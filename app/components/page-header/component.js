@@ -108,7 +108,7 @@ export default Ember.Component.extend(HoverDropdown, {
   },
 
   shouldUpdateNavTree: function() {
-    Ember.run.once(this, 'updateNavTree');
+    Ember.run.scheduleOnce('afterRender', this, 'updateNavTree');
   }.observes(
     'projectId',
     'projects.orchestrationState',

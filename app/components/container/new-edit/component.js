@@ -25,7 +25,6 @@ export default Ember.Component.extend(NewOrEdit, SelectTab, {
   count:                      1,
 
   serviceLinksArray:          null,
-  isGlobal:                   null,
   isRequestedHost:            null,
   portsAsStrArray:            null,
   launchConfigIndex:          -1,
@@ -64,10 +63,6 @@ export default Ember.Component.extend(NewOrEdit, SelectTab, {
 
     setRequestedHostId(hostId) {
       this.set('launchConfig.requestedHostId', hostId);
-    },
-
-    setGlobal(bool) {
-      this.set('isGlobal', bool);
     },
 
     setServiceLinks(links) {
@@ -150,6 +145,7 @@ export default Ember.Component.extend(NewOrEdit, SelectTab, {
         index: index,
         name: item.get('name') || intl.t('newContainer.emptySidekick', {num: index+1}),
         enabled: !isUpgrade
+        uiId: item.get('uiId'),
       });
     });
 
@@ -304,6 +300,17 @@ export default Ember.Component.extend(NewOrEdit, SelectTab, {
 
     return k;
   }.property('isUpgrade','isService'),
+
+  configName: function() {
+    let name = this.get('primaryResource.name');
+    if ( name ) {
+      return name;
+    } else if ( this.get('isSidekick') ) {
+      return '(Sidekick #' + (this.get('launchConfigIndex')+1) + ')';
+    } else {
+      return '(Primary)';
+    }
+  }.property('primaryResource.name'),
 
   supportsSecrets: function() {
     return !!this.get('store').getById('schema','secret');

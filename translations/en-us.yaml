@@ -13,8 +13,9 @@ generic:
   cancel: Cancel
   closeModal: Close
   command: Command
-  confirm: Confirm
   collapseAll: Collapse All
+  confirm: Confirm
+  containers: Containers
   created: Created
   createdDate: "Created {date}"
   default: Default
@@ -42,6 +43,7 @@ generic:
   loading: "Loading..."
   megabyte: 'MB'
   mibibyte: 'MiB'
+  millisecond: 'ms'
   missing: "*%MISSING%*"
   moreActions: More Actions
   na: 'n/a'
@@ -55,6 +57,7 @@ generic:
   saved: Saved
   saving: Saving
   search: Search
+  seconds: seconds
   select: Select
   service: Service
   stack: Stack
@@ -1590,8 +1593,8 @@ accordionRow:
     rule: "{count, plural, =1 {# Rule} other {# Rules}}"
 
 advancedSection:
-  showText: Show Advanced Options
-  hideText: Hide Advanced Options
+  showText: Show advanced options
+  hideText: Hide advanced options
 
 addHostTemplate:
   add:
@@ -2114,7 +2117,7 @@ formHealthCheck:
     label: When Unhealthy
     none: Take no action
     recreate: Re-create
-    recreateOnQuorumPrefix: Re-create, only when at least
+    recreateOnQuorumPrefix: Re-create, but only if at least
     recreateOnQuorumSuffix: |
       {quorum, plural,
         =1 {container is}
@@ -2242,7 +2245,7 @@ formScale:
   containerHelp: "{scale} independent containers will be created.  Consider using a Scaling Group if you want to manage multiple containers as one unit."
   mode:
     service: "Standard: {scale, plural, =1 {# container} other {# containers}}"
-    global: "Global: {scale, plural, =1 {# container} other {# containers}} per host"
+    global: "Global: {scale, plural, =1 {# container} other {# containers}} per host matching scheduling rules"
     sidekick: "Sidekick: Matches the scale and scheduling of the primary service"
 
 formScheduling:
@@ -2258,7 +2261,7 @@ formScheduling:
     vm: Run <b>all</b> virtual machines on a specific host
     containers: Run <b>all</b> containers on a specific host
   runSpecific: Run on a specific host
-  noRules: No scheduling rules
+  noRules: No scheduling rules, run containers on any host.
   autoRun: "Automatically run on every host matching scheduling rules:"
   autoPick:
     vm: "Automatically pick hosts for each virtual machine matching scheduling rules:"
@@ -2469,12 +2472,24 @@ formUserLabels:
   protip: "ProTip: Paste one or more lines of key=value pairs into any key field for easy bulk entry."
 
 formUpgrade:
-  size: Batch Size
-  interval: Batch Interval
-  sec: sec
-  behavior: Start Behavior
-  startStop: Start before Stopping
-  whichServices: Which Services
+  title: Upgrade
+  detail: Configure how containers are replaced when performing an upgrade.
+  batchSize:
+    label: Batch Size
+    detail: Up to this many containers will be replaced at once.
+  interval:
+    label: Batch Interval
+    detail: After finishing a batch of containers, wait this long before starting the next batch
+  behavior:  Replacement Behavior
+  startFirst:
+    label: Start new, then stop old
+    detail: Start new containers before stopping the old ones.  If the service publishes a port, there must be enough eligible hosts availeblt to run Batch Size new containers, because the old containers are still actively using the ports.
+  stopFirst:
+    label: Stop old, then start new
+    detail: Stop the old containers (up to the Batch Size), then start new ones.  This allows the reuse of published ports.  Adjust Batch Size to ensure that you keep enough active capacity to run your application.
+  force:
+    label: Force Redeploy
+    detail: During an upgrade, containers are normally only replaced if part of their definition has changed.  To force one to redeploy for this upgrade, select it here.
 
 formValueArray:
   addActionLabel: Add Value
@@ -3190,7 +3205,6 @@ modalAuditlogInfo:
   response: "Response Object:"
 
 modalContainerStop:
-  uom: seconds
   header: "Are you sure you want to stop"
   helpText: "The container will be forcibly terminated if it does not stop itself before the timeout expires"
   protip: "ProTip: Hold the {key} key while clicking stop to bypass this confirmation."
@@ -3382,6 +3396,7 @@ newContainer:
     container: Add Container
     scalingGroup: Add Scaling Group
     sidekick: 'Sidekick: {name}'
+    sidekickNoName: 'Sidekick: {name}'
   upgrade:
     container: Upgrade Container
     scalingGroup: Upgrade Scaling Group
@@ -3414,7 +3429,7 @@ newContainer:
     keyPlaceholder: e.g. FOO
     valueLabel: Value
     valuePlaceholder: e.g. bar
-  emptyPrimaryService: "(Primary Service)"
+  emptyPrimaryService: "(Primary)"
   emptySidekick: "(Sidekick #{num})"
   addSidekickContainer: Add Sidekick Container
   addSidekickVm: Add Sidekick VM
@@ -3537,6 +3552,7 @@ pagination:
     =0 {No Volumes}
     =1 {{count} {count, plural, =1 {Volume} other {Volumes}}}
     other {{from} - {to} of {count} Volumes}}
+  containerHighlightSubset: "<b>Z {subset} Z of {count}</b> Containers"
 
 pageHeaderEnvironment:
   namespace: Namespace
@@ -3914,7 +3930,7 @@ action:
   garbageCollect: Garbage Collect Containers
   logs: View Logs
   machineConfig: Machine Config
-  pause: Pause Scheduling
+  pause: Pause Operations
   purge: Purge
   remove: Delete
   replay: Replay

@@ -1,39 +1,73 @@
 <section class="header clearfix">
-  <h1>{{headerLabel}} {{help-btn link="/cattle/adding-load-balancers/"}}</h1>
+  <h1>{{headerLabel}}</h1>
 </section>
 
-<section class="horizontal-form container-fluid">
-  {{#liquid-if needsUpgrade}}
-    {{form-upgrade
-      optionsChanged=(action 'setUpgrade')
+<div class="row">
+  <div class="col span-11-of-23">
+    {{form-name-description
+      model=service
+      namePlaceholder="servicePage.newBalancer.form.name.placeholder"
+      descriptionPlaceholder="servicePage.newBalancer.form.description.placeholder"
+      rowClass=""
+      colClass=""
+      bothColClass=""
     }}
-  {{/liquid-if}}
+  </div>
 
-  <div class="{{if needsUpgrade 'hide'}}">
+  <div class="col span-11-of-23 offset-1-of-23">
     {{container/form-scale
       initialLabels=launchConfig.labels
       initialScale=service.scale
       editing=editing
       isGlobal=isGlobal
+      isService=true
       errors=scaleErrors
       setLabels=(action 'setLabels' 'scale')
-      setGlobal=(action 'setGlobal')
       setScale=(action  'setScale')
     }}
+
+    {{form-stack
+      stack=stack
+      errors=stackErrors
+    }}
   </div>
+</div>
+
+<section class="horizontal-form container-fluid">
+  {{container/form-upgrade
+    optionsChanged=(action 'setUpgrade')
+  }}
 </section>
 
 <section class="horizontal-form container-fluid">
-  {{form-name-description
-    model=service
-    namePlaceholder="servicePage.newBalancer.form.name.placeholder"
-    descriptionPlaceholder="servicePage.newBalancer.form.description.placeholder"
-  }}
-
   {{form-balancer-rules
     service=service
   }}
 </section>
+
+{{container/form-scheduling
+  isService=true
+  isGlobal=isGlobal
+  canRequestHost=false
+  initialHostId=launchConfig.requestedHostId
+  initialLabels=launchConfig.labels
+  errors=schedulingErrors
+  allHosts=allHosts
+  setLabels=(action 'setLabels' 'scheduling')
+}}
+
+{{#advanced-section advanced=false}}
+  {{#accordion-list as | al expandFn | }}
+
+    {{form-user-labels
+      initialLabels=launchConfig.labels
+      setLabels=(action 'setLabels' 'user')
+      expandAll=al.expandAll
+      expandFn=expandFn
+    }}
+
+  {{/accordion-list}}
+{{/advanced-section}}
 
 {{#select-tab initialTab='ssl' as |component|}}
 <div class="tabs">
@@ -41,8 +75,6 @@
     <li role="tab" class="tab" data-section="ssl" {{action "selectTab" "ssl" target=component}}><a href="#">{{t 'newBalancer.tabs.ssl'}}</a></li>
     <li role="tab" class="tab" data-section="stickiness" {{action "selectTab" "stickiness" target=component}}><a href="#">{{t 'newBalancer.tabs.stickiness'}}</a></li>
     <li role="tab" class="tab" data-section="custom" {{action "selectTab" "custom" target=component}}><a href="#">{{t 'newBalancer.tabs.custom'}}</a></li>
-    <li role="tab" class="tab" data-section="labels" {{action "selectTab" "labels" target=component}}><a href="#">{{t 'newBalancer.tabs.labels'}}</a></li>
-    <li role="tab" class="tab" data-section="scheduling" {{action "selectTab" "scheduling" target=component}}><a href="#">{{t 'newBalancer.tabs.scheduling'}}</a></li>
   </ul>
 
 <div class="tab-content" role="tabpanel">
@@ -72,24 +104,9 @@
   </div>
 
   <div class="section" data-section="labels">
-    {{form-user-labels
-      initialLabels=launchConfig.labels
-      setLabels=(action 'setLabels' 'user')
-    }}
   </div>
 
   <div class="section" data-section="scheduling">
-    {{container/form-scheduling
-      isService=true
-      isGlobal=isGlobal
-      canRequestHost=false
-      initialHostId=launchConfig.requestedHostId
-      initialLabels=launchConfig.labels
-      errors=schedulingErrors
-      allHosts=allHosts
-      setLabels=(action 'setLabels' 'scheduling')
-      setGlobal=(action 'setGlobal')
-    }}
   </div>
 </div>
 </div>

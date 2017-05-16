@@ -20,7 +20,6 @@
       subSearchField="instances"
       headers=headers as |sortable kind inst dt|}}
       {{#if (eq kind "row")}}
-        {{ log inst }}
         {{service-row
           model=inst
           toggle=(action "toggleExpand" inst.id)
@@ -49,7 +48,6 @@
                   tooltipValues=inst.ref.serviceStates.byName
                 }}
               </div>
-              <p class="m-0 text-muted"><small>{{model.instances.length}} containers</small></p>
             </td>
             <td data-title="{{dt.actions}}" class="actions">
               {{action-menu model=inst.ref}}
@@ -59,6 +57,8 @@
           {{/if}}
         </tr>
       {{else if (eq kind "nomatch")}}
+        <tr><td colspan="{{sortable.fullColspan}}" class="text-center text-muted lacsso pt-20 pb-20">{{t 'containersPage.table.noMatch'}}</td></tr>
+      {{else if (eq kind "norows")}}
         <tr><td colspan="{{sortable.fullColspan}}" class="text-center text-muted lacsso pt-20 pb-20">{{t 'containersPage.table.noMatch'}}</td></tr>
       {{/if}}
     {{/sortable-table}}

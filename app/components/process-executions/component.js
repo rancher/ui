@@ -1,7 +1,6 @@
 import Ember from 'ember';
-import Sortable from 'ui/mixins/sortable';
 
-export default Ember.Component.extend(Sortable, {
+export default Ember.Component.extend({
   expandAll: false,
 
   actions: {

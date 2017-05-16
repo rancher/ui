@@ -27,7 +27,7 @@ export default Ember.Controller.extend({
     addEnvCatalog() {
       this.get('modalService').toggleModal('modal-edit-env-catalogs', {
         project: this.get('projects.current'),
-        catalogs: this.get('model.catalogs.content'),
+        catalogs: this.get('model.catalogs'),
       });
     },
     clearSearch() {
@@ -85,7 +85,7 @@ export default Ember.Controller.extend({
     var neu = {
       catalogs: {}
     };
-    this.get('model.catalogs.content').forEach((cat) => {
+    this.get('model.catalogs').forEach((cat) => {
       neu.catalogs[cat.id] = {
         branch: cat.branch,
         url: cat.url

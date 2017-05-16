@@ -145,16 +145,14 @@ var Container = Instance.extend({
   combinedState: function() {
     var resource = this.get('state');
     var health = this.get('healthState');
+    var hasCheck = !!this.get('healthCheck');
 
     if ( C.ACTIVEISH_STATES.indexOf(resource) >= 0 )
     {
-      if ( health === null || health === 'healthy' )
-      {
-        return resource;
-      }
-      else
-      {
+      if ( hasCheck && health ) {
         return health;
+      } else {
+        return resource;
       }
     }
     else if ((resource === 'stopped') && ((this.get('labels')||{})[C.LABEL.START_ONCE]) && (this.get('startCount') > 0))

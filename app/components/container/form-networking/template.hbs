@@ -7,7 +7,7 @@
      expand=(action expandFn)
 }}
   <div class="row inline-form">
-    <div class="col {{if (or isContainerNetwork isHostNetwork) 'span-6' (if isManagedNetwork 'span-4' 'span-12')}}">
+    <div class="col {{if (or isContainerNetwork isHostNetwork isBridgeNetwork) 'span-6' (if isManagedNetwork 'span-4' 'span-12')}}">
       <label>{{t 'formNetwork.networkMode.label'}}</label>
       {{#input-or-display editable=editing value=instance.networkMode}}
         {{new-select
@@ -20,7 +20,7 @@
       <p class="help-block">{{t (concat-str 'formNetwork.networkMode' instance.networkMode 'detail' character='.')}}</p>
     </div>
 
-    {{#if (or isContainerNetwork isHostNetwork)}}
+    {{#if (or isContainerNetwork isHostNetwork isBridgeNetwork)}}
       <div class="col span-6">
         {{#if isContainerNetwork}}
           <label>{{t 'formNetwork.container.label'}}</label>
@@ -34,7 +34,7 @@
               value=instance.networkContainerId
             }}
           {{/input-or-display}}
-        {{else if isHostNetwork}}
+        {{else if (or isHostNetwork isBridgeNetwork)}}
           <label>{{t 'formNetwork.dns.label'}}</label>
           <div>
             {{#input-or-display editable=editing value=dnsDiscovery}}

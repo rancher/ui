@@ -2,11 +2,7 @@
   {{badge-state model=model}}
 </td>
 <td data-title="{{t 'generic.name'}}:">
-  {{#if (eq projects.current.id model.id)}}
-    {{model.displayName}}
-  {{else}}
-    <a {{action "switchTo" model.id}}>{{model.displayName}}</a>
-  {{/if}}
+  <a href="{{href-to 'authenticated.project.index' model.id}}" {{action "switchTo" model.id}}>{{model.displayName}}</a>
 </td>
 <td data-title="{{t 'generic.description'}}:">
   {{#if model.description}}{{model.description}}{{else}}<span class="text-muted">{{t 'projectRow.none'}}</span>{{/if}}
