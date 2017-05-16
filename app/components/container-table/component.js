@@ -12,7 +12,6 @@ export const headersAll =  [
     name: 'name',
     sort: ['name','id'],
     translationKey: 'generic.name',
-    // width: '25%',
   },
   {
     name: 'image',
