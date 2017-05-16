@@ -4,7 +4,7 @@
   <section class="header header-sidekick clearfix">
     <h2 class="inline-block">{{t headerToken name=configName}}</h2>
     <div class="right-buttons p-0">
-      <button class="btn bg-transparent" {{action "removeSidekick" launchConfigIndex}}>{{t 'newContainer.removeSidekick'}}</button>
+      <button class="btn bg-transparent p-0 text-small text-right" {{action "removeSidekick" launchConfigIndex}}>{{t 'newContainer.removeSidekick'}}</button>
     </div>
   </section>
 {{else}}
@@ -195,6 +195,17 @@
         expandFn=expandFn
     }}
 
+    {{#if (and isService (not isSidekick))}}
+      {{container/form-upgrade
+        service=service
+        editing=true
+        isUpgrade=isUpgrade
+        choices=launchConfigChoices
+        expandAll=al.expandAll
+        expandFn=expandFn
+      }}
+    {{/if}}
+
     {{container/form-volumes
         classNames="accordion-wrapper"
         instance=launchConfig
@@ -228,7 +239,7 @@
   {{top-errors errors=errors}}
   {{#save-cancel saveDisabled=noLaunchConfigsEnabled createLabel=(if isUpgrade 'newContainer.saveUpgrade' 'newContainer.saveNew') save="save" cancel="cancel"}}
     {{#if isService}}
-      <button class="btn bg-transparent" {{action "addSidekick"}}>{{t 'newContainer.addSidekick'}}</button>
+      <button class="btn bg-transparent text-right p-0 pt-5 text-small" style="position: absolute; right: 0; margin-top: 8px;" {{action "addSidekick"}}>{{t 'newContainer.addSidekick'}}</button>
     {{/if}}
   {{/save-cancel}}
 {{/unless}}

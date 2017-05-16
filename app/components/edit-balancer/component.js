@@ -49,10 +49,6 @@ export default Ember.Component.extend(NewOrEdit, {
     setLabels(section,labels) {
       this.set(section+'Labels', labels);
     },
-
-    setUpgrade(upgrade) {
-      this.set('upgradeOptions', upgrade);
-    },
   },
 
   headerLabel: function() {

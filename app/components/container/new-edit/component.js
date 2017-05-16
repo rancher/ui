@@ -145,6 +145,7 @@ export default Ember.Component.extend(NewOrEdit, SelectTab, {
         index: index,
         name: item.get('name') || intl.t('newContainer.emptySidekick', {num: index+1}),
         enabled: !isUpgrade
+        uiId: item.get('uiId'),
       });
     });
 

@@ -95,7 +95,7 @@ export default Ember.Service.extend({
     }
 
     let url = this._addLimits(`${this.get('app.catalogEndpoint')}/templates`, qp);
-    return this.get('store').request({url: url, headers: {[C.HEADER.PROJECT_ID]: this.get('projects.current.id')},}).then((res) => {
+    return this.get('store').request({url: url, headers: {[C.HEADER.PROJECT_ID]: this.get('projects.current.id')}}).then((res) => {
       res.catalogId = catalogId;
       this.set('templateCache', res);
       return this.filter(res, params.category, templateBase, plusInfra);
@@ -106,6 +106,10 @@ export default Ember.Service.extend({
         return Ember.RSVP.reject(err);
       }
     });
+  },
+
+  fetchByUrl(url) {
+    return this.get('store').request({url: url, headers: {[C.HEADER.PROJECT_ID]: this.get('projects.current.id')}});
   },
 
   filter(data, category, templateBase, plusInfra) {

@@ -13,8 +13,9 @@ generic:
   cancel: Cancel
   closeModal: Close
   command: Command
-  confirm: Confirm
   collapseAll: Collapse All
+  confirm: Confirm
+  containers: Containers
   created: Created
   createdDate: "Created {date}"
   default: Default
@@ -42,6 +43,7 @@ generic:
   loading: "Loading..."
   megabyte: 'MB'
   mibibyte: 'MiB'
+  millisecond: 'ms'
   missing: "*%MISSING%*"
   moreActions: More Actions
   na: 'n/a'
@@ -55,6 +57,7 @@ generic:
   saved: Saved
   saving: Saving
   search: Search
+  seconds: seconds
   select: Select
   service: Service
   stack: Stack
@@ -2469,12 +2472,24 @@ formUserLabels:
   protip: "ProTip: Paste one or more lines of key=value pairs into any key field for easy bulk entry."
 
 formUpgrade:
-  size: Batch Size
-  interval: Batch Interval
-  sec: sec
-  behavior: Start Behavior
-  startStop: Start before Stopping
-  whichServices: Which Services
+  title: Upgrade
+  detail: Configure how containers are replaced when performing an upgrade.
+  batchSize:
+    label: Batch Size
+    detail: Up to this many containers will be replaced at once.
+  interval:
+    label: Batch Interval
+    detail: After finishing a batch of containers, wait this long before starting the next batch
+  behavior:  Replacement Behavior
+  startFirst:
+    label: Start new, then stop old
+    detail: Start new containers before stopping the old ones.  If the service publishes a port, there must be enough eligible hosts availeblt to run Batch Size new containers, because the old containers are still actively using the ports.
+  stopFirst:
+    label: Stop old, then start new
+    detail: Stop the old containers (up to the Batch Size), then start new ones.  This allows the reuse of published ports.  Adjust Batch Size to ensure that you keep enough active capacity to run your application.
+  force:
+    label: Force Redeploy
+    detail: During an upgrade, containers are normally only replaced if part of their definition has changed.  To force one to redeploy for this upgrade, select it here.
 
 formValueArray:
   addActionLabel: Add Value
@@ -3190,7 +3205,6 @@ modalAuditlogInfo:
   response: "Response Object:"
 
 modalContainerStop:
-  uom: seconds
   header: "Are you sure you want to stop"
   helpText: "The container will be forcibly terminated if it does not stop itself before the timeout expires"
   protip: "ProTip: Hold the {key} key while clicking stop to bypass this confirmation."
@@ -3415,7 +3429,7 @@ newContainer:
     keyPlaceholder: e.g. FOO
     valueLabel: Value
     valuePlaceholder: e.g. bar
-  emptyPrimaryService: "(Primary Service)"
+  emptyPrimaryService: "(Primary)"
   emptySidekick: "(Sidekick #{num})"
   addSidekickContainer: Add Sidekick Container
   addSidekickVm: Add Sidekick VM
