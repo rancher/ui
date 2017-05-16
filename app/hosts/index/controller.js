@@ -33,20 +33,6 @@ export default Ember.Controller.extend({
     },
   },
 
-  listLinkOptions: {
-    route: 'hosts',
-    options: {
-      mode: 'dot',
-    },
-  },
-
-  groupLinkOptions: {
-    route: 'hosts',
-    options: {
-      mode: 'grouped',
-    },
-  },
-
   headers: [
     {
       name: 'expand',

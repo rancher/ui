@@ -14,8 +14,33 @@ $accordion-header-border: $bg-default;
 
   .accordion-header {
     @include no-select;
+    @extend .bg-default;
+    @extend .hand;
+    @extend .clearfix;
     background: $accordion-header;
     border: solid $accordion-header-border thin;
+    padding: 10px;
+    display: table;
+    vertical-align: middle;
+    width: 100%;
+
+    .expand,
+    .title,
+    .badge-state, {
+      display: table-cell;
+      height: 100%;
+      vertical-align: middle;
+    }
+
+    .expand {
+      width: 40px;
+    }
+
+    .badge-state {
+      padding: 10px;
+      width: 140px;
+      text-align: right;
+    }
   }
 
   .accordion-content {
@@ -32,6 +57,19 @@ $accordion-header-border: $bg-default;
       > .input-group-btn {
         position: absolute;
       }
+    }
+  }
+}
+
+.physical-attrs {
+  .accordion-content {
+    label,
+    h2 {
+      @extend .text-muted;
+    }
+    > .row > .col.span-6 > .col.span-12 {
+      padding: 10px;
+      border-bottom: 1px solid lightgray;
     }
   }
 }

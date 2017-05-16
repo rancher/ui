@@ -62,51 +62,50 @@
 
 <section>
   {{#accordion-list as |al expandFn| }}
-    <div class="mt-10">
-      {{#accordion-list-item
-           title=(t 'physicalStats.title')
-           detail=(t 'physicalStats.detail')
-           status=status
-           statusClass=statusClass
-           expandAll=al.expandAll
-           expand=(action expandFn)
-      }}
-        <div class="row">
-          <div class="col span-6">
-            <label>{{t 'generic.service'}}:</label>
-            <div>
-              {{#if model.container.service}}
-                {{#link-to "service" projects.current.id model.container.service.id}}{{model.container.service.displayName}}{{/link-to}}
-              {{else}}
-                {{t 'generic.none'}}
-              {{/if}}
-            </div>
-          </div>
-          <div class="col span-6">
-            <label>{{t 'generic.entrypoint'}}:</label>
-            <div>
-              {{#if model.container.entrypoint}}
-                {{model.container.entrypoint}}
-              {{else}}
-                {{t 'generic.none'}}
-              {{/if}}
-            </div>
+    {{#accordion-list-item
+         title=(t 'physicalStats.title')
+         detail=(t 'physicalStats.detail')
+         status=status
+         statusClass=statusClass
+         expandAll=al.expandAll
+         expand=(action expandFn)
+    }}
+      <div class="row">
+        <div class="col span-6">
+          <label>{{t 'generic.service'}}:</label>
+          <div>
+            {{#if model.container.service}}
+              {{#link-to "service" projects.current.id model.container.service.id}}{{model.container.service.displayName}}{{/link-to}}
+            {{else}}
+              {{t 'generic.none'}}
+            {{/if}}
           </div>
         </div>
-        <div class="row">
-          <div class="col">
-            <label class="inline-label">{{t 'generic.command'}}:</label>
-            <div>
-              {{#if model.container.command}}
-                {{model.container.command}}
-              {{else}}
-                {{t 'generic.none'}}
-              {{/if}}
-            </div>
+        <div class="col span-6">
+          <label>{{t 'generic.entrypoint'}}:</label>
+          <div>
+            {{#if model.container.entrypoint}}
+              {{model.container.entrypoint}}
+            {{else}}
+              {{t 'generic.none'}}
+            {{/if}}
           </div>
         </div>
-      {{/accordion-list-item}}
-
+      </div>
+      <div class="row">
+        <div class="col">
+          <label class="inline-label">{{t 'generic.command'}}:</label>
+          <div>
+            {{#if model.container.command}}
+              {{model.container.command}}
+            {{else}}
+              {{t 'generic.none'}}
+            {{/if}}
+          </div>
+        </div>
+      </div>
+    {{/accordion-list-item}}
+    <div class="mt-20">
       {{#accordion-list-item
            title=(t 'containerPage.portsTab.header')
            detail=(t 'containerPage.portsTab.detail')
@@ -124,6 +123,7 @@
              sortBy=sortBy
              bulkActions=false
              rowActions=false
+             stickyHeader=false
              pagingLabel="pagination.port"
              isVisible=parent.expanded
              headers=headers as |sortable kind port dt|}}
@@ -188,6 +188,7 @@
              searchText=searchText
              sortBy=sortBy
              bulkActions=false
+             stickyHeader=false
              pagingLabel="pagination.volume"
              isVisible=parent.expanded
              headers=headers as |sortable kind mount dt|}}

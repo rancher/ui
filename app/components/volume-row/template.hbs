@@ -4,8 +4,7 @@
 
 <td>
   <div class="clip">
-    {{model.displayUri}}
-    {{copy-to-clipboard clipboardText=model.displayUri class="with-clip" size="small"}}
+    {{#copy-inline clipboardText=model.displayUri class="with-clip" size="small"}}{{model.displayUri}}{{/copy-inline}} /
   </div>
 </td>
 
@@ -13,7 +12,7 @@
   {{#if model.mounts.length}}
     {{#each model.mounts as |mount|}}
       <div>
-        {{#link-to "container" mount.instanceId}}{{mount.instance.name}}{{/link-to}}:{{mount.path}}
+        <a href="{{href-to "container" mount.instanceId}}">{{mount.instance.name}}</a>:{{mount.path}}
         {{#if (eq mount.permissions "ro")}}
           <span class="text-muted">{{t 'volumeRow.mounts.readOnly'}}</span>
         {{/if}}

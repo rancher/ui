@@ -3,9 +3,15 @@
 
   <div class="right-buttons">
     <div class="btn-group p-0 mr-10">
-      {{#link-to "hosts" (query-params mode="list") classNames="btn btn-sm bg-default"}}{{tooltip-link icon="icon-list" text=(t 'hostsPage.index.tooltip.listView') options=listLinkOptions}}{{/link-to}}
-      {{#link-to "hosts" (query-params mode="dot") classNames="btn btn-sm bg-default"}}{{tooltip-link icon="icon-dotview" text=(t 'hostsPage.index.tooltip.iconView') options=listLinkOptions}}{{/link-to}}
-      {{#link-to "hosts" (query-params mode="grouped") classNames="btn btn-sm bg-default"}}{{tooltip-link icon="icon-boxview" text=(t 'hostsPage.index.tooltip.groupedView') options=groupLinkOptions}}{{/link-to}}
+      {{#tooltip-element type="tooltip-basic" model=(t 'hostsPage.index.tooltip.listView') tooltipTemplate='tooltip-static' aria-describedby="tooltip-base" tooltipFor="tooltipLink"}}
+        {{#link-to "hosts" (query-params mode="list") classNames="btn btn-sm bg-default"}}<i class="icon icon-list"></i>{{/link-to}}
+      {{/tooltip-element}}
+      {{#tooltip-element type="tooltip-basic" model=(t 'hostsPage.index.tooltip.iconView') tooltipTemplate='tooltip-static' aria-describedby="tooltip-base" tooltipFor="tooltipLink"}}
+        {{#link-to "hosts" (query-params mode="dot") classNames="btn btn-sm bg-default"}}<i class="icon icon-dotview"></i>{{/link-to}}
+      {{/tooltip-element}}
+      {{#tooltip-element type="tooltip-basic" model=(t 'hostsPage.index.tooltip.groupedView') tooltipTemplate='tooltip-static' aria-describedby="tooltip-base" tooltipFor="tooltipLink"}}
+        {{#link-to "hosts" (query-params mode="grouped") classNames="btn btn-sm bg-default"}}<i class="icon icon-boxview"></i>{{/link-to}}
+      {{/tooltip-element}}
     </div>
 
     {{#if app.isCaas}}

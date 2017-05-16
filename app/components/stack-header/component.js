@@ -25,16 +25,4 @@ export default Ember.Component.extend({
 
     return out;
   }.property('model.outputs','model.id'),
-
-  listLinkOptions: {
-    route: 'stack.index',
-  },
-
-  graphLinkOptions: {
-    route: 'stack.graph',
-  },
-
-  yamlLinkOptions: {
-    route: 'stack.code',
-  }
 });
