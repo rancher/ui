@@ -95,21 +95,21 @@ export default Ember.Component.extend({
         });
 
         Ember.RSVP.allSettled(changes).then(() => {
-          return this.get('catalog').refresh().then(() => {
-            this.set('saving', false);
-            cb(true);
-            Ember.run.later(() => {
-              this.sendAction('cancel');
-            }, 500);
+          return new Ember.RSVP.Promise((resolve) => { setTimeout(resolve, 1); }).then(() => {
+            return this.get('catalog').refresh().finally(() => {
+              Ember.run.later(() => {
+                // @TODO ugh...
+                window.l('route:catalog-tab').send('refresh');
+                this.sendAction('cancel');
+              }, 500);
+            });
           });
         }).catch((err) => {
           this.set('errors',err);
           cb(false);
-          this.set('saving', false);
         });
       } else {
         cb(false);
-        this.set('saving', false);
       }
     }
   },

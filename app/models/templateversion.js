@@ -1,7 +1,16 @@
+import Ember from 'ember';
 import Resource from 'ember-api-store/models/resource';
 import C from 'ui/utils/constants';
 
 export default Resource.extend({
+  projects: Ember.inject.service(),
+
+  headers: function() {
+    return {
+      [C.HEADER.PROJECT_ID]: this.get('projects.current.id')
+    };
+  }.property('project.current.id'),
+
   filesAsArray: function() {
     var obj = (this.get('files')||{});
     var out = [];

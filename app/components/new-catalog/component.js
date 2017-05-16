@@ -7,6 +7,7 @@ import { compare as compareVersion } from 'ui/utils/parse-version';
 
 export default Ember.Component.extend(NewOrEdit, {
   intl: Ember.inject.service(),
+  catalog: Ember.inject.service(),
   projects: Ember.inject.service(),
   settings: Ember.inject.service(),
 
@@ -138,9 +139,7 @@ export default Ember.Component.extend(NewOrEdit, {
         this.set('stackResource.environment', current);
       }
 
-      this.get('store').request({
-        url: url
-      }).then((response) => {
+      this.get('catalog').fetchByUrl(url).then((response) => {
         if (response.questions) {
           response.questions.forEach((item) => {
             // This will be the component that is rendered to edit this answer
