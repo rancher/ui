@@ -5,15 +5,6 @@ export default Ember.Controller.extend({
   emailSent: false,
   saving: false,
   saveDisabled: true,
-  init() {
-    this._super(...arguments);
-    this.set('model', {
-      type: 'account',
-      kind: 'user',
-      name: '',
-      email: '',
-    });
-  },
   actions: {
     register: function() {
       this.set('saving', true);
@@ -33,6 +24,9 @@ export default Ember.Controller.extend({
       });
     },
     cancel: function() {
+      if (this.get('errors')) {
+        this.set('errors', []);
+      }
       this.transitionToRoute('login');
     }
   },

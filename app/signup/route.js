@@ -5,6 +5,14 @@ export default Ember.Route.extend({
     $('BODY').addClass('container-farm');
   },
 
+  model() {
+    return {
+      type: 'account',
+      kind: 'user',
+      name: '',
+      email: '',
+    };
+  },
   deactivate: function() {
     $('BODY').removeClass('container-farm');
   }
