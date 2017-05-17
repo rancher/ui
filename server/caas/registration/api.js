@@ -293,7 +293,7 @@ module.exports = function(app/*, options*/) {
           method: 'GET'
         }, function(body) {
 
-          if (body) {
+          if (body && body.value) {
             cb({apiKey: apiKey, id: body.value});
           } else {
             cb(false);
