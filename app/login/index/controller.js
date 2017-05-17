@@ -20,7 +20,7 @@ export default Ember.Controller.extend({
   timedOut          : false,
   waiting           : false,
   errorMsg          : null,
-  resetPassword           : false,
+  resetPassword     : false,
 
   actions: {
     started() {

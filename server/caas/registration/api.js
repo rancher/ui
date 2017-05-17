@@ -169,7 +169,7 @@ module.exports = function(app/*, options*/) {
           });
         });
       });
-    });
+    }, res);
   });
 
   app.use('/update-password', function(req, res) {
