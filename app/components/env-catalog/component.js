@@ -67,39 +67,36 @@ export default Ember.Component.extend({
       }
     }
   },
-  validate: function() {
+
+  validate() {
     var errors = [];
     var globals = ['all', 'community', 'library']; // these should be removed when these terms are removed from the envid field
-    var newCatalogs = this.get('ary').filterBy('toAdd', true);
+    var ary = this.get('ary');
 
-    if (newCatalogs.length) {
-      newCatalogs.forEach((cat) => {
-        if ( (cat.name||'').trim().length === 0 )
-        {
-          errors.push('A name is required');
-        }
-        if ( (cat.url||'').trim().length === 0 )
-        {
-          errors.push('A url is required');
-        }
-        if (globals.indexOf(cat.name.toLowerCase()) >= 0) {
-          errors.push('Catalog name can not match a gloabl catalog name');
-        }
-      });
-    }
+    ary.forEach((cat) => {
+      if ( (cat.name||'').trim().length === 0 ) {
+        errors.push('Name is required on each catalog');
+      }
 
-    if ( errors.length )
-    {
+      if ( (cat.url||'').trim().length === 0 ) {
+        errors.push('URL is required on each catalog');
+      }
+
+      if (globals.indexOf(cat.name.toLowerCase()) >= 0 || ary.filter((x) => (x.name||'').trim().toLowerCase() === cat.name.toLowerCase()).length > 1) {
+        errors.push('Each catalog must have a unique name');
+      }
+    });
+
+    if ( errors.length ) {
       this.set('errors',errors.uniq());
       return false;
-    }
-    else
-    {
+    } else {
       this.set('errors', null);
     }
 
     return true;
   },
+
   addCatalogs(catalogs) {
     return this.get('store').request({
       url: `${this.get('app.catalogEndpoint')}/catalogs`,
@@ -110,6 +107,7 @@ export default Ember.Component.extend({
       body: JSON.stringify(catalogs)
     });
   },
+
   removeCatalogs(catalogs) {
     return this.get('store').request({
       url: `${this.get('app.catalogEndpoint')}/catalogs/${catalogs.name}`,
@@ -120,6 +118,7 @@ export default Ember.Component.extend({
       body: JSON.stringify(catalogs)
     });
   },
+
   init() {
     this._super(...arguments);
     this.setProperties({
