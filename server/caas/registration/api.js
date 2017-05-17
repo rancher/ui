@@ -44,7 +44,7 @@ module.exports = function(app/*, options*/) {
           });
         });
       }
-    });
+    }, res);
   });
 
 
@@ -388,7 +388,8 @@ module.exports = function(app/*, options*/) {
 
   }
 
-  function checkExistingAccount(email, cb) {
+  function checkExistingAccount(email, cb, res) {
+    var ogRes = res || null;
     return newRequest({
       url: `${rancherApiUrl}/passwords?publicValue=${email}`,
       method: 'GET',
@@ -398,7 +399,7 @@ module.exports = function(app/*, options*/) {
       } else {
         return cb(false);
       }
-    }, null);
+    }, ogRes);
   }
 
   function isPasswordActive(accountId, cb) {
