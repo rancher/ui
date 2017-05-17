@@ -9,6 +9,7 @@ export default Ember.Component.extend({
   userEmail: null,
   passwordResetSent: false,
   showSuccess: false,
+  saveDisabled: true,
 
   actions: {
     toggleReset: function(e) {
@@ -39,4 +40,11 @@ export default Ember.Component.extend({
       });
     }
   },
+  emailObsv: Ember.on('init', Ember.observer('userEmail', function() {
+    if (this.get('userEmail')) {
+      this.set('saveDisabled', false);
+    } else {
+      this.set('saveDisabled', true);
+    }
+  })),
 });
