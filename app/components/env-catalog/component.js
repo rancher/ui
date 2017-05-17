@@ -74,6 +74,10 @@ export default Ember.Component.extend({
 
         // Add/update
         cur.forEach((cat) => {
+          cat.set('name', (cat.get('name')||'').trim());
+          cat.set('url', (cat.get('url')||'').trim());
+          cat.set('branch', (cat.get('branch')||'').trim() || C.CATALOG.DEFAULT_BRANCH);
+
           if ( cat.uiId ) {
             // Update maybe
             let orig = this.get('old').findBy('uiId', cat.uiId);
@@ -95,21 +99,21 @@ export default Ember.Component.extend({
         });
 
         Ember.RSVP.allSettled(changes).then(() => {
-          return this.get('catalog').refresh().then(() => {
-            this.set('saving', false);
-            cb(true);
-            Ember.run.later(() => {
-              this.sendAction('cancel');
-            }, 500);
+          return new Ember.RSVP.Promise((resolve) => { setTimeout(resolve, 1); }).then(() => {
+            return this.get('catalog').refresh().finally(() => {
+              Ember.run.later(() => {
+                // @TODO ugh...
+                window.l('route:catalog-tab').send('refresh');
+                this.sendAction('cancel');
+              }, 500);
+            });
           });
         }).catch((err) => {
           this.set('errors',err);
           cb(false);
-          this.set('saving', false);
         });
       } else {
         cb(false);
-        this.set('saving', false);
       }
     }
   },
@@ -121,15 +125,15 @@ export default Ember.Component.extend({
 
     ary.forEach((cat) => {
       if ( (cat.name||'').trim().length === 0 ) {
-        errors.push('A name is required');
+        errors.push('Name is required on each catalog');
       }
 
       if ( (cat.url||'').trim().length === 0 ) {
-        errors.push('A url is required');
+        errors.push('URL is required on each catalog');
       }
-      if (globals.indexOf(cat.name.toLowerCase()) >= 0) {
 
-        errors.push('Catalog name can not match a gloabl catalog name');
+      if (globals.indexOf(cat.name.toLowerCase()) >= 0 || ary.filter((x) => (x.name||'').trim().toLowerCase() === cat.name.toLowerCase()).length > 1) {
+        errors.push('Each catalog must have a unique name');
       }
     });
 

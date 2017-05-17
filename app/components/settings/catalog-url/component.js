@@ -59,16 +59,10 @@ export default Ember.Component.extend({
       this.get('settings').set(C.SETTING.CATALOG_URL, JSON.stringify(neu));
       this.get('settings').one('settingsPromisesResolved', () => {
         // Sigh...
-        setTimeout(() => {
-          this.get('catalog').refresh().catch(() => {
-            setTimeout(() => {
-              this.get('catalog').refresh();
-            }, 5000);
-          }).finally(() => {
-            btnCb(true);
-            this.sendAction('saved');
-          });
-        },5000);
+        this.get('catalog').refresh().finally(() => {
+          btnCb(true);
+          this.sendAction('saved');
+        });
       });
     },
   },

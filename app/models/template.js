@@ -7,6 +7,12 @@ export default Resource.extend({
   settings: Ember.inject.service(),
   intl: Ember.inject.service(),
 
+  headers: function() {
+    return {
+      [C.HEADER.PROJECT_ID]: this.get('projects.current.id')
+    };
+  }.property('project.current.id'),
+
   cleanProjectUrl: Ember.computed('links.project', function() {
     let projectUrl = this.get('links.project');
     let pattern = new RegExp('^([a-z]+://|//)', 'i');
