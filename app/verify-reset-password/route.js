@@ -22,9 +22,9 @@ export default Ember.Route.extend({
       }).then((resp) => {
         if (resp.status >= 200 && resp.status < 300) {
           return resp.body;
-        } else {
-          return Ember.RSVP.reject();
         }
+      }).catch((err) => {
+        return Ember.RSVP.reject(err.body);
       });
 
     } else {

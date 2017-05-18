@@ -1,5 +1,8 @@
 {{#if showReset}}
   <div class="pt-15"><label>{{t 'caasLogin.resetHeader'}}</label>
+  {{#if errMsg}}
+    <div class="banner p-10 bg-error" role="alert">{{errMsg}}</div>
+  {{/if}}
   {{#if showSuccess}}
     <p>{{t 'caasLogin.resetSuccess'}}</p>
     <a href="#" class="mt-10" {{action "cancel"}}>{{t 'caasLogin.login'}}</a>
@@ -11,7 +14,7 @@
         </div>
       </div>
       <div class="text-center mt-15">
-        {{save-cancel save="resetPw" cancel="cancel" createLabel='caasLogin.reset'}}
+        {{save-cancel save="resetPw" cancel="cancel" saving=loading saveDisabled=saveDisabled createLabel='caasLogin.reset'}}
       </div>
     </form>
   {{/if}}

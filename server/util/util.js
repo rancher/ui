@@ -38,7 +38,7 @@ const ERRORS = {
   },
   token: {
     message: 'Internal Server Error',
-    status: 500,
+    status: 404,
     type: 'error',
     detail: 'There was an error trying to retrieve that token, try again later'
   },
