@@ -15,7 +15,7 @@ export default Ember.Controller.extend({
   isCaas            : Ember.computed('app.mode', function() {
     return this.get('app.mode') === 'caas' ? true : false;
   }),
-  promptPasswordReset: false,
+  promptPasswordReset: Ember.computed.alias('resetPassword'),
 
   timedOut          : false,
   waiting           : false,
@@ -69,12 +69,6 @@ export default Ember.Controller.extend({
       }
     });
   }.on('init'),
-
-  showPasswordReset: Ember.observer('resetPassword', function() {
-    if (this.get('resetPassword')) {
-      this.set('promptPasswordReset', true);
-    }
-  }),
 
   infoMsg: function() {
     if ( this.get('errorMsg') ) {

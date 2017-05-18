@@ -1,5 +1,8 @@
 {{#authorize-user}}
   {{top-errors errors=errors}}
+  {{#if showReset}}
+    {{#link-to 'login' (query-params resetPassword=true) classNames="inline-block mb-10"}}Reset Password{{/link-to}}
+  {{/if}}
   {{#if emailSent}}
     <div class="row" style="max-width: 500px;">
       <div class="col span-12 text-center">

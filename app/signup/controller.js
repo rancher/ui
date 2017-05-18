@@ -19,6 +19,9 @@ export default Ember.Controller.extend({
         this.set('saving', false);
         this.set('emailSent', true);
       }).catch((err) => {
+        if (err.status === 409) {
+          this.set('showReset', true);
+        }
         this.set('saving', false);
         this.set('errors', [err.body.detail]);
       });
