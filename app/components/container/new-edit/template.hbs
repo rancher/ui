@@ -122,6 +122,16 @@
     editing=true
 }}
 
+{{#if (and isService (not isSidekick))}}
+  {{container/form-upgrade
+    service=service
+    editing=true
+    isUpgrade=isUpgrade
+    slcWithNames=slcWithNames
+  }}
+{{/if}}
+
+
 {{#advanced-section advanced=false}}
   {{#accordion-list as | al expandFn | }}
 
@@ -195,17 +205,6 @@
         expandAll=al.expandAll
         expandFn=expandFn
     }}
-
-    {{#if (and isService (not isSidekick))}}
-      {{container/form-upgrade
-        service=service
-        editing=true
-        isUpgrade=isUpgrade
-        choices=launchConfigChoices
-        expandAll=al.expandAll
-        expandFn=expandFn
-      }}
-    {{/if}}
 
     {{container/form-volumes
         classNames="accordion-wrapper"

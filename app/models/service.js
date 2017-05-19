@@ -45,20 +45,10 @@ var Service = Resource.extend(StateCounts, {
       return this.doAction('restart', {rollingRestartStrategy: {}});
     },
 
-    cancelUpgrade() {
-      return this.doAction('cancelupgrade');
-    },
-
-    cancelRollback() {
-      return this.doAction('cancelrollback');
-    },
-
-    finishUpgrade() {
-      return this.doAction('finishupgrade');
-    },
-
     rollback() {
-      return this.doAction('rollback');
+      this.get('modalService').toggleModal('modal-rollback-service', {
+        originalModel: this
+      });
     },
 
     garbageCollect() {
@@ -162,7 +152,7 @@ var Service = Resource.extend(StateCounts, {
     var choices = [
       { label: 'action.upgradeOrEdit',  icon: 'icon icon-arrow-circle-up',  action: 'upgrade',        enabled: canUpgrade },
       { label: 'action.edit',           icon: 'icon icon-pencil',           action: 'editDns',        enabled: !isReal },
-      { label: 'action.rollback',       icon: 'icon icon-history',          action: 'rollback',       enabled: !!a.rollback && isReal },
+      { label: 'action.rollback',       icon: 'icon icon-history',          action: 'rollback',       enabled: !!a.rollback && isReal && !!this.get('previousRevisionId') },
       { label: 'action.clone',          icon: 'icon icon-copy',             action: 'clone',          enabled: !isK8s && !isSwarm && !isDriver },
       { divider: true },
       { label: 'action.execute',        icon: 'icon icon-terminal',         action: 'shell',          enabled: !!containerForShell, altAction:'popoutShell'},
@@ -180,7 +170,7 @@ var Service = Resource.extend(StateCounts, {
     ];
 
     return choices;
-  }.property('actionLinks.{activate,deactivate,pause,restart,update,remove,rollback,garbagecollect}',
+  }.property('actionLinks.{activate,deactivate,pause,restart,update,remove,rollback,garbagecollect}','previousRevisionId',
     'lcType','isK8s','isSwarm','canHaveContainers','canUpgrade','containerForShell'
   ),
 

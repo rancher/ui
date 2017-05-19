@@ -93,7 +93,11 @@ export default Ember.Component.extend(NewOrEdit, {
 
   sortedVersions: function() {
     let out = this.get('versionsArray').sort((a,b) => {
-      return compareVersion(a.version, b.version);
+      if ( a.sortVersion && b.sortVersion ) {
+        return compareVersion(a.sortVersion, b.sortVersion);
+      } else {
+        return compareVersion(a.version, b.version);
+      }
     });
 
     let def = this.get('templateResource.defaultVersion');

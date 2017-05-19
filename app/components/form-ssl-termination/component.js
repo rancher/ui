@@ -1,6 +1,9 @@
 import Ember from 'ember';
+import { STATUS, STATUS_INTL_KEY, classForStatus } from 'ui/components/accordion-list-item/component';
 
 export default Ember.Component.extend({
+  intl: Ember.inject.service(),
+
   service         : null,
   allCertificates : null,
 
@@ -16,6 +19,14 @@ export default Ember.Component.extend({
     });
 
     this.set('alternates', alternates);
+  },
+
+  didReceiveAttrs() {
+    if (!this.get('expandFn')) {
+      this.set('expandFn', function(item) {
+          item.toggleProperty('expanded');
+      });
+    }
   },
 
   actions: {
@@ -54,4 +65,20 @@ export default Ember.Component.extend({
   updateLabels(labels) {
     this.sendAction('setLabels', labels);
   },
+
+  statusClass: null,
+  status: function() {
+    let k = STATUS.NONE;
+    let count = this.get('lbConfig.certificateIds.length')||0;
+    if ( !!this.get('lbConfig.defaultCertificateId') ) {
+      count++;
+    }
+
+    if ( count ) {
+      k = STATUS.COUNTCONFIGURED;
+    }
+
+    this.set('statusClass', classForStatus(k));
+    return this.get('intl').t(`${STATUS_INTL_KEY}.${k}`, {count: count});
+  }.property('lbConfig.certificateIds.[]','lbConfig.defaultCertificateId'),
 });

@@ -1,0 +1,18 @@
+{{#accordion-list-item
+      title=(t 'formBalancerConfig.title')
+      detail=(t 'formBalancerConfig.detail' appName=settings.appName)
+      status=status
+      statusClass=statusClass
+      expandAll=expandAll
+      expand=(action expandFn)
+}}
+  <div class="mb-10">{{t 'formBalancerConfig.custom' appName=settings.appName htmlSafe=true}}</div>
+  <hr/>
+
+  {{textarea
+    value=service.lbConfig.config
+    placeholder=(t 'formBalancerConfig.config.prompt')
+    rows="8"
+    classNames="form-control"
+  }}
+{{/accordion-list-item}}

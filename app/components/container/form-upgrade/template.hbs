@@ -42,24 +42,29 @@
 
     <div class="col span-11-of-23 offset-1-of-23">
       <label>{{t 'formUpgrade.interval.label'}}</label>
-      {{#input-or-display editable=editing value=service.interval}}
+      {{#input-or-display editable=editing value=interval}}
         <div class="input-group">
-          {{input-integer min=0 classNames="form-control" value=service.interval}}
-          <span class="input-group-addon bg-default">{{t 'generic.millisecond'}}</span>
+          {{input-number min=0 classNames="form-control" value=interval}}
+          <span class="input-group-addon bg-default">{{t 'generic.seconds'}}</span>
         </div>
       {{/input-or-display}}
       <p class="help-block">{{t 'formUpgrade.interval.detail'}}</p>
     </div>
   </div>
 
-  <hr/>
+  {{#if isUpgrade}}
+    <hr/>
 
-  <div class="row">
-    <div class="col-23-of-23">
-      <label>{{t 'formUpgrade.force.label'}}</label>
-      <p class="help-block">{{t 'formUpgrade.force.detail'}}</p>
+    <div class="row">
+      <div class="col-23-of-23">
+        <label>{{t 'formUpgrade.force.label'}}</label>
+        <p class="help-block mb-10">{{t 'formUpgrade.force.detail'}}</p>
 
-      @TODO API for force-upgrade
+        <label>{{input type="checkbox" checked=service.forceUpgrade}} {{service.displayName}}</label>
+        {{#each slcWithNames as |obj idx|}}
+          <label class="pr-20">{{input type="checkbox" checked=obj.slc.forceUpgrade}} {{obj.displayName}}</label>
+        {{/each}}
+      </div>
     </div>
-  </div>
+  {{/if}}
 {{/accordion-list-item}}
