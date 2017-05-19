@@ -1,4 +1,12 @@
-{{#liquid-if lbConfig.needsCertificate}}
+{{#accordion-list-item
+      title=(t 'formSslTermination.title')
+      detail=(t 'formSslTermination.detail' appName=settings.appName)
+      status=status
+      statusClass=statusClass
+      expandAll=expandAll
+      expand=(action expandFn)
+}}
+
   {{#if allCertificates.length}}
     <div class="row inline-form">
       <div class="col span-2 col-inline">
@@ -7,7 +15,7 @@
       <div class="col span-8">
         {{new-select
           classNames="form-control"
-          prompt="formSslTermination.defaultCertificate.prompt"
+          prompt=(t 'formSslTermination.defaultCertificate.prompt')
           content=allCertificates
           optionLabelPath="displayDetailedName"
           optionValuePath="id"
@@ -43,7 +51,7 @@
                 <td>
                   {{new-select
                     classNames="form-control"
-                    prompt="formSslTermination.alternateCertificate.prompt"
+                    prompt=(t 'formSslTermination.alternateCertificate.prompt')
                     content=alternateCertificates
                     optionLabelPath="displayDetailedName"
                     optionValuePath="id"
@@ -70,8 +78,5 @@
   {{else}}
     <span class="text-muted">{{t 'formSslTermination.noCertificates'}}</span>
   {{/if}}
-{{else}}
-  <span class="text-muted">
-    {{t 'formSslTermination.notNeeded'}}
-  </span>
-{{/liquid-if}}
+
+{{/accordion-list-item}}

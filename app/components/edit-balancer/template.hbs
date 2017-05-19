@@ -34,12 +34,6 @@
 </div>
 
 <section class="horizontal-form container-fluid">
-  {{container/form-upgrade
-    optionsChanged=(action 'setUpgrade')
-  }}
-</section>
-
-<section class="horizontal-form container-fluid">
   {{form-balancer-rules
     service=service
   }}
@@ -56,8 +50,20 @@
   setLabels=(action 'setLabels' 'scheduling')
 }}
 
+{{#liquid-if service.lbConfig.needsCertificate}}
+  {{form-ssl-termination
+    service=service
+    allCertificates=allCertificates
+  }}
+{{/liquid-if}}
+
 {{#advanced-section advanced=false}}
   {{#accordion-list as | al expandFn | }}
+    {{form-balancer-config
+      service=service
+      expandAll=al.expandAll
+      expandFn=expandFn
+    }}
 
     {{form-user-labels
       initialLabels=launchConfig.labels
@@ -66,51 +72,23 @@
       expandFn=expandFn
     }}
 
-  {{/accordion-list}}
-{{/advanced-section}}
-
-{{#select-tab initialTab='ssl' as |component|}}
-<div class="tabs">
-  <ul class="tab-header" style="display: inline-block" role="tablist">
-    <li role="tab" class="tab" data-section="ssl" {{action "selectTab" "ssl" target=component}}><a href="#">{{t 'newBalancer.tabs.ssl'}}</a></li>
-    <li role="tab" class="tab" data-section="stickiness" {{action "selectTab" "stickiness" target=component}}><a href="#">{{t 'newBalancer.tabs.stickiness'}}</a></li>
-    <li role="tab" class="tab" data-section="custom" {{action "selectTab" "custom" target=component}}><a href="#">{{t 'newBalancer.tabs.custom'}}</a></li>
-  </ul>
-
-<div class="tab-content" role="tabpanel">
-  <div class="section container-fluid tab-section" data-section="ssl">
-    {{form-ssl-termination
-      service=service
-      allCertificates=allCertificates
-    }}
-  </div>
-
-  <div class="section container-fluid tab-section" data-section="stickiness">
     {{form-stickiness
       service=service
+      expandAll=al.expandAll
+      expandFn=expandFn
     }}
-  </div>
 
-  <div class="section container-fluid tab-section" data-section="custom">
-    <div class="mb-10">{{t 'newBalancer.custom' appName=settings.appName htmlSafe=true}}</div>
-    <hr/>
-
-    {{textarea
-      value=service.lbConfig.config
-      placeholder=(t 'newBalancer.config.prompt')
-      rows="8"
-      classNames="form-control"
+    {{container/form-upgrade
+      service=service
+      editing=true
+      errors=upgradeErrors
+      isUpgrade=isUpgrade
+      expandAll=al.expandAll
+      expandFn=expandFn
     }}
-  </div>
 
-  <div class="section" data-section="labels">
-  </div>
-
-  <div class="section" data-section="scheduling">
-  </div>
-</div>
-</div>
-{{/select-tab}}
+  {{/accordion-list}}
+{{/advanced-section}}
 
 {{#if upgradeInfo}}
   <div class="banner bg-info m-20 p-0">

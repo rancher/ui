@@ -55,12 +55,13 @@ export default Ember.Route.extend({
         // Filter out empty values for rancher/rancher#5494
         return !!links[key];
       }).map((key) => {
-        return {version: key, link: links[key]};
+        return {version: key, sortVersion: key, link: links[key]};
       });
 
       if ( results.upgrade )
       {
         verArr.unshift({
+          sortVersion: results.upgrade.version,
           version: results.upgrade.version + ' (current)',
           link: results.upgrade.links.self
         });

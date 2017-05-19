@@ -10,11 +10,11 @@ export default Ember.Controller.extend({
 
   actions: {
     done() {
-      return this.transitionToRoute('stack', this.get('model.service.stackId'));
+      this.send('goToPrevious','balancers.index');
     },
 
     cancel() {
-      this.send('goToPrevious');
+      this.send('goToPrevious','balancers.index');
     },
   },
 });

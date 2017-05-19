@@ -5,6 +5,8 @@ import { STATUS, STATUS_INTL_KEY, classForStatus } from 'ui/components/accordion
 export default Ember.Component.extend(ManageLabels, {
   intl: Ember.inject.service(),
 
+  classNames: ['accordion-wrapper'],
+
   // Inputs
   initialLabels: null,
 

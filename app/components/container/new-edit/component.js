@@ -6,6 +6,16 @@ import C from 'ui/utils/constants';
 import { flattenLabelArrays } from 'ui/mixins/manage-labels';
 import Util from 'ui/utils/util';
 
+function displayConfigName(name,isSidekick,idx) {
+  if ( name ) {
+    return name;
+  } else if ( isSidekick ) {
+      return '(Sidekick #' + (idx+1) + ')';
+  } else {
+    return '(Primary)';
+  }
+}
+
 export default Ember.Component.extend(NewOrEdit, SelectTab, {
   intl                      : Ember.inject.service(),
   settings                  : Ember.inject.service(),
@@ -248,6 +258,8 @@ export default Ember.Component.extend(NewOrEdit, SelectTab, {
   willSave() {
     let ok = this._super(...arguments);
     if ( ok && !this.get('isUpgrade') ) {
+      this.set('primaryResource.completeUpdate', true);
+
       // Set the stack ID
       if ( this.get('stack.id') ) {
         this.set('primaryResource.stackId', this.get('stack.id'));
@@ -303,14 +315,23 @@ export default Ember.Component.extend(NewOrEdit, SelectTab, {
 
   configName: function() {
     let name = this.get('primaryResource.name');
-    if ( name ) {
-      return name;
-    } else if ( this.get('isSidekick') ) {
-      return '(Sidekick #' + (this.get('launchConfigIndex')+1) + ')';
-    } else {
-      return '(Primary)';
-    }
-  }.property('primaryResource.name'),
+    let isSidekick = this.get('isSidekick');
+    let idx = this.get('launchConfigIndex');
+    return displayConfigName(name,isSidekick,idx);
+  }.property('primaryResource.name','launchConfigIndex','isSidekick'),
+
+  slcWithNames: function() {
+    let out = [];
+
+    out.pushObjects(this.get('service.secondaryLaunchConfigs').map((x, idx) => {
+      return {
+        displayName: displayConfigName(x.get('name'), true, idx),
+        slc: x
+      };
+    }));
+
+    return out;
+  }.property('primaryResource.name','service.secondaryLaunchConfigs.@each.name'),
 
   supportsSecrets: function() {
     return !!this.get('store').getById('schema','secret');

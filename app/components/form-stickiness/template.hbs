@@ -1,64 +1,66 @@
-{{#liquid-if lbConfig.canSticky}}
-  <div class="row {{unless isNone 'inline-form'}}">
-    <div class="col span-2 col-inline">
-      <label>{{t 'formStickiness.stickiness'}}</label>
+{{#accordion-list-item
+     title=(t 'formStickiness.title')
+     detail=(t 'formStickiness.detail' appName=settings.appName)
+     status=status
+     statusClass=statusClass
+     expandAll=expandAll
+     expand=(action expandFn)
+}}
+  {{#liquid-if lbConfig.canSticky}}
+    <div class="row {{unless isNone 'inline-form'}}">
+      <div class="col span-2 radio">
+        <label>{{radio-button selection=stickiness value="none"}} {{t 'formStickiness.none'}}</label>
+      </div>
+      <div class="col span-4 radio">
+        <label>{{radio-button selection=stickiness value="cookie"}} {{t 'formStickiness.newCookie'}}</label>
+      </div>
     </div>
-    <div class="col span-2 radio">
-      <label>{{radio-button selection=stickiness value="none"}} {{t 'formStickiness.none'}}</label>
-    </div>
-    <div class="col span-4 radio">
-      <label>{{radio-button selection=stickiness value="cookie"}} {{t 'formStickiness.newCookie'}}</label>
-    </div>
-  </div>
 
-  {{#liquid-if isCookie}}
-    <div>
-      <div class="row inline-form">
-        <div class="col span-2 col-inline">
-          <label>{{t 'formStickiness.cookieName'}}</label>
-        </div>
-        <div class="col span-3">
-          {{input type="text" classNames="form-control" value=policy.cookie placeholder=(t 'formStickiness.placeholder.sticky')}}
-        </div>
-        <div class="col span-2 col-inline">
-          <label>{{t 'formStickiness.mode'}}</label>
-        </div>
-        <div class="col span-3">
-          {{new-select
-            class="form-control"
-            content=modeChoices
-            value=policy.mode
-          }}
-        </div>
-      </div>
-      <div class="row inline-form">
-        <div class="col span-2 col-inline">
-          <label>{{t 'formStickiness.domain'}}</label>
-        </div>
-        <div class="col span-8">
-          {{input type="text" classNames="form-control" value=policy.domain placeholder=(t 'formStickiness.placeholder.domain')}}
-        </div>
-      </div>
-      <div class="row inline-form">
-        <div class="col span-2 col-inline">
-          <label>{{t 'formStickiness.options'}}</label>
-        </div>
-        <div class="col span-8">
-          <div class="checkbox">
-            <label>{{input type="checkbox" checked=policy.indirect}} {{t 'formStickiness.indirect'}}</label>
+    {{#liquid-if isCookie}}
+      <div>
+        <div class="row inline-form">
+          <div class="col span-2 col-inline">
+            <label>{{t 'formStickiness.cookieName'}}</label>
           </div>
-          <div class="checkbox">
-            <label>{{input type="checkbox" checked=policy.nocache}} {{t 'formStickiness.sendHeader'}}</label>
+          <div class="col span-3">
+            {{input type="text" classNames="form-control" value=policy.cookie placeholder=(t 'formStickiness.placeholder.sticky')}}
           </div>
-          <div class="checkbox">
-            <label>{{input type="checkbox" checked=policy.postonly}} {{t 'formStickiness.onPost'}}</label>
+          <div class="col span-2 col-inline">
+            <label>{{t 'formStickiness.mode'}}</label>
+          </div>
+          <div class="col span-3">
+            {{new-select
+              class="form-control"
+              content=modeChoices
+              value=policy.mode
+            }}
           </div>
         </div>
+        <div class="row inline-form">
+          <div class="col span-2 col-inline">
+            <label>{{t 'formStickiness.domain'}}</label>
+          </div>
+          <div class="col span-8">
+            {{input type="text" classNames="form-control" value=policy.domain placeholder=(t 'formStickiness.placeholder.domain')}}
+          </div>
+        </div>
+        <div class="row inline-form">
+          <div class="col span-2 col-inline">
+            <label>{{t 'formStickiness.options'}}</label>
+          </div>
+          <div class="col span-8">
+            <div class="checkbox">
+              <label>{{input type="checkbox" checked=policy.indirect}} {{t 'formStickiness.indirect'}}</label>
+            </div>
+            <div class="checkbox">
+              <label>{{input type="checkbox" checked=policy.nocache}} {{t 'formStickiness.sendHeader'}}</label>
+            </div>
+            <div class="checkbox">
+              <label>{{input type="checkbox" checked=policy.postonly}} {{t 'formStickiness.onPost'}}</label>
+            </div>
+          </div>
+        </div>
       </div>
-    </div>
+    {{/liquid-if}}
   {{/liquid-if}}
-{{else}}
-  <div class="text-muted">
-    {{t 'formStickiness.noPorts'}}
-  </div>
-{{/liquid-if}}
+{{/accordion-list-item}}

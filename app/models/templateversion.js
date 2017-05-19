@@ -1,5 +1,6 @@
 import Resource from 'ember-api-store/models/resource';
 import C from 'ui/utils/constants';
+import Ember from 'ember';
 
 export default Resource.extend({
   projects: Ember.inject.service(),

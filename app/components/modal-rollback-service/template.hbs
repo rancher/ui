@@ -1,0 +1,19 @@
+<h2>
+  {{#if model.secondaryLaunchConfigs.length}}
+    {{t 'modalRollbackService.titleWithSidekicks' instanceName=model.displayName count=model.secondaryLaunchConfigs.length}}
+  {{else}}
+    {{t 'modalRollbackService.title' instanceName=model.displayName}}
+  {{/if}}
+</h2>
+
+
+<label>{{t 'modalRollbackService.revisionId.label'}}</label>
+{{new-select
+  content=choices
+  value=revisionId
+  optionLabelPath="label"
+  optionValuePath="value"
+}}
+
+{{top-errors errors=errors}}
+{{save-cancel editing=true editLabel="modalRollbackService.action" save="save" cancel="cancel"}}

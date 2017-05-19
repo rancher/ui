@@ -29,8 +29,10 @@ export default Ember.Component.extend(ManageLabels, {
     var glb = this.getLabel(C.LABEL.SCHED_GLOBAL) === 'true';
     if ( glb ) {
       this.set('mode', 'global');
-    } else {
+    } else if ( this.get('isService') ) {
       this.set('mode', 'service');
+    } else {
+      this.set('mode', 'container');
     }
   },
 

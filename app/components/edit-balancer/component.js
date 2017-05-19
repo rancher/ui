@@ -279,7 +279,22 @@ export default Ember.Component.extend(NewOrEdit, {
   // ----------------------------------
   willSave() {
     this.validateRules();
-    return this._super();
+
+    let ok = this._super(...arguments);
+    if ( ok && !this.get('isUpgrade') ) {
+      // Set the stack ID
+      if ( this.get('stack.id') ) {
+        this.set('primaryResource.stackId', this.get('stack.id'));
+        return true;
+      } else if ( this.get('stack') ) {
+        return this.get('stack').save().then((newStack) => {
+          this.set('primaryResource.stackId', newStack.get('id'));
+          return true;
+        });
+      }
+    }
+
+    return ok;
   },
 
   validate: function() {
