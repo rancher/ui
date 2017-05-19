@@ -110,24 +110,16 @@
           </div>
         {{/if}}
         {{#if dnsResolverArray.length}}
-          <table class="table fixed no-lines no-top-padding tight mt-10">
+          <div>
             {{#each dnsResolverArray as |dns|}}
-              <tr>
-                {{#if editing}}
-                  <td>
-                    {{input type="text" value=dns.value classNames="form-control dns-value input-sm" placeholder=(t 'formNetwork.resolvingServers.placeholder')}}
-                  </td>
-                  <td width="40" class="text-right">
-                    <button class="btn bg-primary btn-sm" {{action "removeDnsResolver" dns}}><i class="icon icon-minus"/></button>
-                  </td>
-                {{else}}
-                  <td>
-                    {{dns.value}}
-                  </td>
-                {{/if}}
-              </tr>
+              {{#if editing}}
+                  {{input type="text" value=dns.value classNames="form-control dns-value input-sm" placeholder=(t 'formNetwork.resolvingServers.placeholder')}}
+                  <button class="btn bg-primary btn-sm" {{action "removeDnsResolver" dns}}><i class="icon icon-minus"/></button>
+              {{else}}
+                  {{dns.value}}
+              {{/if}}
             {{/each}}
-          </table>
+          </div>
         {{else if (not editing)}}
           <div>{{t 'generic.none'}}</div>
         {{/if}}
@@ -140,24 +132,20 @@
           </div>
         {{/if}}
         {{#if dnsSearchArray.length}}
-          <table class="table fixed no-lines no-top-padding tight mt-10">
             {{#each dnsSearchArray as |dnsSearch|}}
-              <tr>
                 {{#if editing}}
-                  <td>
+                  <div>
                     {{input type="text" value=dnsSearch.value classNames="form-control dns-search-value input-sm" placeholder=(t 'formNetwork.searchDomains.placeholder')}}
-                  </td>
-                  <td width="40" class="text-right">
+                  </div>
+                  <div width="40" class="text-right">
                     <button class="btn bg-primary btn-sm" {{action "removeDnsSearch" dnsSearch}}><i class="icon icon-minus"/></button>
-                  </td>
+                  </div>
                 {{else}}
-                  <td>
+                  <div>
                     {{dnsSearch.value}}
-                  </td>
+                  </div>
                 {{/if}}
-              </tr>
             {{/each}}
-          </table>
         {{else if (not editing)}}
           <div>{{t 'generic.none'}}</div>
         {{/if}}
