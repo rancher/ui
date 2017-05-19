@@ -1,8 +1,42 @@
 .stack-app {
   margin-bottom: 20px;
   border: 2px solid $table-border-color;
+  position: relative;
+  float: left;
+  width: calc(50% - 15px);
+  margin: 15px 0 15px 15px;
 
   &:last-child {
     margin-bottom: 0;
+  }
+  .stack-info {
+    display: table;
+    width: 100%;
+  }
+  .catalog-icon {
+    @include catalog-img(transparent);
+    border-right: 1px solid $border;
+    display: table-cell;
+    vertical-align: middle;
+    width: 105px;
+  }
+  .stack-info-row {
+    display: table-cell;
+    .stack-info-top,
+    .stack-info-bottom {
+      height: calc(105px/2);
+      padding: 10px;
+    }
+    .stack-info-bottom {
+      .multi-bar {
+        margin-top: 5px;
+        float: right;
+        width: 150px;
+      }
+    }
+    .stack-info-top {
+      padding-top: 20px;
+      border-bottom: 1px solid $border;
+    }
   }
 }
