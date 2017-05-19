@@ -8,12 +8,12 @@
 }}
   <div class="row">
     <div class="col span-4 col-inline">
-      <label>{{t 'formSecurity.pullImage.label'}}</label>
+      <label class="acc-label">{{t 'formSecurity.pullImage.label'}}</label>
       {{#if editing}}
-        <div class="radio small mt-10">
+        <div class="radio small">
           <label>{{radio-button selection=pullImage value=false}} {{t 'formSecurity.pullImage.disable'}}</label>
         </div>
-        <div class="radio small mt-10">
+        <div class="radio small">
           <label>{{radio-button selection=pullImage value=true}} {{t 'formSecurity.pullImage.enable'}}</label>
         </div>
       {{else}}
@@ -21,23 +21,23 @@
     </div>
     {{#unless projects.current.isWindows}}
       <div class="col span-4 col-inline">
-        <label>{{t 'formSecurity.privileged.label'}}</label>
+        <label class="acc-label">{{t 'formSecurity.privileged.label'}}</label>
         {{#input-or-display editable=editing value=instance.privileged}}
-          <div class="radio small mt-10">
+          <div class="radio small">
             <label>{{radio-button selection=instance.privileged value=false}} {{t 'formSecurity.privileged.disable'}}</label>
           </div>
-          <div class="radio small mt-10">
+          <div class="radio small">
             <label>{{radio-button selection=instance.privileged value=true}} {{t 'formSecurity.privileged.enable'}}</label>
           </div>
         {{/input-or-display}}
       </div>
       <div class="col span-4 col-inline">
-        <label>{{t 'formSecurity.pidMode.label'}}</label>
+        <label class="acc-label">{{t 'formSecurity.pidMode.label'}}</label>
         {{#input-or-display editable=editing value=pidHost}}
-          <div class="radio small mt-10">
+          <div class="radio small">
             <label>{{radio-button selection=pidHost value=false}} {{t 'formSecurity.pidMode.disable'}}</label>
           </div>
-          <div class="radio small mt-10">
+          <div class="radio small">
             <label>{{radio-button selection=pidHost value=true}} {{t 'formSecurity.pidMode.enable'}}</label>
           </div>
         {{/input-or-display}}
@@ -50,7 +50,7 @@
   {{#if projects.current.isWindows}}
     <div class="row">
       <div class="col span-12 col-inline">
-        <label>{{t 'formSecurity.isolation.label'}}</label>
+        <label class="acc-label">{{t 'formSecurity.isolation.label'}}</label>
         {{#input-or-display editable=editing value=instance.isolation}}
           {{new-select
             content=isolationChoices
@@ -63,11 +63,11 @@
   {{else}}
     <div class="row">
       <div class="col span-4 col-inline">
-        <label>{{t 'formSecurity.memoryLimit.label'}}</label>
-        <div class="radio small mt-10">
+        <label class="acc-label">{{t 'formSecurity.memoryLimit.label'}}</label>
+        <div class="radio small">
           <label>{{radio-button selection=memoryMode value="unlimited"}} {{t 'formSecurity.memoryLimit.unlimited'}}</label>
         </div>
-        <div class="radio small mt-10">
+        <div class="radio small">
           <label>
             {{radio-button selection=memoryMode value="set"}} {{t 'formSecurity.memoryLimit.set'}}
             <span class="with-input" style="width: 175px;">
@@ -81,20 +81,20 @@
       </div>
 
       <div class="col span-4 col-inline">
-        <label>{{t 'formSecurity.swapLimit.label'}}</label>
+        <label class="acc-label">{{t 'formSecurity.swapLimit.label'}}</label>
         {{#if (eq memoryMode "unlimited")}}
           <div class="text-muted form-control-static">{{t 'formSecurity.swapLimit.unlimited'}}</div>
         {{else}}
-          <div class="radio small mt-10">
+          <div class="radio small">
             <label>{{radio-button selection=swapMode value="default"}} {{t 'formSecurity.swapLimit.default'}}</label>
           </div>
-          <div class="radio small mt-10">
+          <div class="radio small">
             <label>{{radio-button selection=swapMode value="unlimited"}} {{t 'formSecurity.swapLimit.unlimited'}}</label>
           </div>
-          <div class="radio small mt-10">
+          <div class="radio small">
             <label>{{radio-button selection=swapMode value="none"}} {{t 'formSecurity.swapLimit.none'}}</label>
           </div>
-          <div class="radio small mt-10">
+          <div class="radio small">
             <label>
               {{radio-button selection=swapMode value="set"}} {{t 'formSecurity.swapLimit.set'}}
               <span class="with-input" style="width: 175px;">
@@ -109,17 +109,17 @@
       </div>
 
       <div class="col span-4 col-inline">
-        <label>{{t 'formSecurity.swappiness.label'}}</label>
+        <label class="acc-label">{{t 'formSecurity.swappiness.label'}}</label>
         {{#if (eq swapMode "none")}}
           <p class="text-muted form-control-static">{{t 'generic.na'}}</p>
         {{else}}
-          <div class="radio small mt-10">
+          <div class="radio small">
             <label>{{radio-button selection=swappinessMode value="default" disabled=(eq swapMode "none")}} {{t 'formSecurity.swappiness.default'}}</label>
           </div>
-          <div class="radio small mt-10">
+          <div class="radio small pt-10">
             <label>{{radio-button selection=swappinessMode value="none" disabled=(eq swapMode "none")}} {{t 'formSecurity.swappiness.none'}}</label>
           </div>
-          <div class="radio small mt-10">
+          <div class="radio small">
             <label>
               {{radio-button selection=swappinessMode value="set" disabled=(eq swapMode "none")}} {{t 'formSecurity.swappiness.set'}}
               <span class="with-input" style="width: 60px;">
@@ -131,18 +131,18 @@
       </div>
     </div>
 
-    <div class="row">
-      <div class="col span-6 col-inline">
-        <label>{{t 'formSecurity.memoryReservation.label'}}</label>
+    <div class="row box mt-20">
+      <div class="col span-6">
+        <label class="acc-label">{{t 'formSecurity.memoryReservation.label'}}</label>
         <div class="input-group">
           {{input-integer min="4" step="1" value=memoryReservationMb classNames="form-control" placeholder=(t 'formSecurity.memoryReservation.placeholder')}}
           <div class="input-group-addon bg-default">{{t 'generic.mibibyte'}}</div>
         </div>
       </div>
-      <div class="col span-6 col-inline">
-        <label>{{t 'formSecurity.milliCpuReservation.label'}}</label>
+      <div class="col span-6">
+        <label class="acc-label">{{t 'formSecurity.milliCpuReservation.label'}}</label>
         <span class="with-input">
-          <div class="input-group input-sm">
+          <div class="input-group">
             {{input-integer min="1" step="1" value=instance.milliCpuReservation classNames="form-control"}}
           <div class="input-group-addon bg-default">{{t 'formSecurity.milliCpuReservation.unit'}}</div>
           </div>
@@ -150,24 +150,24 @@
       </div>
     </div>
 
-    <div class="row">
-      <div class="col span-6 col-inline">
-        <label>{{t 'formSecurity.cpuPinning.label'}}</label>
+    <div class="row box mt-20">
+      <div class="col span-6">
+        <label class="acc-label">{{t 'formSecurity.cpuPinning.label'}}</label>
         {{#input-or-display editable=editing value=instance.cpuSet}}
           {{input type="text" value=instance.cpuSet classNames="form-control" placeholder=(t 'formSecurity.cpuPinning.placeholder')}}
         {{/input-or-display}}
       </div>
-      <div class="col span-6 col-inline">
-        <label>{{t 'formSecurity.shares.label'}}</label>
+      <div class="col span-6">
+        <label class="acc-label">{{t 'formSecurity.shares.label'}}</label>
         {{#input-or-display editable=editing value=instance.cpuShares}}
           {{input-integer value=instance.cpuShares step=128 min=0 classNames="form-control" placeholder=(t 'formSecurity.shares.placeholder')}}
         {{/input-or-display}}
       </div>
     </div>
 
-    <div class="row">
-      <div class="col span-6 col-inline">
-        <label>{{t 'formSecurity.capabilities.add'}}</label>
+    <div class="row box mt-20">
+      <div class="col span-6">
+        <label class="acc-label">{{t 'formSecurity.capabilities.add'}}</label>
         {{#if editing}}
           <select class="form-control select-cap-add" multiple="true" onchange={{action 'modifyCapabilities' 'capAdd' }}>
             {{#each capabilityChoices as |choice|}}
@@ -185,8 +185,8 @@
         {{/if}}
       </div>
 
-      <div class="col span-6 col-inline">
-        <label>{{t 'formSecurity.capabilities.drop'}}</label>
+      <div class="col span-6">
+        <label class="acc-label">{{t 'formSecurity.capabilities.drop'}}</label>
         {{#if editing}}
           <select class="form-control select-cap-drop" multiple="true" onchange={{action 'modifyCapabilities' 'capDrop'}}>
             {{#each capabilityChoices as |choice|}}
@@ -214,9 +214,9 @@
       </div>
     {{/if}}
 
-    <div class="row">
+    <div class="row box mt-20">
       <div class="col span-12 col-inline">
-        <label>{{t 'formSecurity.deviceBinding.label'}}</label>
+        <label class="acc-label">{{t 'formSecurity.deviceBinding.label'}}</label>
         {{#if editing}}
           <div>
             <button class="btn bg-link icon-btn" {{action "addDevice"}}>

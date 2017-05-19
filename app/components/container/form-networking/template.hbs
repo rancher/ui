@@ -6,9 +6,9 @@
      expandAll=expandAll
      expand=(action expandFn)
 }}
-  <div class="row inline-form">
+  <div class="row">
     <div class="col {{if (or isContainerNetwork isHostNetwork isBridgeNetwork) 'span-6' (if isManagedNetwork 'span-4' 'span-12')}}">
-      <label>{{t 'formNetwork.networkMode.label'}}</label>
+      <label class="acc-label">{{t 'formNetwork.networkMode.label'}}</label>
       {{#input-or-display editable=editing value=instance.networkMode}}
         {{new-select
           classNames="form-control"
@@ -23,7 +23,7 @@
     {{#if (or isContainerNetwork isHostNetwork isBridgeNetwork)}}
       <div class="col span-6">
         {{#if isContainerNetwork}}
-          <label>{{t 'formNetwork.container.label'}}</label>
+          <label class="acc-label">{{t 'formNetwork.container.label'}}</label>
           {{#input-or-display editable=editing value=instance.networkContainerId}}
             {{new-select
               classNames="form-control"
@@ -35,14 +35,14 @@
             }}
           {{/input-or-display}}
         {{else if (or isHostNetwork isBridgeNetwork)}}
-          <label>{{t 'formNetwork.dns.label'}}</label>
+          <label class="acc-label">{{t 'formNetwork.dns.label'}}</label>
           <div>
             {{#input-or-display editable=editing value=dnsDiscovery}}
               <div class="radio small mt-10">
-                <label>{{radio-button selection=dnsDiscovery value=true}} {{t 'formNetwork.dns.enable'}}</label>
+                <label class="acc-label">{{radio-button selection=dnsDiscovery value=true}} {{t 'formNetwork.dns.enable'}}</label>
               </div>
               <div class="radio small mt-10">
-                <label>{{radio-button selection=dnsDiscovery value=false}} {{t 'formNetwork.dns.disable'}}</label>
+                <label class="acc-label">{{radio-button selection=dnsDiscovery value=false}} {{t 'formNetwork.dns.disable'}}</label>
               </div>
             {{/input-or-display}}
           </div>
@@ -52,7 +52,7 @@
 
     {{#if isManagedNetwork}}
       <div class="col {{if (or true (and isService (not isSidekick))) 'span-4' 'span-8'}}">
-        <label>{{t 'formNetwork.requestedIp.label'}}</label>
+        <label class="acc-label">{{t 'formNetwork.requestedIp.label'}}</label>
         {{#input-or-display editable=editing value=requestedIp}}
           {{input type="text" value=requestedIp classNames="form-control" placeholder=(t 'formNetwork.requestedIp.placeholder')}}
           <p class="help-block">{{t 'formNetwork.requestedIp.help'}}</p>
@@ -60,7 +60,7 @@
       </div>
       {{#if (or true (and isService (not isSidekick)))}}
         <div class="col span-4">
-          <label>{{t 'formNetwork.retainIp.label'}}</label>
+          <label class="acc-label">{{t 'formNetwork.retainIp.label'}}</label>
           {{#input-or-display editable=editing value=service.retainIp}}
             <label class="radio small form-control-static">{{input type="checkbox" checked=service.retainIp disabled=disableRetainIp}} {{t 'formNetwork.retainIp.reuse'}}</label>
           {{/input-or-display}}
@@ -70,19 +70,19 @@
   </div>
   <hr>
 
-  <div class="row inline-form">
-    <div class="col span-6">
-      <label>{{t 'formNetwork.hostname.label'}}</label>
+  <div class="row">
+    <div class="col span-6 box">
+      <label class="acc-label">{{t 'formNetwork.hostname.label'}}</label>
       {{#if isService}}
         {{#input-or-display editable=editing value=hostname}}
           <div class="radio small mt-10">
-            <label>{{radio-button selection=hostname value="default"}} {{t 'formNetwork.hostname.dockerId'}}</label>
+            <label class="acc-label">{{radio-button selection=hostname value="default"}} {{t 'formNetwork.hostname.dockerId'}}</label>
           </div>
           <div class="radio small mt-10">
-            <label>{{radio-button selection=hostname value="override"}} {{t 'formNetwork.hostname.containerName'}}</label>
+            <label class="acc-label">{{radio-button selection=hostname value="override"}} {{t 'formNetwork.hostname.containerName'}}</label>
           </div>
           <div class="radio small">
-            <label>{{radio-button selection=hostname value="custom"}} {{t 'formNetwork.hostname.custom'}}:</label>
+            <label class="acc-label">{{radio-button selection=hostname value="custom"}} {{t 'formNetwork.hostname.custom'}}:</label>
             {{input type="text" value=instance.hostname classNames="form-control r-ml10 input-sm" safeStyle="display:inline; width: 200px;" placeholder=(t 'formNetwork.hostname.placeholder') disabled=(not-eq hostname "custom")}}
           </div>
         {{/input-or-display}}
@@ -92,8 +92,8 @@
         {{/input-or-display}}
       {{/if}}
     </div>
-    <div class="col span-6">
-      <label>{{t 'formNetwork.domainName.label'}}</label>
+    <div class="col span-6 box">
+      <label class="acc-label">{{t 'formNetwork.domainName.label'}}</label>
       {{#input-or-display editable=editing value=instance.domainName}}
         {{input type="text" value=instance.domainName classNames="form-control" placeholder=(t 'formNetwork.domainName.placeholder')}}
       {{/input-or-display}}
@@ -101,9 +101,9 @@
   </div>
 
   {{#unless projects.current.isWindows}}
-    <div class="row inline-form">
-      <div class="col span-6">
-        <label>{{t 'formNetwork.resolvingServers.label'}}</label>
+    <div class="row">
+      <div class="col span-6 box">
+        <label class="acc-label">{{t 'formNetwork.resolvingServers.label'}}</label>
         {{#if editing}}
           <div>
             <button class="btn bg-link icon-btn" {{action "addDnsResolver"}}><i class="icon icon-plus text-small"/> <span>{{t 'formNetwork.resolvingServers.addActionLabel'}}</span></button>
@@ -132,8 +132,8 @@
           <div>{{t 'generic.none'}}</div>
         {{/if}}
       </div>
-      <div class="col span-6">
-        <label>{{t 'formNetwork.searchDomains.label'}}</label>
+      <div class="col span-6 box">
+        <label class="acc-label">{{t 'formNetwork.searchDomains.label'}}</label>
         {{#if editing}}
           <div>
             <button class="btn bg-link icon-btn" {{action "addDnsSearch"}}><i class="icon icon-plus text-small"/> <span>{{t 'formNetwork.searchDomains.addActionLabel'}}</span></button>
