@@ -19,8 +19,7 @@
 {{/if}}
 
 <section>
-  <div class="row container-info banner bg-info">
-    <div class="">{{ t 'containerPage.containerInfo.basicInfo' }}</div>
+  <div class="row banner bg-info pl-10 pr-10">
     <div class="col">
       <label class="inline-label">{{t 'generic.image'}}:</label>
       {{#copy-inline clipboardText=model.container.displayImage}}
@@ -62,54 +61,30 @@
 
 <!--error-->
 {{#if model.container.showTransitioningMessage}}
-  <div class="{{model.container.stateBackground}} banner"><p class="banner-message">{{model.container.transitioningMessage}}</p></div>
+  <div class="{{model.container.stateColor}}"><p>{{model.container.transitioningMessage}}</p></div>
 {{/if}}
 
 <section>
   {{#accordion-list as |al expandFn| }}
-    {{#accordion-list-item
-         title=(t 'physicalStats.title')
-         detail=(t 'physicalStats.detail')
-         status=status
-         statusClass=statusClass
-         expandAll=al.expandAll
-         expand=(action expandFn)
-    }}
-      <div class="row">
-        <div class="col span-6">
-          <label>{{t 'generic.service'}}:</label>
-          <div>
-            {{#if model.container.service}}
-              {{#link-to "service" projects.current.id model.container.service.id}}{{model.container.service.displayName}}{{/link-to}}
-            {{else}}
-              {{t 'generic.none'}}
-            {{/if}}
-          </div>
-        </div>
-        <div class="col span-6">
-          <label>{{t 'generic.entrypoint'}}:</label>
-          <div>
-            {{#if model.container.entrypoint}}
-              {{model.container.entrypoint}}
-            {{else}}
-              {{t 'generic.none'}}
-            {{/if}}
-          </div>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col">
-          <label class="inline-label">{{t 'generic.command'}}:</label>
-          <div>
-            {{#if model.container.command}}
-              {{model.container.command}}
-            {{else}}
-              {{t 'generic.none'}}
-            {{/if}}
-          </div>
-        </div>
-      </div>
-    {{/accordion-list-item}}
+    <div>
+      {{container/form-scheduling
+          initialHostId=model.container.requestedHostId
+          initialLabels=model.container.labels
+          isGlobal=model.container.isGlobalScale
+          allHosts=model.hosts
+          editing=false
+          expandAll=al.expandAll
+          expandFn=expandFn
+      }}
+    </div>
+    <div class="mt-20">
+      {{form-healthcheck
+          healthCheck=model.container.healthCheck
+          editing=false
+          expandAll=al.expandAll
+          expandFn=expandFn
+      }}
+    </div>
     <div class="mt-20">
       {{#accordion-list-item
            title=(t 'containerPage.portsTab.header')
@@ -177,6 +152,31 @@
       }}
     </div>
     <div class="mt-20">
+      {{labels-section
+          model=model.container
+          expandAll=al.expandAll
+          expandFn=expandFn
+      }}
+    </div>
+    <div class="mt-20">
+      {{container/form-networking
+          editing=false
+          instance=model.container
+          initialLabels=model.container.labels
+          allHosts=model.hosts
+          expandAll=al.expandAll
+          expandFn=expandFn
+      }}
+    </div>
+    <div class="mt-20">
+      {{container/form-security
+          instance=model.container
+          editing=false
+          expandAll=al.expandAll
+          expandFn=expandFn
+      }}
+    </div>
+    <div class="mt-20">
       {{#accordion-list-item
            title=(t 'containerPage.volumesTab.header')
            detail=(t 'containerPage.volumesTab.detail')
@@ -217,50 +217,6 @@
           {{/if}}
         {{/component}}
       {{/accordion-list-item}}
-    </div>
-    <div class="mt-20">
-      {{container/form-networking
-          editing=false
-          instance=model.container
-          initialLabels=model.container.labels
-          allHosts=model.hosts
-          expandAll=al.expandAll
-          expandFn=expandFn
-      }}
-    </div>
-    <div class="mt-20">
-      {{container/form-security
-          instance=model.container
-          editing=false
-          expandAll=al.expandAll
-          expandFn=expandFn
-      }}
-    </div>
-    <div class="mt-20">
-      {{form-healthcheck
-          healthCheck=model.container.healthCheck
-          editing=false
-          expandAll=al.expandAll
-          expandFn=expandFn
-      }}
-    </div>
-    <div class="mt-20">
-      {{labels-section
-          model=model.container
-          expandAll=al.expandAll
-          expandFn=expandFn
-      }}
-    </div>
-    <div class="mt-20">
-      {{container/form-scheduling
-          initialHostId=model.container.requestedHostId
-          initialLabels=model.container.labels
-          isGlobal=model.container.isGlobalScale
-          allHosts=model.hosts
-          editing=false
-          expandAll=al.expandAll
-          expandFn=expandFn
-      }}
     </div>
   {{/accordion-list}}
 </section>

@@ -2,7 +2,7 @@ import Ember from 'ember';
 
 export default Ember.Component.extend({
   modalService: Ember.inject.service('modal'),
-  classNames: ['billing-info', 'box-borderless'],
+  classNames: ['billing-info', 'box'],
   cards: null,
   account: null,
   actions: {
