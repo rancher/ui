@@ -67,6 +67,25 @@
 <section>
   {{#accordion-list as |al expandFn| }}
     <div>
+      {{container/form-scheduling
+          initialHostId=model.container.requestedHostId
+          initialLabels=model.container.labels
+          isGlobal=model.container.isGlobalScale
+          allHosts=model.hosts
+          editing=false
+          expandAll=al.expandAll
+          expandFn=expandFn
+      }}
+    </div>
+    <div class="mt-20">
+      {{form-healthcheck
+          healthCheck=model.container.healthCheck
+          editing=false
+          expandAll=al.expandAll
+          expandFn=expandFn
+      }}
+    </div>
+    <div class="mt-20">
       {{#accordion-list-item
            title=(t 'containerPage.portsTab.header')
            detail=(t 'containerPage.portsTab.detail')
@@ -133,6 +152,31 @@
       }}
     </div>
     <div class="mt-20">
+      {{labels-section
+          model=model.container
+          expandAll=al.expandAll
+          expandFn=expandFn
+      }}
+    </div>
+    <div class="mt-20">
+      {{container/form-networking
+          editing=false
+          instance=model.container
+          initialLabels=model.container.labels
+          allHosts=model.hosts
+          expandAll=al.expandAll
+          expandFn=expandFn
+      }}
+    </div>
+    <div class="mt-20">
+      {{container/form-security
+          instance=model.container
+          editing=false
+          expandAll=al.expandAll
+          expandFn=expandFn
+      }}
+    </div>
+    <div class="mt-20">
       {{#accordion-list-item
            title=(t 'containerPage.volumesTab.header')
            detail=(t 'containerPage.volumesTab.detail')
@@ -173,50 +217,6 @@
           {{/if}}
         {{/component}}
       {{/accordion-list-item}}
-    </div>
-    <div class="mt-20">
-      {{container/form-networking
-          editing=false
-          instance=model.container
-          initialLabels=model.container.labels
-          allHosts=model.hosts
-          expandAll=al.expandAll
-          expandFn=expandFn
-      }}
-    </div>
-    <div class="mt-20">
-      {{container/form-security
-          instance=model.container
-          editing=false
-          expandAll=al.expandAll
-          expandFn=expandFn
-      }}
-    </div>
-    <div class="mt-20">
-      {{form-healthcheck
-          healthCheck=model.container.healthCheck
-          editing=false
-          expandAll=al.expandAll
-          expandFn=expandFn
-      }}
-    </div>
-    <div class="mt-20">
-      {{labels-section
-          model=model.container
-          expandAll=al.expandAll
-          expandFn=expandFn
-      }}
-    </div>
-    <div class="mt-20">
-      {{container/form-scheduling
-          initialHostId=model.container.requestedHostId
-          initialLabels=model.container.labels
-          isGlobal=model.container.isGlobalScale
-          allHosts=model.hosts
-          editing=false
-          expandAll=al.expandAll
-          expandFn=expandFn
-      }}
     </div>
   {{/accordion-list}}
 </section>
