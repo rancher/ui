@@ -1,20 +1,7 @@
 import Ember from 'ember';
-const PROVIDERS = [
-  {
-    id: 'amazonec2',
-    class: 'amazonec2'
-  },
-  {
-    id: 'digitalocean',
-    class: 'rancherdo'
-  },
-  {
-    id: 'packet',
-    class: 'packet '
-  },
-]
+import C from 'ui/utils/constants';
 export function parseHostIcon(params/*, hash*/) {
-  return PROVIDERS.findBy('id', params[0]).class || 'other';
+  return C.MACHINE_DRIVER_IMAGES[params[0].toUpperCase()] || 'other';
 }
 
 export default Ember.Helper.helper(parseHostIcon);

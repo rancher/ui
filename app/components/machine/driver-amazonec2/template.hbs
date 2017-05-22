@@ -39,7 +39,7 @@
         </div>
         <div class="col span-8">
           {{#if isStep1}}
-            {{input type="password" name="password" classNames="form-control" placeholder=(t 'machine.driverAmazon.secretKey.placeholder') value=amazonec2Config.secretKey}}
+            {{input type="password" name="password" classNames="form-control" placeholder=(t 'machine.driverAmazon.secretKey.placeholder') value=model.secretValues.secretKey}}
           {{else}}
             <div class="text-muted text-italic">{{t 'machine.driverAmazon.secretKey.provided'}}</div>
           {{/if}}
@@ -230,9 +230,14 @@
       <span>{{t 'machine.driverAmazon.instanceSection'}}</span>
     </div>
 
-    {{#if showNameScale}}
-      {{partial "host/add-common"}}
-    {{/if}}
+    {{form-name-description
+        name=model.name
+        description=model.description
+        nameRequired=true
+        namePlaceholder="hostPartial.host.addCommon.new.form.name.placeholder"
+        descriptionShown=true
+        descriptionExpanded=true
+    }}
 
     <div class="over-hr mt-20 mb-20">
       <span>{{t 'machine.driverAmazon.instanceOptionsSection'}}</span>
