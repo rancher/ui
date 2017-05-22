@@ -50,7 +50,11 @@ var machineDriver = Resource.extend(PolledResource, {
       return null;
     }
 
-    return this.get('catalog').getTemplateFromCache(parsedExtId.templateId).get('links.icon');
+    if (this.get('catalog').getTemplateFromCache(parsedExtId.templateId)) {
+      return this.get('catalog').getTemplateFromCache(parsedExtId.templateId).get('links.icon');
+    } else {
+      return `${this.get('app.baseAssets')}assets/images/providers/generic-driver.svg`;
+    }
 
   }),
 
