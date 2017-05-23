@@ -113,7 +113,10 @@ Router.map(function() {
 
       this.route('hosts', {path: '/hosts', resetNamespace: true}, function() {
         this.route('index', {path: '/'});
-        this.route('templates', {path: '/templates'});
+        this.route('templates', {path: '/templates'}, function() {
+          this.route('index', {path: '/'});
+          this.route('launch', {path: '/launch/:template_id'});
+        });
 
         this.route('container-cloud', {path: '/container-cloud'}, function() {
           this.route('index', {path: '/'});

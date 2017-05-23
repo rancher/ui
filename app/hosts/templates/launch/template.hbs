@@ -1,0 +1,61 @@
+{{log model}}
+<div class="hosts-cloud-add">
+  <section class="header clearfix">
+    <div class="row">
+      <div class="mb-0">
+        <h1>
+          {{t 'hostsPage.cloudHostsPage.addPage.header'}}
+        </h1>
+      </div>
+    </div>
+  </section>
+
+  <section class="mt-20">
+    <form>
+      <section class="horizontal-form">
+        <div class="row addtl-info">
+          <div class="col span-4">
+            <div class="nav-boxes driver">
+              <div class="nav-box-item driver machine-driver active {{parse-host-icon 'generic'}}"></div>
+            </div>
+          </div>
+          <div class="col span-8">
+            <div>
+              <label for="">{{t 'hostsPage.cloudHostsPage.addPage.instance'}}</label>
+            </div>
+            <hr/>
+            <div>
+              <label for="">{{t 'hostsPage.cloudHostsPage.addPage.zone'}}</label>
+            </div>
+            <hr/>
+            <div>
+              <label for="">{{t 'hostsPage.cloudHostsPage.addPage.memory'}}</label>
+            </div>
+            <hr/>
+            <div>
+              <label for="">{{t 'hostsPage.cloudHostsPage.addPage.storage'}}</label>
+            </div>
+            <hr/>
+            <div>
+              <label for="">{{t 'hostsPage.cloudHostsPage.addPage.transfer'}}</label>
+            </div>
+          </div>
+        </div>
+        <div class="container-fluid">
+          {{partial "host/add-common"}}
+          <hr />
+          <div class="row">
+            <div class="col span-12">
+              {{#advanced-section}}
+                {{form-user-labels initialLabels=model.labels setLabels=(action 'setLabels')}}
+              {{/advanced-section}}
+            </div>
+          </div>
+        </div>
+        {{top-errors errors=errors}}
+        {{save-cancel save="saveTemp" cancel=cancel createLabel='hostsPage.cloudHostsPage.addPage.launch'}}
+      </section>
+
+    </form>
+  </section>
+</div>

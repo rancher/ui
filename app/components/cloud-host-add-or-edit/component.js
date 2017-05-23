@@ -5,7 +5,6 @@ export default Ember.Component.extend(Driver, {
   errors: null,
   model: null,
   config: null,
-  hostTemplates: null,
   selectedHostTemplate: null,
   actions: {
     saveTemp() {
