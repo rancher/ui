@@ -18,8 +18,6 @@ export default Ember.Component.extend(ManageLabels, {
   advancedShown:   false,
   sliderMax:      10,
 
-  classNames: ['inline-form'],
-
   init() {
     this._super(...arguments);
     this.set('userInput', (this.get('initialScale')||1)+'');

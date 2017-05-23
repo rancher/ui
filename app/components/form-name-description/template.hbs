@@ -1,7 +1,7 @@
-<div class="inline-form {{rowClass}} gutless">
+<div class="{{rowClass}} gutless">
   <div class="{{if (or hasBlock descriptionExpanded) bothColClass colClass}}" style="padding-right: 1%">
-    <div class="col-inline clearfix">
-      <label>{{t nameLabel}}{{if nameRequired '*'}}</label>
+    <div>
+      <label class="pb-5">{{t nameLabel}}{{if nameRequired '*'}}</label>
       {{#if (and descriptionShown (not descriptionExpanded))}}
         <div class="pull-right text-small">
           <a role="button" class="btn bg-transparent p-0" {{action "expandDescription"}}>{{t expandDescriptionAction}}</a>
@@ -18,9 +18,9 @@
   {{/if }}
 
   {{#if (and descriptionShown descriptionExpanded)}}
-    <div class="{{if (or hasBlock descriptionExpanded) bothColClass colClass}}" style="padding-right: 1%;">
-      <div class="col-inline">
-        <label>{{t descriptionLabel}}{{if descriptionRequired '*'}}</label>
+    <div class="{{if (or hasBlock descriptionExpanded) bothColClass colClass}} pt-20" style="padding-right: 1%;">
+      <div>
+        <label class="pb-5">{{t descriptionLabel}}{{if descriptionRequired '*'}}</label>
       </div>
       {{textarea-autogrow value=_description classNames="form-control no-resize description" rows="1" placeholder=descriptionPlaceholder disabled=descriptionDisabled}}
       {{#if descriptionHelp}}<p class="text-info">{{t descriptionHelp}}</p>{{/if}}
