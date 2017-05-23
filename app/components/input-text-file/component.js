@@ -15,7 +15,7 @@ export default Ember.Component.extend({
   showUploadLabel: true,
 
   tagName      : ['div'],
-  classNames   : ['box','p-10'],
+  classNames   : ['box'],
 
   _boundChange : null,
 

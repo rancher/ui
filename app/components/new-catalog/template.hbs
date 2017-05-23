@@ -99,8 +99,8 @@
       <div class="container-flex">
         {{#each selectedTemplateModel.questions as |question|}}
           <div class="flex-item-half">
-            <div class="col span-12 col-inline m-10">
-              <label class="col-inline">{{question.label}}{{if question.required "*"}}</label>
+            <div class="col span-12 col-inline mr-15">
+              <label class="pb-10">{{question.label}}{{if question.required "*"}}</label>
 
               {{#if question.supported}}
                 {{component question.inputComponent field=question value=question.answer}}
@@ -116,6 +116,7 @@
           <span class="text-muted">{{t 'newCatalog.noConfig'}}</span>
         {{/each}}
       </div>
+
       {{#if (and (not editing) (eq templateBase ""))}}
         <div class="row mt-20">
           <div class="col span-12">
