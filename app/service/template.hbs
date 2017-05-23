@@ -104,25 +104,28 @@
           {{#if model.service.isActive}}
           <!--ports start-->
 
-           <div class="row box">
+
            {{#each model.service.endpointsByPort as |obj|}}
+            <div class="row box mt-10">
+              <div class="col span-3">
+                <label class="acc-label">{{t 'servicePage.portsTab.table.header.port'}}</label>
+                <div>{{obj.port}}</div>
+              </div>
 
-                <div class="col span-6">
-                  <label class="acc-label">{{t 'servicePage.portsTab.table.header.port'}}</label>
-                  <div>{{obj.port}}</div>
-                </div>
-
-                <div class="col span-6">
-                  <label class="acc-label">{{t 'servicePage.portsTab.table.header.host'}}</label>
+              <div class="col span-9">
+                <label class="acc-label">{{t 'servicePage.portsTab.table.header.host'}}</label>
+                <div>
                   {{#each obj.ipAddresses as |ip|}}
-                    <div><a href="http://{{ip}}:{{obj.port}}" target="_blank">{{ip}}</a></div>
+                    <a href="http://{{ip}}:{{obj.port}}" target="_blank" class="inline-block pr-10">{{ip}}</a>
                   {{/each}}
                 </div>
-
+              </div>
+            </div>
               {{else}}
                     <div class="text-muted text-center">{{t 'servicePage.portsTab.table.body.noData'}}</div>
+
               {{/each}}
-              </div>
+
 
           <!--ports end-->
           {{else}}
@@ -352,7 +355,7 @@
                       {{else}}
                 <tr>
                   <td colspan="5">
-                    <div class="text-muted text-center">{{t 'servicePage.logTab.table.body.noData'}}</div>
+                    <div class="text-muted text-center p-10">{{t 'servicePage.logTab.table.body.noData'}}</div>
                   </td>
                 </tr>
               {{/each}}
