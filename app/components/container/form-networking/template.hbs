@@ -116,8 +116,10 @@
           <div>
             {{#each dnsResolverArray as |dns|}}
               {{#if editing}}
+                  <div class="input-group pt-20">
                   {{input type="text" value=dns.value classNames="form-control dns-value input-sm" placeholder=(t 'formNetwork.resolvingServers.placeholder')}}
-                  <button class="btn bg-primary btn-sm" {{action "removeDnsResolver" dns}}><i class="icon icon-minus"/></button>
+                  <div class="input-group-btn bg-primary"><button class="btn bg-primary btn-sm" {{action "removeDnsResolver" dns}}><i class="icon icon-minus"/></button></div>
+                  </div>
               {{else}}
                   {{dns.value}}
               {{/if}}
@@ -140,11 +142,11 @@
         {{#if dnsSearchArray.length}}
             {{#each dnsSearchArray as |dnsSearch|}}
                 {{#if editing}}
-                  <div>
+                  <div class="input-group pt-20">
                     {{input type="text" value=dnsSearch.value classNames="form-control dns-search-value input-sm" placeholder=(t 'formNetwork.searchDomains.placeholder')}}
-                  </div>
-                  <div width="40" class="text-right">
-                    <button class="btn bg-primary btn-sm" {{action "removeDnsSearch" dnsSearch}}><i class="icon icon-minus"/></button>
+                    <div class="input-group-btn bg-primary">
+                      <button class="btn bg-primary btn-sm" {{action "removeDnsSearch" dnsSearch}}><i class="icon icon-minus"/></button>
+                    </div>
                   </div>
                 {{else}}
                   <div>
