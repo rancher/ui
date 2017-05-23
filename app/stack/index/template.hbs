@@ -12,15 +12,15 @@
     {{#accordion-list-item
          title=(t 'stackPage.containers.header')
          detail=(t 'stackPage.containers.detail')
-         status=(t 'stackPage.containers.status' count=model.instances.length)
-         statusClass=(if model.instances.length 'bg-success' 'text-muted')
+         status=(t 'stackPage.containers.status' count=instances.length)
+         statusClass=(if instances.length 'bg-success' 'text-muted')
          expandAll=al.expandAll
          expand=(action expandFn)
          componentName='container-table'
          as | parent |
     }}
       {{component parent.intent
-          body=model.instances
+          body=instances
           search=true
           sortBy=sortBy
           stickyHeader=false

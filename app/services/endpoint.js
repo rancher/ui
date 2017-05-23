@@ -8,7 +8,12 @@ export default Ember.Service.extend({
   settings: Ember.inject.service(),
 
   absolute: function() {
-    var url = this.get('app.apiServer');
+    let setting = this.get(`settings.${C.SETTING.API_HOST}`);
+    if ( setting && setting.indexOf('http') !== 0 ) {
+      setting = 'http://' + setting;
+    }
+
+    let url = setting || this.get('app.apiServer');
 
     // If the URL is relative, add on the current base URL from the browser
     if ( url.indexOf('http') !== 0 )
@@ -20,7 +25,7 @@ export default Ember.Service.extend({
     url = url.replace(/\/+$/,'') + '/';
 
     return url;
-  }.property('app.apiServer'),
+  }.property(`settings.${C.SETTING.API_HOST}`,'app.apiServer'),
 
   host: function() {
     var a = document.createElement('a');

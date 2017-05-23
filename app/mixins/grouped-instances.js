@@ -51,8 +51,8 @@ export default Ember.Mixin.create({
 //      let version = instance.get('version')||"";
 
       let k8sName = (instance.get('labels')||{})[C.LABEL.K8S_POD_NAMESPACE] || '';
-      let stackId = instance.get('primaryStack.id') || '';
-      let stackName = instance.get('primaryStack.displayName') || '';
+      let stackId = instance.get('stack.id') || '';
+      let stackName = instance.get('stack.displayName') || '';
 
       let groupId, groupName;
       if ( k8sName ) {

@@ -9,7 +9,7 @@ export default Ember.Controller.extend({
 
   actions: {
     cancel() {
-      this.transitionToRoute(this.get('parentRoute'));
+      this.send('goToPrevious','apps-tab.index');
     }
   },
 });

@@ -30,17 +30,13 @@ var Container = Instance.extend({
   primaryHost                : denormalizeId('hostId'),
   services                   : denormalizeIdArray('serviceIds'),
   primaryService             : Ember.computed.alias('services.firstObject'),
-  primaryStack               : Ember.computed.alias('primaryService.stack'),
-  referencedStack            : denormalizeId('stackId'),
   referencedService          : denormalizeId('serviceId'),
 
   service: Ember.computed('primaryService','referencedService', function() {
     return this.get('referencedService') || this.get('primaryService');
   }),
 
-  stack: Ember.computed('primaryStack','referencedStack', function() {
-    return this.get('referencedStack') || this.get('primaryStack');
-  }),
+  stack: denormalizeId('stackId'),
 
   actions: {
     restart: function() {

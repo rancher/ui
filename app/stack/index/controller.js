@@ -1,6 +1,8 @@
 import Ember from 'ember';
 
 export default Ember.Controller.extend({
+  prefs: Ember.inject.service(),
+
   showAddtlInfo: false,
   selectedService: null,
 
@@ -61,14 +63,6 @@ export default Ember.Controller.extend({
     },
   ],
 
-  stackContainers: Ember.computed('model.stack.services.@each.healthState', function() {
-    var neu = [];
-    this.get('model.stack.services').forEach((service) => {
-      neu = neu.concat(service.get('instances'));
-    });
-    return neu;
-  }),
-
   getType(ownType, real=true) {
     return this.get('model.services').filter((service) => {
       if (real ? (service.get('isReal') && service.get('kind') === ownType) : (service.get('kind') === ownType)) {
@@ -78,16 +72,26 @@ export default Ember.Controller.extend({
     });
   },
 
-  scalingGroups: Ember.computed('model.services.@each.healthState', function() {
+  scalingGroups: Ember.computed('model.services.[]', function() {
     return this.getType('scalingGroup');
   }),
 
-  loadBalancers: Ember.computed('model.services.@each.healthState', function() {
+  loadBalancers: Ember.computed('model.services.[]', function() {
     return this.getType('loadBalancerService');
   }),
 
-  dnsServices: Ember.computed('model.services.@each.healthState', function() {
+  dnsServices: Ember.computed('model.services.[]', function() {
     return this.getType('dnsService', false).concat(this.getType('externalService', false));
+  }),
+
+  instances: Ember.computed('model.instances.[]','prefs.showSystemResources', function() {
+    let out = this.get('model.instances').filterBy('stackId', this.get('model.stack.id'));
+    out = out.filterBy('serviceId', null);
+    if ( !this.get('prefs.showSystemResources') ) {
+      out = out.filterBy('isSystem', false);
+    }
+
+    return out;
   }),
 
   instanceCount: function() {

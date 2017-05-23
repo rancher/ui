@@ -1,56 +1,19 @@
 import Ember from 'ember';
-import { parsePortSpec } from 'ui/utils/parse-port';
 
 export default Ember.Component.extend({
-  intl: Ember.inject.service(),
-
-  service: null,
-  ruleType: 'portRule',
-  showListeners: Ember.computed.equal('ruleType','portRule'),
-
   rules: null,
-  protocolChoices: null,
-  showBackend: null,
-  showIp: null,
+  singleTarget: true,
+  protocol: null,
+  editing: true,
 
-  onInit: function() {
-    let rules = this.get('service.lbConfig.portRules');
-    if ( !rules ) {
-      rules = [];
-      this.set('service.lbConfig.portRules', rules);
-    }
+  ruleType: 'portRule',
 
-    rules.forEach((rule) => {
-      rule.isSelector = !!rule.selector;
-    });
-
-    this.set('rules', rules);
-    if ( rules.length === 0 ) {
-      this.send('addRule');
-    }
-
-    let protos = this.get('store').getById('schema','portrule').optionsFor('protocol');
-    protos.removeObject('udp');
-    protos.sort();
-    this.set('protocolChoices', protos);
-
-    if ( this.get('showBackend') === null ) {
-      let hasName = !!rules.findBy('backendName');
-      this.set('showBackend', hasName);
-    }
-
-    if ( this.get('showIp') === null ) {
-      this.get('service.launchConfig.ports').forEach((port) => {
-        let parsed = parsePortSpec(port,'tcp');
-        if ( parsed.hostIp ) {
-          this.set('showIp', true);
-        }
-      });
-    }
-  }.on('init'),
+  rulesChanged: function() {
+      this.sendAction('rulesChanged');
+  }.observes('rules.@each.{hostname,path,kind,instanceId,serviceId,selector,targetPort,backendName}'),
 
   actions: {
-    addRule(isSelector) {
+    addRule(kind) {
       let max = 0;
       let rules = this.get('rules');
       rules.forEach((rule) => {
@@ -59,9 +22,8 @@ export default Ember.Component.extend({
 
       rules.pushObject(this.get('store').createRecord({
         type: this.get('ruleType'),
-        access: 'public',
-        isSelector: isSelector,
-        protocol: 'http',
+        kind: kind,
+        protocol: this.get('protocol'),
         priority: max+1,
       }));
     },
@@ -93,15 +55,14 @@ export default Ember.Component.extend({
     removeRule(rule) {
       this.get('rules').removeObject(rule);
     },
-
-    showBackend() {
-      this.set('showBackend', true);
-    },
-
-    showIp() {
-      this.set('showIp', true);
-    },
   },
+
+  protocolChanged: function() {
+    let protocol = this.get('protocol');
+    this.get('rules').forEach((rule) => {
+      rule.set('protocol', protocol);
+    });
+  }.observes('protocol'),
 
   updatePriorities() {
     let pri = 1;
@@ -110,27 +71,4 @@ export default Ember.Component.extend({
       pri++;
     });
   },
-
-  minPriority: function() {
-    let val = null;
-    this.get('rules').forEach((rule) => {
-      let cur = rule.get('priority');
-      if ( val === null ) {
-        val = cur;
-      } else {
-        val = Math.min(val, cur);
-      }
-    });
-
-    return val;
-  }.property('rules.@each.priority'),
-
-  maxPriority: function() {
-    let val = 0;
-    this.get('rules').forEach((rule) => {
-      val = Math.max(val, rule.get('priority'));
-    });
-
-    return val;
-  }.property('rules.@each.priority'),
 });

@@ -1,159 +1,121 @@
-<div class="row">
-  <div class="col span-2 col-inline">
-    <label>{{t 'formBalancerRules.label'}}</label>
-  </div>
-  <div class="col span-8">
-    {{#unless editing}}
-      <button class="btn bg-link icon-btn" {{action "addRule" false}}>
+<div class="clearfix">
+  <label class="acc-label">{{t 'formBalancerRules.label'}}</label>
+  {{#if editing}}
+    {{#if singleTarget}}
+      <button class="btn bg-link icon-btn" {{action "addRule" "target"}}>
+        <span class="darken"><i class="icon icon-plus text-small"></i></span>
+        <span>{{t 'formBalancerRules.addTargetLabel'}}</span>
+      </button>
+    {{else}}
+      <button class="btn bg-link icon-btn" {{action "addRule" "service"}}>
         <span class="darken"><i class="icon icon-plus text-small"></i></span>
         <span>{{t 'formBalancerRules.addServiceLabel'}}</span>
       </button>
-      <button class="btn bg-link icon-btn pl-20" {{action "addRule" true}}>
+      <button class="btn bg-link icon-btn ml-20" {{action "addRule" "instance"}}>
+        <span class="darken"><i class="icon icon-plus text-small"></i></span>
+        <span>{{t 'formBalancerRules.addInstanceLabel'}}</span>
+      </button>
+      <button class="btn bg-link icon-btn ml-20" {{action "addRule" "selector"}}>
         <span class="darken"><i class="icon icon-plus text-small"></i></span>
         <span>{{t 'formBalancerRules.addSelectorLabel'}}</span>
       </button>
-    {{/unless}}
-  </div>
-</div>
-
-<div class="row">
-  <div class="">
-    {{#if rules.length}}
-      <table class="grid fixed no-lines no-top-padding tight mb-0">
-        <thead>
-          <tr>
-            {{#if showListeners}}
-              <th width="30">&nbsp;</th>
-              <th width="100">{{t 'formBalancerRules.access.label'}}{{field-required}}</th>
-              {{#if showIp}}
-                <th>{{t 'formBalancerRules.sourceIp.label'}}</th>
-              {{/if}}
-              <th width="100">{{t 'formBalancerRules.protocol.label'}}{{field-required}}</th>
-              <th class="divided">{{t 'formBalancerRules.hostname.label'}}</th>
-              <th width="100">{{t 'formBalancerRules.sourcePort.label'}}{{field-required}}</th>
-              <th>{{t 'formBalancerRules.path.label'}}</th>
-              <th class="divided">{{t 'formBalancerRules.target'}}{{field-required}}</th>
-              <th width="100">{{t 'formBalancerRules.targetPort.label'}}{{field-required}}</th>
-            {{else}}
-              <th>{{t 'formBalancerRules.hostname.label'}}</th>
-              <th>{{t 'formBalancerRules.path.label'}}</th>
-              <th width="100" class="divided">{{t 'formBalancerRules.targetPort.label'}}{{field-required}}</th>
-            {{/if}}
-            {{#if showBackend}}
-              <th class="divided">{{t 'formBalancerRules.backendName.label'}}</th>
-            {{/if}}
-            {{#if showListeners}}
-              <th width="40">&nbsp;</th>
-            {{/if}}
-          </tr>
-        </thead>
-
-        <tbody>
-          {{#each rules as |rule idx|}}
-            <tr>
-              {{#if showListeners}}
-                <td data-title="{{t 'formBalancerRules.priority.label'}}">
-                  <button class="btn bg-default btn-xs" {{action "moveUp" rule}} disabled={{eq rule.priority minPriority}}>
-                    <i class="icon icon-chevron-up"></i>
-                  </button>
-                  <button class="btn bg-default btn-xs" {{action "moveDown" rule}} disabled={{eq rule.priority maxPriority}}>
-                    <i class="icon icon-chevron-down"></i>
-                  </button>
-                </td>
-
-                <td data-title="{{t 'formBalancerRules.access.label'}}">
-                  <select class="form-control input-sm" onchange={{action (mut rule.access) value="target.value"}}>
-                    <option value="public" selected={{eq rule.access "public"}}>{{t 'formBalancerRules.access.public'}}</option>
-                    <option value="internal" selected={{eq rule.access "internal"}}>{{t 'formBalancerRules.access.internal'}}</option>
-                  </select>
-                </td>
-
-                {{#if showIp}}
-                  <td data-title="{{t 'formBalancerRules.sourceIp.label'}}">
-                    {{#if (eq rule.access "public")}}
-                      {{input type="text" class="form-control input-sm" value=rule.sourceIp placeholder=(t 'formBalancerRules.sourceIp.placeholder')}}
-                    {{else}}
-                      <span class="text-muted">{{t 'generic.na'}}</span>
-                    {{/if}}
-                  </td>
-                {{/if}}
-
-                <td data-title="{{t 'formBalancerRules.protocol.label'}}">
-                  <select class="form-control input-sm" onchange={{action (mut rule.protocol) value="target.value"}}>
-                    {{#each protocolChoices as |proto|}}
-                      <option value={{proto}} selected={{eq rule.protocol proto}}>{{upper-case proto}}</option>
-                    {{/each}}
-                  </select>
-                </td>
-              {{/if}}
-
-              <td class="divided" data-title="{{t 'formBalancerRules.hostname.label'}}">
-                {{#if rule.canHostname}}
-                  {{input type="text" class="form-control input-sm" value=rule.hostname placeholder=(t 'formBalancerRules.hostname.placeholder')}}
-                {{else}}
-                  <span class="text-muted">{{t 'generic.na'}}</span>
-                {{/if}}
-              </td>
-
-              {{#if showListeners}}
-                <td data-title="{{t 'formBalancerRules.sourcePort.label'}}">
-                  {{input-integer class="form-control input-sm" min="1" max="65535" value=rule.sourcePort placeholder=(t 'formBalancerRules.sourcePort.placeholder')}}
-                </td>
-              {{/if}}
-
-              <td data-title="{{t 'formBalancerRules.path.label'}}">
-                {{#if rule.canPath}}
-                  {{input type="text" class="form-control input-sm" value=rule.path placeholder=(t 'formBalancerRules.path.placeholder')}}
-                {{else}}
-                  <span class="text-muted">{{t 'generic.na'}}</span>
-                {{/if}}
-              </td>
-
-              {{#if showListeners}}
-                <td class="divided" data-title="{{t (if rule.isSelector 'formBalancerRules.selector.label' 'formBalancerRules.serviceId.label')}}">
-                  {{#if rule.isSelector}}
-                    {{input type="text" class="form-control input-sm" value=rule.selector placeholder=(t 'formBalancerRules.selector.placeholder')}}
-                  {{else}}
-                    {{schema/input-service selectClass="form-control input-sm" canBalanceTo=true selected=rule.serviceId}}
-                  {{/if}}
-                </td>
-              {{/if}}
-
-              <td data-title="{{t 'formBalancerRules.targetPort.label'}}">
-                {{input-integer class="form-control input-sm" min="1" max="65535" value=rule.targetPort placeholder=(t 'formBalancerRules.targetPort.placeholder')}}
-              </td>
-
-              {{#if showBackend}}
-                <td class="divided" data-title="{{t 'formBalancerRules.backendName.label'}}">
-                  {{input type="text" class="form-control input-sm" value=rule.backendName placeholder=(t 'formBalancerRules.backendName.placeholder')}}
-                </td>
-              {{/if}}
-
-              {{#if showListeners}}
-                <td class="text-right">
-                  <button class="btn bg-primary btn-sm" {{action "removeRule" rule}}><i class="icon icon-minus"/><span class="sr-only">{{t 'generic.remove'}}</span></button>
-                </td>
-              {{/if}}
-            </tr>
-          {{/each}}
-        </tbody>
-      </table>
-      <p class="text-info">
-        {{t 'formBalancerRules.help.prefix'}}
-        {{#unless showBackend}}
-          <a href="#" {{action "showBackend"}}>
-            {{t 'formBalancerRules.help.showBackendLink'}}
-          </a>
-        {{/unless}}
-        {{#unless showIp}}
-          <a href="#" {{action "showIp"}}>
-            {{t 'formBalancerRules.help.showIpLink'}}
-          </a>
-        {{/unless}}
-        {{t 'formBalancerRules.help.suffix'}}
-      </p>
-    {{else}}
-      <span class="text-muted">{{t 'formBalancerRules.noRules'}}</span>
     {{/if}}
-  </div>
+  {{/if}}
 </div>
+
+{{#if rules.length}}
+  <table class="grid fixed no-lines no-top-padding mb-0">
+    <thead>
+      <tr>
+        {{#unless singleTarget}}
+          <th width="30">&nbsp;</th>
+        {{/unless}}
+
+        <th class="divided">{{t 'formBalancerRules.hostname.label'}}</th>
+
+        <th>{{t 'formBalancerRules.path.label'}}</th>
+
+        {{#if singleTarget}}
+          <th width="30">&nbsp;</th>
+        {{else}}
+          <th class="divided">{{t 'formBalancerRules.target'}}{{field-required}}</th>
+        {{/if}}
+
+        <th width="100" class="divided">{{t 'formBalancerRules.targetPort.label'}}{{field-required}}</th>
+
+        {{#if showBackend}}
+          <th class="divided">{{t 'formBalancerRules.backendName.label'}}</th>
+        {{/if}}
+
+        {{#if editing}}
+          <th width="40">&nbsp;</th>
+        {{/if}}
+      </tr>
+    </thead>
+
+    <tbody>
+      {{#each rules as |rule idx|}}
+        <tr>
+          {{#unless singleTarget}}
+            <td data-title="{{t 'formBalancerRules.priority.label'}}">
+              <button class="btn bg-default btn-xs" {{action "moveUp" rule}} disabled={{eq idx 0}}>
+                <i class="icon icon-chevron-up"></i>
+              </button>
+              <button class="btn bg-default btn-xs" {{action "moveDown" rule}} disabled={{eq idx (sub rules.length 1)}}>
+                <i class="icon icon-chevron-down"></i>
+              </button>
+            </td>
+          {{/unless}}
+
+          <td class="divided" data-title="{{t 'formBalancerRules.hostname.label'}}">
+            {{#if rule.canHostname}}
+              {{input type="text" class="input-sm" value=rule.hostname placeholder=(t 'formBalancerRules.hostname.placeholder')}}
+            {{else}}
+              <span class="text-muted">{{t 'generic.na'}}</span>
+            {{/if}}
+          </td>
+
+          <td data-title="{{t 'formBalancerRules.path.label'}}">
+            {{#if rule.canPath}}
+              {{input type="text" class="input-sm" value=rule.path placeholder=(t 'formBalancerRules.path.placeholder')}}
+            {{else}}
+              <span class="text-muted">{{t 'generic.na'}}</span>
+            {{/if}}
+          </td>
+
+          {{#if singleTarget}}
+            <td>&nbsp;</td>
+          {{else}}
+            <td class="divided" data-title="{{t (concat-str 'formBalancerRules' rule.kind 'label' character='.')}}">
+              {{#if (eq rule.kind 'selector')}}
+                {{input type="text" class="input-sm" value=rule.selector placeholder=(t 'formBalancerRules.selector.placeholder')}}
+              {{else if (eq rule.kind 'instance')}}
+                {{schema/input-container selectClass="input-sm" selected=rule.instanceId}}
+              {{else}}
+                {{schema/input-service selectClass="input-sm" canBalanceTo=true selected=rule.serviceId}}
+              {{/if}}
+            </td>
+          {{/if}}
+
+          <td data-title="{{t 'formBalancerRules.targetPort.label'}}">
+            {{input-integer class="input-sm" min="1" max="65535" value=rule.targetPort placeholder=(t 'formBalancerRules.targetPort.placeholder')}}
+          </td>
+
+          {{#if showBackend}}
+            <td class="divided" data-title="{{t 'formBalancerRules.backendName.label'}}">
+              {{input type="text" class="input-sm" value=rule.backendName placeholder=(t 'formBalancerRules.backendName.placeholder')}}
+            </td>
+          {{/if}}
+
+          {{#if editing}}
+            <td class="text-right">
+              <button class="btn bg-primary btn-sm" {{action "removeRule" rule}}><i class="icon icon-minus"/><span class="sr-only">{{t 'generic.remove'}}</span></button>
+            </td>
+          {{/if}}
+        </tr>
+      {{/each}}
+    </tbody>
+  </table>
+{{else}}
+  <span class="text-muted">{{t 'formBalancerRules.noRules'}}</span>
+{{/if}}
