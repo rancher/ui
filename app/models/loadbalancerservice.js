@@ -27,10 +27,6 @@ var LoadBalancerService = Service.extend({
     let publish = this.get('launchConfig.ports')||[];
     publish.forEach((str) => {
       let spec = parsePortSpec(str,'tcp');
-      if ( !spec.hostPort || spec.hostIp ) {
-        this.set('hasUnsupportedPorts', true);
-      }
-
       if ( spec.hostPort ) {
         rules.filterBy('sourcePort', spec.hostPort).forEach((rule) => {
           rule.set('access', 'public');

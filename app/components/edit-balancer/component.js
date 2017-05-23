@@ -16,7 +16,6 @@ export default Ember.Component.extend(NewOrEdit, {
   isGlobal                  : null,
   isRequestedHost           : null,
   upgradeOptions            : null,
-  hasUnsupportedPorts       : false,
 
   // Errors from components
   ruleErrors                : null,
@@ -30,7 +29,6 @@ export default Ember.Component.extend(NewOrEdit, {
     this._super(...arguments);
     this.labelsChanged();
     this.get('service').initPorts();
-    this.updatePorts();
   },
 
   actions: {
@@ -63,119 +61,6 @@ export default Ember.Component.extend(NewOrEdit, {
 
     return this.get('intl').t(k);
   }.property('intl.locale','needsUpgrade','isService','isVm','service.secondaryLaunchConfigs.length'),
-
-  // ----------------------------------
-  // Ports
-  // ----------------------------------
-  updatePorts() {
-    let rules = this.get('service.lbConfig.portRules')||[];
-    let publish = [];
-    let expose = [];
-
-    // Set ports and publish on the launch config
-    rules.forEach((rule) => {
-      // The inner one eliminates null/undefined, then the outer one
-      // converts integers to string (so they can be re-parsed later)
-      let srcStr = ((rule.get('sourcePort')||'')+'').trim();
-      let src = parseInt(srcStr,10);
-      if ( !src || src < 1 || src > 65535 ) {
-        return;
-      }
-
-      let entry = src+":"+src+"/"+rule.get('ipProtocol');
-      if ( rule.get('access') === 'public' ) {
-        // Source IP applies only to public rules
-        let ip = rule.get('sourceIp');
-        if ( ip ) {
-          // IPv6
-          if ( ip.indexOf(":") >= 0 && ip.substr(0,1) !== '[' ) {
-            entry = '['+ip+']:' + entry;
-          } else {
-            entry = ip + ':' + entry;
-          }
-        }
-
-        publish.push(entry);
-      } else {
-        expose.push(entry);
-      }
-    });
-
-    this.get('service.launchConfig').setProperties({
-      ports: publish.uniq(),
-      expose: expose.uniq(),
-    });
-  },
-
-  shouldUpdatePorts: function() {
-    Ember.run.once(this,'updatePorts');
-  }.observes('service.lbConfig.portRules.@each.{sourceIp,sourcePort,access,protocol}'),
-
-
-  validateRules() {
-    let intl = this.get('intl');
-    let rules = this.get('service.lbConfig.portRules');
-    let errors = [];
-    let seen = {};
-
-    // Set ports and publish on the launch config
-    // And also do a bunch of validation while we're here
-    rules.forEach((rule) => {
-      // The inner one eliminates null/undefined, then the outer one
-      // converts integers to string (so they can be re-parsed later)
-      let srcStr = ((rule.get('sourcePort')||'')+'').trim();
-      let tgtStr = ((rule.get('targetPort')||'')+'').trim();
-
-      if ( !srcStr ) {
-        errors.push(intl.t('newBalancer.error.noSourcePort'));
-        return;
-      }
-
-      let src = parseInt(srcStr,10);
-      if ( !src || src < 1 || src > 65535 ) {
-        errors.push(intl.t('newBalancer.error.invalidSourcePort', {num: srcStr}));
-      } else if ( !tgtStr ) {
-        tgtStr = srcStr;
-      }
-
-      let tgt = parseInt(tgtStr,10);
-      if ( !tgt || tgt < 1 || tgt > 65535 ) {
-        errors.push(intl.t('newBalancer.error.invalidTargetPort', {num: tgtStr}));
-        return;
-      }
-
-      let sourceIp = rule.get('sourceIp');
-      let key;
-      if ( sourceIp ) {
-        key = '['+sourceIp+']:' + src;
-      } else {
-        key = '[0.0.0.0]:' + src;
-      }
-
-      let access = rule.get('access');
-      let id = access + '-' + rule.get('protocol') + '-' + src;
-
-      if ( seen[key] ) {
-        if ( seen[key] !== id ) {
-          errors.push(intl.t('newBalancer.error.mixedPort', {num: src}));
-        }
-      } else {
-        seen[key] = id;
-      }
-
-      if ( !rule.get('serviceId') && !rule.get('selector') ) {
-        errors.push(intl.t('newBalancer.error.noTarget'));
-      }
-
-      // Make ports always numeric
-      rule.setProperties({
-        sourcePort: src,
-        targetPort: tgt,
-      });
-    });
-
-    this.set('ruleErrors', errors);
-  },
 
   needsUpgrade: function() {
     function arrayToStr(map) {
@@ -278,8 +163,6 @@ export default Ember.Component.extend(NewOrEdit, {
   // Save
   // ----------------------------------
   willSave() {
-    this.validateRules();
-
     let ok = this._super(...arguments);
     if ( ok && !this.get('isUpgrade') ) {
       // Set the stack ID

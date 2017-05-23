@@ -74,6 +74,10 @@ export default Ember.Component.extend({
       count++;
     }
 
+    if ( this.get('lbConfig.needsCertificate') && !count ) {
+      k = STATUS.INCOMPLETE;
+    }
+
     if ( count ) {
       k = STATUS.COUNTCONFIGURED;
     }

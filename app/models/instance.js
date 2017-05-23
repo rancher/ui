@@ -2,8 +2,11 @@ import Ember from 'ember';
 import Resource from 'ember-api-store/models/resource';
 import C from 'ui/utils/constants';
 import { formatSi } from 'ui/utils/util';
+import { denormalizeId } from 'ember-api-store/utils/denormalize';
 
 export default Resource.extend({
+  stack: denormalizeId('stackId'),
+
   isSystem: function() {
     if ( this.get('system') ) {
       return true;
