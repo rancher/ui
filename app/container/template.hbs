@@ -19,14 +19,14 @@
 {{/if}}
 
 <section>
-  <div class="row banner bg-info pl-10 pr-10">
-    <div class="col">
+  <div class="banner bg-info basics ">
+    <div class="inline-block">
       <label class="acc-label p-0">{{t 'generic.image'}}:</label>
       {{#copy-inline clipboardText=model.container.displayImage}}
         {{model.container.displayImage}}
       {{/copy-inline}}
     </div>
-    <div class="col">
+    <div class="inline-block">
       <label class="acc-label p-0">{{t 'generic.ipAddress'}}:</label>
       {{#if model.container.displayIp}}
         {{#copy-inline clipboardText=model.container.displayIp}}
@@ -37,19 +37,19 @@
       {{/if}}
     </div>
     {{#if model.container.stack}}
-      <div class="col">
+      <div class="inline-block">
         <label class="acc-label p-0">{{t 'generic.stack'}}:</label>
         {{#link-to "stack" projects.current.id model.container.stack.id}}{{model.container.stack.displayName}}{{/link-to}}
       </div>
     {{/if}}
     {{#if model.container.primaryHost}}
-      <div class="col">
+      <div class="inline-block">
         <label class="acc-label p-0">{{t 'generic.host'}}:</label>
         {{#link-to "host" model.container.primaryHost.id}}{{model.container.primaryHost.displayName}}{{/link-to}}
       </div>
     {{/if}}
     {{#if model.container.displayExternalId}}
-      <div class="col">
+      <div class="inline-block">
         <label class="acc-label p-0">{{t 'generic.dockerId'}}:</label>
         {{#copy-inline clipboardText=model.container.externalId}}
           {{model.container.displayExternalId}}

@@ -1,13 +1,4 @@
 <section class="header clearfix">
-  {{#banner-message showIcon=false}}
-    <div class="pull-left">
-      <p>{{t 'hostsPage.hostPage.header.singleBanner'}}</p>
-    </div>
-    <div class="pull-right">
-      {{#link-to "hosts"}}{{t 'hostsPage.hostPage.header.backLink'}}{{/link-to}}
-    </div>
-  {{/banner-message}}
-
   <h1 class="pull-left">
     {{t 'hostsPage.hostPage.header.title' name=host.displayName}}
   </h1>
@@ -30,14 +21,14 @@
 {{/if}}
 
 <section>
-  <div class="row banner bg-info pl-10 pr-10">
-    <div class="col">
+  <div class="row banner bg-info basics ">
+    <div class="inline-block">
       <label class="acc-label p-0">{{t 'hostsPage.hostPage.infoMultiStats.ip'}}</label>
       {{#copy-inline clipboardText=host.displayIp}}
         {{host.displayIp}}
       {{/copy-inline}}
     </div>
-    <div class="col">
+    <div class="inline-block">
       <label class="acc-label p-0">{{t 'hostsPage.hostPage.infoMultiStats.docker'}}</label>
       {{#if host.dockerEngineVersion}}
         {{host.dockerEngineVersion}}
@@ -45,7 +36,7 @@
         <span class="text-muted">{{t 'generic.unknown'}}</span>
       {{/if}}
     </div>
-    <div class="col">
+    <div class="inline-block">
       <label class="acc-label p-0">{{t 'hostsPage.hostPage.infoMultiStats.provider.labelText'}}</label>
       {{#if host.driver}}
         {{host.driver}}

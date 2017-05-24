@@ -113,6 +113,7 @@ export default Ember.Component.extend({
     this.set('textBg', textBg);
 
     var text = svg.append('text')
+    .attr('class', `spark-text`)
       .attr('class', `spark-text`)
       .attr('alignment-baseline','middle')
       .attr('text-anchor','middle')

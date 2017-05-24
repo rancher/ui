@@ -10,27 +10,24 @@
     <div class="text-center p-20">Volume support is not currently available for Windows.</div>
   {{else}}
     <button class="btn bg-link icon-btn" {{action "addVolume"}}>
-      <i class="icon icon-plus text-small"/>
+      <span class="darken"><i class="icon icon-plus text-small"/></span>
       <span>{{t 'formVolumes.addActionLabel'}}</span>
     </button>
 
     {{#if volumesArray.length}}
-      <table class="table fixed no-lines no-top-padding tight mt-10">
+      <div class="input-group mt-40">
         {{#each volumesArray as |vol|}}
-          <tr>
-            <td>
-              {{input type="text" class="form-control volume-path" value=vol.value placeholder="e.g. [volumename: or /path/on/host:]/path/in/container[:ro]"}}
-            </td>
-            <td width="30" class="text-right">
-              <button class="btn bg-primary btn-sm" {{action "removeVolume" vol}}><i class="icon icon-minus"/></button>
-            </td>
-          </tr>
+
+              {{input type="text" class="volume-path form-control" value=vol.value placeholder="e.g. [volumename: or /path/on/host:]/path/in/container[:ro]"}}
+
+              <div class="input-group-addon p-0 input-group-button bg-primary"><button class="bg-primary" {{action "removeVolume" vol}}><i class="icon icon-minus"/></button></div>
+
         {{/each}}
-      </table>
+      </div>
     {{/if}}
 
-    <div class="mt-10">
-      <label>{{t 'formVolumes.volumesFrom'}}</label>
+    <div class="mt-40">
+      <label class="acc-label">{{t 'formVolumes.volumesFrom'}}</label>
       {{#if isService}}
         {{#if volumesFromLaunchConfigChoices.length}}
           {{#each volumesFromLaunchConfigChoices as |choice|}}
@@ -76,8 +73,8 @@
       {{/if}}
     </div>
 
-    <div class="mt-10">
-      <label for="volumeDriver">{{t 'formVolumes.volumeDriver.label'}}</label>
+    <div class="mt-40">
+      <label class="acc-label" for="volumeDriver">{{t 'formVolumes.volumeDriver.label'}}</label>
       {{input-suggest
         value=instance.volumeDriver
         grouped=driverChoices

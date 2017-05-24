@@ -22,32 +22,32 @@
 
 {{!todo copy pasta}}
 <section>
-  <div class="row banner bg-info pl-10 pr-10">
+  <div class="row banner bg-info basics ">
 
     {{#if service.launchConfig.memoryReservation}}
-      <div class="col">
-        <label>{{t 'containersPage.containerPage.infoMultiStats.memoryReservation.labelText'}}</label>
+      <div class="inline-block">
+        <label class="acc-label p-0">{{t 'containersPage.containerPage.infoMultiStats.memoryReservation.labelText'}}</label>
         {{service.memoryReservationBlurb}}
       </div>
     {{/if}}
 
     {{#if service.launchConfig.milliCpuReservation}}
-      <div class="col">
-        <label>{{t 'containersPage.containerPage.infoMultiStats.milliCpuReservation.labelText'}}</label>
+      <div class="inline-block">
+        <label class="acc-label p-0">{{t 'containersPage.containerPage.infoMultiStats.milliCpuReservation.labelText'}}</label>
         {{service.launchConfig.milliCpuReservation}}
       </div>
     {{/if}}
 
     {{#if service.fqdn}}
-      <div class="col">
-        <label>{{t 'servicePage.multistat.fqdn'}}</label>
+      <div class="inline-block">
+        <label class="acc-label p-0">{{t 'servicePage.multistat.fqdn'}}</label>
         <a href="http://{{service.fqdn}}">{{service.fqdn}}</a> {{copy-to-clipboard clipboardText=service.fqdn size="small"}}
       </div>
       <hr>
     {{/if}}
 
-    <div class="col">
-      <label>{{t 'servicePage.multistat.scale'}}</label>
+    <div class="inline-block">
+      <label class="acc-label p-0">{{t 'servicePage.multistat.scale'}}</label>
       {{#if service.canScale}}
         <span class="pr-5">{{service.scale}}</span>
         <div class="btn-group btn-group-xs p-0">
@@ -60,8 +60,8 @@
     </div>
 
     {{#if service.hasImage}}
-      <div class="col">
-        <label>{{t 'servicePage.multistat.image'}}</label>
+      <div class="inline-block">
+        <label class="acc-label p-0">{{t 'servicePage.multistat.image'}}</label>
         {{service.launchConfig.displayImage}} {{copy-to-clipboard clipboardText=service.launchConfig.displayImage size="small"}}
       </div>
     {{/if}}
@@ -102,34 +102,32 @@
              expand=(action expandFn)
         }}
           {{#if model.service.isActive}}
-            <table class="grid fixed">
-              <thead>
-                <tr>
-                  <th width="150">{{t 'servicePage.portsTab.table.header.port'}}</th>
-                  <th>{{t 'servicePage.portsTab.table.header.host'}}</th>
-                </tr>
-              </thead>
-              <tbody>
-                {{#each model.service.endpointsByPort as |obj|}}
-                  <tr>
-                    <td>
-                      {{obj.port}}
-                    </td>
-                    <td>
-                      {{#each obj.ipAddresses as |ip|}}
-                        <span class="pr-10"><a href="http://{{ip}}:{{obj.port}}" target="_blank">{{ip}}</a></span>
-                      {{/each}}
-                    </td>
-                  </tr>
-                {{else}}
-                  <tr>
-                    <td colspan="2">
-                      <div class="text-muted text-center">{{t 'servicePage.portsTab.table.body.noData'}}</div>
-                    </td>
-                  </tr>
-                {{/each}}
-              </tbody>
-            </table>
+          <!--ports start-->
+
+
+           {{#each model.service.endpointsByPort as |obj|}}
+            <div class="row box mb-10">
+              <div class="col span-2">
+                <label class="acc-label">{{t 'servicePage.portsTab.table.header.port'}}</label>
+                <div>{{obj.port}}</div>
+              </div>
+
+              <div class="col span-10">
+                <label class="acc-label">{{t 'servicePage.portsTab.table.header.host'}}</label>
+                <div>
+                  {{#each obj.ipAddresses as |ip|}}
+                    <a href="http://{{ip}}:{{obj.port}}" target="_blank" class="inline-block pr-10">{{ip}}</a>
+                  {{/each}}
+                </div>
+              </div>
+            </div>
+              {{else}}
+                    <div class="text-muted text-center">{{t 'servicePage.portsTab.table.body.noData'}}</div>
+
+              {{/each}}
+
+
+          <!--ports end-->
           {{else}}
             <div class="text-center text-muted">{{t 'servicePage.portsTab.notActive'}}</div>
           {{/if}}
@@ -243,28 +241,30 @@
              expandAll=al.expandAll
              expand=(action expandFn)
         }}
-          <div>
-            <label>{{t 'servicePage.certsTab.default'}}:</label>
-            {{#if model.service.lbConfig.defaultCertificateId}}
-              <a href="{{href-to "certificates.detail" model.service.lbConfig.defaultCertificateId}}">{{model.service.lbConfig.defaultCertificate.displayName}}</a>
-            {{else}}
-              <span class="text-muted">{{t 'generic.none'}}</span>
-            {{/if}}
-          </div>
+          <div class="row">
+            <div class="box col span-6">
+              <label class="acc-label">{{t 'servicePage.certsTab.default'}}:</label>
+              {{#if model.service.lbConfig.defaultCertificateId}}
+                <a href="{{href-to "certificates.detail" model.service.lbConfig.defaultCertificateId}}">{{model.service.lbConfig.defaultCertificate.displayName}}</a>
+              {{else}}
+                <div class="text-muted">{{t 'generic.none'}}</div>
+              {{/if}}
+            </div>
 
-          <div>
-            <label>{{t 'servicePage.certsTab.additional'}}:</label>
-            {{#if model.service.lbConfig.certificateIds.length}}
-              <ul class="list-unstyled">
-                {{#each model.service.lbConfig.certificates as |cert|}}
-                  <li>
-                    <a href="{{href-to "certificates.detail" cert.id}}">{{cert.displayName}}</a>
-                  </li>
-                {{/each}}
-              </ul>
-            {{else}}
-              <span class="text-muted">{{t 'generic.none'}}</span>
-            {{/if}}
+            <div class="box col span-6">
+              <label class="acc-label">{{t 'servicePage.certsTab.additional'}}:</label>
+              {{#if model.service.lbConfig.certificateIds.length}}
+                <ul class="list-unstyled">
+                  {{#each model.service.lbConfig.certificates as |cert|}}
+                    <li>
+                      <a href="{{href-to "certificates.detail" cert.id}}">{{cert.displayName}}</a>
+                    </li>
+                  {{/each}}
+                </ul>
+              {{else}}
+                <div class="text-muted">{{t 'generic.none'}}</div>
+              {{/if}}
+            </div>
           </div>
         {{/accordion-list-item}}
 
@@ -305,7 +305,7 @@
              expandAll=al.expandAll
              expand=(action expandFn)
         }}
-          <label class="text-muted ml-15">{{t 'servicePage.linksTab.header'}}</label>
+          <label class="acc-label">{{t 'servicePage.linksTab.header'}}</label>
           <ul class="list-unstyled list-inline with-room">
             {{#each model.service.consumedServicesWithNames as |link|}}
               <li>{{consumed-service-link link=link stackId=model.service.stackId}}</li>
@@ -325,9 +325,9 @@
         }}
           <table class="grid fixed">
             <thead>
-              <tr>
-                <th width="100">{{t 'servicePage.logTab.table.header.date'}}</th>
-                <th width="75">{{t 'servicePage.logTab.table.header.level'}}</th>
+              <tr class="fixed-header">
+                <th width="120">{{t 'servicePage.logTab.table.header.date'}}</th>
+                <th width="100">{{t 'servicePage.logTab.table.header.level'}}</th>
                 <th>{{t 'servicePage.logTab.table.header.event'}}</th>
                 <th>{{t 'servicePage.logTab.table.header.description'}}</th>
                 <th class="actions" width="75">&nbsp;</th>
@@ -335,12 +335,12 @@
             </thead>
             <tbody>
               {{#each model.logs.arrangedContent as |obj|}}
-                <tr>
+                <tr class="main-row">
                   <td>
                     {{date-str obj.created format="hh:mm:ss A"}}
                   </td>
                   <td>
-                    <span class="state badge {{obj.stateColor}} {{obj.stateBackground}}">{{upper-case obj.level}}</span>
+                    <span class="state badge-sm {{obj.stateColor}} {{obj.stateBackground}}">{{upper-case obj.level}}</span>
                   </td>
                   <td>
                     {{obj.eventType}}{{#if obj.runTime}} ({{obj.runTime}}){{/if}}
@@ -355,7 +355,7 @@
                       {{else}}
                 <tr>
                   <td colspan="5">
-                    <div class="text-muted text-center">{{t 'servicePage.logTab.table.body.noData'}}</div>
+                    <div class="text-muted text-center p-10">{{t 'servicePage.logTab.table.body.noData'}}</div>
                   </td>
                 </tr>
               {{/each}}

@@ -1,5 +1,5 @@
 <div class="clearfix">
-  <label>{{t 'formPorts.header'}}</label>
+  <label class="pb-5">{{t 'formPorts.header'}}</label>
   {{#if (and portsArray.length (not showIp))}}
     <div class="pull-right text-small">
       <a role="button" class="btn bg-transparent p-0" {{action "showIp"}}>
@@ -10,12 +10,13 @@
 </div>
 
 {{#if portsArray.length}}
-  <table class="table fixed no-lines small mt-10">
+  <table class="table fixed no-lines small mt-10 mb-10">
     <tr class="text-muted hidden-sm">
       {{#if showIp}}
         <th>{{t 'formPorts.bindAddress.label'}}</th>
         <th width="10"></th>
       {{/if}}
+
       <th>{{t 'formPorts.public.label'}}</th>
       <th width="10"></th>
       <th>{{t 'formPorts.private.label'}}{{field-required}}</th>
@@ -24,6 +25,7 @@
       <th width="40">&nbsp;</th>
     </tr>
     {{#each portsArray as |port|}}
+    <div class="pt-10"></div>
       <tr>
         {{#if showIp}}
           <td data-title="{{t 'formPorts.public.label'}}">
@@ -83,7 +85,7 @@
   {{/if}}
 {{/if}}
 
-<div class="pt-10">
+<div>
   <button class="btn bg-link icon-btn p-0" {{action "addPort"}}>
     <span class="darken"><i class="icon icon-plus text-small"/></span>
     <span>{{t 'formPorts.addAction'}}</span>
