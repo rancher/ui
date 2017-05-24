@@ -131,138 +131,203 @@ export let regions = {
 
 export let sizes = [
   {
+    group: 'Basic',
+    value: 'Basic_A0'
+  },
+  {
+    group: 'Basic',
+    value: 'Basic_A1'
+  },
+  {
+    group: 'Basic',
+    value: 'Basic_A2'
+  },
+  {
+    group: 'Basic',
+    value: 'Basic_A3'
+  },
+  {
+    group: 'Basic',
+    value: 'Basic_A4'
+  },
+  {
+    group: 'Standard',
     value: 'Standard_A0'
   },
   {
+    group: 'Standard',
     value: 'Standard_A1'
   },
   {
+    group: 'Standard',
     value: 'Standard_A2'
   },
   {
+    group: 'Standard',
     value: 'Standard_A3'
   },
   {
+    group: 'Standard',
     value: 'Standard_A4'
   },
   {
+    group: 'Standard',
     value: 'Standard_A5'
   },
   {
+    group: 'Standard',
     value: 'Standard_A6'
   },
   {
+    group: 'Standard',
     value: 'Standard_A7'
   },
   {
+    group: 'Standard',
     value: 'Standard_A8'
   },
   {
+    group: 'Standard',
     value: 'Standard_A9'
   },
   {
+    group: 'Standard',
     value: 'Standard_A10'
   },
   {
+    group: 'Standard',
     value: 'Standard_A11'
   },
   {
+    group: 'Standard',
     value: 'Standard_D1'
   },
   {
+    group: 'Standard',
     value: 'Standard_D2'
   },
   {
+    group: 'Standard',
     value: 'Standard_D3'
   },
   {
+    group: 'Standard',
     value: 'Standard_D4'
   },
   {
+    group: 'Standard',
     value: 'Standard_D11'
   },
   {
+    group: 'Standard',
     value: 'Standard_D12'
   },
   {
+    group: 'Standard',
     value: 'Standard_D13'
   },
   {
+    group: 'Standard',
     value: 'Standard_D14'
   },
   {
+    group: 'Standard',
     value: 'Standard_D1_v2'
   },
   {
+    group: 'Standard',
     value: 'Standard_D2_v2'
   },
   {
+    group: 'Standard',
     value: 'Standard_D3_v2'
   },
   {
+    group: 'Standard',
     value: 'Standard_D4_v2'
   },
   {
+    group: 'Standard',
     value: 'Standard_D5_v2'
   },
   {
+    group: 'Standard',
     value: 'Standard_D11_v2'
   },
   {
+    group: 'Standard',
     value: 'Standard_D12_v2'
   },
   {
+    group: 'Standard',
     value: 'Standard_D13_v2'
   },
   {
+    group: 'Standard',
     value: 'Standard_D14_v2'
   },
   {
+    group: 'Standard',
     value: 'Standard_DS1'
   },
   {
+    group: 'Standard',
     value: 'Standard_DS2'
   },
   {
+    group: 'Standard',
     value: 'Standard_DS3'
   },
   {
+    group: 'Standard',
     value: 'Standard_DS12'
   },
   {
+    group: 'Standard',
     value: 'Standard_DS13'
   },
   {
+    group: 'Standard',
     value: 'Standard_DS14'
   },
   {
+    group: 'Standard',
     value: 'Standard_G1'
   },
   {
+    group: 'Standard',
     value: 'Standard_G2'
   },
   {
+    group: 'Standard',
     value: 'Standard_G3'
   },
   {
+    group: 'Standard',
     value: 'Standard_G4'
   },
   {
+    group: 'Standard',
     value: 'Standard_G5'
   },
   {
+    group: 'Standard',
     value: 'Standard_GS1'
   },
   {
+    group: 'Standard',
     value: 'Standard_GS2'
   },
   {
+    group: 'Standard',
     value: 'Standard_GS3'
   },
   {
+    group: 'Standard',
     value: 'Standard_GS4'
   },
   {
+    group: 'Standard',
     value: 'Standard_GS5'
   },
 ];
