@@ -1,0 +1,56 @@
+{{log clonedModel}}
+<div class="hosts-cloud-add">
+  <section class="header clearfix">
+    <div class="row">
+      <div class="mb-0">
+        <h1>
+          {{t 'hostsPage.cloudHostsPage.addPage.header'}}
+        </h1>
+      </div>
+    </div>
+  </section>
+
+  <section class="mt-20">
+    <form>
+      <section class="horizontal-form">
+        <div class="row addtl-info">
+          <div class="col span-4">
+            <div class="nav-boxes driver">
+              <div class="nav-box-item driver machine-driver active {{parse-host-icon hostTemplate.driver}}"></div>
+            </div>
+          </div>
+          <div class="col span-8">
+            <div>
+              <label for="">{{t 'hostsPage.cloudHostsPage.addPage.instance'}}</label>
+              {{clonedModel.amazonec2Config.instanceType}}
+            </div>
+            <hr/>
+            <div>
+              <label for="">{{t 'hostsPage.cloudHostsPage.addPage.zone'}}</label>
+              {{clonedModel.amazonec2Config.region}}
+            </div>
+            <hr/>
+            <div>
+              <label for="">{{t 'hostsPage.cloudHostsPage.addPage.storage'}}</label>
+              {{clonedModel.amazonec2Config.rootSize}}
+            </div>
+          </div>
+        </div>
+        <div class="container-fluid">
+          {{partial "host/add-common"}}
+          <hr />
+          <div class="row">
+            <div class="col span-12">
+              {{#advanced-section}}
+                {{form-user-labels initialLabels=clonedModel.labels setLabels=(action 'setLabels') expandAll=null}}
+              {{/advanced-section}}
+            </div>
+          </div>
+        </div>
+        {{top-errors errors=errors}}
+        {{save-cancel save="save" cancel="cancel" createLabel='hostsPage.cloudHostsPage.addPage.launch'}}
+      </section>
+
+    </form>
+  </section>
+</div>

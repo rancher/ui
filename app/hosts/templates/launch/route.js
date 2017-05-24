@@ -7,11 +7,11 @@ export default Ember.Route.extend({
       var config = this.get('store').createRecord(template.publicValues);
       var tmp = {
         type: 'host',
-        [config.type]: config,
         hostTemplateId: template.id
       };
       return {
         template: template,
+        config: config,
         host: this.get('store').createRecord(tmp)
       }
     });

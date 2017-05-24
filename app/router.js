@@ -111,6 +111,7 @@ Router.map(function() {
 
       this.route('new-stack', {path: '/import-compose', resetNamespace: true});
 
+      this.route('custom-host', {path: '/hosts/custom', resetNamespace: true});
       this.route('hosts', {path: '/hosts', resetNamespace: true}, function() {
         this.route('index', {path: '/'});
         this.route('templates', {path: '/templates'}, function() {

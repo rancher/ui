@@ -8,25 +8,9 @@ export default Ember.Route.extend({
   host           : Ember.inject.service(),
   backTo         : null,
 
-  defaultDriver: 'custom',
-  lastDriver: null,
-
-  queryParams: {
-    driver: {
-      refreshModel: true
-    },
-    hostId: {
-      refreshModel: false,
-    }
-  },
-
   actions: {
     cancel() {
       this.send('goBack');
-    },
-
-    savedHost() {
-      this.refresh();
     },
 
     goBack() {
@@ -42,16 +26,6 @@ export default Ember.Route.extend({
     let appRoute = getOwner(this).lookup('route:application');
     this.set('previousOpts', {name: appRoute.get('previousRoute'), params: appRoute.get('previousParams')});
   },
-
-  resetController(controller, isExisting /*, transition*/) {
-    if ( isExisting )
-    {
-      controller.set('hostId', null);
-      controller.set('backTo', null);
-    }
-  },
-
-  machineDrivers: null,
 
   // Loads all the machine drivers and selects the active ones with a corresponding schema into machineDrivers
   beforeModel(/*transition*/) {
@@ -69,11 +43,7 @@ export default Ember.Route.extend({
     var hs = this.get('host');
 
     return hs.getModel(params).then((hash) => {
-      if (hash.transition) {
-        this.transitionTo('hosts.new', {queryParams: {driver: hash.driver}});
-      } else {
-        return hash;
-      }
+      return hash;
     });
   },
 
