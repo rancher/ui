@@ -20,7 +20,7 @@ export default Ember.Component.extend(ManageLabels, {
 
         this.$('INPUT.key').last()[0].focus();
       });
-    }
+    },
   },
 
   didReceiveAttrs() {
@@ -30,6 +30,7 @@ export default Ember.Component.extend(ManageLabels, {
       });
     }
   },
+
 
   init() {
     this._super(...arguments);
