@@ -1,0 +1,34 @@
+{{#sortable-table
+  classNames="grid sortable-table"
+  body=logs
+  searchText=searchText
+  sortBy=sortBy
+  bulkActions=false
+  search=true
+  fullRows=true
+  pagingLabel="pagination.event"
+  headers=headers as |sortable kind row dt|}}
+  {{#if (eq kind "row")}}
+    <tr>
+      <td data-title="{{dt.time}}">
+        {{date-str row.created format="hh:mm:ss A"}}
+      </td>
+      <td data-title="{{dt.level}}">
+        <span class="state badge-sm {{row.stateColor}} {{row.stateBackground}}">{{upper-case row.level}}</span>
+      </td>
+      <td data-title="{{dt.event}}">
+        {{row.eventType}}{{#if row.runTime}} ({{row.runTime}}){{/if}}
+      </td>
+      <td data-title="{{dt.detail}}">
+        {{row.description}}
+      </td>
+      <td data-title="{{dt.actions}}" class="actions">
+        {{action-menu model=row}}
+      </td>
+    </tr>
+  {{else if (eq kind "nomatch")}}
+    <tr><td colspan="{{sortable.fullColspan}}" class="text-center text-muted p-20">{{t 'containersPage.table.noMatch'}}</td></tr>
+  {{else if (eq kind "norows")}}
+    <tr><td colspan="{{sortable.fullColspan}}" class="text-center text-muted p-20">{{t 'containersPage.table.noData'}}</td></tr>
+  {{/if}}
+{{/sortable-table}}

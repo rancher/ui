@@ -49,6 +49,7 @@ module.exports = function(defaults) {
 
         // These get version added to the query string so JS doesn't have to know the fingerprint
         'assets/intl',
+        'assets/images/resources',
         'ui-light.css', 'ui-light.rtl.css',
         'ui-dark.css',  'ui-dark.rtl.css',
         'ui.css',       'ui.rtl.css',
