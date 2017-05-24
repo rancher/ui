@@ -18,6 +18,10 @@
     {{model.displayImage}}
   </td>
 
+  <td data-title="{{dt.scale}}">
+    {{model.scale}}
+  </td>
+
   <td data-title="{{dt.instanceState}}" class="pt-5">
     <div style="margin-top:2px;">
       {{#if canExpand}}
@@ -28,8 +32,6 @@
             values=model.instanceStates.byColor
             tooltipValues=model.instanceStates.byName
           }}
-        {{!-- {{else}}
-          <span class="text-muted">{{t 'generic.na'}}</span> --}}
         {{/if}}
       {{else}}
         <span class="text-muted">{{t 'stacksPage.table.standalone'}}</span>
@@ -71,8 +73,8 @@
 {{#if canExpand}}
   <tr class="sub-row hide">{{! make the alternating color match }}</tr>
   <tr class="sub-row {{unless expanded 'hide'}}">
-    <td colspan="2">{{! checkbox and expand}}</td>
-    <td colspan="{{sub fullColspan 3}}">
+    <td>{{! checkbox and expand}}</td>
+    <td colspan="{{sub fullColspan 2}}">
       {{#if expanded}}
         {{container-table
           body=model.instances

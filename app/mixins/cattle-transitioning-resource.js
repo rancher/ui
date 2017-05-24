@@ -111,7 +111,7 @@ export default Ember.Mixin.create({
       url          = url.replace(/https?:\/\/[^\/]+\/?/,endpoint);
 
       // For local development where API doesn't match origin, add basic auth token
-      if ( url.indexOf(window.location.origin) !== 0 )
+      if ( url.indexOf(window.location.origin) !== 0 && this.get('app.mode') === 'development' )
       {
         let token = this.get('cookies').get(C.COOKIE.TOKEN);
         if ( token )

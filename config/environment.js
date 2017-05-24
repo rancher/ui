@@ -96,6 +96,7 @@ module.exports = function(environment) {
       mode: mode,
       isCaas: mode === 'caas',
       caasSignup: signup,
+      environment: environment,
       apiServer: 'http://localhost:8080',
       legacyApiEndpoint: '/v1',
       apiEndpoint: '/v2-beta',

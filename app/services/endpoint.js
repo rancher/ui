@@ -71,7 +71,7 @@ export default Ember.Service.extend({
 
     // For local development where API doesn't match origin, add basic auth token
     var authBase = base;
-    if ( base.indexOf(window.location.origin) !== 0 )
+    if ( base.indexOf(window.location.origin) !== 0 && this.get('app.mode') === 'development')
     {
       var token = this.get('cookies').get(C.COOKIE.TOKEN);
       if ( token ) {
