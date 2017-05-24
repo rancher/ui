@@ -2,11 +2,18 @@ import Ember from 'ember';
 
 export default Ember.Route.extend({
   model(params/* , transistion */) {
-    var templates = this.modelFor('hosts.templates.index');
-    if (templates) {
-      return templates.findBy('id', params.template_id);
-    } else {
-      return this.get('store').find('hosttemplate', params.template_id);
-    }
+    // debugger;
+    return this.get('store').find('hosttemplate', params.template_id).then((template) => {
+      var config = this.get('store').createRecord(template.publicValues);
+      var tmp = {
+        type: 'host',
+        [config.type]: config,
+        hostTemplateId: template.id
+      };
+      return {
+        template: template,
+        host: this.get('store').createRecord(tmp)
+      }
+    });
   }
 });

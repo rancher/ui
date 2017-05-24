@@ -1,3 +1,4 @@
+{{log clonedModel}}
 <div class="hosts-cloud-add">
   <section class="header clearfix">
     <div class="row">
@@ -15,71 +16,39 @@
         <div class="row addtl-info">
           <div class="col span-4">
             <div class="nav-boxes driver">
-              <div class="nav-box-item driver machine-driver active {{config.provider}}"></div>
+              <div class="nav-box-item driver machine-driver active {{parse-host-icon hostTemplate.driver}}"></div>
             </div>
           </div>
           <div class="col span-8">
-            <div class="price">
-              {{#tooltip-element type="tooltip-basic" model=(concat (format-number config.uiOptions.pricePerHour style='currency' currency='USD') (t 'hostsPage.cloudHostsPage.favoritesPage.pricePerHour')) tooltipTemplate='tooltip-static' aria-describedby="tooltip-base" tooltipFor="cloud-host-launch"}}
-                <div class="inline-block">
-                  {{#if config.provider}}
-                    {{#if (eq config.provider 'digitalocean') }}
-                      {{format-number config.uiOptions.pricePerMonth style='currency' currency='USD'}}<span class="addon">{{t 'hostsPage.cloudHostsPage.favoritesPage.price'}}</span>
-                    {{else}}
-                      {{format-number config.uiOptions.pricePerMonth style='currency' currency='USD'}}<span class="addon">{{t 'hostsPage.cloudHostsPage.favoritesPage.price'}}</span>
-                    {{/if}}
-                  {{/if}}
-
-                </div>
-              {{/tooltip-element}}
-            </div>
             <div>
               <label for="">{{t 'hostsPage.cloudHostsPage.addPage.instance'}}</label>
-              {{config.uiOptions.displayName}}
+              {{clonedModel.instanceType}}
             </div>
             <hr/>
             <div>
               <label for="">{{t 'hostsPage.cloudHostsPage.addPage.zone'}}</label>
-              {{config.uiOptions.realm}}
-            </div>
-            <hr/>
-            <div>
-              <label for="">{{t 'hostsPage.cloudHostsPage.addPage.memory'}}</label>
-              {{config.uiOptions.memory}}{{t 'hostsPage.cloudHostsPage.addPage.memStUnit'}}
+              {{clonedModel.region}}
             </div>
             <hr/>
             <div>
               <label for="">{{t 'hostsPage.cloudHostsPage.addPage.storage'}}</label>
-              {{config.uiOptions.storage}}{{t 'hostsPage.cloudHostsPage.addPage.memStUnit'}}
-            </div>
-            <hr/>
-            <div>
-              <label for="">{{t 'hostsPage.cloudHostsPage.addPage.transfer'}}</label>
-              {{config.uiOptions.transfer}}{{t 'hostsPage.cloudHostsPage.addPage.transferUnit'}}
+              {{clonedModel.rootSize}}
             </div>
           </div>
         </div>
         <div class="container-fluid">
           {{partial "host/add-common"}}
           <hr />
-          {{#if (or (eq config.uiOptions.apiKeySupport 'byokey') (eq config.uiOptions.apiKeySupport 'both'))}}
-            {{add-host-template
-                templates=hostTemplates
-                provider=config.pretty_provider
-                selectedKey=(mut selectedHostTemplate)
-            }}
-            <hr/>
-          {{/if}}
           <div class="row">
             <div class="col span-12">
               {{#advanced-section}}
-                {{form-user-labels initialLabels=model.labels setLabels=(action 'setLabels')}}
+                {{form-user-labels initialLabels=clonedModel.labels setLabels=(action 'setLabels')}}
               {{/advanced-section}}
             </div>
           </div>
         </div>
         {{top-errors errors=errors}}
-        {{save-cancel save="saveTemp" cancel=cancel createLabel='hostsPage.cloudHostsPage.addPage.launch'}}
+        {{save-cancel save="save" cancel="cancel" createLabel='hostsPage.cloudHostsPage.addPage.launch'}}
       </section>
 
     </form>
