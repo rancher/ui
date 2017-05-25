@@ -6,23 +6,19 @@ export default Ember.Route.extend({
   model: function(params/*, transition*/) {
     var store = this.get('store');
 
-    var dependencies = [
-      store.findAll('host'), // Need inactive ones in case a link points to an inactive host
-    ];
+    var dependencies = {}
 
     if ( params.serviceId )
     {
-      dependencies.pushObject(store.find('service', params.serviceId));
+      dependencies['serviceOrContainer'] = store.find('service', params.serviceId);
     }
     else if ( params.containerId )
     {
-      dependencies.pushObject(store.find('container', params.containerId, {include: ['ports']}));
+      dependencies['serviceOrContainer'] = store.find('container', params.containerId, {include: ['ports']});
     }
 
-    return Ember.RSVP.all(dependencies, 'Load container dependencies').then((results) => {
-      var store = this.get('store');
-      var allHosts = results[0];
-      var serviceOrContainer = results[1];
+    return Ember.RSVP.hash(dependencies, 'Load dependencies').then((results) => {
+      var serviceOrContainer = results.serviceOrContainer
       var serviceLinks = [];
       var secondaryLaunchConfigs = [];
 
@@ -30,7 +26,6 @@ export default Ember.Route.extend({
       {
         return Ember.Object.create({
           service: serviceOrContainer.clone(),
-          allHosts: allHosts,
         });
       }
 
@@ -96,7 +91,6 @@ export default Ember.Route.extend({
 
       return Ember.Object.create({
         service: service,
-        allHosts: allHosts,
       });
     });
   },

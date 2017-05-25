@@ -4,9 +4,7 @@ export default Ember.Route.extend({
   model: function(params/*, transition*/) {
     var store = this.get('store');
 
-    var dependencies = {
-      allHosts: store.findAll('host'), // Need inactive ones in case a link points to an inactive host
-    };
+    var dependencies = {};
 
     if ( params.containerId )
     {
@@ -14,6 +12,13 @@ export default Ember.Route.extend({
     }
 
     return Ember.RSVP.hash(dependencies, 'Load container dependencies').then(function(results) {
+
+      if ( params.upgrade )
+      {
+        return Ember.Object.create({
+          instance: instance,
+        });
+      }
 
       var data, healthCheckData;
       if ( results.existing )
@@ -60,7 +65,6 @@ export default Ember.Route.extend({
 
       return Ember.Object.create({
         instance: instance,
-        allHosts: results.allHosts,
       });
     });
   },

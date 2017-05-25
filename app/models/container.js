@@ -143,7 +143,10 @@ var Container = Instance.extend({
     var health = this.get('healthState');
     var hasCheck = !!this.get('healthCheck');
 
-    if ( C.ACTIVEISH_STATES.indexOf(resource) >= 0 )
+    if ( this.get('desired') === false ) {
+      return 'garbage-collection';
+    }
+    else if ( C.ACTIVEISH_STATES.indexOf(resource) >= 0 )
     {
       if ( hasCheck && health ) {
         return health;
@@ -159,7 +162,7 @@ var Container = Instance.extend({
     {
       return resource;
     }
-  }.property('state', 'healthState'),
+  }.property('desired', 'state', 'healthState'),
 
   isOn: function() {
     return ['running','updating-running','migrating','restarting'].indexOf(this.get('state')) >= 0;

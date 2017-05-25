@@ -57,10 +57,11 @@ export default Ember.Controller.extend({
       translationKey: 'stacksPage.table.endpoints',
     },
     {
-      name: 'image',
-      sort: ['stack.isDefault:desc','stack.displayName','displayImage','displayName'],
-      searchField: 'displayImage',
-      translationKey: 'generic.image',
+      name: 'scale',
+      sort: 'scale:desc',
+      searchField: null,
+      translationKey: 'stacksPage.table.scale',
+      width: 100
     },
     {
       name: 'instanceState',
