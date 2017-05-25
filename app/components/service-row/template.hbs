@@ -14,8 +14,15 @@
   <td data-title="{{dt.ip}}">
     {{model.displayPorts}}
   </td>
-  <td data-title="{{dt.image}}">
-    {{model.displayImage}}
+
+  {{#if showImage}}
+    <td data-title="{{dt.image}}">
+      {{model.displayImage}}
+    </td>
+  {{/if}}
+
+  <td data-title="{{dt.scale}}">
+    {{model.scale}}
   </td>
 
   <td data-title="{{dt.instanceState}}" class="pt-5">
@@ -28,8 +35,6 @@
             values=model.instanceStates.byColor
             tooltipValues=model.instanceStates.byName
           }}
-        {{!-- {{else}}
-          <span class="text-muted">{{t 'generic.na'}}</span> --}}
         {{/if}}
       {{else}}
         <span class="text-muted">{{t 'stacksPage.table.standalone'}}</span>
@@ -71,8 +76,8 @@
 {{#if canExpand}}
   <tr class="sub-row hide">{{! make the alternating color match }}</tr>
   <tr class="sub-row {{unless expanded 'hide'}}">
-    <td colspan="2">{{! checkbox and expand}}</td>
-    <td colspan="{{sub fullColspan 3}}">
+    <td>{{! checkbox and expand}}</td>
+    <td colspan="{{sub fullColspan 2}}">
       {{#if expanded}}
         {{container-table
           body=model.instances

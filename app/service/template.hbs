@@ -8,7 +8,7 @@
     </div>
   {{/if}}
   <div class="right-buttons">
-    {{header-state model=service}}
+    {{badge-state model=service}}
     {{action-menu model=service showPrimary=false classNames="ml-10 pull-right" size="sm"}}
   </div>
 </section>
@@ -22,7 +22,7 @@
 
 {{!todo copy pasta}}
 <section>
-  <div class="row banner bg-info basics ">
+  <div class="row banner bg-info basics">
 
     {{#if service.launchConfig.memoryReservation}}
       <div class="inline-block">
@@ -67,45 +67,210 @@
     {{/if}}
   </div>
 </section>
+
 <section>
   {{#accordion-list as |al expandFn| }}
-    <div class="row">
-      <div class="col span-12">
-        {{#if (eq service.kind 'externalService')}}
-          {{!-- since external services are the only ones that have externalIp/hostname it didnt make sense to give extIps its own route like other services  --}}
-          <hr/>
-          <section>
-            <div>
-              {{#if service.externalIpAddresses}}
-                <label class="text-muted ml-15">{{t 'servicePage.external.externalIp'}}</label>
-                <ul class="list-unstyled list-inline with-room">
-                  {{#each service.externalIpAddresses as |ip|}}
-                    <li>
-                      <i class="icon icon-external-link"></i> {{ip}}
-                    </li>
-                  {{/each}}
-                </ul>
-              {{else}}
-                <label class="text-muted">{{t 'servicePage.external.externalHostname'}} </label> {{service.hostname}}
-              {{/if}}
-            </div>
-          </section>
-          <hr/>
-        {{/if}}
+    {{#if (eq service.kind 'externalService')}}
+      {{!-- since external services are the only ones that have externalIp/hostname it didnt make sense to give extIps its own route like other services  --}}
+      <hr/>
+      <section>
+        <div>
+          {{#if service.externalIpAddresses}}
+            <label class="text-muted ml-15">{{t 'servicePage.external.externalIp'}}</label>
+            <ul class="list-unstyled list-inline with-room">
+              {{#each service.externalIpAddresses as |ip|}}
+                <li>
+                  <i class="icon icon-external-link"></i> {{ip}}
+                </li>
+              {{/each}}
+            </ul>
+          {{else}}
+            <label class="text-muted">{{t 'servicePage.external.externalHostname'}} </label> {{service.hostname}}
+          {{/if}}
+        </div>
+      </section>
+      <hr/>
+    {{/if}}
 
-        {{#accordion-list-item
-             title=(t 'servicePage.portsTab.title')
-             detail=(t 'servicePage.portsTab.detail')
-             status=(t 'servicePage.portsTab.status' count=model.service.endpointsByPort.length)
-             statusClass=(if model.service.endpointsByPort.length 'bg-success' 'text-muted')
-             expandAll=al.expandAll
-             expand=(action expandFn)
+    {{#if service.canHaveContainers}}
+      {{#accordion-list-item
+            title=(t 'servicePage.containersTab.title')
+            detail=(t 'servicePage.containersTab.detail')
+            status=(t 'servicePage.containersTab.status' count=service.instances.length)
+            statusClass=(if service.instances.length 'bg-success' 'text-muted')
+            expanded=true
+            expandAll=al.expandAll
+            expand=(action expandFn)
+            componentName='container-table'
+            as | parent |
+      }}
+        {{component parent.intent
+            body=service.instances
+            bulkActions=true
+            showHost=true
         }}
-          {{#if model.service.isActive}}
-          <!--ports start-->
+      {{/accordion-list-item}}
+    {{/if}}
 
+    {{#if service.isBalancer}}
+      {{#accordion-list-item
+            title=(t 'formBalancerRules.label')
+            detail=(t 'formBalancerRules.detail')
+            status=(t 'formBalancerRules.status' count=(if rules.length rules.length 0))
+            statusClass=(if rules.length 'bg-success' 'text-muted')
+            expandAll=al.expandAll
+            expand=(action expandFn)
+      }}
+        {{#if rules.length}}
+          <table class="grid fixed no-lines no-top-padding tight mb-0">
+            <thead>
+              <tr>
+                <th width="65">{{t 'formBalancerRules.priority.label'}}</th>
+                <th width="60">{{t 'formBalancerRules.access.label'}}</th>
+                <th width="70">{{t 'formBalancerRules.protocol.label'}}</th>
+                <th class="divided">{{t 'formBalancerRules.hostname.label'}}</th>
+                <th width="60">{{t 'formBalancerRules.sourcePort.label'}}</th>
+                <th>{{t 'formBalancerRules.path.label'}}</th>
+                <th class="divided">{{t 'formBalancerRules.target'}}</th>
+                <th width="60">{{t 'formBalancerRules.targetPort.label'}}</th>
+                <th class="divided">{{t 'formBalancerRules.backendName.label'}}</th>
+              </tr>
+            </thead>
 
-           {{#each model.service.endpointsByPort as |obj|}}
+            <tbody>
+              {{#each rules as |rule idx|}}
+                <tr>
+                  <td data-title="{{t 'formBalancerRules.priority.label'}}">
+                    {{rule.priority}}
+                  </td>
+
+                  <td data-title="{{t 'formBalancerRules.access.label'}}">
+                    {{uc-first rule.access}}
+                  </td>
+
+                  <td data-title="{{t 'formBalancerRules.protocol.label'}}">
+                    {{upper-case rule.protocol}}
+                  </td>
+
+                  <td class="divided" data-title="{{t 'formBalancerRules.hostname.label'}}">
+                    {{#if rule.canHostname}}
+                      {{#if rule.hostname}}
+                        {{rule.hostname}}
+                      {{else}}
+                        <span class="text-muted">{{t 'generic.none'}}</span>
+                      {{/if}}
+                    {{else}}
+                      <span class="text-muted">{{t 'generic.na'}}</span>
+                    {{/if}}
+                  </td>
+
+                  <td data-title="{{t 'formBalancerRules.sourcePort.label'}}">
+                    {{rule.sourcePort}}
+                  </td>
+
+                  <td data-title="{{t 'formBalancerRules.path.label'}}">
+                    {{#if rule.canPath}}
+                      {{#if rule.path}}
+                        {{rule.path}}
+                      {{else}}
+                        <span class="text-muted">{{t 'generic.none'}}</span>
+                      {{/if}}
+                    {{else}}
+                      <span class="text-muted">{{t 'generic.na'}}</span>
+                    {{/if}}
+                  </td>
+
+                  <td class="divided" data-title="{{t (if rule.isSelector 'formBalancerRules.selector.label' 'formBalancerRules.serviceId.label')}}">
+                    {{#if rule.selector}}
+                      {{rule.selector}}
+                    {{else}}
+                      <a href="{{href-to "service" rule.serviceId}}">
+                        {{#if (not-eq service.stackId rule.service.stackId)~}}
+                          {{rule.service.displayStack}}/
+                          {{~/if~}}
+                          {{~rule.service.displayName~}}
+                      </a>
+                      {{~/if~}}
+                  </td>
+
+                  <td data-title="{{t 'formBalancerRules.targetPort.label'}}">
+                    {{rule.targetPort}}
+                  </td>
+
+                  <td class="divided" data-title="{{t 'formBalancerRules.backendName.label'}}">
+                    {{#if rule.backendName}}
+                      {{rule.backendName}}
+                    {{else}}
+                      <span class="text-muted">{{t 'generic.none'}}</span>
+                    {{/if}}
+                  </td>
+                </tr>
+              {{/each}}
+            </tbody>
+          </table>
+        {{else}}
+          <div class="text-muted text-center">{{t 'formBalancerRules.noRules'}}</div>
+        {{/if}}
+      {{/accordion-list-item}}
+
+      {{#accordion-list-item
+            title=(t 'servicePage.certsTab.title')
+            detail=(t 'servicePage.certsTab.detail')
+            status=(t 'servicePage.certsTab.status' count=(if model.service.lbConfig.certificateIds.length model.service.lbConfig.certificateIds.length 0))
+            statusClass=(if model.service.lbConfig.certificateIds.length 'bg-success' 'text-muted')
+              expandAll=al.expandAll
+              expand=(action expandFn)
+      }}
+        <div class="row">
+          <div class="box col span-6">
+            <label class="acc-label">{{t 'servicePage.certsTab.default'}}:</label>
+            {{#if model.service.lbConfig.defaultCertificateId}}
+              <a href="{{href-to "certificates.detail" model.service.lbConfig.defaultCertificateId}}">{{model.service.lbConfig.defaultCertificate.displayName}}</a>
+            {{else}}
+              <div class="text-muted">{{t 'generic.none'}}</div>
+            {{/if}}
+          </div>
+          <div class="box col span-6">
+            <label class="acc-label">{{t 'servicePage.certsTab.additional'}}:</label>
+            {{#if model.service.lbConfig.certificateIds.length}}
+              <ul class="list-unstyled">
+                {{#each model.service.lbConfig.certificates as |cert|}}
+                  <li>
+                    <a href="{{href-to "certificates.detail" cert.id}}">{{cert.displayName}}</a>
+                  </li>
+                {{/each}}
+              </ul>
+            {{else}}
+              <div class="text-muted">{{t 'generic.none'}}</div>
+            {{/if}}
+          </div>
+        </div>
+      {{/accordion-list-item}}
+    {{/if}}
+
+    {{#if (and service.isReal (not service.isBalancer))}}
+      {{container/form-command
+          tagName=''
+          instance=service
+          isService=true
+          initialLabels=service.launchConfig.labels
+          editing=false
+          expandAll=al.expandAll
+          expandFn=expandFn
+      }}
+    {{/if}}
+
+    {{#if service.hasPorts}}
+      {{#accordion-list-item
+            title=(t 'servicePage.portsTab.title')
+            detail=(t 'servicePage.portsTab.detail')
+            status=(t 'servicePage.portsTab.status' count=service.endpointsByPort.length)
+            statusClass=(if service.endpointsByPort.length 'bg-success' 'text-muted')
+            expandAll=al.expandAll
+            expand=(action expandFn)
+      }}
+        {{#if service.isActive}}
+          {{#each model.service.endpointsByPort as |obj|}}
             <div class="row box mb-10">
               <div class="col span-2">
                 <label class="acc-label">{{t 'servicePage.portsTab.table.header.port'}}</label>
@@ -121,249 +286,44 @@
                 </div>
               </div>
             </div>
-              {{else}}
-                    <div class="text-muted text-center">{{t 'servicePage.portsTab.table.body.noData'}}</div>
-
-              {{/each}}
-
-
-          <!--ports end-->
           {{else}}
-            <div class="text-center text-muted">{{t 'servicePage.portsTab.notActive'}}</div>
-          {{/if}}
-        {{/accordion-list-item}}
+            <div class="text-muted text-center">{{t 'servicePage.portsTab.table.body.noData'}}</div>
+          {{/each}}
+        {{else}}
+          <div class="text-center text-muted">{{t 'servicePage.portsTab.notActive'}}</div>
+        {{/if}}
+      {{/accordion-list-item}}
+    {{/if}}
 
-        {{#accordion-list-item
-             title=(t 'formBalancerRules.label')
-             detail=(t 'formBalancerRules.detail')
-             status=(t 'formBalancerRules.status' count=(if rules.length rules.length 0))
-             statusClass=(if rules.length 'bg-success' 'text-muted')
-             expandAll=al.expandAll
-             expand=(action expandFn)
-        }}
-          {{#if rules.length}}
-            <table class="grid fixed no-lines no-top-padding tight mb-0">
-              <thead>
-                <tr>
-                  <th width="65">{{t 'formBalancerRules.priority.label'}}</th>
-                  <th width="60">{{t 'formBalancerRules.access.label'}}</th>
-                  <th width="70">{{t 'formBalancerRules.protocol.label'}}</th>
-                  <th class="divided">{{t 'formBalancerRules.hostname.label'}}</th>
-                  <th width="60">{{t 'formBalancerRules.sourcePort.label'}}</th>
-                  <th>{{t 'formBalancerRules.path.label'}}</th>
-                  <th class="divided">{{t 'formBalancerRules.target'}}</th>
-                  <th width="60">{{t 'formBalancerRules.targetPort.label'}}</th>
-                  <th class="divided">{{t 'formBalancerRules.backendName.label'}}</th>
-                </tr>
-              </thead>
+    {{labels-section model=service.launchConfig tagName='' expandAll=al.expandAll expandFn=expandFn}}
 
-              <tbody>
-                {{#each rules as |rule idx|}}
-                  <tr>
-                    <td data-title="{{t 'formBalancerRules.priority.label'}}">
-                      {{rule.priority}}
-                    </td>
+    {{#accordion-list-item
+          title=(t 'servicePage.linksTab.header')
+          detail=(t 'servicePage.linksTab.detail')
+          status=(t 'servicePage.linksTab.status' count=service.consumedServicesWithNames.length)
+          statusClass=(if service.consumedServicesWithNames.length 'bg-success' 'text-muted')
+          expandAll=al.expandAll
+          expand=(action expandFn)
+    }}
+      <label class="acc-label">{{t 'servicePage.linksTab.header'}}</label>
+      <ul class="list-unstyled list-inline with-room">
+        {{#each service.consumedServicesWithNames as |link|}}
+          <li>{{consumed-service-link link=link stackId=service.stackId}}</li>
+        {{else}}
+          <li class="text-muted">{{t 'servicePage.linksTab.noData'}}</li>
+        {{/each}}
+      </ul>
+    {{/accordion-list-item}}
 
-                    <td data-title="{{t 'formBalancerRules.access.label'}}">
-                      {{uc-first rule.access}}
-                    </td>
-
-                    <td data-title="{{t 'formBalancerRules.protocol.label'}}">
-                      {{upper-case rule.protocol}}
-                    </td>
-
-                    <td class="divided" data-title="{{t 'formBalancerRules.hostname.label'}}">
-                      {{#if rule.canHostname}}
-                        {{#if rule.hostname}}
-                          {{rule.hostname}}
-                        {{else}}
-                          <span class="text-muted">{{t 'generic.none'}}</span>
-                        {{/if}}
-                      {{else}}
-                        <span class="text-muted">{{t 'generic.na'}}</span>
-                      {{/if}}
-                    </td>
-
-                    <td data-title="{{t 'formBalancerRules.sourcePort.label'}}">
-                      {{rule.sourcePort}}
-                    </td>
-
-                    <td data-title="{{t 'formBalancerRules.path.label'}}">
-                      {{#if rule.canPath}}
-                        {{#if rule.path}}
-                          {{rule.path}}
-                        {{else}}
-                          <span class="text-muted">{{t 'generic.none'}}</span>
-                        {{/if}}
-                      {{else}}
-                        <span class="text-muted">{{t 'generic.na'}}</span>
-                      {{/if}}
-                    </td>
-
-                    <td class="divided" data-title="{{t (if rule.isSelector 'formBalancerRules.selector.label' 'formBalancerRules.serviceId.label')}}">
-                      {{#if rule.selector}}
-                        {{rule.selector}}
-                      {{else}}
-                        <a href="{{href-to "service" rule.serviceId}}">
-                          {{#if (not-eq service.stackId rule.service.stackId)~}}
-                            {{rule.service.displayStack}}/
-                            {{~/if~}}
-                            {{~rule.service.displayName~}}
-                        </a>
-                        {{~/if~}}
-                    </td>
-
-                    <td data-title="{{t 'formBalancerRules.targetPort.label'}}">
-                      {{rule.targetPort}}
-                    </td>
-
-                    <td class="divided" data-title="{{t 'formBalancerRules.backendName.label'}}">
-                      {{#if rule.backendName}}
-                        {{rule.backendName}}
-                      {{else}}
-                        <span class="text-muted">{{t 'generic.none'}}</span>
-                      {{/if}}
-                    </td>
-                  </tr>
-                {{/each}}
-              </tbody>
-            </table>
-          {{else}}
-            <div class="text-muted text-center">{{t 'formBalancerRules.noRules'}}</div>
-          {{/if}}
-        {{/accordion-list-item}}
-
-        {{#accordion-list-item
-             title=(t 'servicePage.certsTab.title')
-             detail=(t 'servicePage.certsTab.detail')
-             status=(t 'servicePage.certsTab.status' count=(if model.service.lbConfig.certificateIds.length model.service.lbConfig.certificateIds.length 0))
-             statusClass=(if model.service.lbConfig.certificateIds.length 'bg-success' 'text-muted')
-             expandAll=al.expandAll
-             expand=(action expandFn)
-        }}
-          <div class="row">
-            <div class="box col span-6">
-              <label class="acc-label">{{t 'servicePage.certsTab.default'}}:</label>
-              {{#if model.service.lbConfig.defaultCertificateId}}
-                <a href="{{href-to "certificates.detail" model.service.lbConfig.defaultCertificateId}}">{{model.service.lbConfig.defaultCertificate.displayName}}</a>
-              {{else}}
-                <div class="text-muted">{{t 'generic.none'}}</div>
-              {{/if}}
-            </div>
-
-            <div class="box col span-6">
-              <label class="acc-label">{{t 'servicePage.certsTab.additional'}}:</label>
-              {{#if model.service.lbConfig.certificateIds.length}}
-                <ul class="list-unstyled">
-                  {{#each model.service.lbConfig.certificates as |cert|}}
-                    <li>
-                      <a href="{{href-to "certificates.detail" cert.id}}">{{cert.displayName}}</a>
-                    </li>
-                  {{/each}}
-                </ul>
-              {{else}}
-                <div class="text-muted">{{t 'generic.none'}}</div>
-              {{/if}}
-            </div>
-          </div>
-        {{/accordion-list-item}}
-
-        {{container/form-command
-            tagName=''
-            instance=service
-            isService=true
-            initialLabels=service.launchConfig.labels
-            editing=false
-            expandAll=al.expandAll
-            expandFn=expandFn
-        }}
-
-        {{#accordion-list-item
-             title=(t 'servicePage.containersTab.title')
-             detail=(t 'servicePage.containersTab.detail')
-             status=(t 'servicePage.containersTab.status' count=model.service.instances.length)
-             statusClass=(if model.service.instances.length 'bg-success' 'text-muted')
-             expandAll=al.expandAll
-             expand=(action expandFn)
-             componentName='container-table'
-             as | parent |
-        }}
-          {{component parent.intent
-              body=model.service.instances
-              bulkActions=true
-              showHost=true
-          }}
-        {{/accordion-list-item}}
-
-        {{labels-section model=model.service.launchConfig tagName='' expandAll=al.expandAll expandFn=expandFn}}
-
-        {{#accordion-list-item
-             title=(t 'servicePage.linksTab.header')
-             detail=(t 'servicePage.linksTab.detail')
-             status=(t 'servicePage.linksTab.status' count=model.service.consumedServicesWithNames.length)
-             statusClass=(if model.service.consumedServicesWithNames.length 'bg-success' 'text-muted')
-             expandAll=al.expandAll
-             expand=(action expandFn)
-        }}
-          <label class="acc-label">{{t 'servicePage.linksTab.header'}}</label>
-          <ul class="list-unstyled list-inline with-room">
-            {{#each model.service.consumedServicesWithNames as |link|}}
-              <li>{{consumed-service-link link=link stackId=model.service.stackId}}</li>
-            {{else}}
-              <li class="text-muted">{{t 'servicePage.linksTab.noData'}}</li>
-            {{/each}}
-          </ul>
-        {{/accordion-list-item}}
-
-        {{#accordion-list-item
-             title=(t 'servicePage.logTab.title')
-             detail=(t 'servicePage.logTab.detail')
-             status=(t 'servicePage.logTab.status' count=model.logs.arrangedContent.length)
-             statusClass=(if model.logs.arrangedContent.length 'bg-success' 'text-muted')
-             expandAll=al.expandAll
-             expand=(action expandFn)
-        }}
-          <table class="grid fixed">
-            <thead>
-              <tr class="fixed-header">
-                <th width="120">{{t 'servicePage.logTab.table.header.date'}}</th>
-                <th width="100">{{t 'servicePage.logTab.table.header.level'}}</th>
-                <th>{{t 'servicePage.logTab.table.header.event'}}</th>
-                <th>{{t 'servicePage.logTab.table.header.description'}}</th>
-                <th class="actions" width="75">&nbsp;</th>
-              </tr>
-            </thead>
-            <tbody>
-              {{#each model.logs.arrangedContent as |obj|}}
-                <tr class="main-row">
-                  <td>
-                    {{date-str obj.created format="hh:mm:ss A"}}
-                  </td>
-                  <td>
-                    <span class="state badge-sm {{obj.stateColor}} {{obj.stateBackground}}">{{upper-case obj.level}}</span>
-                  </td>
-                  <td>
-                    {{obj.eventType}}{{#if obj.runTime}} ({{obj.runTime}}){{/if}}
-                  </td>
-                  <td>
-                    {{obj.description}}
-                  </td>
-                  <td data-title="{{t 'generic.actions'}}:" class="actions">
-                    {{action-menu model=obj}}
-                  </td>
-                </tr>
-                      {{else}}
-                <tr>
-                  <td colspan="5">
-                    <div class="text-muted text-center p-10">{{t 'servicePage.logTab.table.body.noData'}}</div>
-                  </td>
-                </tr>
-              {{/each}}
-            </tbody>
-          </table>
-        {{/accordion-list-item}}
-
-      </div>
-    </div>
+    {{#accordion-list-item
+          title=(t 'servicePage.logTab.title')
+          detail=(t 'servicePage.logTab.detail')
+          status=(t 'servicePage.logTab.status' count=model.logs.arrangedContent.length)
+          statusClass=(if model.logs.arrangedContent.length 'bg-success' 'text-muted')
+          expandAll=al.expandAll
+          expand=(action expandFn)
+    }}
+      {{service-log logs=model.logs.arrangedContent}}
+    {{/accordion-list-item}}
   {{/accordion-list}}
 </section>

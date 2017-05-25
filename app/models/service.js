@@ -244,6 +244,14 @@ var Service = Resource.extend(StateCounts, {
     }
   }.property('isReal','isGlobalScale'),
 
+  displayScale: function() {
+    if ( this.get('isGlobalScale') ) {
+      return this.get('scale') + this.get('intl').t('servicePage.globalScale');
+    } else {
+      return this.get('scale');
+    }
+  }.property('scale','isGlobalScale'),
+
   canHaveContainers: function() {
     if ( this.get('isReal') || this.get('isSelector') ) {
       return true;

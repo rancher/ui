@@ -11,6 +11,7 @@ export default Ember.Component.extend({
 
   showLabelRow: Ember.computed.or('model.displayUserLabelStrings.length'),
   showInstanceCount: true,
+  showImage: true,
 
   canExpand: function() {
     return !!this.get('model.isReal');

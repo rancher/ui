@@ -20,6 +20,7 @@ const defaultStateMap = {
   'initializing':             {icon: 'icon icon-alert',         color: 'text-warning'},
   'migrating':                {icon: 'icon icon-info',          color: 'text-info'   },
   'provisioning':             {icon: 'icon icon-circle',        color: 'text-info'   },
+  'garbage-collection':       {icon: 'icon icon-trash',         color: 'text-success'},
   'purged':                   {icon: 'icon icon-purged',        color: 'text-error'  },
   'purging':                  {icon: 'icon icon-purged',        color: 'text-info'   },
   'reconnecting':             {icon: 'icon icon-alert',         color: 'text-error'  },
@@ -111,7 +112,7 @@ export default Ember.Mixin.create({
       url          = url.replace(/https?:\/\/[^\/]+\/?/,endpoint);
 
       // For local development where API doesn't match origin, add basic auth token
-      if ( url.indexOf(window.location.origin) !== 0 )
+      if ( url.indexOf(window.location.origin) !== 0 && this.get('app.mode') === 'development' )
       {
         let token = this.get('cookies').get(C.COOKIE.TOKEN);
         if ( token )
