@@ -78,24 +78,23 @@
 
     {{#if (not-eq checkType "none")}}
       <div class="row mt-20">
-        <div class="col span-6 box row mb-0 mt-0">
-            <div class="col span-6">
-            <label class="acc-label">{{t 'formHealthCheck.port.label'}}{{field-required}}</label>
-            {{#input-or-display editable=editing value=healthCheck.port}}
-              {{input-integer min="1" max="65535" classNames="form-control" placeholder=(t 'formHealthCheck.port.placeholder') value=healthCheck.port}}
-            {{/input-or-display}}
-          </div>
-
-          <div class="col span-6">
-            <label class="acc-label">{{t 'formHealthCheck.interval.label'}}</label>
-            {{#input-or-display editable=editing value=healthCheck.interval}}
-              <div class="input-group">
-                {{input-integer min=1 step=1000 classNames="form-control" value=healthCheck.interval}}
-                <span class="input-group-addon bg-default">{{t 'formHealthCheck.interval.unit'}}</span>
-              </div>
-            {{/input-or-display}}
-          </div>
+        <div class="col span-3 box row mb-0 mt-0">
+          <label class="acc-label">{{t 'formHealthCheck.port.label'}}{{field-required}}</label>
+          {{#input-or-display editable=editing value=healthCheck.port}}
+            {{input-integer min="1" max="65535" classNames="form-control" placeholder=(t 'formHealthCheck.port.placeholder') value=healthCheck.port}}
+          {{/input-or-display}}
         </div>
+
+        <div class="col span-3 box row mb-0 mt-0">
+          <label class="acc-label">{{t 'formHealthCheck.interval.label'}}</label>
+          {{#input-or-display editable=editing value=healthCheck.interval}}
+            <div class="input-group">
+              {{input-integer min=1 step=1000 classNames="form-control" value=healthCheck.interval}}
+              <span class="input-group-addon bg-default">{{t 'formHealthCheck.interval.unit'}}</span>
+            </div>
+          {{/input-or-display}}
+        </div>
+
 
         <div class="col span-6 box row mb-0 mt-0">
           <div class="col span-6">
@@ -157,7 +156,7 @@
           <div class="radio">
             <label>{{radio-button selection=strategy value="none"}} {{t 'formHealthCheck.strategy.none'}}</label>
           </div>
-          <div class="radio mt-10">
+          <div class="radio">
             <label>{{radio-button selection=strategy value="recreate"}} {{t 'formHealthCheck.strategy.recreate'}}</label>
           </div>
           <div class="radio">
@@ -165,7 +164,7 @@
               {{radio-button selection=strategy value="recreateOnQuorum"}}
               <span class="with-input">
                 {{t 'formHealthCheck.strategy.recreateOnQuorumPrefix' quorum=quorum}}
-                {{input-integer min=1 safeStyle="width: 60px; display: inline-block;" class="form-control input-sm" value=quorum}}
+                {{input-integer min=1 safeStyle="width: 60px; display: inline-block;" class="form-control input-xs" value=quorum}}
                 {{t 'formHealthCheck.strategy.recreateOnQuorumSuffix' quorum=quorum}}
               </span>
             </label>
