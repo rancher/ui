@@ -5,6 +5,7 @@ const ALLOWED = {
   'access.log': {description: 'Path to write access logs to (HA installation only)'},
   'api.auth.jwt.token.expiry': {description: 'Authorization token/UI session lifetime (milliseconds)', kind: 'int'},
   'api.auth.realm': {description: 'HTTP Basic Auth realm for requests without Authorization header'},
+  'api.auth.restrict.concurrent.sessions': {description: 'Limit active session tokens to one per account.  This mainly prevents users from logging in to the UI from multiple computers simultaneously.  Note: Existing sessions may continue to be valid until they expire when this is initially enabled.', kind: 'boolean'},
   'api.interceptor.config': {description: 'JSON configuration for API Interceptor', kind: 'multiline'},
   'api.proxy.allow': {description: 'Allow use of /v1/proxy to talk to whitelisted domains, for custom Add Host UIs', kind: 'boolean'},
   'api.proxy.whitelist': {description: 'Whitelist of domains to that can be proxied through /v1/proxy to, for custom Add Host UIs'},
@@ -31,7 +32,7 @@ const ALLOWED = {
   'supported.docker.range': {description: 'Semver range for suported Docker engine versions.  Versions which do not satisfy this range will be marked unsupported in the UI'},
   'ui.pl': {description: 'Private-Label company name'},
   'ui.show.custom.host': {description: 'Show the Custom host option on the Add Host screen', kind: 'boolean'},
-  'upgrade.manager': {description: 'Automatic upgrades of infrastructure stacks', kind: 'boolean'},
+  'upgrade.manager': {description: 'Automatic upgrades of infrastructure stacks', kind: 'enum', options: ['all','mandatory','none']},
 };
 
 export default Ember.Component.extend({

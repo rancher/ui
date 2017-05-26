@@ -41,6 +41,7 @@ var Identity = Resource.extend({
       case C.PROJECT.TYPE_GITHUB_USER:
       case C.PROJECT.TYPE_LDAP_USER:
       case C.PROJECT.TYPE_OPENLDAP_USER:
+      case C.PROJECT.TYPE_SHIBBOLETH_USER:
         return C.PROJECT.PERSON;
 
       case C.PROJECT.TYPE_GITHUB_TEAM:
@@ -50,6 +51,7 @@ var Identity = Resource.extend({
       case C.PROJECT.TYPE_AZURE_GROUP:
       case C.PROJECT.TYPE_LDAP_GROUP:
       case C.PROJECT.TYPE_OPENLDAP_GROUP:
+      case C.PROJECT.TYPE_SHIBBOLETH_GROUP:
         return C.PROJECT.ORG;
     }
   }.property('externalIdType'),
@@ -73,11 +75,13 @@ var Identity = Resource.extend({
       case C.PROJECT.TYPE_AZURE_USER:
       case C.PROJECT.TYPE_LDAP_USER:
       case C.PROJECT.TYPE_OPENLDAP_USER:
+      case C.PROJECT.TYPE_SHIBBOLETH_USER:
         key = 'model.identity.displayType.user';
         break;
       case C.PROJECT.TYPE_AZURE_GROUP:
       case C.PROJECT.TYPE_LDAP_GROUP:
       case C.PROJECT.TYPE_OPENLDAP_GROUP:
+      case C.PROJECT.TYPE_SHIBBOLETH_GROUP:
         key = 'model.identity.displayType.group';
         break;
       case C.PROJECT.TYPE_GITHUB_TEAM:
