@@ -1,21 +1,49 @@
 import Ember from 'ember';
 import { alternateLabel } from 'ui/utils/platform';
+import ThrottledResize from 'ui/mixins/throttled-resize';
 import Terminal from 'npm:xterm';
+import { proposeGeometry } from 'ui/utils/xterm-fit-addon';
 
 const DEFAULT_COMMAND = ["/bin/sh","-c",'TERM=xterm-256color; export TERM; [ -x /bin/bash ] && ([ -x /usr/bin/script ] && /usr/bin/script -q -c "/bin/bash" /dev/null || exec /bin/bash) || exec /bin/sh'];
 
-export default Ember.Component.extend({
+export default Ember.Component.extend(ThrottledResize, {
   instance: null,
   command: null,
   cols: 80,
   rows: 24,
   alternateLabel: alternateLabel,
   showProtip: true,
+  contenteditable: false,
 
   status: 'connecting',
   error: null,
   socket: null,
   term: null,
+
+  actions: {
+    contextMenuHandler() {
+      // fix for no paste button in firefox context menu on Windows
+      this.set('contenteditable', true);
+      setTimeout(()=> {
+        this.set('contenteditable', false);
+      }, 20);
+    }
+  },
+
+  fit() {
+    var term = this.get('term');
+    var socket = this.get('socket');
+    if (term && socket)
+    {
+      var geometry = proposeGeometry(term);
+      socket.send(`:resizeTTY:${geometry.cols},${geometry.rows}`);
+      term.resize(geometry.cols, geometry.rows);
+    }
+  },
+
+  onResize: function () {
+    this.fit();
+  },
 
   didInsertElement: function() {
     this._super();
@@ -53,8 +81,6 @@ export default Ember.Component.extend({
       this.set('status','initializing');
 
       var term = new Terminal({
-        cols: this.get('cols'),
-        rows: this.get('rows'),
         useStyle: true,
         screenKeys: true,
         cursorBlink: false
@@ -67,7 +93,7 @@ export default Ember.Component.extend({
       });
 
       term.open(this.$('.shell-body')[0]);
-
+      this.fit();
       socket.onmessage = (message) => {
         this.set('status','connected');
         this.sendAction('connected');

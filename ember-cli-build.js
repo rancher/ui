@@ -36,7 +36,7 @@ module.exports = function(defaults) {
     },
     nodeAssets: {
       'xterm': {
-        import: ['src/xterm.css']
+        import: ['dist/xterm.css']
       },
       'lacsso': {
         import: ['lacsso.css']
