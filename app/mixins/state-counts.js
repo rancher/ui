@@ -16,6 +16,10 @@ export default Ember.Mixin.create({
 
       this.get(inputKey).sortBy('stateSort').forEach((inst) => {
         let color = inst.get('stateBackground');
+        if ( color === 'bg-muted' ) {
+          color = 'bg-success';
+        }
+
         let state = inst.get('displayState');
         let entry = byName.findBy('state', state);
         if ( entry ) {
@@ -42,7 +46,7 @@ export default Ember.Mixin.create({
 
     this.set(sortProperty, Ember.computed(countsProperty, `${inputKey}.[]`, () => {
       let colors = this.get(`${countsProperty}.byColor`);
-      let success = (colors.findBy('bg-success')||{}).count;
+      let success = (colors.findBy('bg-success')||{}).count + (colors.findBy('bg-muted')||{}).coun;
       let error = (colors.findBy('bg-error')||{}).count;
       let other = this.get(`${inputKey}.length`) - success - error;
 
