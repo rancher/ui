@@ -16,7 +16,7 @@ export default Ember.Route.extend({
       if ( params.upgrade )
       {
         return Ember.Object.create({
-          instance: instance,
+          instance: results.existing.clone(),
         });
       }
 

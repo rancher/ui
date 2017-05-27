@@ -70,7 +70,7 @@ export default Ember.Component.extend({
 
   validate() {
     var errors = [];
-    var globals = ['all', 'community', 'library']; // these should be removed when these terms are removed from the envid field
+    var global = this.get('global');
     var ary = this.get('ary');
 
     ary.forEach((cat) => {
@@ -82,7 +82,8 @@ export default Ember.Component.extend({
         errors.push('URL is required on each catalog');
       }
 
-      if (globals.indexOf(cat.name.toLowerCase()) >= 0 || ary.filter((x) => (x.name||'').trim().toLowerCase() === cat.name.toLowerCase()).length > 1) {
+      if ( global.filter((x) => (x.name||'').trim().toLowerCase() === cat.name.toLowerCase()).length > 1 ||
+              ary.filter((x) => (x.name||'').trim().toLowerCase() === cat.name.toLowerCase()).length > 1) {
         errors.push('Each catalog must have a unique name');
       }
     });

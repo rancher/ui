@@ -39,7 +39,7 @@ export default Ember.Component.extend({
       let map = {};
       // Start with ours, then load the users in case they override the value
       if (this.get('enableLibrary')) {
-        map[C.CATALOG.LIBRARY_KEY] = {url: C.CATALOG.LIBRARY_VALUE, branch: def};
+        map[C.CATALOG.LIBRARY_KEY] = {url: C.CATALOG.LIBRARY_VALUE, branch: C.CATALOG.LIBRARY_BRANCH};
       }
 
       if (this.get('enableCommunity')) {
@@ -79,7 +79,7 @@ export default Ember.Component.extend({
 
     let library = false;
     let entry = map[C.CATALOG.LIBRARY_KEY];
-    if ( entry && entry.url === C.CATALOG.LIBRARY_VALUE && entry.branch === def ) {
+    if ( entry && entry.url === C.CATALOG.LIBRARY_VALUE && entry.branch === C.CATALOG.LIBRARY_BRANCH ) {
       library = true;
       delete map[C.CATALOG.LIBRARY_KEY];
     }

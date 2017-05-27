@@ -167,9 +167,8 @@ export default Ember.Component.extend(NewOrEdit, {
               item.answer = item.default;
             }
           });
-          return response;
         }
-
+        return response;
       });
 
       this.set('selectedTemplateModel', selectedTemplateModel);

@@ -29,6 +29,7 @@ var C = {
     COMMUNITY_KEY: 'community',
     COMMUNITY_VALUE: 'https://git.rancher.io/community-catalog.git',
     DEFAULT_BRANCH: 'master',
+    LIBRARY_BRANCH: '${RELEASE}',
   },
 
   COOKIE: {
