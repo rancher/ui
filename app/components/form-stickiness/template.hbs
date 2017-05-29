@@ -6,6 +6,21 @@
      expandAll=expandAll
      expand=(action expandFn)
 }}
+
+  <label>{{t 'formStickiness.balancerTarget'}}</label>
+  <div class="radio">
+    <label>{{radio-button selection=balancerTarget value="any"}} {{t 'formStickiness.any' htmlSafe=true}}</label>
+  </div>
+  <div class="radio">
+    <label>{{radio-button selection=balancerTarget value="prefer-local"}} {{t 'formStickiness.preferLocal' htmlSafe=true}}</label>
+  </div>
+  <div class="radio">
+    <label>{{radio-button selection=balancerTarget value="only-local"}} {{t 'formStickiness.onlyLocal' htmlSafe=true}}</label>
+  </div>
+
+  <hr/>
+
+  <label>{{t 'formStickiness.sticky'}}</label>
   {{#liquid-if lbConfig.canSticky}}
     <div class="row {{unless isNone 'inline-form'}}">
       <div class="col span-2 radio">
@@ -62,5 +77,7 @@
         </div>
       </div>
     {{/liquid-if}}
+  {{else}}
+    <span class="text-muted">{{t 'formStickiness.noPorts'}}</span>
   {{/liquid-if}}
 {{/accordion-list-item}}

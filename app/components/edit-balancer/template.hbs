@@ -52,12 +52,10 @@
   setLabels=(action 'setLabels' 'scheduling')
 }}
 
-{{#liquid-if service.lbConfig.needsCertificate}}
-  {{form-ssl-termination
-    service=service
-    allCertificates=allCertificates
-  }}
-{{/liquid-if}}
+{{form-ssl-termination
+  service=service
+  allCertificates=allCertificates
+}}
 
 {{#advanced-section advanced=false}}
   {{#accordion-list as | al expandFn | }}
@@ -75,6 +73,8 @@
     }}
 
     {{form-stickiness
+      initialLabels=launchConfig.labels
+      setLabels=(action 'setLabels' 'stickiness')
       service=service
       expandAll=al.expandAll
       expandFn=expandFn

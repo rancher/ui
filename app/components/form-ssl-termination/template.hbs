@@ -7,76 +7,79 @@
       expand=(action expandFn)
 }}
 
-  {{#if allCertificates.length}}
-    <div class="row inline-form">
-      <div class="col span-2 col-inline">
-        <label>{{t 'formSslTermination.certificate'}}</label>
+  {{#liquid-if service.lbConfig.needsCertificate}}
+    {{#if allCertificates.length}}
+      <div class="row inline-form">
+        <div class="col span-2 col-inline">
+          <label>{{t 'formSslTermination.certificate'}}{{field-required}}</label>
+        </div>
+        <div class="col span-8">
+          {{new-select
+            classNames="form-control"
+            prompt=(t 'formSslTermination.defaultCertificate.prompt')
+            content=allCertificates
+            optionLabelPath="displayDetailedName"
+            optionValuePath="id"
+            value=lbConfig.defaultCertificateId
+          }}
+        </div>
       </div>
-      <div class="col span-8">
-        {{new-select
-          classNames="form-control"
-          prompt=(t 'formSslTermination.defaultCertificate.prompt')
-          content=allCertificates
-          optionLabelPath="displayDetailedName"
-          optionValuePath="id"
-          value=lbConfig.defaultCertificateId
-        }}
-      </div>
-    </div>
 
-    <div class="row inline-form">
-      <div class="col span-2 col-inline">
-        <label>{{t 'formSslTermination.alternateCerts'}}</label>
-      </div>
-      <div class="col span-8">
-        <table class="table fixed no-lines no-top-padding">
-          <thead>
-            <tr>
-              <td>
-                {{#if alternateCertificates.length}}
-                  <button class="btn bg-link icon-btn" {{action "addAlternate"}}>
-                  <span class="darken"><i class="icon icon-plus text-small"/></span>
-                  <span>{{t 'formSslTermination.addAlternate'}}</span>
-                  </button>
-                {{else}}
-                  <span class="text-muted">{{t 'formSslTermination.noAlternateCertificates'}}</span>
-                {{/if}}
-              </td>
-              <th width="30">&nbsp;</th>
-            </tr>
-          </thead>
-          <tbody>
-            {{#each alternates as |alt|}}
+      <div class="row inline-form">
+        <div class="col span-2 col-inline">
+          <label>{{t 'formSslTermination.alternateCerts'}}</label>
+        </div>
+        <div class="col span-8">
+          <table class="table fixed no-lines no-top-padding">
+            <thead>
               <tr>
                 <td>
-                  {{new-select
-                    classNames="form-control"
-                    prompt=(t 'formSslTermination.alternateCertificate.prompt')
-                    content=alternateCertificates
-                    optionLabelPath="displayDetailedName"
-                    optionValuePath="id"
-                    value=alt.value
-                  }}
+                  {{#if alternateCertificates.length}}
+                    <button class="btn bg-link icon-btn" {{action "addAlternate"}}>
+                    <span class="darken"><i class="icon icon-plus text-small"/></span>
+                    <span>{{t 'formSslTermination.addAlternate'}}</span>
+                    </button>
+                  {{else}}
+                    <span class="text-muted">{{t 'formSslTermination.noAlternateCertificates'}}</span>
+                  {{/if}}
                 </td>
-                <td class="text-right">
-                  {{#unless link.existing}}
-                    <button class="btn bg-primary btn-sm" {{action "removeAlternate" alt}}><i class="icon icon-minus"/></button>
-                  {{/unless}}
-                </td>
+                <th width="30">&nbsp;</th>
               </tr>
-            {{/each}}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {{#each alternates as |alt|}}
+                <tr>
+                  <td>
+                    {{new-select
+                      classNames="form-control"
+                      prompt=(t 'formSslTermination.alternateCertificate.prompt')
+                      content=alternateCertificates
+                      optionLabelPath="displayDetailedName"
+                      optionValuePath="id"
+                      value=alt.value
+                    }}
+                  </td>
+                  <td class="text-right">
+                    {{#unless link.existing}}
+                      <button class="btn bg-primary btn-sm" {{action "removeAlternate" alt}}><i class="icon icon-minus"/></button>
+                    {{/unless}}
+                  </td>
+                </tr>
+              {{/each}}
+            </tbody>
+          </table>
+        </div>
       </div>
-    </div>
 
-    <div class="row inline-form">
-      <div class="offset-2 col offset-8">
-        <p class="text-info">{{t 'formSslTermination.helpBlock' htmlSafe=true}}</p>
+      <div class="row inline-form">
+        <div class="offset-2 col offset-8">
+          <p class="text-info">{{t 'formSslTermination.helpBlock' htmlSafe=true}}</p>
+        </div>
       </div>
-    </div>
+    {{else}}
+      <span class="text-muted">{{t 'formSslTermination.noCertificates'}}</span>
+    {{/if}}
   {{else}}
-    <span class="text-muted">{{t 'formSslTermination.noCertificates'}}</span>
-  {{/if}}
-
+    <span class="text-muted">{{t 'formSslTermination.notNeeded'}}</span>
+  {{/liquid-if}}
 {{/accordion-list-item}}

@@ -175,6 +175,7 @@ var C = {
     LAUNCH_CONFIG: 'io.rancher.service.launch.config',
     LAUNCH_CONFIG_PRIMARY: 'io.rancher.service.primary.launch.config',
     SIDEKICK: 'io.rancher.sidekicks',
+    BALANCER_TARGET: 'io.rancher.lb_service.target'
   },
 
   LANGUAGE: {

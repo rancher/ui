@@ -1,7 +1,9 @@
 import Ember from 'ember';
 import { STATUS, STATUS_INTL_KEY, classForStatus } from 'ui/components/accordion-list-item/component';
+import C from 'ui/utils/constants';
+import ManageLabels from 'ui/mixins/manage-labels';
 
-export default Ember.Component.extend({
+export default Ember.Component.extend(ManageLabels, {
   service           : null,
   intl: Ember.inject.service(),
 
@@ -38,10 +40,18 @@ export default Ember.Component.extend({
       });
     }
 
+    this.initLabels(this.get('initialLabels'), null, C.LABEL.BALANCER_TARGET);
+    var target = this.getLabel(C.LABEL.BALANCER_TARGET)||'any';
+
     this.setProperties({
       policy: policy,
       stickiness: stickiness,
+      balancerTarget: target,
     });
+  },
+
+  updateLabels(labels) {
+    this.sendAction('setLabels', labels);
   },
 
   stickinessDidChange: function() {
@@ -55,6 +65,15 @@ export default Ember.Component.extend({
       this.set('lbConfig.stickinessPolicy', this.get('policy'));
     }
   }.observes('stickiness','lbConfig.canSticky'),
+
+  balancerTargetDidChange: function() {
+    let target = this.get('balancerTarget');
+    if ( target === 'any' ) {
+      this.removeLabel(C.LABEL.BALANCER_TARGET, true);
+    } else {
+      this.setLabel(C.LABEL.BALANCER_TARGET, target);
+    }
+  }.observes('balancerTarget'),
 
   statusClass: null,
   status: function() {
