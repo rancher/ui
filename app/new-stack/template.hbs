@@ -18,7 +18,8 @@
   }}
 
   {{#advanced-section}}
-    <div class="mt-40 pb-10">
+  <hr class="mt-40 mb-40"/>
+    <div class="pb-10">
       {{input-files
         changed=(action (mut files))
         header='newStack.files.label'
@@ -27,8 +28,6 @@
         valuePlaceholder='newStack.files.valuePlaceholder'
       }}
     </div>
-
-    <hr/>
 
     <div class="box mt-20">
       {{form-key-value
@@ -43,7 +42,7 @@
 
     <div class="row">
       <div class="col span-6">
-        <label>{{t 'newStack.startOnCreate.label'}}</label>
+        <label class="acc-label">{{t 'newStack.startOnCreate.label'}}</label>
         <div class="radio">
           <label>{{radio-button selection=primaryResource.startOnCreate value=true}}&nbsp;{{t 'newStack.startOnCreate.on'}}</label>
         </div>
@@ -52,11 +51,11 @@
         </div>
       </div>
       <div class="col span-6">
-        <label class="pt-5">{{t 'editStack.group.label'}}</label>
+        <label class="acc-label">{{t 'editStack.group.label'}}</label>
         <div class="input-group">
           {{input type="text" value=primaryResource.group classNames="form-control" placeholder=(t 'editStack.group.placeholder')}}
-          <div class="input-group-btn">
-            <button type="button" class="btn bg-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="icon icon-chevron-down"></i></button>
+          <div class="input-group-btn bg-primary">
+            <button type="button" class="btn dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="icon icon-chevron-down"></i></button>
             <ul class="dropdown-menu dropdown-menu-right" role="menu">
               {{#each tagChoices as |key|}}
                 <li><a {{action "addTag" key}}>{{key}}</a></li>
