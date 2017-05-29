@@ -491,7 +491,7 @@ containerPage:
     security: Security
   portsTab:
     header: Ports
-    detail: 'These properties show what ports have been mapped and where.'
+    detail: 'Mappings of container listening ports to host ports on public IP addresses'
     status: |
       {count, plural,
       =0 {No Ports}
@@ -1080,7 +1080,7 @@ servicePage:
     noData: No Links
   certsTab:
     title: Certificates
-    detail: 'Certificates added to service.'
+    detail: 'Certificates used for TLS-termination of requests.'
     status: |
       {count, plural,
       =0 {No certificates}
@@ -1104,7 +1104,7 @@ servicePage:
         placeholder: e.g. Balancer for mycompany.com
   portsTab:
     title: Ports
-    detail: 'These properties show what ports have been mapped and where.'
+    detail: 'Mappings of container listening ports to host ports on public IP addresses.'
     status: |
       {count, plural,
       =0 {No Ports}
@@ -1154,10 +1154,10 @@ signupPage:
   form:
     button: Register
     labels:
-      loginUsername: Name*
-      email: Email*
+      loginUsername: Name
+      email: Email
       cc: Credit Card Info
-      pw: Password*
+      pw: Password
   emailSuccess:
     header: Welcome to Container Cloud
     confirm:
@@ -1982,7 +1982,7 @@ formCloudHost:
 
 formCommand:
   title: Command
-  detail: These properties control the executable that will be run when the container is started.
+  detail: Configuration of the executable that will be run when the container is started.
   command:
     label: Command
     placeholder: e.g. /usr/sbin/httpd -f httpd.conf
@@ -2092,8 +2092,8 @@ formEngineOpts:
 
 formHealthCheck:
   title: Health Check
-  detail: A health check allows {appName} to know if your container is healthy.  For scaling groups, an unhealthy container can be automatically replaced.
-  detailDns: A health check allows {appName} to know if the external resource is healty or not.  This will be used when this record is the target of a Load Balancer.
+  detail: Periodically make a request to the container to see if it is responding correctly.  An unhealthy container will be excluded from Load Balancers.  Scaling Groups can automatically replace unhealthy containers with a new one.
+  detailDns: A health check allows {appName} to know if the external resource is healty or not.  An unhealthy target will be exlcluded from Load Balancers.
   checkType:
     none: None
     tcp: Check that a TCP connection opens successfully
@@ -2134,12 +2134,6 @@ formHealthCheck:
     label: When Unhealthy
     none: Take no action
     recreate: Re-create
-    recreateOnQuorumPrefix: Re-create, but only if at least
-    recreateOnQuorumSuffix: |
-      {quorum, plural,
-        =1 {container is}
-        other {containers are}
-      } healthy
 
 formKeyValue:
   addAction: Add Pair
@@ -2402,14 +2396,14 @@ formSslTermination:
     prompt: Choose a Certificate...
   alternateCertificate:
     prompt: Choose a Certificate...
-  certificate: Certificate*
+  certificate: Certificate
   alternateCerts: Alternate Certs
   addAlternate: Add Alternate Certificate
   noCertificates: There are no certificates to use.
   noAlternateCertificates: There are no other certificates to use.
   helpBlock: |
-    "Note: Some older SSL/TLS clients do not support <a href="https://en.wikipedia.org/wiki/Server_Name_Indication" target="_blank">Server Name Indication (SNI)</a>; these clients will always be offered the main Certificate  Modern clients will be offered an appropriate certificate from the Alternate Certificates list if a match is found."
-  notNeeded: There are no SSL/TLS ports configured.
+    "Note: Some older SSL/TLS clients do not support <a href="https://en.wikipedia.org/wiki/Server_Name_Indication" target="_blank">Server Name Indication (SNI)</a>; these clients will always be offered the main Certificate.  Modern clients will be offered an appropriate certificate from the Alternate Certificates list if a match is found."
+  notNeeded: There are no SSL/TLS Listening Ports configured with a valid Target Rule.
 
 formStack:
   label:
@@ -2429,10 +2423,16 @@ formStack:
     validation: "Stack: {error}"
 
 formStickiness:
-  title: Sticky Sessions
-  detail: Configure the balancer to send requests for a given client to a consistent target container.
+  title: Target Routing
+  detail: Configure the balancer to send requests for a given client to a consistent target container or to the same host the balancer is running on..
+  balancerTarget: Target Container Preference
+  any: Send requests to a healthy target container on any host.
+  preferLocal: Prefer containers on the same host as the balancer.  (If none are healthy, send to containers on a different host)
+  onlyLocal: "Use only containers on the same host as the balancer.  (If none are healthy, return <code>503</code>)"
+
+  sticky: Sticky Sessions
   none: None
-  newCookie: Create new cookie
+  newCookie: Load Balancer defines a stickiness cookie
   cookieName: Cookie Name
   mode: Mode
   domain: Domain
@@ -2440,7 +2440,7 @@ formStickiness:
   indirect: Indirect
   sendHeader: Send no-cache header
   onPost: Only set cookie on POST
-  noPorts: There are no HTTP Listeners configured.
+  noPorts: There are no valid Target Rules configured for a HTTP listener.
 
   placeholder:
     sticky: e.g. sticky
@@ -2737,7 +2737,7 @@ k8s:
 labelsSection:
   kind: Kind
   title: Labels
-  detail: These properties show what labels exist.
+  detail: Key/Value data that can be used in Host Scheduling rules or as part of configuring other advanced options.
   status: |
     {count, plural,
     =0 {No labels}

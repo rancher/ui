@@ -143,8 +143,8 @@ var Container = Instance.extend({
     var health = this.get('healthState');
     var hasCheck = !!this.get('healthCheck');
 
-    if ( this.get('desired') === false ) {
-      return 'garbage-collection';
+    if ( resource === 'stopped' && this.get('desired') === false ) {
+      return 'pending-delete';
     }
     else if ( C.ACTIVEISH_STATES.indexOf(resource) >= 0 )
     {

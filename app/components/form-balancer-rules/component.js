@@ -5,8 +5,17 @@ export default Ember.Component.extend({
   singleTarget: true,
   protocol: null,
   editing: true,
+  showBackend: null,
 
   ruleType: 'portRule',
+
+  didReceiveAttrs() {
+    this._super(...arguments);
+    if ( this.get('showBackend') !== true ) {
+      let hasName = !!((this.get('rules')||[]).findBy('backendName'));
+      this.set('showBackend', hasName);
+    }
+  },
 
   rulesChanged: function() {
       this.sendAction('rulesChanged');
@@ -54,6 +63,10 @@ export default Ember.Component.extend({
 
     removeRule(rule) {
       this.get('rules').removeObject(rule);
+    },
+
+    showBackend() {
+      this.set('showBackend', true);
     },
   },
 

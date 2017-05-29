@@ -105,9 +105,10 @@ export default Ember.Service.extend({
         case 'never':
           return false;
         case 'default_hide':
-          return user !== true;
+          return user === true;
         default:
           // also 'default_show':
+          // user can be null so it must be exactly false
           return user !== false;
       }
     },

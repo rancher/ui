@@ -78,7 +78,7 @@
       {{/each}}
     {{else}}
       {{#each groupedInstances as |group|}}
-        {{#if (or showAdd group.instances.length)}}
+        {{#if group.instances.length}}
           <div class="container-subpod-info">
             <div class="subpod-header">
               <h6 class="clip">
@@ -99,19 +99,13 @@
               {{#each group.instances as |item|}}
                 {{container-subpod model=item.main children=item.children}}
               {{/each}}
-              {{#unless group.name}}
-                {{#if showAdd}}
-                  {{add-subpod action="newContainer" label="hostsPage.addContainer" groupHasChildren=group.hasChildren}}
-                {{/if}}
-              {{/unless}}
             </div>
           </div>
         {{/if}}
-      {{else}}
-        {{#if showAdd}}
-          {{add-subpod action="newContainer" label="hostsPage.addContainer" groupHasChildren=group.hasChildren}}
-        {{/if}}
       {{/each}}
+      {{#if showAdd}}
+        {{add-subpod action="newContainer" label="hostsPage.addContainer" groupHasChildren=group.hasChildren}}
+      {{/if}}
     {{/if}}
   </div>
 {{/if}}

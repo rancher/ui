@@ -47,7 +47,6 @@ export default Ember.Component.extend({
   showUriHost: Ember.computed.equal('uriVersion', HTTP_1_1),
 
   strategy: null,
-  quorum: null,
 
   actions: {
     chooseUriMethod(method) {
@@ -96,7 +95,6 @@ export default Ember.Component.extend({
 
       this.setProperties({
         strategy: this.get('healthCheck.strategy') || 'recreate',
-        quorum: this.get('healthCheck.recreateOnQuorumStrategyConfig.quorum') || '1',
       });
     }
     else
@@ -108,7 +106,6 @@ export default Ember.Component.extend({
         uriVersion: HTTP_1_0,
         uriHost: '',
         strategy: 'recreate',
-        quorum: '1',
       });
     }
 
@@ -164,27 +161,8 @@ export default Ember.Component.extend({
     var strategy = this.get('strategy');
     var hc = this.get('healthCheck');
 
-    if ( strategy === 'recreateOnQuorum' )
-    {
-      hc.setProperties({
-        'strategy': strategy,
-        'recreateOnQuorumStrategyConfig': {
-          quorum: parseInt(this.get('quorum'),10),
-        },
-      });
-    }
-    else
-    {
-      hc.setProperties({
-        'strategy': strategy,
-        'recreateOnQuorumStrategyConfig': null,
-      });
-    }
-  }.observes('strategy','quorum'),
-
-  quorumDidChange: function() {
-    this.set('strategy', 'recreateOnQuorum');
-  }.observes('quorum'),
+    hc.set('strategy', strategy);
+  }.observes('strategy'),
 
   validate: function() {
     var errors = [];

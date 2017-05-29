@@ -6,6 +6,7 @@ const ALLOWED = {
   'access.log': {description: 'Path to write access logs to (HA installation only)'},
   'api.auth.jwt.token.expiry': {description: 'Authorization token/UI session lifetime (milliseconds)', kind: 'int'},
   'api.auth.realm': {description: 'HTTP Basic Auth realm for requests without Authorization header'},
+  'api.auth.restrict.concurrent.sessions': {description: 'Limit active session tokens to one per account.  This mainly prevents users from logging in to the UI from multiple computers simultaneously.  Note: Existing sessions may continue to be valid until they expire when this is initially enabled.', kind: 'boolean'},
   'api.interceptor.config': {description: 'JSON configuration for API Interceptor', kind: 'multiline'},
   'api.proxy.allow': {description: 'Allow use of /v1/proxy to talk to whitelisted domains, for custom Add Host UIs', kind: 'boolean'},
   'api.proxy.whitelist': {description: 'Whitelist of domains to that can be proxied through /v1/proxy to, for custom Add Host UIs'},
@@ -38,7 +39,7 @@ const ALLOWED = {
   'ui.sendgrid.template.password_reset': {description: 'SendGrid template for initiating password reset', mode: C.MODE.CAAS},
   'ui.sendgrid.template.create_user': {description: 'SendGrid template for confirming email', mode: C.MODE.CAAS},
   'ui.sendgrid.template.verify_password': {description: 'SendGrid template for confirming password reset', mode: C.MODE.CAAS},
-  'upgrade.manager': {description: 'Automatic upgrades of infrastructure stacks', kind: 'boolean'},
+  'upgrade.manager': {description: 'Automatic upgrades of infrastructure stacks', kind: 'enum', options: ['all','mandatory','none']},
 };
 
 export default Ember.Component.extend({

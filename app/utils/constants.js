@@ -29,6 +29,7 @@ var C = {
     COMMUNITY_KEY: 'community',
     COMMUNITY_VALUE: 'https://git.rancher.io/community-catalog.git',
     DEFAULT_BRANCH: 'master',
+    LIBRARY_BRANCH: '${RELEASE}',
   },
 
   COOKIE: {
@@ -174,6 +175,7 @@ var C = {
     LAUNCH_CONFIG: 'io.rancher.service.launch.config',
     LAUNCH_CONFIG_PRIMARY: 'io.rancher.service.primary.launch.config',
     SIDEKICK: 'io.rancher.sidekicks',
+    BALANCER_TARGET: 'io.rancher.lb_service.target'
   },
 
   LANGUAGE: {

@@ -275,6 +275,17 @@ export default Ember.Component.extend(NewOrEdit, SelectTab, {
     return ok;
   },
 
+  doSave() {
+    if ( this.get('isService') || !this.get('isUpgrade') ) {
+      return this._super(...arguments);
+    }
+
+    // Container upgrade
+    return this.get('primaryResource').doAction('upgrade', {
+      config: this.get('primaryResource')
+    });
+  },
+
   didSave() {
     if ( this.get('isService') ) {
       // Returns a promise

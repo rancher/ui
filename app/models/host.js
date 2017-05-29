@@ -72,7 +72,7 @@ var Host = Resource.extend(StateCounts,{
 
     var out = [
       { label: 'action.edit', icon: 'icon icon-edit', action: 'edit', enabled: !!a.update },
-      { label: 'action.clone', icon: 'icon icon-copy', action: 'clone', enabled: !!this.get('driver') }
+//      { label: 'action.clone', icon: 'icon icon-copy', action: 'clone', enabled: !!this.get('driver') }
     ];
 
     if ( this.get('links.config') )

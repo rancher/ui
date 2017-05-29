@@ -8,7 +8,6 @@ export default Ember.Component.extend({
 
   ports: null,
   protocolChoices: null,
-  showBackend: null,
   errors: null,
 
   onInit: function() {
@@ -67,11 +66,6 @@ export default Ember.Component.extend({
     protos.removeObject('udp');
     protos.sort();
     this.set('protocolChoices', protos);
-
-    if ( this.get('showBackend') === null ) {
-      let hasName = !!rules.findBy('backendName');
-      this.set('showBackend', hasName);
-    }
   }.on('init'),
 
   shouldFlattenAndValidate: function() {
@@ -194,10 +188,6 @@ export default Ember.Component.extend({
 
     removePort(port) {
       this.get('ports').removeObject(port);
-    },
-
-    showBackend() {
-      this.set('showBackend', true);
     },
 
     rulesChanged() {

@@ -87,6 +87,11 @@ export default Ember.Mixin.create({
         }
 
         remaining.removeObjects(related);
+      } else if ( stackId ) {
+        let unit = getOrCreateUnit(groupId, groupName, instance.get('id'));
+        unit.group.hasChildren = false;
+        unit.main = instance;
+        remaining.removeObject(instance);
       } else {
         orphans = [instance];
       }
