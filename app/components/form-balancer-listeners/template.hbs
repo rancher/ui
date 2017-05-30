@@ -1,12 +1,6 @@
 <div>
   <div class="row">
   <label>{{t 'formBalancerListeners.label'}}</label>
-    <div class="pull-right">
-    <button class="btn bg-link icon-btn inline-block pull-right" {{action "addPort"}}>
-      <span class="darken"><i class="icon icon-plus text-small"></i></span>
-      <span>{{t 'formBalancerListeners.addPortLabel'}}</span>
-    </button>
-    </div>
   </div>
   <hr/>
   <p class="text-info">
@@ -67,3 +61,17 @@
 {{else}}
   <div class="p-20">{{t 'formBalancerListeners.noRules'}}</div>
 {{/each}}
+
+<div class="row">
+  <button class="btn bg-link icon-btn inline-block pull-right" {{action "addPort"}}>
+    <span class="darken"><i class="icon icon-plus text-small"></i></span>
+    <span>{{t 'formBalancerListeners.addPortLabel'}}</span>
+  </button>
+  {{#unless showBackend}}
+    <div class="pull-right clearfix">
+      <button class="btn bg-transparent text-small inline-block" {{action "showBackend"}}>
+        {{t 'formBalancerListeners.showBackendLabel'}}
+      </button>
+    </div>
+  {{/unless}}
+</div>
