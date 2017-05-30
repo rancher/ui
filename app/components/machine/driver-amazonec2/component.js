@@ -106,7 +106,7 @@ export default Ember.Component.extend(Driver, {
   prefs                    : Ember.inject.service(),
   driverName               : 'amazonec2',
   model                    : null,
-  amazonec2Config          : Ember.computed.alias('model.publicValues'),
+  amazonec2Config          : Ember.computed.alias('model.publicValues.amazonec2Config'),
 
   clients                  : null,
   allSubnets               : null,
@@ -148,9 +148,13 @@ export default Ember.Component.extend(Driver, {
     this.set('model', this.get('store').createRecord({
       type:         'hostTemplate',
       driver:       'amazonec2',
-      publicValues: config,
+      publicValues: {
+        amazonec2Config: config
+      },
       secretValues: {
-        secretKey: pref.secretKey||'',
+        amazonec2Config: {
+          secretKey: pref.secretKey||'',
+        }
       }
     }));
   },
@@ -221,13 +225,13 @@ export default Ember.Component.extend(Driver, {
       this.set('step',2);
 
       this.set('amazonec2Config.accessKey', (this.get('amazonec2Config.accessKey')||'').trim());
-      this.set('model.secretValues.secretKey', (this.get('model.secretValues.secretKey')||'').trim());
+      this.set('model.secretValues.amazonec2Config.secretKey', (this.get('model.secretValues.amazonec2Config.secretKey')||'').trim());
 
       let subnets = [];
       let rName = this.get('amazonec2Config.region');
       let ec2 = new AWS.EC2({
         accessKeyId     : this.get('amazonec2Config.accessKey'),
-        secretAccessKey : this.get('model.secretValues.secretKey'),
+        secretAccessKey : this.get('model.secretValues.amazonec2Config.secretKey'),
         region          : rName,
       });
 

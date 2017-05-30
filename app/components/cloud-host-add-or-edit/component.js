@@ -8,11 +8,11 @@ export default Ember.Component.extend(Driver, {
   primaryResource: Ember.computed.alias('clonedModel'),
   didReceiveAttrs() {
     this._super(...arguments);
-    // debugger;
     this.set('clonedModel', this.get('host').clone());
   },
   actions: {
     saveTemp() {
     },
   },
+  hostOptions: Ember.computed.alias('hostTemplate.publicValues.amazonec2Config'),
 });

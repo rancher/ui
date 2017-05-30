@@ -1,6 +1,20 @@
 <section class="horizontal-form">
   <form>
     <div class="container-fluid">
+      <div class="over-hr mt-20 mb-20">
+        <span>{{t 'machine.driverAmazon.instanceSection'}}</span>
+      </div>
+      <div class="row mb-20">
+        {{form-name-description
+            name=model.name
+            description=model.description
+            nameRequired=true
+            namePlaceholder="hostPartial.host.addCommon.new.form.name.placeholder"
+            descriptionShown=true
+            descriptionExpanded=true
+        }}
+      </div>
+
       <div class="over-hr mb-20">
         <span>{{t 'machine.driverAmazon.accessSection'}}</span>
       </div>
@@ -39,7 +53,7 @@
         </div>
         <div class="col span-8">
           {{#if isStep1}}
-            {{input type="password" name="password" classNames="form-control" placeholder=(t 'machine.driverAmazon.secretKey.placeholder') value=model.secretValues.secretKey}}
+            {{input type="password" name="password" classNames="form-control" placeholder=(t 'machine.driverAmazon.secretKey.placeholder') value=model.secretValues.amazonec2Config.secretKey}}
           {{else}}
             <div class="text-muted text-italic">{{t 'machine.driverAmazon.secretKey.provided'}}</div>
           {{/if}}
@@ -226,19 +240,6 @@
 
 <section class="horizontal-form {{unless isGteStep7 'hide'}}" style="padding-top: 0;">
   <div class="container-fluid">
-    <div class="over-hr mt-20 mb-20">
-      <span>{{t 'machine.driverAmazon.instanceSection'}}</span>
-    </div>
-
-    {{form-name-description
-        name=model.name
-        description=model.description
-        nameRequired=true
-        namePlaceholder="hostPartial.host.addCommon.new.form.name.placeholder"
-        descriptionShown=true
-        descriptionExpanded=true
-    }}
-
     <div class="over-hr mt-20 mb-20">
       <span>{{t 'machine.driverAmazon.instanceOptionsSection'}}</span>
     </div>
