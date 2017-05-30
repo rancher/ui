@@ -141,7 +141,7 @@ export default Ember.Component.extend(Driver, {
       instanceType  : 't2.micro',
       securityGroup : 'rancher-machine',
       zone          : 'a',
-      rootSize      : 16,
+      rootSize      : '16',
       accessKey     : pref.accessKey||'',
     });
 

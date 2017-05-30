@@ -3,13 +3,6 @@ import Resource from 'ember-api-store/models/resource';
 var HostTemplate = Resource.extend({
   type: 'hosttemplate',
   actions: {
-    deactivate: function() {
-      return this.doAction('deactivate');
-    },
-
-    activate: function() {
-      return this.doAction('activate');
-    },
   },
 
   availableActions: function() {
