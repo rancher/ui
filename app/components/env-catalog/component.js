@@ -41,6 +41,7 @@ export default Ember.Component.extend({
         branch: C.CATALOG.DEFAULT_BRANCH,
         url: '',
         kind: 'native',
+        isNew: true,
       });
 
       this.get('ary').pushObject(obj);
@@ -56,7 +57,9 @@ export default Ember.Component.extend({
 
     remove(obj) {
       this.get('ary').removeObject(obj);
-      this.get('toRemove').addObject(obj);
+      if ( !obj.get('isNew') ) {
+        this.get('toRemove').addObject(obj);
+      }
     },
 
     save(cb) {
