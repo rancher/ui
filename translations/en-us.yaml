@@ -393,22 +393,6 @@ authPage:
         pre: Enable Local Auth
         post: 'Enabling...'
 
-backupTargetsPage:
-  header: Backup Targets
-  linkTo: Add Backup Target
-  newTarget:
-    hr: NFS Config Options
-    header: Add Backup Target
-  server:
-    label: NFS Server
-    placeholder: 'e.g. my-nfs-server.example.com'
-  share:
-    label: NFS Share
-    placeholder: 'e.g. /mnt/volume-backups'
-  mountOptions:
-    label: NFS Mount Options
-    placeholder: 'e.g. nfsvers=4,proto=udp'
-
 catalogPage:
   index:
     header: Catalog
@@ -1231,10 +1215,8 @@ newStack:
 storagePoolsPage:
   header: Storage Drivers
   volume: Volume ID
-  orphaned: Orphaned Backup
   nav:
     pools: Pools
-    backups: Backups
   index:
     noData: No storage drivers
   newVolume:
@@ -3254,13 +3236,6 @@ modalConfirmDeactivate:
       message: deactivate
       button: Deactivate
 
-modalEditBackup:
-  edit: Edit Backup
-  create: Create Backup
-  nameLabel: Backup Name
-  backupTarget: Backup Target
-  backupTargetPlaceholder: 'Select a Backup target...'
-
 modalConfirmRemovePayment:
   header: 'Confirm Payment Removal'
   title: 'Are you sure you want to delete'
@@ -3292,11 +3267,6 @@ modalEditSetting:
   reset:
     label: Reset to Default
 
-modalEditSnapshot:
-  edit: Edit Snapshot
-  create: Create Snapshot
-  nameLabel: Snapshot Name
-
 modalFeedback:
   header: Welcome to {appName}!
   subtitle: "Before you get started, please tell us a little about yourself..."
@@ -3314,11 +3284,6 @@ modalProcessError:
   none: N/A
   stackTrace: "Stack Trace:"
   close: Close
-
-modalRollbackVolume:
- title:
-  snapshot: Rollback to a Snapshot
-  backup: Rollback to a Backup
 
 modalRollbackService:
   title: 'Rollback "{instanceName}"'
@@ -3681,13 +3646,6 @@ siteAccess:
   groups: Groups
   organizations: Organizations
 
-snapshotTimeline:
-  noData: No Snapshot Data
-
-snapshotSection:
-  none: Not backed up
-  multiple: 'Multiple: {latestDate}'
-
 stackRow:
   label: "Stack: {name}"
   standalone: Standalone
@@ -3706,9 +3664,6 @@ storagePoolSection:
     table:
       header:
         volumeName: 'Volume Name'
-        snapshotState: 'Snapshot State'
-        snapshotName: 'Snapshot Name'
-        backedUp: 'Backed Up'
         mounts: 'Mounts (Container: Path)'
 
 svgServiceContainer:
@@ -3947,8 +3902,6 @@ nav:
 ##############################
 action:
   activate: Activate
-  backup: Backup Snapshot
-  deleteBackup: Delete Backup
   cancelUpgrade: Cancel Upgrade
   cancelRollback: Cancel Rollback
   clone: Clone
@@ -3971,10 +3924,7 @@ action:
   restore: Restore
   retry: Retry
   rollback: Rollback
-  revertToSnapshot: Revert Volume to Snapshot
-  restoreFromBackup: Restore Volume from Backup
   setDefault: Set as Default
-  snapshot: Snapshot
   start: Start
   startServices: Start Services
   stop: Stop

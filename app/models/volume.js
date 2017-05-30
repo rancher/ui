@@ -7,19 +7,8 @@ var Volume = Resource.extend({
   modalService: Ember.inject.service('modal'),
 
   mounts: denormalizeIdArray('mountIds'),
-  snapshots: denormalizeIdArray('snapshotIds'),
 
   isRoot: Ember.computed.notEmpty('instanceId'),
-
-  actions: {
-    snapshot() {
-      this.get('modalService').toggleModal('modal-edit-snapshot', this);
-      this.get('application').setProperties({
-        editSnapshot: true,
-        originalModel: this,
-      });
-    },
-  },
 
   availableActions: function() {
     var a = this.get('actionLinks');

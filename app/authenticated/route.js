@@ -3,6 +3,7 @@ import C from 'ui/utils/constants';
 import Subscribe from 'ui/mixins/subscribe';
 import { xhrConcur } from 'ui/utils/platform';
 import PromiseToCb from 'ui/mixins/promise-to-cb';
+import Errors from 'ui/utils/errors';
 
 const CHECK_AUTH_TIMER = 60*10*1000;
 
@@ -67,8 +68,6 @@ export default Ember.Route.extend(Subscribe, PromiseToCb, {
         mounts:             ['projectSchemas',          this.cbFind('mount', 'store', {filter: {state_ne: 'inactive'}})],
         storagePools:       ['projectSchemas',          this.cbFind('storagepool')],
         volumes:            ['projectSchemas',          this.cbFind('volume')],
-        snapshots:          ['projectSchemas',          this.cbFind('snapshot')],
-        backups:            ['projectSchemas',          this.cbFind('backup')],
         certificate:        ['projectSchemas',          this.cbFind('certificate')],
         secret:             ['projectSchemas',          this.toCb('loadSecrets')],
         identities:         ['userSchemas', this.cbFind('identity', 'userStore')],
@@ -134,10 +133,12 @@ export default Ember.Route.extend(Subscribe, PromiseToCb, {
 
   loadingError(err, transition, ret) {
     let isAuthEnabled = this.get('access.enabled');
+    let isAuthFail = [401,403].indexOf(err.status) >= 0;
 
-    console.log('Loading Error:', err);
-    if ( err && (isAuthEnabled || [401,403].indexOf(err.status) >= 0) ) {
-      this.send('logout',transition, (transition.targetName !== 'authenticated.index'));
+    var msg = Errors.stringify(err);
+    console.log('Loading Error:', msg, err);
+    if ( err && (isAuthEnabled || isAuthFail) ) {
+      this.send('logout', transition, isAuthFail, (isAuthFail ? undefined : msg));
       return;
     }
 
