@@ -32,7 +32,6 @@ const defaultStateMap = {
   'restarting':               {icon: 'icon icon-adjust',        color: 'text-info'   },
   'restoring':                {icon: 'icon icon-medicalcross',  color: 'text-info'   },
   'running':                  {icon: 'icon icon-circle-o',      color: 'text-success'},
-  'snapshotted':              {icon: 'icon icon-snapshot',      color: 'text-warning'},
   'started-once':             {icon: 'icon icon-dot-circlefill',color: 'text-success'},
   'starting':                 {icon: 'icon icon-adjust',        color: 'text-info'   },
   'stopped':                  {icon: 'icon icon-circle',        color: 'text-error'  },

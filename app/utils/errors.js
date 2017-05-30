@@ -65,6 +65,10 @@ export default {
             str += ' is too big'; break;
         }
       }
+      else if ( err.get('status') === 404 )
+      {
+        str = err.get('message') + ": " + err.get('opt.url');
+      }
       else
       {
         str = err.get('message');
