@@ -8,32 +8,37 @@
 </section>
 
 <section class="pl-15 pr-15 clearfix">
-  {{#each filteredContent as |host|}}
-    {{#catalog-box
-         model=model
-         active=(not (eq true 'inactive'))
-         classNames='cloud-host'
-         showIcon=false
-         showDescription=false
-         as |section|
-    }}
-      {{#if (eq section 'header')}}
-        <div class="catalog-icon mb-10 {{parse-host-icon host.driver}}"/>
-      {{else if (eq section 'body')}}
-        <hr class="m-10" />
-        <h2>{{host.name}}</h2>
-        <div>
-          <div class="details">
-            <div>
-              <label for="">{{t 'hostTemplatesPage.templateBox.labels.zone'}}: </label>
-              {{host.publicValues.region}}{{host.publicValues.zone}}
+  {{#if filteredContent}}
+    {{#each filteredContent as |host|}}
+      {{#catalog-box
+          model=model
+          active=(not (eq true 'inactive'))
+          classNames='cloud-host'
+          showIcon=false
+          showDescription=false
+          as |section|
+      }}
+        {{#if (eq section 'header')}}
+          <div class="catalog-icon mb-10 {{parse-host-icon host.driver}}"/>
+        {{else if (eq section 'body')}}
+          <hr class="m-10" />
+          <h2>{{host.name}}</h2>
+          <div>
+            <div class="details">
+              <div>
+                <label for="">{{t 'hostTemplatesPage.templateBox.labels.zone'}}: </label>
+                {{get (host-public-values host) 'region'}}{{get (host-public-values host) 'zone'}}
+              </div>
             </div>
-          </div>
 
-        </div>
-      {{else if (eq section 'footer')}}
-        <button role="button" class="btn bg-primary" {{action 'launch' host}}>{{t 'hostTemplatesPage.templateBox.button'}}</button>
-      {{/if}}
-    {{/catalog-box}}
-  {{/each}}
+          </div>
+        {{else if (eq section 'footer')}}
+          <button role="button" class="btn bg-primary" {{action 'launch' host}}>{{t 'hostTemplatesPage.templateBox.button'}}</button>
+        {{/if}}
+      {{/catalog-box}}
+    {{/each}}
+  {{else}}
+    {{empty-table resource="container" newRoute="hosts.new" newTranslationKey="hostTemplatesPage.addHost"}}
+  {{/if}}
+
 </section>

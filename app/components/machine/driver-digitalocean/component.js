@@ -25,7 +25,7 @@ export default Ember.Component.extend(Driver, {
   driverName:          'digitalocean',
   regionChoices:       null,
   model:               null,
-  digitaloceanConfig:  Ember.computed.alias('model.publicValues'),
+  digitaloceanConfig:  Ember.computed.alias('model.publicValues.digitaloceanConfig'),
   step1:               true,
   sizeChoices:         null,
   imageChoices:        null,
@@ -110,9 +110,13 @@ export default Ember.Component.extend(Driver, {
     this.set('model', this.get('store').createRecord({
       type:         'hostTemplate',
       driver:       'digitalocean',
-      publicValues: config,
+      publicValues: {
+        digitaloceanConfig: config
+      },
       secretValues: {
-        accessToken : '',
+        digitaloceanConfig: {
+          accessToken : '',
+        }
       }
     }));
   },
@@ -122,7 +126,7 @@ export default Ember.Component.extend(Driver, {
     // this._super();
     let errors      = this.get('errors')||[];
     let name        = this.get('model.name')||'';
-    let accessToken = this.get('model.secretValues.accessToken')||'';
+    let accessToken = this.get('model.secretValues.digitaloceanConfig.accessToken')||'';
 
     if ( name.length > 200 ) {
       errors.push('"name" should be 1-200 characters long');
@@ -160,7 +164,7 @@ export default Ember.Component.extend(Driver, {
     return fetch(url, {
       headers: {
         'Accept': 'application/json',
-        'X-Api-Auth-Header': 'Bearer ' + this.get('model.secretValues.accessToken'),
+        'X-Api-Auth-Header': 'Bearer ' + this.get('model.secretValues.digitaloceanConfig.accessToken'),
       },
     }).then((res) => {
       let body = res.body;
