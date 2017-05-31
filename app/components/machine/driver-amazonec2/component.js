@@ -139,7 +139,7 @@ export default Ember.Component.extend(Driver, {
       type          : 'amazonec2Config',
       region        : 'us-west-2',
       instanceType  : 't2.micro',
-      securityGroup : 'rancher-machine',
+      securityGroup : ['rancher-machine',],
       zone          : 'a',
       rootSize      : '16',
       accessKey     : pref.accessKey||'',
@@ -208,15 +208,6 @@ export default Ember.Component.extend(Driver, {
       document.body.scrollTop = document.body.scrollHeight;
     });
   }.observes('context.step'),
-
-  selectedSecurityGroupChanged: Ember.observer('whichSecurityGroup', 'isStep5', function() {
-    if (this.get('isStep5') && this.get('whichSecurityGroup') === 'custom') {
-      Ember.run.scheduleOnce('afterRender', this, function() {
-        this.initMultiselect();
-      });
-    }
-  }),
-
 
   actions: {
     awsLogin: function() {
@@ -418,76 +409,6 @@ export default Ember.Component.extend(Driver, {
     },
   },
 
-  initMultiselect: function() {
-    var view = this;
-
-    var opts = {
-      maxHeight: 200,
-      buttonClass: 'btn bg-default',
-      buttonWidth: '100%',
-
-      templates: {
-        li: '<li><a tabindex="0"><label></label></a></li>',
-      },
-
-      buttonText: function(options/*, select*/) {
-        var label = 'Security Groups: ';
-        if ( options.length === 0 )
-        {
-          label += 'None';
-        }
-        else if ( options.length === 1 )
-        {
-          label += $(options[0]).text();
-        }
-        else
-        {
-          label += options.length + ' Selected';
-        }
-
-        return label;
-      },
-
-      onChange: function(/*option, checked*/) {
-        var self = this;
-        var options = $('option', this.$select);
-        var selectedOptions = this.getSelected();
-        var allOption = $('option[value="ALL"]',this.$select)[0];
-
-        var isAll = $.inArray(allOption, selectedOptions) >= 0;
-
-        if ( isAll )
-        {
-          options.each(function(k, option) {
-            var $option = $(option);
-            if ( option !== allOption )
-            {
-              self.deselect($(option).val());
-              $option.prop('disabled',true);
-              $option.parent('li').addClass('disabled');
-            }
-          });
-
-          // @TODO Figure out why deslect()/select() doesn't fix the state in the ember object and remove this hackery...
-          var ary = view.get('instance.' + (this.$select.hasClass('select-cap-add') ? 'capAdd' : 'capDrop'));
-          ary.clear();
-          ary.pushObject('ALL');
-        }
-        else
-        {
-          options.each(function(k, option) {
-            var $option = $(option);
-            $option.prop('disabled',false);
-            $option.parent('li').removeClass('disabled');
-          });
-        }
-
-        this.$select.multiselect('refresh');
-      }
-    };
-
-    this.$('.existing-security-groups').multiselect(opts);
-  },
   selectedZone: Ember.computed('amazonec2Config.{region,zone}', {
     get: function() {
       let config = this.get('amazonec2Config');
