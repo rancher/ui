@@ -1,9 +1,19 @@
 <section class="horizontal-form">
   <div class="container-fluid">
 
-    {{#if showNameScale}}
-      {{partial "host/add-common"}}
-    {{/if}}
+    <div class="over-hr mt-20 mb-20">
+      <span>{{t 'machine.driverAliyunecs.instanceSection'}}</span>
+    </div>
+    <div class="row mb-20">
+      {{form-name-description
+          name=model.name
+          description=model.description
+          nameRequired=true
+          namePlaceholder="hostPartial.host.addCommon.new.form.name.placeholder"
+          descriptionShown=true
+          descriptionExpanded=true
+      }}
+    </div>
 
     <div class="over-hr mt-20 mb-20">
       <span>{{t 'machine.driverAliyunecs.accountSection'}}</span>
@@ -12,207 +22,207 @@
 
     <div class="row">
 
-        <div class="col span-2 col-inline">
-            <label>{{t 'machine.driverAliyunecs.accessKey.label'}}</label>
-        </div>
-        <div class="col span-4">
-              {{input type="text" class="form-control" value=aliyunecsConfig.accessKeyId placeholder=(t 'machine.driverAliyunecs.accessKey.placeholder')}}
-        </div>
+      <div class="col span-2 col-inline">
+        <label>{{t 'machine.driverAliyunecs.accessKey.label'}}</label>
+      </div>
+      <div class="col span-4">
+        {{input type="text" class="form-control" value=aliyunecsConfig.accessKeyId placeholder=(t 'machine.driverAliyunecs.accessKey.placeholder')}}
+      </div>
 
-        <div class="col span-2 col-inline">
-            <label>{{t 'machine.driverAliyunecs.accessKeySecret.label'}}</label>
-        </div>
-        <div class="col span-4">
-              {{input type="text" class="form-control" value=aliyunecsConfig.accessKeySecret placeholder=(t 'machine.driverAliyunecs.accessKeySecret.placeholder')}}
-        </div>
+      <div class="col span-2 col-inline">
+        <label>{{t 'machine.driverAliyunecs.accessKeySecret.label'}}</label>
+      </div>
+      <div class="col span-4">
+        {{input type="password" class="form-control" value=model.secretValues.aliyunecsConfig.accessKeySecret placeholder=(t 'machine.driverAliyunecs.accessKeySecret.placeholder')}}
+      </div>
     </div>
-      <div class="row">
-          <div class="col span-2 col-inline">
-              <label>{{t 'machine.driverAliyunecs.apiEndpoint.label'}}</label>
-          </div>
-          <div class="col span-4">
-            {{input type="text" class="form-control" value=aliyunecsConfig.apiEndpoint placeholder=(t 'machine.driverAliyunecs.apiEndpoint.placeholder')}}
-          </div>
-      </div>
-
-      <div class="over-hr mt-20 mb-20">
-          <span>{{t 'machine.driverAliyunecs.instanceSection'}}</span>
-      </div>
     <div class="row">
-        <div class="col span-2 col-inline">
-            <label>{{t 'machine.driverAliyunecs.instanceDescription.label'}}</label>
-        </div>
-        <div class="col span-4">
-          {{input type="text" class="form-control" value=aliyunecsConfig.description placeholder=(t 'machine.driverAliyunecs.instanceDescription.placeholder')}}
-        </div>
-
-        <div class="col span-2 col-inline">
-            <label>{{t 'machine.driverAliyunecs.instanceType.label'}}</label>
-        </div>
-        <div class="col span-4">
-          {{input type="text" class="form-control" value=aliyunecsConfig.instanceType placeholder=(t 'machine.driverAliyunecs.instanceType.placeholder')}}
-        </div>
+      <div class="col span-2 col-inline">
+        <label>{{t 'machine.driverAliyunecs.apiEndpoint.label'}}</label>
+      </div>
+      <div class="col span-4">
+        {{input type="text" class="form-control" value=aliyunecsConfig.apiEndpoint placeholder=(t 'machine.driverAliyunecs.apiEndpoint.placeholder')}}
+      </div>
     </div>
 
-      <div class="row">
-          <div class="col span-2 col-inline">
-              <label>{{t 'machine.driverAliyunecs.systemImage.label'}}</label>
-          </div>
-          <div class="col span-4">
-            {{input type="text" class="form-control" value=aliyunecsConfig.imageId placeholder=(t 'machine.driverAliyunecs.systemImage.placeholder')}}
-          </div>
-
-          <div class="col span-2 col-inline">
-              <label>{{t 'machine.driverAliyunecs.instanceTag.label'}}</label>
-          </div>
-          <div class="col span-4">
-            {{input type="text" class="form-control" value=aliyunecsConfig.tag placeholder=(t 'machine.driverAliyunecs.instanceTag.placeholder')}}
-          </div>
+    <div class="over-hr mt-20 mb-20">
+      <span>{{t 'machine.driverAliyunecs.instanceOptionsSection'}}</span>
+    </div>
+    <div class="row">
+      <div class="col span-2 col-inline">
+        <label>{{t 'machine.driverAliyunecs.instanceDescription.label'}}</label>
+      </div>
+      <div class="col span-4">
+        {{input type="text" class="form-control" value=aliyunecsConfig.description placeholder=(t 'machine.driverAliyunecs.instanceDescription.placeholder')}}
       </div>
 
-      <div class="row">
-          <div class="col span-2 col-inline">
-              <label>{{t 'machine.driverAliyunecs.internetMaxBandwidth.label'}}</label>
-          </div>
-          <div class="col span-4">
-              <div class="input-group">
-            {{input type="text" class="form-control" value=aliyunecsConfig.internetMaxBandwidth placeholder=(t 'machine.driverAliyunecs.internetMaxBandwidth.placeholder')}}
-                  <div class="input-group-addon bg-default">Mbps</div>
-              </div>
-          </div>
-          <div class="col span-2 col-inline">
-              <label>{{t 'machine.driverAliyunecs.aliyunSLB.label'}}</label>
-          </div>
-          <div class="col span-4">
-            {{input type="text" class="form-control" value=aliyunecsConfig.slbId placeholder=(t 'machine.driverAliyunecs.aliyunSLB.placeholder')}}
-          </div>
+      <div class="col span-2 col-inline">
+        <label>{{t 'machine.driverAliyunecs.instanceType.label'}}</label>
+      </div>
+      <div class="col span-4">
+        {{input type="text" class="form-control" value=aliyunecsConfig.instanceType placeholder=(t 'machine.driverAliyunecs.instanceType.placeholder')}}
+      </div>
+    </div>
 
+    <div class="row">
+      <div class="col span-2 col-inline">
+        <label>{{t 'machine.driverAliyunecs.systemImage.label'}}</label>
+      </div>
+      <div class="col span-4">
+        {{input type="text" class="form-control" value=aliyunecsConfig.imageId placeholder=(t 'machine.driverAliyunecs.systemImage.placeholder')}}
       </div>
 
-      <div class="over-hr mt-20 mb-20">
-          <span>{{t 'machine.driverAliyunecs.storageSection'}}</span>
+      <div class="col span-2 col-inline">
+        <label>{{t 'machine.driverAliyunecs.instanceTag.label'}}</label>
+      </div>
+      <div class="col span-4">
+        {{input type="text" class="form-control" value=aliyunecsConfig.tag placeholder=(t 'machine.driverAliyunecs.instanceTag.placeholder')}}
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col span-2 col-inline">
+        <label>{{t 'machine.driverAliyunecs.internetMaxBandwidth.label'}}</label>
+      </div>
+      <div class="col span-4">
+        <div class="input-group">
+          {{input type="text" class="form-control" value=aliyunecsConfig.internetMaxBandwidth placeholder=(t 'machine.driverAliyunecs.internetMaxBandwidth.placeholder')}}
+          <div class="input-group-addon bg-default">Mbps</div>
+        </div>
+      </div>
+      <div class="col span-2 col-inline">
+        <label>{{t 'machine.driverAliyunecs.aliyunSLB.label'}}</label>
+      </div>
+      <div class="col span-4">
+        {{input type="text" class="form-control" value=aliyunecsConfig.slbId placeholder=(t 'machine.driverAliyunecs.aliyunSLB.placeholder')}}
       </div>
 
-      <div class="row">
-          <div class="col span-2 col-inline">
-              <label>{{t 'machine.driverAliyunecs.isOptimized.label'}}</label>
-          </div>
-          <div class="col span-4">
-            {{!--{{input type="text" class="form-control" value=aliyunecsConfig.isOptimized placeholder=(t 'machine.driverAliyunecs.isOptimized.placeholder')}}--}}
-            {{new-select
+    </div>
+
+    <div class="over-hr mt-20 mb-20">
+      <span>{{t 'machine.driverAliyunecs.storageSection'}}</span>
+    </div>
+
+    <div class="row">
+      <div class="col span-2 col-inline">
+        <label>{{t 'machine.driverAliyunecs.isOptimized.label'}}</label>
+      </div>
+      <div class="col span-4">
+        {{!--{{input type="text" class="form-control" value=aliyunecsConfig.isOptimized placeholder=(t 'machine.driverAliyunecs.isOptimized.placeholder')}}--}}
+        {{new-select
             classNames="form-control"
             content=isOptimized
             optionLabelPath='value'
             value=aliyunecsConfig.isOptimized
-            }}
-          </div>
-
-          <div class="col span-2 col-inline">
-              <label>{{t 'machine.driverAliyunecs.systemDiskCategory.label'}}</label>
-          </div>
-          <div class="col span-4">
-            {{input type="text" class="form-control" value=aliyunecsConfig.systemDiskCategory placeholder=(t 'machine.driverAliyunecs.systemDiskCategory.placeholder')}}
-          </div>
+        }}
       </div>
 
-      <div class="row">
-          <div class="col span-2 col-inline">
-              <label>{{t 'machine.driverAliyunecs.dataDiskCategory.label'}}</label>
-          </div>
-          <div class="col span-4">
-            {{input type="text" class="form-control" value=aliyunecsConfig.diskCategory placeholder=(t 'machine.driverAliyunecs.dataDiskCategory.placeholder')}}
-          </div>
+      <div class="col span-2 col-inline">
+        <label>{{t 'machine.driverAliyunecs.systemDiskCategory.label'}}</label>
+      </div>
+      <div class="col span-4">
+        {{input type="text" class="form-control" value=aliyunecsConfig.systemDiskCategory placeholder=(t 'machine.driverAliyunecs.systemDiskCategory.placeholder')}}
+      </div>
+    </div>
 
-          <div class="col span-2 col-inline">
-              <label>{{t 'machine.driverAliyunecs.dataDiskSize.label'}}</label>
-          </div>
-          <div class="col span-4">
-              <div class="input-group">
-                {{input type="text" class="form-control" value=aliyunecsConfig.diskSize placeholder=(t 'machine.driverAliyunecs.dataDiskSize.placeholder')}}
-                  <div class="input-group-addon bg-default">GB</div>
-              </div>
-          </div>
+    <div class="row">
+      <div class="col span-2 col-inline">
+        <label>{{t 'machine.driverAliyunecs.dataDiskCategory.label'}}</label>
+      </div>
+      <div class="col span-4">
+        {{input type="text" class="form-control" value=aliyunecsConfig.diskCategory placeholder=(t 'machine.driverAliyunecs.dataDiskCategory.placeholder')}}
       </div>
 
-      <div class="row">
-          <div class="col span-2 col-inline">
-              <label>{{t 'machine.driverAliyunecs.region.label'}}</label>
-          </div>
-          <div class="col span-4">
-            {{input type="text" class="form-control" value=aliyunecsConfig.region placeholder=(t 'machine.driverAliyunecs.region.placeholder')}}
-          </div>
+      <div class="col span-2 col-inline">
+        <label>{{t 'machine.driverAliyunecs.dataDiskSize.label'}}</label>
+      </div>
+      <div class="col span-4">
+        <div class="input-group">
+          {{input type="text" class="form-control" value=aliyunecsConfig.diskSize placeholder=(t 'machine.driverAliyunecs.dataDiskSize.placeholder')}}
+          <div class="input-group-addon bg-default">GB</div>
+        </div>
+      </div>
+    </div>
 
-          <div class="col span-2 col-inline">
-              <label>{{t 'machine.driverAliyunecs.zone.label'}}</label>
-          </div>
-          <div class="col span-4">
-            {{input type="text" class="form-control" value=aliyunecsConfig.zone placeholder=(t 'machine.driverAliyunecs.zone.placeholder')}}
-          </div>
+    <div class="row">
+      <div class="col span-2 col-inline">
+        <label>{{t 'machine.driverAliyunecs.region.label'}}</label>
+      </div>
+      <div class="col span-4">
+        {{input type="text" class="form-control" value=aliyunecsConfig.region placeholder=(t 'machine.driverAliyunecs.region.placeholder')}}
       </div>
 
-      <div class="over-hr mt-20 mb-20">
-          <span>{{t 'machine.driverAliyunecs.networkSection'}}</span>
+      <div class="col span-2 col-inline">
+        <label>{{t 'machine.driverAliyunecs.zone.label'}}</label>
+      </div>
+      <div class="col span-4">
+        {{input type="text" class="form-control" value=aliyunecsConfig.zone placeholder=(t 'machine.driverAliyunecs.zone.placeholder')}}
+      </div>
+    </div>
+
+    <div class="over-hr mt-20 mb-20">
+      <span>{{t 'machine.driverAliyunecs.networkSection'}}</span>
+    </div>
+
+    <div class="row">
+      <div class="col span-2 col-inline">
+        <label>{{t 'machine.driverAliyunecs.routeCIDR.label'}}</label>
+      </div>
+      <div class="col span-4">
+        {{input type="text" class="form-control" value=aliyunecsConfig.routeCidr placeholder=(t 'machine.driverAliyunecs.routeCIDR.placeholder')}}
       </div>
 
-      <div class="row">
-          <div class="col span-2 col-inline">
-              <label>{{t 'machine.driverAliyunecs.routeCIDR.label'}}</label>
-          </div>
-          <div class="col span-4">
-            {{input type="text" class="form-control" value=aliyunecsConfig.routeCidr placeholder=(t 'machine.driverAliyunecs.routeCIDR.placeholder')}}
-          </div>
+      <div class="col span-2 col-inline">
+        <label>{{t 'machine.driverAliyunecs.vpcId.label'}}</label>
+      </div>
+      <div class="col span-4">
+        {{input type="text" class="form-control" value=aliyunecsConfig.vpcId placeholder=(t 'machine.driverAliyunecs.vpcId.placeholder')}}
+      </div>
+    </div>
 
-          <div class="col span-2 col-inline">
-              <label>{{t 'machine.driverAliyunecs.vpcId.label'}}</label>
-          </div>
-          <div class="col span-4">
-            {{input type="text" class="form-control" value=aliyunecsConfig.vpcId placeholder=(t 'machine.driverAliyunecs.vpcId.placeholder')}}
-          </div>
+    <div class="row">
+      <div class="col span-2 col-inline">
+        <label>{{t 'machine.driverAliyunecs.vswitchId.label'}}</label>
+      </div>
+      <div class="col span-4">
+        {{input type="text" class="form-control" value=aliyunecsConfig.vswitchId placeholder=(t 'machine.driverAliyunecs.vswitchId.placeholder')}}
       </div>
 
-      <div class="row">
-          <div class="col span-2 col-inline">
-              <label>{{t 'machine.driverAliyunecs.vswitchId.label'}}</label>
-          </div>
-          <div class="col span-4">
-            {{input type="text" class="form-control" value=aliyunecsConfig.vswitchId placeholder=(t 'machine.driverAliyunecs.vswitchId.placeholder')}}
-          </div>
+      <div class="col span-2 col-inline">
+        <label>{{t 'machine.driverAliyunecs.privateIp.label'}}</label>
+      </div>
+      <div class="col span-4">
+        {{input type="text" class="form-control" value=aliyunecsConfig.privateIp placeholder=(t 'machine.driverAliyunecs.privateIp.placeholder')}}
+      </div>
+    </div>
 
-          <div class="col span-2 col-inline">
-              <label>{{t 'machine.driverAliyunecs.privateIp.label'}}</label>
-          </div>
-          <div class="col span-4">
-            {{input type="text" class="form-control" value=aliyunecsConfig.privateIp placeholder=(t 'machine.driverAliyunecs.privateIp.placeholder')}}
-          </div>
+    <div class="row">
+      <div class="col span-2 col-inline">
+        <label>{{t 'machine.driverAliyunecs.privateAddressOnly.label'}}</label>
+      </div>
+      <div class="col span-4">
+        {{input type="checkbox" class="form-control" checked=aliyunecsConfig.privateAddressOnly}}
+      </div>
+    </div>
+
+    <div class="over-hr mt-20 mb-20">
+      <span>{{t 'machine.driverAliyunecs.securitySection'}}</span>
+    </div>
+    <div class="row">
+      <div class="col span-2 col-inline">
+        <label>{{t 'machine.driverAliyunecs.securityGroup.label'}}</label>
+      </div>
+      <div class="col span-4">
+        {{input type="text" class="form-control" value=aliyunecsConfig.securityGroup placeholder=(t 'machine.driverAliyunecs.securityGroup.placeholder')}}
       </div>
 
-      <div class="row">
-          <div class="col span-2 col-inline">
-              <label>{{t 'machine.driverAliyunecs.privateAddressOnly.label'}}</label>
-          </div>
-          <div class="col span-4">
-            {{input type="checkbox" class="form-control" checked=aliyunecsConfig.privateAddressOnly}}
-          </div>
+      <div class="col span-2 col-inline">
+        <label>{{t 'machine.driverAliyunecs.sshPassword.label'}}</label>
       </div>
-
-      <div class="over-hr mt-20 mb-20">
-          <span>{{t 'machine.driverAliyunecs.securitySection'}}</span>
+      <div class="col span-4">
+        {{input type="text" class="form-control" value=aliyunecsConfig.sshPassword placeholder=(t 'machine.driverAliyunecs.sshPassword.placeholder')}}
       </div>
-      <div class="row">
-          <div class="col span-2 col-inline">
-              <label>{{t 'machine.driverAliyunecs.securityGroup.label'}}</label>
-          </div>
-          <div class="col span-4">
-            {{input type="text" class="form-control" value=aliyunecsConfig.securityGroup placeholder=(t 'machine.driverAliyunecs.securityGroup.placeholder')}}
-          </div>
-
-          <div class="col span-2 col-inline">
-              <label>{{t 'machine.driverAliyunecs.sshPassword.label'}}</label>
-          </div>
-          <div class="col span-4">
-            {{input type="text" class="form-control" value=aliyunecsConfig.sshPassword placeholder=(t 'machine.driverAliyunecs.sshPassword.placeholder')}}
-          </div>
-      </div>
+    </div>
 
 
 
