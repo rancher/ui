@@ -54,7 +54,6 @@ export default Ember.Component.extend(Driver, {
   },
 
   validate: function() {
-    this._super();
     let errors = [];
 
     if (!this.get('packetConfig.projectId') ) {

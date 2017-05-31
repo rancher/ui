@@ -132,7 +132,6 @@ export default Ember.Component.extend(Driver, {
   }),
 
   validate: function() {
-    this._super();
     let errors = [];
 
     this.set('prefix',(this.get('prefix')||'').toLowerCase());
