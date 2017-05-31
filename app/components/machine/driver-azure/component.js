@@ -34,10 +34,6 @@ export default Ember.Component.extend(Driver, {
       openPort         : ['500/udp','4500/udp'],
     });
 
-    // this.set('model', this.get('store').createRecord({
-    //   type: 'host',
-    //   azureConfig: config,
-    // }));
     this.set('model', this.get('store').createRecord({
       type:         'hostTemplate',
       driver:       'azure',
@@ -137,10 +133,10 @@ export default Ember.Component.extend(Driver, {
 
   validate: function() {
     this._super();
-    let errors = this.get('errors')||[];
+    let errors = [];
 
     this.set('prefix',(this.get('prefix')||'').toLowerCase());
-    let name = this.get('model.hostname');
+    let name = this.get('model.name');
     if ( name.length < 4 || name.length > 62 ) {
       errors.push('Name must be between 4 and 62 characters long');
     }

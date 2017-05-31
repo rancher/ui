@@ -1,9 +1,19 @@
 <form>
 <section class="horizontal-form">
   <div class="container-fluid">
-    {{#if showNameScale}}
-      {{partial "host/add-common"}}
-    {{/if}}
+    <div class="over-hr mt-20 mb-20">
+      <span>{{t 'machine.driverPacket.instanceSection'}}</span>
+    </div>
+    <div class="row mb-20">
+      {{form-name-description
+          name=model.name
+          description=model.description
+          nameRequired=true
+          namePlaceholder="hostPartial.host.addCommon.new.form.name.placeholder"
+          descriptionShown=true
+          descriptionExpanded=true
+      }}
+    </div>
 
     <div class="over-hr mt-20 mb-20">
       <span>{{t 'machine.driverPacket.accountSection'}}</span>
@@ -16,13 +26,13 @@
       </div>
       <div class="col span-6">
         <label>{{t 'machine.driverPacket.apiKey.label'}}{{field-required}}</label>
-        {{input type="password" name="password" value=packetConfig.apiKey classNames="form-control" placeholder=(t 'machine.driverPacket.apiKey.placeholder')}}
+        {{input type="password" name="password" value=model.secretValues.packetConfig.apiKey classNames="form-control" placeholder=(t 'machine.driverPacket.apiKey.placeholder')}}
         <p class="text-info">{{t 'machine.driverPacket.apiKeyHelp' htmlSafe=true}}</p>
       </div>
     </div>
 
     <div class="over-hr mt-20 mb-20">
-      <span>{{t 'machine.driverPacket.instanceSection'}}</span>
+      <span>{{t 'machine.driverPacket.instanceOptionsSection'}}</span>
     </div>
 
     <div class="row inline-form">
