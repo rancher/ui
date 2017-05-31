@@ -20,5 +20,17 @@ export default Ember.Route.extend({
         host: this.get('store').createRecord(tmp)
       }
     });
-  }
+  },
+  actions: {
+    cancel() {
+      this.transitionTo('hosts.templates.index');
+    },
+    goBack() {
+      if ( this.get('backTo') === 'waiting' ) {
+        this.transitionTo('authenticated.project.waiting');
+      } else {
+        this.transitionTo('hosts');
+      }
+    }
+  },
 });
