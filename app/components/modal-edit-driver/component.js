@@ -3,7 +3,7 @@ import NewOrEdit from 'ui/mixins/new-or-edit';
 import ModalBase from 'ui/mixins/modal-base';
 
 export default Ember.Component.extend(ModalBase, NewOrEdit, {
-  classNames: ['large-modal'],
+  classNames: ['large-modal', 'alert'],
   originalModel: Ember.computed.alias('modalService.modalOpts'),
   settings: Ember.inject.service(),
 
