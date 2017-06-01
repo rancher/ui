@@ -39,7 +39,7 @@ flavorChoices.sort(function(a,b) {
 
 export default Ember.Component.extend(Driver, {
   driverName      : 'rackspace',
-  rackspaceConfig : Ember.computed.alias('model.rackspaceConfig'),
+  rackspaceConfig : Ember.computed.alias('model.publicValues.rackspaceConfig'),
   flavorChoices   : flavorChoices,
   regionChoices   : [
     {label: 'Dallas (DFW)', value: 'DFW'},
@@ -56,14 +56,33 @@ export default Ember.Component.extend(Driver, {
     let config = store.createRecord({
       type: 'rackspaceConfig',
       username: '',
-      apiKey: '',
       region: 'DFW',
       flavorId: 'general1-1',
     });
 
     this.set('model', this.get('store').createRecord({
-      type: 'host',
-      rackspaceConfig: config,
+      type:         'hostTemplate',
+      driver:       'rackspace',
+      publicValues: {
+        rackspaceConfig: config
+      },
+      secretValues: {
+        rackspaceConfig: {
+          apiKey: '',
+        }
+      }
     }));
   },
+
+  validate() {
+    let errors = [];
+
+    if ( !this.get('model.name') ) {
+      errors.push('Name is required');
+    }
+
+    this.set('errors', errors);
+    return errors.length === 0;
+  },
+
 });

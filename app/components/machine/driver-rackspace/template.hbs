@@ -2,9 +2,19 @@
 
 <section class="horizontal-form">
   <div class="container-fluid">
-    {{#if showNameScale}}
-      {{partial "host/add-common"}}
-    {{/if}}
+    <div class="over-hr mt-20 mb-20">
+      <span>{{t 'machine.driverRackspace.instanceSection'}}</span>
+    </div>
+    <div class="row mb-20">
+      {{form-name-description
+          name=model.name
+          description=model.description
+          nameRequired=true
+          namePlaceholder="hostPartial.host.addCommon.new.form.name.placeholder"
+          descriptionShown=true
+          descriptionExpanded=true
+      }}
+    </div>
 
     <div class="over-hr mt-20 mb-20">
       <span>{{t 'machine.driverRackspace.accountSection'}}</span>
@@ -24,7 +34,7 @@
         <label>{{t 'machine.driverRackspace.apiKey.label'}}{{field-required}}</label>
       </div>
       <div class="col span-10">
-        {{input type="password" value=rackspaceConfig.apiKey classNames="form-control" placeholder=(t 'machine.driverRackspace.apiKey.placeholder')}}
+        {{input type="password" value=model.secretValues.rackspaceConfig.apiKey classNames="form-control" placeholder=(t 'machine.driverRackspace.apiKey.placeholder')}}
         <p class="text-info">{{t 'machine.driverRackspace.accountHelp'}}</p>
       </div>
     </div>
@@ -47,7 +57,7 @@
     </div>
 
     <div class="over-hr mt-20 mb-20">
-      <span>{{t 'machine.driverRackspace.instanceSection'}}</span>
+      <span>{{t 'machine.driverRackspace.instanceOptionsSection'}}</span>
     </div>
 
     <div class="row inline-form">
