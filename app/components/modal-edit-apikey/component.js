@@ -6,7 +6,7 @@ export default Ember.Component.extend(ModalBase, NewOrEdit, {
   endpointService: Ember.inject.service('endpoint'),
   projects: Ember.inject.service(),
 
-  classNames: ['large-modal'],
+  classNames: ['large-modal', 'alert'],
   originalModel: Ember.computed.alias('modalService.modalOpts'),
   model: null,
   clone: null,

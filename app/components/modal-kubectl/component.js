@@ -3,7 +3,7 @@ import ModalBase from 'ui/mixins/modal-base';
 import C from 'ui/utils/constants';
 
 export default Ember.Component.extend(ModalBase, {
-  classNames: ['modal-container', 'large-modal', 'fullscreen-modal', 'modal-shell'],
+  classNames: ['modal-container', 'large-modal', 'fullscreen-modal', 'modal-shell', 'alert'],
   command: ['/bin/bash','-l','-c','echo "# Run kubectl commands inside here\n# e.g. kubectl get rc\n"; TERM=xterm-256color /bin/bash'],
   loading: true,
   model: null,
