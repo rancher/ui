@@ -1,15 +1,14 @@
 <h3>{{t 'hostSettings.header'}}</h3>
-<hr>
-<p>{{t 'hostSettings.subtext' appName=settings.appName}}</p>
+<p class="text-muted">{{t 'hostSettings.subtext' appName=settings.appName}}</p>
 
 <div class="mt-15">
-  <label style="width: 250px;">{{radio-button selection=customRadio value="no"}}&nbsp;{{t 'hostSettings.hostUrl.local'}}&nbsp;&nbsp;</label>
-  <code class="pl-20 pr-20">{{thisPage}}</code>
+  <label style="width: 200px;">{{radio-button selection=customRadio value="no"}}&nbsp;{{t 'hostSettings.hostUrl.local'}}&nbsp;&nbsp;</label>
+  <code class="pl-10 pr-10">{{thisPage}}</code>
 </div>
 
 <div class="mt-10">
-  <label style="width: 250px;">{{radio-button selection=customRadio value="yes"}}&nbsp;{{t 'hostSettings.hostUrl.new.labelText'}}&nbsp;&nbsp;</label>
-  {{input type="text" class="form-control" value=customValue placeholder=(t 'hostSettings.hostUrl.new.placeholder') safeStyle="width: calc(100% - 170px); display: inline-block;  min-width: 300px;"}}
+  <label style="width: 200px;">{{radio-button selection=customRadio value="yes"}}&nbsp;{{t 'hostSettings.hostUrl.new.labelText'}}&nbsp;&nbsp;</label>
+  {{input type="text" class="form-control inline-block" value=customValue placeholder=(t 'hostSettings.hostUrl.new.placeholder') safeStyle="width: calc(100% - 250px); min-width: 335px;"}}
   <p class="text-info">
     {{t 'hostSettings.helpText.static1' htmlSafe=true}}
     {{#if settings.isRancher}}
@@ -22,11 +21,11 @@
 </div>
 
 {{#unless looksPublic}}
-  <div class="banner bg-info" style="margin-top: 30px;">
-    <i class="icon icon-info" style="font-size: 35px; float: left;"></i>
-    <p style="margin-left: 50px;">
-      {{t 'hostSettings.notPublic.alert' activeValue=activeValue htmlSafe=true}}
-    </p>
+  <div class="banner bg-info mt-40">
+    <div class="banner-icon"><span class="icon icon-info"></span></div>
+    <div class="banner-message">
+      <p>{{t 'hostSettings.notPublic.alert' activeValue=activeValue htmlSafe=true}}</p>
+    </div>
   </div>
 {{/unless}}
 
