@@ -41,6 +41,7 @@ export default Ember.Component.extend({
         branch: C.CATALOG.DEFAULT_BRANCH,
         url: '',
         kind: 'native',
+        isNew: true,
       });
 
       this.get('ary').pushObject(obj);
@@ -56,7 +57,9 @@ export default Ember.Component.extend({
 
     remove(obj) {
       this.get('ary').removeObject(obj);
-      this.get('toRemove').addObject(obj);
+      if ( !obj.get('isNew') ) {
+        this.get('toRemove').addObject(obj);
+      }
     },
 
     save(cb) {
@@ -120,7 +123,7 @@ export default Ember.Component.extend({
 
   validate() {
     var errors = [];
-    var globals = ['all', 'community', 'library']; // these should be removed when these terms are removed from the envid field
+    var global = this.get('global');
     var ary = this.get('ary');
 
     ary.forEach((cat) => {
@@ -132,7 +135,8 @@ export default Ember.Component.extend({
         errors.push('URL is required on each catalog');
       }
 
-      if (globals.indexOf(cat.name.toLowerCase()) >= 0 || ary.filter((x) => (x.name||'').trim().toLowerCase() === cat.name.toLowerCase()).length > 1) {
+      if ( global.filter((x) => (x.name||'').trim().toLowerCase() === cat.name.toLowerCase()).length > 1 ||
+              ary.filter((x) => (x.name||'').trim().toLowerCase() === cat.name.toLowerCase()).length > 1) {
         errors.push('Each catalog must have a unique name');
       }
     });

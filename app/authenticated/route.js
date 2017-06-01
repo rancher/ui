@@ -69,8 +69,6 @@ export default Ember.Route.extend(Subscribe, PromiseToCb, {
         mounts:             ['projectSchemas',          this.cbFind('mount', 'store', {filter: {state_ne: 'inactive'}})],
         storagePools:       ['projectSchemas',          this.cbFind('storagepool')],
         volumes:            ['projectSchemas',          this.cbFind('volume')],
-        snapshots:          ['projectSchemas',          this.cbFind('snapshot')],
-        backups:            ['projectSchemas',          this.cbFind('backup')],
         certificate:        ['projectSchemas',          this.cbFind('certificate')],
         secret:             ['projectSchemas',          this.toCb('loadSecrets')],
         identities:         ['userSchemas', this.cbFind('identity', 'userStore')],
