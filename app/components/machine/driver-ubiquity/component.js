@@ -4,7 +4,7 @@ import { ajaxPromise } from 'ember-api-store/utils/ajax-promise';
 
 export default Ember.Component.extend(Driver, {
   driverName         : 'ubiquity',
-  ubiquityConfig     : Ember.computed.alias('model.ubiquityConfig'),
+  ubiquityConfig     : Ember.computed.alias('model.publicValues.ubiquityConfig'),
   ubiquityHostingApi : 'api.ubiquityhosting.com/v25/api.php',
 
   allZones           : null,
@@ -21,7 +21,6 @@ export default Ember.Component.extend(Driver, {
 
     let config = store.createRecord({
       type: 'ubiquityConfig',
-      apiToken: '',
       apiUsername: '',
       clientId: '',
       flavorId: '',
@@ -29,9 +28,17 @@ export default Ember.Component.extend(Driver, {
       zoneId: ''
     });
 
-    this.set('model', store.createRecord({
-      type: 'host',
-      ubiquityConfig: config,
+    this.set('model', this.get('store').createRecord({
+      type:         'hostTemplate',
+      driver:       'ubiquity',
+      publicValues: {
+        ubiquityConfig: config
+      },
+      secretValues: {
+        ubiquityConfig: {
+          apiToken: '',
+        }
+      }
     }));
   },
 
@@ -47,7 +54,7 @@ export default Ember.Component.extend(Driver, {
       this.set('step', 2);
       this.set('ubiquityConfig.clientId', (this.get('ubiquityConfig.clientId')||'').trim());
       this.set('ubiquityConfig.apiUsername', (this.get('ubiquityConfig.apiUsername')||'').trim());
-      this.set('ubiquityConfig.apiToken', (this.get('ubiquityConfig.apiToken')||'').trim());
+      this.set('model.secretValues.ubiquityConfig.apiToken', (this.get('model.secretValues.ubiquityConfig.apiToken')||'').trim());
 
       Ember.RSVP.hash({
         zones: this.getZones(),
@@ -128,7 +135,7 @@ export default Ember.Component.extend(Driver, {
   apiRequest: function(command, params) {
     let url = this.get('app.proxyEndpoint') + '/' + this.ubiquityHostingApi + "?method=cloud." + encodeURIComponent(command);
 
-    let auth = this.get('ubiquityConfig.clientId') + ':' + this.get('ubiquityConfig.apiUsername') + ':' + this.get('ubiquityConfig.apiToken');
+    let auth = this.get('ubiquityConfig.clientId') + ':' + this.get('ubiquityConfig.apiUsername') + ':' + this.get('model.secretValues.ubiquityConfig.apiToken');
     params = params || {};
 
     return ajaxPromise({
@@ -159,9 +166,8 @@ export default Ember.Component.extend(Driver, {
   },
 
   validate: function() {
-    this._super();
     let errors = this.get('errors')||[];
-    let name = this.get('model.hostname')||'';
+    let name = this.get('model.name')||'';
 
     if (name.length < 1 || name.length > 200) {
       errors.push('"name" should be 1-200 characters long');
