@@ -200,9 +200,6 @@ Router.map(function() {
         this.route('edit-receiver', {path: '/receiver/:receiver_id'});
       });
 
-      this.route('host-template', {path: '/host-template'}, function(){
-        this.route('keys', {path: '/keys'});
-      });
       // End: Authenticated
     });
   });
