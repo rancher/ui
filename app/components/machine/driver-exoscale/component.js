@@ -40,7 +40,7 @@ let RANCHER_INGRESS_RULES = [
 export default Ember.Component.extend(Driver, {
   driverName               : 'exoscale',
   model                    : null,
-  exoscaleConfig           : Ember.computed.alias('model.exoscaleConfig'),
+  exoscaleConfig           : Ember.computed.alias('model.publicValues.exoscaleConfig'),
 
   allDiskSizes             : null,
   allInstanceProfiles      : null,
@@ -69,15 +69,22 @@ export default Ember.Component.extend(Driver, {
     let config = this.get('store').createRecord({
       type: 'exoscaleConfig',
       apiKey: '',
-      apiSecretKey: '',
       diskSize: 50,
       instanceProfile: 'small',
       securityGroup: 'rancher-machine'
     });
 
     this.set('model', this.get('store').createRecord({
-      type: 'host',
-      exoscaleConfig: config
+      type:         'hostTemplate',
+      driver:       'exoscale',
+      publicValues: {
+        exoscaleConfig: config
+      },
+      secretValues: {
+        exoscaleConfig: {
+          apiSecretKey: '',
+        }
+      }
     }));
   },
 
@@ -110,7 +117,7 @@ export default Ember.Component.extend(Driver, {
       this.set('step', 2);
 
       this.set('exoscaleConfig.apiKey', (this.get('exoscaleConfig.apiKey')||'').trim());
-      this.set('exoscaleConfig.apiSecretKey', (this.get('exoscaleConfig.apiSecretKey')||'').trim());
+      this.set('model.secretValues.exoscaleConfig.apiSecretKey', (this.get('model.secretValues.exoscaleConfig.apiSecretKey')||'').trim());
 
       this.apiRequest('listSecurityGroups').then((res) => {
         let groups       = [];
@@ -293,7 +300,7 @@ export default Ember.Component.extend(Driver, {
                                 .sort()
                                 .join('&');
                           settings.data += '&signature=' + encodeURIComponent(AWS.util.crypto.hmac(
-                            this.get('exoscaleConfig.apiSecretKey'), qs, 'base64', 'sha1'));
+                            this.get('model.secretValues.exoscaleConfig.apiSecretKey'), qs, 'base64', 'sha1'));
                           return true;
                         },
                         data: params}, true);
