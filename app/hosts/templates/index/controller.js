@@ -1,5 +1,4 @@
 import Ember from 'ember';
-import C from 'ui/utils/constants';
 
 export default Ember.Controller.extend({
   actions: {
@@ -7,7 +6,7 @@ export default Ember.Controller.extend({
       this.transitionToRoute('hosts.templates.launch', model.id);
     },
   },
-  filteredContent: Ember.computed('', function() {
-    return this.get('model.content');
+  filteredContent: Ember.computed('model', function() {
+    return this.get('model.content').sortBy('driver', 'name');
   }),
 });

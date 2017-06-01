@@ -15,11 +15,24 @@
         <div class="row addtl-info">
           <div class="col span-4">
             <div class="nav-boxes driver">
-              <div class="nav-box-item driver machine-driver active {{parse-host-icon hostTemplate.driver}}"></div>
+              {{#unless driver.hasUi}}
+                <div class="nav-box-item driver machine-driver active other"></div>
+              {{else}}
+                <div class="nav-box-item driver machine-driver active {{parse-host-icon hostTemplate.driver}}"></div>
+              {{/unless}}
             </div>
           </div>
           <div class="col span-8">
-            {{partial (concat 'host/host-templates/' hostTemplate.driver)}}
+            <div>
+              <label for="">{{t 'hostsPage.cloudHostsPage.addPage.template'}}</label>
+              {{hostTemplate.name}}
+            </div>
+            <hr/>
+            {{#unless driver.hasUi}}
+              {{partial 'host/host-templates/other'}}
+            {{else}}
+              {{partial (concat 'host/host-templates/' hostTemplate.driver)}}
+            {{/unless}}
           </div>
         </div>
         <div class="container-fluid">
