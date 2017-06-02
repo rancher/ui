@@ -3,11 +3,18 @@ import Ember from 'ember';
 export default Ember.Service.extend({
   intl: Ember.inject.service(),
   store: Ember.inject.service(),
+  prefs: Ember.inject.service(),
 
   list: function() {
     let intl = this.get('intl');
+    let showSystem = this.get('prefs.showSystemResources');
 
-    return this.get('_allServices').filter((service) => service.get('system') !== true).map((service) => {
+    let out = this.get('_allServices');
+    if ( !showSystem ) {
+      out = out.filter(x => x.get('system') !== true);
+    }
+
+    return out.map((service) => {
       let stackName = service.get('stack.displayName') || '('+service.get('stackId')+')';
 
       return {
@@ -19,7 +26,7 @@ export default Ember.Service.extend({
         obj: service,
       };
     });
-  }.property('_allServices.@each.{id,system,displayName,type,hostname}'),
+  }.property('_allServices.@each.{id,system,displayName,type,hostname}','prefs.showSystemResources'),
 
   grouped: function() {
     return this.group(this.get('list'));
