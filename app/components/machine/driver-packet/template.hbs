@@ -4,7 +4,7 @@
     <div class="over-hr mt-20 mb-20">
       <span>{{t 'machine.driverPacket.instanceSection'}}</span>
     </div>
-    <div class="row mb-20">
+    <div class="row mb-20 box">
       {{form-name-description
           name=model.name
           description=model.description
@@ -19,13 +19,13 @@
       <span>{{t 'machine.driverPacket.accountSection'}}</span>
     </div>
 
-    <div class="row inline-form">
+    <div class="row inline-form box">
       <div class="col span-6">
-      <label>{{t 'machine.driverPacket.projectId.label'}}{{field-required}}</label>
+      <label class="pb-5">{{t 'machine.driverPacket.projectId.label'}}{{field-required}}</label>
         {{input type="text" name="username" value=packetConfig.projectId classNames="form-control" placeholder=(t 'machine.driverPacket.projectId.placeholder')}}
       </div>
       <div class="col span-6">
-        <label>{{t 'machine.driverPacket.apiKey.label'}}{{field-required}}</label>
+        <label class="pb-5">{{t 'machine.driverPacket.apiKey.label'}}{{field-required}}</label>
         {{input type="password" name="password" value=model.secretValues.packetConfig.apiKey classNames="form-control" placeholder=(t 'machine.driverPacket.apiKey.placeholder')}}
         <p class="text-info">{{t 'machine.driverPacket.apiKeyHelp' htmlSafe=true}}</p>
       </div>
@@ -35,7 +35,7 @@
       <span>{{t 'machine.driverPacket.instanceOptionsSection'}}</span>
     </div>
 
-    <div class="row inline-form">
+    <div class="row inline-form box">
       <div class="col span-6">
         <label class="pb-5">{{t 'machine.driverPacket.image.label'}}</label>
         <select class="form-control" onchange={{action (mut packetConfig.os) value="target.value"}}>
@@ -55,11 +55,11 @@
       </div>
     </div>
 
-    <div class="over-hr mt-20 mb-20">
+{{!--     <div class="over-hr mt-20 mb-20">
       <span>{{t 'machine.driverPacket.regionSection'}}</span>
-    </div>
+    </div> --}}
 
-    <div class="row inline-form">
+    <div class="row inline-form box mt-20">
       <div class="col span-2 col-inline">
         <label>{{t 'machine.driverPacket.region.label'}}</label>
       </div>
