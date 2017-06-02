@@ -15,11 +15,11 @@
         <div class="row addtl-info">
           <div class="col span-4">
             <div class="nav-boxes driver">
-              {{#unless driver.hasUi}}
-                <div class="nav-box-item driver machine-driver active other"></div>
-              {{else}}
+              {{#if driver.hasUi}}
                 <div class="nav-box-item driver machine-driver active {{parse-host-icon hostTemplate.driver}}"></div>
-              {{/unless}}
+              {{else}}
+                <div class="nav-box-item driver machine-driver active other"></div>
+              {{/if}}
             </div>
           </div>
           <div class="col span-8">
@@ -28,11 +28,12 @@
               {{hostTemplate.name}}
             </div>
             <hr/>
-            {{#unless driver.hasUi}}
-              {{partial 'host/host-templates/other'}}
-            {{else}}
+            {{#if driver.hasUi}}
               {{partial (concat 'host/host-templates/' hostTemplate.driver)}}
-            {{/unless}}
+            {{else}}
+              {{partial 'host/host-templates/other'}}
+            {{/if}}
+
           </div>
         </div>
         <div class="container-fluid">
