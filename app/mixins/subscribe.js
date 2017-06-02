@@ -49,9 +49,10 @@ export default Ember.Mixin.create({
 
         //this._trySend('subscribeMessage',d);
 
+        let key;
         switch ( d.name) {
         case 'resource.change':
-          let key = d.resourceType+'Changed';
+          key = d.resourceType+'Changed';
           if ( this[key] ) {
             this[key](d);
           }

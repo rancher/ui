@@ -26,6 +26,7 @@ module.exports = function(app, options) {
 
   let map = {
     'API': config.apiEndpoint,
+    'Beta API': config.betaApiEndpoint,
     'Legacy API': config.legacyApiEndpoint,
     'Magic': config.magicEndpoint,
     'Telemetry': config.telemetryEndpoint,
