@@ -1,6 +1,5 @@
 import Ember from 'ember';
 import C from 'ui/utils/constants';
-import Util from 'ui/utils/util';
 
 export default Ember.Service.extend({
   cookies: Ember.inject.service(),
@@ -69,15 +68,7 @@ export default Ember.Service.extend({
       project = '/projects/' + projectId;
     }
 
-    // For local development where API doesn't match origin, add basic auth token
-    var authBase = base;
-    if ( base.indexOf(window.location.origin) !== 0 && this.get('app.mode') === 'development')
-    {
-      var token = this.get('cookies').get(C.COOKIE.TOKEN);
-      if ( token ) {
-        authBase = Util.addAuthorization(base, C.USER.BASIC_BEARER, token);
-      }
-    }
+    var authBase = window.location.origin + '/';
 
     return {
       auth: {

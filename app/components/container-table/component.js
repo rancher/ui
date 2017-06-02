@@ -34,6 +34,7 @@ export default Ember.Component.extend({
   showStats: false,
   showInstanceState: true,
   pagingLabel: 'pagination.container',
+  paging: true,
 
   sortBy: 'name',
 

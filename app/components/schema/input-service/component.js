@@ -55,7 +55,18 @@ export default Ember.Component.extend({
       list = list.filter(x => !exclude.includes(x.id));
     }
 
-    return this.get('allServices').group(list);
+    let out = this.get('allServices').group(list);
+    let selected = this.get('allServices').byId(this.get('selected'));
+    if ( selected && !list.includes(selected) ) {
+      out['(Selected)'] = [{
+        id: selected.get('id'),
+        name: selected.get('displayName'),
+        kind: selected.get('type'),
+        obj: selected,
+      }];
+    }
+
+    return out;
   }.property('allServices.list.[]','canBalanceTo','canHaveContainers'),
 
   selectedChanged: function() {

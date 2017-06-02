@@ -107,18 +107,8 @@ export default Ember.Mixin.create({
 
     goToApi: function() {
       let url      = this.get('links.self'); // http://a.b.c.d/v1/things/id, a.b.c.d is where the UI is running
-      let endpoint = this.get('endpointSvc.absolute'); // http://e.f.g.h/ , does not include version.  e.f.g.h is where the API actually is.
-      url          = url.replace(/https?:\/\/[^\/]+\/?/,endpoint);
-
-      // For local development where API doesn't match origin, add basic auth token
-      if ( url.indexOf(window.location.origin) !== 0 && this.get('app.mode') === 'development' )
-      {
-        let token = this.get('cookies').get(C.COOKIE.TOKEN);
-        if ( token )
-        {
-          url = Util.addAuthorization(url, C.USER.BASIC_BEARER, token);
-        }
-      }
+//      let endpoint = this.get('endpointSvc.absolute'); // http://e.f.g.h/ , does not include version.  e.f.g.h is where the API actually is.
+//      url          = url.replace(/https?:\/\/[^\/]+\/?/,endpoint);
 
       window.open(url, '_blank');
     },
