@@ -26,10 +26,12 @@
           <h2>{{host.name}}</h2>
           <div>
             <div class="details">
-              <div>
-                <label for="">{{t 'hostTemplatesPage.templateBox.labels.zone'}}: </label>
-                {{get (host-public-values host) 'region'}}{{get (host-public-values host) 'zone'}}
-              </div>
+              {{#if (get (host-public-values host) 'region')}}
+                <div>
+                  <label for="">{{t 'hostTemplatesPage.templateBox.labels.zone'}}: </label>
+                  {{get (host-public-values host) 'region'}}{{get (host-public-values host) 'zone'}}
+                </div>
+              {{/if}}
             </div>
 
           </div>
