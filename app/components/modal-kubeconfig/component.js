@@ -23,7 +23,7 @@ users:
 
 
 export default Ember.Component.extend(ModalBase, {
-  classNames: ['modal-container', 'large-modal'],
+  classNames: ['modal-container', 'large-modal', 'alert'],
   access: Ember.inject.service(),
   growl: Ember.inject.service(),
   projects: Ember.inject.service(),

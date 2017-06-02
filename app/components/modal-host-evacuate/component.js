@@ -3,7 +3,7 @@ import ModalBase from 'ui/mixins/modal-base';
 import { alternateLabel } from 'ui/utils/platform';
 
 export default Ember.Component.extend(ModalBase, {
-  classNames: ['modal-container', 'medium-modal'],
+  classNames: ['modal-container', 'medium-modal', 'alert'],
   resources: Ember.computed.alias('modalService.modalOpts.model'),
   alternateLabel: alternateLabel,
 
