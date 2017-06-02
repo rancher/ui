@@ -25,7 +25,7 @@ export default Ember.Component.extend(Driver, {
   driverName:          'digitalocean',
   regionChoices:       null,
   model:               null,
-  digitaloceanConfig:  Ember.computed.alias('model.digitaloceanConfig'),
+  digitaloceanConfig:  Ember.computed.alias('model.publicValues.digitaloceanConfig'),
   step1:               true,
   sizeChoices:         null,
   imageChoices:        null,
@@ -102,24 +102,31 @@ export default Ember.Component.extend(Driver, {
   bootstrap: function() {
     let config = this.get('store').createRecord({
       type        : 'digitaloceanConfig',
-      accessToken : '',
       size        : '1gb',
       region      : 'nyc3',
       image       : 'ubuntu-16-04-x64'
     });
 
     this.set('model', this.get('store').createRecord({
-      type: 'host',
-      digitaloceanConfig: config,
+      type:         'hostTemplate',
+      driver:       'digitalocean',
+      publicValues: {
+        digitaloceanConfig: config
+      },
+      secretValues: {
+        digitaloceanConfig: {
+          accessToken : '',
+        }
+      }
     }));
   },
 
 
   validate: function() {
-    this._super();
+    // this._super();
     let errors      = this.get('errors')||[];
-    let name        = this.get('model.hostname')||'';
-    let accessToken = this.get('digitaloceanConfig.accessToken')||'';
+    let name        = this.get('model.name')||'';
+    let accessToken = this.get('model.secretValues.digitaloceanConfig.accessToken')||'';
 
     if ( name.length > 200 ) {
       errors.push('"name" should be 1-200 characters long');
@@ -157,7 +164,7 @@ export default Ember.Component.extend(Driver, {
     return fetch(url, {
       headers: {
         'Accept': 'application/json',
-        'X-Api-Auth-Header': 'Bearer ' + this.get('model.digitaloceanConfig.accessToken'),
+        'X-Api-Auth-Header': 'Bearer ' + this.get('model.secretValues.digitaloceanConfig.accessToken'),
       },
     }).then((res) => {
       let body = res.body;

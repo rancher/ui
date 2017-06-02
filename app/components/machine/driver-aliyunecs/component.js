@@ -11,22 +11,39 @@ let isOptimized=[
 ];
 
 export default Ember.Component.extend(Driver, {
-  driverName       : 'aliyunecs',
-  aliyunecsConfig      : Ember.computed.alias('model.aliyunecsConfig'),
-  isOptimized : isOptimized,
+  driverName:      'aliyunecs',
+  aliyunecsConfig: Ember.computed.alias('model.publicValues.aliyunecsConfig'),
+  isOptimized:     isOptimized,
 
 
   bootstrap: function() {
     let config = this.get('store').createRecord({
-      type                  : 'aliyunecsConfig',
+      type: 'aliyunecsConfig',
     });
 
     this.set('model', this.get('store').createRecord({
-      type: 'host',
-      aliyunecsConfig: config,
+      type:         'hostTemplate',
+      driver:       'aliyunecs',
+      publicValues: {
+        aliyunecsConfig: config
+      },
+      secretValues: {
+        aliyunecsConfig: {
+          accessKeySecret: ''
+        }
+      }
     }));
 
-    //this.set('editing', false);
+  },
+  validate() {
+    let errors = [];
+
+    if ( !this.get('model.name') ) {
+      errors.push('Name is required');
+    }
+
+    this.set('errors', errors);
+    return errors.length === 0;
   },
 
 });

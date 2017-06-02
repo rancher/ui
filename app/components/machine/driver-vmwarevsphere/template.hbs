@@ -2,9 +2,21 @@
 
 <section class="horizontal-form">
   <div class="container-fluid">
-    {{#if showNameScale}}
-      {{partial "host/add-common"}}
-    {{/if}}
+
+    <div class="over-hr mt-20 mb-20">
+      <span>{{t 'machine.driverVsphere.instanceSection'}}</span>
+    </div>
+    <div class="row mb-20">
+      {{form-name-description
+          name=model.name
+          description=model.description
+          nameRequired=true
+          namePlaceholder="hostPartial.host.addCommon.new.form.name.placeholder"
+          descriptionShown=true
+          descriptionExpanded=true
+      }}
+    </div>
+
 
     <div class="over-hr mt-20 mb-20">
       <span>{{t 'machine.driverVsphere.accountSection'}}</span>
@@ -37,12 +49,12 @@
         <label>{{t 'machine.driverVsphere.password.label'}}{{field-required}}</label>
       </div>
       <div class="col span-4">
-        {{input type="password" value=config.password classNames="form-control"}}
+        {{input type="password" value=model.secretValues.vmwarevsphereConfig.password classNames="form-control"}}
       </div>
     </div>
 
     <div class="over-hr mt-20 mb-20">
-      <span>{{t 'machine.driverVsphere.instanceSection'}}</span>
+      <span>{{t 'machine.driverVsphere.instanceOptionsSection'}}</span>
     </div>
 
     <div class="row">

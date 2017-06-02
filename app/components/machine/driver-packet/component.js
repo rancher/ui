@@ -17,7 +17,7 @@ let planChoices = PacketPlans.filter(function(plan) {
 
 export default Ember.Component.extend(Driver, {
   driverName      : 'packet',
-  packetConfig    : Ember.computed.alias('model.packetConfig'),
+  packetConfig    : Ember.computed.alias('model.publicValues.packetConfig'),
 
   facilityChoices : PacketFacilities,
   planChoices     : planChoices,
@@ -27,7 +27,6 @@ export default Ember.Component.extend(Driver, {
     let store = this.get('store');
     let config = store.createRecord({
       type         : 'packetConfig',
-      apiKey       : '',
       projectId    : '',
       os           : 'ubuntu_14_04',
       facilityCode : 'ewr1',
@@ -39,17 +38,29 @@ export default Ember.Component.extend(Driver, {
       type: 'host',
       packetConfig: config,
     }));
+
+    this.set('model', this.get('store').createRecord({
+      type:         'hostTemplate',
+      driver:       'packet',
+      publicValues: {
+        packetConfig: config
+      },
+      secretValues: {
+        packetConfig: {
+          apiKey       : '',
+        }
+      }
+    }));
   },
 
   validate: function() {
-    this._super();
-    let errors = this.get('errors')||[];
+    let errors = [];
 
     if (!this.get('packetConfig.projectId') ) {
       errors.push('Project ID is required');
     }
 
-    if (!this.get('packetConfig.apiKey') ) {
+    if (!this.get('model.secretValues.packetConfig.apiKey') ) {
       errors.push('API Key is requried');
     }
 

@@ -1,6 +1,20 @@
 <section class="horizontal-form">
   <form>
     <div class="container-fluid">
+      <div class="over-hr mt-20 mb-20">
+        <span>{{t 'machine.driverAmazon.instanceSection'}}</span>
+      </div>
+      <div class="row mb-20">
+        {{form-name-description
+            name=model.name
+            description=model.description
+            nameRequired=true
+            namePlaceholder="hostPartial.host.addCommon.new.form.name.placeholder"
+            descriptionShown=true
+            descriptionExpanded=true
+        }}
+      </div>
+
       <div class="over-hr mb-20">
         <span>{{t 'machine.driverAmazon.accessSection'}}</span>
       </div>
@@ -39,7 +53,7 @@
         </div>
         <div class="col span-8">
           {{#if isStep1}}
-            {{input type="password" name="password" classNames="form-control" placeholder=(t 'machine.driverAmazon.secretKey.placeholder') value=amazonec2Config.secretKey}}
+            {{input type="password" name="password" classNames="form-control" placeholder=(t 'machine.driverAmazon.secretKey.placeholder') value=model.secretValues.amazonec2Config.secretKey}}
           {{else}}
             <div class="text-muted text-italic">{{t 'machine.driverAmazon.secretKey.provided'}}</div>
           {{/if}}
@@ -151,25 +165,14 @@
       </div>
       <div class="col span-8">
         {{#if isStep5}}
-          <div class="radio">
-            <label>
-              {{radio-button selection=whichSecurityGroup value="default"}}
-              {{#if defaultSecurityGroup}}
-                {{t 'machine.driverAmazon.securityGroup.defaultExisting' groupName=defaultSecurityGroupName htmlSafe=true}}
-              {{else}}
-                {{t 'machine.driverAmazon.securityGroup.defaultCreate' groupName=defaultSecurityGroupName htmlSafe=true}}
-              {{/if}}
-            </label>
-          </div>
 
           {{#if (and settings.isRancher (not isCustomSecurityGroup))}}
             <p class="text-info ml-20"><a href="{{settings.docsBase}}/hosts/amazon/#required-ports-for-rancher-to-work" target="_blank">{{t 'machine.driverAmazon.portHelp.link'}}</a> {{t 'machine.driverAmazon.portHelp.text'}}</p>
           {{/if}}
 
-          <div class="radio">
+          <div class="radio pt-10">
             <label>
-              {{radio-button selection=whichSecurityGroup value="custom"}}
-              {{t 'machine.driverAmazon.securityGroup.custom'}}
+              {{t 'machine.driverAmazon.securityGroup.choose'}}
             </label>
           </div>
 
@@ -226,14 +229,6 @@
 
 <section class="horizontal-form {{unless isGteStep7 'hide'}}" style="padding-top: 0;">
   <div class="container-fluid">
-    <div class="over-hr mt-20 mb-20">
-      <span>{{t 'machine.driverAmazon.instanceSection'}}</span>
-    </div>
-
-    {{#if showNameScale}}
-      {{partial "host/add-common"}}
-    {{/if}}
-
     <div class="over-hr mt-20 mb-20">
       <span>{{t 'machine.driverAmazon.instanceOptionsSection'}}</span>
     </div>

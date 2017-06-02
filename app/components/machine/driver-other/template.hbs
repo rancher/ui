@@ -1,7 +1,18 @@
-
 <section class="horizontal-form">
   <div class="container-fluid">
-    {{partial "host/add-common"}}
+    <div class="over-hr mt-20 mb-20">
+      <span>{{t 'machine.driverOther.instanceSection'}}</span>
+    </div>
+    <div class="row mb-20">
+      {{form-name-description
+          name=model.name
+          description=model.description
+          nameRequired=true
+          namePlaceholder="hostPartial.host.addCommon.new.form.name.placeholder"
+          descriptionShown=true
+          descriptionExpanded=true
+      }}
+    </div>
 
     <div class="over-hr mt-20 mb-20">
       <span>{{t 'machine.driverOther.driverSection'}}</span>
@@ -13,9 +24,9 @@
       </div>
       <div class="col span-8">
         {{new-select
-          classNames="form-control"
-          content=otherChoices
-          value=otherDriver
+            classNames="form-control"
+            content=otherChoices
+            value=otherDriver
         }}
       </div>
     </div>
@@ -26,12 +37,12 @@
 
     {{#each fieldNames as |fieldName|}}
       {{api-field
-        resource=driverOpts
-        resourceType=otherDriver
-        field=fieldName
-        value=(get driverOpts fieldName)
-        schemas=schemas
-        typeDocs=typeDocumentations
+          resource=driverOpts
+          resourceType=otherDriver
+          field=fieldName
+          value=(get driverOpts fieldName)
+          schemas=schemas
+          typeDocs=typeDocumentations
       }}
     {{/each}}
 

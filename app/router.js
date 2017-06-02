@@ -111,8 +111,13 @@ Router.map(function() {
 
       this.route('new-stack', {path: '/import-compose', resetNamespace: true});
 
+      this.route('custom-host', {path: '/hosts/custom', resetNamespace: true});
       this.route('hosts', {path: '/hosts', resetNamespace: true}, function() {
         this.route('index', {path: '/'});
+        this.route('templates', {path: '/templates'}, function() {
+          this.route('index', {path: '/'});
+          this.route('launch', {path: '/launch/:template_id'});
+        });
 
         this.route('container-cloud', {path: '/container-cloud'}, function() {
           this.route('index', {path: '/'});
@@ -195,9 +200,6 @@ Router.map(function() {
         this.route('edit-receiver', {path: '/receiver/:receiver_id'});
       });
 
-      this.route('host-template', {path: '/host-template'}, function(){
-        this.route('keys', {path: '/keys'});
-      });
       // End: Authenticated
     });
   });

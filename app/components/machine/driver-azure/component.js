@@ -3,7 +3,7 @@ import { regions, sizes, storageTypes, environments } from 'ui/utils/azure-choic
 import Driver from 'ui/mixins/driver';
 
 export default Ember.Component.extend(Driver, {
-  azureConfig      : Ember.computed.alias('model.azureConfig'),
+  azureConfig      : Ember.computed.alias('model.publicValues.azureConfig'),
   environments     : environments.sortBy('value'),
   sizeChoices      : sizes.sortBy('value'),
   driverName       : 'azure',
@@ -31,13 +31,20 @@ export default Ember.Component.extend(Driver, {
       type             : 'azureConfig',
       subscriptionId   : '',
       clientId         : '',
-      clientSecret     : '',
       openPort         : ['500/udp','4500/udp'],
     });
 
     this.set('model', this.get('store').createRecord({
-      type: 'host',
-      azureConfig: config,
+      type:         'hostTemplate',
+      driver:       'azure',
+      publicValues: {
+        azureConfig: config
+      },
+      secretValues: {
+        azureConfig: {
+          clientSecret     : '',
+        }
+      }
     }));
 
     this.set('editing', false);
@@ -125,11 +132,10 @@ export default Ember.Component.extend(Driver, {
   }),
 
   validate: function() {
-    this._super();
-    let errors = this.get('errors')||[];
+    let errors = [];
 
     this.set('prefix',(this.get('prefix')||'').toLowerCase());
-    let name = this.get('model.hostname');
+    let name = this.get('model.name');
     if ( name.length < 4 || name.length > 62 ) {
       errors.push('Name must be between 4 and 62 characters long');
     }
@@ -146,7 +152,7 @@ export default Ember.Component.extend(Driver, {
       errors.push('Client ID is requried');
     }
 
-    if (!this.get('azureConfig.clientSecret') ) {
+    if (!this.get('model.secretValues.azureConfig.clientSecret') ) {
       errors.push('Client Secret is requried');
     }
 

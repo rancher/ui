@@ -211,13 +211,6 @@ const navTree = [
         route: 'authenticated.project.hooks',
         ctx: [getProjectId],
       },
-      {
-        id: 'infra-template-keys',
-        localizedLabel: 'nav.infra.templateKeys',
-        icon: 'icon icon-key',
-        route: 'authenticated.project.host-template.keys',
-        ctx: [getProjectId],
-      },
     ],
   },
 

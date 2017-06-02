@@ -1,8 +1,18 @@
 <section class="horizontal-form">
   <div class="container-fluid">
-    {{#if showNameScale}}
-      {{partial "host/add-common"}}
-    {{/if}}
+      <div class="over-hr mt-20 mb-20">
+        <span>{{t 'machine.driverAzure.instanceSection'}}</span>
+      </div>
+      <div class="row mb-20">
+        {{form-name-description
+            name=model.name
+            description=model.description
+            nameRequired=true
+            namePlaceholder="hostPartial.host.addCommon.new.form.name.placeholder"
+            descriptionShown=true
+            descriptionExpanded=true
+        }}
+      </div>
 
     <div class="over-hr mt-20 mb-20">
       <span>{{t 'machine.driverAzure.placementSection'}}</span>
@@ -61,9 +71,9 @@
 
       <div class="col span-6">
         <label class="pb-5">{{t 'machine.driverAzure.clientSecret.label'}}{{field-required}}</label>
-        {{input type="password" value=azureConfig.clientSecret classNames="form-control"}}
+        {{input type="password" value=model.secretValues.azureConfig.clientSecret classNames="form-control"}}
       </div>
-      
+
 
     </div>
 
@@ -113,7 +123,7 @@
 
 
     <div class="over-hr mt-20 mb-20">
-      <span>{{t 'machine.driverAzure.instanceSection'}}</span>
+      <span>{{t 'machine.driverAzure.instanceOptionsSection'}}</span>
     </div>
 
     <div class="row">
@@ -138,7 +148,7 @@
       <label class="pb-5">{{t 'machine.driverAzure.dockerPort.label'}}</label>
         {{input type="text" value=azureConfig.dockerPort classNames="form-control" placeholder=(t 'machine.driverAzure.dockerPort.placeholder')}}
       </div>
-      
+
       <div class="col span-6">
       <label class="pb-5">{{t 'machine.driverAzure.openPort.label'}}</label>
         {{input type="text" value=openPorts classNames="form-control" placeholder=(t 'machine.driverAzure.openPort.placeholder')}}

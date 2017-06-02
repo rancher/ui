@@ -1,6 +1,21 @@
 <section class="horizontal-form">
+  <div class="over-hr mt-20 mb-20">
+    <span>{{t 'machine.driverDigitalocean.instanceSection'}}</span>
+  </div>
+
+  <div class="row mb-20">
+    {{form-name-description
+        name=model.name
+        description=model.description
+        nameRequired=true
+        namePlaceholder="hostPartial.host.addCommon.new.form.name.placeholder"
+        descriptionShown=true
+        descriptionExpanded=true
+    }}
+  </div>
   {{#if step1}}
     <form>
+
       <div class="over-hr mb-20">
         <span>{{t 'machine.driverDigitalocean.accountSection'}}</span>
       </div>
@@ -10,7 +25,7 @@
           <label>{{t 'machine.driverDigitalocean.accessToken.label'}}</label>
         </div>
         <div class="col span-10">
-          {{input type="password" value=digitaloceanConfig.accessToken classNames="form-control" placeholder=(t 'machine.driverDigitalocean.accessToken.placeholder')}}
+          {{input type="password" value=model.secretValues.digitaloceanConfig.accessToken classNames="form-control" placeholder=(t 'machine.driverDigitalocean.accessToken.placeholder')}}
           <p class="text-info">{{t 'machine.driverDigitalocean.accessToken.help' htmlSafe=true}}</p>
         </div>
       </div>
@@ -20,17 +35,13 @@
         {{#if gettingData}}
           <button class="btn bg-primary btn-disabled"><i class="icon icon-spinner icon-spin"></i> {{t 'generic.loading'}}</button>
         {{else}}
-          <button {{action "getData" 'region'}} class="btn bg-primary" disabled={{not model.digitaloceanConfig.accessToken}}>{{t 'machine.driverDigitalocean.authAccountButton'}}</button>
+          <button {{action "getData" 'region'}} class="btn bg-primary" disabled={{not model.secretValues.digitaloceanConfig.accessToken}}>{{t 'machine.driverDigitalocean.authAccountButton'}}</button>
         {{/if}}
         <button {{action "cancel"}} class="btn bg-transparent">{{t 'generic.cancel'}}</button>
       </div>
     </form>
   {{else}}
     <div class="container-fluid">
-      {{#if showNameScale}}
-        {{partial "host/add-common"}}
-      {{/if}}
-
       <div class="over-hr mt-20 mb-20">
         <span>{{t 'machine.driverDigitalocean.regionSection'}}</span>
       </div>
@@ -49,7 +60,7 @@
       </div>
 
       <div class="over-hr mt-20 mb-20">
-        <span>{{t 'machine.driverDigitalocean.instanceSection'}}</span>
+        <span>{{t 'machine.driverDigitalocean.instanceOptionsSection'}}</span>
       </div>
 
       <div class="row inline-form">

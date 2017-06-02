@@ -40,7 +40,7 @@ let RANCHER_INGRESS_RULES = [
 export default Ember.Component.extend(Driver, {
   driverName               : 'exoscale',
   model                    : null,
-  exoscaleConfig           : Ember.computed.alias('model.exoscaleConfig'),
+  exoscaleConfig           : Ember.computed.alias('model.publicValues.exoscaleConfig'),
 
   allDiskSizes             : null,
   allInstanceProfiles      : null,
@@ -68,18 +68,37 @@ export default Ember.Component.extend(Driver, {
   bootstrap: function() {
     let config = this.get('store').createRecord({
       type: 'exoscaleConfig',
-      apiKey: '',
-      apiSecretKey: '',
+      exoscaleApiKey: '',
       diskSize: 50,
       instanceProfile: 'small',
       securityGroup: 'rancher-machine'
     });
 
     this.set('model', this.get('store').createRecord({
-      type: 'host',
-      exoscaleConfig: config
+      type:         'hostTemplate',
+      driver:       'exoscale',
+      publicValues: {
+        exoscaleConfig: config
+      },
+      secretValues: {
+        exoscaleConfig: {
+          exoscaleApiSecretKey: '',
+        }
+      }
     }));
   },
+
+  validate() {
+    let errors = [];
+
+    if ( !this.get('model.name') ) {
+      errors.push('Name is required');
+    }
+
+    this.set('errors', errors);
+    return errors.length === 0;
+  },
+
 
   afterInit: function() {
     this._super();
@@ -109,8 +128,8 @@ export default Ember.Component.extend(Driver, {
       this.set('errors', null);
       this.set('step', 2);
 
-      this.set('exoscaleConfig.apiKey', (this.get('exoscaleConfig.apiKey')||'').trim());
-      this.set('exoscaleConfig.apiSecretKey', (this.get('exoscaleConfig.apiSecretKey')||'').trim());
+      this.set('exoscaleConfig.exoscaleApiKey', (this.get('exoscaleConfig.exoscaleApiKey')||'').trim());
+      this.set('model.secretValues.exoscaleConfig.exoscaleApiSecretKey', (this.get('model.secretValues.exoscaleConfig.exoscaleApiSecretKey')||'').trim());
 
       this.apiRequest('listSecurityGroups').then((res) => {
         let groups       = [];
@@ -271,7 +290,7 @@ export default Ember.Component.extend(Driver, {
     let url         = this.get('app.proxyEndpoint') + '/' + this.exoscaleApi;
     params          = params || {};
     params.command  = command;
-    params.apiKey   = this.get('exoscaleConfig.apiKey');
+    params.apiKey   = this.get('exoscaleConfig.exoscaleApiKey');
     params.response = 'json';
 
     return ajaxPromise({url: url,
@@ -293,7 +312,7 @@ export default Ember.Component.extend(Driver, {
                                 .sort()
                                 .join('&');
                           settings.data += '&signature=' + encodeURIComponent(AWS.util.crypto.hmac(
-                            this.get('exoscaleConfig.apiSecretKey'), qs, 'base64', 'sha1'));
+                            this.get('model.secretValues.exoscaleConfig.exoscaleApiSecretKey'), qs, 'base64', 'sha1'));
                           return true;
                         },
                         data: params}, true);

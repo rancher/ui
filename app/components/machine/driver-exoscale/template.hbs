@@ -1,6 +1,21 @@
 <section class="horizontal-form">
   <form>
     <div class="container-fluid">
+      <div class="over-hr mt-20 mb-20">
+        <span>{{t 'machine.driverExoscale.instanceSection'}}</span>
+      </div>
+
+      <div class="row mb-20">
+        {{form-name-description
+            name=model.name
+            description=model.description
+            nameRequired=true
+            namePlaceholder="hostPartial.host.addCommon.new.form.name.placeholder"
+            descriptionShown=true
+            descriptionExpanded=true
+        }}
+      </div>
+
       <div class="over-hr mb-20">
         <span>{{t 'machine.driverExoscale.accountSection'}}</span>
       </div>
@@ -11,9 +26,9 @@
         </div>
         <div class="col span-10">
           {{#if isStep1}}
-            {{input type="text" name="username" classNames="form-control" placeholder=(t 'machine.driverExoscale.apiKey.placeholder') value=exoscaleConfig.apiKey}}
+            {{input type="text" name="username" classNames="form-control" placeholder=(t 'machine.driverExoscale.apiKey.placeholder') value=exoscaleConfig.exoscaleApiKey}}
           {{else}}
-            <div>{{exoscaleConfig.apiKey}}</div>
+            <div>{{exoscaleConfig.exoscaleApiKey}}</div>
           {{/if}}
         </div>
       </div>
@@ -23,7 +38,7 @@
         </div>
         <div class="col span-10">
           {{#if isStep1}}
-            {{input type="password" name="password" classNames="form-control" placeholder=(t 'machine.driverExoscale.secretKey.placeholder') value=exoscaleConfig.apiSecretKey}}
+            {{input type="password" name="password" classNames="form-control" placeholder=(t 'machine.driverExoscale.secretKey.placeholder') value=model.secretValues.exoscaleConfig.exoscaleApiSecretKey}}
           {{else}}
             <div class="text-muted text-italic">{{t 'machine.driverExoscale.secretKey.provided'}}</div>
           {{/if}}
@@ -128,12 +143,8 @@
 <section class="horizontal-form pt-0 {{unless isGteStep6 'hide'}}">
   <div class="container-fluid">
     <div class="over-hr mt-20 mb-20">
-      <span>{{t 'machine.driverExoscale.instanceSection'}}</span>
+      <span>{{t 'machine.driverExoscale.instanceOptionsSection'}}</span>
     </div>
-
-    {{#if showNameScale}}
-      {{partial "host/add-common"}}
-    {{/if}}
 
     <div class="row inline-form">
       <div class="col span-2 col-inline">
