@@ -38,12 +38,14 @@ export default Ember.Component.extend({
     if ( existing )
     {
       let links = existing.get('linkedServices');
-      Object.keys(links).forEach((key) => {
+      if(links !== null) {
+        Object.keys(links).forEach((key) => {
         out.pushObject(Ember.Object.create({
           isService: true,
           value: links[key],
         }));
       });
+      }
     }
     else
     {
