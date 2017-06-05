@@ -32,7 +32,7 @@
           <label>{{t 'viewEditProject.showEdit.template'}}</label>
           <div class="row nav nav-boxes checked-active">
             {{#each templateChoices as |tpl|}}
-              <a href="#" tabindex="1" {{action "selectTemplate" tpl.id}} class="col nav-box-item driver orchestration-driver pl-5 {{if (eq project.projectTemplateId tpl.id) 'active'}}">
+              <a href="#" tabindex="1" {{action "selectTemplate" tpl.id}} class="col nav-box-item driver orchestration-driver p-10 {{if (eq project.projectTemplateId tpl.id) 'active'}}">
                 <img src="{{tpl.image}}"/>
                 <div class="clip">{{tpl.name}}</div>
               </a>
@@ -42,11 +42,11 @@
 
         {{#each-in selectedProjectTemplate.summary as |category names|}}
           <div class="text-center">
-            <label class="text-capitalize">{{category}}</label>: {{names}}
+            <label class="text-muted">{{category}}</label>: {{names}}
           </div>
         {{else}}
           <div class="text-center">
-            <label class="text-capitalize">Orchestration</label>: Cattle
+            <label class="text-muted">Orchestration</label>: Cattle
           </div>
         {{/each-in}}
       </div>
@@ -60,9 +60,8 @@
 {{/if}}
 
 <section>
-  <h4>{{t 'viewEditProject.showEdit.accessControl'}}</h4>
-  <hr/>
-  <div class="box">
+  <div class="box mt-40">
+    <h4>{{t 'viewEditProject.showEdit.accessControl'}}</h4>
     {{#if (and accessEnabled showEdit)}}
       <div class="inline-form mb-20">
         {{input-identity action="checkMember" onError="error"}}
@@ -113,7 +112,6 @@
           </tr>
         {{/if}}
       {{/sortable-table}}
-      <hr />
     {{else}}
       <p class="text-info text-center">
         {{t 'viewEditProject.helpBlock' htmlSafe=true}}
@@ -125,9 +123,8 @@
 
 {{#if network}}
   <section>
+    <div class="box mt-40">
     <h4>{{t 'viewEditProject.networkPolicy.label'}}</h4>
-    <hr/>
-    <div class="box">
       <div class="row">
         <div class="col span-12">
           <p>{{t 'viewEditProject.networkPolicy.description'}}</p>
