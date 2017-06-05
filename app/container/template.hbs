@@ -177,6 +177,29 @@
       }}
     </div>
     <div class="mt-20">
+      {{#accordion-list-item
+           title=(t 'containerPage.linksTab.header')
+           detail=(t 'containerPage.linksTab.detail')
+           status=(t 'containerPage.linksTab.status' count=model.instanceLinks.length)
+           statusClass=(if model.instanceLinks.length 'bg-success' 'text-muted')
+           expandAll=al.expandAll
+           expand=(action expandFn)
+      }}
+        <label class="acc-label">{{t 'containerPage.linksTab.header'}}</label>
+        <ul class="list-unstyled list-inline with-room">
+          {{#each model.instanceLinks as |link|}}
+            <li>
+              <a href="{{href-to 'container' link.targetInstanceId }}">
+                {{link.linkedInstanceName}} as {{link.linkName}}
+              </a>
+            </li>
+          {{else}}
+            <li class="text-muted">{{t 'containerPage.linksTab.noData'}}</li>
+          {{/each}}
+        </ul>
+      {{/accordion-list-item}}
+    </div>
+    <div class="mt-20">
       {{container/form-secrets
           instance=model.container
           editing=false
