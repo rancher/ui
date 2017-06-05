@@ -88,10 +88,7 @@ export default Ember.Component.extend(Sortable, StickyHeader, {
     if ( this.get('groupByKey') ) {
       watchKey = `pagedContent.@each.${this.get('groupByKey').replace(/\..*/g,'')}`;
     }
-    console.log('WATCH KEY:', watchKey);
     this.set('groupedContent', Ember.computed(watchKey, () => {
-      let start = (new Date()).getTime();
-      console.log('groupedContent start');
       let ary = [];
       let map = {};
 
@@ -110,8 +107,6 @@ export default Ember.Component.extend(Sortable, StickyHeader, {
         }
       });
 
-      let end = (new Date()).getTime();
-      console.log('groupedContent end', end-start);
       return ary;
     }));
   },
@@ -226,8 +221,6 @@ export default Ember.Component.extend(Sortable, StickyHeader, {
   }),
 
   filtered: Ember.computed('arranged.[]','searchText', function() {
-    let start = (new Date()).getTime();
-    console.log('filtered start');
     let out = this.get('arranged').slice();
     let searchFields = this.get('searchFields');
     let searchText =  (this.get('searchText')||'').trim().toLowerCase();
@@ -284,8 +277,6 @@ export default Ember.Component.extend(Sortable, StickyHeader, {
     }
 
     this.set('subMatches', subMatches);
-    let end = (new Date()).getTime();
-    console.log('filtered end', (end-start));
     return out;
   }),
 
