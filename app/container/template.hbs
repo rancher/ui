@@ -100,13 +100,13 @@
              classNames="grid sortable-table"
              body=model.ports
              searchText=searchText
-             sortBy=sortBy
+             sortBy=portSortBy
              bulkActions=false
              rowActions=false
              stickyHeader=false
              pagingLabel="pagination.port"
              isVisible=parent.expanded
-             headers=headers as |sortable kind port dt|}}
+             headers=portHeaders as |sortable kind port dt|}}
           {{#if (eq kind "row")}}
             <td data-title="{{dt.publicIp}}">
               {{#if (eq "0.0.0.0" port.displayPublicIp)}}
@@ -227,7 +227,7 @@
              stickyHeader=false
              pagingLabel="pagination.volume"
              isVisible=parent.expanded
-             headers=headers as |sortable kind mount dt|}}
+             headers=storageHeaders as |sortable kind mount dt|}}
           {{#if (eq kind "row")}}
             <td data-title="{{dt.name}}">
               {{mount.displayVolumeName}}
