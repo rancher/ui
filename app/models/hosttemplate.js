@@ -9,7 +9,9 @@ var HostTemplate = Resource.extend({
     var a = this.get('actionLinks');
 
     return [
-      { label: 'action.remove',        icon: 'icon icon-trash',  action: 'promptDelete', enabled: !!a.remove, altAction: 'delete' },
+      { label: 'action.remove',     icon: 'icon icon-trash',  action: 'promptDelete', enabled: !!a.remove, altAction: 'delete' },
+      { divider: true },
+      { label: 'action.viewInApi',  icon: 'icon icon-external-link',action: 'goToApi',      enabled: true},
     ];
   }.property('actionLinks.{remove}'),
 });

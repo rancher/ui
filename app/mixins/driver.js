@@ -16,7 +16,6 @@ export default Ember.Mixin.create(NewOrEdit, ManageLabels, {
 
   count         : null,
   prefix        : null,
-  multiTemplate : null,
   clonedModel   : null,
   useHost       : true,
   hostConfig    : null,
@@ -57,6 +56,50 @@ export default Ember.Mixin.create(NewOrEdit, ManageLabels, {
     } else if (typeof this.get('bootstrap') === 'function') {
       this.bootstrap();
     }
+
+    // Dynamically guess a decent location and size description.  Individual drivers can override.
+    let locationA = ['region'];
+    let locationB = ['zone','availabilityZone','location','datacenter'];
+    let size = ['instanceType','offering','flavor','size'];
+    this.set('displayLocation', Ember.computed(
+      this.driver+'.{'+locationA.join(',')+'}',
+      this.driver+'.{'+locationB.join(',')+'}',
+    function() {
+      let out = '';
+      let config = this.get(this.get('driver'));
+      for ( let i = 0 ; i < locationA.length ; i++ ) {
+        let key = locationA[i];
+        let val = config.get(key);
+        if ( val ) {
+          out = val;
+          break;
+        }
+      }
+
+      for ( let i = 0 ; i < locationB.length ; i++ ) {
+        let key = locationB[i];
+        let val = config.get(key);
+        if ( val ) {
+          out += val;
+          break;
+        }
+      }
+
+      return out;
+    }));
+
+    this.set('displaySize', Ember.computed(this.driver+'.{'+size.join(',')+'}', function() {
+      let config = this.get(this.get('driver'));
+      for ( let i = 0 ; i < size.length ; i++ ) {
+        let key = size[i];
+        let val = config.get(key);
+        if ( val ) {
+          return val;
+        }
+      }
+
+      return '';
+    }));
   },
 
   driverSaveAction: Ember.computed('inModal', function() {
@@ -119,24 +162,28 @@ export default Ember.Mixin.create(NewOrEdit, ManageLabels, {
   }.property('nameParts','intl.locale'),
 
   nameDidChange: function() {
-    let parts = this.get('nameParts');
-    let nameField = 'hostname';
-    if (this.get('primaryResource.type') === 'machine') {
-      nameField = 'name';
+    this.set('primaryResource.name', this.get('prefix'));
+  }.observes('prefix'),
+
+  defaultDescription: function() {
+    let loc = this.get('displayLocation');
+    let size = this.get('displaySize');
+    if ( loc && size ) {
+      return loc + ' / ' + size;
+    } else {
+      return (loc||'') + (size||'');
     }
-    if ( typeof parts.name !== 'undefined' || !parts.prefix )
-    {
-      this.set(`primaryResource.${nameField}`, parts.name || '');
-    }
-    else
-    {
-      let first = parts.prefix + Util.strPad(parts.start, parts.minLength, '0');
-      this.set(`primaryResource.${nameField}`, first);
-    }
-  }.observes('nameParts'),
+  }.property('displayLocation','displaySize'),
 
   willSave() {
-    this.set('multiTemplate', this.get('primaryResource').clone());
+    if ( this.get('primaryResource.type').toLowerCase() === 'hosttemplate') {
+     if ( !this.get('primaryResource.description') ) {
+       this.set('primaryResource.description', this.get('defaultDescription'));
+     }
+    } else {
+      this.set('multiTemplate', this.get('primaryResource').clone());
+    }
+
     return this._super();
   },
 
@@ -151,18 +198,42 @@ export default Ember.Mixin.create(NewOrEdit, ManageLabels, {
     return errors.length === 0;
   },
 
+  doSave() {
+    if ( this.get('primaryResource.type').toLowerCase() === 'hosttemplate' ) {
+      return this._super(...arguments);
+    } else {
+      return Ember.RSVP.resolve(this.get('primaryResource'));
+    }
+  },
 
   didSave() {
-    if ( this.get('count') > 1 )
-    {
-      let parts = this.get('nameParts');
-      let tpl = this.get('multiTemplate');
-      let delay = this.get('createDelayMs');
+    let parts = this.get('nameParts');
+    let delay = this.get('createDelayMs');
+    let tpl;
+    if ( this.get('primaryResource.type').toLowerCase() === 'hosttemplate') {
+      tpl = this.get('store').createRecord({
+        type: 'host',
+        driver: this.get('model.driver'),
+        hostTemplateId: this.get('model.id'),
+      });
+
+      // The hostTemplate was the first one, wait for it then add hosts
+      this.get('model').waitForState('active').then(() => {
+        return addHosts();
+      });
+    } else {
+      // The model was the first one, add subsequent numbers
+      tpl = this.get('multiTemplate');
+      return addHosts();
+    }
+
+    function addHosts() {
       var promise = new Ember.RSVP.Promise(function(resolve,reject) {
         let hosts = [];
-        for ( let i = parts.start + 1 ; i <= parts.end ; i++ )
+        for ( let i = parts.start ; i <= parts.end ; i++ )
         {
           let host = tpl.clone();
+          host.set('name', null);
           host.set('hostname', parts.prefix + Util.strPad(i, parts.minLength, '0'));
           hosts.push(host);
         }
@@ -188,7 +259,7 @@ export default Ember.Mixin.create(NewOrEdit, ManageLabels, {
 
   doneSaving() {
     let out = this._super();
-    this.send('goBack');
+    this.get('router').transitionTo('hosts');
     return out;
   },
 
