@@ -35,7 +35,7 @@ export default Ember.Component.extend({
     var out = [];
 
     var existing = this.get('existing');
-    if ( existing )
+    if ( existing && existing.get('linkedServices'))
     {
       let links = existing.get('linkedServices');
       Object.keys(links).forEach((key) => {
