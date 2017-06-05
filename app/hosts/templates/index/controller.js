@@ -6,7 +6,7 @@ export default Ember.Controller.extend({
       this.transitionToRoute('hosts.templates.launch', model.id);
     },
   },
-  filteredContent: Ember.computed('model', function() {
-    return this.get('model.content').sortBy('driver', 'name');
-  }),
+
+  sorting: ['driver','name'],
+  arranged: Ember.computed.sort('model','sorting'),
 });

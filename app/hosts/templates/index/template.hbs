@@ -1,47 +1,51 @@
 <section class="header clearfix">
-  {{#link-to "custom-host" classNames="ml-10 btn btn-sm bg-primary pull-right"}}{{t 'hostTemplatesPage.custom'}}{{/link-to}}
-  {{#link-to "hosts.new" classNames="btn btn-sm bg-primary pull-right"}}{{t 'hostTemplatesPage.addHost'}}{{/link-to}}
   <h1>
-    {{#link-to "infrastructure-tab"}}{{t 'hostsPage.new.header.linkTo'}}{{/link-to}}
     {{t 'hostTemplatesPage.title'}}
   </h1>
 </section>
 
 <section class="pl-15 pr-15 clearfix">
-  {{#if filteredContent}}
-    {{#each filteredContent as |host|}}
-      {{#catalog-box
-          model=model
-          active=(not (eq true 'inactive'))
-          classNames='cloud-host'
-          showIcon=false
-          showDescription=false
-          as |section|
-      }}
-        {{#if (eq section 'header')}}
-          {{action-menu model=host class="pull-right"}}
-          <div class="catalog-icon mt-10 {{parse-host-icon host.driver}}"/>
-        {{else if (eq section 'body')}}
-          <hr class="m-10" />
-          <h2>{{host.name}}</h2>
-          <div>
-            <div class="details">
-              {{#if (get (host-public-values host) 'region')}}
-                <div>
-                  <label for="">{{t 'hostTemplatesPage.templateBox.labels.zone'}}: </label>
-                  {{get (host-public-values host) 'region'}}{{get (host-public-values host) 'zone'}}
-                </div>
-              {{/if}}
-            </div>
+  {{#catalog-box
+    classNames="cloud-host dotted inactive"
+    showIcon=false
+    showDescription=false
+    as |section|
+  }}
+    {{#if (eq section 'header')}}
+      <div class="catalog-icon mt-10 newtemplate"/>
+    {{else if (eq section 'body') }}
+      <hr class="m-10" />
+      <h2>{{t 'hostTemplatesPage.new.title'}}</h2>
+    {{else if (eq section 'footer') }}
+      {{#link-to "hosts.new" classNames="btn btn-sm bg-primary"}}{{t 'hostTemplatesPage.new.btn'}}{{/link-to}}
+    {{/if}}
+  {{/catalog-box}}
 
-          </div>
-        {{else if (eq section 'footer')}}
-          <button role="button" class="btn bg-primary" {{action 'launch' host}}>{{t 'hostTemplatesPage.templateBox.button'}}</button>
-        {{/if}}
-      {{/catalog-box}}
-    {{/each}}
-  {{else}}
-    {{empty-table resource="container" newRoute="hosts.new" newTranslationKey="hostTemplatesPage.addHost"}}
-  {{/if}}
-
+  {{#each arranged as |host|}}
+    {{#catalog-box
+        model=model
+        classNames='cloud-host'
+        showIcon=false
+        showDescription=false
+        as |section|
+    }}
+      {{#if (eq section 'header')}}
+        {{action-menu model=host class="pull-right"}}
+        <div class="catalog-icon mt-10 {{parse-host-icon host.driver}}"/>
+      {{else if (eq section 'body')}}
+        <hr class="m-10" />
+        <h2>{{host.name}}</h2>
+        <div class="details">
+          {{host.description}}
+        </div>
+      {{else if (eq section 'footer')}}
+        <button role="button" class="btn bg-primary" {{action 'launch' host}}>{{t 'hostTemplatesPage.templateBox.button'}}</button>
+      {{/if}}
+    {{/catalog-box}}
+  {{/each}}
 </section>
+{{#unless app.isCaas}}
+  <div class="text-center">
+    {{#link-to "custom-host" classNames="ml-10 btn btn-sm bg-transparent"}}{{t 'hostTemplatesPage.custom'}}{{/link-to}}
+  </div>
+{{/unless}}

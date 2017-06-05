@@ -687,7 +687,12 @@ hostsPage:
         transfer: Transfer
     addPage:
       launch: Launch
-      header: Launch New Host
+      header: Add Host
+      quantity:
+        label: Quantity
+      name:
+        label: Host Name
+        placeholder: e.g. host01
       memStUnit: GB
       transferUnit: TB
       instance: 'Type:'
@@ -757,7 +762,6 @@ hostsPage:
       noMatch: No hosts match the current search
   new:
     header:
-      linkTo: "Hosts: "
       text: Add Host
     manageLink: Manage available machine drivers
     form:
@@ -848,9 +852,11 @@ hostsPage:
           noData: This host does not have any volumes
 
 hostTemplatesPage:
-  title: Templates
-  addHost: Add Host Template
-  custom: Add Custom Host
+  title: Add Host
+  new:
+    title: Start from scratch
+    btn: Configure
+  custom: Custom add an existing host that is already running Docker
   templateBox:
     button: Launch
     labels:
@@ -1430,8 +1436,6 @@ hostPartial:
         form:
           name:
             placeholder: e.g. host01
-    addOptions:
-      labels: Labels
 
 ldap:
   providerName:
@@ -1591,14 +1595,6 @@ accordionRow:
 advancedSection:
   showText: Show advanced options
   hideText: Hide advanced options
-
-addHostTemplate:
-  add:
-    header: Add New Host Key
-  choose:
-    label: Template Keys*
-    add: Add a new key
-    prompt: Select A Template Key
 
 billingInfo:
   header: Billing Info
@@ -2477,6 +2473,7 @@ formUserData:
 formUserLabels:
   title: Labels
   detail: Labels are key/value pairs that can be used to annotate containers and make scheduling decisions.
+  hostDetail: Labels are key/value pairs that can be applied to hosts and used to make scheduling decisions for containers.
   addAction: Add Label
   key:
     label: Key

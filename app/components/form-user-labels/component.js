@@ -7,6 +7,8 @@ export default Ember.Component.extend(ManageLabels, {
 
   classNames: ['accordion-wrapper'],
 
+  detailKey: 'formUserLabels.detail',
+
   // Inputs
   initialLabels: null,
 

@@ -114,14 +114,10 @@ Router.map(function() {
       this.route('custom-host', {path: '/hosts/custom', resetNamespace: true});
       this.route('hosts', {path: '/hosts', resetNamespace: true}, function() {
         this.route('index', {path: '/'});
-        this.route('templates', {path: '/templates'}, function() {
-          this.route('index', {path: '/'});
-          this.route('launch', {path: '/launch/:template_id'});
-        });
 
-        this.route('container-cloud', {path: '/container-cloud'}, function() {
+        this.route('templates', {path: '/launch'}, function() {
           this.route('index', {path: '/'});
-          this.route('add', {path: '/add/:cloud_id'});
+          this.route('launch', {path: '/:template_id'});
         });
 
         this.route('new', {path: '/add'}, function() {

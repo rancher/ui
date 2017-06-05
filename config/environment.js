@@ -100,6 +100,7 @@ module.exports = function(environment) {
       apiServer: 'http://localhost:8080',
       legacyApiEndpoint: '/v1',
       apiEndpoint: '/v2',
+      betaApiEndpoint: '/v2-beta',
       catalogServer: '',
       catalogEndpoint: '/v1-catalog',
       authServer: '',
@@ -115,7 +116,7 @@ module.exports = function(environment) {
       mesosEndpoint: '/r/projects/%PROJECTID%/mesos-master:5050',
       swarmDashboard: '/r/projects/%PROJECTID%/portainer/',
       projectEndpoint: '/v2/projects/%PROJECTID%',
-      proxyEndpoint: '/v2/proxy',
+      proxyEndpoint: '/v2-beta/proxy',
       wsEndpoint: '/v2/projects/%PROJECTID%/subscribe' +
                     '?eventNames=resource.change' +
                     '&limit=-1',

@@ -1,1 +1,67 @@
-{{partial 'host/host-templates/host-launch'}}
+<div class="hosts-cloud-add">
+  <section class="header clearfix">
+    <div class="row">
+      <div class="mb-0">
+        <h1>
+          {{t 'hostsPage.cloudHostsPage.addPage.header'}}
+        </h1>
+      </div>
+    </div>
+  </section>
+
+  <section class="mt-20">
+    <form>
+      <div class="row addtl-info">
+        <div class="col span-4">
+          <div class="nav-boxes driver">
+            {{#if driver.hasUi}}
+              <div class="nav-box-item driver machine-driver active {{parse-host-icon hostTemplate.driver}}"></div>
+            {{else}}
+              <div class="nav-box-item driver machine-driver active other"></div>
+            {{/if}}
+          </div>
+        </div>
+        <div class="col span-8">
+          <div>
+            <label for="">{{t 'hostsPage.cloudHostsPage.addPage.template'}}</label>
+            {{hostTemplate.name}}
+          </div>
+          <hr/>
+          {{#if driver.hasUi}}
+            {{partial (concat 'host/host-templates/' hostTemplate.driver)}}
+          {{else}}
+            {{partial 'host/host-templates/other'}}
+          {{/if}}
+
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col span-11-of-23">
+          {{form-name-description
+            name=prefix
+            nameRequired=true
+            nameLabel="hostsPage.cloudHostsPage.addPage.name.label"
+            namePlaceholder="hostsPage.cloudHostsPage.addPage.name.placeholder"
+            nameHelpText=nameCountLabel
+            descriptionShown=true
+          }}
+        </div>
+        <div class="col span-11-of-23 offset-1-of-23">
+          {{container/form-scale
+            isHost=true
+            initialScale=1
+            setScale=(action (mut count))
+          }}
+        </div>
+      </div>
+
+      <hr />
+
+      {{form-user-labels initialLabels=clonedModel.labels setLabels=(action 'setLabels') detailKey="formUserLabels.hostDetail" expandAll=null}}
+
+      {{top-errors errors=errors}}
+      {{save-cancel save="save" cancel="cancel" createLabel='hostsPage.cloudHostsPage.addPage.launch'}}
+    </form>
+  </section>
+</div>
