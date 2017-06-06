@@ -6,22 +6,32 @@ const DEFAULT_GID = '0';
 const DEFAULT_MODE = '444';
 
 export default Ember.Component.extend({
-  intl: Ember.inject.service(),
-  secrets: null,
+  intl:            Ember.inject.service(),
+  secrets:         null,
+  editing:         false,
   showPermissions: false,
 
-  allSecrets: null,
-  haveAny: Ember.computed.gte('allSecrets.length',1),
+  allSecrets:      null,
+  haveAny:         Ember.computed.gte('allSecrets.length',1),
 
   init: function() {
     this._super(...arguments);
 
-    this.set('allSecrets', this.get('store').all('secret'));
-
+    let allSecrets = this.set('allSecrets', this.get('store').all('secret'));
     let secrets = this.get('secrets');
+    let instance = this.get('instance');
+
     if ( !secrets ) {
       secrets = [];
       this.set('secrets', secrets);
+    }
+
+    if (instance && instance.get('secrets.length')) {
+      instance.get('secrets').forEach((secret) => {
+        let selected = allSecrets.findBy('id', secret.secretId);
+        secret.set('alias', selected.get('name'));
+        secrets.push(secret);
+      });
     }
 
     for ( var i = 0 ; i < secrets.get('length') ; i++ ) {

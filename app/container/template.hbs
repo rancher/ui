@@ -100,13 +100,13 @@
              classNames="grid sortable-table"
              body=model.ports
              searchText=searchText
-             sortBy=sortBy
+             sortBy=portSortBy
              bulkActions=false
              rowActions=false
              stickyHeader=false
              pagingLabel="pagination.port"
              isVisible=parent.expanded
-             headers=headers as |sortable kind port dt|}}
+             headers=portHeaders as |sortable kind port dt|}}
           {{#if (eq kind "row")}}
             <td data-title="{{dt.publicIp}}">
               {{#if (eq "0.0.0.0" port.displayPublicIp)}}
@@ -178,6 +178,36 @@
     </div>
     <div class="mt-20">
       {{#accordion-list-item
+           title=(t 'containerPage.linksTab.header')
+           detail=(t 'containerPage.linksTab.detail')
+           status=(t 'containerPage.linksTab.status' count=model.instanceLinks.length)
+           statusClass=(if model.instanceLinks.length 'bg-success' 'text-muted')
+           expandAll=al.expandAll
+           expand=(action expandFn)
+      }}
+        <ul class="list-unstyled list-inline with-room">
+          {{#each model.instanceLinks as |link|}}
+            <li>
+              <a href="{{href-to 'container' link.targetInstanceId }}">
+                {{link.linkedInstanceName}} as {{link.linkName}}
+              </a>
+            </li>
+          {{else}}
+            <li class="text-muted text-center">{{t 'containerPage.linksTab.noData'}}</li>
+          {{/each}}
+        </ul>
+      {{/accordion-list-item}}
+    </div>
+    <div class="mt-20">
+      {{container/form-secrets
+          instance=model.container
+          editing=false
+          expandAll=al.expandAll
+          expandFn=expandFn
+      }}
+    </div>
+    <div class="mt-20">
+      {{#accordion-list-item
            title=(t 'containerPage.volumesTab.header')
            detail=(t 'containerPage.volumesTab.detail')
            status=(t 'containerPage.volumesTab.status' count=(or model.container.mounts.length 0))
@@ -196,7 +226,7 @@
              stickyHeader=false
              pagingLabel="pagination.volume"
              isVisible=parent.expanded
-             headers=headers as |sortable kind mount dt|}}
+             headers=storageHeaders as |sortable kind mount dt|}}
           {{#if (eq kind "row")}}
             <td data-title="{{dt.name}}">
               {{mount.displayVolumeName}}

@@ -6,7 +6,7 @@ export default Ember.Route.extend({
   catalog: Ember.inject.service(),
 
   model() {
-    return this.get('store').find('stack').then((stacks) => {
+    return this.get('store').findAll('stack').then((stacks) => {
       let deps = [];
       let catalog = this.get('catalog');
       stacks = stacks.filterBy('isFromCatalog', true);

@@ -64,27 +64,27 @@
     <div class="row">
       <div class="col span-4 col-inline">
         <label class="acc-label">{{t 'formSecurity.memoryLimit.label'}}</label>
-        <div class="radio">
-          <label>{{radio-button selection=memoryMode value="unlimited"}} {{t 'formSecurity.memoryLimit.unlimited'}}</label>
-        </div>
-        <div class="radio">
-          <label>
-            {{radio-button selection=memoryMode value="set"}} {{t 'formSecurity.memoryLimit.set'}}
-            <span class="with-input" style="width: 175px;">
-              <div class="input-group input-sm">
-                {{input-integer min="4" step="1" value=memoryMb disabled=(not-eq memoryMode 'set')}}
-                <div class="input-group-addon bg-default">{{t 'generic.mibibyte'}}</div>
-              </div>
-            </span>
-          </label>
-        </div>
+        {{#input-or-display editable=editing value=memoryMode classesForDisplay="text-muted form-control-static"}}
+          <div class="radio">
+            <label>{{radio-button selection=memoryMode value="unlimited"}} {{t 'formSecurity.memoryLimit.unlimited'}}</label>
+          </div>
+          <div class="radio">
+            <label>
+              {{radio-button selection=memoryMode value="set"}} {{t 'formSecurity.memoryLimit.set'}}
+              <span class="with-input" style="width: 175px;">
+                <div class="input-group input-sm">
+                  {{input-integer min="4" step="1" value=memoryMb disabled=(not-eq memoryMode 'set')}}
+                  <div class="input-group-addon bg-default">{{t 'generic.mibibyte'}}</div>
+                </div>
+              </span>
+            </label>
+          </div>
+        {{/input-or-display}}
       </div>
 
       <div class="col span-4 col-inline">
         <label class="acc-label">{{t 'formSecurity.swapLimit.label'}}</label>
-        {{#if (eq memoryMode "unlimited")}}
-          <div class="text-muted form-control-static">{{t 'formSecurity.swapLimit.unlimited'}}</div>
-        {{else}}
+        {{#input-or-display editable=editing value=swapMode classesForDisplay="text-muted form-control-static"}}
           <div class="radio">
             <label>{{radio-button selection=swapMode value="default"}} {{t 'formSecurity.swapLimit.default'}}</label>
           </div>
@@ -105,14 +105,12 @@
               </span>
             </label>
           </div>
-        {{/if}}
+        {{/input-or-display}}
       </div>
 
       <div class="col span-4 col-inline">
         <label class="acc-label">{{t 'formSecurity.swappiness.label'}}</label>
-        {{#if (eq swapMode "none")}}
-          <p class="text-muted form-control-static">{{t 'generic.na'}}</p>
-        {{else}}
+        {{#input-or-display editable=editing value=swappinessMode classesForDisplay="text-muted form-control-static"}}
           <div class="radio">
             <label>{{radio-button selection=swappinessMode value="default" disabled=(eq swapMode "none")}} {{t 'formSecurity.swappiness.default'}}</label>
           </div>
@@ -127,37 +125,41 @@
               </span>
             </label>
           </div>
-        {{/if}}
+        {{/input-or-display}}
       </div>
     </div>
 
-    <div class="row box mt-20">
-      <div class="col span-6">
+    <div class="row mt-20">
+      <div class="col box span-6">
         <label class="acc-label">{{t 'formSecurity.memoryReservation.label'}}</label>
-        <div class="input-group">
-          {{input-integer min="4" step="1" value=memoryReservationMb classNames="form-control" placeholder=(t 'formSecurity.memoryReservation.placeholder')}}
-          <div class="input-group-addon bg-default">{{t 'generic.mibibyte'}}</div>
-        </div>
-      </div>
-      <div class="col span-6">
-        <label class="acc-label">{{t 'formSecurity.milliCpuReservation.label'}}</label>
-        <span class="with-input">
+        {{#input-or-display editable=editing value=memoryReservationMb classesForDisplay="text-muted form-control-static"}}
           <div class="input-group">
-            {{input-integer min="1" step="1" value=instance.milliCpuReservation classNames="form-control"}}
-          <div class="input-group-addon bg-default">{{t 'formSecurity.milliCpuReservation.unit'}}</div>
+            {{input-integer min="4" step="1" value=memoryReservationMb classNames="form-control" placeholder=(t 'formSecurity.memoryReservation.placeholder')}}
+            <div class="input-group-addon bg-default">{{t 'generic.mibibyte'}}</div>
           </div>
-        </span>
+        {{/input-or-display}}
+      </div>
+      <div class="col box span-6">
+        <label class="acc-label">{{t 'formSecurity.milliCpuReservation.label'}}</label>
+        {{#input-or-display editable=editing value=instance.milliCpuReservation classesForDisplay="text-muted form-control-static"}}
+          <span class="with-input">
+            <div class="input-group">
+              {{input-integer min="1" step="1" value=instance.milliCpuReservation classNames="form-control"}}
+              <div class="input-group-addon bg-default">{{t 'formSecurity.milliCpuReservation.unit'}}</div>
+            </div>
+          </span>
+        {{/input-or-display}}
       </div>
     </div>
 
-    <div class="row box mt-20">
-      <div class="col span-6">
+    <div class="row mt-20">
+      <div class="col box span-6">
         <label class="acc-label">{{t 'formSecurity.cpuPinning.label'}}</label>
         {{#input-or-display editable=editing value=instance.cpuSet}}
           {{input type="text" value=instance.cpuSet classNames="form-control" placeholder=(t 'formSecurity.cpuPinning.placeholder')}}
         {{/input-or-display}}
       </div>
-      <div class="col span-6">
+      <div class="col box span-6">
         <label class="acc-label">{{t 'formSecurity.shares.label'}}</label>
         {{#input-or-display editable=editing value=instance.cpuShares}}
           {{input-integer value=instance.cpuShares step=128 min=0 classNames="form-control" placeholder=(t 'formSecurity.shares.placeholder')}}
@@ -165,8 +167,8 @@
       </div>
     </div>
 
-    <div class="row box mt-20">
-      <div class="col span-6">
+    <div class="row mt-20">
+      <div class="col box span-6">
         <label class="acc-label">{{t 'formSecurity.capabilities.add'}}</label>
         {{#if editing}}
           <select class="form-control select-cap-add" multiple="true" onchange={{action 'modifyCapabilities' 'capAdd' }}>
@@ -185,7 +187,7 @@
         {{/if}}
       </div>
 
-      <div class="col span-6">
+      <div class="col box span-6">
         <label class="acc-label">{{t 'formSecurity.capabilities.drop'}}</label>
         {{#if editing}}
           <select class="form-control select-cap-drop" multiple="true" onchange={{action 'modifyCapabilities' 'capDrop'}}>

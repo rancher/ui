@@ -370,9 +370,7 @@ export default Ember.Mixin.create({
           if ( field.nullable )
           {
             val = null;
-            if ( val !== null ) {
-              this.set(key, val);
-            }
+            this.set(key, val);
           }
         }
       }

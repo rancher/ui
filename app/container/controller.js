@@ -8,11 +8,11 @@ export default Ember.Controller.extend({
       this.transitionToRoute('container', container.get('id'));
     }
   },
-  sortBy: 'privatePort',
+  portSortBy: 'privatePort',
   queryParams: ['sortBy'],
   searchText: '',
 
-  headers: [
+  portHeaders: [
     {
       name: 'publicIp',
       sort: ['displayPublicIp','privatePort','protocol'],
@@ -36,6 +36,25 @@ export default Ember.Controller.extend({
       sort: ['protocol','privatePort'],
       searchField: 'protocol',
       translationKey: 'containerPage.portsTab.table.protocol',
+    },
+  ],
+  storageSortBy: 'state',
+  storageHeaders:  [
+    {
+      name:           'state',
+      sort:           ['stateSort','displayUri','id'],
+      translationKey: 'hostsPage.hostPage.storageTab.table.header.state',
+      width:          125,
+    },
+    {
+      name:           'hostPath',
+      sort:           ['displayUri','id'],
+      translationKey: 'hostsPage.hostPage.storageTab.table.header.hostPath',
+    },
+    {
+      name:           'mounts',
+      sort:           false,
+      translationKey: 'hostsPage.hostPage.storageTab.table.header.mounts',
     },
   ],
 });

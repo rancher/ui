@@ -1,4 +1,5 @@
 import Ember from 'ember';
+import C from 'ui/utils/constants';
 import { tagsToArray } from 'ui/models/stack';
 
 export default Ember.Controller.extend({
@@ -30,7 +31,12 @@ export default Ember.Controller.extend({
 
   filteredStacks: function() {
     var needTags = tagsToArray(this.get('tags'));
-    var out = this.get('model.stacks').filterBy('isFromCatalog', true);
+    var out      = this.get('model.stacks').filter((stack) => {
+      if (stack.get('isFromCatalog') && C.REMOVEDISH_STATES.indexOf(stack.get('state')) === -1) {
+        return true;
+      }
+      return false;
+    });
 
     if ( !this.get('prefs.showSystemResources') ) {
       out = out.filterBy('system', false);
@@ -41,5 +47,5 @@ export default Ember.Controller.extend({
     }
 
     return out;
-  }.property('model.stacks.@each.{type,isFromCatalog,tags}','tags','prefs.showSystemResources'),
+  }.property('model.stacks.@each.{type,isFromCatalog,tags,state}','tags','prefs.showSystemResources'),
 });

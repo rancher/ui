@@ -7,10 +7,12 @@
     expand=(action expandFn)
 }}
   {{#if haveAny}}
-    <button class="btn bg-link icon-btn" {{action "addSecret"}}>
-      <span class="darken"><i class="icon icon-plus text-small"/></span>
-      <span>{{t 'formSecrets.addLabel'}}</span>
-    </button>
+    {{#if editing}}
+      <button class="btn bg-link icon-btn" {{action "addSecret"}}>
+        <span class="darken"><i class="icon icon-plus text-small"/></span>
+        <span>{{t 'formSecrets.addLabel'}}</span>
+      </button>
+    {{/if}}
 
     {{#if secrets.length}}
       <table class="grid fixed no-lines mt-10 cell-padding">
@@ -28,7 +30,11 @@
         {{#each secrets as |row|}}
           <tr>
             <td data-title="{{t 'formSecrets.secret.label'}}: ">
-              {{schema/input-secret selectClass="form-control input-sm" selected=row.secretId}}
+              {{#if editing}}
+                {{schema/input-secret selectClass="form-control input-sm" selected=row.secretId}}
+              {{else}}
+                {{row.alias}}
+              {{/if}}
             </td>
 
             <td class="text-center">
@@ -36,25 +42,35 @@
             </td>
 
             <td data-title="{{t 'formSecrets.name.label'}}: ">
-              {{input type="text" class="form-control input-sm" value=row.name placeholder=(t 'formSecrets.name.placeholder')}}
+              {{#input-or-display editable=editing value=row.name}}
+                {{input type="text" class="form-control input-sm" value=row.name placeholder=(t 'formSecrets.name.placeholder')}}
+              {{/input-or-display}}
             </td>
 
             {{#if showPermissions}}
               <td class="divided" data-title="{{t 'formSecrets.uid.label'}}: ">
-                {{input-integer type="text" class="form-control input-sm" value=row.uid placeholder=(t 'formSecrets.uid.placeholder')}}
+                {{#input-or-display editable=editing value=row.uid}}
+                  {{input-integer type="text" class="form-control input-sm" value=row.uid placeholder=(t 'formSecrets.uid.placeholder')}}
+                {{/input-or-display}}
               </td>
               <td data-title="{{t 'formSecrets.gid.label'}}: ">
-                {{input-integer class="form-control input-sm" value=row.gid placeholder=(t 'formSecrets.gid.placeholder')}}
+                {{#input-or-display editable=editing value=row.gid}}
+                  {{input-integer class="form-control input-sm" value=row.gid placeholder=(t 'formSecrets.gid.placeholder')}}
+                {{/input-or-display}}
               </td>
 
               <td data-title="{{t 'formSecrets.mode.label'}}: ">
-                {{input-integer class="form-control input-sm" value=row.mode placeholder=(t 'formSecrets.mode.placeholder')}}
+                {{#input-or-display editable=editing value=row.mode}}
+                  {{input-integer class="form-control input-sm" value=row.mode placeholder=(t 'formSecrets.mode.placeholder')}}
+                {{/input-or-display}}
               </td>
             {{/if}}
 
-            <td class="text-right">
-              <button class="btn bg-primary btn-sm" {{action "removeSecret" row}}><i class="icon icon-minus"/><span class="sr-only">{{t 'generic.remove'}}</span></button>
-            </td>
+              <td class="text-right">
+                {{#if editing}}
+                  <button class="btn bg-primary btn-sm" {{action "removeSecret" row}}><i class="icon icon-minus"/><span class="sr-only">{{t 'generic.remove'}}</span></button>
+                {{/if}}
+              </td>
           </tr>
         {{/each}}
       </table>
