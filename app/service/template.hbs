@@ -47,12 +47,12 @@
     {{/if}}
 
     <div class="inline-block">
-      <label class="acc-label p-0">{{t 'servicePage.multistat.scale'}}</label>
+      <label class="acc-label p-0" style="vertical-align: middle;">{{t 'servicePage.multistat.scale'}}</label>
       {{#if service.canScale}}
-        <span class="pr-5">{{service.scale}}</span>
-        <div class="btn-group btn-group-xs p-0">
-          <button class="btn bg-default btn-xs" {{action "scaleDown" target=service}} disabled={{eq service.scale 1}}><i class="icon icon-minus"></i></button>
-          <button class="btn bg-default btn-xs" {{action "scaleUp" target=service}}><i class="icon icon-plus"></i></button>
+        <span class="pr-5" style="vertical-align: middle;">{{service.scale}}</span>
+        <div class="btn-group btn-group-xs p-0" style="vertical-align: middle;">
+          <button class="btn bg-secondary btn-xs" {{action "scaleDown" target=service}} disabled={{eq service.scale 1}}><i class="icon icon-minus"></i></button>
+          <button class="btn bg-secondary btn-xs" {{action "scaleUp" target=service}}><i class="icon icon-plus"></i></button>
         </div>
       {{else}}
         {{if service.isGlobalScale (concat service.scale (t 'servicePage.globalScale')) (t 'generic.na')}}
