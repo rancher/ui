@@ -2,6 +2,8 @@ import Ember from 'ember';
 import fetch from 'ember-api-store/utils/fetch';
 
 export default Ember.Controller.extend({
+  settings: Ember.inject.service(),
+
   emailSent: false,
   saving: false,
   saveDisabled: true,

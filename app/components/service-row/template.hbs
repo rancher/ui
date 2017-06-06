@@ -28,29 +28,25 @@
   <td data-title="{{dt.instanceState}}" class="pt-5">
     <div style="margin-top:2px;">
       {{#if canExpand}}
-        {{#if model.instances.length}}
-          {{progress-bar-multi
-            labelKey="state"
-            valueKey="count"
-            values=model.instanceStates.byColor
-            tooltipValues=model.instanceStates.byName
-          }}
-        {{/if}}
+        {{progress-bar-multi
+          labelKey="state"
+          valueKey="count"
+          values=model.instanceStates.byColor
+          tooltipValues=model.instanceStates.byName
+        }}
       {{else}}
         <span class="text-muted">{{t 'stacksPage.table.standalone'}}</span>
       {{/if}}
     </div>
     <div>
-       {{#if showInstanceCount}}
-         {{#if subMatches}}
-          {{#if (lt (get subMatches model.id) model.instances.length)}}
-            <p class="m-0 text-muted"><small>{{t 'pagination.containerHighlightSubset' subset=1 count=model.instances.length htmlSafe=true}}</small></p>
-          {{else}}
-            <p class="m-0 text-muted"><small><b>{{t 'pagination.container' pages=1 count=model.instances.length}}</b></small></p>
-          {{/if}}
+      {{#if subMatches}}
+        {{#if (lt (get subMatches model.id) model.instances.length)}}
+          <p class="m-0 text-muted"><small>{{t 'pagination.containerHighlightSubset' subset=1 count=model.instances.length htmlSafe=true}}</small></p>
         {{else}}
-          <p class="m-0 text-muted"><small>{{t 'pagination.container' pages=1 count=model.instances.length}}</small></p>
+          <p class="m-0 text-muted"><small><b>{{t 'pagination.container' pages=1 count=model.instances.length}}</b></small></p>
         {{/if}}
+      {{else}}
+        <p class="m-0 text-muted"><small>{{t 'pagination.container' pages=1 count=(concat model.instances.length "")}}</small></p>
       {{/if}}
     </div>
   </td>

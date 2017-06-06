@@ -23,7 +23,9 @@ export default Ember.Mixin.create(NewOrEdit, ManageLabels, {
   actions: {
     addLabel: addAction('addLabel', '.key'),
     cancel() {
-      this.attrs.cancel();
+      if (Ember.typeOf(this.attrs.goBack) === 'function') {
+        this.attrs.goBack();
+      }
     },
     goBack() {
       if (Ember.typeOf(this.attrs.goBack) === 'function') {
@@ -228,32 +230,39 @@ export default Ember.Mixin.create(NewOrEdit, ManageLabels, {
     }
 
     function addHosts() {
-      var promise = new Ember.RSVP.Promise(function(resolve,reject) {
-        let hosts = [];
-        for ( let i = parts.start ; i <= parts.end ; i++ )
-        {
-          let host = tpl.clone();
-          host.set('name', null);
-          host.set('hostname', parts.prefix + Util.strPad(i, parts.minLength, '0'));
-          hosts.push(host);
-        }
-
-        async.eachSeries(hosts, function(host, cb) {
-          host.save().then(() => {
-            setTimeout(cb, delay);
-          }).catch((err) => {
-            cb(err);
-          });
-        }, function(err) {
-          if ( err ) {
-            reject(err);
-          } else {
-            resolve();
+      if ( parts.name ) {
+        // Single host
+        tpl.set('hostname', parts.name);
+        return tpl.save();
+      } else {
+        // Multiple hosts
+        var promise = new Ember.RSVP.Promise(function(resolve,reject) {
+          let hosts = [];
+          for ( let i = parts.start ; i <= parts.end ; i++ )
+          {
+            let host = tpl.clone();
+            host.set('name', null);
+            host.set('hostname', parts.prefix + Util.strPad(i, parts.minLength, '0'));
+            hosts.push(host);
           }
-        });
-      });
 
-      return promise;
+          async.eachSeries(hosts, function(host, cb) {
+            host.save().then(() => {
+              setTimeout(cb, delay);
+            }).catch((err) => {
+              cb(err);
+            });
+          }, function(err) {
+            if ( err ) {
+              reject(err);
+            } else {
+              resolve();
+            }
+          });
+        });
+
+        return promise;
+      }
     }
   },
 

@@ -18,7 +18,6 @@ export default Ember.Component.extend(ModalBase, {
     this.set('model', model);
   }).on('init'),
   actions: {
-    goBack() {debugger;},
     completed(hostConfig) {
       this.get('modalService.modalOpts.callee').send('completed', hostConfig);
       Ember.run.next(() => {

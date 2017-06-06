@@ -33,7 +33,7 @@ export default Ember.Route.extend({
       if ( this.get('backTo') === 'waiting' ) {
         this.transitionTo('authenticated.project.waiting');
       } else {
-        this.transitionTo('hosts.templates');
+        this.transitionTo('hosts');
       }
     }
   },
