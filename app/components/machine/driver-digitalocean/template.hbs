@@ -1,7 +1,6 @@
 <section class="horizontal-form">
-  <div class="over-hr mt-20 mb-20">
-    <span>{{t 'machine.driverDigitalocean.instanceSection'}}</span>
-  </div>
+  <div class="box mt-20">
+  <h4>{{t 'machine.driverDigitalocean.instanceSection'}}</h4>
 
   <div class="row mb-20">
     {{form-name-description
@@ -13,13 +12,11 @@
         descriptionExpanded=true
     }}
   </div>
+  </div>
   {{#if step1}}
+  <div class="box mt-20">
     <form>
-
-      <div class="over-hr mb-20">
-        <span>{{t 'machine.driverDigitalocean.accountSection'}}</span>
-      </div>
-
+      <h4>{{t 'machine.driverDigitalocean.accountSection'}}</h4>
       <div class="row inline-form">
         <div class="col span-2 col-inline">
           <label>{{t 'machine.driverDigitalocean.accessToken.label'}}</label>
@@ -40,60 +37,62 @@
         <button {{action "cancel"}} class="btn bg-transparent">{{t 'generic.cancel'}}</button>
       </div>
     </form>
+    </div>
   {{else}}
     <div class="container-fluid">
-      <div class="over-hr mt-20 mb-20">
-        <span>{{t 'machine.driverDigitalocean.regionSection'}}</span>
-      </div>
+      <div class="box mt-20">
+        <h4>{{t 'machine.driverDigitalocean.regionSection'}}</h4>
 
-      <div class="row inline-form">
-        <div class="col span-2 col-inline">
-          <label>{{t 'machine.driverDigitalocean.region.label'}}</label>
-        </div>
-        <div class="col span-10">
-          <select class="form-control" onchange={{action (mut digitaloceanConfig.region) value="target.value"}}>
-            {{#each regionChoices as |choice|}}
-              <option value={{choice.slug}} selected={{eq digitaloceanConfig.region choice.slug}}>{{choice.name}}</option>
-            {{/each}}
-          </select>
-        </div>
-      </div>
-
-      <div class="over-hr mt-20 mb-20">
-        <span>{{t 'machine.driverDigitalocean.instanceOptionsSection'}}</span>
-      </div>
-
-      <div class="row inline-form">
-        <div class="col span-2 col-inline">
-          <label>{{t 'machine.driverDigitalocean.image.label'}}</label>
-        </div>
-        <div class="col span-4">
-          <select class="form-control" onchange={{action (mut digitaloceanConfig.image) value="target.value"}}>
-            {{#each imageChoices as |choice|}}
-              <option value={{choice.slug}} disabled={{choice.disabled}} selected={{eq digitaloceanConfig.image choice.slug}}>{{choice.distribution}} {{choice.name}}</option>
-            {{/each}}
-          </select>
-        </div>
-        <div class="col span-2 col-inline">
-          <label>{{t 'machine.driverDigitalocean.size.label'}}</label>
-        </div>
-        <div class="col span-4">
-          <select class="form-control" onchange={{action (mut digitaloceanConfig.size) value="target.value"}}>
-            {{#each filteredSizeChoices as |choice|}}
-            <option value={{choice.slug}} selected={{eq digitaloceanConfig.size choice.slug}}>{{t 'machine.driverDigitalocean.sizeLabel' memoryGb=choice.memoryGb highMem=choice.highMem slug=choice.slug disk=choice.disk vcpus=choice.vcpus}}</option>
-            {{/each}}
-          </select>
-        </div>
-      </div>
-      <div class="row inline-form">
-        <div class="col span-2 col-inline">
-          <label>{{t 'machine.driverDigitalocean.sshUser.label'}}</label>
-        </div>
-        <div class="col span-4">
-          {{input type="text" value=digitaloceanConfig.sshUser classNames="form-control" placeholder=(t 'machine.driverDigitalocean.sshUser.placeholder')}}
+        <div class="row inline-form">
+          <div class="col span-2 col-inline">
+            <label>{{t 'machine.driverDigitalocean.region.label'}}</label>
+          </div>
+          <div class="col span-10">
+            <select class="form-control" onchange={{action (mut digitaloceanConfig.region) value="target.value"}}>
+              {{#each regionChoices as |choice|}}
+                <option value={{choice.slug}} selected={{eq digitaloceanConfig.region choice.slug}}>{{choice.name}}</option>
+              {{/each}}
+            </select>
+          </div>
         </div>
       </div>
 
+      <div class="box mt-20">
+        <h4>{{t 'machine.driverDigitalocean.instanceOptionsSection'}}</h4>
+
+        <div class="row inline-form">
+          <div class="col span-2 col-inline">
+            <label>{{t 'machine.driverDigitalocean.image.label'}}</label>
+          </div>
+          <div class="col span-4">
+            <select class="form-control" onchange={{action (mut digitaloceanConfig.image) value="target.value"}}>
+              {{#each imageChoices as |choice|}}
+                <option value={{choice.slug}} disabled={{choice.disabled}} selected={{eq digitaloceanConfig.image choice.slug}}>{{choice.distribution}} {{choice.name}}</option>
+              {{/each}}
+            </select>
+          </div>
+          <div class="col span-2 col-inline">
+            <label>{{t 'machine.driverDigitalocean.size.label'}}</label>
+          </div>
+          <div class="col span-4">
+            <select class="form-control" onchange={{action (mut digitaloceanConfig.size) value="target.value"}}>
+              {{#each filteredSizeChoices as |choice|}}
+              <option value={{choice.slug}} selected={{eq digitaloceanConfig.size choice.slug}}>{{t 'machine.driverDigitalocean.sizeLabel' memoryGb=choice.memoryGb highMem=choice.highMem slug=choice.slug disk=choice.disk vcpus=choice.vcpus}}</option>
+              {{/each}}
+            </select>
+          </div>
+        </div>
+        <div class="row inline-form">
+          <div class="col span-2 col-inline">
+            <label>{{t 'machine.driverDigitalocean.sshUser.label'}}</label>
+          </div>
+          <div class="col span-4">
+            {{input type="text" value=digitaloceanConfig.sshUser classNames="form-control" placeholder=(t 'machine.driverDigitalocean.sshUser.placeholder')}}
+          </div>
+        </div>
+      </div>
+
+      <div class="box mt-20">
       <div class="over-hr mt-20 mb-20">
         <span>{{t 'machine.driverDigitalocean.optionsSection'}}</span>
       </div>
@@ -117,7 +116,7 @@
           </td>
         </tr>
       </table>
-
+      </div>
       {{partial "host/add-options"}}
     </div>
 
