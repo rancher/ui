@@ -14,7 +14,7 @@
 {{/if}}
 
 <div class="row">
-  <div class="col span-11-of-23">
+  <div class="col span-11-of-23 mt-0 mb-0">
     {{form-name-description
       model=primaryResource
       namePlaceholder="newContainer.name.placeholder"
@@ -24,7 +24,7 @@
       bothColClass=""
     }}
   </div>
-  <div class="col span-11-of-23 offset-1-of-23">
+  <div class="col span-11-of-23 mt-0 mb-0 offset-1-of-23">
     {{#if isSidekick}}
       {{!-- Sidekicks don't have their own scale --}}
       {{container/form-scale isSidekick=true}}
@@ -53,9 +53,9 @@
 
   </div>
 </div>
-<hr class="mt-40 mb-40" />
+<hr class="mt-30 mb-30" />
 <div class="row">
-  <div class="col span-11-of-23">
+  <div class="col span-11-of-23 mt-0 mb-0">
     {{container/form-image
       initialValue=launchConfig.imageUuid
       errors=imageErrors
@@ -63,7 +63,7 @@
     }}
   </div>
 
-  <div class="col span-11-of-23 offset-1-of-23">
+  <div class="col span-11-of-23 mt-0 mb-0 offset-1-of-23">
     {{#if (or isSidekick isUpgrade)}}
       {{!-- Only a new primary service or container picks stack --}}
     {{else}}
@@ -74,9 +74,9 @@
     {{/if}}
   </div>
 </div>
-<hr class="mt-40 mb-40" />
+<hr class="mt-30 mb-30" />
 <div class="row">
-  <div class="col span-11-of-23">
+  <div class="col span-11-of-23 mt-0 mb-0">
     {{container/form-ports
       initialPorts=launchConfig.ports
       errors=portErrors
@@ -84,7 +84,7 @@
       portsAsStrArray=launchConfig.ports
     }}
   </div>
-  <div class="col span-11-of-23 offset-1-of-23">
+  <div class="col span-11-of-23 mt-0 mb-0 offset-1-of-23">
     {{form-key-value
         initialMap=launchConfig.environment
         changed=(action (mut launchConfig.environment))
@@ -100,7 +100,7 @@
   </div>
 </div>
 
-<hr class="mt-40 mb-40" />
+<hr class="mt-30 mb-30" />
 
 {{#if (not isSidekick)}}
   {{container/form-scheduling
