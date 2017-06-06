@@ -20,11 +20,11 @@
 
       <div class="row inline-form">
         <div class="col span-6">
-        <label class="pb-5">{{t 'machine.driverPacket.projectId.label'}}{{field-required}}</label>
+        <label class="acc-label">{{t 'machine.driverPacket.projectId.label'}}{{field-required}}</label>
           {{input type="text" name="username" value=packetConfig.projectId classNames="form-control" placeholder=(t 'machine.driverPacket.projectId.placeholder')}}
         </div>
         <div class="col span-6">
-          <label class="pb-5">{{t 'machine.driverPacket.apiKey.label'}}{{field-required}}</label>
+          <label class="acc-label">{{t 'machine.driverPacket.apiKey.label'}}{{field-required}}</label>
           {{input type="password" name="password" value=model.secretValues.packetConfig.apiKey classNames="form-control" placeholder=(t 'machine.driverPacket.apiKey.placeholder')}}
           <p class="text-info">{{t 'machine.driverPacket.apiKeyHelp' htmlSafe=true}}</p>
         </div>
@@ -36,7 +36,7 @@
 
     <div class="row inline-form">
       <div class="col span-6">
-        <label class="pb-5">{{t 'machine.driverPacket.image.label'}}</label>
+        <label class="acc-label">{{t 'machine.driverPacket.image.label'}}</label>
         <select class="form-control" onchange={{action (mut packetConfig.os) value="target.value"}}>
           {{#each osChoices as |choice|}}
             <option disabled={{not choice.enabled}} value={{choice.slug}} selected={{eq packetConfig.os choice.slug}}>{{choice.name}}</option>
@@ -45,7 +45,7 @@
       </div>
 
       <div class="col span-6">
-      <label class="pb-5">{{t 'machine.driverPacket.size.label'}}</label>
+      <label class="acc-label">{{t 'machine.driverPacket.size.label'}}</label>
         <select class="form-control" onchange={{action (mut packetConfig.plan) value="target.value"}}>
           {{#each planChoices as |choice|}}
             <option disabled={{not choice.enabled}} value={{choice.slug}} selected={{eq packetConfig.plan choice.slug}}>{{choice.name}}</option>
