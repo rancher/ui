@@ -9,51 +9,54 @@
         {{partial "host/add-common"}}
       {{/if}}
 
-      <div class="over-hr mb-20">
+{{!--       <div class="over-hr mb-20">
         <span>{{t 'machine.driverAmazon.accessSection'}}</span>
-      </div>
+      </div> --}}
 
-      <div class="row {{if isStep1 'inline-form'}}">
-        <div class="col span-2 col-inline">
-          <label>{{t 'machine.driverAmazon.region.label'}}</label>
+      <div class="box mt-30">
+        <span>{{t 'machine.driverAmazon.accessSection'}}</span>
+        <div class="row {{if isStep1 'inline-form'}}">
+          <div class="col span-2 col-inline">
+            <label>{{t 'machine.driverAmazon.region.label'}}</label>
+          </div>
+          <div class="col span-8">
+            {{#if isStep1}}
+              <select class="form-control" onchange={{action (mut amazonec2Config.region) value="target.value"}}>
+                {{#each regionChoices as |choice|}}
+                  <option value={{choice}} selected={{eq amazonec2Config.region choice}}>{{choice}}</option>
+                {{/each}}
+              </select>
+            {{else}}
+              <div>{{amazonec2Config.region}}</div>
+            {{/if}}
+          </div>
         </div>
-        <div class="col span-8">
-          {{#if isStep1}}
-            <select class="form-control" onchange={{action (mut amazonec2Config.region) value="target.value"}}>
-              {{#each regionChoices as |choice|}}
-                <option value={{choice}} selected={{eq amazonec2Config.region choice}}>{{choice}}</option>
-              {{/each}}
-            </select>
-          {{else}}
-            <div>{{amazonec2Config.region}}</div>
-          {{/if}}
+        <div class="row {{if isStep1 'inline-form'}}">
+          <div class="col span-2 col-inline">
+            <label>{{t 'machine.driverAmazon.accessKey.label'}}</label>
+          </div>
+          <div class="col span-8">
+            {{#if isStep1}}
+              {{input type="text" name="username" classNames="form-control" placeholder=(t 'machine.driverAmazon.accessKey.placeholder') value=amazonec2Config.accessKey}}
+            {{else}}
+              <div>{{amazonec2Config.accessKey}}</div>
+            {{/if}}
+          </div>
         </div>
-      </div>
-      <div class="row {{if isStep1 'inline-form'}}">
-        <div class="col span-2 col-inline">
-          <label>{{t 'machine.driverAmazon.accessKey.label'}}</label>
-        </div>
-        <div class="col span-8">
-          {{#if isStep1}}
-            {{input type="text" name="username" classNames="form-control" placeholder=(t 'machine.driverAmazon.accessKey.placeholder') value=amazonec2Config.accessKey}}
-          {{else}}
-            <div>{{amazonec2Config.accessKey}}</div>
-          {{/if}}
-        </div>
-      </div>
-      <div class="row {{if isStep1 'inline-form'}}">
-        <div class="col span-2 col-inline">
-          <label>{{t 'machine.driverAmazon.secretKey.label'}}</label>
-        </div>
-        <div class="col span-8">
-          {{#if isStep1}}
-            {{input type="password" name="password" classNames="form-control" placeholder=(t 'machine.driverAmazon.secretKey.placeholder') value=model.secretValues.amazonec2Config.secretKey}}
-          {{else}}
-            <div class="text-muted text-italic">{{t 'machine.driverAmazon.secretKey.provided'}}</div>
-          {{/if}}
-          {{#if isStep1}}
-            <p class="text-info">{{t 'machine.driverAmazon.accessKeyHelp'}}</p>
-          {{/if}}
+        <div class="row {{if isStep1 'inline-form'}}">
+          <div class="col span-2 col-inline">
+            <label>{{t 'machine.driverAmazon.secretKey.label'}}</label>
+          </div>
+          <div class="col span-8">
+            {{#if isStep1}}
+              {{input type="password" name="password" classNames="form-control" placeholder=(t 'machine.driverAmazon.secretKey.placeholder') value=model.secretValues.amazonec2Config.secretKey}}
+            {{else}}
+              <div class="text-muted text-italic">{{t 'machine.driverAmazon.secretKey.provided'}}</div>
+            {{/if}}
+            {{#if isStep1}}
+              <p class="text-info">{{t 'machine.driverAmazon.accessKeyHelp'}}</p>
+            {{/if}}
+          </div>
         </div>
       </div>
     </div>
