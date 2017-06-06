@@ -17,7 +17,7 @@
         <span>{{t 'machine.driverAmazon.accessSection'}}</span>
         <div class="row {{if isStep1 'inline-form'}}">
           <div class="col span-2 col-inline">
-            <label>{{t 'machine.driverAmazon.region.label'}}</label>
+            <label class="acc-label">{{t 'machine.driverAmazon.region.label'}}</label>
           </div>
           <div class="col span-8">
             {{#if isStep1}}
@@ -33,7 +33,7 @@
         </div>
         <div class="row {{if isStep1 'inline-form'}}">
           <div class="col span-2 col-inline">
-            <label>{{t 'machine.driverAmazon.accessKey.label'}}</label>
+            <label class="acc-label">{{t 'machine.driverAmazon.accessKey.label'}}</label>
           </div>
           <div class="col span-8">
             {{#if isStep1}}
@@ -45,7 +45,7 @@
         </div>
         <div class="row {{if isStep1 'inline-form'}}">
           <div class="col span-2 col-inline">
-            <label>{{t 'machine.driverAmazon.secretKey.label'}}</label>
+            <label class="acc-label">{{t 'machine.driverAmazon.secretKey.label'}}</label>
           </div>
           <div class="col span-8">
             {{#if isStep1}}
@@ -84,7 +84,7 @@
     </div>
     <div class="row {{if isStep3 'inline-form'}}">
       <div class="col span-2 col-inline">
-        <label>{{t 'machine.driverAmazon.availabilityZone'}}</label>
+        <label class="acc-label">{{t 'machine.driverAmazon.availabilityZone'}}</label>
       </div>
       <div class="col span-8">
         {{#if isStep3}}
@@ -102,7 +102,7 @@
     </div>
     <div class="row {{if isStep3 'inline-form'}}">
       <div class="col span-2 col-inline">
-        <label>{{t 'machine.driverAmazon.subnet'}}</label>
+        <label class="acc-label">{{t 'machine.driverAmazon.subnet'}}</label>
       </div>
       <div class="col span-8">
         {{#if isStep3}}
@@ -110,7 +110,7 @@
             {{#each subnetChoices as |choice|}}
               {{#if choice.isVpc}}
                 <div class="radio">
-                  <label>{{radio-button selection=selectedSubnet value=choice.value}} {{choice.label}}</label>
+                  <label class="acc-label">{{radio-button selection=selectedSubnet value=choice.value}} {{choice.label}}</label>
                 </div>
               {{else}}
                 <div class="radio">
@@ -158,7 +158,7 @@
 
     <div class="row {{if isStep5 'inline-form'}}">
       <div class="col span-2 col-inline">
-        <label>{{t 'machine.driverAmazon.securityGroup.label'}}</label>
+        <label class="acc-label">{{t 'machine.driverAmazon.securityGroup.label'}}</label>
       </div>
       <div class="col span-8">
         {{#if isStep5}}
@@ -168,7 +168,7 @@
           {{/if}}
 
           <div class="radio pt-10">
-            <label>
+            <label class="acc-label">
               {{t 'machine.driverAmazon.securityGroup.choose'}}
             </label>
           </div>
@@ -232,7 +232,7 @@
 
     <div class="row">
       <div class="col span-2 col-inline">
-        <label>{{t 'machine.driverAmazon.instanceType.label'}}</label>
+        <label class="acc-label">{{t 'machine.driverAmazon.instanceType.label'}}</label>
       </div>
       <div class="col span-4">
         <select class="form-control" onchange={{action (mut amazonec2Config.instanceType) value="target.value"}}>
@@ -242,7 +242,7 @@
         </select>
       </div>
       <div class="col span-2 col-inline">
-        <label>{{t 'machine.driverAmazon.rootSize.label'}}</label>
+        <label class="acc-label">{{t 'machine.driverAmazon.rootSize.label'}}</label>
       </div>
       <div class="col span-4">
         <div class="input-group">
@@ -254,7 +254,7 @@
 
     <div class="row">
       <div class="col span-2 col-inline">
-        <label>{{t 'machine.driverAmazon.ami.label'}}</label>
+        <label class="acc-label">{{t 'machine.driverAmazon.ami.label'}}</label>
       </div>
       <div class="col span-4">
         {{input type="text" classNames="form-control" placeholder=(t 'machine.driverAmazon.ami.placeholder') value=amazonec2Config.ami}}
@@ -265,7 +265,7 @@
         {{/if}}
       </div>
       <div class="col span-2 col-inline">
-        <label>{{t 'machine.driverAmazon.sshUser.label'}}</label>
+        <label class="acc-label">{{t 'machine.driverAmazon.sshUser.label'}}</label>
       </div>
       <div class="col span-4">
         {{input type="text" classNames="form-control" placeholder=(t 'machine.driverAmazon.sshUser.placeholder') value=amazonec2Config.sshUser}}
@@ -273,17 +273,17 @@
     </div>
     <div class="row">
       <div class="col span-2 col-inline">
-        <label>{{t 'machine.driverAmazon.iam.label'}}</label>
+        <label class="acc-label">{{t 'machine.driverAmazon.iam.label'}}</label>
       </div>
       <div class="col span-4">
         {{input type="text" classNames="form-control" value=amazonec2Config.iamInstanceProfile}}
       </div>
       <div class="col span-2 col-inline">
-        <label>{{t 'machine.driverAmazon.privateIp.label'}}</label>
+        <label class="acc-label">{{t 'machine.driverAmazon.privateIp.label'}}</label>
       </div>
       <div class="col span-4">
         <div class="checkbox">
-          <label>{{input type="checkbox" checked=amazonec2Config.privateAddressOnly}} {{t 'machine.driverAmazon.onlyPrivate.label'}}</label>
+          <label class="acc-label">{{input type="checkbox" checked=amazonec2Config.privateAddressOnly}} {{t 'machine.driverAmazon.onlyPrivate.label'}}</label>
         </div>
       </div>
     </div>
