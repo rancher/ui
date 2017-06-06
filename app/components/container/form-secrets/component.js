@@ -29,7 +29,7 @@ export default Ember.Component.extend({
     if (instance && instance.get('secrets.length')) {
       instance.get('secrets').forEach((secret) => {
         let selected = allSecrets.findBy('id', secret.secretId);
-        secret.alias = selected.get('name');
+        secret.set('alias', selected.get('name'));
         secrets.push(secret);
       });
     }
