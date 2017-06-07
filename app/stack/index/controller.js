@@ -1,12 +1,19 @@
 import Ember from 'ember';
+import { headersWithHost as containerHeaders } from 'ui/components/container-table/component';
 
 export default Ember.Controller.extend({
-  prefs: Ember.inject.service(),
+  prefs:             Ember.inject.service(),
+  containerHeaders:  containerHeaders,
+  showAddtlInfo:     false,
+  selectedService:   null,
+  sortBy:            'name',
+  expandedInstances: null,
 
-  showAddtlInfo: false,
-  selectedService: null,
+  init() {
+    this._super(...arguments);
+    this.set('expandedInstances',[]);
+  },
 
-  sortBy: 'name',
 
   actions: {
     showAddtlInfo: function(service) {
@@ -17,8 +24,50 @@ export default Ember.Controller.extend({
     dismiss: function() {
       this.set('showAddtlInfo', false);
       this.set('selectedService', null);
-    }
+    },
+    toggleExpand(instId) {
+      let list = this.get('expandedInstances');
+      if ( list.includes(instId) ) {
+        list.removeObject(instId);
+      } else {
+        list.addObject(instId);
+      }
+    },
   },
+
+  dnsHeaders: [
+    {
+      name: 'expand',
+      sort: false,
+      searchField: null,
+      width: 30
+    },
+    {
+      name: 'state',
+      sort: ['stack.isDefault:desc','stack.displayName','stateSort','displayName'],
+      searchField: 'displayState',
+      translationKey: 'generic.state',
+      width: 120
+    },
+    {
+      name: 'name',
+      sort: ['stack.isDefault:desc','stack.displayName','displayName','id'],
+      searchField: 'displayName',
+      translationKey: 'generic.name',
+    },
+    {
+      name: 'displayType',
+      sort: ['displayType','displayName','id'],
+      searchField: 'displayType',
+      translationKey: 'generic.type',
+    },
+    {
+      name: 'target',
+      sort: false,
+      searchField: 'displayTargets',
+      translationKey: 'dnsPage.table.target',
+    },
+  ],
 
   sgHeaders: [
     {
@@ -51,6 +100,13 @@ export default Ember.Controller.extend({
       sort: ['displayImage','displayName'],
       searchField: 'displayImage',
       translationKey: 'generic.image',
+    },
+    {
+      name: 'scale',
+      sort: 'scale:desc',
+      searchField: null,
+      translationKey: 'stacksPage.table.scale',
+      width: 100
     },
     {
       name: 'instanceState',

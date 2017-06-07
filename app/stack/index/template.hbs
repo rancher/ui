@@ -33,19 +33,29 @@
          as | parent |
     }}
       {{#component parent.intent
-           classNames="grid sortable-table"
            body=scalingGroups
+           bulkActions=true
+           classNames="grid sortable-table"
+           fullRows=true
+           headers=sgHeaders
+           pagingLabel="pagination.scalingGroup"
+           searchText=searchText
            sortBy=sortBy
            stickyHeader=false
-           bulkActions=true
-           fullRows=true
-           pagingLabel="pagination.container"
-           headers=sgHeaders as |sortable kind serv dt|}}
+           subHeaders=containerHeaders
+           subRows=true
+           subSearchField="instances"
+           as |sortable kind serv dt|}}
         {{#if (eq kind "row")}}
           {{service-row
+              canExpand=true
+              expanded=(array-includes expandedInstances serv.id)
+              fullColspan=sortable.fullColspan
               model=serv
-              canExpand=false
+              searchText=searchText
               showInstanceCount=false
+              subMatches=sortable.subMatches
+              toggle=(action "toggleExpand" serv.id)
               dt=dt
           }}
         {{else if (eq kind "nomatch")}}
@@ -65,19 +75,28 @@
          as | parent |
     }}
       {{#component parent.intent
-           classNames="grid sortable-table"
            body=loadBalancers
-           sortBy=sortBy
-           stickyHeader=false
            bulkActions=true
+           classNames="grid sortable-table"
            fullRows=true
            pagingLabel="pagination.container"
+           searchText=searchText
+           sortBy=sortBy
+           stickyHeader=false
+           subHeaders=containerHeaders
+           subRows=true
+           subSearchField="instances"
            headers=sgHeaders as |sortable kind serv dt|}}
         {{#if (eq kind "row")}}
           {{service-row
+              canExpand=true
+              expanded=(array-includes expandedInstances serv.id)
+              fullColspan=sortable.fullColspan
               model=serv
-              canExpand=false
+              searchText=searchText
               showInstanceCount=false
+              subMatches=sortable.subMatches
+              toggle=(action "toggleExpand" serv.id)
               dt=dt
           }}
         {{else if (eq kind "nomatch")}}
@@ -101,15 +120,23 @@
            body=dnsServices
            sortBy=sortBy
            stickyHeader=false
+           subRows=true
+           pagingLabel="pagination.dnsRecord"
+           subHeaders=containerHeaders
+           subSearchField="instances"
            bulkActions=true
            fullRows=true
            pagingLabel="pagination.container"
-           headers=sgHeaders as |sortable kind serv dt|}}
+           headers=dnsHeaders
+           as |sortable kind serv dt|}}
         {{#if (eq kind "row")}}
-          {{service-row
+          {{dns-row
               model=serv
-              canExpand=false
-              showInstanceCount=false
+              toggle=(action "toggleExpand" serv.id)
+              expanded=(array-includes expandedInstances serv.id)
+              searchText=searchText
+              subMatches=sortable.subMatches
+              fullColspan=sortable.fullColspan
               dt=dt
           }}
         {{else if (eq kind "nomatch")}}
