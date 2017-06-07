@@ -4,24 +4,28 @@ languageContribute: "در ترجمه رنچر کمک کنید!"
 generic:
   actions: اکشن ها
   activate: قعال سازی
+  any: هر
   as: به عنوان
   cancel: لغو
   closeModal: بستن
   created: ساخته شد
   default: پیش فرض
   description: توضیح
+  disable: غیر فعال کردن
   disabled: غیر فعال
   domainName: نام دامنه
+  enable: فعال کردن
   enabled: فعال
-  expires: منقضی می شود
   healthy: سالم
   id: آیدی
   image: تصویر
   internal: داخلی
   ipAddress: آدرس آی پی
+  limit: محدودیت
   loading: "در حال بارگزاری..."
   missing: "*%یافت نشده%*"
   moreActions: اکشن های بیشتر
+  na: 'نامشخص'
   name: نام
   none: هیچ یک
   ports: پورت ها
@@ -30,24 +34,24 @@ generic:
   save: ذخیره
   saved: ذخیره شد
   saving: در حال ذخیره سازی
+  search: جستجو
   state: وضعیت
   test: تست
   testing: در حال تست
   to: به
+  total: مجموع
   type: نوع
   unknown: ناشناس
-  noo: "No"
-  yess: "Yes"
+  uuid: شناسه منحصر به فرد عمومی
 accountsPage:
   index:
     header: حساب ها
     localLink: افزودن حساب
     table:
-      state: وضعیت
       id: آی دی
       kind: نوع
       username: نام کاربری
-      name: نام
+      identity: هویت
       noData: هنوز حسابی وجود ندارد
       noName: هیچ یک
   new:
@@ -82,8 +86,6 @@ apiPage:
   account:
     header: کلید های API حساب
     buttonText: افزودن کلید API
-    table:
-      noData: "شما هنوز هیچ کلیدی ندارید."
 auditLogsPage:
   form:
     eventType:
@@ -96,6 +98,7 @@ auditLogsPage:
     requestIp:
       placeholder: آی پی درخواست
     authType:
+      placeholder: "نوع تایید هویت:"
       dropdownPlaceholder: 'یک نوع اهراز هویت انتخاب کنید:'
     clearButtonText: پاک کردن فیلتر ها
     searchButtonText: جستجو
@@ -105,8 +108,8 @@ auditLogsPage:
     description: توضیح
     environment: محیر
     resourceTypeId: "نوع منبع:شناسه"
-  first: صفحه اول
-  next: صفحه بعد
+    identity: هویت
+    authIp: "تایید هویت و آی پی"
 authPage:
   shibboleth:
     enabled:
@@ -115,7 +118,6 @@ authPage:
       authenticated:
         header:
           text: اهراز هویت
-          helpText: "برای تغییر Shibboleth application, کنترل دسترسی زیر را غیر فعال کرده و دوباره تنظیم کنید."
       disableAccess:
         warning: '<b class="text-danger">هشدار:</b> غیر فعال سازی کنترل دسترسی به هر شهصی که به این صفحه دسترسی یابد کنترل کامل خواهد داد.'
         confirmDisable: "آیا مطمئن هستید؟  برای تایید عیر فعال سازی دوباره کلیک کنید."
@@ -142,9 +144,13 @@ authPage:
         buttonText:
           pre: اهراز هویت با IDP
           post: در انتظار دریافت پاسخ از IDP
+    providerName:
+      shibboleth: سیستم تشخیص هویت
   root:
     header: Access Control
   github:
+    standard: سرویس گیت هاب
+    enterprise: نسخه تجاری گیت هاب
     header:
       enabled:
         label: "{github} فعال است"
@@ -171,7 +177,6 @@ authPage:
           text: ' "Register new application" را انتخاب و فرم را پر کنید:'
           ul:
             li1: '<b>نام Application :</b> <span class="text-muted">Anything you like, مثال. My {appName}</span>'
-            li2: '<b>آدرس صفحه خانه: </b> '
             li3: '<b>توضیحات Application:</b> <span class="text-muted">پر کردن این گزینه دلخواه است</span>'
         li3:
           text: '"ثبت Application" را انتخاب کنید '
@@ -225,7 +230,6 @@ authPage:
   localAuth:
     header:
       enabled: 'اهراز هویت لوکال <b>فعال است</b>'
-      disabled: 'اهراز هویت لوکال <b class="text-warning">تنظیم نشده است</b>'
     subtext:
       enabled:
         linkText: مدیریت حساب ها
@@ -258,35 +262,34 @@ authPage:
         post: 'در حال فعال سازی...'
   0:
     header: کنترل دسترسی
-backupTargetsPage:
-  linkTo: افزودن Backup Target
-  newTarget:
-    header: افزودن Backup Target
-  server:
-    placeholder: 'مثال. my-nfs-server.example.com'
-  share:
-    placeholder: 'مثال. /mnt/volume-backups'
-  mountOptions:
-    placeholder: 'مثال. nfsvers=4,proto=udp'
 catalogPage:
   index:
-    header: 'کاتالوگ:'
-    search:
-      placeholder: جستجو...
-    category: "دسته بندی:"
+    certified:
+      rancher:
+        rancher: کارگاه رنچر
+        partner: رسمی
+      pl:
+        rancher: هسته
+        partner: رسمی
     noData:
       singular: هیچ templates سازگاری وجود ندارد.
       plural: هیچ templates سازگاری در این کاتالوگ وجود ندارد.
-consolePage:
-  closeButton: بستن
+    action:
+      launch: مشاهده جزئیات
+      notCompatible: سازگار نیست
+      alreadyDeployed: نرم افزار در حال حاضر مستقر شده
 certificatesPage:
   table:
     cn: نام دامنه
-    noCn: هیچ یک
+    expiresDate: منقضی می شود
   detail:
     description: توضیح
     info:
       labelText: اطلاعات
+      valid: معتبر میشود از
+      expires: منقضی می شود
+      algorithm: الگوریتم
+      issuer: صادر کننده
       serialNumber: شماره سریال
       version: نسخه
     domainNames:
@@ -310,64 +313,19 @@ certificatesPage:
         placeholder: مثال. EV cert for mydomain.com
 containersPage:
   table:
-    ipAddress: آدرس آی پی
-    primaryHostUnknown: ناشناخته
-    image: تصویر
-    command: دستور
-    noCommand: هیچ یک
-  index:
-    linkTo: افزودن Container
-    table:
-      header:
-        state: وضعیت
-        name: نام
-        ip: آدرس آی پی
-        host: میزبان
-        image: تصویر
-        command: دستور
-      body:
-        noData: شما هنوز هیچ containers ندارید.
-  new:
-    form:
-      name:
-        placeholder: مثال. myapp
-      description:
-        placeholder: مثال. My Application
-  containerPage:
-    subtext:
-      "on": true
-    infoMultiStats:
-      tooltip:
-        host: کپی گرفتن از IP
-      host: 'میزبان:'
-      image: 'تصویر:'
-      command: 'دستور:'
-      description: 'توضیح:'
-    navTabs:
-      labels: برچسب ها
-      ports: پورت ها
-      command: دستور
-    portsTab:
-      table:
-        header:
-          ip: آدرس آی پی
-          protocol: پروتوکل
-        body:
-          noData: این container هیچ پورتی ندارد.
-    volumesTab:
-      table:
-        header:
-          name: نام
-          writable: قابل نوشتن
-        body:
-          error:
-            data: 'توجه:'
-            error: خطا
+    sparkPrefixCpu: 'پردازشگر: '
+    sparkPrefixMemory: 'حافظه: '
+    sparkPrefixNetwork: 'شبکه: '
+    sparkPrefixStorage: 'محل ذخیره: '
 failWhalePage:
   header: خطا
   reloadButton: |
     <a href="#" onclick="window.location.href = window.location.href; return false;">بارگزاری مجدد</a> یا
   logoutButton: خروج
+haPage:
+  setup:
+    link: به راهنما مراجعه کنید
+    suffix: " برای اطلاع رسانی در مورد راه اندازی و استفاده."
 helpPage:
   header: اطلاعات و پیوند های مفید
   environment:
@@ -407,13 +365,12 @@ helpPage:
     announcements:
       buttonText: مشاهده موضوعات بیشتر در مورد Annoucement
     general:
+      header: عمومی
       buttonText: مشاهده موضوعات بیشتر در مورد General
     rancherOs:
       buttonText: مشاهده موضوعات بیشتر در مورد RancherOS
     rancher:
       buttonText: مشاهده موضوعات بیشتر در مورد Rancher
-    convoy:
-      buttonText: مشاهده موضوعات بیشتر در مورد Convoy
 hostsPage:
   addContainer: افزودن Container
   index:
@@ -421,33 +378,10 @@ hostsPage:
     addHost: افزودن هاست
     tooltip:
       listView: لیست
-    showSystem: نمایش سیستم
   new:
     header:
-      linkTo: 'میزبان: '
       text: افزودن میزبان
-    form:
-      name:
-        placeholder: مثال. host01
   hostPage:
-    header:
-      linkTo: 'میزبان:'
-    addContainer:
-      linkTo: افزودن Container
-    infoMultiStats:
-      description: 'توضیح:'
-    navTabs:
-      ports: پورت ها
-      labels: برچسب ها
-    containersTab:
-      table:
-        header:
-          state: وضعیت
-          name: نام
-          ip: آدرس آی پی
-          image: تصویر (Command)
-        body:
-          noData: این هاست هیچ containers ندارد.
     portsTab:
       table:
         header:
@@ -469,27 +403,14 @@ k8sTab:
     stepTwo:
       progress: در حال تولید...
 loginPage:
-  greeting: "سلام!<br>به {appName} خوش آمدید"
   githubMessage: "{appName} از GitHub برای مدیریت حساب ها و تیم ها استفاده می کند.  دکمه زیر را فشار دهید و وارد شوید و به ما دسترسی خواندن اطلاعات اولیه خساب GitHub تان را بدهید."
   shibbolethMessage: "{appName} از Shibboleth  برای مدیریت حساب ها استفاده می کند. برای ورود به Shibboleth IDP بر روی دکمه زیر کلیک کنید."
 machinePage:
   header: درایور های ماشین
   inactive: غیر فعال
-  download: دانلود Package
-  upgradeAvailable: ارتقا امکان پذیر است
-  upgrading: در حال ارتقا
-  activating: در حال فعال سازی
-  viewUi: مشاهده رابط کاربری
   subtext: "<code>docker-machine</code> های اضافی می توانند اینجا بارگزاری شده و در صفحه افزودن هاست استفاده شوند."
   add: افزودن درایور ماشی
-  other: دیگر
-  table:
-    header:
-      state: وضعیت
-      name: نام
-    noData: شما هیچ درایور ماشینی ندارید
 mesosPage:
-  actionLink: باز کردن Mesos UI
   banner:
     header: cluster شما
     link: مشاهده یا افزودن هاست
@@ -511,8 +432,11 @@ projectList:
       <p>For example, you might create separate &quot;dev&quot;, &quot;test&quot;, and &quot;production&quot; environments to keep things isolated from each other, and give &quot;dev&quot; access to your entire organization but restrict the &quot;production&quot; environment to a smaller team.</p>
     alert: محیط فعالی یافت نشد. شما قبل از هر کاری ابتدا باید یک محیط را فعال یا ایجاد کنید.
     table:
-      body:
-        noData: "شما هیچ محیطی ندارید."
+      header:
+        projectTemplate: الگو
+  indexTemplate:
+    header: الگو های محیطی
+    new: افزودن الگو
 registriesPage:
   index:
     linkTo: افزودن Registry
@@ -520,7 +444,6 @@ registriesPage:
       header:
         state: وضعیت
         address: آدرس
-        email: ایمیل
         username: نام کاربری
         created: ساخته شد
   new:
@@ -530,9 +453,6 @@ registriesPage:
         labelText: آدرس
         placeholder: مثال. registry.example.com
         help: 'فقط نام هاست یا آدرس آی پی, پروتوکل را وارد نکنید (https://)'
-      email:
-        labelText: ایمیل
-        placeholder: مثال. you@example.com
       username:
         labelText: نام کاربری
         placeholder: مثال. username
@@ -540,25 +460,8 @@ registriesPage:
         labelText: رمز عبور
         placeholder: مثال. password
 servicePage:
-  header: 'سرویس:'
   multistat:
-    type: 'نوع:'
     image: 'تصویر:'
-    command: 'دستور:'
-    description: 'توضیح:'
-    global: سراسری
-  navTabs:
-    ports: پورت ها
-    labels: برچسب ها
-    links: پیوند ها
-  containersTab:
-    table:
-      header:
-        ipAddress: آدرس آی پی
-        host: میزبان
-        image: تصویر
-      body:
-        noData: این سرویس هنوز containers ای ندارد.
   linksTab:
     header: پیوند ها
   new:
@@ -567,12 +470,6 @@ servicePage:
         placeholder: مثال. myapp
       description:
         placeholder: مثال. My application
-  newAlias:
-    form:
-      name:
-        placeholder: مثال. myapp
-      description:
-        placeholder: مثال. Current version of MyApp
   newBalancer:
     form:
       name:
@@ -587,118 +484,26 @@ servicePage:
       body:
         noData: این سرویس پورتی ندارد.
     notActive: پورت ها فقط وقتی سرویس فعال است قابل دسترسی اند.
-  logTab:
-    table:
-      header:
-        date: تاریخ
-        level: سطح
-        event: رویداد
-        description: توضیح
-stacksPage:
-  header:
-    all: همه Stacks
-    user: Stack های کاربر
-  actionButton: افزودن Stack
-  catalogButton: افزودن fاز کاتالوگ
-  sort:
-    label: مرتب سازی بر اساس
-    state: وضعیت
-    name: نام
-  noInfra: شما هیچ Infrastructure Stacks ندارید
-  new:
-    header: افزودن Stack
-    composeLabel: 'اختیاری: Import Compose'
-    form:
-      name:
-        placeholder: مثال. myapp
-      description:
-        placeholder: مثال. MyApp Stack
-      dockerCompose:
-        label: 'اختیاری: docker-compose.yml'
-        placeholder: محتوای docker-compose.yml
-      rancherCompose:
-        label: 'اختیاری: rancher-compose.yml'
-        placeholder: محتوای rancher-compose.yml
-      startOnCreate:
-        label: شروع سرویس ها بعد ایجاد
 storagePoolsPage:
   newVolume:
     header: افزودن Volume
     form:
       addActionLabel: افزودن گزینه
-swarmPage:
-  projects:
-    index:
-      header: پروژه ها
-      linkTo: افزودن پروژه
-      table:
-        header:
-          services: سرویس ها
-        body:
-          noData: شما هیچ پروژه ای ندارید.
-    new:
-      header: افزودن Project
-      form:
-        name:
-          placeholder: مثال. myapp
-        description:
-          placeholder: مثال. MyApp Project
-        variables:
-          addActionLabel: افزودن Variable Substitution
-          keyLabel: متغیر
-          keyPlaceholder: مثال. FOO
-          valuePlaceholder: مثال. bar
-        dockerCompose:
-          placeholder: اطلاعات docker-compose.yml را پیست کنید
-    project:
-      linkTo: 'پروژه:'
-      table:
-        header:
-          ports: پورت ها
-        body:
-          noData: این پروژه هیچ سرویسی ندارد.
-  services:
-    header: سرویس ها
+processesPage:
+  tab:
+    pools: مشترک
+    delayed: تاخیر
+    ready: آماده
+    completed: به تازگی کامل شده
+  summary:
     table:
-      header:
-        ports: پورت ها
-      body:
-        noData: شما هیچ سرویسی ندارید.
-virtualMachinePage:
-  header: 'ماشین مجازی:'
-  multistat:
-    host: 'میزبان:'
-    hostIp: 'آی پی میزبان:'
-    image: 'تصویر:'
-    description: 'توضیح:'
-  navTabs:
-    labels: برچسب ها
-virtualMachinesPage:
-  header: ماشین های مجازی
-  linkTo: افزودن ماشین مجازی
-  table:
-    body:
-      noData: شما هیچ ماشین مجازی ندارید.
+      running: در حال اجرا
 waitingPage:
   hosts:
-    contentLink: اطلاعات بیشتر
-    linkToHost: افزودن هاست
     setup:
       mesos: در حال تنظیم Mesos
       swarm: در حال تنظیم Swarm
       kubernetes: در حال تنظیم Kubernetes
-aliasServicePartial:
-  serviceLinks:
-    labelText: لینک سرویس ها
-    linkTo: مشاهده جزئیات
-  links: پیوند ها
-  description: 'توضیح:'
-externalServicePartial:
-  extService:
-    labelText: سرویس خارجی
-    linkTo: مشاهده جزئیات
-  hostname: 'نام هاست:'
-  description: 'توضیح:'
 hostPartial:
   host:
     addCommon:
@@ -706,8 +511,6 @@ hostPartial:
         form:
           name:
             placeholder: مثال. host01
-    addOptions:
-      labels: برچسب ها
 ldap:
   header:
     enabled:
@@ -767,8 +570,6 @@ ldap:
       labelText: نام کاربری حساب سرویس
     servicePassword:
       labelText: رمز عبور حساب سرویس
-    searchBase:
-      placeholder: "مثال. dc=mycompany,dc=com"
     defaultDomain:
       labelText: دامنه پیش فرض ورود
       placeholder: "مثال. mycompany"
@@ -804,16 +605,6 @@ servicePartial:
   noContainers:
     inactive:
       start: شروع
-serviceInfoPartial:
-  info:
-    label: اطلاعات
-    linkTo: مشاهده جزئیات
-  image: 'تصویر:'
-  command: 'دستور:'
-  description: 'توضیح:'
-  global: سراسری
-  ports: پورت ها
-  links: پیوند ها
 catalogSettings:
   header: کاتالوگ
   subtext: کاتالوگ ها contain templates that allow users to easily deploy applications by answering a few questions
@@ -862,8 +653,6 @@ editAccount:
     description:
       label: توضیح
       placeholder: مثال. This account is for John Smith
-editAliasService:
-  title: ویرایش Service Alias
 editApiKey:
   title:
     justCreated: کلید API Created
@@ -873,8 +662,6 @@ editApiKey:
   description:
     placeholder: مثال. This key is used by the app servers to deploy containers
   noteOptional: نام and/or description are optional to help you remember what it's used for.  You can just create a key by clicking Create.
-editBalancerService:
-  title: ویرایش Load Balancer
 editCertificate:
   title: ویرایش Certificate
   name:
@@ -890,12 +677,6 @@ editContainer:
     placeholder: مثال. myapp
   description:
     placeholder: مثال. My Application
-editExternalService:
-  title: ویرایش External Service
-  name:
-    placeholder: مثال. external-db
-  description:
-    placeholder: مثال. External physical database server
 editHost:
   title: ویرایش هاست
   hostname:
@@ -936,15 +717,8 @@ editStack:
     help: The stacks list can be filtered by tags (comma-separated)
 stackHeader:
   outputs: خروجی ها
-  add:
-    service: افزودن سرویس
-    balancer: افزودن Load Balancer
-    external: افزودن External Service
-    alias: افزودن سرویس Alias
-    vm: افزودن ماشین مجازی
 formatIp:
   noIp: هیچ یک
-  unknownIp: ناشناخته
 formCommand:
   command:
     label: دستور
@@ -962,15 +736,7 @@ formCommand:
     startOnceTrue: هرگز (یک بار اجرا)
     "no": هرگز
     always: همیشه
-  environment:
-    label: محیط Vars
-    addAction: افزودن Environment Variable
-    keyLabel: متغیر
-    keyPlaceholder: مثال. FOO
-    valueLabel: ارزش
-    valuePlaceholder: مثال. bar
 formContainerLinks:
-  label: پیوند ها
   addActionLabel: افزودن پیوند
   name:
     label: به عنوان
@@ -1013,7 +779,6 @@ formEngineOpts:
     addActionLabel: افزودن Registry Mirror
     valuePlaceholder: 'مثال. https://my-mirror.example.com:5000'
 formHealthCheck:
-  label: Health Check
   checkType:
     none: هیچ یک
   path:
@@ -1035,13 +800,6 @@ formKeyValue:
   value:
     label: ارزش
     placeholder: ارزش
-formImage:
-  vm:
-    placeholder: مثال. rancher/vm-ubuntu
-  container:
-    placeholder: "مثال. ubuntu:trusty"
-  pullImage:
-    label: همیشه pull image before creating
 formNameDescription:
   name:
     label: نام
@@ -1050,19 +808,8 @@ formNameDescription:
     label: توضیح
     placeholder: توضیح
 formNetwork:
-  links:
-    table:
-      as: به عنوان
-      data:
-        as: 'به عنوان:'
   networkMode:
     label: شبکه
-    host: میزبان
-    none: هیچ یک
-  requestedIp:
-    placeholder: مثال. 10.42.2.24
-  dns:
-    enable: فعال سازی {appName} DNS service discovery
   hostname:
     label: نام هاست
     placeholder: مثال. web
@@ -1077,15 +824,10 @@ formNetwork:
   searchDomains:
     placeholder: مثال. prod.example.com
 formPorts:
-  addAction: Port maps
   private:
     placeholder: "مثال. 8080"
   protocol:
     label: پروتوکل
-formScale:
-  global:
-    vm: همیشه run one instance of this virtual machine on every host
-    container: همیشه run one instance of this container on every host
 formScheduling:
   canRequestHost:
     vm: اجرای <b>همه</b> ماشین های مجازی بر روی یک هاست مشخص
@@ -1095,28 +837,9 @@ formScheduling:
   key: کلید
   value: ارزش
 formSecurity:
-  key: کلید
-  value: ارزش
-  logConfig:
-    addActionLabel: افزودن گزینه
-    keyPlaceholder: مثال. syslog-facility
-    valuePlaceholder: مثال. daemon
-  privileged:
-    checkbox: دسترسی کامل به هاست
-  pidMode:
-    checkbox: میزبان
-  memoryLimit:
-    label: حافظه محدود
-    placeholder: نامحدود
-  swapLimit:
-    placeholder1: دارای محدودیت حافظه
-    placeholder2: نامحدود
-  cpuPinning:
-    placeholder: 'مثال. 0,3; Default: همه'
   shares:
     placeholder: مثال. 1024
   capabilities:
-    add: افزودن
     helpBlock:
       link: اطلاعات بیشتر
   deviceBinding:
@@ -1126,36 +849,22 @@ formSecurity:
       placeholder: مثال. /dev/xsdc
     permissions:
       label: دسترسی ها
-      placeholder: 'مثال. 0,3; Default: همه'
-  logDriver:
-    label: درایور Log
-    placeholder: مثال. syslog
 formServiceLinks:
-  addAction: سرویس Links
   name:
     label: به عنوان
     placeholder: مثال. database
 formSslTermination:
   addAlternate: افزودن Alternate Certificate
   noCertificates: There are no other certificates to use.
-  helpBlock: |
-    "توجه: Some older SSL/TLS clients do not support <a href="https://en.wikipedia.org/wiki/Server_Name_Indication" target="_blank">Server Name Indication (SNI)</a>; these clients will always be offered the main Certificate  Modern clients will be offered an appropriate certificate from the Alternate Certificates list if a match is found."
 formStickiness:
   none: هیچ یک
-  newCookie: ساختن کوکی جدید
   cookieName: نام کوکی
   domain: دامنه
   options: گزینه ها
-  noPorts: There are no HTTP listening ports configured.
   placeholder:
     sticky: مثال. sticky
     domain: مثال. mydomain.com
-formTarget:
-  pointAddress: اشاره به آدرس آی پی(es)
-  pointHostname: اشاره به نام هاست
-  addTarget: افزودن Target IP
 formTargets:
-  addAction: افزودن سرویس
   hostname:
     label: هاست درخواست
     placeholder: مثال. svc.com
@@ -1184,29 +893,15 @@ formUserLabels:
     label: ارزش
     placeholder: مثال. bar
   protip: 'نکته: Paste one or more lines of key=value pairs into any key field for easy bulk entry.'
-formUpgrade:
-  behavior: شروع Behavior
-  startStop: شروع قبل از توقف
-  whichServices: کدام سرویس ها
 formValueArray:
   addActionLabel: افزودن Value
   valueLabel: ارزش
-  valuePlacholder: ارزش
   protip: 'نکته: Paste one or more lines of values into any field for easy bulk entry.'
 formVirtualMachines:
   memory: حافظه
 formVolumes:
   value:
     prompt: یک Container انتخاب کنید...
-heroAddService:
-  infra:
-    header: افزودن Infrastructure Stacks
-  service:
-    header: افزودن اولین Stack شما
-    contentLink: اطلاعات بیشتر
-  addService: تعریف یک سرویس
-  addCatalog: تنظیم
-  linkToCatalog: Browse کاتالوگ
 hostSettings:
   header: میزبان Registration URL
   hostUrl:
@@ -1244,55 +939,6 @@ inputPassword:
   buttonText: تولید
 inputTextFile:
   tooltip: خواندن از یک فایل
-k8s:
-  containerSection:
-    name: نام Container
-    status: وضعیت
-    message: پیغام
-    ready: آماده
-  formContainerPorts:
-    addPort: پورت افزودن
-    table:
-      header:
-        hostIp: آی پی میزبان
-        hostPort: پورت میزبان
-        containerPort: پورت Container
-        protocol: پروتوکل
-      body:
-        name: مثال. web
-        hostIp: مثال. 19.82.8.24
-        hostPort: مثال. 80
-        containerPort: مثال. 8080
-  heroAddStack:
-    header: افزودن اولین Stack شما
-    linkToCatalog: افزودن از کاتالوگ
-  newOrEditResource:
-    edit: ویرایش {type}
-    add: افزودن {type}
-  podSection:
-    name: نام Pod
-    status: وضعیت
-    hostIp: آی پی میزبان
-  rcSection:
-    name: نام RC
-  replicasetSection:
-    name: نام Replica Set
-  servicePorts:
-    port: پورت
-    containerPort: پورت Container
-    nodePort: پورت Node
-    protocol: پروتوکل
-    noPorts: بدون پورت
-  serviceSection:
-    name: نام سرویس
-    noData: سرویسی وجود ندارد
-lbAddtlInfo:
-  info: اطلاعات
-  viewDetails: مشاهده جزئیات
-  defaultCertificate: Certificate پیش فرض
-  description: 'توضیح: '
-  ports: پورت ها
-  to: به
 labelsSection:
   kind: نوع
   key: کلید
@@ -1417,14 +1063,6 @@ machine:
       label: نام کاربری
     apiKey:
       label: کلید API
-  driverUbiquity:
-    accountSection: دسترسی به حساب
-    apiToken:
-      label: کلید دسترسی
-    loginAction: 'بعدی: اهراز هویت & ساخت a New Cloud Instance'
-    loadingInstance: در حال بارگزاری cloud instance creation details...
-    image:
-      label: تصویر
   driverVsphere:
     accountSection: دسترسی به حساب
     vcenter:
@@ -1476,7 +1114,6 @@ modalAboutComponent:
   version: نسخه
   ui: رابط کاربری
   machineService: سرویس ماشین
-  close: بستن
 modalAuditlogInfo:
   header: افزودنitional Log Info
 modalConfirmDeactivate:
@@ -1492,10 +1129,6 @@ modalConfirmDeactivate:
     default:
       message: غیر فعال سازی
       button: غیر فعال سازی
-modalEditBackup:
-  edit: ویرایش Backup
-  create: ساختن Backup
-  nameLabel: نام Backup
 modalEditDriver:
   header:
     create: افزودن درایور ماشین
@@ -1506,21 +1139,12 @@ modalEditDriver:
     help: 'اختیاری: The URL to load for customized Add Hosts screen for this driver.'
   checksum:
     help: 'اختیاری: Verify that the downloaded driver matches the expected checksum.'
-modalEditSnapshot:
-  edit: ویرایش Snapshot
-  create: ساختن Snapshot
-  nameLabel: نام Snapshot
 modalProcessError:
   cause: "علت:"
   close: بستن
 modalWelcome:
   header: به {appName} خوش آمدید!
   closeModal: بستن
-newAliasService:
-  header: افزودن سرویس Alias
-newBalancer:
-  tabs:
-    labels: برچسب ها
 newCatalog:
   version:
     prompt: انتخاب یک نسخه...
@@ -1541,29 +1165,10 @@ newCatalog:
 newContainer:
   add:
     container: افزودن Container
-    vm: افزودن ماشین مجازی
-    service: |
-      افزودن {numServices, plural,
-      =1 {Service}
-      other {Services}
-      }
   upgrade:
     container: ارتقای Container
-    vm: ارتقای ماشین مجازی
-    service: |
-      ارتقا {numServices, plural,
-      =1 {Service}
-      other {# Services}
-      }
-  tabs:
-    disks: دیسک ها
-    userData: داده های کاربر
-    command: دستور
-    networking: شبکه
-    labels: برچسب ها
   selectUpgrade: یک یا چند سرویس برای ارتقا انتخاب کنید.
   saveUpgrade: ارتقا
-  saveNew: ساختن
   removeSidekick: حذف این Sidekick
   name:
     placeholder: مثال. myapp
@@ -1571,14 +1176,8 @@ newContainer:
     placeholder: مثال. My Application
   addSidekickContainer: افزودن Sidekick Container
   addSidekickVm: افزودن Sidekick VM
-newExternalService:
-  header: افزودن سرویس خارجی
-  alert: 'توجه: This will only be used if the external service is a target of a load balancer.'
 pageFooter:
   notARelease: (نسخه آزمایشی)
-  help: راهنمایی
-  documentation: مستند
-  faq: پرسش و پاسخ ه‍ا
   issues: گزارش مشکل
   forums: تالار های گفتگو
   download:
@@ -1587,7 +1186,6 @@ projectRow:
   none: بدون توضیح
 registryRow:
   address: آدرس
-  email: ایمیل
   username: نام کاربری
   created: ساخته شد
 saveCancel:
@@ -1622,51 +1220,18 @@ serviceLink:
   withAlias:
     sameStack: "{service} به عنوان {alias}"
     differentStack: "{stack}/{service} به عنوان {alias}"
-sidekickAddtlInfo:
-  info: اطلاعات
-  image: تصویر
-  command: دستور
-  labels: برچسب ها
 siteAccess:
   header: دسترسی سایت
   noIdentity: هیچ یک
   users: کاربران
   groups: گروه ها
   organizations: سازمان ها
-stackSection:
-  outputs: خروجی ها
-  description: توضیح
-  none: سرویسی وجود ندارد
-  add:
-    service: افزودن سرویس
-    loadBalancer: افزودن Load Balancer
-    serviceAlias: افزودن سرویس Alias
-    externalService: افزودن سرویس خارجی
-    virtualMachine: افزودن ماشین مجازی
-  table:
-    dataTitle:
-      state: وضعیت
-      serviceName: نام سرویس
-      kind: نوع
-      details: جزئیات
-      actions: اکشن ها
 storagePoolSection:
-  outputs: خروجی ها
   hosts:
     header: میزبان ها
     none: هاستی وجود ندارد
   volumes:
     add: افزودن Volume
-swarm:
-  containerSection:
-    state: وضعیت
-    name: Container نام
-    image: تصویر
-  serviceSection:
-    state: وضعیت
-    name: نام سرویس
-    ports: پورت ها
-    none: سرویسی وجود ندارد
 telemetryOpt:
   learnMore:
     label: اطلاعات بیشتر
@@ -1718,19 +1283,11 @@ nav:
     your: محیط های شما
     selected: محیط انتخاب شده
     manage: مدیریت محیط ها
-  swarm:
-    projects: پروژه ها
-    services: سرویس ها
-  cattle:
-    all: همه
-    user: کاربر
   catalog:
-    tab: کاتالوگ
     all: همه
     library: کتابخانه
   infra:
-    hosts: میزبان ها
-    vms: ماشین های مجازی
+    storagePage: محل ذخیره
   admin:
     tab: مدیر
     accounts: حساب ها
@@ -1740,32 +1297,26 @@ nav:
   user:
     label: 'منوی کاربر: {username}'
     logout: خروج
-    yourAccount: حساب شما
-    changePassword: تغییر رمز عبور
-    theme: پوسته
-    themeLight: روشن
-    themeAuto: خودکار
-    themeDark: تیره
-  noHosts:
-    link: "افزودن هاست"
 action:
   activate: فعال سازی
-  deleteBackup: حذف Backup
   cancelUpgrade: لغو ارتقا
   cancelRollback: لغو Rollback
+  clone: همانند سازی
   deactivate: غیر فعال سازی
   edit: ویرایش
+  evacuate: تخلیه
   exportConfig: خروجی گرفتن از تنظیمات
   finishUpgrade: پایان ارتقا
   logs: مشاهده لاگ ها
   machineConfig: کانفیگ ماشین
   remove: حذف
+  replay: تکرار
+  restart: راه اندازی مجدد
+  retry: سعی مجدد
+  rollback: بحال اول بر گرداندن
   setDefault: انتخاب به عنوان پیش فرض
   start: شروع
-  startServices: شروع سرویس ها
   stop: توقف
-  stopServices: توقف سرویس ها
-  switchEnvironment: جابجایی به این محیط
   upgrade: ارتقا
   viewConfig: مشاهده تنظییمات
   viewGraph: مشاهده گراف
@@ -1774,6 +1325,8 @@ action:
 model:
   account:
     kind:
+      registeredAgent: عامل ثبت شده
+      agent: عامل
       service: سرویس
       user: کاربر
       admin: مدیر
@@ -1785,9 +1338,14 @@ model:
       group: گروه
       org: سازمان
       localUser: کاربر محلی
+      unknown: "{type}؟"
   projectMember:
     role:
       member: عضو
       owner: ماکل
       readonly: فقط قابل خواندن
       restricted: دسترسی قطع شده
+  scaleService:
+    min: حداقل مقیاس
+    max: حداکثر مقیاس
+    amount: توسط
