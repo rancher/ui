@@ -19,6 +19,7 @@ export default Ember.Mixin.create(NewOrEdit, ManageLabels, {
   clonedModel   : null,
   useHost       : true,
   hostConfig    : null,
+  labelResource: Ember.computed.alias('model.publicValues'),
 
   actions: {
     addLabel: addAction('addLabel', '.key'),
@@ -36,13 +37,14 @@ export default Ember.Mixin.create(NewOrEdit, ManageLabels, {
       this.sendAction('completed', this.get('model'));
       cb(true);
     },
+
     setLabels(labels) {
       let out = {};
       labels.forEach((row) => {
         out[row.key] = row.value;
       });
 
-      this.set('primaryResource.labels', out);
+      this.set('labelResource.labels', out);
     }
   },
 
@@ -209,6 +211,7 @@ export default Ember.Mixin.create(NewOrEdit, ManageLabels, {
   },
 
   didSave() {
+    let count = this.get('count');
     let parts = this.get('nameParts');
     let delay = this.get('createDelayMs');
     let tpl;
@@ -232,8 +235,12 @@ export default Ember.Mixin.create(NewOrEdit, ManageLabels, {
     function addHosts() {
       if ( parts.name ) {
         // Single host
-        tpl.set('hostname', parts.name);
-        return tpl.save();
+        if ( count > 0 ) {
+          tpl.set('hostname', parts.name);
+          return tpl.save();
+        } else {
+          return Ember.RSVP.resolve();
+        }
       } else {
         // Multiple hosts
         var promise = new Ember.RSVP.Promise(function(resolve,reject) {
