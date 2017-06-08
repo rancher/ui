@@ -3,7 +3,7 @@ import Ember from 'ember';
 export default Ember.Route.extend({
   model(params/* , transistion */) {
     return this.get('store').find('hosttemplate', params.template_id).then((template) => {
-      return this.get('store').find('machinedriver', null, {forceReload: true}).then((drivers) => {
+      return this.get('userStore').find('machinedriver', null, {forceReload: true}).then((drivers) => {
         var driver = drivers.findBy('name', template.driver);
         var configId = `${template.driver}Config`;
         var config = this.get('store').createRecord(template.publicValues[configId]);

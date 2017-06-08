@@ -1,5 +1,6 @@
 import Ember from 'ember';
 const { getOwner } = Ember;
+import C from 'ui/utils/constants';
 
 export default Ember.Route.extend({
   access         : Ember.inject.service(),
@@ -17,7 +18,20 @@ export default Ember.Route.extend({
       if ( this.get('backTo') === 'waiting' ) {
         this.transitionTo('authenticated.project.waiting');
       } else {
-        this.transitionTo('hosts.templates');
+
+        let drivers = this.get('machineDrivers');
+        let acd = drivers.filter((driver) => {
+          if (C.ACTIVEISH_STATES.indexOf(driver.get('state')) >= 0) {
+            return true;
+          }
+          return false;
+        });
+
+        if (acd.length) {
+          this.transitionTo('hosts.templates');
+        } else {
+          this.transitionTo('hosts.index');
+        }
       }
     }
   },
