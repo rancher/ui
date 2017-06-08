@@ -25,7 +25,7 @@
 <hr class="mt-30 mb-30">
 <div class="row form-group">
     <div class="form-label form-control-static">
-      <label>{{t 'formUpgrade.size'}}</label>
+      <label>{{t 'formUpgrade.batchSize.label'}}</label>
     </div>
     <div>
       {{input-integer min="1" class="form-control" value=model.batchSize}}
@@ -34,11 +34,11 @@
 <hr class="mt-30 mb-30">
 <div class="row form-group">
     <div class="form-label form-control-static">
-      <label>{{t 'formUpgrade.interval'}}</label>
+      <label>{{t 'formUpgrade.interval.label'}}</label>
     </div>
     <div class="input-group">
       {{input-integer class="form-control" value=model.interval}}
-      <span class="input-group-addon bg-default">{{t 'formUpgrade.sec'}}</span>
+      <span class="input-group-addon bg-default">{{t 'generic.seconds'}}</span>
     </div>
 </div>
 <hr class="mt-30 mb-30">
@@ -47,6 +47,13 @@
       <label>{{t 'formUpgrade.behavior'}}</label>
     </div>
     <div class="form-control-static">
-      <label class="checkbox ml-20" style="color: inherit; text-transform: none;">{{input type="checkbox" checked=model.startFirst}} {{t 'formUpgrade.startStop'}}</label>
+      <div>
+        <label>{{radio-button selection=model.startFirst value=false}}&nbsp;{{t 'formUpgrade.stopFirst.label'}}</label>
+        <p class="help-block">{{t 'formUpgrade.stopFirst.detail'}}</p>
+      </div>
+      <div>
+        <label>{{radio-button selection=model.startFirst value=true}}&nbsp;{{t 'formUpgrade.startFirst.label'}}</label>
+        <p class="help-block">{{t 'formUpgrade.startFirst.detail'}}</p>
+      </div>
     </div>
 </div>
