@@ -1,12 +1,11 @@
-<button class="btn bg-link icon-btn" {{action "add"}}><span class="darken"><i class="icon icon-plus text-small"/></span> <span>{{t addActionLabel}}</span></button>
-
 {{#if ary.length}}
-  <table class="table fixed no-lines mt-20">
+  <table class="table fixed no-lines mb-10">
     <tr class="hidden-xs hidden-sm">
       <th>{{t valueLabel}}</th>
       <th width="30">&nbsp;</th>
     </tr>
     {{#each ary as |row|}}
+    <div class="pt-10"></div>
       <tr>
         <td data-title="{{t valueLabel}}">
           {{input-paste pasted="pastedValues" class="form-control input-sm value" type="text" value=row.value placeholder=valuePlaceholder}}
@@ -18,8 +17,12 @@
       </tr>
     {{/each}}
   </table>
+{{/if}}
+<button class="btn bg-link icon-btn" {{action "add"}}><span class="darken"><i class="icon icon-plus text-small"/></span> <span>{{t addActionLabel}}</span></button>
+
+{{#if ary.length}}
   {{#if showProTip}}
-    <div class="text-info">
+    <div class="protip pt-10">
       {{t 'formValueArray.protip'}}
     </div>
   {{/if}}

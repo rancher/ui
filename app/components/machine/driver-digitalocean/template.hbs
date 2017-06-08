@@ -2,7 +2,7 @@
   {{#if showNameScale}}
     <div class="box mt-20">
       <h4>{{t 'machine.driverDigitalocean.instanceSection'}}</h4>
-      <div class="row mb-20">
+      <div class="row">
         {{partial "host/add-common"}}
       </div>
     </div>
@@ -12,14 +12,10 @@
     <div class="box mt-20">
       <form>
         <h4>{{t 'machine.driverDigitalocean.accountSection'}}</h4>
-        <div class="row inline-form">
-          <div class="col span-2 col-inline">
-            <label>{{t 'machine.driverDigitalocean.accessToken.label'}}</label>
-          </div>
-          <div class="col span-10">
+        <div class="row">
+            <label class="acc-label">{{t 'machine.driverDigitalocean.accessToken.label'}}</label>
             {{input type="password" value=model.secretValues.digitaloceanConfig.accessToken classNames="form-control" placeholder=(t 'machine.driverDigitalocean.accessToken.placeholder')}}
             <p class="text-info">{{t 'machine.driverDigitalocean.accessToken.help' htmlSafe=true}}</p>
-          </div>
         </div>
 
         {{top-errors errors=errors}}
@@ -38,75 +34,62 @@
       <div class="box mt-20">
         <h4>{{t 'machine.driverDigitalocean.regionSection'}}</h4>
 
-        <div class="row inline-form">
-          <div class="col span-2 col-inline">
-            <label>{{t 'machine.driverDigitalocean.region.label'}}</label>
-          </div>
-          <div class="col span-10">
+        <div class="row">
+            <label class="acc-label">{{t 'machine.driverDigitalocean.region.label'}}</label>
             <select class="form-control" onchange={{action (mut digitaloceanConfig.region) value="target.value"}}>
               {{#each regionChoices as |choice|}}
                 <option value={{choice.slug}} selected={{eq digitaloceanConfig.region choice.slug}}>{{choice.name}}</option>
               {{/each}}
             </select>
-          </div>
         </div>
       </div>
 
       <div class="box mt-20">
         <h4>{{t 'machine.driverDigitalocean.instanceOptionsSection'}}</h4>
+        <div class="row">
+          <div class="col span-4">
+          <label class="acc-label">{{t 'machine.driverDigitalocean.image.label'}}</label>
+          <select class="form-control" onchange={{action (mut digitaloceanConfig.image) value="target.value"}}>
+            {{#each imageChoices as |choice|}}
+              <option value={{choice.slug}} disabled={{choice.disabled}} selected={{eq digitaloceanConfig.image choice.slug}}>{{choice.distribution}} {{choice.name}}</option>
+            {{/each}}
+          </select>
+          </div>
 
-        <div class="row inline-form">
-          <div class="col span-2 col-inline">
-            <label>{{t 'machine.driverDigitalocean.image.label'}}</label>
-          </div>
           <div class="col span-4">
-            <select class="form-control" onchange={{action (mut digitaloceanConfig.image) value="target.value"}}>
-              {{#each imageChoices as |choice|}}
-                <option value={{choice.slug}} disabled={{choice.disabled}} selected={{eq digitaloceanConfig.image choice.slug}}>{{choice.distribution}} {{choice.name}}</option>
-              {{/each}}
-            </select>
+          <label class="acc-label">{{t 'machine.driverDigitalocean.size.label'}}</label>
+          <select class="form-control" onchange={{action (mut digitaloceanConfig.size) value="target.value"}}>
+            {{#each filteredSizeChoices as |choice|}}
+            <option value={{choice.slug}} selected={{eq digitaloceanConfig.size choice.slug}}>{{t 'machine.driverDigitalocean.sizeLabel' memoryGb=choice.memoryGb highMem=choice.highMem slug=choice.slug disk=choice.disk vcpus=choice.vcpus}}</option>
+            {{/each}}
+          </select>
           </div>
-          <div class="col span-2 col-inline">
-            <label>{{t 'machine.driverDigitalocean.size.label'}}</label>
-          </div>
-          <div class="col span-4">
-            <select class="form-control" onchange={{action (mut digitaloceanConfig.size) value="target.value"}}>
-              {{#each filteredSizeChoices as |choice|}}
-              <option value={{choice.slug}} selected={{eq digitaloceanConfig.size choice.slug}}>{{t 'machine.driverDigitalocean.sizeLabel' memoryGb=choice.memoryGb highMem=choice.highMem slug=choice.slug disk=choice.disk vcpus=choice.vcpus}}</option>
-              {{/each}}
-            </select>
-          </div>
-        </div>
-        <div class="row inline-form">
-          <div class="col span-2 col-inline">
-            <label>{{t 'machine.driverDigitalocean.sshUser.label'}}</label>
-          </div>
-          <div class="col span-4">
-            {{input type="text" value=digitaloceanConfig.sshUser classNames="form-control" placeholder=(t 'machine.driverDigitalocean.sshUser.placeholder')}}
+
+         <div class="col span-4">
+          <label class="acc-label">{{t 'machine.driverDigitalocean.sshUser.label'}}</label>
+          {{input type="text" value=digitaloceanConfig.sshUser classNames="form-control" placeholder=(t 'machine.driverDigitalocean.sshUser.placeholder')}}
           </div>
         </div>
       </div>
 
       <div class="box mt-20">
-      <div class="over-hr mt-20 mb-20">
-        <span>{{t 'machine.driverDigitalocean.optionsSection'}}</span>
-      </div>
+      <h4>{{t 'machine.driverDigitalocean.optionsSection'}}</h4>
 
       <table style="margin: 0 auto;">
         <tr>
           <td style="padding: 0 10px;">
             <div class="col-inline checkbox">
-              <label>{{input type="checkbox" checked=digitaloceanConfig.backups}} {{t 'machine.driverDigitalocean.backups.label'}}</label>
+              <label class="acc-label">{{input type="checkbox" checked=digitaloceanConfig.backups}} {{t 'machine.driverDigitalocean.backups.label'}}</label>
             </div>
           </td>
           <td style="padding: 0 10px;">
             <div class="col-inline checkbox">
-              <label>{{input type="checkbox" checked=digitaloceanConfig.ipv6}} {{t 'machine.driverDigitalocean.ipv6.label'}}</label>
+              <label class="acc-label">{{input type="checkbox" checked=digitaloceanConfig.ipv6}} {{t 'machine.driverDigitalocean.ipv6.label'}}</label>
             </div>
           </td>
           <td style="padding: 0 10px;">
             <div class="col-inline checkbox">
-              <label>{{input type="checkbox" checked=digitaloceanConfig.privateNetworking}} {{t 'machine.driverDigitalocean.privateNetworking.label'}}</label>
+              <label class="acc-label">{{input type="checkbox" checked=digitaloceanConfig.privateNetworking}} {{t 'machine.driverDigitalocean.privateNetworking.label'}}</label>
             </div>
           </td>
         </tr>
