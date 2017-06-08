@@ -14,7 +14,7 @@
         <h4>{{t 'machine.driverDigitalocean.accountSection'}}</h4>
         <div class="row inline-form">
           <div class="col span-2 col-inline">
-            <label>{{t 'machine.driverDigitalocean.accessToken.label'}}</label>
+            <label class="acc-label">{{t 'machine.driverDigitalocean.accessToken.label'}}{{field-required}}</label>
           </div>
           <div class="col span-10">
             {{input type="password" value=model.secretValues.digitaloceanConfig.accessToken classNames="form-control" placeholder=(t 'machine.driverDigitalocean.accessToken.placeholder')}}
@@ -40,7 +40,7 @@
 
         <div class="row inline-form">
           <div class="col span-2 col-inline">
-            <label>{{t 'machine.driverDigitalocean.region.label'}}</label>
+            <label class="acc-label">{{t 'machine.driverDigitalocean.region.label'}}</label>
           </div>
           <div class="col span-10">
             <select class="form-control" onchange={{action (mut digitaloceanConfig.region) value="target.value"}}>
@@ -57,7 +57,7 @@
 
         <div class="row inline-form">
           <div class="col span-2 col-inline">
-            <label>{{t 'machine.driverDigitalocean.image.label'}}</label>
+            <label class="acc-label">{{t 'machine.driverDigitalocean.image.label'}}</label>
           </div>
           <div class="col span-4">
             <select class="form-control" onchange={{action (mut digitaloceanConfig.image) value="target.value"}}>
@@ -67,7 +67,7 @@
             </select>
           </div>
           <div class="col span-2 col-inline">
-            <label>{{t 'machine.driverDigitalocean.size.label'}}</label>
+            <label class="acc-label">{{t 'machine.driverDigitalocean.size.label'}}</label>
           </div>
           <div class="col span-4">
             <select class="form-control" onchange={{action (mut digitaloceanConfig.size) value="target.value"}}>
@@ -79,7 +79,7 @@
         </div>
         <div class="row inline-form">
           <div class="col span-2 col-inline">
-            <label>{{t 'machine.driverDigitalocean.sshUser.label'}}</label>
+            <label class="acc-label">{{t 'machine.driverDigitalocean.sshUser.label'}}</label>
           </div>
           <div class="col span-4">
             {{input type="text" value=digitaloceanConfig.sshUser classNames="form-control" placeholder=(t 'machine.driverDigitalocean.sshUser.placeholder')}}
@@ -94,17 +94,17 @@
         <tr>
           <td style="padding: 0 10px;">
             <div class="col-inline checkbox">
-              <label>{{input type="checkbox" checked=digitaloceanConfig.backups}} {{t 'machine.driverDigitalocean.backups.label'}}</label>
+              <label class="acc-label">{{input type="checkbox" checked=digitaloceanConfig.backups}} {{t 'machine.driverDigitalocean.backups.label'}}</label>
             </div>
           </td>
           <td style="padding: 0 10px;">
             <div class="col-inline checkbox">
-              <label>{{input type="checkbox" checked=digitaloceanConfig.ipv6}} {{t 'machine.driverDigitalocean.ipv6.label'}}</label>
+              <label class="acc-label">{{input type="checkbox" checked=digitaloceanConfig.ipv6}} {{t 'machine.driverDigitalocean.ipv6.label'}}</label>
             </div>
           </td>
           <td style="padding: 0 10px;">
             <div class="col-inline checkbox">
-              <label>{{input type="checkbox" checked=digitaloceanConfig.privateNetworking}} {{t 'machine.driverDigitalocean.privateNetworking.label'}}</label>
+              <label class="acc-label">{{input type="checkbox" checked=digitaloceanConfig.privateNetworking}} {{t 'machine.driverDigitalocean.privateNetworking.label'}}</label>
             </div>
           </td>
         </tr>
