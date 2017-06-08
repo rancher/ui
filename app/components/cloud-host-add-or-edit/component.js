@@ -7,6 +7,7 @@ export default Ember.Component.extend(Driver, {
   clonedModel:     null,
   primaryResource: Ember.computed.alias('clonedModel'),
   hostOptions:     null,
+  labelResource: Ember.computed.alias('primaryResource'),
 
   didReceiveAttrs() {
     this._super(...arguments);

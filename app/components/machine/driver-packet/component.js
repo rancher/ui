@@ -34,11 +34,6 @@ export default Ember.Component.extend(Driver, {
       billingCycle : 'hourly',
     });
 
-    this.set('model', store.createRecord({
-      type: 'host',
-      packetConfig: config,
-    }));
-
     this.set('model', this.get('store').createRecord({
       type:         'hostTemplate',
       driver:       'packet',

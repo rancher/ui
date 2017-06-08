@@ -4,16 +4,20 @@ languageContribute: "Ajude a traduzir o Rancher"
 generic:
   actions: Ações
   activate: Ativar
+  all: Todos
+  any: Qualquer
   as: Como
   cancel: Cancelar
   closeModal: Fechar
+  command: Comando
+  confirm: Confirmar
   created: Criado
   default: Padrão
   description: Descrição
+  disable: Desativar
   disabled: Desativado
   domainName: Nome do Domínio
   enabled: Ativado
-  expires: Expira
   healthy: Sem erros
   id: Identificador
   image: Imagem
@@ -28,21 +32,20 @@ generic:
   ports: Portas
   remove: Remover
   role: Função
+  save: Salvar
+  saved: Salvo
+  saving: Salvando
   state: Estado
   type: Tipo
   unknown: Desconhecido
-  noo: "No"
-  yess: "Yes"
 accountsPage:
   index:
     header: Contas
     localLink: Adicionar Conta
     table:
-      state: Estado
       id: Identificador
       kind: Tipo
       username: Nome de Usuário
-      name: Nome
       identity: Identidade
       noData: Não há contas ainda
       noName: Nenhum
@@ -84,7 +87,7 @@ apiPage:
       paragraph1: Chaves de API de Conta estão ligadas a sua conta específica
       paragraph2: "e podem criar, apagar e manipular todos os ambientes que você tem acesso."
     table:
-      noData: "Você ainda não tem nenhuma Chave de API de Conta."
+      noData: Você ainda não tem nenhuma Chave de API de Conta.
 auditLogsPage:
   header: Logs de Auditoria
   form:
@@ -109,7 +112,6 @@ auditLogsPage:
     environment: Ambiente
     resourceTypeId: "ID:Tempo de Recurso"
     identity: Identidade
-  first: Primeira página
 authPage:
   root:
     header: Access Control
@@ -202,22 +204,17 @@ authPage:
         pre: Ativar Autenticação local
         post: 'Ativando...'
   0:
-    header: Controle de Acesso
+    header: Access Control
 catalogPage:
   index:
     header: 'Catálogo:'
-    search:
-      placeholder: Pesquisar...
     noData:
       singular: Não há templates compatíveis.
       plural: Não há templates compatíveis neste catálogo.
-consolePage:
-  closeButton: Fechar
 certificatesPage:
   table:
     cn: Nome do domínio
     expiresDate: Expira
-    noCn: Nenhum
   detail:
     header: 'Certificado:'
     description: Descrição
@@ -251,70 +248,9 @@ certificatesPage:
         placeholder: p.ex. EV cert para meudominio.com
 containersPage:
   table:
-    ipAddress: Endereço de IP
-    primaryHost: Host Primário
-    primaryHostUnknown: Desconhecido
-    image: Imagem
-    stats: Estatísticas
     sparkPrefixMemory: 'Memória: '
     sparkPrefixNetwork: 'Rede: '
     sparkPrefixStorage: 'Armazenamento: '
-    command: Comando
-    noCommand: Nenhum
-  index:
-    header: Contêineres
-    linkTo: Adicionar Contêiner
-    table:
-      header:
-        state: Estado
-        name: Nome
-        ip: Endereço de IP
-        image: Imagem
-        command: Comando
-      body:
-        noData: Você não tem nenhum contêiner ainda.
-  new:
-    form:
-      name:
-        placeholder: p.ex. myapp
-      description:
-        placeholder: p.ex. Minha Aplicação
-  containerPage:
-    header: 'Contêiner:'
-    subtext:
-      "on": true
-    infoMultiStats:
-      tooltip:
-        host: Copiar IP para Área de Transferência
-      ip: 'Ip do Contêiner:'
-      docker: 'ID do Docker:'
-      image: 'Imagem:'
-      command: 'Comando:'
-      description: 'Descrição:'
-    navTabs:
-      labels: Rótulos
-      ports: Portas
-    portsTab:
-      table:
-        header:
-          ip: Endereço de IP
-          public: Público no Host
-          private: Privado no Contêiner
-          protocol: Protocolo
-        body:
-          noData: Este contêiner não tem portas.
-    volumesTab:
-      table:
-        header:
-          mount: Ponto de Montagem
-          shared: Compartilhado Com
-          writable: Gravável
-        body:
-          error:
-            data: 'Erro:'
-            error: Erro
-            noData: Este contêiner não tem volumes.
-          noContainers: Sem outros contêineres
 containerSubpod:
   childContainers: Contêineres
 failWhalePage:
@@ -324,7 +260,7 @@ failWhalePage:
   logoutButton: Sair
 helpPage:
   header: Links úteis & Informações
-  banner: Avisos
+  banner: 'Avisos'
   environment:
     header: O que é um ambiente?
     content: |
@@ -379,8 +315,6 @@ helpPage:
       buttonText: Ver Mais Tópicos RancherOS
     rancher:
       buttonText: Ver Mais Tópicos Rancher
-    convoy:
-      buttonText: Ver Mais Tópicos Convoy
   commercial:
     header: Suporte Comercial
     content: |
@@ -398,34 +332,11 @@ hostsPage:
     header:
       text: Adicionar Host
     manageLink: Gerenciar machine drivers disponíveis
-    form:
-      name:
-        placeholder: p.ex. host01
   hostPage:
-    addContainer:
-      linkTo: Adicionar Contêiner
     infoMultiStats:
-      memory: 'Memória:'
-      storage: 'Armazenamento:'
       provider:
         labelText: 'Fornecedor:'
         noHost: Personalizado
-      description: 'Descrição:'
-    navTabs:
-      containers: Contêineres
-      ports: Portas
-      labels: Rótulos
-      storage: Armazenamento
-    containersTab:
-      table:
-        header:
-          state: Estado
-          name: Nome
-          ip: Endereço de IP
-          image: Imagem (Comando)
-          stats: Estatísticas
-        body:
-          noData: Este host não tem nenhum contêineres ainda.
     portsTab:
       table:
         header:
@@ -454,15 +365,11 @@ k8sTab:
         Colocar isso em <code>~/.kube/config</code>:
       downloadText: |
         Em seguida <a href="{downloadUrl}" target="_blank">baixar</a> (se necessário) e execute <code>kubectl</code>
-    shell:
-      helpText: |
-        Ou Utilize este prático shell diretamente para executar os comandos <code>kubectl</code>:
 loginPage:
   greeting: "Olá!<br>Bem-vindo à {appName}"
   githubMessage: "{appName} usar GitHub para gerenciar contas e equipes.  Clique no botão a seguir para entrar e dar-nos acesso somente leitura às suas informações básicas sobre a conta GitHub."
 mesosPage:
   header: Visão Geral
-  actionLink: Abrir Mesos UI
   banner:
     header: Seu cluster
     content: |
@@ -488,8 +395,6 @@ projectList:
     table:
       header:
         orchestration: Orquestração
-      body:
-        noData: "Você não tem nenhum ambientes ainda."
 registriesPage:
   index:
     header: Registros
@@ -498,7 +403,6 @@ registriesPage:
       header:
         state: Estado
         address: Endereço
-        email: E-mail
         username: Nome de usuário
         created: Criado
       body:
@@ -509,9 +413,6 @@ registriesPage:
       custom:
         labelText: Endereço
         placeholder: p.ex. registro.exemplo.com
-      email:
-        labelText: E-mail
-        placeholder: p.ex. voce@exemplo.com
       username:
         labelText: Nome de usuário
         placeholder: p.ex. usuario
@@ -521,42 +422,19 @@ registriesPage:
 servicePage:
   header: 'Serviço:'
   multistat:
-    type: 'Tipo:'
     scale: 'Escala:'
     image: 'Imagem:'
-    command: 'Comando:'
-    description: 'Descrição:'
   external:
     externalIp: IPs externos
     externalHostname: 'Nome do Host Externo:'
-  navTabs:
-    ports: Portas
-    containers: Contêineres
-    labels: Rótulos
-    links: Ligações
-  containersTab:
-    table:
-      header:
-        ipAddress: Endereço de IP
-        image: Imagem
-        stats: Estatísticas
-      body:
-        noData: Este serviço não tem nenhum contêineres ainda.
   linksTab:
     header: Ligações
-    noData: Sem Ligações
   new:
     form:
       name:
         placeholder: p.ex. myapp
       description:
         placeholder: p.ex. Minha aplicação
-  newAlias:
-    form:
-      name:
-        placeholder: p.ex. myapp
-      description:
-        placeholder: p.ex. A versão atual do MyApp
   newBalancer:
     form:
       name:
@@ -571,121 +449,18 @@ servicePage:
       body:
         noData: Este serviço não tem portas.
     notActive: Portas estão disponíveis apenas enquanto o serviço está ativo.
-stacksPage:
-  header:
-    all: Todas as Pilhas
-    user: Pilhas de Usuário
-  actionButton: Adicionar Pilha
-  sort:
-    label: Ordenar por
-    state: Estado
-    name: Nome
-  new:
-    composeLabel: 'Opcional: Importar Compose'
-    form:
-      name:
-        placeholder: p.ex. myapp
-      description:
-        placeholder: p.ex. Pilha MyApp
-      dockerCompose:
-        placeholder: Conteúdo de docker-compose.yml
-      rancherCompose:
-        placeholder: Conteúdo de rancher-compose.yml
-      startOnCreate:
-        label: Iniciar serviços após a criação
 storagePoolsPage:
   newVolume:
     header: Adicionar Volume
     form:
       driverOptions: Opções do driver
       addActionLabel: Adicionar Opção
-swarmPage:
-  projects:
-    index:
-      header: Projetos
-      linkTo: Adicionar Projeto
-      table:
-        header:
-          services: Serviços
-        body:
-          noData: Você não tem nenhum Projeto ainda.
-    new:
-      header: Adicionar Projeto
-      form:
-        name:
-          placeholder: p.ex. myapp
-        description:
-          placeholder: p.ex. Projeto MyApp
-        variables:
-          addActionLabel: Adicionar Substituição de Variável
-          keyLabel: Variável
-          keyPlaceholder: p.ex. FOO
-          valuePlaceholder: p.ex. bar
-        dockerCompose:
-          placeholder: Cole o conteúdo do docker-compose.yml
-    project:
-      linkTo: 'Projeto:'
-      table:
-        header:
-          ports: Portas
-          containers: Contêineres
-        body:
-          noData: Este projecto não tem nenhum Serviço ainda.
-  services:
-    header: Serviços
-    table:
-      header:
-        ports: Portas
-        containers: Contêineres
-      body:
-        noData: Você não tem nenhum serviço ainda.
-virtualMachinePage:
-  header: 'Máquina virtual:'
-  multistat:
-    hostIp: 'IP do Host:'
-    vmIp: 'IP da VM:'
-    image: 'Imagem:'
-    description: 'Descrição:'
-  navTabs:
-    labels: Rótulos
-virtualMachinesPage:
-  header: Máquinas Virtuais
-  linkTo: Adicionar a Máquina Virtual
-  table:
-    body:
-      noData: Você ainda não tem nenhuma máquina virtual.
 waitingPage:
   hosts:
-    header: |
-      {expectHosts, plural,
-      =1 {Adicionando seu primeiro host}
-      other {Adicionar hosts}
-      }
-    content: |
-      Você deve adicionar pelo menos {expectHosts, plural,
-      =1 {um único host Linux que suporta}
-      other {# Linux hosts que suportam}
-      } Docker {minVersion} ou superior e ser capaz de alcançar o {appName} servidor via HTTP.<br/>
-      {appName} suporta a adição de hosts Linux sob a forma de uma máquina virtual ou física de quaisquer provedores de nuvem pública, host nuvem privada, ou até mesmo servidores bare metal.
-    contentLink: Aprender mais
-    linkToHost: Adicionar Host
     setup:
       mesos: Configurando Mesos
       swarm: Configurando Swarm
       kubernetes: Configurando Kubernetes
-aliasServicePartial:
-  serviceLinks:
-    labelText: Ligações de Serviços
-    linkTo: Exibir detalhes
-  links: Ligações
-  noLinks: Sem Ligações
-  description: 'Descrição:'
-externalServicePartial:
-  extService:
-    labelText: Serviço Externo
-    linkTo: Exibir detalhes
-  hostname: 'Nome do Host:'
-  description: 'Descrição:'
 hostPartial:
   host:
     addCommon:
@@ -694,8 +469,6 @@ hostPartial:
         form:
           name:
             placeholder: p.ex. host01
-    addOptions:
-      labels: Rótulos
 ldap:
   accessEnabled:
     header: Autenticação
@@ -737,10 +510,6 @@ ldap:
       labelText: Nome de usuário da Conta de Serviço*
     servicePassword:
       labelText: Senha da Conta de Serviço*
-    searchBase:
-      helpText: "Somente os usuários e grupos abaixo da base serão usados."
-      labelText: Base de Pesquisa*
-      placeholder: "p.ex. dc=minhaempresa,dc=com"
     defaultDomain:
       helpText: "Este domínio será usado se um usuário fizer logon sem especificar um."
       labelText: Domínio de logon padrão*
@@ -785,22 +554,6 @@ servicePartial:
     label: Sem contêineres ainda..
     inactive:
       start: Iniciar
-serviceInfoPartial:
-  info:
-    label: Informação
-    linkTo: Exibir detalhes
-  image: 'Imagem:'
-  command: 'Comando:'
-  description: 'Descrição:'
-  containers: Contêineres
-  scale: Escala
-  noContainers: Sem Contêineres
-  ports: Portas
-  noPublicPorts: Sem Portas Públicas
-  links: Ligações
-  noLinks: Sem Ligações
-advancedSection:
-  hrText: Opções Avançadas
 catalogSettings:
   header: Catálogo
   subtext: Catálogos contêm templates rancher-compose que permitem aos usuários facilmente implantar aplicativos, respondendo a algumas perguntas
@@ -875,8 +628,6 @@ editAccount:
       label: Confirmar Senha
     identity:
       label: Identidade
-editAliasService:
-  title: Editar Alias de Serviço
 editApiKey:
   title:
     justCreated: Chave de API Criada
@@ -893,16 +644,6 @@ editApiKey:
   saveWarning1: Salve as chaves acima!  Esta é a única vez que você será capaz de ver o segredo.
   saveWarning2: Se você perdê-lo, você precisará criar uma nova chave de API.
   noteOptional: Nome e/ou descrição é opcional para ajudar a lembrar o que é usado para.  Você só pode criar uma chave clicando em criar.
-editBalancerService:
-  title: Editar Balanceador de Carga
-  haproxy:
-    help: |
-      Configuração <a href="http://cbonte.github.io/haproxy-dconv/configuration-1.5.html" target="_blank">haproxy.cfg</a>
-      adicionais pode ser colocado aqui e será acrescentada à configuração gerada pelo {appName}.
-    global:
-      prompt: Secção de Linhas para Customização Global
-    defaults:
-      prompt: Secção de Linhas para Customização Padrão
 editCertificate:
   title: Editar Certificado
   name:
@@ -918,12 +659,6 @@ editContainer:
     placeholder: p.ex. myapp
   description:
     placeholder: p.ex. Minha Aplicação
-editExternalService:
-  title: Editar Serviço Externo
-  name:
-    placeholder: p.ex. external-db
-  description:
-    placeholder: p.ex. Servidor de banco de dados físico externo
 editHost:
   title: Editar Host
   hostname:
@@ -963,7 +698,6 @@ editStack:
     placeholder: p.ex. Pilha MyApp
 formatIp:
   noIp: Nenhum
-  unknownIp: Desconhecido
 formCommand:
   command:
     label: Comando
@@ -991,17 +725,8 @@ formCommand:
       other {vezes}
       }
     always: Sempre
-  environment:
-    addAction: Adicionar Variável de Ambiente
-    keyLabel: Variável
-    keyPlaceholder: p.ex. FOO
-    valueLabel: Valor
-    valuePlaceholder: p.ex. bar
 formContainerLinks:
-  label: Ligações
   addActionLabel: Adicionar Ligações
-  noContainers: Não há nenhum outros contêineres para vincular.
-  noLinks: Este contêiner não tem ligações.
   targetInstance:
     label: Contêiner de Destino
     prompt: Selecione um Contêiner...
@@ -1066,7 +791,6 @@ formHealthCheck:
     label: Cabeçalho do Host
     placeholder: p.ex. www.exemplo.com
   port:
-    label: Porta
     placeholder: p.ex. 80
   initializingTimeout:
     label: Timeout de Inicialização
@@ -1082,12 +806,6 @@ formHealthCheck:
     label: Quando Insalubre
     none: Não faça nada
     recreate: Re-criar
-    recreateOnQuorumPrefix: Re-criar, somente quando pelo menos
-    recreateOnQuorumSuffix: |
-      {quorum, plural,
-      =1 {Contêiner é}
-      other {contêineres são}
-      } saudável
 formKeyValue:
   addAction: Adicionar Par
   key:
@@ -1099,13 +817,8 @@ formKeyValue:
   protip: 'Dica: Colar uma ou mais linhas de pares chave=valor em qualquer campo de chave para a fácil entrada em massa.'
 formImage:
   label: Selecione Imagem
-  vm:
-    placeholder: p.ex. rancher/vm-ubuntu
-    dropdownLabel: "{appName} Imagens"
   container:
     placeholder: "p.ex. ubuntu:trusty"
-  pullImage:
-    label: Sempre Puxe(pull) a imagem antes de criar
 formNameDescription:
   name:
     label: Nome
@@ -1121,33 +834,8 @@ formPorts:
   protocol:
     label: Protocolo
   noPorts: Este contêiner não tem nenhuma mapa de porta.
-formScale:
-  label: Escala
-  global:
-    vm: Sempre executar uma instância desta máquina virtual em cada host
-    container: Sempre executar uma instância desse contêiner em cada host
-  regular:
-    vm: |
-      Executar {scale, plural,
-      =0 {nenhuma máquina virtual}
-      =1 {1 máquina virtual}
-      other {# máquinas virtuais}
-      }
-    container: |
-      Executar {scale, plural,
-      =0 {nenhum contêineres}
-      =1 {1 contêiner}
-      other {# contêineres}
-      }
-formSecurity:
-  logConfig:
-    addActionLabel: Adicionar Opção
-    keyPlaceholder: p.ex. syslog-facility
-    valuePlaceholder: p.ex. daemon
 formServiceLinks:
   addAction: Ligações de Serviço
-  noServices: Não há outros serviços para vincular.
-  noLinks: Este serviço não tem ligações de serviços.
   service:
     label: Serviço de Destino
   name:
@@ -1183,7 +871,6 @@ formTargets:
     help2: |
       Pedidos correspondentes serão enviadas para o serviço de destino na porta de destino.
       Se isso não está definido, Então a Porta Padrão de Destino será usada para a Porta de Origem.  Se isso também não está definido, então será usado a Porta de Origem.
-  noHostnames: "(Não pode balanciar para os nomes de host)"
 formUserLabels:
   addAction: Adicionar Rótulo
   key:
@@ -1196,7 +883,6 @@ formUserLabels:
 formValueArray:
   addActionLabel: Adicionar Valor
   valueLabel: Valor
-  valuePlacholder: Valor
   protip: 'Dica: Cole um ou mais linhas de valores em qualquer campo para a fácil entrada em massa.'
 formVolumes:
   value:
@@ -1254,60 +940,6 @@ inputPassword:
   buttonText: Gerar
 inputTextFile:
   tooltip: Ler de um arquivo
-k8s:
-  containerSection:
-    message: Mensagem
-    ready: Pronto
-    restarts: Reiniciados
-  formContainerPorts:
-    portMap: Mapa de Porta
-    addPort: Adicionar Porta
-    table:
-      header:
-        hostIp: IP do Host
-        hostPort: Porta do Host
-        containerPort: Porta do Contêiner
-        protocol: Protocolo
-      body:
-        name: p.ex. web
-        hostIp: p.ex. 19.82.8.24
-        hostPort: p.ex. 80
-        containerPort: p.ex. 8080
-    noPorts: Este Contêiner não tem nenhum mapa de porta.
-  newOrEditResource:
-    placeholder: Definição de Recurso YAML ou JSON
-  podSection:
-    name: Nome do Pod
-    containers: Contêineres
-    hostIp: IP do Host
-    podIp: IP do Pod
-    noData: Sem Pods
-  rcSection:
-    replicas: Réplicas
-    selectors: Seletores
-    containers: Contêineres
-    noData: Você não tem nenhum Controlador de Replicação ainda.
-  servicePorts:
-    port: Porta
-    containerPort: Porta do Contêiner
-    nodePort: Porto do Nó
-    protocol: Protocolo
-    noPorts: Sem Portas.
-  serviceSection:
-    selectors: Seletores
-    noData: Você não tem nenhum Serviço ainda.
-lbAddtlInfo:
-  viewDetails: Exibir detalhes
-  defaultCertificate: Certificado Padrão
-  alternateCertificate: Certificado Alternativo
-  description: 'Descrição: '
-  containers: Contêineres
-  noContainers: Sem Contêineres
-  scale: Escala
-  ports: Portas
-  noPorts: Sem portas de host público
-  targets: Destinos
-  to: para
 labelsSection:
   kind: Tipo
   key: Chave
@@ -1379,9 +1011,6 @@ machine:
     subscriptionId:
       label: ID de Assinatura
       placeholder: Seu ID de assinatura Azure
-    subscriptionCert:
-      label: Cert de Assinatura
-      placeholder: Seu certificado de assinatura Azure
     instanceSection: Instância
     image:
       label: Imagem
@@ -1393,7 +1022,6 @@ machine:
     publishSettingsFile:
       label: Configurações de Publicação
       placeholder: Seu arquivo de Configurações de Publicação
-    regionSection: Região
     region:
       label: Região
   driverCustom:
@@ -1496,27 +1124,6 @@ machine:
     region:
       label: Região
     instanceSection: Instância
-  driverUbiquity:
-    accountSection: Conta de Acesso
-    clientId:
-      label: ID de Revendedor
-      placeholder: Sua ID de Revendedor da API de Hospedagem Ubiquity
-    apiUsername:
-      label: ID Remoto
-      placeholder: Sua ID Remoto da API de Hospedagem Ubiquity
-    apiToken:
-      label: Chave de Acesso
-      placeholder: Sua chave de acesso da Hospedagem Ubiquity
-      provided: Fornecido
-    accountHelp: 'Você pode encontrar suas credenciais de API da hospedagem Ubiquity <a href="https://motion.ubiquityhosting.com/api">aqui</a>. Não tem uma conta? Saiba mais sobre <a href="http://www.ubiquityhosting.com/">Hospedagem Ubiquity</a> hoje!'
-    loginAction: 'Próximo: Autenticar & Criar uma nova instância de nuvem'
-    loadingInstance: Carregando dados de criação de instância de nuvem...
-    instanceSection: Instância
-    regionSection: Região
-    region:
-      label: Região
-    image:
-      label: Imagem
   driverVsphere:
     accountSection: Conta de Acesso
     vcenter:
@@ -1547,7 +1154,6 @@ modalAboutComponent:
   version: Versão
   ui: Interface de Usuário
   machineService: Serviço de Máquina
-  close: Fechar
 modalAuditlogInfo:
   header: Informação de Log Adicionais
   request: "Objeto do Pedido:"
@@ -1574,14 +1180,6 @@ modalProcessError:
   cause: "Causa:"
   none: N/D
   close: Fechar
-newAliasService:
-  header: Adicionar Serviço de Alias
-newBalancer:
-  tabs:
-    ssl: Terminação SSL
-    custom: haproxy.cfg Personalizado
-    labels: Rótulos
-    scheduling: Agendamento
 newCatalog:
   version:
     prompt: Escolha uma versão...
@@ -1603,15 +1201,6 @@ newCatalog:
   startService: Iniciar os serviços depois de criar
   preview: Visualizar
 newContainer:
-  tabs:
-    disks: Discos
-    userData: Dados do Usuário
-    command: Comando
-    networking: Rede
-    security: Segurança/Host
-    healthCheck: Exame de Saúde
-    labels: Rótulos
-    scheduling: Agendamento
   selectUpgrade: Selecione um ou mais serviços para atualizar.
   saveUpgrade: Atualizar
   saveNew: Criar
@@ -1620,16 +1209,11 @@ newContainer:
     placeholder: p.ex. myapp
   description:
     placeholder: p.ex. Minha Aplicação
-  emptyPrimaryService: "(Serviço Primário)"
   addSidekickContainer: Adicionar Sidekick Contêiner
   addSidekickVm: Adicionar Sidekick VM
-newExternalService:
-  header: Adicionar Serviço Externo
-  alert: 'Nota: Isto só será usado se o serviço externo é um destino de um balanceador de carga.'
 pageFooter:
   notARelease: (Não é uma Release)
-  help: Ajuda
-  documentation: Documentação
+  help: 'Ajuda'
   issues: Registre uma Issue
   forums: Fóruns
   download:
@@ -1656,64 +1240,15 @@ schedulingRuleRow:
   theHost: O host
   haveA: tem um
   of: de
-sidekickAddtlInfo:
-  info: Informação
-  image: Imagem
-  command: Comando
-  containers: Contêineres
-  noContainers: Sem Contêineres
-  labels: Rótulos
-  noLabels: Sem Rótulos
-stackSection:
-  outputs: Saídas
-  description: Descrição
-  none: Sem Serviços
-  container: |
-    {numContainers, plural,
-    =1 {Contêiner}
-    other {Contêineres}
-    }
-  service: |
-    {numServices, plural,
-    =1 {Serviço}
-    other {Serviços}
-    }
-  add:
-    service: Adicionar Serviço
-    loadBalancer: Adicionar Balanceador de Carga
-    serviceAlias: Adicionar o Alias do Serviço
-    externalService: Adicionar Serviço Externo
-    virtualMachine: Adicionar a Máquina Virtual
-  table:
-    dataTitle:
-      state: 'Estado:'
-      serviceName: 'Nome do serviço:'
-      details: 'Detalhes:'
-      containers: 'Contêineres:'
-      actions: 'Ações:'
 storagePoolSection:
-  outputs: Saídas
   readOnly: "(somente leitura)"
   hosts:
     none: Sem Hosts
   volumes:
     add: Adicionar Volume
     none: Sem Volumes
-swarm:
-  containerSection:
-    state: Estado
-    name: Nome do Contêiner
-    image: Imagem
-    none: Sem Contêineres
-  serviceSection:
-    state: Estado
-    name: Nome do Serviço
-    ports: Portas
-    containers: Contêineres
-    none: Sem Serviços
 tooltipLink:
   list: Lista
-  linkGraph: Gráfico de Ligações
 tooltipWarning:
   notConfigured: Controle de Acesso Não Configurado
   dismiss: Dispensar
@@ -1742,9 +1277,7 @@ driver:
   multiHostNames: "Hosts serão nomeados <b>{first}</b> &mdash; <b>{last}</b>"
 allServices:
   stackGroup: 'Pilha: {name}'
-  noName: '(Pilha: {id})'
 nav:
-  srToggleNav: Alternar Navegação
   srToggleDropdown: Alternar Dropdown
   environment:
     label: Ambiente
@@ -1752,25 +1285,13 @@ nav:
     your: Seus Ambientes
     selected: Ambiente Selecionado
     manage: Gerenciar Ambientes
-  namespace:
-    manage: Gerenciar Namespaces
-  swarm:
-    projects: Projetos
-    services: Serviços
   mesos:
     web: Visão Geral
-  cattle:
-    tab: Pilhas
-    all: Todos
-    user: Usuário
   catalog:
-    tab: Catálogo
     all: Todos
     library: Biblioteca
   infra:
     tab: Infra-estrutura
-    containers: Contêineres
-    vms: Máquinas Virtuais
     certificates: Certificados
     registries: Registros
   admin:
@@ -1782,11 +1303,6 @@ nav:
   user:
     label: 'Menu do Usuário: {username}'
     logout: Sair
-    yourAccount: Sua Conta
-    changePassword: Alterar senha
-    theme: Tema
-    themeLight: Claro
-    themeDark: Escuro
 action:
   activate: Ativar
   cancelUpgrade: Cancelar Atualização
@@ -1800,18 +1316,12 @@ action:
   finishUpgrade: Finalizar Atualização
   logs: Exibir Logs
   machineConfig: Configuração da Máquina
-  purge: Eliminar
   remove: Excluir
   restart: Reiniciar
-  restore: Restaurar
   retry: Tente novamente
   setDefault: Definir como Padrão
   start: Iniciar
-  startServices: Iniciar Serviços
   stop: Parar
-  stopServices: Parar Serviços
-  switchNamespace: Mudar para este Namespace
-  switchEnvironment: Mudar para esta Ambiente
   upgrade: Atualizar
   viewConfig: Exibir Configuração
   viewGraph: Exibir Gráfico
