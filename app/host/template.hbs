@@ -6,8 +6,8 @@
     {{info-multi-stats model=host linkName="hostStats" largeTargetId="largeStats"}}
   </div>
   <div class="right-buttons">
-    {{badge-state model=model}}
-    {{action-menu model=model showPrimary=false classNames="ml-10 pull-right" size="sm"}}
+    {{badge-state model=host}}
+    {{action-menu model=host showPrimary=false classNames="ml-10 pull-right" size="sm"}}
   </div>
 </section>
 
@@ -147,15 +147,15 @@
     {{#accordion-list-item
          title=(t 'hostsPage.hostPage.containersTab.header')
          detail=(t 'hostsPage.hostPage.containersTab.detail')
-         status=(t 'hostsPage.hostPage.containersTab.status' count=model.host.arrangedInstances.length)
-         statusClass=(if model.host.arrangedInstances.length 'bg-success' 'text-muted')
+         status=(t 'hostsPage.hostPage.containersTab.status' count=host.arrangedInstances.length)
+         statusClass=(if host.arrangedInstances.length 'bg-success' 'text-muted')
          expandAll=al.expandAll
          expand=(action expandFn)
          componentName='container-table'
          as | parent |
     }}
       {{component parent.intent
-          body=model.host.arrangedInstances
+          body=host.arrangedInstances
           sortBy=sortBy
           bulkActions=true
           search=true
@@ -168,8 +168,8 @@
     {{#accordion-list-item
          title=(t 'hostsPage.hostPage.portsTab.header')
          detail=(t 'hostsPage.hostPage.portsTab.detail')
-         status=(t 'containerPage.portsTab.status' count=model.host.displayEndpoints.length)
-         statusClass=(if model.host.displayEndpoints.length 'bg-success' 'text-muted')
+         status=(t 'containerPage.portsTab.status' count=host.displayEndpoints.length)
+         statusClass=(if host.displayEndpoints.length 'bg-success' 'text-muted')
          expandAll=al.expandAll
          expand=(action expandFn)
          componentName='sortable-table'
@@ -184,7 +184,7 @@
            stickyHeader=false
            descending=descending
            headers=portHeaders
-           body=model.host.displayEndpoints
+           body=host.displayEndpoints
            as |sortable kind port|
       }}
         {{#if (eq kind "row")}}
@@ -219,7 +219,7 @@
     {{/accordion-list-item}}
 
     {{labels-section
-        model=model.host
+        model=host
         tagName=''
         expandAll=al.expandAll
         expandFn=expandFn
