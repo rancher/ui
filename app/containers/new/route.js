@@ -8,64 +8,95 @@ export default Ember.Route.extend({
 
     if ( params.containerId )
     {
-      dependencies.existing = store.find('container', params.containerId, {include: ['ports','instanceLinks']});
+      dependencies.existing = store.find('container', params.containerId);
     }
 
-    return Ember.RSVP.hash(dependencies, 'Load container dependencies').then(function(results) {
-
-      if ( params.upgrade )
-      {
-        return Ember.Object.create({
-          instance: results.existing.clone(),
-        });
-      }
+    return Ember.RSVP.hash(dependencies, 'Load container dependencies').then((results) => {
 
       var data, healthCheckData;
-      if ( results.existing )
-      {
-        data = results.existing.serializeForNew();
-        data.ports = (data.ports||[]).map((port) => {
-          delete port.id;
-          return port;
+      var instance = null;
+
+      if ( results.existing ) {
+
+        var linksToFollow = {
+          ports: results.existing.followLink('ports'),
+          instanceLinks: results.existing.followLink('instanceLinks'),
+        };
+
+        return Ember.RSVP.hash(linksToFollow).then((hash) => {
+
+          results.existing.setProperties({
+            instanceLinks: hash.instanceLinks,
+            ports: hash.ports,
+          });
+
+          if ( params.upgrade )
+          {
+            return Ember.Object.create({
+              instance: results.existing.clone(),
+            });
+          }
+
+          data = results.existing.serializeForNew();
+          data.ports = (data.ports||[]).map((port) => {
+            delete port.id;
+            return port;
+          });
+
+          if ( Ember.isArray(data.instanceLinks) )
+          {
+            data.instanceLinks = (data.instanceLinks||[]).map((link) => {
+              delete link.id;
+              return link;
+            });
+          }
+
+          if ( !data.environment )
+          {
+            data.environment = {};
+          }
+
+          healthCheckData = data.healthCheck;
+          delete data.healthCheck;
+
+          instance = store.createRecord(data);
+
+          if ( healthCheckData ) {
+            // The type isn't set on an existing one
+            healthCheckData.type = 'instanceHealthCheck';
+            instance.set('healthCheck', store.createRecord(healthCheckData));
+          }
+
+          return Ember.Object.create({
+            instance: instance,
+          });
+
         });
 
-        if ( Ember.isArray(data.instanceLinks) )
-        {
-          data.instanceLinks = (data.instanceLinks||[]).map((link) => {
-            delete link.id;
-            return link;
-          });
-        }
+      } else {
 
-        if ( !data.environment )
-        {
-          data.environment = {};
-        }
-
-        healthCheckData = data.healthCheck;
-        delete data.healthCheck;
-      }
-      else
-      {
         data = {
           type: 'container',
           requestedHostId: params.hostId,
           tty: true,
           stdinOpen: true,
         };
+
+        instance = store.createRecord(data);
+
+        if ( healthCheckData ) {
+          // The type isn't set on an existing one
+          healthCheckData.type = 'instanceHealthCheck';
+          instance.set('healthCheck', store.createRecord(healthCheckData));
+        }
+
+        return Ember.Object.create({
+          instance: instance,
+        });
+
       }
 
-      var instance = store.createRecord(data);
-      if ( healthCheckData )
-      {
-        // The type isn't set on an existing one
-        healthCheckData.type = 'instanceHealthCheck';
-        instance.set('healthCheck', store.createRecord(healthCheckData));
-      }
 
-      return Ember.Object.create({
-        instance: instance,
-      });
     });
   },
 
