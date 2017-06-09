@@ -6,7 +6,7 @@ export default Ember.Component.extend(NewOrEdit, {
 
   userValue: '',
   userValueChanged: Ember.observer('userValue', function() {
-    this.set('primaryResource.value', btoa(this.get('userValue')));
+    this.set('primaryResource.value', AWS.util.base64.encode(this.get('userValue')));
   }),
 
   actions: {

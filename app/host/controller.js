@@ -3,11 +3,10 @@ import ContainerSparkStats from 'ui/mixins/container-spark-stats';
 
 export default Ember.Controller.extend(ContainerSparkStats, {
   application: Ember.inject.controller(),
-  host: Ember.computed.alias('model.host'),
+  host:        Ember.computed.alias('model.host'),
   queryParams: ['sortBy'],
-  sortBy: 'name',
-  // Dynamic sortby?
-  // sortBy: 'ip',
+  sortBy:      'name',
+
   nonRootVolumes: function() {
     return this.get('model.storagePools').filter(function(volume) {
       return !volume.get('instanceId') && volume.get('state') !== 'purged';

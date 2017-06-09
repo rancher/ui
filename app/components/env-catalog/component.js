@@ -124,15 +124,20 @@ export default Ember.Component.extend({
   validate() {
     var errors = [];
     var global = this.get('global');
-    var ary = this.get('ary');
+    var ary    = this.get('ary');
 
     ary.forEach((cat) => {
-      if ( (cat.name||'').trim().length === 0 ) {
+
+      if ( trimAndCheck(cat.name) ) {
         errors.push('Name is required on each catalog');
       }
 
-      if ( (cat.url||'').trim().length === 0 ) {
+      if ( trimAndCheck(cat.url) ) {
         errors.push('URL is required on each catalog');
+      }
+
+      if ( trimAndCheck(cat.branch) ) {
+        errors.push('A Branch is required on each catalog');
       }
 
       if ( global.filter((x) => (x.name||'').trim().toLowerCase() === cat.name.toLowerCase()).length > 1 ||
@@ -146,6 +151,10 @@ export default Ember.Component.extend({
       return false;
     } else {
       this.set('errors', null);
+    }
+
+    function trimAndCheck(str) {
+      return (str||'').trim().length === 0 ? true : false;
     }
 
     return true;

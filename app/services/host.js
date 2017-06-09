@@ -26,7 +26,7 @@ export default Ember.Service.extend({
     let us = this.get('userStore');
     let drivers = [];
 
-    return us.find('machinedriver', null, {forceReload: true}).then((possible) => {
+    return us.findAll('machinedriver').then((possible) => {
       let promises = [];
 
       possible.filterBy('state','active').forEach((driver) => {
