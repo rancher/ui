@@ -71,7 +71,7 @@ export default Ember.Controller.extend({
       name: 'docker',
       sort: ['dockerEngineVersion','displayName'],
       searchField: 'dockerEngineVersion',
-      width: 90,
+      width: 110,
       translationKey: 'hostsPage.index.table.docker',
     },
     {

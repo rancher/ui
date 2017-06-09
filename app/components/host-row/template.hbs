@@ -1,8 +1,8 @@
 <tr class="main-row">
-  <td class="row-check" rowspan={{if showLabelRow 2 1}}>
+  <td class="row-check">
     {{check-box nodeId=model.id}}
   </td>
-  <td rowspan={{if showLabelRow 2 1}}>
+  <td>
     <i role="button" {{action "toggle"}} class="icon icon-play eased text-small text-muted {{if expanded 'icon-rotate-90'}}"></i>
   </td>
   <td data-title="{{dt.state}}" class="state">
@@ -10,7 +10,6 @@
   </td>
   <td data-title="{{dt.name}}" class="clip">
     <a href="{{href-to "host" model.id}}">{{model.displayName}}</a>
-{{!--     labels--}}
     {{#if showLabelRow}}
       {{#each model.displayUserLabelStrings as |label|}}
         <span class="tag-xs bg-info">{{label}}</span>
@@ -30,7 +29,27 @@
     {{model.memoryBlurb}}
   </td>
   <td data-title="{{dt.docker}}">
-    {{model.dockerEngineVersion}}
+    {{#if (eq model.supportState 'unsupported')}}
+      <span class="text-warning">
+        {{model.dockerEngineVersion}}
+        {{#tooltip-element type="tooltip-basic" model=(t 'hostPod.supportState.unsupported') tooltipTemplate='tooltip-static' aria-describedby="tooltip-base" tooltipFor="docker-version"}}
+          <a href="{{settings.docsBase}}/hosts/#supported-docker-versions" target="_blank" rel="nofollow noreferrer">
+            <i class="icon icon-alert text-warning"></i>
+          </a>
+        {{/tooltip-element}}
+      </span>
+    {{else if (eq model.supportState 'untested')}}
+      <span class="text-warning">
+        {{model.dockerEngineVersion}}
+        {{#tooltip-element type="tooltip-basic" model=(t 'hostPod.supportState.unsupported') tooltipTemplate='tooltip-static' aria-describedby="tooltip-base" tooltipFor="docker-version"}}
+          <a href="{{settings.docsBase}}/hosts/#supported-docker-versions" target="_blank" rel="nofollow noreferrer">
+            <i class="icon icon-alert text-warning"></i>
+          </a>
+        {{/tooltip-element}}
+      </span>
+    {{else}}
+      {{model.dockerEngineVersion}}
+    {{/if}}
   </td>
 
   <td data-title="{{dt.instanceState}}">
@@ -41,7 +60,7 @@
         values=model.instanceStates.byColor
         tooltipValues=model.instanceStates.byName
       }}
-      <!--count-->
+
       <p class="text-muted m-0">
         <small>
         {{#if subMatches}}
@@ -57,44 +76,31 @@
     {{action-menu model=model showPrimary=false}}
   </td>
 </tr>
-<tr class="sub-row"></tr>
-{{!-- {{#if showLabelRow}}
-  <tr class="sub-row hide">{{! make the alternating color match }}</tr>
-  <tr class="sub-row no-top">
-    <td colspan="{{sub fullColspan 3}}" style="height: 30px; vertical-align:top;">
-      {{#each model.displayUserLabelStrings as |label|}}
-        <span class="tag-xs bg-info">{{label}}</span>
-      {{/each}}
-      {{#each model.requireAnyLabelStrings as |label|}}
-        <span class="tag-xs bg-warning">{{label}}</span>
-      {{/each}}
-    </td>
-    <td>{{! actions}}</td>
-  </tr>
-{{/if}} --}}
 
-  <tr class="sub-row hide">{{! make the alternating color match }}</tr>
-  <tr class="sub-row {{unless expanded 'hide'}}">
-    <td colspan="2">{{! checkbox and expand}}</td>
-    <td colspan="{{sub fullColspan 3}}">
-      {{#liquid-if expanded}}
-        {{container-table
-          body=model.instances
-          stickyHeader=false
-          bulkActions=false
-          search=false
-          searchText=searchText
-          subRow=true
-          showHost=false
-        }}
-      {{/liquid-if}}
-    </td>
-    <td>{{! actions}}</td>
-  </tr>
+{{#if model.showTransitioningMessage}}
+  {{error-sub-row fullColspan=fullColspan model=model}}
+{{/if}}
 
-  {{#if expanded}}
-    <tr class="sub-row hide">{{! make the alternating color match }}</tr>
-    <tr class="separator-row">
-      <td colspan="{{fullColspan}}"></td>
-    </tr>
-  {{/if}}
+<tr class="sub-row {{unless expanded 'hide'}}">
+  <td colspan="2">{{! checkbox and expand}}</td>
+  <td colspan="{{sub fullColspan 3}}">
+    {{#liquid-if expanded}}
+      {{container-table
+        body=model.instances
+        stickyHeader=false
+        bulkActions=false
+        search=false
+        searchText=searchText
+        subRow=true
+        showHost=false
+      }}
+    {{/liquid-if}}
+  </td>
+  <td>{{! actions}}</td>
+</tr>
+
+{{#if expanded}}
+  <tr class="separator-row">
+    <td colspan="{{fullColspan}}"></td>
+  </tr>
+{{/if}}

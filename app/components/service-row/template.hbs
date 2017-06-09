@@ -56,7 +56,6 @@
 </tr>
 
 {{#if showLabelRow}}
-  <tr class="sub-row hide">{{! make the alternating color match }}</tr>
   <tr class="sub-row no-top">
     <td colspan="{{sub fullColspan 3}}">
       {{#each model.displayUserLabelStrings as |label|}}
@@ -67,10 +66,11 @@
   </tr>
 {{/if}}
 
-{{partial "error-sub-row"}}
+{{#if model.showTransitioningMessage}}
+  {{error-sub-row fullColspan=fullColspan model=model}}
+{{/if}}
 
 {{#if canExpand}}
-  <tr class="sub-row hide">{{! make the alternating color match }}</tr>
   <tr class="sub-row {{unless expanded 'hide'}}">
     <td>{{! checkbox and expand}}</td>
     <td colspan="{{sub fullColspan 2}}">
@@ -90,7 +90,6 @@
   </tr>
 
   {{#if expanded}}
-    <tr class="sub-row hide">{{! make the alternating color match }}</tr>
     <tr class="separator-row">
       <td colspan="{{fullColspan}}"></td>
     </tr>

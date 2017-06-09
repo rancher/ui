@@ -314,55 +314,6 @@ export let PacketPlans = [
     }
   },
   {
-    "id": "3bc8a214-b807-4058-ad4a-6925f2411155",
-    "slug": "baremetal_2a",
-    "name": "Type 2A",
-    "description": "Our Type 2A configuration is a 96-core dual socket ARM 64 beast based on Cavium ThunderX chips",
-    "line": "baremetal",
-    "specs": {
-      "cpus": [
-        {
-          "count": 2,
-          "type": "Cavium ThunderX CN8890 @2GHz"
-        }
-      ],
-      "memory": {
-        "total": "128GB"
-      },
-      "drives": [
-        {
-          "count": 1,
-          "size": "340GB",
-          "type": "SSD"
-        }
-      ],
-      "nics": [
-        {
-          "count": 2,
-          "type": "10Gbps"
-        }
-      ],
-      "features": {}
-    },
-    "available_in": [
-      {
-        "href": "/facilities/8ea03255-89f9-4e62-9d3f-8817db82ceed"
-      },
-      {
-        "href": "/facilities/8e6470b3-b75e-47d1-bb93-45b225750975"
-      },
-      {
-        "href": "/facilities/2b70eb8f-fa18-47c0-aba7-222a842362fd"
-      },
-      {
-        "href": "/facilities/e1e9c52e-a0bc-4117-b996-0fc94843ea09"
-      }
-    ],
-    "pricing": {
-      "hour": 0.5
-    }
-  },
-  {
     "id": "741f3afb-bb2f-4694-93a0-fcbad7cd5e78",
     "slug": "baremetal_3",
     "name": "Type 3",
