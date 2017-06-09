@@ -12,7 +12,6 @@ $table-bg-hover        : lighten($info, 15)!default;
 $table-bg-active       : $table-bg-hover!default;
 $table-bg-selected     : lighten($info, 30)!default;
 $table-border-color    : lighten($mid-grey, 30)!default;
-$table-body-separation : 50px;
 $table-body-separation : 25px;
 $group-row-height      : 50px;
 
@@ -20,6 +19,22 @@ $group-row-height      : 50px;
 @mixin bordered {
   border-bottom: $table-border-color solid 2px;
   border-collapse: collapse;
+
+  // General padding
+  > THEAD > TR > TH,
+  > TBODY > TR > TD {
+    padding: 0;
+    transition: ease-in-out all 200ms;
+
+    &:last-child {
+      height: 0;
+    }
+  }
+
+  > TBODY > TR.main-row > TD {
+    height: $group-row-height;
+  }
+
 
   > TBODY {
     background: transparent;
@@ -93,21 +108,6 @@ TABLE {
 
   TH {
     text-align: left;
-  }
-
-  // General padding
-  > THEAD > TR > TH,
-  > TBODY > TR > TD {
-    padding: 0;
-    height: $group-row-height;
-    transition: ease-in-out all 200ms;
-
-    &:last-child {
-    height: 0;
-    }
-  }
-  > TBODY > TR > TD {
-    height: 50px;
   }
 
   &.cell-padding {

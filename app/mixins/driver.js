@@ -223,7 +223,7 @@ export default Ember.Mixin.create(NewOrEdit, ManageLabels, {
       });
 
       // The hostTemplate was the first one, wait for it then add hosts
-      this.get('model').waitForState('active').then(() => {
+      return this.get('model').waitForState('active').then(() => {
         return addHosts();
       });
     } else {

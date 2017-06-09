@@ -96,7 +96,7 @@ export default Ember.Route.extend({
   },
 
   afterModel: function(model) {
-    model.set('service.secondaryLaunchConfigs', this.setUiId(model.get('service.secondaryLaunchConfigs')));
+    model.set('service.secondaryLaunchConfigs', this.setUiId(model.get('service.secondaryLaunchConfigs')||[]));
   },
 
   setUiId: function(configs) {
