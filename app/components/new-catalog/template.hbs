@@ -95,8 +95,8 @@
      <div class="container-flex">
         {{#each selectedTemplateModel.questions as |question|}}
           <div class="flex-item-half">
-            <div class="col span-12 col-inline mr-15">
-              <label class="pb-10">{{question.label}}{{if question.required "*"}}</label>
+            <div class="col span-12 mr-15">
+              <label class="pb-10">{{question.label}}{{!-- {{if question.required "*"}} --}}{{field-required}}</label>
 
               {{#if question.supported}}
                 {{component question.inputComponent field=question value=question.answer}}
@@ -105,7 +105,7 @@
                 <p>{{t 'newCatalog.unknownType'}} {{question.type}}</p>
               {{/if}}
 
-              <p class="text-info">{{question.description}}</p>
+              <p class="help-block">{{question.description}}</p>
             </div>
           </div>
         {{else}}
