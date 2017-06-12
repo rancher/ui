@@ -1,77 +1,88 @@
-<div>
-  <div class="row">
-  <label>{{t 'formBalancerListeners.label'}}</label>
+{{#if editing}}
+  <div>
+    <div class="row">
+      <label>{{t 'formBalancerListeners.label'}}</label>
+    </div>
+    <hr/>
+    <p class="text-info">
+      {{t 'formBalancerListeners.help'}}
+    </p>
   </div>
-  <hr/>
-  <p class="text-info">
-    {{t 'formBalancerListeners.help'}}
-  </p>
-</div>
+{{/if}}
 
 {{#each ports as |port|}}
   <div class="box mb-10">
     <div class="row">
       <div class="col span-3">
-        <label class="acc-label">{{t 'formBalancerListeners.sourcePort.label'}}{{field-required}}</label>
-        {{input-integer class="form-control input-sm" min="1" max="65535" value=port.sourcePort placeholder=(t 'formBalancerListeners.sourcePort.placeholder')}}
+        <label class="acc-label">{{t 'formBalancerListeners.sourcePort.label'}}{{#if editing}}{{field-required}}{{/if}}</label>
+        {{#input-or-display editable=editing value=port.sourcePort classesForDisplay="clip"}}
+          {{input-integer class="form-control input-sm" min="1" max="65535" value=port.sourcePort placeholder=(t 'formBalancerListeners.sourcePort.placeholder')}}
+        {{/input-or-display}}
       </div>
 
       <div class="col span-3">
         <label class="acc-label">{{t 'formBalancerListeners.protocol.label'}}</label>
-        <select class="form-control input-sm" onchange={{action (mut port.protocol) value="target.value"}}>
-          {{#each protocolChoices as |proto|}}
-            <option value={{proto}} selected={{eq port.protocol proto}}>{{upper-case proto}}</option>
-          {{/each}}
-        </select>
+        {{#input-or-display editable=editing value=port.protocol classesForDisplay="clip"}}
+          <select class="form-control input-sm" onchange={{action (mut port.protocol) value="target.value"}}>
+            {{#each protocolChoices as |proto|}}
+              <option value={{proto}} selected={{eq port.protocol proto}}>{{upper-case proto}}</option>
+            {{/each}}
+          </select>
+        {{/input-or-display}}
+
       </div>
 
       <div class="col span-3">
         <label class="acc-label">{{t 'formBalancerListeners.access.label'}}</label>
-        <select class="form-control input-sm" onchange={{action (mut port.access) value="target.value"}}>
-          <option value="public" selected={{eq port.access "public"}}>{{t 'formBalancerListeners.access.public'}}</option>
-          <option value="internal" selected={{eq port.access "internal"}}>{{t 'formBalancerListeners.access.internal'}}</option>
-        </select>
+        {{#input-or-display editable=editing value=port.access classesForDisplay="clip"}}
+          <select class="form-control input-sm" onchange={{action (mut port.access) value="target.value"}}>
+            <option value="public" selected={{eq port.access "public"}}>{{t 'formBalancerListeners.access.public'}}</option>
+            <option value="internal" selected={{eq port.access "internal"}}>{{t 'formBalancerListeners.access.internal'}}</option>
+          </select>
+        {{/input-or-display}}
       </div>
 
       <div class="col span-3">
         <label class="acc-label">{{t 'formBalancerListeners.sourceIp.label'}}</label>
-        {{#if (eq port.access "public")}}
+        {{#input-or-display editable=editing value=(eq port.access "public" port.sourceIp) classesForDisplay="clip"}}
           {{input type="text" class="form-control input-sm" value=port.sourceIp placeholder=(t 'formBalancerListeners.sourceIp.placeholder')}}
-        {{else}}
-          <div class="text-muted form-control-static">{{t 'generic.na'}}</div>
-        {{/if}}
+        {{/input-or-display}}
       </div>
     </div>
 
     <hr class="mt-30 mb-30" />
 
     {{form-balancer-rules
-      rules=port.rules
-      protocol=port.protocol
-      rulesChanged=(action 'rulesChanged')
-      singleTarget=false
-      editing=true
+        rules=port.rules
+        protocol=port.protocol
+        rulesChanged=(action 'rulesChanged')
+        singleTarget=false
+        editing=editing
     }}
-    <div class="clearfix">
-      <button class="btn bg-transparent p-0 text-small pull-right" {{action "removePort" port}}>
-        {{t 'formBalancerListeners.removePortLabel'}}
-      </button>
-    </div>
+    {{#if editing}}
+      <div class="clearfix">
+        <button class="btn bg-transparent p-0 text-small pull-right" {{action "removePort" port}}>
+          {{t 'formBalancerListeners.removePortLabel'}}
+        </button>
+      </div>
+    {{/if}}
   </div>
 {{else}}
   <div class="p-20">{{t 'formBalancerListeners.noRules'}}</div>
 {{/each}}
 
-<div class="row">
-  <button class="btn bg-link icon-btn inline-block pull-right" {{action "addPort"}}>
-    <span class="darken"><i class="icon icon-plus text-small"></i></span>
-    <span>{{t 'formBalancerListeners.addPortLabel'}}</span>
-  </button>
-  {{#unless showBackend}}
-    <div class="pull-right clearfix">
-      <button class="btn bg-transparent text-small inline-block" {{action "showBackend"}}>
-        {{t 'formBalancerListeners.showBackendLabel'}}
-      </button>
-    </div>
-  {{/unless}}
-</div>
+{{#if editing}}
+  <div class="row">
+    <button class="btn bg-link icon-btn inline-block pull-right" {{action "addPort"}}>
+      <span class="darken"><i class="icon icon-plus text-small"></i></span>
+      <span>{{t 'formBalancerListeners.addPortLabel'}}</span>
+    </button>
+    {{#unless showBackend}}
+      <div class="pull-right clearfix">
+        <button class="btn bg-transparent text-small inline-block" {{action "showBackend"}}>
+          {{t 'formBalancerListeners.showBackendLabel'}}
+        </button>
+      </div>
+    {{/unless}}
+  </div>
+{{/if}}
