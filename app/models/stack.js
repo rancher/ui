@@ -116,7 +116,7 @@ var Stack = Resource.extend(StateCounts, {
       return this._super().then(() => {
         if ( this.get('application.currentRouteName') === 'stack.index' )
         {
-          this.get('router').transitionTo('stacks');
+          this.get('router').transitionTo('containers');
         }
       });
     },

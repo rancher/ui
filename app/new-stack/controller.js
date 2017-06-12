@@ -35,7 +35,7 @@ export default Ember.Controller.extend(NewOrEdit, {
       outFiles['docker-compose.yml'] = compose;
     }
 
-    let userFiles = this.get('files');
+    let userFiles = this.get('files')||[];
     Object.keys(userFiles).forEach((key) => {
       let val = userFiles[key];
       if ( key && val ) {

@@ -7,6 +7,7 @@ export default Ember.Controller.extend({
       translationKey: 'generic.name',
       name: 'name',
       sort: ['name'],
+      searchField: 'processName',
     },
     {
       translationKey: 'processesPage.summary.table.running',
