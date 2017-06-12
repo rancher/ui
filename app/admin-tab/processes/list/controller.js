@@ -23,7 +23,7 @@ export default Ember.Controller.extend({
         name: 'id',
         translationKey: 'generic.id',
         sort: ['id:desc'],
-        width: 75,
+        width: 120,
       },
       {
         name: 'processName',
@@ -52,7 +52,6 @@ export default Ember.Controller.extend({
       name: 'startTime',
       sort: ['startTime:desc','id:desc'],
       width: 120,
-      searchField: false,
     });
 
     if ( which === 'completed' ) {
@@ -61,7 +60,6 @@ export default Ember.Controller.extend({
         name: 'endTime',
         sort: ['endTime:desc','id:desc'],
         width: 120,
-        searchField: false,
       });
     }
 
@@ -79,7 +77,6 @@ export default Ember.Controller.extend({
         name: 'runTime',
         sort: ['runTime:desc','id:desc'],
         width: 100,
-        searchField: false,
       });
     }
 

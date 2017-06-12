@@ -20,22 +20,6 @@ $group-row-height      : 50px;
   border-bottom: $table-border-color solid 2px;
   border-collapse: collapse;
 
-  // General padding
-  > THEAD > TR > TH,
-  > TBODY > TR > TD {
-    padding: 0;
-    transition: ease-in-out all 200ms;
-
-    &:last-child {
-      height: 0;
-    }
-  }
-
-  > TBODY > TR.main-row > TD {
-    height: $group-row-height;
-  }
-
-
   > TBODY {
     background: transparent;
 
@@ -116,14 +100,16 @@ TABLE {
     padding: 0;
     height: $group-row-height;
     transition: ease-in-out all 200ms;
+    word-wrap: break-word;
 
     &:last-child {
     height: 0;
     }
   }
-  > TBODY > TR > TD {
-    height: 50px;
-    word-wrap: break-word;
+
+  > TBODY > TR.auto-height > TD,
+  > TBODY > TR.auto-height > TH {
+    height: auto;
   }
 
   &.cell-padding {
@@ -238,7 +224,8 @@ TABLE {
       background-color: $body-bg;
     }
 
-    > TR.group-row > TD {
+    > TR.group-row > TD,
+    > TR.total > TD {
       background: $table-bg-accent;
       height: $group-row-height;
     }
