@@ -66,7 +66,27 @@
 
 <section>
   {{#accordion-list as |al expandFn| }}
+
     <div>
+      {{container/form-command
+          instance=model.container
+          initialLabels=model.labels
+          editing=false
+          expandAll=al.expandAll
+          expandFn=expandFn
+      }}
+    </div>
+
+    <div class="mt-20">
+      {{form-healthcheck
+          healthCheck=model.container.healthCheck
+          editing=false
+          expandAll=al.expandAll
+          expandFn=expandFn
+      }}
+    </div>
+
+    <div class="mt-20">
       {{container/form-scheduling
           initialHostId=model.container.requestedHostId
           initialLabels=model.container.labels
@@ -77,14 +97,49 @@
           expandFn=expandFn
       }}
     </div>
+
     <div class="mt-20">
-      {{form-healthcheck
-          healthCheck=model.container.healthCheck
-          editing=false
+      {{labels-section
+          model=model.container
           expandAll=al.expandAll
           expandFn=expandFn
       }}
     </div>
+
+    <div class="mt-20">
+      {{#accordion-list-item
+           title=(t 'containerPage.linksTab.header')
+           detail=(t 'containerPage.linksTab.detail')
+           status=(t 'containerPage.linksTab.status' count=model.instanceLinks.length)
+           statusClass=(if model.instanceLinks.length 'bg-success' 'text-muted')
+           expandAll=al.expandAll
+           expand=(action expandFn)
+      }}
+        <ul class="list-unstyled list-inline with-room">
+          {{#each model.instanceLinks as |link|}}
+            <li>
+              <a href="{{href-to 'container' link.targetInstanceId }}">
+                {{link.linkedInstanceName}} as {{link.linkName}}
+              </a>
+            </li>
+          {{else}}
+            <li class="text-muted text-center">{{t 'containerPage.linksTab.noData'}}</li>
+          {{/each}}
+        </ul>
+      {{/accordion-list-item}}
+    </div>
+
+    <div class="mt-20">
+      {{container/form-networking
+          editing=false
+          instance=model.container
+          initialLabels=model.container.labels
+          allHosts=model.hosts
+          expandAll=al.expandAll
+          expandFn=expandFn
+      }}
+    </div>
+
     <div class="mt-20">
       {{#accordion-list-item
            title=(t 'containerPage.portsTab.header')
@@ -142,32 +197,7 @@
         {{/component}}
       {{/accordion-list-item}}
     </div>
-    <div class="mt-20">
-      {{container/form-command
-          instance=model.container
-          initialLabels=model.labels
-          editing=false
-          expandAll=al.expandAll
-          expandFn=expandFn
-      }}
-    </div>
-    <div class="mt-20">
-      {{labels-section
-          model=model.container
-          expandAll=al.expandAll
-          expandFn=expandFn
-      }}
-    </div>
-    <div class="mt-20">
-      {{container/form-networking
-          editing=false
-          instance=model.container
-          initialLabels=model.container.labels
-          allHosts=model.hosts
-          expandAll=al.expandAll
-          expandFn=expandFn
-      }}
-    </div>
+
     <div class="mt-20">
       {{container/form-security
           instance=model.container
@@ -176,28 +206,7 @@
           expandFn=expandFn
       }}
     </div>
-    <div class="mt-20">
-      {{#accordion-list-item
-           title=(t 'containerPage.linksTab.header')
-           detail=(t 'containerPage.linksTab.detail')
-           status=(t 'containerPage.linksTab.status' count=model.instanceLinks.length)
-           statusClass=(if model.instanceLinks.length 'bg-success' 'text-muted')
-           expandAll=al.expandAll
-           expand=(action expandFn)
-      }}
-        <ul class="list-unstyled list-inline with-room">
-          {{#each model.instanceLinks as |link|}}
-            <li>
-              <a href="{{href-to 'container' link.targetInstanceId }}">
-                {{link.linkedInstanceName}} as {{link.linkName}}
-              </a>
-            </li>
-          {{else}}
-            <li class="text-muted text-center">{{t 'containerPage.linksTab.noData'}}</li>
-          {{/each}}
-        </ul>
-      {{/accordion-list-item}}
-    </div>
+
     <div class="mt-20">
       {{container/form-secrets
           instance=model.container
@@ -206,6 +215,7 @@
           expandFn=expandFn
       }}
     </div>
+
     <div class="mt-20">
       {{#accordion-list-item
            title=(t 'containerPage.volumesTab.header')

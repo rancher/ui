@@ -49,13 +49,13 @@
 <section>
 
   {{#accordion-list as |al expandFn| }}
-
     {{#accordion-list-item
          classNames="physical-attrs"
          title=(t 'physicalStats.title')
          detail=(t 'physicalStats.detail')
          status=status
          statusClass=statusClass
+         expandOnInit=true
          expandAll=al.expandAll
          expand=(action expandFn)
     }}
@@ -144,11 +144,13 @@
       </div>
     {{/accordion-list-item}}
 
+
     {{#accordion-list-item
          title=(t 'hostsPage.hostPage.containersTab.header')
          detail=(t 'hostsPage.hostPage.containersTab.detail')
          status=(t 'hostsPage.hostPage.containersTab.status' count=host.arrangedInstances.length)
          statusClass=(if host.arrangedInstances.length 'bg-success' 'text-muted')
+         expandOnInit=true
          expandAll=al.expandAll
          expand=(action expandFn)
          componentName='container-table'
@@ -164,6 +166,14 @@
           stickyHeader=false
       }}
     {{/accordion-list-item}}
+
+    {{labels-section
+        model=host
+        tagName=''
+        expandAll=al.expandAll
+        expandFn=expandFn
+    }}
+
 
     {{#accordion-list-item
          title=(t 'hostsPage.hostPage.portsTab.header')
@@ -217,13 +227,6 @@
         {{/if}}
       {{/component}}
     {{/accordion-list-item}}
-
-    {{labels-section
-        model=host
-        tagName=''
-        expandAll=al.expandAll
-        expandFn=expandFn
-    }}
 
     {{#accordion-list-item
          title=(t 'hostsPage.hostPage.storageTab.header')
