@@ -9,11 +9,11 @@ export default Ember.Controller.extend({
 
   actions: {
     done() {
-      this.send('goToPrevious','scaling-groups.index');
+      this.send('goToPrevious','containers.index');
     },
 
     cancel() {
-      this.send('goToPrevious','scaling-groups.index');
+      this.send('goToPrevious','containers.index');
     },
   },
 });

@@ -76,7 +76,7 @@ var Service = Resource.extend(StateCounts, {
     },
 
     upgrade(upgradeImage='false') {
-      var route = 'scaling-groups.new';
+      var route = 'containers.new';
       if ( this.get('lcType') === 'loadbalancerservice' ) {
         route = 'balancers.new';
       }
@@ -93,8 +93,8 @@ var Service = Resource.extend(StateCounts, {
       var route;
       switch ( this.get('lcType') )
       {
-        case 'service':             route = 'scaling-groups.new'; break;
-        case 'scalinggroup':        route = 'scaling-groups.new'; break;
+        case 'service':             route = 'containers.new'; break;
+        case 'scalinggroup':        route = 'containers.new'; break;
         case 'dnsservice':          route = 'dns.new';            break;
         case 'loadbalancerservice': route = 'balancers.new';      break;
         case 'externalservice':     route = 'dns.new';            break;

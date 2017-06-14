@@ -14,7 +14,7 @@ export default Ember.Component.extend(ModalBase, {
       this.get('model').doAction('converttoservice', {}).then(() => {
         this.send('cancel');
         Ember.run.next(() => {
-          this.get('router').transitionTo('scaling-groups.index');
+          this.get('router').transitionTo('containers.index');
         });
       }).catch((err) => {
         this.set('error', err);

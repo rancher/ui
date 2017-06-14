@@ -84,7 +84,7 @@ const navTree = [
         id: 'swarm-system',
         localizedLabel: 'nav.swarm.system',
         icon: 'icon icon-network',
-        route: 'scaling-groups',
+        route: 'containers',
         condition: isOwner,
         ctx: [getProjectId],
         queryParams: {which: C.EXTERNAL_ID.KIND_NOT_ORCHESTRATION},
@@ -118,7 +118,7 @@ const navTree = [
         id: 'mesos-system',
         localizedLabel: 'nav.mesos.system',
         icon: 'icon icon-network',
-        route: 'scaling-groups',
+        route: 'containers',
         condition: isOwner,
         ctx: [getProjectId],
         queryParams: {which: C.EXTERNAL_ID.KIND_NOT_ORCHESTRATION},
@@ -139,7 +139,7 @@ const navTree = [
     route: 'authenticated.project.index',
     ctx: [getProjectId],
     condition: function() { return this.get('hasProject'); },
-    moreCurrentWhen: ['containers','scaling-groups','balancers','dns'],
+    moreCurrentWhen: ['containers','balancers','dns'],
   },
 
   {
