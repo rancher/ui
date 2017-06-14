@@ -1,54 +1,149 @@
 ///768
 @media only screen and (max-width: map-get($breakpoints, medium)) {
-    .col {
-        margin: 1% 0 1% 0%;
-    }
-
-    [class^='span-'], [class*='span-'] {
-      width: 100%;
-    }
-    .col.offset-12:first-child,
-    .offset-12,
-    .col.offset-11:first-child,
-    .offset-11,
-    .col.offset-10:first-child,
-    .offset-10,
-    .col.offset-9:first-child,
-    .offset-9,
-    .col.offset-8:first-child,
-    .offset-8,
-    .col.offset-7:first-child,
-    .offset-7,
-    .col.offset-6:first-child,
-    .offset-6,
-    .col.offset-5:first-child,
-    .offset-5,
-    .col.offset-4:first-child,
-    .offset-4,
-    .col.offset-3:first-child,
-    .offset-3,
-    .col.offset-2:first-child,
-    .offset-2,
-    .col.offset-1:first-child,
-    .offset-1 {
-        margin-left: 0;
-    }
-    .hidden-md {
+  .col {
+    margin: 1% 0 1% 0%;
+  }
+  [class^='span-'],
+  [class*='span-'] {
+    width: 100%;
+  }
+  .col.offset-12:first-child,
+  .offset-12,
+  .col.offset-11:first-child,
+  .offset-11,
+  .col.offset-10:first-child,
+  .offset-10,
+  .col.offset-9:first-child,
+  .offset-9,
+  .col.offset-8:first-child,
+  .offset-8,
+  .col.offset-7:first-child,
+  .offset-7,
+  .col.offset-6:first-child,
+  .offset-6,
+  .col.offset-5:first-child,
+  .offset-5,
+  .col.offset-4:first-child,
+  .offset-4,
+  .col.offset-3:first-child,
+  .offset-3,
+  .col.offset-2:first-child,
+  .offset-2,
+  .col.offset-1:first-child,
+  .offset-1 {
+    margin-left: 0;
+  }
+  .hidden-md {
+    display: none;
+  }
+  //tables
+  // table > tbody > tr > td,
+  // TABLE.double-rows > TBODY > TR.main-row > TD {
+  //   height: auto;
+  //   padding:  5px;
+  //   .action-menu {
+  //     display: inline-block;
+  //   }
+  // }
+  // body {
+  //   // background: pink;
+  // }
+  //table
+  table,
+  thead,
+  tbody,
+  th,
+  td,
+  tr {
+    display: block;
+  }
+  table {
+    thead {
+      height: 0;
+      & tr {
         display: none;
-    }
-
-    //tables
-    table > tbody > tr > td,
-    TABLE.double-rows > TBODY > TR.main-row > TD {
-      height: auto;
-      padding:  5px;
-
-      .action-menu {
-        display: inline-block;
+        visibility: hidden;
       }
     }
+    tbody {
+      tr {
+        border: 1px solid $light-grey;
+        // margin: 10px 0;
+        &.sm-noborder {
+          border-width: 0px;
+        }
 
-    body {
-      // background: pink;
+        td {
+          border: none;
+          position: relative;
+          padding-left: 5px;
+          white-space: normal;
+          text-align: left;
+          width: 100% !important;
+          border-right: none !important;
+          height: auto;
+
+          &:before {
+            content: attr(data-title);
+            display: inline-block;
+            vertical-align: middle;
+            white-space: nowrap;
+            text-align: left;
+            font-weight: bold;
+            padding-right: 5px;
+          }
+
+          &:after {
+            content: "";
+            border-bottom: 2px dashed $border;
+            display: block;
+            margin: 15px 0;
+          }
+
+          &:last-child {
+            height: auto;
+          }
+
+          &.spark-line {
+            width: 44px !important;
+          }
+
+          &.row-check {
+
+          }
+
+          .resource-actions {
+            display: inline-block;
+          }
+        }
+      }
     }
+  }
+  .grid TD.actions {
+    position: static;
+    text-align: left;
+  }
+  .stack-section {
+    background: transparent !important;
+    .header-right {
+      border: 0;
+    }
+  }
+  .stack-section .grid TD,
+  .stack-section .grid TH {
+    border-bottom: 1px dotted $light-grey !important;
+    border-top: none;
+    text-align: left !important;
+  }
+  .stack-section .grid TD:last-child {
+    border-bottom: 0!important;
+  }
+  .grid > thead > tr > th,
+  .grid > thead > tr > td,
+  .grid > tbody > tr > th,
+  .grid > tbody > tr > td,
+  .grid > tfoot > tr > th,
+  .grid > tfoot > tr > td {
+    border-top: none;
+  }
 }
