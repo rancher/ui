@@ -100,6 +100,11 @@ Router.map(function() {
         this.route('new', {path: '/add'});
       });
 
+      this.route('volumes', {path: '/volumes', resetNamespace: true}, function() {
+        this.route('index', {path: '/'});
+        this.route('new', {path: '/add'});
+      });
+
       this.route('service', {path: '/services/:scaling_group_id', resetNamespace: true});
 
       this.route('stack', {path: '/stack/:stack_id', resetNamespace: true}, function() {

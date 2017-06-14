@@ -5,13 +5,13 @@
         <th width="{{checkWidth}}"></th>
       {{/if}}
       {{#each headers as |header idx|}}
-        <th width={{if header.width header.width}}></th>
+        <th width={{if header.width header.width}} class="{{header.classNames}}"></th>
       {{/each}}
       {{#if rowActions}}
         <th width="{{actionsWidth}}"></th>
       {{/if}}
     </tr>
-    {{#if (or paging search bulkActions)}}
+    {{#if (or search bulkActions)}}
       <div class="fixed-header-actions row">
         <div class="col span-8 mt-0">
           {{#if (and selectedNodes bulkActions)}}

@@ -8,11 +8,14 @@ export default Ember.Component.extend({
   model: null,
   showCommand: 'column', // 'no', 'column', or 'inline'
   showStats: false,
+  bulkActions: true,
+  expandPlaceholder: false,
+  scalePlaceholder: false,
   cpuMax: null,
   memoryMax: null,
   storageMax: null,
   networkMax: null,
-  showPrimaryActions: true,
+  showActions: true,
   tagName: '',
 
   statsAvailable: function() {

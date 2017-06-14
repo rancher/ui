@@ -8,9 +8,10 @@ export default Ember.Controller.extend({
   prefs: Ember.inject.service(),
   tags: Ember.computed.alias('projectController.tags'),
 
-  queryParams: ['sortBy','mode'],
+  queryParams: ['sortBy','mode','showServices'],
   sortBy: 'name',
   mode: 'list',
+  showServices: true,
 
   _allStacks: null,
   init() {
@@ -23,6 +24,10 @@ export default Ember.Controller.extend({
       out = out.filterBy('isSystem', false);
     }
 
+    if ( !this.get('showServices') ) {
+      out = out.filterBy('serviceId',null);
+    }
+
     var needTags = tagsToArray(this.get('tags'));
     if ( needTags.length ) {
       out = out.filter((obj) => {
@@ -32,7 +37,7 @@ export default Ember.Controller.extend({
     }
 
     return out;
-  }.property('model.@each.system','prefs.showSystemResources','tags'),
+  }.property('model.@each.{system,serviceId}','prefs.showSystemResources','tags','showServices'),
 
   showWelcome: function() {
     return this.get('projects.current.orchestration') === 'cattle' && !this.get('filtered.length');
@@ -56,7 +61,7 @@ export default Ember.Controller.extend({
     if ( !this.get('simpleMode') && this.get('mode') === 'grouped' ) {
       return 'stack.id';
     } else {
-      return null; 
+      return null;
     }
   }.property('simpleMode', 'mode'),
 });

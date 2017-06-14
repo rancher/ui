@@ -83,8 +83,6 @@ export default Ember.Component.extend({
     }));
   },
 
-   
-
   zIndexDidChange: function() {
     this.$().css('zIndex', this.get('zIndex') || "inherit");
   }.observes('zIndex'),

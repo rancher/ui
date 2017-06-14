@@ -1,5 +1,5 @@
 <tr class="main-row">
-  <td class="row-check" rowspan={{if showLabelRow 2 1}}>
+  <td class="row-check">
     {{check-box nodeId=model.id}}
   </td>
   <td>
@@ -10,6 +10,9 @@
   </td>
   <td data-title="{{dt.name}}" class="clip">
     <a href="{{href-to "service" model.id}}">{{model.displayName}}</a>
+    {{#if model.showTransitioningMessage}}
+      <div class="clip text-small {{model.stateColor}}">{{model.transitioningMessage}}</div>
+    {{/if}}
   </td>
   <td data-title="{{dt.displayType}}">
     {{model.displayType}}
@@ -35,21 +38,6 @@
     {{action-menu model=model}}
   </td>
 </tr>
-
-{{#if showLabelRow}}
-  <tr class="sub-row no-top">
-    <td colspan="{{sub fullColspan 3}}">
-      {{#each model.displayUserLabelStrings as |label|}}
-        <span class="tag-xs bg-info">{{label}}</span>
-      {{/each}}
-    </td>
-    <td>{{! actions}}</td>
-  </tr>
-{{/if}}
-
-{{#if model.showTransitioningMessage}}
-  {{error-sub-row fullColspan=fullColspan model=model}}
-{{/if}}
 
 {{#if canExpand}}
   <tr class="sub-row {{unless expanded 'hide'}}">
