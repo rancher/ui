@@ -10,7 +10,7 @@ export default Ember.Controller.extend({
   intl: Ember.inject.service(),
 
   queryParams: ['sortBy','mode','showServices'],
-  mode: 'list',
+  mode: 'grouped',
   sortBy: 'name',
   tags: Ember.computed.alias('projectController.tags'),
 
@@ -36,6 +36,7 @@ export default Ember.Controller.extend({
   },
 
   containerHeaders: containerHeaders,
+  preSorts: ['stack.isDefault:desc','stack.displayName'],
   headers: [
     {
       name: 'expand',
@@ -45,26 +46,26 @@ export default Ember.Controller.extend({
     },
     {
       name: 'state',
-      sort: ['stack.isDefault:desc','stack.displayName','stateSort','displayName'],
+      sort: ['stateSort','displayName'],
       searchField: 'displayState',
       translationKey: 'generic.state',
       width: 120
     },
     {
       name: 'name',
-      sort: ['stack.isDefault:desc','stack.displayName','displayName','id'],
+      sort: ['displayName','id'],
       searchField: 'displayName',
       translationKey: 'generic.name',
     },
     {
       name: 'image',
-      sort: ['stack.isDefault:desc','stack.displayName','displayImage','displayName'],
+      sort: ['displayImage','displayName'],
       searchField: 'displayImage',
       translationKey: 'generic.image',
     },
     {
       name: 'scale',
-      sort: 'scale:desc',
+      sort: ['scale:desc','isGlobalScale:desc'],
       searchField: null,
       translationKey: 'stacksPage.table.scale',
       classNames: 'text-center',
@@ -104,6 +105,14 @@ export default Ember.Controller.extend({
 
     return out;
   }.property('filteredStacks.@each.services','standaloneContainers.[]'),
+
+  groupBy: function() {
+    if ( !this.get('simpleMode') && this.get('mode') === 'grouped' ) {
+      return 'stack.id';
+    } else {
+      return null;
+    }
+  }.property('simpleMode', 'mode'),
 
   simpleMode: function() {
     let list = this.get('_allStacks');
