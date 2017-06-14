@@ -135,7 +135,7 @@ export default Ember.Route.extend({
 
   shortcuts: {
     'shift+l': 'langToggle',
-    'shift+s': 'systemToggle',
+    's': 'systemToggle',
   },
 
   finishLogin() {

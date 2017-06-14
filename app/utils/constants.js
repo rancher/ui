@@ -159,6 +159,7 @@ var C = {
     // Kubernetes
     K8S_DASHBOARD: 'io.rancher.k8s.kubernetes-dashboard',
     K8S_KUBECTL: 'io.rancher.k8s.kubectld',
+    K8S_TOKEN: 'io.rancher.k8s.token',
     K8S_POD_NAME: 'io.kubernetes.pod.name',
     K8S_POD_NAMESPACE: 'io.kubernetes.pod.namespace',
 

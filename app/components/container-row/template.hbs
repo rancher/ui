@@ -4,15 +4,26 @@
       {{check-box nodeId=model.id}}
     </td>
   {{/if}}
+  {{#if expandPlaceholder}}
+    <td>
+    </td>
+  {{/if}}
   <td data-title="{{dt.state}}" class="state">
     {{badge-state model=model}}
   </td>
   <td data-title="{{dt.name}}" class="clip">
     <a href="{{href-to detailRoute model.id}}">{{model.displayName}}</a>
+    {{#if model.showTransitioningMessage}}
+      <div class="clip text-small {{model.stateColor}}" >{{model.transitioningMessage}}</div>
+    {{/if}}
   </td>
+  {{#if showEndpoints}}
+    <td data-title="{{dt.endpoints}}">
+    </td>
+  {{/if}}
   <td data-title="{{dt.image}}" class="clip top-half">
      <small>{{model.displayImage}}</small>
-     <p data-title="{{t 'generic.details'}}" class="text-small text-muted m-0">
+     <p data-title="{{t 'generic.details'}}" class="text-small text-muted m-0 clip">
       {{#if model.displayIp}}
         {{#copy-inline clipboardText=model.displayIp}}{{format-ip model.displayIp}}{{/copy-inline}} /
       {{/if}}
@@ -22,13 +33,14 @@
       {{t 'generic.createdDate' date=(date-from-now model.created)}}
     </p>
   </td>
+  {{#if scalePlaceholder}}
+    <td class="text-muted text-center">
+      {{t 'generic.na'}}
+    </td>
+  {{/if}}
   {{#if showActions}}
     <td data-title="{{dt.actions}}" class="actions">
       {{action-menu model=model showPrimary=showPrimaryActions}}
     </td>
   {{/if}}
 </tr>
-
-{{#if model.showTransitioningMessage}}
-  {{error-sub-row fullColspan=fullColspan leftColspan=(if subRow 0 1) model=model}}
-{{/if}}

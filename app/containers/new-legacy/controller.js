@@ -1,10 +1,13 @@
 import Ember from 'ember';
 
 export default Ember.Controller.extend({
-  queryParams: ['stackId','serviceId','containerId','upgrade'],
+  queryParams: ['stackId','scalingGroupId','containerId','hostId','upgrade'],
+  hostId: null,
   stackId: null,
-  serviceId: null,
   containerId: null,
+  scalingGroupId: null,
+  mode: 'container',
+
   upgrade: null,
 
   actions: {
@@ -13,7 +16,7 @@ export default Ember.Controller.extend({
     },
 
     cancel() {
-      this.send('goToPrevious','containers.index');
+      this.send('goToPrevious');
     },
-  },
+  }
 });

@@ -51,32 +51,16 @@ export default Ember.Controller.extend({
       translationKey: 'generic.name',
     },
     {
-      name: 'endpoints',
-      sort: null,
-      searchField: 'endpointPorts',
-      translationKey: 'stacksPage.table.endpoints',
+      name: 'displayType',
+      sort: ['displayType','displayName','id'],
+      searchField: 'displayType',
+      translationKey: 'generic.type',
     },
     {
-      name: 'image',
-      sort: ['stack.isDefault:desc','stack.displayName','displayImage','displayName'],
-      searchField: 'displayImage',
-      translationKey: 'generic.image',
-    },
-    {
-      name: 'scale',
-      sort: 'scale:desc',
-      searchField: null,
-      translationKey: 'stacksPage.table.scale',
-      width: 100
-    },
-    {
-      name: 'instanceState',
-      sort: ['stack.isDefault:desc','stack.displayName', 'instanceCountSort:desc','displayName'],
-      searchField: null,
-      width: 140,
-      icon: 'icon icon-lg icon-container',
-      dtTranslationKey: 'stacksPage.table.instanceState',
-      translationKey: 'stacksPage.table.instanceStateWithIcon',
+      name: 'target',
+      sort: false,
+      searchField: 'displayTargets',
+      translationKey: 'dnsPage.table.target',
     },
   ],
 
@@ -92,16 +76,13 @@ export default Ember.Controller.extend({
       out = out.filter((obj) => obj.hasTags(needTags));
     }
 
-    out = out.filter((obj) => obj.get('type').toLowerCase() !== 'kubernetesstack');
-
     return out;
-
   }.property('model.stacks.@each.{grouping,system}','tags','prefs.showSystemResources'),
 
-  instances: function() {
+  combinedInstances: function() {
     let out = [];
     this.get('filteredStacks').forEach((stack) => {
-      out.pushObjects(stack.get('services').filter((x) => x.get('isReal') && !x.get('isBalancer')));
+      out.pushObjects(stack.get('services').filterBy('isReal', false));
     });
 
     return out;

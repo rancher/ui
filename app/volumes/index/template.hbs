@@ -1,13 +1,13 @@
 {{#containers-header tags=tags}}
   {{#link-to "new-stack" classNames="btn btn-sm bg-default mr-10"}}{{t 'nav.containers.importCompose'}}{{/link-to}}
-  {{#link-to "scaling-groups.new" projects.current.id class="btn btn-sm bg-primary"}}{{t 'nav.containers.addScalingGroup'}}{{/link-to}}
+  {{#link-to "dns.new" projects.current.id class="btn btn-sm bg-primary"}}{{t 'nav.containers.addDns'}}{{/link-to}}
 {{/containers-header}}
 
-<section class="stacks-wrap pl-0 pr-0">
-  {{#if instances.length}}
+<section class="pl-0 pr-0">
+  {{#if combinedInstances.length}}
     {{#sortable-table
       classNames="grid sortable-table"
-      body=instances
+      body=combinedInstances
       searchText=searchText
       sortBy=sortBy
       bulkActions=true
@@ -15,12 +15,12 @@
       fullRows=true
       groupByKey=(if simpleMode null "stack.id")
       groupByRef="stack"
-      pagingLabel="pagination.scalingGroup"
+      pagingLabel="pagination.dnsRecord"
       subHeaders=containerHeaders
       subSearchField="instances"
       headers=headers as |sortable kind inst dt|}}
       {{#if (eq kind "row")}}
-        {{service-row
+        {{dns-row
           model=inst
           toggle=(action "toggleExpand" inst.id)
           expanded=(array-includes expandedInstances inst.id)
@@ -32,22 +32,11 @@
       {{else if (eq kind "group")}}
         <tr class="group-row">
           {{#if inst.ref}}
-            <td colspan={{sub sortable.fullColspan 4}}>
+            <td colspan={{sub sortable.fullColspan 2}}>
               {{stack-row model=inst.ref}}
             </td>
             <td>
               {{upgrade-btn classNames="btn-sm" model=inst.ref}}
-            </td>
-            <td></td>
-            <td data-title="{{dt.instanceState}}">
-              <div class="mt-10">
-                {{progress-bar-multi
-                  labelKey="state"
-                  valueKey="count"
-                  values=inst.ref.serviceStates.byColor
-                  tooltipValues=inst.ref.serviceStates.byName
-                }}
-              </div>
             </td>
             <td data-title="{{dt.actions}}" class="actions">
               {{action-menu model=inst.ref}}
@@ -57,10 +46,12 @@
           {{/if}}
         </tr>
       {{else if (eq kind "nomatch")}}
-        <tr><td colspan="{{sortable.fullColspan}}" class="text-center text-muted lacsso pt-20 pb-20">{{t 'containersPage.table.noMatch'}}</td></tr>
+        <tr><td colspan="{{sortable.fullColspan}}" class="text-center text-muted lacsso pt-20 pb-20">{{t 'dnsPage.noMatch'}}</td></tr>
+      {{else if (eq kind "norows")}}
+        <tr><td colspan="{{sortable.fullColspan}}" class="text-center text-muted lacsso pt-20 pb-20">{{t 'dnsPage.noData'}}</td></tr>
       {{/if}}
     {{/sortable-table}}
   {{else}}
-    {{empty-table resource="container" newRoute="scaling-groups.new" newTranslationKey="nav.containers.addScalingGroup"}}
+    {{empty-table resource="container" newRoute="dns.new" newTranslationKey="nav.containers.addDns"}}
   {{/if}}
 </section>

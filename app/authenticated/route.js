@@ -288,7 +288,6 @@ export default Ember.Route.extend(Subscribe, PromiseToCb, {
     gotoH() { this._gotoRoute('hosts.index'); },
     gotoK() { this._gotoRoute('authenticated.project.apikeys'); },
     gotoL() { this._gotoRoute('balancers.index'); },
-    gotoS() { this._gotoRoute('scaling-groups.index'); },
 
     help()  {
       this.get('modalService').toggleModal('modal-shortcuts');
@@ -348,7 +347,6 @@ export default Ember.Route.extend(Subscribe, PromiseToCb, {
     'l': 'gotoL',
     'n': 'neu',
     'p': 'gotoP',
-    's': 'gotoS',
     't': 'nextTab',
     '/': 'search',
     'shift+/': 'help',

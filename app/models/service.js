@@ -76,7 +76,7 @@ var Service = Resource.extend(StateCounts, {
     },
 
     upgrade(upgradeImage='false') {
-      var route = 'scaling-groups.new';
+      var route = 'containers.new';
       if ( this.get('lcType') === 'loadbalancerservice' ) {
         route = 'balancers.new';
       }
@@ -93,8 +93,8 @@ var Service = Resource.extend(StateCounts, {
       var route;
       switch ( this.get('lcType') )
       {
-        case 'service':             route = 'scaling-groups.new'; break;
-        case 'scalinggroup':        route = 'scaling-groups.new'; break;
+        case 'service':             route = 'containers.new'; break;
+        case 'scalinggroup':        route = 'containers.new'; break;
         case 'dnsservice':          route = 'dns.new';            break;
         case 'loadbalancerservice': route = 'balancers.new';      break;
         case 'externalservice':     route = 'dns.new';            break;
@@ -379,20 +379,18 @@ var Service = Resource.extend(StateCounts, {
   endpointPorts: Ember.computed.mapBy('endpointsByPort','port'),
 
   displayPorts: function() {
-    var pub = '';
+    let parts = [];
 
     this.get('endpointsByPort').forEach((obj) => {
       var url = Util.constructUrl(false, obj.ipAddresses[0], obj.port);
-      pub += '<span>' +
+      parts.push('<span>' +
         '<a href="'+ url +'" target="_blank" rel="nofollow noopener">' +
           obj.port +
-        '</a>,' +
-      '</span> ';
+        '</a> ' +
+      '</span>');
     });
 
-    // Remove last comma
-    pub = pub.replace(/,([^,]*)$/,'$1');
-
+    let pub = parts.join(" / ");
 
     if ( pub )
     {

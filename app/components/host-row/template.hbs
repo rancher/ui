@@ -10,15 +10,12 @@
   </td>
   <td data-title="{{dt.name}}" class="clip">
     <a href="{{href-to "host" model.id}}">{{model.displayName}}</a>
-    {{#if showLabelRow}}
-      {{#each model.displayUserLabelStrings as |label|}}
-        <span class="tag-xs bg-info">{{label}}</span>
-      {{/each}}
-      {{#each model.requireAnyLabelStrings as |label|}}
-        <span class="tag-xs bg-warning">{{label}}</span>
-      {{/each}}
-    {{/if}}
-
+    {{#each model.displayUserLabelStrings as |label|}}
+      <span class="tag-xs bg-info">{{label}}</span>
+    {{/each}}
+    {{#each model.requireAnyLabelStrings as |label|}}
+      <span class="tag-xs bg-warning">{{label}}</span>
+    {{/each}}
   </td>
   <td data-title="{{dt.ip}}">
     {{#copy-inline clipboardText=model.displayIp size="small"}}

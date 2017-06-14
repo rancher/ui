@@ -7,7 +7,8 @@
   {{/unless}}
 
   {{#link-to "new-stack" classNames="btn btn-sm bg-default mr-10"}}{{t 'nav.containers.importCompose'}}{{/link-to}}
-  {{#link-to "containers.new" classNames="btn btn-sm bg-primary"}}{{t 'nav.containers.addContainer'}}{{/link-to}}
+  {{#link-to "containers.new" projects.current.id class="btn btn-sm bg-primary"}}{{t 'nav.containers.addScalingGroup'}}{{/link-to}}
+  {{#link-to "containers.new-legacy" projects.current.id class="btn btn-sm bg-primary"}}(Add Container){{/link-to}}
 {{/containers-header}}
 
 <section class="instances">
@@ -15,9 +16,8 @@
     <div class="row">
       <div class="col {{if showOrchestration 'span-6' 'span-6 offset-3'}} text-center pt-40 pb-40">
         <img style="width: 75%;" src="{{app.baseAssets}}assets/images/resources/container.svg"/>
-        <h1 class="text-center text-bold">{{t 'containersPage.welcome.container1'}}</h1>
-        <h2 class="text-center">{{t 'containersPage.welcome.container2'}}</h2>
-        <a class="btn bg-link icon-btn mt-50" href="{{href-to 'containers.new'}}">
+        <h1 class="text-center text-bold mt-20">{{t 'containersPage.welcome.container'}}</h1>
+        <a class="btn bg-link icon-btn mt-20" href="{{href-to 'containers.new'}}">
           <span class="darken"><i class="icon icon-plus text-small"></i></span>
           <span>{{t 'containersPage.welcome.containerLink'}}</span>
         </a>
@@ -25,47 +25,80 @@
       {{#if showOrchestration}}
         <div class="col span-6 text-center pt-40 pb-40">
           <img style="width: 75%;" src="{{app.baseAssets}}assets/images/resources/orchestration.svg"/>
-          <h1 class="text-center text-bold">{{t 'containersPage.welcome.orchestrator1'}}</h1>
-          <h2 class="text-center">{{t 'containersPage.welcome.orchestrator2'}}</h2>
-          <div class="row mt-20">
-            <div class="col span-4 text-center">
-              <img src="{{app.baseAssets}}assets/images/hexagon-kubernetes.svg" height="100">
-              <br/>
-              <a class="btn bg-link icon-btn mt-10" href="{{href-to 'catalog-tab.launch' 'library:infra*k8s'}}">
-                <span class="darken"><i class="icon icon-plus text-small"></i></span>
-                <span>{{t 'containersPage.welcome.kubernetesLink'}}</span>
-              </a>
-            </div>
-            <div class="col span-4 text-center">
-              <img src="{{app.baseAssets}}assets/images/mesos-logo.svg" height="100">
-              <br/>
-              <a class="btn bg-link icon-btn mt-10" href="{{href-to 'catalog-tab.launch' 'library:infra*mesos'}}">
-                <span class="darken"><i class="icon icon-plus text-small"></i></span>
-                <span>{{t 'containersPage.welcome.mesosLink'}}</span>
-              </a>
-            </div>
-            <div class="col span-4 text-center">
-              <img src="{{app.baseAssets}}assets/images/hexagon-swarm.svg" height="100">
-              <a class="btn bg-link icon-btn mt-10" href="{{href-to 'catalog-tab.launch' 'library:infra*swarm'}}">
-                <span class="darken"><i class="icon icon-plus text-small"></i></span>
-                <span>{{t 'containersPage.welcome.swarmLink'}}</span>
-              </a>
-            </div>
-          </div>
+          <h1 class="text-center text-bold mt-20">{{t 'containersPage.welcome.orchestrator'}}</h1>
+          <a class="btn bg-link icon-btn mt-20" href="{{href-to 'catalog-tab.launch' 'library:infra*k8s'}}">
+            <span class="darken"><i class="icon icon-plus text-small"></i></span>
+            <span>{{t 'containersPage.welcome.kubernetesLink'}}</span>
+          </a>
         </div>
       {{/if}}
     </div>
   {{else}}
-    {{container-table
-      body=filtered
+    {{#sortable-table
+      tableClassNames="double-rows"
+      classNames="grid sortable-table"
+      body=rows
+      searchText=searchText
       sortBy=sortBy
       bulkActions=true
-      search=true
-      paging=true
-      showHost=true
-      showInstanceState=false
+      subRows=true
+      fullRows=true
       groupByKey=groupBy
       groupByRef="stack"
-    }}
+      pagingLabel="pagination.containerScalingGroup"
+      subHeaders=containerHeaders
+      subSearchField="instances"
+      headers=headers as |sortable kind row dt|}}
+      {{#if (eq kind "row")}}
+        {{#if (eq row.baseType "instance")}}
+          {{container-row
+            model=row
+            dt=dt
+            showHost=true
+            expandPlaceholder=true
+            scalePlaceholder=true
+            fullColspan=sortable.fullColspan
+            }}
+        {{else}}
+          {{service-row
+            model=row
+            toggle=(action "toggleExpand" row.id)
+            expanded=(array-includes expandedInstances row.id)
+            searchText=searchText
+            subMatches=sortable.subMatches
+            fullColspan=sortable.fullColspan
+            dt=dt
+          }}
+        {{/if}}
+      {{else if (eq kind "group")}}
+        <tr class="group-row">
+          {{#if row.ref}}
+            <td colspan={{sub sortable.fullColspan 3}}>
+              {{stack-row model=row.ref}}
+            </td>
+            <td>
+              {{upgrade-btn classNames="btn-sm" model=row.ref}}
+            </td>
+            <td data-title="{{dt.instanceState}}">
+              <div class="mt-10">
+                {{progress-bar-multi
+                  labelKey="state"
+                  valueKey="count"
+                  values=row.ref.serviceStates.byColor
+                  tooltipValues=row.ref.serviceStates.byName
+                }}
+              </div>
+            </td>
+            <td data-title="{{dt.actions}}" class="actions">
+              {{action-menu model=row.ref}}
+            </td>
+          {{else}}
+            <td colspan={{sortable.fullColspan}}>{{t 'hostPod.groupedInstances.standalone'}}</td>
+          {{/if}}
+        </tr>
+      {{else if (eq kind "nomatch")}}
+        <tr><td colspan="{{sortable.fullColspan}}" class="text-center text-muted lacsso pt-20 pb-20">{{t 'containersPage.table.noMatch'}}</td></tr>
+      {{/if}}
+    {{/sortable-table}}
   {{/if}}
 </section>

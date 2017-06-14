@@ -10,14 +10,22 @@ export default Ember.Mixin.create({
     var rkCln = this.get('reservedKeys').slice(0);
     rkCln.pushObjects([countsProperty, sortProperty]);
     this.set('reservedKeys', rkCln);
-    this.set(countsProperty, Ember.computed(`${inputKey}.@each.state`, () => {
+    this.set(countsProperty, Ember.computed(`${inputKey}.@each.displayState`, () => {
       let byName = [];
       let byColor = [];
+      let good = 0;
+      let notGood = 0;
 
       this.get(inputKey).sortBy('stateSort').forEach((inst) => {
         let color = inst.get('stateBackground');
         if ( color === 'bg-muted' ) {
           color = 'bg-success';
+        }
+
+        if ( color === 'bg-success' ) {
+          good++;
+        } else {
+          notGood++;
         }
 
         let state = inst.get('displayState');
@@ -40,7 +48,9 @@ export default Ember.Mixin.create({
 
       return {
         byName: byName,
-        byColor: byColor
+        byColor: byColor,
+        good: good,
+        notGood: notGood,
       };
     }));
 

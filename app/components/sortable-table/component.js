@@ -28,6 +28,7 @@ export default Ember.Component.extend(Sortable, StickyHeader, {
   body:              null,
   groupByKey:        null,
   groupByRef:        null,
+  preSorts:          null,
   sortBy:            null,
   descending:        false,
   headers:           null,

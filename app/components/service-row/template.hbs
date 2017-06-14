@@ -1,8 +1,8 @@
 <tr class="main-row">
-  <td class="row-check" rowspan={{if showLabelRow 2 1}}>
+  <td class="row-check">
     {{check-box nodeId=model.id}}
   </td>
-  <td rowspan={{if showLabelRow 2 1}}>
+  <td>
     {{#if canExpand}}<i role="button" {{action "toggle"}} class="icon icon-play eased text-small text-muted {{if expanded 'icon-rotate-90'}}"></i>{{/if}}
   </td>
   <td data-title="{{dt.state}}" class="state">
@@ -10,65 +10,53 @@
   </td>
   <td data-title="{{dt.name}}" class="clip">
     <a href="{{href-to "service" model.id}}">{{model.displayName}}</a>
+    {{#if model.showTransitioningMessage}}
+      <div class="clip text-small {{model.stateColor}}">{{model.transitioningMessage}}</div>
+    {{else if model.displayPorts}}
+      <div class="clip text-small">
+        {{model.displayPorts}}
+      </div>
+    {{/if}}
   </td>
-  <td data-title="{{dt.ip}}">
-    {{model.displayPorts}}
-  </td>
-
   {{#if showImage}}
-    <td data-title="{{dt.image}}">
-      {{model.displayImage}}
+    <td data-title="{{dt.image}}" class="clip top-half">
+      <small>{{model.displayImage}}</small>
+      <p data-title="{{t 'generic.details'}}" class="text-small text-muted m-0 clip">
+        {{#if subMatches}}
+          {{#if (lt (get subMatches model.id) model.instances.length)}}
+            {{t 'pagination.containerHighlightSubset' subset=(get subMatches model.id) count=model.instances.length htmlSafe=true}}
+          {{else}}
+            <b>{{t 'pagination.container' pages=1 count=model.instances.length}}</b>
+          {{/if}}
+        {{else}}
+          {{t 'pagination.container' pages=1 count=(concat model.instances.length "")}}
+        {{/if}} /
+        {{t 'generic.createdDate' date=(date-from-now model.created)}}
+      </p>
     </td>
   {{/if}}
 
-  <td data-title="{{dt.scale}}">
-    {{model.scale}}
+  <td data-title="{{dt.scale}}" class="text-center">
+    {{#if model.instanceStates.notGood}}
+      <small class="text-muted">
+        {{model.scale}}{{#if model.isGlobalScale}}{{t 'servicePage.globalScale'}}{{/if}}
+      </small>
+      {{progress-bar-multi
+        classNames="m-5"
+        labelKey="state"
+        valueKey="count"
+        values=model.instanceStates.byColor
+        tooltipValues=model.instanceStates.byName
+      }}
+    {{else}}
+      {{model.scale}}{{#if model.isGlobalScale}}{{t 'servicePage.globalScale'}}{{/if}}
+    {{/if}}
   </td>
 
-  <td data-title="{{dt.instanceState}}" class="pt-5">
-    <div style="margin-top:2px;">
-      {{#if canExpand}}
-        {{progress-bar-multi
-          labelKey="state"
-          valueKey="count"
-          values=model.instanceStates.byColor
-          tooltipValues=model.instanceStates.byName
-        }}
-      {{else}}
-        <span class="text-muted">{{t 'stacksPage.table.standalone'}}</span>
-      {{/if}}
-    </div>
-    <div>
-      {{#if subMatches}}
-        {{#if (lt (get subMatches model.id) model.instances.length)}}
-          <p class="m-0 text-muted"><small>{{t 'pagination.containerHighlightSubset' subset=1 count=model.instances.length htmlSafe=true}}</small></p>
-        {{else}}
-          <p class="m-0 text-muted"><small><b>{{t 'pagination.container' pages=1 count=model.instances.length}}</b></small></p>
-        {{/if}}
-      {{else}}
-        <p class="m-0 text-muted"><small>{{t 'pagination.container' pages=1 count=(concat model.instances.length "")}}</small></p>
-      {{/if}}
-    </div>
-  </td>
   <td data-title="{{dt.actions}}" class="actions">
     {{action-menu model=model}}
   </td>
 </tr>
-
-{{#if showLabelRow}}
-  <tr class="sub-row no-top">
-    <td colspan="{{sub fullColspan 3}}">
-      {{#each model.displayUserLabelStrings as |label|}}
-        <span class="tag-xs bg-info">{{label}}</span>
-      {{/each}}
-    </td>
-    <td>{{! actions}}</td>
-  </tr>
-{{/if}}
-
-{{#if model.showTransitioningMessage}}
-  {{error-sub-row fullColspan=fullColspan model=model}}
-{{/if}}
 
 {{#if canExpand}}
   <tr class="sub-row {{unless expanded 'hide'}}">

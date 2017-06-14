@@ -80,14 +80,10 @@ Router.map(function() {
 
       this.route('containers', {resetNamespace: true}, function() {
         this.route('new', {path: '/add'});
+        this.route('new-legacy', {path: '/add-legacy'});
         this.route('index', {path: '/'});
 
         this.route('container', {path: '/:container_id', resetNamespace: true});
-      });
-
-      this.route('scaling-groups', {path: '/scaling-groups', resetNamespace: true}, function() {
-        this.route('index', {path: '/'});
-        this.route('new', {path: '/add'});
       });
 
       this.route('balancers', {path: '/balancers', resetNamespace: true}, function() {
@@ -96,6 +92,11 @@ Router.map(function() {
       });
 
       this.route('dns', {path: '/dns', resetNamespace: true}, function() {
+        this.route('index', {path: '/'});
+        this.route('new', {path: '/add'});
+      });
+
+      this.route('volumes', {path: '/volumes', resetNamespace: true}, function() {
         this.route('index', {path: '/'});
         this.route('new', {path: '/add'});
       });

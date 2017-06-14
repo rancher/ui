@@ -493,14 +493,10 @@ containersPage:
     noData: There are no containers to show.
     noMatch: No containers match the current search.
   welcome:
-    container1: Get started right away
-    container2: With the native Docker experience
+    container: Get started right away
     containerLink: Add a container
-    orchestrator1: I'd like to use...
-    orchestrator2: Kubernetes, Mesos, or Swarm
-    kubernetesLink: Kubernetes
-    mesosLink: Mesos
-    swarmLink: Swarm
+    orchestrator: Install another orchestrator
+    kubernetesLink: Install Kubernetes
 
 
 containerSubpod:
@@ -873,7 +869,7 @@ secretsPage:
 
 servicePage:
   header: '{type}: {name}'
-  globalScale: ' per host'
+  globalScale: '/Host'
   multistat:
     fqdn: 'FQDN:'
     scale: 'Scale:'
@@ -2779,6 +2775,7 @@ modalContainerStop:
 
 modalContainerToService:
   title: 'Convert "{instanceName}" to a Scaling Group'
+  detail: 'This will create a new Scaling Group based on this container and make this container part of Scaling Group.'
   name:
     label: New Scaling Group Name
     placeholder: e.g. myapp
@@ -2871,11 +2868,10 @@ modalShortcuts:
   h: Hosts
   k: API Keys
   l: Load Balancers
-  s: Scaling Groups
   other: Other Stuff
   g: Toggle view grouping
   n: "Add New [current resource]"
-  shiftS: Toggle show system
+  s: Toggle show system
   t: Next page tab
   slash: Focus search field
   question: You are here
@@ -3064,6 +3060,11 @@ pagination:
     =0 {No Containers}
     =1 {{count} {count, plural, =1 {Container} other {Containers}}}
     other {{from} - {to} of {count} Containers}}
+  containerScalingGroup: |
+    {pages, plural,
+    =0 {No Containers/Scaling Groups}
+    =1 {{count} {count, plural, =1 {Container/Scaling Group} other {Containers/Scaling Groups}}}
+    other {{from} - {to} of {count} Containers/Scaling Groups}}
   scalingGroup: |
     {pages, plural,
     =0 {No Scaling Groups}
@@ -3363,8 +3364,7 @@ nav:
     tab: Containers
     systemTab: System
     balancers: Load Balancers
-    containers: Containers
-    scalingGroups: Scaling Groups
+    containers: Containers & Scaling Groups
     dns: DNS
     volumes: Volumes
     addContainer: Add Container
