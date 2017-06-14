@@ -4,36 +4,53 @@ import C from 'ui/utils/constants';
 import ModalBase from 'ui/mixins/modal-base';
 
 export default Ember.Component.extend(ModalBase, NewOrEdit, {
-  classNames: ['large-modal'],
-  access: Ember.inject.service(),
-  primaryResource: Ember.computed.alias('model.account'),
-  settings: Ember.inject.service(),
+  classNames:         ['large-modal'],
+  access:             Ember.inject.service(),
+  primaryResource:    Ember.computed.alias('model.account'),
+  settings:           Ember.inject.service(),
 
-  originalModel: Ember.computed.alias('modalService.modalOpts'),
-  account: null,
-  credential: null,
+  originalModel:      Ember.computed.alias('modalService.modalOpts'),
+  account:            null,
+  credential:         null,
 
-  oldPassword: '',
-  newPassword: '',
-  newPassword2: '',
-
-  validateDescription: Ember.computed(function() {
-    return this.get('settings').get(C.SETTING.AUTH_LOCAL_VALIDATE_DESC) || null;
-  }),
+  oldPassword:        '',
+  newPassword:        '',
+  newPassword2:       '',
+  isAdmin:            Ember.computed.alias('access.admin'),
+  generated:          false,
+  needOld:            Ember.computed.not('isAdmin'),
+  showConfirm:        Ember.computed.not('generated'),
 
   accountTypeChoices: [
     {label: 'editAccount.form.kind.user', value: 'user'},
     {label: 'editAccount.form.kind.admin', value: 'admin'},
   ],
 
+  actions: {
+    error(err) {
+      if ( err.get('code') === 'InvalidOldPassword' )
+      {
+        this.set('errors',['Current password is incorrect']);
+      }
+      else
+      {
+        this._super(err);
+      }
+    },
+
+    generated() {
+      this.set('generated', true);
+    },
+  },
+
+  validateDescription: Ember.computed(function() {
+    return this.get('settings').get(C.SETTING.AUTH_LOCAL_VALIDATE_DESC) || null;
+  }),
+
   isLocalAuth: function() {
     return this.get('access.provider') === 'localauthconfig';
   }.property('access.provider'),
 
-  isAdmin: Ember.computed.alias('access.admin'),
-  generated: false,
-  needOld: Ember.computed.not('isAdmin'),
-  showConfirm: Ember.computed.not('generated'),
 
   init() {
     this._super(...arguments);
@@ -113,20 +130,4 @@ export default Ember.Component.extend(ModalBase, NewOrEdit, {
     return Ember.RSVP.resolve();
   },
 
-  actions: {
-    error(err) {
-      if ( err.get('code') === 'InvalidOldPassword' )
-      {
-        this.set('errors',['Current password is incorrect']);
-      }
-      else
-      {
-        this._super(err);
-      }
-    },
-
-    generated() {
-      this.set('generated', true);
-    },
-  },
 });
