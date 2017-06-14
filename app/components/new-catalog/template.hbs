@@ -53,7 +53,6 @@
 
 <section class="{{sectionClass}}">
   <h4>{{t 'newCatalog.templateVersion'}}</h4>
-  <hr/>
   <div class="row">
     <div class="col span-6">
       {{new-select
@@ -74,7 +73,6 @@
 {{#if (and showName selectedTemplateModel)}}
   <section class="{{sectionClass}}">
     <h4>{{t 'newCatalog.newStack'}}</h4>
-    <hr/>
 
     {{form-name-description
       model=stackResource
@@ -94,13 +92,11 @@
   {{#if selectedTemplateModel}}
     <form {{action "submitTemplate" on="submit"}} class="{{if getTemplate.isRunning 'hide'}}">
       <h4>{{t 'newCatalog.config'}}</h4>
-      <hr/>
-
-      <div class="container-flex">
+     <div class="container-flex">
         {{#each selectedTemplateModel.questions as |question|}}
           <div class="flex-item-half">
-            <div class="col span-12 col-inline mr-15">
-              <label class="pb-10">{{question.label}}{{if question.required "*"}}</label>
+            <div class="col span-12 mr-15">
+              <label class="pb-10">{{question.label}}{{#if question.required}}{{field-required}}{{/if}}</label>
 
               {{#if question.supported}}
                 {{component question.inputComponent field=question value=question.answer}}
@@ -109,7 +105,7 @@
                 <p>{{t 'newCatalog.unknownType'}} {{question.type}}</p>
               {{/if}}
 
-              <p class="text-info">{{question.description}}</p>
+              <p class="help-block">{{question.description}}</p>
             </div>
           </div>
         {{else}}
