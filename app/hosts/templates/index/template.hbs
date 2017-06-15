@@ -1,25 +1,20 @@
-<section class="header clearfix">
+<section class="header clearfix mb-5">
   <h1>
     {{t 'hostTemplatesPage.title'}}
   </h1>
 </section>
 
 <section class="pl-15 pr-15 clearfix">
-  {{#catalog-box
-    classNames="cloud-host dotted"
-    showIcon=false
-    showDescription=false
-    as |section|
-  }}
-    {{#if (eq section 'header')}}
-      <div class="catalog-icon mt-10 newtemplate"/>
-    {{else if (eq section 'body') }}
+  <div class="row">
+    <div class="col span-6 offset-3 text-center mt-0">
+      <img style="width: 50%;" src="{{app.baseAssets}}assets/images/resources/container.svg"/>
       <hr class="m-10" />
-      <h2 class="text-muted">{{t 'hostTemplatesPage.new.title'}}</h2>
-    {{else if (eq section 'footer') }}
+      <h2 class="text-muted mb-5">{{t 'hostTemplatesPage.new.title'}}</h2>
+      <p class="help-block mb-10">{{t 'hostTemplatesPage.new.helpText'}}</p>
       {{#link-to "hosts.new" classNames="btn bg-primary"}}{{t 'hostTemplatesPage.new.btn'}}{{/link-to}}
-    {{/if}}
-  {{/catalog-box}}
+    </div>
+  </div>
+  <hr />
 
   {{#each arranged as |host|}}
     {{#catalog-box
