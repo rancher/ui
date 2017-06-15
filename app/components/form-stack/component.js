@@ -48,6 +48,16 @@ export default Ember.Component.extend({
       });
     }
   },
+  willDestroy(){
+    this.setProperties({
+      stack: null,
+      errors: null,
+      reuseStackId: null,
+      createStack: null,
+      showAdvanced: false,
+      choices: null,
+    });
+  },
 
   updateStack: Ember.observer('reuseStackId','mode', function() {
     let stack;

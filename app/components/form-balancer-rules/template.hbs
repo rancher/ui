@@ -38,10 +38,10 @@
         {{#if singleTarget}}
           <th width="30">&nbsp;</th>
         {{else}}
-          <th class="divided">{{t 'formBalancerRules.target'}}{{field-required}}</th>
+          <th class="divided">{{t 'formBalancerRules.target'}}{{#if editing}}{{field-required}}{{/if}}</th>
         {{/if}}
 
-        <th width="100" class="divided">{{t 'formBalancerRules.targetPort.label'}}{{field-required}}</th>
+        <th width="100" class="divided">{{t 'formBalancerRules.targetPort.label'}}{{#if editing}}{{field-required}}{{/if}}</th>
 
         {{#if showBackend}}
           <th class="divided">{{t 'formBalancerRules.backendName.label'}}</th>
@@ -58,18 +58,22 @@
         <tr>
           {{#unless singleTarget}}
             <td data-title="{{t 'formBalancerRules.priority.label'}}">
-              <button class="btn bg-default btn-xs" {{action "moveUp" rule}} disabled={{eq idx 0}}>
-                <i class="icon icon-chevron-up"></i>
-              </button>
-              <button class="btn bg-default btn-xs" {{action "moveDown" rule}} disabled={{eq idx (sub rules.length 1)}}>
-                <i class="icon icon-chevron-down"></i>
-              </button>
+              {{#if editing}}
+                <button class="btn bg-default btn-xs" {{action "moveUp" rule}} disabled={{eq idx 0}}>
+                  <i class="icon icon-chevron-up"></i>
+                </button>
+                <button class="btn bg-default btn-xs" {{action "moveDown" rule}} disabled={{eq idx (sub rules.length 1)}}>
+                  <i class="icon icon-chevron-down"></i>
+                </button>
+              {{/if}}
             </td>
           {{/unless}}
 
           <td class="divided" data-title="{{t 'formBalancerRules.hostname.label'}}">
             {{#if rule.canHostname}}
-              {{input type="text" class="input-sm" value=rule.hostname placeholder=(t 'formBalancerRules.hostname.placeholder')}}
+              {{#input-or-display editable=editing value=rule.hostname classesForDisplay="clip"}}
+                {{input type="text" class="input-sm" value=rule.hostname placeholder=(t 'formBalancerRules.hostname.placeholder')}}
+              {{/input-or-display}}
             {{else}}
               <span class="text-muted">{{t 'generic.na'}}</span>
             {{/if}}
@@ -77,7 +81,9 @@
 
           <td data-title="{{t 'formBalancerRules.path.label'}}">
             {{#if rule.canPath}}
-              {{input type="text" class="input-sm" value=rule.path placeholder=(t 'formBalancerRules.path.placeholder')}}
+              {{#input-or-display editable=editing value=rule.path classesForDisplay="clip"}}
+                {{input type="text" class="input-sm" value=rule.path placeholder=(t 'formBalancerRules.path.placeholder')}}
+              {{/input-or-display}}
             {{else}}
               <span class="text-muted">{{t 'generic.na'}}</span>
             {{/if}}
@@ -88,22 +94,32 @@
           {{else}}
             <td class="divided" data-title="{{t (concat-str 'formBalancerRules' rule.kind 'label' character='.')}}">
               {{#if (eq rule.kind 'selector')}}
-                {{input type="text" class="input-sm" value=rule.selector placeholder=(t 'formBalancerRules.selector.placeholder')}}
+                {{#input-or-display editable=editing value=rule.selector classesForDisplay="clip"}}
+                  {{input type="text" class="input-sm" value=rule.selector placeholder=(t 'formBalancerRules.selector.placeholder')}}
+                {{/input-or-display}}
               {{else if (eq rule.kind 'instance')}}
-                {{schema/input-container selectClass="input-sm" selected=rule.instanceId}}
+                {{#input-or-display editable=editing value=rule.instanceId classesForDisplay="clip"}}
+                  {{schema/input-container selectClass="input-sm" selected=rule.instanceId}}
+                {{/input-or-display}}
               {{else}}
-                {{schema/input-service selectClass="input-sm" canBalanceTo=true selected=rule.serviceId}}
+                {{#input-or-display editable=editing value=rule.serviceId classesForDisplay="clip"}}
+                  {{schema/input-service selectClass="input-sm" canBalanceTo=true selected=rule.serviceId}}
+                {{/input-or-display}}
               {{/if}}
             </td>
           {{/if}}
 
           <td data-title="{{t 'formBalancerRules.targetPort.label'}}">
-            {{input-integer class="input-sm" min="1" max="65535" value=rule.targetPort placeholder=(t 'formBalancerRules.targetPort.placeholder')}}
+            {{#input-or-display editable=editing value=rule.targetPort classesForDisplay="clip"}}
+              {{input-integer class="input-sm" min="1" max="65535" value=rule.targetPort placeholder=(t 'formBalancerRules.targetPort.placeholder')}}
+            {{/input-or-display}}
           </td>
 
           {{#if showBackend}}
             <td class="divided" data-title="{{t 'formBalancerRules.backendName.label'}}">
-              {{input type="text" class="input-sm" value=rule.backendName placeholder=(t 'formBalancerRules.backendName.placeholder')}}
+              {{#input-or-display editable=editing value=rule.backendName classesForDisplay="clip"}}
+                {{input type="text" class="input-sm" value=rule.backendName placeholder=(t 'formBalancerRules.backendName.placeholder')}}
+              {{/input-or-display}}
             </td>
           {{/if}}
 
@@ -117,11 +133,13 @@
     </tbody>
   </table>
   {{#unless showBackend}}
-    <div class="pull-right clearfix">
-      <button class="btn bg-transparent p-0 pl-20 text-small inline-block" {{action "showBackend"}}>
-        {{t 'formBalancerListeners.showBackendLabel'}}
-      </button>
-    </div>
+    {{#if editing}}
+      <div class="pull-right clearfix">
+        <button class="btn bg-transparent p-0 pl-20 text-small inline-block" {{action "showBackend"}}>
+          {{t 'formBalancerListeners.showBackendLabel'}}
+        </button>
+      </div>
+    {{/if}}
   {{/unless}}
 {{else}}
   <span class="text-muted">{{t 'formBalancerRules.noRules'}}</span>

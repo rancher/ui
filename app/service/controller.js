@@ -57,6 +57,21 @@ export default Ember.Controller.extend({
       translationKey: 'formBalancerRules.backendName.label',
     },
   ],
+  portSortBy: 'privatePort',
+  portHeaders: [
+    {
+      name: 'publicIp',
+      sort: ['ipAddress'],
+      searchField: 'ipAddress',
+      translationKey: 'generic.ipAddress',
+    },
+    {
+      name: 'publicPort',
+      sort: ['port'],
+      searchField: 'port',
+      translationKey: 'containerPage.portsTab.table.public',
+    },
+  ],
 
   actions: {
     changeService(service) {

@@ -2,16 +2,18 @@ import Ember from 'ember';
 import { parsePortSpec } from 'ui/utils/parse-port';
 
 export default Ember.Component.extend({
-  intl: Ember.inject.service(),
+  intl:            Ember.inject.service(),
 
-  service: null,
+  service:         null,
 
-  ports: null,
+  ports:           null,
   protocolChoices: null,
-  errors: null,
+  errors:          null,
+  editing:         true,
+  showRules:       true,
 
   onInit: function() {
-    let rules = this.get('service.lbConfig.portRules');
+    let rules = this.get('service.lbConfig.portRules')||[];
     let ports = [];
 
     rules.forEach((rule) => {

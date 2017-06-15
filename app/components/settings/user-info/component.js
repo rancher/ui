@@ -6,11 +6,6 @@ export default Ember.Component.extend({
   modalService: Ember.inject.service('modal'),
   account:      null,
 
-  didReceiveAttrs() {
-    this._super(...arguments);
-    this.set('account', this.get('access.identity'));
-  },
-
   actions: {
     editPassword() {
       this.get('account').send('edit');

@@ -56,7 +56,17 @@ export default Ember.Component.extend({
   expanded: false,
   expandAll: false,
   intent: null,
+  expandOnInit: false,
 
+  init() {
+    this._super(...arguments);
+    Ember.run.scheduleOnce('render', () => {
+      let eoi = this.get('expandOnInit');
+      if (eoi) {
+        this.set('expanded', eoi);
+      }
+    });
+  },
   expdObserver: Ember.on('init', Ember.observer('expanded', function() {
     if (this.get('expanded') && !this.get('intent')) {
       this.set('intent', this.get('componentName'));
