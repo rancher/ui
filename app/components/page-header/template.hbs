@@ -1,11 +1,11 @@
-<nav class="clearfix" role="navigation">
+<nav class="clearfix responsive-nav" role="navigation" id="js-responsive-nav">
   <a class="nav-logo logo-{{app.mode}} btn bg-transparent"><span class="sr-only">{{settings.appName}}</span></a>
 
-  <ul class="nav-main">
+  <ul class="nav-main nav-list">
     {{#each navTree as |item|}}
       {{#if item.submenu.length}}
         {{! Has a submenu }}
-        <li class="dropdown">
+        <li class="dropdown nav-item">
           {{#if item.route}}
             {{#link-to-as-attrs
                 item.route
@@ -62,13 +62,14 @@
         </li>
       {{else if item.route}}
         {{! No submenu }}
-        <li>
+        <li class="nav-item">
           {{#link-to-as-attrs
             item.route
             models=item.ctx
             queryParams=item.queryParams
             activeParent=true
             moreCurrentWhen=item.moreCurrentWhen
+            class="nav-link"
           }}
             {{maybe-t item.localizedLabel item.label}}
           {{/link-to-as-attrs}}
@@ -90,18 +91,6 @@
       ~}}
     {{/if}}
   </ul>
-
-  <!--quick add-->
-  <!--
-  <ul class="quick-add dropdown">
-    <li>
-      <a class="btn btn-sm dropdown-toggle" role="button" aria-haspopup="true" aria-expanded="false" aria-label={{t 'nav.user.label' username=session.user}}>
-        Quick Add <i class="icon icon-plus"></i>
-        <span class="sr-only">{{t 'nav.srToggleDropdown'}}</span>
-      </a>
-    </li>
-  </ul>
-  -->
 
   <ul class="nav-user dropdown">
     <li>

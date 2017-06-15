@@ -37,18 +37,6 @@
     display: none;
   }
   //tables
-  // table > tbody > tr > td,
-  // TABLE.double-rows > TBODY > TR.main-row > TD {
-  //   height: auto;
-  //   padding:  5px;
-  //   .action-menu {
-  //     display: inline-block;
-  //   }
-  // }
-  // body {
-  //   // background: pink;
-  // }
-  //table
   table,
   thead,
   tbody,
@@ -185,5 +173,86 @@
   .grid > tfoot > tr > th,
   .grid > tfoot > tr > td {
     border-top: none;
+  }
+
+  //nav
+  .responsive-nav {
+    position: relative;
+    overflow: hidden;
+    background-color: $header;
+  }
+
+  /* Class added via JS when toggled open */
+  .nav-open {
+    overflow: visible;
+  }
+
+  /* NAV LIST*/
+  .nav-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    // background-color: $header;
+    border-bottom-right-radius: 3px;
+    border-bottom-left-radius: 3px;
+    width: 100%;
+  }
+
+
+  /*NAV LIST ITEMS*/
+  .nav-item {
+    border-top: 1px solid $border;
+
+    .dropdown-menu {
+      display: block;
+      width: 100%;
+      position: initial;
+      float: none;
+      background-color: $header;
+    }
+  }
+  .js .nav-list {
+    position: absolute;
+    z-index: 1000;
+  }
+  .nav-item, .nav-link {
+    display: block;
+  }
+  .nav-link {
+    .active {
+      border: none;
+    }
+  }
+  /*NAV LINKS*/
+  .nav-link, .nav-toggle {
+    color: #fff;
+    display: block;
+    white-space: nowrap;
+  }
+
+  /*TOGGLE BUTTON*/
+  .nav-toggle {
+    display: inline-block;
+    background: $link-color;
+    min-width: 51px;
+    box-sizing: border-box;
+    line-height: 51px;
+    text-align: center;
+  }
+  .nav-toggle:before {
+    content: "☰";
+    font-size: 18px;
+    text-align: center;
+    // line-height: 1;
+  }
+  .nav-toggle:hover {
+    text-decoration: none;
+  }
+  .nav-open .nav-toggle {
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+  }
+  .nav-open .nav-toggle:before {
+    content: "✕";
   }
 }
