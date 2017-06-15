@@ -7,7 +7,7 @@ export default Ember.Route.extend({
   model() {
     return this.get('store').findAll('container').then((containers) => {
       let inst = null;
-      let command = ['/bin/bash','-l','-c','echo "# Run kubectl commands inside here\n# e.g. kubectl get rc\n"; TERM=xterm-256color /bin/bash']
+      let command = ['/bin/bash','-l','-c','echo "# Run kubectl commands inside here\n# e.g. kubectl get rc\n"; TERM=xterm-256color /bin/bash'];
 
       for ( let i = 0 ; i < containers.get('length') ; i++)
       {
