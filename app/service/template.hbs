@@ -182,6 +182,14 @@
       }}
     {{/if}}
 
+    {{#if (not service.isBalancer)}}
+      {{form-env-var
+          model=model.service.displayEnvironmentVars
+          expandAll=al.expandAll
+          expandFn=expandFn
+      }}
+    {{/if}}
+
     {{labels-section model=service.launchConfig tagName='' expandAll=al.expandAll expandFn=expandFn}}
 
     {{#accordion-list-item

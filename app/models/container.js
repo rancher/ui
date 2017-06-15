@@ -168,6 +168,15 @@ var Container = Instance.extend({
     return ['running','updating-running','migrating','restarting'].indexOf(this.get('state')) >= 0;
   }.property('state'),
 
+  displayEnvironmentVars: Ember.computed('environment', function() {
+    var envs = [];
+    var environment = this.get('environment')||{};
+    Object.keys(environment).forEach((key) => {
+      envs.pushObject({key: key, value: environment[key]})
+    });
+    return envs;
+  }),
+
   displayIp: function() {
     return this.get('primaryAssociatedIpAddress') || this.get('primaryIpAddress') || null;
   }.property('primaryIpAddress','primaryAssociatedIpAddress'),
