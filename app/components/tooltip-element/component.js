@@ -28,12 +28,14 @@ export default Ember.Component.extend({
           this.set('tooltipService.tooltipOpts', null);
         }
 
-        // Wait for a little bit of time so that the mouse can pass through
-        // another tooltip-element on the way to the dropdown trigger of a
-        // tooltip-action-menu without changing the tooltip.
-        this.set('showTimer', Ember.run.later(() => {
-          this.show(tgt);
-        }, DELAY));
+        if (this.get('model')) {
+          // Wait for a little bit of time so that the mouse can pass through
+          // another tooltip-element on the way to the dropdown trigger of a
+          // tooltip-action-menu without changing the tooltip.
+          this.set('showTimer', Ember.run.later(() => {
+            this.show(tgt);
+          }, DELAY));
+        }
       }
   },
 
