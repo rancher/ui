@@ -1,43 +1,24 @@
 <section class="horizontal-form container-fluid">
   <h2>{{t 'editStack.title'}}</h2>
+  <label class="pb-5">{{t 'editStack.name.label'}}</label>
+  {{input type="text" value=primaryResource.name classNames="form-control" placeholder=(t 'editStack.name.placeholder')}}
 
-  <div class="row inline-form">
-    <div class="col span-2 col-inline">
-      <label>{{t 'editStack.name.label'}}</label>
-    </div>
-    <div class="col span-8">
-      {{input type="text" value=primaryResource.name classNames="form-control" placeholder=(t 'editStack.name.placeholder')}}
+  <label class="pt-20 pb-5">{{t 'editStack.description.label'}}</label>
+  {{textarea value=primaryResource.description classNames="form-control no-resize" rows="5" placeholder=(t 'editStack.description.placeholder')}}
+
+  <label class="pt-20 pb-5">{{t 'editStack.group.label'}}</label>
+  <div class="input-group">
+    {{input type="text" value=primaryResource.group classNames="form-control" placeholder=(t 'editStack.group.placeholder')}}
+    <div class="input-group-btn bg-primary">
+      <button type="button" class="btn bg-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="icon icon-chevron-down"></i></button>
+      <ul class="dropdown-menu dropdown-menu-right" role="menu">
+        {{#each tagChoices as |key|}}
+          <li><a {{action "addTag" key}}>{{key}}</a></li>
+        {{/each}}
+      </ul>
     </div>
   </div>
-
-  <div class="row inline-form">
-    <div class="col span-2 col-inline">
-      <label>{{t 'editStack.description.label'}}</label>
-    </div>
-    <div class="col span-8">
-      {{textarea value=primaryResource.description classNames="form-control no-resize" rows="5" placeholder=(t 'editStack.description.placeholder')}}
-    </div>
-  </div>
-
-  <div class="row inline-form">
-    <div class="col span-2 col-inline">
-      <label>{{t 'editStack.group.label'}}</label>
-    </div>
-    <div class="col span-8">
-      <div class="input-group">
-        {{input type="text" value=primaryResource.group classNames="form-control" placeholder=(t 'editStack.group.placeholder')}}
-        <div class="input-group-btn">
-          <button type="button" class="btn bg-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="icon icon-chevron-down"></i></button>
-          <ul class="dropdown-menu dropdown-menu-right" role="menu">
-            {{#each tagChoices as |key|}}
-              <li><a {{action "addTag" key}}>{{key}}</a></li>
-            {{/each}}
-          </ul>
-        </div>
-      </div>
-      <p class="text-info">{{t 'editStack.group.help'}}</p>
-    </div>
-  </div>
+  <p class="text-info">{{t 'editStack.group.help'}}</p>
 </section>
 
 {{top-errors errors=errors}}
