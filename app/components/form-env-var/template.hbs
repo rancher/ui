@@ -1,0 +1,34 @@
+{{#accordion-list-item
+     title=(t 'formEnvVar.title')
+     detail=(t 'formEnvVar.detail' appName=settings.appName)
+     status=(t 'formEnvVar.status' count=(or model.length 0))
+     statusClass=(if model.length 'bg-success' 'text-muted')
+     expandAll=expandAll
+     expand=(action expandFn)
+     componentName='sortable-table'
+     as | parent |
+}}
+  {{log model}}
+  {{#component parent.intent
+       classNames="grid fixed mb-0 sortable-table"
+       bulkActions=false
+       rowActions=false
+       paging=false
+       search=true
+       sortBy=sortBy
+       stickyHeader=false
+       descending=descending
+       headers=headers
+       body=model
+       as |sortable kind label|
+  }}
+    {{#if (eq kind "row")}}
+      <td data-title="{{t 'formEnvVar.labels.key'}}:" class="force-wrap">{{label.key}}</td>
+      <td data-title="{{t 'formEnvVar.labels.value'}}:" class="force-wrap">{{label.value}}</td>
+    {{else if (eq kind "norows")}}
+      <tr>
+        <td colspan="{{sortable.fullColspan}}" class="text-center text-muted pt-20 pb-20">{{t 'labelsSection.noData'}}</td>
+      </tr>
+    {{/if}}
+  {{/component}}
+{{/accordion-list-item}}
