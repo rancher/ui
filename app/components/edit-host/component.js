@@ -7,21 +7,26 @@ import { debouncedObserver } from 'ui/utils/debounce';
 import ModalBase from 'ui/mixins/modal-base';
 
 export default Ember.Component.extend(ModalBase, NewOrEdit, ManageLabels, {
-  classNames: ['large-modal'],
+  classNames:    ['large-modal'],
   originalModel: Ember.computed.alias('modalService.modalOpts'),
-  model: null,
-  editing: true,
+  model:         null,
+  editing:       true,
 
-  ips: null,
-  requireAny: null,
+  ips:           null,
+  requireAny:    null,
   requiredIfAny: {[C.LABEL.SYSTEM_TYPE]: ''},
-  systemLabels: null,
-  userLabels: null,
+  systemLabels:  null,
+  userLabels:    null,
+  customName:    null,
 
   init() {
     this._super(...arguments);
     this.set('model', this.get('originalModel').clone());
     this.initLabels(this.get('model.labels'), null, [C.LABEL.SCHED_IPS, C.LABEL.REQUIRE_ANY]);
+
+    if (this.get('model.name')) {
+      this.set('customName', this.get('model.name'))
+    }
 
     let ips = [];
     let str = this.getLabel(C.LABEL.SCHED_IPS);
@@ -32,6 +37,16 @@ export default Ember.Component.extend(ModalBase, NewOrEdit, ManageLabels, {
 
     this.set('requireAny', this.getLabel(C.LABEL.REQUIRE_ANY));
   },
+
+  customNameObserver: Ember.on('init', Ember.observer('customName', function() {
+    let cn = this.get('customName');
+    if (cn && cn.length > 0) {
+      this.set('primaryResource.name', cn);
+    } else {
+      let model = this.get('primaryResource');
+      delete model.name;
+    }
+  })),
 
   ipsChanged: function() {
     let ips = (this.get('ips')||[]).map((x) => x.trim()).filter(x => x.length);
