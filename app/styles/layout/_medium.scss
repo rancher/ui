@@ -1,54 +1,285 @@
 ///768
 @media only screen and (max-width: map-get($breakpoints, medium)) {
-    .col {
-        margin: 1% 0 1% 0%;
-    }
-
-    [class^='span-'], [class*='span-'] {
-      width: 100%;
-    }
-    .col.offset-12:first-child,
-    .offset-12,
-    .col.offset-11:first-child,
-    .offset-11,
-    .col.offset-10:first-child,
-    .offset-10,
-    .col.offset-9:first-child,
-    .offset-9,
-    .col.offset-8:first-child,
-    .offset-8,
-    .col.offset-7:first-child,
-    .offset-7,
-    .col.offset-6:first-child,
-    .offset-6,
-    .col.offset-5:first-child,
-    .offset-5,
-    .col.offset-4:first-child,
-    .offset-4,
-    .col.offset-3:first-child,
-    .offset-3,
-    .col.offset-2:first-child,
-    .offset-2,
-    .col.offset-1:first-child,
-    .offset-1 {
-        margin-left: 0;
-    }
-    .hidden-md {
+  .col {
+    margin: 1% 0 1% 0%;
+  }
+  [class^='span-'],
+  [class*='span-'] {
+    width: 100%;
+  }
+  .col.offset-12:first-child,
+  .offset-12,
+  .col.offset-11:first-child,
+  .offset-11,
+  .col.offset-10:first-child,
+  .offset-10,
+  .col.offset-9:first-child,
+  .offset-9,
+  .col.offset-8:first-child,
+  .offset-8,
+  .col.offset-7:first-child,
+  .offset-7,
+  .col.offset-6:first-child,
+  .offset-6,
+  .col.offset-5:first-child,
+  .offset-5,
+  .col.offset-4:first-child,
+  .offset-4,
+  .col.offset-3:first-child,
+  .offset-3,
+  .col.offset-2:first-child,
+  .offset-2,
+  .col.offset-1:first-child,
+  .offset-1 {
+    margin-left: 0;
+  }
+  .hidden-md {
+    display: none;
+  }
+  //tables
+  table,
+  thead,
+  tbody,
+  th,
+  td,
+  tr {
+    display: block;
+  }
+  table {
+    thead {
+      height: 0;
+      & tr {
         display: none;
-    }
-
-    //tables
-    table > tbody > tr > td,
-    TABLE.double-rows > TBODY > TR.main-row > TD {
-      height: auto;
-      padding:  5px;
-
-      .action-menu {
-        display: inline-block;
+        visibility: hidden;
       }
     }
-
-    body {
-      // background: pink;
+    tbody {
+      tr {
+        border: 1px solid $light-grey;
+        // margin: 10px 0;
+        &.sm-noborder {
+          border-width: 0px;
+        }
+        td {
+          border: none;
+          position: relative;
+          padding-left: 5px;
+          white-space: normal;
+          text-align: left;
+          width: 100%;
+          border-right: none !important;
+          height: auto;
+          &:before {
+            content: attr(data-title);
+            display: inline-block;
+            vertical-align: middle;
+            white-space: nowrap;
+            text-align: left;
+            // font-weight: bold;
+            color: $info;
+            padding-right: 5px;
+          }
+          &:after {
+            content: "";
+            border-bottom: 1px dashed $border;
+            display: block;
+            margin: 5px 0;
+          }
+          &:last-child {
+            height: auto;
+          }
+          &.spark-line {
+            width: 44px !important;
+          }
+          &.row-check {
+            text-align: right;
+            padding-right: 15px;
+          }
+          .resource-actions {
+            display: inline-block;
+          }
+        }
+        &.main-row {
+          td:nth-child(-n + 2) {
+            width: 50%;
+            float: right;
+            padding-top: 5px;
+          }
+          td:nth-child(3) {
+            clear: both;
+            padding-top: 5px;
+          }
+        }
+      }
     }
+    .group-row {
+      clear: both;
+      position: relative;
+      background: $table-bg-accent;
+      td:nth-child(-n + 2) {
+        float: left!important;
+        width: 75%;
+      }
+      td.progress-td {
+        clear: both;
+        width: 25%;
+        float: right;
+        position: absolute;
+        bottom: -100px;
+        right: 0;
+        padding: 0 10px;
+        > div {
+          margin-top: 0!important;
+        }
+      }
+      td.actions {
+        width: 25%;
+        float: right;
+        position: absolute;
+        right: 0;
+        text-align: right;
+        padding: 10px;
+      }
+    }
+    tr.sub-row {
+      > td {
+        padding: 0 15px;
+      }
+    }
+  }
+  .grid TD.actions {
+    position: static;
+    text-align: left;
+  }
+  .stack-section {
+    background: transparent !important;
+    .header-right {
+      border: 0;
+    }
+  }
+  .stack-section .grid TD,
+  .stack-section .grid TH {
+    border-bottom: 1px dotted $light-grey !important;
+    border-top: none;
+    text-align: left !important;
+  }
+  .stack-section .grid TD:last-child {
+    border-bottom: 0!important;
+  }
+  .grid > thead > tr > th,
+  .grid > thead > tr > td,
+  .grid > tbody > tr > th,
+  .grid > tbody > tr > td,
+  .grid > tfoot > tr > th,
+  .grid > tfoot > tr > td {
+    border-top: none;
+  }
+
+  //nav
+  .responsive-nav {
+    position: relative;
+    overflow: hidden;
+    background-color: $header;
+  }
+
+  nav > ul > li.active > a,
+  nav > ul > li > a:hover {
+    border-bottom: 0;
+  }
+
+  /* Class added via JS when toggled open */
+  .nav-open {
+    overflow: visible;
+  }
+
+  /* NAV LIST*/
+  .nav-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    // background-color: $header;
+    border-bottom-right-radius: 3px;
+    border-bottom-left-radius: 3px;
+    width: 100%;
+  }
+
+
+  /*NAV LIST ITEMS*/
+  .nav-item {
+    border-top: 1px solid darken($secondary, 10);
+
+    .dropdown-menu {
+      display: block;
+      width: 100%;
+      position: initial;
+      float: none;
+      background-color: $header;
+    }
+  }
+  .js .nav-list {
+    position: absolute;
+    z-index: 1000;
+  }
+  .nav-item, .nav-link {
+    display: block;
+    border-bottom: 0;
+  }
+  .nav-link {
+    .active {
+      border: none;
+    }
+  }
+  /*NAV LINKS*/
+  .nav-link, .nav-toggle {
+    color: #fff;
+    display: block;
+    white-space: nowrap;
+  }
+  nav > ul > li > a {
+    border-top: 0;
+    border-bottom: 0;
+    width: 100%;
+  }
+
+  /*TOGGLE BUTTON*/
+  .nav-toggle {
+    display: inline-block;
+    background: $link-color;
+    min-width: 51px;
+    box-sizing: border-box;
+    line-height: 51px;
+    text-align: center;
+  }
+  .nav-toggle:before {
+    content: "☰";
+    font-size: 18px;
+    text-align: center;
+    // line-height: 1;
+  }
+  .nav-toggle:hover {
+    text-decoration: none;
+  }
+  .nav-open .nav-toggle {
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+  }
+  .nav-open .nav-toggle:before {
+    content: "✕";
+  }
+
+  .page-header .logo-caas {
+    width: 75px;
+    background-image: url(images/logos/rancher-logo-cow-white.svg);
+    background-size: 75%;
+    margin-left: 10px;
+  }
+  .page-header NAV .dropdown-menu {
+    background: transparent;
+    box-shadow: none;
+    max-width: 100%;
+  }
+
+  .fixed-header-actions {
+    position: relative !important;
+  }
 }

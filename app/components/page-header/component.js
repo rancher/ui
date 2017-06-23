@@ -59,6 +59,25 @@ export default Ember.Component.extend(HoverDropdown, {
     this.set('hosts', this.get('store').all('host'));
     this.set('stackSchema', this.get('store').getById('schema','stack'));
     this.updateNavTree();
+    Ember.run.scheduleOnce('render', () => {
+      //responsive nav 63-87
+      var responsiveNav = document.getElementById('js-responsive-nav');
+
+      var toggleBtn = document.createElement('a');
+      toggleBtn.setAttribute('class', 'nav-toggle');
+      responsiveNav.insertBefore(toggleBtn, responsiveNav.firstChild);
+
+      function hasClass(e,t){return(new RegExp(' '+t+' ')).test(' '+e.className+' ')}
+
+      function toggleClass(e,t){var n=' '+e.className.replace(/[\t\r\n]/g,' ')+' ';if(hasClass(e,t)){while(n.indexOf(' '+t+' ')>=0){n=n.replace(' '+t+' ',' ')}e.className=n.replace(/^\s+|\s+$/g,'')}else{e.className+=' '+t}}
+
+      toggleBtn.onclick = function() {
+          toggleClass(this.parentNode, 'nav-open');
+      }
+
+      var root = document.documentElement;
+      root.className = root.className + ' js';
+    });
   },
 
   // This computed property generates the active list of choices to display
