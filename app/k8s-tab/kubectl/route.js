@@ -27,7 +27,7 @@ export default Ember.Route.extend({
           // For 1.6 with RBAC, the command is different
           if ( labels[C.LABEL.K8S_TOKEN]+'' === 'true' )
           {
-            command = ['kubectl-shell.sh', this.get('access.token.jwt')];
+            command = ['kubectl-shell.sh', this.get('access.token.jwt')||'unauthorized'];
           }
 
           break;
