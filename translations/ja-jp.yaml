@@ -351,6 +351,7 @@ backupTargetsPage:
 catalogPage:
   index:
     header: 'カタログ:'
+    manage: 管理
     search:
       placeholder: 検索...
     category: "カテゴリー:"
@@ -1192,6 +1193,10 @@ catalogSettings:
       label: 名前
     url:
       label: URL
+    kind:
+      label: 種類
+      native: ネイティブ
+      helm: Helm
     branch:
       label: ブランチ
       placeholder: '例: master'
@@ -1317,6 +1322,10 @@ editHost:
     valueLabel: IP アドレス
     addActionLabel: IP アドレスを追加
     help: 入力された場合、スケジューラが与えられたパブリック IP アドレス群から対象を選択し公開ポートをバインドします。
+  requireAny:
+    label: 必要となるコンテナラベル
+    help: 指定した場合、このホストに適切にスケジューリングされるようコンテナは1つまたは複数のラベルを設定する必要があります。値を空のままにした場合一致するキーの有無に関わらずコンテナはスケジュールされます。システムコンテナをこのホストにスケジューリングするには<code>io.rancher.container.system</code> が必要となります。
+    addActionLabel: 必要となるラベルを追加
 editProjectTemplate:
   title:
     add: テンプレートを追加
@@ -1353,6 +1362,10 @@ editStack:
   group:
     label: タグ
     help: スタックのリストはタグ(カンマ区切り) によりフィルターできます
+envCatalog:
+  header: カタログを管理
+  subtext: ここから独自のカスタムされたカタログソースを定義できます。ここから追加されたカタログは対象の環境下でのみ利用できます。各カタログはユニークな名前と <code>git clone</code> 可能な URL が必要となります。(詳細は <a href="https://git-scm.com/docs/git-clone#_git_urls_a_id_urls_a" target="_blank">docs</a> を参照してください)。
+  addActionLabel: カタログを追加
 stackHeader:
   backLink: "スタック:"
   outputs: 出力
@@ -2938,6 +2951,7 @@ action:
   console: コンソールを開く
   deactivate: 非アクティブ化
   edit: 編集
+  evacuate: 退避
   execute: シェルを実行
   exportConfig: 設定をエクスポート
   finishUpgrade: アップグレードを完了
