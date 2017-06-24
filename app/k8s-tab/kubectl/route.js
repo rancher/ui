@@ -29,7 +29,7 @@ export default Ember.Route.extend({
           {
             command = [
               'kubectl-shell.sh',
-              this.get('access.token.jwt') || btoa('unauthorized')
+              this.get('access.token.jwt') || 'unauthorized'
             ];
           }
 
