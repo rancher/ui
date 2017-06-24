@@ -6,16 +6,6 @@ import C from 'ui/utils/constants';
 import { flattenLabelArrays } from 'ui/mixins/manage-labels';
 import Util from 'ui/utils/util';
 
-function displayConfigName(name,isSidekick,idx) {
-  if ( name ) {
-    return name;
-  } else if ( isSidekick ) {
-      return '(Sidekick #' + (idx+1) + ')';
-  } else {
-    return '(Primary)';
-  }
-}
-
 export default Ember.Component.extend(NewOrEdit, SelectTab, {
   intl                      : Ember.inject.service(),
   settings                  : Ember.inject.service(),
@@ -324,19 +314,12 @@ export default Ember.Component.extend(NewOrEdit, SelectTab, {
     return k;
   }.property('isUpgrade','isService'),
 
-  configName: function() {
-    let name = this.get('primaryResource.name');
-    let isSidekick = this.get('isSidekick');
-    let idx = this.get('launchConfigIndex');
-    return displayConfigName(name,isSidekick,idx);
-  }.property('primaryResource.name','launchConfigIndex','isSidekick'),
-
   slcWithNames: function() {
     let out = [];
 
-    out.pushObjects(this.get('service.secondaryLaunchConfigs').map((x, idx) => {
+    out.pushObjects(this.get('service.secondaryLaunchConfigs').map((x) => {
       return {
-        displayName: displayConfigName(x.get('name'), true, idx),
+        displayName: x.get('displayName'),
         slc: x
       };
     }));

@@ -139,14 +139,17 @@ var Container = Instance.extend({
   }),
 
   combinedState: function() {
+    var host = this.get('primaryHost.state');
     var resource = this.get('state');
     var health = this.get('healthState');
     var hasCheck = !!this.get('healthCheck');
 
-    if ( resource === 'stopped' && this.get('desired') === false ) {
+    if ( !hasCheck && C.DISCONNECTED_STATES.includes(host) ) {
+      return 'unknown';
+    } else if ( resource === 'stopped' && this.get('desired') === false ) {
       return 'pending-delete';
     }
-    else if ( C.ACTIVEISH_STATES.indexOf(resource) >= 0 )
+    else if ( C.ACTIVEISH_STATES.includes(resource) )
     {
       if ( hasCheck && health ) {
         return health;
@@ -162,7 +165,7 @@ var Container = Instance.extend({
     {
       return resource;
     }
-  }.property('desired', 'state', 'healthState'),
+  }.property('primaryHost.state', 'desired', 'state', 'healthState'),
 
   isOn: function() {
     return ['running','updating-running','migrating','restarting'].indexOf(this.get('state')) >= 0;

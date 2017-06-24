@@ -1,17 +1,6 @@
-{{#if isSidekick}}
-  <hr class="mt-20 mb-20" />
-
-  <section class="header header-sidekick clearfix">
-    <h2 class="inline-block">{{t headerToken name=configName}}</h2>
-    <div class="right-buttons p-0">
-      <button class="btn bg-transparent p-0 text-small text-right" {{action "removeSidekick" launchConfigIndex}}>{{t 'newContainer.removeSidekick'}}</button>
-    </div>
-  </section>
-{{else}}
-  <section class="header clearfix">
-    <h1>{{t headerToken name=configName}}</h1>
-  </section>
-{{/if}}
+<section class="header clearfix">
+  <h1>{{t headerToken}}</h1>
+</section>
 
 <div class="row">
   <div class="col span-11-of-23 mt-0 mb-0">
@@ -99,7 +88,7 @@
 
 <hr class="mt-30 mb-30" />
 
-{{#if (not isSidekick)}}
+{{#unless isSidekick}}
   {{container/form-scheduling
     isService=isService
     isGlobal=isGlobal
@@ -111,7 +100,7 @@
     setLabels=(action 'setLabels' 'scheduling')
     setRequestedHost=(action 'setRequestedHostId')
   }}
-{{/if}}
+{{/unless}}
 
 {{form-healthcheck
     classNames="accordion-wrapper"
@@ -219,26 +208,5 @@
   {{/accordion-list}}
 {{/advanced-section}}
 
-{{#if (and isService (not isSidekick))}}
-  {{#each service.secondaryLaunchConfigs as |slc index|}}
-    {{container/new-edit
-      isService=true
-      isSidekick=true
-      isUpgrade=isUpgrade
-      launchConfig=slc
-      service=slc
-      primaryResource=slc
-      primaryService=primaryService
-      launchConfigIndex=index
-    }}
-  {{/each}}
-{{/if}}
-
-{{#unless isSidekick}}
-  {{top-errors errors=errors}}
-  {{#save-cancel saveDisabled=noLaunchConfigsEnabled createLabel=(if isUpgrade 'newContainer.saveUpgrade' 'newContainer.saveNew') save="save" cancel="cancel"}}
-    {{#if isService}}
-      <button class="btn bg-transparent text-right p-0 pt-5 text-small" style="position: absolute; right: 0; margin-top: 8px;" {{action "addSidekick"}}>{{t 'newContainer.addSidekick'}}</button>
-    {{/if}}
-  {{/save-cancel}}
-{{/unless}}
+{{top-errors errors=errors}}
+{{save-cancel saveDisabled=noLaunchConfigsEnabled createLabel=(if isUpgrade 'newContainer.saveUpgrade' 'newContainer.saveNew') save="save" cancel="cancel"}}
