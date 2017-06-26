@@ -39,17 +39,19 @@ export default Ember.Route.extend({
 
     return this.get('authStore').find('config', null, {forceReload: true}).then((collection) => {
 
-      let existing = collection.ldapConfig;
+      if (!collection.enabled) {
+        let existing = collection.ldapConfig;
 
-      // this should all come from the ldap config in the schema but it does not exist right now
-      Object.keys(ldapConfig).forEach((key) => {
-        let field = ldapConfig[key];
+        // this should all come from the ldap config in the schema but it does not exist right now
+        Object.keys(ldapConfig).forEach((key) => {
+          let field = ldapConfig[key];
 
-        if ( field &&  !existing[key] ) {
-          existing[key] = field;
-        }
+          if ( field &&  !existing[key] ) {
+            existing[key] = field;
+          }
 
-      });
+        });
+      }
 
       return collection;
     });
