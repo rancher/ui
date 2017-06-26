@@ -6,66 +6,68 @@ var PLAIN_PORT = 389;
 var TLS_PORT = 636;
 
 export default Ember.Controller.extend({
-  access: Ember.inject.service(),
-  settings: Ember.inject.service(),
+  access:         Ember.inject.service(),
+  settings:       Ember.inject.service(),
 
   confirmDisable: false,
-  errors: null,
-  testing: false,
+  errors:         null,
+  testing:        false,
 
-  providerName: 'ldap.providerName.ad',
-  userType: C.PROJECT.TYPE_LDAP_USER,
-  groupType: C.PROJECT.TYPE_LDAP_GROUP,
+  providerName:   'ldap.providerName.ad',
+  userType:       C.PROJECT.TYPE_LDAP_USER,
+  groupType:      C.PROJECT.TYPE_LDAP_GROUP,
+  ldapConfig:     Ember.computed.alias('model.ldapConfig'),
 
-  addUserInput: '',
-  addOrgInput: '',
+  addUserInput:   '',
+  addOrgInput:    '',
 
-  username: '',
-  password: '',
+  username:       '',
+  password:       '',
 
-  createDisabled: function() {
+  createDisabled: Ember.computed('username.length','password.length', function() {
     return !this.get('username.length') || !this.get('password.length');
-  }.property('username.length','password.length'),
+  }),
 
-  numUsers: function() {
+  numUsers: Ember.computed('model.allowedIdentities.@each.externalIdType','userType','groupType', function() {
     return (this.get('model.allowedIdentities')||[]).filterBy('externalIdType', this.get('userType')).get('length');
-  }.property('model.allowedIdentities.@each.externalIdType','userType','groupType'),
+  }),
 
-  numGroups: function() {
+  numGroups: Ember.computed('model.allowedIdentities.@each.externalIdType','userType','groupType', function() {
     return (this.get('model.allowedIdentities')||[]).filterBy('externalIdType', this.get('groupType')).get('length');
-  }.property('model.allowedIdentities.@each.externalIdType','userType','groupType'),
+  }),
 
-  tlsChanged: function() {
-    var on = this.get('model.tls');
-    var port = parseInt(this.get('model.port'),10);
+  tlsChanged: Ember.observer('ldapConfig.tls', function() {
+    var on = this.get('ldapConfig.tls');
+    var port = parseInt(this.get('ldapConfig.port'),10);
 
     if ( on && port === PLAIN_PORT )
     {
-      this.set('model.port', TLS_PORT);
+      this.set('ldapConfig.port', TLS_PORT);
     }
     else if ( !on && port === TLS_PORT )
     {
-      this.set('model.port', PLAIN_PORT);
+      this.set('ldapConfig.port', PLAIN_PORT);
     }
-  }.observes('model.tls'),
+  }),
 
   actions: {
     test: function() {
       this.send('clearError');
 
       var model = this.get('model');
-      model.setProperties({
-        enabled: false,
-        'accessMode': 'unrestricted',
+
+      this.get('model').setProperties({
+        'provider'          : 'ldapconfig',
+        'enabled'           : false, // It should already be, but just in case..
+        'accessMode'        : 'unrestricted',
+        'allowedIdentities' : [],
       });
 
       var errors = model.validationErrors();
-      if ( errors.get('length') )
-      {
+
+      if ( errors.get('length') ) {
         this.set('errors', errors);
-      }
-      else
-      {
+      } else {
         this.set('testing', true);
         model.save().then(() => {
           this.send('authenticate');
@@ -77,7 +79,9 @@ export default Ember.Controller.extend({
 
     authenticate: function() {
       this.send('clearError');
-      var code = this.get('username')+':'+this.get('password');
+
+      var code = `${this.get('username')}:${this.get('password')}`;
+
       this.get('access').login(code).then(res => {
         this.send('authenticationSucceeded', res.body);
       }).catch(err => {
@@ -93,6 +97,7 @@ export default Ember.Controller.extend({
       this.set('access.enabled', true);
 
       var model = this.get('model');
+
       model.setProperties({
         'enabled': true,
         'accessMode': 'unrestricted',
@@ -109,6 +114,7 @@ export default Ember.Controller.extend({
 
     waitAndRefresh: function(url) {
       $('#loading-underlay, #loading-overlay').removeClass('hide').show();
+
       setTimeout(function() {
         window.location.href = url || window.location.href;
       }, 1000);
