@@ -74,8 +74,9 @@ export default Ember.Component.extend({
 
   actions: {
     add() {
-      let ary = this.get('ary');
+      let ary      = this.get('ary');
       let required = this.get('requiredIfAny');
+
       if ( required && !ary.get('length') ) {
         Object.keys(required).forEach((k) => {
           ary.pushObject(Ember.Object.create({key: k, value: required[k], editable: false}));
@@ -98,7 +99,8 @@ export default Ember.Component.extend({
 
     pastedLabels(str, target) {
       var ary = this.get('ary');
-      str = str.trim();
+      str     = str.trim();
+
       if ( str.indexOf('=') === -1 )
       {
         // Just pasting a key
@@ -125,9 +127,19 @@ export default Ember.Component.extend({
     }
     else if ( this.get('initialStr') )
     {
-      var lines = this.get('initialStr').split(',');
+      let lines    = this.get('initialStr').split(',');
+      let required = this.get('requiredIfAny');
+
       applyLinesIntoArray(lines, ary, this.get('kvSeparator'));
       removeEmptyEntries(ary, this.get('allowEmptyValue'));
+
+      if (required) {
+        Object.keys(required).forEach((key) => {
+          let line = ary.findBy('key', key);
+          line.editable = false;
+        });
+      }
+
     }
 
     this.set('ary', ary);
@@ -137,9 +149,9 @@ export default Ember.Component.extend({
     }
   },
 
-  aryObserver: function() {
+  aryObserver: Ember.on('init', Ember.observer('ary.@each.{key,value}', function() {
     Ember.run.debounce(this,'fireChanged',100);
-  }.observes('ary.@each.{key,value}'),
+  })),
 
   fireChanged() {
     if ( this.isDestroyed || this.isDestroying ) {
