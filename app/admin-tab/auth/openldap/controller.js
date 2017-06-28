@@ -1,4 +1,6 @@
+import Ember from 'ember';
 import ActiveDirectory from 'ui/admin-tab/auth/activedirectory/controller';
+
 import C from 'ui/utils/constants';
 
 export default ActiveDirectory.extend({
