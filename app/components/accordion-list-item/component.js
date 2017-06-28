@@ -37,9 +37,9 @@ export function classForStatus(status) {
       return 'text-muted';
     case INCOMPLETE:
     case ERROR:
-      return 'text-bold text-error';
+      return 'text-error';
     default:
-      return 'text-bold text-success';
+      return 'text-success';
   }
 }
 
