@@ -20,13 +20,8 @@ export default Ember.Controller.extend({
       translationKey: 'auditLogsPage.table.eventType',
     },
     {
-      name: 'description',
-      translationKey: 'auditLogsPage.table.description',
-    },
-    {
       name: 'accountId',
       translationKey: 'auditLogsPage.table.environment',
-      sort: ['accountId'],
       width: 125
     },
     {
@@ -37,7 +32,6 @@ export default Ember.Controller.extend({
     {
       name: 'authenticatedAsIdentityId',
       translationKey: 'auditLogsPage.table.identity',
-      sort: ['authenticatedAsIdentityId'],
       width: 175
     },
     {
