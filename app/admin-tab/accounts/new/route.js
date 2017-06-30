@@ -5,9 +5,12 @@ export default Ember.Route.extend({
     var account = this.get('userStore').createRecord({type: 'account', kind: 'user'});
     var credential = this.get('userStore').createRecord({type: 'password'});
 
-    return Ember.Object.create({
-      account: account,
-      credential: credential
+    return this.get('userStore').findAll('account').then((accounts) => {
+      return Ember.Object.create({
+        account:    account,
+        accounts:   accounts,
+        credential: credential
+      });
     });
   },
 
