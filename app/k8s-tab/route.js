@@ -12,6 +12,19 @@ export default Ember.Route.extend(PolledModel,{
     return this.get('projects').updateOrchestrationState();
   },
 
+  actions: {
+    error(error/*, transition*/) {
+      // we have a 5xx error
+      if (error.status.toString().indexOf('5') === 0) {
+        // @@TODO@@ - 06-30-17 - go to host add for now until I know where vince wants this to go
+        this.transitionTo('hosts');
+      } else {
+        // Let the route above this handle the error.
+        return true;
+      }
+    },
+  },
+
   model() {
     let k8s = this.get('k8s');
 
