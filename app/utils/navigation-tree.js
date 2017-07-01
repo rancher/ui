@@ -139,7 +139,7 @@ const navTree = [
     route: 'authenticated.project.index',
     ctx: [getProjectId],
     condition: function() { return this.get('hasProject'); },
-    moreCurrentWhen: ['containers','balancers','dns'],
+    moreCurrentWhen: ['containers','balancers','dns','volumes'],
   },
 
   {

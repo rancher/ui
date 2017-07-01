@@ -79,8 +79,7 @@ Router.map(function() {
       this.route('waiting');
 
       this.route('containers', {resetNamespace: true}, function() {
-        this.route('new', {path: '/add'});
-        this.route('new-legacy', {path: '/add-legacy'});
+        this.route('run', {path: '/run'});
         this.route('index', {path: '/'});
 
         this.route('container', {path: '/:container_id', resetNamespace: true});
@@ -99,6 +98,9 @@ Router.map(function() {
       this.route('volumes', {path: '/volumes', resetNamespace: true}, function() {
         this.route('index', {path: '/'});
         this.route('new', {path: '/add'});
+
+        this.route('volume', {path: '/:volume_id'});
+        this.route('volumeTemplate', {path: '/:volume_template_id'});
       });
 
       this.route('service', {path: '/services/:scaling_group_id', resetNamespace: true});

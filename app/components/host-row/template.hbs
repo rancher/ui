@@ -27,23 +27,19 @@
   </td>
   <td data-title="{{dt.docker}}">
     {{#if (eq model.supportState 'unsupported')}}
-      <span class="text-warning">
-        {{model.dockerEngineVersion}}
-        {{#tooltip-element type="tooltip-basic" model=(t 'hostPod.supportState.unsupported') tooltipTemplate='tooltip-static' aria-describedby="tooltip-base" tooltipFor="docker-version"}}
-          <a href="{{settings.docsBase}}/hosts/#supported-docker-versions" target="_blank" rel="nofollow noreferrer">
-            <i class="icon icon-alert text-warning"></i>
-          </a>
-        {{/tooltip-element}}
-      </span>
+      {{#tooltip-element type="tooltip-basic" model=(t 'hostPod.supportState.unsupported') tooltipTemplate='tooltip-static' aria-describedby="tooltip-base" tooltipFor="docker-version"}}
+        <a class="text-error" href="{{settings.docsBase}}/hosts/#supported-docker-versions" target="_blank" rel="nofollow noreferrer">
+          <i class="icon icon-alert" />
+          {{model.dockerEngineVersion}}
+        </a>
+      {{/tooltip-element}}
     {{else if (eq model.supportState 'untested')}}
-      <span class="text-warning">
-        {{model.dockerEngineVersion}}
-        {{#tooltip-element type="tooltip-basic" model=(t 'hostPod.supportState.unsupported') tooltipTemplate='tooltip-static' aria-describedby="tooltip-base" tooltipFor="docker-version"}}
-          <a href="{{settings.docsBase}}/hosts/#supported-docker-versions" target="_blank" rel="nofollow noreferrer">
-            <i class="icon icon-alert text-warning"></i>
-          </a>
-        {{/tooltip-element}}
-      </span>
+      {{#tooltip-element type="tooltip-basic" model=(t 'hostPod.supportState.untested') tooltipTemplate='tooltip-static' aria-describedby="tooltip-base" tooltipFor="docker-version"}}
+        <a class="text-warning" href="{{settings.docsBase}}/hosts/#supported-docker-versions" target="_blank" rel="nofollow noreferrer">
+          <i class="icon icon-info" />
+          {{model.dockerEngineVersion}}
+        </a>
+      {{/tooltip-element}}
     {{else}}
       {{model.dockerEngineVersion}}
     {{/if}}

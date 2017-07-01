@@ -1,22 +1,12 @@
-{{#if isSidekick}}
-  <hr class="mt-20 mb-20" />
-
-  <section class="header header-sidekick clearfix">
-    <h2 class="inline-block">{{t headerToken name=configName}}</h2>
-    <div class="right-buttons p-0">
-      <button class="btn bg-transparent p-0 text-small text-right" {{action "removeSidekick" launchConfigIndex}}>{{t 'newContainer.removeSidekick'}}</button>
-    </div>
-  </section>
-{{else}}
-  <section class="header clearfix">
-    <h1>{{t headerToken name=configName}}</h1>
-  </section>
-{{/if}}
+<section class="header clearfix">
+  <h1>{{t headerToken}}</h1>
+</section>
 
 <div class="row">
   <div class="col span-11-of-23 mt-0 mb-0">
     {{form-name-description
-      model=primaryResource
+      name=name
+      description=description
       namePlaceholder="newContainer.name.placeholder"
       descriptionPlaceholder="newContainer.description.placeholder"
     }}
@@ -25,29 +15,21 @@
     {{#if isSidekick}}
       {{!-- Sidekicks don't have their own scale --}}
       {{container/form-scale isSidekick=true}}
-    {{else if isService}}
-      {{!-- Normal primary service --}}
-      {{container/form-scale
-        initialLabels=launchConfig.labels
-        initialScale=service.scale
-        isGlobal=isGlobal
-        isService=true
-        errors=scaleErrors
-        setLabels=(action 'setLabels' 'scale')
-        setScale=(action  'setScale')
-      }}
-    {{else if isUpgrade}}
+    {{else if (and isUpgrade (not isService))}}
       {{!-- Containers can't set count on upgrade --}}
     {{else}}
-      {{!-- Container count --}}
+      {{!-- Normal service/container --}}
       {{container/form-scale
-        isService=false
-        initialScale=1
+        initialLabels=launchConfig.labels
+        initialScale=scale
+        isGlobal=isGlobal
+        isService=isService
+        isUpgrade=isUpgrade
         errors=scaleErrors
-        setScale=(action  'setScale')
+        setLabels=(action 'setLabels' 'scale')
+        setScale=(action (mut scale))
       }}
     {{/if}}
-
   </div>
 </div>
 <hr class="mt-30 mb-30" />
@@ -99,7 +81,7 @@
 
 <hr class="mt-30 mb-30" />
 
-{{#if (not isSidekick)}}
+{{#unless isSidekick}}
   {{container/form-scheduling
     isService=isService
     isGlobal=isGlobal
@@ -111,7 +93,7 @@
     setLabels=(action 'setLabels' 'scheduling')
     setRequestedHost=(action 'setRequestedHostId')
   }}
-{{/if}}
+{{/unless}}
 
 {{form-healthcheck
     classNames="accordion-wrapper"
@@ -127,7 +109,6 @@
     service=service
     editing=true
     isUpgrade=isUpgrade
-    slcWithNames=slcWithNames
   }}
 {{/if}}
 
@@ -198,6 +179,7 @@
 
     {{container/form-security
         instance=launchConfig
+        isService=isService
         errors=securityErrors editing=true
         initialLabels=launchConfig.labels
         setLabels=(action 'setLabels' 'security')
@@ -219,26 +201,5 @@
   {{/accordion-list}}
 {{/advanced-section}}
 
-{{#if (and isService (not isSidekick))}}
-  {{#each service.secondaryLaunchConfigs as |slc index|}}
-    {{container/new-edit
-      isService=true
-      isSidekick=true
-      isUpgrade=isUpgrade
-      launchConfig=slc
-      service=slc
-      primaryResource=slc
-      primaryService=primaryService
-      launchConfigIndex=index
-    }}
-  {{/each}}
-{{/if}}
-
-{{#unless isSidekick}}
-  {{top-errors errors=errors}}
-  {{#save-cancel saveDisabled=noLaunchConfigsEnabled createLabel=(if isUpgrade 'newContainer.saveUpgrade' 'newContainer.saveNew') save="save" cancel="cancel"}}
-    {{#if isService}}
-      <button class="btn bg-transparent text-right p-0 pt-5 text-small" style="position: absolute; right: 0; margin-top: 8px;" {{action "addSidekick"}}>{{t 'newContainer.addSidekick'}}</button>
-    {{/if}}
-  {{/save-cancel}}
-{{/unless}}
+{{top-errors errors=errors}}
+{{save-cancel saveDisabled=noLaunchConfigsEnabled createLabel=(if isUpgrade 'newContainer.saveUpgrade' 'newContainer.saveNew') save="save" cancel="cancel"}}

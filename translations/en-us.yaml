@@ -868,7 +868,7 @@ secretsPage:
 
 servicePage:
   header: '{type}: {name}'
-  globalScale: '/Host'
+  globalScale: '{scale} per host'
   multistat:
     fqdn: 'FQDN:'
     scale: 'Scale:'
@@ -945,7 +945,7 @@ servicePage:
       other {# events}
       }
   type:
-    service: Scaling Group
+    service: Service
     selectorservice: Selector
     loadbalancerservice: Load Balancer
     dnsservice: Alias
@@ -977,21 +977,12 @@ stackPage:
     backLink: Back to all stacks
   containers:
     header: Containers
-    detail: Standalone Containers that are not part of a Scaling Group or Load Balancer
+    detail: Standalone Containers that are not part of a Service or Load Balancer
     status: |
       {count, plural,
       =0 {No containers}
       =1 {# container}
       other {# containers}
-      }
-  scalingGroups:
-    header: Scaling Groups
-    detail: 'Scaling Group containers that are apart of this stack'
-    status: |
-      {count, plural,
-      =0 {No groups}
-      =1 {# group}
-      other {# groups}
       }
   loadBalancers:
     header: Load Balancers
@@ -1763,7 +1754,7 @@ formEnvVar:
 
 formHealthCheck:
   title: Health Check
-  detail: Periodically make a request to the container to see if it is responding correctly.  An unhealthy container will be excluded from Load Balancers.  Scaling Groups can automatically replace unhealthy containers with a new one.
+  detail: Periodically make a request to the container to see if it is responding correctly.  An unhealthy container will be excluded from Load Balancers.  Services can automatically replace unhealthy containers with a new one.
   detailDns: A health check allows {appName} to know if the external resource is healty or not.  An unhealthy target will be exlcluded from Load Balancers.
   checkType:
     none: None
@@ -1919,10 +1910,10 @@ formScale:
     sidekick: Scale
     global: Scale per Host
   showAdvanced: More scaling options
-  containerHelp: "{scale} independent containers will be created.  Consider using a Scaling Group instead if you want to manage multiple containers as one unit."
   mode:
-    service: "Standard: {scale, plural, =1 {# container} other {# containers}}"
-    global: "Global: {scale, plural, =1 {# container} other {# containers}} per host matching scheduling rules"
+    container: "{scale, plural, =1 {Standalone container} other {# standalone containers}}"
+    service: "Service with a scale of {scale}"
+    global: "Global service with a scale of {scale} per host"
     sidekick: "Sidekick: Matches the scale and scheduling of the primary service"
 
 formScheduling:
@@ -1980,12 +1971,13 @@ formSecurity:
   detail: Grant or limit the abilities of the container to affect the host it is running on.
   pullImage:
     label: Pull Image
-    enable: Every time a new container is created
+    enableService: Every time a new container is created
+    enableContainer: Even if already present on the host
     disable: Only if not already present on the host
   privileged:
     label: Privileged
     disable: No
-    enable: "Yes: Container has full access to the Host"
+    enable: "Yes: container has full access to the host"
   pidMode:
     label: PID Mode
     disable: Normal
@@ -2002,7 +1994,7 @@ formSecurity:
     none: Do not allow swap
   swappiness:
     label: Swappiness
-    default: Default on the Host
+    default: Use the host's default
     none: Minimum
     set: Custom (1-100)
   cpuPinning:
@@ -2041,7 +2033,7 @@ formSecurity:
 
 formServiceLinks:
   title: Links
-  detail: Define relationships between this scaling group and other services.
+  detail: Define relationships between this and other services.
   addAction: Add Link
   service:
     label: Destination Service
@@ -2067,12 +2059,11 @@ formSslTermination:
 
 formStack:
   label:
-    simple: Deploying into the {name} Stack
-    reuse: Deploy into an existing Stack
-    create: Deploy into a new Stack
+    reuse: Stack
+    create: Stack
   toggle:
     simple: Customize
-    reuse: Use existing
+    reuse: Use an existing stack
     create: Add to a new stack
   reuse:
     prompt: Choose a Stack...
@@ -2206,7 +2197,7 @@ hookPage:
     content: "Receiver hooks give you a URL that can be hit to trigger an action inside of {appName}."
     noData: No receiver hooks.
   scaleService:
-    label: Scale a Scaling Group or Load Balancer
+    label: Scale a Service or Load Balancer
     detailPrefix: "Scale {action} "
     detailLink: "{displayService}"
     detailSuffix: "by {amount}"
@@ -2794,11 +2785,8 @@ modalContainerStop:
   button: Stop
 
 modalContainerToService:
-  title: 'Convert "{instanceName}" to a Scaling Group'
-  detail: 'This will create a new Scaling Group based on this container and make this container part of Scaling Group.'
-  name:
-    label: New Scaling Group Name
-    placeholder: e.g. myapp
+  title: 'Convert "{instanceName}" to a Service'
+  detail: 'This will create a new service based on this container and make this container part of the service.'
   action: Convert
 
 modalConfirmDeactivate:
@@ -2893,6 +2881,7 @@ modalShortcuts:
   n: "Add New [current resource]"
   s: Toggle show system
   t: Next page tab
+  v: Volumes
   slash: Focus search field
   question: You are here
   admin: Only For Admins
@@ -2952,13 +2941,12 @@ newCatalog:
 newContainer:
   add:
     container: Add Container
-    scalingGroup: Add Scaling Group
-    sidekick: 'Sidekick: {name}'
-    sidekickNoName: 'Sidekick: {name}'
+    scalingGroup: Add Service
+    sidekick: 'Add Sidekick'
   upgrade:
     container: Upgrade Container
-    scalingGroup: Upgrade Scaling Group
-    sidekick: 'Sidekick: {name}'
+    scalingGroup: Upgrade Service
+    sidekick: Upgrade Sidekick
   selectUpgrade: Select one or more services to upgrade.
   saveUpgrade: Upgrade
   saveNew: Launch
@@ -3080,16 +3068,16 @@ pagination:
     =0 {No Containers}
     =1 {{count} {count, plural, =1 {Container} other {Containers}}}
     other {{from} - {to} of {count} Containers}}
-  containerScalingGroup: |
+  containerService: |
     {pages, plural,
-    =0 {No Containers/Scaling Groups}
-    =1 {{count} {count, plural, =1 {Container/Scaling Group} other {Containers/Scaling Groups}}}
-    other {{from} - {to} of {count} Containers/Scaling Groups}}
-  scalingGroup: |
+    =0 {No Containers/Services}
+    =1 {{count} {count, plural, =1 {Container/Service} other {Containers/Services}}}
+    other {{from} - {to} of {count} Containers/Services}}
+  service: |
     {pages, plural,
-    =0 {No Scaling Groups}
-    =1 {{count} {count, plural, =1 {Scaling Group} other {Scaling Groups}}}
-    other {{from} - {to} of {count} Scaling Groups}}
+    =0 {No Services}
+    =1 {{count} {count, plural, =1 {Service} other {Services}}}
+    other {{from} - {to} of {count} Services}}
   loadBalancers: |
     {pages, plural,
     =0 {No Load Balancers}
@@ -3302,6 +3290,15 @@ viewEditProject:
     Access Control is not enabled.<br/>
     Anybody with access to the API/UI acts as an admin and will be able to use any environment.
 
+volumesPage:
+  noMatch: No volumes match the current search
+  scope:
+    label: Scope
+    global: Environment
+    stack: Stack
+    container: Container
+  driver:
+    label: Driver
 
 vmConsole:
   header: "Console:"
@@ -3383,14 +3380,14 @@ nav:
   containers:
     tab: Containers
     systemTab: System
-    balancers: Load Balancers
-    containers: Containers & Scaling Groups
+    balancers: Balancers
+    containers: Containers
     dns: DNS
     volumes: Volumes
     addContainer: Add Container
-    addScalingGroup: Add Scaling Group
     addBalancer: Add Balancer
     addDns: Add Record
+    addVolume: Add Volume
     groupNone: Flat List
     groupStack: Group by Stack
     importCompose: Import compose.yml
@@ -3437,14 +3434,14 @@ action:
   cancelRollback: Cancel Rollback
   clone: Clone
   console: Open Console
-  convertToService: Convert to Scaling Group
+  convertToService: Convert to Service
   deactivate: Deactivate
   edit: Edit
   evacuate: Evacuate
   execute: Execute Shell
   exportConfig: Export Config
   finishUpgrade: Finish Upgrade
-  garbageCollect: Garbage Collect Containers
+  garbageCollect: Cleanup
   logs: View Logs
   machineConfig: Machine Config
   pause: Pause Operations

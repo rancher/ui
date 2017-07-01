@@ -20,7 +20,7 @@ export default Ember.Controller.extend({
 
   actions: {
     newContainer(hostId) {
-      this.transitionToRoute('containers.new', {queryParams: {hostId: hostId}});
+      this.transitionToRoute('containers.run', {queryParams: {hostId: hostId}});
     },
 
     toggleExpand(hostId) {

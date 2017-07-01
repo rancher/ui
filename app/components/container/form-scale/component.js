@@ -7,15 +7,17 @@ function newMax(val, curMax, absoluteMax) {
 }
 
 export default Ember.Component.extend(ManageLabels, {
-  initialLabel:   null,
-  initialScale:   null,
-  editing:        false,
-  min:            1,
-  max:            100,
-  mode:           'container',
+  initialLabel: null,
+  initialScale: null,
+  isService:    null,
+  isUpgrade:    null,
+  min:          1,
+  max:          100,
+  mode:         'container',
 
   userInput:      null,
-  advancedShown:   false,
+  advancedAvailable: true,
+  advancedShown:  false,
   sliderMax:      10,
 
   init() {
@@ -61,6 +63,13 @@ export default Ember.Component.extend(ManageLabels, {
 
   modeChanged: Ember.observer('mode', function() {
     var mode = this.get('mode');
+
+    if ( mode === 'container') {
+      this.set('isService', false);
+    } else {
+      this.set('isService', true);
+    }
+
     if ( mode === 'global' ) {
       this.setLabel(C.LABEL.SCHED_GLOBAL,'true');
     } else {
@@ -72,5 +81,26 @@ export default Ember.Component.extend(ManageLabels, {
   updateLabels(labels) {
     this.sendAction('setLabels', labels);
   },
+
+  canScale: function() {
+    return !(this.get('isUpgrade') && this.get('mode') === 'container' );
+  }.property('isUpgrade','mode'),
+
+  canAdvanced: function() {
+    if ( this.get('advancedShown') || !this.get('advancedAvailable') ) {
+      return false;
+    }
+
+    if ( this.get('isSidekick') ) {
+      return false;
+    }
+
+    if ( !this.get('canScale') ) {
+      return false;
+    }
+
+    return true;
+  }.property('advancedShown','advancedAvailable','isSidekick','isUpgrade','mode'),
+
 });
 

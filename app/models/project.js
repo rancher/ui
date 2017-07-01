@@ -127,25 +127,6 @@ var Project = Resource.extend(PolledResource, {
     return Util.ucFirst(this.get('orchestration'));
   }.property('orchestration'),
 
-  combinedState: function() {
-    var project = this.get('state');
-    var health = this.get('healthState');
-    if ( ['active','updating-active'].indexOf(project) === -1 )
-    {
-      // If the project isn't active, return its state
-      return project;
-    }
-
-    if ( health === 'healthy' )
-    {
-      return project;
-    }
-    else
-    {
-      return health;
-    }
-  }.property('state', 'healthState'),
-
   isUpgrading: Ember.computed.equal('state','upgrading'),
 
   needsUpgrade: function() {

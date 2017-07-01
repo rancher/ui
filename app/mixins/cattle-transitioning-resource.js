@@ -37,6 +37,7 @@ const defaultStateMap = {
   'stopped':                  {icon: 'icon icon-circle',        color: 'text-error'  },
   'stopping':                 {icon: 'icon icon-adjust',        color: 'text-info'   },
   'unhealthy':                {icon: 'icon icon-alert',         color: 'text-error'  },
+  'unknown':                  {icon: 'icon icon-help',          color: 'text-error'  },
   'updating':                 {icon: 'icon icon-tag',           color: 'text-info'   },
   'updating-active':          {icon: 'icon icon-tag',           color: 'text-info'   },
   'updating-healthy':         {icon: 'icon icon-tag',           color: 'text-info'   },
@@ -50,11 +51,11 @@ const defaultStateMap = {
 
 const stateColorSortMap = {
   'error':   1,
-  'warning':  2,
-  'info':     3,
-  'success':  4
+  'warning': 2,
+  'info':    3,
+  'success': 4,
+  'other': 5,
 };
-const stateColorUnknown = 5;
 
 export default Ember.Mixin.create({
   endpointSvc: Ember.inject.service('endpoint'), // Some machine drivers have a property called 'endpoint'
@@ -215,7 +216,7 @@ export default Ember.Mixin.create({
 
   stateSort: function() {
     var color = this.get('stateColor').replace('text-','');
-    return (stateColorSortMap[color] || stateColorUnknown) + ' ' + this.get('relevantState');
+    return (stateColorSortMap[color] || stateColorSortMap['other']) + ' ' + this.get('relevantState');
   }.property('stateColor','relevantState'),
 
   stateBackground: function() {

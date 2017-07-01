@@ -6,16 +6,6 @@ import C from 'ui/utils/constants';
 import { flattenLabelArrays } from 'ui/mixins/manage-labels';
 import Util from 'ui/utils/util';
 
-function displayConfigName(name,isSidekick,idx) {
-  if ( name ) {
-    return name;
-  } else if ( isSidekick ) {
-      return '(Sidekick #' + (idx+1) + ')';
-  } else {
-    return '(Primary)';
-  }
-}
-
 export default Ember.Component.extend(NewOrEdit, SelectTab, {
   intl                      : Ember.inject.service(),
   settings                  : Ember.inject.service(),
@@ -24,20 +14,16 @@ export default Ember.Component.extend(NewOrEdit, SelectTab, {
 
   isService:                  false,
   isUpgrade:                  false,
-  //primaryResource:            Ember.computed.alias('launchConfig'),
-  primaryService:             null,
-  launchConfig:               null,
   service:                    null,
-  allHosts:                   null,
-  allStoragePools:            null,
+  launchConfig:               null,
+  launchConfigIndex:          null,
 
   stack:                      null,
-  count:                      1,
+  scale:                      1,
 
   serviceLinksArray:          null,
   isRequestedHost:            null,
   portsAsStrArray:            null,
-  launchConfigIndex:          -1,
   upgradeOptions:             null,
 
   // Errors from components
@@ -55,14 +41,6 @@ export default Ember.Component.extend(NewOrEdit, SelectTab, {
   stackErrors:                null,
 
   actions: {
-    setScale(scale) {
-      if ( this.get('isService') ) {
-        this.set('service.scale', scale);
-      } else {
-        this.set('launchConfig.count', scale);
-      }
-    },
-
     setImage(uuid) {
       this.set('launchConfig.imageUuid', uuid);
     },
@@ -115,12 +93,22 @@ export default Ember.Component.extend(NewOrEdit, SelectTab, {
     this._super(...arguments);
 
     // Tell cattle that we're sending the whole thing, not a diff.
-    if ( this.get('service') ) {
-      this.set('service.completeLaunchConfigs', true);
-    }
+    this.set('service.completeLaunchConfigs', true);
 
     if ( !this.get('launchConfig.secrets') ) {
       this.set('launchConfig.secrets', []);
+    }
+
+    if ( this.get('isService') ) {
+      this.setProperties({
+        name: this.get('service.name'),
+        description: this.get('service.description'),
+      });
+    } else {
+      this.setProperties({
+        name: this.get('launchConfig.name'),
+        description: this.get('launchConfig.description'),
+      });
     }
 
     this.labelsChanged();
@@ -133,9 +121,11 @@ export default Ember.Component.extend(NewOrEdit, SelectTab, {
   // ----------------------------------
   // Sidekicks
   // ----------------------------------
-  hasSidekicks: function() {
-    return this.get('service.secondaryLaunchConfigs.length') > 0;
-  }.property('service.secondaryLaunchConfigs.length'),
+
+  isSidekick: function() {
+    let idx = this.get('launchConfigIndex');
+    return idx !== null && idx !== -1;
+  }.property('launchConfigIndex'),
 
   launchConfigChoices: function() {
     var isUpgrade = this.get('isUpgrade');
@@ -216,8 +206,7 @@ export default Ember.Component.extend(NewOrEdit, SelectTab, {
   // Save
   // ----------------------------------
   validate() {
-    this._super();
-    var errors = this.get('errors')||[];
+    let errors = [];
 
     if ( this.get('isService') )
     {
@@ -257,33 +246,65 @@ export default Ember.Component.extend(NewOrEdit, SelectTab, {
 
   willSave() {
     let ok = this._super(...arguments);
-    if ( ok && !this.get('isUpgrade') ) {
-      this.set('primaryResource.completeUpdate', true);
+    if ( !ok ) {
+      return ok;
+    }
+
+    let pr;
+    let lc = this.get('launchConfig').clone();
+
+    if ( this.get('isService') ) {
+      // Apply the launch config to the service
+      pr = this.get('service').clone();
+      let index = this.get('launchConfigIndex');
+      if ( index >= 0 ) {
+        let slc = pr.get('secondaryLaunchConfigs');
+        if ( !slc ) {
+          slc = [];
+          pr.set('secondaryLaunchConfig', slc);
+        }
+
+        slc[index] = lc;
+      } else {
+        pr.set('launchConfig', lc);
+      }
+    } else {
+      // Convert the launch config to a container
+      let lc = this.get('launchConfig').serialize();
+      lc.type = 'container';
+      pr = this.get('store').createRecord(lc);
+    }
+
+    pr.setProperties({
+      name: this.get('name'),
+      description: this.get('description'),
+    });
+
+    this.set('primaryResource', pr);
+    this.set('originalPrimaryResource', pr);
+
+    if ( this.get('isUpgrade') ) {
+      return true;
+    } else {
+      pr.set('completeUpdate', true);
 
       // Set the stack ID
       if ( this.get('stack.id') ) {
-        this.set('primaryResource.stackId', this.get('stack.id'));
+        pr.set('stackId', this.get('stack.id'));
         return true;
       } else if ( this.get('stack') ) {
         return this.get('stack').save().then((newStack) => {
           this.set('primaryResource.stackId', newStack.get('id'));
           return true;
         });
+      } else {
+        return Ember.RSVP.reject('Stack is required');
       }
     }
-
-    return ok;
   },
 
   doSave() {
-    if ( this.get('isService') || !this.get('isUpgrade') ) {
-      return this._super(...arguments);
-    }
-
-    // Container upgrade
-    return this.get('primaryResource').doAction('upgrade', {
-      config: this.get('primaryResource')
-    });
+    return this._super(...arguments);
   },
 
   didSave() {
@@ -294,7 +315,7 @@ export default Ember.Component.extend(NewOrEdit, SelectTab, {
   },
 
   setServiceLinks() {
-    var service = this.get('service');
+    var service = this.get('primaryResource');
     var ary = [];
     this.get('serviceLinksArray').forEach((row) => {
       if ( row.serviceId )
@@ -323,26 +344,6 @@ export default Ember.Component.extend(NewOrEdit, SelectTab, {
 
     return k;
   }.property('isUpgrade','isService'),
-
-  configName: function() {
-    let name = this.get('primaryResource.name');
-    let isSidekick = this.get('isSidekick');
-    let idx = this.get('launchConfigIndex');
-    return displayConfigName(name,isSidekick,idx);
-  }.property('primaryResource.name','launchConfigIndex','isSidekick'),
-
-  slcWithNames: function() {
-    let out = [];
-
-    out.pushObjects(this.get('service.secondaryLaunchConfigs').map((x, idx) => {
-      return {
-        displayName: displayConfigName(x.get('name'), true, idx),
-        slc: x
-      };
-    }));
-
-    return out;
-  }.property('primaryResource.name','service.secondaryLaunchConfigs.@each.name'),
 
   supportsSecrets: function() {
     return !!this.get('store').getById('schema','secret');

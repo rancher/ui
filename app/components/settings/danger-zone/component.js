@@ -26,6 +26,7 @@ const ALLOWED = {
   'lb.instance.image': {description: 'Default docker image for Load Balancer Services'},
   'main_tables.purge.after.seconds': {description: 'Auto-purge deleted entries from most tables after this long (seconds)', kind: 'int'},
   'newest.docker.version': {description: 'The newest supported version of Docker at the time of this release.  A Docker version that does not satisfy supported.docker.range but is newer than this will be marked as untested'},
+  'project.create.default': {description: 'Automatically create an Environment for users on first login, if they have access to no other Environments.', kind: 'boolean'},
   'registry.default': {description: 'Pull images with no registry specified from this registry instead of DockerHub'},
   'registry.whitelist': {description: 'Allow containers images only from the specified registries (if specified; comma-separated)'},
   'secrets.backend': {description: 'Backend storage provider for secrets', kind: 'enum', options: ['localkey','vault']},

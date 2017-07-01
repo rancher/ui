@@ -288,6 +288,7 @@ export default Ember.Route.extend(Subscribe, PromiseToCb, {
     gotoH() { this._gotoRoute('hosts.index'); },
     gotoK() { this._gotoRoute('authenticated.project.apikeys'); },
     gotoL() { this._gotoRoute('balancers.index'); },
+    gotoV() { this._gotoRoute('volumes.index'); },
 
     help()  {
       this.get('modalService').toggleModal('modal-shortcuts');
@@ -348,6 +349,7 @@ export default Ember.Route.extend(Subscribe, PromiseToCb, {
     'n': 'neu',
     'p': 'gotoP',
     't': 'nextTab',
+    'v': 'gotoV',
     '/': 'search',
     'shift+/': 'help',
     'backspace': 'delete',

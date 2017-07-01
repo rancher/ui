@@ -13,9 +13,15 @@
         <div class="radio">
           <label>{{radio-button selection=pullImage value=false}} {{t 'formSecurity.pullImage.disable'}}</label>
         </div>
-        <div class="radio">
-          <label>{{radio-button selection=pullImage value=true}} {{t 'formSecurity.pullImage.enable'}}</label>
-        </div>
+        {{#if isService}}
+          <div class="radio">
+            <label>{{radio-button selection=pullImage value=true}} {{t 'formSecurity.pullImage.enableService'}}</label>
+          </div>
+        {{else}}
+          <div class="radio">
+            <label>{{radio-button selection=pullImage value=true}} {{t 'formSecurity.pullImage.enableContainer'}}</label>
+          </div>
+        {{/if}}
       {{else}}
       {{/if}}
     </div>
@@ -86,7 +92,7 @@
         <label class="acc-label">{{t 'formSecurity.swapLimit.label'}}</label>
         {{#input-or-display editable=editing value=swapMode classesForDisplay="text-muted form-control-static"}}
           <div class="radio">
-            <label>{{radio-button selection=swapMode value="default"}} {{t 'formSecurity.swapLimit.default'}}</label>
+            <label>{{radio-button selection=swapMode value="default" disabled=(eq memoryMode "unlimited")}} {{t 'formSecurity.swapLimit.default'}}</label>
           </div>
           <div class="radio">
             <label>{{radio-button selection=swapMode value="unlimited"}} {{t 'formSecurity.swapLimit.unlimited'}}</label>
