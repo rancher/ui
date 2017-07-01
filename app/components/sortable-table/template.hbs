@@ -36,7 +36,7 @@
         <div class="col span-4 mt-0 clearfix">
           {{#if search}}
             <div class="pull-right search-group input-group">
-              {{input value=searchText type="search" class="input-sm pull-right" placeholder=(t 'generic.search')}}
+              {{input value=searchText aria-title=(t 'generic.search') type="search" class="input-sm pull-right" placeholder=(t 'generic.search')}}
               {{#if searchText}}
                 <span class="input-group-btn">
                   <button class="btn bg-transparent text-info pl-10 pr-10" {{action 'clearSearch'}}><i class="icon icon-close"/></button>
@@ -76,6 +76,14 @@
 
   {{#if groupByKey}}
     {{! Note: Grouping requires fullRows}}
+    {{#if extraGroups.length}}
+      {{#each extraGroups as |group|}}
+        <tbody class="group">
+          {{yield this 'group' group}}
+          {{yield this 'norows'}}
+        </tbody>
+      {{/each}}
+    {{/if}}
     {{#each groupedContent as |group|}}
       <tbody class="group">
         {{yield this 'group' group}}

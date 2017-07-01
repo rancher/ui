@@ -6,18 +6,6 @@ const NONE = 'none';
 const TCP = 'tcp';
 const HTTP = 'http';
 
-const DEFAULTS = {
-  type: 'instanceHealthCheck',
-  interval: 2000,
-  responseTimeout: 2000,
-  initializingTimeout: 60000,
-  reinitializingTimeout: 60000,
-  healthyThreshold: 2,
-  unhealthyThreshold: 3,
-  requestLine: '',
-  strategy: 'recreate',
-};
-
 const METHOD_CHOICES = ['OPTIONS','GET','HEAD','POST','PUT','DELETE','TRACE','CONNECT'];
 const HTTP_1_0 = 'HTTP/1.0';
 const HTTP_1_1 = 'HTTP/1.1';
@@ -131,7 +119,7 @@ export default Ember.Component.extend({
       var check = this.get('healthCheck');
       if ( !check )
       {
-        check = this.get('store').createRecord(DEFAULTS);
+        check = this.get('store').createRecord({type: 'instanceHealthCheck'});
         this.set('healthCheck', check);
       }
 

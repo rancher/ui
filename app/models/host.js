@@ -47,7 +47,7 @@ var Host = Resource.extend(StateCounts,{
     },
 
     newContainer: function() {
-      this.get('application').transitionToRoute('containers.new', {queryParams: {hostId: this.get('model.id')}});
+      this.get('application').transitionToRoute('containers.run', {queryParams: {hostId: this.get('model.id')}});
     },
 
     clone: function() {
@@ -128,7 +128,7 @@ var Host = Resource.extend(StateCounts,{
 
   supportState: function() {
     let my = this.get('dockerEngineVersion')||'';
-    my = my.replace('-ce','').replace('-ee','');
+    my = my.replace(/-[ce]e[0-9.-]*$/,'');
 
     let supported = this.get(`settings.${C.SETTING.SUPPORTED_DOCKER}`);
     let newest = this.get(`settings.${C.SETTING.NEWEST_DOCKER}`);

@@ -51,16 +51,17 @@ export default Ember.Controller.extend({
       translationKey: 'generic.name',
     },
     {
-      name: 'displayType',
-      sort: ['displayType','displayName','id'],
-      searchField: 'displayType',
-      translationKey: 'generic.type',
+      name: 'scope',
+      sort: ['stack.isDefault:desc','stack.displayName','scope'],
+      translationKey: 'volumesPage.scope.label',
+      width: 120
     },
     {
-      name: 'target',
-      sort: false,
-      searchField: 'displayTargets',
-      translationKey: 'dnsPage.table.target',
+      name: 'driver',
+      sort: ['stack.isDefault:desc','stack.displayName','driver','displayName','id'],
+      searchField: 'displayType',
+      translationKey: 'volumesPage.driver.label',
+      width: 150
     },
   ],
 
@@ -80,13 +81,10 @@ export default Ember.Controller.extend({
   }.property('model.stacks.@each.{grouping,system}','tags','prefs.showSystemResources'),
 
   combinedInstances: function() {
-    let out = [];
-    this.get('filteredStacks').forEach((stack) => {
-      out.pushObjects(stack.get('services').filterBy('isReal', false));
-    });
-
+    let out = this.get('model.volumeTemplates').slice();
+    out.pushObjects(this.get('model.volumes').filterBy('volumeTemplateId',null));
     return out;
-  }.property('filteredStacks.@each.services'),
+  }.property('model.volumeTemplates.[]','model.volumes.@each.volumeTemplateId'),
 
   simpleMode: function() {
     let all = this.get('filteredStacks');

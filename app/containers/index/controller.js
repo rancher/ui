@@ -73,38 +73,53 @@ export default Ember.Controller.extend({
     },
   ],
 
-  filteredStacks: function() {
+  showStack: function() {
     var needTags = tagsToArray(this.get('tags'));
-    var out = this.get('model.stacks');
 
-    if ( !this.get('prefs.showSystemResources') ) {
-      out = out.filterBy('system', false);
-    }
+    let out = {};
+    let ok;
+    this.get('model.stacks').forEach((obj) => {
+      ok = true;
+      if ( !this.get('prefs.showSystemResources') && obj.get('system') !== false ) {
+        ok = false;
+      }
 
-    if ( needTags.length ) {
-      out = out.filter((obj) => obj.hasTags(needTags));
-    }
+      if ( ok && !obj.hasTags(needTags) ) {
+        ok = false;
+      }
 
-    out = out.filter((obj) => obj.get('type').toLowerCase() !== 'kubernetesstack');
+      if ( ok && obj.get('type').toLowerCase() === 'kubernetesstack' ) {
+        ok = false;
+      }
 
-    return out;
-
-  }.property('model.stacks.@each.{grouping,system}','tags','prefs.showSystemResources'),
-
-  standaloneContainers: function() {
-    return this.get('model.instances').filterBy('serviceId',null);
-  }.property('model.instances.@each.serviceId'),
-
-  rows: function() {
-    let out = [];
-    this.get('filteredStacks').forEach((stack) => {
-      out.pushObjects(stack.get('services').filter((x) => x.get('isReal') && !x.get('isBalancer')));
+      out[obj.get('id')] = ok;
     });
 
-    out.pushObjects(this.get('standaloneContainers'));
+    return out;
+  }.property('model.stacks.@each.{grouping,system}','tags','prefs.showSystemResources'), // Grouping is used for tags
+
+  rows: function() {
+    let showStack = this.get('showStack');
+
+    let stackId;
+    // Containers
+    let out = this.get('model.instances').filterBy('serviceId',null).filter((obj) => {
+      stackId = obj.get('stackId');
+      return showStack[obj.get('stackId')];
+    });
+
+    // Services
+    out.pushObjects(this.get('model.services').filter((obj) => {
+      stackId = obj.get('stackId');
+      return showStack[stackId] && obj.get('isReal') && !obj.get('isBalancer');
+    }));
 
     return out;
-  }.property('filteredStacks.@each.services','standaloneContainers.[]'),
+  }.property('showStack','model.services.@each.{isReal,isBalancer}','standaloneContainers.[]'),
+
+  emptyStacks: function() {
+    return this.get('model.stacks').filterBy('isEmpty',true).map((x) => { return {ref: x} });
+  }.property('model.stacks.@each.isEmpty'),
 
   groupBy: function() {
     if ( !this.get('simpleMode') && this.get('mode') === 'grouped' ) {

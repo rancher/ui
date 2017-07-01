@@ -14,8 +14,8 @@ export default Ember.Component.extend({
   createStack: null,
 
   defaultName: 'Default',
-  showAdvanced: false,
   mode: REUSE,
+  editable: true,
   isReuse: Ember.computed.equal('mode', REUSE),
 
   classNames: ['inline-form'],
@@ -39,7 +39,6 @@ export default Ember.Component.extend({
       } else {
         Ember.run.next(() => {
           this.set('mode', CREATE);
-          this.set('showAdvanced', true);
         });
       }
 
@@ -47,16 +46,6 @@ export default Ember.Component.extend({
         this.updateStack();
       });
     }
-  },
-  willDestroy(){
-    this.setProperties({
-      stack: null,
-      errors: null,
-      reuseStackId: null,
-      createStack: null,
-      showAdvanced: false,
-      choices: null,
-    });
   },
 
   updateStack: Ember.observer('reuseStackId','mode', function() {
@@ -105,10 +94,6 @@ export default Ember.Component.extend({
           }
         });
       }
-    },
-
-    showAdvanced() {
-      this.set('showAdvanced', true);
     },
   },
 });

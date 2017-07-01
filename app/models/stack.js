@@ -116,7 +116,7 @@ var Stack = Resource.extend(StateCounts, {
       return this._super().then(() => {
         if ( this.get('application.currentRouteName') === 'stack.index' )
         {
-          this.get('router').transitionTo('containers');
+          this.get('router').transitionTo('rontainers');
         }
       });
     },
@@ -176,6 +176,8 @@ var Stack = Resource.extend(StateCounts, {
   isDefault: function() {
     return (this.get('name')||'').toLowerCase() === 'default';
   }.property('name'),
+
+  isEmpty: Ember.computed.equal('instances.length',0),
 
   isFromCatalog: function() {
     let kind = this.get('externalIdInfo.kind');

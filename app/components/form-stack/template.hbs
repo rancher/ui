@@ -1,18 +1,18 @@
-{{#if showAdvanced}}
-  <div class="clearfix">
-    <label class="pb-5">
-      {{#if isReuse}}
-        {{t 'formStack.label.reuse'}}
-      {{else}}
-        {{t 'formStack.label.create'}}{{field-required}}
-      {{/if}}
-    </label>
-    <div class="pull-right text-small">
-      <a role="button" class="btn bg-transparent p-0" {{action "toggle"}}>{{t (if isReuse 'formStack.toggle.create' 'formStack.toggle.reuse')}}</a>
-    </div>
+<div class="clearfix">
+  <label class="pb-5">
+    {{#if isReuse}}
+      {{t 'formStack.label.reuse'}}
+    {{else}}
+      {{t 'formStack.label.create'}}{{field-required}}
+    {{/if}}
+  </label>
+  <div class="pull-right text-small">
+    <a role="button" class="btn bg-transparent p-0" {{action "toggle"}}>{{t (if isReuse 'formStack.toggle.create' 'formStack.toggle.reuse')}}</a>
   </div>
+</div>
 
-  <div>
+<div>
+  {{#if editable}}
     {{#if isReuse}}
       {{new-select
         content=choices
@@ -24,12 +24,7 @@
     {{else}}
       {{input classNames="new-name" placeholder=(t 'formStack.create.placeholder') value=createStack.name}}
     {{/if}}
-  </div>
-{{else}}
-  <div>
-    {{t 'formStack.label.simple' name=stack.displayName}}
-    <div class="pull-right text-small">
-      <a role="button" class="btn bg-transparent p-0" {{action "showAdvanced"}}>{{t 'formStack.toggle.simple'}}</a>
-    </div>
-  </div>
-{{/if}}
+  {{else}}
+    <div class="form-control-static" style="border-left: 0">{{stack.displayName}}</div>
+  {{/if}}
+</div>

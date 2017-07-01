@@ -7,8 +7,7 @@
   {{/unless}}
 
   {{#link-to "new-stack" classNames="btn btn-sm bg-default mr-10"}}{{t 'nav.containers.importCompose'}}{{/link-to}}
-  {{#link-to "containers.new" projects.current.id class="btn btn-sm bg-primary"}}{{t 'nav.containers.addScalingGroup'}}{{/link-to}}
-  {{#link-to "containers.new-legacy" projects.current.id class="btn btn-sm bg-primary"}}(Add Container){{/link-to}}
+  {{#link-to "containers.run" projects.current.id class="btn btn-sm bg-primary"}}{{t 'nav.containers.addContainer'}}{{/link-to}}
 {{/containers-header}}
 
 <section class="instances">
@@ -17,7 +16,7 @@
       <div class="col {{if showOrchestration 'span-6' 'span-6 offset-3'}} text-center pt-40 pb-40">
         <img style="width: 75%;" src="{{app.baseAssets}}assets/images/resources/container.svg"/>
         <h1 class="text-center text-bold mt-20">{{t 'containersPage.welcome.container'}}</h1>
-        <a class="btn bg-link icon-btn mt-20" href="{{href-to 'containers.new'}}">
+        <a class="btn bg-link icon-btn mt-20" href="{{href-to 'containers.run'}}">
           <span class="darken"><i class="icon icon-plus text-small"></i></span>
           <span>{{t 'containersPage.welcome.containerLink'}}</span>
         </a>
@@ -45,9 +44,10 @@
       fullRows=true
       groupByKey=groupBy
       groupByRef="stack"
-      pagingLabel="pagination.containerScalingGroup"
+      pagingLabel="pagination.containerService"
       subHeaders=containerHeaders
       subSearchField="instances"
+      extraGroups=emptyStacks
       headers=headers as |sortable kind row dt|}}
       {{#if (eq kind "row")}}
         {{#if (eq row.baseType "instance")}}
@@ -93,11 +93,15 @@
               {{action-menu model=row.ref}}
             </td>
           {{else}}
-            <td colspan={{sortable.fullColspan}}>{{t 'hostPod.groupedInstances.standalone'}}</td>
+            <td colspan={{sortable.fullColspan}}>
+              {{stack-row}}
+            </td>
           {{/if}}
         </tr>
       {{else if (eq kind "nomatch")}}
         <tr><td colspan="{{sortable.fullColspan}}" class="text-center text-muted lacsso pt-20 pb-20">{{t 'containersPage.table.noMatch'}}</td></tr>
+      {{else if (eq kind "norows")}}
+        <tr><td colspan="{{sortable.fullColspan}}" class="text-center text-muted lacsso pt-20 pb-20">{{t 'containersPage.table.noData'}}</td></tr>
       {{/if}}
     {{/sortable-table}}
   {{/if}}

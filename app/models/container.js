@@ -85,11 +85,11 @@ var Container = Instance.extend({
     },
 
     edit: function() {
-      this.get('router').transitionTo('containers.new', {queryParams: {containerId: this.get('id'), upgrade: true}});
+      this.get('router').transitionTo('containers.run', {queryParams: {containerId: this.get('id'), upgrade: true}});
     },
 
     clone: function() {
-      this.get('router').transitionTo('containers.new', {queryParams: {containerId: this.get('id')}});
+      this.get('router').transitionTo('containers.run', {queryParams: {containerId: this.get('id')}});
     },
 
     convertToService: function() {

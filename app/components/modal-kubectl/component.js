@@ -25,7 +25,7 @@ export default Ember.Component.extend(ModalBase, {
     if ( labels[C.LABEL.K8S_TOKEN]+'' === 'true' ) {
       return [
         'kubectl-shell.sh',
-        this.get('access.token.jwt') || btoa('unauthorized')
+        this.get('access.token.jwt') || 'unauthorized'
       ];
     } else {
       return ['/bin/bash','-l','-c','echo "# Run kubectl commands inside here\n# e.g. kubectl get rc\n"; TERM=xterm-256color /bin/bash'];

@@ -1,6 +1,6 @@
 <div>
   <label class="pb-5 acc-label">{{t (concat-str 'formScale.label' mode character='.')}}</label>
-  {{#if (and isService (not (or isSidekick isUpgrade advancedShown)))}}
+  {{#if canAdvanced}}
     <div class="pull-right text-small">
       <a role="button" class="btn bg-transparent p-0" {{action "showAdvanced"}}>{{t 'formScale.showAdvanced'}}</a>
     </div>
@@ -12,35 +12,30 @@
     {{t 'formScale.mode.sidekick'}}
   </div>
 {{else}}
-  <div class="row gutless">
-    <div class="col span-2 m-0">
-      {{input-integer value=userInput min=min max=max}}
-    </div>
-    <div class="col offset-1 span-9 hidden-md">
-      {{input-slider value=userInput valueMin=1 scaleMin=0 valueMax=sliderMax}}
-    </div>
-  </div>
-
-  {{#if isService}}
-    {{#if (or advancedShown isUpgrade)}}
-      <div class="pt-10">
-        <div class="radio">
-          <label>{{radio-button selection=mode value="service"}} {{t 'formScale.mode.service' scale=asInteger}}</label>
-        </div>
-        <div class="radio">
-          <label>{{radio-button selection=mode value="global"}} {{t 'formScale.mode.global' scale=asInteger}}</label>
-        </div>
+  {{#if canScale}}
+    <div class="row gutless">
+      <div class="col span-2 m-0">
+        {{input-integer value=userInput min=min max=max}}
       </div>
-    {{/if}}
-    <div class="col-inline clearfix">
-      <label>&nbsp;</label>
+      <div class="col offset-1 span-9 hidden-md">
+        {{input-slider value=userInput valueMin=1 scaleMin=0 valueMax=sliderMax}}
+      </div>
     </div>
-  {{else if isHost}}
-  {{else if (gt userInput 1)}}
-    <p class="help-block">{{t 'formScale.containerHelp' scale=userInput}}</p>
-  {{else}}
-    <div class="col-inline clearfix">
-      <label>&nbsp;</label>
+  {{/if}}
+
+  {{#if advancedShown}}
+    <div class="pt-10">
+      {{#unless (and isUpgrade isService)}}
+        <div class="radio">
+          <label>{{radio-button selection=mode value="container"}} {{t 'formScale.mode.container' scale=asInteger}}</label>
+        </div>
+      {{/unless}}
+      <div class="radio">
+        <label>{{radio-button selection=mode value="service"}} {{t 'formScale.mode.service' scale=asInteger}}</label>
+      </div>
+      <div class="radio">
+        <label>{{radio-button selection=mode value="global"}} {{t 'formScale.mode.global' scale=asInteger}}</label>
+      </div>
     </div>
   {{/if}}
 {{/if}}

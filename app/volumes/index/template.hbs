@@ -1,6 +1,6 @@
 {{#containers-header tags=tags}}
   {{#link-to "new-stack" classNames="btn btn-sm bg-default mr-10"}}{{t 'nav.containers.importCompose'}}{{/link-to}}
-  {{#link-to "dns.new" projects.current.id class="btn btn-sm bg-primary"}}{{t 'nav.containers.addDns'}}{{/link-to}}
+  {{#link-to "volumes.new" projects.current.id class="btn btn-sm bg-primary"}}{{t 'nav.containers.addVolume'}}{{/link-to}}
 {{/containers-header}}
 
 <section class="pl-0 pr-0">
@@ -15,12 +15,12 @@
       fullRows=true
       groupByKey=(if simpleMode null "stack.id")
       groupByRef="stack"
-      pagingLabel="pagination.dnsRecord"
+      pagingLabel="pagination.volume"
       subHeaders=containerHeaders
       subSearchField="instances"
       headers=headers as |sortable kind inst dt|}}
       {{#if (eq kind "row")}}
-        {{dns-row
+        {{volume-row
           model=inst
           toggle=(action "toggleExpand" inst.id)
           expanded=(array-includes expandedInstances inst.id)
@@ -42,16 +42,16 @@
               {{action-menu model=inst.ref}}
             </td>
           {{else}}
-            <td colspan={{sortable.fullColspan}}>{{t 'hostPod.groupedInstances.standalone'}}</td>
+            <td colspan={{sortable.fullColspan}}>
+              {{stack-row}}
+            </td>
           {{/if}}
         </tr>
       {{else if (eq kind "nomatch")}}
-        <tr><td colspan="{{sortable.fullColspan}}" class="text-center text-muted lacsso pt-20 pb-20">{{t 'dnsPage.noMatch'}}</td></tr>
-      {{else if (eq kind "norows")}}
-        <tr><td colspan="{{sortable.fullColspan}}" class="text-center text-muted lacsso pt-20 pb-20">{{t 'dnsPage.noData'}}</td></tr>
+        <tr><td colspan="{{sortable.fullColspan}}" class="text-center text-muted lacsso pt-20 pb-20">{{t 'volumesPage.noMatch'}}</td></tr>
       {{/if}}
     {{/sortable-table}}
   {{else}}
-    {{empty-table resource="container" newRoute="dns.new" newTranslationKey="nav.containers.addDns"}}
+    {{empty-table resource="container" newRoute="volumes.new" newTranslationKey="nav.containers.addVolume"}}
   {{/if}}
 </section>

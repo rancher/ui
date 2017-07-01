@@ -1,14 +1,19 @@
 import Ember from 'ember';
 import Resource from 'ember-api-store/models/resource';
-import { denormalizeIdArray } from 'ember-api-store/utils/denormalize';
+import { denormalizeId, denormalizeIdArray } from 'ember-api-store/utils/denormalize';
 
 var Volume = Resource.extend({
   type: 'volume',
   modalService: Ember.inject.service('modal'),
 
   mounts: denormalizeIdArray('mountIds'),
+  stack: denormalizeId('stackId'),
 
   isRoot: Ember.computed.notEmpty('instanceId'),
+
+  scope: function() {
+    return 'container';
+  }.property(),
 
   availableActions: function() {
     var a = this.get('actionLinks');

@@ -1,6 +1,5 @@
 import Ember from 'ember';
 import C from 'ui/utils/constants';
-import Util from 'ui/utils/util';
 
 export default Ember.Route.extend({
   model: function(params/*, transition*/) {
@@ -8,7 +7,7 @@ export default Ember.Route.extend({
     let lcIndex = params.launchConfigIndex;
 
     let emptyService = store.createRecord({
-      type: 'scalingGroup',
+      type: 'scalingGroup', // @TODO switch back to service
       stackId: params.stackId,
       scale: 1,
       startOnCreate: true,
@@ -29,7 +28,7 @@ export default Ember.Route.extend({
     }
     else if ( params.containerId )
     {
-      dependencies['container'] = store.find('container', params.containerId, {include: ['ports']});
+      dependencies['container'] = store.find('container', params.containerId);
     }
 
     return Ember.RSVP.hash(dependencies, 'Load dependencies').then((results) => {
@@ -93,6 +92,7 @@ export default Ember.Route.extend({
         let clone = container.clone();
 
         if ( params.upgrade) {
+          emptyService.set('launchConfig', clone);
           return Ember.Object.create({
             service: emptyService,
             launchConfig: clone,
@@ -101,6 +101,7 @@ export default Ember.Route.extend({
           });
         } else {
           let neu = store.createRecord(clone.serializeForNew());
+          emptyService.set('launchConfig', neu);
           return Ember.Object.create({
             service: emptyService,
             launchConfig: neu,
@@ -110,6 +111,7 @@ export default Ember.Route.extend({
         }
       } else {
         // New Container/Service
+        emptyService.set('launchConfig', emptyLc);
         return Ember.Object.create({
           service: emptyService,
           launchConfig: emptyLc,

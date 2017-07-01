@@ -76,7 +76,7 @@ var Service = Resource.extend(StateCounts, {
     },
 
     upgrade(upgradeImage='false') {
-      var route = 'containers.new';
+      var route = 'containers.run';
       if ( this.get('lcType') === 'loadbalancerservice' ) {
         route = 'balancers.new';
       }
@@ -93,8 +93,8 @@ var Service = Resource.extend(StateCounts, {
       var route;
       switch ( this.get('lcType') )
       {
-        case 'service':             route = 'containers.new'; break;
-        case 'scalinggroup':        route = 'containers.new'; break;
+        case 'service':             route = 'containers.run'; break;
+        case 'scalinggroup':        route = 'containers.run'; break;
         case 'dnsservice':          route = 'dns.new';            break;
         case 'loadbalancerservice': route = 'balancers.new';      break;
         case 'externalservice':     route = 'dns.new';            break;
@@ -149,11 +149,13 @@ var Service = Resource.extend(StateCounts, {
     var canHaveContainers = this.get('canHaveContainers');
     var containerForShell = this.get('containerForShell');
     var isDriver = ['networkdriverservice','storagedriverservice'].includes(this.get('lcType'));
+    var canCleanup = !!a.garbagecollect && this.get('canCleanup');
 
     var choices = [
       { label: 'action.upgradeOrEdit',  icon: 'icon icon-arrow-circle-up',  action: 'upgrade',        enabled: canUpgrade },
       { label: 'action.edit',           icon: 'icon icon-pencil',           action: 'editDns',        enabled: !isReal },
       { label: 'action.rollback',       icon: 'icon icon-history',          action: 'rollback',       enabled: !!a.rollback && isReal && !!this.get('previousRevisionId') },
+      { label: 'action.garbageCollect', icon: 'icon icon-garbage',          action: 'garbageCollect', enabled: canCleanup},
       { label: 'action.clone',          icon: 'icon icon-copy',             action: 'clone',          enabled: !isK8s && !isSwarm && !isDriver },
       { divider: true },
       { label: 'action.execute',        icon: 'icon icon-terminal',         action: 'shell',          enabled: !!containerForShell, altAction:'popoutShell'},
@@ -164,7 +166,6 @@ var Service = Resource.extend(StateCounts, {
       { label: 'action.restart',        icon: 'icon icon-refresh',          action: 'restart',        enabled: !!a.restart && canHaveContainers, bulkable: true },
       { label: 'action.stop',           icon: 'icon icon-stop',             action: 'promptStop',     enabled: !!a.deactivate, altAction: 'deactivate', bulkable: true},
       { divider: true },
-      { label: 'action.garbageCollect', icon: 'icon icon-garbage',          action: 'garbageCollect', enabled: !!a.garbagecollect && isReal},
       { label: 'action.remove',         icon: 'icon icon-trash',            action: 'promptDelete',   enabled: !!a.remove, altAction: 'delete', bulkable: true},
       { divider: true },
       { label: 'action.viewInApi',      icon: 'icon icon-external-link',    action: 'goToApi',        enabled: true },
@@ -174,7 +175,6 @@ var Service = Resource.extend(StateCounts, {
   }.property('actionLinks.{activate,deactivate,pause,restart,update,remove,rollback,garbagecollect}','previousRevisionId',
     'lcType','isK8s','isSwarm','canHaveContainers','canUpgrade','containerForShell'
   ),
-
 
   serviceLinks: null, // Used for clone
   reservedKeys: ['serviceLinks'],
@@ -247,7 +247,7 @@ var Service = Resource.extend(StateCounts, {
 
   displayScale: function() {
     if ( this.get('isGlobalScale') ) {
-      return this.get('scale') + this.get('intl').t('servicePage.globalScale');
+      return this.get('intl').t('servicePage.globalScale', {scale: this.get('scale')});
     } else {
       return this.get('scale');
     }
@@ -411,6 +411,10 @@ var Service = Resource.extend(StateCounts, {
   containerForShell: function() {
     return this.get('instances').findBy('combinedState','running');
   }.property('instances.@each.combinedState'),
+
+  canCleanup: function() {
+    return !!this.get('instances').findBy('desired',false);
+  }.property('instances.@each.desired'),
 });
 
 export function activeIcon(service)

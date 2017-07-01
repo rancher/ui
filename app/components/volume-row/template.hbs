@@ -1,28 +1,59 @@
-<td>
-  {{badge-state model=model}}
-</td>
+<tr class="main-row">
+  <td class="row-check">
+    {{check-box nodeId=model.id}}
+  </td>
 
-<td>
-  <div class="clip">
-    {{#copy-inline clipboardText=model.displayUri class="with-clip" size="small"}}{{model.displayUri}}{{/copy-inline}} /
-  </div>
-</td>
+  <td>
+    {{#if canExpand}}<i role="button" {{action "toggle"}} class="icon icon-play eased text-small text-muted {{if expanded 'icon-rotate-90'}}"></i>{{/if}}
+  </td>
 
-<td>
-  {{#if model.mounts.length}}
-    {{#each model.mounts as |mount|}}
-      <div>
-        <a href="{{href-to "container" mount.instanceId}}">{{mount.instance.name}}</a>:{{mount.path}}
-        {{#if (eq mount.permissions "ro")}}
-          <span class="text-muted">{{t 'volumeRow.mounts.readOnly'}}</span>
-        {{/if}}
-      </div>
-    {{/each}}
-  {{else}}
-    <span class="text-muted">{{t 'generic.none'}}</span>
+  <td data-title="{{dt.state}}" class="state">
+    {{badge-state model=model}}
+  </td>
+
+  <td data-title="{{dt.name}}" class="clip">
+
+    <a href="{{href-to (concat 'volumes.' model.type) model.id}}">{{model.displayName}}</a>
+    {{#if model.showTransitioningMessage}}
+      <div class="clip text-small {{model.stateColor}}">{{model.transitioningMessage}}</div>
+    {{/if}}
+  </td>
+
+  <td data-title="{{dt.scope}}">
+    {{t (concat 'volumesPage.scope.' model.scope)}}
+  </td>
+
+  <td data-title="{{dt.driver}}">
+    {{model.driver}}
+  </td>
+
+  <td data-title="{{dt.actions}}" class="actions">
+    {{action-menu model=model}}
+  </td>
+</tr>
+
+{{#if canExpand}}
+  <tr class="sub-row {{unless expanded 'hide'}}">
+    <td>{{! checkbox and expand}}</td>
+    <td colspan="{{sub fullColspan 2}}">
+      {{#if expanded}}
+        {{container-table
+          body=model.instances
+          stickyHeader=false
+          bulkActions=false
+          search=false
+          searchText=searchText
+          subRow=true
+          showHost=true
+        }}
+      {{/if}}
+    </td>
+    <td>{{! actions}}</td>
+  </tr>
+
+  {{#if expanded}}
+    <tr class="separator-row">
+      <td colspan="{{fullColspan}}"></td>
+    </tr>
   {{/if}}
-</td>
-
-<td class="actions">
-  {{action-menu model=model}}
-</td>
+{{/if}}
