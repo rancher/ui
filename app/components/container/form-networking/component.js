@@ -4,6 +4,8 @@ import ManageLabels from 'ui/mixins/manage-labels';
 import C from 'ui/utils/constants';
 import { STATUS, STATUS_INTL_KEY, classForStatus } from 'ui/components/accordion-list-item/component';
 
+const UTS_HOST = 'host';
+
 export default Ember.Component.extend(ManageLabels, ContainerChoices,{
   projects:            Ember.inject.service(),
   settings:            Ember.inject.service(),
@@ -140,45 +142,37 @@ export default Ember.Component.extend(ManageLabels, ContainerChoices,{
   hostname: null,
   initHostname: function() {
     var override = this.getLabel(C.LABEL.HOSTNAME_OVERRIDE) === C.LABEL.HOSTNAME_OVERRIDE_VALUE;
+    var host = this.get('instance.uts') === UTS_HOST;
     var hostname = this.get('instance.hostname') || '';
 
-    if ( this.get('isService') )
-    {
-      if ( override )
-      {
-        this.set('hostname', 'override');
-        this.set('instance.hostname', '');
-      }
-      else if ( hostname )
-      {
-        this.set('hostname', 'custom');
-      }
-      else
-      {
-        this.set('hostname', 'default');
-      }
-    }
-    else
-    {
+    if ( override ) {
+      this.set('hostname', 'override');
+      this.set('instance.hostname', '');
+    } else if ( host) {
+      this.set('hostname', 'host');
+    } else if ( hostname ) {
       this.set('hostname', 'custom');
+    } else {
+      this.set('hostname', 'default');
     }
   },
 
   hostnameDidChange: function() {
     var val = this.get('hostname');
-    if ( val === 'override' )
-    {
+    if ( val === 'override' ) {
       this.setLabel(C.LABEL.HOSTNAME_OVERRIDE, C.LABEL.HOSTNAME_OVERRIDE_VALUE);
+    } else {
+      this.removeLabel(C.LABEL.HOSTNAME_OVERRIDE);
+    }
+
+    if ( val !== 'custom' ) {
       this.set('instance.hostname', null);
     }
-    else if ( val === 'default' )
-    {
-      this.removeLabel(C.LABEL.HOSTNAME_OVERRIDE);
-      this.set('instance.hostname', null);
-    }
-    else
-    {
-      this.removeLabel(C.LABEL.HOSTNAME_OVERRIDE);
+
+    if ( val === 'uts' ) {
+      this.set('instance.uts', UTS_HOST);
+    } else {
+      this.set('instance.uts', null);
     }
   }.observes('hostname','instance.hostname'),
 
