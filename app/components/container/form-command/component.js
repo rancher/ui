@@ -7,7 +7,6 @@ export default Ember.Component.extend(ManageLabels, {
   // Inputs
   instance: null,
   errors: null,
-  isService: null,
   editing: true,
 
   intl: Ember.inject.service(),
@@ -16,7 +15,6 @@ export default Ember.Component.extend(ManageLabels, {
     this._super(...arguments);
     this.initLabels(this.get('initialLabels'), null, C.LABEL.START_ONCE);
     this.initTerminal();
-    this.initStartOnce();
     this.initRestart();
     this.initLogging();
   },
@@ -81,25 +79,10 @@ export default Ember.Component.extend(ManageLabels, {
   }.observes('terminal.type'),
 
   // ----------------------------------
-  // Start Once
+  // Deprecated Start Once
   // ----------------------------------
-  startOnce: null,
   initStartOnce: function() {
-    var startOnce = this.getLabel(C.LABEL.START_ONCE) === 'true';
-    this.set('startOnce', startOnce);
   },
-
-  startOnceDidChange: function() {
-    if ( this.get('startOnce') )
-    {
-      this.setLabel(C.LABEL.START_ONCE, 'true');
-    }
-    else
-    {
-      this.removeLabel(C.LABEL.START_ONCE);
-    }
-  }.observes('startOnce'),
-
 
   // ----------------------------------
   // Restart
@@ -110,6 +93,15 @@ export default Ember.Component.extend(ManageLabels, {
   initRestart: function() {
     var name = this.get('instance.restartPolicy.name');
     var count = this.get('instance.restartPolicy.maximumRetryCount');
+
+    // Convert deprecated start-once label to on-failure
+    var startOnce = this.getLabel(C.LABEL.START_ONCE) === 'true';
+    this.removeLabel(C.LABEL.START_ONCE);
+    if ( startOnce ) {
+      name = 'on-failure';
+      count = undefined;
+    }
+
     if ( name === 'on-failure' && count !== undefined )
     {
       this.setProperties({
