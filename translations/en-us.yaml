@@ -2161,9 +2161,12 @@ formUpgrade:
   stopFirst:
     label: Stop old, then start new
     detail: Stop the old containers (up to the Batch Size), then start new ones.  This allows the reuse of published ports.  Adjust Batch Size to ensure that you keep enough active capacity to run your application.
-  force:
-    label: Force Redeploy
-    detail: During an upgrade, containers are normally only replaced if part of their definition has changed.  To force one to redeploy for this upgrade, select it here.
+  prePull:
+    label: Pre-Pull Image
+    detail: The new image can be pre-pulled onto hosts before the upgrade is started, to minimize the disruption of launching the new containers.
+    all: On all hosts
+    existing: On the hosts that the service is currently on
+    none: On no hosts
 
 formValueArray:
   addActionLabel: Add Value
