@@ -104,7 +104,7 @@ export default Ember.Mixin.create(ThrottledResize, {
     }
     $fixedHeader.css({
       'position': 'fixed',
-      'top': (showHeader ? fudge+tableProps.actionsHeight : 0) + 'px',
+      'top': (showHeader && this.get('bulkActions') ? fudge+tableProps.actionsHeight : 0) + 'px',
       'height': tableProps.fixedHeaderHeight + 'px',
     });
 
