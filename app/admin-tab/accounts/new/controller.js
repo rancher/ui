@@ -4,7 +4,8 @@ import C from 'ui/utils/constants';
 
 export default Ember.Controller.extend(NewOrEdit, {
   primaryResource: Ember.computed.alias('model.account'),
-  settings: Ember.inject.service(),
+  settings:        Ember.inject.service(),
+  intl:            Ember.inject.service(),
 
   actions: {
     cancel() {
@@ -21,17 +22,32 @@ export default Ember.Controller.extend(NewOrEdit, {
     {label: 'model.account.kind.admin', value: 'admin'},
   ],
 
+  doesExist() {
+    let account  = this.get('primaryResource');
+    let accounts = this.get('model.accounts');
+
+    if (accounts.findBy('publicValue', account.get('publicValue'))) {
+      return true;
+    }
+
+    return false;
+  },
+
   validate: function() {
     var errors = [];
 
     if ( (this.get('model.credential.publicValue')||'').trim().length === 0 )
     {
-      errors.push('Login Username is requried');
+      errors.push(this.get('intl').findTranslationByKey('accountsPage.new.errors.usernameReq'));
+    }
+
+    if (this.doesExist()) {
+      errors.push(this.get('intl').findTranslationByKey('accountsPage.new.errors.usernameInExists'));
     }
 
     if ( (this.get('model.credential.secretValue')||'').trim().length === 0 )
     {
-      errors.push('Password is requried');
+      errors.push(this.get('intl').findTranslationByKey('accountsPage.new.errors.pwReq'));
     }
 
     if ( errors.length )

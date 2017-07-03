@@ -49,7 +49,7 @@
       </div>
     </div>
     {{#sortable-table
-         classNames="grid sortable-table"
+         classNames="grid sortable-table audit-logs"
          bulkActions=false
          rowActions=false
          paging=showPagination
@@ -66,10 +66,14 @@
             {{date-from-now log.created}}
           {{/tooltip-element}}
         </td>
-        <td data-title="{{dt.eventType}}" class="force-wrap" title="{{log.eventType}}">
-          {{log.eventType}} <i class="icon icon-info service-icon-button" {{action 'showResponseObjects' log.requestObject log.responseObject }}></i>
+        <td data-title="{{dt.eventType}}" class="force-wrap pl-5 pr-5" title="{{log.eventType}}">
+          <div>
+            {{log.eventType}} <i class="icon icon-info service-icon-button" {{action 'showResponseObjects' log.requestObject log.responseObject }}></i>
+          </div>
+          <div class="clip text-small">
+            {{#if log.description}}{{log.description}}{{/if}}
+          </div>
         </td>
-        <td data-title="{{dt.description}}">{{#if log.description}}{{log.description}}{{else}}<span class="text-muted">None</span>{{/if}}</td>
         <td data-title="{{dt.accountId}}" class="clip">
           {{environment-name environmentId=log.accountId onlyType="project"}}
         </td>
