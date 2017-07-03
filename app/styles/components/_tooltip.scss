@@ -28,17 +28,17 @@ $tooltip-arrow-color                 : $tooltip-bg !default;
 .container-tooltip {
   display    : inline-block;
   position   : fixed;
-  border: solid 1px lighten($link-color, 20);
-  background: lighten($link-color,40);
+  background: $link-color;
   padding: 5px;
   // max-width  : 265px;
   z-index    : 1000;
+  color: $body-bg;
 
   .btn.more-actions {
     border: none;
-    background: $link-color;
-    color: lighten($link-color,40);
+    @extend .darken;
     border-radius: 0;
+    color: $body-bg;
   }
 
   &.copy-clipboard {
@@ -138,7 +138,7 @@ $tooltip-arrow-color                 : $tooltip-bg !default;
   .display-name,
   .display-ip {
     width         : 190px;
-    display       : inline-block;
+    // display       : inline-block;
   }
 
   .display-name {
@@ -146,15 +146,14 @@ $tooltip-arrow-color                 : $tooltip-bg !default;
     font-weight   : 600;
     text-overflow : ellipsis;
     overflow      : hidden;
-    float         : left;
   }
 
   .display-ip {
     font-size: 12px;
+    color: rgba($body-bg,.75);
   }
 
   .bottom-row {
-    float         : left;
     width         : 190px;
     font-size     : 12px;
 
