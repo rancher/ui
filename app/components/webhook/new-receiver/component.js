@@ -66,14 +66,24 @@ export default Ember.Component.extend(NewOrEdit, {
     }
   }.observes('model.scaleHostConfig.action'),
 
-  actions: {
-    changeDriver(e) {
-      let driver = e.target.value;
+  scaleTypeChoices: [
+    {label: 'hookPage.scaleService.label', value: 'scaleService'},
+    {label: 'hookPage.scaleHost.label', value: 'scaleHost'},
+    {label: 'hookPage.serviceUpgrade.label', value: 'serviceUpgrade'},
+  ],
+  kind: Ember.computed({
+    set(key, value) {
+      let driver = value;
       this.swapConfig(driver);
-      this.set('model.driver', driver);
       this.set('errors', null);
+      return this.set('model.driver', driver);
     },
+    get(/* key */) {
+      return this.get('model.driver');
+    },
+  }),
 
+  actions: {
     cancel() {
       this.sendAction('cancel');
     }
