@@ -23,7 +23,9 @@
       <small>{{model.displayImage}}</small>
       <p data-title="{{t 'generic.details'}}" class="text-small text-muted m-0 clip">
         {{#if subMatches}}
-          {{#if (lt (get subMatches model.id) model.instances.length)}}
+          {{#if (eq (get subMatches model.id) 0)}}
+            {{t 'pagination.containerNoSubset' count=model.instances.length htmlSafe=true}}
+          {{else if (lt (get subMatches model.id) model.instances.length)}}
             {{t 'pagination.containerHighlightSubset' subset=(get subMatches model.id) count=model.instances.length htmlSafe=true}}
           {{else}}
             <b>{{t 'pagination.container' pages=1 count=model.instances.length}}</b>
@@ -37,20 +39,16 @@
   {{/if}}
 
   <td data-title="{{dt.scale}}" class="text-center">
-    {{#if model.instanceStates.notGood}}
-      <small class="text-muted">
-        {{model.displayScale}}
-      </small>
-      {{progress-bar-multi
-        classNames="m-5"
-        labelKey="state"
-        valueKey="count"
-        values=model.instanceStates.byColor
-        tooltipValues=model.instanceStates.byName
-      }}
-    {{else}}
+    {{progress-bar-multi
+      classNames="m-5"
+      labelKey="state"
+      valueKey="count"
+      values=model.instanceStates.byColor
+      tooltipValues=model.instanceStates.byName
+    }}
+    <small class="text-muted">
       {{model.displayScale}}
-    {{/if}}
+    </small>
   </td>
 
   <td data-title="{{dt.actions}}" class="actions">
@@ -61,17 +59,18 @@
 {{#if canExpand}}
   <tr class="sub-row {{unless expanded 'hide'}}">
     <td colspan="2">{{! checkbox and expand}}</td>
-    <td colspan="{{sub fullColspan 3}}">
+    <td colspan="{{sub fullColspan 4}}">
       {{#if expanded}}
-        {{container-table
-          body=model.instances
-          stickyHeader=false
-          bulkActions=false
-          search=false
+        {{container-dots
+          containers=model.instances
           searchText=searchText
-          subRow=true
-          showHost=true
         }}
+      {{/if}}
+    </td>
+    <td class="text-center">
+      {{#if (and expanded model.canScale)}}
+        <button class="btn btn-xs bg-primary" {{action "scaleDown" target=model}}><i class="icon icon-minus"/></button>
+        <button class="btn btn-xs bg-primary" {{action "scaleUp" target=model}}><i class="icon icon-plus"/></button>
       {{/if}}
     </td>
     <td>{{! actions}}</td>

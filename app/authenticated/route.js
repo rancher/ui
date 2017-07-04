@@ -282,12 +282,12 @@ export default Ember.Route.extend(Subscribe, PromiseToCb, {
     },
 
     gotoA() { this._gotoRoute('apps-tab.index'); },
+    gotoB() { this._gotoRoute('balancers.index'); },
     gotoC() { this._gotoRoute('containers.index'); },
     gotoD() { this._gotoRoute('dns.index'); },
     gotoE() { this._gotoRoute('settings.projects.index', false); },
     gotoH() { this._gotoRoute('hosts.index'); },
     gotoK() { this._gotoRoute('authenticated.project.apikeys'); },
-    gotoL() { this._gotoRoute('balancers.index'); },
     gotoV() { this._gotoRoute('volumes.index'); },
 
     help()  {
@@ -340,12 +340,12 @@ export default Ember.Route.extend(Subscribe, PromiseToCb, {
 
   shortcuts: {
     'a': 'gotoA',
+    'b': 'gotoB',
     'c': 'gotoC',
     'd': 'gotoD',
     'e': 'gotoE',
     'h': 'gotoH',
     'shift+k': 'gotoK',
-    'l': 'gotoL',
     'n': 'neu',
     'p': 'gotoP',
     't': 'nextTab',

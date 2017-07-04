@@ -1,4 +1,5 @@
 import Semver from 'npm:semver';
+import Util from 'ui/utils/util';
 
 export function satisfies(version, range) {
   // Semver doesn't take padding zeros like 17.03.1
@@ -32,15 +33,11 @@ export function parse(str) {
   return parts;
 }
 
-function isNumeric(str) {
-  return typeof str === 'string' && str.match(/^[0-9]*$/);
-}
-
 function comparePart(in1, in2) {
   in1 = (in1+"").toLowerCase();
   in2 = (in2+"").toLowerCase();
 
-  if ( isNumeric(in1) && isNumeric(in2) )
+  if ( Util.isNumeric(in1) && Util.isNumeric(in2) )
   {
     let num1 = parseInt(in1,10);
     let num2 = parseInt(in2,10);

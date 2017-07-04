@@ -1657,8 +1657,6 @@ formCommand:
     none: None
   autoRestart:
     label: Auto Restart
-    startOnceFalse: Always
-    startOnceTrue: Never (Start Once)
     no: Never
     onFailure: 'On failure <span class="text-muted">(non-0 exit code)</span>, forever'
     onFailureCondPrefix: On failure, up to
@@ -1871,6 +1869,7 @@ formNetwork:
     label: Hostname
     placeholder: e.g. web
     dockerId: Use the Docker container ID
+    hostName: Use the host's hostname
     containerName: Use the container name
     custom: Set a specific hostname
   domainName:
@@ -2162,9 +2161,12 @@ formUpgrade:
   stopFirst:
     label: Stop old, then start new
     detail: Stop the old containers (up to the Batch Size), then start new ones.  This allows the reuse of published ports.  Adjust Batch Size to ensure that you keep enough active capacity to run your application.
-  force:
-    label: Force Redeploy
-    detail: During an upgrade, containers are normally only replaced if part of their definition has changed.  To force one to redeploy for this upgrade, select it here.
+  prePull:
+    label: Pre-Pull Image
+    detail: The new image can be pre-pulled onto hosts before the upgrade is started, to minimize the disruption of launching the new containers.
+    all: On all hosts
+    existing: On the hosts that the service is currently on
+    none: On no hosts
 
 formValueArray:
   addActionLabel: Add Value
@@ -2874,12 +2876,12 @@ modalShortcuts:
     pl: Keyboard Shortcuts
   navigation: Page Navigation
   a: Apps
+  b: Balancers
   c: Containers
   d: DNS
   e: Manage Environments
   h: Hosts
   k: API Keys
-  l: Load Balancers
   other: Other Stuff
   g: Toggle view grouping
   n: "Add New [current resource]"
@@ -3103,6 +3105,7 @@ pagination:
     =1 {{count} {count, plural, =1 {Volume} other {Volumes}}}
     other {{from} - {to} of {count} Volumes}}
   containerHighlightSubset: "<b>{subset} of {count}</b> Containers"
+  containerNoSubset: "0 of {count} Containers"
 
 projectRow:
   none: No description

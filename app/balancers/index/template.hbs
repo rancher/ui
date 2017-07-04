@@ -16,8 +16,9 @@
       groupByKey=(if simpleMode null "stack.id")
       groupByRef="stack"
       pagingLabel="pagination.loadBalancers"
-      subHeaders=containerHeaders
       subSearchField="instances"
+      extraSearchFields=extraSearchFields
+      extraSearchSubFields=extraSearchSubFields
       headers=headers as |sortable kind inst dt|}}
       {{#if (eq kind "row")}}
         {{service-row
@@ -27,7 +28,6 @@
           searchText=searchText
           subMatches=sortable.subMatches
           fullColspan=sortable.fullColspan
-          showImage=false
           dt=dt
         }}
       {{else if (eq kind "group")}}

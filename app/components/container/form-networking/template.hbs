@@ -73,24 +73,21 @@
   <div class="row">
     <div class="col span-6 box">
       <label class="acc-label">{{t 'formNetwork.hostname.label'}}</label>
-      {{#if isService}}
-        {{#input-or-display editable=editing value=hostname}}
-          <div class="radio">
-            <label>{{radio-button selection=hostname value="default"}} {{t 'formNetwork.hostname.dockerId'}}</label>
-          </div>
-          <div class="radio">
-            <label>{{radio-button selection=hostname value="override"}} {{t 'formNetwork.hostname.containerName'}}</label>
-          </div>
-          <div class="radio">
-            <label>{{radio-button selection=hostname value="custom"}} {{t 'formNetwork.hostname.custom'}}:</label>
-            {{input type="text" value=instance.hostname classNames="form-control r-ml10 input-xs" safeStyle="display:inline; width: 200px;" placeholder=(t 'formNetwork.hostname.placeholder') disabled=(not-eq hostname "custom")}}
-          </div>
-        {{/input-or-display}}
-      {{else}}
-        {{#input-or-display editable=editing value=instance.hostname}}
-          {{input type="text" value=instance.hostname classNames="form-control" placeholder=(t 'formNetwork.hostname.placeholder')}}
-        {{/input-or-display}}
-      {{/if}}
+      {{#input-or-display editable=editing value=hostname}}
+        <div class="radio">
+          <label>{{radio-button selection=hostname value="default"}} {{t 'formNetwork.hostname.dockerId'}}</label>
+        </div>
+        <div class="radio">
+          <label>{{radio-button selection=hostname value="override"}} {{t 'formNetwork.hostname.containerName'}}</label>
+        </div>
+        <div class="radio">
+          <label>{{radio-button selection=hostname value="host"}} {{t 'formNetwork.hostname.hostName'}}</label>
+        </div>
+        <div class="radio">
+          <label>{{radio-button selection=hostname value="custom"}} {{t 'formNetwork.hostname.custom'}}:</label>
+          {{input type="text" value=instance.hostname classNames="form-control r-ml10 input-xs" safeStyle="display:inline; width: 200px;" placeholder=(t 'formNetwork.hostname.placeholder') disabled=(not-eq hostname "custom")}}
+        </div>
+      {{/input-or-display}}
     </div>
     <div class="col span-6 box">
       <label class="acc-label">{{t 'formNetwork.domainName.label'}}</label>

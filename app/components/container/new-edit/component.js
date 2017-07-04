@@ -103,6 +103,7 @@ export default Ember.Component.extend(NewOrEdit, SelectTab, {
       this.setProperties({
         name: this.get('service.name'),
         description: this.get('service.description'),
+        scale: this.get('service.scale'),
       });
     } else {
       this.setProperties({
@@ -110,6 +111,7 @@ export default Ember.Component.extend(NewOrEdit, SelectTab, {
         description: this.get('launchConfig.description'),
       });
     }
+
 
     this.labelsChanged();
   },
@@ -268,11 +270,14 @@ export default Ember.Component.extend(NewOrEdit, SelectTab, {
       } else {
         pr.set('launchConfig', lc);
       }
+
+      pr.set('scale', this.get('scale'));
     } else {
       // Convert the launch config to a container
       let lc = this.get('launchConfig').serialize();
       lc.type = 'container';
       pr = this.get('store').createRecord(lc);
+      pr.set('count', this.get('scale'));
     }
 
     pr.setProperties({

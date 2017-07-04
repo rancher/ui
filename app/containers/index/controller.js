@@ -1,7 +1,43 @@
 import Ember from 'ember';
 import { tagsToArray } from 'ui/models/stack';
-import { headersWithHost as containerHeaders } from 'ui/components/container-table/component';
 import C from 'ui/utils/constants';
+import { searchFields as containerSearchFields } from 'ui/components/container-dots/component';
+
+export const headers = [
+  {
+    name: 'expand',
+    sort: false,
+    searchField: null,
+    width: 30
+  },
+  {
+    name: 'state',
+    sort: ['stateSort','displayName'],
+    searchField: 'displayState',
+    translationKey: 'generic.state',
+    width: 120
+  },
+  {
+    name: 'name',
+    sort: ['displayName','id'],
+    searchField: 'displayName',
+    translationKey: 'generic.name',
+  },
+  {
+    name: 'image',
+    sort: ['displayImage','displayName'],
+    searchField: 'displayImage',
+    translationKey: 'generic.image',
+  },
+  {
+    name: 'scale',
+    sort: ['scale:desc','isGlobalScale:desc'],
+    searchField: null,
+    translationKey: 'stacksPage.table.scale',
+    classNames: 'text-center',
+    width: 100
+  },
+];
 
 export default Ember.Controller.extend({
   projectController: Ember.inject.controller('authenticated.project'),
@@ -35,43 +71,10 @@ export default Ember.Controller.extend({
     },
   },
 
-  containerHeaders: containerHeaders,
   preSorts: ['stack.isDefault:desc','stack.displayName'],
-  headers: [
-    {
-      name: 'expand',
-      sort: false,
-      searchField: null,
-      width: 30
-    },
-    {
-      name: 'state',
-      sort: ['stateSort','displayName'],
-      searchField: 'displayState',
-      translationKey: 'generic.state',
-      width: 120
-    },
-    {
-      name: 'name',
-      sort: ['displayName','id'],
-      searchField: 'displayName',
-      translationKey: 'generic.name',
-    },
-    {
-      name: 'image',
-      sort: ['displayImage','displayName'],
-      searchField: 'displayImage',
-      translationKey: 'generic.image',
-    },
-    {
-      name: 'scale',
-      sort: ['scale:desc','isGlobalScale:desc'],
-      searchField: null,
-      translationKey: 'stacksPage.table.scale',
-      classNames: 'text-center',
-      width: 100
-    },
-  ],
+  headers: headers,
+  extraSearchFields: ['id:prefix','displayIp:ip'],
+  extraSearchSubFields: containerSearchFields,
 
   showStack: function() {
     var needTags = tagsToArray(this.get('tags'));

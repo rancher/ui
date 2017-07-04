@@ -332,6 +332,11 @@ export function camelToTitle(str) {
   return (str||'').dasherize().split('-').map((str) => { return ucFirst(str); }).join(' ');
 }
 
+export function isNumeric(str) {
+  return typeof str === 'string' && str.match(/^[0-9]*$/);
+}
+
+
 var Util = {
   arrayDiff: arrayDiff,
   arrayIntersect: arrayIntersect,
@@ -359,6 +364,7 @@ var Util = {
   pluralize: pluralize,
   camelToTitle: camelToTitle,
   uniqKeys: uniqKeys,
+  isNumeric: isNumeric,
 };
 
 window.Util = Util;

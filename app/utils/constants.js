@@ -425,5 +425,4 @@ C.SUPPORTED_SCHEMA_INPUTS= [
   'secret',
 ];
 
-
 export default C;

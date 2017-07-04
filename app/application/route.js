@@ -92,6 +92,7 @@ export default Ember.Route.extend({
         session.set(C.SESSION.ACCOUNT_ID,null);
 
         this.get('tab-session').clear();
+        this.set(`session.${C.SESSION.CONTAINER_ROUTE}`, undefined);
 
         access.clearSessionKeys();
 
