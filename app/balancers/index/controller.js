@@ -1,6 +1,7 @@
 import Ember from 'ember';
 import { tagsToArray } from 'ui/models/stack';
-import { headersWithHost as containerHeaders } from 'ui/components/container-table/component';
+import { searchFields as containerSearchFields } from 'ui/components/container-dots/component';
+import { headers } from 'ui/containers/index/controller';
 
 export default Ember.Controller.extend({
   projectController: Ember.inject.controller('authenticated.project'),
@@ -29,50 +30,10 @@ export default Ember.Controller.extend({
     },
   },
 
-  containerHeaders: containerHeaders,
-  headers: [
-    {
-      name: 'expand',
-      sort: false,
-      searchField: null,
-      width: 30
-    },
-    {
-      name: 'state',
-      sort: ['stack.isDefault:desc','stack.displayName','stateSort','displayName'],
-      searchField: 'displayState',
-      translationKey: 'generic.state',
-      width: 120
-    },
-    {
-      name: 'name',
-      sort: ['stack.isDefault:desc','stack.displayName','displayName','id'],
-      searchField: 'displayName',
-      translationKey: 'generic.name',
-    },
-    {
-      name: 'endpoints',
-      sort: null,
-      searchField: 'endpointPorts',
-      translationKey: 'stacksPage.table.endpoints',
-    },
-    {
-      name: 'scale',
-      sort: 'scale:desc',
-      searchField: null,
-      translationKey: 'stacksPage.table.scale',
-      width: 100
-    },
-    {
-      name: 'instanceState',
-      sort: ['stack.isDefault:desc','stack.displayName', 'instanceCountSort:desc','displayName'],
-      searchField: null,
-      width: 100,
-      icon: 'icon icon-lg icon-container',
-      dtTranslationKey: 'stacksPage.table.instanceState',
-      translationKey: 'stacksPage.table.instanceStateWithIcon',
-    },
-  ],
+  preSorts: ['stack.isDefault:desc','stack.displayName'],
+  extraSearchFields: ['id:prefix','displayIp:ip'],
+  extraSearchSubFields: containerSearchFields,
+  headers: headers,
 
   filteredStacks: function() {
     var needTags = tagsToArray(this.get('tags'));

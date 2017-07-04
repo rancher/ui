@@ -6,7 +6,6 @@ export default Ember.Component.extend({
   session:  Ember.inject.service(),
 
   model: null,
-  showCommand: 'column', // 'no', 'column', or 'inline'
   showStats: false,
   bulkActions: true,
   expandPlaceholder: false,

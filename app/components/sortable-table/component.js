@@ -6,13 +6,52 @@ import {isAlternate, isMore, isRange} from 'ui/utils/platform';
 
 const {get,set} = Ember;
 
-function matches(fields, token, item) {
+export function matches(fields, token, item) {
+  let tokenMayBeIp = /^[0-9a-f\.:]+$/i.test(token);
+
   for ( let i = 0 ; i < fields.length ; i++ ) {
     let field = fields[i];
     if ( field ) {
+      // Modifiers:
+      //  id: The token must match id format (i.e. 1i123)
+      let idx = field.indexOf(':');
+      let modifier = null;
+      if ( idx > 0 ) {
+        modifier = field.substr(idx+1);
+        field = field.substr(0,idx);
+      }
+
       let val = (get(item,field)+'').toLowerCase();
-      if ( val && val.indexOf(token) >= 0) {
-        return true;
+      if ( !val ) {
+        continue;
+      }
+
+      switch ( modifier ) {
+        case 'exact':
+          if ( val === token ) {
+            return true;
+          }
+          break;
+
+        case 'ip':
+          if ( tokenMayBeIp ) {
+            let re = new RegExp("(?:^|\.)" + token + "(?:\.|$)");
+            if ( re.test(val) ) {
+              return true;
+            }
+          }
+          break;
+
+        case 'prefix':
+          if ( val.indexOf(token) === 0) {
+            return true;
+          }
+          break;
+
+        default:
+          if ( val.indexOf(token) >= 0) {
+            return true;
+          }
       }
     }
   }
@@ -257,7 +296,15 @@ export default Ember.Component.extend(Sortable, StickyHeader, {
           for ( let k = subRows.length-1 ; k >= 0 ; k-- ) {
             let subFound = true;
             for ( let l = 0 ; l < searchTokens.length ; l++ ) {
-              if ( !matches(subFields, searchTokens[l], subRows[k]) ) {
+              let expect = true;
+              let token = searchTokens[l];
+
+              if ( token.substr(0,1) === '!' ) {
+                expect = false;
+                token = token.substr(1);
+              }
+
+              if ( matches(subFields, token, subRows[k]) !== expect ) {
                 subFound = false;
                 break;
               }
