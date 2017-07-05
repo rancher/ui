@@ -20,8 +20,9 @@ export default Ember.Service.extend({
   access         : Ember.inject.service(),
   projects       : Ember.inject.service(),
   settings       : Ember.inject.service(),
+
   machineDrivers: null,
-  defaultDriver: 'custom',
+  defaultDriver: '',
   loadAllDrivers() {
     let us = this.get('userStore');
     let drivers = [];

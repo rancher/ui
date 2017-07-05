@@ -2,10 +2,6 @@
   <section class="pt-10">
     {{#if showPicker}}
       <div class="row nav nav-boxes checked-active">
-        {{#if allowCustom}}
-          <a {{action "switchDriver" "custom"}} alt="custom" class="col nav-box-item driver machine-driver custom {{if (eq driver 'custom') 'active'}}" href="#"></a>
-        {{/if}}
-
         {{#each sortedDrivers as |choice|}}
           {{#if choice.hasUi}}
             <a {{action "switchDriver" choice.name}} alt={{choice.name}} class="col nav-box-item driver machine-driver {{choice.name}} {{if (eq choice.name driver) 'active'}}" href="#"></a>
@@ -14,6 +10,10 @@
 
         {{#if (and allowOther hasOther)}}
           <a {{action "switchDriver" "other"}} alt="other" class="col nav-box-item driver machine-driver other {{if (eq driver 'other') 'active'}}" href="#"></a>
+        {{/if}}
+
+        {{#if allowCustom}}
+          <a {{action "switchDriver" "custom"}} alt="custom" class="col nav-box-item driver machine-driver custom {{if (eq driver 'custom') 'active'}}" href="#"></a>
         {{/if}}
       </div>
     {{/if}}
