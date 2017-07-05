@@ -8,7 +8,7 @@ export default Ember.Route.extend({
   host           : Ember.inject.service(),
   backTo         : null,
 
-  defaultDriver: 'custom',
+  defaultDriver: '',
   lastDriver: null,
 
   queryParams: {
