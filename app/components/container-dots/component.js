@@ -7,6 +7,7 @@ export const searchFields = ['displayName','id:prefix','displayState','displayIm
 export default Ember.Component.extend({
   containers: null,
   searchText: null,
+  groupByDeploymentUnit: false,
   paging: true,
   sort: ['displayName','id'],
   searchFields: searchFields,
@@ -14,10 +15,10 @@ export default Ember.Component.extend({
   tagName: '',
 
   page: 1,
-  perPage: 100, // Ignore the setting because these are tiny dots
+  perPage: 250, // Ignore the setting because these are tiny dots
 
   // -----
-  // Flow: containers -> arranged -> filtered -> pagedContent
+  // Flow: containers -> arranged -> filtered -> pagedContent -> grouped
   // -----
   arranged: Ember.computed.sort('containers','sort'),
   filtered: Ember.computed('arranged.[]','searchText', function() {
@@ -53,6 +54,22 @@ export default Ember.Component.extend({
   pagedContent: pagedArray('filtered', {
     page: Ember.computed.alias("parent.page"),
     perPage: Ember.computed.alias("parent.perPage")
+  }),
+
+  grouped: Ember.computed('pagedContent.[].deploymentUnitUuid', function() {
+    let map = {};
+    this.get('pagedContent').forEach((inst) => {
+      let du = inst.get('deploymentUnitUuid');
+      let ary = map[du];
+      if ( !ary ) {
+        ary = [];
+        map[du] = ary;
+      }
+
+      ary.push(inst);
+    });
+
+    return Object.values(map);
   }),
 
   indexFrom: Ember.computed('page','perPage', function() {
