@@ -57,6 +57,7 @@ export default Ember.Component.extend({
       model         : this.get('model'),
       template      : this.get('tooltipTemplate'),
       tooltipFor    : this.get('tooltipFor'),
+      placement     : this.get('placement'),
     };
 
     if ( this.get('isCopyTo') ) {

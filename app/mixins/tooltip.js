@@ -61,27 +61,36 @@ export default Ember.Mixin.create(ThrottledResize, {
     let originalNodeHeight = this.get('tooltipService.tooltipOpts.originalNode').outerHeight();
     let nodeHeight         = node.outerHeight();
     let nodeWidth          = node.outerWidth();
+    let overridePlacement   = this.get('tooltipService.tooltipOpts.placement');
 
-    if (nodeWidth >= position.left) {
+    if ( overridePlacement ) {
+      position.placement = overridePlacement;
+    } else if (nodeWidth >= position.left) {
       position.placement = 'left';
-      position.top       = position.top + (originalNodeHeight/2) - (nodeHeight/2);
-      position.left      = position.left + originalNodeWidth + 7;
-
     } else if (nodeWidth >= (windowWidth - position.left)) {
       position.placement = 'right';
-      position.left      = position.left - nodeWidth - 7;
-      position.top       = position.top + (originalNodeHeight/2) - (nodeHeight/2);
-
     } else if (nodeHeight >= position.top) {
       position.placement = 'bottom';
-      position.top       = position.top +  originalNodeHeight + 7;
-      position.left      = position.left + (originalNodeWidth/2) - (nodeWidth/2);
-
     } else {
       position.placement = 'top';
+    }
+
+    switch ( position.placement ) {
+    case 'left':
+      position.top       = position.top + (originalNodeHeight/2) - (nodeHeight/2);
+      position.left      = position.left + originalNodeWidth + 7;
+      break;
+    case 'right':
+      position.left      = position.left - nodeWidth - 7;
+      position.top       = position.top + (originalNodeHeight/2) - (nodeHeight/2);
+      break;
+    case 'bottom':
+      position.top       = position.top +  originalNodeHeight + 7;
+      position.left      = position.left + (originalNodeWidth/2) - (nodeWidth/2);
+      break;
+    default:
       position.top       = position.top -  (nodeHeight + 7);
       position.left      = position.left + (originalNodeWidth/2) - (nodeWidth/2);
-
     }
 
     position.width = nodeWidth;
