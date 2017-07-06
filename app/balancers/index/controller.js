@@ -4,6 +4,7 @@ import { headers } from 'ui/containers/index/controller';
 
 export default Ember.Controller.extend({
   projectController: Ember.inject.controller('authenticated.project'),
+  projects: Ember.inject.service(),
 
   tags: Ember.computed.alias('projectController.tags'),
   simpleMode: Ember.computed.alias('projectController.simpleMode'),

@@ -66,18 +66,20 @@ export default Ember.Controller.extend({
   rows: function() {
     let showStack = this.get('showStack');
 
-    // Containers
-    let out = this.get('model.instances').filterBy('serviceId',null).filter((obj) => {
-      return showStack[obj.get('stackId')];
+    // Services
+    let out = this.get('model.services').filter((obj) => {
+      return showStack[obj.get('stackId')] && obj.get('isReal') && !obj.get('isBalancer');
     });
 
-    // Services
-    out.pushObjects(this.get('model.services').filter((obj) => {
-      return showStack[obj.get('stackId')] && obj.get('isReal') && !obj.get('isBalancer');
-    }));
+    // Containers
+    if ( !this.get('tags') ) {
+      out.pushObjects(this.get('model.instances').filterBy('serviceId',null).filter((obj) => {
+        return showStack[obj.get('stackId')];
+      }));
+    }
 
     return out;
-  }.property('showStack','model.services.@each.{isReal,isBalancer}','standaloneContainers.[]'),
+  }.property('showStack','tags','model.services.@each.{isReal,isBalancer}','standaloneContainers.[]'),
 
   showWelcome: function() {
     return this.get('projects.current.orchestration') === 'cattle' && !this.get('rows.length');

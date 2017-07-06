@@ -3,8 +3,6 @@ import Ember from 'ember';
 export default Ember.Controller.extend({
   projectController: Ember.inject.controller('authenticated.project'),
   projects: Ember.inject.service(),
-  prefs: Ember.inject.service(),
-  intl: Ember.inject.service(),
 
   tags: Ember.computed.alias('projectController.tags'),
   simpleMode: Ember.computed.alias('projectController.simpleMode'),
@@ -66,11 +64,13 @@ export default Ember.Controller.extend({
       return showStack[obj.get('stackId')];
     });
 
-    out.pushObjects(this.get('model.volumes').filterBy('volumeTemplateId',null).filter((obj) => {
-      let stackId = obj.get('stackId');
-      return !stackId || showStack[stackId];
-    }));
+    if ( !this.get('tags') ) {
+      out.pushObjects(this.get('model.volumes').filterBy('volumeTemplateId',null).filter((obj) => {
+        let stackId = obj.get('stackId');
+        return !stackId || showStack[stackId];
+      }));
+    }
 
     return out;
-  }.property('showStack','model.volumeTemplates.@each.stackId','model.volumes.@each.{stackId,volumeTemplateId}'),
+  }.property('showStack','tags','model.volumeTemplates.@each.stackId','model.volumes.@each.{stackId,volumeTemplateId}'),
 });
