@@ -7,7 +7,7 @@
   </ul>
 
   <div class="right-buttons">
-    {{#if tagChoices}}
+    {{#if (and (not simpleMode) tagChoices)}}
       <div class="input-group inline-block mr-10">
         <span class="input-group-btn inline-block">
           <button type="button" class="btn bg-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="icon icon-tag"></i> {{if tags tags "All"}} <i class="icon icon-chevron-down"></i></button>
@@ -34,6 +34,13 @@
         </span>
       </div>
     {{/if}}
+
+    {{#unless simpleMode}}
+      <div class="btn-group p-0 mr-10">
+        {{#link-to (query-params byStack="") classNames="btn btn-sm bg-default" tooltip=(t 'nav.containers.groupNone')}}<i class="icon icon-list"></i>{{/link-to}}
+        {{#link-to (query-params byStack="1") classNames="btn btn-sm bg-default" tooltip=(t 'nav.containers.groupStack')}}<i class="icon icon-list-nested"></i>{{/link-to}}
+      </div>
+    {{/unless}}
 
     {{yield}}
   </div>

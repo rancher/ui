@@ -3,10 +3,9 @@ import C from 'ui/utils/constants';
 
 export default Ember.Route.extend({
   model() {
-    return this.get('store').find('stack').then((stacks) => {
-      return Ember.Object.create({
-        stacks: stacks,
-      });
+    var store = this.get('store');
+    return Ember.RSVP.hash({
+      services: store.findAll('service'),
     });
   },
 

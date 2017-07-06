@@ -43,17 +43,12 @@
   <tr class="sub-row {{unless expanded 'hide'}}">
     <td colspan="2">{{! checkbox and expand}}</td>
     <td colspan="{{sub fullColspan 3}}">
-      {{#liquid-if expanded}}
-        {{container-table
-          body=model.instances
-          stickyHeader=false
-          bulkActions=false
-          search=false
+      {{#if expanded}}
+        {{container-dots
+          containers=model.instances
           searchText=searchText
-          subRow=true
-          showHost=true
         }}
-      {{/liquid-if}}
+      {{/if}}
     </td>
     <td>{{! actions}}</td>
   </tr>
