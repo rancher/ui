@@ -1,6 +1,7 @@
-<section>
+<section class="box">
   {{#if access.enabled}}
-    <b>{{t 'authPage.github.header.enabled.label' github=(t providerName)}}</b>
+    <h3>{{t 'authPage.github.header.enabled.label' github=(t providerName)}}</h3>
+    <hr/>
   {{else}}
     <div class="banner bg-warning">
       <div class="banner-icon"><span class="icon icon-alert"></span></div>
@@ -11,9 +12,9 @@
   {{/if}}
   <div>
     {{#if access.enabled}}
-      {{t (concat-str 'authPage.github.header.enabled.' model.accessMode character='') appName=settings.appName github=(t providerName) users=numUsers orgs=numOrgs}}
+      <p>{{t (concat-str 'authPage.github.header.enabled.' model.accessMode character='') appName=settings.appName github=(t providerName) users=numUsers orgs=numOrgs}}</p>
     {{else}}
-      {{t 'authPage.github.header.disabled.warning' appName=settings.appName}}
+      <p>{{t 'authPage.github.header.disabled.warning' appName=settings.appName}}</p>
     {{/if}}
   </div>
 </section>

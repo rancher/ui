@@ -5,7 +5,8 @@ export default Ember.Component.extend({
   resourceActions : Ember.inject.service('resource-actions'),
   tooltipService  : Ember.inject.service('tooltip'),
   model           : null,
-  tagName         : 'span',
+  tagName         : 'div',
+  classNames      : ['vertical-middle'],
   type            : 'tooltip-action-menu',
   template        : null,
 
