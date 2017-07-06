@@ -125,13 +125,4 @@ export default Ember.Controller.extend({
       });
     },
   },
-
-  headerText: Ember.computed('access.enabled', 'intl.locale', function() {
-    let out = this.get('intl').findTranslationByKey('authPage.azuread.header.disabled');
-    if (this.get('access.enabled')) {
-      out = this.get('intl').findTranslationByKey('authPage.azuread.header.enabled');
-
-    }
-    return this.get('intl').formatHtmlMessage(out);
-  }),
 });

@@ -1,12 +1,18 @@
 <section>
-  <h2>{{headerText}}</h2>
-  <div>
-    {{#if access.enabled}}
-      {{t 'authPage.azuread.subtext.enabled' appName=settings.appName}}
-    {{else}}
-      {{t 'authPage.azuread.subtext.disabled' appName=settings.appName}}
-    {{/if}}
-  </div>
+  {{#if access.enabled}}
+    <p>{{t 'authPage.azuread.header.enabled'}}</p>
+    {{t 'authPage.azuread.subtext.enabled' appName=settings.appName}}
+  {{else}}
+    <div class="banner bg-warning">
+      <div class="banner-icon">
+        <span class="icon icon-alert"></span>
+      </div>
+      <div class="banner-message">
+        <p>{{t 'authPage.azuread.header.disabled'}}</p>
+      </div>
+    </div>
+    <p>{{t 'authPage.azuread.subtext.disabled' appName=settings.appName}}</p>
+  {{/if}}
 </section>
 
 {{#if access.enabled}}

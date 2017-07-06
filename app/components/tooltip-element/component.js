@@ -3,9 +3,9 @@ import Ember from 'ember';
 const DELAY = 100;
 
 export default Ember.Component.extend({
-  classNameBindings : ['inlineBlock:inline-block','clip:clip'],
+  classNameBindings : ['inlineBlock:vertical-middle','clip:clip'],
   tooltipService   : Ember.inject.service('tooltip'),
-  inlineBlock      : true,
+  inlineBlock      : false,
   clip             : false,
   model            : null,
   size             : 'default',
