@@ -35,4 +35,18 @@ export default Ember.Route.extend({
     this.transitionTo('authenticated');
     return ret;
   },
+
+  actions: {
+    toggleGrouping() {
+      let cur = this.get('controller.byStack');
+      let neu = (cur ? '' : '1');
+      Ember.run.next(() => {
+        this.set('controller.byStack', neu);
+      });
+    },
+  },
+
+  shortcuts: {
+    'g': 'toggleGrouping',
+  }
 });

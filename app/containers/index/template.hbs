@@ -1,11 +1,4 @@
-{{#containers-header tags=tags}}
-  {{#unless simpleMode}}
-    <div class="btn-group p-0 mr-10">
-      {{#link-to "containers.index" projects.current.id (query-params mode="list") classNames="btn btn-sm bg-default" tooltip=(t 'nav.containers.groupNone')}}<i class="icon icon-list"></i>{{/link-to}}
-      {{#link-to "containers.index" projects.current.id (query-params mode="grouped") classNames="btn btn-sm bg-default" tooltip=(t 'nav.containers.groupStack')}}<i class="icon icon-list-nested"></i>{{/link-to}}
-    </div>
-  {{/unless}}
-
+{{#containers-header tags=tags simpleMode=simpleMode}}
   {{#link-to "new-stack" classNames="btn btn-sm bg-default mr-10"}}{{t 'nav.containers.importCompose'}}{{/link-to}}
   {{#link-to "containers.run" projects.current.id class="btn btn-sm bg-primary"}}{{t 'nav.containers.addContainer'}}{{/link-to}}
 {{/containers-header}}
@@ -44,9 +37,9 @@
       fullRows=true
       groupByKey=groupBy
       groupByRef="stack"
+      extraGroups=emptyStacks
       pagingLabel="pagination.containerService"
       subSearchField="instances"
-      extraGroups=emptyStacks
       extraSearchFields=extraSearchFields
       extraSearchSubFields=extraSearchSubFields
       headers=headers as |sortable kind row dt|}}

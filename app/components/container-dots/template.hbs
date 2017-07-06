@@ -9,6 +9,14 @@
 {{else}}
   {{#each pagedContent as |item|}}
     {{container-dot model=item}}
+  {{else}}
+    <div class="text-center text-muted pt-20 pb-20">
+      {{#if searchText}}
+        {{t 'containersPage.table.noMatch'}}
+      {{else}}
+        {{t 'containersPage.table.noData'}}
+      {{/if}}
+    </div>
   {{/each}}
 {{/if}}
 {{#if (gt filtered.length pagedContent.length)}}
