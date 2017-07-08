@@ -80,24 +80,8 @@ var Stack = Resource.extend(StateCounts, {
       return this.doAction('rollback');
     },
 
-    addService: function() {
-      this.get('router').transitionTo('scalin-groups.new', {
-        queryParams: {
-          stackId: this.get('id'),
-        },
-      });
-    },
-
-    addBalancer: function() {
-      this.get('router').transitionTo('balancers.new', {
-        queryParams: {
-          stackId: this.get('id'),
-        },
-      });
-    },
-
     edit: function() {
-      this.get('modalService').toggleModal('edit-stack', this);
+      this.get('modalService').toggleModal('modal-edit-stack', this);
     },
 
     exportConfig: function() {

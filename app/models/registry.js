@@ -17,7 +17,7 @@ var Registry = Resource.extend({
 
     edit: function() {
       this.get('store').find('registry').then((registries) => {
-        this.get('modalService').toggleModal('edit-registry', Ember.Object.create({
+        this.get('modalService').toggleModal('modal-edit-registry', Ember.Object.create({
           registries: registries,
           registry: this,
           credential: this.get('credential'),

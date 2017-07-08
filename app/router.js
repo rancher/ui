@@ -87,7 +87,7 @@ Router.map(function() {
 
       this.route('balancers', {path: '/balancers', resetNamespace: true}, function() {
         this.route('index', {path: '/'});
-        this.route('new', {path: '/add'});
+        this.route('run', {path: '/run'});
       });
 
       this.route('dns', {path: '/dns', resetNamespace: true}, function() {

@@ -18,7 +18,7 @@ var Account = Resource.extend(PolledResource, {
     },
 
     edit: function() {
-      this.get('modalService').toggleModal('edit-account', this);
+      this.get('modalService').toggleModal('modal-edit-account', this);
     },
   },
 

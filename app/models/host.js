@@ -55,7 +55,7 @@ var Host = Resource.extend(StateCounts,{
     },
 
     edit: function() {
-      this.get('modalService').toggleModal('edit-host', this);
+      this.get('modalService').toggleModal('modal-edit-host', this);
     },
 
     machineConfig: function() {

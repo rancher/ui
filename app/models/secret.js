@@ -5,7 +5,7 @@ export default Resource.extend({
   modalService: Ember.inject.service('modal'),
   actions: {
     edit: function() {
-      this.get('modalService').toggleModal('edit-secret', this);
+      this.get('modalService').toggleModal('modal-edit-secret', this);
     },
   },
 
