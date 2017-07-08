@@ -1,0 +1,67 @@
+<section class="header clearfix">
+  <h1>{{t headerToken}}</h1>
+</section>
+
+<div class="row">
+  <div class="col span-11-of-23 mt-0 mb-0">
+    {{form-name-description
+      name=model.name
+      nameRequired=true
+      description=model.description
+      namePlaceholder="editVolume.name.placeholder"
+    }}
+  </div>
+
+  <div class="col span-11-of-23 mt-0 mb-0 offset-1-of-23">
+    <div>
+      <label class="pb-5 acc-label">{{t 'editVolume.scope.label'}}</label>
+    </div>
+    <div class="pt-10">
+      <div class="radio">
+        <label>{{radio-button selection=model.scope value="global"}} {{t 'editVolume.scope.global'}}</label>
+      </div>
+      <div class="radio">
+        <label>{{radio-button selection=model.scope value="stack"}} {{t 'editVolume.scope.stack'}}</label>
+      </div>
+      <div class="radio">
+        <label>{{radio-button selection=model.scope value="container"}} {{t 'editVolume.scope.container'}}</label>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="mt-30 mb-30" />
+
+<div class="row">
+  <div class="col span-11-of-23 mt-0 mb-0">
+    Driver...
+    {{input value=model.driver}}
+  </div>
+
+  <div class="col span-11-of-23 mt-0 mb-0 offset-1-of-23">
+    {{#unless (eq model.scope "global")}}
+      {{form-stack
+        stack=stack
+        errors=stackErrors
+      }}
+    {{/unless}}
+  </div>
+</div>
+
+<hr class="mt-30 mb-30" />
+
+<div class="row">
+  <div class="col span-12">
+    {{form-key-value
+        initialMap=model.driverOpts
+        changed=(action (mut model.driverOpts))
+        allowEmptyValue=true
+        editing=true
+        header=(t 'editVolume.driverOpts.label')
+        addActionLabel="editVolume.driverOpts.addAction"
+    }}
+  </div>
+</div>
+
+{{top-errors errors=errors}}
+{{save-cancel save="save" cancel="cancel"}}

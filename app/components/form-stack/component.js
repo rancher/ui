@@ -16,6 +16,7 @@ export default Ember.Component.extend({
   defaultName: 'Default',
   mode: REUSE,
   editable: true,
+  required: true,
   isReuse: Ember.computed.equal('mode', REUSE),
 
   classNames: ['inline-form'],

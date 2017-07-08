@@ -4,55 +4,74 @@ export default Ember.Route.extend({
   model: function(params/*, transition*/) {
     var store = this.get('store');
 
-    var deps = {};
-    if ( params.serviceId )
+    var dependencies = {
+      stacks: store.find('stack'),
+    };
+
+    if ( params.volumeId )
     {
-      deps['service'] = store.find('service', params.serviceId);
+      dependencies['volume'] = store.find('volume', params.volumeId);
+    }
+    else if ( params.volumeTemplateId )
+    {
+      dependencies['volumeTemplate'] = store.find('volumeTemplate', params.volumeTemplateId);
     }
 
-    return Ember.RSVP.hash(deps, 'Load dependencies').then(function(hash) {
-      let record;
-
-      let stackId = params.stackId;
-      let stack;
-      if ( stackId ) {
-        stack = store.getById('stack', stackId);
-      }
-
-      // If the stack doesn't exist or isn't set, pick default
-      if ( !stack ) {
-        stack = store.all('stack').findBy('isDefault',true);
-        if ( stack ) {
-          stackId = stack.get('id');
+    return Ember.RSVP.hash(dependencies, 'Load dependencies').then((results) => {
+      let out;
+      if ( results.hasOwnProperty('volume') ) {
+        out = results.volume.serializeForNew();
+      } else if ( results.hasOwnProperty('volumeTemplate') ) {
+        out = results.volume.serializeForNew();
+        if ( out.perContainer ) {
+          out.scope = 'container';
+        } else {
+          out.scope = 'service';
+        }
+      } else {
+        out = {
+          scope: 'global',
         }
       }
 
-      if ( hash.existing )
-      {
-        record = hash.existing.cloneForNew();
-      }
-      else
-      {
-        record = store.createRecord({
-          type: 'externalservice',
-          name: '',
-          description: '',
-          stackId: stackId,
-          startOnCreate: true,
-        });
+      if ( !out.driverOpts ) {
+        out.driverOpts = {}
       }
 
-      return {
-        record: record,
-      };
+      let stack;
+
+      // User-supplied
+      if ( out.stackId ) {
+        stack = results.stacks.findBy('id', out.stackId);
+      }
+
+      // Default
+      if ( !stack ) {
+        stack = results.stacks.findBy('isDefault', true);
+      }
+
+        if ( existing ) {
+          
+        }
+        if ( params.stackId ) {
+          out.stackId = params.stackId;
+        } else if ( defaultStack ) {
+          out.stackId = defaultStack.get('id');
+        }
+      }
+
+
+      return Ember.Object.create({
+        config: out,
+      });
     });
   },
 
   resetController: function (controller, isExisting/*, transition*/) {
     if (isExisting)
     {
-      controller.set('stackId', null);
-      controller.set('serviceId', null);
+      controller.set('volumeId', null);
+      controller.set('volumeTemplateId', null);
     }
   },
 });
