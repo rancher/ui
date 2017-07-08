@@ -20,9 +20,11 @@ export default Ember.Component.extend(ManageLabels, {
   },
 
   actions: {
-    setLogDriver: function(driver) {
-      this.set('instance.logConfig.driver', driver);
-    },
+    setLogOptions(map) {
+      if ( this.get('instance.logConfig') ) {
+        this.set('instance.logConfig.config', map);
+      }
+    }
   },
 
   updateLabels(labels) {
