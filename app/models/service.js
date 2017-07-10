@@ -78,7 +78,7 @@ var Service = Resource.extend(StateCounts, {
     upgrade(upgradeImage='false') {
       var route = 'containers.run';
       if ( this.get('lcType') === 'loadbalancerservice' ) {
-        route = 'balancers.new';
+        route = 'balancers.run';
       }
 
       this.get('application').transitionToRoute(route, {queryParams: {
@@ -95,9 +95,9 @@ var Service = Resource.extend(StateCounts, {
       {
         case 'service':             route = 'containers.run'; break;
         case 'scalinggroup':        route = 'containers.run'; break;
-        case 'dnsservice':          route = 'dns.new';            break;
-        case 'loadbalancerservice': route = 'balancers.new';      break;
-        case 'externalservice':     route = 'dns.new';            break;
+        case 'dnsservice':          route = 'dns.new';        break;
+        case 'loadbalancerservice': route = 'balancers.run';  break;
+        case 'externalservice':     route = 'dns.new';        break;
         default: return void this.send('error','Unknown service type: ' + this.get('type'));
       }
 
@@ -328,6 +328,14 @@ var Service = Resource.extend(StateCounts, {
 
     if ( !known.includes(type) ) {
       type = 'service';
+    }
+
+    if ( type === 'externalservice' ) {
+      if ( this.get('hostname') ) {
+        type += '-host';
+      } else {
+        type += '-ip';
+      }
     }
 
     return this.get('intl').t('servicePage.type.'+ type);

@@ -53,23 +53,27 @@ export default Ember.Component.extend(NewOrEdit, {
   expand(item) {
     item.toggleProperty('expanded');
   },
+
   init() {
     this._super(...arguments);
-    this.set('record', this.get('originalModel').clone());
-    let type = this.get('record.type').toLowerCase();
+    let record = this.get('originalModel').clone();
+    let type = record.get('type').toLowerCase();
     let mode = type;
+
     if ( type === 'externalservice' ) {
-      if ( this.get('record.hostname') ) {
+      if ( record.get('hostname') ) {
         mode = HOSTNAME;
       } else {
         mode = IP;
       }
     }
 
-    this.set('mode', mode);
-
-    this.set('targetServicesAsMaps',[]);
-    this.set('targetIpArray',[]);
+    this.setProperties({
+      record: record,
+      mode: mode,
+      targetServicesAsMaps: [], // Set by form-targets
+      targetIpArray: (record.externalIpAddresses||[]).map((ip) => { return {value: ip}; }),
+    });
   },
 
   canHealthCheck: function() {

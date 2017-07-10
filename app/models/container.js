@@ -221,6 +221,32 @@ var Container = Instance.extend({
   isGlobalScale: function() {
     return (this.get('labels')||{})[C.LABEL.SCHED_GLOBAL] + '' === 'true';
   }.property('labels'),
+
+  sortName: function() {
+    return (this.get('displayName')||'').split(/-/).map((part) => {
+      if ( Util.isNumeric(part) ) {
+        return Util.strPad(part, 6, '0');
+      } else {
+        return part;
+      }
+    }).join('-');
+  }.property('displayName'),
+
+  isSidekick: function() {
+    return (this.get('labels')||{})[C.LABEL.LAUNCH_CONFIG] + '' !== C.LABEL.LAUNCH_CONFIG_PRIMARY;
+  }.property('labels'),
+
+  sortByDeploymentUnitName: function() {
+    // stack - service - padded number - config
+    if ( this.get('isSidekick') ) {
+      let parts = ((this.get('labels')||{})[C.LABEL.SERVICE_NAME] + '').split(/\//);
+      let num = this.get('sortName').replace(/.*-/,'');
+      parts.insertAt(2, Util.strPad(num, 6, '0')); 
+      return parts.join('-');
+    } else {
+      return this.get('sortName');
+    }
+  }.property('sortName','isSidekick','labels'),
 });
 
 export default Container;

@@ -9,13 +9,15 @@ export default Ember.Component.extend({
   searchText: null,
   groupByDeploymentUnit: false,
   paging: true,
-  sort: ['displayName','id'],
+  sort: ['sortByDeploymentUnitName','id'],
   searchFields: searchFields,
 
   tagName: '',
 
   page: 1,
-  perPage: 250, // Ignore the setting because these are tiny dots
+  perPage: 120, // Ignore the setting because these are tiny dots.
+  // 120 because it has lots of prime factors so that almost any sidekick combination
+  // can be shown without a deploymentUnit being broken up into 2 pages.
 
   // -----
   // Flow: containers -> arranged -> filtered -> pagedContent -> grouped
