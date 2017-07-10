@@ -545,9 +545,38 @@ editDns:
     serviceRequired: 'One or more "Targets" are required'
     selectorRequired: '"Container Selector" is required'
 
+editVolume:
+  add:
+    global: Add Volume
+    stack: Add Volume Template
+    container: Add Volume Template
+  edit:
+    global: Edit Volume
+    stack: Edit Volume Template
+    container: Edit Volume Template
+  name:
+    placeholder: e.g. myvol
+  scope:
+    label: Scope
+    global: One volume for the whole environment
+    stack: One volume within a specific stack
+    container: Separate volumes for each container
+  driver:
+    label: Driver
+    local: Local host disk
+    nfs: Rancher NFS
+    ebs: Rancher EBS
+    efs: Rancher EFS
+    longhorn: Rancher Longhorn
+    custom:
+      label: Custom
+      placeholder: Custom driver name
+  driverOpts:
+    label: Driver Options
+    addAction: Add Option
 
 # If you change translations here also change the translation in app/utils/constants.js under the FALLBACK_TRANSLATIONS key
-# those are present incase we have an error in the app and can not load the translations file
+# those are present in case we have an error in the app and can not load the translations file
 # the error page will at least make a little sense
 failWhalePage:
   header: Error
@@ -953,7 +982,8 @@ servicePage:
     selectorservice: Selector
     loadbalancerservice: Load Balancer
     dnsservice: Alias
-    externalservice: External
+    externalservice-ip: External IP
+    externalservice-host: External Name
     kubernetesservice: K8s Service
     composeservice: Compose Service
     networkdriverservice: Network Service

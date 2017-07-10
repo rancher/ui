@@ -8,11 +8,11 @@ export default Ember.Controller.extend({
 
   actions: {
     done() {
-      return this.transitionToRoute('volumes');
+      return this.transitionToRoute('volumes.index');
     },
 
     cancel() {
-      this.send('goToPrevious');
+      this.send('goToPrevious','volumes.index');
     },
   },
 });

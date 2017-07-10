@@ -330,6 +330,14 @@ var Service = Resource.extend(StateCounts, {
       type = 'service';
     }
 
+    if ( type === 'externalservice' ) {
+      if ( this.get('hostname') ) {
+        type += '-host';
+      } else {
+        type += '-ip';
+      }
+    }
+
     return this.get('intl').t('servicePage.type.'+ type);
   }.property('lcType','isSelector','intl.locale'),
 

@@ -13,7 +13,6 @@ export default Ember.Component.extend({
   reuseStackId: null,
   createStack: null,
 
-  defaultName: 'Default',
   mode: REUSE,
   editable: true,
   required: true,
@@ -33,14 +32,18 @@ export default Ember.Component.extend({
     }));
 
     // Find the default stack if none is passed in
-    if ( this.get('mode') === REUSE && !this.get('stack') ) {
-      let stack = all.findBy('name', this.get('defaultName'))
-      if ( stack  && stack.get('id') ) {
-        this.set('reuseStackId', stack.get('id'));
+    if ( this.get('mode') === REUSE ) {
+      if ( this.get('stack') ) {
+        this.set('reuseStackId', this.get('stack.id'));
       } else {
-        Ember.run.next(() => {
-          this.set('mode', CREATE);
-        });
+        let stack = all.findBy('isDefault', true);
+        if ( stack  && stack.get('id') ) {
+          this.set('reuseStackId', stack.get('id'));
+        } else {
+          Ember.run.next(() => {
+            this.set('mode', CREATE);
+          });
+        }
       }
 
       Ember.run.next(() => {

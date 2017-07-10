@@ -19,19 +19,18 @@ export default Ember.Route.extend({
 
     return Ember.RSVP.hash(dependencies, 'Load dependencies').then((results) => {
       let out;
+      let scope = 'global';
       if ( results.hasOwnProperty('volume') ) {
         out = results.volume.serializeForNew();
       } else if ( results.hasOwnProperty('volumeTemplate') ) {
         out = results.volume.serializeForNew();
         if ( out.perContainer ) {
-          out.scope = 'container';
+          scope = 'container';
         } else {
-          out.scope = 'service';
+          scope = 'service';
         }
       } else {
-        out = {
-          scope: 'global',
-        }
+        out = {}
       }
 
       if ( !out.driverOpts ) {
@@ -45,24 +44,10 @@ export default Ember.Route.extend({
         stack = results.stacks.findBy('id', out.stackId);
       }
 
-      // Default
-      if ( !stack ) {
-        stack = results.stacks.findBy('isDefault', true);
-      }
-
-        if ( existing ) {
-          
-        }
-        if ( params.stackId ) {
-          out.stackId = params.stackId;
-        } else if ( defaultStack ) {
-          out.stackId = defaultStack.get('id');
-        }
-      }
-
-
       return Ember.Object.create({
+        scope: scope,
         config: out,
+        stack: stack,
       });
     });
   },
