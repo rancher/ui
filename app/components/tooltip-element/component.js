@@ -4,6 +4,7 @@ const DELAY = 100;
 
 export default Ember.Component.extend({
   classNameBindings : ['inlineBlock:vertical-middle','clip:clip'],
+  tagName: 'span',
   tooltipService   : Ember.inject.service('tooltip'),
   inlineBlock      : false,
   clip             : false,

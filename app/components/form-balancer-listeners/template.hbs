@@ -13,14 +13,14 @@
 {{#each ports as |port|}}
   <div class="box mb-10">
     <div class="row">
-      <div class="col span-3">
+      <div class="col span-3 mt-0 mb-0">
         <label class="acc-label">{{t 'formBalancerListeners.sourcePort.label'}}{{#if editing}}{{field-required}}{{/if}}</label>
         {{#input-or-display editable=editing value=port.sourcePort classesForDisplay="clip"}}
           {{input-integer class="form-control input-sm" min="1" max="65535" value=port.sourcePort placeholder=(t 'formBalancerListeners.sourcePort.placeholder')}}
         {{/input-or-display}}
       </div>
 
-      <div class="col span-3">
+      <div class="col span-3 mt-0 mb-0">
         <label class="acc-label">{{t 'formBalancerListeners.protocol.label'}}</label>
         {{#input-or-display editable=editing value=port.protocol classesForDisplay="clip"}}
           <select class="form-control input-sm" onchange={{action (mut port.protocol) value="target.value"}}>
@@ -32,7 +32,7 @@
 
       </div>
 
-      <div class="col span-3">
+      <div class="col span-3 mt-0 mb-0">
         <label class="acc-label">{{t 'formBalancerListeners.access.label'}}</label>
         {{#input-or-display editable=editing value=port.access classesForDisplay="clip"}}
           <select class="form-control input-sm" onchange={{action (mut port.access) value="target.value"}}>
@@ -42,7 +42,7 @@
         {{/input-or-display}}
       </div>
 
-      <div class="col span-3">
+      <div class="col span-3 mt-0 mb-0">
         <label class="acc-label">{{t 'formBalancerListeners.sourceIp.label'}}</label>
         {{#input-or-display editable=editing value=(eq port.access "public" port.sourceIp) classesForDisplay="clip"}}
           {{input type="text" class="form-control input-sm" value=port.sourceIp placeholder=(t 'formBalancerListeners.sourceIp.placeholder')}}
@@ -50,7 +50,7 @@
       </div>
     </div>
 
-    <hr class="mt-30 mb-30" />
+    <hr class="mt-20 mb-20" />
 
     {{form-balancer-rules
         rules=port.rules
