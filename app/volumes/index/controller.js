@@ -30,26 +30,33 @@ export default Ember.Controller.extend({
     },
     {
       name: 'state',
-      sort: ['stack.isDefault:desc','stack.displayName','stateSort','displayName'],
+      sort: ['stateSort','displayName'],
       searchField: 'displayState',
       translationKey: 'generic.state',
       width: 120
     },
     {
       name: 'name',
-      sort: ['stack.isDefault:desc','stack.displayName','displayName','id'],
+      sort: ['displayName','id'],
       searchField: 'displayName',
       translationKey: 'generic.name',
     },
     {
+      name: 'mounts',
+      sort: ['mounts.length','displayName','id'],
+      translationKey: 'volumesPage.mounts.label',
+      searchField: null,
+      width: 100,
+    },
+    {
       name: 'scope',
-      sort: ['stack.isDefault:desc','stack.displayName','scope'],
+      sort: ['scope'],
       translationKey: 'volumesPage.scope.label',
       width: 120
     },
     {
       name: 'driver',
-      sort: ['stack.isDefault:desc','stack.displayName','driver','displayName','id'],
+      sort: ['driver','displayName','id'],
       searchField: 'displayType',
       translationKey: 'volumesPage.driver.label',
       width: 150

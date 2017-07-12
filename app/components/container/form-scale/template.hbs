@@ -1,5 +1,5 @@
 <div>
-  <label class="pb-5 acc-label">{{t (concat-str 'formScale.label' mode character='.')}}</label>
+  <label class="pb-5 acc-label">{{t 'formScale.label'}}</label>
   {{#if canAdvanced}}
     <div class="pull-right text-small">
       <a role="button" class="btn bg-transparent p-0" {{action "showAdvanced"}}>{{t 'formScale.showAdvanced'}}</a>
@@ -11,31 +11,55 @@
   <div class="form-control-static">
     {{t 'formScale.mode.sidekick'}}
   </div>
+{{else if (and canScale advancedShown)}}
+  <div class="pt-10">
+    {{#unless (or (not canContainer) (and isUpgrade isService))}}
+      <div class="radio">
+        <label>
+          {{radio-button selection=mode value="container"}}
+          {{t 'formScale.mode.containerPrefix'}}
+          {{t 'formScale.mode.containerSuffix'}}
+        </label>
+      </div>
+    {{/unless}}
+    <div class="radio">
+      <label>
+        {{radio-button selection=mode value="service"}}
+        {{t 'formScale.mode.servicePrefix' scale=asInteger}}
+        {{#if (eq mode "service")}}
+          {{input-integer safeStyle="width: 60px; padding: 0 2px; display: inline-block" value=userInput min=min max=max}}
+        {{else}}
+          {{asInteger}}
+        {{/if}}
+        {{t 'formScale.mode.serviceSuffix' scale=asInteger}}
+      </label>
+    </div>
+    <div class="radio">
+      <label>
+        {{radio-button selection=mode value="global"}}
+        {{t 'formScale.mode.globalPrefix' scale=asInteger}}
+        {{#if (eq mode "global")}}
+          {{input-integer safeStyle="width: 60px; padding: 0 2px; display: inline-block" value=userInput min=min max=max}}
+        {{else}}
+          {{asInteger}}
+        {{/if}}
+        {{t 'formScale.mode.globalSuffix' scale=asInteger}}
+      </label>
+    </div>
+  </div>
 {{else}}
-  {{#if canScale}}
-    <div class="row gutless">
-      <div class="col span-2 m-0">
-        {{input-integer value=userInput min=min max=max}}
-      </div>
-      <div class="col offset-1 span-9 hidden-md">
-        {{input-slider value=userInput valueMin=1 scaleMin=0 valueMax=sliderMax}}
-      </div>
-    </div>
-  {{/if}}
-
-  {{#if advancedShown}}
-    <div class="pt-10">
-      {{#unless (and isUpgrade isService)}}
-        <div class="radio">
-          <label>{{radio-button selection=mode value="container"}} {{t 'formScale.mode.container' scale=asInteger}}</label>
-        </div>
-      {{/unless}}
-      <div class="radio">
-        <label>{{radio-button selection=mode value="service"}} {{t 'formScale.mode.service' scale=asInteger}}</label>
-      </div>
-      <div class="radio">
-        <label>{{radio-button selection=mode value="global"}} {{t 'formScale.mode.global' scale=asInteger}}</label>
-      </div>
-    </div>
-  {{/if}}
+  <div class="form-control-static">
+    {{#if (eq mode "container")}}
+      {{t 'formScale.mode.containerPrefix'}}
+      {{t 'formScale.mode.containerSuffix'}}
+    {{else if (eq mode "global")}}
+      {{t 'formScale.mode.globalPrefix' scale=asInteger}}
+      {{asInteger}}
+      {{t 'formScale.mode.globalSuffix' scale=asInteger}}
+    {{else if (eq mode "service")}}
+      {{t 'formScale.mode.servicePrefix' scale=asInteger}}
+      {{asInteger}}
+      {{t 'formScale.mode.serviceSuffix' scale=asInteger}}
+    {{/if}}
+  </div>
 {{/if}}

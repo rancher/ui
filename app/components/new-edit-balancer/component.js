@@ -134,7 +134,8 @@ export default Ember.Component.extend(NewOrEdit, {
     'userLabels.@each.{key,value}',
     'scaleLabels.@each.{key,value}',
     'schedulingLabels.@each.{key,value}',
-    'stickinessLabels.@each.{key,value}'
+    'stickinessLabels.@each.{key,value}',
+    'networkingLabels.@each.{key,value}'
   ),
 
   mergeLabels() {
@@ -147,6 +148,7 @@ export default Ember.Component.extend(NewOrEdit, {
     (this.get('scaleLabels')||[]).forEach((row) => { out[row.key] = row.value; });
     (this.get('schedulingLabels')||[]).forEach((row) => { out[row.key] = row.value; });
     (this.get('stickinessLabels')||[]).forEach((row) => { out[row.key] = row.value; });
+    (this.get('networkingLabels')||[]).forEach((row) => { out[row.key] = row.value; });
 
     var config = this.get('launchConfig');
     if ( config )

@@ -6,6 +6,8 @@
   <div class="col span-11-of-23 mt-0 mb-0">
     {{form-name-description
       name=name
+      bothColClass="col span-12 mt-0"
+      colClass="col span-12 mt-0"
       description=description
       namePlaceholder="newContainer.name.placeholder"
       descriptionPlaceholder="newContainer.description.placeholder"
@@ -28,6 +30,7 @@
         errors=scaleErrors
         setLabels=(action 'setLabels' 'scale')
         setScale=(action (mut scale))
+        modeChanged=(action 'setScaleMode')
       }}
     {{/if}}
   </div>
@@ -89,6 +92,7 @@
     isGlobal=isGlobal
     initialHostId=launchConfig.requestedHostId
     initialLabels=launchConfig.labels
+    service=service
     errors=schedulingErrors
     editing=true
     expandAll=null
