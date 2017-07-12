@@ -1,11 +1,10 @@
 <div class="clearfix">
-  <label class="acc-label pb-5">
+  <label class="pb-5">
     {{#if isReuse}}
       {{t 'formStack.label.reuse'}}
     {{else}}
       {{t 'formStack.label.create'}}{{field-required}}
     {{/if}}
-    {{#if required}}{{field-required}}{{/if}}
   </label>
   <div class="pull-right text-small">
     <a role="button" class="btn bg-transparent p-0" {{action "toggle"}}>{{t (if isReuse 'formStack.toggle.create' 'formStack.toggle.reuse')}}</a>
@@ -13,19 +12,15 @@
 </div>
 
 <div>
-  {{#if editable}}
-    {{#if isReuse}}
-      {{new-select
-        content=choices
-        prompt=(t 'formStack.reuse.prompt')
-        optionLabelPath="displayName"
-        optionValuePath="id"
-        value=reuseStackId
-      }}
-    {{else}}
-      {{input classNames="new-name" placeholder=(t 'formStack.create.placeholder') value=createStack.name}}
-    {{/if}}
+  {{#if isReuse}}
+    {{new-select
+      content=choices
+      prompt=(t 'formStack.reuse.prompt')
+      optionLabelPath="displayName"
+      optionValuePath="id"
+      value=reuseStackId
+    }}
   {{else}}
-    <div class="form-control-static" style="border-left: 0">{{stack.displayName}}</div>
+    {{input classNames="new-name" placeholder=(t 'formStack.create.placeholder') value=createStack.name}}
   {{/if}}
 </div>

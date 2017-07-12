@@ -80,7 +80,7 @@ export default Ember.Component.extend(ManageLabels, {
       this.set('isGlobal', false);
     }
 
-    this.sendAction('modeChanged', mode);
+    this.sendAction('setMode', mode);
   }),
 
   updateLabels(labels) {
