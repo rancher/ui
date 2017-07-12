@@ -192,7 +192,31 @@
       }}
     {{/if}}
 
-    {{labels-section model=service.launchConfig tagName='' expandAll=al.expandAll expandFn=expandFn}}
+    {{form-healthcheck
+        healthCheck=model.service
+        editing=false
+        expandAll=al.expandAll
+        expandFn=expandFn
+        classNames="accordion"
+    }}
+
+    {{container/form-scheduling
+        initialHostId=model.service.launchConfig.requestedHostId
+        initialLabels=model.service.launchConfig.labels
+        isGlobal=model.service.isGlobalScale
+        allHosts=model.hosts
+        editing=false
+        expandAll=al.expandAll
+        expandFn=expandFn
+        classNames="accordion"
+    }}
+
+    {{labels-section
+        model=service.launchConfig
+        tagName=''
+        expandAll=al.expandAll
+        expandFn=expandFn
+    }}
 
     {{#accordion-list-item
           title=(t 'servicePage.linksTab.header')
@@ -210,6 +234,15 @@
         {{/each}}
       </ul>
     {{/accordion-list-item}}
+
+    {{container/form-networking
+        editing=false
+        instance=model.service
+        initialLabels=model.service.launchConfig.labels
+        allHosts=model.hosts
+        expandAll=al.expandAll
+        expandFn=expandFn
+    }}
 
     {{#if (and service.hasPorts (not service.isBalancer))}}
       {{#accordion-list-item
@@ -266,6 +299,20 @@
       {{/accordion-list-item}}
     {{/if}}
 
+    {{container/form-security
+        instance=model.service.launchConfig
+        editing=false
+        expandAll=al.expandAll
+        expandFn=expandFn
+    }}
+
+    {{container/form-secrets
+        instance=model.service.launchConfig
+        editing=false
+        expandAll=al.expandAll
+        expandFn=expandFn
+        classNames="accordion"
+    }}
 
     {{#accordion-list-item
           title=(t 'servicePage.logTab.title')
