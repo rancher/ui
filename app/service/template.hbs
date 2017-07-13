@@ -53,8 +53,8 @@
           {{service.displayScale}}
         </span>
         <div class="btn-group btn-group-xs p-0" style="vertical-align: middle;">
-          <button class="btn bg-secondary btn-xs" {{action "scaleDown" target=service}} disabled={{eq service.scale 1}}><i class="icon icon-minus"></i></button>
-          <button style="margin-left:1px;" class="btn bg-secondary btn-xs" {{action "scaleUp" target=service}}><i class="icon icon-plus"></i></button>
+          <button class="btn btn-xs bg-primary" {{action "scaleDown" target=service}} disabled={{not service.canScaleDown}}><i class="icon icon-minus icon-fw"/></button>
+          <button style="margin-left:2px;" class="btn btn-xs bg-primary" {{action "scaleUp" target=service}} disabled={{not service.canScaleUp}}><i class="icon icon-plus icon-fw"/></button>
         </div>
       {{else}}
         {{t 'generic.na'}}

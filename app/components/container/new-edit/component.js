@@ -7,8 +7,9 @@ import { flattenLabelArrays } from 'ui/mixins/manage-labels';
 import Util from 'ui/utils/util';
 
 export default Ember.Component.extend(NewOrEdit, SelectTab, {
-  intl                      : Ember.inject.service(),
-  settings                  : Ember.inject.service(),
+  intl: Ember.inject.service(),
+  prefs: Ember.inject.service(),
+  settings: Ember.inject.service(),
 
   tagName: 'form',
 
@@ -20,6 +21,7 @@ export default Ember.Component.extend(NewOrEdit, SelectTab, {
 
   stack:                      null,
   scale:                      1,
+  scaleMode:                  null,
 
   serviceLinksArray:          null,
   isRequestedHost:            null,
@@ -59,6 +61,10 @@ export default Ember.Component.extend(NewOrEdit, SelectTab, {
 
     setUpgrade(upgrade) {
       this.set('upgradeOptions', upgrade);
+    },
+
+    setScaleMode(mode) {
+      this.set('scaleMode', mode);
     },
 
     done() {
@@ -333,6 +339,7 @@ export default Ember.Component.extend(NewOrEdit, SelectTab, {
   },
 
   doneSaving() {
+    this.set(`prefs.${C.PREFS.SCALE_MODE}`, this.get('scaleMode'));
     this.sendAction('done');
   },
 

@@ -1716,6 +1716,9 @@ formContainerLinks:
     label: As Name
     placeholder: e.g. database
 
+formCount:
+  label: Count
+
 formDisks:
   addDiskLabel: Add Disk
   addRootDiskLabel: Add Root Disk
@@ -1937,17 +1940,17 @@ formPorts:
   showIpLink: Customize Host IPs
 
 formScale:
-  label:
-    container: Count
-    service: Scale
-    sidekick: Scale
-    global: Scale per Host
-  showAdvanced: More scaling options
+  label: Scale
+  showAdvanced: Scaling options
   mode:
-    container: "{scale, plural, =1 {Standalone container} other {# standalone containers}}"
-    service: "Service with a scale of {scale}"
-    global: "Global service with a scale of {scale} per host"
-    sidekick: "Sidekick: Matches the scale and scheduling of the primary service"
+    containerPrefix: "Standalone container"
+    containerSuffix: ""
+    servicePrefix: "Service with a scale of"
+    serviceSuffix: ""
+    globalPrefix: "Global service with a scale of"
+    globalSuffix: "per host"
+    sidekickPrefix: "Sidekick: Matches the scale and scheduling of"
+    sidekickSuffix: ""
 
 formScheduling:
   title: Host Scheduling
@@ -1973,6 +1976,17 @@ formScheduling:
   field: Field
   key: Key
   value: Value
+  scaling:
+    minMaxDetail: If set, the scale will not be allowed to be adjusted by user or API call above or below these limits.
+    incrementDetail: If set, the scale must be a multiple of the increment
+    hostMaxDetail: If set, schedule containers for this service to a maximum of this many hosts.
+  scaleMin: Minimum Scale
+  scaleMax: Maximum Scale
+  scaleIncrement: Scale Increment
+  hostMax: Maximum Hosts
+  perHost: per host
+
+
 
 formSecrets:
   title: Secrets
@@ -3333,9 +3347,12 @@ volumesPage:
     label: Scope
     global: Environment
     stack: Stack
-    container: Container
+    container: Per Container
+    standalone: Container
   driver:
     label: Driver
+  mounts:
+    label: Mounts
 
 vmConsole:
   header: "Console:"

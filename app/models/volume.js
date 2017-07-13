@@ -12,7 +12,7 @@ var Volume = Resource.extend({
   isRoot: Ember.computed.notEmpty('instanceId'),
 
   scope: function() {
-    return 'container';
+    return 'standalone';
   }.property(),
 
   availableActions: function() {

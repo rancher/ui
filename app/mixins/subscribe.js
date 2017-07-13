@@ -18,11 +18,9 @@ export default Ember.Mixin.create({
   subscribeSocket : null,
   reconnect: true,
   connected: false,
-  k8sUidBlacklist : null,
 
   init() {
     this._super();
-    this.set('k8sUidBlacklist', []);
 
     var store = this.get('store');
 

@@ -11,9 +11,11 @@ export default Ember.Component.extend(ManageLabels, {
   initialScale: null,
   isService:    null,
   isUpgrade:    null,
+  isGlobal:     null,
+  canContainer: true,
   min:          1,
   max:          100,
-  mode:         'container',
+  mode:         null,
 
   userInput:      null,
   advancedAvailable: true,
@@ -72,10 +74,13 @@ export default Ember.Component.extend(ManageLabels, {
 
     if ( mode === 'global' ) {
       this.setLabel(C.LABEL.SCHED_GLOBAL,'true');
+      this.set('isGlobal', true);
     } else {
       this.removeLabel(C.LABEL.SCHED_GLOBAL);
+      this.set('isGlobal', false);
     }
 
+    this.sendAction('setMode', mode);
   }),
 
   updateLabels(labels) {

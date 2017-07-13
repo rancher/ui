@@ -1,17 +1,17 @@
 import Resource from 'ember-api-store/models/resource';
 import { denormalizeId } from 'ember-api-store/utils/denormalize';
 
-var _allVolumes;
 var VolumeTemplate = Resource.extend({
   type: 'volumeTemplate',
 
   stack: denormalizeId('stackId'),
 
+  _allVolumes: null,
   volumes: function() {
     let allVolumes = this.get('_allVolumes');
     if ( !allVolumes ) {
       allVolumes = this.get('store').all('volume');
-      this.set('_allVolumes', all);
+      this.set('_allVolumes', allVolumes);
     }
 
     return allVolumes.filterBy('volumeTempalteId', this.get('id'));

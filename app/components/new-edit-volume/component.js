@@ -96,6 +96,8 @@ export default Ember.Component.extend(NewOrEdit, {
     if ( scope === 'global' ) {
       stackPromise = Ember.RSVP.resolve();
     } else {
+      pr.set('perContainer', (scope === 'container'));
+
       if ( this.get('stack.id') ) {
         pr.set('stackId', this.get('stack.id'));
         stackPromise = Ember.RSVP.resolve();

@@ -9,6 +9,8 @@ export default Ember.Mixin.create({
   primaryResource: Ember.computed.alias('model'),
   originalPrimaryResource: Ember.computed.alias('originalModel'),
 
+  tagName: 'form', // This indirectly disables global navigation shortcut keys
+
   initFields: function() {
     this._super();
     this.set('errors',null);
