@@ -23,6 +23,7 @@ export default Ember.Controller.extend({
 
   username:       '',
   password:       '',
+  editing:        false,
 
   createDisabled: Ember.computed('username.length','password.length', function() {
     return !this.get('username.length') || !this.get('password.length');
@@ -34,6 +35,18 @@ export default Ember.Controller.extend({
 
   numGroups: Ember.computed('model.allowedIdentities.@each.externalIdType','userType','groupType', function() {
     return (this.get('model.allowedIdentities')||[]).filterBy('externalIdType', this.get('groupType')).get('length');
+  }),
+
+  canEdit: Ember.computed('access.enabled', 'editing', function() {
+    var isEnabled = this.get('access.enabled');
+    var editing = this.get('editing');
+
+    if (( isEnabled && editing ) || !isEnabled) {
+      return true;
+    } else if (isEnabled && !editing) {
+      return false;
+    }
+
   }),
 
   tlsChanged: Ember.observer('ldapConfig.tls', function() {
@@ -51,6 +64,12 @@ export default Ember.Controller.extend({
   }),
 
   actions: {
+    edit: function() {
+      this.toggleProperty('editing');
+    },
+    cancel: function() {
+      this.set('editing', false);
+    },
     test: function() {
       this.send('clearError');
 
@@ -69,11 +88,37 @@ export default Ember.Controller.extend({
         this.set('errors', errors);
       } else {
         this.set('testing', true);
-        model.save().then(() => {
-          this.send('authenticate');
-        }).catch(err => {
-          this.send('gotError', err);
-        });
+        if (this.get('editing')) {
+
+          let model = this.get('model');
+          let data  = {
+            type:       'testAuthConfig',
+            authConfig: model,
+            code:       `${this.get('username')}:${this.get('password')}`,
+          };
+
+          this.get('authStore').rawRequest({
+            url:    'testlogin',
+            method: 'POST',
+            data:   data,
+          }).then((resp) => {
+            if (resp.status === 200) {
+              model.save().then(() => {
+                this.send('authenticate');
+              }).catch(err => {
+                this.send('gotError', err);
+              });
+            }
+          }).catch((err) => {
+            this.send('gotError', err.statusText);
+          })
+        } else {
+          model.save().then(() => {
+            this.send('authenticate');
+          }).catch(err => {
+            this.send('gotError', err);
+          });
+        }
       }
     },
 
