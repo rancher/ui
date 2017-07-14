@@ -1,16 +1,16 @@
 import Ember from 'ember';
 
-const NONE = 'none';
-const INCOMPLETE = 'incomplete';
-const ERROR = 'error';
-const NOTCONFIGURED = 'notConfigured';
-const CONFIGURED = 'configured';
+const NONE            = 'none';
+const INCOMPLETE      = 'incomplete';
+const ERROR           = 'error';
+const NOTCONFIGURED   = 'notConfigured';
+const CONFIGURED      = 'configured';
 const COUNTCONFIGURED = 'countConfigured';
-const STANDARD = 'standard';
-const SPECIFIC = 'specific';
-const CUSTOM = 'custom';
-const RULE = 'rule';
-const ANY = 'any';
+const STANDARD        = 'standard';
+const SPECIFIC        = 'specific';
+const CUSTOM          = 'custom';
+const RULE            = 'rule';
+const ANY             = 'any';
 
 export const STATUS = {
   NONE,
@@ -44,32 +44,43 @@ export function classForStatus(status) {
 }
 
 export default Ember.Component.extend({
-  projects: Ember.inject.service(),
+  projects:     Ember.inject.service(),
 
-  name: null,
-  title: null,
-  detail: null,
-  status: null,
-  statusClass: null,
+  name:         null,
+  title:        null,
+  detail:       null,
+  status:       null,
+  statusClass:  null,
 
-  classNames: ['accordion'],
-  expanded: false,
-  expandAll: false,
-  intent: null,
+  classNames:   ['accordion'],
+  expanded:     false,
+  expandAll:    false,
+  intent:       null,
   expandOnInit: false,
+  everExpanded: false,
 
   init() {
     this._super(...arguments);
     Ember.run.scheduleOnce('render', () => {
       let eoi = this.get('expandOnInit');
       if (eoi) {
-        this.set('expanded', eoi);
+        if (!this.get('everExpanded')) {
+          this.set('everExpanded', true);
+        }
+        Ember.run.next(() => {
+          this.set('expanded', eoi);
+        });
       }
     });
   },
   expdObserver: Ember.on('init', Ember.observer('expanded', function() {
     if (this.get('expanded') && !this.get('intent')) {
-      this.set('intent', this.get('componentName'));
+      if (!this.get('everExpanded')) {
+        this.set('everExpanded', true);
+      }
+      Ember.run.next(() => {
+        this.set('intent', this.get('componentName'));
+      });
     }
   })),
 
