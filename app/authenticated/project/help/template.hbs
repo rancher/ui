@@ -17,34 +17,31 @@
 {{/if}}
 
 <section>
-  <div class="flex-wrap">
-    <div class="flex-item-third">
-      <div class="flex-content">
+  <div class="row">
+    <div class="col span-4">
         <h3>{{t 'helpPage.environment.header'}}</h3>
         <hr/>
         {{t 'helpPage.environment.content' appName=settings.appName htmlSafe=true}}
         {{#link-to 'settings.projects' class="btn bg-primary right-divider-btn"}} {{t 'helpPage.environment.manageLink'}} {{/link-to}}
-      </div>
     </div>
 
-    <div class="flex-item-third">
-      <div class="flex-content">
+    <div class="col span-4">
         <h3>{{t 'helpPage.host.header'}}</h3>
         <hr/>
         <p>{{t 'helpPage.host.content' appName=settings.appName minVersion=settings.minDockerVersion}} <a href="{{docsLink}}/hosts/" target="_blank">{{t 'helpPage.host.contentLink'}}</a></p>
         {{#link-to "hosts.new" class="btn bg-primary"}}{{t 'helpPage.host.addHostLink'}}{{/link-to}}
-      </div>
     </div>
 
-    <div class="flex-item-third">
-      <div class="flex-content">
+    <div class="col span-4">
         <h3>{{t 'helpPage.stacks.header'}}</h3>
         <hr/>
         <p>{{t 'helpPage.stacks.content.paragraph1' appName=settings.appName}}</p>
 
         <p>{{t 'helpPage.stacks.content.paragraph2' appName=settings.appName}} <a href="{{docsLink}}/cattle/adding-services/" target="_blank">{{t 'helpPage.stacks.content.link'}}</a></p>
-
-        {{#if hasHosts}}
+    </div>
+  </div>
+  <div class="row">
+   {{#if hasHosts}}
           {{#link-to "authenticated.project" class="btn bg-primary mb-10"}} {{t 'helpPage.stacks.addServiceLink'}}{{/link-to}}
           {{#link-to "catalog-tab" class="btn bg-primary"}} {{t 'helpPage.stacks.addCatalogLink'}}{{/link-to}}
         {{else}}
@@ -52,16 +49,14 @@
           {{#link-to "authenticated.project" class="btn bg-primary mb-10" disabled=true}}{{t 'helpPage.stacks.manageServiceLink'}}{{/link-to}}
           {{#link-to "catalog-tab" class="btn bg-primary" disabled=true}}{{t 'helpPage.stacks.addCatalogLink'}}{{/link-to}}
         {{/if}}
-      </div>
-    </div>
   </div>
 </section>
 
 {{#if settings.isRancher}}
   <section>
-    <div class="header">
-      <h3>{{t 'helpPage.issues.header.text'}}</h3>
-      <div class="pull-right mb-20">
+    <div>
+      <h3 class="pull-left">{{t 'helpPage.issues.header.text'}}</h3>
+      <div class="pull-right">
         {{t 'helpPage.issues.header.tagline'}} <a href="{{settings.issueUrl}}" class="btn bg-primary ml-10" target="_blank">{{t 'helpPage.issues.header.fileBug'}}</a>
       </div>
     </div>
@@ -110,7 +105,7 @@
   <section>
     <div class="header">
       <h3>{{t 'helpPage.forums.header'}}</h3>
-      <div class="pull-right mb-20">
+      <div class="pull-right">
         {{t 'helpPage.forums.tagline'}} <a href="{{forumsLink}}" class="btn bg-primary ml-10" target="_blank">{{t 'helpPage.forums.buttonText'}}</a>
       </div>
     </div>
