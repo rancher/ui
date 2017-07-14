@@ -7,13 +7,9 @@
   {{/if}}
 </div>
 
-{{#if isSidekick}}
-  <div class="form-control-static">
-    {{t 'formScale.mode.sidekick'}}
-  </div>
-{{else if (and canScale advancedShown)}}
+{{#if (and canScale advancedShown)}}
   <div class="pt-10">
-    {{#unless (or (not canContainer) (and isUpgrade isService))}}
+    {{#if showContainer}}
       <div class="radio">
         <label>
           {{radio-button selection=mode value="container"}}
@@ -21,7 +17,7 @@
           {{t 'formScale.mode.containerSuffix'}}
         </label>
       </div>
-    {{/unless}}
+    {{/if}}
     <div class="radio">
       <label>
         {{radio-button selection=mode value="service"}}
@@ -46,6 +42,20 @@
         {{t 'formScale.mode.globalSuffix' scale=asInteger}}
       </label>
     </div>
+    {{#if showSidekick}}
+      <div class="radio">
+        <label>
+          {{radio-button selection=mode value="sidekick"}}
+          {{#if (eq mode "sidekick")}}
+            {{t 'formScale.mode.sidekickPrefix'}}
+            {{schema/input-service selectClass="input-sm" canHaveContainers=true canBeSystem=false selected=sidekickServiceId}}
+            {{t 'formScale.mode.sidekickSuffix'}}
+          {{else}}
+            {{t 'formScale.mode.sidekickInactive'}}
+          {{/if}}
+        </label>
+      </div>
+    {{/if}}
   </div>
 {{else}}
   <div class="form-control-static">
@@ -60,6 +70,10 @@
       {{t 'formScale.mode.servicePrefix' scale=asInteger}}
       {{asInteger}}
       {{t 'formScale.mode.serviceSuffix' scale=asInteger}}
+    {{else if (eq mode "sidekick")}}
+      {{t 'formScale.mode.sidekickPrefix'}}
+      &quot;{{sidekickService.displayName}}&quot;
+      {{t 'formScale.mode.sidekickSuffix'}}
     {{/if}}
   </div>
 {{/if}}

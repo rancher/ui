@@ -27,6 +27,7 @@ export default Ember.Component.extend(NewOrEdit, SelectTab, {
   isRequestedHost:            null,
   portsAsStrArray:            null,
   upgradeOptions:             null,
+  sidekickService:            null,
 
   // Errors from components
   commandErrors:              null,
@@ -65,6 +66,11 @@ export default Ember.Component.extend(NewOrEdit, SelectTab, {
 
     setScaleMode(mode) {
       this.set('scaleMode', mode);
+    },
+
+    setSidekick(service) {
+      this.set('sidekickService', service);
+      this.set('isSidekick', service !== undefined)
     },
 
     done() {
@@ -343,19 +349,26 @@ export default Ember.Component.extend(NewOrEdit, SelectTab, {
     this.sendAction('done');
   },
 
-  headerToken: function() {
+  header: function() {
+    let args = {};
     let k = 'newContainer.';
     k += (this.get('isUpgrade') ? 'upgrade' : 'add') + '.';
     if ( this.get('isSidekick') ) {
-      k += 'sidekick';
+      let svc = this.get('sidekickService');
+      if ( svc ) {
+        k += 'sidekickName';
+        args = {name: this.get('sidekickService.displayName')};
+      } else {
+        k += 'sidekick';
+      }
     } else if ( this.get('isService') ) {
       k += 'scalingGroup';
     } else {
       k += 'container';
     }
 
-    return k;
-  }.property('isUpgrade','isService'),
+    return this.get('intl').t(k, args);
+  }.property('isUpgrade','isService','isSidekick','sidekickService.displayName','intl.locale'),
 
   supportsSecrets: function() {
     return !!this.get('store').getById('schema','secret');

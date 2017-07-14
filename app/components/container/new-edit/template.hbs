@@ -1,5 +1,5 @@
 <section class="header clearfix">
-  <h1>{{t headerToken}}</h1>
+  <h1>{{header}}</h1>
 </section>
 
 <div class="row">
@@ -14,25 +14,18 @@
     }}
   </div>
   <div class="col span-11-of-23 mt-0 mb-0 offset-1-of-23">
-    {{#if isSidekick}}
-      {{!-- Sidekicks don't have their own scale --}}
-      {{container/form-scale isSidekick=true}}
-    {{else if (and isUpgrade (not isService))}}
-      {{!-- Containers can't set count on upgrade --}}
-    {{else}}
-      {{!-- Normal service/container --}}
-      {{container/form-scale
-        initialLabels=launchConfig.labels
-        initialScale=scale
-        isGlobal=isGlobal
-        isService=isService
-        isUpgrade=isUpgrade
-        errors=scaleErrors
-        setLabels=(action 'setLabels' 'scale')
-        setScale=(action (mut scale))
-        setMode=(action 'setScaleMode')
-      }}
-    {{/if}}
+    {{container/form-scale
+      initialLabels=launchConfig.labels
+      initialScale=scale
+      isGlobal=isGlobal
+      isService=isService
+      isUpgrade=isUpgrade
+      errors=scaleErrors
+      setLabels=(action 'setLabels' 'scale')
+      setScale=(action (mut scale))
+      setMode=(action 'setScaleMode')
+      setSidekick=(action 'setSidekick')
+    }}
   </div>
 </div>
 

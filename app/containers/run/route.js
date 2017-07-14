@@ -2,6 +2,8 @@ import Ember from 'ember';
 import C from 'ui/utils/constants';
 
 export default Ember.Route.extend({
+  prefs: Ember.inject.service(),
+
   model: function(params/*, transition*/) {
     var store = this.get('store');
     let lcIndex = params.launchConfigIndex;
@@ -110,12 +112,19 @@ export default Ember.Route.extend({
           });
         }
       } else {
+        let mode = this.get(`prefs.${C.PREFS.SCALE_MODE}`);
+        let isService = mode && mode !== 'container';
+        let isGlobal = mode === 'global';
+        if ( isGlobal ) {
+          emptyLc.labels[C.LABEL.SCHED_GLOBAL] = 'true';
+        }
+
         // New Container/Service
         emptyService.set('launchConfig', emptyLc);
         return Ember.Object.create({
           service: emptyService,
           launchConfig: emptyLc,
-          isService: false,
+          isService: isService,
           isUpgrade: false,
         });
       }
