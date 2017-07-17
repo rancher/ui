@@ -1,7 +1,23 @@
 import Ember from 'ember';
 import C from 'ui/utils/constants';
 
+export const EMPTY_LC = {
+  type: 'launchConfig',
+  tty: true,
+  stdinOpen: true,
+  labels: { [C.LABEL.PULL_IMAGE]: C.LABEL.PULL_IMAGE_VALUE },
+  restartPolicy: {name: 'always'},
+};
+
 export default Ember.Route.extend({
+  prefs: Ember.inject.service(),
+
+  queryParams: {
+    launchConfigIndex: {
+      refreshModel: true
+    }
+  },
+
   model: function(params/*, transition*/) {
     var store = this.get('store');
     let lcIndex = params.launchConfigIndex;
@@ -13,13 +29,7 @@ export default Ember.Route.extend({
       startOnCreate: true,
     });
 
-    let emptyLc = store.createRecord({
-      type: 'launchConfig',
-      tty: true,
-      stdinOpen: true,
-      labels: { [C.LABEL.PULL_IMAGE]: C.LABEL.PULL_IMAGE_VALUE },
-      restartPolicy: {name: 'always'},
-    });
+    let emptyLc = store.createRecord(EMPTY_LC);
 
     var dependencies = {};
     if ( params.serviceId )
@@ -32,7 +42,6 @@ export default Ember.Route.extend({
     }
 
     return Ember.RSVP.hash(dependencies, 'Load dependencies').then((results) => {
-
       if ( results.hasOwnProperty('service') ) {
         // Service Upgrade/Clone
         let service = results.service;
@@ -56,8 +65,10 @@ export default Ember.Route.extend({
         let clone = service.clone();
         let lc = clone.launchConfig;
         if ( lcIndex === -1 ) {
+          // Primary service
           lc = clone.launchConfig;
         } else {
+          // Existing sidekick
           lc = clone.secondaryLaunchConfigs[lcIndex];
         }
 
@@ -110,12 +121,19 @@ export default Ember.Route.extend({
           });
         }
       } else {
+        let mode = this.get(`prefs.${C.PREFS.SCALE_MODE}`);
+        let isService = mode && mode !== 'container';
+        let isGlobal = mode === 'global';
+        if ( isGlobal ) {
+          emptyLc.labels[C.LABEL.SCHED_GLOBAL] = 'true';
+        }
+
         // New Container/Service
         emptyService.set('launchConfig', emptyLc);
         return Ember.Object.create({
           service: emptyService,
           launchConfig: emptyLc,
-          isService: false,
+          isService: isService,
           isUpgrade: false,
         });
       }

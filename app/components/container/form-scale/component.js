@@ -2,10 +2,6 @@ import Ember from 'ember';
 import C from 'ui/utils/constants';
 import ManageLabels from 'ui/mixins/manage-labels';
 
-function newMax(val, curMax, absoluteMax) {
-  return Math.min(absoluteMax, Math.max(curMax, Math.ceil(val/10)*10));
-}
-
 export default Ember.Component.extend(ManageLabels, {
   initialLabel: null,
   initialScale: null,
@@ -20,16 +16,19 @@ export default Ember.Component.extend(ManageLabels, {
   userInput:      null,
   advancedAvailable: true,
   advancedShown:  false,
-  sliderMax:      10,
+  sidekickServiceId: null,
 
   init() {
     this._super(...arguments);
     this.set('userInput', (this.get('initialScale')||1)+'');
-    this.set('sliderMax', newMax(this.get('asInteger'), this.get('sliderMax'), this.get('max')));
 
     this.initLabels(this.get('initialLabels'), null, C.LABEL.SCHED_GLOBAL);
     var glb = this.getLabel(C.LABEL.SCHED_GLOBAL) === 'true';
-    if ( glb ) {
+    if ( this.get('launchConfigIndex') >= 0 ) {
+      this.set('mode', 'sidekick');
+      this.set('advancedAvailable', false);
+      this.sidekickChanged();
+    } else  if ( glb ) {
       this.set('mode', 'global');
     } else if ( this.get('isService') ) {
       this.set('mode', 'service');
@@ -59,8 +58,6 @@ export default Ember.Component.extend(ManageLabels, {
   scaleChanged: Ember.observer('asInteger', function() {
     let cur = this.get('asInteger');
     this.sendAction('setScale', cur);
-
-    this.set('sliderMax', newMax(cur, this.get('sliderMax'), this.get('max')));
   }),
 
   modeChanged: Ember.observer('mode', function() {
@@ -78,6 +75,10 @@ export default Ember.Component.extend(ManageLabels, {
     } else {
       this.removeLabel(C.LABEL.SCHED_GLOBAL);
       this.set('isGlobal', false);
+    }
+
+    if ( mode !== 'sidekick' ) {
+      this.set('sidekickServiceId', null);
     }
 
     this.sendAction('setMode', mode);
@@ -107,5 +108,38 @@ export default Ember.Component.extend(ManageLabels, {
     return true;
   }.property('advancedShown','advancedAvailable','isSidekick','isUpgrade','mode'),
 
-});
+  showContainer: function() {
+    if ( !this.get('canContainer') ) {
+      return false;
+    }
 
+    if ( this.get('isUpgrade') && this.get('isService') ) {
+      return false;
+    }
+
+    return true;
+  }.property('canContainer','isUpgrade','isService'),
+
+  showSidekick: function() {
+    if ( this.get('isUpgrade') && this.get('isService') ) {
+      return false;
+    } else {
+      return true;
+    }
+  }.property('isUpgrade','isService'),
+
+  sidekickChanged: function() {
+    let id = this.get('sidekickServiceId');
+    if ( id ) {
+      let service = this.get('store').getById('service', id);
+      this.sendAction('setSidekick', service);
+      this.set('sidekickService', service);
+    } else if ( this.get('mode') === 'sidekick' ) {
+      this.sendAction('setSidekick', null);
+      this.set('sidekickService', null);
+    } else {
+      this.sendAction('setSidekick', undefined);
+      this.set('sidekickService', null);
+    }
+  }.observes('sidekickServiceId','mode'),
+});

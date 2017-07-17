@@ -7,6 +7,7 @@ export default Ember.Component.extend({
   selectClass:       'form-control',
   canBalanceTo:      false, // require service have canBalanceTo=true
   canHaveContainers: false, // require service have hasContainers=true
+  canBeSystem:       true, // allow service to have system=true
   exclude:           null,  // ID or array of IDs to exclude from list
 
   // For use as a catalog question
@@ -36,15 +37,11 @@ export default Ember.Component.extend({
   },
 
   grouped: function() {
-    let list = this.get('allServices.list');
-
-    if ( this.get('canBalanceTo') ) {
-      list = list.filterBy('obj.canBalanceTo',true);
-    }
-
-    if ( this.get('canHaveContainers') ) {
-      list = list.filterBy('obj.canHaveContainers',true);
-    }
+    let list = this.get('allServices.list').filter((item) => {
+      return (!this.get('canBalanceTo') || item.obj.get('canBalanceTo')) &&
+             (!this.get('canHaveContainers') || item.obj.get('canHaveContainers')) &&
+             ( this.get('canBeSystem') || !item.obj.get('system'));
+    });
 
     let exclude = this.get('exclude');
     if ( exclude ) {

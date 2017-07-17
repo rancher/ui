@@ -1,6 +1,7 @@
 import Ember from 'ember';
 import Socket from 'ui/utils/socket';
 import C from 'ui/utils/constants';
+import Queue from 'ui/utils/queue';
 
 const { get } = Ember;
 
@@ -18,11 +19,15 @@ export default Ember.Mixin.create({
   subscribeSocket : null,
   reconnect: true,
   connected: false,
+  queue: null,
+  queueTimer: null,
 
   init() {
-    this._super();
+    this._super(...arguments);
 
-    var store = this.get('store');
+    let queue = new Queue();
+    this.set('queue', queue);
+    this.set('queueTimer', setInterval(this.processQueue.bind(this), 1000));
 
     var socket = Socket.create();
 
@@ -39,32 +44,11 @@ export default Ember.Mixin.create({
         }
 
         var d = JSON.parse(event.data);
-        let resource;
-        if ( d.data && d.data.resource ) {
-          resource = store._typeify(d.data.resource);
-          d.data.resource = resource;
-        }
 
-        //this._trySend('subscribeMessage',d);
-
-        let key;
         switch ( d.name) {
         case 'resource.change':
-          key = d.resourceType+'Changed';
-          if ( this[key] ) {
-            this[key](d);
-          }
-
-          if ( resource && C.REMOVEDISH_STATES.includes(resource.state) ) {
-            let type = get(resource,'type');
-            let baseType = get(resource,'baseType');
-
-            store._remove(type, resource);
-
-            if ( baseType && type !== baseType ) {
-              store._remove(baseType, resource);
-            }
-          }
+          queue.enqueue(d);
+//          console.log('Change event', queue.getLength(), 'in queue');
           break;
         case 'logout':
           this.send('logout', false);
@@ -85,6 +69,53 @@ export default Ember.Mixin.create({
     });
 
     this.set('subscribeSocket', socket);
+  },
+
+  willDestroy() {
+    this._super(...arguments);
+    clearInterval(this.get('queueTimer'));
+  },
+
+  processQueue() {
+    let queue = this.get('queue');
+
+    if ( !queue.getLength() ) {
+      return;
+    }
+
+    let store = this.get('store');
+    let count = 0;
+    let event = queue.dequeue();
+
+    Ember.beginPropertyChanges();
+    while ( event ) {
+      let resource;
+      if ( event.data && event.data.resource ) {
+        resource = store._typeify(event.data.resource);
+        event.data.resource = resource;
+      }
+
+      let key = event.resourceType+'Changed';
+      if ( this[key] ) {
+        this[key](event);
+      }
+
+      if ( resource && C.REMOVEDISH_STATES.includes(resource.state) ) {
+        let type = get(resource,'type');
+        let baseType = get(resource,'baseType');
+
+        store._remove(type, resource);
+
+        if ( baseType && type !== baseType ) {
+          store._remove(baseType, resource);
+        }
+      }
+
+      count++;
+      event = queue.dequeue();
+    }
+    Ember.endPropertyChanges();
+    //console.log('Processed',count,'change events');
   },
 
   connectSubscribe() {
@@ -150,6 +181,7 @@ export default Ember.Mixin.create({
   // WebSocket disconnected (unexpectedly)
   subscribeDisconnected: function() {
     this.set('connected', false);
+    this.get('queue').clear();
 
     console.log('Subscribe disconnected ' + this.forStr());
     if ( this.get('reconnect') ) {

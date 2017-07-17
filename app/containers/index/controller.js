@@ -86,6 +86,6 @@ export default Ember.Controller.extend({
   }.property('filtered.length','projects.current.orchestration'),
 
   showOrchestration: function() {
-    return this.get('app.mode') !== C.MODE.CAAS;
+    return false && this.get('app.mode') !== C.MODE.CAAS;
   }.property('app.mode'),
 });

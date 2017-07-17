@@ -1949,7 +1949,8 @@ formScale:
     serviceSuffix: ""
     globalPrefix: "Global service with a scale of"
     globalSuffix: "per host"
-    sidekickPrefix: "Sidekick: Matches the scale and scheduling of"
+    sidekickInactive: "Sidekick: Match the scale and scheduling of a service"
+    sidekickPrefix: "Sidekick: Match the scale and scheduling of"
     sidekickSuffix: ""
 
 formScheduling:
@@ -2991,17 +2992,18 @@ newCatalog:
 newContainer:
   add:
     container: Add Container
-    scalingGroup: Add Service
+    service: Add Service
+    globalService: Add Global Service
     sidekick: 'Add Sidekick'
+    sidekickName: 'Add Sidekick of "{name}"'
   upgrade:
     container: Upgrade Container
     scalingGroup: Upgrade Service
     sidekick: Upgrade Sidekick
+    sidekickName: 'Upgrade Sidekick of "{name}"'
   selectUpgrade: Select one or more services to upgrade.
   saveUpgrade: Upgrade
   saveNew: Launch
-  addSidekick: Add a Sidekick
-  removeSidekick: Remove this Sidekick
   name:
     placeholder: e.g. myapp
   description:
@@ -3013,10 +3015,15 @@ newContainer:
     keyPlaceholder: e.g. FOO
     valueLabel: Value
     valuePlaceholder: e.g. bar
-  emptyPrimaryService: "(Primary)"
-  emptySidekick: "(Sidekick #{num})"
-  addSidekickContainer: Add Sidekick Container
-  addSidekickVm: Add Sidekick VM
+  sidekick:
+    title: Select service launch config to upgrade
+    detail: '"{service}" has sidekicks.  Which launch config do you want to upgrade?'
+    primary: Primary
+    sidekick: Sidekick
+
+  errors:
+    noSidekick: Choose a service to add the sidekick to
+    duplicateName: 'There is already a sidekick named "{name}" in the service "{service}"'
 
 newPassword:
   placeholder: New Password

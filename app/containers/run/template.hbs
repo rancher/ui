@@ -1,13 +1,59 @@
-{{container/new-edit
-  isService=model.isService
-  isUpgrade=model.isUpgrade
-  service=model.service
-  launchConfig=model.launchConfig
-  done=(action 'done')
-  cancel=(action 'cancel')
+{{#if model.selectLaunchConfig}}
+  <h2>{{t 'newContainer.sidekick.title' service=model.service.displayName}}</h2>
+  <h5>{{t 'newContainer.sidekick.detail' service=model.service.displayName}}</h5>
 
-  editing=false
-  primaryResource=model.service
-  primaryService=model.service
-  allHosts=model.allHosts
-}}
+  <div class="clearfix">
+    {{#catalog-box
+      model=model.service.launchConfig
+      showIcon=false
+      showDescription=false
+      as |section|
+    }}
+      {{#if (eq section 'header')}}
+        <i class="icon icon-service icon-2x"/>
+      {{else if (eq section 'body')}}
+        <h5>{{model.service.name}}</h5>
+        <p class="help-block">{{t 'newContainer.sidekick.primary'}}</p>
+      {{else if (eq section 'footer')}}
+        {{#link-to (query-params launchConfigIndex=-1) class="btn bg-primary"}}{{t 'action.upgrade'}}{{/link-to}}
+      {{/if}}
+    {{/catalog-box}}
+
+    {{#each model.service.secondaryLaunchConfigs as |slc index|}}
+      {{#catalog-box
+        model=slc
+        showIcon=false
+        showDescription=false
+        as |section|
+      }}
+        {{#if (eq section 'header')}}
+          <i class="icon icon-container icon-2x"/>
+        {{else if (eq section 'body')}}
+          <h5>{{slc.name}}</h5>
+          <p class="help-block">{{t 'newContainer.sidekick.sidekick'}}</p>
+        {{else if (eq section 'footer')}}
+          <button class="btn bg-error" {{action "promptRemove" index}}>{{t 'action.remove'}}</button>
+          {{#link-to (query-params launchConfigIndex=index) class="btn bg-primary"}}{{t 'action.upgrade'}}{{/link-to}}
+        {{/if}}
+      {{/catalog-box}}
+    {{/each}}
+  </div>
+  <div class="text-center">
+    <button class="btn bg-transparent" {{action 'cancel'}}>{{t 'generic.cancel'}}</button>
+  </div>
+{{else}}
+  {{container/new-edit
+    isService=model.isService
+    isUpgrade=model.isUpgrade
+    service=model.service
+    launchConfig=model.launchConfig
+    launchConfigIndex=launchConfigIndexInt
+    done=(action 'done')
+    cancel=(action 'cancel')
+
+    editing=false
+    primaryResource=model.service
+    primaryService=model.service
+    allHosts=model.allHosts
+  }}
+{{/if}}

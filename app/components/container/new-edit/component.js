@@ -17,7 +17,7 @@ export default Ember.Component.extend(NewOrEdit, SelectTab, {
   isUpgrade:                  false,
   service:                    null,
   launchConfig:               null,
-  launchConfigIndex:          null,
+  launchConfigIndex:          null, // null: not valid here, -1: Primary LC, 0-n: Sidekick SLCs
 
   stack:                      null,
   scale:                      1,
@@ -27,6 +27,7 @@ export default Ember.Component.extend(NewOrEdit, SelectTab, {
   isRequestedHost:            null,
   portsAsStrArray:            null,
   upgradeOptions:             null,
+  sidekickService:            null,
 
   // Errors from components
   commandErrors:              null,
@@ -67,6 +68,11 @@ export default Ember.Component.extend(NewOrEdit, SelectTab, {
       this.set('scaleMode', mode);
     },
 
+    setSidekick(service) {
+      this.set('sidekickService', service);
+      this.set('isSidekick', service !== undefined)
+    },
+
     done() {
       this.sendAction('done');
     },
@@ -105,7 +111,9 @@ export default Ember.Component.extend(NewOrEdit, SelectTab, {
       this.set('launchConfig.secrets', []);
     }
 
-    if ( this.get('isService') ) {
+    this.set('isSidekick', this.get('launchConfigIndex') >= 0);
+
+    if ( this.get('isService') && !this.get('isSidekick') ) {
       this.setProperties({
         name: this.get('service.name'),
         description: this.get('service.description'),
@@ -129,12 +137,6 @@ export default Ember.Component.extend(NewOrEdit, SelectTab, {
   // ----------------------------------
   // Sidekicks
   // ----------------------------------
-
-  isSidekick: function() {
-    let idx = this.get('launchConfigIndex');
-    return idx !== null && idx !== -1;
-  }.property('launchConfigIndex'),
-
   launchConfigChoices: function() {
     var isUpgrade = this.get('isUpgrade');
     let intl = this.get('intl');
@@ -143,7 +145,7 @@ export default Ember.Component.extend(NewOrEdit, SelectTab, {
     var out = [
       {
         index: -1,
-        name: this.get('service.name') || intl.t('newContainer.emptyPrimaryService'),
+        name: this.get('service.name'),
         enabled: true
       }
     ];
@@ -151,7 +153,7 @@ export default Ember.Component.extend(NewOrEdit, SelectTab, {
     (this.get('service.secondaryLaunchConfigs')||[]).forEach((item, index) => {
       out.push({
         index: index,
-        name: item.get('name') || intl.t('newContainer.emptySidekick', {num: index+1}),
+        name: item.get('name'),
         enabled: !isUpgrade,
         uiId: item.get('uiId'),
       });
@@ -214,7 +216,8 @@ export default Ember.Component.extend(NewOrEdit, SelectTab, {
   // Save
   // ----------------------------------
   validate() {
-    let errors = [];
+    let pr = this.get('primaryResource');
+    let errors = pr.validationErrors() || [];
 
     if ( this.get('isService') )
     {
@@ -253,17 +256,51 @@ export default Ember.Component.extend(NewOrEdit, SelectTab, {
   },
 
   willSave() {
-    let ok = this._super(...arguments);
-    if ( !ok ) {
-      return ok;
-    }
-
+    let intl = this.get('intl');
     let pr;
+    let nameResource;
     let lc = this.get('launchConfig').clone();
 
-    if ( this.get('isService') ) {
+    if ( this.get('isSidekick') ) {
+      let service = this.get('sidekickService');
+      let errors = [];
+      if ( !service ) {
+        errors.push(this.get('intl').t('newContainer.errors.noSidekick'));
+        this.set('errors', errors);
+        return false;
+      }
+
+      let name = (this.get('name')||'').trim().toLowerCase();
+
+      if ( !name ) {
+        errors.push(intl.t('validation.required', {key: intl.t('formNameDescription.name.label')}));
+        this.set('errors', errors);
+        return false;
+      }
+
+      pr = service.clone();
+      let sidekick = this.get('store').createRecord({}, lc.serialize(), {type: 'secondaryLaunchConfig'});
+      nameResource = sidekick;
+      let slc = pr.get('secondaryLaunchConfigs');
+      if ( !slc ) {
+        slc = [];
+        pr.set('secondaryLaunchConfigs', slc);
+      }
+
+      let duplicate = slc.find((x, idx) => {
+        return idx !== this.get('launchConfigIndex') && x.get('name').toLowerCase() === name;
+      });
+      if ( duplicate ) {
+        errors.push(intl.t('newContainer.errors.duplicateName', {name: this.get('name'), service: duplicate.get('displayName')}));
+        this.set('errors', errors);
+        return false;
+      }
+
+      slc.push(sidekick);
+    } else if ( this.get('isService') ) {
       // Apply the launch config to the service
       pr = this.get('service').clone();
+      nameResource = pr;
       let index = this.get('launchConfigIndex');
       if ( index >= 0 ) {
         let slc = pr.get('secondaryLaunchConfigs');
@@ -284,15 +321,21 @@ export default Ember.Component.extend(NewOrEdit, SelectTab, {
       lc.type = 'container';
       pr = this.get('store').createRecord(lc);
       pr.set('count', this.get('scale'));
+      nameResource = pr;
     }
 
-    pr.setProperties({
+    nameResource.setProperties({
       name: this.get('name'),
       description: this.get('description'),
     });
 
     this.set('primaryResource', pr);
     this.set('originalPrimaryResource', pr);
+
+    let ok = this._super(...arguments);
+    if ( !ok ) {
+      return ok;
+    }
 
     if ( this.get('isUpgrade') ) {
       return true;
@@ -319,7 +362,7 @@ export default Ember.Component.extend(NewOrEdit, SelectTab, {
   },
 
   didSave() {
-    if ( this.get('isService') ) {
+    if ( this.get('isService') && !this.get('isSidekick') ) {
       // Returns a promise
       return this.setServiceLinks();
     }
@@ -339,23 +382,37 @@ export default Ember.Component.extend(NewOrEdit, SelectTab, {
   },
 
   doneSaving() {
-    this.set(`prefs.${C.PREFS.SCALE_MODE}`, this.get('scaleMode'));
+    if ( !this.get('isUpgrade') ) {
+      this.set(`prefs.${C.PREFS.SCALE_MODE}`, this.get('scaleMode'));
+    }
     this.sendAction('done');
   },
 
-  headerToken: function() {
+  header: '',
+  updateHeader: function() {
+    let args = {};
     let k = 'newContainer.';
     k += (this.get('isUpgrade') ? 'upgrade' : 'add') + '.';
     if ( this.get('isSidekick') ) {
-      k += 'sidekick';
+      let svc = this.get('sidekickService');
+      if ( svc ) {
+        k += 'sidekickName';
+        args = {name: this.get('sidekickService.displayName')};
+      } else {
+        k += 'sidekick';
+      }
+    } else if ( this.get('isGlobal') ) {
+      k += 'globalService';
     } else if ( this.get('isService') ) {
-      k += 'scalingGroup';
+      k += 'service';
     } else {
       k += 'container';
     }
 
-    return k;
-  }.property('isUpgrade','isService'),
+    Ember.run.next(() => {
+      this.set('header', this.get('intl').t(k, args));
+    });
+  }.observes('isUpgrade','isService','isSidekick','isGlobal','sidekickService.displayName','intl.locale'),
 
   supportsSecrets: function() {
     return !!this.get('store').getById('schema','secret');
