@@ -111,7 +111,9 @@ export default Ember.Component.extend(NewOrEdit, SelectTab, {
       this.set('launchConfig.secrets', []);
     }
 
-    if ( this.get('isService') ) {
+    this.set('isSidekick', parseInt(this.get('launchConfigIndex'),10) >= 0);
+
+    if ( this.get('isService') && !this.get('isSidekick') ) {
       this.setProperties({
         name: this.get('service.name'),
         description: this.get('service.description'),
@@ -380,7 +382,9 @@ export default Ember.Component.extend(NewOrEdit, SelectTab, {
   },
 
   doneSaving() {
-    this.set(`prefs.${C.PREFS.SCALE_MODE}`, this.get('scaleMode'));
+    if ( !this.get('isUpgrade') ) {
+      this.set(`prefs.${C.PREFS.SCALE_MODE}`, this.get('scaleMode'));
+    }
     this.sendAction('done');
   },
 

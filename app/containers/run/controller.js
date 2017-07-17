@@ -13,6 +13,9 @@ export default Ember.Controller.extend({
       this.send('goToPrevious','containers.index');
     },
 
+    removeSidekick(idx) {
+    },
+
     cancel() {
       this.send('goToPrevious','containers.index');
     },

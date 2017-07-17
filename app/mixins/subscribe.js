@@ -77,12 +77,18 @@ export default Ember.Mixin.create({
   },
 
   processQueue() {
-    var store = this.get('store');
     let queue = this.get('queue');
-    let event;
+
+    if ( !queue.getLength() ) {
+      return;
+    }
+
+    let store = this.get('store');
     let count = 0;
+    let event = queue.dequeue();
+
     Ember.beginPropertyChanges();
-    while ( event = queue.dequeue() ) {
+    while ( event ) {
       let resource;
       if ( event.data && event.data.resource ) {
         resource = store._typeify(event.data.resource);
@@ -106,6 +112,7 @@ export default Ember.Mixin.create({
       }
 
       count++;
+      event = queue.dequeue();
     }
     Ember.endPropertyChanges();
     console.log('Processed',count,'change events');

@@ -12,6 +12,12 @@ export const EMPTY_LC = {
 export default Ember.Route.extend({
   prefs: Ember.inject.service(),
 
+  queryParams: {
+    launchConfigIndex: {
+      refreshModel: true
+    }
+  },
+
   model: function(params/*, transition*/) {
     var store = this.get('store');
     let lcIndex = params.launchConfigIndex;

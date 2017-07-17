@@ -119,7 +119,8 @@ module.exports = function(environment) {
       proxyEndpoint: '/v2-beta/proxy',
       wsEndpoint: '/v2/projects/%PROJECTID%/subscribe' +
                     '?eventNames=resource.change' +
-                    '&limit=-1',
+                    '&resourceType_ne=serviceLog' +
+                    '&resourceType_ne=deploymentUnit',
       baseAssets: '/',
       locales: readLocales(environment),
       stripe: {

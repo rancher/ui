@@ -28,7 +28,11 @@ export default Ember.Component.extend(ManageLabels, {
 
     this.initLabels(this.get('initialLabels'), null, C.LABEL.SCHED_GLOBAL);
     var glb = this.getLabel(C.LABEL.SCHED_GLOBAL) === 'true';
-    if ( glb ) {
+    if ( parseInt(this.get('launchConfigIndex'),10) >= 0 ) {
+      this.set('mode', 'sidekick');
+      this.set('advancedAvailable', false);
+      this.sidekickChanged();
+    } else  if ( glb ) {
       this.set('mode', 'global');
     } else if ( this.get('isService') ) {
       this.set('mode', 'service');
