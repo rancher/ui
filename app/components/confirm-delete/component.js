@@ -4,15 +4,28 @@ import ModalBase from 'ui/mixins/modal-base';
 
 export default Ember.Component.extend(ModalBase, {
   classNames: ['medium-modal'],
-  resources: Ember.computed.alias('modalService.modalOpts'),
+  resources: Ember.computed.alias('modalService.modalOpts.resources'),
   alternateLabel: alternateLabel,
   settings: Ember.inject.service(),
   intl: Ember.inject.service(),
 
+  showProtip: function() {
+    let show = this.get('modalService.modalOpts.showProtip');
+    if ( show === undefined ) {
+      show = true;
+    }
+
+    return show;
+  }.property('modalService.modalOpts.showProtip'),
+
   actions: {
     confirm: function() {
       this.get('resources').forEach((resource) => {
-        resource.delete();
+        if ( resource.cb ) {
+          resource.cb();
+        } else {
+          resource.delete();
+        }
       });
 
       this.send('cancel');
@@ -21,16 +34,7 @@ export default Ember.Component.extend(ModalBase, {
   },
 
   isEnvironment: Ember.computed('resources', function() {
-    let resources = this.get('resources');
-    let out = false;
-
-    resources.forEach((resource) => {
-      if (resource.type === 'project') {
-        out = true;
-      }
-    });
-
-    return out;
+    return !!this.get('resources').findBy('type','project');
   }),
 
   didRender: function() {

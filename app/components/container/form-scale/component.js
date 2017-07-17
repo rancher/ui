@@ -2,10 +2,6 @@ import Ember from 'ember';
 import C from 'ui/utils/constants';
 import ManageLabels from 'ui/mixins/manage-labels';
 
-function newMax(val, curMax, absoluteMax) {
-  return Math.min(absoluteMax, Math.max(curMax, Math.ceil(val/10)*10));
-}
-
 export default Ember.Component.extend(ManageLabels, {
   initialLabel: null,
   initialScale: null,
@@ -28,7 +24,7 @@ export default Ember.Component.extend(ManageLabels, {
 
     this.initLabels(this.get('initialLabels'), null, C.LABEL.SCHED_GLOBAL);
     var glb = this.getLabel(C.LABEL.SCHED_GLOBAL) === 'true';
-    if ( parseInt(this.get('launchConfigIndex'),10) >= 0 ) {
+    if ( this.get('launchConfigIndex') >= 0 ) {
       this.set('mode', 'sidekick');
       this.set('advancedAvailable', false);
       this.sidekickChanged();
@@ -137,10 +133,13 @@ export default Ember.Component.extend(ManageLabels, {
     if ( id ) {
       let service = this.get('store').getById('service', id);
       this.sendAction('setSidekick', service);
+      this.set('sidekickService', service);
     } else if ( this.get('mode') === 'sidekick' ) {
       this.sendAction('setSidekick', null);
+      this.set('sidekickService', null);
     } else {
       this.sendAction('setSidekick', undefined);
+      this.set('sidekickService', null);
     }
   }.observes('sidekickServiceId','mode'),
 });

@@ -91,7 +91,7 @@ export default Ember.Mixin.create({
 
   actions: {
     promptDelete: function() {
-      this.get('modalService').toggleModal('confirm-delete', [this]);
+      this.get('modalService').toggleModal('confirm-delete', {resources: [this]});
     },
 
     delete: function() {

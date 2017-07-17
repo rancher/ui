@@ -2,7 +2,7 @@
   <h2>{{t 'newContainer.sidekick.title' service=model.service.displayName}}</h2>
   <h5>{{t 'newContainer.sidekick.detail' service=model.service.displayName}}</h5>
 
-  <div>
+  <div class="clearfix">
     {{#catalog-box
       model=model.service.launchConfig
       showIcon=false
@@ -32,11 +32,14 @@
           <h5>{{slc.name}}</h5>
           <p class="help-block">{{t 'newContainer.sidekick.sidekick'}}</p>
         {{else if (eq section 'footer')}}
-          {{#link-to (query-params launchConfigIndex=index)kclass="btn bg-primary"}}{{t 'action.upgrade'}}{{/link-to}}
-          <button class="btn bg-error" {{action "removeSidekick" index}}>{{t 'action.remove'}}</button>
+          <button class="btn bg-error" {{action "promptRemove" index}}>{{t 'action.remove'}}</button>
+          {{#link-to (query-params launchConfigIndex=index) class="btn bg-primary"}}{{t 'action.upgrade'}}{{/link-to}}
         {{/if}}
       {{/catalog-box}}
     {{/each}}
+  </div>
+  <div class="text-center">
+    <button class="btn bg-transparent" {{action 'cancel'}}>{{t 'generic.cancel'}}</button>
   </div>
 {{else}}
   {{container/new-edit
@@ -44,7 +47,7 @@
     isUpgrade=model.isUpgrade
     service=model.service
     launchConfig=model.launchConfig
-    launchConfigIndex=launchConfigIndex
+    launchConfigIndex=launchConfigIndexInt
     done=(action 'done')
     cancel=(action 'cancel')
 

@@ -14,17 +14,17 @@ http://creativecommons.org/publicdomain/zero/1.0/legalcode
 export default function Queue() {
 
   // initialise the queue and offset
-  var queue  = [];
-  var offset = 0;
+  this.queue  = [];
+  this.offset = 0;
 
   // Returns the length of the queue.
   this.getLength = function(){
-    return (queue.length - offset);
+    return (this.queue.length - this.offset);
   }
 
   // Returns true if the queue is empty, and false otherwise.
   this.isEmpty = function(){
-    return (queue.length == 0);
+    return (this.queue.length == 0);
   }
 
   /* Enqueues the specified item. The parameter is:
@@ -32,7 +32,7 @@ export default function Queue() {
    * item - the item to enqueue
    */
   this.enqueue = function(item){
-    queue.push(item);
+    this.queue.push(item);
   }
 
   /* Dequeues an item and returns it. If the queue is empty, the value
@@ -41,15 +41,15 @@ export default function Queue() {
   this.dequeue = function(){
 
     // if the queue is empty, return immediately
-    if (queue.length == 0) return undefined;
+    if (this.queue.length == 0) return undefined;
 
     // store the item at the front of the queue
-    var item = queue[offset];
+    var item = this.queue[this.offset];
 
     // increment the offset and remove the free space if necessary
-    if (++ offset * 2 >= queue.length){
-      queue  = queue.slice(offset);
-      offset = 0;
+    if (++ this.offset * 2 >= this.queue.length){
+      this.queue  = this.queue.slice(this.offset);
+      this.offset = 0;
     }
 
     // return the dequeued item
@@ -61,11 +61,11 @@ export default function Queue() {
    * queue is empty then undefined is returned.
    */
   this.peek = function(){
-    return (queue.length > 0 ? queue[offset] : undefined);
+    return (this.queue.length > 0 ? this.queue[this.offset] : undefined);
   }
 
   this.clear = function() {
-    offset = 0;
-    queue.length = 0;
+    this.offset = 0;
+    this.queue.length = 0;
   }
 }

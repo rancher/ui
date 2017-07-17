@@ -111,7 +111,7 @@ export default Ember.Component.extend(NewOrEdit, SelectTab, {
       this.set('launchConfig.secrets', []);
     }
 
-    this.set('isSidekick', parseInt(this.get('launchConfigIndex'),10) >= 0);
+    this.set('isSidekick', this.get('launchConfigIndex') >= 0);
 
     if ( this.get('isService') && !this.get('isSidekick') ) {
       this.setProperties({
@@ -287,11 +287,11 @@ export default Ember.Component.extend(NewOrEdit, SelectTab, {
         pr.set('secondaryLaunchConfigs', slc);
       }
 
-      let duplicate = slc.find((x) => {
-        return x.get('name').toLowerCase() === name;
+      let duplicate = slc.find((x, idx) => {
+        return idx !== this.get('launchConfigIndex') && x.get('name').toLowerCase() === name;
       });
       if ( duplicate ) {
-        errors.push(intl.t('newContainer.errors.duplicateName'), {name: this.get('name'), service: duplicate.get('displayName')});
+        errors.push(intl.t('newContainer.errors.duplicateName', {name: this.get('name'), service: duplicate.get('displayName')}));
         this.set('errors', errors);
         return false;
       }
@@ -388,7 +388,8 @@ export default Ember.Component.extend(NewOrEdit, SelectTab, {
     this.sendAction('done');
   },
 
-  header: function() {
+  header: '',
+  updateHeader: function() {
     let args = {};
     let k = 'newContainer.';
     k += (this.get('isUpgrade') ? 'upgrade' : 'add') + '.';
@@ -400,14 +401,18 @@ export default Ember.Component.extend(NewOrEdit, SelectTab, {
       } else {
         k += 'sidekick';
       }
+    } else if ( this.get('isGlobal') ) {
+      k += 'globalService';
     } else if ( this.get('isService') ) {
-      k += 'scalingGroup';
+      k += 'service';
     } else {
       k += 'container';
     }
 
-    return this.get('intl').t(k, args);
-  }.property('isUpgrade','isService','isSidekick','sidekickService.displayName','intl.locale'),
+    Ember.run.next(() => {
+      this.set('header', this.get('intl').t(k, args));
+    });
+  }.observes('isUpgrade','isService','isSidekick','isGlobal','sidekickService.displayName','intl.locale'),
 
   supportsSecrets: function() {
     return !!this.get('store').getById('schema','secret');

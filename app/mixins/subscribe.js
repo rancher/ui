@@ -115,7 +115,7 @@ export default Ember.Mixin.create({
       event = queue.dequeue();
     }
     Ember.endPropertyChanges();
-    console.log('Processed',count,'change events');
+    //console.log('Processed',count,'change events');
   },
 
   connectSubscribe() {
