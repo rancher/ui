@@ -38,19 +38,18 @@
         <p>{{t 'helpPage.stacks.content.paragraph1' appName=settings.appName}}</p>
 
         <p>{{t 'helpPage.stacks.content.paragraph2' appName=settings.appName}} <a href="{{docsLink}}/cattle/adding-services/" target="_blank">{{t 'helpPage.stacks.content.link'}}</a></p>
-    </div>
-  </div>
-  <div class="row">
-   {{#if hasHosts}}
-          {{#link-to "authenticated.project" class="btn bg-primary mb-10"}} {{t 'helpPage.stacks.addServiceLink'}}{{/link-to}}
-          {{#link-to "catalog-tab" class="btn bg-primary"}} {{t 'helpPage.stacks.addCatalogLink'}}{{/link-to}}
-        {{else}}
-          <div class="banner bg-warning p-20">
-          <p>{{t 'helpPage.stacks.noHosts'}}</p>
-          {{#link-to "authenticated.project" class="btn bg-primary mr-10" disabled=true}}{{t 'helpPage.stacks.manageServiceLink'}}{{/link-to}}
-          {{#link-to "catalog-tab" class="btn bg-primary" disabled=true}}{{t 'helpPage.stacks.addCatalogLink'}}{{/link-to}}
-          </div>
+
+        {{#if hasHosts}}
+            {{#link-to "authenticated.project" class="btn bg-primary"}} {{t 'helpPage.stacks.addServiceLink'}}{{/link-to}}
+            {{#link-to "catalog-tab" class="btn bg-primary"}} {{t 'helpPage.stacks.addCatalogLink'}}{{/link-to}}
+          {{else}}
+            <div class="banner bg-warning p-20">
+            <p>{{t 'helpPage.stacks.noHosts'}}</p>
+            {{#link-to "authenticated.project" class="btn bg-primary mr-10" disabled=true}}{{t 'helpPage.stacks.manageServiceLink'}}{{/link-to}}
+            {{#link-to "catalog-tab" class="btn bg-primary" disabled=true}}{{t 'helpPage.stacks.addCatalogLink'}}{{/link-to}}
+            </div>
         {{/if}}
+    </div>
   </div>
 </section>
 
@@ -62,7 +61,7 @@
     <hr/>
 
     <div class="row">
-      <p class="text-center col span-8">{{t 'helpPage.issues.content.paragraph1' appName=settings.appName}}</p>
+      <p>{{t 'helpPage.issues.content.paragraph1' appName=settings.appName}}</p>
     </div>
 
     <div class="row">
@@ -97,7 +96,7 @@
         </p>
       </div>
     </div>
-    <div class="row text-center">
+    <div class="banner bg-info p-10 mb-0 text-center">
         {{t 'helpPage.issues.header.tagline'}} <a href="{{settings.issueUrl}}" class="btn bg-primary ml-10" target="_blank">{{t 'helpPage.issues.header.fileBug'}}</a>
       </div>
   </section>
@@ -107,7 +106,7 @@
   <hr/>
   {{#if modelResolved}}
     {{#unless modelError}}
-      <div class="row">
+      <div class="row mb-30">
         <div class="col span-3">
           <h4>{{t 'helpPage.forums.announcements.header'}}</h4>
           <ul class="list-unstyled">
@@ -117,7 +116,7 @@
               </li>
             {{/each}}
           </ul>
-          <a class="btn btn-sm bg-primary mt-10 mb-20" href="{{forumsLink}}/c/announcements" target="blank">{{t 'helpPage.forums.announcements.buttonText'}}</a>
+          <a class="btn btn-sm bg-primary mt-10" href="{{forumsLink}}/c/announcements" target="blank">{{t 'helpPage.forums.announcements.buttonText'}}</a>
           </div>
           <div class="col span-3">
           <h4>{{t 'helpPage.forums.general.header'}}</h4>
@@ -128,7 +127,7 @@
               </li>
             {{/each}}
           </ul>
-          <a class="btn btn-sm bg-primary mt-10 mb-20" href="{{forumsLink}}/c/general" target="blank">{{t 'helpPage.forums.general.buttonText'}}</a>
+          <a class="btn btn-sm bg-primary mt-10" href="{{forumsLink}}/c/general" target="blank">{{t 'helpPage.forums.general.buttonText'}}</a>
 
         </div>
         <div class="col span-3">
@@ -140,10 +139,10 @@
               </li>
             {{/each}}
           </ul>
-          <a class="btn btn-sm bg-primary mt-10 mb-20" href="{{forumsLink}}/c/rancher" target="blank">{{t 'helpPage.forums.rancher.buttonText'}}</a>
+          <a class="btn btn-sm bg-primary mt-10" href="{{forumsLink}}/c/rancher" target="blank">{{t 'helpPage.forums.rancher.buttonText'}}</a>
           </div>
           <div class="col span-3">
-          <h3>{{t 'helpPage.forums.rancherOs.header'}}</h3>
+          <h4>{{t 'helpPage.forums.rancherOs.header'}}</h4>
           <ul class="list-unstyled">
             {{#each model.rancherOS.topics as |topic|}}
               <li class="clip">
@@ -151,7 +150,7 @@
               </li>
             {{/each}}
           </ul>
-          <a class="btn btn-sm bg-primary mt-10 mb-20" href="{{forumsLink}}/c/rancher-os" target="blank">{{t 'helpPage.forums.rancherOs.buttonText'}}</a>
+          <a class="btn btn-sm bg-primary mt-10" href="{{forumsLink}}/c/rancher-os" target="blank">{{t 'helpPage.forums.rancherOs.buttonText'}}</a>
         </div>
       </div>
     {{else}}
@@ -160,7 +159,7 @@
   {{else}}
     <div class="loading text-center"></div>
   {{/if}}
-  <div class="banner bg-info p-10 text-center">
+  <div class="banner bg-info p-10 mb-0 text-center">
     {{t 'helpPage.forums.tagline'}} <a href="{{forumsLink}}" class="btn bg-primary ml-10" target="_blank">{{t 'helpPage.forums.buttonText'}}</a>
   </div>
   </section>
