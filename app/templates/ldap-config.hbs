@@ -85,15 +85,15 @@
   <section class="mt-40 box">
     <h3>{{t 'ldap.accessConfig.header' providerName=(t providerName)}}</h3>
     <hr/>
-    <p class="text-info">{{t 'ldap.accessConfig.subtext1' providerName=(t providerName) htmlSafe=true}}</p>
+    <p class="text-info mb-0">{{t 'ldap.accessConfig.subtext1' providerName=(t providerName) htmlSafe=true}}</p>
     <div class="row">
-      <div class="col span-6">
+      <div class="col span-6 mb-0">
         <div class="inline-form">
           <label class="acc-label pb-5">{{t 'ldap.accessConfig.hostName.labelText'}}{{field-required}}</label>
           {{input value=model.server classNames="form-control"}}
         </div>
       </div>
-      <div class="col span-6">
+      <div class="col span-6 mb-0">
         <label class="acc-label pb-5">{{t 'ldap.accessConfig.port.labelText'}}</label>
         <div class="input-group">
           {{input-integer value=model.port min=1 max=65535 classNames="form-control"}}
@@ -103,15 +103,15 @@
         </div>
       </div>
     </div>
-
-    <p class="text-info">{{t 'ldap.accessConfig.subtext2' appName=settings.appName}}</p>
+    <hr class="mt-30 mb-30"/>
+    <p class="text-info mb-0">{{t 'ldap.accessConfig.subtext2' appName=settings.appName}}</p>
     <div class="row">
       {{#unless isOpenLdap}}
         <div class="col span-4">
           <div class="inline-form">
             <label class="acc-label pb-5">{{t 'ldap.accessConfig.defaultDomain.labelText'}}</label>
             {{input value=model.loginDomain classNames="form-control" placeholder=(t 'ldap.accessConfig.defaultDomain.placeholder')}}
-            <p class="text-info">{{t 'ldap.accessConfig.defaultDomain.helpText'}}</p>
+            <p class="help-block">{{t 'ldap.accessConfig.defaultDomain.helpText'}}</p>
           </div>
         </div>
       {{/unless}}
@@ -134,14 +134,14 @@
         <div class="inline-form">
           <label class="acc-label pb-5">{{t 'ldap.accessConfig.userSearchBase.labelText'}}{{field-required}}</label>
           {{input value=model.domain classNames="form-control" placeholder=(t 'ldap.accessConfig.userSearchBase.placeholder')}}
-          <p class="text-info">{{t 'ldap.accessConfig.userSearchBase.helpText'}}</p>
+          <p class="help-block">{{t 'ldap.accessConfig.userSearchBase.helpText'}}</p>
         </div>
       </div>
       <div class="col span-6">
         <div class="inline-form">
           <label class="acc-label pb-5">{{t 'ldap.accessConfig.groupSearchBase.labelText'}}{{field-required}}</label>
           {{input value=model.groupDomain classNames="form-control" placeholder=(t 'ldap.accessConfig.groupSearchBase.placeholder')}}
-          <p class="text-info">{{t 'ldap.accessConfig.groupSearchBase.helpText'}}</p>
+          <p class="help-block">{{t 'ldap.accessConfig.groupSearchBase.helpText'}}</p>
         </div>
       </div>
     </div>
