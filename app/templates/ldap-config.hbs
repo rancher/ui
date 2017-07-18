@@ -1,22 +1,29 @@
 <section class="well">
   <h2>
-    {{#if access.enabled}}
-      <b>{{t 'ldap.header.enabled.label' providerName=(t providerName)}}</b>
+    {{#if canEdit}}
+      {{#if editing}}
+        <b class="text-warning">{{t 'ldap.header.editing.label' providerName=(t providerName)}}</b>
+      {{else}}
+        <b class="text-warning">{{t 'ldap.header.disabled.label' providerName=(t providerName)}}</b>
+      {{/if}}
     {{else}}
-      <b class="text-warning">{{t 'ldap.header.disabled.label' providerName=(t providerName)}}</b>
+      <b>{{t 'ldap.header.enabled.label' providerName=(t providerName)}}</b>
     {{/if}}
   </h2>
   <div>
-    {{#if access.enabled}}
-      {{t (concat-str 'ldap.header.enabled.' model.accessMode character='') appName=settings.appName providerName=(t providerName) users=numUsers groups=numGroups}}
-    {{else}}
+    {{#if canEdit}}
       {{t 'ldap.header.disabled.warning' appName=settings.appName providerName=(t providerName)}}
+    {{else}}
+      {{t (concat-str 'ldap.header.enabled.' model.accessMode character='') appName=settings.appName providerName=(t providerName) users=numUsers groups=numGroups}}
     {{/if}}
   </div>
 </section>
 
-{{#if access.enabled}}
+{{#unless canEdit}}
   <section class="well">
+    <button class="btn btn-warning btn-sm pull-right" {{action "edit"}} style="margin-top: -5px;">
+      <i class="icon icon-edit"></i> edit
+    </button>
     <h3>{{t 'ldap.accessEnabled.header'}}</h3>
     <hr/>
     <p class="help-block">{{t 'ldap.accessEnabled.subtext'}}</p>
@@ -75,9 +82,9 @@
     {{/if}}
 
   </section>
-{{/if}}
+{{/unless}}
 
-{{#unless access.enabled}}
+{{#if canEdit}}
   <form autocomplete="on">
     <section class="well">
       <h3></h3>
@@ -217,7 +224,11 @@
     </section>
 
     <section class="well">
-      <h3>{{t 'ldap.testAuth.header'}}</h3>
+      {{#if editing}}
+        <h3>{{t 'ldap.testAuth.editingHeader'}}</h3>
+      {{else}}
+        <h3>{{t 'ldap.testAuth.header'}}</h3>
+      {{/if}}
       <hr/>
       <p class="help-block">{{t 'ldap.testAuth.helpText' providerName=(t providerName)}}</p>
       {{top-errors errors=errors}}
@@ -236,18 +247,26 @@
           </div>
         </div>
         <div class="col-md-4">
-          <div class="form-group">
-            <label>&nbsp;</label>
-            <button disabled={{createDisabled}} class="btn btn-primary" style="display: block;" {{action "test"}}>
+          <div class="form-group" style="padding-top: 21px;">
+            <button disabled={{createDisabled}} class="btn btn-primary" {{action "test"}}>
               {{#if testing}}
                 <i class="icon icon-spinner icon-spin"></i> {{t 'ldap.testAuth.authenticate.post'}}
               {{else}}
-                {{t 'ldap.testAuth.authenticate.pre'}}
+                {{#if editing}}
+                  Test and Save
+                {{else}}
+                  {{t 'ldap.testAuth.authenticate.pre'}}
+                {{/if}}
               {{/if}}
             </button>
+            {{#if editing}}
+              <button class="btn btn-primary" {{action "cancel"}}>
+                cancel
+              </button>
+            {{/if}}
           </div>
         </div>
       </div>
     </section>
   </form>
-{{/unless}}
+{{/if}}
