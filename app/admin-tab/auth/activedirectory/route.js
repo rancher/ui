@@ -9,7 +9,7 @@ export default Ember.Route.extend({
     }).then((collection) => {
 
       if (!collection.enabled) {
-        let existing = Ember.Object.create(collection.ldapConfig);
+        let existing = this.get('authStore').createRecord(collection.ldapConfig);
         let defaults = this.get('authStore').getById('schema', this.get('resourceType')).get('resourceFields');
 
         Object.keys(defaults).forEach((key) => {
