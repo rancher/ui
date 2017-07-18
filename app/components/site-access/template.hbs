@@ -1,48 +1,50 @@
-<h3>{{t 'siteAccess.header'}}</h3>
-<p class="text-info">
-  {{t 'siteAccess.helpText' appName=settings.appName htmlSafe=true}}
-</p>
-<hr/>
+<section class="box mt-30">
+  <h3>{{t 'siteAccess.header'}}</h3>
+  <hr/>
+  <p class="text-info">
+    {{t 'siteAccess.helpText' appName=settings.appName htmlSafe=true}}
+  </p>
 
-<div class="row">
-  <div class="col span-6">
-    <div class="radio">
-      <label>{{radio-button selection=copy.accessMode value="unrestricted"}} {{t 'siteAccess.unrestricted' individuals=(t individuals) collection=(t collection)}}</label>
+  <div class="row">
+    <div class="col span-7">
+      <div class="radio">
+        <label>{{radio-button selection=copy.accessMode value="unrestricted"}} {{t 'siteAccess.unrestricted' individuals=(t individuals) collection=(t collection)}}</label>
+      </div>
+      <div class="radio">
+        <label>{{radio-button selection=copy.accessMode value="restricted"}} {{t 'siteAccess.restricted' individuals=(t individuals) collection=(t collection)}}</label>
+      </div>
+      <div class="radio">
+        <label>{{radio-button selection=copy.accessMode value="required"}} {{t 'siteAccess.required' individuals=(t individuals) collection=(t collection)}}</label>
+      </div>
     </div>
-    <div class="radio">
-      <label>{{radio-button selection=copy.accessMode value="restricted"}} {{t 'siteAccess.restricted' individuals=(t individuals) collection=(t collection)}}</label>
-    </div>
-    <div class="radio">
-      <label>{{radio-button selection=copy.accessMode value="required"}} {{t 'siteAccess.required' individuals=(t individuals) collection=(t collection)}}</label>
-    </div>
-  </div>
-  <div class="col span-6">
-    {{#if showList}}
-      {{input-identity allowTeams=false action="addAuthorized" onError="showError"}}
+    <div class="col span-5">
+      {{#if showList}}
+        {{input-identity allowTeams=false action="addAuthorized" onError="showError"}}
 
-      <hr/>
-      <h5>{{t 'siteAccess.listHeader' individuals=(t individuals) collection=(t collection)}}</h5>
+        <hr/>
+        <h5>{{t 'siteAccess.listHeader' individuals=(t individuals) collection=(t collection)}}</h5>
 
-      <ul class="list-unstyled gh-block-list mt-10">
-        {{#each copy.allowedIdentities as |item|}}
-          <li>
-            {{#identity-block identity=item}}
-              <button class="btn bg-primary btn-sm pull-right gh-action" {{action "removeIdentity" item}} disabled={{eq item.id access.identity.id}}><i class="icon icon-minus"/></button>
-            {{/identity-block}}
-          </li>
-        {{/each}}
-      </ul>
-      {{#if (eq copy.allowedIdentities.length 0)}}
-        <span class="text-muted">{{t 'siteAccess.noIdentity'}}</span>
+        <ul class="list-unstyled gh-block-list mt-10">
+          {{#each copy.allowedIdentities as |item|}}
+            <li>
+              {{#identity-block identity=item}}
+                <button class="btn bg-primary btn-sm pull-right gh-action" {{action "removeIdentity" item}} disabled={{eq item.id access.identity.id}}><i class="icon icon-minus"/></button>
+              {{/identity-block}}
+            </li>
+          {{/each}}
+        </ul>
+        {{#if (eq copy.allowedIdentities.length 0)}}
+          <span class="text-muted">{{t 'siteAccess.noIdentity'}}</span>
+        {{/if}}
       {{/if}}
-    {{/if}}
+    </div>
   </div>
-</div>
 
-<hr/>
+  <hr/>
 
-{{top-errors errors=errors}}
+  {{top-errors errors=errors}}
 
-<div class="inline-block">
-  {{save-cancel cancelDisabled=true saved=saved savedDisabled=saved editing=true save="save"}}
-</div>
+  <div class="inline-block">
+    {{save-cancel cancelDisabled=true saved=saved savedDisabled=saved editing=true save="save"}}
+  </div>
+</section>
