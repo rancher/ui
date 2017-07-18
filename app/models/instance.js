@@ -27,6 +27,13 @@ Instance.reopenClass({
       delete data.init;
       return data;
     }
+  },
+  mangleOut(data) {
+    if (data.hasOwnProperty('_init')) {
+      data.init = data._init;
+      delete data._init;
+      return data;
+    }
   }
 
 });
