@@ -111,7 +111,7 @@ export default Ember.Controller.extend({
             }
           }).catch((err) => {
             this.send('gotError', err.statusText);
-          })
+          });
         } else {
           model.save().then(() => {
             this.send('authenticate');
