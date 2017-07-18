@@ -207,4 +207,15 @@ var Container = Instance.extend({
   }.property('labels'),
 });
 
+Container.reopenClass({
+  mangleIn(data) {
+    if (data.hasOwnProperty('init')) {
+      data._init = data.init;
+      delete data.init;
+      return data;
+    }
+  }
+
+});
+
 export default Container;
