@@ -25,15 +25,15 @@ Instance.reopenClass({
     if (data.hasOwnProperty('init')) {
       data._init = data.init;
       delete data.init;
-      return data;
     }
+    return data;
   },
   mangleOut(data) {
     if (data.hasOwnProperty('_init')) {
       data.init = data._init;
       delete data._init;
-      return data;
     }
+    return data;
   }
 
 });
