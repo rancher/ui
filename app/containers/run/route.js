@@ -21,6 +21,9 @@ export default Ember.Route.extend({
   model: function(params/*, transition*/) {
     var store = this.get('store');
     let lcIndex = params.launchConfigIndex;
+    if ( lcIndex ) {
+      lcIndex = parseInt(lcIndex,10);
+    }
 
     let emptyService = store.createRecord({
       type: 'scalingGroup', // @TODO switch back to service
@@ -63,7 +66,7 @@ export default Ember.Route.extend({
         }
 
         let clone = service.clone();
-        let lc = clone.launchConfig;
+        let lc;
         if ( lcIndex === -1 ) {
           // Primary service
           lc = clone.launchConfig;
