@@ -1,12 +1,12 @@
 import Resource from 'ember-api-store/models/resource';
 
-var LaunchConfig = Resource.extend({
+var SecondaryLaunchConfig = Resource.extend({
   displayImage: function() {
     return (this.get('imageUuid')||'').replace(/^docker:/,'');
   }.property('imageUuid'),
 });
 
-LaunchConfig.reopenClass({
+SecondaryLaunchConfig.reopenClass({
   mangleIn(data) {
     if (data.hasOwnProperty('init')) {
       data._init = data.init;
@@ -24,4 +24,4 @@ LaunchConfig.reopenClass({
 
 });
 
-export default LaunchConfig;
+export default SecondaryLaunchConfig;
