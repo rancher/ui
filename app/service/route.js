@@ -4,22 +4,27 @@ import FilteredSorted from 'ui/utils/filtered-sorted-array-proxy';
 export default Ember.Route.extend({
   model: function(params) {
     var service = this.get('store').getById('service', params.scaling_group_id);
-    if ( service )
-    {
-      return this.getServiceLogs(service).then((resp) => {
+    if ( service ) {
+      return Ember.RSVP.hash({
+        hosts:         this.get('store').findAll('host'),
+        logs: this.getServiceLogs(service),
+      }).then((hash) => {
         return Ember.Object.create({
           service: service,
           stack: service.get('stack'),
-          logs: resp.logs,
+          logs: hash.logs,
+          hosts: hash.hosts
         });
       });
-    }
-    else
-    {
-      return this.get('store').find('service', params.scaling_group_id).then((service) => {
+    } else {
+      return Ember.RSVP.hash({
+        service: this.get('store').find('service', params.scaling_group_id),
+        hosts:         this.get('store').findAll('host'),
+      }).then((hash) => {
         return Ember.Object.create({
-          service: service,
-          stack: service.get('stack'),
+          service: hash.service,
+          stack: hash.service.get('stack'),
+          hosts: hash.hosts
         });
       });
     }

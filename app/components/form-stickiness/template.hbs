@@ -8,27 +8,41 @@
 }}
 
   <label>{{t 'formStickiness.balancerTarget'}}</label>
-  <div class="radio">
-    <label>{{radio-button selection=balancerTarget value="any"}} {{t 'formStickiness.any' htmlSafe=true}}</label>
-  </div>
-  <div class="radio">
-    <label>{{radio-button selection=balancerTarget value="prefer-local"}} {{t 'formStickiness.preferLocal' htmlSafe=true}}</label>
-  </div>
-  <div class="radio">
-    <label>{{radio-button selection=balancerTarget value="only-local"}} {{t 'formStickiness.onlyLocal' htmlSafe=true}}</label>
-  </div>
+  {{#if editing}}
+    <div class="radio">
+      <label>{{radio-button selection=balancerTarget value="any"}} {{t 'formStickiness.any' htmlSafe=true}}</label>
+    </div>
+    <div class="radio">
+      <label>{{radio-button selection=balancerTarget value="prefer-local"}} {{t 'formStickiness.preferLocal' htmlSafe=true}}</label>
+    </div>
+    <div class="radio">
+      <label>{{radio-button selection=balancerTarget value="only-local"}} {{t 'formStickiness.onlyLocal' htmlSafe=true}}</label>
+    </div>
+  {{else}}
+    {{balancerTarget}}
+  {{/if}}
 
   <hr/>
 
   <label>{{t 'formStickiness.sticky'}}</label>
   {{#liquid-if lbConfig.canSticky}}
     <div class="row {{unless isNone 'inline-form'}}">
-      <div class="col span-2 radio">
-        <label>{{radio-button selection=stickiness value="none"}} {{t 'formStickiness.none'}}</label>
-      </div>
-      <div class="col span-4 radio">
-        <label>{{radio-button selection=stickiness value="cookie"}} {{t 'formStickiness.newCookie'}}</label>
-      </div>
+      {{#if editing}}
+        <div class="col span-2 radio">
+          <label>{{radio-button selection=stickiness value="none"}} {{t 'formStickiness.none'}}</label>
+        </div>
+        <div class="col span-4 radio">
+          <label>{{radio-button selection=stickiness value="cookie"}} {{t 'formStickiness.newCookie'}}</label>
+        </div>
+      {{else}}
+        <div class="col span-12">
+          {{#if (eq stickiness 'cookie')}}
+            {{t 'formStickiness.newCookie'}}
+          {{else}}
+            {{t 'formStickiness.none'}}
+          {{/if}}
+        </div>
+      {{/if}}
     </div>
 
     {{#liquid-if isCookie}}
@@ -37,42 +51,64 @@
           <div class="col span-2 col-inline">
             <label>{{t 'formStickiness.cookieName'}}</label>
           </div>
-          <div class="col span-3">
-            {{input type="text" classNames="form-control" value=policy.cookie placeholder=(t 'formStickiness.placeholder.sticky')}}
+          <div class="col span-3 {{if editing '' 'col-inline'}}">
+            {{#if editing}}
+              {{input type="text" classNames="form-control" value=policy.cookie placeholder=(t 'formStickiness.placeholder.sticky')}}
+            {{else}}
+              {{policy.cookie}}
+            {{/if}}
           </div>
           <div class="col span-2 col-inline">
             <label>{{t 'formStickiness.mode'}}</label>
           </div>
-          <div class="col span-3">
-            {{new-select
-              class="form-control"
-              content=modeChoices
-              value=policy.mode
-            }}
+          <div class="col span-3 {{if editing '' 'col-inline'}}">
+            {{#if editing}}
+              {{new-select
+                  class="form-control"
+                  content=modeChoices
+                  value=policy.mode
+              }}
+            {{else}}
+              {{policy.mode}}
+            {{/if}}
           </div>
         </div>
         <div class="row inline-form">
           <div class="col span-2 col-inline">
             <label>{{t 'formStickiness.domain'}}</label>
           </div>
-          <div class="col span-8">
-            {{input type="text" classNames="form-control" value=policy.domain placeholder=(t 'formStickiness.placeholder.domain')}}
+          <div class="col span-8 {{if editing '' 'col-inline'}}">
+            {{#if editing}}
+              {{input type="text" classNames="form-control" value=policy.domain placeholder=(t 'formStickiness.placeholder.domain')}}
+            {{else}}
+              {{policy.domain}}
+            {{/if}}
           </div>
         </div>
         <div class="row inline-form">
           <div class="col span-2 col-inline">
             <label>{{t 'formStickiness.options'}}</label>
           </div>
-          <div class="col span-8">
-            <div class="checkbox">
-              <label>{{input type="checkbox" checked=policy.indirect}} {{t 'formStickiness.indirect'}}</label>
-            </div>
-            <div class="checkbox">
-              <label>{{input type="checkbox" checked=policy.nocache}} {{t 'formStickiness.sendHeader'}}</label>
-            </div>
-            <div class="checkbox">
-              <label>{{input type="checkbox" checked=policy.postonly}} {{t 'formStickiness.onPost'}}</label>
-            </div>
+          <div class="col span-8 {{if editing '' 'col-inline'}}">
+            {{#if editing}}
+              <div class="checkbox">
+                <label>{{input type="checkbox" checked=policy.indirect}} {{t 'formStickiness.indirect'}}</label>
+              </div>
+              <div class="checkbox">
+                <label>{{input type="checkbox" checked=policy.nocache}} {{t 'formStickiness.sendHeader'}}</label>
+              </div>
+              <div class="checkbox">
+                <label>{{input type="checkbox" checked=policy.postonly}} {{t 'formStickiness.onPost'}}</label>
+              </div>
+            {{else}}
+              {{#if (eq policy.indirect)}}
+                {{t 'formStickiness.indirect'}}
+              {{else if (eq policy.nocache)}}
+                {{t 'formStickiness.sendHeader'}}
+              {{else if (eq policy.postonly)}}
+                {{t 'formStickiness.onPost'}}
+              {{/if}}
+            {{/if}}
           </div>
         </div>
       </div>
