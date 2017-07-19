@@ -11,12 +11,18 @@ export default Ember.Route.extend({
         instanceLinks: container.followLink('instanceLinks'),
       }).then((hash) => {
 
-        return {
+        let out = {
           container:     container,
           ports:         hash.ports,
           hosts:         hash.hosts,
           instanceLinks: hash.instanceLinks,
         };
+
+        if (container.serviceId) {
+          out.service = this.get('store').getById('service', container.serviceId);
+        }
+
+        return out;
       });
     });
   },
