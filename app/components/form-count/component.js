@@ -1,5 +1,4 @@
 import Ember from 'ember';
-import C from 'ui/utils/constants';
 
 function newMax(val, curMax, absoluteMax) {
   return Math.min(absoluteMax, Math.max(curMax, Math.ceil(val/10)*10));
@@ -44,4 +43,3 @@ export default Ember.Component.extend({
     this.set('sliderMax', newMax(cur, this.get('sliderMax'), this.get('max')));
   }),
 });
-

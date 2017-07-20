@@ -84,7 +84,6 @@ export default Ember.Mixin.create({
     }
 
     let store = this.get('store');
-    let count = 0;
     let event = queue.dequeue();
 
     Ember.beginPropertyChanges();
