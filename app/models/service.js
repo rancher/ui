@@ -141,7 +141,7 @@ var Service = Resource.extend({
   availableActions: function() {
     var a = this.get('actionLinks');
 
-    var canUpgrade = !!a.upgrade && this.get('canUpgrade');
+    var canUpgrade = this.get('canUpgrade');
     var isK8s = this.get('isK8s');
     var isSwarm = this.get('isSwarm');
     var canHaveContainers = this.get('canHaveContainers');
@@ -266,7 +266,10 @@ var Service = Resource.extend({
   hasPorts: Ember.computed.alias('isReal'),
   hasImage: Ember.computed.alias('isReal'),
   hasLabels: Ember.computed.alias('isReal'),
-  canUpgrade: Ember.computed.alias('isReal'),
+
+  canUpgrade: function() {
+    return this.get('isReal') && !!this.get('actionLinks.upgrade');
+  }.property('isReal','actionLinks.upgrade'),
 
   isBalancer: function() {
     return ['loadbalancerservice'].indexOf(this.get('type').toLowerCase()) >= 0;
