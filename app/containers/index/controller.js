@@ -72,11 +72,9 @@ export default Ember.Controller.extend({
     });
 
     // Containers
-    if ( !this.get('tags') ) {
-      out.pushObjects(this.get('model.instances').filterBy('serviceId',null).filter((obj) => {
-        return showStack[obj.get('stackId')];
-      }));
-    }
+    out.pushObjects(this.get('model.instances').filterBy('serviceId',null).filter((obj) => {
+      return showStack[obj.get('stackId')];
+    }));
 
     return out;
   }.property('showStack','tags','model.services.@each.{isReal,isBalancer}','standaloneContainers.[]'),

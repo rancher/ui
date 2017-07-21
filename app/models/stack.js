@@ -22,9 +22,15 @@ export function normalizeTag(name) {
   return (name||'').trim().toLowerCase();
 }
 
-export function tagsToArray(str) {
+export function tagsToArray(str, normalize=true) {
   return (str||'').split(/\s*,\s*/)
-    .map((tag) => normalizeTag(tag))
+    .map((tag) => {
+      if (normalize) {
+        return normalizeTag(tag);
+      } else {
+        return tag;
+      }
+    })
     .filter((tag) => tag.length > 0);
 }
 
@@ -185,9 +191,18 @@ var Stack = Resource.extend(StateCounts, {
     }
   }.property('externalIdInfo.kind','group','system'),
 
-  tags: Ember.computed('group', {
+  normalizedTags: Ember.computed('group', {
     get() {
       return tagsToArray(this.get('group'));
+    },
+    set(key,value) {
+      this.set('group', (value||[]).map((x) => normalizeTag(x)).join(', '));
+      return value;
+    }
+  }),
+  tags: Ember.computed('group', {
+    get(){
+      return tagsToArray(this.get('group'), false);
     },
     set(key,value) {
       this.set('group', (value||[]).map((x) => normalizeTag(x)).join(', '));
