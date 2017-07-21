@@ -218,11 +218,14 @@
         <label class="acc-label">{{t 'machine.driverAmazon.instanceType.label'}}</label>
       </div>
       <div class="col span-4">
-        <select class="form-control" onchange={{action (mut amazonec2Config.instanceType) value="target.value"}}>
-          {{#each instanceTypes as |choice|}}
-            <option value={{choice}} selected={{eq amazonec2Config.instanceType choice}}>{{choice}}</option>
-          {{/each}}
-        </select>
+        {{new-select
+          classNames="form-control"
+          value=amazonec2Config.instanceType
+          content=instanceTypes
+          optionValuePath="name"
+          optionLabelPath="name"
+          optionGroupPath="group"
+        }}
       </div>
       <div class="col span-2 col-inline">
         <label class="acc-label">{{t 'machine.driverAmazon.rootSize.label'}}</label>
