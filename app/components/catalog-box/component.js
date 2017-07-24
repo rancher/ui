@@ -4,7 +4,7 @@ export default Ember.Component.extend({
   settings: Ember.inject.service(),
   tagName: 'div',
 
-  classNames: ['catalog-box', 'box', 'p-0'],
+  classNames: ['catalog-box', 'box'],
   classNameBindings: ['active::inactive'],
 
   model: null,

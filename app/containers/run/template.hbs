@@ -1,18 +1,23 @@
 {{#if model.selectLaunchConfig}}
+  <section class="header">
+    <h1>{{t 'newContainer.sidekick.header' service=model.service.displayName}}</h1>
+  </section>
   <h2>{{t 'newContainer.sidekick.title' service=model.service.displayName}}</h2>
-  <h5>{{t 'newContainer.sidekick.detail' service=model.service.displayName}}</h5>
+  <p class="help-block">{{t 'newContainer.sidekick.detail' service=model.service.displayName}}</p>
 
   <div class="clearfix">
     {{#catalog-box
+      classNames='bg-secondary'
       model=model.service.launchConfig
       showIcon=false
       showDescription=false
       as |section|
     }}
       {{#if (eq section 'header')}}
-        <i class="icon icon-service icon-2x"/>
+        <i class="icon icon-service icon-4x"/>
       {{else if (eq section 'body')}}
-        <h5>{{model.service.name}}</h5>
+        <h3>{{model.service.name}}</h3>
+        <hr/>
         <p class="help-block">{{t 'newContainer.sidekick.primary'}}</p>
       {{else if (eq section 'footer')}}
         {{#link-to (query-params launchConfigIndex=-1) class="btn bg-primary"}}{{t 'action.upgrade'}}{{/link-to}}
@@ -27,9 +32,10 @@
         as |section|
       }}
         {{#if (eq section 'header')}}
-          <i class="icon icon-container icon-2x"/>
+          <i class="icon icon-container icon-4x text-muted"/>
         {{else if (eq section 'body')}}
-          <h5>{{slc.name}}</h5>
+          <h3>{{slc.name}}</h3>
+          <hr/>
           <p class="help-block">{{t 'newContainer.sidekick.sidekick'}}</p>
         {{else if (eq section 'footer')}}
           <button class="btn bg-error" {{action "promptRemove" index}}>{{t 'action.remove'}}</button>
