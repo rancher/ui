@@ -2,6 +2,7 @@ import Ember from 'ember';
 import NewOrEdit from 'ui/mixins/new-or-edit';
 import {tagChoices, tagsToArray} from 'ui/models/stack';
 import ModalBase from 'ui/mixins/modal-base';
+import { uniqKeys } from 'ui/utils/util';
 
 export default Ember.Component.extend(ModalBase, NewOrEdit, {
   classNames: ['large-modal'],
@@ -28,7 +29,12 @@ export default Ember.Component.extend(ModalBase, NewOrEdit, {
   },
 
   tagChoices: function() {
-    return tagChoices(this.get('allStacks')).sort();
+    let choices = uniqKeys(tagChoices(this.get('allStacks'))).sort();
+    if ( !choices.length ) {
+      return null;
+    }
+
+    return choices;
   }.property('allStacks.@each.group'),
 
   doneSaving: function() {

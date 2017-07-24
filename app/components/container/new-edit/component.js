@@ -139,7 +139,6 @@ export default Ember.Component.extend(NewOrEdit, SelectTab, {
   // ----------------------------------
   launchConfigChoices: function() {
     var isUpgrade = this.get('isUpgrade');
-    let intl = this.get('intl');
 
     // Enabled is only for upgrade, and isn't maintained if the names change, but they can't on upgrade.
     var out = [
