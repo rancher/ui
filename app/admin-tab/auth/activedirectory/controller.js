@@ -73,14 +73,17 @@ export default Ember.Controller.extend({
     test: function() {
       this.send('clearError');
 
-      var model = this.get('model');
+      let model   = this.get('model');
+      let editing = this.get('editing');
 
-      this.get('model').setProperties({
-        'provider'          : 'ldapconfig',
-        'enabled'           : false, // It should already be, but just in case..
-        'accessMode'        : 'unrestricted',
-        'allowedIdentities' : [],
-      });
+      if (!editing) {
+        model.setProperties({
+          'provider'          : 'ldapconfig',
+          'enabled'           : false, // It should already be, but just in case..
+          'accessMode'        : 'unrestricted',
+          'allowedIdentities' : [],
+        });
+      }
 
       var errors = model.validationErrors();
 
@@ -88,9 +91,8 @@ export default Ember.Controller.extend({
         this.set('errors', errors);
       } else {
         this.set('testing', true);
-        if (this.get('editing')) {
+        if (editing) {
 
-          let model = this.get('model');
           let data  = {
             type:       'testAuthConfig',
             authConfig: model,
@@ -102,22 +104,27 @@ export default Ember.Controller.extend({
             method: 'POST',
             data:   data,
           }).then((resp) => {
+
             if (resp.status === 200) {
               model.save().then(() => {
-                this.send('authenticate');
+                this.send('waitAndRefresh');
               }).catch(err => {
                 this.send('gotError', err);
               });
             }
+
           }).catch((err) => {
             this.send('gotError', err.statusText);
           });
+
         } else {
+
           model.save().then(() => {
             this.send('authenticate');
           }).catch(err => {
             this.send('gotError', err);
           });
+
         }
       }
     },
