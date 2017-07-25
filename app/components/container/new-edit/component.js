@@ -135,37 +135,6 @@ export default Ember.Component.extend(NewOrEdit, SelectTab, {
   },
 
   // ----------------------------------
-  // Sidekicks
-  // ----------------------------------
-  launchConfigChoices: function() {
-    var isUpgrade = this.get('isUpgrade');
-
-    // Enabled is only for upgrade, and isn't maintained if the names change, but they can't on upgrade.
-    var out = [
-      {
-        index: -1,
-        name: this.get('service.name'),
-        enabled: true
-      }
-    ];
-
-    (this.get('service.secondaryLaunchConfigs')||[]).forEach((item, index) => {
-      out.push({
-        index: index,
-        name: item.get('name'),
-        enabled: !isUpgrade,
-        uiId: item.get('uiId'),
-      });
-    });
-
-    return out;
-  }.property('service.name','service.secondaryLaunchConfigs.@each.name','intl.locale'),
-
-  noLaunchConfigsEnabled: function() {
-    return this.get('launchConfigChoices').filterBy('enabled',true).get('length') === 0;
-  }.property('launchConfigChoices.@each.enabled'),
-
-  // ----------------------------------
   // Labels
   // ----------------------------------
   userLabels: null,
@@ -411,7 +380,7 @@ export default Ember.Component.extend(NewOrEdit, SelectTab, {
     Ember.run.next(() => {
       this.set('header', this.get('intl').t(k, args));
     });
-  }.observes('isUpgrade','isService','isSidekick','isGlobal','sidekickService.displayName','intl.locale'),
+  }.observes('isUpgrade','isService','isSidekick','isGlobal','sidekickService.displayName','intl.locale').on('init'),
 
   supportsSecrets: function() {
     return !!this.get('store').getById('schema','secret');
