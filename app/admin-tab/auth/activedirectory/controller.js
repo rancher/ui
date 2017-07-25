@@ -75,9 +75,12 @@ export default Ember.Controller.extend({
   actions: {
     edit: function() {
       this.toggleProperty('editing');
+      this.set('originalModel', this.get('model').clone());
     },
     cancel: function() {
+      this.send('clearError');
       this.set('editing', false);
+      this.set('model', this.get('originalModel'));
     },
     test: function() {
       this.send('clearError');
