@@ -3,7 +3,7 @@ import Errors from 'ui/utils/errors';
 import C from 'ui/utils/constants';
 
 var PLAIN_PORT = 389;
-var TLS_PORT = 636;
+var TLS_PORT   = 636;
 
 export default Ember.Controller.extend({
   access:         Ember.inject.service(),
@@ -39,7 +39,7 @@ export default Ember.Controller.extend({
 
   canEdit: Ember.computed('access.enabled', 'editing', function() {
     var isEnabled = this.get('access.enabled');
-    var editing = this.get('editing');
+    var editing   = this.get('editing');
 
     if (( isEnabled && editing ) || !isEnabled) {
       return true;
@@ -50,7 +50,7 @@ export default Ember.Controller.extend({
   }),
 
   tlsChanged: Ember.observer('ldapConfig.tls', function() {
-    var on = this.get('ldapConfig.tls');
+    var on   = this.get('ldapConfig.tls');
     var port = parseInt(this.get('ldapConfig.port'),10);
 
     if ( on && port === PLAIN_PORT )
@@ -62,6 +62,15 @@ export default Ember.Controller.extend({
       this.set('ldapConfig.port', PLAIN_PORT);
     }
   }),
+
+  testConfig: function(data) {
+    return this.get('authStore').rawRequest({
+      url:    'testlogin',
+      method: 'POST',
+      data:   data,
+    });
+  },
+
 
   actions: {
     edit: function() {
@@ -87,44 +96,52 @@ export default Ember.Controller.extend({
 
       var errors = model.validationErrors();
 
+
+      let data  = {
+        type:       'testAuthConfig',
+        authConfig: model,
+        code:       `${this.get('username')}:${this.get('password')}`,
+      };
+
       if ( errors.get('length') ) {
+
         this.set('errors', errors);
+
       } else {
+
         this.set('testing', true);
+
         if (editing) {
 
-          let data  = {
-            type:       'testAuthConfig',
-            authConfig: model,
-            code:       `${this.get('username')}:${this.get('password')}`,
-          };
-
-          this.get('authStore').rawRequest({
-            url:    'testlogin',
-            method: 'POST',
-            data:   data,
-          }).then((resp) => {
+          this.testConfig(data).then((resp) => {
 
             if (resp.status === 200) {
+
               model.save().then(() => {
                 this.send('waitAndRefresh');
               }).catch(err => {
                 this.send('gotError', err);
               });
+
             }
 
           }).catch((err) => {
+
             this.send('gotError', err.statusText);
           });
 
         } else {
 
-          model.save().then(() => {
-            this.send('authenticate');
-          }).catch(err => {
-            this.send('gotError', err);
-          });
+          this.testConfig(data).then((resp) => {
 
+            if (resp.status === 200) {
+              this.send('authenticate');
+            }
+
+          }).catch((err) => {
+
+            this.send('gotError', err.statusText);
+          });
         }
       }
     },
@@ -151,8 +168,8 @@ export default Ember.Controller.extend({
       var model = this.get('model');
 
       model.setProperties({
-        'enabled': true,
-        'accessMode': 'unrestricted',
+        'enabled':           true,
+        'accessMode':        'unrestricted',
         'allowedIdentities': [auth.userIdentity],
       });
 
