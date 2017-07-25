@@ -135,15 +135,11 @@ export default Ember.Controller.extend({
 
         } else {
 
-          this.testConfig(data).then((resp) => {
-
-            if (resp.status === 200) {
-              this.send('authenticate');
-            }
-
-          }).catch((err) => {
-
-            this.send('gotError', err.statusText);
+          this.set('testing', true);
+          model.save().then(() => {
+            this.send('authenticate');
+          }).catch(err => {
+            this.send('gotError', err);
           });
         }
       }

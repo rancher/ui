@@ -21,9 +21,11 @@
 
 {{#unless canEdit}}
   <section class="well">
-    <button class="btn btn-primary btn-sm pull-right" {{action "edit"}} style="margin-top: -5px;">
-      {{t 'generic.edit'}}
-    </button>
+    {{#unless isOpenLdap}}
+      <button class="btn btn-primary btn-sm pull-right" {{action "edit"}} style="margin-top: -5px;">
+        {{t 'generic.edit'}}
+      </button>
+    {{/unless}}
     <h3>{{t 'ldap.accessEnabled.header'}}</h3>
     <hr/>
     <p class="help-block">{{t 'ldap.accessEnabled.subtext'}}</p>
