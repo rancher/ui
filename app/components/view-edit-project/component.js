@@ -130,6 +130,10 @@ export default Ember.Component.extend(NewOrEdit, Sortable, {
     return !this.get('policyManager');
   }.property('policyManager'),
 
+  canEditProject: function() {
+    return !this.get('project.id') || !!this.get('project.actionLinks.update');
+  }.property('project.actionLinks.update'),
+
   hasUnsupportedPolicy: function() {
     return this.get('network.policy').filter((x) => { return !!!(x.get('within')); }).length > 0;
   }.property('network.policy.@each.within'),
@@ -161,6 +165,14 @@ export default Ember.Component.extend(NewOrEdit, Sortable, {
     }
 
     return out;
+  },
+
+  doSave() {
+    if ( this.get('canEditProject') ) {
+      return this._super(...arguments);
+    } else {
+      return Ember.RSVP.resolve();
+    }
   },
 
   didSave() {
