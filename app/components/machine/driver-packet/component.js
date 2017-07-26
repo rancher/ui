@@ -3,10 +3,7 @@ import Driver from 'ui/mixins/driver';
 import { PacketFacilities, PacketOs, PacketPlans} from 'ui/utils/packet-choices';
 
 
-let osChoices = PacketOs.map(function(os) {
-  os.enabled = (os.slug||'').toLowerCase() === 'ubuntu_14_04';
-  return os;
-});
+let osChoices = PacketOs.filterBy('enabled', true);
 
 let planChoices = PacketPlans.filter(function(plan) {
   return (plan.line||'').toLowerCase() === 'baremetal';
