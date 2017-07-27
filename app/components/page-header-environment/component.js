@@ -2,7 +2,7 @@ import Ember from 'ember';
 
 export default Ember.Component.extend({
   currentPath : null,
-  isOwner     : null,
+  canEdit     : null,
 
   tagName     : '',
 
