@@ -55,14 +55,16 @@ export default Ember.Component.extend(ManageLabels, {
   },
 
   stickinessDidChange: function() {
-    var stickiness = this.get('stickiness');
-    if ( !this.get('lbConfig.canSticky') || stickiness === 'none' )
-    {
-      this.set('lbConfig.stickinessPolicy', null);
-    }
-    else if ( stickiness === 'cookie' )
-    {
-      this.set('lbConfig.stickinessPolicy', this.get('policy'));
+    if (this.get('lbConfig')) {
+      var stickiness = this.get('stickiness');
+      if ( !this.get('lbConfig.canSticky') || stickiness === 'none' )
+      {
+        this.set('lbConfig.stickinessPolicy', null);
+      }
+      else if ( stickiness === 'cookie' )
+      {
+        this.set('lbConfig.stickinessPolicy', this.get('policy'));
+      }
     }
   }.observes('stickiness','lbConfig.canSticky'),
 
