@@ -2232,6 +2232,29 @@ formVirtualMachines:
   vcpus: vCPUs
   memory: Memory
 
+formVolumeRow:
+  mode:
+    volume: Existing volume
+    newVolume: New volume
+    bindMount: Bind-mount
+    volumesFrom: Volumes from
+    volumesFromLaunchConfig: Volumes from
+    custom: Custom
+  hostPath:
+    label: Host Path
+    placeholder: e.g. /home/foo
+  mountPoint:
+    label: Mount Point
+    placeholder: e.g. /mnt/foo
+  custom:
+    placeholder: Custom --volume value
+  opts:
+    ro: Read-Only
+    rw: Read-Write
+    custom:
+      label: Custom
+      placeholder: e.g. rw,z
+
 formVolumes:
   title: Volumes
   detail: Persist and share data separate from the lifecycle of an individual container.
@@ -2240,15 +2263,22 @@ formVolumes:
   volumes: Volumes
   volumesFrom: Volumes From
   volumeDriver:
-    label: Volume Driver
+    label: Driver for custom volumes
     placeholder: 'e.g. rancher-nfs; Default: local'
     suggestion: 'Volume drivers in use:'
   noLaunchConfigs: There are no other launch configs in this service to share volumes with.
   noHostContainers: This host has no containers to use the volumes from.
   onlySingleHost: Only available when adding a container to a particular host.
-  addActionLabel: Add Volume
   errors:
     invalidName: Volume names can only contain letters, numbers, hyphen, underscore, and dot.
+  add:
+    label: Add Volume...
+    existing: Use an existing volume
+    new: Create a new volume
+    bindMount: Bind-mount a host directory
+    fromContainer: Use volumes from another container
+    fromLaunchConfig: Use volumes from a sidekick
+    custom: Add custom volume entry
 
 hookPage:
   receiver:
@@ -3007,7 +3037,7 @@ newContainer:
     sidekickName: 'Add Sidekick of "{name}"'
   upgrade:
     container: Upgrade Container
-    scalingGroup: Upgrade Service
+    service: Upgrade Service
     sidekick: Upgrade Sidekick
     sidekickName: 'Upgrade Sidekick of "{name}"'
   selectUpgrade: Select one or more services to upgrade.
@@ -3362,10 +3392,9 @@ volumesPage:
   noMatch: No volumes match the current search
   scope:
     label: Scope
-    global: Environment
     stack: Stack
     container: Per Container
-    standalone: Container
+    standalone: Environment
   driver:
     label: Driver
   mounts:

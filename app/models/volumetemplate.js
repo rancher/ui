@@ -25,6 +25,12 @@ var VolumeTemplate = Resource.extend({
     }
   }.property('perContainer'),
 
+  displayNameScope: function() {
+    let name = this.get('displayName');
+    name += ' (' + this.get('intl').t('volumesPage.scope.'+ this.get('scope')) + ')';
+    return name;
+  }.property('displayName','scope'),
+
   availableActions: function() {
     var a = this.get('actionLinks');
 

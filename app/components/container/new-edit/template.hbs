@@ -81,6 +81,14 @@
 
 <hr class="mt-30 mb-30" />
 
+{{container/form-volumes
+  isService=isService
+  isSidekick=isSidekick
+  launchConfig=launchConfig
+  service=service
+  errors=volumeErrors
+}}
+
 {{#unless isSidekick}}
   {{container/form-scheduling
     isService=isService
@@ -185,18 +193,6 @@
         errors=securityErrors editing=true
         initialLabels=launchConfig.labels
         setLabels=(action 'setLabels' 'security')
-        expandAll=al.expandAll
-        expandFn=expandFn
-    }}
-
-    {{container/form-volumes
-        classNames="accordion-wrapper"
-        instance=launchConfig
-        isService=isService
-        service=service
-        primaryService=primaryService
-        launchConfigIndex=launchConfigIndex
-        errors=volumeErrors
         expandAll=al.expandAll
         expandFn=expandFn
     }}

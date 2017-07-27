@@ -15,6 +15,8 @@ var Volume = Resource.extend({
     return 'standalone';
   }.property(),
 
+  displayNameScope: Ember.computed.alias('displayName'),
+
   availableActions: function() {
     var a = this.get('actionLinks');
 

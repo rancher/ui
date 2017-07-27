@@ -1,11 +1,13 @@
 import Ember from 'ember';
 import { tagsToArray } from 'ui/models/stack';
 
+const BY_STACK = '1';
+
 export default Ember.Controller.extend({
   prefs: Ember.inject.service(),
 
   tags: '',
-  byStack: 1,
+  byStack: BY_STACK,
   queryParams: ['tags','byStack'],
 
   stacks: null,
@@ -39,7 +41,7 @@ export default Ember.Controller.extend({
   }.property('stacks.@each.{system,isDefault}','prefs.showSystemResources'),
 
   groupBy: function() {
-    if ( this.get('byStack') && !this.get('simpleMode') ) {
+    if ( this.get('byStack') === BY_STACK && !this.get('simpleMode') ) {
       return 'stack.id';
     } else {
       return null;
