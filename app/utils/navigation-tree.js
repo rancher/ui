@@ -12,7 +12,7 @@ export const swarmReady = function() { return this.get('swarmReady'); };
 export const swarmNotReady = function() { return !this.get('swarmReady'); };
 export const mesosReady = function() { return this.get('mesosReady'); };
 export const mesosNotReady = function() { return !this.get('mesosReady'); };
-export const isOwner = function() { return this.get('isOwner'); };
+export const isOwner = function() { return this.get('access').isOwner(); };
 
 /* Tree item options
   {

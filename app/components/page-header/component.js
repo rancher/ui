@@ -122,10 +122,9 @@ export default Ember.Component.extend(HoverDropdown, {
     return !!this.get('project');
   }.property('project'),
 
-  // Hackery: You're an owner if you can write to the 'system' field of a stack
-  isOwner: function() {
-    return !!this.get('stackSchema.resourceFields.system.update');
-  }.property('stackSchema.resourceFields.system.update'),
+  canEdit: function() {
+    return !!this.get('project.actionLinks.update') || !!this.get('project.actionLinks.setmembers');
+  }.property('project.actionLinks.{update,setmembers}'),
 
   kubernetesReady: function() {
     return this.get('hasKubernetes') &&

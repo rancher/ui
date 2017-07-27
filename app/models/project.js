@@ -75,7 +75,7 @@ var Project = Resource.extend(PolledResource, {
       { label: 'action.switchEnvironment',icon: 'icon icon-folder-open',  action: 'switchTo',     enabled: this.get('canSwitchTo')},
       { label: 'action.setDefault',       icon: 'icon icon-home',         action: 'setAsDefault', enabled: this.get('canSetDefault')},
       { divider: true },
-      { label: 'action.edit',             icon: 'icon icon-edit',         action: 'edit',         enabled: !!a.update },
+      { label: 'action.edit',             icon: 'icon icon-edit',         action: 'edit',         enabled: !!a.update || !!a.setmembers },
       { label: 'action.activate',         icon: 'icon icon-play',         action: 'activate',     enabled: !!a.activate},
       { label: 'action.deactivate',       icon: 'icon icon-pause',        action: 'promptStop',   enabled: !!a.deactivate,        altAction: 'deactivate'},
       { divider: true },
@@ -87,7 +87,7 @@ var Project = Resource.extend(PolledResource, {
 
 
     return choices;
-  }.property('actionLinks.{activate,deactivate,update,restore,purge}','state','canRemove','canSetDefault','canSwitchTo'),
+  }.property('actionLinks.{activate,deactivate,update,restore,purge,setmembers}','state','canRemove','canSetDefault','canSwitchTo'),
 
   icon: function() {
     if ( this.get('isDefault') )
