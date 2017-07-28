@@ -1,10 +1,12 @@
-{{#containers-header tags=tags}}
-  {{#link-to "new-stack" classNames="btn btn-sm bg-default mr-10"}}{{t 'nav.containers.importCompose'}}{{/link-to}}
-  {{#link-to "volumes.new" projects.current.id class="btn btn-sm bg-primary"}}{{t 'nav.containers.addVolume'}}{{/link-to}}
-{{/containers-header}}
+{{#if projectController.showOrchestrationWelcome}}
+  {{orchestration-welcome}}
+{{else if rows.length}}
+  {{#containers-header tags=tags}}
+    {{#link-to "new-stack" classNames="btn btn-sm bg-default mr-10"}}{{t 'nav.containers.importCompose'}}{{/link-to}}
+    {{#link-to "volumes.new" projects.current.id class="btn btn-sm bg-primary"}}{{t 'nav.containers.addVolume'}}{{/link-to}}
+  {{/containers-header}}
 
-<section class="pl-0 pr-0">
-  {{#if rows.length}}
+  <section class="pl-0 pr-0">
     {{#sortable-table
       classNames="grid sortable-table"
       body=rows
@@ -51,7 +53,7 @@
         <tr><td colspan="{{sortable.fullColspan}}" class="text-center text-muted lacsso pt-20 pb-20">{{t 'volumesPage.noMatch'}}</td></tr>
       {{/if}}
     {{/sortable-table}}
-  {{else}}
-    {{empty-table resource="container" newRoute="volumes.new" newTranslationKey="nav.containers.addVolume"}}
-  {{/if}}
-</section>
+  </section>
+{{else}}
+  {{empty-table resource="container" newRoute="volumes.new" newTranslationKey="nav.containers.addVolume"}}
+{{/if}}

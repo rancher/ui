@@ -5,7 +5,7 @@
   <td></td>
 
   {{#if (eq model.mode "custom")}}
-    <td colspan="6">
+    <td colspan="5">
       {{input value=model.str placeholder=(t 'formVolumeRow.custom.placeholder')}}
     </td>
   {{else if (eq model.mode "newVolume")}}
@@ -15,7 +15,7 @@
   {{else if (eq model.mode "volume")}}
     <td>
       {{new-select
-        prompt="formVolumes.value.prompt"
+        prompt=(t 'formVolumeRow.volume.prompt')
         action=(action (mut model.volume))
         content=volumeChoices
         optionValuePath="id"
@@ -29,9 +29,9 @@
     </td>
     <td></td>
   {{else if (eq model.mode "volumesFrom")}}
-    <td>
+    <td colspan="5">
       {{new-select
-        prompt="formVolumes.value.prompt"
+        prompt=(t 'formVolumeRow.volumesFrom.prompt')
         action=(mut model.instance)
         content=containerChoices
         optionValuePath="id"
@@ -42,7 +42,7 @@
   {{else if (eq model.mode "volumesFromLaunchConfig")}}
     <td>
       {{new-select
-        prompt="formVolumes.value.prompt"
+        prompt=(t 'formVolumeRow.volumesFromLaunchConfig.prompt')
         value=vol.launchConfig
         content=launchConfigChoices
         optionValuePath="name"

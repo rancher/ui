@@ -4,6 +4,7 @@ import { headersWithoutHost as containerHeaders } from 'ui/components/container-
 
 export default Ember.Controller.extend({
   prefs: Ember.inject.service(),
+  projectController: Ember.inject.controller('authenticated.project'),
 
   mode: 'list',
   sortBy: 'name',

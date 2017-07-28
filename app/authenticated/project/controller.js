@@ -30,6 +30,10 @@ export default Ember.Controller.extend({
     },
   },
 
+  showOrchestrationWelcome: function() {
+    return !this.get('model.hosts.length');
+  }.property('model.hosts.[]'),
+
   simpleMode: function() {
     let list = this.get('stacks');
     if ( !this.get('prefs.showSystemResources') ) {

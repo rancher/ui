@@ -22,6 +22,7 @@ export default Ember.Route.extend({
 
     return Ember.Object.create({
       project: project,
+      hosts: this.get('store').all('host'),
     });
   },
 

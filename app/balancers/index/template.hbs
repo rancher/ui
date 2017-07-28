@@ -1,10 +1,12 @@
-{{#containers-header tags=tags}}
-  {{#link-to "new-stack" classNames="btn btn-sm bg-default mr-10"}}{{t 'nav.containers.importCompose'}}{{/link-to}}
-  {{#link-to "balancers.run" projects.current.id class="btn btn-sm bg-primary"}}{{t 'nav.containers.addBalancer'}}{{/link-to}}
-{{/containers-header}}
+{{#if projectController.showOrchestrationWelcome}}
+  {{orchestration-welcome}}
+{{else if rows.length}}
+  {{#containers-header tags=tags}}
+    {{#link-to "new-stack" classNames="btn btn-sm bg-default mr-10"}}{{t 'nav.containers.importCompose'}}{{/link-to}}
+    {{#link-to "balancers.run" projects.current.id class="btn btn-sm bg-primary"}}{{t 'nav.containers.addBalancer'}}{{/link-to}}
+  {{/containers-header}}
 
-<section class="pl-0 pr-0">
-  {{#if rows.length}}
+  <section class="pl-0 pr-0">
     {{#sortable-table
       classNames="grid sortable-table"
       body=rows
@@ -64,7 +66,7 @@
         <tr><td colspan="{{sortable.fullColspan}}" class="text-center text-muted lacsso pt-20 pb-20">{{t 'containersPage.table.noData'}}</td></tr>
       {{/if}}
     {{/sortable-table}}
-  {{else}}
-    {{empty-table resource="container" newRoute="balancers.run" newTranslationKey="nav.containers.addBalancer"}}
-  {{/if}}
-</section>
+  </section>
+{{else}}
+  {{empty-table resource="container" newRoute="balancers.run" newTranslationKey="nav.containers.addBalancer"}}
+{{/if}}
