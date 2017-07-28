@@ -151,7 +151,6 @@ var Service = Resource.extend(StateCounts, {
 
     var canUpgrade = !!a.upgrade && this.get('canUpgrade');
     var isK8s = this.get('isK8s');
-    var isSwarm = this.get('isSwarm');
     var isReal = this.get('isReal');
     var canHaveContainers = this.get('canHaveContainers');
     var containerForShell = this.get('containerForShell');
@@ -163,7 +162,7 @@ var Service = Resource.extend(StateCounts, {
       { label: 'action.edit',           icon: 'icon icon-pencil',           action: 'editDns',        enabled: !isReal },
       { label: 'action.rollback',       icon: 'icon icon-history',          action: 'rollback',       enabled: !!a.rollback && isReal && !!this.get('previousRevisionId') },
       { label: 'action.garbageCollect', icon: 'icon icon-garbage',          action: 'garbageCollect', enabled: canCleanup},
-      { label: 'action.clone',          icon: 'icon icon-copy',             action: 'clone',          enabled: !isK8s && !isSwarm && !isDriver },
+      { label: 'action.clone',          icon: 'icon icon-copy',             action: 'clone',          enabled: !isK8s && !isDriver },
       { divider: true },
       { label: 'action.execute',        icon: 'icon icon-terminal',         action: 'shell',          enabled: !!containerForShell, altAction:'popoutShell'},
 //      { label: 'action.logs',           icon: 'icon icon-file',             action: 'logs',           enabled: !!a.logs, altAction: 'popoutLogs' },
@@ -180,7 +179,7 @@ var Service = Resource.extend(StateCounts, {
 
     return choices;
   }.property('actionLinks.{activate,deactivate,pause,restart,update,remove,rollback,garbagecollect}','previousRevisionId',
-    'lcType','isK8s','isSwarm','canHaveContainers','canUpgrade','containerForShell'
+    'lcType','isK8s','canHaveContainers','canUpgrade','containerForShell'
   ),
 
   serviceLinks: null, // Used for clone
@@ -326,10 +325,6 @@ var Service = Resource.extend(StateCounts, {
 
   isK8s: function() {
     return ['kubernetesservice'].indexOf(this.get('lcType')) >= 0;
-  }.property('lcType'),
-
-  isSwarm: function() {
-    return ['composeservice'].indexOf(this.get('lcType')) >= 0;
   }.property('lcType'),
 
   displayType: function() {
