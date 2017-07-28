@@ -5,7 +5,7 @@ export default Ember.Controller.extend({
   prefs: Ember.inject.service(),
 
   tags: '',
-  byStack: '1',
+  byStack: 1,
   queryParams: ['tags','byStack'],
 
   stacks: null,
