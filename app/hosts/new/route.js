@@ -25,10 +25,6 @@ export default Ember.Route.extend({
       this.send('goBack');
     },
 
-    savedHost() {
-      this.refresh();
-    },
-
     goBack() {
       if ( this.get('backTo') === 'waiting' ) {
         this.transitionTo('authenticated.project.waiting');

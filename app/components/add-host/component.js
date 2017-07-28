@@ -41,6 +41,9 @@ export default Ember.Component.extend({
       }
       this.set('driver', name);
     },
+    hostSet() {
+      this.set('model.apiHostSet', true);
+    },
   },
 
   driverObj: Ember.computed('driver', function() {
