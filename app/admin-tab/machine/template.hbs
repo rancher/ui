@@ -22,15 +22,16 @@
       as |section|
     }}
       {{#if (eq section 'header')}}
-        <div class='catalog-header mt-5'>
-          <div class="clearfix mb-5 pl-10 pr-10">
+        <div class='catalog-header bg-default p-10'>
+          <div class="clearfix">
             {{#if driver.state}}
-              {{badge-state model=driver class="pull-left"}}
+              {{badge-state model=driver class="pull-left vertical-middle btn-xs"}}
             {{else}}
-              <span class="state badge-state text-danger bg-error pull-left">
+              <span class="state badge-state btn-xs text-danger bg-error pull-left">
                 <i class="icon icon-circle"></i> {{t 'machinePage.inactive'}}
               </span>
             {{/if}}
+
             {{#if driver.catalogId}}
               <div class=" btn-group resource-actions action-menu pull-right">
                 {{#tooltip-element inlineBlock=true type="tooltip-basic" tooltipTemplate="tooltip-static" model=(t 'generic.activate') tagName="span" tooltipFor="catalogMachine"}}
@@ -46,26 +47,28 @@
         </div>
         {{#if driver.externalId}}
           {{log driver.catalogTemplateIcon}}
-          <div class="catalog-icon mb-10" style="background-image:url({{driver.catalogTemplateIcon}});"/>
+          <div class="catalog-icon m-20" style="background-image:url({{driver.catalogTemplateIcon}});"/>
         {{else if driver.machineHasIcon}}
           {{log driver.machineHasIcon}}
-          <div class="catalog-icon mb-10" style="background-image:url({{driver.machineHasIcon}});"/>
+          <div class="catalog-icon m-20" style="background-image:url({{driver.machineHasIcon}});"/>
         {{else}}
-          <div class="catalog-icon mb-10 {{driver.iconMapFromConstants}}"/>
+          <div class="catalog-icon m-20 {{driver.iconMapFromConstants}}"/>
         {{/if}}
       {{else if (eq section 'body')}}
         <h5>
           {{driver.name}}
         </h5>
         <hr class="m-10" />
-        <div class="mt-10 description">{{driver.description}}</div>
+        <div class="m-10 description">{{driver.description}}</div>
       {{else if (eq section 'footer')}}
         {{#if (and driver.externalId (not-eq driver.state 'inactive'))}}
           {{upgrade-dropdown model=driver btnClass="btn-sm" currentId=driver.externalId upgradeOnly=false changeVersion=(action "upgradeDriver" driver)}}
         {{else if driver.builtin}}
           <span class="text-muted">{{t 'machinePage.builtin'}}</span>
         {{/if}}
+
       {{/if}}
+
     {{/catalog-box}}
   {{/each}}
 </section>
