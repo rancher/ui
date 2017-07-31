@@ -93,18 +93,22 @@
             <td>&nbsp;</td>
           {{else}}
             <td class="divided" data-title="{{t (concat-str 'formBalancerRules' rule.kind 'label' character='.')}}">
-              {{#if (eq rule.kind 'selector')}}
-                {{#input-or-display editable=editing value=rule.selector classesForDisplay="clip"}}
+              {{#if editing}}
+                {{#if (eq rule.kind 'selector')}}
                   {{input type="text" class="input-sm" value=rule.selector placeholder=(t 'formBalancerRules.selector.placeholder')}}
-                {{/input-or-display}}
-              {{else if (eq rule.kind 'instance')}}
-                {{#input-or-display editable=editing value=rule.instanceId classesForDisplay="clip"}}
+                {{else if (eq rule.kind 'instance')}}
                   {{schema/input-container selectClass="input-sm" selected=rule.instanceId}}
-                {{/input-or-display}}
-              {{else}}
-                {{#input-or-display editable=editing value=rule.serviceId classesForDisplay="clip"}}
+                {{else}}
                   {{schema/input-service selectClass="input-sm" canBalanceTo=true selected=rule.serviceId}}
-                {{/input-or-display}}
+                {{/if}}
+              {{else}}
+                {{#if (eq rule.kind 'selector')}}
+                  {{rule.selector}}
+                {{else if (eq rule.kind 'instance')}}
+                  <a href="{{href-to 'container' rule.instanceId}}">{{rule.targetName}}</a>
+                {{else}}
+                  <a href="{{href-to 'service' rule.serviceId}}">{{rule.targetName}}</a>
+                {{/if}}
               {{/if}}
             </td>
           {{/if}}

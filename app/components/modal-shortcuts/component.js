@@ -1,9 +1,11 @@
 import Ember from 'ember';
 import ModalBase from 'ui/mixins/modal-base';
+import C from 'ui/utils/constants';
 
 let DEFAULT_TIME = 400;
 
 export default Ember.Component.extend(ModalBase, {
+  prefs     : Ember.inject.service(),
   classNames: ['generic', 'medium-modal'],
   settings: Ember.inject.service(),
   access: Ember.inject.service(),
@@ -13,6 +15,11 @@ export default Ember.Component.extend(ModalBase, {
   containerCount: Ember.computed.alias('containers.length'),
   time: DEFAULT_TIME,
   timer: null,
+
+  currentTheme: Ember.computed(`prefs.${C.PREFS.THEME}`, function() {
+    return this.get(`prefs.${C.PREFS.THEME}`);
+  }),
+
 
   init() {
     this._super(...arguments);

@@ -23,10 +23,10 @@ export default Ember.Controller.extend(NewOrEdit, {
   ],
 
   doesExist() {
-    let account  = this.get('primaryResource');
-    let accounts = this.get('model.accounts');
+    let credential = this.get('model.credential');
+    let creds      = this.get('model.credentials');
 
-    if (accounts.findBy('publicValue', account.get('publicValue'))) {
+    if (creds.findBy('publicValue', credential.get('publicValue'))) {
       return true;
     }
 

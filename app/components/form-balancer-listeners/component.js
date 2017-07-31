@@ -15,15 +15,30 @@ export default Ember.Component.extend({
   onInit: function() {
     let rules = this.get('service.lbConfig.portRules')||[];
     let ports = [];
+    let store = this.get('store');
 
     rules.forEach((rule) => {
       let kind = 'service';
+      let target = null;
+      let name = '';
+
       if ( !!rule.selector ) {
         kind= 'selector';
       } else if ( rule.instanceId ) {
-        rule.kind = 'instance';
+        kind = 'instance';
+        target = store.getById(kind, rule.instanceId);
+      } else if ( rule.serviceId ) {
+        target = store.getById(kind, rule.serviceId);
       }
 
+      if (target) {
+        name = target.get('displayName');
+      }
+
+      rule.setProperties({
+        kind: kind,
+        targetName: name
+      });
       rule.set('kind', kind);
     });
 

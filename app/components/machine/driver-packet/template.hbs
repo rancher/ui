@@ -1,74 +1,74 @@
 <form>
-<section class="horizontal-form">
-  <div class="container-fluid">
-    {{#if showNameScale}}
+  <section class="horizontal-form">
+    <div class="container-fluid">
+      {{#if showNameScale}}
+        <div class="box mt-20">
+          <h4>{{t 'machine.driverPacket.instanceSection'}}</h4>
+          <div class="row">
+            {{partial "host/add-common"}}
+          </div>
+        </div>
+      {{/if}}
+
       <div class="box mt-20">
-        <h4>{{t 'machine.driverPacket.instanceSection'}}</h4>
-        <div class="row">
-          {{partial "host/add-common"}}
+        <h4>{{t 'machine.driverPacket.accountSection'}}</h4>
+
+        <div class="row inline-form">
+          <div class="col span-6">
+            <label class="acc-label">{{t 'machine.driverPacket.projectId.label'}}{{field-required}}</label>
+            {{input type="text" name="username" value=packetConfig.projectId classNames="form-control" placeholder=(t 'machine.driverPacket.projectId.placeholder')}}
+          </div>
+          <div class="col span-6">
+            <label class="acc-label">{{t 'machine.driverPacket.apiKey.label'}}{{field-required}}</label>
+            {{input type="password" name="password" value=model.secretValues.packetConfig.apiKey classNames="form-control" placeholder=(t 'machine.driverPacket.apiKey.placeholder')}}
+            <p class="text-info">{{t 'machine.driverPacket.apiKeyHelp' htmlSafe=true}}</p>
+          </div>
         </div>
       </div>
-    {{/if}}
 
-    <div class="box mt-20">
-      <h4>{{t 'machine.driverPacket.accountSection'}}</h4>
+      <div class="box mt-20">
+        <h4>{{t 'machine.driverPacket.instanceOptionsSection'}}</h4>
 
-      <div class="row inline-form">
-        <div class="col span-6">
-        <label class="acc-label">{{t 'machine.driverPacket.projectId.label'}}{{field-required}}</label>
-          {{input type="text" name="username" value=packetConfig.projectId classNames="form-control" placeholder=(t 'machine.driverPacket.projectId.placeholder')}}
+        <div class="row inline-form">
+          <div class="col span-6">
+            <label class="acc-label">{{t 'machine.driverPacket.image.label'}}</label>
+            <select class="form-control" onchange={{action (mut packetConfig.os) value="target.value"}}>
+              {{#each osChoices as |choice|}}
+                <option value={{choice.slug}} selected={{eq packetConfig.os choice.slug}}>{{choice.name}}</option>
+              {{/each}}
+            </select>
+          </div>
+
+          <div class="col span-6">
+            <label class="acc-label">{{t 'machine.driverPacket.size.label'}}</label>
+            <select class="form-control" onchange={{action (mut packetConfig.plan) value="target.value"}}>
+              {{#each planChoices as |choice|}}
+                <option disabled={{not choice.enabled}} value={{choice.slug}} selected={{eq packetConfig.plan choice.slug}}>{{choice.name}}</option>
+              {{/each}}
+            </select>
+          </div>
         </div>
-        <div class="col span-6">
-          <label class="acc-label">{{t 'machine.driverPacket.apiKey.label'}}{{field-required}}</label>
-          {{input type="password" name="password" value=model.secretValues.packetConfig.apiKey classNames="form-control" placeholder=(t 'machine.driverPacket.apiKey.placeholder')}}
-          <p class="text-info">{{t 'machine.driverPacket.apiKeyHelp' htmlSafe=true}}</p>
+      </div>
+
+      {{!--     <h4>{{t 'machine.driverPacket.regionSection'}}</h4> --}}
+
+      <div class="row inline-form mt-20">
+        <div class="col span-2 col-inline">
+          <label>{{t 'machine.driverPacket.region.label'}}</label>
+        </div>
+        <div class="col span-10">
+          <select class="form-control" onchange={{action (mut packetConfig.facility) value="target.value"}}>
+            {{#each facilityChoices as |choice|}}
+              <option value={{choice.code}} selected={{eq packetConfig.facilityCode choice.code}}>{{choice.name}}</option>
+            {{/each}}
+          </select>
         </div>
       </div>
+
+      {{partial "host/add-options"}}
     </div>
 
-    <div class="box mt-20">
-    <h4>{{t 'machine.driverPacket.instanceOptionsSection'}}</h4>
-
-    <div class="row inline-form">
-      <div class="col span-6">
-        <label class="acc-label">{{t 'machine.driverPacket.image.label'}}</label>
-        <select class="form-control" onchange={{action (mut packetConfig.os) value="target.value"}}>
-          {{#each osChoices as |choice|}}
-            <option disabled={{not choice.enabled}} value={{choice.slug}} selected={{eq packetConfig.os choice.slug}}>{{choice.name}}</option>
-          {{/each}}
-        </select>
-      </div>
-
-      <div class="col span-6">
-      <label class="acc-label">{{t 'machine.driverPacket.size.label'}}</label>
-        <select class="form-control" onchange={{action (mut packetConfig.plan) value="target.value"}}>
-          {{#each planChoices as |choice|}}
-            <option disabled={{not choice.enabled}} value={{choice.slug}} selected={{eq packetConfig.plan choice.slug}}>{{choice.name}}</option>
-          {{/each}}
-        </select>
-      </div>
-    </div>
-    </div>
-
-{{!--     <h4>{{t 'machine.driverPacket.regionSection'}}</h4> --}}
-
-    <div class="row inline-form mt-20">
-      <div class="col span-2 col-inline">
-        <label>{{t 'machine.driverPacket.region.label'}}</label>
-      </div>
-      <div class="col span-10">
-        <select class="form-control" onchange={{action (mut packetConfig.facility) value="target.value"}}>
-          {{#each facilityChoices as |choice|}}
-            <option value={{choice.code}} selected={{eq packetConfig.facilityCode choice.code}}>{{choice.name}}</option>
-          {{/each}}
-        </select>
-      </div>
-    </div>
-
-    {{partial "host/add-options"}}
-  </div>
-
-  {{top-errors errors=errors}}
-  {{save-cancel save=driverSaveAction cancel="cancel"}}
-</section>
+    {{top-errors errors=errors}}
+    {{save-cancel save=driverSaveAction cancel="cancel"}}
+  </section>
 </form>

@@ -245,6 +245,26 @@ export default Ember.Route.extend(Subscribe, PromiseToCb, {
   },
 
   actions: {
+
+    changeTheme: function() {
+      var userTheme = this.get('userTheme');
+      var currentTheme  = userTheme.getTheme();
+
+      switch (currentTheme) {
+      case 'ui-light':
+        userTheme.setTheme('ui-dark');
+        break;
+      case 'ui-dark':
+        userTheme.setTheme('ui-auto');
+        break;
+      case 'ui-auto':
+        userTheme.setTheme('ui-light');
+        break;
+      default:
+        break;
+      }
+    },
+
     error(err,transition) {
       // Unauthorized error, send back to login screen
       if ( err.status === 401 )
@@ -353,6 +373,7 @@ export default Ember.Route.extend(Subscribe, PromiseToCb, {
     'v': 'gotoV',
     '/': 'search',
     'shift+/': 'help',
+    'shift+t': 'changeTheme',
     'backspace': 'delete',
     'delete': 'delete',
   },

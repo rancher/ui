@@ -38,125 +38,148 @@ export let PacketFacilities = [
 
 export let PacketOs = [
   {
-    "slug": "centos_7",
-    "name": "CentOS 7 (legacy)",
-    "distro": "centos",
-    "version": "7",
-    "provisionable_on": [
-      "baremetal_0",
-      "baremetal_1",
-      "baremetal_3"
-    ]
-  },
+		"slug": "centos_7",
+		"name": "CentOS 7",
+		"distro": "centos",
+		"version": "7",
+    "enabled": true,
+		"provisionable_on": [
+			"baremetal_0",
+			"baremetal_1",
+			"baremetal_2",
+			"baremetal_2a",
+			"baremetal_3",
+			"baremetal_s"
+		],
+	},
+	{
+		"slug": "coreos_stable",
+		"name": "Container Linux (CoreOS) - Stable",
+		"distro": "coreos",
+		"version": "stable",
+    "enabled": true,
+		"provisionable_on": [
+			"baremetal_0",
+			"baremetal_1",
+			"baremetal_2",
+			"baremetal_3"
+		],
+	},
   {
-    "slug": "centos_7_image",
-    "name": "CentOS 7",
-    "distro": "centos",
-    "version": "7",
-    "provisionable_on": [
-      "baremetal_0",
-      "baremetal_1",
-      "baremetal_2",
-      "baremetal_3"
-    ]
-  },
-  {
-    "slug": "coreos_stable",
-    "name": "CoreOS (stable)",
-    "distro": "coreos",
-    "version": "stable",
-    "provisionable_on": [
-      "baremetal_0",
-      "baremetal_1",
-      "baremetal_2",
-      "baremetal_3"
-    ]
-  },
-  {
-    "slug": "coreos_beta",
-    "name": "CoreOS (beta)",
-    "distro": "coreos",
-    "version": "beta",
-    "provisionable_on": [
-      "baremetal_0",
-      "baremetal_1",
-      "baremetal_2",
-      "baremetal_3"
-    ]
-  },
-  {
-    "slug": "coreos_alpha",
-    "name": "CoreOS (alpha)",
-    "distro": "coreos",
-    "version": "alpha",
-    "provisionable_on": [
-      "baremetal_0",
-      "baremetal_1",
-      "baremetal_2",
-      "baremetal_3"
-    ]
-  },
-  {
-    "slug": "debian_8",
-    "name": "Debian 8 (legacy)",
-    "distro": "debian",
-    "version": "8",
-    "provisionable_on": [
-      "baremetal_0",
-      "baremetal_1",
-      "baremetal_2",
-      "baremetal_3"
-    ]
-  },
-  {
-    "slug": "ubuntu_14_04",
-    "name": "Ubuntu 14.04 LTS (legacy)",
-    "distro": "ubuntu",
-    "version": "14.04",
-    "provisionable_on": [
-      "baremetal_0",
-      "baremetal_1",
-      "baremetal_3"
-    ]
-  },
-  {
-    "slug": "ubuntu_14_04_image",
-    "name": "Ubuntu 14.04 LTS",
-    "distro": "ubuntu",
-    "version": "14.04",
-    "provisionable_on": [
-      "baremetal_0",
-      "baremetal_1",
-      "baremetal_2",
-      "baremetal_3"
-    ]
-  },
-  {
-    "slug": "ubuntu_16_04_image",
-    "name": "Ubuntu 16.04 LTS",
-    "distro": "ubuntu",
-    "version": "16.04",
-    "provisionable_on": [
-      "baremetal_0",
-      "baremetal_1",
-      "baremetal_2",
-      "baremetal_2a",
-      "baremetal_3"
-    ]
-  },
-  {
-    "slug": "rancher",
-    "name": "RancherOS",
-    "distro": "rancher",
-    "version": "0.7.0",
-    "provisionable_on": [
-      "baremetal_0",
-      "baremetal_1",
-      "baremetal_2",
-      "baremetal_2a",
-      "baremetal_3"
-    ]
-  }
+		"slug": "debian_8",
+		"name": "Debian 8",
+		"distro": "debian",
+		"version": "8",
+    "enabled": false,
+		"provisionable_on": [
+			"baremetal_0",
+			"baremetal_1",
+			"baremetal_2",
+			"baremetal_3"
+		],
+	},
+	{
+		"slug": "freebsd_10_3",
+		"name": "FreeBSD 10.3",
+		"distro": "freebsd",
+		"version": "10.3",
+    "enabled": false,
+		"provisionable_on": [
+			"baremetal_0",
+			"baremetal_1",
+			"baremetal_2",
+			"baremetal_3",
+			"baremetal_s"
+		],
+	},
+	{
+		"slug": "freebsd_10_8",
+		"name": "FreeBSD 10.8",
+		"distro": "freebsd",
+		"version": "10.8",
+    "enabled": false,
+		"provisionable_on": [
+			"baremetal_0",
+			"baremetal_1",
+			"baremetal_2",
+			"baremetal_3",
+			"baremetal_s"
+		],
+	},
+	{
+		"slug": "freebsd_11_0",
+		"name": "FreeBSD 11.0",
+		"distro": "freebsd",
+		"version": "11.0",
+    "enabled": false,
+		"provisionable_on": [
+			"baremetal_0",
+			"baremetal_1",
+			"baremetal_2",
+			"baremetal_3",
+			"baremetal_s"
+		],
+	},
+	{
+		"slug": "ubuntu_14_04",
+		"name": "Ubuntu 14.04 LTS",
+		"distro": "ubuntu",
+		"version": "14.04",
+    "enabled": true,
+		"provisionable_on": [
+			"baremetal_0",
+			"baremetal_1",
+			"baremetal_2",
+			"baremetal_3",
+			"baremetal_s"
+		],
+	},
+	{
+		"slug": "ubuntu_16_04",
+		"name": "Ubuntu 16.04 LTS",
+		"distro": "ubuntu",
+		"version": "16.04",
+    "enabled": true,
+		"provisionable_on": [
+			"baremetal_0",
+			"baremetal_1",
+			"baremetal_2",
+			"baremetal_2a",
+			"baremetal_2a2",
+			"baremetal_3",
+			"baremetal_hua",
+			"baremetal_s"
+		],
+	},
+	{
+		"slug": "ubuntu_17_04",
+		"name": "Ubuntu 17.04",
+		"distro": "ubuntu",
+		"version": "17.04",
+    "enabled": false,
+		"provisionable_on": [
+			"baremetal_0",
+			"baremetal_1",
+			"baremetal_2",
+			"baremetal_2a",
+			"baremetal_3",
+			"baremetal_s"
+		],
+	},
+	{
+		"slug": "rancher",
+		"name": "RancherOS",
+		"distro": "rancher",
+		"version": "latest",
+    "enabled": true,
+		"provisionable_on": [
+			"baremetal_0",
+			"baremetal_1",
+			"baremetal_2",
+			"baremetal_3",
+			"baremetal_s"
+		],
+	},
 ];
 
 export let PacketPlans = [
