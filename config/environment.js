@@ -113,8 +113,6 @@ module.exports = function(environment) {
       kubectlEndpoint: '/r/projects/%PROJECTID%/kubectld:8091/v1-kubectl',
       kubernetesDashboard: '/r/projects/%PROJECTID%/kubernetes-dashboard:9090/#',
       kubernetesWorkload: '/r/projects/%PROJECTID%/kubernetes-dashboard:9090/api/v1/workload?itemsPerPage=1',
-      mesosEndpoint: '/r/projects/%PROJECTID%/mesos-master:5050',
-      swarmDashboard: '/r/projects/%PROJECTID%/portainer/',
       projectEndpoint: '/v2/projects/%PROJECTID%',
       proxyEndpoint: '/v2-beta/proxy',
       wsEndpoint: '/v2/projects/%PROJECTID%/subscribe' +

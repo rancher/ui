@@ -7,8 +7,6 @@ const { get } = Ember;
 
 const ORCHESTRATION_STACKS = [
   'k8s',
-  'swarm',
-  'mesos'
 ];
 
 export default Ember.Mixin.create({

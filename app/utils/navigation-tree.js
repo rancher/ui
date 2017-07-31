@@ -6,10 +6,6 @@ export const getProjectId = function() { return this.get('projectId'); };
 export const getNamespaceId = function() { return this.get('namespaceId'); };
 export const k8sReady = function() { return this.get('kubernetesReady'); };
 export const k8sNotReady = function() { return !this.get('kubernetesReady'); };
-export const swarmReady = function() { return this.get('swarmReady'); };
-export const swarmNotReady = function() { return !this.get('swarmReady'); };
-export const mesosReady = function() { return this.get('mesosReady'); };
-export const mesosNotReady = function() { return !this.get('mesosReady'); };
 export const isOwner = function() { return this.get('isOwner'); };
 
 /* Tree item options
@@ -50,87 +46,11 @@ const navTree = [
     condition: function() { return this.get('hasKubernetes'); },
   },
 
-  // Swarm
-  {
-    id: 'swarm',
-    localizedLabel: 'nav.swarm.tab',
-    condition: function() { return this.get('hasProject') && this.get('hasSwarm'); },
-    route: 'swarm-tab',
-    ctx: [getProjectId],
-    submenu: [
-      {
-        id: 'swarm-cli',
-        localizedLabel: 'nav.swarm.cli',
-        icon: 'icon icon-terminal',
-        route: 'swarm-tab.console',
-        ctx: [getProjectId],
-        condition: swarmReady,
-      },
-      {
-        id: 'swarm-dashboard',
-        localizedLabel: 'nav.swarm.dashboard',
-        icon: 'icon icon-link',
-        route: 'swarm-tab.dashboard',
-        ctx: [getProjectId],
-        condition: swarmReady,
-      },
-      {
-        id: 'swarm-notready',
-        icon: 'icon icon-spinner icon-spin',
-        localizedLabel: 'nav.notReady',
-        condition: swarmNotReady,
-      },
-      {
-        id: 'swarm-system',
-        localizedLabel: 'nav.swarm.system',
-        icon: 'icon icon-network',
-        route: 'containers',
-        condition: isOwner,
-        ctx: [getProjectId],
-        queryParams: {which: C.EXTERNAL_ID.KIND_NOT_ORCHESTRATION},
-      },
-    ]
-  },
-
-  // Mesos
-  {
-    id: 'mesos',
-    localizedLabel: 'nav.mesos.tab',
-    condition: function() { return this.get('hasProject') && this.get('hasMesos'); },
-    route: 'mesos-tab',
-    ctx: [getProjectId],
-    submenu: [
-      {
-        id: 'mesos-web',
-        localizedLabel: 'nav.mesos.web',
-        icon: 'icon icon-link',
-        route: 'mesos-tab.index',
-        ctx: [getProjectId],
-        condition: mesosReady,
-      },
-      {
-        id: 'mesos-notready',
-        icon: 'icon icon-spinner icon-spin',
-        localizedLabel: 'nav.notReady',
-        condition: mesosNotReady,
-      },
-      {
-        id: 'mesos-system',
-        localizedLabel: 'nav.mesos.system',
-        icon: 'icon icon-network',
-        route: 'containers',
-        condition: isOwner,
-        ctx: [getProjectId],
-        queryParams: {which: C.EXTERNAL_ID.KIND_NOT_ORCHESTRATION},
-      },
-    ],
-  },
-
   // Cattle
   {
     id: 'containers',
     localizedLabel: function() {
-      if ( this.get('hasKubernetes') || this.get('hasMesos') || this.get('hasSwarm') ) {
+      if ( this.get('hasKubernetes') ) {
         return 'nav.containers.systemTab';
       } else {
         return 'nav.containers.tab';

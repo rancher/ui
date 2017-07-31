@@ -24,34 +24,6 @@
       descriptionPlaceholder="viewEditDescription.form.description.placeholder"
     }}
   </section>
-
-  {{#unless editing}}
-    <section>
-      <div class="row">
-        <div class="">
-          <label>{{t 'viewEditProject.showEdit.template'}}</label>
-          <div class="row nav nav-boxes checked-active">
-            {{#each templateChoices as |tpl|}}
-              <a href="#" tabindex="1" {{action "selectTemplate" tpl.id}} class="col nav-box-item driver orchestration-driver p-10 {{if (eq project.projectTemplateId tpl.id) 'active'}}">
-                <img src="{{tpl.image}}"/>
-                <div class="clip">{{tpl.name}}</div>
-              </a>
-            {{/each}}
-          </div>
-        </div>
-
-        {{#each-in selectedProjectTemplate.summary as |category names|}}
-          <div class="text-center">
-            <label class="text-muted">{{category}}</label>: {{names}}
-          </div>
-        {{else}}
-          <div class="text-center">
-            <label class="text-muted">Orchestration</label>: Cattle
-          </div>
-        {{/each-in}}
-      </div>
-    </section>
-  {{/unless}}
 {{else if project.description}}
   <section class="pt-10">
     <label class="inline-block m-0">{{t 'viewEditProject.description'}}: </label>

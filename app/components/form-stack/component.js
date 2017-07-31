@@ -37,11 +37,12 @@ export default Ember.Component.extend({
         this.set('reuseStackId', this.get('stack.id'));
       } else {
         let stack = all.findBy('isDefault', true);
-        if ( stack  && stack.get('id') ) {
+        if ( stack && stack.get('id') ) {
           this.set('reuseStackId', stack.get('id'));
         } else {
           Ember.run.next(() => {
             this.set('mode', CREATE);
+            this.get('createStack.name', 'Default')
           });
         }
       }

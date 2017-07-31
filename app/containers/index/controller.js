@@ -1,5 +1,4 @@
 import Ember from 'ember';
-import C from 'ui/utils/constants';
 import { searchFields as containerSearchFields } from 'ui/components/container-dots/component';
 
 export const headers = [
@@ -78,12 +77,4 @@ export default Ember.Controller.extend({
 
     return out;
   }.property('showStack','tags','model.services.@each.{isReal,isBalancer}','standaloneContainers.[]'),
-
-  showWelcome: function() {
-    return this.get('projects.current.orchestration') === 'cattle' && !this.get('rows.length');
-  }.property('filtered.length','projects.current.orchestration'),
-
-  showOrchestration: function() {
-    return false && this.get('app.mode') !== C.MODE.CAAS;
-  }.property('app.mode'),
 });

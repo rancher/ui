@@ -172,15 +172,6 @@ Router.map(function() {
         });
       });
 
-      this.route('swarm-tab', {path: '/swarm', resetNamespace: true}, function() {
-        this.route('console');
-        this.route('dashboard');
-      });
-
-      // Mesos
-      this.route('mesos-tab', {path: '/mesos', resetNamespace: true}, function() {
-      });
-
       // Catalog
       this.route('apps-tab', {path: '/apps', resetNamespace: true}, function() {
         this.route('index', {path: '/'});

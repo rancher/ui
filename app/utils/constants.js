@@ -3,8 +3,6 @@ const KIND_SYSTEM = 'system';
 const KIND_SYSTEM_CATALOG = 'system-catalog';
 const KIND_LEGACY_KUBERNETES = 'kubernetes';
 const KIND_KUBERNETES = 'k8s';
-const KIND_SWARM = 'swarm';
-const KIND_MESOS = 'mesos';
 const KIND_INFRA = 'infra';
 const KIND_NOT_ORCHESTRATION = 'cattle';
 
@@ -51,14 +49,10 @@ var C = {
     KIND_SYSTEM_CATALOG: KIND_SYSTEM_CATALOG,
     KIND_LEGACY_KUBERNETES: KIND_LEGACY_KUBERNETES,
     KIND_KUBERNETES: KIND_KUBERNETES,
-    KIND_SWARM: KIND_SWARM,
-    KIND_MESOS: KIND_MESOS,
     KIND_INFRA: KIND_INFRA,
     KIND_NOT_ORCHESTRATION: KIND_NOT_ORCHESTRATION,
     KIND_ORCHESTRATION: [
       KIND_KUBERNETES,
-      KIND_SWARM,
-      KIND_MESOS,
     ],
     UPGRADEABLE: [
       KIND_CATALOG,
@@ -202,13 +196,6 @@ var C = {
     ALIYUNECS: 'aliyunecs',
   },
 
-  MESOS: {
-    HEALTH: 'health',
-    FRAMEWORKS: 'frameworks',
-    MASTER_SERVICE: 'mesos-master',
-    MASTER_PORT: 5050,
-  },
-
   MODE: {
     OSS: 'oss', // Regular community UI
     CAAS: 'caas', // Container cloud UI
@@ -300,7 +287,6 @@ var C = {
     },
     API_HOST:                  'api$host',
     CATALOG_URL:               'catalog$url',
-    SWARM_PORT:                'swarm$tls$port',
     ENGINE_URL:                'engine$install$url',
     SUPPORTED_DOCKER:          'supported$docker$range',
     NEWEST_DOCKER:             'newest$docker$version',

@@ -34,6 +34,11 @@ export default Ember.Mixin.create({
     return true;
   },
 
+  submit(event) {
+    event.preventDefault();
+    this.send('save');
+  },
+
   actions: {
     error: function(err) {
       if (err)

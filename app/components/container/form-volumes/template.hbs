@@ -3,87 +3,72 @@
      detail=(t 'formVolumes.detail' appName=settings.appName)
      status=status
      statusClass=statusClass
-     expandAll=expandAll
      expand=(action expandFn)
+     expandOnInit=true
 }}
   {{#if projects.current.isWindows}}
     <div class="text-center p-20">Volume support is not currently available for Windows.</div>
   {{else}}
-    <button class="btn bg-link icon-btn" {{action "addVolume"}}>
+    <button type="button" class="btn bg-link p-0 icon-btn dropdown-toggle pr-10" data-toggle="dropdown" aria-expanded="false">
       <span class="darken"><i class="icon icon-plus text-small"/></span>
-      <span>{{t 'formVolumes.addActionLabel'}}</span>
+      <span>{{t 'formVolumes.add.label'}}</span>
+      <i class="icon icon-chevron-down"></i>
     </button>
-
-    {{#if volumesArray.length}}
-
-        <div class="mt-20">
-          {{#each volumesArray as |vol|}}
-            <div class="row mt-10">
-            <div class="input-group">
-                {{input type="text" class="form-control" value=vol.value placeholder="e.g. [volumename: or /path/on/host:]/path/in/container[:ro]" style="width:100%;"}}
-
-                <div class="input-group-btn bg-primary"><button class="btn" {{action "removeVolume" vol}}><i class="icon icon-minus"/></button></div>
-                </div>
-            </div>
-          {{/each}}
-        </div>
-
-    {{/if}}
-
-    <div class="mt-20">
-      <label class="acc-label">{{t 'formVolumes.volumesFrom'}}</label>
+    <ul class="dropdown-menu" role="menu">
+      <li><a {{action "addVolume"}}>{{t 'formVolumes.add.existing'}}</a></li>
+      <li><a {{action "addNewVolume"}}>{{t 'formVolumes.add.new'}}</a></li>
+      <li><a {{action "addBindMount"}}>{{t 'formVolumes.add.bindMount'}}</a></li>
       {{#if isService}}
-        {{#if volumesFromLaunchConfigChoices.length}}
-          {{#each volumesFromLaunchConfigChoices as |choice|}}
-            <label class="mr-10 radio small" style="color: inherit; text-transform: none;">{{input type="checkbox" checked=choice.enabled}} {{choice.displayName}}</label>
-          {{/each}}
-        {{else}}
-          <span class="text-muted">{{t 'formVolumes.noLaunchConfigs'}}</span>
+        {{#if hasSidekicks}}
+          <li><a {{action "addVolumesFromLaunchConfig"}}>{{t 'formVolumes.add.fromLaunchConfig'}}</a></li>
         {{/if}}
       {{else}}
-        <div>
-          {{#if instance.requestedHostId}}
-            {{#if hostContainerChoices.length}}
-              <button class="btn bg-link icon-btn" {{action "addVolumeFrom"}}><i class="icon icon-plus text-small"/></button>
-            {{else}}
-              <span class="text-muted">{{t 'formVolumes.noHostContainers'}}</span>
-            {{/if}}
-          {{else}}
-              <span class="text-muted">{{t 'formVolumes.onlySingleHost'}}</span>
-          {{/if}}
-        </div>
-        {{#if volumesFromArray.length}}
-          <table class="table fixed no-lines no-top-padding tight">
-            {{#each volumesFromArray as |vol|}}
-              <tr>
-                <td>
-                  {{new-select
-                    classNames="form-control input-sm volumefrom-container"
-                    prompt="formVolumes.value.prompt"
-                    value=vol.value
-                    content=hostContainerChoices
-                    optionValuePath="id"
-                    optionLabelPath="name"
-                    optionGroupPath="group"
-                  }}
-                </td>
-                <td width="30" class="text-right">
-                  <button class="btn bg-primary btn-sm" {{action "removeVolumeFrom" vol}}><i class="icon icon-minus"/></button>
-                </td>
-              </tr>
-            {{/each}}
-          </table>
-        {{/if}}
+        <li><a {{action "addVolumesFromContainer"}}>{{t 'formVolumes.add.fromContainer'}}</a></li>
       {{/if}}
-    </div>
+      <li class="divider"></li>
+      <li><a {{action "addCustom"}}>{{t 'formVolumes.add.custom'}}</a></li>
+    </ul>
 
-    <div class="mt-20">
-      <label class="acc-label" for="volumeDriver">{{t 'formVolumes.volumeDriver.label'}}</label>
-      {{input-suggest
-        value=instance.volumeDriver
-        grouped=driverChoices
-        placeholder=(t 'formVolumes.volumeDriver.placeholder')
-      }}
-    </div>
+    {{#if volumesArray.length}}
+      <div class="mt-20">
+        <table class="table fixed no-lines mt-20">
+          <thead>
+            <tr>
+              <td width="150">Kind</td>
+              <td width="20"></td>
+              <td>Source</td>
+              <td width="20"></td>
+              <td>Mount Point</td>
+              <td width="20"></td>
+              <td width="150">Access</td>
+              <td width="20"></td>
+              <td width="40" class="actions"></td>
+            </tr>
+          </thead>
+          <tbody>
+            {{#each volumesArray as |vol|}}
+              {{container/form-volume-row
+                model=vol
+                isService=isService
+                requestedHostId=launchConfig.requestedHostId
+                remove=(action "remove" vol)
+              }}
+            {{/each}}
+          </tbody>
+        </table>
+      </div>
+    {{/if}}
+
+
+    {{#if hasCustom}}
+      <div class="mt-20">
+        <label class="acc-label" for="volumeDriver">{{t 'formVolumes.volumeDriver.label'}}</label>
+        {{input-suggest
+          value=launchConfig.volumeDriver
+          grouped=driverChoices
+          placeholder=(t 'formVolumes.volumeDriver.placeholder')
+        }}
+      </div>
+    {{/if}}
   {{/if}}
 {{/accordion-list-item}}

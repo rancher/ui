@@ -1,31 +1,12 @@
-{{#containers-header tags=tags simpleMode=simpleMode}}
-  {{#link-to "new-stack" classNames="btn btn-sm bg-default mr-10"}}{{t 'nav.containers.importCompose'}}{{/link-to}}
-  {{#link-to "containers.run" projects.current.id class="btn btn-sm bg-primary"}}{{t 'nav.containers.addContainer'}}{{/link-to}}
-{{/containers-header}}
+{{#if projectController.showOrchestrationWelcome}}
+  {{orchestration-welcome}}
+{{else if rows.length}}
+  {{#containers-header tags=tags simpleMode=simpleMode}}
+    {{#link-to "new-stack" classNames="btn btn-sm bg-default mr-10"}}{{t 'nav.containers.importCompose'}}{{/link-to}}
+    {{#link-to "containers.run" projects.current.id class="btn btn-sm bg-primary"}}{{t 'nav.containers.addContainer'}}{{/link-to}}
+  {{/containers-header}}
 
-<section class="instances">
-  {{#if showWelcome}}
-    <div class="row">
-      <div class="col {{if showOrchestration 'span-6' 'span-6 offset-3'}} text-center pt-40 pb-40">
-        <img style="width: 75%;" src="{{app.baseAssets}}assets/images/resources/container.svg"/>
-        <h1 class="text-center text-bold mt-20">{{t 'containersPage.welcome.container'}}</h1>
-        <a class="btn bg-link icon-btn mt-20" href="{{href-to 'containers.run'}}">
-          <span class="darken"><i class="icon icon-plus text-small"></i></span>
-          <span>{{t 'containersPage.welcome.containerLink'}}</span>
-        </a>
-      </div>
-      {{#if showOrchestration}}
-        <div class="col span-6 text-center pt-40 pb-40">
-          <img style="width: 75%;" src="{{app.baseAssets}}assets/images/resources/orchestration.svg"/>
-          <h1 class="text-center text-bold mt-20">{{t 'containersPage.welcome.orchestrator'}}</h1>
-          <a class="btn bg-link icon-btn mt-20" href="{{href-to 'catalog-tab.launch' 'library:infra*k8s'}}">
-            <span class="darken"><i class="icon icon-plus text-small"></i></span>
-            <span>{{t 'containersPage.welcome.kubernetesLink'}}</span>
-          </a>
-        </div>
-      {{/if}}
-    </div>
-  {{else}}
+  <section class="instances">
     {{#sortable-table
       tableClassNames="double-rows"
       classNames="grid sortable-table"
@@ -98,5 +79,7 @@
         <tr><td colspan="{{sortable.fullColspan}}" class="text-center text-muted lacsso pt-20 pb-20">{{t 'containersPage.table.noData'}}</td></tr>
       {{/if}}
     {{/sortable-table}}
-  {{/if}}
-</section>
+  </section>
+{{else}}
+    {{empty-table resource="container" newRoute="containers.run" newTranslationKey="nav.containers.addContainer"}}
+{{/if}}
