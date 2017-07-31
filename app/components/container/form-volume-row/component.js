@@ -1,6 +1,8 @@
 import Ember from 'ember';
 
 export default Ember.Component.extend({
+  modalService: Ember.inject.service('modal'),
+
   requestedHostId: null,
 
   tagName: '',
@@ -20,6 +22,10 @@ export default Ember.Component.extend({
   },
 
   actions: {
+    defineNew() {
+      this.get('modalService').toggleModal('modal-new-volume', this.get('model.volume'));
+    },
+
     remove() {
       this.sendAction('remove');
     }
@@ -31,8 +37,9 @@ export default Ember.Component.extend({
 
     let out = allVolumes.slice();
     if ( this.get('isService') ) {
-      let allTemplates = store.all('volumetemplate');
-      out.pushObjects(allTemplates);
+      store.all('volumetemplate').forEach((tpl) => {
+        out.push(tpl);
+      });
     }
 
     return out.sortBy('displayNameScope','id');

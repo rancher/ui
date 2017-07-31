@@ -4,7 +4,8 @@ import { denormalizeId, denormalizeIdArray } from 'ember-api-store/utils/denorma
 
 var Volume = Resource.extend({
   type: 'volume',
-  modalService: Ember.inject.service('modal'),
+
+  intl: Ember.inject.service(),
 
   mounts: denormalizeIdArray('mountIds'),
   stack: denormalizeId('stackId'),
@@ -15,7 +16,9 @@ var Volume = Resource.extend({
     return 'standalone';
   }.property(),
 
-  displayNameScope: Ember.computed.alias('displayName'),
+  displayNameScope: function() {
+    return this.get('displayName') + ' (' + this.get('intl').t('volumesPage.scope.standalone')+ ')';
+  }.property('displayName','intl.locale'),
 
   availableActions: function() {
     var a = this.get('actionLinks');
