@@ -12,6 +12,7 @@ export const CUSTOM = 'custom';
 export default Ember.Component.extend({
   intl: Ember.inject.service(),
   projects: Ember.inject.service(),
+  modalService: Ember.inject.service('modal'),
 
   // Inputs
   launchConfig: null,
@@ -112,11 +113,15 @@ export default Ember.Component.extend({
     },
 
     addNewVolume() {
-      this.get('volumesArray').pushObject({
-        mode: NEW_VOLUME,
-        volume: null,
-        mountPoint: '',
-        opts: 'rw',
+      this.get('modalService').toggleModal('modal-new-volume', {
+        callback: (volume) => {
+          this.get('volumesArray').pushObject({
+            mode: NEW_VOLUME,
+            volume: volume,
+            mountPoint: '',
+            opts: 'rw',
+          });
+        },
       });
     },
 
