@@ -2,6 +2,7 @@ import Ember from 'ember';
 import NewOrEdit from 'ui/mixins/new-or-edit';
 
 const SPECIAL = {
+  '': 'editVolume.driver.local',
   'rancher-nfs': 'editVolume.driver.nfs',
   'rancher-ebs': 'editVolume.driver.ebs',
   'rancher-efs': 'editVolume.driver.efs',
@@ -57,11 +58,15 @@ export default Ember.Component.extend(NewOrEdit, {
 
   driverChoices: function() {
     let intl = this.get('intl');
-    let choices = this.get('store').all('storagepool')
+    let drivers = this.get('store').all('storagepool')
       .map((x) => x.driverName)
       .uniq()
-      .filter((x) => !!x && !HIDE.includes(x))
-      .map((driver) => {
+      .filter((x) => !!x && !HIDE.includes(x));
+
+    // Local driver
+    drivers.unshift('');
+
+    let choices = drivers.map((driver) => {
         let key = SPECIAL[driver];
         if ( key ) {
           return { label: intl.t(key), value: driver, special: true };
@@ -74,7 +79,15 @@ export default Ember.Component.extend(NewOrEdit, {
 
   headerToken: function() {
     let k = 'editVolume.';
-    k += (this.get('isUpgrade') ? 'upgrade' : 'add') + '.';
+
+    if ( this.get('isUpgrade') ) {
+      k += 'upgrade.';
+    } else if ( this.get('actuallySave' ) ) {
+      k += 'add.';
+    } else {
+      k += 'define.';
+    }
+
     k += this.get('scope');
     return k;
   }.property('isUpgrade','scope'),
@@ -90,6 +103,20 @@ export default Ember.Component.extend(NewOrEdit, {
 
     pr = this.get('store').createRecord(this.get('model'),{type: type});
     this.set('primaryResource', pr);
+
+    if ( !this.get('actuallySave') ) {
+      let ok = this._super(...arguments);
+      if ( ok ) {
+        let type = pr.get('type');
+        this.sendAction('doSave', {
+          scope: this.get('scope'),
+          [type]: pr,
+        });
+        this.doneSaving();
+      }
+
+      return false;
+    }
 
     let stackPromise;
     // Set the stack ID
@@ -117,19 +144,6 @@ export default Ember.Component.extend(NewOrEdit, {
     }).catch(() => {
       return false;
     });
-  },
-
-  doSave() {
-    if ( this.get('actuallySave') ) {
-      return this._super(...arguments);
-    } else {
-      let pr = this.get('primaryResource');
-      let type = pr.get('type');
-      this.sendAction('doSave', {
-        scope: this.get('scope'),
-        [type]: pr,
-      });
-    }
   },
 
   doneSaving() {

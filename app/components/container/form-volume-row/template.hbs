@@ -8,13 +8,10 @@
     <td colspan="5">
       {{input value=model.str placeholder=(t 'formVolumeRow.custom.placeholder')}}
     </td>
+    <td></td>
   {{else if (eq model.mode "newVolume")}}
     <td>
-      {{#if model.volume}}
-        {{volume.displayName}} <button class="btn bg-link" {{action 'defineNew'}}>{{t 'formVolumeRow.edit'}}</button>
-      {{else}}
-        <button class="btn bg-primary" {{action 'defineNew'}}>{{t 'formVolumeRow.define'}}</button>
-      {{/if}}
+      {{model.volume.displayName}} <button class="btn bg-transparent" {{action 'defineNew'}}>{{t 'formVolumeRow.edit'}}</button>
     </td>
     <td></td>
   {{else if (eq model.mode "volume")}}

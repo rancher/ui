@@ -326,7 +326,11 @@ export default Ember.Component.extend(NewOrEdit, SelectTab, {
   },
 
   doSave() {
-    return this._super(...arguments);
+    if ( !this.get('isUpgrade') || this.get('isService') ) {
+      return this._super(...arguments);
+    } else {
+      return this.get('launchConfig').doAction('upgrade', {config: this.get('launchConfig')});
+    }
   },
 
   didSave() {
