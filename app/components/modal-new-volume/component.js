@@ -5,7 +5,7 @@ export default Ember.Component.extend(ModalBase, {
   classNames: ['large-modal'],
 
   callback: Ember.computed.alias('modalService.modalOpts.callback'),
-  model: Ember.computed.alias('modalService.modalOpts.volume'),
+  model: Ember.computed.alias('modalService.modalOpts.model'),
   editing: true,
 
   init() {
