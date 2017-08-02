@@ -23,7 +23,6 @@ export default Ember.Component.extend({
 
   actions: {
     defineNew() {
-      let self = this;
       this.get('modalService').toggleModal('modal-new-volume', {
         model: this.get('model.volume'),
         callback: (volume) => {

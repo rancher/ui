@@ -23,14 +23,28 @@ export default Ember.Component.extend({
       return;
     }
 
-    let def = this.get('hostService.defaultDriver');
-    if ( def === 'custom'  && this.get('allowCustom') ) {
-      this.set('driver', 'custom');
-    } else if ( !this.get('inModal') && def && this.get('sortedDrivers').map((x) => x.name).includes(def) ) {
-      this.set('driver', def);
+    let want = this.get('hostService.defaultDriver');
+    let first = this.get('sortedDrivers.firstObject.name'); 
+    let allowCustom = this.get('allowCustom');
+    let driver;
+
+    if ( allowCustom && want === 'custom' ) {
+      // You want custom and it's allowed
+      driver = want;
+    } else if ( !this.get('inModal') && want && this.get('sortedDrivers').map((x) => x.name).includes(want) ) {
+      // You want something available
+      driver = want;
+    } else if ( first ){
+      // How about the first one
+      driver = first;
+    } else if ( allowCustom ) {
+      // Ok there's no drivers, show custom
+      driver = 'custom';
     } else {
-      this.set('driver', this.get('sortedDrivers.firstObject.name'));
+      // I give up... show a blank page
     }
+
+    this.set('driver', driver);
   },
 
   actions: {
