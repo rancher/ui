@@ -170,7 +170,8 @@ export default Ember.Component.extend({
   }.observes('volumesArray.@each.{volume,hostPath,mountPoint,launchConfig,str,opts}'),
 
   updateInstance() {
-    let volumes = [];
+    let volumesToCreate = [];
+    let dataVolumes = [];
     let dataVolumesFrom = [];
     let dataVolumesFromLaunchConfigs = [];
 
@@ -185,7 +186,11 @@ export default Ember.Component.extend({
             dest: row.mountPoint,
             opts: row.opts
           }
-          volumes.push(stringifyVolumeSpec(spec));
+          dataVolumes.push(stringifyVolumeSpec(spec));
+
+          if ( !row.volume.id ) {
+            volumesToCreate.push(row.volume);
+          }
         }
         break;
       case BIND_MOUNT:
@@ -195,7 +200,7 @@ export default Ember.Component.extend({
             dest: row.mountPoint,
             opts: row.opts
           };
-          volumes.push(stringifyVolumeSpec(spec));
+          dataVolumes.push(stringifyVolumeSpec(spec));
         }
         break;
       case FROM_CONTAINER:
@@ -211,14 +216,15 @@ export default Ember.Component.extend({
       case CUSTOM:
         spec = (row.str||'').trim();
         if ( spec ) {
-          volumes.push(spec);
+          dataVolumes.push(spec);
         }
         break;
       }
     });
 
+    this.set('volumesToCreate', volumesToCreate);
     this.get('launchConfig').setProperties({
-      volumes,
+      dataVolumes,
       dataVolumesFrom,
       dataVolumesFromLaunchConfigs
     });
@@ -226,26 +232,31 @@ export default Ember.Component.extend({
 
   validate: function() {
     var errors = [];
+    let intl = this.get('intl');
 
     this.get('volumesArray').forEach((row) => {
-      switch ( row.mode ) {
-        case NEW_VOLUME:
-          break;
-        case VOLUME:
-          break;
-        case BIND_MOUNT:
-          break;
-        case FROM_CONTAINER:
-          break;
-        case FROM_LAUNCH_CONFIG:
-          break;
-        case CUSTOM:
-          break;
+
+      // Incomplete
+      if ( row.mode === NEW_VOLUME || row.mode === VOLUME ) {
+        if ( (row.volume && !row.mountPoint) || (!row.volume && row.mountPoint) ) {
+          errors.push(intl.t('formVolumes.errors.incomplete'));
+        }
+      } else if ( row.mode === BIND_MOUNT ) {
+        if ( (row.hostPath && !row.mountPoint) || (!row.hostPath && row.mountPoint) ) {
+          errors.push(intl.t('formVolumes.errors.incomplete'));
+        }
+      }
+
+      // Bad mount
+      if ( row.mode === NEW_VOLUME || row.mode === VOLUME || row.mode === BIND_MOUNT ) {
+        if ( row.mountPoint && row.mountPoint.substr(0,1) !== '/' ) {
+          errors.push(intl.t('formVolumes.errors.absoluteMountPoint'));
+        }
       }
     });
 
     this.set('errors', errors.uniq());
-  }.observes('volumesArray.@each.value', 'instance.volumeDriver'),
+  }.observes('volumesArray.@each.{volume,hostPath,mountPoint}', 'instance.volumeDriver'),
 
   hasCustom: function() {
     return !!this.get('volumesArray').findBy('mode', CUSTOM);

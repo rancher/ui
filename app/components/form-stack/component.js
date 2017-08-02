@@ -71,12 +71,12 @@ export default Ember.Component.extend({
     let errors = [];
 
     let stack = this.get('stack');
-    if ( stack ) {
+    if ( stack && stack.get('name') ) {
       stack.validationErrors().forEach((err) => {
         errors.push(intl.t('formStack.errors.validation', {error: err}))
       });
     } else {
-      errors.push(intl.t('formStack.errors.noneChosen'));
+      errors.push(intl.t('validation.required', {key: intl.t('generic.stack')}));
     }
 
     if ( errors.length ) {
