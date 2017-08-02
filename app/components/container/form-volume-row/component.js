@@ -40,11 +40,14 @@ export default Ember.Component.extend({
   volumeChoices: function() {
     let store = this.get('store');
     let allVolumes = store.all('volume');
+    let stackId = this.get('stackId');
 
     let out = allVolumes.slice();
     if ( this.get('isService') ) {
       store.all('volumetemplate').forEach((tpl) => {
-        out.push(tpl);
+        if ( tpl.get('stackId') === stackId ) {
+          out.push(tpl);
+        }
       });
     }
 

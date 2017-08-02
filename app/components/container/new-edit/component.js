@@ -28,6 +28,7 @@ export default Ember.Component.extend(NewOrEdit, SelectTab, {
   portsAsStrArray:            null,
   upgradeOptions:             null,
   sidekickService:            null,
+  volumesToCreate:            null,
 
   // Errors from components
   commandErrors:              null,
@@ -40,7 +41,6 @@ export default Ember.Component.extend(NewOrEdit, SelectTab, {
   scaleErrors:                null,
   imageErrors:                null,
   portErrors:                 null,
-  diskErrors:                 null,
   stackErrors:                null,
 
   actions: {
@@ -207,7 +207,6 @@ export default Ember.Component.extend(NewOrEdit, SelectTab, {
     errors.pushObjects(this.get('scaleErrors')||[]);
     errors.pushObjects(this.get('imageErrors')||[]);
     errors.pushObjects(this.get('portErrors')||[]);
-    errors.pushObjects(this.get('diskErrors')||[]);
     errors.pushObjects(this.get('stackErrors')||[]);
 
 
@@ -228,6 +227,8 @@ export default Ember.Component.extend(NewOrEdit, SelectTab, {
     let pr;
     let nameResource;
     let lc = this.get('launchConfig').clone();
+    let name = (this.get('name')||'').trim().toLowerCase();
+
 
     if ( this.get('isSidekick') ) {
       let service = this.get('sidekickService');
@@ -237,8 +238,6 @@ export default Ember.Component.extend(NewOrEdit, SelectTab, {
         this.set('errors', errors);
         return false;
       }
-
-      let name = (this.get('name')||'').trim().toLowerCase();
 
       if ( !name ) {
         errors.push(intl.t('validation.required', {key: intl.t('formNameDescription.name.label')}));
@@ -259,7 +258,7 @@ export default Ember.Component.extend(NewOrEdit, SelectTab, {
         return idx !== this.get('launchConfigIndex') && x.get('name').toLowerCase() === name;
       });
       if ( duplicate ) {
-        errors.push(intl.t('newContainer.errors.duplicateName', {name: this.get('name'), service: duplicate.get('displayName')}));
+        errors.push(intl.t('newContainer.errors.duplicateName', {name: name, service: duplicate.get('displayName')}));
         this.set('errors', errors);
         return false;
       }
@@ -292,6 +291,8 @@ export default Ember.Component.extend(NewOrEdit, SelectTab, {
       nameResource = pr;
     }
 
+    pr.set('completeUpdate', true);
+
     nameResource.setProperties({
       name: this.get('name'),
       description: this.get('description'),
@@ -300,57 +301,52 @@ export default Ember.Component.extend(NewOrEdit, SelectTab, {
     this.set('primaryResource', pr);
     this.set('originalPrimaryResource', pr);
 
-    let ok = this._super(...arguments);
-    if ( !ok ) {
-      return ok;
-    }
-
-    if ( this.get('isUpgrade') ) {
-      return true;
-    } else {
-      pr.set('completeUpdate', true);
-
-      // Set the stack ID
-      if ( this.get('stack.id') ) {
-        pr.set('stackId', this.get('stack.id'));
-        return true;
-      } else if ( this.get('stack') ) {
-        return this.get('stack').save().then((newStack) => {
-          this.set('primaryResource.stackId', newStack.get('id'));
-          return true;
-        });
-      } else {
-        return Ember.RSVP.reject('Stack is required');
-      }
-    }
+    let ok = this.validate();
+    return ok;
   },
 
   doSave() {
-    if ( !this.get('isUpgrade') || this.get('isService') ) {
-      return this._super(...arguments);
-    } else {
-      return this.get('launchConfig').doAction('upgrade', {config: this.get('launchConfig')});
-    }
-  },
+    let pr = this.get('primaryResource');
 
-  didSave() {
-    if ( this.get('isService') && !this.get('isSidekick') ) {
-      // Returns a promise
-      return this.setServiceLinks();
-    }
-  },
-
-  setServiceLinks() {
-    var service = this.get('primaryResource');
-    var ary = [];
-    this.get('serviceLinksArray').forEach((row) => {
-      if ( row.serviceId )
-      {
-        ary.push({name: row.name, serviceId: row.serviceId});
+    let stackPromise = Ember.RSVP.resolve();
+    if ( !this.get('isUpgrade') ) {
+      // Set the stack ID
+      if ( this.get('stack.id') ) {
+        pr.set('stackId', this.get('stack.id'));
+      } else if ( this.get('stack') ) {
+        stackPromise = this.get('stack').save().then((newStack) => {
+          pr.set('stackId', newStack.get('id'));
+        });
+      } else {
+        // This shouldn't happen since willSave checked it...
+        return Ember.RSVP.reject('No Stack');
       }
-    });
+    }
 
-    return service.doAction('setservicelinks', {serviceLinks: ary});
+    let self = this;
+    let sup = self._super;
+
+    return stackPromise.then(() => {
+      let volumes = this.get('volumesToCreate');
+      let volumesPromise = Ember.RSVP.resolve();
+
+      if ( volumes && volumes.get('length') ) {
+        volumesPromise = Ember.RSVP.all(volumes.map((volume) => {
+          volume.set('stackId', this.get('stack.id'));
+          return volume.save();
+        }));
+      }
+
+      return volumesPromise.then(() => {
+        if ( this.get('isUpgrade') && !this.get('isService') ) {
+          // Container upgrade
+          return this.get('launchConfig').doAction('upgrade', {config: this.get('launchConfig')});
+        } else {
+          // Container create or Service create/upgrade
+          return sup.apply(self,arguments);
+        }
+      });
+    })
   },
 
   doneSaving() {

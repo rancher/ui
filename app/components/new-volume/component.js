@@ -105,6 +105,7 @@ export default Ember.Component.extend(NewOrEdit, {
     this.set('primaryResource', pr);
 
     if ( !this.get('actuallySave') ) {
+      pr.set('stackId','TBD'); // StackID is required, but won't be set here yet
       let ok = this._super(...arguments);
       if ( ok ) {
         let type = pr.get('type');

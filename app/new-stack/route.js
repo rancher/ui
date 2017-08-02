@@ -69,7 +69,6 @@ export default Ember.Route.extend({
   setupController: function(controller, model) {
     controller.set('originalModel',null);
     controller.set('model', model);
-    controller.initFields();
   },
 
   resetController: function (controller, isExiting/*, transition*/) {
