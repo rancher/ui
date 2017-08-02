@@ -261,7 +261,7 @@ export default Ember.Component.extend(ManageLabels, ContainerChoices,{
   status: function() {
     let k;
     let str;
-    let mode = this.get('instance.networkMode');
+    let mode = ( this.get('instance.networkMode') || 'none' );
 
     if ( this.get('errors.length') ) {
       k = STATUS.INCOMPLETE;
