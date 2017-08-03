@@ -187,8 +187,8 @@ export default Ember.Component.extend({
         .attr('d', line);
 
       this.get('dot')
-        .attr('cx', x(data.length-1))
-        .attr('cy', y(data[data.length-1]));
+        .attr('cx', x(data.length-1) || 0 )
+        .attr('cy', y(data[data.length-1]) || 0);
 
       var str = FORMATTERS[this.get('formatter')](this.get('lastValue'));
       text.text(str);

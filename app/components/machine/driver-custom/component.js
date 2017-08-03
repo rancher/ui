@@ -8,6 +8,9 @@ export default Ember.Component.extend(ManageLabels, {
   cattleAgentIp : null,
   model         : null,
 
+  _allHosts: null,
+  hostsAtLoad: null,
+
   actions: {
     cancel() {
       this.attrs.cancel();
@@ -23,6 +26,15 @@ export default Ember.Component.extend(ManageLabels, {
         this.set('model.labels', out);
       }
     }
+  },
+
+  init() {
+    this._super(...arguments);
+    let hosts = this.get('store').all('host');
+    this.setProperties({
+      _allHosts: hosts,
+      hostsAtLoad: hosts.get('length'),
+    });
   },
 
   bootstrap: function() {
@@ -85,5 +97,16 @@ Invoke-WebRequest -UseBasicParsing 'https://github.com/rancher/agent/releases/do
 & 'C:\\Program Files\\rancher\\agent.exe' -register-service ${url}
 Start-Service rancher-agent`;
   }.property('model.command'),
+
+  newHosts: function() {
+    let atLoad = this.get('hostsAtLoad')
+    let now = this.get('_allHosts.length');
+
+    if ( now < atLoad ) {
+      this.set('hostsAtLoad', now);
+    }
+
+    return Math.max(0, now-atLoad);
+  }.property('hostsAtLoad','_allHosts.length'),
 
 });

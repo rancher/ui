@@ -15,7 +15,6 @@ export default Ember.Component.extend({
   // Ignore the ID and force each initial port to be considered 'new' (for clone)
   editing         : false,
   portsArray      : null,
-  portsAsStrArray : null,
   protocolOptions : protocolOptions,
   showIp          : null,
 
@@ -142,9 +141,8 @@ export default Ember.Component.extend({
       }
     });
 
-    this.set('portsAsStrArray', out);
     this.sendAction('changed', this.get('portsArray'));
-    this.sendAction('changedStr', this.get('portsAsStrArray'));
+    this.sendAction('changedStr', out);
   }.observes('portsArray.@each.{public,private,protocol}'),
 
   validate: function() {

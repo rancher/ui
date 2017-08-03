@@ -448,38 +448,14 @@ containerPage:
   portsTab:
     header: Ports
     detail: 'Mappings of container listening ports to host ports on public IP addresses'
-    status: |
-      {count, plural,
-      =0 {No Ports}
-      =1 {# port}
-      other {# ports}
-      }
-    table:
-      public: Public on Host
-      private: Private in Container
-      protocol: Protocol
-      noData: This container has no ports
-      noMatch: No ports match the current search
     hostPrimaryIp: '({ip})'
   linksTab:
     header: Links
     detail: 'These properties show the links between containers in this container.'
-    status: |
-      {count, plural,
-      =0 {No links}
-      =1 {# link}
-      other {# links}
-      }
     noData: This Container has no links
   volumesTab:
     header: Volumes
     detail: 'These properties show the volumes attached to your container.'
-    status: |
-      {count, plural,
-      =0 {No volumes}
-      =1 {# volume}
-      other {# volumes}
-      }
     table:
       path: Mount Point
       shared: Shared With
@@ -733,21 +709,9 @@ hostsPage:
     containersTab:
       header: Containers
       detail: A list of containers running on this host
-      status: |
-        {count, plural,
-        =0 {No containers}
-        =1 {# container}
-        other {# containers}
-        }
     portsTab:
       header: Ports
       detail: 'These properties show what ports have been mapped and where.'
-      status: |
-        {count, plural,
-        =0 {No Ports}
-        =1 {# port}
-        other {# ports}
-        }
       table:
         header:
           ip: IP Address
@@ -759,12 +723,6 @@ hostsPage:
     storageTab:
       header: Volumes
       detail: 'These properties show the volume details of your host.'
-      status: |
-        {count, plural,
-        =0 {No volumes}
-        =1 {# volume}
-        other {# volumes}
-        }
       table:
         header:
           state: State
@@ -893,31 +851,13 @@ servicePage:
   containersTab:
     title: 'Containers'
     detail: 'The containers running in this service.'
-    status: |
-      {count, plural,
-      =0 {No containers}
-      =1 {# container}
-      other {# containers}
-      }
   linksTab:
     header: Links
     detail: 'These properties show the links between containers in this service.'
-    status: |
-      {count, plural,
-      =0 {No links}
-      =1 {# link}
-      other {# links}
-      }
     noData: This Service has no links
   certsTab:
     title: Certificates
     detail: 'Certificates used for TLS-termination of requests.'
-    status: |
-      {count, plural,
-      =0 {No certificates}
-      =1 {# certificate}
-      other {# certificates}
-      }
     default: Default Certificate
     additional: Additional SNI Certificates
   new:
@@ -942,22 +882,10 @@ servicePage:
       =1 {# port}
       other {# ports}
       }
-    table:
-      header:
-        port: Port
-        host: Host IP
-      body:
-        noData: This Service has no ports.
     notActive: Ports are only available while the service is Active.
   logTab:
     title: Service Log
     detail: 'Recent orchestration events that have occurred for this service'
-    status: |
-      {count, plural,
-      =0 {No events}
-      =1 {# event}
-      other {# events}
-      }
   type:
     service: Service
     selectorservice: Selector
@@ -2537,20 +2465,26 @@ machine:
       label: Region
 
   driverCustom:
-    step1: Start up a Linux machine somewhere and install a <a href="{docsBase}/hosts/#supported-docker-versions" target="_blank">supported version</a> of <a href="http://www.docker.com/" target="_blank" rel="noreferrer nofollow">Docker</a> on it.
-    step2: "Make sure any security groups or firewalls allow traffic:"
-    step2li: From and To all other hosts on <code>UDP</code> ports <code>500</code> and <code>4500</code> <span class="text-muted">(for IPsec networking)</span>
-    step3: "Optional: Add labels to be applied to the host."
-    step4: "Specify the public IP that should be registered for this host.  If left empty, Rancher will auto-detect the IP to use.  This generally works for machines with unique public IPs, but will not work if the machine is behind a firewall/NAT or if it is the same machine that is running the <code>{rancherImage}</code> container."
+    instructions: 'Copy, paste, and run the command below to register a host running a <a href="{docsBase}/hosts/#supported-docker-versions" target="_blank">supported version</a> of Docker with {appName}.  The host should pop up within a minute.'
+    advanced: Advanced options not needed for typical installations
+    detail:
+      ip: The IP address to register the host with typically will be detected automatically.
+      manual: 'If the host is behind a NAT or the same machine that is running the <code>{rancherImage}</code> container you may need to explicitly specify the IP to use in the advanced section below.'
+      firewall: The host agent initiates a connection to the server, so make sure firewalls or security groups allow it to reach the URL in the command.
+      networking: All hosts in the environment will also need to allow traffic between each other for cross-host networking
+      ipsec: 'IPSec: <code>500/udp</code> and <code>4500/udp</code>'
+      vxlan: 'VXLAN: <code>4789/udp</code>'
+
+    detected: |
+      {count, plural,
+        =1 {One new host has registered!}
+        other {# new hosts have registered!}
+      }
     agentIp:
+        label: Specify the public IP that this host should register as.  If left empty, Rancher will auto-detect the IP to use.
         placeholder: e.g. 1.2.3.4
     step5Copy: Copy, paste, and run the command below to register the host with
     generating: "Generating registration URL..."
-    step5Close:
-      part1: Click close below.  The new host should pop up on the
-      link: Hosts
-      part2: screen within a minute.
-    close: Close
     windows:
       windowsHeader: Windows Host
       linuxHeader: Linux Host
@@ -3142,26 +3076,11 @@ pageFooter:
   showSystem: Show System
 
 pagination:
-  generic: |
+  certificate: |
     {pages, plural,
-    =0 {No Items}
-    =1 {{count} {count, plural, =1 {Item} other {Items}}}
-    other {{from} - {to} of {count} Items}}
-  entry: |
-    {pages, plural,
-    =0 {No Entries}
-    =1 {{count} {count, plural, =1 {Entry} other {Entries}}}
-    other {{from} - {to} of {count} Entries}}
-  event: |
-    {pages, plural,
-    =0 {No Events}
-    =1 {{count} {count, plural, =1 {Event} other {Events}}}
-    other {{from} - {to} of {count} Events}}
-  host: |
-    {pages, plural,
-    =0 {No Hosts}
-    =1 {{count} {count, plural, =1 {Host} other {Hosts}}}
-    other {{from} - {to} of {count} Hosts}}
+    =0 {No Certificates}
+    =1 {{count} {count, plural, =1 {Certificate} other {Certificates}}}
+    other {{from} - {to} of {count} Certificates}}
   container: |
     {pages, plural,
     =0 {No Containers}
@@ -3172,26 +3091,56 @@ pagination:
     =0 {No Containers/Services}
     =1 {{count} {count, plural, =1 {Container/Service} other {Containers/Services}}}
     other {{from} - {to} of {count} Containers/Services}}
-  service: |
-    {pages, plural,
-    =0 {No Services}
-    =1 {{count} {count, plural, =1 {Service} other {Services}}}
-    other {{from} - {to} of {count} Services}}
-  loadBalancers: |
-    {pages, plural,
-    =0 {No Load Balancers}
-    =1 {{count} {count, plural, =1 {Load Balancer} other {Load Balancers}}}
-    other {{from} - {to} of {count} Load Balancers}}
   dnsRecord: |
     {pages, plural,
     =0 {No DNS Records}
     =1 {{count} {count, plural, =1 {DNS Record} other {DNS Records}}}
     other {{from} - {to} of {count} DNS Records}}
+  entry: |
+    {pages, plural,
+    =0 {No Entries}
+    =1 {{count} {count, plural, =1 {Entry} other {Entries}}}
+    other {{from} - {to} of {count} Entries}}
+  event: |
+    {pages, plural,
+    =0 {No Events}
+    =1 {{count} {count, plural, =1 {Event} other {Events}}}
+    other {{from} - {to} of {count} Events}}
+  generic: |
+    {pages, plural,
+    =0 {No Items}
+    =1 {{count} {count, plural, =1 {Item} other {Items}}}
+    other {{from} - {to} of {count} Items}}
+  host: |
+    {pages, plural,
+    =0 {No Hosts}
+    =1 {{count} {count, plural, =1 {Host} other {Hosts}}}
+    other {{from} - {to} of {count} Hosts}}
+  link: |
+    {pages, plural,
+    =0 {No Links}
+    =1 {{count} {count, plural, =1 {Link} other {Links}}}
+    other {{from} - {to} of {count} Links}}
+  loadBalancer: |
+    {pages, plural,
+    =0 {No Load Balancers}
+    =1 {{count} {count, plural, =1 {Load Balancer} other {Load Balancers}}}
+    other {{from} - {to} of {count} Load Balancers}}
   port: |
     {pages, plural,
     =0 {No Ports}
     =1 {{count} {count, plural, =1 {Port} other {Ports}}}
     other {{from} - {to} of {count} Ports}}
+  rule: |
+    {pages, plural,
+    =0 {No Rules}
+    =1 {{count} {count, plural, =1 {Rule} other {Rules}}}
+    other {{from} - {to} of {count} Rules}}
+  service: |
+    {pages, plural,
+    =0 {No Services}
+    =1 {{count} {count, plural, =1 {Service} other {Services}}}
+    other {{from} - {to} of {count} Services}}
   volume: |
     {pages, plural,
     =0 {No Volumes}
@@ -3210,6 +3159,15 @@ projectUpgrade:
   notOwner: "Only an owner of this environment or an administrator can perform the upgrade."
   actionButton: Upgrade Now
   banner: Upgrading Environment...
+
+publicEndpoints:
+  endpoint: Endpoint
+  bindIpAddress: Bind IP
+  publicPort: Public Port
+  target: Target
+  privatePort: Container Port
+  noData: There are no published ports
+  noMatch: No ports match the current search
 
 physicalStats:
   title: Physical Attributes

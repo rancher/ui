@@ -128,7 +128,7 @@ var Host = Resource.extend(StateCounts,{
 
   supportState: function() {
     let my = this.get('dockerEngineVersion')||'';
-    my = my.replace(/-[ce]e[0-9.-]*$/,'');
+    my = my.replace(/-(cs,ce,ee)[0-9.-]*$/,'');
 
     let supported = this.get(`settings.${C.SETTING.SUPPORTED_DOCKER}`);
     let newest = this.get(`settings.${C.SETTING.NEWEST_DOCKER}`);

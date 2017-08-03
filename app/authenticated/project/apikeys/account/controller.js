@@ -49,7 +49,7 @@ export default Ember.Controller.extend({
       name:           'created',
       sort:           ['created','name','id'],
       translationKey: 'apiPage.table.created',
-      width:          130,
+      width:          150,
     },
   ],
 
