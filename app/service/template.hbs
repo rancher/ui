@@ -98,7 +98,7 @@
       {{#accordion-list-item
            title=(t 'servicePage.containersTab.title')
            detail=(t 'servicePage.containersTab.detail')
-           status=(t 'servicePage.containersTab.status' count=service.instances.length)
+           status=(t 'pagination.container' pages=1 count=service.instances.length)
            statusClass=(if service.instances.length 'bg-success' 'text-muted')
            expandOnInit=true
            expandAll=al.expandAll
@@ -120,7 +120,7 @@
       {{#accordion-list-item
            title=(t 'formBalancerRules.label')
            detail=(t 'formBalancerRules.detail')
-           status=(t 'formBalancerRules.status' count=(if rules.length rules.length 0))
+           status=(t 'pagination.rule' pages=1 count=(if rules.length rules.length 0))
            statusClass=(if rules.length 'bg-success' 'text-muted')
            expandAll=al.expandAll
            expand=(action expandFn)
@@ -138,7 +138,7 @@
         {{#accordion-list-item
              title=(t 'servicePage.certsTab.title')
              detail=(t 'servicePage.certsTab.detail')
-             status=(t 'servicePage.certsTab.status' count=(if model.service.lbConfig.certificateIds.length model.service.lbConfig.certificateIds.length 0))
+             status=(t 'pagination.certificate' pages=1 count=(if model.service.lbConfig.certificateIds.length model.service.lbConfig.certificateIds.length 0))
              statusClass=(if model.service.lbConfig.certificateIds.length 'bg-success' 'text-muted')
              expandAll=al.expandAll
              expand=(action expandFn)
@@ -193,7 +193,7 @@
     {{/if}}
 
     {{form-healthcheck
-        healthCheck=model.service
+        healthCheck=model.service.launchConfig.healthCheck
         editing=false
         expandAll=al.expandAll
         expandFn=expandFn
@@ -222,7 +222,7 @@
       {{#accordion-list-item
            title=(t 'servicePage.linksTab.header')
            detail=(t 'servicePage.linksTab.detail')
-           status=(t 'servicePage.linksTab.status' count=service.consumedServicesWithNames.length)
+           status=(t 'pagination.link' pages=1 count=service.consumedServicesWithNames.length)
            statusClass=(if service.consumedServicesWithNames.length 'bg-success' 'text-muted')
            expandAll=al.expandAll
            expand=(action expandFn)
@@ -250,7 +250,7 @@
       {{#accordion-list-item
            title=(t 'servicePage.portsTab.title')
            detail=(t 'servicePage.portsTab.detail')
-           status=(t 'servicePage.portsTab.status' count=service.endpointsByPort.length)
+           status=(t 'pagination.port' pages=1 count=service.endpointsByPort.length)
            statusClass=(if service.endpointsByPort.length 'bg-success' 'text-muted')
            expandAll=al.expandAll
            expand=(action expandFn)
@@ -258,43 +258,7 @@
            as | parent |
       }}
         {{#if service.isActive}}
-          {{#if service.publicEndpoints}}
-
-            {{#component parent.intent
-                 classNames="grid sortable-table"
-                 body=service.publicEndpoints
-                 searchText=searchText
-                 sortBy=portSortBy
-                 bulkActions=false
-                 rowActions=false
-                 stickyHeader=false
-                 pagingLabel="pagination.port"
-                 isVisible=parent.expanded
-                 headers=portHeaders as |sortable kind port dt|
-            }}
-              {{#if (eq kind "row")}}
-                <td data-title="{{dt.ipAddress}}">
-                  {{#if (eq "0.0.0.0" port.ipAddress)}}
-                    <span class="text-muted">{{t 'generic.all'}}</span>
-                  {{else}}
-                    {{port.ipAddress}}
-                  {{/if}}
-                </td>
-                <td data-title="{{dt.port}}">
-                  {{#if port.port}}
-                    {{port.port}}
-                  {{else}}
-                    <span class="text-muted">{{t 'generic.none'}}</span>
-                  {{/if}}
-                </td>
-              {{else if (eq kind "nomatch")}}
-                <tr><td colspan="{{sortable.fullColspan}}" class="text-center text-muted pt-20 pb-20">{{t 'containerPage.portsTab.table.noMatch'}}</td></tr>
-              {{else if (eq kind "norows")}}
-                <tr><td colspan="{{sortable.fullColspan}}" class="text-center text-muted pt-20 pb-20">{{t 'containerPage.portsTab.table.noData'}}</td></tr>
-              {{/if}}
-            {{/component}}
-          {{/if}}
-
+          {{public-endpoints model=rervice}}
         {{else}}
           <div class="text-center text-muted">{{t 'servicePage.portsTab.notActive'}}</div>
         {{/if}}
@@ -319,7 +283,7 @@
     {{#accordion-list-item
           title=(t 'servicePage.logTab.title')
           detail=(t 'servicePage.logTab.detail')
-          status=(t 'servicePage.logTab.status' count=model.logs.arrangedContent.length)
+          status=(t 'pagination.event' pages=1 count=model.logs.arrangedContent.length)
           statusClass=(if model.logs.arrangedContent.length 'bg-success' 'text-muted')
           expandAll=al.expandAll
           expand=(action expandFn)
