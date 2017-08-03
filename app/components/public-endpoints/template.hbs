@@ -1,0 +1,37 @@
+{{#sortable-table
+  classNames="grid sortable-table"
+  body=model.publicEndpoints
+  searchText=searchText
+  sortBy=sortBy
+  bulkActions=false
+  fullRows=true
+  pagingLabel="pagination.port"
+  headers=headers as |sortable kind row dt|}}
+  {{#if (eq kind "row")}}
+    <tr>
+      <td>
+        {{#if row.linkEndpoint}}
+          <a target="_blank" rel="noreferrer nofollow" href="{{row.linkEndpoint}}">{{row.displayEndpoint}}</a>
+        {{else}}
+          {{row.displayEndpoint}}
+        {{/if}}
+      </td>
+      <td>{{row.bindIpAddress}}</td>
+      <td>{{row.publicPort}}</td>
+      {{#if showTarget}}
+        <td>
+          {{#if row.service}}
+            <a href="{{href-to "service" row.service.id}}">{{row.service.displayName}}</a>
+          {{else if row.instance}}
+            <a href="{{href-to "container" row.instance.id}}">{{row.instance.displayName}}</a>
+          {{/if}}
+        </td>
+      {{/if}}
+      <td>{{row.privatePort}}</td>
+    </tr>
+  {{else if (eq kind "nomatch")}}
+    <tr><td colspan="{{sortable.fullColspan}}" class="text-center text-muted lacsso pt-20 pb-20">{{t 'publicEndpoints.noMatch'}}</td></tr>
+  {{else if (eq kind "norows")}}
+    <tr><td colspan="{{sortable.fullColspan}}" class="text-center text-muted lacsso pt-20 pb-20">{{t 'publicEndpoints.noData'}}</td></tr>
+  {{/if}}
+{{/sortable-table}}
