@@ -1,30 +1,27 @@
-<div class="protip">{{t 'modalContainerStop.protip' key=alternateLabel}}</div>
-<hr/>
-<div class="container-header-text">
+<h3 class="container-header-text">
   {{t 'modalContainerStop.header'}}:
   <div class="display-name">
     {{#each resources as |resource|}}
       {{resource.displayName}}
     {{/each}}
   </div>
-</div>
+</h3>
 
 <div class="row">
-  <div class="col span-2 col-inline">
-    <label>{{t 'modalContainerStop.label'}}</label>
-  </div>
-  <div class="col span-4 input-group">
+  <label class="acc-label">{{t 'modalContainerStop.label'}}</label>
+  <div class="input-group">
     {{input-integer classNames="form-control" value=inputTimeout style="max-width:120px;"}}
     <div class="input-group-addon bg-default">{{t 'generic.seconds'}}</div>
   </div>
 </div>
-<div class="row text-info mb-20">
-  <div class="col span-12">
-    {{t 'modalContainerStop.helpText'  defaultTimeout=defaultTimeout}}
-  </div>
+<div class="help-block">
+  {{t 'modalContainerStop.helpText'  defaultTimeout=defaultTimeout}}
 </div>
 
 <div class="footer-actions">
   <button {{action "stop"}} class="btn bg-error">{{t 'modalContainerStop.button'}}</button>
   <button {{action "cancel"}} class="btn bg-transparent">{{t 'generic.cancel'}}</button>
 </div>
+
+<hr/>
+<div class="protip">{{t 'modalContainerStop.protip' key=alternateLabel}}</div>
