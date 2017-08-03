@@ -1,27 +1,27 @@
 {{#if projects.current.isWindows}}
-  <section>
+  <section class="box mb-30">
     <h3>{{t 'machine.driverCustom.windows.windowsHeader'}}</h3>
     <div class="container-fluid">
       <div class="row inline-form">
         <ol>
-          <li class="box pl-40">
+          <li>
             {{t 'machine.driverCustom.windows.step1' htmlSafe=true}}
           </li>
-          <li class="box pl-40">
+          <li>
             {{t 'machine.driverCustom.windows.step2' htmlSafe=true}}
             <div class="copy-pre">
               <pre id="network-command">{{t 'machine.driverCustom.windows.step2Copy'}}</pre>
               {{copy-to-clipboard clipboardText=(t 'machine.driverCustom.windows.step2Copy')}}
             </div>
           </li>
-          <li class="box pl-40">
+          <li>
             {{t 'machine.driverCustom.windows.step3' appName=settings.appName}}
             <div class="copy-pre">
               <pre id="registration-command">{{registrationCommandWindows}}</pre>
               {{copy-to-clipboard clipboardText=registrationCommandWindows}}
             </div>
           </li>
-          <li class="box pl-40">
+          <li>
             {{t 'machine.driverCustom.step5Close.part1'}} {{#link-to "hosts"}}{{t 'machine.driverCustom.step5Close.link'}}{{/link-to}} {{t 'machine.driverCustom.step5Close.part2'}}
           </li>
         </ol>
@@ -30,9 +30,11 @@
   </section>
 {{/if}}
 
-<section>
+<section class="box">
   {{#if projects.current.isWindows}}
-    <h3>{{t 'machine.driverCustom.windows.linuxHeader'}}</h3>
+    <h4>{{t 'machine.driverCustom.windows.linuxHeader'}}</h4>
+    {{else}}
+    <h4>{{t 'driverCustom.prep'}}</h4>
   {{/if}}
 
   {{t 'machine.driverCustom.instructions'
@@ -53,14 +55,14 @@
   <hr/>
 
   <ul class="mt-20">
-    <li>
+    <li class="pt-10">
       {{t 'machine.driverCustom.detail.ip'}}
       <ul>
         <li>{{t 'machine.driverCustom.detail.manual' rancherImage=settings.rancherImage htmlSafe=true}}</li>
       </ul>
     </li>
-    <li>{{t 'machine.driverCustom.detail.firewall'}}</li>
-    <li>
+    <li class="pt-10">{{t 'machine.driverCustom.detail.firewall'}}</li>
+    <li class="pt-10">
       {{t 'machine.driverCustom.detail.networking'}}
       <ul>
         <li>{{t 'machine.driverCustom.detail.ipsec' htmlSafe=true}}</li>
@@ -68,22 +70,17 @@
       </ul>
     </li>
   </ul>
-
-  <hr/>
-
-  <div class="box">
-    {{t 'machine.driverCustom.advanced'}}
-
-    <div class="box mt-10 mb-20">
-      {{t 'machine.driverCustom.agentIp.label'}}
-      <div class="mt-10">
-        {{input type="text" value=cattleAgentIp classNames="form-control" placeholder=(t 'machine.driverCustom.agentIp.placeholder')}}
-      </div>
-    </div>
-
-    {{form-user-labels setLabels=(action 'setLabels') expandAll=null}}
-  </div>
 </section>
+
+<div class="box mt-30">
+  <h4>{{t 'machine.driverCustom.advanced'}}</h4>
+
+    <label class="acc-label">{{t 'generic.ipAddress'}}</label>
+    {{input type="text" value=cattleAgentIp classNames="form-control" placeholder=(t 'machine.driverCustom.agentIp.placeholder')}}
+    <p class="help-block mb-30">{{t 'machine.driverCustom.agentIp.label'}}</p>
+
+  {{form-user-labels setLabels=(action 'setLabels') expandAll=null}}
+</div>
 
 {{#if newHosts}}
   <div class="banner bg-success">
