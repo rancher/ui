@@ -1,34 +1,55 @@
 <section class="horizontal-form container-fluid">
   {{#if justCreated}}
     <h2>{{t 'editApiKey.title.justCreated'}}</h2>
+    <hr/>
 
-    <p>
-      <label>{{t 'apiPage.currentEndpoint'}}</label>
-      <div class="btn bg-transparent" style="font-size: 150%;">
-        <code>
-          <a href="{{linkEndpoint}}" target="_blank" rel="nofollow noreferer">{{displayEndpoint}}</a>
-          {{copy-to-clipboard clipboardText=linkEndpoint size="sm"}}
-        </code>
+    <div class="input-group">
+      <span class="input-group-addon bg-code-dark">{{t 'apiPage.currentEndpoint'}}</span>
+        <code class="form-control"><a href="{{linkEndpoint}}" target="_blank" rel="nofollow noreferer">{{displayEndpoint}}</a></code>
+      <span class="input-group-addon bg-code-dark">{{copy-to-clipboard clipboardText=linkEndpoint}}</span>
+    </div>
+
+    <div class="input-group mt-10">
+      <span class="input-group-addon bg-code-dark">{{t 'editApiKey.publicValue.label'}}</span>
+        <code class="form-control">{{#copy-to-clipboard clipboardText=clone.publicValue}}
+          <code>{{clone.publicValue}}</code>
+        {{/copy-to-clipboard}}</code>
+      <span class="input-group-addon bg-code-dark">{{copy-to-clipboard clipboardText=linkEndpoint}}</span>
+    </div>
+
+    <div class="input-group mt-10">
+      <span class="input-group-addon bg-code-dark">{{t 'editApiKey.secretValue.label'}}</span>
+        <code class="form-control">{{#copy-to-clipboard clipboardText=clone.secretValue}}
+          <code>{{clone.secretValue}}</code>
+        {{/copy-to-clipboard}}</code>
+      <span class="input-group-addon bg-code-dark">{{copy-to-clipboard clipboardText=linkEndpoint}}</span>
+    </div>
+
+{{!--     <div class="row">
+      <label class="col">{{t 'apiPage.currentEndpoint'}}</label>
+      <div class="col">
+        <code><a href="{{linkEndpoint}}" target="_blank" rel="nofollow noreferer">{{displayEndpoint}}</a></code>
+        {{copy-to-clipboard clipboardText=linkEndpoint}}
       </div>
-    </p>
+    </div> --}}
 
-    <p>
-      <label>{{t 'editApiKey.publicValue.label'}}</label>
-      <div style="font-size: 150%;">
+{{!--     <div class="row">
+      <label class="col">{{t 'editApiKey.publicValue.label'}}</label>
+      <div class="col">
         {{#copy-to-clipboard clipboardText=clone.publicValue}}
           <code>{{clone.publicValue}}</code>
         {{/copy-to-clipboard}}
       </div>
-    </p>
+    </div> --}}
 
-    <p>
-      <label>{{t 'editApiKey.secretValue.label'}}</label>
-      <div style="font-size: 150%;">
+{{!--     <div class="row">
+      <label class="col">{{t 'editApiKey.secretValue.label'}}</label>
+      <div class="col">
         {{#copy-to-clipboard clipboardText=clone.secretValue}}
           <code>{{clone.secretValue}}</code>
         {{/copy-to-clipboard}}
       </div>
-    </p>
+    </div> --}}
 
     <div class="banner bg-warning">
       <div class="banner-icon">
