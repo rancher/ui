@@ -2465,20 +2465,26 @@ machine:
       label: Region
 
   driverCustom:
-    step1: Start up a Linux machine somewhere and install a <a href="{docsBase}/hosts/#supported-docker-versions" target="_blank">supported version</a> of <a href="http://www.docker.com/" target="_blank" rel="noreferrer nofollow">Docker</a> on it.
-    step2: "Make sure any security groups or firewalls allow traffic:"
-    step2li: From and To all other hosts on <code>UDP</code> ports <code>500</code> and <code>4500</code> <span class="text-muted">(for IPsec networking)</span>
-    step3: "Optional: Add labels to be applied to the host."
-    step4: "Specify the public IP that should be registered for this host.  If left empty, Rancher will auto-detect the IP to use.  This generally works for machines with unique public IPs, but will not work if the machine is behind a firewall/NAT or if it is the same machine that is running the <code>{rancherImage}</code> container."
+    instructions: 'Copy, paste, and run the command below to register a host running a <a href="{docsBase}/hosts/#supported-docker-versions" target="_blank">supported version</a> of Docker with {appName}.  The host should pop up within a minute.'
+    advanced: Advanced options not needed for typical installations
+    detail:
+      ip: The IP address to register the host with typically will be detected automatically.
+      manual: 'If the host is behind a NAT or the same machine that is running the <code>{rancherImage}</code> container you may need to explicitly specify the IP to use in the advanced section below.'
+      firewall: The host agent initiates a connection to the server, so make sure firewalls or security groups allow it to reach the URL in the command.
+      networking: All hosts in the environment will also need to allow traffic between each other for cross-host networking
+      ipsec: 'IPSec: <code>500/udp</code> and <code>4500/udp</code>'
+      vxlan: 'VXLAN: <code>4789/udp</code>'
+
+    detected: |
+      {count, plural,
+        =1 {One new host has registered!}
+        other {# new hosts have registered!}
+      }
     agentIp:
+        label: Specify the public IP that this host should register as.  If left empty, Rancher will auto-detect the IP to use.
         placeholder: e.g. 1.2.3.4
     step5Copy: Copy, paste, and run the command below to register the host with
     generating: "Generating registration URL..."
-    step5Close:
-      part1: Click close below.  The new host should pop up on the
-      link: Hosts
-      part2: screen within a minute.
-    close: Close
     windows:
       windowsHeader: Windows Host
       linuxHeader: Linux Host

@@ -36,12 +36,12 @@ let RANCHER_INGRESS_RULES = [
   },
 
   // Rancher VXLAN
-  //{
-  //  FromPort: 4789,
-  //  ToPort: 4789,
-  //  SourceSecurityGroupName: RANCHER_GROUP,
-  //  IpProtocol: 'udp'
-  //},
+  {
+    FromPort: 4789,
+    ToPort: 4789,
+    CidrIp: '0.0.0.0/0',
+    IpProtocol: 'udp'
+  },
 
   // MTU Path discovery
   // shouldiblockicmp.com
