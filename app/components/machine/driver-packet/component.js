@@ -3,16 +3,25 @@ import Driver from 'ui/mixins/driver';
 import fetch from 'ember-api-store/utils/fetch';
 
 const WHITELIST = ['centos_7', 'coreos_stable', 'ubuntu_14_04', 'ubuntu_16_04', 'rancher'];
+const BLACKLIST = ['baremetal_2a']; //quick wheres james spader?
+const DEFAULTS = {
+  os           : 'ubuntu_16_04',
+  facilityCode : 'ewr1',
+  plan         : 'baremetal_0',
+  billingCycle : 'hourly',
+}
 
 export default Ember.Component.extend(Driver, {
-  driverName:      'packet',
-  packetConfig:    Ember.computed.alias('model.publicValues.packetConfig'),
+  driverName:       'packet',
+  packetConfig:     Ember.computed.alias('model.publicValues.packetConfig'),
 
-  facilityChoices: null,
-  planChoices:     null,
-  osChoices:       null,
-  dataFetched:     false,
-  osWhitelist:     WHITELIST,
+  facilityChoices:  null,
+  planChoices:      null,
+  osChoices:        null,
+  dataFetched:      false,
+  planBlacklist:    BLACKLIST,
+  osWhitelist:      WHITELIST,
+  defaultCodes:     DEFAULTS,
 
   apiRequest: function(command, opt, out) {
     opt = opt || {};
@@ -52,7 +61,7 @@ export default Ember.Component.extend(Driver, {
 
   planChoiceDetails: Ember.computed('packetConfig.plan', function() {
     let planSlug = this.get('packetConfig.plan');
-    let plan     = this.get('allPlans').findBy('slug', planSlug) || null;
+    let plan     = this.get('allPlans').findBy('slug', planSlug);
 
     return plan;
   }),
@@ -60,7 +69,7 @@ export default Ember.Component.extend(Driver, {
   parseOSs(osList) {
     let whitelist = this.get('osWhitelist');
     return osList.filter((os) => {
-      if (whitelist.indexOf(os.slug) !== -1 && os.provisionable_on.length > 0) {
+      if (whitelist.includes(os.slug) && !Ember.isEmpty(os.provisionable_on)) {
         return os;
       }
     });
@@ -72,7 +81,7 @@ export default Ember.Component.extend(Driver, {
     os.provisionable_on.forEach((loc) => {
       let plan = plans.findBy('slug', loc);
 
-      if (plan) {
+      if (plan && !this.get('planBlacklist').includes(loc)) {
         out.push(plan);
       }
     });
@@ -80,13 +89,24 @@ export default Ember.Component.extend(Driver, {
     return out;
   },
 
-  osObserver: Ember.on('init', Ember.observer('packetConfig.os', function() {
-    let os    = this.get('allOS').findBy('slug', this.get('packetConfig.os'));
-    let plans = this.get('allPlans');
+  facilityObserver: Ember.on('init', Ember.observer('packetConfig.facility', function() {
 
-    if (plans && os) {
-      this.set('planChoices', this.parsePlans(os, plans));
-      this.set('packetConfig.plan', os.provisionable_on[0]);
+    let facilities = this.get('facilityChoices');
+    let slug       = this.get('packetConfig.facility');
+    let facility   = facilities.findBy('code', slug);
+    let plans      = this.get('allPlans');
+    let out        = [];
+
+    if (plans && facility) {
+      plans.forEach((plan) => {
+        plan.available_in.forEach((fac) => {
+          let facId = fac.href.split('/')[fac.href.split('/').length-1];
+          if (facility.id === facId) {
+            out.push(plan);
+          }
+        })
+      });
+      this.set('planChoices', out);
     }
 
   })),
@@ -101,9 +121,9 @@ export default Ember.Component.extend(Driver, {
 
       Ember.RSVP.hash(promises).then((hash) => {
 
-        let osChoices = this.parseOSs(hash.opSys.operating_systems);
+        let osChoices     = this.parseOSs(hash.opSys.operating_systems);
         let selectedPlans = this.parsePlans(osChoices.findBy('slug', 'ubuntu_14_04'), hash.plans.plans);
-        let config = this.get('packetConfig');
+        let config        = this.get('packetConfig');
 
         this.setProperties({
           allOS:           osChoices,
@@ -114,12 +134,7 @@ export default Ember.Component.extend(Driver, {
           planChoices:     selectedPlans,
         });
 
-        config.setProperties({
-          os           : 'ubuntu_14_04',
-          facilityCode : 'ewr1',
-          plan         : 'baremetal_0',
-          billingCycle : 'hourly',
-        });
+        config.setProperties(this.get('defaultCodes'));
 
         savedCB(true);
       }, (err) => {
