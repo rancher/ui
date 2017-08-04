@@ -148,18 +148,6 @@ Router.map(function() {
           this.route('detail', {path: '/:certificate_id'});
         });
 
-        this.route('backuptargets', {resetNamespace: true}, function() {
-          this.route('index', {path: '/'});
-        });
-        this.route('backuptargets.new-target', {path: '/add-target', resetNamespace: true});
-
-        this.route('storagepools', {resetNamespace: true}, function() {
-          this.route('index', {path: '/'});
-          this.route('pools', {path: '/pools'});
-          this.route('detail', {path: '/:storagepool_id'});
-        });
-        this.route('storagepools.new-volume', {path: '/add-volume', resetNamespace: true});
-
         this.route('registries', {path: '/registries', resetNamespace: true}, function() {
           this.route('new', { path: '/add' });
           this.route('index', {path: '/'});

@@ -118,13 +118,6 @@ const navTree = [
         ctx: [getProjectId],
       },
       {
-        id: 'infra-storagepools',
-        localizedLabel: 'nav.infra.storagePage',
-        icon: 'icon icon-hdd',
-        route: 'storagepools',
-        ctx: [getProjectId],
-      },
-      {
         id: 'infra-hooks',
         localizedLabel: 'nav.infra.hooks',
         icon: 'icon icon-link',
