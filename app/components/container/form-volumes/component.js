@@ -14,6 +14,8 @@ export default Ember.Component.extend({
   projects: Ember.inject.service(),
   modalService: Ember.inject.service('modal'),
 
+  classNames: ['accordion-wrapper'],
+
   // Inputs
   launchConfig: null,
   service: null,

@@ -80,16 +80,6 @@
 
 <hr class="mt-30 mb-30" />
 
-{{container/form-volumes
-  isService=isService
-  isSidekick=isSidekick
-  launchConfig=launchConfig
-  service=service
-  stack=stack
-  errors=volumeErrors
-  volumesToCreate=volumesToCreate
-}}
-
 {{#unless isSidekick}}
   {{container/form-scheduling
     isService=isService
@@ -112,6 +102,16 @@
     errors=healthCheckErrors
     expandAll=null
     editing=true
+}}
+
+{{container/form-volumes
+  isService=isService
+  isSidekick=isSidekick
+  launchConfig=launchConfig
+  service=service
+  stack=stack
+  errors=volumeErrors
+  volumesToCreate=volumesToCreate
 }}
 
 {{#if (and isService (not isSidekick))}}
