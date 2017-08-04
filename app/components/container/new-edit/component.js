@@ -25,7 +25,6 @@ export default Ember.Component.extend(NewOrEdit, SelectTab, {
 
   serviceLinksArray:          null,
   isRequestedHost:            null,
-  portsAsStrArray:            null,
   upgradeOptions:             null,
   sidekickService:            null,
   volumesToCreate:            null,

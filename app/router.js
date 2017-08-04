@@ -38,10 +38,7 @@ Router.map(function() {
     this.route('settings', {resetNamespace: true}, function() {
       this.route('projects', {path: '/env'}, function() {
         this.route('index', {path: '/'});
-        this.route('templates', {path: '/templates'});
         this.route('new', {path: '/add'});
-        this.route('new-template', {path: '/add-template'});
-        this.route('edit-template', {path: '/template/:template_id'});
         this.route('detail', {path: '/:project_id'});
       });
     });

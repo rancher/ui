@@ -22,11 +22,6 @@ export default Ember.Component.extend({
       translationKey: 'generic.description',
     },
     {
-      name:           'projectTemplate',
-      sort:           ['projectTemplate.name','name','id'],
-      translationKey: 'projectList.index.table.header.projectTemplate',
-    },
-    {
       name:           'orchestration',
       sort:           ['displayOrchestration','name','id'],
       translationKey: 'projectList.index.table.header.orchestration',

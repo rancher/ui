@@ -12,8 +12,6 @@ var Project = Resource.extend(PolledResource, {
   settings: Ember.inject.service(),
   modalService: Ember.inject.service('modal'),
 
-  projectTemplate: denormalizeId('projectTemplateId'),
-
   type: 'project',
   name: null,
   description: null,
