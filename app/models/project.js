@@ -125,12 +125,6 @@ var Project = Resource.extend(PolledResource, {
     return Util.ucFirst(this.get('orchestration'));
   }.property('orchestration'),
 
-  isUpgrading: Ember.computed.equal('state','upgrading'),
-
-  needsUpgrade: function() {
-    return this.get('isActive') && this.get('version') !== this.get(`settings.${C.SETTING.PROJECT_VERSION}`);
-  }.property('isActive','version',`settings.${C.SETTING.PROJECT_VERSION}`),
-
   isWindows: Ember.computed.equal('orchestration','windows'),
 });
 

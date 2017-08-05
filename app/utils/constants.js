@@ -293,7 +293,6 @@ var C = {
     TELEMETRY:                 'telemetry$opt',
     AUTH_LOCAL_VALIDATE_DESC:  'api$auth$local$validate$description',
     BALANCER_IMAGE:            'lb$instance$image',
-    PROJECT_VERSION:           'account$version',
     FEEDBACK_FORM:             'ui$feedback$form',
     SHOW_SYSTEM:               'ui$show$system',
     SHOW_CUSTOM_HOST:          'ui$show$custom$host',

@@ -36,8 +36,6 @@ var Container = Instance.extend({
     return this.get('referencedService') || this.get('primaryService');
   }),
 
-  stack: denormalizeId('stackId'),
-
   actions: {
     restart: function() {
       return this.doAction('restart');
