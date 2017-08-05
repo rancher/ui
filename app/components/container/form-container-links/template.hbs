@@ -15,22 +15,18 @@
   {{#if linksArray.length}}
     <table class="table fixed no-lines no-top-padding mt-10">
       <tr class="acc-label">
-        <th>{{t 'formContainerLinks.targetInstance.label'}}</th>
-        <th width="30">&nbsp;</th>
         <th>{{t 'formContainerLinks.name.label'}}</th>
+        <th width="30">&nbsp;</th>
+        <th>{{t 'formContainerLinks.alias.label'}}</th>
         <th width="40">&nbsp;</th>
       </tr>
       {{#each linksArray as |link|}}
         <tr>
           <td>
-            {{new-select
-              classNames="form-control link-container input-sm"
-              prompt=(t 'formContainerLinks.targetInstance.prompt')
-              value=link.targetInstanceId
-              content=containersOnRequestedHostIfUnmanaged
-              optionValuePath="id"
-              optionLabelPath="name"
-              optionGroupPath="group"
+            {{schema/input-container
+              value=link.name
+              exclude=launchConfig.id
+              stack=stack
             }}
           </td>
           <td class="text-center">
@@ -38,9 +34,9 @@
           </td>
           <td>
             {{#if editing}}
-              <p class="input-sm text-muted">{{link.name}}</p>
+              <p class="input-sm text-muted">{{link.alias}}</p>
             {{else}}
-              {{input class="form-control input-sm" type="text" value=link.name placeholder=(t 'formContainerLinks.name.placeholder')}}
+              {{input class="form-control input-sm" type="text" value=link.alias placeholder=(t 'formContainerLinks.alias.placeholder')}}
             {{/if}}
           </td>
           <td class="text-right">
