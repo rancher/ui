@@ -70,22 +70,6 @@ var Stack = Resource.extend(StateCounts, {
   }),
 
   actions: {
-    cancelUpgrade: function() {
-      return this.doAction('cancelupgrade');
-    },
-
-    cancelRollback: function() {
-      return this.doAction('cancelrollback');
-    },
-
-    finishUpgrade: function() {
-      return this.doAction('finishupgrade');
-    },
-
-    rollback: function() {
-      return this.doAction('rollback');
-    },
-
     edit: function() {
       this.get('modalService').toggleModal('modal-edit-stack', this);
     },
@@ -127,7 +111,6 @@ var Stack = Resource.extend(StateCounts, {
       { label: 'action.exportConfig',   icon: 'icon icon-download',       action: 'exportConfig',     enabled: !!a.exportconfig },
 //      { label: 'action.viewGraph',      icon: 'icon icon-share',          action: 'viewGraph',        enabled: true },
       { divider: true },
-      { label: 'action.rollback',       icon: 'icon icon-history',        action: 'rollback',         enabled: !!a.rollback },
       { label: 'action.remove',         icon: 'icon icon-trash',          action: 'promptDelete',     enabled: !!a.remove,                altAction: 'delete'},
       { divider: true },
       { label: 'action.viewInApi',      icon: 'icon icon-external-link',  action: 'goToApi',          enabled: true },
