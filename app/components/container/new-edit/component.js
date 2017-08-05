@@ -44,7 +44,7 @@ export default Ember.Component.extend(NewOrEdit, SelectTab, {
 
   actions: {
     setImage(uuid) {
-      this.set('launchConfig.imageUuid', uuid);
+      this.set('launchConfig.image', uuid);
     },
 
     setLabels(section,labels) {

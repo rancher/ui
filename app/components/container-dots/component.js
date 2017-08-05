@@ -2,7 +2,7 @@ import Ember from 'ember';
 import pagedArray from 'ember-cli-pagination/computed/paged-array';
 import { matches } from 'ui/components/sortable-table/component';
 
-export const searchFields = ['displayName','id:prefix','displayState','displayImage','displayIp:ip'];
+export const searchFields = ['displayName','id:prefix','displayState','image','displayIp:ip'];
 
 export default Ember.Component.extend({
   containers: null,

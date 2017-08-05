@@ -24,7 +24,7 @@ export default Ember.Route.extend({
           service = hash.existingService.clone();
 
           if ( params.upgradeImage+'' === 'true' ) {
-            service.set('launchConfig.imageUuid', 'docker:' + this.get(`settings.${C.SETTING.BALANCER_IMAGE}`));
+            service.set('launchConfig.image', this.get(`settings.${C.SETTING.BALANCER_IMAGE}`));
           }
 
           hash.existing = hash.existingService;
@@ -43,7 +43,7 @@ export default Ember.Route.extend({
           stackId: params.stackId,
           startOnCreate: true,
           launchConfig: store.createRecord({
-            imageUuid: 'docker:' + this.get(`settings.${C.SETTING.BALANCER_IMAGE}`),
+            image: this.get(`settings.${C.SETTING.BALANCER_IMAGE}`),
             type: 'launchConfig',
             restartPolicy: {name: 'always'},
           }),

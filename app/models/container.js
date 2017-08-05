@@ -14,7 +14,7 @@ var Container = Instance.extend({
   modalService: Ember.inject.service('modal'),
   // Container-specific
   type                       : 'container',
-  imageUuid                  : null,
+  image                      : null,
   registryCredentialId       : null,
   command                    : null,
   commandArgs                : null,
@@ -203,10 +203,6 @@ var Container = Instance.extend({
     var isSystem = !!this.get('system') || labelKeys.indexOf(C.LABEL.SYSTEM_TYPE) >= 0;
     return isSystem;
   }.property('system','labels'),
-
-  displayImage: function() {
-    return (this.get('imageUuid')||'').replace(/^docker:/,'');
-  }.property('imageUuid'),
 
   displayExternalId: function() {
     var id = this.get('externalId');

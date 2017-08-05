@@ -3,7 +3,6 @@ import PolledResource from 'ui/mixins/cattle-polled-resource';
 import Ember from 'ember';
 import Util from 'ui/utils/util';
 import C from 'ui/utils/constants';
-import { denormalizeId } from 'ember-api-store/utils/denormalize';
 
 var Project = Resource.extend(PolledResource, {
   access: Ember.inject.service(),

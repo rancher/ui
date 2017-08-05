@@ -1,7 +1,6 @@
 import Ember from 'ember';
 import C from 'ui/utils/constants';
 import NewOrEdit from 'ui/mixins/new-or-edit';
-import { sortInsensitiveBy } from 'ui/utils/sort';
 
 export default Ember.Component.extend(NewOrEdit, {
   projects: Ember.inject.service(),

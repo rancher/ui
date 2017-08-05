@@ -185,9 +185,7 @@ var Service = Resource.extend(StateCounts, {
   serviceLinks: null, // Used for clone
   reservedKeys: ['serviceLinks'],
 
-  displayImage: function() {
-    return (this.get('launchConfig.imageUuid')||'').replace(/^docker:/,'');
-  }.property('launchConfig.imageUuid'),
+  image: Ember.computed.alias('launchConfig.image'),
 
   displayStack: function() {
     var stack = this.get('stack');
