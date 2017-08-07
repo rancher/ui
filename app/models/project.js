@@ -3,7 +3,6 @@ import PolledResource from 'ui/mixins/cattle-polled-resource';
 import Ember from 'ember';
 import Util from 'ui/utils/util';
 import C from 'ui/utils/constants';
-import { denormalizeId } from 'ember-api-store/utils/denormalize';
 
 var Project = Resource.extend(PolledResource, {
   access: Ember.inject.service(),
@@ -11,8 +10,6 @@ var Project = Resource.extend(PolledResource, {
   projects: Ember.inject.service(),
   settings: Ember.inject.service(),
   modalService: Ember.inject.service('modal'),
-
-  projectTemplate: denormalizeId('projectTemplateId'),
 
   type: 'project',
   name: null,
@@ -126,12 +123,6 @@ var Project = Resource.extend(PolledResource, {
   displayOrchestration: function() {
     return Util.ucFirst(this.get('orchestration'));
   }.property('orchestration'),
-
-  isUpgrading: Ember.computed.equal('state','upgrading'),
-
-  needsUpgrade: function() {
-    return this.get('isActive') && this.get('version') !== this.get(`settings.${C.SETTING.PROJECT_VERSION}`);
-  }.property('isActive','version',`settings.${C.SETTING.PROJECT_VERSION}`),
 
   isWindows: Ember.computed.equal('orchestration','windows'),
 });

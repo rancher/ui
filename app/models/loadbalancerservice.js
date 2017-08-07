@@ -88,10 +88,10 @@ var LoadBalancerService = Service.extend({
   }.property('launchConfig.ports.[]','launchConfig.expose.[]','endpointsMap', 'intl.locale'),
 
   imageUpgradeAvailable: function() {
-    let cur = (this.get('launchConfig.imageUuid')||'').replace(/^docker:/,'');
+    let cur = this.get('launchConfig.image')||'';
     let available = this.get(`settings.${C.SETTING.BALANCER_IMAGE}`);
     return cur.indexOf(available) === -1 && !!this.get('actionLinks.upgrade');
-  }.property('launchConfig.imageUuid',`settings.${C.SETTING.BALANCER_IMAGE}`,'actionLinks.upgrade'),
+  }.property('launchConfig.image',`settings.${C.SETTING.BALANCER_IMAGE}`,'actionLinks.upgrade'),
 });
 
 export default LoadBalancerService;

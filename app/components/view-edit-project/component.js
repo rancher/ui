@@ -1,7 +1,6 @@
 import Ember from 'ember';
 import C from 'ui/utils/constants';
 import NewOrEdit from 'ui/mixins/new-or-edit';
-import { sortInsensitiveBy } from 'ui/utils/sort';
 
 export default Ember.Component.extend(NewOrEdit, {
   projects: Ember.inject.service(),
@@ -45,10 +44,6 @@ export default Ember.Component.extend(NewOrEdit, {
   stacks: null,
 
   actions: {
-    selectTemplate(id) {
-      this.set('project.projectTemplateId', id);
-    },
-
     changeProject(project) {
       this.get('router').transitionTo('settings.projects.detail', project.get('id'));
     },
@@ -102,28 +97,6 @@ export default Ember.Component.extend(NewOrEdit, {
       };
     });
   }.property(),
-
-  templateChoices: function() {
-    var active = this.get('project.projectTemplateId');
-
-    var choices = this.get('projectTemplates').map((tpl) => {
-      return {id: tpl.id, name: tpl.name, image: tpl.get('orchestrationIcon')};
-    });
-
-    if ( !choices.length ) {
-      choices.push({id: null, name: 'None', image: `${this.get('app.baseAssets')}assets/images/logos/provider-orchestration.svg`});
-    }
-
-    choices.forEach(function(driver) {
-      driver.active = ( active === driver.name );
-    });
-
-    return sortInsensitiveBy(choices,'name');
-  }.property('project.projectTemplateId','projectTemplates.@each.name'),
-
-  selectedProjectTemplate: function() {
-    return this.get('projectTemplates').findBy('id', this.get('project.projectTemplateId'));
-  }.property('project.projectTemplateId'),
 
   hasOwner: function() {
     return this.get('project.projectMembers').filterBy('role', C.PROJECT.ROLE_OWNER).get('length') > 0;

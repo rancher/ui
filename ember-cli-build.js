@@ -97,6 +97,7 @@ module.exports = function(defaults) {
   app.import('bower_components/commonmark/dist/commonmark.js');
   app.import('bower_components/momentjs/moment.js');
   app.import('bower_components/ember-shortcuts/ember-shortcuts.js');
+//  app.import('node_modules/prettycron/prettycron.js');
 
   app.import('vendor/icons/style.css');
   app.import('vendor/icons/fonts/rancher-icons.svg',   { destDir: 'assets/fonts/'});

@@ -791,7 +791,6 @@ projectList:
     table:
       header:
         orchestration: Orchestration
-        projectTemplate: Template
   indexTemplate:
     header: Environment Templates
     new: Add Template
@@ -1448,22 +1447,6 @@ editHost:
     help: If provided, containers must have one or more of the given labels in order to be eligible for scheduling onto this host.  If the value is left empty, a container with a matching key is eligible regardless of value.  <code>io.rancher.container.system</code> is required to allow system containers on to the host.
     addActionLabel: Add Required Label
 
-editProjectTemplate:
-  title:
-    add: Add Template
-    edit: "Edit Template: {displayName}"
-  orchestration: Orchestration
-  stackEdit: Edit Config
-  stackRequired: Required
-  access:
-    label: Sharing
-    private: "Private: Only available to me"
-    public: "Public: Available to all users (admin only)"
-  error:
-    conflict: Conflict
-    enabling: 'The selected version of {tplCategory} stack "{stackName}" does not support {orchestration} Orchestration.'
-    changing: 'The currently enabled {tplCategory} stack "{stackName}" does not support {orchestration} Orchestration.'
-
 editRegistry:
   title: Edit Registry
   address:
@@ -1641,10 +1624,9 @@ formContainerLinks:
   title: Links
   detail: Define relationships between this and other containers.
   addActionLabel: Add Link
-  targetInstance:
-    label: Destination Container
-    prompt: Select a Container...
   name:
+    label: Destination Container
+  alias:
     label: As Name
     placeholder: e.g. database
 
@@ -2500,7 +2482,6 @@ machine:
     agentIp:
         label: Specify the public IP that this host should register as.  If left empty, Rancher will auto-detect the IP to use.
         placeholder: e.g. 1.2.3.4
-    step5Copy: Copy, paste, and run the command below to register the host with
     generating: "Generating registration URL..."
     windows:
       windowsHeader: Windows Host
@@ -2584,6 +2565,19 @@ machine:
       label: SSH User
       placeholder: 'usr1'
 
+  driverK8s:
+    instructions: 'Copy, paste, and run the command below to register an existing Kubernetes cluster into {appName}.'
+    detail:
+      version: Kubernetes 1.7 and up are supported
+      detail2: Business business business
+      detail3: Numbers...
+
+    detected: |
+      {count, plural,
+        =1 {One new host has registered!}
+        other {# new hosts have registered!}
+      }
+    generating: "Generating registration URL..."
 
   driverOther:
     driverSection: Driver
@@ -3170,13 +3164,6 @@ projectRow:
   none: No description
   orchestration: Orchestration
 
-projectUpgrade:
-  header: Upgrade Environment
-  detail: "{appName} {appVersion} includes changes that require upgrading the existing system services and load balancer containers."
-  notOwner: "Only an owner of this environment or an administrator can perform the upgrade."
-  actionButton: Upgrade Now
-  banner: Upgrading Environment...
-
 publicEndpoints:
   endpoint: Endpoint
   bindIpAddress: Bind IP
@@ -3478,8 +3465,7 @@ nav:
 ##############################
 action:
   activate: Activate
-  cancelUpgrade: Cancel Upgrade
-  cancelRollback: Cancel Rollback
+  addSidekick: Add a Sidekick
   clone: Clone
   console: Open Console
   convertToService: Convert to Service
@@ -3488,7 +3474,6 @@ action:
   evacuate: Evacuate
   execute: Execute Shell
   exportConfig: Export Config
-  finishUpgrade: Finish Upgrade
   garbageCollect: Cleanup
   logs: View Logs
   machineConfig: Machine Config
@@ -3497,7 +3482,6 @@ action:
   replay: Replay
   restart: Restart
   retry: Retry
-  rollback: Rollback
   setDefault: Set as Default
   start: Start
   stop: Stop

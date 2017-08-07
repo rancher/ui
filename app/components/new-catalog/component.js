@@ -241,13 +241,10 @@ export default Ember.Component.extend(NewOrEdit, {
       return false;
     }
 
-    let files = this.get('selectedTemplateModel.files');
     let stack = this.get('stackResource');
 
     if ( this.get('actuallySave') ) {
       stack.setProperties({
-        dockerCompose: files['docker-compose.yml.tpl'] || files['docker-compose.yml'],
-        rancherCompose: files['rancher-compose.yml.tpl'] || files['rancher-compose.yml'],
         environment: this.get('answers'),
         externalId: this.get('newExternalId'),
       });
@@ -265,20 +262,6 @@ export default Ember.Component.extend(NewOrEdit, {
         answers: this.get('answers'),
       });
       return false;
-    }
-  },
-
-  doSave() {
-    var stack = this.get('stackResource');
-    if (this.get('editing')) {
-      return stack.doAction('upgrade', {
-        dockerCompose: stack.get('dockerCompose'),
-        rancherCompose: stack.get('rancherCompose'),
-        environment: stack.get('environment'),
-        externalId: this.get('newExternalId'),
-      });
-    } else {
-      return this._super.apply(this, arguments);
     }
   },
 

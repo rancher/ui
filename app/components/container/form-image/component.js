@@ -29,7 +29,7 @@ export default Ember.Component.extend({
     var initial;
     if ( this.get('initialValue') )
     {
-      initial = (this.get('initialValue')||'').replace(/^docker:/,'');
+      initial = this.get('initialValue')||'';
     }
 
     if ( !initial )
@@ -49,21 +49,16 @@ export default Ember.Component.extend({
 
   userInputDidChange: function() {
     var input = (this.get('userInput')||'').trim();
-    var out = 'docker:';
+    var out;
 
-    // Look for a redundant docker: pasted in
-    if ( input.indexOf(out) === 0 )
-    {
-      out = input;
-    }
-    else if ( input && input.length )
+    if ( input && input.length )
     {
       if ( this.get('projects.current.isWindows') ) {
         lastWindows = input;
       } else {
         lastContainer = input;
       }
-      out += input;
+      out = input;
     }
     else
     {
@@ -87,7 +82,7 @@ export default Ember.Component.extend({
 
   suggestions: function() {
     let inUse = this.get('allContainers')
-      .map((obj) => (obj.get('imageUuid')||'').replace(/^docker:/,''))
+      .map((obj) => (obj.get('image')||''))
       .filter((str) => str.indexOf('rancher/') !== 0)
       .uniq()
       .sort();
@@ -95,6 +90,6 @@ export default Ember.Component.extend({
     return {
       'Used by other containers': inUse,
     };
-  }.property('allContainers.@each.imageUuid'),
+  }.property('allContainers.@each.image'),
 
 });

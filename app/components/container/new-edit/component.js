@@ -25,7 +25,6 @@ export default Ember.Component.extend(NewOrEdit, SelectTab, {
 
   serviceLinksArray:          null,
   isRequestedHost:            null,
-  portsAsStrArray:            null,
   upgradeOptions:             null,
   sidekickService:            null,
   volumesToCreate:            null,
@@ -45,7 +44,7 @@ export default Ember.Component.extend(NewOrEdit, SelectTab, {
 
   actions: {
     setImage(uuid) {
-      this.set('launchConfig.imageUuid', uuid);
+      this.set('launchConfig.image', uuid);
     },
 
     setLabels(section,labels) {
@@ -246,7 +245,9 @@ export default Ember.Component.extend(NewOrEdit, SelectTab, {
       }
 
       pr = service.clone();
-      let sidekick = this.get('store').createRecord({}, lc.serialize(), {type: 'secondaryLaunchConfig'});
+      let def = lc.serialize();
+      def.type = 'secondaryLaunchConfig';
+      let sidekick = this.get('store').createRecord(def);
       nameResource = sidekick;
       let slc = pr.get('secondaryLaunchConfigs');
       if ( !slc ) {

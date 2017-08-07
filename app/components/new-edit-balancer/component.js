@@ -109,8 +109,8 @@ export default Ember.Component.extend(NewOrEdit, {
   ),
 
   upgradeInfo: function() {
-    let from = (this.get('existing.launchConfig.imageUuid')||'').replace(/^docker:/,'');
-    let to = (this.get('service.launchConfig.imageUuid')||'').replace(/^docker:/,'');
+    let from = this.get('existing.launchConfig.image')||'';
+    let to = this.get('service.launchConfig.image')||'';
 
     if ( this.get('upgradeImage')+'' === 'true' ) {
       return Ember.Object.create({
@@ -118,7 +118,7 @@ export default Ember.Component.extend(NewOrEdit, {
         to: to,
       });
     }
-  }.property('existing.launchConfig.imageUuid','service.launchConfig.imageUuid'),
+  }.property('existing.launchConfig.image','service.launchConfig.image'),
 
   // ----------------------------------
   // Labels

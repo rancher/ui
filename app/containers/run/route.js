@@ -52,7 +52,17 @@ export default Ember.Route.extend({
           return Ember.RVP.reject('Service not found');
         }
 
-        if ( lcIndex === null ) {
+        let clone = service.clone();
+
+        if ( params.addSidekick ) {
+          return Ember.Object.create({
+            service: clone,
+            launchConfig: emptyLc,
+            isService: true,
+            mode: 'sidekick',
+            isUpgrade: false,
+          });
+        } else if ( lcIndex === null ) {
           // If there are sidekicks, you need to pick one & come back
           if ( service.secondaryLaunchConfigs && service.secondaryLaunchConfigs.length ) {
             return Ember.Object.create({
@@ -65,7 +75,6 @@ export default Ember.Route.extend({
           }
         }
 
-        let clone = service.clone();
         let lc;
         if ( lcIndex === -1 ) {
           // Primary service

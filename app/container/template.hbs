@@ -22,8 +22,8 @@
   <div class="banner bg-info basics ">
     <div class="inline-block">
       <label class="acc-label p-0">{{t 'generic.image'}}:</label>
-      {{#copy-inline clipboardText=model.container.displayImage}}
-        {{model.container.displayImage}}
+      {{#copy-inline clipboardText=model.container.image}}
+        {{model.container.image}}
       {{/copy-inline}}
     </div>
     <div class="inline-block">
@@ -164,11 +164,7 @@
            expand=(action expandFn)
            as | parent |
       }}
-        {{#if service.isActive}}
-          {{public-endpoints model=model.container}}
-        {{else}}
-          <div class="text-center text-muted">{{t 'servicePage.portsTab.notActive'}}</div>
-        {{/if}}
+        {{public-endpoints model=model.container}}
       {{/accordion-list-item}}
     </div>
 

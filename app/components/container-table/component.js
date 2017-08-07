@@ -15,8 +15,8 @@ export const headersAll =  [
   },
   {
     name: 'image',
-    sort: ['imageUuid','sortName','id'],
-    searchField: 'displayImage',
+    sort: ['image','sortName','id'],
+    searchField: 'image',
     translationKey: 'generic.image',
   },
 ];

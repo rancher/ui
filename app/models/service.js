@@ -55,7 +55,7 @@ var Service = Resource.extend(StateCounts, {
       return this.doAction('garbagecollect');
     },
 
-    promptStop: function() {
+    promptStop() {
       this.get('modalService').toggleModal('modal-confirm-deactivate', {
         originalModel: this,
         action: 'deactivate'
@@ -114,6 +114,13 @@ var Service = Resource.extend(StateCounts, {
       }});
     },
 
+    addSidekick() {
+      this.get('application').transitionToRoute('containers.run', {queryParams: {
+        serviceId: this.get('id'),
+        addSidekick: true,
+      }});
+    },
+
     shell() {
       this.get('modalService').toggleModal('modal-shell', {
         model: this.get('containerForShell'),
@@ -121,7 +128,7 @@ var Service = Resource.extend(StateCounts, {
       });
     },
 
-    popoutShell: function() {
+    popoutShell() {
       let proj = this.get('projects.current.id');
       let id = this.get('containerForShell.id');
       Ember.run.later(() => {
@@ -149,20 +156,20 @@ var Service = Resource.extend(StateCounts, {
   availableActions: function() {
     var a = this.get('actionLinks');
 
-    var canUpgrade = !!a.upgrade && this.get('canUpgrade');
-    var isK8s = this.get('isK8s');
     var isReal = this.get('isReal');
+    var isK8s = this.get('isK8s');
     var canHaveContainers = this.get('canHaveContainers');
     var containerForShell = this.get('containerForShell');
     var isDriver = ['networkdriverservice','storagedriverservice'].includes(this.get('lcType'));
     var canCleanup = !!a.garbagecollect && this.get('canCleanup');
 
     var choices = [
-      { label: 'action.upgradeOrEdit',  icon: 'icon icon-arrow-circle-up',  action: 'upgrade',        enabled: canUpgrade },
+      { label: 'action.upgradeOrEdit',  icon: 'icon icon-arrow-circle-up',  action: 'upgrade',        enabled: isReal && this.get('canUpgrade') },
       { label: 'action.edit',           icon: 'icon icon-pencil',           action: 'editDns',        enabled: !isReal },
       { label: 'action.rollback',       icon: 'icon icon-history',          action: 'rollback',       enabled: !!a.rollback && isReal && !!this.get('previousRevisionId') },
       { label: 'action.garbageCollect', icon: 'icon icon-garbage',          action: 'garbageCollect', enabled: canCleanup},
       { label: 'action.clone',          icon: 'icon icon-copy',             action: 'clone',          enabled: !isK8s && !isDriver },
+      { label: 'action.addSidekick',    icon: 'icon icon-plus-circle',      action: 'addSidekick',    enabled: this.get('canHaveSidekicks') },
       { divider: true },
       { label: 'action.execute',        icon: 'icon icon-terminal',         action: 'shell',          enabled: !!containerForShell, altAction:'popoutShell'},
 //      { label: 'action.logs',           icon: 'icon icon-file',             action: 'logs',           enabled: !!a.logs, altAction: 'popoutLogs' },
@@ -179,15 +186,13 @@ var Service = Resource.extend(StateCounts, {
 
     return choices;
   }.property('actionLinks.{activate,deactivate,pause,restart,update,remove,rollback,garbagecollect}','previousRevisionId',
-    'lcType','isK8s','canHaveContainers','canUpgrade','containerForShell'
+    'lcType','isK8s','canHaveContainers','canHaveSidekicks','canUpgrade','containerForShell'
   ),
 
   serviceLinks: null, // Used for clone
   reservedKeys: ['serviceLinks'],
 
-  displayImage: function() {
-    return (this.get('launchConfig.imageUuid')||'').replace(/^docker:/,'');
-  }.property('launchConfig.imageUuid'),
+  image: Ember.computed.alias('launchConfig.image'),
 
   displayStack: function() {
     var stack = this.get('stack');
@@ -300,6 +305,10 @@ var Service = Resource.extend(StateCounts, {
       'loadbalancerservice',
     ].includes(type);
   }.property('lcType','isSelector'),
+
+  canHaveSidekicks: function() {
+    return ['service','scalinggroup'].includes(this.get('lcType'));
+  }.property('lcType'),
 
   hasPorts: Ember.computed.alias('isReal'),
   hasImage: Ember.computed.alias('isReal'),

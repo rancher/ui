@@ -97,8 +97,8 @@ export default Ember.Controller.extend({
     },
     {
       name: 'image',
-      sort: ['displayImage','displayName'],
-      searchField: 'displayImage',
+      sort: ['image','displayName'],
+      searchField: 'image',
       translationKey: 'generic.image',
     },
     {

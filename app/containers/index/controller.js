@@ -23,8 +23,8 @@ export const headers = [
   },
   {
     name: 'image',
-    sort: ['displayImage','displayName'],
-    searchField: 'displayImage',
+    sort: ['image','displayName'],
+    searchField: 'image',
     translationKey: 'generic.image',
   },
   {

@@ -4,10 +4,11 @@ export default Ember.Controller.extend({
   growl: Ember.inject.service(),
   modalService: Ember.inject.service('modal'),
 
-  queryParams: ['stackId','serviceId','containerId','launchConfigIndex','upgrade'],
+  queryParams: ['stackId','serviceId','containerId','addSidekick','launchConfigIndex','upgrade'],
   stackId: null,
   serviceId: null,
   containerId: null,
+  addSidekick: null,
   launchConfigIndex: null,
   upgrade: null,
 
