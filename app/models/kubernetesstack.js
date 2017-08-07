@@ -1,6 +1,5 @@
 import Ember from 'ember';
 import Stack from 'ui/models/stack';
-import C from 'ui/utils/constants';
 
 var KubernetesStack = Stack.extend({
   type: 'kubernetesStack',
