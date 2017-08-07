@@ -1,10 +1,7 @@
 import Ember from 'ember';
-import Resource from 'ember-api-store/models/resource';
+import LC from 'ui/models/launchconfig';
 
-var LaunchConfig = Resource.extend({
-  displayImage: function() {
-    return (this.get('imageUuid')||'').replace(/^docker:/,'');
-  }.property('imageUuid'),
+var secondaryLaunchConfigs = LC.extend({
   displayEnvironmentVars: Ember.computed('launchConfig.environment', function() {
     var envs = [];
     var environment = this.get('launchConfig.environment')||{};
@@ -15,4 +12,4 @@ var LaunchConfig = Resource.extend({
   }),
 });
 
-export default LaunchConfig;
+export default secondaryLaunchConfigs;

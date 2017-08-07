@@ -167,7 +167,14 @@ var Stack = Resource.extend(StateCounts, {
     return (this.get('name')||'').toLowerCase() === 'default';
   }.property('name'),
 
-  isEmpty: Ember.computed.equal('instances.length',0),
+  isEmpty: Ember.computed('instances.length', 'services.length', function() {
+
+    if (Ember.isEmpty(this.get('instances')) && Ember.isEmpty(this.get('services'))) {
+      return true;
+    }
+
+    return false;
+  }),
 
   isFromCatalog: function() {
     let kind = this.get('externalIdInfo.kind');
