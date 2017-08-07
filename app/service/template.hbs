@@ -1,3 +1,4 @@
+{{log service}}
 <section class="header clearfix">
   <h1 class="pull-left">
     {{t 'servicePage.header' type=service.displayType name=service.displayName}}
@@ -24,17 +25,17 @@
 <section>
   <div class="row banner bg-info basics">
 
-    {{#if service.launchConfig.memoryReservation}}
+    {{#if fixedLaunchConfig.memoryReservation}}
       <div class="inline-block">
         <label class="acc-label p-0">{{t 'containersPage.containerPage.infoMultiStats.memoryReservation.labelText'}}</label>
-        {{service.memoryReservationBlurb}}
+        {{fixedLaunchConfig.memoryReservationBlurb}}
       </div>
     {{/if}}
 
-    {{#if service.launchConfig.milliCpuReservation}}
+    {{#if fixedLaunchConfig.milliCpuReservation}}
       <div class="inline-block">
         <label class="acc-label p-0">{{t 'containersPage.containerPage.infoMultiStats.milliCpuReservation.labelText'}}</label>
-        {{service.launchConfig.milliCpuReservation}}
+        {{fixedLaunchConfig.milliCpuReservation}}
       </div>
     {{/if}}
 
@@ -64,13 +65,13 @@
     {{#if service.hasImage}}
       <div class="inline-block">
         <label class="acc-label p-0">{{t 'servicePage.multistat.image'}}</label>
-        {{service.launchConfig.displayImage}} {{copy-to-clipboard clipboardText=service.launchConfig.displayImage size="small"}}
+        {{fixedLaunchConfig.displayImage}} {{copy-to-clipboard clipboardText=fixedLaunchConfig.displayImage size="small"}}
       </div>
     {{/if}}
   </div>
 </section>
 
-<section>
+<section class="">
   {{#accordion-list as |al expandFn| }}
     {{#if (eq service.kind 'externalService')}}
       {{!-- since external services are the only ones that have externalIp/hostname it didnt make sense to give extIps its own route like other services  --}}
@@ -114,6 +115,75 @@
             showHost=true
         }}
       {{/accordion-list-item}}
+    {{/if}}
+
+    {{container/form-scheduling
+        initialHostId=activeLaunchConfig.requestedHostId
+        initialLabels=activeLaunchConfig.labels
+        isGlobal=model.service.isGlobalScale
+        allHosts=model.hosts
+        editing=false
+        expandAll=al.expandAll
+        expandFn=expandFn
+        classNames="accordion"
+    }}
+
+    {{#if (not service.isBalancer)}}
+      {{#accordion-list-item
+           title=(t 'servicePage.linksTab.header')
+           detail=(t 'servicePage.linksTab.detail')
+           status=(t 'servicePage.linksTab.status' count=service.consumedServicesWithNames.length)
+           statusClass=(if service.consumedServicesWithNames.length 'bg-success' 'text-muted')
+           expandAll=al.expandAll
+           expand=(action expandFn)
+      }}
+        <ul class="list-unstyled list-inline with-room">
+          {{#each service.consumedServicesWithNames as |link|}}
+            <li>{{consumed-service-link link=link stackId=service.stackId}}</li>
+          {{else}}
+            <li class="text-muted text-center">{{t 'servicePage.linksTab.noData'}}</li>
+          {{/each}}
+        </ul>
+      {{/accordion-list-item}}
+    {{/if}}
+
+    {{#if model.service.isReal}}
+      {{container/form-upgrade
+          service=model.service
+          editing=false
+          errors=upgradeErrors
+          isUpgrade=isUpgrade
+          expandAll=al.expandAll
+          expandFn=expandFn
+      }}
+    {{/if}}
+
+  {{#if service.hasSidekicks}}
+    <div class="header has-tabs">
+      <div class="title">
+      <span class="m-0">Service & Sidekicks PLACEHOLDER</span>
+      <p class="help-block">Select the main service launch config or one of the sidekick launch configs</p>
+      </div>
+      <ul class="tab-nav">
+        <li><a href="#" class="{{if (eq activeLaunchConfig.type 'launchConfig') 'active'}}" {{action 'selectMaster'}}>{{service.displayName}}</a></li>
+        {{#each service.secondaryLaunchConfigs as |sidekick index|}}
+          <li><a href="#"  class="{{if (eq activeLaunchConfig.name sidekick.name) 'active'}}" {{action 'selectSidekick' index}}>{{sidekick.name}}</a></li>
+        {{/each}}
+      </ul>
+    </div>
+  {{/if}}
+
+
+    {{#if (and service.isReal (not service.isBalancer))}}
+      {{container/form-command
+          tagName=''
+          instance=activeLaunchConfig
+          isService=true
+          initialLabels=activeLaunchConfig.labels
+          editing=false
+          expandAll=al.expandAll
+          expandFn=expandFn
+      }}
     {{/if}}
 
     {{#if service.lbConfig}}
@@ -172,18 +242,6 @@
     {{/if}}
 
 
-    {{#if (and service.isReal (not service.isBalancer))}}
-      {{container/form-command
-          tagName=''
-          instance=service.launchConfig
-          isService=true
-          initialLabels=service.launchConfig.labels
-          editing=false
-          expandAll=al.expandAll
-          expandFn=expandFn
-      }}
-    {{/if}}
-
     {{#if (not service.isBalancer)}}
       {{form-env-var
           model=model.service.displayEnvironmentVars
@@ -200,47 +258,17 @@
         classNames="accordion"
     }}
 
-    {{container/form-scheduling
-        initialHostId=model.service.launchConfig.requestedHostId
-        initialLabels=model.service.launchConfig.labels
-        isGlobal=model.service.isGlobalScale
-        allHosts=model.hosts
-        editing=false
-        expandAll=al.expandAll
-        expandFn=expandFn
-        classNames="accordion"
-    }}
-
     {{labels-section
-        model=service.launchConfig
+        model=activeLaunchConfig
         tagName=''
         expandAll=al.expandAll
         expandFn=expandFn
     }}
 
-    {{#if (not service.isBalancer)}}
-      {{#accordion-list-item
-           title=(t 'servicePage.linksTab.header')
-           detail=(t 'servicePage.linksTab.detail')
-           status=(t 'pagination.link' pages=1 count=service.consumedServicesWithNames.length)
-           statusClass=(if service.consumedServicesWithNames.length 'bg-success' 'text-muted')
-           expandAll=al.expandAll
-           expand=(action expandFn)
-      }}
-        <ul class="list-unstyled list-inline with-room">
-          {{#each service.consumedServicesWithNames as |link|}}
-            <li>{{consumed-service-link link=link stackId=service.stackId}}</li>
-          {{else}}
-            <li class="text-muted text-center">{{t 'servicePage.linksTab.noData'}}</li>
-          {{/each}}
-        </ul>
-      {{/accordion-list-item}}
-    {{/if}}
-
     {{container/form-networking
         editing=false
         instance=model.service
-        initialLabels=model.service.launchConfig.labels
+        initialLabels=activeLaunchConfig.labels
         allHosts=model.hosts
         expandAll=al.expandAll
         expandFn=expandFn
@@ -266,14 +294,14 @@
     {{/if}}
 
     {{container/form-security
-        instance=model.service.launchConfig
+        instance=activeLaunchConfig
         editing=false
         expandAll=al.expandAll
         expandFn=expandFn
     }}
 
     {{container/form-secrets
-        instance=model.service.launchConfig
+        instance=activeLaunchConfig
         editing=false
         expandAll=al.expandAll
         expandFn=expandFn
@@ -292,23 +320,12 @@
     {{/accordion-list-item}}
 
     {{form-stickiness
-        initialLabels=model.service.launchConfig.labels
+        initialLabels=activeLaunchConfig.labels
         service=model.service
         editing=false
         expandAll=al.expandAll
         expandFn=expandFn
     }}
-
-    {{#if model.service.isReal}}
-      {{container/form-upgrade
-          service=model.service
-          editing=false
-          errors=upgradeErrors
-          isUpgrade=isUpgrade
-          expandAll=al.expandAll
-          expandFn=expandFn
-      }}
-    {{/if}}
 
   {{/accordion-list}}
 </section>

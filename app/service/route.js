@@ -58,5 +58,17 @@ export default Ember.Route.extend({
         })
       });
     });
+  },
+  setupController(controller, model) {
+    this._super(controller, model);
+
+    let lc = model.get('service.launchConfig');
+    // @@TODO@@ - 08-04-17 - test with non-service
+    if (lc) {
+      controller.setProperties({
+        fixedLaunchConfig:  lc,
+        activeLaunchConfig: lc,
+      });
+    }
   }
 });
