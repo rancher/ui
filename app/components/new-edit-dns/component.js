@@ -38,7 +38,13 @@ export default Ember.Component.extend(NewOrEdit, {
     },
 
     setTargetServices(array, resources) {
-      this.set('targetServicesAsMaps', resources);
+      let store = this.get('store');
+      this.set('record.serviceLinks', resources.map((r) => {
+        return store.createRecord({
+          type: 'link',
+          name: r.serviceName,
+        });
+      }));
     },
 
     addTargetIp() {
@@ -145,14 +151,6 @@ export default Ember.Component.extend(NewOrEdit, {
     }
 
     return this._super(...arguments);
-  },
-
-  didSave() {
-    if ( this.get('mode') === ALIAS ) {
-      return this.get('record').doAction('setservicelinks', {
-        serviceLinks: this.get('targetServicesAsMaps'),
-      });
-    }
   },
 
   doneSaving() {
