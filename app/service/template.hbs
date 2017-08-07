@@ -1,4 +1,3 @@
-{{log service}}
 <section class="header clearfix">
   <h1 class="pull-left">
     {{t 'servicePage.header' type=service.displayType name=service.displayName}}
@@ -158,21 +157,35 @@
       }}
     {{/if}}
 
-  {{#if service.hasSidekicks}}
-    <div class="header has-tabs">
-      <div class="title">
-      <span class="m-0">Service & Sidekicks PLACEHOLDER</span>
-      <p class="help-block">Select the main service launch config or one of the sidekick launch configs</p>
-      </div>
-      <ul class="tab-nav">
-        <li><a href="#" class="{{if (eq activeLaunchConfig.type 'launchConfig') 'active'}}" {{action 'selectMaster'}}>{{service.displayName}}</a></li>
-        {{#each service.secondaryLaunchConfigs as |sidekick index|}}
-          <li><a href="#"  class="{{if (eq activeLaunchConfig.name sidekick.name) 'active'}}" {{action 'selectSidekick' index}}>{{sidekick.name}}</a></li>
-        {{/each}}
-      </ul>
-    </div>
-  {{/if}}
+    {{#accordion-list-item
+         title=(t 'servicePage.logTab.title')
+         detail=(t 'servicePage.logTab.detail')
+         status=(t 'servicePage.logTab.status' count=(or model.logs.arrangedContent.length 0))
+         statusClass=(if model.logs.arrangedContent.length 'bg-success' 'text-muted')
+         expandAll=al.expandAll
+         expand=(action expandFn)
+    }}
+      {{service-log logs=model.logs.arrangedContent}}
+    {{/accordion-list-item}}
 
+    {{#if service.hasSidekicks}}
+      <hr/>
+      <div class="header has-tabs mt-20">
+
+        <div class="title">
+          <span class="m-0">{{t 'servicePage.sidekick.header'}}</span>
+          <p class="help-block">{{t 'servicePage.sidekick.helpBlock'}}</p>
+        </div>
+
+        <ul class="tab-nav">
+          <li><a href="#" class="{{if (eq activeLaunchConfig.type 'launchConfig') 'active'}}" {{action 'selectMaster'}}>{{service.displayName}}</a></li>
+          {{#each service.secondaryLaunchConfigs as |sidekick index|}}
+            <li><a href="#"  class="{{if (eq activeLaunchConfig.name sidekick.name) 'active'}}" {{action 'selectSidekick' index}}>{{t 'servicePage.sidekick.tabHeader'}}: {{sidekick.name}}</a></li>
+          {{/each}}
+        </ul>
+
+      </div>
+    {{/if}}
 
     {{#if (and service.isReal (not service.isBalancer))}}
       {{container/form-command
@@ -244,19 +257,24 @@
 
     {{#if (not service.isBalancer)}}
       {{form-env-var
-          model=model.service.displayEnvironmentVars
+          model=activeLaunchConfig.displayEnvironmentVars
           expandAll=al.expandAll
           expandFn=expandFn
       }}
     {{/if}}
 
     {{form-healthcheck
-        healthCheck=model.service.launchConfig.healthCheck
+        healthCheck=activeLaunchConfig
         editing=false
         expandAll=al.expandAll
         expandFn=expandFn
         classNames="accordion"
     }}
+
+
+    {{#if (not-eq activeLaunchConfig.type 'secondaryLaunchConfig')}}
+    {{/if}}
+
 
     {{labels-section
         model=activeLaunchConfig
@@ -274,23 +292,61 @@
         expandFn=expandFn
     }}
 
-    {{#if (and service.hasPorts (not service.isBalancer))}}
-      {{#accordion-list-item
-           title=(t 'servicePage.portsTab.title')
-           detail=(t 'servicePage.portsTab.detail')
-           status=(t 'pagination.port' pages=1 count=service.endpointsByPort.length)
-           statusClass=(if service.endpointsByPort.length 'bg-success' 'text-muted')
-           expandAll=al.expandAll
-           expand=(action expandFn)
-           componentName='sortable-table'
-           as | parent |
-      }}
-        {{#if service.isActive}}
-          {{public-endpoints model=rervice}}
-        {{else}}
-          <div class="text-center text-muted">{{t 'servicePage.portsTab.notActive'}}</div>
-        {{/if}}
-      {{/accordion-list-item}}
+    {{#if (not-eq activeLaunchConfig.type 'secondaryLaunchConfig')}}
+      {{#if (and service.hasPorts (not service.isBalancer))}}
+        {{#accordion-list-item
+             title=(t 'servicePage.portsTab.title')
+             detail=(t 'servicePage.portsTab.detail')
+             status=(t 'servicePage.portsTab.status' count=service.endpointsByPort.length)
+             statusClass=(if service.endpointsByPort.length 'bg-success' 'text-muted')
+             expandAll=al.expandAll
+             expand=(action expandFn)
+             componentName='sortable-table'
+             as | parent |
+        }}
+          {{#if service.isActive}}
+            {{#if service.publicEndpoints}}
+
+              {{#component parent.intent
+                   classNames="grid sortable-table"
+                   body=service.publicEndpoints
+                   searchText=searchText
+                   sortBy=portSortBy
+                   bulkActions=false
+                   rowActions=false
+                   stickyHeader=false
+                   pagingLabel="pagination.port"
+                   isVisible=parent.expanded
+                   headers=portHeaders as |sortable kind port dt|
+              }}
+                {{#if (eq kind "row")}}
+                  <td data-title="{{dt.ipAddress}}">
+                    {{#if (eq "0.0.0.0" port.ipAddress)}}
+                      <span class="text-muted">{{t 'generic.all'}}</span>
+                    {{else}}
+                      {{port.ipAddress}}
+                    {{/if}}
+                  </td>
+                  <td data-title="{{dt.port}}">
+                    {{#if port.port}}
+                      {{port.port}}
+                    {{else}}
+                      <span class="text-muted">{{t 'generic.none'}}</span>
+                    {{/if}}
+                  </td>
+                {{else if (eq kind "nomatch")}}
+                  <tr><td colspan="{{sortable.fullColspan}}" class="text-center text-muted pt-20 pb-20">{{t 'containerPage.portsTab.table.noMatch'}}</td></tr>
+                {{else if (eq kind "norows")}}
+                  <tr><td colspan="{{sortable.fullColspan}}" class="text-center text-muted pt-20 pb-20">{{t 'containerPage.portsTab.table.noData'}}</td></tr>
+                {{/if}}
+              {{/component}}
+            {{/if}}
+
+          {{else}}
+            <div class="text-center text-muted">{{t 'servicePage.portsTab.notActive'}}</div>
+          {{/if}}
+        {{/accordion-list-item}}
+      {{/if}}
     {{/if}}
 
     {{container/form-security
@@ -308,24 +364,16 @@
         classNames="accordion"
     }}
 
-    {{#accordion-list-item
-          title=(t 'servicePage.logTab.title')
-          detail=(t 'servicePage.logTab.detail')
-          status=(t 'pagination.event' pages=1 count=model.logs.arrangedContent.length)
-          statusClass=(if model.logs.arrangedContent.length 'bg-success' 'text-muted')
+    {{#if service.lbConfig}}
+      {{form-stickiness
+          initialLabels=activeLaunchConfig.labels
+          service=model.service
+          editing=false
           expandAll=al.expandAll
-          expand=(action expandFn)
-    }}
-      {{service-log logs=model.logs.arrangedContent}}
-    {{/accordion-list-item}}
+          expandFn=expandFn
+      }}
 
-    {{form-stickiness
-        initialLabels=activeLaunchConfig.labels
-        service=model.service
-        editing=false
-        expandAll=al.expandAll
-        expandFn=expandFn
-    }}
+    {{/if}}
 
   {{/accordion-list}}
 </section>
