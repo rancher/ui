@@ -38,6 +38,8 @@ export default Ember.Component.extend(ManageLabels, {
     } else {
       this.set('mode', 'container');
     }
+
+    this.modeChanged();
   },
 
   actions: {

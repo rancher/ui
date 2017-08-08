@@ -47,26 +47,7 @@
             }}
           {{/if}}
         {{else if (eq kind "group")}}
-          <tr class="group-row">
-            {{#if inst.ref}}
-              <td colspan={{sub sortable.fullColspan 3}}>
-                {{stack-row model=inst.ref}}
-              </td>
-              <td>
-                {{upgrade-btn classNames="btn-sm" model=inst.ref}}
-              </td>
-              <td data-title="{{dt.instanceState}}" class="progress-td">
-                {{badge-state model=inst.ref classNames="mt-10 text-center"}}
-              </td>
-              <td data-title="{{dt.actions}}" class="actions">
-                {{action-menu model=inst.ref}}
-              </td>
-            {{else}}
-              <td colspan={{sortable.fullColspan}}>
-                {{stack-row}}
-              </td>
-            {{/if}}
-          </tr>
+          {{stack-row model=inst.ref fullColspan=sortable.fullColspan showUpgrade=true showState=true}}
         {{else if (eq kind "nomatch")}}
           <tr><td colspan="{{sortable.fullColspan}}" class="text-center text-muted lacsso pt-20 pb-20">{{t 'containersPage.table.noMatch'}}</td></tr>
         {{else if (eq kind "norows")}}

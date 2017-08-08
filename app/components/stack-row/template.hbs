@@ -1,8 +1,49 @@
-{{#if model}}
-  <a href="{{href-to 'stack' model.id}}">{{t 'stackRow.label' name=model.displayName}}</a>
-  {{#each model.tags as |tag|}}
-    <span class="tag-xs bg-info"><i class="icon icon-tag"></i> {{tag}}</span>
-  {{/each}}
-{{else}}
-  {{t 'stackRow.standalone'}}
+<tr class="group-row">
+  <td colspan={{nameSpan}} class="pl-10">
+    {{#if model}}
+      <a href="{{href-to 'stack' model.id}}">{{t 'stackRow.label' name=model.displayName}}</a>
+      {{#each model.tags as |tag|}}
+        <span class="tag-xs bg-info"><i class="icon icon-tag"></i> {{tag}}</span>
+      {{/each}}
+    {{else}}
+      {{t 'stackRow.standalone'}}
+    {{/if}}
+  </td>
+  {{#if afterName}}
+    <td colspan="{{afterName}}"></td>
+  {{/if}}
+  {{#if showUpgrade}}
+    <td>
+      {{#if model}}
+        {{upgrade-btn classNames="btn-sm" model=model}}
+      {{/if}}
+    </td>
+  {{/if}}
+  {{#if afterUpgrade}}
+    <td colspan="{{afterUpgrade}}"></td>
+  {{/if}}
+  {{#if showState}}
+    <td data-title="{{dt.instanceState}}" class="{{alignState}}">
+      {{#if model}}
+        {{badge-state model=model}}
+      {{/if}}
+    </td>
+  {{/if}}
+  {{#if afterState}}
+    <td colspan="{{afterState}}"></td>
+  {{/if}}
+  {{#if showActions}}
+    <td data-title="{{dt.actions}}" class="actions">
+      {{#if model}}
+        {{action-menu model=model}}
+      {{/if}}
+    </td>
+  {{/if}}
+</tr>
+{{#if model.showTransitioningMessage}}
+  <tr class="group-row group-row-error">
+    <td colspan="{{fullColspan}}" class="text-small {{model.stateColor}}">
+      {{model.transitioningMessage}}
+    </td>
+  </tr>
 {{/if}}

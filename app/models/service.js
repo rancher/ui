@@ -164,7 +164,7 @@ var Service = Resource.extend(StateCounts, {
     var canCleanup = !!a.garbagecollect && this.get('canCleanup');
 
     var choices = [
-      { label: 'action.upgradeOrEdit',  icon: 'icon icon-arrow-circle-up',  action: 'upgrade',        enabled: isReal && this.get('canUpgrade') },
+      { label: 'action.upgradeOrEdit',  icon: 'icon icon-arrow-circle-up',  action: 'upgrade',        enabled: isReal },
       { label: 'action.edit',           icon: 'icon icon-pencil',           action: 'editDns',        enabled: !isReal },
       { label: 'action.rollback',       icon: 'icon icon-history',          action: 'rollback',       enabled: !!a.rollback && isReal && !!this.get('previousRevisionId') },
       { label: 'action.garbageCollect', icon: 'icon icon-garbage',          action: 'garbageCollect', enabled: canCleanup},
@@ -186,7 +186,7 @@ var Service = Resource.extend(StateCounts, {
 
     return choices;
   }.property('actionLinks.{activate,deactivate,pause,restart,update,remove,rollback,garbagecollect}','previousRevisionId',
-    'lcType','isK8s','canHaveContainers','canHaveSidekicks','canUpgrade','containerForShell'
+    'lcType','isK8s','canHaveContainers','canHaveSidekicks','containerForShell'
   ),
 
   serviceLinks: null, // Used for clone

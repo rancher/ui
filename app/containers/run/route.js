@@ -25,15 +25,29 @@ export default Ember.Route.extend({
       lcIndex = parseInt(lcIndex,10);
     }
 
+    let defaultStack = null;
+    if ( params.stackId ) {
+      defaultStack = store.getById('stack', params.stackId); 
+    }
+
+    if ( !defaultStack ) {
+      defaultStack = store.getById('stack', this.get(`prefs.${C.PREFS.LAST_STACK}`));
+    }
+
+    let stackId = null;
+    if ( defaultStack ) {
+      stackId = defaultStack.get('id');
+    }
+
     let emptyService = store.createRecord({
       type: 'scalingGroup', // @TODO switch back to service
-      stackId: params.stackId,
+      stackId: stackId,
       scale: 1,
       startOnCreate: true,
     });
 
     let emptyLc = store.createRecord(JSON.parse(EMPTY_LC));
-    emptyLc.stackId=params.stackId;
+    emptyLc.stackId = stackId;
 
     var dependencies = {};
     if ( params.serviceId )
@@ -138,7 +152,7 @@ export default Ember.Route.extend({
         if ( params.addSidekick ) {
           mode = 'sidekick';
         } else {
-          mode = this.get(`prefs.${C.PREFS.SCALE_MODE}`);
+          mode = this.get(`prefs.${C.PREFS.LAST_SCALE_MODE}`);
         }
 
         let isService = (mode && mode !== 'container');
