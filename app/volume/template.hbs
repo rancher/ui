@@ -1,7 +1,6 @@
 <section class="header clearfix">
   <h1 class="pull-left">
-    {{t 'volumesPage.title'}}: {{model.name}}
-    {{log model}}
+    <a href="{{href-to 'volumes'}}">{{t 'volumesPage.title'}}</a>: {{model.name}}
   </h1>
   <div class="right-buttons">
     {{badge-state model=model}}
@@ -15,12 +14,14 @@
 
 <section>
   <div class="banner bg-info basics">
-    <div class="inline-block">
-      <label class="acc-label p-0">{{t 'volumesPage.banner.driver'}}:</label>
-      {{#copy-inline clipboardText=model.driver}}
-        {{model.driver}}
-      {{/copy-inline}}
-    </div>
+    {{#if model.driver}}
+      <div class="inline-block">
+        <label class="acc-label p-0">{{t 'volumesPage.banner.driver'}}:</label>
+        {{#copy-inline clipboardText=model.driver}}
+          {{model.driver}}
+        {{/copy-inline}}
+      </div>
+    {{/if}}
     {{#if model.sizeMb}}
       <div class="inline-block">
         <label class="acc-label p-0">{{t 'volumesPage.banner.size'}}:</label>
@@ -30,15 +31,31 @@
     {{#if model.stackId}}
       <div class="inline-block">
         <label class="acc-label p-0">{{t 'volumesPage.banner.stack'}}:</label>
-        {{model.stackId}}
+        <a href="{{href-to 'stack' stack.id}}">{{stack.displayName}}</a>
       </div>
     {{/if}}
-    <div class="inline-block">
-      <label class="acc-label p-0">{{t 'volumesPage.banner.uri'}}:</label>
-      {{#copy-inline clipboardText=model.uri classNames="clip"}}
-        {{model.uri}}
-      {{/copy-inline}}
-    </div>
+    {{#if model.perContainer}}
+      <div class="inline-block">
+        <label class="acc-label p-0">{{t 'volumesPage.banner.perCont'}}:</label>
+        {{model.perContainer}}
+      </div>
+    {{/if}}
+    {{#if driver.uri}}
+      <div class="inline-block">
+        <label class="acc-label p-0">{{t 'volumesPage.banner.uri'}}:</label>
+        {{#copy-inline clipboardText=model.uri}}
+          <div class="clip" style="vertical-align:bottom;max-width:200px;">
+            {{model.uri}}
+          </div>
+        {{/copy-inline}}
+      </div>
+    {{/if}}
+    {{#if model.hostId}}
+      <div class="inline-block">
+        <label class="acc-label p-0">{{t 'volumesPage.banner.host'}}:</label>
+        <a href="{{href-to 'host' host.id}}">{{host.displayName}}</a>
+      </div>
+    {{/if}}
   </div>
 </section>
 
@@ -72,11 +89,44 @@
             {{mount-row model=mount dt=dt}}
           {{else if (eq kind "norows")}}
             <tr>
-              <td colspan="{{sortable.fullColspan}}" class="text-center text-muted pt-20 pb-20">{{t 'labelsSection.noData'}}</td>
+              <td colspan="{{sortable.fullColspan}}" class="text-center text-muted pt-20 pb-20">{{t 'volumesPage.mounts.table.noData'}}</td>
             </tr>
           {{/if}}
         {{/component}}
       {{/accordion-list-item}}
 
+      {{#accordion-list-item
+           title=(t 'volumesPage.driverOptions.title')
+           detail=(t 'volumesPage.driverOptions.detail' appName=settings.appName)
+           status=(t 'volumesPage.driverOptions.status' count=(or driverOpts.length 0))
+           statusClass=(if driverOpts.length 'bg-success' 'text-muted')
+           expandAll=expandAll
+           expand=(action expandFn)
+           componentName='sortable-table'
+           as | parent |
+      }}
+        {{#component parent.intent
+             classNames="grid fixed mb-0 sortable-table"
+             bulkActions=false
+             rowActions=false
+             paging=false
+             search=true
+             sortBy=sortBy
+             stickyHeader=false
+             descending=descending
+             headers=optsHeaders
+             body=driverOpts
+             as |sortable kind opt|
+        }}
+          {{#if (eq kind "row")}}
+            <td data-title="{{t 'volumesPage.driverOptions.labels.key'}}:" class="force-wrap">{{opt.key}}</td>
+            <td data-title="{{t 'volumesPage.driverOptions.labels.value'}}:" class="force-wrap">{{opt.value}}</td>
+          {{else if (eq kind "norows")}}
+            <tr>
+              <td colspan="{{sortable.fullColspan}}" class="text-center text-muted pt-20 pb-20">{{t 'volumesPage.driverOptions.labels.noData'}}</td>
+            </tr>
+          {{/if}}
+        {{/component}}
+      {{/accordion-list-item}}
   {{/accordion-list}}
 </section>
