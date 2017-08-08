@@ -1,0 +1,82 @@
+<section class="header clearfix">
+  <h1 class="pull-left">
+    {{t 'volumesPage.title'}}: {{model.name}}
+    {{log model}}
+  </h1>
+  <div class="right-buttons">
+    {{badge-state model=model}}
+    {{action-menu model=model showPrimary=false classNames="ml-10 inline-block" size="sm"}}
+  </div>
+</section>
+
+{{#if model.description}}
+  {{banner-message color='bg-secondary mb-0 mt-10' message=model.description}}
+{{/if}}
+
+<section>
+  <div class="banner bg-info basics">
+    <div class="inline-block">
+      <label class="acc-label p-0">{{t 'volumesPage.banner.driver'}}:</label>
+      {{#copy-inline clipboardText=model.driver}}
+        {{model.driver}}
+      {{/copy-inline}}
+    </div>
+    {{#if model.sizeMb}}
+      <div class="inline-block">
+        <label class="acc-label p-0">{{t 'volumesPage.banner.size'}}:</label>
+        {{model.sizeMb}}
+      </div>
+    {{/if}}
+    {{#if model.stackId}}
+      <div class="inline-block">
+        <label class="acc-label p-0">{{t 'volumesPage.banner.stack'}}:</label>
+        {{model.stackId}}
+      </div>
+    {{/if}}
+    <div class="inline-block">
+      <label class="acc-label p-0">{{t 'volumesPage.banner.uri'}}:</label>
+      {{#copy-inline clipboardText=model.uri classNames="clip"}}
+        {{model.uri}}
+      {{/copy-inline}}
+    </div>
+  </div>
+</section>
+
+<section>
+  {{#accordion-list as |al expandFn| }}
+
+      {{#accordion-list-item
+           title=(t 'volumesPage.mounts.label')
+           detail=(t 'volumesPage.mounts.detail')
+           status=(t 'volumesPage.mounts.status' count=(or model.mounts.length 0))
+           statusClass=(if model.mounts.length 'bg-success' 'text-muted')
+           expandOnInit=true
+           expandAll=al.expandAll
+           expand=(action expandFn)
+           componentName='sortable-table'
+           as | parent |
+      }}
+        {{#component parent.intent
+             classNames="grid fixed mb-0 sortable-table"
+             bulkActions=false
+             rowActions=false
+             paging=false
+             search=true
+             sortBy=sortBy
+             stickyHeader=false
+             headers=headers
+             body=model.mounts
+             as |sortable kind mount dt|
+        }}
+          {{#if (eq kind "row")}}
+            {{mount-row model=mount dt=dt}}
+          {{else if (eq kind "norows")}}
+            <tr>
+              <td colspan="{{sortable.fullColspan}}" class="text-center text-muted pt-20 pb-20">{{t 'labelsSection.noData'}}</td>
+            </tr>
+          {{/if}}
+        {{/component}}
+      {{/accordion-list-item}}
+
+  {{/accordion-list}}
+</section>
