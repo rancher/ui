@@ -1,0 +1,38 @@
+<section class="header has-tabs clearfix">
+  <h1>Import Kubernetes cluster</h1>
+</section>
+
+<section>
+  {{t 'k8sImport.instructions'
+    appName=settings.appName
+    docsBase=settings.docsBase
+    htmlSafe=true
+  }}
+
+  <ul class="mt-20">
+    <li>{{t 'k8sImport.detail.version'}}</li>
+    <li>{{t 'k8sImport.detail.detail2'}}</li>
+    <li>{{t 'k8sImport.detail.detail3'}}</li>
+    <li>{{t 'k8sImport.detail.detail4'}}</li>
+  </ul>
+
+  {{input-text-file
+    name="kubeconfig"
+    canChangeName=false
+    value=kubeconfig
+    placeholder="k8sImport.placeholder"
+  }}
+</section>
+
+<section>
+  <div class="footer-actions">
+    {{save-cancel
+      createLabel="k8sImport.actionLabel"
+      saving=saving
+      cancelDisabled=saving
+      saveDisabled=(not configSet)
+      save="save"
+      cancel="cancel"
+    }}
+  </div>
+</section>

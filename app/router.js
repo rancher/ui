@@ -168,6 +168,7 @@ Router.map(function() {
       });
 
       this.route('k8s-tab', {path: '/kubernetes', resetNamespace: true});
+      this.route('k8s-import', {path: '/kubernetes-import'});
 
       this.route('help');
 
