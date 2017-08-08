@@ -9,6 +9,7 @@ export default Ember.Component.extend(ManageLabels, {
   isUpgrade:    null,
   isGlobal:     null,
   canContainer: true,
+  canSidekick:  true,
   min:          1,
   max:          100,
   mode:         null,
@@ -37,6 +38,8 @@ export default Ember.Component.extend(ManageLabels, {
     } else {
       this.set('mode', 'container');
     }
+
+    this.modeChanged();
   },
 
   actions: {
@@ -123,12 +126,16 @@ export default Ember.Component.extend(ManageLabels, {
   }.property('canContainer','isUpgrade','isService'),
 
   showSidekick: function() {
+    if ( !this.get('canSidekick') ) {
+      return false;
+    }
+
     if ( this.get('isUpgrade') && this.get('isService') ) {
       return false;
     } else {
       return true;
     }
-  }.property('isUpgrade','isService'),
+  }.property('isUpgrade','isService','canSidekick'),
 
   sidekickChanged: function() {
     let id = this.get('sidekickServiceId');

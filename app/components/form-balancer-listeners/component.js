@@ -43,7 +43,7 @@ export default Ember.Component.extend({
     });
 
     (this.get('service.launchConfig.ports')||[]).forEach((str) => {
-      let parsed = parsePortSpec(str);
+      let parsed = parsePortSpec(str,'http');
       let obj = Ember.Object.create({
         access: 'public',
         protocol: null,
@@ -55,7 +55,7 @@ export default Ember.Component.extend({
     });
 
     (this.get('service.launchConfig.expose')||[]).forEach((str) => {
-      let parsed = parsePortSpec(str);
+      let parsed = parsePortSpec(str,'http');
       let obj = Ember.Object.create({
         access: 'internal',
         protocol: null,

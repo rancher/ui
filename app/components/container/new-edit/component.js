@@ -125,6 +125,19 @@ export default Ember.Component.extend(NewOrEdit, SelectTab, {
       });
     }
 
+    let stackId = null;
+    if ( this.get('isService') ) {
+      stackId = this.get('service.stackId');
+    } else {
+      stackId = this.get('launchConfig.stackId');
+    }
+
+    if ( stackId ) {
+      let stack = this.get('store').getById('stack', stackId);
+      if ( stack ) {
+        this.set('stack', stack);
+      }
+    }
 
     this.labelsChanged();
   },
@@ -352,7 +365,8 @@ export default Ember.Component.extend(NewOrEdit, SelectTab, {
 
   doneSaving() {
     if ( !this.get('isUpgrade') ) {
-      this.set(`prefs.${C.PREFS.SCALE_MODE}`, this.get('scaleMode'));
+      this.set(`prefs.${C.PREFS.LAST_SCALE_MODE}`, this.get('scaleMode'));
+      this.set(`prefs.${C.PREFS.LAST_STACK}`, this.get('stack.id'));
     }
     this.sendAction('done');
   },

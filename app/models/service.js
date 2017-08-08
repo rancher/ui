@@ -164,12 +164,12 @@ var Service = Resource.extend(StateCounts, {
     var canCleanup = !!a.garbagecollect && this.get('canCleanup');
 
     var choices = [
-      { label: 'action.upgradeOrEdit',  icon: 'icon icon-arrow-circle-up',  action: 'upgrade',        enabled: isReal && this.get('canUpgrade') },
+      { label: 'action.upgradeOrEdit',  icon: 'icon icon-arrow-circle-up',  action: 'upgrade',        enabled: isReal },
       { label: 'action.edit',           icon: 'icon icon-pencil',           action: 'editDns',        enabled: !isReal },
       { label: 'action.rollback',       icon: 'icon icon-history',          action: 'rollback',       enabled: !!a.rollback && isReal && !!this.get('previousRevisionId') },
       { label: 'action.garbageCollect', icon: 'icon icon-garbage',          action: 'garbageCollect', enabled: canCleanup},
       { label: 'action.clone',          icon: 'icon icon-copy',             action: 'clone',          enabled: !isK8s && !isDriver },
-      { label: 'action.addSidekick',    icon: 'icon icon-plus-circle',      action: 'addSidekick',    enabled: this.get('canHaveSidekicks') },
+//      { label: 'action.addSidekick',    icon: 'icon icon-plus-circle',      action: 'addSidekick',    enabled: this.get('canHaveSidekicks') },
       { divider: true },
       { label: 'action.execute',        icon: 'icon icon-terminal',         action: 'shell',          enabled: !!containerForShell, altAction:'popoutShell'},
 //      { label: 'action.logs',           icon: 'icon icon-file',             action: 'logs',           enabled: !!a.logs, altAction: 'popoutLogs' },
@@ -186,7 +186,7 @@ var Service = Resource.extend(StateCounts, {
 
     return choices;
   }.property('actionLinks.{activate,deactivate,pause,restart,update,remove,rollback,garbagecollect}','previousRevisionId',
-    'lcType','isK8s','canHaveContainers','canHaveSidekicks','canUpgrade','containerForShell'
+    'lcType','isK8s','canHaveContainers','canHaveSidekicks','containerForShell'
   ),
 
   serviceLinks: null, // Used for clone
@@ -380,24 +380,24 @@ var Service = Resource.extend(StateCounts, {
   endpointsMap: function() {
     var out = {};
     (this.get('publicEndpoints')||[]).forEach((endpoint) => {
-      if ( !endpoint.port )
+      if ( !endpoint.publicPort )
       {
         // Skip nulls
         return;
       }
 
-      if ( out[endpoint.port] )
-      {
-        out[endpoint.port].push(endpoint.ipAddress);
+      let key = endpoint.get('portProto');
+      let ary = out[key]
+      if ( !ary ) {
+        ary = [];
+        out[key] = ary;
       }
-      else
-      {
-        out[endpoint.port] = [endpoint.ipAddress];
-      }
+
+      out[key].push(endpoint);
     });
 
     return out;
-  }.property('publicEndpoints.@each.{ipAddress,port}'),
+  }.property('publicEndpoints.@each.{ipAddress,publicPort}'),
 
   endpointsByPort: function() {
     var out = [];
@@ -405,25 +405,31 @@ var Service = Resource.extend(StateCounts, {
     Object.keys(map).forEach((key) => {
       out.push({
         port: parseInt(key,10),
-        ipAddresses: map[key]
+        endpoints: map[key]
       });
     });
 
     return out;
   }.property('endpointsMap'),
 
-  endpointPorts: Ember.computed.mapBy('endpointsByPort','port'),
+  endpointPorts: Ember.computed.mapBy('endpointsByPort','publicPort'),
 
   displayPorts: function() {
     let parts = [];
 
     this.get('endpointsByPort').forEach((obj) => {
-      var url = Util.constructUrl(false, obj.ipAddresses[0], obj.port);
-      parts.push('<span>' +
-        '<a href="'+ url +'" target="_blank" rel="nofollow noopener">' +
-          obj.port +
-        '</a> ' +
-      '</span>');
+      let endpoint = obj.endpoints.get('firstObject');
+      if ( endpoint ) {
+        if ( endpoint.get('isMaybeHttp') ) {
+          parts.push('<span>' +
+            '<a target="_blank" rel="nofollow noopener" href="'+ Util.escapeHtml(endpoint.get('linkEndpoint')) +'">' +
+            Util.escapeHtml(endpoint.get('displayEndpoint')) +
+            '</a>' +
+            '</span>');
+        } else {
+          parts.push('<span>' + Util.escapeHtml(endpoint.get('displayEndpoint')) + '</span>');
+        }
+      }
     });
 
     let pub = parts.join(" / ");
@@ -436,7 +442,7 @@ var Service = Resource.extend(StateCounts, {
     {
       return '';
     }
-  }.property('endpointsByPort.@each.{port,ipAddresses}', 'intl.locale'),
+  }.property('endpointsByPort.@each.{port,endpoints}', 'intl.locale'),
 
   memoryReservationBlurb: Ember.computed('launchConfig.memoryReservation', function() {
     if ( this.get('launchConfig.memoryReservation') ) {

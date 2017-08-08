@@ -78,6 +78,10 @@ var Stack = Resource.extend(StateCounts, {
       download(this.linkFor('composeConfig'));
     },
 
+    addContainer: function() {
+      this.get('application').transitionToRoute('containers.run', {queryParams: {stackId: this.get('id')}});s
+    },
+
     viewCode: function() {
       this.get('application').transitionToRoute('stack.code', this.get('id'));
     },
@@ -106,6 +110,8 @@ var Stack = Resource.extend(StateCounts, {
 
 
     var out = [
+      { label: 'action.addContainer',   icon: 'icon icon-container',      action: 'addContainer',     enabled: true },
+      { divider: true },
       { label: 'action.edit',           icon: 'icon icon-edit',           action: 'edit',             enabled: !!a.update },
       { label: 'action.viewConfig',     icon: 'icon icon-files',          action: 'viewCode',         enabled: !!a.exportconfig },
       { label: 'action.exportConfig',   icon: 'icon icon-download',       action: 'exportConfig',     enabled: !!a.exportconfig },
