@@ -39,40 +39,61 @@ var PublicEndpoint = Resource.extend({
   instance: denormalizeId('instanceId'),
   service: denormalizeId('serviceId'),
 
+  ssl: null, // loadbalancerservice sets this based on the listener
+
   target: function() {
     return this.get('service') || this.get('instance');
   }.property('instance','service'),
 
-  displayEndpoint: function() {
-    let fqdn = this.get('fqdn');
-    let bind = this.get('bindIpAddress');
-    let agent = this.get('agentIpAddress');
-    let port = this.get('publicPort');
+  portProto: function() {
+    let out = this.get('publicPort') + '/' + this.get('protocol');
+  }.property('publicPort','protocol'),
 
+  hasBoundIp: function() {
+    let bind = this.get('bindIpAddress');
+    return bind && !BIND_ANY.includes(bind);
+  }.property('bindIpAddress'),
+
+  endpoint: function() {
     let out = '';
+    let fqdn = this.get('fqdn');
+    let agent = this.get('agentIpAddress');
+
     if ( fqdn ) {
       out = fqdn;
-    } else if ( bind && !BIND_ANY.includes(bind) ) {
-      out = bind;
+    } else if ( this.get('hasBoundIp') ) {
+      out = this.get('bindIpAddress');
     } else if ( agent ) {
       out = agent;
     }
 
-    if ( out && port !== 80 && port !== 443 ) {
-      out += ':' + port; 
+    if ( out ) {
+      out += ':' + this.get('publicPort');
     }
 
     return out;
-  }.property('fqdn','bindIpAddress','agentIpAddress','publicPort'),
+  }.property('fqdn','hasBoundIp','bindIpAddress','agentIpAddress','publicPort'),
+
+  // always ip:port/proto
+  displayEndpoint: function() {
+    let out = this.get('endpoint');
+    let proto = this.get('protocol');
+
+    if ( proto !== 'tcp' ) {
+      out += '/' + protocol;
+    }
+
+    return out;
+  }.property('endpoint','protocol'),
 
   linkEndpoint: function() {
     if ( this.get('isMaybeHttp') ) {
-      let out = this.get('displayEndpoint');
+      let out = this.get('endpoint');
 
       if ( this.get('isMaybeSecure') ) {
-        out = 'https://' + out;
+        out = 'https://' + out.replace(/:443$/,'');
       } else {
-        out = 'http://' + out;
+        out = 'http://' + out.replace(/:80$/,'');
       }
 
       return out;
@@ -84,8 +105,8 @@ var PublicEndpoint = Resource.extend({
   }.property('privatePort','publicPort'),
 
   isMaybeSecure: function() {
-    return portMatch([this.get('publicPort'),this.get('privatePort')], [443,8443], '443');
-  }.property('publicPort','publicPort'),
+    return this.get('ssl') || portMatch([this.get('publicPort'),this.get('privatePort')], [443,8443], '443');
+  }.property('ssl','publicPort','publicPort'),
 });
 
 export default PublicEndpoint;

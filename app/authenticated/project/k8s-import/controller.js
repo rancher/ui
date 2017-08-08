@@ -14,6 +14,6 @@ export default Ember.Controller.extend({
   },
 
   configSet: function() {
-    return this.get('kubeconfig.length') > 0;
+    return (this.get('kubeconfig')||'').includes('clusters:');
   }.property('kubeconfig'),
 });

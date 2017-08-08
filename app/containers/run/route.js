@@ -33,6 +33,7 @@ export default Ember.Route.extend({
     });
 
     let emptyLc = store.createRecord(JSON.parse(EMPTY_LC));
+    emptyLc.stackId=params.stackId;
 
     var dependencies = {};
     if ( params.serviceId )
@@ -133,7 +134,13 @@ export default Ember.Route.extend({
           });
         }
       } else {
-        let mode = this.get(`prefs.${C.PREFS.SCALE_MODE}`);
+        let mode;
+        if ( params.addSidekick ) {
+          mode = 'sidekick';
+        } else {
+          mode = this.get(`prefs.${C.PREFS.SCALE_MODE}`);
+        }
+
         let isService = (mode && mode !== 'container');
         let isGlobal = (mode === 'global');
         if ( isGlobal ) {

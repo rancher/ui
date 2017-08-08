@@ -4,7 +4,7 @@ import Ember from 'ember';
 // hostIp::containerPort
 // hostPort:containerPort
 // containerPort
-export function parsePortSpec(str, defaultProtocol='http') {
+export function parsePortSpec(str, defaultProtocol) {
   str = str.trim();
 
   var match = str.match(/\/([a-z]+)$/i), parts, hostIp = '', hostPort, containerPort, protocol;

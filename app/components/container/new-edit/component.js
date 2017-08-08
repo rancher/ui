@@ -125,6 +125,19 @@ export default Ember.Component.extend(NewOrEdit, SelectTab, {
       });
     }
 
+    let stackId = null;
+    if ( this.get('isService') ) {
+      stackId = this.get('service.stackId');
+    } else {
+      stackId = this.get('launchConfig.stackId');
+    }
+
+    if ( stackId ) {
+      let stack = this.get('store').getById('stack', stackId);
+      if ( stack ) {
+        this.set('stack', stack);
+      }
+    }
 
     this.labelsChanged();
   },

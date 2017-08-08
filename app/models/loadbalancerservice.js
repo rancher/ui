@@ -7,12 +7,12 @@ import { parsePortSpec } from 'ui/utils/parse-port';
 const esc = Ember.Handlebars.Utils.escapeExpression;
 
 function portToStr(spec) {
-  var parts = parsePortSpec(spec);
+  var parts = parsePortSpec(spec,'http');
   return parts.host + (parts.protocol === 'http' ? '' : '/' + parts.protocol);
 }
 
 function specToPort(spec) {
-  var parts = parsePortSpec(spec);
+  var parts = parsePortSpec(spec,'http');
   return parts.hostPort;
 }
 
