@@ -176,8 +176,7 @@ export default Ember.Component.extend(NewOrEdit, Sortable, {
   },
 
   didSave() {
-    var promises = [];
-
+    let setMembers = Ember.RSVP.resolve();
     if ( this.get('editing') )
     {
       if ( this.get('access.enabled') )
@@ -191,20 +190,20 @@ export default Ember.Component.extend(NewOrEdit, Sortable, {
           };
         });
 
-        promises.push(this.get('project').doAction('setmembers',{members: members}));
+        setMembers = this.get('project').doAction('setmembers',{members: members});
       }
     }
 
-    if ( this.get('project.id') && this.get('network') && !this.get('hasUnsupportedPolicy') )
-    {
-      promises.push(this.get('network').save({
-        headers: {
-          [C.HEADER.PROJECT_ID]: this.get('project.id'),
-        }
-      }));
-    }
-
-    return Ember.RSVP.all(promises);
+    return setMembers.then(() => {
+      if ( this.get('project.id') && this.get('network') && !this.get('hasUnsupportedPolicy') )
+      {
+        return this.get('network').save({
+          headers: {
+            [C.HEADER.PROJECT_ID]: this.get('project.id'),
+          }
+        });
+      }
+    });
   },
 
   doneSaving() {

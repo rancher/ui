@@ -54,7 +54,7 @@ export default Ember.Component.extend({
         else if ( typeof value === 'string' )
         {
           // Strings, from clone/edit
-          var parsed = parsePortSpec(value);
+          var parsed = parsePortSpec(value,'tcp');
 
           if ( parsed.hostIp )
           {
