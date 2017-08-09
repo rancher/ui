@@ -212,12 +212,10 @@
     <div class="over-hr mt-20 mb-20">
       <span>{{t 'machine.driverAmazon.instanceOptionsSection'}}</span>
     </div>
-
+    <div class="box">
     <div class="row">
-      <div class="col span-2 col-inline">
+     <div class="col span-6">
         <label class="acc-label">{{t 'machine.driverAmazon.instanceType.label'}}</label>
-      </div>
-      <div class="col span-4">
         {{new-select
           classNames="form-control"
           value=amazonec2Config.instanceType
@@ -227,10 +225,9 @@
           optionGroupPath="group"
         }}
       </div>
-      <div class="col span-2 col-inline">
+
+      <div class="col span-6">
         <label class="acc-label">{{t 'machine.driverAmazon.rootSize.label'}}</label>
-      </div>
-      <div class="col span-4">
         <div class="input-group">
           {{input type="text" classNames="form-control" placeholder="" value=amazonec2Config.rootSize}}
           <span class="input-group-addon bg-default">{{t 'machine.driverAmazon.rootSize.unit'}}</span>
@@ -239,35 +236,30 @@
     </div>
 
     <div class="row">
-      <div class="col span-2 col-inline">
+      <div class="col span-6">
         <label class="acc-label">{{t 'machine.driverAmazon.ami.label'}}</label>
-      </div>
-      <div class="col span-4">
         {{input type="text" classNames="form-control" placeholder=(t 'machine.driverAmazon.ami.placeholder') value=amazonec2Config.ami}}
         {{#if settings.isRancher}}
-          <p class="text-info">
+          <p class="help-block">
             <a href="https://github.com/rancher/os/blob/master/README.md/#user-content-amazon" target="_blank">{{t 'machine.driverAmazon.ami.rancherList'}}</a>
           </p>
         {{/if}}
       </div>
-      <div class="col span-2 col-inline">
+
+      <div class="col span-6">
         <label class="acc-label">{{t 'machine.driverAmazon.sshUser.label'}}</label>
-      </div>
-      <div class="col span-4">
         {{input type="text" classNames="form-control" placeholder=(t 'machine.driverAmazon.sshUser.placeholder') value=amazonec2Config.sshUser}}
       </div>
     </div>
+
     <div class="row">
-      <div class="col span-2 col-inline">
+      <div class="col span-6">
         <label class="acc-label">{{t 'machine.driverAmazon.iam.label'}}</label>
-      </div>
-      <div class="col span-4">
         {{input type="text" classNames="form-control" value=amazonec2Config.iamInstanceProfile}}
       </div>
-      <div class="col span-2 col-inline">
+
+      <div class="col span-6">
         <label class="acc-label">{{t 'machine.driverAmazon.privateIp.label'}}</label>
-      </div>
-      <div class="col span-4">
         <div class="checkbox">
           <label class="acc-label">{{input type="checkbox" checked=amazonec2Config.privateAddressOnly}} {{t 'machine.driverAmazon.onlyPrivate.label'}}</label>
         </div>
@@ -277,6 +269,7 @@
     {{#if model}}
       {{partial "host/add-options"}}
     {{/if}}
+    </div>
   </div>
 
   {{top-errors errors=errors}}
