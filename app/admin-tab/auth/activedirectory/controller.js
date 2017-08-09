@@ -64,7 +64,7 @@ export default Ember.Controller.extend({
   }),
 
   testConfig: function(data) {
-    return this.get('authStore').rawRequest({
+    return this.get('authStore').request({
       url:    'testlogin',
       method: 'POST',
       data:   data,
@@ -107,34 +107,21 @@ export default Ember.Controller.extend({
       };
 
       if ( errors.get('length') ) {
-
         this.set('errors', errors);
-
       } else {
-
         this.set('testing', true);
 
         if (editing) {
-
-          this.testConfig(data).then((resp) => {
-
-            if (resp.status === 200) {
-
-              model.save().then(() => {
-                this.send('waitAndRefresh');
-              }).catch(err => {
-                this.send('gotError', err);
-              });
-
-            }
-
+          this.testConfig(data).then(() => {
+            model.save().then(() => {
+              this.send('waitAndRefresh');
+            }).catch((err) => {
+              this.send('gotError', err);
+            });
           }).catch((err) => {
-
-            this.send('gotError', err.statusText);
+            this.send('gotError', err);
           });
-
         } else {
-
           this.set('testing', true);
           model.save().then(() => {
             this.send('authenticate');
