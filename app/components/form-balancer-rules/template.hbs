@@ -136,15 +136,26 @@
       {{/each}}
     </tbody>
   </table>
-  {{#unless showBackend}}
+  <div class="row text-right">
+    {{#unless showBackend}}
+      {{#if editing}}
+        <div class="vertical-middle">
+          <button class="btn bg-transparent text-small vertical-middle" {{action "showBackend"}}>
+            {{t 'formBalancerListeners.showBackendLabel'}}
+          </button>
+        </div>
+      {{/if}}
+    {{/unless}}
+
     {{#if editing}}
-      <div class="pull-right clearfix">
-        <button class="btn bg-transparent p-0 pl-20 text-small inline-block" {{action "showBackend"}}>
-          {{t 'formBalancerListeners.showBackendLabel'}}
-        </button>
-      </div>
+    <div class="vertical-middle">
+      <button class="btn bg-transparent text-small vertical-middle" {{action "removePort" port}}>
+        {{t 'formBalancerListeners.removePortLabel'}}
+      </button>
+    </div>
     {{/if}}
-  {{/unless}}
+  </div>
+
 {{else}}
   <span class="text-muted">{{t 'formBalancerRules.noRules'}}</span>
 {{/if}}
