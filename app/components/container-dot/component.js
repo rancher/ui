@@ -8,7 +8,7 @@ export default Ember.Component.extend({
   tagName         : 'div',
   classNames      : ['vertical-middle'],
   type            : 'tooltip-action-menu',
-  template        : null,
+  template        : 'tooltip-container-dot',
 
   click(event) {
     this.details(event);
