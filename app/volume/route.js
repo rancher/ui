@@ -7,16 +7,17 @@ export default Ember.Route.extend({
     },
   },
   model: function(params) {
-    return this.get('store').getById(params.type, params.volume_id);
-  },
-  setupController(controller, model) {
-    this._super(controller, model);
-    // Implement your custom setup after
-    if (model.stackId) {
-      this.controllerFor('volume').set('stack', this.get('store').getById('stack', model.stackId));
+    let out = Ember.Object.create({
+      volume: this.get('store').getById(params.type, params.volume_id)
+    });
+
+    if (out.volume.stackId) {
+      out.stack = this.controllerFor('volume').set('stack', this.get('store').getById('stack', out.volume.stackId));
     }
 
-    if (model.hostId) {
-      this.controllerFor('volume').set('host', this.get('store').getById('host', model.hostId));
+    if (out.volume.hostId) {
+      out.host = this.controllerFor('volume').set('host', this.get('store').getById('host', out.volume.hostId));
     }
-  }});
+    return out;
+  },
+});

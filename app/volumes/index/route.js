@@ -6,7 +6,7 @@ export default Ember.Route.extend({
     let store = this.get('store');
     return Ember.RSVP.hash({
       volumes: store.findAll('volume'),
-      volumeTemplates: store.findAll('volumeTemplate'),
+      volumeTemplates: store.findAll('volumetemplate'),
     });
   },
 

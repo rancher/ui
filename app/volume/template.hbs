@@ -1,56 +1,56 @@
 <section class="header clearfix">
   <h1 class="pull-left">
-    <a href="{{href-to 'volumes'}}">{{t 'volumesPage.title'}}</a>: {{model.name}}
+    <a href="{{href-to 'volumes'}}">{{t 'volumesPage.title'}}</a>: {{volume.name}}
   </h1>
   <div class="right-buttons">
-    {{badge-state model=model}}
-    {{action-menu model=model showPrimary=false classNames="ml-10 inline-block" size="sm"}}
+    {{badge-state model=volume}}
+    {{action-menu model=volume showPrimary=false classNames="ml-10 inline-block" size="sm"}}
   </div>
 </section>
 
-{{#if model.description}}
-  {{banner-message color='bg-secondary mb-0 mt-10' message=model.description}}
+{{#if volume.description}}
+  {{banner-message color='bg-secondary mb-0 mt-10' message=volume.description}}
 {{/if}}
 
 <section>
   <div class="banner bg-info basics">
-    {{#if model.driver}}
+    {{#if volume.driver}}
       <div class="inline-block">
         <label class="acc-label p-0">{{t 'volumesPage.banner.driver'}}:</label>
-        {{#copy-inline clipboardText=model.driver}}
-          {{model.driver}}
+        {{#copy-inline clipboardText=volume.driver}}
+          {{volume.driver}}
         {{/copy-inline}}
       </div>
     {{/if}}
-    {{#if model.sizeMb}}
+    {{#if volume.sizeMb}}
       <div class="inline-block">
         <label class="acc-label p-0">{{t 'volumesPage.banner.size'}}:</label>
-        {{model.sizeMb}}
+        {{sizeGB}}
       </div>
     {{/if}}
-    {{#if model.stackId}}
+    {{#if volume.stackId}}
       <div class="inline-block">
         <label class="acc-label p-0">{{t 'volumesPage.banner.stack'}}:</label>
         <a href="{{href-to 'stack' stack.id}}">{{stack.displayName}}</a>
       </div>
     {{/if}}
-    {{#if model.perContainer}}
+    {{#if volume.perContainer}}
       <div class="inline-block">
         <label class="acc-label p-0">{{t 'volumesPage.banner.perCont'}}:</label>
-        {{model.perContainer}}
+        {{volume.perContainer}}
       </div>
     {{/if}}
     {{#if driver.uri}}
       <div class="inline-block">
         <label class="acc-label p-0">{{t 'volumesPage.banner.uri'}}:</label>
-        {{#copy-inline clipboardText=model.uri}}
+        {{#copy-inline clipboardText=volume.uri}}
           <div class="clip" style="vertical-align:bottom;max-width:200px;">
-            {{model.uri}}
+            {{volume.uri}}
           </div>
         {{/copy-inline}}
       </div>
     {{/if}}
-    {{#if model.hostId}}
+    {{#if volume.hostId}}
       <div class="inline-block">
         <label class="acc-label p-0">{{t 'volumesPage.banner.host'}}:</label>
         <a href="{{href-to 'host' host.id}}">{{host.displayName}}</a>
@@ -65,8 +65,8 @@
       {{#accordion-list-item
            title=(t 'volumesPage.mounts.label')
            detail=(t 'volumesPage.mounts.detail')
-           status=(t 'volumesPage.mounts.status' count=(or model.mounts.length 0))
-           statusClass=(if model.mounts.length 'bg-success' 'text-muted')
+           status=(t 'volumesPage.mounts.status' count=(or volume.mounts.length 0))
+           statusClass=(if volume.mounts.length 'bg-success' 'text-muted')
            expandOnInit=true
            expandAll=al.expandAll
            expand=(action expandFn)
@@ -77,12 +77,12 @@
              classNames="grid fixed mb-0 sortable-table"
              bulkActions=false
              rowActions=false
-             paging=false
+             pagingLabel="pagination.mounts"
              search=true
              sortBy=sortBy
              stickyHeader=false
              headers=headers
-             body=model.mounts
+             body=volume.mounts
              as |sortable kind mount dt|
         }}
           {{#if (eq kind "row")}}
@@ -109,18 +109,18 @@
              classNames="grid fixed mb-0 sortable-table"
              bulkActions=false
              rowActions=false
-             paging=false
+             pagingLabel="pagination.driverOptions"
              search=true
              sortBy=sortBy
              stickyHeader=false
              descending=descending
              headers=optsHeaders
              body=driverOpts
-             as |sortable kind opt|
+             as |sortable kind opt dt|
         }}
           {{#if (eq kind "row")}}
-            <td data-title="{{t 'volumesPage.driverOptions.labels.key'}}:" class="force-wrap">{{opt.key}}</td>
-            <td data-title="{{t 'volumesPage.driverOptions.labels.value'}}:" class="force-wrap">{{opt.value}}</td>
+            <td data-title="{{'dt.key'}}:" class="force-wrap">{{opt.key}}</td>
+            <td data-title="{{'dt.value'}}:" class="force-wrap">{{opt.value}}</td>
           {{else if (eq kind "norows")}}
             <tr>
               <td colspan="{{sortable.fullColspan}}" class="text-center text-muted pt-20 pb-20">{{t 'volumesPage.driverOptions.labels.noData'}}</td>
