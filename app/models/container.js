@@ -4,8 +4,9 @@ import Util from 'ui/utils/util';
 import { denormalizeId, denormalizeIdArray } from 'ember-api-store/utils/denormalize';
 import Instance from 'ui/models/instance';
 import { formatSi } from 'ui/utils/util';
+import EndpointPorts from 'ui/mixins/endpoint-ports';
 
-var Container = Instance.extend({
+var Container = Instance.extend(EndpointPorts, {
   // Common to all instances
   requestedHostId            : null,
   primaryIpAddress           : null,
@@ -199,9 +200,12 @@ var Container = Instance.extend({
   }.property('state'),
 
   isSystem: function() {
-    var labelKeys = Object.keys(this.get('labels')||{});
-    var isSystem = !!this.get('system') || labelKeys.indexOf(C.LABEL.SYSTEM_TYPE) >= 0;
-    return isSystem;
+    if ( this.get('system') ) {
+      return true;
+    } else {
+      let labels = this.get('labels')||{};
+      return !!labels[C.LABEL.SYSTEM_TYPE];
+    }
   }.property('system','labels'),
 
   displayExternalId: function() {
