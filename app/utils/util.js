@@ -362,6 +362,7 @@ var Util = {
   random32: random32,
   randomStr: randomStr,
   formatPercent: formatPercent,
+  formatGB: formatGB,
   formatMib: formatMib,
   formatKbps: formatKbps,
   formatSi: formatSi,

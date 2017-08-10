@@ -8,7 +8,7 @@ export default Ember.Controller.extend({
   volume:      Ember.computed.alias('model.volume'),
 
   sizeGB: Ember.computed('volume.sizeMb', function() {
-    let sizeOut = Util.formatMib(this.get('volume.sizeMb'));
+    let sizeOut = Util.formatGB(this.get('volume.sizeMb'));
     return sizeOut;
   }),
 
