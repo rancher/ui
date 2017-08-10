@@ -40,6 +40,7 @@ export const headers = [
 export default Ember.Controller.extend({
   projectController: Ember.inject.controller('authenticated.project'),
   projects: Ember.inject.service(),
+  prefs: Ember.inject.service(),
 
   queryParams: ['sortBy'],
   sortBy: 'name',
@@ -64,17 +65,21 @@ export default Ember.Controller.extend({
 
   rows: function() {
     let showStack = this.get('showStack');
+    let showSystem = this.get('prefs.showSystemResources');
 
     // Services
     let out = this.get('model.services').filter((obj) => {
-      return showStack[obj.get('stackId')] && obj.get('isReal') && !obj.get('isBalancer');
+      return showStack[obj.get('stackId')] &&
+              obj.get('isReal') && !obj.get('isBalancer') &&
+              (showSystem || obj.get('isSystem') !== true); // Note that it can be null, so this isn't the same as === false
     });
 
     // Containers
     out.pushObjects(this.get('model.instances').filterBy('serviceId',null).filter((obj) => {
-      return showStack[obj.get('stackId')];
+      return showStack[obj.get('stackId')] &&
+              (showSystem || obj.get('isSystem') !== true); // Note that it can be null, so this isn't the same as === false
     }));
 
     return out;
-  }.property('showStack','tags','model.services.@each.{isReal,isBalancer}','standaloneContainers.[]'),
+  }.property('showStack','tags','model.services.@each.{isReal,isBalancer,isSystem}','standaloneContainers.[]','prefs.showSystemResources'),
 });
