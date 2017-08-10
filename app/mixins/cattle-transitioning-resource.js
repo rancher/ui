@@ -138,8 +138,15 @@ export default Ember.Mixin.create({
 
   showTransitioningMessage: function() {
     var trans = this.get('transitioning');
-    return (trans === 'yes' || trans === 'error') && (this.get('transitioningMessage')||'').length > 0;
-  }.property('transitioning','transitioningMessage'),
+    if (trans === 'yes' || trans === 'error') {
+      let message = (this.get('transitioningMessage')||'');
+      if ( message.length && message.toLowerCase() !== this.get('displayState').toLowerCase() ) {
+        return true;
+      }
+    }
+
+    return false;
+  }.property('transitioning','transitioningMessage','displayState'),
 
   stateIcon: function() {
     var trans = this.get('transitioning');
