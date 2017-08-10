@@ -83,7 +83,7 @@ export default Ember.Component.extend({
   suggestions: function() {
     let inUse = this.get('allContainers')
       .map((obj) => (obj.get('image')||''))
-      .filter((str) => str.indexOf('rancher/') !== 0)
+      .filter((str) => !str.includes('sha256:') && !str.startsWith('rancher/'))
       .uniq()
       .sort();
 

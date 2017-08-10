@@ -39,7 +39,7 @@ var PublicEndpoint = Resource.extend({
   instance: denormalizeId('instanceId'),
   service: denormalizeId('serviceId'),
 
-  ssl: null, // loadbalancerservice sets this based on the listener
+  tls: null, // loadbalancerservice sets this based on the listener
 
   target: function() {
     return this.get('service') || this.get('instance');
@@ -47,6 +47,7 @@ var PublicEndpoint = Resource.extend({
 
   portProto: function() {
     let out = this.get('publicPort') + '/' + this.get('protocol');
+    return out;
   }.property('publicPort','protocol'),
 
   hasBoundIp: function() {
@@ -80,7 +81,7 @@ var PublicEndpoint = Resource.extend({
     let proto = this.get('protocol');
 
     if ( proto !== 'tcp' ) {
-      out += '/' + protocol;
+      out += '/' + proto;
     }
 
     return out;
@@ -105,8 +106,13 @@ var PublicEndpoint = Resource.extend({
   }.property('privatePort','publicPort'),
 
   isMaybeSecure: function() {
-    return this.get('ssl') || portMatch([this.get('publicPort'),this.get('privatePort')], [443,8443], '443');
-  }.property('ssl','publicPort','publicPort'),
+    let tls = this.get('tls');
+    if ( tls !== null ) {
+      return tls;
+    }
+
+    return portMatch([this.get('publicPort'),this.get('privatePort')], [443,8443], '443');
+  }.property('tls','publicPort','publicPort'),
 });
 
 export default PublicEndpoint;

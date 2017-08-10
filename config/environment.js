@@ -98,9 +98,9 @@ module.exports = function(environment) {
       caasSignup: signup,
       environment: environment,
       apiServer: 'http://localhost:8080',
-      legacyApiEndpoint: '/v1',
-      apiEndpoint: '/v2',
-      betaApiEndpoint: '/v2-beta',
+      legacyApiEndpoint: '/v2',
+      apiEndpoint: '/v3',
+//      betaApiEndpoint: '/v3',
       catalogServer: '',
       catalogEndpoint: '/v1-catalog',
       authServer: '',
@@ -113,9 +113,9 @@ module.exports = function(environment) {
       kubectlEndpoint: '/r/projects/%PROJECTID%/kubectld:8091/v1-kubectl',
       kubernetesDashboard: '/r/projects/%PROJECTID%/kubernetes-dashboard:9090/#',
       kubernetesWorkload: '/r/projects/%PROJECTID%/kubernetes-dashboard:9090/api/v1/workload?itemsPerPage=1',
-      projectEndpoint: '/v2/projects/%PROJECTID%',
-      proxyEndpoint: '/v2-beta/proxy',
-      wsEndpoint: '/v2/projects/%PROJECTID%/subscribe' +
+      projectEndpoint: '/v3/projects/%PROJECTID%',
+      proxyEndpoint: '/v3/proxy',
+      wsEndpoint: '/v3/projects/%PROJECTID%/subscribe' +
                     '?eventNames=resource.change' +
                     '&resourceType_ne=serviceLog' +
                     '&resourceType_ne=deploymentUnit',

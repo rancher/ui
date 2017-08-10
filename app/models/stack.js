@@ -79,7 +79,7 @@ var Stack = Resource.extend(StateCounts, {
     },
 
     addContainer: function() {
-      this.get('application').transitionToRoute('containers.run', {queryParams: {stackId: this.get('id')}});s
+      this.get('application').transitionToRoute('containers.run', {queryParams: {stackId: this.get('id')}});
     },
 
     viewCode: function() {
