@@ -81,5 +81,5 @@ export default Ember.Controller.extend({
     }));
 
     return out;
-  }.property('showStack','tags','model.services.@each.{isReal,isBalancer,isSystem}','standaloneContainers.[]','prefs.showSystemResources'),
+  }.property('showStack','tags','model.services.@each.{stackId,isReal,isBalancer,isSystem}','model.instances.@each.{serviceId,stackId,isSystem}','prefs.showSystemResources'),
 });
