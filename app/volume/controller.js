@@ -2,7 +2,6 @@ import Ember from 'ember';
 import Util from 'ui/utils/util';
 
 export default Ember.Controller.extend({
-  intl:        Ember.inject.service(),
   queryParams: ['type'],
   stack:       Ember.computed.alias('model.stack'),
   host:        Ember.computed.alias('model.host'),
