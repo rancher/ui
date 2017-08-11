@@ -119,6 +119,7 @@ var Service = Resource.extend(StateCounts, EndpointPorts, {
       this.get('application').transitionToRoute('containers.run', {queryParams: {
         serviceId: this.get('id'),
         addSidekick: true,
+        launchConfigIndex: (this.get('secondaryLaunchConfigs')||[]).length
       }});
     },
 
@@ -170,7 +171,7 @@ var Service = Resource.extend(StateCounts, EndpointPorts, {
       { label: 'action.rollback',       icon: 'icon icon-history',          action: 'rollback',       enabled: !!a.rollback && isReal && !!this.get('previousRevisionId') },
       { label: 'action.garbageCollect', icon: 'icon icon-garbage',          action: 'garbageCollect', enabled: canCleanup},
       { label: 'action.clone',          icon: 'icon icon-copy',             action: 'clone',          enabled: !isK8s && !isDriver },
-//      { label: 'action.addSidekick',    icon: 'icon icon-plus-circle',      action: 'addSidekick',    enabled: this.get('canHaveSidekicks') },
+      { label: 'action.addSidekick',    icon: 'icon icon-plus-circle',      action: 'addSidekick',    enabled: this.get('canHaveSidekicks') },
       { divider: true },
       { label: 'action.execute',        icon: 'icon icon-terminal',         action: 'shell',          enabled: !!containerForShell, altAction:'popoutShell'},
 //      { label: 'action.logs',           icon: 'icon icon-file',             action: 'logs',           enabled: !!a.logs, altAction: 'popoutLogs' },

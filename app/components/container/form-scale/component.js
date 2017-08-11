@@ -15,9 +15,7 @@ export default Ember.Component.extend(ManageLabels, {
   mode:         null,
 
   userInput:      null,
-  advancedAvailable: true,
   advancedShown:  false,
-  sidekickServiceId: null,
 
   init() {
     this._super(...arguments);
@@ -25,21 +23,12 @@ export default Ember.Component.extend(ManageLabels, {
 
     this.initLabels(this.get('initialLabels'), null, C.LABEL.SCHED_GLOBAL);
     var glb = this.getLabel(C.LABEL.SCHED_GLOBAL) === 'true';
-    if ( this.get('mode') ) {
-      // Do nothing
-    } else if ( this.get('launchConfigIndex') >= 0 ) {
-      this.set('mode', 'sidekick');
-      this.set('advancedAvailable', false);
-      this.sidekickChanged();
-    } else  if ( glb ) {
-      this.set('mode', 'global');
-    } else if ( this.get('isService') ) {
-      this.set('mode', 'service');
-    } else {
-      this.set('mode', 'container');
+    let mode = this.get('mode');
+    if ( mode === 'service' && glb ) {
+      mode = 'global';
     }
 
-    this.modeChanged();
+    this.set('mode', mode);
   },
 
   actions: {
@@ -67,6 +56,9 @@ export default Ember.Component.extend(ManageLabels, {
 
   modeChanged: Ember.observer('mode', function() {
     var mode = this.get('mode');
+    if ( !mode ) {
+      return;
+    }
 
     if ( mode === 'container') {
       this.set('isService', false);
@@ -81,12 +73,6 @@ export default Ember.Component.extend(ManageLabels, {
       this.removeLabel(C.LABEL.SCHED_GLOBAL);
       this.set('isGlobal', false);
     }
-
-    if ( mode !== 'sidekick' ) {
-      this.set('sidekickServiceId', null);
-    }
-
-    this.sendAction('setMode', mode);
   }),
 
   updateLabels(labels) {
@@ -98,7 +84,7 @@ export default Ember.Component.extend(ManageLabels, {
   }.property('isUpgrade','mode'),
 
   canAdvanced: function() {
-    if ( this.get('advancedShown') || !this.get('advancedAvailable') ) {
+    if ( this.get('advancedShown') || this.get('launchConfigIndex') >= 0 ) {
       return false;
     }
 
@@ -111,7 +97,7 @@ export default Ember.Component.extend(ManageLabels, {
     }
 
     return true;
-  }.property('advancedShown','advancedAvailable','isSidekick','isUpgrade','mode'),
+  }.property('advancedShown','launchConfigIndex','isSidekick','isUpgrade','mode'),
 
   showContainer: function() {
     if ( !this.get('canContainer') ) {
@@ -138,17 +124,9 @@ export default Ember.Component.extend(ManageLabels, {
   }.property('isUpgrade','isService','canSidekick'),
 
   sidekickChanged: function() {
-    let id = this.get('sidekickServiceId');
-    if ( id ) {
-      let service = this.get('store').getById('service', id);
-      this.sendAction('setSidekick', service);
-      this.set('sidekickService', service);
-    } else if ( this.get('mode') === 'sidekick' ) {
-      this.sendAction('setSidekick', null);
-      this.set('sidekickService', null);
-    } else {
-      this.sendAction('setSidekick', undefined);
-      this.set('sidekickService', null);
+    let service = this.get('service');
+    if ( service) {
+      this.set('mode','sidekick')
     }
-  }.observes('sidekickServiceId','mode'),
+  }.observes('service'),
 });

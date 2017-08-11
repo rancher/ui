@@ -37,7 +37,7 @@ const defaultStateMap = {
   'stopped':                  {icon: 'icon icon-circle',        color: 'text-error'  },
   'stopping':                 {icon: 'icon icon-adjust',        color: 'text-info'   },
   'unhealthy':                {icon: 'icon icon-alert',         color: 'text-error'  },
-  'unknown':                  {icon: 'icon icon-help',          color: 'text-error'  },
+  'unknown':                  {icon: 'icon icon-help',          color: 'text-warning'},
   'updating':                 {icon: 'icon icon-tag',           color: 'text-info'   },
   'updating-active':          {icon: 'icon icon-tag',           color: 'text-info'   },
   'updating-healthy':         {icon: 'icon icon-tag',           color: 'text-info'   },
