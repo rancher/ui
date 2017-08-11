@@ -2,6 +2,7 @@ import Ember from 'ember';
 
 export default Ember.Route.extend({
   resourceType: 'ldapconfig',
+  access: Ember.inject.service(),
 
   model: function () {
     return this.get('authStore').find('config', null, {
@@ -20,6 +21,8 @@ export default Ember.Route.extend({
         });
 
         collection.ldapConfig = existing;
+      } else {
+        collection.identity = this.get('access.identity');
       }
       return collection;
     });
