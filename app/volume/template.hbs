@@ -1,0 +1,132 @@
+<section class="header clearfix">
+  <h1 class="pull-left">
+    <a href="{{href-to 'volumes'}}">{{t 'volumesPage.title'}}</a>: {{volume.name}}
+  </h1>
+  <div class="right-buttons">
+    {{badge-state model=volume}}
+    {{action-menu model=volume showPrimary=false classNames="ml-10 inline-block" size="sm"}}
+  </div>
+</section>
+
+{{#if volume.description}}
+  {{banner-message color='bg-secondary mb-0 mt-10' message=volume.description}}
+{{/if}}
+
+<section>
+  <div class="banner bg-info basics">
+    {{#if volume.driver}}
+      <div class="inline-block">
+        <label class="acc-label p-0">{{t 'volumesPage.banner.driver'}}:</label>
+        {{#copy-inline clipboardText=volume.driver}}
+          {{volume.driver}}
+        {{/copy-inline}}
+      </div>
+    {{/if}}
+    {{#if volume.sizeMb}}
+      <div class="inline-block">
+        <label class="acc-label p-0">{{t 'volumesPage.banner.size'}}:</label>
+        {{sizeGB}}
+      </div>
+    {{/if}}
+    {{#if volume.stackId}}
+      <div class="inline-block">
+        <label class="acc-label p-0">{{t 'volumesPage.banner.stack'}}:</label>
+        <a href="{{href-to 'stack' stack.id}}">{{stack.displayName}}</a>
+      </div>
+    {{/if}}
+    {{#if volume.perContainer}}
+      <div class="inline-block">
+        <label class="acc-label p-0">{{t 'volumesPage.banner.perCont'}}:</label>
+        {{volume.perContainer}}
+      </div>
+    {{/if}}
+    {{#if driver.uri}}
+      <div class="inline-block">
+        <label class="acc-label p-0">{{t 'volumesPage.banner.uri'}}:</label>
+        {{#copy-inline clipboardText=volume.uri}}
+          <div class="clip" style="vertical-align:bottom;max-width:200px;">
+            {{volume.uri}}
+          </div>
+        {{/copy-inline}}
+      </div>
+    {{/if}}
+    {{#if volume.hostId}}
+      <div class="inline-block">
+        <label class="acc-label p-0">{{t 'volumesPage.banner.host'}}:</label>
+        <a href="{{href-to 'host' host.id}}">{{host.displayName}}</a>
+      </div>
+    {{/if}}
+  </div>
+</section>
+
+<section>
+  {{#accordion-list as |al expandFn| }}
+
+      {{#accordion-list-item
+           title=(t 'volumesPage.mounts.label')
+           detail=(t 'volumesPage.mounts.detail')
+           status=(t 'pagination.mounts' count=(or volume.mounts.length 0) pages=0)
+           statusClass=(if volume.mounts.length 'bg-success' 'text-muted')
+           expandOnInit=true
+           expandAll=al.expandAll
+           expand=(action expandFn)
+           componentName='sortable-table'
+           as | parent |
+      }}
+        {{#component parent.intent
+             classNames="grid fixed mb-0 sortable-table"
+             bulkActions=false
+             rowActions=false
+             pagingLabel="pagination.mounts"
+             search=true
+             sortBy=sortBy
+             stickyHeader=false
+             headers=headers
+             body=volume.mounts
+             as |sortable kind mount dt|
+        }}
+          {{#if (eq kind "row")}}
+            {{mount-row model=mount dt=dt}}
+          {{else if (eq kind "norows")}}
+            <tr>
+              <td colspan="{{sortable.fullColspan}}" class="text-center text-muted pt-20 pb-20">{{t 'volumesPage.mounts.table.noData'}}</td>
+            </tr>
+          {{/if}}
+        {{/component}}
+      {{/accordion-list-item}}
+
+      {{#accordion-list-item
+           title=(t 'volumesPage.driverOptions.title')
+           detail=(t 'volumesPage.driverOptions.detail' appName=settings.appName)
+           status=(t 'pagination.driverOptions' count=(or driverOpts.length 0) pages=0)
+           statusClass=(if driverOpts.length 'bg-success' 'text-muted')
+           expandAll=expandAll
+           expand=(action expandFn)
+           componentName='sortable-table'
+           as | parent |
+      }}
+        {{#component parent.intent
+             classNames="grid fixed mb-0 sortable-table"
+             bulkActions=false
+             rowActions=false
+             pagingLabel="pagination.driverOptions"
+             search=true
+             sortBy=sortBy
+             stickyHeader=false
+             descending=descending
+             headers=optsHeaders
+             body=driverOpts
+             as |sortable kind opt dt|
+        }}
+          {{#if (eq kind "row")}}
+            <td data-title="{{'dt.key'}}:" class="force-wrap">{{opt.key}}</td>
+            <td data-title="{{'dt.value'}}:" class="force-wrap">{{opt.value}}</td>
+          {{else if (eq kind "norows")}}
+            <tr>
+              <td colspan="{{sortable.fullColspan}}" class="text-center text-muted pt-20 pb-20">{{t 'volumesPage.driverOptions.labels.noData'}}</td>
+            </tr>
+          {{/if}}
+        {{/component}}
+      {{/accordion-list-item}}
+  {{/accordion-list}}
+</section>

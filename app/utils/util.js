@@ -242,6 +242,10 @@ export function formatKbps(value) {
   return formatSi(value*1000,  1000, "bps", "Bps");
 }
 
+export function formatGB(inMB) {
+  return formatSi(inMB, 1000, "B", "B", 2);
+}
+
 export function formatSi(inValue, increment=1000, suffix="", firstSuffix=null, startingExponent=0)
 {
   var units = ['B','K','M','G','T','P'];
@@ -358,6 +362,7 @@ var Util = {
   random32: random32,
   randomStr: randomStr,
   formatPercent: formatPercent,
+  formatGB: formatGB,
   formatMib: formatMib,
   formatKbps: formatKbps,
   formatSi: formatSi,

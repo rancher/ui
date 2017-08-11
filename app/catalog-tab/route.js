@@ -62,7 +62,6 @@ export default Ember.Route.extend({
     if (isExiting)
     {
       controller.set('category', 'all');
-      controller.set('catalogId', 'all');
       controller.set('templateBase', '');
     }
   }
