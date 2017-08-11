@@ -24,6 +24,7 @@ export default Ember.Controller.extend({
   username:       '',
   password:       '',
   editing:        false,
+  advancedOpen:   false,
 
   createDisabled: Ember.computed('username.length','password.length', function() {
     return !this.get('username.length') || !this.get('password.length');
@@ -73,9 +74,22 @@ export default Ember.Controller.extend({
 
 
   actions: {
+    showAdvanced: function() {
+      let open = this.get('advancedOpen');
+
+      if (open) {
+        Ember.$('.custom-schema').hide();
+        this.set('advancedOpen', false);
+      } else {
+        Ember.$('.custom-schema').show();
+        this.set('advancedOpen', true);
+      }
+
+    },
     edit: function() {
       this.toggleProperty('editing');
       this.set('originalModel', this.get('model').clone());
+      this.set('username', this.get('model.identity.login'));
     },
     cancel: function() {
       this.send('clearError');
