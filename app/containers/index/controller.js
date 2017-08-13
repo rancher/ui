@@ -29,7 +29,7 @@ export const headers = [
   },
   {
     name: 'scale',
-    sort: ['scale:desc','isGlobalScale:desc'],
+    sort: ['scale:desc','isGlobalScale:desc','displayName'],
     searchField: null,
     translationKey: 'stacksPage.table.scale',
     classNames: 'text-center',

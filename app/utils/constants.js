@@ -189,7 +189,6 @@ var C = {
     OPENSTACK: 'openstack',
     PACKET: 'packet',
     RACKSPACE: 'rackspace',
-    UBIQUITY: 'ubiquity',
     VMWAREVSPHERE: 'vmwarevsphere',
     OTHER: 'other',
     CUSTOM: 'custom',

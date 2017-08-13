@@ -3,14 +3,7 @@ import Ember from 'ember';
 export default Ember.Component.extend({
   prefs: Ember.inject.service(),
 
-  stickyHeader: true,
-
-  showHost: true,
-  showStats: false,
-  showInstanceState: true,
-  pagingLabel: 'pagination.entry',
-
-  sortBy: 'name',
+  model: null,
 
   headers: [
     {

@@ -294,7 +294,6 @@ var Service = Resource.extend(StateCounts, EndpointPorts, {
   }.property('isReal','isSelector','lcType'),
 
   isReal: function() {
-    let type = this.get('lcType');
     if ( this.get('isSelector') ) {
       return false;
     }
@@ -305,7 +304,7 @@ var Service = Resource.extend(StateCounts, EndpointPorts, {
       'networkdriverservice',
       'storagedriverservice',
       'loadbalancerservice',
-    ].includes(type);
+    ].includes(this.get('lcType'));
   }.property('lcType','isSelector'),
 
   canHaveSidekicks: function() {
@@ -314,13 +313,31 @@ var Service = Resource.extend(StateCounts, EndpointPorts, {
 
   hasPorts: Ember.computed.alias('isReal'),
   hasImage: Ember.computed.alias('isReal'),
-  hasLabels: Ember.computed.alias('isReal'),
   canUpgrade: Ember.computed.alias('isReal'),
+  canHaveLabels: Ember.computed.alias('isReal'),
   canScale: Ember.computed.alias('isReal'),
 
+  realButNotLb: function() {
+    return this.get('isReal') && !this.get('isBalancer');
+  }.property('isReal','isBalancer'),
+
+  canHaveLinks: Ember.computed.alias('realButNotLb'),
+  canChangeNetworking: Ember.computed.alias('realButNotLb'),
+  canChangeSecurity: Ember.computed.alias('realButNotLb'),
+  canHaveSecrets: Ember.computed.alias('realButNotLb'),
+  canHaveEnvironment: Ember.computed.alias('realButNotLb'),
+
+  canHaveHealthCheck: function() {
+    return [
+      'service',
+      'scalinggroup',
+      'externalservice',
+    ].includes(this.get('lcType'));
+  }.property('lcType'),
+
   isSelector: function() {
-    return !!this.get('selectorContainer');
-  }.property('selectorContainer'),
+    return !!this.get('selector');
+  }.property('selector'),
 
   isBalancer: function() {
     return ['loadbalancerservice'].indexOf(this.get('lcType')) >= 0;

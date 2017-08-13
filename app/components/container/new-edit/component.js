@@ -1,12 +1,11 @@
 import Ember from 'ember';
 import NewOrEdit from 'ui/mixins/new-or-edit';
-import SelectTab from 'ui/mixins/select-tab';
 import { debouncedObserver } from 'ui/utils/debounce';
 import C from 'ui/utils/constants';
 import { flattenLabelArrays } from 'ui/mixins/manage-labels';
 import Util from 'ui/utils/util';
 
-export default Ember.Component.extend(NewOrEdit, SelectTab, {
+export default Ember.Component.extend(NewOrEdit, {
   intl: Ember.inject.service(),
   prefs: Ember.inject.service(),
   settings: Ember.inject.service(),

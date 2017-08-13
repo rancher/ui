@@ -70,5 +70,4 @@ export default Ember.Mixin.create({
       return '';
     }
   }.property('endpointsByPort.@each.{port,endpoints}', 'intl.locale'),
-
 });
