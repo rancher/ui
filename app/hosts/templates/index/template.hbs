@@ -20,11 +20,16 @@
         as |section|
     }}
       {{#if (eq section 'header')}}
-        {{action-menu model=host class="pull-right m-10"}}
-        <div class="catalog-icon {{parse-host-icon host.driver}}"/>
+        <div class="catalog-header bg-default p-10">
+        <div class="clearfix">
+          <span class="pull-left vertical-middle btn-xs badge-state vertical-middle">Template</span>
+          {{action-menu model=host class="pull-right"}}
+          </div>
+        </div>
+        <div class="catalog-icon m-20 {{parse-host-icon host.driver}}"/>
       {{else if (eq section 'body')}}
         <h2>{{host.name}}</h2>
-        <div class="details">
+        <div class="details text-muted">
           {{host.description}}
         </div>
       {{else if (eq section 'footer')}}
