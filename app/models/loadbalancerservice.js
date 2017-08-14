@@ -1,20 +1,7 @@
 import Service from 'ui/models/service';
 import Ember from 'ember';
 import C from 'ui/utils/constants';
-import Util from 'ui/utils/util';
 import { parsePortSpec } from 'ui/utils/parse-port';
-
-const esc = Ember.Handlebars.Utils.escapeExpression;
-
-function portToStr(spec) {
-  var parts = parsePortSpec(spec,'http');
-  return parts.host + (parts.protocol === 'http' ? '' : '/' + parts.protocol);
-}
-
-function specToPort(spec) {
-  var parts = parsePortSpec(spec,'http');
-  return parts.hostPort;
-}
 
 var LoadBalancerService = Service.extend({
   type: 'loadBalancerService',
@@ -52,7 +39,7 @@ var LoadBalancerService = Service.extend({
 
     // Set `ssl` on each endpoint since we know it from balancer listener context
     (this.get('publicEndpoints')||[]).forEach((endpoint) => {
-      endpoint.set('tls', tlsPorts.includes(obj.publicPort));
+      endpoint.set('tls', tlsPorts.includes(endpoint.publicPort));
     });
 
     return this._super(...arguments);

@@ -19,7 +19,14 @@ export default Ember.Route.extend({
 
     return Ember.RSVP.hash(dependencies).then((hash) => {
       let service;
+
+      hash.mode = 'service';
+
       if ( hash.existingService ) {
+        if ( hash.existingService.get('isGlobalScale') ) {
+          hash.mode = 'global';
+        }
+
         if ( params.upgrade+'' === 'true' ) {
           service = hash.existingService.clone();
 

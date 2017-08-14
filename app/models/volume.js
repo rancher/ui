@@ -7,9 +7,7 @@ var Volume = Resource.extend({
 
   intl: Ember.inject.service(),
 
-  mounts: denormalizeIdArray('mountIds'),
   stack: denormalizeId('stackId'),
-
   isRoot: Ember.computed.notEmpty('instanceId'),
 
   scope: function() {

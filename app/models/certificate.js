@@ -25,6 +25,7 @@ export default Resource.extend({
 
     return choices;
   }.property('actionLinks.{remove,update}'),
+
   issuedDate: function() {
     return new Date(this.get('issuedAt'));
   }.property('issuedAt'),

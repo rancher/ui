@@ -497,8 +497,8 @@ editDns:
     placeholder: e.g. myapp
   description:
     placeholder: e.g. Current version of MyApp
-  selectorContainer:
-    label: Container Selector
+  selector:
+    label: Container Label Selector
     placeholder: e.g. mylabel=somevalue
   mode:
     label: "Resolves To"
@@ -856,8 +856,14 @@ servicePage:
     scale: 'Scale:'
     image: 'Image:'
   external:
-    externalIp: External IPs
+    externalIp: |
+      {count, plural,
+        =1 {External IP:}
+        other {External IPs:}
+      }
     externalHostname: 'External Hostname:'
+  selector:
+    label: 'Selector:'
   containersTab:
     title: 'Containers'
     detail: 'The containers running in this service.'
@@ -865,12 +871,6 @@ servicePage:
     header: Links
     detail: 'These properties show the links between containers in this service.'
     noData: This Service has no links
-    status: |
-      {count, plural,
-      =0 {No links}
-      =1 {# link}
-      other {# links}
-      }
   certsTab:
     title: Certificates
     detail: 'Certificates used for TLS-termination of requests.'
@@ -892,22 +892,10 @@ servicePage:
   portsTab:
     title: Ports
     detail: 'Mappings of container listening ports to host ports on public IP addresses.'
-    status: |
-      {count, plural,
-      =0 {No Ports}
-      =1 {# port}
-      other {# ports}
-      }
     notActive: Ports are only available while the service is Active.
   logTab:
     title: Service Log
     detail: 'Recent orchestration events that have occurred for this service'
-    status: |
-      {count, plural,
-      =0 {No logs}
-      =1 {# log}
-      other {# logs}
-      }
   type:
     service: Service
     selectorservice: Selector
@@ -1002,16 +990,6 @@ newStack:
     label: After creating services
     on: Automatically start them
     off: Leave them stopped
-
-storagePoolsPage:
-  header: Storage Drivers
-  index:
-    noData: No storage drivers
-  newVolume:
-    header: Add Volume
-    form:
-      driverOptions: Driver Options
-      addActionLabel: Add Option
 
 userPreferencesPage:
   header: Preferences
@@ -1636,10 +1614,12 @@ formContainerLinks:
   detail: Define relationships between this and other containers.
   addActionLabel: Add Link
   name:
-    label: Destination Container
+    label: Target Container
   alias:
     label: As Name
     placeholder: e.g. database
+  noData: There are no container links
+  noMatch: No links match the current search
 
 formCount:
   label: Count
@@ -1714,7 +1694,7 @@ formEnvVar:
 
 formHealthCheck:
   title: Health Check
-  detail: Periodically make a request to the container to see if it is responding correctly.  An unhealthy container will be excluded from Load Balancers.  Services can automatically replace unhealthy containers with a new one.
+  detail: Periodically make a request to the container to see if it is responding correctly.  Unhealthy containers are excluded from Load Balancers and Service Discovery.
   detailDns: A health check allows {appName} to know if the external resource is healty or not.  An unhealthy target will be exlcluded from Load Balancers.
   checkType:
     none: None
@@ -1755,7 +1735,7 @@ formHealthCheck:
   strategy:
     label: When Unhealthy
     none: Take no action
-    recreate: Re-create
+    recreate: Delete container and schedule a replacement
 
 formKeyValue:
   addAction: Add Pair
@@ -3268,21 +3248,6 @@ siteAccess:
 stackRow:
   label: "Stack: {name}"
   standalone: Standalone
-
-storagePoolSection:
-  readOnly: "(read-only)"
-  hosts:
-    header: Hosts
-    none: No Hosts
-  volumes:
-    header: Volumes
-    add: Add Volume
-    none: No Volumes
-  models:
-    table:
-      header:
-        volumeName: 'Volume Name'
-        mounts: 'Mounts (Container: Path)'
 
 svgServiceContainer:
   sidekicks: Sidekicks

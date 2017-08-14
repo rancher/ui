@@ -119,6 +119,7 @@ var Service = Resource.extend(StateCounts, EndpointPorts, {
       this.get('application').transitionToRoute('containers.run', {queryParams: {
         serviceId: this.get('id'),
         addSidekick: true,
+        launchConfigIndex: (this.get('secondaryLaunchConfigs')||[]).length
       }});
     },
 
@@ -170,7 +171,7 @@ var Service = Resource.extend(StateCounts, EndpointPorts, {
       { label: 'action.rollback',       icon: 'icon icon-history',          action: 'rollback',       enabled: !!a.rollback && isReal && !!this.get('previousRevisionId') },
       { label: 'action.garbageCollect', icon: 'icon icon-garbage',          action: 'garbageCollect', enabled: canCleanup},
       { label: 'action.clone',          icon: 'icon icon-copy',             action: 'clone',          enabled: !isK8s && !isDriver },
-//      { label: 'action.addSidekick',    icon: 'icon icon-plus-circle',      action: 'addSidekick',    enabled: this.get('canHaveSidekicks') },
+      { label: 'action.addSidekick',    icon: 'icon icon-plus-circle',      action: 'addSidekick',    enabled: this.get('canHaveSidekicks') },
       { divider: true },
       { label: 'action.execute',        icon: 'icon icon-terminal',         action: 'shell',          enabled: !!containerForShell, altAction:'popoutShell'},
 //      { label: 'action.logs',           icon: 'icon icon-file',             action: 'logs',           enabled: !!a.logs, altAction: 'popoutLogs' },
@@ -293,7 +294,6 @@ var Service = Resource.extend(StateCounts, EndpointPorts, {
   }.property('isReal','isSelector','lcType'),
 
   isReal: function() {
-    let type = this.get('lcType');
     if ( this.get('isSelector') ) {
       return false;
     }
@@ -304,7 +304,7 @@ var Service = Resource.extend(StateCounts, EndpointPorts, {
       'networkdriverservice',
       'storagedriverservice',
       'loadbalancerservice',
-    ].includes(type);
+    ].includes(this.get('lcType'));
   }.property('lcType','isSelector'),
 
   canHaveSidekicks: function() {
@@ -313,13 +313,31 @@ var Service = Resource.extend(StateCounts, EndpointPorts, {
 
   hasPorts: Ember.computed.alias('isReal'),
   hasImage: Ember.computed.alias('isReal'),
-  hasLabels: Ember.computed.alias('isReal'),
   canUpgrade: Ember.computed.alias('isReal'),
+  canHaveLabels: Ember.computed.alias('isReal'),
   canScale: Ember.computed.alias('isReal'),
 
+  realButNotLb: function() {
+    return this.get('isReal') && !this.get('isBalancer');
+  }.property('isReal','isBalancer'),
+
+  canHaveLinks: Ember.computed.alias('realButNotLb'),
+  canChangeNetworking: Ember.computed.alias('realButNotLb'),
+  canChangeSecurity: Ember.computed.alias('realButNotLb'),
+  canHaveSecrets: Ember.computed.alias('realButNotLb'),
+  canHaveEnvironment: Ember.computed.alias('realButNotLb'),
+
+  canHaveHealthCheck: function() {
+    return [
+      'service',
+      'scalinggroup',
+      'externalservice',
+    ].includes(this.get('lcType'));
+  }.property('lcType'),
+
   isSelector: function() {
-    return !!this.get('selectorContainer');
-  }.property('selectorContainer'),
+    return !!this.get('selector');
+  }.property('selector'),
 
   isBalancer: function() {
     return ['loadbalancerservice'].indexOf(this.get('lcType')) >= 0;

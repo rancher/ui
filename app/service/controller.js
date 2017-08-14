@@ -1,14 +1,16 @@
 import Ember from 'ember';
 
 export default Ember.Controller.extend({
-  service:            Ember.computed.alias('model.service'),
-  stack:              Ember.computed.alias('model.stack'),
   application:        Ember.inject.controller(),
+
+  service:            Ember.computed.alias('model.service'),
   rules:              Ember.computed.alias('service.lbConfig.portRules'),
+
   sortBy:             'priority',
   fixedLaunchConfig:  null,
   activeLaunchConfig: null,
   portSortBy:         'privatePort',
+
   headers: [
     {
       name:           'priority',
@@ -60,6 +62,7 @@ export default Ember.Controller.extend({
       translationKey: 'formBalancerRules.backendName.label',
     },
   ],
+
   portHeaders: [
     {
       name:           'publicIp',

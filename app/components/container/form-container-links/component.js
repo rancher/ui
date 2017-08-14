@@ -2,7 +2,20 @@ import Ember from 'ember';
 import ContainerChoices from 'ui/mixins/container-choices';
 import { STATUS, STATUS_INTL_KEY, classForStatus } from 'ui/components/accordion-list-item/component';
 
+const headers = [
+  {
+    name: 'name',
+    translationKey: 'formContainerLinks.name.label',
+  },
+  {
+    name: 'alias',
+    translationKey: 'formContainerLinks.alias.label',
+  },
+];
+
 export default Ember.Component.extend(ContainerChoices, {
+  growl: Ember.inject.service(),
+
   // Inputs
   editing: null,
   instance: null,
@@ -11,6 +24,8 @@ export default Ember.Component.extend(ContainerChoices, {
 
   tagName: '',
   errors: null,
+
+  headers,
 
   actions: {
     addLink: function() {
@@ -29,6 +44,28 @@ export default Ember.Component.extend(ContainerChoices, {
 
     removeLink: function(obj) {
       this.get('linksArray').removeObject(obj);
+    },
+
+    followLink: function(str) {
+      let stack, stackName, containerName;
+      if ( str.includes('/')) {
+        [stackName, containerName] = name.split('/');
+        let stacks = this.get('store').all('stack');
+        stack = stacks.findBy('name', stackName);
+      } else {
+        stack = this.get('stack');
+        containerName = str;
+      }
+
+      if ( stack ) {
+        let container = stack.get('instances').findBy('name', containerName);
+        if ( container ) {
+          this.get('router').transitionTo('container', container.get('id'));
+          return;
+        }
+      }
+
+      this.get('growl').fromError('Unable to find container for "'+name+'"');
     },
   },
 

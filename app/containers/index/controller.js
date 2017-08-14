@@ -29,7 +29,7 @@ export const headers = [
   },
   {
     name: 'scale',
-    sort: ['scale:desc','isGlobalScale:desc'],
+    sort: ['scale:desc','isGlobalScale:desc','displayName'],
     searchField: null,
     translationKey: 'stacksPage.table.scale',
     classNames: 'text-center',
@@ -81,5 +81,5 @@ export default Ember.Controller.extend({
     }));
 
     return out;
-  }.property('showStack','tags','model.services.@each.{isReal,isBalancer,isSystem}','standaloneContainers.[]','prefs.showSystemResources'),
+  }.property('showStack','tags','model.services.@each.{stackId,isReal,isBalancer,isSystem}','model.instances.@each.{serviceId,stackId,isSystem}','prefs.showSystemResources'),
 });

@@ -4,7 +4,7 @@ import NewOrEdit from 'ui/mixins/new-or-edit';
 const HOSTNAME = 'externalhostname';
 const IP = 'externalip';
 const ALIAS = 'dnsservice';
-const SELECTOR = 'service';
+const SELECTOR = 'selectorservice';
 
 function modeToType(mode) {
   if ( mode === HOSTNAME || mode === IP ) {
@@ -26,7 +26,7 @@ export default Ember.Component.extend(NewOrEdit, {
   targetServicesAsMaps: null,
   targetIpArray: null,
   stack: null,
-  stackErrors:                null,
+  stackErrors: null,
 
   actions: {
     done() {
@@ -120,7 +120,7 @@ export default Ember.Component.extend(NewOrEdit, {
         }
         break;
       case SELECTOR:
-        if ( !this.get('record.selectorContainer.length') ) {
+        if ( !this.get('record.selector.length') ) {
           errors.pushObject(this.get('intl').t('editDns.errors.selectorRequired'));
         }
         break;

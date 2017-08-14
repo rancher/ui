@@ -14,8 +14,16 @@ var VolumeTemplate = Resource.extend({
       this.set('_allVolumes', allVolumes);
     }
 
-    return allVolumes.filterBy('volumeTempalteId', this.get('id'));
-  },
+    return allVolumes.filterBy('volumeTemplateId', this.get('id'));
+  }.property(),
+
+  mounts: function() {
+    let out = [];
+    this.get('volumes').forEach((volume) => {
+      out.pushObjects(volume.get('mounts')||[]);
+    });
+    return out;
+  }.property('volumes.@each.mounts'),
 
   scope: function() {
     if ( this.get('perContainer') ) {

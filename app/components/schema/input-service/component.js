@@ -14,8 +14,16 @@ export default Ember.Component.extend({
   field: null,              // Read default from a schema resourceField
   value: null,              // stackName/serviceName string output
 
+  // For abuse
+  obj: null,
+
+
   init() {
     this._super(...arguments);
+
+    if ( this.get('obj') ) {
+      this.set('selected', this.get('obj.id'));
+    }
 
     let def = this.get('field.default');
     if ( def && !this.get('selected') ) {
@@ -54,7 +62,7 @@ export default Ember.Component.extend({
 
     let out = this.get('allServices').group(list);
     let selected = this.get('allServices').byId(this.get('selected'));
-    if ( selected && !list.includes(selected) ) {
+    if ( selected && !list.findBy('id', selected.get('id')) ) {
       out['(Selected)'] = [{
         id: selected.get('id'),
         name: selected.get('displayName'),
@@ -69,14 +77,16 @@ export default Ember.Component.extend({
   selectedChanged: function() {
     let id = this.get('selected');
     let str = null;
+    let service = null;
 
     if ( id ) {
-      let service = this.get('allServices').byId(id);
+      service = this.get('allServices').byId(id);
       if ( service ) {
         str = service.get('stack.name') + '/' + service.get('name');
       }
     }
 
     this.set('value', str);
+    this.set('obj', service);
   }.observes('selected'),
 });

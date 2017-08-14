@@ -3,41 +3,23 @@ import FilteredSorted from 'ui/utils/filtered-sorted-array-proxy';
 
 export default Ember.Route.extend({
   model: function(params) {
-    var service = this.get('store').getById('service', params.scaling_group_id);
-    if ( service ) {
-      return Ember.RSVP.hash({
-        hosts:         this.get('store').findAll('host'),
-        logs: this.getServiceLogs(service),
-      }).then((hash) => {
+    return this.get('store').find('service', params.service_id).then((service) => {
+      return this.getServiceLogs(service.get('id')).then((logs) => {
         return Ember.Object.create({
-          service: service,
-          stack: service.get('stack'),
-          logs: hash.logs,
-          hosts: hash.hosts
+          service,
+          logs,
         });
       });
-    } else {
-      return Ember.RSVP.hash({
-        service: this.get('store').find('service', params.scaling_group_id),
-        hosts:         this.get('store').findAll('host'),
-      }).then((hash) => {
-        return Ember.Object.create({
-          service: hash.service,
-          stack: hash.service.get('stack'),
-          hosts: hash.hosts
-        });
-      });
-    }
+    });
   },
+
   afterModel(model) {
     if (model.get('service.initPorts')) {
       model.get('service').initPorts();
     }
   },
-  getServiceLogs(model) {
-    let par = model;
-    let serviceId = par.get('id');
 
+  getServiceLogs(serviceId) {
     // Find just the recent ones for this service
     return this.get('store').find('serviceLog', null,{
       filter: {serviceId: serviceId},
@@ -45,22 +27,19 @@ export default Ember.Route.extend({
       sortOrder: 'desc',
       depaginate: false,
       limit: 100
-    }).then(() => {
-      let all = this.get('store').all('serviceLog');
-      return Ember.Object.create({
-        logs: FilteredSorted.create({
-          sourceContent: all,
-          sortProperties: ['createdTS:desc'],
-          dependentKeys: ['sourceContent.@each.serviceId'],
-          filterFn: function(log) {
-            return log.get('serviceId') === serviceId;
-          }
-        })
-      });
+    });
+
+    return FilteredSorted.create({
+      sourceContent: this.get('store').all('serviceLog'),
+      dependentKeys: ['sourceContent.@each.serviceId'],
+      filterFn: function(log) {
+        return log.get('serviceId') === serviceId;
+      }
     });
   },
+
   setupController(controller, model) {
-    this._super(controller, model);
+    this._super(...arguments);
 
     let lc = model.get('service.launchConfig');
     if (lc) {

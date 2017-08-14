@@ -42,24 +42,19 @@ export function initialize(/*application */) {
     goToPrevious: function(def) {
       var appRoute = getOwner(this).lookup('route:application');
       var route = appRoute.get('previousRoute');
-      if ( !route || route === 'loading' )
-      {
-        if ( def )
-        {
-          this.transitionTo(def);
-        }
-        else
-        {
-          return this.goToParent();
-        }
+      if ( route && route !== 'loading' ) {
+        var args = (appRoute.get('previousParams')||[]).slice();
+        args.unshift(route);
+
+        this.transitionTo.apply(this,args).catch(() => {
+          this.transitionTo('authenticated');
+        });
+      } else if ( def ) {
+        this.transitionTo(def);
+      } else {
+        this.goToParent();
       }
 
-      var args = (appRoute.get('previousParams')||[]).slice();
-      args.unshift(route);
-
-      this.transitionTo.apply(this,args).catch(() => {
-        this.transitionTo('authenticated');
-      });
     },
 
     goToParent: function() {

@@ -71,10 +71,10 @@ export default Ember.Route.extend({
 
         if ( params.addSidekick ) {
           return Ember.Object.create({
+            mode: 'sidekick',
             service: clone,
             launchConfig: emptyLc,
             isService: true,
-            mode: 'sidekick',
             isUpgrade: false,
           });
         } else if ( lcIndex === null ) {
@@ -101,18 +101,26 @@ export default Ember.Route.extend({
 
         if ( params.upgrade) {
           // Upgrade service
-          return Ember.Object.create({
+          let out = Ember.Object.create({
+            mode: 'service',
             service: clone,
             launchConfig: lc,
             launchConfigIndex: lcIndex,
             isService: true,
             isUpgrade: true
           });
+
+          if ( lcIndex >= 0 ) {
+            out.set('mode','sidekick');
+          }
+
+          return out;
         } else {
           // Clone service
           let neu = store.createRecord(clone.serializeForNew());
 
           return Ember.Object.create({
+            mode: 'service',
             service: neu,
             launchConfig: lc,
             isService: true,
@@ -132,6 +140,7 @@ export default Ember.Route.extend({
         if ( params.upgrade) {
           emptyService.set('launchConfig', clone);
           return Ember.Object.create({
+            mode: 'container',
             service: emptyService,
             launchConfig: clone,
             isService: false,
@@ -141,6 +150,7 @@ export default Ember.Route.extend({
           let neu = store.createRecord(clone.serializeForNew());
           emptyService.set('launchConfig', neu);
           return Ember.Object.create({
+            mode: 'container',
             service: emptyService,
             launchConfig: neu,
             isService: false,
@@ -148,12 +158,7 @@ export default Ember.Route.extend({
           });
         }
       } else {
-        let mode;
-        if ( params.addSidekick ) {
-          mode = 'sidekick';
-        } else {
-          mode = this.get(`prefs.${C.PREFS.LAST_SCALE_MODE}`);
-        }
+        let mode = this.get(`prefs.${C.PREFS.LAST_SCALE_MODE}`) || 'container';
 
         let isService = (mode && mode !== 'container');
         let isGlobal = (mode === 'global');
@@ -164,6 +169,7 @@ export default Ember.Route.extend({
         // New Container/Service
         emptyService.set('launchConfig', emptyLc);
         return Ember.Object.create({
+          mode: mode,
           service: emptyService,
           launchConfig: emptyLc,
           isService: isService,
@@ -181,6 +187,7 @@ export default Ember.Route.extend({
       controller.set('containerId', null);
       controller.set('launchConfigIndex', null);
       controller.set('upgrade', null);
+      controller.set('addSidekick', null);
     }
   }
 });

@@ -39,7 +39,7 @@ export default Ember.Component.extend({
   volumeChoices: function() {
     let store = this.get('store');
     let allVolumes = store.all('volume');
-    let stackId = this.get('stackId');
+    let stackId = this.get('stack.id');
 
     let out = allVolumes.slice();
     if ( this.get('isService') ) {
@@ -51,7 +51,7 @@ export default Ember.Component.extend({
     }
 
     return out.sortBy('displayNameScope','id');
-  }.property('allVolumes.[]','allVolumeTemplates.[]','isService'),
+  }.property('allVolumes.[]','allVolumeTemplates.[]','isService','stack.id'),
 
   containerChoices: function() {
     var list = [];
