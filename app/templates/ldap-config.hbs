@@ -159,7 +159,18 @@
       </div>
     </section>
 
-    <section class="well">
+    <section>
+      <div class="over-hr r-p10">
+        <span class="advanced-link" onclick={{action 'showAdvanced' preventDefault=true}}>
+          {{#if advancedOpen}}
+            {{t 'ldap.accessConfig.advanced.open'}}
+          {{else}}
+            {{t 'ldap.accessConfig.advanced.closed'}}
+          {{/if}}
+        </span>
+      </div>
+    </section>
+    <section class="well custom-schema">
       <h3>{{t 'ldap.customizeSchema.header'}}</h3>
       <hr/>
       <p>{{t 'ldap.customizeSchema.helpText'}}</p>
@@ -239,7 +250,9 @@
         <div class="col-md-4">
           <div class="form-group">
             <label>{{t 'ldap.testAuth.userName.labelText'}}*</label>
-            {{input name="username" value=username classNames="form-control"}}
+            {{#input-or-display editable=(not editing) value=username }}
+              {{input name="username" value=username classNames="form-control"}}
+            {{/input-or-display}}
           </div>
         </div>
         <div class="col-md-4">

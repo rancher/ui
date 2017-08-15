@@ -1175,7 +1175,6 @@ ldap:
     disabled:
       label: "{providerName} is not configured"
       warning: "{appName} can be configured to restrict access to a set of {providerName} users and groups.  This is not currently set up, so anybody that reach this page (or the API) has full control over the system."
-
   accessEnabled:
     header: Authentication
     subtext: "To change the server configuration, disable access control below and then set it up again."
@@ -1206,9 +1205,12 @@ ldap:
         pre: Disable access control
         post: "Are you sure?  Click again to really disable access control"
   accessConfig:
-    header: "1. Configure an {providerName} server"
+    header: "Configure an {providerName} server"
     subtext1: "Enter the address, port, and protocol to connect to your {providerName} server.  <code>389</code> is the standard port for insecure, <code>636</code> for TLS."
     subtext2: "{appName} needs a service account that has (read-only) access to all of the domains that will be able to login, so that we can determine what groups a user is a member of when they make a request with an API key."
+    advanced:
+      open: Hide Advanced
+      closed: Show Advanced
     hostName:
       labelText: Hostname or IP Address
     port:
@@ -1231,7 +1233,7 @@ ldap:
       labelText: Default Login Domain
       placeholder: "e.g. mycompany"
   customizeSchema:
-    header: "2. Customize Schema"
+    header: "Customize Schema"
     helpText: "If your schema does not match the standard ActiveDirectory format, you can customize it here."
     users:
       header: Users
@@ -1266,8 +1268,8 @@ ldap:
         labelText: Group DN Field
         placeholder: distinguishedName
   testAuth:
-    header: "3. Test and enable authentication"
-    editingHeader: "3. Test and save new configuration"
+    header: "Test and enable authentication"
+    editingHeader: "Test and save new configuration"
     helpText: "Check that everything is configured correctly by testing authentication with your {providerName} account:"
     userName:
       labelText: Your Username
