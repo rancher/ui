@@ -10,18 +10,14 @@ export default Resource.extend({
   },
 
   availableActions: function() {
-    var a = this.get('actionLinks');
-    if ( !a )
-    {
-      return [];
-    }
+    var l = this.get('links');
 
     var choices = [
-      { label: 'action.remove',     icon: 'icon icon-trash',          action: 'promptDelete', enabled: !!a.remove, altAction: 'delete', bulkable: true },
+      { label: 'action.remove',     icon: 'icon icon-trash',          action: 'promptDelete', enabled: !!l.remove, altAction: 'delete', bulkable: true },
       { divider: true },
       { label: 'action.viewInApi',  icon: 'icon icon-external-link',  action: 'goToApi',      enabled: true },
     ];
 
     return choices;
-  }.property('actionLinks.{remove,update}'),
+  }.property('l.{remove}'),
 });

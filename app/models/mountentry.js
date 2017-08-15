@@ -10,14 +10,6 @@ export default Resource.extend({
   instance:    denormalizeId('instanceId'),
   volume:      denormalizeId('volumeId'),
 
-  availableActions: function() {
-    let choices = [
-      { label: 'action.viewInApi',  icon: 'icon icon-external-link',  action: 'goToApi',      enabled: true },
-    ];
-
-    return choices;
-  }.property(),
-
   displayVolumeName: Ember.computed('volumeName', function() {
     let name = this.get('volumeName');
     if ( name.match(/^[0-9a-f]{64}$/) ) {

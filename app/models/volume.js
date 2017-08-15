@@ -19,14 +19,14 @@ var Volume = Resource.extend({
   }.property('displayName','intl.locale'),
 
   availableActions: function() {
-    var a = this.get('actionLinks');
+    var l = this.get('links');
 
     return [
-      { label: 'action.remove',           icon: 'icon icon-trash',          action: 'promptDelete',      enabled: !!a.remove, altAction: 'delete' },
+      { label: 'action.remove',           icon: 'icon icon-trash',          action: 'promptDelete',      enabled: !!l.remove, altAction: 'delete' },
       { divider: true },
       { label: 'action.viewInApi',        icon: 'icon icon-external-link',  action: 'goToApi',           enabled: true },
     ];
-  }.property('actionLinks.{remove}'),
+  }.property('links.{remove}'),
 
   displayUri: function() {
     return (this.get('uri')||'').replace(/^file:\/\//,'');

@@ -459,10 +459,10 @@ export default Ember.Component.extend(Sortable, StickyHeader, {
     let toToggle = [];
     let key = this.get('groupByKey');
 
-    // Grouped has 2 levels to look through
     if ( key ) {
+      // Grouped has 2 levels to look through
       let grouped = this.get('groupedContent');
-      //entry = {group: group, ref: ref, items: [obj]};
+
       let from = this.groupIdx(a);
       let to =  this.groupIdx(b);
       if ( !from || !to ) {
@@ -483,9 +483,9 @@ export default Ember.Component.extend(Sortable, StickyHeader, {
           j++;
         }
       }
-
     } else {
       // Ungrouped is much simpler
+      let content = this.get('pagedContent');
       let from = content.indexOf(prevNode);
       let to = content.indexOf(node);
       [from, to] = [Math.min(from,to), Math.max(from,to)];

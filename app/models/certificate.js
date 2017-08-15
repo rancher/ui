@@ -9,22 +9,18 @@ export default Resource.extend({
     },
   },
   availableActions: function() {
-    var a = this.get('actionLinks');
-    if ( !a )
-    {
-      return [];
-    }
+    let l = this.get('links');
 
-    var choices = [
-      { label: 'action.edit',       icon: 'icon icon-edit',           action: 'edit',         enabled: !!a.update },
+    let choices = [
+      { label: 'action.edit',       icon: 'icon icon-edit',           action: 'edit',         enabled: !!l.update },
       { divider: true },
-      { label: 'action.remove',     icon: 'icon icon-trash',          action: 'promptDelete', enabled: !!a.remove, altAction: 'delete' },
+      { label: 'action.remove',     icon: 'icon icon-trash',          action: 'promptDelete', enabled: !!l.remove, altAction: 'delete' },
       { divider: true },
       { label: 'action.viewInApi',  icon: 'icon icon-external-link',  action: 'goToApi',      enabled: true },
     ];
 
     return choices;
-  }.property('actionLinks.{remove,update}'),
+  }.property('links.{update,remove}'),
 
   issuedDate: function() {
     return new Date(this.get('issuedAt'));
