@@ -474,7 +474,7 @@ function getCatalogSubtree() {
     out.push({divider: true});
   }
 
-  repos.forEach((repo) => {
+  repos.sortBy('name').forEach((repo) => {
     out.push({
       id: 'catalog-'+repo.get('id'),
       label: repo.get('name'),
