@@ -1,11 +1,12 @@
 import Ember from 'ember';
 
 export default Ember.Route.extend({
-  resetController: function (controller, isExisting/*, transition*/) {
-    if (isExisting)
-    {
-      controller.set('kubeconfig', null);
-      controller.set('saving', false);
-    }
-  }
+  projects: Ember.inject.service(),
+
+  model() {
+    return Ember.RSVP.hash({
+      clusters: this.get('userStore').find('cluster'),
+      project: this.get('projects.current').clone(),
+    });
+  },
 });

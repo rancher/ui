@@ -1,11 +1,17 @@
 import Ember from 'ember';
 
 export default Ember.Controller.extend({
-  kubeconfig: null,
-  saving: false,
+  growl: Ember.inject.service(),
 
   actions: {
-    save() {
+    select(cluster) {
+      let project = this.get('model.project');
+      project.set('clusterId', cluster.get('id'));
+      project.save().then(() => {
+        this.send('cancel');
+      }).catch((err) => {
+        this.get('growl').fromError(err);
+      });
     },
 
     cancel() {

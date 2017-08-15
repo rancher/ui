@@ -2,15 +2,31 @@
   <h1>Reuse an existing Cluster</h1>
 </section>
 
-<section>
+<section class="clearfix">
+  {{#each model.clusters as |cluster|}}
+    {{#catalog-box
+        model=model
+        classNames='cloud-host'
+        showIcon=false
+        showDescription=false
+        as |section|
+    }}
+      {{#if (eq section 'header')}}
+        <div class="catalog-header bg-default p-10">
+          <div class="catalog-icon m-20 generic"/>
+        </div>
+      {{else if (eq section 'body')}}
+        <h4 class="ml-20 mr-20">{{cluster.displayName}}</h4>
+        <div class="details text-muted text-small">
+          {{cluster.description}}
+        </div>
+      {{else if (eq section 'footer')}}
+        <button role="button" class="btn bg-primary" {{action 'select' cluster}}>{{t 'generic.select'}}</button>
+      {{/if}}
+    {{/catalog-box}}
+  {{/each}}
 </section>
 
-<section>
-  <div class="footer-actions">
-    {{save-cancel
-      save="save"
-      cancel="cancel"
-      createLabel="generic.select"
-    }}
-  </div>
+<section class="text-center mt-20">
+  <button {{action "cancel"}} class="btn bg-transparent">{{t 'saveCancel.cancel'}}</button>
 </section>
