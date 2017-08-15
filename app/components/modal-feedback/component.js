@@ -4,7 +4,7 @@ import { loadScript } from 'ui/utils/load-script';
 import ModalBase from 'ui/mixins/modal-base';
 
 export default Ember.Component.extend(ModalBase, {
-  classNames: ['span-8', 'offset-2', 'modal-welcome'],
+  classNames: ['span-8', 'offset-2', 'modal-telemetry'],
   settings: Ember.inject.service(),
   prefs: Ember.inject.service(),
   access: Ember.inject.service(),

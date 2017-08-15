@@ -1,5 +1,5 @@
 import Ember from 'ember';
-import Driver from 'ui/mixins/driver';
+import Driver from 'ui/mixins/host-driver';
 import fetch from 'ember-api-store/utils/fetch';
 import Util from 'ui/utils/util';
 

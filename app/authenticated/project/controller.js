@@ -30,9 +30,9 @@ export default Ember.Controller.extend({
     },
   },
 
-  showOrchestrationWelcome: function() {
-    return !this.get('model.hosts.length');
-  }.property('model.hosts.[]'),
+  showClusterWelcome: function() {
+    return !!!this.get('model.project.clusterId');
+  }.property('model.project.clusterId'),
 
   simpleMode: function() {
     let list = this.get('stacks');

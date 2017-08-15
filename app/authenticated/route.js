@@ -55,10 +55,12 @@ export default Ember.Route.extend(Subscribe, PromiseToCb, {
     let promise = new Ember.RSVP.Promise((resolve, reject) => {
       let tasks = {
         userSchemas:                                    this.toCb('loadUserSchemas'),
+        clusters:                                       this.toCb('loadClusters'),
         projects:                                       this.toCb('loadProjects'),
         preferences:                                    this.toCb('loadPreferences'),
         settings:                                       this.toCb('loadPublicSettings'),
-        project:            ['projects', 'preferences', this.toCb('selectProject',transition)],
+        project:            ['clusters','projects', 'preferences',
+                                                        this.toCb('selectProject',transition)],
         projectSchemas:     ['project',                 this.toCb('loadProjectSchemas')],
         orchestrationState: ['projectSchemas',          this.toCb('updateOrchestration')],
         instances:          ['projectSchemas',          this.cbFind('instance')],
@@ -111,7 +113,7 @@ export default Ember.Route.extend(Subscribe, PromiseToCb, {
       if ( this.get('access.admin') && (!opt || opt === 'prompt') )
       {
         Ember.run.scheduleOnce('afterRender', this, function() {
-          this.get('modalService').toggleModal('modal-welcome');
+          this.get('modalService').toggleModal('modal-telemetry');
         });
       }
       else if ( form && !this.get(`prefs.${C.PREFS.FEEDBACK}`) )
@@ -197,6 +199,10 @@ export default Ember.Route.extend(Subscribe, PromiseToCb, {
     });
   },
 
+  loadClusters() {
+    return this.get('store').find('cluster', null, {url: 'clusters'});
+  },
+
   loadProjects() {
     let svc = this.get('projects');
     return svc.getAll().then((all) => {
@@ -210,7 +216,7 @@ export default Ember.Route.extend(Subscribe, PromiseToCb, {
   },
 
   loadPublicSettings() {
-    return this.get('userStore').find('setting', null, {url: 'setting', forceReload: true, filter: {all: 'false'}});
+    return this.get('userStore').find('setting', null, {url: 'settings', forceReload: true, filter: {all: 'false'}});
   },
 
   loadSecrets() {

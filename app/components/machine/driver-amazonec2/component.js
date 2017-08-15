@@ -1,5 +1,5 @@
 import Ember from 'ember';
-import Driver from 'ui/mixins/driver';
+import Driver from 'ui/mixins/host-driver';
 
 let RANCHER_TAG           = 'rancher-ui';
 let RANCHER_GROUP         = 'rancher-machine';
