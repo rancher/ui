@@ -9,7 +9,7 @@ export default Ember.Route.extend({
 
     if ( !project )
     {
-      this.replaceWith('settings.projects');
+      this.replaceWith('authenticated.projects');
       return;
     }
 

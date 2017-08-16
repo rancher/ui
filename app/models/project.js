@@ -3,6 +3,7 @@ import PolledResource from 'ui/mixins/cattle-polled-resource';
 import Ember from 'ember';
 import Util from 'ui/utils/util';
 import C from 'ui/utils/constants';
+import { denormalizeId } from 'ember-api-store/utils/denormalize';
 
 var Project = Resource.extend(PolledResource, {
   access: Ember.inject.service(),
@@ -15,9 +16,11 @@ var Project = Resource.extend(PolledResource, {
   name: null,
   description: null,
 
+  cluster: denormalizeId('clusterId'),
+
   actions: {
     edit: function() {
-      this.get('router').transitionTo('settings.projects.detail', this.get('id'), {queryParams: {editing: true}});
+      this.get('router').transitionTo('authenticated.projects.edit', this.get('id'));
     },
 
     delete: function() {
@@ -66,24 +69,24 @@ var Project = Resource.extend(PolledResource, {
   },
 
   availableActions: function() {
-    var a = this.get('actionLinks');
+    let a = this.get('actionLinks');
+    let l = this.get('links');
 
     var choices = [
       { label: 'action.setDefault',       icon: 'icon icon-home',         action: 'setAsDefault', enabled: this.get('canSetDefault')},
       { divider: true },
-      { label: 'action.edit',             icon: 'icon icon-edit',         action: 'edit',         enabled: !!a.update },
+      { label: 'action.edit',             icon: 'icon icon-edit',         action: 'edit',         enabled: !!l.update },
       { divider: true },
       { label: 'action.activate',         icon: 'icon icon-play',         action: 'activate',     enabled: !!a.activate},
-      { label: 'action.deactivate',       icon: 'icon icon-pause',        action: 'promptStop',   enabled: !!a.deactivate,        altAction: 'deactivate'},
+      { label: 'action.deactivate',       icon: 'icon icon-pause',        action: 'promptStop',   enabled: !!a.deactivate, altAction: 'deactivate'},
       { divider: true },
-      { label: 'action.remove',           icon: 'icon icon-trash',        action: 'promptDelete', enabled: this.get('canRemove'), altAction: 'delete' },
+      { label: 'action.remove',           icon: 'icon icon-trash',        action: 'promptDelete', enabled: !!l.remove, altAction: 'delete' },
       { divider: true },
       { label: 'action.viewInApi',        icon: 'icon icon-external-link',action: 'goToApi',      enabled: true },
     ];
 
-
     return choices;
-  }.property('actionLinks.{activate,deactivate,update}','state','canRemove','canSetDefault','canSwitchTo'),
+  }.property('actionLinks.{activate,deactivate}','links.{update,remove}','state','canSetDefault'),
 
   icon: function() {
     if ( this.get('isDefault') )
@@ -107,14 +110,6 @@ var Project = Resource.extend(PolledResource, {
   active: function() {
      return ( this.get('id') === this.get(`tab-session.${C.TABSESSION.PROJECT}`) );
   }.property(`tab-session.${C.TABSESSION.PROJECT}`, 'id'),
-
-  canRemove: function() {
-    return !!this.get('actionLinks.remove') && ['removing','removed','purging','purged'].indexOf(this.get('state')) === -1;
-  }.property('state','actionLinks.remove'),
-
-  canSwitchTo: function() {
-    return this.get('state') === 'active' && this.get('id') !== this.get('projects.current.id');
-  }.property('id','projects.current.id','state'),
 
   canSetDefault: function() {
     return this.get('state') === 'active' && !this.get('isDefault');

@@ -1,10 +1,10 @@
 import Resource from 'ember-api-store/models/resource';
 
-var ClusterMembership = Resource.extend({
-  type: 'clusterMembership',
+var HaMembership = Resource.extend({
+  type: 'haMembership',
 });
 
-ClusterMembership.reopenClass({
+HaMembership.reopenClass({
   pollTransitioningDelay: 1000,
   pollTransitioningInterval: 5000,
 
@@ -22,4 +22,4 @@ ClusterMembership.reopenClass({
   },
 });
 
-export default ClusterMembership;
+export default HaMembership;

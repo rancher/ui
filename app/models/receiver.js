@@ -37,7 +37,7 @@ var Receiver = Resource.extend(PolledResource, {
   },
 
   availableActions: function() {
-    var choices = [
+    let choices = [
 //      { label: 'action.edit',           icon: 'icon icon-edit',             action: 'edit',           enabled: true },
       { label: 'action.clone',          icon: 'icon icon-copy',             action: 'clone',          enabled: true },
       { divider: true },
@@ -47,7 +47,7 @@ var Receiver = Resource.extend(PolledResource, {
     ];
 
     return choices;
-  }.property('actionLinks.{update,remove}'),
+  }.property(),
 
   needsPolling: function() {
     return ['requested','activating','removing'].includes(this.get('state'));

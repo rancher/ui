@@ -3,7 +3,7 @@ import C from 'ui/utils/constants';
 import ModalBase from 'ui/mixins/modal-base';
 
 export default Ember.Component.extend(ModalBase, {
-  classNames: ['modal-container', 'span-6', 'offset-3', 'modal-welcome', 'alert'],
+  classNames: ['modal-container', 'span-6', 'offset-3', 'modal-telemetry', 'alert'],
   settings: Ember.inject.service(),
   optIn: null,
 

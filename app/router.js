@@ -34,15 +34,6 @@ Router.map(function() {
 
     this.route('user-preferences', {path: '/user-preferences', resetNamespace: true});
 
-    // Settings
-    this.route('settings', {resetNamespace: true}, function() {
-      this.route('projects', {path: '/env'}, function() {
-        this.route('index', {path: '/'});
-        this.route('new', {path: '/add'});
-        this.route('detail', {path: '/:project_id'});
-      });
-    });
-
     // Admin
     this.route('admin-tab', {path: '/admin', resetNamespace: true}, function() {
       this.route('auth', {path: '/access'}, function() {
@@ -73,6 +64,14 @@ Router.map(function() {
       this.route('machine');
     });
 
+    // Projects
+    this.route('projects', {path: '/env'}, function() {
+      this.route('index', {path: '/'});
+      this.route('new', {path: '/add'});
+      this.route('edit', {path: '/edit/:project_id'});
+    });
+
+    // Per-Project
     this.route('project', {path: '/env/:project_id'}, function() {
       this.route('index', {path: '/'});
       this.route('apikeys', {path: '/api/keys'}, function() {
@@ -168,6 +167,7 @@ Router.map(function() {
 
       this.route('k8s-tab', {path: '/kubernetes', resetNamespace: true});
       this.route('k8s-import', {path: '/kubernetes-import'});
+      this.route('reuse-cluster', {path: '/reuse-cluster'});
 
       this.route('help');
 

@@ -1,0 +1,55 @@
+<section class="header has-tabs clearfix">
+  <h1>Welcome</h1>
+</section>
+<p>This environment does not have a cluster assigned yet.  Clusters are a set of physical compute resources that your containers will run on.</p>
+
+<div class="row">
+  {{!-- Reuse --}}
+  <div class="col span-4 text-center option {{unless canReuse 'option-disabled'}}">
+    <h2>Reuse an existing Cluster</h2>
+    <div class="box">
+      <p>Reuse a cluster already defined in {{settings.appName}}.</p>
+      <p>Share hardware resources with the other Environments using the cluster.</p>
+
+      {{#if canReuse}}
+        <div class="links" style="top: auto; bottom: 47px;">
+          {{#link-to "authenticated.project.reuse-cluster" projects.current.id class="btn bg-primary"}}Select{{/link-to}}
+        </div>
+      {{/if}}
+    </div>
+    <div class="bubble bg-body round"><img src="{{app.baseAssets}}assets/images/environment-advanced.svg" class="mt-5" /></div>
+  </div>
+
+  {{!-- Create --}}
+  <div class="col span-4 text-center option option-primary {{unless canCreate 'option-disabled'}}">
+    <h2>Create a new Cluster</h2>
+    <div class="box">
+      <p>Define and manage hosts inside {{settings.appName}}.</p>
+      <p>Supports on-premise, bare-metal, and cloud infrastructure.</p>
+
+      {{#if canCreate}}
+        <div class="links" style="top: auto; bottom: 47px;">
+          {{#link-to "hosts.templates" projects.current.id class="btn bg-primary"}}Select{{/link-to}}
+        </div>
+      {{/if}}
+    </div>
+    <div class="bubble bg-body round"><img src="{{app.baseAssets}}assets/images/environment-advanced.svg" class="mt-5" /></div>
+  </div>
+
+  {{!-- Import --}}
+  <div class="col span-4 text-center option {{unless canImport 'option-disabled'}}">
+    <h2>Import an external Cluster</h2>
+    <div class="box">
+      <p>Import an external Kubernetes v1.7+ cluster.</p>
+      <p>Individual hosts are managed by cluster provider outside of {{settings.appName}}.</p>
+      <p>Supports hosted services like Google Container Engine.</p>
+
+      {{#if canImport}}
+        <div class="links" style="top: auto; bottom: 47px;">
+          {{#link-to "authenticated.project.k8s-import" projects.current.id class="btn bg-primary"}}Select{{/link-to}}
+        </div>
+      {{/if}}
+    </div>
+    <div class="bubble bg-body round"><img src="{{app.baseAssets}}assets/images/environment-advanced.svg" class="mt-5" /></div>
+  </div>
+</div>

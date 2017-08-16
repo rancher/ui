@@ -5,11 +5,6 @@ import PromiseToCb from 'ui/mixins/promise-to-cb';
 
 export default Ember.Route.extend(PromiseToCb, {
   catalog: Ember.inject.service(),
-  queryParams: {
-    editing: {
-      refreshModel: true
-    }
-  },
 
   model: function(params /* , transition*/) {
     var userStore = this.get('userStore');
@@ -78,17 +73,10 @@ export default Ember.Route.extend(PromiseToCb, {
         catalogs: hash.catalogs.content,
       });
 
-      if ( params.editing ) {
-        out.setProperties({
-          originalProject: hash.project,
-          project: hash.project.clone(),
-        });
-      } else {
-        out.setProperties({
-          originalProject: null,
-          project: hash.project,
-        });
-      }
+      out.setProperties({
+        originalProject: hash.project,
+        project: hash.project.clone(),
+      });
 
       return out;
     });

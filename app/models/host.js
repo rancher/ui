@@ -68,32 +68,25 @@ var Host = Resource.extend(StateCounts,{
   },
 
   availableActions: function() {
-    var a = this.get('actionLinks');
+    let a = this.get('actionLinks');
+    let l = this.get('links');
 
-    var out = [
-      { label: 'action.edit', icon: 'icon icon-edit', action: 'edit', enabled: !!a.update },
-//      { label: 'action.clone', icon: 'icon icon-copy', action: 'clone', enabled: !!this.get('driver') }
-    ];
-
-    if ( this.get('links.config') )
-    {
-      out.pushObjects([
-        { label: 'action.machineConfig', icon: 'icon icon-download', action: 'machineConfig', enabled: true}
-      ]);
-    }
-
-    out.pushObjects([
+    let out = [
+      { label: 'action.machineConfig', icon: 'icon icon-download', action: 'machineConfig', enabled: !!l.config},
+      { divider: true },
+      { label: 'action.edit', icon: 'icon icon-edit', action: 'edit', enabled: !!l.update },
+      { divider: true },
       { label: 'action.activate',   icon: 'icon icon-play',         action: 'activate',     enabled: !!a.activate, bulkable: true},
       { label: 'action.deactivate', icon: 'icon icon-pause',        action: 'deactivate',   enabled: !!a.deactivate, bulkable: true},
       { label: 'action.evacuate',   icon: 'icon icon-snapshot',     action: 'promptEvacuate',enabled: !!a.evacuate, altAction: 'evacuate', bulkable: true},
       { divider: true },
-      { label: 'action.remove',     icon: 'icon icon-trash',        action: 'promptDelete', enabled: !!a.remove, altAction: 'delete', bulkable: true},
+      { label: 'action.remove',     icon: 'icon icon-trash',        action: 'promptDelete', enabled: !!l.remove, altAction: 'delete', bulkable: true},
       { divider: true },
       { label: 'action.viewInApi',  icon: 'icon icon-external-link',action: 'goToApi',      enabled: true},
-    ]);
+    ];
 
     return out;
-  }.property('actionLinks.{activate,deactivate,evacuate,remove,update}','links.config','driver'),
+  }.property('actionLinks.{activate,deactivate,evacuate}','links.{update,remove,config}','driver'),
 
   displayIp: Ember.computed.alias('agentIpAddress'),
 

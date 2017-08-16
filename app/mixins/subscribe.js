@@ -174,6 +174,11 @@ export default Ember.Mixin.create({
     }
 
     console.log(msg);
+
+    if ( this.get('store').all('stack').get('length') === 0 ) {
+      console.log('Reloading Stacks in case some appeared...');
+      this.get('store').find('stack', null, { forceReload: true });
+    }
   },
 
   // WebSocket disconnected (unexpectedly)

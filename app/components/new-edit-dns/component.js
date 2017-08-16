@@ -49,6 +49,9 @@ export default Ember.Component.extend(NewOrEdit, {
 
     addTargetIp() {
       this.get('targetIpArray').pushObject({value: null});
+      Ember.run.next(() => {
+        this.$('.target-ip').last()[0].focus();
+      });
     },
 
     removeTargetIp(obj) {

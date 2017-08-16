@@ -1,5 +1,5 @@
 import Ember from 'ember';
-import Driver from 'ui/mixins/driver';
+import Driver from 'ui/mixins/host-driver';
 import { ajaxPromise } from 'ember-api-store/utils/ajax-promise';
 
 let RANCHER_TEMPLATE      = 'Linux Ubuntu 14.04 LTS 64-bit';

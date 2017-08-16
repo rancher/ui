@@ -1,60 +1,66 @@
-{{#if projectController.showOrchestrationWelcome}}
-  {{orchestration-welcome}}
-{{else if model.hosts.length}}
+{{#if projectController.showClusterWelcome}}
+  {{cluster-welcome}}
+{{else}}
   <section class="header has-tabs clearfix">
     <h1>{{t 'hostsPage.index.header'}}</h1>
 
     <div class="right-buttons">
-      <div class="btn-group p-0 mr-10">
-        {{#tooltip-element type="tooltip-basic" model=(t 'hostsPage.index.tooltip.listView') tooltipTemplate='tooltip-static' aria-describedby="tooltip-base" tooltipFor="tooltipLink"}}
-          {{#link-to "hosts" (query-params mode="list") classNames="btn btn-sm bg-default"}}<i class="icon icon-list"></i>{{/link-to}}
-        {{/tooltip-element}}
-        {{#tooltip-element type="tooltip-basic" model=(t 'hostsPage.index.tooltip.iconView') tooltipTemplate='tooltip-static' aria-describedby="tooltip-base" tooltipFor="tooltipLink"}}
-          {{#link-to "hosts" (query-params mode="dot") classNames="btn btn-sm bg-default"}}<i class="icon icon-dotview"></i>{{/link-to}}
-        {{/tooltip-element}}
-        {{#tooltip-element type="tooltip-basic" model=(t 'hostsPage.index.tooltip.groupedView') tooltipTemplate='tooltip-static' aria-describedby="tooltip-base" tooltipFor="tooltipLink"}}
-          {{#link-to "hosts" (query-params mode="grouped") classNames="btn btn-sm bg-default"}}<i class="icon icon-boxview"></i>{{/link-to}}
-        {{/tooltip-element}}
-      </div>
+      {{#if model.hosts.length}}
+        <div class="btn-group p-0 mr-10">
+          {{#tooltip-element type="tooltip-basic" model=(t 'hostsPage.index.tooltip.listView') tooltipTemplate='tooltip-static' aria-describedby="tooltip-base" tooltipFor="tooltipLink"}}
+            {{#link-to "hosts" (query-params mode="list") classNames="btn btn-sm bg-default"}}<i class="icon icon-list"></i>{{/link-to}}
+          {{/tooltip-element}}
+          {{#tooltip-element type="tooltip-basic" model=(t 'hostsPage.index.tooltip.iconView') tooltipTemplate='tooltip-static' aria-describedby="tooltip-base" tooltipFor="tooltipLink"}}
+            {{#link-to "hosts" (query-params mode="dot") classNames="btn btn-sm bg-default"}}<i class="icon icon-dotview"></i>{{/link-to}}
+          {{/tooltip-element}}
+          {{#tooltip-element type="tooltip-basic" model=(t 'hostsPage.index.tooltip.groupedView') tooltipTemplate='tooltip-static' aria-describedby="tooltip-base" tooltipFor="tooltipLink"}}
+            {{#link-to "hosts" (query-params mode="grouped") classNames="btn btn-sm bg-default"}}<i class="icon icon-boxview"></i>{{/link-to}}
+          {{/tooltip-element}}
+        </div>
+      {{/if}}
 
       {{#link-to "hosts.templates" classNames="btn btn-sm bg-primary"}}{{t 'hostsPage.index.addHost'}}{{/link-to}}
     </div>
   </section>
 
-  {{#if (eq mode "list")}}
-    {{#sortable-table
-      classNames="grid sortable-table"
-      body=model.hosts
-      searchText=searchText
-      sortBy=sortBy
-      bulkActions=true
-      subRows=true
-      fullRows=true
-      pagingLabel="pagination.host"
-      subHeaders=containerHeaders
-      subSearchField="arrangedInstances"
-      extraSearchFields=extraSearchFields
-      extraSearchSubFields=extraSearchSubFields
-      headers=headers as |sortable kind host dt|}}
-      {{#if (eq kind "row")}}
-        {{host-row
-          model=host
-          toggle=(action "toggleExpand" host.id)
-          expanded=(array-includes expandedHosts host.id)
-          searchText=searchText
-          subMatches=sortable.subMatches
-          fullColspan=sortable.fullColspan
-          dt=dt
-        }}
-      {{else if (eq kind "nomatch")}}
-        <tr><td colspan="{{sortable.fullColspan}}" class="text-center text-muted lacsso pt-20 pb-20">{{t 'hostsPage.index.table.noMatch'}}</td></tr>
-      {{else if (eq kind "norows")}}
-        <tr><td colspan="{{sortable.fullColspan}}" class="text-center text-muted lacsso pt-20 pb-20">{{t 'hostsPage.index.table.noData'}}</td></tr>
-      {{/if}}
-    {{/sortable-table}}
+  {{#if model.hosts.length}}
+    {{#if (eq mode "list")}}
+      {{#sortable-table
+        classNames="grid sortable-table"
+        body=model.hosts
+        searchText=searchText
+        sortBy=sortBy
+        bulkActions=true
+        subRows=true
+        fullRows=true
+        pagingLabel="pagination.host"
+        subHeaders=containerHeaders
+        subSearchField="arrangedInstances"
+        extraSearchFields=extraSearchFields
+        extraSearchSubFields=extraSearchSubFields
+        headers=headers as |sortable kind host dt|}}
+        {{#if (eq kind "row")}}
+          {{host-row
+            model=host
+            toggle=(action "toggleExpand" host.id)
+            expanded=(array-includes expandedHosts host.id)
+            searchText=searchText
+            subMatches=sortable.subMatches
+            fullColspan=sortable.fullColspan
+            dt=dt
+          }}
+        {{else if (eq kind "nomatch")}}
+          <tr><td colspan="{{sortable.fullColspan}}" class="text-center text-muted lacsso pt-20 pb-20">{{t 'hostsPage.index.table.noMatch'}}</td></tr>
+        {{else if (eq kind "norows")}}
+          <tr><td colspan="{{sortable.fullColspan}}" class="text-center text-muted lacsso pt-20 pb-20">{{t 'hostsPage.index.table.noData'}}</td></tr>
+        {{/if}}
+      {{/sortable-table}}
+    {{else}}
+      {{#columns-section pods=model.hosts emptyMessage=(t 'hostsPage.index.columns.emptyMessage') as |item| }}
+        {{host-pod model=item mode=mode newContainer="newContainer"}}
+      {{/columns-section}}
+    {{/if}}
   {{else}}
-    {{#columns-section pods=model.hosts emptyMessage=(t 'hostsPage.index.columns.emptyMessage') as |item| }}
-      {{host-pod model=item mode=mode newContainer="newContainer"}}
-    {{/columns-section}}
+    {{empty-table resource="container" newRoute="hosts.templates" newTranslationKey="nav.hosts.addHost"}}
   {{/if}}
 {{/if}}

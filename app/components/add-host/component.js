@@ -69,8 +69,11 @@ export default Ember.Component.extend({
   }),
 
   allowCustom: function() {
-    return this.get(`settings.${C.SETTING.SHOW_CUSTOM_HOST}`) !== false;
-  }.property(`settings.${C.SETTING.SHOW_CUSTOM_HOST}`),
+    let cluster = this.get('projects.current.cluster');
+
+    return this.get(`settings.${C.SETTING.SHOW_CUSTOM_HOST}`) !== false &&
+      (!cluster || cluster.get('embedded'));
+  }.property(`settings.${C.SETTING.SHOW_CUSTOM_HOST}`,'projects.current.cluster.embedded'),
 
   showPicker: Ember.computed('model.availableDrivers.length','allowOther','hasOther','allowCustom', function() {
     return !this.get('projects.current.isWindows') && (

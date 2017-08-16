@@ -156,18 +156,19 @@ var Service = Resource.extend(StateCounts, EndpointPorts, {
   },
 
   availableActions: function() {
-    var a = this.get('actionLinks');
+    let a = this.get('actionLinks');
+    let l = this.get('links');
 
-    var isReal = this.get('isReal');
-    var isK8s = this.get('isK8s');
-    var canHaveContainers = this.get('canHaveContainers');
-    var containerForShell = this.get('containerForShell');
-    var isDriver = ['networkdriverservice','storagedriverservice'].includes(this.get('lcType'));
-    var canCleanup = !!a.garbagecollect && this.get('canCleanup');
+    let isReal = this.get('isReal');
+    let isK8s = this.get('isK8s');
+    let canHaveContainers = this.get('canHaveContainers');
+    let containerForShell = this.get('containerForShell');
+    let isDriver = ['networkdriverservice','storagedriverservice'].includes(this.get('lcType'));
+    let canCleanup = !!a.garbagecollect && this.get('canCleanup');
 
-    var choices = [
-      { label: 'action.upgradeOrEdit',  icon: 'icon icon-arrow-circle-up',  action: 'upgrade',        enabled: isReal },
-      { label: 'action.edit',           icon: 'icon icon-pencil',           action: 'editDns',        enabled: !isReal },
+    let choices = [
+      { label: 'action.upgradeOrEdit',  icon: 'icon icon-arrow-circle-up',  action: 'upgrade',        enabled: !!l.update &&  isReal },
+      { label: 'action.edit',           icon: 'icon icon-pencil',           action: 'editDns',        enabled: !!l.update && !isReal },
       { label: 'action.rollback',       icon: 'icon icon-history',          action: 'rollback',       enabled: !!a.rollback && isReal && !!this.get('previousRevisionId') },
       { label: 'action.garbageCollect', icon: 'icon icon-garbage',          action: 'garbageCollect', enabled: canCleanup},
       { label: 'action.clone',          icon: 'icon icon-copy',             action: 'clone',          enabled: !isK8s && !isDriver },
@@ -181,13 +182,13 @@ var Service = Resource.extend(StateCounts, EndpointPorts, {
       { label: 'action.restart',        icon: 'icon icon-refresh',          action: 'restart',        enabled: !!a.restart && canHaveContainers, bulkable: true },
       { label: 'action.stop',           icon: 'icon icon-stop',             action: 'promptStop',     enabled: !!a.deactivate, altAction: 'deactivate', bulkable: true},
       { divider: true },
-      { label: 'action.remove',         icon: 'icon icon-trash',            action: 'promptDelete',   enabled: !!a.remove, altAction: 'delete', bulkable: true},
+      { label: 'action.remove',         icon: 'icon icon-trash',            action: 'promptDelete',   enabled: !!l.remove, altAction: 'delete', bulkable: true},
       { divider: true },
       { label: 'action.viewInApi',      icon: 'icon icon-external-link',    action: 'goToApi',        enabled: true },
     ];
 
     return choices;
-  }.property('actionLinks.{activate,deactivate,pause,restart,update,remove,rollback,garbagecollect}','previousRevisionId',
+  }.property('actionLinks.{activate,deactivate,pause,restart,rollback,garbagecollect}','links.{update,remove}','previousRevisionId',
     'lcType','isK8s','canHaveContainers','canHaveSidekicks','containerForShell'
   ),
 

@@ -128,6 +128,7 @@ export default Ember.Component.extend(Sortable, StickyHeader, {
     if ( this.get('groupByKey') ) {
       watchKey = `pagedContent.@each.${this.get('groupByKey').replace(/\..*/g,'')}`;
     }
+
     this.set('groupedContent', Ember.computed(watchKey, () => {
       let ary = [];
       let map = {};
@@ -429,23 +430,16 @@ export default Ember.Component.extend(Sortable, StickyHeader, {
 
     let isSelected = selection.includes(node);
     let prevNode = this.get('prevNode');
-    // PrevNode is only valid if it's in the current content
-    if ( !content.includes(prevNode) ) {
-      prevNode = null;
-    }
 
-    if ( !prevNode ) {
+    // PrevNode is only valid if it's in the current content
+    if ( !prevNode || !content.includes(prevNode) ) {
       prevNode = node;
     }
 
     if ( isMore(e) ) {
       this.toggleSingle(node);
     } else if ( isRange(e) ) {
-      let from = content.indexOf(prevNode);
-      let to = content.indexOf(node);
-      [from, to] = [Math.min(from,to), Math.max(from,to)];
-      let toToggle = content.slice(from,to+1);
-
+      let toToggle = this.nodesBetween(prevNode, node);
       if ( isSelected ) {
         this.toggleMulti([], toToggle);
       } else {
@@ -459,6 +453,60 @@ export default Ember.Component.extend(Sortable, StickyHeader, {
 
     this.set('prevNode', node);
     e.stopPropagation();
+  },
+
+  nodesBetween(a,b) {
+    let toToggle = [];
+    let key = this.get('groupByKey');
+
+    if ( key ) {
+      // Grouped has 2 levels to look through
+      let grouped = this.get('groupedContent');
+
+      let from = this.groupIdx(a);
+      let to =  this.groupIdx(b);
+      if ( !from || !to ) {
+        return [];
+      }
+
+      // From has to come before To
+      if ( (from.group > to.group) || ((from.group === to.group) && (from.item > to.item)) ) {
+        [from, to] = [to,from];
+      }
+
+      for ( let i = from.group ; i <= to.group ; i++ ) {
+        let items = grouped.objectAt(i).items;
+        let j = (from.group === i ? from.item : 0);
+
+        while ( items[j] && ( i < to.group || j <= to.item )) {
+          toToggle.push(items[j]);
+          j++;
+        }
+      }
+    } else {
+      // Ungrouped is much simpler
+      let content = this.get('pagedContent');
+      let from = content.indexOf(a);
+      let to = content.indexOf(b);
+      [from, to] = [Math.min(from,to), Math.max(from,to)];
+      toToggle = content.slice(from,to+1);
+    }
+
+    return toToggle;
+  },
+
+  groupIdx(node) {
+    let grouped = this.get('groupedContent');
+    for ( let i = 0 ; i < grouped.get('length') ; i++ ) {
+      let items = grouped.objectAt(i).items;
+      for ( let j = 0 ; j < items.get('length') ; j++ ) {
+        if ( items.objectAt(j) === node ) {
+          return {group: i, item: j};
+        }
+      }
+    }
+
+    return null;
   },
 
   isAll: Ember.computed('selectedNodes.length', 'pagedContent.length', {

@@ -7,18 +7,18 @@ var KubernetesStack = Stack.extend({
   k8s: Ember.inject.service(),
 
   availableActions: function() {
-    var a = this.get('actionLinks');
+    let l = this.get('links');
 
-    var out = [
+    let out = [
       { label   : 'action.edit',       icon : 'icon icon-edit',           action : 'edit',          enabled  : true },
       { divider: true},
-      { label   : 'action.remove',     icon : 'icon icon-trash',          action : 'promptDelete',  enabled  : !!a.remove, altAction : 'delete'},
+      { label   : 'action.remove',     icon : 'icon icon-trash',          action : 'promptDelete',  enabled  : !!l.remove, altAction : 'delete'},
       { divider: true},
       { label   : 'action.viewInApi',  icon : 'icon icon-external-link',  action : 'goToApi',       enabled  : true },
     ];
 
     return out;
-  }.property('actionLinks.remove'),
+  }.property('links.remove'),
 });
 
 export default KubernetesStack;

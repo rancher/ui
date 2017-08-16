@@ -44,10 +44,6 @@ export default Ember.Component.extend(NewOrEdit, {
   stacks: null,
 
   actions: {
-    changeProject(project) {
-      this.get('router').transitionTo('settings.projects.detail', project.get('id'));
-    },
-
     cancel() {
       this.sendAction('cancel');
     },

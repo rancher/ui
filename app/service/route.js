@@ -21,7 +21,7 @@ export default Ember.Route.extend({
 
   getServiceLogs(serviceId) {
     // Find just the recent ones for this service
-    return this.get('store').find('serviceLog', null,{
+    this.get('store').find('serviceLog', null,{
       filter: {serviceId: serviceId},
       sortBy: 'id',
       sortOrder: 'desc',

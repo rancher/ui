@@ -101,29 +101,31 @@ var Stack = Resource.extend(StateCounts, {
   },
 
   availableActions: function() {
-    var a = this.get('actionLinks');
+    let a = this.get('actionLinks');
+    let l = this.get('links');
 
-    if ( this.get('externalIdInfo.kind') === C.EXTERNAL_ID.KIND_KUBERNETES )
-    {
+    if ( this.get('externalIdInfo.kind') === C.EXTERNAL_ID.KIND_KUBERNETES ) {
       return [];
     }
 
-
-    var out = [
+    let out = [
       { label: 'action.addContainer',   icon: 'icon icon-container',      action: 'addContainer',     enabled: true },
       { divider: true },
-      { label: 'action.edit',           icon: 'icon icon-edit',           action: 'edit',             enabled: !!a.update },
+      { label: 'action.activateServices',   icon: 'icon icon-play',       action: 'activateServices',   enabled: !!a.activateservices },
+      { label: 'action.deactivateServices', icon: 'icon icon-stop',       action: 'deactivateServices', enabled: !!a.deactivateservices },
+      { divider: true },
+      { label: 'action.edit',           icon: 'icon icon-edit',           action: 'edit',             enabled: !!l.update },
       { label: 'action.viewConfig',     icon: 'icon icon-files',          action: 'viewCode',         enabled: !!a.exportconfig },
       { label: 'action.exportConfig',   icon: 'icon icon-download',       action: 'exportConfig',     enabled: !!a.exportconfig },
 //      { label: 'action.viewGraph',      icon: 'icon icon-share',          action: 'viewGraph',        enabled: true },
       { divider: true },
-      { label: 'action.remove',         icon: 'icon icon-trash',          action: 'promptDelete',     enabled: !!a.remove,                altAction: 'delete'},
+      { label: 'action.remove',         icon: 'icon icon-trash',          action: 'promptDelete',     enabled: !!l.remove, altAction: 'delete'},
       { divider: true },
       { label: 'action.viewInApi',      icon: 'icon icon-external-link',  action: 'goToApi',          enabled: true },
     ];
 
     return out;
-  }.property('actionLinks.{remove,purge,exportconfig,rollback,update}','externalIdInfo.kind'),
+  }.property('actionLinks.{exportconfig,deactivateservices,activateservices}','links.{update,remove}','externalIdInfo.kind'),
 
   canViewConfig: function() {
     return !!this.get('actionLinks.exportconfig');
