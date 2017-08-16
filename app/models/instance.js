@@ -4,7 +4,25 @@ import C from 'ui/utils/constants';
 import { formatSi } from 'ui/utils/util';
 import { denormalizeId } from 'ember-api-store/utils/denormalize';
 
-export default Resource.extend({
+export function stoppedIcon(inst)
+{
+  if ( inst.get('healthState') === 'healthy' ) {
+    return 'icon icon-dot-circlefill';
+  }
+
+  return 'icon icon-circle';
+}
+
+export function stoppedColor(inst)
+{
+  if ( inst.get('healthState') === 'healthy' ) {
+    return 'text-success';
+  }
+
+  return 'text-error';
+}
+
+var Instance = Resource.extend({
   stack: denormalizeId('stackId'),
 
   isSystem: function() {
@@ -22,3 +40,9 @@ export default Resource.extend({
     }
   }),
 });
+
+Instance.reopenClass({
+  'stopped': {icon: stoppedIcon, color: stoppedColor},
+});
+
+export default Instance;

@@ -486,8 +486,8 @@ export default Ember.Component.extend(Sortable, StickyHeader, {
     } else {
       // Ungrouped is much simpler
       let content = this.get('pagedContent');
-      let from = content.indexOf(prevNode);
-      let to = content.indexOf(node);
+      let from = content.indexOf(a);
+      let to = content.indexOf(b);
       [from, to] = [Math.min(from,to), Math.max(from,to)];
       toToggle = content.slice(from,to+1);
     }

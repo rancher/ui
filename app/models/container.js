@@ -13,6 +13,7 @@ var Container = Instance.extend(EndpointPorts, {
   primaryAssociatedIpAddress : null,
   projects                   : Ember.inject.service(),
   modalService: Ember.inject.service('modal'),
+
   // Container-specific
   type                       : 'container',
   image                      : null,
