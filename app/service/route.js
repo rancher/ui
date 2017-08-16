@@ -21,21 +21,22 @@ export default Ember.Route.extend({
 
   getServiceLogs(serviceId) {
     // Find just the recent ones for this service
-    this.get('store').find('serviceLog', null,{
+    return this.get('store').find('serviceLog', null,{
       filter: {serviceId: serviceId},
       sortBy: 'id',
       sortOrder: 'desc',
       depaginate: false,
       limit: 100
+    }).then(() => {
+      return FilteredSorted.create({
+        sourceContent: this.get('store').all('serviceLog'),
+        dependentKeys: ['sourceContent.@each.serviceId'],
+        filterFn: function(log) {
+          return log.get('serviceId') === serviceId;
+        }
+      });
     });
 
-    return FilteredSorted.create({
-      sourceContent: this.get('store').all('serviceLog'),
-      dependentKeys: ['sourceContent.@each.serviceId'],
-      filterFn: function(log) {
-        return log.get('serviceId') === serviceId;
-      }
-    });
   },
 
   setupController(controller, model) {
