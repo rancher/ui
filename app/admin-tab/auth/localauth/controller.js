@@ -151,12 +151,4 @@ export default Ember.Controller.extend({
       });
     },
   },
-  headerText: Ember.computed('access.enabled', function() {
-    let out = this.get('intl').findTranslationByKey('authPage.localAuth.header.disabled');
-    if (this.get('access.enabled')) {
-      out = this.get('intl').findTranslationByKey('authPage.localAuth.header.enabled');
-
-    }
-    return this.get('intl').formatHtmlMessage(out);
-  }),
 });
