@@ -9,27 +9,17 @@
       </div>
     {{/if}}
 
-    <div class="over-hr mt-20 mb-20">
-      <span>{{t 'machine.driverOther.driverSection'}}</span>
-    </div>
+  <div class="row inline-form box mt-30">
+    <h4>{{t 'machine.driverOther.driverSection'}}</h4>
+    <label class="acc-label">{{t 'machine.driverOther.driver.label'}}{{field-required}}</label>
+    {{new-select
+        classNames="form-control"
+        content=otherChoices
+        value=otherDriver
+    }}
 
-    <div class="row inline-form">
-      <div class="col span-2 col-inline">
-        <label>{{t 'machine.driverOther.driver.label'}}{{field-required}}</label>
-      </div>
-      <div class="col span-8">
-        {{new-select
-            classNames="form-control"
-            content=otherChoices
-            value=otherDriver
-        }}
-      </div>
-    </div>
 
-    <div class="over-hr mt-20 mb-20">
-      <span>{{t 'machine.driverOther.optionsSection' driverName=(str-replace driver match="Config" with="")}}</span>
-    </div>
-
+    <h4 class="mt-30">{{t 'machine.driverOther.optionsSection' driverName=(str-replace driver match="Config" with="")}}</h4>
     {{#each fieldNames as |fieldName|}}
       {{api-field
           resource=driverOpts
@@ -40,6 +30,8 @@
           typeDocs=typeDocumentations
       }}
     {{/each}}
+</div>
+
 
     {{partial "host/add-options"}}
   </div>
