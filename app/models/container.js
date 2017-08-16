@@ -139,33 +139,22 @@ var Container = Instance.extend(EndpointPorts, {
   }),
 
   combinedState: function() {
-    var host = this.get('primaryHost.state');
     var resource = this.get('state');
     var health = this.get('healthState');
     var hasCheck = !!this.get('healthCheck');
 
-    if ( !hasCheck && C.DISCONNECTED_STATES.includes(host) ) {
-      return 'unknown';
-    } else if ( resource === 'stopped' && this.get('desired') === false ) {
+    if ( resource === 'stopped' && this.get('desired') === false ) {
       return 'pending-delete';
-    }
-    else if ( C.ACTIVEISH_STATES.includes(resource) )
-    {
+    } else if ( C.ACTIVEISH_STATES.includes(resource) ) {
       if ( hasCheck && health ) {
         return health;
       } else {
         return resource;
       }
-    }
-    else if ((resource === 'stopped') && ((this.get('labels')||{})[C.LABEL.START_ONCE]) && (this.get('startCount') > 0))
-    {
-      return 'started-once';
-    }
-    else
-    {
+    } else {
       return resource;
     }
-  }.property('primaryHost.state', 'desired', 'state', 'healthState'),
+  }.property('desired', 'state', 'healthState','healthCheck'),
 
   isOn: function() {
     return ['running','updating-running','migrating','restarting'].indexOf(this.get('state')) >= 0;
