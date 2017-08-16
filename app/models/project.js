@@ -20,7 +20,7 @@ var Project = Resource.extend(PolledResource, {
 
   actions: {
     edit: function() {
-      this.get('router').transitionTo('settings.projects.detail', this.get('id'), {queryParams: {editing: true}});
+      this.get('router').transitionTo('authenticated.projects.edit', this.get('id'));
     },
 
     delete: function() {

@@ -145,7 +145,7 @@ export default Ember.Route.extend(Subscribe, PromiseToCb, {
       return;
     }
 
-    this.replaceWith('settings.projects');
+    this.replaceWith('authenticated.projects');
     return ret;
   },
 
@@ -312,7 +312,7 @@ export default Ember.Route.extend(Subscribe, PromiseToCb, {
     gotoB() { this._gotoRoute('balancers.index'); },
     gotoC() { this._gotoRoute('containers.index'); },
     gotoD() { this._gotoRoute('dns.index'); },
-    gotoE() { this._gotoRoute('settings.projects.index', false); },
+    gotoE() { this._gotoRoute('authenticated.projects.index', false); },
     gotoH() { this._gotoRoute('hosts.index'); },
     gotoK() { this._gotoRoute('authenticated.project.apikeys'); },
     gotoV() { this._gotoRoute('volumes.index'); },
