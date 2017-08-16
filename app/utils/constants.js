@@ -354,21 +354,17 @@ C.SYSTEM_LABELS_WITH_CONTROL = [
 C.ACTIVEISH_STATES = [
   'running',
   'active',
-  'updating-active',
-  'updating-running',
   'healthy',
   'initializing',
   'reinitializing',
   'degraded',
   'unhealthy',
-  'started-once',
   'upgrading',
   'upgraded',
 ];
 
 C.READY_STATES = [
   'healthy',
-  'started-once',
 ];
 
 C.REMOVEDISH_STATES = [
@@ -385,12 +381,6 @@ C.DISCONNECTED_STATES = [
 C.INITIALIZING_STATES = [
   'initializing',
   'reinitializing'
-];
-
-C.VM_CAPABLE_STORAGE_DRIVERS = [
-  'convoy-gluster',
-  'convoy-longhorn',
-  'longhorn',
 ];
 
 // This is populated by each app/components/schema/*

@@ -148,24 +148,12 @@ var Container = Instance.extend(EndpointPorts, {
       return 'unknown';
     } else if ( resource === 'stopped' && this.get('desired') === false ) {
       return 'pending-delete';
-    }
-    else if ( C.ACTIVEISH_STATES.includes(resource) )
-    {
-      if ( hasCheck && health ) {
-        return health;
-      } else {
-        return resource;
-      }
-    }
-    else if ((resource === 'stopped') && ((this.get('labels')||{})[C.LABEL.START_ONCE]) && (this.get('startCount') > 0))
-    {
-      return 'started-once';
-    }
-    else
-    {
+    } else if ( C.ACTIVEISH_STATES.includes(resource) && health ) {
+      return health;
+    } else {
       return resource;
     }
-  }.property('primaryHost.state', 'desired', 'state', 'healthState'),
+  }.property('primaryHost.state','desired','state','healthState','healthCheck'),
 
   isOn: function() {
     return ['running','updating-running','migrating','restarting'].indexOf(this.get('state')) >= 0;
