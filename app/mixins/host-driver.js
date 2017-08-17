@@ -203,11 +203,24 @@ export default Ember.Mixin.create(NewOrEdit, ManageLabels, {
   },
 
   doSave() {
-    if ( this.get('primaryResource.type').toLowerCase() === 'hosttemplate' ) {
-      return this._super(...arguments);
-    } else {
-      return Ember.RSVP.resolve(this.get('primaryResource'));
+    let clusterPromise = Ember.RSVP.resolve();
+    if ( !this.get('projects.current.cluster') ) {
+      let cluster = this.get('userStore').createRecord({
+        type: 'cluster',
+        name: (this.get('projects.current.name')||'Default') + ' Cluster',
+      });
+      clusterPromise = cluster.save();
     }
+
+    let sup = this._super;
+
+    return clusterPromise.then(() => {
+      if ( this.get('primaryResource.type').toLowerCase() === 'hosttemplate' ) {
+        return sup.apply(this);
+      } else {
+        return Ember.RSVP.resolve(this.get('primaryResource'));
+      }
+    });
   },
 
   didSave() {
