@@ -2,7 +2,7 @@
   <h1>{{t 'clustersPage.header'}}</h1>
 
   <div class="right-buttons">
-    {{#link-to "authenticated.clusters.new-project" class="btn btn-sm bg-primary"}}{{t 'clustersPage.newEnvironment'}}{{/link-to}}
+    {{#link-to "authenticated.clusters.new-cluster" class="btn btn-sm bg-primary"}}{{t 'clustersPage.newCluster'}}{{/link-to}}
   </div>
 </section>
 
@@ -22,13 +22,14 @@
 {{#if byCluster.none.length}}
   <div class="box mt-20 pt-0">
     <section class="header has-tabs clearfix">
-      <h1>Not assigned to a Cluster</h1>
+      <h1>Environments not assigned to a Cluster yet</h1>
     </section>
 
     <div style="background-color: white;" class="p-20">
       {{#sortable-table
-        bulkActions=false
+        bulkActions=true
         paging=true
+        pagingLabel="pagination.project"
         search=true
         sortBy=sortBy
         descending=descending
@@ -54,17 +55,19 @@
   <div class="box mt-20 pt-0">
     <section class="header has-tabs clearfix">
       <h1>{{group.cluster.displayName}}</h1>
+      {{badge-state model=group.cluster}}
 
       <div class="right-buttons">
-        {{badge-state model=group.cluster}}
+        {{#link-to "authenticated.clusters.new-project" (query-params clusterId=group.cluster.id) class="btn btn-sm bg-primary"}}{{t 'clustersPage.newProject'}}{{/link-to}}
         {{action-menu model=group.cluster showPrimary=false classNames="ml-10 inline-block" size="sm"}}
       </div>
     </section>
 
     <div style="background-color: white;" class="p-20">
       {{#sortable-table
-        bulkActions=false
+        bulkActions=true
         paging=true
+        pagingLabel="pagination.project"
         search=true
         sortBy=sortBy
         descending=descending

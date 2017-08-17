@@ -68,6 +68,7 @@ Router.map(function() {
     this.route('clusters', {path: '/clusters'}, function() {
       this.route('index', {path: '/'});
       this.route('new-project', {path: '/add-env'});
+      this.route('new-cluster', {path: '/add'});
       this.route('project', {path: '/env/:project_id'});
     });
 
