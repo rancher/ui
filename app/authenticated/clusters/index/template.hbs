@@ -1,0 +1,88 @@
+<section class="header has-tabs clearfix">
+  <h1>{{t 'clustersPage.header'}}</h1>
+
+  <div class="right-buttons">
+    {{#link-to "authenticated.clusters.new-project" class="btn btn-sm bg-primary"}}{{t 'clustersPage.newEnvironment'}}{{/link-to}}
+  </div>
+</section>
+
+{{#unless projects.current}}
+  <section>
+    <div class="banner bg-danger">
+      <div class="banner-icon"><i class="icon icon-alert"></i></div>
+      <div class="banner-message"><p>{{t 'clustersPage.alert'}}</p></div>
+    </div>
+  </section>
+{{/unless}}
+
+<div class="box mt-20 pt-0 pb-0">
+  {{t 'clustersPage.subtext' appName=settings.appName htmlSafe=true}}
+</div>
+
+{{#each byCluster.clusters as |group|}}
+  <div class="box mt-20 pt-0">
+    <section class="header has-tabs clearfix">
+      <h1>{{group.cluster.displayName}}</h1>
+
+      <div class="right-buttons">
+        {{badge-state model=group.cluster}}
+        {{action-menu model=group.cluster showPrimary=false classNames="ml-10 inline-block" size="sm"}}
+      </div>
+    </section>
+
+    <div style="background-color: white;" class="p-20">
+      {{#sortable-table
+        bulkActions=false
+        paging=true
+        search=true
+        sortBy=sortBy
+        descending=descending
+        headers=headers
+        body=group.projects
+        fullRows=true
+        stickyHeader=false
+        as |sortable kind p|
+      }}
+        {{#if (eq kind "row")}}
+          {{project-row model=p}}
+        {{else if (eq kind "norows")}}
+          <tr class="main-row">
+            <td colspan="{{sortable.fullColspan}}" class="text-center text-muted pt-20 pb-20">{{t 'labelsSection.noData'}}</td>
+          </tr>
+        {{/if}}
+      {{/sortable-table}}
+    </div>
+  </div>
+{{/each}}
+
+
+{{#if byCluster.none.length}}
+  <div class="box mt-20 pt-0">
+    <section class="header has-tabs clearfix">
+      <h1>Not assigned to a Cluster</h1>
+    </section>
+
+    <div style="background-color: white;" class="p-20">
+      {{#sortable-table
+        bulkActions=false
+        paging=true
+        search=true
+        sortBy=sortBy
+        descending=descending
+        headers=headers
+        stickyHeader=false
+        body=byCluster.none
+        fullRows=true
+        as |sortable kind p|
+      }}
+        {{#if (eq kind "row")}}
+          {{project-row model=p}}
+        {{else if (eq kind "norows")}}
+          <tr class="main-row">
+            <td colspan="{{sortable.fullColspan}}" class="text-center text-muted pt-20 pb-20">{{t 'labelsSection.noData'}}</td>
+          </tr>
+        {{/if}}
+      {{/sortable-table}}
+    </div>
+  </div>
+{{/if}}

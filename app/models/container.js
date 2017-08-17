@@ -156,7 +156,7 @@ var Container = Instance.extend(EndpointPorts, {
   }.property('primaryHost.state','desired','state','healthState','healthCheck'),
 
   isOn: function() {
-    return ['running','updating-running','migrating','restarting'].indexOf(this.get('state')) >= 0;
+    return ['running','migrating','restarting'].indexOf(this.get('state')) >= 0;
   }.property('state'),
 
   displayEnvironmentVars: Ember.computed('environment', function() {

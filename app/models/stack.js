@@ -134,16 +134,8 @@ var Stack = Resource.extend(StateCounts, {
   combinedState: function() {
     var stack = this.get('state');
     var health = this.get('healthState');
-    if ( ['active','updating-active'].indexOf(stack) === -1 )
-    {
-      // If the stack isn't active, return its state
-      return stack;
-    }
 
-    // @TODO include individual containers
-    let hasCheck = !!this.get('realServices').findBy('launchConfig.healthCheck')
-
-    if ( hasCheck && health ) {
+    if ( stack === 'active' && health ) {
       return health;
     } else {
       return stack;

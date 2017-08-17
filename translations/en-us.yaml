@@ -443,6 +443,17 @@ certificatesPage:
       description:
         placeholder: e.g. EV cert for mydomain.com
 
+clustersPage:
+  header: Clusters & Environments
+  newCluster: Add Cluster
+  newEnvironment: Add Environment
+  alert: There are no active environments.  You will need to create or activate one before you can do anything else.
+  subtext: |
+    <p>{appName} supports grouping resources into multiple <b>clusters</b> and <b>environments</b>.</p>
+    <p>An <b>environment</b> is a namespace where applications, services, and containers are defined.  The containers in an environment can communicate with each other over a shared managed network, and different users/groups can be given access to manage the resources of the environment.</p>
+    <p>A <b>cluster</b> is a group of physical (or virtual) compute resources.  Each environment is tied to one cluster and will run all of its containers on the hosts of that cluster, and a cluster can be shared with more than one environment.</p>
+    <p>For example, you might create a "production" cluster for each team in your company with bare-metal hosts and a single dedicated environment with restricted access, and a shared "sandbox" cluster with shared virtual machines that any employee can use to create their own isolated dev & test environments.</p>
+
 containerPage:
   header: 'Container: {name}'
   portsTab:
@@ -789,31 +800,6 @@ machinePage:
 notFoundPage:
   header: "The page you were looking for doesn't exist!"
   linkTo: Go Home
-
-projectList:
-  index:
-    header: Environments
-    new: Add Environment
-    subtext: |
-      <p>{appName} supports grouping resources into multiple <b>environments</b>.  Each one gets its own set of services and infrastructure resources, and is owned by one or more users or groups.</p>
-      <p>For example, you might create separate &quot;dev&quot;, &quot;test&quot;, and &quot;production&quot; environments to keep things isolated from each other, and give &quot;dev&quot; access to your entire organization but restrict the &quot;production&quot; environment to a smaller team.</p>
-
-    alert: There are no active environments.  You will need to create or activate one before you can do anything else.
-    table:
-      header:
-        orchestration: Orchestration
-  indexTemplate:
-    header: Environment Templates
-    new: Add Template
-    subtext: |
-      <p>An environment template allows users to define a different combination of infrastructure services to be deployed.</p>
-      <p>The infrastructure services includes but not limited to container orchestration (i.e. cattle, kubernetes, networking) or rancher services (i.e healthcheck, dns, metadata, scheduling, service discovery and storage)</p>
-    table:
-      header:
-        stacks: Stacks
-        isPublic: Public
-      body:
-        noData: "You don't have any environment templates yet"
 
 registriesPage:
   index:

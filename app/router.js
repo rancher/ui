@@ -64,11 +64,11 @@ Router.map(function() {
       this.route('machine');
     });
 
-    // Projects
-    this.route('projects', {path: '/env'}, function() {
+    // Clusters
+    this.route('clusters', {path: '/clusters'}, function() {
       this.route('index', {path: '/'});
-      this.route('new', {path: '/add'});
-      this.route('edit', {path: '/edit/:project_id'});
+      this.route('new-project', {path: '/add-env'});
+      this.route('project', {path: '/env/:project_id'});
     });
 
     // Per-Project
