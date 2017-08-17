@@ -200,7 +200,7 @@ export default Ember.Route.extend(Subscribe, PromiseToCb, {
   },
 
   loadClusters() {
-    return this.get('store').find('cluster', null, {url: 'clusters'});
+    return this.get('userStore').find('cluster', null, {url: 'clusters'});
   },
 
   loadProjects() {

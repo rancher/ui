@@ -8,7 +8,7 @@
 
 {{#unless projects.current}}
   <section>
-    <div class="banner bg-danger">
+    <div class="banner bg-error">
       <div class="banner-icon"><i class="icon icon-alert"></i></div>
       <div class="banner-message"><p>{{t 'clustersPage.alert'}}</p></div>
     </div>
@@ -18,6 +18,37 @@
 <div class="box mt-20 pt-0 pb-0">
   {{t 'clustersPage.subtext' appName=settings.appName htmlSafe=true}}
 </div>
+
+{{#if byCluster.none.length}}
+  <div class="box mt-20 pt-0">
+    <section class="header has-tabs clearfix">
+      <h1>Not assigned to a Cluster</h1>
+    </section>
+
+    <div style="background-color: white;" class="p-20">
+      {{#sortable-table
+        bulkActions=false
+        paging=true
+        search=true
+        sortBy=sortBy
+        descending=descending
+        headers=headers
+        stickyHeader=false
+        body=byCluster.none
+        fullRows=true
+        as |sortable kind p|
+      }}
+        {{#if (eq kind "row")}}
+          {{project-row model=p}}
+        {{else if (eq kind "norows")}}
+          <tr class="main-row">
+            <td colspan="{{sortable.fullColspan}}" class="text-center text-muted pt-20 pb-20">{{t 'labelsSection.noData'}}</td>
+          </tr>
+        {{/if}}
+      {{/sortable-table}}
+    </div>
+  </div>
+{{/if}}
 
 {{#each byCluster.clusters as |group|}}
   <div class="box mt-20 pt-0">
@@ -54,35 +85,3 @@
     </div>
   </div>
 {{/each}}
-
-
-{{#if byCluster.none.length}}
-  <div class="box mt-20 pt-0">
-    <section class="header has-tabs clearfix">
-      <h1>Not assigned to a Cluster</h1>
-    </section>
-
-    <div style="background-color: white;" class="p-20">
-      {{#sortable-table
-        bulkActions=false
-        paging=true
-        search=true
-        sortBy=sortBy
-        descending=descending
-        headers=headers
-        stickyHeader=false
-        body=byCluster.none
-        fullRows=true
-        as |sortable kind p|
-      }}
-        {{#if (eq kind "row")}}
-          {{project-row model=p}}
-        {{else if (eq kind "norows")}}
-          <tr class="main-row">
-            <td colspan="{{sortable.fullColspan}}" class="text-center text-muted pt-20 pb-20">{{t 'labelsSection.noData'}}</td>
-          </tr>
-        {{/if}}
-      {{/sortable-table}}
-    </div>
-  </div>
-{{/if}}
