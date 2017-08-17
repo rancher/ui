@@ -217,7 +217,9 @@ export default Ember.Mixin.create(NewOrEdit, ManageLabels, {
 
       clusterPromise = cluster.save().then(() => {
         project.set('clusterId', cluster.get('id'));
-        return project.save();
+        return project.save().then(() => {
+          return cluster.waitForState('active');
+        });
       });
     }
 

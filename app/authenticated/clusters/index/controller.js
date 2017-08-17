@@ -44,7 +44,7 @@ export default Ember.Controller.extend({
       none,
       clusters
     };
-  }.property('model.project.@each.clusterId','model.clusters.[]'),
+  }.property('model.projects.@each.clusterId','model.clusters.[]'),
 
   sortBy:   'name',
   headers:  [
