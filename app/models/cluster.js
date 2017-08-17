@@ -4,7 +4,7 @@ var Cluster = Resource.extend({
   type: 'cluster',
 
   availableActions: function() {
-    let a = this.get('actionLinks');
+//    let a = this.get('actionLinks');
     let l = this.get('links');
 
     var choices = [

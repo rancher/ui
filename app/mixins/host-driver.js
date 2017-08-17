@@ -6,6 +6,7 @@ import { addAction } from 'ui/utils/add-view-action';
 
 export default Ember.Mixin.create(NewOrEdit, ManageLabels, {
   intl          : Ember.inject.service(),
+  projects      : Ember.inject.service(),
   settings      : Ember.inject.service(),
   createDelayMs : 0,
   showEngineUrl : true,
@@ -204,12 +205,20 @@ export default Ember.Mixin.create(NewOrEdit, ManageLabels, {
 
   doSave() {
     let clusterPromise = Ember.RSVP.resolve();
-    if ( !this.get('projects.current.cluster') ) {
+    let project = this.get('projects.current');
+    if ( !project.get('cluster') ) {
+      let name = project.get('name')||'Default';
+      name = name.replace(/[^a-z0-9-]/gi,''); // Clusters must be valid DNS, but Projects didn't previously need to be
+
       let cluster = this.get('userStore').createRecord({
         type: 'cluster',
-        name: (this.get('projects.current.name')||'Default') + ' Cluster',
+        name: name
       });
-      clusterPromise = cluster.save();
+
+      clusterPromise = cluster.save().then(() => {
+        project.set('clusterId', cluster.get('id'));
+        return project.save();
+      });
     }
 
     let sup = this._super;

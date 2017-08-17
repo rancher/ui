@@ -46,7 +46,8 @@ export default Ember.Component.extend(Driver, {
     getData() {
       let promises = {
         regions:  this.apiRequest('regions'),
-        images:   this.apiRequest('images'),
+        images:   this.apiRequest('images', {params: {type:  'distribution'}}),
+        ros:      this.apiRequest('images/rancheros'),
         sizes:    this.apiRequest('sizes')
       };
 
@@ -67,16 +68,15 @@ export default Ember.Component.extend(Driver, {
         }).sortBy('highMem','memory');
 
         let filteredImages = hash.images.images.filter(function(image) {
-          if ( image.type === 'distribution' || image.slug === 'rancheros' ) {
-            // 64-bit only
-            return !((image.name||'').match(/x32$/));
-          }
-
-          return false;
+          // 64-bit only
+          return !((image.name||'').match(/x32$/));
         }).map(function(image) {
           image.disabled = VALID_IMAGES.indexOf(image.slug) === -1;
           return image;
-        }).sortBy('distribution','name');
+        });
+
+        filteredImages.push(hash.ros.image);
+        filteredImages = filteredImages.sortBy('distribution','name');
 
         this.setProperties({
           regionChoices: filteredRegions,
