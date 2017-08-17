@@ -142,18 +142,25 @@
 
     <div class="mt-20">
       {{#accordion-list-item
-        title=(t 'containerPage.portsTab.header')
-        detail=(t 'containerPage.portsTab.detail')
-        status=(t 'pagination.port' pages=1 count=model.container.publicEndpoints.length)
-        statusClass=(if model.container.publicEndpoints.length 'bg-success' 'text-muted')
-        expandAll=al.expandAll
-        expand=(action expandFn)
-        componentName='container-table'
-        as | parent |
+           title=(t 'containerPage.portsTab.header')
+           detail=(t 'containerPage.portsTab.detail')
+           status=(t 'pagination.port' pages=1 count=model.container.publicEndpoints.length)
+           statusClass=(if model.container.publicEndpoints.length 'bg-success' 'text-muted')
+           expandAll=al.expandAll
+           expand=(action expandFn)
       }}
-        {{compontent parent.intent
-          model=model.container
+        {{container/form-ports
+            initialPorts=model.container.ports
+            editing=false
         }}
+        <hr/>
+        <div class="mt-20">
+          <label class="acc-label">{{t 'containerPage.portsTab.header'}}</label>
+          {{public-endpoints
+              model=model.container
+          }}
+        </div>
+
       {{/accordion-list-item}}
     </div>
 

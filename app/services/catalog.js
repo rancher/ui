@@ -113,15 +113,9 @@ export default Ember.Service.extend({
   },
 
   filter(data, category, templateBase, plusInfra) {
-    let bases = [];
+    let bases = [templateBase];
 
     category = (category||'all').toLowerCase();
-
-    if ( templateBase === 'cattle' ) {
-      bases.push('');
-    } else {
-      bases.push(templateBase);
-    }
 
     if ( plusInfra ) {
       bases.push(C.EXTERNAL_ID.KIND_INFRA);
@@ -137,7 +131,7 @@ export default Ember.Service.extend({
         return false;
       }
 
-      if ( !bases.includes(tpl.get('templateBase')||'') ) {
+      if ( !bases.includes(tpl.get('templateBase')) ) {
         return false;
       }
 

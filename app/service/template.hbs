@@ -113,12 +113,18 @@
            statusClass=(if model.container.publicEndpoints.length 'bg-success' 'text-muted')
            expandAll=al.expandAll
            expand=(action expandFn)
-           componentName='public-endpoints'
-           as | parent |
       }}
-        {{component parent.intent
-          model=model.service
+        {{container/form-ports
+            initialPorts=model.service.launchConfig.ports
+            editing=false
         }}
+        <hr/>
+        <div class="mt-20">
+          <label class="acc-label">{{t 'containerPage.portsTab.header'}}</label>
+          {{public-endpoints
+              model=model.service
+          }}
+        </div>
       {{/accordion-list-item}}
 
       {{#accordion-list-item

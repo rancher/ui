@@ -73,13 +73,14 @@ export default Ember.Controller.extend({
   }),
 
   categoryWithCounts: Ember.computed('category', 'categories', function() {
-    var categories = [];
-    var out        = {};
-    var templates  = this.get('catalog.templateCache');
-    var base       = this.get('catalog.templateBase');
+    let categories = [];
+    let out        = {};
+    let templates  = this.get('catalog.templateCache');
+    let base       = this.get('catalog.templateBase');
 
     templates.forEach((tpl) => {
-      if (base.includes(tpl.get('templateBase')||'')) {
+
+      if (base === tpl.get('templateBase') || tpl.get('templateBase') === 'infra') {
         if (tpl.categories) {
 
           tpl.categories.forEach((ctgy) => {
@@ -91,6 +92,7 @@ export default Ember.Controller.extend({
 
     categories.sort().forEach((ctgy) => {
       let normalized = ctgy.underscore();
+
 
       if (out[normalized] && ctgy !== 'all') {
         out[normalized].count++;
@@ -124,14 +126,21 @@ export default Ember.Controller.extend({
   }),
 
   arrangedContent: Ember.computed('model.catalog', 'search', function() {
-    var search = this.get('search').toUpperCase();
-    var result = [];
+    let search  = this.get('search').toUpperCase();
+    let result  = [];
+    let base    = this.get('catalog.templateBase');
+    let catalog = this.get('model.catalog').filter((item) => {
+      if (item.templateBase === base || item.templateBase === 'infra') {
+        return true;
+      }
+      return false;
+    });
 
     if (!search) {
-      return this.get('model.catalog');
+      return catalog;
     }
 
-    this.get('model.catalog').forEach((item) => {
+    catalog.forEach((item) => {
       if (item.name.toUpperCase().indexOf(search) >= 0 || item.description.toUpperCase().indexOf(search) >= 0) {
         result.push(item);
       }
