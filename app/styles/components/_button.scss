@@ -107,6 +107,7 @@ button,
 .btn-xs .btn-label {
     padding: $xs-padding;
     font-size: .65em;
+    line-height: 1.5em;
 }
 
 .btn-sm,
@@ -144,20 +145,27 @@ fieldset[disabled] .btn {
     vertical-align: middle;
     text-align: center;
 
-    .btn,  .btn-xs{
+    :first-child .btn {
+      border-radius: 1.5px 0 0 1.5px;
+      margin-left: 2px;
+    }
+
+    :last-child .btn {
+      border-radius: 0 1.5px 1.5px 0;
+    }
+
+     .btn,   .btn-xs{
         position: relative;
         display: inline-block;
-        border-radius: 0;
-        float: left;
-        margin-left: -1px;
 
-        &:first-child {
-            border-radius: 1.5px 0 0 1.5px;
-            margin-left: 2px;
-        }
-        &:last-child {
-            border-radius: 0 1.5px 1.5px 0;
-        }
+      > &:first-child {
+          border-radius: 1.5px 0 0 1.5px;
+          margin-left: 2px;
+      }
+      > &:last-child {
+          border-radius: 0 1.5px 1.5px 0;
+      }
+
         &.active {
             @extend .bg-primary;
         }
