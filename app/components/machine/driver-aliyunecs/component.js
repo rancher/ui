@@ -17,11 +17,11 @@ export default Ember.Component.extend(Driver, {
 
 
   bootstrap: function() {
-    let config = this.get('store').createRecord({
+    let config = this.get('userStore').createRecord({
       type: 'aliyunecsConfig',
     });
 
-    this.set('model', this.get('store').createRecord({
+    this.set('model', this.get('userStore').createRecord({
       type:         'hostTemplate',
       driver:       'aliyunecs',
       publicValues: {

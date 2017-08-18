@@ -23,6 +23,7 @@ export default Ember.Service.extend({
 
   machineDrivers: null,
   defaultDriver: '',
+
   loadAllDrivers() {
     let us = this.get('userStore');
     let drivers = [];
@@ -45,6 +46,7 @@ export default Ember.Service.extend({
       return Ember.RSVP.resolve(drivers);
     });
   },
+
   getHost(hostId) {
     let store = this.get('store');
     return store.find('host', hostId).then((host) => {
@@ -61,6 +63,7 @@ export default Ember.Service.extend({
       return Ember.RSVP.reject({type: 'error', message: 'Failed to retrieve cloned model'}) ;
     });
   },
+
   getModel(params=null) {
     let promises = {
       reloadHost: this.get('userStore').find('schema','host', {forceReload: true}),
@@ -90,27 +93,10 @@ export default Ember.Service.extend({
         hash.availableDrivers = [];
       }
 
-      // This was used when we may not have a direct link to the add host but since we no longer have a way to get to hosts added
-      // without a direct link its causing problems. but we may need it in the future.
-      // let defaultDriver = this.get('defaultDriver');
-      // let targetDriver = params && params.driver ? params.driver :  defaultDriver;
-
-      // if ( ['custom','other'].indexOf(targetDriver) === -1 && hash.availableDrivers.filterBy('name', targetDriver).length === 0 )
-      // {
-      //   targetDriver = defaultDriver;
-      // }
-
-      // if (params && params.driver !== targetDriver )
-      // {
-      //   return {transition: true, driver: targetDriver};
-      // }
-      // else
-      // {
-      //   return Ember.Object.create(hash);
-      // }
       return Ember.Object.create(hash);
     });
   },
+
   // Loads the custom UI CSS/JS for drivers that have a uiUrl,
   loadCustomUi() {
     return new Ember.RSVP.Promise((resolve, reject) => {
@@ -162,5 +148,4 @@ export default Ember.Service.extend({
       }
     });
   },
-
 });

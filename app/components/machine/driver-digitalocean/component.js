@@ -105,14 +105,14 @@ export default Ember.Component.extend(Driver, {
   },
 
   bootstrap: function() {
-    let config = this.get('store').createRecord({
+    let config = this.get('userStore').createRecord({
       type        : 'digitaloceanConfig',
       size        : '1gb',
       region      : 'nyc3',
       image       : 'ubuntu-16-04-x64'
     });
 
-    this.set('model', this.get('store').createRecord({
+    this.set('model', this.get('userStore').createRecord({
       type:         'hostTemplate',
       driver:       'digitalocean',
       publicValues: {

@@ -181,6 +181,8 @@ export default Ember.Mixin.create(NewOrEdit, ManageLabels, {
   }.property('displayLocation','displaySize'),
 
   willSave() {
+    this.set('primaryResource.clusterId', this.get('cluster.id'));
+
     if ( this.get('primaryResource.type').toLowerCase() === 'hosttemplate') {
      if ( !this.get('primaryResource.description') ) {
        this.set('primaryResource.description', this.get('defaultDescription'));
@@ -204,32 +206,11 @@ export default Ember.Mixin.create(NewOrEdit, ManageLabels, {
   },
 
   doSave() {
-    let clusterPromise = Ember.RSVP.resolve();
-    let project = this.get('projects.current');
-    if ( !project.get('cluster') ) {
-      let name = (project.get('name')||'Default')+'-Cluster';
-      name = name.replace(/[^a-z0-9-]/gi,'-'); // Clusters must be valid DNS, but Projects didn't previously need to be
-
-      let cluster = this.get('userStore').createRecord({
-        type: 'cluster',
-        name: name
-      });
-
-      clusterPromise = cluster.save().then(() => {
-        project.set('clusterId', cluster.get('id'));
-        return project.save();
-      });
+    if ( this.get('primaryResource.type').toLowerCase() === 'hosttemplate' ) {
+      return this._super(...arguments);
+    } else {
+      return Ember.RSVP.resolve(this.get('primaryResource'));
     }
-
-    let sup = this._super;
-
-    return clusterPromise.then(() => {
-      if ( this.get('primaryResource.type').toLowerCase() === 'hosttemplate' ) {
-        return sup.apply(this);
-      } else {
-        return Ember.RSVP.resolve(this.get('primaryResource'));
-      }
-    });
   },
 
   didSave() {
@@ -239,10 +220,11 @@ export default Ember.Mixin.create(NewOrEdit, ManageLabels, {
     let tpl;
 
     if ( this.get('primaryResource.type').toLowerCase() === 'hosttemplate') {
-      tpl = this.get('store').createRecord({
+      tpl = this.get('userStore').createRecord({
         type: 'host',
         driver: this.get('model.driver'),
         hostTemplateId: this.get('model.id'),
+        clusterId: this.get('model.clusterId'),
       });
 
       return addHosts();

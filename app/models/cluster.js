@@ -1,7 +1,8 @@
 import Ember from 'ember';
 import Resource from 'ember-api-store/models/resource';
+import PolledResource from 'ui/mixins/cattle-polled-resource';
 
-var Cluster = Resource.extend({
+var Cluster = Resource.extend(PolledResource, {
   modalService: Ember.inject.service('modal'),
 
   type: 'cluster',

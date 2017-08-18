@@ -27,14 +27,14 @@ export default Ember.Component.extend(Driver, {
   storageTypeChoices: storageTypes.sortBy('name'),
 
   bootstrap: function() {
-    let config = this.get('store').createRecord({
+    let config = this.get('userStore').createRecord({
       type             : 'azureConfig',
       subscriptionId   : '',
       clientId         : '',
       openPort         : ['500/udp','4500/udp'],
     });
 
-    this.set('model', this.get('store').createRecord({
+    this.set('model', this.get('userStore').createRecord({
       type:         'hostTemplate',
       driver:       'azure',
       publicValues: {

@@ -6,30 +6,28 @@ export default Ember.Route.extend({
 
   beforeModel() {
     return this.get('userStore').findAll('machineDriver').then((drivers) => {
-      let acd = drivers.filter((driver) => {
+      let activeDrivers = drivers.filter((driver) => {
         if (C.ACTIVEISH_STATES.indexOf(driver.get('state')) >= 0) {
           return true;
         }
         return false;
       });
 
-      if (acd.get('length')) {
+      if (activeDrivers.get('length')) {
         return Ember.RSVP.resolve();
       } else {
-        this.transitionTo('authenticated.clusters.cluster.host-custom', this.get('projects.currentCluster.id'));
+        this.transitionTo('authenticated.clusters.cluster.host-new', this.get('projects.currentCluster.id'), {queryParams: {driver: 'custom'}});
       }
     });
   },
-  model(/* params */) {
 
+  model(/*params,transition*/) {
     return this.get('store').findAll('hostTemplate').then((templates) => {
       if ( templates.get('length') ) {
         return templates;
       } else {
-        this.transitionTo('hosts.new');
+        this.transitionTo('authenticated.clusters.cluster.host-new');
       }
-
     });
-
   }
 });

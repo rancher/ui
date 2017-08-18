@@ -3,6 +3,7 @@ import C from 'ui/utils/constants';
 
 export default Ember.Controller.extend({
   settings: Ember.inject.service(),
+  projects: Ember.inject.service(),
 
   modelError: false,
   modelResolved: false,
