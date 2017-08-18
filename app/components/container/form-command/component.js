@@ -3,11 +3,14 @@ import C from 'ui/utils/constants';
 import ManageLabels from 'ui/mixins/manage-labels';
 import { STATUS, STATUS_INTL_KEY, classForStatus } from 'ui/components/accordion-list-item/component';
 
+const STOP_TIMEOUT = 10;
+
 export default Ember.Component.extend(ManageLabels, {
   // Inputs
-  instance: null,
-  errors: null,
-  editing: true,
+  instance:           null,
+  errors:             null,
+  editing:            true,
+  defaultStopTimeout: STOP_TIMEOUT,
 
   intl: Ember.inject.service(),
 
@@ -186,6 +189,56 @@ export default Ember.Component.extend(ManageLabels, {
     'splunk',
     'syslog',
   ],
+  stopSignals: [
+    {
+      label: 'formCommand.stopSignal.sigup',
+      value: 'SIGUP',
+    },
+    {
+      label: 'formCommand.stopSignal.sigint',
+      value: 'SIGINT',
+    },
+    {
+      label: 'formCommand.stopSignal.sigquit',
+      value: 'SIGQUIT',
+    },
+    {
+      label: 'formCommand.stopSignal.sigkill',
+      value: 'SIGKILL',
+    },
+    {
+      label: 'formCommand.stopSignal.sigusr1',
+      value: 'SIGUSR1',
+    },
+    {
+      label: 'formCommand.stopSignal.sigusr2',
+      value: 'SIGUSR2',
+    },
+    {
+      label: 'formCommand.stopSignal.sigterm',
+      value: 'SIGTERM',
+    },
+    {
+      label: 'formCommand.stopSignal.custom.label',
+      value: 'custom',
+    },
+  ],
+  customStopSet: false,
+  stopOrCustom: Ember.computed({
+    get(/* key */) {
+      return this.get('instance.stopSignal');
+    },
+    set(key,value) {
+      if (value === 'custom') {
+        this.set('customStopSet', true);
+        return this.set('instance.stopSignal', null);
+      }
+      if (this.get('customStopSet')) {
+        this.set('customStopSet', false);
+      }
+      return this.set('instance.stopSignal', value);
+    }
+  }),
 
   hasLogConfig: Ember.computed('instance.logConfig.config', function() {
     return Ember.isEmpty(this.get('instance.logConfig.config'));
