@@ -6,8 +6,8 @@
       expandAll=expandAll
       expand=(action expandFn)
 }}
-  <div class="row">
-    <div class="col span-4 col-inline">
+  <div class="row box">
+    <div class="col span-4">
       <label class="acc-label">{{t 'formSecurity.pullImage.label'}}</label>
       {{#if editing}}
         <div class="radio">
@@ -26,7 +26,7 @@
       {{/if}}
     </div>
     {{#unless projects.current.isWindows}}
-      <div class="col span-4 col-inline">
+      <div class="col span-4">
         <label class="acc-label">{{t 'formSecurity.privileged.label'}}</label>
         {{#input-or-display editable=editing value=instance.privileged}}
           <div class="radio">
@@ -37,7 +37,7 @@
           </div>
         {{/input-or-display}}
       </div>
-      <div class="col span-4 col-inline">
+      <div class="col span-4">
         <label class="acc-label">{{t 'formSecurity.pidMode.label'}}</label>
         {{#input-or-display editable=editing value=pidHost}}
           <div class="radio">
@@ -51,10 +51,8 @@
     {{/unless}}
   </div>
 
-  <hr/>
-
   {{#if projects.current.isWindows}}
-    <div class="row">
+    <div class="row box mt-20">
       <label class="acc-label">{{t 'formSecurity.isolation.label'}}</label>
       {{#input-or-display editable=editing value=instance.isolation}}
         {{new-select
@@ -65,8 +63,8 @@
       {{/input-or-display}}
     </div>
   {{else}}
-    <div class="row">
-      <div class="col span-4 col-inline">
+    <div class="row box mt-20">
+      <div class="col span-4">
         <label class="acc-label">{{t 'formSecurity.memoryLimit.label'}}</label>
         {{#input-or-display editable=editing value=memoryMode classesForDisplay="text-muted form-control-static"}}
           <div class="radio">
@@ -86,7 +84,7 @@
         {{/input-or-display}}
       </div>
 
-      <div class="col span-4 col-inline">
+      <div class="col span-4">
         <label class="acc-label">{{t 'formSecurity.swapLimit.label'}}</label>
         {{#input-or-display editable=editing value=swapMode classesForDisplay="text-muted form-control-static"}}
           <div class="radio">
@@ -112,7 +110,7 @@
         {{/input-or-display}}
       </div>
 
-      <div class="col span-4 col-inline">
+      <div class="col span-4">
         <label class="acc-label">{{t 'formSecurity.swappiness.label'}}</label>
         {{#input-or-display editable=editing value=swappinessMode classesForDisplay="text-muted form-control-static"}}
           <div class="radio">

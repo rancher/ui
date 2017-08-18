@@ -3,7 +3,7 @@
     {{t 'servicePage.header' type=service.displayType name=service.displayName}}
   </h1>
   {{#if (and service.canHaveContainers (not service.isSelector))}}
-    <div class="pull-left mt-5">
+    <div class="pull-left">
       {{info-multi-stats model=service largeTargetId="largeStats"}}
     </div>
   {{/if}}
@@ -52,7 +52,7 @@
         </span>
         <div class="btn-group btn-group-xs p-0" style="vertical-align: middle;">
           <button class="btn btn-xs bg-primary" {{action "scaleDown" target=service}} disabled={{not service.canScaleDown}}><i class="icon icon-minus icon-fw"/></button>
-          <button style="margin-left:2px;" class="btn btn-xs bg-primary" {{action "scaleUp" target=service}} disabled={{not service.canScaleUp}}><i class="icon icon-plus icon-fw"/></button>
+          <button style="margin-left: -5px;" class="btn btn-xs bg-primary" {{action "scaleUp" target=service}} disabled={{not service.canScaleUp}}><i class="icon icon-plus icon-fw"/></button>
         </div>
       </div>
     {{/if}}
