@@ -5,6 +5,7 @@ import Util from 'ui/utils/util';
 
 const DIGITALOCEAN_API = 'api.digitalocean.com/v2';
 const VALID_IMAGES = [
+  'rancheros',
 //  'centos-6-x64',
   'centos-7-x64',
   'coreos-alpha',
@@ -46,6 +47,7 @@ export default Ember.Component.extend(Driver, {
       let promises = {
         regions:  this.apiRequest('regions'),
         images:   this.apiRequest('images', {params: {type:  'distribution'}}),
+        ros:      this.apiRequest('images/rancheros'),
         sizes:    this.apiRequest('sizes')
       };
 
@@ -71,7 +73,10 @@ export default Ember.Component.extend(Driver, {
         }).map(function(image) {
           image.disabled = VALID_IMAGES.indexOf(image.slug) === -1;
           return image;
-        }).sortBy('distribution','name');
+        });
+
+        filteredImages.push(hash.ros.image);
+        filteredImages = filteredImages.sortBy('distribution','name');
 
         this.setProperties({
           regionChoices: filteredRegions,

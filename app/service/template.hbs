@@ -131,11 +131,11 @@
           title=(t 'servicePage.logTab.title')
           detail=(t 'servicePage.logTab.detail')
           status=(t 'pagination.event' pages=1 count=(or model.logs.length 0))
-          statusClass=(if model.logs.arrangedContent.length 'bg-success' 'text-muted')
+          statusClass=(if model.logs.length 'bg-success' 'text-muted')
           expandAll=al.expandAll
           expand=(action expandFn)
       }}
-        {{service-log logs=model.logs.arrangedContent}}
+        {{service-log logs=model.logs}}
       {{/accordion-list-item}}
 
       {{container/form-scheduling
@@ -154,7 +154,7 @@
       {{#accordion-list-item
            title=(t 'servicePage.linksTab.header')
            detail=(t 'servicePage.linksTab.detail')
-           status=(t 'pagination.links' pages=1 count=service.consumedServicesWithNames.length)
+           status=(t 'pagination.link' pages=1 count=service.consumedServicesWithNames.length)
            statusClass=(if service.consumedServicesWithNames.length 'bg-success' 'text-muted')
            expandAll=al.expandAll
            expand=(action expandFn)
@@ -179,6 +179,8 @@
           expandFn=expandFn
       }}
     {{/if}}
+
+    <hr/>
 
     {{#if service.hasSidekicks}}
       <hr/>

@@ -1,0 +1,130 @@
+<section class="header has-tabs clearfix">
+  <h1>{{t 'clustersPage.header'}}</h1>
+
+  <div class="right-buttons">
+    <button class="btn bg-primary btn-sm" {{action "newCluster"}}>{{t 'clustersPage.newCluster'}}</button>
+  </div>
+</section>
+
+{{#unless projects.current}}
+  <section>
+    <div class="banner bg-error">
+      <div class="banner-icon"><i class="icon icon-alert"></i></div>
+      <div class="banner-message"><p>{{t 'clustersPage.alert'}}</p></div>
+    </div>
+  </section>
+{{/unless}}
+
+<div class="box mt-20 pt-0 pb-0">
+  {{t 'clustersPage.subtext' appName=settings.appName htmlSafe=true}}
+</div>
+
+{{#if byCluster.none.length}}
+  <div class="box mt-20 pt-0">
+    <section class="header has-tabs clearfix">
+      <h1>Environments not assigned to a Cluster yet</h1>
+    </section>
+
+    <div style="background-color: white;" class="p-20">
+      {{#sortable-table
+        bulkActions=true
+        paging=true
+        pagingLabel="pagination.project"
+        search=true
+        sortBy=sortBy
+        descending=descending
+        headers=headers
+        stickyHeader=false
+        body=byCluster.none
+        fullRows=true
+        as |sortable kind p dt|
+      }}
+        {{#if (eq kind "row")}}
+          {{project-row model=p dt=dt}}
+        {{else if (eq kind "norows")}}
+          <tr class="main-row">
+            <td colspan="{{sortable.fullColspan}}" class="text-center text-muted pt-20 pb-20">{{t 'labelsSection.noData'}}</td>
+          </tr>
+        {{/if}}
+      {{/sortable-table}}
+    </div>
+  </div>
+{{/if}}
+
+{{#each byCluster.clusters as |group|}}
+  <div class="box mt-20 pt-0">
+    <section class="header has-tabs clearfix">
+      <h1>{{t 'generic.cluster'}}: {{group.cluster.displayName}}</h1>
+      {{badge-state model=group.cluster}}
+
+      <div class="right-buttons">
+        {{#link-to "authenticated.clusters.cluster.import" group.cluster.id class="btn btn-sm bg-transparent"}}{{t 'clustersPage.import'}}{{/link-to}}
+        {{#link-to "authenticated.clusters.cluster.host-templates" group.cluster.id class="btn btn-sm bg-transparent"}}{{t 'clustersPage.newHost'}}{{/link-to}}
+        {{#link-to "authenticated.clusters.new-project" (query-params clusterId=group.cluster.id) class="btn btn-sm bg-primary"}}{{t 'clustersPage.newProject'}}{{/link-to}}
+        {{action-menu model=group.cluster showPrimary=false classNames="ml-10 inline-block" size="sm"}}
+      </div>
+    </section>
+
+    <div class="row text-center">
+      <div class="col span-1-of-11 text-right">
+        <i class="icon icon-2x icon-host"></i>
+        <h4>Hosts</h4>
+      </div>
+      <div class="col span-1-of-11 text-left">
+        <h1>{{group.cluster.numHosts}}</h1>
+        <h5 class="text-muted" style="position: relative; top: -13px;">Total</h5>
+      </div>
+
+      <div class="col span-1-of-11 offset-1 text-right">
+        <i class="icon icon-2x icon-cpu"></i>
+        <h4>CPU Cores</h4>
+      </div>
+      <div class="col span-1-of-11 text-left">
+        <h1>{{group.cluster.numGhz}}</h1>
+        <h5 class="text-muted" style="position: relative; top: -13px;">Total GHz</h5>
+      </div>
+
+      <div class="col span-1-of-11 offset-1 text-right">
+        <i class="icon icon-2x icon-memory"></i>
+        <h4>Memory</h4>
+      </div>
+      <div class="col span-1-of-11 text-left">
+        <h1>{{group.cluster.numMem}}</h1>
+        <h5 class="text-muted" style="position: relative; top: -13px;">Total GB</h5>
+      </div>
+
+      <div class="col span-1-of-11 offset-1 text-right">
+        <i class="icon icon-2x icon-hdd"></i>
+        <h4>Storage</h4>
+      </div>
+      <div class="col span-1-of-11 text-left">
+        <h1>{{group.cluster.numStorage}}</h1>
+        <h5 class="text-muted" style="position: relative; top: -13px;">Total GB</h5>
+      </div>
+    </div>
+
+    <div style="background-color: white;" class="p-20">
+      {{#sortable-table
+        bulkActions=true
+        paging=true
+        pagingLabel="pagination.project"
+        search=true
+        sortBy=sortBy
+        descending=descending
+        headers=headers
+        body=group.projects
+        fullRows=true
+        stickyHeader=false
+        as |sortable kind p dt|
+      }}
+        {{#if (eq kind "row")}}
+          {{project-row model=p dt=dt}}
+        {{else if (eq kind "norows")}}
+          <tr class="main-row">
+            <td colspan="{{sortable.fullColspan}}" class="text-center text-muted pt-20 pb-20">{{t 'labelsSection.noData'}}</td>
+          </tr>
+        {{/if}}
+      {{/sortable-table}}
+    </div>
+  </div>
+{{/each}}

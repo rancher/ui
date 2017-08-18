@@ -28,7 +28,7 @@ export default Ember.Route.extend({
         });
 
         if (acd.length) {
-          this.transitionTo('hosts.templates');
+          this.transitionTo('authenticated.clusters.cluster.host-templates', this.get('projects.currentCluster.id'));
         } else {
           this.transitionTo('hosts.index');
         }

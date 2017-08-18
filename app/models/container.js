@@ -139,25 +139,24 @@ var Container = Instance.extend(EndpointPorts, {
   }),
 
   combinedState: function() {
+    var host = this.get('primaryHost.state');
     var resource = this.get('state');
     var health = this.get('healthState');
     var hasCheck = !!this.get('healthCheck');
 
-    if ( resource === 'stopped' && this.get('desired') === false ) {
+    if ( !hasCheck && C.DISCONNECTED_STATES.includes(host) ) {
+      return 'unknown';
+    } else if ( resource === 'stopped' && this.get('desired') === false ) {
       return 'pending-delete';
-    } else if ( C.ACTIVEISH_STATES.includes(resource) ) {
-      if ( hasCheck && health ) {
-        return health;
-      } else {
-        return resource;
-      }
+    } else if ( C.ACTIVEISH_STATES.includes(resource) && health ) {
+      return health;
     } else {
       return resource;
     }
-  }.property('desired', 'state', 'healthState','healthCheck'),
+  }.property('primaryHost.state','desired','state','healthState','healthCheck'),
 
   isOn: function() {
-    return ['running','updating-running','migrating','restarting'].indexOf(this.get('state')) >= 0;
+    return ['running','migrating','restarting'].indexOf(this.get('state')) >= 0;
   }.property('state'),
 
   displayEnvironmentVars: Ember.computed('environment', function() {

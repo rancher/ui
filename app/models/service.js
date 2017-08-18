@@ -229,20 +229,14 @@ var Service = Resource.extend(StateCounts, EndpointPorts, {
     var service = this.get('state');
     var health = this.get('healthState');
 
-    if ( ['active','updating-active'].indexOf(service) === -1 )
-    {
-      // If the service isn't active, return its state
-      return service;
-    }
-
-    let hasCheck = !!this.get('launchConfig.healthCheck');
-
-    if ( hasCheck && health ) {
+    if ( service === 'active' && health ) {
+      // Return the health state for active services
       return health;
-    } else {
-      return service;
     }
-  }.property('state', 'healthState', 'launchConfig.healthCheck'),
+
+    // Return the service for anything else
+    return service;
+  }.property('state', 'healthState'),
 
   isGlobalScale: function() {
     return (this.get('launchConfig.labels')||{})[C.LABEL.SCHED_GLOBAL] + '' === 'true';

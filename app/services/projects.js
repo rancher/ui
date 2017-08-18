@@ -1,7 +1,7 @@
 import Ember from 'ember';
 import C from 'ui/utils/constants';
 
-let ACTIVEISH = ['active','upgrading','updating-active'];
+let ACTIVEISH = ['active','upgrading'];
 
 export default Ember.Service.extend({
   access: Ember.inject.service(),
@@ -13,6 +13,8 @@ export default Ember.Service.extend({
 
   current: null,
   all: null,
+
+  currentCluster: Ember.computed.alias('current.cluster'),
 
   active: function() {
     return this.get('all').filter((project) => {

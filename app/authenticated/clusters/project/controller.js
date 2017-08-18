@@ -5,11 +5,11 @@ export default Ember.Controller.extend({
 
   actions: {
     done() {
-      this.transitionToRoute('authenticated.projects');
+      this.transitionToRoute('authenticated.clusters');
     },
 
     cancel() {
-      this.transitionToRoute('authenticated.projects');
+      this.transitionToRoute('authenticated.clusters');
     },
   },
 });

@@ -6,6 +6,7 @@ import { addAction } from 'ui/utils/add-view-action';
 
 export default Ember.Mixin.create(NewOrEdit, ManageLabels, {
   intl          : Ember.inject.service(),
+  projects      : Ember.inject.service(),
   settings      : Ember.inject.service(),
   createDelayMs : 0,
   showEngineUrl : true,
@@ -203,11 +204,32 @@ export default Ember.Mixin.create(NewOrEdit, ManageLabels, {
   },
 
   doSave() {
-    if ( this.get('primaryResource.type').toLowerCase() === 'hosttemplate' ) {
-      return this._super(...arguments);
-    } else {
-      return Ember.RSVP.resolve(this.get('primaryResource'));
+    let clusterPromise = Ember.RSVP.resolve();
+    let project = this.get('projects.current');
+    if ( !project.get('cluster') ) {
+      let name = (project.get('name')||'Default')+'-Cluster';
+      name = name.replace(/[^a-z0-9-]/gi,'-'); // Clusters must be valid DNS, but Projects didn't previously need to be
+
+      let cluster = this.get('userStore').createRecord({
+        type: 'cluster',
+        name: name
+      });
+
+      clusterPromise = cluster.save().then(() => {
+        project.set('clusterId', cluster.get('id'));
+        return project.save();
+      });
     }
+
+    let sup = this._super;
+
+    return clusterPromise.then(() => {
+      if ( this.get('primaryResource.type').toLowerCase() === 'hosttemplate' ) {
+        return sup.apply(this);
+      } else {
+        return Ember.RSVP.resolve(this.get('primaryResource'));
+      }
+    });
   },
 
   didSave() {
@@ -215,6 +237,7 @@ export default Ember.Mixin.create(NewOrEdit, ManageLabels, {
     let parts = this.get('nameParts');
     let delay = this.get('createDelayMs');
     let tpl;
+
     if ( this.get('primaryResource.type').toLowerCase() === 'hosttemplate') {
       tpl = this.get('store').createRecord({
         type: 'host',
@@ -222,10 +245,7 @@ export default Ember.Mixin.create(NewOrEdit, ManageLabels, {
         hostTemplateId: this.get('model.id'),
       });
 
-      // The hostTemplate was the first one, wait for it then add hosts
-      return this.get('model').waitForState('active').then(() => {
-        return addHosts();
-      });
+      return addHosts();
     } else {
       // The model was the first one, add subsequent numbers
       tpl = this.get('multiTemplate');

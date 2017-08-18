@@ -169,17 +169,6 @@ export default Ember.Component.extend(NewOrEdit, {
   ),
 
   // ----------------------------------
-  // Disks
-  // ----------------------------------
-  storageDriverChoices: function() {
-    return (this.get('allStoragePools')||[])
-            .map((pool) => { return pool.get('driverName'); })
-            .filter((name) => { return C.VM_CAPABLE_STORAGE_DRIVERS.indexOf(name) >= 0; })
-            .uniq()
-            .sort();
-  }.property('allStoragePools.@each.driverName'),
-
-  // ----------------------------------
   // Save
   // ----------------------------------
   validate() {

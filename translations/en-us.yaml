@@ -12,6 +12,7 @@ generic:
   as: As
   cancel: Cancel
   closeModal: Close
+  cluster: Cluster
   command: Command
   collapseAll: Collapse All
   confirm: Confirm
@@ -58,7 +59,9 @@ generic:
   seconds: seconds
   select: Select
   service: Service
+  services: Services
   stack: Stack
+  stacks: Stacks
   state: State
   test: Test
   testing: Testing
@@ -443,6 +446,21 @@ certificatesPage:
       description:
         placeholder: e.g. EV cert for mydomain.com
 
+clustersPage:
+  header: Clusters & Environments
+  newCluster: Add Cluster
+  newProject: Add Environment
+  import: Import External
+  newHost: Add Host
+  alert: There are no active environments.  You will need to create or activate one before you can do anything else.
+  subtext: |
+    <p>{appName} supports grouping resources into multiple <b>clusters</b> and <b>environments</b>.</p>
+    <p>An <b>environment</b> is a namespace where applications, services, and containers are defined.  The containers in an environment can communicate with each other over a shared managed network, and different users/groups can be given access to manage the resources of the environment.</p>
+    <p>A <b>cluster</b> is a group of physical (or virtual) compute resources.  Each environment is tied to one cluster and will run all of its containers on the hosts of that cluster, and a cluster can be shared with more than one environment.</p>
+    <p>For example, you might create a "production" cluster for each team in your company with bare-metal hosts and a single dedicated environment with restricted access, and a shared "sandbox" cluster with shared virtual machines that any employee can use to create their own isolated dev & test environments.</p>
+  environment:
+    label: Environment Name
+
 containerPage:
   header: 'Container: {name}'
   portsTab:
@@ -789,31 +807,6 @@ machinePage:
 notFoundPage:
   header: "The page you were looking for doesn't exist!"
   linkTo: Go Home
-
-projectList:
-  index:
-    header: Environments
-    new: Add Environment
-    subtext: |
-      <p>{appName} supports grouping resources into multiple <b>environments</b>.  Each one gets its own set of services and infrastructure resources, and is owned by one or more users or groups.</p>
-      <p>For example, you might create separate &quot;dev&quot;, &quot;test&quot;, and &quot;production&quot; environments to keep things isolated from each other, and give &quot;dev&quot; access to your entire organization but restrict the &quot;production&quot; environment to a smaller team.</p>
-
-    alert: There are no active environments.  You will need to create or activate one before you can do anything else.
-    table:
-      header:
-        orchestration: Orchestration
-  indexTemplate:
-    header: Environment Templates
-    new: Add Template
-    subtext: |
-      <p>An environment template allows users to define a different combination of infrastructure services to be deployed.</p>
-      <p>The infrastructure services includes but not limited to container orchestration (i.e. cattle, kubernetes, networking) or rancher services (i.e healthcheck, dns, metadata, scheduling, service discovery and storage)</p>
-    table:
-      header:
-        stacks: Stacks
-        isPublic: Public
-      body:
-        noData: "You don't have any environment templates yet"
 
 registriesPage:
   index:
@@ -1401,6 +1394,17 @@ editCertificate:
   description:
     placeholder: e.g. EV cert for mydomain.com
   noteKeyWriteOnly: "Note: The Private Key is intentionally blank because the field is write-only.  You will do not need to provide the Private Key unless you are intending on changing it."
+
+editCluster:
+  title:
+    new: New Cluster
+    edit: Edit Cluster
+  name:
+    label: Name
+    placeholder: e.g. Sandbox
+  description:
+    label: Description
+    placeholder: e.g. Shared cluster for development
 
 editContainer:
   title:
@@ -2456,9 +2460,9 @@ machine:
   driverCustom:
     prep: Prepare host
     instructions: 'Copy, paste, and run the command below to register a host running a <a href="{docsBase}/hosts/#supported-docker-versions" target="_blank">supported version</a> of Docker with {appName}.  The host should pop up within a minute.'
-    advanced: Advanced options not needed for typical installations
     detail:
       ip: The IP address to register the host with typically will be detected automatically.
+      ipLabel: Registration IP Address
       manual: 'If the host is behind a NAT or the same machine that is running the <code>{rancherImage}</code> container you may need to explicitly specify the IP to use in the advanced section below.'
       firewall: The host agent initiates a connection to the server, so make sure firewalls or security groups allow it to reach the URL in the command.
       networking: All hosts in the environment will also need to allow traffic between each other for cross-host networking
@@ -3129,6 +3133,11 @@ pagination:
     =0 {No Ports}
     =1 {{count} {count, plural, =1 {Port} other {Ports}}}
     other {{from} - {to} of {count} Ports}}
+  project: |
+    {pages, plural,
+    =0 {No Environments}
+    =1 {{count} {count, plural, =1 {Environment} other {Environments}}}
+    other {{from} - {to} of {count} Environments}}
   rule: |
     {pages, plural,
     =0 {No Rules}
@@ -3229,7 +3238,7 @@ serviceLog:
   time: Time
   level: Level
   event: Event
-  detail: Detai
+  detail: Detail
   noMatch: No events match the current search
   noData: No events have occurred recently
 

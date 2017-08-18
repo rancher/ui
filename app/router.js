@@ -64,11 +64,21 @@ Router.map(function() {
       this.route('machine');
     });
 
-    // Projects
-    this.route('projects', {path: '/env'}, function() {
+    // Clusters
+    this.route('clusters', {path: '/clusters'}, function() {
       this.route('index', {path: '/'});
-      this.route('new', {path: '/add'});
-      this.route('edit', {path: '/edit/:project_id'});
+      this.route('new-project', {path: '/add-env'});
+      this.route('project', {path: '/env/:project_id'});
+
+      this.route('cluster', {path: '/:cluster_id'}, function() {
+        this.route('import', {path: '/import'});
+        this.route('host-new', {path: '/add'});
+        this.route('host-custom', {path: '/add-custom'});
+        this.route('host-templates', {path: '/launch'}, function() {
+          this.route('index', {path: '/'});
+          this.route('launch', {path: '/:template_id'});
+        });
+      });
     });
 
     // Per-Project
@@ -115,19 +125,8 @@ Router.map(function() {
 
       this.route('new-stack', {path: '/import-compose', resetNamespace: true});
 
-      this.route('custom-host', {path: '/hosts/custom', resetNamespace: true});
       this.route('hosts', {path: '/hosts', resetNamespace: true}, function() {
         this.route('index', {path: '/'});
-
-        this.route('templates', {path: '/launch'}, function() {
-          this.route('index', {path: '/'});
-          this.route('launch', {path: '/:template_id'});
-        });
-
-        this.route('new', {path: '/add'}, function() {
-          this.route('index', {path: '/'});
-        });
-
         this.route('host', {path: '/:host_id', resetNamespace: true});
       });
 
@@ -166,8 +165,6 @@ Router.map(function() {
       });
 
       this.route('k8s-tab', {path: '/kubernetes', resetNamespace: true});
-      this.route('k8s-import', {path: '/kubernetes-import'});
-      this.route('reuse-cluster', {path: '/reuse-cluster'});
 
       this.route('help');
 

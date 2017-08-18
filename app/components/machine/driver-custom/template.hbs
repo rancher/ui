@@ -1,5 +1,5 @@
 {{#if projects.current.isWindows}}
-  <section class="box mb-30">
+  <section class="box mb-20">
     <h3>{{t 'machine.driverCustom.windows.windowsHeader'}}</h3>
     <div class="container-fluid">
       <div class="row inline-form">
@@ -70,15 +70,15 @@
   </ul>
 </section>
 
-<div class="box mt-30">
-  <h4>{{t 'machine.driverCustom.advanced'}}</h4>
-
-    <label class="acc-label">{{t 'generic.ipAddress'}}</label>
+{{#advanced-section}}
+  <div class="box mt-20 mb-20 p-10">
+    <label class="acc-label">{{t 'machine.driverCustom.detail.ipLabel'}}</label>
     {{input type="text" value=cattleAgentIp classNames="form-control" placeholder=(t 'machine.driverCustom.agentIp.placeholder')}}
-    <p class="help-block mb-30">{{t 'machine.driverCustom.agentIp.label'}}</p>
+    <p class="help-block">{{t 'machine.driverCustom.agentIp.label'}}</p>
+  </div>
 
-  {{form-user-labels setLabels=(action 'setLabels') expandAll=null}}
-</div>
+  {{form-user-labels setLabels=(action 'setLabels') expandAll=null expandOnInit=true}}
+{{/advanced-section}}
 
 {{#if newHosts}}
   <div class="banner bg-success">

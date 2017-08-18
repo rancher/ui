@@ -20,7 +20,7 @@ var Project = Resource.extend(PolledResource, {
 
   actions: {
     edit: function() {
-      this.get('router').transitionTo('authenticated.projects.edit', this.get('id'));
+      this.get('router').transitionTo('authenticated.clusters.edit', this.get('id'));
     },
 
     delete: function() {
@@ -77,10 +77,10 @@ var Project = Resource.extend(PolledResource, {
       { divider: true },
       { label: 'action.edit',             icon: 'icon icon-edit',         action: 'edit',         enabled: !!l.update },
       { divider: true },
-      { label: 'action.activate',         icon: 'icon icon-play',         action: 'activate',     enabled: !!a.activate},
-      { label: 'action.deactivate',       icon: 'icon icon-pause',        action: 'promptStop',   enabled: !!a.deactivate, altAction: 'deactivate'},
+      { label: 'action.activate',         icon: 'icon icon-play',         action: 'activate',     enabled: !!a.activate, bulkable: true},
+      { label: 'action.deactivate',       icon: 'icon icon-pause',        action: 'promptStop',   enabled: !!a.deactivate, altAction: 'deactivate', bulkable: true},
       { divider: true },
-      { label: 'action.remove',           icon: 'icon icon-trash',        action: 'promptDelete', enabled: !!l.remove, altAction: 'delete' },
+      { label: 'action.remove',           icon: 'icon icon-trash',        action: 'promptDelete', enabled: !!l.remove, altAction: 'delete', bulkable: true },
       { divider: true },
       { label: 'action.viewInApi',        icon: 'icon icon-external-link',action: 'goToApi',      enabled: true },
     ];
@@ -120,6 +120,19 @@ var Project = Resource.extend(PolledResource, {
   }.property('orchestration'),
 
   isWindows: Ember.computed.equal('orchestration','windows'),
+
+  // @TODO real data
+  numStacks: function() {
+    return 1+Math.round(Math.random()*30);
+  }.property(),
+
+  numServices: function() {
+    return 1+Math.round(Math.random()*100);
+  }.property(),
+
+  numContainers: function() {
+    return 1+Math.round(Math.random()*1000);
+  }.property(),
 });
 
 // Projects don't get pushed by /subscribe WS, so refresh more often

@@ -2,6 +2,8 @@ import Ember from 'ember';
 import C from 'ui/utils/constants';
 
 export default Ember.Route.extend({
+  projects: Ember.inject.service(),
+
   beforeModel() {
     return this.get('userStore').findAll('machineDriver').then((drivers) => {
       let acd = drivers.filter((driver) => {
@@ -14,7 +16,7 @@ export default Ember.Route.extend({
       if (acd.get('length')) {
         return Ember.RSVP.resolve();
       } else {
-        this.transitionTo('custom-host');
+        this.transitionTo('authenticated.clusters.cluster.host-custom', this.get('projects.currentCluster.id'));
       }
     });
   },
