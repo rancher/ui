@@ -5,6 +5,7 @@ const BY_STACK = '1';
 
 export default Ember.Controller.extend({
   prefs: Ember.inject.service(),
+  projects: Ember.inject.service(),
 
   tags: '',
   byStack: BY_STACK,
@@ -31,8 +32,8 @@ export default Ember.Controller.extend({
   },
 
   showClusterWelcome: function() {
-    return !!!this.get('model.project.clusterId');
-  }.property('model.project.clusterId'),
+    return this.get('projects.currentCluster.state') !== 'active';
+  }.property('projects.currentCluster.state'),
 
   simpleMode: function() {
     let list = this.get('stacks');

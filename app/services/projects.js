@@ -14,6 +14,8 @@ export default Ember.Service.extend({
   current: null,
   all: null,
 
+  currentCluster: Ember.computed.alias('current.cluster'),
+
   active: function() {
     return this.get('all').filter((project) => {
       return ACTIVEISH.includes(project.get('state'));

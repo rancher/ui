@@ -22,7 +22,7 @@ export default Ember.Route.extend({
   },
   actions: {
     cancel() {
-      this.transitionTo('hosts.templates.index');
+      this.transitionTo('host-templates');
     },
     goBack() {
       if ( this.get('backTo') === 'waiting' ) {

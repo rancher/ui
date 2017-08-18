@@ -5,7 +5,7 @@ export default Ember.Route.extend({
   access: Ember.inject.service(),
   catalog: Ember.inject.service(),
 
-  model: function(/*params, transition*/) {
+  model: function(params/*, transition*/) {
     var userStore = this.get('userStore');
     return Ember.RSVP.hash({
       all: userStore.findAll('project'),
@@ -13,6 +13,7 @@ export default Ember.Route.extend({
     }).then((hash) => {
       var project = userStore.createRecord({
         type: 'project',
+        clusterId: params.clusterId,
         name: '',
         description: '',
       });

@@ -1,10 +1,21 @@
 import Ember from 'ember';
 
 export default Ember.Controller.extend({
+  modalService: Ember.inject.service('modal'),
   access: Ember.inject.service(),
   projects: Ember.inject.service(),
   settings: Ember.inject.service(),
   application: Ember.inject.controller(),
+
+  actions: {
+    newCluster() {
+      let cluster = this.get('userStore').createRecord({
+        type: 'cluster',
+      });
+
+      this.get('modalService').toggleModal('modal-edit-cluster', cluster);
+    },
+  },
 
   byCluster: function() {
     let none = [];
@@ -57,12 +68,25 @@ export default Ember.Controller.extend({
     {
       name:           'name',
       sort:           ['name','id'],
-      translationKey: 'generic.name',
+      translationKey: 'clustersPage.environment.label',
     },
     {
-      name:           'description',
-      sort:           ['description','name','id'],
-      translationKey: 'generic.description',
+      name:           'stacks',
+      sort:           ['numStacks','name','id'],
+      translationKey: 'generic.stacks',
+      width: 120,
+    },
+    {
+      name:           'services',
+      sort:           ['numServices','name','id'],
+      translationKey: 'generic.services',
+      width: 120,
+    },
+    {
+      name:           'containers',
+      sort:           ['numContainers','name','id'],
+      translationKey: 'generic.containers',
+      width: 120,
     },
     {
       name:           'default',

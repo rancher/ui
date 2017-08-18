@@ -207,8 +207,8 @@ export default Ember.Mixin.create(NewOrEdit, ManageLabels, {
     let clusterPromise = Ember.RSVP.resolve();
     let project = this.get('projects.current');
     if ( !project.get('cluster') ) {
-      let name = project.get('name')||'Default';
-      name = name.replace(/[^a-z0-9-]/gi,'r'); // Clusters must be valid DNS, but Projects didn't previously need to be
+      let name = (project.get('name')||'Default')+'-Cluster';
+      name = name.replace(/[^a-z0-9-]/gi,'-'); // Clusters must be valid DNS, but Projects didn't previously need to be
 
       let cluster = this.get('userStore').createRecord({
         type: 'cluster',

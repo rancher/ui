@@ -120,6 +120,19 @@ var Project = Resource.extend(PolledResource, {
   }.property('orchestration'),
 
   isWindows: Ember.computed.equal('orchestration','windows'),
+
+  // @TODO real data
+  numStacks: function() {
+    return 1+Math.round(Math.random()*30);
+  }.property(),
+
+  numServices: function() {
+    return 1+Math.round(Math.random()*100);
+  }.property(),
+
+  numContainers: function() {
+    return 1+Math.round(Math.random()*1000);
+  }.property(),
 });
 
 // Projects don't get pushed by /subscribe WS, so refresh more often
