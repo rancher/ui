@@ -4,15 +4,7 @@ export default Ember.Component.extend({
   projects: Ember.inject.service(),
   settings: Ember.inject.service(),
 
-  clusters: null,
-
-  canCreate: true,
-  canImport: true,
-  canReuse: Ember.computed.gt('clusters.length', 0),
-
-  init() {
-    this._super(),
-
-    this.set('clusters', this.get('store').all('cluster'));
-  },
+  cluster: Ember.computed.alias('projects.currentCluster'),
+  canCreate: Ember.computed.notEmpty('cluster.registrationToken.hostCommand'),
+  canImport: Ember.computed.notEmpty('cluster.registrationToken.clusterCommand'),
 });

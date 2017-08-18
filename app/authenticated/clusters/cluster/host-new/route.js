@@ -26,11 +26,7 @@ export default Ember.Route.extend({
     },
 
     goBack() {
-      if ( this.get('backTo') === 'waiting' ) {
-        this.transitionTo('authenticated.project.waiting');
-      } else {
-        this.transitionTo('hosts');
-      }
+      this.send('goToPrevious','authenticated.clusters');
     }
   },
 

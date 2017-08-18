@@ -9,11 +9,7 @@ export default Ember.Controller.extend({
 
   actions: {
     newCluster() {
-      let cluster = this.get('userStore').createRecord({
-        type: 'cluster',
-      });
-
-      this.get('modalService').toggleModal('modal-edit-cluster', cluster);
+      this.get('modalService').toggleModal('modal-edit-cluster');
     },
   },
 

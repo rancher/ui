@@ -4,6 +4,7 @@ import PolledResource from 'ui/mixins/cattle-polled-resource';
 
 var Cluster = Resource.extend(PolledResource, {
   modalService: Ember.inject.service('modal'),
+  userStore: Ember.inject.service('user-store'),
 
   type: 'cluster',
 
@@ -12,6 +13,16 @@ var Cluster = Resource.extend(PolledResource, {
       this.get('modalService').toggleModal('modal-edit-cluster', this);
     }
   },
+
+  _allProjects: null,
+  init() {
+    this._super(...arguments);
+    this.set('_allProjects', this.get('userStore').all('project'));
+  },
+
+  projects: function() {
+    return this.get('_allProjects').filterBy('clusterId', this.get('id'));
+  }.property('_allProjects.@each.clusterId'),
 
   availableActions: function() {
 //    let a = this.get('actionLinks');
