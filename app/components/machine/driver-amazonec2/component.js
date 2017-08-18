@@ -196,7 +196,7 @@ export default Ember.Component.extend(Driver, {
 
   bootstrap: function() {
     let pref   = this.get('prefs.amazonec2')||{};
-    let config = this.get('store').createRecord({
+    let config = this.get('userStore').createRecord({
       type          : 'amazonec2Config',
       region        : 'us-west-2',
       instanceType  : 't2.micro',
@@ -206,7 +206,7 @@ export default Ember.Component.extend(Driver, {
       accessKey     : pref.accessKey||'',
     });
 
-    this.set('model', this.get('store').createRecord({
+    this.set('model', this.get('userStore').createRecord({
       type:         'hostTemplate',
       driver:       'amazonec2',
       publicValues: {

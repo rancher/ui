@@ -152,13 +152,13 @@ export default Ember.Component.extend(Driver, {
   },
 
   bootstrap: function() {
-    let store = this.get('store');
+    let store = this.get('userStore');
     let config = store.createRecord({
       type         : 'packetConfig',
       projectId    : '',
     });
 
-    this.set('model', this.get('store').createRecord({
+    this.set('model', this.get('userStore').createRecord({
       type:         'hostTemplate',
       driver:       'packet',
       publicValues: {

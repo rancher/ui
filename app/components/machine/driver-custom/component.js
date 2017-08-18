@@ -3,10 +3,13 @@ import ManageLabels from 'ui/mixins/manage-labels';
 import Util from 'ui/utils/util';
 
 export default Ember.Component.extend(ManageLabels, {
-  settings      : Ember.inject.service(),
-  projects      : Ember.inject.service(),
+  settings: Ember.inject.service(),
+  projects: Ember.inject.service(),
   cattleAgentIp : null,
-  model         : null,
+  model: null,
+
+  cluster: null,
+  loading: Ember.computed.alias('cluster.isTransitioning'),
 
   _allHosts: null,
   hostsAtLoad: null,
@@ -37,30 +40,8 @@ export default Ember.Component.extend(ManageLabels, {
     });
   },
 
-  bootstrap: function() {
-    if (this.get('clonedModel')) {
-      this.set('model', this.get('clonedModel'));
-    } else {
-      this.get('store').find('registrationToken',null,{filter: {state: 'active'}, forceReload: true}).then((tokens) => {
-        if ( tokens.get('length') === 0 )
-        {
-          // There should always be one already, but if there isn't go create one...
-          var model = this.get('store').createRecord({
-            type: 'registrationToken'
-          });
-          this.set('model', model);
-          model.save();
-        }
-        else
-        {
-          this.set('model', tokens.get('firstObject'));
-        }
-      });
-    }
-  }.on('init'),
-
   registrationCommand: function() {
-    let cmd      = this.get('model.command');
+    let cmd      = this.get('cluster.registrationToken.hostCommand');
     let cattleIp = this.get('cattleAgentIp');
     let lookFor  = 'docker run';
 
@@ -89,14 +70,7 @@ export default Ember.Component.extend(ManageLabels, {
     return cmd;
   }.property('model.command','model.labels', 'cattleAgentIp'),
 
-  registrationCommandWindows: function() {
-    let url = this.get('model.registrationUrl');
-
-    return `New-Item -Path 'C:\\Program Files\\rancher' -Type Directory
-Invoke-WebRequest -UseBasicParsing 'https://github.com/rancher/agent/releases/download/v0.6.0/agent.exe' -OutFile 'C:\\Program Files\\rancher\\agent.exe'
-& 'C:\\Program Files\\rancher\\agent.exe' -register-service ${url}
-Start-Service rancher-agent`;
-  }.property('model.command'),
+  registrationCommandWindows: Ember.computed.alias('cluster.registrationToken.windowsCommand'),
 
   newHosts: function() {
     let atLoad = this.get('hostsAtLoad')

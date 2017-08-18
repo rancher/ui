@@ -73,7 +73,6 @@ Router.map(function() {
       this.route('cluster', {path: '/:cluster_id'}, function() {
         this.route('import', {path: '/import'});
         this.route('host-new', {path: '/add'});
-        this.route('host-custom', {path: '/add-custom'});
         this.route('host-templates', {path: '/launch'}, function() {
           this.route('index', {path: '/'});
           this.route('launch', {path: '/:template_id'});

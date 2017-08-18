@@ -1,6 +1,5 @@
 import Ember from 'ember';
 const { getOwner } = Ember;
-import C from 'ui/utils/constants';
 
 export default Ember.Route.extend({
   access         : Ember.inject.service(),
@@ -9,30 +8,25 @@ export default Ember.Route.extend({
   host           : Ember.inject.service(),
   backTo         : null,
 
+  defaultDriver: '',
+  lastDriver: null,
+
+  queryParams: {
+    driver: {
+      refreshModel: true
+    },
+    hostId: {
+      refreshModel: false,
+    }
+  },
+
   actions: {
     cancel() {
       this.send('goBack');
     },
 
     goBack() {
-      if ( this.get('backTo') === 'waiting' ) {
-        this.transitionTo('authenticated.project.waiting');
-      } else {
-
-        let drivers = this.get('machineDrivers');
-        let acd = drivers.filter((driver) => {
-          if (C.ACTIVEISH_STATES.indexOf(driver.get('state')) >= 0) {
-            return true;
-          }
-          return false;
-        });
-
-        if (acd.length) {
-          this.transitionTo('authenticated.clusters.cluster.host-templates', this.get('projects.currentCluster.id'));
-        } else {
-          this.transitionTo('hosts.index');
-        }
-      }
+      this.send('goToPrevious','authenticated.clusters');
     }
   },
 
@@ -40,6 +34,16 @@ export default Ember.Route.extend({
     let appRoute = getOwner(this).lookup('route:application');
     this.set('previousOpts', {name: appRoute.get('previousRoute'), params: appRoute.get('previousParams')});
   },
+
+  resetController(controller, isExisting /*, transition*/) {
+    if ( isExisting )
+    {
+      controller.set('hostId', null);
+      controller.set('backTo', null);
+    }
+  },
+
+  machineDrivers: null,
 
   // Loads all the machine drivers and selects the active ones with a corresponding schema into machineDrivers
   beforeModel(/*transition*/) {
@@ -56,9 +60,6 @@ export default Ember.Route.extend({
     this.set('backTo', params.backTo);
     var hs = this.get('host');
 
-    return hs.getModel(params).then((hash) => {
-      return hash;
-    });
+    return hs.getModel(params);
   },
-
 });

@@ -11,9 +11,37 @@ export default Ember.Component.extend(ModalBase, NewOrEdit, {
   willInsertElement: function() {
     this._super(...arguments);
     var orig = this.get('originalModel');
-    var clone = orig.clone();
-    this.set('model', clone);
-    this.set('editing', !!this.get('model.id'));
+    if ( orig ) {
+      var clone = orig.clone();
+      this.setProperties({
+        editing: true,
+        model: clone,
+        createProject: null,
+      });
+    } else {
+      this.setProperties({
+        editing: false,
+        model: this.get('userStore').createRecord({
+          type: 'cluster',
+        }),
+        createProject: this.get('userStore').createRecord({
+          type: 'project',
+          name: 'Default',
+        }),
+      });
+    }
+  },
+
+  didInsertElement() {
+    this.$('INPUT')[0].focus();
+  },
+
+  didSave() {
+    let project = this.get('createProject');
+    if ( project ) {
+      project.set('clusterId', this.get('model.id'));
+      return project.save();
+    }
   },
 
   doneSaving: function() {

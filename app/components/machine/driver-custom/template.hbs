@@ -1,4 +1,4 @@
-{{#if projects.current.isWindows}}
+{{#if cluster.isWindows}}
   <section class="box mb-20">
     <h3>{{t 'machine.driverCustom.windows.windowsHeader'}}</h3>
     <div class="container-fluid">
@@ -31,7 +31,7 @@
 {{/if}}
 
 <section class="box">
-  {{#if projects.current.isWindows}}
+  {{#if cluster.isWindows}}
     <h4>{{t 'machine.driverCustom.windows.linuxHeader'}}</h4>
   {{/if}}
 
@@ -41,13 +41,13 @@
     htmlSafe=true
   }}
 
-  {{#if registrationCommand}}
+  {{#if loading}}
+    <div><i class="icon icon-spinner icon-spin"></i> {{t 'machine.driverCustom.generating'}}</div>
+  {{else}}
     <div class="copy-pre m-20">
       {{copy-to-clipboard clipboardText=registrationCommand tagName="div" classNames="copy-to-pre"}}
       <pre id="registration-command" style="font-size: 14px;">{{registrationCommand}}</pre>
     </div>
-  {{else}}
-    <div><i class="icon icon-spinner icon-spin"></i> {{t 'machine.driverCustom.generating'}}</div>
   {{/if}}
 
   <hr/>

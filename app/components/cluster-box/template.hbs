@@ -1,0 +1,83 @@
+<section class="header has-tabs clearfix">
+  <h1>{{t 'generic.cluster'}}: {{model.displayName}}</h1>
+  {{#unless (eq model.state 'active')}}
+    {{badge-state model=model}}
+  {{/unless}}
+
+  <div class="right-buttons">
+    {{#if (and (eq model.state 'active') model.registrationToken.hostCommand)}}
+      {{#link-to "authenticated.clusters.cluster.host-templates" model.id class="btn btn-sm bg-primary"}}{{t 'clustersPage.newHost'}}{{/link-to}}
+    {{else}}
+      {{#link-to "authenticated.clusters.cluster.host-templates" projects.currentCluster.id class="btn btn-sm bg-primary"}}{{t 'clusterBox.addHost'}}{{/link-to}}
+      {{#link-to "authenticated.clusters.cluster.import" projects.currentCluster.id class="btn btn-sm bg-primary"}}{{t 'clusterBox.importCluster'}}{{/link-to}}
+    {{/if}}
+    {{action-menu model=model showPrimary=false classNames="ml-10 inline-block" size="sm"}}
+  </div>
+</section>
+
+{{#if (not-eq model.state 'inactive')}}
+  <div class="row text-center">
+    <div class="col span-1-of-11 text-right">
+      <i class="icon icon-2x icon-host"></i>
+      <h4>Hosts</h4>
+    </div>
+    <div class="col span-1-of-11 text-left">
+      <h1>{{model.numHosts}}</h1>
+      <h5 class="text-muted" style="position: relative; top: -13px;">Total</h5>
+    </div>
+
+    <div class="col span-1-of-11 offset-1 text-right">
+      <i class="icon icon-2x icon-cpu"></i>
+      <h4>CPU Cores</h4>
+    </div>
+    <div class="col span-1-of-11 text-left">
+      <h1>{{model.numGhz}}</h1>
+      <h5 class="text-muted" style="position: relative; top: -13px;">Total GHz</h5>
+    </div>
+
+    <div class="col span-1-of-11 offset-1 text-right">
+      <i class="icon icon-2x icon-memory"></i>
+      <h4>Memory</h4>
+    </div>
+    <div class="col span-1-of-11 text-left">
+      <h1>{{model.numMem}}</h1>
+      <h5 class="text-muted" style="position: relative; top: -13px;">Total GB</h5>
+    </div>
+
+    <div class="col span-1-of-11 offset-1 text-right">
+      <i class="icon icon-2x icon-hdd"></i>
+      <h4>Storage</h4>
+    </div>
+    <div class="col span-1-of-11 text-left">
+      <h1>{{model.numStorage}}</h1>
+      <h5 class="text-muted" style="position: relative; top: -13px;">Total GB</h5>
+    </div>
+  </div>
+{{/if}}
+
+<div style="background-color: white;" class="p-20">
+  {{#sortable-table
+    bulkActions=true
+    rightActions=true
+    paging=true
+    pagingLabel="pagination.project"
+    search=true
+    sortBy=sortBy
+    descending=descending
+    headers=headers
+    body=model.projects
+    fullRows=true
+    stickyHeader=false
+    as |sortable kind p dt|
+  }}
+    {{#if (eq kind "row")}}
+      {{project-row model=p dt=dt}}
+    {{else if (eq kind "nomatch")}}
+      <tr><td colspan="{{sortable.fullColspan}}" class="text-center text-muted lacsso pt-20 pb-20">{{t 'clusterBox.noMatch'}}</td></tr>
+    {{else if (eq kind "norows")}}
+      <tr><td colspan="{{sortable.fullColspan}}" class="text-center text-muted lacsso pt-20 pb-20">{{t 'clusterBox.noData'}}</td></tr>
+    {{else if (eq kind "right-actions")}}
+      {{#link-to "authenticated.clusters.new-project" (query-params clusterId=model.id) class="btn btn-sm bg-primary"}}{{t 'clustersPage.newProject'}}{{/link-to}}
+    {{/if}}
+  {{/sortable-table}}
+</div>
