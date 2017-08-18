@@ -3,6 +3,7 @@ import Sortable from 'ui/mixins/sortable-base';
 import StickyHeader from 'ui/mixins/sticky-table-header';
 import pagedArray from 'ember-cli-pagination/computed/paged-array';
 import {isAlternate, isMore, isRange} from 'ui/utils/platform';
+import { task } from 'ember-concurrency';
 
 const {get,set} = Ember;
 
@@ -160,10 +161,10 @@ export default Ember.Component.extend(Sortable, StickyHeader, {
     }
   }),
 
-  didUpdateAttrs() {
-    this._super(...arguments);
-    this.cleanupOrphans();
-  },
+  // didUpdateAttrs() {
+  //   this._super(...arguments);
+  //   this.cleanupOrphans();
+  // },
 
   actions: {
     clearSearch() {
@@ -562,14 +563,19 @@ export default Ember.Component.extend(Sortable, StickyHeader, {
       if ( id ) {
         let input = Ember.$(`input[nodeid=${id}]`);
         if ( input && input.length ) {
-          Ember.run.next(function() { input[0].checked = on; });
-          let tr = Ember.$(input).closest('tr');
-          let first = true;
-          while ( tr && (first || tr.hasClass('sub-row') ) ) {
-            tr.toggleClass('row-selected', on);
-            tr = tr.next();
-            first = false;
-          }
+          Ember.run.next(function() {
+            // can't reuse the input ref here because the table has rerenderd and the ref is no longer good
+            Ember.$(`input[nodeid=${id}]`).prop('checked', on);
+
+            let tr    = Ember.$(`input[nodeid =${id}]`).closest('tr');
+            let first = true;
+
+            while ( tr && (first || tr.hasClass('sub-row') ) ) {
+              tr.toggleClass('row-selected', on);
+              tr    = tr.next();
+              first = false;
+            }
+          });
         }
       }
     }
