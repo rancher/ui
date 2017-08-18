@@ -3,7 +3,6 @@ import Sortable from 'ui/mixins/sortable-base';
 import StickyHeader from 'ui/mixins/sticky-table-header';
 import pagedArray from 'ember-cli-pagination/computed/paged-array';
 import {isAlternate, isMore, isRange} from 'ui/utils/platform';
-import { task } from 'ember-concurrency';
 
 const {get,set} = Ember;
 
