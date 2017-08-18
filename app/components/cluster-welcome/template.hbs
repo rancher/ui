@@ -1,7 +1,8 @@
-<section class="header has-tabs clearfix">
-  <h1>Welcome</h1>
-</section>
-<p>This environment does not have any hosts yet.  Do you want to add some, or import an external Kubernetes cluster?</p>
+{{#if header}}
+  <section class="header has-tabs clearfix">
+    <h1>Welcome</h1>
+  </section>
+{{/if}}
 
 <div class="row">
   <div class="col span-4 offset-2 text-center option option-primary {{unless canCreate 'option-disabled'}}">
@@ -24,7 +25,7 @@
     <h2>Import an external Cluster</h2>
     <div class="box">
       <p>Use an external Kubernetes v1.7+ cluster.</p>
-      <p>Individual hosts are managed by cluster provider outside of {{settings.appName}}.</p>
+      <p>Hosts are managed by cluster provider outside of {{settings.appName}}.</p>
       <p>Supports hosted services like Google Container Engine.</p>
 
       {{#if canImport}}

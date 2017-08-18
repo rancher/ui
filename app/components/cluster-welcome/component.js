@@ -7,4 +7,6 @@ export default Ember.Component.extend({
   cluster: Ember.computed.alias('projects.currentCluster'),
   canCreate: Ember.computed.notEmpty('cluster.registrationToken.hostCommand'),
   canImport: Ember.computed.notEmpty('cluster.registrationToken.clusterCommand'),
+
+  header: true,
 });

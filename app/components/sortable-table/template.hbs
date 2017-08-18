@@ -12,39 +12,40 @@
       {{/if}}
     </tr>
     {{#if (or search bulkActions)}}
-      <div class="fixed-header-actions row">
-        <div class="col span-8 mt-0 mb-0">
-          {{#if (and selectedNodes bulkActions)}}
-            <div class="bulk-actions">
-              {{#each availableActions as |action index|}}
-                {{#if action.enabled}}
-                  <a class="btn btn-sm bg-primary" href="#" onclick={{action 'executeBulkAction' action.action}} tabindex={{index}}>
-                    {{t action.label}}
-                    <i class="{{action.icon}}"></i>
-                  </a>
-                {{else}}
-                  <a class="btn btn-sm bg-default btn-disabled" href="#" onclick="return false;" tabindex={{index}}>
-                    {{t action.label}}
-                    <i class="{{action.icon}}"></i>
-                  </a>
-                {{/if}}
-              {{/each}}
-              <div class="inline-block text-small">{{t pagingLabel pages=1 count=selectedNodes.length}}</div>
-            </div>
-          {{/if}}
-        </div>
-        <div class="col span-4 mt-0 mb-0 pull-right clearfix">
-          {{#if search}}
-            <div class="pull-right search-group input-group">
-              {{input value=searchText aria-title=(t 'generic.search') type="search" class="input-sm pull-right" placeholder=(t 'generic.search')}}
-              {{#if searchText}}
-                <span class="input-group-btn">
-                  <button class="btn bg-transparent text-info pl-10 pr-10" {{action 'clearSearch'}}><i class="icon icon-close"/></button>
-                </span>
+      <div class="fixed-header-actions row clearfix">
+        {{#if (and selectedNodes bulkActions)}}
+          <div class="bulk-actions pull-left">
+            {{#each availableActions as |action index|}}
+              {{#if action.enabled}}
+                <a class="btn btn-sm bg-primary" href="#" onclick={{action 'executeBulkAction' action.action}} tabindex={{index}}>
+                  {{t action.label}}
+                  <i class="{{action.icon}}"></i>
+                </a>
+              {{else}}
+                <a class="btn btn-sm bg-default btn-disabled" href="#" onclick="return false;" tabindex={{index}}>
+                  {{t action.label}}
+                  <i class="{{action.icon}}"></i>
+                </a>
               {{/if}}
-            </div>
-          {{/if}}
-        </div>
+            {{/each}}
+            <div class="inline-block text-small">{{t pagingLabel pages=1 count=selectedNodes.length}}</div>
+          </div>
+        {{/if}}
+        {{#if rightActions}}
+          <div class="pull-right pl-20">
+            {{yield this 'right-actions'}}
+          </div>
+        {{/if}}
+        {{#if search}}
+          <div class="pull-right search-group input-group">
+            {{input value=searchText aria-title=(t 'generic.search') type="search" class="input-sm pull-right" placeholder=(t 'generic.search')}}
+            {{#if searchText}}
+              <span class="input-group-btn">
+                <button class="btn bg-transparent text-info pl-10 pr-10" {{action 'clearSearch'}}><i class="icon icon-close"/></button>
+              </span>
+            {{/if}}
+          </div>
+        {{/if}}
       </div>
     {{/if}}
 
