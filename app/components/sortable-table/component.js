@@ -160,10 +160,10 @@ export default Ember.Component.extend(Sortable, StickyHeader, {
     }
   }),
 
-  didUpdateAttrs() {
-    this._super(...arguments);
-    this.cleanupOrphans();
-  },
+  // didUpdateAttrs() {
+  //   this._super(...arguments);
+  //   this.cleanupOrphans();
+  // },
 
   actions: {
     clearSearch() {
@@ -545,33 +545,36 @@ export default Ember.Component.extend(Sortable, StickyHeader, {
         nodesToRemove = nodesToRemove.toArray();
       }
       selectedNodes.removeObjects(nodesToRemove);
-      nodesToRemove.forEach((node) => {
-        toggle(node, false);
-      });
+      toggle(nodesToRemove, false);
     }
 
     if (nodesToAdd.length) {
       selectedNodes.addObjects(nodesToAdd);
-      nodesToAdd.forEach((node) => {
-        toggle(node, true);
-      });
+      toggle(nodesToAdd, true);
     }
 
-    function toggle(node, on) {
-      let id = get(node,'id');
-      if ( id ) {
-        let input = Ember.$(`input[nodeid=${id}]`);
-        if ( input && input.length ) {
-          Ember.run.next(function() { input[0].checked = on; });
-          let tr = Ember.$(input).closest('tr');
-          let first = true;
-          while ( tr && (first || tr.hasClass('sub-row') ) ) {
-            tr.toggleClass('row-selected', on);
-            tr = tr.next();
-            first = false;
+    function toggle(nodes, on) {
+      Ember.run.next(function() {
+        nodes.forEach((node) => {
+          let id = get(node,'id');
+          if ( id ) {
+            let input = Ember.$(`input[nodeid=${id}]`);
+            if ( input && input.length ) {
+              // can't reuse the input ref here because the table has rerenderd and the ref is no longer good
+              Ember.$(`input[nodeid=${id}]`).prop('checked', on);
+
+              let tr    = Ember.$(`input[nodeid =${id}]`).closest('tr');
+              let first = true;
+
+              while ( tr && (first || tr.hasClass('sub-row') ) ) {
+                tr.toggleClass('row-selected', on);
+                tr    = tr.next();
+                first = false;
+              }
+            }
           }
-        }
-      }
+        });
+      });
     }
   },
 

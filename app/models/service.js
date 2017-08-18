@@ -56,6 +56,17 @@ var Service = Resource.extend(StateCounts, EndpointPorts, {
       return this.doAction('garbagecollect');
     },
 
+    // Start and stop are only here to mimic the same actions that exist on a container
+    // the reason being bulkActions, to forgo writing distinct logic for containers vs
+    // services lets just mimic the actions here.
+    start() {
+      return this.doAction('activate');
+    },
+
+    stop() {
+      return this.doAction('deactivate');
+    },
+
     promptStop() {
       this.get('modalService').toggleModal('modal-confirm-deactivate', {
         originalModel: this,
