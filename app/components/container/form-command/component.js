@@ -4,6 +4,52 @@ import ManageLabels from 'ui/mixins/manage-labels';
 import { STATUS, STATUS_INTL_KEY, classForStatus } from 'ui/components/accordion-list-item/component';
 
 const STOP_TIMEOUT = 10;
+const STOP_SIGNALS = [
+  {
+    label: 'formCommand.stopSignal.sigup',
+    value: 'SIGUP',
+  },
+  {
+    label: 'formCommand.stopSignal.sigint',
+    value: 'SIGINT',
+  },
+  {
+    label: 'formCommand.stopSignal.sigquit',
+    value: 'SIGQUIT',
+  },
+  {
+    label: 'formCommand.stopSignal.sigkill',
+    value: 'SIGKILL',
+  },
+  {
+    label: 'formCommand.stopSignal.sigusr1',
+    value: 'SIGUSR1',
+  },
+  {
+    label: 'formCommand.stopSignal.sigusr2',
+    value: 'SIGUSR2',
+  },
+  {
+    label: 'formCommand.stopSignal.sigterm',
+    value: 'SIGTERM',
+  },
+  {
+    label: 'formCommand.stopSignal.custom.label',
+    value: 'custom',
+  },
+];
+const LOG_DRIVERS = [
+  'none',
+  'json-file',
+  'awslogs',
+  'etwlogs',
+  'fluentd',
+  'gcplogs',
+  'gelf',
+  'journald',
+  'splunk',
+  'syslog',
+];
 
 export default Ember.Component.extend(ManageLabels, {
   // Inputs
@@ -11,6 +57,8 @@ export default Ember.Component.extend(ManageLabels, {
   errors:             null,
   editing:            true,
   defaultStopTimeout: STOP_TIMEOUT,
+  stopSignals:        STOP_SIGNALS,
+  customStopSet:      false,
 
   intl: Ember.inject.service(),
 
@@ -177,53 +225,8 @@ export default Ember.Component.extend(ManageLabels, {
     }
   },
 
-  logDriverChoices: [
-    'none',
-    'json-file',
-    'awslogs',
-    'etwlogs',
-    'fluentd',
-    'gcplogs',
-    'gelf',
-    'journald',
-    'splunk',
-    'syslog',
-  ],
-  stopSignals: [
-    {
-      label: 'formCommand.stopSignal.sigup',
-      value: 'SIGUP',
-    },
-    {
-      label: 'formCommand.stopSignal.sigint',
-      value: 'SIGINT',
-    },
-    {
-      label: 'formCommand.stopSignal.sigquit',
-      value: 'SIGQUIT',
-    },
-    {
-      label: 'formCommand.stopSignal.sigkill',
-      value: 'SIGKILL',
-    },
-    {
-      label: 'formCommand.stopSignal.sigusr1',
-      value: 'SIGUSR1',
-    },
-    {
-      label: 'formCommand.stopSignal.sigusr2',
-      value: 'SIGUSR2',
-    },
-    {
-      label: 'formCommand.stopSignal.sigterm',
-      value: 'SIGTERM',
-    },
-    {
-      label: 'formCommand.stopSignal.custom.label',
-      value: 'custom',
-    },
-  ],
-  customStopSet: false,
+  logDriverChoices: LOG_DRIVERS,
+
   stopOrCustom: Ember.computed({
     get(/* key */) {
       return this.get('instance.stopSignal');
