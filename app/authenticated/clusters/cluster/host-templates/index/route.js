@@ -26,7 +26,7 @@ export default Ember.Route.extend({
       if ( templates.get('length') ) {
         return templates;
       } else {
-        this.transitionTo('authenticated.clusters.cluster.host-new');
+        this.transitionTo('authenticated.clusters.cluster.host-new', this.get('projects.currentCluster.id'));
       }
     });
   }

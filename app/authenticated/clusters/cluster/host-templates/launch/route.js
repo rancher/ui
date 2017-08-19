@@ -22,14 +22,11 @@ export default Ember.Route.extend({
   },
   actions: {
     cancel() {
-      this.transitionTo('host-templates');
+      this.send('goBack');
     },
+
     goBack() {
-      if ( this.get('backTo') === 'waiting' ) {
-        this.transitionTo('authenticated.project.waiting');
-      } else {
-        this.transitionTo('hosts');
-      }
+      this.goToPrevious('authenticated.clusters');
     }
   },
 });
