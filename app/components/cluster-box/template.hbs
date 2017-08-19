@@ -1,10 +1,10 @@
-<section class="header has-tabs clearfix">
-  <h1>{{t 'generic.cluster'}}: {{model.displayName}}</h1>
+<section class="clearfix pt-20">
+  <h4 class="pull-left">{{t 'generic.cluster'}}: {{model.displayName}}</h4>
   {{#unless (eq model.state 'active')}}
     {{badge-state model=model}}
   {{/unless}}
 
-  <div class="right-buttons">
+  <div class="pull-right">
     {{#if (and (eq model.state 'active') model.registrationToken.hostCommand)}}
       {{#link-to "authenticated.clusters.cluster.host-templates" model.id class="btn btn-sm bg-primary"}}{{t 'clustersPage.newHost'}}{{/link-to}}
     {{else}}
@@ -17,6 +17,7 @@
     {{action-menu model=model showPrimary=false classNames="ml-10 inline-block" size="sm"}}
   </div>
 </section>
+<hr/>
 
 {{#if (not-eq model.state 'inactive')}}
 <div class="row">
@@ -57,36 +58,6 @@
   </div>
 
 </div>
-{{!--   <div class="row text-center">
-
-    <div class="col span-3">
-      <i class="bg-info p-20 round icon icon-2x icon-host"></i>
-      <h4>Hosts</h4>
-      <h1 class="text-info vertical-middle m-0">{{model.numHosts}}</h1>
-      <h5 class="text-muted vertical-middle m-0">Total</h5>
-    </div>
-
-    <div class="col span-3">
-      <i class="bg-info p-20 round icon icon-2x icon-cpu"></i>
-      <h4>CPU Cores</h4>
-      <h1 class="text-info vertical-middle m-0">{{model.numGhz}}</h1>
-      <h5 class="text-muted vertical-middle m-0">Total GHz</h5>
-    </div>
-
-    <div class="col span-3">
-      <i class="bg-info p-20 round icon icon-2x icon-memory"></i>
-      <h4>Memory</h4>
-      <h1 class="text-info vertical-middle m-0">{{model.numMem}}</h1>
-      <h5 class="text-muted vertical-middle m-0">Total GB</h5>
-    </div>
-
-    <div class="col span-3">
-      <i class="bg-info p-20 round icon icon-2x icon-hdd"></i>
-      <h4>Storage</h4>
-      <h1 class="text-info vertical-middle m-0">{{model.numStorage}}</h1>
-      <h5 class="text-muted vertical-middle m-0">Total GB</h5>
-    </div>
-  </div> --}}
 {{/if}}
 
 <div class="p-20">
