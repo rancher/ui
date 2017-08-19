@@ -33,7 +33,9 @@ export default Ember.Service.extend({
       opt.filter = {all: 'true'};
     }
 
-    return this.get('userStore').find('project', null, opt);
+    return this.get('userStore').find('project', null, opt).then(() => {
+      return this.get('userStore').all('project');
+    });
   },
 
   refreshAll: function() {

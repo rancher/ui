@@ -24,14 +24,19 @@ export default Ember.Component.extend({
       let clusterId = cluster.get('id');
       let entry = out.findBy('clusterId', clusterId);
       if ( !entry ) {
-        entry = {clusterId: clusterId, cluster: cluster, projects: []};
+        entry = {clusterId: clusterId, cluster: cluster, projects: [], show: false};
         out.push(entry);
       }
 
-      entry.projects.push(project);
+      if ( project.get('clusterOwner') ) {
+        entry.system = project;
+      } else {
+        entry.projects.push(project);
+        entry.show = true;
+      }
     });
 
-    return out;
+    return out.filterBy('show',true);;
   }.property('projectChoices.@each.clusterId'),
 
   projectIsMissing: function() {

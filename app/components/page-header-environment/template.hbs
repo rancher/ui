@@ -1,28 +1,25 @@
 {{~#if project~}}
   <li class="dropdown pull-right">
     {{#if (gt byCluster.length 1)}}
-
-
-          <ul class="list-unstyled pr-40" style="padding: 4px;">
-          <li>
+      <ul class="list-unstyled pr-40" style="padding: 4px;">
+        <li>
           <a href="#" role="button" class="text-white dropdown-toggle clip" aria-haspopup="true" aria-expanded="false" aria-label="{{t 'nav.cluster.label'}}">
             <i class="icon icon-cluster icon-fw"></i>
             {{project.cluster.displayName}}
             <span class="sr-only">{{t 'nav.srToggleDropdown'}}</span>
           </a>
-          </li>
+        </li>
 
         <li class="pl-15 text-small text-muted">
-          <a href="#" role="button" class="color-white dropdown-toggle clip" aria-haspopup="true" aria-expanded="false" aria-label="{{t 'nav.environment.label'}}">
-          <i class="{{project.icon}} project-icon icon-fw"></i>
+          <a href="#" role="button" class="text-white dropdown-toggle clip" aria-haspopup="true" aria-expanded="false" aria-label="{{t 'nav.environment.label'}}">
+            <i class="{{project.icon}} project-icon icon-fw"></i>
             {{project.displayName}}
             <span class="sr-only">{{t 'nav.srToggleDropdown'}}</span>
           </a>
         </li>
 
-        <i class="icon icon-chevron-down project-chevron ml-10" style="position: absolute; right: 20px; top: 20px;"></i>
-        </ul>
-
+        <i class="icon icon-chevron-down project-chevron ml-10 text-white" style="position: absolute; right: 20px; top: 20px;"></i>
+      </ul>
     {{else}}
       <span class="environment-dropdown">
         <i class="{{project.icon}} project-icon icon-fw"></i>
@@ -36,14 +33,25 @@
 
     <ul class="dropdown-menu project-menu" role="menu" data-dropdown-id="enviroment">
       {{#if (gt byCluster.length 1)}}
+        {{#each byCluster as |entry|}}
+          <li class="{{if entry.system.active 'active selected'}}">
+            <a href="#" {{action "switchProject" entry.system.id}} class="clip">
+              <i class="icon icon-cluster"></i>
+              &nbsp;
+              {{entry.cluster.displayName}}
+            </a>
+          </li>
+          {{#each entry.projects as |p|}}
+            <li class="{{if p.active 'active selected'}}">
+              <a href="#" {{action "switchProject" p.id}} class="clip pl-40">
+                <i class="icon {{p.icon}}"></i>
+                &nbsp;
+                {{p.displayName}}
+              </a>
+            </li>
+          {{/each}}
+        {{/each}}
       {{else if projectChoices.length}}
-        <li role="presentation" class="dropdown-header">
-          {{#if accessEnabled}}
-            {{t 'nav.environment.your'}}
-          {{else}}
-            {{t 'nav.environment.all'}}
-          {{/if}}
-        </li>
         {{#each projectChoices as |p|}}
           <li class="{{if p.active 'active selected'}}">
             <a href="#" {{action "switchProject" p.id}} class="clip">

@@ -1,5 +1,5 @@
 <section class="clearfix pt-20">
-  <h4 class="pull-left">{{t 'generic.cluster'}}: {{model.displayName}}</h4>
+  <h4 class="pull-left m-0 pr-10 pt-5">{{t 'generic.cluster'}}: {{model.displayName}}</h4>
   {{#unless (eq model.state 'active')}}
     {{badge-state model=model}}
   {{/unless}}
@@ -19,7 +19,7 @@
 </section>
 <hr/>
 
-{{#if (not-eq model.state 'inactive')}}
+{{#if (eq model.state 'active')}}
 <div class="row">
   <div class="col span-3">
     <div class="banner bg-info">
@@ -60,30 +60,28 @@
 </div>
 {{/if}}
 
-<div class="p-20">
-  {{#sortable-table
-    tableClassNames="bordered"
-    bulkActions=true
-    rightActions=true
-    paging=true
-    pagingLabel="pagination.project"
-    search=true
-    sortBy=sortBy
-    descending=descending
-    headers=headers
-    body=model.projects
-    fullRows=true
-    stickyHeader=false
-    as |sortable kind p dt|
-  }}
-    {{#if (eq kind "row")}}
-      {{project-row model=p dt=dt}}
-    {{else if (eq kind "nomatch")}}
-      <tr><td colspan="{{sortable.fullColspan}}" class="text-center text-muted lacsso pt-20 pb-20">{{t 'clusterBox.noMatch'}}</td></tr>
-    {{else if (eq kind "norows")}}
-      <tr><td colspan="{{sortable.fullColspan}}" class="text-center text-muted lacsso pt-20 pb-20">{{t 'clusterBox.noData'}}</td></tr>
-    {{else if (eq kind "right-actions")}}
-      {{#link-to "authenticated.clusters.new-project" (query-params clusterId=model.id) class="btn btn-sm bg-primary"}}{{t 'clustersPage.newProject'}}{{/link-to}}
-    {{/if}}
-  {{/sortable-table}}
-</div>
+{{#sortable-table
+  tableClassNames="bordered"
+  bulkActions=true
+  rightActions=true
+  paging=true
+  pagingLabel="pagination.project"
+  search=true
+  sortBy=sortBy
+  descending=descending
+  headers=headers
+  body=model.projects
+  fullRows=true
+  stickyHeader=false
+  as |sortable kind p dt|
+}}
+  {{#if (eq kind "row")}}
+    {{project-row model=p dt=dt}}
+  {{else if (eq kind "nomatch")}}
+    <tr><td colspan="{{sortable.fullColspan}}" class="text-center text-muted lacsso pt-20 pb-20">{{t 'clusterBox.noMatch'}}</td></tr>
+  {{else if (eq kind "norows")}}
+    <tr><td colspan="{{sortable.fullColspan}}" class="text-center text-muted lacsso pt-20 pb-20">{{t 'clusterBox.noData'}}</td></tr>
+  {{else if (eq kind "right-actions")}}
+    {{#link-to "authenticated.clusters.new-project" (query-params clusterId=model.id) class="btn btn-sm bg-primary"}}{{t 'clustersPage.newProject'}}{{/link-to}}
+  {{/if}}
+{{/sortable-table}}
