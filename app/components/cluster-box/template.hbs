@@ -8,55 +8,90 @@
     {{#if (and (eq model.state 'active') model.registrationToken.hostCommand)}}
       {{#link-to "authenticated.clusters.cluster.host-templates" model.id class="btn btn-sm bg-primary"}}{{t 'clustersPage.newHost'}}{{/link-to}}
     {{else}}
-      {{#link-to "authenticated.clusters.cluster.host-templates" model.id class="btn btn-sm bg-primary"}}{{t 'clusterBox.addHost'}}{{/link-to}}
-      {{#link-to "authenticated.clusters.cluster.import" model.id class="btn btn-sm bg-primary"}}{{t 'clusterBox.importCluster'}}{{/link-to}}
+
+    {{#link-to "authenticated.clusters.cluster.host-templates" projects.currentCluster.id class="btn bg-link icon-btn"}}<span class="darken"><i class="icon icon-plus text-small"></i></span> <span>{{t 'clusterBox.addHost'}}</span>{{/link-to}}
+
+    {{#link-to "authenticated.clusters.cluster.import" projects.currentCluster.id class="btn bg-link icon-btn"}} <span class="darken"><i class="icon icon-upload text-small"></i></span><span>{{t 'clusterBox.importCluster'}}</span>{{/link-to}}
+
     {{/if}}
     {{action-menu model=model showPrimary=false classNames="ml-10 inline-block" size="sm"}}
   </div>
 </section>
 
 {{#if (not-eq model.state 'inactive')}}
-  <div class="row text-center">
-    <div class="col span-1-of-11 text-right">
-      <i class="icon icon-2x icon-host"></i>
-      <h4>Hosts</h4>
-    </div>
-    <div class="col span-1-of-11 text-left">
-      <h1>{{model.numHosts}}</h1>
-      <h5 class="text-muted" style="position: relative; top: -13px;">Total</h5>
-    </div>
-
-    <div class="col span-1-of-11 offset-1 text-right">
-      <i class="icon icon-2x icon-cpu"></i>
-      <h4>CPU Cores</h4>
-    </div>
-    <div class="col span-1-of-11 text-left">
-      <h1>{{model.numGhz}}</h1>
-      <h5 class="text-muted" style="position: relative; top: -13px;">Total GHz</h5>
-    </div>
-
-    <div class="col span-1-of-11 offset-1 text-right">
-      <i class="icon icon-2x icon-memory"></i>
-      <h4>Memory</h4>
-    </div>
-    <div class="col span-1-of-11 text-left">
-      <h1>{{model.numMem}}</h1>
-      <h5 class="text-muted" style="position: relative; top: -13px;">Total GB</h5>
-    </div>
-
-    <div class="col span-1-of-11 offset-1 text-right">
-      <i class="icon icon-2x icon-hdd"></i>
-      <h4>Storage</h4>
-    </div>
-    <div class="col span-1-of-11 text-left">
-      <h1>{{model.numStorage}}</h1>
-      <h5 class="text-muted" style="position: relative; top: -13px;">Total GB</h5>
+<div class="row">
+  <div class="col span-3">
+    <div class="banner bg-info">
+      <div class="banner-icon"><span class="icon icon-host"></span></div>
+      <div class="banner-message">
+        <p>{{model.numHosts}} Total Hosts</p>
+      </div>
     </div>
   </div>
+
+  <div class="col span-3">
+    <div class="banner bg-info">
+      <div class="banner-icon"><span class="icon icon-cpu"></span></div>
+      <div class="banner-message">
+        <p>{{model.numGhz}} Total GHz</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="col span-3">
+    <div class="banner bg-info">
+      <div class="banner-icon"><span class="icon icon-memory"></span></div>
+      <div class="banner-message">
+        <p>{{model.numMem}} Total GB</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="col span-3">
+    <div class="banner bg-info">
+      <div class="banner-icon"><span class="icon icon-hdd"></span></div>
+      <div class="banner-message">
+        <p>{{model.numStorage}} Total GB</p>
+      </div>
+    </div>
+  </div>
+
+</div>
+{{!--   <div class="row text-center">
+
+    <div class="col span-3">
+      <i class="bg-info p-20 round icon icon-2x icon-host"></i>
+      <h4>Hosts</h4>
+      <h1 class="text-info vertical-middle m-0">{{model.numHosts}}</h1>
+      <h5 class="text-muted vertical-middle m-0">Total</h5>
+    </div>
+
+    <div class="col span-3">
+      <i class="bg-info p-20 round icon icon-2x icon-cpu"></i>
+      <h4>CPU Cores</h4>
+      <h1 class="text-info vertical-middle m-0">{{model.numGhz}}</h1>
+      <h5 class="text-muted vertical-middle m-0">Total GHz</h5>
+    </div>
+
+    <div class="col span-3">
+      <i class="bg-info p-20 round icon icon-2x icon-memory"></i>
+      <h4>Memory</h4>
+      <h1 class="text-info vertical-middle m-0">{{model.numMem}}</h1>
+      <h5 class="text-muted vertical-middle m-0">Total GB</h5>
+    </div>
+
+    <div class="col span-3">
+      <i class="bg-info p-20 round icon icon-2x icon-hdd"></i>
+      <h4>Storage</h4>
+      <h1 class="text-info vertical-middle m-0">{{model.numStorage}}</h1>
+      <h5 class="text-muted vertical-middle m-0">Total GB</h5>
+    </div>
+  </div> --}}
 {{/if}}
 
-<div style="background-color: white;" class="p-20">
+<div class="p-20">
   {{#sortable-table
+    tableClassNames="bordered"
     bulkActions=true
     rightActions=true
     paging=true
