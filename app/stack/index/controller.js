@@ -101,6 +101,7 @@ export default Ember.Controller.extend({
       searchField: null,
       width: 100,
       translationKey: 'stacksPage.table.scale',
+      classNames: 'text-center',
     },
   ],
 
