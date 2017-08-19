@@ -5,14 +5,17 @@
   {{/unless}}
 
   <div class="pull-right">
-    {{#if (and (eq model.state 'active') model.registrationToken.hostCommand)}}
-      {{#link-to "authenticated.clusters.cluster.host-templates" model.id class="btn btn-sm bg-primary"}}{{t 'clustersPage.newHost'}}{{/link-to}}
-    {{else}}
-
-    {{#link-to "authenticated.clusters.cluster.host-templates" projects.currentCluster.id class="btn bg-link icon-btn"}}<span class="darken"><i class="icon icon-plus text-small"></i></span> <span>{{t 'clusterBox.addHost'}}</span>{{/link-to}}
-
-    {{#link-to "authenticated.clusters.cluster.import" projects.currentCluster.id class="btn bg-link icon-btn"}} <span class="darken"><i class="icon icon-upload text-small"></i></span><span>{{t 'clusterBox.importCluster'}}</span>{{/link-to}}
-
+    {{#if model.registrationToken.hostCommand}}
+      {{#link-to "authenticated.clusters.cluster.host-templates" model.id class="btn btn-sm bg-primary icon-btn ml-20"}}
+        <span class="darken"><i class="icon icon-host"></i></span>
+        <span>{{t 'clusterBox.addHost'}}</span>
+      {{/link-to}}
+    {{/if}}
+    {{#if model.registrationToken.clusterCommand}}
+      {{#link-to "authenticated.clusters.cluster.import" model.id class="btn btn-sm bg-primary icon-btn ml-20"}}
+        <span class="darken"><i class="icon icon-download"></i></span>
+        <span>{{t 'clusterBox.importCluster'}}</span>
+      {{/link-to}}
     {{/if}}
     {{action-menu model=model showPrimary=false classNames="ml-10 inline-block" size="sm"}}
   </div>
@@ -60,28 +63,33 @@
 </div>
 {{/if}}
 
-{{#sortable-table
-  tableClassNames="bordered"
-  bulkActions=true
-  rightActions=true
-  paging=true
-  pagingLabel="pagination.project"
-  search=true
-  sortBy=sortBy
-  descending=descending
-  headers=headers
-  body=model.projects
-  fullRows=true
-  stickyHeader=false
-  as |sortable kind p dt|
-}}
-  {{#if (eq kind "row")}}
-    {{project-row model=p dt=dt}}
-  {{else if (eq kind "nomatch")}}
-    <tr><td colspan="{{sortable.fullColspan}}" class="text-center text-muted lacsso pt-20 pb-20">{{t 'clusterBox.noMatch'}}</td></tr>
-  {{else if (eq kind "norows")}}
-    <tr><td colspan="{{sortable.fullColspan}}" class="text-center text-muted lacsso pt-20 pb-20">{{t 'clusterBox.noData'}}</td></tr>
-  {{else if (eq kind "right-actions")}}
-    {{#link-to "authenticated.clusters.new-project" (query-params clusterId=model.id) class="btn btn-sm bg-primary"}}{{t 'clustersPage.newProject'}}{{/link-to}}
-  {{/if}}
-{{/sortable-table}}
+<div class="p-20 bg-body">
+  {{#sortable-table
+    tableClassNames="bordered"
+    bulkActions=true
+    rightActions=true
+    paging=true
+    pagingLabel="pagination.project"
+    search=true
+    sortBy=sortBy
+    descending=descending
+    headers=headers
+    body=model.projects
+    fullRows=true
+    stickyHeader=false
+    as |sortable kind p dt|
+  }}
+    {{#if (eq kind "row")}}
+      {{project-row model=p dt=dt}}
+    {{else if (eq kind "nomatch")}}
+      <tr><td colspan="{{sortable.fullColspan}}" class="text-center text-muted lacsso pt-20 pb-20">{{t 'clusterBox.noMatch'}}</td></tr>
+    {{else if (eq kind "norows")}}
+      <tr><td colspan="{{sortable.fullColspan}}" class="text-center text-muted lacsso pt-20 pb-20">{{t 'clusterBox.noData'}}</td></tr>
+    {{else if (eq kind "right-actions")}}
+      {{#link-to "authenticated.clusters.new-project" (query-params clusterId=model.id) class="btn btn-sm bg-primary icon-btn"}}
+        <span class="darken"><i class="icon icon-folder"></i></span>
+        <span>{{t 'clustersPage.newProject'}}</span>
+      {{/link-to}}
+    {{/if}}
+  {{/sortable-table}}
+</div>

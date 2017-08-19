@@ -20,13 +20,13 @@ export default Ember.Component.extend({
       name:           'stacks',
       sort:           ['numStacks','name','id'],
       translationKey: 'generic.stacks',
-      width: 120,
+      width: 100,
     },
     {
       name:           'services',
       sort:           ['numServices','name','id'],
       translationKey: 'generic.services',
-      width: 120,
+      width: 100,
     },
     {
       name:           'containers',
@@ -37,8 +37,8 @@ export default Ember.Component.extend({
     {
       name:           'default',
       sort:           false,
-      translationKey: 'generic.default',
-      width:          80,
+      translationKey: 'clusterBox.loginDefault',
+      width:          60,
     },
   ],
 });
