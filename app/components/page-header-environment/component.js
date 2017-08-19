@@ -36,7 +36,7 @@ export default Ember.Component.extend({
       }
     });
 
-    return out.filterBy('show',true);;
+    return out.filterBy('show',true);
   }.property('projectChoices.@each.clusterId'),
 
   projectIsMissing: function() {
