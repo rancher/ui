@@ -29,6 +29,7 @@ export default Ember.Mixin.create(NewOrEdit, ManageLabels, {
         this.attrs.goBack();
       }
     },
+
     goBack() {
       if (Ember.typeOf(this.attrs.goBack) === 'function') {
         this.attrs.goBack();
@@ -277,7 +278,12 @@ export default Ember.Mixin.create(NewOrEdit, ManageLabels, {
 
   doneSaving() {
     let out = this._super();
-    this.get('router').transitionTo('hosts');
+    let project = this.get('projects.current');
+    if ( project && project.get('clusterId') === out.get('clusterId') ) {
+      this.get('router').transitionTo('hosts', project.get('id'));
+    } else {
+      this.get('router').transitionTo('authenticated.clusters');
+    }
     return out;
   },
 

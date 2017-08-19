@@ -1,16 +1,37 @@
 {{~#if project~}}
   <li class="dropdown pull-right">
+    {{#if (gt byCluster.length 1)}}
+      <div class="environment-dropdown" style="position: relative; padding-right: 20px;">
+        <div>
+          <i class="icon icon-cluster icon-fw"></i>
+          <a href="#" role="button" class="dropdown-toggle clip" aria-haspopup="true" aria-expanded="false" aria-label="{{t 'nav.cluster.label'}}">
+            {{project.cluster.displayName}}
+            <span class="sr-only">{{t 'nav.srToggleDropdown'}}</span>
+          </a>
+        </div>
+        <div>
+          <i class="{{project.icon}} project-icon icon-fw"></i>
+          <a href="#" role="button" class="dropdown-toggle clip" aria-haspopup="true" aria-expanded="false" aria-label="{{t 'nav.environment.label'}}">
+            {{project.displayName}}
+            <span class="sr-only">{{t 'nav.srToggleDropdown'}}</span>
+          </a>
+        </div>
+        <i class="icon icon-chevron-down project-chevron" style="position: absolute; right: 0; top: 20px;"></i>
+      </div>
+    {{else}}
       <span class="environment-dropdown">
         <i class="{{project.icon}} project-icon icon-fw"></i>
         <a href="#" role="button" class="dropdown-toggle clip" aria-haspopup="true" aria-expanded="false" aria-label="{{t 'nav.environment.label'}}">
-        {{project.displayName}}
-        <span class="sr-only">{{t 'nav.srToggleDropdown'}}</span>
+          {{project.displayName}}
+          <span class="sr-only">{{t 'nav.srToggleDropdown'}}</span>
         </a>
         <i class="icon icon-chevron-down project-chevron"></i>
       </span>
+    {{/if}}
 
     <ul class="dropdown-menu project-menu" role="menu" data-dropdown-id="enviroment">
-      {{#if projectChoices.length}}
+      {{#if (gt byCluster.length 1)}}
+      {{else if projectChoices.length}}
         <li role="presentation" class="dropdown-header">
           {{#if accessEnabled}}
             {{t 'nav.environment.your'}}
@@ -28,9 +49,11 @@
           </li>
         {{/each}}
       {{/if}}
+
       {{#if projectChoices.length}}
         <li role="presentation" class="divider"></li>
       {{/if}}
+
       {{#if projectIsMissing}}
         <li role="presentation" class="dropdown-header">{{t 'nav.environment.selected'}}</li>
         <li class="{{if project.active 'active selected'}}">
@@ -42,6 +65,7 @@
         </li>
         <li role="presentation" class="divider"></li>
       {{/if}}
+
       {{#if (and isOwner projects.current)}}
         <li>{{#link-to "authenticated.clusters.project" projects.current.id class="clip"}}{{t 'nav.environment.edit' name=projects.current.displayName}}{{/link-to}}</li>
       {{/if}}
