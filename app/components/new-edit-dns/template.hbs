@@ -45,11 +45,9 @@
     <div class="col span-6">
       <div class="box">
         {{#if (eq mode "dnsservice")}}
-          {{form-targets
-            isBalancer=false
-            existing=record
-            exclude=service.id
-            changed=(action "setTargetServices")
+          {{container/form-service-links
+            service=record
+            changed=(action 'setTargetServices')
           }}
         {{else if (or (eq mode "externalip") (eq mode "externalhostname"))}}
           {{#if (eq mode "externalip")}}

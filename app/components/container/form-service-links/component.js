@@ -16,7 +16,7 @@ export default Ember.Component.extend({
     this._super(...arguments);
 
     var out = [];
-    var links;
+    var links = this.get('service.serviceLinks')||[];
     if ( this.get('service.id') )
     {
       // Edit
@@ -25,7 +25,6 @@ export default Ember.Component.extend({
     else
     {
       // New / Clone
-      links = this.get('service.serviceLinks')||[];
     }
 
     links.forEach(function(obj) {

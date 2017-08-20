@@ -14,9 +14,8 @@ export default Ember.Component.extend({
   field: null,              // Read default from a schema resourceField
   value: null,              // stackName/serviceName string output
 
-  // For abuse
+  // For other abuses
   obj: null,
-
 
   init() {
     this._super(...arguments);
