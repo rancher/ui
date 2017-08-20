@@ -30,7 +30,7 @@ export default Ember.Component.extend(HoverDropdown, {
   prefs                : Ember.inject.service(),
   isAdmin              : Ember.computed.alias('access.admin'),
   hasVm                : Ember.computed.alias('project.virtualMachine'),
-  hasKubernetes        : Ember.computed.alias('projects.orchestrationState.hasKubernetes'),
+  hasKubernetes        : true, //Ember.computed.alias('projects.orchestrationState.hasKubernetes'),
   isCaas               : Ember.computed.equal('app.mode',C.MODE.CAAS),
   isOss                : Ember.computed.equal('app.mode',C.MODE.OSS),
   accessEnabled        : Ember.computed.alias('access.enabled'),

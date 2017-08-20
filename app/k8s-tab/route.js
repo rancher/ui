@@ -7,13 +7,14 @@ export default Ember.Route.extend(PolledModel,{
 
   pollInterval: 5000,
 
+/*
   beforeModel() {
     this._super(...arguments);
     return this.get('projects').updateOrchestrationState();
   },
 
   actions: {
-    error(error/*, transition*/) {
+    error(error, transition) {
       // we have a 5xx error
       if (error.status.toString().indexOf('5') === 0) {
         // @@TODO@@ - 06-30-17 - go to host add for now until I know where vince wants this to go
@@ -24,12 +25,21 @@ export default Ember.Route.extend(PolledModel,{
       }
     },
   },
+*/
 
   model() {
     let k8s = this.get('k8s');
-
     return Ember.RSVP.hash({
-      workload: k8s.workload(),
+//      workload: k8s.workload(),
+      workload: Ember.RSVP.resolve({
+        deploymentList: { listMeta: { totalItems: Math.floor(Math.random()*100) }},
+        replicaSetList: { listMeta: { totalItems: Math.floor(Math.random()*100) }},
+        replicationControllerList: { listMeta: { totalItems: Math.floor(Math.random()*100) }},
+        podList: { listMeta: { totalItems: Math.floor(Math.random()*100) }},
+        daemonSetList: { listMeta: { totalItems: Math.floor(Math.random()*100) }},
+        statefulSetList: { listMeta: { totalItems: Math.floor(Math.random()*100) }},
+        jobList: { listMeta: { totalItems: Math.floor(Math.random()*100) }},
+      }),
       stacks: this.get('store').find('stack'),
     }).then((hash) => {
       return Ember.Object.create({

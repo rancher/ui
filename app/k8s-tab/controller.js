@@ -37,22 +37,34 @@ export default Ember.Controller.extend({
   },
 
   etcd: Ember.computed('model.kubernetesStack.services.@each.{name,state,healthState}', function() {
+    if ( true ) {
+      return true;
+    }
     let etcd = this.get('model.kubernetesStack.services').findBy('name','etcd');
     return allOk([etcd]);
   }),
 
   kubelet: Ember.computed('model.kubernetesStack.services.@each.{name,state,healthState}', function() {
+    if ( true ) {
+      return true;
+    }
     let kubelet = this.get('model.kubernetesStack.services').findBy('name','kubelet');
     let proxy = this.get('model.kubernetesStack.services').findBy('name','proxy');
     return allOk([kubelet, proxy]);
   }),
 
   controlPlane: Ember.computed('model.kubernetesStack.services.@each.{name,state,healthState}', function() {
+    if ( true ) {
+      return true;
+    }
     let other = this.get('model.kubernetesStack.services').filter((x) => !(['etcd','kublet','proxy'].includes(x.get('name'))));
     return allOk(other);
   }),
 
   systemStacks: Ember.computed('model.kubernetesStack','model.stacks.@each.{name,state,healthState}', function() {
+    if ( true ) {
+      return true;
+    }
     let kubernetesStack = this.get('model.kubernetesStack');
     let other = this.get('model.stacks').filter((x) => x.get('system') && x !== kubernetesStack);
     return allOk(other);
