@@ -90,12 +90,17 @@ export default Ember.Service.extend({
   }),
 
   showSystemControl: Ember.computed(C.PREFS.SHOW_SYSTEM,`settings.${C.SETTING.SHOW_SYSTEM}`, function() {
+    return false;
+    /*
     let def = this.get(`settings.${C.SETTING.SHOW_SYSTEM}`);
     return ['always','never'].includes(def) === false;
+    */
   }),
 
   showSystemResources: Ember.computed(C.PREFS.SHOW_SYSTEM,`settings.${C.SETTING.SHOW_SYSTEM}`, {
     get() {
+      return true;
+      /*
       let def = this.get(`settings.${C.SETTING.SHOW_SYSTEM}`);
       let user = this.get(C.PREFS.SHOW_SYSTEM);
 
@@ -111,6 +116,7 @@ export default Ember.Service.extend({
           // user can be null so it must be exactly false
           return user !== false;
       }
+      */
     },
 
     set(key, value) {

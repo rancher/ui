@@ -37,25 +37,10 @@ export const isOwner = function() { return this.get('isOwner'); };
   },
 */
 const navTree = [
-  // Kubernetes
-  {
-    id: 'k8s',
-    localizedLabel: 'nav.k8s.tab',
-    route: 'k8s-tab',
-    ctx: [getProjectId],
-    condition: function() { return this.get('hasKubernetes'); },
-  },
-
   // Cattle
   {
     id: 'containers',
-    localizedLabel: function() {
-      if ( this.get('hasKubernetes') ) {
-        return 'nav.containers.systemTab';
-      } else {
-        return 'nav.containers.tab';
-      }
-    },
+    localizedLabel: 'nav.containers.tab',
     route: 'authenticated.project.index',
     ctx: [getProjectId],
     condition: function() { return this.get('hasProject'); },
@@ -102,6 +87,14 @@ const navTree = [
         icon: 'icon icon-certificate',
         route: 'certificates',
         ctx: [getProjectId],
+      },
+      {
+        id: 'k8s',
+        localizedLabel: 'nav.k8s.tab',
+        icon: 'icon icon-kubernetes',
+        route: 'k8s-tab',
+        ctx: [getProjectId],
+        condition: function() { return this.get('hasKubernetes'); },
       },
       {
         id: 'infra-registries',

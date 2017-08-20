@@ -38,6 +38,9 @@ export default Ember.Component.extend(NewOrEdit, {
     },
 
     setTargetServices(array, resources) {
+      if ( true ) {
+        return;
+      }
       let store = this.get('store');
       this.set('record.serviceLinks', resources.map((r) => {
         return store.createRecord({
