@@ -1,5 +1,5 @@
-<div class="clearfix">
-  <label class="acc-label">{{t 'formPorts.header'}}</label>
+<div class="clearfix {{unless editing 'box'}}">
+  <label class="{{if editing 'acc-label'}}">{{t 'formPorts.header'}}</label>
   {{#if (and portsArray.length (not showIp))}}
     {{#if editing}}
       <div class="pull-right text-small">
@@ -9,9 +9,8 @@
       </div>
     {{/if}}
   {{/if}}
-</div>
 
-{{#if portsArray.length}}
+  {{#if portsArray.length}}
   <table class="table fixed no-lines small mb-10">
     <thead>
       <tr class="hidden-sm">
@@ -20,11 +19,11 @@
           <th width="10"></th>
         {{/if}}
 
-        <th>{{t 'formPorts.public.label'}}</th>
+        <th class="{{unless editing 'acc-label'}}">{{t 'formPorts.public.label'}}</th>
         <th width="10"></th>
-        <th>{{t 'formPorts.private.label'}}{{#if editing}}{{field-required}}{{/if}}</th>
+        <th class="{{unless editing 'acc-label'}}">{{t 'formPorts.private.label'}}{{#if editing}}{{field-required}}{{/if}}</th>
         <th width="10"></th>
-        <th width="80">{{t 'formPorts.protocol.label'}}</th>
+        <th class="{{unless editing 'acc-label'}}" width="80">{{t 'formPorts.protocol.label'}}</th>
         <th width="40">&nbsp;</th>
       </tr>
     </thead>
@@ -113,6 +112,7 @@
     <span class="text-center text-muted">{{t 'formPorts.noPorts'}}</span>
   {{/unless}}
 {{/if}}
+</div>
 
 <div>
   {{#if editing}}
