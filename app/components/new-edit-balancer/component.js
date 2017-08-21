@@ -1,10 +1,12 @@
 import Ember from 'ember';
 import NewOrEdit from 'ui/mixins/new-or-edit';
 import C from 'ui/utils/constants';
+import StackState from 'ui/mixins/stack-memory';
 
-export default Ember.Component.extend(NewOrEdit, {
+export default Ember.Component.extend(NewOrEdit, StackState, {
   intl                      : Ember.inject.service(),
   settings                  : Ember.inject.service(),
+  prefs:                      Ember.inject.service(),
 
   service                   : null,
   editing                   : null,
@@ -252,6 +254,7 @@ export default Ember.Component.extend(NewOrEdit, {
   },
 
   doneSaving() {
+    this._super(...arguments);
     this.send('done');
   },
 });
