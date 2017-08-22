@@ -3,6 +3,7 @@ import C from 'ui/utils/constants';
 
 export default Ember.Route.extend({
   access: Ember.inject.service(),
+  cookies: Ember.inject.service(),
 
   model() {
     return this.get('store').findAll('container').then((containers) => {
@@ -29,7 +30,7 @@ export default Ember.Route.extend({
           {
             command = [
               'kubectl-shell.sh',
-              this.get('access.token.jwt') || 'unauthorized'
+              this.get('cookies').get(C.COOKIE.TOKEN) || 'unauthorized'
             ];
           }
 
