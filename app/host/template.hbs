@@ -77,71 +77,74 @@
           </div>
         </div>
       </div>
-      <hr/>
-      <div class="row">
-        <div class="col span-6 box">
-          <h2>{{t 'generic.hardware'}}: </h2>
-          <div>
-            <label class="acc-label">{{t 'hostsPage.hostPage.infoMultiStats.cpu'}}</label>
-            <div>
-              {{host.cpuBlurb}}
-            </div>
-            <div>
-              {{#if host.cpuTooltip}}
-                {{host.cpuTooltip}}
-              {{/if}}
-            </div>
-          </div>
-          <div>
-            <label class="acc-label pt-20">{{t 'hostsPage.hostPage.infoMultiStats.memory'}}</label>
-            <div>
-              {{#if host.memoryBlurb}}
-                {{host.memoryBlurb}}
-              {{else}}
-                <span class="text-muted">{{t 'generic.unknown'}}</span>
-              {{/if}}
-            </div>
-          </div>
-          <div>
-            <label class="acc-label pt-20">{{t 'hostsPage.hostPage.infoMultiStats.storage'}}</label>
-            <div>
-              {{#if host.diskBlurb}}
-                {{#if host.diskDetail}}
-                  {{#each host.diskDetail as |disk|}}
-                    {{disk.value}}
-                    ( {{disk.label}} )
-                  {{/each}}
-              {{else}}
-                  {{host.diskBlurb}} (total)
+
+        <div class="box">
+          <h4>{{t 'generic.hardware'}} </h4>
+          <div class="row">
+            <div class="col span-4">
+              <label class="acc-label">{{t 'hostsPage.hostPage.infoMultiStats.cpu'}}</label>
+              <div>
+                {{host.cpuBlurb}}
+              </div>
+              <div>
+                {{#if host.cpuTooltip}}
+                  {{host.cpuTooltip}}
                 {{/if}}
-            {{else}}
-                <span class="text-muted">{{t 'generic.unknown'}}</span>
-              {{/if}}
+              </div>
+            </div>
+            <div class="col span-4">
+              <label class="acc-label pt-20">{{t 'hostsPage.hostPage.infoMultiStats.memory'}}</label>
+              <div>
+                {{#if host.memoryBlurb}}
+                  {{host.memoryBlurb}}
+                {{else}}
+                  <span class="text-muted">{{t 'generic.unknown'}}</span>
+                {{/if}}
+              </div>
+            </div>
+            <div class="col span-4">
+              <label class="acc-label pt-20">{{t 'hostsPage.hostPage.infoMultiStats.storage'}}</label>
+              <div>
+                {{#if host.diskBlurb}}
+                  {{#if host.diskDetail}}
+                    {{#each host.diskDetail as |disk|}}
+                      {{disk.value}}
+                      ( {{disk.label}} )
+                    {{/each}}
+                {{else}}
+                    {{host.diskBlurb}} (total)
+                  {{/if}}
+              {{else}}
+                  <span class="text-muted">{{t 'generic.unknown'}}</span>
+                {{/if}}
+              </div>
             </div>
           </div>
         </div>
-        <div class="col span-6 box">
-          <h2>{{t 'generic.limits'}}: </h2>
-          <div>
+
+        <div class="box mt-30">
+          <h4>{{t 'generic.limits'}} </h4>
+          <div class="row">
+          <div class="col span-4">
             <label class="acc-label">{{t 'hostsPage.hostPage.limits.cpu'}}</label>
             <div>
               {{host.milliCpu}} {{t 'hostsPage.hostPage.infoMultiStats.milliCpu.labelText'}}
             </div>
           </div>
-          <div>
+          <div class="col span-4">
             <label class="acc-label pt-20">{{t 'hostsPage.hostPage.limits.memory'}}</label>
             <div>
               {{host.memoryLimitBlurb}}
             </div>
           </div>
-          <div>
+          <div class="col span-4">
             <label class="acc-label pt-20">{{t 'hostsPage.hostPage.limits.storage'}}</label>
             <div>
               {{host.localStorageBlurb}}
             </div>
           </div>
+          </div>
         </div>
-      </div>
     {{/accordion-list-item}}
 
 
