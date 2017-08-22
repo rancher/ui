@@ -1,5 +1,5 @@
 <section class="header has-tabs clearfix">
-  <h1>{{t 'clustersPage.header'}}</h1>
+  <h1>{{t 'clustersPage.header'}}</h1> <div class="vertical-middle"><i class="icon icon-info"></i></div>
 
   <div class="right-buttons">
     <button class="btn bg-primary btn-sm icon-btn" {{action "newCluster"}}>
@@ -8,6 +8,8 @@
     </button>
   </div>
 </section>
+
+<div class="mb-30">{{t 'clustersPage.subtext' appName=settings.appName htmlSafe=true}}</div>
 
 {{#unless projects.current}}
   <section>
@@ -21,5 +23,3 @@
 {{#each arrangedClusters as |cluster|}}
   {{cluster-box model=cluster}}
 {{/each}}
-
-<div class="mt-30">{{t 'clustersPage.subtext' appName=settings.appName htmlSafe=true}}</div>
