@@ -3,9 +3,10 @@ import C from 'ui/utils/constants';
 
 export default Ember.Route.extend({
   access: Ember.inject.service(),
+  cookies: Ember.inject.service(),
 
   model() {
-    return this.get('store').findAll('container'/* , {forceReload: true} */).then((containers) => {
+    return this.get('store').findAll('container').then((containers) => {
       let inst = null;
       let command = ['/bin/bash','-l','-c','echo "# Run kubectl commands inside here\n# e.g. kubectl get rc\n"; TERM=xterm-256color /bin/bash'];
 
@@ -29,7 +30,7 @@ export default Ember.Route.extend({
           {
             command = [
               'kubectl-shell.sh',
-              this.get('access.token.jwt') || 'unauthorized'
+              this.get('cookies').get(C.COOKIE.TOKEN) || 'unauthorized'
             ];
           }
 
