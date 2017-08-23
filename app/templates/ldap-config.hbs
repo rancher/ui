@@ -11,7 +11,16 @@
     {{/if}}
   </h2>
   <div>
-    {{t (concat-str 'ldap.header.enabled.' model.accessMode character='') appName=settings.appName providerName=(t providerName) users=numUsers groups=numGroups}}
+    {{#if canEdit}}
+      {{#if editing}}
+        {{t (concat-str 'ldap.header.enabled.' model.accessMode character='') appName=settings.appName providerName=(t providerName) users=numUsers groups=numGroups}}
+      {{else}}
+        {{t 'ldap.header.disabled.warning' appName=settings.appName providerName=(t providerName)}}
+      {{/if}}
+
+    {{else}}
+      {{t (concat-str 'ldap.header.enabled.' model.accessMode character='') appName=settings.appName providerName=(t providerName) users=numUsers groups=numGroups}}
+    {{/if}}
   </div>
 </section>
 
@@ -23,8 +32,8 @@
       </button>
     {{/unless}}
     <h3>{{t 'ldap.accessEnabled.header'}}</h3>
-    <hr/>
     <p class="help-block">{{t 'ldap.accessEnabled.subtext'}}</p>
+    <hr/>
 
     <div class="row">
       <div class="col-md-4">
