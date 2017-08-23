@@ -1,5 +1,6 @@
 import Ember from 'ember';
 import NewOrEdit from 'ui/mixins/new-or-edit';
+import Errors from 'ui/utils/errors';
 
 const HOSTNAME = 'externalhostname';
 const IP = 'externalip';
@@ -35,19 +36,6 @@ export default Ember.Component.extend(NewOrEdit, {
 
     cancel() {
       this.sendAction('cancel');
-    },
-
-    setTargetServices(array, resources) {
-      if ( true ) {
-        return;
-      }
-      let store = this.get('store');
-      this.set('record.serviceLinks', resources.map((r) => {
-        return store.createRecord({
-          type: 'link',
-          name: r.serviceName,
-        });
-      }));
     },
 
     addTargetIp() {
@@ -116,7 +104,7 @@ export default Ember.Component.extend(NewOrEdit, {
         }
         break;
       case ALIAS:
-        if ( !this.get('targetServicesAsMaps.length') ) {
+        if ( !this.get('record.serviceLinks.length') ) {
           errors.pushObject(this.get('intl').t('editDns.errors.serviceRequired'));
         }
         break;
@@ -145,14 +133,22 @@ export default Ember.Component.extend(NewOrEdit, {
       this.set('record.externalIpAddresses', null);
     }
 
-    if ( !this.get('id') ) {
+    if ( !this.get('record.id') ) {
       // Set the stack ID
       if ( this.get('stack.id') ) {
         this.set('record.stackId', this.get('stack.id'));
       } else if ( this.get('stack') ) {
         return this.get('stack').save().then((newStack) => {
           this.set('record.stackId', newStack.get('id'));
+          return true;
+        }).catch((err) => {
+          let errors = this.get('errors')||[];
+          errors.push(Errors.stringify(err));
+          this.set('errors', errors);
+          return false;
         });
+      } else {
+        return Ember.RSVP.reject('No Stack');
       }
     }
 

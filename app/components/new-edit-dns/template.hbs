@@ -43,13 +43,14 @@
       </div>
     </div>
     <div class="col span-6">
-      <div class="box">
-        {{#if (eq mode "dnsservice")}}
-          {{container/form-service-links
-            service=record
-            changed=(action 'setTargetServices')
-          }}
-        {{else if (or (eq mode "externalip") (eq mode "externalhostname"))}}
+      {{#if (eq mode "dnsservice")}}
+        {{container/form-service-links
+          service=record
+          stack=stack
+          expandOnInit=true
+        }}
+      {{else}}
+        <div class="box">
           {{#if (eq mode "externalip")}}
             <div class="mb-20">
               <label>{{t 'editDns.targetIp.label'}}{{field-required}}</label>
@@ -80,19 +81,19 @@
                 </div>
               </div>
             {{/if}}
-          {{else}}
+          {{else if (eq mode "externalhostname")}}
             <div class="mb-20">
               <label>{{t 'editDns.hostname.label'}}{{field-required}}</label>
             </div>
             {{input value=record.hostname placeholder=(t 'editDns.hostname.placeholder')}}
+          {{else if (eq mode "selectorservice")}}
+            <div class="mb-20">
+              <label>{{t 'editDns.selector.label'}}{{field-required}}</label>
+            </div>
+            {{input value=record.selector placeholder=(t 'editDns.selector.placeholder')}}
           {{/if}}
-        {{else}}
-          <div class="mb-20">
-            <label>{{t 'editDns.selector.label'}}{{field-required}}</label>
-          </div>
-          {{input value=record.selector placeholder=(t 'editDns.selector.placeholder')}}
-        {{/if}}
-      </div>
+        </div>
+      {{/if}}
     </div>
   </div>
 </section>

@@ -5,6 +5,7 @@
      statusClass=statusClass
      expandAll=expandAll
      expand=(action expandFn)
+     expandOnInit=expandOnInit
 }}
 
   <button class="btn bg-link icon-btn" {{action "addServiceLink"}}>
@@ -27,7 +28,8 @@
           <td data-title="{{t 'formServiceLinks.service.label'}}">
             {{schema/input-relative-service
               inputClass="form-control input-sm service-link"
-              selected=link.serviceId
+              stack=stack
+              value=link.name
               exclude=service.id
             }}
           </td>
@@ -36,7 +38,7 @@
               <p><i class="icon icon-chevron-right"></i></p>
             </td>
             <td data-title="{{t 'formServiceLinks.name.label'}}">
-              {{input class="form-control input-sm" type="text" value=link.name placeholder=(t 'formServiceLinks.name.placeholder')}}
+              {{input class="form-control input-sm" type="text" value=link.alias placeholder=(t 'formServiceLinks.name.placeholder')}}
             </td>
           {{/if}}
           <td class="text-right">

@@ -11,6 +11,7 @@ var Service = Resource.extend(StateCounts, EndpointPorts, {
   intl: Ember.inject.service(),
   growl: Ember.inject.service(),
   modalService: Ember.inject.service('modal'),
+  allServices: Ember.inject.service(),
 
   instances: denormalizeIdArray('instanceIds'),
   instanceCount: Ember.computed.alias('instances.length'),
@@ -203,9 +204,6 @@ var Service = Resource.extend(StateCounts, EndpointPorts, {
     'lcType','isK8s','canHaveContainers','canHaveSidekicks','containerForShell'
   ),
 
-  serviceLinks: null, // Used for clone
-  reservedKeys: ['serviceLinks'],
-
   image: Ember.computed.alias('launchConfig.image'),
 
   displayStack: function() {
@@ -217,24 +215,17 @@ var Service = Resource.extend(StateCounts, EndpointPorts, {
     }
   }.property('stack.displayName'),
 
-  consumedServicesWithNames: function() {
-    let store = this.get('store');
-    let links = this.get('linkedServices')||{};
-    let out = Object.keys(links).map((key) => {
-      let name = key;
-      let pos = name.indexOf('/');
-      if ( pos >= 0 ) {
-        name = name.substr(pos+1);
-      }
-
-      return Ember.Object.create({
-        name: name,
-        service: store.getById('service', links[key])
-      });
+  linkedServices: function() {
+    let allServices = this.get('allServices');
+    let stack = this.get('stack');
+    return (this.get('serviceLinks')||[]).map((link) => {
+      return {
+        name: link.name,
+        alias: link.alias,
+        service: allServices.matching(link.name, stack),
+      };
     });
-
-    return out.sortBy('name');
-  }.property('linkedServices'),
+  }.property('serviceLinks.@each.{name,alias}'),
 
   combinedState: function() {
     var service = this.get('state');
