@@ -44,24 +44,24 @@ var Cluster = Resource.extend(PolledResource, {
 
   // @TODO real data
   numHosts: function() {
-    return 1+Math.round(Math.random()*100);
+    return 3+Math.round(Math.random()*2);
   }.property(),
 
   numCores: function() {
-    return 1+Math.round(Math.random()*100);
-  }.property(),
+    return this.get('numHosts')*8;
+  }.property('numHosts'),
 
   numGhz: function() {
-    return 1+Math.round(Math.random()*100);
-  }.property(),
+    return 3.4*this.get('numCores');
+  }.property('numCores'),
 
   numMem: function() {
-    return Math.round(Math.random()*1000);
-  }.property(),
+    return 8*this.get('numHosts');
+  }.property('numHosts'),
 
   numStorage: function() {
-    return Math.round(Math.random()*1000);
-  }.property(),
+    return 40*this.get('numHosts');
+  }.property('numHosts'),
 });
 
 Cluster.reopenClass({

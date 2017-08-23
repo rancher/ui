@@ -113,6 +113,8 @@ Router.map(function() {
         this.route('volume', {path: '/volume/:volume_id', resetNamespace: true});
       });
 
+      this.route('k8s', {path: '/kubernetes', resetNamespace: true});
+
       this.route('service', {path: '/services/:service_id', resetNamespace: true});
 
       this.route('stack', {path: '/stack/:stack_id', resetNamespace: true}, function() {
@@ -162,8 +164,6 @@ Router.map(function() {
           this.route('launch', {path: '/:template'});
         });
       });
-
-      this.route('k8s-tab', {path: '/kubernetes', resetNamespace: true});
 
       this.route('help');
 

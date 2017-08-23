@@ -16,10 +16,13 @@ export default Ember.Controller.extend({
   projects: Ember.inject.service(),
   k8s: Ember.inject.service(),
 
+  projectController: Ember.inject.controller('authenticated.project'),
+  tags: Ember.computed.alias('projectController.tags'),
+
   actions: {
     kubernetesReady() {
       this.get('projects').updateOrchestrationState().then(() => {
-        this.transitionToRoute('k8s-tab.index');
+        this.transitionToRoute('k8s');
       });
     },
 

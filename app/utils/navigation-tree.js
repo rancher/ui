@@ -4,8 +4,6 @@ import C from 'ui/utils/constants';
 // Useful context/condition shortcuts
 export const getProjectId = function() { return this.get('projectId'); };
 export const getNamespaceId = function() { return this.get('namespaceId'); };
-export const k8sReady = function() { return this.get('kubernetesReady'); };
-export const k8sNotReady = function() { return !this.get('kubernetesReady'); };
 export const isOwner = function() { return this.get('isOwner'); };
 
 /* Tree item options
@@ -87,14 +85,6 @@ const navTree = [
         icon: 'icon icon-certificate',
         route: 'certificates',
         ctx: [getProjectId],
-      },
-      {
-        id: 'k8s',
-        localizedLabel: 'nav.k8s.tab',
-        icon: 'icon icon-kubernetes',
-        route: 'k8s-tab',
-        ctx: [getProjectId],
-        condition: function() { return this.get('hasKubernetes'); },
       },
       {
         id: 'infra-registries',
