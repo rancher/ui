@@ -168,6 +168,7 @@ export default Ember.Component.extend(Driver, {
   driverName               : 'amazonec2',
   model                    : null,
   amazonec2Config          : Ember.computed.alias('model.amazonec2Config'),
+  intl                     : Ember.inject.service(),
 
   clients                  : null,
   allSubnets               : null,
@@ -638,5 +639,27 @@ export default Ember.Component.extend(Driver, {
 
   subnetById: function(id) {
     return (this.get('allSubnets')||[]).filterBy('subnetId',id)[0];
+  },
+
+  validate() {
+    let errors = [];
+    let config = this.get('amazonec2Config');
+
+    if ( !this.get('nameParts.prefix') && !this.get('nameParts.name') ) {
+      errors.push('Name is required');
+    }
+
+    if (Object.keys(config.get('tags'))) {
+      let tags = config.get('tags');
+
+      Object.keys(tags).forEach((tag) => {
+        if (tag.indexOf(',') > -1 || tags[tag].indexOf(',') > -1) {
+          errors.push(this.get('intl').t('machine.driverAmazon.tags.error', {tag: tag}));
+        }
+      });
+    }
+
+    this.set('errors', errors);
+    return errors.length === 0;
   },
 });
