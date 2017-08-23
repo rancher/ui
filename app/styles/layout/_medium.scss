@@ -56,7 +56,7 @@
     tbody {
       tr {
         border: 1px solid $light-grey;
-        // margin: 10px 0;
+
         &.sm-noborder {
           border-width: 0px;
         }
@@ -66,7 +66,6 @@
           padding-left: 5px;
           white-space: normal;
           text-align: left;
-          width: 100%;
           border-right: none !important;
           height: auto;
           &:before {
@@ -75,7 +74,6 @@
             vertical-align: middle;
             white-space: nowrap;
             text-align: left;
-            // font-weight: bold;
             color: $info;
             padding-right: 5px;
           }
@@ -98,6 +96,10 @@
           .resource-actions {
             display: inline-block;
           }
+
+          .btn {
+            white-space: wrap;
+          }
         }
         &.main-row {
           td:nth-child(-n + 2) {
@@ -111,35 +113,26 @@
           }
         }
       }
+      TR.group-row > TD {
+        height: auto;
+      }
     }
     .group-row {
       clear: both;
       position: relative;
-      background: $table-bg-accent;
-      td:nth-child(-n + 2) {
-        float: left!important;
-        width: 75%;
-      }
-      td.progress-td {
-        clear: both;
-        width: 25%;
-        float: right;
-        position: absolute;
-        bottom: -100px;
-        right: 0;
-        padding: 0 10px;
-        > div {
-          margin-top: 0!important;
+      display: inline-block;
+      width: 100%;
+      background: red;
+
+        > td {
+          width: 24.25%;
+          display: inline-block;
+          padding: 10px 0;
+
+          &:after {
+            display: none;
+          }
         }
-      }
-      td.actions {
-        width: 25%;
-        float: right;
-        position: absolute;
-        right: 0;
-        text-align: right;
-        padding: 10px;
-      }
     }
     tr.sub-row {
       > td {
@@ -217,7 +210,6 @@
     list-style: none;
     margin: 0;
     padding: 0;
-    // background-color: $header;
     border-bottom-right-radius: 3px;
     border-bottom-left-radius: 3px;
     width: 100%;
@@ -274,7 +266,6 @@
     content: "☰";
     font-size: 18px;
     text-align: center;
-    // line-height: 1;
   }
   .nav-toggle:hover {
     text-decoration: none;
@@ -316,7 +307,7 @@
       width: 120px;
       height: 120px;
     }
-    .stack-info-row, .catalog-icon {}
-    display: inline-block;
+    .stack-info-row, .catalog-icon {
+    display: inline-block;}
   }
 }
