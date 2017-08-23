@@ -44,6 +44,7 @@
         {{#unless isOpenLdap}}
           <div><b>{{t 'ldap.accessEnabled.general.defaultDomain'}} </b> <span class="text-muted">{{ldapConfig.loginDomain}}</span></div>
         {{/unless}}
+        <div><b>{{t 'ldap.accessEnabled.general.timeout'}} </b> <span class="text-muted">{{ldapConfig.connectionTimeout}}{{t 'ldap.accessConfig.timeout.unit'}}</span></div>
       </div>
       <div class="col-md-4">
         <h4>{{t 'ldap.accessEnabled.users.header'}}</h4>
@@ -105,7 +106,7 @@
             {{input value=ldapConfig.server name="hostname" classNames="form-control"}}
           </div>
         </div>
-        <div class="col-md-6">
+        <div class="col-md-3">
           <div class="form-group">
             <label>{{t 'ldap.accessConfig.port.labelText'}}</label>
             <div class="input-group">
@@ -116,8 +117,13 @@
             </div>
           </div>
         </div>
-        <div class="col-md-4">
-          <div class="checkbox">
+        <div class="col-md-3">
+          <div class="form-group">
+            <label>{{t 'ldap.accessConfig.timeout.labelText'}}</label>
+            <div class="input-group">
+              {{input-integer  classNames="form-control" value=ldapConfig.connectionTimeout}}
+              <span class="input-group-addon">{{t 'ldap.accessConfig.timeout.unit'}}</span>
+            </div>
           </div>
         </div>
       </div>
