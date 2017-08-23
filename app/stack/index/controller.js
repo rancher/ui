@@ -1,5 +1,6 @@
 import Ember from 'ember';
 import { headersWithHost as containerHeaders } from 'ui/components/container-table/component';
+import { searchFields as containerSearchFields } from 'ui/components/container-dots/component';
 
 export default Ember.Controller.extend({
   prefs:             Ember.inject.service(),
@@ -99,11 +100,26 @@ export default Ember.Controller.extend({
       name: 'scale',
       sort: ['scale:desc','isGlobalScale:desc','displayName'],
       searchField: null,
-      width: 100,
       translationKey: 'stacksPage.table.scale',
       classNames: 'text-center',
+      width: 100
     },
   ],
+
+  extraSearchFields: ['id:prefix','displayIp:ip'],
+  extraSearchSubFields: containerSearchFields,
+  rows: Ember.computed('instances.[]', 'scalingGroups.[]', function() {
+    let out = [];
+    let containers = this.get('instances');
+    let scalinggroups = this.get('scalingGroups');
+    return out.concat(containers, scalinggroups);
+  }),
+
+  containerStats: Ember.computed('instances.[]', 'scalingGroups.[]', function() {
+    let containerLength = this.get('instances.length') || 0;
+    let scalingGroupsLength = this.get('scalingGroups.length') || 0;
+    return containerLength += scalingGroupsLength;
+  }),
 
   getType(ownType, real=true) {
     return this.get('model.services').filter((service) => {
