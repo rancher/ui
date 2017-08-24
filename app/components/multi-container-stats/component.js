@@ -45,11 +45,7 @@ export default Ember.Component.extend({
       return;
     }
 
-    if ( this.get('active') )
-    {
-      this.setUp();
-    }
-    else
+    if ( !this.get('active') )
     {
       this.tearDown();
     }
@@ -116,6 +112,10 @@ export default Ember.Component.extend({
   onDataPoint(point) {
     if ( this.isDestroyed || this.isDestroying ) {
       return;
+    }
+
+    if ( !this.get('cpuSystem_A') ) {
+      this.setUp();
     }
 
     let key = point.key;
