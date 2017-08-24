@@ -53,7 +53,6 @@ export default Ember.Component.extend({
   },
 
   serviceLinksArrayDidChange: function() {
-    let store = this.get('store');
     let ary = this.get('serviceLinksArray');
     this.set('service.serviceLinks', ary.filterBy('name'));
   }.observes('serviceLinksArray.@each.{name}'),
