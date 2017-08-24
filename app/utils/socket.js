@@ -64,6 +64,13 @@ export default Ember.Object.extend(Ember.Evented, {
     });
   },
 
+  send(/*arguments*/) {
+    let socket = this.get('_socket');
+    if ( socket ) {
+      socket.send(...arguments);
+    }
+  },
+
   disconnect(cb) {
     if ( cb )
     {

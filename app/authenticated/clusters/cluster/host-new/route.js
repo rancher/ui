@@ -13,7 +13,8 @@ export default Ember.Route.extend({
 
   queryParams: {
     driver: {
-      refreshModel: true
+      refreshModel: true,
+      replace: true
     },
     hostId: {
       refreshModel: false,
@@ -26,7 +27,14 @@ export default Ember.Route.extend({
     },
 
     goBack() {
-      this.send('goToPrevious','authenticated.clusters');
+      let backTo = this.get('backTo');
+      if ( backTo === 'hosts' ) {
+        this.transitionTo('hosts.index', this.get('projects.current.id'));
+      } else if ( backTo === 'clusters' ) {
+        this.transitionTo('authenticated.clusters');
+      } else {
+        this.send('goToPrevious','authenticated.clusters');
+      }
     }
   },
 
