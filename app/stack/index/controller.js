@@ -105,6 +105,48 @@ export default Ember.Controller.extend({
       width: 100
     },
   ],
+  storageSortBy: 'state',
+  storageHeaders:  [
+    {
+      name: 'expand',
+      sort: false,
+      searchField: null,
+      width: 30
+    },
+    {
+      name: 'state',
+      sort: ['stateSort','displayName'],
+      searchField: 'displayState',
+      translationKey: 'generic.state',
+      width: 120
+    },
+    {
+      name: 'name',
+      sort: ['displayName','id'],
+      searchField: 'displayName',
+      translationKey: 'generic.name',
+    },
+    {
+      name: 'mounts',
+      sort: ['mounts.length','displayName','id'],
+      translationKey: 'volumesPage.mounts.label',
+      searchField: null,
+      width: 100,
+    },
+    {
+      name: 'scope',
+      sort: ['scope'],
+      translationKey: 'volumesPage.scope.label',
+      width: 120
+    },
+    {
+      name: 'driver',
+      sort: ['driver','displayName','id'],
+      searchField: 'displayType',
+      translationKey: 'volumesPage.driver.label',
+      width: 150
+    },
+  ],
 
   extraSearchFields: ['id:prefix','displayIp:ip'],
   extraSearchSubFields: containerSearchFields,
