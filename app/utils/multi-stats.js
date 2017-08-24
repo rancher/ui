@@ -61,7 +61,10 @@ export default Ember.Object.extend(Ember.Evented, {
         if (response.get('url') && response.get('token')) {
           var url = response.get('url') + '?token=' + encodeURIComponent(response.get('token'));
 
-          var socket = Socket.create({url: url});
+          var socket = Socket.create({
+            url: url,
+            autoReconnect: false
+          });
 
           socket.on('message', (event) => {
             if ( this.get('connected') )
@@ -82,6 +85,8 @@ export default Ember.Object.extend(Ember.Evented, {
           socket.on('disconnected', (/*tries*/) => {
             this.set('connected',false);
             this.trigger('disconnected');
+            this.set('socket', null);
+            Ember.run.next(this,'connect');
           });
 
           this.set('socket', socket);
