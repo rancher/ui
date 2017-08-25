@@ -3,8 +3,10 @@ import C from 'ui/utils/constants';
 
 export default Ember.Route.extend({
   projects: Ember.inject.service(),
+  backTo: null,
 
-  model(/*params,transition*/) {
+  model(params/*,transition*/) {
+    this.set('backTo', params.backTo);
     return this.get('store').findAll('hostTemplate');
   },
 
@@ -19,11 +21,16 @@ export default Ember.Route.extend({
         });
 
         if (!activeDrivers.get('length')) {
-          this.transitionTo('authenticated.clusters.cluster.host-new', this.get('projects.currentCluster.id'), {queryParams: {driver: 'custom'}});
+          this.transitionTo('authenticated.clusters.cluster.host-new', this.get('projects.currentCluster.id'), {queryParams: {
+            backTo: this.get('backTo'),
+            driver: 'custom'
+          }});
         }
       });
     } else {
-      this.transitionTo('authenticated.clusters.cluster.host-new', this.get('projects.currentCluster.id'));
+      this.transitionTo('authenticated.clusters.cluster.host-new', this.get('projects.currentCluster.id'), {queryParams: {
+        backTo: this.get('backTo')
+      }});
     }
   },
 

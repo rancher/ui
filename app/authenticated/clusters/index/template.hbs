@@ -2,6 +2,17 @@
   <h1>{{t 'clustersPage.header'}}</h1> <div class="vertical-middle"><i class="icon icon-info text-muted"></i></div>
 
   <div class="right-buttons">
+    <div class="btn-group p-0 mr-10">
+      {{#tooltip-element type="tooltip-basic" model=(t 'hostsPage.index.tooltip.listView') tooltipTemplate='tooltip-static' aria-describedby="tooltip-base" tooltipFor="tooltipLink"}}
+        {{#link-to (query-params mode="list") classNames="btn btn-sm bg-default"}}<i class="icon icon-list"></i>{{/link-to}}
+      {{/tooltip-element}}
+      {{#tooltip-element type="tooltip-basic" model=(t 'hostsPage.index.tooltip.groupedView') tooltipTemplate='tooltip-static' aria-describedby="tooltip-base" tooltipFor="tooltipLink"}}
+        {{#link-to (query-params mode="grouped") classNames="btn btn-sm bg-default"}}<i class="icon icon-boxview"></i>{{/link-to}}
+      {{/tooltip-element}}
+    </div>
+
+    {{#link-to "authenticated.clusters.cluster.host-templates.index" projects.currentCluster.id classNames="btn btn-sm bg-primary"}}{{t 'hostsPage.index.addHost'}}{{/link-to}}
+
     <button class="btn bg-primary btn-sm icon-btn" {{action "newCluster"}}>
       <span class="darken"><i class="icon icon-cluster"></i></span>
       <span>{{t 'clustersPage.newCluster'}}</span>
@@ -20,6 +31,26 @@
   </section>
 {{/unless}}
 
-{{#each arrangedClusters as |cluster|}}
-  {{cluster-box model=cluster}}
-{{/each}}
+{{#if (eq mode "grouped")}}
+  {{#each arrangedClusters as |cluster|}}
+    {{cluster-box model=cluster}}
+  {{/each}}
+{{else}}
+  {{#sortable-table
+    classNames="grid sortable-table"
+    body=model.projects
+    searchText=searchText
+    sortBy=sortBy
+    bulkActions=true
+    fullRows=true
+    pagingLabel="pagination.project"
+    headers=headers as |sortable kind inst dt|
+  }}
+    {{project-row
+      model=inst
+      showCluster=true
+      fullColspan=sortable.fullColspan
+      dt=dt
+    }}
+  {{/sortable-table}}
+{{/if}}
