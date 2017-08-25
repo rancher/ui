@@ -7,7 +7,10 @@
     <div class="row nav nav-boxes checked-active">
       {{#each drivers as |driver|}}
         {{#if driver.available}}
-          {{#link-to driver.route alt=driver.label classNames=(concat "col nav-box-item driver auth-driver " driver.css) href=false}}{{/link-to}}
+          {{#link-to driver.route alt=driver.label classNames=(concat "col span-2 nav-box-item driver auth-driver " driver.css) href=false}}
+            <span classNames=(concat "col span-2 nav-box-item driver auth-driver")></span>
+            <p>{{driver.label}}</p>
+          {{/link-to}}
         {{/if}}
       {{/each}}
     </div>
@@ -15,3 +18,4 @@
 {{/unless}}
 
 {{outlet}}
+
