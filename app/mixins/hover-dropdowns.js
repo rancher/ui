@@ -10,6 +10,13 @@ let timerObj             = null;
 let dropdown             = null;
 
 export default Ember.Mixin.create({
+  willRender(){
+    if (Ember.$('BODY').hasClass('touch')) {
+      Ember.run.later(() => {
+        this.clearHeaderMenus();
+      }, DROPDOWNCLOSETIMER);
+    }
+  },
   didInsertElement: function() {
     let $body = Ember.$('BODY');
 
@@ -24,7 +31,7 @@ export default Ember.Mixin.create({
         }
       });
 
-      this.$('#environment-dropdown').on('touchstart', (e) => {
+      this.$('[data-toggle="header-user-menu"]').on('touchstart', (e) => {
           e.preventDefault();
           e.stopPropagation();
           this.touchHandler(e);
@@ -111,7 +118,20 @@ export default Ember.Mixin.create({
   },
 
   enterHandler(e) {
-    let anchor = Ember.$(e.currentTarget).find('a:first');
+    let anchor     = Ember.$(e.currentTarget).find('.dropdown-toggle');
+    let dataTarget = anchor.data('toggle') ? anchor.data('toggle') : null;
+    let findTarget = dataTarget ? `ul[data-dropdown-id ="${dataTarget}"]` : 'ul';
+    let offset     = null;
+
+    if (anchor.data('offset-x') || anchor.data('offset-y')) {
+      offset = {};
+      if (anchor.data('offset-x')) {
+        offset.x = anchor.data('offset-x');
+      }
+      if (anchor.data('offset-y')) {
+        offset.y = anchor.data('offset-y');
+      }
+    }
 
     Ember.run.cancel(timerObj);
 
@@ -126,15 +146,15 @@ export default Ember.Mixin.create({
         dropdown = Ember.$(e.currentTarget).find('ul');
 
         if (dropdown) {
-          this.showMenu(anchor, dropdown);
+          this.showMenu(anchor, dropdown, offset);
         }
       }
     } else { // no dropdown open
 
-      dropdown = Ember.$(e.currentTarget).find('ul');
+      dropdown = Ember.$(e.currentTarget).find(findTarget);
 
       if (dropdown) {
-        this.showMenu(anchor, dropdown);
+        this.showMenu(anchor, dropdown, offset);
       }
     }
 
@@ -224,15 +244,10 @@ export default Ember.Mixin.create({
     }
   },
 
-  showMenu: function(el, drpd) {
-    let body = Ember.$('BODY');
-    if (body.hasClass('touch')) {
-      Ember.$('BODY').addClass('nav-dropdown-open');
-    }
-
+  showMenu: function(el, drpd, offset) {
     drpd.addClass('invisible');
     drpd.addClass('block');
-    positionDropdown(drpd, el, drpd.hasClass('dropdown-menu-right'));
+    positionDropdown(drpd, el, drpd.hasClass('dropdown-menu-right'), offset);
     drpd.removeClass('invisible');
 
     if (el.attr('aria-expanded')) {
@@ -241,10 +256,6 @@ export default Ember.Mixin.create({
   },
 
   clearHeaderMenus: function() {
-    let body = Ember.$('BODY');
-    if (body.hasClass('touch')) {
-      Ember.$('BODY').removeClass('nav-dropdown-open');
-    }
     const navbar       = Ember.$(PARENT);
 
     dropdown = null;
