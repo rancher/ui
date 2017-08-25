@@ -96,79 +96,79 @@
   {{#accordion-list as |al expandFn|}}
     {{#if service.canHaveContainers}}
       {{#accordion-list-item
-           title=(t 'servicePage.containersTab.title')
-           detail=(t 'servicePage.containersTab.detail')
-           status=(t 'pagination.container' pages=1 count=service.instances.length)
-           statusClass=(if service.instances.length 'bg-success' 'text-muted')
-           expandOnInit=true
-           expandAll=al.expandAll
-           expand=(action expandFn)
-           componentName='container-table'
-           as | parent |
+        title=(t 'servicePage.containersTab.title')
+        detail=(t 'servicePage.containersTab.detail')
+        status=(t 'pagination.container' pages=1 count=service.instances.length)
+        statusClass=(if service.instances.length 'bg-success' 'text-muted')
+        expandOnInit=true
+        expandAll=al.expandAll
+        expand=(action expandFn)
+        componentName='container-table'
+        as |parent|
       }}
         {{component parent.intent
-            body=service.instances
-            bulkActions=true
-            search=true
-            searchText=searchText
-            showHost=true
+          body=service.instances
+          bulkActions=true
+          search=true
+          searchText=searchText
+          showHost=true
         }}
       {{/accordion-list-item}}
     {{/if}}
 
     {{#if service.isReal}}
       {{#accordion-list-item
-           title=(t 'containerPage.portsTab.header')
-           detail=(t 'containerPage.portsTab.detail')
-           status=(t 'pagination.port' pages=1 count=model.container.publicEndpoints.length)
-           statusClass=(if model.container.publicEndpoints.length 'bg-success' 'text-muted')
-           expandAll=al.expandAll
-           expand=(action expandFn)
+        title=(t 'containerPage.portsTab.header')
+        detail=(t 'containerPage.portsTab.detail')
+        status=(t 'pagination.port' pages=1 count=model.container.publicEndpoints.length)
+        statusClass=(if model.container.publicEndpoints.length 'bg-success' 'text-muted')
+        expandAll=al.expandAll
+        expand=(action expandFn)
       }}
         {{container/form-ports
-            initialPorts=model.service.launchConfig.ports
-            editing=false
+          initialPorts=model.service.launchConfig.ports
+          editing=false
         }}
-        <hr/>
-        <div class="mt-20">
-          <label class="acc-label">{{t 'containerPage.portsTab.header'}}</label>
-          {{public-endpoints
-              model=model.service
-          }}
-        </div>
+        {{#if model.service.launchConfig.ports.length}}
+          <hr/>
+          <div class="mt-20">
+            <label class="acc-label">{{t 'containerPage.portsTab.header'}}</label>
+            {{public-endpoints
+                model=model.service
+            }}
+          </div>
+        {{/if}}
       {{/accordion-list-item}}
 
       {{#accordion-list-item
-          title=(t 'servicePage.logTab.title')
-          detail=(t 'servicePage.logTab.detail')
-          status=(t 'pagination.event' pages=1 count=(or model.logs.length 0))
-          statusClass=(if model.logs.length 'bg-success' 'text-muted')
-          expandAll=al.expandAll
-          expand=(action expandFn)
+        title=(t 'servicePage.logTab.title')
+        detail=(t 'servicePage.logTab.detail')
+        expandAll=al.expandAll
+        expand=(action expandFn)
       }}
-        {{service-log logs=model.logs}}
+        {{service-log model=model.service}}
       {{/accordion-list-item}}
 
       {{container/form-scheduling
-          initialHostId=activeLaunchConfig.requestedHostId
-          initialLabels=activeLaunchConfig.labels
-          isGlobal=model.service.isGlobalScale
-          allHosts=model.hosts
-          editing=false
-          expandAll=al.expandAll
-          expandFn=expandFn
-          classNames="accordion"
+        initialHostId=activeLaunchConfig.requestedHostId
+        initialLabels=activeLaunchConfig.labels
+        isGlobal=model.service.isGlobalScale
+        allHosts=model.hosts
+        editing=false
+        expandAll=al.expandAll
+        expandFn=expandFn
+        classNames="accordion"
       }}
     {{/if}}
 
     {{#if model.service.canHaveLinks}}
       {{#accordion-list-item
-           title=(t 'servicePage.linksTab.header')
-           detail=(t 'servicePage.linksTab.detail')
-           status=(t 'pagination.link' pages=1 count=service.serviceLinks.length)
-           statusClass=(if service.serviceLinks.length 'bg-success' 'text-muted')
-           expandAll=al.expandAll
-           expand=(action expandFn)
+        title=(t 'servicePage.linksTab.header')
+        detail=(t 'servicePage.linksTab.detail')
+        status=(t 'pagination.link' pages=1 count=service.serviceLinks.length)
+        statusClass=(if service.serviceLinks.length 'bg-success' 'text-muted')
+        expandAll=al.expandAll
+        expand=(action expandFn)
       }}
         <ul class="list-unstyled list-inline with-room">
           {{#each service.serviceLinks as |link|}}
@@ -182,12 +182,12 @@
 
     {{#if model.service.canUpgrade}}
       {{container/form-upgrade
-          service=model.service
-          editing=false
-          errors=upgradeErrors
-          isUpgrade=isUpgrade
-          expandAll=al.expandAll
-          expandFn=expandFn
+        service=model.service
+        editing=false
+        errors=upgradeErrors
+        isUpgrade=isUpgrade
+        expandAll=al.expandAll
+        expandFn=expandFn
       }}
     {{/if}}
 
@@ -214,42 +214,42 @@
 
     {{#if (and service.isReal (not service.isBalancer))}}
       {{container/form-command
-          tagName=''
-          instance=activeLaunchConfig
-          isService=true
-          initialLabels=activeLaunchConfig.labels
-          editing=false
-          expandAll=al.expandAll
-          expandFn=expandFn
+        tagName=''
+        instance=activeLaunchConfig
+        isService=true
+        initialLabels=activeLaunchConfig.labels
+        editing=false
+        expandAll=al.expandAll
+        expandFn=expandFn
       }}
     {{/if}}
 
     {{#if service.lbConfig}}
       {{#accordion-list-item
-           title=(t 'formBalancerRules.label')
-           detail=(t 'formBalancerRules.detail')
-           status=(t 'pagination.rule' pages=1 count=(if rules.length rules.length 0))
-           statusClass=(if rules.length 'bg-success' 'text-muted')
-           expandAll=al.expandAll
-           expand=(action expandFn)
-           componentName='sortable-table'
-           as | parent |
+        title=(t 'formBalancerRules.label')
+        detail=(t 'formBalancerRules.detail')
+        status=(t 'pagination.rule' pages=1 count=(if rules.length rules.length 0))
+        statusClass=(if rules.length 'bg-success' 'text-muted')
+        expandAll=al.expandAll
+        expand=(action expandFn)
+        componentName='sortable-table'
+        as |parent|
       }}
         {{form-balancer-listeners
-            service=service
-            errors=ruleErrors
-            editing=false
+          service=service
+          errors=ruleErrors
+          editing=false
         }}
       {{/accordion-list-item}}
 
       {{#if service.isBalancer}}
         {{#accordion-list-item
-             title=(t 'servicePage.certsTab.title')
-             detail=(t 'servicePage.certsTab.detail')
-             status=(t 'pagination.certificate' pages=1 count=(if model.service.lbConfig.certificateIds.length model.service.lbConfig.certificateIds.length 0))
-             statusClass=(if model.service.lbConfig.certificateIds.length 'bg-success' 'text-muted')
-             expandAll=al.expandAll
-             expand=(action expandFn)
+          title=(t 'servicePage.certsTab.title')
+          detail=(t 'servicePage.certsTab.detail')
+          status=(t 'pagination.certificate' pages=1 count=(if model.service.lbConfig.certificateIds.length model.service.lbConfig.certificateIds.length 0))
+          statusClass=(if model.service.lbConfig.certificateIds.length 'bg-success' 'text-muted')
+          expandAll=al.expandAll
+          expand=(action expandFn)
         }}
           <div class="row">
             <div class="box col span-6">
@@ -282,67 +282,67 @@
 
     {{#if service.canHaveEnvironment}}
       {{form-env-var
-          model=activeLaunchConfig.displayEnvironmentVars
-          expandAll=al.expandAll
-          expandFn=expandFn
+        model=activeLaunchConfig.displayEnvironmentVars
+        expandAll=al.expandAll
+        expandFn=expandFn
       }}
     {{/if}}
 
     {{#if service.canHaveHealthCheck}}
       {{form-healthcheck
-          healthCheck=activeLaunchConfig
-          editing=false
-          expandAll=al.expandAll
-          expandFn=expandFn
-          classNames="accordion"
+        healthCheck=activeLaunchConfig
+        editing=false
+        expandAll=al.expandAll
+        expandFn=expandFn
+        classNames="accordion"
       }}
     {{/if}}
 
     {{#if service.canHaveLabels}}
       {{labels-section
-          model=activeLaunchConfig
-          tagName=''
-          expandAll=al.expandAll
-          expandFn=expandFn
+        model=activeLaunchConfig
+        tagName=''
+        expandAll=al.expandAll
+        expandFn=expandFn
       }}
     {{/if}}
 
     {{#if service.canChangeNetworking}}
       {{container/form-networking
-          editing=false
-          instance=model.service
-          initialLabels=activeLaunchConfig.labels
-          expandAll=al.expandAll
-          expandFn=expandFn
+        editing=false
+        instance=model.service
+        initialLabels=activeLaunchConfig.labels
+        expandAll=al.expandAll
+        expandFn=expandFn
       }}
     {{/if}}
 
     {{#if service.canChangeSecurity}}
       {{container/form-security
-          instance=activeLaunchConfig
-          editing=false
-          expandAll=al.expandAll
-          expandFn=expandFn
+        instance=activeLaunchConfig
+        editing=false
+        expandAll=al.expandAll
+        expandFn=expandFn
       }}
     {{/if}}
 
     {{#if service.canHaveSecrets}}
       {{container/form-secrets
-          instance=activeLaunchConfig
-          editing=false
-          expandAll=al.expandAll
-          expandFn=expandFn
-          classNames="accordion"
+        instance=activeLaunchConfig
+        editing=false
+        expandAll=al.expandAll
+        expandFn=expandFn
+        classNames="accordion"
       }}
     {{/if}}
 
     {{#if service.isBalancer}}
       {{form-stickiness
-          initialLabels=activeLaunchConfig.labels
-          service=model.service
-          editing=false
-          expandAll=al.expandAll
-          expandFn=expandFn
+        initialLabels=activeLaunchConfig.labels
+        service=model.service
+        editing=false
+        expandAll=al.expandAll
+        expandFn=expandFn
       }}
     {{/if}}
 

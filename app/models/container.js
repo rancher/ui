@@ -15,28 +15,22 @@ var Container = Instance.extend(EndpointPorts, {
   modalService: Ember.inject.service('modal'),
 
   // Container-specific
-  type                       : 'container',
-  image                      : null,
-  registryCredentialId       : null,
-  command                    : null,
-  commandArgs                : null,
-  environment                : null,
-  ports                      : null,
-  instanceLinks              : null,
-  dataVolumes                : null,
-  dataVolumesFrom            : null,
-  devices                    : null,
-  restartPolicy              : null,
+  type: 'container',
+  image: null,
+  registryCredentialId: null,
+  command: null,
+  commandArgs: null,
+  environment: null,
+  ports: null,
+  instanceLinks: null,
+  dataVolumes: null,
+  dataVolumesFrom: null,
+  devices: null,
+  restartPolicy: null,
 
-  mounts                     : denormalizeIdArray('mountIds'),
-  primaryHost                : denormalizeId('hostId'),
-  services                   : denormalizeIdArray('serviceIds'),
-  primaryService             : Ember.computed.alias('services.firstObject'),
-  referencedService          : denormalizeId('serviceId'),
-
-  service: Ember.computed('primaryService','referencedService', function() {
-    return this.get('referencedService') || this.get('primaryService');
-  }),
+  mounts: denormalizeIdArray('mountIds'),
+  primaryHost: denormalizeId('hostId'),
+  service: denormalizeId('serviceId'),
 
   actions: {
     restart: function() {
@@ -141,6 +135,7 @@ var Container = Instance.extend(EndpointPorts, {
   combinedState: function() {
     var host = this.get('primaryHost.state');
     var resource = this.get('state');
+    var service = this.get('service.state');
     var health = this.get('healthState');
     var hasCheck = !!this.get('healthCheck');
 
