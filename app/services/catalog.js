@@ -14,7 +14,7 @@ export default Ember.Service.extend({
   catalogs:                   null,
 
   templateBase: Ember.computed('projects.current.orchestration', function() {
-    return this.get('projects.current.orchestration') || 'cattle';
+    return this.get('projects.current.orchestration') || '';
   }),
 
   reset() {
