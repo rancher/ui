@@ -15,49 +15,47 @@ export default Ember.Component.extend({
   init() {
     this._super(...arguments);
 
-    var out = [];
-    var links = this.get('service.serviceLinks')||[];
-    if ( this.get('service.id') )
-    {
-      // Edit
-      links = this.get('service.consumedServicesWithNames')||[];
-    }
-    else
-    {
-      // New / Clone
-    }
+    let out = [];
+    let links = this.get('service.serviceLinks')||[];
 
     links.forEach(function(obj) {
-      var name = obj.get('name');
-      var service = obj.get('service');
-
-      out.push(Ember.Object.create({
-        name: (name === service.get('name') ? '' : name),
-        obj: service,
-        serviceId: service.get('id'),
+      out.push(this.get('store').createRecord({
+        type: 'link',
+        name: obj.get('name'),
+        alias: obj.get('alias'),
       }));
     });
 
     this.set('serviceLinksArray', out);
-    this.serviceLinksArrayDidChange();
   },
 
   actions: {
-    addServiceLink: function() {
-      this.get('serviceLinksArray').pushObject(Ember.Object.create({name: '', serviceId: null}));
+    addServiceLink() {
+      this.get('serviceLinksArray').pushObject(this.get('store').createRecord({
+        type: 'link',
+        name: '',
+        alias: '',
+      }));
     },
-    removeServiceLink: function(obj) {
+
+    removeServiceLink(obj) {
       this.get('serviceLinksArray').removeObject(obj);
     },
   },
 
-  expand(item) {
-    item.toggleProperty('expanded');
+
+  didReceiveAttrs() {
+    if (!this.get('expandFn')) {
+      this.set('expandFn', function(item) {
+          item.toggleProperty('expanded');
+      });
+    }
   },
 
   serviceLinksArrayDidChange: function() {
-    this.sendAction('changed', this.get('serviceLinksArray'));
-  }.observes('serviceLinksArray.@each.{name,serviceId}'),
+    let ary = this.get('serviceLinksArray');
+    this.set('service.serviceLinks', ary.filterBy('name'));
+  }.observes('serviceLinksArray.@each.{name}'),
 
   statusClass: null,
   status: function() {

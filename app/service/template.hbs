@@ -154,13 +154,13 @@
       {{#accordion-list-item
            title=(t 'servicePage.linksTab.header')
            detail=(t 'servicePage.linksTab.detail')
-           status=(t 'pagination.link' pages=1 count=service.consumedServicesWithNames.length)
-           statusClass=(if service.consumedServicesWithNames.length 'bg-success' 'text-muted')
+           status=(t 'pagination.link' pages=1 count=service.serviceLinks.length)
+           statusClass=(if service.serviceLinks.length 'bg-success' 'text-muted')
            expandAll=al.expandAll
            expand=(action expandFn)
       }}
         <ul class="list-unstyled list-inline with-room">
-          {{#each service.consumedServicesWithNames as |link|}}
+          {{#each service.serviceLinks as |link|}}
             <li>{{consumed-service-link link=link stackId=service.stackId}}</li>
           {{else}}
             <li class="text-muted text-center">{{t 'servicePage.linksTab.noData'}}</li>

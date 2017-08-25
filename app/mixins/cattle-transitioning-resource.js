@@ -21,6 +21,7 @@ const defaultStateMap = {
   'migrating':                {icon: 'icon icon-info',          color: 'text-info'   },
   'provisioning':             {icon: 'icon icon-circle',        color: 'text-info'   },
   'pending-delete':           {icon: 'icon icon-trash',         color: 'text-muted'  },
+  'pending-restart':          {icon: 'icon icon-history',       color: 'text-warning'},
   'purged':                   {icon: 'icon icon-purged',        color: 'text-error'  },
   'purging':                  {icon: 'icon icon-purged',        color: 'text-info'   },
   'reconnecting':             {icon: 'icon icon-alert',         color: 'text-error'  },

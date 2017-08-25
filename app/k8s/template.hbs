@@ -1,0 +1,63 @@
+{{#if projectController.showClusterWelcome}}
+  {{cluster-welcome}}
+{{else}}
+  {{waiting-orchestration}}
+
+  {{#containers-header tags=tags simpleMode=true}}
+    <button class="btn btn-sm bg-primary icon-btn" {{action "dashboard"}}>
+      <span class="darken"><i class="icon icon-external-link"></i></span>
+      <span>Launch Dashboard</span>
+    </button>
+
+    <button class="btn btn-sm bg-primary icon-btn ml-10" {{action "kubectl"}}>
+      <span class="darken"><i class="icon icon-terminal"></i></span>
+      <span>Launch kubectl</span>
+    </button>
+
+    <button class="btn btn-sm bg-primary icon-btn ml-10" {{action "kubeconfig"}}>
+      <span class="darken"><i class="icon icon-download"></i></span>
+      <span>Download kubeconfig</span>
+    </button>
+  {{/containers-header}}
+
+  <section class="header has-tabs clearfix">
+    <h1>Kubernetes Status</h1>
+  </section>
+
+  <div class="k8s-tab">
+    <div class="row text-center">
+      <div class="col span-3 mt-0">
+        {{banner-message icon=(if etcd 'icon-success' 'icon-alert') color=(if etcd 'bg-success' 'bg-warning') message='Etcd'}}
+      </div>
+      <div class="col span-3 mt-0">
+        {{banner-message icon=(if kubelet 'icon-success' 'icon-alert') color=(if kubelet 'bg-success' 'bg-warning') message='Kubelets'}}
+      </div>
+      <div class="col span-3 mt-0">
+        {{banner-message icon=(if controlPlane 'icon-success' 'icon-alert') color=(if controlPlane 'bg-success' 'bg-warning') message='Control Plane'}}
+      </div>
+      <div class="col span-3 mt-0">
+        {{banner-message icon=(if systemStacks 'icon-success' 'icon-alert') color=(if systemStacks 'bg-success' 'bg-warning') message='System Services'}}
+      </div>
+    </div>
+
+    <section class="header">
+      <h1>Kubernetes Resources</h1>
+    </section>
+    <div class="box pt-0 pb-0">
+      <div class="row">
+        <div class="col span-6 mt-0 mb-0">
+          {{banner-message title=model.workload.deploymentList.listMeta.totalItems color='bg-info' message='Deployments' titleWidth=100}}
+          {{banner-message title=model.workload.replicaSetList.listMeta.totalItems color='bg-info' message='Replica Sets' titleWidth=100}}
+          {{banner-message title=model.workload.replicationControllerList.listMeta.totalItems color='bg-info' message='Replication Controllers' titleWidth=100}}
+          {{banner-message title=model.workload.podList.listMeta.totalItems color='bg-info' message='Pods' titleWidth=100}}
+        </div>
+
+        <div class="col span-6 mt-0 mb-0">
+          {{banner-message title=model.workload.daemonSetList.listMeta.totalItems color='bg-info' message='Daemon Sets' titleWidth=100}}
+          {{banner-message title=model.workload.statefulSetList.listMeta.totalItems color='bg-info' message='Stateful Sets' titleWidth=100}}
+          {{banner-message title=model.workload.jobList.listMeta.totalItems color='bg-info' message='Jobs' titleWidth=100}}
+        </div>
+      </div>
+    </div>
+  </div>
+{{/if}}

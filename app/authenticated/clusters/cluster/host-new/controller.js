@@ -8,6 +8,7 @@ export default Ember.Controller.extend({
   backTo      : null,
   driver      : null,
   hostId      : null,
+
   actions: {
     completed() {}
   }

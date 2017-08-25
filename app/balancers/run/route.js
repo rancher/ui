@@ -48,7 +48,6 @@ export default Ember.Route.extend({
           description: '',
           scale: 1,
           stackId: params.stackId,
-          startOnCreate: true,
           launchConfig: store.createRecord({
             image: this.get(`settings.${C.SETTING.BALANCER_IMAGE}`),
             type: 'launchConfig',

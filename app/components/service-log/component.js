@@ -4,6 +4,7 @@ export default Ember.Component.extend({
   prefs: Ember.inject.service(),
 
   logs: null,
+  sortBy: 'time',
 
   headers: [
     {

@@ -21,7 +21,7 @@ export default Ember.Component.extend({
     kubernetesReady() {
       this.get('k8s').allNamespaces().then(() => {
         this.get('projects').updateOrchestrationState().then(() => {
-          this.transitionToRoute('k8s-tab');
+          this.transitionToRoute('k8s');
         });
       });
     },

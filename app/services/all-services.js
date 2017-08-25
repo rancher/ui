@@ -63,15 +63,18 @@ export default Ember.Service.extend({
   matching(serviceOrCombined, defaultStack) {
     if ( defaultStack && typeof defaultStack === 'object' ) {
       defaultStack = Ember.get(defaultStack,'name');
-    };
+    }
 
     let combined;
-    if ( defaultStack && !name.includes('/') ) {
+    if ( defaultStack && !serviceOrCombined.includes('/') ) {
       combined = defaultStack + '/' + serviceOrCombined;
     } else {
       combined = serviceOrCombined;
     }
 
-    return this.get('list').findBy('combined', combined);
+    let match = this.get('list').findBy('combined', combined);
+    if ( match ) {
+      return match.obj;
+    }
   },
 });

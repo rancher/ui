@@ -32,13 +32,13 @@ export default Ember.Route.extend(PolledModel,{
     return Ember.RSVP.hash({
 //      workload: k8s.workload(),
       workload: Ember.RSVP.resolve({
-        deploymentList: { listMeta: { totalItems: Math.floor(Math.random()*100) }},
-        replicaSetList: { listMeta: { totalItems: Math.floor(Math.random()*100) }},
-        replicationControllerList: { listMeta: { totalItems: Math.floor(Math.random()*100) }},
-        podList: { listMeta: { totalItems: Math.floor(Math.random()*100) }},
-        daemonSetList: { listMeta: { totalItems: Math.floor(Math.random()*100) }},
-        statefulSetList: { listMeta: { totalItems: Math.floor(Math.random()*100) }},
-        jobList: { listMeta: { totalItems: Math.floor(Math.random()*100) }},
+        deploymentList: { listMeta: { totalItems: 5+Math.floor(Math.random()*3) }},
+        replicaSetList: { listMeta: { totalItems: 10+Math.floor(Math.random()*5) }},
+        replicationControllerList: { listMeta: { totalItems: 1+Math.floor(Math.random()*2) }},
+        podList: { listMeta: { totalItems: 45+Math.floor(Math.random()*5) }},
+        daemonSetList: { listMeta: { totalItems: 0 }},
+        statefulSetList: { listMeta: { totalItems: 0}},
+        jobList: { listMeta: { totalItems: 0}}
       }),
       stacks: this.get('store').find('stack'),
     }).then((hash) => {

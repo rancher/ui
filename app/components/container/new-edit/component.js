@@ -53,10 +53,6 @@ export default Ember.Component.extend(NewOrEdit, {
       this.set('launchConfig.requestedHostId', hostId);
     },
 
-    setServiceLinks(links) {
-      this.set('serviceLinksArray', links);
-    },
-
     setUpgrade(upgrade) {
       this.set('upgradeOptions', upgrade);
     },

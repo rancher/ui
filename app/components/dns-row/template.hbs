@@ -19,14 +19,18 @@
   </td>
   <td data-title="{{dt.target}}">
     {{#if model.linkedServices}}
-      {{#each linkedServicesArray as |entry idx|}}
+      {{#each model.linkedServices as |link idx|}}
         {{~if (gt idx 0) ', '~}}
-        {{~#link-to 'service' projects.current.id entry.service.id~}}
-          {{~#unless (eq entry.service.stackId model.stackId)~}}
-            {{entry.service.displayStack}}/
-          {{~/unless~}}
-          {{entry.service.displayName}}
-        {{~/link-to~}}
+        {{~#if link.service}}
+          {{~#link-to 'service' projects.current.id link.service.id~}}
+            {{~link.name}}
+          {{~/link-to~}}
+        {{~else~}}
+          {{link.name}}
+        {{~/if~}}
+        {{~#if link.alias}}
+          {{t 'generic.as'}} {{link.alias}}
+        {{/if~}}
       {{/each}}
     {{else if model.selector}}
       <span>{{model.selector}}</span>

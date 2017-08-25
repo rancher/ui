@@ -12,7 +12,15 @@ export default Ember.Component.extend(ModalBase, {
 
   isAdmin: Ember.computed.alias('access.admin'),
 
-  containerCount: Ember.computed.alias('containers.length'),
+  containerCount: function() {
+    let count = this.get('containers.length');
+    if ( count > 9 ) {
+      return count;
+    } else {
+      return '0' + count;
+    }
+  }.property('containers.length'),
+
   time: DEFAULT_TIME,
   timer: null,
 

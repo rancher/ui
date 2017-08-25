@@ -43,7 +43,6 @@ export default Ember.Route.extend({
       type: 'scalingGroup', // @TODO switch back to service
       stackId: stackId,
       scale: 1,
-      startOnCreate: true,
     });
 
     let emptyLc = store.createRecord(JSON.parse(EMPTY_LC));

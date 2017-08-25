@@ -123,16 +123,16 @@ var Project = Resource.extend(PolledResource, {
 
   // @TODO real data
   numStacks: function() {
-    return 1+Math.round(Math.random()*30);
-  }.property(),
+    return 3+Math.round(Math.random()*3);
+  }.property().volatile(),
 
   numServices: function() {
-    return 1+Math.round(Math.random()*100);
-  }.property(),
+    return 10+Math.round(Math.random()*9);
+  }.property().volatile(),
 
   numContainers: function() {
-    return 1+Math.round(Math.random()*1000);
-  }.property(),
+    return 50+Math.round(Math.random()*49);
+  }.property().volatile(),
 });
 
 // Projects don't get pushed by /subscribe WS, so refresh more often
