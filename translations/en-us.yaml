@@ -459,6 +459,8 @@ clustersPage:
     <p><b>Environment:</b> A namespace where applications, services, and containers are defined.  The containers in an environment can communicate with each other over a shared managed network, and different users/groups can be given access to manage the resources of the environment.</p>
     <p><b>Cluster:</b> A group of physical (or virtual) compute resources.  Each environment is tied to one cluster and will run all its containers on cluster's hosts, and a cluster can be shared with more than one environment.</p>
     <p class="help-block">For example, you might create a <em>"production"</em> cluster for each team in your company with bare-metal hosts and a single dedicated environment with restricted access, and a shared <em>"sandbox"</em> cluster with shared virtual machines that any employee can use to create their own isolated dev & test environments.</p>
+  cluster:
+    label: Cluster Name
   environment:
     label: Environment Name
 
@@ -973,11 +975,6 @@ newStack:
     label: Answers (variable substitutions)
     addActionLabel: Add Answer
 
-  startOnCreate:
-    label: After creating services
-    on: Automatically start them
-    off: Leave them stopped
-
 userPreferencesPage:
   header: Preferences
   theme:
@@ -1466,7 +1463,7 @@ editStack:
   group:
     label: Tags
     placeholder: e.g. frontend, production
-    help: Comma-separated list of tags.  The Stacks list can be filtered by individual tags.
+    help: Comma-separated list of tags for the new Stack.  The Containers lists can be filtered by individual tags.
 
 envCatalog:
   header: Catalog
@@ -2904,11 +2901,11 @@ modalShortcuts:
   k: API Keys
   other: Other Stuff
   g: Toggle view grouping
-  n: "Add New [current resource]"
+  n: "Add a new [the current resource]"
   s: Toggle show system
   t: Next page tab
   v: Volumes
-  slash: Focus search field
+  slash: Focus the search field
   question: You are here
   admin: Only For Admins
   p: Processes

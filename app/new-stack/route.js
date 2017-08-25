@@ -21,7 +21,6 @@ export default Ember.Route.extend({
   model: function(params/*, transition*/) {
     var stack = this.get('store').createRecord({
       type: 'stack',
-      startOnCreate: true,
     });
 
     var dockerUrl = null;
