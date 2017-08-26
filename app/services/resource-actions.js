@@ -8,7 +8,16 @@ export default Ember.Service.extend({
   actionToggle   : null,
   actionMenu     : null,
 
-  show: function(model,trigger,toggle) {
+  // offset is a parameter that we need to open in our api, it allows us to pass a
+  // positial x/y offset to the position-calculator library
+  // http://tlindig.github.io/position-calculator/
+  // itemOffset: {
+  //   y: -1,
+  //   x: 2,
+  //   mirror: true
+  // },
+
+  show: function(model,trigger,toggle, offset) {
     if (this.get('open') && this.get('actionMenu')) {
       this.hide();
     }
@@ -52,7 +61,7 @@ export default Ember.Service.extend({
       this.set('open',true);
       // Delay ensure it works in firefox
       Ember.run.next(() => {
-        positionDropdown($menu, trigger, true);
+        positionDropdown($menu, trigger, true, offset);
         $('#resource-actions-first')[0].focus();
         $menu.css('visibility','visible');
       });

@@ -1,5 +1,6 @@
 import Ember from 'ember';
 import { headersWithHost as containerHeaders } from 'ui/components/container-table/component';
+import { searchFields as containerSearchFields } from 'ui/components/container-dots/component';
 
 export default Ember.Controller.extend({
   prefs:             Ember.inject.service(),
@@ -99,11 +100,68 @@ export default Ember.Controller.extend({
       name: 'scale',
       sort: ['scale:desc','isGlobalScale:desc','displayName'],
       searchField: null,
-      width: 100,
       translationKey: 'stacksPage.table.scale',
       classNames: 'text-center',
+      width: 100
     },
   ],
+  storageSortBy: 'state',
+  storageHeaders:  [
+    {
+      name: 'expand',
+      sort: false,
+      searchField: null,
+      width: 30
+    },
+    {
+      name: 'state',
+      sort: ['stateSort','displayName'],
+      searchField: 'displayState',
+      translationKey: 'generic.state',
+      width: 120
+    },
+    {
+      name: 'name',
+      sort: ['displayName','id'],
+      searchField: 'displayName',
+      translationKey: 'generic.name',
+    },
+    {
+      name: 'mounts',
+      sort: ['mounts.length','displayName','id'],
+      translationKey: 'volumesPage.mounts.label',
+      searchField: null,
+      width: 100,
+    },
+    {
+      name: 'scope',
+      sort: ['scope'],
+      translationKey: 'volumesPage.scope.label',
+      width: 120
+    },
+    {
+      name: 'driver',
+      sort: ['driver','displayName','id'],
+      searchField: 'displayType',
+      translationKey: 'volumesPage.driver.label',
+      width: 150
+    },
+  ],
+
+  extraSearchFields: ['id:prefix','displayIp:ip'],
+  extraSearchSubFields: containerSearchFields,
+  rows: Ember.computed('instances.[]', 'scalingGroups.[]', function() {
+    let out = [];
+    let containers = this.get('instances');
+    let scalinggroups = this.get('scalingGroups');
+    return out.concat(containers, scalinggroups);
+  }),
+
+  containerStats: Ember.computed('instances.[]', 'scalingGroups.[]', function() {
+    let containerLength = this.get('instances.length') || 0;
+    let scalingGroupsLength = this.get('scalingGroups.length') || 0;
+    return containerLength += scalingGroupsLength;
+  }),
 
   getType(ownType, real=true) {
     return this.get('model.services').filter((service) => {

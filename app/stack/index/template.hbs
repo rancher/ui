@@ -1,67 +1,63 @@
 {{stack-header model=model.stack all=model.all.stacks}}
 
+{{#if model.stack.description}}
+  {{banner-message color='bg-secondary mb-0 mt-10' message=model.stack.description}}
+{{/if}}
+
 <section>
   {{#accordion-list as |al expandFn| }}
     {{#accordion-list-item
          title=(t 'stackPage.containers.header')
          detail=(t 'stackPage.containers.detail')
          status=(t 'stackPage.containers.status' count=instances.length)
-         statusClass=(if instances.length 'bg-success' 'text-muted')
+         statusClass=(if containerStats 'bg-success' 'text-muted')
+         expandOnInit=true
          expandAll=al.expandAll
          expand=(action expandFn)
          componentName='container-table'
          as | parent |
     }}
-      {{component parent.intent
-          body=instances
-          search=true
-          sortBy=sortBy
-          stickyHeader=false
-          bulkActions=true
-          showHost=false
-      }}
-    {{/accordion-list-item}}
-
-    {{#accordion-list-item
-         title=(t 'stackPage.scalingGroups.header')
-         detail=(t 'stackPage.scalingGroups.detail')
-         status=(t 'stackPage.scalingGroups.status' count=scalingGroups.length)
-         statusClass=(if scalingGroups.length 'bg-success' 'text-muted')
-         expandAll=al.expandAll
-         expand=(action expandFn)
-         componentName='sortable-table'
-         as | parent |
-    }}
-      {{#component parent.intent
-           body=scalingGroups
-           bulkActions=true
+      {{#sortable-table
+           tableClassNames="double-rows"
            classNames="grid sortable-table"
-           fullRows=true
-           headers=sgHeaders
-           pagingLabel="pagination.service"
+           body=rows
            searchText=searchText
            sortBy=sortBy
-           stickyHeader=false
-           subHeaders=containerHeaders
+           bulkActions=true
            subRows=true
+           fullRows=true
+           pagingLabel="pagination.containerService"
            subSearchField="instances"
-           as |sortable kind serv dt|}}
+           extraSearchFields=extraSearchFields
+           extraSearchSubFields=extraSearchSubFields
+           headers=sgHeaders as |sortable kind inst dt|}}
         {{#if (eq kind "row")}}
-          {{service-row
-              canExpand=true
-              expanded=(array-includes expandedInstances serv.id)
-              fullColspan=sortable.fullColspan
-              model=serv
-              searchText=searchText
-              showInstanceCount=false
-              subMatches=sortable.subMatches
-              toggle=(action "toggleExpand" serv.id)
-              dt=dt
-          }}
+          {{#if (eq inst.baseType "instance")}}
+            {{container-row
+                model=inst
+                dt=dt
+                showHost=true
+                expandPlaceholder=true
+                scalePlaceholder=true
+                fullColspan=sortable.fullColspan
+            }}
+          {{else}}
+            {{service-row
+                model=inst
+                toggle=(action "toggleExpand" inst.id)
+                expanded=(array-includes expandedInstances inst.id)
+                searchText=searchText
+                subMatches=sortable.subMatches
+                fullColspan=sortable.fullColspan
+                dt=dt
+            }}
+          {{/if}}
         {{else if (eq kind "nomatch")}}
-          <tr><td colspan="{{sortable.fullColspan}}" class="text-center text-muted pt-20 pb-20">{{t 'containersPage.table.noMatch'}}</td></tr>
+          <tr><td colspan="{{sortable.fullColspan}}" class="text-center text-muted lacsso pt-20 pb-20">{{t 'containersPage.table.noMatch'}}</td></tr>
+        {{else if (eq kind "norows")}}
+          <tr><td colspan="{{sortable.fullColspan}}" class="text-center text-muted lacsso pt-20 pb-20">{{t 'containersPage.table.noData'}}</td></tr>
         {{/if}}
-      {{/component}}
+      {{/sortable-table}}
     {{/accordion-list-item}}
 
     {{#accordion-list-item
@@ -141,6 +137,49 @@
           }}
         {{else if (eq kind "nomatch")}}
           <tr><td colspan="{{sortable.fullColspan}}"  class="text-center text-muted pt-20 pb-20">{{t 'containersPage.table.noMatch'}}</td></tr>
+        {{/if}}
+      {{/component}}
+    {{/accordion-list-item}}
+
+    {{#accordion-list-item
+         title=(t 'stackPage.volumesTab.header')
+         detail=(t 'stackPage.volumesTab.detail')
+         status=(t 'pagination.volume' pages=1 count=(or model.volumes.length 0))
+         statusClass=(if model.volumes.length 'bg-success' 'text-muted')
+         expandAll=al.expandAll
+         expand=(action expandFn)
+         componentName='sortable-table'
+         as | parent |
+    }}
+      {{#component parent.intent
+           body=model.volumes
+           bulkActions=true
+           classNames="grid sortable-table"
+           fullRows=true
+           isVisible=parent.expanded
+           pagingLabel="pagination.volume"
+           searchText=searchText
+           sortBy=sortBy
+           stickyHeader=false
+           subHeaders=containerHeaders
+           subRows=true
+           subSearchField="instances"
+           headers=storageHeaders as |sortable kind mount dt|
+      }}
+        {{#if (eq kind "row")}}
+          {{volume-row
+              model=mount
+              toggle=(action "toggleExpand" mount.id)
+              expanded=(array-includes expandedInstances mount.id)
+              searchText=searchText
+              subMatches=sortable.subMatches
+              fullColspan=sortable.fullColspan
+              dt=dt
+          }}
+        {{else if (eq kind "nomatch")}}
+          <tr><td colspan="{{sortable.fullColspan}}" class="text-center text-muted pt-20 pb-20">{{t 'stackPage.volumesTab.table.noMatch'}}</td></tr>
+        {{else if (eq kind "norows")}}
+          <tr><td colspan="{{sortable.fullColspan}}" class="text-center text-muted pt-20 pb-20">{{t 'stackPage.volumesTab.table.noData'}}</td></tr>
         {{/if}}
       {{/component}}
     {{/accordion-list-item}}

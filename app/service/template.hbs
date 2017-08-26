@@ -22,6 +22,28 @@
 
 <section>
   <div class="row banner bg-info basics">
+    {{#if service.externalIpAddresses}}
+      <div class="inline-block">
+        <label class="text-muted ml-15">{{t 'servicePage.external.externalIp' count=service.externalIpAddresses.length}}</label>
+        {{join-array service.externalIpAddresses}}
+      </div>
+    {{else if service.hostname}}
+      <div class="inline-block">
+        <label class="text-muted">{{t 'servicePage.external.externalHostname'}} </label> {{service.hostname}}
+      </div>
+    {{else if service.selector}}
+      <div class="inline-block">
+        <label class="text-muted">{{t 'servicePage.selector.label'}} </label> {{service.selector}}
+      </div>
+    {{/if}}
+
+    {{#if service.hasImage}}
+      <div class="inline-block">
+        <label class="acc-label p-0">{{t 'servicePage.multistat.image'}}</label>
+        {{fixedLaunchConfig.image}} {{copy-to-clipboard clipboardText=fixedLaunchConfig.image size="small"}}
+      </div>
+    {{/if}}
+
     {{#if fixedLaunchConfig.memoryReservation}}
       <div class="inline-block">
         <label class="acc-label p-0">{{t 'containersPage.containerPage.infoMultiStats.memoryReservation.labelText'}}</label>
@@ -57,27 +79,14 @@
       </div>
     {{/if}}
 
-    {{#if service.hasImage}}
+
+    {{#if model.stack}}
       <div class="inline-block">
-        <label class="acc-label p-0">{{t 'servicePage.multistat.image'}}</label>
-        {{fixedLaunchConfig.image}} {{copy-to-clipboard clipboardText=fixedLaunchConfig.image size="small"}}
+        <label class="acc-label p-0">{{t 'generic.stack'}}:</label>
+        {{#link-to "stack" projects.current.id model.stack.id}}{{model.stack.displayName}}{{/link-to}}
       </div>
     {{/if}}
 
-    {{#if service.externalIpAddresses}}
-      <div class="inline-block">
-        <label class="text-muted ml-15">{{t 'servicePage.external.externalIp' count=service.externalIpAddresses.length}}</label>
-        {{join-array service.externalIpAddresses}}
-      </div>
-    {{else if service.hostname}}
-      <div class="inline-block">
-        <label class="text-muted">{{t 'servicePage.external.externalHostname'}} </label> {{service.hostname}}
-      </div>
-    {{else if service.selector}}
-      <div class="inline-block">
-        <label class="text-muted">{{t 'servicePage.selector.label'}} </label> {{service.selector}}
-      </div>
-    {{/if}}
   </div>
 </section>
 

@@ -2,6 +2,7 @@ import Ember from 'ember';
 
 export default Ember.Controller.extend({
   application:        Ember.inject.controller(),
+  projects:           Ember.inject.service(),
 
   service:            Ember.computed.alias('model.service'),
   rules:              Ember.computed.alias('service.lbConfig.portRules'),

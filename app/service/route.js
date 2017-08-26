@@ -17,6 +17,9 @@ export default Ember.Route.extend({
     if (model.get('service.initPorts')) {
       model.get('service').initPorts();
     }
+    if (model.get('service.stackId')) {
+      model.set('stack', this.get('store').getById('stack', model.get('service.stackId')));
+    }
   },
 
   getServiceLogs(serviceId) {

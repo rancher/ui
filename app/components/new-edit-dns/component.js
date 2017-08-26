@@ -1,6 +1,7 @@
 import Ember from 'ember';
 import NewOrEdit from 'ui/mixins/new-or-edit';
 import Errors from 'ui/utils/errors';
+import StackState from 'ui/mixins/stack-memory';
 
 const HOSTNAME = 'externalhostname';
 const IP = 'externalip';
@@ -15,7 +16,7 @@ function modeToType(mode) {
   }
 }
 
-export default Ember.Component.extend(NewOrEdit, {
+export default Ember.Component.extend(NewOrEdit, StackState, {
   intl: Ember.inject.service(),
 
   record: null,
@@ -156,6 +157,7 @@ export default Ember.Component.extend(NewOrEdit, {
   },
 
   doneSaving() {
-    this.send('cancel');
+    this._super(...arguments);
+    this.send('done');
   },
 });

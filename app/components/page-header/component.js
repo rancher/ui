@@ -48,6 +48,14 @@ export default Ember.Component.extend(HoverDropdown, {
     },
   },
 
+  willRender() {
+    if (Ember.$('BODY').hasClass('touch') && Ember.$('header > nav').hasClass('nav-open')) {
+      Ember.run.later(() => {
+        Ember.$('header > nav').removeClass('nav-open');
+      });
+    }
+  },
+
   init() {
     this._super(...arguments);
     this.get('intl.locale');

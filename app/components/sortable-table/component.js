@@ -452,7 +452,6 @@ export default Ember.Component.extend(Sortable, StickyHeader, {
     }
 
     this.set('prevNode', node);
-    e.stopPropagation();
   },
 
   nodesBetween(a,b) {
