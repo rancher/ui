@@ -4,7 +4,6 @@ import C from 'ui/utils/constants';
 // Useful context/condition shortcuts
 export const getProjectId = function() { return this.get('projectId'); };
 export const getNamespaceId = function() { return this.get('namespaceId'); };
-export const isOwner = function() { return this.get('isOwner'); };
 
 /* Tree item options
   {
