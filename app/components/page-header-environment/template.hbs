@@ -1,7 +1,7 @@
 {{~#if project~}}
 <li class="dropdown pull-right ">
     {{#if (gt byCluster.length 1)}}
-      <div class="cluster-dropdown dropdown-toggle" aria-haspopup="true" aria-expanded="false" aria-label="{{t 'nav.cluster.label'}}" data-toggle="environment">
+      <div class="cluster-dropdown dropdown-toggle pb-5" aria-haspopup="true" aria-expanded="false" aria-label="{{t 'nav.cluster.label'}}" data-toggle="environment">
         <span  class="text-white clip" >
           <i class="icon icon-cluster icon-fw"></i>
           {{project.cluster.displayName}}
@@ -15,14 +15,16 @@
         <i class="icon icon-chevron-down project-chevron ml-10 text-white" style="position: absolute; right: 20px; top: 20px;"></i>
       </div>
     {{else}}
-      <span class="environment-dropdown dropdown-toggle" aria-role="button" aria-haspopup="true" aria-expanded="false" aria-label="{{t 'nav.environment.label'}}" data-toggle="environment">
-        <i class="{{project.icon}} project-icon icon-fw"></i>
-        <span  class="text-white clip" >
-          {{project.displayName}}
-          <span class="sr-only">{{t 'nav.srToggleDropdown'}}</span>
+      <div style="padding-bottom:2px;" >
+        <span class="environment-dropdown dropdown-toggle" aria-role="button" aria-haspopup="true" aria-expanded="false" aria-label="{{t 'nav.environment.label'}}" data-toggle="environment" data-offset-x="5" >
+          <i class="{{project.icon}} project-icon icon-fw"></i>
+          <span  class="text-white clip" >
+            {{project.displayName}}
+            <span class="sr-only">{{t 'nav.srToggleDropdown'}}</span>
+          </span>
+          <i class="icon icon-chevron-down project-chevron"></i>
         </span>
-        <i class="icon icon-chevron-down project-chevron"></i>
-      </span>
+      </div>
     {{/if}}
 
     <ul class="dropdown-menu dropdown-menu-right project-menu" role="menu" data-dropdown-id="environment">

@@ -22,7 +22,7 @@ export default Ember.Component.extend({
     var tgt = Ember.$(e.target);
     var more = tgt.closest('.more-actions');
     var offsets = {
-      y: -1,
+      y: 1,
       x: 2,
       mirror: true
     };
