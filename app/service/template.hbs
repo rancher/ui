@@ -1,12 +1,14 @@
 <section class="header clearfix">
-  <h1 class="pull-left">
-    {{t 'servicePage.header' type=service.displayType name=service.displayName}}
-  </h1>
-  {{#if (and service.canHaveContainers (not service.isSelector))}}
-    <div class="pull-left">
-      {{info-multi-stats model=service largeTargetId="largeStats"}}
-    </div>
-  {{/if}}
+  <div class="pull-left">
+    <h1 class="vertical-middle">
+      {{t 'servicePage.header' type=service.displayType name=service.displayName}}
+    </h1>
+    {{#if (and service.canHaveContainers (not service.isSelector))}}
+      <div class="vertical-middle">
+        {{info-multi-stats model=service largeTargetId="largeStats"}}
+      </div>
+    {{/if}}
+  </div>
   <div class="right-buttons">
     {{badge-state model=service}}
     {{action-menu model=service showPrimary=false classNames="ml-10 pull-right" size="sm"}}

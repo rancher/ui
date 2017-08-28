@@ -1,7 +1,7 @@
 {{#multi-container-stats model=model linkName=linkName emitMaps=true as |stats|}}
   {{#liquid-if (eq mode "small") class=(if stats.loading 'child-loading')}}
     {{#if stats.loading}}
-      <div class="text-muted" style="position: relative; top: 20px; z-index:20;">Connecting&hellip;</div>
+      <div class="text-muted text-small vertical-middle">Connecting&hellip;</div>
     {{else if stats.active}}
       {{spark-line
         data=stats.cpuTotal
@@ -41,7 +41,7 @@
 
       <button class="btn btn-sm bg-transparent hide" style="vertical-align: top" {{action "toggle"}}><i class="icon icon-plus-circle"></i></button>
     {{else}}
-      <div class="text-muted mt-20">Stats not available</div>
+      <div class="text-muted text-small">Stats not available</div>
     {{/if}}
   {{/liquid-if}}
   {{#if (eq mode "large")}}

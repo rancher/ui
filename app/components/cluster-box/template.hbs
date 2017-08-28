@@ -6,14 +6,14 @@
 
   <div class="pull-right">
     {{#if model.registrationToken.hostCommand}}
+      {{#if model.registrationToken.clusterCommand}}
+        {{#link-to "authenticated.clusters.cluster.import" model.id class="btn btn-sm bg-transparent icon-btn ml-20"}}
+          <i class="icon icon-download"></i> {{t 'clusterBox.importCluster'}}
+        {{/link-to}}
+      {{/if}}
       {{#link-to "authenticated.clusters.cluster.host-templates" model.id (query-params backTo="clusters") class="btn btn-sm bg-primary icon-btn ml-20"}}
         <span class="darken"><i class="icon icon-host"></i></span>
         <span>{{t 'clusterBox.addHost'}}</span>
-      {{/link-to}}
-    {{/if}}
-    {{#if model.registrationToken.clusterCommand}}
-      {{#link-to "authenticated.clusters.cluster.import" model.id class="btn btn-sm bg-transparent icon-btn ml-20"}}
-        <i class="icon icon-download"></i> {{t 'clusterBox.importCluster'}}
       {{/link-to}}
     {{/if}}
     {{action-menu model=model showPrimary=false classNames="ml-10 inline-block" size="sm"}}

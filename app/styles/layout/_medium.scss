@@ -76,13 +76,16 @@
             text-align: left;
             color: $info;
             padding-right: 5px;
+            font-size: .8em;
+            text-transform: uppercase;
+            letter-spacing: .5px;
           }
-          &:after {
-            content: "";
-            border-bottom: 1px dashed $border;
-            display: block;
-            margin: 5px 0;
-          }
+          // &:after {
+          //   content: "";
+          //   border-bottom: 1px dashed $border;
+          //   display: block;
+          //   padding: 5px 0;
+          // }
           &:last-child {
             height: auto;
           }
@@ -105,11 +108,48 @@
           td:nth-child(-n + 2) {
             width: 50%;
             float: right;
-            padding-top: 5px;
           }
           td:nth-child(3) {
             clear: both;
-            padding-top: 5px;
+            background: red;
+          }
+          td:nth-child(4) {
+            background: tomato;
+          }
+          td:nth-child(5) {
+            background: turquoise;
+            > * {
+              display: inline-block;
+              vertical-align: middle;
+              font-size: 100%;
+            }
+          }
+          td:nth-child(6) {
+            background: yellow;
+            width:49.45%;
+            display: inline-block;
+            vertical-align: middle;
+            text-align: left;
+            > * {
+              display: inline-block;
+            }
+          }
+          td:nth-child(7) {
+            width: 49.45%;
+            display: inline-block;
+            background: lavender;
+            vertical-align: middle;
+            text-align: right;
+          }
+          > td {
+            padding: 10px !important;
+            display: block;
+            &:nth-child(odd) {
+              background: $table-bg-accent;
+            }
+            &:nth-child(even) {
+              background: lighten($table-bg-accent, 4);
+            }
           }
         }
       }
@@ -120,17 +160,20 @@
     .group-row {
       clear: both;
       position: relative;
-      display: inline-block;
       width: 100%;
-      background: red;
+      background: $table-bg-accent!important;
+      display: table;
 
         > td {
-          width: 24.25%;
-          display: inline-block;
+          display: table-cell;
           padding: 10px 0;
 
           &:after {
             display: none;
+          }
+
+          &:nth-child(4){
+            text-align: right;
           }
         }
     }
