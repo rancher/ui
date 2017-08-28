@@ -266,7 +266,7 @@ var C = {
   },
 
   SETTING: {
-    // Dots in key names do not mix well with Ember, so use $ in their place.
+    // Dots in key names do not mix well with Ember, so we use $ in their place.
     DOT_CHAR:                  '$',
     IMAGE_RANCHER:             'rancher$server$image',
     VERSION_RANCHER:           'rancher$server$version',
@@ -296,6 +296,7 @@ var C = {
     FEEDBACK_FORM:             'ui$feedback$form',
     SHOW_SYSTEM:               'ui$show$system',
     SHOW_CUSTOM_HOST:          'ui$show$custom$host',
+    CLUSTER_TEMPLATE:          'default$cluster$template',
   },
 
   TABLES: {

@@ -46,7 +46,6 @@ export default Ember.Component.extend({
     }, this.get('pollInterval')));
   },
 
-  logs: null,
   sortBy: 'time',
 
   headers: [

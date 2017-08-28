@@ -1,5 +1,5 @@
 <section class="clearfix pt-20">
-  <h4 class="pull-left m-0 pr-10 pt-5">{{t 'generic.cluster'}}: {{model.displayName}}</h4>
+  <h4 class="pull-left m-0 pr-10 pt-5">{{t 'generic.cluster'}}: <a href="{{href-to "authenticated.clusters.cluster.index" model.id}}">{{model.displayName}}</a></h4>
   {{#unless (eq model.state 'active')}}
     {{badge-state model=model}}
   {{/unless}}
@@ -16,10 +16,21 @@
         <span>{{t 'clusterBox.addHost'}}</span>
       {{/link-to}}
     {{/if}}
+    {{#if model.registrationToken.clusterCommand}}
+      {{#link-to "authenticated.clusters.cluster.import" model.id class="btn btn-sm bg-primary icon-btn ml-20"}}
+        <span class="darken"><i class="icon icon-download"></i></span>
+        <span>{{t 'clusterBox.importCluster'}}</span>
+      {{/link-to}}
+    {{/if}}
     {{action-menu model=model showPrimary=false classNames="ml-10 inline-block" size="sm"}}
   </div>
 </section>
+
 <hr/>
+
+{{#if model.showTransitioningMessage}}
+  <div class="{{model.stateColor}}">{{model.transitioningMessage}}</div>
+{{/if}}
 
 {{#if (eq model.state 'active')}}
 <div class="row">

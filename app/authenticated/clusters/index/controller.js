@@ -17,10 +17,4 @@ export default Ember.Controller.extend({
 
   sortClusters: ['name','id'],
   arrangedClusters: Ember.computed.sort('model.clusters','sortClusters'),
-
-  actions: {
-    newCluster() {
-      this.get('modalService').toggleModal('modal-edit-cluster');
-    },
-  },
 });

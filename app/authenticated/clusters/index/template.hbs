@@ -3,20 +3,18 @@
 
   <div class="right-buttons">
     <div class="btn-group p-0 mr-10">
-      {{#tooltip-element type="tooltip-basic" model=(t 'hostsPage.index.tooltip.listView') tooltipTemplate='tooltip-static' aria-describedby="tooltip-base" tooltipFor="tooltipLink"}}
+      {{#tooltip-element type="tooltip-basic" model=(t 'clustersPage.mode.list') tooltipTemplate='tooltip-static' aria-describedby="tooltip-base" tooltipFor="tooltipLink"}}
         {{#link-to (query-params mode="list") classNames="btn btn-sm bg-default"}}<i class="icon icon-list"></i>{{/link-to}}
       {{/tooltip-element}}
-      {{#tooltip-element type="tooltip-basic" model=(t 'hostsPage.index.tooltip.groupedView') tooltipTemplate='tooltip-static' aria-describedby="tooltip-base" tooltipFor="tooltipLink"}}
+      {{#tooltip-element type="tooltip-basic" model=(t 'clustersPage.mode.grouped') tooltipTemplate='tooltip-static' aria-describedby="tooltip-base" tooltipFor="tooltipLink"}}
         {{#link-to (query-params mode="grouped") classNames="btn btn-sm bg-default"}}<i class="icon icon-boxview"></i>{{/link-to}}
       {{/tooltip-element}}
     </div>
 
-    {{#link-to "authenticated.clusters.cluster.host-templates.index" projects.currentCluster.id classNames="btn btn-sm bg-primary"}}{{t 'hostsPage.index.addHost'}}{{/link-to}}
-
-    <button class="btn bg-primary btn-sm icon-btn" {{action "newCluster"}}>
+    {{#link-to "authenticated.clusters.new" class="btn bg-primary btn-sm icon-btn"}}
       <span class="darken"><i class="icon icon-cluster"></i></span>
       <span>{{t 'clustersPage.newCluster'}}</span>
-    </button>
+    {{/link-to}}
   </div>
 </section>
 

@@ -143,7 +143,7 @@ var Container = Instance.extend(EndpointPorts, {
       return 'unknown';
     } else if ( resource === 'stopped' && this.get('desired') === false ) {
       return 'pending-delete';
-    } else if ( resource === 'stopped' && this.get('shouldRestart') === true ) {
+    } else if ( service !== 'inactive' && resource === 'stopped' && this.get('shouldRestart') === true ) {
       return 'pending-restart';
     } else if ( C.ACTIVEISH_STATES.includes(resource) && health ) {
       return health;

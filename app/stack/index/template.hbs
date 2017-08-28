@@ -9,8 +9,6 @@
     {{#accordion-list-item
          title=(t 'stackPage.containers.header')
          detail=(t 'stackPage.containers.detail')
-         status=(t 'stackPage.containers.status' count=instances.length)
-         statusClass=(if containerStats 'bg-success' 'text-muted')
          expandOnInit=true
          expandAll=al.expandAll
          expand=(action expandFn)
@@ -63,8 +61,6 @@
     {{#accordion-list-item
          title=(t 'stackPage.loadBalancers.header')
          detail=(t 'stackPage.loadBalancers.detail')
-         status=(t 'stackPage.loadBalancers.status' count=loadBalancers.length)
-         statusClass=(if loadBalancers.length 'bg-success' 'text-muted')
          expandAll=al.expandAll
          expand=(action expandFn)
          componentName='sortable-table'
@@ -97,6 +93,8 @@
           }}
         {{else if (eq kind "nomatch")}}
           <tr><td colspan="{{sortable.fullColspan}}" class="text-center text-muted pt-20 pb-20">{{t 'containersPage.table.noMatch'}}</td></tr>
+        {{else if (eq kind "norows")}}
+          <tr><td colspan="{{sortable.fullColspan}}" class="text-center text-muted lacsso pt-20 pb-20">{{t 'containersPage.table.noData'}}</td></tr>
         {{/if}}
       {{/component}}
     {{/accordion-list-item}}
@@ -104,8 +102,6 @@
     {{#accordion-list-item
          title=(t 'stackPage.dnsServices.header')
          detail=(t 'stackPage.dnsServices.detail')
-         status=(t 'stackPage.dnsServices.status' count=dnsServices.length)
-         statusClass=(if dnsServices.length 'bg-success' 'text-muted')
          expandAll=al.expandAll
          expand=(action expandFn)
          componentName='sortable-table'
@@ -137,6 +133,8 @@
           }}
         {{else if (eq kind "nomatch")}}
           <tr><td colspan="{{sortable.fullColspan}}"  class="text-center text-muted pt-20 pb-20">{{t 'containersPage.table.noMatch'}}</td></tr>
+        {{else if (eq kind "norows")}}
+          <tr><td colspan="{{sortable.fullColspan}}" class="text-center text-muted lacsso pt-20 pb-20">{{t 'dnsPage.noData'}}</td></tr>
         {{/if}}
       {{/component}}
     {{/accordion-list-item}}
@@ -144,8 +142,6 @@
     {{#accordion-list-item
          title=(t 'stackPage.volumesTab.header')
          detail=(t 'stackPage.volumesTab.detail')
-         status=(t 'pagination.volume' pages=1 count=(or model.volumes.length 0))
-         statusClass=(if model.volumes.length 'bg-success' 'text-muted')
          expandAll=al.expandAll
          expand=(action expandFn)
          componentName='sortable-table'
