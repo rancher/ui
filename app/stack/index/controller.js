@@ -150,38 +150,31 @@ export default Ember.Controller.extend({
 
   extraSearchFields: ['id:prefix','displayIp:ip'],
   extraSearchSubFields: containerSearchFields,
-  rows: Ember.computed('instances.[]', 'scalingGroups.[]', function() {
+  rows: Ember.computed('instances.[]', 'services.[]', function() {
     let out = [];
     let containers = this.get('instances');
-    let scalinggroups = this.get('scalingGroups');
-    return out.concat(containers, scalinggroups);
+    let services = this.get('services');
+    return out.concat(containers, services);
   }),
 
-  containerStats: Ember.computed('instances.[]', 'scalingGroups.[]', function() {
+  containerStats: Ember.computed('instances.[]', 'services.[]', function() {
     let containerLength = this.get('instances.length') || 0;
-    let scalingGroupsLength = this.get('scalingGroups.length') || 0;
+    let scalingGroupsLength = this.get('services.length') || 0;
     return containerLength += scalingGroupsLength;
   }),
 
-  getType(ownType, real=true) {
-    return this.get('model.services').filter((service) => {
-      if (real ? (service.get('isReal') && service.get('kind') === ownType) : (service.get('kind') === ownType)) {
-        return true;
-      }
-      return false;
+  services: Ember.computed('model.services.[]', function() {
+    return this.get('model.services').filter((obj) => {
+      return obj.get('isReal') && !obj.get('isBalancer');
     });
-  },
-
-  scalingGroups: Ember.computed('model.services.[]', function() {
-    return this.getType('scalingGroup');
   }),
 
-  loadBalancers: Ember.computed('model.services.[]', function() {
-    return this.getType('loadBalancerService');
+  loadBalancers: Ember.computed('model.services.@each.isBalancer', function() {
+    return this.get('model.services').filterBy('isBalancer',true);
   }),
 
   dnsServices: Ember.computed('model.services.[]', function() {
-    return this.getType('dnsService', false).concat(this.getType('externalService', false));
+    return this.get('model.services').filterBy('isReal',false);
   }),
 
   instances: Ember.computed('model.instances.[]','prefs.showSystemResources', function() {

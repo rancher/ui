@@ -3,14 +3,13 @@ import Resource from 'ember-api-store/models/resource';
 import PolledResource from 'ui/mixins/cattle-polled-resource';
 
 var Cluster = Resource.extend(PolledResource, {
-  modalService: Ember.inject.service('modal'),
   userStore: Ember.inject.service('user-store'),
 
   type: 'cluster',
 
   actions: {
     edit() {
-      this.get('modalService').toggleModal('modal-edit-cluster', this);
+      this.get('router').transitionTo('authenticated.clusters.cluster.edit', this.get('id'));
     }
   },
 

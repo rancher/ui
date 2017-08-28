@@ -1,15 +1,11 @@
 import Ember from 'ember';
-import FilteredSorted from 'ui/utils/filtered-sorted-array-proxy';
 
 export default Ember.Route.extend({
   model: function(params) {
-    return this.get('store').find('service', params.service_id).then((service) => {
-      return this.getServiceLogs(service.get('id')).then((logs) => {
-        return Ember.Object.create({
-          service,
-          logs,
-        });
-      });
+    return Ember.RSVP.hash({
+      service: this.get('store').find('service', params.service_id),
+    }).then((hash) => {
+      return Ember.Object.create(hash);
     });
   },
 
@@ -20,25 +16,6 @@ export default Ember.Route.extend({
     if (model.get('service.stackId')) {
       model.set('stack', this.get('store').getById('stack', model.get('service.stackId')));
     }
-  },
-
-  getServiceLogs(serviceId) {
-    // Find just the recent ones for this service
-    return this.get('store').find('serviceLog', null,{
-      filter: {serviceId: serviceId},
-      sortBy: 'id',
-      sortOrder: 'desc',
-      depaginate: false,
-      limit: 100
-    }).then(() => {
-      return FilteredSorted.create({
-        sourceContent: this.get('store').all('serviceLog'),
-        dependentKeys: ['sourceContent.@each.serviceId'],
-        filterFn: function(log) {
-          return log.get('serviceId') === serviceId;
-        }
-      });
-    });
   },
 
   setupController(controller, model) {

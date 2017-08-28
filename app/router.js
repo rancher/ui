@@ -67,13 +67,15 @@ Router.map(function() {
     // Clusters
     this.route('clusters', {path: '/clusters'}, function() {
       this.route('index', {path: '/'});
+      this.route('new', {path: '/add'});
       this.route('new-project', {path: '/add-env'});
       this.route('project', {path: '/env/:project_id'});
 
       this.route('cluster', {path: '/:cluster_id'}, function() {
+        this.route('edit', {path: '/edit'});
         this.route('import', {path: '/import'});
-        this.route('host-new', {path: '/add'});
-        this.route('host-templates', {path: '/launch'}, function() {
+        this.route('host-new', {path: '/add-host'});
+        this.route('host-templates', {path: '/launch-host'}, function() {
           this.route('index', {path: '/'});
           this.route('launch', {path: '/:template_id'});
         });

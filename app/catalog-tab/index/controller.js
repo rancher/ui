@@ -77,10 +77,10 @@ export default Ember.Controller.extend({
     let out        = {};
     let templates  = this.get('catalog.templateCache');
     let base       = this.get('catalog.templateBase');
+    let plusInfra  = this.get('projects.current.clusterOwner') === true;
 
     templates.forEach((tpl) => {
-
-      if (base === tpl.get('templateBase') || tpl.get('templateBase') === 'infra') {
+      if (base === tpl.get('templateBase') || (plusInfra && tpl.get('templateBase') === 'infra')) {
         if (tpl.categories) {
 
           tpl.categories.forEach((ctgy) => {

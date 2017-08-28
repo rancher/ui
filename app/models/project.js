@@ -20,7 +20,7 @@ var Project = Resource.extend(PolledResource, {
 
   actions: {
     edit: function() {
-      this.get('router').transitionTo('authenticated.clusters.edit', this.get('id'));
+      this.get('router').transitionTo('authenticated.clusters.project', this.get('id'));
     },
 
     delete: function() {

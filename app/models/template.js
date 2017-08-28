@@ -157,12 +157,4 @@ function normalize(str) {
   return (str||'').replace(/[^a-z]/gi,'').toLowerCase();
 }
 
-Template.reopenClass({
-  mangleIn: function(data) {
-    if (!data.templateBase) {
-      data.templateBase = 'cattle';
-    }
-    return data;
-  },
-});
 export default Template;

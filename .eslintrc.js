@@ -21,7 +21,6 @@ module.exports = {
     "Identicon": true,
     "md5": true,
     "_": true,
-    "NoVNC": true,
     "commonmark": true,
     "Stripe": true
   },
