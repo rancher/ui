@@ -34,7 +34,7 @@ export default Ember.Controller.extend({
   },
 
   showClusterWelcome: function() {
-    return this.get('projects.currentCluster.state') !== 'active';
+    return this.get('projects.currentCluster.state') === 'inactive';
   }.property('projects.currentCluster.state'),
 
   simpleMode: function() {
@@ -53,7 +53,7 @@ export default Ember.Controller.extend({
     } else {
       return null;
     }
-  }.property('simpleMode', 'byStack'),
+  }.property('simpleMode', 'group'),
 
   preSorts: function() {
     if ( this.get('groupTableBy') ) {

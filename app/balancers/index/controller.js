@@ -8,6 +8,7 @@ export default Ember.Controller.extend({
 
   tags: Ember.computed.alias('projectController.tags'),
   simpleMode: Ember.computed.alias('projectController.simpleMode'),
+  group: Ember.computed.alias('projectController.group'),
   groupTableBy: Ember.computed.alias('projectController.groupTableBy'),
   showStack: Ember.computed.alias('projectController.showStack'),
   expandedInstances: Ember.computed.alias('projectController.expandedInstances'),
@@ -28,11 +29,19 @@ export default Ember.Controller.extend({
 
   rows: function() {
     let showStack = this.get('showStack');
-
-    let out = this.get('model.services').filter((obj) => {
+    let services = this.get('model.services').filter((obj) => {
       return showStack[obj.get('stackId')] && obj.get('isBalancer');
     });
 
-    return out;
-  }.property('showStack','model.services.@each.{isBalancer}'),
+    if ( this.get('group') === 'none' ) {
+      let out = []
+      services.forEach((obj) => {
+        out.pushObjects(obj.get('instances'));
+      });
+
+      return out;
+    } else {
+      return services;
+    }
+  }.property('group','showStack','model.services.@each.{isBalancer,instances}'),
 });

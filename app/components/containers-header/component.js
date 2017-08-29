@@ -7,10 +7,9 @@ export default Ember.Component.extend({
 
   tags: null,
 
-  allStacks: null,
-
   tagName: '',
 
+  allStacks: null,
   init() {
     this._super(...arguments);
     this.set('allStacks', this.get('store').all('stack'));
