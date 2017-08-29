@@ -24,7 +24,7 @@ export default Ember.Component.extend({
     }
 
     let want = this.get('hostService.defaultDriver');
-    let first = this.get('sortedDrivers.firstObject.name'); 
+    let first = this.get('sortedDrivers.firstObject.name');
     let allowCustom = this.get('allowCustom');
     let driver;
 

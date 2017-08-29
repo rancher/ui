@@ -25,56 +25,56 @@
 <section>
   <div class="row banner bg-info basics">
     {{#if service.externalIpAddresses}}
-      <div class="inline-block">
+      <div class="vertical-middle">
         <label class="text-muted ml-15">{{t 'servicePage.external.externalIp' count=service.externalIpAddresses.length}}</label>
         {{join-array service.externalIpAddresses}}
       </div>
     {{else if service.hostname}}
-      <div class="inline-block">
+      <div class="vertical-middle">
         <label class="text-muted">{{t 'servicePage.external.externalHostname'}} </label> {{service.hostname}}
       </div>
     {{else if service.selector}}
-      <div class="inline-block">
+      <div class="vertical-middle">
         <label class="text-muted">{{t 'servicePage.selector.label'}} </label> {{service.selector}}
       </div>
     {{/if}}
 
     {{#if service.hasImage}}
-      <div class="inline-block">
-        <label class="acc-label p-0">{{t 'servicePage.multistat.image'}}</label>
+      <div class="vertical-middle">
+        <label class="acc-label vertical-middle p-0">{{t 'servicePage.multistat.image'}}</label>
         {{fixedLaunchConfig.image}} {{copy-to-clipboard clipboardText=fixedLaunchConfig.image size="small"}}
       </div>
     {{/if}}
 
     {{#if fixedLaunchConfig.memoryReservation}}
-      <div class="inline-block">
-        <label class="acc-label p-0">{{t 'containersPage.containerPage.infoMultiStats.memoryReservation.labelText'}}</label>
+      <div class="vertical-middle">
+        <label class="acc-label vertical-middle p-0">{{t 'containersPage.containerPage.infoMultiStats.memoryReservation.labelText'}}</label>
         {{fixedLaunchConfig.memoryReservationBlurb}}
       </div>
     {{/if}}
 
     {{#if fixedLaunchConfig.milliCpuReservation}}
-      <div class="inline-block">
-        <label class="acc-label p-0">{{t 'containersPage.containerPage.infoMultiStats.milliCpuReservation.labelText'}}</label>
+      <div class="vertical-middle">
+        <label class="acc-label vertical-middle p-0">{{t 'containersPage.containerPage.infoMultiStats.milliCpuReservation.labelText'}}</label>
         {{fixedLaunchConfig.milliCpuReservation}}
       </div>
     {{/if}}
 
     {{#if service.fqdn}}
-      <div class="inline-block">
-        <label class="acc-label p-0">{{t 'servicePage.multistat.fqdn'}}</label>
+      <div class="vertical-middle">
+        <label class="acc-label vertical-middle p-0">{{t 'servicePage.multistat.fqdn'}}</label>
         <a href="http://{{service.fqdn}}">{{service.fqdn}}</a> {{copy-to-clipboard clipboardText=service.fqdn size="small"}}
       </div>
       <hr>
     {{/if}}
 
     {{#if service.canScale}}
-      <div class="inline-block">
-        <label class="acc-label p-0" style="vertical-align: middle;">{{t 'servicePage.multistat.scale'}}</label>
-        <span class="pr-5" style="vertical-align: middle;">
+      <div class="vertical-middle">
+        <label class="acc-label vertical-middle p-0">{{t 'servicePage.multistat.scale'}}</label>
+        <span class="pr-5">
           {{service.displayScale}}
         </span>
-        <div class="btn-group btn-group-xs p-0" style="vertical-align: middle;">
+        <div class="btn-group btn-group-xs p-0">
           <button class="btn btn-xs bg-primary" {{action "scaleDown" target=service}} disabled={{not service.canScaleDown}}><i class="icon icon-minus icon-fw"/></button>
           <button style="margin-left: -5px;" class="btn btn-xs bg-primary" {{action "scaleUp" target=service}} disabled={{not service.canScaleUp}}><i class="icon icon-plus icon-fw"/></button>
         </div>
@@ -83,8 +83,8 @@
 
 
     {{#if model.stack}}
-      <div class="inline-block">
-        <label class="acc-label p-0">{{t 'generic.stack'}}:</label>
+      <div class="vertical-middle">
+        <label class="acc-label vertical-middle p-0">{{t 'generic.stack'}}:</label>
         {{#link-to "stack" projects.current.id model.stack.id}}{{model.stack.displayName}}{{/link-to}}
       </div>
     {{/if}}
