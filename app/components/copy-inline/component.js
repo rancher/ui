@@ -18,12 +18,13 @@ export default Ember.Component.extend({
   clipboardText    : null,
   textChangedEvent : null,
 
-  mouseEnter() {
+  init() {
+    this._super(...arguments);
     this.set('model', new Object({tooltipText: DEFAULT_TEXT}));
   },
 
-  click: function(evt) {
-    this.set('textChangedEvent', Ember.$(evt.currentTarget));
+  mouseEnter() {
+    this.set('model', new Object({tooltipText: DEFAULT_TEXT}));
   },
 
   isSupported: function() {
@@ -32,13 +33,18 @@ export default Ember.Component.extend({
 
   actions: {
     alertSuccess: function() {
-      this.set('status', 'success');
       let orig = this.get('model.tooltipText');
-      this.set('model', new Object({tooltipText: 'copyToClipboard.copied'}));
+
+      this.setProperties({
+        status: 'success',
+        model: {tooltipText: 'copyToClipboard.copied'}
+      });
 
       Ember.run.later(() =>{
-        this.set('status', null);
-        this.set('model', new Object({tooltipText: orig}));
+        this.setProperties({
+          status: null,
+          model: {tooltipText: orig}
+        });
       }, DELAY);
     },
   },
