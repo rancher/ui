@@ -8,7 +8,6 @@ export default Ember.Route.extend({
 
     return Ember.Object.create({
       cluster: clone,
-      createProject: null,
     });
   },
 });

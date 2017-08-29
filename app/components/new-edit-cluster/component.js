@@ -6,24 +6,23 @@ export default Ember.Component.extend(NewOrEdit, {
   primaryResource: Ember.computed.alias('cluster'),
 
   cluster: null,
-  createProject: null,
 
   actions: {
     done() {
       this.sendAction('done');
     },
 
+    editStack(obj) {
+      obj;
+    },
+
+    removeStack(obj) {
+      this.get('primaryResource.systemStacks').removeObject(obj);
+    },
+
     cancel() {
       this.sendAction('cancel');
     },
-  },
-
-  didSave() {
-    let project = this.get('createProject');
-    if ( project ) {
-      project.set('clusterId', this.get('model.id'));
-      return project.save();
-    }
   },
 
   doneSaving: function() {

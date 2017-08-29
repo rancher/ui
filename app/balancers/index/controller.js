@@ -8,7 +8,7 @@ export default Ember.Controller.extend({
 
   tags: Ember.computed.alias('projectController.tags'),
   simpleMode: Ember.computed.alias('projectController.simpleMode'),
-  groupBy: Ember.computed.alias('projectController.groupBy'),
+  groupTableBy: Ember.computed.alias('projectController.groupTableBy'),
   showStack: Ember.computed.alias('projectController.showStack'),
   expandedInstances: Ember.computed.alias('projectController.expandedInstances'),
   preSorts: Ember.computed.alias('projectController.preSorts'),

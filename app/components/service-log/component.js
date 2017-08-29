@@ -63,13 +63,6 @@ export default Ember.Component.extend({
       width: 100,
     },
     {
-      name: 'event',
-      sort: ['eventType','createdTs:desc','id:desc'],
-      searchField: 'eventType',
-      translationKey: 'serviceLog.event',
-      width: 200,
-    },
-    {
       name: 'detail',
       sort: ['description','createdTs:desc','id:desc'],
       searchField: 'description',

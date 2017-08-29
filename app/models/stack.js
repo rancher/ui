@@ -48,6 +48,7 @@ var Stack = Resource.extend(StateCounts, {
   type: 'stack',
   k8s: Ember.inject.service(),
   modalService: Ember.inject.service('modal'),
+  catalog: Ember.inject.service(),
   projectsService: Ember.inject.service('projects'),
 
   services: denormalizeIdArray('serviceIds'),
@@ -163,6 +164,18 @@ var Stack = Resource.extend(StateCounts, {
     let kind = this.get('externalIdInfo.kind');
     return kind === C.EXTERNAL_ID.KIND_CATALOG || kind === C.EXTERNAL_ID.KIND_SYSTEM_CATALOG;
   }.property('externalIdInfo.kind'),
+
+  // This only works if the templates have already been loaded elsewhere...
+  catalogTemplate: function() {
+    return this.get('catalog').getTemplateFromCache(this.get('externalIdInfo.templateId'));
+  }.property('externalIdInfo.templateId'),
+
+  icon: function() {
+    let tpl = this.get('catalogTemplate');
+    if ( tpl ) {
+      return tpl.linkFor('icon');
+    }
+  }.property('catalogTemplate'),
 
   grouping: function() {
     var kind = this.get('externalIdInfo.kind');
