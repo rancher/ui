@@ -6,6 +6,8 @@ export default Ember.Component.extend({
   projects: Ember.inject.service(),
 
   tags: null,
+  simpleMode: false,
+  showGroup: true,
 
   tagName: '',
 
