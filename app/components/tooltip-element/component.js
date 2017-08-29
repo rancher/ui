@@ -82,7 +82,9 @@ export default Ember.Component.extend({
   modelObserver: Ember.observer('model', 'textChangedEvent', function() {
     let opts = this.get('tooltipService.tooltipOpts');
     if ((opts) && this.get('tooltipFor') === opts.tooltipFor ) {
-      this.set('tooltipService.tooltipOpts.model', this.get('model'));
+      Ember.run.next(() => {
+        this.set('tooltipService.tooltipOpts.model', this.get('model'));
+      });
     }
   })
 });

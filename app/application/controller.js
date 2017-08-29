@@ -9,8 +9,8 @@ export default Ember.Controller.extend({
   resourceActions : Ember.inject.service('resource-actions'),
   tooltipService  : Ember.inject.service('tooltip'),
 
-  tooltip         : Ember.computed.alias('tooltipService.tooltipOpts.type'),
-  tooltipTemplate : Ember.computed.alias('tooltipService.tooltipOpts.template'),
+  tooltip         : Ember.computed.oneWay('tooltipService.tooltipOpts.type'),
+  tooltipTemplate : Ember.computed.oneWay('tooltipService.tooltipOpts.template'),
 
   error             : null,
   error_description : null,

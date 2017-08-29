@@ -3,18 +3,11 @@ import Tooltip from 'ui/mixins/tooltip';
 
 export default Ember.Component.extend(Tooltip, {
   needs   : ['application'],
-  model   : Ember.computed.alias('tooltipService.tooltipOpts.model'),
+  model   : Ember.computed.oneWay('tooltipService.tooltipOpts.model'),
   display : null,
 
-  selectPartial: function() {
-    var template = this.get('tooltipService.tooltipOpts.template');
-    var out      = template;
-
-    if (!template) {
-      out = 'tooltip-basic';
-    }
-
-    return out;
-  }.property('tooltipService.tooltipOpts.template')
+  selectPartial: Ember.computed('tooltipService.tooltipOpts.template', function() {
+    return this.get('tooltipService.tooltipOpts.template') || 'tooltip-basic';
+  })
 
 });
