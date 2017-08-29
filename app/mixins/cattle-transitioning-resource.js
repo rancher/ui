@@ -522,10 +522,10 @@ export default Ember.Mixin.create({
     }, 'Wait for state='+state);
   },
 
-  waitForNotTransitioning: function() {
+  waitForTransition: function() {
     return this._waitForTestFn(function() {
       return this.get('transitioning') !== 'yes';
-    }, 'Wait for not transitioning');
+    }, 'Wait for transition');
   },
 
   waitForAction: function(name) {
