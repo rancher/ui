@@ -206,6 +206,10 @@ var Service = Resource.extend(StateCounts, EndpointPorts, {
 
   image: Ember.computed.alias('launchConfig.image'),
 
+  sortName: function() {
+    return Util.sortableNumericSuffix(this.get('displayName'));
+  }.property('displayName'),
+
   displayStack: function() {
     var stack = this.get('stack');
     if ( stack ) {
