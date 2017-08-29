@@ -39,10 +39,11 @@ export default Ember.Route.extend({
 
   actions: {
     toggleGrouping() {
-      let cur = this.get('controller.byStack');
-      let neu = (cur === '1' ? '0' : '1');
+      let choices = ['none','service','stack'];
+      let cur = this.get('controller.group');
+      let neu = choices[((choices.indexOf(cur)+1) % choices.length)];
       Ember.run.next(() => {
-        this.set('controller.byStack', neu);
+        this.set('controller.group', neu);
       });
     },
   },

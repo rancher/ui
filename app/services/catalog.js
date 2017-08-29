@@ -75,6 +75,8 @@ export default Ember.Service.extend({
   },
 
   fetchTemplates(params) {
+    params = params || {};
+
     let cache        = this.get('templateCache');
     let templateBase = params.templateBase || this.get('templateBase');
     let catalogId    = params.catalogId;

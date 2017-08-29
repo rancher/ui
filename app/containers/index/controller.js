@@ -17,7 +17,7 @@ export const headers = [
   },
   {
     name: 'name',
-    sort: ['displayName','id'],
+    sort: ['sortName','id'],
     searchField: 'displayName',
     translationKey: 'generic.name',
   },
@@ -53,7 +53,8 @@ export default Ember.Controller.extend({
 
   tags: Ember.computed.alias('projectController.tags'),
   simpleMode: Ember.computed.alias('projectController.simpleMode'),
-  groupBy: Ember.computed.alias('projectController.groupBy'),
+  group: Ember.computed.alias('projectController.group'),
+  groupTableBy: Ember.computed.alias('projectController.groupTableBy'),
   showStack: Ember.computed.alias('projectController.showStack'),
   emptyStacks: Ember.computed.alias('projectController.emptyStacks'),
   expandedInstances: Ember.computed.alias('projectController.expandedInstances'),
@@ -64,22 +65,26 @@ export default Ember.Controller.extend({
   extraSearchSubFields: containerSearchFields,
 
   rows: function() {
+    let groupNone = this.get('group') === 'none';
     let showStack = this.get('showStack');
     let showSystem = this.get('prefs.showSystemResources');
 
-    // Services
-    let out = this.get('model.services').filter((obj) => {
-      return showStack[obj.get('stackId')] &&
-              obj.get('isReal') && !obj.get('isBalancer') &&
+    // Containers
+    let out = this.get('model.instances').filter((obj) => {
+      return (groupNone || obj.get('serviceId') === null) &&
+              showStack[obj.get('stackId')] &&
               (showSystem || obj.get('isSystem') !== true); // Note that it can be null, so this isn't the same as === false
     });
 
-    // Containers
-    out.pushObjects(this.get('model.instances').filterBy('serviceId',null).filter((obj) => {
-      return showStack[obj.get('stackId')] &&
-              (showSystem || obj.get('isSystem') !== true); // Note that it can be null, so this isn't the same as === false
-    }));
+    // Services
+    if ( !groupNone ) {
+      out.pushObjects(this.get('model.services').filter((obj) => {
+        return showStack[obj.get('stackId')] &&
+                obj.get('isReal') && !obj.get('isBalancer') &&
+                (showSystem || obj.get('isSystem') !== true); // Note that it can be null, so this isn't the same as === false
+      }));
+    }
 
     return out;
-  }.property('showStack','tags','model.services.@each.{stackId,isReal,isBalancer,isSystem}','model.instances.@each.{serviceId,stackId,isSystem}','prefs.showSystemResources'),
+  }.property('group','showStack','tags','model.services.@each.{stackId,isReal,isBalancer,isSystem}','model.instances.@each.{serviceId,stackId,isSystem}','prefs.showSystemResources'),
 });

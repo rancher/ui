@@ -1,15 +1,17 @@
 import Ember from 'ember';
 import { tagsToArray } from 'ui/models/stack';
 
-const BY_STACK = '1';
+const NONE = 'none';
+const SERVICE = 'service';
+const STACK = 'stack';
 
 export default Ember.Controller.extend({
   prefs: Ember.inject.service(),
   projects: Ember.inject.service(),
 
   tags: '',
-  byStack: BY_STACK,
-  queryParams: ['tags','byStack'],
+  group: STACK,
+  queryParams: ['tags','group'],
 
   stacks: null,
   expandedInstances: null,
@@ -32,7 +34,7 @@ export default Ember.Controller.extend({
   },
 
   showClusterWelcome: function() {
-    return this.get('projects.currentCluster.state') !== 'active';
+    return this.get('projects.currentCluster.state') === 'inactive';
   }.property('projects.currentCluster.state'),
 
   simpleMode: function() {
@@ -45,21 +47,21 @@ export default Ember.Controller.extend({
     return !bad;
   }.property('stacks.@each.{system,isDefault}','prefs.showSystemResources'),
 
-  groupBy: function() {
-    if ( this.get('byStack') === BY_STACK && !this.get('simpleMode') ) {
+  groupTableBy: function() {
+    if ( this.get('group') === STACK && !this.get('simpleMode') ) {
       return 'stack.id';
     } else {
       return null;
     }
-  }.property('simpleMode', 'byStack'),
+  }.property('simpleMode', 'group'),
 
   preSorts: function() {
-    if ( this.get('groupBy') ) {
+    if ( this.get('groupTableBy') ) {
       return ['stack.isDefault:desc','stack.displayName'];
     } else {
       return null;
     }
-  }.property('groupBy'),
+  }.property('groupTableBy'),
 
   showStack: function() {
     let needTags = tagsToArray(this.get('tags'));

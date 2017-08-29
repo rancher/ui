@@ -10,7 +10,6 @@ export default Ember.Component.extend({
   driver:        null,
   hostId:        null,
   allowOther:    true,
-  forCatalog:    true,
   inModal:       false,
   showNameScale: true,
   goBack:        null,

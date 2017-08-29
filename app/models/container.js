@@ -207,13 +207,7 @@ var Container = Instance.extend(EndpointPorts, {
   }.property('labels'),
 
   sortName: function() {
-    return (this.get('displayName')||'').split(/-/).map((part) => {
-      if ( Util.isNumeric(part) ) {
-        return Util.strPad(part, 6, '0');
-      } else {
-        return part;
-      }
-    }).join('-');
+    return Util.sortableNumericSuffix(this.get('displayName'));
   }.property('displayName'),
 
   isSidekick: function() {

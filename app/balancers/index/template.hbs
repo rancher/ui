@@ -1,7 +1,7 @@
 {{#if projectController.showClusterWelcome}}
   {{cluster-welcome}}
 {{else}}
-  {{#containers-header tags=tags}}
+  {{#containers-header tags=tags simpleMode=simpleMode}}
     {{#link-to "new-stack" classNames="btn btn-sm bg-default mr-10"}}{{t 'nav.containers.importCompose'}}{{/link-to}}
     {{#link-to "balancers.run" projects.current.id class="btn btn-sm bg-primary"}}{{t 'nav.containers.addBalancer'}}{{/link-to}}
   {{/containers-header}}
@@ -16,7 +16,7 @@
            bulkActions=true
            subRows=true
            fullRows=true
-           groupByKey=groupBy
+           groupByKey=groupTableBy
            groupByRef="stack"
            pagingLabel="pagination.loadBalancer"
            subSearchField="instances"

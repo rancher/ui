@@ -154,6 +154,17 @@ export function strPad(str, toLength, padChars, right)
   }
 }
 
+// Turn thing1 into thing00000001 so that the numbers sort numerically
+export function sortableNumericSuffix(str) {
+  str = str||'';
+  let match = str.match(/^(.*[^0-9])([0-9]+)$/)
+  if ( match ) {
+    return match[1] + Util.strPad(match[2], 8, '0');
+  }
+
+  return str;
+}
+
 export function timerFuzz(ms, maxFuzz=0.1)
 {
   var factor = Math.random()*2*maxFuzz + (1-maxFuzz);
@@ -358,6 +369,7 @@ var Util = {
   ucFirst: ucFirst,
   lcFirst: lcFirst,
   strPad: strPad,
+  sortableNumericSuffix: sortableNumericSuffix,
   timerFuzz: timerFuzz,
   random32: random32,
   randomStr: randomStr,

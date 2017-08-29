@@ -6,11 +6,12 @@ export default Ember.Component.extend({
   projects: Ember.inject.service(),
 
   tags: null,
-
-  allStacks: null,
+  simpleMode: false,
+  showGroup: true,
 
   tagName: '',
 
+  allStacks: null,
   init() {
     this._super(...arguments);
     this.set('allStacks', this.get('store').all('stack'));

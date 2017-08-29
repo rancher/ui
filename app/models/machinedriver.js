@@ -28,6 +28,7 @@ var machineDriver = Resource.extend(PolledResource, {
   type: 'machineDriver',
   modalService: Ember.inject.service('modal'),
   catalog: Ember.inject.service(),
+  intl: Ember.inject.service(),
 
   actions: {
     activate: function() {
@@ -58,16 +59,18 @@ var machineDriver = Resource.extend(PolledResource, {
 
   }),
 
-  iconMapFromConstants: Ember.computed('name', function() {
-    let name = this.get('name').toUpperCase();
-    let icon = C.MACHINE_DRIVER_IMAGES[name];
+  displayName: Ember.computed('displayIcon', 'intl.locale', function() {
+    return this.get('intl').t('machine.driver.'+this.get('displayIcon'));
+  }),
 
-    if (icon) {
-      return icon;
+  displayIcon: Ember.computed('name', function() {
+    let name = this.get('name');
+
+    if ( this.get('hasBuiltinUi') ) {
+      return name;
     } else {
-      return C.MACHINE_DRIVER_IMAGES.GENERIC;
+      return 'generic';
     }
-
   }),
 
   displayUrl: function() {
