@@ -43,7 +43,7 @@ export default Ember.Component.extend({
       Ember.$('.container-tooltip .more-actions').trigger('click');
     } else {
 
-      this.get('resourceActions').show(this.get('model'), this.$());
+      this.get('resourceActions').show(this.get('model'), this.$(), null, {});
     }
   },
 

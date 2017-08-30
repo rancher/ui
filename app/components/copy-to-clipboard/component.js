@@ -1,7 +1,7 @@
 import Ember from 'ember';
 import { isSafari } from 'ui/utils/platform';
 
-const DELAY = 1000;
+const DELAY        = 1000;
 const DEFAULT_TEXT = 'copyToClipboard.tooltip';
 
 export default Ember.Component.extend({
@@ -19,12 +19,13 @@ export default Ember.Component.extend({
   clipboardText    : null,
   textChangedEvent : null,
 
-  mouseEnter() {
-    this.set('model', new Object({tooltipText: DEFAULT_TEXT}));
+  init() {
+    this._super(...arguments);
+    // otherwise the tooltip doesn't show up on the first hover
+    this.set('model', {tooltipText: DEFAULT_TEXT});
   },
-
-  click: function(evt) {
-    this.set('textChangedEvent', Ember.$(evt.currentTarget));
+  mouseEnter() {
+    this.set('model', {tooltipText: DEFAULT_TEXT});
   },
 
   isSupported: function() {
@@ -33,13 +34,18 @@ export default Ember.Component.extend({
 
   actions: {
     alertSuccess: function() {
-      this.set('status', 'success');
       let orig = this.get('model.tooltipText');
-      this.set('model', new Object({tooltipText: 'copyToClipboard.copied'}));
+
+      this.setProperties({
+        status: 'success',
+        model: {tooltipText: 'copyToClipboard.copied'}
+      });
 
       Ember.run.later(() =>{
-        this.set('status', null);
-        this.set('model', new Object({tooltipText: orig}));
+        this.setProperties({
+          status: null,
+          model: {tooltipText: orig}
+        });
       }, DELAY);
     },
   },
