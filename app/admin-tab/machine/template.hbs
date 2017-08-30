@@ -1,5 +1,7 @@
 <section class="header clearfix">
-  <h1>{{t 'machinePage.header'}}</h1>
+  <div class="pull-left">
+    <h1>{{t 'machinePage.header'}}</h1>
+  </div>
 
   <div class="right-buttons">
     <button class="btn btn-sm bg-primary right-divider-btn" {{action 'addNewDriver'}}>{{t 'machinePage.add'}}</button>
@@ -54,9 +56,9 @@
           <div class="catalog-icon m-20 {{driver.displayIcon}}"/>
         {{/if}}
       {{else if (eq section 'body')}}
-        <h4 class="ml-20 mr-20">
+        <span class="sr-only">
           {{driver.name}}
-        </h4>
+        </span>
         <div class="m-10 description">{{driver.description}}</div>
       {{else if (eq section 'footer')}}
         {{#if (and driver.externalId (not-eq driver.state 'inactive'))}}
