@@ -4,16 +4,16 @@
       <div class="row nav nav-boxes checked-active">
         {{#each sortedDrivers as |choice|}}
           {{#if choice.hasUi}}
-            <a {{action "switchDriver" choice.name}} alt={{choice.name}} class="col span-2 nav-box-item driver machine-driver {{choice.name}} {{if (eq choice.name driver) 'active'}}" href="#"><p>{{choice.displayName}}</p></a>
+            <a {{action "switchDriver" choice.name}} alt={{choice.name}} class="col span-2 nav-box-item driver machine-driver {{choice.name}} {{if (eq choice.name driver) 'active'}}" href="#"><p class="sr-only">{{choice.displayName}}</p></a>
           {{/if}}
         {{/each}}
 
         {{#if (and allowOther hasOther)}}
-          <a {{action "switchDriver" "other"}} alt="other" class="col span-2 nav-box-item driver machine-driver other {{if (eq driver 'other') 'active'}}" href="#"><p>{{t 'machine.driver.other'}}</p></a>
+          <a {{action "switchDriver" "other"}} alt="other" class="col span-2 nav-box-item driver machine-driver other {{if (eq driver 'other') 'active'}}" href="#"><p class="sr-only">{{t 'machine.driver.other'}}</p></a>
         {{/if}}
 
         {{#if allowCustom}}
-          <a {{action "switchDriver" "custom"}} alt="custom" class="col span-2 nav-box-item driver machine-driver custom {{if (eq driver 'custom') 'active'}}" href="#"><p>{{t 'machine.driver.custom'}}</p></a>
+          <a {{action "switchDriver" "custom"}} alt="custom" class="col span-2 nav-box-item driver machine-driver custom {{if (eq driver 'custom') 'active'}}" href="#"><p class="sr-only">{{t 'machine.driver.custom'}}</p></a>
         {{/if}}
       </div>
     {{/if}}
