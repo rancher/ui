@@ -6,7 +6,7 @@ export function resizeDropdown(event) {
   return positionDropdown($item, target, right);
 }
 
-export function positionDropdown(menu, trigger, right) {
+export function positionDropdown(menu, trigger, right, offset) {
   // https://github.com/twbs/bootstrap/issues/10756#issuecomment-41041800
   var direction = (right === true ? 'right' : 'left');
   var $menu = $(menu);
@@ -17,19 +17,20 @@ export function positionDropdown(menu, trigger, right) {
     left: 0
   });
 
-  // calculate new position
-  var calculator = new $.PositionCalculator({
+  let pco = {
     item: $menu,
     target: trigger,
     itemAt: 'top ' + direction,
-    itemOffset: {
-      y: 3,
-      x: 0,
-      mirror: true
-    },
     targetAt: 'bottom ' + direction,
     flip: 'both'
-  });
+  };
+
+  if (offset) {
+    pco.itemOffset = offset;
+  }
+
+  // calculate new position
+  var calculator = new $.PositionCalculator(pco);
   var posResult = calculator.calculate();
 
   // set new position

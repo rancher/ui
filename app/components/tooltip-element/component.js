@@ -3,9 +3,10 @@ import Ember from 'ember';
 const DELAY = 100;
 
 export default Ember.Component.extend({
-  classNameBindings : ['inlineBlock:inline-block','clip:clip'],
+  classNameBindings : ['inlineBlock:vertical-middle','clip:clip'],
+  tagName: 'span',
   tooltipService   : Ember.inject.service('tooltip'),
-  inlineBlock      : true,
+  inlineBlock      : false,
   clip             : false,
   model            : null,
   size             : 'default',
@@ -57,6 +58,7 @@ export default Ember.Component.extend({
       model         : this.get('model'),
       template      : this.get('tooltipTemplate'),
       tooltipFor    : this.get('tooltipFor'),
+      placement     : this.get('placement'),
     };
 
     if ( this.get('isCopyTo') ) {
@@ -80,7 +82,9 @@ export default Ember.Component.extend({
   modelObserver: Ember.observer('model', 'textChangedEvent', function() {
     let opts = this.get('tooltipService.tooltipOpts');
     if ((opts) && this.get('tooltipFor') === opts.tooltipFor ) {
-      this.set('tooltipService.tooltipOpts.model', this.get('model'));
+      Ember.run.next(() => {
+        this.set('tooltipService.tooltipOpts.model', this.get('model'));
+      });
     }
   })
 });

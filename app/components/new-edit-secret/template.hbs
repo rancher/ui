@@ -1,0 +1,24 @@
+<section class="header clearfix">
+  <h1>{{t (if editing 'newSecret.title.edit' 'newSecret.title.add')}}</h1>
+</section>
+
+<section class="horizontal-form container-fluid">
+  <div class="row">
+  {{form-name-description
+    model=primaryResource
+    nameRequired=true
+    namePlaceholder="newSecret.name.placeholder"
+    descriptionPlaceholder="newSecret.description.placeholder"
+  }}
+
+  {{#unless editing}}
+      <div class="col span-6">
+        <label class="acc-label pb-5">{{t 'newSecret.value.label'}}{{field-required}}</label>
+        {{textarea-autogrow class="form-control" value=userValue placeholder="newSecret.value.placeholder"}}
+      </div>
+  {{/unless}}
+  </div>
+</section>
+
+{{top-errors errors=errors}}
+{{save-cancel editing=true save="save" cancel="cancel"}}

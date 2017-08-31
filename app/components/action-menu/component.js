@@ -21,6 +21,11 @@ export default Ember.Component.extend({
   click(e) {
     var tgt = Ember.$(e.target);
     var more = tgt.closest('.more-actions');
+    var offsets = {
+      y: 1,
+      x: 2,
+      mirror: true
+    };
     if ( more && more.length ) {
       e.preventDefault();
       e.stopPropagation();
@@ -31,7 +36,7 @@ export default Ember.Component.extend({
         this.get('resourceActions').set('tooltipActions', false);
       }
 
-      this.get('resourceActions').show(this.get('model'), more, this.$());
+      this.get('resourceActions').show(this.get('model'), more, this.$(), offsets);
     }
   },
 

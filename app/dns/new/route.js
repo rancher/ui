@@ -38,7 +38,6 @@ export default Ember.Route.extend({
           name: '',
           description: '',
           stackId: stackId,
-          startOnCreate: true,
         });
       }
 

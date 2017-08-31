@@ -1,5 +1,6 @@
-$accordion-header: lighten($bg-default, 5) !default;
-$accordion-header-border: $bg-default !default;
+$accordion-header: lighten($bg-default, 2) !default;
+$accordion-header-border: darken($bg-default, 5) !default;
+$acc-label                           : $primary !default;
 
 .accordion-wrapper {
   margin-bottom: 10px;
@@ -18,7 +19,7 @@ $accordion-header-border: $bg-default !default;
     @extend .clearfix;
     background: $accordion-header;
     border: solid $accordion-header-border thin;
-    padding: 10px;
+    padding: 5px;
     display: table;
     vertical-align: middle;
     width: 100%;
@@ -29,10 +30,22 @@ $accordion-header-border: $bg-default !default;
       display: table-cell;
       height: 100%;
       vertical-align: middle;
+      background: transparent;
     }
 
     .expand {
-      width: 40px;
+      width: 30px;
+      text-align: center;
+
+      I {
+        margin: 0;
+        padding: 0;
+        font-size: 10px;
+      }
+    }
+
+    .help-block {
+      margin: 0;
     }
 
     .badge-state {
@@ -43,6 +56,7 @@ $accordion-header-border: $bg-default !default;
   }
 
   .accordion-content {
+    position: relative;
     padding: 20px;
     border: solid 1px $border;
     border-top: 0;
@@ -71,6 +85,7 @@ $accordion-header-border: $bg-default !default;
 }
 
 .acc-label {
-  color: $info;
+  color: $acc-label;
   padding-bottom: 10px;
+  font-size: .85em;
 }

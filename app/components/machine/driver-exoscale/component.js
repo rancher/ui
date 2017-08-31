@@ -1,5 +1,5 @@
 import Ember from 'ember';
-import Driver from 'ui/mixins/driver';
+import Driver from 'ui/mixins/host-driver';
 import { ajaxPromise } from 'ember-api-store/utils/ajax-promise';
 
 let RANCHER_TEMPLATE      = 'Linux Ubuntu 14.04 LTS 64-bit';
@@ -66,7 +66,7 @@ export default Ember.Component.extend(Driver, {
   isGteStep6               : Ember.computed.gte('step',6),
 
   bootstrap: function() {
-    let config = this.get('store').createRecord({
+    let config = this.get('userStore').createRecord({
       type: 'exoscaleConfig',
       exoscaleApiKey: '',
       diskSize: 50,
@@ -74,7 +74,7 @@ export default Ember.Component.extend(Driver, {
       securityGroup: 'rancher-machine'
     });
 
-    this.set('model', this.get('store').createRecord({
+    this.set('model', this.get('userStore').createRecord({
       type:         'hostTemplate',
       driver:       'exoscale',
       publicValues: {

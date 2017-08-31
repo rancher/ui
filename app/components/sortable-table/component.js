@@ -6,13 +6,52 @@ import {isAlternate, isMore, isRange} from 'ui/utils/platform';
 
 const {get,set} = Ember;
 
-function matches(fields, token, item) {
+export function matches(fields, token, item) {
+  let tokenMayBeIp = /^[0-9a-f\.:]+$/i.test(token);
+
   for ( let i = 0 ; i < fields.length ; i++ ) {
     let field = fields[i];
     if ( field ) {
+      // Modifiers:
+      //  id: The token must match id format (i.e. 1i123)
+      let idx = field.indexOf(':');
+      let modifier = null;
+      if ( idx > 0 ) {
+        modifier = field.substr(idx+1);
+        field = field.substr(0,idx);
+      }
+
       let val = (get(item,field)+'').toLowerCase();
-      if ( val && val.indexOf(token) >= 0) {
-        return true;
+      if ( !val ) {
+        continue;
+      }
+
+      switch ( modifier ) {
+        case 'exact':
+          if ( val === token ) {
+            return true;
+          }
+          break;
+
+        case 'ip':
+          if ( tokenMayBeIp ) {
+            let re = new RegExp("(?:^|\.)" + token + "(?:\.|$)");
+            if ( re.test(val) ) {
+              return true;
+            }
+          }
+          break;
+
+        case 'prefix':
+          if ( val.indexOf(token) === 0) {
+            return true;
+          }
+          break;
+
+        default:
+          if ( val.indexOf(token) >= 0) {
+            return true;
+          }
       }
     }
   }
@@ -89,6 +128,7 @@ export default Ember.Component.extend(Sortable, StickyHeader, {
     if ( this.get('groupByKey') ) {
       watchKey = `pagedContent.@each.${this.get('groupByKey').replace(/\..*/g,'')}`;
     }
+
     this.set('groupedContent', Ember.computed(watchKey, () => {
       let ary = [];
       let map = {};
@@ -120,10 +160,10 @@ export default Ember.Component.extend(Sortable, StickyHeader, {
     }
   }),
 
-  didUpdateAttrs() {
-    this._super(...arguments);
-    this.cleanupOrphans();
-  },
+  // didUpdateAttrs() {
+  //   this._super(...arguments);
+  //   this.cleanupOrphans();
+  // },
 
   actions: {
     clearSearch() {
@@ -257,7 +297,15 @@ export default Ember.Component.extend(Sortable, StickyHeader, {
           for ( let k = subRows.length-1 ; k >= 0 ; k-- ) {
             let subFound = true;
             for ( let l = 0 ; l < searchTokens.length ; l++ ) {
-              if ( !matches(subFields, searchTokens[l], subRows[k]) ) {
+              let expect = true;
+              let token = searchTokens[l];
+
+              if ( token.substr(0,1) === '!' ) {
+                expect = false;
+                token = token.substr(1);
+              }
+
+              if ( matches(subFields, token, subRows[k]) !== expect ) {
                 subFound = false;
                 break;
               }
@@ -382,23 +430,16 @@ export default Ember.Component.extend(Sortable, StickyHeader, {
 
     let isSelected = selection.includes(node);
     let prevNode = this.get('prevNode');
-    // PrevNode is only valid if it's in the current content
-    if ( !content.includes(prevNode) ) {
-      prevNode = null;
-    }
 
-    if ( !prevNode ) {
+    // PrevNode is only valid if it's in the current content
+    if ( !prevNode || !content.includes(prevNode) ) {
       prevNode = node;
     }
 
     if ( isMore(e) ) {
       this.toggleSingle(node);
     } else if ( isRange(e) ) {
-      let from = content.indexOf(prevNode);
-      let to = content.indexOf(node);
-      [from, to] = [Math.min(from,to), Math.max(from,to)];
-      let toToggle = content.slice(from,to+1);
-
+      let toToggle = this.nodesBetween(prevNode, node);
       if ( isSelected ) {
         this.toggleMulti([], toToggle);
       } else {
@@ -411,7 +452,60 @@ export default Ember.Component.extend(Sortable, StickyHeader, {
     }
 
     this.set('prevNode', node);
-    e.stopPropagation();
+  },
+
+  nodesBetween(a,b) {
+    let toToggle = [];
+    let key = this.get('groupByKey');
+
+    if ( key ) {
+      // Grouped has 2 levels to look through
+      let grouped = this.get('groupedContent');
+
+      let from = this.groupIdx(a);
+      let to =  this.groupIdx(b);
+      if ( !from || !to ) {
+        return [];
+      }
+
+      // From has to come before To
+      if ( (from.group > to.group) || ((from.group === to.group) && (from.item > to.item)) ) {
+        [from, to] = [to,from];
+      }
+
+      for ( let i = from.group ; i <= to.group ; i++ ) {
+        let items = grouped.objectAt(i).items;
+        let j = (from.group === i ? from.item : 0);
+
+        while ( items[j] && ( i < to.group || j <= to.item )) {
+          toToggle.push(items[j]);
+          j++;
+        }
+      }
+    } else {
+      // Ungrouped is much simpler
+      let content = this.get('pagedContent');
+      let from = content.indexOf(a);
+      let to = content.indexOf(b);
+      [from, to] = [Math.min(from,to), Math.max(from,to)];
+      toToggle = content.slice(from,to+1);
+    }
+
+    return toToggle;
+  },
+
+  groupIdx(node) {
+    let grouped = this.get('groupedContent');
+    for ( let i = 0 ; i < grouped.get('length') ; i++ ) {
+      let items = grouped.objectAt(i).items;
+      for ( let j = 0 ; j < items.get('length') ; j++ ) {
+        if ( items.objectAt(j) === node ) {
+          return {group: i, item: j};
+        }
+      }
+    }
+
+    return null;
   },
 
   isAll: Ember.computed('selectedNodes.length', 'pagedContent.length', {
@@ -450,33 +544,36 @@ export default Ember.Component.extend(Sortable, StickyHeader, {
         nodesToRemove = nodesToRemove.toArray();
       }
       selectedNodes.removeObjects(nodesToRemove);
-      nodesToRemove.forEach((node) => {
-        toggle(node, false);
-      });
+      toggle(nodesToRemove, false);
     }
 
     if (nodesToAdd.length) {
       selectedNodes.addObjects(nodesToAdd);
-      nodesToAdd.forEach((node) => {
-        toggle(node, true);
-      });
+      toggle(nodesToAdd, true);
     }
 
-    function toggle(node, on) {
-      let id = get(node,'id');
-      if ( id ) {
-        let input = Ember.$(`input[nodeid=${id}]`);
-        if ( input && input.length ) {
-          Ember.run.next(function() { input[0].checked = on; });
-          let tr = Ember.$(input).closest('tr');
-          let first = true;
-          while ( tr && (first || tr.hasClass('sub-row') ) ) {
-            tr.toggleClass('row-selected', on);
-            tr = tr.next();
-            first = false;
+    function toggle(nodes, on) {
+      Ember.run.next(function() {
+        nodes.forEach((node) => {
+          let id = get(node,'id');
+          if ( id ) {
+            let input = Ember.$(`input[nodeid=${id}]`);
+            if ( input && input.length ) {
+              // can't reuse the input ref here because the table has rerenderd and the ref is no longer good
+              Ember.$(`input[nodeid=${id}]`).prop('checked', on);
+
+              let tr    = Ember.$(`input[nodeid =${id}]`).closest('tr');
+              let first = true;
+
+              while ( tr && (first || tr.hasClass('sub-row') ) ) {
+                tr.toggleClass('row-selected', on);
+                tr    = tr.next();
+                first = false;
+              }
+            }
           }
-        }
-      }
+        });
+      });
     }
   },
 

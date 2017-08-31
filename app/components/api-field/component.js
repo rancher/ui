@@ -9,7 +9,7 @@ export default Ember.Component.extend({
   typeDocs:     null, // Type docs for all the types
 
   tagName: 'div',
-  classNames: ['inline-form','row','api-field'],
+  classNames: ['vertical-middle', 'span-6', 'api-field', 'box', 'mb-20'],
 
   value:        null,
 

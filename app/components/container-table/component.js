@@ -3,20 +3,20 @@ import Ember from 'ember';
 export const headersAll =  [
   {
     name: 'state',
-    sort: ['stateSort','name','id'],
+    sort: ['stateSort','sortName','id'],
     searchField: 'displayState',
     translationKey: 'generic.state',
     width: 150,
   },
   {
     name: 'name',
-    sort: ['name','id'],
+    sort: ['sortName','id'],
     translationKey: 'generic.name',
   },
   {
     name: 'image',
-    sort: ['imageUuid','id'],
-    searchField: 'displayImage',
+    sort: ['image','sortName','id'],
+    searchField: 'image',
     translationKey: 'generic.image',
   },
 ];

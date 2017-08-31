@@ -21,9 +21,12 @@ export default Ember.Component.extend(ModalBase, {
   },
 
   command: Ember.computed('model.labels', function() {
-    var labels = container.get('labels')||{};
+    var labels = this.get('model.labels')||{};
     if ( labels[C.LABEL.K8S_TOKEN]+'' === 'true' ) {
-      return ['kubectl-shell.sh', this.get('access.token.jwt')];
+      return [
+        'kubectl-shell.sh',
+        this.get('access.token.jwt') || 'unauthorized'
+      ];
     } else {
       return ['/bin/bash','-l','-c','echo "# Run kubectl commands inside here\n# e.g. kubectl get rc\n"; TERM=xterm-256color /bin/bash'];
     }

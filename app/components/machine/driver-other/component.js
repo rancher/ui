@@ -1,5 +1,5 @@
 import Ember from 'ember';
-import Driver from 'ui/mixins/driver';
+import Driver from 'ui/mixins/host-driver';
 
 export default Ember.Component.extend(Driver, {
   // Set by Driver
@@ -13,7 +13,7 @@ export default Ember.Component.extend(Driver, {
   driverOpts         : null,
 
   bootstrap() {
-    let model = this.get('store').createRecord({
+    let model = this.get('userStore').createRecord({
       type: 'hostTemplate',
       isOfTypeOther: true,
     });
@@ -64,7 +64,7 @@ export default Ember.Component.extend(Driver, {
     if (this.get('otherDriver')) {
       let driver  = this.get('otherDriver').split('C')[0];
       let hostTemplate = this.get('model');
-      let config = this.get('store').createRecord({
+      let config = this.get('userStore').createRecord({
         type          : this.get('otherDriver'),
       });
       let secrets = this.getSecrets(this.get('userStore').getById('schema', this.get('otherDriver').toLowerCase()).get('resourceFields'));

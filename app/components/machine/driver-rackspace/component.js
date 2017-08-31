@@ -1,5 +1,5 @@
 import Ember from 'ember';
-import Driver from 'ui/mixins/driver';
+import Driver from 'ui/mixins/host-driver';
 import Flavors from 'ui/utils/rackspace-choices';
 
 let flavorChoices = [];
@@ -51,7 +51,7 @@ export default Ember.Component.extend(Driver, {
   ],
 
   bootstrap: function() {
-    let store = this.get('store');
+    let store = this.get('userStore');
 
     let config = store.createRecord({
       type: 'rackspaceConfig',
@@ -60,7 +60,7 @@ export default Ember.Component.extend(Driver, {
       flavorId: 'general1-1',
     });
 
-    this.set('model', this.get('store').createRecord({
+    this.set('model', store.createRecord({
       type:         'hostTemplate',
       driver:       'rackspace',
       publicValues: {

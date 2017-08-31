@@ -1,5 +1,5 @@
 import Ember from 'ember';
-import Driver from 'ui/mixins/driver';
+import Driver from 'ui/mixins/host-driver';
 
 export default Ember.Component.extend(Driver, {
   driverName         : 'vmwarevsphere',
@@ -8,7 +8,7 @@ export default Ember.Component.extend(Driver, {
   showEngineUrl      : false,
 
   bootstrap: function() {
-    let config = this.get('store').createRecord({
+    let config = this.get('userStore').createRecord({
       type: 'vmwarevsphereConfig',
       cpuCount: 2,
       memorySize: 2048,
@@ -16,7 +16,7 @@ export default Ember.Component.extend(Driver, {
       vcenterPort: 443
     });
 
-    this.set('model', this.get('store').createRecord({
+    this.set('model', this.get('userStore').createRecord({
       type:         'hostTemplate',
       driver:       'vmwarevsphere',
       publicValues: {

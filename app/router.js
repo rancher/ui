@@ -3,7 +3,13 @@ import config from './config/environment';
 import {applyRoutes, clearRoutes} from 'ui/utils/additional-routes';
 
 const Router = Ember.Router.extend({
-  location: config.locationType
+  modalService: Ember.inject.service('modal'),
+  location: config.locationType,
+  willTransition(){
+    if (this.get('modalService.modalVisible')) {
+      this.get('modalService').toggleModal();
+    }
+  },
 });
 
 Router.map(function() {
@@ -27,18 +33,6 @@ Router.map(function() {
     this.route('dummy-dev', {path: '/dev'});
 
     this.route('user-preferences', {path: '/user-preferences', resetNamespace: true});
-
-    // Settings
-    this.route('settings', {resetNamespace: true}, function() {
-      this.route('projects', {path: '/env'}, function() {
-        this.route('index', {path: '/'});
-        this.route('templates', {path: '/templates'});
-        this.route('new', {path: '/add'});
-        this.route('new-template', {path: '/add-template'});
-        this.route('edit-template', {path: '/template/:template_id'});
-        this.route('detail', {path: '/:project_id'});
-      });
-    });
 
     // Admin
     this.route('admin-tab', {path: '/admin', resetNamespace: true}, function() {
@@ -70,6 +64,25 @@ Router.map(function() {
       this.route('machine');
     });
 
+    // Clusters
+    this.route('clusters', {path: '/clusters'}, function() {
+      this.route('index', {path: '/'});
+      this.route('new', {path: '/add'});
+      this.route('new-project', {path: '/add-env'});
+      this.route('project', {path: '/env/:project_id'});
+
+      this.route('cluster', {path: '/:cluster_id'}, function() {
+        this.route('edit', {path: '/edit'});
+        this.route('import', {path: '/import'});
+        this.route('host-new', {path: '/add-host'});
+        this.route('host-templates', {path: '/launch-host'}, function() {
+          this.route('index', {path: '/'});
+          this.route('launch', {path: '/:template_id'});
+        });
+      });
+    });
+
+    // Per-Project
     this.route('project', {path: '/env/:project_id'}, function() {
       this.route('index', {path: '/'});
       this.route('apikeys', {path: '/api/keys'}, function() {
@@ -79,8 +92,7 @@ Router.map(function() {
       this.route('waiting');
 
       this.route('containers', {resetNamespace: true}, function() {
-        this.route('new', {path: '/add'});
-        this.route('new-legacy', {path: '/add-legacy'});
+        this.route('run', {path: '/run'});
         this.route('index', {path: '/'});
 
         this.route('container', {path: '/:container_id', resetNamespace: true});
@@ -88,7 +100,7 @@ Router.map(function() {
 
       this.route('balancers', {path: '/balancers', resetNamespace: true}, function() {
         this.route('index', {path: '/'});
-        this.route('new', {path: '/add'});
+        this.route('run', {path: '/run'});
       });
 
       this.route('dns', {path: '/dns', resetNamespace: true}, function() {
@@ -99,9 +111,13 @@ Router.map(function() {
       this.route('volumes', {path: '/volumes', resetNamespace: true}, function() {
         this.route('index', {path: '/'});
         this.route('new', {path: '/add'});
+
+        this.route('volume', {path: '/volume/:volume_id', resetNamespace: true});
       });
 
-      this.route('service', {path: '/services/:scaling_group_id', resetNamespace: true});
+      this.route('k8s', {path: '/kubernetes', resetNamespace: true});
+
+      this.route('service', {path: '/services/:service_id', resetNamespace: true});
 
       this.route('stack', {path: '/stack/:stack_id', resetNamespace: true}, function() {
         this.route('index', {path: '/'});
@@ -112,19 +128,8 @@ Router.map(function() {
 
       this.route('new-stack', {path: '/import-compose', resetNamespace: true});
 
-      this.route('custom-host', {path: '/hosts/custom', resetNamespace: true});
       this.route('hosts', {path: '/hosts', resetNamespace: true}, function() {
         this.route('index', {path: '/'});
-
-        this.route('templates', {path: '/launch'}, function() {
-          this.route('index', {path: '/'});
-          this.route('launch', {path: '/:template_id'});
-        });
-
-        this.route('new', {path: '/add'}, function() {
-          this.route('index', {path: '/'});
-        });
-
         this.route('host', {path: '/:host_id', resetNamespace: true});
       });
 
@@ -140,18 +145,6 @@ Router.map(function() {
           this.route('detail', {path: '/:certificate_id'});
         });
 
-        this.route('backuptargets', {resetNamespace: true}, function() {
-          this.route('index', {path: '/'});
-        });
-        this.route('backuptargets.new-target', {path: '/add-target', resetNamespace: true});
-
-        this.route('storagepools', {resetNamespace: true}, function() {
-          this.route('index', {path: '/'});
-          this.route('pools', {path: '/pools'});
-          this.route('detail', {path: '/:storagepool_id'});
-        });
-        this.route('storagepools.new-volume', {path: '/add-volume', resetNamespace: true});
-
         this.route('registries', {path: '/registries', resetNamespace: true}, function() {
           this.route('new', { path: '/add' });
           this.route('index', {path: '/'});
@@ -164,15 +157,6 @@ Router.map(function() {
         });
       });
 
-      this.route('swarm-tab', {path: '/swarm', resetNamespace: true}, function() {
-        this.route('console');
-        this.route('dashboard');
-      });
-
-      // Mesos
-      this.route('mesos-tab', {path: '/mesos', resetNamespace: true}, function() {
-      });
-
       // Catalog
       this.route('apps-tab', {path: '/apps', resetNamespace: true}, function() {
         this.route('index', {path: '/'});
@@ -182,8 +166,6 @@ Router.map(function() {
           this.route('launch', {path: '/:template'});
         });
       });
-
-      this.route('k8s-tab', {path: '/kubernetes', resetNamespace: true});
 
       this.route('help');
 

@@ -4,6 +4,8 @@ import { headersWithoutHost as containerHeaders } from 'ui/components/container-
 
 export default Ember.Controller.extend({
   prefs: Ember.inject.service(),
+  projects: Ember.inject.service(),
+  projectController: Ember.inject.controller('authenticated.project'),
 
   mode: 'list',
   sortBy: 'name',
@@ -20,7 +22,7 @@ export default Ember.Controller.extend({
 
   actions: {
     newContainer(hostId) {
-      this.transitionToRoute('containers.new', {queryParams: {hostId: hostId}});
+      this.transitionToRoute('containers.run', {queryParams: {hostId: hostId}});
     },
 
     toggleExpand(hostId) {

@@ -29,15 +29,16 @@ var RegistryController = Cattle.LegacyTransitioningResourceController.extend({
   }.property('email','publicValue','id'),
 
   availableActions: function() {
-    var a = this.get('actionLinks');
+    let a = this.get('actionLinks');
+    let l = this.get('links');
 
     return [
       { label: 'Activate',      icon: 'icon icon-play',   action: 'activate',     enabled: !!a.activate },
       { label: 'Deactivate',    icon: 'icon icon-pause',  action: 'deactivate',   enabled: !!a.deactivate },
       { divider: true },
-      { label: 'Delete',        icon: 'icon icon-trash',  action: 'promptDelete', enabled: !!a.remove, altAction: 'delete' },
+      { label: 'Delete',        icon: 'icon icon-trash',  action: 'promptDelete', enabled: !!l.remove, altAction: 'delete' },
     ];
-  }.property('actionLinks.{activate,deactivate,remove}'),
+  }.property('actionLinks.{activate,deactivate}','links.{remove}'),
 });
 
 export default RegistryController;

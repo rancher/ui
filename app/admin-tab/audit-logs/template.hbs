@@ -30,8 +30,8 @@
           {{input class="input-sm" value=filters.clientIp placeholder=(t "auditLogsPage.form.requestIp.placeholder")}}
         </div>
         <div class="col span-4">
-          <span class="dropdown">
-            <button type="button" class="btn btn-sm bg-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">{{if authTypeReadable authTypeReadable (t "auditLogsPage.form.authType.placeholder")}} <i class="icon icon-chevron-down"></i></button>
+          <div class="dropdown inline-block">
+            <button type="button" class="btn bg-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">{{if authTypeReadable authTypeReadable (t "auditLogsPage.form.authType.placeholder")}} <i class="icon icon-chevron-down"></i></button>
             <ul class="dropdown-menu" role="menu">
               <li role="presentation" class="dropdown-header">
                 {{t 'auditLogsPage.form.authType.dropdownPlaceholder'}}
@@ -42,14 +42,14 @@
                 </li>
               {{/each}}
             </ul>
-          </span>
-          <button role="button" class="btn btn-sm bg-error ml-5" {{action "clearAll"}}> {{t 'auditLogsPage.form.clearButtonText'}}</button>
-          <button role="button" class="btn btn-sm bg-primary ml-5" {{action "search"}}> {{t 'auditLogsPage.form.searchButtonText'}}</button>
+          </div>
+          <button role="button" class="btn bg-error ml-5" {{action "clearAll"}}> {{t 'auditLogsPage.form.clearButtonText'}}</button>
+          <button role="button" class="btn bg-primary ml-5" {{action "search"}}> {{t 'auditLogsPage.form.searchButtonText'}}</button>
         </div>
       </div>
     </div>
     {{#sortable-table
-         classNames="grid sortable-table"
+         classNames="grid sortable-table audit-logs"
          bulkActions=false
          rowActions=false
          paging=showPagination
@@ -66,10 +66,14 @@
             {{date-from-now log.created}}
           {{/tooltip-element}}
         </td>
-        <td data-title="{{dt.eventType}}" class="force-wrap" title="{{log.eventType}}">
-          {{log.eventType}} <i class="icon icon-info service-icon-button" {{action 'showResponseObjects' log.requestObject log.responseObject }}></i>
+        <td data-title="{{dt.eventType}}" class="force-wrap pl-5 pr-5" title="{{log.eventType}}">
+          <div>
+            {{log.eventType}} <i class="icon icon-info service-icon-button" {{action 'showResponseObjects' log.requestObject log.responseObject }}></i>
+          </div>
+          <div class="clip text-small">
+            {{#if log.description}}{{log.description}}{{/if}}
+          </div>
         </td>
-        <td data-title="{{dt.description}}">{{#if log.description}}{{log.description}}{{else}}<span class="text-muted">None</span>{{/if}}</td>
         <td data-title="{{dt.accountId}}" class="clip">
           {{environment-name environmentId=log.accountId onlyType="project"}}
         </td>

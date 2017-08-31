@@ -21,7 +21,6 @@ export default Ember.Route.extend({
   model: function(params/*, transition*/) {
     var stack = this.get('store').createRecord({
       type: 'stack',
-      startOnCreate: true,
     });
 
     var dockerUrl = null;
@@ -69,7 +68,6 @@ export default Ember.Route.extend({
   setupController: function(controller, model) {
     controller.set('originalModel',null);
     controller.set('model', model);
-    controller.initFields();
   },
 
   resetController: function (controller, isExiting/*, transition*/) {

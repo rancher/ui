@@ -38,19 +38,6 @@ export default Ember.Service.extend({
     return a.origin;
   }.property('absolute'),
 
-  swarm: function() {
-    var port = this.get(`settings.${C.SETTING.SWARM_PORT}`);
-    if ( !port ) {
-      port = parseInt(window.location.port,10);
-    }
-
-    if ( !port ) {
-      port = ( window.location.protocol === 'https:' ? 443 : 80 );
-    }
-
-    return `tcp://${window.location.hostname}:${port}`;
-  }.property(`settings.${C.SETTING.SWARM_PORT}`),
-
   api: function() {
     // Strip trailing slash off of the absoluteEndpoint
     var base = this.get('absolute').replace(/\/+$/,'');

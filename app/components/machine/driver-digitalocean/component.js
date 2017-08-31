@@ -1,10 +1,11 @@
 import Ember from 'ember';
-import Driver from 'ui/mixins/driver';
+import Driver from 'ui/mixins/host-driver';
 import fetch from 'ember-api-store/utils/fetch';
 import Util from 'ui/utils/util';
 
 const DIGITALOCEAN_API = 'api.digitalocean.com/v2';
 const VALID_IMAGES = [
+  'rancheros',
 //  'centos-6-x64',
   'centos-7-x64',
   'coreos-alpha',
@@ -46,6 +47,7 @@ export default Ember.Component.extend(Driver, {
       let promises = {
         regions:  this.apiRequest('regions'),
         images:   this.apiRequest('images', {params: {type:  'distribution'}}),
+        ros:      this.apiRequest('images/rancheros'),
         sizes:    this.apiRequest('sizes')
       };
 
@@ -71,7 +73,10 @@ export default Ember.Component.extend(Driver, {
         }).map(function(image) {
           image.disabled = VALID_IMAGES.indexOf(image.slug) === -1;
           return image;
-        }).sortBy('distribution','name');
+        });
+
+        filteredImages.push(hash.ros.image);
+        filteredImages = filteredImages.sortBy('distribution','name');
 
         this.setProperties({
           regionChoices: filteredRegions,
@@ -100,14 +105,14 @@ export default Ember.Component.extend(Driver, {
   },
 
   bootstrap: function() {
-    let config = this.get('store').createRecord({
+    let config = this.get('userStore').createRecord({
       type        : 'digitaloceanConfig',
       size        : '1gb',
       region      : 'nyc3',
       image       : 'ubuntu-16-04-x64'
     });
 
-    this.set('model', this.get('store').createRecord({
+    this.set('model', this.get('userStore').createRecord({
       type:         'hostTemplate',
       driver:       'digitalocean',
       publicValues: {

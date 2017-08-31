@@ -1,0 +1,24 @@
+{{#if groupByDeploymentUnit}}
+  {{#each grouped as |group|}}
+    <div class="dot-group bg-default">
+      {{#each group as |item|}}
+        {{container-dot model=item}}
+      {{/each}}
+    </div>
+  {{/each}}
+{{else}}
+  {{#each pagedContent as |item|}}
+    {{container-dot model=item}}
+  {{else}}
+    <div class="text-center text-muted pt-20 pb-20">
+      {{#if searchText}}
+        {{t 'containersPage.table.noMatch'}}
+      {{else}}
+        {{t 'containersPage.table.noData'}}
+      {{/if}}
+    </div>
+  {{/each}}
+{{/if}}
+{{#if (gt filtered.length pagedContent.length)}}
+  {{page-numbers content=pagedContent class="text-center mt-10 mb-10 no-select" indexTo=indexTo indexFrom=indexFrom totalCount=filtered.length textLabel="pagination.container"}}
+{{/if}}

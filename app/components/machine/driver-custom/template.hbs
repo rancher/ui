@@ -1,5 +1,5 @@
-{{#if projects.current.isWindows}}
-  <section>
+{{#if cluster.isWindows}}
+  <section class="box mt-20">
     <h3>{{t 'machine.driverCustom.windows.windowsHeader'}}</h3>
     <div class="container-fluid">
       <div class="row inline-form">
@@ -30,55 +30,67 @@
   </section>
 {{/if}}
 
-<section>
-  <div class="container-fluid">
-    {{#if projects.current.isWindows}}
-      <h3>{{t 'machine.driverCustom.windows.linuxHeader'}}</h3>
-    {{/if}}
-    <div class="row inline-form">
-      <ol>
-        <li>
-          {{t 'machine.driverCustom.step1' docsBase=settings.docsBase htmlSafe=true}}
-        </li>
-        <li>
-          {{t 'machine.driverCustom.step2'}}
-          <ul>
-            <li>{{t 'machine.driverCustom.step2li' htmlSafe=true}}</li>
-          </ul>
-        </li>
-        <li>
-          {{t 'machine.driverCustom.step3'}}
-          <div class="mt-10">
-            {{form-user-labels setLabels=(action 'setLabels') expandAll=null}}
-          </div>
-        </li>
-        <li>
-          {{t 'machine.driverCustom.step4' rancherImage=settings.rancherImage htmlSafe=true}}
-          <div class="checkbox mt-10">
-            {{input type="text" value=cattleAgentIp classNames="form-control" placeholder=(t 'machine.driverCustom.agentIp.placeholder')}}
-          </div>
-        </li>
-        <li>
-          {{t 'machine.driverCustom.step5Copy'}} {{settings.appName}}:
-          {{#if registrationCommand}}
-            <div class="copy-pre">
-              <pre id="registration-command">{{registrationCommand}}</pre>
-              {{copy-to-clipboard clipboardText=registrationCommand}}
-            </div>
-          {{else}}
-            <div><i class="icon icon-spinner icon-spin"></i> {{t 'machine.driverCustom.generating'}}</div>
-          {{/if}}
-        </li>
-        <li>
-          {{t 'machine.driverCustom.step5Close.part1'}} {{#link-to "hosts"}}{{t 'machine.driverCustom.step5Close.link'}}{{/link-to}} {{t 'machine.driverCustom.step5Close.part2'}}
-        </li>
-      </ol>
+<section class="box mt-20">
+  {{#if cluster.isWindows}}
+    <h4>{{t 'machine.driverCustom.windows.linuxHeader'}}</h4>
+  {{/if}}
+
+  {{t 'machine.driverCustom.instructions'
+    appName=settings.appName
+    docsBase=settings.docsBase
+    htmlSafe=true
+  }}
+
+  {{#if loading}}
+    <div><i class="icon icon-spinner icon-spin"></i> {{t 'machine.driverCustom.generating'}}</div>
+  {{else}}
+    <div class="copy-pre m-20">
+      {{copy-to-clipboard clipboardText=registrationCommand tagName="div" classNames="copy-to-pre"}}
+      <pre id="registration-command" style="font-size: 14px;">{{registrationCommand}}</pre>
+    </div>
+  {{/if}}
+
+  <hr/>
+
+  <ul class="mt-20">
+    <li class="pt-10">
+      {{t 'machine.driverCustom.detail.ip'}}
+      <ul>
+        <li>{{t 'machine.driverCustom.detail.manual' rancherImage=settings.rancherImage htmlSafe=true}}</li>
+      </ul>
+    </li>
+    <li class="pt-10">{{t 'machine.driverCustom.detail.firewall'}}</li>
+    <li class="pt-10">
+      {{t 'machine.driverCustom.detail.networking'}}
+      <ul>
+        <li>{{t 'machine.driverCustom.detail.ipsec' htmlSafe=true}}</li>
+        <li>{{t 'machine.driverCustom.detail.vxlan' htmlSafe=true}}</li>
+      </ul>
+    </li>
+  </ul>
+</section>
+
+{{#advanced-section}}
+  <div class="box mt-20 mb-20 p-10">
+    <label class="acc-label">{{t 'machine.driverCustom.detail.ipLabel'}}</label>
+    {{input type="text" value=cattleAgentIp classNames="form-control" placeholder=(t 'machine.driverCustom.agentIp.placeholder')}}
+    <p class="help-block">{{t 'machine.driverCustom.agentIp.label'}}</p>
+  </div>
+
+  {{form-user-labels setLabels=(action 'setLabels') expandAll=null expandOnInit=true}}
+{{/advanced-section}}
+
+{{#if newHosts}}
+  <div class="banner bg-success">
+    <div class="banner-icon"><span class="icon icon-success"></span></div>
+    <div class="banner-message">
+      <p>{{t 'machine.driverCustom.detected' count=newHosts}}</p>
     </div>
   </div>
-</section>
+{{/if}}
 
 <section>
   <div class="footer-actions">
-    <button {{action "cancel"}} class="btn bg-primary">{{t 'machine.driverCustom.close'}}</button>
+    <button {{action "cancel"}} class="btn bg-primary">{{t 'generic.closeModal'}}</button>
   </div>
 </section>

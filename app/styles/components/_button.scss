@@ -7,7 +7,7 @@ $lg-padding: 18px 30px;
 // This file contains all styles related to the button component.
 // -----------------------------------------------------------------------------
 button {
-  background: $bg-primary;
+  background: $bg-default;
 }
 
 .btn,
@@ -27,10 +27,9 @@ button,
     letter-spacing: .5px;
     border-radius: 1.5px;
     line-height: 1.5;
-    border-radius: 0;
 
     &.bg-transparent {
-        color: $link-color;
+        color: darken($link-color, 5);
     }
     &:hover {
         text-decoration: none;
@@ -58,13 +57,15 @@ button,
     }
 
     &.more-actions {
-        border: solid 1px $link-color;
-        background: lighten($link-color,40);
+        background: lighten($link-color,35);
         &.bg-transparent:hover {
             color: lighten($link-color,20);
         }
         &:focus {
             outline: 0;
+        }
+        &:hover {
+          background: lighten($link-color,10);
         }
     }
 }
@@ -73,6 +74,10 @@ button,
 //icon button
 .icon-btn {
     padding: 0;
+    &.btn-sm {
+      padding: 0;
+    }
+
     .darken {
         padding: 5px 10px;
         display: inline-block;
@@ -86,12 +91,6 @@ button,
         padding: 0 10px 0 5px;
         vertical-align: middle;
     }
-}
-//dropdown button
-button + .dropdown-menu {
-  left: -210px;
-  position: absolute;
-  border-radius: 0;
 }
 
 .dropdown-menu {
@@ -112,6 +111,7 @@ button + .dropdown-menu {
 .btn-xs .btn-label {
     padding: $xs-padding;
     font-size: .65em;
+    line-height: 1.5em;
 }
 
 .btn-sm,
@@ -149,20 +149,27 @@ fieldset[disabled] .btn {
     vertical-align: middle;
     text-align: center;
 
-    .btn,  .btn-xs{
+    :first-child .btn {
+      border-radius: 1.5px 0 0 1.5px;
+      margin-left: 2px;
+    }
+
+    :last-child .btn {
+      border-radius: 0 1.5px 1.5px 0;
+    }
+
+     .btn,   .btn-xs{
         position: relative;
         display: inline-block;
-        border-radius: 0;
-        float: left;
-        margin-left: -1px;
 
-        &:first-child {
-            border-radius: 1.5px 0 0 1.5px;
-            margin-left: 0;
-        }
-        &:last-child {
-            border-radius: 0 1.5px 1.5px 0;
-        }
+      > &:first-child {
+          border-radius: 1.5px 0 0 1.5px;
+          margin-left: 2px;
+      }
+      > &:last-child {
+          border-radius: 0 1.5px 1.5px 0;
+      }
+
         &.active {
             @extend .bg-primary;
         }

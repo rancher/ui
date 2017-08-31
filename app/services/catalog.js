@@ -14,7 +14,7 @@ export default Ember.Service.extend({
   catalogs:                   null,
 
   templateBase: Ember.computed('projects.current.orchestration', function() {
-    return this.get('projects.current.orchestration') || 'cattle';
+    return this.get('projects.current.orchestration') || '';
   }),
 
   reset() {
@@ -75,6 +75,8 @@ export default Ember.Service.extend({
   },
 
   fetchTemplates(params) {
+    params = params || {};
+
     let cache        = this.get('templateCache');
     let templateBase = params.templateBase || this.get('templateBase');
     let catalogId    = params.catalogId;
@@ -113,15 +115,9 @@ export default Ember.Service.extend({
   },
 
   filter(data, category, templateBase, plusInfra) {
-    let bases = [];
+    let bases = [templateBase];
 
     category = (category||'all').toLowerCase();
-
-    if ( templateBase === 'cattle' ) {
-      bases.push('');
-    } else {
-      bases.push(templateBase);
-    }
 
     if ( plusInfra ) {
       bases.push(C.EXTERNAL_ID.KIND_INFRA);
@@ -137,7 +133,7 @@ export default Ember.Service.extend({
         return false;
       }
 
-      if ( !bases.includes(tpl.get('templateBase')||'') ) {
+      if ( !bases.includes(tpl.get('templateBase')) ) {
         return false;
       }
 

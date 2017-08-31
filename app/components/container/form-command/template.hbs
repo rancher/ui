@@ -61,52 +61,53 @@
 
     <div class="col span-6 box">
       <label class="acc-label">{{t 'formCommand.autoRestart.label'}}</label>
-      {{#if isService}}
+      <div class="row {{unless editing 'inline-form'}}">
         {{#if editing}}
           <div class="radio">
-            <label>{{radio-button selection=startOnce value=false}} {{t 'formCommand.autoRestart.startOnceFalse'}}</label>
+            <label>{{radio-button selection=restart value="no"}} {{t 'formCommand.autoRestart.no'}}</label>
           </div>
+
           <div class="radio">
-            <label>{{radio-button selection=startOnce value=true}} {{t 'formCommand.autoRestart.startOnceTrue'}}</label>
+            <label>{{radio-button selection=restart value="always"}} {{t 'formCommand.autoRestart.always'}}</label>
           </div>
-        {{else if startOnce}}
-            <div>{{startOnce}}</div>
+
+          <div class="radio">
+            <label>{{radio-button selection=restart value="on-failure"}} {{t 'formCommand.autoRestart.onFailure' htmlSafe=true}}</label>
+          </div>
+
+          <div class="radio pt-5">
+            <label>
+              {{radio-button selection=restart value="on-failure-cond"}}
+              <span class="with-input">
+                {{t 'formCommand.autoRestart.onFailureCondPrefix' limit=restartLimit}}
+                {{input-integer min=1 safeStyle="width: 60px; padding: 0 2px; display: inline-block;" class="form-control input-xs" value=restartLimit}}
+                {{t 'formCommand.autoRestart.onFailureCondSuffix' limit=restartLimit}}
+              </span>
+            </label>
+          </div>
+
+        {{else if (eq restart "on-failure-cond")}}
+          <div>
+            {{t 'formCommand.autoRestart.onFailureCondPrefix' limit=restartLimit}}
+            {{restartLimit}}
+            {{t 'formCommand.autoRestart.onFailureCondSuffix' limit=restartLimit}}
+          </div>
+        {{else if (eq restart "on-failure")}}
+          <div>
+            {{t 'formCommand.autoRestart.onFailure' htmlSafe=true}}
+          </div>
+        {{else if (eq restart "always")}}
+          <div>
+            {{t 'formCommand.autoRestart.always'}}
+          </div>
+        {{else if (eq restart "on-failure")}}
+          <div>
+            {{t 'formCommand.autoRestart.never'}}
+          </div>
         {{else}}
           <div>{{t 'generic.none'}}</div>
         {{/if}}
-      {{else}}
-        <div class="row {{unless editing 'inline-form'}}">
-          {{#if editing}}
-            <div class="radio">
-              <label>{{radio-button selection=restart value="no"}} {{t 'formCommand.autoRestart.no'}}</label>
-            </div>
-
-            <div class="radio">
-              <label>{{radio-button selection=restart value="always"}} {{t 'formCommand.autoRestart.always'}}</label>
-            </div>
-
-            <div class="radio">
-              <label>{{radio-button selection=restart value="on-failure"}} {{t 'formCommand.autoRestart.onFailure' htmlSafe=true}}</label>
-            </div>
-
-            <div class="radio pt-5">
-              <label>
-                {{radio-button selection=restart value="on-failure-cond"}}
-                <span class="with-input">
-                  {{t 'formCommand.autoRestart.onFailureCondPrefix' limit=restartLimit}}
-                  {{input-integer min=1 safeStyle="width: 60px; padding: 0 2px; display: inline-block;" class="form-control input-xs" value=restartLimit}}
-                  {{t 'formCommand.autoRestart.onFailureCondSuffix' limit=restartLimit}}
-                </span>
-              </label>
-            </div>
-
-          {{else if restart}}
-              <div>{{restart}}</div>
-          {{else}}
-              <div>{{t 'generic.none'}}</div>
-          {{/if}}
-        </div>
-      {{/if}}
+      </div>
     </div>
   </div>
 
@@ -125,12 +126,39 @@
       <label class="acc-label">{{t 'formCommand.logConfig.label'}}</label>
       {{form-key-value
         initialMap=instance.logConfig.config
-        changed=(action (mut instance.logConfig.config))
+        changed=(action "setLogOptions")
         addActionLabel="formCommand.logConfig.addActionLabel"
         keyPlaceholder="formCommand.logConfig.keyPlaceholder"
         valuePlaceholder="formCommand.logConfig.valuePlaceholder"
         editing=editing
       }}
+    </div>
+  </div>
+  <div class="row">
+    <div class="col span-6 box">
+      <label class="acc-label">{{t 'formCommand.stopSignal.label'}}</label>
+      {{#input-or-display editable=editing value=instance.stopSignal}}
+        {{new-select
+            prompt=(t 'formCommand.stopSignal.prompt')
+            value=stopOrCustom
+            content=stopSignals
+            optionValuePath="value"
+            optionLabelPath="label"
+            localizedLabel=true
+        }}
+      {{/input-or-display}}
+      {{#if customStopSet}}
+        {{#input-or-display editable=editing value=instance.stopSignal}}
+          {{input type="text" value=instance.stopSignal classNames="form-control mt-20" placeholder=(t 'formCommand.stopSignal.custom.placeholder')}}
+        {{/input-or-display}}
+      {{/if}}
+    </div>
+    <div class="col span-6 box">
+      <label class="acc-label">{{t 'formCommand.stopTimeout.label'}}</label>
+      {{#input-or-display editable=editing value=instance.stopTimeout safeStyle="width: 60px; padding: 0 2px; display: inline-block;" }}
+        {{input-integer min=0 safeStyle="width: 60px; padding: 0 2px; display: inline-block;" class="form-control" value=instance.stopTimeout}}
+      {{/input-or-display}}
+      <p class="help-block">{{t 'formCommand.stopTimeout.helpText'}}</p>
     </div>
   </div>
 {{/accordion-list-item}}

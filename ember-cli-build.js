@@ -79,24 +79,20 @@ module.exports = function(defaults) {
   app.import('bower_components/jgrowl/jquery.jgrowl.js');
   app.import('bower_components/jgrowl/jquery.jgrowl.css');
   app.import('bower_components/d3/d3.js');
-  app.import('bower_components/c3/c3.js');
-  app.import('bower_components/c3/c3.css');
   app.import('bower_components/prism/prism.js');
   app.import('bower_components/prism/components/prism-yaml.js');
   app.import('bower_components/prism/components/prism-bash.js');
   app.import('bower_components/lodash/lodash.js');
   app.import('bower_components/graphlib/dist/graphlib.core.js');
-  app.import('bower_components/dagre/dist/dagre.core.js');
   app.import('bower_components/async/dist/async.js');
   app.import('bower_components/position-calculator/dist/position-calculator.js');
   app.import('vendor/aws-sdk-ec2.js');
   app.import('bower_components/identicon.js/pnglib.js');
   app.import('bower_components/identicon.js/identicon.js');
-  app.import('vendor/dagre-d3/dagre-d3.core.js');
-  app.import('vendor/novnc.js');
   app.import('bower_components/commonmark/dist/commonmark.js');
   app.import('bower_components/momentjs/moment.js');
   app.import('bower_components/ember-shortcuts/ember-shortcuts.js');
+//  app.import('node_modules/prettycron/prettycron.js');
 
   app.import('vendor/icons/style.css');
   app.import('vendor/icons/fonts/rancher-icons.svg',   { destDir: 'assets/fonts/'});

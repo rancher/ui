@@ -30,11 +30,7 @@ export default Ember.Component.extend(HoverDropdown, {
   prefs                : Ember.inject.service(),
   isAdmin              : Ember.computed.alias('access.admin'),
   hasVm                : Ember.computed.alias('project.virtualMachine'),
-  hasSwarm             : Ember.computed.alias('projects.orchestrationState.hasSwarm'),
-  hasKubernetes        : Ember.computed.alias('projects.orchestrationState.hasKubernetes'),
-  hasMesos             : Ember.computed.alias('projects.orchestrationState.hasMesos'),
-  swarmReady           : Ember.computed.alias('projects.orchestrationState.swarmReady'),
-  mesosReady           : Ember.computed.alias('projects.orchestrationState.mesosReady'),
+  hasKubernetes        : true, //Ember.computed.alias('projects.orchestrationState.hasKubernetes'),
   isCaas               : Ember.computed.equal('app.mode',C.MODE.CAAS),
   isOss                : Ember.computed.equal('app.mode',C.MODE.OSS),
   accessEnabled        : Ember.computed.alias('access.enabled'),
@@ -50,6 +46,14 @@ export default Ember.Component.extend(HoverDropdown, {
     switchProject(id) {
       this.sendAction('switchProject', id);
     },
+  },
+
+  willRender() {
+    if (Ember.$('BODY').hasClass('touch') && Ember.$('header > nav').hasClass('nav-open')) {
+      Ember.run.later(() => {
+        Ember.$('header > nav').removeClass('nav-open');
+      });
+    }
   },
 
   init() {

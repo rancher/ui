@@ -2,7 +2,7 @@ import Ember from 'ember';
 import Resource from 'ember-api-store/models/resource';
 import C from 'ui/utils/constants';
 
-export default Resource.extend({
+const Template = Resource.extend({
   projects: Ember.inject.service(),
   settings: Ember.inject.service(),
   intl: Ember.inject.service(),
@@ -157,3 +157,4 @@ function normalize(str) {
   return (str||'').replace(/[^a-z]/gi,'').toLowerCase();
 }
 
+export default Template;

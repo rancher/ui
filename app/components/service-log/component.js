@@ -1,16 +1,52 @@
 import Ember from 'ember';
 
 export default Ember.Component.extend({
+  growl: Ember.inject.service(),
   prefs: Ember.inject.service(),
 
-  stickyHeader: true,
+  model: null,
 
-  showHost: true,
-  showStats: false,
-  showInstanceState: true,
-  pagingLabel: 'pagination.entry',
+  pollInterval: 5000,
+  pollTimer: null,
 
-  sortBy: 'name',
+  init() {
+    this._super();
+    this.poll().then(() => {
+      this.scheduleTimer();
+    });
+  },
+
+  willDestroyElement() {
+    Ember.run.cancel(this.get('pollTimer'));
+  },
+
+  logs: null,
+  poll() {
+    return this.get('model').followLink('serviceLogs').then((logs) => {
+      if ( this.isDestroyed || this.isDestroying ) {
+        return;
+      }
+
+      this.set('logs', logs);
+    });
+  },
+
+  scheduleTimer() {
+    Ember.run.cancel(this.get('pollTimer'));
+    this.set('pollTimer', Ember.run.later(() => {
+      this.poll().then(() => {
+        if ( this.isDestroyed || this.isDestroying ) {
+          return;
+        }
+
+        this.scheduleTimer();
+      }).catch((err) => {
+        this.get('growl').fromError(err);
+      });
+    }, this.get('pollInterval')));
+  },
+
+  sortBy: 'time',
 
   headers: [
     {
@@ -25,13 +61,6 @@ export default Ember.Component.extend({
       sort: ['level','createdTs:desc','id:desc'],
       translationKey: 'serviceLog.level',
       width: 100,
-    },
-    {
-      name: 'event',
-      sort: ['eventType','createdTs:desc','id:desc'],
-      searchField: 'eventType',
-      translationKey: 'serviceLog.event',
-      width: 200,
     },
     {
       name: 'detail',

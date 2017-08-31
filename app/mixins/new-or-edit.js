@@ -9,12 +9,9 @@ export default Ember.Mixin.create({
   primaryResource: Ember.computed.alias('model'),
   originalPrimaryResource: Ember.computed.alias('originalModel'),
 
-  initFields: function() {
-    this._super();
-    this.set('errors',null);
-  },
+  tagName: 'form', // This indirectly disables global navigation shortcut keys
 
-  didReceiveAttrs: function() {
+  init: function() {
     this._super();
     this.set('errors',null);
   },
@@ -30,6 +27,11 @@ export default Ember.Mixin.create({
 
     this.set('errors', null);
     return true;
+  },
+
+  submit(event) {
+    event.preventDefault();
+    this.send('save');
   },
 
   actions: {

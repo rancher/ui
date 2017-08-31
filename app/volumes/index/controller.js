@@ -1,35 +1,26 @@
 import Ember from 'ember';
-import { tagsToArray } from 'ui/models/stack';
-import { headersWithHost as containerHeaders } from 'ui/components/container-table/component';
 
 export default Ember.Controller.extend({
   projectController: Ember.inject.controller('authenticated.project'),
   projects: Ember.inject.service(),
-  prefs: Ember.inject.service(),
-  intl: Ember.inject.service(),
 
   tags: Ember.computed.alias('projectController.tags'),
+  simpleMode: Ember.computed.alias('projectController.simpleMode'),
+  groupTableBy: Ember.computed.alias('projectController.groupTableBy'),
+  showStack: Ember.computed.alias('projectController.showStack'),
+  emptyStacks: Ember.computed.alias('projectController.emptyStacks'),
+  expandedInstances: Ember.computed.alias('projectController.expandedInstances'),
+  preSorts: Ember.computed.alias('projectController.preSorts'),
+
+  queryParams: ['sortBy'],
   sortBy: 'name',
 
-  expandedInstances: null,
-
-  init() {
-    this._super(...arguments);
-    this.set('expandedInstances',[]);
-  },
-
   actions: {
-    toggleExpand(instId) {
-      let list = this.get('expandedInstances');
-      if ( list.includes(instId) ) {
-        list.removeObject(instId);
-      } else {
-        list.addObject(instId);
-      }
+    toggleExpand() {
+      this.get('projectController').send('toggleExpand', ...arguments);
     },
   },
 
-  containerHeaders: containerHeaders,
   headers: [
     {
       name: 'expand',
@@ -39,66 +30,54 @@ export default Ember.Controller.extend({
     },
     {
       name: 'state',
-      sort: ['stack.isDefault:desc','stack.displayName','stateSort','displayName'],
+      sort: ['stateSort','displayName'],
       searchField: 'displayState',
       translationKey: 'generic.state',
       width: 120
     },
     {
       name: 'name',
-      sort: ['stack.isDefault:desc','stack.displayName','displayName','id'],
+      sort: ['displayName','id'],
       searchField: 'displayName',
       translationKey: 'generic.name',
     },
     {
-      name: 'displayType',
-      sort: ['displayType','displayName','id'],
-      searchField: 'displayType',
-      translationKey: 'generic.type',
+      name: 'mounts',
+      sort: ['mounts.length','displayName','id'],
+      translationKey: 'volumesPage.mounts.label',
+      searchField: null,
+      width: 100,
     },
     {
-      name: 'target',
-      sort: false,
-      searchField: 'displayTargets',
-      translationKey: 'dnsPage.table.target',
+      name: 'scope',
+      sort: ['scope'],
+      translationKey: 'volumesPage.scope.label',
+      width: 120
+    },
+    {
+      name: 'driver',
+      sort: ['driver','displayName','id'],
+      searchField: 'displayType',
+      translationKey: 'volumesPage.driver.label',
+      width: 150
     },
   ],
 
-  filteredStacks: function() {
-    var needTags = tagsToArray(this.get('tags'));
-    var out = this.get('model.stacks');
+  rows: function() {
+    let showStack = this.get('showStack');
 
-    if ( !this.get('prefs.showSystemResources') ) {
-      out = out.filterBy('system', false);
-    }
-
-    if ( needTags.length ) {
-      out = out.filter((obj) => obj.hasTags(needTags));
-    }
-
-    return out;
-  }.property('model.stacks.@each.{grouping,system}','tags','prefs.showSystemResources'),
-
-  combinedInstances: function() {
-    let out = [];
-    this.get('filteredStacks').forEach((stack) => {
-      out.pushObjects(stack.get('services').filterBy('isReal', false));
+    // VolumeTemplates
+    let out = this.get('model.volumeTemplates').slice().filter((obj) => {
+      return showStack[obj.get('stackId')];
     });
 
+    if ( !this.get('tags') ) {
+      out.pushObjects(this.get('model.volumes').filterBy('volumeTemplateId',null).filter((obj) => {
+        let stackId = obj.get('stackId');
+        return !stackId || showStack[stackId];
+      }));
+    }
+
     return out;
-  }.property('filteredStacks.@each.services'),
-
-  simpleMode: function() {
-    let all = this.get('filteredStacks');
-    if ( all.get('length') > 1 ) {
-      return false;
-    }
-
-    let stack = all.objectAt(0);
-    if ( stack.get('isDefault') ) {
-      return true;
-    }
-
-    return false;
-  }.property('filteredStacks.@each.name'),
+  }.property('showStack','tags','model.volumeTemplates.@each.stackId','model.volumes.@each.{stackId,volumeTemplateId}'),
 });

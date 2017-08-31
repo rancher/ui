@@ -58,10 +58,15 @@ export default Ember.Object.extend(Ember.Evented, {
     if ( this.get('resource').hasLink(this.get('linkName')) )
     {
       this.get('resource').followLink(this.get('linkName')).then((response) => {
-        if (response.get('url') && response.get('token')) {
-          var url = response.get('url') + '?token=' + encodeURIComponent(response.get('token'));
+        if (response.get('url') && response.get('authToken')) {
+          // Send the fixed-size auth token in query string if present
+          let token = response.get('authToken') || response.get('token');
+          var url = response.get('url') + '?token=' + encodeURIComponent(token);
 
-          var socket = Socket.create({url: url});
+          var socket = Socket.create({
+            url: url,
+            autoReconnect: false
+          });
 
           socket.on('message', (event) => {
             if ( this.get('connected') )
@@ -75,6 +80,11 @@ export default Ember.Object.extend(Ember.Evented, {
           });
 
           socket.on('connected', (/*tries, after*/) => {
+            // Send the big token
+            if ( response.get('token') && response.get('authToken') ) {
+              socket.send(response.get('token'));
+            }
+
             this.set('connected',true);
             this.trigger('connected');
           });
@@ -82,6 +92,8 @@ export default Ember.Object.extend(Ember.Evented, {
           socket.on('disconnected', (/*tries*/) => {
             this.set('connected',false);
             this.trigger('disconnected');
+            this.set('socket', null);
+            Ember.run.next(this,'connect');
           });
 
           this.set('socket', socket);

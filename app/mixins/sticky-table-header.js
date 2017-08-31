@@ -55,19 +55,21 @@ export default Ember.Mixin.create(ThrottledResize, {
   },
 
   buildTableWidths() {
-    let ths = Ember.$(this.element).find('> table > thead > tr.fixed-header > th');
-    let $fixHdr = Ember.$(this.element).find('> table > thead > .fixed-header-actions, > table > thead > .fixed-header');
+    if (Ember.$(this.element).is(':visible')) {
+      let ths = Ember.$(this.element).find('> table > thead > tr.fixed-header > th');
+      let $fixHdr = Ember.$(this.element).find('> table > thead > .fixed-header-actions, > table > thead > .fixed-header');
 
-    Ember.$(this.element).find('> table > thead > tr.fixed-header-placeholder > th').each((idx, th) => {
-      Ember.$(ths[idx]).attr('width', Ember.$(th).outerWidth());
-    });
-
-    if (this.get('showHeader')) {
-      $fixHdr.css({
-        'width': Ember.$(this.element).find('> table').width(),
+      Ember.$(this.element).find('> table > thead > tr.fixed-header-placeholder > th').each((idx, th) => {
+        Ember.$(ths[idx]).attr('width', Ember.$(th).outerWidth());
       });
-      if ($fixHdr.is(':visible')) {
-        Ember.$(this.element).find('.search-group').show(1, 'linear');
+
+      if (this.get('showHeader')) {
+        $fixHdr.css({
+          'width': Ember.$(this.element).find('> table').width(),
+        });
+        if ($fixHdr.is(':visible')) {
+          Ember.$(this.element).find('.search-group').show(1, 'linear');
+        }
       }
     }
   },
@@ -104,7 +106,7 @@ export default Ember.Mixin.create(ThrottledResize, {
     }
     $fixedHeader.css({
       'position': 'fixed',
-      'top': (showHeader ? fudge+tableProps.actionsHeight : 0) + 'px',
+      'top': (showHeader && this.get('bulkActions') ? fudge+tableProps.actionsHeight : 0) + 'px',
       'height': tableProps.fixedHeaderHeight + 'px',
     });
 

@@ -16,10 +16,9 @@ $lines-to-show: 4;
 
   .footer {
     position: absolute;
-    bottom: 0;
+    bottom: 20px;
     left: 0;
     right: 0;
-    margin-bottom: 20px;
     text-align: center;
   }
 
@@ -47,7 +46,7 @@ $lines-to-show: 4;
   }
 
   &.machine {
-    height: 245px;
+    // height: 245px;
 
     h5 {
       padding-top: 5px;
@@ -58,15 +57,25 @@ $lines-to-show: 4;
   }
   &.cloud-host {
     @extend .machine;
-    height: 260px;
+    // height: 260px;
     .help-text {
       color: $accent-two;
+    }
+
+    &.bg-secondary {
+      border: 0;
+
+      .darken {
+        background: rgba($black, .5);
+      }
     }
   }
 
   &.inactive {
-    background-color: $table-bg-accent;
+    position: relative;
     box-shadow: none;
+    filter: grayscale(.5);
+    opacity: .8;
 
     .catalog-icon {
       background-color: $table-bg-accent;
@@ -81,7 +90,7 @@ $lines-to-show: 4;
 
   .catalog-icon {
     @include catalog-img;
-    border-bottom: solid thin $border;
+    border: solid 1px $accent-border;
   }
 
   .description {
@@ -126,7 +135,7 @@ $lines-to-show: 4;
       border-color: darken($warning, 20%) transparent transparent darken($warning, 20%);
       border-style: solid;
       border-width: 5px;
-      right: 0px;
+      right: 2px;
       bottom: -10px;
       display: block;
       position: absolute;
@@ -189,7 +198,7 @@ $lines-to-show: 4;
     min-height: 100px;
     background-position: center;
     background-repeat: no-repeat;
-    background-size: contain;
+    background-size: 35%;
 
     &.aliyunecs     { @include aliyunecs; }
     &.amazonec2     { @include amazonec2; }
@@ -197,13 +206,12 @@ $lines-to-show: 4;
     &.custom        { @include custom; }
     &.digitalocean  { @include digitalocean;}
     &.exoscale      { @include exoscale; }
-    &.generic       { @include generic; background-size: 65%; }
+    &.generic       { @include generic; }
     &.openstack     { @include openstack; }
     &.other         { @include other; }
     &.packet        { @include packet; }
     &.rackspace     { @include rackspace; }
     &.rancherdo     { @include rancherdo;}
-    &.ubiquity      { @include ubiquity; }
     &.vmwarevsphere { @include vmwarevsphere; }
     &.newtemplate { @include newtemplate; }
   }

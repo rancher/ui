@@ -52,19 +52,23 @@
     </div>
   </div>
 
-  {{#if isUpgrade}}
-    <hr/>
-
-    <div class="row">
-      <div class="col-23-of-23">
-        <label>{{t 'formUpgrade.force.label'}}</label>
-        <p class="help-block mb-10">{{t 'formUpgrade.force.detail'}}</p>
-
-        <label>{{input type="checkbox" checked=service.forceUpgrade}} {{service.displayName}}</label>
-        {{#each slcWithNames as |obj idx|}}
-          <label class="pr-20">{{input type="checkbox" checked=obj.slc.forceUpgrade}} {{obj.displayName}}</label>
-        {{/each}}
-      </div>
+  <div class="row box mt-10">
+    <div class="row span-12">
+      <label class="acc-label">{{t 'formUpgrade.prePull.label'}}</label>
+      <p class="help-block">{{t 'formUpgrade.prePull.detail'}}</p>
+      {{#if editing}}
+        <div class="radio mb-10">
+          <label>{{radio-button selection=instance.prePullOnUpgrade value="all"}} {{t 'formUpgrade.prePull.all'}}</label>
+        </div>
+        <div class="radio mb-10">
+          <label>{{radio-button selection=instance.prePullOnUpgrade value="existing"}} {{t 'formUpgrade.prePull.existing'}}</label>
+        </div>
+        <div class="radio mb-10">
+          <label>{{radio-button selection=instance.prePullOnUpgrade value="none"}} {{t 'formUpgrade.prePull.none'}}</label>
+        </div>
+      {{else}}
+        {{t (concat 'formUpgrade.prePull.' (if instance.prePullOnUpgrade instance.prePullOnUpgrade 'none'))}}
+      {{/if}}
     </div>
-  {{/if}}
+  </div>
 {{/accordion-list-item}}

@@ -4,39 +4,33 @@ import Util from 'ui/utils/util';
 import { denormalizeId, denormalizeIdArray } from 'ember-api-store/utils/denormalize';
 import Instance from 'ui/models/instance';
 import { formatSi } from 'ui/utils/util';
+import EndpointPorts from 'ui/mixins/endpoint-ports';
 
-var Container = Instance.extend({
+var Container = Instance.extend(EndpointPorts, {
   // Common to all instances
   requestedHostId            : null,
   primaryIpAddress           : null,
   primaryAssociatedIpAddress : null,
   projects                   : Ember.inject.service(),
   modalService: Ember.inject.service('modal'),
+
   // Container-specific
-  type                       : 'container',
-  imageUuid                  : null,
-  registryCredentialId       : null,
-  command                    : null,
-  commandArgs                : null,
-  environment                : null,
-  ports                      : null,
-  instanceLinks              : null,
-  dataVolumes                : null,
-  dataVolumesFrom            : null,
-  devices                    : null,
-  restartPolicy              : null,
+  type: 'container',
+  image: null,
+  registryCredentialId: null,
+  command: null,
+  commandArgs: null,
+  environment: null,
+  ports: null,
+  instanceLinks: null,
+  dataVolumes: null,
+  dataVolumesFrom: null,
+  devices: null,
+  restartPolicy: null,
 
-  mounts                     : denormalizeIdArray('mountIds'),
-  primaryHost                : denormalizeId('hostId'),
-  services                   : denormalizeIdArray('serviceIds'),
-  primaryService             : Ember.computed.alias('services.firstObject'),
-  referencedService          : denormalizeId('serviceId'),
-
-  service: Ember.computed('primaryService','referencedService', function() {
-    return this.get('referencedService') || this.get('primaryService');
-  }),
-
-  stack: denormalizeId('stackId'),
+  mounts: denormalizeIdArray('mountIds'),
+  primaryHost: denormalizeId('hostId'),
+  service: denormalizeId('serviceId'),
 
   actions: {
     restart: function() {
@@ -85,11 +79,11 @@ var Container = Instance.extend({
     },
 
     edit: function() {
-      this.get('router').transitionTo('containers.new', {queryParams: {containerId: this.get('id'), upgrade: true}});
+      this.get('router').transitionTo('containers.run', {queryParams: {containerId: this.get('id'), upgrade: true}});
     },
 
     clone: function() {
-      this.get('router').transitionTo('containers.new', {queryParams: {containerId: this.get('id')}});
+      this.get('router').transitionTo('containers.run', {queryParams: {containerId: this.get('id')}});
     },
 
     convertToService: function() {
@@ -111,7 +105,7 @@ var Container = Instance.extend({
     var canConvert = !!a.converttoservice && !isSystem && !isService && !isK8s;
 
     var choices = [
-      { label: 'action.upgradeOrEdit',    icon: 'icon icon-edit',         action: 'edit',             enabled: !!a.update && !isK8s },
+      { label: 'action.upgradeOrEdit',    icon: 'icon icon-edit',         action: 'edit',             enabled: !!a.upgrade && !isK8s },
       { label: 'action.convertToService', icon: 'icon icon-service',      action: 'convertToService', enabled: canConvert},
       { label: 'action.clone',            icon: 'icon icon-copy',         action: 'clone',            enabled: !isSystem && !isService && !isK8s},
       { divider: true },
@@ -129,7 +123,7 @@ var Container = Instance.extend({
     ];
 
     return choices;
-  }.property('actionLinks.{restart,start,stop,restore,execute,logs,update,converttoservice}','canDelete','isSystem'),
+  }.property('actionLinks.{restart,start,stop,restore,execute,logs,upgrade,converttoservice}','canDelete','isSystem'),
 
 
   memoryReservationBlurb: Ember.computed('memoryReservation', function() {
@@ -139,33 +133,27 @@ var Container = Instance.extend({
   }),
 
   combinedState: function() {
+    var host = this.get('primaryHost.state');
     var resource = this.get('state');
+    var service = this.get('service.state');
     var health = this.get('healthState');
     var hasCheck = !!this.get('healthCheck');
 
-    if ( resource === 'stopped' && this.get('desired') === false ) {
+    if ( !hasCheck && C.DISCONNECTED_STATES.includes(host) ) {
+      return 'unknown';
+    } else if ( resource === 'stopped' && this.get('desired') === false ) {
       return 'pending-delete';
-    }
-    else if ( C.ACTIVEISH_STATES.indexOf(resource) >= 0 )
-    {
-      if ( hasCheck && health ) {
-        return health;
-      } else {
-        return resource;
-      }
-    }
-    else if ((resource === 'stopped') && ((this.get('labels')||{})[C.LABEL.START_ONCE]) && (this.get('startCount') > 0))
-    {
-      return 'started-once';
-    }
-    else
-    {
+    } else if ( service !== 'inactive' && resource === 'stopped' && this.get('shouldRestart') === true ) {
+      return 'pending-restart';
+    } else if ( C.ACTIVEISH_STATES.includes(resource) && health ) {
+      return health;
+    } else {
       return resource;
     }
-  }.property('desired', 'state', 'healthState'),
+  }.property('primaryHost.state','desired','state','healthState','healthCheck','shouldRestart'),
 
   isOn: function() {
-    return ['running','updating-running','migrating','restarting'].indexOf(this.get('state')) >= 0;
+    return ['running','migrating','restarting'].indexOf(this.get('state')) >= 0;
   }.property('state'),
 
   displayEnvironmentVars: Ember.computed('environment', function() {
@@ -198,14 +186,13 @@ var Container = Instance.extend({
   }.property('state'),
 
   isSystem: function() {
-    var labelKeys = Object.keys(this.get('labels')||{});
-    var isSystem = !!this.get('system') || labelKeys.indexOf(C.LABEL.SYSTEM_TYPE) >= 0;
-    return isSystem;
+    if ( this.get('system') ) {
+      return true;
+    } else {
+      let labels = this.get('labels')||{};
+      return !!labels[C.LABEL.SYSTEM_TYPE];
+    }
   }.property('system','labels'),
-
-  displayImage: function() {
-    return (this.get('imageUuid')||'').replace(/^docker:/,'');
-  }.property('imageUuid'),
 
   displayExternalId: function() {
     var id = this.get('externalId');
@@ -218,6 +205,26 @@ var Container = Instance.extend({
   isGlobalScale: function() {
     return (this.get('labels')||{})[C.LABEL.SCHED_GLOBAL] + '' === 'true';
   }.property('labels'),
+
+  sortName: function() {
+    return Util.sortableNumericSuffix(this.get('displayName'));
+  }.property('displayName'),
+
+  isSidekick: function() {
+    return (this.get('labels')||{})[C.LABEL.LAUNCH_CONFIG] + '' !== C.LABEL.LAUNCH_CONFIG_PRIMARY;
+  }.property('labels'),
+
+  sortByDeploymentUnitName: function() {
+    // stack - service - padded number - config
+    if ( this.get('isSidekick') ) {
+      let parts = ((this.get('labels')||{})[C.LABEL.SERVICE_NAME] + '').split(/\//);
+      let num = this.get('sortName').replace(/.*-/,'');
+      parts.insertAt(2, Util.strPad(num, 6, '0')); 
+      return parts.join('-');
+    } else {
+      return this.get('sortName');
+    }
+  }.property('sortName','isSidekick','labels'),
 });
 
 export default Container;

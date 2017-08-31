@@ -9,7 +9,7 @@ export default Ember.Route.extend({
 
     if ( !project )
     {
-      this.replaceWith('settings.projects');
+      this.replaceWith('authenticated.clusters');
       return;
     }
 
@@ -22,6 +22,7 @@ export default Ember.Route.extend({
 
     return Ember.Object.create({
       project: project,
+      hosts: this.get('store').all('host'),
     });
   },
 
@@ -35,4 +36,19 @@ export default Ember.Route.extend({
     this.transitionTo('authenticated');
     return ret;
   },
+
+  actions: {
+    toggleGrouping() {
+      let choices = ['none','service','stack'];
+      let cur = this.get('controller.group');
+      let neu = choices[((choices.indexOf(cur)+1) % choices.length)];
+      Ember.run.next(() => {
+        this.set('controller.group', neu);
+      });
+    },
+  },
+
+  shortcuts: {
+    'g': 'toggleGrouping',
+  }
 });

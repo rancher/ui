@@ -1,18 +1,33 @@
 import Ember from 'ember';
 import ModalBase from 'ui/mixins/modal-base';
+import C from 'ui/utils/constants';
 
 let DEFAULT_TIME = 400;
 
 export default Ember.Component.extend(ModalBase, {
+  prefs     : Ember.inject.service(),
   classNames: ['generic', 'medium-modal'],
   settings: Ember.inject.service(),
   access: Ember.inject.service(),
 
   isAdmin: Ember.computed.alias('access.admin'),
 
-  containerCount: Ember.computed.alias('containers.length'),
+  containerCount: function() {
+    let count = this.get('containers.length');
+    if ( count > 9 ) {
+      return count;
+    } else {
+      return '0' + count;
+    }
+  }.property('containers.length'),
+
   time: DEFAULT_TIME,
   timer: null,
+
+  currentTheme: Ember.computed(`prefs.${C.PREFS.THEME}`, function() {
+    return this.get(`prefs.${C.PREFS.THEME}`);
+  }),
+
 
   init() {
     this._super(...arguments);

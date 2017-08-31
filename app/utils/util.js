@@ -154,6 +154,17 @@ export function strPad(str, toLength, padChars, right)
   }
 }
 
+// Turn thing1 into thing00000001 so that the numbers sort numerically
+export function sortableNumericSuffix(str) {
+  str = str||'';
+  let match = str.match(/^(.*[^0-9])([0-9]+)$/)
+  if ( match ) {
+    return match[1] + Util.strPad(match[2], 8, '0');
+  }
+
+  return str;
+}
+
 export function timerFuzz(ms, maxFuzz=0.1)
 {
   var factor = Math.random()*2*maxFuzz + (1-maxFuzz);
@@ -240,6 +251,10 @@ export function formatMib(value) {
 
 export function formatKbps(value) {
   return formatSi(value*1000,  1000, "bps", "Bps");
+}
+
+export function formatGB(inMB) {
+  return formatSi(inMB, 1000, "B", "B", 2);
 }
 
 export function formatSi(inValue, increment=1000, suffix="", firstSuffix=null, startingExponent=0)
@@ -332,6 +347,11 @@ export function camelToTitle(str) {
   return (str||'').dasherize().split('-').map((str) => { return ucFirst(str); }).join(' ');
 }
 
+export function isNumeric(str) {
+  return typeof str === 'string' && str.match(/^[0-9]*$/);
+}
+
+
 var Util = {
   arrayDiff: arrayDiff,
   arrayIntersect: arrayIntersect,
@@ -349,16 +369,19 @@ var Util = {
   ucFirst: ucFirst,
   lcFirst: lcFirst,
   strPad: strPad,
+  sortableNumericSuffix: sortableNumericSuffix,
   timerFuzz: timerFuzz,
   random32: random32,
   randomStr: randomStr,
   formatPercent: formatPercent,
+  formatGB: formatGB,
   formatMib: formatMib,
   formatKbps: formatKbps,
   formatSi: formatSi,
   pluralize: pluralize,
   camelToTitle: camelToTitle,
   uniqKeys: uniqKeys,
+  isNumeric: isNumeric,
 };
 
 window.Util = Util;

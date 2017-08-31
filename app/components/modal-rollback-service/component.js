@@ -29,7 +29,7 @@ export default Ember.Component.extend(ModalBase, {
 
   didReceiveAttrs() {
     this.set('model', this.get('modalService.modalOpts.originalModel').clone());
-    this.get('model').followLink('serviceRevisions').then((revs) => {
+    this.get('model').followLink('revisions').then((revs) => {
       let choices = revs.map((x) => {
         let time = moment(x.get('created'));
         return {

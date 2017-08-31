@@ -1,46 +1,82 @@
 <div>
-  <label class="pb-5 acc-label">{{t (concat-str 'formScale.label' mode character='.')}}</label>
-  {{#if (and isService (not (or isSidekick isUpgrade advancedShown)))}}
+  <label class="pb-5 acc-label">{{t 'formScale.label'}}</label>
+  {{#if canAdvanced}}
     <div class="pull-right text-small">
       <a role="button" class="btn bg-transparent p-0" {{action "showAdvanced"}}>{{t 'formScale.showAdvanced'}}</a>
     </div>
   {{/if}}
 </div>
 
-{{#if isSidekick}}
-  <div class="form-control-static">
-    {{t 'formScale.mode.sidekick'}}
-  </div>
-{{else}}
-  <div class="row gutless">
-    <div class="col span-2 m-0">
-      {{input-integer value=userInput min=min max=max}}
-    </div>
-    <div class="col offset-1 span-9 hidden-md">
-      {{input-slider value=userInput valueMin=1 scaleMin=0 valueMax=sliderMax}}
-    </div>
-  </div>
-
-  {{#if isService}}
-    {{#if (or advancedShown isUpgrade)}}
-      <div class="pt-10">
-        <div class="radio">
-          <label>{{radio-button selection=mode value="service"}} {{t 'formScale.mode.service' scale=asInteger}}</label>
-        </div>
-        <div class="radio">
-          <label>{{radio-button selection=mode value="global"}} {{t 'formScale.mode.global' scale=asInteger}}</label>
-        </div>
+{{#if (and canScale advancedShown)}}
+  <div class="pt-10">
+    {{#if showContainer}}
+      <div class="radio">
+        <label>
+          {{radio-button selection=mode value="container"}}
+          <i class="icon icon-container"></i>
+          {{t 'formScale.mode.containerPrefix'}}
+          {{t 'formScale.mode.containerSuffix'}}
+        </label>
       </div>
     {{/if}}
-    <div class="col-inline clearfix">
-      <label>&nbsp;</label>
+    <div class="radio">
+      <label>
+        {{radio-button selection=mode value="service"}}
+        <i class="icon icon-service"></i>
+        {{t 'formScale.mode.servicePrefix' scale=asInteger}}
+        {{#if (eq mode "service")}}
+          {{input-integer safeStyle="width: 60px; padding: 0 2px; display: inline-block" value=userInput min=min max=max}}
+        {{else}}
+          {{asInteger}}
+        {{/if}}
+        {{t 'formScale.mode.serviceSuffix' scale=asInteger}}
+      </label>
     </div>
-  {{else if isHost}}
-  {{else if (gt userInput 1)}}
-    <p class="help-block">{{t 'formScale.containerHelp' scale=userInput}}</p>
-  {{else}}
-    <div class="col-inline clearfix">
-      <label>&nbsp;</label>
+    <div class="radio">
+      <label>
+        {{radio-button selection=mode value="global"}}
+        <i class="icon icon-globe"></i>
+        {{t 'formScale.mode.globalPrefix' scale=asInteger}}
+        {{#if (eq mode "global")}}
+          {{input-integer safeStyle="width: 60px; padding: 0 2px; display: inline-block" value=userInput min=min max=max}}
+        {{else}}
+          {{asInteger}}
+        {{/if}}
+        {{t 'formScale.mode.globalSuffix' scale=asInteger}}
+      </label>
     </div>
-  {{/if}}
+    {{#if showSidekick}}
+      <div class="radio">
+        <label>
+          {{radio-button selection=mode value="sidekick"}}
+          {{#if (eq mode "sidekick")}}
+            {{t 'formScale.mode.sidekickPrefix'}}
+            {{schema/input-service selectClass="input-sm" canHaveContainers=true canBeSystem=false obj=service}}
+            {{t 'formScale.mode.sidekickSuffix'}}
+          {{else}}
+            {{t 'formScale.mode.sidekickInactive'}}
+          {{/if}}
+        </label>
+      </div>
+    {{/if}}
+  </div>
+{{else}}
+  <div class="form-control-static">
+    {{#if (eq mode "container")}}
+      {{t 'formScale.mode.containerPrefix'}}
+      {{t 'formScale.mode.containerSuffix'}}
+    {{else if (eq mode "global")}}
+      {{t 'formScale.mode.globalPrefix' scale=asInteger}}
+      {{asInteger}}
+      {{t 'formScale.mode.globalSuffix' scale=asInteger}}
+    {{else if (eq mode "service")}}
+      {{t 'formScale.mode.servicePrefix' scale=asInteger}}
+      {{asInteger}}
+      {{t 'formScale.mode.serviceSuffix' scale=asInteger}}
+    {{else if (eq mode "sidekick")}}
+      {{t 'formScale.mode.sidekickPrefix'}}
+      &quot;{{service.displayName}}&quot;
+      {{t 'formScale.mode.sidekickSuffix'}}
+    {{/if}}
+  </div>
 {{/if}}

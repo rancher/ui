@@ -1,135 +1,90 @@
 import Ember from 'ember';
-import { tagsToArray } from 'ui/models/stack';
-import { headersWithHost as containerHeaders } from 'ui/components/container-table/component';
-import C from 'ui/utils/constants';
+import { searchFields as containerSearchFields } from 'ui/components/container-dots/component';
+
+export const headers = [
+  {
+    name: 'expand',
+    sort: false,
+    searchField: null,
+    width: 30
+  },
+  {
+    name: 'state',
+    sort: ['stateSort','displayName'],
+    searchField: 'displayState',
+    translationKey: 'generic.state',
+    width: 120
+  },
+  {
+    name: 'name',
+    sort: ['sortName','id'],
+    searchField: 'displayName',
+    translationKey: 'generic.name',
+  },
+  {
+    name: 'image',
+    sort: ['image','displayName'],
+    searchField: 'image',
+    translationKey: 'generic.image',
+  },
+  {
+    name: 'scale',
+    sort: ['scale:desc','isGlobalScale:desc','displayName'],
+    searchField: null,
+    translationKey: 'stacksPage.table.scale',
+    classNames: 'text-center',
+    width: 100
+  },
+];
 
 export default Ember.Controller.extend({
   projectController: Ember.inject.controller('authenticated.project'),
   projects: Ember.inject.service(),
   prefs: Ember.inject.service(),
-  intl: Ember.inject.service(),
 
-  queryParams: ['sortBy','mode','showServices'],
-  mode: 'grouped',
+  queryParams: ['sortBy'],
   sortBy: 'name',
-  tags: Ember.computed.alias('projectController.tags'),
-
-  expandedInstances: null,
-
-  _allStacks: null,
-
-  init() {
-    this._super(...arguments);
-    this.set('_allStacks', this.get('store').all('stack'));
-    this.set('expandedInstances',[]);
-  },
 
   actions: {
-    toggleExpand(instId) {
-      let list = this.get('expandedInstances');
-      if ( list.includes(instId) ) {
-        list.removeObject(instId);
-      } else {
-        list.addObject(instId);
-      }
+    toggleExpand() {
+      this.get('projectController').send('toggleExpand', ...arguments);
     },
   },
 
-  containerHeaders: containerHeaders,
-  preSorts: ['stack.isDefault:desc','stack.displayName'],
-  headers: [
-    {
-      name: 'expand',
-      sort: false,
-      searchField: null,
-      width: 30
-    },
-    {
-      name: 'state',
-      sort: ['stateSort','displayName'],
-      searchField: 'displayState',
-      translationKey: 'generic.state',
-      width: 120
-    },
-    {
-      name: 'name',
-      sort: ['displayName','id'],
-      searchField: 'displayName',
-      translationKey: 'generic.name',
-    },
-    {
-      name: 'image',
-      sort: ['displayImage','displayName'],
-      searchField: 'displayImage',
-      translationKey: 'generic.image',
-    },
-    {
-      name: 'scale',
-      sort: ['scale:desc','isGlobalScale:desc'],
-      searchField: null,
-      translationKey: 'stacksPage.table.scale',
-      classNames: 'text-center',
-      width: 100
-    },
-  ],
+  tags: Ember.computed.alias('projectController.tags'),
+  simpleMode: Ember.computed.alias('projectController.simpleMode'),
+  group: Ember.computed.alias('projectController.group'),
+  groupTableBy: Ember.computed.alias('projectController.groupTableBy'),
+  showStack: Ember.computed.alias('projectController.showStack'),
+  emptyStacks: Ember.computed.alias('projectController.emptyStacks'),
+  expandedInstances: Ember.computed.alias('projectController.expandedInstances'),
+  preSorts: Ember.computed.alias('projectController.preSorts'),
 
-  filteredStacks: function() {
-    var needTags = tagsToArray(this.get('tags'));
-    var out = this.get('model.stacks');
-
-    if ( !this.get('prefs.showSystemResources') ) {
-      out = out.filterBy('system', false);
-    }
-
-    if ( needTags.length ) {
-      out = out.filter((obj) => obj.hasTags(needTags));
-    }
-
-    out = out.filter((obj) => obj.get('type').toLowerCase() !== 'kubernetesstack');
-
-    return out;
-
-  }.property('model.stacks.@each.{grouping,system}','tags','prefs.showSystemResources'),
-
-  standaloneContainers: function() {
-    return this.get('model.instances').filterBy('serviceId',null);
-  }.property('model.instances.@each.serviceId'),
+  headers: headers,
+  extraSearchFields: ['id:prefix','displayIp:ip'],
+  extraSearchSubFields: containerSearchFields,
 
   rows: function() {
-    let out = [];
-    this.get('filteredStacks').forEach((stack) => {
-      out.pushObjects(stack.get('services').filter((x) => x.get('isReal') && !x.get('isBalancer')));
+    let groupNone = this.get('group') === 'none';
+    let showStack = this.get('showStack');
+    let showSystem = this.get('prefs.showSystemResources');
+
+    // Containers
+    let out = this.get('model.instances').filter((obj) => {
+      return (groupNone || obj.get('serviceId') === null) &&
+              showStack[obj.get('stackId')] &&
+              (showSystem || obj.get('isSystem') !== true); // Note that it can be null, so this isn't the same as === false
     });
 
-    out.pushObjects(this.get('standaloneContainers'));
+    // Services
+    if ( !groupNone ) {
+      out.pushObjects(this.get('model.services').filter((obj) => {
+        return showStack[obj.get('stackId')] &&
+                obj.get('isReal') && !obj.get('isBalancer') &&
+                (showSystem || obj.get('isSystem') !== true); // Note that it can be null, so this isn't the same as === false
+      }));
+    }
 
     return out;
-  }.property('filteredStacks.@each.services','standaloneContainers.[]'),
-
-  groupBy: function() {
-    if ( !this.get('simpleMode') && this.get('mode') === 'grouped' ) {
-      return 'stack.id';
-    } else {
-      return null;
-    }
-  }.property('simpleMode', 'mode'),
-
-  simpleMode: function() {
-    let list = this.get('_allStacks');
-    if ( !this.get('prefs.showSystemResources') ) {
-      list = list.filterBy('system', false);
-    }
-
-    let bad = list.findBy('isDefault', false);
-    return !bad;
-  }.property('_allStacks.@each.{system,isDefault}','prefs.showSystemResources'),
-
-  showWelcome: function() {
-    return this.get('projects.current.orchestration') === 'cattle' && !this.get('rows.length');
-  }.property('filtered.length','projects.current.orchestration'),
-
-  showOrchestration: function() {
-    return this.get('app.mode') !== C.MODE.CAAS;
-  }.property('app.mode'),
-
+  }.property('group','showStack','tags','model.services.@each.{stackId,isReal,isBalancer,isSystem}','model.instances.@each.{serviceId,stackId,isSystem}','prefs.showSystemResources'),
 });

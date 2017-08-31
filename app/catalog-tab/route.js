@@ -45,7 +45,7 @@ export default Ember.Route.extend({
   },
 
   model(params) {
-    params.plusInfra = this.get('access').isOwner();
+    params.plusInfra = this.get('projects.current.clusterOwner') === true;
     let stacks = this.get('stacks');
     return this.get('catalog').fetchTemplates(params).then((res) => {
       res.catalog.forEach((tpl) => {
@@ -62,7 +62,6 @@ export default Ember.Route.extend({
     if (isExiting)
     {
       controller.set('category', 'all');
-      controller.set('catalogId', 'all');
       controller.set('templateBase', '');
     }
   }

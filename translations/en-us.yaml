@@ -9,9 +9,10 @@ generic:
   activate: Activate
   all: All
   any: Any
-  as: As
+  as: as
   cancel: Cancel
   closeModal: Close
+  cluster: Cluster
   command: Command
   collapseAll: Collapse All
   confirm: Confirm
@@ -58,7 +59,9 @@ generic:
   seconds: seconds
   select: Select
   service: Service
+  services: Services
   stack: Stack
+  stacks: Stacks
   state: State
   test: Test
   testing: Testing
@@ -94,6 +97,10 @@ accountsPage:
       noName: None
   new:
     header: Add Account
+    errors:
+      usernameReq: Login Username is requried.
+      usernameInExists: Login Username is already in use. Please choose a new username.
+      pwReq: Password is requried.
     form:
       username:
         labelText: Login Username
@@ -304,7 +311,7 @@ authPage:
   azuread:
     header:
       enabled: 'Azure AD Authentication is <b>enabled</b>'
-      disabled: 'Azure AD Authentication is <b class="text-warning">not configured</b>'
+      disabled: 'Azure AD Authentication is not configured'
     subtext:
       enabled: '{appName} is configured to allow access to accounts in Azure AD'
       disabled: '{appName} can be configured to restrict access to a set of accounts defined in the {appName} database.  This is not currently set up, so anybody that reach this page (or the API) has full control over the system.'
@@ -345,8 +352,8 @@ authPage:
 
   localAuth:
     header:
-      enabled: 'Local Authentication is <b>enabled</b>'
-      disabled: '<p>Local Authentication is not configured</p>'
+      enabled: 'Local Authentication is enabled'
+      disabled: 'Local Authentication is not configured'
     subtext:
       enabled:
         text: '{appName} is configured to allow access to accounts in its local database.'
@@ -378,6 +385,12 @@ authPage:
       buttonText:
         pre: Enable Local Auth
         post: 'Enabling...'
+
+balancerPage:
+  noMatch: No balancers match the current search
+  noData: There are no balancers to show.
+  table:
+    target: Target
 
 catalogPage:
   index:
@@ -439,43 +452,39 @@ certificatesPage:
       description:
         placeholder: e.g. EV cert for mydomain.com
 
+clustersPage:
+  header: Clusters & Environments
+  newCluster: Add Cluster
+  newProject: Add Environment
+  import: Import External
+  newHost: Add Host
+  alert: There are no active environments.  You will need to create or activate one before you can do anything else.
+  mode:
+    list: Environment List
+    grouped: Grouped by Cluster
+  subtext: |
+    <h3>{appName} supports grouping resources into multiple <b>clusters</b> and <b>environments</b>.</h3>
+    <p><b>Environment:</b> A namespace where applications, services, and containers are defined.  The containers in an environment can communicate with each other over a shared managed network, and different users/groups can be given access to manage the resources of the environment.</p>
+    <p><b>Cluster:</b> A group of physical (or virtual) compute resources.  Each environment is tied to one cluster and will run all its containers on cluster's hosts, and a cluster can be shared with more than one environment.</p>
+    <p class="help-block">For example, you might create a <em>"production"</em> cluster for each team in your company with bare-metal hosts and a single dedicated environment with restricted access, and a shared <em>"sandbox"</em> cluster with shared virtual machines that any employee can use to create their own isolated dev & test environments.</p>
+  cluster:
+    label: Cluster Name
+  environment:
+    label: Environment Name
+
 containerPage:
   header: 'Container: {name}'
   portsTab:
     header: Ports
     detail: 'Mappings of container listening ports to host ports on public IP addresses'
-    status: |
-      {count, plural,
-      =0 {No Ports}
-      =1 {# port}
-      other {# ports}
-      }
-    table:
-      public: Public on Host
-      private: Private in Container
-      protocol: Protocol
-      noData: This container has no ports
-      noMatch: No ports match the current search
     hostPrimaryIp: '({ip})'
   linksTab:
     header: Links
     detail: 'These properties show the links between containers in this container.'
-    status: |
-      {count, plural,
-      =0 {No links}
-      =1 {# link}
-      other {# links}
-      }
     noData: This Container has no links
   volumesTab:
     header: Volumes
     detail: 'These properties show the volumes attached to your container.'
-    status: |
-      {count, plural,
-      =0 {No volumes}
-      =1 {# volume}
-      other {# volumes}
-      }
     table:
       path: Mount Point
       shared: Shared With
@@ -498,19 +507,15 @@ containersPage:
     orchestrator: Install another orchestrator
     kubernetesLink: Install Kubernetes
 
-
 containerSubpod:
   childContainers: Containers
   childSidekicks: Sidekicks
 
 dnsPage:
   noMatch: No records match the current search
-  noData: No DNS records
+  noData: There are no DNS records to show
   table:
     target: Target
-
-dockerCLI:
-  header: Swarm CLI
 
 editDns:
   title:
@@ -520,8 +525,8 @@ editDns:
     placeholder: e.g. myapp
   description:
     placeholder: e.g. Current version of MyApp
-  selectorContainer:
-    label: Container Selector
+  selector:
+    label: Container Label Selector
     placeholder: e.g. mylabel=somevalue
   mode:
     label: "Resolves To"
@@ -541,9 +546,44 @@ editDns:
     serviceRequired: 'One or more "Targets" are required'
     selectorRequired: '"Container Selector" is required'
 
+editVolume:
+  define:
+    global: Define Volume
+    stack: Define Volume Template
+    container: Define Volume Template
+    action: Define
+  add:
+    global: Add Volume
+    stack: Add Volume Template
+    container: Add Volume Template
+  edit:
+    global: Edit Volume
+    stack: Edit Volume Template
+    container: Edit Volume Template
+  name:
+    placeholder: e.g. myvol
+  scope:
+    label: Scope
+    global: One volume for the whole environment
+    stack: One volume within a specific stack
+    container: Separate volumes for each container
+  driver:
+    label: Driver
+    local: Local host disk
+    nfs: Rancher NFS
+    ebs: Rancher EBS
+    efs: Rancher EFS
+    longhorn: Rancher Longhorn
+    standard: Standard
+    custom:
+      label: Custom
+      placeholder: Custom driver name
+  driverOpts:
+    label: Driver Options
+    addAction: Add Option
 
 # If you change translations here also change the translation in app/utils/constants.js under the FALLBACK_TRANSLATIONS key
-# those are present incase we have an error in the app and can not load the translations file
+# those are present in case we have an error in the app and can not load the translations file
 # the error page will at least make a little sense
 failWhalePage:
   header: Error
@@ -697,21 +737,9 @@ hostsPage:
     containersTab:
       header: Containers
       detail: A list of containers running on this host
-      status: |
-        {count, plural,
-        =0 {No containers}
-        =1 {# container}
-        other {# containers}
-        }
     portsTab:
       header: Ports
       detail: 'These properties show what ports have been mapped and where.'
-      status: |
-        {count, plural,
-        =0 {No Ports}
-        =1 {# port}
-        other {# ports}
-        }
       table:
         header:
           ip: IP Address
@@ -723,12 +751,6 @@ hostsPage:
     storageTab:
       header: Volumes
       detail: 'These properties show the volume details of your host.'
-      status: |
-        {count, plural,
-        =0 {No volumes}
-        =1 {# volume}
-        other {# volumes}
-        }
       table:
         header:
           state: State
@@ -736,6 +758,10 @@ hostsPage:
           mounts: Mounts
         body:
           noData: This host does not have any volumes
+
+k8sImport:
+  instructions: 'Copy, paste, and run the command below to use an existing Kubernetes installation for this {appName} cluster.'
+  generating: Generating command
 
 k8sTab:
   dashboard:
@@ -778,60 +804,12 @@ machinePage:
   add: Add Machine Driver
   builtin: Built-In
 
-mesosPage:
-  header: Overview
-
-  banner:
-    header: Your cluster
-    content: |
-      You currently have {hosts, plural,
-       =1 {# active host}
-       other {# active hosts}
-      } in your Mesos cluster
-    link: View or add hosts
-
-  launch:
-    header: Launch
-    content: You can launch frameworks from our catalog.
-    button: Launch a Framework
-
-  manage:
-    header: Manage
-    content: Manage Mesos from the Mesos UI.
-    button: Mesos UI
-
 # If you change translations here also change the translation in app/utils/constants.js under the FALLBACK_TRANSLATIONS key
 # those are present in case we have an error in the app and can not load the translations file
 # the error page will at least make a little sense
 notFoundPage:
   header: "The page you were looking for doesn't exist!"
   linkTo: Go Home
-
-projectList:
-  index:
-    header: Environments
-    new: Add Environment
-    subtext: |
-      <p>{appName} supports grouping resources into multiple <b>environments</b>.  Each one gets its own set of services and infrastructure resources, and is owned by one or more users or groups.</p>
-      <p>For example, you might create separate &quot;dev&quot;, &quot;test&quot;, and &quot;production&quot; environments to keep things isolated from each other, and give &quot;dev&quot; access to your entire organization but restrict the &quot;production&quot; environment to a smaller team.</p>
-
-    alert: There are no active environments.  You will need to create or activate one before you can do anything else.
-    table:
-      header:
-        orchestration: Orchestration
-        projectTemplate: Template
-  indexTemplate:
-    header: Environment Templates
-    new: Add Template
-    subtext: |
-      <p>An environment template allows users to define a different combination of infrastructure services to be deployed.</p>
-      <p>The infrastructure services includes but not limited to container orchestration (i.e. cattle, kubernetes, mesos, swarm, networking) or rancher services (i.e healthcheck, dns, metadata, scheduling, service discovery and storage)</p>
-    table:
-      header:
-        stacks: Stacks
-        isPublic: Public
-      body:
-        noData: "You don't have any environment templates yet"
 
 registriesPage:
   index:
@@ -868,42 +846,30 @@ secretsPage:
 
 servicePage:
   header: '{type}: {name}'
-  globalScale: '/Host'
+  globalScale: '{scale} per host'
   multistat:
     fqdn: 'FQDN:'
     scale: 'Scale:'
     image: 'Image:'
   external:
-    externalIp: External IPs
+    externalIp: |
+      {count, plural,
+        =1 {External IP:}
+        other {External IPs:}
+      }
     externalHostname: 'External Hostname:'
+  selector:
+    label: 'Selector:'
   containersTab:
     title: 'Containers'
-    detail: 'The containers running in this service.'
-    status: |
-      {count, plural,
-      =0 {No containers}
-      =1 {# container}
-      other {# containers}
-      }
+    detail: 'The containers that make up this service.'
   linksTab:
     header: Links
     detail: 'These properties show the links between containers in this service.'
-    status: |
-      {count, plural,
-      =0 {No links}
-      =1 {# link}
-      other {# links}
-      }
     noData: This Service has no links
   certsTab:
     title: Certificates
     detail: 'Certificates used for TLS-termination of requests.'
-    status: |
-      {count, plural,
-      =0 {No certificates}
-      =1 {# certificate}
-      other {# certificates}
-      }
     default: Default Certificate
     additional: Additional SNI Certificates
   new:
@@ -921,39 +887,26 @@ servicePage:
         placeholder: e.g. Balancer for mycompany.com
   portsTab:
     title: Ports
-    detail: 'Mappings of container listening ports to host ports on public IP addresses.'
-    status: |
-      {count, plural,
-      =0 {No Ports}
-      =1 {# port}
-      other {# ports}
-      }
-    table:
-      header:
-        port: Port
-        host: Host IP
-      body:
-        noData: This Service has no ports.
+    detail: 'Ports mapped from a host IP to the listening ports of a container.'
     notActive: Ports are only available while the service is Active.
   logTab:
     title: Service Log
     detail: 'Recent orchestration events that have occurred for this service'
-    status: |
-      {count, plural,
-      =0 {No events}
-      =1 {# event}
-      other {# events}
-      }
   type:
-    service: Scaling Group
+    service: Service
     selectorservice: Selector
     loadbalancerservice: Load Balancer
     dnsservice: Alias
-    externalservice: External
+    externalservice-ip: External IP
+    externalservice-host: External Name
     kubernetesservice: K8s Service
     composeservice: Compose Service
     networkdriverservice: Network Service
     storagedriverservice: Storage Service
+  sidekick:
+    tabHeader: Sidekick
+    header: Service & Sidekicks
+    helpBlock: Select the main service launch config or one of the sidekick launch configs
 
 settingsPage:
   header: Settings
@@ -977,21 +930,12 @@ stackPage:
     backLink: Back to all stacks
   containers:
     header: Containers
-    detail: Standalone Containers that are not part of a Scaling Group or Load Balancer
+    detail: Standalone Containers and Services contained in this stack
     status: |
       {count, plural,
       =0 {No containers}
       =1 {# container}
       other {# containers}
-      }
-  scalingGroups:
-    header: Scaling Groups
-    detail: 'Scaling Group containers that are apart of this stack'
-    status: |
-      {count, plural,
-      =0 {No groups}
-      =1 {# group}
-      other {# groups}
       }
   loadBalancers:
     header: Load Balancers
@@ -1011,6 +955,24 @@ stackPage:
       =1 {# entry}
       other {# entries}
       }
+  scalingGroups:
+    header: Scaling groups
+    detail: 'Containers existing in this scaling group'
+    status: |
+      {count, plural,
+      =0 {No containers}
+      =1 {# container}
+      other {# containers}
+      }
+  volumesTab:
+    header: Volumes
+    detail: 'These properties show the volumes attached to your container.'
+    table:
+      path: Mount Point
+      shared: Shared With
+      writable: Writable
+      noData: This stack has no volumes mounted
+      noMatch: No volumes match the current search
 
 newStack:
   header: Import Compose.yml
@@ -1028,21 +990,6 @@ newStack:
   answers:
     label: Answers (variable substitutions)
     addActionLabel: Add Answer
-
-  startOnCreate:
-    label: After creating services
-    on: Automatically start them
-    off: Leave them stopped
-
-storagePoolsPage:
-  header: Storage Drivers
-  index:
-    noData: No storage drivers
-  newVolume:
-    header: Add Volume
-    form:
-      driverOptions: Driver Options
-      addActionLabel: Add Option
 
 userPreferencesPage:
   header: Preferences
@@ -1120,8 +1067,6 @@ verifyResetPasswordPage:
 waitingPage:
   hosts:
     setup:
-      mesos: Setting up Mesos
-      swarm: Setting up Swarm
       kubernetes: Setting up Kubernetes
 
 ##############################
@@ -1308,8 +1253,6 @@ billingInfo:
       name: "Name On Card: {name}"
       actions: Actions
 
-
-
 caasLogin:
   resetHeader: Reset Password
   new: Create Account
@@ -1329,8 +1272,8 @@ catalogSettings:
       rancher: "{appName} Certified Library"
       pl: Certified Library
     detail:
-      rancher: Templates required for core Rancher features such as Kubernetes/Mesos/Swarm orchestration support.  Maintained and supported by Rancher Labs.
-      pl: Officially maintained templates required for core features such as Kubernetes/Mesos/Swarm support.
+      rancher: Templates required for core Rancher features such as Kubernetes orchestration support.  Maintained and supported by Rancher Labs.
+      pl: Officially maintained templates required for core features such as Kubernetes.
   community:
     header:
       rancher: Community Contributed
@@ -1356,6 +1299,12 @@ catalogSettings:
       label: Branch
       placeholder: 'e.g. master'
 
+clusterBox:
+  noMatch: No environments match the current search
+  noData: This cluster doesn't have any environments yet.
+  addHost: Add Hosts
+  importCluster: Use existing Kubernetes
+  loginDefault: Login
 
 confirmDelete:
   title: 'Are you sure you want to delete'
@@ -1455,7 +1404,18 @@ editCertificate:
     placeholder: e.g. mydomain.com
   description:
     placeholder: e.g. EV cert for mydomain.com
-  noteKeyWriteOnly: "Note: The Private Key is intentionally blank because the field is write-only.  You will need to provide the Private Key again to update the certificate, even if it hasn't changed."
+  noteKeyWriteOnly: "Note: The Private Key is intentionally blank because the field is write-only.  You will do not need to provide the Private Key unless you are intending on changing it."
+
+editCluster:
+  title:
+    new: Add Cluster
+    edit: Edit Cluster
+  name:
+    label: Name
+    placeholder: e.g. Sandbox
+  description:
+    label: Description
+    placeholder: e.g. Shared cluster for development
 
 editContainer:
   title:
@@ -1491,22 +1451,6 @@ editHost:
     help: If provided, containers must have one or more of the given labels in order to be eligible for scheduling onto this host.  If the value is left empty, a container with a matching key is eligible regardless of value.  <code>io.rancher.container.system</code> is required to allow system containers on to the host.
     addActionLabel: Add Required Label
 
-editProjectTemplate:
-  title:
-    add: Add Template
-    edit: "Edit Template: {displayName}"
-  orchestration: Orchestration
-  stackEdit: Edit Config
-  stackRequired: Required
-  access:
-    label: Sharing
-    private: "Private: Only available to me"
-    public: "Public: Available to all users (admin only)"
-  error:
-    conflict: Conflict
-    enabling: 'The selected version of {tplCategory} stack "{stackName}" does not support {orchestration} Orchestration.'
-    changing: 'The currently enabled {tplCategory} stack "{stackName}" does not support {orchestration} Orchestration.'
-
 editRegistry:
   title: Edit Registry
   address:
@@ -1535,7 +1479,7 @@ editStack:
   group:
     label: Tags
     placeholder: e.g. frontend, production
-    help: Comma-separated list of tags.  The Stacks list can be filtered by individual tags.
+    help: Comma-separated list of tags for the new Stack.  The Containers lists can be filtered by individual tags.
 
 envCatalog:
   header: Catalog
@@ -1662,8 +1606,6 @@ formCommand:
     none: None
   autoRestart:
     label: Auto Restart
-    startOnceFalse: Always
-    startOnceTrue: Never (Start Once)
     no: Never
     onFailure: 'On failure <span class="text-muted">(non-0 exit code)</span>, forever'
     onFailureCondPrefix: On failure, up to
@@ -1681,17 +1623,38 @@ formCommand:
     addActionLabel: Add Option
     keyPlaceholder: e.g. syslog-facility
     valuePlaceholder: e.g. daemon
+  stopTimeout:
+    label: Stop Timeout
+    helpText: The container will be forcefully killed if it does not stop within this period of time when requested.
+  stopSignal:
+    label: Stop Signal
+    sigup: SIGHUP (1)
+    sigint: SIGINT (2)
+    sigquit: SIGQUIT (3)
+    sigkill: SIGKILL (9)
+    sigusr1: SIGUSR1 (10)
+    sigusr2: SIGUSR2 (12)
+    sigterm: SIGTERM (15)
+    custom:
+      label: Custom
+      placeholder: SIGEGV
+    prompt: "Select a Stop Signal:"
+
 
 formContainerLinks:
   title: Links
   detail: Define relationships between this and other containers.
   addActionLabel: Add Link
-  targetInstance:
-    label: Destination Container
-    prompt: Select a Container...
   name:
+    label: Target Container
+  alias:
     label: As Name
     placeholder: e.g. database
+  noData: There are no container links
+  noMatch: No links match the current search
+
+formCount:
+  label: Count
 
 formDisks:
   addDiskLabel: Add Disk
@@ -1763,7 +1726,7 @@ formEnvVar:
 
 formHealthCheck:
   title: Health Check
-  detail: Periodically make a request to the container to see if it is responding correctly.  An unhealthy container will be excluded from Load Balancers.  Scaling Groups can automatically replace unhealthy containers with a new one.
+  detail: Periodically make a request to the container to see if it is responding correctly.  Unhealthy containers are excluded from Load Balancers and Service Discovery.
   detailDns: A health check allows {appName} to know if the external resource is healty or not.  An unhealthy target will be exlcluded from Load Balancers.
   checkType:
     none: None
@@ -1804,7 +1767,7 @@ formHealthCheck:
   strategy:
     label: When Unhealthy
     none: Take no action
-    recreate: Re-create
+    recreate: Delete container and schedule a replacement
 
 formKeyValue:
   addAction: Add Pair
@@ -1876,6 +1839,7 @@ formNetwork:
     label: Hostname
     placeholder: e.g. web
     dockerId: Use the Docker container ID
+    hostName: Use the host's hostname
     containerName: Use the container name
     custom: Set a specific hostname
   domainName:
@@ -1913,17 +1877,18 @@ formPorts:
   showIpLink: Customize Host IPs
 
 formScale:
-  label:
-    container: Count
-    service: Scale
-    sidekick: Scale
-    global: Scale per Host
-  showAdvanced: More scaling options
-  containerHelp: "{scale} independent containers will be created.  Consider using a Scaling Group instead if you want to manage multiple containers as one unit."
+  label: Scale
+  showAdvanced: Scaling options
   mode:
-    service: "Standard: {scale, plural, =1 {# container} other {# containers}}"
-    global: "Global: {scale, plural, =1 {# container} other {# containers}} per host matching scheduling rules"
-    sidekick: "Sidekick: Matches the scale and scheduling of the primary service"
+    containerPrefix: "Standalone container"
+    containerSuffix: ""
+    servicePrefix: "Service with a scale of"
+    serviceSuffix: ""
+    globalPrefix: "Global service with a scale of"
+    globalSuffix: "per host"
+    sidekickInactive: "Sidekick: Match the scale and scheduling of a service"
+    sidekickPrefix: "Sidekick: Match the scale and scheduling of"
+    sidekickSuffix: ""
 
 formScheduling:
   title: Host Scheduling
@@ -1949,6 +1914,17 @@ formScheduling:
   field: Field
   key: Key
   value: Value
+  scaling:
+    minMaxDetail: If set, the scale will not be allowed to be adjusted by user or API call above or below these limits.
+    incrementDetail: If set, the scale must be a multiple of the increment
+    hostMaxDetail: If set, schedule containers for this service to a maximum of this many hosts.
+  scaleMin: Minimum Scale
+  scaleMax: Maximum Scale
+  scaleIncrement: Scale Increment
+  hostMax: Maximum Hosts
+  perHost: per host
+
+
 
 formSecrets:
   title: Secrets
@@ -1980,12 +1956,13 @@ formSecurity:
   detail: Grant or limit the abilities of the container to affect the host it is running on.
   pullImage:
     label: Pull Image
-    enable: Every time a new container is created
+    enableService: Every time a new container is created
+    enableContainer: Even if already present on the host
     disable: Only if not already present on the host
   privileged:
     label: Privileged
     disable: No
-    enable: "Yes: Container has full access to the Host"
+    enable: "Yes: container has full access to the host"
   pidMode:
     label: PID Mode
     disable: Normal
@@ -2002,7 +1979,7 @@ formSecurity:
     none: Do not allow swap
   swappiness:
     label: Swappiness
-    default: Default on the Host
+    default: Use the host's default
     none: Minimum
     set: Custom (1-100)
   cpuPinning:
@@ -2041,7 +2018,7 @@ formSecurity:
 
 formServiceLinks:
   title: Links
-  detail: Define relationships between this scaling group and other services.
+  detail: Define relationships between this and other services.
   addAction: Add Link
   service:
     label: Destination Service
@@ -2067,12 +2044,11 @@ formSslTermination:
 
 formStack:
   label:
-    simple: Deploying into the {name} Stack
-    reuse: Deploy into an existing Stack
-    create: Deploy into a new Stack
+    reuse: Stack
+    create: Stack
   toggle:
     simple: Customize
-    reuse: Use existing
+    reuse: Use an existing stack
     create: Add to a new stack
   reuse:
     prompt: Choose a Stack...
@@ -2167,9 +2143,12 @@ formUpgrade:
   stopFirst:
     label: Stop old, then start new
     detail: Stop the old containers (up to the Batch Size), then start new ones.  This allows the reuse of published ports.  Adjust Batch Size to ensure that you keep enough active capacity to run your application.
-  force:
-    label: Force Redeploy
-    detail: During an upgrade, containers are normally only replaced if part of their definition has changed.  To force one to redeploy for this upgrade, select it here.
+  prePull:
+    label: Pre-Pull Image
+    detail: The new image can be pre-pulled onto hosts before the upgrade is started, to minimize the disruption of launching the new containers.
+    all: On all hosts
+    existing: On the hosts that the service is currently on
+    none: On no hosts
 
 formValueArray:
   addActionLabel: Add Value
@@ -2181,6 +2160,36 @@ formVirtualMachines:
   vcpus: vCPUs
   memory: Memory
 
+formVolumeRow:
+  mode:
+    volume: Existing volume
+    newVolume: New volume
+    bindMount: Bind-mount
+    volumesFrom: Volumes from
+    volumesFromLaunchConfig: Volumes from
+    custom: Custom
+  edit: Edit
+  hostPath:
+    label: Host Path
+    placeholder: e.g. /home/foo
+  mountPoint:
+    label: Mount Point
+    placeholder: e.g. /mnt/foo
+  volume:
+    prompt: Select a Volume...
+  volumesFrom:
+    prompt: Select a Container...
+  volumesFromLaunchConfig:
+    prompt: Select a Launch Config...
+  custom:
+    placeholder: Custom --volume value
+  opts:
+    ro: Read-Only
+    rw: Read-Write
+    custom:
+      label: Custom
+      placeholder: e.g. rw,z
+
 formVolumes:
   title: Volumes
   detail: Persist and share data separate from the lifecycle of an individual container.
@@ -2189,15 +2198,23 @@ formVolumes:
   volumes: Volumes
   volumesFrom: Volumes From
   volumeDriver:
-    label: Volume Driver
+    label: Driver for custom volumes
     placeholder: 'e.g. rancher-nfs; Default: local'
     suggestion: 'Volume drivers in use:'
   noLaunchConfigs: There are no other launch configs in this service to share volumes with.
   noHostContainers: This host has no containers to use the volumes from.
   onlySingleHost: Only available when adding a container to a particular host.
-  addActionLabel: Add Volume
   errors:
-    invalidName: Volume names can only contain letters, numbers, hyphen, underscore, and dot.
+    incomplete: Incomplete volume definition
+    absoluteMountPoint: Volume mount points must be absolute paths
+  add:
+    label: Add Volume...
+    existing: Use an existing volume
+    new: Create a new volume
+    bindMount: Bind-mount a host directory
+    fromContainer: Use volumes from another container
+    fromLaunchConfig: Use volumes from a sidekick
+    custom: Add custom volume entry
 
 hookPage:
   receiver:
@@ -2206,7 +2223,7 @@ hookPage:
     content: "Receiver hooks give you a URL that can be hit to trigger an action inside of {appName}."
     noData: No receiver hooks.
   scaleService:
-    label: Scale a Scaling Group or Load Balancer
+    label: Scale a Service or Load Balancer
     detailPrefix: "Scale {action} "
     detailLink: "{displayService}"
     detailSuffix: "by {amount}"
@@ -2346,6 +2363,20 @@ loginUserPass:
   passwordLabel: Password
 
 machine:
+  driver:
+    amazonec2: Amazon EC2
+    azure: Azure
+    digitalocean: DigitalOcean
+    exoscale: Exoscale
+    generic: Generic
+    openstack: OpenStack
+    packet: Packet
+    rackspace: RackSpace
+    vmwarevsphere: VMware vSphere
+    other: Other
+    custom: Custom
+    aliyunecs: Aliyun ECS
+
   driverAmazon:
     accessSection: Account Access
     accessKey:
@@ -2469,20 +2500,25 @@ machine:
       label: Region
 
   driverCustom:
-    step1: Start up a Linux machine somewhere and install a <a href="{docsBase}/hosts/#supported-docker-versions" target="_blank">supported version</a> of <a href="http://www.docker.com/" target="_blank" rel="noreferrer nofollow">Docker</a> on it.
-    step2: "Make sure any security groups or firewalls allow traffic:"
-    step2li: From and To all other hosts on <code>UDP</code> ports <code>500</code> and <code>4500</code> <span class="text-muted">(for IPsec networking)</span>
-    step3: "Optional: Add labels to be applied to the host."
-    step4: "Specify the public IP that should be registered for this host.  If left empty, Rancher will auto-detect the IP to use.  This generally works for machines with unique public IPs, but will not work if the machine is behind a firewall/NAT or if it is the same machine that is running the <code>{rancherImage}</code> container."
+    instructions: 'Copy, paste, and run the command below to register a host running a <a href="{docsBase}/hosts/#supported-docker-versions" target="_blank">supported version</a> of Docker with {appName}.  The host should pop up within a minute.'
+    detail:
+      ip: The IP address to register the host with typically will be detected automatically.
+      ipLabel: Registration IP Address
+      manual: 'If the host is behind a NAT or the same machine that is running the <code>{rancherImage}</code> container you may need to explicitly specify the IP to use in the advanced section below.'
+      firewall: The host agent initiates a connection to the server, so make sure firewalls or security groups allow it to reach the URL in the command.
+      networking: All hosts in the environment will also need to allow traffic between each other for cross-host networking
+      ipsec: 'IPSec: <code>500/udp</code> and <code>4500/udp</code>'
+      vxlan: 'VXLAN: <code>4789/udp</code>'
+
+    detected: |
+      {count, plural,
+        =1 {One new host has registered!}
+        other {# new hosts have registered!}
+      }
     agentIp:
+        label: Specify the public IP that this host should register as.  If left empty, Rancher will auto-detect the IP to use.
         placeholder: e.g. 1.2.3.4
-    step5Copy: Copy, paste, and run the command below to register the host with
     generating: "Generating registration URL..."
-    step5Close:
-      part1: Click close below.  The new host should pop up on the
-      link: Hosts
-      part2: screen within a minute.
-    close: Close
     windows:
       windowsHeader: Windows Host
       linuxHeader: Linux Host
@@ -2511,7 +2547,7 @@ machine:
       label: Image
     sshUser:
       label: SSH User
-      placeholder: 'usr1'
+      placeholder: 'e.g. root'
     size:
       label: Size
     regionSection: Region
@@ -2565,7 +2601,6 @@ machine:
       label: SSH User
       placeholder: 'usr1'
 
-
   driverOther:
     driverSection: Driver
     driver:
@@ -2584,6 +2619,15 @@ machine:
     apiKeyHelp: From the Packet <a href="https://app.packet.net/portal#/api-keys" target="_blank">API Keys</a> screen
     instanceSection: Instance
     instanceOptionsSection: Instance Options
+    loginAction: "Next: Authenticate & select an instance"
+    authentication: Authenticating
+    location: Location
+    planDetails:
+      label: Instance Details
+      cpu: CPUs
+      memory: Memory
+      drives: Drives
+      network: NICs
     image:
       label: Image
     size:
@@ -2678,7 +2722,7 @@ machine:
       label: Aliyun SLB ID
       placeholder: Aliyun SLB ID
     storageSection: Storage Info
-    isOptimized:
+    ioOptimized:
       label: Instance Storage I/O Optimized
       placeholder: none or optimized
     systemDiskCategory:
@@ -2794,11 +2838,8 @@ modalContainerStop:
   button: Stop
 
 modalContainerToService:
-  title: 'Convert "{instanceName}" to a Scaling Group'
-  detail: 'This will create a new Scaling Group based on this container and make this container part of Scaling Group.'
-  name:
-    label: New Scaling Group Name
-    placeholder: e.g. myapp
+  title: 'Convert "{instanceName}" to a Service'
+  detail: 'This will create a new service based on this container and make this container part of the service.'
   action: Convert
 
 modalConfirmDeactivate:
@@ -2882,22 +2923,23 @@ modalShortcuts:
     pl: Keyboard Shortcuts
   navigation: Page Navigation
   a: Apps
+  b: Balancers
   c: Containers
   d: DNS
-  e: Manage Environments
+  e: Manage Clusters & Environments
   h: Hosts
   k: API Keys
-  l: Load Balancers
   other: Other Stuff
   g: Toggle view grouping
-  n: "Add New [current resource]"
+  n: "Add a new [the current resource]"
   s: Toggle show system
   t: Next page tab
-  slash: Focus search field
+  v: Volumes
+  slash: Focus the search field
   question: You are here
   admin: Only For Admins
   p: Processes
-
+  theme: Cycle theme ({currentTheme})
 
 modalWelcome:
   header: Welcome to {appName}!
@@ -2952,18 +2994,18 @@ newCatalog:
 newContainer:
   add:
     container: Add Container
-    scalingGroup: Add Scaling Group
-    sidekick: 'Sidekick: {name}'
-    sidekickNoName: 'Sidekick: {name}'
+    service: Add Service
+    globalService: Add Global Service
+    sidekick: 'Add Sidekick'
+    sidekickName: 'Add Sidekick of "{name}"'
   upgrade:
     container: Upgrade Container
-    scalingGroup: Upgrade Scaling Group
-    sidekick: 'Sidekick: {name}'
+    service: Upgrade Service
+    sidekick: Upgrade Sidekick
+    sidekickName: 'Upgrade Sidekick of "{name}"'
   selectUpgrade: Select one or more services to upgrade.
   saveUpgrade: Upgrade
   saveNew: Launch
-  addSidekick: Add a Sidekick
-  removeSidekick: Remove this Sidekick
   name:
     placeholder: e.g. myapp
   description:
@@ -2975,10 +3017,16 @@ newContainer:
     keyPlaceholder: e.g. FOO
     valueLabel: Value
     valuePlaceholder: e.g. bar
-  emptyPrimaryService: "(Primary)"
-  emptySidekick: "(Sidekick #{num})"
-  addSidekickContainer: Add Sidekick Container
-  addSidekickVm: Add Sidekick VM
+  sidekick:
+    header: Upgrade service
+    title: Select service launch config to upgrade
+    detail: '"{service}" has sidekicks.  Which launch config do you want to upgrade?'
+    primary: Primary
+    sidekick: Sidekick
+
+  errors:
+    noSidekick: Choose a service to add the sidekick to
+    duplicateName: 'There is already a sidekick named "{name}" in the service "{service}"'
 
 newPassword:
   placeholder: New Password
@@ -3045,6 +3093,12 @@ newSecret:
     label: Secret Value
     placeholder: The secret value
 
+orchestrationWelcome:
+  simple:
+    title: Simple
+  enhanced:
+    title: Enhanced with Kubernetes
+
 pageFooter:
   notARelease: (Not a Release)
   help: 'Help & Docs'
@@ -3059,11 +3113,31 @@ pageFooter:
   showSystem: Show System
 
 pagination:
-  generic: |
+  certificate: |
     {pages, plural,
-    =0 {No Items}
-    =1 {{count} {count, plural, =1 {Item} other {Items}}}
-    other {{from} - {to} of {count} Items}}
+    =0 {No Certificates}
+    =1 {{count} {count, plural, =1 {Certificate} other {Certificates}}}
+    other {{from} - {to} of {count} Certificates}}
+  container: |
+    {pages, plural,
+    =0 {No Containers}
+    =1 {{count} {count, plural, =1 {Container} other {Containers}}}
+    other {{from} - {to} of {count} Containers}}
+  containerService: |
+    {pages, plural,
+    =0 {No Containers/Services}
+    =1 {{count} {count, plural, =1 {Container/Service} other {Containers/Services}}}
+    other {{from} - {to} of {count} Containers/Services}}
+  dnsRecord: |
+    {pages, plural,
+    =0 {No DNS Records}
+    =1 {{count} {count, plural, =1 {DNS Record} other {DNS Records}}}
+    other {{from} - {to} of {count} DNS Records}}
+  driverOptions: |
+    {pages, plural,
+    =0 {No Options}
+    =1 {{count} {count, plural, =1 {Driver Option} other {Driver Options}}}
+    other {{from} - {to} of {count} Driver Options}}
   entry: |
     {pages, plural,
     =0 {No Entries}
@@ -3074,58 +3148,71 @@ pagination:
     =0 {No Events}
     =1 {{count} {count, plural, =1 {Event} other {Events}}}
     other {{from} - {to} of {count} Events}}
+  generic: |
+    {pages, plural,
+    =0 {No Items}
+    =1 {{count} {count, plural, =1 {Item} other {Items}}}
+    other {{from} - {to} of {count} Items}}
   host: |
     {pages, plural,
     =0 {No Hosts}
     =1 {{count} {count, plural, =1 {Host} other {Hosts}}}
     other {{from} - {to} of {count} Hosts}}
-  container: |
+  link: |
     {pages, plural,
-    =0 {No Containers}
-    =1 {{count} {count, plural, =1 {Container} other {Containers}}}
-    other {{from} - {to} of {count} Containers}}
-  containerScalingGroup: |
-    {pages, plural,
-    =0 {No Containers/Scaling Groups}
-    =1 {{count} {count, plural, =1 {Container/Scaling Group} other {Containers/Scaling Groups}}}
-    other {{from} - {to} of {count} Containers/Scaling Groups}}
-  scalingGroup: |
-    {pages, plural,
-    =0 {No Scaling Groups}
-    =1 {{count} {count, plural, =1 {Scaling Group} other {Scaling Groups}}}
-    other {{from} - {to} of {count} Scaling Groups}}
-  loadBalancers: |
+    =0 {No Links}
+    =1 {{count} {count, plural, =1 {Link} other {Links}}}
+    other {{from} - {to} of {count} Links}}
+  loadBalancer: |
     {pages, plural,
     =0 {No Load Balancers}
     =1 {{count} {count, plural, =1 {Load Balancer} other {Load Balancers}}}
     other {{from} - {to} of {count} Load Balancers}}
-  dnsRecord: |
+  mounts: |
     {pages, plural,
-    =0 {No DNS Records}
-    =1 {{count} {count, plural, =1 {DNS Record} other {DNS Records}}}
-    other {{from} - {to} of {count} DNS Records}}
+    =0 {No Mounts}
+    =1 {{count} {count, plural, =1 {Mount} other {Mounts}}}
+    other {{from} - {to} of {count} Mounts}}
   port: |
     {pages, plural,
     =0 {No Ports}
     =1 {{count} {count, plural, =1 {Port} other {Ports}}}
     other {{from} - {to} of {count} Ports}}
+  project: |
+    {pages, plural,
+    =0 {No Environments}
+    =1 {{count} {count, plural, =1 {Environment} other {Environments}}}
+    other {{from} - {to} of {count} Environments}}
+  rule: |
+    {pages, plural,
+    =0 {No Rules}
+    =1 {{count} {count, plural, =1 {Rule} other {Rules}}}
+    other {{from} - {to} of {count} Rules}}
+  service: |
+    {pages, plural,
+    =0 {No Services}
+    =1 {{count} {count, plural, =1 {Service} other {Services}}}
+    other {{from} - {to} of {count} Services}}
   volume: |
     {pages, plural,
     =0 {No Volumes}
     =1 {{count} {count, plural, =1 {Volume} other {Volumes}}}
     other {{from} - {to} of {count} Volumes}}
   containerHighlightSubset: "<b>{subset} of {count}</b> Containers"
+  containerNoSubset: "0 of {count} Containers"
 
 projectRow:
   none: No description
   orchestration: Orchestration
 
-projectUpgrade:
-  header: Upgrade Environment
-  detail: "{appName} {appVersion} includes changes that require upgrading the existing system services and load balancer containers."
-  notOwner: "Only an owner of this environment or an administrator can perform the upgrade."
-  actionButton: Upgrade Now
-  banner: Upgrading Environment...
+publicEndpoints:
+  endpoint: Endpoint
+  bindIpAddress: Bind IP
+  publicPort: Public Port
+  target: Target
+  privatePort: Container Port
+  noData: There are no published ports
+  noMatch: No ports match the current search
 
 physicalStats:
   title: Physical Attributes
@@ -3168,6 +3255,7 @@ schema:
     label: Choose a Host...
   inputService:
     prompt: Choose a Service...
+    custom: Custom
   inputSecret:
     prompt: Choose a Secret...
 
@@ -3196,7 +3284,7 @@ serviceLog:
   time: Time
   level: Level
   event: Event
-  detail: Detai
+  detail: Detail
   noMatch: No events match the current search
   noData: No events have occurred recently
 
@@ -3216,30 +3304,8 @@ stackRow:
   label: "Stack: {name}"
   standalone: Standalone
 
-storagePoolSection:
-  readOnly: "(read-only)"
-  hosts:
-    header: Hosts
-    none: No Hosts
-  volumes:
-    header: Volumes
-    add: Add Volume
-    none: No Volumes
-  models:
-    table:
-      header:
-        volumeName: 'Volume Name'
-        mounts: 'Mounts (Container: Path)'
-
 svgServiceContainer:
   sidekicks: Sidekicks
-
-swarmTab:
-  dashboard:
-    header: Dashboard
-    dashboard:
-      content: Portainer is a lightweight management UI which allows you to easily manage your Docker swarm cluster
-      button: Portainer UI
 
 tableCountSelect:
   header: Table Rows per Page
@@ -3306,6 +3372,39 @@ viewEditProject:
     Access Control is not enabled.<br/>
     Anybody with access to the API/UI acts as an admin and will be able to use any environment.
 
+volumesPage:
+  title: Volume
+  noMatch: No volumes match the current search
+  banner:
+    driver: Driver
+    size: Size
+    stack: Stack
+    uri: URI
+    perCont: On Container
+    host: Host
+  scope:
+    label: Scope
+    stack: Stack
+    container: Per Container
+    standalone: Environment
+  driver:
+    label: Driver
+  driverOptions:
+    title: Driver Options
+    detail: Map of key value pairs representing driver options
+    labels:
+      key: Key
+      value: Value
+      noData: No Options
+  mounts:
+    label: Mounts
+    detail: Physical mounts related to the volume
+    table:
+      instance: Instance
+      path: Path
+      permission: Permissions
+      volume: Volume
+      noData: No Mounts
 
 vmConsole:
   header: "Console:"
@@ -3328,19 +3427,6 @@ waitKubernetes:
   createStack: 'Creating Kubernetes system stack'
   startServices: 'Starting services'
   waitApi: 'Waiting for Kubernetes API'
-
-waitMesos:
-  addHost: 'Add at least three hosts'
-  activateHost: 'Waiting for hosts to be active'
-  createStack: 'Creating Mesos system stack'
-  startServices: 'Starting services'
-  waitApi: 'Waiting for leading Mesos Master'
-
-waitSwarm:
-  addHost: 'Add at least one host'
-  activateHost: 'Waiting for a host to be active'
-  createStack: 'Creating Swarm system stack'
-  startServices: 'Starting services'
 
 ##############################
 # Mixins
@@ -3370,36 +3456,28 @@ nav:
     all: All Environments
     your: Your Environments
     selected: Selected Environment
-    manage: Manage Environments
+    manage: Manage
     edit: 'Edit "{name}"'
   notReady: Setting Up...
-  k8s:
-    tab: Kubernetes
-  swarm:
-    tab: Swarm
-    cli: CLI
-    dashboard: Portainer
-    system: Infrastructure
-  mesos:
-    tab: Mesos
-    web: Overview
-    system: Infrastructure
   containers:
     tab: Containers
     systemTab: System
-    balancers: Load Balancers
-    containers: Containers & Scaling Groups
+    balancers: Balancers
+    containers: Containers
     dns: DNS
     volumes: Volumes
+    k8s: Advanced
     addContainer: Add Container
-    addScalingGroup: Add Scaling Group
     addBalancer: Add Balancer
     addDns: Add Record
-    groupNone: Flat List
-    groupStack: Group by Stack
+    addVolume: Add Volume
+    groupNone: Flat Container List
+    groupService: Group by Service
+    groupStack: Group by Stack/Service
     importCompose: Import compose.yml
   hosts:
     tab: Hosts
+    addHost: Add Host
   catalog:
     all: All
     library: Library
@@ -3437,18 +3515,19 @@ nav:
 ##############################
 action:
   activate: Activate
-  cancelUpgrade: Cancel Upgrade
-  cancelRollback: Cancel Rollback
+  activateServices: Activate Services
+  addContainer: Add Container
+  addSidekick: Add a Sidekick
   clone: Clone
   console: Open Console
-  convertToService: Convert to Scaling Group
+  convertToService: Convert to Service
   deactivate: Deactivate
+  deactivateServices: Deactivate Services
   edit: Edit
   evacuate: Evacuate
   execute: Execute Shell
   exportConfig: Export Config
-  finishUpgrade: Finish Upgrade
-  garbageCollect: Garbage Collect Containers
+  garbageCollect: Cleanup
   logs: View Logs
   machineConfig: Machine Config
   pause: Pause Operations
@@ -3457,7 +3536,7 @@ action:
   restart: Restart
   retry: Retry
   rollback: Rollback
-  setDefault: Set as Default
+  setDefault: Set as Login Environment
   start: Start
   stop: Stop
   upgrade: Upgrade

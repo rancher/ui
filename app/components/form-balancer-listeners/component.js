@@ -15,20 +15,35 @@ export default Ember.Component.extend({
   onInit: function() {
     let rules = this.get('service.lbConfig.portRules')||[];
     let ports = [];
+    let store = this.get('store');
 
     rules.forEach((rule) => {
       let kind = 'service';
+      let target = null;
+      let name = '';
+
       if ( !!rule.selector ) {
         kind= 'selector';
       } else if ( rule.instanceId ) {
-        rule.kind = 'instance';
+        kind = 'instance';
+        target = store.getById(kind, rule.instanceId);
+      } else if ( rule.serviceId ) {
+        target = store.getById(kind, rule.serviceId);
       }
 
+      if (target) {
+        name = target.get('displayName');
+      }
+
+      rule.setProperties({
+        kind: kind,
+        targetName: name
+      });
       rule.set('kind', kind);
     });
 
     (this.get('service.launchConfig.ports')||[]).forEach((str) => {
-      let parsed = parsePortSpec(str);
+      let parsed = parsePortSpec(str,'http');
       let obj = Ember.Object.create({
         access: 'public',
         protocol: null,
@@ -40,7 +55,7 @@ export default Ember.Component.extend({
     });
 
     (this.get('service.launchConfig.expose')||[]).forEach((str) => {
-      let parsed = parsePortSpec(str);
+      let parsed = parsePortSpec(str,'http');
       let obj = Ember.Object.create({
         access: 'internal',
         protocol: null,

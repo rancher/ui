@@ -94,7 +94,7 @@
 
   <ul class="nav-user dropdown">
     <li>
-      <a class="btn dropdown-toggle" role="button" aria-haspopup="true" aria-expanded="false" aria-label={{t 'nav.user.label' username=session.user}}>
+      <a class="btn dropdown-toggle" role="button" aria-haspopup="true" aria-expanded="false" aria-label="{{t 'nav.user.label' username=session.user}}"  data-toggle="header-user-menu">
         {{#if accessEnabled}}
           {{identity-avatar link=false identity=access.identity}}
         {{else}}
@@ -117,25 +117,16 @@
 
         {{#if isCaas}}
           <li role="separator" class="divider"></li>
-          <li>{{#link-to "settings.projects"}}{{t 'nav.environment.manage'}}{{/link-to}}</li>
+          <li>{{#link-to "authenticated.clusters"}}{{t 'nav.environment.manage'}}{{/link-to}}</li>
         {{/if}}
 
         <li>{{#link-to "user-preferences"}}{{t 'nav.userPreferences.link'}}{{/link-to}}</li>
-        <li role="separator" class="divider"></li>
 
-        <li>{{#link-to "logout" class="user-logout"}}<i class="icon icon-logout"></i> {{t 'nav.user.logout'}}{{/link-to}}</li>
+        {{#if accessEnabled}}
+          <li role="separator" class="divider"></li>
+          <li>{{#link-to "logout" class="user-logout"}}<i class="icon icon-logout"></i> {{t 'nav.user.logout'}}{{/link-to}}</li>
+        {{/if}}
       </ul>
     </li>
   </ul>
 </nav>
-
-{{#if projects.current.isUpgrading}}
-  <div class="banner bg-warning mb-0 p-0">
-    <div class="banner-icon" style="width: 68px;"><span class="icon icon-2x icon-spinner icon-spin"></span></div>
-    <div class="banner-message">
-      <p class="mt-15 mb-15">
-        {{t 'projectUpgrade.banner' htmlSafe=true}}
-      </p>
-    </div>
-  </div>
-{{/if}}

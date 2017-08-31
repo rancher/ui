@@ -1,0 +1,125 @@
+<section class="header clearfix">
+  <h1>{{headerLabel}}</h1>
+</section>
+
+<div class="row">
+  <div class="col span-11-of-23 mt-0 mb-0">
+    {{form-name-description
+      model=service
+      nameDisabled=isUpgrade
+      namePlaceholder="servicePage.newBalancer.form.name.placeholder"
+      descriptionPlaceholder="servicePage.newBalancer.form.description.placeholder"
+    }}
+  </div>
+
+  <div class="col span-11-of-23 mt-0 mb-0 offset-1-of-23">
+    {{container/form-scale
+      mode=mode
+      initialLabels=launchConfig.labels
+      initialScale=service.scale
+      editing=editing
+      isGlobal=isGlobal
+      isService=true
+      canContainer=false
+      canSidekick=false
+      errors=scaleErrors
+      setLabels=(action 'setLabels' 'scale')
+      setScale=(action  'setScale')
+    }}
+    <div class="pb-15"></div>
+    {{form-stack
+      stack=stack
+      errors=stackErrors
+    }}
+  </div>
+</div>
+
+<section class="mt-40 horizontal-form container-fluid">
+  {{form-balancer-listeners
+      service=service
+      errors=ruleErrors
+      editing=true
+  }}
+  <hr class="mt-30 mb-30" />
+</section>
+
+{{container/form-scheduling
+  isService=true
+  isGlobal=isGlobal
+  canRequestHost=false
+  initialHostId=launchConfig.requestedHostId
+  initialLabels=launchConfig.labels
+  errors=schedulingErrors
+  allHosts=allHosts
+  expandAll=null
+  setLabels=(action 'setLabels' 'scheduling')
+}}
+
+{{form-ssl-termination
+  service=service
+  allCertificates=allCertificates
+}}
+
+{{#advanced-section advanced=false}}
+  {{#accordion-list as | al expandFn | }}
+    {{form-balancer-config
+      service=service
+      expandAll=al.expandAll
+      expandFn=expandFn
+    }}
+
+    {{form-user-labels
+      initialLabels=launchConfig.labels
+      setLabels=(action 'setLabels' 'user')
+      expandAll=al.expandAll
+      expandFn=expandFn
+    }}
+
+    {{container/form-networking
+        editing=true
+        instance=service.launchConfig
+        errors=networkingErrors
+        service=service
+        isService=true
+        isSidekick=false
+        initialLabels=service.launchConfig.labels
+        isUpgrade=isUpgrade
+        setLabels=(action 'setLabels' 'networking')
+        expandAll=al.expandAll
+        expandFn=expandFn
+    }}
+
+    {{form-stickiness
+        initialLabels=launchConfig.labels
+        editing=true
+        setLabels=(action 'setLabels' 'stickiness')
+        service=service
+        expandAll=al.expandAll
+        expandFn=expandFn
+    }}
+
+    {{container/form-upgrade
+      service=service
+      editing=true
+      errors=upgradeErrors
+      isUpgrade=isUpgrade
+      expandAll=al.expandAll
+      expandFn=expandFn
+    }}
+
+  {{/accordion-list}}
+{{/advanced-section}}
+
+{{#if upgradeInfo}}
+  <div class="banner bg-info m-20 p-0">
+    <div class="banner-icon" style="width: 68px;"><span class="icon icon-2x icon-info"></span></div>
+    <div class="banner-info">
+      <p class="p-15 ">
+        {{t 'servicePage.newBalancer.upgradeImage' from=upgradeInfo.from to=upgradeInfo.to htmlSafe=true}}
+      </p>
+    </div>
+  </div>
+{{/if}}
+
+{{top-errors errors=errors}}
+{{save-cancel editing=editing editLabel=editLabel save="save" cancel="cancel"}}

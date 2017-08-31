@@ -1,0 +1,78 @@
+<tr>
+  <td>
+    {{t (concat 'formVolumeRow.mode.' model.mode)}}
+  </td>
+  <td></td>
+
+  {{#if (eq model.mode "custom")}}
+    <td colspan="5">
+      {{input value=model.str placeholder=(t 'formVolumeRow.custom.placeholder')}}
+    </td>
+    <td></td>
+  {{else if (eq model.mode "newVolume")}}
+    <td>
+      {{model.volume.displayName}} <button class="btn bg-transparent" {{action 'defineNew'}}>{{t 'formVolumeRow.edit'}}</button>
+    </td>
+    <td></td>
+  {{else if (eq model.mode "volume")}}
+    <td>
+      {{new-select
+        prompt=(t 'formVolumeRow.volume.prompt')
+        action=(action (mut model.volume))
+        content=volumeChoices
+        optionValuePath="id"
+        optionLabelPath="displayNameScope"
+      }}
+    </td>
+    <td></td>
+  {{else if (eq model.mode "bindMount")}}
+    <td>
+      {{input value=model.hostPath placeholder=(t 'formVolumeRow.hostPath.placeholder')}}
+    </td>
+    <td></td>
+  {{else if (eq model.mode "volumesFrom")}}
+    <td colspan="5">
+      {{new-select
+        prompt=(t 'formVolumeRow.volumesFrom.prompt')
+        action=(mut model.instance)
+        content=containerChoices
+        optionValuePath="id"
+        optionLabelPath="name"
+      }}
+    </td>
+    <td></td>
+  {{else if (eq model.mode "volumesFromLaunchConfig")}}
+    <td>
+      {{new-select
+        prompt=(t 'formVolumeRow.volumesFromLaunchConfig.prompt')
+        value=vol.launchConfig
+        content=launchConfigChoices
+        optionValuePath="name"
+        optionLabelPath="name"
+      }}
+    </td>
+    <td></td>
+  {{/if}}
+
+  {{#if showOpts}}
+    <td>
+      {{input value=model.mountPoint placeholder=(t 'formVolumeRow.mountPoint.placeholder')}}
+    </td>
+    <td></td>
+    <td>
+      {{#if customOpts}}
+        {{input value=model.opts placeholder=(t 'formVolumeRow.opts.custom.placeholder')}}
+      {{else}}
+        <select onchange={{action (mut model.opts) value="target.value"}}>
+          <option selected={{eq model.opts "rw"}} value="rw">{{t 'formVolumeRow.opts.rw'}}</option>
+          <option selected={{eq model.opts "ro"}} value="ro">{{t 'formVolumeRow.opts.ro'}}</option>
+          <option selected={{eq model.opts ""}} value="">{{t 'formVolumeRow.opts.custom.label'}}</option>
+        </select>
+      {{/if}}
+    </td>
+    <td></td>
+  {{/if}}
+  <td>
+    <button class="btn bg-primary btn-sm" {{action "remove"}}><i class="icon icon-minus"/><span class="sr-only">{{t 'generic.remove'}}</span></button>
+  </td>
+</tr>

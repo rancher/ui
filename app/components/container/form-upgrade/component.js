@@ -4,7 +4,6 @@ export default Ember.Component.extend({
   service: null,
   editing: null,
   isUpgrade: null,
-  slcWithNames: null,
 
   classNames: ['accordion-wrapper'],
   interval: null,

@@ -1,28 +1,28 @@
 <tr class="main-row">
   {{#if bulkActions}}
-    <td class="row-check">
+    <td valign="middle" class="row-check" style="padding-top: 2px;">
       {{check-box nodeId=model.id}}
     </td>
   {{/if}}
   {{#if expandPlaceholder}}
-    <td>
+    <td valign="middle">
     </td>
   {{/if}}
-  <td data-title="{{dt.state}}" class="state">
+  <td data-title="{{dt.state}}" class="state" valign="middle">
     {{badge-state model=model}}
   </td>
   <td data-title="{{dt.name}}" class="clip">
     <a href="{{href-to detailRoute model.id}}">{{model.displayName}}</a>
     {{#if model.showTransitioningMessage}}
       <div class="clip text-small {{model.stateColor}}" >{{model.transitioningMessage}}</div>
+    {{else if model.displayEndpoints}}
+      <div class="clip text-small">
+        {{model.displayEndpoints}}
+      </div>
     {{/if}}
   </td>
-  {{#if showEndpoints}}
-    <td data-title="{{dt.endpoints}}">
-    </td>
-  {{/if}}
   <td data-title="{{dt.image}}" class="clip top-half">
-     <small>{{model.displayImage}}</small>
+     <small>{{model.image}}</small>
      <p data-title="{{t 'generic.details'}}" class="text-small text-muted m-0 clip">
       {{#if model.displayIp}}
         {{#copy-inline clipboardText=model.displayIp}}{{format-ip model.displayIp}}{{/copy-inline}} /
@@ -35,7 +35,7 @@
   </td>
   {{#if scalePlaceholder}}
     <td class="text-muted text-center">
-      {{t 'generic.na'}}
+      <small>{{t 'stackRow.standalone'}}</small>
     </td>
   {{/if}}
   {{#if showActions}}

@@ -3,8 +3,6 @@ const KIND_SYSTEM = 'system';
 const KIND_SYSTEM_CATALOG = 'system-catalog';
 const KIND_LEGACY_KUBERNETES = 'kubernetes';
 const KIND_KUBERNETES = 'k8s';
-const KIND_SWARM = 'swarm';
-const KIND_MESOS = 'mesos';
 const KIND_INFRA = 'infra';
 const KIND_NOT_ORCHESTRATION = 'cattle';
 
@@ -51,14 +49,10 @@ var C = {
     KIND_SYSTEM_CATALOG: KIND_SYSTEM_CATALOG,
     KIND_LEGACY_KUBERNETES: KIND_LEGACY_KUBERNETES,
     KIND_KUBERNETES: KIND_KUBERNETES,
-    KIND_SWARM: KIND_SWARM,
-    KIND_MESOS: KIND_MESOS,
     KIND_INFRA: KIND_INFRA,
     KIND_NOT_ORCHESTRATION: KIND_NOT_ORCHESTRATION,
     KIND_ORCHESTRATION: [
       KIND_KUBERNETES,
-      KIND_SWARM,
-      KIND_MESOS,
     ],
     UPGRADEABLE: [
       KIND_CATALOG,
@@ -185,30 +179,6 @@ var C = {
     DOCS: ['en'],
   },
 
-  // CSS map to driver icons
-  MACHINE_DRIVER_IMAGES: {
-    AMAZONEC2: 'amazonec2',
-    AZURE: 'azure',
-    DIGITALOCEAN: 'digitalocean',
-    EXOSCALE: 'exoscale',
-    GENERIC: 'generic',
-    OPENSTACK: 'openstack',
-    PACKET: 'packet',
-    RACKSPACE: 'rackspace',
-    UBIQUITY: 'ubiquity',
-    VMWAREVSPHERE: 'vmwarevsphere',
-    OTHER: 'other',
-    CUSTOM: 'custom',
-    ALIYUNECS: 'aliyunecs',
-  },
-
-  MESOS: {
-    HEALTH: 'health',
-    FRAMEWORKS: 'frameworks',
-    MASTER_SERVICE: 'mesos-master',
-    MASTER_PORT: 5050,
-  },
-
   MODE: {
     OSS: 'oss', // Regular community UI
     CAAS: 'caas', // Container cloud UI
@@ -217,17 +187,18 @@ var C = {
   PREFS: {
     ACCESS_WARNING  : 'accessWarning',
     BODY_BACKGROUND : 'bodyBackground',
-    PROJECT_DEFAULT : 'defaultProjectId',
     EXPANDED_STACKS : 'expandedStacks',
-    SORT_STACKS_BY  : 'sortStacksBy',
-    HOST_VIEW       : 'hostView',
-    THEME           : 'theme',
-    TABLE_COUNT     : 'tableCount',
-    LANGUAGE        : 'language',
-    I_HATE_SPINNERS : 'ihatespinners',
     FEEDBACK        : 'feedback',
+    HOST_VIEW       : 'hostView',
+    I_HATE_SPINNERS : 'ihatespinners',
+    LANGUAGE        : 'language',
+    PROJECT_DEFAULT : 'defaultProjectId',
+    LAST_SCALE_MODE : 'lastScaleMode',
+    LAST_STACK      : 'lastStack',
     SHOW_SYSTEM     : 'showSystem',
-    HOST_FAVORITES  : 'hostFavorites',
+    SORT_STACKS_BY  : 'sortStacksBy',
+    TABLE_COUNT     : 'tableCount',
+    THEME           : 'theme',
   },
 
   PROJECT: {
@@ -279,7 +250,7 @@ var C = {
   },
 
   SETTING: {
-    // Dots in key names do not mix well with Ember, so use $ in their place.
+    // Dots in key names do not mix well with Ember, so we use $ in their place.
     DOT_CHAR:                  '$',
     IMAGE_RANCHER:             'rancher$server$image',
     VERSION_RANCHER:           'rancher$server$version',
@@ -300,17 +271,16 @@ var C = {
     },
     API_HOST:                  'api$host',
     CATALOG_URL:               'catalog$url',
-    SWARM_PORT:                'swarm$tls$port',
     ENGINE_URL:                'engine$install$url',
     SUPPORTED_DOCKER:          'supported$docker$range',
     NEWEST_DOCKER:             'newest$docker$version',
     TELEMETRY:                 'telemetry$opt',
     AUTH_LOCAL_VALIDATE_DESC:  'api$auth$local$validate$description',
     BALANCER_IMAGE:            'lb$instance$image',
-    PROJECT_VERSION:           'account$version',
     FEEDBACK_FORM:             'ui$feedback$form',
     SHOW_SYSTEM:               'ui$show$system',
     SHOW_CUSTOM_HOST:          'ui$show$custom$host',
+    CLUSTER_TEMPLATE:          'default$cluster$template',
   },
 
   TABLES: {
@@ -369,21 +339,17 @@ C.SYSTEM_LABELS_WITH_CONTROL = [
 C.ACTIVEISH_STATES = [
   'running',
   'active',
-  'updating-active',
-  'updating-running',
   'healthy',
   'initializing',
   'reinitializing',
   'degraded',
   'unhealthy',
-  'started-once',
   'upgrading',
   'upgraded',
 ];
 
 C.READY_STATES = [
   'healthy',
-  'started-once',
 ];
 
 C.REMOVEDISH_STATES = [
@@ -392,15 +358,14 @@ C.REMOVEDISH_STATES = [
   'purged'
 ];
 
+C.DISCONNECTED_STATES = [
+  'disconnected',
+  'reconnecting',
+];
+
 C.INITIALIZING_STATES = [
   'initializing',
   'reinitializing'
-];
-
-C.VM_CAPABLE_STORAGE_DRIVERS = [
-  'convoy-gluster',
-  'convoy-longhorn',
-  'longhorn',
 ];
 
 // This is populated by each app/components/schema/*
@@ -419,6 +384,5 @@ C.SUPPORTED_SCHEMA_INPUTS= [
   'masked',
   'secret',
 ];
-
 
 export default C;

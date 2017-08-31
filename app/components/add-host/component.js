@@ -10,7 +10,6 @@ export default Ember.Component.extend({
   driver:        null,
   hostId:        null,
   allowOther:    true,
-  forCatalog:    true,
   inModal:       false,
   showNameScale: true,
   goBack:        null,
@@ -23,14 +22,28 @@ export default Ember.Component.extend({
       return;
     }
 
-    let def = this.get('hostService.defaultDriver');
-    if ( def === 'custom'  && this.get('allowCustom') ) {
-      this.set('driver', 'custom');
-    } else if ( !this.get('inModal') && def && this.get('sortedDrivers').map((x) => x.name).includes(def) ) {
-      this.set('driver', def);
+    let want = this.get('hostService.defaultDriver');
+    let first = this.get('sortedDrivers.firstObject.name');
+    let allowCustom = this.get('allowCustom');
+    let driver;
+
+    if ( allowCustom && want === 'custom' ) {
+      // You want custom and it's allowed
+      driver = want;
+    } else if ( !this.get('inModal') && want && this.get('sortedDrivers').map((x) => x.name).includes(want) ) {
+      // You want something available
+      driver = want;
+    } else if ( first ){
+      // How about the first one
+      driver = first;
+    } else if ( allowCustom ) {
+      // Ok there's no drivers, show custom
+      driver = 'custom';
     } else {
-      this.set('driver', this.get('sortedDrivers.firstObject.name'));
+      // I give up... show a blank page
     }
+
+    this.set('driver', driver);
   },
 
   actions: {
@@ -40,6 +53,9 @@ export default Ember.Component.extend({
         this.set('model.clonedModel', null);
       }
       this.set('driver', name);
+    },
+    hostSet() {
+      this.set('model.apiHostSet', true);
     },
   },
 
@@ -52,8 +68,11 @@ export default Ember.Component.extend({
   }),
 
   allowCustom: function() {
-    return this.get(`settings.${C.SETTING.SHOW_CUSTOM_HOST}`) !== false;
-  }.property(`settings.${C.SETTING.SHOW_CUSTOM_HOST}`),
+    let cluster = this.get('projects.current.cluster');
+
+    return this.get(`settings.${C.SETTING.SHOW_CUSTOM_HOST}`) !== false &&
+      (!cluster || cluster.get('embedded'));
+  }.property(`settings.${C.SETTING.SHOW_CUSTOM_HOST}`,'projects.current.cluster.embedded'),
 
   showPicker: Ember.computed('model.availableDrivers.length','allowOther','hasOther','allowCustom', function() {
     return !this.get('projects.current.isWindows') && (

@@ -1,20 +1,7 @@
 import Service from 'ui/models/service';
 import Ember from 'ember';
 import C from 'ui/utils/constants';
-import Util from 'ui/utils/util';
 import { parsePortSpec } from 'ui/utils/parse-port';
-
-const esc = Ember.Handlebars.Utils.escapeExpression;
-
-function portToStr(spec) {
-  var parts = parsePortSpec(spec);
-  return parts.host + (parts.protocol === 'http' ? '' : '/' + parts.protocol);
-}
-
-function specToPort(spec) {
-  var parts = parsePortSpec(spec);
-  return parts.hostPort;
-}
 
 var LoadBalancerService = Service.extend({
   type: 'loadBalancerService',
@@ -42,56 +29,27 @@ var LoadBalancerService = Service.extend({
     });
   },
 
-  sslPorts: function() {
-    let out = (this.get('lbConfig.portRules')||[]).filterBy('isTls',true).map((x) => x.get('sourcePort')).uniq();
+  tlsPorts: function() {
+    let out = (this.get('lbConfig.portRules')||[]).filterBy('isTls',true).map((x) => parseInt(x.get('sourcePort'),10)).uniq();
     return out;
   }.property(`lbConfig.portRules.@each.{isTls,sourcePort}`),
 
-  endpointsByPort: function() {
-    var sslPorts = this.get('sslPorts');
+  endpointsMap: function() {
+    var tlsPorts = this.get('tlsPorts');
 
-    return this._super().map((obj) => {
-      obj.ssl = sslPorts.indexOf(obj.port) >= 0;
-      return obj;
-    });
-  }.property('endpointsMap'),
-
-  displayPorts: function() {
-    var sslPorts = this.get('sslPorts');
-    var pieces = [];
-
-    var fqdn = this.get('fqdn');
-    let ports = (this.get('launchConfig.ports')||[]);
-    ports.forEach((portSpec, idx) => {
-      var portNum = specToPort(portSpec);
-      var endpoints = this.get('endpointsMap')[portNum];
-      if ( endpoints )
-      {
-        var url = Util.constructUrl((sslPorts.indexOf(portNum) >= 0), fqdn||endpoints[0], portNum);
-        pieces.push('<span>' +
-        '<a href="'+ url +'" target="_blank" rel="nofollow noopener">' +
-        esc(portToStr(portSpec)) +
-        '</a>' + (idx+1 === ports.length ? '' : ', ') +
-        '</span>');
-      }
-      else
-      {
-        pieces.push('<span>' + (idx === 0 ? '' : ', ') + esc(portToStr(portSpec)) + '</span>');
-      }
+    // Set `ssl` on each endpoint since we know it from balancer listener context
+    (this.get('publicEndpoints')||[]).forEach((endpoint) => {
+      endpoint.set('tls', tlsPorts.includes(endpoint.publicPort));
     });
 
-    (this.get('launchConfig.expose')||[]).forEach((portSpec, idx) => {
-      pieces.push('<span>' + (idx === 0 ? '' : ', ') + esc(portToStr(portSpec)) + '</span>');
-    });
-
-    return pieces.join(', ').htmlSafe();
-  }.property('launchConfig.ports.[]','launchConfig.expose.[]','endpointsMap', 'intl.locale'),
+    return this._super(...arguments);
+  }.property('publicEndpoints.@each.{ipAddress,publicPort}','tlsPorts.[]'),
 
   imageUpgradeAvailable: function() {
-    let cur = (this.get('launchConfig.imageUuid')||'').replace(/^docker:/,'');
+    let cur = this.get('launchConfig.image')||'';
     let available = this.get(`settings.${C.SETTING.BALANCER_IMAGE}`);
     return cur.indexOf(available) === -1 && !!this.get('actionLinks.upgrade');
-  }.property('launchConfig.imageUuid',`settings.${C.SETTING.BALANCER_IMAGE}`,'actionLinks.upgrade'),
+  }.property('launchConfig.image',`settings.${C.SETTING.BALANCER_IMAGE}`,'actionLinks.upgrade'),
 });
 
 export default LoadBalancerService;

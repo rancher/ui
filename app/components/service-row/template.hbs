@@ -1,29 +1,31 @@
 <tr class="main-row">
-  <td class="row-check">
+  <td class="row-check" valign="middle" style="padding-top: 2px;">
     {{check-box nodeId=model.id}}
   </td>
   <td>
-    {{#if canExpand}}<i role="button" {{action "toggle"}} class="icon icon-play eased text-small text-muted {{if expanded 'icon-rotate-90'}}"></i>{{/if}}
+    {{#if canExpand}}<i role="button" {{action "toggle"}} class="icon icon-play eased text-small text-muted {{if expanded 'icon-rotate-90'}}"><span class="visually-hidden">Open accordion</span></i>{{/if}}
   </td>
   <td data-title="{{dt.state}}" class="state">
     {{badge-state model=model}}
   </td>
   <td data-title="{{dt.name}}" class="clip">
-    <a href="{{href-to "service" model.id}}">{{model.displayName}}</a>
+    <a href="{{href-to "service" model.id}}">{{model.displayName}} <i class="icon icon-service"></i></a>
     {{#if model.showTransitioningMessage}}
       <div class="clip text-small {{model.stateColor}}">{{model.transitioningMessage}}</div>
-    {{else if model.displayPorts}}
+    {{else if model.displayEndpoints}}
       <div class="clip text-small">
-        {{model.displayPorts}}
+        {{model.displayEndpoints}}
       </div>
     {{/if}}
   </td>
   {{#if showImage}}
     <td data-title="{{dt.image}}" class="clip top-half">
-      <small>{{model.displayImage}}</small>
+      <small>{{model.image}}</small>
       <p data-title="{{t 'generic.details'}}" class="text-small text-muted m-0 clip">
         {{#if subMatches}}
-          {{#if (lt (get subMatches model.id) model.instances.length)}}
+          {{#if (eq (get subMatches model.id) 0)}}
+            {{t 'pagination.containerNoSubset' count=model.instances.length htmlSafe=true}}
+          {{else if (lt (get subMatches model.id) model.instances.length)}}
             {{t 'pagination.containerHighlightSubset' subset=(get subMatches model.id) count=model.instances.length htmlSafe=true}}
           {{else}}
             <b>{{t 'pagination.container' pages=1 count=model.instances.length}}</b>
@@ -37,20 +39,16 @@
   {{/if}}
 
   <td data-title="{{dt.scale}}" class="text-center">
-    {{#if model.instanceStates.notGood}}
-      <small class="text-muted">
-        {{model.scale}}{{#if model.isGlobalScale}}{{t 'servicePage.globalScale'}}{{/if}}
-      </small>
-      {{progress-bar-multi
-        classNames="m-5"
-        labelKey="state"
-        valueKey="count"
-        values=model.instanceStates.byColor
-        tooltipValues=model.instanceStates.byName
-      }}
-    {{else}}
-      {{model.scale}}{{#if model.isGlobalScale}}{{t 'servicePage.globalScale'}}{{/if}}
-    {{/if}}
+    {{progress-bar-multi
+      classNames="mt-5"
+      labelKey="state"
+      valueKey="count"
+      values=model.instanceStates.byColor
+      tooltipValues=model.instanceStates.byName
+    }}
+    <small class="text-muted">
+      {{model.displayScale}}
+    </small>
   </td>
 
   <td data-title="{{dt.actions}}" class="actions">
@@ -60,18 +58,22 @@
 
 {{#if canExpand}}
   <tr class="sub-row {{unless expanded 'hide'}}">
-    <td>{{! checkbox and expand}}</td>
-    <td colspan="{{sub fullColspan 2}}">
+    <td colspan="2">{{! checkbox and expand}}</td>
+    <td colspan="{{sub fullColspan 4}}">
       {{#if expanded}}
-        {{container-table
-          body=model.instances
-          stickyHeader=false
-          bulkActions=false
-          search=false
+        {{container-dots
+          containers=model.instances
           searchText=searchText
-          subRow=true
-          showHost=true
+          groupByDeploymentUnit=model.hasSidekicks
         }}
+      {{/if}}
+    </td>
+    <td class="text-center">
+      {{#if (and expanded model.canScale)}}
+        <div class="btn-group bg-default scale-arrow">
+        <button class="btn btn-xs bg-primary" {{action "scaleDown" target=model}} disabled={{not model.canScaleDown}}><i class="icon icon-minus icon-fw"/></button>
+        <button style="margin-left:-5px;" class="btn btn-xs bg-primary" {{action "scaleUp" target=model}} disabled={{not model.canScaleUp}}><i class="icon icon-plus icon-fw"/></button>
+        </div>
       {{/if}}
     </td>
     <td>{{! actions}}</td>

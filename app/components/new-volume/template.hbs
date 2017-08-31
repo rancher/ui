@@ -1,0 +1,82 @@
+<section class="header clearfix">
+  <h1>{{t headerToken}}</h1>
+</section>
+
+<div class="row">
+  <div class="col span-11-of-23 mt-0 mb-0">
+    {{form-name-description
+      name=model.name
+      nameRequired=true
+      description=model.description
+      namePlaceholder="editVolume.name.placeholder"
+    }}
+  </div>
+
+  <div class="col span-11-of-23 mt-0 mb-0 offset-1-of-23">
+    <div>
+      <label class="pb-5 acc-label">{{t 'editVolume.scope.label'}}</label>
+    </div>
+    <div class="pt-10">
+      <div class="radio">
+        <label>{{radio-button selection=scope value="global"}} {{t 'editVolume.scope.global'}}</label>
+      </div>
+      <div class="radio">
+        <label>{{radio-button selection=scope value="stack"}} {{t 'editVolume.scope.stack'}}</label>
+      </div>
+      <div class="radio">
+        <label>{{radio-button selection=scope value="container"}} {{t 'editVolume.scope.container'}}</label>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="mt-30 mb-30" />
+
+<div class="row">
+  <div class="col span-11-of-23 mt-0 mb-0">
+    <div>
+      <label class="pb-5 acc-label">{{t 'editVolume.driver.label'}}</label>
+      <div class="pull-right text-small">
+        <a role="button" class="btn bg-transparent p-0" {{action "toggleCustomDriver"}}>{{t (if customDriver 'editVolume.driver.standard' 'editVolume.driver.custom.label')}}</a>
+      </div>
+    </div>
+
+    {{#if customDriver}}
+      {{input value=model.driver placeholder=(t 'editVolume.driver.custom.placeholder')}}
+    {{else}}
+      {{new-select
+        content=driverChoices
+        optionLabelPath="label"
+        optionValuePath="value"
+        value=model.driver
+      }}
+    {{/if}}
+  </div>
+
+  <div class="col span-11-of-23 mt-0 mb-0 offset-1-of-23">
+    {{#if (and selectStack actuallySave (not-eq scope "global"))}}
+      {{form-stack
+        stack=stack
+        errors=stackErrors
+      }}
+    {{/if}}
+  </div>
+</div>
+
+<hr class="mt-30 mb-30" />
+
+<div class="row">
+  <div class="col span-12">
+    {{form-key-value
+        initialMap=model.driverOpts
+        changed=(action (mut model.driverOpts))
+        allowEmptyValue=true
+        editing=true
+        header=(t 'editVolume.driverOpts.label')
+        addActionLabel="editVolume.driverOpts.addAction"
+    }}
+  </div>
+</div>
+
+{{top-errors errors=errors}}
+{{save-cancel createLabel=(if actuallySave 'saveCancel.create' 'editVolume.define.action') save="save" cancel="cancel"}}

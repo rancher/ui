@@ -1,0 +1,21 @@
+<div class="input-group" style="width: 100%">
+  {{#if custom}}
+    {{input value=value classNames=inputClass placeholder="[stack-name/]service-name"}}
+    <span class="input-group-addon bg-default p-0">
+      <span class="input-group-btn p-0">
+        <button class="btn bg-transparent text-info pl-10 pr-10" {{action 'standard'}}><i class="icon icon-close"/></button>
+      </span>
+    </span>
+  {{else}}
+    {{new-select
+      classNames=inputClass
+      value=value
+      content=list
+      optionValuePath="value"
+      optionLabelPath="name"
+      optionGroupPath="group"
+      prompt="schema.inputService.prompt"
+      localizedPrompt=true
+    }}
+  {{/if}}
+</div>

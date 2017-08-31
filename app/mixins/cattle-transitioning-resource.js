@@ -21,6 +21,7 @@ const defaultStateMap = {
   'migrating':                {icon: 'icon icon-info',          color: 'text-info'   },
   'provisioning':             {icon: 'icon icon-circle',        color: 'text-info'   },
   'pending-delete':           {icon: 'icon icon-trash',         color: 'text-muted'  },
+  'pending-restart':          {icon: 'icon icon-history',       color: 'text-warning'},
   'purged':                   {icon: 'icon icon-purged',        color: 'text-error'  },
   'purging':                  {icon: 'icon icon-purged',        color: 'text-info'   },
   'reconnecting':             {icon: 'icon icon-alert',         color: 'text-error'  },
@@ -32,29 +33,22 @@ const defaultStateMap = {
   'restarting':               {icon: 'icon icon-adjust',        color: 'text-info'   },
   'restoring':                {icon: 'icon icon-medicalcross',  color: 'text-info'   },
   'running':                  {icon: 'icon icon-circle-o',      color: 'text-success'},
-  'started-once':             {icon: 'icon icon-dot-circlefill',color: 'text-success'},
   'starting':                 {icon: 'icon icon-adjust',        color: 'text-info'   },
   'stopped':                  {icon: 'icon icon-circle',        color: 'text-error'  },
   'stopping':                 {icon: 'icon icon-adjust',        color: 'text-info'   },
   'unhealthy':                {icon: 'icon icon-alert',         color: 'text-error'  },
+  'unknown':                  {icon: 'icon icon-help',          color: 'text-warning'},
   'updating':                 {icon: 'icon icon-tag',           color: 'text-info'   },
-  'updating-active':          {icon: 'icon icon-tag',           color: 'text-info'   },
-  'updating-healthy':         {icon: 'icon icon-tag',           color: 'text-info'   },
-  'updating-inactive':        {icon: 'icon icon-tag',           color: 'text-info'   },
-  'updating-reinitializing':  {icon: 'icon icon-alert',         color: 'text-warning'},
-  'updating-running':         {icon: 'icon icon-tag',           color: 'text-info'   },
-  'updating-stopped':         {icon: 'icon icon-tag',           color: 'text-info'   },
-  'updating-unhealthy':       {icon: 'icon icon-tag',           color: 'text-info'   },
   'waiting':                  {icon: 'icon icon-tag',           color: 'text-info'   },
 };
 
 const stateColorSortMap = {
   'error':   1,
-  'warning':  2,
-  'info':     3,
-  'success':  4
+  'warning': 2,
+  'info':    3,
+  'success': 4,
+  'other': 5,
 };
-const stateColorUnknown = 5;
 
 export default Ember.Mixin.create({
   endpointSvc: Ember.inject.service('endpoint'), // Some machine drivers have a property called 'endpoint'
@@ -90,7 +84,7 @@ export default Ember.Mixin.create({
 
   actions: {
     promptDelete: function() {
-      this.get('modalService').toggleModal('confirm-delete', [this]);
+      this.get('modalService').toggleModal('confirm-delete', {resources: [this]});
     },
 
     delete: function() {
@@ -137,8 +131,15 @@ export default Ember.Mixin.create({
 
   showTransitioningMessage: function() {
     var trans = this.get('transitioning');
-    return (trans === 'yes' || trans === 'error') && (this.get('transitioningMessage')||'').length > 0;
-  }.property('transitioning','transitioningMessage'),
+    if (trans === 'yes' || trans === 'error') {
+      let message = (this.get('transitioningMessage')||'');
+      if ( message.length && message.toLowerCase() !== this.get('displayState').toLowerCase() ) {
+        return true;
+      }
+    }
+
+    return false;
+  }.property('transitioning','transitioningMessage','displayState'),
 
   stateIcon: function() {
     var trans = this.get('transitioning');
@@ -215,7 +216,7 @@ export default Ember.Mixin.create({
 
   stateSort: function() {
     var color = this.get('stateColor').replace('text-','');
-    return (stateColorSortMap[color] || stateColorUnknown) + ' ' + this.get('relevantState');
+    return (stateColorSortMap[color] || stateColorSortMap['other']) + ' ' + this.get('relevantState');
   }.property('stateColor','relevantState'),
 
   stateBackground: function() {

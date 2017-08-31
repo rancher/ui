@@ -5,6 +5,7 @@ export default Ember.Component.extend({
 
   selected:          null,  // Selected service ID
   exclude:           null,  // ID or array of IDs to exclude from list
+  stack:             null,  // The current stack, to generate stack-relative names
 
   // For use as a catalog question
   field: null,              // Read default from a schema resourceField
@@ -41,9 +42,13 @@ export default Ember.Component.extend({
     let str = null;
 
     if ( id ) {
-      let service = this.get('allContainers').byId(id);
-      if ( service ) {
-        str = service.get('stack.name') + '/' + service.get('name');
+      let container = this.get('allContainers').byId(id);
+      if ( container ) {
+        if ( this.get('stack') && this.get('stack') === container.get('stack') ) {
+          str = container.get('name');
+        } else {
+          str = container.get('stack.name') + '/' + container.get('name');
+        }
       }
     }
 

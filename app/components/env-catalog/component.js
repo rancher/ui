@@ -101,22 +101,41 @@ export default Ember.Component.extend({
           }
         });
 
-        Ember.RSVP.allSettled(changes).then(() => {
-          return new Ember.RSVP.Promise((resolve) => { setTimeout(resolve, 1); }).then(() => {
-            return this.get('catalog').refresh().finally(() => {
-          Ember.run.later(() => {
-                // @TODO ugh...
-                window.l('route:catalog-tab').send('refresh');
-            this.sendAction('cancel');
-          }, 500);
+        Ember.RSVP.allSettled(changes).then((settled) => {
+          let errors = settled.filterBy('state', 'rejected');
+          if (errors.length) {
+            let errOut = [];
+            errors.forEach((err) => {
+              errOut.push(JSON.parse(err.reason.message).message);
             });
-          });
+            this.set('errors',errOut.uniq());
+            cb(false);
+
+          } else {
+            return new Ember.RSVP.Promise((resolve) => { setTimeout(resolve, 1); }).then(() => {
+
+              return this.get('catalog').refresh().finally(() => {
+
+                Ember.run.later(() => {
+                  // @TODO ugh...
+                  window.l('route:catalog-tab').send('refresh');
+                  this.sendAction('cancel');
+                }, 500);
+
+              });
+
+            });
+          }
+
         }).catch((err) => {
           this.set('errors',err);
           cb(false);
         });
+
       } else {
+
         cb(false);
+
       }
     }
   },

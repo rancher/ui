@@ -1,9 +1,11 @@
 <section class="header clearfix">
-  <h1 class="pull-left">
-    {{t 'containerPage.header' name=model.container.displayName}}
-  </h1>
-  <div class="pull-left mt-5">
-    {{info-multi-stats model=model.container largeTargetId="largeStats"}}
+  <div class="pull-left">
+    <h1 class="vertical-middle">
+      {{t 'containerPage.header' name=model.container.displayName}}
+    </h1>
+    <div class="vertical-middle">
+      {{info-multi-stats model=model.container largeTargetId="largeStats"}}
+    </div>
   </div>
   <div class="right-buttons">
     {{badge-state model=model.container}}
@@ -22,8 +24,8 @@
   <div class="banner bg-info basics ">
     <div class="inline-block">
       <label class="acc-label p-0">{{t 'generic.image'}}:</label>
-      {{#copy-inline clipboardText=model.container.displayImage}}
-        {{model.container.displayImage}}
+      {{#copy-inline clipboardText=model.container.image}}
+        {{model.container.image}}
       {{/copy-inline}}
     </div>
     <div class="inline-block">
@@ -36,6 +38,12 @@
         {{t 'generic.none'}}
       {{/if}}
     </div>
+    {{#if model.container.serviceId}}
+      <div class="inline-block">
+        <label class="acc-label p-0">{{t 'generic.service'}}:</label>
+        {{#link-to "service" projects.current.id model.container.serviceId}}{{model.service.name}}{{/link-to}}
+      </div>
+    {{/if}}
     {{#if model.container.stack}}
       <div class="inline-block">
         <label class="acc-label p-0">{{t 'generic.stack'}}:</label>
@@ -59,92 +67,78 @@
   </div>
 </section>
 
-<!--error-->
 {{#if model.container.showTransitioningMessage}}
   <div class="{{model.container.stateColor}}"><p>{{model.container.transitioningMessage}}</p></div>
 {{/if}}
 
 <section>
-  {{#accordion-list as |al expandFn| }}
+  {{#accordion-list as |al expandFn|}}
 
     <div>
       {{container/form-command
-          instance=model.container
-          initialLabels=model.labels
-          editing=false
-          expandAll=al.expandAll
-          expandFn=expandFn
+        instance=model.container
+        initialLabels=model.labels
+        editing=false
+        expandAll=al.expandAll
+        expandFn=expandFn
       }}
     </div>
 
     <div class="mt-20">
       {{form-env-var
-          model=model.container.displayEnvironmentVars
-          expandAll=al.expandAll
-          expandFn=expandFn
+        model=model.container.displayEnvironmentVars
+        expandAll=al.expandAll
+        expandFn=expandFn
       }}
     </div>
 
     <div class="mt-20">
       {{form-healthcheck
-          healthCheck=model.container.healthCheck
-          editing=false
-          expandAll=al.expandAll
-          expandFn=expandFn
+        healthCheck=model.container.healthCheck
+        editing=false
+        expandAll=al.expandAll
+        expandFn=expandFn
       }}
     </div>
 
     <div class="mt-20">
       {{container/form-scheduling
-          initialHostId=model.container.requestedHostId
-          initialLabels=model.container.labels
-          isGlobal=model.container.isGlobalScale
-          allHosts=model.hosts
-          editing=false
-          expandAll=al.expandAll
-          expandFn=expandFn
+        initialHostId=model.container.requestedHostId
+        initialLabels=model.container.labels
+        isGlobal=model.container.isGlobalScale
+        allHosts=model.hosts
+        editing=false
+        expandAll=al.expandAll
+        expandFn=expandFn
       }}
     </div>
 
     <div class="mt-20">
       {{labels-section
-          model=model.container
-          expandAll=al.expandAll
-          expandFn=expandFn
+        model=model.container
+        expandAll=al.expandAll
+        expandFn=expandFn
       }}
     </div>
 
     <div class="mt-20">
-      {{#accordion-list-item
-           title=(t 'containerPage.linksTab.header')
-           detail=(t 'containerPage.linksTab.detail')
-           status=(t 'containerPage.linksTab.status' count=model.instanceLinks.length)
-           statusClass=(if model.instanceLinks.length 'bg-success' 'text-muted')
-           expandAll=al.expandAll
-           expand=(action expandFn)
+      {{container/form-container-links
+        editing=false
+        instance=model.container
+        stack=model.container.stack
+        expandAll=al.expandAll
+        expandFn=(action expandFn)
       }}
-        <ul class="list-unstyled list-inline with-room">
-          {{#each model.instanceLinks as |link|}}
-            <li>
-              <a href="{{href-to 'container' link.targetInstanceId }}">
-                {{link.linkedInstanceName}} as {{link.linkName}}
-              </a>
-            </li>
-          {{else}}
-            <li class="text-muted text-center">{{t 'containerPage.linksTab.noData'}}</li>
-          {{/each}}
-        </ul>
-      {{/accordion-list-item}}
     </div>
 
     <div class="mt-20">
       {{container/form-networking
-          editing=false
-          instance=model.container
-          initialLabels=model.container.labels
-          allHosts=model.hosts
-          expandAll=al.expandAll
-          expandFn=expandFn
+        editing=false
+        instance=model.container
+        initialLabels=model.container.labels
+        allHosts=model.hosts
+        expandAll=al.expandAll
+        expandFn=expandFn
       }}
     </div>
 
@@ -152,99 +146,66 @@
       {{#accordion-list-item
            title=(t 'containerPage.portsTab.header')
            detail=(t 'containerPage.portsTab.detail')
-           status=(t 'containerPage.portsTab.status' count=model.ports.length)
-           statusClass=(if model.ports.length 'bg-success' 'text-muted')
+           status=(t 'pagination.port' pages=1 count=model.container.publicEndpoints.length)
+           statusClass=(if model.container.publicEndpoints.length 'bg-success' 'text-muted')
            expandAll=al.expandAll
            expand=(action expandFn)
-           componentName='sortable-table'
-           as | parent |
       }}
-        {{#component parent.intent
-             classNames="grid sortable-table"
-             body=model.ports
-             searchText=searchText
-             sortBy=portSortBy
-             bulkActions=false
-             rowActions=false
-             stickyHeader=false
-             pagingLabel="pagination.port"
-             isVisible=parent.expanded
-             headers=portHeaders as |sortable kind port dt|}}
-          {{#if (eq kind "row")}}
-            <td data-title="{{dt.publicIp}}">
-              {{#if (eq "0.0.0.0" port.displayPublicIp)}}
-                {{port.displayPublicIp}} {{t 'containerPage.portsTab.hostPrimaryIp' ip=model.container.primaryHost.displayIp}}
-              {{else if port.displayPublicIp}}
-                {{port.displayPublicIp}}
-              {{else}}
-                <span class="text-muted">{{t 'generic.none'}}</span>
-              {{/if}}
-            </td>
-            <td data-title="{{dt.publicPort}}">
-              {{#if port.publicPort}}
-                {{port.publicPort}}
-              {{else}}
-                <span class="text-muted">{{t 'generic.none'}}</span>
-              {{/if}}
-            </td>
-            <td data-title="{{dt.privatePort}}">
-              {{#if port.privatePort}}
-                {{port.privatePort}}
-              {{else}}
-                <span class="text-muted">{{t 'generic.none'}}</span>
-              {{/if}}
-            </td>
-            <td data-title="{{dt.protocol}}">
-              {{upper-case port.protocol}}
-            </td>
-          {{else if (eq kind "nomatch")}}
-            <tr><td colspan="{{sortable.fullColspan}}" class="text-center text-muted pt-20 pb-20">{{t 'containerPage.portsTab.table.noMatch'}}</td></tr>
-          {{else if (eq kind "norows")}}
-            <tr><td colspan="{{sortable.fullColspan}}" class="text-center text-muted pt-20 pb-20">{{t 'containerPage.portsTab.table.noData'}}</td></tr>
-          {{/if}}
-        {{/component}}
+        {{container/form-ports
+            initialPorts=model.container.ports
+            editing=false
+        }}
+        <hr/>
+        <div class="mt-20">
+          <label class="acc-label">{{t 'containerPage.portsTab.header'}}</label>
+          {{public-endpoints
+              model=model.container
+          }}
+        </div>
+
       {{/accordion-list-item}}
     </div>
 
     <div class="mt-20">
       {{container/form-security
-          instance=model.container
-          editing=false
-          expandAll=al.expandAll
-          expandFn=expandFn
+        instance=model.container
+        editing=false
+        expandAll=al.expandAll
+        expandFn=expandFn
       }}
     </div>
 
     <div class="mt-20">
       {{container/form-secrets
-          instance=model.container
-          editing=false
-          expandAll=al.expandAll
-          expandFn=expandFn
+        instance=model.container
+        editing=false
+        expandAll=al.expandAll
+        expandFn=expandFn
       }}
     </div>
 
     <div class="mt-20">
       {{#accordion-list-item
-           title=(t 'containerPage.volumesTab.header')
-           detail=(t 'containerPage.volumesTab.detail')
-           status=(t 'containerPage.volumesTab.status' count=(or model.container.mounts.length 0))
-           statusClass=(if model.container.mounts.length 'bg-success' 'text-muted')
-           expandAll=al.expandAll
-           expand=(action expandFn)
-           componentName='sortable-table'
-           as | parent |
+          title=(t 'containerPage.volumesTab.header')
+          detail=(t 'containerPage.volumesTab.detail')
+          status=(t 'pagination.volume' pages=1 count=(or model.container.mounts.length 0))
+          statusClass=(if model.container.mounts.length 'bg-success' 'text-muted')
+          expandAll=al.expandAll
+          expand=(action expandFn)
+          componentName='sortable-table'
+          as | parent |
       }}
         {{#component parent.intent
-             classNames="grid sortable-table"
-             body=model.container.mounts
-             searchText=searchText
-             sortBy=sortBy
-             bulkActions=false
-             stickyHeader=false
-             pagingLabel="pagination.volume"
-             isVisible=parent.expanded
-             headers=storageHeaders as |sortable kind mount dt|}}
+          classNames="grid sortable-table"
+          body=model.container.mounts
+          searchText=searchText
+          sortBy=sortBy
+          bulkActions=false
+          stickyHeader=false
+          pagingLabel="pagination.volume"
+          isVisible=parent.expanded
+          headers=storageHeaders as |sortable kind mount dt|
+        }}
           {{#if (eq kind "row")}}
             <td data-title="{{dt.name}}">
               {{mount.displayVolumeName}}

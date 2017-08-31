@@ -13,9 +13,9 @@ export default Ember.Component.extend({
   reuseStackId: null,
   createStack: null,
 
-  defaultName: 'Default',
-  showAdvanced: false,
   mode: REUSE,
+  editable: true,
+  required: true,
   isReuse: Ember.computed.equal('mode', REUSE),
 
   classNames: ['inline-form'],
@@ -32,31 +32,25 @@ export default Ember.Component.extend({
     }));
 
     // Find the default stack if none is passed in
-    if ( this.get('mode') === REUSE && !this.get('stack') ) {
-      let stack = all.findBy('name', this.get('defaultName'))
-      if ( stack  && stack.get('id') ) {
-        this.set('reuseStackId', stack.get('id'));
+    if ( this.get('mode') === REUSE ) {
+      if ( this.get('stack') ) {
+        this.set('reuseStackId', this.get('stack.id'));
       } else {
-        Ember.run.next(() => {
-          this.set('mode', CREATE);
-          this.set('showAdvanced', true);
-        });
+        let stack = all.findBy('isDefault', true);
+        if ( stack && stack.get('id') ) {
+          this.set('reuseStackId', stack.get('id'));
+        } else {
+          Ember.run.next(() => {
+            this.set('mode', CREATE);
+            this.get('createStack.name', 'Default')
+          });
+        }
       }
 
       Ember.run.next(() => {
         this.updateStack();
       });
     }
-  },
-  willDestroy(){
-    this.setProperties({
-      stack: null,
-      errors: null,
-      reuseStackId: null,
-      createStack: null,
-      showAdvanced: false,
-      choices: null,
-    });
   },
 
   updateStack: Ember.observer('reuseStackId','mode', function() {
@@ -77,12 +71,12 @@ export default Ember.Component.extend({
     let errors = [];
 
     let stack = this.get('stack');
-    if ( stack ) {
+    if ( stack && stack.get('name') ) {
       stack.validationErrors().forEach((err) => {
         errors.push(intl.t('formStack.errors.validation', {error: err}))
       });
     } else {
-      errors.push(intl.t('formStack.errors.noneChosen'));
+      errors.push(intl.t('validation.required', {key: intl.t('generic.stack')}));
     }
 
     if ( errors.length ) {
@@ -105,10 +99,6 @@ export default Ember.Component.extend({
           }
         });
       }
-    },
-
-    showAdvanced() {
-      this.set('showAdvanced', true);
     },
   },
 });

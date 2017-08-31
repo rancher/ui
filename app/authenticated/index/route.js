@@ -8,7 +8,7 @@ export default Ember.Route.extend({
     if ( project ) {
       this.replaceWith('authenticated.project', project.get('id'));
     } else {
-      this.replaceWith('settings.projects');
+      this.replaceWith('authenticated.clusters');
     }
   },
 });

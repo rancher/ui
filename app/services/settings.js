@@ -22,7 +22,7 @@ export default Ember.Service.extend(Ember.Evented, {
 
   init() {
     this._super();
-    this.set('all', this.get('userStore').all('activesetting'));
+    this.set('all', this.get('userStore').all('setting'));
   },
 
   unknownProperty(key) {

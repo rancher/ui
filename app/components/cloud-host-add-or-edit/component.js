@@ -1,5 +1,5 @@
 import Ember from 'ember';
-import Driver from 'ui/mixins/driver';
+import Driver from 'ui/mixins/host-driver';
 
 export default Ember.Component.extend(Driver, {
   errors:          null,

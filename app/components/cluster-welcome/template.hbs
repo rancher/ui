@@ -1,0 +1,41 @@
+{{#if header}}
+  <section class="header has-tabs clearfix">
+    <h1 class="pull-left">Welcome</h1>
+  </section>
+  <p>There are no hosts in this cluster yet.  Do you want to add hosts or use an existing Kubernetes installation?</p>
+{{/if}}
+
+<div class="row">
+  <div class="col span-5 offset-1 text-center option option-primary {{unless canCreate 'option-disabled'}}">
+    <h2>Add Hosts</h2>
+    <div class="box">
+      <p>Define and manage hosts inside {{settings.appName}}.</p>
+      <p>Supports on-premise, bare-metal, and cloud infrastructure.</p>
+      <p>Use any existing host with Docker installed, or deploy new hosts through cloud providers.</p>
+
+      {{#if canCreate}}
+        <div class="links" style="top: auto; bottom: 47px;">
+          {{#link-to "authenticated.clusters.cluster.host-templates" projects.currentCluster.id class="btn bg-primary"}}Select{{/link-to}}
+        </div>
+      {{/if}}
+    </div>
+    <div class="bubble bg-body round p-10"><img src="{{app.baseAssets}}assets/images/environment-standard.svg" class="mt-5" /></div>
+  </div>
+
+  {{!-- Import --}}
+  <div class="col span-5 text-center option {{unless canImport 'option-disabled'}}">
+    <h2>Use existing Kubernetes</h2>
+    <div class="box">
+      <p>Use an existing external Kubernetes v1.7+ installation.</p>
+      <p>Hosts are managed by the cluster provider, outside of {{settings.appName}}.</p>
+      <p>Supports hosted services like Google Container Engine, Azure Container Service, and IBM Bluemix.</p>
+
+      {{#if canImport}}
+        <div class="links" style="top: auto; bottom: 47px;">
+          {{#link-to "authenticated.clusters.cluster.import" projects.currentCluster.id class="btn bg-primary"}}Select{{/link-to}}
+        </div>
+      {{/if}}
+    </div>
+    <div class="bubble bg-body round p-10"><img src="{{app.baseAssets}}assets/images/environment-import.svg" class="mt-5" /></div>
+  </div>
+</div>

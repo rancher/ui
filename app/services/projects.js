@@ -1,20 +1,20 @@
 import Ember from 'ember';
 import C from 'ui/utils/constants';
 
-let ACTIVEISH = ['active','upgrading','updating-active'];
+let ACTIVEISH = ['active','upgrading'];
 
 export default Ember.Service.extend({
   access: Ember.inject.service(),
   'tab-session': Ember.inject.service('tab-session'),
   prefs: Ember.inject.service(),
   k8sSvc: Ember.inject.service('k8s'),
-  swarmSvc: Ember.inject.service('swarm'),
-  mesosSvc: Ember.inject.service('mesos'),
   userStore: Ember.inject.service('user-store'),
   store: Ember.inject.service(),
 
   current: null,
   all: null,
+
+  currentCluster: Ember.computed.alias('current.cluster'),
 
   active: function() {
     return this.get('all').filter((project) => {
@@ -33,7 +33,9 @@ export default Ember.Service.extend({
       opt.filter = {all: 'true'};
     }
 
-    return this.get('userStore').find('project', null, opt);
+    return this.get('userStore').find('project', null, opt).then(() => {
+      return this.get('userStore').all('project');
+    });
   },
 
   refreshAll: function() {
@@ -155,11 +157,7 @@ export default Ember.Service.extend({
   updateOrchestrationState() {
     let hash = {
       hasKubernetes: false,
-      hasSwarm: false,
-      hasMesos: false,
       kubernetesReady: false,
-      swarmReady: false,
-      mesosReady: false,
     };
 
     let promises = [];
@@ -172,22 +170,6 @@ export default Ember.Service.extend({
         hash.hasKubernetes = true;
         promises.push(this.get('k8sSvc').isReady().then((ready) => {
           hash.kubernetesReady = ready;
-        }));
-      }
-
-      if ( orch === 'swarm' )
-      {
-        hash.hasSwarm = true;
-        promises.push(this.get('swarmSvc').isReady().then((ready) => {
-          hash.swarmReady = ready;
-        }));
-      }
-
-      if ( orch === 'mesos' )
-      {
-        hash.hasMesos = true;
-        promises.push(this.get('mesosSvc').isReady().then((ready) => {
-          hash.mesosReady = ready;
         }));
       }
     }
@@ -213,9 +195,7 @@ export default Ember.Service.extend({
     }
 
     return (
-      (!state.hasKubernetes || state.kubernetesReady) &&
-      (!state.hasSwarm || state.swarmReady) &&
-      (!state.hasMesos || state.mesosReady)
+      (!state.hasKubernetes || state.kubernetesReady)
     );
   }.property('orchestrationState'), // The state object is always completely replaced, so this is ok
 });

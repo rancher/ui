@@ -16,12 +16,14 @@ export default Ember.Service.extend({
 
     return out.map((service) => {
       let stackName = service.get('stack.displayName') || '('+service.get('stackId')+')';
+      let serviceName = service.get('displayName');
 
       return {
         group: intl.t('allServices.stackGroup', {name: stackName}),
+        combined: stackName+'/'+serviceName,
         id: service.get('id'),
         stackName: stackName,
-        name: service.get('displayName'),
+        name: serviceName,
         kind: service.get('type'),
         obj: service,
       };
@@ -56,5 +58,23 @@ export default Ember.Service.extend({
 
   byId(id) {
     return this.get('_allServices').findBy('id',id);
+  },
+
+  matching(serviceOrCombined, defaultStack) {
+    if ( defaultStack && typeof defaultStack === 'object' ) {
+      defaultStack = Ember.get(defaultStack,'name');
+    }
+
+    let combined;
+    if ( defaultStack && !serviceOrCombined.includes('/') ) {
+      combined = defaultStack + '/' + serviceOrCombined;
+    } else {
+      combined = serviceOrCombined;
+    }
+
+    let match = this.get('list').findBy('combined', combined);
+    if ( match ) {
+      return match.obj;
+    }
   },
 });

@@ -1,0 +1,20 @@
+<tr>
+  <td data-title="{{dt.serviceName}}" class="clip">
+    {{#if model.instance.service}}
+      <a href="{{href-to 'service' model.instance.service.id}}">{{model.instance.service.displayName}}</a>
+    {{else}}
+      <span class="text-muted">{{t 'generic.na'}}</span>
+    {{/if}}
+  </td>
+  <td data-title="{{dt.instanceName}}" class="clip">
+    <a href="{{href-to 'container' model.instanceId}}">{{model.instanceName}}</a>
+  </td>
+  <td data-title="{{dt.path}}" class="clip">
+    {{#copy-inline clipboardText=model.path}}
+      {{model.path}}
+    {{/copy-inline}}
+  </td>
+  <td data-title="{{dt.displayPermission}}" class="clip">
+    {{model.displayPermission}}
+  </td>
+</tr>

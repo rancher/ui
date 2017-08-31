@@ -4,7 +4,7 @@ import PolledResource from 'ui/mixins/cattle-polled-resource';
 import C from 'ui/utils/constants';
 import { parseExternalId } from 'ui/utils/parse-externalid';
 
-const builtInUi = ['amazonec2','azure','digitalocean','exoscale','packet','rackspace','ubiquity','vmwarevsphere','aliyunecs'];
+const builtInUi = ['amazonec2','azure','digitalocean','exoscale','packet','rackspace','vmwarevsphere','aliyunecs'];
 
 function displayUrl(url) {
   url = url||'';
@@ -28,6 +28,7 @@ var machineDriver = Resource.extend(PolledResource, {
   type: 'machineDriver',
   modalService: Ember.inject.service('modal'),
   catalog: Ember.inject.service(),
+  intl: Ember.inject.service(),
 
   actions: {
     activate: function() {
@@ -58,16 +59,18 @@ var machineDriver = Resource.extend(PolledResource, {
 
   }),
 
-  iconMapFromConstants: Ember.computed('name', function() {
-    let name = this.get('name').toUpperCase();
-    let icon = C.MACHINE_DRIVER_IMAGES[name];
+  displayName: Ember.computed('displayIcon', 'intl.locale', function() {
+    return this.get('intl').t('machine.driver.'+this.get('displayIcon'));
+  }),
 
-    if (icon) {
-      return icon;
+  displayIcon: Ember.computed('name', function() {
+    let name = this.get('name');
+
+    if ( this.get('hasBuiltinUi') ) {
+      return name;
     } else {
-      return C.MACHINE_DRIVER_IMAGES.GENERIC;
+      return 'generic';
     }
-
   }),
 
   displayUrl: function() {
@@ -101,19 +104,20 @@ var machineDriver = Resource.extend(PolledResource, {
 
   availableActions: function() {
     let a = this.get('actionLinks');
+    let l = this.get('links');
     let builtin = !!this.get('builtin');
 
     return [
-      { label: 'action.edit',        icon: 'icon icon-edit',         action: 'edit',         enabled: !!a.update && !builtin },
+      { label: 'action.edit',        icon: 'icon icon-edit',         action: 'edit',         enabled: !!l.update && !builtin },
       { divider: true },
       { label: 'action.activate',    icon: 'icon icon-play',         action: 'activate',     enabled: !!a.activate},
       { label: 'action.deactivate',  icon: 'icon icon-pause',        action: 'deactivate',   enabled: !!a.deactivate},
       { divider: true },
-      { label: 'action.remove',      icon: 'icon icon-trash',        action: 'promptDelete', enabled: !!a.remove && !builtin, altAction: 'delete'},
+      { label: 'action.remove',      icon: 'icon icon-trash',        action: 'promptDelete', enabled: !!l.remove && !builtin, altAction: 'delete'},
       { divider: true },
       { label: 'action.viewInApi',   icon: 'icon icon-external-link',action: 'goToApi',      enabled: true },
     ];
-  }.property('actionLinks.{update,activate,deactivate,remove}','builtin'),
+  }.property('actionLinks.{activate,deactivate}','links.{update,remove}','builtin'),
 
   externalIdInfo: function() {
     return parseExternalId(this.get('externalId'));

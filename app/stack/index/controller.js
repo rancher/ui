@@ -1,5 +1,6 @@
 import Ember from 'ember';
 import { headersWithHost as containerHeaders } from 'ui/components/container-table/component';
+import { searchFields as containerSearchFields } from 'ui/components/container-dots/component';
 
 export default Ember.Controller.extend({
   prefs:             Ember.inject.service(),
@@ -90,54 +91,90 @@ export default Ember.Controller.extend({
       translationKey: 'generic.name',
     },
     {
-      name: 'endpoints',
-      sort: null,
-      searchField: 'endpointPorts',
-      translationKey: 'stacksPage.table.endpoints',
-    },
-    {
       name: 'image',
-      sort: ['displayImage','displayName'],
-      searchField: 'displayImage',
+      sort: ['image','displayName'],
+      searchField: 'image',
       translationKey: 'generic.image',
     },
     {
       name: 'scale',
-      sort: 'scale:desc',
+      sort: ['scale:desc','isGlobalScale:desc','displayName'],
       searchField: null,
       translationKey: 'stacksPage.table.scale',
+      classNames: 'text-center',
       width: 100
     },
+  ],
+  storageSortBy: 'state',
+  storageHeaders:  [
     {
-      name: 'instanceState',
-      sort: ['instanceCountSort:desc','displayName'],
+      name: 'expand',
+      sort: false,
       searchField: null,
-      width: 140,
-      icon: 'icon icon-lg icon-container',
-      dtTranslationKey: 'stacksPage.table.instanceState',
-      translationKey: 'stacksPage.table.instanceStateWithIcon',
+      width: 30
+    },
+    {
+      name: 'state',
+      sort: ['stateSort','displayName'],
+      searchField: 'displayState',
+      translationKey: 'generic.state',
+      width: 120
+    },
+    {
+      name: 'name',
+      sort: ['displayName','id'],
+      searchField: 'displayName',
+      translationKey: 'generic.name',
+    },
+    {
+      name: 'mounts',
+      sort: ['mounts.length','displayName','id'],
+      translationKey: 'volumesPage.mounts.label',
+      searchField: null,
+      width: 100,
+    },
+    {
+      name: 'scope',
+      sort: ['scope'],
+      translationKey: 'volumesPage.scope.label',
+      width: 120
+    },
+    {
+      name: 'driver',
+      sort: ['driver','displayName','id'],
+      searchField: 'displayType',
+      translationKey: 'volumesPage.driver.label',
+      width: 150
     },
   ],
 
-  getType(ownType, real=true) {
-    return this.get('model.services').filter((service) => {
-      if (real ? (service.get('isReal') && service.get('kind') === ownType) : (service.get('kind') === ownType)) {
-        return true;
-      }
-      return false;
-    });
-  },
-
-  scalingGroups: Ember.computed('model.services.[]', function() {
-    return this.getType('scalingGroup');
+  extraSearchFields: ['id:prefix','displayIp:ip'],
+  extraSearchSubFields: containerSearchFields,
+  rows: Ember.computed('instances.[]', 'services.[]', function() {
+    let out = [];
+    let containers = this.get('instances');
+    let services = this.get('services');
+    return out.concat(containers, services);
   }),
 
-  loadBalancers: Ember.computed('model.services.[]', function() {
-    return this.getType('loadBalancerService');
+  containerStats: Ember.computed('instances.[]', 'services.[]', function() {
+    let containerLength = this.get('instances.length') || 0;
+    let scalingGroupsLength = this.get('services.length') || 0;
+    return containerLength += scalingGroupsLength;
+  }),
+
+  services: Ember.computed('model.services.[]', function() {
+    return this.get('model.services').filter((obj) => {
+      return obj.get('isReal') && !obj.get('isBalancer');
+    });
+  }),
+
+  loadBalancers: Ember.computed('model.services.@each.isBalancer', function() {
+    return this.get('model.services').filterBy('isBalancer',true);
   }),
 
   dnsServices: Ember.computed('model.services.[]', function() {
-    return this.getType('dnsService', false).concat(this.getType('externalService', false));
+    return this.get('model.services').filterBy('isReal',false);
   }),
 
   instances: Ember.computed('model.instances.[]','prefs.showSystemResources', function() {

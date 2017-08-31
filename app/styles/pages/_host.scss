@@ -1,7 +1,30 @@
 .dot {
-  float: left;
-  margin: 2px;
-  font-size: 11px;
+  margin: 0;
+  font-size: 13px;
+  line-height: 18px;
+}
+
+.dot-group {
+  display: inline-block;
+  border: 1px solid $border;
+  margin: 0 5px 0 0;
+  line-height: 0;
+  padding: 0 3px;
+}
+
+//scale
+.scale-arrow {
+  position: relative;
+  &:before {
+    content: "";
+    position: absolute;
+    border-style: solid;
+    border-width: 7px;
+    border-color: transparent;
+    border-bottom-color: $bg-default;
+    top: -13px;
+    left: calc(50% - 7px);
+  }
 }
 
 .modal-shell {
@@ -21,83 +44,22 @@
 }
 
 .machine-driver {
-  &.amazonec2 {
-    @include amazonec2;
-  }
-
-  &.azure {
-    @include azure;
-  }
-
-  &.digitalocean {
-    @include digitalocean;
-  }
-
-  &.exoscale {
-    @include exoscale;
-  }
-
-  &.openstack {
-    @include openstack;
-  }
-
-  &.packet {
-    @include packet;
-  }
-
-  &.rackspace {
-    @include rackspace;
-  }
-
-  &.ubiquity {
-    @include ubiquity;
-  }
-
-  &.vmwarevsphere {
-    @include vmwarevsphere;
-  }
-
-  &.other {
-    @include other;
-  }
-
-  &.custom {
-    @include custom;
-  }
-
-  &.aliyunecs {
-    @include aliyunecs;
-  }
-}
-
-.c3 svg {
-  font: 12px "Lato";
-}
-
-#memoryGraph,
-#cpuGraph,
-#networkGraph,
-#storageGraph {
-  .c3-axis .tick {
-    fill: #9da0ae;
-    // text-shadow: 1px 1px 0px rgba(255,255,255,.5), -1px 1px 0px rgba(255,255,255,.5), 1px -1px 0px rgba(255,255,255,.5), -1px -1px 0px rgba(255,255,255,.5);
-
-    line {
-      display: none;
-    }
-  }
-
-  .c3-axis-x {
-    display: none;
-  }
-
-  .c3-axis .domain {
-    stroke: $light-grey;
-  }
+  &.amazonec2 { @include amazonec2; }
+  &.azure { @include azure; }
+  &.digitalocean { @include digitalocean; }
+  &.exoscale { @include exoscale; }
+  &.openstack { @include openstack; }
+  &.packet { @include packet; }
+  &.rackspace { @include rackspace; }
+  &.vmwarevsphere { @include vmwarevsphere; }
+  &.other { @include other; }
+  &.custom { @include custom; }
+  &.aliyunecs { @include aliyunecs; }
 }
 
 .api-field LABEL {
   text-transform: initial;
+  display: block;
 }
 
 /**********
@@ -109,8 +71,7 @@
   justify-content: center;
 
   & > .nav-box-item {
-    width            : 150px;
-    min-height       : 150px;
+    min-height       : 110px;
     flex             : 0 1 auto;
     position         : relative;
     outline          : 0;
@@ -140,13 +101,14 @@
 
   .driver {
     background-position : center center;
-    background-size     : 90%;
+    // background-size     : 30%;
     background-repeat   : no-repeat;
     filter              : grayscale(100%);
-    -webkit-filter      : grayscale(100%);
-    -moz-filter         : grayscale(100%);
-    -ms-filter          : grayscale(100%);
-    -o-filter           : grayscale(100%);
+    -webkit-filter : grayscale(100%);
+    -moz-filter    : grayscale(100%);
+    -ms-filter     : grayscale(100%);
+    -o-filter      : grayscale(100%);
+    position       : relative;
 
     &.active {
       filter         : none;
@@ -154,6 +116,13 @@
       -moz-filter    : none;
       -ms-filter     : none;
       -o-filter      : none;
+    }
+
+    p {
+      position: absolute;
+      bottom: 0;
+      width: 100%;
+      margin: 10px 0;
     }
   }
 
@@ -195,7 +164,7 @@ ol {
 ol > li {
     position: relative;
     margin: 0 0 25px 2em;
-    padding: 10px 20px;
+    padding: 10px 20px 10px 40px;
     list-style: none;
     background: $accent-bg;
     border: solid $accent-border 1px;
@@ -205,15 +174,20 @@ ol > li::before {
     counter-increment: li;
     position: absolute;
     top: calc(50% - 20px);
-    left: -2em;
-    width: 2em;
-    margin-right: 8px;
-    padding: 10px;
+    left: -20px;
     width: 40px;
+    height: 40px;
+    line-height: 40px;
+    margin-right: 8px;
     border-radius: 50%;
     text-align: center;
     background: $info;
     color: white;
+  }
+
+.box ol > li {
+    background: lighten($accent-bg, 2);
+    border: solid $accent-border 1px;
 }
 
 .host-blurb {

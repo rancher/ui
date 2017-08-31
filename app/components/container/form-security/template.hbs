@@ -6,21 +6,27 @@
       expandAll=expandAll
       expand=(action expandFn)
 }}
-  <div class="row">
-    <div class="col span-4 col-inline">
+  <div class="row box">
+    <div class="col span-4">
       <label class="acc-label">{{t 'formSecurity.pullImage.label'}}</label>
       {{#if editing}}
         <div class="radio">
           <label>{{radio-button selection=pullImage value=false}} {{t 'formSecurity.pullImage.disable'}}</label>
         </div>
-        <div class="radio">
-          <label>{{radio-button selection=pullImage value=true}} {{t 'formSecurity.pullImage.enable'}}</label>
-        </div>
+        {{#if isService}}
+          <div class="radio">
+            <label>{{radio-button selection=pullImage value=true}} {{t 'formSecurity.pullImage.enableService'}}</label>
+          </div>
+        {{else}}
+          <div class="radio">
+            <label>{{radio-button selection=pullImage value=true}} {{t 'formSecurity.pullImage.enableContainer'}}</label>
+          </div>
+        {{/if}}
       {{else}}
       {{/if}}
     </div>
     {{#unless projects.current.isWindows}}
-      <div class="col span-4 col-inline">
+      <div class="col span-4">
         <label class="acc-label">{{t 'formSecurity.privileged.label'}}</label>
         {{#input-or-display editable=editing value=instance.privileged}}
           <div class="radio">
@@ -31,7 +37,7 @@
           </div>
         {{/input-or-display}}
       </div>
-      <div class="col span-4 col-inline">
+      <div class="col span-4">
         <label class="acc-label">{{t 'formSecurity.pidMode.label'}}</label>
         {{#input-or-display editable=editing value=pidHost}}
           <div class="radio">
@@ -45,24 +51,20 @@
     {{/unless}}
   </div>
 
-  <hr/>
-
   {{#if projects.current.isWindows}}
-    <div class="row">
-      <div class="col span-12 col-inline">
-        <label class="acc-label">{{t 'formSecurity.isolation.label'}}</label>
-        {{#input-or-display editable=editing value=instance.isolation}}
-          {{new-select
-            content=isolationChoices
-            localizedLabel=true
-            value=instance.isolation
-          }}
-        {{/input-or-display}}
-      </div>
+    <div class="row box mt-20">
+      <label class="acc-label">{{t 'formSecurity.isolation.label'}}</label>
+      {{#input-or-display editable=editing value=instance.isolation}}
+        {{new-select
+          content=isolationChoices
+          localizedLabel=true
+          value=instance.isolation
+        }}
+      {{/input-or-display}}
     </div>
   {{else}}
-    <div class="row">
-      <div class="col span-4 col-inline">
+    <div class="row box mt-20">
+      <div class="col span-4">
         <label class="acc-label">{{t 'formSecurity.memoryLimit.label'}}</label>
         {{#input-or-display editable=editing value=memoryMode classesForDisplay="text-muted form-control-static"}}
           <div class="radio">
@@ -82,11 +84,11 @@
         {{/input-or-display}}
       </div>
 
-      <div class="col span-4 col-inline">
+      <div class="col span-4">
         <label class="acc-label">{{t 'formSecurity.swapLimit.label'}}</label>
         {{#input-or-display editable=editing value=swapMode classesForDisplay="text-muted form-control-static"}}
           <div class="radio">
-            <label>{{radio-button selection=swapMode value="default"}} {{t 'formSecurity.swapLimit.default'}}</label>
+            <label>{{radio-button selection=swapMode value="default" disabled=(eq memoryMode "unlimited")}} {{t 'formSecurity.swapLimit.default'}}</label>
           </div>
           <div class="radio">
             <label>{{radio-button selection=swapMode value="unlimited"}} {{t 'formSecurity.swapLimit.unlimited'}}</label>
@@ -108,7 +110,7 @@
         {{/input-or-display}}
       </div>
 
-      <div class="col span-4 col-inline">
+      <div class="col span-4">
         <label class="acc-label">{{t 'formSecurity.swappiness.label'}}</label>
         {{#input-or-display editable=editing value=swappinessMode classesForDisplay="text-muted form-control-static"}}
           <div class="radio">
@@ -209,7 +211,7 @@
 
     {{#if editing}}
       <div class="row">
-        <div class="col span-12 text-center text-info">
+        <div class="col span-12 text-center text-info m-0">
           {{t 'formSecurity.capabilities.helpBlock.text'}}
           <a href="http://man7.org/linux/man-pages/man7/capabilities.7.html" target="_blank">{{t 'formSecurity.capabilities.helpBlock.link'}}</a>
         </div>
@@ -217,7 +219,6 @@
     {{/if}}
 
     <div class="row box mt-20">
-      <div class="col span-12 col-inline">
         <label class="acc-label">{{t 'formSecurity.deviceBinding.label'}}</label>
         {{#if editing}}
           <div>
@@ -297,6 +298,5 @@
           {{/if}}
         {{/if}}
       </div>
-    </div>
   {{/if}}
 {{/accordion-list-item}}

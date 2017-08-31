@@ -17,7 +17,8 @@ BODY {
 
 #application {
   padding-top: 10px;
-  padding-bottom: 125px; // So the footer doesn't cover the end of the body
+  padding-bottom: 70px; // So the footer doesn't cover the end of the body
+  min-height: 150px; // header + footer + a bit
 }
 
 // Articles (above the page info/warnings)
@@ -79,9 +80,30 @@ MAIN {
     border-color: darken($border, 5%);
   }
 
-  h4 {
-    border-bottom: solid 2px $border;
+  > h4 {
+    border-bottom: solid 2px darken($border, 5%);
     margin-bottom: 10px;
     padding-bottom: 5px;
+    text-transform: capitalize;
+  }
+
+  &.bg-secondary {
+    @extend .bg-secondary;
+
+    hr {
+      opacity: .3;
+    }
+  }
+
+  .accordion {
+    background: $body-bg;
+  }
+
+  .bg-default {
+    background: darken($bg-default, 5);
+  }
+
+  .text-muted {
+    color: $mid-grey;
   }
 }

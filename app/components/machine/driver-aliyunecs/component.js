@@ -1,7 +1,7 @@
 import Ember from 'ember';
-import Driver from 'ui/mixins/driver';
+import Driver from 'ui/mixins/host-driver';
 
-let isOptimized=[
+let ioOptimized=[
   {
     value : "none",
   },
@@ -13,15 +13,15 @@ let isOptimized=[
 export default Ember.Component.extend(Driver, {
   driverName:      'aliyunecs',
   aliyunecsConfig: Ember.computed.alias('model.publicValues.aliyunecsConfig'),
-  isOptimized:     isOptimized,
+  ioOptimized:     ioOptimized,
 
 
   bootstrap: function() {
-    let config = this.get('store').createRecord({
+    let config = this.get('userStore').createRecord({
       type: 'aliyunecsConfig',
     });
 
-    this.set('model', this.get('store').createRecord({
+    this.set('model', this.get('userStore').createRecord({
       type:         'hostTemplate',
       driver:       'aliyunecs',
       publicValues: {

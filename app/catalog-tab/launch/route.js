@@ -35,7 +35,6 @@ export default Ember.Route.extend({
         results.stack = store.createRecord({
           type: 'stack',
           name: results.tpl.get('defaultName'),
-          startOnCreate: true,
           system: (results.tpl.get('templateBase') === C.EXTERNAL_ID.KIND_INFRA),
           environment: {}, // Question answers
         });

@@ -21,7 +21,6 @@
     // Deprecated in Compass 0.13
     @warn "The $threshold argment to contrasted is no longer needed and will be removed in the next release.";
   }
-  background-color: $background-color;
   color: contrast-color($background-color, $dark, $light);
 
   &:hover {
@@ -75,8 +74,7 @@
           transform: scale($horiz, $vert);
 }
 
-// driver names are mapped in MACHINE_DRIVER_IMAGES app/utils/constants.js for the machine driver page
-// Add a new one? Change an existing one? make sure you update the map as well
+// Add a new one? Change an existing one? make sure you update the list in app/models/machinedriver.jsl
 @mixin amazonec2 {
   background-image: url('images/providers/amazonec2.svg');
 }
@@ -109,10 +107,6 @@
     background-image: url('images/providers/rancherdigitalocean.svg');
 }
 
-@mixin ubiquity {
-  background-image: url('images/providers/ubiquity.svg');
-}
-
 @mixin vmwarevsphere {
   background-image: url('images/providers/vmwarevsphere.png');
 }
@@ -122,7 +116,7 @@
 }
 
 @mixin custom {
-  background-image: url('images/logos/provider-custom.svg');
+  background-image: url('images/providers/custom-registry.svg');
 }
 
 @mixin generic {
@@ -130,7 +124,7 @@
 }
 
 @mixin aliyunecs {
-  background-image: url('images/providers/aliyunecs.png');
+  background-image: url('images/providers/aliyunecs.svg');
 }
 
 @mixin newtemplate {
@@ -177,9 +171,10 @@
 
 @mixin catalog-img($background: rgba(255,255,255,.9)) {
   margin: 0 auto;
-  padding: 15px 5px 5px 5px;
+  padding: 0;
   background: $background;
-  min-height: 110px;
+  height: 110px;
+  line-height: 108px;
   max-width: 295px;
 
   img {
@@ -187,5 +182,6 @@
     height: auto;
     max-height: 80px;
     max-width: 180px;
+    vertical-align: middle;
   }
 }

@@ -4,7 +4,7 @@
 
   // Successful states are de-emphasized by using [text-]color instead of background-color
   &.bg-success {
-    background-color: transparent;
+    background-color: lighten($success, 53);
     color: $success;
   }
 
@@ -23,19 +23,22 @@
   }
 }
 
-.grid TD.state {
-  .badge-state {
-    @include clip;
-    display: inline-block;
-    max-width: 100%;
-    position: relative;
-    padding: 1px 5px;
-    font-size: 1em;
-    max-width: 110px;
-    font-size: .85em;
+.grid TD .badge-state {
+  @include clip;
+  display: inline-block;
+  max-width: 100%;
+  position: relative;
+  padding: 1px 5px;
+  font-size: 1em;
+  max-width: 110px;
+  font-size: .85em;
+  line-height: $base-line-height;
 
-    &.bg-success {
-      padding: 0px 5px;
-    }
+  &.bg-success {
+    border: solid lighten($success, 30) 1px;
+  }
+
+  &.bg-muted {
+    border: solid lighten($text-muted, 30) 1px;
   }
 }

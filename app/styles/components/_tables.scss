@@ -10,7 +10,7 @@ $table-nested-header   : lighten($mid-grey, 32)!default;
 $table-bg-accent       : darken($light-grey, .5)!default;
 $table-bg-hover        : lighten($info, 15)!default;
 $table-bg-active       : $table-bg-hover!default;
-$table-bg-selected     : lighten($info, 30)!default;
+$table-bg-selected     : lighten($info, 32)!default;
 $table-border-color    : lighten($mid-grey, 30)!default;
 $table-body-separation : 25px;
 $group-row-height      : 50px;
@@ -39,6 +39,10 @@ $group-row-height      : 50px;
 
       > TD {
         border: none;
+        a {
+          line-height: initial;
+          vertical-align: middle;
+        }
       }
 
       &.row-selected {
@@ -92,19 +96,30 @@ TABLE {
 
   TH {
     text-align: left;
+
+    .btn {
+      padding: 5px 0;
+    }
   }
 
   // General padding
   > THEAD > TR > TH,
   > TBODY > TR > TD {
     padding: 0;
-    height: $group-row-height;
     transition: ease-in-out all 200ms;
     word-wrap: break-word;
 
     &:last-child {
     height: 0;
     }
+  }
+
+  > THEAD > TR > TH > .btn {
+    padding: 0;
+  }
+
+  > TBODY > TR > TD {
+    height: $group-row-height;
   }
 
   > TBODY > TR.auto-height > TD,
@@ -191,6 +206,14 @@ TABLE {
       background: $body-bg;
     }
 
+    tr.row-selected .btn-group.bg-default {
+      background: darken($bg-default, 7);
+    }
+
+    tr.row-selected .scale-arrow:before {
+      border-bottom-color: darken($bg-default, 7);
+    }
+
     TABLE {
       > TBODY {
         @include striped;
@@ -228,6 +251,15 @@ TABLE {
     > TR.total > TD {
       background: $table-bg-accent;
       height: $group-row-height;
+    }
+
+    > TR.group-row-error {
+      border-top: 0 !important;
+
+      > TD {
+        padding: 0 10px;
+        height: auto;
+      }
     }
 
     > TR.no-bottom > TD {
@@ -272,6 +304,7 @@ TABLE {
   &.double-rows > TBODY {
     > TR.main-row > TD {
       padding-bottom: 0;
+      line-height: 15px;
 
       &.top-half {
         border-bottom: 1px solid transparent;
@@ -354,5 +387,29 @@ TABLE {
 
   &.solid {
     @include solid;
+  }
+}
+
+.box > div > table.striped {
+  thead tr {
+    color: $link-color;
+    border-bottom: solid $link-color 3px;
+    text-align: left;
+  }
+  > TBODY > TR {
+    background-color: rgba($border, .3);
+  }
+
+  > TBODY > TR:nth-child(even) {
+    background-color: $border;
+  }
+}
+
+.box {
+  TABLE .fixed-header-actions, TABLE > THEAD > TR.fixed-header {
+    background: transparent;
+  }
+  TABLE.bordered > TBODY > TR {
+    background: rgba($body-bg, .5);
   }
 }

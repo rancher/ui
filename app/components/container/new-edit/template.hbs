@@ -1,60 +1,43 @@
-{{#if isSidekick}}
-  <hr class="mt-20 mb-20" />
-
-  <section class="header header-sidekick clearfix">
-    <h2 class="inline-block">{{t headerToken name=configName}}</h2>
-    <div class="right-buttons p-0">
-      <button class="btn bg-transparent p-0 text-small text-right" {{action "removeSidekick" launchConfigIndex}}>{{t 'newContainer.removeSidekick'}}</button>
-    </div>
-  </section>
-{{else}}
-  <section class="header clearfix">
-    <h1>{{t headerToken name=configName}}</h1>
-  </section>
-{{/if}}
+<section class="header clearfix">
+  <h1>{{header}}</h1>
+</section>
 
 <div class="row">
   <div class="col span-11-of-23 mt-0 mb-0">
     {{form-name-description
-      model=primaryResource
+      name=name
+      nameDisabled=isUpgrade
+      bothColClass="col span-12 mt-0"
+      colClass="col span-12 mt-0"
+      description=description
       namePlaceholder="newContainer.name.placeholder"
       descriptionPlaceholder="newContainer.description.placeholder"
     }}
   </div>
   <div class="col span-11-of-23 mt-0 mb-0 offset-1-of-23">
-    {{#if isSidekick}}
-      {{!-- Sidekicks don't have their own scale --}}
-      {{container/form-scale isSidekick=true}}
-    {{else if isService}}
-      {{!-- Normal primary service --}}
-      {{container/form-scale
-        initialLabels=launchConfig.labels
-        initialScale=service.scale
-        isGlobal=isGlobal
-        isService=true
-        errors=scaleErrors
-        setLabels=(action 'setLabels' 'scale')
-        setScale=(action  'setScale')
-      }}
-    {{else if isUpgrade}}
-      {{!-- Containers can't set count on upgrade --}}
-    {{else}}
-      {{!-- Container count --}}
-      {{container/form-scale
-        isService=false
-        initialScale=1
-        errors=scaleErrors
-        setScale=(action  'setScale')
-      }}
-    {{/if}}
-
+    {{container/form-scale
+      initialLabels=launchConfig.labels
+      initialScale=scale
+      isGlobal=isGlobal
+      isService=isService
+      forceSidekick=forceSidekick
+      launchConfigIndex=launchConfigIndex
+      service=service
+      isUpgrade=isUpgrade
+      errors=scaleErrors
+      mode=mode
+      setLabels=(action 'setLabels' 'scale')
+      setScale=(action (mut scale))
+    }}
   </div>
 </div>
+
 <hr class="mt-30 mb-30" />
+
 <div class="row">
   <div class="col span-11-of-23 mt-0 mb-0">
     {{container/form-image
-      initialValue=launchConfig.imageUuid
+      initialValue=launchConfig.image
       errors=imageErrors
       changed=(action 'setImage')
     }}
@@ -75,10 +58,10 @@
 <div class="row">
   <div class="col span-11-of-23 mt-0 mb-0">
     {{container/form-ports
-      initialPorts=launchConfig.ports
-      errors=portErrors
-      changedStr=(action (mut launchConfig.ports))
-      portsAsStrArray=launchConfig.ports
+        initialPorts=launchConfig.ports
+        errors=portErrors
+        changedStr=(action (mut launchConfig.ports))
+        editing=true
     }}
   </div>
   <div class="col span-11-of-23 mt-0 mb-0 offset-1-of-23">
@@ -98,147 +81,132 @@
 </div>
 
 <hr class="mt-30 mb-30" />
+{{#accordion-list as | al expandFn | }}
+  {{#unless isSidekick}}
+    {{container/form-scheduling
+      isService=isService
+      isGlobal=isGlobal
+      initialHostId=launchConfig.requestedHostId
+      initialLabels=launchConfig.labels
+      service=service
+      errors=schedulingErrors
+      editing=true
+      expandAll=null
+      setLabels=(action 'setLabels' 'scheduling')
+      setRequestedHost=(action 'setRequestedHostId')
+      expandAll=al.expandAll
+      expandFn=expandFn
+    }}
+  {{/unless}}
 
-{{#if (not isSidekick)}}
-  {{container/form-scheduling
-    isService=isService
-    isGlobal=isGlobal
-    initialHostId=launchConfig.requestedHostId
-    initialLabels=launchConfig.labels
-    errors=schedulingErrors
-    editing=true
-    expandAll=null
-    setLabels=(action 'setLabels' 'scheduling')
-    setRequestedHost=(action 'setRequestedHostId')
+  {{form-healthcheck
+      classNames="accordion-wrapper"
+      isService=isService
+      healthCheck=launchConfig.healthCheck
+      errors=healthCheckErrors
+      expandAll=null
+      editing=true
+      expandAll=al.expandAll
+      expandFn=expandFn
   }}
-{{/if}}
 
-{{form-healthcheck
-    classNames="accordion-wrapper"
-    isService=isService
-    healthCheck=launchConfig.healthCheck
-    errors=healthCheckErrors
-    expandAll=null
-    editing=true
-}}
-
-{{#if (and isService (not isSidekick))}}
-  {{container/form-upgrade
-    service=service
-    editing=true
-    isUpgrade=isUpgrade
-    slcWithNames=slcWithNames
-  }}
-{{/if}}
-
-{{#advanced-section advanced=false}}
-  {{#accordion-list as | al expandFn | }}
-
-    {{container/form-command
-        classNames="accordion-wrapper"
-        instance=launchConfig
-        initialLabels=launchConfig.labels
-        errors=commandErrors
+  {{#advanced-section advanced=false}}
+        {{container/form-volumes
         isService=isService
-        setLabels=(action 'setLabels' 'command')
+        isSidekick=isSidekick
+        launchConfig=launchConfig
+        service=service
+        stack=stack
+        errors=volumeErrors
+        volumesToCreate=volumesToCreate
         expandAll=al.expandAll
         expandFn=expandFn
-    }}
+      }}
 
-    {{form-user-labels
-        classNames="accordion-wrapper"
-        initialLabels=launchConfig.labels
-        setLabels=(action 'setLabels' 'user')
-        expandAll=al.expandAll
+      {{#if (and isService (not isSidekick))}}
+        {{container/form-upgrade
+          service=service
+          instance=launchConfig
+          editing=true
+          isUpgrade=isUpgrade
+          expandAll=al.expandAll
         expandFn=expandFn
-    }}
+        }}
+      {{/if}}
 
-    {{#if isService}}
-      {{#unless isSidekick}}
-        {{container/form-service-links
+      {{container/form-command
+          classNames="accordion-wrapper"
+          instance=launchConfig
+          initialLabels=launchConfig.labels
+          errors=commandErrors
+          isService=isService
+          setLabels=(action 'setLabels' 'command')
+          expandAll=al.expandAll
+          expandFn=expandFn
+      }}
+
+      {{form-user-labels
+          classNames="accordion-wrapper"
+          initialLabels=launchConfig.labels
+          setLabels=(action 'setLabels' 'user')
+          expandAll=al.expandAll
+          expandFn=expandFn
+      }}
+
+      {{#if isService}}
+        {{#unless isSidekick}}
+          {{container/form-service-links
             service=service
-            changed=(action 'setServiceLinks')
+            expandAll=al.expandAll
+            expandFn=expandFn
+          }}
+        {{/unless}}
+      {{else}}
+        {{container/form-container-links
+            editing=true
+            instance=launchConfig
+            stack=stack
             expandAll=al.expandAll
             expandFn=expandFn
         }}
-      {{/unless}}
-    {{else}}
-      {{container/form-container-links
-          initialLinks=launchConfig.instanceLinks
-          instance=launchConfig
-          expandAll=al.expandAll
-          expandFn=expandFn
-      }}
-    {{/if}}
+      {{/if}}
 
-    {{container/form-networking
-        editing=true
-        instance=launchConfig
-        errors=networkingErrors
-        service=service
-        isService=isService
-        isSidekick=isSidekick
-        initialLabels=launchConfig.labels
-        isUpgrade=isUpgrade
-        setLabels=(action 'setLabels' 'networking')
-        expandAll=al.expandAll
-        expandFn=expandFn
-    }}
-
-    {{#if supportsSecrets}}
-      {{container/form-secrets
-          classNames="accordion-wrapper"
-          secrets=launchConfig.secrets
-          errors=secretErrors
+      {{container/form-networking
           editing=true
+          instance=launchConfig
+          errors=networkingErrors
+          service=service
+          isService=isService
+          isSidekick=isSidekick
+          initialLabels=launchConfig.labels
+          isUpgrade=isUpgrade
+          setLabels=(action 'setLabels' 'networking')
           expandAll=al.expandAll
           expandFn=expandFn
       }}
-    {{/if}}
 
-    {{container/form-security
-        instance=launchConfig
-        errors=securityErrors editing=true
-        initialLabels=launchConfig.labels
-        setLabels=(action 'setLabels' 'security')
-        expandAll=al.expandAll
-        expandFn=expandFn
-    }}
+      {{#if supportsSecrets}}
+        {{container/form-secrets
+            classNames="accordion-wrapper"
+            secrets=launchConfig.secrets
+            errors=secretErrors
+            editing=true
+            expandAll=al.expandAll
+            expandFn=expandFn
+        }}
+      {{/if}}
 
-    {{container/form-volumes
-        classNames="accordion-wrapper"
-        instance=launchConfig
-        isService=isService
-        service=service
-        primaryService=primaryService
-        launchConfigIndex=launchConfigIndex
-        errors=volumeErrors
-        expandAll=al.expandAll
-        expandFn=expandFn
-    }}
-  {{/accordion-list}}
-{{/advanced-section}}
+      {{container/form-security
+          instance=launchConfig
+          isService=isService
+          errors=securityErrors editing=true
+          initialLabels=launchConfig.labels
+          setLabels=(action 'setLabels' 'security')
+          expandAll=al.expandAll
+          expandFn=expandFn
+      }}
+  {{/advanced-section}}
+{{/accordion-list}}
 
-{{#if (and isService (not isSidekick))}}
-  {{#each service.secondaryLaunchConfigs as |slc index|}}
-    {{container/new-edit
-      isService=true
-      isSidekick=true
-      isUpgrade=isUpgrade
-      launchConfig=slc
-      service=slc
-      primaryResource=slc
-      primaryService=primaryService
-      launchConfigIndex=index
-    }}
-  {{/each}}
-{{/if}}
-
-{{#unless isSidekick}}
-  {{top-errors errors=errors}}
-  {{#save-cancel saveDisabled=noLaunchConfigsEnabled createLabel=(if isUpgrade 'newContainer.saveUpgrade' 'newContainer.saveNew') save="save" cancel="cancel"}}
-    {{#if isService}}
-      <button class="btn bg-transparent text-right p-0 pt-5 text-small" style="position: absolute; right: 0; margin-top: 8px;" {{action "addSidekick"}}>{{t 'newContainer.addSidekick'}}</button>
-    {{/if}}
-  {{/save-cancel}}
-{{/unless}}
+{{top-errors errors=errors}}
+{{save-cancel createLabel=(if isUpgrade 'newContainer.saveUpgrade' 'newContainer.saveNew') save="save" cancel="cancel"}}

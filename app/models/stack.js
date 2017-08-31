@@ -22,9 +22,15 @@ export function normalizeTag(name) {
   return (name||'').trim().toLowerCase();
 }
 
-export function tagsToArray(str) {
+export function tagsToArray(str, normalize=true) {
   return (str||'').split(/\s*,\s*/)
-    .map((tag) => normalizeTag(tag))
+    .map((tag) => {
+      if (normalize) {
+        return normalizeTag(tag);
+      } else {
+        return tag;
+      }
+    })
     .filter((tag) => tag.length > 0);
 }
 
@@ -42,6 +48,7 @@ var Stack = Resource.extend(StateCounts, {
   type: 'stack',
   k8s: Ember.inject.service(),
   modalService: Ember.inject.service('modal'),
+  catalog: Ember.inject.service(),
   projectsService: Ember.inject.service('projects'),
 
   services: denormalizeIdArray('serviceIds'),
@@ -64,44 +71,16 @@ var Stack = Resource.extend(StateCounts, {
   }),
 
   actions: {
-    cancelUpgrade: function() {
-      return this.doAction('cancelupgrade');
-    },
-
-    cancelRollback: function() {
-      return this.doAction('cancelrollback');
-    },
-
-    finishUpgrade: function() {
-      return this.doAction('finishupgrade');
-    },
-
-    rollback: function() {
-      return this.doAction('rollback');
-    },
-
-    addService: function() {
-      this.get('router').transitionTo('scalin-groups.new', {
-        queryParams: {
-          stackId: this.get('id'),
-        },
-      });
-    },
-
-    addBalancer: function() {
-      this.get('router').transitionTo('balancers.new', {
-        queryParams: {
-          stackId: this.get('id'),
-        },
-      });
-    },
-
     edit: function() {
-      this.get('modalService').toggleModal('edit-stack', this);
+      this.get('modalService').toggleModal('modal-edit-stack', this);
     },
 
     exportConfig: function() {
       download(this.linkFor('composeConfig'));
+    },
+
+    addContainer: function() {
+      this.get('application').transitionToRoute('containers.run', {queryParams: {stackId: this.get('id')}});
     },
 
     viewCode: function() {
@@ -116,35 +95,38 @@ var Stack = Resource.extend(StateCounts, {
       return this._super().then(() => {
         if ( this.get('application.currentRouteName') === 'stack.index' )
         {
-          this.get('router').transitionTo('containers');
+          this.get('router').transitionTo('rontainers');
         }
       });
     },
   },
 
   availableActions: function() {
-    var a = this.get('actionLinks');
+    let a = this.get('actionLinks');
+    let l = this.get('links');
 
-    if ( this.get('externalIdInfo.kind') === C.EXTERNAL_ID.KIND_KUBERNETES )
-    {
+    if ( this.get('externalIdInfo.kind') === C.EXTERNAL_ID.KIND_KUBERNETES ) {
       return [];
     }
 
-
-    var out = [
-      { label: 'action.edit',           icon: 'icon icon-edit',           action: 'edit',             enabled: !!a.update },
+    let out = [
+      { label: 'action.addContainer',   icon: 'icon icon-container',      action: 'addContainer',     enabled: true },
+      { divider: true },
+      { label: 'action.activateServices',   icon: 'icon icon-play',       action: 'activateServices',   enabled: !!a.activateservices },
+      { label: 'action.deactivateServices', icon: 'icon icon-stop',       action: 'deactivateServices', enabled: !!a.deactivateservices },
+      { divider: true },
+      { label: 'action.edit',           icon: 'icon icon-edit',           action: 'edit',             enabled: !!l.update },
       { label: 'action.viewConfig',     icon: 'icon icon-files',          action: 'viewCode',         enabled: !!a.exportconfig },
       { label: 'action.exportConfig',   icon: 'icon icon-download',       action: 'exportConfig',     enabled: !!a.exportconfig },
 //      { label: 'action.viewGraph',      icon: 'icon icon-share',          action: 'viewGraph',        enabled: true },
       { divider: true },
-      { label: 'action.rollback',       icon: 'icon icon-history',        action: 'rollback',         enabled: !!a.rollback },
-      { label: 'action.remove',         icon: 'icon icon-trash',          action: 'promptDelete',     enabled: !!a.remove,                altAction: 'delete'},
+      { label: 'action.remove',         icon: 'icon icon-trash',          action: 'promptDelete',     enabled: !!l.remove, altAction: 'delete'},
       { divider: true },
       { label: 'action.viewInApi',      icon: 'icon icon-external-link',  action: 'goToApi',          enabled: true },
     ];
 
     return out;
-  }.property('actionLinks.{remove,purge,exportconfig,rollback,update}','externalIdInfo.kind'),
+  }.property('actionLinks.{exportconfig,deactivateservices,activateservices}','links.{update,remove}','externalIdInfo.kind'),
 
   canViewConfig: function() {
     return !!this.get('actionLinks.exportconfig');
@@ -153,16 +135,8 @@ var Stack = Resource.extend(StateCounts, {
   combinedState: function() {
     var stack = this.get('state');
     var health = this.get('healthState');
-    if ( ['active','updating-active'].indexOf(stack) === -1 )
-    {
-      // If the stack isn't active, return its state
-      return stack;
-    }
 
-    // @TODO include individual containers
-    let hasCheck = !!this.get('realServices').findBy('launchConfig.healthCheck')
-
-    if ( hasCheck && health ) {
+    if ( stack === 'active' && health ) {
       return health;
     } else {
       return stack;
@@ -177,10 +151,31 @@ var Stack = Resource.extend(StateCounts, {
     return (this.get('name')||'').toLowerCase() === 'default';
   }.property('name'),
 
+  isEmpty: Ember.computed('instances.length', 'services.length', function() {
+
+    if (Ember.isEmpty(this.get('instances')) && Ember.isEmpty(this.get('services'))) {
+      return true;
+    }
+
+    return false;
+  }),
+
   isFromCatalog: function() {
     let kind = this.get('externalIdInfo.kind');
     return kind === C.EXTERNAL_ID.KIND_CATALOG || kind === C.EXTERNAL_ID.KIND_SYSTEM_CATALOG;
   }.property('externalIdInfo.kind'),
+
+  // This only works if the templates have already been loaded elsewhere...
+  catalogTemplate: function() {
+    return this.get('catalog').getTemplateFromCache(this.get('externalIdInfo.templateId'));
+  }.property('externalIdInfo.templateId'),
+
+  icon: function() {
+    let tpl = this.get('catalogTemplate');
+    if ( tpl ) {
+      return tpl.linkFor('icon');
+    }
+  }.property('catalogTemplate'),
 
   grouping: function() {
     var kind = this.get('externalIdInfo.kind');
@@ -199,9 +194,18 @@ var Stack = Resource.extend(StateCounts, {
     }
   }.property('externalIdInfo.kind','group','system'),
 
-  tags: Ember.computed('group', {
+  normalizedTags: Ember.computed('group', {
     get() {
       return tagsToArray(this.get('group'));
+    },
+    set(key,value) {
+      this.set('group', (value||[]).map((x) => normalizeTag(x)).join(', '));
+      return value;
+    }
+  }),
+  tags: Ember.computed('group', {
+    get(){
+      return tagsToArray(this.get('group'), false);
     },
     set(key,value) {
       this.set('group', (value||[]).map((x) => normalizeTag(x)).join(', '));

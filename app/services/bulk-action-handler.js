@@ -15,6 +15,6 @@ export default Ember.Service.extend({
   },
 
   promptDelete: function(nodes) {
-    this.get('modalService').toggleModal('confirm-delete', nodes);
+    this.get('modalService').toggleModal('confirm-delete', {resources: nodes});
   },
 });

@@ -7,14 +7,22 @@ export default Ember.Component.extend({
   selectClass:       'form-control',
   canBalanceTo:      false, // require service have canBalanceTo=true
   canHaveContainers: false, // require service have hasContainers=true
+  canBeSystem:       true, // allow service to have system=true
   exclude:           null,  // ID or array of IDs to exclude from list
 
   // For use as a catalog question
   field: null,              // Read default from a schema resourceField
   value: null,              // stackName/serviceName string output
 
+  // For other abuses
+  obj: null,
+
   init() {
     this._super(...arguments);
+
+    if ( this.get('obj') ) {
+      this.set('selected', this.get('obj.id'));
+    }
 
     let def = this.get('field.default');
     if ( def && !this.get('selected') ) {
@@ -36,15 +44,11 @@ export default Ember.Component.extend({
   },
 
   grouped: function() {
-    let list = this.get('allServices.list');
-
-    if ( this.get('canBalanceTo') ) {
-      list = list.filterBy('obj.canBalanceTo',true);
-    }
-
-    if ( this.get('canHaveContainers') ) {
-      list = list.filterBy('obj.canHaveContainers',true);
-    }
+    let list = this.get('allServices.list').filter((item) => {
+      return (!this.get('canBalanceTo') || item.obj.get('canBalanceTo')) &&
+             (!this.get('canHaveContainers') || item.obj.get('canHaveContainers')) &&
+             ( this.get('canBeSystem') || !item.obj.get('system'));
+    });
 
     let exclude = this.get('exclude');
     if ( exclude ) {
@@ -57,7 +61,7 @@ export default Ember.Component.extend({
 
     let out = this.get('allServices').group(list);
     let selected = this.get('allServices').byId(this.get('selected'));
-    if ( selected && !list.includes(selected) ) {
+    if ( selected && !list.findBy('id', selected.get('id')) ) {
       out['(Selected)'] = [{
         id: selected.get('id'),
         name: selected.get('displayName'),
@@ -72,14 +76,16 @@ export default Ember.Component.extend({
   selectedChanged: function() {
     let id = this.get('selected');
     let str = null;
+    let service = null;
 
     if ( id ) {
-      let service = this.get('allServices').byId(id);
+      service = this.get('allServices').byId(id);
       if ( service ) {
         str = service.get('stack.name') + '/' + service.get('name');
       }
     }
 
     this.set('value', str);
+    this.set('obj', service);
   }.observes('selected'),
 });

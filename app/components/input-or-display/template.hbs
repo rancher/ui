@@ -2,7 +2,11 @@
   {{yield}}
 {{else}}
   {{#if value}}
-    <div class={{classesForDisplay}}>{{value}}</div>
+    {{#if obfuscate}}
+      <div class={{classesForDisplay}}>{{obfuscatedValue}}</div>
+    {{else}}
+      <div class={{classesForDisplay}}>{{value}}</div>
+    {{/if}}
   {{else}}
     <div class="{{classesForDisplay}} text-muted">{{t 'generic.na'}}</div>
   {{/if}}

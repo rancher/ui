@@ -1,0 +1,79 @@
+<section class="horizontal-form container-fluid">
+  <h2>{{t 'editAccount.title'}}</h2>
+  <hr>
+
+  <div class="row">
+   {{#if isAdmin}}
+      <div class="col span-6 mb-0">
+      <label class="acc-label">{{t 'editAccount.form.name.label'}}</label>
+      {{input type="text" value=model.account.name classNames="form-control" placeholder=(t 'editAccount.form.name.placeholder')}}
+      </div>
+    {{else}}
+      <div>
+      <label class="acc-label">{{t 'editAccount.form.name.label'}}</label>
+        {{model.account.name}}
+      </div>
+    {{/if}}
+
+    {{#if isAdmin}}
+      <div class="col span-6 mb-0">
+        <label class="acc-label" for="description">{{t 'editAccount.form.description.label'}}</label>
+        {{textarea value=model.account.description classNames="form-control no-resize" rows="2" placeholder=(t 'editAccount.form.description.placeholder')}}
+      </div>
+    {{/if}}
+  </div>
+  <hr/>
+  {{#if isAdmin}}
+    <div>
+      <label class="acc-label">{{t 'editAccount.form.kind.label'}}</label>
+      {{new-select
+        classNames="form-control"
+        content=accountTypeChoices
+        value=model.account.kind
+        localizedLabel=true
+      }}
+      </div>
+  {{/if}}
+
+  {{#if isLocalAuth}}
+    <div class="pt-30">
+      <label class="acc-label">{{t 'editAccount.form.publicValue.label'}}</label>
+      <div>
+        {{model.credential.publicValue}}
+      </div>
+    </div>
+
+    {{#if needOld}}
+      <div class="">
+        <label class="acc-label">{{t 'editAccount.form.oldPassword.label'}}</label>
+        {{input type="password" value=oldPassword classNames="form-control"}}
+      </div>
+    {{/if}}
+
+    <div class="pt-30">
+        <label class="acc-label">{{t 'editAccount.form.newPassword.label'}}</label>
+        {{schema/input-password value=newPassword generated="generated"}}
+        <div class="text-info">{{validateDescription}}</div>
+    </div>
+
+    {{#liquid-if showConfirm}}
+      <div class="pt-30">
+        <label class="acc-label">{{t 'editAccount.form.confirmPassword.label'}}</label>
+        {{input type="password" value=newPassword2 classNames="form-control"}}
+      </div>
+    {{/liquid-if}}
+  {{else}}
+    <div class="pt-30">
+        <label class="acc-label">{{t 'editAccount.form.identity.label'}}</label>
+        {{#if (and model.account.externalId model.account.externalIdType)}}
+          {{identity-block externalIdType=model.account.externalIdType externalId=model.account.externalId}}
+        {{else}}
+          <div class="text-muted">
+            {{t 'generic.none'}}
+          </div>
+        {{/if}}    </div>
+  {{/if}}
+</section>
+
+{{top-errors errors=errors}}
+{{save-cancel editing=editing save="save" cancel="cancel"}}

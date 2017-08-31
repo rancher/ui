@@ -9,8 +9,11 @@ export default Ember.Component.extend({
   saveDisabled: false,
   cancelDisabled: false,
   savedLabel: 'saveCancel.saved',
+  saveColor: 'bg-primary',
+  savedColor: 'bg-success',
+  cancelColor: 'bg-transparent',
   forFooter: true,
-  classNames: ['text-center', 'pt-20', 'pb-20'],
+  classNames: ['text-center', 'pt-20'],
 
   classNamesBindings: ['forFooter:footer-actions'],
   saving: false,

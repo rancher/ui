@@ -1,14 +1,14 @@
 <div class="{{rowClass}} gutless">
   <div class="{{if (or hasBlock descriptionExpanded) bothColClass colClass}}" style="padding-right: 1%">
-    <div>
-      <label class="pb-5 acc-label">{{t nameLabel}}{{#if nameRequired}}{{field-required}}{{/if}}</label>
+
+      <label for="{{concat elementId '-form-name'}}" class="pb-5 acc-label">{{t nameLabel}}{{#if nameRequired}}{{field-required}}{{/if}}</label>
       {{#if (and descriptionShown (not descriptionExpanded))}}
         <div class="pull-right text-small">
           <a role="button" class="btn bg-transparent p-0" {{action "expandDescription"}}>{{t expandDescriptionAction}}</a>
         </div>
       {{/if}}
-    </div>
-    {{input type="text" value=_name classNames="form-control" placeholder=(t namePlaceholder) disabled=nameDisabled}}
+
+    {{input id=(concat elementId '-form-name') type="text" value=_name classNames="form-control" placeholder=(t namePlaceholder) disabled=nameDisabled}}
     {{#if nameHelpText}}<p class="text-info">{{nameHelpText}}</p>{{/if}}
   </div>
   {{#if hasBlock}}
@@ -20,9 +20,9 @@
   {{#if (and descriptionShown descriptionExpanded)}}
     <div class="{{if (or hasBlock descriptionExpanded) bothColClass colClass}}" style="padding-right: 1%;">
       <div>
-        <label class="pb-5 acc-label desc-label">{{t descriptionLabel}}{{#if descriptionRequired}}{{field-required}}{{/if}}</label>
+        <label for="{{concat elementId '-form-description'}}" class="pb-5 acc-label desc-label">{{t descriptionLabel}}{{#if descriptionRequired}}{{field-required}}{{/if}}</label>
       </div>
-      {{textarea-autogrow value=_description classNames="form-control no-resize description" rows="1" placeholder=descriptionPlaceholder disabled=descriptionDisabled}}
+      {{textarea-autogrow id=(concat elementId '-form-description') value=_description classNames="form-control no-resize description" rows="1" placeholder=descriptionPlaceholder disabled=descriptionDisabled}}
       {{#if descriptionHelp}}<p class="text-info">{{t descriptionHelp}}</p>{{/if}}
     </div>
   {{/if}}

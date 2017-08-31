@@ -1,12 +1,14 @@
 <section class="header clearfix">
-  <h1 class="pull-left">
-    {{t 'servicePage.header' type=service.displayType name=service.displayName}}
-  </h1>
-  {{#if service.canHaveContainers}}
-    <div class="pull-left mt-5">
-      {{info-multi-stats model=service largeTargetId="largeStats"}}
-    </div>
-  {{/if}}
+  <div class="pull-left">
+    <h1 class="vertical-middle">
+      {{t 'servicePage.header' type=service.displayType name=service.displayName}}
+    </h1>
+    {{#if (and service.canHaveContainers (not service.isSelector))}}
+      <div class="vertical-middle">
+        {{info-multi-stats model=service largeTargetId="largeStats"}}
+      </div>
+    {{/if}}
+  </div>
   <div class="right-buttons">
     {{badge-state model=service}}
     {{action-menu model=service showPrimary=false classNames="ml-10 pull-right" size="sm"}}
@@ -20,126 +22,234 @@
   {{banner-message color='bg-secondary mb-0 mt-10' message=model.description}}
 {{/if}}
 
-{{!todo copy pasta}}
 <section>
   <div class="row banner bg-info basics">
-
-    {{#if service.launchConfig.memoryReservation}}
-      <div class="inline-block">
-        <label class="acc-label p-0">{{t 'containersPage.containerPage.infoMultiStats.memoryReservation.labelText'}}</label>
-        {{service.memoryReservationBlurb}}
+    {{#if service.externalIpAddresses}}
+      <div class="vertical-middle">
+        <label class="text-muted ml-15">{{t 'servicePage.external.externalIp' count=service.externalIpAddresses.length}}</label>
+        {{join-array service.externalIpAddresses}}
+      </div>
+    {{else if service.hostname}}
+      <div class="vertical-middle">
+        <label class="text-muted">{{t 'servicePage.external.externalHostname'}} </label> {{service.hostname}}
+      </div>
+    {{else if service.selector}}
+      <div class="vertical-middle">
+        <label class="text-muted">{{t 'servicePage.selector.label'}} </label> {{service.selector}}
       </div>
     {{/if}}
 
-    {{#if service.launchConfig.milliCpuReservation}}
-      <div class="inline-block">
-        <label class="acc-label p-0">{{t 'containersPage.containerPage.infoMultiStats.milliCpuReservation.labelText'}}</label>
-        {{service.launchConfig.milliCpuReservation}}
+    {{#if service.hasImage}}
+      <div class="vertical-middle">
+        <label class="acc-label vertical-middle p-0">{{t 'servicePage.multistat.image'}}</label>
+        {{fixedLaunchConfig.image}} {{copy-to-clipboard clipboardText=fixedLaunchConfig.image size="small"}}
+      </div>
+    {{/if}}
+
+    {{#if fixedLaunchConfig.memoryReservation}}
+      <div class="vertical-middle">
+        <label class="acc-label vertical-middle p-0">{{t 'containersPage.containerPage.infoMultiStats.memoryReservation.labelText'}}</label>
+        {{fixedLaunchConfig.memoryReservationBlurb}}
+      </div>
+    {{/if}}
+
+    {{#if fixedLaunchConfig.milliCpuReservation}}
+      <div class="vertical-middle">
+        <label class="acc-label vertical-middle p-0">{{t 'containersPage.containerPage.infoMultiStats.milliCpuReservation.labelText'}}</label>
+        {{fixedLaunchConfig.milliCpuReservation}}
       </div>
     {{/if}}
 
     {{#if service.fqdn}}
-      <div class="inline-block">
-        <label class="acc-label p-0">{{t 'servicePage.multistat.fqdn'}}</label>
+      <div class="vertical-middle">
+        <label class="acc-label vertical-middle p-0">{{t 'servicePage.multistat.fqdn'}}</label>
         <a href="http://{{service.fqdn}}">{{service.fqdn}}</a> {{copy-to-clipboard clipboardText=service.fqdn size="small"}}
       </div>
       <hr>
     {{/if}}
 
-    <div class="inline-block">
-      <label class="acc-label p-0" style="vertical-align: middle;">{{t 'servicePage.multistat.scale'}}</label>
-      {{#if service.canScale}}
-        <span class="pr-5" style="vertical-align: middle;">{{service.scale}}</span>
-        <div class="btn-group btn-group-xs p-0" style="vertical-align: middle;">
-          <button class="btn bg-secondary btn-xs" {{action "scaleDown" target=service}} disabled={{eq service.scale 1}}><i class="icon icon-minus"></i></button>
-          <button style="margin-left:1px;" class="btn bg-secondary btn-xs" {{action "scaleUp" target=service}}><i class="icon icon-plus"></i></button>
+    {{#if service.canScale}}
+      <div class="vertical-middle">
+        <label class="acc-label vertical-middle p-0">{{t 'servicePage.multistat.scale'}}</label>
+        <span class="pr-5">
+          {{service.displayScale}}
+        </span>
+        <div class="btn-group btn-group-xs p-0">
+          <button class="btn btn-xs bg-primary" {{action "scaleDown" target=service}} disabled={{not service.canScaleDown}}><i class="icon icon-minus icon-fw"/></button>
+          <button style="margin-left: -5px;" class="btn btn-xs bg-primary" {{action "scaleUp" target=service}} disabled={{not service.canScaleUp}}><i class="icon icon-plus icon-fw"/></button>
         </div>
-      {{else}}
-        {{if service.isGlobalScale (concat service.scale (t 'servicePage.globalScale')) (t 'generic.na')}}
-      {{/if}}
-    </div>
-
-    {{#if service.hasImage}}
-      <div class="inline-block">
-        <label class="acc-label p-0">{{t 'servicePage.multistat.image'}}</label>
-        {{service.launchConfig.displayImage}} {{copy-to-clipboard clipboardText=service.launchConfig.displayImage size="small"}}
       </div>
     {{/if}}
+
+
+    {{#if model.stack}}
+      <div class="vertical-middle">
+        <label class="acc-label vertical-middle p-0">{{t 'generic.stack'}}:</label>
+        {{#link-to "stack" projects.current.id model.stack.id}}{{model.stack.displayName}}{{/link-to}}
+      </div>
+    {{/if}}
+
   </div>
 </section>
 
 <section>
-  {{#accordion-list as |al expandFn| }}
-    {{#if (eq service.kind 'externalService')}}
-      {{!-- since external services are the only ones that have externalIp/hostname it didnt make sense to give extIps its own route like other services  --}}
-      <hr/>
-      <section>
-        <div>
-          {{#if service.externalIpAddresses}}
-            <label class="text-muted ml-15">{{t 'servicePage.external.externalIp'}}</label>
-            <ul class="list-unstyled list-inline with-room">
-              {{#each service.externalIpAddresses as |ip|}}
-                <li>
-                  <i class="icon icon-external-link"></i> {{ip}}
-                </li>
-              {{/each}}
-            </ul>
-          {{else}}
-            <label class="text-muted">{{t 'servicePage.external.externalHostname'}} </label> {{service.hostname}}
-          {{/if}}
-        </div>
-      </section>
-      <hr/>
-    {{/if}}
-
+  {{#accordion-list as |al expandFn|}}
     {{#if service.canHaveContainers}}
       {{#accordion-list-item
-           title=(t 'servicePage.containersTab.title')
-           detail=(t 'servicePage.containersTab.detail')
-           status=(t 'servicePage.containersTab.status' count=service.instances.length)
-           statusClass=(if service.instances.length 'bg-success' 'text-muted')
-           expandOnInit=true
-           expandAll=al.expandAll
-           expand=(action expandFn)
-           componentName='container-table'
-           as | parent |
+        title=(t 'servicePage.containersTab.title')
+        detail=(t 'servicePage.containersTab.detail')
+        status=(t 'pagination.container' pages=1 count=service.instances.length)
+        statusClass=(if service.instances.length 'bg-success' 'text-muted')
+        expandOnInit=true
+        expandAll=al.expandAll
+        expand=(action expandFn)
+        componentName='container-table'
+        as |parent|
       }}
         {{component parent.intent
-            body=service.instances
-            bulkActions=true
-            search=true
-            searchText=searchText
-            showHost=true
+          body=service.instances
+          bulkActions=true
+          search=true
+          searchText=searchText
+          showHost=true
         }}
       {{/accordion-list-item}}
     {{/if}}
 
+    {{#if service.isReal}}
+      {{#accordion-list-item
+        title=(t 'containerPage.portsTab.header')
+        detail=(t 'containerPage.portsTab.detail')
+        status=(t 'pagination.port' pages=1 count=model.container.publicEndpoints.length)
+        statusClass=(if model.container.publicEndpoints.length 'bg-success' 'text-muted')
+        expandAll=al.expandAll
+        expand=(action expandFn)
+      }}
+        {{container/form-ports
+          initialPorts=model.service.launchConfig.ports
+          editing=false
+        }}
+        {{#if model.service.launchConfig.ports.length}}
+          <hr/>
+          <div class="mt-20">
+            <label class="acc-label">{{t 'containerPage.portsTab.header'}}</label>
+            {{public-endpoints
+                model=model.service
+            }}
+          </div>
+        {{/if}}
+      {{/accordion-list-item}}
+
+      {{#accordion-list-item
+        title=(t 'servicePage.logTab.title')
+        detail=(t 'servicePage.logTab.detail')
+        expandAll=al.expandAll
+        expand=(action expandFn)
+      }}
+        {{service-log model=model.service}}
+      {{/accordion-list-item}}
+
+      {{container/form-scheduling
+        initialHostId=activeLaunchConfig.requestedHostId
+        initialLabels=activeLaunchConfig.labels
+        isGlobal=model.service.isGlobalScale
+        allHosts=model.hosts
+        editing=false
+        expandAll=al.expandAll
+        expandFn=expandFn
+        classNames="accordion"
+      }}
+    {{/if}}
+
+    {{#if model.service.canHaveLinks}}
+      {{#accordion-list-item
+        title=(t 'servicePage.linksTab.header')
+        detail=(t 'servicePage.linksTab.detail')
+        status=(t 'pagination.link' pages=1 count=service.serviceLinks.length)
+        statusClass=(if service.serviceLinks.length 'bg-success' 'text-muted')
+        expandAll=al.expandAll
+        expand=(action expandFn)
+      }}
+        <ul class="list-unstyled list-inline with-room">
+          {{#each service.serviceLinks as |link|}}
+            <li>{{consumed-service-link link=link stackId=service.stackId}}</li>
+          {{else}}
+            <li class="text-muted text-center">{{t 'servicePage.linksTab.noData'}}</li>
+          {{/each}}
+        </ul>
+      {{/accordion-list-item}}
+    {{/if}}
+
+    {{#if model.service.canUpgrade}}
+      {{container/form-upgrade
+        service=model.service
+        editing=false
+        errors=upgradeErrors
+        isUpgrade=isUpgrade
+        expandAll=al.expandAll
+        expandFn=expandFn
+      }}
+    {{/if}}
+
+    <hr/>
+
+    {{#if service.hasSidekicks}}
+      <hr/>
+      <div class="header has-tabs mt-20">
+
+        <div class="title">
+          <span class="m-0">{{t 'servicePage.sidekick.header'}}</span>
+          <p class="help-block">{{t 'servicePage.sidekick.helpBlock'}}</p>
+        </div>
+
+        <ul class="tab-nav">
+          <li><a href="#" class="{{if (eq activeLaunchConfig.type 'launchConfig') 'active'}}" {{action 'selectMaster'}}>{{service.displayName}}</a></li>
+          {{#each service.secondaryLaunchConfigs as |sidekick index|}}
+            <li><a href="#"  class="{{if (eq activeLaunchConfig.name sidekick.name) 'active'}}" {{action 'selectSidekick' index}}>{{t 'servicePage.sidekick.tabHeader'}}: {{sidekick.name}}</a></li>
+          {{/each}}
+        </ul>
+
+      </div>
+    {{/if}}
+
+    {{#if (and service.isReal (not service.isBalancer))}}
+      {{container/form-command
+        tagName=''
+        instance=activeLaunchConfig
+        isService=true
+        initialLabels=activeLaunchConfig.labels
+        editing=false
+        expandAll=al.expandAll
+        expandFn=expandFn
+      }}
+    {{/if}}
+
     {{#if service.lbConfig}}
       {{#accordion-list-item
-           title=(t 'formBalancerRules.label')
-           detail=(t 'formBalancerRules.detail')
-           status=(t 'formBalancerRules.status' count=(if rules.length rules.length 0))
-           statusClass=(if rules.length 'bg-success' 'text-muted')
-           expandAll=al.expandAll
-           expand=(action expandFn)
-           componentName='sortable-table'
-           as | parent |
+        title=(t 'formBalancerRules.label')
+        detail=(t 'formBalancerRules.detail')
+        status=(t 'pagination.rule' pages=1 count=(if rules.length rules.length 0))
+        statusClass=(if rules.length 'bg-success' 'text-muted')
+        expandAll=al.expandAll
+        expand=(action expandFn)
+        componentName='sortable-table'
+        as |parent|
       }}
         {{form-balancer-listeners
-            service=service
-            errors=ruleErrors
-            editing=false
+          service=service
+          errors=ruleErrors
+          editing=false
         }}
       {{/accordion-list-item}}
 
       {{#if service.isBalancer}}
         {{#accordion-list-item
-             title=(t 'servicePage.certsTab.title')
-             detail=(t 'servicePage.certsTab.detail')
-             status=(t 'servicePage.certsTab.status' count=(if model.service.lbConfig.certificateIds.length model.service.lbConfig.certificateIds.length 0))
-             statusClass=(if model.service.lbConfig.certificateIds.length 'bg-success' 'text-muted')
-             expandAll=al.expandAll
-             expand=(action expandFn)
+          title=(t 'servicePage.certsTab.title')
+          detail=(t 'servicePage.certsTab.detail')
+          status=(t 'pagination.certificate' pages=1 count=(if model.service.lbConfig.certificateIds.length model.service.lbConfig.certificateIds.length 0))
+          statusClass=(if model.service.lbConfig.certificateIds.length 'bg-success' 'text-muted')
+          expandAll=al.expandAll
+          expand=(action expandFn)
         }}
           <div class="row">
             <div class="box col span-6">
@@ -170,110 +280,71 @@
     {{/if}}
 
 
-    {{#if (and service.isReal (not service.isBalancer))}}
-      {{container/form-command
-          tagName=''
-          instance=service
-          isService=true
-          initialLabels=service.launchConfig.labels
-          editing=false
-          expandAll=al.expandAll
-          expandFn=expandFn
-      }}
-    {{/if}}
-
-    {{#if (not service.isBalancer)}}
+    {{#if service.canHaveEnvironment}}
       {{form-env-var
-          model=model.service.displayEnvironmentVars
-          expandAll=al.expandAll
-          expandFn=expandFn
+        model=activeLaunchConfig.displayEnvironmentVars
+        expandAll=al.expandAll
+        expandFn=expandFn
       }}
     {{/if}}
 
-    {{labels-section model=service.launchConfig tagName='' expandAll=al.expandAll expandFn=expandFn}}
-
-    {{#accordion-list-item
-          title=(t 'servicePage.linksTab.header')
-          detail=(t 'servicePage.linksTab.detail')
-          status=(t 'servicePage.linksTab.status' count=service.consumedServicesWithNames.length)
-          statusClass=(if service.consumedServicesWithNames.length 'bg-success' 'text-muted')
-          expandAll=al.expandAll
-          expand=(action expandFn)
-    }}
-      <ul class="list-unstyled list-inline with-room">
-        {{#each service.consumedServicesWithNames as |link|}}
-          <li>{{consumed-service-link link=link stackId=service.stackId}}</li>
-        {{else}}
-          <li class="text-muted text-center">{{t 'servicePage.linksTab.noData'}}</li>
-        {{/each}}
-      </ul>
-    {{/accordion-list-item}}
-
-    {{#if (and service.hasPorts (not service.isBalancer))}}
-      {{#accordion-list-item
-           title=(t 'servicePage.portsTab.title')
-           detail=(t 'servicePage.portsTab.detail')
-           status=(t 'servicePage.portsTab.status' count=service.endpointsByPort.length)
-           statusClass=(if service.endpointsByPort.length 'bg-success' 'text-muted')
-           expandAll=al.expandAll
-           expand=(action expandFn)
-           componentName='sortable-table'
-           as | parent |
+    {{#if service.canHaveHealthCheck}}
+      {{form-healthcheck
+        healthCheck=activeLaunchConfig
+        editing=false
+        expandAll=al.expandAll
+        expandFn=expandFn
+        classNames="accordion"
       }}
-        {{#if service.isActive}}
-          {{#if service.publicEndpoints}}
-
-            {{#component parent.intent
-                 classNames="grid sortable-table"
-                 body=service.publicEndpoints
-                 searchText=searchText
-                 sortBy=portSortBy
-                 bulkActions=false
-                 rowActions=false
-                 stickyHeader=false
-                 pagingLabel="pagination.port"
-                 isVisible=parent.expanded
-                 headers=portHeaders as |sortable kind port dt|
-            }}
-              {{#if (eq kind "row")}}
-                <td data-title="{{dt.ipAddress}}">
-                  {{#if (eq "0.0.0.0" port.ipAddress)}}
-                    <span class="text-muted">{{t 'generic.all'}}</span>
-                  {{else}}
-                    {{port.ipAddress}}
-                  {{/if}}
-                </td>
-                <td data-title="{{dt.port}}">
-                  {{#if port.port}}
-                    {{port.port}}
-                  {{else}}
-                    <span class="text-muted">{{t 'generic.none'}}</span>
-                  {{/if}}
-                </td>
-              {{else if (eq kind "nomatch")}}
-                <tr><td colspan="{{sortable.fullColspan}}" class="text-center text-muted pt-20 pb-20">{{t 'containerPage.portsTab.table.noMatch'}}</td></tr>
-              {{else if (eq kind "norows")}}
-                <tr><td colspan="{{sortable.fullColspan}}" class="text-center text-muted pt-20 pb-20">{{t 'containerPage.portsTab.table.noData'}}</td></tr>
-              {{/if}}
-            {{/component}}
-          {{/if}}
-
-        {{else}}
-          <div class="text-center text-muted">{{t 'servicePage.portsTab.notActive'}}</div>
-        {{/if}}
-      {{/accordion-list-item}}
     {{/if}}
 
+    {{#if service.canHaveLabels}}
+      {{labels-section
+        model=activeLaunchConfig
+        tagName=''
+        expandAll=al.expandAll
+        expandFn=expandFn
+      }}
+    {{/if}}
 
-    {{#accordion-list-item
-          title=(t 'servicePage.logTab.title')
-          detail=(t 'servicePage.logTab.detail')
-          status=(t 'servicePage.logTab.status' count=model.logs.arrangedContent.length)
-          statusClass=(if model.logs.arrangedContent.length 'bg-success' 'text-muted')
-          expandAll=al.expandAll
-          expand=(action expandFn)
-    }}
-      {{service-log logs=model.logs.arrangedContent}}
-    {{/accordion-list-item}}
+    {{#if service.canChangeNetworking}}
+      {{container/form-networking
+        editing=false
+        instance=model.service
+        initialLabels=activeLaunchConfig.labels
+        expandAll=al.expandAll
+        expandFn=expandFn
+      }}
+    {{/if}}
+
+    {{#if service.canChangeSecurity}}
+      {{container/form-security
+        instance=activeLaunchConfig
+        editing=false
+        expandAll=al.expandAll
+        expandFn=expandFn
+      }}
+    {{/if}}
+
+    {{#if service.canHaveSecrets}}
+      {{container/form-secrets
+        instance=activeLaunchConfig
+        editing=false
+        expandAll=al.expandAll
+        expandFn=expandFn
+        classNames="accordion"
+      }}
+    {{/if}}
+
+    {{#if service.isBalancer}}
+      {{form-stickiness
+        initialLabels=activeLaunchConfig.labels
+        service=model.service
+        editing=false
+        expandAll=al.expandAll
+        expandFn=expandFn
+      }}
+    {{/if}}
+
   {{/accordion-list}}
 </section>

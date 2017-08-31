@@ -32,7 +32,7 @@ export default Ember.Controller.extend(NewOrEdit, {
     let outFiles = {};
     let compose = this.get('compose');
     if ( compose ) {
-      outFiles['docker-compose.yml'] = compose;
+      outFiles['compose.yml'] = compose;
     }
 
     let userFiles = this.get('files')||[];

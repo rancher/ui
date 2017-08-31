@@ -4,6 +4,8 @@ export default Ember.Component.extend({
   model: null,
   tagName: 'TR',
 
+  showCluster: false,
+
   projects: Ember.inject.service(),
 
   actions: {

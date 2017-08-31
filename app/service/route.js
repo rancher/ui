@@ -1,57 +1,32 @@
 import Ember from 'ember';
-import FilteredSorted from 'ui/utils/filtered-sorted-array-proxy';
 
 export default Ember.Route.extend({
   model: function(params) {
-    var service = this.get('store').getById('service', params.scaling_group_id);
-    if ( service )
-    {
-      return this.getServiceLogs(service).then((resp) => {
-        return Ember.Object.create({
-          service: service,
-          stack: service.get('stack'),
-          logs: resp.logs,
-        });
-      });
-    }
-    else
-    {
-      return this.get('store').find('service', params.scaling_group_id).then((service) => {
-        return Ember.Object.create({
-          service: service,
-          stack: service.get('stack'),
-        });
-      });
-    }
+    return Ember.RSVP.hash({
+      service: this.get('store').find('service', params.service_id),
+    }).then((hash) => {
+      return Ember.Object.create(hash);
+    });
   },
+
   afterModel(model) {
     if (model.get('service.initPorts')) {
       model.get('service').initPorts();
     }
+    if (model.get('service.stackId')) {
+      model.set('stack', this.get('store').getById('stack', model.get('service.stackId')));
+    }
   },
-  getServiceLogs(model) {
-    let par = model;
-    let serviceId = par.get('id');
 
-    // Find just the recent ones for this service
-    return this.get('store').find('serviceLog', null,{
-      filter: {serviceId: serviceId},
-      sortBy: 'id',
-      sortOrder: 'desc',
-      depaginate: false,
-      limit: 100
-    }).then(() => {
-      let all = this.get('store').all('serviceLog');
-      return Ember.Object.create({
-        logs: FilteredSorted.create({
-          sourceContent: all,
-          sortProperties: ['createdTS:desc'],
-          dependentKeys: ['sourceContent.@each.serviceId'],
-          filterFn: function(log) {
-            return log.get('serviceId') === serviceId;
-          }
-        })
+  setupController(controller, model) {
+    this._super(...arguments);
+
+    let lc = model.get('service.launchConfig');
+    if (lc) {
+      controller.setProperties({
+        fixedLaunchConfig:  lc,
+        activeLaunchConfig: lc,
       });
-    });
+    }
   }
 });

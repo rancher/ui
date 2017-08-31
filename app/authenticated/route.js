@@ -55,10 +55,12 @@ export default Ember.Route.extend(Subscribe, PromiseToCb, {
     let promise = new Ember.RSVP.Promise((resolve, reject) => {
       let tasks = {
         userSchemas:                                    this.toCb('loadUserSchemas'),
+        clusters:                                       this.toCb('loadClusters'),
         projects:                                       this.toCb('loadProjects'),
         preferences:                                    this.toCb('loadPreferences'),
         settings:                                       this.toCb('loadPublicSettings'),
-        project:            ['projects', 'preferences', this.toCb('selectProject',transition)],
+        project:            ['clusters','projects', 'preferences',
+                                                        this.toCb('selectProject',transition)],
         projectSchemas:     ['project',                 this.toCb('loadProjectSchemas')],
         orchestrationState: ['projectSchemas',          this.toCb('updateOrchestration')],
         instances:          ['projectSchemas',          this.cbFind('instance')],
@@ -68,6 +70,7 @@ export default Ember.Route.extend(Subscribe, PromiseToCb, {
         mounts:             ['projectSchemas',          this.cbFind('mount', 'store', {filter: {state_ne: 'inactive'}})],
         storagePools:       ['projectSchemas',          this.cbFind('storagepool')],
         volumes:            ['projectSchemas',          this.cbFind('volume')],
+        volumeTemplates:    ['projectSchemas',          this.cbFind('volumetemplate')],
         certificate:        ['projectSchemas',          this.cbFind('certificate')],
         secret:             ['projectSchemas',          this.toCb('loadSecrets')],
         identities:         ['userSchemas', this.cbFind('identity', 'userStore')],
@@ -110,7 +113,7 @@ export default Ember.Route.extend(Subscribe, PromiseToCb, {
       if ( this.get('access.admin') && (!opt || opt === 'prompt') )
       {
         Ember.run.scheduleOnce('afterRender', this, function() {
-          this.get('modalService').toggleModal('modal-welcome');
+          this.get('modalService').toggleModal('modal-telemetry');
         });
       }
       else if ( form && !this.get(`prefs.${C.PREFS.FEEDBACK}`) )
@@ -142,7 +145,7 @@ export default Ember.Route.extend(Subscribe, PromiseToCb, {
       return;
     }
 
-    this.replaceWith('settings.projects');
+    this.replaceWith('authenticated.clusters');
     return ret;
   },
 
@@ -196,6 +199,10 @@ export default Ember.Route.extend(Subscribe, PromiseToCb, {
     });
   },
 
+  loadClusters() {
+    return this.get('userStore').find('cluster', null, {url: 'clusters'});
+  },
+
   loadProjects() {
     let svc = this.get('projects');
     return svc.getAll().then((all) => {
@@ -209,7 +216,7 @@ export default Ember.Route.extend(Subscribe, PromiseToCb, {
   },
 
   loadPublicSettings() {
-    return this.get('userStore').find('setting', null, {url: 'setting', forceReload: true, filter: {all: 'false'}});
+    return this.get('userStore').find('setting', null, {url: 'settings', forceReload: true, filter: {all: 'false'}});
   },
 
   loadSecrets() {
@@ -244,6 +251,26 @@ export default Ember.Route.extend(Subscribe, PromiseToCb, {
   },
 
   actions: {
+
+    changeTheme: function() {
+      var userTheme = this.get('userTheme');
+      var currentTheme  = userTheme.getTheme();
+
+      switch (currentTheme) {
+      case 'ui-light':
+        userTheme.setTheme('ui-dark');
+        break;
+      case 'ui-dark':
+        userTheme.setTheme('ui-auto');
+        break;
+      case 'ui-auto':
+        userTheme.setTheme('ui-light');
+        break;
+      default:
+        break;
+      }
+    },
+
     error(err,transition) {
       // Unauthorized error, send back to login screen
       if ( err.status === 401 )
@@ -282,12 +309,13 @@ export default Ember.Route.extend(Subscribe, PromiseToCb, {
     },
 
     gotoA() { this._gotoRoute('apps-tab.index'); },
+    gotoB() { this._gotoRoute('balancers.index'); },
     gotoC() { this._gotoRoute('containers.index'); },
     gotoD() { this._gotoRoute('dns.index'); },
-    gotoE() { this._gotoRoute('settings.projects.index', false); },
+    gotoE() { this._gotoRoute('authenticated.clusters.index', false); },
     gotoH() { this._gotoRoute('hosts.index'); },
     gotoK() { this._gotoRoute('authenticated.project.apikeys'); },
-    gotoL() { this._gotoRoute('balancers.index'); },
+    gotoV() { this._gotoRoute('volumes.index'); },
 
     help()  {
       this.get('modalService').toggleModal('modal-shortcuts');
@@ -295,7 +323,7 @@ export default Ember.Route.extend(Subscribe, PromiseToCb, {
 
     gotoP() {
       if ( this.get('access.admin') ) {
-        this._gotoRoute('admin-tab.processes');
+        this._gotoRoute('admin-tab.processes', false);
       }
     },
 
@@ -339,17 +367,19 @@ export default Ember.Route.extend(Subscribe, PromiseToCb, {
 
   shortcuts: {
     'a': 'gotoA',
+    'b': 'gotoB',
     'c': 'gotoC',
     'd': 'gotoD',
     'e': 'gotoE',
     'h': 'gotoH',
     'shift+k': 'gotoK',
-    'l': 'gotoL',
     'n': 'neu',
     'p': 'gotoP',
     't': 'nextTab',
+    'v': 'gotoV',
     '/': 'search',
     'shift+/': 'help',
+    'shift+t': 'changeTheme',
     'backspace': 'delete',
     'delete': 'delete',
   },
