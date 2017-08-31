@@ -47,7 +47,7 @@ export default Ember.Component.extend(NewOrEdit, {
         serviceSelector: '',
         batchSize: 1,
         interval: 2,
-        registry: 'dockerhub',
+        payloadFormat: 'dockerhub',
         startFirst: false,
       });
       break;

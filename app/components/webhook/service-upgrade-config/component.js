@@ -2,9 +2,9 @@ import Ember from 'ember';
 
 export default Ember.Component.extend({
   tagName: '',
-  registryChoices: [
-    { label: 'newReceiver.registry.dockerhub', value: 'dockerhub' },
-    { label: 'newReceiver.registry.alicloud', value: 'alicloud' }
+  payloadFormatChoices: [
+    { label: 'newReceiver.payloadFormat.dockerhub', value: 'dockerhub' },
+    { label: 'newReceiver.payloadFormat.alicloud', value: 'alicloud' }
   ],
 
   actions: {
