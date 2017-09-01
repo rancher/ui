@@ -30,7 +30,7 @@ export default Ember.Controller.extend({
     },
     {
       name: 'state',
-      sort: ['stack.isDefault:desc','stack.displayName','stateSort','displayName'],
+      sort: ['stack.isDefault:desc','stack.displayName','sortState','displayName'],
       searchField: 'displayState',
       translationKey: 'generic.state',
       width: 120

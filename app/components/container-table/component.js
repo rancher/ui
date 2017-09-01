@@ -3,7 +3,7 @@ import Ember from 'ember';
 export const headersAll =  [
   {
     name: 'state',
-    sort: ['stateSort','sortName','id'],
+    sort: ['sortState','sortName','id'],
     searchField: 'displayState',
     translationKey: 'generic.state',
     width: 150,

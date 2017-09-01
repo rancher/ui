@@ -5,7 +5,7 @@ export default Ember.Controller.extend({
   headers: [
     {
       name:           'state',
-      sort:           ['stateSort','name','id'],
+      sort:           ['sortState','name','id'],
       translationKey: 'certificatesPage.index.table.header.state',
       width:          125,
     },

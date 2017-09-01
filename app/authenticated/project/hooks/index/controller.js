@@ -8,7 +8,7 @@ export default Ember.Controller.extend({
     {
       translationKey: 'generic.state',
       name: 'state',
-      sort: ['stateSort','name','id'],
+      sort: ['sortState','name','id'],
       width: '121'
     },
     {

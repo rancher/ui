@@ -4,7 +4,7 @@ import PolledResource from 'ui/mixins/cattle-polled-resource';
 import C from 'ui/utils/constants';
 import { parseExternalId } from 'ui/utils/parse-externalid';
 
-const builtInUi = ['amazonec2','azure','digitalocean','exoscale','packet','rackspace','vmwarevsphere','aliyunecs'];
+export const builtInUi = ['amazonec2','azure','digitalocean','exoscale','packet','rackspace','vmwarevsphere','aliyunecs'];
 
 function displayUrl(url) {
   url = url||'';

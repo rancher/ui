@@ -24,6 +24,19 @@
       descriptionPlaceholder="viewEditDescription.form.description.placeholder"
     }}
   </section>
+
+  <section class="pt-10">
+    <label class="pb-5 acc-label">{{t 'viewEditProject.showEdit.cluster.label'}}</label>
+    {{new-select
+      classNames="form-control"
+      optionValuePath="id"
+      optionLabelPath="displayName"
+      content=clusters
+      value=project.clusterId
+      prompt="viewEditProject.showEdit.cluster.prompt"
+      localizedPrompt=true
+    }}
+  </section>
 {{else if project.description}}
   <section class="pt-10">
     <label class="inline-block m-0">{{t 'viewEditProject.description'}}: </label>
