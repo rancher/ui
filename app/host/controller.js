@@ -16,7 +16,7 @@ export default Ember.Controller.extend(ContainerSparkStats, {
   storageHeaders:  [
     {
       name:           'state',
-      sort:           ['stateSort','displayUri','id'],
+      sort:           ['sortState','displayUri','id'],
       translationKey: 'hostsPage.hostPage.storageTab.table.header.state',
       width:          125,
     },

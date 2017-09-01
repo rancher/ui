@@ -41,7 +41,14 @@ export default Ember.Component.extend(NewOrEdit, {
       width:          '40',
     },
   ],
+
   stacks: null,
+  clusters: null,
+
+  init() {
+    this._super(...arguments);
+    this.set('clusters', this.get('userStore').all('cluster'));
+  },
 
   actions: {
     cancel() {

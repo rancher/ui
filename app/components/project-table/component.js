@@ -1,9 +1,9 @@
 import Ember from 'ember';
 
-export const headersWithCluster = [
+const headersWithCluster = [
   {
     name:           'state',
-    sort:           ['stateSort','name','id'],
+    sort:           ['sortState','name','id'],
     translationKey: 'generic.state',
     width:          125,
   },
@@ -11,11 +11,13 @@ export const headersWithCluster = [
     name:           'cluster',
     sort:           ['cluster.displayName','displayName','id'],
     translationKey: 'clustersPage.cluster.label',
+    searchField:   ['cluster.displayName'],
   },
   {
     name:           'name',
     sort:           ['displayName','id'],
     translationKey: 'clustersPage.environment.label',
+    searchField:    ['displayName'],
   },
   {
     name:           'stacks',
@@ -41,17 +43,25 @@ export const headersWithCluster = [
   {
     name:           'default',
     sort:           false,
-    translationKey: 'clusterBox.loginDefault',
+    translationKey: 'clusterRow.loginDefault',
     width:          60,
     classNames: 'text-center',
   },
 ];
 
-export const headersWithoutCluster = headersWithCluster.filter(x => x.name !== 'cluster');
+const headersWithoutCluster = headersWithCluster.filter(x => x.name !== 'cluster');
 
 export default Ember.Component.extend({
-  classNames: ['box','mt-20','pt-0'],
+  tagName: '',
+  showCluster: false,
+  bulkActions: true,
+  search: true,
 
-  sortBy:   'name',
-  headers:  headersWithoutCluster,
+  headers: Ember.computed('showCluster', function() {
+    if ( this.get('showCluster') ) {
+      return headersWithCluster;
+    } else {
+      return headersWithoutCluster;
+    }
+  }),
 });

@@ -1,0 +1,66 @@
+<tr class="main-row">
+  <td>
+    <i role="button" {{action "toggle"}} class="icon icon-play eased text-small text-muted {{if expanded 'icon-rotate-90'}}"><span class="visually-hidden">Open accordion</span></i>
+  </td>
+  <td data-title="{{dt.state}}" class="state">
+    {{badge-state model=model}}
+  </td>
+  <td data-title="{{dt.name}}">
+    <a href="{{href-to 'authenticated.clusters.cluster' model.id}}">{{model.displayName}}</a>
+  </td>
+  {{#if (eq model.state "inactive")}}
+    <td colspan="4" class="text-center">
+      {{#if (or model.registrationToken.hostCommand model.registrationToken.clusterCommand)}}
+        {{#if model.registrationToken.hostCommand}}
+          {{#link-to "authenticated.clusters.cluster.host-templates" model.id (query-params backTo="clusters") class="btn btn-sm bg-primary icon-btn ml-20"}}
+            <span class="darken"><i class="icon icon-host"></i></span>
+            <span>{{t 'clusterRow.addHost'}}</span>
+          {{/link-to}}
+        {{/if}}
+        {{#if model.registrationToken.clusterCommand}}
+          {{#link-to "authenticated.clusters.cluster.import" model.id class="btn btn-sm bg-primary icon-btn ml-20"}}
+            <span class="darken"><i class="icon icon-download"></i></span>
+            <span>{{t 'clusterRow.importCluster'}}</span>
+          {{/link-to}}
+        {{/if}}
+      {{else}}
+        {{t 'clusterRow.noHosts'}}
+      {{/if}}
+    </td>
+  {{else}}
+    <td data-title="{{dt.hosts}}" class="text-center">
+      {{model.numHosts}}
+    </td>
+    <td data-title="{{dt.cpu}}" class="text-center">
+      {{model.numGhz}} GHz
+    </td>
+    <td data-title="{{dt.memory}}" class="text-center">
+      {{model.numMem}} GiB
+    </td>
+    <td data-title="{{dt.storage}}" class="text-center">
+      {{model.numStorage}} GiB
+    </td>
+  {{/if}}
+  <td data-title="{{dt.actions}} "class="actions">
+    {{action-menu model=model}}
+  </td>
+</tr>
+
+<tr class="sub-row {{unless expanded 'hide'}}">
+  <td>{{! expand}}</td>
+  <td colspan="{{sub fullColspan 2}}">
+    {{#if expanded}}
+      {{project-table
+        model=model.projects
+        bulkActions=false
+        search=false
+      }}
+    {{/if}}
+  </td>
+</tr>
+
+{{#if expanded}}
+  <tr class="separator-row">
+    <td colspan="{{fullColspan}}"></td>
+  </tr>
+{{/if}}

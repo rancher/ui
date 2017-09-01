@@ -1,5 +1,52 @@
 import Ember from 'ember';
-import { headersWithCluster } from 'ui/components/cluster-box/component';
+
+const headers = [
+  {
+    name: 'expand',
+    sort: false,
+    searchField: null,
+    width: 30
+  },
+  {
+    name:           'state',
+    sort:           ['stateSort','name','id'],
+    translationKey: 'generic.state',
+    width:          125,
+  },
+  {
+    name:           'name',
+    sort:           ['displayName','id'],
+    translationKey: 'clustersPage.cluster.label',
+  },
+  {
+    name:           'hosts',
+    sort:           ['numHosts','name','id'],
+    translationKey: 'clustersPage.hosts.label',
+    width: 100,
+    classNames: 'text-center',
+  },
+  {
+    name:           'cpu',
+    sort:           ['numGhz','name','id'],
+    translationKey: 'clustersPage.cpu.label',
+    width: 100,
+    classNames: 'text-center',
+  },
+  {
+    name:           'memory',
+    sort:           ['numMem','name','id'],
+    translationKey: 'clustersPage.memory.label',
+    width: 100,
+    classNames: 'text-center',
+  },
+  {
+    name:           'storage',
+    sort:           ['numStorage','name','id'],
+    translationKey: 'clustersPage.storage.label',
+    width: 100,
+    classNames: 'text-center',
+  },
+];
 
 export default Ember.Controller.extend({
   queryParams: ['mode'],
@@ -11,10 +58,24 @@ export default Ember.Controller.extend({
   settings: Ember.inject.service(),
   application: Ember.inject.controller(),
 
-  headers: headersWithCluster,
-  sortBy: 'cluster',
+  headers: headers,
+  sortBy: 'name',
   searchText: null,
+  bulkActions: true,
 
-  sortClusters: ['name','id'],
-  arrangedClusters: Ember.computed.sort('model.clusters','sortClusters'),
+  init() {
+    this._super(...arguments);
+    this.set('expandedClusters',[]);
+  },
+
+  actions: {
+    toggleExpand(id) {
+      let list = this.get('expandedClusters');
+      if ( list.includes(id) ) {
+        list.removeObject(id);
+      } else {
+        list.addObject(id);
+      }
+    },
+  },
 });

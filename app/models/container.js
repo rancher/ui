@@ -206,10 +206,6 @@ var Container = Instance.extend(EndpointPorts, {
     return (this.get('labels')||{})[C.LABEL.SCHED_GLOBAL] + '' === 'true';
   }.property('labels'),
 
-  sortName: function() {
-    return Util.sortableNumericSuffix(this.get('displayName'));
-  }.property('displayName'),
-
   isSidekick: function() {
     return (this.get('labels')||{})[C.LABEL.LAUNCH_CONFIG] + '' !== C.LABEL.LAUNCH_CONFIG_PRIMARY;
   }.property('labels'),

@@ -112,6 +112,10 @@ export default Ember.Mixin.create({
     return this.get('name') || '('+this.get('id')+')';
   }.property('name','id'),
 
+  sortName: function() {
+    return Util.sortableNumericSuffix(this.get('displayName'));
+  }.property('displayName'),
+
   isTransitioning: Ember.computed.equal('transitioning','yes'),
   isError: Ember.computed.equal('transitioning','error'),
   isRemoved: Ember.computed('state', () => { return !C.REMOVEDISH_STATES.includes(this.state); }),
@@ -214,7 +218,7 @@ export default Ember.Mixin.create({
     return this.constructor.defaultStateColor;
   }.property('relevantState','isError'),
 
-  stateSort: function() {
+  sortState: function() {
     var color = this.get('stateColor').replace('text-','');
     return (stateColorSortMap[color] || stateColorSortMap['other']) + ' ' + this.get('relevantState');
   }.property('stateColor','relevantState'),

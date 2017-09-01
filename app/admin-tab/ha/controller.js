@@ -8,7 +8,7 @@ export default Ember.Controller.extend({
     {
       translationKey: 'generic.uuid',
       name:           'uuid',
-      sort:           ['stateSort','address','uuid'],
+      sort:           ['sortState','address','uuid'],
     },
     {
       translationKey: 'haPage.table.address',
