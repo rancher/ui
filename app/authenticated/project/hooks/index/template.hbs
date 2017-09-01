@@ -1,14 +1,16 @@
 <div class="banner bg-info mb-0 p-0">
   <div class="banner-icon" style="width: 68px;"><span class="icon icon-2x icon-notification"></span></div>
   <div class="banner-message">
-    <p class="mt-15 mb-15">
+    <p>
       Experimental: More webhook features will be added in future releases, and the existing capabilities may change.
     </p>
   </div>
 </div>
 
 <section class="header clearfix">
-  <h1>{{t 'hookPage.receiver.header'}}</h1>
+  <div class="pull-left">
+    <h1>{{t 'hookPage.receiver.header'}}</h1>
+  </div>
 
   <div class="right-buttons">
     {{#link-to "authenticated.project.hooks.new-receiver" class="btn btn-sm bg-primary"}}{{t 'hookPage.receiver.buttonText'}}{{/link-to}}
@@ -36,7 +38,7 @@
           <td colspan="{{sortable.fullColspan}}" class="text-center text-muted pt-20 pb-20">{{t 'hookPage.receiver.noData'}}</td>
         </tr>
       {{/if}}
-    {{/sortable-table}}  
+    {{/sortable-table}}
   {{else}}
     {{empty-table resource="container" newRoute="authenticated.project.hooks.new-receiver" newTranslationKey="hookPage.receiver.buttonText"}}
   {{/if}}

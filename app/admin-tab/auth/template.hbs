@@ -1,5 +1,5 @@
 <section class="header clearfix">
-  <h1>{{t 'authPage.root.header'}}</h1>
+  <div class="pull-left"><h1>{{t 'authPage.root.header'}}</h1></div>
 </section>
 
 {{#unless access.enabled}}
@@ -8,7 +8,7 @@
       {{#each drivers as |driver|}}
         {{#if driver.available}}
           {{#link-to driver.route alt=driver.label classNames=(concat "col span-2 nav-box-item driver auth-driver " driver.css) href=false}}
-            <p>{{driver.label}}</p>
+            <p class="sr-only">{{driver.label}}</p>
           {{/link-to}}
         {{/if}}
       {{/each}}
