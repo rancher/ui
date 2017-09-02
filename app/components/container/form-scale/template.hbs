@@ -8,72 +8,75 @@
 </div>
 
 {{#if (and canScale advancedShown)}}
-  <div class="pt-10">
-    {{#if showContainer}}
-      <div class="radio">
-        <label>
-          {{radio-button selection=mode value="container"}}
-          <i class="icon icon-container"></i>
-          {{t 'formScale.mode.containerPrefix'}}
-          {{t 'formScale.mode.containerSuffix'}}
-        </label>
-      </div>
-    {{/if}}
+  {{#if showContainer}}
     <div class="radio">
       <label>
-        {{radio-button selection=mode value="service"}}
-        <i class="icon icon-service"></i>
-        {{t 'formScale.mode.servicePrefix' scale=asInteger}}
-        {{#if (eq mode "service")}}
-          {{input-integer safeStyle="width: 60px; padding: 0 2px; display: inline-block" value=userInput min=min max=max}}
-        {{else}}
-          {{asInteger}}
-        {{/if}}
-        {{t 'formScale.mode.serviceSuffix' scale=asInteger}}
+        {{radio-button selection=mode value="container"}}
+        <i class="icon icon-lg icon-container"></i>
+        {{t 'formScale.mode.containerPrefix'}}
+        {{t 'formScale.mode.containerSuffix'}}
       </label>
     </div>
-    <div class="radio">
-      <label>
-        {{radio-button selection=mode value="global"}}
-        <i class="icon icon-globe"></i>
-        {{t 'formScale.mode.globalPrefix' scale=asInteger}}
-        {{#if (eq mode "global")}}
-          {{input-integer safeStyle="width: 60px; padding: 0 2px; display: inline-block" value=userInput min=min max=max}}
-        {{else}}
-          {{asInteger}}
-        {{/if}}
-        {{t 'formScale.mode.globalSuffix' scale=asInteger}}
-      </label>
-    </div>
-    {{#if showSidekick}}
-      <div class="radio">
-        <label>
-          {{radio-button selection=mode value="sidekick"}}
-          {{#if (eq mode "sidekick")}}
-            {{t 'formScale.mode.sidekickPrefix'}}
-            {{schema/input-service selectClass="input-sm" canHaveContainers=true canBeSystem=false obj=service}}
-            {{t 'formScale.mode.sidekickSuffix'}}
-          {{else}}
-            {{t 'formScale.mode.sidekickInactive'}}
-          {{/if}}
-        </label>
-      </div>
-    {{/if}}
+  {{/if}}
+  <div class="radio">
+    <label>
+      {{radio-button selection=mode value="service"}}
+      <i class="icon icon-lg icon-service"></i>
+      {{t 'formScale.mode.servicePrefix' scale=asInteger}}
+      {{#if (eq mode "service")}}
+        {{input-integer safeStyle="width: 60px; padding: 0 2px; display: inline-block" value=userInput min=min max=max}}
+      {{else}}
+        {{asInteger}}
+      {{/if}}
+      {{t 'formScale.mode.serviceSuffix' scale=asInteger}}
+    </label>
   </div>
+  <div class="radio">
+    <label>
+      {{radio-button selection=mode value="global"}}
+      <i class="icon icon-lg icon-globe"></i>
+      {{t 'formScale.mode.globalPrefix' scale=asInteger}}
+      {{#if (eq mode "global")}}
+        {{input-integer safeStyle="width: 60px; padding: 0 2px; display: inline-block" value=userInput min=min max=max}}
+      {{else}}
+        {{asInteger}}
+      {{/if}}
+      {{t 'formScale.mode.globalSuffix' scale=asInteger}}
+    </label>
+  </div>
+  {{#if showSidekick}}
+    <div class="radio">
+      <label>
+        {{radio-button selection=mode value="sidekick"}}
+        <i class="icon icon-lg icon-sidekick"></i>
+        {{#if (eq mode "sidekick")}}
+          {{t 'formScale.mode.sidekickPrefix'}}
+          {{schema/input-service selectClass="input-sm ml-45 mt-5" canHaveContainers=true canBeSystem=false obj=service}}
+          {{t 'formScale.mode.sidekickSuffix'}}
+        {{else}}
+          {{t 'formScale.mode.sidekickInactive'}}
+        {{/if}}
+      </label>
+    </div>
+  {{/if}}
 {{else}}
   <div class="form-control-static">
     {{#if (eq mode "container")}}
+      <i class="icon icon-lg icon-container"></i>
       {{t 'formScale.mode.containerPrefix'}}
       {{t 'formScale.mode.containerSuffix'}}
-    {{else if (eq mode "global")}}
-      {{t 'formScale.mode.globalPrefix' scale=asInteger}}
-      {{asInteger}}
-      {{t 'formScale.mode.globalSuffix' scale=asInteger}}
     {{else if (eq mode "service")}}
+      <i class="icon icon-lg icon-service"></i>
       {{t 'formScale.mode.servicePrefix' scale=asInteger}}
       {{asInteger}}
       {{t 'formScale.mode.serviceSuffix' scale=asInteger}}
+    {{else if (eq mode "global")}}
+      <i class="icon icon-lg icon-globe"></i>
+      {{t 'formScale.mode.globalPrefix' scale=asInteger}}
+      {{asInteger}}
+      {{t 'formScale.mode.globalSuffix' scale=asInteger}}
     {{else if (eq mode "sidekick")}}
+      <i class="icon icon-lg icon-sidekick"></i>
       {{t 'formScale.mode.sidekickPrefix'}}
       &quot;{{service.displayName}}&quot;
       {{t 'formScale.mode.sidekickSuffix'}}

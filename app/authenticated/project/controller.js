@@ -1,8 +1,8 @@
 import Ember from 'ember';
 import { tagsToArray } from 'ui/models/stack';
 
-const NONE = 'none';
-const SERVICE = 'service';
+//const NONE = 'none';
+//const SERVICE = 'service';
 const STACK = 'stack';
 
 export default Ember.Controller.extend({

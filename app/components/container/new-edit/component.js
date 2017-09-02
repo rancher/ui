@@ -236,10 +236,15 @@ export default Ember.Component.extend(NewOrEdit, {
       nameResource = sidekick;
 
       let slc = pr.get('secondaryLaunchConfigs');
-      let lci = this.get('launchConfigIndex');
       if ( !slc ) {
         slc = [];
         pr.set('secondaryLaunchConfigs', slc);
+      }
+
+      let lci = this.get('launchConfigIndex');
+      if ( lci === undefined || lci === null ) {
+        // If it's a new sidekick, add it to the end of the list
+        lci = slc.length;
       }
 
       let duplicate = slc.find((x, idx) => {
@@ -328,6 +333,8 @@ export default Ember.Component.extend(NewOrEdit, {
     if ( !this.get('isUpgrade') ) {
       let mode = this.get('mode');
       if ( mode === 'sidekick' ) {
+        // Remember sidekick as service since you're not
+        // likely to want to add many sidekicks in a row
         mode = 'service';
       }
       this.set(`prefs.${C.PREFS.LAST_SCALE_MODE}`, mode);
