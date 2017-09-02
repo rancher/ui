@@ -18,6 +18,9 @@ var Project = Resource.extend(PolledResource, {
 
   cluster: denormalizeId('clusterId'),
 
+  canAddHost: Ember.computed.notEmpty('cluster.registrationToken.hostCommand'),
+  canImport: Ember.computed.notEmpty('cluster.registrationToken.clusterCommand'),
+
   actions: {
     edit: function() {
       this.get('router').transitionTo('authenticated.clusters.project', this.get('id'));

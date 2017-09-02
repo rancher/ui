@@ -16,7 +16,7 @@
       <span>{{t 'clustersPage.newCluster'}}</span>
     {{/link-to}}
 
-    {{#link-to "authenticated.clusters.new-project" class="btn bg-primary btn-sm icon-btn"}}
+    {{#link-to "authenticated.clusters.new-project" class="btn bg-primary btn-sm icon-btn" disabled=(eq model.clusters.length 0)}}
       <span class="darken"><i class="icon icon-folder"></i></span>
       <span>{{t 'clustersPage.newProject'}}</span>
     {{/link-to}}
@@ -46,13 +46,19 @@
     pagingLabel="pagination.cluster"
     headers=headers as |sortable kind inst dt|
   }}
-    {{cluster-row
-      model=inst
-      fullColspan=sortable.fullColspan
-      toggle=(action "toggleExpand" inst.id)
-      expanded=(array-includes expandedClusters inst.id)
-      dt=dt
-    }}
+    {{#if (eq kind "row")}}
+      {{cluster-row
+        model=inst
+        fullColspan=sortable.fullColspan
+        toggle=(action "toggleExpand" inst.id)
+        expanded=(array-includes expandedClusters inst.id)
+        dt=dt
+      }}
+    {{else if (eq kind "nomatch")}}
+      <tr><td colspan="{{sortable.fullColspan}}" class="text-center text-muted lacsso pt-20 pb-20">{{t 'clusterRow.noClusterMatch'}}</td></tr>
+    {{else if (eq kind "norows")}}
+      <tr><td colspan="{{sortable.fullColspan}}" class="text-center text-muted lacsso pt-20 pb-20">{{t 'clusterRow.noClusterData'}}</td></tr>
+    {{/if}}
   {{/sortable-table}}
 {{else}}
   {{project-table model=model.projects showCluster=true}}
