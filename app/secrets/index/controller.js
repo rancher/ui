@@ -8,8 +8,8 @@ export default Ember.Controller.extend({
 
   headers: [
     {
-      name: 'stateSort',
-      sort: ['stateSort','name','id'],
+      name: 'state',
+      sort: ['sortState','name','id'],
       type: 'string',
       searchField: 'displayState',
       translationKey: 'generic.state',

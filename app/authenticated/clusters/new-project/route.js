@@ -13,7 +13,6 @@ export default Ember.Route.extend({
     }).then((hash) => {
       var project = userStore.createRecord({
         type: 'project',
-        clusterId: params.clusterId,
         name: '',
         description: '',
       });

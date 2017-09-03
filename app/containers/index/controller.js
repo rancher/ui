@@ -10,7 +10,7 @@ export const headers = [
   },
   {
     name: 'state',
-    sort: ['stateSort','displayName'],
+    sort: ['sortState','displayName'],
     searchField: 'displayState',
     translationKey: 'generic.state',
     width: 120

@@ -5,15 +5,6 @@ export default Ember.Controller.extend({
   access:        Ember.inject.service(),
   'tab-session': Ember.inject.service(),
 
-  sortBy: 'name',
-  sorts: {
-    state:        ['stateSort','name','id'],
-    name:         ['name','id'],
-    description:  ['description','name','id'],
-    publicValue:  ['publicValue','id'],
-    created:      ['created','name','id'],
-  },
-
   application:        Ember.inject.controller(),
   cookies:            Ember.inject.service(),
   projects:           Ember.inject.service(),
@@ -23,10 +14,11 @@ export default Ember.Controller.extend({
   modalService:       Ember.inject.service('modal'),
   bulkActionHandler: Ember.inject.service(),
 
+  sortBy: 'name',
   headers: [
     {
       name:           'state',
-      sort:           ['stateSort','name','id'],
+      sort:           ['sortState','name','id'],
       translationKey: 'apiPage.table.state',
       width:          125,
     },

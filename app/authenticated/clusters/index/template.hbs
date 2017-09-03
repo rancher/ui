@@ -1,5 +1,5 @@
 <section class="header has-tabs clearfix">
-  <h1 class="pull-left">{{t 'clustersPage.header'}}</h1> <div class="vertical-middle"></div>
+  <div class="pull-left"><h1>{{t 'clustersPage.header'}}</h1> <div class="vertical-middle"></div></div>
 
   <div class="right-buttons">
     <div class="btn-group p-0 mr-10">
@@ -14,6 +14,11 @@
     {{#link-to "authenticated.clusters.new" class="btn bg-primary btn-sm icon-btn"}}
       <span class="darken"><i class="icon icon-cluster"></i></span>
       <span>{{t 'clustersPage.newCluster'}}</span>
+    {{/link-to}}
+
+    {{#link-to "authenticated.clusters.new-project" class="btn bg-primary btn-sm icon-btn"}}
+      <span class="darken"><i class="icon icon-folder"></i></span>
+      <span>{{t 'clustersPage.newProject'}}</span>
     {{/link-to}}
   </div>
 </section>
@@ -30,25 +35,25 @@
 {{/unless}}
 
 {{#if (eq mode "grouped")}}
-  {{#each arrangedClusters as |cluster|}}
-    {{cluster-box model=cluster}}
-  {{/each}}
-{{else}}
   {{#sortable-table
     classNames="grid sortable-table"
-    body=model.projects
+    body=model.clusters
     searchText=searchText
     sortBy=sortBy
-    bulkActions=true
+    bulkActions=false
     fullRows=true
-    pagingLabel="pagination.project"
+    subRows=true
+    pagingLabel="pagination.cluster"
     headers=headers as |sortable kind inst dt|
   }}
-    {{project-row
+    {{cluster-row
       model=inst
-      showCluster=true
       fullColspan=sortable.fullColspan
+      toggle=(action "toggleExpand" inst.id)
+      expanded=(array-includes expandedClusters inst.id)
       dt=dt
     }}
   {{/sortable-table}}
+{{else}}
+  {{project-table model=model.projects showCluster=true}}
 {{/if}}
