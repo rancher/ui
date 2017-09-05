@@ -45,14 +45,14 @@ export function tagChoices(all) {
 
 var Stack = Resource.extend(StateCounts, {
 
-  type: 'stack',
-  k8s: Ember.inject.service(),
-  modalService: Ember.inject.service('modal'),
-  catalog: Ember.inject.service(),
+  type:            'stack',
+  k8s:             Ember.inject.service(),
+  modalService:    Ember.inject.service('modal'),
+  catalog:         Ember.inject.service(),
   projectsService: Ember.inject.service('projects'),
 
-  services: denormalizeIdArray('serviceIds'),
-  realServices: Ember.computed.filterBy('services','isReal',true),
+  services:        denormalizeIdArray('serviceIds'),
+  realServices:    Ember.computed.filterBy('services','isReal',true),
 
   init() {
     this._super(...arguments);
@@ -71,6 +71,22 @@ var Stack = Resource.extend(StateCounts, {
   }),
 
   actions: {
+
+    activateServices: function() {
+      return this.doAction('activateservices');
+    },
+
+    deactivateServices: function() {
+      return this.doAction('deactivateservices');
+    },
+
+    promptStop: function() {
+      this.get('modalService').toggleModal('modal-confirm-deactivate', {
+        originalModel: this,
+        action: 'deactivateServices'
+      });
+    },
+
     edit: function() {
       this.get('modalService').toggleModal('modal-edit-stack', this);
     },
@@ -109,20 +125,20 @@ var Stack = Resource.extend(StateCounts, {
       return [];
     }
 
-    let out = [
-      { label: 'action.addContainer',   icon: 'icon icon-container',      action: 'addContainer',     enabled: true },
+    let out    = [
+      { label:   'action.addContainer',   icon:       'icon icon-container',      action: 'addContainer',     enabled:   true },
       { divider: true },
-      { label: 'action.activateServices',   icon: 'icon icon-play',       action: 'activateServices',   enabled: !!a.activateservices },
-      { label: 'action.deactivateServices', icon: 'icon icon-stop',       action: 'deactivateServices', enabled: !!a.deactivateservices },
+      { label:   'action.activateServices',   icon:   'icon icon-play',           action: 'activateServices',   enabled: !!a.activateservices },
+      { label:   'action.deactivateServices',   icon: 'icon icon-stop',           action: 'promptStop',       enabled:   this.get('canDeactivate'), altAction: 'deactivateServices' },
       { divider: true },
-      { label: 'action.edit',           icon: 'icon icon-edit',           action: 'edit',             enabled: !!l.update },
-      { label: 'action.viewConfig',     icon: 'icon icon-files',          action: 'viewCode',         enabled: !!a.exportconfig },
-      { label: 'action.exportConfig',   icon: 'icon icon-download',       action: 'exportConfig',     enabled: !!a.exportconfig },
-//      { label: 'action.viewGraph',      icon: 'icon icon-share',          action: 'viewGraph',        enabled: true },
+      { label:   'action.edit',           icon:       'icon icon-edit',           action: 'edit',             enabled:   !!l.update },
+      { label:   'action.viewConfig',     icon:       'icon icon-files',          action: 'viewCode',         enabled:   !!a.exportconfig },
+      { label:   'action.exportConfig',   icon:       'icon icon-download',       action: 'exportConfig',     enabled:   !!a.exportconfig },
+//      { label: 'action.viewGraph',      icon:       'icon icon-share',          action: 'viewGraph',        enabled:   true },
       { divider: true },
-      { label: 'action.remove',         icon: 'icon icon-trash',          action: 'promptDelete',     enabled: !!l.remove, altAction: 'delete'},
+      { label:   'action.remove',         icon:       'icon icon-trash',          action: 'promptDelete',     enabled:   !!l.remove, altAction:                'delete'},
       { divider: true },
-      { label: 'action.viewInApi',      icon: 'icon icon-external-link',  action: 'goToApi',          enabled: true },
+      { label:   'action.viewInApi',      icon:       'icon icon-external-link',  action: 'goToApi',          enabled:   true },
     ];
 
     return out;
