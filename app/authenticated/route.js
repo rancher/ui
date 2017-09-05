@@ -289,19 +289,21 @@ export default Ember.Route.extend(Subscribe, PromiseToCb, {
       this.controllerFor('application').set('showAbout', true);
     },
 
-    switchProject(projectId, transition=true) {
+    switchProject(projectId, transitionTo='authenticated', transitionArgs) {
       console.log('Switch to ' + projectId);
       this.disconnectSubscribe(() => {
         console.log('Switch is disconnected');
-        this.send('finishSwitchProject', projectId, transition);
+        this.send('finishSwitchProject', projectId, transitionTo, transitionArgs);
       });
     },
 
-    finishSwitchProject(projectId, transition) {
+    finishSwitchProject(projectId, transitionTo, transitionArgs) {
       console.log('Switch finishing');
       this.get('storeReset').reset();
-      if ( transition ) {
-        this.intermediateTransitionTo('authenticated');
+      if ( transitionTo ) {
+        let args = (transitionArgs||[]).slice();
+        args.unshift(transitionTo);
+        this.intermediateTransitionTo.apply(this,args);
       }
       this.set(`tab-session.${C.TABSESSION.PROJECT}`, projectId);
       this.refresh();

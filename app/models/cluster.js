@@ -23,6 +23,22 @@ var Cluster = Resource.extend(PolledResource, {
     return this.get('_allProjects').filterBy('clusterId', this.get('id'));
   }.property('_allProjects.@each.clusterId'),
 
+  defaultProject: function() {
+    let projects = this.get('projects');
+
+    let out = projects.findBy('name','Default');
+
+    if ( !out ) {
+      out = projects.findBy('clusterOwner', true);
+    }
+
+    if ( !out ) {
+      out = projects.objectAt(0);
+    }
+
+    return out;
+  }.property('projects.@each.{name,clusterOwner}'),
+
   availableActions: function() {
 //    let a = this.get('actionLinks');
     let l = this.get('links');

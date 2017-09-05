@@ -95,7 +95,7 @@ export default Ember.Component.extend({
       ary.push({
         mode: TMPFS,
         mountPoint: path,
-        opts: tpmfs[path]
+        opts: tmpfs[path]
       });
     });
 
