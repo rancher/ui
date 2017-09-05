@@ -3,6 +3,7 @@ import C from 'ui/utils/constants';
 import NewOrEdit from 'ui/mixins/new-or-edit';
 
 export default Ember.Component.extend(NewOrEdit, {
+  intl: Ember.inject.service(),
   projects: Ember.inject.service(),
   access: Ember.inject.service(),
   growl: Ember.inject.service(),
@@ -144,11 +145,28 @@ export default Ember.Component.extend(NewOrEdit, {
   },
 
   willSave() {
+    let intl = this.get('intl');
+
     var out = this._super();
     if ( out && !this.get('project.id') )
     {
       // For create the members go in the request
       this.set('project.members', this.get('project.projectMembers'));
+    }
+
+    let errors = this.get('errors')||[];
+
+    if ( !this.get('primaryResource.name') ) {
+      errors.push(intl.t('validation.required', {key: intl.t('generic.name')}));
+    }
+
+    if ( !this.get('primaryResource.clusterId') ) {
+      errors.push(intl.t('validation.required', {key: intl.t('generic.cluster')}));
+    }
+
+    if ( errors.length ) {
+      this.set('errors', errors);
+      return false;
     }
 
     return out;
