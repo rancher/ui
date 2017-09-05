@@ -25,18 +25,20 @@ export default Ember.Mixin.create({
   },
 
   setUnknownProperty: function(key, value) {
-    var backing = this.get('backing');
+    if (key !== 'app') {
+      var backing = this.get('backing');
 
-    if ( value === undefined )
-    {
-      backing.removeItem(key);
-    }
-    else
-    {
-      backing.setItem(key, JSON.stringify(value));
-    }
+      if ( value === undefined )
+      {
+        backing.removeItem(key);
+      }
+      else
+      {
+        backing.setItem(key, JSON.stringify(value));
+      }
 
-    this.notifyPropertyChange(key);
+      this.notifyPropertyChange(key);
+    }
     return value;
   },
 

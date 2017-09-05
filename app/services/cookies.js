@@ -42,7 +42,10 @@ export default Ember.Service.extend({
   },
 
   setUnknownProperty: function(key, value) {
-    this.setWithOptions(key, value);
+    if (key !== 'app') {
+      this.setWithOptions(key, value);
+    }
+    return value;
   },
 
   // Opt: expire: date or number of days, path, domain, secure

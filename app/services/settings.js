@@ -48,33 +48,35 @@ export default Ember.Service.extend(Ember.Evented, {
   },
 
   setUnknownProperty(key, value) {
-    var obj = this.findByName(key);
+    if (key !== 'app') {
+      var obj = this.findByName(key);
 
-    if ( value === undefined )
-    {
-      // Delete by set to undefined is not needed for settings
-      throw new Error('Deleting settings is not supported');
-    }
+      if ( value === undefined )
+      {
+        // Delete by set to undefined is not needed for settings
+        throw new Error('Deleting settings is not supported');
+      }
 
-    if ( !obj )
-    {
-      obj = this.get('userStore').createRecord({
-        type: 'setting',
-        name: denormalizeName(key),
+      if ( !obj )
+      {
+        obj = this.get('userStore').createRecord({
+          type: 'setting',
+          name: denormalizeName(key),
+        });
+      }
+
+      this.incrementProperty('promiseCount');
+
+      obj.set('value', value+''); // Values are all strings in settings.
+      obj.save().then(() => {
+        this.notifyPropertyChange(normalizeName(key));
+      }).catch((err) => {
+        console.log('Error saving setting:', err);
+      }).finally(() => {
+        this.decrementProperty('promiseCount');
       });
+
     }
-
-    this.incrementProperty('promiseCount');
-
-    obj.set('value', value+''); // Values are all strings in settings.
-    obj.save().then(() => {
-      this.notifyPropertyChange(normalizeName(key));
-    }).catch((err) => {
-      console.log('Error saving setting:', err);
-    }).finally(() => {
-      this.decrementProperty('promiseCount');
-    });
-
     return value;
   },
 

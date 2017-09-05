@@ -34,39 +34,41 @@ export default Ember.Service.extend({
   },
 
   setUnknownProperty: function(key, value) {
-    var obj = this.findByName(key);
+    if (key !== 'app') {
+      var obj = this.findByName(key);
 
-    // Delete by set to undefined
-    if ( value === undefined )
-    {
-      if ( obj )
+      // Delete by set to undefined
+      if ( value === undefined )
       {
-        obj.set('value',undefined);
-        obj.delete();
-        this.notifyPropertyChange(key);
+        if ( obj )
+        {
+          obj.set('value',undefined);
+          obj.delete();
+          this.notifyPropertyChange(key);
+        }
+
+        return;
       }
 
-      return;
-    }
-
-    if ( !obj )
-    {
-      obj = this.get('userStore').createRecord({
-        type: 'userPreference',
-        name: key,
-      });
-    }
-
-    let neu = JSON.stringify(value);
-    if ( !obj.get('id') || obj.get('value') !== neu ) {
-      obj.set('value', neu);
-      obj.save().then(() => {
-        Ember.run(() => {
-          this.notifyPropertyChange(key);
+      if ( !obj )
+      {
+        obj = this.get('userStore').createRecord({
+          type: 'userPreference',
+          name: key,
         });
-      });
-    }
+      }
 
+      let neu = JSON.stringify(value);
+      if ( !obj.get('id') || obj.get('value') !== neu ) {
+        obj.set('value', neu);
+        obj.save().then(() => {
+          Ember.run(() => {
+            this.notifyPropertyChange(key);
+          });
+        });
+      }
+
+    }
     return value;
   },
 
