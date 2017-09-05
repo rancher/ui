@@ -89,6 +89,6 @@ export default Ember.Component.extend({
   }.observes('model.opts'),
 
   showOpts: function() {
-    return ['newVolume','volume','bindMount'].includes(this.get('model.mode'));
+    return ['newVolume','volume','bindMount','tmpfs'].includes(this.get('model.mode'));
   }.property('model.mode'),
 });

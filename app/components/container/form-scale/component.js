@@ -60,6 +60,10 @@ export default Ember.Component.extend(ManageLabels, {
       return;
     }
 
+    if ( mode === 'sidekick' ) {
+      this.set('service', null);
+    }
+
     if ( mode === 'container') {
       this.set('isService', false);
     } else {

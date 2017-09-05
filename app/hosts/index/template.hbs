@@ -19,7 +19,9 @@
         </div>
       {{/if}}
 
-      {{#link-to "authenticated.clusters.cluster.host-templates.index" projects.currentCluster.id classNames="btn btn-sm bg-primary"}}{{t 'hostsPage.index.addHost'}}{{/link-to}}
+      {{#if projects.current.canAddHost}}
+        {{#link-to "authenticated.clusters.cluster.host-templates.index" projects.currentCluster.id classNames="btn btn-sm bg-primary"}}{{t 'hostsPage.index.addHost'}}{{/link-to}}
+      {{/if}}
     </div>
   </section>
 

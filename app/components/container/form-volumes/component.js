@@ -7,6 +7,7 @@ export const VOLUME = 'volume';
 export const BIND_MOUNT = 'bindMount';
 export const FROM_CONTAINER = 'volumesFrom';
 export const FROM_LAUNCH_CONFIG = 'volumesFromLaunchConfig';
+export const TMPFS = 'tmpfs';
 export const CUSTOM = 'custom';
 
 export default Ember.Component.extend({
@@ -88,6 +89,15 @@ export default Ember.Component.extend({
       });
     }
 
+    // Tmpfs
+    let tmpfs = this.get('launchConfig.tmpfs')||{};
+    Object.keys(tmpfs).forEach((path) => {
+      ary.push({
+        mode: TMPFS,
+        mountPoint: path,
+        opts: tpmfs[path]
+      });
+    });
 
     this.set('volumesArray', ary);
   },
@@ -105,6 +115,7 @@ export default Ember.Component.extend({
 // Bind:             {mode: 'bindMount',   hostPath: '/foo', mountPoint: '/bar', opts: 'rw'}
 // From Container:   {mode: 'volumesFrom', instance: [obj]}
 // From LaunchConfig:{mode: 'volumesFromLaunchConfig', launchConfig: 'sk'}
+// Tempfs:           {mode: 'tmpfs', mountPoint: '/foo', opts: 'rw,size=10000k'}
 // Custom:           {mode: 'custom', str: 'blah:/blah:rw,z,nocopy'}
 //
 // Kind   Source    Mount Point  Access
@@ -159,6 +170,14 @@ export default Ember.Component.extend({
       });
     },
 
+    addTmpfs() {
+      this.get('volumesArray').pushObject({
+        mode: TMPFS,
+        mountPoint: '',
+        opts: 'size=200m,rw,noexec,nosuid',
+      });
+    },
+
     addCustom() {
       this.get('volumesArray').pushObject({
         mode: CUSTOM,
@@ -176,6 +195,7 @@ export default Ember.Component.extend({
     let dataVolumes = [];
     let dataVolumesFrom = [];
     let dataVolumesFromLaunchConfigs = [];
+    let tmpfs = {};
 
     let spec;
     this.get('volumesArray').forEach((row) => {
@@ -215,6 +235,11 @@ export default Ember.Component.extend({
           dataVolumesFromLaunchConfigs.push(row.launchConfig);
         }
         break;
+      case TMPFS:
+        if ( row.mountPoint ) {
+          tmpfs[row.mountPoint] = row.opts;
+        }
+        break;
       case CUSTOM:
         spec = (row.str||'').trim();
         if ( spec ) {
@@ -228,7 +253,8 @@ export default Ember.Component.extend({
     this.get('launchConfig').setProperties({
       dataVolumes,
       dataVolumesFrom,
-      dataVolumesFromLaunchConfigs
+      dataVolumesFromLaunchConfigs,
+      tmpfs
     });
   },
 
@@ -250,7 +276,7 @@ export default Ember.Component.extend({
       }
 
       // Bad mount
-      if ( row.mode === NEW_VOLUME || row.mode === VOLUME || row.mode === BIND_MOUNT ) {
+      if ( [NEW_VOLUME, VOLUME, BIND_MOUNT, TMPFS].includes(row.mode) ) {
         if ( row.mountPoint && row.mountPoint.substr(0,1) !== '/' ) {
           errors.push(intl.t('formVolumes.errors.absoluteMountPoint'));
         }

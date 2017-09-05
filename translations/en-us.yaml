@@ -1310,9 +1310,11 @@ catalogSettings:
       placeholder: 'e.g. master'
 
 clusterRow:
-  noMatch: No environments match the current search
+  noMatch: No environments match the current search.
   noData: This cluster doesn't have any environments yet.
   noHosts: External cluster has no hosts
+  noClusterMatch: No clusters match the current search.
+  noClusterData: There are no clusters yet.
   addHost: Add Hosts
   importCluster: Use existing Kubernetes
   loginDefault: Login
@@ -2178,8 +2180,10 @@ formVolumeRow:
     bindMount: Bind-mount
     volumesFrom: Volumes from
     volumesFromLaunchConfig: Volumes from
+    tmpfs: Tmpfs
     custom: Custom
   edit: Edit
+  tmpfsSource: Memory
   hostPath:
     label: Host Path
     placeholder: e.g. /home/foo
@@ -2225,7 +2229,13 @@ formVolumes:
     bindMount: Bind-mount a host directory
     fromContainer: Use volumes from another container
     fromLaunchConfig: Use volumes from a sidekick
+    tmpfs: Add an in-memory tmpfs
     custom: Add custom volume entry
+  table:
+    kind: Kind
+    source: Source
+    mountPoint: Mount Point
+    opts: Access/Options
 
 hookPage:
   receiver:
@@ -3462,6 +3472,7 @@ allServices:
 nav:
   srToggleDropdown: Toggle Dropdown
   environment:
+    cluster: Cluster
     label: Environment
     all: All Environments
     your: Your Environments

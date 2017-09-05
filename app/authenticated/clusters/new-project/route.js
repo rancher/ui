@@ -5,7 +5,7 @@ export default Ember.Route.extend({
   access: Ember.inject.service(),
   catalog: Ember.inject.service(),
 
-  model: function(params/*, transition*/) {
+  model: function() {
     var userStore = this.get('userStore');
     return Ember.RSVP.hash({
       all: userStore.findAll('project'),
