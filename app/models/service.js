@@ -7,15 +7,16 @@ import StateCounts from 'ui/mixins/state-counts';
 import EndpointPorts from 'ui/mixins/endpoint-ports';
 
 var Service = Resource.extend(StateCounts, EndpointPorts, {
-  type: 'service',
-  intl: Ember.inject.service(),
-  growl: Ember.inject.service(),
-  modalService: Ember.inject.service('modal'),
-  allServices: Ember.inject.service(),
+  type:          'service',
+  intl:          Ember.inject.service(),
+  growl:         Ember.inject.service(),
+  modalService:  Ember.inject.service('modal'),
+  allServices:   Ember.inject.service(),
+  projects:      Ember.inject.service(),
 
-  instances: denormalizeIdArray('instanceIds'),
+  instances:     denormalizeIdArray('instanceIds'),
   instanceCount: Ember.computed.alias('instances.length'),
-  stack: denormalizeId('stackId'),
+  stack:         denormalizeId('stackId'),
 
   init() {
     this._super(...arguments);
