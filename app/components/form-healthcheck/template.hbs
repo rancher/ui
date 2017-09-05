@@ -80,15 +80,15 @@
     {{/if}}
 
     {{#if (not-eq checkType "none")}}
-      <div class="row mt-20">
-        <div class="col span-3 box row mb-0 mt-0">
+      <div class="row">
+        <div class="col span-4 box">
           <label class="acc-label">{{t 'formHealthCheck.port.label'}}{{field-required}}</label>
           {{#input-or-display editable=editing value=healthCheck.port}}
             {{input-integer min="1" max="65535" classNames="form-control" placeholder=(t 'formHealthCheck.port.placeholder') value=healthCheck.port}}
           {{/input-or-display}}
         </div>
 
-        <div class="col span-3 box row mb-0 mt-0">
+        <div class="col span-4 box">
           <label class="acc-label">{{t 'formHealthCheck.interval.label'}}</label>
           {{#input-or-display editable=editing value=healthCheck.interval}}
             <div class="input-group">
@@ -99,34 +99,7 @@
         </div>
 
 
-        <div class="col span-3 box row mb-0 mt-0">
-          <div class="">
-            <label class="acc-label">{{t 'formHealthCheck.healthyThreshold.label'}}</label>
-            {{#input-or-display editable=editing value=healthCheck.healthyThreshold}}
-              <div class="input-group">
-                {{input-integer min=1 step=1 classNames="form-control" value=healthCheck.healthyThreshold}}
-                <span class="input-group-addon bg-default">{{t 'formHealthCheck.healthyThreshold.unit'}}</span>
-              </div>
-            {{/input-or-display}}
-          </div>
-        </div>
-
-        <div class="col span-3 box row mb-0 mt-0">
-          <div class="">
-            <label class="acc-label">{{t 'formHealthCheck.unhealthyThreshold.label'}}</label>
-            {{#input-or-display editable=editing value=healthCheck.unhealthyThreshold}}
-              <div class="input-group">
-                {{input-integer min=1 step=1 classNames="form-control" value=healthCheck.unhealthyThreshold}}
-                <span class="input-group-addon bg-default">{{t 'formHealthCheck.unhealthyThreshold.unit'}}</span>
-              </div>
-            {{/input-or-display}}
-          </div>
-        </div>
-
-      </div>
-
-      <div class="row mt-20">
-        <div class="col box span-4">
+        <div class="col span-4 box">
           <label class="acc-label">{{t 'formHealthCheck.timeout.label'}}</label>
           {{#input-or-display editable=editing value=healthCheck.responseTimeout}}
             <div class="input-group">
@@ -135,6 +108,9 @@
             </div>
           {{/input-or-display}}
         </div>
+      </div>
+
+      <div class="row">
         <div class="col box span-4">
           <label class="acc-label">{{t 'formHealthCheck.initializingTimeout.label'}}</label>
           {{#input-or-display editable=editing value=healthCheck.initializingTimeout}}
@@ -145,11 +121,20 @@
           {{/input-or-display}}
         </div>
         <div class="col box span-4">
-          <label class="acc-label">{{t 'formHealthCheck.reinitializingTimeout.label'}}</label>
-          {{#input-or-display editable=editing value=healthCheck.reinitializingTimeout}}
+          <label class="acc-label">{{t 'formHealthCheck.healthyThreshold.label'}}</label>
+          {{#input-or-display editable=editing value=healthCheck.healthyThreshold}}
             <div class="input-group">
-              {{input-integer step=100 classNames="form-control" value=healthCheck.reinitializingTimeout}}
-              <span class="input-group-addon bg-default">{{t 'formHealthCheck.reinitializingTimeout.unit'}}</span>
+              {{input-integer min=1 step=1 classNames="form-control" value=healthCheck.healthyThreshold}}
+              <span class="input-group-addon bg-default">{{t 'formHealthCheck.healthyThreshold.unit'}}</span>
+            </div>
+          {{/input-or-display}}
+        </div>
+        <div class="col box span-4">
+          <label class="acc-label">{{t 'formHealthCheck.unhealthyThreshold.label'}}</label>
+          {{#input-or-display editable=editing value=healthCheck.unhealthyThreshold}}
+            <div class="input-group">
+              {{input-integer min=1 step=1 classNames="form-control" value=healthCheck.unhealthyThreshold}}
+              <span class="input-group-addon bg-default">{{t 'formHealthCheck.unhealthyThreshold.unit'}}</span>
             </div>
           {{/input-or-display}}
         </div>
