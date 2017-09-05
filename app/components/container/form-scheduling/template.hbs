@@ -105,6 +105,7 @@
             <th class="acc-label" >{{t 'formScheduling.key'}}</th>
             <th width="30"></th>
             <th class="acc-label" >{{t 'formScheduling.value'}}</th>
+            <th width="10">&nbsp;</th>
             <th width="40"></th>
           </tr>
         </thead>
@@ -128,61 +129,55 @@
   {{#if isService}}
     <hr/>
 
-    <div class="box">
-      <div class="row">
-        <div class="col span-3 mt-0">
-          <label class="acc-label">{{t 'formScheduling.scaleMin'}}</label>
-          {{#input-or-display editable=editing value=service.scaleMin}}
-            <div>
-              {{input-integer min=1 classNames="form-control" value=service.scaleMin}}
-              {{#if isGlobal}}
-                <span class="input-group-addon bg-default">{{t 'formScheduling.perHost'}}</span>
-              {{/if}}
-            </div>
-          {{/input-or-display}}
+  <div class="row">
+  <div class="box col span-6">
+    <div class="row">
+      <div class="col span-6 mt-0">
+        <label class="acc-label">{{t 'formScheduling.scaleMin'}}</label>
+        {{#input-or-display editable=editing value=service.scaleMin}}
+        <div>
+          {{input-integer min=1 classNames="form-control" value=service.scaleMin}} {{#if isGlobal}}
+          <span class="input-group-addon bg-default">{{t 'formScheduling.perHost'}}</span> {{/if}}
         </div>
-        <div class="col span-3 mt-0">
-          <label class="acc-label">{{t 'formScheduling.scaleMax'}}</label>
-          {{#input-or-display editable=editing value=service.scaleMax}}
-            <div>
-              {{input-integer min=1 classNames="form-control" value=service.scaleMax}}
-              {{#if isGlobal}}
-                <span class="input-group-addon bg-default">{{t 'formScheduling.perHost'}}</span>
-              {{/if}}
-            </div>
-          {{/input-or-display}}
-        </div>
-        <div class="col span-3 mt-0">
-          <label class="acc-label">{{t 'formScheduling.scaleIncrement'}}</label>
-          {{#input-or-display editable=editing value=service.scaleIncrement}}
-            <div>
-              {{input-integer min=1 classNames="form-control" value=service.scaleIncrement}}
-              {{#if isGlobal}}
-                <span class="input-group-addon bg-default">{{t 'formScheduling.perHost'}}</span>
-              {{/if}}
-            </div>
-          {{/input-or-display}}
-        </div>
-        <div class="col span-3 mt-0">
-          <label class="acc-label">{{t 'formScheduling.hostMax'}}</label>
-          {{#input-or-display editable=editing value=service.hostMax}}
-            <div>
-              {{input-integer min=1 classNames="form-control" value=service.hostMax}}
-            </div>
-          {{/input-or-display}}
-        </div>
+        {{/input-or-display}}
       </div>
-      <div class="row">
-        <div class="col span-6 mt-0">
-          <p class="help-block">{{t 'formScheduling.scaling.minMaxDetail'}}</p>
+      <div class="col span-6 mt-0">
+        <label class="acc-label">{{t 'formScheduling.scaleMax'}}</label>
+        {{#input-or-display editable=editing value=service.scaleMax}}
+        <div>
+          {{input-integer min=1 classNames="form-control" value=service.scaleMax}} {{#if isGlobal}}
+          <span class="input-group-addon bg-default">{{t 'formScheduling.perHost'}}</span> {{/if}}
         </div>
-        <div class="col span-3 mt-0">
-          <p class="help-block">{{t 'formScheduling.scaling.incrementDetail'}}</p>
-        </div>
-        <div class="col span-3 mt-0">
-          <p class="help-block">{{t 'formScheduling.scaling.hostMaxDetail'}}</p>
-        </div>
+        {{/input-or-display}}
       </div>
     </div>
+    <div class="row">
+      <p class="help-block">{{t 'formScheduling.scaling.minMaxDetail'}}</p>
+    </div>
+  </div>
+
+  <div class="box col span-6">
+    <div class="col span-6 mt-0">
+      <label class="acc-label">{{t 'formScheduling.scaleIncrement'}}</label>
+      {{#input-or-display editable=editing value=service.scaleIncrement}}
+      <div>
+        {{input-integer min=1 classNames="form-control" value=service.scaleIncrement}} {{#if isGlobal}}
+        <span class="input-group-addon bg-default">{{t 'formScheduling.perHost'}}</span> {{/if}}
+      </div>
+      {{/input-or-display}}
+      <p class="help-block">{{t 'formScheduling.scaling.incrementDetail'}}</p>
+    </div>
+    <div class="col span-6 mt-0">
+      <label class="acc-label">{{t 'formScheduling.hostMax'}}</label>
+      {{#input-or-display editable=editing value=service.hostMax}}
+      <div>
+        {{input-integer min=1 classNames="form-control" value=service.hostMax}}
+        <p class="help-block">{{t 'formScheduling.scaling.hostMaxDetail'}}</p>
+      </div>
+      {{/input-or-display}}
+    </div>
+  </div>
+</div>
+
   {{/if}}
 {{/accordion-list-item}}
