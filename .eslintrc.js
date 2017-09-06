@@ -22,7 +22,8 @@ module.exports = {
     "md5": true,
     "_": true,
     "commonmark": true,
-    "Stripe": true
+    "Stripe": true,
+    "jsondiffpatch": true
   },
   env: {
     browser: true,

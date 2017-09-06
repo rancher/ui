@@ -279,12 +279,21 @@ export default Ember.Mixin.create(NewOrEdit, ManageLabels, {
   doneSaving() {
     let out = this._super();
     let project = this.get('projects.current');
-    if ( project && project.get('clusterId') === out.get('clusterId') ) {
-      this.get('router').transitionTo('hosts', project.get('id'));
-    } else {
-      this.get('router').transitionTo('authenticated.clusters');
-    }
-    return out;
+    let cluster = this.get('projects.currentCluster');
+    cluster.reload().then(() => {
+      let project = this.get('projects.current');
+      if ( project.get('clusterId') !== cluster.get('id') ) {
+        project = cluster.get('defaultProject');
+      }
+
+      if ( project ) {
+        this.get('router').send('switchProject', project.get('id'), 'hosts', [project.get('id')]);
+      } else {
+        this.get('router').transitionTo('authenticated.clusters');
+      }
+
+      return out;
+    });
   },
 
   didInsertElement() {
