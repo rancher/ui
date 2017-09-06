@@ -1,6 +1,43 @@
 import Ember from 'ember';
 import ModalBase from 'ui/mixins/modal-base';
 
+function sanitize(input) {
+  let config = input.serialize().config;
+
+  let lc = config.launchConfig;
+  if ( lc ) {
+    delete lc.completeUpdate;
+    delete lc.forceUpgrade;
+    delete lc.version;
+
+    if ( lc.logConfig && lc.logConfig.driver === '') {
+      lc.logConfig.driver = null;
+    }
+  }
+
+  if ( !config.lbConfig ) {
+    config.lbConfig = {};
+  }
+
+  if ( !config.lbTargetConfig ) {
+    config.lbTargetConfig = {};
+  }
+
+  if ( !config.metadata ) {
+    config.metadata = {};
+  }
+
+  if ( !config.serviceLinks ) {
+    config.serviceLinks = {};
+  }
+
+  if ( !config.secondaryLaunchConfigs ) {
+    config.secondaryLaunchConfigs = [];
+  }
+
+  return config;
+}
+
 export default Ember.Component.extend(ModalBase, {
   growl: Ember.inject.service(),
 
@@ -9,7 +46,7 @@ export default Ember.Component.extend(ModalBase, {
   name: null,
   error: null,
   loading: true,
-  choices: null,
+  revisions: null,
   revisionId: null,
 
   actions: {
@@ -28,18 +65,11 @@ export default Ember.Component.extend(ModalBase, {
   },
 
   didReceiveAttrs() {
-    this.set('model', this.get('modalService.modalOpts.originalModel').clone());
-    this.get('model').followLink('revisions').then((revs) => {
-      let choices = revs.map((x) => {
-        let time = moment(x.get('created'));
-        return {
-          label: x.get('id') + ': ' + time.format('YYYY-MM-DD HH:mm:ss') + ' (' + time.fromNow() + ')',
-          value: x.get('id'),
-          ts: x.get('createdTs'),
-        };
-      }).sortBy('ts').reverse();
+    let model = this.get('modalService.modalOpts.originalModel').clone();
+    this.set('model', model);
 
-      this.set('choices',choices);
+    model.followLink('revisions').then((revs) => {
+      this.set('revisions', revs);
     }).catch((err) => {
       this.send('cancel');
       this.get('growl').fromError(err);
@@ -47,4 +77,38 @@ export default Ember.Component.extend(ModalBase, {
       this.set('loading', false);
     });
   },
+
+  choices: function() {
+    return (this.get('revisions')||[])
+      .map((r) => {
+        let time = moment(r.get('created'));
+
+        return {
+          label: r.get('id') + ': ' + time.format('YYYY-MM-DD HH:mm:ss') + ' (' + time.fromNow() + ')',
+          value: r.get('id'),
+          ts: r.get('createdTs'),
+          disabled: (r.get('id') === this.get('model.revisionId')),
+        };
+      })
+      .sortBy('ts')
+      .reverse();
+  }.property('revisions.[]'),
+
+  current: function() {
+    return this.get('revisions').findBy('id', this.get('model.revisionId'));
+  }.property('model.revisionId','revisions.[]'),
+
+  selected: function() {
+    return this.get('revisions').findBy('id', this.get('revisionId'));
+  }.property('revisionId','revisions.[]'),
+
+  diff: function() {
+    if ( this.get('current') && this.get('selected') ) {
+      let left = sanitize(this.get('current'));
+      let right = sanitize(this.get('selected'));
+      var delta = jsondiffpatch.diff(left,right);
+      jsondiffpatch.formatters.html.hideUnchanged();
+      return jsondiffpatch.formatters.html.format(delta, left).htmlSafe();
+    }
+  }.property('current','selected'),
 });

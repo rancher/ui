@@ -105,7 +105,7 @@ var Container = Instance.extend(EndpointPorts, {
     var canConvert = !!a.converttoservice && !isSystem && !isService && !isK8s;
 
     var choices = [
-      { label: 'action.upgradeOrEdit',    icon: 'icon icon-edit',         action: 'edit',             enabled: !!a.upgrade && !isK8s },
+      { label: 'action.edit',             icon: 'icon icon-edit',         action: 'edit',             enabled: !!a.upgrade && !isK8s },
       { label: 'action.convertToService', icon: 'icon icon-service',      action: 'convertToService', enabled: canConvert},
       { label: 'action.clone',            icon: 'icon icon-copy',         action: 'clone',            enabled: !isSystem && !isService && !isK8s},
       { divider: true },

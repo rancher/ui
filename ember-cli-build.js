@@ -92,6 +92,8 @@ module.exports = function(defaults) {
   app.import('bower_components/commonmark/dist/commonmark.js');
   app.import('bower_components/momentjs/moment.js');
   app.import('bower_components/ember-shortcuts/ember-shortcuts.js');
+  app.import('bower_components/jsondiffpatch/public/build/jsondiffpatch.js');
+  app.import('bower_components/jsondiffpatch/public/build/jsondiffpatch-formatters.js');
 //  app.import('node_modules/prettycron/prettycron.js');
 
   app.import('vendor/icons/style.css');
