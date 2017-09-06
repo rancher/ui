@@ -146,13 +146,13 @@
         expandAll=al.expandAll
         expand=(action expandFn)
       }}
-        {{service-log model=model.service}}
+        {{service-log model=service}}
       {{/accordion-list-item}}
 
       {{container/form-scheduling
         initialHostId=activeLaunchConfig.requestedHostId
         initialLabels=activeLaunchConfig.labels
-        isGlobal=model.service.isGlobalScale
+        isGlobal=service.isGlobalScale
         allHosts=model.hosts
         editing=false
         expandAll=al.expandAll
@@ -171,8 +171,8 @@
         expand=(action expandFn)
       }}
         <ul class="list-unstyled list-inline with-room">
-          {{#each service.serviceLinks as |link|}}
-            <li>{{consumed-service-link link=link stackId=service.stackId}}</li>
+          {{#each serviceLinksNamed as |link|}}
+            <li>{{consumed-service-link link=link stackId=service.stackId service=service}}</li>
           {{else}}
             <li class="text-muted text-center">{{t 'servicePage.linksTab.noData'}}</li>
           {{/each}}
@@ -182,7 +182,7 @@
 
     {{#if model.service.canUpgrade}}
       {{container/form-upgrade
-        service=model.service
+        service=service
         editing=false
         errors=upgradeErrors
         isUpgrade=isUpgrade
@@ -310,7 +310,7 @@
     {{#if service.canChangeNetworking}}
       {{container/form-networking
         editing=false
-        instance=model.service
+        instance=service
         initialLabels=activeLaunchConfig.labels
         expandAll=al.expandAll
         expandFn=expandFn
@@ -339,7 +339,7 @@
     {{#if service.isBalancer}}
       {{form-stickiness
         initialLabels=activeLaunchConfig.labels
-        service=model.service
+        service=service
         editing=false
         expandAll=al.expandAll
         expandFn=expandFn

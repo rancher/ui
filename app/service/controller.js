@@ -3,9 +3,10 @@ import Ember from 'ember';
 export default Ember.Controller.extend({
   application:        Ember.inject.controller(),
   projects:           Ember.inject.service(),
+  allServices:        Ember.inject.service(),
 
-  service:            Ember.computed.alias('model.service'),
-  rules:              Ember.computed.alias('service.lbConfig.portRules'),
+  service:            Ember.computed.oneWay('model.service'),
+  rules:              Ember.computed.oneWay('service.lbConfig.portRules'),
 
   sortBy:             'priority',
   fixedLaunchConfig:  null,
@@ -99,4 +100,24 @@ export default Ember.Controller.extend({
       this.transitionToRoute(transitionTo, service.get('id'));
     }
   },
+
+  serviceLinksNamed: Ember.computed('service.serviceLinks.[]', function() {
+    let as = this.get('allServices');
+
+    ( this.get('service.serviceLinks') || []).forEach((link) => {
+      if (link) {
+        let matching = as.matching(link.name, this.get('model.stack'));
+
+        if (matching) {
+          link.setProperties({
+            service: matching
+          })
+        }
+      }
+      return link;
+    });
+
+    return this.get('service.serviceLinks');
+
+  })
 });

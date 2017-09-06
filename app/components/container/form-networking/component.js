@@ -165,7 +165,7 @@ export default Ember.Component.extend(ManageLabels, ContainerChoices,{
       this.removeLabel(C.LABEL.HOSTNAME_OVERRIDE);
     }
 
-    if ( val !== 'custom' ) {
+    if ( val !== 'custom' && this.get('instance.hostname')) {
       this.set('instance.hostname', null);
     }
 

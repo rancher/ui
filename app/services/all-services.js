@@ -60,16 +60,16 @@ export default Ember.Service.extend({
     return this.get('_allServices').findBy('id',id);
   },
 
-  matching(serviceOrCombined, defaultStack) {
-    if ( defaultStack && typeof defaultStack === 'object' ) {
-      defaultStack = Ember.get(defaultStack,'name');
+  matching(serviceOrCombinedName, defaultStackObj) {
+    if ( defaultStackObj && typeof defaultStackObj === 'object' ) {
+      defaultStackObj = Ember.get(defaultStackObj,'name');
     }
 
     let combined;
-    if ( defaultStack && !serviceOrCombined.includes('/') ) {
-      combined = defaultStack + '/' + serviceOrCombined;
+    if ( defaultStackObj && !serviceOrCombinedName.includes('/') ) {
+      combined = defaultStackObj + '/' + serviceOrCombinedName;
     } else {
-      combined = serviceOrCombined;
+      combined = serviceOrCombinedName;
     }
 
     let match = this.get('list').findBy('combined', combined);
