@@ -207,6 +207,12 @@ export default Ember.Component.extend(NewOrEdit, StackState, {
       this.set('service.lbConfig.certificateIds', []);
     }
 
+    if (this.get('stack')) {
+      if (!this.get('stack').name.length) {
+        errors.push(intl.t('newBalancer.error.stackName'));
+      }
+    }
+
     if ( errors.length )
     {
       this.set('errors',errors.uniq());
