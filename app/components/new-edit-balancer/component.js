@@ -208,7 +208,7 @@ export default Ember.Component.extend(NewOrEdit, StackState, {
     }
 
     if (this.get('stack')) {
-      if (!this.get('stack').name.length) {
+      if (!this.get('stack.name.length')) {
         errors.push(intl.t('newBalancer.error.stackName'));
       }
     }
