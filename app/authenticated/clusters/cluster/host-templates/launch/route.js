@@ -26,7 +26,7 @@ export default Ember.Route.extend({
     },
 
     goBack() {
-      this.goToPrevious('authenticated.clusters');
+      this.goToPrevious('hosts');
     }
   },
 });
