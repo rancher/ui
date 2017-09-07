@@ -281,7 +281,6 @@ export default Ember.Mixin.create(NewOrEdit, ManageLabels, {
     let project = this.get('projects.current');
     let cluster = this.get('projects.currentCluster');
     cluster.reload().then(() => {
-      let project = this.get('projects.current');
       if ( project.get('clusterId') !== cluster.get('id') ) {
         project = cluster.get('defaultProject');
       }
