@@ -14,11 +14,13 @@ export default Ember.Controller.extend({
   queryParams: ['tags','group'],
 
   stacks: null,
+  hosts: null,
   expandedInstances: null,
 
   init() {
     this._super(...arguments);
     this.set('stacks', this.get('store').all('stack'));
+    this.set('hosts', this.get('store').all('host'));
     this.set('expandedInstances',[]);
   },
 
@@ -34,8 +36,8 @@ export default Ember.Controller.extend({
   },
 
   showClusterWelcome: function() {
-    return this.get('projects.currentCluster.state') === 'inactive';
-  }.property('projects.currentCluster.state'),
+    return this.get('projects.currentCluster.state') === 'inactive' && !this.get('hosts.length');
+  }.property('projects.currentCluster.state','hosts.[]'),
 
   simpleMode: function() {
     let list = this.get('stacks');
