@@ -1,9 +1,10 @@
+import Ember from 'ember';
 import AccountController from '../account/controller';
 
 export default AccountController.extend({
-  arranged: function() {
+  arranged: Ember.computed('model.environment.@each.{accountId,name,createdTs}','sortBy','descending', function() {
     var project = this.get('project.id');
-    let sort = this.get('sorts')[this.get('sortBy')];
+    let sort    = (Ember.get(this.get('headers').findBy('name', this.get('sortBy')), 'sort')||[]);
 
     let out = this.get('model.environment').filter((row) => {
       return row.get('accountId') === project;
@@ -14,5 +15,5 @@ export default AccountController.extend({
     }
 
     return out;
-  }.property('model.environment.@each.{accountId,name,createdTs}','sortBy','descending'),
+  }),
 });

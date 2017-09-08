@@ -1,7 +1,8 @@
 import Ember from 'ember';
+const { get } = Ember;
 
 export default Ember.Route.extend({
-  model(params/* , transistion */) {
+  model(params, transistion) {
     return this.get('store').find('hosttemplate', params.template_id).then((template) => {
       return this.get('userStore').find('machinedriver', null, {forceReload: true}).then((drivers) => {
         var driver = drivers.findBy('name', template.driver);
@@ -11,12 +12,17 @@ export default Ember.Route.extend({
           type: 'host',
           hostTemplateId: template.id
         };
-        return {
-          template: template,
-          config: config,
-          host: this.get('store').createRecord(tmp),
-          driver: driver,
-        }
+        return this.get('userStore').find('cluster', null, {url: 'clusters', forceReload: true, removeMissing: true}).then((clusters) => {
+          let clusterToCreateOn = get(transistion, 'params')['authenticated.clusters.cluster']['cluster_id'];
+          return {
+            template: template,
+            config: config,
+            host: this.get('store').createRecord(tmp),
+            driver: driver,
+            clusters: clusters,
+            clusterId: clusterToCreateOn
+          }
+        });
       });
     });
   },
@@ -26,7 +32,7 @@ export default Ember.Route.extend({
     },
 
     goBack() {
-      this.goToPrevious('authenticated.clusters');
+      this.goToPrevious('hosts');
     }
   },
 });

@@ -9,15 +9,15 @@
   {{/if}}
 
   {{#if step1}}
-    <div class="box mt-20">
       <form>
-        <h4>{{t 'machine.driverDigitalocean.accountSection'}}</h4>
-        <div class="row">
+        <div class="box mt-20">
+          <h4>{{t 'machine.driverDigitalocean.accountSection'}}</h4>
+          <div class="row">
             <label class="acc-label">{{t 'machine.driverDigitalocean.accessToken.label'}}</label>
             {{input type="password" value=model.secretValues.digitaloceanConfig.accessToken classNames="form-control" placeholder=(t 'machine.driverDigitalocean.accessToken.placeholder')}}
             <p class="text-info">{{t 'machine.driverDigitalocean.accessToken.help' htmlSafe=true}}</p>
+          </div>
         </div>
-
         {{top-errors errors=errors}}
         <div class="footer-actions">
           {{#if gettingData}}
@@ -28,7 +28,6 @@
           <button {{action "cancel"}} class="btn bg-transparent">{{t 'generic.cancel'}}</button>
         </div>
       </form>
-    </div>
   {{else}}
     <div class="container-fluid">
       <div class="box mt-20">

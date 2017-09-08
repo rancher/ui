@@ -5,10 +5,11 @@ export default Ember.Controller.extend({
 
   queryParams: ['backTo'],
   backTo: 'hosts',
+  currentClusterId: null,
 
   actions: {
     launch(model) {
-      this.transitionToRoute('authenticated.clusters.cluster.host-templates.launch', this.get('projects.currentCluster.id'), model.id);
+      this.transitionToRoute('authenticated.clusters.cluster.host-templates.launch', this.get('currentClusterId'), model.id);
     },
   },
 

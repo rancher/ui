@@ -128,32 +128,35 @@ export default Ember.Component.extend(NewOrEdit, StackState, {
   },
 
   willSave() {
-    if ( this.get('mode') === IP ) {
-      this.set('record.hostname', null);
-    } else if ( this.get('mode') === HOSTNAME ) {
-      this.set('record.externalIpAddresses', null);
-    }
-
-    if ( !this.get('record.id') ) {
-      // Set the stack ID
-      if ( this.get('stack.id') ) {
-        this.set('record.stackId', this.get('stack.id'));
-      } else if ( this.get('stack') ) {
-        return this.get('stack').save().then((newStack) => {
-          this.set('record.stackId', newStack.get('id'));
-          return true;
-        }).catch((err) => {
-          let errors = this.get('errors')||[];
-          errors.push(Errors.stringify(err));
-          this.set('errors', errors);
-          return false;
-        });
-      } else {
-        return Ember.RSVP.reject('No Stack');
+    let ok = this._super(...arguments);
+    if (ok) {
+      if ( this.get('mode') === IP ) {
+        this.set('record.hostname', null);
+      } else if ( this.get('mode') === HOSTNAME ) {
+        this.set('record.externalIpAddresses', null);
       }
-    }
 
-    return this._super(...arguments);
+      if ( !this.get('record.id') ) {
+        // Set the stack ID
+        if ( this.get('stack.id') ) {
+          this.set('record.stackId', this.get('stack.id'));
+        } else if ( this.get('stack') ) {
+          return this.get('stack').save().then((newStack) => {
+            this.set('record.stackId', newStack.get('id'));
+            return true;
+          }).catch((err) => {
+            let errors = this.get('errors')||[];
+            errors.push(Errors.stringify(err));
+            this.set('errors', errors);
+            return false;
+          });
+        } else {
+          return Ember.RSVP.reject('No Stack');
+        }
+      }
+
+    }
+    return ok;
   },
 
   doneSaving() {

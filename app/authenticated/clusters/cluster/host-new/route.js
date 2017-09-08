@@ -65,7 +65,7 @@ export default Ember.Route.extend({
   },
 
   model(params) {
-    this.set('backTo', params.backTo);
+    this.set('backTo', (params.backTo || 'hosts'));
     var hs = this.get('host');
 
     return hs.getModel(params);
