@@ -182,7 +182,7 @@ export default Ember.Mixin.create(NewOrEdit, ManageLabels, {
   }.property('displayLocation','displaySize'),
 
   willSave() {
-    this.set('primaryResource.clusterId', this.get('cluster.id'));
+    this.set('primaryResource.clusterId', this.get('clusterId'));
 
     if ( this.get('primaryResource.type').toLowerCase() === 'hosttemplate') {
      if ( !this.get('primaryResource.description') ) {
@@ -276,10 +276,11 @@ export default Ember.Mixin.create(NewOrEdit, ManageLabels, {
     }
   },
 
-  doneSaving() {
+  doneSaving(neu) {
     let out = this._super();
     let project = this.get('projects.current');
-    let cluster = this.get('projects.currentCluster');
+    let cluster = this.get('clusters').findBy('id', neu.clusterId);
+
     cluster.reload().then(() => {
       if ( project.get('clusterId') !== cluster.get('id') ) {
         project = cluster.get('defaultProject');
