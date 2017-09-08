@@ -21,7 +21,7 @@ var data = [
 
 data.forEach(function(obj) {
   var input = obj.str;
-  var actual = parsePortSpec(input);
+  var actual = parsePortSpec(input,'http');
 
   if ( obj.parsed )
   {
