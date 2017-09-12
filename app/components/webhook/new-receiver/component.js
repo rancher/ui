@@ -41,13 +41,16 @@ export default Ember.Component.extend(NewOrEdit, {
       });
       break;
     case 'serviceUpgrade':
+      const serviceUpgradeSchema = this.get('webhookStore').getById('schema','serviceupgrade');
+      const resourceFields = serviceUpgradeSchema.resourceFields;
       def = store.createRecord({
         type: 'serviceUpgrade',
         tag: '',
         serviceSelector: '',
-        batchSize: 1,
-        interval: 2,
-        startFirst: false,
+        batchSize: resourceFields.batchSize.default,
+        interval: resourceFields.intervalMillis.default,
+        payloadFormat: resourceFields.payloadFormat.default,
+        startFirst: resourceFields.startFirst.default
       });
       break;
     }
