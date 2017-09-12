@@ -1,4 +1,5 @@
 import Ember from 'ember';
+const { getOwner } = Ember;
 
 const headers = [
   {
@@ -76,6 +77,10 @@ export default Ember.Controller.extend({
       } else {
         list.addObject(id);
       }
+    },
+    launchOnCluster(model) {
+      let authenticated = getOwner(this).lookup('route:authenticated');
+      authenticated.send('switchProject', model.get("defaultProject.id"), 'authenticated.clusters.cluster.host-templates', [model.id, {queryParams: {backTo: 'clusters'}}]);
     },
   },
 });
