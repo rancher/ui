@@ -61,13 +61,12 @@ export default Ember.Mixin.create(ThrottledResize, {
 
   positionTooltip: function(node, position) {
 
-    let windowWidth       = window.innerWidth;
-    let eventNode         = this.get('tooltipService.tooltipOpts.originalNode');
-    let eventNodeWidth    = eventNode.outerWidth();
-    let eventNodeHeight   = eventNode.outerHeight();
-    let nodeHeight        = node.outerHeight();
-    let nodeWidth         = node.outerWidth();
-    let overridePlacement = this.get('tooltipService.tooltipOpts.placement');
+    let windowWidth        = window.innerWidth;
+    let originalNodeWidth  = this.get('tooltipService.tooltipOpts.originalNode').outerWidth();
+    let originalNodeHeight = this.get('tooltipService.tooltipOpts.originalNode').outerHeight();
+    let nodeHeight         = node.outerHeight();
+    let nodeWidth          = node.outerWidth();
+    let overridePlacement   = this.get('tooltipService.tooltipOpts.placement');
 
     if ( overridePlacement ) {
       position.placement = overridePlacement;
@@ -81,63 +80,22 @@ export default Ember.Mixin.create(ThrottledResize, {
       position.placement = 'top';
     }
 
-    let clonedPosition    = Ember.$().extend({}, position);
-
-    // run the first set of calculations to check it the item will be places off screen so we can recompute
-    calcPositions(position);
-
-    // a bit more complicated, just check to see if the event will be close enough to the top to change the positions here
-    if (position.top < eventNode.position().top) {
-
-      position = Ember.$().extend({}, clonedPosition);
-
-      if (position.placement === 'top') {
-        position.placement = 'bottom';
-      } else if (position.placement === 'bottom'){
-        position.placement = 'top';
-      } else {
-        position.placement = 'top';
-      }
-
-      calcPositions(position);
-    }
-
-    // easy peasy check to see if its off screen
-    if (position.left < 0) {
-
-      position = Ember.$().extend({}, clonedPosition);
-
-      if (position.placement === 'left') {
-        position.placement = 'right';
-      } else if (position.placement === 'right') {
-        position.placement = 'left';
-      } else {
-        position.placement = 'left';
-      }
-
-      calcPositions(position);
-    }
-
-
-
-    function calcPositions(position) {
-      switch ( position.placement ) {
-      case 'left':
-        position.top       = position.top + (eventNodeHeight/2) - (nodeHeight/2);
-        position.left      = position.left + eventNodeWidth + 7;
-        break;
-      case 'right':
-        position.left      = position.left - nodeWidth - 7;
-        position.top       = position.top + (eventNodeHeight/2) - (nodeHeight/2);
-        break;
-      case 'bottom':
-        position.top       = position.top +  eventNodeHeight + 7;
-        position.left      = position.left + (eventNodeWidth/2) - (nodeWidth/2);
-        break;
-      default:
-        position.top       = position.top -  (nodeHeight + 7);
-        position.left      = position.left + (eventNodeWidth/2) - (nodeWidth/2);
-      }
+    switch ( position.placement ) {
+    case 'left':
+      position.top       = position.top + (originalNodeHeight/2) - (nodeHeight/2);
+      position.left      = position.left + originalNodeWidth + 7;
+      break;
+    case 'right':
+      position.left      = position.left - nodeWidth - 7;
+      position.top       = position.top + (originalNodeHeight/2) - (nodeHeight/2);
+      break;
+    case 'bottom':
+      position.top       = position.top +  originalNodeHeight + 7;
+      position.left      = position.left + (originalNodeWidth/2) - (nodeWidth/2);
+      break;
+    default:
+      position.top       = position.top -  (nodeHeight + 7);
+      position.left      = position.left + (originalNodeWidth/2) - (nodeWidth/2);
     }
 
     position.width = nodeWidth;
