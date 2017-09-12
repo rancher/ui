@@ -8,6 +8,7 @@ export default Ember.Component.extend({
   hostService: Ember.inject.service('host'),
 
   driver:        null,
+  cluster:       null,
   hostId:        null,
   allowOther:    true,
   inModal:       false,
@@ -68,11 +69,11 @@ export default Ember.Component.extend({
   }),
 
   allowCustom: function() {
-    let cluster = this.get('projects.current.cluster');
+    let cluster = this.get('cluster');
 
     return this.get(`settings.${C.SETTING.SHOW_CUSTOM_HOST}`) !== false &&
       (!cluster || cluster.get('embedded'));
-  }.property(`settings.${C.SETTING.SHOW_CUSTOM_HOST}`,'projects.current.cluster.embedded'),
+  }.property(`settings.${C.SETTING.SHOW_CUSTOM_HOST}`,'cluster.embedded'),
 
   showPicker: Ember.computed('model.availableDrivers.length','allowOther','hasOther','allowCustom', function() {
     return !this.get('projects.current.isWindows') && (
