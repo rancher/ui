@@ -19,7 +19,12 @@
   <div class="pod-info">
     <div class="pod-info-container">
       {{#if model.displayIp}}
-        <div class="pod-info-item"><i class="icon icon-link"></i> {{format-ip model.displayIp}}</div>
+        <div class="pod-info-item">
+          <i class="icon icon-link"></i>
+          {{#copy-inline clipboardText=model.displayIp size="small"}}
+            {{format-ip model.displayIp}}
+          {{/copy-inline}}
+        </div>
       {{/if}}
 
       {{#if model.dockerEngineVersion}}
