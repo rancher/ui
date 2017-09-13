@@ -80,7 +80,11 @@ export default Ember.Controller.extend({
     },
     launchOnCluster(model) {
       let authenticated = getOwner(this).lookup('route:authenticated');
-      authenticated.send('switchProject', model.get("defaultProject.id"), 'authenticated.clusters.cluster.host-templates', [model.id, {queryParams: {backTo: 'clusters'}}]);
+      if (this.get('projects.current.id') === model.get('defaultProject.id')) {
+        this.transitionToRoute('authenticated.clusters.cluster.host-templates', model.get('id'), {queryParams: {backTo: 'clusters'}});
+      } else {
+        authenticated.send('switchProject', model.get("defaultProject.id"), 'authenticated.clusters.cluster.host-templates', [model.id, {queryParams: {backTo: 'clusters'}}]);
+      }
     },
   },
 });
