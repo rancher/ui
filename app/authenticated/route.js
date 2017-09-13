@@ -303,7 +303,7 @@ export default Ember.Route.extend(Subscribe, PromiseToCb, {
       if ( transitionTo ) {
         let args = (transitionArgs||[]).slice();
         args.unshift(transitionTo);
-        this.intermediateTransitionTo.apply(this,args);
+        this.transitionTo.apply(this,args);
       }
       this.set(`tab-session.${C.TABSESSION.PROJECT}`, projectId);
       this.refresh();

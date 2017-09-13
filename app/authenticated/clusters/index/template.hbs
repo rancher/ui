@@ -34,23 +34,24 @@
 
 {{#if (eq mode "grouped")}}
   {{#sortable-table
-    classNames="grid sortable-table"
-    body=model.clusters
-    searchText=searchText
-    sortBy=sortBy
-    bulkActions=false
-    fullRows=true
-    subRows=true
-    pagingLabel="pagination.cluster"
-    headers=headers as |sortable kind inst dt|
+       classNames="grid sortable-table"
+       body=model.clusters
+       searchText=searchText
+       sortBy=sortBy
+       bulkActions=false
+       fullRows=true
+       subRows=true
+       pagingLabel="pagination.cluster"
+       headers=headers as |sortable kind inst dt|
   }}
     {{#if (eq kind "row")}}
       {{cluster-row
-        model=inst
-        fullColspan=sortable.fullColspan
-        toggle=(action "toggleExpand" inst.id)
-        expanded=(array-includes expandedClusters inst.id)
-        dt=dt
+          model=inst
+          fullColspan=sortable.fullColspan
+          toggle=(action "toggleExpand" inst.id)
+          expanded=(array-includes expandedClusters inst.id)
+          launchOnCluster=(action "launchOnCluster")
+          dt=dt
       }}
     {{else if (eq kind "nomatch")}}
       <tr><td colspan="{{sortable.fullColspan}}" class="text-center text-muted lacsso pt-20 pb-20">{{t 'clusterRow.noClusterMatch'}}</td></tr>

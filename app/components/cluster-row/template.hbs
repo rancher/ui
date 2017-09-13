@@ -12,10 +12,14 @@
     <td colspan="4" class="text-center">
       {{#if (or model.registrationToken.hostCommand model.registrationToken.clusterCommand)}}
         {{#if model.registrationToken.hostCommand}}
-          {{#link-to "authenticated.clusters.cluster.host-templates" model.id (query-params backTo="clusters") class="btn btn-sm bg-primary icon-btn ml-20"}}
-            <span class="darken"><i class="icon icon-host"></i></span>
-            <span>{{t 'clusterRow.addHost'}}</span>
-          {{/link-to}}
+          <div class="input-group inline-block" style="vertical-align: middle;" >
+            <span class="input-group-btn">
+              <button type="button" class="btn btn-sm bg-primary icon-btn" onclick={{action (action launchOnCluster) model}}>
+                <span class="darken"><i class="icon icon-host"></i></span>
+                <span>{{t 'clusterRow.addHost'}}</span>
+              </button>
+            </span>
+          </div>
         {{/if}}
         {{#if model.registrationToken.clusterCommand}}
           {{#link-to "authenticated.clusters.cluster.import" model.id class="btn btn-sm bg-primary icon-btn ml-20"}}
