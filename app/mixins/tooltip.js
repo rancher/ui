@@ -92,15 +92,15 @@ export default Ember.Mixin.create(ThrottledResize, {
 
     switch ( position.placement ) {
     case 'left':
-      position.left      = horizontalViewport(position.left + originalNodeWidth + 7);
+      position.left      = horizontalViewport(position.left + originalNodeWidth + 7, position);
       position.top       = position.top + (originalNodeHeight/2) - (nodeHeight/2);
       break;
     case 'right':
-      position.left      = horizontalViewport(position.left - nodeWidth - 7);
+      position.left      = horizontalViewport(position.left - nodeWidth - 7, position);
       position.top       = position.top + (originalNodeHeight/2) - (nodeHeight/2);
       break;
     case 'bottom':
-      position.left      = horizontalViewport(position.left + (originalNodeWidth/2) - (nodeWidth/2));
+      position.left      = horizontalViewport(position.left + (originalNodeWidth/2) - (nodeWidth/2), position);
       position.top       = position.top +  originalNodeHeight + 7;
       break;
     default:
@@ -112,8 +112,11 @@ export default Ember.Mixin.create(ThrottledResize, {
 
     function horizontalViewport(left, position) {
       if (left < (nodeWidth/2)) {
-        left           = 10;
-        position.caret = self.get('tooltipService.tooltipOpts.eventPosition.left') - 10;
+        let centerOfDot  =  self.get('tooltipService.tooltipOpts.originalNode').offset().left + (originalNodeWidth/2);
+        let widthOfEvent = originalNodeWidth;
+        let pushFromLeft = 10;
+        left             = pushFromLeft;
+        position.caret = centerOfDot - pushFromLeft - widthOfEvent/2;
       }
       return left;
     }
