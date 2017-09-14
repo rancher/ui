@@ -11,7 +11,26 @@
 {{/if}}
 
 {{#each ports as |port|}}
-  <div class="box mb-10">
+  <div class="box mb-10 pt-5">
+    <div class="row">
+      {{#if (gt ports.length 1 )}}
+        <div class="pull-right">
+          {{#if (lte ports.length 1 )}}
+            <button class="btn btn-disabled-transparent text-small vertical-middle" disabled="true">
+              {{t 'formBalancerListeners.removePortLabel'}}
+            </button>
+          {{else}}
+            <button class="btn bg-transparent text-small vertical-middle" {{action "removePort" port}}>
+              {{t 'formBalancerListeners.removePortLabel'}}
+            </button>
+          {{/if}}
+        </div>
+      {{else}}
+        <!-- 28px is the height of the button, no jumpy -->
+        <div style="height: 28px;"></div>
+      {{/if}}
+    </div>
+
     <div class="row">
       <div class="col span-3 mt-0 mb-0">
         <label class="acc-label">{{t 'formBalancerListeners.sourcePort.label'}}{{#if editing}}{{field-required}}{{/if}}</label>
