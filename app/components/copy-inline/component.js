@@ -17,14 +17,15 @@ export default Ember.Component.extend({
   target           : null,
   clipboardText    : null,
   textChangedEvent : null,
+  defaultText      : DEFAULT_TEXT,
 
   init() {
     this._super(...arguments);
-    this.set('model', new Object({tooltipText: DEFAULT_TEXT}));
+    this.set('model', new Object({tooltipText: this.get('defaultText')}));
   },
 
   mouseEnter() {
-    this.set('model', new Object({tooltipText: DEFAULT_TEXT}));
+    this.set('model', new Object({tooltipText: this.get('defaultText')}));
   },
 
   isSupported: function() {
