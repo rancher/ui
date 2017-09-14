@@ -10,5 +10,10 @@ export default Ember.Component.extend({
     toggle() {
       this.sendAction('toggle');
     },
+
+    switchToProject(id) {
+      // @TODO bad
+      window.lc('authenticated').send('switchProject', id);
+    }
   },
 });

@@ -137,26 +137,31 @@
   <div class="row">
     <div class="col span-6 box">
       <label class="acc-label">{{t 'formCommand.stopSignal.label'}}</label>
-      {{#input-or-display editable=editing value=instance.stopSignal}}
-        {{new-select
-            prompt=(t 'formCommand.stopSignal.prompt')
-            value=stopOrCustom
-            content=stopSignals
-            optionValuePath="value"
-            optionLabelPath="label"
-            localizedLabel=true
-        }}
-      {{/input-or-display}}
       {{#if customStopSet}}
         {{#input-or-display editable=editing value=instance.stopSignal}}
           {{input type="text" value=instance.stopSignal classNames="form-control mt-20" placeholder=(t 'formCommand.stopSignal.custom.placeholder')}}
         {{/input-or-display}}
+      {{else}}
+        {{#input-or-display editable=editing value=instance.stopSignal}}
+          {{new-select
+              prompt=(t 'formCommand.stopSignal.prompt')
+              value=stopOrCustom
+              content=stopSignals
+              optionValuePath="value"
+              optionLabelPath="label"
+              localizedLabel=true
+          }}
+        {{/input-or-display}}
       {{/if}}
+      <p class="help-block">{{t 'formCommand.stopSignal.helpText'}}</p>
     </div>
     <div class="col span-6 box">
       <label class="acc-label">{{t 'formCommand.stopTimeout.label'}}</label>
-      {{#input-or-display editable=editing value=instance.stopTimeout safeStyle="width: 60px; padding: 0 2px; display: inline-block;" }}
-        {{input-integer min=0 safeStyle="width: 60px; padding: 0 2px; display: inline-block;" class="form-control" value=instance.stopTimeout}}
+      {{#input-or-display editable=editing value=instance.stopTimeout}}
+        <div class="input-group">
+          {{input-integer min=0 value=instance.stopTimeout}}
+          <span class="input-group-addon bg-default">{{t 'generic.seconds'}}</span>
+        </div>
       {{/input-or-display}}
       <p class="help-block">{{t 'formCommand.stopTimeout.helpText'}}</p>
     </div>

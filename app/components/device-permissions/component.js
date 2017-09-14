@@ -8,7 +8,6 @@ export default Ember.Component.extend({
   rSelected:  false,
   wSelected:  false,
   mSelected:  false,
-  editing:    false,
 
   selection:  null,
 
