@@ -6,7 +6,11 @@
     {{badge-state model=model}}
   </td>
   <td data-title="{{dt.name}}">
-    <a href="{{href-to 'authenticated.clusters.cluster' model.id}}">{{model.displayName}}</a>
+    {{#if model.defaultProject}}
+      <a href="{{href-to 'authenticated.project.index' model.defaultProject.id}}" {{action "switchToProject" model.defaultProject.id}}>{{model.displayName}}</a>
+    {{else}}
+      {{model.displayName}}
+    {{/if}}
   </td>
   {{#if (eq model.state "inactive")}}
     <td colspan="4" class="text-center">
