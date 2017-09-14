@@ -25,7 +25,8 @@ export default Ember.Component.extend(Driver, {
       type: 'host',
       aliyunecsConfig: config,
     }));
-
+    this.set('model.engineRegistryMirror',['https://s06nkgus.mirror.aliyuncs.com']);
+    this.set('model.engineInstallUrl','http://dev-tool.oss-cn-shenzhen.aliyuncs.com/docker-install/1.12.6.sh');
     //this.set('editing', false);
   },
   validate: function(){
