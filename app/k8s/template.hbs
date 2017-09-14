@@ -3,62 +3,52 @@
 {{else}}
   {{waiting-orchestration}}
 
-  {{#containers-header tags=tags simpleMode=true}}
-    <button class="btn btn-sm bg-primary icon-btn" {{action "dashboard"}}>
-      <span class="darken"><i class="icon icon-external-link"></i></span>
-      <span>Launch Dashboard</span>
-    </button>
+  {{containers-header tags=tags simpleMode=true showGroup=false}}
 
-    <button class="btn btn-sm bg-primary icon-btn ml-10" {{action "kubectl"}}>
-      <span class="darken"><i class="icon icon-terminal"></i></span>
-      <span>Launch kubectl</span>
-    </button>
+  <div class="row">
+    <div class="col span-4 text-center option option-primary">
+      <h2>Dashboard</h2>
+      <div class="box" style="min-height: 250px;">
+        <p>Access the native Kubernetes dashboard.</p>
 
-    <button class="btn btn-sm bg-primary icon-btn ml-10" {{action "kubeconfig"}}>
-      <span class="darken"><i class="icon icon-download"></i></span>
-      <span>Download kubeconfig</span>
-    </button>
-  {{/containers-header}}
-
-  <section class="header has-tabs clearfix">
-    <div class="pull-left"><h1>Kubernetes Status</h1></div>
-  </section>
-
-  <div class="k8s-tab">
-    <div class="row text-center">
-      <div class="col span-3 mt-0">
-        {{banner-message icon=(if etcd 'icon-success' 'icon-alert') color=(if etcd 'bg-success' 'bg-warning') message='Etcd'}}
+        <div class="links" style="top: auto; bottom: 47px;">
+          <button class="btn bg-primary icon-btn" {{action "dashboard"}}>
+            <span class="darken"><i class="icon icon-external-link"></i></span>
+            <span>Launch Dashboard</span>
+          </button>
+        </div>
       </div>
-      <div class="col span-3 mt-0">
-        {{banner-message icon=(if kubelet 'icon-success' 'icon-alert') color=(if kubelet 'bg-success' 'bg-warning') message='Kubelets'}}
-      </div>
-      <div class="col span-3 mt-0">
-        {{banner-message icon=(if controlPlane 'icon-success' 'icon-alert') color=(if controlPlane 'bg-success' 'bg-warning') message='Control Plane'}}
-      </div>
-      <div class="col span-3 mt-0">
-        {{banner-message icon=(if systemStacks 'icon-success' 'icon-alert') color=(if systemStacks 'bg-success' 'bg-warning') message='System Services'}}
-      </div>
+      <div class="bubble bg-body round p-10"><img src="{{app.baseAssets}}assets/images/environment-standard.svg" class="mt-5" /></div>
     </div>
 
+    <div class="col span-4 text-center option option-primary">
+      <h2>Shell</h2>
+      <div class="box" style="min-height: 250px;">
+        <p>Run <code>kubectl</code> commands from your browser.</p>
 
-    <div class="box">
-      <h4>Kubernetes Resources</h4>
-      <div class="row">
-        <div class="col span-4 mt-0 mb-0">
-          {{banner-message title=model.workload.deploymentList.listMeta.totalItems color='bg-info' message='Deployments' titleWidth=100}}
-          {{banner-message title=model.workload.replicaSetList.listMeta.totalItems color='bg-info' message='Replica Sets' titleWidth=100}}
-          {{banner-message title=model.workload.replicationControllerList.listMeta.totalItems color='bg-info' message='Replication Controllers' titleWidth=100}}
-        </div>
-
-        <div class="col span-4 mt-0 mb-0">
-          {{banner-message title=model.workload.podList.listMeta.totalItems color='bg-info' message='Pods' titleWidth=100}}
-          {{banner-message title=model.workload.daemonSetList.listMeta.totalItems color='bg-info' message='Daemon Sets' titleWidth=100}}
-        </div>
-        <div class="col span-4  mt-0 mb-0">
-          {{banner-message title=model.workload.statefulSetList.listMeta.totalItems color='bg-info' message='Stateful Sets' titleWidth=100}}
-          {{banner-message title=model.workload.jobList.listMeta.totalItems color='bg-info' message='Jobs' titleWidth=100}}
+        <div class="links" style="top: auto; bottom: 47px;">
+          <button class="btn bg-primary icon-btn ml-10" {{action "kubectl"}}>
+            <span class="darken"><i class="icon icon-terminal"></i></span>
+            <span>Launch kubectl</span>
+          </button>
         </div>
       </div>
+      <div class="bubble bg-body round p-10"><img src="{{app.baseAssets}}assets/images/environment-standard.svg" class="mt-5" /></div>
+    </div>
+
+    <div class="col span-4 text-center option option-primary">
+      <h2>Config File</h2>
+      <div class="box" style="min-height: 250px;">
+        <p>Generate a Kubernetes config file to use <code>kubectl</code> on your desktop.</p>
+
+        <div class="links" style="top: auto; bottom: 47px;">
+          <button class="btn bg-primary icon-btn ml-10" {{action "kubeconfig"}}>
+            <span class="darken"><i class="icon icon-download"></i></span>
+            <span>Download kubeconfig</span>
+          </button>
+        </div>
+      </div>
+      <div class="bubble bg-body round p-10"><img src="{{app.baseAssets}}assets/images/environment-standard.svg" class="mt-5" /></div>
     </div>
   </div>
 {{/if}}

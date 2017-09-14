@@ -242,7 +242,7 @@ export default Ember.Mixin.create(NewOrEdit, ManageLabels, {
           tpl.set('hostname', parts.name);
           return tpl.save();
         } else {
-          return Ember.RSVP.resolve();
+          return Ember.RSVP.resolve(tpl);
         }
       } else {
         // Multiple hosts
@@ -266,7 +266,7 @@ export default Ember.Mixin.create(NewOrEdit, ManageLabels, {
             if ( err ) {
               reject(err);
             } else {
-              resolve();
+              resolve(hosts[0]);
             }
           });
         });
