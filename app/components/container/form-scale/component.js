@@ -11,7 +11,7 @@ export default Ember.Component.extend(ManageLabels, {
   canContainer: true,
   canSidekick:  true,
   min:          1,
-  max:          100,
+  max:          1000,
   mode:         null,
 
   userInput:      null,

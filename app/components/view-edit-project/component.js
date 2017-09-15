@@ -3,7 +3,6 @@ import C from 'ui/utils/constants';
 import NewOrEdit from 'ui/mixins/new-or-edit';
 
 export default Ember.Component.extend(NewOrEdit, {
-  intl: Ember.inject.service(),
   projects: Ember.inject.service(),
   access: Ember.inject.service(),
   growl: Ember.inject.service(),
@@ -145,8 +144,6 @@ export default Ember.Component.extend(NewOrEdit, {
   },
 
   willSave() {
-    let intl = this.get('intl');
-
     var out = this._super();
     if ( out && !this.get('project.id') )
     {
