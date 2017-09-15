@@ -517,7 +517,7 @@ export default Ember.Component.extend(Driver, {
   dataDiskCategory: dataDiskCategory,
   systemDiskCategory: systemDiskCategory,
   regions: regions,
-
+  intl: Ember.inject.service(),
   ioOptimizedObserves: function(){
     if (this.get('aliyunecsConfig.ioOptimized')==='none'){
       this.set('instanceType',notOptimizedinstanceType);
@@ -550,40 +550,40 @@ export default Ember.Component.extend(Driver, {
     if (name) {
       //name length rules
       if (name.length<2){
-        errors.push("Name should have more then 2 letters.");
+        errors.push(this.get('intl').t('machine.driverAliyunecs.errors.nameTooShort'));
       }
       //check '.','-' can not be used as the first letter and the last letter
       if (!/^[a-zA-Z0-9]([\.-]?[a-zA-Z0-9]+[\.-]?)*[a-zA-Z0-9]$/.test(name)){
-        errors.push("Name doesn't match the rule of Aliyunecs hostname rule");
+        errors.push(this.get('intl').t('machine.driverAliyunecs.errors.nameNotValid'));
       }
       //windows hostname can not have more than 15 letter. And we should not use windows image to setup a host, so we don't need to validate name for windows hostname.
 
       //linux hostname can not have more than 30 letter.
       if (name.length>30){
-        errors.push("The hostname can not have more then 30 letters.");
+        errors.push(this.get('intl').t('machine.driverAliyunecs.errors.nameTooLong'));
       }
     }
     var accessKey = this.get('aliyunecsConfig.accessKeyId');
     var accessSecret = this.get('aliyunecsConfig.accessKeySecret');
     if (!accessKey){
-      errors.push("Access key is required.");
+      errors.push(this.get('intl').t('machine.driverAliyunecs.errors.accessKeyRequired'));
     }
     if (!accessSecret){
-      errors.push("Access Secret is required");
+      errors.push(this.get('intl').t('machine.driverAliyunecs.errors.accessSecretRequired'));
     }
     var sshPassword = this.get('aliyunecsConfig.sshPassword');
     if (sshPassword && (sshPassword.length<8) || sshPassword.length>30){
-      errors.push("SSH Password should have at least 8 chatacter and less then 30 chatacter");
+      errors.push(this.get('intl').t('machine.driverAliyunecs.errors.sshPasswordLengthNotValid'));
     }
     if (sshPassword&&!/[?+*$^().|<>';:\-=\[\]\{\},&%#@!~`\\a-zA-Z0-9]+/.test(sshPassword)) {
-      errors.push("SSH Password has invalid charaters.");
+      errors.push(this.get('intl').t('machine.driverAliyunecs.errors.sshPasswordInvalidCharacter'));
     }
     var lower = /[a-z]/.test(sshPassword) ? 1:0;
     var upper = /[A-Z]/.test(sshPassword) ? 1:0;
     var number = /[0-9]/.test(sshPassword) ? 1:0;
     var special = /[?+*$^().|<>';:\-=\[\]\{\},&%#@!~`\\]/.test(sshPassword) ? 1:0;
     if (sshPassword&&(lower + upper + number + special <3)) {
-      errors.push("SSH Password needs to containe 3 different kinds of charater, 3 in upper, lower, number and special.");
+      errors.push(this.get('intl').t('machine.driverAliyunecs.errors.sshPasswordFormatError'));
     }
     this.set('errors', errors);
     return !errors.length;
