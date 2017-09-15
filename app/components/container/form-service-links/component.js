@@ -11,6 +11,7 @@ export default Ember.Component.extend({
   serviceLinksArray : null,
 
   classNames: ['accordion-wrapper'],
+  expandAll: null,
 
   init() {
     this._super(...arguments);
