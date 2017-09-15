@@ -4,6 +4,24 @@
   {{banner-message color='bg-secondary mb-0 mt-10' message=model.stack.description}}
 {{/if}}
 
+{{#if model.stack.tags}}
+  <section>
+    <div class="banner bg-info basics basics-stack-detail">
+      <div class="inline-block">
+        <label class="acc-label">{{t 'generic.tags'}}:</label>
+        {{#copy-inline clipboardText=model.stack.tags defaultText="stackPage.basics.tagsCopy"}}
+          {{#each model.stack.tags as |tag|}}
+            <span class="tag-xs bg-info">
+              <i class="icon icon-tag"></i>
+              {{tag}}
+            </span>
+          {{/each}}
+        {{/copy-inline}}
+      </div>
+    </div>
+  </section>
+{{/if}}
+
 <section>
   {{#accordion-list as |al expandFn| }}
     {{#accordion-list-item

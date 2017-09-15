@@ -6,8 +6,13 @@ export default Ember.Mixin.create(ThrottledResize, {
   originalNode   : null,
   router         : Ember.inject.service("-routing"),
   currentRoute   : null,
+  tooltipService : Ember.inject.service('tooltip'),
 
-  tooltipService: Ember.inject.service('tooltip'),
+  didInsertElement() {
+    let $el    = Ember.$(this.get('element'));
+    let markup = `<div class ='tooltip-caret'></div>`;
+    Ember.$(markup).appendTo($el);
+  },
 
   mouseEnter: function() {
     this.get('tooltipService').cancelTimer();
@@ -16,7 +21,7 @@ export default Ember.Mixin.create(ThrottledResize, {
     this.destroyTooltip();
   },
 
-  routeObserver: Ember.observer('router.currentRouteName', function() {
+  routeObserver: Ember.on('init', Ember.observer('router.currentRouteName', function() {
     // On init
     if (!this.get('currentRoute')) {
       this.set('currentRoute', this.get('router.currentRouteName'));
@@ -26,21 +31,21 @@ export default Ember.Mixin.create(ThrottledResize, {
     if (this.get('currentRoute') !== this.get('router.currentRouteName')) {
       this.destroyTooltip();
     }
-  }).on('init'),
+  })),
 
-  tooltipConstructor: function() {
+  tooltipConstructor: Ember.on('init', Ember.observer('tooltipService.tooltipOpts', function() {
     Ember.run.scheduleOnce('afterRender', this, function() {
       if (this.get('tooltipService.tooltipOpts')) {
         this.constructTooltip();
       }
     });
-  }.observes('tooltipService.tooltipOpts').on('init'),
+  })),
 
   constructTooltip: function() {
     let tts           = this.get('tooltipService');
     let node          = Ember.$(this.element);
     let eventPosition = tts.get('tooltipOpts.eventPosition');
-    let position      = this.positionTooltip(node, eventPosition);
+    let position      = this.positionTooltip(node, Ember.$().extend({}, eventPosition));
     let css           = {visibility: 'visible'};
     let classes       = position.placement;
 
@@ -53,6 +58,9 @@ export default Ember.Mixin.create(ThrottledResize, {
     }
 
     node.offset(position).addClass(classes).css(css);
+    if (position.caret) {
+      node.find('.tooltip-caret').css('left', position.caret);
+    }
   },
 
   destroyTooltip: function() {
@@ -62,11 +70,13 @@ export default Ember.Mixin.create(ThrottledResize, {
   positionTooltip: function(node, position) {
 
     let windowWidth        = window.innerWidth;
-    let originalNodeWidth  = this.get('tooltipService.tooltipOpts.originalNode').outerWidth();
-    let originalNodeHeight = this.get('tooltipService.tooltipOpts.originalNode').outerHeight();
+    let eventNode          = this.get('tooltipService.tooltipOpts.originalNode');
+    let originalNodeWidth  = eventNode.outerWidth();
+    let originalNodeHeight = eventNode.outerHeight();
     let nodeHeight         = node.outerHeight();
     let nodeWidth          = node.outerWidth();
-    let overridePlacement   = this.get('tooltipService.tooltipOpts.placement');
+    let overridePlacement  = this.get('tooltipService.tooltipOpts.placement');
+    let self               = this;
 
     if ( overridePlacement ) {
       position.placement = overridePlacement;
@@ -82,20 +92,33 @@ export default Ember.Mixin.create(ThrottledResize, {
 
     switch ( position.placement ) {
     case 'left':
+      position.left      = horizontalViewport(position.left + originalNodeWidth + 7, position);
       position.top       = position.top + (originalNodeHeight/2) - (nodeHeight/2);
-      position.left      = position.left + originalNodeWidth + 7;
       break;
     case 'right':
-      position.left      = position.left - nodeWidth - 7;
+      position.left      = horizontalViewport(position.left - nodeWidth - 7, position);
       position.top       = position.top + (originalNodeHeight/2) - (nodeHeight/2);
       break;
     case 'bottom':
+      position.left      = horizontalViewport(position.left + (originalNodeWidth/2) - (nodeWidth/2), position);
       position.top       = position.top +  originalNodeHeight + 7;
-      position.left      = position.left + (originalNodeWidth/2) - (nodeWidth/2);
       break;
     default:
+      position.left      = horizontalViewport(position.left + (originalNodeWidth/2) - (nodeWidth/2), position);
       position.top       = position.top -  (nodeHeight + 7);
-      position.left      = position.left + (originalNodeWidth/2) - (nodeWidth/2);
+      break;
+    }
+
+
+    function horizontalViewport(left, position) {
+      if (left < (nodeWidth/2)) {
+        let centerOfDot  =  self.get('tooltipService.tooltipOpts.originalNode').offset().left + (originalNodeWidth/2);
+        let widthOfEvent = originalNodeWidth;
+        let pushFromLeft = 10;
+        left             = pushFromLeft;
+        position.caret = centerOfDot - pushFromLeft - widthOfEvent/2;
+      }
+      return left;
     }
 
     position.width = nodeWidth;
