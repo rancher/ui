@@ -16,13 +16,7 @@ export default Ember.Route.extend({
         deps.push(catalog.fetchTemplate(extInfo.templateId, false));
       });
 
-      return Ember.RSVP.all(deps).then((templates) => {
-        templates.forEach((template) => {
-          stacks.filterBy('externalIdInfo.templateId', template.id).forEach((stack) => {
-            Ember.set(stack,'catalogTemplateInfo',template);
-          });
-        });
-
+      return Ember.RSVP.allSettled(deps).then(() => {
         return Ember.Object.create({
           stacks: stacks,
         });

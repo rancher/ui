@@ -348,7 +348,7 @@ export function camelToTitle(str) {
 }
 
 export function isNumeric(str) {
-  return typeof str === 'string' && str.match(/^[0-9]*$/);
+  return (str+'').match(/^([0-9]+\.)?[0-9]*$/);
 }
 
 
