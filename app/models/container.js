@@ -82,6 +82,10 @@ var Container = Instance.extend(EndpointPorts, {
       this.get('router').transitionTo('containers.run', {queryParams: {containerId: this.get('id'), upgrade: true}});
     },
 
+    editService: function() {
+      this.get('service').send('upgrade');
+    },
+
     clone: function() {
       this.get('router').transitionTo('containers.run', {queryParams: {containerId: this.get('id')}});
     },
@@ -98,14 +102,16 @@ var Container = Instance.extend(EndpointPorts, {
       return [];
     }
 
-    var labelKeys = Object.keys(this.get('labels')||{});
-    var isSystem = this.get('isSystem');
-    var isService = labelKeys.indexOf(C.LABEL.SERVICE_NAME) >= 0;
-    var isK8s = labelKeys.indexOf(C.LABEL.K8S_POD_NAME) >= 0;
-    var canConvert = !!a.converttoservice && !isSystem && !isService && !isK8s;
+    let labelKeys = Object.keys(this.get('labels')||{});
+    let isSystem = this.get('isSystem');
+    let isService = labelKeys.indexOf(C.LABEL.SERVICE_NAME) >= 0;
+    let isK8s = labelKeys.indexOf(C.LABEL.K8S_POD_NAME) >= 0;
+    let canConvert = !!a.converttoservice && !isSystem && !isService && !isK8s;
+    let canEditService = !!this.get('service.links.update');
 
     var choices = [
-      { label: 'action.edit',             icon: 'icon icon-edit',         action: 'edit',             enabled: !!a.upgrade && !isK8s },
+      { label: 'action.edit',             icon: 'icon icon-edit',         action: 'edit',             enabled: !!a.upgrade && !isService && !isK8s },
+      { label: 'action.editService',      icon: 'icon icon-edit',         action: 'editService',      enabled: canEditService && !isK8s },
       { label: 'action.convertToService', icon: 'icon icon-service',      action: 'convertToService', enabled: canConvert},
       { label: 'action.clone',            icon: 'icon icon-copy',         action: 'clone',            enabled: !isSystem && !isService && !isK8s},
       { divider: true },
@@ -123,7 +129,7 @@ var Container = Instance.extend(EndpointPorts, {
     ];
 
     return choices;
-  }.property('actionLinks.{restart,start,stop,restore,execute,logs,upgrade,converttoservice}','canDelete','isSystem'),
+  }.property('actionLinks.{restart,start,stop,restore,execute,logs,upgrade,converttoservice}','canDelete','isSystem','service.links.update'),
 
 
   memoryReservationBlurb: Ember.computed('memoryReservation', function() {

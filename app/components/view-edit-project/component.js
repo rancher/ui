@@ -154,21 +154,6 @@ export default Ember.Component.extend(NewOrEdit, {
       this.set('project.members', this.get('project.projectMembers'));
     }
 
-    let errors = this.get('errors')||[];
-
-    if ( !this.get('primaryResource.name') ) {
-      errors.push(intl.t('validation.required', {key: intl.t('generic.name')}));
-    }
-
-    if ( !this.get('primaryResource.clusterId') ) {
-      errors.push(intl.t('validation.required', {key: intl.t('generic.cluster')}));
-    }
-
-    if ( errors.length ) {
-      this.set('errors', errors);
-      return false;
-    }
-
     return out;
   },
 
