@@ -30,6 +30,11 @@ export default Ember.Controller.extend(NewOrEdit, {
 
   willSave() {
     let outFiles = {};
+    let compose = this.get('compose');
+    if ( compose ) {
+      outFiles['compose.yml'] = compose;
+    }
+
     let userFiles = this.get('files')||[];
     Object.keys(userFiles).forEach((key) => {
       let val = userFiles[key];
