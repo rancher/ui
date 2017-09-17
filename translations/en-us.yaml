@@ -1906,9 +1906,17 @@ formScale:
     containerPrefix: "Standalone container"
     containerSuffix: ""
     servicePrefix: "Service with a scale of"
-    serviceSuffix: ""
+    serviceSuffix: |
+      {scale, plural,
+        =1 {container}
+        other {containers}
+      }
     globalPrefix: "Global service with a scale of"
-    globalSuffix: "per host"
+    globalSuffix: |
+      {scale, plural,
+        =1 {container}
+        other {containers}
+      } per host
     sidekickInactive: "Sidekick: Match the scale and scheduling of a service"
     sidekickPrefix: "Sidekick: Match the scale and scheduling of"
     sidekickSuffix: ""
@@ -3038,6 +3046,7 @@ newContainer:
   upgrade:
     container: Upgrade Container
     service: Upgrade Service
+    globalService: Upgrade Global Service
     sidekick: Upgrade Sidekick
     sidekickName: 'Upgrade Sidekick of "{name}"'
   selectUpgrade: Select one or more services to upgrade.
