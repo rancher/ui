@@ -331,6 +331,8 @@ export default Ember.Mixin.create({
       intlKey = `model.${this.get('type')}.${key}`;
       if ( intl.exists(intlKey) ) {
         displayKey = intl.t(intlKey);
+      } else if ( key.match(/.Id$/) ) {
+        displayKey = Util.camelToTitle(key.replace(/Id$/,''));
       } else {
         displayKey = Util.camelToTitle(key);
       }

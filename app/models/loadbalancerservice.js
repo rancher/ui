@@ -37,7 +37,7 @@ var LoadBalancerService = Service.extend({
   endpointsMap: function() {
     var tlsPorts = this.get('tlsPorts');
 
-    // Set `ssl` on each endpoint since we know it from balancer listener context
+    // Set `tls` on each endpoint since we know it from balancer listener context
     (this.get('publicEndpoints')||[]).forEach((endpoint) => {
       endpoint.set('tls', tlsPorts.includes(endpoint.publicPort));
     });

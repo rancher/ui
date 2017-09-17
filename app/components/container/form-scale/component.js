@@ -11,24 +11,23 @@ export default Ember.Component.extend(ManageLabels, {
   canContainer: true,
   canSidekick:  true,
   min:          1,
-  max:          100,
+  max:          1000,
   mode:         null,
 
   userInput:      null,
   advancedShown:  false,
 
-  init() {
+  didReceiveAttrs() {
     this._super(...arguments);
     this.set('userInput', (this.get('initialScale')||1)+'');
-
     this.initLabels(this.get('initialLabels'), null, C.LABEL.SCHED_GLOBAL);
     var glb = this.getLabel(C.LABEL.SCHED_GLOBAL) === 'true';
     let mode = this.get('mode');
     if ( mode === 'service' && glb ) {
-      mode = 'global';
+      Ember.run.next(() => {
+        this.set('mode', 'global');
+      });
     }
-
-    this.set('mode', mode);
   },
 
   actions: {
