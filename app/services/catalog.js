@@ -110,6 +110,15 @@ export default Ember.Service.extend({
     });
   },
 
+  cleanVersionsArray(template) {
+    return Object.keys(template.versionLinks).filter((key) => {
+      // Filter out empty values for rancher/rancher#5494
+      return !!template.versionLinks[key];
+    }).map((key) => {
+      return {version: key, sortVersion: key, link: template.versionLinks[key]};
+    })
+  },
+
   fetchByUrl(url) {
     return this.get('store').request({url: url, headers: {[C.HEADER.PROJECT_ID]: this.get('projects.current.id')}});
   },
