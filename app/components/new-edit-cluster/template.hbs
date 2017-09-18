@@ -21,22 +21,22 @@
   </section>
     <p class="text-info mb-0">These stacks will be automatically deployed into the System environment for the cluster</p>
 
-  <div class="section container-fluid container-catalog clearfix">
-    {{#each primaryResource.systemStacks as |stack|}}
-      {{#catalog-box model=stack.catalogTemplate showSource=true as |section|}}
-        {{#if (eq section 'body')}}
-          <h3>{{stack.catalogTemplate.name}}</h3>
-          <div class="mt-10 description">{{stack.catalogTemplate.description}}</div>
-        {{else if (eq section 'footer')}}
-          <button type="button" class="btn bg-primary" disabled=true {{action "editStack" stack}}>{{t 'action.edit'}}</button>
-          <button type="button" class="btn bg-error" disabled=true {{action "removeStack" stack}}>{{t 'generic.remove'}}</button>
-        {{/if}}
-      {{/catalog-box}}
-    {{else}}
-      No system services
-    {{/each}}
-  </div>
 {{/unless}}
+<div class="section container-fluid container-catalog clearfix">
+  {{#each primaryResource.systemStacks as |stack|}}
+    {{#catalog-box model=stack.catalogTemplate showSource=true as |section|}}
+      {{#if (eq section 'body')}}
+        <h3>{{stack.catalogTemplate.name}}</h3>
+        <div class="mt-10 description">{{stack.catalogTemplate.description}}</div>
+      {{else if (eq section 'footer')}}
+        <button type="button" disabled='true' class="btn bg-primary" {{action "editStack" stack}}>{{t 'action.edit'}}</button>
+        <button type="button" class="btn bg-error" {{action "removeStack" stack}}>{{t 'generic.remove'}}</button>
+      {{/if}}
+    {{/catalog-box}}
+  {{else}}
+    No system services
+  {{/each}}
+</div>
 
 {{top-errors errors=errors}}
 {{save-cancel editing=editing save="save" cancel="cancel"}}

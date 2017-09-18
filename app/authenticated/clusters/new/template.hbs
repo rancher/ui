@@ -1,5 +1,20 @@
-{{new-edit-cluster
-  editing=false
-  cluster=model.cluster
-  cancel=(action 'cancel')
-}}
+{{#if editCatalog}}
+  {{new-catalog
+      allTemplates=catalogItem.allTemplates
+      stackResource=catalogItem.stack
+      templateResource=catalogItem.tpl
+      versionLinks=catalogItem.versionLinks
+      versionsArray=catalogItem.versionsArray
+      showName=(and (not editing) (not catalogItem.stack.system))
+      editCluster=true
+      templateEdited=(action 'templateEdited')
+      cancel=(action "cancel")
+  }}
+{{else}}
+  {{new-edit-cluster
+      editing=false
+      cluster=model.cluster
+      goToTemplate=(action 'goToTemplate')
+      cancel=(action 'cancel')
+  }}
+{{/if}}

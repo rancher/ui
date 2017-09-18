@@ -8,41 +8,41 @@ import { task } from 'ember-concurrency';
 
 
 export default Ember.Component.extend(NewOrEdit, {
-  intl: Ember.inject.service(),
-  catalog: Ember.inject.service(),
-  projects: Ember.inject.service(),
-  settings: Ember.inject.service(),
+  intl:                     Ember.inject.service(),
+  catalog:                  Ember.inject.service(),
+  projects:                 Ember.inject.service(),
+  settings:                 Ember.inject.service(),
 
-  allTemplates: null,
-  templateResource: null,
-  stackResource: null,
-  versionsArray: null,
-  versionsLinks: null,
-  actuallySave: true,
-  showHeader: true,
-  showPreview: true,
-  showName: true,
-  titleAdd: 'newCatalog.titleAdd',
-  titleUpgrade: 'newCatalog.titleUpgrade',
-  selectVersionAdd: 'newCatalog.selectVersionAdd',
-  selectVersionUpgrade: 'newCatalog.selectVersionUpgrade',
-  saveUpgrade: 'newCatalog.saveUpgrade',
-  saveNew: 'newCatalog.saveNew',
-  sectionClass: 'box mb-20',
+  allTemplates:             null,
+  templateResource:         null,
+  stackResource:            null,
+  versionsArray:            null,
+  versionsLinks:            null,
+  actuallySave:             true,
+  showHeader:               true,
+  showPreview:              true,
+  showName:                 true,
+  titleAdd:                 'newCatalog.titleAdd',
+  titleUpgrade:             'newCatalog.titleUpgrade',
+  selectVersionAdd:         'newCatalog.selectVersionAdd',
+  selectVersionUpgrade:     'newCatalog.selectVersionUpgrade',
+  saveUpgrade:              'newCatalog.saveUpgrade',
+  saveNew:                  'newCatalog.saveNew',
+  sectionClass:             'box mb-20',
   showDefaultVersionOption: false,
 
-  classNames: ['launch-catalog'],
+  classNames:               ['launch-catalog'],
 
-  primaryResource: Ember.computed.alias('stackResource'),
-  templateBase: Ember.computed.alias('templateResource.templateBase'),
-  editing: Ember.computed.notEmpty('stackResource.id'),
+  primaryResource:          Ember.computed.alias('stackResource'),
+  templateBase:             Ember.computed.alias('templateResource.templateBase'),
+  editing:                  Ember.computed.notEmpty('stackResource.id'),
 
-  previewOpen: false,
-  previewTab: null,
-  questionsArray: null,
-  selectedTemplateUrl: null,
-  selectedTemplateModel: null,
-  readmeContent: null,
+  previewOpen:              false,
+  previewTab:               null,
+  questionsArray:           null,
+  selectedTemplateUrl:      null,
+  selectedTemplateModel:    null,
+  readmeContent:            null,
 
   actions: {
     cancel: function() {
@@ -60,6 +60,10 @@ export default Ember.Component.extend(NewOrEdit, {
     changeTemplate: function(tpl) {
       this.get('application').transitionToRoute('catalog-tab.launch', tpl.id);
     },
+
+    saveTemplate() {
+      this.sendAction('templateEdited', this.get('stackResource'));
+    }
   },
 
   didReceiveAttrs: function() {
