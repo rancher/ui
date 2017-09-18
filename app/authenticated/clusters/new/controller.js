@@ -14,8 +14,7 @@ export default Ember.Controller.extend({
     },
 
     goToTemplate(templateId) {
-      var extId = templateId;
-      var templateInfo =  parseExternalId(extId);
+      var templateInfo =  parseExternalId(templateId);
 
       this.get('catalog').fetchTemplate(templateInfo.templateId).then((template) => {
         var stack = this.get('model.cluster.systemStacks').find((stack) => {
