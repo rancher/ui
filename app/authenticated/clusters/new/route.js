@@ -12,9 +12,10 @@ export default Ember.Route.extend({
     })
     def.type = 'cluster';
 
-    return this.get('catalog').fetchTemplates().then(() => {
+    return this.get('catalog').fetchTemplates({plusInfra: true}).then((templates) => {
       return Ember.Object.create({
         cluster: this.get('userStore').createRecord(def),
+        allTemplates: templates
       });
     });
   },

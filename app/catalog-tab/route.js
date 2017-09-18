@@ -2,8 +2,8 @@ import Ember from 'ember';
 import C from 'ui/utils/constants';
 
 export default Ember.Route.extend({
-  access: Ember.inject.service(),
-  catalog: Ember.inject.service(),
+  access:   Ember.inject.service(),
+  catalog:  Ember.inject.service(),
   projects: Ember.inject.service(),
 
   queryParams: {
@@ -45,7 +45,13 @@ export default Ember.Route.extend({
   },
 
   model(params) {
-    params.plusInfra = this.get('projects.current.clusterOwner') === true;
+
+    if (params.launchCluster) {
+      params.plusInfra = true;
+    } else {
+      params.plusInfra = this.get('projects.current.clusterOwner') === true;
+    }
+
     let stacks = this.get('stacks');
     return this.get('catalog').fetchTemplates(params).then((res) => {
       res.catalog.forEach((tpl) => {

@@ -152,7 +152,11 @@
   {{/if}}
 
   <div class="footer-actions">
-    {{save-cancel createLabel=(if editing saveUpgrade saveNew) save="save" cancel="cancel"}}
+    {{#if editCluster}}
+      {{save-cancel createLabel='generic.save' save=(action 'saveTemplate') cancel="cancel"}}
+    {{else}}
+      {{save-cancel createLabel=(if editing saveUpgrade saveNew) save="save" cancel="cancel"}}
+    {{/if}}
   </div>
 {{else}}
   <div class="footer-actions">

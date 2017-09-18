@@ -70,9 +70,8 @@ var Service = Resource.extend(StateCounts, EndpointPorts, {
     },
 
     promptStop() {
-      this.get('modalService').toggleModal('modal-confirm-deactivate', {
-        originalModel: this,
-        action: 'deactivate'
+      this.get('modalService').toggleModal('modal-container-stop', {
+        model: [this]
       });
     },
 
@@ -191,9 +190,9 @@ var Service = Resource.extend(StateCounts, EndpointPorts, {
 //      { label: 'action.logs',           icon: 'icon icon-file',             action: 'logs',           enabled: !!a.logs, altAction: 'popoutLogs' },
       { divider: true },
       { label: 'action.pause',          icon: 'icon icon-pause',            action: 'pause',          enabled: !!a.pause, bulkable: true},
-      { label: 'action.start',          icon: 'icon icon-play',             action: 'activate',       enabled: !!a.activate, bulkable: true},
+      { label: 'action.start',          icon: 'icon icon-play',             action: 'start',          enabled: !!a.activate, bulkable: true},
       { label: 'action.restart',        icon: 'icon icon-refresh',          action: 'restart',        enabled: !!a.restart && canHaveContainers, bulkable: true },
-      { label: 'action.stop',           icon: 'icon icon-stop',             action: 'promptStop',     enabled: !!a.deactivate, altAction: 'deactivate', bulkable: true},
+      { label: 'action.stop',           icon: 'icon icon-stop',             action: 'promptStop',     enabled: !!a.deactivate, altAction: 'stop', bulkable: true},
       { divider: true },
       { label: 'action.remove',         icon: 'icon icon-trash',            action: 'promptDelete',   enabled: !!l.remove, altAction: 'delete', bulkable: true},
       { divider: true },

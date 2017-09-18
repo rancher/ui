@@ -160,11 +160,6 @@ export default Ember.Component.extend(Sortable, StickyHeader, {
     }
   }),
 
-  // didUpdateAttrs() {
-  //   this._super(...arguments);
-  //   this.cleanupOrphans();
-  // },
-
   actions: {
     clearSearch() {
       this.set('searchText', '');
