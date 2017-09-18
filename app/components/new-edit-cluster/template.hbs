@@ -14,9 +14,9 @@
   <hr/>
 
   <section class="header clearfix">
-    <h1 class="pull-left">System Catalog Items</h1>
+    <h1 class="pull-left">{{t 'editCluster.systemStacks.title'}}</h1>
     <div class="right-buttons">
-      <button class="btn bg-primary" disabled=true>Add</button>
+      <button class="btn bg-primary" disabled=true>{{t 'editCluster.systemStacks.add'}}</button>
     </div>
   </section>
     <p class="text-info mb-0">These stacks will be automatically deployed into the System environment for the cluster</p>
@@ -30,11 +30,11 @@
         <div class="mt-10 description">{{stack.catalogTemplate.description}}</div>
       {{else if (eq section 'footer')}}
         <button type="button" disabled='true' class="btn bg-primary" {{action "editStack" stack}}>{{t 'action.edit'}}</button>
-        <button type="button" class="btn bg-error" {{action "removeStack" stack}}>{{t 'generic.remove'}}</button>
+        <button type="button" class="btn bg-transparent" {{action "removeStack" stack}}>{{t 'generic.remove'}}</button>
       {{/if}}
     {{/catalog-box}}
   {{else}}
-    No system services
+    {{t 'editCluster.systemStacks.noData'}}
   {{/each}}
 </div>
 
