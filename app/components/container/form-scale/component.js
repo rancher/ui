@@ -17,7 +17,7 @@ export default Ember.Component.extend(ManageLabels, {
   userInput:      null,
   advancedShown:  false,
 
-  didReceiveAttrs() {
+  init() {
     this._super(...arguments);
     this.set('userInput', (this.get('initialScale')||1)+'');
     this.initLabels(this.get('initialLabels'), null, C.LABEL.SCHED_GLOBAL);

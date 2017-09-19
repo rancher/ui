@@ -6,16 +6,10 @@ export default Ember.Service.extend({
   store: Ember.inject.service('store'),
   projects: Ember.inject.service(),
 
-  kubernetesEndpoint: function() {
-    return this.get('app.kubernetesEndpoint')
+  kubernetesDashboard: function() {
+    return this.get('app.kubernetesDashboard')
       .replace(this.get('app.projectToken'), this.get('projects.current.id'))
       .replace(this.get('app.clusterToken'), this.get('projects.currentCluster.id'));
-  }.property('projects.current.id','projects.currentCluster.id'),
-
-  kubectlEndpoint: function() {
-  }.property(),
-
-  kubernetesDashboard: function() {
   }.property(),
 
   isReady() {

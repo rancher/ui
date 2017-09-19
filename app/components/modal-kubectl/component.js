@@ -4,6 +4,7 @@ import C from 'ui/utils/constants';
 
 export default Ember.Component.extend(ModalBase, {
   access: Ember.inject.service(),
+  projects: Ember.inject.service(),
 
   classNames: ['modal-container', 'large-modal', 'fullscreen-modal', 'modal-shell', 'alert'],
   loading: true,
@@ -25,7 +26,7 @@ export default Ember.Component.extend(ModalBase, {
     if ( labels[C.LABEL.K8S_TOKEN]+'' === 'true' ) {
       return [
         'kubectl-shell.sh',
-        this.get('access.token.jwt') || 'unauthorized'
+        this.get('cookies').get(C.COOKIE.TOKEN) || 'unauthorized'
       ];
     } else {
       return ['/bin/bash','-l','-c','echo "# Run kubectl commands inside here\n# e.g. kubectl get rc\n"; TERM=xterm-256color /bin/bash'];
@@ -33,28 +34,30 @@ export default Ember.Component.extend(ModalBase, {
   }),
 
   didReceiveAttrs() {
-    this.get('store').findAll('container').then((containers) => {
-      let inst = null;
-      for ( let i = 0 ; i < containers.get('length') ; i++)
-      {
-        let container = containers.objectAt(i);
-        if ( container.get('state') !== 'running' )
-        {
-          continue;
-        }
+    let systemProject = this.get('projects.current.cluster.systemProject');
+    let inst;
 
-        var labels = container.get('labels')||{};
-        if ( labels[C.LABEL.K8S_KUBECTL]+'' === 'true' )
-        {
-          inst = container;
-          break;
-        }
-      }
+    if ( !systemProject ) {
+      this.setProperties({
+        loading: false,
+        error: "Unable to locate system environment"
+      });
+      return;
+    }
+
+    this.get('userStore').rawRequest({
+      url: systemProject.links.instances,
+    }).then((res) => {
+      inst = res.body.data.find((c) => {
+        return c.state === 'running'
+          && c.labels
+          && c.labels[C.LABEL.K8S_KUBECTL]+'' === 'true';
+      });
 
       if ( inst )
       {
         this.setProperties({
-          model: inst,
+          model: this.get('store').createRecord(inst),
           loading: false,
           error: null,
         });
@@ -68,5 +71,4 @@ export default Ember.Component.extend(ModalBase, {
       }
     });
   }
-
 });

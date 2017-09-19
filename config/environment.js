@@ -110,10 +110,9 @@ module.exports = function(environment) {
       clusterToken: '%CLUSTERID%',
       projectToken: '%PROJECTID%',
       magicEndpoint: '/r',
-      kubernetesEndpoint: '/k8s/cluster/%CLUSTERID%',
+      kubernetesBase: '/k8s',
       kubectlEndpoint: '/r/projects/%PROJECTID%/kubectld:8091/v1-kubectl',
-      kubernetesDashboard: '/r/projects/%PROJECTID%/kubernetes-dashboard:9090/#',
-      kubernetesWorkload: '/r/projects/%PROJECTID%/kubernetes-dashboard:9090/api/v1/workload?itemsPerPage=1',
+      kubernetesDashboard: '/k8s/clusters/%CLUSTERID%/api/v1/namespaces/kube-system/services/kubernetes-dashboard/proxy/',
       projectEndpoint: '/v3/projects/%PROJECTID%',
       proxyEndpoint: '/v3/proxy',
       wsEndpoint: '/v3/projects/%PROJECTID%/subscribe' +

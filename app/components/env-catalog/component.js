@@ -110,32 +110,24 @@ export default Ember.Component.extend({
             });
             this.set('errors',errOut.uniq());
             cb(false);
-
           } else {
-            return new Ember.RSVP.Promise((resolve) => { setTimeout(resolve, 1); }).then(() => {
-
+            return Ember.run.next(() => {
               return this.get('catalog').refresh().finally(() => {
-
-                Ember.run.later(() => {
+                cb(true);
+                this.sendAction('cancel');
+                Ember.run.next(() => {
                   // @TODO ugh...
                   window.l('route:catalog-tab').send('refresh');
-                  this.sendAction('cancel');
-                }, 500);
-
+                });
               });
-
             });
           }
-
         }).catch((err) => {
           this.set('errors',err);
           cb(false);
         });
-
       } else {
-
         cb(false);
-
       }
     }
   },

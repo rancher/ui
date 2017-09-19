@@ -142,11 +142,11 @@ export default Ember.Component.extend(NewOrEdit, {
         url = Util.addQueryParam(url, 'rancherVersion', version);
       }
 
-      var current = this.get('stackResource.environment');
+      var current = this.get('stackResource.answers');
 
       if ( !current ) {
         current = {};
-        this.set('stackResource.environment', current);
+        this.set('stackResource.answers', current);
       }
 
       var selectedTemplateModel = yield this.get('catalog').fetchByUrl(url).then((response) => {
@@ -249,7 +249,7 @@ export default Ember.Component.extend(NewOrEdit, {
 
     if ( this.get('actuallySave') ) {
       stack.setProperties({
-        environment: this.get('answers'),
+        answers: this.get('answers'),
         externalId: this.get('newExternalId'),
       });
 

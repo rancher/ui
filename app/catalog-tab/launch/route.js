@@ -36,7 +36,7 @@ export default Ember.Route.extend({
           type: 'stack',
           name: results.tpl.get('defaultName'),
           system: (results.tpl.get('templateBase') === C.EXTERNAL_ID.KIND_INFRA),
-          environment: {}, // Question answers
+          answers: {},
         });
       }
 

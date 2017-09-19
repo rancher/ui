@@ -39,6 +39,8 @@ export default Ember.Controller.extend({
     return this.get('projects.currentCluster.state') === 'inactive' && !this.get('hosts.length');
   }.property('projects.currentCluster.state','hosts.[]'),
 
+  simpleMode: false,
+  /*
   simpleMode: function() {
     let list = this.get('stacks');
     if ( !this.get('prefs.showSystemResources') ) {
@@ -48,6 +50,7 @@ export default Ember.Controller.extend({
     let bad = list.findBy('isDefault', false);
     return !bad;
   }.property('stacks.@each.{system,isDefault}','prefs.showSystemResources'),
+  */
 
   groupTableBy: function() {
     if ( this.get('group') === STACK && !this.get('simpleMode') ) {

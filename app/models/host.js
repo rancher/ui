@@ -91,7 +91,17 @@ var Host = Resource.extend(StateCounts,{
   displayIp: Ember.computed.alias('agentIpAddress'),
 
   displayName: function() {
-    return this.get('name') || this.get('hostname') || '('+this.get('id')+')';
+    let name = this.get('name');
+    if ( name ) {
+      return name;
+    }
+
+    name = this.get('hostname');
+    if ( name ) {
+      return name.replace(/\..*$/,'');
+    }
+
+    return '('+this.get('id')+')';
   }.property('name','hostname','id'),
 
   osBlurb: function() {
