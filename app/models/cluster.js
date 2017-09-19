@@ -39,6 +39,10 @@ var Cluster = Resource.extend(PolledResource, {
     return out;
   }.property('projects.@each.{name,clusterOwner}'),
 
+  systemProject: function() {
+    return this.get('projects').findBy('clusterOwner', true);
+  }.property('projects.@each.{clusterOwner}'),
+
   availableActions: function() {
 //    let a = this.get('actionLinks');
     let l = this.get('links');
