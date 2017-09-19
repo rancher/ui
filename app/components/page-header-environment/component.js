@@ -28,12 +28,8 @@ export default Ember.Component.extend({
         out.push(entry);
       }
 
-      if ( project.get('clusterOwner') ) {
-        entry.system = project;
-      } else {
-        entry.projects.push(project);
-        entry.show = true;
-      }
+      entry.projects.push(project);
+      entry.show = true;
     });
 
     return out.filterBy('show',true);
