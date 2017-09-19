@@ -1,0 +1,317 @@
+<section class="horizontal-form">
+  <div class="container-fluid">
+    <form>
+      <div class="over-hr r-mt20 r-mb20">
+        <span>{{t 'machine.driverOtc.access'}}</span>
+      </div>
+      <div class="row r-mb10">
+        <div class="col-sm-12 col-md-2 form-label">
+          <label class="form-control-static">{{t 'machine.driverOtc.accessKey'}}</label>
+        </div>
+        <div class="col-sm-12 col-md-4">
+          {{#if (eq step 1)}}
+            {{input type="text"
+              class="form-control"
+              name="access-key-id"
+              value=model.otcConfig.accessKeyId
+            }}
+          {{else}}
+            <div class="form-control-static text-muted text-italic">{{model.otcConfig.accessKeyId}}</div>
+          {{/if}}
+        </div>
+        <div class="col-sm-12 col-md-2 form-label">
+          <label class="form-control-static">{{t 'machine.driverOtc.accessSecret'}}</label>
+        </div>
+        <div class="col-sm-12 col-md-4">
+          {{#if (eq step 1)}}
+            {{input type="password"
+              class="form-control"
+              name="access-key-secret"
+              value=model.otcConfig.accessKeySecret
+            }}
+          {{else}}
+            <div class="form-control-static text-muted text-italic">{{t 'machine.driverOtc.provided.password'}}</div>
+          {{/if}}
+        </div>
+      </div>
+      <div class="row r-mb10">
+        <div class="col-sm-12 col-md-2 form-label">
+          <label class="form-control-static">{{t 'machine.driverOtc.projectId'}}</label>
+        </div>
+        <div class="col-sm-12 col-md-4">
+          {{#if (eq step 1)}}
+            {{input type="text"
+              class="form-control"
+              name="tenant-id"
+              value=model.otcConfig.tenantId
+            }}
+          {{else}}
+            <div class="form-control-static text-muted text-italic">{{model.otcConfig.tenantId}}</div>
+          {{/if}}
+        </div>
+      </div>
+      {{#if (eq step 1)}}
+        <div class="footer-actions">
+          {{#if itemsLoading}}
+            <button class="btn btn-primary"><i class="icon icon-spinner icon-spin"></i> {{t 'generic.loading'}}</button>
+          {{else}}
+            {{#if (and model.otcConfig.accessKeyId (and model.otcConfig.accessKeySecret model.otcConfig.tenantId))}}
+              <button class="btn btn-primary" {{action 'authorizeCreds'}} name="submit">{{t 'machine.driverOtc.next.availability'}}</button>
+            {{else}}
+              <button class="btn btn-primary" disabled>{{t 'machine.driverOtc.next.availability'}}</button>
+            {{/if}}
+          {{/if}}
+        </div>
+      {{/if}}
+    </form>
+    {{#if (and (eq step 2) (not (and osAvailabilityZone networks)))}}
+      <div class="text-center">
+        <i class="icon icon-spinner icon-spin"></i> {{t 'machine.driverOtc.loadingAvailability'}}
+      </div>
+    {{/if}}
+
+    {{#if (and (gte step 2) osAvailabilityZone networks)}}
+      <div class="over-hr r-mt20 r-mb20">
+        <span>{{t 'machine.driverOtc.availableZone.header'}}</span>
+      </div>
+
+      <div class="row r-mb10">
+        <div class="col-sm-12 col-md-2 form-label">
+          <label class="form-control-static">{{t 'machine.driverOtc.availableZone.label.zone'}}</label>
+        </div>
+        <div class="col-sm-12 col-md-4">
+          {{#if (eq step 2)}}
+            {{new-select
+              classNames="form-control"
+              content=osAvailabilityZone
+              optionLabelPath='zoneName'
+              optionValuePath='zoneName'
+              prompt='machine.driverOtc.availableZone.dropdown.zone'
+              value=model.otcConfig.availableZone
+            }}
+          {{else}}
+            <div class="form-control-static text-muted text-italic">{{model.otcConfig.availableZone}}</div>
+          {{/if}}
+        </div>
+        <div class="col-sm-12 col-md-2 form-label">
+          <label class="form-control-static">{{t 'machine.driverOtc.vpcAndSecurity.vpc'}}</label>
+        </div>
+        <div class="col-sm-12 col-md-4">
+          {{#if (eq step 2)}}
+            {{new-select
+                classNames="form-control"
+                content=networks
+                optionLabelPath='name'
+                optionValuePath='id'
+                prompt='machine.driverOtc.vpcAndSecurity.dropdown.vpc'
+                value=model.otcConfig.vpcId
+            }}
+          {{else}}
+            <div class="form-control-static text-muted text-italic">{{model.otcConfig.vpcId}}</div>
+          {{/if}}
+        </div>
+      </div>
+      <div class="row r-mb10">
+        <div class="col-sm-12 col-md-2 form-label">
+          <label class="form-control-static">{{t 'machine.driverOtc.availableZone.label.region'}}</label>
+        </div>
+        <div class="col-sm-12 col-md-4">
+          <div class="form-control-static text-muted">{{model.otcConfig.region}}</div>
+        </div>
+      </div>
+      {{#if (eq step 2)}}
+        <div class="footer-actions">
+          {{#if itemsLoading}}
+            <button class="btn btn-primary"><i class="icon icon-spinner icon-spin"></i> {{t 'generic.loading'}}</button>
+          {{else}}
+            {{#if (and model.otcConfig.availableZone model.otcConfig.vpcId)}}
+              <button class="btn btn-primary" {{action 'goToStep3'}} name="submit">{{t 'machine.driverOtc.next.networks'}}</button>
+            {{else}}
+              <button class="btn btn-primary" disabled>{{t 'machine.driverOtc.next.networks'}}</button>
+            {{/if}}
+          {{/if}}
+        </div>
+      {{/if}}
+    {{/if}}
+
+    {{#if (and (eq step 3) (not (and subnets securityGroups)))}}
+      <div class="text-center">
+        <i class="icon icon-spinner icon-spin"></i> {{t 'machine.driverOtc.loadingNetworks'}}
+      </div>
+    {{/if}}
+
+    {{#if (and (gte step 3) (and subnets securityGroups))}}
+      <div class="over-hr r-mt20 r-mb20">
+        <span>{{t 'machine.driverOtc.vpcAndSecurity.header'}}</span>
+      </div>
+      <div class="row r-mb10">
+        <div class="col-sm-12 col-md-2 form-label">
+          <label class="form-control-static">{{t 'machine.driverOtc.vpcAndSecurity.subnet'}}</label>
+        </div>
+        <div class="col-sm-12 col-md-4">
+          {{#if (eq step 3)}}
+            {{new-select
+                classNames="form-control"
+                optionLabelPath='name'
+                optionValuePath='id'
+                content=subnets
+                prompt='machine.driverOtc.vpcAndSecurity.dropdown.subnet'
+                value=model.otcConfig.subnetId
+            }}
+          {{else}}
+            <div class="form-control-static text-muted text-italic">{{model.otcConfig.subnetId}}</div>
+          {{/if}}
+        </div>
+        <div class="col-sm-12 col-md-2 form-label">
+          <label class="form-control-static">{{t 'machine.driverOtc.vpcAndSecurity.security'}}</label>
+        </div>
+        <div class="col-sm-12 col-md-4">
+          {{#if (eq step 3)}}
+            {{new-select
+                classNames="form-control"
+                optionLabelPath='name'
+                optionValuePath='name'
+                content=securityGroups
+                prompt='machine.driverOtc.vpcAndSecurity.dropdown.security'
+                value=model.otcConfig.securityGroup
+            }}
+          {{else}}
+            <div class="form-control-static text-muted text-italic">{{model.otcConfig.securityGroup}}</div>
+          {{/if}}
+        </div>
+      </div>
+      {{#if (eq step 3)}}
+        <div class="footer-actions">
+          {{#if itemsLoading}}
+            <button class="btn btn-primary"><i class="icon icon-spinner icon-spin"></i> {{t 'generic.loading'}}</button>
+          {{else}}
+            {{#if (and model.otcConfig.securityGroup model.otcConfig.subnetId)}}
+              <button class="btn btn-primary" {{action 'goToStep4'}} name="submit">{{t 'machine.driverOtc.next.instance'}}</button>
+            {{else}}
+              <button class="btn btn-primary" disabled>{{t 'machine.driverOtc.next.instance'}}</button>
+            {{/if}}
+          {{/if}}
+        </div>
+      {{/if}}
+    {{/if}}
+
+    {{#if (and (gte step 4) (not (and flavors images)))}}
+      <div class="text-center">
+        <i class="icon icon-spinner icon-spin"></i> {{t 'machine.driverOtc.loadingFlavors'}}
+      </div>
+    {{/if}}
+
+    {{#if (and (eq step 4) (and flavors images))}}
+      <div class="over-hr r-mt20 r-mb20">
+        <span>{{t 'machine.driverOtc.instance.header'}}</span>
+      </div>
+      {{!-- This partial contains the quantity, name, and description fields --}}
+      {{partial "host/add-common"}}
+
+      <div class="over-hr r-mt20 r-mb20">
+        <span>{{t 'machine.driverOtc.instance.options'}}</span>
+      </div>
+
+      <div class="row r-mb10">
+        <div class="col-sm-12 col-md-2 form-label">
+          <label class="form-control-static">{{t 'machine.driverOtc.instance.flavorid'}}</label>
+        </div>
+        <div class="col-sm-12 col-md-4">
+          {{#if (eq step 4)}}
+            {{new-select
+              classNames="form-control"
+              optionLabelPath="name"
+              optionValuePath='id'
+              content=flavors
+              prompt='machine.driverOtc.instance.dropdown.flavorid'
+              value=model.otcConfig.flavorId
+            }}
+          {{else}}
+            <div class="form-control-static text-muted text-italic">{{model.otcConfig.flavorId}}</div>
+          {{/if}}
+        </div>
+        <div class="col-sm-12 col-md-2 form-label">
+          <label class="form-control-static">{{t 'machine.driverOtc.instance.images'}}</label>
+        </div>
+        <div class="col-sm-12 col-md-4">
+          {{#if (eq step 4)}}
+            {{new-select
+              classNames="form-control"
+              optionLabelPath="name"
+              optionValuePath='id'
+              content=images
+              prompt='machine.driverOtc.instance.dropdown.imageid'
+              value=model.otcConfig.imageId
+            }}
+          {{else}}
+            <div class="form-control-static text-muted text-italic">{{model.otcConfig.imageId}}</div>
+          {{/if}}
+        </div>
+      </div>
+      <div class="row r-mb10">
+        <div class="col-sm-12 col-md-2 form-label">
+          <label class="form-control-static">{{t 'machine.driverOtc.instance.sshUser'}}</label>
+        </div>
+        <div class="col-sm-12 col-md-4">
+          {{input type="text"
+              class="form-control"
+              value=model.otcConfig.sshUser
+          }}
+        </div>
+        <div class="col-sm-12 col-md-2 form-label">
+          <label class="form-control-static">{{t 'machine.driverOtc.instance.rootPassword'}}</label>
+        </div>
+        <div class="col-sm-12 col-md-4">
+          {{input type="text"
+            class="form-control"
+            value=model.otcConfig.adminPassword
+          }}
+        </div>
+      </div>
+      <div class="row r-mb10">
+        <div class="col-sm-12 col-md-2 form-label">
+          <label class="form-control-static">{{t 'machine.driverOtc.instance.rootVolume'}}</label>
+        </div>
+        <div class="col-sm-12 col-md-4">
+          <div class="input-group">
+            {{input type="number"
+              class="form-control"
+              value=model.otcConfig.rootVolumeSize
+            }}
+            <span class="input-group-addon">GB</span>
+          </div>
+        </div>
+        <div class="col-sm-12 col-md-2 form-label">
+          <label class="form-control-static">{{t 'machine.driverOtc.instance.rootVolumeType'}}</label>
+        </div>
+        <div class="col-sm-12 col-md-4">
+          {{new-select
+              classNames="form-control"
+              content=volumeTypes
+              optionLabelPath='name'
+              optionValuePath='name'
+              prompt='machine.driverOtc.instance.dropdown.type'
+              value=model.otcConfig.rootVolumeType
+          }}
+        </div>
+      </div>
+      <div class="row r-mb10">
+        <div class="col-sm-12 col-md-2 form-label">
+          <label class="form-control-static">{{t 'machine.driverOtc.instance.size'}}</label>
+        </div>
+        <div class="col-sm-12 col-md-4">
+          {{input type="number"
+            class="form-control"
+            value=model.otcConfig.bandwidthSize
+          }}
+        </div>
+      </div>
+      {{!-- This partial contains the Labels and Advanced Options fields --}}
+      {{partial "host/add-options"}}
+      {{!-- This component shows the Create and Cancel buttons --}}
+      {{save-cancel save="save" cancel="cancel"}}
+    {{/if}}
+  </div>
+  {{!-- This component shows errors produced by validate() in the component --}}
+  {{top-errors errors=errors}}
+</section>
