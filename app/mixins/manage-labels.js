@@ -221,12 +221,13 @@ export default Ember.Mixin.create({
     }
 
     let existing = this.getLabelObj(key);
-    if ( existing && existing.get('value') !== value )
-    {
-      Ember.setProperties(existing,{
-        value: value,
-        type: type,
-      });
+    if ( existing ) {
+      if ( existing.get('value') !== value ) {
+        Ember.setProperties(existing,{
+          value: value,
+          type: type,
+        });
+      }
     }
     else
     {
