@@ -3,29 +3,20 @@ import ApiError from 'ember-api-store/models/error';
 import C from 'ui/utils/constants';
 
 export default Ember.Service.extend({
-  'tab-session': Ember.inject.service(),
   store: Ember.inject.service('store'),
+  projects: Ember.inject.service(),
 
   kubernetesEndpoint: function() {
-    return this.get('app.kubernetesEndpoint').replace(this.get('app.projectToken'), this.get(`tab-session.${C.TABSESSION.PROJECT}`));
-  }.property(`tab-session.${C.TABSESSION.PROJECT}`,'app.kubernetesEndpoint'),
+    return this.get('app.kubernetesEndpoint')
+      .replace(this.get('app.projectToken'), this.get('projects.current.id'))
+      .replace(this.get('app.clusterToken'), this.get('projects.currentCluster.id'));
+  }.property('projects.current.id','projects.currentCluster.id'),
 
   kubectlEndpoint: function() {
-    return this.get('app.kubectlEndpoint').replace(this.get('app.projectToken'), this.get(`tab-session.${C.TABSESSION.PROJECT}`));
-  }.property(`tab-session.${C.TABSESSION.PROJECT}`,'app.kubectlEndpoint'),
+  }.property(),
 
   kubernetesDashboard: function() {
-    return this.get('app.kubernetesDashboard').replace(this.get('app.projectToken'), this.get(`tab-session.${C.TABSESSION.PROJECT}`));
-  }.property(`tab-session.${C.TABSESSION.PROJECT}`,'app.kubernetesDashboard'),
-
-  workload() {
-    let url = this.get('app.kubernetesWorkload').replace(this.get('app.projectToken'), this.get(`tab-session.${C.TABSESSION.PROJECT}`));
-    return this.get('store').rawRequest({
-      url: url
-    }).then(function(res) {
-      return res.body;
-    });
-  },
+  }.property(),
 
   isReady() {
     let store = this.get('store');
