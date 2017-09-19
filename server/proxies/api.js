@@ -28,6 +28,7 @@ module.exports = function(app, options) {
     'API': config.apiEndpoint,
 //    'Beta API': config.betaApiEndpoint,
     'Legacy API': config.legacyApiEndpoint,
+    'K8s': config.kubernetesEndpoint,
     'Magic': config.magicEndpoint,
     'Telemetry': config.telemetryEndpoint,
     'WebHook': config.webhookEndpoint,

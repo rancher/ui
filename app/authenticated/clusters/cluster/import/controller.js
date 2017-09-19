@@ -50,6 +50,10 @@ export default Ember.Controller.extend({
   },
 
   actions: {
+    hostSet() {
+      this.set('model.apiHostSet', true);
+    },
+
     cancel() {
       this.transitionToRoute('authenticated.clusters');
     }
