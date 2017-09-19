@@ -23,8 +23,7 @@ export default Ember.Component.extend(NewOrEdit, {
     },
 
     editStack(obj) {
-      let libLink = obj.get('externalId').split(':')[2];
-      this.sendAction('goToTemplate', `library:${libLink}`);
+      this.sendAction('goToTemplate', obj.get('externalId'));
     },
 
     removeStack(obj) {
