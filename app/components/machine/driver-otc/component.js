@@ -1,7 +1,6 @@
 import Ember from 'ember';
 import Driver from 'ui/mixins/driver';
 import fetch from 'ember-api-store/utils/fetch';
-import Errors from 'ui/utils/errors';
 
 const VOLUME_TYPES = [{
   name: 'SAS',
