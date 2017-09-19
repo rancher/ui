@@ -1,6 +1,7 @@
 import Ember from 'ember';
 import Driver from 'ui/mixins/driver';
 import fetch from 'ember-api-store/utils/fetch';
+import Errors from 'ui/utils/errors';
 
 const VOLUME_TYPES = [{
   name: 'SAS',
@@ -18,16 +19,18 @@ const URLS = {
 const SERVICE = 'ecs';
 
 export default Ember.Component.extend(Driver, {
-  driverName:       'otcConfig',
-  catalogUrls:      null,
-  step:             1,
-  intl:             Ember.inject.service(),
-  volumeTypes:      VOLUME_TYPES,
-  itemsLoading:     false,
-  flavors:          null,
-  images:           null,
-  osAvailabilityZone:   null,
-  subnet:           null,
+  driverName:         'otcConfig',
+  catalogUrls:        null,
+  step:               1,
+  _prevStep:          1,
+  errors:             null,
+  intl:               Ember.inject.service(),
+  volumeTypes:        VOLUME_TYPES,
+  itemsLoading:       false,
+  flavors:            null,
+  images:             null,
+  osAvailabilityZone: null,
+  subnet:             null,
 
   init: function() {
     this._super(...arguments);
@@ -59,25 +62,53 @@ export default Ember.Component.extend(Driver, {
 
   actions: {
     authorizeCreds: function() {
-      this.set('step', 2);
+      this.setProperties({
+        _prevStep: 1,
+        step: 2,
+        errors: null,
+      });
       this.getZones().then(() => {
         this.getNetworks().then(() => {
         });
       });
     },
     goToStep3: function() {
-      this.set('step', 3);
+      this.setProperties({
+        _prevStep: 2,
+        step: 3,
+        errors: null,
+      });
       this.getSubnets().then(() => {
         this.getSecurityGroups();
       });
     },
     goToStep4: function() {
-      this.set('step', 4);
+      this.setProperties({
+        _prevStep: 3,
+        step: 4,
+        errors: null,
+      });
       this.getFlavors().then(() => {
         this.getImage();
       });
     },
 
+  },
+
+  validate() {
+    this._super(...arguments);
+    let errors = this.get('errors');
+
+    if ( !this.get('model.otcConfig.flavorId')) {
+      errors.push('Flavor is required');
+    }
+
+    if ( !this.get('model.otcConfig.imageId')) {
+      errors.push('Image is required');
+    }
+
+    this.set('errors', errors);
+    return errors.length === 0;
   },
 
 
@@ -247,15 +278,16 @@ export default Ember.Component.extend(Driver, {
   apiRequest: function(params) {
     var time = moment.utc();
     var signature = this.signAuth({
-      accessKeyId: this.get('model.otcConfig.accessKeyId'),
+      accessKeyId:     this.get('model.otcConfig.accessKeyId'),
       secretAccessKey: this.get('model.otcConfig.accessKeySecret')
     }, this.describeRequest(this.getURL(params.serviceEndpoint || SERVICE, params.version, params.endpoint, params.queryParams), params.method, `${time.format('YYYYMMDDTHHmmss')}Z`, ''), time);
 
     this.set('itemsLoading', true);
 
     delete signature.headers.host;
+
     return fetch(signature.url, {
-      method: params.method,
+      method:  params.method,
       headers: signature.headers,
     }).then((xhr) => {
       if (xhr.status >= 200 && xhr.status < 300) {
@@ -266,11 +298,18 @@ export default Ember.Component.extend(Driver, {
       } else {
 
         this.set('itemsLoading', false);
+        this.set('step', this.get('_prevStep'));
 
         return Ember.RSVP.reject();
       }
     }).catch((err) => {
-      this.set('itemsLoading', false);
+      var errors = [];
+      errors.push(err.body.message);
+      this.setProperties({
+        itemsLoading: false,
+        step: this.get('_prevStep'),
+        errors: errors.uniq()
+      });
 
       return Ember.RSVP.reject(err);
     });
