@@ -16,6 +16,9 @@ export default Ember.Service.extend({
   }.property(),
 
   kubernetesDashboard: function() {
+    return this.get('app.kubernetesDashboard')
+      .replace(this.get('app.projectToken'), this.get('projects.current.id'))
+      .replace(this.get('app.clusterToken'), this.get('projects.currentCluster.id'));
   }.property(),
 
   isReady() {
