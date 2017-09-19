@@ -8,9 +8,12 @@ export default Ember.Controller.extend({
   editCatalog:         false,
   selectedTemplateUrl: null,
   actions: {
+    addSystemStack() {
+      this.transitionToRoute('catalog-tab', this.get('projects.current.id'), {queryParams: { forCluster: true }});
+    },
 
     templateEdited() {
-      this.cancelEdit();
+      this.send('cancelEdit');
     },
 
     goToTemplate(templateId) {
