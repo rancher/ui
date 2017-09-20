@@ -3,6 +3,7 @@ import Ember from 'ember';
 export default Ember.Controller.extend({
   sortBy: 'name',
   prefs: Ember.inject.service(),
+  projects: Ember.inject.service(),
 
   queryParams: ['sortBy'],
 
