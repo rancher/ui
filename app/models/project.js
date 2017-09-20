@@ -93,19 +93,15 @@ var Project = Resource.extend(PolledResource, {
   }.property('actionLinks.{activate,deactivate}','links.{update,remove}','state','canSetDefault'),
 
   icon: function() {
-    if ( this.get('isDefault') )
-    {
-      return 'icon icon-home';
-    }
-    else if ( this.get('active') )
+    if ( this.get('active') )
     {
       return 'icon icon-folder-open';
     }
     else
     {
-      return 'icon icon-folder';
+      return 'icon icon-folder text-muted';
     }
-  }.property('active','isDefault'),
+  }.property('active'),
 
   isDefault: function() {
     return this.get('prefs.' + C.PREFS.PROJECT_DEFAULT) === this.get('id');
