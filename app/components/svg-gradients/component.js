@@ -25,17 +25,21 @@ export default Ember.Component.extend({
             .attr('id', `${name}-${idx}-gradient`)
             .attr('x1', '0%')
             .attr('y1', '0%')
-            .attr('x2', '100%')
+            .attr('x2', '0%')
             .attr('y2', '100%')
             .attr('spreadMethod', 'pad');
           gradient.append('svg:stop')
             .attr('offset', '0%')
             .attr('stop-color', val)
-            .attr('stop-opacity', '1');
+            .attr('stop-opacity', '0.5');
+          gradient.append('svg:stop')
+            .attr('offset', '10%')
+            .attr('stop-color', val)
+            .attr('stop-opacity', '0.25');
           gradient.append('svg:stop')
             .attr('offset', '100%')
             .attr('stop-color', val)
-            .attr('stop-opacity', '0.4');
+            .attr('stop-opacity', '0.1');
 
       });
     });
