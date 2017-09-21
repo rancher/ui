@@ -6,15 +6,20 @@ export default Ember.Route.extend({
   settings: Ember.inject.service(),
 
   model() {
+    let store = this.get('userStore');
     let def = JSON.parse(this.get(`settings.${C.SETTING.CLUSTER_TEMPLATE}`)) || {};
-    (def.systemStacks||[]).forEach((stack) => {
-      stack.type = 'stack';
-    })
+
     def.type = 'cluster';
+    def.systemStacks = (def.systemStacks||[]).map((stack) => {
+      stack.type = 'stack';
+      return stack;
+    })
+
+    let cluster = store.createRecord(def);
 
     return this.get('catalog').fetchTemplates({plusInfra: true}).then((templates) => {
       return Ember.Object.create({
-        cluster: this.get('userStore').createRecord(def),
+        cluster: cluster,
         allTemplates: templates
       });
     });
