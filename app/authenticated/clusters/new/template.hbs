@@ -1,22 +1,56 @@
-{{#if editCatalog}}
-  {{new-catalog
-      allTemplates=catalogItem.allTemplates
-      stackResource=catalogItem.stack
-      templateResource=catalogItem.tpl
-      versionLinks=catalogItem.versionLinks
-      versionsArray=catalogItem.versionsArray
-      showName=(and (not editing) (not catalogItem.stack.system))
-      selectedTemplateUrl=selectedTemplateUrl
-      editCluster=true
-      templateEdited=(action 'templateEdited')
-      cancel=(action "cancelEdit")
-  }}
-{{else}}
-  {{new-edit-cluster
-      editing=false
-      cluster=model.cluster
-      goToTemplate=(action 'goToTemplate')
-      cancel=(action 'cancel')
-      addSystemStack=(action 'addSystemStack')
-  }}
-{{/if}}
+<section class="header has-tabs clearfix">
+  <div class="pull-left"><h1>{{t (if editing 'editCluster.title.edit' 'editCluster.title.new')}}</h1></div>
+</section>
+
+<section class="horizontal-form container-fluid">
+  <label class="acc-label pb-5">{{t 'editCluster.name.label'}}</label>
+  {{input type="text" value=primaryResource.name classNames="form-control" placeholder=(t 'editCluster.name.placeholder')}}
+
+  <label class="acc-label pt-20 pb-5">{{t 'editCluster.description.label'}}</label>
+  {{textarea value=primaryResource.description classNames="form-control no-resize" rows="5" placeholder=(t 'editCluster.description.placeholder')}}
+</section>
+
+{{#unless editing}}
+    <div class="over-hr mt-20 mb-20">
+      <span>{{t 'editCluster.systemStacks.hr'}}</span>
+    </div>
+{{/unless}}
+
+<section class="horizontal-form container-fluid">
+  {{#if editCatalog}}
+    {{new-catalog
+        allTemplates=catalogItem.allTemplates
+        stackResource=catalogItem.stack
+        templateResource=catalogItem.tpl
+        versionLinks=catalogItem.versionLinks
+        versionsArray=catalogItem.versionsArray
+        showName=(and (not editing) (not catalogItem.stack.system))
+        selectedTemplateUrl=selectedTemplateUrl
+        editCluster=true
+        templateEdited=(action 'templateEdited')
+        cancel=(action "cancelEdit")
+    }}
+  {{else if viewCatalog}}
+    {{catalog-index
+        model=catalogInfo
+        category=category
+        catalogId=catalogId
+        application=application
+        showHeader=false
+        launch=(action 'goToTemplate')
+        filterAction=(action 'filterAction' )
+        categoryAction=(action 'categoryAction' )
+        preFetchCategory=(perform fetchTemplates)
+    }}
+  {{else}}
+    {{new-edit-cluster
+        editing=false
+        cluster=model.cluster
+        goToTemplate=(action 'goToTemplate')
+        cancel=(action 'cancel')
+        prefetchCatalogInfo=(action 'prefetchCatalog')
+        addSystemStack=(action 'addSystemStack')
+        intermediateLoad=intermediateLoad
+    }}
+  {{/if}}
+</section>

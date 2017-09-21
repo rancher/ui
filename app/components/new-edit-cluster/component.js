@@ -3,12 +3,12 @@ import NewOrEdit from 'ui/mixins/new-or-edit';
 
 export default Ember.Component.extend(NewOrEdit, {
   projects:        Ember.inject.service(),
-
   editing:         true,
   editCluster:     false,
   primaryResource: Ember.computed.alias('cluster'),
   goToTemplate:    null,
   cluster:         null,
+  showHeader:      true,
 
   didInsertElement() {
     let el = this.$('INPUT')[0];
