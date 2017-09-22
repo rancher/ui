@@ -158,9 +158,4 @@ export default Ember.Component.extend(NewOrEdit, StackState, {
     }
     return ok;
   },
-
-  doneSaving() {
-    this._super(...arguments);
-    this.send('done');
-  },
 });
