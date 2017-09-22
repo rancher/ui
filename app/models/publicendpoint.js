@@ -55,6 +55,7 @@ var PublicEndpoint = Resource.extend({
     return bind && !BIND_ANY.includes(bind);
   }.property('bindIpAddress'),
 
+  // ip:port
   endpoint: function() {
     let out = '';
     let fqdn = this.get('fqdn');
@@ -75,17 +76,26 @@ var PublicEndpoint = Resource.extend({
     return out;
   }.property('fqdn','hasBoundIp','bindIpAddress','agentIpAddress','publicPort'),
 
-  // always ip:port/proto
+  // [ip:]port[/udp]
   displayEndpoint: function() {
-    let out = this.get('endpoint');
-    let proto = this.get('protocol');
+    let out = '';
 
+    let fqdn = this.get('fqdn');
+    if ( fqdn ) {
+      out = fqdn;
+    } else if ( this.get('hasBoundIp') ) {
+      out = this.get('bindIpAddress');
+    }
+
+    out += (out ? ':' : '') + this.get('publicPort');
+
+    let proto = this.get('protocol');
     if ( proto !== 'tcp' ) {
       out += '/' + proto;
     }
 
     return out;
-  }.property('endpoint','protocol'),
+  }.property('fqdn','hasBoundIp','bindIpAddress','publicPort','protocol'),
 
   linkEndpoint: function() {
     if ( this.get('isMaybeHttp') ) {

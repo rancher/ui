@@ -1,24 +1,15 @@
-<div class="banner bg-info mb-0 p-0">
-  <div class="banner-icon" style="width: 68px;"><span class="icon icon-2x icon-notification"></span></div>
-  <div class="banner-message">
-    <p>
-      Experimental: More webhook features will be added in future releases, and the existing capabilities may change.
-    </p>
-  </div>
-</div>
-
 <section class="header clearfix">
   <div class="pull-left">
     <h1>{{t 'hookPage.receiver.header'}}</h1>
   </div>
 
   <div class="right-buttons">
-    {{#link-to "authenticated.project.hooks.new-receiver" class="btn btn-sm bg-primary"}}{{t 'hookPage.receiver.buttonText'}}{{/link-to}}
+    {{#link-to "authenticated.project.hooks.new-receiver" class="btn btn-sm bg-primary" disabled=projects.current.isKubernetes}}{{t 'hookPage.receiver.buttonText'}}{{/link-to}}
   </div>
 </section>
 
 <section>
-  <p>{{t 'hookPage.receiver.content' appName=settings.appName}}</p>
+  <p class="help-block">{{t 'hookPage.receiver.content' appName=settings.appName}}</p>
   {{#if model.receivers.length}}
     {{#sortable-table
         classNames="grid fixed r-mb0 mt-10 sortable-table"
@@ -39,6 +30,8 @@
         </tr>
       {{/if}}
     {{/sortable-table}}
+  {{else if projects.current.isKubernetes}}
+    <div class="m-40 text-center text-muted">Coming soon for Kubernetes clusters</div>
   {{else}}
     {{empty-table resource="container" newRoute="authenticated.project.hooks.new-receiver" newTranslationKey="hookPage.receiver.buttonText"}}
   {{/if}}

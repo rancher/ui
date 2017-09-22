@@ -1,8 +1,10 @@
 import Ember from 'ember';
 
 export default Ember.Controller.extend({
-  settings:        Ember.inject.service(),
-  sortBy:          'name',
+  settings: Ember.inject.service(),
+  projects: Ember.inject.service(),
+
+  sortBy:'name',
 
   headers: [
     {

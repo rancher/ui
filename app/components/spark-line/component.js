@@ -54,7 +54,7 @@ export default Ember.Component.extend({
 
   cssSize: function() {
     let margin = parseInt(this.get('margin',10));
-    let width  = (parseInt(this.get('width'), 10)  + 2*margin);
+    let width  = (parseInt(this.get('width'), 10) + 2*margin);
     let height = (parseInt(this.get('height'),10) + 2*margin);
     return new Ember.String.htmlSafe(`width: ${width}px; height: ${height}px`);
   }.property('width', 'height'),

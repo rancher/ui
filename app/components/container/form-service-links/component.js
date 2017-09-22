@@ -17,10 +17,11 @@ export default Ember.Component.extend({
     this._super(...arguments);
 
     let out = [];
+    let store = this.get('store');
     let links = this.get('service.serviceLinks')||[];
 
-    links.forEach(function(obj) {
-      out.push(this.get('store').createRecord({
+    links.forEach((obj) => {
+      out.push(store.createRecord({
         type: 'link',
         name: obj.get('name'),
         alias: obj.get('alias'),

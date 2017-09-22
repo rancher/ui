@@ -6,7 +6,7 @@ kind: Config
 clusters:
 - cluster:
     api-version: v1%maybeInsecure%
-    server: "%baseUrl%/r/projects/%projectId%/kubernetes"
+    server: "%baseUrl%/k8s/clusters/%clusterId%"
   name: "%projectName%"
 contexts:
 - context:
@@ -59,6 +59,7 @@ export default Ember.Component.extend(ModalBase, {
         .replace(/%maybeInsecure%/g,(insecure ? '\n    insecure-skip-tls-verify: true' : ''))
         .replace(/%projectName%/g, this.get('projects.current.displayName'))
         .replace(/%projectId%/g,   this.get('projects.current.id'))
+        .replace(/%clusterId%/g,   this.get('projects.currentCluster.id'))
         .replace(/%publicValue%/g, key.get('publicValue'))
         .replace(/%secretValue%/g, key.get('secretValue'));
 

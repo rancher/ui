@@ -20,6 +20,7 @@ var Project = Resource.extend(PolledResource, {
 
   canAddHost: Ember.computed.notEmpty('cluster.registrationToken.hostCommand'),
   canImport: Ember.computed.notEmpty('cluster.registrationToken.clusterCommand'),
+  isKubernetes: Ember.computed.equal('cluster.orchestration','kubernetes'),
 
   actions: {
     edit: function() {
