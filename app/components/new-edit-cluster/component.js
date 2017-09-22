@@ -22,8 +22,8 @@ export default Ember.Component.extend(NewOrEdit, {
       this.sendAction('done');
     },
 
-    editStack(obj) {
-      this.sendAction('goToTemplate', obj.get('externalId'));
+    editStack(obj, edit) {
+      this.sendAction('goToTemplate', obj.get('externalId'), edit);
     },
 
     removeStack(obj) {

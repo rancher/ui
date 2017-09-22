@@ -100,30 +100,34 @@ export default Ember.Controller.extend({
         externalId: selectedTemplate.externalId
       });
 
-      this.get('model.cluster.systemStacks').pushObject(newSystemStack);
+      if (!this.get('model.cluster.systemStacks').findBy('externalId', newSystemStack.get('externalId'))) {
+        this.get('model.cluster.systemStacks').pushObject(newSystemStack);
+      }
       this.set('viewCatalog', false);
       this.send('cancelEdit');
     },
 
-    goToTemplate(templateId, edit=false) {
+    goToTemplate(externalId, edit=false) {
       var templateInfo =  {};
       if (edit) {
-        templateInfo = parseExternalId(templateId);
+        templateInfo = parseExternalId(externalId);
       } else {
         templateInfo = {
-          templateId: templateId,
+          templateId: externalId,
           templateBase: '',
         };
       }
 
       this.get('catalog').fetchTemplate(templateInfo.templateId).then((template) => {
         var stack = this.get('model.cluster.systemStacks').find((stack) => {
-          if (stack.get('externalId').indexOf(templateInfo.templateId) >= 0) {
+          if (stack.get('externalId').indexOf(externalId) >= 0) {
             return stack;
           }
         });
 
-        if (!stack) {
+        if (stack) {
+          this.set('newSystemStack', stack);
+        } else {
           stack = this.set('newSystemStack', this.get('store').createRecord({
             type: 'stack',
             name: template.get('defaultName'),
