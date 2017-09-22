@@ -1,6 +1,6 @@
 import Ember from 'ember';
 import { parseExternalId } from 'ui/utils/parse-externalid';
-import { task, timeout } from 'ember-concurrency';
+import { task/* , timeout */ } from 'ember-concurrency';
 import C from 'ui/utils/constants';
 
 export default Ember.Controller.extend({
