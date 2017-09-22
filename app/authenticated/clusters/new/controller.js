@@ -49,6 +49,16 @@ export default Ember.Controller.extend({
   }).restartable().maxConcurrency(3),
 
   actions: {
+    cancelAddSystem() {
+      this.setProperties({
+        catalogInfo:       null,
+        _catalogInfoCache: null,
+        _prefetchInstance: null,
+        catalogId:         'all',
+        category:          null,
+        viewCatalog:       false,
+      });
+    },
     filterAction: function(catalogId){
       this.get('fetchTemplates').perform({
         "category": this.get('category'),

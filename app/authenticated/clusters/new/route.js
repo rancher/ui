@@ -19,4 +19,18 @@ export default Ember.Route.extend({
       });
     });
   },
+  teardownForComponentState: Ember.on('deactivate', function(){
+    this.controller.setProperties({
+      catalogItem:         null,
+      editCatalog:         false,
+      selectedTemplateUrl: null,
+      catalogInfo:         null,
+      _catalogInfoCache:   null,
+      _prefetchInstance:   null,
+      catalogId:           'all',
+      category:            null,
+      viewCatalog:         false,
+      newSystemStack:      null,
+    });
+  })
 });
