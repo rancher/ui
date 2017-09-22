@@ -16,6 +16,7 @@ export default Ember.Controller.extend({
   catalogId:           'all',
   category:            null,
   viewCatalog:         false,
+  newSystemStack:      null,
 
   fetchCatalogInfo: task(function * () {
     let promise = this.get('catalog').fetchCatalogs({
@@ -89,7 +90,18 @@ export default Ember.Controller.extend({
         }
       }
     },
-    templateEdited() {
+
+    templateEdited(selectedTemplate) {
+
+      let newSystemStack = this.get('newSystemStack');
+
+      newSystemStack.setProperties({
+        environment: selectedTemplate.answers,
+        externalId: selectedTemplate.externalId
+      });
+
+      this.get('model.cluster.systemStacks').pushObject(newSystemStack);
+      this.set('viewCatalog', false);
       this.send('cancelEdit');
     },
 
@@ -112,14 +124,13 @@ export default Ember.Controller.extend({
         });
 
         if (!stack) {
-          stack = this.get('store').createRecord({
+          stack = this.set('newSystemStack', this.get('store').createRecord({
             type: 'stack',
             name: template.get('defaultName'),
             system: (template.get('templateBase') === C.EXTERNAL_ID.KIND_INFRA),
             environment: {}, // Question answers
-          });
+          }));
         }
-        debugger;
 
         var neu = Ember.Object.create({
           stack:         stack,
