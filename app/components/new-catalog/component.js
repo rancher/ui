@@ -261,9 +261,10 @@ export default Ember.Component.extend(NewOrEdit, {
       }
 
       this.sendAction('doSave', {
-        templateId: this.get('templateResource.id'),
+        answers:           this.get('answers'),
+        externalId:        this.get('newExternalId'),
+        templateId:        this.get('templateResource.id'),
         templateVersionId: versionId,
-        answers: this.get('answers'),
       });
       return false;
     }

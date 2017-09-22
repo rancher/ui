@@ -1,0 +1,127 @@
+{{#if showHeader}}
+  <section class="header clearfix">
+    <div class="pull-left">
+      <h1>{{t 'catalogPage.index.header'}}</h1>
+    </div>
+
+    <div class="right-buttons">
+      <button type="button" class="btn bg-primary icon-btn" disabled={{eq updating 'yes'}} {{action "update"}}>
+        {{#if (eq updating "yes")}}
+          <span class="darken"><i class="icon icon-spinner icon-spin"></i></span>
+        {{else}}
+          {{#if (eq updating "error")}}
+            <span class="darken"><i class="icon icon-spinner icon-alert"></i></span>
+          {{else}}
+            <span class="darken"><i class="icon icon-refresh"></i></span>
+          {{/if}}
+        {{/if}}
+        <span>{{t 'catalogPage.index.refreshBtn'}}</span>
+      </button>
+      <button type="button" class="btn bg-primary icon-btn" {{ action "addEnvCatalog" }}>
+        <span class="darken"><i class="icon icon-edit"></i></span>
+        <span>{{t 'catalogPage.index.manage'}}</span>
+      </button>
+    </div>
+  </section>
+{{/if}}
+
+<div class="row">
+  <div class="col span-5-of-24">
+    <div class="catalog-search box">
+      <div class="mb-25">
+        <label class="pb-10">{{t 'catalogPage.index.search.label'}}</label>
+        <div class="search-group input-group full-width">
+          {{input value=search type="search" class="input-sm pull-right" placeholder=(t 'generic.search')}}
+          {{#if search}}
+            <span class="input-group-btn">
+              <button class="btn bg-transparent text-info pl-10 pr-10" {{action 'clearSearch'}}><i class="icon icon-close"/></button>
+            </span>
+          {{/if}}
+        </div>
+      </div>
+      <div>
+        <label class="pb-10">{{t 'catalogPage.index.filters.label'}}</label>
+        <div class="dropdown filter-group">
+          <button type="button" class="btn bg-default btn-md dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="text-align: left;"><i class="icon icon-chevron-down pull-right"></i><span class="text-capitalize">{{catalogId}}</span></button>
+          <ul class="dropdown-menu dropdown-menu-right">
+            {{#each filters as |opt|}}
+              <li class="text-capitalize {{if (eq catalogId opt.queryParams.catalogId) 'active'}}">
+                <a href="#" {{action (action filterAction opt.queryParams.catalogId )}}>
+                  <i class="{{opt.icon}}"></i>
+                  {{#if opt.localizedLabel}}
+                    {{t opt.localizedLabel}}
+                  {{else}}
+                    {{opt.label}}
+                  {{/if}}
+                </a>
+              </li>
+            {{/each}}
+          </ul>
+
+        </div>
+      </div>
+    </div>
+    <ul class="container-categories list-unstyled">
+      <li class=" {{if (eq category 'all') 'active' ''}}">
+        {{#if preFetchCategory}}
+          <a href="#" {{action (action categoryAction 'all' catalogId)}} class="btn has-label bg-default btn-md">
+            <span class="btn-label">{{totalCategories}}</span><span class="clip">{{t 'generic.all'}}</span>
+          </a>
+        {{else}}
+          <a href="#" {{action (action categoryAction 'all' catalogId)}} class="btn has-label bg-default btn-md">
+            <span class="btn-label">{{totalCategories}}</span><span class="clip">{{t 'generic.all'}}</span>
+          </a>
+        {{/if}}
+      </li>
+      {{#each-in categoryWithCounts as |norm cat|}}
+        <li class=" {{if (eq cat.name category) 'active' ''}}">
+          <a href="#" {{action (action categoryAction cat.name catalogId )}} class="btn has-label bg-default btn-md">
+            <span class="btn-label">{{cat.count}}</span><span class="clip">{{cat.name}}</span>
+          </a>
+        </li>
+      {{/each-in}}
+    </ul>
+  </div>
+  <div class="col span-19-of-24">
+    {{#each arrangedContent as |catalogItem|}}
+      {{#catalog-box model=catalogItem showSource=showCatalogDropdown as |section|}}
+        {{#if (eq section 'body')}}
+          <h3>
+            {{#if (eq catalogItem.templateBase 'infra')}}
+              {{#if catalogItem.exists}}
+                <a href="#" {{action (action launch catalogItem.id true) allowedKeys="meta ctrl"}}>{{catalogItem.name}}</a>
+              {{else if catalogItem.supported}}
+                <a href="#"  {{action (action launch catalogItem.id )}}>{{catalogItem.name}}</a>
+              {{else}}
+                <a href="#"  {{action (action launch catalogItem.id true ) allowedKeys="meta ctrl"}}>{{catalogItem.name}}</a>
+              {{/if}}
+            {{else}}
+                <a href="#"  {{action (action launch catalogItem.id )}}>{{catalogItem.name}}</a>
+            {{/if}}
+          </h3>
+          <div class="mt-10 description">{{catalogItem.description}}</div>
+        {{else if (eq section 'footer')}}
+          {{#if (eq catalogItem.templateBase 'infra')}}
+            {{#if catalogItem.exists}}
+              <button type="button" class="btn btn-sm bg-default bg-disabled" {{action (action launch catalogItem.id true ) allowedKeys="meta ctrl"}}>{{t 'catalogPage.index.action.alreadyDeployed'}}</button>
+            {{else if catalogItem.supported}}
+              <button class="btn btn-sm bg-primary" {{action (action launch catalogItem.id )}}>{{t 'catalogPage.index.action.launch'}}</button>
+            {{else}}
+              <button type="button" class="btn btn-sm bg-default bg-disabled" {{action (action launch catalogItem.id true ) allowedKeys="meta ctrl"}}>{{t 'catalogPage.index.action.notCompatible'}}</button>
+            {{/if}}
+          {{else}}
+            <button type="button" class="btn btn-sm bg-primary" {{action (action launch catalogItem.id )}}>{{t 'catalogPage.index.action.launch'}}</button>
+          {{/if}}
+        {{/if}}
+      {{/catalog-box}}
+    {{else}}
+      <div class="text-muted mt-20">
+        {{#if showCatalogDropdown}}
+          {{t 'catalogPage.index.noData.plural'}}
+        {{else}}
+          {{t 'catalogPage.index.noData.singular'}}
+        {{/if}}
+      </div>
+    {{/each}}
+  </div>
+</div>
