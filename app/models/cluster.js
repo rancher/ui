@@ -4,6 +4,7 @@ import PolledResource from 'ui/mixins/cattle-polled-resource';
 
 var Cluster = Resource.extend(PolledResource, {
   userStore: Ember.inject.service('user-store'),
+  projectsService: Ember.inject.service('projects'),
 
   type: 'cluster',
 
@@ -12,6 +13,14 @@ var Cluster = Resource.extend(PolledResource, {
       this.get('router').transitionTo('authenticated.clusters.cluster.edit', this.get('id'));
     }
   },
+
+  delete: function(/*arguments*/) {
+    var promise = this._super.apply(this, arguments);
+    return promise.then((/* resp */) => {
+      this.get('projectsService').refreshAll();
+    });
+  },
+
 
   _allProjects: null,
   init() {

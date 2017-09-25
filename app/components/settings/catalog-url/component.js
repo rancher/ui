@@ -73,7 +73,7 @@ export default Ember.Component.extend({
   init() {
     this._super(...arguments);
 
-    const def = C.CATALOG.DEFAULT_BRANCH;
+    // const def = C.CATALOG.DEFAULT_BRANCH;
     let parsed = parseCatalogSetting(this.get('initialValue'));
     let map = parsed.catalogs || {};
 

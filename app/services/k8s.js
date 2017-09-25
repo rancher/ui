@@ -7,9 +7,10 @@ export default Ember.Service.extend({
   projects: Ember.inject.service(),
 
   kubernetesDashboard: function() {
-    return this.get('app.kubernetesDashboard')
-      .replace(this.get('app.projectToken'), this.get('projects.current.id'))
-      .replace(this.get('app.clusterToken'), this.get('projects.currentCluster.id'));
+    let kbd = this.get('app.kubernetesDashboard')
+        .replace(this.get('app.projectToken'), this.get('projects.current.id'))
+        .replace(this.get('app.clusterToken'), this.get('projects.currentCluster.id'));
+    return `${kbd}#!/overview?namespace=default`; // im not 100% sure if '#!/overview?namespace=' is the final route, maybe we can do this better, but denise wanted this
   }.property('projects.current.id','projects.currentCluster.id'),
 
   isReady() {

@@ -3,16 +3,17 @@ import ManageLabels from 'ui/mixins/manage-labels';
 import Util from 'ui/utils/util';
 
 export default Ember.Component.extend(ManageLabels, {
-  settings: Ember.inject.service(),
-  projects: Ember.inject.service(),
-  cattleAgentIp : null,
-  model: null,
+  settings:                   Ember.inject.service(),
+  projects:                   Ember.inject.service(),
+  cattleAgentIp :             null,
+  model:                      null,
 
-  cluster: null,
-  loading: Ember.computed.alias('cluster.isTransitioning'),
+  cluster:                    null,
+  loading:                    Ember.computed.alias('cluster.isTransitioning'),
+  registrationCommandWindows: Ember.computed.alias('cluster.registrationToken.windowsCommand'),
 
-  _allHosts: null,
-  hostsAtLoad: null,
+  _allHosts:                  null,
+  hostsAtLoad:                null,
 
   actions: {
     cancel() {
@@ -20,14 +21,12 @@ export default Ember.Component.extend(ManageLabels, {
     },
 
     setLabels(labels) {
-      if ( this.get('model') ) {
-        var out = {};
-        labels.forEach((row) => {
-          out[row.key] = row.value;
-        });
+      var out = {};
+      labels.forEach((row) => {
+        out[row.key] = row.value;
+      });
 
-        this.set('model.labels', out);
-      }
+      this.set('labels', out);
     }
   },
 
@@ -37,10 +36,11 @@ export default Ember.Component.extend(ManageLabels, {
     this.setProperties({
       _allHosts: hosts,
       hostsAtLoad: hosts.get('length'),
+      labels: []
     });
   },
 
-  registrationCommand: function() {
+  registrationCommand: Ember.computed('registrationCommand','labels', 'cattleAgentIp', function() {
     let cmd      = this.get('cluster.registrationToken.hostCommand');
     let cattleIp = this.get('cattleAgentIp');
     let lookFor  = 'docker run';
@@ -50,7 +50,7 @@ export default Ember.Component.extend(ManageLabels, {
     }
 
     let idx = cmd.indexOf(lookFor);
-    let env = Util.addQueryParams('', this.get('model.labels')||{});
+    let env = Util.addQueryParams('', this.get('labels')||{});
 
     if ( env ) {
       lookFor  = 'docker run';
@@ -68,11 +68,8 @@ export default Ember.Component.extend(ManageLabels, {
     }
 
     return cmd;
-  }.property('model.command','model.labels', 'cattleAgentIp'),
-
-  registrationCommandWindows: Ember.computed.alias('cluster.registrationToken.windowsCommand'),
-
-  newHosts: function() {
+  }),
+  newHosts: Ember.computed('hostsAtLoad','_allHosts.length', function() {
     let atLoad = this.get('hostsAtLoad')
     let now = this.get('_allHosts.length');
 
@@ -81,6 +78,6 @@ export default Ember.Component.extend(ManageLabels, {
     }
 
     return Math.max(0, now-atLoad);
-  }.property('hostsAtLoad','_allHosts.length'),
+  }),
 
 });
