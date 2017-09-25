@@ -9,9 +9,19 @@ export default Ember.Component.extend({
   projects    : Ember.inject.service(),
   project     : Ember.computed.alias('projects.current'),
 
+  clusters: Ember.computed(function() {
+    return this.get('userStore').all('cluster', null, {url: 'clusters', forceReload: true, removeMissing: true});
+  }),
+
   projectChoices: function() {
-    return this.get('projects.active').sortBy('name','id');
-  }.property('projects.active.@each.{id,displayName,state}'),
+    return this.get('projects.active').filter((project) => {
+      let removedish = ['removing', 'removed'];
+      let cluster = this.get('clusters').findBy('id', project.get('clusterId'));
+      if ( cluster && !removedish.includes( cluster.get('state'))) {
+        return project;
+      }
+    }).sortBy('name','id');
+  }.property('projects.active.@each.{id,displayName,state}', 'clusters.@each.{state,transition}'),
 
   byCluster: function() {
     let out = [];
