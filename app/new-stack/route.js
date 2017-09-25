@@ -77,6 +77,7 @@ export default Ember.Route.extend({
         githubRepo: null,
         githubBranch: null,
         composeFiles: null,
+        compose: null,
         system: false,
       });
     }
