@@ -43,7 +43,7 @@ export default Ember.Component.extend({
       }
 
       if (this.get('enableCommunity')) {
-        map[C.CATALOG.COMMUNITY_KEY] = {url: C.CATALOG.COMMUNITY_VALUE, branch: def};
+        map[C.CATALOG.COMMUNITY_KEY] = {url: C.CATALOG.COMMUNITY_VALUE, branch: C.CATALOG.COMMUNITY_BRANCH};
       }
 
       // Load the user's non-empty rows
@@ -85,8 +85,8 @@ export default Ember.Component.extend({
     }
 
     let community = false;
-    entry = map[C.CATALOG.COMMUNITY_KEY];
-    if ( entry && entry.url === C.CATALOG.COMMUNITY_VALUE && entry.branch === def ) {
+    entry = map[C.CATALOG.COMMUNITY_KEY]
+    if ( entry && entry.url === C.CATALOG.COMMUNITY_VALUE && entry.branch === C.CATALOG.COMMUNITY_BRANCH ) {
       community = true;
       delete map[C.CATALOG.COMMUNITY_KEY];
     }

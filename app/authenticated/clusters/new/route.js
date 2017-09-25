@@ -11,7 +11,7 @@ export default Ember.Route.extend({
 
     def.type = 'cluster';
     def.systemStacks = (def.systemStacks||[]).map((stack) => {
-      stack.type = 'stack';
+      stack.type = 'stackConfiguration';
       return stack;
     })
 
