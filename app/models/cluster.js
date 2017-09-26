@@ -48,6 +48,10 @@ var Cluster = Resource.extend(PolledResource, {
     return out;
   }.property('projects.@each.{name,clusterOwner}'),
 
+  canEdit: Ember.computed('actionLinks.{activate,deactivate}','links.{update,remove}', function() {
+    return (this.get('links.update') && this.get('state') === 'inactive') ? true : false;
+  }),
+
   systemProject: function() {
     return this.get('projects').findBy('clusterOwner', true);
   }.property('projects.@each.{clusterOwner}'),
@@ -57,7 +61,7 @@ var Cluster = Resource.extend(PolledResource, {
     let l = this.get('links');
 
     var choices = [
-      { label: 'action.edit',             icon: 'icon icon-edit',         action: 'edit',         enabled: !!l.update },
+      { label: 'action.edit',             icon: 'icon icon-edit',         action: 'edit',         enabled: this.get('canEdit') },
       { divider: true },
 //      { label: 'action.activate',         icon: 'icon icon-play',         action: 'activate',     enabled: !!a.activate},
 //      { label: 'action.deactivate',       icon: 'icon icon-pause',        action: 'promptStop',   enabled: !!a.deactivate, altAction: 'deactivate'},
