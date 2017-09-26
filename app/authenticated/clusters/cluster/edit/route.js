@@ -15,7 +15,7 @@ export default Ember.Route.extend({
     if ( cluster.systemStacks === null ) {
       let def = JSON.parse(this.get(`settings.${C.SETTING.CLUSTER_TEMPLATE}`)) || {};
       cluster.set('systemStacks', (def.systemStacks||[]).map((stack) => {
-        stack.type = 'stack';
+        stack.type = 'stackConfiguration';
         let extInfo = parseExternalId(stack.externalId);
         deps.push(catalog.fetchTemplate(extInfo.templateId, false));
         return store.createRecord(stack);
@@ -23,8 +23,9 @@ export default Ember.Route.extend({
     }
 
     return Ember.RSVP.allSettled(deps).then(() => {
-      return Ember.Object.create({
-        cluster
+      return this.get('catalog').fetchTemplates({plusInfra: true}).then((resp) => {
+        resp.cluster = cluster;
+        return resp;
       });
     });
   },
