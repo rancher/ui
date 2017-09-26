@@ -65,6 +65,7 @@ export default Ember.Component.extend(ManageLabels, {
 
     if ( mode === 'container') {
       this.set('isService', false);
+      this.set('initialScale', 1);
     } else {
       this.set('isService', true);
     }
