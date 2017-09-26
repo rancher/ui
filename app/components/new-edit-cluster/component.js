@@ -139,7 +139,7 @@ export default Ember.Component.extend(NewOrEdit, {
       let newSystemStack = this.get('newSystemStack');
 
       newSystemStack.setProperties({
-        environment: selectedTemplate.answers,
+        answers: selectedTemplate.answers,
         externalId: selectedTemplate.externalId
       });
 
