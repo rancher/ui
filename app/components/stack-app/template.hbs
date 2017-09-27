@@ -3,10 +3,13 @@
     <img src="{{app.baseAssets}}assets/images/generic-catalog.svg" data-src={{model.catalogTemplate.links.icon}}/>
   </div>
   <div class="stack-info-row box">
-    <div class="stack-info-top">
-      {{action-menu model=model classNames="pull-right"}}
-      <div>
+    <div class="stack-info-top row">
+      <div class="col span-6">
         {{#link-to "stack" projects.current.id model.id}}{{model.displayName}}{{/link-to}}
+      </div>
+      <div class="col span-6 text-right">
+        {{badge-state model=model classNames="btn-xs"}}
+        {{action-menu model=model classNames="inline-block"}}
       </div>
     </div>
     <hr>
