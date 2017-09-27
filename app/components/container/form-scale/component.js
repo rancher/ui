@@ -3,19 +3,20 @@ import C from 'ui/utils/constants';
 import ManageLabels from 'ui/mixins/manage-labels';
 
 export default Ember.Component.extend(ManageLabels, {
-  initialLabel: null,
-  initialScale: null,
-  isService:    null,
-  isUpgrade:    null,
-  isGlobal:     null,
-  canContainer: true,
-  canSidekick:  true,
-  min:          1,
-  max:          1000,
-  mode:         null,
+  initialLabel:     null,
+  initialScale:     null,
+  isService:        null,
+  isUpgrade:        null,
+  isGlobal:         null,
+  canContainer:     true,
+  canSidekick:      true,
+  min:              1,
+  max:              1000,
+  mode:             null,
 
-  userInput:      null,
-  advancedShown:  false,
+  userInput:        null,
+  advancedShown:    false,
+  _previousService: null,
 
   init() {
     this._super(...arguments);
@@ -60,13 +61,24 @@ export default Ember.Component.extend(ManageLabels, {
     }
 
     if ( mode === 'sidekick' ) {
-      this.set('service', null);
+      this.setProperties({
+        _previousService: this.get('service'),
+        service: null,
+      });
     }
 
     if ( mode === 'container') {
-      this.set('isService', false);
-      this.set('initialScale', 1);
+      this.setProperties({
+        isServices:   false,
+        initialScale: 1,
+      });
     } else {
+      if (this.get('_previousService')) {
+        this.setProperties({
+          service:          this.get('_previousService'),
+          _previousService: null,
+        });
+      }
       this.set('isService', true);
     }
 
