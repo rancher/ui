@@ -26,10 +26,14 @@
           </div>
         {{/if}}
         {{#if model.registrationToken.clusterCommand}}
-          {{#link-to "authenticated.clusters.cluster.import" model.id class="btn btn-sm bg-primary icon-btn ml-20"}}
-            <span class="darken"><i class="icon icon-download"></i></span>
-            <span>{{t 'clusterRow.importCluster'}}</span>
-          {{/link-to}}
+          <div class="input-group inline-block" style="vertical-align: middle;" >
+            <span class="input-group-btn">
+              <button type="button" class="btn btn-sm bg-primary icon-btn ml-20" onclick={{action (action useKubernetes) model}}>
+                <span class="darken"><i class="icon icon-download"></i></span>
+                <span>{{t 'clusterRow.importCluster'}}</span>
+              </button>
+            </span>
+          </div>
         {{/if}}
       {{else}}
         {{t 'clusterRow.noHosts'}}

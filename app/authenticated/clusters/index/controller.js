@@ -86,5 +86,9 @@ export default Ember.Controller.extend({
         authenticated.send('switchProject', model.get("defaultProject.id"), 'authenticated.clusters.cluster.host-templates', [model.id, {queryParams: {backTo: 'clusters'}}]);
       }
     },
+    useKubernetes(model) {
+      let authenticated = getOwner(this).lookup('route:authenticated');
+      authenticated.send('switchProject', model.get("defaultProject.id"), 'authenticated.clusters.cluster.import', [model.id, {queryParams: {backTo: 'clusters'}}]);
+    },
   },
 });

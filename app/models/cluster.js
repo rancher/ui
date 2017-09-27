@@ -11,7 +11,25 @@ var Cluster = Resource.extend(PolledResource, {
   actions: {
     edit() {
       this.get('router').transitionTo('authenticated.clusters.cluster.edit', this.get('id'));
+    },
+    promptDelete: function() {
+      if (this.get('projectsService.current.clusterId') === this.get('id')) {
+        this.get('modalService').toggleModal('modal-switch-cluster', {resources: [this]});
+      } else {
+        this.get('modalService').toggleModal('confirm-delete', {resources: [this]});
+      }
+    },
+    checkDefaultDelete() {
+      if (this.get('projectsService.current.clusterId') === this.get('id')) {
+        this.get('modalService').toggleModal('modal-switch-cluster', {resources: [this]});
+      } else {
+        this.delete();
+      }
     }
+  },
+
+  isCurrentCluster() {
+    return
   },
 
   delete: function(/*arguments*/) {
@@ -66,7 +84,7 @@ var Cluster = Resource.extend(PolledResource, {
 //      { label: 'action.activate',         icon: 'icon icon-play',         action: 'activate',     enabled: !!a.activate},
 //      { label: 'action.deactivate',       icon: 'icon icon-pause',        action: 'promptStop',   enabled: !!a.deactivate, altAction: 'deactivate'},
 //      { divider: true },
-      { label: 'action.remove',           icon: 'icon icon-trash',        action: 'promptDelete', enabled: !!l.remove, altAction: 'delete' },
+      { label: 'action.remove',           icon: 'icon icon-trash',        action: 'promptDelete', enabled: !!l.remove, altAction: 'checkDefaultDelete' },
       { divider: true },
       { label: 'action.viewInApi',        icon: 'icon icon-external-link',action: 'goToApi',      enabled: true },
     ];
