@@ -2,6 +2,7 @@ import Ember from 'ember';
 
 export default Ember.Controller.extend({
   projects: Ember.inject.service(),
+  settings: Ember.inject.service(),
   clusterController: Ember.inject.controller('authenticated.clusters.cluster'),
   cluster: Ember.computed.alias('clusterController.model'),
 

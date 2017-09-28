@@ -57,9 +57,15 @@
       <p class="text-muted m-0">
         <small>
         {{#if subMatches}}
-          {{get subMatches model.id}}/{{model.arrangedInstances.length}} containers
+          {{#if (eq (get subMatches model.id) 0)}}
+            {{t 'pagination.containerNoSubset' count=model.arrangedInstances.length htmlSafe=true}}
+          {{else if (lt (get subMatches model.id) model.arrangedInstances.length)}}
+            {{t 'pagination.containerHighlightSubset' subset=(get subMatches model.id) count=model.arrangedInstances.length htmlSafe=true}}
+          {{else}}
+            <b>{{t 'pagination.container' pages=1 count=model.arrangedInstances.length}}</b>
+          {{/if}}
         {{else}}
-          {{model.arrangedInstances.length}} containers
+          {{t 'pagination.container' pages=1 count=(concat model.arrangedInstances.length "")}}
         {{/if}}
         </small>
       </p>

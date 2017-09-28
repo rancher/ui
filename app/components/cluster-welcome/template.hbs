@@ -1,22 +1,18 @@
 {{#if header}}
   <section class="header has-tabs clearfix">
-    <div class="pull-left"><h1>Welcome</h1></div>
+    <div class="pull-left"><h1>{{t 'clusterWelcome.welcome'}}</h1></div>
   </section>
-  <p>There are no hosts in this cluster yet.  Do you want to add hosts or use an existing Kubernetes installation?</p>
+  <p>{{t 'clusterWelcome.noHost'}}</p>
 {{/if}}
 
 <div class="row">
   <div class="col span-5 offset-1 text-center option option-primary {{unless canCreate 'option-disabled'}}">
-    <h2>Add Hosts</h2>
+    <h2>{{t 'clusterWelcome.addHost'}}</h2>
     <div class="box">
-      <p>{{settings.appName}} automatically deploys and manages Kubernetes.</p>
-      <p>Deploy hosts with popular providers inside of {{settings.appName}}, or use any existing hosts with Docker installed.</p>
-      <p>Supports any combination of virtual machines or bare-metal, running on-premise or cloud-hosted.</p>
-      <p>Provides secure overlay network for containers to communicate with each other across hosts.</p>
-
+      {{t 'clusterWelcome.embeddedDescription' appName=settings.appName htmlSafe=true}}
       {{#if canCreate}}
         <div class="links" style="top: auto; bottom: 30px;">
-          {{#link-to "authenticated.clusters.cluster.host-templates" projects.currentCluster.id class="btn bg-primary"}}Select{{/link-to}}
+          {{#link-to "authenticated.clusters.cluster.host-templates" projects.currentCluster.id class="btn bg-primary"}}{{t 'clusterWelcome.select'}}{{/link-to}}
         </div>
       {{/if}}
     </div>
@@ -25,13 +21,9 @@
 
   {{!-- Import --}}
   <div class="col span-5 text-center option {{unless canImport 'option-disabled'}}">
-    <h2>Use existing Kubernetes</h2>
+    <h2>{{t 'clusterWelcome.importCluster'}}</h2>
     <div class="box">
-      <p>Deploy containers into an existing Kubernetes installation using the hosts and networking it provides.</p>
-      <p>Infrastructure resources are managed outside of {{settings.appName}}.</p>
-
-      <p>Supports on-premise installations, or hosted services like:</p>
-
+      {{t 'clusterWelcome.importClusterDescription' appName=settings.appName htmlSafe=true}}
       <div class="row">
                 <div class="col span-6 text-center">
           <a class="block mb-5" target="_blank" rel="nofollow noreferrer" href="https://cloud.google.com/container-engine/">
@@ -59,7 +51,7 @@
 
       {{#if canImport}}
         <div class="links" style="top: auto; bottom: 30px;">
-          {{#link-to "authenticated.clusters.cluster.import" projects.currentCluster.id class="btn bg-primary"}}Select{{/link-to}}
+          {{#link-to "authenticated.clusters.cluster.import" projects.currentCluster.id class="btn bg-primary"}}{{t 'clusterWelcome.select'}}{{/link-to}}
         </div>
       {{/if}}
     </div>

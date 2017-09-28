@@ -62,7 +62,7 @@ export default Ember.Component.extend({
   statusClass: null,
   status: function() {
     let k = STATUS.NONE;
-    let count = this.get('serviceLinksArray').filter((x) => !!x.get('serviceId')).get('length') || 0;
+    let count = this.get('serviceLinksArray').filter((x) => !!x.get('name')).get('length') || 0;
 
     if ( count ) {
       k = STATUS.COUNTCONFIGURED;
@@ -70,5 +70,5 @@ export default Ember.Component.extend({
 
     this.set('statusClass', classForStatus(k));
     return this.get('intl').t(`${STATUS_INTL_KEY}.${k}`, {count: count});
-  }.property('serviceLinksArray.@each.serviceId')
+  }.property('serviceLinksArray.@each.name')
 });
