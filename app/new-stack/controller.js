@@ -3,13 +3,11 @@ import NewOrEdit from 'ui/mixins/new-or-edit';
 import {tagChoices, tagsToArray} from 'ui/models/stack';
 
 export default Ember.Controller.extend(NewOrEdit, {
-  error: null,
-  editing: false,
-
-  compose: null,
-  files: null,
-  answers: null,
-
+  error:     null,
+  editing:   false,
+  compose:   null,
+  files:     null,
+  answers:   null,
   allStacks: null,
   init() {
     this._super(...arguments);
@@ -28,14 +26,43 @@ export default Ember.Controller.extend(NewOrEdit, {
     },
   },
 
-  willSave() {
-    let outFiles = {};
-    let compose = this.get('compose');
-    if ( compose ) {
-      outFiles['compose.yml'] = compose;
+  testNames: function(el, idx, ary) {
+    let error = false;
+    if (el.includes('compose')) {
+      if (el !== 'rancher-compose.yml' || el !== 'docker-compose.yml') {
+        error = true;
+      }
     }
+    return error;
+  },
+
+  validate: function() {
+    var model = this.get('primaryResource');
+    var errors = model.validationErrors();
 
     let userFiles = this.get('files')||[];
+    let fileNames = Object.keys(userFiles);
+
+    // file name contains compose but not rancher-compose or docker-compose as it should
+    if (fileNames.includes('compose') && (!fileNames.includes('rancher-compose.yml') && !fileNames.includes('docker-compose.yml'))) {
+      errors.push('File name must match rancher-compose.yml or docker-compose.yml exaclty');
+    }
+
+    if ( errors.get('length') )
+    {
+      this.set('errors', errors);
+      return false;
+    }
+
+    this.set('errors', null);
+    return true;
+  },
+
+  willSave() {
+    let outFiles = {};
+
+    let userFiles = this.get('files')||[];
+
     Object.keys(userFiles).forEach((key) => {
       let val = userFiles[key];
       if ( key && val ) {

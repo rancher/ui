@@ -4,38 +4,32 @@
 
 <section class="container-fluid">
   {{form-name-description
-    model=primaryResource
-    namePlaceholder="newStack.name.placeholder"
-    descriptionPlaceholder="newStack.description.placeholder"
+      model=primaryResource
+      namePlaceholder="newStack.name.placeholder"
+      descriptionPlaceholder="newStack.description.placeholder"
   }}
 
-  {{input-text-file
-    accept=".yml, .yaml"
-    name="compose.yml"
-    canChangeName=false
-    value=compose
-    placeholder="newStack.dockerCompose.placeholder"
+  {{input-files
+      accept=".yml, .yaml"
+      changed=(action (mut files))
+      header='newStack.files.label'
+      addActionLabel='newStack.files.addActionLabel'
+      namePlaceholder='newStack.files.namePlaceholder'
+      valuePlaceholder='newStack.files.valuePlaceholder'
+      protipLabel='newStack.files.protipLabel'
+      initWithFile=true
   }}
+  <!-- {{input-text-file accept=".yml, .yaml" name="compose.yml" canChangeName=false value=compose placeholder="newStack.dockerCompose.placeholder"}} -->
 
   {{#advanced-section}}
-  <hr class="mt-30 mb-30"/>
-    <div class="mb-30">
-      {{input-files
-        accept=".yml, .yaml"
-        changed=(action (mut files))
-        header='newStack.files.label'
-        addActionLabel='newStack.files.addActionLabel'
-        namePlaceholder='newStack.files.namePlaceholder'
-        valuePlaceholder='newStack.files.valuePlaceholder'
-      }}
-    </div>
+    <hr class="mt-30 mb-30"/>
 
     <div class="box mt-20">
       {{form-key-value
-        header=(t 'newStack.answers.label')
-        changed=(action "answersChanged")
-        allowMultilineValue=true
-        addActionLabel="newStack.answers.addActionLabel"
+          header=(t 'newStack.answers.label')
+          changed=(action "answersChanged")
+          allowMultilineValue=true
+          addActionLabel="newStack.answers.addActionLabel"
       }}
     </div>
 
