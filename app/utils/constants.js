@@ -191,6 +191,7 @@ var C = {
     EXPANDED_STACKS : 'expandedStacks',
     FEEDBACK        : 'feedback',
     HOST_VIEW       : 'hostView',
+    CONTAINER_VIEW  : 'containerView',
     I_HATE_SPINNERS : 'ihatespinners',
     LANGUAGE        : 'language',
     PROJECT_DEFAULT : 'defaultProjectId',
