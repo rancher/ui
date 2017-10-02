@@ -39,6 +39,7 @@ export default Ember.Component.extend(NewOrEdit, {
   imageErrors:                null,
   portErrors:                 null,
   stackErrors:                null,
+  metadataErrors:             null,
 
   actions: {
     setImage(uuid) {
@@ -100,11 +101,13 @@ export default Ember.Component.extend(NewOrEdit, {
         name: this.get('service.name'),
         description: this.get('service.description'),
         scale: this.get('service.scale'),
+        metadata: this.get('service.metadata') || {},
       });
     } else {
       this.setProperties({
         name: this.get('launchConfig.name'),
         description: this.get('launchConfig.description'),
+        metadata: {},
       });
     }
 
@@ -192,7 +195,7 @@ export default Ember.Component.extend(NewOrEdit, {
     errors.pushObjects(this.get('imageErrors')||[]);
     errors.pushObjects(this.get('portErrors')||[]);
     errors.pushObjects(this.get('stackErrors')||[]);
-
+    errors.pushObjects(this.get('metadataErrors')||[]);
 
     errors = errors.uniq();
 
@@ -261,6 +264,7 @@ export default Ember.Component.extend(NewOrEdit, {
       pr = this.get('service').clone();
       nameResource = pr;
       pr.set('launchConfig', lc);
+      pr.set('metadata', this.get('metadata'))
       pr.set('scale', this.get('scale'));
     } else {
       // Convert the launch config to a container

@@ -87,6 +87,7 @@ module.exports = function(defaults) {
   app.import('bower_components/async/dist/async.js');
   app.import('bower_components/position-calculator/dist/position-calculator.js');
   app.import('vendor/aws-sdk-ec2.js');
+  app.import('vendor/json-sanitizer/json-sanitizer.js');
   app.import('bower_components/identicon.js/pnglib.js');
   app.import('bower_components/identicon.js/identicon.js');
   app.import('bower_components/commonmark/dist/commonmark.js');
