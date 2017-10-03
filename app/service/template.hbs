@@ -102,7 +102,7 @@
       {{#accordion-list-item
         title=(t 'servicePage.containersTab.title')
         detail=(t 'servicePage.containersTab.detail')
-        status=(t 'pagination.container' pages=1 count=service.instances.length)
+        status=(t 'pagination.container' pages=(if service.instances.length 1 0) count=service.instances.length)
         statusClass=(if service.instances.length 'bg-success' 'text-muted')
         expandOnInit=true
         expandAll=al.expandAll
@@ -124,7 +124,7 @@
       {{#accordion-list-item
         title=(t 'containerPage.portsTab.header')
         detail=(t 'containerPage.portsTab.detail')
-        status=(t 'pagination.port' pages=1 count=model.container.publicEndpoints.length)
+        status=(t 'pagination.port' pages=(if model.container.publicEndpoints.length 1 0) count=model.container.publicEndpoints.length)
         statusClass=(if model.container.publicEndpoints.length 'bg-success' 'text-muted')
         expandAll=al.expandAll
         expand=(action expandFn)
@@ -169,7 +169,7 @@
       {{#accordion-list-item
         title=(t 'servicePage.linksTab.header')
         detail=(t 'servicePage.linksTab.detail')
-        status=(t 'pagination.link' pages=1 count=service.serviceLinks.length)
+        status=(t 'pagination.link' pages=(if service.serviceLinks.length 1 0) count=service.serviceLinks.length)
         statusClass=(if service.serviceLinks.length 'bg-success' 'text-muted')
         expandAll=al.expandAll
         expand=(action expandFn)
@@ -232,7 +232,7 @@
       {{#accordion-list-item
         title=(t 'formBalancerRules.label')
         detail=(t 'formBalancerRules.detail')
-        status=(t 'pagination.rule' pages=1 count=(if rules.length rules.length 0))
+        status=(t 'pagination.rule' pages=(if rules.length 1 0) count=rules.length)
         statusClass=(if rules.length 'bg-success' 'text-muted')
         expandAll=al.expandAll
         expand=(action expandFn)
@@ -250,7 +250,7 @@
         {{#accordion-list-item
           title=(t 'servicePage.certsTab.title')
           detail=(t 'servicePage.certsTab.detail')
-          status=(t 'pagination.certificate' pages=1 count=(if model.service.lbConfig.certificateIds.length model.service.lbConfig.certificateIds.length 0))
+          status=(t 'pagination.certificate' pages=(if rmodel.service.lbConfig.certificateIds.length 1 0) count=model.service.lbConfig.certificateIds.length)
           statusClass=(if model.service.lbConfig.certificateIds.length 'bg-success' 'text-muted')
           expandAll=al.expandAll
           expand=(action expandFn)

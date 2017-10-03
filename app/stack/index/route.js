@@ -18,8 +18,8 @@ export default Ember.Route.extend({
 
         let volOut    = [];
 
-        model.volumes = volOut.concat(volumes.filterBy('stackId', model.get('stack.id')), volumeTemplates.filterBy('stackId', model.get('stack.id')));
-
+        const vols = volOut.concat(volumes.filterBy('stackId', model.get('stack.id')), volumeTemplates.filterBy('stackId', model.get('stack.id')));
+        model.set('volumes', vols)
         return model;
       });
     });

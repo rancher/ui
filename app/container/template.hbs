@@ -146,7 +146,7 @@
       {{#accordion-list-item
            title=(t 'containerPage.portsTab.header')
            detail=(t 'containerPage.portsTab.detail')
-           status=(t 'pagination.port' pages=1 count=model.container.publicEndpoints.length)
+           status=(t 'pagination.port' pages=(if model.container.publicEndpoints.length 1 0) count=model.container.publicEndpoints.length)
            statusClass=(if model.container.publicEndpoints.length 'bg-success' 'text-muted')
            expandAll=al.expandAll
            expand=(action expandFn)
@@ -188,7 +188,7 @@
       {{#accordion-list-item
           title=(t 'containerPage.volumesTab.header')
           detail=(t 'containerPage.volumesTab.detail')
-          status=(t 'pagination.volume' pages=1 count=(or model.container.mounts.length 0))
+          status=(t 'pagination.volume' pages=(if model.container.mounts.length 1 0) count=model.container.mounts.length)
           statusClass=(if model.container.mounts.length 'bg-success' 'text-muted')
           expandAll=al.expandAll
           expand=(action expandFn)

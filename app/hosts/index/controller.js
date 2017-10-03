@@ -99,7 +99,6 @@ export default Ember.Controller.extend({
   ],
 
   extraSearchSubFields: [
-    'displayUserLabelStrings',
   ],
 
   modeChanged: function() {
