@@ -2,51 +2,108 @@ import Ember from 'ember';
 import sanitize from 'json-sanitizer';
 import C from 'ui/utils/constants';
 
+const TAB_SIZE = 2;
+const TAB_STR = (new Array(TAB_SIZE+1)).join(' ');
+
 export default Ember.Component.extend({
-  json: {},
-  isInvalid: false,
+  jsonString: null,
 
   tagName: 'div',
   classNames: ['jsoneditor-component'],
 
-  jsonString: function () {
-    return JSON.stringify(this.get('json'), undefined, 4);
-  }.property('json'),
+  json: {},
+  isValid: true,
 
-  onChange: function () {
-    try {
-      const json = this.parseJSON(this.jsonString)
-      this.set('json', json);
-      this.set('isInvalid', false)
-    } catch (err) {
-      this.set('isInvalid', true)
-    }
-  }.observes('jsonString'),
-
-  parseJSON: function (jsonString) {
-    try {
-      return JSON.parse(jsonString);
-    } catch (err) {
-      return JSON.parse(sanitize(jsonString));
-    }
+  init() {
+    this._super();
+    this.focusOut();
   },
 
   focusOut() {
-    if (!this.get('isInvalid')) {
-      this.set('jsonString', JSON.stringify(this.get('json'), undefined, 4));
+    if ( this.get('isValid') ) {
+      this.set('jsonString', JSON.stringify(this.get('json'), undefined, TAB_SIZE));
     }
   },
 
-  keyDown: function (event) {
+  keyDown(event) {
     const keyCode = event.which;
     if (keyCode === C.KEY.TAB) {
       event.preventDefault();
       const el = $(this).get(0).childViews.get(0).element;
-      const start = el.selectionStart;
-      const end = el.selectionEnd;
-      $(el).val($(el).val().substring(0, start) + "    " + $(el).val().substring(end));
-      el.selectionStart = start + 4;
-      el.selectionEnd = start + 4;
+      const val = $(el).val();
+
+      let start = el.selectionStart;
+      let end = el.selectionEnd;
+      const origStart = start;
+      const origEnd = end;
+
+      // Move start to the beginning of the line
+      while ( start > 0 && val.charAt(start-1) !== '\n' ) {
+        start--;
+      }
+
+      // And end to the end of the line
+      while ( end < val.length && val.charAt(end) !== '\n') {
+        end++;
+      }
+
+      let lines = val.substring(start,end).split(/\n/);
+
+      let sub;
+      let direction;
+      if ( event.shiftKey ) {
+        const re = new RegExp("^(\\s{"+ TAB_SIZE + "}|\\t)");
+        let found = false;
+        sub = lines.map((x) => {
+          let out = x.replace(re,'');
+          if ( out !== x ) {
+            found = true;
+          }
+          return out;
+        });
+
+        if ( found ) {
+          direction = -1;
+        } else {
+          // If no lines moved, this will prevent the cursor from moving back
+          direction = 0;
+        }
+      } else {
+        sub = lines.map(x => TAB_STR+x);
+        direction = 1;
+      }
+
+      let replaceStr = sub.join("\n");
+      $(el).val(val.substring(0, start) + replaceStr + val.substring(end));
+
+      if ( origStart === origEnd ) {
+        el.selectionStart = el.selectionEnd = origStart + direction*TAB_SIZE*sub.length;
+      } else {
+        el.selectionStart = start;
+        el.selectionEnd = start + replaceStr.length;
+      }
+    }
+  },
+
+  onChange: function() {
+    const [json, isValid] = this.parse(this.get('jsonString'));
+    this.setProperties({
+      json,
+      isValid,
+    });
+  }.observes('jsonString'),
+
+  parse(jsonString) {
+    try {
+      const json = JSON.parse(jsonString);
+      return [json,true];
+    } catch (err) {
+      try {
+        const json = JSON.parse(sanitize(jsonString));
+        return [json,true];
+      } catch (err) {
+        return [null,false];
+      }
     }
   },
 });
