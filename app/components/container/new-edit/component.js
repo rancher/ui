@@ -96,18 +96,20 @@ export default Ember.Component.extend(NewOrEdit, {
       this.set('launchConfig.secrets', []);
     }
 
+    if ( !this.get('launchConfig.metadata') ) {
+      this.set('launchConfig.metadata', {});
+    };
+
     if ( this.get('isService') && !this.get('isSidekick') ) {
       this.setProperties({
         name: this.get('service.name'),
         description: this.get('service.description'),
         scale: this.get('service.scale'),
-        metadata: this.get('service.metadata') || {},
       });
     } else {
       this.setProperties({
         name: this.get('launchConfig.name'),
         description: this.get('launchConfig.description'),
-        metadata: {},
       });
     }
 
@@ -264,7 +266,6 @@ export default Ember.Component.extend(NewOrEdit, {
       pr = this.get('service').clone();
       nameResource = pr;
       pr.set('launchConfig', lc);
-      pr.set('metadata', this.get('metadata'))
       pr.set('scale', this.get('scale'));
     } else {
       // Convert the launch config to a container

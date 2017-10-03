@@ -118,13 +118,13 @@
         }
       }
 
-      // parse an unquoted key
+      // parse an unquoted value
       function parseValue() {
         var specialValues = ['null', 'true', 'false'];
         var key = '';
         var c = curr();
 
-        while ([',', '}', ']'].indexOf(c) === -1) {
+        while (i < jsString.length && [',', '}', ']'].indexOf(c) === -1) {
           key += c;
           i++;
           c = curr();
@@ -138,6 +138,22 @@
         else {
           chars.push(key);
         }
+      }
+
+      function isTrailingComma() {
+        var idx = i+1;
+        var c = jsString.charAt(idx);
+
+        while ( idx < jsString.length && [' ','\n','\r','\t'].indexOf(c) >= 0) {
+          idx++;
+          c = jsString.charAt(idx);
+        }
+
+        if ( ['}',']'].indexOf(c) >= 0 ) {
+          return true;
+        }
+
+        return false;
       }
 
       while (i < jsString.length) {
@@ -159,6 +175,9 @@
         else if (c.trim() !== '' && ['[', '{'].indexOf(c) === -1 && ':' === lastNonWhitespace()) {
           // an unquoted object value (like b in '{a:b}')
           parseValue();
+        }
+        else if ( c === ',' && isTrailingComma() ) {
+          i++;
         }
         else {
           chars.push(c);
