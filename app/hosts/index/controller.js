@@ -18,6 +18,12 @@ export default Ember.Controller.extend({
   init() {
     this._super(...arguments);
     this.set('expandedHosts',[]);
+
+    Ember.run.scheduleOnce('afterRender', () => {
+      let key = `prefs.${C.PREFS.HOST_VIEW}`;
+      let mode = this.get(key) || this.get('mode');
+      this.transitionToRoute({queryParams: {mode}});
+    });
   },
 
   actions: {

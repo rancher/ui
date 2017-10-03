@@ -1,4 +1,5 @@
 import Ember from 'ember';
+import C from 'ui/utils/constants';
 import { tagsToArray } from 'ui/models/stack';
 
 //const NONE = 'none';
@@ -22,6 +23,12 @@ export default Ember.Controller.extend({
     this.set('stacks', this.get('store').all('stack'));
     this.set('hosts', this.get('store').all('host'));
     this.set('expandedInstances',[]);
+
+    Ember.run.scheduleOnce('afterRender', () => {
+      let key = `prefs.${C.PREFS.CONTAINER_VIEW}`;
+      const group = this.get(key) || this.get('group');
+      this.transitionToRoute({queryParams: {group}});
+    });
   },
 
   actions: {
@@ -97,4 +104,13 @@ export default Ember.Controller.extend({
   emptyStacks: function() {
     return this.get('stacks').filterBy('isEmpty',true).map((x) => { return {ref: x} });
   }.property('stacks.@each.isEmpty'),
+
+  groupChanged: function() {
+    let key = `prefs.${C.PREFS.CONTAINER_VIEW}`;
+    let cur = this.get(key);
+    let neu = this.get('group');
+    if ( cur !== neu ) {
+      this.set(key,neu);
+    }
+  }.observes('group'),
 });
