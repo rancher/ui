@@ -162,6 +162,16 @@ var Container = Instance.extend(EndpointPorts, {
     return ['running','migrating','restarting'].indexOf(this.get('state')) >= 0;
   }.property('state'),
 
+  displayState: Ember.computed('_displayState','exitCode', function() {
+    let out = this.get('_displayState');
+    let code = this.get('exitCode');
+    if ( this.get('state') === 'stopped' && this.get('exitCode') > 0) {
+      out += ' (' + code + ')';
+    }
+
+    return out;
+  }),
+
   displayEnvironmentVars: Ember.computed('environment', function() {
     var envs = [];
     var environment = this.get('environment')||{};

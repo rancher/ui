@@ -126,7 +126,8 @@ export default Ember.Mixin.create({
     return this.get('combinedState') || this.get('state');
   }.property('combinedState','state'),
 
-  displayState: function() {
+  displayState: Ember.computed.alias('_displayState'),
+  _displayState: function() {
     var state = this.get('relevantState')||'';
     return state.split(/-/).map((word) => {
       return Util.ucFirst(word);
