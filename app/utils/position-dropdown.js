@@ -22,7 +22,8 @@ export function positionDropdown(menu, trigger, right, offset) {
     target: trigger,
     itemAt: 'top ' + direction,
     targetAt: 'bottom ' + direction,
-    flip: 'both'
+    flip: 'both',
+    stick: 'all' // ensure the menu stays on screen
   };
 
   if (offset) {
