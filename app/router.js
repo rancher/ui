@@ -126,7 +126,7 @@ Router.map(function() {
         this.route('chart', {path: '/chart'});
       });
 
-      this.route('new-stack', {path: '/import-compose', resetNamespace: true});
+      this.route('new-stack', {path: '/import-yaml', resetNamespace: true});
 
       this.route('hosts', {path: '/hosts', resetNamespace: true}, function() {
         this.route('index', {path: '/'});
