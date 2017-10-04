@@ -75,26 +75,25 @@ export default Ember.Component.extend(ManageLabels, ContainerChoices,{
   isBridgeNetwork: Ember.computed.equal('instance.networkMode','bridge'),
 
   initNetwork: function() {
-    var isService = this.get('isService')||false;
-
     let mode = this.get('instance.networkMode') || 'managed';
 
     var choices = ['bridge','container','host','managed','none'];
-    if ( this.get('projects.current.isWindows') ) {
+    if ( this.get('projects.current.isKubernetes') ) {
+      choices.removeObject('bridge');
+    } else  if ( this.get('projects.current.isWindows') ) {
       choices = ['nat','transparent'];
-      if ( mode === 'managed' ) {
-        mode = 'nat';
-      }
     }
 
-    var out = [];
-    choices.forEach((option) => {
-      if ( isService && option === 'container' )
-      {
-        return;
-      }
+    if ( this.get('isService') ) {
+      choices.removeObject('container');
+    }
 
-      out.push({label: 'formNetwork.networkMode.'+option+'.label', value: option});
+    if ( !choices.includes(mode) ) {
+      mode = choices[0];
+    }
+
+    let out = choices.map((option) => {
+      return {label: 'formNetwork.networkMode.'+option+'.label', value: option};
     });
 
     this.set('networkChoices', out);
