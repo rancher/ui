@@ -1,5 +1,18 @@
 <div class="box mt-20">
     <div class="form-label form-control-static">
+      <label class="acc-label">{{t 'newReceiver.payloadFormat.label'}}</label>
+    </div>
+    <div>
+      {{new-select
+        classNames="form-control"
+        content=payloadFormatChoices
+        localizedLabel=true
+        value=model.payloadFormat
+      }}
+    </div>
+</div>
+<div class="box mt-20">
+    <div class="form-label form-control-static">
       <label class="acc-label">{{t 'newReceiver.tag.label'}}{{field-required}}</label>
     </div>
     <div>
@@ -32,7 +45,7 @@
     <div class="col span-6">
       <label class="acc-label">{{t 'formUpgrade.interval.label'}}</label>
       <div class="input-group">
-        {{input-integer class="form-control" value=model.interval}}
+        {{input-integer class="form-control" value=model.intervalMillis}}
         <span class="input-group-addon bg-default">{{t 'generic.seconds'}}</span>
       </div>
     </div>
