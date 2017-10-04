@@ -1,11 +1,18 @@
 import Ember from 'ember';
 
 export default Ember.Component.extend({
-  ary          : null,
-  accept       : "text/*",
-  addActionLabel: 'generic.emptyString',
-  namePlaceholder: 'generic.emptyString',
+  ary:              null,
+  accept:           "text/*",
+  addActionLabel:   'generic.emptyString',
+  namePlaceholder:  'generic.emptyString',
   valuePlaceholder: 'generic.emptyString',
+  initWithFile:     false,
+  shouldMargin: Ember.computed(function() {
+    if (this.get('header')) {
+      return Ember.String.htmlSafe('margin-top: 8px;');
+    }
+    return null;
+  }),
 
   actions: {
     add() {
@@ -22,7 +29,11 @@ export default Ember.Component.extend({
 
   init() {
     this._super(...arguments);
-    this.set('ary', []);
+    let files = [];
+    if (this.get('initWithFile')) {
+      files.pushObject({name: '', value: '',});
+    }
+    this.set('ary', files);
   },
 
   onFilesChanged: Ember.observer('ary.@each.{name,value}', function() {

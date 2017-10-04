@@ -68,10 +68,7 @@ export default Ember.Component.extend(ManageLabels, {
     }
 
     if ( mode === 'container') {
-      this.setProperties({
-        isServices:   false,
-        initialScale: 1,
-      });
+      this.set('isService', false);
     } else {
       if (this.get('_previousService')) {
         this.setProperties({

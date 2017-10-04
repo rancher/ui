@@ -272,7 +272,6 @@ export default Ember.Component.extend(NewOrEdit, {
       let lc = this.get('launchConfig').serialize();
       lc.type = 'container';
       pr = this.get('store').createRecord(lc);
-      pr.set('count', this.get('scale'));
       nameResource = pr;
     }
 

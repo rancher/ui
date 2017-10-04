@@ -1,24 +1,29 @@
 <div class="clearfix mb-20">
   {{#if header}}
-    <label style="margin-top: 8px;">{{t header}}</label>
+    <div class="pull-left">
+      <label style="margin-top: 8px;">{{t header}} boo</label>
+      {{#if protipLabel}}
+        <div class="protip">{{t protipLabel}}</div>
+      {{/if}}
+    </div>
   {{/if}}
-    <button class="btn bg-link icon-btn pull-right" {{action "add"}}>
-      <span class="darken"><i class="icon icon-plus text-small"/></span>
-      <span>{{t addActionLabel}}</span>
-    </button>
+  <button class="btn bg-link icon-btn pull-right" style="{{shouldMargin}}"{{action "add"}}>
+    <span class="darken"><i class="icon icon-plus text-small"/></span>
+    <span>{{t addActionLabel}}</span>
+  </button>
 </div>
 
 {{#each ary as |file|}}
   {{#input-text-file
-    accept=accept
-    name=file.name
-    inputName=true
-    namePlaceholder=namePlaceholder
-    canChangeName=true
-    value=file.value
-    placeholder=valuePlaceholder
+       accept=accept
+       classNames='mb-20'
+       name=file.name
+       inputName=true
+       namePlaceholder=namePlaceholder
+       canChangeName=true
+       value=file.value
+       placeholder=valuePlaceholder
   }}
   <button class="btn bg-primary" {{action "remove" file}}><i class="icon icon-minus"></i></button>
   {{/input-text-file}}
 {{/each}}
-

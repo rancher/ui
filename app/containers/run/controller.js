@@ -2,6 +2,7 @@ import Ember from 'ember';
 
 export default Ember.Controller.extend({
   growl: Ember.inject.service(),
+  projects: Ember.inject.service(),
   modalService: Ember.inject.service('modal'),
 
   queryParams: ['stackId','serviceId','containerId','addSidekick','launchConfigIndex','upgrade'],
@@ -20,15 +21,19 @@ export default Ember.Controller.extend({
   }.property('launchConfigIndex'),
 
   actions: {
+    transitionOut() {
+      this.transitionToRoute('containers.index', this.get('projects.current.id'));
+    },
+
     done() {
-      this.send('goToPrevious','containers.index');
+      this.send('transitionOut');
     },
 
     cancel() {
-      this.send('goToPrevious','containers.index');
+      this.send('transitionOut');
     },
 
-    promptRemove(idx){ 
+    promptRemove(idx){
       let slc = this.get('model.service.secondaryLaunchConfigs').objectAt(idx);
       let resources = [{
         cb: () => { this.removeSidekick(idx) },

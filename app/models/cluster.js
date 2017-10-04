@@ -12,20 +12,6 @@ var Cluster = Resource.extend(PolledResource, {
     edit() {
       this.get('router').transitionTo('authenticated.clusters.cluster.edit', this.get('id'));
     },
-    promptDelete: function() {
-      if (this.get('projectsService.current.clusterId') === this.get('id')) {
-        this.get('modalService').toggleModal('modal-switch-cluster', {resources: [this]});
-      } else {
-        this.get('modalService').toggleModal('confirm-delete', {resources: [this]});
-      }
-    },
-    checkDefaultDelete() {
-      if (this.get('projectsService.current.clusterId') === this.get('id')) {
-        this.get('modalService').toggleModal('modal-switch-cluster', {resources: [this]});
-      } else {
-        this.delete();
-      }
-    }
   },
 
   isCurrentCluster() {
@@ -33,9 +19,17 @@ var Cluster = Resource.extend(PolledResource, {
   },
 
   delete: function(/*arguments*/) {
-    var promise = this._super.apply(this, arguments);
+    const promise = this._super.apply(this, arguments);
+
     return promise.then((/* resp */) => {
-      this.get('projectsService').refreshAll();
+      if (this.get('projectsService.current.clusterId') === this.get('id')) {
+        this.get('projectsService').getAll().then((projects) => {
+          let defProject = projects.findBy('isDefault', true);
+          this.get('projectsService').selectDefault(defProject.get('id'));
+        });
+      } else {
+        this.get('projectsService').refreshAll();
+      }
     });
   },
 
@@ -84,7 +78,7 @@ var Cluster = Resource.extend(PolledResource, {
 //      { label: 'action.activate',         icon: 'icon icon-play',         action: 'activate',     enabled: !!a.activate},
 //      { label: 'action.deactivate',       icon: 'icon icon-pause',        action: 'promptStop',   enabled: !!a.deactivate, altAction: 'deactivate'},
 //      { divider: true },
-      { label: 'action.remove',           icon: 'icon icon-trash',        action: 'promptDelete', enabled: !!l.remove, altAction: 'checkDefaultDelete' },
+      { label: 'action.remove',           icon: 'icon icon-trash',        action: 'promptDelete', enabled: !!l.remove, altAction: 'delete' },
       { divider: true },
       { label: 'action.viewInApi',        icon: 'icon icon-external-link',action: 'goToApi',      enabled: true },
     ];
