@@ -21,7 +21,7 @@
             <label class="form-control-static">{{t 'machine.driverAliyunecs.accessKeySecret.label'}}</label>
         </div>
         <div class="col-sm-12 col-md-4">
-              {{input type="text" class="form-control" value=aliyunecsConfig.accessKeySecret placeholder=(t 'machine.driverAliyunecs.accessKeySecret.placeholder')}}
+              {{input type="password" class="form-control" value=aliyunecsConfig.accessKeySecret placeholder=(t 'machine.driverAliyunecs.accessKeySecret.placeholder')}}
         </div>
     </div>
       <div class="row form-group">
@@ -48,7 +48,15 @@
             <label class="form-control-static">{{t 'machine.driverAliyunecs.instanceType.label'}}</label>
         </div>
         <div class="col-sm-12 col-md-4">
-          {{input type="text" class="form-control" value=aliyunecsConfig.instanceType placeholder=(t 'machine.driverAliyunecs.instanceType.placeholder')}}
+          {{!-- {{input type="text" class="form-control" value=aliyunecsConfig.instanceType placeholder=(t 'machine.driverAliyunecs.instanceType.placeholder')}} --}}
+            {{new-select
+            classNames="form-control"
+            content=instanceType
+            optionLabelPath='description'
+            optionValuePath='value'
+            value=aliyunecsConfig.instanceType
+            }}
+            {{!-- <p class="text-small text-info"{{}}></p> --}}
         </div>
     </div>
 
@@ -69,15 +77,6 @@
       </div>
 
       <div class="row form-group">
-          <div class="col-sm-12 col-md-2 form-label">
-              <label class="form-control-static">{{t 'machine.driverAliyunecs.internetMaxBandwidth.label'}}</label>
-          </div>
-          <div class="col-sm-12 col-md-4">
-              <div class="input-group">
-            {{input type="text" class="form-control" value=aliyunecsConfig.internetMaxBandwidth placeholder=(t 'machine.driverAliyunecs.internetMaxBandwidth.placeholder')}}
-                  <div class="input-group-addon">Mbps</div>
-              </div>
-          </div>
           <div class="col-sm-12 col-md-2 form-label">
               <label class="form-control-static">{{t 'machine.driverAliyunecs.aliyunSLB.label'}}</label>
           </div>
@@ -109,7 +108,13 @@
               <label class="form-control-static">{{t 'machine.driverAliyunecs.systemDiskCategory.label'}}</label>
           </div>
           <div class="col-sm-12 col-md-4">
-            {{input type="text" class="form-control" value=aliyunecsConfig.systemDiskCategory placeholder=(t 'machine.driverAliyunecs.systemDiskCategory.placeholder')}}
+            {{!-- {{input type="text" class="form-control" value=aliyunecsConfig.systemDiskCategory placeholder=(t 'machine.driverAliyunecs.systemDiskCategory.placeholder')}} --}}
+            {{new-select
+            classNames="form-control"
+            content=systemDiskCategory
+            optionLabelPath='value'
+            value=aliyunecsConfig.systemDiskCategory
+            }}
           </div>
       </div>
 
@@ -118,7 +123,13 @@
               <label class="form-control-static">{{t 'machine.driverAliyunecs.dataDiskCategory.label'}}</label>
           </div>
           <div class="col-sm-12 col-md-4">
-            {{input type="text" class="form-control" value=aliyunecsConfig.diskCategory placeholder=(t 'machine.driverAliyunecs.dataDiskCategory.placeholder')}}
+            {{!-- {{input type="text" class="form-control" value=aliyunecsConfig.diskCategory placeholder=(t 'machine.driverAliyunecs.dataDiskCategory.placeholder')}} --}}
+            {{new-select
+            classNames="form-control"
+            content=dataDiskCategory
+            optionLabelPath='value'
+            value=aliyunecsConfig.diskCategory
+            }}
           </div>
 
           <div class="col-sm-12 col-md-2 form-label">
@@ -137,7 +148,13 @@
               <label class="form-control-static">{{t 'machine.driverAliyunecs.region.label'}}</label>
           </div>
           <div class="col-sm-12 col-md-4">
-            {{input type="text" class="form-control" value=aliyunecsConfig.region placeholder=(t 'machine.driverAliyunecs.region.placeholder')}}
+            {{!-- {{input type="text" class="form-control" value=aliyunecsConfig.region placeholder=(t 'machine.driverAliyunecs.region.placeholder')}} --}}
+            {{new-select
+            classNames="form-control"
+            content=regions
+            optionLabelPath='value'
+            value=aliyunecsConfig.region
+            }}
           </div>
 
           <div class="col-sm-12 col-md-2 form-label">
@@ -189,8 +206,19 @@
               <label class="form-control-static">{{t 'machine.driverAliyunecs.privateAddressOnly.label'}}</label>
           </div>
           <div class="col-sm-12 col-md-4">
-            {{input type="checkbox" class="form-control" checked=aliyunecsConfig.privateAddressOnly}}
+            <label class="form-control-static">{{input type="checkbox" checked=aliyunecsConfig.privateAddressOnly}}</label>
           </div>
+          {{#if (not aliyunecsConfig.privateAddressOnly)}}
+          <div class="col-sm-12 col-md-2 form-label">
+              <label class="form-control-static">{{t 'machine.driverAliyunecs.internetMaxBandwidth.label'}}</label>
+          </div>
+          <div class="col-sm-12 col-md-4">
+              <div class="input-group">
+            {{input type="text" class="form-control" value=aliyunecsConfig.internetMaxBandwidth placeholder=(t 'machine.driverAliyunecs.internetMaxBandwidth.placeholder')}}
+                  <div class="input-group-addon">Mbps</div>
+              </div>
+          </div>
+          {{/if}}
       </div>
 
       <div class="over-hr r-mt20 r-mb20">
@@ -208,7 +236,7 @@
               <label class="form-control-static">{{t 'machine.driverAliyunecs.sshPassword.label'}}</label>
           </div>
           <div class="col-sm-12 col-md-4">
-            {{input type="text" class="form-control" value=aliyunecsConfig.sshPassword placeholder=(t 'machine.driverAliyunecs.sshPassword.placeholder')}}
+            {{input type="password" class="form-control" value=aliyunecsConfig.sshPassword placeholder=(t 'machine.driverAliyunecs.sshPassword.placeholder')}}
           </div>
       </div>
 
