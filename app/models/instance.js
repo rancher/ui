@@ -6,7 +6,7 @@ import { denormalizeId } from 'ember-api-store/utils/denormalize';
 
 export function stoppedIcon(inst)
 {
-  if ( inst.get('healthState') === 'healthy' ) {
+  if ( inst.get('restartPolicy.name') === 'no' && inst.get('exitCode') === 0 ) {
     return 'icon icon-dot-circlefill';
   }
 
@@ -15,7 +15,7 @@ export function stoppedIcon(inst)
 
 export function stoppedColor(inst)
 {
-  if ( inst.get('healthState') === 'healthy' ) {
+  if ( inst.get('restartPolicy.name') === 'no' && inst.get('exitCode') === 0 ) {
     return 'text-success';
   }
 
@@ -42,7 +42,9 @@ var Instance = Resource.extend({
 });
 
 Instance.reopenClass({
-  'stopped': {icon: stoppedIcon, color: stoppedColor},
+  stateMap: {
+    'stopped': {icon: stoppedIcon, color: stoppedColor},
+  },
 });
 
 export default Instance;

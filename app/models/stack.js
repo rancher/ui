@@ -72,18 +72,22 @@ var Stack = Resource.extend(StateCounts, {
 
   actions: {
 
-    activateServices: function() {
-      return this.doAction('activateservices');
+    startAll: function() {
+      return this.doAction('startall');
     },
 
-    deactivateServices: function() {
-      return this.doAction('deactivateservices');
+    pauseAll: function() {
+      return this.doAction('pauseall');
+    },
+
+    stopAll: function() {
+      return this.doAction('stopall');
     },
 
     promptStop: function() {
       this.get('modalService').toggleModal('modal-confirm-deactivate', {
         originalModel: this,
-        action: 'deactivateServices'
+        action: 'stopAll'
       });
     },
 
@@ -126,23 +130,63 @@ var Stack = Resource.extend(StateCounts, {
     }
 
     let out    = [
-      { label:   'action.addContainer',   icon:       'icon icon-container',      action: 'addContainer',     enabled:   true },
+      { label:   'action.addContainer',   icon: 'icon icon-container',      action: 'addContainer',     enabled: true },
       { divider: true },
-      { label:   'action.activateServices',   icon:   'icon icon-play',           action: 'activateServices',   enabled: !!a.activateservices },
-      { label:   'action.deactivateServices',   icon: 'icon icon-stop',           action: 'promptStop',       enabled:   this.get('canDeactivate'), altAction: 'deactivateServices' },
+      { label:   'action.pause',          icon: 'icon icon-pause',          action: 'pauseAll',         enabled: this.get('canPauseAll'), bulkable: true},
+      { label:   'action.startAll',       icon: 'icon icon-play',           action: 'startAll',         enabled: this.get('canStartAll'), bulkable: true},
+      { label:   'action.stopAll',        icon: 'icon icon-stop',           action: 'promptStop',       enabled: this.get('canStopAll'),  bulkable: true, altAction: 'stopAll' },
       { divider: true },
-      { label:   'action.edit',           icon:       'icon icon-edit',           action: 'edit',             enabled:   !!l.update },
-      { label:   'action.viewConfig',     icon:       'icon icon-files',          action: 'viewCode',         enabled:   !!a.exportconfig },
-      { label:   'action.exportConfig',   icon:       'icon icon-download',       action: 'exportConfig',     enabled:   !!a.exportconfig },
-//      { label: 'action.viewGraph',      icon:       'icon icon-share',          action: 'viewGraph',        enabled:   true },
+      { label:   'action.edit',           icon: 'icon icon-edit',           action: 'edit',             enabled: !!l.update },
+      { label:   'action.viewConfig',     icon: 'icon icon-files',          action: 'viewCode',         enabled: !!a.exportconfig },
+      { label:   'action.exportConfig',   icon: 'icon icon-download',       action: 'exportConfig',     enabled: !!a.exportconfig },
+//      { label: 'action.viewGraph',      icon: 'icon icon-share',          action: 'viewGraph',        enabled: true },
       { divider: true },
-      { label:   'action.remove',         icon:       'icon icon-trash',          action: 'promptDelete',     enabled:   !!l.remove, altAction:                'delete'},
+      { label:   'action.remove',         icon: 'icon icon-trash',          action: 'promptDelete',     enabled: !!l.remove, bulkable: true, altAction: 'delete'},
       { divider: true },
-      { label:   'action.viewInApi',      icon:       'icon icon-external-link',  action: 'goToApi',          enabled:   true },
+      { label:   'action.viewInApi',      icon: 'icon icon-external-link',  action: 'goToApi',          enabled: true },
     ];
 
     return out;
-  }.property('actionLinks.{exportconfig,deactivateservices,activateservices}','links.{update,remove}','externalIdInfo.kind'),
+  }.property('actionLinks.{exportconfig}','links.{update,remove}','externalIdInfo.kind','canStartAll','canPauseAll','canStopAll'),
+
+  canStartAll: function() {
+    if ( !this.hasAction('startall') ) {
+      return false;
+    }
+
+    var count = this.get('services.length') || 0;
+    if ( count === 0 ) {
+      return false;
+    }
+
+    return this.get('services').filterBy('actionLinks.activate').get('length') > 0;
+  }.property('services.@each.state','actionLinks.startall'),
+
+  canPauseAll: function() {
+    if ( !this.hasAction('pauseall') ) {
+      return false;
+    }
+
+    var count = this.get('services.length') || 0;
+    if ( count === 0 ) {
+      return false;
+    }
+
+    return this.get('services').filterBy('actionLinks.pause').get('length') > 0;
+  }.property('services.@each.state','actionLinks.pauseall'),
+
+  canStopAll: function() {
+    if ( !this.hasAction('stopall') ) {
+      return false;
+    }
+
+    var count = this.get('services.length') || 0;
+    if ( count === 0 ) {
+      return false;
+    }
+
+    return this.get('services').filterBy('actionLinks.deactivate').get('length') > 0;
+  }.property('services.@each.state','actionLinks.stopall'),
 
   canViewConfig: function() {
     return !!this.get('actionLinks.exportconfig');
