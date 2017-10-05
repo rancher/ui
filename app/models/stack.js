@@ -180,12 +180,18 @@ var Stack = Resource.extend(StateCounts, {
       return false;
     }
 
-    var count = this.get('services.length') || 0;
-    if ( count === 0 ) {
+    var services = this.get('services');
+    var containers = this.get('instances').filter((inst) => {
+      return inst.get('serviceId') === null;
+    });
+    var countS = (services.length || 0);
+    var countC = (containers.length || 0);
+
+    if ( (countS + countC) === 0 ) {
       return false;
     }
 
-    return this.get('services').filterBy('actionLinks.deactivate').get('length') > 0;
+    return services.filterBy('actionLinks.deactivate').get('length') > 0 && containers.filterBy('actionLinks.stop').get('length');
   }.property('services.@each.state','actionLinks.stopall'),
 
   canViewConfig: function() {
