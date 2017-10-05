@@ -112,7 +112,7 @@ var PublicEndpoint = Resource.extend({
   }.property('isMaybeHttp','isMaybeSecure','displayEndpoint'),
 
   isMaybeHttp: function() {
-    return portMatch([this.get('publicPort'),this.get('privatePort')], [80,8080,3000,4567], '80');
+    return portMatch([this.get('publicPort'),this.get('privatePort')], [80,8000,8080,3000,4000,5000], '80');
   }.property('privatePort','publicPort'),
 
   isMaybeSecure: function() {
