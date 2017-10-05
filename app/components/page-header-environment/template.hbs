@@ -37,10 +37,10 @@
           </li>
           {{#each entry.projects as |p|}}
             <li class="{{if p.active 'active selected'}}  text-muted">
-              <a href="#" {{action "switchProject" p.id}} class="clip pl-40 env-icon">
+              <a href="#" {{action "switchProject" p.id}} class="clip pl-40 project-link">
                 <i class="icon {{p.icon}}"></i>
                 {{#if p.isDefault}}
-                  <i class="icon icon-star-fill"/>
+                  <i class="icon icon-star-fill default-project"/>
                 {{/if}}
                 &nbsp;
                 {{p.displayName}}
@@ -51,10 +51,10 @@
       {{else if projectChoices.length}}
         {{#each projectChoices as |p|}}
           <li class="{{if p.active 'active selected'}}">
-            <a href="#" {{action "switchProject" p.id}} class="clip env-icon">
+            <a href="#" {{action "switchProject" p.id}} class="clip project-link">
               <i class="icon {{p.icon}}"></i>
               {{#if p.isDefault}}
-                <i class="icon icon-star-fill"/>
+                <i class="icon icon-star-fill default-project"/>
               {{/if}}
               &nbsp;
               {{p.displayName}}

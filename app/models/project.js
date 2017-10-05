@@ -77,7 +77,7 @@ var Project = Resource.extend(PolledResource, {
     let l = this.get('links');
 
     var choices = [
-      { label: 'action.setDefault',       icon: 'icon icon-home',         action: 'setAsDefault', enabled: this.get('canSetDefault')},
+      { label: 'action.setDefault',       icon: 'icon icon-star-fill',    action: 'setAsDefault', enabled: this.get('canSetDefault')},
       { divider: true },
       { label: 'action.edit',             icon: 'icon icon-edit',         action: 'edit',         enabled: !!l.update },
       { divider: true },
