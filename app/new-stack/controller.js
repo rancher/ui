@@ -26,7 +26,7 @@ export default Ember.Controller.extend(NewOrEdit, {
     },
   },
 
-  testNames: function(el, idx, ary) {
+  testNames: function(el/*, idx , ary */) {
     let error = false;
     if (el.includes('compose')) {
       if (el !== 'rancher-compose.yml' || el !== 'docker-compose.yml') {

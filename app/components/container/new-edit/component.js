@@ -98,7 +98,7 @@ export default Ember.Component.extend(NewOrEdit, {
 
     if ( !this.get('launchConfig.metadata') ) {
       this.set('launchConfig.metadata', {});
-    };
+    }
 
     if ( this.get('isService') && !this.get('isSidekick') ) {
       this.setProperties({
