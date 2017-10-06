@@ -302,8 +302,11 @@ export default Ember.Component.extend(Driver, {
         return Ember.RSVP.reject();
       }
     }).catch((err) => {
-      var errors = [];
-      errors.push(err.body.message);
+      let errors = [];
+      let errMsg = err.body.message || err.body.badRequest.message; // werid case where we get an odd bad response from the otc driver
+
+      errors.push(errMsg);
+
       this.setProperties({
         itemsLoading: false,
         step: this.get('_prevStep'),
