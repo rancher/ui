@@ -1,6 +1,6 @@
 {{~#if project~}}
 <li class="dropdown pull-right ">
-    {{#if (gt byCluster.length 1)}}
+    {{#if nested}}
       <div class="cluster-dropdown dropdown-toggle pb-5" aria-haspopup="true" aria-expanded="false" aria-label="{{t 'nav.environment.cluster'}}" data-toggle="environment">
         <span class="text-white clip" >
           <i class="icon icon-cluster icon-fw"></i>
@@ -28,7 +28,7 @@
     {{/if}}
 
     <ul class="dropdown-menu dropdown-menu-right project-menu" role="menu" data-dropdown-id="environment">
-      {{#if (gt byCluster.length 1)}}
+      {{#if nested}}
         {{#each byCluster as |entry|}}
           <li class="header">
             <i class="icon icon-cluster"></i>
@@ -40,7 +40,7 @@
               <a href="#" {{action "switchProject" p.id}} class="clip pl-40 project-link">
                 <i class="icon {{p.icon}}"></i>
                 {{#if p.isDefault}}
-                  <i class="icon icon-star-fill default-project"/>
+                  <i class="icon icon-star-fill default-project nested"/>
                 {{/if}}
                 &nbsp;
                 {{p.displayName}}

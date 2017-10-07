@@ -45,6 +45,8 @@ export default Ember.Component.extend({
     return out.filterBy('show',true);
   }.property('projectChoices.@each.clusterId'),
 
+  nested: Ember.computed.gt('byCluster.length', 1),
+
   projectIsMissing: function() {
     return this.get('projectChoices').filterBy('id', this.get('project.id')).get('length') === 0;
   }.property('project.id','projectChoices.@each.id'),
