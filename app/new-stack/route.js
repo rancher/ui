@@ -1,24 +1,24 @@
 import Ember from 'ember';
 
 export default Ember.Route.extend({
-  model: function(params/*, transition*/) {
+  model() {
     var stack = this.get('store').createRecord({
       type: 'stack',
       templates: {
-        'config.yml': ''
+        'compose.yml': ''
       },
     });
 
     return stack;
   },
 
-  setupController: function(controller, model) {
+  setupController(controller, model) {
     controller.set('originalModel',null);
     controller.set('model', model);
   },
 
   actions: {
-    cancel: function() {
+    cancel() {
       this.goToPrevious();
     },
   }
