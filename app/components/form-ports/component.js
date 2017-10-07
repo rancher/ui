@@ -139,7 +139,7 @@ export default Ember.Component.extend({
     this.set('portsAsStrArray', out);
     this.sendAction('changed', this.get('portsArray'));
     this.sendAction('changedStr', this.get('portsAsStrArray'));
-  }.observes('portsArray.@each.{public,private,protocol}'),
+  }.observes('portsArray.@each.{bindAddress,public,private,protocol}'),
 
   validate: function() {
     var errors = [];
