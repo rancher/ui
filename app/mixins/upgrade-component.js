@@ -150,7 +150,7 @@ export default Ember.Mixin.create({
   doUpgrade() {
     let status = this.get('upgradeStatus');
 
-    if ( [REQUIRED,AVAILABLE,CURRENT].indexOf(status) >= 0 )
+    if ( [REQUIRED,AVAILABLE,CURRENT].indexOf(status) >= 0 && [REQUIRED,AVAILABLE,CURRENT].indexOf(status) !== 2)
     {
       let templateId = this.get('model.externalIdInfo.templateId');
       let versionId = this.get('upgradeInfo.id');
