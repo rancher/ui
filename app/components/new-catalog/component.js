@@ -1,10 +1,10 @@
 import Ember from 'ember';
 import NewOrEdit from 'ui/mixins/new-or-edit';
-import ShellQuote from 'npm:shell-quote';
 import C from 'ui/utils/constants';
 import Util from 'ui/utils/util';
 import { compare as compareVersion } from 'ui/utils/parse-version';
 import { task } from 'ember-concurrency';
+import YAML from 'npm:yamljs';
 
 
 export default Ember.Component.extend(NewOrEdit, {
@@ -43,6 +43,7 @@ export default Ember.Component.extend(NewOrEdit, {
   selectedTemplateUrl:      null,
   selectedTemplateModel:    null,
   readmeContent:            null,
+  pastedAnswers:            null,
 
   actions: {
     cancel: function() {
@@ -200,15 +201,13 @@ export default Ember.Component.extend(NewOrEdit, {
 
   answersArray: Ember.computed.alias('selectedTemplateModel.questions'),
 
-  answersString: function() {
-    return (this.get('answersArray')||[]).map((obj) => {
-      if (obj.answer === null || obj.answer === undefined) {
-        return obj.variable + '=';
-      } else {
-        return obj.variable + '=' + ShellQuote.quote([obj.answer]);
-      }
-    }).join("\n");
-  }.property('answersArray.@each.{variable,answer}'),
+  answersString: Ember.computed('answersArray.@each.{variable,answer}', function() {
+    let neu = {};
+    this.get('answersArray').forEach((a) => {
+      neu[a.variable] = a.answer || a.default;
+    });
+    return YAML.stringify(neu);
+  }),
 
   validate() {
     var errors = [];

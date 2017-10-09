@@ -1,0 +1,40 @@
+<form class="{{if getTemplate.isRunning 'hide'}}">
+  <div class="btn-group  pull-right">
+    <button class="btn btn-sm bg-primary" {{action 'showPaste'}}>{{t 'generic.paste'}} <span class="icon icon-copy"></span></button>
+    <button class="btn btn-sm bg-primary" {{action 'upload'}}>{{t 'generic.upload'}} <span class="icon icon-upload"></span></button>
+  </div>
+  <h4 class="mb-0">{{t 'inputAnswers.config'}}</h4>
+  <span class="protip mb-20">{{t 'inputAnswers.protip'}}</span>
+  {{#if pasteOrUpload}}
+    {{textarea-autogrow
+      value=pastedAnswers
+      classNames="form-control text-small"
+      placeholder='tbd'
+      minHeight='0'
+      maxHeight='200'
+    }}
+    <span class="pull-right btn btn-xs bg-transparent mb-10" {{action 'cancel'}}>Cancel</span>
+  {{else}}
+    <div class="container-flex">
+      {{#each questions as |question|}}
+        <div class="flex-item-half">
+          <div class="col span-12 mr-15">
+            <label class="acc-label">{{question.label}}{{#if question.required}}{{field-required}}{{/if}}</label>
+
+            {{#if question.supported}}
+              {{component question.inputComponent field=question value=question.answer}}
+            {{else}}
+              {{input type="text" value=question.answer class="form-control"}}
+              <p>{{t 'inputAnswers.unknownType'}} {{question.type}}</p>
+            {{/if}}
+
+            <p class="help-block">{{question.description}}</p>
+          </div>
+        </div>
+  {{else}}
+        <span class="text-muted">{{t 'inputAnswers.noConfig'}}</span>
+      {{/each}}
+    </div>
+  {{/if}}
+</form>
+<input type="file" accept="{{actualAccept}}" class="hide">
