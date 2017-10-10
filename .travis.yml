@@ -4,17 +4,27 @@ node_js:
   - "6"
 
 sudo: false
+dist: trusty
+
+addons:
+  chrome: stable
 
 cache:
   directories:
     - $HOME/.npm
     - $HOME/.cache # includes bowers cache
+  #yarn: true
+
+env:
+  global:
+    # See https://git.io/vdao3 for details.
+    - JOBS=1
 
 before_install:
   - npm config set spin false
-  - npm install -g bower phantomjs-prebuilt
+  - npm install -g bower # phantomjs-prebuilt
   - bower --version
-  - phantomjs --version
+  #- phantomjs --version
 
 install:
   - npm install
