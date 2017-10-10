@@ -297,12 +297,7 @@ var Stack = Resource.extend(StateCounts, {
 
 Stack.reopenClass({
   stateMap: {
-    'active':             {icon: activeIcon,          color: 'text-success'},
-    'canceled-rollback':  {icon: 'icon icon-life-ring',       color: 'text-info'},
-    'canceled-upgrade':   {icon: 'icon icon-life-ring',       color: 'text-info'},
-    'canceling-rollback': {icon: 'icon icon-life-ring',       color: 'text-info'},
-    'canceling-upgrade':  {icon: 'icon icon-life-ring',       color: 'text-info'},
-    'finishing-upgrade':  {icon: 'icon icon-arrow-circle-up', color: 'text-info'},
+    'active':             {icon: activeIcon,                  color: 'text-success'},
     'rolling-back':       {icon: 'icon icon-history',         color: 'text-info'},
     'upgraded':           {icon: 'icon icon-arrow-circle-up', color: 'text-info'},
     'upgrading':          {icon: 'icon icon-arrow-circle-up', color: 'text-info'},
