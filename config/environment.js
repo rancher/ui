@@ -53,7 +53,6 @@ module.exports = function(environment) {
     modulePrefix: 'ui',
     environment: environment,
     exportApplicationGlobal: true,
-    baseURL: '/',
     locationType: 'auto',
     EmberENV: {
       FEATURES: {
@@ -137,7 +136,6 @@ module.exports = function(environment) {
 
   if (environment === 'test') {
     // Testem prefers this...
-    ENV.baseURL = '/';
     ENV.locationType = 'none';
 
     // keep test console output quieter
@@ -146,12 +144,6 @@ module.exports = function(environment) {
 
     ENV.APP.rootElement = '#ember-testing';
   }
-
-  if (process.env.BASE_URL) {
-    ENV.baseURL = process.env.BASE_URL;
-  }
-
-  ENV.APP.baseURL = ENV.baseURL;
 
   if (process.env.FINGERPRINT) {
     ENV.APP.fingerprint = process.env.FINGERPRINT;
