@@ -17,12 +17,12 @@ export default Ember.Service.extend({
       this.set('modalVisible', false);
       this.set('modalOpts', null);
       Ember.run.next(() => {
-        document.body.scrollTop = this.get('lastScroll');
+        window.scrollTo(0, this.get('lastScroll'));
       });
     } else {
-      this.set('lastScroll', document.body.scrollTop);
+      this.set('lastScroll', window.scrollY);
       this.set('modalVisible', true);
-      document.body.scrollTop = 0;
+      window.scrollTo(0, 0);
     }
   },
 });
