@@ -8,6 +8,10 @@ export default Ember.Service.extend({
     $.jGrowl.defaults.closerTemplate = '<div><button type="button" class="btn bg-info btn-xs btn-block">Dismiss All Notifications</button></div>';
   },
 
+  close: function() {
+    $("div.jGrowl").jGrowl("close");
+  },
+
   raw: function(title, body, opt) {
     opt = opt || {};
 

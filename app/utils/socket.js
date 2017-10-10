@@ -5,7 +5,8 @@ import Util from 'ui/utils/util';
 var INSECURE = 'ws://';
 var SECURE   = 'wss://';
 var sockId = 1;
-var safariWarningShown = false;
+var warningShown = false;
+var wasConnected = false;
 
 const DISCONNECTED = 'disconnected';
 const CONNECTING = 'connecting';
@@ -197,7 +198,6 @@ export default Ember.Object.extend(Ember.Evented, {
       cb.apply(this);
     }
 
-    let wasConnected = false;
     if ( [CONNECTED, CLOSING].indexOf(this.get('_state')) >= 0 )
     {
       this.trigger('disconnected');
@@ -209,15 +209,19 @@ export default Ember.Object.extend(Ember.Evented, {
       this.set('_disconnectedAt', (new Date()).getTime());
     }
 
-    if ( isSafari && !wasConnected && this.get('url').indexOf('wss://') === 0 )
+    if ( !warningShown && !wasConnected )
     {
       this.set('autoReconnect', false);
       this.set('_state', DISCONNECTED);
-      if ( !safariWarningShown )
+
+      const intl = window.l('service:intl');
+      let warningMessage = intl.t('growl.webSocket.connecting.warning');
+      if ( isSafari && this.get('url').indexOf('wss://') === 0 )
       {
-        safariWarningShown = true;
-        window.l('service:growl').error('Error connecting to WebSocket','Safari does not support WebSockets connecting to a self-signed or unrecognized certificate.  Use http:// instead of https:// or reconfigure the server with a valid certificate from a recognized certificate authority.  Streaming stats, logs, shell/console, and auto-updating of the state of resources in the UI will not work until this is resolved.');
+        warningMessage += `  ${intl.t('growl.webSocket.connecting.safariCertWarning')}`;
       }
+      window.l('service:growl').error(intl.t('growl.webSocket.connecting.title'), warningMessage);
+      warningShown = true;
     }
     else if ( this.get('autoReconnect') )
     {

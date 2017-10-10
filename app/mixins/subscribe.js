@@ -10,6 +10,8 @@ const ORCHESTRATION_STACKS = [
 ];
 
 export default Ember.Mixin.create({
+  intl            : Ember.inject.service(),
+  growl           : Ember.inject.service(),
   k8s             : Ember.inject.service(),
   projects        : Ember.inject.service(),
   'tab-session'   : Ember.inject.service(),
@@ -19,6 +21,9 @@ export default Ember.Mixin.create({
   connected: false,
   queue: null,
   queueTimer: null,
+  warningShown: false,
+  wasConnected: false,
+  disconnectedTimer: null,
 
   init() {
     this._super(...arguments);
@@ -160,6 +165,14 @@ export default Ember.Mixin.create({
   // WebSocket connected
   subscribeConnected: function(tries,msec) {
     this.set('connected', true);
+    this.set('wasConnected', true);
+
+    if( this.get('warningShown') ) {
+      this.get('growl').close();
+      this.set('warningShown', false);
+    }
+
+    Ember.run.cancel(this.get('disconnectedTimer'));
 
     let msg = 'Subscribe connected ' + this.forStr();
     if (tries > 0)
@@ -189,6 +202,24 @@ export default Ember.Mixin.create({
     console.log('Subscribe disconnected ' + this.forStr());
     if ( this.get('reconnect') ) {
       this.connectSubscribe();
+      this.showDisconnectedWarning();
+    }
+  },
+
+  showDisconnectedWarning: function() {
+    if( !this.get('warningShown') && this.get('wasConnected') ) {
+      const intl = this.get('intl');
+      this.get('growl').error(intl.t('growl.webSocket.connecting.title'), intl.t('growl.webSocket.connecting.disconnectedWarning'));
+      this.set('warningShown', true);
+      this.set('disconnectedTimer', Ember.run.later(this, function() {
+        if ( window.navigator.onLine ) {
+          window.location.reload();
+        } else {
+          window.ononline = function() {
+            window.location.reload();
+          }
+        }
+      }, C.WEBSOCKET.SUBSCRIBE_DISCONNECTED_TIMEOUT));
     }
   },
 

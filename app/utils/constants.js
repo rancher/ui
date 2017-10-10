@@ -180,6 +180,10 @@ var C = {
     DOCS: ['en'],
   },
 
+  WEBSOCKET: {
+    SUBSCRIBE_DISCONNECTED_TIMEOUT: 30000
+  },
+
   MODE: {
     OSS: 'oss', // Regular community UI
     CAAS: 'caas', // Container cloud UI
