@@ -116,6 +116,7 @@ module.exports = function(environment) {
       proxyEndpoint: '/v3/proxy',
       wsEndpoint: '/v3/projects/%PROJECTID%/subscribe' +
                     '?eventNames=resource.change' +
+                    '&resourceType_ne=auditLog' +
                     '&resourceType_ne=serviceLog' +
                     '&resourceType_ne=deploymentUnit',
       baseAssets: '/',

@@ -10,13 +10,14 @@ export default Ember.Controller.extend({
   headers: [
     {
       name: 'created',
-      sort: ['created:desc'],
+      sort: ['created:desc','id'],
+      serverSortReversed: true,
       translationKey: 'auditLogsPage.table.time',
       width: 115
     },
     {
       name: 'eventType',
-      sort: ['id','created:desc'],
+      sort: ['eventType','created:desc','id'],
       translationKey: 'auditLogsPage.table.eventType',
     },
     {
@@ -27,7 +28,6 @@ export default Ember.Controller.extend({
     {
       name: 'resourceType',
       translationKey: 'auditLogsPage.table.resourceTypeId',
-      sort: ['resourceType'],
     },
     {
       name: 'authenticatedAsIdentityId',
@@ -62,7 +62,6 @@ export default Ember.Controller.extend({
         clientIp     : this.get('filters.clientIp'),
         authType     : this.get('filters.authType'),
       });
-      this.send('filterLogs');
     },
 
     showResponseObjects: function(request, response) {
@@ -98,18 +97,16 @@ export default Ember.Controller.extend({
       });
 
       this.setProperties({
-        sortBy    : 'id',
+        sortBy    : 'created',
         sortOrder : 'desc',
       });
       this.set('authTypeReadable', null);
-      this.send('filterLogs');
     },
   },
 
-  sortBy           : 'id',
-  sortOrder        : 'desc',
-  descending       : true,
-  limit            : 100,
+  sortBy           : 'created',
+  sortOrder        : 'asc',
+  descending       : false,
   eventType        : null,
   resourceType     : null,
   resourceId       : null,
@@ -145,18 +142,25 @@ export default Ember.Controller.extend({
     });
 
     this.set('authTypes', out);
+    this.updateServerDirection();
   }.on('init'),
 
-  setSortOrderObserver: function() {
-    var out = 'asc';
+  updateServerSort: function() {
+    this.set('descending', false);
+  }.observes('sortBy'),
 
-    if (this.get('descending')) {
+  updateServerDirection: function() {
+    let out = 'asc';
+    let entry = this.get('headers').findBy('name', this.get('sortBy'));
+    if ( entry.serverSortReversed ) {
       out = 'desc';
     }
 
-    this.set('sortOrder', out);
-    this.send('logsSorted');
+    if (this.get('descending')) {
+      out = (out == 'asc' ? 'desc' : 'asc');
+    }
 
+    this.set('sortOrder', out);
   }.observes('descending'),
 
   resourceIdReady: function() {
@@ -166,15 +170,4 @@ export default Ember.Controller.extend({
       return true;
     }
   }.property('filters.resourceType'),
-
-  showPagination: function() {
-    var pagination = this.get('model.auditLog.pagination');
-
-    if (pagination.next) {
-      return true;
-    } else {
-      return false;
-    }
-  }.property('model.auditLog.pagination'),
-
 });
