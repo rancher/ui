@@ -1,9 +1,6 @@
-<button type="button" class="btn {{color}} {{btnClass}}" {{action "doUpgrade"}}>
-  {{t (concat-str 'upgradeBtn.status.' upgradeStatus character='')}}
-</button>
 {{~#if showDropdown~}}
   <button type="button" class="btn {{color}} {{btnClass}} dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
-    <i class="icon icon-fw icon-chevron-down"></i>
+    {{t (concat-str 'upgradeBtn.status.' upgradeStatus character='')}}
     <span class="sr-only">{{t 'nav.srToggleDropdown'}}</span>
   </button>
   <ul class="dropdown-menu dropdown-menu-right" role="menu">
@@ -15,4 +12,8 @@
       </li>
     {{/each-in}}
   </ul>
+{{else}}
+  <button type="button" class="btn {{color}} {{btnClass}}">
+    {{t (concat-str 'upgradeBtn.status.' upgradeStatus character='')}}
+  </button>
 {{/if}}
