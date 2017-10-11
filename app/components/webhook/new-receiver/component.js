@@ -58,6 +58,10 @@ export default Ember.Component.extend(NewOrEdit, {
     if ( !this.get(`model.${driver}Config`) ) {
       this.set(`model.${driver}Config`, def);
     }
+
+    setTimeout(() => {
+      this.$('INPUT')[0].focus();
+    }, 500);
   },
 
   scaleHostActionChanged: function() {
