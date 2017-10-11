@@ -4,7 +4,7 @@ languageContribute: "Hjelp til med å oversette Rancher"
 generic:
   actions: Handlinger
   activate: Aktiver
-  as: Som
+  all: Alle
   cancel: Avbryt
   closeModal: Lukk
   created: Oppprettet
@@ -12,10 +12,13 @@ generic:
   description: Beskrivelse
   disable: Deaktiver
   disabled: Deaktivert
+  dockerId: Docker ID
   domainName: Domenenavn
   enable: Aktiver
   enabled: Aktivert
+  hardware: Maskinvare
   healthy: Frisk
+  host: Vert
   id: ID
   image: Bilde
   internal: Intern
@@ -26,6 +29,7 @@ generic:
   moreActions: Flere handlinger
   na: 'Ikke tilgjengelig'
   name: Navn
+  "no": "Nei"
   none: Ingen
   ports: Porter
   remove: Fjern
@@ -34,6 +38,8 @@ generic:
   saved: Lagret
   saving: Lagrer
   search: Søk
+  select: Velg
+  service: Tjeneste
   state: Tilstand
   test: Test
   testing: Tester
@@ -42,6 +48,9 @@ generic:
   type: Type
   unknown: Ukjent
   uuid: UUID
+  "yes": "Ja"
+realmNames:
+  asia: Asia
 accountsPage:
   index:
     header: Kontoer
@@ -182,6 +191,7 @@ authPage:
         label: GitHub er ikke konfigurert
     authenticated:
       header:
+        text: Autentisering
         clientId:
           text: "Klient-ID:"
       disableAccess:
@@ -221,15 +231,16 @@ authPage:
         label: Domene
         placeholder: f.eks dittfirma.hosmicrosoft.no
       adminAccountUsername:
+        label: Administrator brukernavn
         placeholder: f.eks rancher-administrator
+      adminAccountPassword:
+        label: Administrator passord
     test:
       username:
         placeholder: 'f.eks onormann'
       pre: Autentiser med Azure
       post: Venter på tilbakemelding fra Azure
   localAuth:
-    header:
-      enabled: 'Lokal autentisering er <b>aktivert</b>'
     accessEnabled:
       buttonText:
         prompt: Deaktiver tilgangskontroll
@@ -288,6 +299,7 @@ certificatesPage:
     linkTo: Legge til sertifikat
     table:
       header:
+        state: Tilstand
         name: Navn
         domain: Domenenavn
         expires: Utløper
@@ -300,6 +312,15 @@ certificatesPage:
         placeholder: f.eks mittdomene.no
       description:
         placeholder: f.eks EV sertifikat for mittdomene.no
+containerPage:
+  portsTab:
+    hostPrimaryIp: '({ip})'
+  linksTab:
+    header: Lenker
+  volumesTab:
+    table:
+      shared: Delt med
+      writable: Skrivbar
 containersPage:
   table:
     sparkPrefixCpu: 'CPU: '
@@ -308,8 +329,19 @@ containersPage:
     sparkPrefixStorage: 'Lagring: '
 containerSubpod:
   childContainers: Beholdere
-dockerCLI:
-  header: Swarm CLI
+  childSidekicks: Hjelpere
+dnsPage:
+  noMatch: Ingen oppføringer stemmer med det gjeldende søket
+editDns:
+  title:
+    new: Legge til DNS-oppføring
+    edit: Redigere DNS-oppføring
+  name:
+    placeholder: f.eks minapplikasjon
+  description:
+    placeholder: f.eks gjeldende versjon av minapplikasjon
+  hostname:
+    placeholder: f.eks foobar.com
 failWhalePage:
   header: Feil
   logoutButton: Logg ut
@@ -317,18 +349,23 @@ haPage:
   header: Høy tilgjengelighet
   setup:
     link: Se i dokumentasjonen
+    suffix: " for informasjon om installasjon og bruk."
   table:
     port: Port
     heartbeat: Sist sett
 helpPage:
   header: Nyttige lenker & informasjon
+  banner: 'Siste utgivelse {released}:'
   environment:
     header: Hva er et miljø?
     manageLink: Administrere miljøer
   host:
     header: Hva er en vert?
+    contentLink: Få mer informasjon
     addHostLink: Legg til vert
   stacks:
+    content:
+      link: Få mer informasjon
     addServiceLink: Administrer tjenester
     addCatalogLink: Legge til katalog
     manageServiceLink: Administrer tjenester
@@ -353,6 +390,7 @@ helpPage:
       header: Kunngjøringer
       buttonText: Vis flere kunngjøringer
     general:
+      header: Generelt
       buttonText: Vis flere generelle emner
     rancherOs:
       header: RancherOS
@@ -363,20 +401,53 @@ helpPage:
   commercial:
     header: Kommersiell bistand
 hostsPage:
+  cloudHostsPage:
+    addPage:
+      name:
+        placeholder: f.eks tjener01
+      transferUnit: TB
+      instance: 'Type:'
+      storage: 'Lagring:'
+      transfer: 'Overføre:'
+      zone: 'Sone:'
+      env: 'Miljø:'
+      size: 'Størrelse:'
+      os: 'OPERATIVSYSTEM:'
+      driver: 'Driver:'
+      template: 'Malnavn:'
   addContainer: Legge til en beholder
   index:
+    header: Verter
     addHost: Legge til vert
+    table:
+      memory: RAM
+      docker: Docker
   new:
     header:
       text: Legge til vert
+    name:
+      placeholder: f.eks tjener01
   hostPage:
+    header:
+      title: 'Vert: {name}'
+    limits:
+      cpu: 'Grense for CPU:'
+      memory: 'Minnegrense:'
     infoMultiStats:
+      ip: 'IP'
+      cpu: 'CPU'
+      memory: 'Minne'
+      storage: 'Volumer'
       provider:
         labelText: 'Leverandør:'
+        noHost: Egendefinert
+      kernel: 'Kjerne'
       docker: 'Docker:'
+      os: 'OPERATIVSYSTEM'
       milliCpu:
         labelText: mCPU
     portsTab:
+      header: Porter
       table:
         header:
           ip: IP-adresse
@@ -402,19 +473,8 @@ machinePage:
   inactive: Inaktiv
   add: Legg til maskindriver
   builtin: Innebygd
-mesosPage:
-  header: Oversikt
 notFoundPage:
   linkTo: Gå til startsiden
-projectList:
-  index:
-    header: Miljøer
-    new: Legg til et miljø
-    table:
-      header:
-        projectTemplate: Mal
-  indexTemplate:
-    header: Miljø maler
 registriesPage:
   index:
     table:
@@ -425,6 +485,7 @@ registriesPage:
     form:
       custom:
         labelText: Adresse
+        placeholder: f.eks register.eksempel.no
       username:
         labelText: Brukernavn
         placeholder: f.eks brukernavn
@@ -434,8 +495,6 @@ registriesPage:
 servicePage:
   multistat:
     fqdn: 'FQDN:'
-  external:
-    externalIp: Eksterne IP-addresser
   linksTab:
     header: Koblinger
   new:
@@ -452,6 +511,9 @@ servicePage:
         placeholder: f.eks lastbalanserer for mittfirma.no
 settingsPage:
   header: Innstillinger
+newStack:
+  name:
+    placeholder: f.eks minapplikasjon
 processesPage:
   tab:
     summary: Oppsummering
@@ -468,8 +530,6 @@ processesPage:
 waitingPage:
   hosts:
     setup:
-      mesos: Definer Mesos
-      swarm: Definer Swarm
       kubernetes: Definer Kubernetes
 hostPartial:
   host:
@@ -494,6 +554,10 @@ ldap:
   accessConfig:
     hostName:
       labelText: Vertsnavn eller IP-adresse
+    userSearchBase:
+      placeholder: "f.eks ou=Brukere,dc=mittfirma,dc=no"
+    groupSearchBase:
+      placeholder: "f.eks ou=Gruppe,dc=mittfirma,dc=no"
     defaultDomain:
       placeholder: "f.eks mittfirma"
   customizeSchema:
@@ -621,12 +685,6 @@ editHost:
     valueLabel: IP-adresse
     valuePlaceholder: f.eks 1.2.3.4
     addActionLabel: Legge til IP-addresse
-editProjectTemplate:
-  title:
-    add: Legg til mal
-    edit: 'Rediger mal: {displayName}'
-  stackEdit: Rediger konfigurasjon
-  stackRequired: Obligatorisk
 editRegistry:
   address:
     label: Adresse
@@ -645,9 +703,18 @@ editStack:
     placeholder: f.eks minapplikasjon
   description:
     label: Beskrivelse
+  group:
+    placeholder: f.eks frontend, produksjon
 formatIp:
   noIp: Ingen
+formBalancerListeners:
+  sourceIp:
+    placeholder: 'f.eks 1.2.3.4; Standard: Alle'
+  sourcePort:
+    placeholder: f.eks 80
 formBalancerRules:
+  sourceIp:
+    placeholder: 'f.eks 1.2.3.4; Standard: Alle'
   sourcePort:
     placeholder: f.eks 80
   path:
@@ -679,16 +746,10 @@ formCommand:
     none: Ingen
   autoRestart:
     label: Automatisk omstart
-    startOnceTrue: Aldri (start en gang)
     "no": Aldri
     always: Alltid
 formContainerLinks:
   addActionLabel: Legg til kobling
-  targetInstance:
-    label: Målbeholder
-    prompt: Velg en beholder...
-  name:
-    placeholder: f.eks database
 formDisks:
   addDiskLabel: Legg til disk
   addRootDiskLabel: Legg til root disk
@@ -748,7 +809,6 @@ formHealthCheck:
   strategy:
     label: Når er det et problem
     none: Ikke utfør noen handling
-    recreate: Gjennopprett
 formKeyValue:
   key:
     label: Nøkkel
@@ -757,6 +817,9 @@ formKeyValue:
   value:
     label: Verdi
     placeholder: Verdi
+formImage:
+  container:
+    placeholder: "f.eks ubuntu:xenial"
 formNameDescription:
   name:
     label: Navn
@@ -767,6 +830,8 @@ formNameDescription:
 formNetwork:
   networkMode:
     label: Nettverk
+  requestedIp:
+    placeholder: Valgfritt; f.eks 10.42.2.24
   hostname:
     label: Vertsnavn
     placeholder: f.eks web
@@ -803,6 +868,10 @@ formSecrets:
   mode:
     placeholder: f.eks 0444 (oktale)
 formSecurity:
+  privileged:
+    disable: false
+  cpuPinning:
+    placeholder: 'f.eks 0,1,3; Standard: Alle'
   shares:
     placeholder: f.eks 1024
   capabilities:
@@ -825,6 +894,9 @@ formServiceLinks:
 formSslTermination:
   alternateCerts: Alternative sertifikater
   addAlternate: Legg til alternativt sertifikat
+formStack:
+  create:
+    placeholder: f.eks minapplikasjon
 formStickiness:
   none: Ingen
   domain: Domene
@@ -915,6 +987,8 @@ machine:
     secretKey:
       label: Hemmelig nøkkel
       placeholder: Din AWS hemmelige nøkkel
+    portHelp:
+      link: Få mer informasjon
     setInstanceAction: 'Neste: Sett alternativer for forekomst'
     instanceSection: Forekomst
     instanceOptionsSection: Alternativer for forekomst
@@ -962,7 +1036,6 @@ machine:
   driverCustom:
     agentIp:
       placeholder: f.eks 1.2.3.4
-    close: Lukk
     windows:
       windowsHeader: Windows-vert
       linuxHeader: Linux-vert
@@ -970,7 +1043,6 @@ machine:
     instanceSection: Forekomst
     sshUser:
       label: SSH bruker
-      placeholder: 'bruker1'
     size:
       label: Størrelse
     regionSection: Region
@@ -985,6 +1057,8 @@ machine:
     secretKey:
       label: Hemmelig nøkkel
       placeholder: Din Exoscale hemmelige nøkkel
+    portHelp:
+      link: Få mer informasjon
     selectSecurityGroupAction: 'Neste: Sett alternativer for forekomst'
     loadingInstance: Henter tilgjengelig innstillinger for forekomst...
     instanceSection: Forekomst
@@ -1060,8 +1134,6 @@ machine:
     aliyunSLB:
       label: Aliyun SLB-ID
       placeholder: Aliyun SLB-ID
-    ioOptimized:
-      placeholder: ingen eller optimalisert
     region:
       label: Region
       placeholder: Region
@@ -1132,11 +1204,16 @@ newContainer:
     placeholder: f.eks minapplikasjon
   description:
     placeholder: f.eks min applikasjon
+  environment:
+    keyPlaceholder: f.eks FOO
+    valuePlaceholder: f.eks bar
 newReceiver:
   min:
     placeholder: f.eks 1
   max:
     placeholder: f.eks 20
+  tag:
+    placeholder: "f.eks siste"
 newSecret:
   name:
     placeholder: f.eks api-token
@@ -1144,8 +1221,6 @@ pageFooter:
   issues: Rapporter et problem
 projectRow:
   none: Ingen beskrivelse
-projectUpgrade:
-  header: Oppgrader miljøet
 registryRow:
   username: Brukernavn
 reservationParameters:
@@ -1189,13 +1264,10 @@ serviceLink:
 siteAccess:
   header: Områdetilgang
   noIdentity: Ingen
-storagePoolSection:
-  readOnly: "(read-only)"
-  hosts:
-    header: Verter
-    none: Ingen verter
 telemetryOpt:
   header: Statistikker
+  learnMore:
+    label: Få mer informasjon
 upgradeBtn:
   status:
     none: 'Ingen'
@@ -1232,21 +1304,9 @@ nav:
     all: Alle miljøer
     your: Dine miljøer
     selected: Valgte miljøer
-    manage: Administrer miljøer
-  k8s:
-    tab: Kubernetes
-  swarm:
-    tab: Swarm
-    cli: CLI
-    system: Infrastruktur
-  mesos:
-    tab: Mesos
-    web: Oversikt
-    system: Infrastruktur
   user:
     logout: Logg ut
 action:
-  setDefault: Angi som standard
   viewInstance: Vis forekomst
 validation:
   required: '"{key}" er påkrevd'

@@ -2,26 +2,34 @@ import Ember from 'ember';
 import { isSafari } from 'ui/utils/platform';
 
 export default Ember.Component.extend({
-  label        : null,
+  settings: Ember.inject.service(),
+
+  label:           null,
   namePlaceholder: '',
-  name         : null,
-  value        : null,
-  placeholder  : "",
-  accept       : "text/*",
-  minHeight    : 0,
-  maxHeight    : 200,
-  inputName    : false,
-  canChangeName: true,
+  name:            null,
+  value:           null,
+  placeholder:     "",
+  accept:          "text/*",
+  minHeight:       0,
+  maxHeight:       200,
+  inputName:       false,
+  canChangeName:   true,
+  canUpload:       true,
   showUploadLabel: true,
 
-  tagName      : ['div'],
-  classNames   : ['box'],
+  tagName: ['div'],
+  classNames: ['box','mb-10','p-10','pt-0'],
 
-  _boundChange : null,
+  _boundChange: null,
+  shouldChangeName: true,
 
   actions: {
     click() {
       this.$('INPUT[type=file]')[0].click();
+    },
+
+    wantsChange() {
+      this.set('shouldChangeName', true);
     }
   },
 
@@ -39,7 +47,10 @@ export default Ember.Component.extend({
     if ( input.files && input.files[0] ) {
       let file = input.files[0];
       if ( this.get('canChangeName') ) {
-        this.set('name', file.name);
+        this.setProperties({
+          name: file.name,
+          shouldChangeName: false,
+        });
       }
 
       var reader = new FileReader();

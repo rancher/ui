@@ -156,7 +156,7 @@ var Container = Instance.extend(EndpointPorts, {
     } else {
       return resource;
     }
-  }.property('primaryHost.state','desired','state','healthState','healthCheck','shouldRestart'),
+  }.property('primaryHost.state','service.state','desired','state','healthState','healthCheck','shouldRestart'),
 
   isOn: function() {
     return ['running','migrating','restarting'].indexOf(this.get('state')) >= 0;

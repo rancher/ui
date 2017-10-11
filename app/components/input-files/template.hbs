@@ -1,13 +1,17 @@
 <div class="clearfix mb-20">
   {{#if header}}
     <div class="pull-left">
-      <label style="margin-top: 8px;">{{t header}} boo</label>
+      <label style="margin-top: 8px;">{{t header}}</label>
       {{#if protipLabel}}
-        <div class="protip">{{t protipLabel}}</div>
+        <div class="protip">{{t protipLabel appName=settings.appName htmlSafe=true}}</div>
       {{/if}}
     </div>
   {{/if}}
-  <button class="btn bg-link icon-btn pull-right" style="{{shouldMargin}}"{{action "add"}}>
+  <button class="btn bg-link icon-btn pull-right" style="margin-top: 8px;" {{action "upload"}}>
+    <span class="darken"><i class="icon icon-upload text-small"/></span>
+    <span>{{t uploadActionLabel}}</span>
+  </button>
+  <button class="btn bg-link icon-btn pull-right mr-10" style="margin-top: 8px;" {{action "add"}}>
     <span class="darken"><i class="icon icon-plus text-small"/></span>
     <span>{{t addActionLabel}}</span>
   </button>
@@ -15,15 +19,19 @@
 
 {{#each ary as |file|}}
   {{#input-text-file
-       accept=accept
-       classNames='mb-20'
-       name=file.name
-       inputName=true
-       namePlaceholder=namePlaceholder
-       canChangeName=true
-       value=file.value
-       placeholder=valuePlaceholder
+    accept=accept
+    classNames='mb-20'
+    name=file.name
+    inputName=true
+    namePlaceholder=namePlaceholder
+    canChangeName=true
+    shouldChangeName=(not file.uploaded)
+    canUpload=false
+    value=file.value
+    placeholder=valuePlaceholder
   }}
   <button class="btn bg-primary" {{action "remove" file}}><i class="icon icon-minus"></i></button>
   {{/input-text-file}}
 {{/each}}
+
+<input type="file" class="input-files" multiple=true accept="{{actualAccept}}" class="hide">

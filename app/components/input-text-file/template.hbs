@@ -1,33 +1,39 @@
 <div class="row">
-  <div class="col clip mb-0">
-    {{#if inputName}}
+  <div class="col span-6 clip">
+    {{#if (and canChangeName shouldChangeName)}}
       {{input value=name placeholder=(if namePlaceholder (t namePlaceholder) '')}}
     {{else}}
-      <label class="acc-label">
+      <label class="acc-label form-control-static" style="font-size: 15px;">
         {{#if label}}
           {{t label}}
         {{else}}
           {{name}}
         {{/if}}
+
+        {{#if canChangeName}}
+          <button class="btn btn-sm bg-transparent p-0 pl-10 acc-label-hover" {{action "wantsChange"}}>{{t 'action.edit'}}</button>
+        {{/if}}
       </label>
     {{/if}}
   </div>
-  <div class="pull-right">
-    {{#if showUploadLabel}}
-      <button class="btn bg-link icon-btn" {{action "click"}}>
-        <span class="darken"><i class="icon icon-upload text-small"/></span>
-        <span>{{t 'inputTextFile.tooltip'}}</span>
-      </button>
-    {{else}}
-      {{#tooltip-element type="tooltip-basic" model=(t 'inputTextFile.tooltip') tooltipTemplate="tooltip-static" aria-describedby="tooltip-base" tooltipFor="inputTextFile"}}
-        <button type="button" class="btn bg-link" {{action "click"}}><i class="icon icon-upload"></i></button>
-      {{/tooltip-element}}
+  <div class="col span-6 text-right">
+    {{#if canUpload}}
+      {{#if showUploadLabel}}
+        <button class="btn bg-link icon-btn" {{action "click"}}>
+          <span class="darken"><i class="icon icon-upload text-small"/></span>
+          <span>{{t 'inputTextFile.tooltip'}}</span>
+        </button>
+      {{else}}
+        {{#tooltip-element type="tooltip-basic" model=(t 'inputTextFile.tooltip') tooltipTemplate="tooltip-static" aria-describedby="tooltip-base" tooltipFor="inputTextFile"}}
+          <button type="button" class="btn bg-link" {{action "click"}}><i class="icon icon-upload"></i></button>
+        {{/tooltip-element}}
+      {{/if}}
     {{/if}}
     {{yield}}
   </div>
 </div>
 <div class="row">
-  <div class="col span-12 pt-10 mb-0">
+  <div class="col span-12 m-0 p-0">
     {{textarea-autogrow
       value=value
       classNames="form-control text-small"

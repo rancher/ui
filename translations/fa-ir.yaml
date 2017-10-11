@@ -4,29 +4,42 @@ languageContribute: "در ترجمه رنچر کمک کنید!"
 generic:
   actions: اکشن ها
   activate: قعال سازی
+  all: همه
   any: هر
-  as: به عنوان
   cancel: لغو
   closeModal: بستن
+  collapseAll: بستن همه
+  command: دستور
+  confirm: تایید
+  containers: کانتینرها
   created: ساخته شد
+  createdDate: "ایجاد شد {date}"
   default: پیش فرض
   description: توضیح
+  details: جزییات
   disable: غیر فعال کردن
   disabled: غیر فعال
   domainName: نام دامنه
   enable: فعال کردن
   enabled: فعال
+  environment: محیط
+  expandAll: بازکردن همه
+  hardware: سخت‌افزار
   healthy: سالم
   id: آیدی
   image: تصویر
   internal: داخلی
   ipAddress: آدرس آی پی
   limit: محدودیت
+  limits: محدودیت‌ها
   loading: "در حال بارگزاری..."
+  mibibyte: 'MiB'
   missing: "*%یافت نشده%*"
   moreActions: اکشن های بیشتر
   na: 'نامشخص'
   name: نام
+  "no": "خیر"
+  noRating: بدون امتیاز
   none: هیچ یک
   ports: پورت ها
   remove: حذف
@@ -35,6 +48,9 @@ generic:
   saved: ذخیره شد
   saving: در حال ذخیره سازی
   search: جستجو
+  seconds: ثانیه
+  select: انتخاب
+  service: سرویس
   state: وضعیت
   test: تست
   testing: در حال تست
@@ -43,6 +59,9 @@ generic:
   type: نوع
   unknown: ناشناس
   uuid: شناسه منحصر به فرد عمومی
+  "yes": "بله"
+realmNames:
+  all: همه
 accountsPage:
   index:
     header: حساب ها
@@ -56,6 +75,10 @@ accountsPage:
       noName: هیچ یک
   new:
     header: افزودن حساب
+    errors:
+      usernameReq: نام کاربر ورود به سیستم الزامی است.
+      usernameInExists: این نام کاربری قبلا استفاده شده است. لطفا نامی دیگر انتخاب کنید.
+      pwReq: کلمه عبور الزامی است.
     form:
       username:
         labelText: نام کاربری برای ورود
@@ -87,6 +110,7 @@ apiPage:
     header: کلید های API حساب
     buttonText: افزودن کلید API
 auditLogsPage:
+  header: گزارش های بازرسی
   form:
     eventType:
       placeholder: نوع رویداد
@@ -119,6 +143,7 @@ authPage:
         header:
           text: اهراز هویت
       disableAccess:
+        header: "محدوده خطر&trade;"
         warning: '<b class="text-danger">هشدار:</b> غیر فعال سازی کنترل دسترسی به هر شهصی که به این صفحه دسترسی یابد کنترل کامل خواهد داد.'
         confirmDisable: "آیا مطمئن هستید؟  برای تایید عیر فعال سازی دوباره کلیک کنید."
         disable: غیر فعال سازی کنترل دسترسی
@@ -163,6 +188,7 @@ authPage:
         clientId:
           helpText: "برای تغییر برنامه GitHub, دسترسی کنترل زیر را غیر فعال کرده و دوباره تنظیم کنید."
       disableAccess:
+        header: "محدوده خطر&trade;"
         warning: '<b class="text-danger">هشدار:</b> غیر فعال سازی کنترل دسترسی به هر کاربری در {appName} اجازه می دهد به این صفحه دسترسی داشته باشد.'
         confirmDisable: "برای غیر فعال سازی کنترل دسترسی دوباره کلیک کنید."
         disable: غیر فعال سازی کنترل دسترسی
@@ -177,6 +203,7 @@ authPage:
           text: ' "Register new application" را انتخاب و فرم را پر کنید:'
           ul:
             li1: '<b>نام Application :</b> <span class="text-muted">Anything you like, مثال. My {appName}</span>'
+            li2: آدرس صفحه اصلی
             li3: '<b>توضیحات Application:</b> <span class="text-muted">پر کردن این گزینه دلخواه است</span>'
         li3:
           text: '"ثبت Application" را انتخاب کنید '
@@ -198,7 +225,6 @@ authPage:
   azuread:
     header:
       enabled: 'اهراز هویت Azure AD <b>فعال است</b>'
-      disabled: 'اهراز هویت Azure AD <b class="text-warning">تنظیم نشده است</b>'
     subtext:
       disabled: '{appName} می تواند تنظیم شود تا دسترسی به برخی حساب ها که در دیتابیس تعریف شده اند را محدود کند. این کار هنوز انجام نشده، بنابراین هر شخصی با دسترسی به این صفحه،  به سیستم کنترل کامل دارد.'
     enabled:
@@ -228,8 +254,6 @@ authPage:
       pre: اهراز هویت با Azure
       post: در انتظار پاسخ از Azure
   localAuth:
-    header:
-      enabled: 'اهراز هویت لوکال <b>فعال است</b>'
     subtext:
       enabled:
         linkText: مدیریت حساب ها
@@ -410,33 +434,9 @@ machinePage:
   inactive: غیر فعال
   subtext: "<code>docker-machine</code> های اضافی می توانند اینجا بارگزاری شده و در صفحه افزودن هاست استفاده شوند."
   add: افزودن درایور ماشی
-mesosPage:
-  banner:
-    header: cluster شما
-    link: مشاهده یا افزودن هاست
-  launch:
-    header: اجرا
-    content: شما می توانید فریموورک ها را از کاتالوگ ما اجرا کنید.
-    button: اجرای یک فریموورک
-  manage:
-    header: مدیریت
-    content: مدیریت Mesos از Mesos UI.
 notFoundPage:
   header: "چنین صفحه ای وجود ندارد"
   linkTo: خانه
-projectList:
-  index:
-    header: محیط ها
-    subtext: |
-      <p>{appName} supports grouping resources into multiple <b>environments</b>.  Each one gets its own set of services and infrastructure resources, and is owned by one or more GitHub users, teams or organizations.</p>
-      <p>For example, you might create separate &quot;dev&quot;, &quot;test&quot;, and &quot;production&quot; environments to keep things isolated from each other, and give &quot;dev&quot; access to your entire organization but restrict the &quot;production&quot; environment to a smaller team.</p>
-    alert: محیط فعالی یافت نشد. شما قبل از هر کاری ابتدا باید یک محیط را فعال یا ایجاد کنید.
-    table:
-      header:
-        projectTemplate: الگو
-  indexTemplate:
-    header: الگو های محیطی
-    new: افزودن الگو
 registriesPage:
   index:
     linkTo: افزودن Registry
@@ -477,18 +477,7 @@ servicePage:
       description:
         placeholder: مثال. Balancer for mycompany.com
   portsTab:
-    table:
-      header:
-        port: پورت
-        host: آی پی میزبان
-      body:
-        noData: این سرویس پورتی ندارد.
     notActive: پورت ها فقط وقتی سرویس فعال است قابل دسترسی اند.
-storagePoolsPage:
-  newVolume:
-    header: افزودن Volume
-    form:
-      addActionLabel: افزودن گزینه
 processesPage:
   tab:
     pools: مشترک
@@ -501,8 +490,6 @@ processesPage:
 waitingPage:
   hosts:
     setup:
-      mesos: در حال تنظیم Mesos
-      swarm: در حال تنظیم Swarm
       kubernetes: در حال تنظیم Kubernetes
 hostPartial:
   host:
@@ -608,10 +595,6 @@ servicePartial:
 catalogSettings:
   header: کاتالوگ
   subtext: کاتالوگ ها contain templates that allow users to easily deploy applications by answering a few questions
-  certified:
-    detail:
-      rancher: Optional templates maintained and supported by Rancher Labs.
-      pl: Officially maintained and supported optional templates.
   more:
     addActionLabel: افزودن Catalog
     name:
@@ -668,7 +651,6 @@ editCertificate:
     placeholder: مثال. mydomain.com
   description:
     placeholder: مثال. EV cert for mydomain.com
-  noteKeyWriteOnly: 'توجه: The Private Key is intentionally blank because the field is write-only.  You will need to provide the Private Key again to update the certificate, even if it hasn''t changed.'
 editContainer:
   title:
     vm: ویرایش VM
@@ -714,7 +696,6 @@ editStack:
     placeholder: مثال. MyApp Stack
   group:
     placeholder: مثال. frontend, production
-    help: The stacks list can be filtered by tags (comma-separated)
 stackHeader:
   outputs: خروجی ها
 formatIp:
@@ -732,15 +713,10 @@ formCommand:
     label: کنسول
     none: هیچ یک
   autoRestart:
-    startOnceFalse: همیشه
-    startOnceTrue: هرگز (یک بار اجرا)
     "no": هرگز
     always: همیشه
 formContainerLinks:
   addActionLabel: افزودن پیوند
-  name:
-    label: به عنوان
-    placeholder: مثال. database
 formDisks:
   addDiskLabel: افزودن Disk
   addRootDiskLabel: افزودن Root Disk
@@ -837,6 +813,8 @@ formScheduling:
   key: کلید
   value: ارزش
 formSecurity:
+  privileged:
+    disable: false
   shares:
     placeholder: مثال. 1024
   capabilities:
@@ -998,20 +976,11 @@ machine:
     clientId:
       label: شناسه کلاینت
   driverCustom:
-    step2li: From and To all other hosts on <code>UDP</code> ports <code>500</code> and <code>4500</code> <span class="text-muted">(برای شبکه IPsec)</span>
-    step3: 'اختیاری: افزودن برچسب برای هاست.'
-    step5Copy: دستور زیر را کپی و پیست و اجرا کرده تا هاست شما ثبت شود
     generating: "در حال ایجاد registration URL..."
-    step5Close:
-      part1: دکمه بستن را انتخاب کنید. هاست جدید تا دقایقی بعد بر روی
-      link: میزبان ها
-      part2: صفحه نمایش ظاهر خواهد شد.
-    close: بستن
   driverDigitalocean:
     accountSection: دسترسی به حساب
     authAccountButton: 'بعدی: تنظیم Droplet'
     accessToken:
-      label: شناسه دسترسی*
       placeholder: شناسه دسترسی DigitalOcean API شما
       help: |
         یک شناسه دسترسی خصوصی از DigitalOcean
@@ -1090,8 +1059,6 @@ machine:
       label: حداکثر پهنای باند اینترنت
       placeholder: 1 تا 100
     storageSection: اطلاعات فضای ذخیره سازی
-    ioOptimized:
-      placeholder: هیچکدام یا بهینه شده
     dataDiskSize:
       placeholder: اندازه دیسک
     zone:
@@ -1169,13 +1136,10 @@ newContainer:
     container: ارتقای Container
   selectUpgrade: یک یا چند سرویس برای ارتقا انتخاب کنید.
   saveUpgrade: ارتقا
-  removeSidekick: حذف این Sidekick
   name:
     placeholder: مثال. myapp
   description:
     placeholder: مثال. My Application
-  addSidekickContainer: افزودن Sidekick Container
-  addSidekickVm: افزودن Sidekick VM
 pageFooter:
   notARelease: (نسخه آزمایشی)
   issues: گزارش مشکل
@@ -1226,12 +1190,6 @@ siteAccess:
   users: کاربران
   groups: گروه ها
   organizations: سازمان ها
-storagePoolSection:
-  hosts:
-    header: میزبان ها
-    none: هاستی وجود ندارد
-  volumes:
-    add: افزودن Volume
 telemetryOpt:
   learnMore:
     label: اطلاعات بیشتر
@@ -1263,14 +1221,6 @@ waitKubernetes:
   addHost: 'حداقل یک هاست اضافه کنید'
   activateHost: 'در انتظار فعال سازی هاست'
   startServices: 'در حال شروع سرویس ها'
-waitMesos:
-  addHost: 'حداقل سه هاست اضافه کنید'
-  activateHost: 'در انتظار فعال سازی هاست ها'
-  startServices: 'در حال شروع سرویس ها'
-  waitApi: 'در انتظار leading Mesos Master'
-waitSwarm:
-  addHost: 'حداقل یک هاست اضافه کنید'
-  startServices: 'در حال شروع سرویس ها'
 containerChoices:
   hostGroup: 'هاست: {name}'
   unknownHost: 'هاست: ???'
@@ -1282,7 +1232,6 @@ nav:
     all: همه محیط ها
     your: محیط های شما
     selected: محیط انتخاب شده
-    manage: مدیریت محیط ها
   catalog:
     all: همه
     library: کتابخانه
@@ -1299,14 +1248,11 @@ nav:
     logout: خروج
 action:
   activate: فعال سازی
-  cancelUpgrade: لغو ارتقا
-  cancelRollback: لغو Rollback
   clone: همانند سازی
   deactivate: غیر فعال سازی
   edit: ویرایش
   evacuate: تخلیه
   exportConfig: خروجی گرفتن از تنظیمات
-  finishUpgrade: پایان ارتقا
   logs: مشاهده لاگ ها
   machineConfig: کانفیگ ماشین
   remove: حذف
@@ -1314,7 +1260,6 @@ action:
   restart: راه اندازی مجدد
   retry: سعی مجدد
   rollback: بحال اول بر گرداندن
-  setDefault: انتخاب به عنوان پیش فرض
   start: شروع
   stop: توقف
   upgrade: ارتقا
