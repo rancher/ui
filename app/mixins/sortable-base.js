@@ -46,7 +46,7 @@ export default Ember.Mixin.create({
           if ( desc ) {
             sort.pushObjects(more.map((x) => {
               let parts = x.split(/:/);
-              if ( parts.length === 2 && parts[1] === 'desc' ) {
+              if ( parts.length === 2 && parts[1] === 'asc' ) {
                 return parts[0];
               } else {
                 return x+':desc';
