@@ -15,11 +15,6 @@ export const getNamespaceId = function() { return this.get('namespaceId'); };
       // return true if this item should be displayed
       // condition can depend on anything page-header/component.js shouldUpdateNavTree() depends on
     }
-    alertRoute: 'target.route.path', // as in link-to
-    alertCondition: function() {
-      // return true if the alert (!) icon should be displayed
-      // can depend on anything page-header/component.js shouldUpdateNavTree() depends on
-    }
     target: '_blank', (for url only)
     route: 'target.route.path', // as in link-to
     ctx: ['values', 'asContextToRoute', orFunctionThatReturnsValue, anotherFunction]
@@ -114,10 +109,6 @@ const navTree = [
     id: 'admin',
     localizedLabel: 'nav.admin.tab',
     condition: function() { return this.get('isAdmin'); },
-    alertRoute: 'admin-tab.auth',
-    alertCondition: function() {
-      return !this.get('access.enabled') && this.get('prefs.'+C.PREFS.ACCESS_WARNING) !== false;
-    },
     submenu: [
       {
         id: 'admin-audit',

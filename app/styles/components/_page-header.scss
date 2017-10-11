@@ -3,6 +3,7 @@ $header                              : $secondary !default;
 $header-link                         : $light-grey !default;
 $header-link-active                  : $primary !default;
 $user-btn                            : darken($header, 10%) !default;
+$nav-spacing: 4px;
 
 .page-header {
   @include no-select;
@@ -23,10 +24,47 @@ $user-btn                            : darken($header, 10%) !default;
       top: auto!important;
       border-radius: 0;
       box-shadow: $darken-helper 0 0 7px;
-      width: 240px;
+    }
 
-      > ul > li > a {
-        margin: 0;
+    > ul {
+      background-color: $header;
+      border-radius: 3px 0 0 3px;
+      display: table-cell;
+      padding: 0;
+      width: 100%;
+      vertical-align: middle;
+
+      > li {
+        list-style-type: none;
+        display: inline-block;
+
+        &.active {
+          > a {
+            color: $info;
+            border-bottom: solid $nav-spacing mix($user-btn, black, 50%);
+            text-decoration: none;
+            margin: 0;
+          }
+        }
+
+        > a {
+          color: $header-link;
+          display: block;
+          padding: 11px;
+          border-bottom: solid $nav-spacing transparent;
+          border-top: solid $nav-spacing transparent;
+
+          &:hover {
+            background-color: mix($user-btn, black, 80%);
+            color: white;
+            text-decoration: none;
+            border-bottom: solid $nav-spacing mix($user-btn, black, 50%);
+          }
+
+          .icon-chevron-down {
+            font-size: .75em;
+          }
+        }
       }
     }
   }
@@ -42,79 +80,58 @@ $user-btn                            : darken($header, 10%) !default;
     padding: 0;
   }
 
-  .cluster-dropdown {
-    padding: 4px 40px 4px 4px;
-    @extend .clip;
-    @extend .hand;
-  }
-  .environment-dropdown {
-    padding: 0 10px;
-    @extend .clip;
-    @extend .hand;
+  .nav-cluster {
+    float: left;
+    padding-left: 5px;
+    margin-right: 15px;
 
-    a {
+    background-color: $primary-dark;
+
+    &::after {
+      content: '';
+      border-left: 8px solid $primary-dark;
+      border-top: 5px solid transparent;
+      border-bottom: 5px solid transparent;
+      position: absolute;
+      top: 20px;
+      right: -8px;
+    }
+
+    .dropdown-toggle {
+      max-width: 300px;
+      padding: 4px 30px 4px 4px;
+      @extend .clip;
+      @extend .hand;
+    }
+
+    .chevron {
       color: white;
-    }
-
-    > .clip {
-      max-width: 250px;
-      color: $header-link ;
-      display: inline-block;
-      vertical-align: middle;
-      padding: 14px 10px 14px 0;
-
-      &:hover {
-        text-decoration: none;
-      }
-    }
-    i {
-      color: $header-link;
+      position: absolute;
+      right: 10px;
+      top: 19px;
     }
   }
-  .project-btn {
-    & > A {
-      @include clip;
-      max-width: 150px;
-      color: $header-link;
-    }
-
-    padding-left: 10px;
-  }
-
-  // ul.nav-middle {
-  //   display:table-cell;
-  //   vertical-align: middle;
-  //   width: 100%;
-  //   font-size: .75em;
-
-  //   li {
-  //     a {
-  //       padding: 13px 10px 10px 10px;
-  //     }
-  //   }
-  // }
 
   .nav-user {
     display:table-cell;
-    width: 80px;
     background: $user-btn;
     border-radius: 0 3px 3px 0;
     margin: 0;
 
     a {
       display: block;
-      padding: 8px 15px;
+      padding: 4px 10px;
 
       &:hover {
-        border-bottom: 0;
+        border-bottom-color: transparent;
       }
     }
 
-      .user-auth {
-        line-height: initial;
-        padding: 10px;
-        background: lighten($accent-two, 20);
-      }
+    .user-auth {
+      line-height: initial;
+      padding: 10px;
+      background: lighten($accent-two, 20);
+    }
   }
 
   .quick-add {

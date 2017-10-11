@@ -1,71 +1,40 @@
 {{~#if project~}}
-<li class="dropdown pull-right ">
-    {{#if nested}}
-      <div class="cluster-dropdown dropdown-toggle pb-5" aria-haspopup="true" aria-expanded="false" aria-label="{{t 'nav.environment.cluster'}}" data-toggle="environment">
-        <span class="text-white clip" >
-          <i class="icon icon-cluster icon-fw"></i>
-          {{project.cluster.displayName}}
-          <span class="sr-only">{{t 'nav.srToggleDropdown'}}</span>
-        </span>
-        <span class="block pl-15 text-small text-muted">
-          <i class="{{project.icon}} project-icon icon-fw"></i>
-          {{project.displayName}}
-          <span class="sr-only">{{t 'nav.srToggleDropdown'}}</span>
-        </span>
-        <i class="icon icon-chevron-down project-chevron ml-10 text-white" style="position: absolute; right: 15px; top: 19px;"></i>
+  <li class="dropdown nav-item nav-cluster">
+    <div class="dropdown-toggle pb-5" aria-haspopup="true" aria-expanded="false" aria-label="{{t 'nav.environment.cluster'}}" data-toggle="environment">
+      <div class="text-white clip">
+        <i class="icon icon-cluster icon-fw"></i>
+        {{project.cluster.displayName}}
       </div>
-    {{else}}
-      <div style="padding-bottom:2px;" >
-        <span class="environment-dropdown dropdown-toggle" aria-role="button" aria-haspopup="true" aria-expanded="false" aria-label="{{t 'nav.environment.label'}}" data-toggle="environment" data-offset-x="5" >
-          <i class="{{project.icon}} project-icon icon-fw"></i>
-          <span  class="text-white clip" >
-            {{project.displayName}}
-            <span class="sr-only">{{t 'nav.srToggleDropdown'}}</span>
-          </span>
-          <i class="icon icon-chevron-down project-chevron"></i>
-        </span>
+      <div class="pl-15 clip text-muted">
+        <i class="{{project.icon}} project-icon icon-fw"></i>
+        {{project.displayName}}
       </div>
-    {{/if}}
+      <i class="icon icon-chevron-down chevron"></i>
+      <span class="sr-only">{{t 'nav.srToggleDropdown'}}</span>
+    </div>
 
-    <ul class="dropdown-menu dropdown-menu-right project-menu" role="menu" data-dropdown-id="environment">
-      {{#if nested}}
-        {{#each byCluster as |entry|}}
-          <li class="header">
-            <i class="icon icon-cluster"></i>
-            &nbsp;
-            {{entry.cluster.displayName}}
-          </li>
-          {{#each entry.projects as |p|}}
-            <li class="{{if p.active 'active selected'}}  text-muted">
-              <a href="#" {{action "switchProject" p.id}} class="clip pl-40 project-link">
-                <i class="icon {{p.icon}}"></i>
-                {{#if p.isDefault}}
-                  <i class="icon icon-star-fill default-project nested"/>
-                {{/if}}
-                &nbsp;
-                {{p.displayName}}
-              </a>
-            </li>
-          {{/each}}
-        {{/each}}
-      {{else if projectChoices.length}}
-        {{#each projectChoices as |p|}}
-          <li class="{{if p.active 'active selected'}}">
-            <a href="#" {{action "switchProject" p.id}} class="clip project-link">
+    <ul class="dropdown-menu project-menu" role="menu" data-dropdown-id="environment">
+      {{#each byCluster as |entry|}}
+        <li class="header">
+          <i class="icon icon-cluster"></i>
+          &nbsp;
+          {{entry.cluster.displayName}}
+        </li>
+        {{#each entry.projects as |p|}}
+          <li class="{{if p.active 'active selected'}}  text-muted">
+            <a href="#" {{action "switchProject" p.id}} class="clip pl-40 project-link">
               <i class="icon {{p.icon}}"></i>
               {{#if p.isDefault}}
-                <i class="icon icon-star-fill default-project"/>
+                <i class="icon icon-star-fill default-project nested"/>
               {{/if}}
               &nbsp;
               {{p.displayName}}
             </a>
           </li>
         {{/each}}
-      {{/if}}
+      {{/each}}
 
-      {{#if projectChoices.length}}
-        <li role="presentation" class="divider"></li>
-      {{/if}}
+      <li role="presentation" class="divider"></li>
 
       {{#if projectIsMissing}}
         <li role="presentation" class="dropdown-header">{{t 'nav.environment.selected'}}</li>
@@ -82,12 +51,22 @@
       {{#if (and isOwner projects.current)}}
         <li>{{#link-to "authenticated.clusters.project" projects.current.id class="clip"}}{{t 'nav.environment.edit' name=projects.current.displayName}}{{/link-to}}</li>
       {{/if}}
+
       <li>
         {{#link-to "authenticated.clusters"}}
           <i class="icon icon-edit icon-fw"></i>
           {{t 'nav.environment.manage'}}
         {{/link-to}}
       </li>
+
+      {{#if isAdmin}}
+        <li>
+          {{#link-to "admin-tab"}}
+            <i class="icon icon-gear icon-fw"></i>
+            {{t 'nav.admin.tab' appName=settings.appName}}
+          {{/link-to}}
+        </li>
+      {{/if}}
     </ul>
   </li>
 {{~/if~}}

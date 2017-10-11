@@ -2,7 +2,13 @@
   <a class="nav-logo logo-{{app.mode}} btn bg-transparent"><span class="sr-only">{{settings.appName}}</span></a>
 
   <ul class="nav-main nav-list">
-    {{#each navTree as |item|}}
+    {{~page-header-environment
+      currentPath=currentPath
+      isOwner=isOwner
+      switchProject="switchProject"
+      switchNamespace="switchNamespace"
+    ~}}
+    {{~#each navTree as |item|~}}
       {{#if item.submenu.length}}
         {{! Has a submenu }}
         <li class="dropdown nav-item">
@@ -54,11 +60,6 @@
               {{/if}}
             {{/each}}
           </ul>
-          {{#if item.showAlert}}
-            {{#tooltip-element class="bg-error badge-xs" type='tooltip-warning' tooltipFor="showAlert" style="position:absolute; display:inline;"}}
-              {{#link-to item.alertRoute data-toggle="tooltip" data-placement="bottom"}}!{{/link-to}}
-            {{/tooltip-element}}
-          {{/if}}
         </li>
       {{else if item.route}}
         {{! No submenu }}
@@ -81,15 +82,6 @@
         </li>
       {{/if}}
     {{/each}}
-
-    {{#if (or isOss (gt projects.active.length 1))}}
-      {{~page-header-environment
-        currentPath=currentPath
-        isOwner=isOwner
-        switchProject="switchProject"
-        switchNamespace="switchNamespace"
-      ~}}
-    {{/if}}
   </ul>
 
   <ul class="nav-user dropdown">

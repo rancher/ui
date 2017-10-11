@@ -1,13 +1,16 @@
 import Ember from 'ember';
 
 export default Ember.Component.extend({
-  currentPath : null,
-  isOwner     : null,
+  access: Ember.inject.service(),
+  projects: Ember.inject.service(),
+  project: Ember.computed.alias('projects.current'),
 
-  tagName     : '',
+  currentPath: null,
+  isOwner: null,
 
-  projects    : Ember.inject.service(),
-  project     : Ember.computed.alias('projects.current'),
+  tagName: '',
+
+  isAdmin: Ember.computed.reads('access.admin'),
 
   clusters: Ember.computed(function() {
     return this.get('userStore').all('cluster', null, {url: 'clusters', forceReload: true, removeMissing: true});
