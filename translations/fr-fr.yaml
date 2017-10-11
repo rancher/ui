@@ -6,9 +6,12 @@ generic:
   activate: Activé
   all: Tous
   any: N’importe quel
-  as: Comme
   cancel: Annuler
   closeModal: Fermer
+  collapseAll: Tout réduire
+  command: Commande
+  confirm: Confirmer
+  containers: Conteneurs
   created: Crée le
   createdDate: "Crée le {date}"
   default: Defaut
@@ -16,10 +19,14 @@ generic:
   details: Détails
   disable: Désactiver
   disabled: Desactivé
+  dockerId: ID Docker
   domainName: Nom de Domaine
   enable: Activer
   enabled: Activé
   entrypoint: Point d’entrée
+  environment: Environnement
+  expandAll: Tout développer
+  hardware: Matériel
   healthy: Sans erreur
   host: Hôte
   id: ID
@@ -27,11 +34,15 @@ generic:
   internal: Interne
   ipAddress: Addresse IP
   limit: Limite
+  limits: Limites
   loading: "Chargement..."
+  mibibyte: 'MiB'
   missing: "*%ABSENT%*"
   moreActions: Plus
   na: 's/o'
   name: Nom
+  "no": "Non"
+  noRating: Aucun avis
   none: Aucun
   ports: Ports
   remove: Retirer
@@ -40,6 +51,8 @@ generic:
   saved: Enregistré
   saving: Enregistrement en cours
   search: Rechercher
+  seconds: secondes
+  select: Sélectionner
   service: Service
   stack: Pile
   state: Etat
@@ -50,8 +63,12 @@ generic:
   type: Catégorie
   unknown: Inconnu
   uuid: UUID
+  "yes": "Oui"
 realmNames:
   all: Tous
+  asia: Asie
+  euWest: Europe
+  euEast: Europe de l'Est
 accountsPage:
   index:
     header: Utilisateur
@@ -65,6 +82,10 @@ accountsPage:
       noName: Aucun
   new:
     header: Ajout Utilisateur
+    errors:
+      usernameReq: Le nom d'utilisateur est requis.
+      usernameInExists: Ce nom est déjà utilisé. Veuillez choisir un autre nom.
+      pwReq: Le mot de passe est requis.
     form:
       username:
         labelText: Nom d'utilisateur
@@ -84,6 +105,7 @@ apiPage:
   actionButton: Ajouter une clé API d'environnement
   content: |
     Les clés API sont liées à l'environnement (<code>{displayName}</code>) et ne peuvent être utilisées que dans celui-ci. Elles peuvent être modifiées par tout utilisateur ayant accès a cet environnement.
+  currentEndpoint: 'Point d''accès:'
   table:
     state: Etat
     name: Nom
@@ -100,6 +122,8 @@ apiPage:
     content:
       paragraph1: Les clés API utilisateurs sont liées à votre compte utilisateur
       paragraph2: "Elles permettent de modifier les clés API d'environnement auxquelles vous avez accès"
+    table:
+      noData: Il n’y a pas encore de clés pour ce compte.
 auditLogsPage:
   header: Journaux de logs
   form:
@@ -249,7 +273,7 @@ authPage:
   azuread:
     header:
       enabled: 'Authentification Azure AD <b>activé</b>'
-      disabled: 'Authentication Azure AD <b class="text-warning">non configurée</b>'
+      disabled: 'L''authentification Azure AD n’est pas configurée'
     subtext:
       enabled: '{appName} est configuré pour autoriser les comptes Azure AD'
       disabled: '{appName} peut être configuré pour restreindre l''accès à un ensemble de comptes définis dans la base de donnée de {appName}. Celà n''est pas encore fait, donc quiconque pouvant accéder à cette page (ou à l''API) a un contrôle entier sur le système.'
@@ -287,9 +311,6 @@ authPage:
       pre: Authentification via Azure
       post: En attente de validation d'Azure
   localAuth:
-    header:
-      enabled: 'L''authentification locale est <b>actvivée</b>'
-      disabled: '<p>L''authentification locale n''est pas configurée</p>'
     subtext:
       enabled:
         text: '{appName} est configuré pour autoriser l’accès aux comptes dans sa base de données locale.'
@@ -326,13 +347,16 @@ authPage:
 catalogPage:
   index:
     header: Catalogue
+    refreshBtn: Actualiser
     manage: Gérer
     search:
       label: Chercher
     certified:
       rancher:
+        rancher: Rancher Labs
         partner: Officiel
       pl:
+        rancher: Noyau
         partner: Officiel
     noData:
       singular: Il n’y a aucun modèle compatible.
@@ -346,6 +370,7 @@ certificatesPage:
     cn: Nom de domaine
     expiresDate: Expire le
   detail:
+    header: 'Certificat : {name}'
     description: Description 
     info:
       labelText: Info
@@ -376,23 +401,65 @@ certificatesPage:
       description:
         placeholder: par exemple certificat EV pour mondomaine.fr
 containerPage:
+  header: 'Conteneur : {name}'
   portsTab:
+    header: Ports
+    hostPrimaryIp: '({ip})'
+  linksTab:
+    header: Liens
+    detail: 'Ces propriétés montrent les liens entre les conteneurs et ce conteneur.'
+    noData: Ce conteneur ne possède aucun lien
+  volumesTab:
+    header: Volumes
+    detail: 'Ces propriétés affichent les volumes attachés à votre conteneur.'
     table:
-      noMatch: Aucun pool ne correspond à la recherche en cours
+      path: Point de Montage
+      shared: Partager avec
+      writable: Modifiable
+      noData: Ce conteneur ne dispose pas de volumes montés
+      noMatch: Aucun volume ne correspond à la recherche en cours
+      noContainers: Aucun autre conteneur
 containersPage:
   table:
     sparkPrefixCpu: 'CPU : '
     sparkPrefixMemory: 'Mémoire: '
     sparkPrefixNetwork: 'Réseau: '
     sparkPrefixStorage: 'Stockage: '
+    noData: Il n'y a aucun conteneur à afficher.
+    noMatch: Aucun conteneur ne correspond à la recherche en cours.
+  welcome:
+    containerLink: Ajouter un conteneur
+    kubernetesLink: Installe Kubernetes
 containerSubpod:
   childContainers: Conteneurs
   childSidekicks: Compagnons
-dockerCLI:
-  header: Interface en Ligne de Commande Swarm
+dnsPage:
+  noMatch: Aucun enregistrement ne correspond à la recherche en cours
+  table:
+    target: Cible 
 editDns:
+  title:
+    new: Ajouter un enregistrement DNS
+    edit: Editer un enregistrement DNS
   mode:
     dnsservice: Un ou plusieurs autres services
+    externalip: Une ou plusieurs adresses IP extérieures
+    externalhostname: Nom d'hôte externe
+  targetIp:
+    label: Adresse IP cible
+    add: Ajouter une adresse IP cible
+  hostname:
+    label: Nom d'hôte cible
+    placeholder: Par exemple foobar.com
+  errors:
+    ipRequired: 'Une ou plusieurs "Adresse IP Cible" sont requies'
+    hostnameRequired: 'Un nom d''hôte cible est requis'
+    serviceRequired: 'Une ou plusieurs « cibles » sont nécessaires'
+editVolume:
+  scope:
+    label: Objectifs
+  driver:
+    label: Pilote
 failWhalePage:
   header: Erreur
   reloadButton: |
@@ -473,6 +540,12 @@ helpPage:
     content: |
       Dans les laboratoires Rancher, nous fournissons un support commercial, professionnel pour {appName}, incluant un équipe de support disponible 24h/24 et 7j/7, et une correction prioritaire de bugs. De plus, nous fournissons des implémentations, des intégrations et des services de consulting pour des organisations cherchant à installer et dimensionner {appName}. Pour plus d'informations sur tous ces services, envoyer s'il vous plaît, un mél à notre équipe commerciale. <a href="mailto:sales@rancher.com">sales@rancher.com</a>
 hostsPage:
+  cloudHostsPage:
+    addPage:
+      size: 'Taille:'
+      os: 'SYSTÈME D''EXPLOITATION :'
+      driver: 'Pilote:'
+      template: 'Nom du Modèle:'
   addContainer: Ajouter un conteneur
   index:
     header: Hôtes
@@ -482,19 +555,32 @@ hostsPage:
       groupedView: Piles groupées & Compagnons
     columns:
       emptyMessage: Aucun hôte ou de conteneur.
+    table:
+      memory: RAM
+      docker: Docker 
   new:
     header:
       text: Ajouter un hôte
     manageLink: Gérer les pilotes docker machine disponibles
   hostPage:
     infoMultiStats:
+      ip: 'IP'
+      cpu: 'CPU'
+      memory: 'Mémoire'
+      storage: 'Volumes'
       provider:
         labelText: 'Fournisseur :'
         noHost: Personnalisé
+      kernel: 'Kernel'
       docker: 'Docker :'
+      os: 'OS'
       milliCpu:
         labelText: mCPU
+    containersTab:
+      header: Conteneurs
+      detail: Liste des conteneurs actifs sur cet hôte
     portsTab:
+      header: Ports
       table:
         header:
           ip: Adresse IP
@@ -504,6 +590,7 @@ hostsPage:
         body:
           noData: Cet hôte n’a pas de ports.
     storageTab:
+      header: Volumes
       table:
         header:
           state: État
@@ -532,6 +619,7 @@ k8sTab:
       downloadText: |
         Ensuite, <a href="{downloadUrl}" target="_blank"> Téléchargez</a> (si nécessaire) et exécuter <code>kubectl</code>
 loginPage:
+  greeting: "Salut!<br><span>Bienvenue sur {appName}</span>"
   githubMessage: "{appName} Utilise GitHub pour gerer l'authentifiation.  Cliquer sur le bouton ci-dessous pour se connecter (en lecture seule) pour acceder aux information de compte Github."
   shibbolethMessage: "{appName} utilise Shibboleth pour gérer les comptes.  Cliquez sur le bouton ci-dessous pour vous connecter à l’IDP Shibboleth configuré."
   shibbolethError:
@@ -547,51 +635,9 @@ machinePage:
   subtext: "Les pilotes supplémentaires <code>docker-machine</code> peuvent être chargés ici et utilisés dans l’écran Ajouter un hôte."
   add: Ajouter Machine Driver
   builtin: Embarqué
-mesosPage:
-  header: Résumé
-  banner:
-    header: Votre cluster
-    content: |
-      Vous avez actuellement  {hosts, plural,
-      =1 {# active host}
-      other {# active hosts}
-      } dans votre cluster Mesos
-    link: Voir ou Ajouter des hôtes
-  launch:
-    header: Démarrer
-    content: Vous pouvez démarrer des frameworks depuis notre catalogue.
-    button: Lancer un Framework
-  manage:
-    header: Administration
-    content: Administrer Mesos Depuis l'interface de Mesos.
-    button: Interface Mesos
 notFoundPage:
   header: "Cette page n'existe pas!"
   linkTo: Acceuil
-projectList:
-  index:
-    header: Environnements
-    new: Ajouter un Environnement
-    subtext: |
-      <p>{appName} permet de regrouper les ressources en de multiples <b>environnements</b>.  Chacun ayant ses propres ressources d'infrastructure et services, et appartenant à un ou plusieurs utilisateurs ou groupes.</p>
-      <p>Il est possible de créer des environnements de &quot;dev&quot;, &quot;test&quot; et &quot;production&quot; séparés les uns des autres, et de ne restreindre que les accès à l'environnement de &quot;production&quot;. </p>
-    alert: Aucun environnement actif.  You will need to create or activate one before you can do anything else.
-    table:
-      header:
-        orchestration: Orchestration
-        projectTemplate: Modèle
-  indexTemplate:
-    header: Modèles d'Environnement
-    new: Ajouter un Modèle
-    subtext: |
-      <p>Un modèle d’environnement permet aux utilisateurs de définir une combinaison différente de services d’infrastructure à déployer.</p>
-      <p>Les services d’infrastructure se chargent, mais ne sont pas limités à l’orchestration de conteneurs (cattle, kubernetes, mesos, swarm, gestion du réseau) ou les services Rancher (c’est à dire healthcheck, dns, métadonnées, ordonnancement, découverte du service et stockage)</p>
-    table:
-      header:
-        stacks: Piles
-        isPublic: Public
-      body:
-        noData: "Vous n'avez pas encore de modèles d'environnement."
 registriesPage:
   index:
     header: Registres
@@ -629,11 +675,14 @@ servicePage:
     scale: 'Échelle:'
     image: 'Image:'
   external:
-    externalIp: IPs externes
     externalHostname: 'Nom d''hôte externe:'
+  containersTab:
+    title: 'Conteneurs'
   linksTab:
     header: Liens
+    noData: Ce service n’a aucun lien
   certsTab:
+    title: Certificats
     default: Certificat par Défaut
     additional: Certificats Additionnels SNI
   new:
@@ -650,34 +699,38 @@ servicePage:
       description:
         placeholder: p. ex. équilibreur pour mycompany.com
   portsTab:
-    table:
-      header:
-        port: Port
-        host: IP hôte
-      body:
-        noData: Acun ports pour ce service.
+    title: Ports
     notActive: Les ports sont ouvert que si le service est actif.
   type:
     loadbalancerservice: Équilibreur de Charge
-    externalservice: Externe
+    dnsservice: Alias
     kubernetesservice: Service K8s
     composeservice: Composer le Service
     networkdriverservice: Service Réseau
     storagedriverservice: Service de Stockage
 settingsPage:
   header: Paramétrages
-newStack:
-  startOnCreate:
-    "on": Démarrer automatiquement les
-storagePoolsPage:
-  header: Pilotes de Stockage
-  index:
-    noData: Aucun pilote de stockage
-  newVolume:
-    header: Ajouter un Volume
-    form:
-      driverOptions: Options du Pilote
-      addActionLabel: Ajouter une Option
+stackPage:
+  dnsServices:
+    header: Entrées DNS
+userPreferencesPage:
+  header: Préférences
+  theme:
+    header: Thème
+    light: Clair
+    auto: Auto
+    autoDetail: Auto avec basculement vers le sombre de 18h00 à 6h00
+    dark: Sombre
+  generalInfo:
+    header: Mon Compte
+    name:
+      label: Nom
+    username:
+      label: Nom d'utilisateur
+    email:
+      label: E-mail 
+    password:
+      text: Modifier le compte
 processesPage:
   header: Processus
   tab:
@@ -711,12 +764,23 @@ processesPage:
       endTime: Heure de fin
       runTime: Durée
       runAfter: Exécuter Après
+    noData: 'Aucun processus en cours d’exécution {which}'
     noMatch: Aucun processus ne correspond à la recherche en cours
+verifyPage:
+  header: "Votre email a été vérifié avec succès!"
+  subtext: Nous avons encore besoin de quelques éléments pour finaliser votre compte.
+  account:
+    header: Compte Créé
+    subtext: Cliquez sur le lien ci dessous pour être redirigé vers la page de connexion.
+verifyResetPasswordPage:
+  header: Réinitialiser le mot de passe
+  button: Modifier le mot de passe
+  success:
+    header: Mot de passe réinitialisé!
+    subtext: Cliquez sur le lien ci dessous pour être redirigé vers la page de connexion.
 waitingPage:
   hosts:
     setup:
-      mesos: Mise en place de Mesos
-      swarm: Mise en place de Swarm
       kubernetes: Mise en place de Kubernetes
 hostPartial:
   host:
@@ -841,6 +905,13 @@ servicePartial:
     label: Pas encore de conteneurs.
     inactive:
       start: Démarrer
+accordionRow:
+  status:
+    error: Erreur
+    notConfigured: Non configuré
+    configured: Configuré
+    countConfigured: "{count} configuré(s)"
+    standard: Défaut
 catalogSettings:
   header: Catalogue
   subtext: Les Catalogues contiennent des modèles rancher-compose qui permettent aux utilisateurs de déployer facilement des applications en répondant à quelques questions
@@ -848,9 +919,6 @@ catalogSettings:
     header:
       rancher: "Bibliothèque certifiée {appName}"
       pl: Bibliothèque certifiée
-    detail:
-      rancher: Modèles nécessaires aux fonctionnalités d'infrastructure principales de Rancher telles que le support d'orchestration Kubernetes/Mesos/Swarm. Maintenus et soutenus par les laboratoires Rancher.
-      pl: Modèles officiellement maintenus et requis pour les fonctionnalités essentielles tel que le support de Kubernetes/Mesos/Swarm.
   community:
     header:
       rancher: Contribué par la Communauté
@@ -961,7 +1029,6 @@ editCertificate:
     placeholder: par exemple mondomaine.com
   description:
     placeholder: par exemple certificat EV (vérification approfondie) pour mondomaine.com
-  noteKeyWriteOnly: 'Remarque : La clé privée est intentionnellement vide car le champ ne peut être réutilisé.  Vous devrez fournir la clé privée à nouveau pour mettre à jour le certificat, même si elle n’a pas changé.'
 editContainer:
   title:
     vm: Modifier la Machine Virtuelle (VM)
@@ -990,21 +1057,6 @@ editHost:
     valuePlaceholder: par exemple 1.2.3.4
     addActionLabel: Ajouter une adresse IP
     help: Si fourni, l'orchestrateur sélectionnera et reliera les ports publiés à une des adresses IP publiques données.
-editProjectTemplate:
-  title:
-    add: Ajouter un Modèle
-    edit: 'Éditer un Modèle : {displayName}'
-  orchestration: Orchestration
-  stackEdit: Éditer une Configuration
-  stackRequired: Obligatoire
-  access:
-    label: Partage en cours
-    private: 'Privé : disponible seulement pour moi'
-    public: 'Public : Disponible pour tous les utilisateurs (administrateur seulement)'
-  error:
-    conflict: Conflit
-    enabling: 'La version séléctionnée de la pile "{stackName}" de la catégorie {tplCategory} ne supporte pas l''orchestration {orchestration}.'
-    changing: 'La pile "{stackName}" courante de la catégorie {tplCategory} ne supporte pas l''orchestration {orchestration}.'
 editRegistry:
   title: Modifier le Registre
   address:
@@ -1031,7 +1083,6 @@ editStack:
   group:
     label: Étiquettes
     placeholder: par exemple, frontend, production
-    help: La liste des piles peut être filtrée par étiquettes (séparées par des virgules)
 stackHeader:
   outputs: Sorties
 formatIp:
@@ -1084,8 +1135,6 @@ formCommand:
     none: Aucun
   autoRestart:
     label: Redémarrage Automatique
-    startOnceFalse: Toujours
-    startOnceTrue: Jamais (démarrer une fois)
     "no": Jamais
     onFailure: 'En cas d''Échec <span class="text-muted"> (code de sortie non-0)</span>, pour toujours'
     onFailureCondPrefix: En cas d’échec, jusqu'à
@@ -1094,12 +1143,6 @@ formCommand:
     always: Toujours
 formContainerLinks:
   addActionLabel: Ajouter un Lien
-  targetInstance:
-    label: Conteneur de Destination
-    prompt: Sélectionnez un Conteneur...
-  name:
-    label: Avec pour Nom
-    placeholder: par exemple base de données
 formDisks:
   addDiskLabel: Ajouter le Disque
   addRootDiskLabel: Ajouter le Disque Racine
@@ -1189,7 +1232,6 @@ formHealthCheck:
   strategy:
     label: Quand en mauvaise Santé
     none: Ne prendre aucune mesure
-    recreate: Re-créer
 formKeyValue:
   addAction: Ajouter une Paire
   key:
@@ -1213,6 +1255,10 @@ formNetwork:
       label: Géré
   retainIp:
     label: Conserver l'IP
+  dns:
+    label: Service de découverte
+    enable: Activer la découverte et utiliser le résolveur de cache local
+    disable: Désactiver la découvere and utiliser la résolution de serveurs directe
   hostname:
     label: Nom de l’Hôte
     placeholder: par exemple web
@@ -1276,6 +1322,7 @@ formSecrets:
 formSecurity:
   privileged:
     label: Restreint
+    disable: false
   pidMode:
     label: Mode PID
   cpuPinning:
@@ -1379,14 +1426,9 @@ formVolumes:
     prompt: Sélectionnez un Conteneur...
   volumes: Volumes
   volumesFrom: Volumes Depuis
-  volumeDriver:
-    label: Pilote de Volume
   noLaunchConfigs: Il n’y a aucune autres configurations de lancement de ce service pour partager des volumes avec celui-ci.
   noHostContainers: Cet hôte n’a aucun conteneurs ayant des volumes sur lesquels se connecter.
   onlySingleHost: Disponible uniquement lorsque vous ajoutez un conteneur à un hôte particulier.
-  addActionLabel: Ajouter un Volume
-  errors:
-    invalidName: Les noms de volume peuvent uniquement contenir des lettres, chiffres, traits d’union, tirets bas et des points.
 hookPage:
   receiver:
     header: Récepteurs de déclencheurs
@@ -1607,20 +1649,9 @@ machine:
     region:
       label: Région
   driverCustom:
-    step1: 'Démarrage d’une machine Linux quelque part et installer une <a href="{docsBase}/hosts/#supported-docker-versions" target="_blank"> prise en charge par la version</a> de <a href="http://www.docker.com/" target="_blank" rel="noreferrer nofollow"> Docker</a> dessus.'
-    step2: "Assurez-vous que tous les groupes de sécurité ou pare-feus autorisent le trafic :"
-    step2li: Depuis et vers tous les autres hôtes sur les ports<code>UDP</code> <code>500</code> et <code>4500</code> <span class="text-muted"> (pour la gestion de réseau IPsec)</span>
-    step3: 'Facultatif : Ajouter des étiquettes à appliquer à l’hôte.'
-    step4: "Spécifiez l’adresse IP publique qui doit être enregistré pour cet hôte.  Si laissé vide, Rancher détectera automatiquement l’adresse IP à utiliser.  Cela fonctionne en général pour les machines avec IPs public uniques, mais ne fonctionnera pas si la machine est derrière un pare-feu/NAT ou si c’est le même ordinateur qui exécute le conteneur <code>{rancherImage}</code>."
     agentIp:
       placeholder: par exemple 1.2.3.4
-    step5Copy: Copiez, collez et exécutez la commande ci-dessous pour inscrire l'hôte
     generating: "Génération d'une URL d'inscription ..."
-    step5Close:
-      part1: Cliquez sur Fermer ci-dessous.  Le nouvel hôte devrait apparaître sur la
-      link: Hôtes
-      part2: écran dans une minute.
-    close: Fermer
     windows:
       step1: 'Démarrage d’une machine Windows Server 2016 quelque part et installer la dernière version de <a href="https://msdn.microsoft.com/en-us/virtualization/windowscontainers/quick_start/quick_start_windows_server" target="_blank" rel="noreferrer nofollow"> Docker</a> sur elle.'
       step2: "Créer un réseau Docker transparent :"
@@ -1635,7 +1666,6 @@ machine:
     accountSection: Accès du Compte
     authAccountButton: 'Suivant : Configurer Droplet'
     accessToken:
-      label: Jeton d'Accès *
       placeholder: Votre jeton d’accès à l'API DigitalOcean
       help: |
         Un jeton d’accès personnel depuis l’écran de DigitalOcean <a href="https://cloud.digitalocean.com/settings/applications" target="_blank"> API & Apps</a>
@@ -1644,7 +1674,6 @@ machine:
       label: Image
     sshUser:
       label: Utilisateur SSH
-      placeholder: 'utilisateur1'
     size:
       label: Taille
     regionSection: Région
@@ -1798,9 +1827,6 @@ machine:
       label: Id de SLB Aliyun
       placeholder: Id de SLB Aliyun
     storageSection: Infos de stockage
-    ioOptimized:
-      label: Instance de Stockage avec E/S optimisées
-      placeholder: aucun ou optimisé
     systemDiskCategory:
       label: Catégorie de Disque Système
       placeholder: Quand le stockage est optimisé, vous pouvez entrer cloud_efficiency, cloud_ssd ou ephemeral_ssd.
@@ -1904,8 +1930,6 @@ modalProcessError:
   close: Fermer
 modalShell:
   title: 'Shell : {instanceName}'
-modalShortcuts:
-  e: Gérer les environnements
 modalWelcome:
   header: Bienvenue sur {appName} !
   closeModal: J'ai compris
@@ -1958,14 +1982,10 @@ newContainer:
     container: Mise à niveau du Conteneur
   selectUpgrade: Sélectionnez un ou plusieurs services à mettre à niveau.
   saveUpgrade: Mettre à niveau
-  removeSidekick: Supprimer ce Compagnon
   name:
     placeholder: par exemple monappli
   description:
     placeholder: par exemple Mon Application
-  emptySidekick: "(Compagnon #{num})"
-  addSidekickContainer: Ajoutez le Conteneur Compagnon
-  addSidekickVm: Ajouter une VM compagnon
 newReceiver:
   title:
     edit: Modifier le Récepteur
@@ -2009,12 +2029,6 @@ pageFooter:
 projectRow:
   none: Aucune description
   orchestration: Orchestration
-projectUpgrade:
-  header: Mettre à jour l'Environnement
-  detail: "{appName} {appVersion} inclut des modifications qui nécessitent la mise à niveau des services système existants et des conteneurs de l’équilibreur de charge."
-  notOwner: "Seul un propriétaire de cet environnement ou un administrateur peut effectuer la mise à niveau."
-  actionButton: Mettre à jour Maintenant
-  banner: Mise à jour de l'Environnement ...
 registryRow:
   address: Adresse
   username: Nom d'Utilisateur
@@ -2075,26 +2089,8 @@ siteAccess:
   users: Utilisateurs
   groups: Groupes
   organizations: Organisations
-storagePoolSection:
-  readOnly: "(lecture seule)"
-  hosts:
-    header: Hôtes
-    none: Aucun Hôte
-  volumes:
-    header: Volumes
-    add: Ajouter un Volume
-    none: Aucun Volume
-  models:
-    table:
-      header:
-        volumeName: 'Nom du Volume'
-        mounts: 'Points de Montage (Conteneur : Chemin d''accès)'
 svgServiceContainer:
   sidekicks: Compagnons
-swarmTab:
-  dashboard:
-    dashboard:
-      content: Portainer est une interface utilisateur légère qui vous permet de gérer facilement votre cluster Docker swarm
 telemetryOpt:
   header: Statistiques
   subtext: |
@@ -2159,17 +2155,6 @@ waitKubernetes:
   createStack: 'En création de la pile système Kubernetes'
   startServices: 'Démarrage des services'
   waitApi: 'En attente de l''API Kubernetes'
-waitMesos:
-  addHost: 'Ajouter au moins trois hôtes'
-  activateHost: 'En attente que les hôtes soient actifs'
-  createStack: 'Création de la pile système Mesos'
-  startServices: 'Démarrage des services'
-  waitApi: 'Attente de pilotage du Master Mesos'
-waitSwarm:
-  addHost: 'Ajouter au moins un hôte'
-  activateHost: 'En attente qu’un hôte soit actif'
-  createStack: 'En création de la pile système Swarm'
-  startServices: 'Démarrage des services'
 containerChoices:
   hostGroup: 'Hôte : {name}'
   hostGroupWithState: 'Hôte : {name} ({state})'
@@ -2186,19 +2171,11 @@ nav:
     all: All Environnements
     your: Your Environnements
     selected: Environnement Sélectionné
-    manage: Manage Environnements
     edit: 'Éditer "{name}"'
   notReady: En cours...
-  k8s:
-    tab: Kubernetes
-  swarm:
-    tab: Swarm
-    cli: Interface de Ligne de Commande (CLI)
-    system: Infrastructure
-  mesos:
-    tab: Mesos
-    web: Aperçu
-    system: Infrastructure
+  containers:
+    dns: DNS
+    addDns: Ajouter un enregistrement
   catalog:
     all: Tout
     library: Bibliothèque
@@ -2222,15 +2199,12 @@ nav:
     logout: Deconnecter
 action:
   activate: Activer
-  cancelUpgrade: Annuler
-  cancelRollback: Annuler
   clone: Cloner
   console: Ouvrir une Console
   deactivate: Desactiver
   edit: Editer
   execute: Lancer un Shell
   exportConfig: Exporter Config
-  finishUpgrade: Terminer mise à jour
   logs: Voir les Logs
   machineConfig: Configuration de Docker Machine
   remove: Supprimmer
@@ -2238,7 +2212,6 @@ action:
   restart: Redemarrer
   retry: Relancer
   rollback: Retablir
-  setDefault: Definir par Default
   start: Demarrer
   stop: Arreter
   upgrade: Mettre à jour

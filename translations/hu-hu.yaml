@@ -6,11 +6,12 @@ generic:
   activate: Engedélyezés
   all: Összes
   any: Bármely
-  as: Mint
   cancel: Mégsem
   closeModal: Bezár
+  collapseAll: Mind bezár
   command: Parancs
   confirm: Megerősítés
+  containers: Konténerek
   created: Létrehozva
   createdDate: "Létrehozva {date}"
   default: Alapértelmezett
@@ -18,10 +19,14 @@ generic:
   details: Részletek
   disable: Letilt
   disabled: Letiltott
+  dockerId: Docker ID
   domainName: Tartománynév
   enable: Engedélyez
   enabled: Engedélyezve
   entrypoint: Belépési pont
+  environment: Környezet
+  expandAll: Mind kibont
+  hardware: Hardver
   healthy: Egészséges
   host: Hoszt
   id: ID
@@ -29,12 +34,15 @@ generic:
   internal: Belső
   ipAddress: IP Cím
   limit: Korlát
+  limits: Limitek
   loading: "Betöltés..."
   mibibyte: 'MiB'
   missing: "*%MISSING%*"
   moreActions: További műveletek
   na: 'nincs adat'
   name: Név
+  "no": "Nem"
+  noRating: Nincs értékelés
   none: Semmi
   ports: Portok
   remove: Töröl
@@ -43,6 +51,7 @@ generic:
   saved: Mentett
   saving: Mentés
   search: Keresés
+  seconds: másodperc
   service: Szolgáltatás
   stack: Köteg
   state: Állapot
@@ -53,8 +62,11 @@ generic:
   type: Típus
   unknown: Ismeretlen
   uuid: UUID
+  "yes": "Igen"
 realmNames:
   all: Összes
+  usWest: Nyugat-US
+  usEast: Kelet-US
   asia: Ázsia
   euWest: Nyugat-EU
   euEast: Kelet-EU
@@ -174,6 +186,7 @@ authPage:
     disabled:
       header: '1. Shibboleth fiók beállítása'
       label: "{providerName} nincs beállítva"
+      warning: "A(z) {appName} beállítható úgy, hogy korlátozza a(z) {providerName} felhasználók és csoportok hozzáférését. Ez jelenleg nincs beállítva, így bárki, aki elérné ezt az oldalt (vagy az API-t), teljes mértékben irányíthatja a rendszert."
       name:
         labelText: Megjelenítendő név mező
       username:
@@ -198,23 +211,54 @@ authPage:
     header:
       enabled:
         label: "{github} engedélyezve van"
+        required: |
+          A(z) {appName} úgy van beállítva, hogy {orgs, plural,
+          =0 {egyetlen szervezetnek se}
+          =1 {# szervezetnek}
+          other {# szervezetnek}
+          } és {users, plural,
+          =0 {egyetlen felhasználónak se}
+          =1 {# felhasználónak}
+          other {# felhasználónak}
+          } biztosítson hozzáférést.
+        restricted: |
+          A(z) {appName} úgy van beállítva, hogy hozzáférést biztosítson a környezeti tagok számára, illetve {orgs, plural,
+          =0 {egyetlen szervezetnek se}
+          =1 {# szervezetnek}
+          other {# szervezetnek}
+          } és {users, plural,
+          =0 {egyetlen felhasználónak se}
+          =1 {# felhasználónak}
+          other {# felhasználónak}
+          }.
+        unrestricted: "A(z) {appName} úgy van beállítva, hogy hozzáférést biztosítson bármely {github} felhasználónak."
       disabled:
         label: Nincs beállítva a GitHub
+        warning: "A(z) {appName} beállítható úgy, hogy korlátozza a GitHub felhasználók és szervezeti tagok számára elérhető hozzáférést. Ez jelenleg nincs beállítva, így bárki, aki elérné ezt az oldalt (vagy az API-t), teljes mértékben irányíthatja a rendszert."
     authenticated:
       header:
         text: Hitelesítés
         enterpriseHostName: "Vállalati hoszt:"
         clientId:
           text: "Kliens ID:"
+          helpText: "A konfigurált GitHub alkalmazás megváltoztatásához tiltsd le a hozzáférési vezérlést, majd ismét állítsd be."
       disableAccess:
         header: "Veszélyes Terület&trade;"
+        warning: '<b class="text-danger">Figyelmeztetés:</b> A hozzáférés-vezérlés letiltása teljes körű hozzáférést biztosít a(z) {appName} szolgáltatásban bárkinek, aki elérheti ezt az oldalt vagy az API-t.'
         confirmDisable: "Biztos vagy benne?  Kattints újra, hogy valóban letiltsd a hozzáférés-szabályozást"
         disable: Hozzáférés-szabályozás letiltása
     notAuthenticated:
       header: "1. GitHub alkalmazás beállítása"
       ul:
-        li2:
+        li1:
+          text: 'Standard GitHub esetén <a href="https://github.com/settings/developers" target="_blank">kattints ide</a> az alkalmazás-beállítások megnyitásához (új ablak).'
           ul:
+            li1: "Github Enterprise esetén jelentkezz be fiókodba. Kattints a Beállítások, majd az Alkalmazások elemre."
+        li2:
+          text: 'Kattints az "Új alkalmazás regisztrálása" gombra, majd töltsd ki az űrlapot:'
+          ul:
+            li1: '<b>Alkalmazásnév</b> <span class="text-muted">Bármi, ami tetszik, pl.: Az én {appName} alkalmazásom</span>'
+            li2: Honlap URL-címe
             li3: '<b>Alkalmazás leírás:</b> <span class="text-muted">bármi, amit szeretnél, opcionális</span>'
             li4: Hitelesítés visszahívási URL
         li3:
@@ -242,11 +286,12 @@ authPage:
   azuread:
     header:
       enabled: 'Azure AD hitelesítés <b>engedélyezve</b>'
-      disabled: 'Azure AD hitelesítés <b class="text-warning">nincs beállítva</b>'
     subtext:
       enabled: '{appName} úgy van beállítva, hogy hozzáférjen fiókokhoz az Azure AD-ben'
+      disabled: 'A(z) {appName} beállítható úgy, hogy korlátozza az {appName} adatbázisban meghatározott fiókcsoporthoz való hozzáférést. Ez jelenleg nincs beállítva, így bárki, aki elérné ezt az oldalt (vagy az API-t), teljes mértékben irányíthatja a rendszert.'
     enabled:
       header: 'Veszélyes Terület&trade;'
+      warning: '<b class="text-danger">Figyelmeztetés:</b> A hozzáférés-vezérlés letiltása teljes körű hozzáférést biztosít a(z) {appName} szolgáltatásban bárkinek, aki elérheti ezt az oldalt vagy az API-t.'
       reallyDisable: 'Biztos vagy benne?  Kattints újra, hogy valóban letiltsd a hozzáférés-szabályozást'
       promptDisable: Hozzáférés-szabályozás letiltása
     configure:
@@ -278,14 +323,14 @@ authPage:
       pre: Hitelesítés Azure használatával
       post: Várakozás az Azure viszontválaszára
   localAuth:
-    header:
-      enabled: 'Helyi hitelesítés <b>engedélyezve</b>'
     subtext:
       enabled:
         text: '{appName} úgy van beállítva, hogy hozzáférjen fiókokhoz a lokális adatbázisában.'
         linkText: Fiókok kezelése
+      disabled: 'A(z) {appName} beállítható úgy, hogy korlátozza az {appName} adatbázisban meghatározott fiókcsoporthoz való hozzáférést. Ez jelenleg nincs beállítva, így bárki, aki elérné ezt az oldalt (vagy az API-t), teljes mértékben irányíthatja a rendszert.'
     accessEnabled:
       header: 'Veszélyes Terület&trade;'
+      warning: '<b class="text-danger">Figyelmeztetés:</b> A hozzáférés-vezérlés letiltása teljes körű hozzáférést biztosít a(z) {appName} szolgáltatásban bárkinek, aki elérheti ezt az oldalt vagy az API-t.'
       buttonText:
         disable: 'Biztos vagy benne?  Kattints újra, hogy valóban letiltsd a hozzáférés-szabályozást'
         prompt: Hozzáférés-szabályozás letiltása
@@ -313,6 +358,13 @@ authPage:
     header: Hozzáférés-vezérlés
 catalogPage:
   index:
+    header: Katalógus
+    refreshBtn: Frissítés
+    manage: Kezelés
+    search:
+      label: Keresés
+    filters:
+      label: Katalógus szűrő
     certified:
       rancher:
         rancher: Rancher Labs
@@ -332,6 +384,7 @@ certificatesPage:
     cn: Tartománynév
     expiresDate: Lejár
   detail:
+    header: 'Tanúsítvány: {name}'
     description: Leírás
     info:
       labelText: Infó
@@ -361,30 +414,47 @@ certificatesPage:
         placeholder: pl. sajat-domain-nevem.hu
       description:
         placeholder: pl. EV tanúsítvány a sajat-domain-nevem.hu webhelyhez
+containerPage:
+  header: 'Konténer: {name}'
+  portsTab:
+    header: Portok
+    detail: 'A konténer hallgatói portok leképezése portok hostolásához nyilvános IP-címeken'
+    hostPrimaryIp: '({ip})'
+  linksTab:
+    header: Linkek
+    detail: 'Ezek a tulajdonságok mutatják az ebben a konténerben lévő konténerek közötti kapcsolatokat.'
+    noData: Ez a Konténer nem tartalmaz kapcsolatokat
+  volumesTab:
+    header: Kötetek
+    detail: 'Ezek a tulajdonságok jelzik a konténerhez csatolt köteteket.'
 containersPage:
   table:
     sparkPrefixCpu: 'Processzor: '
     sparkPrefixMemory: 'Memória: '
     sparkPrefixNetwork: 'Hálózat: '
     sparkPrefixStorage: 'Tároló: '
-  welcome:
-    kubernetesLink: Kubernetes
-    mesosLink: Mesos
-    swarmLink: Swarm
 containerSubpod:
   childContainers: Konténerek
   childSidekicks: Társak
 dnsPage:
   table:
     target: Cél
-dockerCLI:
-  header: Swarm CLI
 editDns:
+  title:
+    edit: DNS-rekord szerkesztése
+  name:
+    placeholder: pl. sajat-app
   mode:
+    dnsservice: Egy vagy több egyéb szolgáltatás
+    externalip: Egy vagy több külső IP-cím
     externalhostname: Egy külső hosztnév
   targetIp:
     label: Cél IP-címek
     add: Cél IP-cím hozzáadása
+  hostname:
+    placeholder: pl. foobar.com
+  errors:
+    ipRequired: 'Egy vagy több "cél IP-cím" szükséges'
 failWhalePage:
   header: Hiba
   reloadButton: |
@@ -401,6 +471,7 @@ haPage:
     clustered: Fürtözött
 helpPage:
   header: Hasznos linkek & információk
+  banner: 'Legújabb kiadása {released}:'
   environment:
     header: Mi az a Környezet?
     manageLink: Környezetek kezelése
@@ -451,8 +522,17 @@ helpPage:
 hostsPage:
   cloudHostsPage:
     addPage:
+      header: Hoszt hozzáadása
+      name:
+        label: Hoszt neve
       transferUnit: TB
       instance: 'Típus:'
+      storage: 'Tároló:'
+      zone: 'Zóna:'
+      env: 'Környezet:'
+      size: 'Méret:'
+      os: 'OS:'
+      driver: 'Meghajtó:'
   addContainer: Konténer hozzáadása
   index:
     header: Hosztok
@@ -470,7 +550,12 @@ hostsPage:
       text: Hoszt hozzáadása
     manageLink: Elérhető Gép illesztőprogramok kezelése
   hostPage:
+    limits:
+      cpu: 'CPU korlát:'
+      memory: 'Memória korlát:'
     infoMultiStats:
+      ip: 'IP'
+      cpu: 'CPU'
       provider:
         labelText: 'Szolgáltató:'
         noHost: Egyéni
@@ -528,46 +613,9 @@ machinePage:
   subtext: "További <code>docker-machine</code> illesztőprogram tölthető be és használható a Hoszt hozzáadása képernyőn."
   add: Gép-illesztőprogram hozzáadása
   builtin: Beépített
-mesosPage:
-  header: Áttekintés
-  banner:
-    header: A fürtöd
-    content: |
-      Pillanatnyilag {hosts, plural,
-      =1 {# aktív hoszt}
-      other {# aktív hoszt}
-      } található a Mesos fürtödben
-      
-    link: Hoszt megtekintése vagy hozzáadása
-  launch:
-    header: Indítás
-    content: Keretrendszereket tudsz elindítani a Katalógusunkból.
-    button: Keretrendszer indítása
-  manage:
-    header: Kezelés
-    content: Mesos kezelése a Mesos felhasználói felületről.
-    button: Mesos felhasználói felület
 notFoundPage:
   header: "A keresett oldal nem létezik!"
   linkTo: Nyitóoldalra
-projectList:
-  index:
-    header: Környezetek
-    new: Környezet hozzáadása
-    alert: Nincs aktív környezet. Létre kell hoznod vagy aktiválnod kell egyet mielőtt bármi mást csinálnál.
-    table:
-      header:
-        orchestration: Számítógépfürt rendszer (Orchestration)
-        projectTemplate: Sablon
-  indexTemplate:
-    header: Környezet sablonok
-    new: Sablon hozzáadása
-    table:
-      header:
-        stacks: Kötegek
-        isPublic: Publikus
-      body:
-        noData: "Nincs még egyetlen környezet sablonod sem"
 registriesPage:
   index:
     header: Registry-k
@@ -605,11 +653,13 @@ servicePage:
     scale: 'Skála:'
     image: 'Kép:'
   external:
-    externalIp: Külső IP-k
     externalHostname: 'Külső hosztnév:'
+  containersTab:
+    title: 'Konténerek'
   linksTab:
     header: Linkek
   certsTab:
+    title: Tanúsítványok
     default: Alapértelmezett tanúsítvány
     additional: További SNI tanúsítványok
   new:
@@ -626,16 +676,10 @@ servicePage:
       description:
         placeholder: pl. terheléselosztó a sajatcegem.hu-hoz
   portsTab:
-    table:
-      header:
-        port: Port
-        host: Hoszt IP
-      body:
-        noData: Ez a szolgáltatás nem tartalmaz portokat.
+    title: Portok
     notActive: A portok csak addig érhetők el, amíg a szolgáltatás aktív.
   type:
     loadbalancerservice: Terheléselosztó
-    externalservice: Külső
     kubernetesservice: K8s szolgáltatás
     composeservice: Szolgáltatás összeállítása
     networkdriverservice: Hálózati szolgáltatás
@@ -645,36 +689,40 @@ settingsPage:
 signupPage:
   form:
     button: Regisztráció
+    labels:
+      loginUsername: Név
+      email: E-mail
+  emailSuccess:
+    confirm:
+      resend: E-mail újraküldése
+stackPage:
+  containers:
+    header: Konténerek
 newStack:
+  name:
+    placeholder: pl. sajat-app
+  description:
+    placeholder: pl. SajatApp Köteg
   files:
     namePlaceholder: Fájlnév
     valuePlaceholder: Fájl tartalma
   answers:
     addActionLabel: Válasz hozzáadása
-storagePoolsPage:
-  header: Tároló illesztőprogramok
-  index:
-    noData: Nincsenek tároló illesztőprogramok
-  newVolume:
-    header: Kötet hozzáadása
-    form:
-      driverOptions: Illesztőprogram-beállítások
-      addActionLabel: Opció hozzáadása
 userPreferencesPage:
+  header: Beállítások
   theme:
     header: Téma
     light: Világos
     auto: Automatikus
     dark: Sötét
   generalInfo:
+    header: Saját fiókom
     name:
       label: Név
     username:
       label: Felhasználói név
     email:
       label: E-mail
-    password:
-      text: Jelszó módosítása
 processesPage:
   header: Folyamatok
   tab:
@@ -723,8 +771,6 @@ verifyResetPasswordPage:
 waitingPage:
   hosts:
     setup:
-      mesos: Mesos beállítása
-      swarm: Swarm beállítása
       kubernetes: Kubernetes beállítása
 hostPartial:
   host:
@@ -824,8 +870,21 @@ servicePartial:
     label: Még nincs konténerek.
     inactive:
       start: Start
+accordionRow:
+  status:
+    none: Semmi
+    incomplete: Hiányos
+    error: Hiba
+    any: Bármely
+billingInfo:
+  header: Számlázási információk
+  table:
+    title:
+      actions: Műveletek
 caasLogin:
+  resetHeader: Jelszó visszaállítása
   new: Fiók létrehozása
+  reset: Jelszó visszaállítása
   form:
     email: E-mail
 catalogSettings:
@@ -835,8 +894,6 @@ catalogSettings:
     header:
       rancher: "Minősített könyvtár {appName}"
       pl: Minősített könyvtár
-    detail:
-      rancher: A Sablonokhoz szükség van a Rancher néhány alapvető funkciójára, mint például a Kubernetes/Mesos/Swarm számítógépfürtözési támogatás. Ezeket a Rancher Labs tartja fenn és nyújt hozzájuk támogatást.
   community:
     header:
       rancher: Közösségi hozzájárulással
@@ -849,6 +906,8 @@ catalogSettings:
       placeholder: pl. mycatalog
     url:
       label: URL
+    kind:
+      native: Natív
     branch:
       label: Branch
       placeholder: 'pl. master'
@@ -936,7 +995,6 @@ editCertificate:
     placeholder: pl. sajat-domain-nevem.hu
   description:
     placeholder: pl. EV tanúsítvány a sajat-domain-nevem.hu webhelyhez
-  noteKeyWriteOnly: 'Megjegyzés: A privát kulcs szándékosan üres, mivel a mező csak írható.  A tanúsítvány módosításához szükséged lesz a privát kulcsra ismét, akkor is ha az nem változott.'
 editContainer:
   title:
     vm: VM szerkesztése
@@ -968,21 +1026,6 @@ editHost:
   requireAny:
     label: Konténer elnevezés szükséges
     addActionLabel: Szükséges címke hozzáadása
-editProjectTemplate:
-  title:
-    add: Sablon hozzáadása
-    edit: 'Sablon szerkesztése: {displayName}'
-  orchestration: Számítógépfürt rendszer (Orchestration)
-  stackEdit: Konfiguráció szerkesztése
-  stackRequired: Kötelező
-  access:
-    label: Megosztás
-    private: 'Privát: csak számomra elérhető'
-    public: 'Publikus: minden felhasználó számára elérhető (csak adminoknak)'
-  error:
-    conflict: Ütközés
-    enabling: 'A kiválasztott {tplCategory} {stackName} köteg nem támogatja a {orchestration} számítógépfürt rendszert.'
-    changing: 'A jelenleg engedélyezett {tplCategory} {stackName} köteg nem támogatja a {orchestration} számítógépfürt rendszert.'
 editRegistry:
   title: Registry szerkesztése
   address:
@@ -1009,7 +1052,6 @@ editStack:
   group:
     label: Címkék
     placeholder: pl. frontend, production
-    help: Vesszővel elválasztott címkék listája.  A Kötet lista az egyes címkékkel szűrhető.
 stackHeader:
   outputs: Kimenetek
 formatIp:
@@ -1062,19 +1104,12 @@ formCommand:
     none: Semmi
   autoRestart:
     label: Automatikus újraindítás
-    startOnceFalse: Mindig
-    startOnceTrue: Soha (egyszer indítsd csak)
     "no": Soha
     onFailure: 'Hiba esetén <span class="text-muted">(nem 0 kilépési kód)</span>, örökké'
     onFailureCondPrefix: Hiba esetén, legfeljebb
     always: Mindig
 formContainerLinks:
   addActionLabel: Link hozzáadása
-  targetInstance:
-    label: Cél konténer
-    prompt: Válassz egy konténert...
-  name:
-    placeholder: pl. adatbazis
 formDisks:
   addDiskLabel: Lemez hozzáadása
   addRootDiskLabel: Root lemez hozzáadása
@@ -1149,7 +1184,6 @@ formHealthCheck:
     unit: hibák
   strategy:
     none: Nincs művelet
-    recreate: Létrehozás újra
 formKeyValue:
   addAction: Kulcs-értékpár hozzáadása
   key:
@@ -1223,6 +1257,8 @@ formSecrets:
     prefix: "A titkos kód a megadott fájlnévvel a <code>/run/secrets/</code> könyvtárban lesz elérhető a konténer belsejében.  "
     showPermissionsLink: "Fájl hozzáférési jogainak testreszabása"
 formSecurity:
+  privileged:
+    disable: false
   pidMode:
     label: PID-mód
   shares:
@@ -1260,6 +1296,9 @@ formSslTermination:
   addAlternate: Alternatív tanúsítvány hozzáadása
   noCertificates: Nincs tanúsítvány használat alatt.
   noAlternateCertificates: Nincsenek más tanúsítványok használat alatt.
+formStack:
+  errors:
+    noneChosen: Ki kell választani egy Köteget.
 formStickiness:
   none: Semmi
   cookieName: Süti neve
@@ -1309,12 +1348,7 @@ formVolumes:
     prompt: Konténer kiválasztása...
   volumes: Kötetek
   volumesFrom: Kötet innen
-  volumeDriver:
-    label: Kötet illesztőprogramja
   onlySingleHost: Csak akkor érhető el, ha egy Konténer hozzá van adva egy megadott hoszthoz.
-  addActionLabel: Kötet hozzáadása
-  errors:
-    invalidName: A Kötetnevek csak betűket, számokat, kötőjelet, aláhúzást és pontot tartalmazhatnak.
 hookPage:
   receiver:
     buttonText: Vevő hozzáadása
@@ -1498,10 +1532,6 @@ machine:
   driverCustom:
     agentIp:
       placeholder: pl. 1.2.3.4
-    step5Close:
-      link: Hosztok
-      part2: képernyőn egy percen belül.
-    close: Bezár
     windows:
       windowsHeader: Windows hoszt
       linuxHeader: Linux hoszt
@@ -1513,14 +1543,11 @@ machine:
       }
     accountSection: Fiókhozzáférés
     authAccountButton: 'Következő: Droplet konfigurálása'
-    accessToken:
-      label: Hozzáférési Token *
     instanceSection: Példány
     image:
       label: Kép
     sshUser:
       label: SSH felhasználó
-      placeholder: 'usr1'
     size:
       label: Méret
     regionSection: Régió
@@ -1652,9 +1679,6 @@ machine:
       label: Aliyun SLB ID
       placeholder: Aliyun SLB ID
     storageSection: Tároló infó
-    ioOptimized:
-      label: Tároló példány I/O optimalizált
-      placeholder: none vagy optimized
     systemDiskCategory:
       label: Rendszerlemez kategória
     dataDiskCategory:
@@ -1693,6 +1717,15 @@ modalAboutComponent:
   cli: CLI
   ui: Felhasználói felület
   compose: Compose
+modalAddPayment:
+  errors:
+    cc: Érvénytelen hitelkártya-szám
+    exp: Érvénytelen lejárat
+    cvc: Érvénytelen CVC-szám
+    street: Az utca megadása kötelező.
+    city: A település megadása kötelező.
+    state: Az állam megadása kötelező.
+    zip: Az irányítószám megadása kötelező.
 modalContainerStop:
   header: "Biztosan le akarod állítani?"
   helpText: "A konténer erőszakkal megszűnik, ha nem áll meg magától az időtúllépés lejárta előtt"
@@ -1785,14 +1818,10 @@ newContainer:
     container: Konténer frissítése
   selectUpgrade: Válassz egy vagy több szolgáltatást a frissítéshez.
   saveUpgrade: Frissítés
-  removeSidekick: Társ eltávolítása
   name:
     placeholder: pl. sajat-app
   description:
     placeholder: pl. SajátAlkalmazásom
-  emptySidekick: "(#{num} Társ)"
-  addSidekickContainer: Társ konténer hozzáadása
-  addSidekickVm: Társ VM hozzáadása
 newReceiver:
   title:
     edit: Vevő szerkesztése
@@ -1848,8 +1877,6 @@ pageFooter:
 projectRow:
   none: Nincs leírás
   orchestration: Számítógépfürt rendszer (Orchestration)
-projectUpgrade:
-  header: Környezet frissítése
 registryRow:
   address: Cím
   username: Felhasználói név
@@ -1904,20 +1931,6 @@ siteAccess:
   users: Felhasználók
   groups: Csoportok
   organizations: Szervezetek
-storagePoolSection:
-  readOnly: "(csak olvasható)"
-  hosts:
-    header: Hosztok
-    none: Nincs hoszt
-  volumes:
-    header: Kötetek
-    add: Kötet hozzáadása
-    none: Nincsenek Kötetek
-  models:
-    table:
-      header:
-        volumeName: 'Kötet neve'
-        mounts: 'Csatolások (Konténer: elérési út)'
 svgServiceContainer:
   sidekicks: Társak
 telemetryOpt:
@@ -1986,15 +1999,6 @@ waitKubernetes:
   createStack: 'Kubernetes rendszer köteg létrehozása'
   startServices: 'Szolgáltatások indítása'
   waitApi: 'Várakozás a Kubernetes API-ra'
-waitMesos:
-  addHost: 'Adj hozzá legalább három hosztot'
-  activateHost: 'Várakozás a hosztra, hogy aktív legyen'
-  createStack: 'Mesos rendszer köteg létrehozása'
-  startServices: 'Szolgáltatások indítása'
-waitSwarm:
-  addHost: 'Adj hozzá legalább egy hosztot'
-  createStack: 'Swarm rendszer köteg létrehozása'
-  startServices: 'Szolgáltatások indítása'
 containerChoices:
   hostGroup: 'Hoszt: {name}'
   hostGroupWithState: 'Hoszt: {name} ({state})'
@@ -2006,18 +2010,7 @@ nav:
   environment:
     label: Környezet
     selected: Kiválasztott Környezet
-    manage: Környezetek kezelése
     edit: '"{name}" szerkesztése'
-  k8s:
-    tab: Kubernetes
-  swarm:
-    tab: Swarm
-    cli: CLI
-    system: Infrastruktúra
-  mesos:
-    tab: Mesos
-    web: Áttekintés
-    system: Infrastruktúra
   catalog:
     all: Összes
     library: Könyvtár
@@ -2041,8 +2034,6 @@ nav:
     logout: Kijelentkezés
 action:
   activate: Engedélyezés
-  cancelUpgrade: Frissítés megszakítása
-  cancelRollback: Visszavonás megszakítása
   clone: Klónoz
   console: Konzol megnyitása
   deactivate: Deaktiválás
@@ -2050,7 +2041,6 @@ action:
   evacuate: Kiürítés
   execute: Rendszerhéj végrehajtása
   exportConfig: Beállítások exportálása
-  finishUpgrade: Frissítés befejezése
   logs: Naplók megtekintése
   machineConfig: Gép beállítása
   remove: Törlés

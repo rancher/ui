@@ -6,9 +6,12 @@ generic:
   activate: Aktivieren
   all: Alle
   any: Irgendein
-  as: Als
   cancel: Abbrechen
   closeModal: Schließen
+  collapseAll: Alles schliessen
+  command: Befehl
+  confirm: Bestätigen
+  containers: Container
   created: Erstellt
   createdDate: "Erstellt {date}"
   default: Standard
@@ -16,9 +19,14 @@ generic:
   details: Details
   disable: Deaktivieren
   disabled: Deaktiviert
+  dockerId: Docker ID
   domainName: Domainname
   enable: Aktivieren
   enabled: Aktiviert
+  entrypoint: Einstiegspunkt
+  environment: Umgebung
+  expandAll: Alles öffnen
+  hardware: Hardware
   healthy: Bereit
   host: Server
   id: Id
@@ -26,13 +34,16 @@ generic:
   internal: Intern
   ipAddress: IP Addresse
   limit: Grenze
+  limits: Limitierungen
   loading: "Laden..."
+  mibibyte: 'MiB'
   missing: "*%FEHLT%*"
   moreActions: Weitere Aktionen
   na: 'Keine Angabe'
   name: Name
-  none: Kein
+  "no": "Nein"
   noRating: Keine Bewertung
+  none: Kein
   ports: Ports
   remove: Entfernen
   role: Rolle
@@ -40,6 +51,10 @@ generic:
   saved: Gespeichert
   saving: Speichern
   search: Suche
+  seconds: Sekunden
+  select: Markieren
+  service: Service
+  stack: Stack
   state: Status
   test: Test
   testing: Testet
@@ -48,6 +63,14 @@ generic:
   type: Typ
   unknown: Unbekannt
   uuid: UUID
+  "yes": "Ja"
+realmNames:
+  all: Alle
+  usWest: US Westküste
+  usEast: US Ostküste
+  asia: Asien
+  euWest: EU West
+  euEast: EU Ost
 accountsPage:
   index:
     header: Konten
@@ -61,6 +84,10 @@ accountsPage:
       noName: Kein
   new:
     header: Konto hinzufügen
+    errors:
+      usernameReq: Benutzername ist erforderlich.
+      usernameInExists: Benutzername ist bereits vergeben. Bitte einen neuen wählen.
+      pwReq: Passwort wird benötigt.
     form:
       username:
         labelText: Login Benutzername
@@ -80,6 +107,7 @@ apiPage:
   actionButton: API Key zur Umgebung hinzufügen
   content: |
     Environment API Keys sind mit dieser spezifischen Umgebung verbunden (<code>{displayName}</code>) und können daher auch nur Ressourcen in diesem Environment modifizieren. Andere Zugänge mit Zugriff auf diese Umgebung können diese Keys ebenfalls verwalten.
+  currentEndpoint: 'Endpunkt:'
   table:
     state: Status
     name: Name
@@ -96,6 +124,8 @@ apiPage:
     content:
       paragraph1: Zugangs API Keys sind auf diesen spezifischen Zugang beschränkt
       paragraph2: "und können alle Umgebungen erstellen löschen und bearbeiten für die dieser Zugang berechtigt ist."
+    table:
+      noData: Noch gibt es keine Schlüssel für dieses Konto.
 auditLogsPage:
   header: Protokolle
   form:
@@ -174,17 +204,17 @@ authPage:
           {appName} ist konfiguriert für den Zugriff auf {orgs, plural,
           =0 {keine Organisationen}
           =1 {# Organisationen}
-          other {# Organisationen}
+          andere {# Organisationen}
           } und {users, plural,
           =0 {keine Benutzer}
           =1 {# Benutzer}
-          other {# Benutzer}
+          andere {# Benutzer}
           }.
         restricted: |
           {appName} ist konfiguriert für den Zugriff auf Mitglieder der Umgebung, {orgs, plural,
           =0 {keine Organisationen}
           =1 {# Organisationen}
-          other {# Organisationen}
+          andere {# Organisationen}
           } and {users, plural,
           =0 {keine Benutzer}
           =1 {# Benutzer}
@@ -217,6 +247,7 @@ authPage:
           text: 'Klicken Sie auf "Neue Anwendung registrieren" und füllen Sie das Formular aus:'
           ul:
             li1: '<b>Name der Anwendung:</b> <span class="text-muted">z.B. Meine {appName}</span>'
+            li2: Homepage URL
             li3: '<b>Beschreibung der Anwendung:</b> <span class="text-muted">optional</span>'
             li4: Authorisierungs-URL
         li3:
@@ -244,7 +275,7 @@ authPage:
   azuread:
     header:
       enabled: 'Azure AD Authentifizierung ist <b>aktiviert</b>'
-      disabled: 'Azure AD Authentifizierung ist <b class="text-warning">nicht aktiviert</b>'
+      disabled: 'Azure AD Authentifizierung ist nicht aktiviert'
     subtext:
       enabled: '{appName} ist für den Zugriff durch Accounts in Azure AD konfiguriert'
       disabled: '{appName} kann konfiguriert werden um den Zugriff auf einen Satz von Accounts in der {appName} Datenbank zu beschränken. Das ist aktuell nicht konfiguriert und jeder Benutzer mit Zugriff auf diese Seite (oder die API) hat volle Kontrolle über das System.'
@@ -282,9 +313,6 @@ authPage:
       pre: Mit Azure authentifizieren
       post: Warte auf Feedback von Azure
   localAuth:
-    header:
-      enabled: 'Lokale Authentifizierung isr <b>aktiviert</b>'
-      disabled: '<p>Lokale Authentifizierung ist nicht konfiguriert</p>'
     subtext:
       enabled:
         text: '{appName} ist für den Zugriff durch Accounts in der lokalen Datenbank konfiguriert.'
@@ -320,6 +348,8 @@ authPage:
     header: Zugriffskontrolle
 catalogPage:
   index:
+    header: Katalog
+    refreshBtn: Aktualisieren
     manage: Verwalten
     search:
       label: Suche
@@ -377,14 +407,12 @@ certificatesPage:
 containerPage:
   header: 'Container: {name}'
   portsTab:
-    table:
-      public: Public auf Host
-      private: Private im Container
-      protocol: Protokoll
-      noData: Dieser Container hat keine Ports
-      noMatch: Keine Ports zur aktuellen Suche gefunden
+    header: Ports
     hostPrimaryIp: '({ip})'
+  linksTab:
+    header: Links
   volumesTab:
+    header: Laufwerke
     table:
       path: Einhängepunkt
       shared: Geteilt mit
@@ -395,11 +423,47 @@ containersPage:
     sparkPrefixMemory: 'Hauptspeicher: '
     sparkPrefixNetwork: 'Netzwerk: '
     sparkPrefixStorage: 'Speicherplatz: '
+  welcome:
+    kubernetesLink: Kubernetes installieren
 containerSubpod:
   childContainers: Container
   childSidekicks: Sidekicks
-dockerCLI:
-  header: Swarm CLI
+dnsPage:
+  table:
+    target: Ziel
+editDns:
+  title:
+    new: DNS-Eintrag hinzufügen
+    edit: DNS-Eintrag bearbeiten
+  mode:
+    dnsservice: Einer oder mehrere andere Dienste
+  targetIp:
+    label: IP-Zieladressen
+    add: Ziel-IP-Adresse hinzufügen
+  hostname:
+    placeholder: z.B. beispiel.de
+  errors:
+    ipRequired: 'Eine oder mehrere "IP-Zieladressen" werden benötigt'
+editVolume:
+  add:
+    global: Volume hinzufügen
+    stack: Volume-Vorlage hinzufügen
+    container: Volume-Vorlage hinzufügen
+  edit:
+    global: Volume bearbeiten
+  name:
+    placeholder: z.B. MeinVolume
+  scope:
+    global: Ein Volume für die gesamte Umgebung
+    stack: Ein Volume innerhalb eines bestimmten Stapels
+  driver:
+    label: Treiber
+    nfs: Rancher NFS
+    ebs: Rancher EBS
+    efs: Rancher EFS
+    longhorn: Rancher Longhorn
+  driverOpts:
+    addAction: Option hinzufügen
 failWhalePage:
   header: Fehler
   reloadButton: |
@@ -418,6 +482,7 @@ haPage:
     clustered: Gruppiert
 helpPage:
   header: Hilfreiche Links und Informationen
+  banner: 'Aktuellste Version {released}:'
   environment:
     header: Was ist eine Umgebung?
     content: |
@@ -482,6 +547,23 @@ helpPage:
     content: |
       Wir von Rancher Labs bieten kommerziellen, professionellen Unternehmenssupport für {appName} an. Dazu gehört ein 24x7 Support Team und priorisierte Fehlerbehebungen. Zusätztlich bieten wir Unterstützung bei der Implementierung, Integration und BEratung für Unternehmen die {appName} verwenden und skalieren möchten.  Für weiterführende Informationen zu diesen Angeboten mailen Sie bitte unserem Support Team unter <a href="mailto:sales@rancher.com">sales@rancher.com</a>
 hostsPage:
+  cloudHostsPage:
+    addPage:
+      launch: Ausführen
+      header: Host hinzufügen
+      name:
+        label: Servername
+        placeholder: z.B. host01
+      transferUnit: TB
+      instance: 'Typ:'
+      storage: 'Speicher:'
+      transfer: 'Transfer:'
+      zone: 'Zone:'
+      env: 'Umgebung:'
+      size: 'Größe:'
+      os: 'Betriebssystem:'
+      driver: 'Treiber:'
+      template: 'Vorlagenname:'
   addContainer: Container hinzufügen
   index:
     header: Hosts
@@ -491,19 +573,47 @@ hostsPage:
       groupedView: Gruppierte Stacks & Sidekicks
     columns:
       emptyMessage: Noch keine Hosts oder Container vorhanden.
+    table:
+      memory: Arbeitsspeicher
+      docker: Docker
+      instanceState: Container Stati
+      instanceStateWithIcon: Stati
+      noData: Sie haben noch keine Hosts hinzugefügt
+      noMatch: Keine Hosts zur aktuellen Suche gefunden
   new:
     header:
+      customText: Eigenen Host hinzufügen
       text: Host hinzufügen
     manageLink: Vorhandene Machine Treiber verwalten
+    custom: Eigenen Host hinzufügen
+    name:
+      placeholder: z.B. host01
   hostPage:
+    header:
+      title: 'Host: {name}'
+    limits:
+      cpu: 'CPU-Limit:'
+      memory: 'Speicherlimit:'
+      storage: 'Lokales Volume-Limit:'
     infoMultiStats:
+      ip: 'IP'
+      cpu: 'Prozessor'
+      memory: 'Arbeitsspeicher'
+      storage: 'Volumes'
       provider:
         labelText: 'Provider:'
         noHost: Benutzerdefininert
+      kernel: 'Kernel'
       docker: 'Docker:'
+      os: 'Betriebssystem'
       milliCpu:
         labelText: mCPU
+    containersTab:
+      header: Container
+      detail: Eine Liste der Container, die auf diesem Host ausgeführt werden
     portsTab:
+      header: Ports
+      detail: 'Diese Eigenschaften zeigen, welche Ports zugeordnet wurden und wo.'
       table:
         header:
           ip: IP Addresse
@@ -513,6 +623,8 @@ hostsPage:
         body:
           noData: Dieser Host hat noch keine Ports.
     storageTab:
+      header: Volumes
+      detail: 'Diese Eigenschaften zeigen die Volume-Angaben von Ihrem Host.'
       table:
         header:
           state: Status
@@ -541,6 +653,7 @@ k8sTab:
       downloadText: |
         Dann <a href="{downloadUrl}" target="_blank">laden Sie</a> (wenn benötigt) und führen Sie <code>kubectl</code> aus
 loginPage:
+  greeting: "Howdy!<br><span>Willkommen bei {appName}</span>"
   githubMessage: "{appName} nutzt GitHub um Acocunts und Teams zu verwalten.  Klicken Sie den Button um sich einzuloggen und uns lesenden Zugriff auf ihre GitHub Zugangsinformationen zu geben."
   shibbolethMessage: "{appName} benutzt Shibboleth zur Verwaltung von Accounts.  Für die Anmeldung bei der Shibboleth IDP auf den nachstehenden Button klicken."
   shibbolethError:
@@ -556,48 +669,9 @@ machinePage:
   subtext: "Hier können zusätzliche <code>docker-machine</code> Treiber heruntergeladen und dann im Hosts Dialog verwendet werden."
   add: Machine Treiber hinzufügen
   builtin: Integriert
-mesosPage:
-  header: Überblick
-  banner:
-    header: Ihr Cluster
-    content: |
-      Sie haben aktuell {hosts, plural,
-      =1 {# aktiven Host}
-      other {# aktive Hosts}
-      } in ihrem Mesos Cluster
-    link: Hosts ansehen oder Hinzufügen
-  launch:
-    header: Starten
-    content: Sie könne Frameworks aus unserem Katalog starten.
-    button: Ein Frameworks starten
-  manage:
-    header: Verwalten
-    content: Verwalte Mesos von der Mesos UI.
-    button: Mesos UI
 notFoundPage:
   header: "Diese Seite existiert nicht!"
   linkTo: Zur Startseite
-projectList:
-  index:
-    header: Umgebungen
-    new: Umgebung hinzufügen
-    subtext: |
-      <p>{appName} unterstützt die Gruppierung von Ressourcen in mehreren &quot;Environments&quot;. Jede dieser Umgebungen erhält dabei ihre eigenen Service- und Infrastruktur-Komponenten und wird von einem oder mehreren Benutzern bzw. Gruppen verwaltet.</p>
-      <p>Dies erlaubt es Ihnen z.B. separate &quot;dev&quot;, &quot;test&quot; und &quot;produktiv&quot; Umgebungen einrichten um die dort laufenden Services von einander zu isolieren und die Zugriffsberechtigungen zu segmentieren. Beispielsweise können Sie Ihrer gesamten Organisation den Zugang zur Entwicklungs-Umgebung ermöglichen, den Zugriff auf die Produktiv-Umgebung dagegen auf ein kleineres Team beschränken.</p>
-    alert: Keine aktiven Umgebungen vorhanden. Sie müssen zuerst eine Umgebung erstellen..
-    table:
-      header:
-        orchestration: Orchestrierung
-        projectTemplate: Vorlage
-  indexTemplate:
-    header: Umgebungs Vorlagen
-    new: Vorlage hinzufügen
-    table:
-      header:
-        stacks: Stapel
-        isPublic: Öffentlich
-      body:
-        noData: "Sie haben noch keine Vorlagen für Umgebungen."
 registriesPage:
   index:
     header: Registries
@@ -630,13 +704,16 @@ secretsPage:
     noData: Keine Secrets vorhanden
     noMatch: Keine Secrets gefunden, die den Suchkriterien entsprechen
 servicePage:
+  header: '{type}: {name}'
+  globalScale: '{scale} pro Host'
   multistat:
     fqdn: 'FQDN:'
     scale: 'Skalieren:'
     image: 'Image:'
   external:
-    externalIp: Externe IPs
     externalHostname: 'Externer Hostname:'
+  containersTab:
+    title: 'Container'
   linksTab:
     header: Links
   certsTab:
@@ -656,31 +733,33 @@ servicePage:
       description:
         placeholder: z.B. Balancer für mycompany.com
   portsTab:
-    table:
-      header:
-        port: Port
-        host: Host-IP
-      body:
-        noData: Dieser Service hat keine Ports.
     notActive: Ports sind nur verfügbar wenn der Service aktiv ist.
   type:
     loadbalancerservice: Load Balancer
-    externalservice: Extern
     kubernetesservice: K8s Service
     composeservice: Compose Service
     networkdriverservice: Netzwerk Service
     storagedriverservice: Speicher Service
 settingsPage:
   header: Einstellungen
-storagePoolsPage:
-  header: Storage-Treiber
-  index:
-    noData: Keine Storage-Treiber
-  newVolume:
-    header: Volume hinzufügen
-    form:
-      driverOptions: Driver Optionen
-      addActionLabel: Option hinzufügen
+userPreferencesPage:
+  header: Einstellungen
+  theme:
+    header: Farbschema
+    light: Hell
+    auto: Automatisch
+    autoDetail: 'Automatisch wird von 18:00 Uhr bis 6:00 Uhr "Dunkel" einstellen'
+    dark: Dunkel
+  generalInfo:
+    header: Mein Konto
+    name:
+      label: Name
+    username:
+      label: Benutzername
+    email:
+      label: E-Mail
+    password:
+      text: Konto bearbeiten
 processesPage:
   header: Prozesse
   tab:
@@ -716,11 +795,23 @@ processesPage:
       runAfter: Starte nach
     noData: 'Keine Prozesse sind derzeit {which}'
     noMatch: Keine Prozesse zur aktuellen Suche gefunden
+verifyPage:
+  header: "Sie haben Ihre E-Mail-Adresse erfolgreich bestätigt!"
+  subtext: Wir benötigen ein paar mehr Informationen, bevor wir Ihr Konto erstellen können.
+  account:
+    header: Konto erstellt
+    subtext: Klicken Sie auf den untenstehenden Link, um auf die Login-Seite weitergeleitet zu werden.
+    linkText: Anmelden
+verifyResetPasswordPage:
+  header: Passwort zurücksetzen
+  button: Passwort aktualisieren
+  success:
+    header: Passwort zurücksetzen!
+    subtext: Klicken Sie auf den untenstehenden Link, um auf die Login-Seite weitergeleitet zu werden.
+    linkText: Anmelden
 waitingPage:
   hosts:
     setup:
-      mesos: Mesos konfigurieren
-      swarm: Swarm konfigurieren
       kubernetes: Kubernetes konfigurieren
 hostPartial:
   host:
@@ -803,6 +894,12 @@ ldap:
       labelText: Service Zugang Benutzername
     servicePassword:
       labelText: Service Zugang Passwort
+    userSearchBase:
+      labelText: Basis für Benutzersuche
+      placeholder: "z.B. ou=Benutzer,dc=meinefirma,dc=de"
+      helpText: "Nur Benutzer und Gruppen unterhalb der Basis werden genutzt."
+    groupSearchBase:
+      placeholder: "z.B. ou=Benutzer,dc=meinefirma,dc=de"
     defaultDomain:
       helpText: "Diese Domain wird verwendet wenn ein Benutzer keine spezifische Angabe macht."
       labelText: Standard Login Domain
@@ -851,6 +948,30 @@ servicePartial:
     label: Noch keine Container.
     inactive:
       start: Starten
+accordionRow:
+  status:
+    none: Keine
+    countConfigured: "{count} konfiguriert"
+    standard: Standard
+    custom: Individuell angepasst
+    specific: Bestimmte
+    any: Alle
+    rule: "{count, plural, =1 {# Regel} other {# Regeln}}"
+advancedSection:
+  showText: Erweiterte Optionen einblenden
+  hideText: Erweiterte Optionen ausblenden
+billingInfo:
+  header: Zahlungsinformationen
+  addNew: Zahlungsmethode hinzufügen
+  table:
+    title:
+      actions: Aktionen
+caasLogin:
+  resetHeader: Passwort zurücksetzen
+  new: Account erstellen
+  reset: Passwort zurücksetzen
+  form:
+    email: E-Mail
 catalogSettings:
   header: Katalog
   subtext: Kataloge enthalten rancher-compose Templates die es Benutzern erlauben Anwendungen mit wenigen Fragen auszurollen.
@@ -875,6 +996,8 @@ catalogSettings:
     url:
       label: URL
       placeholder: 'z. B. https://github.com/meinefirma/meinkatalog.git'
+    kind:
+      helm: Helm
     branch:
       placeholder: 'z. B. master'
 confirmDelete:
@@ -922,6 +1045,7 @@ editAccount:
   title: Zugang bearbeiten
   form:
     name:
+      label: Name
       placeholder: z.B. John Smith
     kind:
       label: Typ des Zugangs
@@ -961,7 +1085,6 @@ editCertificate:
     placeholder: z.B. mydomain.com
   description:
     placeholder: z.B. EV Zertifikat für mydomain.com
-  noteKeyWriteOnly: 'Hinweis: Der Private Key ist bewusst leer, da dieses Feld write-only ist. Sie müssen den Private Key erneut eintragen um das Zertifikat zu aktualisieren, auch wenn er sich nicht verändert hat.'
 editContainer:
   title:
     vm: VM bearbeiten
@@ -982,10 +1105,8 @@ editHost:
     label: Beschreibung
     placeholder: z.B. Mein Entwicklungssystem
   ips:
+    addActionLabel: IP hinzufügen
     help: Wenn angegeben, wird der Scheduler die veröffentlichten Ports an eine der angegebenen IP-Adressen binden.
-editProjectTemplate:
-  error:
-    conflict: Konflikt
 editRegistry:
   title: Registry bearbeiten
   address:
@@ -1021,6 +1142,10 @@ formBalancerRules:
     internal: Intern
   protocol:
     label: Protokoll
+  targetPort:
+    placeholder: z.B. 80
+  priority:
+    label: Priorität
   target: Ziel
 formCommand:
   command:
@@ -1039,8 +1164,6 @@ formCommand:
     none: Kein
   autoRestart:
     label: Automatischer Neustart
-    startOnceFalse: Immer
-    startOnceTrue: Nie (Einmal starten)
     "no": Nie
     onFailure: 'Im  Fall eines Fehlers <span class="text-muted">(non-0 Exitcode)</span>, immer'
     onFailureCondPrefix: Im Fehlerfall, bis zu
@@ -1052,12 +1175,6 @@ formCommand:
     always: Immer
 formContainerLinks:
   addActionLabel: Link hinzufügen
-  targetInstance:
-    label: Ziel Container
-    prompt: Einen Container auswählen...
-  name:
-    label: Name
-    placeholder: z.B. Datenbank
 formDisks:
   addDiskLabel: Disk hinzufügen
   addRootDiskLabel: Root Disk hinzufügen
@@ -1130,7 +1247,6 @@ formHealthCheck:
   strategy:
     label: Wenn nicht Ordnung
     none: Nichts unternehmen
-    recreate: Neu-Erstellung
 formKeyValue:
   addAction: Schlüsselpaar hinzufügen
   key:
@@ -1184,6 +1300,7 @@ formScheduling:
 formSecurity:
   privileged:
     label: Privilegiert
+    disable: false
   shares:
     placeholder: z.B. 1024
   capabilities:
@@ -1405,19 +1522,10 @@ machine:
     environment:
       label: Umgebung
   driverCustom:
-    step2: "Stellen Sie sicher, dass alle Sicherheitsrichtlinien oder Firewalls den folgenden Netzwerkverkehr erlauben:"
-    step2li: Von und zu anderen Hosts auf <code>UDP</code> Ports <code>500</code> und <code>4500</code> <span class="text-muted">(für IPsec Netzwerk)</span>
-    step3: 'Optional: Labels für den host hinzufügen.'
-    step5Copy: Kopieren Sie den folgenden Bfehl in die zwischenablage und führen Sie ihn auf dem Host aus um diesen bei Rancher zu registrieren
     generating: "Generiere URL für die Registrierung..."
-    step5Close:
-      part1: Unten Schliessen klicken.  Der neue Host sollte auf dem
-      part2: Dialog innerhalb einer Minute auftauchen.
-    close: Schliessen
   driverDigitalocean:
     accountSection: Zugriff
     accessToken:
-      label: Zugriffs Token*
       placeholder: Ihre DigitalOcean API Zugriffs Token
       help: |
         Ein  privater Access Token vom DigitalOcean
@@ -1551,13 +1659,10 @@ newCatalog:
   noConfig: Dieses Template hat keine Konfigurationsparameter
 newContainer:
   selectUpgrade: Einen oder mehrere Service für das Upgrade auswählen.
-  removeSidekick: Diesen Sidekick entfernen
   name:
     placeholder: z.B. myapp
   description:
     placeholder: z.B. Meine Anwendung
-  addSidekickContainer: Sidekick Container hinzufügen
-  addSidekickVm: Sidekick VM hinzufügen
 pageFooter:
   notARelease: (Kein Release)
   issues: Issue eröffnen
@@ -1616,13 +1721,6 @@ siteAccess:
   users: Benutzer
   groups: Gruppen
   organizations: Organizationen
-storagePoolSection:
-  readOnly: "(nur-lesend)"
-  hosts:
-    none: Keine Hosts
-  volumes:
-    add: Volume hinzufügen
-    none: Keine Volumes
 telemetryOpt:
   subtext: |
     Rancher-Labs möchte anonyme Informationen über die Konfiguration Ihrer Installation sammeln, um beizutragen {appName} besser zu machen. <br/> Ihre Daten werden nicht mit Dritten geteilt und keine Ihrer verwendeten Ressourcennamen oder Adressen gesammelt.
@@ -1662,16 +1760,6 @@ waitKubernetes:
   createStack: 'Erstelle Kubernetes System-Stack'
   startServices: 'Starte Services'
   waitApi: 'Warte auf Kubernetes API'
-waitMesos:
-  addHost: 'Mindestens 3 Hosts hinzufügen'
-  activateHost: 'Warte auf Aktivierung des Hosts'
-  createStack: 'Erstelle Mesos System-Stack'
-  startServices: 'Starte Services'
-waitSwarm:
-  addHost: 'Mindestens einen Host hinzufügen'
-  activateHost: 'Warte auf Aktivierung eines Hosts'
-  createStack: 'Erstelle Swarm System-Stack'
-  startServices: 'Starte Services'
 driver:
   multiHostNames: "Hosts werden umbenannt <b>{first}</b> &mdash; <b>{last}</b>"
 nav:
@@ -1681,14 +1769,6 @@ nav:
     all: Alle Umgebungen
     your: Ihre Umgebungen
     selected: Ausgewählte Umgebungen
-    manage: Umgebungen verwalten
-  swarm:
-    cli: CLI
-    system: Infrastruktur
-  mesos:
-    tab: Mesos
-    web: Überblick
-    system: Infrastruktur
   catalog:
     all: Alle
     library: Bibliothek
@@ -1710,21 +1790,17 @@ nav:
     logout: Abmelden
 action:
   activate: Aktivieren
-  cancelUpgrade: Upgrade abbrechen
-  cancelRollback: Rollback abbrechen
   clone: Klonen
   console: Shell öffnen
   deactivate: Deaktivieren
   edit: bearbeiten
   execute: Shell ausführen
   exportConfig: Konfiguration exportieren
-  finishUpgrade: Upgrade abschliessen
   logs: Logs betrachten
   machineConfig: Konfiguration der Maschine
   remove: Löschen
   restart: Neustart
   retry: Erneuter Versuch
-  setDefault: Als default definieren
   start: Starten
   stop: Stoppen
   viewConfig: Konfiguration betrachten

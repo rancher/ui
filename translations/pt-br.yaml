@@ -6,7 +6,6 @@ generic:
   activate: Ativar
   all: Todos
   any: Qualquer
-  as: Como
   cancel: Cancelar
   closeModal: Fechar
   command: Comando
@@ -169,9 +168,6 @@ authPage:
       tenantId:
         label: ID do inquilino
   localAuth:
-    header:
-      enabled: 'Autenticação local está <b>ativado</b>'
-      disabled: 'Autenticação local <b class="text-warning">não está configurado</b>'
     subtext:
       enabled:
         text: '{appName} é configurado para permitir o acesso a contas, na sua base de dados local.'
@@ -368,33 +364,9 @@ k8sTab:
 loginPage:
   greeting: "Olá!<br>Bem-vindo à {appName}"
   githubMessage: "{appName} usar GitHub para gerenciar contas e equipes.  Clique no botão a seguir para entrar e dar-nos acesso somente leitura às suas informações básicas sobre a conta GitHub."
-mesosPage:
-  header: Visão Geral
-  banner:
-    header: Seu cluster
-    content: |
-      Você tem atualmente {hosts, plural,
-      =1 {# host ativo}
-      other {# hosts ativo}
-      } em seu cluster Mesos
-    link: Visualizar ou adicionar hosts
-  launch:
-    header: Iniciar
-    content: Você pode iniciar o frameworks a partir de nosso catálogo.
-    button: Iniciar um Framework
-  manage:
-    header: Gerenciar
-    content: Gerenciar Mesos do Mesos UI.
 notFoundPage:
   header: "A página que você estava procurando não existe!"
   linkTo: Ir para Página Inicial
-projectList:
-  index:
-    header: Ambientes
-    alert: Não há nenhum ambiente ativo.  Você precisará criar ou ativar um antes, você pode fazer mais nada.
-    table:
-      header:
-        orchestration: Orquestração
 registriesPage:
   index:
     header: Registros
@@ -425,7 +397,6 @@ servicePage:
     scale: 'Escala:'
     image: 'Imagem:'
   external:
-    externalIp: IPs externos
     externalHostname: 'Nome do Host Externo:'
   linksTab:
     header: Ligações
@@ -442,24 +413,10 @@ servicePage:
       description:
         placeholder: p.ex. Balanceador para minhaempresa.com
   portsTab:
-    table:
-      header:
-        port: Porta
-        host: IP do Host
-      body:
-        noData: Este serviço não tem portas.
     notActive: Portas estão disponíveis apenas enquanto o serviço está ativo.
-storagePoolsPage:
-  newVolume:
-    header: Adicionar Volume
-    form:
-      driverOptions: Opções do driver
-      addActionLabel: Adicionar Opção
 waitingPage:
   hosts:
     setup:
-      mesos: Configurando Mesos
-      swarm: Configurando Swarm
       kubernetes: Configurando Kubernetes
 hostPartial:
   host:
@@ -650,7 +607,6 @@ editCertificate:
     placeholder: p.ex. meudominio.com
   description:
     placeholder: p.ex. EV cert para meudominio.com
-  noteKeyWriteOnly: 'Nota: A chave privada é intencionalmente em branco porque o campo é somente leitura.  Você precisará fornecer a chave privada novamente para atualizar o certificado, mesmo que não tenha mudado.'
 editContainer:
   title:
     vm: Editar VM
@@ -714,8 +670,6 @@ formCommand:
     none: Nenhum
   autoRestart:
     label: Reinício Automático
-    startOnceFalse: Sempre
-    startOnceTrue: Nunca (Iniciar uma Vez)
     "no": Nunca
     onFailure: 'Em caso de falha <span class="text-muted">(non-0 exit code)</span>, para sempre'
     onFailureCondPrefix: Em caso de falha, até
@@ -727,12 +681,6 @@ formCommand:
     always: Sempre
 formContainerLinks:
   addActionLabel: Adicionar Ligações
-  targetInstance:
-    label: Contêiner de Destino
-    prompt: Selecione um Contêiner...
-  name:
-    label: Como o Nome
-    placeholder: p.ex. database
 formDisks:
   addDiskLabel: Adicionar Disco
   addRootDiskLabel: Adicionar Raiz do Disco
@@ -778,7 +726,6 @@ formHealthCheck:
   checkType:
     none: Nenhum
     tcp: Conexões TCP Abertas
-    http: Resposta HTTP 2xx/3xx
   request:
     label: Pedido HTTP
   method:
@@ -805,7 +752,6 @@ formHealthCheck:
   strategy:
     label: Quando Insalubre
     none: Não faça nada
-    recreate: Re-criar
 formKeyValue:
   addAction: Adicionar Par
   key:
@@ -834,6 +780,9 @@ formPorts:
   protocol:
     label: Protocolo
   noPorts: Este contêiner não tem nenhuma mapa de porta.
+formSecurity:
+  privileged:
+    disable: false
 formServiceLinks:
   addAction: Ligações de Serviço
   service:
@@ -1025,19 +974,10 @@ machine:
     region:
       label: Região
   driverCustom:
-    step2: "Certifique-se de que quaisquer grupos de segurança ou firewalls permitam tráfego:"
-    step2li: De e para todos os outros hosts nas portas <code>UDP</code> <code>500</code> e <code>4500</code> <span class="text-muted">(para redes de IPsec)</span>
-    step3: 'Opcional: Adicionar rótulos a ser aplicado para o host.'
-    step5Copy: Copiar, colar e executar o comando abaixo para registrar o host com
     generating: "Gerando URL de registro..."
-    step5Close:
-      part1: Clique em fechar abaixo.  O novo host deve aparecer na
-      part2: tela em menos de um minuto.
-    close: Fechar
   driverDigitalocean:
     accountSection: Conta de Acesso
     accessToken:
-      label: Token de Acesso*
       placeholder: Seu token de acesso da API DigitalOcean
       help: |
         Um Token de acesso pessoal da DigitalOcean
@@ -1204,13 +1144,10 @@ newContainer:
   selectUpgrade: Selecione um ou mais serviços para atualizar.
   saveUpgrade: Atualizar
   saveNew: Criar
-  removeSidekick: Remover este Sidekick
   name:
     placeholder: p.ex. myapp
   description:
     placeholder: p.ex. Minha Aplicação
-  addSidekickContainer: Adicionar Sidekick Contêiner
-  addSidekickVm: Adicionar Sidekick VM
 pageFooter:
   notARelease: (Não é uma Release)
   help: 'Ajuda'
@@ -1240,13 +1177,6 @@ schedulingRuleRow:
   theHost: O host
   haveA: tem um
   of: de
-storagePoolSection:
-  readOnly: "(somente leitura)"
-  hosts:
-    none: Sem Hosts
-  volumes:
-    add: Adicionar Volume
-    none: Sem Volumes
 tooltipLink:
   list: Lista
 tooltipWarning:
@@ -1284,9 +1214,6 @@ nav:
     all: Todos os Ambientes
     your: Seus Ambientes
     selected: Ambiente Selecionado
-    manage: Gerenciar Ambientes
-  mesos:
-    web: Visão Geral
   catalog:
     all: Todos
     library: Biblioteca
@@ -1305,21 +1232,17 @@ nav:
     logout: Sair
 action:
   activate: Ativar
-  cancelUpgrade: Cancelar Atualização
-  cancelRollback: Cancelar Rollback
   clone: Clonar
   console: Abrir Console
   deactivate: Desativar
   edit: Editar
   execute: Executar Shell
   exportConfig: Configuração de Exportação
-  finishUpgrade: Finalizar Atualização
   logs: Exibir Logs
   machineConfig: Configuração da Máquina
   remove: Excluir
   restart: Reiniciar
   retry: Tente novamente
-  setDefault: Definir como Padrão
   start: Iniciar
   stop: Parar
   upgrade: Atualizar
