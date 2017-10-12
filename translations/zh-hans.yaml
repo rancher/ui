@@ -964,10 +964,12 @@ newStack:
   description:
     placeholder: '例如: MyApp Stack'
   files:
-    label: 额外的Compose文件
+    label: Compose文件
     addActionLabel: 添加Compose文件
+    uploadActionLabel: 从本地读取
     namePlaceholder: 文件名
     valuePlaceholder: 文件内容
+    protipLabel: 支持 {appName} <code>compose.yml</code>，<code>docker-compose.yml</code>，和Kubernetes manifest文件。
   answers:
     label: 应答 (变量替换)
     addActionLabel: 添加应答
@@ -1280,7 +1282,7 @@ clusterWelcome:
   importClusterDescription: |
     <p>部署容器到已有的Kubernetes环境，并使用它的主机和网络。</p>
     <p>基础设施资源将在{appName}外部进行管理。</p>
-    
+
     <p>支持本地部署的K8S，或者类似以下的托管的K8S服务:</p>
   embeddedDescription: |
     <p>{appName}将自动部署并且管理Kubernetes。</p>
@@ -3371,6 +3373,7 @@ action:
   logs: 查看日志
   machineConfig: 主机配置
   pause: 暂停
+  pauseAll: 全部暂停
   remove: 删除
   replay: 重播
   restart: 重启
@@ -3378,7 +3381,9 @@ action:
   rollback: 回滚
   setDefault: 设置为缺省
   start: 启动
+  startAll: 全部启动
   stop: 停止
+  stopAll: 全部停止
   upgrade: 升级
   upgradeOrEdit: 升级/编辑
   viewConfig: 查看配置
@@ -3438,6 +3443,14 @@ model:
     min: 最小数量
     max: 最大数量
     amount: 以
+
+growl:
+  webSocket:
+    connecting:
+      title: WebSocket连接失败
+      warning:  浏览器无法连接WebSocket。如果您在服务器之前设置了反向代理服务器，请确保该反向代理支持WebSocket连接。在此问题解决之前，监控状态、日志和命令行都无法正常工作，UI上显示的数据也无法自动更新。
+      safariCertWarning: 另一种情况可能是因为Safari不支持WebSocket连接到一个自签名证书或者无法识别的证书。请使用http://来代替https://，或者用合法的证书来重新配置服务器。
+      disconnectedWarning: 与服务器的连接断开，正在尝试重连...
 
 ##############################
 # Only For Chinese Language
