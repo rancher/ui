@@ -52,6 +52,7 @@ module.exports = {
     "dot-notation": 0,
     "strict": 0,
     "no-eq-null": 2,
-    "no-unused-vars": 2
+    "no-unused-vars": 2,
+    "no-useless-escape": 0
   }
 };

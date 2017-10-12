@@ -2,13 +2,14 @@ import Ember from 'ember';
 import { isMore } from 'ui/utils/platform';
 
 export default Ember.Component.extend({
-  resourceActions : Ember.inject.service('resource-actions'),
-  tooltipService  : Ember.inject.service('tooltip'),
-  model           : null,
-  tagName         : 'div',
-  classNames      : ['vertical-middle'],
-  type            : 'tooltip-action-menu',
-  template        : 'tooltip-container-dot',
+  resourceActions: Ember.inject.service('resource-actions'),
+  tooltipService:  Ember.inject.service('tooltip'),
+  model:           null,
+  tagName:         'div',
+  classNames:      ['vertical-middle'],
+  type:            'tooltip-action-menu',
+  template:        'tooltip-container-dot',
+  router:          Ember.inject.service(),
 
   click(event) {
     this.details(event);

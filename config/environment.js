@@ -53,6 +53,10 @@ module.exports = function(environment) {
     modulePrefix: 'ui',
     environment: environment,
     exportApplicationGlobal: true,
+<<<<<<< HEAD
+=======
+    rootURL: '/',
+>>>>>>> upgrade fixes for 2.16
     locationType: 'auto',
     EmberENV: {
       FEATURES: {
@@ -137,6 +141,7 @@ module.exports = function(environment) {
 
   if (environment === 'test') {
     // Testem prefers this...
+    ENV.rootURL = '/';
     ENV.locationType = 'none';
 
     // keep test console output quieter
@@ -145,6 +150,12 @@ module.exports = function(environment) {
 
     ENV.APP.rootElement = '#ember-testing';
   }
+
+  if (process.env.BASE_URL) {
+    ENV.rootURL = process.env.BASE_URL;
+  }
+
+  ENV.APP.rootURL = ENV.rootURL;
 
   if (process.env.FINGERPRINT) {
     ENV.APP.fingerprint = process.env.FINGERPRINT;

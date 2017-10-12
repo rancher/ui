@@ -8,9 +8,10 @@ import YAML from 'npm:yamljs';
 
 
 export default Ember.Component.extend(NewOrEdit, {
-  intl:                     Ember.inject.service(),
   catalog:                  Ember.inject.service(),
+  intl:                     Ember.inject.service(),
   projects:                 Ember.inject.service(),
+  router:                   Ember.inject.service(),
   settings:                 Ember.inject.service(),
 
   allTemplates:             null,

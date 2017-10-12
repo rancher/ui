@@ -50,6 +50,8 @@ var Stack = Resource.extend(StateCounts, {
   modalService:    Ember.inject.service('modal'),
   catalog:         Ember.inject.service(),
   projectsService: Ember.inject.service('projects'),
+  router:          Ember.inject.service(),
+
 
   services:        denormalizeIdArray('serviceIds'),
   realServices:    Ember.computed.filterBy('services','isReal',true),

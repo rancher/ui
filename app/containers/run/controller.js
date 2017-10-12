@@ -11,7 +11,7 @@ export default Ember.Controller.extend({
   containerId: null,
   addSidekick: null,
   launchConfigIndex: null,
-  upgrade: null,
+  upgrade: false,
 
   launchConfigIndexInt: function() {
     let str = this.get('launchConfigIndex');

@@ -3,7 +3,8 @@ import ModalBase from 'ui/mixins/modal-base';
 
 export default Ember.Component.extend(ModalBase, {
   classNames: ['medium-modal'],
-  model: Ember.computed.alias('modalService.modalOpts'),
+  model:      Ember.computed.alias('modalService.modalOpts'),
+  router:     Ember.inject.service(),
 
   name: null,
   error: null,

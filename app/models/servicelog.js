@@ -2,6 +2,8 @@ import Ember from 'ember';
 import Resource from 'ember-api-store/models/resource';
 
 var ServiceLog = Resource.extend({
+  router: Ember.inject.service(),
+
   actions: {
     goToInstance() {
       let id = this.get('instanceId');

@@ -14,7 +14,8 @@ const headers = [
 ];
 
 export default Ember.Component.extend(ContainerChoices, {
-  growl: Ember.inject.service(),
+  router: Ember.inject.service(),
+  growl:  Ember.inject.service(),
 
   // Inputs
   editing: null,
