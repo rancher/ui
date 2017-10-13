@@ -507,7 +507,11 @@ export default Ember.Component.extend(Driver, {
   }),
 
   zoneChoices: function() {
-    return (this.get('allSubnets')||[]).map((subnet) => {return subnet.get('zone');}).sort().uniq();
+    const choices = (this.get('allSubnets')||[]).map((subnet) => {return subnet.get('zone');}).sort().uniq();
+    if ( choices.length ) {
+      this.set('selectedZone', choices[0]);
+    }
+    return choices;
   }.property('allSubnets.@each.{zone}'),
 
   subnetChoices: function() {
