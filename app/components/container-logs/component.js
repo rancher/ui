@@ -94,6 +94,7 @@ export default Ember.Component.extend(ThrottledResize, {
     };
 
     socket.onmessage = (message) => {
+      let ansiup = new AnsiUp.default;
       this.set('status','connected');
 
       var isFollow = ($body.scrollTop() + $body.outerHeight() + 10) >= body.scrollHeight;
@@ -116,10 +117,11 @@ export default Ember.Component.extend(ThrottledResize, {
           dateStr = '<span class="log-date">Unknown Date</span>';
         }
 
+        // @@TODO@@ - 10-13-17 - needed to remove the escaping here because it was being double escaped but double verify that its acutally being escaped
         body.insertAdjacentHTML('beforeend',
           '<div class="log-msg '+ typeClass[type]  +'">' +
             dateStr +
-            AnsiUp.ansi_to_html(Util.escapeHtml(msg)) +
+            ansiup.ansi_to_html(msg) +
           '</div>'
         );
       });

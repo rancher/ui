@@ -184,7 +184,7 @@ export default Ember.Service.extend(Ember.Evented, {
     } else {
       if ( this.get('isRancher') )
       {
-        return this.get('app.appName'); // Rancher
+        return this.get('app.appName') || "Rancher"; // Rancher
       }
       else
       {

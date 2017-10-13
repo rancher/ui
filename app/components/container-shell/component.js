@@ -92,7 +92,7 @@ export default Ember.Component.extend(ThrottledResize, {
         socket.send(AWS.util.base64.encode(data));
       });
 
-      term.open(this.$('.shell-body')[0]);
+      term.open(this.$('.shell-body')[0], true);
       this.fit();
       socket.onmessage = (message) => {
         this.set('status','connected');
