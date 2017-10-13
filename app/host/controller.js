@@ -2,7 +2,6 @@ import Ember from 'ember';
 import ContainerSparkStats from 'ui/mixins/container-spark-stats';
 
 export default Ember.Controller.extend(ContainerSparkStats, {
-  application: Ember.inject.controller(),
   host:        Ember.computed.alias('model.host'),
   queryParams: ['sortBy'],
   sortBy:      'name',
@@ -54,10 +53,4 @@ export default Ember.Controller.extend(ContainerSparkStats, {
     },
   ],
   statsSocket: null,
-
-  actions: {
-    changeHost(host) {
-      this.get('application').transitionToRoute('host', host.get('id'));
-    },
-  }
 });

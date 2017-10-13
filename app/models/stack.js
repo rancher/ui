@@ -102,15 +102,15 @@ var Stack = Resource.extend(StateCounts, {
     },
 
     addContainer: function() {
-      this.get('application').transitionToRoute('containers.run', {queryParams: {stackId: this.get('id')}});
+      this.get('router').transitionTo('containers.run', {queryParams: {stackId: this.get('id')}});
     },
 
     viewCode: function() {
-      this.get('application').transitionToRoute('stack.code', this.get('id'));
+      this.get('router').transitionTo('stack.code', this.get('id'));
     },
 
     viewGraph: function() {
-      this.get('application').transitionToRoute('stack.graph', this.get('id'));
+      this.get('router').transitionTo('stack.graph', this.get('id'));
     },
 
     delete: function() {
