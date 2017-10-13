@@ -1,5 +1,6 @@
 import Ember from 'ember';
 import Driver from 'ui/mixins/driver';
+import { validateHostname } from 'ui/utils/validate-dns';
 
 let ioOptimized=[
   {
@@ -518,6 +519,7 @@ export default Ember.Component.extend(Driver, {
   systemDiskCategory: systemDiskCategory,
   regions: regions,
   intl: Ember.inject.service(),
+  settings: Ember.inject.service(),
   ioOptimizedObserves: function(){
     if (this.get('aliyunecsConfig.ioOptimized')==='none'){
       this.set('instanceType',notOptimizedinstanceType);
@@ -548,18 +550,21 @@ export default Ember.Component.extend(Driver, {
     var errors = this.get('errors') || [];
     var name = this.get('model.hostname');
     if (name) {
+      if (!validateHostname(name)){
+        errors.push(this.get('intl').t('machine.driverAliyunecs.errors.nameNotValidForApp',{appName: this.get('settings.appName')}));
+      }
       //name length rules
       if (name.length<2){
         errors.push(this.get('intl').t('machine.driverAliyunecs.errors.nameTooShort'));
       }
       //check '.','-' can not be used as the first letter and the last letter
-      if (!/^[a-zA-Z0-9]([\.-]?[a-zA-Z0-9]+[\.-]?)*[a-zA-Z0-9]$/.test(name)){
+      if (!/^[a-zA-Z]([\.]?[a-zA-Z0-9\-]+[\.]?)*[a-zA-Z0-9]$/.test(name)){
         errors.push(this.get('intl').t('machine.driverAliyunecs.errors.nameNotValid'));
       }
       //windows hostname can not have more than 15 letter. And we should not use windows image to setup a host, so we don't need to validate name for windows hostname.
-
-      //linux hostname can not have more than 30 letter.
-      if (name.length>30){
+      
+      //linux hostname can not have more than 128 letter.
+      if (name.length>128){
         errors.push(this.get('intl').t('machine.driverAliyunecs.errors.nameTooLong'));
       }
     }
