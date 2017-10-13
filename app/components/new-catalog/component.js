@@ -56,6 +56,7 @@ export default Ember.Component.extend(NewOrEdit, {
     },
 
     changeTemplate: function(tpl) {
+      this.set('selectedTemplateUrl', null);
       this.get('application').transitionToRoute('catalog-tab.launch', tpl.id);
     },
   },
