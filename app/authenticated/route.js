@@ -141,6 +141,7 @@ export default Ember.Route.extend(Subscribe, PromiseToCb, {
     var msg = Errors.stringify(err);
     console.log('Loading Error:', msg, err);
     if ( err && (isAuthEnabled || isAuthFail) ) {
+      this.set('access.enabled', true);
       this.send('logout', transition, isAuthFail, (isAuthFail ? undefined : msg));
       return;
     }
