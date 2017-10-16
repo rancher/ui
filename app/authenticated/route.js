@@ -137,6 +137,7 @@ export default Ember.Route.extend(Subscribe, PromiseToCb, {
 
     console.log('Loading Error:', err);
     if ( err && (isAuthEnabled || [401,403].indexOf(err.status) >= 0) ) {
+      this.set('access.enabled', true);
       this.send('logout',transition, (transition.targetName !== 'authenticated.index'));
       return;
     }

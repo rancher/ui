@@ -109,7 +109,7 @@ export let regions = {
       "displayName": "China East",
     }
   ].sortBy('name'),
-  'AzureUSGovernment': [
+  'AzureUSGovernmentCloud': [
     {
       "name": "usgovvirginia",
       "displayName": "US Gov Virginia",
@@ -366,6 +366,6 @@ export let environments = [
     value: 'AzureChinaCloud'
   },
   {
-    value: 'AzureUSGovernment'
+    value: 'AzureUSGovernmentCloud'
   }
 ];
