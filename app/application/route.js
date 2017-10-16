@@ -202,7 +202,7 @@ export default Ember.Route.extend({
           this.finishLogin();
         }).catch((err) => {
           transition.abort();
-          this.transitionTo('login', {queryParams: { errorMsg: err.message}});
+          this.transitionTo('login', {queryParams: { errorMsg: err.message, errorCode: err.status}});
         }).finally(() => {
           this.controllerFor('application').setProperties({
             state: null,
