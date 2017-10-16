@@ -5,10 +5,29 @@ export default Ember.Component.extend({
   projects: Ember.inject.service(),
   project: Ember.computed.alias('projects.current'),
 
-  currentPath: null,
   isOwner: null,
 
-  tagName: '',
+  tagName: 'LI',
+  classNames: ['dropdown','nav-item','nav-cluster'],
+  classNameBindings: ['hide'],
+
+  actions: {
+    switchProject(id) {
+      this.sendAction('switchProject', id);
+    },
+
+    switchNamespace(id) {
+      this.sendAction('switchNamespace', id);
+    },
+  },
+
+  twoLine: Ember.computed('scope', function() {
+    return this.get('scope') === 'project';
+  }),
+
+  hide: Ember.computed('scope',function() {
+    return this.get('scope') === 'user';
+  }),
 
   isAdmin: Ember.computed.reads('access.admin'),
 
@@ -16,7 +35,7 @@ export default Ember.Component.extend({
     return this.get('userStore').all('cluster', null, {url: 'clusters', forceReload: true, removeMissing: true});
   }),
 
-  projectChoices: function() {
+  projectChoices: Ember.computed('projects.active.@each.{id,displayName,state}', 'clusters.@each.{state,transition}', function() {
     return this.get('projects.active').filter((project) => {
       let removedish = ['removing', 'removed'];
       let cluster = this.get('clusters').findBy('id', project.get('clusterId'));
@@ -24,9 +43,9 @@ export default Ember.Component.extend({
         return project;
       }
     }).sortBy('name','id');
-  }.property('projects.active.@each.{id,displayName,state}', 'clusters.@each.{state,transition}'),
+  }),
 
-  byCluster: function() {
+  byCluster: Ember.computed('projectChoices.@each.clusterId', function() {
     let out = [];
     this.get('projectChoices').forEach((project) => {
       let cluster = project.get('cluster');
@@ -46,21 +65,9 @@ export default Ember.Component.extend({
     });
 
     return out.filterBy('show',true);
-  }.property('projectChoices.@each.clusterId'),
+  }),
 
-  nested: Ember.computed.gt('byCluster.length', 1),
-
-  projectIsMissing: function() {
+  projectIsMissing: Ember.computed('project.id','projectChoices.@each.id', function() {
     return this.get('projectChoices').filterBy('id', this.get('project.id')).get('length') === 0;
-  }.property('project.id','projectChoices.@each.id'),
-
-  actions: {
-    switchProject(id) {
-      this.sendAction('switchProject', id);
-    },
-
-    switchNamespace(id) {
-      this.sendAction('switchNamespace', id);
-    },
-  }
+  }),
 });

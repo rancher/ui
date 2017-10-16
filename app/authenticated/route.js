@@ -62,7 +62,6 @@ export default Ember.Route.extend(Subscribe, PromiseToCb, {
         project:            ['clusters','projects', 'preferences',
                                                         this.toCb('selectProject',transition)],
         projectSchemas:     ['project',                 this.toCb('loadProjectSchemas')],
-        orchestrationState: ['projectSchemas',          this.toCb('updateOrchestration')],
         instances:          ['projectSchemas',          this.cbFind('instance')],
         services:           ['projectSchemas',          this.cbFind('service')],
         hosts:              ['projectSchemas',          this.cbFind('host')],
@@ -212,10 +211,6 @@ export default Ember.Route.extend(Subscribe, PromiseToCb, {
     });
   },
 
-  updateOrchestration() {
-    return this.get('projects').updateOrchestrationState();
-  },
-
   loadPublicSettings() {
     return this.get('userStore').find('setting', null, {url: 'settings', forceReload: true, filter: {all: 'false'}});
   },
@@ -242,12 +237,14 @@ export default Ember.Route.extend(Subscribe, PromiseToCb, {
   _gotoRoute(name, withProjectId=true) {
     // Don't go to routes if in a form page, because you can easily not be on an input
     // and leave the page accidentally.
-    if ( $('FORM').length === 0 ) {
-      if ( withProjectId ) {
-        this.transitionTo(name, this.get('projects.current.id'));
-      } else {
-        this.transitionTo(name);
-      }
+    if ( $('FORM').length > 0 ) {
+      return;
+    }
+
+    if ( withProjectId ) {
+      this.transitionTo(name, this.get('projects.current.id'));
+    } else {
+      this.transitionTo(name);
     }
   },
 

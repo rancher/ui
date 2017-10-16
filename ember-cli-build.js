@@ -82,8 +82,6 @@ module.exports = function(defaults) {
   app.import('bower_components/prism/prism.js');
   app.import('bower_components/prism/components/prism-yaml.js');
   app.import('bower_components/prism/components/prism-bash.js');
-  app.import('bower_components/lodash/lodash.js');
-  app.import('bower_components/graphlib/dist/graphlib.core.js');
   app.import('bower_components/async/dist/async.js');
   app.import('bower_components/position-calculator/dist/position-calculator.js');
   app.import('vendor/aws-sdk-ec2.js');

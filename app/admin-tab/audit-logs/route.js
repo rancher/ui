@@ -9,7 +9,7 @@ export default Ember.Route.extend(PolledModel, {
     sortBy: {
       refreshModel: true
     },
-    sortOrder: {
+    descending: {
       refreshModel: true
     },
     eventType: {
@@ -34,7 +34,19 @@ export default Ember.Route.extend(PolledModel, {
     const schema = us.getById('schema','auditlog');
     const resourceTypes = this.get('userStore').all('schema').filterBy('links.collection').map(x => x.get('_id'));
 
-    let url = urlOptions(schema.links.collection, this.parseFilters(params));
+    let descending = params.descending;
+    delete params.descending;
+    if ( params.sortBy === 'created' ) {
+      descending = !descending;
+    }
+
+    if ( descending ) {
+      params.sortOrder = 'desc';
+    }
+
+    let opt = this.requestOptions(params);
+
+    let url = urlOptions(schema.links.collection, opt);
     return us.rawRequest({url}).then((res) => {
       let records = us._typeify(res.body, {updateStore: false});
 
@@ -45,27 +57,27 @@ export default Ember.Route.extend(PolledModel, {
     });
   },
 
-  parseFilters(params) {
-    var returnValue = {
+  requestOptions(params) {
+    var out = {
       filter      : {},
-      limit       : 20,
+      limit       : 1000,
       depaginate  : false,
       forceReload : true,
     };
-    if (params) {
-      _.forEach(params, (item, key) => {
-        if ( ['sortBy','sortOrder','forceReload'].indexOf(key) >= 0 )  {
-          returnValue[key] = item;
-        } else {
-          if (item) {
-            returnValue.filter[key] = item;
-          } else {
-            delete returnValue.filter[key];
-          }
-        }
-      });
-    }
-    return returnValue;
+
+    Object.keys(params).forEach((key) => {
+      const item = params[key];
+
+      if ( ['sortBy','sortOrder','forceReload'].includes(key) )  {
+        out[key] = item;
+      } else if (item) {
+        out.filter[key] = item;
+      } else {
+        delete out.filter[key];
+      }
+    });
+
+    return out;
   },
 
 });

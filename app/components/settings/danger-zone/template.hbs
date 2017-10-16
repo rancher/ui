@@ -1,21 +1,15 @@
-<h2>{{t 'dangerZone.header'}}</h2>
-<p class="text-muted">{{t 'dangerZone.subtext' appName=settings.appName}}</p>
-<hr>
+<p>{{t 'dangerZone.subtext' appName=settings.appName htmlSafe=true}}</p>
 
 {{#if loading}}
   <div class="p-20 text-center"><i class="icon icon-spinner icon-spin"></i> {{t 'generic.loading'}}</div>
-{{else if show}}
+{{else}}
   <div>
     {{#each current as |row|}}
       <div class="advanced-setting">
         <div class="edit btn bg-warning" {{action "showEdit" row.key}}><i class="icon icon-edit"></i></div>
         <div class="text-mono force-wrap {{unless (or (not row.obj) row.obj.isDefault) 'text-bold'}}">{{row.key}}={{#if row.obj.value}}{{row.obj.value}}{{else}}<span class="text-muted">&lt;none&gt;</span>{{/if}}</div>
-        <p class="text-info">{{row.description}}</p>
+        <p class="text-info">{{t row.descriptionKey}}</p>
       </div>
     {{/each}}
-  </div>
-{{else}}
-  <div class="text-center">
-    <a class="btn btn-link" {{action "show"}}><i class="icon icon-purge"></i> {{t 'dangerZone.showLabel'}}</a>
   </div>
 {{/if}}

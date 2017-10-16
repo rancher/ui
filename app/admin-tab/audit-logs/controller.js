@@ -3,7 +3,7 @@ import C from 'ui/utils/constants';
 
 export default Ember.Controller.extend({
   application       : Ember.inject.controller(),
-  queryParams       : ['sortBy', 'sortOrder', 'eventType', 'resourceType', 'resourceId', 'clientIp', 'authType'],
+  queryParams       : ['sortBy', 'descending', 'eventType', 'resourceType', 'resourceId', 'clientIp', 'authType'],
   resourceTypeAndId : null,
   modalService:       Ember.inject.service('modal'),
 
@@ -11,7 +11,6 @@ export default Ember.Controller.extend({
     {
       name: 'created',
       sort: ['created:desc','id'],
-      serverSortReversed: true,
       translationKey: 'auditLogsPage.table.time',
       width: 115
     },
@@ -35,7 +34,7 @@ export default Ember.Controller.extend({
       width: 175
     },
     {
-      name: 'authIp',
+      name: 'clientIp',
       translationKey: 'auditLogsPage.table.authIp',
       sort: ['clientIp'],
       searchFields: ['authType','clientIp'],
@@ -96,16 +95,12 @@ export default Ember.Controller.extend({
         authType     : null,
       });
 
-      this.setProperties({
-        sortBy    : 'created',
-        sortOrder : 'desc',
-      });
+      this.updateServerSort();
       this.set('authTypeReadable', null);
     },
   },
 
   sortBy           : 'created',
-  sortOrder        : 'asc',
   descending       : false,
   eventType        : null,
   resourceType     : null,
@@ -142,26 +137,7 @@ export default Ember.Controller.extend({
     });
 
     this.set('authTypes', out);
-    this.updateServerDirection();
   }.on('init'),
-
-  updateServerSort: function() {
-    this.set('descending', false);
-  }.observes('sortBy'),
-
-  updateServerDirection: function() {
-    let out = 'asc';
-    let entry = this.get('headers').findBy('name', this.get('sortBy'));
-    if ( entry.serverSortReversed ) {
-      out = 'desc';
-    }
-
-    if (this.get('descending')) {
-      out = (out == 'asc' ? 'desc' : 'asc');
-    }
-
-    this.set('sortOrder', out);
-  }.observes('descending'),
 
   resourceIdReady: function() {
     if (this.get('filters.resourceType')) {

@@ -4,6 +4,11 @@ export default Ember.Route.extend({
   access    : Ember.inject.service(),
   projects  : Ember.inject.service(),
 
+  activate() {
+    this._super();
+    this.controllerFor('authenticated').setPageScope('project');
+  },
+
   model(params/*, transition*/) {
     var project = this.get('projects.current');
 

@@ -1,14 +1,15 @@
 <nav class="clearfix responsive-nav" role="navigation" id="js-responsive-nav">
   <a class="nav-logo logo-{{app.mode}} btn bg-transparent"><span class="sr-only">{{settings.appName}}</span></a>
 
-  <ul class="nav-main nav-list">
-    {{~page-header-environment
-      currentPath=currentPath
+  <ul class="nav-main nav-list no-inline-space">
+    {{page-header-environment
+      scope=scope
       isOwner=isOwner
       switchProject="switchProject"
       switchNamespace="switchNamespace"
-    ~}}
-    {{~#each navTree as |item|~}}
+    }}
+
+    {{#each navTree as |item|}}
       {{#if item.submenu.length}}
         {{! Has a submenu }}
         <li class="dropdown nav-item">
@@ -112,7 +113,7 @@
           <li>{{#link-to "authenticated.clusters"}}{{t 'nav.environment.manage'}}{{/link-to}}</li>
         {{/if}}
 
-        <li>{{#link-to "user-preferences"}}{{t 'nav.userPreferences.link'}}{{/link-to}}</li>
+        <li>{{#link-to "authenticated.prefs"}}{{t 'nav.userPreferences.link'}}{{/link-to}}</li>
 
         {{#if accessEnabled}}
           <li role="separator" class="divider"></li>

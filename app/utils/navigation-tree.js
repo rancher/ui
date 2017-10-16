@@ -3,7 +3,7 @@ import C from 'ui/utils/constants';
 
 // Useful context/condition shortcuts
 export const getProjectId = function() { return this.get('projectId'); };
-export const getNamespaceId = function() { return this.get('namespaceId'); };
+export const getClusterId = function() { return this.get('clusterId'); };
 
 /* Tree item options
   {
@@ -29,42 +29,37 @@ export const getNamespaceId = function() { return this.get('namespaceId'); };
   },
 */
 const navTree = [
-  // Cattle
+  // Project
   {
+    scope: 'project',
     id: 'containers',
     localizedLabel: 'nav.containers.tab',
     route: 'authenticated.project.index',
     ctx: [getProjectId],
-    condition: function() { return this.get('hasProject'); },
     moreCurrentWhen: ['containers','balancers','dns','volumes','k8s'],
   },
 
   {
-    id: 'hosts',
+    scope: 'project',
+    id: 'project-hosts',
     localizedLabel: 'nav.hosts.tab',
     route: 'hosts',
     ctx: [getProjectId],
-    condition: function() { return this.get('hasProject'); },
   },
 
-  // App Catalog
   {
-    id: 'apps',
+    scope: 'project',
+    id: 'project-apps',
     localizedLabel: 'nav.apps.tab',
     route: 'apps-tab',
     ctx: [getProjectId],
-    condition: function() {
-      return this.get('hasProject') &&
-      this.get(`settings.${C.SETTING.CATALOG_URL}`);
-    },
+    condition: function() { return this.get(`settings.${C.SETTING.CATALOG_URL}`); },
   },
-
-  // Infrastructure = Resources
   {
+    scope: 'project',
     id: 'infra',
     localizedLabel: 'nav.infra.tab',
     ctx: [getProjectId],
-    condition: function() { return this.get('hasProject'); },
     submenu: [
       {
         id: 'infra-keys',
@@ -104,60 +99,62 @@ const navTree = [
     ],
   },
 
-  // Admin
+  // Cluster
   {
-    id: 'admin',
-    localizedLabel: 'nav.admin.tab',
-    condition: function() { return this.get('isAdmin'); },
-    submenu: [
-      {
-        id: 'admin-audit',
-        localizedLabel: 'nav.admin.audit',
-        icon: 'icon icon-folder-open',
-        route: 'admin-tab.audit-logs',
-      },
-      {
-        id: 'admin-accounts',
-        localizedLabel: 'nav.admin.accounts',
-        icon: 'icon icon-users',
-        route: 'admin-tab.accounts',
-      },
-      {
-        id: 'admin-processes',
-        localizedLabel: 'nav.admin.processes',
-        icon: 'icon icon-processes',
-        route: 'admin-tab.processes',
-      },
-      {
-        divider: true
-      },
-      {
-        id: 'admin-access',
-        localizedLabel: 'nav.admin.access',
-        icon: 'icon icon-key',
-        route: 'admin-tab.auth',
-      },
-      {
-        id: 'admin-ha',
-        localizedLabel: 'nav.admin.ha',
-        icon: 'icon icon-umbrella',
-        route: 'admin-tab.ha',
-      },
-      {
-        id: 'admin-machine',
-        localizedLabel: 'nav.admin.machine',
-        icon: 'icon icon-host',
-        route: 'admin-tab.machine',
-      },
-      {
-        id: 'admin-settings',
-        localizedLabel: 'nav.admin.settings',
-        icon: 'icon icon-network',
-        route: 'admin-tab.settings',
-      },
-    ],
+    scope: 'cluster',
+    id: 'cluster-hosts',
+    localizedLabel: 'nav.cluster.hosts',
+    route: 'authenticated.clusters.cluster.hosts',
+    ctx: [getClusterId],
+  },
+  {
+    scope: 'cluster',
+    id: 'cluster-k8s',
+    localizedLabel: 'nav.cluster.k8s',
+    route: 'authenticated.clusters.cluster.k8s',
+    condition: function() { return this.get(`cluster.isKubernetes`); },
+    ctx: [getClusterId],
+  },
+  {
+    scope: 'cluster',
+    id: 'cluster-networking',
+    localizedLabel: 'nav.cluster.networking',
+    route: 'authenticated.clusters.cluster.networking',
+    ctx: [getClusterId],
+  },
+  {
+    scope: 'cluster',
+    id: 'cluster-storage',
+    localizedLabel: 'nav.cluster.storage',
+    route: 'authenticated.clusters.cluster.storage',
+    ctx: [getClusterId],
   },
 
+  // Admin
+  {
+    scope: 'admin',
+    id: 'admin-audit',
+    localizedLabel: 'nav.admin.audit',
+    route: 'admin-tab.audit-logs',
+  },
+  {
+    scope: 'admin',
+    id: 'admin-accounts',
+    localizedLabel: 'nav.admin.accounts',
+    route: 'admin-tab.accounts',
+  },
+  {
+    scope: 'admin',
+    id: 'admin-processes',
+    localizedLabel: 'nav.admin.processes',
+    route: 'admin-tab.processes',
+  },
+  {
+    scope: 'admin',
+    id: 'admin-settings',
+    localizedLabel: 'nav.admin.settings.tab',
+    route: 'admin-tab.settings',
+  },
 ];
 
 export function addItem(opt) {
