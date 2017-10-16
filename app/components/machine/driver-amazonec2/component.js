@@ -163,6 +163,21 @@ function nameFromResource(r, idField) {
   return out;
 }
 
+function tagsFromResource(r) {
+  let out = [];
+
+  if ( r && r.Tags && r.Tags.length )
+  {
+    r.Tags.forEach(tag => {
+      if( tag.Key !== 'Name' ) {
+        out.push(`${tag.Key}=${tag.Value}`)
+      }
+    })
+  }
+
+  return out;
+}
+
 export default Ember.Component.extend(Driver, {
   prefs                    : Ember.inject.service(),
   driverName               : 'amazonec2',
@@ -288,6 +303,7 @@ export default Ember.Component.extend(Driver, {
       });
 
       let vpcNames = {};
+      let vpcTags = {};
 
       ec2.describeVpcs({}, (err, vpcs) => {
         if ( err ) {
@@ -300,6 +316,7 @@ export default Ember.Component.extend(Driver, {
 
         vpcs.Vpcs.forEach((vpc) => {
           vpcNames[vpc.VpcId] = nameFromResource(vpc, 'VpcId');
+          vpcTags[vpc.VpcId] = tagsFromResource(vpc);
         });
 
         ec2.describeSubnets({}, (err, data) => {
@@ -322,8 +339,10 @@ export default Ember.Component.extend(Driver, {
             subnets.pushObject(Ember.Object.create({
               subnetName: nameFromResource(subnet, 'SubnetId'),
               subnetId:   subnet.SubnetId,
+              subnetTags: tagsFromResource(subnet),
               vpcName:    vpcNames[subnet.VpcId] || subnet.VpcId,
               vpcId:      subnet.VpcId,
+              vpcTags:    vpcTags[subnet.VpcId] || [],
               zone:       subnet.AvailabilityZone,
               region:     rName
             }));
@@ -521,8 +540,10 @@ export default Ember.Component.extend(Driver, {
     (this.get('allSubnets')||[]).filterBy('zone', this.get('selectedZone')).forEach((subnet) => {
       let vpcName    = subnet.get('vpcName');
       let vpcId      = subnet.get('vpcId');
+      let vpcTags    = subnet.get('vpcTags');
       let subnetId   = subnet.get('subnetId');
       let subnetName = subnet.get('subnetName');
+      let subnetTags = subnet.get('subnetTags');
 
       if ( seenVpcs.indexOf(vpcId) === -1 ) {
         seenVpcs.pushObject(vpcId);
@@ -530,7 +551,8 @@ export default Ember.Component.extend(Driver, {
           sortKey : vpcId,
           label   : vpcName,
           value   : vpcId,
-          isVpc   : true
+          isVpc   : true,
+          tags    : vpcTags
         });
       }
 
@@ -539,6 +561,7 @@ export default Ember.Component.extend(Driver, {
         label   : subnetName,
         value   : subnetId,
         isVpc   : false,
+        tags    : subnetTags
       });
     });
 
