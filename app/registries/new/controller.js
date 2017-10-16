@@ -11,7 +11,7 @@ export default Ember.Controller.extend(NewOrEdit, {
   actions: {
     selectDriver: function(name) {
       setTimeout(() => {
-        $('main INPUT')[0].focus();
+        $('MAIN INPUT')[0].focus();
       }, 500);
       var driver = this.get('drivers').filterBy('name',name)[0];
       this.set('activeDriver', driver.name);

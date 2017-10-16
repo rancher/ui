@@ -21,11 +21,6 @@ export default Ember.Component.extend(ModalBase, NewOrEdit, {
   needOld:            Ember.computed.not('isAdmin'),
   showConfirm:        Ember.computed.not('generated'),
 
-  accountTypeChoices: [
-    {label: 'editAccount.form.kind.user', value: 'user'},
-    {label: 'editAccount.form.kind.admin', value: 'admin'},
-  ],
-
   actions: {
     error(err) {
       if ( err.get('code') === 'InvalidOldPassword' )
@@ -51,6 +46,7 @@ export default Ember.Component.extend(ModalBase, NewOrEdit, {
     return this.get('access.provider') === 'localauthconfig';
   }.property('access.provider'),
 
+  authEnabled: Ember.computed.reads('access.enabled'),
 
   init() {
     this._super(...arguments);

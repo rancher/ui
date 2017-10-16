@@ -26,6 +26,7 @@ generic:
   disabled: Disabled
   dockerId: Docker ID
   domainName: Domain Name
+  done: Done
   emptyString: ""
   enable: Enable
   enabled: Enabled
@@ -937,9 +938,6 @@ servicePage:
     header: Service & Sidekicks
     helpBlock: Select the main service launch config or one of the sidekick launch configs
 
-settingsPage:
-  header: Settings
-
 signupPage:
   header: 'Signup for {appName}'
   form:
@@ -1389,8 +1387,48 @@ copyToClipboard:
 
 dangerZone:
   header: Advanced Settings
-  subtext: "Proceed with caution; typical users will not need to change these.  Incorrect values can break your {appName} installation.  Settings which have been changed are shown in bold."
+  subtext: "Typical users will not need to change these.  Proceed with caution, incorrect values can break your {appName} installation.<br/>Settings which have been customized from default settings  are shown in <b>bold</b>."
   showLabel: I understand that I can break things by changing advanced settings.
+  description:
+    'access$log': 'Path to write access logs to (HA installation only)'
+    'api$auth$jwt$token$expiry': 'Authorization token/UI session lifetime (milliseconds)'
+    'api$auth$realm': 'HTTP Basic Auth realm for requests without Authorization header'
+    'api$auth$restrict$concurrent$sessions': 'Limit active session tokens to one per account.  This mainly prevents users from logging in to the UI from multiple computers simultaneously.  Note: Existing sessions may continue to be valid until they expire when this is initially enabled.'
+    'api$interceptor$config': 'JSON configuration for API Interceptor'
+    'api$proxy$allow': 'Allow use of /v1/proxy to talk to whitelisted domains, for custom Add Host UIs'
+    'api$proxy$whitelist': 'Whitelist of domains to that can be proxied through /v1/proxy to, for custom Add Host UIs'
+    'api$ui$css$url': 'CSS location for the API UI'
+    'api$ui$js$url': 'JavaScript location for the API UI'
+    'audit_log$purge$after$seconds': 'Auto-purge Audit Log entries after this long (seconds)'
+    'catalog$refresh$interval$seconds': 'Refresh Catalog git repos after this long (seconds)'
+    'container$event$max$size': 'Maximum number of outstanding container events allowed per host before dropping events'
+    'default$cluster$template': 'Template to use when creating a new cluster.  This includes the default catalog items which are deployed to the System environment and the configurations of each item.'
+    'db$cattle$maxidle': 'Database pool: maximum idle connections (change requires restart)'
+    'db$cattle$maxtotal': 'Database pool: maximum total connections (change requires restart)'
+    'db$prep$stmt$cache$size': 'Database pool: Prepared statement cache size (per connection; change requires restart)'
+    'events$purge$after$seconds': 'Auto-purge Event entries after this long (seconds)'
+    'graphite$host': 'Graphite: Server hostname or IP (change requires restart)'
+    'graphite$options': 'Graphite: Additional options'
+    'graphite$port': 'Graphite: Server port'
+    'host$remove$delay$seconds': 'Automatically remove hosts that are disconnected for more than this long (seconds)'
+    'lb$instance$image': 'Default docker image for Load Balancer Services'
+    'main_tables$purge$after$seconds': 'Auto-purge deleted entries from most tables after this long (seconds)'
+    'newest$docker$version': 'The newest supported version of Docker at the time of this release.  A Docker version that does not satisfy supported docker range but is newer than this will be marked as untested'
+    'project$create$default': 'Automatically create an Environment for users on first login, if they have access to no other Environments.'
+    'registry$default': 'Pull images with no registry specified from this registry instead of DockerHub'
+    'registry$whitelist': 'Allow containers images only from the specified registries (if specified; comma-separated)'
+    'secrets$backend': 'Backend storage provider for secrets'
+    'service_log$purge$after$seconds': 'Auto-purge Service Log entries after this long (seconds)'
+    'settings$public': 'The settings that are visible to non-admin users.  These are primarily needed for the UI.'
+    'supported$docker$range': 'Semver range for suported Docker engine versions.  Versions which do not satisfy this range will be marked unsupported in the UI'
+    'ui$pl': 'Private-Label company name'
+    'ui$show$custom$host': 'Show the Custom host option on the Add Host screen.  Note that disabling this does not prevent a user from using the API to add custom hosts.'
+    'ui$sendgrid$api_key': 'SendGrid API key'
+    'ui$sendgrid$template$password_reset': 'SendGrid template for initiating password reset'
+    'ui$sendgrid$template$create_user': 'SendGrid template for confirming email'
+    'ui$sendgrid$template$verify_password': 'SendGrid template for confirming password reset'
+    'upgrade$manager': 'Automatic upgrades of infrastructure stacks'
+
 
 devicePermissions:
   all: All
@@ -1407,8 +1445,8 @@ editAccount:
       placeholder: e.g. John Smith
     kind:
       label: Account Type
-      user: User
-      admin: Admin
+      user: Normal User
+      admin: "Admin: Full access to manage everything in all clusters"
     description:
       label: Description
       placeholder: e.g. This account is for John Smith
@@ -2027,7 +2065,7 @@ formSecurity:
     disable: Only if not already present on the host
   privileged:
     label: Privileged
-    disable: No
+    disable: "No"
     enable: "Yes: container has full access to the host"
   pidMode:
     label: PID Mode
@@ -3551,7 +3589,11 @@ nav:
     selected: Selected Environment
     manage: Manage Clusters
     edit: 'Edit "{name}"'
-  notReady: Setting Up...
+  cluster:
+    hosts: Hosts
+    k8s: Kubernetes
+    networking: Networking
+    storage: Storage
   containers:
     tab: Containers
     systemTab: System
@@ -3589,14 +3631,18 @@ nav:
     hooks: Webhooks
     templateKeys: Template Keys
   admin:
-    tab: Admin
+    tab: Global Admin
     audit: Audit Log
     processes: Processes
     accounts: Accounts
-    access: Access Control
-    machine: Machine Drivers
-    settings: Settings
-    ha: High Availability
+    settings:
+      tab: Settings
+      auth: Access Control
+      catalog: Catalogs
+      ha: High Availability
+      machine: Machine Drivers
+      registration: Host Registration
+      advanced: Advanced
   user:
     label: "User Menu: {username}"
     logout: Log Out

@@ -18,21 +18,21 @@
     {{#if isAdmin}}
       <div class="col span-6 mb-0">
         <label class="acc-label" for="description">{{t 'editAccount.form.description.label'}}</label>
-        {{textarea value=model.account.description classNames="form-control no-resize" rows="2" placeholder=(t 'editAccount.form.description.placeholder')}}
+        {{textarea-autogrow value=model.account.description classNames="form-control no-resize" rows="2" placeholder="editAccount.form.description.placeholder"}}
       </div>
     {{/if}}
   </div>
   <hr/>
-  {{#if isAdmin}}
+  {{#if (and authEnabled isAdmin)}}
     <div>
       <label class="acc-label">{{t 'editAccount.form.kind.label'}}</label>
-      {{new-select
-        classNames="form-control"
-        content=accountTypeChoices
-        value=model.account.kind
-        localizedLabel=true
-      }}
+      <div class="radio">
+        <label>{{radio-button selection=model.account.kind value="user"}} {{t 'editAccount.form.kind.user'}}</label>
       </div>
+      <div class="radio">
+        <label>{{radio-button selection=model.account.kind value="admin"}} {{t 'editAccount.form.kind.admin'}}</label>
+      </div>
+    </div>
   {{/if}}
 
   {{#if isLocalAuth}}
@@ -64,14 +64,15 @@
     {{/liquid-if}}
   {{else}}
     <div class="pt-30">
-        <label class="acc-label">{{t 'editAccount.form.identity.label'}}</label>
-        {{#if (and model.account.externalId model.account.externalIdType)}}
-          {{identity-block externalIdType=model.account.externalIdType externalId=model.account.externalId}}
-        {{else}}
-          <div class="text-muted">
-            {{t 'generic.none'}}
-          </div>
-        {{/if}}    </div>
+      <label class="acc-label">{{t 'editAccount.form.identity.label'}}</label>
+      {{#if (and model.account.externalId model.account.externalIdType)}}
+        {{identity-block externalIdType=model.account.externalIdType externalId=model.account.externalId}}
+      {{else}}
+        <div class="text-muted">
+          {{t 'generic.none'}}
+        </div>
+      {{/if}}
+    </div>
   {{/if}}
 </section>
 

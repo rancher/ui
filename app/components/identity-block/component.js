@@ -1,6 +1,8 @@
 import Ember from 'ember';
 import C from 'ui/utils/constants';
 
+let notFound={};
+
 export default Ember.Component.extend({
   // Identity or externalId+externalIdType
   identity          : null,
@@ -17,6 +19,8 @@ export default Ember.Component.extend({
   init() {
     this._super(...arguments);
 
+    const us = this.get('userStore');
+
     var eType = this.get('externalIdType');
     var eId = this.get('externalId');
     var id = this.get('identityNotParsed');
@@ -25,27 +29,35 @@ export default Ember.Component.extend({
      id =`1i!${eType}:${eId}`;
     }
 
-    if ( !this.get('identity') )
+    if ( this.get('identity') || notFound[id] ) {
+      return;
+    }
+
+    if ( id )
     {
-      if ( id )
-      {
-        this.set('loading', true);
-        this.get('userStore').find('identity', id).then((identity) => {
-          if ( this.isDestroyed || this.isDestroying ) {
-            return;
-          }
-
-          this.set('identity', identity);
-        }).catch((/*err*/) => {
-          // Do something..
-        }).finally(() => {
-          if ( this.isDestroyed || this.isDestroying ) {
-            return;
-          }
-
-          this.set('loading', false);
-        });
+      let identity = us.getById('identity', id);
+      if ( identity ) {
+        this.set('identity', identity);
+        return;
       }
+
+      this.set('loading', true);
+      this.get('userStore').find('identity', id).then((identity) => {
+        if ( this.isDestroyed || this.isDestroying ) {
+          return;
+        }
+
+        this.set('identity', identity);
+      }).catch((/*err*/) => {
+        // Do something..
+        notFound[id] = true;
+      }).finally(() => {
+        if ( this.isDestroyed || this.isDestroying ) {
+          return;
+        }
+
+        this.set('loading', false);
+      });
     }
   },
 

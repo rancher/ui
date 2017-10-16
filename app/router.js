@@ -21,6 +21,7 @@ Router.map(function() {
   this.route('signup', {path: '/signup'});
   this.route('verify', {path: '/verify/:verify_token'});
   this.route('verify-reset-password', {path: '/verify-reset-password/:verify_token'});
+
   this.route('login', function() {
     this.route('index', {path: '/'});
     this.route('shibboleth-auth');
@@ -28,29 +29,34 @@ Router.map(function() {
   this.route('logout');
 
   this.route('authenticated', {path: '/'}, function() {
-
-    this.route('style-guide', {path: '/style-guide'});
     this.route('dummy-dev', {path: '/dev'});
 
-    this.route('user-preferences', {path: '/user-preferences', resetNamespace: true});
+    this.route('prefs');
 
     // Admin
     this.route('admin-tab', {path: '/admin', resetNamespace: true}, function() {
-      this.route('auth', {path: '/access'}, function() {
-        this.route('activedirectory');
-        this.route('azuread');
-        this.route('github');
-        this.route('openldap');
-        this.route('localauth', {path: 'local'});
-        this.route('shibboleth');
-      });
-
-      this.route('settings');
-      this.route('ha');
-
       this.route('accounts', {path: '/accounts'}, function() {
         this.route('index', {path: '/'});
         this.route('new', {path: '/add'});
+      });
+
+      this.route('audit-logs');
+
+      this.route('settings', function() {
+        this.route('auth', {path: '/access'}, function() {
+          this.route('activedirectory');
+          this.route('azuread');
+          this.route('github');
+          this.route('openldap');
+          this.route('localauth', {path: 'local'});
+          this.route('shibboleth');
+        });
+
+        this.route('catalog');
+        this.route('ha');
+        this.route('machine');
+        this.route('registration');
+        this.route('advanced');
       });
 
       this.route('processes', {path: '/processes'}, function() {
@@ -60,8 +66,6 @@ Router.map(function() {
       });
       this.route('process', {path: '/processes/:process_id'});
 
-      this.route('audit-logs');
-      this.route('machine');
     });
 
     // Clusters
@@ -72,8 +76,13 @@ Router.map(function() {
       this.route('project', {path: '/env/:project_id'});
 
       this.route('cluster', {path: '/:cluster_id'}, function() {
-        this.route('edit', {path: '/edit'});
-        this.route('import', {path: '/import'});
+        this.route('edit');
+        this.route('import');
+
+        this.route('storage');
+        this.route('networking');
+
+        this.route('hosts');
         this.route('host-new', {path: '/add-host'});
         this.route('host-templates', {path: '/launch-host'}, function() {
           this.route('index', {path: '/'});
@@ -178,9 +187,9 @@ Router.map(function() {
         this.route('new-receiver', {path: '/add-receiver'});
         this.route('edit-receiver', {path: '/receiver/:receiver_id'});
       });
-
-      // End: Authenticated
     });
+
+    // End: Authenticated
   });
 
 

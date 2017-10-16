@@ -1,5 +1,7 @@
 import Ember from 'ember';
 
+let notFound= {};
+
 export default Ember.Component.extend({
   environmentId: null,
   loading: true,
@@ -8,7 +10,11 @@ export default Ember.Component.extend({
 
   tagName: '',
 
-  didReceiveAttrs() {
+  init() {
+    this._super();
+
+    const us = this.get('userStore');
+
     let id = this.get('environmentId');
     let onlyType = this.get('onlyType');
 
@@ -17,21 +23,41 @@ export default Ember.Component.extend({
       env: null
     });
 
-    if ( id )
-    {
-      this.get('userStore').find('project', id).then((env) => {
+    let env = us.getById('project', id);
+    if ( env || notFound[id] ) {
+      this.setProperties({
+        env: env,
+        loading: false,
+      });
+      return;
+    }
+
+    if ( id ) {
+      us.find('project', id).then((env) => {
+        if ( this.isDestroyed || this.isDestroying ) {
+          return;
+        }
+
         if ( !onlyType || env.get('type').toLowerCase() === onlyType.toLowerCase() )
         {
           this.set('env', env);
         }
       }).catch(() => {
+        notFound[id] = true;
+
+        if ( this.isDestroyed || this.isDestroying ) {
+          return;
+        }
+
         this.set('env', null);
       }).finally(() => {
+        if ( this.isDestroyed || this.isDestroying ) {
+          return;
+        }
+
         this.set('loading', false);
       });
-    }
-    else
-    {
+    } else {
       this.set('loading',false);
     }
   }

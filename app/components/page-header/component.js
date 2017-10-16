@@ -17,25 +17,23 @@ function fnOrValue(val, ctx) {
 
 export default Ember.Component.extend(HoverDropdown, {
   // Inputs
-  hasCattleSystem      : null,
-  currentPath          : null,
+  stacks               : null,
 
   // Injections
   intl                 : Ember.inject.service(),
   projects             : Ember.inject.service(),
-  project              : Ember.computed.alias('projects.current'),
-  projectId            : Ember.computed.alias(`tab-session.${C.TABSESSION.PROJECT}`),
   settings             : Ember.inject.service(),
   access               : Ember.inject.service(),
   prefs                : Ember.inject.service(),
+
+  clusterId            : Ember.computed.alias('projects.currentCluster.id'),
+  project              : Ember.computed.alias('projects.currentCluster'),
+  projectId            : Ember.computed.alias('projects.current.id'),
+  project              : Ember.computed.alias('projects.current'),
   isAdmin              : Ember.computed.alias('access.admin'),
-  hasVm                : Ember.computed.alias('project.virtualMachine'),
-  hasKubernetes        : true, //Ember.computed.alias('projects.orchestrationState.hasKubernetes'),
   isCaas               : Ember.computed.equal('app.mode',C.MODE.CAAS),
   isOss                : Ember.computed.equal('app.mode',C.MODE.OSS),
   accessEnabled        : Ember.computed.alias('access.enabled'),
-
-  stacks               : null,
 
   // Component options
   tagName              : 'header',
@@ -87,6 +85,8 @@ export default Ember.Component.extend(HoverDropdown, {
   // This computed property generates the active list of choices to display
   navTree: null,
   updateNavTree() {
+    let currentScope = this.get('scope');
+
     let out = getTree().filter((item) => {
       if ( typeof item.condition === 'function' )
       {
@@ -96,6 +96,10 @@ export default Ember.Component.extend(HoverDropdown, {
         }
       }
 
+      if ( item.scope && item.scope !== currentScope ) {
+        return false;
+      }
+
       item.localizedLabel = fnOrValue(item.localizedLabel, this);
       item.label = fnOrValue(item.label, this);
       item.route = fnOrValue(item.route, this);
@@ -103,11 +107,6 @@ export default Ember.Component.extend(HoverDropdown, {
         return fnOrValue(prop, this);
       });
       item.submenu = fnOrValue(item.submenu, this);
-
-      item.showAlert = false;
-      if ( typeof item.alertCondition === 'function' && item.alertCondition.call(this) === true ) {
-        item.showAlert = true;
-      }
 
       item.submenu = (item.submenu||[]).filter((subitem) => {
         if ( typeof subitem.condition === 'function' && !subitem.condition.call(this) ) {
@@ -133,9 +132,8 @@ export default Ember.Component.extend(HoverDropdown, {
   shouldUpdateNavTree: function() {
     Ember.run.scheduleOnce('afterRender', this, 'updateNavTree');
   }.observes(
+    'scope',
     'projectId',
-    'projects.orchestrationState',
-    'project.virtualMachine',
     'stacks.@each.group',
     `prefs.${C.PREFS.ACCESS_WARNING}`,
     'access.enabled',
@@ -153,9 +151,4 @@ export default Ember.Component.extend(HoverDropdown, {
   isOwner: function() {
     return !!this.get('stackSchema.resourceFields.system.update');
   }.property('stackSchema.resourceFields.system.update'),
-
-  kubernetesReady: function() {
-    return this.get('hasKubernetes') &&
-    this.get('projects.orchestrationState.kubernetesReady');
-  }.property('hasKubernetes','projects.orchestrationState.kubernetesReady'),
 });

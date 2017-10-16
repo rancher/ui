@@ -1,7 +1,14 @@
 <nav class="clearfix responsive-nav" role="navigation" id="js-responsive-nav">
   <a class="nav-logo logo-{{app.mode}} btn bg-transparent"><span class="sr-only">{{settings.appName}}</span></a>
 
-  <ul class="nav-main nav-list">
+  <ul class="nav-main nav-list no-inline-space">
+    {{page-header-environment
+      scope=scope
+      isOwner=isOwner
+      switchProject="switchProject"
+      switchNamespace="switchNamespace"
+    }}
+
     {{#each navTree as |item|}}
       {{#if item.submenu.length}}
         {{! Has a submenu }}
@@ -54,11 +61,6 @@
               {{/if}}
             {{/each}}
           </ul>
-          {{#if item.showAlert}}
-            {{#tooltip-element class="bg-error badge-xs" type='tooltip-warning' tooltipFor="showAlert" style="position:absolute; display:inline;"}}
-              {{#link-to item.alertRoute data-toggle="tooltip" data-placement="bottom"}}!{{/link-to}}
-            {{/tooltip-element}}
-          {{/if}}
         </li>
       {{else if item.route}}
         {{! No submenu }}
@@ -81,15 +83,6 @@
         </li>
       {{/if}}
     {{/each}}
-
-    {{#if (or isOss (gt projects.active.length 1))}}
-      {{~page-header-environment
-        currentPath=currentPath
-        isOwner=isOwner
-        switchProject="switchProject"
-        switchNamespace="switchNamespace"
-      ~}}
-    {{/if}}
   </ul>
 
   <ul class="nav-user dropdown">
@@ -120,7 +113,7 @@
           <li>{{#link-to "authenticated.clusters"}}{{t 'nav.environment.manage'}}{{/link-to}}</li>
         {{/if}}
 
-        <li>{{#link-to "user-preferences"}}{{t 'nav.userPreferences.link'}}{{/link-to}}</li>
+        <li>{{#link-to "authenticated.prefs"}}{{t 'nav.userPreferences.link'}}{{/link-to}}</li>
 
         {{#if accessEnabled}}
           <li role="separator" class="divider"></li>

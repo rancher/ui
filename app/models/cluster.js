@@ -14,9 +14,7 @@ var Cluster = Resource.extend(PolledResource, {
     },
   },
 
-  isCurrentCluster() {
-    return
-  },
+  isKubernetes: Ember.computed.equal('orchestration','kubernetes'),
 
   delete: function(/*arguments*/) {
     const promise = this._super.apply(this, arguments);

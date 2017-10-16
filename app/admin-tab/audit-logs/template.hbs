@@ -51,8 +51,7 @@
     {{#sortable-table
          classNames="grid sortable-table audit-logs"
          bulkActions=false
-         rowActions=false
-         paging=showPagination
+         paging=true
          search=false
          sortBy=sortBy
          descending=descending
@@ -86,6 +85,9 @@
         </td>
         <td data-title="{{dt.authenticatedAsIdentityId}}">{{identity-block identityNotParsed=log.authenticatedAsIdentityId}}</td>
         <td data-title="{{dt.authIp}}" class="clip">{{auth-type log.authType}}<div>{{format-ip log.clientIp noIp='generic.emptyString'}}</div></td>
+        <td data-title="{{dt.actions}}" class="actions">
+          {{action-menu model=log}}
+        </td>
       {{else if (eq kind "norows")}}
         <td colspan="{{sortable.fullColspan}}" class="text-center text-muted pt-20 pb-20">{{t 'processesPage.summary.noData'}}</td>
       {{/if}}

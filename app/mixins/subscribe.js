@@ -5,10 +5,6 @@ import Queue from 'ui/utils/queue';
 
 const { get } = Ember;
 
-const ORCHESTRATION_STACKS = [
-  'k8s',
-];
-
 export default Ember.Mixin.create({
   intl            : Ember.inject.service(),
   growl           : Ember.inject.service(),
@@ -225,18 +221,5 @@ export default Ember.Mixin.create({
 
   subscribePing: function() {
     console.log('Subscribe ping ' + this.forStr());
-  },
-
-  stackChanged: function(change) {
-    let stack = change.data.resource;
-    let info = stack.get('externalIdInfo');
-
-    if ( info && info.name && ORCHESTRATION_STACKS.includes(info.name) ) {
-      Ember.run.once(this, function() {
-        this.get('projects.current').reload().then(() => {
-          this.get('projects').updateOrchestrationState();
-        });
-      });
-    }
   },
 });
