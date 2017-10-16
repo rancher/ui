@@ -19,7 +19,16 @@
       {{/if}}
 
       {{#if infoMsg}}
-        <div class="banner p-10 {{if errorMsg 'bg-error' 'bg-warning'}}" role="alert">{{infoMsg}}</div>
+        <div class="banner p-10 {{if errorMsg 'bg-error' 'bg-warning'}}" role="alert">
+          {{infoMsg}}
+          {{#if (and isGithub isForbidden)}}
+            <br/>
+            <br/>
+            <div>
+              {{t 'loginGithub.thirdPartyAccessLimitation' htmlSafe=true}}
+            </div>
+          {{/if}}
+        </div>
       {{/if}}
 
       {{#if (or isLocal isActiveDirectory isOpenLdap isAzureAd)}}

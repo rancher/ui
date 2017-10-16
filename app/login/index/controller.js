@@ -1,7 +1,7 @@
 import Ember from 'ember';
 
 export default Ember.Controller.extend({
-  queryParams       : ['timedOut','errorMsg', 'resetPassword'],
+  queryParams       : ['timedOut','errorMsg', 'resetPassword', 'errorCode'],
   access            : Ember.inject.service(),
   settings          : Ember.inject.service(),
   intl              : Ember.inject.service(),
@@ -20,7 +20,9 @@ export default Ember.Controller.extend({
   timedOut          : false,
   waiting           : false,
   errorMsg          : null,
+  errorCode         : null,
   resetPassword     : false,
+  isForbidden       : Ember.computed.equal('errorCode', '403'),
 
   actions: {
     started() {
