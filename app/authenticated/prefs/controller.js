@@ -7,7 +7,8 @@ export default Ember.Controller.extend({
 
   actions: {
     done() {
-      this.send('goToPrevious');
+      window.history.back();
+      //this.send('goToPrevious');
     }
   },
 });
