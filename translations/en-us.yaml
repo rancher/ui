@@ -1177,19 +1177,9 @@ ldap:
     header: "1. Configure an {providerName} server"
     subtext1: "Enter the address, port, and protocol to connect to your {providerName} server.  <code>389</code> is the standard port for insecure, <code>636</code> for TLS."
     subtext2: "{appName} needs a service account that has (read-only) access to all of the domains that will be able to login, so that we can determine what groups a user is a member of when they make a request with an API key."
-    hostName:
-      labelText: Hostname or IP Address
     port:
       labelText: Port
       checkbox: TLS
-    serviceUsername:
-      labelText: Service Account Username
-    servicePassword:
-      labelText: Service Account Password
-    userSearchBase:
-      labelText: User Search Base
-      placeholder: "e.g. ou=Users,dc=mycompany,dc=com"
-      helpText: "Only users below this base will be used."
     groupSearchBase:
       labelText: Group Search Base
       placeholder: "e.g. ou=Groups,dc=mycompany,dc=com"
@@ -3693,6 +3683,17 @@ model:
       org: Organization
       localUser: Local User
       unknown: "{type}?"
+  openldapconfig:
+    server:
+      label: Hostname or IP Address
+    serviceAccountUsername:
+      label: Service Account Username
+    serviceAccountPassword:
+      label: Service Account Password
+    domain:
+      label: User Search Base
+      placeholder: "e.g. ou=Users,dc=mycompany,dc=com"
+      help: "Only users below this base will be used."
   projectMember:
     role:
       member: Member
