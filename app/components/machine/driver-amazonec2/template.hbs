@@ -96,13 +96,26 @@
               {{#if choice.isVpc}}
                 <hr class="mt-20 mb-20" />
                 <div class="radio">
-                  <label class="acc-label pb-0">{{radio-button selection=selectedSubnet value=choice.value}} {{choice.label}}</label>
+                  <label class="acc-label pb-0">{{radio-button selection=selectedSubnet value=choice.value}} {{choice.label}}
+                    {{#each choice.tags as |tag|}}
+                      <span class="tag-xs bg-info mr-5">
+                        <i class="icon icon-tag"></i>
+                        {{tag}}
+                      </span>
+                    {{/each}}
+                  </label>
                 </div>
 
               {{else}}
                 <div class="radio">
                 <label class="ml-20">
                   {{radio-button selection=selectedSubnet value=choice.value}} <i class="icon icon-level-down text-muted" style="transform: scaleX(-1) rotate(90deg);"></i> {{choice.label}}
+                  {{#each choice.tags as |tag|}}
+                    <span class="tag-xs bg-info mr-5">
+                      <i class="icon icon-tag"></i>
+                      {{tag}}
+                    </span>
+                  {{/each}}
                 </label>
                 </div>
 {{!--                 <hr class="mt-20 mb-20" />
