@@ -13,8 +13,6 @@ export default Ember.Component.extend(NewOrEdit, {
 
   swapConfig(driver) {
     let store = this.get('webhookStore');
-    const serviceUpgradeSchema = store.getById('schema','serviceupgrade');
-    const serviceUpgradeFields = serviceUpgradeSchema.resourceFields;
 
     // Clear the config of the inactive drivers
     DRIVERS.forEach((name) => {
@@ -38,7 +36,6 @@ export default Ember.Component.extend(NewOrEdit, {
         type: 'scaleHost',
         action: 'up',
         amount: 1,
-        hostSelector: '',
         deleteOption: 'leastRecent',
       });
       break;
@@ -47,10 +44,6 @@ export default Ember.Component.extend(NewOrEdit, {
         type: 'serviceUpgrade',
         tag: '',
         serviceSelector: '',
-        batchSize: serviceUpgradeFields.batchSize.default,
-        interval: serviceUpgradeFields.intervalMillis.default,
-        payloadFormat: serviceUpgradeFields.payloadFormat.default,
-        startFirst: serviceUpgradeFields.startFirst.default
       });
       break;
     }

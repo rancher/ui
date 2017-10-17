@@ -90,29 +90,10 @@
   {{/if}}
 
   {{#if selectedTemplateModel}}
-    <form {{action "submitTemplate" on="submit"}} class="{{if getTemplate.isRunning 'hide'}}">
-      <h4>{{t 'newCatalog.config'}}</h4>
-     <div class="container-flex">
-        {{#each selectedTemplateModel.questions as |question|}}
-          <div class="flex-item-half">
-            <div class="col span-12 mr-15">
-              <label class="acc-label">{{question.label}}{{#if question.required}}{{field-required}}{{/if}}</label>
+    {{input-answers
+        selectedTemplate=selectedTemplateModel
+    }}
 
-              {{#if question.supported}}
-                {{component question.inputComponent field=question value=question.answer}}
-              {{else}}
-                {{input type="text" value=question.answer class="form-control"}}
-                <p>{{t 'newCatalog.unknownType'}} {{question.type}}</p>
-              {{/if}}
-
-              <p class="help-block">{{question.description}}</p>
-            </div>
-          </div>
-        {{else}}
-          <span class="text-muted">{{t 'newCatalog.noConfig'}}</span>
-        {{/each}}
-      </div>
-    </form>
   {{/if}}
 </section>
 
@@ -134,7 +115,7 @@
           {{#each selectedTemplateModel.filesAsArray as |file|}}
             {{code-block code=file.body language="yaml" hide=(not-eq previewTab file.name)}}
           {{/each}}
-          {{code-block code=answersString language="bash" hide=(not-eq  previewTab 'answers')}}
+          {{code-block code=answersString language="yaml" hide=(not-eq  previewTab 'answers')}}
         </div>
         </div>
       {{/if}}

@@ -2,6 +2,13 @@ import Ember from 'ember';
 
 export default Ember.Route.extend({
   webhookStore: Ember.inject.service(),
+  store: Ember.inject.service(),
+
+  beforeModel() {
+    return this.get('store').findAll('hostTemplate').then((templates) => {
+      this.controllerFor('authenticated.project.hooks.new-receiver').set('hostTemplates', templates);
+    });
+  },
 
   model(params) {
     let promise;
