@@ -1,0 +1,21 @@
+#!/bin/bash
+set -e
+
+# cd to app root
+CWD=$(dirname $0)
+if [[ `basename $(pwd)` = 'scripts' ]]; then
+  cd ../
+else
+  cd `dirname $CWD`
+fi
+
+if [[ ! "${CROWDIN_API_KEY}" ]]; then
+  echo Please setup CROWDIN_API_KEY
+  exit 1
+fi
+
+docker run -e CROWDIN_API_KEY \
+  -e PROJECT_IDENTIFIER=rancher-ui \
+  -v $(pwd)/translations:/translations \
+  -v $(pwd)/crowdin.yml:/opt/translations/crowdin.yml \
+  loganhz/crowdin-tool:v0.0.1 \
