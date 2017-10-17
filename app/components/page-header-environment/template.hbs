@@ -32,37 +32,32 @@
   <span class="sr-only">{{t 'nav.srToggleDropdown'}}</span>
 </a>
 
-<ul class="dropdown-menu project-menu" role="menu" data-dropdown-id="environment">
-  {{#each byCluster as |entry idx|}}
-    {{#if (gt idx 0)}}
-      <li role="presentation" class="divider"></li>
-    {{/if}}
-    <li class="header">
-      <a href="{{href-to "authenticated.clusters.cluster" entry.cluster.id}}">
-       <i class="icon icon-cluster"></i>
-        &nbsp;
-        {{entry.cluster.displayName}}
-      </a>
+<ul class="dropdown-menu cluster-menu" role="menu" data-dropdown-id="environment">
+  {{#if isAdmin}}
+    <li class="{{if (eq scope "admin") 'active selected'}}">
+      {{#link-to "admin-tab"}}
+        <i class="icon icon-globe icon-fw"></i>
+        {{t 'nav.admin.tab' appName=settings.appName}}
+      {{/link-to}}
     </li>
-    {{#each entry.projects as |p|}}
-      <li class="{{if p.active 'active selected'}}  text-muted">
-        <a href="#" {{action "switchProject" p.id}} class="clip pl-40 project-link">
-          <i class="icon {{p.icon}}"></i>
-          {{#if p.isDefault}}
-            <i class="icon icon-star-fill default-project nested"/>
-          {{/if}}
-          &nbsp;
-          {{p.displayName}}
-        </a>
-      </li>
-    {{/each}}
-  {{/each}}
+  {{/if}}
+
+  <li class="{{if (eq scope "clusters") 'active selected'}}">
+    {{#link-to "authenticated.clusters"}}
+      <i class="icon icon-cluster icon-fw"></i>
+      {{t 'nav.environment.manage'}}
+    {{/link-to}}
+  </li>
+
+  {{#if (and isOwner projects.current)}}
+    <li>{{#link-to "authenticated.clusters.project" projects.current.id class="clip"}}{{t 'nav.environment.edit' name=projects.current.displayName}}{{/link-to}}</li>
+  {{/if}}
 
   <li role="presentation" class="divider"></li>
 
   {{#if projectIsMissing}}
     <li role="presentation" class="dropdown-header">{{t 'nav.environment.selected'}}</li>
-    <li class="{{if project.active 'active selected'}}">
+    <li class="{{if (and (eq scope "project") project.active) 'active selected'}}">
       <a href="#" {{action "switchProject" project.id}} class="clip">
         <i class="icon {{project.icon}}"></i>
         &nbsp;
@@ -72,23 +67,28 @@
     <li role="presentation" class="divider"></li>
   {{/if}}
 
-  {{#if (and isOwner projects.current)}}
-    <li>{{#link-to "authenticated.clusters.project" projects.current.id class="clip"}}{{t 'nav.environment.edit' name=projects.current.displayName}}{{/link-to}}</li>
-  {{/if}}
-
-  <li>
-    {{#link-to "authenticated.clusters"}}
-      <i class="icon icon-cluster icon-fw"></i>
-      {{t 'nav.environment.manage'}}
-    {{/link-to}}
-  </li>
-
-  {{#if isAdmin}}
-    <li>
-      {{#link-to "admin-tab"}}
-        <i class="icon icon-globe icon-fw"></i>
-        {{t 'nav.admin.tab' appName=settings.appName}}
-      {{/link-to}}
+  {{#each byCluster as |entry idx|}}
+    {{#if (gt idx 0)}}
+      <li role="presentation" class="divider"></li>
+    {{/if}}
+    <li class="header {{if (and (eq scope "cluster") (eq entry.cluster.id projects.currentCluster.id)) 'active selected'}}">
+      <a href="{{href-to "authenticated.clusters.cluster" entry.cluster.id}}">
+       <i class="icon icon-cluster icon-fw"></i>
+        &nbsp;
+        {{entry.cluster.displayName}}
+      </a>
     </li>
-  {{/if}}
+    {{#each entry.projects as |p|}}
+      <li class="{{if (and (eq scope "project") p.active) 'active selected'}} subitem text-muted">
+        <a href="#" {{action "switchProject" p.id}} class="clip project-link">
+          <i class="icon {{p.icon}} icon-fw"></i>
+          {{#if p.isDefault}}
+            <i class="icon icon-star-fill default-project nested"/>
+          {{/if}}
+          &nbsp;
+          {{p.displayName}}
+        </a>
+      </li>
+    {{/each}}
+  {{/each}}
 </ul>

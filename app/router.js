@@ -41,6 +41,8 @@ Router.map(function() {
       });
 
       this.route('audit-logs');
+      this.route('catalog');
+      this.route('ha');
 
       this.route('settings', function() {
         this.route('auth', {path: '/access'}, function() {
@@ -52,8 +54,6 @@ Router.map(function() {
           this.route('shibboleth');
         });
 
-        this.route('catalog');
-        this.route('ha');
         this.route('machine');
         this.route('registration');
         this.route('advanced');
