@@ -64,7 +64,7 @@ export default Ember.Component.extend({
       entry.show = true;
     });
 
-    return out.filterBy('show',true);
+    return out.filterBy('show',true).sortBy('cluster.sortName');
   }),
 
   projectIsMissing: Ember.computed('project.id','projectChoices.@each.id', function() {

@@ -113,7 +113,7 @@ export default Ember.Mixin.create({
   }.property('name','id'),
 
   sortName: function() {
-    return Util.sortableNumericSuffix(this.get('displayName'));
+    return Util.sortableNumericSuffix(this.get('displayName').toLowerCase());
   }.property('displayName'),
 
   isTransitioning: Ember.computed.equal('transitioning','yes'),
