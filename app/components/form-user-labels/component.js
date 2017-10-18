@@ -9,6 +9,8 @@ export default Ember.Component.extend(ManageLabels, {
 
   detailKey: 'formUserLabels.detail',
 
+  expandAll: null,
+
   readonlyLabels: null,
 
   // Inputs
