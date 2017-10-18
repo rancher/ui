@@ -321,15 +321,6 @@
       }}
     {{/if}}
 
-    {{#if service.canChangeSecurity}}
-      {{container/form-security
-        instance=activeLaunchConfig
-        editing=false
-        expandAll=al.expandAll
-        expandFn=expandFn
-      }}
-    {{/if}}
-
     {{#if service.canHaveSecrets}}
       {{container/form-secrets
         instance=activeLaunchConfig
@@ -337,6 +328,15 @@
         expandAll=al.expandAll
         expandFn=expandFn
         classNames="accordion"
+      }}
+    {{/if}}
+
+    {{#if service.canChangeSecurity}}
+      {{container/form-security
+        instance=activeLaunchConfig
+        editing=false
+        expandAll=al.expandAll
+        expandFn=expandFn
       }}
     {{/if}}
 
