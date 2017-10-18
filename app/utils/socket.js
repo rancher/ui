@@ -116,6 +116,7 @@ export default Ember.Object.extend(Ember.Evented, {
     {
       try {
         this._log('closing');
+        this.trigger('closing');
         this.set('_closingId', socket.__sockId);
         socket.onopen = null;
         socket.onerror = null;
