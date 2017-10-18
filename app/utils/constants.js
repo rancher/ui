@@ -150,6 +150,7 @@ var C = {
     STACK_NAME: 'io.rancher.stack.name',
     STACK_UUID: 'io.rancher.stack.uuid',
     SYSTEM_TYPE: 'io.rancher.container.system',
+    PER_HOST_SUBNET: 'io.rancher.network.per_host_subnet.subnet',
 
     // Catalog
     CERTIFIED: 'io.rancher.certified',
