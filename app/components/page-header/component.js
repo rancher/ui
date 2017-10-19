@@ -27,7 +27,7 @@ export default Ember.Component.extend(HoverDropdown, {
   prefs                : Ember.inject.service(),
 
   clusterId            : Ember.computed.alias('projects.currentCluster.id'),
-  project              : Ember.computed.alias('projects.currentCluster'),
+  cluster              : Ember.computed.alias('projects.currentCluster'),
   projectId            : Ember.computed.alias('projects.current.id'),
   project              : Ember.computed.alias('projects.current'),
   isAdmin              : Ember.computed.alias('access.admin'),

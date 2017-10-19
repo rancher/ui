@@ -36,7 +36,7 @@ const navTree = [
     localizedLabel: 'nav.containers.tab',
     route: 'authenticated.project.index',
     ctx: [getProjectId],
-    moreCurrentWhen: ['containers','balancers','dns','volumes','k8s'],
+    moreCurrentWhen: ['containers','balancers','dns','volumes'],
   },
 
   {

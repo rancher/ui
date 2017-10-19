@@ -45,7 +45,9 @@ export default Ember.Component.extend({
     }).sortBy('name','id');
   }),
 
-  byCluster: Ember.computed('projectChoices.@each.clusterId', function() {
+  byCluster: Ember.computed('projectChoices.@each.clusterId','projects.current.id','projects.currentCluster.id', function() {
+    let currentClusterId = this.get('projects.currentCluster.id');
+
     let out = [];
     this.get('projectChoices').forEach((project) => {
       let cluster = project.get('cluster');
@@ -56,7 +58,14 @@ export default Ember.Component.extend({
       let clusterId = cluster.get('id');
       let entry = out.findBy('clusterId', clusterId);
       if ( !entry ) {
-        entry = {clusterId: clusterId, cluster: cluster, projects: [], show: false};
+        entry = {
+          clusterId: clusterId,
+          cluster: cluster,
+          projects: [],
+          active: clusterId === currentClusterId,
+          show: false
+        };
+
         out.push(entry);
       }
 

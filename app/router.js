@@ -77,7 +77,9 @@ Router.map(function() {
 
       this.route('cluster', {path: '/:cluster_id'}, function() {
         this.route('edit');
+
         this.route('import');
+        this.route('k8s', {path: '/kubernetes'});
 
         this.route('storage');
         this.route('networking');
@@ -123,8 +125,6 @@ Router.map(function() {
 
         this.route('volume', {path: '/volume/:volume_id', resetNamespace: true});
       });
-
-      this.route('k8s', {path: '/kubernetes', resetNamespace: true});
 
       this.route('service', {path: '/services/:service_id', resetNamespace: true});
 
