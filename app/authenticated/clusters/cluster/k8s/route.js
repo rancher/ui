@@ -1,5 +1,4 @@
 import Ember from 'ember';
-import PolledModel from 'ui/mixins/polled-model';
 
 export default Ember.Route.extend({
   projects: Ember.inject.service(),
