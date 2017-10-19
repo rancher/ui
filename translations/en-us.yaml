@@ -717,7 +717,9 @@ hostsPage:
     columns:
       emptyMessage: No hosts or containers yet.
     table:
+      cpu: CPU
       memory: RAM
+      disk: Disk
       docker: Docker
       instanceState: Container States
       instanceStateWithIcon: States
@@ -781,7 +783,8 @@ k8sImport:
   instructions: 'Copy, paste, and run the command below to use an existing Kubernetes installation for this {appName} cluster.'
   generating: Generating command
 
-k8sAdvancedTab:
+k8sPage:
+  header: Kubernetes
   dashboard:
     title: Dashboard
     detail: Access the native Kubernetes dashboard.
@@ -794,23 +797,8 @@ k8sAdvancedTab:
     title: Config File
     detail: Generate a Kubernetes config file to use <code>kubectl</code> on your desktop.
     button: Download kubeconfig
-
-k8sTab:
-  dashboard:
-    header: Kubernetes Dashboard
-    dashboard:
-      header: Dashboard
-      content: Kubernetes Dashboard is a general purpose, web-based UI for Kubernetes clusters. It allows users to manage applications running in the cluster and troubleshoot them, as well as manage the cluster itself.
-      button: Kubernetes UI
-  kubectl:
-    header: Kubernetes CLI
-    stepOne:
-      generateConfigText: |
-        To use <a href="{downloadUrl}" target="_blank">kubectl</a> (v1.4+ only) on your workstation, click the button to generate an API key and config file:
-      generateButton: Generate Config
-    stepTwo:
-      progress: Generating...
-    stepThree:
+    generating: Generating...
+    usage:
       helpText: |
         Put this into <code>~/.kube/config</code>:
       downloadText: |

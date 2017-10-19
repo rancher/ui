@@ -71,7 +71,7 @@
     {{#if (gt idx 0)}}
       <li role="presentation" class="divider"></li>
     {{/if}}
-    <li class="header {{if (and (eq scope "cluster") (eq entry.cluster.id projects.currentCluster.id)) 'active selected'}}">
+    <li class="header {{if entry.active (if (eq scope 'cluster') 'active selected') 'inactive'}}">
       <a href="{{href-to "authenticated.clusters.cluster" entry.cluster.id}}">
        <i class="icon icon-cluster icon-fw"></i>
         &nbsp;
@@ -79,7 +79,7 @@
       </a>
     </li>
     {{#each entry.projects as |p|}}
-      <li class="{{if (and (eq scope "project") p.active) 'active selected'}} subitem text-muted">
+      <li class="{{if (and (eq scope "project") p.active) 'active selected' (unless entry.active 'inactive')}} subitem text-muted">
         <a href="#" {{action "switchProject" p.id}} class="clip project-link">
           <i class="icon {{p.icon}} icon-fw"></i>
           {{#if p.isDefault}}

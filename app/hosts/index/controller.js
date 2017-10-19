@@ -1,6 +1,7 @@
 import Ember from 'ember';
 import C from 'ui/utils/constants';
 import { headersWithoutHost as containerHeaders } from 'ui/components/container-table/component';
+import { headersProject as hostHeaders } from 'ui/components/host-row/component';
 
 export default Ember.Controller.extend({
   prefs: Ember.inject.service(),
@@ -41,57 +42,7 @@ export default Ember.Controller.extend({
     },
   },
 
-  headers: [
-    {
-      name: 'expand',
-      sort: false,
-      searchField: null,
-      width: 30
-    },
-    {
-      name: 'state',
-      sort: ['sortState','displayName'],
-      searchField: 'displayState',
-      translationKey: 'generic.state',
-      width: 120
-    },
-    {
-      name: 'name',
-      sort: ['displayName','id'],
-      searchField: 'displayName',
-      translationKey: 'generic.name',
-    },
-    {
-      name: 'ip',
-      sort: ['displayIp','displayName'],
-      searchField: 'displayIp',
-      translationKey: 'generic.ipAddress',
-      width: 130,
-    },
-    {
-      name: 'memory',
-      sort: ['memory','displayName'],
-      searchField: 'memoryBlurb',
-      width: 80,
-      translationKey: 'hostsPage.index.table.memory',
-    },
-    {
-      name: 'docker',
-      sort: ['dockerEngineVersion','displayName'],
-      searchField: 'dockerEngineVersion',
-      width: 110,
-      translationKey: 'hostsPage.index.table.docker',
-    },
-    {
-      name: 'instanceState',
-      sort: ['instanceCountSort:desc','displayName'],
-      searchField: null,
-      width: 140,
-      icon: 'icon icon-lg icon-container',
-      dtTranslationKey: 'hostsPage.index.table.instanceState',
-      translationKey: 'hostsPage.index.table.instanceStateWithIcon',
-    },
-  ],
+  headers: hostHeaders,
 
   extraSearchFields: [
     'displayUserLabelStrings',
