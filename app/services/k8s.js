@@ -1,5 +1,4 @@
 import Ember from 'ember';
-import ApiError from 'ember-api-store/models/error';
 import C from 'ui/utils/constants';
 
 export default Ember.Service.extend({
