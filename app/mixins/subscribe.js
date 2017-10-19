@@ -63,6 +63,10 @@ export default Ember.Mixin.create({
       this.subscribeConnected(tries, after);
     });
 
+    socket.on('closing', ()=> {
+      this.showDisconnectedWarning();
+    })
+
     socket.on('disconnected', () => {
       this.subscribeDisconnected(this.get('tries'));
     });
