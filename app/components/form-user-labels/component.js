@@ -9,6 +9,10 @@ export default Ember.Component.extend(ManageLabels, {
 
   detailKey: 'formUserLabels.detail',
 
+  expandAll: null,
+
+  readonlyLabels: null,
+
   // Inputs
   initialLabels: null,
 
@@ -37,7 +41,7 @@ export default Ember.Component.extend(ManageLabels, {
   init() {
     this._super(...arguments);
 
-    this.initLabels(this.get('initialLabels'),'user');
+    this.initLabels(this.get('initialLabels'),'user', null, this.get('readonlyLabels'));
     this.labelsChanged();
   },
 

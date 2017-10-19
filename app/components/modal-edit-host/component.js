@@ -15,6 +15,7 @@ export default Ember.Component.extend(ModalBase, NewOrEdit, ManageLabels, {
   ips:           null,
   requireAny:    null,
   requiredIfAny: {[C.LABEL.SYSTEM_TYPE]: ''},
+  readonlyLabels:[C.LABEL.PER_HOST_SUBNET],
   systemLabels:  null,
   userLabels:    null,
   customName:    null,

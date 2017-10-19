@@ -22,7 +22,7 @@
       {{#each userLabelArray as |label|}}
         <tr>
           <td data-title="key">
-            {{input-paste pasted="pastedLabels" class="form-control input-sm key" type="text" value=label.key placeholder="formUserLabels.key.placeholder"}}
+            {{input-paste pasted="pastedLabels" class="form-control input-sm key" type="text" value=label.key placeholder="formUserLabels.key.placeholder" disabled=(eq label.readonly true)}}
           </td>
 
           <td class="text-center">
@@ -30,11 +30,11 @@
           </td>
 
           <td data-title="label">
-            {{input class="form-control input-sm" type="text" value=label.value placeholder=(t 'formUserLabels.value.placeholder')}}
+            {{input class="form-control input-sm" type="text" value=label.value placeholder=(t 'formUserLabels.value.placeholder') disabled=(eq label.readonly true)}}
           </td>
 
           <td class="text-right">
-            <button class="btn bg-primary btn-sm" {{action "removeLabel" label}}><i class="icon icon-minus"/><span class="sr-only">{{t 'generic.remove'}}</span></button>
+            <button class="btn bg-primary btn-sm" {{action "removeLabel" label}} disabled={{eq label.readonly true}}><i class="icon icon-minus"/><span class="sr-only">{{t 'generic.remove'}}</span></button>
           </td>
         </tr>
       {{/each}}

@@ -256,7 +256,7 @@ export default Ember.Mixin.create({
     }
   },
 
-  initLabels: function(obj, onlyOfType, onlyKeys) {
+  initLabels: function(obj, onlyOfType, onlyKeys, readonlyKeys) {
     let out = [];
 
     if ( onlyKeys && !Ember.isArray(onlyKeys) )
@@ -264,6 +264,10 @@ export default Ember.Mixin.create({
       onlyKeys = [onlyKeys];
     }
 
+    if ( readonlyKeys && !Ember.isArray(readonlyKeys) )
+    {
+      readonlyKeys = [readonlyKeys];
+    }
 
     Object.keys(obj||{}).forEach(function(key) {
       let type = 'user';
@@ -310,6 +314,7 @@ export default Ember.Mixin.create({
         key: key,
         value: obj[key]||'',
         type: type,
+        readonly: readonlyKeys && readonlyKeys.indexOf(key) >= 0
       }));
     });
 
