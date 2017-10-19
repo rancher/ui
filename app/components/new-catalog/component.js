@@ -84,11 +84,18 @@ export default Ember.Component.extend(NewOrEdit, {
     let model = this.get('selectedTemplateModel');
     this.set('readmeContent', null);
     if ( model && model.hasLink('readme') ) {
+      this.set('loadingReadme', true);
       model.followLink('readme').then((response) => {
         this.set('readmeContent', response);
+      }).finally(() => {
+        this.set('loadingReadme', false);
       });
     }
   },
+
+  showDescription: Ember.computed('loading', 'loadingReadme', function () {
+    return (!this.get('loading') && !this.get('loadingReadme'));
+  }),
 
   sortedVersions: function() {
     let out = this.get('versionsArray').sort((a,b) => {

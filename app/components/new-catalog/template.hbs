@@ -42,15 +42,17 @@
       <small class="force-wrap"><strong>{{t 'newCatalog.url'}}</strong> <a href="{{templateResource.cleanProjectUrl}}" target="_blank">{{templateResource.cleanProjectUrl}}</a></small>
     {{/if}}
   </div>
-  {{#if readmeContent}}
-    <div class="col-sm-12 col-md-9" style="overflow-y: auto; max-height: 500px;">
-      {{common-mark markdown=readmeContent}}
-    </div>
-  {{else}}
-    <h2 class="r-mb10">
-      {{t (if editing titleUpgrade titleAdd) name=templateResource.name}}
-    </h2>
-    <p>{{templateResource.description}}</p>
+  {{#if showDescription}}
+    {{#if readmeContent}}
+      <div class="col-sm-12 col-md-9" style="overflow-y: auto; max-height: 500px;">
+        {{common-mark markdown=readmeContent}}
+      </div>
+    {{else}}
+      <h2 class="r-mb10">
+        {{t (if editing titleUpgrade titleAdd) name=templateResource.name}}
+      </h2>
+      <p>{{templateResource.description}}</p>
+    {{/if}}
   {{/if}}
 </section>
 
