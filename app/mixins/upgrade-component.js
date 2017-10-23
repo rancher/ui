@@ -129,7 +129,7 @@ export default Ember.Mixin.create({
         return 'hide';
       case CURRENT:
       case LOADING:
-        return 'bg-transparent';
+        return 'bg-default';
       case NOTFOUND:
       case ERROR:
       case INPROGRESS:
