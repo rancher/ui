@@ -53,10 +53,7 @@ module.exports = function(environment) {
     modulePrefix: 'ui',
     environment: environment,
     exportApplicationGlobal: true,
-<<<<<<< HEAD
-=======
     rootURL: '/',
->>>>>>> upgrade fixes for 2.16
     locationType: 'auto',
     EmberENV: {
       FEATURES: {
