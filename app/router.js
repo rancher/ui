@@ -15,6 +15,7 @@ const Router = EmberRouter.extend({
 });
 
 Router.map(function() {
+  this.mount('login', {path: '/login'});
   this.route('ie');
   this.route('index');
   this.route('failWhale', {path: '/fail'});
@@ -24,10 +25,10 @@ Router.map(function() {
   this.route('verify', {path: '/verify/:verify_token'});
   this.route('verify-reset-password', {path: '/verify-reset-password/:verify_token'});
 
-  this.route('login', function() {
-    this.route('index', {path: '/'});
-    this.route('shibboleth-auth');
-  });
+  // this.route('login', function() {
+  //   this.route('index', {path: '/'});
+  //   this.route('shibboleth-auth');
+  // });
   this.route('logout');
 
   this.route('authenticated', {path: '/'}, function() {

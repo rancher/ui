@@ -1,4 +1,4 @@
-{{#authorize-user}}
+<div class="login">
   <h1>
     {{t 'loginPage.greeting' appName=settings.appName htmlSafe=true}}
     <div class="logo"></div>
@@ -31,6 +31,7 @@
         </div>
       {{/if}}
 
+        {{login-user-pass action="authenticate" waiting=waiting}}
       {{#if (or isLocal isActiveDirectory isOpenLdap isAzureAd)}}
         {{login-user-pass action="authenticate" waiting=waiting}}
       {{/if}}
@@ -47,4 +48,4 @@
       {{caas-login promptReset=(mut promptPasswordReset)}}
     {{/if}}
   </section>
-{{/authorize-user}}
+</div>
