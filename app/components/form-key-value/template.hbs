@@ -6,13 +6,16 @@
 
 {{#if ary.length}}
   <table class="table fixed no-lines small mb-10">
-    <tr class="hidden-xs hidden-sm">
-      <th class="acc-label">{{t keyLabel}}{{#if editing}}{{field-required}}{{/if}}</th>
-      <th width="30">&nbsp;</th>
-      <th class="acc-label">{{t valueLabel}}</th>
-      <th width="10">&nbsp;</th>
-      <th width="30">&nbsp;</th>
-    </tr>
+    <thead>
+      <tr class="hidden-sm">
+        <th>{{t keyLabel}}{{#if editing}}{{field-required}}{{/if}}</th>
+        <th width="30">&nbsp;</th>
+        <th>{{t valueLabel}}</th>
+        <th width="10">&nbsp;</th>
+        <th width="30">&nbsp;</th>
+      </tr>
+    </thead>
+    <tbody>
     {{#each ary as |row|}}
       <tr>
         <td data-title="{{t keyLabel}}:">
@@ -49,6 +52,7 @@
       </tr>
       <div class="pb-10"></div>
     {{/each}}
+    </tbody>
   </table>
 {{else}}
   {{#unless editing}}
