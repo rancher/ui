@@ -175,6 +175,7 @@ export default Ember.Object.extend(Ember.Evented, {
       this.set('_frameTimer', Ember.run.later(this, function() {
         this._log('Socket watchdog expired after', timeout, 'closing');
         this._close();
+        this.trigger('frameTimeout');
       }, timeout));
     }
   },
