@@ -11,6 +11,7 @@ module.exports = {
     "-Promise": true,
     "jQuery": true,
     "$": true,
+    "navigator": true,
     "moment": true,
     "d3": true,
     "Terminal": true,
@@ -23,7 +24,8 @@ module.exports = {
     "_": true,
     "commonmark": true,
     "Stripe": true,
-    "jsondiffpatch": true
+    "jsondiffpatch": true,
+    "WebSocket": true
   },
   env: {
     browser: true,
