@@ -3,7 +3,7 @@ import C from 'ui/utils/constants';
 import Util from 'ui/utils/util';
 import { denormalizeId, denormalizeIdArray } from 'ember-api-store/utils/denormalize';
 import Instance from 'ui/models/instance';
-import { formatSi } from 'ui/utils/util';
+import { formatSi } from 'shared/utils/util';
 import EndpointPorts from 'ui/mixins/endpoint-ports';
 
 var Container = Instance.extend(EndpointPorts, {

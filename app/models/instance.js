@@ -1,7 +1,7 @@
 import Ember from 'ember';
 import Resource from 'ember-api-store/models/resource';
 import C from 'ui/utils/constants';
-import { formatSi } from 'ui/utils/util';
+import { formatSi } from 'shared/utils/util';
 import { denormalizeId } from 'ember-api-store/utils/denormalize';
 
 export function stoppedIcon(inst)

@@ -1,7 +1,7 @@
 import Ember from 'ember';
 import Util from 'ui/utils/util';
 import Resource from 'ember-api-store/models/resource';
-import { formatMib, formatSi } from 'ui/utils/util';
+import { formatMib, formatSi } from 'shared/utils/util';
 import C from 'ui/utils/constants';
 import { denormalizeIdArray } from 'ember-api-store/utils/denormalize';
 import { satisfies, compare } from 'ui/utils/parse-version';

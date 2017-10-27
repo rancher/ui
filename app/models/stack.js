@@ -2,7 +2,7 @@ import Ember from 'ember';
 import Resource from 'ember-api-store/models/resource';
 import { parseExternalId } from 'ui/utils/parse-externalid';
 import C from 'ui/utils/constants';
-import { download } from 'ui/utils/util';
+import { download } from 'shared/utils/util';
 import { denormalizeIdArray } from 'ember-api-store/utils/denormalize';
 import StateCounts from 'ui/mixins/state-counts';
 
