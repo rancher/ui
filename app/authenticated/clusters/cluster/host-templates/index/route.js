@@ -13,7 +13,6 @@ export default Ember.Route.extend({
   setupController(controller, model) {
     this._super(controller, model);
     let cluster = this.modelFor('authenticated.clusters.cluster');
-    debugger;
     controller.set('currentClusterId', cluster.get('id'));
   },
 
