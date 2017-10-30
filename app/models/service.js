@@ -5,14 +5,17 @@ import Util from 'ui/utils/util';
 import { denormalizeId, denormalizeIdArray } from 'ember-api-store/utils/denormalize';
 import StateCounts from 'ui/mixins/state-counts';
 import EndpointPorts from 'ui/mixins/endpoint-ports';
+import { inject as service } from "@ember/service";
+
 
 var Service = Resource.extend(StateCounts, EndpointPorts, {
   type:          'service',
-  intl:          Ember.inject.service(),
-  growl:         Ember.inject.service(),
-  modalService:  Ember.inject.service('modal'),
-  allServices:   Ember.inject.service(),
-  projects:      Ember.inject.service(),
+  intl:          service(),
+  growl:         service(),
+  modalService:  service('modal'),
+  allServices:   service(),
+  projects:      service(),
+  router:        service(),
 
   instances:     denormalizeIdArray('instanceIds'),
   instanceCount: Ember.computed.alias('instances.length'),
@@ -101,7 +104,7 @@ var Service = Resource.extend(StateCounts, EndpointPorts, {
         route = 'balancers.run';
       }
 
-      this.get('application').transitionToRoute(route, {queryParams: {
+      this.get('router').transitionTo(route, {queryParams: {
         serviceId: this.get('id'),
         upgrade: true,
         upgradeImage: upgradeImage,
@@ -121,14 +124,14 @@ var Service = Resource.extend(StateCounts, EndpointPorts, {
         default: return void this.send('error','Unknown service type: ' + this.get('type'));
       }
 
-      this.get('application').transitionToRoute(route, {queryParams: {
+      this.get('router').transitionTo(route, {queryParams: {
         serviceId: this.get('id'),
         stackId: this.get('stackId'),
       }});
     },
 
     addSidekick() {
-      this.get('application').transitionToRoute('containers.run', {queryParams: {
+      this.get('router').transitionTo('containers.run', {queryParams: {
         serviceId: this.get('id'),
         addSidekick: true,
         launchConfigIndex: (this.get('secondaryLaunchConfigs')||[]).length

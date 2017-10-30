@@ -5,21 +5,22 @@ import ManageLabels from 'ui/mixins/manage-labels';
 import { addAction } from 'ui/utils/add-view-action';
 
 export default Ember.Mixin.create(NewOrEdit, ManageLabels, {
-  intl          : Ember.inject.service(),
-  projects      : Ember.inject.service(),
-  settings      : Ember.inject.service(),
-  createDelayMs : 0,
-  showEngineUrl : true,
+  intl:          Ember.inject.service(),
+  projects:      Ember.inject.service(),
+  settings:      Ember.inject.service(),
+  router:        Ember.inject.service(),
+  createDelayMs: 0,
+  showEngineUrl: true,
 
-  queryParams   : ['hostId'],
-  hostId        : null,
-  error         : null,
+  queryParams:   ['hostId'],
+  hostId:        null,
+  error:         null,
 
-  count         : null,
-  prefix        : null,
-  clonedModel   : null,
-  useHost       : true,
-  hostConfig    : null,
+  count:         null,
+  prefix:        null,
+  clonedModel:   null,
+  useHost:       true,
+  hostConfig:    null,
   labelResource: Ember.computed.alias('model.publicValues'),
 
   actions: {

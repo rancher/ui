@@ -1,7 +1,7 @@
 module.exports = {
   root: true,
   parserOptions: {
-    ecmaVersion: 6,
+    ecmaVersion: 2017,
     sourceType: 'module'
   },
   extends: 'eslint:recommended',
@@ -11,6 +11,7 @@ module.exports = {
     "-Promise": true,
     "jQuery": true,
     "$": true,
+    "navigator": true,
     "moment": true,
     "d3": true,
     "Terminal": true,
@@ -23,7 +24,8 @@ module.exports = {
     "_": true,
     "commonmark": true,
     "Stripe": true,
-    "jsondiffpatch": true
+    "jsondiffpatch": true,
+    "WebSocket": true
   },
   env: {
     browser: true,
@@ -52,6 +54,7 @@ module.exports = {
     "dot-notation": 0,
     "strict": 0,
     "no-eq-null": 2,
-    "no-unused-vars": 2
+    "no-unused-vars": 2,
+    "no-useless-escape": 0
   }
 };

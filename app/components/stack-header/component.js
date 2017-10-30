@@ -1,8 +1,11 @@
 import Ember from 'ember';
+import { inject as service } from "@ember/service";
 
 export default Ember.Component.extend({
-  settings: Ember.inject.service(),
-  projects: Ember.inject.service(),
+  settings: service(),
+  projects: service(),
+  hasVm: Ember.computed.alias('projects.current.virtualMachine'),
+  router: service(),
 
   actions: {
     changeStack(stack) {

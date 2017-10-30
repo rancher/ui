@@ -2,7 +2,7 @@ import Ember from 'ember';
 import Resource from 'ember-api-store/models/resource';
 import { parseExternalId } from 'ui/utils/parse-externalid';
 import C from 'ui/utils/constants';
-import { download } from 'ui/utils/util';
+import { download } from 'shared/utils/util';
 import { denormalizeIdArray } from 'ember-api-store/utils/denormalize';
 import StateCounts from 'ui/mixins/state-counts';
 
@@ -50,6 +50,8 @@ var Stack = Resource.extend(StateCounts, {
   modalService:    Ember.inject.service('modal'),
   catalog:         Ember.inject.service(),
   projectsService: Ember.inject.service('projects'),
+  router:          Ember.inject.service(),
+
 
   services:        denormalizeIdArray('serviceIds'),
   realServices:    Ember.computed.filterBy('services','isReal',true),
@@ -100,15 +102,15 @@ var Stack = Resource.extend(StateCounts, {
     },
 
     addContainer: function() {
-      this.get('application').transitionToRoute('containers.run', {queryParams: {stackId: this.get('id')}});
+      this.get('router').transitionTo('containers.run', {queryParams: {stackId: this.get('id')}});
     },
 
     viewCode: function() {
-      this.get('application').transitionToRoute('stack.code', this.get('id'));
+      this.get('router').transitionTo('stack.code', this.get('id'));
     },
 
     viewGraph: function() {
-      this.get('application').transitionToRoute('stack.graph', this.get('id'));
+      this.get('router').transitionTo('stack.graph', this.get('id'));
     },
 
     delete: function() {

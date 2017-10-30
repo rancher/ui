@@ -45,6 +45,14 @@ export default Ember.Controller.extend({
       })
       return out;
     }
+    return [];
+  }),
+  dCount: Ember.computed('', function() {
+    return this.get('volume.driverOpts.length') || 0;
+  }),
+
+  vCount: Ember.computed('', function() {
+    return this.get('volume.mounts.length') || 0;
   }),
 
   headers,

@@ -1,8 +1,10 @@
 import Ember from 'ember';
+import EmberRouter from '@ember/routing/router';
 import config from './config/environment';
 import {applyRoutes, clearRoutes} from 'ui/utils/additional-routes';
 
-const Router = Ember.Router.extend({
+//const Router = Ember.Router.extend({
+const Router = EmberRouter.extend({
   modalService: Ember.inject.service('modal'),
   location: config.locationType,
   willTransition(){
@@ -13,6 +15,7 @@ const Router = Ember.Router.extend({
 });
 
 Router.map(function() {
+  this.mount('login', {path: '/login'});
   this.route('ie');
   this.route('index');
   this.route('failWhale', {path: '/fail'});
@@ -22,10 +25,10 @@ Router.map(function() {
   this.route('verify', {path: '/verify/:verify_token'});
   this.route('verify-reset-password', {path: '/verify-reset-password/:verify_token'});
 
-  this.route('login', function() {
-    this.route('index', {path: '/'});
-    this.route('shibboleth-auth');
-  });
+  // this.route('login', function() {
+  //   this.route('index', {path: '/'});
+  //   this.route('shibboleth-auth');
+  // });
   this.route('logout');
 
   this.route('authenticated', {path: '/'}, function() {

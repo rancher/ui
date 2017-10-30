@@ -4,7 +4,7 @@ import ThrottledResize from 'ui/mixins/throttled-resize';
 export default Ember.Mixin.create(ThrottledResize, {
   tooltipContent : null,
   originalNode   : null,
-  router         : Ember.inject.service("-routing"),
+  router         : Ember.inject.service(),
   currentRoute   : null,
   tooltipService : Ember.inject.service('tooltip'),
 

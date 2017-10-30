@@ -1,17 +1,20 @@
 import Ember from 'ember';
 import Util from 'ui/utils/util';
 import Resource from 'ember-api-store/models/resource';
-import { formatMib, formatSi } from 'ui/utils/util';
+import { formatMib, formatSi } from 'shared/utils/util';
 import C from 'ui/utils/constants';
 import { denormalizeIdArray } from 'ember-api-store/utils/denormalize';
 import { satisfies, compare } from 'ui/utils/parse-version';
 import StateCounts from 'ui/mixins/state-counts';
+import { inject as service } from "@ember/service";
+
 
 var Host = Resource.extend(StateCounts,{
   type: 'host',
-  modalService: Ember.inject.service('modal'),
-  settings: Ember.inject.service(),
-  prefs: Ember.inject.service(),
+  modalService: service('modal'),
+  settings: service(),
+  prefs: service(),
+  router: service(),
 
   init() {
     this._super(...arguments);
@@ -47,11 +50,11 @@ var Host = Resource.extend(StateCounts,{
     },
 
     newContainer: function() {
-      this.get('application').transitionToRoute('containers.run', {queryParams: {hostId: this.get('model.id')}});
+      this.get('router').transitionTo('containers.run', {queryParams: {hostId: this.get('model.id')}});
     },
 
     clone: function() {
-      this.get('application').transitionToRoute('hosts.new', {queryParams: {hostId: this.get('id'), driver: this.get('driver')}});
+      this.get('router').transitionTo('hosts.new', {queryParams: {hostId: this.get('id'), driver: this.get('driver')}});
     },
 
     edit: function() {

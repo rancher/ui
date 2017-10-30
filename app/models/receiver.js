@@ -5,7 +5,8 @@ import { denormalizeId } from 'ember-api-store/utils/denormalize';
 
 var Receiver = Resource.extend(PolledResource, {
   regularStore: Ember.inject.service('store'),
-  intl: Ember.inject.service(),
+  intl:         Ember.inject.service(),
+  router:       Ember.inject.service(),
 
   service: denormalizeId('opt.serviceId','service','regularStore'),
 

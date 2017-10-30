@@ -1,6 +1,6 @@
 import Ember from 'ember';
 import { tagChoices } from 'ui/models/stack';
-import { uniqKeys } from 'ui/utils/util';
+import { uniqKeys } from 'shared/utils/util';
 
 export default Ember.Component.extend({
   projects: Ember.inject.service(),

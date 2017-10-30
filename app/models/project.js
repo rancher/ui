@@ -6,20 +6,22 @@ import C from 'ui/utils/constants';
 import { denormalizeId } from 'ember-api-store/utils/denormalize';
 
 var Project = Resource.extend(PolledResource, {
-  access: Ember.inject.service(),
-  prefs: Ember.inject.service(),
-  projects: Ember.inject.service(),
-  settings: Ember.inject.service(),
+  access:       Ember.inject.service(),
+  prefs:        Ember.inject.service(),
+  projects:     Ember.inject.service(),
+  settings:     Ember.inject.service(),
   modalService: Ember.inject.service('modal'),
+  router:       Ember.inject.service(),
 
-  type: 'project',
-  name: null,
-  description: null,
 
-  cluster: denormalizeId('clusterId'),
+  type:         'project',
+  name:         null,
+  description:  null,
 
-  canAddHost: Ember.computed.notEmpty('cluster.registrationToken.hostCommand'),
-  canImport: Ember.computed.notEmpty('cluster.registrationToken.clusterCommand'),
+  cluster:      denormalizeId('clusterId'),
+
+  canAddHost:   Ember.computed.notEmpty('cluster.registrationToken.hostCommand'),
+  canImport:    Ember.computed.notEmpty('cluster.registrationToken.clusterCommand'),
   isKubernetes: Ember.computed.equal('cluster.orchestration','kubernetes'),
 
   actions: {

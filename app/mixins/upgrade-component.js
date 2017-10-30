@@ -1,5 +1,6 @@
 import Ember from 'ember';
 import C from 'ui/utils/constants';
+import { inject as service } from "@ember/service";
 
 const NONE       = 'none',
       LOADING    = 'loading',
@@ -111,9 +112,10 @@ export default Ember.Mixin.create({
   model               : null,
   upgradeOnly         : true,
 
-  intl                : Ember.inject.service(),
-  catalog             : Ember.inject.service(),
-  userStore           : Ember.inject.service('user-store'),
+  intl                : service(),
+  catalog             : service(),
+  userStore           : service('user-store'),
+  router: service(),
 
   upgradeInfo         : null,
   upgradeStatus       : null,
@@ -159,7 +161,7 @@ export default Ember.Mixin.create({
     {
       let templateId = this.get('model.externalIdInfo.templateId');
       let versionId = this.get('upgradeInfo.id');
-      this.get('application').transitionToRoute('catalog-tab.launch', templateId, {queryParams: {
+      this.get('router').transitionTo('catalog-tab.launch', templateId, {queryParams: {
         stackId: this.get('model.id'),
         upgrade: versionId
       }});

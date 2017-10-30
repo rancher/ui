@@ -3,34 +3,36 @@ import C from 'ui/utils/constants';
 import Util from 'ui/utils/util';
 import { denormalizeId, denormalizeIdArray } from 'ember-api-store/utils/denormalize';
 import Instance from 'ui/models/instance';
-import { formatSi } from 'ui/utils/util';
+import { formatSi } from 'shared/utils/util';
 import EndpointPorts from 'ui/mixins/endpoint-ports';
 
 var Container = Instance.extend(EndpointPorts, {
+  projects:                   Ember.inject.service(),
+  modalService:               Ember.inject.service('modal'),
+  router:                     Ember.inject.service(),
   // Common to all instances
-  requestedHostId            : null,
-  primaryIpAddress           : null,
-  primaryAssociatedIpAddress : null,
-  projects                   : Ember.inject.service(),
-  modalService: Ember.inject.service('modal'),
+  requestedHostId:            null,
+  primaryIpAddress:           null,
+  primaryAssociatedIpAddress: null,
+
 
   // Container-specific
-  type: 'container',
-  image: null,
-  registryCredentialId: null,
-  command: null,
-  commandArgs: null,
-  environment: null,
-  ports: null,
-  instanceLinks: null,
-  dataVolumes: null,
-  dataVolumesFrom: null,
-  devices: null,
-  restartPolicy: null,
+  type:                       'container',
+  image:                      null,
+  registryCredentialId:       null,
+  command:                    null,
+  commandArgs:                null,
+  environment:                null,
+  ports:                      null,
+  instanceLinks:              null,
+  dataVolumes:                null,
+  dataVolumesFrom:            null,
+  devices:                    null,
+  restartPolicy:              null,
 
-  mounts: denormalizeIdArray('mountIds'),
-  primaryHost: denormalizeId('hostId'),
-  service: denormalizeId('serviceId'),
+  mounts:                     denormalizeIdArray('mountIds'),
+  primaryHost:                denormalizeId('hostId'),
+  service:                    denormalizeId('serviceId'),
 
   actions: {
     restart: function() {
@@ -87,7 +89,7 @@ var Container = Instance.extend(EndpointPorts, {
     },
 
     clone: function() {
-      this.get('router').transitionTo('containers.run', {queryParams: {containerId: this.get('id')}});
+      this.get('router').transitionTo('containers.run', {queryParams: {containerId: this.get('id'), 'error_description': null, }});
     },
 
     convertToService: function() {
@@ -234,7 +236,7 @@ var Container = Instance.extend(EndpointPorts, {
       if ( name ) {
         let parts = name.split(/\//);
         let num = this.get('sortName').replace(/.*-/,'');
-        parts.insertAt(2, Util.strPad(num, 6, '0')); 
+        parts.insertAt(2, Util.strPad(num, 6, '0'));
         return parts.join('-');
       }
     }

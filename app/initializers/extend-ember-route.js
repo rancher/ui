@@ -11,9 +11,10 @@ export function initialize(/*application */) {
       this.rememberPrevious();
     },
 
+
     rememberPrevious: function() {
       var appRoute = getOwner(this).lookup('route:application');
-      var infos = this.router.router.currentHandlerInfos;
+      var infos = this.router._routerMicrolib.currentHandlerInfos;
       if ( infos && infos.length )
       {
         var params = [];
@@ -58,7 +59,7 @@ export function initialize(/*application */) {
     },
 
     goToParent: function() {
-      var infos = this.router.router.currentHandlerInfos;
+      var infos = this.router._routerMicrolib.currentHandlerInfos;
 
       var args = [];
       var info;

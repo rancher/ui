@@ -3,10 +3,11 @@ import Resource from 'ember-api-store/models/resource';
 import PolledResource from 'ui/mixins/cattle-polled-resource';
 
 var Cluster = Resource.extend(PolledResource, {
-  userStore: Ember.inject.service('user-store'),
+  userStore:       Ember.inject.service('user-store'),
   projectsService: Ember.inject.service('projects'),
+  router:          Ember.inject.service(),
 
-  type: 'cluster',
+  type:            'cluster',
 
   actions: {
     edit() {
@@ -33,13 +34,19 @@ var Cluster = Resource.extend(PolledResource, {
 
 
   _allProjects: null,
-  init() {
-    this._super(...arguments);
-    this.set('_allProjects', this.get('userStore').all('project'));
-  },
+  // init() {
+  //   this._super(...arguments);
+  //   // this.set('_allProjects', this.get('userStore').all('project'));
+  // },
 
   projects: function() {
-    return this.get('_allProjects').filterBy('clusterId', this.get('id'));
+    let x = this.get('_allProjects');
+
+    if (!x) {
+      x = this.set('_allProjects', this.get('userStore').all('project'));
+    }
+
+    return x.filterBy('clusterId', this.get('id'));
   }.property('_allProjects.@each.clusterId'),
 
   defaultProject: function() {
