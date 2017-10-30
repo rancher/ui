@@ -16,6 +16,7 @@ const Router = EmberRouter.extend({
 
 Router.map(function() {
   this.mount('login', {path: '/login'});
+  this.mount('global-admin', {path: '/gadmin'});
   this.route('ie');
   this.route('index');
   this.route('failWhale', {path: '/fail'});

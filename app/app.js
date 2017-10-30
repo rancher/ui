@@ -21,6 +21,21 @@ const App = Application.extend({
           authenticated: 'authenticated'
         }
       }
+    },
+    globalAdmin: {
+      dependencies: {
+        services: [
+          'access',
+          'user-language',
+          'intl',
+          'settings',
+          'session'
+        ],
+        externalRoutes: {
+          index: 'index',
+          authenticated: 'authenticated'
+        }
+      }
     }
   }
 });
