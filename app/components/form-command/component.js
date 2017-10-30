@@ -7,6 +7,8 @@ export default Ember.Component.extend(ManageLabels, {
   instance: null,
   errors: null,
   isService: null,
+  isUpgrade: null,
+  isSidekick: null,
   editing: true,
   classNameBindings: ['editing:component-editing:component-static'],
 
@@ -138,4 +140,8 @@ export default Ember.Component.extend(ManageLabels, {
   restartLimitDidChange: function() {
     this.set('restart', 'on-failure-cond');
   }.observes('restartLimit'),
+
+  showDrainTimeout: function() {
+    return this.get('isService') && !this.get('isSidekick');
+  }.property('isService', 'isSidekick')
 });
