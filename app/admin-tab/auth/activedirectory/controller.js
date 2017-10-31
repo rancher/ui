@@ -117,7 +117,7 @@ export default Ember.Controller.extend({
       let data  = {
         type:       'testAuthConfig',
         authConfig: model,
-        code:       `${this.get('username')}:${this.get('password')}`,
+        code:       `:${this.get('password')}`,
       };
 
       if ( errors.get('length') ) {
