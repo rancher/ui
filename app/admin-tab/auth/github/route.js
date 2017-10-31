@@ -14,7 +14,8 @@ export default Ember.Route.extend({
       testing: false,
       organizations: this.get('session.orgs')||[],
       errors: null,
-      isEnterprise: (model.get('hostname') ? true : false),
+      isEnterprise: (model.get('githubConfig.hostname') ? true : false),
+      secure: model.get('githubConfig.schema') === 'https://'
     });
 
     controller.set('saved',true);
