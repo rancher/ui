@@ -1,13 +1,12 @@
 import Ember from 'ember';
 
 export default Ember.Component.extend({
-  choices         : null,
-  index           : null,
+  choices    : null,
+  index      : null,
 
-  batchSize       : 1,
-  interval        : 2,
-  drainTimeoutMs  : 0,
-  startFirst      : false,
+  batchSize  : 1,
+  interval   : 2,
+  startFirst : false,
 
   init() {
     this._super(...arguments);

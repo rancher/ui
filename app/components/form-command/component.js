@@ -7,7 +7,6 @@ export default Ember.Component.extend(ManageLabels, {
   instance: null,
   errors: null,
   isService: null,
-  isUpgrade: null,
   isSidekick: null,
   editing: true,
   classNameBindings: ['editing:component-editing:component-static'],
