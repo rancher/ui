@@ -26,14 +26,24 @@ const App = Application.extend({
       dependencies: {
         services: [
           'access',
-          'user-language',
           'intl',
+          'projects',
+          'session',
           'settings',
-          'session'
+          'store',
+          'user-language',
+          'user-store',
+          'user-theme',
         ],
         externalRoutes: {
-          index: 'index',
-          authenticated: 'authenticated'
+          index:                            'index',
+          failWhale:                        'failWhale',
+          authenticated:                    'authenticated',
+          'authenticated.clusters':         'authenticated.clusters',
+          'authenticated.clusters.cluster': 'authenticated.clusters.cluster',
+          'authenticated.clusters.project': 'authenticated.clusters.project',
+          'authenticated.prefs':            'authenticated.prefs',
+          'logout':                         'logout'
         }
       }
     }

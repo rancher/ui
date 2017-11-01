@@ -39,10 +39,10 @@ Router.map(function() {
 
     // Admin
     this.route('admin-tab', {path: '/admin', resetNamespace: true}, function() {
-      this.route('accounts', {path: '/accounts'}, function() {
-        this.route('index', {path: '/'});
-        this.route('new', {path: '/add'});
-      });
+      // this.route('accounts', {path: '/accounts'}, function() {
+      //   this.route('index', {path: '/'});
+      //   this.route('new', {path: '/add'});
+      // });
 
       this.route('audit-logs');
       this.route('catalog');
