@@ -67,6 +67,21 @@ export default Ember.Component.extend({
     this.on('change', this, this._change);
   },
 
+  didRender: function () {
+    const selectEl = this.$()[0];
+    const value = this.get('value');
+    for (let i = 0; i < selectEl.options.length; i++) {
+      if(selectEl.options[i].value === value) {
+        selectEl.value = value;
+        break;
+      }
+    }
+
+    if (value !== selectEl.value) {
+      this._change();
+    }
+  },
+
   willDestroyElement() {
     this.off('change', this, this._change);
   },
