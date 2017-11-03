@@ -16,7 +16,7 @@ const Router = EmberRouter.extend({
 
 Router.map(function() {
   this.mount('login', {path: '/login'});
-  this.mount('global-admin', { path: '/gadmin'});
+  this.mount('global-admin', { path: '/admin'});
 
   this.route('ie');
   this.route('index');
@@ -39,39 +39,39 @@ Router.map(function() {
     this.route('prefs');
 
     // Admin
-    this.route('admin-tab', {path: '/admin', resetNamespace: true}, function() {
-      // this.route('accounts', {path: '/accounts'}, function() {
-      //   this.route('index', {path: '/'});
-      //   this.route('new', {path: '/add'});
-      // });
+    // this.route('admin-tab', {path: '/admin', resetNamespace: true}, function() {
+    //   this.route('accounts', {path: '/accounts'}, function() {
+    //     this.route('index', {path: '/'});
+    //     this.route('new', {path: '/add'});
+    //   });
 
-      this.route('audit-logs');
-      this.route('catalog');
-      this.route('ha');
+    //   this.route('audit-logs');
+    //   this.route('catalog');
+    //   this.route('ha');
 
-      this.route('settings', function() {
-        this.route('auth', {path: '/access'}, function() {
-          this.route('activedirectory');
-          this.route('azuread');
-          this.route('github');
-          this.route('openldap');
-          this.route('localauth', {path: 'local'});
-          this.route('shibboleth');
-        });
+    //   this.route('settings', function() {
+    //     this.route('auth', {path: '/access'}, function() {
+    //       this.route('activedirectory');
+    //       this.route('azuread');
+    //       this.route('github');
+    //       this.route('openldap');
+    //       this.route('localauth', {path: 'local'});
+    //       this.route('shibboleth');
+    //     });
 
-        this.route('machine');
-        this.route('registration');
-        this.route('advanced');
-      });
+    //     this.route('machine');
+    //     this.route('registration');
+    //     this.route('advanced');
+    //   });
 
-      this.route('processes', {path: '/processes'}, function() {
-        this.route('index', {path: '/'});
-        this.route('pools', {path: '/pools'});
-        this.route('list', {path: '/list'});
-      });
-      this.route('process', {path: '/processes/:process_id'});
+    //   this.route('processes', {path: '/processes'}, function() {
+    //     this.route('index', {path: '/'});
+    //     this.route('pools', {path: '/pools'});
+    //     this.route('list', {path: '/list'});
+    //   });
+    //   this.route('process', {path: '/processes/:process_id'});
 
-    });
+    // });
 
     // Clusters
     this.route('clusters', {path: '/clusters'}, function() {
@@ -199,11 +199,11 @@ Router.map(function() {
 
 
   // Load any custom routes from additional-routes
-  var cb = applyRoutes("application");
-  if( cb ) {
-    cb.apply(this);
-  }
-  clearRoutes();
+  // var cb = applyRoutes("application");
+  // if( cb ) {
+  //   cb.apply(this);
+  // }
+  // clearRoutes();
 });
 
 

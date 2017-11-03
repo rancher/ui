@@ -323,7 +323,7 @@ export default Ember.Route.extend(Subscribe, PromiseToCb, {
 
     gotoP() {
       if ( this.get('access.admin') ) {
-        this._gotoRoute('admin-tab.processes', false);
+        this._gotoRoute('global-admin.processes', false);
       }
     },
 

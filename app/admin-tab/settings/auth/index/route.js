@@ -12,11 +12,11 @@ export default Ember.Route.extend({
 
     if ( this.get('access.enabled') )
     {
-      this.replaceWith('admin-tab.settings.auth.' + route);
+      this.replaceWith('global-admin.settings.auth.' + route);
     }
     else
     {
-      this.replaceWith('admin-tab.settings.auth.localauth');
+      this.replaceWith('global-admin.settings.auth.localauth');
     }
   },
 });
