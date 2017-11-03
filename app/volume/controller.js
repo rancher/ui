@@ -1,28 +1,8 @@
 import Ember from 'ember';
 import Util from 'ui/utils/util';
+import { volumes as VolumeHeaders } from 'shared/headers';
 
-export const headers = [
-  {
-    name:           'serviceName',
-    sort:           ['instance.service.displayName:desc', 'instanceId:desc'],
-    translationKey: 'volumesPage.mounts.table.instance',
-  },
-  {
-    name:           'instanceName',
-    sort:           ['instanceName:desc', 'instanceId:desc'],
-    translationKey: 'volumesPage.mounts.table.instance',
-  },
-  {
-    name:           'path',
-    sort:           ['path'],
-    translationKey: 'volumesPage.mounts.table.path',
-  },
-  {
-    name:           'permission',
-    sort:           ['permission'],
-    translationKey: 'volumesPage.mounts.table.permission',
-  },
-];
+const headers = VolumeHeaders;
 
 export default Ember.Controller.extend({
   queryParams: ['type'],
