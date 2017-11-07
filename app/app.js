@@ -26,6 +26,9 @@ const App = Application.extend({
       dependencies: {
         services: [
           'access',
+          'auth-store',
+          'endpoint',
+          'github',
           'intl',
           'projects',
           'session',
