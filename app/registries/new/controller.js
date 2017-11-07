@@ -1,12 +1,13 @@
-import Ember from 'ember';
+import { alias, equal } from '@ember/object/computed';
+import Controller from '@ember/controller';
 import NewOrEdit from 'ui/mixins/new-or-edit';
 
-export default Ember.Controller.extend(NewOrEdit, {
+export default Controller.extend(NewOrEdit, {
   editing: false,
-  primaryResource: Ember.computed.alias('model.registry'),
+  primaryResource: alias('model.registry'),
 
   activeDriver: null,
-  isCustom: Ember.computed.equal('activeDriver','custom'),
+  isCustom: equal('activeDriver','custom'),
 
   actions: {
     selectDriver: function(name) {

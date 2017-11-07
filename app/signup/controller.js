@@ -1,8 +1,10 @@
-import Ember from 'ember';
+import { observer } from '@ember/object';
+import { inject as service } from '@ember/service';
+import Controller from '@ember/controller';
 import fetch from 'ember-api-store/utils/fetch';
 
-export default Ember.Controller.extend({
-  settings: Ember.inject.service(),
+export default Controller.extend({
+  settings: service(),
 
   emailSent: false,
   saving: false,
@@ -35,7 +37,7 @@ export default Ember.Controller.extend({
       this.transitionToRoute('login');
     }
   },
-  validate: Ember.observer('model.name', 'model.email', function() {
+  validate: observer('model.name', 'model.email', function() {
     if (this.get('model.name') && this.get('model.email')) {
       if (this.get('errors')) {
         this.set('errors', []);

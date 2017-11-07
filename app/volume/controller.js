@@ -1,21 +1,23 @@
-import Ember from 'ember';
+import { computed } from '@ember/object';
+import { alias } from '@ember/object/computed';
+import Controller from '@ember/controller';
 import Util from 'ui/utils/util';
 import { volumes as VolumeHeaders } from 'shared/headers';
 
 const headers = VolumeHeaders;
 
-export default Ember.Controller.extend({
+export default Controller.extend({
   queryParams: ['type'],
-  stack:       Ember.computed.alias('model.stack'),
-  host:        Ember.computed.alias('model.host'),
-  volume:      Ember.computed.alias('model.volume'),
+  stack:       alias('model.stack'),
+  host:        alias('model.host'),
+  volume:      alias('model.volume'),
 
-  sizeGB: Ember.computed('volume.sizeMb', function() {
+  sizeGB: computed('volume.sizeMb', function() {
     let sizeOut = Util.formatGB(this.get('volume.sizeMb'));
     return sizeOut;
   }),
 
-  driverOpts: Ember.computed('volume.driverOpts', function() {
+  driverOpts: computed('volume.driverOpts', function() {
     if (this.get('volume.driverOpts')) {
       let out  = [];
       let opts = this.get('volume.driverOpts')
@@ -27,11 +29,11 @@ export default Ember.Controller.extend({
     }
     return [];
   }),
-  dCount: Ember.computed('', function() {
+  dCount: computed('', function() {
     return this.get('volume.driverOpts.length') || 0;
   }),
 
-  vCount: Ember.computed('', function() {
+  vCount: computed('', function() {
     return this.get('volume.mounts.length') || 0;
   }),
 

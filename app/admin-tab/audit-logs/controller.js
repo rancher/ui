@@ -1,11 +1,12 @@
-import Ember from 'ember';
+import { inject as service } from '@ember/service';
+import Controller, { inject as controller } from '@ember/controller';
 import C from 'ui/utils/constants';
 
-export default Ember.Controller.extend({
-  application       : Ember.inject.controller(),
+export default Controller.extend({
+  application       : controller(),
   queryParams       : ['sortBy', 'descending', 'eventType', 'resourceType', 'resourceId', 'clientIp', 'authType'],
   resourceTypeAndId : null,
-  modalService:       Ember.inject.service('modal'),
+  modalService:       service('modal'),
 
   headers: [
     {

@@ -1,7 +1,9 @@
-import Ember from 'ember';
+import { alias } from '@ember/object/computed';
+import { inject as service } from '@ember/service';
+import Controller from '@ember/controller';
 import C from 'ui/utils/constants';
 
-export default Ember.Controller.extend({
-  settings    : Ember.inject.service(),
-  projectId   : Ember.computed.alias(`tab-session.${C.TABSESSION.PROJECT}`),
+export default Controller.extend({
+  settings    : service(),
+  projectId   : alias(`tab-session.${C.TABSESSION.PROJECT}`),
 });

@@ -1,10 +1,13 @@
-import Ember from 'ember';
+import { later } from '@ember/runloop';
+import { computed } from '@ember/object';
+import { inject as service } from '@ember/service';
+import Controller from '@ember/controller';
 import C from 'ui/utils/constants';
 
-export default Ember.Controller.extend({
-  access            : Ember.inject.service(),
-  settings          : Ember.inject.service(),
-  intl              : Ember.inject.service(),
+export default Controller.extend({
+  access            : service(),
+  settings          : service(),
+  intl              : service(),
 
   confirmDisable    : false,
   errors            : null,
@@ -21,7 +24,7 @@ export default Ember.Controller.extend({
     return !ok;
   }.property('adminPublicValue','adminSecretValue','adminSecretValue2'),
 
-  validateDescription: Ember.computed(function() {
+  validateDescription: computed(function() {
     return this.get('settings').get(C.SETTING.AUTH_LOCAL_VALIDATE_DESC) || null;
   }),
 
@@ -102,7 +105,7 @@ export default Ember.Controller.extend({
 
     promptDisable: function() {
       this.set('confirmDisable', true);
-      Ember.run.later(this, function() {
+      later(this, function() {
         this.set('confirmDisable', false);
       }, 10000);
     },

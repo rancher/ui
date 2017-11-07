@@ -1,4 +1,7 @@
-import Ember from 'ember';
+import { isEmpty } from '@ember/utils';
+import { computed } from '@ember/object';
+import { filterBy } from '@ember/object/computed';
+import { inject as service } from '@ember/service';
 import Resource from 'ember-api-store/models/resource';
 import { parseExternalId } from 'ui/utils/parse-externalid';
 import C from 'ui/utils/constants';
@@ -46,15 +49,15 @@ export function tagChoices(all) {
 var Stack = Resource.extend(StateCounts, {
 
   type:            'stack',
-  k8s:             Ember.inject.service(),
-  modalService:    Ember.inject.service('modal'),
-  catalog:         Ember.inject.service(),
-  projectsService: Ember.inject.service('projects'),
-  router:          Ember.inject.service(),
+  k8s:             service(),
+  modalService:    service('modal'),
+  catalog:         service(),
+  projectsService: service('projects'),
+  router:          service(),
 
 
   services:        denormalizeIdArray('serviceIds'),
-  realServices:    Ember.computed.filterBy('services','isReal',true),
+  realServices:    filterBy('services','isReal',true),
 
   init() {
     this._super(...arguments);
@@ -62,7 +65,7 @@ var Stack = Resource.extend(StateCounts, {
   },
 
   _allInstances: null,
-  instances: Ember.computed('_allInstances.@each.stackId', function() {
+  instances: computed('_allInstances.@each.stackId', function() {
     let all = this.get('_allInstances');
     if ( !all ) {
       all = this.get('store').all('instance');
@@ -219,9 +222,9 @@ var Stack = Resource.extend(StateCounts, {
     return (this.get('name')||'').toLowerCase() === 'default';
   }.property('name'),
 
-  isEmpty: Ember.computed('instances.length', 'services.length', function() {
+  isEmpty: computed('instances.length', 'services.length', function() {
 
-    if (Ember.isEmpty(this.get('instances')) && Ember.isEmpty(this.get('services'))) {
+    if (isEmpty(this.get('instances')) && isEmpty(this.get('services'))) {
       return true;
     }
 
@@ -262,7 +265,7 @@ var Stack = Resource.extend(StateCounts, {
     }
   }.property('externalIdInfo.kind','group','system'),
 
-  normalizedTags: Ember.computed('group', {
+  normalizedTags: computed('group', {
     get() {
       return tagsToArray(this.get('group'));
     },
@@ -271,7 +274,7 @@ var Stack = Resource.extend(StateCounts, {
       return value;
     }
   }),
-  tags: Ember.computed('group', {
+  tags: computed('group', {
     get(){
       return tagsToArray(this.get('group'), false);
     },

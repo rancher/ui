@@ -1,5 +1,7 @@
+import { later, cancel } from '@ember/runloop';
+import { computed } from '@ember/object';
+import { alias } from '@ember/object/computed';
 import Resource from 'ember-api-store/models/resource';
-import Ember from 'ember';
 import C from 'ui/utils/constants';
 import Util from 'ui/utils/util';
 import { denormalizeId, denormalizeIdArray } from 'ember-api-store/utils/denormalize';
@@ -18,7 +20,7 @@ var Service = Resource.extend(StateCounts, EndpointPorts, {
   router:        service(),
 
   instances:     denormalizeIdArray('instanceIds'),
-  instanceCount: Ember.computed.alias('instances.length'),
+  instanceCount: alias('instances.length'),
   stack:         denormalizeId('stackId'),
 
   init() {
@@ -26,7 +28,7 @@ var Service = Resource.extend(StateCounts, EndpointPorts, {
     this.defineStateCounts('instances', 'instanceStates', 'instanceCountSort');
   },
 
-  lcType: Ember.computed('type', function() {
+  lcType: computed('type', function() {
     return (this.get('type')||'').toLowerCase();
   }),
 
@@ -148,7 +150,7 @@ var Service = Resource.extend(StateCounts, EndpointPorts, {
     popoutShell() {
       let proj = this.get('projects.current.id');
       let id = this.get('containerForShell.id');
-      Ember.run.later(() => {
+      later(() => {
         window.open(`//${window.location.host}/env/${proj}/infra/console?instanceId=${id}&isPopup=true`, '_blank', "toolbars=0,width=900,height=700,left=200,top=200");
       });
     },
@@ -158,10 +160,10 @@ var Service = Resource.extend(StateCounts, EndpointPorts, {
   saveScale() {
     if ( this.get('scaleTimer') )
     {
-      Ember.run.cancel(this.get('scaleTimer'));
+      cancel(this.get('scaleTimer'));
     }
 
-    var timer = Ember.run.later(this, function() {
+    var timer = later(this, function() {
       this.save().catch((err) => {
         this.get('growl').fromError('Error updating scale',err);
       });
@@ -207,7 +209,7 @@ var Service = Resource.extend(StateCounts, EndpointPorts, {
     'lcType','isK8s','canHaveContainers','canHaveSidekicks','containerForShell'
   ),
 
-  image: Ember.computed.alias('launchConfig.image'),
+  image: alias('launchConfig.image'),
 
   sortName: function() {
     return Util.sortableNumericSuffix(this.get('displayName'));
@@ -315,21 +317,21 @@ var Service = Resource.extend(StateCounts, EndpointPorts, {
     return ['service','scalinggroup'].includes(this.get('lcType'));
   }.property('lcType'),
 
-  hasPorts: Ember.computed.alias('isReal'),
-  hasImage: Ember.computed.alias('isReal'),
-  canUpgrade: Ember.computed.alias('isReal'),
-  canHaveLabels: Ember.computed.alias('isReal'),
-  canScale: Ember.computed.alias('isReal'),
+  hasPorts: alias('isReal'),
+  hasImage: alias('isReal'),
+  canUpgrade: alias('isReal'),
+  canHaveLabels: alias('isReal'),
+  canScale: alias('isReal'),
 
   realButNotLb: function() {
     return this.get('isReal') && !this.get('isBalancer');
   }.property('isReal','isBalancer'),
 
-  canHaveLinks: Ember.computed.alias('realButNotLb'),
-  canChangeNetworking: Ember.computed.alias('realButNotLb'),
-  canChangeSecurity: Ember.computed.alias('realButNotLb'),
-  canHaveSecrets: Ember.computed.alias('realButNotLb'),
-  canHaveEnvironment: Ember.computed.alias('realButNotLb'),
+  canHaveLinks: alias('realButNotLb'),
+  canChangeNetworking: alias('realButNotLb'),
+  canChangeSecurity: alias('realButNotLb'),
+  canHaveSecrets: alias('realButNotLb'),
+  canHaveEnvironment: alias('realButNotLb'),
 
   canHaveHealthCheck: function() {
     return [
@@ -400,7 +402,7 @@ var Service = Resource.extend(StateCounts, EndpointPorts, {
     return activeIcon(this);
   }.property('lcType'),
 
-  memoryReservationBlurb: Ember.computed('launchConfig.memoryReservation', function() {
+  memoryReservationBlurb: computed('launchConfig.memoryReservation', function() {
     if ( this.get('launchConfig.memoryReservation') ) {
       return Util.formatSi(this.get('launchConfig.memoryReservation'), 1024, 'iB', 'B');
     }

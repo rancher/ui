@@ -1,9 +1,11 @@
-import Ember from 'ember';
+import { computed } from '@ember/object';
+import { inject as service } from '@ember/service';
+import Route from '@ember/routing/route';
 import C from 'ui/utils/constants';
 
-export default Ember.Route.extend({
-  projects: Ember.inject.service(),
-  k8s: Ember.inject.service(),
+export default Route.extend({
+  projects: service(),
+  k8s: service(),
   model: function(params) {
     let store = this.get('store');
     if (params.kubernetes) {
@@ -17,7 +19,7 @@ export default Ember.Route.extend({
   setupController(controller, model) {
     this._super(controller, model);
     if (controller.get('kubernetes')) {
-      controller.set('command', Ember.computed('model.labels', function() {
+      controller.set('command', computed('model.labels', function() {
         var labels = this.get('model.labels')||{};
         if ( labels[C.LABEL.K8S_TOKEN]+'' === 'true' ) {
           return [

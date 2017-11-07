@@ -1,12 +1,12 @@
-import Ember from 'ember';
+import { inject as service } from '@ember/service';
 import Resource from 'ember-api-store/models/resource';
 import PolledResource from 'ui/mixins/cattle-polled-resource';
 import { denormalizeId } from 'ember-api-store/utils/denormalize';
 
 var Receiver = Resource.extend(PolledResource, {
-  regularStore: Ember.inject.service('store'),
-  intl:         Ember.inject.service(),
-  router:       Ember.inject.service(),
+  regularStore: service('store'),
+  intl:         service(),
+  router:       service(),
 
   service: denormalizeId('opt.serviceId','service','regularStore'),
 

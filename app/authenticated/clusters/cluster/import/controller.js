@@ -1,13 +1,16 @@
-import Ember from 'ember';
+import { cancel, later } from '@ember/runloop';
+import { alias } from '@ember/object/computed';
+import { inject as service } from '@ember/service';
+import Controller, { inject as controller } from '@ember/controller';
 
-export default Ember.Controller.extend({
-  projects: Ember.inject.service(),
-  settings: Ember.inject.service(),
-  clusterController: Ember.inject.controller('authenticated.clusters.cluster'),
-  cluster: Ember.computed.alias('clusterController.model'),
+export default Controller.extend({
+  projects: service(),
+  settings: service(),
+  clusterController: controller('authenticated.clusters.cluster'),
+  cluster: alias('clusterController.model'),
 
-  loading: Ember.computed.alias('cluster.isTransitioning'),
-  registrationCommand: Ember.computed.alias('cluster.registrationToken.clusterCommand'),
+  loading: alias('cluster.isTransitioning'),
+  registrationCommand: alias('cluster.registrationToken.clusterCommand'),
 
   refreshTimer: null,
   init() {
@@ -20,12 +23,12 @@ export default Ember.Controller.extend({
   },
 
   cancelRefresh() {
-    Ember.run.cancel(this.get('refreshTimer'));
+    cancel(this.get('refreshTimer'));
   },
 
   scheduleRefresh() {
     this.cancelRefresh();
-    this.set('refreshTimer', Ember.run.later(this, 'refreshCluster', 5000));
+    this.set('refreshTimer', later(this, 'refreshCluster', 5000));
   },
 
   refreshCluster() {

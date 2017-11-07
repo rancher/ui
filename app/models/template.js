@@ -1,11 +1,13 @@
-import Ember from 'ember';
+import { htmlSafe } from '@ember/string';
+import { computed } from '@ember/object';
+import { inject as service } from '@ember/service';
 import Resource from 'ember-api-store/models/resource';
 import C from 'ui/utils/constants';
 
 const Template = Resource.extend({
-  projects: Ember.inject.service(),
-  settings: Ember.inject.service(),
-  intl: Ember.inject.service(),
+  projects: service(),
+  settings: service(),
+  intl: service(),
 
   headers: function() {
     return {
@@ -13,7 +15,7 @@ const Template = Resource.extend({
     };
   }.property('project.current.id'),
 
-  cleanProjectUrl: Ember.computed('links.project', function() {
+  cleanProjectUrl: computed('links.project', function() {
     let projectUrl = this.get('links.project');
     let pattern = new RegExp('^([a-z]+://|//)', 'i');
 
@@ -23,10 +25,10 @@ const Template = Resource.extend({
       }
     }
 
-    return Ember.String.htmlSafe(projectUrl);
+    return htmlSafe(projectUrl);
   }),
 
-  defaultName: Ember.computed('id','templateBase', function() {
+  defaultName: computed('id','templateBase', function() {
     var name = this.get('id');
     var base = this.get('templateBase');
 
@@ -50,7 +52,7 @@ const Template = Resource.extend({
     return name;
   }),
 
-  machineHasIcon: Ember.computed('templateBase', function(){
+  machineHasIcon: computed('templateBase', function(){
     if (this.get('templateBase') === 'machine') {
       if (this.get('links.icon')) {
         return this.get('links.icon');

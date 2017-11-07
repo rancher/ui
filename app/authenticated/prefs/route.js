@@ -1,22 +1,26 @@
-import Ember from 'ember';
+import EmberObject from '@ember/object';
+import { resolve } from 'rsvp';
+import { alias } from '@ember/object/computed';
+import { inject as service } from '@ember/service';
+import Route from '@ember/routing/route';
 import { loadScript } from 'ui/utils/load-script';
 import C from 'ui/utils/constants';
 import fetch from 'ember-api-store/utils/fetch';
 
-export default Ember.Route.extend({
-  session: Ember.inject.service(),
-  accountId: Ember.computed.alias(`session.${C.SESSION.ACCOUNT_ID}`),
+export default Route.extend({
+  session: service(),
+  accountId: alias(`session.${C.SESSION.ACCOUNT_ID}`),
 
   beforeModel() {
     return loadScript('https://js.stripe.com/v2/').then(() => {
       Stripe.setPublishableKey(this.get('app.stripe.publishableKey'));
-      return Ember.RSVP.resolve();
+      return resolve();
     });
   },
 
   model(/*params, transition*/) {
 
-    var modelOut = Ember.Object.create({
+    var modelOut = EmberObject.create({
       account: null,
       stripeCards: null,
     });

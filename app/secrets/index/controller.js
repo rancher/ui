@@ -1,9 +1,11 @@
-import Ember from 'ember';
+import { alias } from '@ember/object/computed';
+import { inject as service } from '@ember/service';
+import Controller from '@ember/controller';
 
-export default Ember.Controller.extend({
+export default Controller.extend({
   sortBy: 'name',
-  prefs: Ember.inject.service(),
-  projects: Ember.inject.service(),
+  prefs: service(),
+  projects: service(),
 
   queryParams: ['sortBy'],
 
@@ -36,7 +38,7 @@ export default Ember.Controller.extend({
     },
   ],
 
-  sortableContent: Ember.computed.alias('filtered'),
+  sortableContent: alias('filtered'),
   filtered: function() {
     let all = this.get('model');
     if ( !this.get('prefs.showSystemResources') ) {

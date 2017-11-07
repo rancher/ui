@@ -1,4 +1,5 @@
-import Ember from 'ember';
+import EmberObject, { computed } from '@ember/object';
+import { alias } from '@ember/object/computed';
 import Util from 'ui/utils/util';
 import Resource from 'ember-api-store/models/resource';
 import { formatMib, formatSi } from 'shared/utils/util';
@@ -91,7 +92,7 @@ var Host = Resource.extend(StateCounts,{
     return out;
   }.property('actionLinks.{activate,deactivate,evacuate}','links.{update,remove,config}','driver'),
 
-  displayIp: Ember.computed.alias('agentIpAddress'),
+  displayIp: alias('agentIpAddress'),
 
   displayName: function() {
     let name = this.get('name');
@@ -123,7 +124,7 @@ var Host = Resource.extend(StateCounts,{
     return out;
   }.property('info.osInfo.operatingSystem','labels'),
 
-  osDetail: Ember.computed.alias('info.osInfo.operatingSystem'),
+  osDetail: alias('info.osInfo.operatingSystem'),
 
   dockerEngineVersion: function() {
     if ( this.get('info.osInfo') )
@@ -150,7 +151,7 @@ var Host = Resource.extend(StateCounts,{
     }
   }.property('dockerEngineVersion',`settings.${C.SETTING.SUPPORTED_DOCKER}`,`settings.${C.SETTING.NEWEST_DOCKER}`),
 
-  dockerDetail: Ember.computed.alias('info.osInfo.operatingSystem'),
+  dockerDetail: alias('info.osInfo.operatingSystem'),
 
   kernelBlurb: function() {
     if ( this.get('info.osInfo') )
@@ -175,7 +176,7 @@ var Host = Resource.extend(StateCounts,{
     }
   }.property('info.cpuInfo.{count,mhz}'),
 
-  cpuTooltip: Ember.computed.alias('info.cpuInfo.modelName'),
+  cpuTooltip: alias('info.cpuInfo.modelName'),
 
   memoryBlurb: function() {
     if ( this.get('info.memoryInfo') )
@@ -184,14 +185,14 @@ var Host = Resource.extend(StateCounts,{
     }
   }.property('info.memoryInfo.memTotal'),
 
-  memoryLimitBlurb: Ember.computed('memory', function() {
+  memoryLimitBlurb: computed('memory', function() {
     if ( this.get('memory') )
     {
       return formatSi(this.get('memory'), 1024, 'iB', 'B');
     }
   }),
 
-  localStorageBlurb: Ember.computed('localStorageMb', function() {
+  localStorageBlurb: computed('localStorageMb', function() {
     if (this.get('localStorageMb')) {
       return formatSi(this.get('localStorageMb'), 1024, 'iB', 'B', 2 /*start at 1024^2==MB */);
     }
@@ -229,7 +230,7 @@ var Host = Resource.extend(StateCounts,{
       var out = [];
       var fses = this.get('info.diskInfo.fileSystems')||[];
       Object.keys(fses).forEach((fs) => {
-        out.pushObject(Ember.Object.create({label: fs, value: formatMib(fses[fs].capacity)}));
+        out.pushObject(EmberObject.create({label: fs, value: formatMib(fses[fs].capacity)}));
       });
 
       return out;

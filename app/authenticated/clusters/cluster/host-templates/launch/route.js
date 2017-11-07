@@ -1,7 +1,7 @@
-import Ember from 'ember';
-const { get } = Ember;
+import Route from '@ember/routing/route';
+import { get } from '@ember/object';
 
-export default Ember.Route.extend({
+export default Route.extend({
   model(params, transistion) {
     return this.get('store').find('hosttemplate', params.template_id).then((template) => {
       return this.get('userStore').find('machinedriver', null, {forceReload: true}).then((drivers) => {

@@ -1,10 +1,10 @@
-import Ember from 'ember';
+import { inject as service } from '@ember/service';
 import Resource from 'ember-api-store/models/resource';
 import { parseExternalId } from 'ui/utils/parse-externalid';
 import C from 'ui/utils/constants';
 
 export default Resource.extend({
-  catalog: Ember.inject.service(),
+  catalog: service(),
 
   type: 'catalogTemplate',
 

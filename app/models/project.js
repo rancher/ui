@@ -1,17 +1,18 @@
+import { notEmpty, equal } from '@ember/object/computed';
+import { inject as service } from '@ember/service';
 import Resource from 'ember-api-store/models/resource';
 import PolledResource from 'ui/mixins/cattle-polled-resource';
-import Ember from 'ember';
 import Util from 'ui/utils/util';
 import C from 'ui/utils/constants';
 import { denormalizeId } from 'ember-api-store/utils/denormalize';
 
 var Project = Resource.extend(PolledResource, {
-  access:       Ember.inject.service(),
-  prefs:        Ember.inject.service(),
-  projects:     Ember.inject.service(),
-  settings:     Ember.inject.service(),
-  modalService: Ember.inject.service('modal'),
-  router:       Ember.inject.service(),
+  access:       service(),
+  prefs:        service(),
+  projects:     service(),
+  settings:     service(),
+  modalService: service('modal'),
+  router:       service(),
 
 
   type:         'project',
@@ -20,9 +21,9 @@ var Project = Resource.extend(PolledResource, {
 
   cluster:      denormalizeId('clusterId'),
 
-  canAddHost:   Ember.computed.notEmpty('cluster.registrationToken.hostCommand'),
-  canImport:    Ember.computed.notEmpty('cluster.registrationToken.clusterCommand'),
-  isKubernetes: Ember.computed.equal('cluster.orchestration','kubernetes'),
+  canAddHost:   notEmpty('cluster.registrationToken.hostCommand'),
+  canImport:    notEmpty('cluster.registrationToken.clusterCommand'),
+  isKubernetes: equal('cluster.orchestration','kubernetes'),
 
   actions: {
     edit: function() {
@@ -121,7 +122,7 @@ var Project = Resource.extend(PolledResource, {
     return Util.ucFirst(this.get('orchestration'));
   }.property('orchestration'),
 
-  isWindows: Ember.computed.equal('orchestration','windows'),
+  isWindows: equal('orchestration','windows'),
 
   // @TODO real data
   numStacks: function() {

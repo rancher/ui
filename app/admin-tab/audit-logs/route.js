@@ -1,8 +1,9 @@
-import Ember from 'ember';
+import EmberObject from '@ember/object';
+import Route from '@ember/routing/route';
 import PolledModel from 'ui/mixins/polled-model';
 import { urlOptions } from 'ember-api-store/utils/url-options';
 
-export default Ember.Route.extend(PolledModel, {
+export default Route.extend(PolledModel, {
   pollInterval: 10000,
 
   queryParams: {
@@ -50,7 +51,7 @@ export default Ember.Route.extend(PolledModel, {
     return us.rawRequest({url}).then((res) => {
       let records = us._typeify(res.body, {updateStore: false});
 
-      return Ember.Object.create({
+      return EmberObject.create({
         auditLog: records,
         resourceTypes: resourceTypes
       });

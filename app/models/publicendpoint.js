@@ -1,19 +1,19 @@
-import Ember from 'ember';
+import { isArray } from '@ember/array';
 import Resource from 'ember-api-store/models/resource';
 import { denormalizeId } from 'ember-api-store/utils/denormalize';
 
 const BIND_ANY = ['0.0.0.0','::'];
 
 function portMatch(ports, equals, endsWith) {
-  if ( !Ember.isArray(ports) ) {
+  if ( !isArray(ports) ) {
     ports = [ports];
   }
 
-  if ( !Ember.isArray(equals) ) {
+  if ( !isArray(equals) ) {
     equals = [equals];
   }
 
-  if ( !Ember.isArray(endsWith) ) {
+  if ( !isArray(endsWith) ) {
     endsWith = [endsWith];
   }
 

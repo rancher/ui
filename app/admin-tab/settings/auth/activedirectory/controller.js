@@ -1,13 +1,15 @@
-import Ember from 'ember';
+import { later } from '@ember/runloop';
+import { inject as service } from '@ember/service';
+import Controller from '@ember/controller';
 import Errors from 'ui/utils/errors';
 import C from 'ui/utils/constants';
 
 var PLAIN_PORT = 389;
 var TLS_PORT = 636;
 
-export default Ember.Controller.extend({
-  access: Ember.inject.service(),
-  settings: Ember.inject.service(),
+export default Controller.extend({
+  access: service(),
+  settings: service(),
 
   confirmDisable: false,
   errors: null,
@@ -116,7 +118,7 @@ export default Ember.Controller.extend({
 
     promptDisable: function() {
       this.set('confirmDisable', true);
-      Ember.run.later(this, function() {
+      later(this, function() {
         this.set('confirmDisable', false);
       }, 10000);
     },

@@ -1,7 +1,8 @@
-import Ember from 'ember';
+import EmberObject from '@ember/object';
+import Route from '@ember/routing/route';
 import PolledModel from 'ui/mixins/polled-model';
 
-export default Ember.Route.extend(PolledModel, {
+export default Route.extend(PolledModel, {
   queryParams: {
     which: {
       refreshModel: true
@@ -35,7 +36,7 @@ export default Ember.Route.extend(PolledModel, {
       filter: filters,
       forceReload: true
     }).then((response) => {
-      return Ember.Object.create({
+      return EmberObject.create({
         processInstances: response,
       });
     });

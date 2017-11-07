@@ -1,10 +1,10 @@
-import Ember from 'ember';
+import { inject as service } from '@ember/service';
 import Resource from 'ember-api-store/models/resource';
 import PolledResource from 'ui/mixins/cattle-polled-resource';
 
 var Account = Resource.extend(PolledResource, {
   type: 'account',
-  modalService: Ember.inject.service('modal'),
+  modalService: service('modal'),
 
   reservedKeys: ['_allPasswords'],
 

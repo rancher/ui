@@ -1,5 +1,5 @@
 import PageHeader from 'shared/components/page-header/component';
-import {getProjectId, getClusterId, bulkAdd} from 'ui/utils/navigation-tree';
+import { getProjectId, getClusterId, bulkAdd } from 'ui/utils/navigation-tree';
 import C from 'shared/utils/constants';
 
 const rootNav = [

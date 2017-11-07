@@ -1,9 +1,10 @@
-import Ember from 'ember';
+import { inject as service } from '@ember/service';
+import Controller from '@ember/controller';
 
-export default Ember.Controller.extend({
-  growl: Ember.inject.service(),
-  projects: Ember.inject.service(),
-  modalService: Ember.inject.service('modal'),
+export default Controller.extend({
+  growl: service(),
+  projects: service(),
+  modalService: service('modal'),
 
   queryParams: ['stackId','serviceId','containerId','addSidekick','launchConfigIndex','upgrade'],
   stackId: null,

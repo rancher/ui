@@ -1,6 +1,7 @@
-import Ember from 'ember';
+import { hash } from 'rsvp';
+import Route from '@ember/routing/route';
 
-export default Ember.Route.extend({
+export default Route.extend({
   activate() {
     this._super();
     this.controllerFor('authenticated').setPageScope('clusters');
@@ -8,7 +9,7 @@ export default Ember.Route.extend({
 
   model() {
     var userStore = this.get('userStore');
-    return Ember.RSVP.hash({
+    return hash({
       projects: userStore.find('project', null, {url: 'projects', filter: {all: 'true'}, forceReload: true, removeMissing: true}),
       clusters: userStore.find('cluster', null, {url: 'clusters',                        forceReload: true, removeMissing: true}),
     }).then(() => {

@@ -1,10 +1,13 @@
-import Ember from 'ember';
+import EmberObject from '@ember/object';
+import { Promise as EmberPromise } from 'rsvp';
+import { inject as service } from '@ember/service';
+import Route from '@ember/routing/route';
 import C from 'ui/utils/constants';
 import { xhrConcur } from 'ui/utils/platform';
 import PromiseToCb from 'ui/mixins/promise-to-cb';
 
-export default Ember.Route.extend(PromiseToCb, {
-  catalog: Ember.inject.service(),
+export default Route.extend(PromiseToCb, {
+  catalog: service(),
 
   model: function(params /* , transition*/) {
     var userStore = this.get('userStore');
@@ -18,7 +21,7 @@ export default Ember.Route.extend(PromiseToCb, {
       },
     };
 
-    let promise = new Ember.RSVP.Promise((resolve, reject) => {
+    let promise = new EmberPromise((resolve, reject) => {
       let tasks = {
         allProjects:                        this.toCb(() => { return userStore.findAll('project'); }),
         project:            ['allProjects', this.toCb(() => { return userStore.find('project', params.project_id); })],
@@ -66,7 +69,7 @@ export default Ember.Route.extend(PromiseToCb, {
         });
       }
 
-      let out = Ember.Object.create({
+      let out = EmberObject.create({
         all: hash.allProjects,
         network: network,
         policyManager: hash.policyManagers.objectAt(0),

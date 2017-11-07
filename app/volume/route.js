@@ -1,6 +1,7 @@
-import Ember from 'ember';
+import EmberObject from '@ember/object';
+import Route from '@ember/routing/route';
 
-export default Ember.Route.extend({
+export default Route.extend({
   queryParams: {
     type: {
       refreshModel: true
@@ -8,7 +9,7 @@ export default Ember.Route.extend({
   },
   model: function(params) {
 
-    let out = Ember.Object.create({
+    let out = EmberObject.create({
       volume: this.get('store').getById(params.type, params.volume_id)
     });
 

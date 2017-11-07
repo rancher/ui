@@ -1,4 +1,5 @@
-import Ember from 'ember';
+import { later } from '@ember/runloop';
+import { alias } from '@ember/object/computed';
 import Resource from 'ember-api-store/models/resource';
 import { denormalizeId } from 'ember-api-store/utils/denormalize';
 
@@ -44,7 +45,7 @@ let PortRule = Resource.extend({
     return ['http','https'].includes(this.get('protocol'));
   }.property('protocol'),
 
-  canSticky: Ember.computed.alias('canPath'),
+  canSticky: alias('canPath'),
 
   ipProtocol: function() {
     if ( this.get('protocol') === 'udp' ) {
@@ -55,7 +56,7 @@ let PortRule = Resource.extend({
   }.property('protocol'),
 
   autoSetPort: function() {
-    Ember.run.later(this, setTlsPort, 500);
+    later(this, setTlsPort, 500);
   }.observes('protocol','sourcePort'),
 });
 

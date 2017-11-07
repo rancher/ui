@@ -1,7 +1,8 @@
-import Ember from 'ember';
+import { inject as service } from '@ember/service';
+import Controller from '@ember/controller';
 
-export default Ember.Controller.extend({
-  access: Ember.inject.service(),
+export default Controller.extend({
+  access: service(),
 
   lastRoute: 'global-admin.settings.auth.github',
   drivers: function() {

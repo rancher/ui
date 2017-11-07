@@ -1,10 +1,12 @@
-import Ember from 'ember';
+import { allSettled } from 'rsvp';
+import { inject as service } from '@ember/service';
+import Route from '@ember/routing/route';
 import C from 'ui/utils/constants';
 import { parseExternalId } from 'ui/utils/parse-externalid';
 
-export default Ember.Route.extend({
-  settings: Ember.inject.service(),
-  catalog: Ember.inject.service(),
+export default Route.extend({
+  settings: service(),
+  catalog: service(),
 
   model() {
     let store = this.get('store');
@@ -22,7 +24,7 @@ export default Ember.Route.extend({
       }));
     }
 
-    return Ember.RSVP.allSettled(deps).then(() => {
+    return allSettled(deps).then(() => {
       return this.get('catalog').fetchTemplates({plusInfra: true}).then((resp) => {
         resp.cluster = cluster;
         return resp;

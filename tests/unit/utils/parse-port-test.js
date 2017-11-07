@@ -1,4 +1,4 @@
-import Ember from 'ember';
+import { get } from '@ember/object';
 import { parsePortSpec } from 'ui/utils/parse-port';
 import { module, test } from 'qunit';
 
@@ -28,7 +28,7 @@ data.forEach(function(obj) {
     test('it can parse spec: ' + obj.str, function(assert) {
       var expected = obj.parsed;
       Object.keys(expected).forEach((key) => {
-        assert.strictEqual(Ember.get(actual,key), Ember.get(expected, key), key + ' parses correctly');
+        assert.strictEqual(get(actual,key), get(expected, key), key + ' parses correctly');
       });
     });
   }

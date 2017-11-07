@@ -1,10 +1,12 @@
-import Ember from 'ember';
+import { hash } from 'rsvp';
+import $ from 'jquery';
+import Route from '@ember/routing/route';
 import C from 'ui/utils/constants';
 
-export default Ember.Route.extend({
+export default Route.extend({
   actions: {
     didTransition: function() {
-      Ember.$.getJSON(`${C.EXT_REFERENCES.FORUM}/categories.json`).then((response) => {
+      $.getJSON(`${C.EXT_REFERENCES.FORUM}/categories.json`).then((response) => {
         let modelOut = {
           resolved: true,
         };
@@ -15,26 +17,26 @@ export default Ember.Route.extend({
           switch (item.name) {
             case 'Announcements':
               modelOut.announcements = item;
-              promises['announcements'] = Ember.$.getJSON(`${C.EXT_REFERENCES.FORUM}/c/${item.id}/l/latest.json`);
+              promises['announcements'] = $.getJSON(`${C.EXT_REFERENCES.FORUM}/c/${item.id}/l/latest.json`);
               break;
             case 'General':
               modelOut.general = item;
-              promises['general'] = Ember.$.getJSON(`${C.EXT_REFERENCES.FORUM}/c/${item.id}/l/latest.json`);
+              promises['general'] = $.getJSON(`${C.EXT_REFERENCES.FORUM}/c/${item.id}/l/latest.json`);
               break;
             case 'Rancher':
               modelOut.rancher = item;
-              promises['rancher'] = Ember.$.getJSON(`${C.EXT_REFERENCES.FORUM}/c/${item.id}/l/latest.json`);
+              promises['rancher'] = $.getJSON(`${C.EXT_REFERENCES.FORUM}/c/${item.id}/l/latest.json`);
               break;
             case 'RancherOS':
               modelOut.rancherOS = item;
-              promises['rancherOS'] = Ember.$.getJSON(`${C.EXT_REFERENCES.FORUM}/c/${item.id}/l/latest.json`);
+              promises['rancherOS'] = $.getJSON(`${C.EXT_REFERENCES.FORUM}/c/${item.id}/l/latest.json`);
               break;
             default:
               break;
           }
         });
 
-        Ember.RSVP.hash(promises).then((hash) => {
+        hash(promises).then((hash) => {
           Object.keys(hash).forEach((key) => {
             let topics = hash[key].topic_list.topics.filterBy('pinned',false);
             topics.length = 5;

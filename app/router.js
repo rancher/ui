@@ -1,11 +1,11 @@
-import Ember from 'ember';
+import { inject as service } from '@ember/service';
 import EmberRouter from '@ember/routing/router';
 import config from './config/environment';
-import {applyRoutes, clearRoutes} from 'ui/utils/additional-routes';
+import { applyRoutes, clearRoutes } from 'ui/utils/additional-routes';
 
 //const Router = Ember.Router.extend({
 const Router = EmberRouter.extend({
-  modalService: Ember.inject.service('modal'),
+  modalService: service('modal'),
   location: config.locationType,
   willTransition(){
     if (this.get('modalService.modalVisible')) {

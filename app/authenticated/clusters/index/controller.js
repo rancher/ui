@@ -1,5 +1,6 @@
-import Ember from 'ember';
-const { getOwner } = Ember;
+import { inject as service } from '@ember/service';
+import Controller, { inject as controller } from '@ember/controller';
+import { getOwner } from '@ember/application';
 
 const headers = [
   {
@@ -49,15 +50,15 @@ const headers = [
   },
 ];
 
-export default Ember.Controller.extend({
+export default Controller.extend({
   queryParams: ['mode'],
   mode: 'grouped',
 
-  modalService: Ember.inject.service('modal'),
-  access: Ember.inject.service(),
-  projects: Ember.inject.service(),
-  settings: Ember.inject.service(),
-  application: Ember.inject.controller(),
+  modalService: service('modal'),
+  access: service(),
+  projects: service(),
+  settings: service(),
+  application: controller(),
 
   headers: headers,
   sortBy: 'name',

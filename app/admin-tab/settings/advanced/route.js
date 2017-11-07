@@ -1,9 +1,11 @@
 
-import Ember from 'ember';
+import EmberObject from '@ember/object';
+import { inject as service } from '@ember/service';
+import Route from '@ember/routing/route';
 import C from 'ui/utils/constants';
 
-export default Ember.Route.extend({
-  settings: Ember.inject.service(),
+export default Route.extend({
+  settings: service(),
 
   beforeModel() {
     return this.get('settings').load([
@@ -15,7 +17,7 @@ export default Ember.Route.extend({
     let settings = this.get('settings');
 
     return this.get('userStore').find('setting').then(() => {
-      return Ember.Object.create({
+      return EmberObject.create({
         telemetry: settings.get(C.SETTING.TELEMETRY),
       });
     });

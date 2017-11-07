@@ -1,3 +1,6 @@
+import { computed } from '@ember/object';
+import { later } from '@ember/runloop';
+import { inject as service } from '@ember/service';
 import Ember from 'ember';
 import C from 'ui/utils/constants';
 import Util from 'ui/utils/util';
@@ -7,9 +10,9 @@ import { formatSi } from 'shared/utils/util';
 import EndpointPorts from 'ui/mixins/endpoint-ports';
 
 var Container = Instance.extend(EndpointPorts, {
-  projects:                   Ember.inject.service(),
-  modalService:               Ember.inject.service('modal'),
-  router:                     Ember.inject.service(),
+  projects:                   service(),
+  modalService:               service('modal'),
+  router:                     service(),
   // Common to all instances
   requestedHostId:            null,
   primaryIpAddress:           null,
@@ -63,7 +66,7 @@ var Container = Instance.extend(EndpointPorts, {
     popoutShell: function() {
       let proj = this.get('projects.current.id');
       let id = this.get('id');
-      Ember.run.later(() => {
+      later(() => {
         window.open(`//${window.location.host}/env/${proj}/infra/console?instanceId=${id}&isPopup=true`, '_blank', "toolbars=0,width=900,height=700,left=200,top=200");
       });
     },
@@ -71,7 +74,7 @@ var Container = Instance.extend(EndpointPorts, {
     popoutLogs: function() {
       let proj = this.get('projects.current.id');
       let id = this.get('id');
-      Ember.run.later(() => {
+      later(() => {
         window.open(`//${window.location.host}/env/${proj}/infra/container-log?instanceId=${id}&isPopup=true`, '_blank', "toolbars=0,width=700,height=715,left=200,top=200");
       });
     },
@@ -134,7 +137,7 @@ var Container = Instance.extend(EndpointPorts, {
   }.property('actionLinks.{restart,start,stop,restore,execute,logs,upgrade,converttoservice}','canDelete','isSystem','nativeContainer','service.links.update'),
 
 
-  memoryReservationBlurb: Ember.computed('memoryReservation', function() {
+  memoryReservationBlurb: computed('memoryReservation', function() {
     if ( this.get('memoryReservation') ) {
       return formatSi(this.get('memoryReservation'), 1024, 'iB', 'B');
     }
@@ -164,7 +167,7 @@ var Container = Instance.extend(EndpointPorts, {
     return ['running','migrating','restarting'].indexOf(this.get('state')) >= 0;
   }.property('state'),
 
-  displayState: Ember.computed('_displayState','exitCode', function() {
+  displayState: computed('_displayState','exitCode', function() {
     let out = this.get('_displayState');
     let code = this.get('exitCode');
     if ( this.get('state') === 'stopped' && this.get('exitCode') > 0) {
@@ -174,7 +177,7 @@ var Container = Instance.extend(EndpointPorts, {
     return out;
   }),
 
-  displayEnvironmentVars: Ember.computed('environment', function() {
+  displayEnvironmentVars: computed('environment', function() {
     var envs = [];
     var environment = this.get('environment')||{};
     Object.keys(environment).forEach((key) => {

@@ -1,6 +1,6 @@
-import Ember from 'ember';
+import Route from '@ember/routing/route';
 
-export default Ember.Route.extend({
+export default Route.extend({
   model: function() {
     return this.get('userStore').find('localauthconfig', null, {forceReload: true}).then((collection) => {
       return collection.get('firstObject');

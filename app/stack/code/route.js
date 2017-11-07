@@ -1,6 +1,7 @@
-import Ember from 'ember';
+import EmberObject from '@ember/object';
+import Route from '@ember/routing/route';
 
-export default Ember.Route.extend({
+export default Route.extend({
   model: function(/*params, transition*/) {
     var par = this.modelFor('stack');
     var stack = par.get('stack');
@@ -15,7 +16,7 @@ export default Ember.Route.extend({
         });
       }
 
-      return Ember.Object.create({
+      return EmberObject.create({
         stack: stack,
         all: par.get('all'),
         templates: templates,

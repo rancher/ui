@@ -1,12 +1,14 @@
-import Ember from 'ember';
+import { computed } from '@ember/object';
+import { inject as service } from '@ember/service';
+import Controller, { inject as controller } from '@ember/controller';
 import C from 'ui/utils/constants';
 import { parseExternalId } from 'ui/utils/parse-externalid';
 
-export default Ember.Controller.extend({
-  application : Ember.inject.controller(),
-  growl       : Ember.inject.service(),
-  settings    : Ember.inject.service(),
-  modalService: Ember.inject.service('modal'),
+export default Controller.extend({
+  application : controller(),
+  growl       : service(),
+  settings    : service(),
+  modalService: service('modal'),
 
   actions: {
     activate(driver) {
@@ -70,7 +72,7 @@ export default Ember.Controller.extend({
     };
   },
 
-  arranged: Ember.computed('model.drivers.@each.{state,id,version,externalId}', 'model.catalogDrivers.@each.{id,catalogId,name}', function() {
+  arranged: computed('model.drivers.@each.{state,id,version,externalId}', 'model.catalogDrivers.@each.{id,catalogId,name}', function() {
     // possibly add some search here
     let cDrivers   = this.get('model.catalogDrivers.catalog');
     let drivers    = this.get('model.drivers.content');

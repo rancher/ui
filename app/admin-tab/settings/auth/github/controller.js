@@ -1,13 +1,17 @@
-import Ember from 'ember';
+import EmberObject from '@ember/object';
+import { once, later } from '@ember/runloop';
+import { alias } from '@ember/object/computed';
+import { inject as service } from '@ember/service';
+import Controller from '@ember/controller';
 import C from 'ui/utils/constants';
 import { denormalizeName } from 'ui/services/settings';
 
-export default Ember.Controller.extend({
-  github                  : Ember.inject.service(),
-  endpoint                : Ember.inject.service(),
-  access                  : Ember.inject.service(),
-  settings                : Ember.inject.service(),
-  githubConfig            : Ember.computed.alias('model.githubConfig'),
+export default Controller.extend({
+  github                  : service(),
+  endpoint                : service(),
+  access                  : service(),
+  settings                : service(),
+  githubConfig            : alias('model.githubConfig'),
 
   confirmDisable          : false,
   errors                  : null,
@@ -18,7 +22,7 @@ export default Ember.Controller.extend({
   haveToken               : false,
 
   organizations           : null,
-  scheme                  : Ember.computed.alias('githubConfig.scheme'),
+  scheme                  : alias('githubConfig.scheme'),
   isEnterprise: false,
   secure : true,
 
@@ -80,7 +84,7 @@ export default Ember.Controller.extend({
   },
 
   enterpriseDidChange: function() {
-    Ember.run.once(this,'updateEnterprise');
+    once(this,'updateEnterprise');
   }.observes('isEnterprise','githubConfig.hostname','secure'),
 
   protocolChoices: [
@@ -93,7 +97,7 @@ export default Ember.Controller.extend({
       this.send('clearError');
       this.set('saving', true);
 
-      let githubConfig = Ember.Object.create(this.get('githubConfig'));
+      let githubConfig = EmberObject.create(this.get('githubConfig'));
       githubConfig.setProperties({
         'clientId'          : (githubConfig.get('clientId')||'').trim(),
         'clientSecret'      : (githubConfig.get('clientSecret')||'').trim(),
@@ -219,7 +223,7 @@ export default Ember.Controller.extend({
 
     promptDisable: function() {
       this.set('confirmDisable', true);
-      Ember.run.later(this, function() {
+      later(this, function() {
         this.set('confirmDisable', false);
       }, 10000);
     },

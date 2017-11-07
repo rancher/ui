@@ -1,4 +1,5 @@
-import Ember from 'ember';
+import { computed } from '@ember/object';
+import { inject as service } from '@ember/service';
 import Resource from 'ember-api-store/models/resource';
 import PolledResource from 'ui/mixins/cattle-polled-resource';
 import C from 'ui/utils/constants';
@@ -26,9 +27,9 @@ function displayUrl(url) {
 
 var machineDriver = Resource.extend(PolledResource, {
   type: 'machineDriver',
-  modalService: Ember.inject.service('modal'),
-  catalog: Ember.inject.service(),
-  intl: Ember.inject.service(),
+  modalService: service('modal'),
+  catalog: service(),
+  intl: service(),
 
   actions: {
     activate: function() {
@@ -44,7 +45,7 @@ var machineDriver = Resource.extend(PolledResource, {
     },
   },
 
-  catalogTemplateIcon: Ember.computed('externalId', function() {
+  catalogTemplateIcon: computed('externalId', function() {
     let parsedExtId = parseExternalId(this.get('externalId')) || null;
 
     if (!parsedExtId) {
@@ -59,11 +60,11 @@ var machineDriver = Resource.extend(PolledResource, {
 
   }),
 
-  displayName: Ember.computed('displayIcon', 'intl.locale', function() {
+  displayName: computed('displayIcon', 'intl.locale', function() {
     return this.get('intl').t('machine.driver.'+this.get('displayIcon'));
   }),
 
-  displayIcon: Ember.computed('name', function() {
+  displayIcon: computed('name', function() {
     let name = this.get('name');
 
     if ( this.get('hasBuiltinUi') ) {
@@ -77,7 +78,7 @@ var machineDriver = Resource.extend(PolledResource, {
     return displayUrl(this.get('url'));
   }.property('url'),
 
-  displayChecksum: Ember.computed('checksum', function() {
+  displayChecksum: computed('checksum', function() {
     return this.get('checksum').substring(0, 8);
   }),
 

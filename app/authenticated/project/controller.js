@@ -1,4 +1,6 @@
-import Ember from 'ember';
+import { scheduleOnce } from '@ember/runloop';
+import { inject as service } from '@ember/service';
+import Controller from '@ember/controller';
 import C from 'ui/utils/constants';
 import { tagsToArray } from 'ui/models/stack';
 
@@ -6,9 +8,9 @@ import { tagsToArray } from 'ui/models/stack';
 //const SERVICE = 'service';
 const STACK = 'stack';
 
-export default Ember.Controller.extend({
-  prefs: Ember.inject.service(),
-  projects: Ember.inject.service(),
+export default Controller.extend({
+  prefs: service(),
+  projects: service(),
 
   tags: '',
   group: STACK,
@@ -24,7 +26,7 @@ export default Ember.Controller.extend({
     this.set('hosts', this.get('store').all('host'));
     this.set('expandedInstances',[]);
 
-    Ember.run.scheduleOnce('afterRender', () => {
+    scheduleOnce('afterRender', () => {
       let key = `prefs.${C.PREFS.CONTAINER_VIEW}`;
       const group = this.get(key) || this.get('group');
       this.transitionToRoute({queryParams: {group}});

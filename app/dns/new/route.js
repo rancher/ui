@@ -1,6 +1,7 @@
-import Ember from 'ember';
+import { hash } from 'rsvp';
+import Route from '@ember/routing/route';
 
-export default Ember.Route.extend({
+export default Route.extend({
   model: function(params/*, transition*/) {
     var store = this.get('store');
 
@@ -10,7 +11,7 @@ export default Ember.Route.extend({
       deps['service'] = store.find('service', params.serviceId);
     }
 
-    return Ember.RSVP.hash(deps, 'Load dependencies').then(function(hash) {
+    return hash(deps, 'Load dependencies').then(function(hash) {
       let record;
 
       let stackId = params.stackId;

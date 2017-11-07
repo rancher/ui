@@ -1,6 +1,6 @@
-import Ember from 'ember';
+import { get } from '@ember/object';
+import { makeArray } from '@ember/array';
 import missingMessage from 'ui/utils/intl/missing-message';
-const { get, makeArray } = Ember;
 
 export function initialize(instance) {
   let intl = instance.lookup('service:intl');

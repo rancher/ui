@@ -1,10 +1,12 @@
-import Ember from 'ember';
+import { hash } from 'rsvp';
+import { inject as service } from '@ember/service';
+import Route from '@ember/routing/route';
 import C from 'ui/utils/constants';
 
-export default Ember.Route.extend({
-  access:   Ember.inject.service(),
-  catalog:  Ember.inject.service(),
-  projects: Ember.inject.service(),
+export default Route.extend({
+  access:   service(),
+  catalog:  service(),
+  projects: service(),
 
   queryParams: {
     category: { refreshModel: true },
@@ -29,7 +31,7 @@ export default Ember.Route.extend({
   beforeModel: function() {
     this._super(...arguments);
 
-    return Ember.RSVP.hash({
+    return hash({
       stacks: this.get('store').find('stack'),
       catalogs: this.get('catalog').fetchCatalogs({
         headers: {

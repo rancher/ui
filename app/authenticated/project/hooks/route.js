@@ -1,7 +1,9 @@
-import Ember from 'ember';
+import { hash } from 'rsvp';
+import { inject as service } from '@ember/service';
+import Route from '@ember/routing/route';
 
-export default Ember.Route.extend({
-  webhookStore: Ember.inject.service(),
+export default Route.extend({
+  webhookStore: service(),
 
   model: function() {
     return this.get('webhookStore').findAll('schema', {url: 'schemas'}).then((schemas) => {
@@ -11,7 +13,7 @@ export default Ember.Route.extend({
       schemas.findBy('id','scalehost').resourceFields.hostSelector.required = true;
       schemas.findBy('id','serviceupgrade').resourceFields.serviceSelector.required = true;
 
-      return Ember.RSVP.hash({
+      return hash({
         receivers: this.get('webhookStore').findAll('receiver', {forceReload: true}),
       });
     });

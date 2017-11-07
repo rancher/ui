@@ -1,3 +1,4 @@
+import { alias } from '@ember/object/computed';
 import Service from 'ui/models/service';
 import Ember from 'ember';
 
@@ -5,7 +6,7 @@ const esc = Ember.Handlebars.Utils.escapeExpression;
 
 var KubernetesService = Service.extend({
   type: 'kubernetesService',
-  spec: Ember.computed.alias('template.spec'),
+  spec: alias('template.spec'),
 
   displayPorts: function() {
     var pub = '';

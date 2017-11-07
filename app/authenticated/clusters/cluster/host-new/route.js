@@ -1,11 +1,12 @@
-import Ember from 'ember';
-const { getOwner } = Ember;
+import { inject as service } from '@ember/service';
+import Route from '@ember/routing/route';
+import { getOwner } from '@ember/application';
 
-export default Ember.Route.extend({
-  access         : Ember.inject.service(),
-  projects       : Ember.inject.service(),
-  settings       : Ember.inject.service(),
-  host           : Ember.inject.service(),
+export default Route.extend({
+  access         : service(),
+  projects       : service(),
+  settings       : service(),
+  host           : service(),
   backTo         : null,
 
   defaultDriver: '',

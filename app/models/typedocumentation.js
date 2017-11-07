@@ -1,4 +1,4 @@
-import {normalizeType} from 'ember-api-store/utils/normalize';
+import { normalizeType } from 'ember-api-store/utils/normalize';
 import Resource from 'ember-api-store/models/resource';
 
 var TypeDocumentation = Resource.extend();

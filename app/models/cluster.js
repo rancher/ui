@@ -1,11 +1,13 @@
-import Ember from 'ember';
+import { computed } from '@ember/object';
+import { equal } from '@ember/object/computed';
+import { inject as service } from '@ember/service';
 import Resource from 'ember-api-store/models/resource';
 import PolledResource from 'ui/mixins/cattle-polled-resource';
 
 var Cluster = Resource.extend(PolledResource, {
-  userStore:       Ember.inject.service('user-store'),
-  projectsService: Ember.inject.service('projects'),
-  router:          Ember.inject.service(),
+  userStore:       service('user-store'),
+  projectsService: service('projects'),
+  router:          service(),
 
   type:            'cluster',
 
@@ -15,7 +17,7 @@ var Cluster = Resource.extend(PolledResource, {
     },
   },
 
-  isKubernetes: Ember.computed.equal('orchestration','kubernetes'),
+  isKubernetes: equal('orchestration','kubernetes'),
 
   delete: function(/*arguments*/) {
     const promise = this._super.apply(this, arguments);
@@ -65,7 +67,7 @@ var Cluster = Resource.extend(PolledResource, {
     return out;
   }.property('projects.@each.{name,clusterOwner}'),
 
-  canEdit: Ember.computed('actionLinks.{activate,deactivate}','links.{update,remove}', function() {
+  canEdit: computed('actionLinks.{activate,deactivate}','links.{update,remove}', function() {
     return (this.get('links.update') && this.get('state') === 'inactive') ? true : false;
   }),
 

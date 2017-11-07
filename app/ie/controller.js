@@ -1,10 +1,12 @@
-import Ember from 'ember';
+import $ from 'jquery';
+import { schedule } from '@ember/runloop';
+import Controller from '@ember/controller';
 
-export default Ember.Controller.extend({
+export default Controller.extend({
   bootstrap: function() {
-    Ember.run.schedule('afterRender', this, () => {
-      Ember.$('#loading-overlay').hide();
-      Ember.$('#loading-underlay').hide();
+    schedule('afterRender', this, () => {
+      $('#loading-overlay').hide();
+      $('#loading-underlay').hide();
     });
   }.on('init')
 });

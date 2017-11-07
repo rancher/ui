@@ -1,7 +1,7 @@
-import Ember from 'ember';
+import Controller from '@ember/controller';
 import fetch from 'ember-api-store/utils/fetch';
 
-export default Ember.Controller.extend({
+export default Controller.extend({
   passwordRest: false,
   loading: false,
   password: null,

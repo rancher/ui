@@ -1,3 +1,5 @@
+import Application from '@ember/application';
+import { run } from '@ember/runloop';
 import {
   moduleFor,
   test
@@ -10,9 +12,9 @@ var container, application;
 
 moduleFor('initializer:extend-ember-input', {
   setup: function() {
-    Ember.run(function() {
+    run(function() {
       container = new Ember.Container();
-      application = Ember.Application.create();
+      application = Application.create();
       application.deferReadiness();
     });
   }
