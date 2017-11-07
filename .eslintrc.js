@@ -4,7 +4,10 @@ module.exports = {
     ecmaVersion: 2017,
     sourceType: 'module'
   },
-  extends: 'eslint:recommended',
+  extends: [
+    'eslint:recommended',
+    'plugin:ember/recommended'
+  ],
   globals: {
     "document": true,
     "window": true,
@@ -25,7 +28,11 @@ module.exports = {
     "commonmark": true,
     "Stripe": true,
     "jsondiffpatch": true,
-    "WebSocket": true
+    "WebSocket": true,
+    "AnsiUp": true,
+    "Terminal": true,
+    "ShellQuote": true,
+    "YAML": true
   },
   env: {
     browser: true,
@@ -55,6 +62,22 @@ module.exports = {
     "strict": 0,
     "no-eq-null": 2,
     "no-unused-vars": 2,
-    "no-useless-escape": 0
+    "no-useless-escape": 0,
+    "ember/use-ember-get-and-set": 0,
+    "ember/order-in-controllers": 0,
+    "ember/closure-actions": 0,
+    "ember/order-in-components": 0,
+    "ember/no-on-calls-in-components": 0,
+    "ember/named-functions-in-promises": 0,
+    "ember/no-observers": 0,
+    "ember/no-function-prototype-extensions": 0,
+    "ember/avoid-leaking-state-in-components": 0,
+    "ember/alias-model-in-controller": 0,
+    "ember/order-in-routes": 0,
+    "ember/jquery-ember-run": 0,
+    "ember/use-brace-expansion": 0,
+    "ember/no-side-effects": 0,
+    "ember/no-capital-letters-in-routes": 0,
+    "generator-star-spacing": 0,
   }
 };
