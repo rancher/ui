@@ -27,6 +27,7 @@ const App = Application.extend({
         services: [
           'access',
           'auth-store',
+          'catalog',
           'endpoint',
           'github',
           'intl',
