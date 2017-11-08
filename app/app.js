@@ -21,6 +21,35 @@ const App = Application.extend({
           authenticated: 'authenticated'
         }
       }
+    },
+    globalAdmin: {
+      dependencies: {
+        services: [
+          'access',
+          'auth-store',
+          'catalog',
+          'endpoint',
+          'github',
+          'intl',
+          'projects',
+          'session',
+          'settings',
+          'store',
+          'user-language',
+          'user-store',
+          'user-theme',
+        ],
+        externalRoutes: {
+          index:                            'index',
+          failWhale:                        'failWhale',
+          authenticated:                    'authenticated',
+          'authenticated.clusters':         'authenticated.clusters',
+          'authenticated.clusters.cluster': 'authenticated.clusters.cluster',
+          'authenticated.clusters.project': 'authenticated.clusters.project',
+          'authenticated.prefs':            'authenticated.prefs',
+          'logout':                         'logout'
+        }
+      }
     }
   }
 });

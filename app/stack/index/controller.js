@@ -1,9 +1,15 @@
-import Ember from 'ember';
-import { headersWithHost as containerHeaders } from 'ui/components/container-table/component';
-import { searchFields as containerSearchFields } from 'ui/components/container-dots/component';
+import { computed } from '@ember/object';
+import { inject as service } from '@ember/service';
+import Controller from '@ember/controller';
+import {
+  headersWithHost as containerHeaders
+} from 'shared/components/container-table/component';
+import {
+  searchFields as containerSearchFields
+} from 'shared/components/container-dots/component';
 
-export default Ember.Controller.extend({
-  prefs:             Ember.inject.service(),
+export default Controller.extend({
+  prefs:             service(),
   containerHeaders:  containerHeaders,
   showAddtlInfo:     false,
   selectedService:   null,
@@ -150,34 +156,34 @@ export default Ember.Controller.extend({
 
   extraSearchFields: ['id:prefix','displayIp:ip'],
   extraSearchSubFields: containerSearchFields,
-  rows: Ember.computed('instances.[]', 'services.[]', function() {
+  rows: computed('instances.[]', 'services.[]', function() {
     let out = [];
     let containers = this.get('instances');
     let services = this.get('services');
     return out.concat(containers, services);
   }),
 
-  containerStats: Ember.computed('instances.[]', 'services.[]', function() {
+  containerStats: computed('instances.[]', 'services.[]', function() {
     let containerLength = this.get('instances.length') || 0;
     let scalingGroupsLength = this.get('services.length') || 0;
     return containerLength += scalingGroupsLength;
   }),
 
-  services: Ember.computed('model.services.[]', function() {
+  services: computed('model.services.[]', function() {
     return this.get('model.services').filter((obj) => {
       return obj.get('isReal') && !obj.get('isBalancer');
     });
   }),
 
-  loadBalancers: Ember.computed('model.services.@each.isBalancer', function() {
+  loadBalancers: computed('model.services.@each.isBalancer', function() {
     return this.get('model.services').filterBy('isBalancer',true);
   }),
 
-  dnsServices: Ember.computed('model.services.[]', function() {
+  dnsServices: computed('model.services.[]', function() {
     return this.get('model.services').filterBy('isReal',false);
   }),
 
-  instances: Ember.computed('model.instances.[]','prefs.showSystemResources', function() {
+  instances: computed('model.instances.[]','prefs.showSystemResources', function() {
     let out = this.get('model.instances').filterBy('stackId', this.get('model.stack.id'));
     out = out.filterBy('serviceId', null);
     if ( !this.get('prefs.showSystemResources') ) {

@@ -1,10 +1,11 @@
-import Ember from 'ember';
-import { headersCluster as hostHeaders } from 'ui/components/host-row/component';
+import { inject as service } from '@ember/service';
+import Controller, { inject as controller } from '@ember/controller';
+import { headersCluster as hostHeaders } from 'shared/components/host-row/component';
 
-export default Ember.Controller.extend({
-  prefs: Ember.inject.service(),
-  projects: Ember.inject.service(),
-  projectController: Ember.inject.controller('authenticated.project'),
+export default Controller.extend({
+  prefs: service(),
+  projects: service(),
+  projectController: controller('authenticated.project'),
 
   sortBy: 'name',
   queryParams: ['sortBy'],

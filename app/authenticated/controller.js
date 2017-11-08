@@ -1,17 +1,20 @@
-import Ember from 'ember';
+import { schedule } from '@ember/runloop';
+import { alias } from '@ember/object/computed';
+import { inject as service } from '@ember/service';
+import Controller, { inject as controller } from '@ember/controller';
 import C from 'ui/utils/constants';
 
-export default Ember.Controller.extend({
-  application : Ember.inject.controller(),
-  settings    : Ember.inject.service(),
-  prefs       : Ember.inject.service(),
-  projects    : Ember.inject.service(),
+export default Controller.extend({
+  application : controller(),
+  settings    : service(),
+  prefs       : service(),
+  projects    : service(),
   error       : null,
 
-  isPopup: Ember.computed.alias('application.isPopup'),
+  isPopup: alias('application.isPopup'),
 
   bootstrap: function() {
-    Ember.run.schedule('afterRender', this, () => {
+    schedule('afterRender', this, () => {
       this.get('application').setProperties({
         error: null,
         error_description: null,

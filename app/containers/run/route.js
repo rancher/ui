@@ -1,3 +1,7 @@
+import EmberObject from '@ember/object';
+import { hash } from 'rsvp';
+import { inject as service } from '@ember/service';
+import Route from '@ember/routing/route';
 import Ember from 'ember';
 import C from 'ui/utils/constants';
 
@@ -9,8 +13,8 @@ export const EMPTY_LC = JSON.stringify({
   restartPolicy: {name: 'always'},
 });
 
-export default Ember.Route.extend({
-  prefs: Ember.inject.service(),
+export default Route.extend({
+  prefs: service(),
 
   queryParams: {
     launchConfigIndex: {
@@ -58,7 +62,7 @@ export default Ember.Route.extend({
       dependencies['container'] = store.find('container', params.containerId);
     }
 
-    return Ember.RSVP.hash(dependencies, 'Load dependencies').then((results) => {
+    return hash(dependencies, 'Load dependencies').then((results) => {
       if ( results.hasOwnProperty('service') ) {
         // Service Upgrade/Clone
         let service = results.service;
@@ -69,7 +73,7 @@ export default Ember.Route.extend({
         let clone = service.clone();
 
         if ( params.addSidekick ) {
-          return Ember.Object.create({
+          return EmberObject.create({
             mode: 'sidekick',
             service: clone,
             launchConfig: emptyLc,
@@ -79,7 +83,7 @@ export default Ember.Route.extend({
         } else if ( lcIndex === null ) {
           // If there are sidekicks, you need to pick one & come back
           if ( service.secondaryLaunchConfigs && service.secondaryLaunchConfigs.length ) {
-            return Ember.Object.create({
+            return EmberObject.create({
               service: service,
               selectLaunchConfig: true,
             });
@@ -100,7 +104,7 @@ export default Ember.Route.extend({
 
         if ( params.upgrade) {
           // Upgrade service
-          let out = Ember.Object.create({
+          let out = EmberObject.create({
             mode: 'service',
             service: clone,
             launchConfig: lc,
@@ -118,7 +122,7 @@ export default Ember.Route.extend({
           // Clone service
           let neu = store.createRecord(clone.serializeForNew());
 
-          return Ember.Object.create({
+          return EmberObject.create({
             mode: 'service',
             service: neu,
             launchConfig: lc,
@@ -138,7 +142,7 @@ export default Ember.Route.extend({
 
         if ( params.upgrade) {
           emptyService.set('launchConfig', clone);
-          return Ember.Object.create({
+          return EmberObject.create({
             mode: 'container',
             service: emptyService,
             launchConfig: clone,
@@ -148,7 +152,7 @@ export default Ember.Route.extend({
         } else {
           let neu = store.createRecord(clone.serializeForNew());
           emptyService.set('launchConfig', neu);
-          return Ember.Object.create({
+          return EmberObject.create({
             mode: 'container',
             service: emptyService,
             launchConfig: neu,
@@ -167,7 +171,7 @@ export default Ember.Route.extend({
 
         // New Container/Service
         emptyService.set('launchConfig', emptyLc);
-        return Ember.Object.create({
+        return EmberObject.create({
           mode: mode,
           service: emptyService,
           launchConfig: emptyLc,

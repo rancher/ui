@@ -1,7 +1,8 @@
-import Ember from 'ember';
+import { reject } from 'rsvp';
+import Route from '@ember/routing/route';
 import fetch from 'ember-api-store/utils/fetch';
 
-export default Ember.Route.extend({
+export default Route.extend({
   activate: function() {
     $('BODY').addClass('container-farm');
   },
@@ -24,7 +25,7 @@ export default Ember.Route.extend({
           return resp.body;
         }
       }).catch((err) => {
-        return Ember.RSVP.reject(err.body);
+        return reject(err.body);
       });
 
     } else {

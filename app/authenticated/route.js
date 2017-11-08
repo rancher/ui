@@ -1,4 +1,13 @@
-import Ember from 'ember';
+import $ from 'jquery';
+import EmberObject from '@ember/object';
+import { later, scheduleOnce, cancel } from '@ember/runloop';
+import {
+  reject,
+  Promise as EmberPromise,
+  resolve
+} from 'rsvp';
+import { inject as service } from '@ember/service';
+import Route from '@ember/routing/route';
 import C from 'ui/utils/constants';
 import Subscribe from 'ui/mixins/subscribe';
 import { xhrConcur } from 'ui/utils/platform';
@@ -7,15 +16,15 @@ import Errors from 'ui/utils/errors';
 
 const CHECK_AUTH_TIMER = 60*10*1000;
 
-export default Ember.Route.extend(Subscribe, PromiseToCb, {
-  prefs     : Ember.inject.service(),
-  projects  : Ember.inject.service(),
-  settings  : Ember.inject.service(),
-  access    : Ember.inject.service(),
-  userTheme : Ember.inject.service('user-theme'),
-  language  : Ember.inject.service('user-language'),
-  storeReset: Ember.inject.service(),
-  modalService: Ember.inject.service('modal'),
+export default Route.extend(Subscribe, PromiseToCb, {
+  prefs     : service(),
+  projects  : service(),
+  settings  : service(),
+  access    : service(),
+  userTheme : service('user-theme'),
+  language  : service('user-language'),
+  storeReset: service(),
+  modalService: service('modal'),
 
   testTimer: null,
 
@@ -27,13 +36,13 @@ export default Ember.Route.extend(Subscribe, PromiseToCb, {
         this.testAuthToken();
       } else {
         transition.send('logout', transition, false);
-        return Ember.RSVP.reject('Not logged in');
+        return reject('Not logged in');
       }
     }
   },
 
   testAuthToken: function() {
-    let timer = Ember.run.later(() => {
+    let timer = later(() => {
       this.get('access').testAuth().then((/* res */) => {
         this.testAuthToken();
       }, (/* err */) => {
@@ -52,7 +61,7 @@ export default Ember.Route.extend(Subscribe, PromiseToCb, {
 
     this.get('session').set(C.SESSION.BACK_TO, undefined);
 
-    let promise = new Ember.RSVP.Promise((resolve, reject) => {
+    let promise = new EmberPromise((resolve, reject) => {
       let tasks = {
         userSchemas:                                    this.toCb('loadUserSchemas'),
         clusters:                                       this.toCb('loadClusters'),
@@ -85,9 +94,9 @@ export default Ember.Route.extend(Subscribe, PromiseToCb, {
     }, 'Load all the things');
 
     return promise.then((hash) => {
-      return Ember.Object.create(hash);
+      return EmberObject.create(hash);
     }).catch((err) => {
-      return this.loadingError(err, transition, Ember.Object.create({
+      return this.loadingError(err, transition, EmberObject.create({
         projects: [],
         project: null,
       }));
@@ -111,13 +120,13 @@ export default Ember.Route.extend(Subscribe, PromiseToCb, {
       let opt = this.get(`settings.${C.SETTING.TELEMETRY}`);
       if ( this.get('access.admin') && (!opt || opt === 'prompt') )
       {
-        Ember.run.scheduleOnce('afterRender', this, function() {
+        scheduleOnce('afterRender', this, function() {
           this.get('modalService').toggleModal('modal-telemetry');
         });
       }
       else if ( form && !this.get(`prefs.${C.PREFS.FEEDBACK}`) )
       {
-        Ember.run.scheduleOnce('afterRender', this, function() {
+        scheduleOnce('afterRender', this, function() {
           this.get('modalService').toggleModal('modal-feedback');
         });
       }
@@ -127,7 +136,7 @@ export default Ember.Route.extend(Subscribe, PromiseToCb, {
   deactivate() {
     this._super();
     this.disconnectSubscribe();
-    Ember.run.cancel(this.get('testTimer'));
+    cancel(this.get('testTimer'));
 
     // Forget all the things
     this.get('storeReset').reset();
@@ -176,7 +185,7 @@ export default Ember.Route.extend(Subscribe, PromiseToCb, {
       this.get('userTheme').setupTheme();
 
       if (this.get(`prefs.${C.PREFS.I_HATE_SPINNERS}`)) {
-        Ember.$('BODY').addClass('i-hate-spinners');
+        $('BODY').addClass('i-hate-spinners');
       }
 
       return res;
@@ -219,7 +228,7 @@ export default Ember.Route.extend(Subscribe, PromiseToCb, {
     if ( this.get('store').getById('schema','secret') ) {
       return this.get('store').find('secret');
     } else {
-      return Ember.RSVP.resolve();
+      return resolve();
     }
   },
 
@@ -323,7 +332,7 @@ export default Ember.Route.extend(Subscribe, PromiseToCb, {
 
     gotoP() {
       if ( this.get('access.admin') ) {
-        this._gotoRoute('admin-tab.processes', false);
+        this._gotoRoute('global-admin.processes', false);
       }
     },
 

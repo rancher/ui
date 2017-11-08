@@ -1,11 +1,13 @@
-import Ember from 'ember';
+import { hash } from 'rsvp';
+import { inject as service } from '@ember/service';
+import Route from '@ember/routing/route';
 
-export default Ember.Route.extend({
-  prefs: Ember.inject.service(),
+export default Route.extend({
+  prefs: service(),
 
   model: function() {
     var store = this.get('store');
-    return Ember.RSVP.hash({
+    return hash({
       hosts: store.findAll('host'),
       instances: store.findAll('instance'),
     }).then((hash) => {

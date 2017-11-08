@@ -1,11 +1,12 @@
-import Ember from 'ember';
+import { alias } from '@ember/object/computed';
+import Controller, { inject as controller } from '@ember/controller';
 import { isAlternate } from 'ui/utils/platform';
 
-export default Ember.Controller.extend({
-  application:       Ember.inject.controller(),
-  catalogController: Ember.inject.controller('catalog-tab'),
-  category:          Ember.computed.alias('catalogController.category'),
-  catalogId:         Ember.computed.alias('catalogController.catalogId'),
+export default Controller.extend({
+  application:       controller(),
+  catalogController: controller('catalog-tab'),
+  category:          alias('catalogController.category'),
+  catalogId:         alias('catalogController.catalogId'),
   parentRoute:       'catalog-tab',
   launchRoute:       'catalog-tab.launch',
   actions: {

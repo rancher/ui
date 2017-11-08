@@ -1,11 +1,13 @@
-import Ember from 'ember';
+import EmberObject from '@ember/object';
+import { hash } from 'rsvp';
+import Route from '@ember/routing/route';
 
-export default Ember.Route.extend({
+export default Route.extend({
   model: function(params) {
-    return Ember.RSVP.hash({
+    return hash({
       service: this.get('store').find('service', params.service_id),
     }).then((hash) => {
-      return Ember.Object.create(hash);
+      return EmberObject.create(hash);
     });
   },
 

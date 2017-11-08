@@ -1,8 +1,8 @@
-import Ember from 'ember';
+import Controller from '@ember/controller';
 import NewOrEdit from 'ui/mixins/new-or-edit';
-import {tagChoices, tagsToArray} from 'ui/models/stack';
+import { tagChoices, tagsToArray } from 'ui/models/stack';
 
-export default Ember.Controller.extend(NewOrEdit, {
+export default Controller.extend(NewOrEdit, {
   error:     null,
   editing:   false,
   compose:   null,

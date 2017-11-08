@@ -1,8 +1,9 @@
-import Ember from 'ember';
+import { alias } from '@ember/object/computed';
+import Controller, { inject as controller } from '@ember/controller';
 
-export default Ember.Controller.extend({
-  clusterController: Ember.inject.controller('authenticated.clusters.cluster'),
-  cluster: Ember.computed.alias('clusterController.model'),
+export default Controller.extend({
+  clusterController: controller('authenticated.clusters.cluster'),
+  cluster: alias('clusterController.model'),
 
   queryParams : ['backTo', 'driver', 'hostId'],
   backTo      : null,

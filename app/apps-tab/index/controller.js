@@ -1,14 +1,16 @@
-import Ember from 'ember';
+import { alias } from '@ember/object/computed';
+import { inject as service } from '@ember/service';
+import Controller, { inject as controller } from '@ember/controller';
 import C from 'ui/utils/constants';
 import { tagsToArray } from 'ui/models/stack';
 
-export default Ember.Controller.extend({
-  projectController: Ember.inject.controller('authenticated.project'),
-  projects: Ember.inject.service(),
-  prefs: Ember.inject.service(),
-  intl: Ember.inject.service(),
+export default Controller.extend({
+  projectController: controller('authenticated.project'),
+  projects: service(),
+  prefs: service(),
+  intl: service(),
 
-  tags: Ember.computed.alias('projectController.tags'),
+  tags: alias('projectController.tags'),
   sortBy: 'name',
 
   expandedStacks: null,

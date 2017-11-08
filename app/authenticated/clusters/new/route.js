@@ -1,9 +1,12 @@
-import Ember from 'ember';
+import { on } from '@ember/object/evented';
+import EmberObject from '@ember/object';
+import { inject as service } from '@ember/service';
+import Route from '@ember/routing/route';
 import C from 'ui/utils/constants';
 
-export default Ember.Route.extend({
-  catalog: Ember.inject.service(),
-  settings: Ember.inject.service(),
+export default Route.extend({
+  catalog: service(),
+  settings: service(),
 
   model() {
     let store = this.get('userStore');
@@ -18,13 +21,13 @@ export default Ember.Route.extend({
     let cluster = store.createRecord(def);
 
     return this.get('catalog').fetchTemplates({plusInfra: true}).then((templates) => {
-      return Ember.Object.create({
+      return EmberObject.create({
         cluster: cluster,
         allTemplates: templates
       });
     });
   },
-  teardownForComponentState: Ember.on('deactivate', function(){
+  teardownForComponentState: on('deactivate', function(){
     this.controller.setProperties({
       catalogItem:         null,
       editCatalog:         false,

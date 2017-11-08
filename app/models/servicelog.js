@@ -1,8 +1,10 @@
-import Ember from 'ember';
+import { equal } from '@ember/object/computed';
+import { computed } from '@ember/object';
+import { inject as service } from '@ember/service';
 import Resource from 'ember-api-store/models/resource';
 
 var ServiceLog = Resource.extend({
-  router: Ember.inject.service(),
+  router: service(),
 
   actions: {
     goToInstance() {
@@ -30,7 +32,7 @@ var ServiceLog = Resource.extend({
     return choices;
   }.property('instanceId'),
 
-  runTime: Ember.computed('created', 'endTime', function(){
+  runTime: computed('created', 'endTime', function(){
     if ( this.get('endTime') ) {
       let sec =  moment(this.get('endTime')).diff(this.get('created'), 'seconds');
       if (sec > 0) {
@@ -41,9 +43,9 @@ var ServiceLog = Resource.extend({
     }
   }),
 
-  isError: Ember.computed.equal('level','error'),
+  isError: equal('level','error'),
 
-  displayState: Ember.computed('level', function() {
+  displayState: computed('level', function() {
     return this.get('level').toUpperCase();
   }),
 });

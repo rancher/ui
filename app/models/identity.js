@@ -1,13 +1,14 @@
-import Ember from 'ember';
+import { equal } from '@ember/object/computed';
+import { inject as service } from '@ember/service';
 import Resource from 'ember-api-store/models/resource';
 import C from 'ui/utils/constants';
 
 var Identity = Resource.extend({
-  intl: Ember.inject.service(),
+  intl: service(),
 
-  isUser: Ember.computed.equal('externalIdType', C.PROJECT.TYPE_USER),
-  isTeam: Ember.computed.equal('externalIdType', C.PROJECT.TYPE_TEAM),
-  isOrg: Ember.computed.equal('externalIdType', C.PROJECT.TYPE_ORG),
+  isUser: equal('externalIdType', C.PROJECT.TYPE_USER),
+  isTeam: equal('externalIdType', C.PROJECT.TYPE_TEAM),
+  isOrg: equal('externalIdType', C.PROJECT.TYPE_ORG),
 
   avatarSrc: function() {
     if ( this.get('isGithub') && this.get('profilePicture') )

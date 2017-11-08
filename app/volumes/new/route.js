@@ -1,6 +1,8 @@
-import Ember from 'ember';
+import EmberObject from '@ember/object';
+import { hash } from 'rsvp';
+import Route from '@ember/routing/route';
 
-export default Ember.Route.extend({
+export default Route.extend({
   model: function(params/*, transition*/) {
     var store = this.get('store');
 
@@ -17,7 +19,7 @@ export default Ember.Route.extend({
       dependencies['volumeTemplate'] = store.find('volumeTemplate', params.volumeTemplateId);
     }
 
-    return Ember.RSVP.hash(dependencies, 'Load dependencies').then((results) => {
+    return hash(dependencies, 'Load dependencies').then((results) => {
       let out;
       let scope = 'global';
       if ( results.hasOwnProperty('volume') ) {
@@ -44,7 +46,7 @@ export default Ember.Route.extend({
         stack = results.stacks.findBy('id', out.stackId);
       }
 
-      return Ember.Object.create({
+      return EmberObject.create({
         scope: scope,
         config: out,
         stack: stack,

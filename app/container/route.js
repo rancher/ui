@@ -1,11 +1,12 @@
-import Ember from 'ember';
+import { hash } from 'rsvp';
+import Route from '@ember/routing/route';
 
-export default Ember.Route.extend({
+export default Route.extend({
   model: function(params) {
 
     return this.get('store').find('container', params.container_id).then((container) => {
 
-      return Ember.RSVP.hash({
+      return hash({
         hosts:         this.get('store').findAll('host'),
       }).then((hash) => {
 

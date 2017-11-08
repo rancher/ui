@@ -1,7 +1,9 @@
-import Ember from 'ember';
+import { sort } from '@ember/object/computed';
+import { inject as service } from '@ember/service';
+import Controller from '@ember/controller';
 
-export default Ember.Controller.extend({
-  projects: Ember.inject.service(),
+export default Controller.extend({
+  projects: service(),
 
   queryParams: ['backTo'],
   backTo: 'hosts',
@@ -14,5 +16,5 @@ export default Ember.Controller.extend({
   },
 
   sorting: ['driver','name'],
-  arranged: Ember.computed.sort('model','sorting'),
+  arranged: sort('model','sorting'),
 });

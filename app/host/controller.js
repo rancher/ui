@@ -1,8 +1,9 @@
-import Ember from 'ember';
+import { alias } from '@ember/object/computed';
+import Controller from '@ember/controller';
 import ContainerSparkStats from 'ui/mixins/container-spark-stats';
 
-export default Ember.Controller.extend(ContainerSparkStats, {
-  host:        Ember.computed.alias('model.host'),
+export default Controller.extend(ContainerSparkStats, {
+  host:        alias('model.host'),
   queryParams: ['sortBy'],
   sortBy:      'name',
 

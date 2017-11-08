@@ -1,8 +1,9 @@
-import Ember from 'ember';
+import { equal } from '@ember/object/computed';
+import Controller from '@ember/controller';
 import C from 'ui/utils/constants';
 
-export default Ember.Controller.extend({
-  isCaas               : Ember.computed.equal('app.mode',C.MODE.CAAS),
+export default Controller.extend({
+  isCaas               : equal('app.mode',C.MODE.CAAS),
   newPassword: null,
 
   actions: {

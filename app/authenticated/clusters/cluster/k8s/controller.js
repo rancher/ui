@@ -1,12 +1,15 @@
-import Ember from 'ember';
+import { later } from '@ember/runloop';
+import { alias } from '@ember/object/computed';
+import { inject as service } from '@ember/service';
+import Controller, { inject as controller } from '@ember/controller';
 
-export default Ember.Controller.extend({
-  modalService: Ember.inject.service('modal'),
-  projects: Ember.inject.service(),
-  k8s: Ember.inject.service(),
+export default Controller.extend({
+  modalService: service('modal'),
+  projects: service(),
+  k8s: service(),
 
-  projectController: Ember.inject.controller('authenticated.project'),
-  tags: Ember.computed.alias('projectController.tags'),
+  projectController: controller('authenticated.project'),
+  tags: alias('projectController.tags'),
 
   actions: {
     dashboard() {
@@ -16,7 +19,7 @@ export default Ember.Controller.extend({
     kubectl(e) {
       if (e.metaKey) {
         let proj = this.get('projects.current.id');
-        Ember.run.later(() => {
+        later(() => {
           window.open(`//${window.location.host}/env/${proj}/infra/console?kubernetes=true&isPopup=true`, '_blank', "toolbars=0,width=900,height=700,left=200,top=200");
         });
       } else {

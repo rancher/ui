@@ -1,8 +1,10 @@
-import Ember from 'ember';
+import { hash } from 'rsvp';
+import { inject as service } from '@ember/service';
+import Route from '@ember/routing/route';
 import C from 'ui/utils/constants';
 
-export default Ember.Route.extend({
-  settings: Ember.inject.service(),
+export default Route.extend({
+  settings: service(),
 
   model: function(params/*, transition*/) {
     var store = this.get('store');
@@ -17,7 +19,7 @@ export default Ember.Route.extend({
       dependencies['existingService'] = store.find('service', params.serviceId);
     }
 
-    return Ember.RSVP.hash(dependencies).then((hash) => {
+    return hash(dependencies).then((hash) => {
       let service;
 
       hash.mode = 'service';

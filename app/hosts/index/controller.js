@@ -1,12 +1,16 @@
-import Ember from 'ember';
-import C from 'ui/utils/constants';
-import { headersWithoutHost as containerHeaders } from 'ui/components/container-table/component';
-import { headersProject as hostHeaders } from 'ui/components/host-row/component';
+import { scheduleOnce } from '@ember/runloop';
+import { inject as service } from '@ember/service';
+import Controller, { inject as controller } from '@ember/controller';
+import C from 'shared/utils/constants';
+import {
+  headersWithoutHost as containerHeaders
+} from 'shared/components/container-table/component';
+import { headersProject as hostHeaders } from 'shared/components/host-row/component';
 
-export default Ember.Controller.extend({
-  prefs: Ember.inject.service(),
-  projects: Ember.inject.service(),
-  projectController: Ember.inject.controller('authenticated.project'),
+export default Controller.extend({
+  prefs: service(),
+  projects: service(),
+  projectController: controller('authenticated.project'),
 
   mode: 'list',
   sortBy: 'name',
@@ -20,7 +24,7 @@ export default Ember.Controller.extend({
     this._super(...arguments);
     this.set('expandedHosts',[]);
 
-    Ember.run.scheduleOnce('afterRender', () => {
+    scheduleOnce('afterRender', () => {
       let key = `prefs.${C.PREFS.HOST_VIEW}`;
       let mode = this.get(key) || this.get('mode');
       this.transitionToRoute({queryParams: {mode}});

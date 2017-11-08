@@ -1,11 +1,10 @@
-import Ember from 'ember';
+import { inject as service } from '@ember/service';
 import EmberRouter from '@ember/routing/router';
 import config from './config/environment';
-import {applyRoutes, clearRoutes} from 'ui/utils/additional-routes';
 
 //const Router = Ember.Router.extend({
 const Router = EmberRouter.extend({
-  modalService: Ember.inject.service('modal'),
+  modalService: service('modal'),
   location: config.locationType,
   willTransition(){
     if (this.get('modalService.modalVisible')) {
@@ -16,6 +15,8 @@ const Router = EmberRouter.extend({
 
 Router.map(function() {
   this.mount('login', {path: '/login'});
+  this.mount('global-admin', { path: '/admin'});
+
   this.route('ie');
   this.route('index');
   this.route('failWhale', {path: '/fail'});
@@ -35,41 +36,6 @@ Router.map(function() {
     this.route('dummy-dev', {path: '/dev'});
 
     this.route('prefs');
-
-    // Admin
-    this.route('admin-tab', {path: '/admin', resetNamespace: true}, function() {
-      this.route('accounts', {path: '/accounts'}, function() {
-        this.route('index', {path: '/'});
-        this.route('new', {path: '/add'});
-      });
-
-      this.route('audit-logs');
-      this.route('catalog');
-      this.route('ha');
-
-      this.route('settings', function() {
-        this.route('auth', {path: '/access'}, function() {
-          this.route('activedirectory');
-          this.route('azuread');
-          this.route('github');
-          this.route('openldap');
-          this.route('localauth', {path: 'local'});
-          this.route('shibboleth');
-        });
-
-        this.route('machine');
-        this.route('registration');
-        this.route('advanced');
-      });
-
-      this.route('processes', {path: '/processes'}, function() {
-        this.route('index', {path: '/'});
-        this.route('pools', {path: '/pools'});
-        this.route('list', {path: '/list'});
-      });
-      this.route('process', {path: '/processes/:process_id'});
-
-    });
 
     // Clusters
     this.route('clusters', {path: '/clusters'}, function() {
@@ -197,11 +163,11 @@ Router.map(function() {
 
 
   // Load any custom routes from additional-routes
-  var cb = applyRoutes("application");
-  if( cb ) {
-    cb.apply(this);
-  }
-  clearRoutes();
+  // var cb = applyRoutes("application");
+  // if( cb ) {
+  //   cb.apply(this);
+  // }
+  // clearRoutes();
 });
 
 

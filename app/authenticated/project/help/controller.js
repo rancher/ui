@@ -1,9 +1,12 @@
-import Ember from 'ember';
+import { computed } from '@ember/object';
+import { alias } from '@ember/object/computed';
+import { inject as service } from '@ember/service';
+import Controller from '@ember/controller';
 import C from 'ui/utils/constants';
 
-export default Ember.Controller.extend({
-  settings: Ember.inject.service(),
-  projects: Ember.inject.service(),
+export default Controller.extend({
+  settings: service(),
+  projects: service(),
 
   modelError: false,
   modelResolved: false,
@@ -11,9 +14,9 @@ export default Ember.Controller.extend({
   forumsLink: C.EXT_REFERENCES.FORUM,
   companyLink: C.EXT_REFERENCES.COMPANY,
   githubLink: C.EXT_REFERENCES.GITHUB,
-  docsLink: Ember.computed.alias('settings.docsBase'),
+  docsLink: alias('settings.docsBase'),
 
-  latestAnnouncement: Ember.computed('model.announcements', function() {
+  latestAnnouncement: computed('model.announcements', function() {
     if (this.get('model.announcements.topics')) {
       let sorted = this.get('model.announcements.topics').sortBy('id');
       var announcement = sorted[sorted.length-1];

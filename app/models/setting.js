@@ -1,5 +1,5 @@
+import { later } from '@ember/runloop';
 import Resource from 'ember-api-store/models/resource';
-import Ember from 'ember';
 
 export default Resource.extend({
   isDefault: function() {
@@ -17,7 +17,7 @@ export default Resource.extend({
 
   delete() {
     return this._super().then((res) => {
-      Ember.run.later(this,'reload',500);
+      later(this,'reload',500);
       return res;
     });
   },

@@ -1,12 +1,15 @@
-import Ember from 'ember';
+import { computed } from '@ember/object';
+import { oneWay } from '@ember/object/computed';
+import { inject as service } from '@ember/service';
+import Controller, { inject as controller } from '@ember/controller';
 
-export default Ember.Controller.extend({
-  application:        Ember.inject.controller(),
-  projects:           Ember.inject.service(),
-  allServices:        Ember.inject.service(),
+export default Controller.extend({
+  application:        controller(),
+  projects:           service(),
+  allServices:        service(),
 
-  service:            Ember.computed.oneWay('model.service'),
-  rules:              Ember.computed.oneWay('service.lbConfig.portRules'),
+  service:            oneWay('model.service'),
+  rules:              oneWay('service.lbConfig.portRules'),
 
   sortBy:             'priority',
   fixedLaunchConfig:  null,
@@ -101,7 +104,7 @@ export default Ember.Controller.extend({
     }
   },
 
-  serviceLinksNamed: Ember.computed('service.serviceLinks.[]', function() {
+  serviceLinksNamed: computed('service.serviceLinks.[]', function() {
     let as = this.get('allServices');
 
     ( this.get('service.serviceLinks') || []).forEach((link) => {

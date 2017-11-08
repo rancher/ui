@@ -1,14 +1,17 @@
-import Ember from 'ember';
+import EmberObject from '@ember/object';
+import { hash } from 'rsvp';
+import { inject as service } from '@ember/service';
+import Route from '@ember/routing/route';
 
-export default Ember.Route.extend({
-  projects: Ember.inject.service(),
-  k8s: Ember.inject.service(),
+export default Route.extend({
+  projects: service(),
+  k8s: service(),
 
   model() {
-    return Ember.RSVP.hash({
+    return hash({
       stacks: this.get('store').find('stack'),
     }).then((hash) => {
-      return Ember.Object.create(hash);
+      return EmberObject.create(hash);
     });
   },
 });

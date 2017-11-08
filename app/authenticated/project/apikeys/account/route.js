@@ -1,10 +1,11 @@
-import Ember from 'ember';
+import { hash } from 'rsvp';
+import Route from '@ember/routing/route';
 import C from 'ui/utils/constants';
 
-export default Ember.Route.extend({
+export default Route.extend({
   model: function() {
     var me = this.get(`session.${C.SESSION.ACCOUNT_ID}`);
-    return Ember.RSVP.hash({
+    return hash({
       account: this.get('userStore').findAll('apikey', null, {filter: {accountId: me}, url: 'apikeys', forceReload: true}),
     });
   },

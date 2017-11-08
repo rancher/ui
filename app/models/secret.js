@@ -1,8 +1,8 @@
-import Ember from 'ember';
+import { inject as service } from '@ember/service';
 import Resource from 'ember-api-store/models/resource';
 
 export default Resource.extend({
-  modalService: Ember.inject.service('modal'),
+  modalService: service('modal'),
   actions: {
     edit: function() {
       this.get('modalService').toggleModal('modal-edit-secret', this);

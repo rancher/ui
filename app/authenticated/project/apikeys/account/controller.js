@@ -1,18 +1,20 @@
-import Ember from 'ember';
+import { alias } from '@ember/object/computed';
+import { inject as service } from '@ember/service';
+import Controller, { inject as controller } from '@ember/controller';
 import C from 'ui/utils/constants';
 
-export default Ember.Controller.extend({
-  access:        Ember.inject.service(),
-  'tab-session': Ember.inject.service(),
+export default Controller.extend({
+  access:        service(),
+  'tab-session': service(),
 
-  application:        Ember.inject.controller(),
-  cookies:            Ember.inject.service(),
-  projects:           Ember.inject.service(),
-  growl:              Ember.inject.service(),
-  project:            Ember.computed.alias('projects.current'),
-  endpointService:    Ember.inject.service('endpoint'),
-  modalService:       Ember.inject.service('modal'),
-  bulkActionHandler: Ember.inject.service(),
+  application:        controller(),
+  cookies:            service(),
+  projects:           service(),
+  growl:              service(),
+  project:            alias('projects.current'),
+  endpointService:    service('endpoint'),
+  modalService:       service('modal'),
+  bulkActionHandler: service(),
 
   sortBy: 'name',
   headers: [

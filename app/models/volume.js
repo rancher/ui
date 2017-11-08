@@ -1,14 +1,15 @@
-import Ember from 'ember';
+import { notEmpty } from '@ember/object/computed';
+import { inject as service } from '@ember/service';
 import Resource from 'ember-api-store/models/resource';
 import { denormalizeId } from 'ember-api-store/utils/denormalize';
 
 var Volume = Resource.extend({
   type: 'volume',
 
-  intl: Ember.inject.service(),
+  intl: service(),
 
   stack: denormalizeId('stackId'),
-  isRoot: Ember.computed.notEmpty('instanceId'),
+  isRoot: notEmpty('instanceId'),
 
   scope: function() {
     return 'standalone';

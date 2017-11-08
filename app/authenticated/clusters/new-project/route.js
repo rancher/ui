@@ -1,13 +1,16 @@
-import Ember from 'ember';
+import EmberObject from '@ember/object';
+import { hash } from 'rsvp';
+import { inject as service } from '@ember/service';
+import Route from '@ember/routing/route';
 import C from 'ui/utils/constants';
 
-export default Ember.Route.extend({
-  access: Ember.inject.service(),
-  catalog: Ember.inject.service(),
+export default Route.extend({
+  access: service(),
+  catalog: service(),
 
   model: function() {
     var userStore = this.get('userStore');
-    return Ember.RSVP.hash({
+    return hash({
       all: userStore.findAll('project'),
       catalogTemplates: this.get('catalog').fetchTemplates({templateBase: C.EXTERNAL_ID.KIND_INFRA, category: C.EXTERNAL_ID.KIND_ALL}),
     }).then((hash) => {
@@ -30,7 +33,7 @@ export default Ember.Route.extend({
         project.set('projectMembers',[]);
       }
 
-      return Ember.Object.create({
+      return EmberObject.create({
         originalProject: null,
         project: project,
         all: hash.all,

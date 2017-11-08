@@ -1,16 +1,18 @@
-import Ember from 'ember';
+import { computed } from '@ember/object';
+import { equal } from '@ember/object/computed';
+import { inject as service } from '@ember/service';
 import Resource from 'ember-api-store/models/resource';
 import { denormalizeId } from 'ember-api-store/utils/denormalize';
 
 export default Resource.extend({
-  intl:        Ember.inject.service(),
-  isReadWrite: Ember.computed.equal('permission','rw'),
-  isReadOnly:  Ember.computed.equal('permission','ro'),
+  intl:        service(),
+  isReadWrite: equal('permission','rw'),
+  isReadOnly:  equal('permission','ro'),
 
   instance:    denormalizeId('instanceId'),
   volume:      denormalizeId('volumeId'),
 
-  displayVolumeName: Ember.computed('volumeName', function() {
+  displayVolumeName: computed('volumeName', function() {
     let name = this.get('volumeName');
     if ( name.match(/^[0-9a-f]{64}$/) ) {
       return (name.substr(0,12)+'&hellip;').htmlSafe();
@@ -19,7 +21,7 @@ export default Resource.extend({
     return name;
   }),
 
-  displayPermission: Ember.computed('permission', function() {
+  displayPermission: computed('permission', function() {
     let permission = this.get('permission');
     let out        = null;
     let intl       = this.get('intl');

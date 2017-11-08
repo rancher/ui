@@ -1,12 +1,13 @@
-import Ember from 'ember';
+import { next } from '@ember/runloop';
+import Route from '@ember/routing/route';
 
-export default Ember.Route.extend({
+export default Route.extend({
   actions: {
     toggleGrouping() {
       let choices = ['list','grouped'];
       let cur = this.get('controller.mode');
       let neu = choices[((choices.indexOf(cur)+1) % choices.length)];
-      Ember.run.next(() => {
+      next(() => {
         this.set('controller.mode', neu);
       });
     },

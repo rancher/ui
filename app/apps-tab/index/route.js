@@ -1,9 +1,13 @@
-import Ember from 'ember';
+import { on } from '@ember/object/evented';
+import EmberObject from '@ember/object';
+import { allSettled } from 'rsvp';
+import { inject as service } from '@ember/service';
+import Route from '@ember/routing/route';
 import C from 'ui/utils/constants';
 import { parseExternalId } from 'ui/utils/parse-externalid';
 
-export default Ember.Route.extend({
-  catalog: Ember.inject.service(),
+export default Route.extend({
+  catalog: service(),
 
   model() {
     return this.get('store').findAll('stack').then((stacks) => {
@@ -16,15 +20,15 @@ export default Ember.Route.extend({
         deps.push(catalog.fetchTemplate(extInfo.templateId, false));
       });
 
-      return Ember.RSVP.allSettled(deps).then(() => {
-        return Ember.Object.create({
+      return allSettled(deps).then(() => {
+        return EmberObject.create({
           stacks: stacks,
         });
       });
     });
   },
 
-  setDefaultRoute: Ember.on('activate', function() {
+  setDefaultRoute: on('activate', function() {
     this.set(`session.${C.SESSION.CONTAINER_ROUTE}`,'containers');
   }),
 });

@@ -1,16 +1,18 @@
-import Ember from 'ember';
+import { alias } from '@ember/object/computed';
+import { inject as service } from '@ember/service';
+import Controller, { inject as controller } from '@ember/controller';
 
-export default Ember.Controller.extend({
-  projectController: Ember.inject.controller('authenticated.project'),
-  projects: Ember.inject.service(),
+export default Controller.extend({
+  projectController: controller('authenticated.project'),
+  projects: service(),
 
-  tags: Ember.computed.alias('projectController.tags'),
-  simpleMode: Ember.computed.alias('projectController.simpleMode'),
-  groupTableBy: Ember.computed.alias('projectController.groupTableBy'),
-  showStack: Ember.computed.alias('projectController.showStack'),
-  emptyStacks: Ember.computed.alias('projectController.emptyStacks'),
-  expandedInstances: Ember.computed.alias('projectController.expandedInstances'),
-  preSorts: Ember.computed.alias('projectController.preSorts'),
+  tags: alias('projectController.tags'),
+  simpleMode: alias('projectController.simpleMode'),
+  groupTableBy: alias('projectController.groupTableBy'),
+  showStack: alias('projectController.showStack'),
+  emptyStacks: alias('projectController.emptyStacks'),
+  expandedInstances: alias('projectController.expandedInstances'),
+  preSorts: alias('projectController.preSorts'),
 
   queryParams: ['sortBy'],
   sortBy: 'name',

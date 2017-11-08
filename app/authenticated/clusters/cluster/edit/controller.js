@@ -1,7 +1,7 @@
-import Ember from 'ember';
+import Controller, { inject as controller } from '@ember/controller';
 
-export default Ember.Controller.extend({
-  application:         Ember.inject.controller(),
+export default Controller.extend({
+  application:         controller(),
   actions: {
     cancel(prev) {
       this.send('goToPrevious',prev);

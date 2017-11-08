@@ -1,10 +1,10 @@
-import Ember from 'ember';
+import { inject as service } from '@ember/service';
 import Stack from 'ui/models/stack';
 
 var KubernetesStack = Stack.extend({
   type: 'kubernetesStack',
 
-  k8s: Ember.inject.service(),
+  k8s: service(),
 
   availableActions: function() {
     let l = this.get('links');
