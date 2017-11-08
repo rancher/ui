@@ -1,4 +1,3 @@
-import PageHeader from 'shared/components/page-header/component';
 import { getProjectId, getClusterId, bulkAdd } from 'ui/utils/navigation-tree';
 import C from 'shared/utils/constants';
 
@@ -105,9 +104,12 @@ const rootNav = [
   },
 ]
 
-export default PageHeader.extend({
-  init() {
-    bulkAdd(rootNav);
-    this._super(...arguments);
-  }
-});
+export function initialize(appInstance) {
+  bulkAdd(rootNav);
+}
+
+export default {
+  name: 'nav',
+  initialize: initialize,
+  after: 'store',
+};
