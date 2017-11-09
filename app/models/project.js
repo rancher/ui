@@ -1,4 +1,5 @@
 import { notEmpty, equal } from '@ember/object/computed';
+import { computed } from '@ember/object';
 import { inject as service } from '@ember/service';
 import Resource from 'ember-api-store/models/resource';
 import PolledResource from 'ui/mixins/cattle-polled-resource';
@@ -13,6 +14,7 @@ var Project = Resource.extend(PolledResource, {
   settings:     service(),
   modalService: service('modal'),
   router:       service(),
+  cookies:      service(),
 
 
   type:         'project',
@@ -75,7 +77,7 @@ var Project = Resource.extend(PolledResource, {
 
   },
 
-  availableActions: function() {
+  availableActions: computed('actionLinks.{activate,deactivate}','links.{update,remove}','state','canSetDefault', function() {
     let a = this.get('actionLinks');
     let l = this.get('links');
 
@@ -93,9 +95,9 @@ var Project = Resource.extend(PolledResource, {
     ];
 
     return choices;
-  }.property('actionLinks.{activate,deactivate}','links.{update,remove}','state','canSetDefault'),
+  }),
 
-  icon: function() {
+  icon: computed('active', function() {
     if ( this.get('active') )
     {
       return 'icon icon-folder-open';
@@ -104,38 +106,38 @@ var Project = Resource.extend(PolledResource, {
     {
       return 'icon icon-folder text-muted';
     }
-  }.property('active'),
+  }),
 
-  isDefault: function() {
-    return this.get('prefs.' + C.PREFS.PROJECT_DEFAULT) === this.get('id');
-  }.property('prefs.' + C.PREFS.PROJECT_DEFAULT, 'id'),
+  isDefault: computed(`prefs.${C.PREFS.PROJECT_DEFAULT}`, 'id', function() {
+    return this.get(`prefs.${C.PREFS.PROJECT_DEFAULT}`) === this.get('id');
+  }),
 
-  active: function() {
-     return ( this.get('id') === this.get(`tab-session.${C.TABSESSION.PROJECT}`) );
-  }.property(`tab-session.${C.TABSESSION.PROJECT}`, 'id'),
+  active: computed(`cookies.${C.COOKIE.PROJECT}`, 'id', function() {
+    return ( this.get('id') === this.get('cookies').get(C.COOKIE.PROJECT));
+  }),
 
-  canSetDefault: function() {
+  canSetDefault: computed('state','isDefault', function() {
     return this.get('state') === 'active' && !this.get('isDefault');
-  }.property('state','isDefault'),
+  }),
 
-  displayOrchestration: function() {
+  displayOrchestration: computed('orchestration', function() {
     return Util.ucFirst(this.get('orchestration'));
-  }.property('orchestration'),
+  }),
 
   isWindows: equal('orchestration','windows'),
 
   // @TODO real data
-  numStacks: function() {
+  numStacks: computed(function() {
     return 3+Math.round(Math.random()*3);
-  }.property().volatile(),
+  }).volatile(),
 
-  numServices: function() {
+  numServices: computed(function() {
     return 10+Math.round(Math.random()*9);
-  }.property().volatile(),
+  }).volatile(),
 
-  numContainers: function() {
+  numContainers: computed(function() {
     return 50+Math.round(Math.random()*49);
-  }.property().volatile(),
+  }).volatile(),
 });
 
 // Projects don't get pushed by /subscribe WS, so refresh more often

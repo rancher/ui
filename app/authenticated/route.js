@@ -1,32 +1,29 @@
 import $ from 'jquery';
-import EmberObject from '@ember/object';
-import { later, scheduleOnce, cancel } from '@ember/runloop';
-import {
-  reject,
-  Promise as EmberPromise,
-  resolve
-} from 'rsvp';
-import { inject as service } from '@ember/service';
-import Route from '@ember/routing/route';
 import C from 'ui/utils/constants';
-import Subscribe from 'ui/mixins/subscribe';
-import { xhrConcur } from 'ui/utils/platform';
-import PromiseToCb from 'ui/mixins/promise-to-cb';
+import EmberObject from '@ember/object';
 import Errors from 'ui/utils/errors';
+import PromiseToCb from 'ui/mixins/promise-to-cb';
+import Route from '@ember/routing/route';
+import Subscribe from 'ui/mixins/subscribe';
+import { inject as service } from '@ember/service';
+import { later, scheduleOnce, cancel } from '@ember/runloop';
+import { reject, Promise as EmberPromise, resolve } from 'rsvp';
+import { xhrConcur } from 'ui/utils/platform';
 
 const CHECK_AUTH_TIMER = 60*10*1000;
 
 export default Route.extend(Subscribe, PromiseToCb, {
-  prefs     : service(),
-  projects  : service(),
-  settings  : service(),
-  access    : service(),
-  userTheme : service('user-theme'),
-  language  : service('user-language'),
-  storeReset: service(),
+  prefs:        service(),
+  projects:     service(),
+  settings:     service(),
+  access:       service(),
+  userTheme:    service('user-theme'),
+  language:     service('user-language'),
+  storeReset:   service(),
+  cookies:      service(),
   modalService: service('modal'),
 
-  testTimer: null,
+  testTimer:    null,
 
   beforeModel(transition) {
     this._super.apply(this,arguments);
@@ -312,7 +309,7 @@ export default Route.extend(Subscribe, PromiseToCb, {
         args.unshift(transitionTo);
         this.transitionTo.apply(this,args);
       }
-      this.set(`tab-session.${C.TABSESSION.PROJECT}`, projectId);
+      this.set(`cookies.${C.COOKIE.PROJECT}`, projectId);
       this.refresh();
       console.log('Switch finished');
     },
