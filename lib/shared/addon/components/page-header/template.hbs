@@ -102,6 +102,12 @@
       </a>
 
       <ul class="dropdown-menu dropdown-menu-right" data-dropdown-id="header-user-menu">
+        {{#if isAdmin}}
+          <li class="{{if (eq scope "admin") 'active selected'}}">
+            {{#link-to "global-admin"}}{{t 'nav.admin.tab' appName=settings.appName}}{{/link-to}}
+          </li>
+        {{/if}}
+
         {{#if accessEnabled}}
           <li role="presentation" class="user-auth">
             {{identity-block avatar=false identity=access.identity}}
