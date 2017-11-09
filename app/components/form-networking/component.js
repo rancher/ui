@@ -4,6 +4,7 @@ import ManageLabels from 'ui/mixins/manage-labels';
 import C from 'ui/utils/constants';
 
 export default Ember.Component.extend(ManageLabels, ContainerChoices,{
+  intl:                Ember.inject.service(),
   projects:            Ember.inject.service(),
   settings:            Ember.inject.service(),
 
@@ -70,11 +71,13 @@ export default Ember.Component.extend(ManageLabels, ContainerChoices,{
   isContainerNetwork: Ember.computed.equal('instance.networkMode','container'),
   initNetwork: function() {
     var isService = this.get('isService')||false;
+    var mode = this.get('instance.networkMode');
+    var intl = this.get('intl');
 
     var choices = ['bridge','container','host','managed','none'];
     if ( this.get('projects.current.isWindows') ) {
       choices = ['nat','transparent'];
-      if ( this.get('instance.networkMode') === 'managed' ) {
+      if ( mode === 'managed' ) {
         this.set('instance.networkMode','nat');
       }
     }
@@ -86,8 +89,12 @@ export default Ember.Component.extend(ManageLabels, ContainerChoices,{
         return;
       }
 
-      out.push({label: 'formNetwork.networkMode.'+option, value: option});
+      out.push({label: intl.t('formNetwork.networkMode.'+option), value: option});
     });
+
+    if ( !out.findBy('value', mode) ) {
+      out.push({label: mode, value: mode});
+    }
 
     this.set('networkChoices', out);
   },

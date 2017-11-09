@@ -8,28 +8,41 @@
       {{new-select
         classNames="form-control"
         content=networkChoices
-        localizedLabel=true
         value=instance.networkMode
       }}
     {{/input-or-display}}
   </div>
 
   {{#if isContainerNetwork}}
-    <div class="col-sm-12 col-md-2 form-label">
-      <label class="form-control-static">{{t 'formNetwork.container.label'}}</label>
-    </div>
-    <div class="col-sm-12 col-md-3">
-      {{#input-or-display editable=editing value=instance.networkContainerId}}
-        {{new-select
-          classNames="form-control"
-          content=containersOnRequestedHost
-          optionLabelPath="name"
-          optionValuePath="id"
-          optionGroupPath="group"
-          value=instance.networkContainerId
-        }}
-      {{/input-or-display}}
-    </div>
+    {{#if isService}}
+      <div class="col-sm-12 col-md-2 form-label">
+        <label class="form-control-static">{{t 'formNetwork.container.label'}}</label>
+      </div>
+      <div class="col-sm-12 col-md-3">
+        {{#input-or-display editable=editing value=instance.networkLaunchConfig}}
+          {{input
+            classNames="form-control"
+            value=instance.networkLaunchConfig
+          }}
+        {{/input-or-display}}
+      </div>
+    {{else}}
+      <div class="col-sm-12 col-md-2 form-label">
+        <label class="form-control-static">{{t 'formNetwork.container.label'}}</label>
+      </div>
+      <div class="col-sm-12 col-md-3">
+        {{#input-or-display editable=editing value=instance.networkContainerId}}
+          {{new-select
+            classNames="form-control"
+            content=containersOnRequestedHost
+            optionLabelPath="name"
+            optionValuePath="id"
+            optionGroupPath="group"
+            value=instance.networkContainerId
+          }}
+        {{/input-or-display}}
+      </div>
+    {{/if}}
   {{/if}}
 </div>
 
