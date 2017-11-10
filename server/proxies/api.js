@@ -48,6 +48,16 @@ module.exports = function(app, options) {
     });
   });
 
+  // New hotness
+  app.use('/meta', function(req, res, next) {
+    // include root path in proxied request
+    req.url = path.join('/meta', req.url);
+    req.headers['X-Forwarded-Proto'] = req.protocol;
+
+    proxyLog('Meta', req);
+    proxy.web(req, res);
+  });
+
   // Kubernetes needs this API
   app.use('/swaggerapi', function(req, res, next) {
     // include root path in proxied request
