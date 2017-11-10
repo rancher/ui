@@ -84,6 +84,10 @@ export default Ember.Controller.extend({
         if ( base.indexOf('http://') === 0 )
         {
           base = base.replace(/^http:\/\//,'https://');
+          if ( ! window.location.port )
+          {
+            base += ':80';
+          }
           insecure = true;
         }
 
