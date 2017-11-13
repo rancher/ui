@@ -36,7 +36,9 @@ export default ModalBase.extend(NewOrEdit, {
     this.get('serviceLinksArray').forEach((row) => {
       if ( row.serviceId )
       {
-        ary.push({name: row.name, serviceId: row.serviceId});
+        const s = { name: row.name }
+        s[row.obj.arbitraryString ? 'service' : 'serviceId'] = row.serviceId
+        ary.push(s);
       }
     });
 
