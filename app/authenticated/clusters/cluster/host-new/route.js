@@ -4,7 +4,7 @@ import { getOwner } from '@ember/application';
 
 export default Route.extend({
   access:        service(),
-  scope:         service('scope'),
+  scope:         service(),
   settings:      service(),
   host:          service(),
   backTo:        null,

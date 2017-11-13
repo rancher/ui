@@ -5,7 +5,7 @@ import Controller, { inject as controller } from '@ember/controller';
 
 export default Controller.extend({
   modalService: service('modal'),
-  scope: service('scope'),
+  scope: service(),
   k8s: service(),
 
   projectController: controller('authenticated.project'),

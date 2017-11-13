@@ -3,7 +3,7 @@ import Resource from 'ember-api-store/models/resource';
 import C from 'ui/utils/constants';
 
 export default Resource.extend({
-  scope: service('scope'),
+  scope: service(),
 
   headers: function() {
     return {

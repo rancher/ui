@@ -7,7 +7,7 @@ export default Controller.extend({
   access:            service(),
   application:       controller(),
   cookies:           service(),
-  scope:             service('scope'),
+  scope:             service(),
   growl:             service(),
   project:           alias('scope.current'),
   endpointService:   service('endpoint'),
