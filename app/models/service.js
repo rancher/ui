@@ -197,10 +197,15 @@ var Service = Resource.extend({
       if ( pos >= 0 ) {
         name = name.substr(pos+1);
       }
-
+      const id = links[key]
+      const service = store.getById('service', id);
       return Ember.Object.create({
         name: name,
-        service: store.getById('service', links[key])
+        service: service ? service : Ember.Object.create({
+          name: id,
+          id: id,
+          arbitraryString: true,
+        })
       });
     });
 
