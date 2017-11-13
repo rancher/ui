@@ -92,7 +92,7 @@ export default Ember.Component.extend(ThrottledResize, {
         socket.send(btoa(unescape(encodeURIComponent(data))));// jshint ignore:line
       });
 
-      term.open(this.$('.shell-body')[0]);
+      term.open(this.$('.shell-body')[0], true);
       this.fit();
       socket.onmessage = (message) => {
         this.set('status','connected');
