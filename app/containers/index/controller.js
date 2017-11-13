@@ -43,7 +43,7 @@ export const headers = [
 
 export default Controller.extend({
   projectController: controller('authenticated.project'),
-  projects: service(),
+  scope: service('scope'),
   prefs: service(),
 
   queryParams: ['sortBy'],

@@ -6,7 +6,7 @@ import PolledResource from 'ui/mixins/cattle-polled-resource';
 
 var Cluster = Resource.extend(PolledResource, {
   userStore:       service('user-store'),
-  projectsService: service('projects'),
+  scope: service(),
   router:          service(),
 
   type:            'cluster',
@@ -23,13 +23,13 @@ var Cluster = Resource.extend(PolledResource, {
     const promise = this._super.apply(this, arguments);
 
     return promise.then((/* resp */) => {
-      if (this.get('projectsService.current.clusterId') === this.get('id')) {
-        this.get('projectsService').getAll().then((projects) => {
+      if (this.get('scope.current.clusterId') === this.get('id')) {
+        this.get('scope').getAll().then((projects) => {
           let defProject = projects.findBy('isDefault', true);
-          this.get('projectsService').selectDefault(defProject.get('id'));
+          this.get('scope').selectDefaultProject(defProject.get('id'));
         });
       } else {
-        this.get('projectsService').refreshAll();
+        this.get('scope').refreshAll();
       }
     });
   },

@@ -6,7 +6,7 @@ import C from 'ui/utils/constants';
 
 export default Controller.extend({
   settings: service(),
-  projects: service(),
+  scope: service(),
 
   modelError: false,
   modelResolved: false,

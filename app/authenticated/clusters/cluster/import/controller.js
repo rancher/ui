@@ -4,7 +4,7 @@ import { inject as service } from '@ember/service';
 import Controller, { inject as controller } from '@ember/controller';
 
 export default Controller.extend({
-  projects: service(),
+  scope: service(),
   settings: service(),
   clusterController: controller('authenticated.clusters.cluster'),
   cluster: alias('clusterController.model'),
@@ -37,7 +37,7 @@ export default Controller.extend({
       if ( cluster.get('state') === 'inactive' ) {
         this.scheduleRefresh();
       } else {
-        let project = this.get('projects.current');
+        let project = this.get('scope.current');
         if ( project.get('clusterId') !== cluster.get('id') ) {
           project = cluster.get('defaultProject');
         }

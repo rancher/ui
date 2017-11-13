@@ -4,7 +4,7 @@ import Route from '@ember/routing/route';
 import C from 'ui/utils/constants';
 
 export default Route.extend({
-  projects: service(),
+  scope: service(),
   k8s: service(),
   model: function(params) {
     let store = this.get('store');

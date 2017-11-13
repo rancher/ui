@@ -14,7 +14,7 @@ const CHECK_AUTH_TIMER = 60*10*1000;
 
 export default Route.extend(Subscribe, PromiseToCb, {
   prefs:        service(),
-  projects:     service(),
+  scope:     service('scope'),
   settings:     service(),
   access:       service(),
   userTheme:    service('user-theme'),
@@ -104,7 +104,7 @@ export default Route.extend(Subscribe, PromiseToCb, {
     let app = this.controllerFor('application');
 
     this._super();
-    if ( !this.controllerFor('application').get('isPopup') && this.get('projects.current') )
+    if ( !this.controllerFor('application').get('isPopup') && this.get('scope.current') )
     {
       this.connectSubscribe();
     }
@@ -210,7 +210,7 @@ export default Route.extend(Subscribe, PromiseToCb, {
   },
 
   loadProjects() {
-    let svc = this.get('projects');
+    let svc = this.get('scope');
     return svc.getAll().then((all) => {
       svc.set('all', all);
       return all;
@@ -237,7 +237,7 @@ export default Route.extend(Subscribe, PromiseToCb, {
     }
 
     // Make sure a valid project is selected
-    return this.get('projects').selectDefault(projectId);
+    return this.get('scope').selectDefaultProject(projectId);
   },
 
   _gotoRoute(name, withProjectId=true) {
@@ -248,7 +248,7 @@ export default Route.extend(Subscribe, PromiseToCb, {
     }
 
     if ( withProjectId ) {
-      this.transitionTo(name, this.get('projects.current.id'));
+      this.transitionTo(name, this.get('scope.current.id'));
     } else {
       this.transitionTo(name);
     }

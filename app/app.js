@@ -31,7 +31,7 @@ const App = Application.extend({
           'endpoint',
           'github',
           'intl',
-          'projects',
+          'scope',
           'session',
           'settings',
           'store',

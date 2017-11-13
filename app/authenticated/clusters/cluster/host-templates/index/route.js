@@ -3,7 +3,7 @@ import Route from '@ember/routing/route';
 import C from 'ui/utils/constants';
 
 export default Route.extend({
-  projects: service(),
+  scope: service(),
   backTo: null,
 
   model(params/*,transition*/) {
@@ -28,14 +28,14 @@ export default Route.extend({
         });
 
         if (!activeDrivers.get('length')) {
-          this.transitionTo('authenticated.clusters.cluster.host-new', this.get('projects.currentCluster.id'), {queryParams: {
+          this.transitionTo('authenticated.clusters.cluster.host-new', this.get('scope.currentCluster.id'), {queryParams: {
             backTo: this.get('backTo'),
             driver: 'custom'
           }});
         }
       });
     } else {
-      this.transitionTo('authenticated.clusters.cluster.host-new', this.get('projects.currentCluster.id'), {queryParams: {
+      this.transitionTo('authenticated.clusters.cluster.host-new', this.get('scope.currentCluster.id'), {queryParams: {
         backTo: this.get('backTo')
       }});
     }

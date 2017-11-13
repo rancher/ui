@@ -3,11 +3,11 @@ import Resource from 'ember-api-store/models/resource';
 import C from 'ui/utils/constants';
 
 export default Resource.extend({
-  projects: service(),
+  scope: service('scope'),
 
   headers: function() {
     return {
-      [C.HEADER.PROJECT_ID]: this.get('projects.current.id')
+      [C.HEADER.PROJECT_ID]: this.get('scope.current.id')
     };
   }.property('project.current.id'),
 

@@ -5,7 +5,7 @@ import Controller, { inject as controller } from '@ember/controller';
 
 export default Controller.extend({
   application:        controller(),
-  projects:           service(),
+  scope:              service(),
   allServices:        service(),
 
   service:            oneWay('model.service'),

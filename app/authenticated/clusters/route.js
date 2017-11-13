@@ -1,10 +1,12 @@
 import { hash } from 'rsvp';
 import Route from '@ember/routing/route';
+import { inject as service } from '@ember/service';
 
 export default Route.extend({
+  scope: service(),
   activate() {
     this._super();
-    this.controllerFor('authenticated').setPageScope('clusters');
+    this.get('scope').setPageScope('clusters');
   },
 
   model() {

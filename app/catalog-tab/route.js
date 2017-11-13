@@ -4,9 +4,9 @@ import Route from '@ember/routing/route';
 import C from 'ui/utils/constants';
 
 export default Route.extend({
-  access:   service(),
-  catalog:  service(),
-  projects: service(),
+  access:  service(),
+  catalog: service(),
+  scope:   service(),
 
   queryParams: {
     category: { refreshModel: true },
@@ -35,7 +35,7 @@ export default Route.extend({
       stacks: this.get('store').find('stack'),
       catalogs: this.get('catalog').fetchCatalogs({
         headers: {
-          [C.HEADER.PROJECT_ID]: this.get('projects.current.id')
+          [C.HEADER.PROJECT_ID]: this.get('scope.current.id')
         },
       }),
     }).then((hash) => {
@@ -49,7 +49,7 @@ export default Route.extend({
     if (params.launchCluster) {
       params.plusInfra = true;
     } else {
-      params.plusInfra = this.get('projects.current.clusterOwner') === true;
+      params.plusInfra = this.get('scope.current.clusterOwner') === true;
     }
 
     let stacks = this.get('stacks');

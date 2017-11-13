@@ -5,7 +5,7 @@ import Controller from '@ember/controller';
 export default Controller.extend({
   sortBy: 'name',
   prefs: service(),
-  projects: service(),
+  scope: service('scope'),
 
   queryParams: ['sortBy'],
 

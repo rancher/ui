@@ -4,7 +4,7 @@ import Util from 'ui/utils/util';
 export function initialize(instance) {
   var application = instance.lookup('application:main');
   var store = instance.lookup('service:webhook-store');
-  var projects = instance.lookup('service:projects');
+  var scope = instance.lookup('service:scope');
 
   store.reopen(StoreTweaks);
   store.reopen({
@@ -14,7 +14,7 @@ export function initialize(instance) {
     normalizeUrl() {
       let out = this._super(...arguments);
       if ( out.indexOf('projectId=') === -1 ) {
-        out = Util.addQueryParam(out, 'projectId', projects.get('current.id'));
+        out = Util.addQueryParam(out, 'projectId', scope.get('current.id'));
       }
       return out;
     }

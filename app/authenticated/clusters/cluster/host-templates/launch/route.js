@@ -32,7 +32,7 @@ export default Route.extend({
     },
 
     goBack() {
-      this.goToPrevious('hosts');
+      this.goToPrevious();
     }
   },
 });

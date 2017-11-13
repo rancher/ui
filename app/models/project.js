@@ -10,7 +10,7 @@ import { denormalizeId } from 'ember-api-store/utils/denormalize';
 var Project = Resource.extend(PolledResource, {
   access:       service(),
   prefs:        service(),
-  projects:     service(),
+  scope:        service(),
   settings:     service(),
   modalService: service('modal'),
   router:       service(),
@@ -45,7 +45,7 @@ var Project = Resource.extend(PolledResource, {
     activate: function() {
       return this.doAction('activate').then(() => {
         return this.waitForState('active').then(() => {
-          this.get('projects').refreshAll();
+          this.get('scope').refreshAll();
         });
       });
     },

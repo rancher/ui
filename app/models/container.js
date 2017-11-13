@@ -10,7 +10,7 @@ import { formatSi } from 'shared/utils/util';
 import EndpointPorts from 'ui/mixins/endpoint-ports';
 
 var Container = Instance.extend(EndpointPorts, {
-  projects:                   service(),
+  scope:                      service(),
   modalService:               service('modal'),
   router:                     service(),
   // Common to all instances

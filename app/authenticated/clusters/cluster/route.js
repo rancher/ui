@@ -1,9 +1,11 @@
 import Route from '@ember/routing/route';
+import { inject as service } from '@ember/service';
 
 export default Route.extend({
+  scope: service(),
   activate() {
     this._super();
-    this.controllerFor('authenticated').setPageScope('cluster');
+    this.get('scope').setPageScope('cluster');
   },
 
   model(params/*,transition*/) {

@@ -5,7 +5,7 @@ import Controller, { inject as controller } from '@ember/controller';
 
 export default Controller.extend({
   modalService: service('modal'),
-  projects: service(),
+  scope: service('scope'),
   k8s: service(),
 
   projectController: controller('authenticated.project'),
@@ -18,7 +18,7 @@ export default Controller.extend({
 
     kubectl(e) {
       if (e.metaKey) {
-        let proj = this.get('projects.current.id');
+        let proj = this.get('scope.current.id');
         later(() => {
           window.open(`//${window.location.host}/env/${proj}/infra/console?kubernetes=true&isPopup=true`, '_blank', "toolbars=0,width=900,height=700,left=200,top=200");
         });

@@ -3,14 +3,14 @@ import Route from '@ember/routing/route';
 import { getOwner } from '@ember/application';
 
 export default Route.extend({
-  access         : service(),
-  projects       : service(),
-  settings       : service(),
-  host           : service(),
-  backTo         : null,
+  access:        service(),
+  scope:         service('scope'),
+  settings:      service(),
+  host:          service(),
+  backTo:        null,
 
   defaultDriver: '',
-  lastDriver: null,
+  lastDriver:    null,
 
   queryParams: {
     driver: {
@@ -30,7 +30,7 @@ export default Route.extend({
     goBack() {
       let backTo = this.get('backTo');
       if ( backTo === 'hosts' ) {
-        this.transitionTo('hosts.index', this.get('projects.current.id'));
+        this.transitionTo('hosts.index', this.get('scope.current.id'));
       } else if ( backTo === 'clusters' ) {
         this.transitionTo('authenticated.clusters');
       } else {

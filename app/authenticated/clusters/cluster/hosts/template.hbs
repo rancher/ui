@@ -5,8 +5,8 @@
     <div class="pull-left"><h1>{{t 'hostsPage.index.header'}}</h1></div>
 
     <div class="right-buttons">
-      {{#if projects.current.canAddHost}}
-        {{#link-to "authenticated.clusters.cluster.host-templates.index" projects.currentCluster.id classNames="btn btn-sm bg-primary"}}{{t 'hostsPage.index.addHost'}}{{/link-to}}
+      {{#if scope.current.canAddHost}}
+        {{#link-to "authenticated.clusters.cluster.host-templates.index" scope.currentCluster.id classNames="btn btn-sm bg-primary"}}{{t 'hostsPage.index.addHost'}}{{/link-to}}
       {{/if}}
     </div>
   </section>
@@ -39,7 +39,7 @@
   {{else}}
     {{empty-table
       resource="container"
-      showNew=projects.current.canAddHost
+      showNew=scope.current.canAddHost
       newRoute="authenticated.clusters.cluster.host-templates"
       newTranslationKey="nav.hosts.addHost" ctx="clusterId"}}
   {{/if}}
