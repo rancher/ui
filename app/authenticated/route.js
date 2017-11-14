@@ -11,7 +11,6 @@ export default Ember.Route.extend(Subscribe, PromiseToCb, {
   prefs     : Ember.inject.service(),
   projects  : Ember.inject.service(),
   settings  : Ember.inject.service(),
-  regions   : Ember.inject.service(),
   access    : Ember.inject.service(),
   userTheme : Ember.inject.service('user-theme'),
   language  : Ember.inject.service('user-language'),
@@ -59,7 +58,7 @@ export default Ember.Route.extend(Subscribe, PromiseToCb, {
         projects:                                       this.toCb('loadProjects'),
         preferences:                                    this.toCb('loadPreferences'),
         settings:                                       this.toCb('loadPublicSettings'),
-        regions:                                        this.toCb('loadRegions'),
+        regions:            ['userSchemas',             this.cbFind('region', 'userStore')],
         project:            ['projects', 'preferences', this.toCb('selectProject',transition)],
         projectSchemas:     ['project',                 this.toCb('loadProjectSchemas')],
         catalogs:           ['project',                 this.toCb('loadCatalogs')],
@@ -73,7 +72,7 @@ export default Ember.Route.extend(Subscribe, PromiseToCb, {
         volumes:            ['projectSchemas',          this.cbFind('volume')],
         certificate:        ['projectSchemas',          this.cbFind('certificate')],
         secret:             ['projectSchemas',          this.toCb('loadSecrets')],
-        identities:         ['userSchemas', this.cbFind('identity', 'userStore')],
+        identities:         ['userSchemas',             this.cbFind('identity', 'userStore')],
       };
 
       async.auto(tasks, xhrConcur, function(err, res) {
@@ -224,14 +223,6 @@ export default Ember.Route.extend(Subscribe, PromiseToCb, {
     } else {
       return Ember.RSVP.resolve();
     }
-  },
-
-  loadRegions() {
-    let svc = this.get('regions');
-    return svc.getAll().then((all) => {
-      svc.set('all', all);
-      return all;
-    });
   },
 
   selectProject(transition) {

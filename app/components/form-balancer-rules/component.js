@@ -3,7 +3,6 @@ import { parsePortSpec } from 'ui/utils/parse-port';
 
 export default Ember.Component.extend({
   intl: Ember.inject.service(),
-  regions: Ember.inject.service(),
 
   service: null,
   ruleType: 'portRule',
@@ -37,8 +36,8 @@ export default Ember.Component.extend({
     protos.sort();
     this.set('protocolChoices', protos);
 
-    const regions = this.get('regions').get('all');
-    this.set('hasRegion', regions.content.length > 0)
+    const regions = this.get('userStore').all('region');
+    this.set('hasRegion', regions.get('length') > 0)
 
     if ( this.get('showBackend') === null ) {
       let hasName = !!rules.findBy('backendName');
