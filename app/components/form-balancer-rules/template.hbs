@@ -113,7 +113,7 @@
                   {{#if rule.isSelector}}
                     {{input type="text" class="form-control input-sm" value=rule.selector placeholder=(t 'formBalancerRules.selector.placeholder')}}
                   {{else}}
-                    {{schema/input-service selectClass="form-control input-sm" custom=rule.service customMode=rule.customMode canBalanceTo=true selected=rule.serviceId showCustomOption=showRegion}}
+                    {{schema/input-service selectClass="form-control input-sm" canBalanceTo=true selected=rule.serviceId}}
                   {{/if}}
                 </td>
               {{/if}}
@@ -124,21 +124,21 @@
 
               {{#if showRegion}}
                 <td class="divided" data-title="{{t 'formBalancerRules.region.label'}}">
-                  {{#if (or rule.isSelector rule.customMode)}}
+                  {{#if rule.isSelector}}
                     {{input type="text" class="form-control input-sm" value=rule.region placeholder=(t 'formBalancerRules.region.placeholder')}}
                   {{else}}
                     <span class="text-muted">{{t 'generic.na'}}</span>
                   {{/if}}
                 </td>
                 <td data-title="{{t 'formBalancerRules.environment.label'}}">
-                  {{#if (or rule.isSelector rule.customMode)}}
+                  {{#if rule.isSelector}}
                     {{input type="text" class="form-control input-sm" value=rule.environment placeholder=(t 'formBalancerRules.environment.placeholder')}}
                   {{else}}
                     <span class="text-muted">{{t 'generic.na'}}</span>
                   {{/if}}
                 </td>
                 <td data-title="{{t 'formBalancerRules.weight.label'}}">
-                  {{#if (or rule.isSelector rule.customMode)}}
+                  {{#if rule.isSelector}}
                     {{input-integer class="form-control input-sm" min="0" value=rule.weight placeholder=(t 'formBalancerRules.weight.placeholder')}}
                   {{else}}
                     <span class="text-muted">{{t 'generic.na'}}</span>
