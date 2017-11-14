@@ -1,7 +1,10 @@
 import Route from '@ember/routing/route';
 import { get } from '@ember/object';
+import { inject as service } from '@ember/service';
+
 
 export default Route.extend({
+  clusterStore: service('cluster-store'),
   model(params, transistion) {
     return this.get('store').find('hosttemplate', params.template_id).then((template) => {
       return this.get('userStore').find('machinedriver', null, {forceReload: true}).then((drivers) => {

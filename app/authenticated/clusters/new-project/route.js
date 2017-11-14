@@ -5,16 +5,18 @@ import Route from '@ember/routing/route';
 import C from 'ui/utils/constants';
 
 export default Route.extend({
-  access: service(),
-  catalog: service(),
+  clusterStore: service('cluster-store'),
+  access:       service(),
+  catalog:      service(),
 
   model: function() {
     var userStore = this.get('userStore');
+    var clusterStore = this.get('clusterStore');
     return hash({
-      all: userStore.findAll('project'),
+      all: clusterStore.findAll('project'),
       catalogTemplates: this.get('catalog').fetchTemplates({templateBase: C.EXTERNAL_ID.KIND_INFRA, category: C.EXTERNAL_ID.KIND_ALL}),
     }).then((hash) => {
-      var project = userStore.createRecord({
+      var project = clusterStore.createRecord({
         type: 'project',
         name: '',
         description: '',

@@ -5,11 +5,12 @@ import Route from '@ember/routing/route';
 import C from 'ui/utils/constants';
 
 export default Route.extend({
+  clusterStore: service('cluster-store'),
   catalog: service(),
   settings: service(),
 
   model() {
-    let store = this.get('userStore');
+    let store = this.get('clusterStore');
     let def = JSON.parse(this.get(`settings.${C.SETTING.CLUSTER_TEMPLATE}`)) || {};
 
     def.type = 'cluster';

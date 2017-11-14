@@ -3,12 +3,13 @@ import Route from '@ember/routing/route';
 import C from 'ui/utils/constants';
 
 export default Route.extend({
-  scope: service(),
-  backTo: null,
+  clusterStore: service('cluster-store'),
+  scope:        service(),
+  backTo:       null,
 
   model(params/*,transition*/) {
     this.set('backTo', params.backTo);
-    return this.get('store').findAll('hostTemplate');
+    return this.get('clusterStore').findAll('hostTemplate');
   },
 
   setupController(controller, model) {

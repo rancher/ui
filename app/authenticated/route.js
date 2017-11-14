@@ -14,7 +14,7 @@ const CHECK_AUTH_TIMER = 60*10*1000;
 
 export default Route.extend(Subscribe, PromiseToCb, {
   prefs:        service(),
-  scope:     service(),
+  scope:        service(),
   settings:     service(),
   access:       service(),
   userTheme:    service('user-theme'),
