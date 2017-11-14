@@ -40,13 +40,6 @@ export default Ember.Component.extend({
 
   grouped: function() {
     let list = this.get('allServices.list');
-    const selected = this.get('selected');
-    if (selected) {
-      const found = list.any(s => s.id === selected);
-      if (!found) {
-        list.push({ group: 'Others', id: selected, name: selected });
-      }
-    }
 
     if ( this.get('canBalanceTo') ) {
       list = list.filterBy('obj.canBalanceTo',true);

@@ -37,7 +37,11 @@ export default ModalBase.extend(NewOrEdit, {
       if ( row.serviceId )
       {
         const s = { name: row.name };
-        s[row.obj.arbitraryString ? 'service' : 'serviceId'] = row.serviceId;
+        if( row.customMode ) {
+          s.service = row.service;
+        } else {
+          s.serviceId = row.serviceId;
+        }
         ary.push(s);
       }
     });

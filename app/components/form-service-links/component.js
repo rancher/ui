@@ -5,6 +5,7 @@ export default Ember.Component.extend({
   service           : null,
   withAlias         : true,
   serviceLinksArray : null,
+  hasRegion         : null,
 
   tagName: '',
 
@@ -31,12 +32,17 @@ export default Ember.Component.extend({
       out.push(Ember.Object.create({
         name: (name === service.get('name') ? '' : name),
         obj: service,
+        customMode: service.get('arbitraryString'),
         serviceId: service.get('id'),
+        service: service.get('id'),
       }));
     });
 
     this.set('serviceLinksArray', out);
     this.serviceLinksArrayDidChange();
+
+    const regions = this.get('userStore').all('region');
+    this.set('hasRegion', regions.get('length') > 0);
   },
 
   serviceLinksArrayDidChange: function() {
