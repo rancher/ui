@@ -34,15 +34,10 @@ export default ModalBase.extend(NewOrEdit, {
     var service = this.get('service');
     var ary = [];
     this.get('serviceLinksArray').forEach((row) => {
-      if ( row.serviceId )
-      {
-        const s = { name: row.name };
-        if( row.customMode ) {
-          s.service = row.service;
-        } else {
-          s.serviceId = row.serviceId;
-        }
-        ary.push(s);
+      if ( row.serviceId ) {
+        ary.push({name: row.name, serviceId: row.serviceId});
+      } else if ( row.service ) {
+        ary.push({name: row.name, service: row.service});
       }
     });
 

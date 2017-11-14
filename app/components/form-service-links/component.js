@@ -33,8 +33,8 @@ export default Ember.Component.extend({
         name: (name === service.get('name') ? '' : name),
         obj: service,
         customMode: service.get('arbitraryString'),
-        serviceId: service.get('id'),
-        service: service.get('id'),
+        serviceId: service.get('arbitraryString') ? null : service.get('id'),
+        service: service.get('arbitraryString') ? service.get('id') : null,
       }));
     });
 
@@ -47,7 +47,7 @@ export default Ember.Component.extend({
 
   serviceLinksArrayDidChange: function() {
     this.sendAction('changed', this.get('serviceLinksArray'));
-  }.observes('serviceLinksArray.@each.{name,serviceId}'),
+  }.observes('serviceLinksArray.@each.{name,serviceId,customMode,service}'),
 
   actions: {
     addServiceLink: function() {
