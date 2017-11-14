@@ -150,4 +150,13 @@ export default Ember.Component.extend({
 
     return val;
   }.property('rules.@each.priority'),
+
+  resetRegionOptions: function() {
+    this.get('rules').forEach((rule) => {
+      if ( !rule.get('customMode') && !rule.get('isSelector') ) {
+        rule.set('region', null);
+        rule.set('environment', null);
+      }
+    });
+  }.observes('rules.@each.customMode'),
 });

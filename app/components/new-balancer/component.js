@@ -159,6 +159,32 @@ export default Ember.Component.extend(NewOrEdit, {
         return;
       }
 
+      if ( rule.customMode ) {
+        if ( !rule.service ) {
+          errors.push(intl.t('newBalancer.error.noTarget'));
+          return;
+        }
+        if ( !rule.region ) {
+          errors.push(intl.t('newBalancer.error.noRegion'));
+          return;
+        }
+        if ( !rule.environment ) {
+          errors.push(intl.t('newBalancer.error.noEnvironment'));
+          return;
+        }
+      }
+
+      if ( rule.isSelector ) {
+        if ( !rule.region && rule.environment) {
+          errors.push(intl.t('newBalancer.error.missingRegion'));
+          return;
+        }
+        if ( rule.region && !rule.environment ) {
+          errors.push(intl.t('newBalancer.error.missingEnvironment'));
+          return;
+        }
+      }
+
       let sourceIp = rule.get('sourceIp');
       let key;
       if ( sourceIp ) {
@@ -178,7 +204,7 @@ export default Ember.Component.extend(NewOrEdit, {
         seen[key] = id;
       }
 
-      if ( !rule.get('serviceId') && !rule.get('selector') ) {
+      if ( !rule.get('service') && !rule.get('serviceId') && !rule.get('selector') ) {
         errors.push(intl.t('newBalancer.error.noTarget'));
       }
 
