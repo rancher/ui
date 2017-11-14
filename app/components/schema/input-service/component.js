@@ -37,11 +37,11 @@ export default Ember.Component.extend({
 
   grouped: function() {
     let list = this.get('allServices.list');
-    const selected = this.get('selected')
+    const selected = this.get('selected');
     if (selected) {
-      const found = list.any(s => s.id === selected)
+      const found = list.any(s => s.id === selected);
       if (!found) {
-        list.push({ group: 'Others', id: selected, name: selected })
+        list.push({ group: 'Others', id: selected, name: selected });
       }
     }
 

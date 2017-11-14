@@ -378,8 +378,8 @@ export default Ember.Component.extend(NewOrEdit, SelectTab, {
     this.get('serviceLinksArray').forEach((row) => {
       if ( row.serviceId )
       {
-        const s = { name: row.name }
-        s[row.obj.arbitraryString ? 'service' : 'serviceId'] = row.serviceId
+        const s = { name: row.name };
+        s[row.obj.arbitraryString ? 'service' : 'serviceId'] = row.serviceId;
         ary.push(s);
       }
     });

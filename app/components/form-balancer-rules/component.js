@@ -37,7 +37,7 @@ export default Ember.Component.extend({
     this.set('protocolChoices', protos);
 
     const regions = this.get('userStore').all('region');
-    this.set('hasRegion', regions.get('length') > 0)
+    this.set('hasRegion', regions.get('length') > 0);
 
     if ( this.get('showBackend') === null ) {
       let hasName = !!rules.findBy('backendName');
