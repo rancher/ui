@@ -5,11 +5,11 @@ import Resource from 'ember-api-store/models/resource';
 import PolledResource from 'ui/mixins/cattle-polled-resource';
 
 var Cluster = Resource.extend(PolledResource, {
-  userStore:       service('user-store'),
-  scope: service(),
-  router:          service(),
+  clusterStore: service('cluster-store'),
+  scope:        service(),
+  router:       service(),
 
-  type:            'cluster',
+  type:         'cluster',
 
   actions: {
     edit() {
@@ -36,16 +36,12 @@ var Cluster = Resource.extend(PolledResource, {
 
 
   _allProjects: null,
-  // init() {
-  //   this._super(...arguments);
-  //   // this.set('_allProjects', this.get('userStore').all('project'));
-  // },
 
   projects: function() {
     let x = this.get('_allProjects');
 
     if (!x) {
-      x = this.set('_allProjects', this.get('userStore').all('project'));
+      x = this.set('_allProjects', this.get('clusterStore').all('project'));
     }
 
     return x.filterBy('clusterId', this.get('id'));

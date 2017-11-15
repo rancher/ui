@@ -206,7 +206,11 @@ export default Route.extend(Subscribe, PromiseToCb, {
   },
 
   loadClusters() {
-    return this.get('clusterStore').find('cluster', null, {url: 'clusters'});
+    let svc = this.get('scope');
+    return svc.getAllClusters().then((all) => {
+      svc.set('allClusters', all);
+      return all;
+    });
   },
 
   loadProjects() {
@@ -293,15 +297,23 @@ export default Route.extend(Subscribe, PromiseToCb, {
       this.controllerFor('application').set('showAbout', true);
     },
 
-    switchProject(projectId, transitionTo='authenticated', transitionArgs) {
-      console.log('Switch to ' + projectId);
+    switchCluster(clusterId, transitionTo='authenticated.clusters', transitionArgs) {
+      console.log('Switch to Cluster:' + clusterId);
       this.disconnectSubscribe(() => {
         console.log('Switch is disconnected');
-        this.send('finishSwitchProject', projectId, transitionTo, transitionArgs);
+        this.send('finishSwitchProject', `cluster:${clusterId}`, transitionTo, transitionArgs);
       });
     },
 
-    finishSwitchProject(projectId, transitionTo, transitionArgs) {
+    switchProject(projectId, transitionTo='authenticated', transitionArgs) {
+      console.log('Switch to Project:' + projectId);
+      this.disconnectSubscribe(() => {
+        console.log('Switch is disconnected');
+        this.send('finishSwitchProject', `project:${projectId}`, transitionTo, transitionArgs);
+      });
+    },
+
+    finishSwitchProject(id, transitionTo, transitionArgs) {
       console.log('Switch finishing');
       this.get('storeReset').reset();
       if ( transitionTo ) {
@@ -309,7 +321,8 @@ export default Route.extend(Subscribe, PromiseToCb, {
         args.unshift(transitionTo);
         this.transitionTo.apply(this,args);
       }
-      this.set(`cookies.${C.COOKIE.PROJECT}`, projectId);
+      var [whichCookie, idOut] = id.split(':');
+      this.set(`cookies.${whichCookie}`, idOut);
       this.refresh();
       console.log('Switch finished');
     },
