@@ -9,6 +9,7 @@ export default Route.extend({
   model: function(params) {
     let store = this.get('store');
     if (params.kubernetes) {
+      debugger;
       return this.get('k8s').getInstanceToConnect();
     }
 
