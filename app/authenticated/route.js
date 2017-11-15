@@ -315,15 +315,22 @@ export default Route.extend(Subscribe, PromiseToCb, {
 
     finishSwitchProject(id, transitionTo, transitionArgs) {
       console.log('Switch finishing');
+
+      const cookies = this.get('cookies');
+      var [whichCookie, idOut] = id.split(':');
+
       this.get('storeReset').reset();
+
       if ( transitionTo ) {
         let args = (transitionArgs||[]).slice();
         args.unshift(transitionTo);
         this.transitionTo.apply(this,args);
       }
-      var [whichCookie, idOut] = id.split(':');
-      this.set(`cookies.${whichCookie}`, idOut);
+
+      cookies.set(C.COOKIE[whichCookie.toUpperCase()], idOut);
+
       this.refresh();
+
       console.log('Switch finished');
     },
 
