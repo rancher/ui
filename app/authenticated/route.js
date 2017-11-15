@@ -13,17 +13,17 @@ import { xhrConcur } from 'ui/utils/platform';
 const CHECK_AUTH_TIMER = 60*10*1000;
 
 export default Route.extend(Subscribe, PromiseToCb, {
+  access:       service(),
+  clusterStore: service('cluster-store'),
+  cookies:      service(),
+  language:     service('user-language'),
+  modalService: service('modal'),
   prefs:        service(),
   scope:        service(),
   settings:     service(),
-  access:       service(),
-  userTheme:    service('user-theme'),
-  language:     service('user-language'),
   storeReset:   service(),
-  cookies:      service(),
-  modalService: service('modal'),
-
   testTimer:    null,
+  userTheme:    service('user-theme'),
 
   beforeModel(transition) {
     this._super.apply(this,arguments);
@@ -206,7 +206,7 @@ export default Route.extend(Subscribe, PromiseToCb, {
   },
 
   loadClusters() {
-    return this.get('userStore').find('cluster', null, {url: 'clusters'});
+    return this.get('clusterStore').find('cluster', null, {url: 'clusters'});
   },
 
   loadProjects() {

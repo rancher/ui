@@ -29,7 +29,7 @@ var Cluster = Resource.extend(PolledResource, {
           this.get('scope').selectDefaultProject(defProject.get('id'));
         });
       } else {
-        this.get('scope').refreshAll();
+        this.get('scope').refreshAllClusters();
       }
     });
   },

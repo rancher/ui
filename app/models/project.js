@@ -15,13 +15,14 @@ var Project = Resource.extend(PolledResource, {
   modalService: service('modal'),
   router:       service(),
   cookies:      service(),
+  clusterStore: service('cluster-store'),
 
 
   type:         'project',
   name:         null,
   description:  null,
 
-  cluster:      denormalizeId('clusterId'),
+  cluster:      denormalizeId('clusterId', 'cluster', 'clusterStore'),
 
   canAddHost:   notEmpty('cluster.registrationToken.hostCommand'),
   canImport:    notEmpty('cluster.registrationToken.clusterCommand'),
