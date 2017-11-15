@@ -78,6 +78,6 @@ module.exports = {
     "ember/use-brace-expansion": 0,
     "ember/no-side-effects": 0,
     "ember/no-capital-letters-in-routes": 0,
-    "generator-star-spacing": 0,
+    "generator-star-spacing": 0
   }
 };

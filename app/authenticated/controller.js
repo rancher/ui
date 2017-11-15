@@ -5,14 +5,14 @@ import Controller, { inject as controller } from '@ember/controller';
 import C from 'ui/utils/constants';
 
 export default Controller.extend({
-  application : controller(),
-  settings    : service(),
-  prefs       : service(),
-  scope    : service(),
-  error       : null,
+  application: controller(),
+  settings:    service(),
+  prefs:       service(),
+  scope:       service(),
+  error:       null,
 
-  isPopup: alias('application.isPopup'),
-  pageScope: alias('scope.currentPageScope'),
+  isPopup:     alias('application.isPopup'),
+  pageScope:   alias('scope.currentPageScope'),
 
   bootstrap: function() {
     schedule('afterRender', this, () => {
