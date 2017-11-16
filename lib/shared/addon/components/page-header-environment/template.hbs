@@ -33,18 +33,11 @@
 </a>
 
 <ul class="dropdown-menu cluster-menu" role="menu" data-dropdown-id="environment">
-  <li class="{{if (eq scope "clusters") 'active selected'}}">
-    {{#link-to "authenticated.clusters"}}
-      <i class="icon icon-cluster icon-fw"></i>
-      {{t 'nav.environment.manage'}}
-    {{/link-to}}
-  </li>
-
   {{#if (and isOwner scope.current)}}
     <li>{{#link-to "authenticated.clusters.project" scope.current.id class="clip"}}{{t 'nav.environment.edit' name=scope.current.displayName}}{{/link-to}}</li>
+    <li role="presentation" class="divider"></li>
   {{/if}}
 
-  <li role="presentation" class="divider"></li>
 
   {{#if projectIsMissing}}
     <li role="presentation" class="dropdown-header">{{t 'nav.environment.selected'}}</li>
