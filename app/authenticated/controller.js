@@ -5,13 +5,14 @@ import Controller, { inject as controller } from '@ember/controller';
 import C from 'ui/utils/constants';
 
 export default Controller.extend({
-  application : controller(),
-  settings    : service(),
-  prefs       : service(),
-  projects    : service(),
-  error       : null,
+  application: controller(),
+  settings:    service(),
+  prefs:       service(),
+  scope:       service(),
+  error:       null,
 
-  isPopup: alias('application.isPopup'),
+  isPopup:     alias('application.isPopup'),
+  pageScope:   alias('scope.currentPageScope'),
 
   bootstrap: function() {
     schedule('afterRender', this, () => {
@@ -32,8 +33,4 @@ export default Controller.extend({
     return (this.get('model.hosts.length') > 0);
   }.property('model.hosts.length'),
 
-  pageScope: 'none',
-  setPageScope(scope) {
-    this.set('pageScope', scope);
-  },
 });

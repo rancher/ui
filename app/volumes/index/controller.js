@@ -4,18 +4,18 @@ import Controller, { inject as controller } from '@ember/controller';
 
 export default Controller.extend({
   projectController: controller('authenticated.project'),
-  projects: service(),
+  scope:             service(),
 
-  tags: alias('projectController.tags'),
-  simpleMode: alias('projectController.simpleMode'),
-  groupTableBy: alias('projectController.groupTableBy'),
-  showStack: alias('projectController.showStack'),
-  emptyStacks: alias('projectController.emptyStacks'),
+  tags:              alias('projectController.tags'),
+  simpleMode:        alias('projectController.simpleMode'),
+  groupTableBy:      alias('projectController.groupTableBy'),
+  showStack:         alias('projectController.showStack'),
+  emptyStacks:       alias('projectController.emptyStacks'),
   expandedInstances: alias('projectController.expandedInstances'),
-  preSorts: alias('projectController.preSorts'),
+  preSorts:          alias('projectController.preSorts'),
 
-  queryParams: ['sortBy'],
-  sortBy: 'name',
+  queryParams:       ['sortBy'],
+  sortBy:            'name',
 
   actions: {
     toggleExpand() {

@@ -3,7 +3,7 @@ import Controller from '@ember/controller';
 
 export default Controller.extend({
   settings: service(),
-  projects: service(),
+  scope: service(),
 
   sortBy:'name',
 

@@ -16,7 +16,7 @@ var Service = Resource.extend(StateCounts, EndpointPorts, {
   growl:         service(),
   modalService:  service('modal'),
   allServices:   service(),
-  projects:      service(),
+  scope:         service(),
   router:        service(),
 
   instances:     denormalizeIdArray('instanceIds'),
@@ -148,7 +148,7 @@ var Service = Resource.extend(StateCounts, EndpointPorts, {
     },
 
     popoutShell() {
-      let proj = this.get('projects.current.id');
+      let proj = this.get('scope.current.id');
       let id = this.get('containerForShell.id');
       later(() => {
         window.open(`//${window.location.host}/env/${proj}/infra/console?instanceId=${id}&isPopup=true`, '_blank', "toolbars=0,width=900,height=700,left=200,top=200");

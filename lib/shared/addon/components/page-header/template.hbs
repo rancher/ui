@@ -3,10 +3,10 @@
 
   <ul class="nav-main nav-list no-inline-space">
     {{page-header-environment
-      scope=scope
-      isOwner=isOwner
-      switchProject="switchProject"
-      switchNamespace="switchNamespace"
+        scope=scope
+        isOwner=isOwner
+        switchProject=(action switchProject)
+        switchCluster=(action switchCluster)
     }}
 
     {{#each navTree as |item|}}
@@ -102,6 +102,12 @@
       </a>
 
       <ul class="dropdown-menu dropdown-menu-right" data-dropdown-id="header-user-menu">
+        {{#if isAdmin}}
+          <li class="">
+            {{#link-to "global-admin"}}{{t 'nav.admin.tab' appName=settings.appName}}{{/link-to}}
+          </li>
+        {{/if}}
+
         {{#if accessEnabled}}
           <li role="presentation" class="user-auth">
             {{identity-block avatar=false identity=access.identity}}

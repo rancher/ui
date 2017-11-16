@@ -1,7 +1,10 @@
 import Route from '@ember/routing/route';
 import { get } from '@ember/object';
+import { inject as service } from '@ember/service';
+
 
 export default Route.extend({
+  clusterStore: service('cluster-store'),
   model(params, transistion) {
     return this.get('store').find('hosttemplate', params.template_id).then((template) => {
       return this.get('userStore').find('machinedriver', null, {forceReload: true}).then((drivers) => {
@@ -12,7 +15,7 @@ export default Route.extend({
           type: 'host',
           hostTemplateId: template.id
         };
-        return this.get('userStore').find('cluster', null, {url: 'clusters', forceReload: true, removeMissing: true}).then((clusters) => {
+        return this.get('clusterStore').find('cluster', null, {url: 'clusters', forceReload: true, removeMissing: true}).then((clusters) => {
           let clusterToCreateOn = get(transistion, 'params')['authenticated.clusters.cluster']['cluster_id'];
           return {
             template: template,
@@ -32,7 +35,7 @@ export default Route.extend({
     },
 
     goBack() {
-      this.goToPrevious('hosts');
+      this.goToPrevious();
     }
   },
 });

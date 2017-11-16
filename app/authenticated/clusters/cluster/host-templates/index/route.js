@@ -3,12 +3,13 @@ import Route from '@ember/routing/route';
 import C from 'ui/utils/constants';
 
 export default Route.extend({
-  projects: service(),
-  backTo: null,
+  clusterStore: service('cluster-store'),
+  scope:        service(),
+  backTo:       null,
 
   model(params/*,transition*/) {
     this.set('backTo', params.backTo);
-    return this.get('store').findAll('hostTemplate');
+    return this.get('clusterStore').findAll('hostTemplate');
   },
 
   setupController(controller, model) {
@@ -28,14 +29,14 @@ export default Route.extend({
         });
 
         if (!activeDrivers.get('length')) {
-          this.transitionTo('authenticated.clusters.cluster.host-new', this.get('projects.currentCluster.id'), {queryParams: {
+          this.transitionTo('authenticated.clusters.cluster.host-new', this.get('scope.currentCluster.id'), {queryParams: {
             backTo: this.get('backTo'),
             driver: 'custom'
           }});
         }
       });
     } else {
-      this.transitionTo('authenticated.clusters.cluster.host-new', this.get('projects.currentCluster.id'), {queryParams: {
+      this.transitionTo('authenticated.clusters.cluster.host-new', this.get('scope.currentCluster.id'), {queryParams: {
         backTo: this.get('backTo')
       }});
     }

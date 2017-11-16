@@ -5,15 +5,10 @@ import Route from '@ember/routing/route';
 
 export default Route.extend({
   access    : service(),
-  projects  : service(),
-
-  activate() {
-    this._super();
-    this.controllerFor('authenticated').setPageScope('project');
-  },
+  scope  : service(),
 
   model(params/*, transition*/) {
-    var project = this.get('projects.current');
+    var project = this.get('scope.current');
 
     if ( !project )
     {

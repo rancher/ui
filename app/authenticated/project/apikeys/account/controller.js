@@ -4,19 +4,17 @@ import Controller, { inject as controller } from '@ember/controller';
 import C from 'ui/utils/constants';
 
 export default Controller.extend({
-  access:        service(),
-  'tab-session': service(),
-
-  application:        controller(),
-  cookies:            service(),
-  projects:           service(),
-  growl:              service(),
-  project:            alias('projects.current'),
-  endpointService:    service('endpoint'),
-  modalService:       service('modal'),
+  access:            service(),
+  application:       controller(),
+  cookies:           service(),
+  scope:             service(),
+  growl:             service(),
+  project:           alias('scope.current'),
+  endpointService:   service('endpoint'),
+  modalService:      service('modal'),
   bulkActionHandler: service(),
 
-  sortBy: 'name',
+  sortBy:            'name',
   headers: [
     {
       name:           'state',
@@ -72,7 +70,7 @@ export default Controller.extend({
       {
         cred = this.get('store').createRecord({
           type: 'apikey',
-          accountId: this.get('projects.current.id'),
+          accountId: this.get('scope.current.id'),
         });
       }
 

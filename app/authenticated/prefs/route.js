@@ -8,8 +8,9 @@ import C from 'ui/utils/constants';
 import fetch from 'ember-api-store/utils/fetch';
 
 export default Route.extend({
-  session: service(),
+  session:   service(),
   accountId: alias(`session.${C.SESSION.ACCOUNT_ID}`),
+  scope:     service(),
 
   beforeModel() {
     return loadScript('https://js.stripe.com/v2/').then(() => {
@@ -53,9 +54,4 @@ export default Route.extend({
       });
     });
   },
-
-  activate() {
-    this._super();
-    this.controllerFor('authenticated').setPageScope('user');
-  }
 });

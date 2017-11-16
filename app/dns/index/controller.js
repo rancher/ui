@@ -4,7 +4,7 @@ import Controller, { inject as controller } from '@ember/controller';
 
 export default Controller.extend({
   projectController: controller('authenticated.project'),
-  projects: service(),
+  scope: service(),
 
   tags: alias('projectController.tags'),
   simpleMode: alias('projectController.simpleMode'),

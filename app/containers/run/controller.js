@@ -3,7 +3,7 @@ import Controller from '@ember/controller';
 
 export default Controller.extend({
   growl: service(),
-  projects: service(),
+  scope: service(),
   modalService: service('modal'),
 
   queryParams: ['stackId','serviceId','containerId','addSidekick','launchConfigIndex','upgrade'],
@@ -23,7 +23,7 @@ export default Controller.extend({
 
   actions: {
     transitionOut() {
-      this.transitionToRoute('containers.index', this.get('projects.current.id'));
+      this.transitionToRoute('containers.index', this.get('scope.current.id'));
     },
 
     done() {

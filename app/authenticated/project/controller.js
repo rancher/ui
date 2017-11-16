@@ -10,7 +10,7 @@ const STACK = 'stack';
 
 export default Controller.extend({
   prefs: service(),
-  projects: service(),
+  scope: service(),
 
   tags: '',
   group: STACK,
@@ -45,8 +45,8 @@ export default Controller.extend({
   },
 
   showClusterWelcome: function() {
-    return this.get('projects.currentCluster.state') === 'inactive' && !this.get('hosts.length');
-  }.property('projects.currentCluster.state','hosts.[]'),
+    return this.get('scope.currentCluster.state') === 'inactive' && !this.get('hosts.length');
+  }.property('scope.currentCluster.state','hosts.[]'),
 
   simpleMode: false,
   /*

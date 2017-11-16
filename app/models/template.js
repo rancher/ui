@@ -5,7 +5,7 @@ import Resource from 'ember-api-store/models/resource';
 import C from 'ui/utils/constants';
 
 const Template = Resource.extend({
-  projects: service(),
+  scope: service(),
   settings: service(),
   intl: service(),
 

@@ -8,9 +8,10 @@ import PromiseToCb from 'ui/mixins/promise-to-cb';
 
 export default Route.extend(PromiseToCb, {
   catalog: service(),
+  clusterStore: service('cluster-store'),
 
   model: function(params /* , transition*/) {
-    var userStore = this.get('userStore');
+    const clusterStore = this.get('clusterStore');
 
     let policyManagerOpt = {
       headers: {
@@ -23,11 +24,11 @@ export default Route.extend(PromiseToCb, {
 
     let promise = new EmberPromise((resolve, reject) => {
       let tasks = {
-        allProjects:                        this.toCb(() => { return userStore.findAll('project'); }),
-        project:            ['allProjects', this.toCb(() => { return userStore.find('project', params.project_id); })],
+        allProjects:                        this.toCb(() => { return clusterStore.findAll('project'); }),
+        project:            ['allProjects', this.toCb(() => { return clusterStore.find('project', params.project_id); })],
         importMembers:      ['project',     this.toCb((results) => { return results.project.importLink('projectMembers'); })],
-        networks:                           this.toCb(() => { return userStore.find('network', null, {filter: {accountId: params.project_id}}); }),
-        policyManagers:                     this.toCb(() => { return userStore.find('stack', null, policyManagerOpt); }),
+        networks:                           this.toCb(() => { return clusterStore.find('network', null, {filter: {accountId: params.project_id}}); }),
+        policyManagers:                     this.toCb(() => { return clusterStore.find('stack', null, policyManagerOpt); }),
         catalogs:                           this.toCb(() => { return this.get('catalog').fetchCatalogs();}),
       };
 
@@ -60,7 +61,7 @@ export default Route.extend(PromiseToCb, {
         fields.forEach((field) => {
           let rule = policy.findBy('within', field);
           if ( !rule ) {
-            policy.pushObject(userStore.createRecord({
+            policy.pushObject(clusterStore.createRecord({
               type: 'networkPolicyRule',
               within: field,
               action: network.get('defaultPolicyAction'),

@@ -48,16 +48,16 @@ export function tagChoices(all) {
 
 var Stack = Resource.extend(StateCounts, {
 
-  type:            'stack',
-  k8s:             service(),
-  modalService:    service('modal'),
-  catalog:         service(),
-  projectsService: service('projects'),
-  router:          service(),
+  type:         'stack',
+  k8s:          service(),
+  modalService: service('modal'),
+  catalog:      service(),
+  scope:        service(),
+  router:       service(),
 
 
-  services:        denormalizeIdArray('serviceIds'),
-  realServices:    filterBy('services','isReal',true),
+  services:     denormalizeIdArray('serviceIds'),
+  realServices: filterBy('services','isReal',true),
 
   init() {
     this._super(...arguments);

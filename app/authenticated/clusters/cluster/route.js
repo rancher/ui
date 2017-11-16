@@ -1,12 +1,15 @@
 import Route from '@ember/routing/route';
+import { inject as service } from '@ember/service';
 
 export default Route.extend({
+  clusterStore: service('cluster-store'),
+  scope: service(),
   activate() {
     this._super();
-    this.controllerFor('authenticated').setPageScope('cluster');
+    this.get('scope').setPageScope('cluster');
   },
 
   model(params/*,transition*/) {
-    return this.get('userStore').find('cluster', params.cluster_id);
+    return this.get('clusterStore').find('cluster', params.cluster_id);
   },
 });

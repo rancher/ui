@@ -4,7 +4,7 @@
   </div>
 
   <div class="right-buttons">
-    {{#link-to "authenticated.project.hooks.new-receiver" class="btn btn-sm bg-primary" disabled=projects.current.isKubernetes}}{{t 'hookPage.receiver.buttonText'}}{{/link-to}}
+    {{#link-to "authenticated.project.hooks.new-receiver" class="btn btn-sm bg-primary" disabled=scope.current.isKubernetes}}{{t 'hookPage.receiver.buttonText'}}{{/link-to}}
   </div>
 </section>
 
@@ -30,7 +30,7 @@
         </tr>
       {{/if}}
     {{/sortable-table}}
-  {{else if projects.current.isKubernetes}}
+  {{else if scope.current.isKubernetes}}
     <div class="m-40 text-center text-muted">Coming soon for Kubernetes clusters</div>
   {{else}}
     {{empty-table resource="container" newRoute="authenticated.project.hooks.new-receiver" newTranslationKey="hookPage.receiver.buttonText"}}

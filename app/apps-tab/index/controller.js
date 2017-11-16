@@ -3,17 +3,15 @@ import { inject as service } from '@ember/service';
 import Controller, { inject as controller } from '@ember/controller';
 import C from 'ui/utils/constants';
 import { tagsToArray } from 'ui/models/stack';
+import { computed } from '@ember/object';
 
 export default Controller.extend({
   projectController: controller('authenticated.project'),
-  projects: service(),
-  prefs: service(),
-  intl: service(),
-
-  tags: alias('projectController.tags'),
-  sortBy: 'name',
-
-  expandedStacks: null,
+  prefs:             service(),
+  intl:              service(),
+  tags:              alias('projectController.tags'),
+  sortBy:            'name',
+  expandedStacks:    null,
 
   init() {
     this._super(...arguments);
@@ -31,7 +29,7 @@ export default Controller.extend({
     },
   },
 
-  filteredStacks: function() {
+  filteredStacks: computed('model.stacks.@each.{type,isFromCatalog,tags,state}','tags','prefs.showSystemResources', function() {
     var needTags = tagsToArray(this.get('tags'));
     var out      = this.get('model.stacks').filter((stack) => {
       if (stack.get('isFromCatalog') && C.REMOVEDISH_STATES.indexOf(stack.get('state')) === -1) {
@@ -49,5 +47,5 @@ export default Controller.extend({
     }
 
     return out;
-  }.property('model.stacks.@each.{type,isFromCatalog,tags,state}','tags','prefs.showSystemResources'),
+  }),
 });

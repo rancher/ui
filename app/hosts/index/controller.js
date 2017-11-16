@@ -9,7 +9,7 @@ import { headersProject as hostHeaders } from 'shared/components/host-row/compon
 
 export default Controller.extend({
   prefs: service(),
-  projects: service(),
+  projects: service('scope'),
   projectController: controller('authenticated.project'),
 
   mode: 'list',

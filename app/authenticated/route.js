@@ -1,32 +1,29 @@
 import $ from 'jquery';
-import EmberObject from '@ember/object';
-import { later, scheduleOnce, cancel } from '@ember/runloop';
-import {
-  reject,
-  Promise as EmberPromise,
-  resolve
-} from 'rsvp';
-import { inject as service } from '@ember/service';
-import Route from '@ember/routing/route';
 import C from 'ui/utils/constants';
-import Subscribe from 'ui/mixins/subscribe';
-import { xhrConcur } from 'ui/utils/platform';
-import PromiseToCb from 'ui/mixins/promise-to-cb';
+import EmberObject from '@ember/object';
 import Errors from 'ui/utils/errors';
+import PromiseToCb from 'ui/mixins/promise-to-cb';
+import Route from '@ember/routing/route';
+import Subscribe from 'ui/mixins/subscribe';
+import { inject as service } from '@ember/service';
+import { later, scheduleOnce, cancel } from '@ember/runloop';
+import { reject, Promise as EmberPromise, resolve } from 'rsvp';
+import { xhrConcur } from 'ui/utils/platform';
 
 const CHECK_AUTH_TIMER = 60*10*1000;
 
 export default Route.extend(Subscribe, PromiseToCb, {
-  prefs     : service(),
-  projects  : service(),
-  settings  : service(),
-  access    : service(),
-  userTheme : service('user-theme'),
-  language  : service('user-language'),
-  storeReset: service(),
+  access:       service(),
+  clusterStore: service('cluster-store'),
+  cookies:      service(),
+  language:     service('user-language'),
   modalService: service('modal'),
-
-  testTimer: null,
+  prefs:        service(),
+  scope:        service(),
+  settings:     service(),
+  storeReset:   service(),
+  testTimer:    null,
+  userTheme:    service('user-theme'),
 
   beforeModel(transition) {
     this._super.apply(this,arguments);
@@ -107,7 +104,7 @@ export default Route.extend(Subscribe, PromiseToCb, {
     let app = this.controllerFor('application');
 
     this._super();
-    if ( !this.controllerFor('application').get('isPopup') && this.get('projects.current') )
+    if ( !this.controllerFor('application').get('isPopup') && this.get('scope.current') )
     {
       this.connectSubscribe();
     }
@@ -209,11 +206,15 @@ export default Route.extend(Subscribe, PromiseToCb, {
   },
 
   loadClusters() {
-    return this.get('userStore').find('cluster', null, {url: 'clusters'});
+    let svc = this.get('scope');
+    return svc.getAllClusters().then((all) => {
+      svc.set('allClusters', all);
+      return all;
+    });
   },
 
   loadProjects() {
-    let svc = this.get('projects');
+    let svc = this.get('scope');
     return svc.getAll().then((all) => {
       svc.set('all', all);
       return all;
@@ -240,7 +241,7 @@ export default Route.extend(Subscribe, PromiseToCb, {
     }
 
     // Make sure a valid project is selected
-    return this.get('projects').selectDefault(projectId);
+    return this.get('scope').selectDefaultProject(projectId);
   },
 
   _gotoRoute(name, withProjectId=true) {
@@ -251,7 +252,7 @@ export default Route.extend(Subscribe, PromiseToCb, {
     }
 
     if ( withProjectId ) {
-      this.transitionTo(name, this.get('projects.current.id'));
+      this.transitionTo(name, this.get('scope.current.id'));
     } else {
       this.transitionTo(name);
     }
@@ -296,24 +297,40 @@ export default Route.extend(Subscribe, PromiseToCb, {
       this.controllerFor('application').set('showAbout', true);
     },
 
-    switchProject(projectId, transitionTo='authenticated', transitionArgs) {
-      console.log('Switch to ' + projectId);
+    switchCluster(clusterId, transitionTo='authenticated.clusters', transitionArgs) {
+      console.log('Switch to Cluster:' + clusterId);
       this.disconnectSubscribe(() => {
         console.log('Switch is disconnected');
-        this.send('finishSwitchProject', projectId, transitionTo, transitionArgs);
+        this.send('finishSwitchProject', `cluster:${clusterId}`, transitionTo, transitionArgs);
       });
     },
 
-    finishSwitchProject(projectId, transitionTo, transitionArgs) {
+    switchProject(projectId, transitionTo='authenticated', transitionArgs) {
+      console.log('Switch to Project:' + projectId);
+      this.disconnectSubscribe(() => {
+        console.log('Switch is disconnected');
+        this.send('finishSwitchProject', `project:${projectId}`, transitionTo, transitionArgs);
+      });
+    },
+
+    finishSwitchProject(id, transitionTo, transitionArgs) {
       console.log('Switch finishing');
+
+      const cookies = this.get('cookies');
+      var [whichCookie, idOut] = id.split(':');
+
       this.get('storeReset').reset();
+
       if ( transitionTo ) {
         let args = (transitionArgs||[]).slice();
         args.unshift(transitionTo);
         this.transitionTo.apply(this,args);
       }
-      this.set(`tab-session.${C.TABSESSION.PROJECT}`, projectId);
+
+      cookies.set(C.COOKIE[whichCookie.toUpperCase()], idOut);
+
       this.refresh();
+
       console.log('Switch finished');
     },
 

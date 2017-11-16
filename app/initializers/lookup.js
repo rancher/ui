@@ -8,8 +8,9 @@ export function initialize(/*application*/) {
     return Ui.__container__.lookup('controller:'+name);
   };
 
-  window.s = Ui.__container__.lookup('service:store');
+  window.s  = Ui.__container__.lookup('service:store');
   window.us = Ui.__container__.lookup('service:user-store');
+  window.cs = Ui.__container__.lookup('service:cluster-store');
 }
 
 export default {

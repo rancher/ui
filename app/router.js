@@ -15,7 +15,6 @@ const Router = EmberRouter.extend({
 
 Router.map(function() {
   this.mount('login', {path: '/login'});
-  this.mount('global-admin', { path: '/admin'});
 
   this.route('ie');
   this.route('index');
@@ -33,6 +32,7 @@ Router.map(function() {
   this.route('logout');
 
   this.route('authenticated', {path: '/'}, function() {
+    this.mount('global-admin', { path: '/admin', resetNamespace: true});
     this.route('dummy-dev', {path: '/dev'});
 
     this.route('prefs');
