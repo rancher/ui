@@ -4,10 +4,13 @@ export default Ember.Component.extend({
   allServices : Ember.inject.service(),
 
   selected:          null,  // Selected service ID
+  custom:            null, // Custom input
   selectClass:       'form-control',
   canBalanceTo:      false, // require service have canBalanceTo=true
   canHaveContainers: false, // require service have hasContainers=true
   exclude:           null,  // ID or array of IDs to exclude from list
+  showCustomOption:  null, // Show a custom option where user can input text
+  customMode:        null, // Custom mode
 
   // For use as a catalog question
   field: null,              // Read default from a schema resourceField
@@ -37,13 +40,6 @@ export default Ember.Component.extend({
 
   grouped: function() {
     let list = this.get('allServices.list');
-    const selected = this.get('selected')
-    if (selected) {
-      const found = list.any(s => s.id === selected)
-      if (!found) {
-        list.push({ group: 'Others', id: selected, name: selected })
-      }
-    }
 
     if ( this.get('canBalanceTo') ) {
       list = list.filterBy('obj.canBalanceTo',true);
@@ -68,6 +64,19 @@ export default Ember.Component.extend({
   selectedChanged: function() {
     let id = this.get('selected');
     let str = null;
+
+    if (this.get('showCustomOption') && id !== null ) {
+      this.set('custom', null);
+      if (id === 'customMode') {
+        setTimeout(() => {
+          this.$('.input-select')[0].focus();
+        }, 100);
+        this.set('customMode', true);
+        this.set('selected', null);
+      } else {
+        this.set('customMode', false);
+      }
+    }
 
     if ( id ) {
       let service = this.get('allServices').byId(id);

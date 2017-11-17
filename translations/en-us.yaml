@@ -1576,6 +1576,15 @@ formBalancerRules:
     internal: Internal
   protocol:
     label: Protocol
+  region:
+    label: Region
+    placeholder: e.g. region1
+  environment:
+    label: Environment
+    placeholder: e.g. 1a5
+  weight:
+    label: Weight
+    placeholder: e.g. 1
   sourceIp:
     label: Host IP
     placeholder: e.g. 1.2.3.4
@@ -1607,6 +1616,7 @@ formBalancerRules:
     prefix: "Host and Path rules are matched top-to-bottom in the order shown.  Backends will be named randomly by default;  to customize the generated backends, provide a name and then refer to that in the custom haproxy.cfg.  "
     showBackendLink: "Show custom backend names."
     showIpLink: "Show host IP address options."
+    showRegionLink: "Show region options."
     suffix: ""
 
 formCommand:
@@ -2928,8 +2938,13 @@ newBalancer:
   error:
     noRules: "Choose one or more port rules to listen on"
     noSourcePort: "Source Port is required on each rule"
+    noRegion: "Region is required for custom service target"
+    noEnvironment: "Environment is required for custom service target"
+    missingRegion: "Region is required if environment field is not empty"
+    missingEnvironment: "Environment is required if region field is not empty"
     invalidSourcePort: "Invalid source port: '{num}'"
     invalidTargetPort: "Invalid target port: '{num}'"
+    invalidWeight: "Invalid weight: '{num}'"
     mixedPort: "Port {num} has multiple rules with conflicting access/protcols"
     noTarget: "Target is required on each rule"
     needsCertificate: "A certificate is required because there are SSL/TLS port rules"
@@ -3147,6 +3162,9 @@ schema:
     option: Choose an option...
   inputService:
     prompt: Choose a Service...
+    custom:
+      prompt: Custom...
+      placeholder: e.g. app
   inputSecret:
     prompt: Choose a Secret...
 

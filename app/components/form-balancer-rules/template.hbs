@@ -33,6 +33,11 @@
               <th>{{t 'formBalancerRules.path.label'}}</th>
               <th width="100" class="divided">{{t 'formBalancerRules.targetPort.label'}}*</th>
             {{/if}}
+            {{#if showRegion}}
+              <th class="divided">{{t 'formBalancerRules.region.label'}}</th>
+              <th>{{t 'formBalancerRules.environment.label'}}</th>
+              <th>{{t 'formBalancerRules.weight.label'}}</th>
+            {{/if}}
             {{#if showBackend}}
               <th class="divided">{{t 'formBalancerRules.backendName.label'}}</th>
             {{/if}}
@@ -117,6 +122,30 @@
                 {{input-integer class="form-control input-sm" min="1" max="65535" value=rule.targetPort placeholder=(t 'formBalancerRules.targetPort.placeholder')}}
               </td>
 
+              {{#if showRegion}}
+                <td class="divided" data-title="{{t 'formBalancerRules.region.label'}}">
+                  {{#if rule.isSelector}}
+                    {{input type="text" class="form-control input-sm" value=rule.region placeholder=(t 'formBalancerRules.region.placeholder')}}
+                  {{else}}
+                    <span class="text-muted">{{t 'generic.na'}}</span>
+                  {{/if}}
+                </td>
+                <td data-title="{{t 'formBalancerRules.environment.label'}}">
+                  {{#if rule.isSelector}}
+                    {{input type="text" class="form-control input-sm" value=rule.environment placeholder=(t 'formBalancerRules.environment.placeholder')}}
+                  {{else}}
+                    <span class="text-muted">{{t 'generic.na'}}</span>
+                  {{/if}}
+                </td>
+                <td data-title="{{t 'formBalancerRules.weight.label'}}">
+                  {{#if rule.isSelector}}
+                    {{input-integer class="form-control input-sm" min="0" value=rule.weight placeholder=(t 'formBalancerRules.weight.placeholder')}}
+                  {{else}}
+                    <span class="text-muted">{{t 'generic.na'}}</span>
+                  {{/if}}
+                </td>
+              {{/if}}
+
               {{#if showBackend}}
                 <td class="divided" data-title="{{t 'formBalancerRules.backendName.label'}}">
                   {{input type="text" class="form-control input-sm" value=rule.backendName placeholder=(t 'formBalancerRules.backendName.placeholder')}}
@@ -142,6 +171,11 @@
         {{#unless showIp}}
           <a href="#" {{action "showIp"}}>
             {{t 'formBalancerRules.help.showIpLink'}}
+          </a>
+        {{/unless}}
+        {{#unless (and showRegion hasRegion)}}
+          <a href="#" {{action "showRegion"}}>
+            {{t 'formBalancerRules.help.showRegionLink'}}
           </a>
         {{/unless}}
         {{t 'formBalancerRules.help.suffix'}}

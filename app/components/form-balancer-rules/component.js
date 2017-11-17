@@ -12,6 +12,8 @@ export default Ember.Component.extend({
   protocolChoices: null,
   showBackend: null,
   showIp: null,
+  showRegion: null,
+  hasRegion: null,
 
   onInit: function() {
     let rules = this.get('service.lbConfig.portRules');
@@ -34,6 +36,9 @@ export default Ember.Component.extend({
     protos.sort();
     this.set('protocolChoices', protos);
 
+    const regions = this.get('userStore').all('region');
+    this.set('hasRegion', regions.get('length') > 0);
+
     if ( this.get('showBackend') === null ) {
       let hasName = !!rules.findBy('backendName');
       this.set('showBackend', hasName);
@@ -44,6 +49,14 @@ export default Ember.Component.extend({
         let parsed = parsePortSpec(port,'tcp');
         if ( parsed.hostIp ) {
           this.set('showIp', true);
+        }
+      });
+    }
+
+    if ( this.get('showRegion') === null ) {
+      rules.forEach((rule) => {
+        if ( rule.region ) {
+          this.set('showRegion', true);
         }
       });
     }
@@ -100,6 +113,10 @@ export default Ember.Component.extend({
 
     showIp() {
       this.set('showIp', true);
+    },
+
+    showRegion() {
+      this.set('showRegion', true);
     },
   },
 

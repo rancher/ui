@@ -133,6 +133,7 @@ export default Ember.Component.extend(NewOrEdit, {
       // converts integers to string (so they can be re-parsed later)
       let srcStr = ((rule.get('sourcePort')||'')+'').trim();
       let tgtStr = ((rule.get('targetPort')||'')+'').trim();
+      let wgtStr = ((rule.get('weight')||'')+'').trim();
 
       if ( !srcStr ) {
         errors.push(intl.t('newBalancer.error.noSourcePort'));
@@ -150,6 +151,23 @@ export default Ember.Component.extend(NewOrEdit, {
       if ( !tgt || tgt < 1 || tgt > 65535 ) {
         errors.push(intl.t('newBalancer.error.invalidTargetPort', {num: tgtStr}));
         return;
+      }
+
+      let wgt = parseInt(wgtStr,10);
+      if ( !wgt || wgt < 0 ) {
+        errors.push(intl.t('newBalancer.error.invalidWeight', {num: wgt}));
+        return;
+      }
+
+      if ( rule.isSelector ) {
+        if ( !rule.region && rule.environment) {
+          errors.push(intl.t('newBalancer.error.missingRegion'));
+          return;
+        }
+        if ( rule.region && !rule.environment ) {
+          errors.push(intl.t('newBalancer.error.missingEnvironment'));
+          return;
+        }
       }
 
       let sourceIp = rule.get('sourceIp');
@@ -179,6 +197,7 @@ export default Ember.Component.extend(NewOrEdit, {
       rule.setProperties({
         sourcePort: src,
         targetPort: tgt,
+        weight: wgt,
       });
     });
 
