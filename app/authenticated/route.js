@@ -7,13 +7,13 @@ import Route from '@ember/routing/route';
 import Subscribe from 'ui/mixins/subscribe';
 import { inject as service } from '@ember/service';
 import { later, scheduleOnce, cancel } from '@ember/runloop';
-import { reject, Promise as EmberPromise, resolve } from 'rsvp';
-import { xhrConcur } from 'ui/utils/platform';
+import { reject, resolve, all as PromiseAll } from 'rsvp';
 
 const CHECK_AUTH_TIMER = 60*10*1000;
 
 export default Route.extend(Subscribe, PromiseToCb, {
   access:       service(),
+  authnStore:   service('authn-store'),
   clusterStore: service('cluster-store'),
   cookies:      service(),
   language:     service('user-language'),
@@ -58,45 +58,25 @@ export default Route.extend(Subscribe, PromiseToCb, {
 
     this.get('session').set(C.SESSION.BACK_TO, undefined);
 
-    let promise = new EmberPromise((resolve, reject) => {
-      let tasks = {
-        userSchemas:                                    this.toCb('loadUserSchemas'),
-        clusters:                                       this.toCb('loadClusters'),
-        projects:                                       this.toCb('loadProjects'),
-        preferences:                                    this.toCb('loadPreferences'),
-        settings:                                       this.toCb('loadPublicSettings'),
-        project:            ['clusters','projects', 'preferences',
-                                                        this.toCb('selectProject',transition)],
-        projectSchemas:     ['project',                 this.toCb('loadProjectSchemas')],
-        instances:          ['projectSchemas',          this.cbFind('instance')],
-        services:           ['projectSchemas',          this.cbFind('service')],
-        hosts:              ['projectSchemas',          this.cbFind('host')],
-        stacks:             ['projectSchemas',          this.cbFind('stack')],
-        mounts:             ['projectSchemas',          this.cbFind('mount', 'store', {filter: {state_ne: 'inactive'}})],
-        storagePools:       ['projectSchemas',          this.cbFind('storagepool')],
-        volumes:            ['projectSchemas',          this.cbFind('volume')],
-        volumeTemplates:    ['projectSchemas',          this.cbFind('volumetemplate')],
-        certificate:        ['projectSchemas',          this.cbFind('certificate')],
-        secret:             ['projectSchemas',          this.toCb('loadSecrets')],
-        identities:         ['userSchemas', this.cbFind('identity', 'userStore')],
-      };
-
-      async.auto(tasks, xhrConcur, function(err, res) {
-        if ( err ) {
-          reject(err);
-        } else {
-          resolve(res);
-        }
-      });
-    }, 'Load all the things');
-
-    return promise.then((hash) => {
-      return EmberObject.create(hash);
+    return PromiseAll([
+      this.loadSchemas('clusterStore'),
+//      this.loadSchemas('authnStore'),
+      this.loadClusters(),
+      this.loadProjects()
+      //this.loadPreferences(),
+      //this.loadPublicSettings()
+    ]).then(() => {
+      return this.selectProject(transition);
+    }).then(() => {
+      return this.loadSchemas('store');
+    }).then(() => {
+      return PromiseAll([
+        this.preload('workload'),
+        this.preload('nodes'),
+        this.preload('pods'),
+      ]);
     }).catch((err) => {
-      return this.loadingError(err, transition, EmberObject.create({
-        projects: [],
-        project: null,
-      }));
+      return this.loadingError(err, transition);
     });
   },
 
@@ -139,35 +119,23 @@ export default Route.extend(Subscribe, PromiseToCb, {
     this.get('storeReset').reset();
   },
 
-  loadingError(err, transition, ret) {
+  loadingError(err, transition) {
     let isAuthEnabled = this.get('access.enabled');
-    let isAuthFail = [401,403].indexOf(err.status) >= 0;
+    let isAuthFail = err && err.status && [401,403].indexOf(err.status) >= 0;
 
     var msg = Errors.stringify(err);
     console.log('Loading Error:', msg, err);
     if ( err && (isAuthEnabled || isAuthFail) ) {
       this.set('access.enabled', true);
       this.send('logout', transition, isAuthFail, (isAuthFail ? undefined : msg));
-      return;
+    } else {
+      this.replaceWith('authenticated.clusters');
     }
 
-    this.replaceWith('authenticated.clusters');
-    return ret;
   },
 
-  cbFind(type, store='store', opt=null) {
-    return (results, cb) => {
-      if ( typeof results === 'function' ) {
-        cb = results;
-        results = null;
-      }
-
-      return this.get(store).find(type,null,opt).then(function(res) {
-        cb(null, res);
-      }).catch(function(err) {
-        cb(err, null);
-      });
-    };
+  preload(type, store='store', opt=null) {
+    return this.get(store).find(type,null,opt);
   },
 
   loadPreferences() {
@@ -189,19 +157,11 @@ export default Route.extend(Subscribe, PromiseToCb, {
     });
   },
 
-  loadProjectSchemas() {
-    var store = this.get('store');
+  loadSchemas(storeName) {
+    var store = this.get(storeName);
     store.resetType('schema');
     return store.rawRequest({url:'schema', dataType: 'json'}).then((xhr) => {
       store._bulkAdd('schema', xhr.body.data);
-    });
-  },
-
-  loadUserSchemas() {
-    // @TODO Inline me into releases
-    let userStore = this.get('userStore');
-    return userStore.rawRequest({url:'schema', dataType: 'json'}).then((xhr) => {
-      userStore._bulkAdd('schema', xhr.body.data);
     });
   },
 
@@ -281,7 +241,7 @@ export default Route.extend(Subscribe, PromiseToCb, {
 
     error(err,transition) {
       // Unauthorized error, send back to login screen
-      if ( err.status === 401 )
+      if ( err && err.status === 401 )
       {
         this.send('logout',transition,true);
         return false;

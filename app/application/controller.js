@@ -1,6 +1,7 @@
 import { oneWay } from '@ember/object/computed';
 import { inject as service } from '@ember/service';
 import Controller from '@ember/controller';
+import { run } from '@ember/runloop';
 
 export default Controller.extend({
   settings: service(),
@@ -26,6 +27,14 @@ export default Controller.extend({
     clickedAction: function(actionName) {
       this.get('resourceActions').triggerAction(actionName);
     },
+  },
+
+  init() {
+    this._super(...arguments);
+
+    if ( this.get('app.environment') === 'development' ) {
+      run.backburner.DEBUG = true;
+    }
   },
 
   // currentRouteName is set by Ember.Router
