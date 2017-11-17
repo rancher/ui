@@ -26,16 +26,24 @@ module.exports = function(app, options) {
 
   let map = {
     'API': config.apiEndpoint,
+    'Cluster': config.clusterEndpoint,
+    'AuthN': config.authenticationEndpoint,
+    'AuthZ': config.authorizationEndpoint,
+    'Catalog': config.catalogEndpoint,
+
 //    'Beta API': config.betaApiEndpoint,
-    'Legacy API': config.legacyApiEndpoint,
+//    'Legacy API': config.legacyApiEndpoint,
     'K8s': config.kubernetesBase,
     'Magic': config.magicEndpoint,
     'Telemetry': config.telemetryEndpoint,
     'WebHook': config.webhookEndpoint,
+
+    'Meta': '/meta',
+    'Swagger': '/swaggerapi',
+    'Version': '/version',
   }
 
-  // Rancher API
-  console.log('Proxying API to', config.apiServer);
+  console.log('Proxying APIs to', config.apiServer);
   Object.keys(map).forEach(function(label) {
     let base = map[label];
     app.use(base, function(req, res, next) {
@@ -46,79 +54,6 @@ module.exports = function(app, options) {
       proxyLog(label, req);
       proxy.web(req, res);
     });
-  });
-
-  // New hotness
-  app.use('/meta', function(req, res, next) {
-    // include root path in proxied request
-    req.url = path.join('/meta', req.url);
-    req.headers['X-Forwarded-Proto'] = req.protocol;
-
-    proxyLog('Meta', req);
-    proxy.web(req, res);
-  });
-
-  // Kubernetes needs this API
-  app.use('/swaggerapi', function(req, res, next) {
-    // include root path in proxied request
-    req.url = path.join('/swaggerapi', req.url);
-    req.headers['X-Forwarded-Proto'] = req.protocol;
-
-    proxyLog('K8sSwag', req);
-    proxy.web(req, res);
-  });
-
-  app.use('/version', function(req, res, next) {
-    // include root path in proxied request
-    req.url = '/version';
-    req.headers['X-Forwarded-Proto'] = req.protocol;
-
-    proxyLog('K8sVers', req);
-    proxy.web(req, res);
-  });
-
-  // Catalog API
-  var catalogPath = config.catalogEndpoint;
-  // Default catalog to the regular API
-  var catalogServer = config.catalogServer || config.apiServer;
-  if ( catalogServer !== config.apiServer ) {
-    console.log('Proxying Catalog to', catalogServer);
-  }
-  app.use(catalogPath, function(req, res, next) {
-    req.headers['X-Forwarded-Proto'] = req.protocol;
-    var catalogProxy = HttpProxy.createProxyServer({
-      xfwd: false,
-      target: catalogServer
-    });
-
-    catalogProxy.on('error', onProxyError);
-
-    // include root path in proxied request
-    req.url = path.join(catalogPath, req.url);
-
-    proxyLog('Catalog', req);
-    catalogProxy.web(req, res);
-  });
-
-  // Auth API
-  var authPath = config.authEndpoint;
-  var authServer = config.authServer || config.apiServer;
-  if ( authServer !== config.apiServer ) {
-    console.log('Proxying Auth to', authServer);
-  }
-  app.use(authPath, function(req, res, next) {
-    req.headers['X-Forwarded-Proto'] = req.protocol;
-    var catalogProxy = HttpProxy.createProxyServer({
-      xfwd: false,
-      target: authServer
-    });
-
-    catalogProxy.on('error', onProxyError);
-
-    req.url = path.join(authPath, req.url);
-
-    proxyLog('Auth', req);
-    catalogProxy.web(req, res);
   });
 }
 

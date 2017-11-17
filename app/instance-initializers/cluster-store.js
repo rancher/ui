@@ -6,7 +6,7 @@ export function initialize(instance) {
   var cookies = instance.lookup('service:cookies');
 
   store.reopen(StoreTweaks);
-  store.baseUrl = application.apiEndpoint;
+  store.baseUrl = application.clusterEndpoint;
 
   let timeout = cookies.get('timeout');
   if ( timeout ) {

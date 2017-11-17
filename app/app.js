@@ -26,7 +26,7 @@ const App = Application.extend({
       dependencies: {
         services: [
           'access',
-          'auth-store',
+          'authn-store',
           'catalog',
           'endpoint',
           'github',
