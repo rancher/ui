@@ -1,0 +1,67 @@
+.searchable-select {
+  $group-indent: 20px;
+  $indent: 20px;
+  padding-left: 0;
+  padding-right: 0;
+
+  .searchable-option-active {
+    background: #4698FD;
+    color: white;
+  }
+
+  font-family: prompt;
+  position: relative;
+  color: #000;
+
+  .searchable-group {
+    .group-label {
+      color: $text-muted;
+      padding-left: $indent;
+      font-weight: bold;
+    }
+    > div {
+      padding-left: $indent + $group-indent;
+    }
+  }
+
+  .searchable-options {
+    max-height: 285px;
+    overflow-y: scroll;
+    background: white;
+    position: absolute;
+    box-sizing: border-box;
+    width: 100%;
+    z-index: 2;
+    border: 1px solid $accent-border;
+    border-top: none;
+    padding: 2px 0 5px;
+    input {
+      margin-bottom: 10px;
+      border-left: none;
+      border-right: none;
+      border-color: $input-border;
+      background: $input-bg;
+    }
+    input:hover {
+      border-color: $input-border;
+      background: $input-bg;
+    }
+  }
+  .searchable-option, .searchable-prompt {
+    user-select: none;
+    cursor: default;
+    display: flex;
+    align-items: center;
+    padding: 0px 0;
+    padding-left: $indent;
+    position: relative;
+    .icon-check {
+      margin-left: -15px;
+      margin-right: 5px;
+      font-size: 10px;
+    }
+  }
+  .no-match {
+    padding-left: $indent;
+  }
+}

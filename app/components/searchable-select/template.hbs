@@ -1,0 +1,83 @@
+{{#outside-click onOutsideClick=(action 'hide')}}
+  <select class="form-control {{class}}" {{action 'show'}} value=value>
+    <option style="display:none;" value=value>{{displayLabel}}</option>
+  </select>
+
+  {{#if showOptions}}
+    <section class="searchable-options {{if showSearch '' 'pt-10'}}">
+      {{#if showSearch}}
+        {{input class=(concat 'form-control ' class) placeholder=(t 'generic.search') type="text" value=filter}}
+      {{/if}}
+      {{#if prompt}}
+        <div
+          class="searchable-option searchable-prompt"
+          {{action 'mouseEnter' item on="mouseEnter"}}
+          {{action 'mouseLeave' item on="mouseLeave"}}
+          {{action 'selectPrompt'}}
+        >
+          {{#unless value}}
+            <i class="icon icon-check"></i>
+          {{/unless}}
+          {{#if localizedPrompt}}
+            {{t prompt}}
+          {{else}}
+            {{prompt}}
+          {{/if}}
+        </div>
+      {{/if}}
+
+      {{#if prefix}}
+        {{yield this 'prefix'}}
+      {{/if}}
+
+      {{#each unGroupedContent as |item idx|}}
+        <div
+          class="searchable-option"
+          {{action 'selectUnGroupedItem' idx}}
+          {{action 'mouseEnter' item on="mouseEnter"}}
+          {{action 'mouseLeave' item on="mouseLeave"}}
+        >
+          {{#if (eq value (get item optionValuePath))}}
+            <i class="icon icon-check"></i>
+          {{/if}}
+          {{#if showOptionIcon}}
+            <img width="32" height="32" alt="logo" src="{{item.imgUrl}}" class="p-5" style="margin-left:-5px" />
+          {{/if}}
+          {{if localizedLabel (t (get item optionLabelPath))  (get item optionLabelPath)}}
+        </div>
+      {{/each}}
+
+      {{#each groupedContent as |group|}}
+        <div class="searchable-group">
+          <div class="group-label">{{group.group}}</div>
+          {{#each group.options as |item idx|}}
+            <div
+              class="searchable-option"
+              {{action 'selectGroupedItem' group.options idx}}
+              {{action 'mouseEnter' item on="mouseEnter"}}
+            >
+                {{#if (eq value (get item optionValuePath))}}
+                  <i class="icon icon-check"></i>
+                {{/if}}
+                {{if localizedLabel (t (get item optionLabelPath))  (get item optionLabelPath)}}
+              </div>
+          {{/each}}
+        </div>
+      {{/each}}
+
+      {{#unless filtered.length}}
+        <div class="text-muted no-match">
+          {{#if content.length}}
+            {{t 'searchableSelect.noMatch'}}
+          {{else}}
+            {{t 'searchableSelect.noOptions'}}
+          {{/if}}
+        </div>
+      {{/unless}}
+
+      {{#if suffix}}
+        {{yield this 'suffix'}}
+      {{/if}}
+    </section>
+  {{/if}}
+{{/outside-click}}
