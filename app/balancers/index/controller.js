@@ -12,7 +12,7 @@ export default Controller.extend({
   simpleMode:        alias('projectController.simpleMode'),
   group:             alias('projectController.group'),
   groupTableBy:      alias('projectController.groupTableBy'),
-  showStack:         alias('projectController.showStack'),
+  showNamespace:     alias('projectController.showNamespace'),
   expandedInstances: alias('projectController.expandedInstances'),
   preSorts:          alias('projectController.preSorts'),
 
@@ -30,9 +30,9 @@ export default Controller.extend({
   headers: headers,
 
   rows: function() {
-    let showStack = this.get('showStack');
+    let showNamespace = this.get('showNamespace');
     let services = this.get('model.services').filter((obj) => {
-      return showStack[obj.get('stackId')] && obj.get('isBalancer');
+      return showNamespace[obj.get('stackId')] && obj.get('isBalancer');
     });
 
     if ( this.get('group') === 'none' ) {
@@ -45,5 +45,5 @@ export default Controller.extend({
     } else {
       return services;
     }
-  }.property('group','showStack','model.services.@each.{isBalancer,instances}'),
+  }.property('group','showNamespace','model.services.@each.{isBalancer,instances}'),
 });

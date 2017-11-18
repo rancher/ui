@@ -2,7 +2,6 @@ import { alias } from '@ember/object/computed';
 import { inject as service } from '@ember/service';
 import Controller, { inject as controller } from '@ember/controller';
 import C from 'ui/utils/constants';
-import { tagsToArray } from 'ui/models/stack';
 import { computed } from '@ember/object';
 
 export default Controller.extend({
@@ -29,18 +28,14 @@ export default Controller.extend({
     },
   },
 
-  filteredStacks: computed('model.stacks.@each.{type,isFromCatalog,tags,state}','tags','prefs.showSystemResources', function() {
-    var needTags = tagsToArray(this.get('tags'));
+  filteredStacks: computed('model.stacks.@each.{type,isFromCatalog,tags,state}','tags', function() {
+    var needTags = this.get('tags');
     var out      = this.get('model.stacks').filter((stack) => {
       if (stack.get('isFromCatalog') && C.REMOVEDISH_STATES.indexOf(stack.get('state')) === -1) {
         return true;
       }
       return false;
     });
-
-    if ( !this.get('prefs.showSystemResources') ) {
-      out = out.filterBy('system', false);
-    }
 
     if ( needTags.length ) {
       out = out.filter((obj) => obj.hasTags(needTags));

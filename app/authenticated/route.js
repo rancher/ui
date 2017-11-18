@@ -2,7 +2,6 @@ import $ from 'jquery';
 import C from 'ui/utils/constants';
 import EmberObject from '@ember/object';
 import Errors from 'ui/utils/errors';
-import PromiseToCb from 'ui/mixins/promise-to-cb';
 import Route from '@ember/routing/route';
 import Subscribe from 'ui/mixins/subscribe';
 import { inject as service } from '@ember/service';
@@ -11,9 +10,9 @@ import { reject, resolve, all as PromiseAll } from 'rsvp';
 
 const CHECK_AUTH_TIMER = 60*10*1000;
 
-export default Route.extend(Subscribe, PromiseToCb, {
+export default Route.extend(Subscribe, {
   access:       service(),
-  authnStore:   service('authn-store'),
+  authzStore:   service('authz-store'),
   clusterStore: service('cluster-store'),
   cookies:      service(),
   language:     service('user-language'),
@@ -61,6 +60,7 @@ export default Route.extend(Subscribe, PromiseToCb, {
     return PromiseAll([
       this.loadSchemas('clusterStore'),
 //      this.loadSchemas('authnStore'),
+      this.loadSchemas('authzStore'),
       this.loadClusters(),
       this.loadProjects()
       //this.loadPreferences(),
@@ -72,8 +72,9 @@ export default Route.extend(Subscribe, PromiseToCb, {
     }).then(() => {
       return PromiseAll([
         this.preload('workload'),
-        this.preload('nodes'),
-        this.preload('pods'),
+        this.preload('namespace'),
+        this.preload('node'),
+        this.preload('pod'),
       ]);
     }).catch((err) => {
       return this.loadingError(err, transition);
@@ -86,10 +87,10 @@ export default Route.extend(Subscribe, PromiseToCb, {
     this._super();
     if ( !this.controllerFor('application').get('isPopup') && this.get('scope.current') )
     {
-      this.connectSubscribe();
+      // @TODO-2.0 this.connectSubscribe();
     }
 
-    if ( this.get('settings.isRancher') && !app.get('isPopup') )
+    if ( false && this.get('settings.isRancher') && !app.get('isPopup') ) // @TODO-2.0
     {
       let form = this.get(`settings.${C.SETTING.FEEDBACK_FORM}`);
 

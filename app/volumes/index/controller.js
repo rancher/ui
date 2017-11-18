@@ -9,8 +9,8 @@ export default Controller.extend({
   tags:              alias('projectController.tags'),
   simpleMode:        alias('projectController.simpleMode'),
   groupTableBy:      alias('projectController.groupTableBy'),
-  showStack:         alias('projectController.showStack'),
-  emptyStacks:       alias('projectController.emptyStacks'),
+  showNamespace:     alias('projectController.showNamespace'),
+  emptyNamespaces:   alias('projectController.emptyNamespaces'),
   expandedInstances: alias('projectController.expandedInstances'),
   preSorts:          alias('projectController.preSorts'),
 
@@ -66,20 +66,20 @@ export default Controller.extend({
   ],
 
   rows: function() {
-    let showStack = this.get('showStack');
+    let showNamespace = this.get('showNamespace');
 
     // VolumeTemplates
     let out = this.get('model.volumeTemplates').slice().filter((obj) => {
-      return showStack[obj.get('stackId')];
+      return showNamespace[obj.get('stackId')];
     });
 
     if ( !this.get('tags') ) {
       out.pushObjects(this.get('model.volumes').filterBy('volumeTemplateId',null).filter((obj) => {
         let stackId = obj.get('stackId');
-        return !stackId || showStack[stackId];
+        return !stackId || showNamespace[stackId];
       }));
     }
 
     return out;
-  }.property('showStack','tags','model.volumeTemplates.@each.stackId','model.volumes.@each.{stackId,volumeTemplateId}'),
+  }.property('showNamespace','tags','model.volumeTemplates.@each.stackId','model.volumes.@each.{stackId,volumeTemplateId}'),
 });

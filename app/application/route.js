@@ -132,10 +132,6 @@ export default Route.extend({
         svc.sideLoadLanguage('none');
       }
     },
-
-    systemToggle() {
-      this.get('prefs').toggleProperty('showSystemResources');
-    }
   },
 
   shortcuts: {

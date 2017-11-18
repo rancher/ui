@@ -1,6 +1,6 @@
 import Controller from '@ember/controller';
 import NewOrEdit from 'ui/mixins/new-or-edit';
-import { tagChoices, tagsToArray } from 'ui/models/stack';
+import { tagChoices } from 'ui/models/namespace';
 
 export default Controller.extend(NewOrEdit, {
   error:     null,
@@ -16,9 +16,9 @@ export default Controller.extend(NewOrEdit, {
 
   actions: {
     addTag(tag) {
-      let neu = tagsToArray(this.get('model.group'));
+      let neu = this.get('model.tags')||[];
       neu.addObject(tag);
-      this.set('model.group', neu.join(', '));
+      this.set('model.tags', tags);
     },
 
     answersChanged(answers) {
