@@ -25,11 +25,8 @@ var Host = Resource.extend(StateCounts,{
   instances: denormalizeIdArray('instanceIds'),
   arrangedInstances: function() {
     let out = this.get('instances').sortBy('system','displayName');
-    if ( !this.get('prefs.showSystemResources') ) {
-      out = out.filterBy('isSystem',false);
-    }
     return out;
-  }.property('instances.@each.{isSystem,displayName}','prefs.showSystemResources'),
+  }.property('instances.@each.{isSystem,displayName}'),
 
   actions: {
     activate: function() {

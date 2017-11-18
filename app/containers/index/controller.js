@@ -59,8 +59,8 @@ export default Controller.extend({
   simpleMode: alias('projectController.simpleMode'),
   group: alias('projectController.group'),
   groupTableBy: alias('projectController.groupTableBy'),
-  showStack: alias('projectController.showStack'),
-  emptyStacks: alias('projectController.emptyStacks'),
+  showNamespace: alias('projectController.showNamespace'),
+  emptyNamespaces: alias('projectController.emptyNamespaces'),
   expandedInstances: alias('projectController.expandedInstances'),
   preSorts: alias('projectController.preSorts'),
 
@@ -70,25 +70,22 @@ export default Controller.extend({
 
   rows: function() {
     let groupNone = this.get('group') === 'none';
-    let showStack = this.get('showStack');
-    let showSystem = this.get('prefs.showSystemResources');
+    let showNamespace = this.get('showNamespace');
 
     // Containers
-    let out = this.get('model.instances').filter((obj) => {
-      return (groupNone || obj.get('serviceId') === null) &&
-              showStack[obj.get('stackId')] &&
-              (showSystem || obj.get('isSystem') !== true); // Note that it can be null, so this isn't the same as === false
+    let out = this.get('model.pods').filter((obj) => {
+      return (groupNone || !obj.get('workloadId')) &&
+              showNamespace[obj.get('namespace')];
     });
 
     // Services
     if ( !groupNone ) {
-      out.pushObjects(this.get('model.services').filter((obj) => {
-        return showStack[obj.get('stackId')] &&
-                obj.get('isReal') && !obj.get('isBalancer') &&
-                (showSystem || obj.get('isSystem') !== true); // Note that it can be null, so this isn't the same as === false
+      out.pushObjects(this.get('model.workloads').filter((obj) => {
+        return showNamespace[obj.get('namespace')] &&
+                !obj.get('isBalancer');
       }));
     }
 
     return out;
-  }.property('group','showStack','tags','model.services.@each.{stackId,isReal,isBalancer,isSystem}','model.instances.@each.{serviceId,stackId,isSystem}','prefs.showSystemResources'),
+  }.property('group','showNamespace','tags','model.workloads.@each.{namespace,isBalancer}','model.pods.@each.{workloadId,namespace}'),
 });

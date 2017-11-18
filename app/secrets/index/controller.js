@@ -41,11 +41,7 @@ export default Controller.extend({
   sortableContent: alias('filtered'),
   filtered: function() {
     let all = this.get('model');
-    if ( !this.get('prefs.showSystemResources') ) {
-      all = all.filterBy('isSystem', false);
-    }
-
     return all;
-  }.property('model.@each.system','prefs.showSystemResources'),
+  }.property('model.@each.system'),
 
 });

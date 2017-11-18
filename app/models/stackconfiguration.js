@@ -1,4 +1,4 @@
-import Stack from 'ui/models/stack';
+import Stack from 'ui/models/namespace';
 
 var StackConfiguration = Stack.extend();
 

@@ -9,8 +9,8 @@ export default Controller.extend({
   tags: alias('projectController.tags'),
   simpleMode: alias('projectController.simpleMode'),
   groupTableBy: alias('projectController.groupTableBy'),
-  showStack: alias('projectController.showStack'),
-  emptyStacks: alias('projectController.emptyStacks'),
+  showNamespace: alias('projectController.showNamespace'),
+  emptyNamespaces: alias('projectController.emptyNamespaces'),
   expandedInstances: alias('projectController.expandedInstances'),
   preSorts: alias('projectController.preSorts'),
 
@@ -58,10 +58,10 @@ export default Controller.extend({
   ],
 
   rows: function() {
-    let showStack = this.get('showStack');
+    let showNamespace = this.get('showNamespace');
 
     return this.get('model.services').filter((obj) => {
-      return showStack[obj.get('stackId')] && !obj.get('isReal');
+      return showNamespace[obj.get('stackId')] && !obj.get('isReal');
     });
-  }.property('showStack','model.services.@each.{isReal}'),
+  }.property('showNamespace','model.services.@each.{isReal}'),
 });

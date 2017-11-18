@@ -10,14 +10,15 @@ import EndpointPorts from 'ui/mixins/endpoint-ports';
 import { inject as service } from "@ember/service";
 
 
-var Service = Resource.extend(StateCounts, EndpointPorts, {
-  type:          'service',
+var Workload = Resource.extend(StateCounts, EndpointPorts, {
   intl:          service(),
   growl:         service(),
   modalService:  service('modal'),
   allServices:   service(),
   scope:         service(),
   router:        service(),
+
+  namespaceObj: denormalizeId('namespace','namespace'),
 
   instances:     denormalizeIdArray('instanceIds'),
   instanceCount: alias('instances.length'),
@@ -432,7 +433,7 @@ export function activeIcon(service)
   return out;
 }
 
-Service.reopenClass({
+Workload.reopenClass({
   stateMap: {
     'active':             {icon: activeIcon,                  color: 'text-success'},
     'canceled-rollback':  {icon: 'icon icon-life-ring',       color: 'text-info'},
@@ -446,4 +447,4 @@ Service.reopenClass({
   }
 });
 
-export default Service;
+export default Workload;

@@ -183,13 +183,9 @@ export default Controller.extend({
     return this.get('model.services').filterBy('isReal',false);
   }),
 
-  instances: computed('model.instances.[]','prefs.showSystemResources', function() {
+  instances: computed('model.instances.[]', function() {
     let out = this.get('model.instances').filterBy('stackId', this.get('model.stack.id'));
-    out = out.filterBy('serviceId', null);
-    if ( !this.get('prefs.showSystemResources') ) {
-      out = out.filterBy('isSystem', false);
-    }
-
+    out = out.filterBy('workloadId', null);
     return out;
   }),
 

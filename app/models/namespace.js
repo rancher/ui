@@ -21,10 +21,6 @@ export function activeIcon(stack)
   }
 }
 
-export function normalizeTag(name) {
-  return (name||'').trim().toLowerCase();
-}
-
 export function tagsToArray(str, normalize=true) {
   return (str||'').split(/\s*,\s*/)
     .map((tag) => {
@@ -35,6 +31,14 @@ export function tagsToArray(str, normalize=true) {
       }
     })
     .filter((tag) => tag.length > 0);
+}
+
+export function normalizeTag(name) {
+  return (name||'').trim().toLowerCase();
+}
+
+export function normalizeTags(ary) {
+  return (ary||[]).map(normalizeTag).filter(str => str.length > 0);
 }
 
 export function tagChoices(all) {
@@ -223,6 +227,7 @@ var Stack = Resource.extend(StateCounts, {
   }.property('name'),
 
   isEmpty: computed('instances.length', 'services.length', function() {
+    return false; // @TODO-2.0
 
     if (isEmpty(this.get('instances')) && isEmpty(this.get('services'))) {
       return true;
@@ -248,40 +253,8 @@ var Stack = Resource.extend(StateCounts, {
     }
   }.property('catalogTemplate'),
 
-  grouping: function() {
-    var kind = this.get('externalIdInfo.kind');
-
-    if ( kind === C.EXTERNAL_ID.KIND_KUBERNETES || kind === C.EXTERNAL_ID.KIND_LEGACY_KUBERNETES )
-    {
-      return C.EXTERNAL_ID.KIND_KUBERNETES;
-    }
-    else if ( this.get('system') )
-    {
-      return C.EXTERNAL_ID.KIND_INFRA;
-    }
-    else
-    {
-      return C.EXTERNAL_ID.KIND_USER;
-    }
-  }.property('externalIdInfo.kind','group','system'),
-
-  normalizedTags: computed('group', {
-    get() {
-      return tagsToArray(this.get('group'));
-    },
-    set(key,value) {
-      this.set('group', (value||[]).map((x) => normalizeTag(x)).join(', '));
-      return value;
-    }
-  }),
-  tags: computed('group', {
-    get(){
-      return tagsToArray(this.get('group'), false);
-    },
-    set(key,value) {
-      this.set('group', (value||[]).map((x) => normalizeTag(x)).join(', '));
-      return value;
-    }
+  normalizedTags: computed('tags.[]', function() {
+    return normalizedTags(this.get('tags'));
   }),
 
   hasTags(want) {
@@ -289,7 +262,9 @@ var Stack = Resource.extend(StateCounts, {
       return true;
     }
 
-    let have = this.get('tags');
+    want = normalizeTags(want);
+
+    let have = this.get('normalizedTags');
     for ( let i = 0 ; i < want.length ; i++ ) {
       if ( !have.includes(want[i]) ) {
         return false;
