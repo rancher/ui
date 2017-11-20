@@ -47,15 +47,16 @@
             </div>
           {{/if}}
         </div>
-        <div class="text-center">
+        <div class="text-center pt-10">
           {{#if loading}}
-            <button class="btn bg-primary mt-10 btn-disabled" disabled><i class="icon icon-spinner icon-spin"></i> {{t 'generic.loading'}}</button>
+            <button class="btn bg-primary btn-disabled" disabled><i class="icon icon-spinner icon-spin"></i> {{t 'generic.loading'}}</button>
           {{else}}
             {{#if clusterList.length }}
-              <button {{action 'go'}} class="btn bg-primary mt-10 {{not clusterList.length 'disabled'}}" disbaled={{not clusterList.length}}>{{t 'generic.save'}}</button>
+              <button {{action 'go'}} class="btn bg-primary {{not clusterList.length 'disabled'}}" disbaled={{not clusterList.length}}>{{t 'generic.save'}}</button>
             {{else}}
-              <button class="btn bg-primary mt-10 disabled" disabled>{{t 'generic.save'}}</button>
+              <button class="btn bg-primary disabled" disabled>{{t 'generic.save'}}</button>
             {{/if}}
+            <button {{action "cancel"}} class="btn bg-primary">{{t 'generic.cancel'}}</button>
           {{/if}}
         </div>
       </form>
