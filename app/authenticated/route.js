@@ -99,7 +99,8 @@ export default Route.extend(Subscribe, {
       if ( this.get('access.admin') && (!opt || opt === 'prompt') )
       {
         scheduleOnce('afterRender', this, function() {
-          this.get('modalService').toggleModal('modal-telemetry');
+          // TODO - !!FORDEV!! removed for dev sake
+          // this.get('modalService').toggleModal('modal-telemetry');
         });
       }
       else if ( form && !this.get(`prefs.${C.PREFS.FEEDBACK}`) )

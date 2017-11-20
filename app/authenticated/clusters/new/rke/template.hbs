@@ -1,0 +1,152 @@
+<section class="header">
+  {{#if (eq step 1)}}
+    <h1>Add RKE: Step 1 set up your ETCD cluster.</h1>
+  {{else if (eq step 2) }}
+    <h1>Add RKE: Step 2 Add Managment.</h1>
+  {{else if (eq step 3) }}
+    <h1>Add RKE: Step 3 Add Nodes.</h1>
+  {{else}}
+    step 4
+  {{/if}}
+</section>
+<section>
+  <div class="row">
+    {{#if (eq step 1)}}
+      <form class="form text-left">
+        <div class="pt-15 pb-30">
+          <span class="radio block mb-10">
+            <label>{{radio-button selection=newOrReuse value="reuse"}}&nbsp;Specify your existing ETCD cluster</label>
+          </span>
+          <span class="radio block">
+            <label>{{radio-button selection=newOrReuse value="new"}}&nbsp;Add new cluster</label>
+          </span>
+        </div>
+        <div class="row">
+          <div class="col span-6">
+            <label>User</label>
+            {{input type="text" value=newHost.clusterName }}
+          </div>
+          <div class="col span-6">
+            <label>Host</label>
+            {{input type="text" value=newHost.hostName }}
+          </div>
+        </div>
+        <div class="pt-10 pb-15">
+          <label>SSH Key</label>
+          {{textarea value=newHost.sshkey classNames="form-control no-resize" rows="6"}}
+        </div>
+        <div class="row">
+          <button {{action 'addHost'}} class="btn bg-primary mt-10 pull-right" name="submit">Add Cluster</button>
+        </div>
+        <div class="row">
+          {{#if clusterList.length }}
+            <span>Minimum 1 host. 3 hosts recommended.</span>
+            {{#each clusterList as | cluster |}}
+              <div class="host col span-12 border">
+                <div class="col span-6">
+                  <p>{{cluster.hostName}}</p>
+                </div>
+                <div class="col span-6">
+                  <button class="btn bg-transparent pull-right" {{action 'removeHost' cluster 'clusterList'}}> <i class="icon icon-close"></i>Remove</button>
+                </div>
+              </div>
+            {{/each}}
+          {{/if}}
+        </div>
+        <div class="text-center">
+          {{#if loading}}
+            <button class="btn bg-primary mt-10 btn-disabled" disabled><i class="icon icon-spinner icon-spin"></i> {{t 'generic.loading'}}</button>
+          {{else}}
+            {{#if clusterList.length }}
+              <button {{action 'go'}} class="btn bg-primary mt-10" name="submit">{{t 'generic.save'}}</button>
+            {{else}}
+              <button class="btn bg-primary mt-10 disabled" disabled>{{t 'generic.save'}}</button>
+            {{/if}}
+          {{/if}}
+        </div>
+      </form>
+    {{else if (eq step 2) }}
+      <form class="form text-left">
+        <div class="row">
+          {{#if managementList.length }}
+            {{#each managementList as | cluster |}}
+              <div class="host col span-12 border">
+                <div class="col span-6">
+                  <p>{{cluster.hostName}}</p>
+                </div>
+                <div class="col span-6">
+                  <button class="btn bg-transparent pull-right" {{action 'removeHost' cluster 'managementList'}}> <i class="icon icon-close"></i>Remove</button>
+                </div>
+              </div>
+            {{/each}}
+          {{/if}}
+        </div>
+        <div class="row">
+          {{#if clusterList.length }}
+            <span>Reuse other nodes</span>
+            {{#each clusterList as | cluster |}}
+              <div class="host col span-12 border">
+                <div class="col span-6">
+                  <p>{{cluster.hostName}}</p>
+                </div>
+                <div class="col span-6">
+                  <button class="btn bg-transparent pull-right" {{action 'useFor' cluster 'managementList'}}>Use for Management</button>
+                </div>
+              </div>
+            {{/each}}
+          {{/if}}
+        </div>
+        <div class="text-center">
+          {{#if loading}}
+            <button class="btn bg-primary mt-10 btn-disabled" disabled><i class="icon icon-spinner icon-spin"></i> {{t 'generic.loading'}}</button>
+          {{else}}
+            <button {{action 'addManagementHost'}} class="btn bg-primary mt-10" name="submit">Add Another</button>
+            <button {{action 'go'}} class="btn bg-primary mt-10" name="submit">Next</button>
+          {{/if}}
+        </div>
+      </form>
+    {{else if (eq step 3) }}
+      <form class="form text-left">
+        <div class="row">
+          {{#if nodesList.length }}
+            {{#each nodesList as | cluster |}}
+              <div class="host col span-12 border">
+                <div class="col span-6">
+                  <p>{{cluster.hostName}}</p>
+                </div>
+                <div class="col span-6">
+                  <button class="btn bg-transparent pull-right" {{action 'removeHost' cluster 'nodesList'}}> <i class="icon icon-close"></i>Remove</button>
+                </div>
+              </div>
+            {{/each}}
+          {{/if}}
+        </div>
+        <div class="row">
+          {{#if clusterList.length }}
+            <span>Reuse other nodes</span>
+            {{#each clusterList as | cluster |}}
+              <div class="host col span-12 border">
+                <div class="col span-6">
+                  <p>{{cluster.hostName}}</p>
+                </div>
+                <div class="col span-6">
+                  <button class="btn bg-transparent pull-right" {{action 'useFor' cluster 'nodesList'}}> <i class="icon icon-close"></i>Use as Node</button>
+                </div>
+              </div>
+            {{/each}}
+          {{/if}}
+        </div>
+        <div class="text-center">
+          {{#if loading}}
+            <button class="btn bg-primary mt-10 btn-disabled" disabled><i class="icon icon-spinner icon-spin"></i> {{t 'generic.loading'}}</button>
+          {{else}}
+            <button {{action 'addManagementHost'}} class="btn bg-primary mt-10" name="submit">Add Another</button>
+            <button {{action 'go'}} class="btn bg-primary mt-10" name="submit">Next</button>
+          {{/if}}
+        </div>
+      </form>
+    {{else}}
+      step 4
+    {{/if}}
+  </div>
+</section>
