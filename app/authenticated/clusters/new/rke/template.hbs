@@ -5,8 +5,6 @@
     <h1>Add RKE: Step 2 Add Managment.</h1>
   {{else if (eq step 3) }}
     <h1>Add RKE: Step 3 Add Nodes.</h1>
-  {{else}}
-    step 4
   {{/if}}
 </section>
 <section>
@@ -21,36 +19,32 @@
             <label>{{radio-button selection=newOrReuse value="new"}}&nbsp;Add new cluster</label>
           </span>
         </div>
-        <div class="row">
-          <div class="col span-6">
-            <label>User</label>
-            {{input type="text" value=newHost.clusterName }}
-          </div>
-          <div class="col span-6">
-            <label>Host</label>
-            {{input type="text" value=newHost.hostName }}
-          </div>
+        {{#if (eq newOrReuse "new")}}
+          {{partial "add-cluster"}}
+        {{else}}
+          reuse
+        {{/if}}
+        <div class="row mb-20">
+          <button {{action 'addHost'}} class="btn bg-primary mt-10 pull-right {{not canAdd 'disabled'}}" disabled={{not canAdd}}>Add Cluster</button>
         </div>
-        <div class="pt-10 pb-15">
-          <label>SSH Key</label>
-          {{textarea value=newHost.sshkey classNames="form-control no-resize" rows="6"}}
-        </div>
-        <div class="row">
-          <button {{action 'addHost'}} class="btn bg-primary mt-10 pull-right" name="submit">Add Cluster</button>
-        </div>
-        <div class="row">
+        <hr/>
+        <div class="row mt-10">
           {{#if clusterList.length }}
-            <span>Minimum 1 host. 3 hosts recommended.</span>
+            <div class="row help-text mt-10 mb-10">Minimum 1 host. 3 hosts recommended.</div>
             {{#each clusterList as | cluster |}}
-              <div class="host col span-12 border">
-                <div class="col span-6">
-                  <p>{{cluster.hostName}}</p>
+              <div class="col span-12 border">
+                <div class="col span-10 pl-5 ">
+                  <h2 class="mt-5 mb-0">{{cluster.hostName}}</h2>
                 </div>
-                <div class="col span-6">
-                  <button class="btn bg-transparent pull-right" {{action 'removeHost' cluster 'clusterList'}}> <i class="icon icon-close"></i>Remove</button>
+                <div class="col span-2 text-right">
+                  <button class="btn btn-sm bg-transparent" {{action 'removeHost' cluster 'clusterList'}}><i class="icon icon-close mr-5"></i> Remove</button>
                 </div>
               </div>
             {{/each}}
+          {{else}}
+            <div class="mt-10 mb-10">
+              <div class="row help-text">You have no hosts. Minimum 1 host. 3 hosts recommended.</div>
+            </div>
           {{/if}}
         </div>
         <div class="text-center">
@@ -58,7 +52,7 @@
             <button class="btn bg-primary mt-10 btn-disabled" disabled><i class="icon icon-spinner icon-spin"></i> {{t 'generic.loading'}}</button>
           {{else}}
             {{#if clusterList.length }}
-              <button {{action 'go'}} class="btn bg-primary mt-10" name="submit">{{t 'generic.save'}}</button>
+              <button {{action 'go'}} class="btn bg-primary mt-10 {{not clusterList.length 'disabled'}}" disbaled={{not clusterList.length}}>{{t 'generic.save'}}</button>
             {{else}}
               <button class="btn bg-primary mt-10 disabled" disabled>{{t 'generic.save'}}</button>
             {{/if}}
@@ -69,28 +63,32 @@
       <form class="form text-left">
         <div class="row">
           {{#if managementList.length }}
+            <div class="row help-text mt-10 mb-10">Minimum 1 host. 2 hosts recommended.</div>
             {{#each managementList as | cluster |}}
-              <div class="host col span-12 border">
-                <div class="col span-6">
-                  <p>{{cluster.hostName}}</p>
+              <div class="col span-12 border">
+                <div class="col span-10 pl-5 ">
+                  <h2 class="mt-5 mb-0">{{cluster.hostName}}</h2>
                 </div>
-                <div class="col span-6">
-                  <button class="btn bg-transparent pull-right" {{action 'removeHost' cluster 'managementList'}}> <i class="icon icon-close"></i>Remove</button>
+                <div class="col span-2 text-right">
+                  <button class="btn btn-sm bg-transparent" {{action 'removeHost' cluster 'managementList'}}><i class="icon icon-close mr-5"></i> Remove</button>
                 </div>
               </div>
             {{/each}}
+          {{else}}
+            <div class="row help-text">You have no management nodes. Minimum 1 host. 3 hosts recommended.</div>
           {{/if}}
         </div>
+        <hr/>
         <div class="row">
           {{#if clusterList.length }}
-            <span>Reuse other nodes</span>
+            <div class="row help-text mt-10 mb-10">Reuse other nodes.</div>
             {{#each clusterList as | cluster |}}
-              <div class="host col span-12 border">
-                <div class="col span-6">
-                  <p>{{cluster.hostName}}</p>
+              <div class="col span-12 border">
+                <div class="col span-10 pl-5 ">
+                  <h2 class="mt-5 mb-0">{{cluster.hostName}}</h2>
                 </div>
-                <div class="col span-6">
-                  <button class="btn bg-transparent pull-right" {{action 'useFor' cluster 'managementList'}}>Use for Management</button>
+                <div class="col span-2 text-right">
+                  <button class="btn btn-sm bg-transparent" {{action 'useFor' cluster 'managementList'}}>Use for Management</button>
                 </div>
               </div>
             {{/each}}
@@ -100,8 +98,12 @@
           {{#if loading}}
             <button class="btn bg-primary mt-10 btn-disabled" disabled><i class="icon icon-spinner icon-spin"></i> {{t 'generic.loading'}}</button>
           {{else}}
-            <button {{action 'addManagementHost'}} class="btn bg-primary mt-10" name="submit">Add Another</button>
-            <button {{action 'go'}} class="btn bg-primary mt-10" name="submit">Next</button>
+            <button {{action 'addNew' 'managementList'}} class="btn bg-primary mt-10" >Add Another</button>
+            {{#if managementList.length }}
+              <button {{action 'go'}} class="btn bg-primary mt-10" >{{t 'generic.save'}}</button>
+            {{else}}
+              <button class="btn bg-primary mt-10 disabled" disabled>{{t 'generic.save'}}</button>
+            {{/if}}
           {{/if}}
         </div>
       </form>
@@ -109,28 +111,34 @@
       <form class="form text-left">
         <div class="row">
           {{#if nodesList.length }}
+            <div class="row help-text mt-10 mb-10">Minimum 1 host.</div>
             {{#each nodesList as | cluster |}}
-              <div class="host col span-12 border">
-                <div class="col span-6">
-                  <p>{{cluster.hostName}}</p>
+              <div class="col span-12 border">
+                <div class="col span-10 pl-5 ">
+                  <h2 class="mt-5 mb-0">{{cluster.hostName}}</h2>
                 </div>
-                <div class="col span-6">
-                  <button class="btn bg-transparent pull-right" {{action 'removeHost' cluster 'nodesList'}}> <i class="icon icon-close"></i>Remove</button>
+                <div class="col span-2 text-right">
+                  <button class="btn btn-sm bg-transparent" {{action 'removeHost' cluster 'nodesList'}}> <i class="icon icon-close mr-5"></i>Remove</button>
                 </div>
               </div>
             {{/each}}
+          {{else}}
+            <div class="mt-10 mb-10">
+              <div class="row help-text mt-10 mb-10">You have no hosts. Minimum 1 host.</div>
+            </div>
           {{/if}}
         </div>
+        <hr/>
         <div class="row">
           {{#if clusterList.length }}
-            <span>Reuse other nodes</span>
+            <div class="row help-text mt-10 mb-10">Reuse other nodes.</div>
             {{#each clusterList as | cluster |}}
-              <div class="host col span-12 border">
-                <div class="col span-6">
-                  <p>{{cluster.hostName}}</p>
+              <div class="col span-12 border">
+                <div class="col span-10 pl-5 ">
+                  <h2 class="mt-5 mb-0">{{cluster.hostName}}</h2>
                 </div>
-                <div class="col span-6">
-                  <button class="btn bg-transparent pull-right" {{action 'useFor' cluster 'nodesList'}}> <i class="icon icon-close"></i>Use as Node</button>
+                <div class="col span-2 text-right">
+                  <button class="btn btn-sm bg-transparent" {{action 'useFor' cluster 'nodesList'}}> <i class="icon icon-close mr-5"></i>Use as Node</button>
                 </div>
               </div>
             {{/each}}
@@ -140,13 +148,11 @@
           {{#if loading}}
             <button class="btn bg-primary mt-10 btn-disabled" disabled><i class="icon icon-spinner icon-spin"></i> {{t 'generic.loading'}}</button>
           {{else}}
-            <button {{action 'addManagementHost'}} class="btn bg-primary mt-10" name="submit">Add Another</button>
-            <button {{action 'go'}} class="btn bg-primary mt-10" name="submit">Next</button>
+            <button {{action 'addNew' 'nodesList'}} class="btn bg-primary mt-10" >Add Another</button>
+            <button {{action 'save'}} class="btn bg-primary mt-10" >{{t 'generic.save'}}</button>
           {{/if}}
         </div>
       </form>
-    {{else}}
-      step 4
     {{/if}}
   </div>
 </section>
