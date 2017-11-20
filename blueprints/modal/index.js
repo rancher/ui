@@ -5,7 +5,7 @@ module.exports = {
     // Return custom template variables here.
     return {
       // options are large-modal or medium-modal
-      size: options.entity.options.size || 'medium-modal'
+      size: options.size || 'medium-modal'
     };
   }
 
