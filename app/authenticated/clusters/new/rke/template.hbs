@@ -1,22 +1,17 @@
 <section class="header">
-  {{#if (eq step 1)}}
-    <h1>Add RKE: Step 1 set up your ETCD cluster.</h1>
-  {{else if (eq step 2) }}
-    <h1>Add RKE: Step 2 Add Managment.</h1>
-  {{else if (eq step 3) }}
-    <h1>Add RKE: Step 3 Add Nodes.</h1>
-  {{/if}}
+  {{t 'clustersPage.addPage.rke.header' count=step}}
 </section>
+
 <section>
   <div class="row">
     {{#if (eq step 1)}}
       <form class="form text-left">
         <div class="pt-15 pb-30">
           <span class="radio block mb-10">
-            <label>{{radio-button selection=newOrReuse value="reuse"}}&nbsp;Specify your existing ETCD cluster</label>
+            <label>{{radio-button selection=newOrReuse value="reuse"}}&nbsp;{{t 'clustersPage.addPage.rke.reuse.radioLabel'}}</label>
           </span>
           <span class="radio block">
-            <label>{{radio-button selection=newOrReuse value="new"}}&nbsp;Add new cluster</label>
+            <label>{{radio-button selection=newOrReuse value="new"}}&nbsp;{{t 'clustersPage.addPage.rke.new.radioLabel'}}</label>
           </span>
         </div>
         {{#if (eq newOrReuse "new")}}
@@ -25,25 +20,25 @@
           reuse
         {{/if}}
         <div class="row mb-20">
-          <button {{action 'addHost'}} class="btn bg-primary mt-10 pull-right {{not canAdd 'disabled'}}" disabled={{not canAdd}}>Add Cluster</button>
+          <button {{action 'addHost'}} class="btn bg-primary mt-10 pull-right {{not canAdd 'disabled'}}" disabled={{not canAdd}}>{{t 'generic.add'}}</button>
         </div>
         <hr/>
         <div class="row mt-10">
           {{#if clusterList.length }}
-            <div class="row help-text mt-10 mb-10">Minimum 1 host. 3 hosts recommended.</div>
+            <div class="row help-text mt-10 mb-10">{{t 'clustersPage.addPage.rke.minimums.cluster'}}</div>
             {{#each clusterList as | cluster |}}
               <div class="col span-12 border">
                 <div class="col span-10 pl-5 ">
                   <h2 class="mt-5 mb-0">{{cluster.hostName}}</h2>
                 </div>
                 <div class="col span-2 text-right">
-                  <button class="btn btn-sm bg-transparent" {{action 'removeHost' cluster 'clusterList'}}><i class="icon icon-close mr-5"></i> Remove</button>
+                  <button class="btn btn-sm bg-transparent" {{action 'removeHost' cluster 'clusterList'}}><i class="icon icon-close mr-5"></i> {{t 'generic.remove'}}</button>
                 </div>
               </div>
             {{/each}}
           {{else}}
             <div class="mt-10 mb-10">
-              <div class="row help-text">You have no hosts. Minimum 1 host. 3 hosts recommended.</div>
+              <div class="row help-text">{{t 'clustersPage.addPage.rke.minimums.nocluster'}}</div>
             </div>
           {{/if}}
         </div>
@@ -64,32 +59,32 @@
       <form class="form text-left">
         <div class="row">
           {{#if managementList.length }}
-            <div class="row help-text mt-10 mb-10">Minimum 1 host. 2 hosts recommended.</div>
+            <div class="row help-text mt-10 mb-10">{{t 'clustersPage.addPage.rke.minimums.management'}}</div>
             {{#each managementList as | cluster |}}
               <div class="col span-12 border">
                 <div class="col span-10 pl-5 ">
                   <h2 class="mt-5 mb-0">{{cluster.hostName}}</h2>
                 </div>
                 <div class="col span-2 text-right">
-                  <button class="btn btn-sm bg-transparent" {{action 'removeHost' cluster 'managementList'}}><i class="icon icon-close mr-5"></i> Remove</button>
+                  <button class="btn btn-sm bg-transparent" {{action 'removeHost' cluster 'managementList'}}><i class="icon icon-close mr-5"></i> {{t 'generic.move'}}</button>
                 </div>
               </div>
             {{/each}}
           {{else}}
-            <div class="row help-text">You have no management nodes. Minimum 1 host. 3 hosts recommended.</div>
+            <div class="row help-text">{{t 'clustersPage.addPage.rke.minimums.noManagement'}}</div>
           {{/if}}
         </div>
         <hr/>
         <div class="row">
           {{#if clusterList.length }}
-            <div class="row help-text mt-10 mb-10">Reuse other nodes.</div>
+            <div class="row help-text mt-10 mb-10">{{t 'clustersPage.addPage.rke.reuse.nodes'}}</div>
             {{#each clusterList as | cluster |}}
               <div class="col span-12 border">
                 <div class="col span-10 pl-5 ">
                   <h2 class="mt-5 mb-0">{{cluster.hostName}}</h2>
                 </div>
                 <div class="col span-2 text-right">
-                  <button class="btn btn-sm bg-transparent" {{action 'useFor' cluster 'managementList'}}>Use for Management</button>
+                  <button class="btn btn-sm bg-transparent" {{action 'useFor' cluster 'managementList'}}>{{t 'clustersPage.addPage.rke.reuse.management'}}</button>
                 </div>
               </div>
             {{/each}}
@@ -99,7 +94,7 @@
           {{#if loading}}
             <button class="btn bg-primary mt-10 btn-disabled" disabled><i class="icon icon-spinner icon-spin"></i> {{t 'generic.loading'}}</button>
           {{else}}
-            <button {{action 'addNew' 'managementList'}} class="btn bg-primary mt-10" >Add Another</button>
+            <button {{action 'addNew' 'managementList'}} class="btn bg-primary mt-10" >{{t 'generic.add'}}</button>
             {{#if managementList.length }}
               <button {{action 'go'}} class="btn bg-primary mt-10" >{{t 'generic.save'}}</button>
             {{else}}
@@ -112,34 +107,34 @@
       <form class="form text-left">
         <div class="row">
           {{#if nodesList.length }}
-            <div class="row help-text mt-10 mb-10">Minimum 1 host.</div>
+            <div class="row help-text mt-10 mb-10">{{t 'clustersPage.addPage.rke.minimums.nodes'}}</div>
             {{#each nodesList as | cluster |}}
               <div class="col span-12 border">
                 <div class="col span-10 pl-5 ">
                   <h2 class="mt-5 mb-0">{{cluster.hostName}}</h2>
                 </div>
                 <div class="col span-2 text-right">
-                  <button class="btn btn-sm bg-transparent" {{action 'removeHost' cluster 'nodesList'}}> <i class="icon icon-close mr-5"></i>Remove</button>
+                  <button class="btn btn-sm bg-transparent" {{action 'removeHost' cluster 'nodesList'}}> <i class="icon icon-close mr-5"></i>{{t 'generic.remove'}}</button>
                 </div>
               </div>
             {{/each}}
           {{else}}
             <div class="mt-10 mb-10">
-              <div class="row help-text mt-10 mb-10">You have no hosts. Minimum 1 host.</div>
+              <div class="row help-text mt-10 mb-10">{{t 'clustersPage.addPage.rke.minimums.noNodes'}}</div>
             </div>
           {{/if}}
         </div>
         <hr/>
         <div class="row">
           {{#if clusterList.length }}
-            <div class="row help-text mt-10 mb-10">Reuse other nodes.</div>
+            <div class="row help-text mt-10 mb-10">{{t 'clustersPage.addPage.rke.reuse.nodes'}}</div>
             {{#each clusterList as | cluster |}}
               <div class="col span-12 border">
                 <div class="col span-10 pl-5 ">
                   <h2 class="mt-5 mb-0">{{cluster.hostName}}</h2>
                 </div>
                 <div class="col span-2 text-right">
-                  <button class="btn btn-sm bg-transparent" {{action 'useFor' cluster 'nodesList'}}> <i class="icon icon-close mr-5"></i>Use as Node</button>
+                  <button class="btn btn-sm bg-transparent" {{action 'useFor' cluster 'nodesList'}}> <i class="icon icon-close mr-5"></i>{{t 'clustersPage.addPage.rke.reuse.useNode'}}</button>
                 </div>
               </div>
             {{/each}}
@@ -149,7 +144,7 @@
           {{#if loading}}
             <button class="btn bg-primary mt-10 btn-disabled" disabled><i class="icon icon-spinner icon-spin"></i> {{t 'generic.loading'}}</button>
           {{else}}
-            <button {{action 'addNew' 'nodesList'}} class="btn bg-primary mt-10" >Add Another</button>
+            <button {{action 'addNew' 'nodesList'}} class="btn bg-primary mt-10" >{{t 'generic.add'}}</button>
             <button {{action 'save'}} class="btn bg-primary mt-10" >{{t 'generic.save'}}</button>
           {{/if}}
         </div>

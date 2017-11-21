@@ -484,6 +484,44 @@ clustersPage:
     label: RAM
   storage:
     label: Disk
+  indexPage:
+    rke:
+      header: Create a RKE Cluster
+      desc: Rancher automatically deploys and manages Kubernetes.
+    cloud:
+      header: Create a Cloud Cluster
+      desc: Create and use a new cluster with in a cloud provider.
+    import:
+      header: Import Existing Cluster
+      desc: Deploy containers into an existing Kubernetes installation using hosts and networking it provides.
+
+
+  addPage:
+    host:
+      clusterName: Cluster Name
+      hostName: Host Name
+      ssh: SSH Key
+    rke:
+      header: |
+        {count, plural,
+        =1 {Add RKE: Step # set up your ETCD cluster.}
+        =2 {Add RKE: Step # Add Managment nodes.}
+        =3 {Add RKE: Step # Add Nodes.}
+        }
+      reuse:
+        radioLabel: Specify your existing ETCD cluster
+        nodes: Reuse other nodes
+        management: Use for Managment
+        useNode: Use as Node
+      new:
+        radioLabel: Add new cluster
+      minimums:
+        cluster: Minimum 1 host. 3 hosts recommended.
+        nocluster: You have no hosts. Minimum 1 host. 3 hosts recommended.
+        management: Minimum 1 host. 2 hosts recommended.
+        noManagement: You have no management nodes. Minimum 1 host. 3 hosts recommended.
+        nodes: Minimum 1 host.
+        noNodes: You have no hosts. Minimum 1 host.
 
 containerPage:
   header: 'Container: {name}'
