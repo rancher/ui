@@ -80,7 +80,9 @@ export default Ember.Component.extend(HoverDropdown, {
       if ( typeof item.alertCondition === 'function' && item.alertCondition.call(this) === true ) {
         item.showAlert = true;
       }
-
+      if ( typeof item.alertLink === 'function') {
+        item.alertLink = item.alertLink.call(this);
+      }
       item.submenu = (item.submenu||[]).filter((subitem) => {
         if ( typeof subitem.condition === 'function' && !subitem.condition.call(this) ) {
           return false;
