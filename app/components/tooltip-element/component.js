@@ -12,7 +12,7 @@ export default Ember.Component.extend({
   ariaRole         : ['tooltip'],
   textChangedEvent : null,
   tooltipFor       : null,
-
+  hideWarning       : null,
   showTimer        : null,
 
   textChanged: Ember.observer('textChangedEvent', function() {
@@ -55,6 +55,7 @@ export default Ember.Component.extend({
       model         : this.get('model'),
       template      : this.get('tooltipTemplate'),
       tooltipFor    : this.get('tooltipFor'),
+      hideWarning    : this.get('hideWarning')
     };
 
     if ( this.get('isCopyTo') ) {

@@ -268,8 +268,12 @@ const navTree = [
     route: 'admin-tab',
     condition: function() { return this.get('isAdmin'); },
     alertRoute: 'admin-tab.auth',
+    alertMsg: 'tooltipWarning.notConfigured',
     alertCondition: function() {
       return !this.get('access.enabled') && this.get('prefs.'+C.PREFS.ACCESS_WARNING) !== false;
+    },
+    hideWarning: function(){
+      this.set(`prefs.${C.PREFS.ACCESS_WARNING}`, false);
     },
     submenu: [
       {
