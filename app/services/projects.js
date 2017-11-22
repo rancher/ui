@@ -10,6 +10,7 @@ export default Ember.Service.extend({
   k8sSvc: Ember.inject.service('k8s'),
   swarmSvc: Ember.inject.service('swarm'),
   mesosSvc: Ember.inject.service('mesos'),
+  pipelineSvc: Ember.inject.service('pipeline'),
   userStore: Ember.inject.service('user-store'),
   store: Ember.inject.service(),
 
@@ -154,12 +155,15 @@ export default Ember.Service.extend({
   orchestrationState: null,
   updateOrchestrationState() {
     let hash = {
+      hasPipeline: false,
+      pipelineReady: false,
       hasKubernetes: false,
       hasSwarm: false,
       hasMesos: false,
       kubernetesReady: false,
       swarmReady: false,
       mesosReady: false,
+      hasActivityApprove: false,
     };
 
     let promises = [];
@@ -190,6 +194,12 @@ export default Ember.Service.extend({
           hash.mesosReady = ready;
         }));
       }
+
+      promises.push(this.get('pipelineSvc').isReady().then(({has,ready,hasActivityApprove}) => {
+        hash.hasPipeline = has;
+        hash.pipelineReady = ready;
+        hash.hasActivityApprove = !!hasActivityApprove;
+      }));
     }
 
     return Ember.RSVP.all(promises).then(() => {

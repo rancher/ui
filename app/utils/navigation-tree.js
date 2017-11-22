@@ -349,6 +349,28 @@ const navTree = [
       },
     ],
   },
+
+  // CICD
+  {
+    id: 'pipelines',
+    localizedLabel: 'nav.pipelines.tab',
+    route: 'pipelines',
+    ctx: [getProjectId],
+    moreCurrentWhen: ['pipelines'],
+    alertLink: function(){
+      return this.get('pipelineSvc.pipelinesUIPoint');
+    },
+    alertMsg: 'nav.pipelines.warning',
+    alertCondition: function() {
+      return this.get('hasActivityApprove')&&this.get('pipelineSvc.showWarning');
+    },
+    hideWarning: function(){
+      this.set('pipelineSvc.showWarning', false);
+    },
+    condition: function() {
+      return this.get('hasPipeline'); 
+    },
+  }
 ];
 
 export function addItem(opt) {

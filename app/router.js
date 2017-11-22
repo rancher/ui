@@ -64,7 +64,7 @@ Router.map(function() {
     this.route('project', {path: '/env/:project_id'}, function() {
       this.route('index', {path: '/'});
       this.route('waiting');
-
+      this.route('pipelines', {path: '/pipelines',resetNamespace: true});
       // Infrastructure
       this.route('infrastructure-tab', {path: '/infra', resetNamespace: true}, function() {
         // console popup route

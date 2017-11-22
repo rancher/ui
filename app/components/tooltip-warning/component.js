@@ -3,6 +3,7 @@ import Tooltip from 'ui/mixins/tooltip';
 
 export default Ember.Component.extend(Tooltip, {
   prefs: Ember.inject.service(),
+  pipelineSvc: Ember.inject.service('pipeline'),
   classNames: ['tooltip-warning-container'],
   model: Ember.computed.alias('tooltipService.tooltipOpts.model'),
   actions: {
