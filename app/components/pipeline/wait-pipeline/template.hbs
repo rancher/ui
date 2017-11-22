@@ -1,0 +1,12 @@
+{{#if ready}}
+  <div class="well r-mt40 text text-center" style="width: 50%; margin-left: 25%">
+    <a href="{{pipelineURL}}" target="_blank" class="btn btn-sm btn-primary">Launch Pipeline UI</a>
+  </div>
+{{else}}
+  {{orchestration/wait-steps
+    steps=steps
+    currentStep=currentStep
+    subStep=subStep
+    subCount=subCount
+    label="waitingPage.hosts.setup.pipelines"}}
+{{/if}}

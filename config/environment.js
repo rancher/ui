@@ -97,6 +97,7 @@ module.exports = function(environment) {
       webhookEndpoint: '/v1-webhooks',
       projectToken: '%PROJECTID%',
       magicEndpoint: '/r',
+      pipelinesEndpoint: '/r/projects/%PROJECTID%/pipeline-server:60080/v1',
       kubernetesEndpoint: '/r/projects/%PROJECTID%/kubernetes',
       kubectlEndpoint: '/r/projects/%PROJECTID%/kubectld:8091/v1-kubectl',
       kubernetesDashboard: '/r/projects/%PROJECTID%/kubernetes-dashboard:9090/#',
