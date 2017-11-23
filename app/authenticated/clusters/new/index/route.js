@@ -10,16 +10,16 @@ export default Route.extend({
 
   model() {
     // TODO - !!FORDEV!! removed for dev sake
-    // let store = this.get('clusterStore');
-    // let def = JSON.parse(this.get(`settings.${C.SETTING.CLUSTER_TEMPLATE}`)) || {};
+    let store = this.get('clusterStore');
+    let def = JSON.parse(this.get(`settings.${C.SETTING.CLUSTER_TEMPLATE}`)) || {};
 
-    // def.type = 'cluster';
+    def.type = 'cluster';
     // def.systemStacks = (def.systemStacks||[]).map((stack) => {
     //   stack.type = 'stackConfiguration';
     //   return stack;
-    // })
+    // });
 
-    // let cluster = store.createRecord(def);
+    let cluster = store.createRecord(def);
 
     // return this.get('catalog').fetchTemplates({plusInfra: true}).then((templates) => {
     //   return EmberObject.create({
@@ -27,7 +27,7 @@ export default Route.extend({
     //     allTemplates: templates
     //   });
     // });
-    return EmberObject.create({cluster: {}, allTemplates: []});
+    return EmberObject.create({cluster: cluster, allTemplates: []});
   },
   // teardownForComponentState: on('deactivate', function(){
   //   this.controller.setProperties({
