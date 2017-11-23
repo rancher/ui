@@ -1,0 +1,79 @@
+<section class="header clearfix">
+  <div class="pull-left">
+    <h1>{{t 'rolesPage.new.header'}}</h1>
+  </div>
+</section>
+
+<section class="horizontal-form container-fluid">
+  {{form-name-description
+      name=model.role.name
+      nameRequired=true
+      namePlaceholder="rolesPage.new.form.name.placeholder"
+      colClass="col span-7"
+      descriptionShown=false
+  }}
+</section>
+<section class="horizontal-form container-fluid">
+  <div class="row">
+    <div class="col span-3">
+      <label class="pb-5 acc-label">{{t 'rolesPage.new.form.allow.labelText'}}</label>
+    </div>
+  </div>
+  <div class="pl-10 pr-10">
+    <table class="table fixed no-lines">
+      <thead>
+        <tr>
+          {{#each ruleVerbs as |verb|}}
+            <th class="text-center">{{t verb}}</th>
+          {{/each}}
+          <th width="50%">{{t 'rolesPage.new.form.allow.resource'}}</th>
+          <th width="10">&nbsp;</th>
+          <th width="40"></th>
+        </tr>
+      </thead>
+      <tbody>
+        {{#each ruleArray as |rule|}}
+          {{role-rule-row rule=rule remove="removeRule"}}
+        {{/each}}
+      </tbody>
+    </table>
+  </div>
+  <div class="pull-right pr-10 mt-5">
+    <button class="btn bg-link icon-btn p-0" {{action "addRule"}}>
+      <span class="darken"><i class="icon icon-plus text-small"/></span>
+      <span>{{t 'rolesPage.new.form.allow.addAction'}}</span>
+    </button>
+  </div>
+</section>
+<section class="horizontal-form container-fluid">
+  <div class="row">
+    <div class="col span-3">
+      <label class="pb-5 acc-label">{{t 'rolesPage.new.form.otherRole.labelText'}}</label>
+    </div>
+  </div>
+  <div class="pr-10">
+    <table class="table fixed no-lines">
+      <thead>
+        <tr>
+          <th>{{t 'rolesPage.new.form.otherRole.role'}}</th>
+          <th width="10">&nbsp;</th>
+          <th width="40"></th>
+        </tr>
+      </thead>
+      <tbody>
+        {{#each roleArray as |role|}}
+          {{other-role-row role=role otherRoles=model.roles remove="removeOtherRole"}}
+        {{/each}}
+      </tbody>
+    </table>
+  </div>
+  <div class="pull-right pr-10 mt-5 mb-10">
+    <button class="btn bg-link icon-btn p-0" {{action "addOtherRole"}}>
+      <span class="darken"><i class="icon icon-plus text-small"/></span>
+      <span>{{t 'rolesPage.new.form.otherRole.addAction'}}</span>
+    </button>
+  </div>
+</section>
+
+{{top-errors errors=errors}}
+{{save-cancel save="save" cancel="cancel"}}

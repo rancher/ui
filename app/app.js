@@ -32,6 +32,7 @@ const App = Application.extend({
           'endpoint',
           'github',
           'intl',
+          'router',
           'resource-actions',
           'scope',
           'session',
