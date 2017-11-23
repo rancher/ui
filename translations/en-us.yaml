@@ -7,6 +7,7 @@ languageContribute: "Help Translate Rancher"
 generic:
   actions: Actions
   activate: Activate
+  add: Add
   all: All
   any: Any
   as: as
@@ -457,15 +458,10 @@ certificatesPage:
         placeholder: e.g. EV cert for mydomain.com
 
 clustersPage:
-  header: Clusters & Environments
+  header: Clusters
   newCluster: Add Cluster
-  newProject: Add Environment
   import: Import External
-  newHost: Add Host
   alert: There are no active environments.  You will need to create or activate one before you can do anything else.
-  mode:
-    list: Environment List
-    grouped: Grouped by Cluster
   subtext: |
     <h4>{appName} supports grouping resources into multiple <b class="text-info">clusters</b> and <b class="text-info">environments</b>.</h4>
     <div class="row">
@@ -488,6 +484,44 @@ clustersPage:
     label: RAM
   storage:
     label: Disk
+  indexPage:
+    rke:
+      header: Create a RKE Cluster
+      desc: Rancher automatically deploys and manages Kubernetes.
+    cloud:
+      header: Create a Cloud Cluster
+      desc: Create and use a new cluster with in a cloud provider.
+    import:
+      header: Import Existing Cluster
+      desc: Deploy containers into an existing Kubernetes installation using hosts and networking it provides.
+
+
+  addPage:
+    host:
+      clusterName: User
+      hostName: Host Name
+      ssh: SSH Key
+    rke:
+      header: |
+        {count, plural,
+        =1 {Add RKE: Step # set up your ETCD hosts.}
+        =2 {Add RKE: Step # Add Managment hosts.}
+        =3 {Add RKE: Step # Add Nodes Hosts.}
+        }
+      reuse:
+        radioLabel: Specify your existing ETCD cluster
+        nodes: Reuse other nodes
+        management: Use for Managment
+        useNode: Use as Node
+      new:
+        radioLabel: Add new cluster
+      minimums:
+        cluster: Minimum 1 host. 3 hosts recommended.
+        nocluster: You have no hosts. Minimum 1 host. 3 hosts recommended.
+        management: Minimum 1 host. 2 hosts recommended.
+        noManagement: You have no management nodes. Minimum 1 host. 3 hosts recommended.
+        nodes: Minimum 1 host.
+        noNodes: You have no hosts. Minimum 1 host.
 
 containerPage:
   header: 'Container: {name}'

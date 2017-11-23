@@ -65,6 +65,7 @@ module.exports = {
     "no-useless-escape": 0,
     "ember/use-ember-get-and-set": 0,
     "ember/order-in-controllers": 0,
+    "ember/order-in-models": 0,
     "ember/closure-actions": 0,
     "ember/order-in-components": 0,
     "ember/no-on-calls-in-components": 0,

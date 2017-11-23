@@ -1,6 +1,5 @@
 <tr class="main-row">
   <td>
-    <i role="button" {{action "toggle"}} class="icon icon-play eased text-small text-muted {{if expanded 'icon-rotate-90'}}"><span class="visually-hidden">Open accordion</span></i>
   </td>
   <td data-title="{{dt.state}}" class="state">
     {{badge-state model=model}}
@@ -62,22 +61,3 @@
     {{action-menu model=model}}
   </td>
 </tr>
-
-<tr class="sub-row {{unless expanded 'hide'}}">
-  <td>{{! expand}}</td>
-  <td colspan="{{sub fullColspan 2}}">
-    {{#if expanded}}
-      {{project-table
-        model=model.projects
-        bulkActions=false
-        search=false
-      }}
-    {{/if}}
-  </td>
-</tr>
-
-{{#if expanded}}
-  <tr class="separator-row">
-    <td colspan="{{fullColspan}}"></td>
-  </tr>
-{{/if}}

@@ -130,7 +130,7 @@ var Stack = Resource.extend(StateCounts, {
     },
   },
 
-  availableActions: function() {
+  availableActions: computed('actionLinks.{exportconfig}','links.{update,remove}','externalIdInfo.kind','canStartAll','canPauseAll','canStopAll', function() {
     let a = this.get('actionLinks');
     let l = this.get('links');
 
@@ -156,9 +156,9 @@ var Stack = Resource.extend(StateCounts, {
     ];
 
     return out;
-  }.property('actionLinks.{exportconfig}','links.{update,remove}','externalIdInfo.kind','canStartAll','canPauseAll','canStopAll'),
+  }),
 
-  canStartAll: function() {
+  canStartAll: computed('services.@each.state','actionLinks.startall', function() {
     if ( !this.hasAction('startall') ) {
       return false;
     }
@@ -169,9 +169,9 @@ var Stack = Resource.extend(StateCounts, {
     }
 
     return this.get('services').filterBy('actionLinks.activate').get('length') > 0;
-  }.property('services.@each.state','actionLinks.startall'),
+  }),
 
-  canPauseAll: function() {
+  canPauseAll: computed('services.@each.state','actionLinks.pauseall', function() {
     if ( !this.hasAction('pauseall') ) {
       return false;
     }
@@ -182,9 +182,9 @@ var Stack = Resource.extend(StateCounts, {
     }
 
     return this.get('services').filterBy('actionLinks.pause').get('length') > 0;
-  }.property('services.@each.state','actionLinks.pauseall'),
+  }),
 
-  canStopAll: function() {
+  canStopAll: computed('services.@each.state','actionLinks.stopall', function() {
     if ( !this.hasAction('stopall') ) {
       return false;
     }
@@ -201,13 +201,13 @@ var Stack = Resource.extend(StateCounts, {
     }
 
     return services.filterBy('actionLinks.deactivate').get('length') > 0 && containers.filterBy('actionLinks.stop').get('length');
-  }.property('services.@each.state','actionLinks.stopall'),
+  }),
 
-  canViewConfig: function() {
+  canViewConfig: computed('actionLinks.exportconfig', function() {
     return !!this.get('actionLinks.exportconfig');
-  }.property('actionLinks.exportconfig'),
+  }),
 
-  combinedState: function() {
+  combinedState: computed('state', 'healthState', function() {
     var stack = this.get('state');
     var health = this.get('healthState');
 
@@ -216,15 +216,15 @@ var Stack = Resource.extend(StateCounts, {
     } else {
       return stack;
     }
-  }.property('state', 'healthState'),
+  }),
 
-  externalIdInfo: function() {
+  externalIdInfo: computed('externalId', function() {
     return parseExternalId(this.get('externalId'));
-  }.property('externalId'),
+  }),
 
-  isDefault: function() {
+  isDefault: computed('name', function() {
     return (this.get('name')||'').toLowerCase() === 'default';
-  }.property('name'),
+  }),
 
   isEmpty: computed('instances.length', 'services.length', function() {
     return false; // @TODO-2.0
@@ -236,25 +236,57 @@ var Stack = Resource.extend(StateCounts, {
     return false;
   }),
 
-  isFromCatalog: function() {
+  isFromCatalog: computed('externalIdInfo.kind', function() {
     let kind = this.get('externalIdInfo.kind');
     return kind === C.EXTERNAL_ID.KIND_CATALOG || kind === C.EXTERNAL_ID.KIND_SYSTEM_CATALOG;
-  }.property('externalIdInfo.kind'),
+  }),
 
   // This only works if the templates have already been loaded elsewhere...
-  catalogTemplate: function() {
+  catalogTemplate: computed('externalIdInfo.templateId', function() {
     return this.get('catalog').getTemplateFromCache(this.get('externalIdInfo.templateId'));
-  }.property('externalIdInfo.templateId'),
+  }),
 
-  icon: function() {
+  icon: computed('catalogTemplate', function() {
     let tpl = this.get('catalogTemplate');
     if ( tpl ) {
       return tpl.linkFor('icon');
     }
-  }.property('catalogTemplate'),
+  }),
 
-  normalizedTags: computed('tags.[]', function() {
-    return normalizedTags(this.get('tags'));
+  grouping: computed('externalIdInfo.kind','group','system', function() {
+    var kind = this.get('externalIdInfo.kind');
+
+    if ( kind === C.EXTERNAL_ID.KIND_KUBERNETES || kind === C.EXTERNAL_ID.KIND_LEGACY_KUBERNETES )
+    {
+      return C.EXTERNAL_ID.KIND_KUBERNETES;
+    }
+    else if ( this.get('system') )
+    {
+      return C.EXTERNAL_ID.KIND_INFRA;
+    }
+    else
+    {
+      return C.EXTERNAL_ID.KIND_USER;
+    }
+  }),
+
+  normalizedTags: computed('group', {
+    get() {
+      return tagsToArray(this.get('group'));
+    },
+    set(key,value) {
+      this.set('group', (value||[]).map((x) => normalizeTag(x)).join(', '));
+      return value;
+    }
+  }),
+  tags: computed('group', {
+    get(){
+      return tagsToArray(this.get('group'), false);
+    },
+    set(key,value) {
+      this.set('group', (value||[]).map((x) => normalizeTag(x)).join(', '));
+      return value;
+    }
   }),
 
   hasTags(want) {

@@ -42,18 +42,11 @@
     </li>
   {{/if}}
 
-  <li class="{{if (eq scope "clusters") 'active selected'}}">
-    {{#link-to-external "authenticated.clusters"}}
-      <i class="icon icon-cluster icon-fw"></i>
-      {{t 'nav.environment.manage'}}
-    {{/link-to-external}}
-  </li>
-
   {{#if (and isOwner projects.current)}}
     <li>{{#link-to-external "authenticated.clusters.project" projects.current.id class="clip"}}{{t 'nav.environment.edit' name=projects.current.displayName}}{{/link-to-external}}</li>
+    <li role="presentation" class="divider"></li>
   {{/if}}
 
-  <li role="presentation" class="divider"></li>
 
   {{#if projectIsMissing}}
     <li role="presentation" class="dropdown-header">{{t 'nav.environment.selected'}}</li>

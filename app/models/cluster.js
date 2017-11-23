@@ -40,7 +40,7 @@ var Cluster = Resource.extend(PolledResource, {
 
   _allProjects: null,
 
-  projects: function() {
+  projects: computed('_allProjects.@each.clusterName', function() {
     let x = this.get('_allProjects');
 
     if (!x) {
@@ -48,9 +48,9 @@ var Cluster = Resource.extend(PolledResource, {
     }
 
     return x.filterBy('clusterName', this.get('id'));
-  }.property('_allProjects.@each.clusterName'),
+  }),
 
-  defaultProject: function() {
+  defaultProject: computed('projects.@each.{name,clusterOwner}', function() {
     let projects = this.get('projects');
 
     let out = projects.findBy('name','Default');
@@ -64,54 +64,54 @@ var Cluster = Resource.extend(PolledResource, {
     }
 
     return out;
-  }.property('projects.@each.{name,clusterOwner}'),
+  }),
 
   canEdit: computed('actionLinks.{activate,deactivate}','links.{update,remove}', function() {
     return (this.get('links.update') && this.get('state') === 'inactive') ? true : false;
   }),
 
-  systemProject: function() {
+  systemProject: computed('projects.@each.{clusterOwner}', function() {
     return this.get('projects').findBy('clusterOwner', true);
-  }.property('projects.@each.{clusterOwner}'),
+  }),
 
-  availableActions: function() {
-//    let a = this.get('actionLinks');
+  availableActions: computed('actionLinks.{activate,deactivate}','links.{update,remove}', function() {
+    //    let a = this.get('actionLinks');
     let l = this.get('links');
 
     var choices = [
       { label: 'action.edit',             icon: 'icon icon-edit',         action: 'edit',         enabled: this.get('canEdit') },
       { divider: true },
-//      { label: 'action.activate',         icon: 'icon icon-play',         action: 'activate',     enabled: !!a.activate},
-//      { label: 'action.deactivate',       icon: 'icon icon-pause',        action: 'promptStop',   enabled: !!a.deactivate, altAction: 'deactivate'},
-//      { divider: true },
+      //      { label: 'action.activate',         icon: 'icon icon-play',         action: 'activate',     enabled: !!a.activate},
+      //      { label: 'action.deactivate',       icon: 'icon icon-pause',        action: 'promptStop',   enabled: !!a.deactivate, altAction: 'deactivate'},
+      //      { divider: true },
       { label: 'action.remove',           icon: 'icon icon-trash',        action: 'promptDelete', enabled: !!l.remove, altAction: 'delete' },
       { divider: true },
       { label: 'action.viewInApi',        icon: 'icon icon-external-link',action: 'goToApi',      enabled: true },
     ];
 
     return choices;
-  }.property('actionLinks.{activate,deactivate}','links.{update,remove}'),
+  }),
 
   // @TODO real data
-  numHosts: function() {
+  numHosts: computed(function() {
     return 3+Math.round(Math.random()*2);
-  }.property(),
+  }),
 
-  numCores: function() {
+  numCores: computed('numHosts', function() {
     return this.get('numHosts')*8;
-  }.property('numHosts'),
+  }),
 
-  numGhz: function() {
+  numGhz: computed('numCores', function() {
     return 3.4*this.get('numCores');
-  }.property('numCores'),
+  }),
 
-  numMem: function() {
+  numMem: computed('numHosts', function() {
     return 8*this.get('numHosts');
-  }.property('numHosts'),
+  }),
 
-  numStorage: function() {
+  numStorage: computed('numHosts', function() {
     return 40*this.get('numHosts');
-  }.property('numHosts'),
+  }),
 });
 
 Cluster.reopenClass({

@@ -2,23 +2,9 @@
   <h1 class="pull-left">{{t 'clustersPage.header'}}</h1> <div class="vertical-middle"></div>
 
   <div class="right-buttons">
-    <div class="btn-group p-0 mr-10">
-      {{#tooltip-element type="tooltip-basic" model=(t 'clustersPage.mode.list') tooltipTemplate='tooltip-static' aria-describedby="tooltip-base" tooltipFor="tooltipLink"}}
-        {{#link-to (query-params mode="list") classNames="btn btn-sm bg-default"}}<i class="icon icon-list"></i>{{/link-to}}
-      {{/tooltip-element}}
-      {{#tooltip-element type="tooltip-basic" model=(t 'clustersPage.mode.grouped') tooltipTemplate='tooltip-static' aria-describedby="tooltip-base" tooltipFor="tooltipLink"}}
-        {{#link-to (query-params mode="grouped") classNames="btn btn-sm bg-default"}}<i class="icon icon-boxview"></i>{{/link-to}}
-      {{/tooltip-element}}
-    </div>
-
     {{#link-to "authenticated.clusters.new" class="btn bg-primary btn-sm icon-btn"}}
       <span class="darken"><i class="icon icon-cluster"></i></span>
       <span>{{t 'clustersPage.newCluster'}}</span>
-    {{/link-to}}
-
-    {{#link-to "authenticated.clusters.new-project" class="btn bg-primary btn-sm icon-btn" disabled=(eq model.clusters.length 0)}}
-      <span class="darken"><i class="icon icon-folder"></i></span>
-      <span>{{t 'clustersPage.newProject'}}</span>
     {{/link-to}}
   </div>
 </section>
@@ -32,36 +18,29 @@
   </section>
 {{/unless}}
 
-{{#if (eq mode "grouped")}}
-  {{#sortable-table
-       classNames="grid sortable-table"
-       body=model.clusters
-       searchText=searchText
-       sortBy=sortBy
-       bulkActions=false
-       fullRows=true
-       subRows=true
-       pagingLabel="pagination.cluster"
-       headers=headers as |sortable kind inst dt|
-  }}
-    {{#if (eq kind "row")}}
-      {{cluster-row
-          model=inst
-          fullColspan=sortable.fullColspan
-          toggle=(action "toggleExpand" inst.id)
-          expanded=(array-includes expandedClusters inst.id)
-          launchOnCluster=(action "launchOnCluster")
-          useKubernetes=(action "useKubernetes")
-          dt=dt
-      }}
-    {{else if (eq kind "nomatch")}}
-      <tr><td colspan="{{sortable.fullColspan}}" class="text-center text-muted lacsso pt-20 pb-20">{{t 'clusterRow.noClusterMatch'}}</td></tr>
-    {{else if (eq kind "norows")}}
-      <tr><td colspan="{{sortable.fullColspan}}" class="text-center text-muted lacsso pt-20 pb-20">{{t 'clusterRow.noClusterData'}}</td></tr>
-    {{/if}}
-  {{/sortable-table}}
-{{else}}
-  {{project-table model=model.projects showCluster=true}}
-{{/if}}
-
-<div class="mt-30 box">{{t 'clustersPage.subtext' appName=settings.appName htmlSafe=true}}</div>
+{{#sortable-table
+     classNames="grid sortable-table"
+     body=model.clusters
+     searchText=searchText
+     sortBy=sortBy
+     bulkActions=false
+     fullRows=true
+     pagingLabel="pagination.cluster"
+     headers=headers as |sortable kind inst dt|
+}}
+  {{#if (eq kind "row")}}
+    {{cluster-row
+        model=inst
+        fullColspan=sortable.fullColspan
+        toggle=(action "toggleExpand" inst.id)
+        expanded=(array-includes expandedClusters inst.id)
+        launchOnCluster=(action "launchOnCluster")
+        useKubernetes=(action "useKubernetes")
+        dt=dt
+    }}
+  {{else if (eq kind "nomatch")}}
+    <tr><td colspan="{{sortable.fullColspan}}" class="text-center text-muted lacsso pt-20 pb-20">{{t 'clusterRow.noClusterMatch'}}</td></tr>
+  {{else if (eq kind "norows")}}
+    <tr><td colspan="{{sortable.fullColspan}}" class="text-center text-muted lacsso pt-20 pb-20">{{t 'clusterRow.noClusterData'}}</td></tr>
+  {{/if}}
+{{/sortable-table}}
