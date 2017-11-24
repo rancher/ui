@@ -1,6 +1,10 @@
 <section class="header clearfix">
   <div class="pull-left">
-    <h1>{{t 'rolesPage.new.header'}}</h1>
+    {{#if editing}}
+      <h1>{{t 'rolesPage.editRole'}}</h1>
+    {{else}}
+      <h1>{{t 'rolesPage.addRole'}}</h1>
+    {{/if}}
   </div>
 </section>
 
@@ -8,6 +12,7 @@
   {{form-name-description
       name=model.role.name
       nameRequired=true
+      nameDisabled=editing
       namePlaceholder="rolesPage.new.form.name.placeholder"
       colClass="col span-7"
       descriptionShown=false
@@ -76,4 +81,4 @@
 </section>
 
 {{top-errors errors=errors}}
-{{save-cancel save="save" cancel="cancel"}}
+{{save-cancel createLabel=(if editing 'rolesPage.saveEdit' 'rolesPage.saveNew') save="save" cancel="cancel"}}

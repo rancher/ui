@@ -3,7 +3,7 @@
     <h1>{{t 'rolesPage.index.header'}}</h1>
   </div>
   <div class="right-buttons">
-    {{#link-to "roles.new" classNames="btn btn-sm bg-primary right-divider-btn"}} {{t 'rolesPage.index.localLink'}} {{/link-to}}
+    {{#link-to "roles.new" classNames="btn btn-sm bg-primary right-divider-btn"}} {{t 'rolesPage.addRole'}} {{/link-to}}
   </div>
 </section>
 
@@ -33,8 +33,10 @@
           {{action-menu model=row}}
         </td>
       </tr>
+    {{else if (eq kind "nomatch")}}
+      <td colspan="6" class="text-center text-muted lacsso pt-20 pb-20">{{t 'rolesPage.index.table.noMatch'}}</td>
     {{else if (eq kind "norows")}}
-      <td colspan="6" class="text-center text-muted pt-20 pb-20">{{t 'rolesPage.index.table.noData'}}</td>
+      <td colspan="6" class="text-center text-muted lacsso pt-20 pb-20">{{t 'rolesPage.index.table.noData'}}</td>
     {{/if}}
   {{/sortable-table}}
 </section>
