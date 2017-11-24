@@ -5,13 +5,13 @@ import { next } from '@ember/runloop';
 import Resource from 'ember-api-store/models/resource';
 import PolledResource from 'ui/mixins/cattle-polled-resource';
 
-var ProjectRoleTemplate = Resource.extend(PolledResource, {
-  type: 'projectRoleTemplate',
+var ClusterRoleTemplate = Resource.extend(PolledResource, {
+  type: 'clusterRoleTemplate',
   router: service(),
-  
+
   actions: {
-    edit: function() {
-      this.get('router').transitionTo('global-admin.roles.edit', this.get('id'), { queryParams: { type: 'project' } });
+    edit: function () {
+      this.get('router').transitionTo('global-admin.roles.edit', this.get('id'), { queryParams: { type: 'cluster' } });
     },
   },
 
@@ -35,9 +35,9 @@ var ProjectRoleTemplate = Resource.extend(PolledResource, {
   },
 });
 
-ProjectRoleTemplate.reopenClass({
+ClusterRoleTemplate.reopenClass({
   pollTransitioningDelay: 1000,
   pollTransitioningInterval: 5000,
 });
 
-export default ProjectRoleTemplate;
+export default ClusterRoleTemplate;

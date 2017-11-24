@@ -1,18 +1,18 @@
-<section class="header clearfix">
-  <div class="pull-left">
-    <h1>{{t 'rolesPage.index.header'}}</h1>
-  </div>
-  <div class="right-buttons">
-    {{#link-to "roles.new" classNames="btn btn-sm bg-primary right-divider-btn"}} {{t 'rolesPage.addRole'}} {{/link-to}}
-  </div>
-</section>
-
+{{#roles-header showGroup=false}}
+    {{#if (eq type "project")}}
+      {{#link-to "roles.new" (query-params type="project") classNames="btn btn-sm bg-primary right-divider-btn"}} {{t 'rolesPage.addProjectRole'}} {{/link-to}}
+    {{else if (eq type "cluster")}}
+      {{#link-to "roles.new" (query-params type="cluster") classNames="btn btn-sm bg-primary right-divider-btn"}} {{t 'rolesPage.addClusterRole'}} {{/link-to}}
+    {{/if}}
+{{/roles-header}}
+  
 <section class="instances">
   {{#sortable-table
     classNames="grid sortable-table"
     fullRows=true
     sortBy=sortBy
     headers=headers
+    searchText=searchText
     body=filtered
     as |sortable kind row dt|
   }}
@@ -22,7 +22,7 @@
           &nbsp;
         </td>
         <td data-title="{{t 'rolesPage.index.table.name'}}:" class="clip">
-          {{#link-to "roles.edit" row.id}}
+          {{#link-to "roles.edit" row.id (query-params type=type)}}
             {{row.name}}
           {{/link-to}}
         </td>

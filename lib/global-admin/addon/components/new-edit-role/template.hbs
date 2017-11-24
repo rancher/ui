@@ -1,9 +1,17 @@
 <section class="header clearfix">
   <div class="pull-left">
     {{#if editing}}
-      <h1>{{t 'rolesPage.editRole'}}</h1>
+      {{#if (eq roleType "project")}}
+        <h1>{{t 'rolesPage.editProjectRole'}}</h1>   
+      {{else if (eq roleType "cluster")}}
+        <h1>{{t 'rolesPage.editClusterRole'}}</h1>
+      {{/if}}
     {{else}}
-      <h1>{{t 'rolesPage.addRole'}}</h1>
+      {{#if (eq roleType "project")}}
+        <h1>{{t 'rolesPage.addProjectRole'}}</h1>      
+      {{else if (eq roleType "cluster")}}
+        <h1>{{t 'rolesPage.addClusterRole'}}</h1> 
+      {{/if}}
     {{/if}}
   </div>
 </section>
@@ -38,7 +46,7 @@
       </thead>
       <tbody>
         {{#each ruleArray as |rule|}}
-          {{role-rule-row rule=rule remove="removeRule"}}
+          {{role-rule-row roleType=roleType rule=rule remove="removeRule"}}
         {{/each}}
       </tbody>
     </table>
@@ -67,7 +75,7 @@
       </thead>
       <tbody>
         {{#each roleArray as |role|}}
-          {{other-role-row role=role otherRoles=model.roles remove="removeOtherRole"}}
+          {{other-role-row role=role otherRoles=otherRoles remove="removeOtherRole"}}
         {{/each}}
       </tbody>
     </table>
