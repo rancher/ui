@@ -49,6 +49,8 @@ generic:
   moreActions: More Actions
   na: 'n/a'
   name: Name
+  namespace: Namespace
+  namespaces: Namespaces
   no: "No"
   noRating: No Rating
   none: None
@@ -65,8 +67,6 @@ generic:
   select: Select
   service: Service
   services: Services
-  stack: Stack
-  stacks: Stacks
   state: State
   tags: Tags
   test: Test
@@ -1658,7 +1658,7 @@ envCatalog:
   addActionLabel: Add Catalog
 
 stackHeader:
-  title: 'Stack: {name}'
+  title: 'Namespace: {name}'
   outputs: Outputs
 
 stacksPage:
@@ -2228,21 +2228,21 @@ formSslTermination:
     "Note: Some older SSL/TLS clients do not support <a href="https://en.wikipedia.org/wiki/Server_Name_Indication" target="_blank">Server Name Indication (SNI)</a>; these clients will always be offered the main Certificate.  Modern clients will be offered an appropriate certificate from the Alternate Certificates list if a match is found."
   notNeeded: There are no SSL/TLS Listening Ports configured with a valid Target Rule.
 
-formStack:
+formNamespace:
   label:
-    reuse: Stack
-    create: Stack
+    reuse: Namespace
+    create: Namespace
   toggle:
     simple: Customize
-    reuse: Use an existing stack
-    create: Add to a new stack
+    reuse: Use an existing namespace
+    create: Add to a new namespace
   reuse:
-    prompt: Choose a Stack...
+    prompt: Choose a Namespace...
   create:
     placeholder: e.g. myapp
   errors:
-    noneChosen: You must choose a stack.
-    validation: "Stack: {error}"
+    noneChosen: You must choose a namespace.
+    validation: "Namespace: {error}"
 
 formStickiness:
   title: Target Routing
@@ -3339,11 +3339,6 @@ pagination:
     =0 {No Containers}
     =1 {{count} {count, plural, =1 {Container} other {Containers}}}
     other {{from} - {to} of {count} Containers}}
-  containerService: |
-    {pages, plural,
-    =0 {No Containers/Services}
-    =1 {{count} {count, plural, =1 {Container/Service} other {Containers/Services}}}
-    other {{from} - {to} of {count} Containers/Services}}
   dnsRecord: |
     {pages, plural,
     =0 {No DNS Records}
@@ -3371,9 +3366,14 @@ pagination:
     other {{from} - {to} of {count} Items}}
   host: |
     {pages, plural,
-    =0 {No Hosts}
-    =1 {{count} {count, plural, =1 {Host} other {Hosts}}}
-    other {{from} - {to} of {count} Hosts}}
+    =0 {No Nodes}
+    =1 {{count} {count, plural, =1 {Node} other {Nodes}}}
+    other {{from} - {to} of {count} Nodes}}
+  image: |
+    {pages, plural,
+    =0 {No Images}
+    =1 {{count} {count, plural, =1 {Image} other {Images}}}
+    other {{from} - {to} of {count} Images}}
   link: |
     {pages, plural,
     =0 {No Links}
@@ -3389,6 +3389,13 @@ pagination:
     =0 {No Mounts}
     =1 {{count} {count, plural, =1 {Mount} other {Mounts}}}
     other {{from} - {to} of {count} Mounts}}
+  pod: |
+    {pages, plural,
+    =0 {No Pods}
+    =1 {{count} {count, plural, =1 {Pod} other {Pods}}}
+    other {{from} - {to} of {count} Pods}}
+  podHighlightSubset: "<b>{subset} of {count}</b> Pods"
+  podNoSubset: "0 of {count} Pods"
   port: |
     {pages, plural,
     =0 {No Ports}
@@ -3414,8 +3421,11 @@ pagination:
     =0 {No Volumes}
     =1 {{count} {count, plural, =1 {Volume} other {Volumes}}}
     other {{from} - {to} of {count} Volumes}}
-  containerHighlightSubset: "<b>{subset} of {count}</b> Containers"
-  containerNoSubset: "0 of {count} Containers"
+  workload: |
+    {pages, plural,
+    =0 {No Workloads}
+    =1 {{count} {count, plural, =1 {Workload} other {Workloads}}}
+    other {{from} - {to} of {count} Workloads}}
 
 projectRow:
   none: No description
@@ -3688,10 +3698,10 @@ nav:
     networking: Networking
     storage: Storage
   containers:
-    tab: Containers
+    tab: Workloads
     systemTab: System
     balancers: Balancers
-    containers: Containers
+    containers: Workloads
     dns: DNS
     volumes: Volumes
     k8s: Advanced

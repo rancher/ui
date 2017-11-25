@@ -26,17 +26,19 @@
            extraSearchSubFields=extraSearchSubFields
            headers=headers as |sortable kind inst dt|}}
         {{#if (eq kind "row")}}
-          {{#if (eq inst.baseType "instance")}}
-            {{container-row
+          {{#if (eq inst.type "pod")}}
+            {{pod-row
                 model=inst
                 dt=dt
-                showHost=true
+                showNode=true
                 expandPlaceholder=true
                 scalePlaceholder=true
                 fullColspan=sortable.fullColspan
+                toggle=(action "toggleExpand" inst.id)
+                expanded=(array-includes expandedInstances inst.id)
             }}
           {{else}}
-            {{service-row
+            {{workload-row
                 model=inst
                 toggle=(action "toggleExpand" inst.id)
                 expanded=(array-includes expandedInstances inst.id)

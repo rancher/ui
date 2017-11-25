@@ -1,17 +1,15 @@
-import { isEmpty } from '@ember/utils';
-import { computed } from '@ember/object';
-import { filterBy } from '@ember/object/computed';
+import { computed, get } from '@ember/object';
 import { inject as service } from '@ember/service';
 import Resource from 'ember-api-store/models/resource';
 import { parseExternalId } from 'ui/utils/parse-externalid';
 import C from 'ui/utils/constants';
 import { download } from 'shared/utils/util';
-import { denormalizeIdArray } from 'ember-api-store/utils/denormalize';
+import { hasMany } from 'ember-api-store/utils/denormalize';
 import StateCounts from 'ui/mixins/state-counts';
 
-export function activeIcon(stack)
+export function activeIcon(ns)
 {
-  if ( stack.get('system') )
+  if ( ns.get('system') )
   {
     return 'icon icon-gear';
   }
@@ -43,44 +41,30 @@ export function normalizeTags(ary) {
 
 export function tagChoices(all) {
   let choices = [];
-  (all||[]).forEach((stack) => {
-    choices.addObjects(stack.get('tags'));
+  (all||[]).forEach((ns) => {
+    choices.addObjects(ns.get('tags'));
   });
 
   return choices;
 }
 
-var Stack = Resource.extend(StateCounts, {
-
-  type:         'stack',
+var Namespace = Resource.extend(StateCounts, {
+  type:         'namespace',
   k8s:          service(),
   modalService: service('modal'),
   catalog:      service(),
   scope:        service(),
   router:       service(),
 
-
-  services:     denormalizeIdArray('serviceIds'),
-  realServices: filterBy('services','isReal',true),
+  pods:      hasMany('pods', 'namespace', 'id', 'pod', 'namespaceId'),
+  workloads: hasMany('workloads', 'namespace', 'id', 'workload', 'namespaceId'),
 
   init() {
     this._super(...arguments);
-    this.defineStateCounts('services', 'serviceStates', 'serviceCountSort');
+    // @TODO-2.0 this.defineStateCounts('services', 'serviceStates', 'serviceCountSort');
   },
 
-  _allInstances: null,
-  instances: computed('_allInstances.@each.stackId', function() {
-    let all = this.get('_allInstances');
-    if ( !all ) {
-      all = this.get('store').all('instance');
-      this.set('_allInstances', all);
-    }
-
-    return all.filterBy('stackId', this.get('id'));
-  }),
-
   actions: {
-
     startAll: function() {
       return this.doAction('startall');
     },
@@ -189,10 +173,8 @@ var Stack = Resource.extend(StateCounts, {
       return false;
     }
 
-    var services = this.get('services');
-    var containers = this.get('instances').filter((inst) => {
-      return inst.get('serviceId') === null;
-    });
+    var services = this.get('workloads');
+    var containers = this.get('pods').filterBy('workloadId', null);
     var countS = (services.length || 0);
     var countC = (containers.length || 0);
 
@@ -226,14 +208,8 @@ var Stack = Resource.extend(StateCounts, {
     return (this.get('name')||'').toLowerCase() === 'default';
   }),
 
-  isEmpty: computed('instances.length', 'services.length', function() {
-    return false; // @TODO-2.0
-
-    if (isEmpty(this.get('instances')) && isEmpty(this.get('services'))) {
-      return true;
-    }
-
-    return false;
+  isEmpty: computed('pods.length', 'workloads.length', function() {
+    return (get(this, 'pods.length')||0 + get(this, 'workloads.length')||0) === 0;
   }),
 
   isFromCatalog: computed('externalIdInfo.kind', function() {
@@ -270,23 +246,8 @@ var Stack = Resource.extend(StateCounts, {
     }
   }),
 
-  normalizedTags: computed('group', {
-    get() {
-      return tagsToArray(this.get('group'));
-    },
-    set(key,value) {
-      this.set('group', (value||[]).map((x) => normalizeTag(x)).join(', '));
-      return value;
-    }
-  }),
-  tags: computed('group', {
-    get(){
-      return tagsToArray(this.get('group'), false);
-    },
-    set(key,value) {
-      this.set('group', (value||[]).map((x) => normalizeTag(x)).join(', '));
-      return value;
-    }
+  normalizedTags: computed('tags.[]', function() {
+    return normalizeTags(this.get('tags'));
   }),
 
   hasTags(want) {
@@ -307,7 +268,7 @@ var Stack = Resource.extend(StateCounts, {
   },
 });
 
-Stack.reopenClass({
+Namespace.reopenClass({
   stateMap: {
     'active':             {icon: activeIcon,                  color: 'text-success'},
     'rolling-back':       {icon: 'icon icon-history',         color: 'text-info'},
@@ -316,4 +277,4 @@ Stack.reopenClass({
   }
 });
 
-export default Stack;
+export default Namespace;

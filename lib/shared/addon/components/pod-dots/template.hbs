@@ -2,7 +2,9 @@
   {{#each grouped as |group|}}
     <div class="dot-group bg-default">
       {{#each group as |item|}}
-        {{container-dot model=item}}
+        {{#tooltip-element type="tooltip-basic" model=item.name tooltipTemplate='tooltip-static' aria-describedby="tooltip-base" tooltipFor="containerDot"}}
+          <i class="{{item.pod.stateIcon}} {{item.pod.stateColor}} dot hand" alt={{alt}}></i>
+        {{/tooltip-element}}
       {{/each}}
     </div>
   {{/each}}

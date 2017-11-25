@@ -14,14 +14,6 @@ const rootNav = [
 
   {
     scope: 'project',
-    id: 'project-hosts',
-    localizedLabel: 'nav.hosts.tab',
-    route: 'hosts',
-    ctx: [getProjectId],
-  },
-
-  {
-    scope: 'project',
     id: 'project-apps',
     localizedLabel: 'nav.apps.tab',
     route: 'apps-tab',
@@ -104,7 +96,7 @@ const rootNav = [
   },
 ]
 
-export function initialize(appInstance) {
+export function initialize(/*appInstance*/) {
   bulkAdd(rootNav);
 }
 

@@ -4,7 +4,11 @@
       {{check-box nodeId=model.id}}
     </td>
   {{/if}}
-  {{#if expandPlaceholder}}
+  {{#if canExpand}}
+    <td valign="middle">
+      <i role="button" {{action "toggle"}} class="icon icon-play eased text-small text-muted {{if expanded 'icon-rotate-90'}}"><span class="visually-hidden">Open accordion</span></i>
+    </td>
+  {{else if expandPlaceholder}}
     <td valign="middle">
     </td>
   {{/if}}
@@ -12,7 +16,7 @@
     {{badge-state model=model}}
   </td>
   <td data-title="{{dt.name}}" class="clip">
-    <a href="{{href-to detailRoute model.id}}">{{model.displayName}}</a>
+    <a href="{{href-to "container" model.id}}">{{model.displayName}}</a>
     {{#if model.showTransitioningMessage}}
       <div class="clip text-small {{model.stateColor}}" >{{model.transitioningMessage}}</div>
     {{else if model.displayEndpoints}}
@@ -22,13 +26,13 @@
     {{/if}}
   </td>
   <td data-title="{{dt.image}}" class="clip top-half">
-     <small>{{model.image}}</small>
+     <small>{{model.displayImage}}</small>
      <p data-title="{{t 'generic.details'}}" class="text-small text-muted m-0 clip">
       {{#if model.displayIp}}
         {{#copy-inline clipboardText=model.displayIp}}{{format-ip model.displayIp}}{{/copy-inline}} /
       {{/if}}
-      {{#if (and showHost model.primaryHost)}}
-        <a href="{{href-to "host" model.primaryHost.id}}">{{model.primaryHost.displayName}}</a> /
+      {{#if (and showNode model.node)}}
+        <a href="{{href-to "host" model.node.id}}">{{model.node.displayName}}</a> /
       {{/if}}
       {{t 'generic.createdDate' date=(date-from-now model.created)}}
     </p>
@@ -44,3 +48,26 @@
     </td>
   {{/if}}
 </tr>
+
+{{#if canExpand}}
+  <tr class="sub-row {{unless expanded 'hide'}}">
+    <td colspan="2">{{! checkbox and expand}}</td>
+    <td colspan="{{sub fullColspan 4}}">
+      {{#if expanded}}
+        {{#each containers as |item|}}
+          {{#tooltip-element type="tooltip-basic" model=item.name tooltipTemplate='tooltip-static' aria-describedby="tooltip-base" tooltipFor="containerDot"}}
+            <i class="{{item.pod.stateIcon}} {{item.pod.stateColor}} dot hand" alt={{alt}}></i>
+          {{/tooltip-element}}
+        {{/each}}
+      {{/if}}
+    </td>
+    <td class="text-center">{{! scale }}</td>
+    <td>{{! actions}}</td>
+  </tr>
+
+  {{#if expanded}}
+    <tr class="separator-row">
+      <td colspan="{{fullColspan}}"></td>
+    </tr>
+  {{/if}}
+{{/if}}
