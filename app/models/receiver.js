@@ -21,7 +21,7 @@ var Receiver = Resource.extend(PolledResource, {
   displayService: function() {
     let service = this.get('regularStore').getById('service', this.get('opt.serviceId'));
     if ( service ) {
-      return service.get('displayStack') +'/'+ service.get('displayName');
+      return service.get('namespace') +'/'+ service.get('displayName');
     } else {
       return '?';
     }

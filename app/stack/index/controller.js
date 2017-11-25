@@ -188,13 +188,4 @@ export default Controller.extend({
     out = out.filterBy('workloadId', null);
     return out;
   }),
-
-  instanceCount: function() {
-    var count = 0;
-    (this.get('model.stack.services')||[]).forEach((service) => {
-      count += service.get('instances.length')||0;
-    });
-
-    return count;
-  }.property('model.stack.services.@each.healthState'),
 });

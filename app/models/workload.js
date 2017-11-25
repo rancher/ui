@@ -1,16 +1,16 @@
 import { later, cancel } from '@ember/runloop';
-import { computed } from '@ember/object';
+import { computed, get } from '@ember/object';
 import { alias } from '@ember/object/computed';
 import Resource from 'ember-api-store/models/resource';
 import C from 'ui/utils/constants';
 import Util from 'ui/utils/util';
-import { denormalizeId, denormalizeIdArray } from 'ember-api-store/utils/denormalize';
+import { denormalizeId, hasMany } from 'ember-api-store/utils/denormalize';
 import StateCounts from 'ui/mixins/state-counts';
 import EndpointPorts from 'ui/mixins/endpoint-ports';
 import { inject as service } from "@ember/service";
+import DisplayImage from 'shared/mixins/display-image';
 
-
-var Workload = Resource.extend(StateCounts, EndpointPorts, {
+var Workload = Resource.extend(DisplayImage, StateCounts, EndpointPorts, {
   intl:          service(),
   growl:         service(),
   modalService:  service('modal'),
@@ -18,15 +18,14 @@ var Workload = Resource.extend(StateCounts, EndpointPorts, {
   scope:         service(),
   router:        service(),
 
-  namespaceObj: denormalizeId('namespace','namespace'),
+  state: 'active', // @TODO-2.0
 
-  instances:     denormalizeIdArray('instanceIds'),
-  instanceCount: alias('instances.length'),
-  stack:         denormalizeId('stackId'),
+  namespaceObj: denormalizeId('namespace','namespace'),
+  pods:         hasMany('pods', 'workload','id', 'pod','workloadId'),
 
   init() {
     this._super(...arguments);
-    this.defineStateCounts('instances', 'instanceStates', 'instanceCountSort');
+    this.defineStateCounts('pods', 'podStates', 'podCountSort');
   },
 
   lcType: computed('type', function() {
@@ -178,10 +177,8 @@ var Workload = Resource.extend(StateCounts, EndpointPorts, {
     let l = this.get('links');
 
     let isReal = this.get('isReal');
-    let isK8s = this.get('isK8s');
     let canHaveContainers = this.get('canHaveContainers');
     let containerForShell = this.get('containerForShell');
-    let isDriver = ['networkdriverservice','storagedriverservice'].includes(this.get('lcType'));
     let canCleanup = !!a.garbagecollect && this.get('canCleanup');
 
     let choices = [
@@ -189,7 +186,7 @@ var Workload = Resource.extend(StateCounts, EndpointPorts, {
       { label: 'action.edit',           icon: 'icon icon-pencil',           action: 'editDns',        enabled: !!l.update && !isReal },
       { label: 'action.rollback',       icon: 'icon icon-history',          action: 'rollback',       enabled: !!a.rollback && isReal && !!this.get('previousRevisionId') },
       { label: 'action.garbageCollect', icon: 'icon icon-garbage',          action: 'garbageCollect', enabled: canCleanup},
-      { label: 'action.clone',          icon: 'icon icon-copy',             action: 'clone',          enabled: !isK8s && !isDriver },
+      { label: 'action.clone',          icon: 'icon icon-copy',             action: 'clone',          enabled: true},
       { label: 'action.addSidekick',    icon: 'icon icon-plus-circle',      action: 'addSidekick',    enabled: this.get('canHaveSidekicks') },
       { divider: true },
       { label: 'action.execute',        icon: 'icon icon-terminal',         action: 'shell',          enabled: !!containerForShell, altAction:'popoutShell'},
@@ -207,23 +204,12 @@ var Workload = Resource.extend(StateCounts, EndpointPorts, {
 
     return choices;
   }.property('actionLinks.{activate,deactivate,pause,restart,rollback,garbagecollect}','links.{update,remove}','previousRevisionId',
-    'lcType','isK8s','canHaveContainers','canHaveSidekicks','containerForShell'
+    'canHaveContainers','canHaveSidekicks','containerForShell'
   ),
-
-  image: alias('launchConfig.image'),
 
   sortName: function() {
     return Util.sortableNumericSuffix(this.get('displayName'));
   }.property('displayName'),
-
-  displayStack: function() {
-    var stack = this.get('stack');
-    if ( stack ) {
-      return stack.get('displayName');
-    } else {
-      return '...';
-    }
-  }.property('stack.displayName'),
 
   linkedServices: function() {
     let allServices = this.get('allServices');
@@ -300,19 +286,8 @@ var Workload = Resource.extend(StateCounts, EndpointPorts, {
     ].includes(this.get('lcType'));
   }.property('isReal','isSelector','lcType'),
 
-  isReal: function() {
-    if ( this.get('isSelector') ) {
-      return false;
-    }
-
-    return [
-      'service',
-      'scalinggroup',
-      'networkdriverservice',
-      'storagedriverservice',
-      'loadbalancerservice',
-    ].includes(this.get('lcType'));
-  }.property('lcType','isSelector'),
+  isReal: true,
+  isSelector: false,
 
   canHaveSidekicks: function() {
     return ['service','scalinggroup'].includes(this.get('lcType'));
@@ -341,10 +316,6 @@ var Workload = Resource.extend(StateCounts, EndpointPorts, {
       'externalservice',
     ].includes(this.get('lcType'));
   }.property('lcType'),
-
-  isSelector: function() {
-    return !!this.get('selector');
-  }.property('selector'),
 
   isBalancer: function() {
     return ['loadbalancerservice'].indexOf(this.get('lcType')) >= 0;
@@ -396,8 +367,8 @@ var Workload = Resource.extend(StateCounts, EndpointPorts, {
   }.property('lcType','isSelector','intl.locale'),
 
   hasSidekicks: function() {
-    return this.get('secondaryLaunchConfigs.length') > 0;
-  }.property('secondaryLaunchConfigs.length'),
+    return Object.keys(get(this,'containers')).length > 1;
+  }.property('containers'),
 
   activeIcon: function() {
     return activeIcon(this);
@@ -410,12 +381,12 @@ var Workload = Resource.extend(StateCounts, EndpointPorts, {
   }),
 
   containerForShell: function() {
-    return this.get('instances').findBy('combinedState','running');
-  }.property('instances.@each.combinedState'),
+    return this.get('pods').findBy('combinedState','running');
+  }.property('pods.@each.combinedState'),
 
   canCleanup: function() {
-    return !!this.get('instances').findBy('desired',false);
-  }.property('instances.@each.desired'),
+    return !!this.get('pods').findBy('desired',false);
+  }.property('pods.@each.desired'),
 });
 
 export function activeIcon(service)

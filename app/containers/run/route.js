@@ -6,100 +6,98 @@ import Ember from 'ember';
 import C from 'ui/utils/constants';
 
 export const EMPTY_LC = JSON.stringify({
-  type: 'launchConfig',
+  type: 'container',
   tty: true,
-  stdinOpen: true,
-  labels: { [C.LABEL.PULL_IMAGE]: C.LABEL.PULL_IMAGE_VALUE },
-  restartPolicy: {name: 'always'},
+  stdin: true,
+  pullPolicy: 'Always',
 });
 
 export default Route.extend({
   prefs: service(),
 
   queryParams: {
-    launchConfigIndex: {
+    containerName: {
       refreshModel: true
     }
   },
 
   model: function(params/*, transition*/) {
     var store = this.get('store');
-    let lcIndex = params.launchConfigIndex;
-    if ( lcIndex ) {
-      lcIndex = parseInt(lcIndex,10);
+    let containerName = params.containerName;
+
+    let defaultNs = null;
+    if ( params.namespaceId ) {
+      defaultNs = store.getById('namespace', params.namespaceId); 
     }
 
-    let defaultStack = null;
-    if ( params.stackId ) {
-      defaultStack = store.getById('stack', params.stackId); 
+    if ( !defaultNs ) {
+      defaultNs = store.getById('namespace', this.get(`prefs.${C.PREFS.LAST_NAMESPACE}`));
     }
 
-    if ( !defaultStack ) {
-      defaultStack = store.getById('stack', this.get(`prefs.${C.PREFS.LAST_STACK}`));
-    }
-
-    let stackId = null;
-    if ( defaultStack ) {
-      stackId = defaultStack.get('id');
+    let namespaceId = null;
+    if ( defaultNs ) {
+      namespaceId = defaultNs.get('id');
     }
 
     let emptyService = store.createRecord({
-      type: 'scalingGroup', // @TODO switch back to service
-      stackId: stackId,
+      type: 'workload',
+      namespace: namespaceId,
       scale: 1,
+      restart: 'Always',
     });
 
     let emptyLc = store.createRecord(JSON.parse(EMPTY_LC));
-    emptyLc.stackId = stackId;
+    emptyLc.namespaceId = namespaceId;
 
     var dependencies = {};
-    if ( params.serviceId )
+    if ( params.workloadId )
     {
-      dependencies['service'] = store.find('service', params.serviceId);
+      dependencies['workload'] = store.find('workload', params.workloadId);
     }
     else if ( params.containerId )
     {
-      dependencies['container'] = store.find('container', params.containerId);
+      dependencies['pod'] = store.find('pod', params.podId);
     }
 
     return hash(dependencies, 'Load dependencies').then((results) => {
-      if ( results.hasOwnProperty('service') ) {
-        // Service Upgrade/Clone
-        let service = results.service;
-        if ( !service ) {
-          return Ember.RVP.reject('Service not found');
+      if ( results.hasOwnProperty('workload') ) {
+        // Workload Upgrade/Clone
+        let workload = results.workload;
+        if ( !workload ) {
+          return Ember.RVP.reject('Workload not found');
         }
 
-        let clone = service.clone();
+        let clone = workload.clone();
 
         if ( params.addSidekick ) {
           return EmberObject.create({
             mode: 'sidekick',
-            service: clone,
+            workload: clone,
             launchConfig: emptyLc,
             isService: true,
             isUpgrade: false,
           });
-        } else if ( lcIndex === null ) {
+        } else if ( containerName === null ) {
           // If there are sidekicks, you need to pick one & come back
-          if ( service.secondaryLaunchConfigs && service.secondaryLaunchConfigs.length ) {
+          const containerNames = Object.keys(service.containers);
+          if ( containerNames.length > 1 ) {
             return EmberObject.create({
-              service: service,
+              workload: workload,
               selectLaunchConfig: true,
             });
           } else {
             // Otherwise use primary
-            lcIndex = -1;
+            containerName = "";
           }
         }
 
         let lc;
-        if ( lcIndex === -1 ) {
+        if ( containerName === "" ) {
           // Primary service
-          lc = clone.launchConfig;
+          lc = service.containers[containerNames[0]];
         } else {
           // Existing sidekick
-          lc = clone.secondaryLaunchConfigs[lcIndex];
+          lc = service.containers[containerName];
         }
 
         if ( params.upgrade) {
@@ -108,12 +106,12 @@ export default Route.extend({
             mode: 'service',
             service: clone,
             launchConfig: lc,
-            launchConfigIndex: lcIndex,
+            containerName: containerName,
             isService: true,
             isUpgrade: true
           });
 
-          if ( lcIndex >= 0 ) {
+          if ( containerName ) {
             out.set('mode','sidekick');
           }
 
@@ -131,11 +129,11 @@ export default Route.extend({
             // no launchConfigIndex because this will be a new service or sidekick
           });
         }
-      } else if ( results.hasOwnProperty('container') ) {
+      } else if ( results.hasOwnProperty('pod') ) {
         // Container Upgrade/Clone
-        let container = results.container;
-        if ( !container ) {
-          return Ember.RVP.reject('Container not found');
+        let pod = results.pod;
+        if ( !pod ) {
+          return Ember.RVP.reject('Pod not found');
         }
 
         let clone = container.clone();
@@ -185,10 +183,10 @@ export default Route.extend({
   resetController: function (controller, isExiting/*, transition*/) {
     if (isExiting)
     {
-      controller.set('stackId', null);
-      controller.set('serviceId', null);
-      controller.set('containerId', null);
-      controller.set('launchConfigIndex', null);
+      controller.set('namespaceId', null);
+      controller.set('workloadId', null);
+      controller.set('podId', null);
+      controller.set('containerName', null);
       controller.set('upgrade', null);
       controller.set('addSidekick', null);
     }

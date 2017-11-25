@@ -20,18 +20,18 @@
   </td>
   {{#if showImage}}
     <td data-title="{{dt.image}}" class="clip top-half">
-      <small>{{model.image}}</small>
+      <small>{{model.displayImage}}</small>
       <p data-title="{{t 'generic.details'}}" class="text-small text-muted m-0 clip">
         {{#if subMatches}}
           {{#if (eq (get subMatches model.id) 0)}}
-            {{t 'pagination.containerNoSubset' count=model.instances.length htmlSafe=true}}
-          {{else if (lt (get subMatches model.id) model.instances.length)}}
-            {{t 'pagination.containerHighlightSubset' subset=(get subMatches model.id) count=model.instances.length htmlSafe=true}}
+            {{t 'pagination.podNoSubset' count=model.pods.length htmlSafe=true}}
+          {{else if (lt (get subMatches model.id) model.pods.length)}}
+            {{t 'pagination.podHighlightSubset' subset=(get subMatches model.id) count=model.pods.length htmlSafe=true}}
           {{else}}
-            <b>{{t 'pagination.container' pages=1 count=model.instances.length}}</b>
+            <b>{{t 'pagination.pod' pages=1 count=model.pods.length}}</b>
           {{/if}}
         {{else}}
-          {{t 'pagination.container' pages=1 count=(concat model.instances.length "")}}
+          {{t 'pagination.pod' pages=1 count=(concat model.pods.length "")}}
         {{/if}} /
         {{t 'generic.createdDate' date=(date-from-now model.created)}}
       </p>
@@ -43,8 +43,8 @@
       classNames="mt-5"
       labelKey="state"
       valueKey="count"
-      values=model.instanceStates.byColor
-      tooltipValues=model.instanceStates.byName
+      values=model.podStates.byColor
+      tooltipValues=model.podStates.byName
     }}
     <small class="text-muted">
       {{model.displayScale}}
@@ -61,10 +61,10 @@
     <td colspan="2">{{! checkbox and expand}}</td>
     <td colspan="{{sub fullColspan 4}}">
       {{#if expanded}}
-        {{container-dots
-          containers=model.instances
+        {{pod-dots
+          pods=model.pods
           searchText=searchText
-          groupByDeploymentUnit=model.hasSidekicks
+          groupByPod=model.hasSidekicks
         }}
       {{/if}}
     </td>

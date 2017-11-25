@@ -6,20 +6,13 @@ export default Controller.extend({
   scope: service(),
   modalService: service('modal'),
 
-  queryParams: ['stackId','serviceId','containerId','addSidekick','launchConfigIndex','upgrade'],
-  stackId: null,
+  queryParams: ['namespaceId','workloadId','podId','addSidekick','containerName','upgrade'],
+  namespaceId: null,
   serviceId: null,
   containerId: null,
-  addSidekick: null,
-  launchConfigIndex: null,
+  ddSidekick: null,
+  containerName: null,
   upgrade: false,
-
-  launchConfigIndexInt: function() {
-    let str = this.get('launchConfigIndex');
-    if ( str ) {
-      return parseInt(str,10);
-    }
-  }.property('launchConfigIndex'),
 
   actions: {
     transitionOut() {

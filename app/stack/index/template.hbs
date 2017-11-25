@@ -38,23 +38,23 @@
            bulkActions=true
            subRows=true
            fullRows=true
-           pagingLabel="pagination.containerService"
+           pagingLabel="pagination.workload"
            subSearchField="instances"
            extraSearchFields=extraSearchFields
            extraSearchSubFields=extraSearchSubFields
            headers=sgHeaders as |sortable kind inst dt|}}
         {{#if (eq kind "row")}}
           {{#if (eq inst.baseType "instance")}}
-            {{container-row
+            {{pod-row
                 model=inst
                 dt=dt
-                showHost=true
+                showNode=true
                 expandPlaceholder=true
                 scalePlaceholder=true
                 fullColspan=sortable.fullColspan
             }}
           {{else}}
-            {{service-row
+            {{workload-row
                 model=inst
                 toggle=(action "toggleExpand" inst.id)
                 expanded=(array-includes expandedInstances inst.id)
@@ -94,7 +94,7 @@
            subSearchField="instances"
            headers=sgHeaders as |sortable kind serv dt|}}
         {{#if (eq kind "row")}}
-          {{service-row
+          {{workload-row
               canExpand=true
               expanded=(array-includes expandedInstances serv.id)
               fullColspan=sortable.fullColspan
