@@ -1,0 +1,42 @@
+{{#roles-header showGroup=false}}
+    {{#if (eq type "project")}}
+      {{#link-to "roles.new" (query-params type="project") classNames="btn btn-sm bg-primary right-divider-btn"}} {{t 'rolesPage.addProjectRole'}} {{/link-to}}
+    {{else if (eq type "cluster")}}
+      {{#link-to "roles.new" (query-params type="cluster") classNames="btn btn-sm bg-primary right-divider-btn"}} {{t 'rolesPage.addClusterRole'}} {{/link-to}}
+    {{/if}}
+{{/roles-header}}
+  
+<section class="instances">
+  {{#sortable-table
+    classNames="grid sortable-table"
+    fullRows=true
+    sortBy=sortBy
+    headers=headers
+    searchText=searchText
+    body=filtered
+    as |sortable kind row dt|
+  }}
+    {{#if (eq kind "row")}}
+      <tr class="main-row">
+        <td valign="middle" class="row-check" style="padding-top: 2px;">
+          &nbsp;
+        </td>
+        <td data-title="{{t 'rolesPage.index.table.name'}}:" class="clip">
+          {{#link-to "roles.edit" row.id (query-params type=type)}}
+            {{row.name}}
+          {{/link-to}}
+        </td>
+        <td data-title="{{t 'rolesPage.index.table.created'}}:" >
+          {{date-calendar row.created}}
+        </td>
+        <td data-title="{{t 'generic.actions'}}:" class="actions">
+          {{action-menu model=row}}
+        </td>
+      </tr>
+    {{else if (eq kind "nomatch")}}
+      <td colspan="6" class="text-center text-muted lacsso pt-20 pb-20">{{t 'rolesPage.index.table.noMatch'}}</td>
+    {{else if (eq kind "norows")}}
+      <td colspan="6" class="text-center text-muted lacsso pt-20 pb-20">{{t 'rolesPage.index.table.noData'}}</td>
+    {{/if}}
+  {{/sortable-table}}
+</section>

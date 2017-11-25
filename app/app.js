@@ -27,10 +27,13 @@ const App = Application.extend({
         services: [
           'access',
           'authn-store',
+          'authz-store',
           'catalog',
           'endpoint',
           'github',
           'intl',
+          'router',
+          'resource-actions',
           'scope',
           'session',
           'settings',
