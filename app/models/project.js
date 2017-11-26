@@ -32,17 +32,7 @@ var Project = Resource.extend(PolledResource, {
 
   actions: {
     edit: function() {
-      this.get('router').transitionTo('authenticated.clusters.project', this.get('id'));
-    },
-
-    delete: function() {
-      return this.delete().then(() => {
-        // If you're in the project that was deleted, go back to the default project
-        if ( this.get('active') )
-        {
-          window.location.href = window.location.href;
-        }
-      });
+      this.get('router').transitionTo('authenticated.projects.edit', this.get('id'));
     },
 
     activate: function() {
@@ -85,20 +75,24 @@ var Project = Resource.extend(PolledResource, {
     let l = this.get('links');
 
     var choices = [
-      { label: 'action.setDefault',       icon: 'icon icon-star-fill',    action: 'setAsDefault', enabled: this.get('canSetDefault')},
+      { label: 'action.edit',             icon: 'icon icon-edit',         action: 'edit',         enabled: true},
       { divider: true },
-      { label: 'action.edit',             icon: 'icon icon-edit',         action: 'edit',         enabled: !!l.update },
-      { divider: true },
-      { label: 'action.activate',         icon: 'icon icon-play',         action: 'activate',     enabled: !!a.activate, bulkable: true},
-      { label: 'action.deactivate',       icon: 'icon icon-pause',        action: 'promptStop',   enabled: !!a.deactivate, altAction: 'deactivate', bulkable: true},
-      { divider: true },
-      { label: 'action.remove',           icon: 'icon icon-trash',        action: 'promptDelete', enabled: !!l.remove, altAction: 'delete', bulkable: true },
+      { label: 'action.remove',           icon: 'icon icon-trash',        action: 'promptDelete', enabled: true, altAction: 'delete', bulkable: true },
       { divider: true },
       { label: 'action.viewInApi',        icon: 'icon icon-external-link',action: 'goToApi',      enabled: true },
     ];
 
     return choices;
   }),
+
+  delete: function (/*arguments*/) {
+    var promise = this._super.apply(this, arguments);
+    return promise.then(() => {
+      this.set('state', 'removed');
+    }).catch((err) => {
+      this.get('growl').fromError('Error deleting', err);
+    });
+  },
 
   icon: computed('active', function() {
     if ( this.get('active') )

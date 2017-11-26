@@ -1,22 +1,18 @@
 {{#sortable-table
   tableClassNames="bordered"
-  bulkActions=bulkActions
   paging=true
   pagingLabel="pagination.project"
-  search=search
-  sortBy=sortBy
-  descending=descending
   headers=headers
   body=model
+  sortBy=sortBy
   fullRows=true
-  stickyHeader=false
   as |sortable kind p dt|
 }}
   {{#if (eq kind "row")}}
-    {{project-row model=p dt=dt showCluster=showCluster search=search bulkActions=bulkActions}}
+    {{project-row model=p dt=dt}}
   {{else if (eq kind "nomatch")}}
-    <tr><td colspan="{{sortable.fullColspan}}" class="text-center text-muted lacsso pt-20 pb-20">{{t 'clusterRow.noMatch'}}</td></tr>
+    <tr><td colspan="{{sortable.fullColspan}}" class="text-center text-muted lacsso pt-20 pb-20">{{t 'projectsPage.table.noMatch'}}</td></tr>
   {{else if (eq kind "norows")}}
-    <tr><td colspan="{{sortable.fullColspan}}" class="text-center text-muted lacsso pt-20 pb-20">{{t 'clusterRow.noData'}}</td></tr>
+    <tr><td colspan="{{sortable.fullColspan}}" class="text-center text-muted lacsso pt-20 pb-20">{{t 'projectsPage.table.noData'}}</td></tr>
   {{/if}}
 {{/sortable-table}}

@@ -37,6 +37,12 @@ Router.map(function() {
 
     this.route('prefs');
 
+    this.route('projects', {path: '/projects'}, function() {
+      this.route('index', {path: '/'});
+      this.route('edit', {path: '/:project_id'});
+      this.route('new', {path: '/add'});
+    });
+
     // Clusters
     this.route('clusters', {path: '/clusters'}, function() {
       this.route('index', {path: '/'});
