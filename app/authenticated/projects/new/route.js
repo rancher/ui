@@ -8,12 +8,6 @@ export default Route.extend({
     const project = this.get('authzStore').createRecord({
       type: `project`,
       name: '',
-      projectRoleTemplateBindings: [{
-        subjectKind: 'User',
-        subjectName: '',
-        projectRoleTemplateId: '',
-        projectId: '',
-      }]
     });
     return hash({
       project,
