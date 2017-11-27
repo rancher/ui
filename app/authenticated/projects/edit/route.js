@@ -7,7 +7,8 @@ export default Route.extend({
     model: function (params) {
         return hash({
             project: this.get('authzStore').find('project', params.project_id),
-            projectRoleTemplateBindings: this.get('authzStore').findAll('projectRoleTemplateBinding', null, { filter: { projectId: params.project_id } }),
+            projectRoleTemplateBindings: this.get('authzStore').findAll('projectRoleTemplateBinding', { forceReload: true })
+                .then(bindings => bindings.filter(b => b.projectId === params.project_id)),
             projects: this.get('authzStore').findAll('project'),
             roles: this.get('authzStore').findAll('projectRoleTemplate'),
         });
