@@ -5,7 +5,8 @@
     sortBy=sortBy
     headers=headers
     searchText=searchText
-    body=filtered
+    body=model
+    rightActions=true
     as |sortable kind row dt|
   }}
     {{#if (eq kind "row")}}
@@ -29,6 +30,12 @@
       <td colspan="6" class="text-center text-muted lacsso pt-20 pb-20">{{t 'rolesPage.index.table.noMatch'}}</td>
     {{else if (eq kind "norows")}}
       <td colspan="6" class="text-center text-muted lacsso pt-20 pb-20">{{t 'rolesPage.index.table.noData'}}</td>
+    {{else if (eq kind "right-actions")}}
+      {{#if (eq type "project")}}
+        {{#link-to "roles.new" (query-params type="project") classNames="btn btn-sm bg-primary right-divider-btn"}} {{t 'rolesPage.addProjectRole'}} {{/link-to}}
+      {{else if (eq type "cluster")}}
+        {{#link-to "roles.new" (query-params type="cluster") classNames="btn btn-sm bg-primary right-divider-btn"}} {{t 'rolesPage.addClusterRole'}} {{/link-to}}
+      {{/if}}
     {{/if}}
   {{/sortable-table}}
 </section>
