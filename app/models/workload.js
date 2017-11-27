@@ -4,7 +4,7 @@ import { alias } from '@ember/object/computed';
 import Resource from 'ember-api-store/models/resource';
 import C from 'ui/utils/constants';
 import Util from 'ui/utils/util';
-import { denormalizeId, hasMany } from 'ember-api-store/utils/denormalize';
+import { reference, hasMany } from 'ember-api-store/utils/denormalize';
 import StateCounts from 'ui/mixins/state-counts';
 import EndpointPorts from 'ui/mixins/endpoint-ports';
 import { inject as service } from "@ember/service";
@@ -18,10 +18,8 @@ var Workload = Resource.extend(DisplayImage, StateCounts, EndpointPorts, {
   scope:         service(),
   router:        service(),
 
-  state: 'active', // @TODO-2.0
-
-  namespaceObj: denormalizeId('namespace','namespace'),
-  pods:         hasMany('pods', 'workload','id', 'pod','workloadId'),
+  namespace:    reference('namespaceId'),
+  pods:         hasMany('id', 'pod','workloadId'),
 
   init() {
     this._super(...arguments);

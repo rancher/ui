@@ -5,7 +5,7 @@ import Resource from 'ember-api-store/models/resource';
 import PolledResource from 'ui/mixins/cattle-polled-resource';
 import Util from 'ui/utils/util';
 import C from 'ui/utils/constants';
-import { denormalizeId } from 'ember-api-store/utils/denormalize';
+import { reference } from 'ember-api-store/utils/denormalize';
 
 var Project = Resource.extend(PolledResource, {
   access:       service(),
@@ -23,8 +23,8 @@ var Project = Resource.extend(PolledResource, {
   name:         null,
   description:  null,
 
-  cluster:      denormalizeId('clusterName', 'cluster', 'clusterStore'),
-  clusterName: 'mycluster',
+  cluster:      reference('clusterId', 'cluster', 'clusterStore'),
+  clusterId: 'mycluster', // @TODO-2.0
 
   canAddHost:   notEmpty('cluster.registrationToken.hostCommand'),
   canImport:    notEmpty('cluster.registrationToken.clusterCommand'),

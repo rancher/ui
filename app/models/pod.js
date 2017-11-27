@@ -1,6 +1,6 @@
 import C from 'ui/utils/constants';
 import Resource from 'ember-api-store/models/resource';
-import { denormalizeId } from 'ember-api-store/utils/denormalize';
+import { reference } from 'ember-api-store/utils/denormalize';
 import { computed } from '@ember/object';
 import Util from 'ui/utils/util';
 import { formatSi } from 'shared/utils/util';
@@ -8,8 +8,8 @@ import { get } from '@ember/object';
 import DisplayImage from 'shared/mixins/display-image';
 
 var Pod = Resource.extend(DisplayImage, {
-  namespaceObj: denormalizeId('namespace','namespace'),
-  node: denormalizeId('nodeId'),
+  namespace: reference('namespaceId'),
+  node: reference('nodeId'),
 
   availableActions: function() {
     var a = this.get('actionLinks');

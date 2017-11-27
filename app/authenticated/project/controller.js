@@ -67,7 +67,7 @@ export default Controller.extend({
 
   preSorts: function() {
     if ( this.get('groupTableBy') ) {
-      return ['namespaceObj.isDefault:desc','namespaceObj.displayName'];
+      return ['namespace.isDefault:desc','namespace.displayName'];
     } else {
       return null;
     }

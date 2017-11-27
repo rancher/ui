@@ -43,8 +43,8 @@ Router.map(function() {
       this.route('new', {path: '/add'}, function() {
         this.route('rke');
       });
-      this.route('new-project', {path: '/add-env'});
-      this.route('project', {path: '/env/:project_id'});
+      this.route('new-project', {path: '/add-project'});
+      this.route('project', {path: '/p/:project_id'});
 
       this.route('cluster', {path: '/:cluster_id'}, function() {
         this.route('edit');
@@ -65,11 +65,11 @@ Router.map(function() {
     });
 
     // Per-Project
-    this.route('project', {path: '/env/:project_id'}, function() {
+    this.route('project', {path: '/p/:project_id'}, function() {
       this.route('index', {path: '/'});
       this.route('apikeys', {path: '/api/keys'}, function() {
         this.route('account', {path: '/account'});
-        this.route('environment', {path: '/environment'});
+        this.route('project', {path: '/project'});
       });
       this.route('waiting');
 
@@ -151,7 +151,7 @@ Router.map(function() {
 
       this.route('apikeys', {path: '/api/keys'}, function() {
         this.route('account', {path: '/account'});
-        this.route('environment', {path: '/environment'});
+        this.route('project', {path: '/project'});
       });
 
       this.route('hooks', {path: '/api/hooks'}, function() {
