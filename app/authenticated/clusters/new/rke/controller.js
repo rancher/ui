@@ -19,18 +19,15 @@ export default Controller.extend({
   step:        null,
   loading:     null,
   newHost:     null,
-  // clusterList: null,
   canAdd: null,
   cluster: alias('model'),
   config: alias('model.rancherKubernetesEngineConfig'),
 
   init() {
     this._super(...arguments);
-    let newHostConfig = get(this, 'store').createRecord(CONFIG_DEFAULT);
-    set(newHostConfig, 'role', ['etcd']);
     this.setProperties({
       step: 1,
-      newHost: newHostConfig,
+      newHost: this.neuHostModel(),
       loading: false,
       canAdd: false,
     });
@@ -50,7 +47,7 @@ export default Controller.extend({
 
   clusterList: computed('config.hosts.@each.{role,advertisedHostname,user,ssh}', function() {
     // unfilterd list of host
-    return ( get(this, 'config.hosts') || [] ).uniq();
+    return ( get(this, 'config.hosts') || [] );
   }),
 
   hostObserver: observer('newHost.user','newHost.advertisedHostname','newHost.ssh', function() {
@@ -60,30 +57,64 @@ export default Controller.extend({
     (cName.length > 0) && (hName.length > 0) && (ssh.length > 0) ? set(this, 'canAdd', true) : set(this, 'canAdd', false);
   }),
 
+  currentRole: function() {
+    let role = 'etcd';
+    let step = get(this, 'step');
+    switch(step) {
+    case 1:
+      role = 'etcd';
+      break;
+    case 2:
+      role = 'controlplane';
+      break;
+    case 3:
+      role = 'worker';
+      break;
+    default:
+      break;
+    }
+    return role;
+  },
+
+  neuHostModel: function() {
+    let newHostConfig = get(this, 'store').createRecord(CONFIG_DEFAULT);
+    set(newHostConfig, 'role', [this.currentRole()]);
+    return newHostConfig;
+  },
+
   actions: {
     save() {
+      get(this, 'cluster').save().then((resp) => {
+        resp;
+        debugger;
+      }).catch((err) => {
+        err;
+        debugger;
+      });
     },
     cancel(prev) {
       this.send('goToPrevious',prev);
     },
     addNew(type) {
       // TODO - set role
-      let neu = CONFIG_DEFAULT;
-      set(neu, 'role', []);
       this.get('modalService').toggleModal('modal-add-cluster', {
-        newHost: get(this, 'store').createRecord(neu),
+        newHost: get(this, 'store').createRecord(this.neuHostModel()),
         list: get(this, type),
+        scope: this,
       });
     },
     go() {
       this.incrementProperty('step');
+      set(this, 'newHost', this.neuHostModel());
     },
     back() {
+      this.notifyPropertyChange('clusterList');
       this.decrementProperty('step');
+      set(this, 'newHost', this.neuHostModel());
     },
     addHost() {
-      get(this, 'config.hosts').pushObject(get(this, 'newHost'));
-      set(this, 'newHost', get(this, 'store').createRecord(CONFIG_DEFAULT));
+      get(this, 'config.hosts').addObject(get(this, 'newHost'));
+      set(this, 'newHost', this.neuHostModel());
     },
     removeHost(host, roleToRemove) {
       let roles = get(host, 'role');
@@ -92,6 +123,7 @@ export default Controller.extend({
         roles.removeAt(at);
         if (roles.length === 0) {
           get(this, 'config.hosts').removeObject(host);
+          set(this, 'newHost', this.neuHostModel());
         }
       }
     },
@@ -100,6 +132,7 @@ export default Controller.extend({
       let roles = get(host, 'role').slice(); //clone the array
       roles.addObject(role);
       set(host, 'role', roles);
+      set(this, 'newHost', this.neuHostModel());
     },
   }
 });

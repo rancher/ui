@@ -12,21 +12,17 @@
         </div>
         <hr/>
         <div class="row mt-10">
-            {{#each config.hosts as | cluster |}}
-              <div class="row help-text mt-10 mb-10">{{t 'clustersPage.addPage.rke.minimums.cluster'}}</div>
-              <div class="col span-12 border">
-                <div class="col span-10 pl-5 ">
-                  <h2 class="mt-5 mb-0">{{cluster.advertisedHostname}}</h2>
-                </div>
-                <div class="col span-2 text-right">
-                  <button class="btn btn-sm bg-transparent" {{action 'removeHost' cluster 'etcd'}}><i class="icon icon-close mr-5"></i> {{t 'generic.remove'}}</button>
-                </div>
+          <div class="row help-text mt-10 mb-10">{{t 'clustersPage.addPage.rke.minimums.cluster'}}</div>
+          {{#each config.hosts as | cluster |}}
+            <div class="col span-12 border">
+              <div class="col span-10 pl-5 ">
+                <h2 class="mt-5 mb-0">{{cluster.advertisedHostname}}</h2>
               </div>
-            {{else}}
-              <div class="mt-10 mb-10">
-                <div class="row help-text">{{t 'clustersPage.addPage.rke.minimums.nocluster'}}</div>
+              <div class="col span-2 text-right">
+                <button class="btn btn-sm bg-transparent" {{action 'removeHost' cluster 'etcd'}}><i class="icon icon-close mr-5"></i> {{t 'generic.remove'}}</button>
               </div>
-            {{/each}}
+            </div>
+          {{/each}}
         </div>
         <div class="text-center pt-10">
           {{#if loading}}
@@ -44,35 +40,31 @@
     {{else if (eq step 2) }}
       <form class="form text-left">
         <div class="row">
-            {{#each controlplaneList as | cluster |}}
-              <div class="row help-text mt-10 mb-10">{{t 'clustersPage.addPage.rke.minimums.management'}}</div>
-              <div class="col span-12 border">
-                <div class="col span-10 pl-5 ">
-                  <h2 class="mt-5 mb-0">{{cluster.advertisedHostname}}</h2>
-                </div>
-                <div class="col span-2 text-right">
-                  <button class="btn btn-sm bg-transparent" {{action 'removeHost' cluster 'controlplane'}}><i class="icon icon-close mr-5"></i> {{t 'generic.remove'}}</button>
-                </div>
+          <div class="row help-text mt-10 mb-10">{{t 'clustersPage.addPage.rke.minimums.management'}}</div>
+          {{#each controlplaneList as | cluster |}}
+            <div class="col span-12 border">
+              <div class="col span-10 pl-5 ">
+                <h2 class="mt-5 mb-0">{{cluster.advertisedHostname}}</h2>
               </div>
-            {{else}}
-              <div class="row help-text">{{t 'clustersPage.addPage.rke.minimums.noManagement'}}</div>
-            {{/each}}
+              <div class="col span-2 text-right">
+                <button class="btn btn-sm bg-transparent" {{action 'removeHost' cluster 'controlplane'}}><i class="icon icon-close mr-5"></i> {{t 'generic.remove'}}</button>
+              </div>
+            </div>
+          {{/each}}
         </div>
         <hr/>
         <div class="row">
-          {{#if clusterList.length }}
-            <div class="row help-text mt-10 mb-10">{{t 'clustersPage.addPage.rke.reuse.nodes'}}</div>
-            {{#each clusterList as | cluster |}}
-              <div class="col span-12 border">
-                <div class="col span-10 pl-5 ">
-                  <h2 class="mt-5 mb-0">{{cluster.advertisedHostname}}</h2>
-                </div>
-                <div class="col span-2 text-right">
-                  <button class="btn btn-sm bg-transparent" {{action 'useFor' cluster 'controlplane'}}>{{t 'clustersPage.addPage.rke.reuse.management'}}</button>
-                </div>
+          <div class="row help-text mt-10 mb-10">{{t 'clustersPage.addPage.rke.reuse.nodes'}}</div>
+          {{#each clusterList as | cluster |}}
+            <div class="col span-12 border">
+              <div class="col span-10 pl-5 ">
+                <h2 class="mt-5 mb-0">{{cluster.advertisedHostname}}</h2>
               </div>
-            {{/each}}
-          {{/if}}
+              <div class="col span-2 text-right">
+                <button class="btn btn-sm bg-transparent" {{action 'useFor' cluster 'controlplane'}}>{{t 'clustersPage.addPage.rke.reuse.management'}}</button>
+              </div>
+            </div>
+          {{/each}}
         </div>
         <div class="text-center">
           {{#if loading}}
@@ -90,43 +82,69 @@
     {{else if (eq step 3) }}
       <form class="form text-left">
         <div class="row">
-            <div class="row help-text mt-10 mb-10">{{t 'clustersPage.addPage.rke.minimums.nodes'}}</div>
-            {{#each workerList as | cluster |}}
-              <div class="col span-12 border">
-                <div class="col span-10 pl-5 ">
-                  <h2 class="mt-5 mb-0">{{cluster.advertisedHostname}}</h2>
-                </div>
-                <div class="col span-2 text-right">
-                  <button class="btn btn-sm bg-transparent" {{action 'removeHost' cluster 'worker'}}> <i class="icon icon-close mr-5"></i>{{t 'generic.remove'}}</button>
-                </div>
+          <div class="row help-text mt-10 mb-10">{{t 'clustersPage.addPage.rke.minimums.nodes'}}</div>
+          {{#each workerList as | cluster |}}
+            <div class="col span-12 border">
+              <div class="col span-10 pl-5 ">
+                <h2 class="mt-5 mb-0">{{cluster.advertisedHostname}}</h2>
               </div>
-            {{else}}
-              <div class="mt-10 mb-10">
-                <div class="row help-text mt-10 mb-10">{{t 'clustersPage.addPage.rke.minimums.noNodes'}}</div>
+              <div class="col span-2 text-right">
+                <button class="btn btn-sm bg-transparent" {{action 'removeHost' cluster 'worker'}}> <i class="icon icon-close mr-5"></i>{{t 'generic.remove'}}</button>
               </div>
-            {{/each}}
+            </div>
+          {{/each}}
         </div>
         <hr/>
         <div class="row">
-          {{#if clusterList.length }}
-            <div class="row help-text mt-10 mb-10">{{t 'clustersPage.addPage.rke.reuse.nodes'}}</div>
-            {{#each clusterList as | cluster |}}
-              <div class="col span-12 border">
-                <div class="col span-10 pl-5 ">
-                  <h2 class="mt-5 mb-0">{{cluster.advertisedHostname}}</h2>
-                </div>
-                <div class="col span-2 text-right">
-                  <button class="btn btn-sm bg-transparent" {{action 'useFor' cluster 'worker'}}> <i class="icon icon-close mr-5"></i>{{t 'clustersPage.addPage.rke.reuse.useNode'}}</button>
-                </div>
+          <div class="row help-text mt-10 mb-10">{{t 'clustersPage.addPage.rke.reuse.nodes'}}</div>
+          {{#each clusterList as | cluster |}}
+            <div class="col span-12 border">
+              <div class="col span-10 pl-5 ">
+                <h2 class="mt-5 mb-0">{{cluster.advertisedHostname}}</h2>
               </div>
-            {{/each}}
-          {{/if}}
+              <div class="col span-2 text-right">
+                <button class="btn btn-sm bg-transparent" {{action 'useFor' cluster 'worker'}}> <i class="icon icon-close mr-5"></i>{{t 'clustersPage.addPage.rke.reuse.useNode'}}</button>
+              </div>
+            </div>
+          {{/each}}
         </div>
         <div class="text-center">
           {{#if loading}}
             <button class="btn bg-primary mt-10 btn-disabled" disabled><i class="icon icon-spinner icon-spin"></i> {{t 'generic.loading'}}</button>
           {{else}}
             <button {{action 'addNew' 'workerList'}} class="btn bg-primary mt-10" >{{t 'generic.add'}}</button>
+            <button {{action 'go'}} class="btn bg-primary mt-10" >{{t 'generic.save'}}</button>
+          {{/if}}
+        </div>
+      </form>
+    {{else if (eq step 4) }}
+      <form class="form text-left">
+        <div class="row">
+          {{#each clusterList as | cluster |}}
+            <div class="col span-12 border">
+              <div class="col span-10 pl-5 ">
+                <h2 class="mt-5 mb-0">{{cluster.advertisedHostname}}</h2>
+                {{#each cluster.role as | role |}}
+                  {{role}}
+                {{/each}}
+              </div>
+              <div class="col span-2 text-right">
+                <button class="btn btn-sm bg-transparent" {{action 'useFor' cluster 'worker'}}> <i class="icon icon-close mr-5"></i>{{t 'clustersPage.addPage.rke.reuse.useNode'}}</button>
+              </div>
+            </div>
+          {{/each}}
+        </div>
+        <hr/>
+        <div class="row">
+          <div class="col span-6">
+            <label>{{t 'clustersPage.addPage.host.clusterName'}}{{field-required}}</label>
+            {{input type="text" value=cluster.name }}
+          </div>
+        </div>
+        <div class="text-center">
+          {{#if loading}}
+            <button class="btn bg-primary mt-10 btn-disabled" disabled><i class="icon icon-spinner icon-spin"></i> {{t 'generic.loading'}}</button>
+          {{else}}
             <button {{action 'save'}} class="btn bg-primary mt-10" >{{t 'generic.save'}}</button>
           {{/if}}
         </div>
