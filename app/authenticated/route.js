@@ -75,6 +75,7 @@ export default Route.extend(Subscribe, {
         this.preload('namespace'),
         this.preload('node'),
         this.preload('pod'),
+        this.preload('projectRoleTemplateBinding', 'authzStore'),
       ]);
     }).catch((err) => {
       return this.loadingError(err, transition);

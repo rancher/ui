@@ -8,16 +8,15 @@ export default Route.extend({
     const project = this.get('authzStore').createRecord({
       type: `project`,
       name: '',
+      projectRoleTemplateBindings: [{
+        subjectKind: 'User',
+        subjectName: '',
+        projectRoleTemplateId: '',
+        projectId: '',
+      }]
     });
-    const projectRoleTemplateBindings = [{
-      subjectKind: 'User',
-      subjectName: '',
-      projectRoleTemplateId: '',
-      projectId: '',
-    }];
     return hash({
       project,
-      projectRoleTemplateBindings,
       projects: this.get('authzStore').findAll('project'),
       roles: this.get('authzStore').findAll('projectRoleTemplate'),
     });
