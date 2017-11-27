@@ -56,8 +56,8 @@ var Namespace = Resource.extend(StateCounts, {
   scope:        service(),
   router:       service(),
 
-  pods:      hasMany('pods', 'namespace', 'id', 'pod', 'namespaceId'),
-  workloads: hasMany('workloads', 'namespace', 'id', 'workload', 'namespaceId'),
+  pods:      hasMany('id', 'pod', 'namespaceId'),
+  workloads: hasMany('id', 'workload', 'namespaceId'),
 
   init() {
     this._super(...arguments);

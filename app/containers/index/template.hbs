@@ -3,7 +3,7 @@
 {{else}}
   {{#containers-header tags=tags simpleMode=simpleMode}}
     {{#link-to "new-stack" classNames="btn btn-sm bg-default mr-10"}}{{t 'nav.containers.importCompose'}}{{/link-to}}
-    {{#link-to "containers.run" scope.current.id class="btn btn-sm bg-primary"}}{{t 'nav.containers.addContainer'}}{{/link-to}}
+    {{#link-to "containers.run" scope.current.id class="btn btn-sm bg-primary"}}{{t 'nav.containers.deploy'}}{{/link-to}}
   {{/containers-header}}
 
   {{#if rows.length}}
@@ -18,7 +18,7 @@
            subRows=true
            fullRows=true
            groupByKey=groupTableBy
-           groupByRef="namespaceObj"
+           groupByRef="namespace"
            extraGroups=emptyNamespaces
            pagingLabel="pagination.containerService"
            subSearchField="instances"
@@ -58,6 +58,6 @@
       {{/sortable-table}}
     </section>
   {{else}}
-    {{empty-table resource="container" newRoute="containers.run" newTranslationKey="nav.containers.addContainer"}}
+    {{empty-table resource="container" newRoute="containers.run" newTranslationKey="nav.containers.deploy"}}
   {{/if}}
 {{/if}}

@@ -75,17 +75,17 @@ export default Controller.extend({
     // Containers
     let out = this.get('model.pods').filter((obj) => {
       return (groupNone || !obj.get('workloadId')) &&
-              showNamespace[obj.get('namespace')];
+              showNamespace[obj.get('namespaceId')];
     });
 
     // Services
     if ( !groupNone ) {
       out.pushObjects(this.get('model.workloads').filter((obj) => {
-        return showNamespace[obj.get('namespace')] &&
+        return showNamespace[obj.get('namespaceId')] &&
                 !obj.get('isBalancer');
       }));
     }
 
     return out;
-  }.property('group','showNamespace','tags','model.workloads.@each.{namespace,isBalancer}','model.pods.@each.{workloadId,namespace}'),
+  }.property('group','showNamespace','tags','model.workloads.@each.{namespaceId,isBalancer}','model.pods.@each.{workloadId,namespaceId}'),
 });
