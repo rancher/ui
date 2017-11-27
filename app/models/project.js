@@ -90,6 +90,9 @@ var Project = Resource.extend(PolledResource, {
     var promise = this._super.apply(this, arguments);
     return promise.then(() => {
       this.set('state', 'removed');
+      if (this.get('active')) {
+        window.location.href = window.location.href;
+      }
     }).catch((err) => {
       this.get('growl').fromError('Error deleting', err);
     });
