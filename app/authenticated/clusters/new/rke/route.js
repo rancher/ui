@@ -2,6 +2,7 @@ import Ember from 'ember';
 import { inject as service } from '@ember/service';
 import { get, set } from '@ember/object';
 
+
 export default Ember.Route.extend({
   store: service('cluster-store'),
   model: function(/* params, transition */) {

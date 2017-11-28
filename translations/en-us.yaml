@@ -581,20 +581,32 @@ clustersPage:
       hostName: Host Name
       ssh: SSH Key
     rke:
-      header: |
-        {count, plural,
-        =1 {Add RKE: Step # set up your ETCD hosts.}
-        =2 {Add RKE: Step # Add Managment hosts.}
-        =3 {Add RKE: Step # Add Nodes Hosts.}
-        =4 {Add RKE: Step # Cluster Name and Options.}
-        }
-      reuse:
-        radioLabel: Specify your existing ETCD cluster
-        nodes: Reuse other nodes
-        management: Use for Managment
-        useNode: Use as Node
+      header: Add Cluster
       new:
-        radioLabel: Add new cluster
+        addHost: Add Host
+        radio:
+          embedded:
+            label: Embedded
+          dedicated:
+            label: Dedicated
+        name:
+          placeholder: production
+        description:
+          placeholder: production
+        options:
+          auth:
+            label: Auth Choices
+            x509: x509
+          network:
+            label: Network Choices
+            flannel: Flannel
+            calico: Calico
+            canal: Canal
+        headers:
+          labels:
+            etcd: ETCD
+            control: Control Plane
+            worker: Worker
       minimums:
         cluster: Minimum 1 host. 3 hosts recommended.
         nocluster: You have no hosts. Minimum 1 host. 3 hosts recommended.

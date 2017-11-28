@@ -2,10 +2,12 @@ import Controller from '@ember/controller';
 // import { copy } from '@ember/object/internals';
 import { get, set } from '@ember/object';
 import { inject as service } from '@ember/service';
-import { computed,observer } from '@ember/object';
+// import { computed,observer } from '@ember/object';
 import { alias } from '@ember/object/computed';
+import NewOrEdit from 'ui/mixins/new-or-edit';
+import EmberObject from '@ember/object';
 
-const CONFIG_DEFAULT = {
+const RKECONFIGHOST_DEFAULT = {
   advertisedHostname: '',
   role: null,
   type: 'rkeConfigHost',
@@ -13,126 +15,116 @@ const CONFIG_DEFAULT = {
   ssh: '',
 };
 
-export default Controller.extend({
+const headersAll = [
+  {
+    name: 'state',
+    sort: ['sortState','displayName'],
+    searchField: 'displayState',
+    translationKey: 'generic.state',
+  },
+  {
+    name: 'name',
+    sort: ['displayName','id'],
+    searchField: 'displayName',
+    translationKey: 'generic.name',
+  },
+  {
+    name: 'etcd',
+    sort: false,
+    searchField: null,
+    translationKey: 'clustersPage.addPage.rke.new.headers.labels.etcd',
+  },
+  {
+    name: 'controlplane',
+    sort: false,
+    searchField: null,
+    translationKey: 'clustersPage.addPage.rke.new.headers.labels.control',
+  },
+  {
+    name: 'worker',
+    sort: false,
+    searchField: null,
+    translationKey: 'clustersPage.addPage.rke.new.headers.labels.worker',
+  },
+];
+
+const NETWORK = [
+  {label: 'clustersPage.addPage.rke.new.options.network.flannel', value: 'flannel'},
+  {label: 'clustersPage.addPage.rke.new.options.network.calico', value: 'calico'},
+  {label: 'clustersPage.addPage.rke.new.options.network.canal', value: 'canal'},
+];
+const AUTH = [
+  {label: 'clustersPage.addPage.rke.new.options.auth.x509', value: 'x509'},
+];
+
+export default Controller.extend(NewOrEdit, {
   modalService: service('modal'),
-  store: service('cluster-store'),
-  step:        null,
-  loading:     null,
-  newHost:     null,
-  canAdd: null,
-  cluster: alias('model'),
-  config: alias('model.rancherKubernetesEngineConfig'),
+  store:        service('cluster-store'),
+  loading:      null,
+  newHost:      null,
+  canSave:       null,
+  primaryResource: alias('model'),
+  config:       alias('primaryResource.rancherKubernetesEngineConfig'),
+  scope: null,
+  headers: headersAll,
+  sortBy: 'name',
+  searchText: '',
+  hasEtcd: null,
+  hasControlPlane: null,
+  hasWorkers: null,
+  authChoices: AUTH,
+  networkChoices: NETWORK,
 
   init() {
     this._super(...arguments);
     this.setProperties({
-      step: 1,
-      newHost: this.neuHostModel(),
       loading: false,
-      canAdd: false,
+      canSave: false,
+      scope: 'dedicated',
+      hasEtcd: false,
+      hasControlPlane: false,
+      hasWorkers: false,
     });
-  },
-
-  workerList: computed('config.hosts.@each.{role,advertisedHostname,user}', function() {
-    return ( get(this, 'config.hosts') || [] ).filter((host) => {
-      return (get(host, 'role')||[]).includes('worker');
-    });
-  }),
-
-  controlplaneList: computed('config.hosts.@each.{role,advertisedHostname,user}', function() {
-    return ( get(this, 'config.hosts') || [] ).filter((host) => {
-      return (get(host, 'role')||[]).includes('controlplane');
-    });
-  }),
-
-  clusterList: computed('config.hosts.@each.{role,advertisedHostname,user,ssh}', function() {
-    // unfilterd list of host
-    return ( get(this, 'config.hosts') || [] );
-  }),
-
-  hostObserver: observer('newHost.user','newHost.advertisedHostname','newHost.ssh', function() {
-    let cName = get(this, 'newHost.user');
-    let hName = get(this, 'newHost.advertisedHostname');
-    let ssh = get(this, 'newHost.ssh');
-    (cName.length > 0) && (hName.length > 0) && (ssh.length > 0) ? set(this, 'canAdd', true) : set(this, 'canAdd', false);
-  }),
-
-  currentRole: function() {
-    let role = 'etcd';
-    let step = get(this, 'step');
-    switch(step) {
-    case 1:
-      role = 'etcd';
-      break;
-    case 2:
-      role = 'controlplane';
-      break;
-    case 3:
-      role = 'worker';
-      break;
-    default:
-      break;
-    }
-    return role;
-  },
-
-  neuHostModel: function() {
-    let newHostConfig = get(this, 'store').createRecord(CONFIG_DEFAULT);
-    set(newHostConfig, 'role', [this.currentRole()]);
-    return newHostConfig;
   },
 
   actions: {
     save() {
-      get(this, 'cluster').save().then((resp) => {
-        resp;
-        debugger;
-      }).catch((err) => {
-        err;
-        debugger;
-      });
+      debugger;
     },
     cancel(prev) {
       this.send('goToPrevious',prev);
     },
-    addNew(type) {
-      // TODO - set role
-      this.get('modalService').toggleModal('modal-add-cluster', {
-        newHost: get(this, 'store').createRecord(this.neuHostModel()),
-        list: get(this, type),
-        scope: this,
-      });
-    },
-    go() {
-      this.incrementProperty('step');
-      set(this, 'newHost', this.neuHostModel());
-    },
-    back() {
-      this.notifyPropertyChange('clusterList');
-      this.decrementProperty('step');
-      set(this, 'newHost', this.neuHostModel());
-    },
-    addHost() {
-      get(this, 'config.hosts').addObject(get(this, 'newHost'));
-      set(this, 'newHost', this.neuHostModel());
-    },
-    removeHost(host, roleToRemove) {
-      let roles = get(host, 'role');
-      let at = roles.indexOf(roleToRemove);
-      if (at >= 0) {
-        roles.removeAt(at);
-        if (roles.length === 0) {
-          get(this, 'config.hosts').removeObject(host);
-          set(this, 'newHost', this.neuHostModel());
+    addRole(host, type) {
+      let store = get(this, 'store');
+      let neu = EmberObject.create(RKECONFIGHOST_DEFAULT);
+      let config = get(this, 'config');
+      let hosts = get(config, 'hosts') || [];
+      let match = hosts.findBy('advertisedHostname', get(host, 'displayName'))
+      if (match) {
+        let roles = get(match, 'role');
+        // exists now check roles
+        if (roles.includes(type)) {
+          // remove
+          roles.removeObject(type);
+          //last one? remove that as well
+          if (roles.length === 0) {
+            hosts.removeObject(match);
+          }
+        } else {
+          //add new role
+          roles.addObject(type);
         }
+      } else {
+        neu.setProperties({
+          advertisedHostname: get(host, 'displayName'),
+          role: [type],
+          type: 'rkeConfigHost',
+          user: 'root',
+          ssh: '123',
+        });
+        neu = store.createRecord(neu);
+        hosts.addObject(neu);
       }
-    },
-    useFor(host, role) {
-      // set knows nothing changed so it will not fire the computed propertiy change events
-      let roles = get(host, 'role').slice(); //clone the array
-      roles.addObject(role);
-      set(host, 'role', roles);
-      set(this, 'newHost', this.neuHostModel());
-    },
+    }
   }
 });

@@ -3,6 +3,10 @@ import { inject as service } from '@ember/service';
 import Route from '@ember/routing/route';
 import C from 'ui/utils/constants';
 
+// @@TODO@@ - 11-28-17 - just temp until endpoints
+import Mocks from './mocks';
+import Schemas from './schemas';
+
 export default Route.extend({
   clusterStore: service('cluster-store'),
   catalog: service(),
@@ -11,36 +15,23 @@ export default Route.extend({
   model() {
     // TODO - !!FORDEV!! removed for dev sake
     let store = this.get('clusterStore');
-    let def = JSON.parse(this.get(`settings.${C.SETTING.CLUSTER_TEMPLATE}`)) || {};
 
+    store._bulkAdd('schema', Schemas);
+    Object.keys(Mocks).forEach((mock) => {
+      var toAdd = Mocks[mock];
+      store._typeify(toAdd.data, {updateStore: true});
+    })
+    let def = JSON.parse(this.get(`settings.${C.SETTING.CLUSTER_TEMPLATE}`)) || {};
     def.type = 'cluster';
-    // def.systemStacks = (def.systemStacks||[]).map((stack) => {
-    //   stack.type = 'stackConfiguration';
-    //   return stack;
-    // });
 
     let cluster = store.createRecord(def);
 
-    // return this.get('catalog').fetchTemplates({plusInfra: true}).then((templates) => {
-    //   return EmberObject.create({
-    //     cluster: cluster,
-    //     allTemplates: templates
-    //   });
-    // });
-    return EmberObject.create({cluster: cluster, allTemplates: []});
+    return EmberObject.create({
+      cluster: cluster,
+      allTemplates: [],
+      hosts: store.all('host'), // this should eventually be all host with out cluster id
+      hostTemplates: store.all('hosttemplate'),
+      drivers: store.all('machinedriver'),
+    });
   },
-  // teardownForComponentState: on('deactivate', function(){
-  //   this.controller.setProperties({
-  //     catalogItem:         null,
-  //     editCatalog:         false,
-  //     selectedTemplateUrl: null,
-  //     catalogInfo:         null,
-  //     _catalogInfoCache:   null,
-  //     _prefetchInstance:   null,
-  //     catalogId:           'all',
-  //     category:            null,
-  //     viewCatalog:         false,
-  //     newSystemStack:      null,
-  //   });
-  // })
 });
