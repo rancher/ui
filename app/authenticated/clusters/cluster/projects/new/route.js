@@ -4,10 +4,12 @@ import Route from '@ember/routing/route';
 
 export default Route.extend({
   authzStore: service('authz-store'),
+  scope: service(),
   model: function () {
     const project = this.get('authzStore').createRecord({
       type: `project`,
       name: '',
+      clusterId: this.get('scope.currentCluster.id'),
     });
     return hash({
       project,
