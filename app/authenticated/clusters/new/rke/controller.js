@@ -58,36 +58,42 @@ const AUTH = [
 ];
 
 export default Controller.extend(NewOrEdit, {
-  modalService: service('modal'),
-  store:        service('cluster-store'),
-  loading:      null,
-  newHost:      null,
-  canSave:       null,
-  primaryResource: alias('model'),
-  config:       alias('primaryResource.rancherKubernetesEngineConfig'),
-  scope: null,
-  headers: headersAll,
-  sortBy: 'name',
-  searchText: '',
-  hasEtcd: null,
+  modal:           service('modal'),
+  store:           service('cluster-store'),
+  loading:         null,
+  newHost:         null,
+  canSave:         null,
+  primaryResource: alias('model.cluster'),
+  config:          alias('primaryResource.rancherKubernetesEngineConfig'),
+  scope:           null,
+  headers:         headersAll,
+  sortBy:          'name',
+  searchText:      '',
+  hasEtcd:         null,
   hasControlPlane: null,
-  hasWorkers: null,
-  authChoices: AUTH,
-  networkChoices: NETWORK,
+  hasWorkers:      null,
+  authChoices:     AUTH,
+  networkChoices:  NETWORK,
 
   init() {
     this._super(...arguments);
     this.setProperties({
-      loading: false,
-      canSave: false,
-      scope: 'dedicated',
-      hasEtcd: false,
+      loading:         false,
+      canSave:         false,
+      scope:           'dedicated',
+      hasEtcd:         false,
       hasControlPlane: false,
-      hasWorkers: false,
+      hasWorkers:      false,
     });
   },
 
   actions: {
+    addHost() {
+      get(this, 'modal').toggleModal('modal-add-cluster', {
+        templates: get(this, 'model.hostTemplates'),
+        hosts: get(this, 'model.hosts')
+      });
+    },
     save() {
       debugger;
     },

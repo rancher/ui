@@ -28,10 +28,9 @@ export default Route.extend({
 
     return EmberObject.create({
       cluster: cluster,
-      allTemplates: [],
       hosts: store.all('host'), // this should eventually be all host with out cluster id
       hostTemplates: store.all('hosttemplate'),
-      drivers: store.all('machinedriver'),
+      machineDrivers: store.all('machinedriver'),
     });
   },
 });
