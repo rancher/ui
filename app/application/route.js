@@ -136,7 +136,6 @@ export default Route.extend({
 
   shortcuts: {
     'shift+l': 'langToggle',
-    's': 'systemToggle',
   },
 
   finishLogin() {
