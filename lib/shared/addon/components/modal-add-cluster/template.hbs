@@ -1,8 +1,16 @@
-{{host-template-list
-    model=templates
-    launch=(action 'launch')
-}}
-<div class="footer-actions">
-  <button {{action 'add'}} class="btn bg-primary">{{t 'generic.save'}}</button>
-  <button {{action "cancel"}} class="btn bg-primary">{{t 'generic.cancel'}}</button>
-</div>
+{{#if (eq mode 'hostTemplate')}}
+  {{host-template-list
+      model=templates
+      launch=(action 'launch')
+  }}
+  <div class="footer-actions">
+    <button {{action 'add'}} class="btn bg-primary">{{t 'generic.save'}}</button>
+    <button {{action "cancel"}} class="btn bg-primary">{{t 'generic.cancel'}}</button>
+  </div>
+{{else if (eq mode 'launch')}}
+  {{cloud-host-add-or-edit
+      hostTemplate=launchHostTemplate
+      driver=launchHostDriver
+      goBack=(action 'goBack')
+  }}
+{{/if}}

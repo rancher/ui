@@ -91,7 +91,8 @@ export default Controller.extend(NewOrEdit, {
     addHost() {
       get(this, 'modal').toggleModal('modal-add-cluster', {
         templates: get(this, 'model.hostTemplates'),
-        hosts: get(this, 'model.hosts')
+        hosts: get(this, 'model.hosts'),
+        drivers: get(this, 'model.machineDrivers'),
       });
     },
     save() {
