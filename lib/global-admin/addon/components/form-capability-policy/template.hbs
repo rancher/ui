@@ -1,0 +1,38 @@
+{{#accordion-list-item
+     title=(t 'formCapabilityPodSecurityPolicy.title')
+     detail=(t 'formCapabilityPodSecurityPolicy.detail')
+     status=status
+     statusClass=statusClass
+     expandAll=expandAll
+     expand=(action expandFn)
+}}
+  <div class="row">
+    <div class="col box span-4">
+      <label class="acc-label">{{t 'formCapabilityPodSecurityPolicy.capabilities.allow'}}</label>
+      <select class="form-control select-cap-allow" multiple="true" onchange={{action 'modifyCapabilities' 'allowedCapabilities' }}>
+        {{#each capabilityChoices as |choice|}}
+          <option value={{choice}} selected={{array-includes model.allowedCapabilities choice}}>{{choice}}</option>
+        {{/each}}
+      </select>
+    </div>
+
+    <div class="col box span-4">
+      <label class="acc-label">{{t 'formCapabilityPodSecurityPolicy.capabilities.add'}}</label>
+      <select class="form-control select-cap-add" multiple="true" onchange={{action 'modifyCapabilities' 'defaultAddCapabilities' }}>
+        {{#each capabilityChoices as |choice|}}
+          <option value={{choice}} selected={{array-includes model.defaultAddCapabilities choice}}>{{choice}}</option>
+        {{/each}}
+      </select>
+    </div>
+
+    <div class="col box span-4">
+      <label class="acc-label">{{t 'formCapabilityPodSecurityPolicy.capabilities.drop'}}</label>
+      <select class="form-control select-cap-drop" multiple="true" onchange={{action 'modifyCapabilities' 'requiredDropCapabilities'}}>
+        {{#each capabilityChoices as |choice|}}
+          <option value={{choice}} selected={{array-includes model.requiredDropCapabilities choice}}>{{choice}}</option>
+        {{/each}}
+      </select>
+    </div>
+
+  </div>
+{{/accordion-list-item}}
