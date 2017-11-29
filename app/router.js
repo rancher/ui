@@ -61,6 +61,12 @@ Router.map(function() {
           this.route('index', {path: '/'});
           this.route('launch', {path: '/:template_id'});
         });
+
+        this.route('projects', {path: '/projects'}, function() {
+          this.route('index', {path: '/'});
+          this.route('edit', {path: '/:project_id'});
+          this.route('new', {path: '/add'});
+        });
       });
     });
 

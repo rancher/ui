@@ -94,6 +94,13 @@ const rootNav = [
     route: 'authenticated.clusters.cluster.storage',
     ctx: [getClusterId],
   },
+  {
+    scope: 'cluster',
+    id: 'cluster-projects',
+    localizedLabel: 'nav.cluster.projects',
+    route: 'authenticated.clusters.cluster.projects.index',
+    ctx: [getClusterId],
+  },
 ]
 
 export function initialize(/*appInstance*/) {

@@ -1,0 +1,66 @@
+<section class="header clearfix">
+  <div class="pull-left">
+    {{#if editing}}
+        <h1>{{t 'projectsPage.editProject'}}</h1>
+    {{else}}
+        <h1>{{t 'projectsPage.addProject'}}</h1>      
+    {{/if}}
+  </div>
+</section>
+
+<section class="horizontal-form container-fluid">
+  {{form-name-description
+      name=model.project.name
+      nameLabel="projectsPage.new.form.name.label"
+      nameRequired=true
+      nameDisabled=editing
+      namePlaceholder="projectsPage.new.form.name.placeholder"
+      colClass="col span-7"
+      descriptionShown=false
+  }}
+</section>
+
+<section class="horizontal-form container-fluid">
+  <div class="row">
+    <div class="col span-3">
+      <label class="pb-5 acc-label">{{t 'projectsPage.new.form.members.labelText'}}</label>
+    </div>
+  </div>
+  <div class="pl-10 pr-10">
+    <table class="table fixed no-lines">
+      <thead>
+        <tr>
+          <th width="150">{{t 'projectsPage.new.form.members.kind.label'}}</th>
+          <th>{{t 'projectsPage.new.form.members.name.label'}}</th>
+          <th>{{t 'projectsPage.new.form.members.role.label'}}</th>
+          <th width="10">&nbsp;</th>
+          <th width="40"></th>
+        </tr>
+      </thead>
+      <tbody>
+        {{#each memberArray as |member|}}
+          {{project-member-row member=member roles=model.roles remove="removeMember"}}
+        {{/each}}
+      </tbody>
+    </table>
+  </div>
+  <div class="mt-5">
+    <button class="btn bg-link icon-btn p-0" {{action "addMember" "User"}}>
+      <span class="darken"><i class="icon icon-plus text-small"/></span>
+      <span>{{t 'projectsPage.new.form.members.addUser'}}</span>
+    </button>
+
+    <button class="btn bg-link icon-btn p-0" {{action "addMember" "Group"}}>
+      <span class="darken"><i class="icon icon-plus text-small"/></span>
+      <span>{{t 'projectsPage.new.form.members.addGroup'}}</span>
+    </button>
+
+    <button class="btn bg-link icon-btn p-0" {{action "addMember" "ServiceAccount"}}>
+      <span class="darken"><i class="icon icon-plus text-small"/></span>
+      <span>{{t 'projectsPage.new.form.members.addServiceAccount'}}</span>
+    </button>
+  </div>
+</section>
+
+{{top-errors errors=errors}}
+{{save-cancel createLabel=(if editing 'projectsPage.saveEdit' 'projectsPage.saveNew') save="save" cancel="cancel"}}
