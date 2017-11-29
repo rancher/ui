@@ -27,65 +27,103 @@
         </div>
       </div>
       <div class="row">
-        {{#sortable-table
-             classNames="grid sortable-table"
-             body=model.hosts
-             searchText=searchText
-             sortBy=sortBy
-             fullRows=true
-             bulkActions=false
-             pagingLabel="pagination.host"
-             headers=headers as |sortable kind host dt|}}
-          {{#if (eq kind "row")}}
-            <tr class="main-row">
-              <td data-title="{{dt.state}}" class="state">
-                {{badge-state model=host}}
-              </td>
-              <td data-title="{{dt.name}}">
-                {{host.displayName}}
-              </td>
-              <td data-title="{{dt.etcd}}">
-                {{input type="checkbox" change=(action 'addRole' host 'etcd')}}
-              </td>
-              <td data-title="{{dt.controlplane}}">
-                {{input type="checkbox" change=(action 'addRole' host 'controlplane')}}
-              </td>
-              <td data-title="{{dt.worker}}">
-                {{input type="checkbox" change=(action 'addRole' host 'worker')}}
-              </td>
-            </tr>
-          {{else if (eq kind "nomatch")}}
-            <tr><td colspan="{{sortable.fullColspan}}" class="text-center text-muted lacsso pt-20 pb-20">{{t 'hostsPage.index.table.noMatch'}}</td></tr>
-          {{else if (eq kind "norows")}}
-            <tr><td colspan="{{sortable.fullColspan}}" class="text-center text-muted lacsso pt-20 pb-20" style="height:200px;">{{t 'hostsPage.index.table.noData'}}</td></tr>
-          {{/if}}
-        {{/sortable-table}}
-      </div>
-      <div class="row indicators">
-        <div class="col span-4">
-          {{#if hasEtcd}}
-            <i class="icon icon-success text-success"></i>
-          {{else}}
-            <i class="icon icon-x-circle text-error"></i>
-          {{/if}}
-          Odd # of ETCD Hosts
-        </div>
-        <div class="col span-4">
-          {{#if hasControlPlane}}
-            <i class="icon icon-success text-success"></i>
-          {{else}}
-            <i class="icon icon-x-circle text-error"></i>
-          {{/if}}
-          Something about Control Planes
-        </div>
-        <div class="col span-4">
-          {{#if hasWorkers}}
-            <i class="icon icon-success text-success"></i>
-          {{else}}
-            <i class="icon icon-x-circle text-error"></i>
-          {{/if}}
-          Something about Workers
-        </div>
+        {{#if (eq scope 'dedicated')}}
+          {{#sortable-table
+               classNames="grid sortable-table"
+               body=model.hosts
+               searchText=searchText
+               sortBy=sortBy
+               fullRows=true
+               bulkActions=false
+               pagingLabel="pagination.host"
+               headers=headersAll as |sortable kind host dt|}}
+            {{#if (eq kind "row")}}
+              <tr class="main-row">
+                <td data-title="{{dt.state}}" class="state">
+                  {{badge-state model=host}}
+                </td>
+                <td data-title="{{dt.name}}">
+                  {{host.displayName}}
+                </td>
+                <td data-title="{{dt.etcd}}">
+                  {{input type="checkbox" change=(action 'addRole' host 'etcd')}}
+                </td>
+                <td data-title="{{dt.controlplane}}">
+                  {{input type="checkbox" change=(action 'addRole' host 'controlplane')}}
+                </td>
+                <td data-title="{{dt.worker}}">
+                  {{input type="checkbox" change=(action 'addRole' host 'worker')}}
+                </td>
+              </tr>
+            {{else if (eq kind "nomatch")}}
+              <tr><td colspan="{{sortable.fullColspan}}" class="text-center text-muted lacsso pt-20 pb-20">{{t 'hostsPage.index.table.noMatch'}}</td></tr>
+            {{else if (eq kind "norows")}}
+              <tr><td colspan="{{sortable.fullColspan}}" class="text-center text-muted lacsso pt-20 pb-20" style="height:200px;">{{t 'hostsPage.index.table.noData'}}</td></tr>
+            {{/if}}
+          {{/sortable-table}}
+          <div class="row indicators mt-20 mb-10">
+            <div class="col span-4 text-center">
+              {{#if etcdSafe}}
+                <i class="icon icon-success text-success"></i>
+              {{else}}
+                <i class="icon icon-x-circle text-error"></i>
+              {{/if}}
+              {{t 'clustersPage.addPage.rke.minimums.cluster'}}
+            </div>
+            <div class="col span-4 text-center">
+              {{#if cpSafe}}
+                <i class="icon icon-success text-success"></i>
+              {{else}}
+                <i class="icon icon-x-circle text-error"></i>
+              {{/if}}
+              {{t 'clustersPage.addPage.rke.minimums.management'}}
+            </div>
+            <div class="col span-4 text-center">
+              {{#if workerSafe}}
+                <i class="icon icon-success text-success"></i>
+              {{else}}
+                <i class="icon icon-x-circle text-error"></i>
+              {{/if}}
+              {{t 'clustersPage.addPage.rke.minimums.nodes'}}
+            </div>
+          </div>
+        {{else}}
+          {{#sortable-table
+               classNames="grid sortable-table"
+               body=model.hosts
+               searchText=searchText
+               sortBy=sortBy
+               fullRows=true
+               bulkActions=false
+               pagingLabel="pagination.host"
+               headers=workerHeaders as |sortable kind host dt|}}
+            {{#if (eq kind "row")}}
+              <tr class="main-row">
+                <td data-title="{{dt.state}}" class="state">
+                  {{badge-state model=host}}
+                </td>
+                <td data-title="{{dt.name}}">
+                  {{host.displayName}}
+                </td>
+                <td data-title="{{dt.worker}}">
+                  {{input type="checkbox" change=(action 'addRole' host 'worker')}}
+                </td>
+              </tr>
+            {{else if (eq kind "nomatch")}}
+              <tr><td colspan="{{sortable.fullColspan}}" class="text-center text-muted lacsso pt-20 pb-20">{{t 'hostsPage.index.table.noMatch'}}</td></tr>
+            {{else if (eq kind "norows")}}
+              <tr><td colspan="{{sortable.fullColspan}}" class="text-center text-muted lacsso pt-20 pb-20" style="height:200px;">{{t 'hostsPage.index.table.noData'}}</td></tr>
+            {{/if}}
+          {{/sortable-table}}
+          <div class="row indicators text-center mt-20 mb-10">
+            {{#if workerSafe}}
+              <i class="icon icon-success text-success"></i>
+            {{else}}
+              <i class="icon icon-x-circle text-error"></i>
+            {{/if}}
+            {{t 'clustersPage.addPage.rke.minimums.nodes'}}
+          </div>
+        {{/if}}
       </div>
       <hr/>
       <div class="row pt-10">
