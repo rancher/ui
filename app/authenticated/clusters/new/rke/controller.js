@@ -59,7 +59,7 @@ const AUTH = [
 
 export default Controller.extend(NewOrEdit, {
   modal:           service('modal'),
-  store:           service('cluster-store'),
+  clusterStore:           service('cluster-store'),
   loading:         null,
   newHost:         null,
   canSave:         null,
@@ -102,7 +102,7 @@ export default Controller.extend(NewOrEdit, {
       this.send('goToPrevious',prev);
     },
     addRole(host, type) {
-      let store = get(this, 'store');
+      let clusterStore = get(this, 'clusterStore');
       let neu = EmberObject.create(RKECONFIGHOST_DEFAULT);
       let config = get(this, 'config');
       let hosts = get(config, 'hosts') || [];
@@ -129,7 +129,7 @@ export default Controller.extend(NewOrEdit, {
           user: 'root',
           ssh: '123',
         });
-        neu = store.createRecord(neu);
+        neu = clusterStore.createRecord(neu);
         hosts.addObject(neu);
       }
     }
