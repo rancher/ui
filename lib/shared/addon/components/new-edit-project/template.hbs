@@ -20,13 +20,16 @@
   }}
 </section>
 
-<section class="horizontal-form container-fluid">
-  <div class="row">
-    <div class="col span-3">
-      <label class="pb-5 acc-label">{{t 'projectsPage.new.form.members.labelText'}}</label>
-    </div>
-  </div>
-  <div class="pl-10 pr-10">
+{{#accordion-list as | al expandFn | }}
+  {{#accordion-list-item
+        title="Members"
+        detail="Who has access to this project and what level of access they have to manipulate it."
+        status=(t 'pagination.member' pages=1 count=memberArray.length)
+        statusClass=(if memberArray.length 'text-success' 'text-error')
+        expandAll=al.expandAll
+        expand=(action expandFn)
+        expandOnInit=true
+  }}
     <table class="table fixed no-lines">
       <thead>
         <tr>
@@ -43,24 +46,35 @@
         {{/each}}
       </tbody>
     </table>
-  </div>
-  <div class="mt-5">
-    <button class="btn bg-link icon-btn p-0" {{action "addMember" "User"}}>
-      <span class="darken"><i class="icon icon-plus text-small"/></span>
-      <span>{{t 'projectsPage.new.form.members.addUser'}}</span>
-    </button>
 
-    <button class="btn bg-link icon-btn p-0" {{action "addMember" "Group"}}>
-      <span class="darken"><i class="icon icon-plus text-small"/></span>
-      <span>{{t 'projectsPage.new.form.members.addGroup'}}</span>
-    </button>
+    <div class="mt-10">
+      <button class="btn bg-link icon-btn p-0" {{action "addMember" "User"}}>
+        <span class="darken"><i class="icon icon-plus text-small"/></span>
+        <span>{{t 'projectsPage.new.form.members.addUser'}}</span>
+      </button>
 
-    <button class="btn bg-link icon-btn p-0" {{action "addMember" "ServiceAccount"}}>
-      <span class="darken"><i class="icon icon-plus text-small"/></span>
-      <span>{{t 'projectsPage.new.form.members.addServiceAccount'}}</span>
-    </button>
-  </div>
-</section>
+      <button class="btn bg-link icon-btn p-0" {{action "addMember" "Group"}}>
+        <span class="darken"><i class="icon icon-plus text-small"/></span>
+        <span>{{t 'projectsPage.new.form.members.addGroup'}}</span>
+      </button>
+
+      <button class="btn bg-link icon-btn p-0" {{action "addMember" "ServiceAccount"}}>
+        <span class="darken"><i class="icon icon-plus text-small"/></span>
+        <span>{{t 'projectsPage.new.form.members.addServiceAccount'}}</span>
+      </button>
+    </div>
+  {{/accordion-list-item}}
+
+  {{#accordion-list-item
+        title="Namespaces"
+        detail="The Kubernetes namespaces that are managed by this project."
+        expandAll=al.expandAll
+        expand=(action expandFn)
+        expandOnInit=true
+  }}
+    Namespaces...
+  {{/accordion-list-item}}
+{{/accordion-list}}
 
 {{top-errors errors=errors}}
 {{save-cancel createLabel=(if editing 'projectsPage.saveEdit' 'projectsPage.saveNew') save="save" cancel="cancel"}}

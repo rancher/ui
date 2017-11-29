@@ -603,12 +603,14 @@ clustersPage:
     rke:
       header: Add Cluster
       new:
-        addHost: Add Host
+        addHost: Add a new node
         radio:
           embedded:
-            label: Embedded
+            label: Embedded 
+            detail: Shared etcd and control plane running inside {appName} server.
           dedicated:
             label: Dedicated
+            detail: Control-plane and etcd running on nodes dedicated to only this cluster.
         name:
           placeholder: production
         description:
@@ -624,16 +626,16 @@ clustersPage:
             canal: Canal
         headers:
           labels:
-            etcd: ETCD
-            control: Control Plane
-            worker: Worker
+            etcd: Use for etcd
+            control: Use for management
+            worker: Use as worker node
       minimums:
-        cluster: "Odd # of Hosts"
-        nocluster: You have no hosts. Minimum 1 host. 3 hosts recommended.
-        management: Minimum 1 host. 2 hosts recommended.
-        noManagement: You have no management nodes. Minimum 1 host. 3 hosts recommended.
-        nodes: Minimum 1 host.
-        noNodes: You have no hosts. Minimum 1 host.
+        cluster: 1, 3, or 5
+        nocluster: You have no nodes. Minimum 1 node. 3 nodes recommended.
+        management: At least one
+        noManagement: You have no management nodes. Minimum 1 node. 3 nodes recommended.
+        nodes: At least one
+        noNodes: You have no nodes. Minimum 1 node.
 
 containerPage:
   header: 'Container: {name}'
@@ -2130,21 +2132,21 @@ formScale:
   label: Scale
   showAdvanced: Scaling options
   mode:
-    containerPrefix: "Standalone container"
+    containerPrefix: "Standalone pod"
     containerSuffix: ""
-    servicePrefix: "Service with a scale of"
+    servicePrefix: "Workload with a scale of"
     serviceSuffix: |
       {scale, plural,
-        =1 {container}
-        other {containers}
+        =1 {pod}
+        other {pods}
       }
-    globalPrefix: "Global service with a scale of"
+    globalPrefix: "Global workload with a scale of"
     globalSuffix: |
       {scale, plural,
-        =1 {container}
-        other {containers}
-      } per host
-    sidekickInactive: "Sidekick: Match the scale and scheduling of a service"
+        =1 {pod}
+        other {pods}
+      } per node
+    sidekickInactive: "Sidekick: Match the scale and scheduling of a workload"
     sidekickPrefix: "Sidekick: Match the scale and scheduling of"
     sidekickSuffix: ""
 
@@ -3324,9 +3326,9 @@ newCatalog:
 
 newContainer:
   add:
-    container: Add Container
-    service: Add Service
-    globalService: Add Global Service
+    container: Add Pod
+    service: Add Workload
+    globalService: Add Global Workload
     sidekick: 'Add Sidekick'
     sidekickName: 'Add Sidekick of "{name}"'
   upgrade:
@@ -3500,11 +3502,21 @@ pagination:
     =0 {No Load Balancers}
     =1 {{count} {count, plural, =1 {Load Balancer} other {Load Balancers}}}
     other {{from} - {to} of {count} Load Balancers}}
-  mounts: |
+  member: |
+    {pages, plural,
+    =0 {No Members}
+    =1 {{count} {count, plural, =1 {Member} other {Members}}}
+    other {{from} - {to} of {count} Members}}
+  mount: |
     {pages, plural,
     =0 {No Mounts}
     =1 {{count} {count, plural, =1 {Mount} other {Mounts}}}
     other {{from} - {to} of {count} Mounts}}
+  namespace: |
+    {pages, plural,
+    =0 {No Namespaces}
+    =1 {{count} {count, plural, =1 {Namespace} other {Namespaces}}}
+    other {{from} - {to} of {count} Namespaces}}
   pod: |
     {pages, plural,
     =0 {No Pods}
@@ -3643,7 +3655,7 @@ siteAccess:
   organizations: Organizations
 
 stackRow:
-  label: "Stack: {name}"
+  label: "Namespace: {name}"
   standalone: Standalone
 
 svgServiceContainer:
@@ -3792,8 +3804,8 @@ driver:
 ##############################
 # Services
 ##############################
-allServices:
-  stackGroup: "Stack: {name}"
+allWorkloads:
+  namespace: "Namespace: {name}"
 
 ##############################
 # Navigation
@@ -3809,7 +3821,7 @@ nav:
     manage: Manage Clusters
     edit: 'Edit "{name}"'
   cluster:
-    hosts: Hosts
+    hosts: Nodes
     k8s: Kubernetes
     networking: Networking
     storage: Storage

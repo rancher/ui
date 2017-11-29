@@ -6,7 +6,7 @@ export default Route.extend({
   scope: service(),
 
   model: function() {
-    return this.get('clusterStore').find('node', null, {filter: {clusterId: this.get('scope.currentCluster.id')}}).then((nodes) => {
+    return this.get('clusterStore').find('clusterNode', null, {filter: {clusterId: this.get('scope.currentCluster.id')}}).then((nodes) => {
       return {
         hosts: nodes,
       };
