@@ -1,0 +1,37 @@
+<section class="instances">
+  {{#sortable-table
+    classNames="grid sortable-table"
+    fullRows=true
+    sortBy=sortBy
+    headers=headers
+    searchText=searchText
+    body=filtered
+    rightActions=true
+    as |sortable kind row dt|
+  }}
+    {{#if (eq kind "row")}}
+      <tr class="main-row">
+        <td valign="middle" class="row-check" style="padding-top: 2px;">
+          &nbsp;
+        </td>
+        <td data-title="{{t 'podSecurityPoliciesPage.index.table.name'}}:" class="clip">
+          {{#link-to "policies.edit" row.id}}
+            {{row.name}}
+          {{/link-to}}
+        </td>
+        <td data-title="{{t 'podSecurityPoliciesPage.index.table.created'}}:" >
+          {{date-calendar row.created}}
+        </td>
+        <td data-title="{{t 'generic.actions'}}:" class="actions">
+          {{action-menu model=row}}
+        </td>
+      </tr>
+    {{else if (eq kind "nomatch")}}
+      <td colspan="6" class="text-center text-muted lacsso pt-20 pb-20">{{t 'podSecurityPoliciesPage.index.table.noMatch'}}</td>
+    {{else if (eq kind "norows")}}
+      <td colspan="6" class="text-center text-muted lacsso pt-20 pb-20">{{t 'podSecurityPoliciesPage.index.table.noData'}}</td>
+    {{else if (eq kind "right-actions")}}
+      {{#link-to "policies.new" classNames="btn btn-sm bg-primary right-divider-btn"}} {{t 'podSecurityPoliciesPage.addPodSecurityPolicy'}} {{/link-to}}
+    {{/if}}
+  {{/sortable-table}}
+</section>

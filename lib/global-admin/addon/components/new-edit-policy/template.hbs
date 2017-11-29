@@ -1,0 +1,53 @@
+<section class="header clearfix">
+  <div class="pull-left">
+    {{#if editing}}
+      <h1>{{t 'podSecurityPoliciesPage.editPodSecurityPolicy'}}</h1>
+    {{else}}
+      <h1>{{t 'podSecurityPoliciesPage.addPodSecurityPolicy'}}</h1>
+    {{/if}}
+  </div>
+</section>
+
+<section class="horizontal-form container-fluid">
+  {{form-name-description
+      name=model.policy.name
+      nameRequired=true
+      nameDisabled=editing
+      namePlaceholder="podSecurityPoliciesPage.new.form.name.placeholder"
+      colClass="col span-7"
+      descriptionShown=false
+  }}
+</section>
+
+<section>
+  {{#accordion-list as |al expandFn|}}
+    <div class="mt-20">
+      {{form-basic-policy
+        model=model.policy
+        expandAll=al.expandAll
+        expandFn=expandFn
+      }}
+    </div>
+
+    <div class="mt-20">
+      {{form-capability-policy
+        model=model.policy
+        expandAll=al.expandAll
+        expandFn=expandFn
+      }}
+    </div>
+
+    <div class="mt-20">
+      {{form-volume-policy
+        model=model.policy
+        expandAll=al.expandAll
+        expandFn=expandFn
+      }}
+    </div>
+
+  {{/accordion-list}}
+</section>
+
+
+{{top-errors errors=errors}}
+{{save-cancel createLabel=(if editing 'podSecurityPoliciesPage.saveEdit' 'podSecurityPoliciesPage.saveNew') save="save" cancel="cancel"}}

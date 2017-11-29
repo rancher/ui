@@ -122,6 +122,26 @@ accountsPage:
         labelText: Description
         placeholder: "e.g. This account is for John Smith"
 
+podSecurityPoliciesPage:
+  index:
+    table:
+      name: Name
+      created: Created Time
+      noData: There are no pod security policies yet
+      noMatch: No pod security policies match the current search
+  addPodSecurityPolicy: Add Pod Security Policy
+  editPodSecurityPolicy: Edit Pod Security Policy
+  saveEdit: Edit
+  saveNew: Create
+  new:
+    errors:
+      nameReq: Name is requried.
+      nameInExists: Name is already exists. Please use a new pod security policy name.
+    form:
+      name:
+        labelText: Name
+        placeholder: "e.g. policy"
+
 rolesPage:
   index:
     clusterRoles: Cluster Roles
@@ -2494,6 +2514,50 @@ hookPage:
     url:
       label: Trigger URL
 
+formCapabilityPodSecurityPolicy:
+  title: Capability Policies
+  detail: Config set of capability Policies
+  capabilities:
+    allow: Allowed Capabilities
+    add: Default Add Capabilities
+    drop: Required Drop Capabilities
+
+formVolumePodSecurityPolicy:
+  title: Volume Policy
+  detail: Control the usage of volume types
+  volumes: Volumes
+
+formBasicPodSecurityPolicy:
+  title: Basic Policies
+  detail: Config basic pod security policies
+  allowPrivilegeEscalation:
+    label: Allow Privilege Escalation
+    enable: "Yes: Running of a container that allow privilege escalation from its parent"
+    disable: No
+  defaultAllowPrivilegeEscalation:
+    label: Default Allow Privilege Escalation
+    enable: "Yes: Control whether a process can gain more privileges than its parent process"
+    disable: No
+  hostIPC:
+    label: Host IPC
+    enable: "Yes: The use of host’s IPC namespace"
+    disable: No
+  hostNetwork:
+    label: Host Network
+    enable: "Yes: The use of host networking"
+    disable: No
+  hostPID:
+    label: Host PID
+    enable: "Yes: The use of host’s PID namespace"
+    disable: No
+  privileged:
+    label: Privileged
+    enable: "Yes: Running of privileged containers"
+    disable: No
+  readOnlyRootFilesystem:
+    label: Read Only Root Filesystem
+    enable: "Yes: Requiring the use of a read only root file system"
+    disable: No
 
 hostSettings:
   header: Host Registration URL
@@ -3791,6 +3855,7 @@ nav:
     tab: Admin Settings
     audit: Audit Log
     processes: Processes
+    podSecurityPolicies: Pod Security Policies
     accounts: Accounts
     catalog: Catalogs
     ha: HA

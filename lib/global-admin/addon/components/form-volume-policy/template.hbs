@@ -1,0 +1,19 @@
+{{#accordion-list-item
+     title=(t 'formVolumePodSecurityPolicy.title')
+     detail=(t 'formVolumePodSecurityPolicy.detail')
+     status=status
+     statusClass=statusClass
+     expandAll=expandAll
+     expand=(action expandFn)
+}}
+  <div class="row">
+    <div class="col box span-12">
+      <label class="acc-label">{{t 'formVolumePodSecurityPolicy.volumes'}}</label>
+      <select class="form-control" multiple="true" onchange={{action 'modifyVolumes'}}>
+        {{#each volumeChoices as |choice|}}
+          <option value={{choice}} selected={{array-includes model.volumes choice}}>{{choice}}</option>
+        {{/each}}
+      </select>
+    </div>
+  </div>
+{{/accordion-list-item}}

@@ -1,0 +1,24 @@
+{{#accordion-list-item
+     title=(t 'formBasicPodSecurityPolicy.title')
+     detail=(t 'formBasicPodSecurityPolicy.detail')
+     status=status
+     statusClass=statusClass
+     expandAll=expandAll
+     expand=(action expandFn)
+}}
+  {{#each basicPolicies as |row index|}}
+    <div class="{{if (eq index 0) 'row box' 'row box mt-20'}}">
+      {{#each row as |policy|}}
+        <div class="col span-4">
+          <label class="acc-label">{{t (concat-str 'formBasicPodSecurityPolicy' policy 'label' character='.')}}</label>
+          <div class="radio">
+            <label>{{radio-button selection=(get model policy) value=true}} {{t (concat-str 'formBasicPodSecurityPolicy' policy 'enable' character='.')}}</label>
+          </div>
+          <div class="radio">
+            <label>{{radio-button selection=(get model policy) value=false}} {{t (concat-str 'formBasicPodSecurityPolicy' policy 'disable' character='.')}}</label>
+          </div>
+        </div>
+      {{/each}}
+    </div>
+  {{/each}}
+{{/accordion-list-item}}
