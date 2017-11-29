@@ -23,7 +23,6 @@ var Project = Resource.extend(PolledResource, {
   description: null,
 
   cluster: reference('clusterId', 'cluster', 'clusterStore'),
-  clusterId: 'mycluster', // @TODO-2.0
 
   canAddHost: notEmpty('cluster.registrationToken.hostCommand'),
   canImport: notEmpty('cluster.registrationToken.clusterCommand'),

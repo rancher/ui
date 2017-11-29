@@ -87,7 +87,7 @@ export default Route.extend(Subscribe, {
     this._super();
     if ( !this.controllerFor('application').get('isPopup') && this.get('scope.current') )
     {
-      // @TODO-2.0 this.connectSubscribe();
+      //this.connectSubscribe();
     }
 
     if ( false && this.get('settings.isRancher') && !app.get('isPopup') ) // @TODO-2.0

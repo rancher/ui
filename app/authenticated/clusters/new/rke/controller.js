@@ -22,6 +22,7 @@ const headersAll = [
     searchField: 'displayState',
     translationKey: 'generic.state',
     scope: 'embedded',
+    width: 120,
   },
   {
     name: 'name',
@@ -83,7 +84,7 @@ export default Controller.extend(NewOrEdit, {
     this._super(...arguments);
     this.setProperties({
       loading:         false,
-      canSave:         false,
+      canSave:         true,
       scope:           'dedicated',
       countMap: {
         etcd: 0,
@@ -94,15 +95,16 @@ export default Controller.extend(NewOrEdit, {
   },
 
   etcdSafe: computed('countMap.etcd', function() {
-    return get(this, 'countMap.etcd') % 2 ? true : false;
+    const count = get(this, 'countMap.etcd');
+    return count === 1 || count === 3 || count === 5;
   }),
 
   cpSafe: computed('countMap.controlplane', function() {
-    return get(this, 'countMap.controlplane') >= 1 ? true : false;
+    return get(this, 'countMap.controlplane') >= 1;
   }),
 
   workerSafe: computed('countMap.worker', function() {
-    return get(this, 'countMap.worker') >= 1 ? true : false;
+    return get(this, 'countMap.worker') >= 1;
   }),
 
   countState: observer('config.hosts.[]', function() {
