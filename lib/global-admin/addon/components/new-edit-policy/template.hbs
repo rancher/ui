@@ -19,5 +19,18 @@
   }}
 </section>
 
+<section>
+  {{#accordion-list as |al expandFn|}}
+    <div class="mt-20">
+      {{form-basic-policy
+        model=model.policy
+        expandAll=al.expandAll
+        expandFn=expandFn
+      }}
+    </div>
+  {{/accordion-list}}
+</section>
+
+
 {{top-errors errors=errors}}
 {{save-cancel createLabel=(if editing 'podSecurityPoliciesPage.saveEdit' 'podSecurityPoliciesPage.saveNew') save="save" cancel="cancel"}}
