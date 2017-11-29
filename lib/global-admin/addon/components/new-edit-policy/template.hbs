@@ -1,0 +1,23 @@
+<section class="header clearfix">
+  <div class="pull-left">
+    {{#if editing}}
+      <h1>{{t 'podSecurityPoliciesPage.editPodSecurityPolicy'}}</h1>
+    {{else}}
+      <h1>{{t 'podSecurityPoliciesPage.addPodSecurityPolicy'}}</h1>
+    {{/if}}
+  </div>
+</section>
+
+<section class="horizontal-form container-fluid">
+  {{form-name-description
+      name=model.policy.name
+      nameRequired=true
+      nameDisabled=editing
+      namePlaceholder="podSecurityPoliciesPage.new.form.name.placeholder"
+      colClass="col span-7"
+      descriptionShown=false
+  }}
+</section>
+
+{{top-errors errors=errors}}
+{{save-cancel createLabel=(if editing 'podSecurityPoliciesPage.saveEdit' 'podSecurityPoliciesPage.saveNew') save="save" cancel="cancel"}}
