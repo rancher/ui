@@ -12,8 +12,6 @@ var Cluster = Resource.extend(PolledResource, {
 
   type:         'cluster',
 
-  state: 'active', // @TODO-2.0
-
   actions: {
     edit() {
       this.get('router').transitionTo('authenticated.clusters.cluster.edit', this.get('id'));

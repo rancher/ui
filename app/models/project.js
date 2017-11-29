@@ -18,8 +18,6 @@ var Project = Resource.extend(PolledResource, {
   cookies: service(),
   clusterStore: service('cluster-store'),
 
-  state: 'active', // @TODO-2.0
-
   type: 'project',
   name: null,
   description: null,

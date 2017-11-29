@@ -8,10 +8,15 @@ export default Route.extend({
   k8s: service(),
 
   model() {
+    return EmberObject.create({
+      stacks: [],
+    });
+    /*
     return hash({
       stacks: this.get('clusterStore').find('stack'),
     }).then((hash) => {
       return EmberObject.create(hash);
     });
+    */
   },
 });

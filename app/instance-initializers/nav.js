@@ -67,6 +67,13 @@ const rootNav = [
   // Cluster
   {
     scope: 'cluster',
+    id: 'cluster-projects',
+    localizedLabel: 'nav.cluster.projects',
+    route: 'authenticated.clusters.cluster.projects.index',
+    ctx: [getClusterId],
+  },
+  {
+    scope: 'cluster',
     id: 'cluster-hosts',
     localizedLabel: 'nav.cluster.hosts',
     route: 'authenticated.clusters.cluster.hosts',
@@ -77,7 +84,6 @@ const rootNav = [
     id: 'cluster-k8s',
     localizedLabel: 'nav.cluster.k8s',
     route: 'authenticated.clusters.cluster.k8s',
-    condition: function() { return this.get(`cluster.isKubernetes`); },
     ctx: [getClusterId],
   },
   {
@@ -92,13 +98,6 @@ const rootNav = [
     id: 'cluster-storage',
     localizedLabel: 'nav.cluster.storage',
     route: 'authenticated.clusters.cluster.storage',
-    ctx: [getClusterId],
-  },
-  {
-    scope: 'cluster',
-    id: 'cluster-projects',
-    localizedLabel: 'nav.cluster.projects',
-    route: 'authenticated.clusters.cluster.projects.index',
     ctx: [getClusterId],
   },
 ]
