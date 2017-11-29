@@ -118,11 +118,7 @@ module.exports = function(environment) {
       kubernetesDashboard: '/k8s/clusters/%CLUSTERID%/api/v1/namespaces/kube-system/services/kubernetes-dashboard/proxy/',
       projectEndpoint: '/v3/projects/%PROJECTID%',
       proxyEndpoint: '/v3/proxy',
-      wsEndpoint: '/v3/projects/%PROJECTID%/subscribe' +
-                    '?eventNames=resource.change' +
-                    '&resourceType_ne=auditLog' +
-                    '&resourceType_ne=serviceLog' +
-                    '&resourceType_ne=deploymentUnit',
+      wsEndpoint: '/v1-meta/subscribe?projectId=%PROJECTID%',
       baseAssets: '/',
       locales: readLocales(environment),
       stripe: {

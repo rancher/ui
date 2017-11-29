@@ -6,7 +6,7 @@ import Controller, { inject as controller } from '@ember/controller';
 export default Controller.extend({
   application:        controller(),
   scope:              service(),
-  allServices:        service(),
+  allWorkloads:       service(),
 
   service:            oneWay('model.service'),
   rules:              oneWay('service.lbConfig.portRules'),
@@ -105,7 +105,7 @@ export default Controller.extend({
   },
 
   serviceLinksNamed: computed('service.serviceLinks.[]', function() {
-    let as = this.get('allServices');
+    let as = this.get('allWorkloads');
 
     ( this.get('service.serviceLinks') || []).forEach((link) => {
       if (link) {

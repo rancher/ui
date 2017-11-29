@@ -14,7 +14,7 @@ var Workload = Resource.extend(DisplayImage, StateCounts, EndpointPorts, {
   intl:          service(),
   growl:         service(),
   modalService:  service('modal'),
-  allServices:   service(),
+  allWorkloads:  service(),
   scope:         service(),
   router:        service(),
 
@@ -210,13 +210,13 @@ var Workload = Resource.extend(DisplayImage, StateCounts, EndpointPorts, {
   }.property('displayName'),
 
   linkedServices: function() {
-    let allServices = this.get('allServices');
+    let allWorkloads = this.get('allWorkloads');
     let stack = this.get('stack');
     return (this.get('serviceLinks')||[]).map((link) => {
       return {
         name: link.name,
         alias: link.alias,
-        service: allServices.matching(link.name, stack),
+        service: allWorkloads.matching(link.name, stack),
       };
     });
   }.property('serviceLinks.@each.{name,alias}'),

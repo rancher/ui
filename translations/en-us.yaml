@@ -2130,21 +2130,21 @@ formScale:
   label: Scale
   showAdvanced: Scaling options
   mode:
-    containerPrefix: "Standalone container"
+    containerPrefix: "Standalone pod"
     containerSuffix: ""
-    servicePrefix: "Service with a scale of"
+    servicePrefix: "Workload with a scale of"
     serviceSuffix: |
       {scale, plural,
-        =1 {container}
-        other {containers}
+        =1 {pod}
+        other {pods}
       }
-    globalPrefix: "Global service with a scale of"
+    globalPrefix: "Global workload with a scale of"
     globalSuffix: |
       {scale, plural,
-        =1 {container}
-        other {containers}
-      } per host
-    sidekickInactive: "Sidekick: Match the scale and scheduling of a service"
+        =1 {pod}
+        other {pods}
+      } per node
+    sidekickInactive: "Sidekick: Match the scale and scheduling of a workload"
     sidekickPrefix: "Sidekick: Match the scale and scheduling of"
     sidekickSuffix: ""
 
@@ -3324,9 +3324,9 @@ newCatalog:
 
 newContainer:
   add:
-    container: Add Container
-    service: Add Service
-    globalService: Add Global Service
+    container: Add Pod
+    service: Add Workload
+    globalService: Add Global Workload
     sidekick: 'Add Sidekick'
     sidekickName: 'Add Sidekick of "{name}"'
   upgrade:
@@ -3792,8 +3792,8 @@ driver:
 ##############################
 # Services
 ##############################
-allServices:
-  stackGroup: "Stack: {name}"
+allWorkloads:
+  namespace: "Namespace: {name}"
 
 ##############################
 # Navigation

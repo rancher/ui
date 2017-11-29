@@ -1,6 +1,5 @@
 import $ from 'jquery';
 import C from 'ui/utils/constants';
-import EmberObject from '@ember/object';
 import Errors from 'ui/utils/errors';
 import Route from '@ember/routing/route';
 import Subscribe from 'ui/mixins/subscribe';
@@ -100,8 +99,7 @@ export default Route.extend(Subscribe, {
       if ( this.get('access.admin') && (!opt || opt === 'prompt') )
       {
         scheduleOnce('afterRender', this, function() {
-          // TODO - !!FORDEV!! removed for dev sake
-          // this.get('modalService').toggleModal('modal-telemetry');
+          this.get('modalService').toggleModal('modal-telemetry');
         });
       }
       else if ( form && !this.get(`prefs.${C.PREFS.FEEDBACK}`) )
