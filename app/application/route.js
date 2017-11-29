@@ -77,7 +77,6 @@ export default Route.extend({
       this.transitionTo('failWhale');
 
       console.log('Application Error', (err ? err.stack : undefined));
-      debugger;
     },
 
     goToPrevious(def) {
