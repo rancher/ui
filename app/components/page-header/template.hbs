@@ -69,7 +69,7 @@
                 {{/each}}
               </ul>
               {{#if item.showAlert}}
-                {{#tooltip-element class="tooltip-warning" type='tooltip-warning' tooltipFor="showAlert"}}
+                {{#tooltip-element class="tooltip-warning" type='tooltip-warning' tooltipFor="showAlert" model=item.alertMsg hideWarning=item.hideWarning}}
                   {{#link-to item.alertRoute data-toggle="tooltip" data-placement="bottom"}}!{{/link-to}}
                 {{/tooltip-element}}
               {{/if}}
@@ -86,6 +86,16 @@
               }}
                 {{#if item.localizedLabel}}{{t item.localizedLabel}}{{else}}{{item.label}}{{/if}}
               {{/link-to-as-attrs}}
+              {{#if item.showAlert}}
+                {{#tooltip-element class="tooltip-warning" type='tooltip-warning' tooltipFor="showAlert" model=item.alertMsg hideWarning=item.hideWarning}}
+                  {{#if item.alertRoute}}
+                    {{#link-to item.alertRoute data-toggle="tooltip" data-placement="bottom"}}!{{/link-to}}
+                  {{/if}}
+                  {{#if item.alertLink}}
+                    <a href="{{item.alertLink}}" target="_blank">!</a>
+                  {{/if}}
+                {{/tooltip-element}}
+              {{/if}}
             </li>
           {{else}}
             {{! Just a label }}

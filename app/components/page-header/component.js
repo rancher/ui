@@ -22,6 +22,7 @@ export default Ember.Component.extend(HoverDropdown, {
 
   // Injections
   projects             : Ember.inject.service(),
+  pipelineSvc          : Ember.inject.service('pipeline'),
   project              : Ember.computed.alias('projects.current'),
   projectId            : Ember.computed.alias(`tab-session.${C.TABSESSION.PROJECT}`),
   catalog              : Ember.inject.service(),
@@ -32,6 +33,8 @@ export default Ember.Component.extend(HoverDropdown, {
   hasVm                : Ember.computed.alias('project.virtualMachine'),
   hasSwarm             : Ember.computed.alias('projects.orchestrationState.hasSwarm'),
   hasKubernetes        : Ember.computed.alias('projects.orchestrationState.hasKubernetes'),
+  hasPipeline          : Ember.computed.alias('projects.orchestrationState.hasPipeline'),
+  hasActivityApprove   : Ember.computed.alias('projects.orchestrationState.hasActivityApprove'),
   hasMesos             : Ember.computed.alias('projects.orchestrationState.hasMesos'),
   swarmReady           : Ember.computed.alias('projects.orchestrationState.swarmReady'),
   mesosReady           : Ember.computed.alias('projects.orchestrationState.mesosReady'),
@@ -80,7 +83,9 @@ export default Ember.Component.extend(HoverDropdown, {
       if ( typeof item.alertCondition === 'function' && item.alertCondition.call(this) === true ) {
         item.showAlert = true;
       }
-
+      if ( typeof item.alertLink === 'function') {
+        item.alertLink = item.alertLink.call(this);
+      }
       item.submenu = (item.submenu||[]).filter((subitem) => {
         if ( typeof subitem.condition === 'function' && !subitem.condition.call(this) ) {
           return false;
@@ -113,7 +118,8 @@ export default Ember.Component.extend(HoverDropdown, {
     `settings.${C.SETTING.CATALOG_URL}`,
     `prefs.${C.PREFS.ACCESS_WARNING}`,
     'access.enabled',
-    'isAdmin'
+    'isAdmin',
+    'pipelineSvc.showWarning'
   ),
 
   // Utilities you can use in the condition() function to decide if an item is shown or hidden,
