@@ -1,0 +1,44 @@
+{{#accordion-list-item
+     title=(t 'formHostPortsPodSecurityPolicy.title')
+     detail=(t 'formHostPortsPodSecurityPolicy.detail')
+     status=status
+     statusClass=statusClass
+     expandAll=expandAll
+     expand=(action expandFn)
+}}
+  <div class="row">
+    <div>
+      <button class="btn bg-link icon-btn" {{action "add"}}>
+        <span class="darken"><i class="icon icon-plus text-small"/></span>
+        <span>{{t 'formHostPortsPodSecurityPolicy.port.addLabel'}}</span>
+      </button>
+    </div>
+
+    {{#if model.hostPorts.length}}
+      <table class="table fixed no-lines no-top-padding mt-10">
+        <tr class="hidden-sm hidden-xs">
+          <th>{{t 'formHostPortsPodSecurityPolicy.port.min.label'}}{{field-required}}</th>
+          <th width="30">&nbsp;</th>
+          <th>{{t 'formHostPortsPodSecurityPolicy.port.max.label'}}{{field-required}}</th>
+          <th width="40">&nbsp;</th>
+        </tr>
+        {{#each model.hostPorts as |port|}}
+          <tr class="sm-noborder">
+            <td data-title="{{t 'formHostPortsPodSecurityPolicy.port.min.label'}}">
+              {{input class="form-control input-sm" type="number" value=port.min placeholder=(t 'formHostPortsPodSecurityPolicy.port.min.placeholder')}}
+            </td>
+            <td class="text-center">
+              <p><i class="icon icon-chevron-right"></i></p>
+            </td>
+            <td data-title="{{t 'formHostPortsPodSecurityPolicy.port.max.label'}}">
+              {{input class="form-control input-sm" type="number" value=port.max placeholder=(t 'formHostPortsPodSecurityPolicy.port.max.placeholder')}}
+            </td>
+            <td class="text-right">
+              <button class="btn bg-primary btn-sm" {{action "remove" port}}><i class="icon icon-minus"/><span class="sr-only">{{t 'generic.remove'}}</span></button>
+            </td>
+          </tr>
+        {{/each}}
+      </table>
+    {{/if}}
+  </div>
+{{/accordion-list-item}}
