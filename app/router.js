@@ -47,12 +47,13 @@ Router.map(function() {
       this.route('storage');
       this.route('networking');
 
-      this.route('hosts');
-      this.route('host-new', {path: '/add-host'});
-      this.route('host-templates', {path: '/launch-host'}, function() {
+      this.route('ns', {path: '/namespaces'}, function() {
         this.route('index', {path: '/'});
-        this.route('launch', {path: '/:template_id'});
+        this.route('edit', {path: '/:namespace_id'});
+        this.route('new', {path: '/add'});
       });
+
+      this.route('hosts');
 
       this.route('projects', {path: '/projects'}, function() {
         this.route('index', {path: '/'});
@@ -60,11 +61,6 @@ Router.map(function() {
         this.route('new', {path: '/add'});
       });
 
-      this.route('namespaces', {path: '/namespaces'}, function() {
-        this.route('index', {path: '/'});
-        this.route('edit', {path: '/:namespace_id'});
-        this.route('new', {path: '/add'});
-      });
     });
 
     // Per-Project
