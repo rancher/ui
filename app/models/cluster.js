@@ -3,6 +3,7 @@ import { equal } from '@ember/object/computed';
 import { inject as service } from '@ember/service';
 import Resource from 'ember-api-store/models/resource';
 import PolledResource from 'ui/mixins/cattle-polled-resource';
+import { hasMany } from 'ember-api-store/utils/denormalize';
 
 var Cluster = Resource.extend(PolledResource, {
   authzStore: service('authz-store'),
@@ -10,7 +11,8 @@ var Cluster = Resource.extend(PolledResource, {
   scope:        service(),
   router:       service(),
 
-  type:         'cluster',
+  namespaces: hasMany('id', 'namespace', 'clusterId'),
+  projects: hasMany('id', 'project', 'clusterId'),
 
   actions: {
     edit() {

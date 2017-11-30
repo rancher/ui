@@ -47,10 +47,10 @@ Router.map(function() {
       this.route('project', {path: '/p/:project_id'});
 
       this.route('cluster', {path: '/:cluster_id'}, function() {
+        this.route('index', {path: '/'});
         this.route('edit');
 
         this.route('import');
-        this.route('k8s', {path: '/kubernetes'});
 
         this.route('storage');
         this.route('networking');
@@ -65,6 +65,12 @@ Router.map(function() {
         this.route('projects', {path: '/projects'}, function() {
           this.route('index', {path: '/'});
           this.route('edit', {path: '/:project_id'});
+          this.route('new', {path: '/add'});
+        });
+
+        this.route('namespaces', {path: '/namespaces'}, function() {
+          this.route('index', {path: '/'});
+          this.route('edit', {path: '/:namespace_id'});
           this.route('new', {path: '/add'});
         });
       });

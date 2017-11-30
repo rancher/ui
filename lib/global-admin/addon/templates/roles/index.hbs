@@ -1,3 +1,18 @@
+<section class="header has-tabs clearfix p-0">
+  <ul class="tab-nav">
+    <li>{{#link-to (query-params type="project")}}{{t 'rolesPage.index.projectRoles'}}{{/link-to}}</li>
+    <li>{{#link-to (query-params type="cluster")}}{{t 'rolesPage.index.clusterRoles'}}{{/link-to}}</li>
+  </ul>
+
+  <div class="right-buttons">
+    {{#if (eq type "project")}}
+      {{#link-to "roles.new" (query-params type="project") classNames="btn btn-sm bg-primary right-divider-btn"}} {{t 'rolesPage.addProjectRole'}} {{/link-to}}
+    {{else if (eq type "cluster")}}
+      {{#link-to "roles.new" (query-params type="cluster") classNames="btn btn-sm bg-primary right-divider-btn"}} {{t 'rolesPage.addClusterRole'}} {{/link-to}}
+    {{/if}}
+  </div>
+</section>
+
 <section class="instances">
   {{#sortable-table
     classNames="grid sortable-table"
@@ -6,7 +21,6 @@
     headers=headers
     searchText=searchText
     body=filtered
-    rightActions=true
     as |sortable kind row dt|
   }}
     {{#if (eq kind "row")}}
@@ -30,12 +44,6 @@
       <td colspan="6" class="text-center text-muted lacsso pt-20 pb-20">{{t 'rolesPage.index.table.noMatch'}}</td>
     {{else if (eq kind "norows")}}
       <td colspan="6" class="text-center text-muted lacsso pt-20 pb-20">{{t 'rolesPage.index.table.noData'}}</td>
-    {{else if (eq kind "right-actions")}}
-      {{#if (eq type "project")}}
-        {{#link-to "roles.new" (query-params type="project") classNames="btn btn-sm bg-primary right-divider-btn"}} {{t 'rolesPage.addProjectRole'}} {{/link-to}}
-      {{else if (eq type "cluster")}}
-        {{#link-to "roles.new" (query-params type="cluster") classNames="btn btn-sm bg-primary right-divider-btn"}} {{t 'rolesPage.addClusterRole'}} {{/link-to}}
-      {{/if}}
     {{/if}}
   {{/sortable-table}}
 </section>

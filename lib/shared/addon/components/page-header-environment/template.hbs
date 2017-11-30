@@ -17,8 +17,9 @@
     <div class="clip">
       {{t 'nav.environment.manage'}}
     </div>
-  {{else if (eq scope "admin")}}
+  {{else if (eq scope "global")}}
     <div class="clip">
+      <i class="icon icon-globe icon-fw"></i>
       {{t 'nav.admin.tab'}}
     </div>
   {{else}}
@@ -33,11 +34,13 @@
 </a>
 
 <ul class="dropdown-menu cluster-menu" role="menu" data-dropdown-id="environment">
-  {{#if (and isOwner scope.current)}}
-    <li>{{#link-to "authenticated.clusters.project" scope.current.id class="clip"}}{{t 'nav.environment.edit' name=scope.current.displayName}}{{/link-to}}</li>
-    <li role="presentation" class="divider"></li>
-  {{/if}}
-
+  <li class="header {{if (eq scope "global") 'active selected'}}">
+    <a href="{{href-to "global-admin"}}">
+      <i class="icon icon-globe icon-fw"></i>
+      {{t 'nav.admin.tab'}}
+    </a>
+  </li>
+  <li role="presentation" class="divider"></li>
 
   {{#if projectIsMissing}}
     <li role="presentation" class="dropdown-header">{{t 'nav.environment.selected'}}</li>
