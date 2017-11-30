@@ -1,18 +1,13 @@
 {{#outside-click onOutsideClick=(action 'hide')}}
-  <select class="form-control {{class}}" {{action 'show'}} value=value>
-    <option style="display:none;" value=value>{{displayLabel}}</option>
-  </select>
+  {{input class=(concat 'form-control input-search ' class) placeholder=placeholder type="text" value=filter}}
 
   {{#if showOptions}}
     <section class="searchable-options {{if showSearch '' 'pt-10'}}">
-      {{#if showSearch}}
-        {{input class=(concat 'form-control ' class) placeholder=(t 'generic.search') type="text" value=filter}}
-      {{/if}}
       {{#if prompt}}
         <div
           class="searchable-option searchable-prompt"
-          {{action 'mouseEnter' item on="mouseEnter"}}
-          {{action 'mouseLeave' item on="mouseLeave"}}
+          onmouseenter={{action 'mouseEnter'}}
+          onmouseleave={{action 'mouseLeave'}}
           {{action 'selectPrompt'}}
         >
           {{#unless value}}
@@ -34,8 +29,8 @@
         <div
           class="searchable-option"
           {{action 'selectUnGroupedItem' idx}}
-          {{action 'mouseEnter' item on="mouseEnter"}}
-          {{action 'mouseLeave' item on="mouseLeave"}}
+          onmouseenter={{action 'mouseEnter'}}
+          onmouseleave={{action 'mouseLeave'}}
         >
           {{#if (eq value (get item optionValuePath))}}
             <i class="icon icon-check"></i>
@@ -54,7 +49,8 @@
             <div
               class="searchable-option"
               {{action 'selectGroupedItem' group.options idx}}
-              {{action 'mouseEnter' item on="mouseEnter"}}
+              onmouseenter={{action 'mouseEnter'}}
+              onmouseleave={{action 'mouseLeave'}}
             >
                 {{#if (eq value (get item optionValuePath))}}
                   <i class="icon icon-check"></i>

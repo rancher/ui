@@ -43,8 +43,7 @@ export default Ember.Component.extend({
   optionGroupPath: 'group',
   localizedPrompt: false,
   localizedLabel: false,
-  // Whether to show the search input box. It maybe useful where the option list is short.
-  showSearch: true,
+  placeholder: null,
 
   showOptions: false,
   filter: null,
@@ -56,30 +55,24 @@ export default Ember.Component.extend({
     return this.get('unGroupedContent').some(item => !!item.imgUrl);
   }.property('unGroupedContent.@each.imgUrl'),
 
-  smallMode: function() {
-    return this.$().hasClass('input-sm');
-  }.property('class'),
-
   init() {
     this._super();
     if (!this.get('content')) {
       this.set('content', []);
     }
+    this.set('filter', this.get('displayLabel'));
   },
 
   displayLabel: function() {
     const value = this.get('value');
-    // Don't use prompt, prompt is a global function.
-    let p = this.get('prompt');
-    if (this.get('localizedPrompt')) {
-      p = this.get('intl').t(p);
-    }
     if (!value) {
-      return p;
+      return null;
     }
+
     const vp = this.get('optionValuePath');
     const lp = this.get('optionLabelPath');
     const selectedItem = this.get('content').filterBy(vp, value).get('firstObject');
+
     if (selectedItem) {
       let label = Ember.get(selectedItem, lp);
       if (this.get('localizedLabel')) {
@@ -87,8 +80,14 @@ export default Ember.Component.extend({
       }
       return label;
     }
-    return p;
+    return null;
   }.property('value', 'prompt', 'content.[]'),
+
+  didInsertElement() {
+    this.$('.input-search').on('click', () => {
+      this.send('show');
+    })
+  },
 
   filtered: function() {
     const filter = (this.get('filter') || '').trim();
@@ -172,10 +171,11 @@ export default Ember.Component.extend({
           if ($activeTarget.hasClass('searchable-prompt')) {
             this.send('selectPrompt');
           } else {
-            const idx = this.$('.searchable-option').index($activeTarget);
+            let idx = this.$('.searchable-option').index($activeTarget);
+            idx = !!this.get('prompt') ? idx - 1 : idx;
 
             // set value
-            const activeOption = this.allContent().objectAt(idx - 1);
+            const activeOption = this.allContent().objectAt(idx);
             this.setSelect(activeOption);
           }
 
@@ -202,6 +202,12 @@ export default Ember.Component.extend({
     if (gp && Ember.get(item, gp)) {
       this.set('group', Ember.get(item, gp));
     }
+    this.set('filter', this.get('displayLabel'));
+    // https://stackoverflow.com/questions/39624902/new-input-placeholder-behavior-in-safari-10-no-longer-hides-on-change-via-java
+    Ember.run.next(() => {
+      this.$('.input-search').focus();
+      this.$('.input-search').blur();
+    })
     this.sendAction('change', item);
     this.send('hide');
   },
@@ -264,21 +270,27 @@ export default Ember.Component.extend({
       this.set('value', null);
       this.send('hide');
     },
-    mouseEnter() {
+    mouseEnter(event) {
       this.$('.searchable-option').removeClass('searchable-option-active');
       const $target = this.$(event.target);
       $target.addClass('searchable-option-active');
       this.set('$activeTarget', $target);
     },
-    mouseLeave() {
+    mouseLeave(event) {
       this.$(event.target).removeClass('searchable-option-active');
       this.set('$activeTarget', null);
     },
     show() {
+      if (this.get('showOptions') === true) {
+        return;
+      }
+      this.set('filter', null);
+      // select text inside input search box, which will let users easey to clear the inputed text.
+      // this.$('.input-search').select();
       this.set('showOptions', true);
     },
-    hide() {
-      this.set('filter', null);
+    hide(isPrompt) {
+      this.set('filter', this.get('displayLabel'));
       this.set('showOptions', false);
       this.set('$activeTarget', null);
     },
