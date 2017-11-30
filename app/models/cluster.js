@@ -16,7 +16,7 @@ var Cluster = Resource.extend(PolledResource, {
 
   actions: {
     edit() {
-      this.get('router').transitionTo('authenticated.clusters.cluster.edit', this.get('id'));
+      this.get('router').transitionTo('authenticated.cluster.edit', this.get('id'));
     },
   },
 
