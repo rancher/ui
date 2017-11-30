@@ -83,7 +83,7 @@ const rootNav = [
     scope: 'cluster',
     id: 'cluster-namespaces',
     localizedLabel: 'nav.cluster.namespaces',
-    route: 'authenticated.cluster.namespaces.index',
+    route: 'authenticated.cluster.ns.index',
     ctx: [getClusterId],
   },
   {

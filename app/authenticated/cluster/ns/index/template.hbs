@@ -1,0 +1,62 @@
+<section class="header clearfix">
+  <h1 class="pull-left">{{t 'namespacesPage.header'}}</h1>
+  <div class="vertical-middle"></div>
+
+  <div class="right-buttons">
+    {{#link-to "authenticated.cluster.projects.new" class="btn bg-primary btn-sm icon-btn"}}
+      <span class="darken">
+        <i class="icon icon-plus"></i>
+      </span>
+      <span>{{t 'namespacesPage.addNamespace'}}</span>
+    {{/link-to}}
+  </div>
+</section>
+
+{{#sortable-table
+  tableClassNames="bordered"
+  paging=true
+  pagingLabel="pagination.namespace"
+  headers=headers
+  bulkActions=true
+  body=rows
+  sortBy=sortBy
+  fullRows=true
+  as |sortable kind obj dt|
+}}
+  {{#if (eq kind "row")}}
+    <tr>
+      <td class="row-check" valign="middle" style="padding-top: 2px;">
+        {{check-box nodeId=obj.id}}
+      </td>
+      <td>
+        {{badge-state model=obj}}
+      </td>
+      <td>
+        {{obj.name}}
+      </td>
+      <td>
+        {{#if obj.project}}
+          {{obj.project.name}}
+        {{else}}
+          <b>None</b>
+        {{/if}}
+      </td>
+      <td>
+        {{obj.pods.length}}
+      </td>
+      <td>
+        {{obj.workloads.length}}
+      </td>
+      <td>
+        {{date-calendar obj.created}}
+      </td>
+      <td data-title="{{t 'generic.actions'}}:" class="actions">
+        {{action-menu model=obj}}
+      </td>
+    </tr>
+  {{else if (eq kind "nomatch")}}
+    <tr><td colspan="{{sortable.fullColspan}}" class="text-center text-muted lacsso pt-20 pb-20">{{t 'namespacesPage.noMatch'}}</td></tr>
+  {{else if (eq kind "norows")}}
+    <tr><td colspan="{{sortable.fullColspan}}" class="text-center text-muted lacsso pt-20 pb-20">{{t 'namespacesPage.noData'}}</td></tr>
+  {{/if}}
+{{/sortable-table}}
