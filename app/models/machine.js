@@ -10,12 +10,13 @@ import StateCounts from 'ui/mixins/state-counts';
 import { inject as service } from "@ember/service";
 
 
-var Host = Resource.extend(StateCounts,{
-  type: 'host',
+var Machine = Resource.extend(StateCounts,{
+  type: 'machine',
   modalService: service('modal'),
   settings: service(),
   prefs: service(),
   router: service(),
+  clusterStore: service('cluster-store'),
 
   init() {
     this._super(...arguments);
@@ -237,7 +238,7 @@ var Host = Resource.extend(StateCounts,{
   // If you use this you must ensure that services and containers are already in the store
   //  or they will not be pulled in correctly.
   displayEndpoints: function() {
-    var store = this.get('store');
+    var store = this.get('clusterStore');
     return (this.get('publicEndpoints')||[]).map((endpoint) => {
       if ( !endpoint.service ) {
         endpoint.service = store.getById('service', endpoint.serviceId);
@@ -255,8 +256,8 @@ var Host = Resource.extend(StateCounts,{
   }.property(`labels.${C.LABEL.REQUIRE_ANY}`),
 });
 
-Host.reopenClass({
+Machine.reopenClass({
   defaultSortBy: 'name,hostname',
 });
 
-export default Host;
+export default Machine;

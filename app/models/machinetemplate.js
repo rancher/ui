@@ -1,7 +1,7 @@
 import Resource from 'ember-api-store/models/resource';
 
-var HostTemplate = Resource.extend({
-  type: 'hosttemplate',
+var MachineTemplate = Resource.extend({
+  type: 'machinetemplate',
   actions: {
   },
 
@@ -16,4 +16,4 @@ var HostTemplate = Resource.extend({
   }.property('links.{remove}'),
 });
 
-export default HostTemplate;
+export default MachineTemplate;

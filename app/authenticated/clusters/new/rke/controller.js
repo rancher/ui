@@ -108,7 +108,7 @@ export default Controller.extend(NewOrEdit, {
   }),
 
   countState: observer('config.hosts.[]', function() {
-    let hosts = get(this, 'config.hosts');
+    let hosts = (get(this, 'config.hosts') || []);
     let countMap = {
       etcd: 0,
       controlplane: 0,

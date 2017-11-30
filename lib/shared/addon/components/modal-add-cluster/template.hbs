@@ -2,6 +2,7 @@
   {{host-template-list
       model=templates
       launch=(action 'launch')
+      add=(action 'add')
   }}
   <div class="footer-actions">
     <button {{action 'add'}} class="btn bg-primary">{{t 'generic.save'}}</button>
@@ -14,4 +15,6 @@
       goBack=(action 'goBack')
       save=(action 'launch')
   }}
+{{else if (eq mode 'add')}}
+  {{add-host allowCustom=(not app.isCaas) model=addHostModel.model driver=driver cluster=cluster hostId=hostId completed=(action 'completed') goBack=(action 'goBack') cancel=(action 'goBack')}}
 {{/if}}
