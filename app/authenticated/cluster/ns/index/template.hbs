@@ -17,40 +17,41 @@
   paging=true
   pagingLabel="pagination.namespace"
   headers=headers
+  bulkActions=true
   body=rows
   sortBy=sortBy
   fullRows=true
-  as |sortable kind ns dt|
+  as |sortable kind obj dt|
 }}
   {{#if (eq kind "row")}}
     <tr>
-      <td valign="middle" class="row-check" style="padding-top: 2px;">
-        &nbsp;
+      <td class="row-check" valign="middle" style="padding-top: 2px;">
+        {{check-box nodeId=obj.id}}
       </td>
       <td>
-        {{badge-state model=ns}}
+        {{badge-state model=obj}}
       </td>
       <td>
-        {{ns.name}}
+        {{obj.name}}
       </td>
       <td>
-        {{#if ns.project}}
-          {{ns.project.name}}
+        {{#if obj.project}}
+          {{obj.project.name}}
         {{else}}
           <b>None</b>
         {{/if}}
       </td>
       <td>
-        {{ns.pods.length}}
+        {{obj.pods.length}}
       </td>
       <td>
-        {{ns.workloads.length}}
+        {{obj.workloads.length}}
       </td>
       <td>
-        {{date-calendar ns.created}}
+        {{date-calendar obj.created}}
       </td>
       <td data-title="{{t 'generic.actions'}}:" class="actions">
-        {{action-menu model=ns}}
+        {{action-menu model=obj}}
       </td>
     </tr>
   {{else if (eq kind "nomatch")}}

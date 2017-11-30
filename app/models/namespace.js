@@ -66,52 +66,55 @@ var Namespace = Resource.extend(StateCounts, {
   },
 
   actions: {
-    startAll: function() {
+    startAll() {
       return this.doAction('startall');
     },
 
-    pauseAll: function() {
+    pauseAll() {
       return this.doAction('pauseall');
     },
 
-    stopAll: function() {
+    stopAll() {
       return this.doAction('stopall');
     },
 
-    promptStop: function() {
+    promptStop() {
       this.get('modalService').toggleModal('modal-confirm-deactivate', {
         originalModel: this,
         action: 'stopAll'
       });
     },
 
-    edit: function() {
+    edit() {
       this.get('modalService').toggleModal('modal-edit-stack', this);
     },
 
-    exportConfig: function() {
+    exportConfig() {
       download(this.linkFor('composeConfig'));
     },
 
-    addContainer: function() {
+    addContainer() {
       this.get('router').transitionTo('containers.run', {queryParams: {stackId: this.get('id')}});
     },
 
-    viewCode: function() {
+    viewCode() {
       this.get('router').transitionTo('stack.code', this.get('id'));
     },
 
-    viewGraph: function() {
+    viewGraph() {
       this.get('router').transitionTo('stack.graph', this.get('id'));
     },
 
-    delete: function() {
+    delete() {
       return this._super().then(() => {
         if ( this.get('application.currentRouteName') === 'stack.index' )
         {
           this.get('router').transitionTo('containers');
         }
       });
+    },
+
+    move() {
     },
   },
 
@@ -124,11 +127,12 @@ var Namespace = Resource.extend(StateCounts, {
     }
 
     let out    = [
+      { label:   'action.move',           icon: 'icon icon-fork',           action: 'move',             enabled: true, bulkable: true},
       { label:   'action.addContainer',   icon: 'icon icon-container',      action: 'addContainer',     enabled: true },
       { divider: true },
       { label:   'action.pause',          icon: 'icon icon-pause',          action: 'pauseAll',         enabled: this.get('canPauseAll'), bulkable: true},
-      { label:   'action.startAll',       icon: 'icon icon-play',           action: 'startAll',         enabled: this.get('canStartAll'), bulkable: true},
-      { label:   'action.stopAll',        icon: 'icon icon-stop',           action: 'promptStop',       enabled: this.get('canStopAll'),  bulkable: true, altAction: 'stopAll' },
+      { label:   'action.startAll',       icon: 'icon icon-play',           action: 'startAll',         enabled: this.get('canStartAll')},
+      { label:   'action.stopAll',        icon: 'icon icon-stop',           action: 'promptStop',       enabled: this.get('canStopAll'), altAction: 'stopAll' },
       { divider: true },
       { label:   'action.edit',           icon: 'icon icon-edit',           action: 'edit',             enabled: !!l.update },
       { label:   'action.viewConfig',     icon: 'icon icon-files',          action: 'viewCode',         enabled: !!a.exportconfig },

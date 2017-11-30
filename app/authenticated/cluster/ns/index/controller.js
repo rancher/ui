@@ -23,12 +23,6 @@ export const headers = [
     translationKey: 'namespacesPage.table.project.label',
   },
   {
-    name: 'created',
-    sort: ['created','id'],
-    searchField: 'created',
-    translationKey: 'namespacesPage.table.created.label',
-  },
-  {
     name: 'pods',
     sort: ['pods.length','id'],
     searchField: null,
@@ -39,6 +33,12 @@ export const headers = [
     sort: ['workloads.length','id'],
     searchField: null,
     translationKey: 'namespacesPage.table.workloads.label',
+  },
+  {
+    name: 'created',
+    sort: ['created','id'],
+    searchField: 'created',
+    translationKey: 'namespacesPage.table.created.label',
   },
 ];
 
