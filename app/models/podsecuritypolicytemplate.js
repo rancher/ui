@@ -1,6 +1,4 @@
 import { inject as service } from '@ember/service';
-import { getOwner } from '@ember/application';
-import { next } from '@ember/runloop';
 
 import Resource from 'ember-api-store/models/resource';
 import PolledResource from 'ui/mixins/cattle-polled-resource';

@@ -1,6 +1,4 @@
 import { inject as service } from '@ember/service';
-import { getOwner } from '@ember/application';
-import { next } from '@ember/runloop';
 
 import Resource from 'ember-api-store/models/resource';
 import PolledResource from 'ui/mixins/cattle-polled-resource';
@@ -8,7 +6,7 @@ import PolledResource from 'ui/mixins/cattle-polled-resource';
 var ProjectRoleTemplate = Resource.extend(PolledResource, {
   type: 'projectRoleTemplate',
   router: service(),
-  
+
   actions: {
     edit: function() {
       this.get('router').transitionTo('global-admin.roles.edit', this.get('id'), { queryParams: { type: 'project' } });
