@@ -1,4 +1,4 @@
-{{#if model.apiHostSet}}
+{{!-- {{#if model.apiHostSet}} --}}
   <section class="pt-10">
     {{#if showPicker}}
       <div class="row nav nav-boxes checked-active">
@@ -26,7 +26,7 @@
 
   {{#if driver}}
     {{component (concat 'machine/driver-' driver)
-        cancel=(route-action 'cancel')
+        cancel=(action cancel)
         clonedModel=model.clonedModel
         driver=(concat driver 'Config')
         cluster=cluster
@@ -39,10 +39,10 @@
         goBack=(action goBack)
     }}
   {{/if}}
-{{else}}
-  <section>
+  {{!-- {{else}}
+    <section>
     <div class="box">
-      {{settings/host-registration saved=(action 'hostSet')}}
+    {{settings/host-registration saved=(action 'hostSet')}}
     </div>
-  </section>
-{{/if}}
+    </section>
+    {{/if}} --}}

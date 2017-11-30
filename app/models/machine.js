@@ -16,6 +16,7 @@ var Machine = Resource.extend(StateCounts,{
   settings: service(),
   prefs: service(),
   router: service(),
+  clusterStore: service('cluster-store'),
 
   init() {
     this._super(...arguments);
@@ -237,7 +238,7 @@ var Machine = Resource.extend(StateCounts,{
   // If you use this you must ensure that services and containers are already in the store
   //  or they will not be pulled in correctly.
   displayEndpoints: function() {
-    var store = this.get('store');
+    var store = this.get('clusterStore');
     return (this.get('publicEndpoints')||[]).map((endpoint) => {
       if ( !endpoint.service ) {
         endpoint.service = store.getById('service', endpoint.serviceId);
