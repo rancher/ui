@@ -13,9 +13,9 @@ export default Route.extend({
     } else {
       this.get('scope').setPageScope('cluster');
       if (cluster) {
-        this.replaceWith('authenticated.clusters.cluster', cluster.get('id'));
+        this.replaceWith('authenticated.cluster', cluster.get('id'));
       } else {
-        this.replaceWith('authenticated.clusters');
+        this.replaceWith('global-admin.clusters');
       }
     }
   },

@@ -67,38 +67,83 @@ const rootNav = [
   // Cluster
   {
     scope: 'cluster',
+    id: 'cluster-k8s',
+    localizedLabel: 'nav.cluster.dashboard',
+    route: 'authenticated.cluster.index',
+    ctx: [getClusterId],
+  },
+  {
+    scope: 'cluster',
     id: 'cluster-projects',
     localizedLabel: 'nav.cluster.projects',
-    route: 'authenticated.clusters.cluster.projects.index',
+    route: 'authenticated.cluster.projects.index',
+    ctx: [getClusterId],
+  },
+  {
+    scope: 'cluster',
+    id: 'cluster-namespaces',
+    localizedLabel: 'nav.cluster.namespaces',
+    route: 'authenticated.cluster.namespaces.index',
     ctx: [getClusterId],
   },
   {
     scope: 'cluster',
     id: 'cluster-hosts',
     localizedLabel: 'nav.cluster.hosts',
-    route: 'authenticated.clusters.cluster.hosts',
-    ctx: [getClusterId],
-  },
-  {
-    scope: 'cluster',
-    id: 'cluster-k8s',
-    localizedLabel: 'nav.cluster.k8s',
-    route: 'authenticated.clusters.cluster.k8s',
+    route: 'authenticated.cluster.hosts',
     ctx: [getClusterId],
   },
   {
     scope: 'cluster',
     id: 'cluster-networking',
     localizedLabel: 'nav.cluster.networking',
-    route: 'authenticated.clusters.cluster.networking',
+    route: 'authenticated.cluster.networking',
     ctx: [getClusterId],
   },
   {
     scope: 'cluster',
     id: 'cluster-storage',
     localizedLabel: 'nav.cluster.storage',
-    route: 'authenticated.clusters.cluster.storage',
+    route: 'authenticated.cluster.storage',
     ctx: [getClusterId],
+  },
+
+  // Global
+  {
+    scope: 'global',
+    id: 'global-clusters',
+    localizedLabel: 'nav.admin.clusters',
+    route: 'global-admin.clusters',
+  },
+  {
+    scope: 'global',
+    id: 'global-accounts',
+    localizedLabel: 'nav.admin.accounts',
+    route: 'global-admin.accounts',
+  },
+  {
+    scope: 'global',
+    id: 'global-machines',
+    localizedLabel: 'nav.admin.machines',
+    route: 'global-admin.machines',
+  },
+  {
+    scope: 'global',
+    id: 'global-roles',
+    localizedLabel: 'nav.admin.roles',
+    route: 'global-admin.roles',
+  },
+  {
+    scope: 'global',
+    id: 'global-podsecurity',
+    localizedLabel: 'nav.admin.podSecurityPolicies',
+    route: 'global-admin.policies',
+  },
+  {
+    scope: 'global',
+    id: 'global-advanced',
+    localizedLabel: 'nav.admin.settings.advanced',
+    route: 'global-admin.settings.advanced',
   },
 ]
 

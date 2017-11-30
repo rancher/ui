@@ -15,12 +15,10 @@
       nameRequired=true
       nameDisabled=editing
       namePlaceholder="projectsPage.new.form.name.placeholder"
-      colClass="col span-7"
-      descriptionShown=false
   }}
 </section>
 
-{{#accordion-list as | al expandFn | }}
+{{#accordion-list showExpandAll=false as | al expandFn | }}
   {{#accordion-list-item
         title="Members"
         detail="Who has access to this project and what level of access they have to manipulate it."
@@ -63,16 +61,6 @@
         <span>{{t 'projectsPage.new.form.members.addServiceAccount'}}</span>
       </button>
     </div>
-  {{/accordion-list-item}}
-
-  {{#accordion-list-item
-        title="Namespaces"
-        detail="The Kubernetes namespaces that are managed by this project."
-        expandAll=al.expandAll
-        expand=(action expandFn)
-        expandOnInit=true
-  }}
-    Namespaces...
   {{/accordion-list-item}}
 {{/accordion-list}}
 

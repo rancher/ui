@@ -28,10 +28,12 @@ const App = Application.extend({
           'access',
           'authn-store',
           'authz-store',
+          'cluster-store',
           'catalog',
           'endpoint',
           'github',
           'intl',
+          'modal',
           'router',
           'resource-actions',
           'scope',
@@ -43,14 +45,13 @@ const App = Application.extend({
           'user-theme',
         ],
         externalRoutes: {
-          index:                            'index',
-          failWhale:                        'failWhale',
-          authenticated:                    'authenticated',
-          'authenticated.clusters':         'authenticated.clusters',
-          'authenticated.clusters.cluster': 'authenticated.clusters.cluster',
-          'authenticated.clusters.project': 'authenticated.clusters.project',
-          'authenticated.prefs':            'authenticated.prefs',
-          'logout':                         'logout'
+          index:                   'index',
+          failWhale:               'failWhale',
+          authenticated:           'authenticated',
+          'authenticated.cluster': 'authenticated.cluster',
+          'authenticated.project': 'authenticated.project',
+          'authenticated.prefs':   'authenticated.prefs',
+          'logout':                'logout'
         }
       }
     }

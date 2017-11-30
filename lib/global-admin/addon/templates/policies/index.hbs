@@ -1,3 +1,11 @@
+<section class="header clearfix">
+  <h1>{{t 'podSecurityPoliciesPage.header'}}</h1>
+
+  <div class="right-buttons">
+    {{#link-to "policies.new" classNames="btn btn-sm bg-primary right-divider-btn"}} {{t 'podSecurityPoliciesPage.addPodSecurityPolicy'}} {{/link-to}}
+  </div>
+</section>
+
 <section class="instances">
   {{#sortable-table
     classNames="grid sortable-table"
@@ -6,7 +14,6 @@
     headers=headers
     searchText=searchText
     body=filtered
-    rightActions=true
     as |sortable kind row dt|
   }}
     {{#if (eq kind "row")}}
@@ -30,8 +37,6 @@
       <td colspan="6" class="text-center text-muted lacsso pt-20 pb-20">{{t 'podSecurityPoliciesPage.index.table.noMatch'}}</td>
     {{else if (eq kind "norows")}}
       <td colspan="6" class="text-center text-muted lacsso pt-20 pb-20">{{t 'podSecurityPoliciesPage.index.table.noData'}}</td>
-    {{else if (eq kind "right-actions")}}
-      {{#link-to "policies.new" classNames="btn btn-sm bg-primary right-divider-btn"}} {{t 'podSecurityPoliciesPage.addPodSecurityPolicy'}} {{/link-to}}
     {{/if}}
   {{/sortable-table}}
 </section>

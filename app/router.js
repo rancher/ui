@@ -37,36 +37,33 @@ Router.map(function() {
 
     this.route('prefs');
 
-    // Clusters
-    this.route('clusters', {path: '/clusters'}, function() {
+    // Per-Cluster
+    this.route('cluster', {path: '/c/:cluster_id'}, function() {
       this.route('index', {path: '/'});
-      this.route('new', {path: '/add'}, function() {
-        this.route('rke');
+      this.route('edit');
+
+      this.route('import');
+
+      this.route('storage');
+      this.route('networking');
+
+      this.route('hosts');
+      this.route('host-new', {path: '/add-host'});
+      this.route('host-templates', {path: '/launch-host'}, function() {
+        this.route('index', {path: '/'});
+        this.route('launch', {path: '/:template_id'});
       });
-      this.route('new-project', {path: '/add-project'});
-      this.route('project', {path: '/p/:project_id'});
 
-      this.route('cluster', {path: '/:cluster_id'}, function() {
-        this.route('edit');
+      this.route('projects', {path: '/projects'}, function() {
+        this.route('index', {path: '/'});
+        this.route('edit', {path: '/:project_id'});
+        this.route('new', {path: '/add'});
+      });
 
-        this.route('import');
-        this.route('k8s', {path: '/kubernetes'});
-
-        this.route('storage');
-        this.route('networking');
-
-        this.route('hosts');
-        this.route('host-new', {path: '/add-host'});
-        this.route('host-templates', {path: '/launch-host'}, function() {
-          this.route('index', {path: '/'});
-          this.route('launch', {path: '/:template_id'});
-        });
-
-        this.route('projects', {path: '/projects'}, function() {
-          this.route('index', {path: '/'});
-          this.route('edit', {path: '/:project_id'});
-          this.route('new', {path: '/add'});
-        });
+      this.route('namespaces', {path: '/namespaces'}, function() {
+        this.route('index', {path: '/'});
+        this.route('edit', {path: '/:namespace_id'});
+        this.route('new', {path: '/add'});
       });
     });
 
