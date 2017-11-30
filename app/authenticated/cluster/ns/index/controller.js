@@ -1,5 +1,5 @@
 import { inject as service } from '@ember/service';
-import Controller, { inject as controller } from '@ember/controller';
+import Controller from '@ember/controller';
 import { alias } from '@ember/object/computed';
 
 export const headers = [
