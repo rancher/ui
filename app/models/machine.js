@@ -10,8 +10,8 @@ import StateCounts from 'ui/mixins/state-counts';
 import { inject as service } from "@ember/service";
 
 
-var Host = Resource.extend(StateCounts,{
-  type: 'host',
+var Machine = Resource.extend(StateCounts,{
+  type: 'machine',
   modalService: service('modal'),
   settings: service(),
   prefs: service(),
@@ -255,8 +255,8 @@ var Host = Resource.extend(StateCounts,{
   }.property(`labels.${C.LABEL.REQUIRE_ANY}`),
 });
 
-Host.reopenClass({
+Machine.reopenClass({
   defaultSortBy: 'name,hostname',
 });
 
-export default Host;
+export default Machine;

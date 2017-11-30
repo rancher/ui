@@ -6,7 +6,6 @@ import { get, set } from '@ember/object';
 export default Ember.Route.extend({
   clusterStore: service('cluster-store'),
   model: function(/* params, transition */) {
-    // TODO - !!FORDEV!! get clusters
     let clusterStore = get(this, 'clusterStore');
     let def = {
       type: 'rancherKubernetesEngineConfig',
@@ -15,7 +14,7 @@ export default Ember.Route.extend({
       auth: 'x509'
     };
     let config = clusterStore.createRecord(def);
-    let models = this.modelFor('authenticated.clusters.new.index');
+    let models = this.modelFor('authenticated.clusters.new');
     let cluster = get(models, 'cluster')
     let hostTemplates = get(models, 'hostTemplates');
     let machineDrivers = get(models, 'machineDrivers');
