@@ -130,7 +130,7 @@ export default Route.extend(Subscribe, {
       this.set('access.enabled', true);
       this.send('logout', transition, isAuthFail, (isAuthFail ? undefined : msg));
     } else {
-      this.replaceWith('authenticated.clusters');
+      this.replaceWith('global-admin.clusters');
     }
 
   },
@@ -258,7 +258,7 @@ export default Route.extend(Subscribe, {
       this.controllerFor('application').set('showAbout', true);
     },
 
-    switchCluster(clusterId, transitionTo='authenticated.clusters', transitionArgs) {
+    switchCluster(clusterId, transitionTo='global-admin.clusters', transitionArgs) {
       console.log('Switch to Cluster:' + clusterId);
       this.disconnectSubscribe(() => {
         console.log('Switch is disconnected');
@@ -299,7 +299,7 @@ export default Route.extend(Subscribe, {
     gotoB() { this._gotoRoute('balancers.index'); },
     gotoC() { this._gotoRoute('containers.index'); },
     gotoD() { this._gotoRoute('dns.index'); },
-    gotoE() { this._gotoRoute('authenticated.clusters.index', false); },
+    gotoE() { this._gotoRoute('global-admin.clusters.index', false); },
     gotoH() { this._gotoRoute('hosts.index'); },
     gotoK() { this._gotoRoute('authenticated.project.apikeys'); },
     gotoV() { this._gotoRoute('volumes.index'); },

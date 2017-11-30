@@ -5,11 +5,11 @@ export default Controller.extend({
 
   actions: {
     done() {
-      this.transitionToRoute('authenticated.clusters');
+      this.transitionToRoute('global-admin.clusters');
     },
 
     cancel() {
-      this.transitionToRoute('authenticated.clusters');
+      this.transitionToRoute('global-admin.clusters');
     },
   },
 });
