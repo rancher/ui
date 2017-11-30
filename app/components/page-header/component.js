@@ -36,6 +36,7 @@ export default Ember.Component.extend(HoverDropdown, {
   swarmReady           : Ember.computed.alias('projects.orchestrationState.swarmReady'),
   mesosReady           : Ember.computed.alias('projects.orchestrationState.mesosReady'),
   stacks               : null,
+  services             : null,
 
   // Component options
   tagName              : 'header',
@@ -51,6 +52,7 @@ export default Ember.Component.extend(HoverDropdown, {
   init() {
     this._super(...arguments);
     this.set('stacks', this.get('store').all('stack'));
+    this.set('services', this.get('store').all('service'));
     this.set('hosts', this.get('store').all('host'));
     this.set('stackSchema', this.get('store').getById('schema','stack'));
     this.updateNavTree();
@@ -59,7 +61,27 @@ export default Ember.Component.extend(HoverDropdown, {
   // This computed property generates the active list of choices to display
   navTree: null,
   updateNavTree() {
-    let out = getTree().filter((item) => {
+    let services = this.get('services');
+    let servicesNav = [];
+    if(services){
+      services.forEach((ele)=>{
+        let serviceApp = ele.get('serviceApp');
+        if(serviceApp){
+          let exist = getTree().findBy('id', ele.id);
+          if(!exist){
+            servicesNav.pushObject({
+              id: ele.id,
+              label: serviceApp.label,
+              url: serviceApp.url,
+              target: '_blank',
+              ctx: [this.get('projectId')],
+            });
+          }
+        }
+      });
+    }
+
+    let out = getTree().concat(servicesNav).filter((item) => {
       if ( typeof item.condition === 'function' )
       {
         if ( !item.condition.call(this) )
@@ -109,6 +131,7 @@ export default Ember.Component.extend(HoverDropdown, {
     'projects.orchestrationState',
     'project.virtualMachine',
     'stacks.@each.group',
+    'services.@each.serviceApp',
     'catalog.catalogs.@each.{id,name}',
     `settings.${C.SETTING.CATALOG_URL}`,
     `prefs.${C.PREFS.ACCESS_WARNING}`,

@@ -12,6 +12,7 @@ var Service = Resource.extend({
 
   instances: denormalizeIdArray('instanceIds'),
   instanceCount: Ember.computed.alias('instances.length'),
+  projectId: Ember.computed.alias(`tab-session.${C.TABSESSION.PROJECT}`),
   stack: denormalizeId('stackId'),
 
   actions: {
@@ -400,6 +401,58 @@ var Service = Resource.extend({
       return Util.formatSi(this.get('launchConfig.memoryReservation'), 1024, 'iB', 'B');
     }
   }),
+
+  localizedServiceUILabel: function(){
+    let labels = this.get('launchConfig.labels');
+    let serviceUILabel = labels[C.LABEL.SERVICE_UI_LABEL] || '';
+    let serviceName = this.get('name');
+    if(!serviceUILabel){
+      return;
+    }
+    let language = this.get('intl._locale')[0];
+    let localizedLabel = '';
+    // if the label is not a valid JSON map, default to use the service name.
+    try{
+      serviceUILabel = JSON.parse(serviceUILabel);
+      // if the label is not a Object, just use service name as label
+      if(serviceUILabel.constructor !== Object){
+        console.warn(`${C.LABEL.SERVICE_UI_LABEL} in ${serviceName} is not a JSON map`);
+        return this.get('name');
+      }
+      localizedLabel = serviceUILabel[Object.keys(serviceUILabel)[0]];
+      if(serviceUILabel[language]){
+        localizedLabel = serviceUILabel[language];
+      }
+    }
+    catch(err){
+      console.warn(`${C.LABEL.SERVICE_UI_LABEL} in ${serviceName} is not valid`);
+      localizedLabel = this.get('name');
+    }
+    return localizedLabel;
+  }.property('launchConfig.labels', 'intl._locale'),
+
+  serviceApp: function(){
+    let labels = this.get('launchConfig.labels');
+    let serviceName = this.get('name');
+    let serviceUIPath = labels[C.LABEL.SERVICE_UI_PATH] || '/';
+    let serviceUIPort = labels[C.LABEL.SERVICE_UI_PORT] || '';
+    let localizedServiceUILabel = this.get('localizedServiceUILabel');
+    let url;
+    if( localizedServiceUILabel ){
+      url = `${window.location.origin}${this.get('app.magicEndpoint')}/projects/${this.get('projectId')}`;
+      if(!serviceUIPort){
+        url += `/${serviceName}${serviceUIPath}`;
+      }else{
+        url += `/${serviceName}:${serviceUIPort}${serviceUIPath}`;
+      }
+      return {
+        label: localizedServiceUILabel,
+        url: url
+      };
+    } else {
+      return null;
+    }
+  }.property('name', 'launchConfig.labels', 'localizedServiceUILabel'),
 });
 
 export function activeIcon(service)
