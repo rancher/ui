@@ -33,6 +33,7 @@ const App = Application.extend({
           'endpoint',
           'github',
           'intl',
+          'modal',
           'router',
           'resource-actions',
           'scope',
