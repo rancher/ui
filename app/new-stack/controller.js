@@ -18,7 +18,7 @@ export default Controller.extend(NewOrEdit, {
     addTag(tag) {
       let neu = this.get('model.tags')||[];
       neu.addObject(tag);
-      this.set('model.tags', tags);
+      this.set('model.tags', neu);
     },
 
     answersChanged(answers) {

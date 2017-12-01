@@ -4,7 +4,6 @@ import { reference } from 'ember-api-store/utils/denormalize';
 import { computed } from '@ember/object';
 import Util from 'ui/utils/util';
 import { formatSi } from 'shared/utils/util';
-import { get } from '@ember/object';
 import DisplayImage from 'shared/mixins/display-image';
 
 var Pod = Resource.extend(DisplayImage, {

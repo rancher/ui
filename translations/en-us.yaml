@@ -624,7 +624,7 @@ clustersPage:
         addHost: Add a new node
         radio:
           embedded:
-            label: Embedded 
+            label: Embedded
             detail: Shared etcd and control plane running inside {appName} server.
           dedicated:
             label: Dedicated
@@ -2546,6 +2546,87 @@ formVolumePodSecurityPolicy:
   title: Volume Policy
   detail: Control the usage of volume types
   volumes: Volumes
+
+formAllowedHostPathsPodSecurityPolicy:
+  title: Allowed Host Paths Policy
+  detail: Whitelist of allowed host paths
+  path:
+    addLabel: Add Path Prefix
+    placeholder: e.g. /foo
+
+formFsGroupPodSecurityPolicy:
+  title: FS Group Policy
+  detail: Allocating an FSGroup that owns the pod’s volumes
+  rule:
+    mustRunAs: MustRunAs - Requires at least one range to be specified. Uses the minimum value of the first range as the default. Validates against the first ID in the first range.
+    runAsAny: RunAsAny - No default provided. Allows any fsGroup ID to be specified.
+  range:
+    addLabel: Add Range
+    max:
+      label: Max
+      placeholder: e.g. 6
+    min:
+      label: Min
+      placeholder: e.g. 1
+
+formHostPortsPodSecurityPolicy:
+  title: Host Ports Policy
+  detail: The use of host ports
+  port:
+    addLabel: Add Port Range
+    max:
+      label: Max
+      placeholder: e.g. 7000
+    min:
+      label: Min
+      placeholder: e.g. 6000
+
+formRunAsUserPodSecurityPolicy:
+  title: Run As User Policy
+  detail: The user ID
+  rule:
+    mustRunAs: MustRunAs - Requires a range to be configured. Uses the first value of the range as the default. Validates against the configured range.
+    mustRunAsNonRoot: MustRunAsNonRoot - Requires that the pod be submitted with a non-zero runAsUser or have the USER directive defined in the image. No default provided.
+    runAsAny: RunAsAny - No default provided. Allows any runAsUser to be specified.
+  range:
+    addLabel: Add Range
+    max:
+      label: Max
+      placeholder: e.g. 6
+    min:
+      label: Min
+      placeholder: e.g. 1
+
+formSeLinuxodSecurityPolicy:
+  title: SELinux Policy
+  detail: The SELinux context of the container
+  rule:
+    mustRunAs: MustRunAs - Uses seLinuxOptions as the default. Validates against seLinuxOptions.
+    runAsAny: RunAsAny - Allows any seLinuxOptions to be specified
+  level:
+    label: Level
+    placeholder: e.g. level
+  role:
+    label: Role
+    placeholder: e.g. role
+  user:
+    label: User
+    placeholder: e.g. user
+
+formSupplementalGroupsPodSecurityPolicy:
+  title: Supplemental Groups Policy
+  detail: Configuring allowable supplemental groups
+  rule:
+    mustRunAs: MustRunAs - Requires at least one range to be specified. Uses the minimum value of the first range as the default. Validates against all ranges.
+    runAsAny: RunAsAny - No default provided. Allows any supplementalGroups to be specified.
+  range:
+    addLabel: Add Range
+    max:
+      label: Max
+      placeholder: e.g. 6
+    min:
+      label: Min
+      placeholder: e.g. 1
 
 formBasicPodSecurityPolicy:
   title: Basic Policies
