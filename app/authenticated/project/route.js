@@ -12,7 +12,7 @@ export default Route.extend({
 
     if ( !project )
     {
-      this.replaceWith('authenticated.clusters');
+      this.replaceWith('global-admin.clusters');
       return;
     }
 

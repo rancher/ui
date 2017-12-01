@@ -59,7 +59,7 @@ export default Controller.extend({
     },
 
     cancel() {
-      this.transitionToRoute('authenticated.clusters');
+      this.transitionToRoute('global-admin.clusters');
     }
   },
 

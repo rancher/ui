@@ -38,17 +38,17 @@ var Cluster = Resource.extend(PolledResource, {
   },
 
 
-  _allProjects: null,
+  // _allProjects: null,
 
-  projects: computed('_allProjects.@each.clusterName', function() {
-    let x = this.get('_allProjects');
+  // projects: computed('_allProjects.@each.clusterName', function() {
+  //   let x = this.get('_allProjects');
 
-    if (!x) {
-      x = this.set('_allProjects', this.get('authzStore').all('project'));
-    }
+  //   if (!x) {
+  //     x = this.set('_allProjects', this.get('authzStore').all('project'));
+  //   }
 
-    return x.filterBy('clusterName', this.get('id'));
-  }),
+  //   return x.filterBy('clusterName', this.get('id'));
+  // }),
 
   defaultProject: computed('projects.@each.{name,clusterOwner}', function() {
     let projects = this.get('projects');

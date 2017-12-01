@@ -69,6 +69,9 @@ var Project = Resource.extend(PolledResource, {
   },
 
   availableActions: computed('actionLinks.{activate,deactivate}', 'links.{update,remove}', 'state', 'canSetDefault', function () {
+    // let a = this.get('actionLinks');
+    // let l = this.get('links');
+
     var choices = [
       { label: 'action.edit', icon: 'icon icon-edit', action: 'edit', enabled: true },
       { divider: true },
