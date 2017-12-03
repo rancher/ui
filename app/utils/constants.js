@@ -186,6 +186,9 @@ var C = {
     LAUNCH_CONFIG: 'io.rancher.service.launch.config',
     LAUNCH_CONFIG_PRIMARY: 'io.rancher.service.primary.launch.config',
     SIDEKICK: 'io.rancher.sidekicks',
+    SERVICE_UI_PATH: 'io.rancher.service.ui_link.path',
+    SERVICE_UI_PORT: 'io.rancher.service.ui_link.port',
+    SERVICE_UI_LABEL: 'io.rancher.service.ui_link.label',
   },
 
   PREFS: {
