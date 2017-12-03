@@ -9,7 +9,7 @@ $dropdown-link-hover-color           : $body-bg !default;
 $dropdown-link-hover-bg              : $link-color !default;
 
 $dropdown-link-active-color          : white !default;
-$dropdown-link-active-bg             : $link-color !default;
+$dropdown-link-active-bg             : darken($link-color, 10%) !default;
 
 $dropdown-link-disabled-color        : $mid-grey !default;
 
@@ -64,13 +64,17 @@ $dropdown-caret-color                : $mid-grey !default;
 
   // Active state
   > .active > a {
-    &,
-    &:hover,
-    &:focus {
+    & {
       color: $dropdown-link-active-color;
       text-decoration: none;
       outline: 0;
       background-color: $dropdown-link-active-bg;
+    }
+
+    &:hover,
+    &:focus {
+      color: $dropdown-link-hover-color;
+      background-color: $dropdown-link-hover-bg;
     }
   }
 
@@ -94,8 +98,7 @@ $dropdown-caret-color                : $mid-grey !default;
   }
 
   .divider {
-    margin-top: 8px;
-    margin-bottom: 8px;
+    margin: 0;
     border-top: 1px solid $dropdown-divider-bg;
   }
 

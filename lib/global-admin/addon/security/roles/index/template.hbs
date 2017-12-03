@@ -1,17 +1,6 @@
-<section class="header has-tabs clearfix p-0">
-  <ul class="tab-nav">
-    <li>{{#link-to (query-params type="project")}}{{t 'rolesPage.index.projectRoles'}}{{/link-to}}</li>
-    <li>{{#link-to (query-params type="cluster")}}{{t 'rolesPage.index.clusterRoles'}}{{/link-to}}</li>
-  </ul>
-
-  <div class="right-buttons">
-    {{#if (eq type "project")}}
-      {{#link-to "roles.new" (query-params type="project") classNames="btn btn-sm bg-primary right-divider-btn"}} {{t 'rolesPage.addProjectRole'}} {{/link-to}}
-    {{else if (eq type "cluster")}}
-      {{#link-to "roles.new" (query-params type="cluster") classNames="btn btn-sm bg-primary right-divider-btn"}} {{t 'rolesPage.addClusterRole'}} {{/link-to}}
-    {{/if}}
-  </div>
-</section>
+{{#security-header}}
+  {{#link-to "security.roles.new" classNames="btn btn-sm bg-primary right-divider-btn"}} {{t 'rolesPage.addRole'}}{{/link-to}}
+{{/security-header}}
 
 <section class="instances">
   {{#sortable-table
@@ -29,7 +18,7 @@
           &nbsp;
         </td>
         <td data-title="{{t 'rolesPage.index.table.name'}}:" class="clip">
-          {{#link-to "roles.edit" row.id (query-params type=type)}}
+          {{#link-to "security.roles.edit" row.id}}
             {{row.name}}
           {{/link-to}}
         </td>

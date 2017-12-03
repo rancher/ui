@@ -9,7 +9,7 @@ var ProjectRoleTemplate = Resource.extend(PolledResource, {
 
   actions: {
     edit: function() {
-      this.get('router').transitionTo('global-admin.roles.edit', this.get('id'), { queryParams: { type: 'project' } });
+      this.get('router').transitionTo('global-admin.security.roles.edit', this.get('id'), { queryParams: { type: 'project' } });
     },
   },
 

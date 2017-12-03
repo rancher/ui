@@ -129,21 +129,42 @@ const rootNav = [
   },
   {
     scope: 'global',
-    id: 'global-roles',
-    localizedLabel: 'nav.admin.roles',
-    route: 'global-admin.roles',
+    id: 'global-catalogs',
+    localizedLabel: 'nav.admin.catalogs',
+    route: 'global-admin.catalog',
   },
   {
     scope: 'global',
-    id: 'global-podsecurity',
-    localizedLabel: 'nav.admin.podSecurityPolicies',
-    route: 'global-admin.policies',
+    id: 'global-security',
+    localizedLabel: 'nav.admin.security.tab',
+    route: 'global-admin.security',
+    submenu: [
+      {
+        id: 'global-security-roles',
+        localizedLabel: 'nav.admin.security.roles',
+        icon: 'icon icon-key',
+        route: 'global-admin.security.roles',
+      },
+      {
+        id: 'global-security-roles',
+        localizedLabel: 'nav.admin.security.podSecurityPolicies',
+        icon: 'icon icon-files',
+        route: 'global-admin.security.policies',
+      },
+      {
+        id: 'global-security-authentication',
+        localizedLabel: 'nav.admin.security.authentication',
+        icon: 'icon icon-users',
+        route: 'global-admin.security.authentication',
+      },
+    ],
   },
   {
     scope: 'global',
     id: 'global-advanced',
     localizedLabel: 'nav.admin.settings.advanced',
     route: 'global-admin.settings.advanced',
+    disabled: true,
   },
 ]
 
