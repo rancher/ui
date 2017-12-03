@@ -4,6 +4,24 @@
   padding-left: 0;
   padding-right: 0;
 
+  .input-arrow {
+    position: relative;
+    background-image: url(images/dropdown-arrow.svg);
+    background-repeat: no-repeat;
+    background-size: 15px 10px;
+    background-position: calc(100% - 10px) center;
+  }
+
+  .input-search {
+    @extend .input-arrow;
+    &:hover{
+      @extend .input-arrow;
+    }
+    &:focus{
+      @extend .input-arrow;
+    }
+  }
+
   .searchable-option-active {
     background: #4698FD;
     color: white;
@@ -48,8 +66,8 @@
     }
   }
   .searchable-option, .searchable-prompt {
+    cursor: pointer;
     user-select: none;
-    cursor: default;
     display: flex;
     align-items: center;
     padding: 0px 0;
