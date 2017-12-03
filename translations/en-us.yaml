@@ -92,14 +92,14 @@ realmNames:
 ##############################
 accountsPage:
   index:
-    header: Accounts
-    localLink: Add Account
+    header: Users
+    localLink: Add User
     table:
       id: ID
       kind: Kind
       username: Username
       identity: Identity
-      noData: There are no accounts yet
+      noData: There are no users yet
       noName: None
   new:
     header: Add Account
@@ -3966,9 +3966,11 @@ nav:
     tab: Global
     accounts: Users
     clusters: Clusters
-    machines: Machines
-    roles: Roles
-    podSecurityPolicies: PSPs
+    machines: Nodes
+    security:
+      tab: Security
+      roles: Roles
+      podSecurityPolicies: Pod Security Policies
     settings:
       tab: Settings
       auth: Access Control
@@ -4041,6 +4043,21 @@ validation:
     min: '"{key}" should be at least {val}'
     max: '"{key}" should be at most {val}'
   chars: '"{key}" contains {count, plural, =1 {an invalid character} other {# invalid characters}}: {chars}'
+  dns:
+    doubleHyphen: Cannot contain two consecutive hyphens
+    hostname:
+      startDot: '"{key}" cannot start with a dot'
+      empty: '"{key}" must be at least one character'
+      tooLong: '"{key}" cannot be longer than {max} characters'
+      startHyphen: '"{key}" cannot have a section starting with a hyphen'
+      endHyphen: '"{key}" cannot have a section ending with a hyphen'
+      emptyLabel: '"{key}" cannot have two consecutive dots'
+      labelTooLong: '"{key}" cannot have a section longer than {max} characters'
+    label:
+      startHyphen: '"{key}" cannot start with a hyphen'
+      endHyphen: '"{key}" cannot end with a hyphen'
+      emptyLabel: '"{key}" cannot be empty'
+      labelTooLong: '"{key}" cannot be more than {max} characters'
 
 ##############################
 # Model Properties
