@@ -117,12 +117,6 @@ const rootNav = [
   },
   {
     scope: 'global',
-    id: 'global-accounts',
-    localizedLabel: 'nav.admin.accounts',
-    route: 'global-admin.accounts',
-  },
-  {
-    scope: 'global',
     id: 'global-machines',
     localizedLabel: 'nav.admin.machines',
     route: 'global-admin.machines',
@@ -132,6 +126,12 @@ const rootNav = [
     id: 'global-catalogs',
     localizedLabel: 'nav.admin.catalogs',
     route: 'global-admin.catalog',
+  },
+  {
+    scope: 'global',
+    id: 'global-accounts',
+    localizedLabel: 'nav.admin.accounts',
+    route: 'global-admin.accounts',
   },
   {
     scope: 'global',
@@ -159,13 +159,13 @@ const rootNav = [
       },
     ],
   },
-  {
-    scope: 'global',
-    id: 'global-advanced',
-    localizedLabel: 'nav.admin.settings.advanced',
-    route: 'global-admin.settings.advanced',
-    disabled: true,
-  },
+//  {
+//    scope: 'global',
+//    id: 'global-advanced',
+//    localizedLabel: 'nav.admin.settings.advanced',
+//    route: 'global-admin.settings.advanced',
+//    disabled: true,
+//  },
 ]
 
 export function initialize(/*appInstance*/) {

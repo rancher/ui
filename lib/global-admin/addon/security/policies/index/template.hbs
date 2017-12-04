@@ -2,14 +2,6 @@
   {{#link-to "security.policies.new" classNames="btn btn-sm bg-primary right-divider-btn"}} {{t 'podSecurityPoliciesPage.addPodSecurityPolicy'}} {{/link-to}}
 {{/security-header}}
 
-After
-<section class="header clearfix">
-  <h1 class="pull-left">{{t 'podSecurityPoliciesPage.index.header'}}</h1>
-
-  <div class="right-buttons">
-  </div>
-</section>
-
 <section class="instances">
   {{#sortable-table
     classNames="grid sortable-table"
@@ -23,14 +15,14 @@ After
     {{#if (eq kind "row")}}
       <tr class="main-row">
         <td valign="middle" class="row-check" style="padding-top: 2px;">
-          &nbsp;
+          {{check-box nodeId=row.id}}
         </td>
         <td data-title="{{t 'podSecurityPoliciesPage.index.table.name'}}:" class="clip">
           {{#link-to "security.policies.edit" row.id}}
             {{row.name}}
           {{/link-to}}
         </td>
-        <td data-title="{{t 'podSecurityPoliciesPage.index.table.created'}}:" >
+        <td data-title="{{t 'generic.created'}}:" >
           {{date-calendar row.created}}
         </td>
         <td data-title="{{t 'generic.actions'}}:" class="actions">
