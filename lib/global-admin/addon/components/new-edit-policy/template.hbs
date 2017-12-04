@@ -10,7 +10,7 @@
 
 <section class="horizontal-form container-fluid">
   {{form-name-description
-      name=model.policy.name
+      name=model.name
       nameRequired=true
       nameDisabled=editing
       namePlaceholder="podSecurityPoliciesPage.new.form.name.placeholder"
@@ -23,7 +23,7 @@
   {{#accordion-list as |al expandFn|}}
     <div class="mt-20">
       {{form-basic-policy
-        model=model.policy
+        model=model
         expandAll=al.expandAll
         expandFn=expandFn
       }}
@@ -31,7 +31,7 @@
 
     <div class="mt-20">
       {{form-capability-policy
-        model=model.policy
+        model=model
         expandAll=al.expandAll
         expandFn=expandFn
       }}
@@ -39,7 +39,7 @@
 
     <div class="mt-20">
       {{form-volume-policy
-        model=model.policy
+        model=model
         expandAll=al.expandAll
         expandFn=expandFn
       }}
@@ -47,7 +47,7 @@
 
     <div class="mt-20">
       {{form-hostpath-policy
-        model=model.policy
+        model=model
         expandAll=al.expandAll
         expandFn=expandFn
       }}
@@ -55,7 +55,7 @@
 
     <div class="mt-20">
       {{form-fsgroup-policy
-        model=model.policy
+        model=model
         expandAll=al.expandAll
         expandFn=expandFn
       }}
@@ -63,7 +63,7 @@
 
     <div class="mt-20">
       {{form-hostports-policy
-        model=model.policy
+        model=model
         expandAll=al.expandAll
         expandFn=expandFn
       }}
@@ -71,7 +71,7 @@
 
     <div class="mt-20">
       {{form-runasuser-policy
-        model=model.policy
+        model=model
         expandAll=al.expandAll
         expandFn=expandFn
       }}
@@ -79,7 +79,7 @@
 
     <div class="mt-20">
       {{form-selinux-policy
-        model=model.policy
+        model=model
         expandAll=al.expandAll
         expandFn=expandFn
       }}
@@ -87,7 +87,7 @@
 
     <div class="mt-20">
       {{form-supplementalgroups-policy
-        model=model.policy
+        model=model
         expandAll=al.expandAll
         expandFn=expandFn
       }}
@@ -98,4 +98,4 @@
 
 
 {{top-errors errors=errors}}
-{{save-cancel createLabel=(if editing 'podSecurityPoliciesPage.saveEdit' 'podSecurityPoliciesPage.saveNew') save="save" cancel="cancel"}}
+{{save-cancel editing=editing  save="save" cancel="cancel"}}

@@ -130,7 +130,7 @@ var Namespace = Resource.extend(StateCounts, {
       { label:   'action.move',           icon: 'icon icon-fork',           action: 'move',             enabled: true, bulkable: true},
       { label:   'action.addContainer',   icon: 'icon icon-container',      action: 'addContainer',     enabled: true },
       { divider: true },
-      { label:   'action.pause',          icon: 'icon icon-pause',          action: 'pauseAll',         enabled: this.get('canPauseAll'), bulkable: true},
+      { label:   'action.pause',          icon: 'icon icon-pause',          action: 'pauseAll',         enabled: this.get('canPauseAll')},
       { label:   'action.startAll',       icon: 'icon icon-play',           action: 'startAll',         enabled: this.get('canStartAll')},
       { label:   'action.stopAll',        icon: 'icon icon-stop',           action: 'promptStop',       enabled: this.get('canStopAll'), altAction: 'stopAll' },
       { divider: true },

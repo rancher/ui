@@ -11,9 +11,9 @@
         <th width="{{actionsWidth}}"></th>
       {{/if}}
     </tr>
-    {{#if (or search bulkActions)}}
+    {{#if showHeader}}
       <div class="fixed-header-actions row clearfix">
-        {{#if (and selectedNodes bulkActions)}}
+        {{#if bulkActions}}
           <div class="bulk-actions pull-left">
             {{#each availableActions as |action index|}}
               {{#if action.enabled}}
@@ -28,7 +28,9 @@
                 </a>
               {{/if}}
             {{/each}}
-            <div class="inline-block text-small">{{t pagingLabel pages=1 count=selectedNodes.length}}</div>
+            {{#if selectedNodes}}
+              <div class="inline-block text-small">{{t pagingLabel pages=1 count=selectedNodes.length}}</div>
+            {{/if}}
           </div>
         {{/if}}
         {{#if rightActions}}
@@ -37,14 +39,16 @@
           </div>
         {{/if}}
         {{#if search}}
-          <div class="pull-right search-group input-group">
-            {{input value=searchText aria-title=(t 'generic.search') type="search" class="input-sm pull-right" placeholder=(t 'generic.search')}}
-            {{#if searchText}}
-              <span class="input-group-btn">
-                <button class="btn bg-transparent text-info pl-10 pr-10" {{action 'clearSearch'}}><i class="icon icon-close"/></button>
-              </span>
-            {{/if}}
-          </div>
+          {{#ember-wormhole to=searchToWormhole renderInPlace=(not searchToWormhole)}}
+            <div class="{{unless searchToWormhole 'pull-right'}} search-group input-group">
+              {{input value=searchText aria-title=(t 'generic.search') type="search" class="input-sm pull-right" placeholder=(t 'generic.search')}}
+              {{#if searchText}}
+                <span class="input-group-btn">
+                  <button class="btn bg-transparent text-info pl-10 pr-10" {{action 'clearSearch'}}><i class="icon icon-close"/></button>
+                </span>
+              {{/if}}
+            </div>
+          {{/ember-wormhole}}
         {{/if}}
       </div>
     {{/if}}

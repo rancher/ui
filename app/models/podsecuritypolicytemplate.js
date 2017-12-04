@@ -8,7 +8,7 @@ var PodSecurityPolicyTemplate = Resource.extend(PolledResource, {
 
   actions: {
     edit: function() {
-      this.get('router').transitionTo('global-admin.policies.edit', this.get('id'));
+      this.get('router').transitionTo('global-admin.security.policies.edit', this.get('id'));
     },
   },
 

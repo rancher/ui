@@ -92,14 +92,14 @@ realmNames:
 ##############################
 accountsPage:
   index:
-    header: Accounts
-    localLink: Add Account
+    header: Users
+    localLink: Add User
     table:
       id: ID
       kind: Kind
       username: Username
       identity: Identity
-      noData: There are no accounts yet
+      noData: There are no users yet
       noName: None
   new:
     header: Add Account
@@ -130,8 +130,8 @@ podSecurityPoliciesPage:
       created: Created Time
       noData: There are no pod security policies yet
       noMatch: No pod security policies match the current search
-  addPodSecurityPolicy: Add Pod Security Policy
-  editPodSecurityPolicy: Edit Pod Security Policy
+  addPodSecurityPolicy: Add Policy
+  editPodSecurityPolicy: Edit Policy
   saveEdit: Edit
   saveNew: Create
   new:
@@ -145,18 +145,15 @@ podSecurityPoliciesPage:
 
 rolesPage:
   index:
-    clusterRoles: Cluster Roles
-    projectRoles: Project Roles
     localLink: Add Role
     table:
       name: Name
       created: Created Time
+      builtin: Built-In
       noData: There are no roles yet
       noMatch: No roles match the current search
-  addProjectRole: Add Project Role
-  addClusterRole: Add Cluster Role
-  editProjectRole: Edit Project Role
-  editClusterRole: Edit Cluster Role
+  addRole: Add Role
+  editRole: Edit Role
   saveEdit: Edit
   saveNew: Create
   new:
@@ -181,6 +178,9 @@ rolesPage:
         labelText: Include other roles
         role: Role
         addAction: Add Role
+      policy:
+        policy: Policy
+        addAction: Add Policy
 
 apiPage:
   header: Environment API Keys
@@ -892,8 +892,8 @@ hostsPage:
       template: 'Template Name:'
   addContainer: Add Container
   index:
-    header: Hosts
-    addHost: Add Host
+    header: Nodes
+    addHost: Add Node
     tooltip:
       listView: List
       iconView: State Icons
@@ -3966,9 +3966,13 @@ nav:
     tab: Global
     accounts: Users
     clusters: Clusters
-    machines: Machines
-    roles: Roles
-    podSecurityPolicies: PSPs
+    machines: Nodes
+    catalogs: Catalogs
+    security:
+      tab: Security
+      roles: Roles
+      podSecurityPolicies: Pod Security Policies
+      authentication: Authentication
     settings:
       tab: Settings
       auth: Access Control
@@ -4041,6 +4045,21 @@ validation:
     min: '"{key}" should be at least {val}'
     max: '"{key}" should be at most {val}'
   chars: '"{key}" contains {count, plural, =1 {an invalid character} other {# invalid characters}}: {chars}'
+  dns:
+    doubleHyphen: Cannot contain two consecutive hyphens
+    hostname:
+      startDot: '"{key}" cannot start with a dot'
+      empty: '"{key}" must be at least one character'
+      tooLong: '"{key}" cannot be longer than {max} characters'
+      startHyphen: '"{key}" cannot have a section starting with a hyphen'
+      endHyphen: '"{key}" cannot have a section ending with a hyphen'
+      emptyLabel: '"{key}" cannot have two consecutive dots'
+      labelTooLong: '"{key}" cannot have a section longer than {max} characters'
+    label:
+      startHyphen: '"{key}" cannot start with a hyphen'
+      endHyphen: '"{key}" cannot end with a hyphen'
+      emptyLabel: '"{key}" cannot be empty'
+      labelTooLong: '"{key}" cannot be more than {max} characters'
 
 ##############################
 # Model Properties
