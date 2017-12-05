@@ -6,6 +6,17 @@
   <label class="pt-20 pb-5">{{t 'editStack.description.label'}}</label>
   {{textarea value=primaryResource.description classNames="form-control no-resize" rows="5" placeholder=(t 'editStack.description.placeholder')}}
 
+  <label class="pt-20 pb-5">{{t 'editStack.project.label'}}</label>
+  {{new-select
+    classNames="form-control"
+    optionValuePath="id"
+    optionLabelPath="displayName"
+    content=allProjects
+    value=primaryResource.projectId
+    prompt="editStack.project.prompt"
+    localizedPrompt=true
+  }}
+
   <label class="pt-20 pb-5">{{t 'editStack.group.label'}}</label>
   <div class="input-group">
     {{input type="text" value=primaryResource.group classNames="form-control" placeholder=(t 'editStack.group.placeholder')}}

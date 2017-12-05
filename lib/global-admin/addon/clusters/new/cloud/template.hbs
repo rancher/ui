@@ -5,7 +5,9 @@
 <section class="pt-10">
   <div class="row nav nav-boxes checked-active">
     {{#each sortedDrivers as |choice|}}
-      <a {{action "switchDriver" choice.name}} alt={{choice.name}} class="col span-2 nav-box-item driver machine-driver {{choice.name}} {{if (eq choice.name driver) 'active'}}" href="#"><p class="sr-only">{{choice.displayName}}</p> -- {{choice.displayName}}</a>
+      <a {{action "switchDriver" choice.name}} alt={{choice.name}} class="col span-2 nav-box-item driver machine-driver {{choice.name}} {{if (eq choice.name driver) 'active'}}" href="#">
+        <p class="sr-only">{{choice.displayName}}</p>
+      </a>
     {{/each}}
   </div>
 </section>
@@ -14,7 +16,7 @@
   {{#if driver}}
     {{component (concat 'driver/driver-' driver)
       cancel=(action 'cancel')
-      cluster=cluster
+      cluster=model.cluster
       driver=(concat driver 'Config')
     }}
   {{/if}}
