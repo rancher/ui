@@ -58,7 +58,7 @@ export default Ember.Route.extend(Subscribe, PromiseToCb, {
         projects:                                       this.toCb('loadProjects'),
         preferences:                                    this.toCb('loadPreferences'),
         settings:                                       this.toCb('loadPublicSettings'),
-        regions:            ['userSchemas',             this.cbFind('region', 'userStore')],
+        regions:            ['userSchemas',             this.toCb('loadRegions')],
         project:            ['projects', 'preferences', this.toCb('selectProject',transition)],
         projectSchemas:     ['project',                 this.toCb('loadProjectSchemas')],
         catalogs:           ['project',                 this.toCb('loadCatalogs')],
@@ -207,6 +207,14 @@ export default Ember.Route.extend(Subscribe, PromiseToCb, {
 
   loadCatalogs() {
     return this.get('catalog').fetchCatalogs();
+  },
+
+  loadRegions() {
+    if (this.get('userStore').getById('schema', 'region')) {
+      return this.get('userStore').find('region');
+    } else {
+      return Ember.RSVP.resolve();
+    }
   },
 
   updateOrchestration() {
