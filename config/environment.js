@@ -92,27 +92,30 @@ module.exports = function(environment) {
       // when it is created
       version: pkg.version,
       appName: 'Rancher',
-      baseAssets: '/',
       mode: mode,
       isCaas: mode === 'caas',
       caasSignup: signup,
       environment: environment,
+      baseAssets: '/',
+
+      clusterToken: '%CLUSTERID%',
+      projectToken: '%PROJECTID%',
 
       apiServer: 'http://localhost:8080',
       apiEndpoint: '/v3',
+      clusterEndpoint: '/v3/clusters/%CLUSTERID%',
       projectEndpoint: '/v3/projects/%PROJECTID%',
       proxyEndpoint: '/v3/proxy',
-      globalSubscribeEndpoint: '/meta/subscribe',
-      projectSubscribeEndpoint: '/meta/subscribe?projectId=%PROJECTID%',
+      subscribeEndpoint: '/meta/subscribe?projectId=%PROJECTID%',
+      magicEndpoint: '/r',
 
+      // @TODO-2.0
       telemetryEndpoint: '/v1-telemetry',
       webhookEndpoint: '/v1-webhooks',
-      clusterToken: '%CLUSTERID%',
-      projectToken: '%PROJECTID%',
-      magicEndpoint: '/r',
       kubernetesBase: '/k8s',
       kubectlEndpoint: '/r/projects/%PROJECTID%/kubectld:8091/v1-kubectl',
       kubernetesDashboard: '/k8s/clusters/%CLUSTERID%/api/v1/namespaces/kube-system/services/kubernetes-dashboard/proxy/',
+
       locales: readLocales(environment),
       stripe: {
         publishableKey: 'pk_test_g925RcuVORh2KgHWfFbE80by'

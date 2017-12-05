@@ -8,7 +8,7 @@ import PromiseToCb from 'ui/mixins/promise-to-cb';
 
 export default Route.extend(PromiseToCb, {
   catalog: service(),
-  clusterStore: service('cluster-store'),
+  clusterStore: service(),
 
   model: function(params /* , transition*/) {
     const clusterStore = this.get('clusterStore');

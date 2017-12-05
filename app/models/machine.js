@@ -16,7 +16,7 @@ var Machine = Resource.extend(StateCounts,{
   settings: service(),
   prefs: service(),
   router: service(),
-  clusterStore: service('cluster-store'),
+  clusterStore: service(),
 
   init() {
     this._super(...arguments);
