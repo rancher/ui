@@ -1,14 +1,16 @@
 import { hash } from 'rsvp';
-import { inject as service } from '@ember/service';
+import { get } from '@ember/object';
 import Route from '@ember/routing/route';
 
 export default Route.extend({
-  authzStore: service('authz-store'),
-  model: function (params) {
+  globalStore: service(),
+
+  model(params) {
+    const store = get(this, 'globalStore');
     return hash({
-      project: this.get('authzStore').find('project', params.project_id),
-      projects: this.get('authzStore').findAll('project'),
-      roles: this.get('authzStore').findAll('projectRoleTemplate'),
+      project:  store.find('project', params.project_id),
+      projects: store.findAll('project'),
+      roles:    store.findAll('projectRoleTemplate'),
     });
   },
 });

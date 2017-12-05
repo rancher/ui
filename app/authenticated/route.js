@@ -11,8 +11,8 @@ const CHECK_AUTH_TIMER = 60*10*1000;
 
 export default Route.extend(Subscribe, {
   access:       service(),
-  authzStore:   service('authz-store'),
-  clusterStore: service('cluster-store'),
+  globalStore:  service(),
+  clusterStore: service(),
   cookies:      service(),
   language:     service('user-language'),
   modalService: service('modal'),
@@ -36,7 +36,7 @@ export default Route.extend(Subscribe, {
     }
   },
 
-  testAuthToken: function() {
+  testAuthToken() {
     let timer = later(() => {
       this.get('access').testAuth().then((/* res */) => {
         this.testAuthToken();
@@ -57,9 +57,7 @@ export default Route.extend(Subscribe, {
     this.get('session').set(C.SESSION.BACK_TO, undefined);
 
     return PromiseAll([
-      this.loadSchemas('clusterStore'),
-//      this.loadSchemas('authnStore'),
-      this.loadSchemas('authzStore'),
+      this.loadSchemas('globalStore'),
       this.loadClusters(),
       this.loadProjects()
       //this.loadPreferences(),
@@ -74,7 +72,7 @@ export default Route.extend(Subscribe, {
         this.preload('namespace'),
         this.preload('node'),
         this.preload('pod'),
-        this.preload('projectRoleTemplateBinding', 'authzStore'),
+        this.preload('projectRoleTemplateBinding', 'globalStore'),
       ]);
     }).catch((err) => {
       return this.loadingError(err, transition);
@@ -140,7 +138,7 @@ export default Route.extend(Subscribe, {
   },
 
   loadPreferences() {
-    return this.get('userStore').find('userpreference', null, {url: 'userpreferences', forceReload: true}).then((res) => {
+    return this.get('globalStore').find('userpreference', null, {url: 'userpreferences', forceReload: true}).then((res) => {
       // Save the account ID from the response headers into session
       if ( res )
       {
@@ -183,7 +181,7 @@ export default Route.extend(Subscribe, {
   },
 
   loadPublicSettings() {
-    return this.get('userStore').find('setting', null, {url: 'settings', forceReload: true, filter: {all: 'false'}});
+    return this.get('globalStore').find('setting', null, {url: 'settings', forceReload: true, filter: {all: 'false'}});
   },
 
   loadSecrets() {
@@ -220,8 +218,7 @@ export default Route.extend(Subscribe, {
   },
 
   actions: {
-
-    changeTheme: function() {
+    changeTheme() {
       var userTheme = this.get('userTheme');
       var currentTheme  = userTheme.getTheme();
 
@@ -297,12 +294,12 @@ export default Route.extend(Subscribe, {
 
     gotoA() { this._gotoRoute('apps-tab.index'); },
     gotoB() { this._gotoRoute('balancers.index'); },
-    gotoC() { this._gotoRoute('containers.index'); },
     gotoD() { this._gotoRoute('dns.index'); },
     gotoE() { this._gotoRoute('global-admin.clusters.index', false); },
     gotoH() { this._gotoRoute('hosts.index'); },
     gotoK() { this._gotoRoute('authenticated.project.apikeys'); },
     gotoV() { this._gotoRoute('volumes.index'); },
+    gotoW() { this._gotoRoute('workloads.index'); },
 
     help()  {
       this.get('modalService').toggleModal('modal-shortcuts');
@@ -355,7 +352,6 @@ export default Route.extend(Subscribe, {
   shortcuts: {
     'a': 'gotoA',
     'b': 'gotoB',
-    'c': 'gotoC',
     'd': 'gotoD',
     'e': 'gotoE',
     'h': 'gotoH',
@@ -364,6 +360,7 @@ export default Route.extend(Subscribe, {
     'p': 'gotoP',
     't': 'nextTab',
     'v': 'gotoV',
+    'w': 'gotoW',
     '/': 'search',
     'shift+/': 'help',
     'shift+t': 'changeTheme',

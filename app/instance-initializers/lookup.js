@@ -13,10 +13,8 @@ export function initialize(application) {
   };
 
   window.s  = application.lookup('service:store');
-  window.us = application.lookup('service:user-store');
-  window.cs = application.lookup('service:cluster-store');
-  window.ns = application.lookup('service:authn-store');
-  window.zs = application.lookup('service:authz-store');
+  window.cs = application.lookup('service:clusterStore');
+  window.gs = application.lookup('service:globalStore');
 }
 
 export default {

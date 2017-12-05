@@ -6,8 +6,6 @@ import PolledResource from 'ui/mixins/cattle-polled-resource';
 import { hasMany } from 'ember-api-store/utils/denormalize';
 
 var Cluster = Resource.extend(PolledResource, {
-  authzStore: service('authz-store'),
-
   scope:        service(),
   router:       service(),
 
@@ -37,32 +35,20 @@ var Cluster = Resource.extend(PolledResource, {
     });
   },
 
-
-  // _allProjects: null,
-
-  // projects: computed('_allProjects.@each.clusterName', function() {
-  //   let x = this.get('_allProjects');
-
-  //   if (!x) {
-  //     x = this.set('_allProjects', this.get('authzStore').all('project'));
-  //   }
-
-  //   return x.filterBy('clusterName', this.get('id'));
-  // }),
-
   defaultProject: computed('projects.@each.{name,clusterOwner}', function() {
     let projects = this.get('projects');
 
     let out = projects.findBy('name','Default');
-
-    if ( !out ) {
-      out = projects.findBy('clusterOwner', true);
+    if ( out ) {
+      return out;
     }
 
-    if ( !out ) {
-      out = projects.objectAt(0);
+    out = projects.findBy('clusterOwner', true);
+    if ( out ) {
+      return out;
     }
 
+    out = projects.objectAt(0);
     return out;
   }),
 

@@ -27,9 +27,9 @@ export default Route.extend({
     });
 
     //only need to populate the passwords for the account right now
-    return this.get('userStore').find('password').then((/* pwds */) => {
+    return this.get('globalStore').find('password').then((/* pwds */) => {
 
-      return this.get('userStore').find('account', this.get('accountId')).then((resp) => {
+      return this.get('globalStore').find('account', this.get('accountId')).then((resp) => {
         let stripeAccountId = null;
         if (resp.description && typeof resp.description === 'object') {
           stripeAccountId = JSON.parse(resp.description).stripeAccountId;

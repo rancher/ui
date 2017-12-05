@@ -2,7 +2,7 @@ import StoreTweaks from 'ui/mixins/store-tweaks';
 
 export function initialize(instance) {
   var application = instance.lookup('application:main');
-  var store = instance.lookup('service:user-store');
+  var store = instance.lookup('service:globalStore');
   var cookies = instance.lookup('service:cookies');
 
   store.reopen(StoreTweaks);
@@ -15,6 +15,6 @@ export function initialize(instance) {
 }
 
 export default {
-  name: 'user-store',
+  name: 'global-store',
   initialize: initialize
 };

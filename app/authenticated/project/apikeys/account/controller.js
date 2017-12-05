@@ -61,7 +61,7 @@ export default Controller.extend({
       var cred;
       if ( kind === 'account' )
       {
-        cred = this.get('userStore').createRecord({
+        cred = this.get('globalStore').createRecord({
           type: 'apikey',
           accountId: this.get(`session.${C.SESSION.ACCOUNT_ID}`),
         });

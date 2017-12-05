@@ -2,7 +2,7 @@ import StoreTweaks from 'ui/mixins/store-tweaks';
 
 export function initialize(instance) {
   var application = instance.lookup('application:main');
-  var clusterStore = instance.lookup('service:cluster-store');
+  var clusterStore = instance.lookup('service:clusterStore');
   var cookies = instance.lookup('service:cookies');
 
   clusterStore.reopen(StoreTweaks);

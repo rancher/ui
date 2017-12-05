@@ -25,16 +25,12 @@ module.exports = function(app, options) {
   });
 
   let map = {
-    'API': config.apiEndpoint,
-    'Cluster': config.clusterEndpoint,
-    'AuthN': config.authenticationEndpoint,
-    'AuthZ': config.authorizationEndpoint,
-    'Catalog': config.catalogEndpoint,
-
-//    'Beta API': config.betaApiEndpoint,
-//    'Legacy API': config.legacyApiEndpoint,
-    'K8s': config.kubernetesBase,
+    'Project': config.projectEndpoint.replace(config.projectToken, ''),
+    'Cluster': config.clusterEndpoint.replace(config.clusterToken, ''),
+    'Global':  config.apiEndpoint,
     'Magic': config.magicEndpoint,
+
+    // @TODO-2.0
     'Telemetry': config.telemetryEndpoint,
     'WebHook': config.webhookEndpoint,
 

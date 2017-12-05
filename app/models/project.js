@@ -16,17 +16,17 @@ var Project = Resource.extend(PolledResource, {
   modalService: service('modal'),
   router: service(),
   cookies: service(),
-  clusterStore: service('cluster-store'),
 
   type: 'project',
   name: null,
   description: null,
 
-  cluster: reference('clusterId', 'cluster', 'clusterStore'),
+  state: 'active', // @TODO-2.0
+
+  cluster: reference('clusterId', 'cluster'),
 
   canAddHost: notEmpty('cluster.registrationToken.hostCommand'),
   canImport: notEmpty('cluster.registrationToken.clusterCommand'),
-  isKubernetes: equal('cluster.orchestration', 'kubernetes'),
   projectRoleTemplateBindings: hasMany('id', 'projectRoleTemplateBinding', 'projectId'),
 
   actions: {
