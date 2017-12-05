@@ -2,13 +2,13 @@ import { inject as service } from '@ember/service';
 import Route from '@ember/routing/route';
 
 export default Route.extend({
-  clsuterStore: service('cluster-store'),
+  clusterStore: service(),
   scope: service(),
 
   model: function() {
-    return this.get('clusterStore').find('clusterNode', null, {filter: {clusterId: this.get('scope.currentCluster.id')}}).then((nodes) => {
+    return this.get('clusterStore').find('node').then((nodes) => {
       return {
-        hosts: nodes,
+        nodes,
       };
     });
   },

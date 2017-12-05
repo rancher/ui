@@ -24,9 +24,6 @@ var Project = Resource.extend(PolledResource, {
   state: 'active', // @TODO-2.0
 
   cluster: reference('clusterId', 'cluster'),
-
-  canAddHost: notEmpty('cluster.registrationToken.hostCommand'),
-  canImport: notEmpty('cluster.registrationToken.clusterCommand'),
   projectRoleTemplateBindings: hasMany('id', 'projectRoleTemplateBinding', 'projectId'),
 
   actions: {

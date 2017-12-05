@@ -6,11 +6,12 @@ export default Route.extend({
   scope: service(),
 
   model() {
-    const store = this.get('clusterStore');
+    const clusterStore = this.get('clusterStore');
+    const globalStore = this.get('globalStore');
 
     return hash({
-      namespaces: store.findAll('namespace'),
-      projects: store.findAll('project')
+      namespaces: clusterStore.findAll('namespace', {url: 'namespaces'}), // @TODO-2.0 get schema for cluster ns so the url isn't hardcoded
+      projects: globalStore.findAll('project'),
     })
   },
 });

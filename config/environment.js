@@ -53,7 +53,6 @@ module.exports = function(environment) {
     modulePrefix: 'ui',
     environment: environment,
     exportApplicationGlobal: true,
-    rootURL: '/',
     locationType: 'auto',
     EmberENV: {
       FEATURES: {
@@ -93,28 +92,27 @@ module.exports = function(environment) {
       // when it is created
       version: pkg.version,
       appName: 'Rancher',
+      baseAssets: '/',
       mode: mode,
       isCaas: mode === 'caas',
       caasSignup: signup,
       environment: environment,
+
       apiServer: 'http://localhost:8080',
-
       apiEndpoint: '/v3',
-      clusterEndpoint: '/v3/clusters/%CLUSTERID%',
       projectEndpoint: '/v3/projects/%PROJECTID%',
-      subscribeEndpoint: '/meta/subscribe?projectId=%PROJECTID%',
-      proxyEndpoint: '/meta/proxy',
+      proxyEndpoint: '/v3/proxy',
+      globalSubscribeEndpoint: '/meta/subscribe',
+      projectSubscribeEndpoint: '/meta/subscribe?projectId=%PROJECTID%',
 
-      // @TODO-2.0
       telemetryEndpoint: '/v1-telemetry',
       webhookEndpoint: '/v1-webhooks',
-
       clusterToken: '%CLUSTERID%',
       projectToken: '%PROJECTID%',
       magicEndpoint: '/r',
+      kubernetesBase: '/k8s',
       kubectlEndpoint: '/r/projects/%PROJECTID%/kubectld:8091/v1-kubectl',
       kubernetesDashboard: '/k8s/clusters/%CLUSTERID%/api/v1/namespaces/kube-system/services/kubernetes-dashboard/proxy/',
-      baseAssets: '/',
       locales: readLocales(environment),
       stripe: {
         publishableKey: 'pk_test_g925RcuVORh2KgHWfFbE80by'
@@ -132,7 +130,6 @@ module.exports = function(environment) {
 
   if (environment === 'test') {
     // Testem prefers this...
-    ENV.rootURL = '/';
     ENV.locationType = 'none';
 
     // keep test console output quieter
@@ -141,12 +138,6 @@ module.exports = function(environment) {
 
     ENV.APP.rootElement = '#ember-testing';
   }
-
-  if (process.env.BASE_URL) {
-    ENV.rootURL = process.env.BASE_URL;
-  }
-
-  ENV.APP.rootURL = ENV.rootURL;
 
   if (process.env.FINGERPRINT) {
     ENV.APP.fingerprint = process.env.FINGERPRINT;

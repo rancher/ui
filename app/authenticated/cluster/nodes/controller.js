@@ -1,6 +1,6 @@
 import { inject as service } from '@ember/service';
 import Controller, { inject as controller } from '@ember/controller';
-import { headersCluster as hostHeaders } from 'shared/components/host-row/component';
+import { headersCluster as hostHeaders } from 'shared/components/node-row/component';
 
 export default Controller.extend({
   prefs:             service(),
@@ -9,14 +9,8 @@ export default Controller.extend({
 
   sortBy:            'name',
   queryParams:       ['sortBy'],
-  expandedHosts:     null,
   searchText:        '',
   headers:           hostHeaders,
-
-  init() {
-    this._super(...arguments);
-    this.set('expandedHosts',[]);
-  },
 
   extraSearchFields: [
     'displayUserLabelStrings',

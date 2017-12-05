@@ -1,0 +1,46 @@
+{{#if projectController.showClusterWelcome}}
+  {{cluster-welcome}}
+{{else}}
+  <section class="header clearfix">
+    <div class="pull-left"><h1>{{t 'nodesPage.header'}}</h1></div>
+
+    <div class="right-buttons">
+      {{#if scope.currentCluster.canAddNode}}
+        {{#link-to "authenticated.host-templates.index" classNames="btn btn-sm bg-primary"}}{{t 'nodesPage.addNode'}}{{/link-to}}
+      {{/if}}
+    </div>
+  </section>
+
+  {{#if model.nodes.length}}
+    {{#sortable-table
+      classNames="grid sortable-table"
+      body=model.nodes
+      searchText=searchText
+      sortBy=sortBy
+      bulkActions=true
+      subRows=true
+      fullRows=true
+      pagingLabel="pagination.node"
+      extraSearchFields=extraSearchFields
+      headers=headers as |sortable kind nodes dt|}}
+      {{#if (eq kind "row")}}
+        {{node-row
+          view="cluster"
+          model=nodes
+          fullColspan=sortable.fullColspan
+          dt=dt
+        }}
+      {{else if (eq kind "nomatch")}}
+        <tr><td colspan="{{sortable.fullColspan}}" class="text-center text-muted lacsso pt-20 pb-20">{{t 'nodesPage.table.noMatch'}}</td></tr>
+      {{else if (eq kind "norows")}}
+        <tr><td colspan="{{sortable.fullColspan}}" class="text-center text-muted lacsso pt-20 pb-20">{{t 'nodesPage.table.noData'}}</td></tr>
+      {{/if}}
+    {{/sortable-table}}
+  {{else}}
+    {{empty-table
+      resource="container"
+      showNew=scope.currentCluster.canAddNode
+      newRoute="authenticated.host-templates"
+      newTranslationKey="nodesPage.addNode"}}
+  {{/if}}
+{{/if}}

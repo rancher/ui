@@ -37,6 +37,13 @@ Router.map(function() {
 
     this.route('prefs');
 
+    // Global
+    this.route('host-new', {path: '/add-host'});
+    this.route('host-templates', {path: '/launch-host'}, function() {
+      this.route('index', {path: '/'});
+      this.route('launch', {path: '/:template_id'});
+    });
+
     // Per-Cluster
     this.route('cluster', {path: '/c/:cluster_id'}, function() {
       this.route('index', {path: '/'});
@@ -53,7 +60,7 @@ Router.map(function() {
         this.route('new', {path: '/add'});
       });
 
-      this.route('hosts');
+      this.route('nodes');
 
       this.route('projects', {path: '/projects'}, function() {
         this.route('index', {path: '/'});

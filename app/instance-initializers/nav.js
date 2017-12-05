@@ -88,9 +88,9 @@ const rootNav = [
   },
   {
     scope: 'cluster',
-    id: 'cluster-hosts',
-    localizedLabel: 'nav.cluster.hosts',
-    route: 'authenticated.cluster.hosts',
+    id: 'cluster-nodes',
+    localizedLabel: 'nav.cluster.nodes',
+    route: 'authenticated.cluster.nodes',
     ctx: [getClusterId],
   },
   {

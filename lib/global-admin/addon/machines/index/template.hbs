@@ -1,5 +1,5 @@
 <section class="header clearfix">
-  <h1 class="pull-left">{{t 'hostsPage.index.header'}}</h1> <div class="vertical-middle"></div>
+  <h1 class="pull-left">{{t 'nodesPage.header'}}</h1> <div class="vertical-middle"></div>
 
   <div class="right-buttons">
     {{#link-to "machines.templates" class="btn bg-primary btn-sm icon-btn"}}
@@ -9,3 +9,35 @@
   </div>
 </section>
 
+{{#if model.nodes.length}}
+  {{#sortable-table
+    classNames="grid sortable-table"
+    body=model.nodes
+    searchText=searchText
+    sortBy=sortBy
+    bulkActions=true
+    subRows=true
+    fullRows=true
+    pagingLabel="pagination.node"
+    extraSearchFields=extraSearchFields
+    headers=headers as |sortable kind nodes dt|}}
+    {{#if (eq kind "row")}}
+      {{node-row
+        view="cluster"
+        model=nodes
+        fullColspan=sortable.fullColspan
+        dt=dt
+      }}
+    {{else if (eq kind "nomatch")}}
+      <tr><td colspan="{{sortable.fullColspan}}" class="text-center text-muted pt-20 pb-20">{{t 'nodesPage.table.noMatch'}}</td></tr>
+    {{else if (eq kind "norows")}}
+      <tr><td colspan="{{sortable.fullColspan}}" class="text-center text-muted pt-20 pb-20">{{t 'nodesPage.table.noData'}}</td></tr>
+    {{/if}}
+  {{/sortable-table}}
+{{else}}
+  {{empty-table
+    resource="container"
+    showNew=scope.currentCluster.canAddNode
+    newRoute="authenticated.host-templates"
+    newTranslationKey="nodesPage.addNode" ctx="clusterId"}}
+{{/if}}
