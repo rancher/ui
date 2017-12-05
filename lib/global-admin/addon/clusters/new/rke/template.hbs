@@ -66,20 +66,23 @@
             </td>
             {{#if (eq scope "dedicated")}}
               <td data-title="{{dt.etcd}}">
-                {{input type="checkbox" disabled=(not-eq host.state "active") change=(action 'addRole' host 'etcd')}}
+                {{!-- disabled=(not-eq host.state "active") --}}
+                {{input type="checkbox" change=(action 'addRole' host 'etcd')}}
               </td>
               <td data-title="{{dt.controlplane}}">
-                {{input type="checkbox" disabled=(not-eq host.state "active") change=(action 'addRole' host 'controlplane')}}
+                {{!-- disabled=(not-eq host.state "active") --}}
+                {{input type="checkbox" change=(action 'addRole' host 'controlplane')}}
               </td>
             {{/if}}
             <td data-title="{{dt.worker}}">
-              {{input type="checkbox" disabled=(not-eq host.state "active") change=(action 'addRole' host 'worker')}}
+              {{!-- disabled=(not-eq host.state "active") --}}
+              {{input type="checkbox" change=(action 'addRole' host 'worker')}}
             </td>
           </tr>
         {{else if (eq kind "nomatch")}}
-          <tr><td colspan="{{sortable.fullColspan}}" class="text-center text-muted lacsso pt-20 pb-20">{{t 'hostsPage.index.table.noMatch'}}</td></tr>
+          <tr><td colspan="{{sortable.fullColspan}}" class="text-center text-muted lacsso pt-20 pb-20">{{t 'nodesPage.table.noMatch'}}</td></tr>
         {{else if (eq kind "norows")}}
-          <tr><td colspan="{{sortable.fullColspan}}" class="text-center text-muted lacsso pt-20 pb-20" style="height:200px;">{{t 'hostsPage.index.table.noData'}}</td></tr>
+          <tr><td colspan="{{sortable.fullColspan}}" class="text-center text-muted lacsso pt-20 pb-20" style="height:200px;">{{t 'nodesPage.table.noData'}}</td></tr>
         {{else if (eq kind "suffix")}}
           <tr class="suffix">
             <td colspan="2" class="text-right pr-20">Number of nodes required:</td>

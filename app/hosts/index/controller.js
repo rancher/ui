@@ -5,7 +5,7 @@ import C from 'shared/utils/constants';
 import {
   headersWithoutHost as containerHeaders
 } from 'shared/components/container-table/component';
-import { headersProject as hostHeaders } from 'shared/components/host-row/component';
+import { headersProject as hostHeaders } from 'shared/components/node-row/component';
 
 export default Controller.extend({
   prefs: service(),

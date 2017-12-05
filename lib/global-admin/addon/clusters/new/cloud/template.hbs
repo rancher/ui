@@ -1,0 +1,23 @@
+<section class="header">
+  <h1>{{t 'clustersPage.addPage.rke.header'}}</h1>
+</section>
+
+<section class="pt-10">
+  <div class="row nav nav-boxes checked-active">
+    {{#each sortedDrivers as |choice|}}
+      <a {{action "switchDriver" choice.name}} alt={{choice.name}} class="col span-2 nav-box-item driver machine-driver {{choice.name}} {{if (eq choice.name driver) 'active'}}" href="#"><p class="sr-only">{{choice.displayName}}</p> -- {{choice.displayName}}</a>
+    {{/each}}
+  </div>
+</section>
+
+<form class="form text-left">
+  {{#if driver}}
+    {{component (concat 'driver/driver-' driver)
+      cancel=(action 'cancel')
+      cluster=cluster
+      driver=(concat driver 'Config')
+    }}
+  {{/if}}
+
+  {{save-cancel save="save" cancel="cancel"}}
+</form>

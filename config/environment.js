@@ -53,7 +53,6 @@ module.exports = function(environment) {
     modulePrefix: 'ui',
     environment: environment,
     exportApplicationGlobal: true,
-    rootURL: '/',
     locationType: 'auto',
     EmberENV: {
       FEATURES: {
@@ -97,29 +96,26 @@ module.exports = function(environment) {
       isCaas: mode === 'caas',
       caasSignup: signup,
       environment: environment,
-      apiServer: 'http://localhost:8080',
-      legacyApiEndpoint: '/v2',
-      apiEndpoint: '/v1-workload',
-      clusterEndpoint: '/v1-cluster',
-      authenticationEndpoint: '/v1-authn',
-      authorizationEndpoint: '/v1-authz',
-//      betaApiEndpoint: '/v3',
-      catalogServer: '',
-      catalogEndpoint: '/v1-catalog',
-      authServer: '',
-      authEndpoint: '/v1-auth',
-      telemetryEndpoint: '/v1-telemetry',
-      webhookEndpoint: '/v1-webhooks',
+      baseAssets: '/',
+
       clusterToken: '%CLUSTERID%',
       projectToken: '%PROJECTID%',
+
+      apiServer: 'http://localhost:8080',
+      apiEndpoint: '/v3',
+      clusterEndpoint: '/v3/clusters/%CLUSTERID%',
+      projectEndpoint: '/v3/projects/%PROJECTID%',
+      proxyEndpoint: '/v3/proxy',
+      subscribeEndpoint: '/meta/subscribe?projectId=%PROJECTID%',
       magicEndpoint: '/r',
+
+      // @TODO-2.0
+      telemetryEndpoint: '/v1-telemetry',
+      webhookEndpoint: '/v1-webhooks',
       kubernetesBase: '/k8s',
       kubectlEndpoint: '/r/projects/%PROJECTID%/kubectld:8091/v1-kubectl',
       kubernetesDashboard: '/k8s/clusters/%CLUSTERID%/api/v1/namespaces/kube-system/services/kubernetes-dashboard/proxy/',
-      projectEndpoint: '/v3/projects/%PROJECTID%',
-      proxyEndpoint: '/v3/proxy',
-      wsEndpoint: '/v1-meta/subscribe?projectId=%PROJECTID%',
-      baseAssets: '/',
+
       locales: readLocales(environment),
       stripe: {
         publishableKey: 'pk_test_g925RcuVORh2KgHWfFbE80by'
@@ -137,7 +133,6 @@ module.exports = function(environment) {
 
   if (environment === 'test') {
     // Testem prefers this...
-    ENV.rootURL = '/';
     ENV.locationType = 'none';
 
     // keep test console output quieter
@@ -146,12 +141,6 @@ module.exports = function(environment) {
 
     ENV.APP.rootElement = '#ember-testing';
   }
-
-  if (process.env.BASE_URL) {
-    ENV.rootURL = process.env.BASE_URL;
-  }
-
-  ENV.APP.rootURL = ENV.rootURL;
 
   if (process.env.FINGERPRINT) {
     ENV.APP.fingerprint = process.env.FINGERPRINT;

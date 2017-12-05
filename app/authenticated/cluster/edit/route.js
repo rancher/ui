@@ -5,7 +5,7 @@ import C from 'ui/utils/constants';
 import { parseExternalId } from 'ui/utils/parse-externalid';
 
 export default Route.extend({
-  clusterStore: service('cluster-store'),
+  clusterStore: service(),
   settings: service(),
   catalog: service(),
 

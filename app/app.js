@@ -26,12 +26,11 @@ const App = Application.extend({
       dependencies: {
         services: [
           'access',
-          'authn-store',
-          'authz-store',
-          'cluster-store',
+          'clusterStore',
           'catalog',
           'endpoint',
           'github',
+          'globalStore',
           'intl',
           'modal',
           'router',
@@ -41,7 +40,6 @@ const App = Application.extend({
           'settings',
           'store',
           'user-language',
-          'user-store',
           'user-theme',
         ],
         externalRoutes: {

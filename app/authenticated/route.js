@@ -1,18 +1,18 @@
 import $ from 'jquery';
 import C from 'ui/utils/constants';
-import Errors from 'ui/utils/errors';
 import Route from '@ember/routing/route';
 import Subscribe from 'ui/mixins/subscribe';
+import Preload from 'ui/mixins/preload';
 import { inject as service } from '@ember/service';
 import { later, scheduleOnce, cancel } from '@ember/runloop';
 import { reject, resolve, all as PromiseAll } from 'rsvp';
 
 const CHECK_AUTH_TIMER = 60*10*1000;
 
-export default Route.extend(Subscribe, {
+export default Route.extend(Preload, Subscribe, {
   access:       service(),
-  authzStore:   service('authz-store'),
-  clusterStore: service('cluster-store'),
+  globalStore:  service(),
+  clusterStore: service(),
   cookies:      service(),
   language:     service('user-language'),
   modalService: service('modal'),
@@ -36,7 +36,7 @@ export default Route.extend(Subscribe, {
     }
   },
 
-  testAuthToken: function() {
+  testAuthToken() {
     let timer = later(() => {
       this.get('access').testAuth().then((/* res */) => {
         this.testAuthToken();
@@ -57,25 +57,13 @@ export default Route.extend(Subscribe, {
     this.get('session').set(C.SESSION.BACK_TO, undefined);
 
     return PromiseAll([
-      this.loadSchemas('clusterStore'),
-//      this.loadSchemas('authnStore'),
-      this.loadSchemas('authzStore'),
+      this.loadSchemas('globalStore'),
       this.loadClusters(),
       this.loadProjects()
       //this.loadPreferences(),
       //this.loadPublicSettings()
     ]).then(() => {
       return this.selectProject(transition);
-    }).then(() => {
-      return this.loadSchemas('store');
-    }).then(() => {
-      return PromiseAll([
-        this.preload('workload'),
-        this.preload('namespace'),
-        this.preload('node'),
-        this.preload('pod'),
-        this.preload('projectRoleTemplateBinding', 'authzStore'),
-      ]);
     }).catch((err) => {
       return this.loadingError(err, transition);
     });
@@ -90,7 +78,8 @@ export default Route.extend(Subscribe, {
       //this.connectSubscribe();
     }
 
-    if ( false && this.get('settings.isRancher') && !app.get('isPopup') ) // @TODO-2.0
+    let FALSE = false;
+    if ( FALSE && this.get('settings.isRancher') && !app.get('isPopup') ) // @TODO-2.0
     {
       let form = this.get(`settings.${C.SETTING.FEEDBACK_FORM}`);
 
@@ -120,27 +109,8 @@ export default Route.extend(Subscribe, {
     this.get('storeReset').reset();
   },
 
-  loadingError(err, transition) {
-    let isAuthEnabled = this.get('access.enabled');
-    let isAuthFail = err && err.status && [401,403].indexOf(err.status) >= 0;
-
-    var msg = Errors.stringify(err);
-    console.log('Loading Error:', msg, err);
-    if ( err && (isAuthEnabled || isAuthFail) ) {
-      this.set('access.enabled', true);
-      this.send('logout', transition, isAuthFail, (isAuthFail ? undefined : msg));
-    } else {
-      this.replaceWith('global-admin.clusters');
-    }
-
-  },
-
-  preload(type, store='store', opt=null) {
-    return this.get(store).find(type,null,opt);
-  },
-
   loadPreferences() {
-    return this.get('userStore').find('userpreference', null, {url: 'userpreferences', forceReload: true}).then((res) => {
+    return this.get('globalStore').find('userpreference', null, {url: 'userpreferences', forceReload: true}).then((res) => {
       // Save the account ID from the response headers into session
       if ( res )
       {
@@ -155,14 +125,6 @@ export default Route.extend(Subscribe, {
       }
 
       return res;
-    });
-  },
-
-  loadSchemas(storeName) {
-    var store = this.get(storeName);
-    store.resetType('schema');
-    return store.rawRequest({url:'schema', dataType: 'json'}).then((xhr) => {
-      store._bulkAdd('schema', xhr.body.data);
     });
   },
 
@@ -183,7 +145,7 @@ export default Route.extend(Subscribe, {
   },
 
   loadPublicSettings() {
-    return this.get('userStore').find('setting', null, {url: 'settings', forceReload: true, filter: {all: 'false'}});
+    return this.get('globalStore').find('setting', null, {url: 'settings', forceReload: true, filter: {all: 'false'}});
   },
 
   loadSecrets() {
@@ -220,8 +182,7 @@ export default Route.extend(Subscribe, {
   },
 
   actions: {
-
-    changeTheme: function() {
+    changeTheme() {
       var userTheme = this.get('userTheme');
       var currentTheme  = userTheme.getTheme();
 
@@ -262,7 +223,7 @@ export default Route.extend(Subscribe, {
       console.log('Switch to Cluster:' + clusterId);
       this.disconnectSubscribe(() => {
         console.log('Switch is disconnected');
-        this.send('finishSwitchProject', `cluster:${clusterId}`, transitionTo, transitionArgs);
+        this.send('finishSwitch', `cluster:${clusterId}`, transitionTo, transitionArgs);
       });
     },
 
@@ -270,11 +231,11 @@ export default Route.extend(Subscribe, {
       console.log('Switch to Project:' + projectId);
       this.disconnectSubscribe(() => {
         console.log('Switch is disconnected');
-        this.send('finishSwitchProject', `project:${projectId}`, transitionTo, transitionArgs);
+        this.send('finishSwitch', `project:${projectId}`, transitionTo, transitionArgs);
       });
     },
 
-    finishSwitchProject(id, transitionTo, transitionArgs) {
+    finishSwitch(id, transitionTo, transitionArgs) {
       console.log('Switch finishing');
 
       const cookies = this.get('cookies');
@@ -297,12 +258,12 @@ export default Route.extend(Subscribe, {
 
     gotoA() { this._gotoRoute('apps-tab.index'); },
     gotoB() { this._gotoRoute('balancers.index'); },
-    gotoC() { this._gotoRoute('containers.index'); },
     gotoD() { this._gotoRoute('dns.index'); },
     gotoE() { this._gotoRoute('global-admin.clusters.index', false); },
     gotoH() { this._gotoRoute('hosts.index'); },
     gotoK() { this._gotoRoute('authenticated.project.apikeys'); },
     gotoV() { this._gotoRoute('volumes.index'); },
+    gotoW() { this._gotoRoute('workloads.index'); },
 
     help()  {
       this.get('modalService').toggleModal('modal-shortcuts');
@@ -355,7 +316,6 @@ export default Route.extend(Subscribe, {
   shortcuts: {
     'a': 'gotoA',
     'b': 'gotoB',
-    'c': 'gotoC',
     'd': 'gotoD',
     'e': 'gotoE',
     'h': 'gotoH',
@@ -364,6 +324,7 @@ export default Route.extend(Subscribe, {
     'p': 'gotoP',
     't': 'nextTab',
     'v': 'gotoV',
+    'w': 'gotoW',
     '/': 'search',
     'shift+/': 'help',
     'shift+t': 'changeTheme',

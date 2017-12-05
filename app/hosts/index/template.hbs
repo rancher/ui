@@ -20,7 +20,7 @@
       {{/if}}
 
       {{#if scope.current.canAddHost}}
-        {{#link-to "authenticated.cluster.host-templates.index" scope.currentCluster.id classNames="btn btn-sm bg-primary"}}{{t 'hostsPage.index.addHost'}}{{/link-to}}
+        {{#link-to "authenticated.host-templates.index" scope.currentCluster.id classNames="btn btn-sm bg-primary"}}{{t 'hostsPage.index.addHost'}}{{/link-to}}
       {{/if}}
     </div>
   </section>
@@ -42,7 +42,7 @@
         extraSearchSubFields=extraSearchSubFields
         headers=headers as |sortable kind host dt|}}
         {{#if (eq kind "row")}}
-          {{host-row
+          {{node-row
             view="project"
             model=host
             toggle=(action "toggleExpand" host.id)
@@ -67,7 +67,7 @@
     {{empty-table
       resource="container"
       showNew=scope.current.canAddHost
-      newRoute="authenticated.cluster.host-templates"
+      newRoute="authenticated.host-templates"
       newTranslationKey="nav.hosts.addHost" ctx="clusterId"}}
   {{/if}}
 {{/if}}

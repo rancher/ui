@@ -6,7 +6,7 @@ export default Route.extend({
   model: function() {
     var me = this.get(`session.${C.SESSION.ACCOUNT_ID}`);
     return hash({
-      account: this.get('userStore').findAll('apikey', null, {filter: {accountId: me}, url: 'apikeys', forceReload: true}),
+      account: this.get('globalStore').findAll('apikey', null, {filter: {accountId: me}, url: 'apikeys', forceReload: true}),
     });
   },
 });

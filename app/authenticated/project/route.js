@@ -2,12 +2,14 @@ import { next } from '@ember/runloop';
 import EmberObject from '@ember/object';
 import { inject as service } from '@ember/service';
 import Route from '@ember/routing/route';
+import { all as PromiseAll } from 'rsvp';
+import Preload from 'ui/mixins/preload';
 
-export default Route.extend({
+export default Route.extend(Preload,{
   access    : service(),
   scope  : service(),
 
-  model(params/*, transition*/) {
+  model(params, transition) {
     var project = this.get('scope.current');
 
     if ( !project )
@@ -23,21 +25,21 @@ export default Route.extend({
       return;
     }
 
-    return EmberObject.create({
-      project: project,
-      hosts: this.get('store').all('host'),
+    return this.loadSchemas('store').then(() =>  {
+      return PromiseAll([
+        this.preload('workload'),
+        this.preload('namespace'),
+  //@TODO-2.0      this.preload('node'),
+  //@TODO-2.0        this.preload('pod'),
+        this.preload('projectRoleTemplateBinding', 'globalStore'),
+      ]).then(() => {
+        return EmberObject.create({
+          project,
+        });
+      })
+    }).catch((err) => {
+      return this.loadingError(err, transition);
     });
-  },
-
-  loadingError(err, transition, ret) {
-    if ( err && err.status && [401,403].indexOf(err.status) >= 0 )
-    {
-      this.send('logout',transition,true);
-      return;
-    }
-
-    this.transitionTo('authenticated');
-    return ret;
   },
 
   actions: {
