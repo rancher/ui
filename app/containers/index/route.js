@@ -8,10 +8,7 @@ export default Route.extend({
     var store = this.get('store');
     return hash({
       workloads: store.findAll('workload'),
-      //@TODO-2.0 pods: store.findAll('pod'),
-    }).then((hash) => {
-      hash.pods = []; // @TODO-2.0
-      return hash;
+      pods: store.findAll('pod'),
     });
   },
 

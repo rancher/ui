@@ -1,14 +1,17 @@
-<h2>{{t 'moveNamespace.title'}}</h2>
+<h2>{{t 'moveNamespace.move' count=model.length}}</h2>
 
-<h4>{{t 'moveNamespace.move' count=model.length}}</h4>
-<ul>
+<ul class="list-unstyled">
   {{#each model as |item|}}
-    <li>{{model.displayName}}</li>
+    <li>{{item.displayName}}</li>
   {{/each}}
 </ul>
 
 <h4>{{t 'moveNamespace.to'}}</h4>
-<ul>
+<ul class="list-unstyled">
+  <label>
+    {{radio-button selection=projectId value=null}}
+    <b>{{t 'generic.none'}}</b>
+  </label>
   {{#each allProjects as |project|}}
     <li>
       <label>

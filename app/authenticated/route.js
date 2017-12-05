@@ -75,7 +75,7 @@ export default Route.extend(Preload, Subscribe, {
     this._super();
     if ( !this.controllerFor('application').get('isPopup') && this.get('scope.current') )
     {
-      //this.connectSubscribe();
+      this.connectSubscribe();
     }
 
     let FALSE = false;
