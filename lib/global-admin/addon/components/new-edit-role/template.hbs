@@ -1,6 +1,8 @@
 <section class="header clearfix">
   <div class="pull-left">
-    {{#if editing}}
+    {{#if readOnly}}
+      <h1>{{t 'rolesPage.title'}}:{{model.role.name}}</h1>
+    {{else if editing}}
       <h1>{{t 'rolesPage.editRole'}}</h1>
     {{else}}
       <h1>{{t 'rolesPage.addRole'}}</h1>
@@ -8,16 +10,18 @@
   </div>
 </section>
 
-<section class="mb-10">
-  {{form-name-description
-    name=model.role.name
-    nameRequired=true
-    nameDisabled=editing
-    namePlaceholder="rolesPage.new.form.name.placeholder"
-    colClass="col span-7"
-    descriptionShown=false
-  }}
-</section>
+{{#unless readOnly}}
+  <section class="mb-10">
+    {{form-name-description
+      name=model.role.name
+      nameRequired=true
+      nameDisabled=editing
+      namePlaceholder="rolesPage.new.form.name.placeholder"
+      colClass="col span-7"
+      descriptionShown=false
+    }}
+  </section>
+{{/unless}}
 
 {{#accordion-list showExpandAll=false as |al expandFn|}}
   {{#accordion-list-item
@@ -43,17 +47,19 @@
         </thead>
         <tbody>
           {{#each ruleArray as |rule|}}
-            {{role-rule-row roleType=roleType rule=rule remove=(action "removeRule")}}
+            {{role-rule-row readOnly=readOnly roleType=roleType rule=rule remove=(action "removeRule")}}
           {{/each}}
         </tbody>
       </table>
     {{/if}}
-    <div>
-      <button class="btn bg-primary icon-btn p-0" {{action "addRule"}}>
-        <span class="darken"><i class="icon icon-plus text-small"/></span>
-        <span>{{t 'rolesPage.new.form.allow.addAction'}}</span>
-      </button>
-    </div>
+    {{#unless readOnly}}
+      <div>
+        <button class="btn bg-primary icon-btn p-0" {{action "addRule"}}>
+          <span class="darken"><i class="icon icon-plus text-small"/></span>
+          <span>{{t 'rolesPage.new.form.allow.addAction'}}</span>
+        </button>
+      </div>
+    {{/unless}}
   {{/accordion-list-item}}
 
   <div class="row">
@@ -78,17 +84,19 @@
             </thead>
             <tbody>
               {{#each roleArray as |role|}}
-                {{other-role-row model=role otherRoles=otherRoles remove=(action "removeOtherRole")}}
+                {{other-role-row model=role readOnly=readOnly otherRoles=otherRoles remove=(action "removeOtherRole")}}
               {{/each}}
             </tbody>
           </table>
         {{/if}}
-        <div>
-          <button class="btn bg-primary icon-btn p-0" {{action "addOtherRole"}}>
-            <span class="darken"><i class="icon icon-plus text-small"/></span>
-            <span>{{t 'rolesPage.new.form.otherRole.addAction'}}</span>
-          </button>
-        </div>
+        {{#unless readOnly}}
+          <div>
+            <button class="btn bg-primary icon-btn p-0" {{action "addOtherRole"}}>
+              <span class="darken"><i class="icon icon-plus text-small"/></span>
+              <span>{{t 'rolesPage.new.form.otherRole.addAction'}}</span>
+            </button>
+          </div>
+        {{/unless}}
       {{/accordion-list-item}}
     </div>
 
@@ -113,21 +121,27 @@
             </thead>
             <tbody>
               {{#each policyArray as |policy|}}
-                {{policy-row model=policy choices=model.policies remove=(action "removePolicy")}}
+                {{policy-row model=policy readOnly=readOnly choices=model.policies remove=(action "removePolicy")}}
               {{/each}}
             </tbody>
           </table>
         {{/if}}
-        <div>
-          <button class="btn bg-primary icon-btn p-0" {{action "addPolicy"}}>
-            <span class="darken"><i class="icon icon-plus text-small"/></span>
-            <span>{{t 'rolesPage.new.form.policy.addAction'}}</span>
-          </button>
-        </div>
+        {{#unless readOnly}}
+          <div>
+            <button class="btn bg-primary icon-btn p-0" {{action "addPolicy"}}>
+              <span class="darken"><i class="icon icon-plus text-small"/></span>
+              <span>{{t 'rolesPage.new.form.policy.addAction'}}</span>
+            </button>
+          </div>
+        {{/unless}}
       {{/accordion-list-item}}
     </div>
   </div>
 {{/accordion-list}}
 
 {{top-errors errors=errors}}
-{{save-cancel editing=editing save="save" cancel="cancel"}}
+
+{{#unless readOnly}}
+  {{save-cancel editing=editing save="save" cancel="cancel"}}
+{{/unless}}
+
