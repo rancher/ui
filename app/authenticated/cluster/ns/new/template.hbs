@@ -1,0 +1,23 @@
+<section class="header clearfix">
+  <div class="pull-left">
+    <h2>Add Namespace</h2>
+  </div>
+</section>
+
+{{form-name-description
+  model=model.namespace
+}}
+
+<label class="pt-20 pb-5 acc-label">{{t 'editStack.project.label'}}</label>
+{{new-select
+  classNames="form-control"
+  optionValuePath="id"
+  optionLabelPath="displayName"
+  content=model.allProjects
+  value=model.namespace.projectId
+  prompt="editStack.project.prompt"
+  localizedPrompt=true
+}}
+
+{{top-errors errors=errors}}
+{{save-cancel editing=false save="save" cancel="cancel"}}
