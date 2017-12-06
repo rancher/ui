@@ -42,7 +42,7 @@ export function normalizeTags(ary) {
 export function tagChoices(all) {
   let choices = [];
   (all||[]).forEach((ns) => {
-    choices.addObjects(ns.get('tags'));
+    choices.addObjects(ns.get('tags')||[]);
   });
 
   return choices;
@@ -55,10 +55,11 @@ var Namespace = Resource.extend(StateCounts, {
   catalog:      service(),
   scope:        service(),
   router:       service(),
+  globalStore:  service(),
 
   pods:      hasMany('id', 'pod', 'namespaceId'),
   workloads: hasMany('id', 'workload', 'namespaceId'),
-  project:   reference('projectId'),
+  project:   reference('projectId', 'project', 'globalStore'),
 
   init() {
     this._super(...arguments);
@@ -115,6 +116,8 @@ var Namespace = Resource.extend(StateCounts, {
     },
 
     move() {
+      debugger;
+      this.get('modalService').toggleModal('modal-move-namespace', this);
     },
   },
 

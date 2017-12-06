@@ -9,21 +9,12 @@
   </div>
 </section>
 
-{{#unless scope.current}}
-  <section>
-    <div class="banner bg-error">
-      <div class="banner-icon"><i class="icon icon-alert"></i></div>
-      <div class="banner-message"><p>{{t 'clustersPage.alert'}}</p></div>
-    </div>
-  </section>
-{{/unless}}
-
 {{#sortable-table
      classNames="grid sortable-table"
      body=model.clusters
      searchText=searchText
      sortBy=sortBy
-     bulkActions=false
+     bulkActions=true
      fullRows=true
      pagingLabel="pagination.cluster"
      headers=headers as |sortable kind inst dt|
@@ -32,8 +23,6 @@
     {{cluster-row
         model=inst
         fullColspan=sortable.fullColspan
-        toggle=(action "toggleExpand" inst.id)
-        expanded=(array-includes expandedClusters inst.id)
         launchOnCluster=(action "launchOnCluster")
         useKubernetes=(action "useKubernetes")
         dt=dt

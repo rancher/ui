@@ -3,7 +3,7 @@
   <div class="vertical-middle"></div>
 
   <div class="right-buttons">
-    {{#link-to "authenticated.cluster.projects.new" class="btn bg-primary btn-sm icon-btn"}}
+    {{#link-to "authenticated.cluster.ns.new" class="btn bg-primary btn-sm icon-btn"}}
       <span class="darken">
         <i class="icon icon-plus"></i>
       </span>
@@ -24,7 +24,7 @@
   as |sortable kind obj dt|
 }}
   {{#if (eq kind "row")}}
-    <tr>
+    <tr class="main-row">
       <td class="row-check" valign="middle" style="padding-top: 2px;">
         {{check-box nodeId=obj.id}}
       </td>
@@ -40,12 +40,6 @@
         {{else}}
           <b>None</b>
         {{/if}}
-      </td>
-      <td>
-        {{obj.pods.length}}
-      </td>
-      <td>
-        {{obj.workloads.length}}
       </td>
       <td>
         {{date-calendar obj.created}}

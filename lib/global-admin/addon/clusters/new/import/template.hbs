@@ -1,0 +1,27 @@
+<section class="header">
+  <h1>{{t 'k8sImport.header'}}</h1>
+</section>
+
+<section class="box">
+  {{t 'k8sImport.instructions'
+    appName=settings.appName
+    docsBase=settings.docsBase
+    htmlSafe=true
+  }}
+
+  {{form-name-description
+    name=name
+    description=description
+  }}
+
+  <div class="copy-pre">
+    {{copy-to-clipboard clipboardText=command tagName="div" classNames="copy-to-pre"}}
+    <pre id="registration-command" style="font-size: 14px;">{{command}}</pre>
+  </div>
+</section>
+
+<section>
+  <div class="footer-actions">
+    {{#link-to "clusters.index" class="btn bg-primary"}}{{t 'generic.done'}}{{/link-to}}
+  </div>
+</section>

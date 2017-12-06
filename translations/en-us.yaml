@@ -34,6 +34,7 @@ generic:
   entrypoint: Entrypoint
   environment: Environment
   expandAll: Expand All
+  gigabyte: 'GB'
   hardware: Hardware
   healthy: Healthy
   host: Host
@@ -602,15 +603,15 @@ clustersPage:
   storage:
     label: Disk
   indexPage:
-    rke:
-      header: Create a RKE Cluster
-      desc: Rancher automatically deploys and manages Kubernetes.
     cloud:
       header: Create a Cloud Cluster
-      desc: Create and use a new cluster with in a cloud provider.
+      desc: Create and use a new cluster and nodes managed by a cloud Kubernetes provider.
+    rke:
+      header: Create a RKE Cluster
+      desc: Rancher deploys and automatically manages a Kubernetes cluster for you.  Supports on-premise nodes or cloud infrastructure providers.
     import:
-      header: Import Existing Cluster
-      desc: Deploy containers into an existing Kubernetes installation using hosts and networking it provides.
+      header: Import an Existing Cluster
+      desc: Use an existing Kubernetes installation and the nodes it provides.
 
 
   addPage:
@@ -1728,22 +1729,34 @@ editService:
   title: Edit Service
 
 editStack:
-  title: Edit Stack
+  title: Edit Namespace
   name:
     label: Name
     placeholder: e.g. myapp
+  project:
+    label: Project
+    prompt: Select a Project...
   description:
     label: Description
-    placeholder: e.g. MyApp Stack
+    placeholder: e.g. MyApp namespace
   group:
     label: Tags
     placeholder: e.g. frontend, production
-    help: Comma-separated list of tags for the new Stack.  The Containers lists can be filtered by individual tags.
+    help: Comma-separated list of tags for the new Stack.  The workload lists can be filtered by individual tags.
 
 envCatalog:
   header: Catalog
   subtext: You can define your own custom catalog sources here. Catalogs added here will only be availabel to the environemnt in which they were added. Each one needs a unique name and a URL that <code>git clone</code> can handle (see <a href="https://git-scm.com/docs/git-clone#_git_urls_a_id_urls_a" target="_blank">docs</a> for more info).
   addActionLabel: Add Catalog
+
+moveNamespace:
+  title: Move Namespace
+  move: |
+    Move {count, plural,
+    =1 {one namespace}
+    other {# namespaces}}:
+  to: "To project:"
+
 
 stackHeader:
   title: 'Namespace: {name}'
@@ -2784,6 +2797,40 @@ loginUserPass:
   loggingInLabel: Logging In...
   passwordLabel: Password
 
+cloud:
+  driverGoogle:
+    accessSection: Account Access
+    credential:
+      label: Service Account
+      placeholder: Service account private key JSON file
+      helpText: |
+        Create a <a href="https://console.cloud.google.com/projectselector/iam-admin/serviceaccounts" target="_blank" rel="nofollow noreferrer">Service Account</a> with a JSON private key and provide the JSON here.  See <a href="https://cloud.google.com/compute/docs/access/create-enable-service-accounts-for-instances" target="_blank" rel="nofollow noreferrer">Google Cloud docs</a> for more info about creating a service account.
+    machine: Node Configuration
+    location: Location
+    customize: Customize
+    zone:
+      label: Zone
+      prompt: Choose a Zone...
+    project:
+      label: Project
+      placeholder: e.g. my-project
+    nodeCount:
+      label: Quantity
+    machineType:
+      label: Machine Type
+      prompt: Choose a Type...
+    diskSizeGb:
+      label: Root Disk Size
+    masterVersion:
+      label: Kubernetes Version
+      prompt: Choose a Version...
+    clusterIpv4Cidr:
+      label: Container Address Range
+      placeholder: e.g. 10.42.0.0/16
+    alphaFeatures:
+      label: Alpha Features
+
+
 machine:
   driver:
     amazonec2: Amazon EC2
@@ -3549,6 +3596,11 @@ pagination:
     other {{from} - {to} of {count} Certificates}}
   container: |
     {pages, plural,
+    =0 {No Clusters}
+    =1 {{count} {count, plural, =1 {Cluster} other {Clusters}}}
+    other {{from} - {to} of {count} Clusters}}
+  cluster: |
+    {pages, plural,
     =0 {No Containers}
     =1 {{count} {count, plural, =1 {Container} other {Containers}}}
     other {{from} - {to} of {count} Containers}}
@@ -3631,9 +3683,9 @@ pagination:
     other {{from} - {to} of {count} Ports}}
   project: |
     {pages, plural,
-    =0 {No Environments}
-    =1 {{count} {count, plural, =1 {Environment} other {Environments}}}
-    other {{from} - {to} of {count} Environments}}
+    =0 {No Projects}
+    =1 {{count} {count, plural, =1 {Project} other {Projects}}}
+    other {{from} - {to} of {count} Projects}}
   rule: |
     {pages, plural,
     =0 {No Rules}

@@ -1,0 +1,26 @@
+<h2>{{t 'moveNamespace.move' count=model.length}}</h2>
+
+<ul class="list-unstyled">
+  {{#each model as |item|}}
+    <li>{{item.displayName}}</li>
+  {{/each}}
+</ul>
+
+<h4>{{t 'moveNamespace.to'}}</h4>
+<ul class="list-unstyled">
+  <label>
+    {{radio-button selection=projectId value=null}}
+    <b>{{t 'generic.none'}}</b>
+  </label>
+  {{#each allProjects as |project|}}
+    <li>
+      <label>
+        {{radio-button selection=projectId value=project.id}}
+        {{project.displayName}}
+      </label>
+    </li>
+  {{/each}}
+</ul>
+
+{{top-errors errors=errors}}
+{{save-cancel editing=editing save="save" cancel="cancel"}}
