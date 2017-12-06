@@ -1,4 +1,4 @@
-import { notEmpty, equal } from '@ember/object/computed';
+import { equal } from '@ember/object/computed';
 import { computed } from '@ember/object';
 import { inject as service } from '@ember/service';
 import { hasMany } from 'ember-api-store/utils/denormalize';

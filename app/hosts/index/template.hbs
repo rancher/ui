@@ -20,7 +20,7 @@
       {{/if}}
 
       {{#if scope.current.canAddHost}}
-        {{#link-to "authenticated.host-templates.index" scope.currentCluster.id classNames="btn btn-sm bg-primary"}}{{t 'nodesPage.addNode'}}{{/link-to}}
+        {{#link-to "authenticated.host-templates.index" (query-params clusterId=scope.currentCluster.id) classNames="btn btn-sm bg-primary"}}{{t 'nodesPage.addNode'}}{{/link-to}}
       {{/if}}
     </div>
   </section>
@@ -68,6 +68,6 @@
       resource="container"
       showNew=scope.current.canAddHost
       newRoute="authenticated.host-templates"
-      newTranslationKey="nav.hosts.addHost" ctx="clusterId"}}
+      newTranslationKey="nav.hosts.addHost"}}
   {{/if}}
 {{/if}}
