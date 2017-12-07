@@ -2414,10 +2414,23 @@ machine:
     windows:
       windowsHeader: Windows主机
       linuxHeader: Linux主机
-      step1: 运行一台Windows 2016主机并安装最新版本的 <a href="https://msdn.microsoft.com/en-us/virtualization/windowscontainers/quick_start/quick_start_windows_server" target="_blank" rel="noreferrer nofollow">Docker</a> on it.
+      step1: 运行一台Windows 2016主机并安装最新版本的 <a href="https://msdn.microsoft.com/en-us/virtualization/windowscontainers/quick_start/quick_start_windows_server" target="_blank" rel="noreferrer nofollow">Docker</a>
       step2: "创建一个 transparent Docker 网络:"
       step2Copy: docker network create -d transparent transparent
       step3: '复制粘贴下面的命令到Powershell命令行中运行以启动 {appName} agent'
+    windowsSteps:
+      step1: 运行一台Windows 2016主机并安装最新版本的 <a href="https://docs.docker.com/engine/installation/windows/docker-ee/" target="_blank" rel="noreferrer nofollow">Docker</a> on it.
+      step2: "检查并安装Windoes功能 RemoteAccess, Routing:"
+      step2Copy: Get-WindowsFeature -Name "RemoteAccess","Routing" | Install-WindowsFeature
+      step3: 请设置Windows主机的子网. 在Windows环境中，只支持 per-host-subnet网络模型
+      step4: 请设置子网的路由IP，此IP用于转发不同主机上容器之间的网络流量
+      routerIp:
+          placeholder: e.g. 1.2.3.4
+      subnet:
+          placeholder: e.g. 192.168.0.0/24
+      step5: "指定用于注册这台主机的公网IP。如果留空，Rancher会自动检测IP注册。通常在主机有唯一公网IP 的情况下这是可以的。如果主机位于防火墙/NAT设备之后，或者主机同时也是运行<code>{rancherImage}</code>容器的主机时，则必须设置此IP。"
+      step6: "可选项: 在主机上增加标签"
+      step7: 制粘贴下面的命令到Powershell命令行中运行以启动 {appName} agent
 
   driverDigitalocean:
     sizeLabel: |

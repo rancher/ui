@@ -341,6 +341,7 @@ const navTree = [
         localizedLabel: 'nav.api.hooks',
         icon: 'icon icon-link',
         route: 'authenticated.project.api.hooks',
+        condition: function() { return !this.get('projects.current.isWindows'); },
         ctx: [getProjectId],
       },
     ],

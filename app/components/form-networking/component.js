@@ -78,7 +78,7 @@ export default Ember.Component.extend(ManageLabels, ContainerChoices,{
     if ( this.get('projects.current.isWindows') ) {
       choices = ['nat','transparent'];
       if ( mode === 'managed' ) {
-        this.set('instance.networkMode','nat');
+        this.set('instance.networkMode','transparent');
       }
     }
 
