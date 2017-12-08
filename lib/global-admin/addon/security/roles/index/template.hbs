@@ -18,7 +18,7 @@
           {{check-box nodeId=row.id}}
         </td>
         <td data-title="{{t 'rolesPage.index.table.name'}}:" class="clip">
-          {{#link-to "security.roles.edit" row.id}}
+          {{#link-to "security.roles.detail" row.id}}
             {{row.name}}
           {{/link-to}}
         </td>
@@ -29,7 +29,7 @@
             <span class="text-muted">&ndash;</span>
           {{/if}}
         </td>
-        <td data-title="{{t 'generic.created'}}:" >
+        <td data-title="{{t 'generic.created'}}:" class="text-right pr-20">
           {{date-calendar row.created}}
         </td>
         <td data-title="{{t 'generic.actions'}}:" class="actions">
@@ -37,9 +37,9 @@
         </td>
       </tr>
     {{else if (eq kind "nomatch")}}
-      <td colspan="6" class="text-center text-muted lacsso pt-20 pb-20">{{t 'rolesPage.index.table.noMatch'}}</td>
+      <td colspan="5" class="text-center text-muted lacsso pt-20 pb-20">{{t 'rolesPage.index.table.noMatch'}}</td>
     {{else if (eq kind "norows")}}
-      <td colspan="6" class="text-center text-muted lacsso pt-20 pb-20">{{t 'rolesPage.index.table.noData'}}</td>
+      <td colspan="5" class="text-center text-muted lacsso pt-20 pb-20">{{t 'rolesPage.index.table.noData'}}</td>
     {{/if}}
   {{/sortable-table}}
 </section>
