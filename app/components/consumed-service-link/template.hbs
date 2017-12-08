@@ -1,22 +1,26 @@
-{{~#link-to 'service' link.service.stackId link.service.id~}}
-  {{~#if (eq link.service.name link.name)~}}
-    {{t (if (eq link.service.stackId stackId) 'serviceLink.noAlias.sameStack' 'serviceLink.noAlias.differentStack')
-      stack=link.service.displayStack
-      service=link.service.displayName
-      alias=link.name
-    }}
-  {{~else~}}
-    {{~#if link.name~}}
-      {{t (if (eq link.service.stackId stackId) 'serviceLink.withAlias.sameStack' 'serviceLink.withAlias.differentStack')
+{{~#if link.service.arbitraryString~}}
+  <div>{{link.service.name}} <label class="text-muted" style="padding: 0 10px;">{{t 'formServiceLinks.asName'}}</label> {{link.name}}</div>
+{{~else~}}
+  {{~#link-to 'service' link.service.stackId link.service.id~}}
+    {{~#if (eq link.service.name link.name)~}}
+      {{t (if (eq link.service.stackId stackId) 'serviceLink.noAlias.sameStack' 'serviceLink.noAlias.differentStack')
         stack=link.service.displayStack
         service=link.service.displayName
         alias=link.name
       }}
     {{~else~}}
-      {{t (if (eq link.service.stackId stackId) 'serviceLink.noAlias.sameStack' 'serviceLink.noAlias.differentStack')
-        stack=link.service.displayStack
-        service=link.service.displayName
-      }}
+      {{~#if link.name~}}
+        {{t (if (eq link.service.stackId stackId) 'serviceLink.withAlias.sameStack' 'serviceLink.withAlias.differentStack')
+          stack=link.service.displayStack
+          service=link.service.displayName
+          alias=link.name
+        }}
+      {{~else~}}
+        {{t (if (eq link.service.stackId stackId) 'serviceLink.noAlias.sameStack' 'serviceLink.noAlias.differentStack')
+          stack=link.service.displayStack
+          service=link.service.displayName
+        }}
+      {{~/if~}}
     {{~/if~}}
-  {{~/if~}}
-{{/link-to}}
+  {{/link-to}}
+{{~/if~}}
