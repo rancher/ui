@@ -404,6 +404,9 @@ var Service = Resource.extend({
 
   localizedServiceUILabel: function(){
     let labels = this.get('launchConfig.labels');
+    if(!labels){
+      return;
+    }
     let serviceUILabel = labels[C.LABEL.SERVICE_UI_LABEL] || '';
     let serviceName = this.get('name');
     if(!serviceUILabel){
@@ -433,6 +436,9 @@ var Service = Resource.extend({
 
   serviceApp: function(){
     let labels = this.get('launchConfig.labels');
+    if(!labels){
+      return null;
+    }
     let serviceName = this.get('name');
     let serviceUIPath = labels[C.LABEL.SERVICE_UI_PATH] || '/';
     let serviceUIPort = labels[C.LABEL.SERVICE_UI_PORT] || '';
