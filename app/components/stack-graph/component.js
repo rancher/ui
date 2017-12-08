@@ -174,7 +174,7 @@ export default Ember.Component.extend(ThrottledResize, {
     var expectedServices = unremovedServices.slice();
     expectedServices.pushObjects(this.get('crosslinkServices'));
 
-    expectedServices.forEach((service) => {
+    expectedServices.filter(service => !service.get('arbitraryString')).forEach((service) => {
       var serviceId = service.get('id');
       var instances = service.get('instances.length')||'No';
       var color = service.get('stateColor').replace('text-','');
@@ -203,7 +203,7 @@ export default Ember.Component.extend(ThrottledResize, {
 
     unremovedServices.forEach(function(service) {
       var serviceId = service.get('id');
-      (service.get('consumedServicesWithNames')||[]).map(function(map) {
+      (service.get('consumedServicesWithNames')||[]).filter(map => !map.get('service.arbitraryString')).map(function(map) {
         var target = map.get('service');
         var targetId = target.get('id');
         var color = target.get('stateColor').replace('text-','');

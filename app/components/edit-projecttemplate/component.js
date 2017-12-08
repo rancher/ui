@@ -2,11 +2,13 @@ import Ember from 'ember';
 import NewOrEdit from 'ui/mixins/new-or-edit';
 import { uniqKeys, ucFirst } from 'ui/utils/util';
 import { isAlternate } from 'ui/utils/platform';
+import C from 'ui/utils/constants';
 
 export default Ember.Component.extend(NewOrEdit, {
   access: Ember.inject.service(),
   growl: Ember.inject.service(),
   intl: Ember.inject.service(),
+  userStore: Ember.inject.service(),
   modalService: Ember.inject.service('modal'),
 
   projectTemplate: null,
@@ -29,11 +31,19 @@ export default Ember.Component.extend(NewOrEdit, {
       let intl = this.get('intl');
       let map = this.get('stacksMap');
       let keys = Object.keys(map);
+      const projectTemplates = this.get('userStore').all('projecttemplate');
+      const toEnable = [];
+      const toDisable = [];
 
       for ( let i = 0 ; i < keys.length ; i++ ) {
         let obj = map[keys[i]];
         let tpl = obj.get('tpl');
-        if ( obj.get('enabled') && tpl && !tpl.supportsOrchestration(id) ) {
+        if (this.isReqiredForOrchestration(id, tpl, projectTemplates)) {
+          toEnable.push(obj);
+        } else if (obj.required) {
+          toDisable.push(obj);
+        }
+        if ( obj.get('enabled') && tpl && !tpl.supportsOrchestration(id) && !obj.required) {
           let orch = map[id].get('tpl.name');
           this.get('growl').error(
             intl.t('editProjectTemplate.error.conflict'),
@@ -46,6 +56,12 @@ export default Ember.Component.extend(NewOrEdit, {
           return;
         }
       }
+
+      toEnable.forEach(o => {
+        o.set('enabled', true);
+        o.set('required', true);
+      });
+      toDisable.forEach(o => o.set('enabled', false));
 
       this.get('orchestrationIds').forEach((cur) => {
         if ( map[cur] ) {
@@ -89,6 +105,23 @@ export default Ember.Component.extend(NewOrEdit, {
     },
   },
 
+  isReqiredForOrchestration(orchId, tpl, projectTemplates) {
+    const projectTemplate = projectTemplates.find(pt => pt.stacks.findBy('templateId', orchId));
+    let stacks = [];
+    if (projectTemplate) {
+      stacks = projectTemplate.stacks;
+    } else if (C.PROJECT_TEMPLATE.DEFAULT === orchId) {
+      let def = projectTemplates.find((pt) => (pt.get('name') || '').toLowerCase() === C.PROJECT_TEMPLATE.DEFAULT);
+      if (def) {
+        stacks = def.stacks;
+      }
+    }
+    let cur = stacks.findBy('externalIdInfo.templateId', tpl.get('id'));
+    let categories = tpl.get('categoryLowerArray');
+    let required = categories.includes('framework');
+    return required && cur;
+  },
+
   initMap() {
     let map = {};
     let orch = [];
@@ -116,7 +149,7 @@ export default Ember.Component.extend(NewOrEdit, {
         });
       } else {
         map[tplId] = Ember.Object.create({
-          required: required,
+          required: false,
           enabled: false,
           tpl: tpl,
           compatible: null,
