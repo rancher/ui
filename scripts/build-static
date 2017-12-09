@@ -179,6 +179,9 @@ if [[ $LATEST -ne 1 ]]; then
   # Create a file containing the version
   echo "${PKG_VERSION}" > ${BUILD_DIR}/VERSION.txt
 
+  # Remove .DS_Store files
+  runCmd find ${BUILD_DIR} -name '.DS_Store' -exec rm {} \;
+
   # Create a tarball of the version
   runCmd tar -czf ${BUILD_TGZ} -C ${BUILD_PAR} ${VERSION}
 fi;
