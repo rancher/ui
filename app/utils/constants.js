@@ -151,6 +151,7 @@ var C = {
     STACK_UUID: 'io.rancher.stack.uuid',
     SYSTEM_TYPE: 'io.rancher.container.system',
     PER_HOST_SUBNET: 'io.rancher.network.per_host_subnet.subnet',
+    PER_HOST_SUBNET_ROUTING_IP: 'io.rancher.network.per_host_subnet.router_ip',
 
     // Catalog
     CERTIFIED: 'io.rancher.certified',

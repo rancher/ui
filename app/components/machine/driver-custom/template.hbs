@@ -6,38 +6,66 @@
         <ul class="list-circles list-circles-clear">
           <li>
             <i>1</i>
-            {{format-html-message 'machine.driverCustom.windows.step1'}}
+            {{format-html-message 'machine.driverCustom.windowsSteps.step1'}}
           </li>
           <li>
             <i>2</i>
-            {{format-html-message 'machine.driverCustom.windows.step2'}}
+            {{format-html-message 'machine.driverCustom.windowsSteps.step2'}}
             <div class="copy-pre">
-              <pre id="network-command">{{t 'machine.driverCustom.windows.step2Copy'}}</pre>
-              {{copy-to-clipboard clipboardText=(t 'machine.driverCustom.windows.step2Copy')}}
+              <pre id="network-command">{{t 'machine.driverCustom.windowsSteps.step2Copy'}}</pre>
+              {{copy-to-clipboard clipboardText=(t 'machine.driverCustom.windowsSteps.step2Copy')}}
             </div>
           </li>
           <li>
             <i>3</i>
-            {{t 'machine.driverCustom.windows.step3' appName=settings.appName}}
+            {{format-html-message 'machine.driverCustom.windowsSteps.step3' rancherImage=settings.rancherImage}}
+            <div class="checkbox r-mt10">
+              {{input type="text" value=subnet classNames="form-control" input=(action 'subnetOnChange') placeholder=(t 'machine.driverCustom.windowsSteps.subnet.placeholder')}}
+            </div>
+          </li>
+          <li>
+            <i>4</i>
+            {{format-html-message 'machine.driverCustom.windowsSteps.step4' rancherImage=settings.rancherImage}}
+            <div class="checkbox r-mt10">
+              {{input type="text" value=routerIp classNames="form-control" input=(action 'subnetOnChange') placeholder=(t 'machine.driverCustom.windowsSteps.routerIp.placeholder')}}
+            </div>
+          </li>
+          <li>
+            <i>5</i>
+            {{format-html-message 'machine.driverCustom.windowsSteps.step5' rancherImage=settings.rancherImage}}
+            <div class="checkbox r-mt10">
+              {{input type="text" value=cattleAgentIp classNames="form-control" placeholder=(t 'machine.driverCustom.agentIp.placeholder')}}
+            </div>
+          </li>
+          <li>
+            <i>6</i>
+            {{t 'machine.driverCustom.windowsSteps.step6'}}
+            <div class="r-mt10">
+              {{form-user-labels setLabels=(action 'setLabels')}}
+            </div>
+          </li>
+          <li>
+            <i>7</i>
+            {{t 'machine.driverCustom.windowsSteps.step7' appName=settings.appName}}
             <div class="copy-pre">
               <pre id="registration-command">{{registrationCommandWindows}}</pre>
               {{copy-to-clipboard clipboardText=registrationCommandWindows}}
             </div>
           </li>
           <li>
-            <i>3</i>
+            <i>8</i>
             {{t 'machine.driverCustom.step5Close.part1'}} {{#link-to "hosts"}}{{t 'machine.driverCustom.step5Close.link'}}{{/link-to}} {{t 'machine.driverCustom.step5Close.part2'}}
           </li>
         </ul>
       </div>
     </div>
+  <div class="footer-actions">
+    <button {{action "cancel"}} class="btn btn-primary">{{t 'machine.driverCustom.close'}}</button>
+  </div>
   </section>
-{{/if}}
+{{else}}
 
 <section>
-  {{#if projects.current.isWindows}}
-    <h3>{{t 'machine.driverCustom.windows.linuxHeader'}}</h3>
-  {{/if}}
   <div class="row form-group">
     <div class="col-md-8 col-md-offset-2">
       <ul class="list-circles list-circles-clear">
@@ -85,8 +113,8 @@
       </ul>
     </div>
   </div>
-
   <div class="footer-actions">
     <button {{action "cancel"}} class="btn btn-primary">{{t 'machine.driverCustom.close'}}</button>
   </div>
 </section>
+{{/if}}

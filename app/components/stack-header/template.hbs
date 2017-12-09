@@ -22,20 +22,20 @@
 
     <div class="btn-group r-ml10">
       {{#link-to "service.new" (query-params stackId=model.id) classNames="btn btn-primary btn-sm"}}{{t 'stackHeader.add.service'}}{{/link-to}}
-      {{#unless projects.current.isWindows}}
         <button type="button" class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
           <i class="icon icon-chevron-down"></i>
           <span class="sr-only">{{t 'nav.srToggleNav'}}</span>
         </button>
         <ul class="dropdown-menu dropdown-menu-right" role="menu">
+          {{#unless projects.current.isWindows}}
           <li>{{#link-to "service.new-balancer" (query-params stackId=model.id)}}{{t 'stackHeader.add.balancer'}}{{/link-to}}</li>
+          {{/unless}}
           <li>{{#link-to "service.new-alias" (query-params stackId=model.id)}}{{t 'stackHeader.add.alias'}}{{/link-to}}</li>
           <li>{{#link-to "service.new-external" (query-params stackId=model.id)}}{{t 'stackHeader.add.external'}}{{/link-to}}</li>
-          {{#if hasVm}}
+          {{#if (and hasVm (not projects.current.isWindows))}}
             <li>{{#link-to "service.new-virtualmachine" (query-params stackId=model.id)}}{{t 'stackHeader.add.vm'}}{{/link-to}}</li>
           {{/if}}
         </ul>
-      {{/unless}}
     </div>
 
     {{action-menu model=model classNames="r-ml10 pull-right" size="sm"}}

@@ -53,20 +53,22 @@
       {{#if showAddService}}
         <div class="btn-group">
           {{#link-to "service.new" (query-params stackId=model.id) classNames="btn btn-default btn-sm"}}{{t 'stackSection.add.service'}}{{/link-to}}
-          {{#unless projects.current.isWindows}}
+
             <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
               <i class="icon icon-fw icon-chevron-down"></i>
               <span class="sr-only">{{t 'nav.srToggleDropdown'}}</span>
             </button>
             <ul class="dropdown-menu dropdown-menu-right" role="menu">
+              {{#unless projects.current.isWindows}}
               <li>{{#link-to "service.new-balancer" (query-params stackId=model.id)}}{{t 'stackSection.add.loadBalancer'}}{{/link-to}}</li>
+              {{/unless}}
               <li>{{#link-to "service.new-alias" (query-params stackId=model.id)}}{{t 'stackSection.add.serviceAlias'}}{{/link-to}}</li>
               <li>{{#link-to "service.new-external" (query-params stackId=model.id)}}{{t 'stackSection.add.externalService'}}{{/link-to}}</li>
-              {{#if hasVm}}
+              {{#if (and hasVm (not projects.current.isWindows))}}
                 <li>{{#link-to "service.new-virtualmachine" (query-params stackId=model.id)}}{{t 'stackSection.add.virtualMachine'}}{{/link-to}}</li>
               {{/if}}
             </ul>
-          {{/unless}}
+
         </div>
       {{/if}}
     </div>
