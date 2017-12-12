@@ -116,7 +116,6 @@ var Namespace = Resource.extend(StateCounts, {
     },
 
     move() {
-      debugger;
       this.get('modalService').toggleModal('modal-move-namespace', this);
     },
   },

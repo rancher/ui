@@ -4,7 +4,6 @@ import Util from 'ui/utils/util';
 import Resource from 'ember-api-store/models/resource';
 import { formatMib, formatSi } from 'shared/utils/util';
 import C from 'ui/utils/constants';
-import { denormalizeIdArray } from 'ember-api-store/utils/denormalize';
 import { satisfies, compare } from 'shared/utils/parse-version';
 import StateCounts from 'ui/mixins/state-counts';
 import { inject as service } from "@ember/service";
@@ -22,12 +21,6 @@ var Machine = Resource.extend(StateCounts,{
     this._super(...arguments);
     this.defineStateCounts('arrangedInstances', 'instanceStates', 'instanceCountSort');
   },
-
-  instances: denormalizeIdArray('instanceIds'),
-  arrangedInstances: function() {
-    let out = this.get('instances').sortBy('system','displayName');
-    return out;
-  }.property('instances.@each.{isSystem,displayName}'),
 
   actions: {
     activate: function() {

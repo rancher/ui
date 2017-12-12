@@ -161,17 +161,6 @@ module.exports = function(environment) {
     ENV.APP.apiServer = '';
   }
 
-  // Override the Catalog server/endpoint with environment var
-  server = process.env.CATALOG;
-  if ( server )
-  {
-    ENV.APP.catalogServer = normalizeHost(server,8088);
-  }
-  else if (environment === 'production')
-  {
-    ENV.APP.catalogServer = '';
-  }
-
   var pl = process.env.PL;
   if ( pl )
   {

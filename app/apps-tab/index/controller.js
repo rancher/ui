@@ -2,7 +2,7 @@ import { alias } from '@ember/object/computed';
 import { inject as service } from '@ember/service';
 import Controller, { inject as controller } from '@ember/controller';
 import C from 'ui/utils/constants';
-import { computed } from '@ember/object';
+import { computed, get } from '@ember/object';
 
 export default Controller.extend({
   projectController: controller('authenticated.project'),
@@ -10,16 +10,16 @@ export default Controller.extend({
   intl:              service(),
   tags:              alias('projectController.tags'),
   sortBy:            'name',
-  expandedStacks:    null,
+  expandedNamespaces:    null,
 
   init() {
     this._super(...arguments);
-    this.set('expandedStacks',[]);
+    this.set('expandedNamespaces',[]);
   },
 
   actions: {
     toggleExpand(instId) {
-      let list = this.get('expandedStacks');
+      let list = get(this,'expandedNamespaces');
       if ( list.includes(instId) ) {
         list.removeObject(instId);
       } else {
@@ -28,13 +28,11 @@ export default Controller.extend({
     },
   },
 
-  filteredStacks: computed('model.stacks.@each.{type,isFromCatalog,tags,state}','tags', function() {
-    var needTags = this.get('tags');
-    var out      = this.get('model.stacks').filter((stack) => {
-      if (stack.get('isFromCatalog') && C.REMOVEDISH_STATES.indexOf(stack.get('state')) === -1) {
-        return true;
-      }
-      return false;
+  filteredNamespaces: computed('model.namespaces.@each.{type,isFromCatalog,tags,state}','tags', function() {
+    var needTags = get(this,'tags');
+
+    var out = get(this,'model.namespaces').filter((ns) => {
+      return get(ns,'isFromCatalog') && !C.REMOVEDISH_STATES.includes(get(ns,'state'));
     });
 
     if ( needTags.length ) {

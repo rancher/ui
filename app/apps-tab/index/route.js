@@ -1,5 +1,6 @@
 import { on } from '@ember/object/evented';
 import EmberObject from '@ember/object';
+import { get } from '@ember/object';
 import { allSettled } from 'rsvp';
 import { inject as service } from '@ember/service';
 import Route from '@ember/routing/route';
@@ -10,25 +11,21 @@ export default Route.extend({
   catalog: service(),
 
   model() {
-    return this.get('store').findAll('stack').then((stacks) => {
-      let deps = [];
-      let catalog = this.get('catalog');
-      stacks = stacks.filterBy('isFromCatalog', true);
+    const catalog = get(this, 'catalog');
 
-      stacks.forEach((stack) => {
+    return this.get('store').findAll('namespace').then((namespaces) => {
+      let deps = [];
+
+      namespaces.filterBy('isFromCatalog', true).forEach((stack) => {
         let extInfo = parseExternalId(stack.get('externalId'));
         deps.push(catalog.fetchTemplate(extInfo.templateId, false));
       });
 
       return allSettled(deps).then(() => {
         return EmberObject.create({
-          stacks: stacks,
+          namespaces,
         });
       });
     });
   },
-
-  setDefaultRoute: on('activate', function() {
-    this.set(`session.${C.SESSION.CONTAINER_ROUTE}`,'containers');
-  }),
 });

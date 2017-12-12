@@ -18,7 +18,6 @@ const rootNav = [
     localizedLabel: 'nav.apps.tab',
     route: 'apps-tab',
     ctx: [getProjectId],
-    condition: function() { return this.get(`settings.${C.SETTING.CATALOG_URL}`); },
   },
   {
     scope: 'project',

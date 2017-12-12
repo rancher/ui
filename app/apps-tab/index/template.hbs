@@ -7,11 +7,11 @@
 </section>
 
 <section class="pl-0 pr-0">
-  {{#each filteredStacks as |stack|}}
-    {{stack-app
-      model=stack
-      toggle=(action "toggleExpand" stack.id)
-      expanded=(array-includes expandedStacks stack.id)
+  {{#each filteredNamespaces as |ns|}}
+    {{namespace-app
+      model=ns
+      toggle=(action "toggleExpand" ns.id)
+      expanded=(array-includes expandedNamespaces ns.id)
     }}
   {{else}}
     {{empty-table resource="container" newRoute="catalog-tab" newTranslationKey="nav.apps.launch"}}
