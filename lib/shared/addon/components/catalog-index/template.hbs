@@ -17,10 +17,6 @@
         {{/if}}
         <span>{{t 'catalogPage.index.refreshBtn'}}</span>
       </button>
-      <button type="button" class="btn bg-primary icon-btn" {{ action "addEnvCatalog" }}>
-        <span class="darken"><i class="icon icon-edit"></i></span>
-        <span>{{t 'catalogPage.index.manage'}}</span>
-      </button>
     </div>
   </section>
 {{/if}}
@@ -83,7 +79,7 @@
     </ul>
   </div>
   <div class="col span-19-of-24">
-    {{#each arrangedContent as |catalogItem|}}
+    {{#each model.catalog as |catalogItem|}}
       {{#catalog-box model=catalogItem showSource=showCatalogDropdown as |section|}}
         {{#if (eq section 'body')}}
           <h3>

@@ -1,1 +1,91 @@
-{{settings/catalog-url initialValue=model.catalog}}
+<section class="header clearfix">
+  <h1 class="pull-left">{{t 'catalogSettings.header'}}</h1>
+
+  <div class="right-buttons">
+    <button class="btn bg-link icon-btn" {{action "add"}}>
+      <span class="darken"><i class="icon icon-plus text-small"/></span>
+      <span>{{t 'catalogSettings.more.addActionLabel'}}</span>
+    </button>
+  </div>
+</section>
+
+<div class="row row-same-height">
+  <div class="col span-6">
+    <h2>{{t (if settings.isRancher 'catalogSettings.certified.header.rancher' 'catalogSettings.certified.header.pl') appName=settings.appName}}</h2>
+    <div>
+      {{#if stdLibrary}}
+        <button class="btn btn-link btn-sm bg-success" {{action "disableLibrary"}}>{{t 'generic.enabled'}}</button>
+      {{else if libraryUsed}}
+        {{t 'catalogSettings.notAvailable' name='library'}}
+      {{else}}
+        <button class="btn btn-link btn-sm bg-primary" {{action "enableLibrary"}}>{{t 'generic.disabled'}}</button>
+      {{/if}}
+    </div>
+    <p class="text-info">
+      {{t (if settings.isRancher 'catalogSettings.certified.detail.rancher' 'catalogSettings.certified.detail.pl')}}
+    </p>
+  </div>
+
+  <div class="col span-6">
+    <h2>{{t (if settings.isRancher 'catalogSettings.community.header.rancher' 'catalogSettings.community.header.pl') appName=settings.appName}}</h2>
+    <div>
+      {{#if stdCommunity}}
+        <button class="btn btn-link btn-sm bg-success" {{action "disableCommunity"}}>{{t 'generic.enabled'}}</button>
+      {{else if communityUsed}}
+        {{t 'catalogSettings.notAvailable' name='community'}}
+      {{else}}
+        <button class="btn btn-link btn-sm bg-primary" {{action "enableCommunity"}}>{{t 'generic.disabled'}}</button>
+      {{/if}}
+    </div>
+    <p class="text-info">
+      {{t (if settings.isRancher 'catalogSettings.community.detail.rancher' 'catalogSettings.community.detail.pl')}}
+    </p>
+  </div>
+</div>
+
+<section class="header clearfix">
+  <h1>{{t 'catalogSettings.more.header'}}</h1>
+  <p>{{t 'catalogSettings.more.helpText' htmlSafe=true}}</p>
+</section>
+
+{{#sortable-table
+  tableClassNames="bordered"
+  paging=true
+  pagingLabel="pagination.catalog"
+  headers=headers
+  body=custom
+  sortBy=sortBy
+  fullRows=true
+  rightActions=true
+  as |sortable kind row dt|
+}}
+  {{#if (eq kind "row")}}
+    <tr class="main-row">
+      <td class="row-check" valign="middle" style="padding-top: 2px;">
+        {{check-box nodeId=row.id}}
+      </td>
+      <td data-title="{{dt.state}}" class="state">
+        {{badge-state model=row}}
+      </td>
+      <td data-title="{{dt.name}}">
+        {{row.name}}
+      </td>
+      <td data-title="{{dt.kind}}">
+        {{row.displayKind}}
+      </td>
+      <td data-title="{{dt.url}}">
+        <a href="{{row.url}}" target="_blank" rel="nofollow noopener">{{row.url}}</a>
+      </td>
+      <td data-title="{{dt.branch}}">
+        {{row.branch}}
+      </td>
+      <td data-title="{{dt.actions}}" class="actions">
+        {{action-menu model=row}}
+      </td>
+    </tr>
+  {{else if (eq kind "nomatch")}}
+    <tr><td colspan="{{sortable.fullColspan}}" class="text-center text-muted pt-20 pb-20">{{t 'catalogSettings.more.noMatch'}}</td></tr>
+  {{else if (eq kind "norows")}}
+    <tr><td colspan="{{sortable.fullColspan}}" class="text-center text-muted pt-20 pb-20">{{t 'catalogSettings.more.noData'}}</td></tr>
+  {{/if}}
+{{/sortable-table}}

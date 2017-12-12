@@ -27,18 +27,17 @@ export default Route.extend({
       dependencies.upgrade = this.get('catalog').fetchTemplate(params.upgrade, true);
     }
 
-    if ( params.stackId )
+    if ( params.namespaceId )
     {
-      dependencies.stack = store.find('stack', params.stackId);
+      dependencies.namespace = store.find('namespace', params.namespaceId);
     }
 
     return hash(dependencies, 'Load dependencies').then((results) => {
-      if ( !results.stack )
+      if ( !results.namespace )
       {
-        results.stack = store.createRecord({
-          type: 'stack',
+        results.namespace = store.createRecord({
+          type: 'namespace',
           name: results.tpl.get('defaultName'),
-          system: (results.tpl.get('templateBase') === C.EXTERNAL_ID.KIND_INFRA),
           answers: {},
         });
       }
@@ -70,7 +69,7 @@ export default Route.extend({
       }
 
       return EmberObject.create({
-        stack: results.stack,
+        namespace: results.namespace,
         tpl: results.tpl,
         upgrade: results.upgrade,
         versionLinks: links,
@@ -84,7 +83,7 @@ export default Route.extend({
   resetController: function (controller, isExiting/*, transition*/) {
     if (isExiting)
     {
-      controller.set('stackId', null);
+      controller.set('namespaceId', null);
       controller.set('upgrade', null);
     }
   }

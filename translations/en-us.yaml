@@ -1457,7 +1457,7 @@ caasLogin:
 
 catalogSettings:
   header: Catalogs
-  subtext: Catalogs contain templates that allow users to easily deploy applications by answering a few questions
+  notAvailable: "Not available: there is a custom catalog called <code>{name}</code>"
   certified:
     header:
       rancher: "{appName} Certified Library"
@@ -1474,8 +1474,12 @@ catalogSettings:
       pl: Templates created and maintained by community members.
   more:
     header: Custom
-    helpText: You can define your own custom catalog sources here.  Each one needs a unique name and a URL that <code>git clone</code> can handle (see <a href="https://git-scm.com/docs/git-clone#_git_urls_a_id_urls_a" target="_blank">docs</a> for more info).
+    helpText: You can define your own additional custom catalog sources.  Each one needs a unique name and a URL that <code>git clone</code> can handle (see <a href="https://git-scm.com/docs/git-clone#_git_urls_a_id_urls_a" target="_blank">docs</a> for more info).
     addActionLabel: Add Catalog
+    noMatch: No catalogs match the current search.
+    noData: There are no custom catalogs defined.
+    addHeader: Add Catalog
+    editHeader: Edit Catalog
     name:
       label: Name
       placeholder: e.g. mycatalog
@@ -3459,7 +3463,7 @@ newCatalog:
   selectVersionAdd: Select a version of the template to deploy
   selectVersionUpgrade: Select a version of the template to upgrade to
   selectVersionConfigure: Select a version of the template to configure
-  newStack: New Stack
+  newNamespace: New Namespace
   config: Configuration Options
   unknownType: "Unrecognized question type:"
   startService: Start services after creating
@@ -3590,6 +3594,11 @@ pageFooter:
   showSystem: Show System
 
 pagination:
+  catalog: |
+    {pages, plural,
+    =0 {No Catalogs}
+    =1 {{count} {count, plural, =1 {Catalog} other {Catalogs}}}
+    other {{from} - {to} of {count} Catalogs}}
   certificate: |
     {pages, plural,
     =0 {No Certificates}
@@ -4004,9 +4013,9 @@ nav:
     library: Library
     community: Community
   apps:
-    tab: Apps
-    apps: Applications
-    launch: Launch from Catalog
+    tab: Catalog Apps
+    apps: Catalog Apps
+    launch: Launch
   infra:
     tab: Resources
     storagePage: Storage
