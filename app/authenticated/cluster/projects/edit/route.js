@@ -1,6 +1,5 @@
 import { hash } from 'rsvp';
 import { get } from '@ember/object';
-import { inject as service } from '@ember/service';
 import Route from '@ember/routing/route';
 import { inject as service } from '@ember/service';
 
