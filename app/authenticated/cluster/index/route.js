@@ -7,9 +7,11 @@ export default Route.extend({
 
   model: function() {
     return this.get('clusterStore').find('node').then((nodes) => {
+      const cluster = this.get('scope').currentCluster;
       return {
+        displayName: cluster.name,
         nodes,
-        cluster: this.get('scope').currentCluster,
+        cluster,
       };
     });
   },
