@@ -60,7 +60,12 @@ Router.map(function() {
         this.route('new', {path: '/add'});
       });
 
-      this.route('nodes');
+      this.route('nodes', function() {
+        this.route('index', {path: '/'});
+        this.route('templates');
+        this.route('launch', {path: '/launch/:template_id'});
+        this.route('configure');
+      });
 
       this.route('projects', {path: '/projects'}, function() {
         this.route('index', {path: '/'});
