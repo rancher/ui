@@ -1,5 +1,26 @@
 <div class="row pl-20 pr-20">
   {{#each gauges as |gauge|}}
-    <div class="col span-3">{{percent-gauge value=gauge.value title=gauge.title subtitle=gauge.subtitle ticks=gauge.ticks}}</div>
+  <div class="col span-3">{{percent-gauge value=gauge.value title=gauge.title subtitle=gauge.subtitle ticks=gauge.ticks}}</div>
   {{/each}}
+  <div class="col span-3">
+    <div class="banner bg-error">
+      <div class="banner-icon">
+        <i class="icon icon-alert"></i>
+      </div>
+      <div class="banner-message text-left">
+        <p>{{t 'clusterDashboard.alert.node' node=node.name}}</p>
+      </div>
+    </div>
+  </div>
 </div>
+
+{{#each inactiveNodes as |node|}}
+<div class="banner bg-error mt-30">
+  <div class="banner-icon">
+    <i class="icon icon-alert"></i>
+  </div>
+  <div class="banner-message text-left">
+    <p>{{t 'clusterDashboard.alert.node' node=node.name}}</p>
+  </div>
+</div>
+{{/each}}
