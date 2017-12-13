@@ -50,8 +50,10 @@ var machineDriver = Resource.extend(PolledResource, {
       return null;
     }
 
-    return this.get('catalog').getTemplateFromCache(parsedExtId.templateId).get('links.icon');
-
+    const template =  this.get('catalog').getTemplateFromCache(parsedExtId.templateId);
+    if( template ) {
+      return template.get('links.icon');
+    }
   }),
 
   iconMapFromConstants: Ember.computed('name', function() {
