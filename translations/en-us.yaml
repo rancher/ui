@@ -2010,42 +2010,37 @@ formHealthCheck:
     none: None
     tcp: Check that a TCP connection opens successfully
     http: Check that a HTTP request responds with a successful status code (2xx or 3xx)
-  request:
+    https: Check that a HTTPS request responds with a successful status code
+    command: Check that a command run inside the container exits successfully (exit code 0)
+  command:
+    label: Command
+    placeholder: e.g. cat /tmp/health
+  http:
     label: HTTP Request
-  method:
-    prompt: "Select a HTTP Method:"
-  path:
-    placeholder: Request Path e.g. /healthcheck
-  version:
-    prompt: "Select a HTTP Version:"
-  host:
-    label: Host Header
-    placeholder: e.g. www.example.com
+    path:
+      placeholder: Request Path e.g. /healthcheck
+    headers:
+      label: Host Header
   port:
-    label: Listening Port
+    label: Target Container Port
     placeholder: e.g. 80
-  initializingTimeout:
-    label: Initializing Timeout
+  initialDelaySeconds:
+    label: Delay before initial check
     unit: ms
   reinitializingTimeout:
     label: Reinitializing Timeout
     unit: ms
-  interval:
+  periodSeconds:
     label: Check Interval
-    unit: ms
-  timeout:
+  timeoutSeconds:
     label: Check Timeout
     unit: ms
-  healthyThreshold:
+  successThreshold:
     label: Healthy After
     unit: successes
-  unhealthyThreshold:
+  failureTheshold:
     label: Unhealthy After
     unit: failures
-  strategy:
-    label: When Unhealthy
-    none: Take no action
-    recreate: Delete container and schedule a replacement
 
 formKeyValue:
   addAction: Add Pair

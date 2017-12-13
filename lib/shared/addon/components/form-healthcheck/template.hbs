@@ -6,151 +6,150 @@
      expandAll=expandAll
      expand=(action expandFn)
 }}
-  {{#if scope.current.isWindows}}
-    <div class="text-center p-20">Healthcheck support is not currently available for Windows.</div>
+  {{#if editing}}
+    <div class="radio input">
+      <label>{{radio-button selection=checkType value="none"}} {{t 'formHealthCheck.checkType.none'}}</label>
+    </div>
+    <div class="radio input">
+      <label>{{radio-button selection=checkType value="tcp"}} {{t 'formHealthCheck.checkType.tcp'}}</label>
+    </div>
+    <div class="radio input">
+      <label>{{radio-button selection=checkType value="http"}} {{t 'formHealthCheck.checkType.http'}}</label>
+    </div>
+    <div class="radio input">
+      <label>{{radio-button selection=checkType value="command"}} {{t 'formHealthCheck.checkType.http'}}</label>
+    </div>
   {{else}}
-    {{#if editing}}
-      <div class="radio input">
-        <label>{{radio-button selection=checkType value="none"}} {{t 'formHealthCheck.checkType.none'}}</label>
-      </div>
-      <div class="radio input">
-        <label>{{radio-button selection=checkType value="tcp"}} {{t 'formHealthCheck.checkType.tcp'}}</label>
-      </div>
-      <div class="radio input">
-        <label>{{radio-button selection=checkType value="http"}} {{t 'formHealthCheck.checkType.http'}}</label>
+    {{#if checkType}}
+      <div>
+        <label class="acc-label">{{t 'generic.type'}}:</label>
+        {{checkType}}
       </div>
     {{else}}
-      {{#if checkType}}
-        <div>
-          <label class="acc-label">{{t 'generic.type'}}:</label>
-          {{checkType}}
-        </div>
-      {{else}}
-        <div>{{t 'generic.none'}}</div>
-      {{/if}}
+      <div>{{t 'generic.none'}}</div>
     {{/if}}
+  {{/if}}
 
-    {{#if (eq checkType "http")}}
-      <div class="row">
-        <div class="col {{if showUriHost 'span-6' 'span-12'}}">
-          <label class="acc-label">{{t 'formHealthCheck.request.label'}}{{field-required}}</label>
-          {{#input-or-display editable=editing value=healthCheck.requestLine}}
-              <div class="input-group">
-                <div class="input-group-btn bg-default ">
-                  <button type="button" class="btn bg-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">{{uriMethod}} <i class="icon icon-chevron-down"></i></button>
-                  <ul class="dropdown-menu" role="menu">
-                    <li role="presentation" class="dropdown-header">
-                      {{t 'formHealthCheck.method.prompt'}}
+  {{#if (eq checkType "http")}}
+    <div class="row">
+      <div class="col {{if showUriHost 'span-6' 'span-12'}}">
+        <label class="acc-label">{{t 'formHealthCheck.request.label'}}{{field-required}}</label>
+        {{#input-or-display editable=editing value=healthCheck.requestLine}}
+            <div class="input-group">
+              <div class="input-group-btn bg-default ">
+                <button type="button" class="btn bg-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">{{uriMethod}} <i class="icon icon-chevron-down"></i></button>
+                <ul class="dropdown-menu" role="menu">
+                  <li role="presentation" class="dropdown-header">
+                    {{t 'formHealthCheck.method.prompt'}}
+                  </li>
+                  {{#each uriMethodChoices as |choice|}}
+                    <li {{action "chooseUriMethod" choice}}>
+                      <a href="#">{{choice}}</a>
                     </li>
-                    {{#each uriMethodChoices as |choice|}}
-                      <li {{action "chooseUriMethod" choice}}>
-                        <a href="#">{{choice}}</a>
-                      </li>
-                    {{/each}}
-                  </ul>
-                </div>
-
-                {{input type="text" classNames="form-control" placeholder=(t 'formHealthCheck.path.placeholder') value=uriPath}}
-
-                <div class="input-group-btn  bg-default">
-                  <button type="button" class="btn bg-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">{{uriVersion}} <i class="icon icon-chevron-down"></i></button>
-                  <ul class="dropdown-menu" role="menu">
-                    <li role="presentation" class="dropdown-header">
-                      {{t 'formHealthCheck.version.prompt'}}
-                    </li>
-                    {{#each uriVersionChoices as |choice|}}
-                      <li {{action "chooseUriVersion" choice}}>
-                        <a href="#">{{choice}}</a>
-                      </li>
-                    {{/each}}
-                  </ul>
-                </div>
+                  {{/each}}
+                </ul>
               </div>
-          {{/input-or-display}}
-        </div>
-        {{#if showUriHost}}
-          <div class="col span-6">
-            <label class="acc-label">{{t 'formHealthCheck.host.label'}}</label>
-            {{#input-or-display editable=editing value=uriHost}}
-              {{input type="text" classNames="form-control" placeholder=(t 'formHealthCheck.host.placeholder') value=uriHost}}
-            {{/input-or-display}}
-          </div>
-        {{/if}}
+
+              {{input type="text" classNames="form-control" placeholder=(t 'formHealthCheck.path.placeholder') value=uriPath}}
+
+              <div class="input-group-btn  bg-default">
+                <button type="button" class="btn bg-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">{{uriVersion}} <i class="icon icon-chevron-down"></i></button>
+                <ul class="dropdown-menu" role="menu">
+                  <li role="presentation" class="dropdown-header">
+                    {{t 'formHealthCheck.version.prompt'}}
+                  </li>
+                  {{#each uriVersionChoices as |choice|}}
+                    <li {{action "chooseUriVersion" choice}}>
+                      <a href="#">{{choice}}</a>
+                    </li>
+                  {{/each}}
+                </ul>
+              </div>
+            </div>
+        {{/input-or-display}}
       </div>
-    {{/if}}
-
-    {{#if (not-eq checkType "none")}}
-      <div class="row">
-        <div class="col span-4 box">
-          <label class="acc-label">{{t 'formHealthCheck.port.label'}}{{field-required}}</label>
-          {{#input-or-display editable=editing value=healthCheck.port}}
-            {{input-integer min="1" max="65535" classNames="form-control" placeholder=(t 'formHealthCheck.port.placeholder') value=healthCheck.port}}
+      {{#if showUriHost}}
+        <div class="col span-6">
+          <label class="acc-label">{{t 'formHealthCheck.host.label'}}</label>
+          {{#input-or-display editable=editing value=uriHost}}
+            {{input type="text" classNames="form-control" placeholder=(t 'formHealthCheck.host.placeholder') value=uriHost}}
           {{/input-or-display}}
         </div>
+      {{/if}}
+    </div>
+  {{/if}}
 
-        <div class="col span-4 box">
-          <label class="acc-label">{{t 'formHealthCheck.interval.label'}}</label>
-          {{#input-or-display editable=editing value=healthCheck.interval}}
-            <div class="input-group">
-              {{input-integer min=1 step=1000 classNames="form-control" value=healthCheck.interval}}
-              <span class="input-group-addon bg-default">{{t 'formHealthCheck.interval.unit'}}</span>
-            </div>
-          {{/input-or-display}}
-        </div>
-
-
-        <div class="col span-4 box">
-          <label class="acc-label">{{t 'formHealthCheck.timeout.label'}}</label>
-          {{#input-or-display editable=editing value=healthCheck.responseTimeout}}
-            <div class="input-group">
-              {{input-integer min=1 step=100 classNames="form-control" value=healthCheck.responseTimeout}}
-              <span class="input-group-addon bg-default">{{t 'formHealthCheck.timeout.unit'}}</span>
-            </div>
-          {{/input-or-display}}
-        </div>
+  {{#if (not-eq checkType "none")}}
+    <div class="row">
+      <div class="col span-4 box">
+        <label class="acc-label">{{t 'formHealthCheck.port.label'}}{{field-required}}</label>
+        {{#input-or-display editable=editing value=healthCheck.port}}
+          {{input-integer min="1" max="65535" classNames="form-control" placeholder=(t 'formHealthCheck.port.placeholder') value=healthCheck.port}}
+        {{/input-or-display}}
       </div>
 
-      <div class="row">
-        <div class="col box span-4">
-          <label class="acc-label">{{t 'formHealthCheck.initializingTimeout.label'}}</label>
-          {{#input-or-display editable=editing value=healthCheck.initializingTimeout}}
-            <div class="input-group">
-              {{input-integer step=100 classNames="form-control" value=healthCheck.initializingTimeout}}
-              <span class="input-group-addon bg-default">{{t 'formHealthCheck.initializingTimeout.unit'}}</span>
-            </div>
-          {{/input-or-display}}
-        </div>
-        <div class="col box span-4">
-          <label class="acc-label">{{t 'formHealthCheck.healthyThreshold.label'}}</label>
-          {{#input-or-display editable=editing value=healthCheck.healthyThreshold}}
-            <div class="input-group">
-              {{input-integer min=1 step=1 classNames="form-control" value=healthCheck.healthyThreshold}}
-              <span class="input-group-addon bg-default">{{t 'formHealthCheck.healthyThreshold.unit'}}</span>
-            </div>
-          {{/input-or-display}}
-        </div>
-        <div class="col box span-4">
-          <label class="acc-label">{{t 'formHealthCheck.unhealthyThreshold.label'}}</label>
-          {{#input-or-display editable=editing value=healthCheck.unhealthyThreshold}}
-            <div class="input-group">
-              {{input-integer min=1 step=1 classNames="form-control" value=healthCheck.unhealthyThreshold}}
-              <span class="input-group-addon bg-default">{{t 'formHealthCheck.unhealthyThreshold.unit'}}</span>
-            </div>
-          {{/input-or-display}}
-        </div>
-      </div>
-
-      {{#if (and isService showStrategy)}}
-        <label class="acc-label mt-20">{{t 'formHealthCheck.strategy.label'}}</label>
-        {{#input-or-display editable=editing value=strategy}}
-          <div class="radio">
-            <label>{{radio-button selection=strategy value="none"}} {{t 'formHealthCheck.strategy.none'}}</label>
-          </div>
-          <div class="radio">
-            <label>{{radio-button selection=strategy value="recreate"}} {{t 'formHealthCheck.strategy.recreate'}}</label>
+      <div class="col span-4 box">
+        <label class="acc-label">{{t 'formHealthCheck.interval.label'}}</label>
+        {{#input-or-display editable=editing value=healthCheck.interval}}
+          <div class="input-group">
+            {{input-integer min=1 step=1000 classNames="form-control" value=healthCheck.interval}}
+            <span class="input-group-addon bg-default">{{t 'generic.seconds'}}</span>
           </div>
         {{/input-or-display}}
-      {{/if}}
+      </div>
+
+
+      <div class="col span-4 box">
+        <label class="acc-label">{{t 'formHealthCheck.timeout.label'}}</label>
+        {{#input-or-display editable=editing value=healthCheck.responseTimeout}}
+          <div class="input-group">
+            {{input-integer min=1 step=100 classNames="form-control" value=healthCheck.responseTimeout}}
+            <span class="input-group-addon bg-default">{{t 'generic.seconds'}}</span>
+          </div>
+        {{/input-or-display}}
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col box span-4">
+        <label class="acc-label">{{t 'formHealthCheck.initialDelaySeconds.label'}}</label>
+        {{#input-or-display editable=editing value=healthCheck.initialDelaySeconds}}
+          <div class="input-group">
+            {{input-integer step=100 classNames="form-control" value=healthCheck.initialDelaySeconds}}
+            <span class="input-group-addon bg-default">{{t 'generic.seconds'}}</span>
+          </div>
+        {{/input-or-display}}
+      </div>
+      <div class="col box span-4">
+        <label class="acc-label">{{t 'formHealthCheck.successThreshold.label'}}</label>
+        {{#input-or-display editable=editing value=healthCheck.successThreshold}}
+          <div class="input-group">
+            {{input-integer min=1 step=1 classNames="form-control" value=healthCheck.successThreshold}}
+            <span class="input-group-addon bg-default">{{t 'formHealthCheck.successThreshold.unit'}}</span>
+          </div>
+        {{/input-or-display}}
+      </div>
+      <div class="col box span-4">
+        <label class="acc-label">{{t 'formHealthCheck.failureTheshold.label'}}</label>
+        {{#input-or-display editable=editing value=healthCheck.failureTheshold}}
+          <div class="input-group">
+            {{input-integer min=1 step=1 classNames="form-control" value=healthCheck.failureTheshold}}
+            <span class="input-group-addon bg-default">{{t 'formHealthCheck.failureTheshold.unit'}}</span>
+          </div>
+        {{/input-or-display}}
+      </div>
+    </div>
+
+    {{#if (and isService showStrategy)}}
+      <label class="acc-label mt-20">{{t 'formHealthCheck.strategy.label'}}</label>
+      {{#input-or-display editable=editing value=strategy}}
+        <div class="radio">
+          <label>{{radio-button selection=strategy value="none"}} {{t 'formHealthCheck.strategy.none'}}</label>
+        </div>
+        <div class="radio">
+          <label>{{radio-button selection=strategy value="recreate"}} {{t 'formHealthCheck.strategy.recreate'}}</label>
+        </div>
+      {{/input-or-display}}
     {{/if}}
   {{/if}}
 {{/accordion-list-item}}
