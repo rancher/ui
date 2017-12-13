@@ -19,17 +19,17 @@ export default Ember.Component.extend(ManageLabels, {
     setLabels(labels) {
       if ( this.get('model') ) {
         var out = {}; 
-        const oldlabels = Object.assign({}, this.get('model.labels'));
-        if(!labels){
-          labels={};
-        }
-        for(var tmp in oldlabels){
-          out[tmp]=oldlabels[tmp];
-        }
         labels.forEach((row) => {
           out[row.key] = row.value;
         });
-
+        var subnet=this.get('subnet');
+        var routerIp=this.get('routerIp');
+        if (subnet) {
+          out[C.LABEL.PER_HOST_SUBNET]=subnet;
+        }
+        if (routerIp) {
+          out[C.LABEL.PER_HOST_SUBNET_ROUTING_IP]=routerIp;
+        }
         this.set('model.labels', out);
       }
     },
