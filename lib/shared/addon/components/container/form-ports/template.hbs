@@ -1,6 +1,6 @@
 <div class="clearfix {{unless editing 'box'}}">
   <label class="{{if editing 'acc-label'}}">{{t 'formPorts.header'}}</label>
-  {{#if (and portsArray.length (not showIp))}}
+  {{#if (and ports.length (not showIp))}}
     {{#if editing}}
       <div class="pull-right text-small">
         <a role="button" class="btn bg-transparent p-0" {{action "showIp"}}>
@@ -10,40 +10,40 @@
     {{/if}}
   {{/if}}
 
-  {{#if portsArray.length}}
+  {{#if ports.length}}
   <table class="table fixed no-lines small mb-10">
     <thead>
       <tr class="hidden-sm">
         {{#if showIp}}
-          <th>{{t 'formPorts.bindAddress.label'}}</th>
+          <th>{{t 'formPorts.hostIp.label'}}</th>
           <th width="10"></th>
         {{/if}}
 
-        <th class="{{unless editing 'acc-label'}}">{{t 'formPorts.public.label'}}</th>
+        <th class="{{unless editing 'acc-label'}}">{{t 'formPorts.hostPort.label'}}</th>
         <th width="10"></th>
-        <th class="{{unless editing 'acc-label'}}">{{t 'formPorts.private.label'}}{{#if editing}}{{field-required}}{{/if}}</th>
+        <th class="{{unless editing 'acc-label'}}">{{t 'formPorts.containerPort.label'}}{{#if editing}}{{field-required}}{{/if}}</th>
         <th width="10"></th>
         <th class="{{unless editing 'acc-label'}}" width="80">{{t 'formPorts.protocol.label'}}</th>
         <th width="40">&nbsp;</th>
       </tr>
     </thead>
     <tbody>
-      {{#each portsArray as |port|}}
+      {{#each ports as |port|}}
         <tr>
           {{#if showIp}}
-            <td data-title="{{t 'formPorts.public.label'}}">
+            <td data-title="{{t 'formPorts.hostPort.label'}}">
               {{#if port.existing}}
-                {{#if port.bindAddress}}
-                  {{port.bindAddress}}
+                {{#if port.hostIP}}
+                  {{port.hostIP}}
                 {{else}}
                   <span class="text-muted">{{t 'generic.any'}}</span>
                 {{/if}}
               {{else}}
                 {{#if editing}}
-                  {{input class="form-control input-sm" type="text" value=port.bindAddress placeholder=(t 'formPorts.bindAddress.placeholder')}}
+                  {{input class="form-control input-sm" type="text" value=port.hostIP placeholder=(t 'formPorts.hostIp.placeholder')}}
                 {{else}}
-                  {{#if port.bindAddress}}
-                    {{port.bindAddress}}
+                  {{#if port.hostIP}}
+                    {{port.hostIP}}
                   {{else}}
                     <span class="text-muted">{{t 'generic.na'}}</span>
                   {{/if}}
@@ -54,23 +54,23 @@
             <td>&nbsp;</td>
           {{/if}}
 
-          <td data-title="{{t 'formPorts.public.label'}}">
+          <td data-title="{{t 'formPorts.hostPort.label'}}">
             {{#if editing}}
-              {{input-integer class="form-control input-sm public" min="1" max="65535" value=port.public placeholder=(t 'formPorts.public.placeholder')}}
+              {{input-integer class="form-control input-sm public" min="1" max="65535" value=port.hostPort placeholder=(t 'formPorts.hostPort.placeholder')}}
             {{else}}
-              {{port.public}}
+              {{port.hostPort}}
             {{/if}}
           </td>
           <td>&nbsp;</td>
 
-          <td data-title="{{t 'formPorts.private.label'}}">
+          <td data-title="{{t 'formPorts.containerPort.label'}}">
             {{#if port.existing}}
-              <div class="text-muted">{{port.private}}</div>
+              <div class="text-muted">{{port.containerPort}}</div>
             {{else}}
               {{#if editing}}
-                {{input-integer class="form-control input-sm" min="1" max="65535" value=port.private placeholder=(t 'formPorts.private.placeholder')}}
+                {{input-integer class="form-control input-sm" min="1" max="65535" value=port.containerPort placeholder=(t 'formPorts.containerPort.placeholder')}}
               {{else}}
-                {{port.private}}
+                {{port.containerPort}}
               {{/if}}
             {{/if}}
           </td>
