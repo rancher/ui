@@ -1,8 +1,7 @@
 import { getProjectId, getClusterId, bulkAdd } from 'ui/utils/navigation-tree';
-import C from 'shared/utils/constants';
 
 const rootNav = [
-  //project
+  // Project
   {
     scope: 'project',
     id: 'containers',
@@ -119,6 +118,12 @@ const rootNav = [
     id: 'global-machines',
     localizedLabel: 'nav.admin.machines',
     route: 'global-admin.machines',
+  },
+  {
+    scope: 'global',
+    id: 'global-machine-drivers',
+    localizedLabel: 'nav.admin.machineDrivers',
+    route: 'global-admin.machine-drivers',
   },
   {
     scope: 'global',

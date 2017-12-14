@@ -1,10 +1,8 @@
-import { on } from '@ember/object/evented';
 import EmberObject from '@ember/object';
 import { get } from '@ember/object';
 import { allSettled } from 'rsvp';
 import { inject as service } from '@ember/service';
 import Route from '@ember/routing/route';
-import C from 'ui/utils/constants';
 import { parseExternalId } from 'ui/utils/parse-externalid';
 
 export default Route.extend({
