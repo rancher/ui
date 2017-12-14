@@ -2,7 +2,6 @@ import EmberObject from '@ember/object';
 import { hash } from 'rsvp';
 import { inject as service } from '@ember/service';
 import Route from '@ember/routing/route';
-import C from 'ui/utils/constants';
 
 export default Route.extend({
   modalService: service('modal'),
