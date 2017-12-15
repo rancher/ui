@@ -11,10 +11,10 @@
     </div>
   </section>
 
-  {{#if model.nodes.length}}
+  {{#if rows.length}}
     {{#sortable-table
       classNames="grid sortable-table"
-      body=model.nodes
+      body=rows
       searchText=searchText
       sortBy=sortBy
       bulkActions=true
@@ -22,11 +22,11 @@
       fullRows=true
       pagingLabel="pagination.node"
       extraSearchFields=extraSearchFields
-      headers=headers as |sortable kind nodes dt|}}
+      headers=headers as |sortable kind node dt|}}
       {{#if (eq kind "row")}}
         {{node-row
           view="cluster"
-          model=nodes
+          model=node
           fullColspan=sortable.fullColspan
           dt=dt
         }}

@@ -2,13 +2,15 @@ import { inject as service } from '@ember/service';
 import Route from '@ember/routing/route';
 
 export default Route.extend({
-  clusterStore: service(),
+  globalStore: service(),
   scope: service(),
 
   model: function() {
-    return this.get('clusterStore').findAll('machine').then((nodes) => {
+    const cluster = this.modelFor('authenticated.cluster');
+    return this.get('globalStore').findAll('machine').then((machines) => {
       return {
-        nodes,
+        cluster,
+        machines,
       };
     });
   },
