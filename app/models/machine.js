@@ -1,8 +1,8 @@
 import EmberObject, { computed } from '@ember/object';
 import { alias } from '@ember/object/computed';
-import Util from 'ui/utils/util';
 import Resource from 'ember-api-store/models/resource';
-import { formatMib, formatSi } from 'shared/utils/util';
+import { formatMib, download } from 'shared/utils/util';
+import { formatSi } from 'shared/utils/parse-unit';
 import C from 'ui/utils/constants';
 import { satisfies, compare } from 'shared/utils/parse-version';
 import StateCounts from 'ui/mixins/state-counts';
@@ -57,7 +57,7 @@ var Machine = Resource.extend(StateCounts,{
       var url = this.linkFor('config');
       if ( url )
       {
-        Util.download(url);
+        download(url);
       }
     }
   },

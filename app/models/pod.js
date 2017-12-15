@@ -2,8 +2,8 @@ import C from 'ui/utils/constants';
 import Resource from 'ember-api-store/models/resource';
 import { reference } from 'ember-api-store/utils/denormalize';
 import { computed } from '@ember/object';
-import Util from 'ui/utils/util';
-import { formatSi } from 'shared/utils/util';
+import { strPad } from 'ui/utils/util';
+import { formatSi } from 'shared/utils/parse-unit';
 import DisplayImage from 'shared/mixins/display-image';
 
 var Pod = Resource.extend(DisplayImage, {
@@ -107,7 +107,7 @@ var Pod = Resource.extend(DisplayImage, {
     var match = ip.match(/^(\d+)\.(\d+)\.(\d+)\.(\d+)$/);
     if ( match )
     {
-      return match.slice(1).map((octet) => { return Util.strPad(octet,3,'0',false); }).join(".");
+      return match.slice(1).map((octet) => { return strPad(octet,3,'0',false); }).join(".");
     }
   }.property('primaryIpAddress','primaryAssociatedIpAddress'),
 

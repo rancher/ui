@@ -6,7 +6,7 @@ export default Route.extend({
   scope: service(),
 
   model: function() {
-    return this.get('clusterStore').findAll('node').then((nodes) => {
+    return this.get('clusterStore').findAll('machine').then((nodes) => {
       return {
         nodes,
       };
