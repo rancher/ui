@@ -37,122 +37,139 @@
       </div>
     {{/accordion-list-item}}
 
-    {{#accordion-list-item
-          title="Nodes"
-          detail="Select the nodes that will run the containers in this cluster"
-          expandAll=al.expandAll
-          expand=(action expandFn)
-          expandOnInit=true
-    }}
-      {{#sortable-table
-            classNames="grid sortable-table"
-            body=model.hosts
-            searchText=searchText
-            sortBy=sortBy
-            fullRows=true
-            suffix=true
-            bulkActions=false
-            rowActions=false
-            pagingLabel="pagination.host"
-            headers=(if (eq scope "dedicated") headersAll workerHeaders)
-            as |sortable kind host dt|}}
-        {{#if (eq kind "row")}}
-          <tr class="main-row">
-            <td data-title="{{dt.state}}" class="state">
-              {{badge-state model=host}}
-            </td>
-            <td data-title="{{dt.name}}">
-              {{host.displayName}}
-            </td>
-            {{#if (eq scope "dedicated")}}
-              <td data-title="{{dt.etcd}}">
-                {{!-- disabled=(not-eq host.state "active") --}}
-                {{input type="checkbox" change=(action 'addRole' host 'etcd')}}
-              </td>
-              <td data-title="{{dt.controlplane}}">
-                {{!-- disabled=(not-eq host.state "active") --}}
-                {{input type="checkbox" change=(action 'addRole' host 'controlplane')}}
-              </td>
-            {{/if}}
-            <td data-title="{{dt.worker}}">
-              {{!-- disabled=(not-eq host.state "active") --}}
-              {{input type="checkbox" change=(action 'addRole' host 'worker')}}
-            </td>
-          </tr>
-        {{else if (eq kind "nomatch")}}
-          <tr><td colspan="{{sortable.fullColspan}}" class="text-center text-muted lacsso pt-20 pb-20">{{t 'nodesPage.table.noMatch'}}</td></tr>
-        {{else if (eq kind "norows")}}
-          <tr><td colspan="{{sortable.fullColspan}}" class="text-center text-muted lacsso pt-20 pb-20" style="height:200px;">{{t 'nodesPage.table.noData'}}</td></tr>
-        {{else if (eq kind "suffix")}}
-          <tr class="suffix">
-            <td colspan="2" class="text-right pr-20">Number of nodes required:</td>
-            {{#if (eq scope "dedicated")}}
-              <td class="{{if etcdSafe "text-success" "text-error"}}">
-                <i class="icon {{if etcdSafe "icon-success" "icon-x-circle"}}"></i>
-                {{t 'clustersPage.addPage.rke.minimums.cluster'}}
-              </td>
-              <td class="{{if cpSafe "text-success" "text-error"}}">
-                <i class="icon {{if cpSafe "icon-success" "icon-x-circle"}}"></i>
-                {{t 'clustersPage.addPage.rke.minimums.management'}}
-              </td>
-            {{/if}}
-            <td class="{{if workerSafe "text-success" "text-error"}}">
-              <i class="icon {{if workerSafe "icon-success" "icon-x-circle"}}"></i>
-              {{t 'clustersPage.addPage.rke.minimums.nodes'}}
-            </td>
-          </tr>
-        {{/if}}
-      {{/sortable-table}}
-
-      <div class="mt-20">
-        <button class="btn bg-primary icon-btn p-0" {{action "addHost"}}>
-          <span class="darken"><i class="icon icon-plus text-small"/></span>
-          <span>{{t 'clustersPage.addPage.rke.new.addHost'}}</span>
-        </button>
-      </div>
-    {{/accordion-list-item}}
-
-    {{form-members
-        classNames="mb-10"
-        project=primaryResource
-        memberArray=memberArray
-        editing=false
-        roles=model.roles
-        memberConfig=memberConfig
-    }}
-
-    {{#if (eq scope "dedicated")}}
+    <div class="col span-12">
       {{#accordion-list-item
-           title="Customize"
-           detail="Optional configuration options for the Kubernetes installation"
+           title="Nodes"
+           detail="Select the nodes that will run the containers in this cluster"
            expandAll=al.expandAll
            expand=(action expandFn)
+           expandOnInit=true
       }}
-        <div class="row">
-          <div class="col span-6">
-            <label>
-              {{t 'clustersPage.addPage.rke.new.options.auth.label'}}
-            </label>
-            {{new-select
-                classNames="form-control"
-                content=authChoices
-                localizedLabel=true
-                value=config.auth
-            }}
-          </div>
-          <div class="col span-6">
-            <label>
-              {{t 'clustersPage.addPage.rke.new.options.network.label'}}
-            </label>
-            {{new-select
-                classNames="form-control"
-                content=networkChoices
-                localizedLabel=true
-                value=config.network
-            }}
-          </div>
+        {{#sortable-table
+             classNames="grid sortable-table"
+             body=model.hosts
+             searchText=searchText
+             sortBy=sortBy
+             fullRows=true
+             suffix=true
+             bulkActions=false
+             rowActions=false
+             pagingLabel="pagination.host"
+             headers=(if (eq scope "dedicated") headersAll workerHeaders)
+             as |sortable kind host dt|}}
+          {{#if (eq kind "row")}}
+            <tr class="main-row">
+              <td data-title="{{dt.state}}" class="state">
+                {{badge-state model=host}}
+              </td>
+              <td data-title="{{dt.name}}">
+                {{host.displayName}}
+              </td>
+              {{#if (eq scope "dedicated")}}
+                <td data-title="{{dt.etcd}}">
+                  {{!-- disabled=(not-eq host.state "active") --}}
+                  {{input type="checkbox" change=(action 'addRole' host 'etcd')}}
+                </td>
+                <td data-title="{{dt.controlplane}}">
+                  {{!-- disabled=(not-eq host.state "active") --}}
+                  {{input type="checkbox" change=(action 'addRole' host 'controlplane')}}
+                </td>
+              {{/if}}
+              <td data-title="{{dt.worker}}">
+                {{!-- disabled=(not-eq host.state "active") --}}
+                {{input type="checkbox" change=(action 'addRole' host 'worker')}}
+              </td>
+            </tr>
+          {{else if (eq kind "nomatch")}}
+            <tr><td colspan="{{sortable.fullColspan}}" class="text-center text-muted lacsso pt-20 pb-20">{{t 'nodesPage.table.noMatch'}}</td></tr>
+          {{else if (eq kind "norows")}}
+            <tr><td colspan="{{sortable.fullColspan}}" class="text-center text-muted lacsso pt-20 pb-20" style="height:200px;">{{t 'nodesPage.table.noData'}}</td></tr>
+          {{else if (eq kind "suffix")}}
+            <tr class="suffix">
+              <td colspan="2" class="text-right pr-20">Number of nodes required:</td>
+              {{#if (eq scope "dedicated")}}
+                <td class="{{if etcdSafe "text-success" "text-error"}}">
+                  <i class="icon {{if etcdSafe "icon-success" "icon-x-circle"}}"></i>
+                  {{t 'clustersPage.addPage.rke.minimums.cluster'}}
+                </td>
+                <td class="{{if cpSafe "text-success" "text-error"}}">
+                  <i class="icon {{if cpSafe "icon-success" "icon-x-circle"}}"></i>
+                  {{t 'clustersPage.addPage.rke.minimums.management'}}
+                </td>
+              {{/if}}
+              <td class="{{if workerSafe "text-success" "text-error"}}">
+                <i class="icon {{if workerSafe "icon-success" "icon-x-circle"}}"></i>
+                {{t 'clustersPage.addPage.rke.minimums.nodes'}}
+              </td>
+            </tr>
+          {{/if}}
+        {{/sortable-table}}
+
+        <div class="mt-20">
+          <button class="btn bg-primary icon-btn p-0" {{action "addHost"}}>
+            <span class="darken"><i class="icon icon-plus text-small"/></span>
+            <span>{{t 'clustersPage.addPage.rke.new.addHost'}}</span>
+          </button>
         </div>
       {{/accordion-list-item}}
+    </div>
+
+    <div class="row">
+      <div class="col span-6">
+        {{form-members
+            project=primaryResource
+            memberArray=memberArray
+            editing=false
+            roles=model.roles
+            memberConfig=memberConfig
+        }}
+      </div>
+
+      <div class="col span-6">
+        {{form-pod-sec-policy
+            policyArray=policyArray
+            policies=model.policies
+            expandAll=al.expandAll
+            expand=(action expandFn)
+            readOnly=false
+        }}
+      </div>
+    </div>
+
+    {{#if (eq scope "dedicated")}}
+      <div class="col span-12">
+        {{#accordion-list-item
+             title="Customize"
+             detail="Optional configuration options for the Kubernetes installation"
+             expandAll=al.expandAll
+             expand=(action expandFn)
+        }}
+          <div class="row">
+            <div class="col span-6">
+              <label>
+                {{t 'clustersPage.addPage.rke.new.options.auth.label'}}
+              </label>
+              {{new-select
+                  classNames="form-control"
+                  content=authChoices
+                  localizedLabel=true
+                  value=config.auth.strategy
+              }}
+            </div>
+            <div class="col span-6">
+              <label>
+                {{t 'clustersPage.addPage.rke.new.options.network.label'}}
+              </label>
+              {{new-select
+                  classNames="form-control"
+                  content=networkChoices
+                  localizedLabel=true
+                  value=config.network.plugin
+              }}
+            </div>
+          </div>
+        {{/accordion-list-item}}
+      </div>
     {{/if}}
   {{/accordion-list}}
 

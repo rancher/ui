@@ -105,42 +105,13 @@
     </div>
 
     <div class="col span-6">
-      {{#accordion-list-item
-        title="Pod Security Policies"
-        detail="Apply Policies to Pods created by a user with this Role"
-        expandAll=al.expandAll
-        expand=(action expandFn)
-        expandOnInit=true
-        showExpand=false
-        showStatus=false
+      {{form-pod-sec-policy
+          policyArray=policyArray
+          policies=model.policies
+          expandAll=al.expandAll
+          expand=(action expandFn)
+          readOnly=readOnly
       }}
-        {{#if policyArray.length}}
-          <table class="table fixed no-lines">
-            <thead>
-              <tr>
-                <th>{{t 'rolesPage.new.form.policy.policy'}}</th>
-                <th width="10">&nbsp;</th>
-                <th width="40"></th>
-              </tr>
-            </thead>
-            <tbody>
-              {{#each policyArray as |policy|}}
-                {{policy-row model=policy readOnly=readOnly choices=model.policies remove=(action "removePolicy")}}
-              {{/each}}
-            </tbody>
-          </table>
-        {{else if readOnly}}
-          <span class="text-muted">{{t 'generic.none'}}</span>
-        {{/if}}
-        {{#unless readOnly}}
-          <div>
-            <button class="btn bg-primary icon-btn p-0" {{action "addPolicy"}}>
-              <span class="darken"><i class="icon icon-plus text-small"/></span>
-              <span>{{t 'rolesPage.new.form.policy.addAction'}}</span>
-            </button>
-          </div>
-        {{/unless}}
-      {{/accordion-list-item}}
     </div>
   </div>
 {{/accordion-list}}
@@ -150,4 +121,3 @@
 {{#unless readOnly}}
   {{save-cancel editing=editing save="save" cancel="cancel"}}
 {{/unless}}
-
