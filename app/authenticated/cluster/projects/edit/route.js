@@ -11,7 +11,7 @@ export default Route.extend({
     return hash({
       project:  store.find('project', params.project_id),
       projects: store.findAll('project'),
-      roles:    store.findAll('projectRoleTemplate'),
+      roles:    store.findAll('roleTemplate'),
     });
   },
 });
