@@ -92,7 +92,7 @@ export default Ember.Component.extend(ManageLabels, ContainerChoices,{
       out.push({label: intl.t('formNetwork.networkMode.'+option), value: option});
     });
 
-    if ( !out.findBy('value', mode) ) {
+    if ( !out.findBy('value', mode) && !this.get('projects.current.isWindows')) {
       out.push({label: mode, value: mode});
     }
 
