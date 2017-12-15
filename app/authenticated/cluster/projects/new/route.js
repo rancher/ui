@@ -20,6 +20,7 @@ export default Route.extend({
       project,
       projects: store.findAll('project'),
       roles: store.findAll('roleTemplate'),
+      policies: store.find('podSecurityPolicyTemplate'),
     });
   },
 });

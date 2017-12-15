@@ -18,13 +18,25 @@
   }}
 </section>
 
-{{form-members
-    project=primaryResource
-    memberArray=memberArray
-    editing=editing
-    roles=model.roles
-    memberConfig=memberConfig
-}}
+<div class="row">
+  <div class="col span-6">
+    {{form-members
+        project=primaryResource
+        memberArray=memberArray
+        editing=editing
+        roles=model.roles
+        memberConfig=memberConfig
+    }}
+  </div>
+
+  <div class="col span-6">
+    {{form-pod-sec-policy
+        config=secPolicy
+        policies=model.policies
+        expandAll=false
+    }}
+  </div>
+</div>
 
 {{top-errors errors=errors}}
 {{save-cancel createLabel=(if editing 'projectsPage.saveEdit' 'projectsPage.saveNew') save="save" cancel="cancel"}}
