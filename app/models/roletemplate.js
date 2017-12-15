@@ -3,8 +3,8 @@ import { inject as service } from '@ember/service';
 import Resource from 'ember-api-store/models/resource';
 import PolledResource from 'ui/mixins/cattle-polled-resource';
 
-var ProjectRoleTemplate = Resource.extend(PolledResource, {
-  type: 'projectRoleTemplate',
+var RoleTemplate = Resource.extend(PolledResource, {
+  type: 'roleTemplate',
   router: service(),
 
   actions: {
@@ -35,9 +35,9 @@ var ProjectRoleTemplate = Resource.extend(PolledResource, {
   },
 });
 
-ProjectRoleTemplate.reopenClass({
+RoleTemplate.reopenClass({
   pollTransitioningDelay: 1000,
   pollTransitioningInterval: 5000,
 });
 
-export default ProjectRoleTemplate;
+export default RoleTemplate;
