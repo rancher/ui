@@ -215,30 +215,14 @@
       }}
     {{/if}}
 
-    {{container/form-networking
+    {{container/form-secrets
+        classNames="accordion-wrapper"
+        secrets=launchConfig.secrets
+        errors=secretErrors
         editing=true
-        instance=launchConfig
-        errors=networkingErrors
-        service=service
-        isService=isService
-        isSidekick=isSidekick
-        initialLabels=launchConfig.labels
-        isUpgrade=isUpgrade
-        setLabels=(action 'setLabels' 'networking')
         expandAll=al.expandAll
         expandFn=expandFn
     }}
-
-    {{#if supportsSecrets}}
-      {{container/form-secrets
-          classNames="accordion-wrapper"
-          secrets=launchConfig.secrets
-          errors=secretErrors
-          editing=true
-          expandAll=al.expandAll
-          expandFn=expandFn
-      }}
-    {{/if}}
 
     {{container/form-security
         instance=launchConfig
