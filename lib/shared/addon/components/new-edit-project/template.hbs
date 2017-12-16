@@ -3,7 +3,7 @@
     {{#if editing}}
         <h1>{{t 'projectsPage.editProject'}}</h1>
     {{else}}
-        <h1>{{t 'projectsPage.addProject'}}</h1>      
+        <h1>{{t 'projectsPage.addProject'}}</h1>
     {{/if}}
   </div>
 </section>
@@ -18,51 +18,25 @@
   }}
 </section>
 
-{{#accordion-list showExpandAll=false as | al expandFn | }}
-  {{#accordion-list-item
-        title="Members"
-        detail="Configure who has access to the resources in this project and what permissions they have"
-        status=(t 'pagination.member' pages=1 count=memberArray.length)
-        statusClass=(if memberArray.length 'text-success' 'text-error')
-        expandAll=al.expandAll
-        expand=(action expandFn)
-        expandOnInit=true
-  }}
-    <table class="table fixed no-lines">
-      <thead>
-        <tr>
-          <th width="150">{{t 'projectsPage.new.form.members.kind.label'}}</th>
-          <th>{{t 'projectsPage.new.form.members.name.label'}}</th>
-          <th>{{t 'projectsPage.new.form.members.role.label'}}</th>
-          <th width="10">&nbsp;</th>
-          <th width="40"></th>
-        </tr>
-      </thead>
-      <tbody>
-        {{#each memberArray as |member|}}
-          {{project-member-row member=member roles=model.roles remove="removeMember"}}
-        {{/each}}
-      </tbody>
-    </table>
+<div class="row">
+  <div class="col span-6">
+    {{form-members
+        project=primaryResource
+        memberArray=memberArray
+        editing=editing
+        roles=model.roles
+        memberConfig=memberConfig
+    }}
+  </div>
 
-    <div class="mt-10">
-      <button class="btn bg-link icon-btn p-0" {{action "addMember" "User"}}>
-        <span class="darken"><i class="icon icon-plus text-small"/></span>
-        <span>{{t 'projectsPage.new.form.members.addUser'}}</span>
-      </button>
-
-      <button class="btn bg-link icon-btn p-0" {{action "addMember" "Group"}}>
-        <span class="darken"><i class="icon icon-plus text-small"/></span>
-        <span>{{t 'projectsPage.new.form.members.addGroup'}}</span>
-      </button>
-
-      <button class="btn bg-link icon-btn p-0" {{action "addMember" "ServiceAccount"}}>
-        <span class="darken"><i class="icon icon-plus text-small"/></span>
-        <span>{{t 'projectsPage.new.form.members.addServiceAccount'}}</span>
-      </button>
-    </div>
-  {{/accordion-list-item}}
-{{/accordion-list}}
+  <div class="col span-6">
+    {{form-pod-sec-policy
+        config=secPolicy
+        policies=model.policies
+        expandAll=false
+    }}
+  </div>
+</div>
 
 {{top-errors errors=errors}}
 {{save-cancel createLabel=(if editing 'projectsPage.saveEdit' 'projectsPage.saveNew') save="save" cancel="cancel"}}

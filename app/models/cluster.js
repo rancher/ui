@@ -11,6 +11,7 @@ var Cluster = Resource.extend(PolledResource, {
 
   namespaces: hasMany('id', 'namespace', 'clusterId'),
   projects: hasMany('id', 'project', 'clusterId'),
+  clusterRoleTemplateBindings: hasMany('id', 'clusterRoleTemplateBinding', 'clusterId'),
 
   canAddNode: true, // @TODO-2.0
 
