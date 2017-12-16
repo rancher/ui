@@ -898,6 +898,7 @@ nodesPage:
     cpu: CPU
     memory: RAM
     disk: Disk
+    pod: Pods
     docker: Docker
     instanceState: Container States
     instanceStateWithIcon: States
@@ -1888,9 +1889,9 @@ formCommand:
   workingDir:
     label: Working Dir
     placeholder: e.g. /myapp
-  user:
-    label: User
-    placeholder: e.g. apache
+  uid:
+    label: User ID
+    placeholder: e.g. 501
   console:
     label: Console
     both: 'Interactive &amp; TTY <span class="text-muted">(-i -t)</span>'
@@ -1908,31 +1909,9 @@ formCommand:
         other {times}
       }
     always: Always
-  logDriver:
-    label: Log Driver
-    placeholder: "e.g. syslog; Default: The host daemon's configuration"
-  logConfig:
-    label: Log Options
-    addActionLabel: Add Option
-    keyPlaceholder: e.g. syslog-facility
-    valuePlaceholder: e.g. daemon
-  stopTimeout:
+  terminationGracePeriodSeconds:
     label: Stop Timeout
     helpText: The container will have this long to stop on its own before it is forcefully terminated.
-  stopSignal:
-    label: Stop Signal
-    sigup: SIGHUP (1)
-    sigint: SIGINT (2)
-    sigquit: SIGQUIT (3)
-    sigkill: SIGKILL (9)
-    sigusr1: SIGUSR1 (10)
-    sigusr2: SIGUSR2 (12)
-    sigterm: SIGTERM (15)
-    custom:
-      label: Custom
-      placeholder: e.g. SIGSEGV
-    helpText: The container will be sent this signal when it should be stopped.
-    prompt: "Select a Stop Signal:"
 
 
 formContainerLinks:
@@ -2020,37 +1999,43 @@ formEnvVar:
 
 formHealthCheck:
   title: Health Check
-  detail: Periodically make a request to the container to see if it is responding correctly.  Unhealthy containers are excluded from Load Balancers and Service Discovery.
-  detailDns: A health check allows {appName} to know if the external resource is healty or not.  An unhealthy target will be exlcluded from Load Balancers.
+  detail: Periodically make a request to the container to see if it is alive and responding correctly.
+  readiness: Readiness Check
+  liveness: Liveness Check
+  separateLivenessCheck: Define a separate liveness check
+  combinedLivenessCheck: Use the same check for liveness and readiness
   checkType:
     none: None
-    tcp: Check that a TCP connection opens successfully
-    http: Check that a HTTP request responds with a successful status code (2xx or 3xx)
-    https: Check that a HTTPS request responds with a successful status code
-    command: Check that a command run inside the container exits successfully (exit code 0)
+    tcp: TCP connection opens successfully
+    http: HTTP request returns a successful status (2xx or 3xx)
+    https: HTTPS request returns  a successful status (2xx or 3xx)
+    command: Command run inside the container exits status 0
   command:
     label: Command
     placeholder: e.g. cat /tmp/health
-  http:
-    label: HTTP Request
-    path:
-      placeholder: Request Path e.g. /healthcheck
-    headers:
-      label: Host Header
+  path:
+    label: Request Path
+    placeholder: e.g. /healthcheck
+  httpHeaders:
+    label: Additional Headers
+    addActionLabel: Add Header
+    keyLabel: Header Name
+    keyPlaceholder: e.g. User-Agent
+    valuePlaceholder: e.g. Health-Check
+  host:
+    label: Host Header
+    placeholder: e.g. example.com
   port:
     label: Target Container Port
     placeholder: e.g. 80
   initialDelaySeconds:
-    label: Delay before initial check
-    unit: ms
+    label: Start Checking After
   reinitializingTimeout:
     label: Reinitializing Timeout
-    unit: ms
   periodSeconds:
     label: Check Interval
   timeoutSeconds:
     label: Check Timeout
-    unit: ms
   successThreshold:
     label: Healthy After
     unit: successes

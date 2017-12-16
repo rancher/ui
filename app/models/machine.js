@@ -1,10 +1,9 @@
-import EmberObject, { computed } from '@ember/object';
+import { computed, get } from '@ember/object';
 import { alias } from '@ember/object/computed';
-import Util from 'ui/utils/util';
 import Resource from 'ember-api-store/models/resource';
-import { formatMib, formatSi } from 'shared/utils/util';
+import { formatPercent, download } from 'shared/utils/util';
+import { formatSi, parseSi, exponentNeeded } from 'shared/utils/parse-unit';
 import C from 'ui/utils/constants';
-import { satisfies, compare } from 'shared/utils/parse-version';
 import StateCounts from 'ui/mixins/state-counts';
 import { inject as service } from "@ember/service";
 
@@ -57,7 +56,7 @@ var Machine = Resource.extend(StateCounts,{
       var url = this.linkFor('config');
       if ( url )
       {
-        Util.download(url);
+        download(url);
       }
     }
   },
@@ -99,6 +98,55 @@ var Machine = Resource.extend(StateCounts,{
     return '('+this.get('id')+')';
   }.property('name','hostname','id'),
 
+  cpuUsage: computed('requested.cpu','allocatable.cpu', function() {
+    const used  = parseSi(get(this,'requested.cpu'));
+    const total = parseSi(get(this,'allocatable.cpu'));
+    const minExp = exponentNeeded(total);
+    const usedStr  = formatSi(used,  1000, '', '', 0, minExp).replace(/\s.*$/,'');
+    const totalStr = formatSi(total, 1000, '', '', 0, minExp);
+
+    return `${usedStr}/${totalStr}`
+  }),
+
+  cpuPercent: computed('requested.cpu','allocatable.cpu', function() {
+    const used  = parseSi(get(this,'requested.cpu'));
+    const total = parseSi(get(this,'allocatable.cpu'));
+    return formatPercent(100*used/total);
+  }),
+
+  memoryUsage: computed('requested.memory','allocatable.memory', function() {
+    const used = parseSi(get(this,'requested.memory'));
+    const total = parseSi(get(this,'allocatable.memory'));
+    const minExp = exponentNeeded(total);
+    const usedStr =  formatSi(used,  1024, '', '', 0, minExp).replace(/\s.*/,'');
+    const totalStr = formatSi(total, 1024, 'iB', 'B', 0, minExp);
+
+    return `${usedStr}/${totalStr}`
+  }),
+
+  memoryPercent: computed('requested.memory','allocatable.memory', function() {
+    const used  = parseSi(get(this,'requested.memory'));
+    const total = parseSi(get(this,'allocatable.memory'));
+    return formatPercent(100*used/total);
+  }),
+
+  podUsage: computed('requested.pods','allocatable.pods', function() {
+    const used  = parseSi(get(this,'requested.pods'));
+    const total = parseSi(get(this,'allocatable.pods'));
+    const minExp = exponentNeeded(total);
+    const usedStr  = formatSi(used,  1000, '', '', 0, minExp).replace(/\s.*$/,'');
+    const totalStr = formatSi(total, 1000, '', '', 0, minExp);
+
+    return `${usedStr}/${totalStr}`
+  }),
+
+  podPercent: computed('requested.pods','allocatable.pods', function() {
+    const used  = parseSi(get(this,'requested.pods'));
+    const total = parseSi(get(this,'allocatable.pods'));
+    return formatPercent(100*used/total);
+  }),
+
+/*
   osBlurb: function() {
     var out = this.get('info.osInfo.operatingSystem')||'';
 
@@ -120,8 +168,9 @@ var Machine = Resource.extend(StateCounts,{
   dockerEngineVersion: function() {
     if ( this.get('info.osInfo') )
     {
-      return (this.get('info.osInfo.dockerVersion')||'').replace(/^Docker version\s*/i,'').replace(/,.*/,'');
-    }
+*/
+//      return (this.get('info.osInfo.dockerVersion')||'').replace(/^Docker version\s*/i,'').replace(/,.*/,'');
+/*    }
   }.property('info.osInfo.dockerVersion'),
 
   supportState: function() {
@@ -185,7 +234,7 @@ var Machine = Resource.extend(StateCounts,{
 
   localStorageBlurb: computed('localStorageMb', function() {
     if (this.get('localStorageMb')) {
-      return formatSi(this.get('localStorageMb'), 1024, 'iB', 'B', 2 /*start at 1024^2==MB */);
+      return formatSi(this.get('localStorageMb'), 1024, 'iB', 'B', 2); // start at 1024^2==MB
     }
   }),
 
@@ -227,6 +276,7 @@ var Machine = Resource.extend(StateCounts,{
       return out;
     }
   }.property('info.diskInfo.fileSystems.@each.capacity'),
+*/
 
   // If you use this you must ensure that services and containers are already in the store
   //  or they will not be pulled in correctly.

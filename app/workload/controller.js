@@ -8,7 +8,7 @@ export default Controller.extend({
   scope:              service(),
   allWorkloads:       service(),
 
-  service:            oneWay('model.service'),
+  service:            oneWay('model.workload'),
   rules:              oneWay('service.lbConfig.portRules'),
 
   sortBy:             'priority',
@@ -88,7 +88,7 @@ export default Controller.extend({
       this.set('activeLaunchConfig', this.get('fixedLaunchConfig'));
     },
     selectSidekick(idx) {
-      let service = this.get('model.service');
+      let service = this.get('model.workload');
       let configs = service.get('secondaryLaunchConfigs');
 
       this.set('activeLaunchConfig', configs[idx]);

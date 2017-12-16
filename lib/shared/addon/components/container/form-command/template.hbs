@@ -8,15 +8,15 @@
 }}
   <div class="row">
     <div class="col span-6 box">
-      <label class="acc-label">{{t 'formCommand.command.label'}}</label>
-      {{#input-or-display editable=editing value=instance.command classesForDisplay="clip"}}
-        {{input-command class="form-control" type="text" changed=(action (mut instance.command)) initialValue=instance.command placeholder=(t 'formCommand.command.placeholder')}}
-      {{/input-or-display}}
-    </div>
-    <div class="col span-6 box">
       <label class="acc-label">{{t 'formCommand.entryPoint.label'}}</label>
       {{#input-or-display editable=editing value=instance.entryPoint}}
         {{input-command class="form-control" type="text" changed=(action (mut instance.entryPoint)) initialValue=instance.entryPoint placeholder=(t 'formCommand.entryPoint.placeholder')}}
+      {{/input-or-display}}
+    </div>
+    <div class="col span-6 box">
+      <label class="acc-label">{{t 'formCommand.command.label'}}</label>
+      {{#input-or-display editable=editing value=instance.command classesForDisplay="clip"}}
+        {{input-command class="form-control" type="text" changed=(action (mut instance.command)) initialValue=instance.command placeholder=(t 'formCommand.command.placeholder')}}
       {{/input-or-display}}
     </div>
   </div>
@@ -29,11 +29,11 @@
       {{/input-or-display}}
     </div>
     <div class="col span-6 box">
-      <label class="acc-label">{{t 'formCommand.user.label'}}</label>
+      <label class="acc-label">{{t 'formCommand.uid.label'}}</label>
       {{#if editing}}
-        {{input type="text" value=instance.user classNames="form-control" placeholder=(t 'formCommand.user.placeholder')}}
-      {{else if instance.user}}
-        <div class='text-muted'>{{instance.user}}</div>
+        {{input type="text" value=instance.uid classNames="form-control" placeholder=(t 'formCommand.uid.placeholder')}}
+      {{else if instance.uid}}
+        <div>{{instance.uid}}</div>
       {{else}}
         <div class="text-muted">{{t 'generic.na'}}</div>
       {{/if}}
@@ -113,57 +113,14 @@
 
   <div class="row">
     <div class="col span-6 box">
-      <label class="acc-label">{{t 'formCommand.logDriver.label'}}</label>
-      {{#input-or-display editable=editing value=instance.logConfig.driver}}
-        {{input-suggest
-          value=instance.logConfig.driver
-          choices=logDriverChoices
-          placeholder=(t 'formCommand.logDriver.placeholder')
-        }}
-      {{/input-or-display}}
-    </div>
-    <div class="col span-6 box">
-      <label class="acc-label">{{t 'formCommand.logConfig.label'}}</label>
-      {{form-key-value
-        initialMap=instance.logConfig.config
-        changed=(action "setLogOptions")
-        addActionLabel="formCommand.logConfig.addActionLabel"
-        keyPlaceholder="formCommand.logConfig.keyPlaceholder"
-        valuePlaceholder="formCommand.logConfig.valuePlaceholder"
-        editing=editing
-      }}
-    </div>
-  </div>
-  <div class="row">
-    <div class="col span-6 box">
-      <label class="acc-label">{{t 'formCommand.stopSignal.label'}}</label>
-      {{#if customStopSet}}
-        {{#input-or-display editable=editing value=instance.stopSignal}}
-          {{input type="text" value=instance.stopSignal classNames="form-control mt-20" placeholder=(t 'formCommand.stopSignal.custom.placeholder')}}
-        {{/input-or-display}}
-      {{else}}
-        {{#input-or-display editable=editing value=instance.stopSignal}}
-          {{new-select
-              prompt=(t 'formCommand.stopSignal.prompt')
-              value=stopOrCustom
-              content=stopSignals
-              optionValuePath="value"
-              optionLabelPath="label"
-              localizedLabel=true
-          }}
-        {{/input-or-display}}
-      {{/if}}
-      <p class="help-block">{{t 'formCommand.stopSignal.helpText'}}</p>
-    </div>
-    <div class="col span-6 box">
-      <label class="acc-label">{{t 'formCommand.stopTimeout.label'}}</label>
-      {{#input-or-display editable=editing value=instance.stopTimeout}}
+      <label class="acc-label">{{t 'formCommand.terminationGracePeriodSeconds.label'}}</label>
+      {{#input-or-display editable=editing value=instance.terminationGracePeriodSeconds}}
         <div class="input-group">
-          {{input-integer min=0 value=instance.stopTimeout}}
+          {{input-integer min=0 value=instance.terminationGracePeriodSeconds}}
           <span class="input-group-addon bg-default">{{t 'generic.seconds'}}</span>
         </div>
       {{/input-or-display}}
-      <p class="help-block">{{t 'formCommand.stopTimeout.helpText'}}</p>
+      <p class="help-block">{{t 'formCommand.terminationGracePeriodSeconds.helpText'}}</p>
     </div>
   </div>
 {{/accordion-list-item}}

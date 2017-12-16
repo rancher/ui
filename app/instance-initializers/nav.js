@@ -91,20 +91,20 @@ const rootNav = [
     route: 'authenticated.cluster.nodes',
     ctx: [getClusterId],
   },
-  {
-    scope: 'cluster',
-    id: 'cluster-networking',
-    localizedLabel: 'nav.cluster.networking',
-    route: 'authenticated.cluster.networking',
-    ctx: [getClusterId],
-  },
-  {
-    scope: 'cluster',
-    id: 'cluster-storage',
-    localizedLabel: 'nav.cluster.storage',
-    route: 'authenticated.cluster.storage',
-    ctx: [getClusterId],
-  },
+//  {
+//    scope: 'cluster',
+//    id: 'cluster-networking',
+//    localizedLabel: 'nav.cluster.networking',
+//    route: 'authenticated.cluster.networking',
+//    ctx: [getClusterId],
+//  },
+//  {
+//    scope: 'cluster',
+//    id: 'cluster-storage',
+//    localizedLabel: 'nav.cluster.storage',
+//    route: 'authenticated.cluster.storage',
+//    ctx: [getClusterId],
+//  },
 
   // Global
   {

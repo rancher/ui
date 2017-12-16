@@ -3,7 +3,8 @@ import { computed, get } from '@ember/object';
 import { alias } from '@ember/object/computed';
 import Resource from 'ember-api-store/models/resource';
 import C from 'ui/utils/constants';
-import Util from 'ui/utils/util';
+import { sortableNumericSuffix } from 'shared/utils/util';
+import { formatSi } from 'shared/utils/parse-unit';
 import { reference, hasMany } from 'ember-api-store/utils/denormalize';
 import StateCounts from 'ui/mixins/state-counts';
 import EndpointPorts from 'ui/mixins/endpoint-ports';
@@ -206,7 +207,7 @@ var Workload = Resource.extend(DisplayImage, StateCounts, EndpointPorts, {
   ),
 
   sortName: function() {
-    return Util.sortableNumericSuffix(this.get('displayName'));
+    return sortableNumericSuffix(this.get('displayName'));
   }.property('displayName'),
 
   linkedServices: function() {
@@ -374,7 +375,7 @@ var Workload = Resource.extend(DisplayImage, StateCounts, EndpointPorts, {
 
   memoryReservationBlurb: computed('launchConfig.memoryReservation', function() {
     if ( this.get('launchConfig.memoryReservation') ) {
-      return Util.formatSi(this.get('launchConfig.memoryReservation'), 1024, 'iB', 'B');
+      return formatSi(this.get('launchConfig.memoryReservation'), 1024, 'iB', 'B');
     }
   }),
 
