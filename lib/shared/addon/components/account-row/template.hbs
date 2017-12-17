@@ -1,25 +1,19 @@
 <td valign="middle" class="row-check" style="padding-top: 2px;">
   {{check-box nodeId=model.id}}
 </td>
-<td data-title="{{t 'generic.state'}}:" >
-  {{badge-state model=model}}
+<td data-title="{{t 'generic.name'}}:" >
+  {{model.name}}
 </td>
-<td data-title="{{t 'generic.id'}}:" >
-  {{model.id}}
-</td>
-<td data-title="{{t 'accountsPage.index.table.kind'}}:" >
-  {{t (concat-str 'model.account.kind.' model.kind character='')}}
+<td data-title="{{t 'generic.type'}}:" >
+  {{model.type}}
 </td>
 {{#if isLocal}}
   <td data-title="{{t 'accountsPage.index.table.username'}}:" >
-    {{#if model.username}}
-      {{model.username}}
+    {{#if model.userName}}
+      {{model.userName}}
     {{else}}
       <span class="text-muted">{{t 'accountsPage.index.table.noName'}}</span>
     {{/if}}
-  </td>
-  <td data-title="{{t 'generic.name'}}:" class="force-wrap">
-    {{model.displayName}}
   </td>
 {{else}}
   <td data-title="{{t 'accountsPage.index.table.identity'}}" >
