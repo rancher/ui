@@ -3,6 +3,7 @@ import { cancel, next, scheduleOnce } from '@ember/runloop';
 import { inject as service } from '@ember/service';
 import Route from '@ember/routing/route';
 import C from 'ui/utils/constants';
+import { get } from '@ember/object';
 
 export default Route.extend({
   access         : service(),
@@ -71,6 +72,10 @@ export default Route.extend({
       {
         this.send('logout',transition,true);
         return;
+      }
+
+      if (get(err, "status") === "401") {
+        return this.transitionTo('login');
       }
 
       this.controllerFor('application').set('error',err);
