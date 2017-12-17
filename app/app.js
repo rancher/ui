@@ -13,6 +13,7 @@ const App = Application.extend({
           'access',
           'user-language',
           'intl',
+          'modal',
           'settings',
           'session'
         ],
