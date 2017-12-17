@@ -53,7 +53,7 @@
           <div class="col span-4 {{if isStep1 'inline-form'}}">
               <label class="acc-label">{{t 'machine.driverAmazon.secretKey.label'}}</label>
               {{#if isStep1}}
-                {{input type="password" name="password" classNames="form-control" placeholder=(t 'machine.driverAmazon.secretKey.placeholder') value=model.secretValues.amazonec2Config.secretKey}}
+                {{input type="password" name="password" classNames="form-control" placeholder=(t 'machine.driverAmazon.secretKey.placeholder') value=amazonec2Config.secretKey}}
               {{else}}
                 <div class="text-muted text-italic">{{t 'machine.driverAmazon.secretKey.provided'}}</div>
               {{/if}}
@@ -310,8 +310,8 @@
       </div>
 
       {{#advanced-section}}
-        {{limit-parameters model=model.publicValues}}
-        {{form-engine-opts machine=model.publicValues showEngineUrl=showEngineUrl}}
+        {{limit-parameters model=model}}
+        {{form-engine-opts machine=model showEngineUrl=showEngineUrl}}
       {{/advanced-section}}
     {{/if}}
     </div>

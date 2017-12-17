@@ -39,8 +39,8 @@
           </div>
           <div class="col span-6">
             <label class="acc-label">{{t 'machine.driverPacket.apiKey.label'}}{{field-required}}</label>
-            {{#input-or-display editable=(not dataFetched) value=model.secretValues.packetConfig.apiKey obfuscate=true}}
-              {{input type="password" name="password" value=model.secretValues.packetConfig.apiKey classNames="form-control" placeholder=(t 'machine.driverPacket.apiKey.placeholder')}}
+            {{#input-or-display editable=(not dataFetched) value=packetConfig.apiKey obfuscate=true}}
+              {{input type="password" name="password" value=packetConfig.apiKey classNames="form-control" placeholder=(t 'machine.driverPacket.apiKey.placeholder')}}
             {{/input-or-display}}
             <p class="text-info">{{t 'machine.driverPacket.apiKeyHelp' htmlSafe=true}}</p>
           </div>
@@ -134,8 +134,8 @@
         </div>
 
         {{#advanced-section}}
-          {{limit-parameters model=model.publicValues}}
-          {{form-engine-opts machine=model.publicValues showEngineUrl=showEngineUrl}}
+          {{limit-parameters model=model}}
+          {{form-engine-opts machine=model showEngineUrl=showEngineUrl}}
         {{/advanced-section}}
       {{/if}}
     </div>

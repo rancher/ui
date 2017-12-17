@@ -84,6 +84,8 @@ var Machine = Resource.extend(StateCounts,{
 
   displayIp: alias('agentIpAddress'),
 
+  foo: 'bar',
+
   displayName: function() {
     let name = this.get('name');
     if ( name ) {
