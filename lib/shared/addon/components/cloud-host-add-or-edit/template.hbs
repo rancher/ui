@@ -15,7 +15,7 @@
         <div class="col span-4">
           <div class="nav-boxes driver">
             {{#if driver.hasUi}}
-              <div class="nav-box-item driver machine-driver active {{parse-host-icon hostTemplate.driver}}"></div>
+              <div class="nav-box-item driver machine-driver active {{parse-host-icon machineTemplate.driver}}"></div>
             {{else}}
               <div class="nav-box-item driver machine-driver active other"></div>
             {{/if}}
@@ -24,13 +24,13 @@
         <div class="col span-8 box">
           <div>
             <label class="acc-label pt-10" for="">{{t 'hostsPage.cloudHostsPage.addPage.template'}}</label>
-            {{hostTemplate.name}}
+            {{machineTemplate.name}}
           </div>
           <hr/>
           {{#if driver.hasUi}}
-            {{component (concat 'host/host-templates/' hostTemplate.driver) hostTemplate=model.template}}
+            {{component (concat 'host/host-templates/' machineTemplate.driver) machineTemplate=model.template}}
           {{else}}
-            {{component 'host-template-other' hostTemplate=model.template}}
+            {{component 'host-template-other' machineTemplate=model.template}}
           {{/if}}
 
         </div>

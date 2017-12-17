@@ -13,12 +13,12 @@ export default Route.extend({
     let globalStore = get(this, 'globalStore');
     return hash({
       hosts: store.findAll('node'), // this should eventually be all host with out cluster id
-      hostTemplates: globalStore.findAll('machinetemplate'),
+      machineTemplates: globalStore.findAll('machinetemplate'),
       machineDrivers: globalStore.findAll('machinedriver'),
     }).then((hash) => {
       return EmberObject.create({
         hosts: hash.hosts,
-        hostTemplates: hash.hostTemplates,
+        machineTemplates: hash.machineTemplates,
         machineDrivers: hash.machineDrivers,
       });
     });

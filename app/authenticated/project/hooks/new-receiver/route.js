@@ -8,8 +8,8 @@ export default Route.extend({
   store: service(),
 
   beforeModel() {
-    return this.get('store').findAll('hostTemplate').then((templates) => {
-      this.controllerFor('authenticated.project.hooks.new-receiver').set('hostTemplates', templates);
+    return this.get('store').findAll('machineTemplate').then((templates) => {
+      this.controllerFor('authenticated.project.hooks.new-receiver').set('machineTemplates', templates);
     });
   },
 
