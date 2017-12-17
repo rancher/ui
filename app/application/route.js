@@ -68,14 +68,10 @@ export default Route.extend({
       /*if we dont abort the transition we'll call the model calls again and fail transition correctly*/
       transition.abort();
 
-      if ( err && err.status && [401,403].indexOf(err.status) >= 0 )
-      {
+      const status = parseInt(err.status,10);
+      if ( err && [401,403].includes(status) ) {
         this.send('logout',transition,true);
         return;
-      }
-
-      if (get(err, "status") === "401") {
-        return this.transitionTo('login');
       }
 
       this.controllerFor('application').set('error',err);
