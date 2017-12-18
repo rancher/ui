@@ -15,7 +15,9 @@ const App = Application.extend({
           'intl',
           'modal',
           'settings',
-          'session'
+          'session',
+          'globalStore',
+          'router',
         ],
         externalRoutes: {
           index: 'index',
