@@ -22,6 +22,7 @@ export default Route.extend({
         description: '',
       });
 
+      // TODO 2.0 Where are identities coming from?
       if ( this.get('access.enabled') )
       {
         var identity = this.get('session.'+C.SESSION.IDENTITY);

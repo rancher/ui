@@ -23,30 +23,28 @@ export default Route.extend(Preload, Subscribe, {
   testTimer:    null,
   userTheme:    service('user-theme'),
 
-  beforeModel(transition) {
-    this._super.apply(this,arguments);
+  // beforeModel(transition) {
+  //   this._super.apply(this,arguments);
 
-    if ( this.get('access.enabled') ) {
-      if ( this.get('access.isLoggedIn') ) {
-        this.testAuthToken();
-      } else {
-        transition.send('logout', transition, false);
-        return reject('Not logged in');
-      }
-    }
-  },
+  //   if ( this.get('access.isLoggedIn') ) {
+  //     this.testAuthToken();
+  //   } else {
+  //     transition.send('logout', transition, false);
+  //     return reject('Not logged in');
+  //   }
+  // },
 
-  testAuthToken() {
-    let timer = later(() => {
-      this.get('access').testAuth().then((/* res */) => {
-        this.testAuthToken();
-      }, (/* err */) => {
-        this.send('logout',null,true);
-      });
-    }, CHECK_AUTH_TIMER);
+  // testAuthToken() {
+  //   let timer = later(() => {
+  //     this.get('access').testAuth().then((/* res */) => {
+  //       this.testAuthToken();
+  //     }, (/* err */) => {
+  //       this.send('logout',null,true);
+  //     });
+  //   }, CHECK_AUTH_TIMER);
 
-    this.set('testTimer', timer);
-  },
+  //   this.set('testTimer', timer);
+  // },
 
   model(params, transition) {
     // Save whether the user is admin
