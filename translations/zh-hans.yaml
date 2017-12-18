@@ -2419,9 +2419,10 @@ machine:
       step2Copy: docker network create -d transparent transparent
       step3: '复制粘贴下面的命令到Powershell命令行中运行以启动 {appName} agent'
     windowsSteps:
-      step1: 运行一台Windows 2016主机并安装最新版本的 <a href="https://docs.docker.com/engine/installation/windows/docker-ee/" target="_blank" rel="noreferrer nofollow">Docker</a> on it.
+      step1: 运行一台Windows 2016主机并安装<a href="{docsBase}/hosts/#supported-docker-versions" target="_blank">支持的版本</a>的<a href="ttps://docs.docker.com/engine/installation/windows/docker-ee/" target="_blank" rel="noreferrer nofollow">Docker</a>。
       step2: "检查并安装Windoes功能 RemoteAccess, Routing:"
       step2Copy: Get-WindowsFeature -Name "RemoteAccess","Routing" | Install-WindowsFeature
+      step2Note: "注意：安装功能成功后，Windows主机需要被重启。"
       step3: 请设置Windows主机的子网. 在Windows环境中，只支持 per-host-subnet网络模型
       step4: 请设置子网的路由IP，此IP用于转发不同主机上容器之间的网络流量
       routerIp:

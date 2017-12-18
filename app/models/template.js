@@ -65,6 +65,9 @@ export default Resource.extend({
       orch = 'kubernetes';
     }
     let list = ((this.get('labels')||{})[C.LABEL.ORCHESTRATION_SUPPORTED]||'').split(/\s*,\s*/).filter((x) => x.length > 0);
+    if ( orch === 'windows' ) {
+      return list.includes(orch);
+    }
     return list.length === 0 || list.includes(orch);
   },
 

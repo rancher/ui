@@ -43,6 +43,11 @@ export default Ember.Component.extend(NewOrEdit, {
         } else if (obj.required) {
           toDisable.push(obj);
         }
+
+        if (id === 'library:infra*windows' && tpl.get('categories').contains('Networking') && obj.get('enabled')) {
+          obj.set('enabled', false);
+        }
+
         if ( obj.get('enabled') && tpl && !tpl.supportsOrchestration(id) && !obj.required) {
           let orch = map[id].get('tpl.name');
           this.get('growl').error(
@@ -257,7 +262,8 @@ export default Ember.Component.extend(NewOrEdit, {
     Object.keys(map).forEach((key) => {
       let obj = map[key];
       let tpl = obj.get('tpl');
-      if ( obj.enabled && !tpl.supportsOrchestration(orch) ) {
+
+      if ( obj.enabled && !tpl.supportsOrchestration(orch) && !tpl.get('categories').contains('Orchestration') ) {
         this.get('growl').error(
           intl.t('editProjectTemplate.error.conflict'),
           intl.t('editProjectTemplate.error.enabling', {

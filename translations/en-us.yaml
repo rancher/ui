@@ -2503,11 +2503,12 @@ machine:
       step2Copy: docker network create -d transparent transparent
       step3: Copy, paste, and run the command below in PowerShell to start the {appName} agent.
     windowsSteps:
-      step1: Start up a Windows Server 2016 machine somewhere and install the latest version of <a href="https://docs.docker.com/engine/installation/windows/docker-ee/" target="_blank" rel="noreferrer nofollow">Docker</a> on it.
+      step1: Start up a Windows Server 2016 machine somewhere and install a <a href="{docsBase}/hosts/#supported-docker-versions" target="_blank">supported version</a> of <a href="https://docs.docker.com/engine/installation/windows/docker-ee/" target="_blank" rel="noreferrer nofollow">Docker</a> on it.
       step2: "Check and install RemoteAccess and Routing in Windows features:"
       step2Copy: Get-WindowsFeature -Name "RemoteAccess","Routing" | Install-WindowsFeature
-      step3: Please set the subnet for Windows host. In Windows environment, only the per-host-subnet network model is supported.
-      step4: Please set the router IP for host's subnet. This IP is used to forward network traffic between containers on different hosts。
+      step2Note: "Note: Windows machine will need to be rebooted if the applications were installed."
+      step3: Specify a unique subnet for the Windows host. In order to support an overlay network in Windows, each host in the environment must have a unique subnet.
+      step4: Specify the router IP for the host's subnet. This IP is used to forward network traffic between the different hosts.
       routerIp:
           placeholder: e.g. 1.2.3.4
       subnet:
