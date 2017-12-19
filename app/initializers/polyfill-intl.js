@@ -15,5 +15,6 @@ export function initialize(application ) {
 
 export default {
   name: 'polyfill-intl',
-  initialize: initialize
+  initialize: initialize,
+  before: 'app',
 };

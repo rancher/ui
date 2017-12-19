@@ -3,7 +3,7 @@ import { cancel, next, scheduleOnce } from '@ember/runloop';
 import { inject as service } from '@ember/service';
 import Route from '@ember/routing/route';
 import C from 'ui/utils/constants';
-import { get } from '@ember/object';
+// import { get } from '@ember/object';
 
 export default Route.extend({
   access         : service(),

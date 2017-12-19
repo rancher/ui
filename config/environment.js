@@ -115,6 +115,7 @@ module.exports = function(environment) {
       kubernetesBase: '/k8s',
       kubectlEndpoint: '/r/projects/%PROJECTID%/kubectld:8091/v1-kubectl',
       kubernetesDashboard: '/k8s/clusters/%CLUSTERID%/api/v1/namespaces/kube-system/services/kubernetes-dashboard/proxy/',
+      needIntlPolyfill: false,
 
       locales: readLocales(environment),
       stripe: {

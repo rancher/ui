@@ -3,6 +3,7 @@ import Route from '@ember/routing/route';
 
 export default Route.extend({
   storeReset: service(),
+  settings: service(),
 
   actions: {
     activate: function() {

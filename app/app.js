@@ -10,6 +10,7 @@ const App = Application.extend({
     login: {
       dependencies: {
         services: [
+          'app',
           'access',
           'user-language',
           'intl',
@@ -28,6 +29,7 @@ const App = Application.extend({
     globalAdmin: {
       dependencies: {
         services: [
+          'app',
           'access',
           'clusterStore',
           'catalog',
