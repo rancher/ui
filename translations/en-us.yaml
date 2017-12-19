@@ -42,6 +42,7 @@ generic:
   image: Image
   internal: Internal
   ipAddress: IP Address
+  key: Key
   limit: Limit
   limits: Limits
   loading: "Loading..."
@@ -78,6 +79,7 @@ generic:
   unknown: Unknown
   upload: Upload
   uuid: UUID
+  value: Value
   yes: "Yes"
 
 realmNames:
@@ -2415,12 +2417,12 @@ formUserLabels:
     placeholder: e.g. bar
   protip: "ProTip: Paste one or more lines of key=value pairs into any key field for easy bulk entry."
 
-formMetadata:
-  title: Metadata
-  detail: Configure the metadata for the container.
+formAnnotations:
+  title: Annotations
+  detail: Configure annotations (key/value metadata) for the container.
   errors:
-    invalidJSON: Metadata JSON format is invalid.
-    topLevelValueInvalid: Metadata JSON top-level value should be an object.
+    invalidJSON: Annotation JSON format is invalid.
+    topLevelValueInvalid: Annotation JSON top-level value must be an object.
 
 formUpgrade:
   title: Upgrade Policy
@@ -4106,15 +4108,23 @@ validation:
       startDot: '"{key}" cannot start with a dot'
       empty: '"{key}" must be at least one character'
       tooLong: '"{key}" cannot be longer than {max} characters'
-      startHyphen: '"{key}" cannot have a section starting with a hyphen'
-      endHyphen: '"{key}" cannot have a section ending with a hyphen'
+      startHyphen: '"{key}" must start with a letter or number'
+      endHyphen: '"{key}" must end with a letter or number'
       emptyLabel: '"{key}" cannot have two consecutive dots'
-      labelTooLong: '"{key}" cannot have a section longer than {max} characters'
+      tooLongLabel: '"{key}" cannot have a section longer than {max} characters'
     label:
-      startHyphen: '"{key}" cannot start with a hyphen'
-      endHyphen: '"{key}" cannot end with a hyphen'
+      startHyphen: '"{key}" must start with a letter or number'
+      endHyphen: '"{key}" must end with a letter or number'
       emptyLabel: '"{key}" cannot be empty'
-      labelTooLong: '"{key}" cannot be more than {max} characters'
+      tooLongLabel: '"{key}" cannot be more than {max} characters'
+  k8s:
+    identifier:
+      startLetter: '"{key}" must start with a letter or number'
+      endLetter: '"{key}" must end with a letter or number'
+      emptyPrefix: '"{key}" cannot have an empty prefix'
+      tooLongPrefix: '"{key}" cannot have a prefix longer than {max} characters'
+      emptyLabel: '"{key}" cannot have an empty key'
+      tooLongKey: '"{key}" cannot have a key longer than {max} characters'
 
 ##############################
 # Model Properties

@@ -1,6 +1,7 @@
 import { later, cancel } from '@ember/runloop';
 import { computed, get } from '@ember/object';
-import { alias } from '@ember/object/computed';
+import { alias, gt } from '@ember/object/computed';
+
 import Resource from 'ember-api-store/models/resource';
 import C from 'ui/utils/constants';
 import { sortableNumericSuffix } from 'shared/utils/util';
@@ -365,9 +366,7 @@ var Workload = Resource.extend(DisplayImage, StateCounts, EndpointPorts, {
     return this.get('intl').t('servicePage.type.'+ type);
   }.property('lcType','isSelector','intl.locale'),
 
-  hasSidekicks: function() {
-    return Object.keys(get(this,'containers')).length > 1;
-  }.property('containers'),
+  hasSidekicks: gt('containers.length', 1),
 
   activeIcon: function() {
     return activeIcon(this);
