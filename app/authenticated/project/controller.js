@@ -5,7 +5,7 @@ import C from 'ui/utils/constants';
 import { tagsToArray } from 'ui/models/namespace';
 
 //const NONE = 'none';
-//const SERVICE = 'service';
+//const WORKLOAD = 'workload';
 const NAMESPACE = 'namespace';
 
 export default Controller.extend({
