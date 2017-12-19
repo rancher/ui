@@ -48,7 +48,11 @@ export default Ember.Component.extend(NewOrEdit, {
           obj.set('enabled', false);
         }
 
-        if ( obj.get('enabled') && tpl && !tpl.supportsOrchestration(id) && !obj.required) {
+        if ( tpl.get('id') === 'library:infra*ipsec' && this.get('activeOrchestration') === 'library:infra*windows') {
+          obj.set('enabled', true);
+        }
+
+        if ( obj.get('enabled') && tpl && !tpl.supportsOrchestration(id) && !obj.required && !tpl.get('categories').contains('Orchestration')) {
           let orch = map[id].get('tpl.name');
           this.get('growl').error(
             intl.t('editProjectTemplate.error.conflict'),
