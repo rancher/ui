@@ -1,5 +1,6 @@
 import EmberObject from '@ember/object';
 import { inject as service } from '@ember/service';
+import { get } from '@ember/object';
 import Route from '@ember/routing/route';
 import Ember from 'ember';
 import C from 'ui/utils/constants';
@@ -55,7 +56,7 @@ export default Route.extend({
     }
 
     const clone = _workload.clone();
-    const containerNames = Object.keys(service.containers);
+    const containerNames = service.containers.map(x => get(x, name));
     let containerName = params.containerName;
 
     // Add a sidekick
@@ -90,10 +91,10 @@ export default Route.extend({
     let container;
     if ( containerName === "" ) {
       // The primary/only container
-      container = service.containers[containerNames[0]];
+      container = service.containers[0];
     } else {
       // Existing container
-      container = service.containers[containerName];
+      container = service.containers.findBy('name', containerName);
     }
 
     if ( params.upgrade ) {
@@ -145,7 +146,7 @@ export default Route.extend({
       namespaceId: namespaceId,
       scale: 1,
       restart: 'Always',
-      containers: {},
+      containers: [],
     });
   },
 

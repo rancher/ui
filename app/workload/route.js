@@ -14,11 +14,11 @@ export default Route.extend({
   setupController(controller, model) {
     this._super(...arguments);
 
-    let containers = model.get('workload.containers');
-    let keys = Object.keys(containers);
+    let lc = model.get('workload.containers.firstObject');
+
     controller.setProperties({
-      fixedLaunchConfig:  containers[keys[0]],
-      activeLaunchConfig: containers[keys[0]],
+      fixedLaunchConfig:  lc,
+      activeLaunchConfig: lc,
     });
   }
 });
