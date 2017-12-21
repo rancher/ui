@@ -35,6 +35,8 @@
         {{#if role.active}}
           <span>{{role.name}}</span>
         {{/if}}
+      {{else}}
+        {{t 'accountsPage.detail.table.global.noRoles'}}
       {{/each}}
     </div>
   </div>
@@ -86,14 +88,14 @@
           </tr>
 
         {{else if (eq kind "norows")}}
-          <tr><td colspan="{{sortable.fullColspan}}" class="text-center text-muted pt-20 pb-20">{{t 'nodesPage.table.noData'}}</td></tr>
+          <tr><td colspan="{{sortable.fullColspan}}" class="text-center text-muted pt-20 pb-20">{{t 'accountsPage.detail.table.project.noRoles'}}</td></tr>
         {{/if}}
       {{/sortable-table}}
     {{/accordion-list-item}}
 
     {{#accordion-list-item
-         title=(t 'accountsPage.detail.table.project.title')
-         detail=(t 'accountsPage.detail.table.project.description')
+         title=(t 'accountsPage.detail.table.cluster.title')
+         detail=(t 'accountsPage.detail.table.cluster.description')
          expandOnInit=true
          expandAll=false
          expand=(action expandFn)
@@ -121,7 +123,7 @@
           </tr>
 
         {{else if (eq kind "norows")}}
-          <tr><td colspan="{{sortable.fullColspan}}" class="text-center text-muted pt-20 pb-20">{{t 'nodesPage.table.noData'}}</td></tr>
+          <tr><td colspan="{{sortable.fullColspan}}" class="text-center text-muted pt-20 pb-20">{{t 'accountsPage.detail.table.cluster.noRoles'}}</td></tr>
         {{/if}}
       {{/sortable-table}}
     {{/accordion-list-item}}
