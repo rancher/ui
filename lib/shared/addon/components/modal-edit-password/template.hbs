@@ -1,28 +1,7 @@
-<section class="horizontal-form container-fluid">
-  <div class="modal-header">
-    <h2>Edit Password</h2>
-    <p class="help-text">This is your first time loging in to Rancher. Please change your default password below.</p>
-  </div>
-  {{!-- <hr/> --}}
-
-  <div class="modal-content">
-    <div class="row">
-      <div class="col span-6">
-        <label class="acc-label">Display Name</label>
-        {{input type="text" value=name classNames="form-control"}}
-      </div>
-      <div class="col span-6">
-        <label class="acc-label">New Password</label>
-        {{input type="password" value=password classNames="form-control"}}
-      </div>
-      <div class="col span-6">
-        <label class="acc-label">Confirm Password</label>
-        {{input type="password" value=confirm classNames="form-control"}}
-      </div>
-    </div>
-  </div>
-
-  <div class="footer-actions">
-    {{save-cancel saveDisabled=canSave save="save" cancel="cancel" createLabel=(t 'generic.save')}}
-  </div>
-</section>
+<div class="header">
+  <h2>{{t 'modalEditPassword.title'}}</h2>
+  <p class="help-text">{{t 'modalEditPassword.help'}}</p>
+</div>
+{{input-edit-password
+    complete="complete"
+}}

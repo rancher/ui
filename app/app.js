@@ -10,12 +10,15 @@ const App = Application.extend({
     login: {
       dependencies: {
         services: [
+          'app',
           'access',
           'user-language',
           'intl',
           'modal',
           'settings',
-          'session'
+          'session',
+          'globalStore',
+          'router',
         ],
         externalRoutes: {
           index: 'index',
@@ -26,10 +29,12 @@ const App = Application.extend({
     globalAdmin: {
       dependencies: {
         services: [
+          'app',
           'access',
           'clusterStore',
           'catalog',
           'endpoint',
+          'external-utils',
           'github',
           'globalStore',
           'intl',
@@ -48,6 +53,7 @@ const App = Application.extend({
           failWhale:               'failWhale',
           authenticated:           'authenticated',
           'authenticated.cluster': 'authenticated.cluster',
+          'authenticated.cluster.projects': 'authenticated.cluster.projects',
           'authenticated.project': 'authenticated.project',
           'authenticated.prefs':   'authenticated.prefs',
           'logout':                'logout'
