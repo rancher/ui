@@ -25,6 +25,7 @@ generic:
   details: Details
   disable: Disable
   disabled: Disabled
+  displayName: Display Name
   dockerId: Docker ID
   domainName: Domain Name
   done: Done
@@ -96,7 +97,7 @@ realmNames:
 ##############################
 accountsPage:
   detail:
-    header: Account Details
+    header: User Details
     table:
       headers:
         role: Role
@@ -105,13 +106,16 @@ accountsPage:
         active: Active
       global:
         title: Global Roles
-        description: Global Security roles TBD
+        description: Global Security roles
+        noRoles: User has no global roles
       project:
         title: Project Roles
-        description: Project Security roles TBD
+        description: Project Security roles
+        noRoles: User has no project roles
       cluster:
         title: Cluster Roles
-        description: Cluster Security roles TBD
+        description: Cluster Security roles
+        noRoles: User has no cluster roles
       roles:
         title: Roles
         description: Security roles TBD
@@ -126,7 +130,7 @@ accountsPage:
       noData: There are no users yet
       noName: None
   new:
-    header: Add Account
+    header: Add User
     errors:
       usernameReq: Login Username is requried.
       usernameInExists: Login Username is already in use. Please choose a new username.
@@ -1797,10 +1801,19 @@ editUser:
     name:
       label: Display Name
       placeholder: e.g. John Smith
+    userName:
+      label: Username
     globalRoles:
-      label: Remove Global Roles
+      label: Edit Global Roles
+      description: Add or Remove global roles for this user
+      noRoles: User has no global roles
     otherRoles:
       label: Remove Roles
+    password:
+      label: Change Password
+      new: New Password
+      confirm: Confirm Password
+      error: Passwords must match
 
 envCatalog:
   header: Catalog
