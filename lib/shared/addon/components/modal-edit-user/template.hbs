@@ -1,0 +1,83 @@
+<section class="horizontal-form container-fluid">
+  <h2>{{t 'editAccount.title'}}</h2>
+  <hr>
+
+  <div class="row">
+    <div class="col span-12">
+      <label class="acc-label">Username</label>
+      <div class="form-control">
+        {{primaryResource.userName}}
+      </div>
+    </div>
+    <div class="col span-6 mb-0">
+      <label class="acc-label">{{t 'editAccount.form.name.label'}}</label>
+      {{input type="text" value=primaryResource.name classNames="form-control" placeholder=(t 'editAccount.form.name.placeholder')}}
+    </div>
+  </div>
+
+  <hr class="mt-20 mb-20" />
+
+  <div class="row mb-0">
+    <h2>{{t 'accountsPage.modal.password'}}</h2>
+    <div class="col span-6 col-inline">
+      <label class="acc-label">{{t 'modalEditPassword.new'}}</label>
+      {{input type="password" value=password classNames="form-control start"}}
+    </div>
+    <div class="col span-6 col-inline">
+      <label class="acc-label">{{t 'modalEditPassword.confirm'}}</label>
+      {{input type="password" value=confirm classNames="form-control"}}
+    </div>
+  </div>
+  {{#unless passwordsMatch}}
+    <div class="row mt-0">
+      <div class="col span-12">
+        <p class="help-text text-error span-12">Passwords must patch</p>
+      </div>
+    </div>
+  {{/unless}}
+
+  <hr class="mt-20 mb-20" />
+
+
+  {{#accordion-list
+       showExpandAll=false
+       as |al expandFn|
+  }}
+    {{#accordion-list-item
+         title=(t 'accountsPage.detail.table.global.title')
+         detail=(t 'accountsPage.detail.table.global.description')
+         expandOnInit=true
+         expandAll=false
+         expand=(action expandFn)
+    }}
+      {{#sortable-table
+           classNames="grid sortable-table"
+           body=globalRoles
+           search=false
+           sortBy=sortBy
+           bulkActions=false
+           fullRows=true
+           pagingLabel="pagination.node"
+           headers=headers as |sortable kind role dt|}}
+        {{#if (eq kind "row")}}
+          <tr class="main-row">
+            <td data-title="{{dt.name}}" class="state">
+              {{role.name}}
+            </td>
+
+            <td data-title="{{dt.active}}">
+              {{input type="checkbox" checked=role.active}}
+            </td>
+          </tr>
+
+        {{else if (eq kind "norows")}}
+          <tr><td colspan="{{sortable.fullColspan}}" class="text-center text-muted pt-20 pb-20">{{t 'nodesPage.table.noData'}}</td></tr>
+        {{/if}}
+      {{/sortable-table}}
+    {{/accordion-list-item}}
+
+  {{/accordion-list}}
+</section>
+
+{{top-errors errors=errors}}
+{{save-cancel save="doSave" saveLabel="generic.save" cancel="cancel"}}

@@ -34,6 +34,7 @@ const App = Application.extend({
           'clusterStore',
           'catalog',
           'endpoint',
+          'external-utils',
           'github',
           'globalStore',
           'intl',
@@ -52,6 +53,7 @@ const App = Application.extend({
           failWhale:               'failWhale',
           authenticated:           'authenticated',
           'authenticated.cluster': 'authenticated.cluster',
+          'authenticated.cluster.projects': 'authenticated.cluster.projects',
           'authenticated.project': 'authenticated.project',
           'authenticated.prefs':   'authenticated.prefs',
           'logout':                'logout'
