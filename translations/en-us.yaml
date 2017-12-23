@@ -8,6 +8,7 @@ generic:
   actions: Actions
   activate: Activate
   add: Add
+  addCustom: Add Custom
   all: All
   any: Any
   as: as
@@ -2228,8 +2229,8 @@ formScale:
     sidekickSuffix: ""
 
 formScheduling:
-  title: Host Scheduling
-  detail: Configure what hosts the containers can be deployed to.
+  title: Node Scheduling
+  detail: Configure what nodes the pods can be deployed to.
   status: |
     {count, plural,
     =0 {No rules}
@@ -2237,20 +2238,28 @@ formScheduling:
     other {# rules}
     }
   canRequestHost:
-    vm: Run <b>all</b> virtual machines on a specific host
-    containers: Run <b>all</b> containers on a specific host
-  runSpecific: Run on a specific host
-  noRules: No scheduling rules, run containers on any host.
-  autoRun: "Automatically run on every host matching scheduling rules:"
+    vm: Run <b>all</b> virtual machines on a specific node
+    containers: Run <b>all</b> pods on a specific node
+  runSpecific: Run pod on a specific node
+  noRules: No rules.
+  noToleration: No tolerations.
+  autoRun: "Automatically run on every node matching scheduling rules:"
   autoPick:
-    vm: "Automatically pick hosts for each virtual machine matching scheduling rules:"
-    container: "Automatically pick hosts for each container matching scheduling rules:"
-    host: "Automatically pick a host matching scheduling rules:"
+    vm: "Automatically pick nodes for each virtual machine matching scheduling rules:"
+    container: "Automatically pick nodes for each pod matching scheduling rules:"
+    host: "Automatically pick a node matching scheduling rules:"
   addRule: Add Scheduling Rule
   condition: Condition
   field: Field
   key: Key
   value: Value
+  operator: Operator
+  effect: Effect
+  time: Time
+  toleration:
+    title: Toleration
+    add: Add Toleration
+
   scaling:
     minMaxDetail: If set, the scale will not be allowed to be adjusted by user or API call above or below these limits.
     incrementDetail: If set, the scale must be a multiple of the increment
@@ -2260,8 +2269,34 @@ formScheduling:
   scaleIncrement: Scale Increment
   hostMax: Maximum Hosts
   perHost: per host
-
-
+  priority:
+    label: Priority
+    placeholder: e.g. 3
+  priorityClassName:
+    label: Priority Class Name
+    placeholder: e.g. high
+  scheduler:
+    label: Scheduler
+    placeholder: e.g. myScheduler
+  nodeSelector:
+    requireAll: "Require ALL of:"
+    requireAny: "Require Any of:"
+    preferred: "Prefer Any of:"
+    operator:
+      lt: '<'
+      le: '<='
+      eq: '='
+      ne: '!='
+      gt: '>'
+      ge: '>='
+      in: 'in'
+      notIn: 'not in'
+      exists: 'exists'
+      notExists: 'does not exist'
+    multiple:
+      placeholder: 'e.g. a,b,c'
+    custom:
+      placeholder: e.g. a>4 && b != foo && c
 
 formSecrets:
   title: Secrets
