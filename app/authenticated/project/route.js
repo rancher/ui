@@ -29,6 +29,9 @@ export default Route.extend(Preload,{
       return PromiseAll([
         this.preload('workload'),
         this.preload('namespace'),
+        this.preload('machine'),
+        this.preload('secret'),
+        this.preload('namespacedSecret'),
   //@TODO-2.0      this.preload('node'),
   //@TODO-2.0        this.preload('pod'),
         this.preload('projectRoleTemplateBinding', 'globalStore'),

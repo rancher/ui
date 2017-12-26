@@ -1,15 +1,17 @@
 import $ from 'jquery';
 import C from 'ui/utils/constants';
 import Route from '@ember/routing/route';
-import Subscribe from 'ui/mixins/subscribe';
 import Preload from 'ui/mixins/preload';
 import { inject as service } from '@ember/service';
-import { later, scheduleOnce, cancel } from '@ember/runloop';
-import { reject, resolve, all as PromiseAll } from 'rsvp';
+import {  scheduleOnce, cancel } from '@ember/runloop';
+import {  resolve, all as PromiseAll } from 'rsvp';
+import { get, set } from '@ember/object';
+import SubscribeGlobal from 'shared/utils/subscribe-global';
+import SubscribeProject from 'shared/utils/subscribe-project';
 
-const CHECK_AUTH_TIMER = 60*10*1000;
+//const CHECK_AUTH_TIMER = 60*10*1000;
 
-export default Route.extend(Preload, Subscribe, {
+export default Route.extend(Preload, {
   access:       service(),
   globalStore:  service(),
   clusterStore: service(),
@@ -20,8 +22,35 @@ export default Route.extend(Preload, Subscribe, {
   scope:        service(),
   settings:     service(),
   storeReset:   service(),
+  intl:         service(),
+  growl:        service(),
   testTimer:    null,
   userTheme:    service('user-theme'),
+
+  subscribeGlobal: null,
+  subscribeProject: null,
+
+  init() {
+    this._super(...arguments);
+    const deps = {
+      app:          get(this, 'app'),
+      store:        get(this, 'store'),
+      clusterStore: get(this, 'clusterStore'),
+      globalStore:  get(this, 'globalStore'),
+      intl:         get(this, 'intl'),
+      growl:        get(this, 'growl'),
+      scope:        get(this, 'scope'),
+    };
+
+    const g = SubscribeGlobal.create(deps);
+    const p = SubscribeProject.create(deps);
+
+    g.set('label', 'Global');
+    p.set('label', 'Project');
+
+    set(this, 'subscribeGlobal', g);
+    set(this, 'subscribeProject', p);
+  },
 
   // beforeModel(transition) {
   //   this._super.apply(this,arguments);
@@ -71,9 +100,12 @@ export default Route.extend(Preload, Subscribe, {
     let app = this.controllerFor('application');
 
     this._super();
+
+    get(this, 'subscribeGlobal').connect();
+
     if ( !this.controllerFor('application').get('isPopup') && this.get('scope.current') )
     {
-      this.connectSubscribe();
+      get(this, 'subscribeProject').connect();
     }
 
     let FALSE = false;
@@ -100,7 +132,8 @@ export default Route.extend(Preload, Subscribe, {
 
   deactivate() {
     this._super();
-    this.disconnectSubscribe();
+    get(this, 'subscribeGlobal').disconnect();
+    get(this, 'subscribeProject').disconnect();
     cancel(this.get('testTimer'));
 
     // Forget all the things
@@ -219,7 +252,10 @@ export default Route.extend(Preload, Subscribe, {
 
     switchCluster(clusterId, transitionTo='global-admin.clusters', transitionArgs) {
       console.log('Switch to Cluster:' + clusterId);
-      this.disconnectSubscribe(() => {
+      PromiseAll([
+        get(this, 'subscribeGlobal').disconnect(),
+        get(this, 'subscribeProject').disconnect(),
+      ]).then(() => {
         console.log('Switch is disconnected');
         this.send('finishSwitch', `cluster:${clusterId}`, transitionTo, transitionArgs);
       });
@@ -227,7 +263,10 @@ export default Route.extend(Preload, Subscribe, {
 
     switchProject(projectId, transitionTo='authenticated', transitionArgs) {
       console.log('Switch to Project:' + projectId);
-      this.disconnectSubscribe(() => {
+      PromiseAll([
+        get(this, 'subscribeGlobal').disconnect(),
+        get(this, 'subscribeProject').disconnect(),
+      ]).then(() => {
         console.log('Switch is disconnected');
         this.send('finishSwitch', `project:${projectId}`, transitionTo, transitionArgs);
       });
