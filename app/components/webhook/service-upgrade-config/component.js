@@ -3,19 +3,24 @@ import Ember from 'ember';
 export default Ember.Component.extend({
   tagName: '',
   payloadFormatChoices: null,
+  addressTypeChoices: null,
 
   init() {
     this._super(...arguments);
-    this.initPayloadFormatChoices();
+    this.set('payloadFormatChoices', this.getChoices('payloadFormat'));
+    this.set('addressTypeChoices', this.getChoices('addressType'));
   },
 
-  initPayloadFormatChoices() {
+  getChoices(field) {
     const serviceUpgradeSchema = this.get('webhookStore').getById('schema', 'serviceupgrade');
-    const payloadFormatSchema = serviceUpgradeSchema.resourceFields.payloadFormat;
-    const choices = payloadFormatSchema.options.map(option => {
-      return { label: `newReceiver.payloadFormat.${option}`, value: option };
-    });
-    this.set('payloadFormatChoices', choices);
+    const schema = serviceUpgradeSchema.resourceFields[field];
+    let choices = [];
+    if (schema) {
+      choices = schema.options.map(option => {
+        return { label: `newReceiver.${field}.${option}`, value: option };
+      });
+    }
+    return choices;
   },
 
   actions: {
