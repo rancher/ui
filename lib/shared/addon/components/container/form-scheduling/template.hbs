@@ -1,8 +1,6 @@
 {{#accordion-list-item
      title=(t 'formScheduling.title')
      detail=(t 'formScheduling.detail' appName=settings.appName)
-     status=(t 'formScheduling.status' count=affinityLabelArray.length)
-     statusClass=(if affinityLabelArray.length 'bg-success' 'text-muted')
      expandAll=expandAll
      expand=(action expandFn)
 }}
@@ -11,25 +9,23 @@
       <div class="radio mb-0">
         <label>{{radio-button selection=isRequestedHost value=true}}
           {{#if isService}}
-            {{#if (eq isVm 'virtual machines')}}
-              {{t 'formScheduling.canRequestHost.vm' htmlSafe=true}}
-            {{else}}
               {{t 'formScheduling.canRequestHost.containers' htmlSafe=true}}
-            {{/if~}}
           {{else}}
             {{t 'formScheduling.runSpecific'}}
           {{/if}}
         </label>
           {{#if isRequestedHost}}
-            {{new-select
-              class="form-control mb-15"
-              content=hostChoices
-              value=requestedHostId
-              optionValuePath="id"
-              optionLabelPath="name"
-              disabled=(not isRequestedHost)
-              style="display: inline-block; width: auto;"
-            }}
+            <div class="mb-10 mt-10">
+              {{searchable-select
+                class="form-control"
+                content=hostChoices
+                value=requestedHostId
+                optionValuePath="id"
+                optionLabelPath="name"
+                disabled=(not isRequestedHost)
+                style="display: inline-block; width: auto;"
+              }}
+            </div>
           {{/if}}
       </div>
 
@@ -38,8 +34,6 @@
           {{#if isService}}
             {{#if isGlobal}}
               {{t 'formScheduling.autoRun'}}
-            {{else if (eq isVm 'virtual machines')}}
-              {{t 'formScheduling.autoPick.vm'}}
             {{else}}
               {{t 'formScheduling.autoPick.container'}}
             {{/if~}}
@@ -52,8 +46,6 @@
       {{#if isService}}
         {{#if isGlobal}}
           <label class="acc-label">{{t 'formScheduling.autoRun'}}</label>
-        {{else if isVm}}
-          <label class="acc-label">{{t 'formScheduling.autoPick.vm'}}</label>
         {{else}}
           <label class="acc-label">{{t 'formScheduling.autoPick.container'}}</label>
         {{/if~}}
@@ -67,117 +59,57 @@
     <div class="row">
       <label>
         {{#if isService}}
-          {{#if (eq isVm 'virtual machines')}}
-            {{t 'formScheduling.canRequestHost.vm' htmlSafe=true}}
-          {{else}}
-            {{t 'formScheduling.canRequestHost.containers' htmlSafe=true}}
-          {{/if~}}
+          {{t 'formScheduling.canRequestHost.containers' htmlSafe=true}}
         {{else}}
           {{t 'formScheduling.runSpecific'}}
         {{/if}}
       </label>
       <span class="form-static-control">{{selectedChoice.name}}</span>
     </div>
-  {{else if (eq isVm 'virtual machines')}}
-    <p>{{t 'formScheduling.autoPick.vm'}}</p>
   {{else}}
     <p>{{t 'formScheduling.autoPick.container'}}</p>
   {{/if}}
 
   {{#unless isRequestedHost}}
-    {{#if editing}}
-      <div>
-        <button class="btn bg-link icon-btn" {{action "addSchedulingRule"}}>
-          <span class="darken"><i class="icon icon-plus text-small"/></span>
-          <span>{{t 'formScheduling.addRule'}}</span>
-        </button>
+    <div class="row">
+      <div class="col span-6 box">
+        {{node-selector editing=editing title="formScheduling.nodeSelector.requireAll" rules=scheduling.node.requireAll}}
       </div>
-    {{/if}}
-    {{#if affinityLabelArray.length}}
-      <table class="table fixed no-lines mt-20">
-        <thead>
-          <tr>
-            <th width="90"></th>
-            <th class="acc-label" width="120">{{t 'formScheduling.condition'}}</th>
-            <th width="80"></th>
-            <th class="acc-label" width="200">{{t 'formScheduling.field'}}</th>
-            <th width="40"></th>
-            <th class="acc-label" >{{t 'formScheduling.key'}}</th>
-            <th width="30"></th>
-            <th class="acc-label" >{{t 'formScheduling.value'}}</th>
-            <th width="10">&nbsp;</th>
-            <th width="40"></th>
-          </tr>
-        </thead>
-        <tbody>
-          {{#each labelArray as |rule|}}
-            {{#if (eq rule.type "affinity")}}
-              {{container/scheduling-rule-row
-                editing=editing
-                rule=rule
-                remove="removeSchedulingRule"
-                isGlobal=isGlobal}}
-            {{/if}}
-          {{/each}}
-        </tbody>
-      </table>
-    {{else}}
-      <div class="text-muted pt-10">{{t 'formScheduling.noRules'}}</div>
-    {{/if}}
+      <div class="col span-6 box">
+        {{node-selector editing=editing title="formScheduling.nodeSelector.requireAny" rules=scheduling.node.requireAny}}
+      </div>
+    </div>
+    <div class="row">
+      <div class="col span-6 box">
+        {{node-selector editing=editing title="formScheduling.nodeSelector.preferred" rules=scheduling.node.preferred}}
+      </div>
+    </div>
+    {{#advanced-section advanced=advanced}}
+      <div class="row">
+        <div class="col span-12 box">
+          {{scheduling-toleration editing=editing tolerate=scheduling.tolerate}}
+        </div>
+      </div>
+      <div class="row">
+        <div class="col span-4 box">
+          <label class="acc-label">{{t 'formScheduling.scheduler.label'}}</label>
+          {{#input-or-display editable=editing value=scheduling.scheduler}}
+            {{input type="text" classNames="form-control" value=scheduling.scheduler placeholder=(t 'formScheduling.scheduler.placeholder')}}
+          {{/input-or-display}}
+        </div>
+        <div class="col span-4 box">
+          <label class="acc-label">{{t 'formScheduling.priority.label'}}</label>
+          {{#input-or-display editable=editing value=scheduling.priority}}
+            {{input-integer min="1" step="1" value=scheduling.priority classNames="form-control" placeholder=(t 'formScheduling.priority.placeholder')}}
+          {{/input-or-display}}
+        </div>
+        <div class="col span-4 box">
+          <label class="acc-label">{{t 'formScheduling.priorityClassName.label'}}</label>
+          {{#input-or-display editable=editing value=scheduling.priorityClassName}}
+            {{input type="text" classNames="form-control" value=scheduling.priorityClassName placeholder=(t 'formScheduling.priorityClassName.placeholder')}}
+          {{/input-or-display}}
+        </div>
+      </div>
+    {{/advanced-section}}
   {{/unless}}
-
-  {{#if isService}}
-    <hr/>
-
-  <div class="row">
-  <div class="box col span-6">
-    <div class="row">
-      <div class="col span-6 mt-0">
-        <label class="acc-label">{{t 'formScheduling.scaleMin'}}</label>
-        {{#input-or-display editable=editing value=service.scaleMin}}
-        <div>
-          {{input-integer min=1 classNames="form-control" value=service.scaleMin}} {{#if isGlobal}}
-          <span class="input-group-addon bg-default">{{t 'formScheduling.perHost'}}</span> {{/if}}
-        </div>
-        {{/input-or-display}}
-      </div>
-      <div class="col span-6 mt-0">
-        <label class="acc-label">{{t 'formScheduling.scaleMax'}}</label>
-        {{#input-or-display editable=editing value=service.scaleMax}}
-        <div>
-          {{input-integer min=1 classNames="form-control" value=service.scaleMax}} {{#if isGlobal}}
-          <span class="input-group-addon bg-default">{{t 'formScheduling.perHost'}}</span> {{/if}}
-        </div>
-        {{/input-or-display}}
-      </div>
-    </div>
-    <div class="row">
-      <p class="help-block">{{t 'formScheduling.scaling.minMaxDetail'}}</p>
-    </div>
-  </div>
-
-  <div class="box col span-6">
-    <div class="col span-6 mt-0">
-      <label class="acc-label">{{t 'formScheduling.scaleIncrement'}}</label>
-      {{#input-or-display editable=editing value=service.scaleIncrement}}
-      <div>
-        {{input-integer min=1 classNames="form-control" value=service.scaleIncrement}} {{#if isGlobal}}
-        <span class="input-group-addon bg-default">{{t 'formScheduling.perHost'}}</span> {{/if}}
-      </div>
-      {{/input-or-display}}
-      <p class="help-block">{{t 'formScheduling.scaling.incrementDetail'}}</p>
-    </div>
-    <div class="col span-6 mt-0">
-      <label class="acc-label">{{t 'formScheduling.hostMax'}}</label>
-      {{#input-or-display editable=editing value=service.hostMax}}
-      <div>
-        {{input-integer min=1 classNames="form-control" value=service.hostMax}}
-        <p class="help-block">{{t 'formScheduling.scaling.hostMaxDetail'}}</p>
-      </div>
-      {{/input-or-display}}
-    </div>
-  </div>
-</div>
-
-  {{/if}}
 {{/accordion-list-item}}

@@ -1,0 +1,40 @@
+{{#if (gte rule.custom.length 0)}}
+  <td colspan="5">
+    {{#input-or-display editable=editing value=rule.custom}}
+      {{input type="text" class="form-control input-sm" placeholder=(t 'formScheduling.nodeSelector.custom.placeholder') value=rule.custom}}
+    {{/input-or-display}}
+  </td>
+{{else}}
+  <td>{{input type="text" class="form-control input-sm" value=rule.key}}</td>
+  <td>&nbsp;</td>
+  <td>
+    {{new-select
+      class="form-control input-sm"
+      content=operatorChoices
+      localizedHtmlLabel=true
+      value=rule.operator
+      readOnly=editing
+      style="display: inline-block; width: auto;"
+    }}
+  </td>
+  <td>&nbsp;</td>
+  <td>
+    {{#if isJustLabel}}
+      {{t 'generic.na'}}
+    {{else if isMultiple}}
+      {{#input-or-display editable=editing value=rule.value}}
+        {{input type="text" class="form-control input-sm" value=rule.value placeholder=(t 'formScheduling.nodeSelector.multiple.placeholder')}}
+      {{/input-or-display}}
+    {{else}}
+      {{#input-or-display editable=editing value=rule.value}}
+        {{input type="text" class="form-control input-sm" value=rule.value}}
+      {{/input-or-display}}
+    {{/if}}
+  </td>
+{{/if}}
+<td>&nbsp;</td>
+{{#if editing}}
+  <div class="input-group-btn">
+    <button class="btn bg-primary btn-sm" {{action "removeRule" rule}}><i class="icon icon-minus"/></button>
+  </div>
+{{/if}}

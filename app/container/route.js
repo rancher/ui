@@ -4,23 +4,14 @@ import Route from '@ember/routing/route';
 export default Route.extend({
   model: function(params) {
 
-    return this.get('store').find('container', params.container_id).then((container) => {
-
-      return hash({
-        hosts:         this.get('store').findAll('host'),
-      }).then((hash) => {
-
-        let out = {
-          container:     container,
-          hosts:         hash.hosts,
-        };
-
-        if (container.serviceId) {
-          out.service = this.get('store').getById('service', container.serviceId);
-        }
-
-        return out;
-      });
+    return this.get('store').find('pod', params.container_id).then((container) => {
+      let out = {
+        container:     container,
+      };
+      if (container.serviceId) {
+        out.service = this.get('store').getById('service', container.serviceId);
+      }
+      return out;
     });
   },
 });
