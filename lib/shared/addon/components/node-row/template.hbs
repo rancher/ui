@@ -3,12 +3,6 @@
     {{check-box nodeId=model.id}}
   </td>
 
-  {{#if showExpand}}
-    <td>
-      <i role="button" {{action "toggle"}} class="icon icon-play eased text-small text-muted {{if expanded 'icon-rotate-90'}}"><span class="visually-hidden">Open accordion</span></i>
-    </td>
-  {{/if}}
-
   <td data-title="{{dt.state}}" class="state">
     {{badge-state model=model}}
   </td>
@@ -27,56 +21,33 @@
     {{/each}}
   </td>
 
+  {{#if showCluster}}
+    <td data-title="{{dt.cluster}}">
+      {{#if model.cluster}}
+        {{model.cluster.displayName}}
+      {{else}}
+        <b>{{t 'generic.none'}}</b>
+      {{/if}}
+    </td>
+  {{/if}}
+
   <td data-title="{{dt.ip}}">
     {{#copy-inline clipboardText=model.displayIp size="small"}}
       {{format-ip model.displayIp}}
     {{/copy-inline}}
   </td>
 
-  {{#if showCpu}}
-    <td data-title="{{dt.cpu}}">
-      {{model.cpuUsage}}
-    </td>
-  {{/if}}
+  <td data-title="{{dt.cpu}}">
+    {{model.cpuUsage}}
+  </td>
 
   <td data-title="{{dt.memory}}">
     {{model.memoryUsage}}
   </td>
 
-  {{#if showPod}}
-    <td data-title="{{dt.pod}}">
-      {{model.podUsage}}
-    </td>
-  {{/if}}
-
-  {{#if showInstanceStates}}
-    <td data-title="{{dt.instanceState}}">
-      <div style="margin-top: 5px;">
-        {{progress-bar-multi
-          labelKey="state"
-          valueKey="count"
-          values=model.instanceStates.byColor
-          tooltipValues=model.instanceStates.byName
-        }}
-
-        <p class="text-muted m-0">
-          <small>
-          {{#if subMatches}}
-            {{#if (eq (get subMatches model.id) 0)}}
-              {{t 'pagination.containerNoSubset' count=model.arrangedInstances.length htmlSafe=true}}
-            {{else if (lt (get subMatches model.id) model.arrangedInstances.length)}}
-              {{t 'pagination.containerHighlightSubset' subset=(get subMatches model.id) count=model.arrangedInstances.length htmlSafe=true}}
-            {{else}}
-              <b>{{t 'pagination.container' pages=1 count=model.arrangedInstances.length}}</b>
-            {{/if}}
-          {{else}}
-            {{t 'pagination.container' pages=1 count=(concat model.arrangedInstances.length "")}}
-          {{/if}}
-          </small>
-        </p>
-      </div>
-    </td>
-  {{/if}}
+  <td data-title="{{dt.pod}}">
+    {{model.podUsage}}
+  </td>
 
   <td data-title="{{dt.actions}}" class="actions">
     {{action-menu model=model showPrimary=false}}
