@@ -20,7 +20,7 @@
       </thead>
       <tbody>
         {{#each memberArray as |member|}}
-          {{project-member-row member=member roles=roles remove="removeMember"}}
+          {{project-member-row member=member roles=roles users=users remove="removeMember"}}
         {{/each}}
       </tbody>
     </table>
@@ -31,12 +31,14 @@
         <span>{{t 'projectsPage.new.form.members.addUser'}}</span>
       </button>
 
-      <button class="btn bg-link icon-btn p-0" {{action "addMember" "Group"}}>
+      {{!-- TODO - 2.0 --}}
+      <button class="btn bg-link icon-btn p-0" {{action "addMember" "Group"}} disabled="true">
         <span class="darken"><i class="icon icon-plus text-small"/></span>
         <span>{{t 'projectsPage.new.form.members.addGroup'}}</span>
       </button>
 
-      <button class="btn bg-link icon-btn p-0" {{action "addMember" "ServiceAccount"}}>
+      {{!-- TODO - 2.0 --}}
+      <button class="btn bg-link icon-btn p-0" {{action "addMember" "ServiceAccount"}} disabled="true">
         <span class="darken"><i class="icon icon-plus text-small"/></span>
         <span>{{t 'projectsPage.new.form.members.addServiceAccount'}}</span>
       </button>
