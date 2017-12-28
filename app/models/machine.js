@@ -82,70 +82,85 @@ var Machine = Resource.extend(StateCounts,{
     return out;
   }.property('actionLinks.{activate,deactivate,evacuate}','links.{update,remove,config}','driver'),
 
-  displayIp: alias('agentIpAddress'),
+  displayIp: alias('ipAddress'),
 
-  foo: 'bar',
-
-  displayName: function() {
+  displayName: computed('name','nodeName','id', function() {
     let name = this.get('name');
     if ( name ) {
       return name;
     }
 
-    name = this.get('hostname');
+    name = this.get('nodeName');
     if ( name ) {
       return name.replace(/\..*$/,'');
     }
 
+    name = this.get('requestedHostname');
+    if ( name ) {
+      return name;
+    }
+
     return '('+this.get('id')+')';
-  }.property('name','hostname','id'),
+  }),
 
   cpuUsage: computed('requested.cpu','allocatable.cpu', function() {
     const used  = parseSi(get(this,'requested.cpu'));
     const total = parseSi(get(this,'allocatable.cpu'));
-    const minExp = exponentNeeded(total);
-    const usedStr  = formatSi(used,  1000, '', '', 0, minExp).replace(/\s.*$/,'');
-    const totalStr = formatSi(total, 1000, '', '', 0, minExp);
+    if ( total ) {
+      const minExp = exponentNeeded(total);
+      const usedStr  = formatSi(used,  1000, '', '', 0, minExp).replace(/\s.*$/,'');
+      const totalStr = formatSi(total, 1000, '', '', 0, minExp);
 
-    return `${usedStr}/${totalStr}`
+      return `${usedStr}/${totalStr}`
+    }
   }),
 
   cpuPercent: computed('requested.cpu','allocatable.cpu', function() {
     const used  = parseSi(get(this,'requested.cpu'));
     const total = parseSi(get(this,'allocatable.cpu'));
-    return formatPercent(100*used/total);
+    if ( total ) {
+      return formatPercent(100*used/total);
+    }
   }),
 
   memoryUsage: computed('requested.memory','allocatable.memory', function() {
     const used = parseSi(get(this,'requested.memory'));
     const total = parseSi(get(this,'allocatable.memory'));
-    const minExp = exponentNeeded(total);
-    const usedStr =  formatSi(used,  1024, '', '', 0, minExp).replace(/\s.*/,'');
-    const totalStr = formatSi(total, 1024, 'iB', 'B', 0, minExp);
+    if ( total ) {
+      const minExp = exponentNeeded(total);
+      const usedStr =  formatSi(used,  1024, '', '', 0, minExp).replace(/\s.*/,'');
+      const totalStr = formatSi(total, 1024, 'iB', 'B', 0, minExp);
 
-    return `${usedStr}/${totalStr}`
+      return `${usedStr}/${totalStr}`
+    }
   }),
 
   memoryPercent: computed('requested.memory','allocatable.memory', function() {
     const used  = parseSi(get(this,'requested.memory'));
     const total = parseSi(get(this,'allocatable.memory'));
-    return formatPercent(100*used/total);
+    if ( total ) {
+      return formatPercent(100*used/total);
+    }
   }),
 
   podUsage: computed('requested.pods','allocatable.pods', function() {
     const used  = parseSi(get(this,'requested.pods'));
     const total = parseSi(get(this,'allocatable.pods'));
-    const minExp = exponentNeeded(total);
-    const usedStr  = formatSi(used,  1000, '', '', 0, minExp).replace(/\s.*$/,'');
-    const totalStr = formatSi(total, 1000, '', '', 0, minExp);
+    if ( total ) {
+      const minExp = exponentNeeded(total);
+      const usedStr  = formatSi(used,  1000, '', '', 0, minExp).replace(/\s.*$/,'');
+      const totalStr = formatSi(total, 1000, '', '', 0, minExp);
 
-    return `${usedStr}/${totalStr}`
+      return `${usedStr}/${totalStr}`
+    }
   }),
 
   podPercent: computed('requested.pods','allocatable.pods', function() {
     const used  = parseSi(get(this,'requested.pods'));
     const total = parseSi(get(this,'allocatable.pods'));
-    return formatPercent(100*used/total);
+    if ( total ) {
+      return formatPercent(100*used/total);
+    }
   }),
 
 /*

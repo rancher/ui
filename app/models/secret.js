@@ -3,6 +3,7 @@ import Resource from 'ember-api-store/models/resource';
 
 export default Resource.extend({
   modalService: service('modal'),
+
   actions: {
     edit: function() {
       this.get('modalService').toggleModal('modal-edit-secret', this);

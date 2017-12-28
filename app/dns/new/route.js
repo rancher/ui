@@ -14,17 +14,17 @@ export default Route.extend({
     return hash(deps, 'Load dependencies').then(function(hash) {
       let record;
 
-      let stackId = params.stackId;
-      let stack;
-      if ( stackId ) {
-        stack = store.getById('stack', stackId);
+      let namespaceId = params.namespaceId;
+      let namespace;
+      if ( namespaceId ) {
+        namespace = store.getById('namespace', namespaceId);
       }
 
-      // If the stack doesn't exist or isn't set, pick default
-      if ( !stack ) {
-        stack = store.all('stack').findBy('isDefault',true);
-        if ( stack ) {
-          stackId = stack.get('id');
+      // If the namespace doesn't exist or isn't set, pick default
+      if ( !namespace ) {
+        namespace = store.all('namespace').findBy('isDefault',true);
+        if ( namespace ) {
+          namespaceId = namespace.get('id');
         }
       }
 
@@ -35,10 +35,9 @@ export default Route.extend({
       else
       {
         record = store.createRecord({
-          type: 'externalservice',
+          type: 'service',
           name: '',
-          description: '',
-          stackId: stackId,
+          namespaceId: namespaceId,
         });
       }
 
@@ -51,7 +50,7 @@ export default Route.extend({
   resetController: function (controller, isExisting/*, transition*/) {
     if (isExisting)
     {
-      controller.set('stackId', null);
+      controller.set('namespaceId', null);
       controller.set('serviceId', null);
     }
   },
