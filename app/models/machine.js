@@ -92,7 +92,11 @@ var Machine = Resource.extend(StateCounts,{
 
     name = this.get('nodeName');
     if ( name ) {
-      return name.replace(/\..*$/,'');
+      if ( name.match(/[a-z]/i) ) {
+        name = name.replace(/\..*$/,'');
+      }
+
+      return name;
     }
 
     name = this.get('requestedHostname');
