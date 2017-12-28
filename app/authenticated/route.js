@@ -7,6 +7,7 @@ import {  scheduleOnce, cancel } from '@ember/runloop';
 import {  resolve, all as PromiseAll } from 'rsvp';
 import { get, set } from '@ember/object';
 import SubscribeGlobal from 'shared/utils/subscribe-global';
+import SubscribeCluster from 'shared/utils/subscribe-cluster';
 import SubscribeProject from 'shared/utils/subscribe-project';
 
 //const CHECK_AUTH_TIMER = 60*10*1000;
@@ -28,6 +29,7 @@ export default Route.extend(Preload, {
   userTheme:    service('user-theme'),
 
   subscribeGlobal: null,
+  subscribeCluster: null,
   subscribeProject: null,
 
   init() {
@@ -43,12 +45,15 @@ export default Route.extend(Preload, {
     };
 
     const g = SubscribeGlobal.create(deps);
+    const c = SubscribeCluster.create(deps);
     const p = SubscribeProject.create(deps);
 
     g.set('label', 'Global');
+    g.set('label', 'Cluster');
     p.set('label', 'Project');
 
     set(this, 'subscribeGlobal', g);
+    set(this, 'subscribeCluster', c);
     set(this, 'subscribeProject', p);
   },
 
@@ -97,19 +102,27 @@ export default Route.extend(Preload, {
   },
 
   activate() {
-    let app = this.controllerFor('application');
+    const app = this.controllerFor('application');
+    const isPopup = this.controllerFor('application').get('isPopup');
 
     this._super();
 
+    if ( isPopup ) {
+      return;
+    }
+
     get(this, 'subscribeGlobal').connect();
 
-    if ( !this.controllerFor('application').get('isPopup') && this.get('scope.current') )
-    {
+    if ( this.get('scope.currentCluster') ) {
+      get(this, 'subscribeCluster').connect();
+    }
+
+    if ( this.get('scope.currentProject') ) {
       get(this, 'subscribeProject').connect();
     }
 
     let FALSE = false;
-    if ( FALSE && this.get('settings.isRancher') && !app.get('isPopup') ) // @TODO-2.0
+    if ( FALSE && this.get('settings.isRancher') ) // @TODO-2.0
     {
       let form = this.get(`settings.${C.SETTING.FEEDBACK_FORM}`);
 
@@ -133,6 +146,7 @@ export default Route.extend(Preload, {
   deactivate() {
     this._super();
     get(this, 'subscribeGlobal').disconnect();
+    get(this, 'subscribeCluster').disconnect();
     get(this, 'subscribeProject').disconnect();
     cancel(this.get('testTimer'));
 
@@ -253,7 +267,7 @@ export default Route.extend(Preload, {
     switchCluster(clusterId, transitionTo='global-admin.clusters', transitionArgs) {
       console.log('Switch to Cluster:' + clusterId);
       PromiseAll([
-        get(this, 'subscribeGlobal').disconnect(),
+        get(this, 'subscribeCluster').disconnect(),
         get(this, 'subscribeProject').disconnect(),
       ]).then(() => {
         console.log('Switch is disconnected');
@@ -264,7 +278,6 @@ export default Route.extend(Preload, {
     switchProject(projectId, transitionTo='authenticated', transitionArgs) {
       console.log('Switch to Project:' + projectId);
       PromiseAll([
-        get(this, 'subscribeGlobal').disconnect(),
         get(this, 'subscribeProject').disconnect(),
       ]).then(() => {
         console.log('Switch is disconnected');

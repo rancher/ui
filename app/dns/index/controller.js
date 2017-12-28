@@ -61,7 +61,7 @@ export default Controller.extend({
     let showNamespace = this.get('showNamespace');
 
     return this.get('model.services').filter((obj) => {
-      return showNamespace[obj.get('stackId')] && !obj.get('isReal');
+      return showNamespace[obj.get('namespaceId')] && !obj.get('isReal');
     });
   }.property('showNamespace','model.services.@each.{isReal}'),
 });

@@ -8,7 +8,6 @@ generic:
   actions: Actions
   activate: Activate
   add: Add
-  addCustom: Add Custom
   all: All
   any: Any
   as: as
@@ -2239,8 +2238,8 @@ formScheduling:
     }
   canRequestHost:
     vm: Run <b>all</b> virtual machines on a specific node
-    containers: Run <b>all</b> pods on a specific node
-  runSpecific: Run pod on a specific node
+    containers: Run <b>all</b> pods for this workload on a specific node
+  runSpecific: Run this pod on a specific node
   noRules: No rules.
   noToleration: No tolerations.
   autoRun: "Automatically run on every node matching scheduling rules:"
@@ -2248,10 +2247,11 @@ formScheduling:
     vm: "Automatically pick nodes for each virtual machine matching scheduling rules:"
     container: "Automatically pick nodes for each pod matching scheduling rules:"
     host: "Automatically pick a node matching scheduling rules:"
-  addRule: Add Scheduling Rule
+  addRule: Add Rule
+  addCustom: Add Custom Rule
   condition: Condition
   field: Field
-  key: Key
+  key: Label Key
   value: Value
   operator: Operator
   effect: Effect
@@ -2292,14 +2292,14 @@ formScheduling:
       gt: '>'
       ge: |
         &ge;
-      in: 'in'
-      notIn: 'not in'
-      exists: 'exists'
-      notExists: 'does not exist'
+      in: 'in list'
+      notIn: 'not in list'
+      exists: 'is set'
+      notExists: 'is not set'
     multiple:
-      placeholder: 'e.g. a,b,c'
+      placeholder: 'e.g. foo, bar, baz'
     custom:
-      placeholder: e.g. a>4 && b != foo && c
+      placeholder: 'e.g. foo > 42 && bar != baz'
 
 formSecrets:
   title: Secrets
@@ -3901,9 +3901,10 @@ siteAccess:
   groups: Groups
   organizations: Organizations
 
-stackRow:
+namespaceGroup:
   label: "Namespace: {name}"
-  standalone: Standalone
+  none: Standalone
+  project: Project-Level
 
 svgServiceContainer:
   sidekicks: Sidekicks
