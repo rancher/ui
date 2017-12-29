@@ -19,14 +19,15 @@
         </tr>
       </thead>
       <tbody>
+        {{project-member-row member=member roles=roles users=users remove="removeMember" owner=creator type=type}}
         {{#each memberArray as |member|}}
-          {{project-member-row member=member roles=roles users=users remove="removeMember"}}
+          {{project-member-row member=member roles=roles users=filteredUsers remove="removeMember"}}
         {{/each}}
       </tbody>
     </table>
 
     <div class="mt-10">
-      <button class="btn bg-link icon-btn p-0" {{action "addMember" "User"}}>
+      <button class="btn bg-link icon-btn p-0" {{action "addMember" "User"}} disabled={{if (eq filteredUsers.length 0) true}}>
         <span class="darken"><i class="icon icon-plus text-small"/></span>
         <span>{{t 'projectsPage.new.form.members.addUser'}}</span>
       </button>

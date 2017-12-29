@@ -21,6 +21,9 @@ export default Route.extend({
       projects: store.findAll('project'),
       roles: store.findAll('roleTemplate'),
       policies: store.find('podSecurityPolicyTemplate'),
+      users: store.find('user', null, {forceReload: true}),
+      // me: get(this, 'globalStore').find('user', null, {filter: {me: true}}),
+      me: get(this, 'globalStore').find('user', 'admin', {forceReload: true}), // TODO 2.0
     });
   },
 });
