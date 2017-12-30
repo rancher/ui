@@ -2,15 +2,22 @@
   {{t kind}}
 </td>
 <td class="pr-20">
-  {{!-- {{input type="text" value=member.subjectName classNames="form-control"}} --}}
-  {{searchable-select content=userList value=member.roleTemplateId}}
+  {{#if owner}}
+    {{owner.name}}
+  {{else}}
+    {{searchable-select content=userList value=member.roleTemplateId disbaled=true}}
+  {{/if}}
 </td>
 <td class="pr-20">
-  {{searchable-select content=choices value=member.roleTemplateId}}
+  {{#if owner}}
+    {{if (eq type 'project') 'Project Owner' 'Cluster Owner'}}
+  {{else}}
+    {{searchable-select content=choices value=member.roleTemplateId}}
+  {{/if}}
 </td>
 <td>&nbsp;</td>
 <div class="input-group-btn">
-  <button class="btn bg-primary btn-sm" {{action "remove"}}>
+  <button class="btn bg-primary btn-sm" {{action "remove"}} disabled={{if owner 'true' null}}>
     <i class="icon icon-minus" />
   </button>
 </div>
