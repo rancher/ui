@@ -6,6 +6,7 @@ import { formatSi, parseSi, exponentNeeded } from 'shared/utils/parse-unit';
 import C from 'ui/utils/constants';
 import StateCounts from 'ui/mixins/state-counts';
 import { inject as service } from "@ember/service";
+import { reference } from 'ember-api-store/utils/denormalize';
 
 
 var Machine = Resource.extend(StateCounts,{
@@ -15,6 +16,8 @@ var Machine = Resource.extend(StateCounts,{
   prefs: service(),
   router: service(),
   clusterStore: service(),
+
+  cluster: reference('clusterId','cluster'),
 
   init() {
     this._super(...arguments);
@@ -92,7 +95,11 @@ var Machine = Resource.extend(StateCounts,{
 
     name = this.get('nodeName');
     if ( name ) {
-      return name.replace(/\..*$/,'');
+      if ( name.match(/[a-z]/i) ) {
+        name = name.replace(/\..*$/,'');
+      }
+
+      return name;
     }
 
     name = this.get('requestedHostname');

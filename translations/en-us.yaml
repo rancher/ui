@@ -924,6 +924,7 @@ nodesPage:
   header: Nodes
   addNode: Add Node
   table:
+    clusterName: Cluster
     cpu: CPU
     memory: RAM
     disk: Disk
@@ -1091,6 +1092,8 @@ secretsPage:
     linkTo: Add Secret
     noData: You do not have any Secrets yet
     noMatch: No Secrets match the current search
+  table:
+    keys: Keys
 
 servicePage:
   header: '{type}: {name}'
@@ -3649,15 +3652,20 @@ newReceiver:
 
 newSecret:
   title:
-    edit: Edit Secret
     add: Add Secret
+    edit: 'Edit Secret: {name}'
+    view: 'Secret: {name}'
   name:
-    placeholder: e.g. api-token
+    placeholder: e.g. api-key
+  scope:
+    label: Scope
+    project: Available to all namespaces in this project
+    namespace: Available to a single namespace
   description:
-    placeholder: e.g. Secret token for the API
-  value:
-    label: Secret Value
-    placeholder: The secret value
+    placeholder: e.g. S3 key pair
+  values:
+    label: Secrets Values
+  addActionLabel: Add Secret Value
 
 orchestrationWelcome:
   simple:
@@ -3904,7 +3912,7 @@ siteAccess:
 namespaceGroup:
   label: "Namespace: {name}"
   none: Standalone
-  project: Project-Level
+  project: Any Namespace in Project
 
 svgServiceContainer:
   sidekicks: Sidekicks
@@ -4087,10 +4095,12 @@ nav:
     addBalancer: Add Balancer
     addDns: Add Record
     addVolume: Add Volume
-    groupNone: Flat Pod List
-    groupService: Group by Workload
-    groupStack: Group by Namespace/Workload
     importCompose: Import from YAML
+  group:
+    none: Flat List
+    workload: Group by Workload
+    namespace: Group by Namespace
+    namespaceWorkload: Group by Namespace/Workload
   hosts:
     tab: Hosts
     addHost: Add Host

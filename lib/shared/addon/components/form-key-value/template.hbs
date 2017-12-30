@@ -35,9 +35,9 @@
         <td data-title="{{t valueLabel}}:">
           {{#if editing}}
             {{#if allowMultilineValue}}
-              {{textarea-autogrow class="form-control input-sm value" value=row.value placeholder=valuePlaceholder disabled=(eq row.editable false)}}
+              {{textarea-autogrow class=(concat "form-control input-sm value" (if concealValue " conceal")) spellcheck="false" required=true value=row.value placeholder=valuePlaceholder disabled=(eq row.editable false)}}
             {{else}}
-              {{input class="form-control input-sm value" type="text" value=row.value placeholder=valuePlaceholder disabled=(eq row.editable false)}}
+              {{input class=(concat "form-control input-sm value" (if concealValue " conceal")) spellcheck="false" type="text" value=row.value placeholder=valuePlaceholder disabled=(eq row.editable false)}}
             {{/if}}
           {{else}}
             {{row.value}}

@@ -11,7 +11,7 @@ export function initialize(/*application */) {
 
   // Disable iOS auto-capitalization
   TextField.reopen({
-    attributeBindings: ['autocapitalize'],
+    attributeBindings: ['autocapitalize','spellcheck','autocomplete'],
     autocapitalize: 'none',
   });
 }

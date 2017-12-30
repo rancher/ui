@@ -144,7 +144,9 @@ Router.map(function() {
         this.route('secrets', {path: '/secrets', resetNamespace: true}, function() {
           this.route('new', {path: '/add'});
           this.route('index', {path: '/'});
-          this.route('detail', {path: '/:secret_id'});
+          this.route('detail', {path: '/:secret_id'}, function() {
+            this.route('edit');
+          });
         });
       });
 

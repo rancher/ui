@@ -9,7 +9,7 @@
     {{badge-state model=model}}
   </td>
   <td data-title="{{dt.name}}" class="clip">
-    <a href="{{href-to "workload" model.id}}">{{model.displayName}} <i class="icon icon-service"></i></a>
+    <a href="{{href-to "service" model.id}}">{{model.displayName}} <i class="icon icon-service"></i></a>
     {{#if model.showTransitioningMessage}}
       <div class="clip text-small {{model.stateColor}}">{{model.transitioningMessage}}</div>
     {{else if model.displayEndpoints}}
@@ -33,7 +33,7 @@
         {{else}}
           {{t 'pagination.pod' pages=1 count=(concat model.pods.length "")}}
         {{/if}} /
-        {{t 'generic.createdDate' date=(date-from-now model.created)}}
+        {{t 'generic.createdDate' date=(date-from-now model.created) htmlSafe=true}}
       </p>
     </td>
   {{/if}}
