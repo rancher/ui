@@ -80,7 +80,6 @@
   {{/if}}
 
   {{#if groupByKey}}
-    {{! Note: Grouping requires fullRows}}
     {{#if extraGroups.length}}
       {{#each extraGroups as |group|}}
         <tbody class="group">
@@ -99,38 +98,12 @@
     {{else}}
       {{yield this (if arranged.length 'nomatch' 'norows')}}
     {{/each}}
-  {{else if fullRows}}
+  {{else}}
     <tbody>
       {{#each pagedContent as |row|}}
         {{yield this 'row' row dt (array-includes childFilterNodes row.id)}}
       {{else}}
         {{yield this (if arranged.length 'nomatch' 'norows')}}
-      {{/each}}
-    </tbody>
-  {{else}}
-    <tbody>
-      {{#each pagedContent as |row|}}
-       <tr class="main-row">
-          {{#if bulkActions}}
-            <td data-title="{{generic.actions}}: " class="row-check">
-              {{check-box nodeId=row.id}}
-            </td>
-          {{/if}}
-          {{#if hasBlock}}
-            {{yield this 'row' row dt}}
-          {{else}}
-            {{#each headers as |header|}}
-              <td data-title={{header.displayName}} data-id={{row.id}}>{{select-property row header.name}}</td>
-            {{/each}}
-          {{/if}}
-        </tr>
-        {{#if hasBlock}}
-          {{yield this 'sub-row' row dt}}
-        {{/if}}
-      {{else}}
-        {{#if hasBlock}}
-          {{yield this (if arranged.length 'nomatch' 'norows')}}
-        {{/if}}
       {{/each}}
     </tbody>
   {{/if}}

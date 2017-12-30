@@ -1,24 +1,72 @@
 <section class="header clearfix">
-  <h1>{{t (if editing 'newSecret.title.edit' 'newSecret.title.add')}}</h1>
+  {{#if isView}}
+    <div class="right-buttons pull-right">
+      {{badge-state model=model}}
+      {{action-menu model=model showPrimary=false classNames="ml-10 inline-block" size="sm"}}
+    </div>
+  {{/if}}
+
+  <h1>{{title}}</h1>
 </section>
 
-<section class="horizontal-form container-fluid">
-  <div class="row">
+{{#if isView}}
+  {{#if model.description}}
+    {{banner-message color='bg-secondary mb-0 mt-10' message=(linkify model.container.description)}}
+  {{/if}}
+{{else}}
   {{form-name-description
     model=primaryResource
     nameRequired=true
     namePlaceholder="newSecret.name.placeholder"
     descriptionPlaceholder="newSecret.description.placeholder"
   }}
+{{/if}}
 
-  {{#unless editing}}
-      <div class="col span-6">
-        <label class="acc-label pb-5">{{t 'newSecret.value.label'}}{{field-required}}</label>
-        {{textarea-autogrow class="form-control" value=userValue placeholder="newSecret.value.placeholder"}}
+<div class="row">
+  <div class="col span-6" style="min-height: 106px;">
+    <label class="acc-label">{{t 'newSecret.scope.label'}}</label>
+    {{#if isNew}}
+      <div class="radio">
+        <label>{{radio-button selection=scope value="project"}}&nbsp;{{t 'newSecret.scope.project'}}</label>
       </div>
-  {{/unless}}
+      <div class="radio">
+        <label>{{radio-button selection=scope value="namespace"}}&nbsp;{{t 'newSecret.scope.namespace'}}{{if (eq scope "namespace") ':'}}</label>
+      </div>
+    {{else}}
+      <div>
+        {{#if model.namespace}}
+          {{t 'newSecret.scope.namespace'}}: {{model.namespace.displayName}}
+        {{else}}
+          {{t 'newSecret.scope.project'}}
+        {{/if}}
+      </div>
+    {{/if}}
   </div>
-</section>
 
-{{top-errors errors=errors}}
-{{save-cancel editing=true save="save" cancel="cancel"}}
+  {{#if (and isNew (eq scope "namespace"))}}
+    <div class="col span-6 box">
+      {{form-namespace
+        namespace=namespace
+        errors=namespaceErrors
+      }}
+    </div>
+  {{/if}}
+</div>
+
+<div class="box mt-10">
+  <label class="acc-label">{{t 'newSecret.values.label'}}</label>
+  {{form-key-value
+    initialMap=primaryResource.data
+    addActionLabel="newSecret.addActionLabel"
+    addInitialEmptyRow=true
+    base64Value=true
+    concealValue=true
+    editing=notIsView
+    changed=(action "updateData")
+  }}
+</div>
+
+{{#unless isView}}
+  {{top-errors errors=errors}}
+  {{save-cancel editing=true save="save" cancel="viewEditCancel"}}
+{{/unless}}

@@ -38,11 +38,24 @@ export default Controller.extend({
       sort: ['description','name','id'],
     },
     {
+      name: 'namespace',
+      translationKey: 'generic.namespace',
+      searchField: 'namespace.displayName',
+      sort: ['namespace.displayName','name','id'],
+    },
+    {
+      name: 'keys',
+      translationKey: 'secretsPage.table.keys',
+      searchField: 'keys',
+      sort: ['firstKey','name','id'],
+    },
+    {
       name: 'created',
       translationKey: 'generic.created',
       sort: ['created:desc','name','id'],
       searchField: false,
       type: 'string',
+      width: 150,
     },
   ],
 

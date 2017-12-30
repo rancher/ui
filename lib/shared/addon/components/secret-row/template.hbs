@@ -11,8 +11,18 @@
   <td data-title="{{dt.description}}">
     {{model.description}}
   </td>
+  <td data-title="{{dt.namespace}}">
+    {{#if model.namespace}}
+      {{model.namespace.displayName}}
+    {{else}}
+      <span class="text-muted">{{t 'generic.all'}}</span>
+    {{/if}}
+  </td>
+  <td data-title="{{dt.keys}}">
+    {{join-array model.keys}}
+  </td>
   <td data-title="{{dt.created}}">
-    {{date-from-now row.created}}
+    {{date-from-now model.created}}
   </td>
   <td data-title="{{dt.actions}} "class="actions">
     {{action-menu model=model}}
