@@ -20,7 +20,7 @@ export default Controller.extend({
         this.scheduleRefresh();
     }else{
         this.scheduleRefresh();
-      }
+    }
   },
 
   willDestroyElement() {
