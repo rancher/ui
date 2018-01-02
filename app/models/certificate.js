@@ -49,17 +49,17 @@ export default Resource.extend({
     // subjectAlternativeNames can be null:
     return (this.get('subjectAlternativeNames')||[])
       .slice()
-      .removeObject(this.get('CN'))
+      .removeObject(this.get('cn'))
       .filter((san) => {
         return (san+'').indexOf('@') === -1;
       });
-  }.property('CN','subjectAlternativeNames.[]'),
+  }.property('cn','subjectAlternativeNames.[]'),
 
   countableSans: function() {
     var sans = this.get('displaySans').slice();
-    if ( this.get('CN') )
+    if ( this.get('cn') )
     {
-      sans.pushObject(this.get('CN'));
+      sans.pushObject(this.get('cn'));
     }
 
     var commonBases = sans.filter((name) => {
@@ -69,12 +69,12 @@ export default Resource.extend({
     });
 
     return this.get('displaySans').slice().removeObjects(commonBases);
-  }.property('displaySans.[]','CN'),
+  }.property('displaySans.[]','cn'),
 
   displayDetailedName: function() {
     var name = (this.get('name') || '('+this.get('id')+')');
     var str = name;
-    var cn = this.get('CN');
+    var cn = this.get('cn');
     var sans = this.get('countableSans.length');
 
     var more = '';
@@ -97,5 +97,5 @@ export default Resource.extend({
     }
 
     return str;
-  }.property('id','name','CN','countableSans.length')
+  }.property('id','name','cn','countableSans.length')
 });
