@@ -19,7 +19,7 @@ export default Controller.extend({
     if(cluster.state==="inactive"){
         this.scheduleRefresh();
     }else{
-        this.scheduleRefresh();
+        this.send('cancel');
     }
   },
 
