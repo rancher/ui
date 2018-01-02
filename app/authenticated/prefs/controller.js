@@ -15,7 +15,7 @@ export default Controller.extend({
       //this.send('goToPrevious');
     },
     editPassword() {
-      get(this, 'modal').toggleModal('modal-edit-password');
+      get(this, 'modal').toggleModal('modal-edit-password', {user: get(this, 'model.account')});
     },
   },
 });

@@ -16,6 +16,10 @@ var User = Resource.extend({
     edit: function() {
       this.get('modalService').toggleModal('modal-edit-account', this);
     },
+
+    changePassword(password) {
+      this.doAction('changepassword', {newPassword: password});
+    }
   },
 
   availableActions: function() {

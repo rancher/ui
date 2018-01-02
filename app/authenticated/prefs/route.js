@@ -6,7 +6,7 @@ import Route from '@ember/routing/route';
 // import { loadScript } from 'ui/utils/load-script';
 import C from 'ui/utils/constants';
 // import fetch from 'ember-api-store/utils/fetch';
-import { get, set } from '@ember/object';
+import { get/* , set */ } from '@ember/object';
 
 export default Route.extend({
   session:     service(),
@@ -23,15 +23,11 @@ export default Route.extend({
   // },
 
   model(/*params, transition*/) {
-
-    var modelOut = EmberObject.create({
-      account: null,
-      // stripeCards: null,
-    });
-
-    return get(this, 'globalStore').find('user', 'admin', {forceReload: true}).then((user) => { // TODO 2.0 'user?me=true'
-      set(modelOut, 'account', user);
-      return modelOut;
+    return get(this, 'globalStore').find('user', null, {forceReload: true, filter: {me: true}}).then((user) => { // TODO 2.0 'user?me=true'
+      return EmberObject.create({
+        account: get(user, 'firstObject'), // dont like this
+        // stripeCards: null,
+      });
     });
 
     //only need to populate the passwords for the account right now
