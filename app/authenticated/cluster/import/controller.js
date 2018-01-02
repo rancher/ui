@@ -14,12 +14,13 @@ export default Controller.extend({
 
   refreshTimer: null,
   init() {
-    this._super(...arguments);
+     this._super(...arguments);
     let cluster = this.get('cluster');
-    if(cluster.state!=="inactive"){
-        this.send('cancel');
-    }
-    this.scheduleRefresh();
+    if(cluster.state==="inactive"){
+        this.scheduleRefresh();
+    }else{
+        this.scheduleRefresh();
+      }
   },
 
   willDestroyElement() {
