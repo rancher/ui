@@ -27,10 +27,25 @@
     </table>
 
     <div class="mt-10">
-      <button class="btn bg-link icon-btn p-0" {{action "addMember" "User"}} disabled={{if (eq filteredUsers.length 0) true}}>
-        <span class="darken"><i class="icon icon-plus text-small"/></span>
-        <span>{{t 'projectsPage.new.form.members.addUser'}}</span>
-      </button>
+      {{#if (and (eq filteredUsers.length 0) (eq access.provider 'local'))}}
+        {{#tooltip-element
+             type="tooltip-basic"
+             model=(t 'projectsPage.new.form.members.noAddUser')
+             tooltipTemplate='tooltip-static'
+             aria-describedby="tooltip-base"
+             tooltipFor="tooltipNoUsers"
+        }}
+          <button class="btn bg-link icon-btn p-0" disabled=true>
+            <span class="darken"><i class="icon icon-plus text-small"/></span>
+            <span>{{t 'projectsPage.new.form.members.addUser'}}</span>
+          </button>
+        {{/tooltip-element}}
+      {{else}}
+        <button class="btn bg-link icon-btn p-0" {{action "addMember" "User"}}>
+          <span class="darken"><i class="icon icon-plus text-small"/></span>
+          <span>{{t 'projectsPage.new.form.members.addUser'}}</span>
+        </button>
+      {{/if}}
 
       {{!-- TODO - 2.0 --}}
       <button class="btn bg-link icon-btn p-0" {{action "addMember" "Group"}} disabled="true">

@@ -45,6 +45,7 @@ const App = Application.extend({
           'session',
           'settings',
           'store',
+          'tooltip',
           'user-language',
           'user-theme',
         ],
