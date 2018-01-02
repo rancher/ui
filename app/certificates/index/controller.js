@@ -4,20 +4,14 @@ export default Controller.extend({
   sortBy: 'name',
   headers: [
     {
-      name:           'state',
-      sort:           ['sortState','name','id'],
-      translationKey: 'certificatesPage.index.table.header.state',
-      width:          125,
-    },
-    {
-      name:           'name',
-      sort:           ['name','id'],
+      name: 'name',
+      sort: ['name', 'id'],
       translationKey: 'certificatesPage.index.table.header.name',
     },
     {
       name:           'cn',
-      searchField:    ['CN'],
-      sort:           ['CN','id'],
+      searchField:    ['cn'],
+      sort:           ['cn','id'],
       translationKey: 'certificatesPage.index.table.header.domain',
     },
     {
@@ -25,6 +19,13 @@ export default Controller.extend({
       sort:           ['expiresDate','id'],
       translationKey: 'certificatesPage.index.table.header.expires',
       width:          120,
+    },
+    {
+      name: 'created',
+      sort: ['created', 'id'],
+      classNames: 'text-right pr-20',
+      searchField: 'created',
+      translationKey: 'certificatesPage.index.table.header.created',
     },
   ],
 });
