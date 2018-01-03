@@ -3,7 +3,6 @@
     <h1>{{t 'accountsPage.detail.header'}}</h1>
   </div>
   <div class="right-buttons">
-    {{!-- <button {{action "edit"}} type="button" class="btn bg-primary">{{t 'generic.edit'}}</button> --}}
     {{#link-to 'accounts.edit' model.user.id classNames="btn bg-primary"}}{{t 'generic.edit'}}{{/link-to}}
   </div>
 </section>
@@ -32,10 +31,8 @@
       <label>{{t 'accountsPage.detail.table.global.title'}}:</label>
     </div>
     <div class="col span-6 col-inline comma-list">
-      {{#each myGlobalRoles as |role index|}}
-        {{#if role.active}}
+      {{#each model.globalRoleBindings as |role index|}}
           <span>{{role.name}}</span>
-        {{/if}}
       {{else}}
         {{t 'accountsPage.detail.table.global.noRoles'}}
       {{/each}}
