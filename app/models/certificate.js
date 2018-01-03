@@ -1,101 +1,125 @@
 import { inject as service } from '@ember/service';
+import { get } from '@ember/object';
+import { computed } from '@ember/object'
 import Resource from 'ember-api-store/models/resource';
 
 export default Resource.extend({
   modalService: service('modal'),
+  intl: service(),
+
+  state: 'active',
+
   actions: {
-    edit: function() {
-      this.get('modalService').toggleModal('modal-edit-certificate', this);
+    edit() {
+      get(this, 'modalService').toggleModal('modal-edit-certificate', this);
     },
   },
-  availableActions: function() {
-    let l = this.get('links');
+
+  availableActions: computed('links.{update,remove}', function() {
+    let l = get(this, 'links');
 
     let choices = [
       { label: 'action.edit',       icon: 'icon icon-edit',           action: 'edit',         enabled: !!l.update },
       { divider: true },
-      { label: 'action.remove',     icon: 'icon icon-trash',          action: 'promptDelete', enabled: !!l.remove, altAction: 'delete' },
+      { label: 'action.remove',     icon: 'icon icon-trash',          action: 'promptDelete', enabled: !!l.remove, altAction: 'delete', bulkable: true },
       { divider: true },
       { label: 'action.viewInApi',  icon: 'icon icon-external-link',  action: 'goToApi',      enabled: true },
     ];
 
     return choices;
-  }.property('links.{update,remove}'),
+  }),
 
-  issuedDate: function() {
-    return new Date(this.get('issuedAt'));
-  }.property('issuedAt'),
+  issuedDate: computed('issuedAt', function() {
+    return new Date(get(this, 'issuedAt'));
+  }),
 
-  expiresDate: function() {
-    return new Date(this.get('expiresAt'));
-  }.property('expiresAt'),
+  expiresDate: computed('expiresAt', function() {
+    return new Date(get(this, 'expiresAt'));
+  }),
 
-  expiresSoon: function() {
-    var diff = (this.get('expiresDate')).getTime() - (new Date()).getTime();
+  expiresSoon: computed('expiresDate', function() {
+    var diff = (get(this, 'expiresDate')).getTime() - (new Date()).getTime();
     var days = diff/(86400*1000);
     return days <= 8;
-  }.property('expiresDate'),
+  }),
 
-  displayIssuer: function() {
-    return (this.get('issuer')||'').split(/,/)[0].replace(/^CN=/i,'');
-  }.property('issuer'),
+  displayIssuer: computed('issuer', function() {
+    return (get(this, 'issuer')||'').split(/,/)[0].replace(/^CN=/i,'');
+  }),
 
-  isValid: function() {
-    var now = new Date();
-    return this.get('expiresDate') > now && this.get('issuedDate') < now;
-  }.property('expiresDate','issuedDate'),
-
-  displaySans: function() {
+  // All the SANs that aren't the CN
+  displaySans: computed('cn','subjectAlternativeNames.[]', function() {
     // subjectAlternativeNames can be null:
-    return (this.get('subjectAlternativeNames')||[])
+    return (get(this, 'subjectAlternativeNames').split(',')||[])
       .slice()
-      .removeObject(this.get('cn'))
+      .removeObject(get(this, 'cn'))
       .filter((san) => {
         return (san+'').indexOf('@') === -1;
       });
-  }.property('cn','subjectAlternativeNames.[]'),
+  }),
 
-  countableSans: function() {
-    var sans = this.get('displaySans').slice();
-    if ( this.get('cn') )
+  // The useful SANs; Removes "domain.com" when the cert is for "www.domain.com"
+  countableSans: computed('displaySans.[]','cn', function() {
+    var sans = get(this, 'displaySans').slice();
+    if ( get(this, 'cn') )
     {
-      sans.pushObject(this.get('cn'));
+      sans.pushObject(get(this, 'cn'));
     }
 
     var commonBases = sans.filter((name) => {
       return name.indexOf('*.') === 0 || name.indexOf('www.') === 0;
     }).map((name) => {
-      return name.substr(2);
+      return name.substr(name.indexOf('.'));
     });
 
-    return this.get('displaySans').slice().removeObjects(commonBases);
-  }.property('displaySans.[]','cn'),
+    return get(this, 'displaySans').slice().removeObjects(commonBases);
+  }),
 
-  displayDetailedName: function() {
-    var name = (this.get('name') || '('+this.get('id')+')');
-    var str = name;
-    var cn = this.get('cn');
-    var sans = this.get('countableSans.length');
+  // "cn.com and 5 others" (for table view)
+  displayDomainName: computed('cn','countableSans.length', function() {
+    const intl = get(this, 'intl');
+    const cn = get(this, 'cn');
+    const sans = get(this, 'countableSans.length');
+    const wildcard = cn.substr(0,1) === '*';
+
+    let key;
+    if ( wildcard ) {
+      if ( sans ) {
+        key = 'certificatesPage.domainNames.wildcardWithSan'
+      } else {
+        key = 'certificatesPage.domainNames.wildcardSingle'
+      }
+    } else if ( sans ) {
+      key = 'certificatesPage.domainNames.withSan';
+    } else {
+      key = 'certificatesPage.domainNames.single';
+    }
+
+    return intl.t(key, { cn, sans });
+  }),
+
+  // "user-provided-name (cn-if-different-than-user-name.com + 5 others)"
+  displayDetailedName: computed('displayName','cn','countableSans.length', function() {
+    var name = get(this, 'displayName');
+    var cn = get(this, 'cn');
+    var sans = get(this, 'countableSans.length');
+    var out = name;
 
     var more = '';
-    if ( cn )
-    {
-      if ( cn !== name )
-      {
+    if ( cn ) {
+      if ( cn !== name ) {
         more += cn;
       }
 
-      if ( sans > 0 )
-      {
+      if ( sans > 0 ) {
         more += ' + ' + sans + ' other' + (sans === 1 ? '' : 's');
       }
     }
 
-    if ( more )
-    {
-      str += ' (' + more + ')';
+    if ( more ) {
+      out += ' (' + more + ')';
     }
 
-    return str;
-  }.property('id','name','cn','countableSans.length')
+    return out;
+  }),
 });

@@ -1,5 +1,5 @@
 import { later, cancel } from '@ember/runloop';
-import { computed, get } from '@ember/object';
+import { computed, get, set } from '@ember/object';
 import { alias, gt } from '@ember/object/computed';
 
 import Resource from 'ember-api-store/models/resource';
@@ -29,12 +29,12 @@ var Workload = Resource.extend(DisplayImage, StateCounts, EndpointPorts, {
   },
 
   lcType: computed('type', function() {
-    return (this.get('type')||'').toLowerCase();
+    return (get(this, 'type')||'').toLowerCase();
   }),
 
   actions: {
     editDns() {
-      this.get('modalService').toggleModal('modal-edit-dns', this);
+      get(this, 'modalService').toggleModal('modal-edit-dns', this);
     },
 
     activate() {
@@ -54,7 +54,7 @@ var Workload = Resource.extend(DisplayImage, StateCounts, EndpointPorts, {
     },
 
     rollback() {
-      this.get('modalService').toggleModal('modal-rollback-service', {
+      get(this, 'modalService').toggleModal('modal-rollback-service', {
         originalModel: this
       });
     },
@@ -75,81 +75,81 @@ var Workload = Resource.extend(DisplayImage, StateCounts, EndpointPorts, {
     },
 
     promptStop() {
-      this.get('modalService').toggleModal('modal-container-stop', {
+      get(this, 'modalService').toggleModal('modal-container-stop', {
         model: [this]
       });
     },
 
     scaleUp() {
-      let scale = this.get('scale');
-      let max = this.get('scaleMax');
-      scale += this.get('scaleIncrement')||1;
+      let scale = get(this, 'scale');
+      let max = get(this, 'scaleMax');
+      scale += get(this, 'scaleIncrement')||1;
       if ( max ) {
         scale = Math.min(scale, max);
       }
-      this.set('scale', scale);
+      set(this, 'scale', scale);
       this.saveScale();
     },
 
     scaleDown() {
-      let scale = this.get('scale');
-      let min = this.get('scaleMin') || 0;
-      scale -= this.get('scaleIncrement')||1;
+      let scale = get(this, 'scale');
+      let min = get(this, 'scaleMin') || 0;
+      scale -= get(this, 'scaleIncrement')||1;
       scale = Math.max(scale, min);
-      this.set('scale', scale);
+      set(this, 'scale', scale);
       this.saveScale();
     },
 
     upgrade(upgradeImage='false') {
       var route = 'containers.run';
-      if ( this.get('lcType') === 'loadbalancerservice' ) {
+      if ( get(this, 'lcType') === 'loadbalancerservice' ) {
         route = 'balancers.run';
       }
 
-      this.get('router').transitionTo(route, {queryParams: {
-        serviceId: this.get('id'),
+      get(this, 'router').transitionTo(route, {queryParams: {
+        serviceId: get(this, 'id'),
         upgrade: true,
         upgradeImage: upgradeImage,
-        stackId: this.get('stackId'),
+        stackId: get(this, 'stackId'),
       }});
     },
 
     clone() {
       var route;
-      switch ( this.get('lcType') )
+      switch ( get(this, 'lcType') )
       {
         case 'service':             route = 'containers.run'; break;
         case 'scalinggroup':        route = 'containers.run'; break;
         case 'dnsservice':          route = 'dns.new';        break;
         case 'loadbalancerservice': route = 'balancers.run';  break;
         case 'externalservice':     route = 'dns.new';        break;
-        default: return void this.send('error','Unknown service type: ' + this.get('type'));
+        default: return void this.send('error','Unknown service type: ' + get(this, 'type'));
       }
 
-      this.get('router').transitionTo(route, {queryParams: {
-        serviceId: this.get('id'),
-        stackId: this.get('stackId'),
+      get(this, 'router').transitionTo(route, {queryParams: {
+        serviceId: get(this, 'id'),
+        stackId: get(this, 'stackId'),
       }});
     },
 
     addSidekick() {
-      this.get('router').transitionTo('containers.run', {queryParams: {
-        serviceId: this.get('id'),
+      get(this, 'router').transitionTo('containers.run', {queryParams: {
+        serviceId: get(this, 'id'),
         addSidekick: true,
-        launchConfigIndex: (this.get('secondaryLaunchConfigs')||[]).length
+        launchConfigIndex: (get(this, 'secondaryLaunchConfigs')||[]).length
       }});
     },
 
     shell() {
-      this.get('modalService').toggleModal('modal-shell', {
-        model: this.get('containerForShell'),
+      get(this, 'modalService').toggleModal('modal-shell', {
+        model: get(this, 'containerForShell'),
         escToClose: false,
       });
     },
 
     popoutShell() {
-      let proj = this.get('scope.current.id');
-      let id = this.get('containerForShell.id');
+      let proj = get(this, 'scope.current.id');
+      let id = get(this, 'containerForShell.id');
       later(() => {
         window.open(`//${window.location.host}/env/${proj}/infra/console?instanceId=${id}&isPopup=true`, '_blank', "toolbars=0,width=900,height=700,left=200,top=200");
       });
@@ -158,36 +158,36 @@ var Workload = Resource.extend(DisplayImage, StateCounts, EndpointPorts, {
 
   scaleTimer: null,
   saveScale() {
-    if ( this.get('scaleTimer') )
+    if ( get(this, 'scaleTimer') )
     {
-      cancel(this.get('scaleTimer'));
+      cancel(get(this, 'scaleTimer'));
     }
 
     var timer = later(this, function() {
       this.save().catch((err) => {
-        this.get('growl').fromError('Error updating scale',err);
+        get(this, 'growl').fromError('Error updating scale',err);
       });
     }, 500);
 
-    this.set('scaleTimer', timer);
+    set(this, 'scaleTimer', timer);
   },
 
   availableActions: function() {
-    let a = this.get('actionLinks');
-    let l = this.get('links');
+    let a = get(this, 'actionLinks');
+    let l = get(this, 'links');
 
-    let isReal = this.get('isReal');
-    let canHaveContainers = this.get('canHaveContainers');
-    let containerForShell = this.get('containerForShell');
-    let canCleanup = !!a.garbagecollect && this.get('canCleanup');
+    let isReal = get(this, 'isReal');
+    let canHaveContainers = get(this, 'canHaveContainers');
+    let containerForShell = get(this, 'containerForShell');
+    let canCleanup = !!a.garbagecollect && get(this, 'canCleanup');
 
     let choices = [
       { label: 'action.edit',           icon: 'icon icon-edit',             action: 'upgrade',        enabled: !!l.update &&  isReal },
       { label: 'action.edit',           icon: 'icon icon-pencil',           action: 'editDns',        enabled: !!l.update && !isReal },
-      { label: 'action.rollback',       icon: 'icon icon-history',          action: 'rollback',       enabled: !!a.rollback && isReal && !!this.get('previousRevisionId') },
+      { label: 'action.rollback',       icon: 'icon icon-history',          action: 'rollback',       enabled: !!a.rollback && isReal && !!get(this, 'previousRevisionId') },
       { label: 'action.garbageCollect', icon: 'icon icon-garbage',          action: 'garbageCollect', enabled: canCleanup},
       { label: 'action.clone',          icon: 'icon icon-copy',             action: 'clone',          enabled: true},
-      { label: 'action.addSidekick',    icon: 'icon icon-plus-circle',      action: 'addSidekick',    enabled: this.get('canHaveSidekicks') },
+      { label: 'action.addSidekick',    icon: 'icon icon-plus-circle',      action: 'addSidekick',    enabled: get(this, 'canHaveSidekicks') },
       { divider: true },
       { label: 'action.execute',        icon: 'icon icon-terminal',         action: 'shell',          enabled: !!containerForShell, altAction:'popoutShell'},
 //      { label: 'action.logs',           icon: 'icon icon-file',             action: 'logs',           enabled: !!a.logs, altAction: 'popoutLogs' },
@@ -208,13 +208,13 @@ var Workload = Resource.extend(DisplayImage, StateCounts, EndpointPorts, {
   ),
 
   sortName: function() {
-    return sortableNumericSuffix(this.get('displayName'));
+    return sortableNumericSuffix(get(this, 'displayName'));
   }.property('displayName'),
 
   linkedServices: function() {
-    let allWorkloads = this.get('allWorkloads');
-    let stack = this.get('stack');
-    return (this.get('serviceLinks')||[]).map((link) => {
+    let allWorkloads = get(this, 'allWorkloads');
+    let stack = get(this, 'stack');
+    return (get(this, 'serviceLinks')||[]).map((link) => {
       return {
         name: link.name,
         alias: link.alias,
@@ -224,8 +224,8 @@ var Workload = Resource.extend(DisplayImage, StateCounts, EndpointPorts, {
   }.property('serviceLinks.@each.{name,alias}'),
 
   combinedState: function() {
-    var service = this.get('state');
-    var health = this.get('healthState');
+    var service = get(this, 'state');
+    var health = get(this, 'healthState');
 
     if ( service === 'active' && health ) {
       // Return the health state for active services
@@ -237,60 +237,60 @@ var Workload = Resource.extend(DisplayImage, StateCounts, EndpointPorts, {
   }.property('state', 'healthState'),
 
   isGlobalScale: function() {
-    return (this.get('launchConfig.labels')||{})[C.LABEL.SCHED_GLOBAL] + '' === 'true';
+    return (get(this, 'launchConfig.labels')||{})[C.LABEL.SCHED_GLOBAL] + '' === 'true';
   }.property('launchConfig.labels'),
 
   canScaleUp: function() {
-    if ( !this.get('canScale') ) {
+    if ( !get(this, 'canScale') ) {
       return false;
     }
 
-    let scale = this.get('scale');
-    let max = this.get('scaleMax');
+    let scale = get(this, 'scale');
+    let max = get(this, 'scaleMax');
     if ( !max ) {
       return true;
     }
 
-    scale += this.get('scaleIncrement')||1;
+    scale += get(this, 'scaleIncrement')||1;
     return scale <= max;
   }.property('canScale','scaleMax','scaleIncrement','scale'),
 
   canScaleDown: function() {
-    if ( !this.get('canScale') ) {
+    if ( !get(this, 'canScale') ) {
       return false;
     }
 
-    let scale = this.get('scale');
-    let min = this.get('scaleMin')||1;
+    let scale = get(this, 'scale');
+    let min = get(this, 'scaleMin')||1;
 
-    scale -= this.get('scaleIncrement')||1;
+    scale -= get(this, 'scaleIncrement')||1;
     return scale >= min;
   }.property('canScale','scaleMin','scaleIncrement','scale'),
 
   displayScale: function() {
-    if ( this.get('isGlobalScale') ) {
-      return this.get('intl').t('servicePage.globalScale', {scale: this.get('scale')});
+    if ( get(this, 'isGlobalScale') ) {
+      return get(this, 'intl').t('servicePage.globalScale', {scale: get(this, 'scale')});
     } else {
-      return this.get('scale');
+      return get(this, 'scale');
     }
   }.property('scale','isGlobalScale'),
 
   canHaveContainers: function() {
-    if ( this.get('isReal') || this.get('isSelector') ) {
+    if ( get(this, 'isReal') || get(this, 'isSelector') ) {
       return true;
     }
 
     return [
       'kubernetesservice',
       'composeservice',
-    ].includes(this.get('lcType'));
+    ].includes(get(this, 'lcType'));
   }.property('isReal','isSelector','lcType'),
 
   isReal: true,
   isSelector: false,
 
   canHaveSidekicks: function() {
-    return ['service','scalinggroup'].includes(this.get('lcType'));
+    return ['service','scalinggroup'].includes(get(this, 'lcType'));
   }.property('lcType'),
 
   hasPorts: alias('isReal'),
@@ -300,7 +300,7 @@ var Workload = Resource.extend(DisplayImage, StateCounts, EndpointPorts, {
   canScale: alias('isReal'),
 
   realButNotLb: function() {
-    return this.get('isReal') && !this.get('isBalancer');
+    return get(this, 'isReal') && !get(this, 'isBalancer');
   }.property('isReal','isBalancer'),
 
   canHaveLinks: alias('realButNotLb'),
@@ -314,15 +314,15 @@ var Workload = Resource.extend(DisplayImage, StateCounts, EndpointPorts, {
       'service',
       'scalinggroup',
       'externalservice',
-    ].includes(this.get('lcType'));
+    ].includes(get(this, 'lcType'));
   }.property('lcType'),
 
   isBalancer: function() {
-    return ['loadbalancerservice'].indexOf(this.get('lcType')) >= 0;
+    return ['loadbalancerservice'].indexOf(get(this, 'lcType')) >= 0;
   }.property('lcType'),
 
   canBalanceTo: function() {
-    if ( this.get('lcType') === 'externalservice' && this.get('hostname') !== null) {
+    if ( get(this, 'lcType') === 'externalservice' && get(this, 'hostname') !== null) {
       return false;
     }
 
@@ -330,7 +330,7 @@ var Workload = Resource.extend(DisplayImage, StateCounts, EndpointPorts, {
   }.property('lcType','hostname'),
 
   isK8s: function() {
-    return ['kubernetesservice'].indexOf(this.get('lcType')) >= 0;
+    return ['kubernetesservice'].indexOf(get(this, 'lcType')) >= 0;
   }.property('lcType'),
 
   displayType: function() {
@@ -346,8 +346,8 @@ var Workload = Resource.extend(DisplayImage, StateCounts, EndpointPorts, {
       'service'
     ];
 
-    let type = this.get('lcType');
-    if ( this.get('isSelector') ) {
+    let type = get(this, 'lcType');
+    if ( get(this, 'isSelector') ) {
       type = 'selectorservice';
     }
 
@@ -356,14 +356,14 @@ var Workload = Resource.extend(DisplayImage, StateCounts, EndpointPorts, {
     }
 
     if ( type === 'externalservice' ) {
-      if ( this.get('hostname') ) {
+      if ( get(this, 'hostname') ) {
         type += '-host';
       } else {
         type += '-ip';
       }
     }
 
-    return this.get('intl').t('servicePage.type.'+ type);
+    return get(this, 'intl').t('servicePage.type.'+ type);
   }.property('lcType','isSelector','intl.locale'),
 
   hasSidekicks: gt('containers.length', 1),
@@ -373,17 +373,17 @@ var Workload = Resource.extend(DisplayImage, StateCounts, EndpointPorts, {
   }.property('lcType'),
 
   memoryReservationBlurb: computed('launchConfig.memoryReservation', function() {
-    if ( this.get('launchConfig.memoryReservation') ) {
-      return formatSi(this.get('launchConfig.memoryReservation'), 1024, 'iB', 'B');
+    if ( get(this, 'launchConfig.memoryReservation') ) {
+      return formatSi(get(this, 'launchConfig.memoryReservation'), 1024, 'iB', 'B');
     }
   }),
 
   containerForShell: function() {
-    return this.get('pods').findBy('combinedState','running');
+    return get(this, 'pods').findBy('combinedState','running');
   }.property('pods.@each.combinedState'),
 
   canCleanup: function() {
-    return !!this.get('pods').findBy('desired',false);
+    return !!get(this, 'pods').findBy('desired',false);
   }.property('pods.@each.desired'),
 });
 
