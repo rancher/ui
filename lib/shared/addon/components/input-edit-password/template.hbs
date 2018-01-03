@@ -7,11 +7,12 @@
       </div>
       <div class="col span-12">
         <label class="acc-label">{{t 'modalEditPassword.confirm'}}</label>
-        {{input type="password" value=confirm classNames="form-control"}}
+        {{input type="password" value=confirm classNames="form-control" focusOut=(action 'blurredConfirm') }}
       </div>
     </div>
   </div>
   <div class="footer-actions">
-    {{save-cancel saveDisabled=canSave save="save" cancelDisabled=true createLabel='generic.save'}}
+    {{top-errors errors=errors}}
+    {{save-cancel saveDisabled=saveDisabled save="save" editing=true cancelDisabled=true}}
   </div>
 </form>
