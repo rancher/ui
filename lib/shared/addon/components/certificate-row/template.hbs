@@ -1,24 +1,20 @@
-<td data-title="{{t 'generic.name'}}:" class="force-wrap">
-  {{#link-to "certificates.detail" model.id}}{{model.displayName}}{{/link-to}}
+<td class="row-check" valign="middle" style="padding-top: 2px;">
+  {{check-box nodeId=model.id}}
 </td>
-<td data-title="{{t 'certificatesPage.table.cn'}}:">
-  {{#if model.cn}}
-    {{model.cn}}
-    {{#if model.countableSans.length}}
-      + {{model.countableSans.length}} other{{if (eq model.countableSans.length 1) "" "s"}}
-    {{/if}}
-  {{else}}
-    <span class="text-muted">{{t 'generic.none'}}</span>
-  {{/if}}
+<td data-title="{{dt.state}}" class="state">
+  {{badge-state model=model}}
 </td>
-<td data-title="certificatesPage.table.expiresDate:">
+<td data-title="{{dt.name}}" class="force-wrap">
+  {{model.displayName}}
+</td>
+<td data-title="{{dt.cn}}">
+  {{{model.displayDomainName}}}
+</td>
+<td data-title="{{dt.expires}}">
   <span class="{{if model.expiresSoon "text-bold text-danger"}}">
     {{date-from-now model.expiresDate}}
   </span>
 </td>
-<td data-title="{{t 'generic.created'}}:" class="text-right pr-20">
-  {{date-calendar model.created}}
-</td>
-<td data-title="{{t 'generic.actions'}}:" class="actions">
+<td data-title="{{dt.actions}}" class="actions">
   {{action-menu model=model}}
 </td>

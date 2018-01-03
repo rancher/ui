@@ -7,12 +7,11 @@ import Controller, { inject as controller } from '@ember/controller';
 const NAMESPACE = 'namespace';
 
 export default Controller.extend({
+  prefs: service(),
+  scope: service(),
   projectController: controller('authenticated.project'),
 
   sortBy: 'name',
-  prefs: service(),
-  scope: service(),
-
   queryParams: ['sortBy'],
   group: alias('projectController.group'),
   groupTableBy: alias('projectController.groupTableBy'),
@@ -31,11 +30,6 @@ export default Controller.extend({
       name: 'name',
       sort: ['name','id'],
       translationKey: 'generic.name',
-    },
-    {
-      name: 'description',
-      translationKey: 'generic.description',
-      sort: ['description','name','id'],
     },
     {
       name: 'namespace',

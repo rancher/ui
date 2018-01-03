@@ -78,12 +78,8 @@ Router.map(function() {
     // Per-Project
     this.route('project', {path: '/p/:project_id'}, function() {
       this.route('index', {path: '/'});
-      this.route('apikeys', {path: '/api/keys'}, function() {
-        this.route('account', {path: '/account'});
-        this.route('project', {path: '/project'});
-      });
-      this.route('waiting');
 
+      // Workload
       this.route('containers', {resetNamespace: true}, function() {
         this.route('run', {path: '/run'});
         this.route('index', {path: '/'});
@@ -109,46 +105,8 @@ Router.map(function() {
       });
 
       this.route('workload', {path: '/workload/:workload_id', resetNamespace: true});
-
-      this.route('stack', {path: '/stack/:stack_id', resetNamespace: true}, function() {
-        this.route('index', {path: '/'});
-        this.route('code',  {path: '/code'});
-        this.route('graph', {path: '/graph'});
-        this.route('chart', {path: '/chart'});
-      });
-
       this.route('new-stack', {path: '/import-yaml', resetNamespace: true});
 
-      this.route('hosts', {path: '/hosts', resetNamespace: true}, function() {
-        this.route('index', {path: '/'});
-        this.route('host', {path: '/:host_id', resetNamespace: true});
-      });
-
-      // Infrastructure
-      this.route('infrastructure-tab', {path: '/infra', resetNamespace: true}, function() {
-        // Popup Routes
-        this.route('console', {path: '/console', resetNamespace: true});
-        this.route('container-log', {path: '/container-log', resetNamespace: true});
-
-        this.route('certificates', {resetNamespace: true}, function() {
-          this.route('new', {path: '/add'});
-          this.route('index', {path: '/'});
-          this.route('detail', {path: '/:certificate_id'});
-        });
-
-        this.route('registries', {path: '/registries', resetNamespace: true}, function() {
-          this.route('new', { path: '/add' });
-          this.route('index', {path: '/'});
-        });
-
-        this.route('secrets', {path: '/secrets', resetNamespace: true}, function() {
-          this.route('new', {path: '/add'});
-          this.route('index', {path: '/'});
-          this.route('detail', {path: '/:secret_id'}, function() {
-            this.route('edit');
-          });
-        });
-      });
 
       // Catalog
       this.route('apps-tab', {path: '/apps', resetNamespace: true}, function() {
@@ -160,17 +118,56 @@ Router.map(function() {
         });
       });
 
-      this.route('help');
-
+      // Resources
       this.route('apikeys', {path: '/api/keys'}, function() {
         this.route('account', {path: '/account'});
         this.route('project', {path: '/project'});
+      });
+
+      this.route('stack', {path: '/stack/:stack_id', resetNamespace: true}, function() {
+        this.route('index', {path: '/'});
+        this.route('code',  {path: '/code'});
+        this.route('graph', {path: '/graph'});
+        this.route('chart', {path: '/chart'});
+      });
+
+      this.route('hosts', {path: '/hosts', resetNamespace: true}, function() {
+        this.route('index', {path: '/'});
+        this.route('host', {path: '/:host_id', resetNamespace: true});
+      });
+
+      this.route('certificates', {path: '/certificates', resetNamespace: true}, function() {
+        this.route('new', {path: '/add'});
+        this.route('index', {path: '/'});
+        this.route('detail', {path: '/:certificate_id'}, function() {
+          this.route('edit');
+        });
+      });
+
+      this.route('registries', {path: '/registries', resetNamespace: true}, function() {
+        this.route('new', { path: '/add' });
+        this.route('index', {path: '/'});
+      });
+
+      this.route('secrets', {path: '/secrets', resetNamespace: true}, function() {
+        this.route('new', {path: '/add'});
+        this.route('index', {path: '/'});
+        this.route('detail', {path: '/:secret_id'}, function() {
+          this.route('edit');
+        });
       });
 
       this.route('hooks', {path: '/api/hooks'}, function() {
         this.route('new-receiver', {path: '/add-receiver'});
         this.route('edit-receiver', {path: '/receiver/:receiver_id'});
       });
+
+      this.route('help');
+
+      // Popup Routes
+      this.route('console', {path: '/console', resetNamespace: true});
+      this.route('container-log', {path: '/container-log', resetNamespace: true});
+
     });
 
     // End: Authenticated

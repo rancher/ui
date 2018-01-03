@@ -1,31 +1,44 @@
-import Controller from '@ember/controller';
+import { alias } from '@ember/object/computed';
+import { get } from '@ember/object'
+import Controller, { inject as controller } from '@ember/controller';
 
 export default Controller.extend({
+  projectController: controller('authenticated.project'),
+
   sortBy: 'name',
+  group: alias('projectController.group'),
+  groupTableBy: alias('projectController.groupTableBy'),
+
   headers: [
+    {
+      name:           'state',
+      sort:           ['sortState','name','id'],
+      translationKey: 'generic.state',
+      width:          125,
+    },
     {
       name: 'name',
       sort: ['name', 'id'],
-      translationKey: 'certificatesPage.index.table.header.name',
+      translationKey: 'generic.name',
     },
     {
       name:           'cn',
       searchField:    ['cn'],
       sort:           ['cn','id'],
-      translationKey: 'certificatesPage.index.table.header.domain',
+      translationKey: 'certificatesPage.domainNames.labelText',
     },
     {
       name:           'expires',
       sort:           ['expiresDate','id'],
-      translationKey: 'certificatesPage.index.table.header.expires',
+      translationKey: 'certificatesPage.expires',
       width:          120,
     },
-    {
-      name: 'created',
-      sort: ['created', 'id'],
-      classNames: 'text-right pr-20',
-      searchField: 'created',
-      translationKey: 'certificatesPage.index.table.header.created',
-    },
   ],
+
+  rows: function() {
+    const proj = get(this, 'model.projectCerts').slice();
+    const ns = get(this, 'model.namespacedCerts').slice();
+    const out = proj.concat(ns);
+    return out;
+  }.property('model.projectCerts.[]','model.namespacedCerts.[]'),
 });

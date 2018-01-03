@@ -10,19 +10,19 @@ export default Resource.extend({
   state: 'active',
 
   actions: {
-    edit: function(act) {
-      this.get('router').transitionTo('secrets.detail.edit', this.get('id'));
+    edit() {
+      get(this, 'router').transitionTo('secrets.detail.edit', get(this, 'id'));
     },
   },
 
   keys: computed('data', function() {
-    return Object.keys(get(this, 'data')).sort();
+    return Object.keys(get(this, 'data')||{}).sort();
   }),
 
   firstKey: alias('keys.firstObject'),
 
-  availableActions: function() {
-    var l = this.get('links');
+  availableActions: computed('links.remove', function() {
+    var l = get(this, 'links');
 
     var choices = [
       { label: 'action.edit',       icon: 'icon icon-edit',           action: 'edit',         enabled: !!l.update },
@@ -33,5 +33,5 @@ export default Resource.extend({
     ];
 
     return choices;
-  }.property('l.{remove}'),
+  }),
 });

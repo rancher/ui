@@ -22,36 +22,7 @@
   }}
 {{/if}}
 
-<div class="row">
-  <div class="col span-6" style="min-height: 106px;">
-    <label class="acc-label">{{t 'newSecret.scope.label'}}</label>
-    {{#if isNew}}
-      <div class="radio">
-        <label>{{radio-button selection=scope value="project"}}&nbsp;{{t 'newSecret.scope.project'}}</label>
-      </div>
-      <div class="radio">
-        <label>{{radio-button selection=scope value="namespace"}}&nbsp;{{t 'newSecret.scope.namespace'}}{{if (eq scope "namespace") ':'}}</label>
-      </div>
-    {{else}}
-      <div>
-        {{#if model.namespace}}
-          {{t 'newSecret.scope.namespace'}}: {{model.namespace.displayName}}
-        {{else}}
-          {{t 'newSecret.scope.project'}}
-        {{/if}}
-      </div>
-    {{/if}}
-  </div>
-
-  {{#if (and isNew (eq scope "namespace"))}}
-    <div class="col span-6 box">
-      {{form-namespace
-        namespace=namespace
-        errors=namespaceErrors
-      }}
-    </div>
-  {{/if}}
-</div>
+{{optionally-namespaced scope=scope mode=mode namespace=namespace model=model}}
 
 <div class="box mt-10">
   <label class="acc-label">{{t 'newSecret.values.label'}}</label>
@@ -61,7 +32,7 @@
     addInitialEmptyRow=true
     base64Value=true
     concealValue=true
-    editing=notIsView
+    editing=notView
     changed=(action "updateData")
   }}
 </div>
