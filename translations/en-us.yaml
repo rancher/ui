@@ -1140,6 +1140,12 @@ servicePage:
         placeholder: e.g. website
       description:
         placeholder: e.g. Balancer for mycompany.com
+  newIngress:
+    form:
+      name:
+        placeholder: e.g. website
+      description:
+        placeholder: e.g. Ingress for mycompany.com
   portsTab:
     title: Ports
     detail: 'Ports mapped from a host IP to the listening ports of a container.'
@@ -1858,6 +1864,38 @@ formBalancerConfig:
     See <a href="https://cbonte.github.io/haproxy-dconv/1.6/configuration.html" target="_blank" rel="nofollow noopener noreferrer">haproxy documentation</a> fore more info about specific options that can go into the the config file.  When overriding the <code>backend</code> or similar lines which include the IP address of the target container, use <code>$IP</code> where the address goes and {appName} will generate the appropriate line(s).
   config:
     prompt: Custom haproxy.cfg content
+
+formIngress:
+  defaultBackend:
+    label: Set this rule as default backend
+  label: Rules
+  addRuleLabel: Add Rule
+  removeRuleLabel: Remove this Rule
+  noRules: No Rules
+  host:
+    label: Request Host
+    placeholder: "e.g. example.com"
+  backendType:
+    label: Backend Type
+  mode:
+    workload: Workload
+    service: DNS Record
+formIngressBackends:
+  label: Target Backends
+  noRules: No Backends
+  addServiceLabel:  Add a DNS Record
+  addWorkloadLabel: Add a Service
+  service:
+    label: service
+  workload:
+    label: workload
+  targetPort:
+    label: Port
+    placeholder: e.g. 80
+  path:
+    label: Path
+    placeholder: e.g. /foo
+  target: Target
 
 formBalancerListeners:
   label: Listeners & Target Rules
@@ -3522,6 +3560,12 @@ modalWelcome:
   header: Welcome to {appName}!
   closeModal: Got It
 
+newIngress:
+  header:
+    add: Add Ingress
+    edit: Edit Ingress
+  error:
+    noRules: "You must have one or more rules"
 newBalancer:
   header:
     add: Add Load Balancer
@@ -3877,6 +3921,8 @@ schema:
   inputService:
     prompt: Choose a Service...
     custom: Custom
+  inputDnsRecord:
+    prompt: Choose a DNS Record...
   inputSecret:
     prompt: Choose a Secret...
 
@@ -4098,6 +4144,7 @@ nav:
     tab: Workloads
     systemTab: System
     balancers: Balancers
+    ingresses: Ingresses
     containers: Workloads
     dns: DNS
     volumes: Volumes
@@ -4105,6 +4152,7 @@ nav:
     deploy: Deploy
     addContainer: Add Container
     addBalancer: Add Balancer
+    addIngress: Add Ingress
     addDns: Add Record
     addVolume: Add Volume
     importCompose: Import from YAML

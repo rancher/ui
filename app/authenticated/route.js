@@ -307,7 +307,7 @@ export default Route.extend(Preload, {
     },
 
     gotoA() { this._gotoRoute('apps-tab.index'); },
-    gotoB() { this._gotoRoute('balancers.index'); },
+    gotoB() { this._gotoRoute('ingresses.index'); },
     gotoD() { this._gotoRoute('dns.index'); },
     gotoE() { this._gotoRoute('global-admin.clusters.index', false); },
     gotoH() { this._gotoRoute('hosts.index'); },

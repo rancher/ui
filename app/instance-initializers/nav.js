@@ -8,7 +8,7 @@ const rootNav = [
     localizedLabel: 'nav.containers.tab',
     route: 'authenticated.project.index',
     ctx: [getProjectId],
-    moreCurrentWhen: ['containers','balancers','dns','volumes'],
+    moreCurrentWhen: ['containers','ingresses','dns','volumes'],
   },
 
   {

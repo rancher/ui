@@ -28,6 +28,7 @@ export default Route.extend(Preload,{
     return this.loadSchemas('store').then(() =>  {
       return PromiseAll([
         this.preload('workload'),
+        this.preload('dnsRecord'),
         this.preload('namespace'),
         this.preload('pod'),
         this.preload('machine'),

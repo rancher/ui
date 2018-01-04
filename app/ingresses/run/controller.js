@@ -1,0 +1,17 @@
+import Controller from '@ember/controller';
+
+export default Controller.extend({
+  queryParams: ['id', 'upgrade'],
+  id: null,
+  upgrade: null,
+
+  actions: {
+    done() {
+      this.send('goToPrevious', 'ingresses.index');
+    },
+
+    cancel() {
+      this.send('goToPrevious', 'ingresses.index');
+    },
+  },
+});

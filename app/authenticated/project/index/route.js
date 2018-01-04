@@ -2,7 +2,7 @@ import Route from '@ember/routing/route';
 import C from 'ui/utils/constants';
 
 const DEFAULT_ROUTE = 'containers';
-const VALID_ROUTES = [DEFAULT_ROUTE,'scaling-groups','balancers', 'dns','volumes'];
+const VALID_ROUTES = [DEFAULT_ROUTE,'scaling-groups','ingresses', 'dns','volumes'];
 
 export default Route.extend({
   redirect() {

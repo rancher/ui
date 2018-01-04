@@ -227,23 +227,6 @@
     {{/if}}
 
     {{#if service.lbConfig}}
-      {{#accordion-list-item
-        title=(t 'formBalancerRules.label')
-        detail=(t 'formBalancerRules.detail')
-        status=(t 'pagination.rule' pages=(if rules.length 1 0) count=rules.length)
-        statusClass=(if rules.length 'bg-success' 'text-muted')
-        expandAll=al.expandAll
-        expand=(action expandFn)
-        componentName='sortable-table'
-        as |parent|
-      }}
-        {{form-balancer-listeners
-          service=service
-          errors=ruleErrors
-          editing=false
-        }}
-      {{/accordion-list-item}}
-
       {{#if service.isBalancer}}
         {{#accordion-list-item
           title=(t 'servicePage.certsTab.title')
