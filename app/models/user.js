@@ -1,8 +1,10 @@
 import { inject as service } from '@ember/service';
 import Resource from 'ember-api-store/models/resource';
+import { get, computed } from '@ember/object';
 
 var User = Resource.extend({
   modalService: service('modal'),
+  router: service(),
 
   actions: {
     deactivate() {
@@ -14,7 +16,7 @@ var User = Resource.extend({
     },
 
     edit: function() {
-      this.get('modalService').toggleModal('modal-edit-account', this);
+      get(this, 'router').transitionTo('global-admin.accounts.edit', get(this, 'id'));
     },
 
     changePassword(password) {
@@ -22,7 +24,7 @@ var User = Resource.extend({
     }
   },
 
-  availableActions: function() {
+  availableActions: computed('actionLinks.{activate,deactivate,restore}','links.{update,remove}', function() {
     let a = this.get('actionLinks');
     let l = this.get('links');
 
@@ -36,7 +38,7 @@ var User = Resource.extend({
       { divider: true },
       { label: 'action.viewInApi',  icon: 'icon icon-external-link',action: 'goToApi',      enabled: true },
     ];
-  }.property('actionLinks.{activate,deactivate,restore}','links.{update,remove}'),
+  }),
 });
 
 export default User;

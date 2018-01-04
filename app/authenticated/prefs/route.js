@@ -23,7 +23,7 @@ export default Route.extend({
   // },
 
   model(/*params, transition*/) {
-    return get(this, 'globalStore').find('user', null, {forceReload: true, filter: {me: true}}).then((user) => { // TODO 2.0 'user?me=true'
+    return get(this, 'globalStore').find('user', null, {forceReload: true, filter: {me: true}}).then((user) => {
       return EmberObject.create({
         account: get(user, 'firstObject'), // dont like this
         // stripeCards: null,
