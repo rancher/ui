@@ -62,6 +62,13 @@ let INSTANCE_TYPES = [
   {group: 'T2 - Burstable', name: 't2.xlarge'},
   {group: 'T2 - Burstable', name: 't2.2xlarge'},
 
+  {group: 'M5 - General Purpose', name: 'm5.large'},
+  {group: 'M5 - General Purpose', name: 'm5.xlarge'},
+  {group: 'M5 - General Purpose', name: 'm5.2xlarge'},
+  {group: 'M5 - General Purpose', name: 'm5.4xlarge'},
+  {group: 'M5 - General Purpose', name: 'm5.12xlarge'},
+  {group: 'M5 - General Purpose', name: 'm5.24xlarge'},
+
   {group: 'M4 - General Purpose', name: 'm4.large'},
   {group: 'M4 - General Purpose', name: 'm4.xlarge'},
   {group: 'M4 - General Purpose', name: 'm4.2xlarge'},
