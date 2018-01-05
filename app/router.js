@@ -93,9 +93,12 @@ Router.map(function() {
         this.route('ingress', {path: '/:ingress_id', resetNamespace: true});
       });
 
-      this.route('dns', {path: '/dns', resetNamespace: true}, function() {
-        this.route('index', {path: '/'});
+      this.route('dns', function() {
         this.route('new', {path: '/add'});
+        this.route('index', {path: '/'});
+        this.route('detail', {path: '/:record_id'}, function() {
+          this.route('edit');
+        });
       });
 
       this.route('volumes', {path: '/volumes', resetNamespace: true}, function() {
@@ -132,11 +135,6 @@ Router.map(function() {
         this.route('code',  {path: '/code'});
         this.route('graph', {path: '/graph'});
         this.route('chart', {path: '/chart'});
-      });
-
-      this.route('hosts', {path: '/hosts', resetNamespace: true}, function() {
-        this.route('index', {path: '/'});
-        this.route('host', {path: '/:host_id', resetNamespace: true});
       });
 
       this.route('certificates', function() {
