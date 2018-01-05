@@ -3,7 +3,7 @@ import { get } from '@ember/object';
 
 export default Route.extend({
   model: function(params) {
-    const all = this.modelFor('certificates');
+    const all = this.modelFor('authenticated.project.certificates');
 
     let cert = all.projectCerts.findBy('id', params.certificate_id);
     if ( cert ) {

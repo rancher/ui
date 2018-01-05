@@ -3,7 +3,7 @@ import {  set } from '@ember/object';
 
 export default Route.extend({
   model() {
-    const original = this.modelFor('secrets.detail');
+    const original = this.modelFor('authenticated.project.certificates.detail');
     set(this, 'originalModel', original);
 
     return original.clone();
@@ -11,6 +11,6 @@ export default Route.extend({
 
   setupController(controller/*, model*/) {
     this._super(...arguments);
-    set(controller,'originalModel', this.modelFor('secrets.detail'));
+    set(controller,'originalModel', this.modelFor('authenticated.project.certificates.detail'));
   }
 });

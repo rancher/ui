@@ -3,7 +3,7 @@ import { get } from '@ember/object';
 
 export default Route.extend({
   model: function(params) {
-    const all = this.modelFor('registries');
+    const all = this.modelFor('authenticated.project.registries');
 
     let registry = all.projectDockerCredentials.findBy('id', params.registry_id);
     if ( registry ) {

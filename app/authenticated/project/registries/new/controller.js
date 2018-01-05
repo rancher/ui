@@ -3,7 +3,7 @@ import Controller from '@ember/controller';
 export default Controller.extend({
   actions: {
     back() {
-      this.transitionToRoute('secrets');
+      this.transitionToRoute('authenticated.project.registries');
     },
   },
 });
