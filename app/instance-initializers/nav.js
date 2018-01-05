@@ -6,9 +6,9 @@ const rootNav = [
     scope: 'project',
     id: 'containers',
     localizedLabel: 'nav.containers.tab',
-    route: 'authenticated.project.index',
+    route: 'authenticated.project',
     ctx: [getProjectId],
-    moreCurrentWhen: ['containers','ingresses','dns','volumes'],
+    moreCurrentWhen: ['containers','ingresses',/*'dns',*/'volumes'],
   },
 
   {
