@@ -2,7 +2,7 @@ import Controller from '@ember/controller';
 
 export default Controller.extend({
   actions: {
-    cancel() {
+    back() {
       this.transitionToRoute('registries');
     },
   },

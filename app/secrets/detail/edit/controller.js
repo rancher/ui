@@ -2,12 +2,8 @@ import Controller from '@ember/controller';
 
 export default Controller.extend({
   actions: {
-    done() {
-      this.send('goToPrevious');
+    back() {
+      this.send('goToPrevious','secrets');
     },
-
-    cancel() {
-      this.send('goToPrevious');
-    }
   },
 });
