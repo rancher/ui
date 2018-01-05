@@ -145,12 +145,15 @@ Router.map(function() {
         });
       });
 
-      this.route('registries', {path: '/registries', resetNamespace: true}, function() {
-        this.route('new', { path: '/add' });
+      this.route('registries', {resetNamespace: true}, function() {
+        this.route('new', {path: '/add'});
         this.route('index', {path: '/'});
+        this.route('detail', {path: '/:registry_id'}, function() {
+          this.route('edit');
+        });
       });
 
-      this.route('secrets', {path: '/secrets', resetNamespace: true}, function() {
+      this.route('secrets', {resetNamespace: true}, function() {
         this.route('new', {path: '/add'});
         this.route('index', {path: '/'});
         this.route('detail', {path: '/:secret_id'}, function() {

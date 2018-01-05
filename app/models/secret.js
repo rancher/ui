@@ -4,7 +4,6 @@ import { computed, get } from '@ember/object';
 import Resource from 'ember-api-store/models/resource';
 
 export default Resource.extend({
-  modalService: service('modal'),
   router:       service(),
 
   state: 'active',

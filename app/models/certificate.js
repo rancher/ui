@@ -4,14 +4,14 @@ import { computed } from '@ember/object'
 import Resource from 'ember-api-store/models/resource';
 
 export default Resource.extend({
-  modalService: service('modal'),
+  router: service(),
   intl: service(),
 
   state: 'active',
 
   actions: {
     edit() {
-      get(this, 'modalService').toggleModal('modal-edit-certificate', this);
+      get(this, 'router').transitionTo('certificates.detail.edit', get(this, 'id'));
     },
   },
 

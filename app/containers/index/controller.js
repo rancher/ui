@@ -60,7 +60,6 @@ export default Controller.extend({
   group: alias('projectController.group'),
   groupTableBy: alias('projectController.groupTableBy'),
   showNamespace: alias('projectController.showNamespace'),
-  emptyNamespaces: alias('projectController.emptyNamespaces'),
   expandedInstances: alias('projectController.expandedInstances'),
   preSorts: alias('projectController.preSorts'),
 

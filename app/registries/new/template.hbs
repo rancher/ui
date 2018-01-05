@@ -1,35 +1,5 @@
-<section class="header clearfix">
-  <h1>{{t 'registriesPage.new.header'}}</h1>
-</section>
-<section class="horizontal-form container-fluid">
-  <section>
-    <div class="row nav nav-boxes checked-active">
-      {{#each drivers as |driver|}}
-        <a href="false" {{action "selectDriver" driver.name}} alt={{driver.label}} class="col span-2 nav-box-item driver registry-driver {{if driver.active 'active'}} {{driver.css}}"><p class="sr-only">{{driver.label}}</p></a>
-      {{/each}}
-    </div>
-  </section>
-</section>
-
-<section class="horizontal-form container-fluid" role="tabpanel">
-  {{#if isCustom}}
-    <div class="pt-30">
-      <label class="acc-label">{{t 'registriesPage.new.form.custom.labelText'}}{{#if isCustom}}{{field-required}}{{/if}}</label>
-      {{input type="text" value=model.registry.serverAddress classNames="form-control" placeholder=(t 'registriesPage.new.form.custom.placeholder')}}
-      <p class="text-info mb-0">{{t 'registriesPage.new.form.custom.help'}}</p>
-    </div>
-  {{/if}}
-
-  <div class="pt-30">
-    <label class="acc-label">{{t 'registriesPage.new.form.username.labelText'}}</label>
-    {{input type="text" class="form-control" value=model.credential.publicValue placeholder=(t 'registriesPage.new.form.username.placeholder')}}
-  </div>
-
-  <div class="pt-30">
-    <label class="acc-label">{{t 'registriesPage.new.form.password.labelText'}}</label>
-    {{input type="password" class="form-control" value=model.credential.secretValue placeholder=(t 'registriesPage.new.form.password.placeholder')}}
-  </div>
-</section>
-
-{{top-errors errors=errors}}
-{{save-cancel save="save" cancel="cancel"}}
+{{cru-registry
+  mode="new"
+  model=model
+  cancel=(action "cancel")
+}}

@@ -26,7 +26,6 @@ export default Controller.extend({
       width: 125,
     },
     {
-      displayName: 'Name',
       name: 'name',
       sort: ['name','id'],
       translationKey: 'generic.name',
