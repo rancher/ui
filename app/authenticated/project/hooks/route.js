@@ -3,9 +3,9 @@ import { inject as service } from '@ember/service';
 import Route from '@ember/routing/route';
 
 export default Route.extend({
-  webhookStore: service(),
-
   model: function() {
+    return {};
+    /* @TODO-2.0
     return this.get('webhookStore').findAll('schema', {url: 'schemas'}).then((schemas) => {
       let receiver = schemas.findBy('id','receiver').resourceFields;
       receiver.name.required = true;
@@ -17,5 +17,6 @@ export default Route.extend({
         receivers: this.get('webhookStore').findAll('receiver', {forceReload: true}),
       });
     });
+    */
   },
 });

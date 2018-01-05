@@ -11,7 +11,7 @@ export default Resource.extend({
 
   actions: {
     edit() {
-      get(this, 'router').transitionTo('certificates.detail.edit', get(this, 'id'));
+      get(this, 'router').transitionTo('authenticated.project.certificates.detail.edit', get(this, 'id'));
     },
   },
 

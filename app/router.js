@@ -120,11 +120,13 @@ Router.map(function() {
       });
 
       // Resources
+      // @TODO-2.0
       this.route('apikeys', {path: '/api/keys'}, function() {
         this.route('account', {path: '/account'});
         this.route('project', {path: '/project'});
       });
 
+      // @TODO-2.0
       this.route('stack', {path: '/stack/:stack_id', resetNamespace: true}, function() {
         this.route('index', {path: '/'});
         this.route('code',  {path: '/code'});
@@ -137,7 +139,7 @@ Router.map(function() {
         this.route('host', {path: '/:host_id', resetNamespace: true});
       });
 
-      this.route('certificates', {path: '/certificates', resetNamespace: true}, function() {
+      this.route('certificates', function() {
         this.route('new', {path: '/add'});
         this.route('index', {path: '/'});
         this.route('detail', {path: '/:certificate_id'}, function() {
@@ -145,7 +147,7 @@ Router.map(function() {
         });
       });
 
-      this.route('registries', {resetNamespace: true}, function() {
+      this.route('registries', function() {
         this.route('new', {path: '/add'});
         this.route('index', {path: '/'});
         this.route('detail', {path: '/:registry_id'}, function() {
@@ -153,7 +155,7 @@ Router.map(function() {
         });
       });
 
-      this.route('secrets', {resetNamespace: true}, function() {
+      this.route('secrets', function() {
         this.route('new', {path: '/add'});
         this.route('index', {path: '/'});
         this.route('detail', {path: '/:secret_id'}, function() {

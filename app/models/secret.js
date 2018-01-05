@@ -10,7 +10,7 @@ export default Resource.extend({
 
   actions: {
     edit() {
-      get(this, 'router').transitionTo('secrets.detail.edit', get(this, 'id'));
+      get(this, 'router').transitionTo('authenticated.project.secrets.detail.edit', get(this, 'id'));
     },
   },
 
