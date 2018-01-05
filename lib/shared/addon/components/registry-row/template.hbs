@@ -1,14 +1,29 @@
-<td data-title="{{t 'generic.state'}}:" class="state">
+<td class="row-check" valign="middle" style="padding-top: 2px;">
+  {{check-box nodeId=model.id}}
+</td>
+<td data-title="{{dt.state}}" class="state">
   {{badge-state model=model}}
 </td>
-<td data-title="{{t 'registryRow.address'}}:">
+<td data-title="{{dt.name}}">
+  {{#link-to-external 'registries.detail' model.id}}{{model.displayName}}{{/link-to-external}}
+  {{#if model.description}}
+    <p data-title="{{t 'generic.description'}}" class="text-small text-muted m-0 clip">
+      {{model.description}}
+    </p>
+  {{/if}}
+</td>
+<td data-title="{{dt.namespace}}">
+  {{#if model.namespace}}
+    {{model.namespace.displayName}}
+  {{else}}
+    <span class="text-muted">{{t 'generic.all'}}</span>
+  {{/if}}
+</td>
+<td data-title="{{dt.registry}}">
   {{model.displayAddress}}
 </td>
-<td data-title="{{t 'registryRow.username'}}:">
-  {{#if model.credential.publicValue}}{{model.credential.publicValue}}{{else}}<i class="text-muted">{{t 'generic.none'}}</i>{{/if}}
-</td>
-<td data-title="{{t 'registryRow.created'}}:">
-  {{date-calendar model.created}}
+<td data-title="{{dt.username}}">
+  {{model.displayUsername}}
 </td>
 <td data-title="{{t 'generic.actions'}}:" align="actions">
   {{action-menu model=model}}

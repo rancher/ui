@@ -92,10 +92,6 @@ export default Controller.extend({
     return out;
   }.property('namespaces.@each.{grouping,system}','tags','simpleMode'), // Grouping is used for tags
 
-  emptyNamespaces: function() {
-    return this.get('namespaces').filterBy('isEmpty',true).map((x) => { return {ref: x} });
-  }.property('namespaces.@each.isEmpty'),
-
   groupChanged: function() {
     let key = `prefs.${C.PREFS.CONTAINER_VIEW}`;
     let cur = this.get(key);

@@ -31,9 +31,9 @@ export default Route.extend(Preload,{
         this.preload('dnsRecord'),
         this.preload('namespace'),
         this.preload('pod'),
-        this.preload('machine'),
+        this.preload('machine', 'globalStore'),
         this.preload('secret'),
-        this.preload('namespacedSecret', 'store', {url: 'namespacedSecrets'}),
+        this.preload('namespacedSecret'),
         this.preload('projectRoleTemplateBinding', 'globalStore'),
       ]).then(() => {
         return EmberObject.create({
