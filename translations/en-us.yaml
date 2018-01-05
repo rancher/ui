@@ -690,7 +690,10 @@ clustersPage:
         noManagement: You have no management nodes. Minimum 1 node. 3 nodes recommended.
         nodes: At least one
         noNodes: You have no nodes. Minimum 1 node.
-
+ingressPage:
+  header: 'Ingress: {name}'
+  table:
+    noMatch: No ingresses match the current search.
 containerPage:
   header: 'Container: {name}'
   portsTab:
@@ -1140,6 +1143,12 @@ servicePage:
         placeholder: e.g. website
       description:
         placeholder: e.g. Balancer for mycompany.com
+  newIngress:
+    form:
+      name:
+        placeholder: e.g. website
+      description:
+        placeholder: e.g. Ingress for mycompany.com
   portsTab:
     title: Ports
     detail: 'Ports mapped from a host IP to the listening ports of a container.'
@@ -1859,6 +1868,39 @@ formBalancerConfig:
   config:
     prompt: Custom haproxy.cfg content
 
+formIngress:
+  defaultBackend:
+    label: Set this rule as default backend
+    mark: Default backend
+  label: Rules
+  addRuleLabel: Add Rule
+  removeRuleLabel: Remove this Rule
+  noRules: No Rules
+  host:
+    label: Request Host
+    placeholder: "e.g. example.com"
+  backendType:
+    label: Backend Type
+  mode:
+    workload: Workload
+    service: DNS Record
+formIngressBackends:
+  label: Target Backends
+  noRules: No Backends
+  addServiceLabel:  Add a DNS Record
+  addWorkloadLabel: Add a Service
+  service:
+    label: service
+  workload:
+    label: workload
+  targetPort:
+    label: Port
+    placeholder: e.g. 80
+  path:
+    label: Path
+    placeholder: e.g. /foo
+  target: Target
+
 formBalancerListeners:
   label: Listeners & Target Rules
   detail: Control the mapping of requests coming into the balancer to the desired target.
@@ -2419,10 +2461,19 @@ formSslTermination:
   alternateCerts: Alternate Certs
   addAlternate: Add Alternate Certificate
   noCertificates: There are no certificates to use.
+  noCertificatesConfiged: No Certificates.
   noAlternateCertificates: There are no other certificates to use.
+  hosts: Hosts
+  noHosts: No Hosts
+  host:
+    label: Host
+    placeholder: e.g. example.com
+  addHostLabel: Add Host
   helpBlock: |
     "Note: Some older SSL/TLS clients do not support <a href="https://en.wikipedia.org/wiki/Server_Name_Indication" target="_blank">Server Name Indication (SNI)</a>; these clients will always be offered the main Certificate.  Modern clients will be offered an appropriate certificate from the Alternate Certificates list if a match is found."
   notNeeded: There are no SSL/TLS Listening Ports configured with a valid Target Rule.
+  removeCertLabel: Remove this Certificate
+  addCertLabel: Add Certificate
 
 formNamespace:
   label:
@@ -3522,6 +3573,12 @@ modalWelcome:
   header: Welcome to {appName}!
   closeModal: Got It
 
+newIngress:
+  header:
+    add: Add Ingress
+    edit: Edit Ingress
+  error:
+    noRules: "You must have one or more rules"
 newBalancer:
   header:
     add: Add Load Balancer
@@ -3764,6 +3821,11 @@ pagination:
     =0 {No Load Balancers}
     =1 {{count} {count, plural, =1 {Load Balancer} other {Load Balancers}}}
     other {{from} - {to} of {count} Load Balancers}}
+  ingress: |
+    {pages, plural,
+    =0 {No Ingresses}
+    =1 {{count} {count, plural, =1 {Ingress} other {Ingresses}}}
+    other {{from} - {to} of {count} Ingresses}}
   member: |
     {pages, plural,
     =0 {No Members}
@@ -3877,6 +3939,8 @@ schema:
   inputService:
     prompt: Choose a Service...
     custom: Custom
+  inputDnsRecord:
+    prompt: Choose a DNS Record...
   inputSecret:
     prompt: Choose a Secret...
 
@@ -4098,6 +4162,7 @@ nav:
     tab: Workloads
     systemTab: System
     balancers: Balancers
+    ingresses: Ingresses
     containers: Workloads
     dns: DNS
     volumes: Volumes
@@ -4105,6 +4170,7 @@ nav:
     deploy: Deploy
     addContainer: Add Container
     addBalancer: Add Balancer
+    addIngress: Add Ingress
     addDns: Add Record
     addVolume: Add Volume
     importCompose: Import from YAML

@@ -1,0 +1,26 @@
+<section class="header clearfix">
+  <div class="pull-left">
+    <h1 class="vertical-middle">
+      {{t 'ingressPage.header' name=model.ingress.displayName}}
+    </h1>
+    <p class="text-info">{{model.ingress.description}}</p>
+  </div>
+  <div class="right-buttons">
+    {{badge-state model=model.ingress}}
+    {{action-menu model=model.ingress showPrimary=false classNames="ml-10 inline-block" size="sm"}}
+  </div>
+</section>
+
+<section class="mt-40 horizontal-form container-fluid">
+  {{form-ingress-rule
+    ingress=model.ingress
+    editing=false
+  }}
+  <hr class="mt-30 mb-30" />
+</section>
+
+{{form-ssl-termination
+  editing=false
+  ingress=model.ingress
+  allCertificates=model.allCertificates
+}}

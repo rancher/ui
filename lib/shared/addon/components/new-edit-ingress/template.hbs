@@ -1,0 +1,40 @@
+<section class="header clearfix">
+  <h1>{{headerLabel}}</h1>
+</section>
+
+<div class="row">
+  <div class="col span-11-of-23 mt-0 mb-0">
+    {{form-name-description
+      model=ingress
+      nameDisabled=existing
+      namePlaceholder="servicePage.newIngress.form.name.placeholder"
+      descriptionPlaceholder="servicePage.newIngress.form.description.placeholder"
+    }}
+  </div>
+
+  <div class="col span-11-of-23 mt-0 mb-0 offset-1-of-23">
+    {{form-namespace
+      editable=editing
+      namespace=namespace
+      errors=namespaceErrors
+    }}
+  </div>
+</div>
+
+<section class="mt-40 horizontal-form container-fluid">
+  {{form-ingress-rule
+    ingress=ingress
+    errors=ruleErrors
+    editing=editing
+  }}
+  <hr class="mt-30 mb-30" />
+</section>
+
+{{form-ssl-termination
+  editing=editing
+  ingress=ingress
+  allCertificates=allCertificates
+}}
+
+{{top-errors errors=errors}}
+{{save-cancel editing=true save="save" cancel="cancel"}}
