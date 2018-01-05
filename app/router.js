@@ -90,6 +90,7 @@ Router.map(function() {
       this.route('ingresses', {path: '/ingresses', resetNamespace: true}, function() {
         this.route('index', {path: '/'});
         this.route('run', {path: '/run'});
+        this.route('ingress', {path: '/:ingress_id', resetNamespace: true});
       });
 
       this.route('dns', {path: '/dns', resetNamespace: true}, function() {

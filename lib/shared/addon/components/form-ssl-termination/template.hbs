@@ -9,13 +9,15 @@
   {{#if allCertificates.length}}
     {{#each certs as |cert|}}
       <div class="box mb-10 pt-5">
-        <div class="row">
-          <div class="pull-right">
-            <button class="btn bg-transparent text-small vertical-middle" {{action "removeCert" cert}}>
-              {{t 'formSslTermination.removeCertLabel'}}
-            </button>
+        {{#if editing}}
+          <div class="row">
+            <div class="pull-right">
+              <button class="btn bg-transparent text-small vertical-middle" {{action "removeCert" cert}}>
+                {{t 'formSslTermination.removeCertLabel'}}
+              </button>
+            </div>
           </div>
-        </div>
+        {{/if}}
         <div class="row">
           <div class="col span-11-of-23 mt-0 mb-0">
             <label class="acc-label">{{t 'formSslTermination.certificate'}}{{#if editing}}{{field-required}}{{/if}}</label>
@@ -25,6 +27,7 @@
                 content=allCertificates
                 optionLabelPath="displayDetailedName"
                 optionValuePath="id"
+                disabled=readOnly
                 value=cert.certificateId
               }}
           </div>
@@ -32,6 +35,8 @@
         <hr class="mt-20 mb-20" />
         {{form-ssl-rows editing=editing hosts=cert.hosts}}
       </div>
+    {{else}}
+      <span class="text-muted">{{t 'formSslTermination.noCertificatesConfiged'}}</span>
     {{/each}}
   {{else}}
     <span class="text-muted">{{t 'formSslTermination.noCertificates'}}</span>

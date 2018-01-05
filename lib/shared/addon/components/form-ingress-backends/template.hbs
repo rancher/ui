@@ -1,16 +1,21 @@
 <div class="clearfix">
   <label class="acc-label">{{t 'formIngressBackends.label'}}</label>
-  <button class="btn bg-link icon-btn" {{action "addPath" "service"}}>
-    <span class="darken"><i class="icon icon-plus text-small"></i></span>
-    <span>{{t 'formIngressBackends.addServiceLabel'}}</span>
-  </button>
-  <button class="btn bg-link icon-btn ml-20" {{action "addPath" "workload"}}>
-    <span class="darken"><i class="icon icon-plus text-small"></i></span>
-    <span>{{t 'formIngressBackends.addWorkloadLabel'}}</span>
-  </button>
-
+  {{#if editing}}
+    <button class="btn bg-link icon-btn" {{action "addPath" "service"}}>
+      <span class="darken"><i class="icon icon-plus text-small"></i></span>
+      <span>{{t 'formIngressBackends.addServiceLabel'}}</span>
+    </button>
+    <button class="btn bg-link icon-btn ml-20" {{action "addPath" "workload"}}>
+      <span class="darken"><i class="icon icon-plus text-small"></i></span>
+      <span>{{t 'formIngressBackends.addWorkloadLabel'}}</span>
+    </button>
+  {{/if}}
   <div class="pull-right mt-10">
-    {{input type="checkbox" checked=checked}}{{t 'formIngress.defaultBackend.label'}}
+    {{#if editing}}
+      {{input type="checkbox" checked=checked}}{{t 'formIngress.defaultBackend.label'}}
+    {{else if checked}}
+      {{t 'formIngress.defaultBackend.mark'}}
+    {{/if}}
   </div>
 </div>
 
@@ -45,7 +50,11 @@
 
           <td class="divided p-5" data-title="{{t (concat-str 'formIngressBackends' path.backendType 'label' character='.')}}">
             {{#if (eq path.backendType 'service')}}
-              {{schema/input-dns-record selectClass="input-sm" selected=path.serviceId culsterIpNotNull=false}}
+              {{#if editing}}
+                {{schema/input-dns-record selectClass="input-sm" selected=path.serviceId culsterIpNotNull=false}}
+              {{else}}
+                {{schema/input-dns-record selectClass="input-sm" disabled=true selected=(concat-str ingress.namespaceId ':' path.serviceId character='') culsterIpNotNull=false}}
+              {{/if}}
             {{else if (eq path.backendType 'workload')}}
               {{schema/input-workload selectClass="input-sm" selected=path.serviceId}}
             {{/if}}
