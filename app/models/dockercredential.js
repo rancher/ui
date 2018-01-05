@@ -3,10 +3,15 @@ import { alias } from '@ember/object/computed'
 import { inject as service } from '@ember/service';
 import Resource from 'ember-api-store/models/resource';
 
-const PRESETS = {
+export const PRESETS = {
   'index.docker.io': 'dockerhub',
   'quay.io': 'quay',
 }
+
+export const PRESETS_BY_NAME = {};
+Object.keys(PRESETS).forEach(function(key) {
+  PRESETS_BY_NAME[ PRESETS[key] ] = key;
+});
 
 var DockerCredential = Resource.extend({
   intl: service(),
