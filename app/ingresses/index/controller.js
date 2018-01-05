@@ -1,8 +1,6 @@
 import { alias } from '@ember/object/computed';
 import { inject as service } from '@ember/service';
 import Controller, { inject as controller } from '@ember/controller';
-import { searchFields as containerSearchFields } from 'shared/components/container-dots/component';
-import { headers } from 'ui/containers/index/controller';
 
 export default Controller.extend({
   projectController: controller('authenticated.project'),
@@ -13,24 +11,32 @@ export default Controller.extend({
   group:             alias('projectController.group'),
   groupTableBy:      alias('projectController.groupTableBy'),
   showNamespace:     alias('projectController.showNamespace'),
-  expandedInstances: alias('projectController.expandedInstances'),
-  preSorts:          alias('projectController.preSorts'),
+
+  rows:              alias('model.ingresses'),
 
   queryParams:       ['sortBy'],
   sortBy:            'name',
 
-  actions: {
-    toggleExpand() {
-      this.get('projectController').send('toggleExpand', ...arguments);
+  headers: [
+    {
+      name: 'state',
+      sort: ['sortState','displayName'],
+      searchField: 'displayState',
+      translationKey: 'generic.state',
+      width: 120
     },
-  },
-
-  extraSearchFields: ['id:prefix','displayIp:ip'],
-  extraSearchSubFields: containerSearchFields,
-  headers: headers,
-
-  rows: function() {
-    let ingresses = this.get('model.ingresses');
-    return ingresses;
-  }.property('group','showNamespace','model.services.@each.{isBalancer,instances}'),
+    {
+      name: 'name',
+      sort: ['sortName','id'],
+      searchField: 'displayName',
+      translationKey: 'generic.name',
+    },
+    {
+      name: 'created',
+      sort: ['created','id'],
+      classNames: 'text-right pr-20',
+      searchField: 'created',
+      translationKey: 'generic.created',
+    },
+  ],
 });
