@@ -2,14 +2,25 @@
   {{form-name-description model=cluster}}
 </div>
 
-{{input-text-file
-  label='cloud.driverGoogle.credential.label'
-  value=config.credential
-  accept="text/*, .json"
-  minHeight=60
-  canChangeName=false
-  placeholder="cloud.driverGoogle.credential.placeholder"
+{{#input-text-file
+     label='cloud.driverGoogle.credential.label'
+     value=config.credential
+     accept="text/*, .json"
+     minHeight=60
+     canChangeName=false
+     placeholder="cloud.driverGoogle.credential.placeholder"
+     as |section|
 }}
+  {{#if (eq section 'help')}}
+    <div class="row hide help">
+      <div class="col span-6 help-block wrap mt-0">
+        {{t 'cloud.driverGoogle.credential.helpText' htmlSafe=true}}
+      </div>
+    </div>
+   {{else if (eq section 'help-button')}}
+    <a class="help-block" href="#" {{action 'help'}}>{{t 'generic.help'}}</a>
+  {{/if}}
+{{/input-text-file}}
 
 <div class="box mt-30">
   <h4>{{t 'cloud.driverGoogle.location'}}</h4>
@@ -86,7 +97,7 @@
     </div>
     <div class="col span-4">
       <label class="acc-label">{{t 'cloud.driverGoogle.clusterIpv4Cidr.label'}}</label>
-      {{input value=config.clusterIpv4Cidr placeholder='config.driverGoogle.clusterIpv4Cidr.placeholder'}}
+      {{input value=config.clusterIpv4Cidr placeholder=(t 'cloud.driverGoogle.clusterIpv4Cidr.placeholder')}}
     </div>
   </div>
 </div>
