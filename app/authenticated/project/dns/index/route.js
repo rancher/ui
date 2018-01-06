@@ -12,6 +12,6 @@ export default Route.extend({
   },
 
   setDefaultRoute: on('activate', function() {
-    this.set(`session.${C.SESSION.CONTAINER_ROUTE}`,'dns');
+    this.set(`session.${C.SESSION.CONTAINER_ROUTE}`,'authenticated.project.dns');
   }),
 });
