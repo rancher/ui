@@ -18,14 +18,12 @@ export default Ember.Component.extend({
     let def = this.get(`settings.${C.SETTING.ENGINE_URL}`);
     let out = [
       {label: this.get('intl').t('formEngineOpts.engineInstallUrl.recommended'), value: def},
-      {label: 'v1.10.x', value: 'https://releases.rancher.com/install-docker/1.10.sh'},
-      {label: 'v1.11.x', value: 'https://releases.rancher.com/install-docker/1.11.sh'},
       {label: 'v1.12.x', value: 'https://releases.rancher.com/install-docker/1.12.sh'},
       {label: 'v1.13.x', value: 'https://releases.rancher.com/install-docker/1.13.sh'},
       {label: 'v17.03.x', value: 'https://releases.rancher.com/install-docker/17.03.sh'},
-      {label: 'v17.04.x', value: 'https://releases.rancher.com/install-docker/17.04.sh'},
-      {label: 'v17.05.x', value: 'https://releases.rancher.com/install-docker/17.05.sh'},
       {label: 'v17.06.x', value: 'https://releases.rancher.com/install-docker/17.06.sh'},
+      {label: 'v17.09.x', value: 'https://releases.rancher.com/install-docker/17.09.sh'},
+      {label: 'v17.12.x', value: 'https://releases.rancher.com/install-docker/17.12.sh'},
       {label: this.get('intl').t('formEngineOpts.engineInstallUrl.latest'), value: 'https://get.docker.com'},
     ];
 
