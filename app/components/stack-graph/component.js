@@ -5,6 +5,7 @@ import { activeIcon } from 'ui/models/service';
 
 export default Ember.Component.extend(ThrottledResize, {
   classNames: ['stack-graph'],
+  tooltipService: Ember.inject.service('tooltip'),
   graphZoom: null,
   graphInner: null,
   graphOuter: null,
@@ -187,7 +188,7 @@ export default Ember.Component.extend(ThrottledResize, {
       }
 
       var html = `<span data-service="${service.get('id')}"></span><i class="icon  ${activeIcon(service)}"></i>
-                  <h4 class="clip">${stackName}${Util.escapeHtml(service.get('displayName'))}</h4>
+                  <h4 class="clip stack-graph-tooltip">${stackName}${Util.escapeHtml(service.get('displayName'))}</h4>
                   <h6 class="count"><b>${instances}</b> container${(instances === 1 ? '' : 's')}</h6>
                   <h6><span class="state ${color}">${Util.escapeHtml(service.get('displayState'))}</span></h6>`;
 
@@ -244,6 +245,24 @@ export default Ember.Component.extend(ThrottledResize, {
     this.renderGraph();
   },
 
+  addTooltip: function () {
+    let svc = this.get('tooltipService');
+    $(".stack-graph-tooltip").mouseenter(function (e) {
+      let node = Ember.$(e.target);
+      let out = {
+        type: 'tooltip-basic',
+        eventPosition: node.offset(),
+        originalNode: node,
+        model: e.target.textContent,
+        template: 'tooltip-static',
+      };
+      svc.set('tooltipOpts', out);
+    });
+    $(".stack-graph-tooltip").mouseleave(function (e) {
+      svc.leave();
+    });
+  },
+
   zoomAndScale: function(scaleFactor=2.0) {
     var zoom = this.get('graphZoom');
     var outer = this.get('graphOuter');
@@ -273,6 +292,7 @@ export default Ember.Component.extend(ThrottledResize, {
 
     // Overflow the foreignObjects
     $(this.get('graphElem').getElementsByTagName('foreignObject')).css('overflow','visible');
+    this.addTooltip();
   },
 
   stackIdObserver: Ember.observer('model.stack.id', function() {
