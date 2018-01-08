@@ -107,7 +107,7 @@ var Workload = Resource.extend(DisplayImage, StateCounts, EndpointPorts, {
       }
 
       get(this, 'router').transitionTo(route, {queryParams: {
-        serviceId: get(this, 'id'),
+        workloadId: get(this, 'id'),
         upgrade: true,
         upgradeImage: upgradeImage,
         stackId: get(this, 'stackId'),
