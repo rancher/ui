@@ -7,7 +7,7 @@ export default Route.extend({
   scope: service(),
 
   model() {
-    return get(this, 'globalStore').findAll('project', { filter: { clusterId: this.get('scope.currentCluster.id') } }).then(projects => {
+    return get(this, 'globalStore').findAll('project').then(projects => {
       return {
         projects
       };
