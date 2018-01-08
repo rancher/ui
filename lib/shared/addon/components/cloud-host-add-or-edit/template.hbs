@@ -39,12 +39,12 @@
       <div class="row">
         <div class="col span-11-of-23 mt-0 mb-0">
           {{form-name-description
-            name=prefix
-            nameRequired=true
-            nameLabel="hostsPage.cloudHostsPage.addPage.name.label"
-            namePlaceholder="hostsPage.cloudHostsPage.addPage.name.placeholder"
-            nameHelpText=nameCountLabel
-            descriptionShown=true
+              name=prefix
+              nameRequired=true
+              nameLabel="hostsPage.cloudHostsPage.addPage.name.label"
+              namePlaceholder="hostsPage.cloudHostsPage.addPage.name.placeholder"
+              nameHelpText=nameCountLabel
+              descriptionShown=true
           }}
         </div>
         <div class="col span-11-of-23 mt-0 mb-0 offset-1-of-23">
@@ -56,6 +56,41 @@
       </div>
 
       <hr />
+
+      {{#if canAddOptions}}
+        {{#accordion-list-item
+             title=(t 'hostsPage.new.addCluster.label')
+             detail=(t 'hostsPage.new.addCluster.description')
+             expandAll=expandAll
+             expand=(action expandFn)
+        }}
+          <div class="row">
+            <div class="col span-6">
+              <label class="acc-label pt-10" for="">{{t 'hostsPage.new.addCluster.cluster.label'}}</label>
+              {{searchable-select content=clusters value=clonedModel.requestedClusterId optionLabelPath="name" optionValuePath="id" localizedLabel=false}}
+            </div>
+            <div class="col span-6">
+              <label class="acc-label pt-10" for="">{{t 'hostsPage.new.addCluster.roles.label'}}</label>
+              <table class="table fixed no-lines no-top-padding mt-10">
+                <thead>
+                  <tr>
+                    <th>{{t 'hostsPage.new.addCluster.table.label.etcd'}}</th>
+                    <th>{{t 'hostsPage.new.addCluster.table.label.control'}}</th>
+                    <th>{{t 'hostsPage.new.addCluster.table.label.worker'}}</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><i class="icon icon-x-circle"></i></td>
+                    <td><i class="icon icon-x-circle"></i></td>
+                    <td class="text-success"><i class="icon icon-success"></i></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        {{/accordion-list-item}}
+      {{/if}}
 
       {{!-- @@TODO@@ - 11-28-17 - not sure we should be doing this this way how the heck do we know which host to clone labels from? --}}
       {{form-user-labels initialLabels=clonedModel.labels setLabels=(action 'setLabels') detailKey="formUserLabels.hostDetail" expandAll=null}}
