@@ -153,12 +153,12 @@ export default Ember.Component.extend(NewOrEdit, {
         return;
       }
 
-      let wgt = 0;
+      let wgt = 1;
 
       if ( rule.isSelector ) {
         if (rule.region || rule.environment) {
           wgt = parseInt(wgtStr,10);
-          if ( !wgt || wgt < 0 ) {
+          if ( isNaN(wgt) || wgt < 0 ) {
             errors.push(intl.t('newBalancer.error.invalidWeight', {num: wgt}));
             return;
           }
