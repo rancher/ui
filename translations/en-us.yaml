@@ -56,6 +56,7 @@ generic:
   name: Name
   namespace: Namespace
   namespaces: Namespaces
+  never: Never
   no: "No"
   noRating: No Rating
   none: None
@@ -2402,21 +2403,42 @@ formSecurity:
   detail: Grant or limit the abilities of the container to affect the host it is running on.
   pullImage:
     label: Pull Image
-    enableService: Every time a new container is created
-    enableContainer: Even if already present on the host
-    disable: Only if not already present on the host
+    always: Even if already present on the host
+    ifNotPresent: Only if not already present on the host
   privileged:
     label: Privileged
     disable: "No"
     enable: "Yes: container has full access to the host"
+  ipcMode:
+    label: IPC Mode
+    disable: "Normal"
+    enable: Host
+  runAsNonRoot:
+    label: Run as Non Root
+    disable: "No"
+    enable: "Yes: container must run as a non-root user"
+  readOnlyRootFilesystem:
+    label: ReadOnly Root Filesystem
+    disable: "No"
+    enable: "Yes: container has a read-only root filesystem"
   pidMode:
     label: PID Mode
     disable: Normal
     enable: Host
   memoryLimit:
-    label: Physical Memory
+    label: Memory
     unlimited: Unlimited
     set: Limit to
+  cpuLimit:
+    label: CPU
+    unlimited: Unlimited
+    set: Limit to
+    unit: milli CPUs
+  gpuLimit:
+    label: Nvidia GPU
+    unlimited: Unlimited
+    set: Limit to
+    unit: milli GPUs
   swapLimit:
     label: Swap Memory
     unlimited: Unlimited
@@ -2453,10 +2475,15 @@ formSecurity:
       label: Permissions
   memoryReservation:
     label: Memory Reservation
-    placeholder: Scheduling will reserve this much RAM for the container
+    placeholder: reserve this much RAM
   milliCpuReservation:
     label: CPU Reservation
+    placeholder: reserve this much CPU
     unit: milli CPUs
+  milliGpuReservation:
+    label: GPU Reservation
+    placeholder: reserve this much GPU
+    unit: milli GPUs
   isolation:
     label: Isolation
     default: Default (Container)

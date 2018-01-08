@@ -56,7 +56,7 @@ export default Route.extend({
     }
 
     const clone = _workload.clone();
-    const containerNames = service.containers.map(x => get(x, name));
+    const containerNames = clone.containers.map(x => get(x, 'name'));
     let containerName = params.containerName;
 
     // Add a sidekick
@@ -91,10 +91,10 @@ export default Route.extend({
     let container;
     if ( containerName === "" ) {
       // The primary/only container
-      container = service.containers[0];
+      container = clone.containers[0];
     } else {
       // Existing container
-      container = service.containers.findBy('name', containerName);
+      container = clone.containers.findBy('name', containerName);
     }
 
     if ( params.upgrade ) {
@@ -129,7 +129,7 @@ export default Route.extend({
 
     let ns = null;
     if ( params.namespaceId ) {
-      ns = store.getById('namespace', params.namespaceId); 
+      ns = store.getById('namespace', params.namespaceId);
     }
 
     if ( !ns ) {
@@ -146,6 +146,8 @@ export default Route.extend({
       namespaceId: namespaceId,
       scale: 1,
       restart: 'Always',
+      ipc: false,
+      pid: false,
       containers: [],
     });
   },
@@ -155,6 +157,14 @@ export default Route.extend({
       type: 'container',
       tty: true,
       stdin: true,
+      privileged: false,
+      readOnly: false,
+      runAsNonRoot: false,
+      resources: {
+        cpu: {},
+        memory: {},
+        nvidiaGPU: {},
+      },
       pullPolicy: 'Always',
     });
   },
