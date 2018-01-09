@@ -20,7 +20,7 @@ export default Resource.extend({
 
   firstKey: alias('keys.firstObject'),
 
-  availableActions: computed('links.remove', function() {
+  availableActions: computed('links.{update,remove}', function() {
     var l = get(this, 'links');
 
     var choices = [

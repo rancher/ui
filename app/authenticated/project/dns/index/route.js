@@ -7,7 +7,7 @@ export default Route.extend({
   model() {
     var store = this.get('store');
     return hash({
-      services: store.findAll('service'),
+      records: store.findAll('dnsRecord'),
     });
   },
 

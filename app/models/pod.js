@@ -1,7 +1,7 @@
 import C from 'ui/utils/constants';
 import Resource from 'ember-api-store/models/resource';
 import { reference } from 'ember-api-store/utils/denormalize';
-import { computed } from '@ember/object';
+import { get, computed } from '@ember/object';
 import { strPad } from 'ui/utils/util';
 import { formatSi } from 'shared/utils/parse-unit';
 import DisplayImage from 'shared/mixins/display-image';
@@ -118,6 +118,20 @@ var Pod = Resource.extend(DisplayImage, {
   isGlobalScale: function() {
     return (this.get('labels')||{})[C.LABEL.SCHED_GLOBAL] + '' === 'true';
   }.property('labels'),
+
+  hasLabel(key, desiredValue) {
+    const labels = get(this, 'labels')||{};
+    const value = get(labels, key);
+    if ( value === undefined ) {
+      return false;
+    }
+
+    if ( desiredValue === undefined ) {
+      return true;
+    }
+
+    return ( value === desiredValue );
+  }
 });
 
 export function stoppedIcon(inst)

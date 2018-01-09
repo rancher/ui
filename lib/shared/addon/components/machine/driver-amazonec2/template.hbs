@@ -187,13 +187,24 @@
       {{!-- </div>
       <div class="col span-8"> --}}
         {{#if isStep5}}
+          <div class="radio pt-10">
+            <label>
+              {{radio-button selection=whichSecurityGroup value="default"}}
+              {{#if defaultSecurityGroup}}
+                {{t 'machine.driverAmazon.securityGroup.defaultExisting' groupName=defaultSecurityGroupName htmlSafe=true}}
+              {{else}}
+                {{t 'machine.driverAmazon.securityGroup.defaultCreate' groupName=defaultSecurityGroupName htmlSafe=true}}
+              {{/if}}
+            </label>
+          </div>
 
           {{#if (and settings.isRancher (not isCustomSecurityGroup))}}
             <p class="text-info ml-20"><a href="{{settings.docsBase}}/hosts/amazon/#required-ports-for-rancher-to-work" target="_blank">{{t 'machine.driverAmazon.portHelp.link'}}</a> {{t 'machine.driverAmazon.portHelp.text'}}</p>
           {{/if}}
 
           <div class="radio pt-10">
-            <label class="acc-label">
+            <label>
+              {{radio-button selection=whichSecurityGroup value="custom"}}
               {{t 'machine.driverAmazon.securityGroup.choose'}}
             </label>
           </div>
