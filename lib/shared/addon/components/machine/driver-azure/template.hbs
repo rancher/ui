@@ -27,7 +27,7 @@
     {{/if}}
 
     {{form-cluster-select
-        classNames="mt-30"
+        classNames="mt-20"
         clusters=clusters
         defaultExpand=false
         machine=clonedModel
@@ -39,69 +39,69 @@
       <h4>{{t 'machine.driverAzure.placementSection'}}</h4>
       <div class="row">
         <div class="col span-6">
-        <label class="acc-label">{{t 'machine.driverAzure.environment.label'}}</label>
+          <label class="acc-label">{{t 'machine.driverAzure.environment.label'}}</label>
           {{new-select
-            classNames="form-control"
-            content=environments
-            optionLabelPath='value'
-            value=azureConfig.environment
+              classNames="form-control"
+              content=environments
+              optionLabelPath='value'
+              value=azureConfig.environment
           }}
         </div>
 
         <div class="col span-6">
-        <label class="acc-label">{{t 'machine.driverAzure.region.label'}}</label>
+          <label class="acc-label">{{t 'machine.driverAzure.region.label'}}</label>
           {{new-select
-            classNames="form-control"
-            content=regionChoices
-            optionLabelPath='displayName'
-            optionValuePath='name'
-            value=azureConfig.location
+              classNames="form-control"
+              content=regionChoices
+              optionLabelPath='displayName'
+              optionValuePath='name'
+              value=azureConfig.location
           }}
         </div>
       </div>
 
       <div class="row">
         <div class="col span-6 mb-0">
-        <label class="acc-label">{{t 'machine.driverAzure.availabilitySet.label'}}</label>
+          <label class="acc-label">{{t 'machine.driverAzure.availabilitySet.label'}}</label>
           {{input type="text" value=azureConfig.availabilitySet classNames="form-control" placeholder=(t 'machine.driverAzure.availabilitySet.placeholder')}}
         </div>
         <div class="col span-6 mb-0">
-        <label class="acc-label">{{t 'machine.driverAzure.resourceGroup.label'}}</label>
+          <label class="acc-label">{{t 'machine.driverAzure.resourceGroup.label'}}</label>
           {{input type="text" value=azureConfig.resourceGroup classNames="form-control" placeholder=(t 'machine.driverAzure.resourceGroup.placeholder')}}
         </div>
       </div>
     </div>
 
     <div class="box mt-20">
-    <h4>{{t 'machine.driverAzure.accountAccessSection'}}</h4>
+      <h4>{{t 'machine.driverAzure.accountAccessSection'}}</h4>
 
-    <div class="row">
+      <div class="row">
         <div class="col span-4">
-        <label class="acc-label">{{t 'machine.driverAzure.subscriptionId.label'}}{{field-required}}</label>
+          <label class="acc-label">{{t 'machine.driverAzure.subscriptionId.label'}}{{field-required}}</label>
           {{input type="text" value=azureConfig.subscriptionId classNames="form-control" placeholder=(t 'machine.driverAzure.subscriptionId.placeholder')}}
         </div>
+      </div>
+
+      <div class="row">
+        <div class="col span-6 mb-0">
+          <label class="acc-label">{{t 'machine.driverAzure.clientId.label'}}{{field-required}}</label>
+          {{input type="text" value=azureConfig.clientId classNames="form-control" placeholder=(t 'machine.driverAzure.clientId.placeholder')}}
+          <p class="text-info text-small mb-0">{{t 'machine.driverAzure.helpBlock' htmlSafe=true}}</p>
+        </div>
+
+        <div class="col span-6 mb-0">
+          <label class="acc-label">{{t 'machine.driverAzure.clientSecret.label'}}{{field-required}}</label>
+          {{input type="password" value=azureConfig.clientSecret classNames="form-control" placeholder=(t 'machine.driverAzure.clientSecret.placeholder')}}
+        </div>
+      </div>
     </div>
-
-    <div class="row">
-      <div class="col span-6 mb-0">
-      <label class="acc-label">{{t 'machine.driverAzure.clientId.label'}}{{field-required}}</label>
-        {{input type="text" value=azureConfig.clientId classNames="form-control" placeholder=(t 'machine.driverAzure.clientId.placeholder')}}
-        <p class="text-info text-small mb-0">{{t 'machine.driverAzure.helpBlock' htmlSafe=true}}</p>
-      </div>
-
-      <div class="col span-6 mb-0">
-        <label class="acc-label">{{t 'machine.driverAzure.clientSecret.label'}}{{field-required}}</label>
-        {{input type="password" value=azureConfig.clientSecret classNames="form-control" placeholder=(t 'machine.driverAzure.clientSecret.placeholder')}}
-      </div>
-  </div>
-</div>
 
     <div class="box mt-20">
       <h4>{{t 'machine.driverAzure.networkSection'}}</h4>
 
       <div class="row">
         <div class="col span-6">
-        <label class="acc-label">{{t 'machine.driverAzure.subnet.label'}}</label>
+          <label class="acc-label">{{t 'machine.driverAzure.subnet.label'}}</label>
           {{input type="text" value=azureConfig.subnet classNames="form-control" placeholder=(t 'machine.driverAzure.subnet.placeholder')}}
         </div>
 
@@ -118,13 +118,13 @@
           {{input type="text" value=azureConfig.vnet classNames="form-control" placeholder=(t 'machine.driverAzure.vnet.placeholder')}}
         </div>
         <div class="col span-6">
-         <label class="acc-label">{{t 'machine.driverAzure.staticPublicIp.label'}}</label>
+          <label class="acc-label">{{t 'machine.driverAzure.staticPublicIp.label'}}</label>
           {{new-select
-            classNames="form-control"
-            content=publicIpChoices
-            optionLabelPath='name'
-            optionValuePath='value'
-            value=publicIpChoice
+              classNames="form-control"
+              content=publicIpChoices
+              optionLabelPath='name'
+              optionValuePath='value'
+              value=publicIpChoice
           }}
         </div>
       </div>
@@ -152,42 +152,42 @@
         </div>
 
         <div class="col span-6">
-        <label class="acc-label">{{t 'machine.driverAzure.size.label'}}</label>
+          <label class="acc-label">{{t 'machine.driverAzure.size.label'}}</label>
           {{new-select
-            classNames="form-control"
-            content=sizeChoices
-            optionLabelPath='value'
-            value=azureConfig.size
+              classNames="form-control"
+              content=sizeChoices
+              optionLabelPath='value'
+              value=azureConfig.size
           }}
         </div>
       </div>
 
       <div class="row inline-form">
         <div class="col span-6">
-        <label class="acc-label">{{t 'machine.driverAzure.dockerPort.label'}}</label>
+          <label class="acc-label">{{t 'machine.driverAzure.dockerPort.label'}}</label>
           {{input type="text" value=azureConfig.dockerPort classNames="form-control" placeholder=(t 'machine.driverAzure.dockerPort.placeholder')}}
         </div>
 
         <div class="col span-6">
-        <label class="acc-label">{{t 'machine.driverAzure.openPort.label'}}</label>
+          <label class="acc-label">{{t 'machine.driverAzure.openPort.label'}}</label>
           {{input type="text" value=openPorts classNames="form-control" placeholder=(t 'machine.driverAzure.openPort.placeholder')}}
         </div>
       </div>
 
       <div class="row">
         <div class="col span-6 mb-0">
-        <label class="acc-label">{{t 'machine.driverAzure.sshUser.label'}}</label>
+          <label class="acc-label">{{t 'machine.driverAzure.sshUser.label'}}</label>
           {{input type="text" value=azureConfig.sshUser classNames="form-control" placeholder=(t 'machine.driverAzure.sshUser.placeholder')}}
         </div>
 
         <div class="col span-6 mb-0">
-        <label class="acc-label">{{t 'machine.driverAzure.storageType.label'}}</label>
+          <label class="acc-label">{{t 'machine.driverAzure.storageType.label'}}</label>
           {{new-select
-            classNames="form-control"
-            content=storageTypeChoices
-            optionLabelPath='name'
-            optionValuePath='value'
-            value=azureConfig.storageType
+              classNames="form-control"
+              content=storageTypeChoices
+              optionLabelPath='name'
+              optionValuePath='value'
+              value=azureConfig.storageType
           }}
         </div>
       </div>

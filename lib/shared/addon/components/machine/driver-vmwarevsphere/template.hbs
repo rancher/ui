@@ -29,7 +29,7 @@
     {{/if}}
 
     {{form-cluster-select
-        classNames="mt-30"
+        classNames="mt-20"
         clusters=clusters
         defaultExpand=false
         machine=clonedModel
@@ -37,135 +37,128 @@
         requestedRoles=requestedRoles
     }}
 
-    <div class="over-hr mt-20 mb-20">
-      <span>{{t 'machine.driverVsphere.accountSection'}}</span>
-    </div>
-
-    <div class="row">
-      <div class="col span-2 col-inline">
-        <label>{{t 'machine.driverVsphere.vcenter.label'}}{{field-required}}</label>
-      </div>
-      <div class="col span-4">
-        {{input type="text" class="form-control" value=config.vcenter placeholder=(t 'machine.driverVsphere.vcenter.placeholder')}}
-      </div>
-      <div class="col span-2 col-inline">
-        <label>{{t 'machine.driverVsphere.vcenterPort.label'}}{{field-required}}</label>
-      </div>
-      <div class="col span-4">
-        {{input-integer min=1 max=65535 class="form-control" value=config.vcenterPort}}
-      </div>
-    </div>
-
-    <div class="row">
-      <div class="col span-2 col-inline">
-        <label>{{t 'machine.driverVsphere.username.label'}}{{field-required}}</label>
-      </div>
-      <div class="col span-4">
-        {{input type="text" value=config.username classNames="form-control"}}
+    <div class="row box mt-20">
+      <h4>{{t 'machine.driverVsphere.accountSection'}}</h4>
+      <div class="row">
+        <div class="col span-2 col-inline">
+          <label>{{t 'machine.driverVsphere.vcenter.label'}}{{field-required}}</label>
+        </div>
+        <div class="col span-4">
+          {{input type="text" class="form-control" value=config.vcenter placeholder=(t 'machine.driverVsphere.vcenter.placeholder')}}
+        </div>
+        <div class="col span-2 col-inline">
+          <label>{{t 'machine.driverVsphere.vcenterPort.label'}}{{field-required}}</label>
+        </div>
+        <div class="col span-4">
+          {{input-integer min=1 max=65535 class="form-control" value=config.vcenterPort}}
+        </div>
       </div>
 
-      <div class="col span-2 col-inline">
-        <label>{{t 'machine.driverVsphere.password.label'}}{{field-required}}</label>
-      </div>
-      <div class="col span-4">
-        {{input type="password" value=vmwarevsphereConfig.password classNames="form-control"}}
-      </div>
-    </div>
+      <div class="row">
+        <div class="col span-2 col-inline">
+          <label>{{t 'machine.driverVsphere.username.label'}}{{field-required}}</label>
+        </div>
+        <div class="col span-4">
+          {{input type="text" value=config.username classNames="form-control"}}
+        </div>
 
-    <div class="over-hr mt-20 mb-20">
-      <span>{{t 'machine.driverVsphere.instanceOptionsSection'}}</span>
-    </div>
-
-    <div class="row">
-      <div class="col span-2 col-inline">
-        <label>{{t 'machine.driverVsphere.cpuCount.label'}}</label>
-      </div>
-
-      <div class="col span-1">
-        {{config.cpuCount}}
-      </div>
-      <div class="col span-3">
-        {{input-slider value=config.cpuCount valueMin=1 valueMax=32}}
-      </div>
-
-      <div class="col span-2 col-inline">
-        <label>{{t 'machine.driverVsphere.memorySize.label'}}</label>
-      </div>
-      <div class="col span-4">
-        <div class="input-group">
-          {{input-integer min=1 value=config.memorySize classNames="form-control"}}
-          <div class="input-group-addon bg-default">{{t 'machine.driverVsphere.memorySize.unit'}}</div>
+        <div class="col span-2 col-inline">
+          <label>{{t 'machine.driverVsphere.password.label'}}{{field-required}}</label>
+        </div>
+        <div class="col span-4">
+          {{input type="password" value=vmwarevsphereConfig.password classNames="form-control"}}
         </div>
       </div>
     </div>
 
-    <div class="row">
-      <div class="col span-2 col-inline">
-        <label>{{t 'machine.driverVsphere.diskSize.label'}}</label>
-      </div>
-      <div class="col span-4">
-        <div class="input-group">
-          {{input-integer min=1 value=config.diskSize classNames="form-control"}}
-          <div class="input-group-addon bg-default">{{t 'machine.driverVsphere.diskSize.unit'}}</div>
+    <div class="row box mt-20">
+      <h4>{{t 'machine.driverVsphere.instanceOptionsSection'}}</h4>
+      <div class="row">
+        <div class="col span-2 col-inline">
+          <label>{{t 'machine.driverVsphere.cpuCount.label'}}</label>
+        </div>
+
+        <div class="col span-1">
+          {{config.cpuCount}}
+        </div>
+        <div class="col span-3">
+          {{input-slider value=config.cpuCount valueMin=1 valueMax=32}}
+        </div>
+
+        <div class="col span-2 col-inline">
+          <label>{{t 'machine.driverVsphere.memorySize.label'}}</label>
+        </div>
+        <div class="col span-4">
+          <div class="input-group">
+            {{input-integer min=1 value=config.memorySize classNames="form-control"}}
+            <div class="input-group-addon bg-default">{{t 'machine.driverVsphere.memorySize.unit'}}</div>
+          </div>
         </div>
       </div>
 
-      <div class="col span-2 col-inline">
-        <label>{{t 'machine.driverVsphere.boot2dockerUrl.label'}}</label>
-      </div>
-      <div class="col span-4">
-        {{input type="text" value=config.boot2dockerUrl classNames="form-control" placeholder=(t 'machine.driverVsphere.boot2dockerUrl.placeholder')}}
+      <div class="row">
+        <div class="col span-2 col-inline">
+          <label>{{t 'machine.driverVsphere.diskSize.label'}}</label>
+        </div>
+        <div class="col span-4">
+          <div class="input-group">
+            {{input-integer min=1 value=config.diskSize classNames="form-control"}}
+            <div class="input-group-addon bg-default">{{t 'machine.driverVsphere.diskSize.unit'}}</div>
+          </div>
+        </div>
+
+        <div class="col span-2 col-inline">
+          <label>{{t 'machine.driverVsphere.boot2dockerUrl.label'}}</label>
+        </div>
+        <div class="col span-4">
+          {{input type="text" value=config.boot2dockerUrl classNames="form-control" placeholder=(t 'machine.driverVsphere.boot2dockerUrl.placeholder')}}
+        </div>
       </div>
     </div>
 
-    <div class="over-hr mt-20 mb-20">
-      <span>{{t 'machine.driverVsphere.schedulingSection'}}</span>
+    <div class="row box mt-20">
+      <h4>{{t 'machine.driverVsphere.schedulingSection'}}</h4>
+      <div class="row">
+        <div class="col span-2 col-inline">
+          <label>{{t 'machine.driverVsphere.dataCenter.label'}}</label>
+        </div>
+        <div class="col span-2">
+          {{input type="text" value=config.datacenter classNames="form-control"}}
+        </div>
+
+        <div class="col span-2 col-inline">
+          <label>{{t 'machine.driverVsphere.pool.label'}}</label>
+        </div>
+        <div class="col span-2">
+          {{input type="text" value=config.pool classNames="form-control"}}
+        </div>
+
+        <div class="col span-2 col-inline">
+          <label>{{t 'machine.driverVsphere.host.label'}}</label>
+        </div>
+        <div class="col span-2">
+          {{input type="text" value=config.hostsystem classNames="form-control" placeholder=(t 'machine.driverVsphere.host.placeholder')}}
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col span-2 col-inline">
+          <label>{{t 'machine.driverVsphere.network.label'}}</label>
+        </div>
+        <div class="col span-4">
+          {{input type="text" value=config.network classNames="form-control"}}
+        </div>
+
+        <div class="col span-2 col-inline">
+          <label>{{t 'machine.driverVsphere.dataStore.label'}}</label>
+        </div>
+        <div class="col span-4">
+          {{input type="text" value=config.datastore classNames="form-control"}}
+        </div>
+      </div>
     </div>
 
-    <div class="row">
-      <div class="col span-2 col-inline">
-        <label>{{t 'machine.driverVsphere.dataCenter.label'}}</label>
-      </div>
-      <div class="col span-2">
-        {{input type="text" value=config.datacenter classNames="form-control"}}
-      </div>
-
-      <div class="col span-2 col-inline">
-        <label>{{t 'machine.driverVsphere.pool.label'}}</label>
-      </div>
-      <div class="col span-2">
-        {{input type="text" value=config.pool classNames="form-control"}}
-      </div>
-
-      <div class="col span-2 col-inline">
-        <label>{{t 'machine.driverVsphere.host.label'}}</label>
-      </div>
-      <div class="col span-2">
-        {{input type="text" value=config.hostsystem classNames="form-control" placeholder=(t 'machine.driverVsphere.host.placeholder')}}
-      </div>
-    </div>
-
-    <div class="row">
-      <div class="col span-2 col-inline">
-        <label>{{t 'machine.driverVsphere.network.label'}}</label>
-      </div>
-      <div class="col span-4">
-        {{input type="text" value=config.network classNames="form-control"}}
-      </div>
-
-      <div class="col span-2 col-inline">
-        <label>{{t 'machine.driverVsphere.dataStore.label'}}</label>
-      </div>
-      <div class="col span-4">
-        {{input type="text" value=config.datastore classNames="form-control"}}
-      </div>
-    </div>
-
-    <div class="over-hr mt-40 mb-30">
-      <span>{{settings.appName}}</span>
-    </div>
-
-    <div class="row">
+    <div class="row mt-5">
       <div class="col span-12">
         {{form-user-labels initialLabels=labelResource.labels setLabels=(action 'setLabels') expandAll=null}}
       </div>
