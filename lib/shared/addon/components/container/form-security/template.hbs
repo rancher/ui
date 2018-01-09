@@ -31,13 +31,13 @@
       {{/input-or-display}}
     </div>
     <div class="col span-4">
-      <label class="acc-label">{{t 'formSecurity.runAsNonRoot.label'}}</label>
-      {{#input-or-display editable=editing value=instance.runAsNonRoot}}
+      <label class="acc-label">{{t 'formSecurity.allowPrivilegeEscalation.label'}}</label>
+      {{#input-or-display editable=editing value=instance.allowPrivilegeEscalation}}
         <div class="radio">
-          <label>{{radio-button selection=instance.runAsNonRoot value=false}} {{t 'formSecurity.runAsNonRoot.disable'}}</label>
+          <label>{{radio-button selection=instance.allowPrivilegeEscalation value=false disabled=allowPrivilegeEscalationDisabled}} {{t 'formSecurity.allowPrivilegeEscalation.disable'}}</label>
         </div>
         <div class="radio">
-          <label>{{radio-button selection=instance.runAsNonRoot value=true}} {{t 'formSecurity.runAsNonRoot.enable'}}</label>
+          <label>{{radio-button selection=instance.allowPrivilegeEscalation value=true disabled=allowPrivilegeEscalationDisabled}} {{t 'formSecurity.allowPrivilegeEscalation.enable'}}</label>
         </div>
       {{/input-or-display}}
     </div>
@@ -45,13 +45,13 @@
 
   <div class="row box mt-20">
     <div class="col span-4">
-      <label class="acc-label">{{t 'formSecurity.readOnlyRootFilesystem.label'}}</label>
-      {{#input-or-display editable=editing value=instance.readOnly}}
+      <label class="acc-label">{{t 'formSecurity.runAsNonRoot.label'}}</label>
+      {{#input-or-display editable=editing value=instance.runAsNonRoot}}
         <div class="radio">
-          <label>{{radio-button selection=instance.readOnly value=false}} {{t 'formSecurity.readOnlyRootFilesystem.disable'}}</label>
+          <label>{{radio-button selection=instance.runAsNonRoot value=false}} {{t 'formSecurity.runAsNonRoot.disable'}}</label>
         </div>
         <div class="radio">
-          <label>{{radio-button selection=instance.readOnly value=true}} {{t 'formSecurity.readOnlyRootFilesystem.enable'}}</label>
+          <label>{{radio-button selection=instance.runAsNonRoot value=true}} {{t 'formSecurity.runAsNonRoot.enable'}}</label>
         </div>
       {{/input-or-display}}
     </div>
@@ -78,7 +78,19 @@
       {{/input-or-display}}
     </div>
   </div>
-
+  <div class="row box mt-20">
+    <div class="col span-4">
+      <label class="acc-label">{{t 'formSecurity.readOnlyRootFilesystem.label'}}</label>
+      {{#input-or-display editable=editing value=instance.readOnly}}
+        <div class="radio">
+          <label>{{radio-button selection=instance.readOnly value=false}} {{t 'formSecurity.readOnlyRootFilesystem.disable'}}</label>
+        </div>
+        <div class="radio">
+          <label>{{radio-button selection=instance.readOnly value=true}} {{t 'formSecurity.readOnlyRootFilesystem.enable'}}</label>
+        </div>
+      {{/input-or-display}}
+    </div>
+  </div>
   <div class="row box mt-20">
     <div class="col span-4">
       <label class="acc-label">{{t 'formSecurity.memoryLimit.label'}}</label>

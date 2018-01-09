@@ -158,6 +158,7 @@ export default Route.extend({
       tty: true,
       stdin: true,
       privileged: false,
+      allowPrivilegeEscalation: false,
       readOnly: false,
       runAsNonRoot: false,
       resources: {
