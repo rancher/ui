@@ -59,8 +59,8 @@ export default Controller.extend({
   rows: function() {
     let showNamespace = this.get('showNamespace');
 
-    return this.get('model.services').filter((obj) => {
+    return this.get('model.records').filter((obj) => {
       return showNamespace[obj.get('namespaceId')] && !obj.get('isReal');
     });
-  }.property('showNamespace','model.services.@each.{isReal}'),
+  }.property('showNamespace','model.dns.@each.namespaceId'),
 });

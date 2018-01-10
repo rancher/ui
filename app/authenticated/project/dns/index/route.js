@@ -7,11 +7,11 @@ export default Route.extend({
   model() {
     var store = this.get('store');
     return hash({
-      services: store.findAll('service'),
+      records: store.findAll('dnsRecord'),
     });
   },
 
   setDefaultRoute: on('activate', function() {
-    this.set(`session.${C.SESSION.CONTAINER_ROUTE}`,'dns');
+    this.set(`session.${C.SESSION.CONTAINER_ROUTE}`,'authenticated.project.dns');
   }),
 });
