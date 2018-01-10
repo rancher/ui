@@ -146,8 +146,8 @@ export default Route.extend({
       namespaceId: namespaceId,
       scale: 1,
       restart: 'Always',
-      ipc: false,
-      pid: false,
+      ipc: "pod",
+      pid: "pod",
       containers: [],
     });
   },
