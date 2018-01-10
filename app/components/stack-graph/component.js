@@ -258,7 +258,7 @@ export default Ember.Component.extend(ThrottledResize, {
       };
       svc.set('tooltipOpts', out);
     });
-    $(".stack-graph-tooltip").mouseleave(function (e) {
+    $(".stack-graph-tooltip").mouseleave(function () {
       svc.leave();
     });
   },
