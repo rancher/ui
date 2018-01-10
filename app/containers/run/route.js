@@ -148,6 +148,8 @@ export default Route.extend({
       restart: 'Always',
       ipc: "pod",
       pid: "pod",
+      net: "pod",
+      dnsPolicy: "ClusterFirst",
       containers: [],
     });
   },
