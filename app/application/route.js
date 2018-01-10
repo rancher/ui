@@ -3,7 +3,7 @@ import { cancel, next, scheduleOnce } from '@ember/runloop';
 import { inject as service } from '@ember/service';
 import Route from '@ember/routing/route';
 import C from 'ui/utils/constants';
-// import { get } from '@ember/object';
+import { get, set } from '@ember/object';
 
 export default Route.extend({
   access         : service(),
@@ -24,12 +24,12 @@ export default Route.extend({
   actions: {
     loading(transition) {
       this.incrementProperty('loadingId');
-      let id = this.get('loadingId');
-      cancel(this.get('hideTimer'));
+      let id = get(this, 'loadingId');
+      cancel(get(this, 'hideTimer'));
 
       //console.log('Loading', id);
-      if ( !this.get('loadingShown') ) {
-        this.set('loadingShown', true);
+      if ( !get(this, 'loadingShown') ) {
+        set(this, 'loadingShown', true);
         //console.log('Loading Show', id);
 
         $('#loading-underlay').stop().show().fadeIn({duration: 100, queue: false, easing: 'linear', complete: function() {
@@ -47,12 +47,12 @@ export default Route.extend({
           }});
         }
 
-        if ( this.get('loadingId') === id ) {
+        if ( get(this, 'loadingId') === id ) {
           if ( transition.isAborted ) {
-            //console.log('Loading aborted', id, this.get('loadingId'));
-            this.set('hideTimer', next(hide));
+            //console.log('Loading aborted', id, get(this, 'loadingId'));
+            set(this, 'hideTimer', next(hide));
           } else {
-            //console.log('Loading finished', id, this.get('loadingId'));
+            //console.log('Loading finished', id, get(this, 'loadingId'));
             //needed to set this to run after render as there was wierdness wiht new register page
             scheduleOnce('afterRender', () => {
               hide();
@@ -89,14 +89,14 @@ export default Route.extend({
     },
 
     logout(transition, timedOut, errorMsg) {
-      let session = this.get('session');
-      let access = this.get('access');
+      let session = get(this, 'session');
+      let access = get(this, 'access');
 
       access.clearToken().finally(() => {
         session.set(C.SESSION.ACCOUNT_ID,null);
 
-        this.get('tab-session').clear();
-        this.set(`session.${C.SESSION.CONTAINER_ROUTE}`, undefined);
+        get(this, 'tab-session').clear();
+        set(this, `session.${C.SESSION.CONTAINER_ROUTE}`, undefined);
 
         access.clearSessionKeys();
 
@@ -104,8 +104,8 @@ export default Route.extend({
           session.set(C.SESSION.BACK_TO, window.location.href);
         }
 
-        if ( this.get('modal.modalVisible') ) {
-          this.get('modal').toggleModal();
+        if ( get(this, 'modal.modalVisible') ) {
+          get(this, 'modal').toggleModal();
         }
 
         let params = {queryParams: {}};
@@ -123,12 +123,12 @@ export default Route.extend({
     },
 
     langToggle() {
-      let svc = this.get('language');
+      let svc = get(this, 'language');
       let cur = svc.getLocale();
       if ( cur === 'none' ) {
-        svc.sideLoadLanguage(this.get('previousLang')||'en-us');
+        svc.sideLoadLanguage(get(this, 'previousLang')||'en-us');
       } else {
-        this.set('previousLang', cur);
+        set(this, 'previousLang', cur);
         svc.sideLoadLanguage('none');
       }
     },
@@ -139,7 +139,7 @@ export default Route.extend({
   },
 
   finishLogin() {
-    let session = this.get('session');
+    let session = get(this, 'session');
 
     let backTo = session.get(C.SESSION.BACK_TO);
     session.set(C.SESSION.BACK_TO, undefined);
@@ -153,10 +153,10 @@ export default Route.extend({
   },
 
   model(params, transition) {
-    let github   = this.get('github');
+    let github   = get(this, 'github');
     let stateMsg = 'Authorization state did not match, please try again.';
 
-    this.get('language').initLanguage();
+    get(this, 'language').initLanguage();
 
     transition.finally(() => {
       this.controllerFor('application').setProperties({
@@ -170,7 +170,7 @@ export default Route.extend({
     if ( params.redirectTo ) {
       let path = params.redirectTo;
       if ( path.substr(0,1) === '/' ) {
-        this.get('session').set(C.SESSION.BACK_TO, path);
+        get(this, 'session').set(C.SESSION.BACK_TO, path);
       }
     }
 
@@ -192,7 +192,7 @@ export default Route.extend({
     } else if ( params.code ) {
 
       if ( github.stateMatches(params.state) ) {
-        return this.get('access').login(params.code).then(() => {
+        return get(this, 'access').login(params.code).then(() => {
           // Abort the orignial transition that was coming in here since
           // we'll redirect the user manually in finishLogin
           // if we dont then model hook runs twice to finish the transition itself
@@ -233,7 +233,7 @@ export default Route.extend({
   },
 
   updateWindowTitle: function() {
-    document.title = this.get('settings.appName');
+    document.title = get(this, 'settings.appName');
   }.observes('settings.appName'),
 
   beforeModel() {
@@ -247,6 +247,6 @@ export default Route.extend({
     }
 
     // Find out if auth is enabled
-    return this.get('access').detect();
+    return get(this, 'access').detect();
   },
 });
