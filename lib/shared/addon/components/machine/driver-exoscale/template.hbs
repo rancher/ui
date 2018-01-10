@@ -26,8 +26,17 @@
       </div>
     {{/if}}
 
+    {{form-cluster-select
+        classNames="mt-20"
+        clusters=clusters
+        defaultExpand=false
+        machine=clonedModel
+        requestedClusterId=requestedClusterId
+        requestedRoles=requestedRoles
+    }}
+
     <div class="container-fluid">
-     <div class="over-hr mb-20">
+      <div class="over-hr mb-20 mt-20">
         <span>{{t 'machine.driverExoscale.accountSection'}}</span>
       </div>
 
@@ -65,7 +74,7 @@
       <div class="footer-actions">
         <button {{action "exoscaleLogin"}} name="submit" class="btn bg-primary">{{t 'machine.driverExoscale.loginAction'}}</button>
         <button {{action "cancel"}} class="btn bg-transparent">{{t 'generic.cancel'}}</button>
-        </div>
+      </div>
     {{/if}}
   </form>
 </section>

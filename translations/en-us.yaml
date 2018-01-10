@@ -971,6 +971,19 @@ hostsPage:
     custom: Add Custom Host
     name:
       placeholder: e.g. host01
+    addCluster:
+      label: "Cluster Options <small>( Optional )</small>"
+      description: Attach this new node to a cluster, delegate roles, etc.
+      cluster:
+        label: Cluster
+      roles:
+        label: Roles
+      table:
+        label:
+          etcd: Use for etcd
+          control: Use for management
+          worker: Use as worker node
+
   hostPage:
     header:
       title: 'Host: {name}'
@@ -3027,7 +3040,7 @@ cloud:
       label: Service Account
       placeholder: Service account private key JSON file
       helpText: |
-        Create a <a href="https://console.cloud.google.com/projectselector/iam-admin/serviceaccounts" target="_blank" rel="nofollow noopener noreferrer">Service Account</a> with a JSON private key and provide the JSON here.  See <a href="https://cloud.google.com/compute/docs/access/create-enable-service-accounts-for-instances" target="_blank" rel="nofollow noopener noreferrer">Google Cloud docs</a> for more info about creating a service account.
+        Create a <a href="https://console.cloud.google.com/projectselector/iam-admin/serviceaccounts" target="_blank" rel="nofollow noopener noreferrer">Service Account</a> with a JSON private key and provide the JSON here.  See <a href="https://cloud.google.com/compute/docs/access/create-enable-service-accounts-for-instances" target="_blank" rel="nofollow noopener noreferrer">Google Cloud docs</a> for more info about creating a service account. Additionally two IAM roles are required <code>kubernetes-engine/admin</code> and <code>service-account/user</code>, more info on roles can be found <a href="https://cloud.google.com/kubernetes-engine/docs/how-to/iam-integration" target="_blank" rel="nofollow noopener noreferrer">here.</a>
     machine: Node Configuration
     location: Location
     customize: Customize

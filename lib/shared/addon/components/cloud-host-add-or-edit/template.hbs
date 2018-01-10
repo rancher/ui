@@ -39,12 +39,12 @@
       <div class="row">
         <div class="col span-11-of-23 mt-0 mb-0">
           {{form-name-description
-            name=prefix
-            nameRequired=true
-            nameLabel="hostsPage.cloudHostsPage.addPage.name.label"
-            namePlaceholder="hostsPage.cloudHostsPage.addPage.name.placeholder"
-            nameHelpText=nameCountLabel
-            descriptionShown=true
+              name=prefix
+              nameRequired=true
+              nameLabel="hostsPage.cloudHostsPage.addPage.name.label"
+              namePlaceholder="hostsPage.cloudHostsPage.addPage.name.placeholder"
+              nameHelpText=nameCountLabel
+              descriptionShown=true
           }}
         </div>
         <div class="col span-11-of-23 mt-0 mb-0 offset-1-of-23">
@@ -56,6 +56,18 @@
       </div>
 
       <hr />
+
+      {{#if canAddOptions}}
+        <div class="row">
+          {{form-cluster-select
+              classNames="mt-20 mb-20"
+              machine=clonedModel
+              clusters=clusters
+              requestedClusterId=requestedClusterId
+              requestedRoles=requestedRoles
+          }}
+        </div>
+      {{/if}}
 
       {{!-- @@TODO@@ - 11-28-17 - not sure we should be doing this this way how the heck do we know which host to clone labels from? --}}
       {{form-user-labels initialLabels=clonedModel.labels setLabels=(action 'setLabels') detailKey="formUserLabels.hostDetail" expandAll=null}}
