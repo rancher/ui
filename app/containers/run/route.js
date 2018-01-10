@@ -150,6 +150,7 @@ export default Route.extend({
       pid: "pod",
       net: "pod",
       dnsPolicy: "ClusterFirst",
+      labels: {},
       containers: [],
     });
   },
