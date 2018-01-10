@@ -31,6 +31,20 @@
       {{/input-or-display}}
     </div>
     <div class="col span-4">
+      <label class="acc-label">{{t 'formSecurity.allowPrivilegeEscalation.label'}}</label>
+      {{#input-or-display editable=editing value=instance.allowPrivilegeEscalation}}
+        <div class="radio">
+          <label>{{radio-button selection=instance.allowPrivilegeEscalation value=false disabled=allowPrivilegeEscalationDisabled}} {{t 'formSecurity.allowPrivilegeEscalation.disable'}}</label>
+        </div>
+        <div class="radio">
+          <label>{{radio-button selection=instance.allowPrivilegeEscalation value=true disabled=allowPrivilegeEscalationDisabled}} {{t 'formSecurity.allowPrivilegeEscalation.enable'}}</label>
+        </div>
+      {{/input-or-display}}
+    </div>
+  </div>
+
+  <div class="row box mt-20">
+    <div class="col span-4">
       <label class="acc-label">{{t 'formSecurity.runAsNonRoot.label'}}</label>
       {{#input-or-display editable=editing value=instance.runAsNonRoot}}
         <div class="radio">
@@ -41,8 +55,29 @@
         </div>
       {{/input-or-display}}
     </div>
+    <div class="col span-4">
+      <label class="acc-label">{{t 'formSecurity.pidMode.label'}}</label>
+      {{#input-or-display editable=editing value=service.pid}}
+        <div class="radio">
+          <label>{{radio-button selection=service.pid value="pod"}} {{t 'formSecurity.pidMode.disable'}}</label>
+        </div>
+        <div class="radio">
+          <label>{{radio-button selection=service.pid value="host"}} {{t 'formSecurity.pidMode.enable'}}</label>
+        </div>
+      {{/input-or-display}}
+    </div>
+    <div class="col span-4">
+      <label class="acc-label">{{t 'formSecurity.ipcMode.label'}}</label>
+      {{#input-or-display editable=editing value=service.ipc}}
+        <div class="radio">
+          <label>{{radio-button selection=service.ipc value="pod"}} {{t 'formSecurity.ipcMode.disable'}}</label>
+        </div>
+        <div class="radio">
+          <label>{{radio-button selection=service.ipc value="host"}} {{t 'formSecurity.ipcMode.enable'}}</label>
+        </div>
+      {{/input-or-display}}
+    </div>
   </div>
-
   <div class="row box mt-20">
     <div class="col span-4">
       <label class="acc-label">{{t 'formSecurity.readOnlyRootFilesystem.label'}}</label>
@@ -55,30 +90,7 @@
         </div>
       {{/input-or-display}}
     </div>
-    <div class="col span-4">
-      <label class="acc-label">{{t 'formSecurity.pidMode.label'}}</label>
-      {{#input-or-display editable=editing value=service.pid}}
-        <div class="radio">
-          <label>{{radio-button selection=service.pid value=false}} {{t 'formSecurity.pidMode.disable'}}</label>
-        </div>
-        <div class="radio">
-          <label>{{radio-button selection=service.pid value=true}} {{t 'formSecurity.pidMode.enable'}}</label>
-        </div>
-      {{/input-or-display}}
-    </div>
-    <div class="col span-4">
-      <label class="acc-label">{{t 'formSecurity.ipcMode.label'}}</label>
-      {{#input-or-display editable=editing value=service.ipc}}
-        <div class="radio">
-          <label>{{radio-button selection=service.ipc value=false}} {{t 'formSecurity.ipcMode.disable'}}</label>
-        </div>
-        <div class="radio">
-          <label>{{radio-button selection=service.ipc value=true}} {{t 'formSecurity.ipcMode.enable'}}</label>
-        </div>
-      {{/input-or-display}}
-    </div>
   </div>
-
   <div class="row box mt-20">
     <div class="col span-4">
       <label class="acc-label">{{t 'formSecurity.memoryLimit.label'}}</label>

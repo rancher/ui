@@ -173,10 +173,20 @@
     {{container/form-command
         classNames="accordion-wrapper"
         instance=launchConfig
-        initialLabels=launchConfig.labels
         errors=commandErrors
         isService=isService
-        setLabels=(action 'setLabels' 'command')
+        service=service
+        expandAll=al.expandAll
+        expandFn=expandFn
+    }}
+
+    {{container/form-networking
+        classNames="accordion-wrapper"
+        instance=launchConfig
+        errors=networkingErrors
+        isService=isService
+        service=service
+        editing=true
         expandAll=al.expandAll
         expandFn=expandFn
     }}
@@ -184,7 +194,7 @@
     {{form-user-labels
         classNames="accordion-wrapper"
         errors=labelErrors
-        initialLabels=launchConfig.labels
+        initialLabels=service.labels
         setLabels=(action 'setLabels' 'user')
         expandAll=al.expandAll
         expandFn=expandFn
@@ -192,7 +202,7 @@
 
     {{form-annotations
       classNames="accordion-wrapper"
-      instance=launchConfig
+      service=service
       errors=annotationErrors
       expandAll=al.expandAll
       expandFn=expandFn

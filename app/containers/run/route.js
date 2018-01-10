@@ -146,8 +146,11 @@ export default Route.extend({
       namespaceId: namespaceId,
       scale: 1,
       restart: 'Always',
-      ipc: false,
-      pid: false,
+      ipc: "pod",
+      pid: "pod",
+      net: "pod",
+      dnsPolicy: "ClusterFirst",
+      labels: {},
       containers: [],
     });
   },
@@ -158,6 +161,7 @@ export default Route.extend({
       tty: true,
       stdin: true,
       privileged: false,
+      allowPrivilegeEscalation: false,
       readOnly: false,
       runAsNonRoot: false,
       resources: {

@@ -7,161 +7,55 @@
      expand=(action expandFn)
 }}
   <div class="row box">
-    {{#if isSidekick}}
-      <div class="col span-12">
-        <label class="acc-label">{{t 'formNetwork.networkMode.label'}}</label>
-        <p>{{t 'formNetwork.networkMode.sidekick.label'}}</p>
-        <p class="help-block">{{t 'formNetwork.networkMode.sidekick.detail'}}</p>
-      </div>
-    {{else}}
-      <div class="col {{if (or isContainerNetwork isHostNetwork isBridgeNetwork) 'span-6' (if isManagedNetwork 'span-6' 'span-12')}}">
-        <label class="acc-label">{{t 'formNetwork.networkMode.label'}}</label>
-        {{#input-or-display editable=editing value=instance.networkMode}}
-          {{new-select
-            classNames="form-control"
-            content=networkChoices
-            localizedLabel=true
-            value=instance.networkMode
-          }}
-        {{/input-or-display}}
-        <p class="help-block">{{t (concat-str 'formNetwork.networkMode' (or instance.networkMode 'none') 'detail' character='.')}}</p>
-      </div>
-
-      {{#if (or isContainerNetwork isHostNetwork isBridgeNetwork)}}
-        <div class="col span-6">
-          {{#if isContainerNetwork}}
-            <label class="acc-label">{{t 'formNetwork.container.label'}}</label>
-            {{#input-or-display editable=editing value=instance.networkContainerId}}
-              {{new-select
-                classNames="form-control"
-                content=containersOnRequestedHost
-                optionLabelPath="name"
-                optionValuePath="id"
-                optionGroupPath="group"
-                value=instance.networkContainerId
-              }}
-            {{/input-or-display}}
-          {{else if (or isHostNetwork isBridgeNetwork)}}
-            <label class="acc-label">{{t 'formNetwork.dns.label'}}</label>
-            <div>
-              {{#input-or-display editable=editing value=dnsDiscovery}}
-                <div class="radio small mt-10">
-                  <label>{{radio-button selection=dnsDiscovery value=true}} {{t 'formNetwork.dns.enable'}}</label>
-                </div>
-                <div class="radio small mt-10">
-                  <label>{{radio-button selection=dnsDiscovery value=false}} {{t 'formNetwork.dns.disable'}}</label>
-                </div>
-              {{/input-or-display}}
-            </div>
-          {{/if}}
-        </div>
-      {{/if}}
-    {{/if}}
-
-    {{#if isManagedNetwork}}
-      <div class="col {{if (or true (and isService (not isSidekick))) 'span-4' 'span-8'}}">
-        <label class="acc-label">{{t 'formNetwork.requestedIp.label'}}</label>
-        {{#input-or-display editable=editing value=requestedIp}}
-          {{input type="text" value=requestedIp classNames="form-control" placeholder=(t 'formNetwork.requestedIp.placeholder')}}
-          <p class="help-block">{{t 'formNetwork.requestedIp.help'}}</p>
-        {{/input-or-display}}
-      </div>
-      {{#if (and isService (not isSidekick))}}
-        <div class="col span-4">
-          <label class="acc-label">{{t 'formNetwork.retainIp.label'}}</label>
-          {{#input-or-display editable=editing value=service.retainIp}}
-            <label class="radio small form-control-static">{{input type="checkbox" checked=instance.retainIp}} {{t 'formNetwork.retainIp.reuse'}}</label>
-          {{/input-or-display}}
-        </div>
-      {{/if}}
-    {{/if}}
-  </div>
-
-  <div class="row">
-    <div class="col span-6 box">
-      <label class="acc-label">{{t 'formNetwork.hostname.label'}}</label>
-      {{#input-or-display editable=editing value=hostname}}
+    <div class="col span-6">
+      <label class="acc-label">{{t 'formNetwork.netMode.label'}}</label>
+      {{#input-or-display editable=editing value=service.net}}
         <div class="radio">
-          <label>{{radio-button selection=hostname value="default"}} {{t 'formNetwork.hostname.dockerId'}}</label>
+          <label>{{radio-button selection=service.net value="pod"}} {{t 'formNetwork.netMode.disable'}}</label>
         </div>
         <div class="radio">
-          <label>{{radio-button selection=hostname value="override"}} {{t 'formNetwork.hostname.containerName'}}</label>
-        </div>
-        <div class="radio">
-          <label>{{radio-button selection=hostname value="host"}} {{t 'formNetwork.hostname.hostName'}}</label>
-        </div>
-        <div class="radio pt-0">
-          <label>{{radio-button selection=hostname value="custom"}} {{t 'formNetwork.hostname.custom'}}:</label>
-          {{input type="text" value=instance.hostname classNames="form-control r-ml10 input-sm" safeStyle="display:inline; width: 200px;" placeholder=(t 'formNetwork.hostname.placeholder') disabled=(not-eq hostname "custom")}}
+          <label>{{radio-button selection=service.net value="host"}} {{t 'formNetwork.netMode.enable'}}</label>
         </div>
       {{/input-or-display}}
     </div>
-    <div class="col span-6 box">
-      <label class="acc-label">{{t 'formNetwork.domainName.label'}}</label>
-      {{#input-or-display editable=editing value=instance.domainName}}
-        {{input type="text" value=instance.domainName classNames="form-control" placeholder=(t 'formNetwork.domainName.placeholder')}}
+    <div class="col span-6">
+      <label class="acc-label">{{t 'formNetwork.dnsPolicy.label'}}</label>
+      {{#input-or-display editable=editing value=service.dnsPolicy}}
+        <div class="radio">
+          <label>{{radio-button selection=service.dnsPolicy value="ClusterFirst"}} {{t 'formNetwork.dnsPolicy.clusterFirst'}}</label>
+        </div>
+        <div class="radio">
+          <label>{{radio-button selection=service.dnsPolicy value="ClusterFirstWithHostNet"}} {{t 'formNetwork.dnsPolicy.clusterFirstWithHostNet'}}</label>
+        </div>
       {{/input-or-display}}
     </div>
   </div>
-
-  {{#unless scope.current.isWindows}}
-    <div class="row">
-      <div class="col span-6 box">
-        <label class="acc-label">{{t 'formNetwork.resolvingServers.label'}}</label>
-        {{#if editing}}
-          <div>
-            <button class="btn bg-link icon-btn" {{action "addDnsResolver"}}>
-              <span class="darken"><i class="icon icon-plus text-small"/></span>
-              <span>{{t 'formNetwork.resolvingServers.addActionLabel'}}</span>
-            </button>
-          </div>
-        {{/if}}
-        {{#if dnsResolverArray.length}}
-          <div>
-            {{#each dnsResolverArray as |dns|}}
-              {{#if editing}}
-                  <div class="row pt-20">
-                  <div class="col span-11">{{input type="text" value=dns.value classNames="form-control dns-value input-sm" placeholder=(t 'formNetwork.resolvingServers.placeholder')}}</div>
-                  <div class="col"><button class="btn bg-primary btn-sm" {{action "removeDnsResolver" dns}}><i class="icon icon-minus"/></button></div>
-                  </div>
-              {{else}}
-                  {{dns.value}}
-              {{/if}}
-            {{/each}}
-          </div>
-        {{else if (not editing)}}
-          <div>{{t 'generic.none'}}</div>
-        {{/if}}
+  <div class="row mt-20">
+      <div class="col box span-6">
+        <label class="acc-label">{{t 'formNetwork.hostname.label'}}</label>
+        {{#input-or-display editable=editing value=service.hostname}}
+          {{input type="text" value=service.hostname classNames="form-control" placeholder=(t 'formNetwork.hostname.placeholder')}}
+        {{/input-or-display}}
       </div>
-      <div class="col span-6 box">
-        <label class="acc-label">{{t 'formNetwork.searchDomains.label'}}</label>
-        {{#if editing}}
-          <div>
-            <button class="btn bg-link icon-btn" {{action "addDnsSearch"}}>
-            <span class="darken"><i class="icon icon-plus text-small"/></span>
-            <span>{{t 'formNetwork.searchDomains.addActionLabel'}}</span>
-            </button>
-          </div>
-        {{/if}}
-        {{#if dnsSearchArray.length}}
-            {{#each dnsSearchArray as |dnsSearch|}}
-                {{#if editing}}
-                  <div class="row pt-20">
-                    <div class="col span-11">{{input type="text" value=dnsSearch.value classNames="form-control dns-search-value input-sm" placeholder=(t 'formNetwork.searchDomains.placeholder')}}</div>
-                    <div class="col">
-                      <button class="btn bg-primary btn-sm" {{action "removeDnsSearch" dnsSearch}}><i class="icon icon-minus"/></button>
-                    </div>
-                  </div>
-                {{else}}
-                  <div>
-                    {{dnsSearch.value}}
-                  </div>
-                {{/if}}
-            {{/each}}
-        {{else if (not editing)}}
-          <div>{{t 'generic.none'}}</div>
-        {{/if}}
+      <div class="col box span-6">
+        <label class="acc-label">{{t 'formNetwork.subdomain.label'}}</label>
+        {{#input-or-display editable=editing value=service.subdomain}}
+          {{input type="text" value=service.subdomain classNames="form-control" placeholder=(t 'formNetwork.subdomain.placeholder')}}
+        {{/input-or-display}}
       </div>
-    </div>
-  {{/unless}}
+  </div>
+  <div class="row box mt-20">
+    {{form-key-value
+        editing=editing
+        allowEmptyValue=false
+        initialArray=initHostAliasesArray
+        changedArray=(action "hostAliasesChanged")
+        header=(t 'formNetwork.hostAlias.label')
+        valueLabel="formNetwork.hostAlias.host.label"
+        keyLabel="formNetwork.hostAlias.ip.label"
+        valuePlaceholder="formNetwork.hostAlias.host.placeholder"
+        keyPlaceholder="formNetwork.hostAlias.ip.placeholder"
+        addActionLabel="formNetwork.hostAlias.addActionLabel"
+    }}
+  </div>
 {{/accordion-list-item}}

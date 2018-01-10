@@ -9,8 +9,8 @@
   <div class="row">
     <div class="col span-6 box">
       <label class="acc-label">{{t 'formCommand.entryPoint.label'}}</label>
-      {{#input-or-display editable=editing value=instance.entryPoint}}
-        {{input-command class="form-control" type="text" changed=(action (mut instance.entryPoint)) initialValue=instance.entryPoint placeholder=(t 'formCommand.entryPoint.placeholder')}}
+      {{#input-or-display editable=editing value=instance.entrypoint}}
+        {{input-command class="form-control" type="text" changed=(action (mut instance.entrypoint)) initialValue=instance.entrypoint placeholder=(t 'formCommand.entryPoint.placeholder')}}
       {{/input-or-display}}
     </div>
     <div class="col span-6 box">
@@ -64,45 +64,27 @@
       <div class="row {{unless editing 'inline-form'}}">
         {{#if editing}}
           <div class="radio">
-            <label>{{radio-button selection=restart value="no"}} {{t 'formCommand.autoRestart.no'}}</label>
+            <label>{{radio-button selection=service.restart value="Never"}} {{t 'formCommand.autoRestart.no'}}</label>
           </div>
 
           <div class="radio">
-            <label>{{radio-button selection=restart value="always"}} {{t 'formCommand.autoRestart.always'}}</label>
+            <label>{{radio-button selection=service.restart value="Always"}} {{t 'formCommand.autoRestart.always'}}</label>
           </div>
 
           <div class="radio">
-            <label>{{radio-button selection=restart value="on-failure"}} {{t 'formCommand.autoRestart.onFailure' htmlSafe=true}}</label>
+            <label>{{radio-button selection=service.restart value="OnFailure"}} {{t 'formCommand.autoRestart.onFailure' htmlSafe=true}}</label>
           </div>
-
-          <div class="radio pt-5">
-            <label>
-              {{radio-button selection=restart value="on-failure-cond"}}
-              <span class="with-input">
-                {{t 'formCommand.autoRestart.onFailureCondPrefix' limit=restartLimit}}
-                {{input-integer min=1 safeStyle="width: 60px; padding: 0 2px; display: inline-block;" class="form-control input-xs" value=restartLimit}}
-                {{t 'formCommand.autoRestart.onFailureCondSuffix' limit=restartLimit}}
-              </span>
-            </label>
-          </div>
-
-        {{else if (eq restart "on-failure-cond")}}
-          <div>
-            {{t 'formCommand.autoRestart.onFailureCondPrefix' limit=restartLimit}}
-            {{restartLimit}}
-            {{t 'formCommand.autoRestart.onFailureCondSuffix' limit=restartLimit}}
-          </div>
-        {{else if (eq restart "on-failure")}}
+        {{else if (eq service.restart "OnFailure")}}
           <div>
             {{t 'formCommand.autoRestart.onFailure' htmlSafe=true}}
           </div>
-        {{else if (eq restart "always")}}
+        {{else if (eq service.restart "Always")}}
           <div>
             {{t 'formCommand.autoRestart.always'}}
           </div>
-        {{else if (eq restart "on-failure")}}
+        {{else if (eq service.restart "Never")}}
           <div>
-            {{t 'formCommand.autoRestart.never'}}
+            {{t 'formCommand.autoRestart.no'}}
           </div>
         {{else}}
           <div>{{t 'generic.none'}}</div>
@@ -113,10 +95,16 @@
 
   <div class="row">
     <div class="col span-6 box">
+      <label class="acc-label">{{t 'formCommand.fsgid.label'}}</label>
+      {{#input-or-display editable=editing value=service.fsgid}}
+        {{input-integer min=0 value=service.fsgid classNames="form-control" placeholder=(t 'formCommand.fsgid.placeholder')}}
+      {{/input-or-display}}
+    </div>
+    <div class="col span-6 box">
       <label class="acc-label">{{t 'formCommand.terminationGracePeriodSeconds.label'}}</label>
-      {{#input-or-display editable=editing value=instance.terminationGracePeriodSeconds}}
+      {{#input-or-display editable=editing value=service.terminationGracePeriodSeconds}}
         <div class="input-group">
-          {{input-integer min=0 value=instance.terminationGracePeriodSeconds}}
+          {{input-integer min=0 value=service.terminationGracePeriodSeconds}}
           <span class="input-group-addon bg-default">{{t 'generic.seconds'}}</span>
         </div>
       {{/input-or-display}}

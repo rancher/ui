@@ -2033,6 +2033,9 @@ formCommand:
   terminationGracePeriodSeconds:
     label: Stop Timeout
     helpText: The container will have this long to stop on its own before it is forcefully terminated.
+  fsgid:
+    label: Filesystem Group
+    placeholder: e.g. 501
 
 
 formContainerLinks:
@@ -2192,6 +2195,14 @@ formNameDescription:
 formNetwork:
   title: Networking
   detail: Configure the networking and DNS options for the container.
+  netMode:
+    label: Use Host's Network Namespace
+    disable: "No"
+    enable: "Yes"
+  dnsPolicy:
+    label: DNS Policy
+    clusterFirstWithHostNet: "Cluster first with host network"
+    clusterFirst: "Cluster first"
   networkMode:
     label: Network
     bridge:
@@ -2254,6 +2265,18 @@ formNetwork:
     label: Search Domains
     placeholder: e.g. prod.example.com
     addActionLabel: Add Domain
+  subdomain:
+    label: Subdomain
+    placeholder: e.g. foo
+  hostAlias:
+    addActionLabel: Add Host Alias
+    label: Host Aliases
+    host:
+      label: Host
+      placeholder: e.g. example
+    ip:
+      label: IP
+      placeholder: e.g. 192.168.1.101
 
 formPorts:
   header: Port Mapping
@@ -2409,10 +2432,14 @@ formSecurity:
     label: Privileged
     disable: "No"
     enable: "Yes: container has full access to the host"
+  allowPrivilegeEscalation:
+    label: Privilege Escalation
+    disable: "No"
+    enable: "Yes: container can gain more privileges than its parent process"
   ipcMode:
-    label: IPC Mode
-    disable: "Normal"
-    enable: Host
+    label: Use Host's IPC Namespace
+    disable: "No"
+    enable: "Yes"
   runAsNonRoot:
     label: Run as Non Root
     disable: "No"
@@ -2422,9 +2449,9 @@ formSecurity:
     disable: "No"
     enable: "Yes: container has a read-only root filesystem"
   pidMode:
-    label: PID Mode
-    disable: Normal
-    enable: Host
+    label: Use Host's PID Namespace
+    disable: "No"
+    enable: "Yes"
   memoryLimit:
     label: Memory
     unlimited: Unlimited
@@ -4074,6 +4101,9 @@ upgradeBtn:
     notfound: 'Template version not found'
     error: 'Error checking for upgrade'
     required: 'Upgrade required'
+
+jsonEditor:
+  placeholder: "Please input in JSON format"
 
 viewEditDescription:
   form:

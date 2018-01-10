@@ -22,9 +22,11 @@
        as |sortable kind label|
   }}
     {{#if (eq kind "row")}}
-      {{#if showKind}}<td data-title="{{t 'labelsSection.kind'}}:"  >{{uc-first label.type}}</td>{{/if}}
-      <td data-title="{{t 'labelsSection.key'}}:" class="force-wrap">{{label.key}}</td>
-      <td data-title="{{t 'labelsSection.value'}}:" class="force-wrap">{{pretty-json value=label.value}}</td>
+      <tr>
+        {{#if showKind}}<td data-title="{{t 'labelsSection.kind'}}:"  >{{uc-first label.type}}</td>{{/if}}
+        <td data-title="{{t 'labelsSection.key'}}:" class="force-wrap">{{label.key}}</td>
+        <td data-title="{{t 'labelsSection.value'}}:" class="force-wrap">{{pretty-json value=label.value}}</td>
+      </tr>
     {{else if (eq kind "norows")}}
       <tr>
         <td colspan="{{sortable.fullColspan}}" class="text-center text-muted pt-20 pb-20">{{t 'labelsSection.noData'}}</td>
