@@ -1,67 +1,51 @@
 <section class="header clearfix">
-  <h1 class="pull-left">{{t 'machinePage.header'}}</h1> <div class="vertical-middle"></div>
-  <p>{{t 'machinePage.subtext' htmlSafe=true}}</p>
-
   <div class="right-buttons">
     <button class="btn btn-sm bg-primary right-divider-btn" {{action 'addNewDriver'}}>{{t 'machinePage.add'}}</button>
   </div>
+
+  <h1>{{t 'machinePage.header'}}</h1> <div class="vertical-middle"></div>
 </section>
 
-<section class="pl-15 pr-15 clearfix">
-  {{#each arranged as |driver|}}
-    {{#catalog-box
-      model=driver
-      active=(not (or (eq driver.state 'inactive') (eq driver.type 'template')))
-      classNames='machine'
-      showIcon=false
-      showDescription=false
-      as |section|
-    }}
-      {{#if (eq section 'header')}}
-        <div class="catalog-header bg-default clearfix p-5">
-          {{#if driver.state}}
-            {{badge-state model=driver class="pull-left vertical-middle btn-xs"}}
-          {{else}}
-            <span class="state badge-state btn-xs text-danger bg-error pull-left">
-              <i class="icon icon-circle"></i> {{t 'machinePage.inactive'}}
-            </span>
-          {{/if}}
+{{#sortable-table
+    classNames="grid sortable-table"
+    body=rows
+    searchText=searchText
+    sortBy=sortBy
+    bulkActions=true
+    pagingLabel="pagination.driver"
+    headers=headers as |sortable kind driver dt|}}
+  {{#if (eq kind "row")}}
+    <tr class="main-row">
+      <td valign="middle" class="row-check" style="padding-top: 2px;">
+        {{check-box nodeId=driver.id}}
+      </td>
 
-          {{#if driver.catalogId}}
-            <div class=" btn-group resource-actions action-menu pull-right">
-              {{#tooltip-element inlineBlock=true type="tooltip-basic" tooltipTemplate="tooltip-static" model=(t 'generic.activate') tagName="span" tooltipFor="catalogMachine"}}
-                <button class="btn bg-default btn-sm" aria-label={{t 'generic.activate'}} {{action 'addCatalogDriver' driver}}>
-                  <i class="icon-fw icon icon-play" alt={{t 'generic.activate'}}></i>
-                </button>
-              {{/tooltip-element~}}
-            </div>
+      <td data-title="{{dt.state}}" class="state">
+        {{badge-state model=driver}}
+      </td>
+
+      <td data-title="{{dt.name}}" class="clip">
+        {{driver.displayName}}
+        <div class="clip text-small">
+          {{#if driver.builtin}}
+            <span class="text-muted">{{t 'machinePage.builtin'}}</span>
           {{else}}
-            {{action-menu model=driver class="pull-right"}}
+            {{driver.url}}
           {{/if}}
         </div>
-        {{#if driver.externalId}}
-          {{log driver.catalogTemplateIcon}}
-          <div class="catalog-icon m-20" style="background-image:url({{driver.catalogTemplateIcon}});"/>
-        {{else if driver.machineHasIcon}}
-          {{log driver.machineHasIcon}}
-          <div class="catalog-icon m-20" style="background-image:url({{driver.machineHasIcon}});"/>
-        {{else}}
-          <div class="catalog-icon m-20 {{driver.displayIcon}}"/>
-        {{/if}}
-      {{else if (eq section 'body')}}
-        <div class="{{if (eq driver.state 'active') 'text-bold'}}">
-          {{driver.name}}
-        </div>
-        <div class="m-10 description">{{driver.description}}</div>
-      {{else if (eq section 'footer')}}
-        {{#if (and driver.externalId (not-eq driver.state 'inactive'))}}
-          {{upgrade-dropdown model=driver btnClass="btn-sm" currentId=driver.externalId upgradeOnly=false changeVersion=(action "upgradeDriver" driver)}}
-        {{else if driver.builtin}}
-          <span class="text-muted">{{t 'machinePage.builtin'}}</span>
-        {{/if}}
+      </td>
 
-      {{/if}}
+      <td data-title="{{dt.actions}}" class="actions">
+        {{action-menu model=driver}}
+      </td>
+    </tr>
 
-    {{/catalog-box}}
-  {{/each}}
-</section>
+    {{#if model.showTransitioningMessage}}
+      {{error-sub-row fullColspan=sortable.fullColspan model=driver}}
+    {{/if}}
+  {{else if (eq kind "nomatch")}}
+    <tr><td colspan="{{sortable.fullColspan}}" class="text-center text-muted pt-20 pb-20">{{t 'nodesPage.table.noMatch'}}</td></tr>
+  {{else if (eq kind "norows")}}
+    <tr><td colspan="{{sortable.fullColspan}}" class="text-center text-muted pt-20 pb-20">{{t 'nodesPage.table.noData'}}</td></tr>
+  {{/if}}
+{{/sortable-table}}

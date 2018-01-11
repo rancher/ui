@@ -1,15 +1,15 @@
 import { computed, get } from '@ember/object';
 import { alias } from '@ember/object/computed';
 import Resource from 'ember-api-store/models/resource';
-import { formatPercent, download } from 'shared/utils/util';
-import { formatSi, parseSi, exponentNeeded } from 'shared/utils/parse-unit';
+import { download } from 'shared/utils/util';
 import C from 'ui/utils/constants';
 import StateCounts from 'ui/mixins/state-counts';
 import { inject as service } from "@ember/service";
 import { reference } from 'ember-api-store/utils/denormalize';
+import ResourceUsage from 'shared/mixins/resource-usage';
 
 
-var Machine = Resource.extend(StateCounts,{
+var Machine = Resource.extend(StateCounts, ResourceUsage, {
   type: 'machine',
   modalService: service('modal'),
   settings: service(),
@@ -34,7 +34,7 @@ var Machine = Resource.extend(StateCounts,{
     },
 
     promptEvacuate: function() {
-      this.get('modalService').toggleModal('modal-host-evacuate', {
+      get(this,'modalService').toggleModal('modal-host-evacuate', {
         model: [this]
       });
     },
@@ -44,15 +44,15 @@ var Machine = Resource.extend(StateCounts,{
     },
 
     newContainer: function() {
-      this.get('router').transitionTo('containers.run', {queryParams: {hostId: this.get('model.id')}});
+      get(this,'router').transitionTo('containers.run', {queryParams: {hostId: get(this,'model.id')}});
     },
 
     clone: function() {
-      this.get('router').transitionTo('hosts.new', {queryParams: {hostId: this.get('id'), driver: this.get('driver')}});
+      get(this,'router').transitionTo('hosts.new', {queryParams: {hostId: get(this,'id'), driver: get(this,'driver')}});
     },
 
     edit: function() {
-      this.get('modalService').toggleModal('modal-edit-host', this);
+      get(this,'modalService').toggleModal('modal-edit-host', this);
     },
 
     machineConfig: function() {
@@ -65,18 +65,18 @@ var Machine = Resource.extend(StateCounts,{
   },
 
   availableActions: function() {
-    let a = this.get('actionLinks');
-    let l = this.get('links');
+    let a = get(this,'actionLinks');
+    let l = get(this,'links');
 
     let out = [
       { label: 'action.machineConfig', icon: 'icon icon-download', action: 'machineConfig', enabled: !!l.config},
       { divider: true },
       { label: 'action.edit', icon: 'icon icon-edit', action: 'edit', enabled: !!l.update },
       { divider: true },
-      { label: 'action.activate',   icon: 'icon icon-play',         action: 'activate',     enabled: !!a.activate, bulkable: true},
-      { label: 'action.deactivate', icon: 'icon icon-pause',        action: 'deactivate',   enabled: !!a.deactivate, bulkable: true},
-      { label: 'action.evacuate',   icon: 'icon icon-snapshot',     action: 'promptEvacuate',enabled: !!a.evacuate, altAction: 'evacuate', bulkable: true},
-      { divider: true },
+//      { label: 'action.activate',   icon: 'icon icon-play',         action: 'activate',     enabled: !!a.activate, bulkable: true},
+//      { label: 'action.deactivate', icon: 'icon icon-pause',        action: 'deactivate',   enabled: !!a.deactivate, bulkable: true},
+//      { label: 'action.evacuate',   icon: 'icon icon-snapshot',     action: 'promptEvacuate',enabled: !!a.evacuate, altAction: 'evacuate', bulkable: true},
+//      { divider: true },
       { label: 'action.remove',     icon: 'icon icon-trash',        action: 'promptDelete', enabled: !!l.remove, altAction: 'delete', bulkable: true},
       { divider: true },
       { label: 'action.viewInApi',  icon: 'icon icon-external-link',action: 'goToApi',      enabled: true},
@@ -88,12 +88,12 @@ var Machine = Resource.extend(StateCounts,{
   displayIp: alias('ipAddress'),
 
   displayName: computed('name','nodeName','id', function() {
-    let name = this.get('name');
+    let name = get(this,'name');
     if ( name ) {
       return name;
     }
 
-    name = this.get('nodeName');
+    name = get(this,'nodeName');
     if ( name ) {
       if ( name.match(/[a-z]/i) ) {
         name = name.replace(/\..*$/,'');
@@ -102,83 +102,23 @@ var Machine = Resource.extend(StateCounts,{
       return name;
     }
 
-    name = this.get('requestedHostname');
+    name = get(this,'requestedHostname');
     if ( name ) {
       return name;
     }
 
-    return '('+this.get('id')+')';
-  }),
-
-  cpuUsage: computed('requested.cpu','allocatable.cpu', function() {
-    const used  = parseSi(get(this,'requested.cpu'));
-    const total = parseSi(get(this,'allocatable.cpu'));
-    if ( total ) {
-      const minExp = exponentNeeded(total);
-      const usedStr  = formatSi(used,  1000, '', '', 0, minExp).replace(/\s.*$/,'');
-      const totalStr = formatSi(total, 1000, '', '', 0, minExp);
-
-      return `${usedStr}/${totalStr}`
-    }
-  }),
-
-  cpuPercent: computed('requested.cpu','allocatable.cpu', function() {
-    const used  = parseSi(get(this,'requested.cpu'));
-    const total = parseSi(get(this,'allocatable.cpu'));
-    if ( total ) {
-      return formatPercent(100*used/total);
-    }
-  }),
-
-  memoryUsage: computed('requested.memory','allocatable.memory', function() {
-    const used = parseSi(get(this,'requested.memory'));
-    const total = parseSi(get(this,'allocatable.memory'));
-    if ( total ) {
-      const minExp = exponentNeeded(total);
-      const usedStr =  formatSi(used,  1024, '', '', 0, minExp).replace(/\s.*/,'');
-      const totalStr = formatSi(total, 1024, 'iB', 'B', 0, minExp);
-
-      return `${usedStr}/${totalStr}`
-    }
-  }),
-
-  memoryPercent: computed('requested.memory','allocatable.memory', function() {
-    const used  = parseSi(get(this,'requested.memory'));
-    const total = parseSi(get(this,'allocatable.memory'));
-    if ( total ) {
-      return formatPercent(100*used/total);
-    }
-  }),
-
-  podUsage: computed('requested.pods','allocatable.pods', function() {
-    const used  = parseSi(get(this,'requested.pods'));
-    const total = parseSi(get(this,'allocatable.pods'));
-    if ( total ) {
-      const minExp = exponentNeeded(total);
-      const usedStr  = formatSi(used,  1000, '', '', 0, minExp).replace(/\s.*$/,'');
-      const totalStr = formatSi(total, 1000, '', '', 0, minExp);
-
-      return `${usedStr}/${totalStr}`
-    }
-  }),
-
-  podPercent: computed('requested.pods','allocatable.pods', function() {
-    const used  = parseSi(get(this,'requested.pods'));
-    const total = parseSi(get(this,'allocatable.pods'));
-    if ( total ) {
-      return formatPercent(100*used/total);
-    }
+    return '('+get(this,'id')+')';
   }),
 
 /*
   osBlurb: function() {
-    var out = this.get('info.osInfo.operatingSystem')||'';
+    var out = get(this,'info.osInfo.operatingSystem')||'';
 
     out = out.replace(/\s+\(.*?\)/,''); // Remove details in parens
     out = out.replace(/;.*$/,''); // Or after semicolons
     out = out.replace('Red Hat Enterprise Linux Server','RHEL'); // That's kinda long
 
-    var hasKvm = (this.get('labels')||{})[C.LABEL.KVM] === 'true';
+    var hasKvm = (get(this,'labels')||{})[C.LABEL.KVM] === 'true';
     if ( hasKvm && out )
     {
       out += ' (with KVM)';
@@ -190,19 +130,19 @@ var Machine = Resource.extend(StateCounts,{
   osDetail: alias('info.osInfo.operatingSystem'),
 
   dockerEngineVersion: function() {
-    if ( this.get('info.osInfo') )
+    if ( get(this,'info.osInfo') )
     {
 */
-//      return (this.get('info.osInfo.dockerVersion')||'').replace(/^Docker version\s*/i,'').replace(/,.*/,'');
+//      return (get(this,'info.osInfo.dockerVersion')||'').replace(/^Docker version\s*/i,'').replace(/,.*/,'');
 /*    }
   }.property('info.osInfo.dockerVersion'),
 
   supportState: function() {
-    let my = this.get('dockerEngineVersion')||'';
+    let my = get(this,'dockerEngineVersion')||'';
     my = my.replace(/-(cs|ce|ee)[0-9.-]*$/,'');
 
-    let supported = this.get(`settings.${C.SETTING.SUPPORTED_DOCKER}`);
-    let newest = this.get(`settings.${C.SETTING.NEWEST_DOCKER}`);
+    let supported = get(this,`settings.${C.SETTING.SUPPORTED_DOCKER}`);
+    let newest = get(this,`settings.${C.SETTING.NEWEST_DOCKER}`);
 
     if ( !my || !supported || !newest) {
       return 'unknown';
@@ -218,20 +158,20 @@ var Machine = Resource.extend(StateCounts,{
   dockerDetail: alias('info.osInfo.operatingSystem'),
 
   kernelBlurb: function() {
-    if ( this.get('info.osInfo') )
+    if ( get(this,'info.osInfo') )
     {
-      return (this.get('info.osInfo.kernelVersion')||'');
+      return (get(this,'info.osInfo.kernelVersion')||'');
     }
   }.property('info.osInfo.kernelVersion'),
 
   cpuBlurb: function() {
-    if ( this.get('info.cpuInfo.count') )
+    if ( get(this,'info.cpuInfo.count') )
     {
-      var ghz = Math.round(this.get('info.cpuInfo.mhz')/10)/100;
+      var ghz = Math.round(get(this,'info.cpuInfo.mhz')/10)/100;
 
-      if ( this.get('info.cpuInfo.count') > 1 )
+      if ( get(this,'info.cpuInfo.count') > 1 )
       {
-        return this.get('info.cpuInfo.count')+'x' + ghz + ' GHz';
+        return get(this,'info.cpuInfo.count')+'x' + ghz + ' GHz';
       }
       else
       {
@@ -243,22 +183,22 @@ var Machine = Resource.extend(StateCounts,{
   cpuTooltip: alias('info.cpuInfo.modelName'),
 
   memoryBlurb: function() {
-    if ( this.get('info.memoryInfo') )
+    if ( get(this,'info.memoryInfo') )
     {
-      return formatMib(this.get('info.memoryInfo.memTotal'));
+      return formatMib(get(this,'info.memoryInfo.memTotal'));
     }
   }.property('info.memoryInfo.memTotal'),
 
   memoryLimitBlurb: computed('memory', function() {
-    if ( this.get('memory') )
+    if ( get(this,'memory') )
     {
-      return formatSi(this.get('memory'), 1024, 'iB', 'B');
+      return formatSi(get(this,'memory'), 1024, 'iB', 'B');
     }
   }),
 
   localStorageBlurb: computed('localStorageMb', function() {
-    if (this.get('localStorageMb')) {
-      return formatSi(this.get('localStorageMb'), 1024, 'iB', 'B', 2); // start at 1024^2==MB
+    if (get(this,'localStorageMb')) {
+      return formatSi(get(this,'localStorageMb'), 1024, 'iB', 'B', 2); // start at 1024^2==MB
     }
   }),
 
@@ -266,19 +206,19 @@ var Machine = Resource.extend(StateCounts,{
     var totalMb = 0;
 
     // New hotness
-    if ( this.get('info.diskInfo.fileSystems') )
+    if ( get(this,'info.diskInfo.fileSystems') )
     {
-      var fses = this.get('info.diskInfo.fileSystems')||[];
+      var fses = get(this,'info.diskInfo.fileSystems')||[];
       Object.keys(fses).forEach((fs) => {
         totalMb += fses[fs].capacity;
       });
 
       return formatMib(totalMb);
     }
-    else if ( this.get('info.diskInfo.mountPoints') )
+    else if ( get(this,'info.diskInfo.mountPoints') )
     {
       // Old & busted
-      var mounts = this.get('info.diskInfo.mountPoints')||[];
+      var mounts = get(this,'info.diskInfo.mountPoints')||[];
       Object.keys(mounts).forEach((mountPoint) => {
         totalMb += mounts[mountPoint].total;
       });
@@ -289,10 +229,10 @@ var Machine = Resource.extend(StateCounts,{
 
   diskDetail: function() {
     // New hotness
-    if ( this.get('info.diskInfo.fileSystems') )
+    if ( get(this,'info.diskInfo.fileSystems') )
     {
       var out = [];
-      var fses = this.get('info.diskInfo.fileSystems')||[];
+      var fses = get(this,'info.diskInfo.fileSystems')||[];
       Object.keys(fses).forEach((fs) => {
         out.pushObject(EmberObject.create({label: fs, value: formatMib(fses[fs].capacity)}));
       });
@@ -305,8 +245,8 @@ var Machine = Resource.extend(StateCounts,{
   // If you use this you must ensure that services and containers are already in the store
   //  or they will not be pulled in correctly.
   displayEndpoints: function() {
-    var store = this.get('clusterStore');
-    return (this.get('publicEndpoints')||[]).map((endpoint) => {
+    var store = get(this,'clusterStore');
+    return (get(this,'publicEndpoints')||[]).map((endpoint) => {
       if ( !endpoint.service ) {
         endpoint.service = store.getById('service', endpoint.serviceId);
       }
@@ -317,7 +257,7 @@ var Machine = Resource.extend(StateCounts,{
   }.property('publicEndpoints.@each.{ipAddress,port,serviceId,instanceId}'),
 
   requireAnyLabelStrings: function() {
-    return  ((this.get('labels')||{})[C.LABEL.REQUIRE_ANY]||'')
+    return  ((get(this,'labels')||{})[C.LABEL.REQUIRE_ANY]||'')
               .split(/\s*,\s*/)
               .filter((x) => x.length > 0 && x !== C.LABEL.SYSTEM_TYPE);
   }.property(`labels.${C.LABEL.REQUIRE_ANY}`),

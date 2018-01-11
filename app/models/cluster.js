@@ -2,15 +2,16 @@ import { computed } from '@ember/object';
 import { equal } from '@ember/object/computed';
 import { inject as service } from '@ember/service';
 import Resource from 'ember-api-store/models/resource';
-import PolledResource from 'ui/mixins/cattle-polled-resource';
 import { hasMany } from 'ember-api-store/utils/denormalize';
+import ResourceUsage from 'shared/mixins/resource-usage';
 
-var Cluster = Resource.extend(PolledResource, {
+var Cluster = Resource.extend(ResourceUsage, {
   scope:        service(),
   router:       service(),
 
   namespaces: hasMany('id', 'namespace', 'clusterId'),
   projects: hasMany('id', 'project', 'clusterId'),
+  machines: hasMany('id', 'machine', 'clusterId'),
   clusterRoleTemplateBindings: hasMany('id', 'clusterRoleTemplateBinding', 'clusterId'),
 
   canAddNode: true, // @TODO-2.0
