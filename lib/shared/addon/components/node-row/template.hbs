@@ -8,7 +8,17 @@
   </td>
 
   <td data-title="{{dt.name}}" class="clip">
-    <a href="{{href-to "node" model.id}}">{{model.displayName}}</a>
+    {{#if (eq view "global")}}
+      {{#if model.clusterId}}
+        {{#link-to-external 'authenticated.cluster.nodes.node' model.clusterId model.id}}
+          {{model.displayName}}
+        {{/link-to-external}}
+      {{else}}
+          {{model.displayName}}
+      {{/if}}
+    {{else}}
+      <a href="{{href-to 'authenticated.cluster.nodes.node' model.clusterId model.id}}">{{model.displayName}}</a>
+    {{/if}}
     {{#each model.displayUserLabelStrings as |label|}}
       <span class="tag-xs bg-info">{{label}}</span>
     {{/each}}
