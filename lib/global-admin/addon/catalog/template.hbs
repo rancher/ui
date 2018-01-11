@@ -1,12 +1,11 @@
 <section class="header clearfix">
-  <h1 class="pull-left">{{t 'catalogSettings.header'}}</h1>
-
   <div class="right-buttons">
-    <button class="btn bg-link icon-btn" {{action "add"}}>
-      <span class="darken"><i class="icon icon-plus text-small"/></span>
-      <span>{{t 'catalogSettings.more.addActionLabel'}}</span>
+    <button class="btn bg-primary btn-sm" {{action "add"}}>
+      {{t 'catalogSettings.more.addActionLabel'}}
     </button>
   </div>
+
+  <h1>{{t 'catalogSettings.header'}}</h1>
 </section>
 
 <div class="row row-same-height">
@@ -14,11 +13,17 @@
     <h2>{{t (if settings.isRancher 'catalogSettings.certified.header.rancher' 'catalogSettings.certified.header.pl') appName=settings.appName}}</h2>
     <div>
       {{#if stdLibrary}}
-        <button class="btn btn-link btn-sm bg-success" {{action "disableLibrary"}}>{{t 'generic.enabled'}}</button>
+        <div class="btn-group">
+          <button class="btn btn-link btn-sm bg-default" {{action "disableLibrary"}}>{{t 'generic.disable'}}</button>
+          <button class="btn btn-link btn-sm bg-success">{{t 'generic.enabled'}}</button>
+        </div>
       {{else if libraryUsed}}
         {{t 'catalogSettings.notAvailable' name='library'}}
       {{else}}
-        <button class="btn btn-link btn-sm bg-primary" {{action "enableLibrary"}}>{{t 'generic.disabled'}}</button>
+        <div class="btn-group">
+          <button class="btn btn-link btn-sm bg-primary">{{t 'generic.disabled'}}</button>
+          <button class="btn btn-link btn-sm bg-defualt" {{action "enableLibrary"}}>{{t 'generic.enable'}}</button>
+        </div>
       {{/if}}
     </div>
     <p class="text-info">
@@ -30,11 +35,17 @@
     <h2>{{t (if settings.isRancher 'catalogSettings.community.header.rancher' 'catalogSettings.community.header.pl') appName=settings.appName}}</h2>
     <div>
       {{#if stdCommunity}}
-        <button class="btn btn-link btn-sm bg-success" {{action "disableCommunity"}}>{{t 'generic.enabled'}}</button>
+        <div class="btn-group">
+          <button class="btn btn-link btn-sm bg-default" {{action "disableCommunity"}}>{{t 'generic.disable'}}</button>
+          <button class="btn btn-link btn-sm bg-success">{{t 'generic.enabled'}}</button>
+        </div>
       {{else if communityUsed}}
         {{t 'catalogSettings.notAvailable' name='community'}}
       {{else}}
-        <button class="btn btn-link btn-sm bg-primary" {{action "enableCommunity"}}>{{t 'generic.disabled'}}</button>
+        <div class="btn-group">
+          <button class="btn btn-link btn-sm bg-primary">{{t 'generic.disabled'}}</button>
+          <button class="btn btn-link btn-sm bg-defualt" {{action "enableCommunity"}}>{{t 'generic.enable'}}</button>
+        </div>
       {{/if}}
     </div>
     <p class="text-info">

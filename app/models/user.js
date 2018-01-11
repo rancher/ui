@@ -3,7 +3,6 @@ import Resource from 'ember-api-store/models/resource';
 import { get, computed } from '@ember/object';
 
 var User = Resource.extend({
-  modalService: service('modal'),
   router: service(),
 
   actions: {

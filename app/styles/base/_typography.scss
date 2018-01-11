@@ -51,10 +51,14 @@ h6 {
   font-family : Consolas, "Andale Mono", "Lucida Console",  Monaco, "Courier New", Courier, monospace;
 }
 
-.no-inline-space {
+@mixin no-inline-space() {
   font-family: zerowidthspace;
 
   & > * {
     font-family: $text-font-stack;
   }
+}
+
+.no-inline-space {
+  @include no-inline-space;
 }

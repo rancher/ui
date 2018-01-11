@@ -59,38 +59,6 @@
   }}
 
     {{#accordion-list-item
-         title=(t 'accountsPage.detail.table.project.title')
-         detail=(t 'accountsPage.detail.table.project.description')
-         expandOnInit=true
-         expandAll=false
-         expand=(action expandFn)
-    }}
-      {{#sortable-table
-           classNames="grid sortable-table"
-           body=projectRoles
-           search=false
-           sortBy=sortBy
-           bulkActions=false
-           pagingLabel="pagination.node"
-           headers=projectHeaders as |sortable kind role dt|}}
-        {{#if (eq kind "row")}}
-          <tr class="main-row">
-            <td data-title="{{dt.name}}" class="state">
-              {{role.name}}
-            </td>
-
-            <td data-title="{{dt.project.name}}">
-              <a href="#" {{action 'launchOnCluster' role.project }}>{{role.project.name}}</a>
-            </td>
-          </tr>
-
-        {{else if (eq kind "norows")}}
-          <tr><td colspan="{{sortable.fullColspan}}" class="text-center text-muted pt-20 pb-20">{{t 'accountsPage.detail.table.project.noRoles'}}</td></tr>
-        {{/if}}
-      {{/sortable-table}}
-    {{/accordion-list-item}}
-
-    {{#accordion-list-item
          title=(t 'accountsPage.detail.table.cluster.title')
          detail=(t 'accountsPage.detail.table.cluster.description')
          expandOnInit=true
@@ -124,8 +92,36 @@
       {{/sortable-table}}
     {{/accordion-list-item}}
 
+    {{#accordion-list-item
+         title=(t 'accountsPage.detail.table.project.title')
+         detail=(t 'accountsPage.detail.table.project.description')
+         expandOnInit=true
+         expandAll=false
+         expand=(action expandFn)
+    }}
+      {{#sortable-table
+           classNames="grid sortable-table"
+           body=projectRoles
+           search=false
+           sortBy=sortBy
+           bulkActions=false
+           pagingLabel="pagination.node"
+           headers=projectHeaders as |sortable kind role dt|}}
+        {{#if (eq kind "row")}}
+          <tr class="main-row">
+            <td data-title="{{dt.name}}" class="state">
+              {{role.name}}
+            </td>
+
+            <td data-title="{{dt.project.name}}">
+              <a href="#" {{action 'launchOnCluster' role.project }}>{{role.project.name}}</a>
+            </td>
+          </tr>
+
+        {{else if (eq kind "norows")}}
+          <tr><td colspan="{{sortable.fullColspan}}" class="text-center text-muted pt-20 pb-20">{{t 'accountsPage.detail.table.project.noRoles'}}</td></tr>
+        {{/if}}
+      {{/sortable-table}}
+    {{/accordion-list-item}}
   {{/accordion-list}}
-
-
 </section>
-{{top-errors errors=errors}}
