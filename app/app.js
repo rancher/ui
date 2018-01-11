@@ -57,6 +57,8 @@ const App = Application.extend({
           'authenticated.cluster.projects': 'authenticated.cluster.projects',
           'authenticated.project': 'authenticated.project',
           'authenticated.prefs':   'authenticated.prefs',
+          'authenticated.cluster.nodes': 'authenticated.cluster.nodes',
+          'authenticated.cluster.nodes.node': 'authenticated.cluster.nodes.node',
           'logout':                'logout'
         }
       }
