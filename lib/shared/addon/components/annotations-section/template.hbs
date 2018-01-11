@@ -1,0 +1,34 @@
+{{#accordion-list-item
+     title=(t 'annotationsSection.title')
+     detail=(t 'annotationsSection.detail')
+     statusClass=(if labelArray.length 'bg-success' 'text-muted')
+     expandAll=expandAll
+     expand=(action expandFn)
+     componentName='sortable-table'
+     as | parent |
+}}
+  {{#component parent.intent
+       classNames="grid fixed mb-0 sortable-table"
+       bulkActions=false
+       rowActions=false
+       paging=false
+       search=true
+       sortBy=sortBy
+       stickyHeader=false
+       descending=descending
+       headers=headers
+       body=labelArray
+       as |sortable kind label|
+  }}
+    {{#if (eq kind "row")}}
+      <tr>
+        <td data-title="{{t 'annotationsSection.key'}}:" class="force-wrap">{{label.key}}</td>
+        <td data-title="{{t 'annotationsSection.value'}}:" class="force-wrap">{{pretty-json value=label.value}}</td>
+      </tr>
+    {{else if (eq kind "norows")}}
+      <tr>
+        <td colspan="{{sortable.fullColspan}}" class="text-center text-muted pt-20 pb-20">{{t 'annotationsSection.noData'}}</td>
+      </tr>
+    {{/if}}
+  {{/component}}
+{{/accordion-list-item}}

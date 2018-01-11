@@ -1,5 +1,4 @@
 import Resource from 'ember-api-store/models/resource';
-import { set } from '@ember/object';
 
 var MachineTemplate = Resource.extend({
   type: 'machinetemplate',

@@ -4,7 +4,6 @@ import { inject as service } from '@ember/service';
 import Controller, { inject as controller } from '@ember/controller';
 
 //const NONE = 'none';
-const NAMESPACE = 'namespace';
 
 export default Controller.extend({
   prefs: service(),

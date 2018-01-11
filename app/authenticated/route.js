@@ -102,7 +102,6 @@ export default Route.extend(Preload, {
   },
 
   activate() {
-    const app = this.controllerFor('application');
     const isPopup = this.controllerFor('application').get('isPopup');
 
     this._super();

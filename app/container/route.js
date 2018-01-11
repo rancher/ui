@@ -1,4 +1,3 @@
-import { hash } from 'rsvp';
 import { get } from '@ember/object';
 import Route from '@ember/routing/route';
 
