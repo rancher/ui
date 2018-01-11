@@ -65,6 +65,7 @@ Router.map(function() {
         this.route('templates');
         this.route('launch', {path: '/launch/:template_id'});
         this.route('configure');
+        this.route('node', {path: '/:node_id', resetNamespace: true});
       });
 
       this.route('projects', {path: '/projects'}, function() {

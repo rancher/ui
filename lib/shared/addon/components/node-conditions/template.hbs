@@ -1,0 +1,22 @@
+<div class="row">
+  {{#each conditions as |c|}}
+    <div class="col span-3 box text-center {{if c.healthy 'text-success' 'bg-danger-imp'}}">
+      <div class="p-10">
+        <i class="icon icon-2x {{if c.healthy 'icon-thumbs-up' 'icon-alert'}}" />
+      </div>
+      <p>{{c.name}}</p>
+    </div>
+  {{/each}}
+</div>
+<div class="row">
+  {{#each unhealthyConditions as |condition|}}
+    <div class="banner bg-error mt-30">
+      <div class="banner-icon">
+        <i class="icon icon-alert"></i>
+      </div>
+      <div class="banner-message text-left">
+        <p>{{condition.message}}</p>
+      </div>
+    </div>
+  {{/each}}
+</div>
