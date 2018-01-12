@@ -102,25 +102,26 @@ accountsPage:
     header: User Details
     table:
       headers:
+        permission: Permission
         role: Role
-        projectName: Project Name
-        clusterName: Project Name
+        clusterName: Cluster
+        projectName: Project
         active: Active
+        created: Granted
       global:
-        title: Global Roles
-        description: Global Security roles
-        noRoles: User has no global roles
+        title: Global Permissions
+        description: Access to manage things that affect the entire installation
+        noRoles: User has no global permissions
+      cluster:
+        title: Cluster Roles
+        description: Roles granted to this user for individual clusters
+        noRoles: User has no cluster roles
       project:
         title: Project Roles
         description: Project Security roles
-        noRoles: User has no project roles
-      cluster:
-        title: Cluster Roles
-        description: Cluster Security roles
-        noRoles: User has no cluster roles
+        noRoles: Roles granted to this user for individual projects
       roles:
         title: Roles
-        description: Security roles TBD
   index:
     header: Users
     localLink: Add User
@@ -134,17 +135,17 @@ accountsPage:
   new:
     header: Add User
     errors:
-      usernameReq: Login Username is requried.
-      usernameInExists: Login Username is already in use. Please choose a new username.
-      pwReq: Password is requried.
+      usernameReq: Username is required.
+      usernameInExists: Username is already in use. Please choose a new username.
+      pwReq: Password is required.
     form:
       username:
-        labelText: Login Username
+        labelText: Username
         placeholder: "e.g. jsmith"
       password:
         labelText: Password
       name:
-        labelText: Name
+        labelText: Display Name
         placeholder: "e.g. John Smith"
       type:
         labelText: Account Type
@@ -169,7 +170,7 @@ podSecurityPoliciesPage:
   saveNew: Create
   new:
     errors:
-      nameReq: Name is requried.
+      nameReq: Name is required.
       nameInExists: Name is already exists. Please use a new pod security policy name.
     form:
       name:
@@ -192,9 +193,9 @@ rolesPage:
   saveNew: Create
   new:
     errors:
-      nameReq: Name is requried.
+      nameReq: Name is required.
       nameInExists: Name is already exists. Please use a new role name.
-      ruleResourceReq: Resource is requried for a rule.
+      ruleResourceReq: Resource is required for a rule.
     form:
       name:
         labelText: Name
@@ -607,10 +608,10 @@ projectsPage:
         role:
           label: Role
     errors:
-      nameReq: Name is requried.
+      nameReq: Name is required.
       nameInExists: Name is already exists. Please use a new project name.
-      memberNameReq: Name is requried for a member
-      memberRoleReq: Role is requried for a member
+      memberNameReq: Name is required for a member
+      memberRoleReq: Role is required for a member
 
 clustersPage:
   header: Clusters
@@ -788,7 +789,7 @@ editDns:
     label: Target Hostname
     placeholder: e.g. foobar.com
   errors:
-    ipRequired: 'One or more "Target IP Addresses" are requried'
+    ipRequired: 'One or more "Target IP Addresses" are required'
     hostnameRequired: '"Target Hostname" is required'
     serviceRequired: 'One or more "Targets" are required'
     selectorRequired: '"Container Selector" is required'
@@ -1731,7 +1732,7 @@ editAccount:
   title: Edit Account
   form:
     name:
-      label: Name
+      label: Display Name
       placeholder: e.g. John Smith
     kind:
       label: Account Type
@@ -1741,7 +1742,7 @@ editAccount:
       label: Description
       placeholder: e.g. This account is for John Smith
     publicValue:
-      label: Login Username
+      label: Username
     oldPassword:
       label: Current Password
     newPassword:

@@ -27,14 +27,12 @@ export default Route.extend(Preload,{
 
     return this.loadSchemas('store').then(() =>  {
       return PromiseAll([
-        this.preload('workload'),
-        this.preload('dnsRecord'),
         this.preload('namespace'),
         this.preload('pod'),
-        this.preload('machine', 'globalStore'),
+        this.preload('workload'),
+        this.preload('dnsRecord'),
         this.preload('secret'),
         this.preload('namespacedSecret'),
-        this.preload('projectRoleTemplateBinding', 'globalStore'),
       ]).then(() => {
         return EmberObject.create({
           project,
