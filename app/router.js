@@ -32,7 +32,7 @@ Router.map(function() {
   this.route('logout');
 
   this.route('authenticated', {path: '/'}, function() {
-    this.mount('global-admin', { path: '/global', resetNamespace: true});
+    this.mount('global-admin', { path: '/g', resetNamespace: true});
     this.route('dummy-dev', {path: '/dev'});
 
     this.route('prefs');

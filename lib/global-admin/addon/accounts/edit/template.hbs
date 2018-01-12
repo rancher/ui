@@ -42,6 +42,14 @@
         </div>
       </div>
     {{/unless}}
+    <div class="row inline-form">
+      <div class="col span-8 offset-2">
+        <label>
+          {{input type="checkbox" checked=primaryResource.mustChangePassword}}
+          {{t 'editUser.form.password.mustChangePassword'}}
+        </label>
+      </div>
+    </div>
   </div>
 
   {{#accordion-list
@@ -49,11 +57,10 @@
        as |al expandFn|
   }}
     {{#accordion-list-item
-         title=(t 'editUser.form.globalRoles.label')
-         detail=(t 'editUser.form.globalRoles.description')
+         title=(t 'accountsPage.detail.table.global.title')
+         detail=(t 'accountsPage.detail.table.global.description')
          expandOnInit=true
-         expandAll=false
-         expand=(action expandFn)
+         showExpand=false
     }}
       {{#sortable-table
            classNames="grid sortable-table"

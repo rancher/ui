@@ -45,48 +45,54 @@
     expandOnInit=true
     showExpand=false
   }}
-    {{#sortable-table
-      classNames="grid sortable-table"
-      body=globalRoleMapping
-      search=false
-      sortBy=sortGlobalBy
-      bulkActions=false
-      pagingLabel="pagination.role"
-      headers=globalHeaders as |sortable kind entry dt|
-    }}
-      {{#if (eq kind "row")}}
-        <tr class="main-row {{if entry.enabled '' 'text-muted'}}">
-          <td data-title="{{dt.enabled}}">
-            {{#if entry.enabled}}
-              <i class="icon icon-check"/>
-            {{else}}
-              <i class="icon icon-x"/>
-            {{/if}}
-          </td>
-          <td data-title="{{dt.name}}">
-            {{entry.role.displayName}}
-          </td>
-          <td data-title="{{dt.created}}">
-            {{#if entry.enabled}}
-              {{date-from-now entry.binding.created}}
-            {{else}}
-              {{t 'generic.na'}}
-            {{/if}}
-          </td>
-          <td data-title="{{dt.actions}}" class="actions">
-            {{#if entry.enabled}}
-              {{action-menu model=entry.binding}}
-            {{/if}}
-          </td>
-        </tr>
-      {{else if (eq kind "norows")}}
-        <tr>
-          <td colspan="{{sortable.fullColspan}}" class="text-center text-muted pt-20 pb-20">
-            {{t 'accountsPage.detail.table.global.noRoles'}}
-          </td>
-        </tr>
-      {{/if}}
-    {{/sortable-table}}
+    {{#if model.user.hasAdmin}}
+      <div class="text-center mt-20 mb-20">
+        {{t 'accountsPage.detail.table.global.admin'}}
+      </div>
+    {{else}}
+      {{#sortable-table
+        classNames="grid sortable-table"
+        body=globalRoleMapping
+        search=false
+        sortBy=sortGlobalBy
+        bulkActions=false
+        pagingLabel="pagination.role"
+        headers=globalHeaders as |sortable kind entry dt|
+      }}
+        {{#if (eq kind "row")}}
+          <tr class="main-row {{if entry.enabled '' 'text-muted'}}">
+            <td data-title="{{dt.enabled}}">
+              {{#if entry.enabled}}
+                <i class="icon icon-check"/>
+              {{else}}
+                <i class="icon icon-x"/>
+              {{/if}}
+            </td>
+            <td data-title="{{dt.name}}">
+              {{entry.role.displayName}}
+            </td>
+            <td data-title="{{dt.created}}">
+              {{#if entry.enabled}}
+                {{date-from-now entry.binding.created}}
+              {{else}}
+                {{t 'generic.na'}}
+              {{/if}}
+            </td>
+            <td data-title="{{dt.actions}}" class="actions">
+              {{#if entry.enabled}}
+                {{action-menu model=entry.binding}}
+              {{/if}}
+            </td>
+          </tr>
+        {{else if (eq kind "norows")}}
+          <tr>
+            <td colspan="{{sortable.fullColspan}}" class="text-center text-muted pt-20 pb-20">
+              {{t 'accountsPage.detail.table.global.noRoles'}}
+            </td>
+          </tr>
+        {{/if}}
+      {{/sortable-table}}
+    {{/if}}
   {{/accordion-list-item}}
 </section>
 

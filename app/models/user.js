@@ -12,7 +12,7 @@ export default Resource.extend({
   }),
 
   hasAdmin: computed('globalRoleBindings.[]', function() {
-    if ( get(this, 'globalRoleBindings').findBy('isAdmin', true) ) {
+    if ( get(this, 'globalRoleBindings').findBy('globalRole.isAdmin', true) ) {
       return true;
     }
 
@@ -20,7 +20,7 @@ export default Resource.extend({
   }),
 
   hasBase: computed('globalRoleBindings.[]', function() {
-    if ( get(this, 'globalRoleBindings').findBy('isBase', true) ) {
+    if ( get(this, 'globalRoleBindings').findBy('globalRole.isBase', true) ) {
       return true;
     }
 

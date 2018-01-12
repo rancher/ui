@@ -1,0 +1,26 @@
+<section class="header clearfix">
+  <h1>{{t 'clusterPage.edit'}}</h1>
+</section>
+
+<section class="horizontal-form container-fluid">
+  {{form-name-description
+    model=primaryResource
+    nameRequired=true
+    nameDisabled=true
+  }}
+</section>
+
+{{form-members
+    creator=model.me
+    editing=editing
+    memberArray=memberArray
+    memberConfig=memberConfig
+    project=primaryResource
+    roles=model.roles
+    users=model.users
+    type="cluster"
+    updateLists=(action "updateLists")
+}}
+
+{{top-errors errors=errors}}
+{{save-cancel createLabel=(if editing 'projectsPage.saveEdit' 'projectsPage.saveNew') save="save" cancel="cancel"}}

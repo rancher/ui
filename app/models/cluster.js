@@ -18,23 +18,18 @@ var Cluster = Resource.extend(ResourceUsage, {
 
   actions: {
     edit() {
-      this.get('router').transitionTo('authenticated.cluster.edit', this.get('id'));
+      this.get('router').transitionTo('global-admin.clusters.detail.edit', this.get('id'));
     },
   },
-
-  isKubernetes: equal('orchestration','kubernetes'),
 
   delete: function(/*arguments*/) {
     const promise = this._super.apply(this, arguments);
 
     return promise.then((/* resp */) => {
-      if (this.get('scope.current.clusterId') === this.get('id')) {
+      if (this.get('scope.currentCluster.id') === this.get('id')) {
         this.get('scope').getAll().then((projects) => {
-          let defProject = projects.findBy('isDefault', true);
-          this.get('scope').selectDefaultProject(defProject.get('id'));
+          this.get('router').transitionTo('global-admin.clusters.detail.edit', this.get('id'));
         });
-      } else {
-        this.get('scope').refreshAllClusters();
       }
     });
   },
@@ -42,7 +37,7 @@ var Cluster = Resource.extend(ResourceUsage, {
   defaultProject: computed('projects.@each.{name,clusterOwner}', function() {
     let projects = this.get('projects');
 
-    let out = projects.findBy('name','Default');
+    let out = projects.findBy('isDefault');
     if ( out ) {
       return out;
     }
@@ -56,10 +51,6 @@ var Cluster = Resource.extend(ResourceUsage, {
     return out;
   }),
 
-  canEdit: computed('actionLinks.{activate,deactivate}','links.{update,remove}', function() {
-    return (this.get('links.update') && this.get('state') === 'inactive') ? true : false;
-  }),
-
   systemProject: computed('projects.@each.{clusterOwner}', function() {
     return this.get('projects').findBy('clusterOwner', true);
   }),
@@ -69,7 +60,7 @@ var Cluster = Resource.extend(ResourceUsage, {
     let l = this.get('links');
 
     var choices = [
-      { label: 'action.edit',             icon: 'icon icon-edit',         action: 'edit',         enabled: this.get('canEdit') },
+      { label: 'action.edit',             icon: 'icon icon-edit',         action: 'edit',         enabled: true },
       { divider: true },
       //      { label: 'action.activate',         icon: 'icon icon-play',         action: 'activate',     enabled: !!a.activate},
       //      { label: 'action.deactivate',       icon: 'icon icon-pause',        action: 'promptStop',   enabled: !!a.deactivate, altAction: 'deactivate'},
@@ -80,27 +71,6 @@ var Cluster = Resource.extend(ResourceUsage, {
     ];
 
     return choices;
-  }),
-
-  // @TODO real data
-  numHosts: computed(function() {
-    return 3+Math.round(Math.random()*2);
-  }),
-
-  numCores: computed('numHosts', function() {
-    return this.get('numHosts')*8;
-  }),
-
-  numGhz: computed('numCores', function() {
-    return 3.4*this.get('numCores');
-  }),
-
-  numMem: computed('numHosts', function() {
-    return 8*this.get('numHosts');
-  }),
-
-  numStorage: computed('numHosts', function() {
-    return 40*this.get('numHosts');
   }),
 });
 

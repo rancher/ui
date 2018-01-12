@@ -95,6 +95,7 @@ export default Route.extend(Preload, {
       this.preload('projectRoleTemplateBinding', 'globalStore', {url: 'projectRoleTemplateBinding'}),
       this.preload('globalRole', 'globalStore', {url: 'globalRole'}),
       this.preload('globalRoleBinding', 'globalStore', {url: 'globalRoleBinding'}),
+      this.preload('user', 'globalStore', {url: 'user'}),
       this.loadClusters(),
       this.loadProjects()
       //this.loadPreferences(),
