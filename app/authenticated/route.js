@@ -90,6 +90,12 @@ export default Route.extend(Preload, {
 
     return PromiseAll([
       this.loadSchemas('globalStore'),
+      this.preload('roleTemplate', 'globalStore', {url: 'roleTemplates'}),
+      this.preload('clusterRoleTemplateBindings', 'globalStore', {url: 'clusterRoleTemplateBindings'}),
+      this.preload('projectRoleTemplateBinding', 'globalStore', {url: 'projectRoleTemplateBinding'}),
+      this.preload('globalRole', 'globalStore', {url: 'globalRole'}),
+      this.preload('globalRoleBinding', 'globalStore', {url: 'globalRoleBinding'}),
+      this.preload('user', 'globalStore', {url: 'user'}),
       this.loadClusters(),
       this.loadProjects()
       //this.loadPreferences(),

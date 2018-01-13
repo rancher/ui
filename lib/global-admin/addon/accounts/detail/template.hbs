@@ -26,19 +26,6 @@
     </div>
   </div>
 
-  <div class="row">
-    <div class="col span-3 col-inline">
-      <label>{{t 'accountsPage.detail.table.global.title'}}:</label>
-    </div>
-    <div class="col span-6 col-inline comma-list">
-      {{#each model.globalRoleBindings as |role index|}}
-          <span>{{role.name}}</span>
-      {{else}}
-        {{t 'accountsPage.detail.table.global.noRoles'}}
-      {{/each}}
-    </div>
-  </div>
-
   {{#if model.user.description.length}}
     <div class="row">
       <div class="col span-3 col-inline">
@@ -49,79 +36,150 @@
       </div>
     </div>
   {{/if}}
+</section>
 
-
-  <hr class="mt-20 mb-20" />
-
-  {{#accordion-list
-       showExpandAll=false
-       as |al expandFn|
+<section>
+  {{#accordion-list-item
+    title=(t 'accountsPage.detail.table.global.title')
+    detail=(t 'accountsPage.detail.table.global.description')
+    expandOnInit=true
+    showExpand=false
   }}
-
-    {{#accordion-list-item
-         title=(t 'accountsPage.detail.table.cluster.title')
-         detail=(t 'accountsPage.detail.table.cluster.description')
-         expandOnInit=true
-         expandAll=false
-         expand=(action expandFn)
-    }}
+    {{#if model.user.hasAdmin}}
+      <div class="text-center mt-20 mb-20">
+        {{t 'accountsPage.detail.table.global.admin'}}
+      </div>
+    {{else}}
       {{#sortable-table
-           classNames="grid sortable-table"
-           body=clusterRoles
-           search=false
-           sortBy=sortBy
-           bulkActions=false
-           pagingLabel="pagination.node"
-           headers=clusterHeaders as |sortable kind role dt|}}
+        classNames="grid sortable-table"
+        body=globalRoleMapping
+        search=false
+        sortBy=sortGlobalBy
+        bulkActions=false
+        pagingLabel="pagination.role"
+        headers=globalHeaders as |sortable kind entry dt|
+      }}
         {{#if (eq kind "row")}}
-          <tr class="main-row">
-            <td data-title="{{dt.name}}" class="state">
-              {{role.name}}
+          <tr class="main-row {{if entry.enabled '' 'text-muted'}}">
+            <td data-title="{{dt.enabled}}">
+              {{#if entry.enabled}}
+                <i class="icon icon-check"/>
+              {{else}}
+                <i class="icon icon-x"/>
+              {{/if}}
             </td>
-
-            <td data-title="{{dt.project.name}}">
-              {{#link-to-external 'authenticated.cluster.projects' role.cluster.id}}
-                {{role.cluster.name}}
-              {{/link-to-external}}
+            <td data-title="{{dt.name}}">
+              {{entry.role.displayName}}
+            </td>
+            <td data-title="{{dt.created}}">
+              {{#if entry.enabled}}
+                {{date-from-now entry.binding.created}}
+              {{else}}
+                {{t 'generic.na'}}
+              {{/if}}
+            </td>
+            <td data-title="{{dt.actions}}" class="actions">
+              {{#if entry.enabled}}
+                {{action-menu model=entry.binding}}
+              {{/if}}
             </td>
           </tr>
-
         {{else if (eq kind "norows")}}
-          <tr><td colspan="{{sortable.fullColspan}}" class="text-center text-muted pt-20 pb-20">{{t 'accountsPage.detail.table.cluster.noRoles'}}</td></tr>
-        {{/if}}
-      {{/sortable-table}}
-    {{/accordion-list-item}}
-
-    {{#accordion-list-item
-         title=(t 'accountsPage.detail.table.project.title')
-         detail=(t 'accountsPage.detail.table.project.description')
-         expandOnInit=true
-         expandAll=false
-         expand=(action expandFn)
-    }}
-      {{#sortable-table
-           classNames="grid sortable-table"
-           body=projectRoles
-           search=false
-           sortBy=sortBy
-           bulkActions=false
-           pagingLabel="pagination.node"
-           headers=projectHeaders as |sortable kind role dt|}}
-        {{#if (eq kind "row")}}
-          <tr class="main-row">
-            <td data-title="{{dt.name}}" class="state">
-              {{role.name}}
-            </td>
-
-            <td data-title="{{dt.project.name}}">
-              <a href="#" {{action 'launchOnCluster' role.project }}>{{role.project.name}}</a>
+          <tr>
+            <td colspan="{{sortable.fullColspan}}" class="text-center text-muted pt-20 pb-20">
+              {{t 'accountsPage.detail.table.global.noRoles'}}
             </td>
           </tr>
-
-        {{else if (eq kind "norows")}}
-          <tr><td colspan="{{sortable.fullColspan}}" class="text-center text-muted pt-20 pb-20">{{t 'accountsPage.detail.table.project.noRoles'}}</td></tr>
         {{/if}}
       {{/sortable-table}}
-    {{/accordion-list-item}}
-  {{/accordion-list}}
+    {{/if}}
+  {{/accordion-list-item}}
+</section>
+
+<section class="mt-20">
+  {{#accordion-list-item
+    title=(t 'accountsPage.detail.table.cluster.title')
+    detail=(t 'accountsPage.detail.table.cluster.description')
+    expandOnInit=true
+    showExpand=false
+  }}
+    {{#sortable-table
+      classNames="grid sortable-table"
+      body=model.user.clusterRoleBindings
+      search=false
+      sortBy=sortClusterBy
+      bulkActions=false
+      pagingLabel="pagination.role"
+      headers=clusterHeaders as |sortable kind binding dt|
+    }}
+      {{#if (eq kind "row")}}
+        <tr class="main-row">
+          <td data-title="{{dt.cluster}}">
+            <a href="#" {{action 'launchOnCluster' binding.project }}>
+              {{binding.cluster.displayName}}
+            </a>
+          </td>
+          <td data-title="{{dt.name}}">
+            {{binding.roleTemplate.displayName}}
+          </td>
+          <td data-title="{{dt.created}}">
+            {{date-from-now binding.created}}
+          </td>
+          <td data-title="{{dt.actions}}" class="actions">
+            {{action-menu model=binding}}
+          </td>
+        </tr>
+      {{else if (eq kind "norows")}}
+        <tr>
+          <td colspan="{{sortable.fullColspan}}" class="text-center text-muted pt-20 pb-20">
+            {{t 'accountsPage.detail.table.cluster.noRoles'}}
+          </td>
+        </tr>
+      {{/if}}
+    {{/sortable-table}}
+  {{/accordion-list-item}}
+</section>
+
+<section class="mt-20">
+  {{#accordion-list-item
+    title=(t 'accountsPage.detail.table.project.title')
+    detail=(t 'accountsPage.detail.table.project.description')
+    expandOnInit=true
+    showExpand=false
+  }}
+    {{#sortable-table
+      classNames="grid sortable-table"
+      body=model.user.projectRoleBindings
+      search=false
+      sortBy=sortProjectBy
+      bulkActions=false
+      pagingLabel="pagination.role"
+      headers=projectHeaders as |sortable kind binding dt|
+    }}
+      {{#if (eq kind "row")}}
+        <tr class="main-row">
+          <td data-title="{{dt.project}}">
+            {{#link-to-external 'authenticated.cluster.projects' role.project.id}}
+              {{binding.project.displayName}}
+            {{/link-to-external}}
+          </td>
+          <td data-title="{{dt.name}}">
+            {{binding.roleTemplate.displayName}}
+          </td>
+          <td data-title="{{dt.created}}">
+            {{date-from-now binding.created}}
+          </td>
+          <td data-title="{{dt.actions}}" class="actions">
+            {{action-menu model=binding}}
+          </td>
+        </tr>
+      {{else if (eq kind "norows")}}
+        <tr>
+          <td colspan="{{sortable.fullColspan}}" class="text-center text-muted pt-20 pb-20">
+            {{t 'accountsPage.detail.table.project.noRoles'}}
+          </td>
+        </tr>
+      {{/if}}
+    {{/sortable-table}}
+  {{/accordion-list-item}}
 </section>

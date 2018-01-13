@@ -1,9 +1,39 @@
 import { inject as service } from '@ember/service';
-import Resource from 'ember-api-store/models/resource';
 import { get, computed } from '@ember/object';
+import { hasMany } from 'ember-api-store/utils/denormalize';
+import Resource from 'ember-api-store/models/resource';
 
-var User = Resource.extend({
+export default Resource.extend({
   router: service(),
+  globalStore: service(),
+
+  globalRoleBindings: hasMany('id', 'globalRoleBinding', 'subjectName', 'globalStore', function(x) {
+    return get(x, 'subjectKind') === 'User';
+  }),
+
+  hasAdmin: computed('globalRoleBindings.[]', function() {
+    if ( get(this, 'globalRoleBindings').findBy('globalRole.isAdmin', true) ) {
+      return true;
+    }
+
+    return false;
+  }),
+
+  hasBase: computed('globalRoleBindings.[]', function() {
+    if ( get(this, 'globalRoleBindings').findBy('globalRole.isBase', true) ) {
+      return true;
+    }
+
+    return false;
+  }),
+
+  clusterRoleBindings: hasMany('id', 'clusterRoleTemplateBinding', 'subjectName', 'globalStore', function(x) {
+    return get(x, 'subjectKind') === 'User';
+  }),
+
+  projectRoleBindings: hasMany('id', 'projectRoleTemplateBinding', 'subjectName', 'globalStore', function(x) {
+    return get(x, 'subjectKind') === 'User';
+  }),
 
   actions: {
     deactivate() {
@@ -39,5 +69,3 @@ var User = Resource.extend({
     ];
   }),
 });
-
-export default User;
