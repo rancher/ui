@@ -154,24 +154,29 @@ export default Ember.Component.extend(NewOrEdit, {
       }
 
       if ( rule.isSelector ) {
-        if (rule.region || rule.environment) {
+        if (wgtStr || rule.region || rule.environment) {
           let wgt = parseInt(wgtStr,10);
           if ( isNaN(wgt) || wgt < 0 ) {
             errors.push(intl.t('newBalancer.error.invalidWeight', {num: wgt}));
             return;
           }
+
+          if ( !rule.environment ) {
+            errors.push(intl.t('newBalancer.error.missingEnvironment'));
+            return;
+          }
+
           rule.setProperties({
             weight: wgt,
           });
-        }
 
-        if ( !rule.region && rule.environment) {
-          errors.push(intl.t('newBalancer.error.missingRegion'));
-          return;
-        }
-        if ( rule.region && !rule.environment ) {
-          errors.push(intl.t('newBalancer.error.missingEnvironment'));
-          return;
+          if(!rule.region) {
+            delete rule['region'];
+          }
+        } else {
+          delete rule['weight'];
+          delete rule['region'];
+          delete rule['environment'];
         }
       }
 
