@@ -14,6 +14,24 @@
   </div>
 </div>
 
+{{#if (eq model.payloadFormat 'alicloud')}}
+  <div class="row form-group">
+    <div class="col-md-6 col-md-offset-3">
+      <div class="form-label form-control-static">
+        <label>{{t 'newReceiver.addressType.label'}}</label>
+      </div>
+      <div>
+        {{new-select
+          classNames="form-control"
+          content=addressTypeChoices
+          localizedLabel=true
+          value=model.addressType
+        }}
+      </div>
+    </div>
+  </div>
+{{/if}}
+
 <div class="row form-group">
   <div class="col-md-6 col-md-offset-3">
     <div class="form-label form-control-static">

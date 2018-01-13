@@ -46,9 +46,10 @@ export default Ember.Component.extend(NewOrEdit, {
       def = store.createRecord({
         type: 'serviceUpgrade',
         tag: '',
+        addressType: resourceFields.addressType.default,
         serviceSelector: '',
         batchSize: resourceFields.batchSize.default,
-        interval: resourceFields.intervalMillis.default,
+        intervalMillis: resourceFields.intervalMillis.default,
         payloadFormat: resourceFields.payloadFormat.default,
         startFirst: resourceFields.startFirst.default
       });
