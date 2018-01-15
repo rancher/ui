@@ -63,7 +63,7 @@ export default Route.extend(Preload, {
   //   if ( this.get('access.isLoggedIn') ) {
   //     this.testAuthToken();
   //   } else {
-  //     transition.send('logout', transition, false);
+  //     transition.send('logout', transition);
   //     return reject('Not logged in');
   //   }
   // },
@@ -73,7 +73,7 @@ export default Route.extend(Preload, {
   //     this.get('access').testAuth().then((/* res */) => {
   //       this.testAuthToken();
   //     }, (/* err */) => {
-  //       this.send('logout',null,true);
+  //       this.send('logout',null);
   //     });
   //   }, CHECK_AUTH_TIMER);
 
@@ -255,7 +255,7 @@ export default Route.extend(Preload, {
       // Unauthorized error, send back to login screen
       if ( err && err.status === 401 )
       {
-        this.send('logout',transition,true);
+        this.send('logout',transition);
         return false;
       }
       else

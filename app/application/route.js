@@ -70,7 +70,7 @@ export default Route.extend({
 
       const status = parseInt(err.status,10);
       if ( err && [401,403].includes(status) ) {
-        this.send('logout',transition,true);
+        this.send('logout',transition);
         return;
       }
 
@@ -88,7 +88,7 @@ export default Route.extend({
       this.finishLogin();
     },
 
-    logout(transition, timedOut, errorMsg) {
+    logout(transition, errorMsg) {
       let session = get(this, 'session');
       let access = get(this, 'access');
 
@@ -109,10 +109,6 @@ export default Route.extend({
         }
 
         let params = {queryParams: {}};
-
-        if ( timedOut ) {
-          params.queryParams.timedOut = true;
-        }
 
         if ( errorMsg ) {
           params.queryParams.errorMsg = errorMsg;
