@@ -1,33 +1,36 @@
-{{#accordion-list-item
-     title=(t 'hostsPage.new.addCluster.label' htmlSafe=true )
-     detail=(t 'hostsPage.new.addCluster.description')
-     expandOnInit=defaultExpand
-     expandAll=expandAll
-     expand=(action expandFn)
-}}
-  <div class="row">
-    <div class="col span-6">
-      <label class="acc-label pt-10" for="">{{t 'hostsPage.new.addCluster.cluster.label'}}</label>
+<h4>{{t 'hostsPage.new.addCluster.label' htmlSafe=true }}</h4>
+<div class="row">
+  <div class="col span-6">
+    <label class="acc-label" for="">{{t 'hostsPage.new.addCluster.cluster.label'}}</label>
+    {{#if hasCluster }}
+      <input name="" type="text" value="{{requestedClusterId}}" disabled=true />
+    {{else}}
       {{searchable-select content=clusters value=requestedClusterId optionLabelPath="name" optionValuePath="id" localizedLabel=false}}
-    </div>
-    <div class="col span-6">
-      <label class="acc-label pt-10" for="">{{t 'hostsPage.new.addCluster.roles.label'}}</label>
-      <table class="table fixed no-lines no-top-padding mt-10">
-        <thead>
-          <tr>
-            <th>{{t 'hostsPage.new.addCluster.table.label.etcd'}}</th>
-            <th>{{t 'hostsPage.new.addCluster.table.label.control'}}</th>
-            <th>{{t 'hostsPage.new.addCluster.table.label.worker'}}</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td><i class="icon icon-x-circle"></i></td>
-            <td><i class="icon icon-x-circle"></i></td>
-            <td class="text-success"><i class="icon icon-success"></i></td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
+    {{/if}}
   </div>
-{{/accordion-list-item}}
+  <div class="col span-6">
+    {{!-- <label class="acc-label" for="">{{t 'hostsPage.new.addCluster.roles.label'}}</label> --}}
+    <table class="table fixed no-lines no-top-padding">
+      <thead>
+        <tr>
+          <th>{{t 'hostsPage.new.addCluster.table.label.etcd'}}</th>
+          <th>{{t 'hostsPage.new.addCluster.table.label.control'}}</th>
+          <th>{{t 'hostsPage.new.addCluster.table.label.worker'}}</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td data-title="">
+            {{input type="checkbox" change=(action 'addRole' 'etcd')}}
+          </td>
+          <td data-title="">
+            {{input type="checkbox" change=(action 'addRole' 'controlplane')}}
+          </td>
+          <td data-title="">
+            {{input type="checkbox" change=(action 'addRole' 'worker')}}
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
