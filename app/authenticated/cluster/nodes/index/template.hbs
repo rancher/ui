@@ -6,7 +6,7 @@
 
     <div class="right-buttons">
       {{#if scope.currentCluster.canAddNode}}
-        {{#link-to "authenticated.cluster.nodes.templates" classNames="btn btn-sm bg-primary"}}{{t 'nodesPage.addNode'}}{{/link-to}}
+        {{#link-to "authenticated.cluster.nodes.templates" classNames="btn btn-sm bg-primary" disabled=(rbac-prevents resource="machine" scope="global" permission="create") }}{{t 'nodesPage.addNode'}}{{/link-to}}
       {{/if}}
     </div>
   </section>
@@ -41,6 +41,7 @@
       showNew=scope.currentCluster.canAddNode
       newRoute="authenticated.host-templates"
       newTranslationKey="nodesPage.addNode"
+      disabled=(rbac-prevents resource="machine" scope="global" permission="create")
       ctx=""
     }}
   {{/if}}

@@ -2,8 +2,8 @@
   {{cluster-welcome}}
 {{else}}
   {{#containers-header tags=tags simpleMode=simpleMode}}
-    {{#link-to "new-stack" classNames="btn btn-sm bg-default mr-10"}}{{t 'nav.containers.importCompose'}}{{/link-to}}
-    {{#link-to "ingresses.run" scope.current.id class="btn btn-sm bg-primary"}}{{t 'nav.containers.addIngress'}}{{/link-to}}
+    {{#link-to "new-stack" classNames="btn btn-sm bg-default mr-10" disabled=(rbac-prevents resource="ingress" scope="project" permission="create")}}{{t 'nav.containers.importCompose'}}{{/link-to}}
+    {{#link-to "ingresses.run" scope.current.id class="btn btn-sm bg-primary" disabled=(rbac-prevents resource="ingress" scope="project" permission="create")}}{{t 'nav.containers.addIngress'}}{{/link-to}}
   {{/containers-header}}
 
   {{#if rows.length}}
@@ -45,6 +45,6 @@
       {{/sortable-table}}
     </section>
   {{else}}
-    {{empty-table resource="container" newRoute="ingresses.run" newTranslationKey="nav.containers.addIngress"}}
+    {{empty-table disabled=(rbac-prevents resource="ingress" scope="project" permission="create") resource="container" newRoute="ingresses.run" newTranslationKey="nav.containers.addIngress"}}
   {{/if}}
 {{/if}}

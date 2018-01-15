@@ -2,8 +2,8 @@
   {{cluster-welcome}}
 {{else}}
   {{#containers-header simpleMode=simpleMode tags=tags showGroup=false}}
-    {{#link-to "new-stack" classNames="btn btn-sm bg-default mr-10"}}{{t 'nav.containers.importCompose'}}{{/link-to}}
-    {{#link-to "authenticated.project.dns.new" scope.current.id class="btn btn-sm bg-primary"}}{{t 'nav.containers.addDns'}}{{/link-to}}
+    {{#link-to "new-stack" classNames="btn btn-sm bg-default mr-10" disabled=(rbac-prevents resource="dnsrecord" scope="project" permission="create")}}{{t 'nav.containers.importCompose'}}{{/link-to}}
+    {{#link-to "authenticated.project.dns.new" scope.current.id class="btn btn-sm bg-primary" disabled=(rbac-prevents resource="dnsrecord" scope="project" permission="create")}}{{t 'nav.containers.addDns'}}{{/link-to}}
   {{/containers-header}}
 
   {{#if rows.length}}
@@ -42,6 +42,6 @@
       {{/sortable-table}}
     </section>
   {{else}}
-    {{empty-table resource="container" newRoute="authenticated.project.dns.new" newTranslationKey="nav.containers.addDns"}}
+    {{empty-table disabled=(rbac-prevents resource="dnsrecord" scope="project" permission="create") resource="container" newRoute="authenticated.project.dns.new" newTranslationKey="nav.containers.addDns"}}
   {{/if}}
 {{/if}}

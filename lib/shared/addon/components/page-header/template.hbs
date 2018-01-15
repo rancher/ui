@@ -14,21 +14,22 @@
         {{! Has a submenu }}
         <li class="dropdown nav-item">
           {{#if item.route}}
-            {{#link-to-as-attrs
-                item.route
-                models=item.ctx
-                qp=item.qp
-                moreCurrentWhen=item.moreCurrentWhen
-                activeParent=true
-                class="dropdown-toggle"
-                role="button"
-                aria-haspopup="true"
-                aria-expanded="false"
-            }}
-              {{maybe-t item.localizedLabel item.label}}
-              <span class="icon icon-chevron-down"/>
-            {{/link-to-as-attrs}}
-
+            {{#if (rbac-allows resource=item.resource scope=item.scope)}}
+              {{#link-to-as-attrs
+                  item.route
+                  models=item.ctx
+                  qp=item.qp
+                  moreCurrentWhen=item.moreCurrentWhen
+                  activeParent=true
+                  class="dropdown-toggle"
+                  role="button"
+                  aria-haspopup="true"
+                  aria-expanded="false"
+              }}
+                {{maybe-t item.localizedLabel item.label}}
+                <span class="icon icon-chevron-down"/>
+              {{/link-to-as-attrs}}
+            {{/if}}
           {{else}}
             <a class="dropdown-toggle" role="button" aria-haspopup="true" aria-expanded="false" aria-label={{maybe-t item.localizedLabel item.label}}>
               {{maybe-t item.localizedLabel item.label}}
@@ -39,18 +40,20 @@
           <ul class="dropdown-menu" data-dropdown-id={{item.id}}>
             {{#each item.submenu as |subitem|}}
               {{#if subitem.route}}
-                <li>
-                  {{#link-to-as-attrs
-                    subitem.route
-                    models=subitem.ctx
-                    qp=subitem.qp
-                    activeParent=true
-                    moreCurrentWhen=subitem.moreCurrentWhen
-                    submenuItem=true
-                  }}
-                    <i class="{{subitem.icon}}"/> {{maybe-t subitem.localizedLabel subitem.label}}
-                  {{/link-to-as-attrs}}
-                </li>
+                {{#if (rbac-allows resource=subitem.resource scope=item.scope)}}
+                  <li>
+                    {{#link-to-as-attrs
+                      subitem.route
+                      models=subitem.ctx
+                      qp=subitem.qp
+                      activeParent=true
+                      moreCurrentWhen=subitem.moreCurrentWhen
+                      submenuItem=true
+                    }}
+                      <i class="{{subitem.icon}}"/> {{maybe-t subitem.localizedLabel subitem.label}}
+                    {{/link-to-as-attrs}}
+                  </li>
+                {{/if}}
               {{else if subitem.divider}}
                 <li class="divider"></li>
               {{else}}
@@ -63,19 +66,21 @@
           </ul>
         </li>
       {{else if item.route}}
-        {{! No submenu }}
-        <li class="nav-item">
-          {{#link-to-as-attrs
-            item.route
-            models=item.ctx
-            qp=item.qp
-            activeParent=true
-            moreCurrentWhen=item.moreCurrentWhen
-            class="nav-link"
-          }}
-            {{maybe-t item.localizedLabel item.label}}
-          {{/link-to-as-attrs}}
-        </li>
+        {{#if (rbac-allows resource=item.resource scope=item.scope)}}
+          {{! No submenu }}
+          <li class="nav-item">
+            {{#link-to-as-attrs
+              item.route
+              models=item.ctx
+              qp=item.qp
+              activeParent=true
+              moreCurrentWhen=item.moreCurrentWhen
+              class="nav-link"
+            }}
+              {{maybe-t item.localizedLabel item.label}}
+            {{/link-to-as-attrs}}
+          </li>
+        {{/if}}
       {{else}}
         {{! Just a label }}
         <li class="dropdown-header">
