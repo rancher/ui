@@ -2,7 +2,11 @@
 <div class="row">
   <div class="col span-6">
     <label class="acc-label" for="">{{t 'hostsPage.new.addCluster.cluster.label'}}</label>
-    {{searchable-select content=clusters value=requestedClusterId optionLabelPath="name" optionValuePath="id" localizedLabel=false}}
+    {{#if hasCluster }}
+      <input name="" type="text" value="{{requestedClusterId}}" disabled=true />
+    {{else}}
+      {{searchable-select content=clusters value=requestedClusterId optionLabelPath="name" optionValuePath="id" localizedLabel=false}}
+    {{/if}}
   </div>
   <div class="col span-6">
     {{!-- <label class="acc-label" for="">{{t 'hostsPage.new.addCluster.roles.label'}}</label> --}}
