@@ -1,4 +1,4 @@
-import { computed } from '@ember/object';
+import { get, computed } from '@ember/object';
 import { inject as service } from '@ember/service';
 import Resource from 'ember-api-store/models/resource';
 import PolledResource from 'ui/mixins/cattle-polled-resource';
@@ -41,33 +41,33 @@ var machineDriver = Resource.extend(PolledResource, {
     },
 
     edit: function() {
-      this.get('modalService').toggleModal('modal-edit-driver', this);
+      get(this,'modalService').toggleModal('modal-edit-driver', this);
     },
   },
 
   catalogTemplateIcon: computed('externalId', function() {
-    let parsedExtId = parseExternalId(this.get('externalId')) || null;
+    let parsedExtId = parseExternalId(get(this,'externalId')) || null;
 
     if (!parsedExtId) {
       return null;
     }
 
-    if (this.get('catalog').getTemplateFromCache(parsedExtId.templateId)) {
-      return this.get('catalog').getTemplateFromCache(parsedExtId.templateId).get('links.icon');
+    if (get(this,'catalog').getTemplateFromCache(parsedExtId.templateId)) {
+      return get(this,'catalog').getTemplateFromCache(parsedExtId.templateId).get('links.icon');
     } else {
-      return `${this.get('app.baseAssets')}assets/images/providers/generic-driver.svg`;
+      return `${get(this,'app.baseAssets')}assets/images/providers/generic-driver.svg`;
     }
 
   }),
 
   displayName: computed('displayIcon', 'intl.locale', function() {
-    return this.get('intl').t('machine.driver.'+this.get('displayIcon'));
+    return get(this,'intl').t('machine.driver.'+get(this,'displayIcon'));
   }),
 
   displayIcon: computed('name', function() {
-    let name = this.get('name');
+    let name = get(this,'name');
 
-    if ( this.get('hasBuiltinUi') ) {
+    if ( get(this,'hasBuiltinUi') ) {
       return name;
     } else {
       return 'generic';
@@ -75,38 +75,38 @@ var machineDriver = Resource.extend(PolledResource, {
   }),
 
   displayUrl: function() {
-    return displayUrl(this.get('url'));
+    return displayUrl(get(this,'url'));
   }.property('url'),
 
   displayChecksum: computed('checksum', function() {
-    return this.get('checksum').substring(0, 8);
+    return get(this,'checksum').substring(0, 8);
   }),
 
   displayUiUrl: function() {
-    return displayUrl(this.get('uiUrl'));
+    return displayUrl(get(this,'uiUrl'));
   }.property('uiUrl'),
 
   hasBuiltinUi: function() {
-    return builtInUi.indexOf(this.get('name')) >= 0;
+    return builtInUi.indexOf(get(this,'name')) >= 0;
   }.property('name'),
 
   isCustom: function() {
-    return !this.get('builtin') && !this.get('externalId');
+    return !get(this,'builtin') && !get(this,'externalId');
   }.property('builtin','externalId'),
 
   hasUi: function() {
-    return this.get('hasBuiltinUi') || !!this.get('uiUrl');
+    return get(this,'hasBuiltinUi') || !!get(this,'uiUrl');
   }.property('hasBuiltinUi'),
 
   newExternalId: function() {
-    var externalId = C.EXTERNAL_ID.KIND_CATALOG + C.EXTERNAL_ID.KIND_SEPARATOR + this.get('selectedTemplateModel.id');
+    var externalId = C.EXTERNAL_ID.KIND_CATALOG + C.EXTERNAL_ID.KIND_SEPARATOR + get(this,'selectedTemplateModel.id');
     return externalId;
   }.property('isSystem','selectedTemplateModel.id'),
 
-  availableActions: function() {
-    let a = this.get('actionLinks');
-    let l = this.get('links');
-    let builtin = !!this.get('builtin');
+  availableActions: computed('links.{update,remove}','actionLinks.{activate,deactivate}','builtin', function() {
+    let a = get(this,'actionLinks');
+    let l = get(this,'links');
+    let builtin = !!get(this,'builtin');
 
     return [
       { label: 'action.edit',        icon: 'icon icon-edit',         action: 'edit',         enabled: !!l.update && !builtin },
@@ -118,10 +118,10 @@ var machineDriver = Resource.extend(PolledResource, {
       { divider: true },
       { label: 'action.viewInApi',   icon: 'icon icon-external-link',action: 'goToApi',      enabled: true },
     ];
-  }.property('actionLinks.{activate,deactivate}','links.{update,remove}','builtin'),
+  }),
 
   externalIdInfo: function() {
-    return parseExternalId(this.get('externalId'));
+    return parseExternalId(get(this,'externalId'));
   }.property('externalId'),
 });
 
