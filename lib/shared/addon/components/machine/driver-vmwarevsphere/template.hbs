@@ -28,14 +28,15 @@
       </div>
     {{/if}}
 
-    {{form-cluster-select
-        classNames="mt-20"
-        clusters=clusters
-        defaultExpand=false
-        machine=clonedModel
-        requestedClusterId=requestedClusterId
-        requestedRoles=requestedRoles
-    }}
+    {{#unless inModal}}
+      {{form-cluster-select
+          classNames="mt-20"
+          clusters=clusters
+          machine=clonedModel
+          requestedClusterId=requestedClusterId
+          requestedRoles=requestedRoles
+      }}
+    {{/unless}}
 
     <div class="row box mt-20">
       <h4>{{t 'machine.driverVsphere.accountSection'}}</h4>

@@ -105,13 +105,23 @@
     </div>
 
     <div class="col span-6">
-      {{form-pod-sec-policy
-          config=secPolicy
-          policies=model.policies
-          expandAll=al.expandAll
-          expand=(action expandFn)
-          readOnly=readOnly
+      {{#accordion-list-item
+           title=(t 'podSecurityPoliciesPage.index.header')
+           detail=(t 'podSecurityPoliciesPage.index.description')
+           expandAll=al.expandAll
+           expand=(action expandFn)
+           expandOnInit=true
+           showExpand=false
+           showStatus=false
       }}
+        {{form-pod-sec-policy
+            config=secPolicy
+            policies=model.policies
+            expandAll=al.expandAll
+            expand=(action expandFn)
+            readOnly=readOnly
+        }}
+      {{/accordion-list-item}}
     </div>
   </div>
 {{/accordion-list}}

@@ -5,21 +5,21 @@
 </section>
 
 <section class="clearfix">
-   <div class="catalog-box cloud-host bg-secondary">
+  <div class="catalog-box cloud-host bg-secondary">
     <div class="darken p-20"><i class="icon icon-host icon-4x"></i></div>
     <div class="itemwrap m-10"><p>{{t 'machineTemplatesPage.new.helpText'}}</p></div>
     <div class="footer">
-      <button role="button" class="ml-10 btn btn-sm bg-transparent" {{action (action add)}}>{{t 'machineTemplatesPage.new.btn'}}</button>
+      <button role="button" class="ml-10 btn bg-primary" {{action (action add)}}>{{t 'machineTemplatesPage.new.btn'}}</button>
     </div>
   </div>
 
   {{#each arranged as |host|}}
     {{#catalog-box
-        model=model
-        classNames='cloud-host'
-        showIcon=false
-        showDescription=false
-        as |section|
+         model=model
+         classNames='cloud-host'
+         showIcon=false
+         showDescription=false
+         as |section|
     }}
       {{#if (eq section 'header')}}
         <div class="catalog-header bg-default p-10">
@@ -40,9 +40,3 @@
     {{/catalog-box}}
   {{/each}}
 </section>
-{{#unless app.isCaas}}
-  <div class="text-center">
-    <a href="#" class="ml-10 btn btn-sm bg-transparent">{{t 'machineTemplatesPage.custom'}}</a>
-    {{!-- {{#link-to "authenticated.cluster.host-new" (query-params driver="custom") classNames="ml-10 btn btn-sm bg-transparent"}}{{t 'machineTemplatesPage.custom'}}{{/link-to}} --}}
-  </div>
-{{/unless}}

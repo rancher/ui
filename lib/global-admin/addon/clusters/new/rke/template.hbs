@@ -13,108 +13,98 @@
     }}
   </div>
 
-  {{#accordion-list showExpandAll=false as |al expandFn|}}
-    {{#accordion-list-item
-          title="Control Plane"
-          detail="Choose where the control-plane components will run"
-          expandAll=al.expandAll
-          expand=(action expandFn)
-          expandOnInit=true
-    }}
-      <div class="row">
-        <div class="col span-6">
-          <div class="radio text-muted">
-            <label>{{radio-button selection=scope value="embedded" disabled=true}} {{t 'clustersPage.addPage.rke.new.radio.embedded.label'}}</label>
-            <p class="text-info">{{t 'clustersPage.addPage.rke.new.radio.embedded.detail' appName=settings.appName}} &mdash; Coming Soon</p>
-          </div>
-        </div>
-        <div class="col span-6">
-          <div class="radio">
-            <label>{{radio-button selection=scope value="dedicated"}} {{t 'clustersPage.addPage.rke.new.radio.dedicated.label'}}</label>
-            <p class="text-info">{{t 'clustersPage.addPage.rke.new.radio.dedicated.detail' appName=settings.appName}}</p>
-          </div>
-        </div>
-      </div>
-    {{/accordion-list-item}}
-
-    <div class="col span-12">
-      {{#accordion-list-item
-           title="Nodes"
-           detail="Select the nodes that will run the containers in this cluster"
-           expandAll=al.expandAll
-           expand=(action expandFn)
-           expandOnInit=true
-      }}
-        {{#sortable-table
-             classNames="grid sortable-table"
-             body=filteredMachines
-             searchText=searchText
-             sortBy=sortBy
-             suffix=true
-             bulkActions=false
-             rowActions=false
-             pagingLabel="pagination.host"
-             headers=(if (eq scope "dedicated") headersAll workerHeaders)
-             as |sortable kind host dt|}}
-          {{#if (eq kind "row")}}
-            <tr class="main-row">
-              <td data-title="{{dt.state}}" class="state">
-                {{badge-state model=host}}
-              </td>
-              <td data-title="{{dt.name}}">
-                {{host.displayName}}
-              </td>
-              {{#if (eq scope "dedicated")}}
-                <td data-title="{{dt.etcd}}">
-                  {{!-- disabled=(not-eq host.state "active") --}}
-                  {{input type="checkbox" change=(action 'addRole' host 'etcd')}}
-                </td>
-                <td data-title="{{dt.controlplane}}">
-                  {{!-- disabled=(not-eq host.state "active") --}}
-                  {{input type="checkbox" change=(action 'addRole' host 'controlplane')}}
-                </td>
-              {{/if}}
-              <td data-title="{{dt.worker}}">
-                {{!-- disabled=(not-eq host.state "active") --}}
-                {{input type="checkbox" change=(action 'addRole' host 'worker')}}
-              </td>
-            </tr>
-          {{else if (eq kind "nomatch")}}
-            <tr><td colspan="{{sortable.fullColspan}}" class="text-center text-muted lacsso pt-20 pb-20">{{t 'nodesPage.table.noMatch'}}</td></tr>
-          {{else if (eq kind "norows")}}
-            <tr><td colspan="{{sortable.fullColspan}}" class="text-center text-muted lacsso pt-20 pb-20" style="height:200px;">{{t 'nodesPage.table.noData'}}</td></tr>
-          {{else if (eq kind "suffix")}}
-            <tr class="suffix">
-              <td colspan="2" class="text-right pr-20">Number of nodes required:</td>
-              {{#if (eq scope "dedicated")}}
-                <td class="{{if etcdSafe "text-success" "text-error"}}">
-                  <i class="icon {{if etcdSafe "icon-success" "icon-x-circle"}}"></i>
-                  {{t 'clustersPage.addPage.rke.minimums.cluster'}}
-                </td>
-                <td class="{{if cpSafe "text-success" "text-error"}}">
-                  <i class="icon {{if cpSafe "icon-success" "icon-x-circle"}}"></i>
-                  {{t 'clustersPage.addPage.rke.minimums.management'}}
-                </td>
-              {{/if}}
-              <td class="{{if workerSafe "text-success" "text-error"}}">
-                <i class="icon {{if workerSafe "icon-success" "icon-x-circle"}}"></i>
-                {{t 'clustersPage.addPage.rke.minimums.nodes'}}
-              </td>
-            </tr>
-          {{/if}}
-        {{/sortable-table}}
-
-        <div class="mt-20">
-          <button class="btn bg-primary icon-btn p-0" {{action "addHost"}}>
-            <span class="darken"><i class="icon icon-plus text-small"/></span>
-            <span>{{t 'clustersPage.addPage.rke.new.addHost'}}</span>
-          </button>
-        </div>
-      {{/accordion-list-item}}
-    </div>
-
+  <div class="box mt-30">
+    <h4>{{t 'clustersPage.addPage.rke.new.controlPlane.header'}}</h4>
     <div class="row">
       <div class="col span-6">
+        <div class="radio text-muted">
+          <label>{{radio-button selection=scope value="embedded" disabled=true}} {{t 'clustersPage.addPage.rke.new.radio.embedded.label'}}</label>
+          <p class="text-info">{{t 'clustersPage.addPage.rke.new.radio.embedded.detail' appName=settings.appName}} &mdash; Coming Soon</p>
+        </div>
+      </div>
+      <div class="col span-6">
+        <div class="radio">
+          <label>{{radio-button selection=scope value="dedicated"}} {{t 'clustersPage.addPage.rke.new.radio.dedicated.label'}}</label>
+          <p class="text-info">{{t 'clustersPage.addPage.rke.new.radio.dedicated.detail' appName=settings.appName}}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="box mt-30">
+    <h4>{{t 'clustersPage.addPage.rke.new.nodes.header'}}</h4>
+    {{#sortable-table
+         classNames="grid sortable-table"
+         body=filteredMachines
+         searchText=searchText
+         sortBy=sortBy
+         suffix=true
+         bulkActions=false
+         rowActions=false
+         pagingLabel="pagination.host"
+         headers=(if (eq scope "dedicated") headersAll workerHeaders)
+         as |sortable kind host dt|}}
+      {{#if (eq kind "row")}}
+        <tr class="main-row">
+          <td data-title="{{dt.state}}" class="state">
+            {{badge-state model=host}}
+          </td>
+          <td data-title="{{dt.name}}">
+            {{host.displayName}}
+          </td>
+          {{#if (eq scope "dedicated")}}
+            <td data-title="{{dt.etcd}}">
+              {{!-- disabled=(not-eq host.state "active") --}}
+              {{input type="checkbox" change=(action 'addRole' host 'etcd')}}
+            </td>
+            <td data-title="{{dt.controlplane}}">
+              {{!-- disabled=(not-eq host.state "active") --}}
+              {{input type="checkbox" change=(action 'addRole' host 'controlplane')}}
+            </td>
+          {{/if}}
+          <td data-title="{{dt.worker}}">
+            {{!-- disabled=(not-eq host.state "active") --}}
+            {{input type="checkbox" change=(action 'addRole' host 'worker')}}
+          </td>
+        </tr>
+      {{else if (eq kind "nomatch")}}
+        <tr><td colspan="{{sortable.fullColspan}}" class="text-center text-muted lacsso pt-20 pb-20">{{t 'nodesPage.table.noMatch'}}</td></tr>
+      {{else if (eq kind "norows")}}
+        <tr><td colspan="{{sortable.fullColspan}}" class="text-center text-muted lacsso pt-20 pb-20" style="height:200px;">{{t 'nodesPage.table.noData'}}</td></tr>
+      {{else if (eq kind "suffix")}}
+        <tr class="suffix">
+          <td colspan="2" class="text-right pr-20">Number of nodes required:</td>
+          {{#if (eq scope "dedicated")}}
+            <td class="{{if etcdSafe "text-success" "text-error"}}">
+              <i class="icon {{if etcdSafe "icon-success" "icon-x-circle"}}"></i>
+              {{t 'clustersPage.addPage.rke.minimums.cluster'}}
+            </td>
+            <td class="{{if cpSafe "text-success" "text-error"}}">
+              <i class="icon {{if cpSafe "icon-success" "icon-x-circle"}}"></i>
+              {{t 'clustersPage.addPage.rke.minimums.management'}}
+            </td>
+          {{/if}}
+          <td class="{{if workerSafe "text-success" "text-error"}}">
+            <i class="icon {{if workerSafe "icon-success" "icon-x-circle"}}"></i>
+            {{t 'clustersPage.addPage.rke.minimums.nodes'}}
+          </td>
+        </tr>
+      {{/if}}
+    {{/sortable-table}}
+
+    <div class="mt-20">
+      <button class="btn bg-primary icon-btn p-0" {{action "addHost"}}>
+        <span class="darken"><i class="icon icon-plus text-small"/></span>
+        <span>{{t 'clustersPage.addPage.rke.new.addHost'}}</span>
+      </button>
+    </div>
+  </div>
+
+  <div class="box mt-30">
+    <h4>Security</h4>
+    <div class="row">
+      <div class="col span-6">
+        <label class="acc-label">Member Roles</label>
         {{form-members
             creator=model.me
             editing=false
@@ -128,20 +118,21 @@
       </div>
 
       <div class="col span-6">
+        <label class="acc-label mb-20">Pod Security Policy</label>
         {{form-pod-sec-policy
             config=secPolicy
             policies=model.policies
-            expandAll=al.expandAll
-            expand=(action expandFn)
         }}
       </div>
     </div>
+  </div>
 
+  {{#accordion-list showExpandAll=false as |al expandFn|}}
     {{#if (eq scope "dedicated")}}
-      <div class="col span-12">
+      <div class="col span-12 mt-30">
         {{#accordion-list-item
-             title="Customize"
-             detail="Optional configuration options for the Kubernetes installation"
+             title=(t 'clustersPage.addPage.rke.new.customize.label')
+             detail=(t 'clustersPage.addPage.rke.new.customize.detail')
              expandAll=al.expandAll
              expand=(action expandFn)
         }}
