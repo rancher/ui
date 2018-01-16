@@ -1,5 +1,5 @@
 <section class="header clearfix">
-  <h1 class="pull-left">Dashboard: {{model.displayName}}</h1>
+  <h1 class="pull-left">Dashboard: {{displayName}}</h1>
 
   <div class="right-buttons">
     <button class="btn bg-primary icon-btn hide" {{action "dashboard"}}>
@@ -19,6 +19,12 @@
   </div>
 </section>
 
+{{#if model.cluster.description}}
+  <div class="row mb-30">
+    {{banner-message color='bg-secondary mb-0 mt-10' message=(linkify model.cluster.description)}}
+  </div>
+{{/if}}
+
 <section class="text-center">
-  {{cluster-dashboard nodes=model.nodes}}
+  {{cluster-dashboard nodes=currentClusterNodes}}
 </section>

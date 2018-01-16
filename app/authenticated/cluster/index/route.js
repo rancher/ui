@@ -6,10 +6,11 @@ export default Route.extend({
   scope: service(),
 
   model: function () {
-    return this.get('globalStore').findAll('machine', { filter: { clusterId: this.get('scope.currentCluster.id') } }).then((nodes) => {
+    return this.get('globalStore').findAll('machine').then((nodes) => {
       const cluster = this.get('scope').currentCluster;
+
       return {
-        displayName: cluster.name,
+        cluster,
         nodes,
       };
     });

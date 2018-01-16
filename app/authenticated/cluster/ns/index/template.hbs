@@ -3,7 +3,7 @@
   <div class="vertical-middle"></div>
 
   <div class="right-buttons">
-    {{#link-to "authenticated.cluster.ns.new" class="btn bg-primary btn-sm icon-btn"}}
+    {{#link-to "authenticated.cluster.ns.new" class="btn bg-primary btn-sm icon-btn" disabled=(rbac-prevents resource="namespace" scope="cluster" permission="create")}}
       <span class="darken">
         <i class="icon icon-plus"></i>
       </span>
@@ -39,6 +39,9 @@
         {{else}}
           <b>None</b>
         {{/if}}
+      </td>
+      <td>
+        {{linkify obj.description}}
       </td>
       <td>
         {{date-calendar obj.created}}

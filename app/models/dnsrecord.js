@@ -44,24 +44,25 @@ export default Resource.extend({
     return 'unknown';
   }),
 
+  getIpAddresses: function() {
+    const addresses = get(this, 'ipAddresses');
+    if ( addresses.length > 2 ) {
+      let other = addresses.length - 1;
+      return addresses[0] + ' and ' + other + ' others';
+    }
+    return get(this, 'ipAddresses').join(', ')
+  },
+
   displayTarget: computed('recordType','ipAddresses.[]','hostname','selector','targetDnsRecords.[]','targetWorkloads.[]', function() {
     switch ( get(this, 'recordType') ) {
       case 'arecord':
-        const addresses = get(this, 'ipAddresses');
-        if ( addresses.length > 2 ) {
-          let other = addresses.length - 1;
-          return address[0] + ' and ' + other + ' others';
-        }
-        return get(this, 'ipAddresses').join(', ')
+        return this.getIpAddresses();
       case 'cname':
         return get(this, 'hostname');
-        break;
       case 'selector':
         return get(this, 'selector');
-        break;
       case 'alias':
         return 'Some things'
-        break;
       default:
         return 'Unknown';
     }

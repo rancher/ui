@@ -22,6 +22,12 @@ export const headers = [
     translationKey: 'namespacesPage.table.project.label',
   },
   {
+    name: 'description',
+    sort: ['description','id'],
+    searchField: 'description',
+    translationKey: 'namespacesPage.table.description.label',
+  },
+  {
     name: 'created',
     sort: ['created','id'],
     searchField: 'created',
