@@ -10,6 +10,7 @@ const rootNav = [
     ctx: [getProjectId],
     moreCurrentWhen: ['containers','ingresses',/*'dns',*/'volumes'],
     resource: ["workload", "ingress", "dnsrecord"],
+    resourceScope: 'project',
   },
 
   {
@@ -19,6 +20,7 @@ const rootNav = [
     route: 'apps-tab',
     ctx: [getProjectId],
     resource: ["namespace"],
+    resourceScope: 'project',
   },
   {
     scope: 'project',
@@ -40,6 +42,7 @@ const rootNav = [
         route: 'authenticated.project.certificates',
         ctx: [getProjectId],
         resource: ["certificate"],
+        resourceScope: 'project',
       },
       {
         id: 'infra-registries',
@@ -48,6 +51,7 @@ const rootNav = [
         route: 'authenticated.project.registries',
         ctx: [getProjectId],
         resource: ["dockercredential"],
+        resourceScope: 'project',
       },
       {
         id: 'infra-secrets',
@@ -56,6 +60,7 @@ const rootNav = [
         route: 'authenticated.project.secrets',
         ctx: [getProjectId],
         resource: ["namespacedsecret", "secret"],
+        resourceScope: 'project',
       },
       {
         id: 'infra-hooks',
@@ -75,6 +80,7 @@ const rootNav = [
     route: 'authenticated.cluster.index',
     ctx: [getClusterId],
     resource: ['machine'],
+    resourceScope: 'global',
   },
   {
     scope: 'cluster',
@@ -83,6 +89,7 @@ const rootNav = [
     route: 'authenticated.cluster.projects.index',
     ctx: [getClusterId],
     resource: ['project'],
+    resourceScope: 'global',
   },
   {
     scope: 'cluster',
@@ -90,6 +97,8 @@ const rootNav = [
     localizedLabel: 'nav.cluster.namespaces',
     route: 'authenticated.cluster.ns.index',
     ctx: [getClusterId],
+    resource: ['namespace'],
+    resourceScope: 'cluster',
   },
   {
     scope: 'cluster',
@@ -98,6 +107,7 @@ const rootNav = [
     route: 'authenticated.cluster.nodes',
     ctx: [getClusterId],
     resource: ['machine'],
+    resourceScope: 'global',
   },
 //  {
 //    scope: 'cluster',
@@ -121,6 +131,7 @@ const rootNav = [
     localizedLabel: 'nav.admin.clusters',
     route: 'global-admin.clusters',
     resource: ['cluster'],
+    resourceScope: 'global',
   },
   {
     scope: 'global',
@@ -128,6 +139,7 @@ const rootNav = [
     localizedLabel: 'nav.admin.machines',
     route: 'global-admin.machines',
     resource: ['machine'],
+    resourceScope: 'global',
   },
   {
     scope: 'global',
@@ -135,6 +147,7 @@ const rootNav = [
     localizedLabel: 'nav.admin.machineDrivers',
     route: 'global-admin.machine-drivers',
     resource: ['machinedriver'],
+    resourceScope: 'global',
   },
   {
     scope: 'global',
@@ -142,6 +155,7 @@ const rootNav = [
     localizedLabel: 'nav.admin.catalogs',
     route: 'global-admin.catalog',
     resource: ['catalog'],
+    resourceScope: 'global',
   },
   {
     scope: 'global',
@@ -149,6 +163,7 @@ const rootNav = [
     localizedLabel: 'nav.admin.accounts',
     route: 'global-admin.accounts',
     resource: ['user'],
+    resourceScope: 'global',
   },
   {
     scope: 'global',
@@ -162,6 +177,7 @@ const rootNav = [
         icon: 'icon icon-key',
         route: 'global-admin.security.roles',
         resource: ['roletemplate'],
+        resourceScope: 'global',
       },
       {
         id: 'global-security-roles',
@@ -169,6 +185,7 @@ const rootNav = [
         icon: 'icon icon-files',
         route: 'global-admin.security.policies',
         resource: ['podsecuritypolicytemplate'],
+        resourceScope: 'global',
       },
       {
         id: 'global-security-authentication',

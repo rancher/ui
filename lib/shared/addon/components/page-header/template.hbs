@@ -14,7 +14,7 @@
         {{! Has a submenu }}
         <li class="dropdown nav-item">
           {{#if item.route}}
-            {{#if (rbac-allows resource=item.resource scope=item.scope)}}
+            {{#if (rbac-allows resource=item.resource scope=item.resourceScope)}}
               {{#link-to-as-attrs
                   item.route
                   models=item.ctx
@@ -40,7 +40,7 @@
           <ul class="dropdown-menu" data-dropdown-id={{item.id}}>
             {{#each item.submenu as |subitem|}}
               {{#if subitem.route}}
-                {{#if (rbac-allows resource=subitem.resource scope=item.scope)}}
+                {{#if (rbac-allows resource=subitem.resource scope=subitem.resourceScope)}}
                   <li>
                     {{#link-to-as-attrs
                       subitem.route
@@ -66,7 +66,7 @@
           </ul>
         </li>
       {{else if item.route}}
-        {{#if (rbac-allows resource=item.resource scope=item.scope)}}
+        {{#if (rbac-allows resource=item.resource scope=item.resourceScope)}}
           {{! No submenu }}
           <li class="nav-item">
             {{#link-to-as-attrs
