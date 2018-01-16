@@ -1,63 +1,53 @@
-{{#accordion-list showExpandAll=false as | al expandFn | }}
-  {{#accordion-list-item
-        title="Members"
-        detail="Configure who has access to the resources in this project and what permissions they have"
-        status=(t 'pagination.member' pages=1 count=memberArray.length)
-        statusClass=(if memberArray.length 'text-success' 'text-error')
-        expandAll=al.expandAll
-        expand=(action expandFn)
-        expandOnInit=true
-  }}
-    <table class="table fixed no-lines">
-      <thead>
-        <tr>
-          <th width="150">{{t 'projectsPage.new.form.members.kind.label'}}</th>
-          <th>{{t 'projectsPage.new.form.members.name.label'}}</th>
-          <th>{{t 'projectsPage.new.form.members.role.label'}}</th>
-          <th width="10">&nbsp;</th>
-          <th width="40"></th>
-        </tr>
-      </thead>
-      <tbody>
-        {{project-member-row member=member roles=roles users=users remove="removeMember" owner=creator type=type}}
-        {{#each memberArray as |member|}}
-          {{project-member-row member=member roles=roles users=filteredUsers remove="removeMember" update="updateMember"}}
-        {{/each}}
-      </tbody>
-    </table>
+<div>
+  <table class="table fixed no-lines">
+    <thead>
+      <tr>
+        <th width="150">{{t 'projectsPage.new.form.members.kind.label'}}</th>
+        <th>{{t 'projectsPage.new.form.members.name.label'}}</th>
+        <th>{{t 'projectsPage.new.form.members.role.label'}}</th>
+        <th width="10">&nbsp;</th>
+        <th width="40"></th>
+      </tr>
+    </thead>
+    <tbody>
+      {{project-member-row member=member roles=roles users=users remove="removeMember" owner=creator type=type}}
+      {{#each memberArray as |member|}}
+        {{project-member-row member=member roles=roles users=filteredUsers remove="removeMember" update="updateMember"}}
+      {{/each}}
+    </tbody>
+  </table>
 
-    <div class="mt-10">
-      {{#if (and (eq filteredUsers.length 0) (eq access.provider 'local'))}}
-        {{#tooltip-element
-             type="tooltip-basic"
-             model=(t 'projectsPage.new.form.members.noAddUser')
-             tooltipTemplate='tooltip-static'
-             aria-describedby="tooltip-base"
-             tooltipFor="tooltipNoUsers"
-        }}
-          <button class="btn bg-link icon-btn p-0" disabled=true>
-            <span class="darken"><i class="icon icon-plus text-small"/></span>
-            <span>{{t 'projectsPage.new.form.members.addUser'}}</span>
-          </button>
-        {{/tooltip-element}}
-      {{else}}
-        <button class="btn bg-link icon-btn p-0" {{action "addMember" "User"}}>
+  <div class="mt-10">
+    {{#if (and (eq filteredUsers.length 0) (eq access.provider 'local'))}}
+      {{#tooltip-element
+           type="tooltip-basic"
+           model=(t 'projectsPage.new.form.members.noAddUser')
+           tooltipTemplate='tooltip-static'
+           aria-describedby="tooltip-base"
+           tooltipFor="tooltipNoUsers"
+      }}
+        <button class="btn bg-link icon-btn p-0" disabled=true>
           <span class="darken"><i class="icon icon-plus text-small"/></span>
           <span>{{t 'projectsPage.new.form.members.addUser'}}</span>
         </button>
-      {{/if}}
-
-      {{!-- TODO - 2.0 --}}
-      <button class="btn bg-link icon-btn p-0" {{action "addMember" "Group"}} disabled="true">
+      {{/tooltip-element}}
+    {{else}}
+      <button class="btn bg-link icon-btn p-0" {{action "addMember" "User"}}>
         <span class="darken"><i class="icon icon-plus text-small"/></span>
-        <span>{{t 'projectsPage.new.form.members.addGroup'}}</span>
+        <span>{{t 'projectsPage.new.form.members.addUser'}}</span>
       </button>
+    {{/if}}
 
-      {{!-- TODO - 2.0 --}}
-      <button class="btn bg-link icon-btn p-0" {{action "addMember" "ServiceAccount"}} disabled="true">
-        <span class="darken"><i class="icon icon-plus text-small"/></span>
-        <span>{{t 'projectsPage.new.form.members.addServiceAccount'}}</span>
-      </button>
-    </div>
-  {{/accordion-list-item}}
-{{/accordion-list}}
+    {{!-- TODO - 2.0 --}}
+    <button class="btn bg-link icon-btn p-0" {{action "addMember" "Group"}} disabled="true">
+      <span class="darken"><i class="icon icon-plus text-small"/></span>
+      <span>{{t 'projectsPage.new.form.members.addGroup'}}</span>
+    </button>
+
+    {{!-- TODO - 2.0 --}}
+    <button class="btn bg-link icon-btn p-0" {{action "addMember" "ServiceAccount"}} disabled="true">
+      <span class="darken"><i class="icon icon-plus text-small"/></span>
+      <span>{{t 'projectsPage.new.form.members.addServiceAccount'}}</span>
+    </button>
+  </div>
+</div>
