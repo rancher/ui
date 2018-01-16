@@ -11,12 +11,22 @@
       {{#each row as |policy|}}
         <div class="col span-4">
           <label class="acc-label">{{t (concat-str 'formBasicPodSecurityPolicy' policy 'label' character='.')}}</label>
-          <div class="radio">
-            <label>{{radio-button selection=(get model policy) value=true}} {{t (concat-str 'formBasicPodSecurityPolicy' policy 'enable' character='.')}}</label>
-          </div>
-          <div class="radio">
-            <label>{{radio-button selection=(get model policy) value=false}} {{t (concat-str 'formBasicPodSecurityPolicy' policy 'disable' character='.')}}</label>
-          </div>
+          {{#if (and readOnly (get model policy))}}
+            <div>
+              <label>{{t (concat-str 'formBasicPodSecurityPolicy' policy 'enable' character='.')}}</label>
+            </div>
+          {{else if readOnly}}
+            <div>
+              <label>{{t (concat-str 'formBasicPodSecurityPolicy' policy 'enable' character='.')}}</label>
+            </div>
+          {{else}}
+            <div class="radio">
+              <label>{{radio-button selection=(get model policy) value=true}} {{t (concat-str 'formBasicPodSecurityPolicy' policy 'enable' character='.')}}</label>
+            </div>
+            <div class="radio">
+              <label>{{radio-button selection=(get model policy) value=false}} {{t (concat-str 'formBasicPodSecurityPolicy' policy 'disable' character='.')}}</label>
+            </div>
+          {{/if}}
         </div>
       {{/each}}
     </div>
