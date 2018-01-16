@@ -4,16 +4,14 @@
 
 <section class="horizontal-form container-fluid">
   <div class="mb-30">
-    {{form-name-description
-      labelColClass="col span-3 col-inline"
-      inputColClass="col span-7"
-      rowClass="row inline-form"
-      nameLabel="accountsPage.new.form.username.labelText"
-      namePlaceholder="accountsPage.new.form.username.placeholder"
-      horizontal=true
-      nameRequired=true
-      name=model.account.userName
-    }}
+    <div class="row inline-form">
+      <div class="col span-3 col-inline">
+        <label>{{t 'accountsPage.new.form.username.labelText'}}{{field-required}}</label>
+      </div>
+      <div class="col span-7">
+        {{input type="text" value=model.account.userName classNames="form-control" placeholder=(t 'accountsPage.new.form.username.placeholder')}}
+      </div>
+    </div>
 
     <div class="row inline-form">
       <div class="col span-3 col-inline">
