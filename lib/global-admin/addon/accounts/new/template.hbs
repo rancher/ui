@@ -2,46 +2,40 @@
   <div class="pull-left"><h1>{{t 'accountsPage.new.header'}}</h1></div>
 </section>
 
-<section class="horizontal-form container-fluid">
-  <div class="mb-30">
-    <div class="row inline-form">
-      <div class="col span-3 col-inline">
-        <label>{{t 'accountsPage.new.form.username.labelText'}}{{field-required}}</label>
-      </div>
-      <div class="col span-7">
-        {{input type="text" value=model.account.userName classNames="form-control" placeholder=(t 'accountsPage.new.form.username.placeholder')}}
-      </div>
-    </div>
+<div class="row">
+    {{form-name-description
+      name=model.account.userName
+      namePlaceholder="accountsPage.new.form.username.placeholder"
+      nameLabel="accountsPage.new.form.username.labelText"
+      nameRequired=true
+      descriptionShown=false
+    }}
+</div>
 
-    <div class="row inline-form">
-      <div class="col span-3 col-inline">
-        <label>{{t 'accountsPage.new.form.password.labelText'}}{{field-required}}</label>
-      </div>
-      <div class="col span-7">
-        {{schema/input-password value=model.account.password}}
-        <div class="text-info">{{validateDescription}}</div>
-      </div>
-    </div>
-
-    <div class="row inline-form">
-      <div class="col span-7 offset-3">
-        <label>
-          {{input type="checkbox" checked=primaryResource.mustChangePassword}}
-          {{t 'editUser.form.password.mustChangePassword'}}
-        </label>
-      </div>
-    </div>
-
-    <div class="row inline-form">
-      <div class="col span-3 col-inline">
-        <label>{{t 'accountsPage.new.form.name.labelText'}}</label>
-      </div>
-      <div class="col span-7">
-        {{input type="text" value=model.account.name classNames="form-control" placeholder=(t 'accountsPage.new.form.name.placeholder')}}
-      </div>
-    </div>
+<div class="row">
+  <div class="col span-12">
+    <label class="pb-5 acc-label">{{t 'accountsPage.new.form.password.labelText'}}{{field-required}}</label>
+    {{schema/input-password value=model.account.password}}
+    <div class="text-info">{{validateDescription}}</div>
   </div>
+  <div class="col span-12">
+    <label>
+      {{input type="checkbox" checked=primaryResource.mustChangePassword}}
+      {{t 'editUser.form.password.mustChangePassword'}}
+    </label>
+  </div>
+</div>
 
+<div class="row">
+  <div class="col span-12">
+    <label class="pb-5 acc-label">{{t 'accountsPage.new.form.name.labelText'}}</label>
+    {{input type="text" value=model.account.name classNames="form-control" placeholder=(t 'accountsPage.new.form.name.placeholder')}}
+  </div>
+</div>
+
+<hr class="mt-30 mb-30" />
+
+<section class="horizontal-form container-fluid">
   {{#accordion-list
        showExpandAll=false
        as |al expandFn|
@@ -63,12 +57,11 @@
            headers=headers as |sortable kind role dt|}}
         {{#if (eq kind "row")}}
           <tr class="main-row">
+            <td data-title="{{dt.active}}" class="pl-20">
+              {{input type="checkbox" checked=role.active}}
+            </td>
             <td data-title="{{dt.name}}" class="state">
               {{role.name}}
-            </td>
-
-            <td data-title="{{dt.active}}">
-              {{input type="checkbox" checked=role.active}}
             </td>
           </tr>
 

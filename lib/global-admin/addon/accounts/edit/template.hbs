@@ -1,57 +1,53 @@
-<section class="horizontal-form container-fluid">
-  <h2>{{t 'editUser.title'}}</h2>
-  <hr>
+<section class="header clearfix">
+  <div class="pull-left"><h1>{{t 'editUser.title'}}</h1></div>
+</section>
 
-  <div class="mb-30">
-    <div class="row inline-form">
-      <div class="col span-2 col-inline">
-        <label>{{t 'editUser.form.userName.label'}}</label>
-      </div>
-      <div class="col span-8 col-inline">
-        {{primaryResource.userName}}
-      </div>
-    </div>
-    <div class="row inline-form">
-      <div class="col span-2 col-inline">
-        <label>{{t 'editUser.form.name.label'}}</label>
-      </div>
-      <div class="col span-8">
-        {{input type="text" value=primaryResource.name classNames="form-control" placeholder=(t 'editUser.form.name.placeholder')}}
-      </div>
-    </div>
-    <div class="row inline-form">
-      <div class="col span-2 col-inline">
-        <label>{{t 'editUser.form.password.new'}}</label>
-      </div>
-      <div class="col span-8">
-        {{input type="password" value=password classNames="form-control start"}}
-      </div>
-    </div>
-    <div class="row inline-form">
-      <div class="col span-2 col-inline">
-        <label>{{t 'editUser.form.password.confirm'}}</label>
-      </div>
-      <div class="col span-8">
-        {{input type="password" value=confirm classNames="form-control"}}
-      </div>
-    </div>
-    {{#unless passwordsMatch}}
-      <div class="row mt-0">
-        <div class="col span-12">
-          <p class="help-text text-error span-12">{{t 'editUser.form.password.error'}}</p>
-        </div>
-      </div>
-    {{/unless}}
-    <div class="row inline-form">
-      <div class="col span-8 offset-2">
-        <label>
-          {{input type="checkbox" checked=primaryResource.mustChangePassword}}
-          {{t 'editUser.form.password.mustChangePassword'}}
-        </label>
-      </div>
+<div class="row">
+  {{form-name-description
+    name=primaryResource.userName
+    nameLabel="editUser.form.userName.label"
+    nameDisabled=true
+    descriptionShown=false
+  }}
+</div>
+
+<div class="row">
+  <div class="col span-12">
+    <label class="pb-5 acc-label">{{t 'editUser.form.name.label'}}</label>
+    {{input type="text" value=primaryResource.name classNames="form-control" placeholder=(t 'editUser.form.name.placeholder')}}
+  </div>
+</div>
+
+<div class="row">
+  <div class="col span-12">
+    <label class="pb-5 acc-label">{{t 'editUser.form.password.new'}}{{field-required}}</label>
+    {{input type="password" value=password classNames="form-control start"}}
+  </div>
+</div>
+
+<div class="row">
+  <div class="col span-12">
+    <label class="pb-5 acc-label">{{t 'editUser.form.password.confirm'}}{{field-required}}</label>
+    {{input type="password" value=confirm classNames="form-control"}}
+  </div>
+  {{#unless passwordsMatch}}
+  <div class="row mt-0">
+    <div class="col span-12">
+      <p class="help-text text-error span-12">{{t 'editUser.form.password.error'}}</p>
     </div>
   </div>
+  {{/unless}}
+  <div class="col span-12">
+    <label>
+      {{input type="checkbox" checked=primaryResource.mustChangePassword}}
+      {{t 'editUser.form.password.mustChangePassword'}}
+    </label>
+  </div>
+</div>
 
+<hr class="mt-30 mb-30" />
+
+<section class="horizontal-form container-fluid">
   {{#accordion-list
        showExpandAll=false
        as |al expandFn|
