@@ -15,6 +15,8 @@ export default Controller.extend({
   group: alias('projectController.group'),
   groupTableBy: alias('projectController.groupTableBy'),
 
+  resource: ["namespacedsecret", "secret"],
+
   headers: [
     {
       name: 'state',

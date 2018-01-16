@@ -9,8 +9,7 @@
         {{#link-to (query-params group="namespace") classNames="btn btn-sm bg-default"}}<i class="icon icon-list-nested"></i>{{/link-to}}
       {{/tooltip-element}}
     </div>
-
-    {{#link-to "authenticated.project.registries.new" classNames="btn btn-sm bg-primary"}}{{t 'registriesPage.index.linkTo'}}{{/link-to}}
+    {{#link-to "authenticated.project.registries.new" classNames="btn btn-sm bg-primary" disabled=(rbac-prevents resource="dockercredential" scope="project" permission="create")}}{{t 'registriesPage.index.linkTo'}}{{/link-to}}
   </div>
 
   <h1>{{t 'registriesPage.index.header'}}</h1>
@@ -37,6 +36,6 @@
       {{/if}}
     {{/sortable-table}}
   {{else}}
-    {{empty-table resource="container" newRoute="authenticated.project.registries.new" newTranslationKey="registriesPage.index.linkTo"}}
+    {{empty-table disabled=(rbac-prevents resource="dockercredential" scope="project" permission="create") resource="container" newRoute="authenticated.project.registries.new" newTranslationKey="registriesPage.index.linkTo"}}
   {{/if}}
 </section>
