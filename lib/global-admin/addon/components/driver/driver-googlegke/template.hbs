@@ -68,6 +68,33 @@
   </div>
 </div>
 
+<div class="box mt-30">
+  <h4>Security</h4>
+  <div class="row">
+    <div class="col span-6">
+      <label class="acc-label">Member Roles</label>
+      {{form-members
+          creator=userData.me
+          editing=false
+          memberArray=memberArray
+          memberConfig=memberConfig
+          roles=userData.roles
+          users=userData.users
+          type="cluster"
+      }}
+    </div>
+
+    <div class="col span-6">
+      <label class="acc-label mb-20">Pod Security Policy</label>
+      {{form-pod-sec-policy
+          config=model.cluster.defaultPodSecurityPolicyTemplateId
+          policies=model.policies
+      }}
+    </div>
+  </div>
+</div>
+
+
 {{#accordion-list showExpandAll=false as |al expandFn|}}
   <div class="mt-30">
     {{#accordion-list-item

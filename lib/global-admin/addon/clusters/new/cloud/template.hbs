@@ -15,9 +15,11 @@
 <form class="form text-left">
   {{#if driver}}
     {{component (concat 'driver/driver-' driver)
-      cancel=(action 'cancel')
-      cluster=model.cluster
-      driver=(concat driver 'Config')
+        cancel=(action 'cancel')
+        cluster=model.cluster
+        userData=model
+        membersArray=model.cluster.clusterRoleTemplateBindings
+        driver=(concat driver 'Config')
     }}
   {{/if}}
 
