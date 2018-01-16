@@ -1,6 +1,7 @@
 import { later } from '@ember/runloop';
 import { alias } from '@ember/object/computed';
 import { inject as service } from '@ember/service';
+import { get, computed } from '@ember/object';
 import Controller, { inject as controller } from '@ember/controller';
 
 export default Controller.extend({
@@ -31,4 +32,9 @@ export default Controller.extend({
       this.get('modalService').toggleModal('modal-kubeconfig');
     },
   },
+
+  currentClusterNodes: computed('model.nodes.@each.{capacity,allocatable,state}', function () {
+    const clusterId = get(this, 'scope.currentCluster.id');
+    return get(this, 'model.nodes').filter(n => n.clusterId === clusterId);
+  }),
 });

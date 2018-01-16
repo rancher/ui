@@ -11,7 +11,7 @@ export default Route.extend({
 
       return {
         displayName: cluster.name,
-        nodes: nodes.filter(n => n.clusterId === cluster.id),
+        nodes,
       };
     });
   },
