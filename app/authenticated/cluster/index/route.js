@@ -10,8 +10,7 @@ export default Route.extend({
       const cluster = this.get('scope').currentCluster;
 
       return {
-        description: cluster.description,
-        displayName: cluster.name,
+        cluster,
         nodes,
       };
     });

@@ -33,6 +33,10 @@ export default Controller.extend({
     },
   },
 
+  displayName: computed('model.cluster.name', function () {
+    return get(this, 'model.cluster.name') || `(${get(this, 'model.cluster.id')})`;
+  }),
+
   currentClusterNodes: computed('model.nodes.@each.{capacity,allocatable,state}', function () {
     const clusterId = get(this, 'scope.currentCluster.id');
     return get(this, 'model.nodes').filter(n => n.clusterId === clusterId);
