@@ -65,7 +65,7 @@ var Machine = Resource.extend(StateCounts, ResourceUsage, {
   },
 
   availableActions: function() {
-    let a = get(this,'actionLinks');
+    //let a = get(this,'actionLinks');
     let l = get(this,'links');
 
     let out = [
