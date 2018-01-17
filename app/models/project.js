@@ -3,12 +3,11 @@ import { computed } from '@ember/object';
 import { inject as service } from '@ember/service';
 import { hasMany } from 'ember-api-store/utils/denormalize';
 import Resource from 'ember-api-store/models/resource';
-import PolledResource from 'ui/mixins/cattle-polled-resource';
 import Util from 'ui/utils/util';
 import C from 'ui/utils/constants';
 import { reference } from 'ember-api-store/utils/denormalize';
 
-var Project = Resource.extend(PolledResource, {
+export default Resource.extend({
   access: service(),
   prefs: service(),
   scope: service(),
@@ -20,8 +19,6 @@ var Project = Resource.extend(PolledResource, {
   type: 'project',
   name: null,
   description: null,
-
-  state: 'active', // @TODO-2.0
 
   cluster: reference('clusterId', 'cluster'),
   projectRoleTemplateBindings: hasMany('id', 'projectRoleTemplateBinding', 'projectId'),
@@ -62,10 +59,20 @@ var Project = Resource.extend(PolledResource, {
         action: 'deactivate'
       });
     },
-
   },
 
-  availableActions: computed('actionLinks.{activate,deactivate}', 'links.{update,remove}', 'state', 'canSetDefault', function () {
+  combinedState: computed('state', 'cluster.state', function() {
+    var project = this.get('state');
+    var cluster = this.get('cluster.state');
+
+    if ( cluster === 'active' ) {
+      return project;
+    } else {
+      return cluster;
+    }
+  }),
+
+  availableActions: computed('actionLinks.{activate,deactivate}', 'links.{update,remove}', function () {
     // let a = this.get('actionLinks');
     // let l = this.get('links');
 
@@ -80,10 +87,9 @@ var Project = Resource.extend(PolledResource, {
     return choices;
   }),
 
-  delete: function (/*arguments*/) {
+  delete(/*arguments*/) {
     var promise = this._super.apply(this, arguments);
     return promise.then(() => {
-      this.set('state', 'removed');
       if (this.get('active')) {
         window.location.href = window.location.href;
       }
@@ -109,8 +115,8 @@ var Project = Resource.extend(PolledResource, {
     return (this.get('id') === this.get('cookies').get(C.COOKIE.PROJECT));
   }),
 
-  canSetDefault: computed('state', 'isDefault', function () {
-    return this.get('state') === 'active' && !this.get('isDefault');
+  canSetDefault: computed('combinedState', 'isDefault', function () {
+    return this.get('combinedState') === 'active' && !this.get('isDefault');
   }),
 
   displayOrchestration: computed('orchestration', function () {
@@ -132,11 +138,3 @@ var Project = Resource.extend(PolledResource, {
     return 50 + Math.round(Math.random() * 49);
   }).volatile(),
 });
-
-// Projects don't get pushed by /subscribe WS, so refresh more often
-Project.reopenClass({
-  pollTransitioningDelay: 1000,
-  pollTransitioningInterval: 5000,
-});
-
-export default Project;

@@ -1,7 +1,6 @@
 import { get, computed } from '@ember/object';
 import { inject as service } from '@ember/service';
 import Resource from 'ember-api-store/models/resource';
-import PolledResource from 'ui/mixins/cattle-polled-resource';
 import C from 'ui/utils/constants';
 import { parseExternalId } from 'ui/utils/parse-externalid';
 
@@ -25,7 +24,7 @@ function displayUrl(url) {
   return out;
 }
 
-var machineDriver = Resource.extend(PolledResource, {
+export default Resource.extend({
   type: 'machineDriver',
   modalService: service('modal'),
   catalog: service(),
@@ -60,8 +59,18 @@ var machineDriver = Resource.extend(PolledResource, {
 
   }),
 
-  displayName: computed('displayIcon', 'intl.locale', function() {
-    return get(this,'intl').t('machine.driver.'+get(this,'displayIcon'));
+  displayName: computed('name', 'intl.locale', function() {
+    const intl = get(this,'intl');
+    const name = get(this, 'name');
+    const key = `machine.driver.${name}`;
+
+    if ( name && intl.exists(key) ) {
+      return intl.t(key);
+    } else if ( name ) {
+      return name;
+    } else {
+      return '(' + get(this, 'id') + ')';
+    }
   }),
 
   displayIcon: computed('name', function() {
@@ -124,13 +133,3 @@ var machineDriver = Resource.extend(PolledResource, {
     return parseExternalId(get(this,'externalId'));
   }.property('externalId'),
 });
-
-machineDriver.reopenClass({
-  // Drivers don't get pushed by /subscribe WS, so refresh more often
-  pollTransitioningDelay: 2000,
-  pollTransitioningInterval: 1000,
-  pollTransitioningIntervalMax: 60000,
-  pollTransitioningIntervalFactor: 1.5,
-});
-
-export default machineDriver;

@@ -1,5 +1,5 @@
 <div class="row">
-  {{form-name-description model=cluster}}
+  {{form-name-description model=cluster nameRequired=true}}
 </div>
 
 {{#input-text-file
@@ -8,17 +8,16 @@
      accept="text/*, .json"
      minHeight=60
      canChangeName=false
+     nameRequired=true
      placeholder="cloud.driverGoogle.credential.placeholder"
      as |section|
 }}
-  {{#if (eq section 'help')}}
-    <div class="row hide help">
-      <div class="col span-12 help-block wrap mt-0">
+  {{#if (eq section 'description')}}
+    <div class="row help">
+      <div class="col span-12 help-block wrap mb-0">
         {{t 'cloud.driverGoogle.credential.helpText' htmlSafe=true}}
       </div>
     </div>
-   {{else if (eq section 'help-button')}}
-    <a class="help-block" href="#" {{action 'help'}}>{{t 'generic.help'}}</a>
   {{/if}}
 {{/input-text-file}}
 

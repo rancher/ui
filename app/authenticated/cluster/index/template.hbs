@@ -7,12 +7,12 @@
       <span>{{t 'k8sPage.dashboard.button'}}</span>
     </button>
 
-    <button class="btn bg-primary icon-btn ml-10" onClick={{action "kubectl" allowedKeys="meta"}}>
+    <button class="btn bg-primary icon-btn ml-10" disabled={{not model.cluster.isActive}} onClick={{action "kubectl" allowedKeys="meta"}}>
       <span class="darken"><i class="icon icon-terminal"></i></span>
       <span>{{t 'k8sPage.shell.button'}}</span>
     </button>
 
-    <button class="btn bg-primary icon-btn ml-10" {{action "kubeconfig"}}>
+    <button class="btn bg-primary icon-btn ml-10" disabled={{not model.cluster.isActive}} {{action "kubeconfig"}}>
       <span class="darken"><i class="icon icon-download"></i></span>
       <span>{{t 'k8sPage.configFile.button'}}</span>
     </button>
@@ -24,6 +24,10 @@
     {{banner-message color='bg-secondary mb-0 mt-10' message=(linkify model.cluster.description)}}
   </div>
 {{/if}}
+
+{{#unless model.cluster.isActive}}
+  {{banner-message color='bg-error' message=(t 'clusterDashboard.notActive' state=model.cluster.displayState)}}
+{{/unless}}
 
 <section class="text-center">
   {{cluster-dashboard nodes=currentClusterNodes}}

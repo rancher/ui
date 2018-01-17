@@ -14,9 +14,13 @@ export default Route.extend(Preload, {
   model(params) {
     return get(this, 'globalStore').find('cluster', params.cluster_id).then((cluster) => {
       get(this, 'scope').setCurrentCluster(cluster);
-      return this.loadSchemas('clusterStore').then(() => {
+      if ( get(cluster, 'state') === 'active' ) {
+        return this.loadSchemas('clusterStore').then(() => {
+          return cluster;
+        });
+      } else {
         return cluster;
-      });
+      }
     });
   },
 
