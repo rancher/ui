@@ -11,11 +11,13 @@ import ResourceUsage from 'shared/mixins/resource-usage';
 
 var Machine = Resource.extend(StateCounts, ResourceUsage, {
   type: 'machine',
+  
   modalService: service('modal'),
   settings: service(),
   prefs: service(),
   router: service(),
   clusterStore: service(),
+  intl: service(),
 
   cluster: reference('clusterId','cluster'),
 
@@ -108,6 +110,19 @@ var Machine = Resource.extend(StateCounts, ResourceUsage, {
     }
 
     return '('+get(this,'id')+')';
+  }),
+
+  displayRoles: computed('role.[]', function() {
+    const intl = get(this, 'intl');
+    let roles = get(this, 'role')||[];
+    return roles.map(role => {
+      let key = `model.machine.role.${role}`;
+      if ( intl.exists(key) ) {
+        return intl.t(key);
+      }
+
+      return key;
+    });
   }),
 
 /*
