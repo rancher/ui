@@ -19,7 +19,7 @@ export default Resource.extend({
   description: null,
 
   cluster: reference('clusterId', 'cluster'),
-  projectRoleTemplateBindings: hasMany('id', 'projectRoleTemplateBinding', 'projectId'),
+  projectRoleTemplateBindings: hasMany('id', 'projectRoleTemplateBinding', 'projectId'), // 2.0 bug projectId is wrong in the ptrb should be <cluster-id>:<project-id> instead of just <project-id>
 
   actions: {
     edit: function () {
