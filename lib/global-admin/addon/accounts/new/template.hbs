@@ -21,7 +21,7 @@
   <div class="col span-12">
     <label>
       {{input type="checkbox" checked=primaryResource.mustChangePassword}}
-      {{t 'editUser.form.password.mustChangePassword'}}
+      {{t 'editUser.form.password.mustChangePassword.new'}}
     </label>
   </div>
 </div>
@@ -36,43 +36,10 @@
 <hr class="mt-30 mb-30" />
 
 <section class="horizontal-form container-fluid">
-  {{#accordion-list
-       showExpandAll=false
-       as |al expandFn|
+  {{form-global-roles
+    user=model.account
+    setSave=(action "setGlobalRoleSave")
   }}
-    {{#accordion-list-item
-         title=(t 'editUser.form.globalRoles.label')
-         detail=(t 'editUser.form.globalRoles.description')
-         expandOnInit=true
-         expandAll=false
-         expand=(action expandFn)
-    }}
-      {{#sortable-table
-           classNames="grid sortable-table"
-           body=roles
-           search=false
-           sortBy=sortBy
-           bulkActions=false
-           pagingLabel="pagination.node"
-           headers=headers as |sortable kind role dt|}}
-        {{#if (eq kind "row")}}
-          <tr class="main-row">
-            <td data-title="{{dt.active}}" class="pl-20">
-              {{input type="checkbox" checked=role.active}}
-            </td>
-            <td data-title="{{dt.name}}" class="state">
-              {{role.name}}
-            </td>
-          </tr>
-
-        {{else if (eq kind "norows")}}
-          <tr><td colspan="{{sortable.fullColspan}}" class="text-center text-muted pt-20 pb-20">{{t 'editUser.form.globalRoles.noRoles'}}</td></tr>
-        {{/if}}
-      {{/sortable-table}}
-    {{/accordion-list-item}}
-
-  {{/accordion-list}}
-
 </section>
 
 {{top-errors errors=errors}}

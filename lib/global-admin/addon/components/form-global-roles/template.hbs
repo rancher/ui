@@ -1,0 +1,40 @@
+{{#accordion-list-item
+  title=(t 'formGlobalRoles.title')
+  detail=(t 'formGlobalRoles.description' appName=settings.appName)
+  expandOnInit=true
+  showExpand=false
+}}
+
+  <div class="radio">
+    <label>
+      {{radio-button selection=mode value="user"}} {{t 'formGlobalRoles.mode.user.label'}}
+      <p class="help-block">{{t 'formGlobalRoles.mode.user.detail'}}</p>
+    </label>
+  </div>
+  <div class="radio">
+    <label>
+      {{radio-button selection=mode value="admin"}} {{t 'formGlobalRoles.mode.admin.label'}}
+      <p class="help-block">{{t 'formGlobalRoles.mode.admin.detail'}}</p>
+    </label>
+  </div>
+  <div class="radio">
+    <label>
+      {{radio-button selection=mode value="custom"}} {{t 'formGlobalRoles.mode.custom.label'}}
+      <p class="help-block">{{t 'formGlobalRoles.mode.custom.detail'}}</p>
+    </label>
+  </div>
+
+  {{#if (eq mode 'custom')}}
+    <div class="pl-20">
+      {{#each custom as |row|}}
+        <div class="box p-10 mt-5 mb-5">
+          <label>
+            {{input type="checkbox" checked=row.active}} {{row.role.displayName}}
+            <p class="help-block">{{row.role.detail}}</p>
+          </label>
+        </div>
+      {{/each}}
+    </div>
+  {{/if}}
+
+{{/accordion-list-item}}
