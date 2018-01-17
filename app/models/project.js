@@ -1,9 +1,7 @@
-import { equal } from '@ember/object/computed';
 import { computed } from '@ember/object';
 import { inject as service } from '@ember/service';
 import { hasMany } from 'ember-api-store/utils/denormalize';
 import Resource from 'ember-api-store/models/resource';
-import Util from 'ui/utils/util';
 import C from 'ui/utils/constants';
 import { reference } from 'ember-api-store/utils/denormalize';
 
@@ -118,23 +116,4 @@ export default Resource.extend({
   canSetDefault: computed('combinedState', 'isDefault', function () {
     return this.get('combinedState') === 'active' && !this.get('isDefault');
   }),
-
-  displayOrchestration: computed('orchestration', function () {
-    return Util.ucFirst(this.get('orchestration'));
-  }),
-
-  isWindows: equal('orchestration', 'windows'),
-
-  // @TODO real data
-  numStacks: computed(function () {
-    return 3 + Math.round(Math.random() * 3);
-  }).volatile(),
-
-  numServices: computed(function () {
-    return 10 + Math.round(Math.random() * 9);
-  }).volatile(),
-
-  numContainers: computed(function () {
-    return 50 + Math.round(Math.random() * 49);
-  }).volatile(),
 });

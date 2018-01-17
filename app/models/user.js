@@ -11,8 +11,30 @@ export default Resource.extend({
     return get(x, 'subjectKind') === 'User';
   }),
 
+  displayName: computed('name','username','id', function() {
+    let name = get(this, 'name');
+    if ( name ) {
+      return name;
+    }
+
+    name = get(this, 'username');
+    if ( name ) {
+      return name;
+    }
+
+    return '(' + get(this,'id') + ')';
+  }),
+
   hasAdmin: computed('globalRoleBindings.[]', function() {
     if ( get(this, 'globalRoleBindings').findBy('globalRole.isAdmin', true) ) {
+      return true;
+    }
+
+    return false;
+  }),
+
+  hasCustom: computed('globalRoleBindings.[]', function() {
+    if ( get(this, 'globalRoleBindings').findBy('globalRole.isCustom', true) ) {
       return true;
     }
 

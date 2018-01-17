@@ -1,11 +1,13 @@
 import Resource from 'ember-api-store/models/resource';
 import { get, computed } from '@ember/object';
+import { inject as service } from '@ember/service';
 
 const BASE = 'user-base';
 const ADMIN = 'admin';
 const SPECIAL = [BASE, ADMIN];
 
 export default Resource.extend({
+  intl: service(),
 
   isHidden: computed('id', function () {
     return SPECIAL.includes(get(this, 'id'));
@@ -17,6 +19,37 @@ export default Resource.extend({
 
   isAdmin: computed('id', function () {
     return get(this, 'id') === ADMIN;
+  }),
+
+  isCustom: computed('isAdmin','isBase', function() {
+    return !get(this, 'isAdmin') && !get(this, 'isBase');
+  }),
+
+  displayName: computed('id', 'name', 'intl.locale',function() {
+    const intl = get(this, 'intl');
+    const id = get(this, 'id');
+    const key = `formGlobalRoles.role.${id}.label`;
+    if ( intl.exists(key) ){
+      return intl.t(key);
+    }
+
+    const name = get(this, 'name');
+    if ( name ) {
+      return name;
+    }
+
+    return `(${id})`;
+  }),
+
+  detail: computed('name', 'intl.locale',function() {
+    const intl = get(this, 'intl');
+    const id = get(this, 'id');
+    const key = `formGlobalRoles.role.${id}.detail`;
+    if ( intl.exists(key) ){
+      return intl.t(key);
+    }
+
+    return '';
   }),
 
   availableActions: computed('links.remove', function () {

@@ -762,7 +762,7 @@ clusterDashboard:
   scheduler: Scheduler
   controllerManager: Controller Manager
   value: Value
-  notActive: This cluster is currently {state}.  Some operations like managing namespaces will not be available until it is Active again.
+  notActive: This cluster is currently {state}.  Some operations like managing namespaces will not be available until it is Active.
   noNodes: There are no nodes.
   alert:
     node: "Alert: Node {node} is not active."
@@ -1886,10 +1886,6 @@ editUser:
       placeholder: e.g. John Smith
     userName:
       label: Username
-    globalRoles:
-      label: Edit Global Roles
-      description: Add or Remove global roles for this user
-      noRoles: User has no global roles
     otherRoles:
       label: Remove Roles
     password:
@@ -1897,7 +1893,9 @@ editUser:
       new: New Password
       confirm: Confirm Password
       error: Passwords must match
-      mustChangePassword: Require user to change their password on next login
+      mustChangePassword:
+        new: Require user to change their password on first login
+        edit: Require user to change their password on next login
 
 envCatalog:
   header: Catalog
@@ -2164,6 +2162,51 @@ formEnvVar:
   labels:
     key: Key
     value: Value
+
+formGlobalRoles:
+  title: Global Permissions
+  description: Controls what access the user has to administer the overall {appName} installation.
+  mode:
+    admin:
+      label: Administrator
+      detail: Administrators have full control over the entire installation and all resources in all clusters.
+    user:
+      label: Standard User
+      detail: Standard Users can create new clusters and manage clusters and projects they have been granted access to.
+    custom:
+      label: Custom
+      detail: Choose individual permissions for the user.
+  role:
+    create-clusters:
+      label: Create new Clusters
+      detail: Allows the user to create new clusters and become the owner of them.  Standard Users have this permission by default.
+    manage-authn:
+      label: Configure Authentication
+      detail: Allows the user to enable, configure, and disable all Authentication provider settings.
+    manage-catalogs:
+      label: Configure Catalogs
+      detail: Allows the user to add, edit, and remove Catalogs
+    manage-clusters:
+      label: Manage all Clusters
+      detail: Allows the user to manage all clusters, including ones they are not a member of.
+    manage-node-drivers:
+      label: Configure Node Drivers
+      detail: Allows the user to enable, configure, and remove all Node Driver settings 
+    manage-node-templates:
+      label: Manage Node Templates
+      detail: Allows the user to define, edit, and remove Node Templates
+    manage-roles:
+      label: Manage Roles
+      detail: Allows the user to define, edit, and remove Role definitions
+    manage-users:
+      label: Manage Users
+      detail: Allows the user to create, remove, and set passwords for all Users
+    use-catalogs:
+      label: Use Catalogs
+      detail: Allows the user to see and deploy Templates from the Catalog.  Standard Users have this permission by default.
+    use-node-templates:
+      label: Use Node Templates
+      detail: Allows the user to deploy new Nodes using any existing Node Templates.
 
 formHealthCheck:
   title: Health Check
