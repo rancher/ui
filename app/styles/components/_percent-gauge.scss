@@ -1,8 +1,10 @@
 //Percent gauge
-$gauge-color                         : $bg-info !default;
+$gauge-color                         : $link-color !default;
+$gauge-max-color                     : $light-grey !default;
 $gauge-text-color                    : $text-color !default;
-$gauge-tick-color                    : $accent-one !default;
-
+$gauge-main-color                    : $accent-border !default;
+$gauge-subtitle-color                : $accent-two !default;
+$gauge-tick-color                    : $accent-three !default;
 //Component badge
 $healthy-circle-color                : $success !default;
 $unhealthy-circle-color              : $error !default;
@@ -12,26 +14,44 @@ $healthy-text-color                  : $success !default;
 $unhealthy-text-color                : $error !default;
 
 .percent-gauge {
-  fill: $gauge-tick-color;
+  fill: $gauge-main-color;
 
   .gauge-value-path {
     fill: $gauge-color;
   }
 
   .gauge-text-stroke {
-    stroke: $gauge-tick-color;
+    stroke: $gauge-main-color;
   }
 
-  .gauge-text-fill {
+  .gauge-value-fill {
+    stroke: $gauge-text-color;
     fill: $gauge-text-color;
   }
 
-  .gauge-tick {
+  .gauge-title-fill {
+    fill: $gauge-text-color;
+  }
+
+  .gauge-subtitle-fill {
+    fill: $gauge-subtitle-color;
+  }
+
+  .gauge-tick-path {
+    fill: none;
+    stroke: $gauge-tick-color;
+  }
+
+  .gauge-max-path {
+    fill: $gauge-max-color;
+  }
+
+  .gauge-circle-fill {
     fill: $gauge-tick-color;
   }
 
-  .none {
-    fill: none;
+  .gauge-none-fill {
+    fill: transparent;
   }
 }
 
