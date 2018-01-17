@@ -5,19 +5,15 @@ import { hash } from 'rsvp';
 import { get } from '@ember/object';
 
 export default Route.extend({
-  clusterStore: service(),
   globalStore: service(),
 
   model() {
-    let store = get(this, 'clusterStore');
     let globalStore = get(this, 'globalStore');
     return hash({
-      hosts: store.findAll('node'), // this should eventually be all host with out cluster id
       machineTemplates: globalStore.findAll('machinetemplate'),
       machineDrivers: globalStore.find('machinedriver', null, {filter: {active: true}}),
     }).then((hash) => {
       return EmberObject.create({
-        hosts: hash.hosts,
         machineTemplates: hash.machineTemplates,
         machineDrivers: hash.machineDrivers,
       });

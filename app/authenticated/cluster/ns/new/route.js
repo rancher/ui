@@ -8,15 +8,15 @@ export default Route.extend({
   scope: service(),
 
   model() {
-    const store = get(this, 'clusterStore');
+    const clusterStore = get(this, 'clusterStore');
 
-    const namespace = store.createRecord({
+    const namespace = clusterStore.createRecord({
       type: 'namespace',
       name: '',
       clusterId: get(this,'scope.currentCluster.id'),
     });
 
-    let allProjects = this.get('globalStore').all('project').filterBy('clusterId', this.get('scope.currentCluster.id'));
+    let allProjects = get(this,'globalStore').all('project').filterBy('clusterId', get(this,'scope.currentCluster.id'));
 
     return {
       namespace,
