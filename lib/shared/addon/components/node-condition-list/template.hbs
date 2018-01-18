@@ -1,0 +1,50 @@
+{{#accordion-list-item
+     title=(t 'conditionSections.title')
+     detail=(t 'conditionSections.detail')
+     expandAll=expandAll
+     expand=(action expandFn)
+     componentName='sortable-table'
+     as | parent |
+}}
+  {{#component parent.intent
+       classNames="grid fixed mb-0 sortable-table"
+       bulkActions=false
+       rowActions=false
+       paging=false
+       search=true
+       sortBy=sortBy
+       stickyHeader=false
+       descending=descending
+       headers=headers
+       body=conditions
+       as |sortable kind row dt|
+  }}
+    {{#if (eq kind "row")}}
+      <tr>
+        <td data-title="{{dt.type}}">
+          {{row.type}}
+        </td>
+        <td data-title="{{dt.status}}">
+          {{row.status}}
+        </td>
+        <td data-title="{{dt.lastUpdateTime}}">
+          {{date-calendar row.lastUpdateTime}}
+        </td>
+        <td data-title="{{dt.reason}}">
+          {{row.reason}}
+        </td>
+        <td data-title="{{dt.message}}">
+          {{row.message}}
+        </td>
+      </tr>
+    {{else if (eq kind "norows")}}
+      <tr>
+        <td colspan="{{sortable.fullColspan}}" class="text-center text-muted pt-20 pb-20">{{t 'conditionSections.noData'}}</td>
+      </tr>
+    {{else if (eq kind "nomatch")}}
+      <tr>
+        <td colspan="{{sortable.fullColspan}}" class="text-center text-muted pt-20 pb-20">{{t 'conditionSections.noMatch'}}</td>
+      </tr>
+    {{/if}}
+  {{/component}}
+{{/accordion-list-item}}
