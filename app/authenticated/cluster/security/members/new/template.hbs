@@ -1,0 +1,26 @@
+<section class="header clearfix">
+  <div class="pull-left">
+    <h1>{{t 'membersPage.add.title' type='Cluster'}}</h1>
+  </div>
+</section>
+
+<section>
+  <div class="box mt-30">
+    <div class="row">
+      <div class="col span-4">
+        <label class="acc-label">{{t 'membersPage.add.form.member'}}</label>
+        {{searchable-select content=model.users value=primaryResource.subjectName optionValuePath="id" optionLabelPath="username"}}
+      </div>
+      <div class="col span-4">
+        <label class="acc-label">{{t 'membersPage.add.form.role'}}</label>
+        {{searchable-select content=model.roles value=primaryResource.roleTemplateId optionValuePath="id" optionLabelPath="name"}}
+      </div>
+      <div class="col span-4">
+        <label class="acc-label">{{t 'membersPage.add.form.kind'}}</label>
+        {{searchable-select content=kinds value=primaryResource.subjectKind optionValuePath="id" optionLabelPath="id"}}
+      </div>
+    </div>
+    {{top-errors errors=errors}}
+    {{save-cancel save="save" cancel="cancel"}}
+  </div>
+</section>

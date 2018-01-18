@@ -74,6 +74,15 @@ Router.map(function() {
         this.route('new', {path: '/add'});
       });
 
+      this.route('security', function() {
+        this.route('index', {path: '/'});
+        this.route('members', function() {
+          this.route('index', {path: '/'});
+          this.route('edit', {path: '/edit/:role_id'});
+          this.route('detail', {path: '/:role_id'});
+          this.route('new', {path: '/add'});
+        });
+      })
     });
 
     // Per-Project
