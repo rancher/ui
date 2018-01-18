@@ -2,11 +2,12 @@
   {{node-gauges nodes=nodes}}
   <div class="row">
     {{#each components as |c|}}
-      <div class="col span-3 box text-center {{if c.healthy 'text-success' 'bg-danger-imp'}}">
-        <div class="p-10">
-          <i class="icon icon-2x {{if c.healthy 'icon-thumbs-up' 'icon-alert'}}" />
+      <div class="col span-3">
+        <div class="banner {{if c.healthy 'bg-success' 'bg-danger'}}">
+          <div class="banner-icon"><i class="icon icon-2x {{if c.healthy 'icon-check' 'icon-alert'}}" /></div>
+          <div class="banner-message text-left"><p>{{c.name}}</p></div>
         </div>
-        <p>{{c.name}}</p>
+
       </div>
     {{/each}}
   </div>
