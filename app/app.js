@@ -59,7 +59,7 @@ const App = Application.extend({
           'authenticated.prefs':   'authenticated.prefs',
           'authenticated.cluster.nodes': 'authenticated.cluster.nodes',
           'authenticated.cluster.nodes.node': 'authenticated.cluster.nodes.node',
-          'authenticated.cluster.security.roles.index': 'authenticated.cluster.security.roles.index',
+          'authenticated.cluster.security.members.index': 'authenticated.cluster.security.members.index',
           'logout':                'logout'
         }
       }

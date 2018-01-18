@@ -23,6 +23,6 @@ export default Controller.extend(NewOrEdit, {
   actions: {
   },
   doneSaving() {
-    this.transitionToRoute('authenticated.cluster.security.roles.index', get(this, 'model.cluster.id'))
+    this.transitionToRoute('authenticated.cluster.security.members.index', get(this, 'model.cluster.id'))
   },
 });

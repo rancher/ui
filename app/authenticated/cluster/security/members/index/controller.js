@@ -3,22 +3,22 @@ import FilterState from 'ui/mixins/filter-state';
 
 const headers = [
   {
-    translationKey: 'rolesPage.index.table.name',
+    translationKey: 'membersPage.index.table.name',
     name: 'name',
     sort: ['name', 'subjectName', 'id'],
   },
   {
-    translationKey: 'rolesPage.index.table.subjectName',
+    translationKey: 'membersPage.index.table.subjectName',
     name: 'subjectName',
     sort: ['subjectName', 'name', 'id'],
   },
   {
-    translationKey: 'rolesPage.index.table.subjectKind',
+    translationKey: 'membersPage.index.table.subjectKind',
     name: 'subjectKind',
     sort: ['subjectKind', 'subjectName', 'name'],
   },
   {
-    translationKey: 'rolesPage.index.table.template',
+    translationKey: 'membersPage.index.table.template',
     name: 'roleTemplateId',
     sort: ['roleTemplateId'],
   },

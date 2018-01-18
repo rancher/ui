@@ -76,7 +76,7 @@ Router.map(function() {
 
       this.route('security', function() {
         this.route('index', {path: '/'});
-        this.route('roles', function() {
+        this.route('members', function() {
           this.route('index', {path: '/'});
           this.route('edit', {path: '/edit/:role_id'});
           this.route('detail', {path: '/:role_id'});

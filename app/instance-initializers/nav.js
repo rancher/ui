@@ -118,9 +118,9 @@ const rootNav = [
     submenu: [
       {
         id: 'cluster-security-roles',
-        localizedLabel: 'nav.admin.security.roles',
+        localizedLabel: 'nav.admin.security.members',
         icon: 'icon icon-key',
-        route: 'authenticated.cluster.security.roles.index',
+        route: 'authenticated.cluster.security.members.index',
         resource: ['clusterroletemplatebinding'],
         resourceScope: 'global',
         ctx: [getClusterId],
