@@ -4,6 +4,7 @@ import NewOrEdit from 'ui/mixins/new-or-edit';
 const DRIVERS = ['scaleService','scaleHost','serviceUpgrade'];
 
 export default Ember.Component.extend(NewOrEdit, {
+  projects: Ember.inject.service(),
   model: null,
 
   init() {
