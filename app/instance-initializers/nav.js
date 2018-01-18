@@ -71,6 +71,23 @@ const rootNav = [
       },
     ],
   },
+  {
+    scope: 'project',
+    id: 'project-security',
+    localizedLabel: 'nav.admin.security.tab',
+    ctx: [getProjectId],
+    submenu: [
+      {
+        id: 'project-security-roles',
+        localizedLabel: 'nav.admin.security.members',
+        icon: 'icon icon-key',
+        route: 'authenticated.project.security.members.index',
+        resource: ['projectroletemplatebinding'],
+        resourceScope: 'global',
+        ctx: [getProjectId],
+      },
+    ],
+  },
 
   // Cluster
   {
