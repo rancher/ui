@@ -109,6 +109,24 @@ const rootNav = [
     resource: ['machine'],
     resourceScope: 'global',
   },
+  {
+    scope: 'cluster',
+    id: 'cluster-security',
+    localizedLabel: 'nav.admin.security.tab',
+    route: 'authenticated.cluster.nodes',
+    ctx: [getClusterId],
+    submenu: [
+      {
+        id: 'cluster-security-roles',
+        localizedLabel: 'nav.admin.security.roles',
+        icon: 'icon icon-key',
+        route: 'authenticated.cluster.security.roles.index',
+        resource: ['clusterroletemplatebinding'],
+        resourceScope: 'global',
+        ctx: [getClusterId],
+      },
+    ],
+  },
 //  {
 //    scope: 'cluster',
 //    id: 'cluster-networking',

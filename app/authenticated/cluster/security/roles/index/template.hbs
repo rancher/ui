@@ -1,0 +1,52 @@
+<section class="header has-tabs clearfix p-0">
+  <ul class="tab-nav">
+    <li>{{#link-to "authenticated.cluster.security.roles.index"}}{{t 'nav.admin.security.roles'}}{{/link-to}}</li>
+  </ul>
+  <div class="right-buttons">
+    {{#link-to "authenticated.cluster.security.roles.new" classNames="btn btn-sm bg-primary right-divider-btn" disabled=(rbac-prevents resource="clusterroletemplatebinding" scope="global" permission="create")}} {{t 'rolesPage.addRole'}}{{/link-to}}
+    <span id="header-search"/>
+  </div>
+</section>
+
+<section class="instances">
+  {{#sortable-table
+    classNames="grid sortable-table"
+    sortBy=sortBy
+    headers=headers
+    searchText=searchText
+    body=filtered
+    as |sortable kind row dt|
+  }}
+    {{#if (eq kind "row")}}
+      <tr class="main-row">
+        <td valign="middle" class="row-check" style="padding-top: 2px;">
+          {{check-box nodeId=row.id}}
+        </td>
+        <td data-title="{{t 'rolesPage.index.table.name'}}:" class="clip">
+          {{#link-to "authenticated.cluster.security.roles.detail" clusterId row.id}}
+            {{row.name}}
+          {{/link-to}}
+        </td>
+        <td data-title="{{t 'rolesPage.index.table.subjectName'}}:" >
+          {{row.subjectName}}
+        </td>
+        <td data-title="{{t 'rolesPage.index.table.subjectKind'}}:" >
+          {{row.subjectKind}}
+        </td>
+        <td data-title="{{t 'rolesPage.index.table.template'}}:" >
+          {{row.roleTemplateId}}
+        </td>
+        <td data-title="{{t 'generic.created'}}:" class="text-right pr-20">
+          {{date-calendar row.created}}
+        </td>
+        <td data-title="{{t 'generic.actions'}}:" class="actions">
+          {{action-menu model=row}}
+        </td>
+      </tr>
+    {{else if (eq kind "nomatch")}}
+      <td colspan="5" class="text-center text-muted lacsso pt-20 pb-20">{{t 'rolesPage.index.table.noMatch'}}</td>
+    {{else if (eq kind "norows")}}
+      <td colspan="5" class="text-center text-muted lacsso pt-20 pb-20">{{t 'rolesPage.index.table.noData'}}</td>
+    {{/if}}
+  {{/sortable-table}}
+</section>
