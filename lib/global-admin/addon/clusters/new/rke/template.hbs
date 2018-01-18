@@ -54,17 +54,22 @@
           {{#if (eq scope "dedicated")}}
             <td data-title="{{dt.etcd}}">
               {{!-- disabled=(not-eq host.state "active") --}}
-              {{input type="checkbox" change=(action 'addRole' host 'etcd')}}
+              {{input type="checkbox" checked=(array-includes host.role 'etcd') change=(action 'addRole' host 'etcd')}}
             </td>
             <td data-title="{{dt.controlplane}}">
               {{!-- disabled=(not-eq host.state "active") --}}
-              {{input type="checkbox" change=(action 'addRole' host 'controlplane')}}
+              {{input type="checkbox" checked=(array-includes host.role 'controlplane') change=(action 'addRole' host 'controlplane')}}
             </td>
           {{/if}}
           <td data-title="{{dt.worker}}">
             {{!-- disabled=(not-eq host.state "active") --}}
-            {{input type="checkbox" change=(action 'addRole' host 'worker')}}
+            {{input type="checkbox" checked=(array-includes host.role 'worker') change=(action 'addRole' host 'worker')}}
           </td>
+          {{#if (eq scope "dedicated")}}
+            <td data-title="{{dt.all}}">
+              {{input type="checkbox" checked=(array-includes host.role 'worker' 'controlplane' 'etcd') change=(action 'selectAllRoles' host)}}
+            </td>
+          {{/if}}
         </tr>
       {{else if (eq kind "nomatch")}}
         <tr><td colspan="{{sortable.fullColspan}}" class="text-center text-muted lacsso pt-20 pb-20">{{t 'nodesPage.table.noMatch'}}</td></tr>
@@ -72,7 +77,7 @@
         <tr><td colspan="{{sortable.fullColspan}}" class="text-center text-muted lacsso pt-20 pb-20" style="height:200px;">{{t 'nodesPage.table.noData'}}</td></tr>
       {{else if (eq kind "suffix")}}
         <tr class="suffix">
-          <td colspan="2" class="text-right pr-20">Number of nodes required:</td>
+          <td colspan="2" class="text-right pr-20">{{t 'clustersPage.addPage.rke.minimums.label'}}:</td>
           {{#if (eq scope "dedicated")}}
             <td class="{{if etcdSafe "text-success" "text-error"}}">
               <i class="icon {{if etcdSafe "icon-success" "icon-x-circle"}}"></i>
@@ -83,7 +88,7 @@
               {{t 'clustersPage.addPage.rke.minimums.management'}}
             </td>
           {{/if}}
-          <td class="{{if workerSafe "text-success" "text-error"}}">
+          <td colspan="{{if (eq scope "dedicated") "2" "1"}}" class="{{if workerSafe "text-success" "text-error"}}">
             <i class="icon {{if workerSafe "icon-success" "icon-x-circle"}}"></i>
             {{t 'clustersPage.addPage.rke.minimums.nodes'}}
           </td>
@@ -163,6 +168,6 @@
       </div>
     {{/if}}
   {{/accordion-list}}
-
+  {{top-errors errors=errors}}
   {{save-cancel save="save" cancel="cancel"}}
 </form>

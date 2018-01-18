@@ -664,7 +664,7 @@ clustersPage:
   addPage:
     host:
       clusterName: User
-      hostName: Host Name
+      hostName: Node Name
       ssh: SSH Key
     rke:
       header: Add Cluster
@@ -699,16 +699,22 @@ clustersPage:
             etcd: Use for etcd
             control: Use for management
             worker: Use as worker node
+            all: User for all
         customize:
           label: Customize
           detail: "Optional configuration options for the Kubernetes installation"
       minimums:
+        label: Number of nodes required
         cluster: 1, 3, or 5
         nocluster: You have no nodes. Minimum 1 node. 3 nodes recommended.
         management: At least one
         noManagement: You have no management nodes. Minimum 1 node. 3 nodes recommended.
         nodes: At least one
         noNodes: You have no nodes. Minimum 1 node.
+      error:
+        etcd: Number of nodes should be 1, 3, or 5.
+        management: Please select at least one node for management.
+        node: Please select at least one node as worker.
 ingressPage:
   header: 'Ingress: {name}'
   table:
@@ -899,7 +905,7 @@ helpPage:
       Before adding your first service or launching a container, you must add at least a single Linux host that supports Docker {minVersion} or higher and be able to reach the {appName} server via HTTP. {appName} supports adding Linux hosts in the form of a virtual or physical
           machine from any public cloud providers, privately hosted clouds, or even bare metal servers.
     contentLink: Learn More
-    addHostLink: Add Host
+    addHostLink: Add Node
   stacks:
     header: What are stacks and services?
     content:
@@ -967,16 +973,16 @@ nodesPage:
     instanceState: Container States
     instanceStateWithIcon: States
     noData: You do not have any nodes yet
-    noMatch: No hosts match the current search
+    noMatch: No nodes match the current search
 
 hostsPage:
   cloudHostsPage:
     addPage:
       launch: Launch
-      header: Add Host
+      header: Add Node
       name:
-        label: Host Name
-        placeholder: e.g. host01
+        label: Node Name
+        placeholder: e.g. node01
       transferUnit: TB
       instance: 'Type:'
       storage: 'Storage:'
@@ -991,11 +997,11 @@ hostsPage:
   new:
     header:
       customText: Add Custom Host
-      text: Add Host
+      text: Add Node
     manageLink: Manage available machine drivers
     custom: Add Custom Host
     name:
-      placeholder: e.g. host01
+      placeholder: e.g. node01
     addCluster:
       label: "Cluster Options"
       description: Attach this new node to a cluster, delegate roles, etc.
@@ -1389,7 +1395,7 @@ hostPartial:
       new:
         form:
           name:
-            placeholder: e.g. host01
+            placeholder: e.g. node01
 
 ldap:
   providerName:
@@ -1609,14 +1615,14 @@ clusterRow:
   noHosts: External cluster has no hosts
   noClusterMatch: No clusters match the current search.
   noClusterData: There are no clusters yet.
-  addHost: Add Hosts
+  addHost: Add Nodes
   importCluster: Use existing Kubernetes
   loginDefault: Login
 
 clusterWelcome:
   welcome: Welcome
   noHost: There are no hosts in this cluster yet.  Do you want to add hosts or use an existing Kubernetes installation?
-  addHost: Add Hosts
+  addHost: Add Nodes
   select: Select
   importCluster: Use existing Kubernetes
   importClusterDescription: |
@@ -1825,14 +1831,14 @@ editHost:
   title: Edit Host
   hostname:
     label: Hostname
-    help: As reported by the host operating system.
+    help: As reported by the node operating system.
   customName:
     label: Custom Name
     placeholder: e.g. dev1
     help: If this is left empty, the Hostname will be shown as the Name.
   description:
     label: Description
-    placeholder: e.g. My development host
+    placeholder: e.g. My development node
   labels:
     label: Labels
   ips:
@@ -1843,7 +1849,7 @@ editHost:
     help:  If provided, the scheduler will select and bind published ports to one of the given public IP addresses.
   requireAny:
     label: Require Container Label
-    help: If provided, containers must have one or more of the given labels in order to be eligible for scheduling onto this host.  If the value is left empty, a container with a matching key is eligible regardless of value.  <code>io.rancher.container.system</code> is required to allow system containers on to the host.
+    help: If provided, containers must have one or more of the given labels in order to be eligible for scheduling onto this node.  If the value is left empty, a container with a matching key is eligible regardless of value.  <code>io.rancher.container.system</code> is required to allow system containers on to the node.
     addActionLabel: Add Required Label
 
 editRegistry:
@@ -2357,7 +2363,7 @@ formNetwork:
     label: Subdomain
     placeholder: e.g. foo
   hostAlias:
-    addActionLabel: Add Host Alias
+    addActionLabel: Add Node Alias
     label: Host Aliases
     host:
       label: Host
@@ -2632,7 +2638,7 @@ formSslTermination:
   host:
     label: Host
     placeholder: e.g. example.com
-  addHostLabel: Add Host
+  addHostLabel: Add Node
   helpBlock: |
     "Note: Some older SSL/TLS clients do not support <a href="https://en.wikipedia.org/wiki/Server_Name_Indication" target="_blank">Server Name Indication (SNI)</a>; these clients will always be offered the main Certificate.  Modern clients will be offered an appropriate certificate from the Alternate Certificates list if a match is found."
   notNeeded: There are no SSL/TLS Listening Ports configured with a valid Target Rule.
@@ -3085,6 +3091,19 @@ annotationsSection:
   key: Key
   value: Value
   noData: No Annotations
+  noMatch: No annotations match the current search
+
+conditionSections:
+  title: Conditions
+  detail: Current conditions of this node.
+  table:
+    type: Type
+    status: Status
+    lastUpdate: Last Update
+    reason: Reason
+    message: Message
+  noData: No Conditions
+  noMatch: No conditions match the current search
 
 systemInfoSection:
   title: System Information
@@ -3099,6 +3118,7 @@ systemInfoSection:
   kubeProxyVersion: Kube Proxy Version
   operatingSystem: Operating System Image
   osType: Operating System
+  noMatch: No system information match the current search
 
 labelsSection:
   kind: Kind
@@ -3672,7 +3692,7 @@ modalEditDriver:
     help: The URL to download the machine driver binary for 64-bit Linux.
   uiUrl:
     label: Custom UI URL
-    help: "Optional: The URL to load for customized Add Hosts screen for this driver."
+    help: "Optional: The URL to load for customized Add Nodes screen for this driver."
     link: See <a href="https://github.com/rancher/ui-driver-skel" target="_blank">ui-driver-skel</a> for more info.
   checksum:
     label: Checksum
@@ -4374,7 +4394,7 @@ nav:
     namespaceWorkload: Group by Namespace/Workload
   hosts:
     tab: Hosts
-    addHost: Add Host
+    addHost: Add Node
   catalog:
     all: All
     library: Library

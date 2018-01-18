@@ -37,11 +37,18 @@
 
 <section>
   {{#accordion-list as |al expandFn|}}
-    {{system-info-section
-      node=model.node
+    {{node-condition-list
+      conditions=model.node.conditions
       expandAll=al.expandAll
       expandFn=expandFn
     }}
+    <div class="mt-20">
+      {{system-info-section
+        node=model.node
+        expandAll=al.expandAll
+        expandFn=expandFn
+      }}
+    </div>
     <div class="mt-20">
       {{labels-section
         model=model.node
