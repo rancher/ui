@@ -2,8 +2,10 @@
   {{t kind}}
 </td>
 <td class="pr-20">
-  {{#if owner}}
-    {{owner.name}}
+  {{#if (and owner owner.username)}}
+    {{owner.username}} <label class="text-muted">{{owner.name}}</label>
+  {{else if owner}}
+    {{owner.id}} <label class="text-muted">{{owner.name}}</label>
   {{else}}
     {{searchable-select content=userList value=member.subjectName disabled=true}}
   {{/if}}
