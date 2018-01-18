@@ -72,7 +72,7 @@
         <tr><td colspan="{{sortable.fullColspan}}" class="text-center text-muted lacsso pt-20 pb-20" style="height:200px;">{{t 'nodesPage.table.noData'}}</td></tr>
       {{else if (eq kind "suffix")}}
         <tr class="suffix">
-          <td colspan="2" class="text-right pr-20">Number of nodes required:</td>
+          <td colspan="2" class="text-right pr-20">{{t 'clustersPage.addPage.rke.minimums.label'}}:</td>
           {{#if (eq scope "dedicated")}}
             <td class="{{if etcdSafe "text-success" "text-error"}}">
               <i class="icon {{if etcdSafe "icon-success" "icon-x-circle"}}"></i>
@@ -163,6 +163,6 @@
       </div>
     {{/if}}
   {{/accordion-list}}
-
+  {{top-errors errors=errors}}
   {{save-cancel save="save" cancel="cancel"}}
 </form>
