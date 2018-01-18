@@ -10,9 +10,9 @@ export default Route.extend({
     const store = get(this, 'globalStore');
 
     return hash({
-      role: store.find('roleTemplate', params.role_id),
-      roles: store.find('roleTemplate'),
-      policies: store.find('podSecurityPolicyTemplate'),
+      role: store.find('clusterroletemplatebinding', params.role_id),
+      roles: store.find('roletemplate', null, {filter: {hidden: false, context: 'cluster'}}),
+      policies: store.find('podsecuritypolicytemplate'),
     });
   },
 });

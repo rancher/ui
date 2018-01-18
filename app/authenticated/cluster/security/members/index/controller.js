@@ -13,11 +13,6 @@ const headers = [
     sort: ['subjectName', 'name', 'id'],
   },
   {
-    translationKey: 'membersPage.index.table.subjectKind',
-    name: 'subjectKind',
-    sort: ['subjectKind', 'subjectName', 'name'],
-  },
-  {
     translationKey: 'membersPage.index.table.template',
     name: 'roleTemplateId',
     sort: ['roleTemplateId'],

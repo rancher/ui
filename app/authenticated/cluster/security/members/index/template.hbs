@@ -1,6 +1,6 @@
 <section class="header has-tabs clearfix p-0">
   <ul class="tab-nav">
-    <li>{{#link-to "authenticated.cluster.security.members.index"}}{{t 'nav.admin.security.roles'}}{{/link-to}}</li>
+    <li>{{#link-to "authenticated.cluster.security.members.index"}}{{t 'nav.admin.security.members'}}{{/link-to}}</li>
   </ul>
   <div class="right-buttons">
     {{#link-to "authenticated.cluster.security.members.new" classNames="btn btn-sm bg-primary right-divider-btn" disabled=(rbac-prevents resource="clusterroletemplatebinding" scope="global" permission="create")}} {{t 'membersPage.index.localLink' 'Cluster'}}{{/link-to}}
@@ -23,15 +23,10 @@
           {{check-box nodeId=row.id}}
         </td>
         <td data-title="{{t 'membersPage.index.table.name'}}:" class="clip">
-          {{#link-to "authenticated.cluster.security.members.detail" clusterId row.id}}
-            {{row.name}}
-          {{/link-to}}
+          {{row.name}}
         </td>
         <td data-title="{{t 'membersPage.index.table.subjectName'}}:" >
-          {{row.subjectName}}
-        </td>
-        <td data-title="{{t 'membersPage.index.table.subjectKind'}}:" >
-          {{row.subjectKind}}
+          {{row.user.name}}
         </td>
         <td data-title="{{t 'membersPage.index.table.template'}}:" >
           {{row.roleTemplateId}}
