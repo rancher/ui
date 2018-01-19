@@ -44,7 +44,7 @@ export default Route.extend({
     return EmberObject.create({
       mode,
       workload: this.emptyWorkload(params),
-      container: this.emptyContainer(),
+      container: this.emptyContainer(params),
       isService,
       isUpgrade: false,
     });
@@ -64,7 +64,7 @@ export default Route.extend({
       return EmberObject.create({
         mode: 'sidekick',
         workload: clone,
-        container: this.emptyContainer(),
+        container: this.emptyContainer(params),
         isService,
         isUpgrade: false,
       });
@@ -124,7 +124,7 @@ export default Route.extend({
     }
   },
 
-  emptyWorkload(params) {
+  getNamespaceId(params) {
     const store = this.get('store');
 
     let ns = null;
@@ -140,10 +140,14 @@ export default Route.extend({
     if ( ns ) {
       namespaceId = ns.get('id');
     }
+    return namespaceId;
+  },
 
+  emptyWorkload(params) {
+    const store = this.get('store');
     return store.createRecord({
       type: 'workload',
-      namespaceId: namespaceId,
+      namespaceId: this.getNamespaceId(params),
       scale: 1,
       restart: 'Always',
       ipc: "pod",
@@ -155,7 +159,7 @@ export default Route.extend({
     });
   },
 
-  emptyContainer() {
+  emptyContainer(params) {
     return this.get('store').createRecord({
       type: 'container',
       tty: true,
@@ -164,6 +168,7 @@ export default Route.extend({
       allowPrivilegeEscalation: false,
       readOnly: false,
       runAsNonRoot: false,
+      namespaceId : this.getNamespaceId(params),
       resources: {
         cpu: {},
         memory: {},
