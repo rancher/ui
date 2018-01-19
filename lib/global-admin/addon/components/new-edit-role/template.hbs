@@ -30,7 +30,6 @@
     expandAll=al.expandAll
     expand=(action expandFn)
     expandOnInit=true
-    showExpand=false
     showStatus=false
   }}
     {{#if ruleArray.length}}
@@ -65,14 +64,13 @@
   {{/accordion-list-item}}
 
   <div class="row">
-    <div class="col span-6">
+    <div class="col span-12">
       {{#accordion-list-item
         title="Inherit from a Role"
         detail="Include all the permissions of another role"
         expandAll=al.expandAll
         expand=(action expandFn)
         expandOnInit=true
-        showExpand=false
         showStatus=false
       }}
         {{#if roleArray.length}}
@@ -101,26 +99,6 @@
             </button>
           </div>
         {{/unless}}
-      {{/accordion-list-item}}
-    </div>
-
-    <div class="col span-6">
-      {{#accordion-list-item
-           title=(t 'podSecurityPoliciesPage.index.header')
-           detail=(t 'podSecurityPoliciesPage.index.description')
-           expandAll=al.expandAll
-           expand=(action expandFn)
-           expandOnInit=true
-           showExpand=false
-           showStatus=false
-      }}
-        {{form-pod-sec-policy
-            config=secPolicy
-            policies=model.policies
-            expandAll=al.expandAll
-            expand=(action expandFn)
-            readOnly=readOnly
-        }}
       {{/accordion-list-item}}
     </div>
   </div>

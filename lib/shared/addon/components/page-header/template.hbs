@@ -13,8 +13,8 @@
       {{#if item.submenu.length}}
         {{! Has a submenu }}
         <li class="dropdown nav-item">
-          {{#if item.route}}
-            {{#if (or (not item.resource) (rbac-allows resource=item.resource scope=item.resourceScope))}}
+          {{#if (or (not item.resource) (rbac-allows resource=item.resource scope=item.resourceScope))}}
+            {{#if item.route}}
               {{#link-to-as-attrs
                   item.route
                   models=item.ctx
@@ -29,12 +29,12 @@
                 {{maybe-t item.localizedLabel item.label}}
                 <span class="icon icon-chevron-down"/>
               {{/link-to-as-attrs}}
+            {{else}}
+              <a class="dropdown-toggle" role="button" aria-haspopup="true" aria-expanded="false" aria-label={{maybe-t item.localizedLabel item.label}}>
+                {{maybe-t item.localizedLabel item.label}}
+                <span class="icon icon-chevron-down"/>
+              </a>
             {{/if}}
-          {{else}}
-            <a class="dropdown-toggle" role="button" aria-haspopup="true" aria-expanded="false" aria-label={{maybe-t item.localizedLabel item.label}}>
-              {{maybe-t item.localizedLabel item.label}}
-              <span class="icon icon-chevron-down"/>
-            </a>
           {{/if}}
 
           <ul class="dropdown-menu" data-dropdown-id={{item.id}}>

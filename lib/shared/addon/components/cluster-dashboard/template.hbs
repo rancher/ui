@@ -3,7 +3,7 @@
   <div class="row">
     {{#each components as |c|}}
       <div class="col span-3">
-        <div class="banner {{if c.healthy 'bg-success' 'bg-danger'}}">
+        <div class="banner {{if c.healthy 'bg-success' 'bg-error'}}">
           <div class="banner-icon"><i class="icon icon-2x {{if c.healthy 'icon-check' 'icon-alert'}}" /></div>
           <div class="banner-message text-left"><p>{{c.name}}</p></div>
         </div>
@@ -37,7 +37,7 @@
   {{empty-table
     resource="container"
     showNew=scope.currentCluster.canAddNode
-    newRoute="authenticated.host-templates"
+    newRoute="authenticated.cluster.nodes.templates"
     newTranslationKey="nodesPage.addNode"
     disabled=(rbac-prevents resource="machine" scope="global" permission="create")
     ctx=""

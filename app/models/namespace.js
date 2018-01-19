@@ -95,7 +95,7 @@ var Namespace = Resource.extend(StateCounts, {
     },
 
     addContainer() {
-      this.get('router').transitionTo('containers.run', {queryParams: {stackId: this.get('id')}});
+      this.get('router').transitionTo('containers.run', this.get('projectId'), {queryParams: {namespaceId: this.get('id')}});
     },
 
     viewCode() {
@@ -130,7 +130,7 @@ var Namespace = Resource.extend(StateCounts, {
 
     let out    = [
       { label:   'action.move',           icon: 'icon icon-fork',           action: 'move',             enabled: true, bulkable: true},
-      { label:   'action.addContainer',   icon: 'icon icon-container',      action: 'addContainer',     enabled: true },
+      { label:   'action.addContainer',   icon: 'icon icon-container',      action: 'addContainer',     enabled: !!this.get('projectId') },
       { divider: true },
       { label:   'action.pause',          icon: 'icon icon-pause',          action: 'pauseAll',         enabled: this.get('canPauseAll')},
       { label:   'action.startAll',       icon: 'icon icon-play',           action: 'startAll',         enabled: this.get('canStartAll')},

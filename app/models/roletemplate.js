@@ -23,13 +23,4 @@ export default Resource.extend({
       { label: 'action.viewInApi', icon: 'icon icon-external-link', action: 'goToApi', enabled: true },
     ];
   }.property('builtin'),
-
-  delete: function (/*arguments*/) {
-    var promise = this._super.apply(this, arguments);
-    return promise.then(() => {
-      this.set('state', 'removed');
-    }).catch((err) => {
-      this.get('growl').fromError('Error deleting', err);
-    });
-  },
 });

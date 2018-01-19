@@ -4,8 +4,10 @@
 <td data-title="{{dt.state}}" class="state">
   {{badge-state model=model}}
 </td>
-<td data-title="{{t 'projects.table.project.label'}}:" class="clip">
-  {{#link-to "authenticated.project" model.id }} {{model.name}} {{/link-to}}
+<td data-title="{{t 'projects.table.project.label'}}:">
+  <a href="#" {{action "switchProject" model }} class="clip project-link">
+    {{model.name}}
+  </a>
 </td>
 <td data-title="{{t 'projects.table.created.label'}}:">
   {{date-calendar model.created}}
