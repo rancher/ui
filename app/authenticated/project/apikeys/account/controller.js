@@ -9,7 +9,7 @@ export default Controller.extend({
   cookies:           service(),
   scope:             service(),
   growl:             service(),
-  project:           alias('scope.current'),
+  project:           alias('scope.currentProject'),
   endpointService:   service('endpoint'),
   modalService:      service('modal'),
   bulkActionHandler: service(),
@@ -70,7 +70,7 @@ export default Controller.extend({
       {
         cred = this.get('store').createRecord({
           type: 'apikey',
-          accountId: this.get('scope.current.id'),
+          accountId: this.get('scope.currentProject.id'),
         });
       }
 

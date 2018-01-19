@@ -3,14 +3,11 @@ import C from 'ui/utils/constants';
 import Route from '@ember/routing/route';
 import Preload from 'ui/mixins/preload';
 import { inject as service } from '@ember/service';
-import {  scheduleOnce, cancel } from '@ember/runloop';
-import {  resolve, all as PromiseAll } from 'rsvp';
-import { get, set } from '@ember/object';
-import SubscribeGlobal from 'shared/utils/subscribe-global';
-import SubscribeCluster from 'shared/utils/subscribe-cluster';
-import SubscribeProject from 'shared/utils/subscribe-project';
+import { scheduleOnce, later, cancel } from '@ember/runloop';
+import { resolve, all as PromiseAll } from 'rsvp';
+import { get } from '@ember/object';
 
-//const CHECK_AUTH_TIMER = 60*10*1000;
+const CHECK_AUTH_TIMER = 60*10*1000;
 
 export default Route.extend(Preload, {
   access:       service(),
@@ -25,124 +22,79 @@ export default Route.extend(Preload, {
   storeReset:   service(),
   intl:         service(),
   growl:        service(),
-  testTimer:    null,
   userTheme:    service('user-theme'),
 
-  subscribeGlobal: null,
-  subscribeCluster: null,
-  subscribeProject: null,
-
-  init() {
+  beforeModel() {
     this._super(...arguments);
-    const deps = {
-      app:          get(this, 'app'),
-      store:        get(this, 'store'),
-      clusterStore: get(this, 'clusterStore'),
-      globalStore:  get(this, 'globalStore'),
-      intl:         get(this, 'intl'),
-      growl:        get(this, 'growl'),
-      scope:        get(this, 'scope'),
-    };
-
-    const g = SubscribeGlobal.create(deps);
-    const c = SubscribeCluster.create(deps);
-    const p = SubscribeProject.create(deps);
-
-    g.set('label', 'Global');
-    g.set('label', 'Cluster');
-    p.set('label', 'Project');
-
-    set(this, 'subscribeGlobal', g);
-    set(this, 'subscribeCluster', c);
-    set(this, 'subscribeProject', p);
+    this.testAuthToken();
   },
 
-  // beforeModel(transition) {
-  //   this._super.apply(this,arguments);
+  testTimer:    null,
+  testAuthToken() {
+    let timer = later(() => {
+      get(this,'access').testAuth().then((/* res */) => {
+        this.testAuthToken();
+      }, (/* err */) => {
+        this.send('logout',null);
+      });
+    }, CHECK_AUTH_TIMER);
 
-  //   if ( this.get('access.isLoggedIn') ) {
-  //     this.testAuthToken();
-  //   } else {
-  //     transition.send('logout', transition);
-  //     return reject('Not logged in');
-  //   }
-  // },
-
-  // testAuthToken() {
-  //   let timer = later(() => {
-  //     this.get('access').testAuth().then((/* res */) => {
-  //       this.testAuthToken();
-  //     }, (/* err */) => {
-  //       this.send('logout',null);
-  //     });
-  //   }, CHECK_AUTH_TIMER);
-
-  //   this.set('testTimer', timer);
-  // },
+    this.set('testTimer', timer);
+  },
 
   model(params, transition) {
     // Save whether the user is admin
-    let type = this.get(`session.${C.SESSION.USER_TYPE}`);
-    let isAdmin = (type === C.USER.TYPE_ADMIN) || !this.get('access.enabled');
-    this.set('access.admin', isAdmin);
+    //let type = get(this,`session.${C.SESSION.USER_TYPE}`);
+    //let isAdmin = (type === C.USER.TYPE_ADMIN) || !get(this,'access.enabled');
+    //this.set('access.admin', isAdmin);
 
-    this.get('session').set(C.SESSION.BACK_TO, undefined);
+    get(this,'session').set(C.SESSION.BACK_TO, undefined);
 
-    return PromiseAll([
-      this.loadSchemas('globalStore'),
-      this.preload('roleTemplate', 'globalStore', {url: 'roleTemplates'}),
-      this.preload('clusterRoleTemplateBindings', 'globalStore', {url: 'clusterRoleTemplateBindings'}),
-      this.preload('projectRoleTemplateBinding', 'globalStore', {url: 'projectRoleTemplateBinding'}),
-      this.preload('globalRole', 'globalStore', {url: 'globalRole'}),
-      this.preload('globalRoleBinding', 'globalStore', {url: 'globalRoleBinding'}),
-      this.preload('user', 'globalStore', {url: 'user'}),
-      this.loadClusters(),
-      this.loadProjects()
-      //this.loadPreferences(),
-      //this.loadPublicSettings()
-    ]).then(() => {
-      return this.selectProject(transition);
+
+    return get(this, 'scope').startSwitchToGlobal().then(() => {
+      return PromiseAll([
+        this.loadSchemas('globalStore'),
+        this.preload('roleTemplate', 'globalStore', {url: 'roleTemplates'}),
+        this.preload('clusterRoleTemplateBindings', 'globalStore', {url: 'clusterRoleTemplateBindings'}),
+        this.preload('projectRoleTemplateBinding', 'globalStore', {url: 'projectRoleTemplateBinding'}),
+        this.preload('globalRole', 'globalStore', {url: 'globalRole'}),
+        this.preload('globalRoleBinding', 'globalStore', {url: 'globalRoleBinding'}),
+        this.preload('user', 'globalStore', {url: 'user'}),
+        this.loadClusters(),
+        this.loadProjects(),
+        this.loadPreferences(),
+        //this.loadPublicSettings(),
+      ]);
     }).catch((err) => {
       return this.loadingError(err, transition);
     });
   },
 
   activate() {
-    const isPopup = this.controllerFor('application').get('isPopup');
-
     this._super();
+    get(this, 'scope').finishSwitchToGlobal();
 
-    if ( isPopup ) {
+    if ( this.controllerFor('application').get('isPopup') ) {
       return;
     }
 
-    get(this, 'subscribeGlobal').connect();
-
-    if ( this.get('scope.currentCluster') ) {
-      get(this, 'subscribeCluster').connect();
-    }
-
-    if ( this.get('scope.currentProject') ) {
-      get(this, 'subscribeProject').connect();
-    }
-
     let FALSE = false;
-    if ( FALSE && this.get('settings.isRancher') ) // @TODO-2.0
+    if ( FALSE && get(this,'settings.isRancher') ) // @TODO-2.0
     {
-      let form = this.get(`settings.${C.SETTING.FEEDBACK_FORM}`);
+      let form = get(this,`settings.${C.SETTING.FEEDBACK_FORM}`);
 
      //Show the telemetry opt-in
-      let opt = this.get(`settings.${C.SETTING.TELEMETRY}`);
-      if ( this.get('access.admin') && (!opt || opt === 'prompt') )
+      let opt = get(this,`settings.${C.SETTING.TELEMETRY}`);
+      if ( get(this,'access.admin') && (!opt || opt === 'prompt') )
       {
         scheduleOnce('afterRender', this, function() {
-          this.get('modalService').toggleModal('modal-telemetry');
+          get(this,'modalService').toggleModal('modal-telemetry');
         });
       }
-      else if ( form && !this.get(`prefs.${C.PREFS.FEEDBACK}`) )
+      else if ( form && !get(this,`prefs.${C.PREFS.FEEDBACK}`) )
       {
         scheduleOnce('afterRender', this, function() {
-          this.get('modalService').toggleModal('modal-feedback');
+          get(this,'modalService').toggleModal('modal-feedback');
         });
       }
     }
@@ -150,27 +102,25 @@ export default Route.extend(Preload, {
 
   deactivate() {
     this._super();
-    get(this, 'subscribeGlobal').disconnect();
-    get(this, 'subscribeCluster').disconnect();
-    get(this, 'subscribeProject').disconnect();
-    cancel(this.get('testTimer'));
-
-    // Forget all the things
-    this.get('storeReset').reset();
+    const scope = get(this,'scope');
+    scope.startSwitchToNothing().then(() => {
+      scope.finishSwitchToNothing();
+    });
+    cancel(get(this,'testTimer'));
   },
 
   loadPreferences() {
-    return this.get('globalStore').find('userpreference', null, {url: 'userpreferences', forceReload: true}).then((res) => {
+    return get(this,'globalStore').find('userpreference', null, {url: 'userpreferences'}).then((res) => {
       // Save the account ID from the response headers into session
       if ( res )
       {
         this.set(`session.${C.SESSION.ACCOUNT_ID}`, res.xhr.headers.get(C.HEADER.ACCOUNT_ID));
       }
 
-      this.get('language').initLanguage(true);
-      this.get('userTheme').setupTheme();
+      get(this,'language').initLanguage(true);
+      get(this,'userTheme').setupTheme();
 
-      if (this.get(`prefs.${C.PREFS.I_HATE_SPINNERS}`)) {
+      if (get(this,`prefs.${C.PREFS.I_HATE_SPINNERS}`)) {
         $('BODY').addClass('i-hate-spinners');
       }
 
@@ -179,42 +129,29 @@ export default Route.extend(Preload, {
   },
 
   loadClusters() {
-    let svc = this.get('scope');
-    return svc.getAllClusters().then((all) => {
-      svc.set('allClusters', all);
-      return all;
-    });
+    return get(this,'scope').getAllClusters();
   },
 
   loadProjects() {
-    let svc = this.get('scope');
-    return svc.getAll().then((all) => {
-      svc.set('all', all);
-      return all;
-    });
+    return get(this,'scope').getAllProjects();
   },
 
   loadPublicSettings() {
-    return this.get('globalStore').find('setting', null, {url: 'settings', forceReload: true, filter: {all: 'false'}});
+    return get(this,'globalStore').find('setting', null, {
+      url: 'settings',
+      forceReload: true,
+      filter: {
+        all: 'false'
+      }
+    });
   },
 
   loadSecrets() {
-    if ( this.get('store').getById('schema','secret') ) {
-      return this.get('store').find('secret');
+    if ( get(this,'store').getById('schema','secret') ) {
+      return get(this,'store').find('secret');
     } else {
       return resolve();
     }
-  },
-
-  selectProject(transition) {
-    let projectId = null;
-    if ( transition.params && transition.params['authenticated.project'] && transition.params['authenticated.project'].project_id )
-    {
-      projectId = transition.params['authenticated.project'].project_id;
-    }
-
-    // Make sure a valid project is selected
-    return this.get('scope').selectDefaultProject(projectId);
   },
 
   _gotoRoute(name, withProjectId=true) {
@@ -225,7 +162,7 @@ export default Route.extend(Preload, {
     }
 
     if ( withProjectId ) {
-      this.transitionTo(name, this.get('scope.current.id'));
+      this.transitionTo(name, get(this,'scope.currentProject.id'));
     } else {
       this.transitionTo(name);
     }
@@ -233,7 +170,7 @@ export default Route.extend(Preload, {
 
   actions: {
     changeTheme() {
-      var userTheme = this.get('userTheme');
+      var userTheme = get(this,'userTheme');
       var currentTheme  = userTheme.getTheme();
 
       switch (currentTheme) {
@@ -272,8 +209,8 @@ export default Route.extend(Preload, {
     switchCluster(clusterId, transitionTo='global-admin.clusters', transitionArgs) {
       console.log('Switch to Cluster:' + clusterId);
       PromiseAll([
-        get(this, 'subscribeCluster').disconnect(),
-        get(this, 'subscribeProject').disconnect(),
+        get(this, 'scope.subscribeCluster').disconnect(),
+        get(this, 'scope.subscribeProject').disconnect(),
       ]).then(() => {
         console.log('Switch is disconnected');
         this.send('finishSwitch', `cluster:${clusterId}`, transitionTo, transitionArgs);
@@ -283,7 +220,7 @@ export default Route.extend(Preload, {
     switchProject(projectId, transitionTo='authenticated', transitionArgs) {
       console.log('Switch to Project:' + projectId);
       PromiseAll([
-        get(this, 'subscribeProject').disconnect(),
+        get(this, 'scope.subscribeProject').disconnect(),
       ]).then(() => {
         console.log('Switch is disconnected');
         this.send('finishSwitch', `project:${projectId}`, transitionTo, transitionArgs);
@@ -293,10 +230,10 @@ export default Route.extend(Preload, {
     finishSwitch(id, transitionTo, transitionArgs) {
       console.log('Switch finishing');
 
-      const cookies = this.get('cookies');
+      const cookies = get(this,'cookies');
       var [whichCookie, idOut] = id.split(':');
 
-      this.get('storeReset').reset();
+      get(this,'storeReset').reset();
 
       if ( transitionTo ) {
         let args = (transitionArgs||[]).slice();
@@ -321,11 +258,11 @@ export default Route.extend(Preload, {
     gotoW() { this._gotoRoute('workloads.index'); },
 
     help()  {
-      this.get('modalService').toggleModal('modal-shortcuts');
+      get(this,'modalService').toggleModal('modal-shortcuts');
     },
 
     gotoP() {
-      if ( this.get('access.admin') ) {
+      if ( get(this,'access.admin') ) {
         this._gotoRoute('global-admin.processes', false);
       }
     },

@@ -35,7 +35,7 @@ export default Route.extend({
       namespaces: this.get('store').findAll('namespace'),
       catalogs: this.get('catalog').fetchCatalogs({
         headers: {
-          [C.HEADER.PROJECT_ID]: this.get('scope.current.id')
+          [C.HEADER.PROJECT_ID]: this.get('scope.currentProject.id')
         },
       }),
     }).then((hash) => {
@@ -48,7 +48,7 @@ export default Route.extend({
     if (params.launchCluster) {
       params.plusInfra = true;
     } else {
-      params.plusInfra = this.get('scope.current.clusterOwner') === true;
+      params.plusInfra = this.get('scope.currentProject.clusterOwner') === true;
     }
 
     let namespaces = this.get('namespaces');

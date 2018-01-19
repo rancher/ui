@@ -42,7 +42,7 @@ export default Controller.extend({
       if ( cluster.get('state') === 'inactive' ) {
         this.scheduleRefresh();
       } else {
-        let project = this.get('scope.current');
+        let project = this.get('scope.currentProject');
         if ( project.get('clusterId') !== cluster.get('id') ) {
           project = cluster.get('defaultProject');
         }

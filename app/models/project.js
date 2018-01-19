@@ -1,4 +1,4 @@
-import { computed } from '@ember/object';
+import { get, set, computed } from '@ember/object';
 import { inject as service } from '@ember/service';
 import { hasMany } from 'ember-api-store/utils/denormalize';
 import Resource from 'ember-api-store/models/resource';
@@ -12,7 +12,6 @@ export default Resource.extend({
   settings: service(),
   modalService: service('modal'),
   router: service(),
-  cookies: service(),
 
   type: 'project',
   name: null,
@@ -23,36 +22,32 @@ export default Resource.extend({
 
   actions: {
     edit: function () {
-      this.get('router').transitionTo('authenticated.cluster.projects.edit', this.get('id'));
+      get(this,'router').transitionTo('authenticated.cluster.projects.edit', get(this,'id'));
     },
 
     activate: function () {
-      return this.doAction('activate').then(() => {
-        return this.waitForState('active').then(() => {
-          this.get('scope').refreshAll();
-        });
-      });
+      return this.doAction('activate');
     },
 
     deactivate: function () {
       return this.doAction('deactivate').then(() => {
-        if (this.get('active')) {
+        if ( get(this, 'scope.currentProject') === this ) {
           window.location.href = window.location.href;
         }
       });
     },
 
     setAsDefault: function () {
-      this.get('prefs').set(C.PREFS.PROJECT_DEFAULT, this.get('id'));
+      set(get(this,'prefs'), C.PREFS.PROJECT_DEFAULT, get(this,'id'));
     },
 
     switchTo: function () {
       // @TODO bad
-      window.lc('authenticated').send('switchProject', this.get('id'));
+      window.lc('authenticated').send('switchProject', get(this,'id'));
     },
 
     promptStop: function () {
-      this.get('modalService').toggleModal('modal-confirm-deactivate', {
+      get(this,'modalService').toggleModal('modal-confirm-deactivate', {
         originalModel: this,
         action: 'deactivate'
       });
@@ -60,8 +55,8 @@ export default Resource.extend({
   },
 
   combinedState: computed('state', 'cluster.state', function() {
-    var project = this.get('state');
-    var cluster = this.get('cluster.state');
+    var project = get(this,'state');
+    var cluster = get(this,'cluster.state');
 
     if ( cluster === 'active' ) {
       return project;
@@ -71,8 +66,8 @@ export default Resource.extend({
   }),
 
   availableActions: computed('actionLinks.{activate,deactivate}', 'links.{update,remove}', function () {
-    // let a = this.get('actionLinks');
-    // let l = this.get('links');
+    // let a = get(this,'actionLinks');
+    // let l = get(this,'links');
 
     var choices = [
       { label: 'action.edit', icon: 'icon icon-edit', action: 'edit', enabled: true },
@@ -88,16 +83,16 @@ export default Resource.extend({
   delete(/*arguments*/) {
     var promise = this._super.apply(this, arguments);
     return promise.then(() => {
-      if (this.get('active')) {
+      if (get(this,'active')) {
         window.location.href = window.location.href;
       }
     }).catch((err) => {
-      this.get('growl').fromError('Error deleting', err);
+      get(this,'growl').fromError('Error deleting', err);
     });
   },
 
   icon: computed('active', function () {
-    if (this.get('active')) {
+    if (get(this,'active')) {
       return 'icon icon-folder-open';
     }
     else {
@@ -106,14 +101,14 @@ export default Resource.extend({
   }),
 
   isDefault: computed(`prefs.${C.PREFS.PROJECT_DEFAULT}`, 'id', function () {
-    return this.get(`prefs.${C.PREFS.PROJECT_DEFAULT}`) === this.get('id');
+    return get(this,`prefs.${C.PREFS.PROJECT_DEFAULT}`) === get(this,'id');
   }),
 
-  active: computed(`cookies.${C.COOKIE.PROJECT}`, 'id', function () {
-    return (this.get('id') === this.get('cookies').get(C.COOKIE.PROJECT));
+  active: computed('scope.currentProject.id', 'id', function () {
+    return get(this, 'scope.currentProject.id') === get(this, 'id');
   }),
 
   canSetDefault: computed('combinedState', 'isDefault', function () {
-    return this.get('combinedState') === 'active' && !this.get('isDefault');
+    return get(this,'combinedState') === 'active' && !get(this,'isDefault');
   }),
 });

@@ -28,9 +28,7 @@ var Cluster = Resource.extend(ResourceUsage, {
 
     return promise.then((/* resp */) => {
       if (this.get('scope.currentCluster.id') === this.get('id')) {
-        this.get('scope').getAll().then(() => {
-          this.get('router').transitionTo('global-admin.clusters');
-        });
+        this.get('router').transitionTo('global-admin.clusters');
       }
     });
   },

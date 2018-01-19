@@ -16,7 +16,7 @@ export default Controller.extend({
 
   actions: {
     transitionOut() {
-      this.transitionToRoute('containers.index', this.get('scope.current.id'));
+      this.transitionToRoute('containers.index', this.get('scope.currentProject.id'));
     },
 
     done() {

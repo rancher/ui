@@ -1,46 +1,42 @@
 import { next } from '@ember/runloop';
-import EmberObject from '@ember/object';
+import EmberObject, { get } from '@ember/object';
 import { inject as service } from '@ember/service';
 import Route from '@ember/routing/route';
 import { all as PromiseAll } from 'rsvp';
 import Preload from 'ui/mixins/preload';
 
 export default Route.extend(Preload,{
-  access    : service(),
-  scope  : service(),
+  access: service(),
+  scope: service(),
+  globalStore: service(),
 
   model(params, transition) {
-    var project = this.get('scope.current');
-
-    if ( !project )
-    {
-      this.replaceWith('global-admin.clusters');
-      return;
-    }
-
-    // If the project ID in the URL is out of sync somehow, bail & try again
-    if ( project.get('id') !== params.project_id )
-    {
-      this.replaceWith('authenticated');
-      return;
-    }
-
-    return this.loadSchemas('store').then(() =>  {
-      return PromiseAll([
-        this.preload('namespace'),
-        this.preload('pod'),
-        this.preload('workload'),
-        this.preload('dnsRecord'),
-        this.preload('secret'),
-        this.preload('namespacedSecret'),
-      ]).then(() => {
-        return EmberObject.create({
-          project,
+    return get(this, 'globalStore').find('project', params.project_id).then((project) => {
+      return get(this,'scope').startSwitchToProject(project).then(() => {
+        return this.loadSchemas('store').then(() =>  {
+          return PromiseAll([
+            this.preload('namespace'),
+            this.preload('pod'),
+            this.preload('workload'),
+            this.preload('dnsRecord'),
+            this.preload('secret'),
+            this.preload('namespacedSecret'),
+          ]).then(() => {
+            return EmberObject.create({
+              project,
+            });
+          })
         });
-      })
+      });
     }).catch((err) => {
       return this.loadingError(err, transition);
     });
+  },
+
+  activate() {
+    this._super();
+    const model = this.modelFor('authenticated.project');
+    get(this, 'scope').finishSwitchToProject(get(model,'project'));
   },
 
   actions: {
