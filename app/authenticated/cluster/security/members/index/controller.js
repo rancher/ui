@@ -9,8 +9,8 @@ const headers = [
   },
   {
     translationKey: 'membersPage.index.table.subjectName',
-    name: 'subjectName',
-    sort: ['subjectName', 'name', 'id'],
+    name: 'user.displayName',
+    sort: ['user.dispalyName', 'name', 'id'],
   },
   {
     translationKey: 'membersPage.index.table.template',
