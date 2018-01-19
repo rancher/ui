@@ -148,7 +148,7 @@ var Workload = Resource.extend(DisplayImage, StateCounts, EndpointPorts, {
     },
 
     popoutShell() {
-      let proj = get(this, 'scope.current.id');
+      let proj = get(this, 'scope.currentProject.id');
       let id = get(this, 'containerForShell.id');
       later(() => {
         window.open(`//${window.location.host}/env/${proj}/infra/console?instanceId=${id}&isPopup=true`, '_blank', "toolbars=0,width=900,height=700,left=200,top=200");

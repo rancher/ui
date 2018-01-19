@@ -5,13 +5,11 @@ export default Route.extend({
   scope: service(),
 
   redirect() {
-    var project = this.get('scope.current');
+    var project = this.get('scope.currentProject');
     var cluster = this.get('scope.currentCluster');
     if ( project ) {
-      this.get('scope').setPageScope('project');
       this.replaceWith('authenticated.project', project.get('id'));
     } else {
-      this.get('scope').setPageScope('cluster');
       if (cluster) {
         this.replaceWith('authenticated.cluster', cluster.get('id'));
       } else {

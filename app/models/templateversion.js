@@ -7,7 +7,7 @@ export default Resource.extend({
 
   headers: function() {
     return {
-      [C.HEADER.PROJECT_ID]: this.get('scope.current.id')
+      [C.HEADER.PROJECT_ID]: this.get('scope.currentProject.id')
     };
   }.property('project.current.id'),
 

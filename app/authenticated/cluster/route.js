@@ -7,16 +7,12 @@ import { reject } from 'rsvp';
 export default Route.extend(Preload, {
   scope: service(),
 
-  activate() {
-    this._super();
-    this.get('scope').setPageScope('cluster');
-  },
-
-  model(params) {
+  model(params, transition) {
     return get(this, 'globalStore').find('cluster', params.cluster_id).then((cluster) => {
-      get(this, 'scope').setCurrentCluster(cluster);
-      return this.loadSchemas('clusterStore').then(() => {
-        return cluster;
+      return get(this, 'scope').startSwitchToCluster(cluster).then(() => {
+        return this.loadSchemas('clusterStore').then(() => {
+          return cluster;
+        });
       }).catch((err) => {
         // @TODO-2.0 right now the API can't return schemas for a not-active cluster
         if ( err.status === 404 ) {
@@ -25,7 +21,14 @@ export default Route.extend(Preload, {
           return reject(err);
         }
       });
+    }).catch((err) => {
+      return this.loadingError(err, transition);
     });
   },
 
+  activate() {
+    this._super();
+    const model = this.modelFor('authenticated.cluster');
+    get(this, 'scope').finishSwitchToCluster(model);
+  },
 });

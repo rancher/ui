@@ -19,7 +19,7 @@ export default Controller.extend({
 
     kubectl(e) {
       if (e.metaKey) {
-        let proj = this.get('scope.current.id');
+        let proj = this.get('scope.currentProject.id');
         later(() => {
           window.open(`//${window.location.host}/env/${proj}/infra/console?kubernetes=true&isPopup=true`, '_blank', "toolbars=0,width=900,height=700,left=200,top=200");
         });
@@ -32,10 +32,6 @@ export default Controller.extend({
       this.get('modalService').toggleModal('modal-kubeconfig');
     },
   },
-
-  displayName: computed('model.cluster.name', function () {
-    return get(this, 'model.cluster.name') || `(${get(this, 'model.cluster.id')})`;
-  }),
 
   currentClusterNodes: computed('model.nodes.@each.{capacity,allocatable,state}', function () {
     const clusterId = get(this, 'scope.currentCluster.id');
