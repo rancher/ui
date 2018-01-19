@@ -7,6 +7,7 @@ export default Resource.extend({
 
   cluster: reference('clusterId'),
   roleTemplate: reference('roleTemplateId'),
+  user: reference('subjectName', 'user'),
 
   availableActions: computed('links.remove', 'name', function() {
     const l = get(this, 'links');

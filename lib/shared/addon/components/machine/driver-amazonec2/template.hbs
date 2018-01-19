@@ -191,11 +191,7 @@
           <div class="radio pt-10">
             <label>
               {{radio-button selection=whichSecurityGroup value="default"}}
-              {{#if defaultSecurityGroup}}
-                {{t 'machine.driverAmazon.securityGroup.defaultExisting' groupName=defaultSecurityGroupName htmlSafe=true}}
-              {{else}}
                 {{t 'machine.driverAmazon.securityGroup.defaultCreate' groupName=defaultSecurityGroupName htmlSafe=true}}
-              {{/if}}
             </label>
           </div>
 
@@ -216,13 +212,6 @@
                 <option value={{choice.name}} selected={{array-includes selectedSecurityGroup choice.name}}>{{choice.name}} ({{choice.id}})</option>
               {{/each}}
             </select>
-
-            <p style="m-0 mt-10">{{t 'machine.driverAmazon.needs.label' appName=settings.appName}}</p>
-            <ul>
-              <li>{{t 'machine.driverAmazon.needs.item1' appName=settings.appName htmlSafe=true}}</li>
-              <li>{{t 'machine.driverAmazon.needs.item2' appName=settings.appName htmlSafe=true}}</li>
-              <li>{{t 'machine.driverAmazon.needs.item3' appName=settings.appName htmlSafe=true}}</li>
-            </ul>
           {{/if}}
         {{else}}
           <div>
@@ -233,7 +222,7 @@
                 {{/each}}
               </div>
             {{else}}
-              {{amazonec2Config.securityGroup}}
+              {{defaultSecurityGroupName}}
             {{/if}}
           </div>
         {{/if}}
