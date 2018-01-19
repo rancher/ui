@@ -76,6 +76,8 @@ const rootNav = [
     id: 'project-security',
     localizedLabel: 'nav.admin.security.tab',
     ctx: [getProjectId],
+    resource: ['projectroletemplatebinding'],
+    resourceScope: 'global',
     submenu: [
       {
         id: 'project-security-roles',
@@ -130,8 +132,9 @@ const rootNav = [
     scope: 'cluster',
     id: 'cluster-security',
     localizedLabel: 'nav.admin.security.tab',
-    route: 'authenticated.cluster.nodes',
     ctx: [getClusterId],
+    resource: ['clusterroletemplatebinding'],
+    resourceScope: 'global',
     submenu: [
       {
         id: 'cluster-security-roles',
