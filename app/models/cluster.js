@@ -13,7 +13,9 @@ var Cluster = Resource.extend(ResourceUsage, {
   machines: hasMany('id', 'machine', 'clusterId'),
   clusterRoleTemplateBindings: hasMany('id', 'clusterRoleTemplateBinding', 'clusterId'),
 
-  canAddNode: true, // @TODO-2.0
+  canAddNode: computed('rancherKubernetesEngineConfig', function() {
+    return !!this.get('rancherKubernetesEngineConfig');
+  }),
 
   actions: {
     edit() {
