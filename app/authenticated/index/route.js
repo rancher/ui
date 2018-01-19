@@ -5,16 +5,7 @@ export default Route.extend({
   scope: service(),
 
   redirect() {
-    var project = this.get('scope.currentProject');
-    var cluster = this.get('scope.currentCluster');
-    if ( project ) {
-      this.replaceWith('authenticated.project', project.get('id'));
-    } else {
-      if (cluster) {
-        this.replaceWith('authenticated.cluster', cluster.get('id'));
-      } else {
-        this.replaceWith('global-admin.clusters');
-      }
-    }
+    // @TODO-2.0 go to appropriate place based on permissions
+    this.replaceWith('global-admin.clusters');
   },
 });
