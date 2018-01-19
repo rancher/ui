@@ -29,5 +29,6 @@ const headers = [
 export default Controller.extend(FilterState, {
   sortBy: 'name',
   headers: headers,
+  clusterId: null,
   searchText: '',
 });
