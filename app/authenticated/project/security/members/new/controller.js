@@ -21,8 +21,8 @@ export default Controller.extend(NewOrEdit, {
   primaryResource: null,
   kinds: ROLE_KINDS,
   actions: {
-  },
-  doneSaving() {
-    this.transitionToRoute('authenticated.project.security.members.index', get(this, 'model.project.id'))
+    doneSaving() {
+      this.transitionToRoute('authenticated.project.security.members.index', get(this, 'model.project.id'))
+    },
   },
 });

@@ -13,16 +13,14 @@ export default Route.extend({
     return hash({
       users: gs.findAll('user').then(users => users.filter(u => !u.hasOwnProperty('me'))),
       project: gs.find('project', pid.project_id, {forceReload: true}),
-      roles: gs.find('roleTemplate', null, {filter: {hidden: false, context: 'project'}}),
+      roles: gs.find('roleTemplate', null, {forceReload: true}),
     });
   },
   setupController(controller, model) {
     this._super(controller, model);
+    let dfu = get(model, 'users.firstObject');
     controller.setProperties({
-      primaryResource: get(this, 'globalStore').createRecord({
-        type: 'projectRoleTemplateBinding',
-        projectId: get(model, 'project.id'),
-      }),
+      defaultUser: dfu,
     })
   },
 });

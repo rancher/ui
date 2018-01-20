@@ -81,6 +81,7 @@ generic:
   total: Total
   type: Type
   unknown: Unknown
+  user: User
   upload: Upload
   uuid: UUID
   value: Value
@@ -2237,6 +2238,35 @@ formGlobalRoles:
       label: Use Node Templates
       detail: Allows the user to deploy new Nodes using any existing Node Templates.
 
+formScopedRoles:
+  title: '{type} Permissions'
+  description: TBD.
+  mode:
+    admin:
+      label: '{type} owner'
+      detail: Administrators have full control over the entire installation and all resources in all clusters.
+    user:
+      label: '{type} member'
+      detail: Standard Users can create new clusters and manage clusters and projects they have been granted access to.
+    custom:
+      label: Custom
+      detail: Choose individual permissions for the user.
+  role:
+    cluster-owner:
+      label: Create new Clusters
+      detail: Allows the user to create new clusters and become the owner of them.  Standard Users have this permission by default.
+    project-owner:
+      label: Create new projects
+      detail: Allows the user to create new project and become the owner of them.  Standard Users have this permission by default.
+    cluster-member:
+      label: TBD
+      detail: TBD
+    project-member:
+      label: TBD
+      detail: TBD
+    read-only:
+      label: TBD
+      detail: TBD
 formHealthCheck:
   title: Health Check
   detail: Periodically make a request to the container to see if it is alive and responding correctly.
