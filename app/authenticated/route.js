@@ -114,7 +114,7 @@ export default Route.extend(Preload, {
   },
 
   loadPreferences() {
-    return get(this,'globalStore').find('userpreference', null, {url: 'userpreferences'}).then((res) => {
+    return get(this,'globalStore').find('preference', null, {url: 'preference'}).then((res) => {
       // Save the account ID from the response headers into session
       if ( res )
       {
