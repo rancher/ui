@@ -70,8 +70,8 @@ export default Resource.extend({
       get(this, 'router').transitionTo('global-admin.accounts.edit', get(this, 'id'));
     },
 
-    changePassword(password) {
-      this.doAction('changepassword', {newPassword: password});
+    setPassword(password) {
+      this.doAction('setpassword', {newPassword: password});
     }
   },
 
