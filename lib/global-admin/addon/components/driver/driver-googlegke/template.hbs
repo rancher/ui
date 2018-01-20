@@ -1,141 +1,155 @@
-<div class="row">
-  {{form-name-description model=cluster nameRequired=true}}
-</div>
-
-{{#input-text-file
-     label='cloud.driverGoogle.credential.label'
-     value=config.credential
-     accept="text/*, .json"
-     minHeight=60
-     canChangeName=false
-     nameRequired=true
-     placeholder="cloud.driverGoogle.credential.placeholder"
-     as |section|
-}}
-  {{#if (eq section 'description')}}
-    <div class="row help">
-      <div class="col span-12 help-block wrap mb-0">
-        {{t 'cloud.driverGoogle.credential.helpText' htmlSafe=true}}
-      </div>
-    </div>
-  {{/if}}
-{{/input-text-file}}
-
-<div class="box mt-30">
-  <h4>{{t 'cloud.driverGoogle.location'}}</h4>
-  <div class="row">
-    <div class="col span-12">
-      <label class="acc-label">{{t 'cloud.driverGoogle.zone.label'}}</label>
-      {{new-select
-        classNames="form-control"
-        optionValuePath="name"
-        optionLabelPath="name"
-        content=zones
-        value=config.zone
-        prompt="cloud.driverGoogle.zone.prompt"
-        localizedPrompt=true
-      }}
-    </div>
-  </div>
-</div>
-
-<div class="box mt-30">
-  <h4>{{t 'cloud.driverGoogle.machine'}}</h4>
-  <div class="row">
-    <div class="col span-4">
-      <label class="acc-label">{{t 'cloud.driverGoogle.nodeCount.label'}}</label>
-      {{input-number min=1 value=config.nodeCount}}
-    </div>
-    <div class="col span-4">
-      <label class="acc-label">{{t 'cloud.driverGoogle.machineType.label'}}</label>
-      {{new-select
-        classNames="form-control"
-        optionValuePath="name"
-        optionLabelPath="displayName"
-        content=machineTypes
-        value=config.machineType
-        prompt="cloud.driverGoogle.machineType.prompt"
-        localizedPrompt=true
-      }}
-    </div>
-    <div class="col span-4">
-      <label class="acc-label">{{t 'cloud.driverGoogle.diskSizeGb.label'}}</label>
-      <div class="input-group">
-        {{input-number min=1 value=config.diskSizeGb}}
-        <span class="input-group-addon bg-default">{{t 'generic.gigabyte'}}</span>
-      </div>
-    </div>
-  </div>
-</div>
-
-<div class="box mt-30">
-  <h4>Security</h4>
-  <div class="row">
-    <div class="col span-6">
-      <label class="acc-label">Member Roles</label>
-      {{form-members
-          creator=userData.me
-          editing=false
-          memberArray=memberArray
-          memberConfig=memberConfig
-          roles=userData.roles
-          users=userData.users
-          type="cluster"
-      }}
-    </div>
-
-    <div class="col span-6">
-      <label class="acc-label mb-20">Pod Security Policy</label>
-      {{form-pod-sec-policy
-          config=model.cluster.defaultPodSecurityPolicyTemplateId
-          policies=model.policies
-      }}
-    </div>
-  </div>
-</div>
-
-
-{{#accordion-list showExpandAll=false as |al expandFn|}}
-  <div class="mt-30">
-    {{#accordion-list-item
-         title=(t 'clustersPage.addPage.rke.new.customize.label')
-         detail=(t 'clustersPage.addPage.rke.new.customize.detail')
-         expandAll=al.expandAll
-         expand=(action expandFn)
-    }}
-      <div class="row">
-        <div class="col span-4">
-          <label class="acc-label">{{t 'cloud.driverGoogle.masterVersion.label'}}</label>
-          {{new-select
-              classNames="form-control"
-              content=allowedVersions
-              optionValuePath="value"
-              optionLabelPath="value"
-              value=config.masterVersion
-              prompt="cloud.driverGoogle.masterVersion.prompt"
-              localizedPrompt=true
-          }}
+{{#if (eq step 1)}}
+  {{#input-text-file
+      label='cloud.driverGoogle.credential.label'
+      value=config.credential
+      accept="text/*, .json"
+      minHeight=60
+      canChangeName=false
+      nameRequired=true
+      placeholder="cloud.driverGoogle.credential.placeholder"
+      fileChosen=(action "checkServiceAccount")
+      as |section|
+  }}
+    {{#if (eq section 'description')}}
+      <div class="row help">
+        <div class="col span-12 help-block wrap mb-0">
+          {{t 'cloud.driverGoogle.credential.helpText' htmlSafe=true}}
         </div>
-        <div class="col span-4">
-          <label class="acc-label">{{t 'cloud.driverGoogle.alphaFeatures.label'}}</label>
-          <div class="form-control-static">
-            <label class="mr-20 hand">
-              {{radio-button selection=config.enableAlphaFeature value=true}} {{t 'generic.enabled'}}
-            </label>
-            <label class="hand">
-              {{radio-button selection=config.enableAlphaFeature value=false}} {{t 'generic.disabled'}}
-            </label>
+      </div>
+    {{/if}}
+  {{/input-text-file}}
+
+  {{top-errors errors=errors}}
+  {{save-cancel createLabel="cloud.driverGoogle.checkServiceAccount" save="checkServiceAccount" cancel=cancel}}
+{{else if (eq step 2)}}
+  <div class="row">
+    <div class="text-center m-30"><i class="icon icon-spinner icon-spin"/> {{t 'generic.loading'}}</div>
+  </div>
+{{else}}
+  <div class="row">
+    <label class="acc-label">{{t 'cloud.driverGoogle.credential.label'}}</label>
+    <div class="form-control-static"><i>Configured for {{config.projectId}} project</i></div>
+  </div>
+
+  <div class="row">
+    {{form-name-description model=cluster nameRequired=true}}
+  </div>
+
+  <div class="box mt-30">
+    <h4>{{t 'cloud.driverGoogle.location'}}</h4>
+    <div class="row">
+      <div class="col span-12">
+        <label class="acc-label">{{t 'cloud.driverGoogle.zone.label'}}</label>
+        {{new-select
+          classNames="form-control"
+          optionValuePath="name"
+          optionLabelPath="name"
+          content=zoneChoices
+          value=config.zone
+          prompt="cloud.driverGoogle.zone.prompt"
+          localizedPrompt=true
+        }}
+      </div>
+    </div>
+  </div>
+
+  <div class="box mt-30">
+    <h4>{{t 'cloud.driverGoogle.machine'}}</h4>
+    <div class="row">
+      <div class="col span-4">
+        <label class="acc-label">{{t 'cloud.driverGoogle.nodeCount.label'}}</label>
+        {{input-number min=1 value=config.nodeCount}}
+      </div>
+      <div class="col span-4">
+        <label class="acc-label">{{t 'cloud.driverGoogle.machineType.label'}}</label>
+        {{new-select
+          classNames="form-control"
+          optionValuePath="name"
+          optionLabelPath="displayName"
+          content=machineChoices
+          value=config.machineType
+          prompt="cloud.driverGoogle.machineType.prompt"
+          localizedPrompt=true
+        }}
+      </div>
+      <div class="col span-4">
+        <label class="acc-label">{{t 'cloud.driverGoogle.diskSizeGb.label'}}</label>
+        <div class="input-group">
+          {{input-number min=1 value=config.diskSizeGb}}
+          <span class="input-group-addon bg-default">{{t 'generic.gigabyte'}}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="box mt-30">
+    <h4>Security</h4>
+    <div class="row">
+      <div class="col span-6">
+        <label class="acc-label">Member Roles</label>
+        {{form-members
+            creator=userData.me
+            editing=false
+            memberArray=memberArray
+            memberConfig=memberConfig
+            roles=userData.roles
+            users=userData.users
+            type="cluster"
+        }}
+      </div>
+
+      <div class="col span-6">
+        <label class="acc-label mb-20">Pod Security Policy</label>
+        {{form-pod-sec-policy
+            config=model.cluster.defaultPodSecurityPolicyTemplateId
+            policies=model.policies
+        }}
+      </div>
+    </div>
+  </div>
+
+
+  {{#accordion-list showExpandAll=false as |al expandFn|}}
+    <div class="mt-30">
+      {{#accordion-list-item
+          title=(t 'clustersPage.addPage.rke.new.customize.label')
+          detail=(t 'clustersPage.addPage.rke.new.customize.detail')
+          expandAll=al.expandAll
+          expand=(action expandFn)
+      }}
+        <div class="row">
+          <div class="col span-4">
+            <label class="acc-label">{{t 'cloud.driverGoogle.masterVersion.label'}}</label>
+            {{new-select
+                classNames="form-control"
+                content=versionChoices
+                optionValuePath="value"
+                optionLabelPath="value"
+                value=config.masterVersion
+                prompt="cloud.driverGoogle.masterVersion.prompt"
+                localizedPrompt=true
+            }}
+          </div>
+          <div class="col span-4">
+            <label class="acc-label">{{t 'cloud.driverGoogle.alphaFeatures.label'}}</label>
+            <div class="form-control-static">
+              <label class="mr-20 hand">
+                {{radio-button selection=config.enableAlphaFeature value=true}} {{t 'generic.enabled'}}
+              </label>
+              <label class="hand">
+                {{radio-button selection=config.enableAlphaFeature value=false}} {{t 'generic.disabled'}}
+              </label>
+            </div>
+          </div>
+          <div class="col span-4">
+            <label class="acc-label">{{t 'cloud.driverGoogle.clusterIpv4Cidr.label'}}</label>
+            {{input value=config.clusterIpv4Cidr placeholder=(t 'cloud.driverGoogle.clusterIpv4Cidr.placeholder')}}
           </div>
         </div>
-        <div class="col span-4">
-          <label class="acc-label">{{t 'cloud.driverGoogle.clusterIpv4Cidr.label'}}</label>
-          {{input value=config.clusterIpv4Cidr placeholder=(t 'cloud.driverGoogle.clusterIpv4Cidr.placeholder')}}
-        </div>
-      </div>
-    {{/accordion-list-item}}
-  </div>
-{{/accordion-list}}
+      {{/accordion-list-item}}
+    </div>
+  {{/accordion-list}}
 
-
-{{top-errors errors=errors}}
-{{save-cancel save="save" cancel=cancel}}
+  {{top-errors errors=errors}}
+  {{save-cancel save="save" cancel=cancel}}
+{{/if}}
