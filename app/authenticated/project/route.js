@@ -33,9 +33,8 @@ export default Route.extend(Preload,{
     });
   },
 
-  activate() {
-    this._super();
-    const model = this.modelFor('authenticated.project');
+  setupController(controller, model) {
+    this._super(...arguments);
     get(this, 'scope').finishSwitchToProject(get(model,'project'));
   },
 

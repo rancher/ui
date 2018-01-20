@@ -70,9 +70,13 @@ export default Route.extend(Preload, {
     });
   },
 
-  activate() {
-    this._super();
+  setupController(controller, model) {
+    this._super(...arguments);
     get(this, 'scope').finishSwitchToGlobal();
+  },
+
+  activate() {
+    this._super(...arguments);
 
     if ( this.controllerFor('application').get('isPopup') ) {
       return;

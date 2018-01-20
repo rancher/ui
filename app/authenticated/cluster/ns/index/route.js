@@ -4,10 +4,9 @@ import { get } from '@ember/object'
 import Route from '@ember/routing/route';
 
 export default Route.extend({
-  scope: service(),
 
   model() {
-    let cluster = get(this, 'scope.currentCluster');
+    let cluster = this.modelFor('authenticated.cluster');
 
     if ( get(cluster,'state') !== 'active' ) {
       this.transitionTo('authenticated.cluster.index');
