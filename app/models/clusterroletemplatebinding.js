@@ -9,15 +9,6 @@ export default Resource.extend({
   roleTemplate: reference('roleTemplateId'),
   user: reference('subjectName', 'user'),
 
-  displayName: computed('name','id', function() {
-    let name = get(this, 'name');
-    if ( name ) {
-      return name;
-    }
-
-    return '(' + get(this,'id') + ')';
-  }),
-
   availableActions: computed('links.remove', 'name', function() {
     const l = get(this, 'links');
     const canRemove = !!l.remove && get(this,'name') !== 'creator';

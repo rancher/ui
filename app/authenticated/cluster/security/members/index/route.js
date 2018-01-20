@@ -6,12 +6,6 @@ export default Route.extend({
   globalStore: service(),
 
   model() {
-    const cid = this.paramsFor('authenticated.cluster');
-    return get(this, 'globalStore').findAll('clusterroletemplatebinding', {forceReload: true, filter: { clusterId: cid.cluster_id}});
+    return this.modelFor('authenticated.cluster');
   },
-  setupController(controller, model) {
-    this._super(controller, model);
-    controller.set('clusterId', get(model, 'firstObject.clusterId'));
-  }
-
 });

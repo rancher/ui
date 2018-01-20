@@ -11,9 +11,9 @@ export default Route.extend({
     const pid = this.paramsFor('authenticated.project');
 
     return hash({
-      users: gs.findAll('user').then(users => users.filter(u => !u.hasOwnProperty('me'))),
+      users: gs.findAll('user'),
       project: gs.find('project', pid.project_id, {forceReload: true}),
-      roles: gs.find('roleTemplate', null, {forceReload: true}),
+      roles: gs.findAll('roleTemplate'),
     });
   },
   setupController(controller, model) {

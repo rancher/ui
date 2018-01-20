@@ -1,5 +1,8 @@
 import Controller from '@ember/controller';
 import FilterState from 'ui/mixins/filter-state';
+import { inject as service } from '@ember/service';
+import { computed } from '@ember/object';
+import { get } from '@ember/object';
 
 const headers = [
   {
@@ -29,5 +32,9 @@ const headers = [
 export default Controller.extend(FilterState, {
   sortBy: 'name',
   headers: headers,
+  scope: service(),
   searchText: '',
+  filterableContent: computed('model.projectRoleTemplateBindings.[]', function() {
+    return get(this, 'model.projectRoleTemplateBindings');
+  }),
 });

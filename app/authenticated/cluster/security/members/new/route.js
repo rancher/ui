@@ -13,9 +13,9 @@ export default Route.extend({
     const cid = this.paramsFor('authenticated.cluster');
 
     return hash({
-      users: gs.findAll('user').then(users => users.filter(u => !u.hasOwnProperty('me'))),
+      users: gs.findAll('user'),
       cluster: gs.find('cluster', cid.cluster_id, {forceReload: true}),
-      roles: gs.find('roleTemplate', null, {forceReload: true}),
+      roles: gs.findAll('roleTemplate'),
     });
   },
   setupController(controller, model) {
