@@ -70,7 +70,7 @@ export default Route.extend(Preload, {
     });
   },
 
-  setupController(controller, model) {
+  setupController(/*controller, model*/) {
     this._super(...arguments);
     get(this, 'scope').finishSwitchToGlobal();
   },

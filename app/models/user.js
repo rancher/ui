@@ -41,6 +41,14 @@ export default Resource.extend({
     return false;
   }),
 
+  hasUser: computed('globalRoleBindings.[]', function() {
+    if ( get(this, 'globalRoleBindings').findBy('globalRole.isUser', true) ) {
+      return true;
+    }
+
+    return false;
+  }),
+
   hasBase: computed('globalRoleBindings.[]', function() {
     if ( get(this, 'globalRoleBindings').findBy('globalRole.isBase', true) ) {
       return true;
