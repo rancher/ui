@@ -5,6 +5,7 @@ export default Route.extend({
   access: service(),
 
   beforeModel: function(transition) {
+    this._super(...arguments);
     transition.send('logout');
   }
 });

@@ -8,6 +8,7 @@ export default Route.extend({
   store: service(),
 
   beforeModel() {
+    this._super(...arguments);
     return this.get('store').findAll('machineTemplate').then((templates) => {
       this.controllerFor('authenticated.project.hooks.new-receiver').set('machineTemplates', templates);
     });
