@@ -2,7 +2,7 @@
   <h1 class="pull-left">{{t 'nodesPage.header'}}</h1> <div class="vertical-middle"></div>
 
   <div class="right-buttons">
-    {{#link-to "machines.templates" class="btn bg-primary btn-sm" disabled=(rbac-prevents resource="machine" scope="global" permission="create")}}
+    {{#link-to "machines.templates" class="btn bg-primary btn-sm" disabled=(or noAddableClusters (rbac-prevents resource="machine" scope="global" permission="create"))}}
       {{t 'nodesPage.addNode'}}
     {{/link-to}}
   </div>
@@ -33,10 +33,9 @@
 {{else}}
   {{empty-table
       resource="container"
-      showNew=scope.currentCluster.canAddNode
       newRoute="global-admin.machines.templates"
       newTranslationKey="nodesPage.addNode"
-      disabled=(rbac-prevents resource="machine" scope="global" permission="create")
+      disabled=(or noAddableClusters (rbac-prevents resource="machine" scope="global" permission="create"))
       ctx=""
   }}
 {{/if}}
