@@ -41,6 +41,14 @@ export default Resource.extend({
     return false;
   }),
 
+  hasUser: computed('globalRoleBindings.[]', function() {
+    if ( get(this, 'globalRoleBindings').findBy('globalRole.isUser', true) ) {
+      return true;
+    }
+
+    return false;
+  }),
+
   hasBase: computed('globalRoleBindings.[]', function() {
     if ( get(this, 'globalRoleBindings').findBy('globalRole.isBase', true) ) {
       return true;
@@ -70,8 +78,8 @@ export default Resource.extend({
       get(this, 'router').transitionTo('global-admin.accounts.edit', get(this, 'id'));
     },
 
-    changePassword(password) {
-      this.doAction('changepassword', {newPassword: password});
+    setPassword(password) {
+      this.doAction('setpassword', {newPassword: password});
     }
   },
 

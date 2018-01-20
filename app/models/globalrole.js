@@ -3,8 +3,9 @@ import { get, computed } from '@ember/object';
 import { inject as service } from '@ember/service';
 
 const BASE = 'user-base';
+const USER = 'user';
 const ADMIN = 'admin';
-const SPECIAL = [BASE, ADMIN];
+const SPECIAL = [BASE, ADMIN, USER];
 
 export default Resource.extend({
   intl: service(),
@@ -17,12 +18,16 @@ export default Resource.extend({
     return get(this, 'id') === BASE;
   }),
 
+  isUser: computed('id', function () {
+    return get(this, 'id') === USER;
+  }),
+
   isAdmin: computed('id', function () {
     return get(this, 'id') === ADMIN;
   }),
 
-  isCustom: computed('isAdmin','isBase', function() {
-    return !get(this, 'isAdmin') && !get(this, 'isBase');
+  isCustom: computed('isAdmin','isUser','isBase', function() {
+    return !get(this, 'isAdmin') && !get(this, 'isBase') && !get(this, 'isUser');
   }),
 
   displayName: computed('id', 'name', 'intl.locale',function() {

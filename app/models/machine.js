@@ -115,6 +115,11 @@ var Machine = Resource.extend(StateCounts, ResourceUsage, {
   displayRoles: computed('role.[]', function() {
     const intl = get(this, 'intl');
     let roles = get(this, 'role')||[];
+
+    if ( roles.sort().join(",").toLowerCase() === 'controlplane,etcd,worker' ) {
+      return [intl.t('generic.all')];
+    }
+
     return roles.map(role => {
       let key = `model.machine.role.${role}`;
       if ( intl.exists(key) ) {
@@ -123,6 +128,24 @@ var Machine = Resource.extend(StateCounts, ResourceUsage, {
 
       return key;
     });
+  }),
+
+  sortRole: computed('role.[]', function() {
+    let roles = (get(this, 'role')||[]).map(x => x.toLowerCase());
+
+    if ( roles.length >= 3 ) {
+      return 1;
+    }
+
+    if ( roles.includes('controlplane') ) {
+      return 2;
+    }
+
+    if ( roles.includes('etcd') ) {
+      return 3;
+    }
+
+    return 4;
   }),
 
 /*
