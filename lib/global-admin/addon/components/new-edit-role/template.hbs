@@ -13,15 +13,18 @@
 {{#unless readOnly}}
   <section class="mb-10">
     {{form-name-description
-      name=model.role.name
+      model=model.role
       nameRequired=true
-      nameDisabled=editing
       namePlaceholder="rolesPage.new.form.name.placeholder"
-      colClass="col span-7"
-      descriptionShown=false
     }}
   </section>
 {{/unless}}
+
+{{#if (and model.role.description readOnly)}}
+  <div class="row mb-30">
+    {{banner-message color='bg-secondary mb-0 mt-10' message=(linkify model.role.description)}}
+  </div>
+{{/if}}
 
 {{#accordion-list showExpandAll=false as |al expandFn|}}
   {{#accordion-list-item
