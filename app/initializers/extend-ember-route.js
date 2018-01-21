@@ -6,13 +6,14 @@ export function initialize(/*application */) {
 
     // Remember the current route (into the application route's previousRoute/Params properties)
     beforeModel: function() {
-      this._super.apply(this,arguments);
+      this._super(...arguments);
       this.rememberPrevious();
     },
 
 
     rememberPrevious: function() {
-      var appRoute = getOwner(this).lookup('route:application');
+      //var appRoute = getOwner(this).lookup('route:application');
+      const appRoute = window.l('route:application'); // The global one, not the per-engine application
       var infos = this.router._routerMicrolib.currentHandlerInfos;
       if ( infos && infos.length )
       {
@@ -40,7 +41,9 @@ export function initialize(/*application */) {
     },
 
     goToPrevious: function(def) {
-      var appRoute = getOwner(this).lookup('route:application');
+      //var appRoute = getOwner(this).lookup('route:application');
+      const appRoute = window.l('route:application'); // The global one, not the per-engine application
+
       var route = appRoute.get('previousRoute');
       if ( route && route !== 'loading' ) {
         var args = (appRoute.get('previousParams')||[]).slice();

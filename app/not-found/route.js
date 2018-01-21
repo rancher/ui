@@ -5,6 +5,7 @@ export default Route.extend({
   language  : service('user-language'),
 
   beforeModel: function() {
+    this._super(...arguments);
     return this.get('language').initLanguage();
   },
 

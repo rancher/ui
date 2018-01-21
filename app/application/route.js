@@ -233,6 +233,7 @@ export default Route.extend({
   }.observes('settings.appName'),
 
   beforeModel() {
+    this._super(...arguments);
     this.updateWindowTitle();
 
     let agent = window.navigator.userAgent.toLowerCase();

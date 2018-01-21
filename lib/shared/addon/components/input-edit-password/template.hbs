@@ -1,10 +1,20 @@
 <form class="horizontal-form container-fluid" {{action 'save' on="submit"}}>
   <div class="content">
+    {{#if inputCurrent}}
+      <div class="row">
+        <div class="col span-12">
+          <label class="acc-label">{{t 'modalEditPassword.current'}}</label>
+          {{input type="password" value=currentPassword classNames="form-control start"}}
+        </div>
+      </div>
+    {{/if}}
     <div class="row">
       <div class="col span-12">
         <label class="acc-label">{{t 'modalEditPassword.new'}}</label>
         {{input type="password" value=password classNames="form-control start"}}
       </div>
+    </div>
+    <div class="row">
       <div class="col span-12">
         <label class="acc-label">{{t 'modalEditPassword.confirm'}}</label>
         {{input type="password" value=confirm classNames="form-control" focusOut=(action 'blurredConfirm') }}
