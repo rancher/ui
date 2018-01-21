@@ -11,6 +11,15 @@ export default Resource.extend({
     return get(x, 'subjectKind') === 'User';
   }),
 
+  clusterRoleBindings: hasMany('id', 'clusterRoleTemplateBinding', 'subjectName', 'globalStore', function(x) {
+    return get(x, 'subjectKind') === 'User';
+  }),
+
+  projectRoleBindings: hasMany('id', 'projectRoleTemplateBinding', 'subjectName', 'globalStore', function(x) {
+    return get(x, 'subjectKind') === 'User';
+  }),
+
+
   displayName: computed('name','username','id', function() {
     let name = get(this, 'name');
     if ( name ) {
@@ -55,14 +64,6 @@ export default Resource.extend({
     }
 
     return false;
-  }),
-
-  clusterRoleBindings: hasMany('id', 'clusterRoleTemplateBinding', 'subjectName', 'globalStore', function(x) {
-    return get(x, 'subjectKind') === 'User';
-  }),
-
-  projectRoleBindings: hasMany('id', 'projectRoleTemplateBinding', 'subjectName', 'globalStore', function(x) {
-    return get(x, 'subjectKind') === 'User';
   }),
 
   actions: {
