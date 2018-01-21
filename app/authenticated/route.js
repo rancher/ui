@@ -5,7 +5,7 @@ import Preload from 'ui/mixins/preload';
 import { inject as service } from '@ember/service';
 import { scheduleOnce, later, cancel } from '@ember/runloop';
 import { resolve, all as PromiseAll } from 'rsvp';
-import { get } from '@ember/object';
+import { get, set } from '@ember/object';
 
 const CHECK_AUTH_TIMER = 60*10*1000;
 
@@ -24,29 +24,30 @@ export default Route.extend(Preload, {
   growl:        service(),
   userTheme:    service('user-theme'),
 
+  testTimer:    null,
+
   beforeModel() {
     this._super(...arguments);
-    this.testAuthToken();
+
+    set(this, 'testTimer', later(() => {
+      this.testAuthToken();
+    }, CHECK_AUTH_TIMER));
+
+    return this.testAuthToken();
   },
 
-  testTimer:    null,
   testAuthToken() {
-    let timer = later(() => {
-      get(this,'access').testAuth().then((/* res */) => {
-        this.testAuthToken();
-      }, (/* err */) => {
-        this.send('logout',null);
-      });
-    }, CHECK_AUTH_TIMER);
-
-    this.set('testTimer', timer);
+    return get(this,'access').testAuth().catch(() => {
+      this.transitionTo('login');
+      this.send('logout',null);
+    });
   },
 
   model(params, transition) {
     // Save whether the user is admin
     //let type = get(this,`session.${C.SESSION.USER_TYPE}`);
     //let isAdmin = (type === C.USER.TYPE_ADMIN) || !get(this,'access.enabled');
-    //this.set('access.admin', isAdmin);
+    //set(this,'access.admin', isAdmin);
 
     get(this,'session').set(C.SESSION.BACK_TO, undefined);
 
@@ -118,7 +119,7 @@ export default Route.extend(Preload, {
       // Save the account ID from the response headers into session
       if ( res )
       {
-        this.set(`session.${C.SESSION.ACCOUNT_ID}`, res.xhr.headers.get(C.HEADER.ACCOUNT_ID));
+        set(this,`session.${C.SESSION.ACCOUNT_ID}`, res.xhr.headers.get(C.HEADER.ACCOUNT_ID));
       }
 
       get(this,'language').initLanguage(true);
