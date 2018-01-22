@@ -5,19 +5,23 @@
   {{#if owner}}
     {{owner.displayName}}
   {{else}}
-    {{searchable-select content=userList value=member.subjectName disabled=true}}
+    {{searchable-select content=userList value=member.role.subjectName}}
   {{/if}}
 </td>
 <td class="pr-20">
   {{#if owner}}
     {{if (eq type 'project') 'Project Owner' 'Cluster Owner'}}
+  {{else if hasCustom}}
+    Multple Roles (edit)
   {{else}}
-    {{searchable-select content=choices value=member.roleTemplateId}}
+    {{searchable-select content=choices value=member.role.roleTemplateId}}
   {{/if}}
 </td>
 <td>&nbsp;</td>
 <div class="input-group-btn">
-  <button class="btn bg-primary btn-sm" {{action "remove"}} disabled={{if owner 'true' null}}>
-    <i class="icon icon-minus" />
-  </button>
+  {{#unless  owner}}
+    <button class="btn bg-primary btn-sm" {{action "remove"}}>
+      <i class="icon icon-minus" />
+    </button>
+  {{/unless}}
 </div>

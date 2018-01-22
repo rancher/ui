@@ -10,9 +10,22 @@
       </tr>
     </thead>
     <tbody>
-      {{project-member-row member=member roles=roles users=users owner=creator type=type}}
+      {{project-member-row
+          roles=roles
+          users=users
+          owner=creator
+          type=type
+      }}
       {{#each memberArray as |member|}}
-        {{project-member-row member=member roles=roles users=filteredUsers remove="removeMember" }}
+        {{project-member-row
+            member=member
+            resource=primaryResource
+            roles=roles
+            users=filteredUsers
+            pageType=primaryResource.type
+            remove="removeMember"
+            alertNewCustoms=(action "setCustomToAdd")
+        }}
       {{/each}}
     </tbody>
   </table>
