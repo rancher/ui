@@ -114,7 +114,7 @@ export default Route.extend({
           params.queryParams.errorMsg = errorMsg;
         }
 
-        this.transitionTo('login', params);
+        window.location.href = "/login";
       });
     },
 
