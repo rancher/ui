@@ -41,7 +41,7 @@ generic:
   moreActions: További műveletek
   na: 'nincs adat'
   name: Név
-  "no": "Nem"
+  no: "Nem"
   noRating: Nincs értékelés
   none: Semmi
   ports: Portok
@@ -53,7 +53,6 @@ generic:
   search: Keresés
   seconds: másodperc
   service: Szolgáltatás
-  stack: Köteg
   state: Állapot
   test: Teszt
   testing: Tesztelés
@@ -62,7 +61,7 @@ generic:
   type: Típus
   unknown: Ismeretlen
   uuid: UUID
-  "yes": "Igen"
+  yes: "Igen"
 realmNames:
   all: Összes
   usWest: Nyugat-US
@@ -72,25 +71,19 @@ realmNames:
   euEast: Kelet-EU
 accountsPage:
   index:
-    header: Fiókok
-    localLink: Fiók hozzáadása
     table:
       id: ID
       kind: Milyen
       username: Felhasználói név
       identity: Azonosító
-      noData: Még nincsenek fiókok
       noName: Semmi
   new:
-    header: Fiók hozzáadása
     form:
       username:
-        labelText: Felhasználónév a bejelentkezéshez
         placeholder: "pl. kovacsj"
       password:
         labelText: Jelszó
       name:
-        labelText: Név
         placeholder: "pl. Kovács János"
       type:
         labelText: Fióktípus
@@ -380,33 +373,11 @@ catalogPage:
       notCompatible: Nem kompatibilis
       alreadyDeployed: Már telepítve
 certificatesPage:
-  table:
-    cn: Tartománynév
-    expiresDate: Lejár
   detail:
     header: 'Tanúsítvány: {name}'
-    description: Leírás
-    info:
-      labelText: Infó
-      valid: Érvényesség kezdete
-      expires: Lejár
-      algorithm: Algoritmus
-      issuer: Kibocsátó
-      serialNumber: Sorozatszám
-      version: Verzió
-    domainNames:
-      labelText: Tartománynevek
   index:
     header: Tanúsítványok
     linkTo: Tanúsítvány hozzáadása
-    table:
-      header:
-        state: Állapot
-        name: Név
-        domain: Tartománynév
-        expires: Lejár
-      body:
-        noData: Még egyetlen tanúsítványod sincs.
   new:
     header: Tanúsítvány hozzáadása
     form:
@@ -453,8 +424,6 @@ editDns:
     add: Cél IP-cím hozzáadása
   hostname:
     placeholder: pl. foobar.com
-  errors:
-    ipRequired: 'Egy vagy több "cél IP-cím" szükséges'
 failWhalePage:
   header: Hiba
   reloadButton: |
@@ -478,14 +447,12 @@ helpPage:
   host:
     header: Mi a hoszt?
     contentLink: Tudj meg többet
-    addHostLink: Hoszt hozzáadása
   stacks:
     header: Mik azok a Kötegek és Szolgáltatások?
     content:
       link: Tudj meg többet
     addServiceLink: Szolgáltatások kezelése
     addCatalogLink: Hozzáadás Katalógusból
-    noHosts: Jelenleg nincsenek hosztjaid. Kérlek adj hozzá egy hosztot mielőtt szolgáltatást adnál hozzá.
     manageServiceLink: Szolgáltatások kezelése
   issues:
     header:
@@ -522,9 +489,6 @@ helpPage:
 hostsPage:
   cloudHostsPage:
     addPage:
-      header: Hoszt hozzáadása
-      name:
-        label: Hoszt neve
       transferUnit: TB
       instance: 'Típus:'
       storage: 'Tároló:'
@@ -534,20 +498,7 @@ hostsPage:
       os: 'OS:'
       driver: 'Meghajtó:'
   addContainer: Konténer hozzáadása
-  index:
-    header: Hosztok
-    addHost: Hoszt hozzáadása
-    tooltip:
-      listView: Lista
-      groupedView: Csoportosított Kötegek és Társak
-    columns:
-      emptyMessage: Nincs még hoszt vagy konténer.
-    table:
-      memory: RAM
-      docker: Docker
   new:
-    header:
-      text: Hoszt hozzáadása
     manageLink: Elérhető Gép illesztőprogramok kezelése
   hostPage:
     limits:
@@ -579,24 +530,6 @@ hostsPage:
           mounts: Csatolások
         body:
           noData: Ez a hoszt nem rendelkezik egyetlen Kötettel sem
-k8sTab:
-  dashboard:
-    header: Kubernetes irányítópult
-    dashboard:
-      header: Irányítópult
-      content: A Kubernetes irányítópult egy általános célú, web alapú felhasználói felület a Kubernetes fürtökhöz. Lehetővé teszi a felhasználóknak hogy alkalmazásokat kezeljenek a fürtben és hibaelhárítást végezhessenek, valamint kezelhessék magát a fürtöt.
-      button: Kubernetes felhasználói felület
-  kubectl:
-    header: Kubernetes CLI
-    stepOne:
-      generateButton: Konfiguráció létrehozása
-    stepTwo:
-      progress: Generálás...
-    stepThree:
-      helpText: |
-        Tedd ezt bele a <code>~/.kube/config</code> fájlba:
-      downloadText: |
-        Majd <a href="{downloadUrl}" target="_blank">töltsd le</a> (ha szükséges) és futtasd a <code>kubectl</code> parancsot
 loginPage:
   githubMessage: "{appName} a GitHub segítségével kezeli a fiókokat és a csoportokat.  Kattints az alábbi gombra a bejelentkezéshez, és adj nekünk csak olvasható hozzáférést az alapvető GitHun fiókinformációidhoz."
   shibbolethMessage: "{appName} a Shibboleth-et használja a fiókok kezeléséhez.  Kattints az alábbi gombra hogy bejelentkezz a beállított Shibboleth IDP-re."
@@ -606,19 +539,14 @@ loginPage:
     generic: "Hiba lépett fel ({errorCode}) miközben megpróbáltál bejelentkezni. Kérlek próbáld meg újra."
   error:
     authFailed: Felhasználónév vagy jelszó helytelen.
-    timedOut: A munkamenet túllépte az időkorlátot.  Jelentkezz be ismét a folytatáshoz.
 machinePage:
-  header: Gép-illesztőprogramok
   inactive: Inaktív
-  subtext: "További <code>docker-machine</code> illesztőprogram tölthető be és használható a Hoszt hozzáadása képernyőn."
-  add: Gép-illesztőprogram hozzáadása
   builtin: Beépített
 notFoundPage:
   header: "A keresett oldal nem létezik!"
   linkTo: Nyitóoldalra
 registriesPage:
   index:
-    header: Registry-k
     linkTo: Registry hozzáadása
     table:
       header:
@@ -626,15 +554,13 @@ registriesPage:
         address: Cím
         username: Felhasználói név
         created: Létrehozva
-      body:
-        noData: "Nincs még egyetlen registry-d sem"
   new:
     header: Registry hozzáadása
     form:
       custom:
         labelText: Cím
         placeholder: pl. registry.sajatdomain.hu
-        help: 'Csak a hosztnév vagy az IP-cím, ne tartalmazza a protokollt (https://)'
+        help: Csak a hosztnév vagy az IP-cím, ne tartalmazza a protokollt (https://)
       username:
         labelText: Felhasználói név
         placeholder: pl. felhasználói név
@@ -684,8 +610,6 @@ servicePage:
     composeservice: Szolgáltatás összeállítása
     networkdriverservice: Hálózati szolgáltatás
     storagedriverservice: Tároló szolgáltatás
-settingsPage:
-  header: Beállítások
 signupPage:
   form:
     button: Regisztráció
@@ -776,10 +700,6 @@ hostPartial:
   host:
     addCommon:
       quanity: Mennyiség
-      new:
-        form:
-          name:
-            placeholder: pl. host01
 ldap:
   providerName:
     openldap: OpenLDAP
@@ -815,15 +735,9 @@ ldap:
         post: "Biztos vagy benne?  Kattints újra, hogy valóban letiltsd a hozzáférés-szabályozást"
   accessConfig:
     header: "1. {providerName} szerver konfigurálása"
-    hostName:
-      labelText: Hosztnév vagy IP-cím
     port:
       labelText: Port
       checkbox: TLS
-    serviceUsername:
-      labelText: Szolgáltatás felhasználóneved
-    servicePassword:
-      labelText: Szolgáltatás fiók jelszó
     defaultDomain:
       helpText: "Ezzel a tartománynévvel lép be a felhasználó, ha nem adott meg semmit sem."
       labelText: Alapértelmezett bejelentkezési tartománynév
@@ -888,8 +802,6 @@ caasLogin:
   form:
     email: E-mail
 catalogSettings:
-  header: Katalógus
-  subtext: A Katalógusok sablonokat tartalmaznak, amelyek megkönnyítik a felhasználók számára az alkalmazások telepítését pusztán néhány kérdés megválaszolásával
   certified:
     header:
       rancher: "Minősített könyvtár {appName}"
@@ -913,7 +825,6 @@ catalogSettings:
       placeholder: 'pl. master'
 confirmDelete:
   title: 'Biztosan törölni szeretné?'
-  environmentNote: 'Megjegyzés: Minden erőforrás ebben a Környezetben végérvényesen törlődik, beleértve a létrehozott {appName} által létrehozott hosztokat is.'
   protip: 'Profi tipp: Tartsd nyomva a {key} billenytűt, miközben a Törlés-re kattintasz, hogy kikerüld a megerősítést.'
   confirmAction: Törlés
   cancelAction: Mégsem
@@ -955,17 +866,12 @@ editAccount:
   title: Fiók szerkesztése
   form:
     name:
-      label: Név
       placeholder: pl. Kovács János
     kind:
       label: Fióktípus
-      user: Felhasználó
-      admin: Admin
     description:
       label: Leírás
       placeholder: pl. Ez a fiók Kovács Jánosé
-    publicValue:
-      label: Felhasználónév a bejelentkezéshez
     oldPassword:
       label: Jelenlegi Jelszó
     newPassword:
@@ -1007,14 +913,12 @@ editHost:
   title: Hoszt szerkesztése
   hostname:
     label: Hosztnév
-    help: A hoszt operációs rendszer által jelentett.
   customName:
     label: Egyedi név
     placeholder: pl. dev1
     help: Ha ez üresen marad, a Hosztnév jelenik meg, mint Név.
   description:
     label: Leírás
-    placeholder: pl. saját fejlesztői gépem
   labels:
     label: Címkék
   ips:
@@ -1042,13 +946,11 @@ editRegistry:
 editService:
   title: Szolgáltatás szerkesztése
 editStack:
-  title: Köteg szerkesztése
   name:
     label: Név
     placeholder: pl. sajat-app
   description:
     label: Leírás
-    placeholder: pl. SajatApp Köteg
   group:
     label: Címkék
     placeholder: pl. frontend, production
@@ -1094,9 +996,6 @@ formCommand:
   workingDir:
     label: Munkakönyvtár
     placeholder: pl. /sajat-app
-  user:
-    label: Felhasználó
-    placeholder: pl. apache
   console:
     label: Konzol
     interactive: 'Interaktív <span class="text-muted">(-i)</span>'
@@ -1104,7 +1003,7 @@ formCommand:
     none: Semmi
   autoRestart:
     label: Automatikus újraindítás
-    "no": Soha
+    no: Soha
     onFailure: 'Hiba esetén <span class="text-muted">(nem 0 kilépési kód)</span>, örökké'
     onFailureCondPrefix: Hiba esetén, legfeljebb
     always: Mindig
@@ -1129,7 +1028,7 @@ formDisks:
 formEngineOpts:
   engineInstallUrl:
     label: Docker telepítési URL
-    placeholder: 'pl. http://get.docker.com/'
+    placeholder: pl. http://get.docker.com/
     recommended: Ajánlott
     latest: Legújabb
   engineStorageDriver:
@@ -1149,7 +1048,7 @@ formEngineOpts:
     addActionLabel: Környezeti változó hozzáadása
     keyLabel: Változó
     keyPlaceholder: pl. HTTP_PROXY
-    valuePlaceholder: 'pl. http://sajat-proxy:8080'
+    valuePlaceholder: pl. http://sajat-proxy:8080
   engineInsecureRegistry:
     addActionLabel: Insecure Registry hozzáadása
     valueLabel: Registry tartomány
@@ -1158,32 +1057,12 @@ formEngineOpts:
     label: Registry tükrök
     addActionLabel: Registry Mirror hozzáadása
     valueLabel: Tükör URL
-    valuePlaceholder: 'pl. https://sajat-tukor.szerver.hu:5000'
+    valuePlaceholder: pl. https://sajat-tukor.szerver.hu:5000
 formHealthCheck:
   checkType:
     none: Semmi
-  request:
-    label: HTTP lekérés
-  method:
-    prompt: "Válassz egy HTTP metódust:"
-  version:
-    prompt: "Válassz egy HTTP verziót:"
-  host:
-    placeholder: pl. www.sajatdomain.hu
   port:
     placeholder: pl. 80
-  initializingTimeout:
-    unit: ms
-  reinitializingTimeout:
-    unit: ms
-  interval:
-    unit: ms
-  timeout:
-    unit: ms
-  unhealthyThreshold:
-    unit: hibák
-  strategy:
-    none: Nincs művelet
 formKeyValue:
   addAction: Kulcs-értékpár hozzáadása
   key:
@@ -1221,10 +1100,6 @@ formNetwork:
     placeholder: pl. kiszolgalo.sajatdomain.hu
     addActionLabel: Tartomány hozzáadása
 formPorts:
-  public:
-    placeholder: "pl. 80"
-  private:
-    placeholder: "pl. 8080"
   protocol:
     label: Protokoll
   noPorts: Ez a Konténer nem tartalmaz port térképeket.
@@ -1232,10 +1107,8 @@ formPorts:
     privateRequired: Privát konténer port szükséges minden portszabály számára.
     publicRequired: Nyilvános hoszt port kötelező, ha a hoszt IP be van állítva.
 formScheduling:
-  addRule: Ütemezési szabály hozzáadása
   condition: Feltétel
   field: Mező
-  key: Kulcs
   value: Érték
 formSecrets:
   noData: Nincsenek titkos kódok
@@ -1257,10 +1130,6 @@ formSecrets:
     prefix: "A titkos kód a megadott fájlnévvel a <code>/run/secrets/</code> könyvtárban lesz elérhető a konténer belsejében.  "
     showPermissionsLink: "Fájl hozzáférési jogainak testreszabása"
 formSecurity:
-  privileged:
-    disable: Nem
-  pidMode:
-    label: PID-mód
   shares:
     placeholder: pl. 1024
   capabilities:
@@ -1296,9 +1165,6 @@ formSslTermination:
   addAlternate: Alternatív tanúsítvány hozzáadása
   noCertificates: Nincs tanúsítvány használat alatt.
   noAlternateCertificates: Nincsenek más tanúsítványok használat alatt.
-formStack:
-  errors:
-    noneChosen: Ki kell választani egy Köteget.
 formStickiness:
   none: Semmi
   cookieName: Süti neve
@@ -1340,9 +1206,6 @@ formUserLabels:
 formValueArray:
   addActionLabel: Érték hozzáadása
   valueLabel: Érték
-formVirtualMachines:
-  vcpus: vCPUs
-  memory: Memória
 formVolumes:
   value:
     prompt: Konténer kiválasztása...
@@ -1355,8 +1218,6 @@ hookPage:
   scaleService:
     detailPrefix: "{action} skálázása "
     detailLink: "{displayService}"
-  scaleHost:
-    label: Hosztok számának skálázása
   serviceUpgrade:
     label: Szolgáltatás frissítése
   fields:
@@ -1396,19 +1257,6 @@ infoMultiStats:
     labelText: Tároló
     read: Olvasás
     write: Írás
-inputCertificate:
-  key:
-    label: Privát kulcs
-    placeholder: "Illessze be a privát kulcsot a -----BEGIN RSA PRIVATE KEY----- kezdettel együtt"
-  cert:
-    label: Tanúsítvány
-    placeholder: "Illeszd be az elsődleges tanúsítványt, a -----BEGIN CERTIFICATE----- kezdettel együtt"
-  certChain:
-    label: Lánc tanúsítványok
-    placeholder: "Nem kötelező: Illessz be további lánc tanúsítványokat, a -----BEGIN CERTIFICATE----- kezdettel együtt"
-  metaXML:
-    label: XML metaadatok
-    placeholder: "Beillesztés az IDP XML metaadatokba"
 inputIdentity:
   placeholder:
     github: GitHub felhasználó vagy szervezet nevének hozzáadása
@@ -1742,9 +1590,6 @@ modalConfirmDeactivate:
     default:
       button: Deaktiválás
 modalEditDriver:
-  header:
-    create: Gép-illesztőprogram hozzáadása
-    edit: Gép-illesztőprogram szerkesztése
   url:
     label: Letöltési URL
   uiUrl:
@@ -1804,7 +1649,6 @@ newCatalog:
   templateVersion: Sablon verziója
   selectVersionAdd: Válaszd ki a sablon egy verzióját telepítésre
   selectVersionUpgrade: Válaszd ki a sablon egy verzióját frissítésre
-  newStack: Új Köteg
   config: Konfigurációs beállítások
   unknownType: "Ismeretlen kérdéstípus:"
   startService: Szolgáltatások elindítása a létrehozás után
@@ -1812,8 +1656,6 @@ newCatalog:
   txt: answers.txt
   noConfig: Ennek a sablonnak a nincs beállításai
 newContainer:
-  add:
-    container: Konténer hozzáadása
   upgrade:
     container: Konténer frissítése
   selectUpgrade: Válassz egy vagy több szolgáltatást a frissítéshez.
@@ -1836,8 +1678,6 @@ newReceiver:
     down: Lefelé skálázás
   deleteOption:
     leastRecent: A legrégebbi hoszt
-  hostSelector:
-    label: Hoszt választó
   image:
     label: Docker kép neve
   service:
@@ -1854,17 +1694,6 @@ newReceiver:
     placeholder: pl. 20
   tag:
     placeholder: "pl. legújabb"
-newSecret:
-  title:
-    edit: Titkos kód szerkesztése
-    add: Titkos kód hozzáadása
-  name:
-    placeholder: pl. api-token
-  description:
-    placeholder: pl. titkos API token
-  value:
-    label: Titkos érték
-    placeholder: A titkos érték
 pageFooter:
   notARelease: (Nem egy Kiadás)
   issues: Hiba jelentése
@@ -1899,8 +1728,8 @@ saveCancel:
   cancel: Mégsem
 schema:
   inputBoolean:
-    "y": "Igaz"
-    "n": "Hamis"
+    y: "Igaz"
+    n: "Hamis"
   inputCertificate:
     prompt: Válassz egy tanúsítványt...
   inputEnum:
@@ -2004,8 +1833,6 @@ containerChoices:
   hostGroupWithState: 'Hoszt: {name} ({state})'
   unknownHost: 'Hoszt: ???'
   containerOption: "{name}"
-allServices:
-  stackGroup: 'Köteg: {name}'
 nav:
   environment:
     label: Környezet
@@ -2020,15 +1847,6 @@ nav:
     certificates: Tanúsítványok
     registries: Registry-k
     secrets: Titkos kódok
-  admin:
-    tab: Admin
-    audit: Hozzáférési naplók
-    processes: Folyamatok
-    accounts: Fiókok
-    access: Hozzáférés-vezérlés
-    machine: Gép-illesztőprogramok
-    settings: Beállítások
-    ha: Magas rendelkezésre állás
   user:
     label: 'Felhasználói menü: {username}'
     logout: Kijelentkezés
@@ -2042,7 +1860,6 @@ action:
   execute: Rendszerhéj végrehajtása
   exportConfig: Beállítások exportálása
   logs: Naplók megtekintése
-  machineConfig: Gép beállítása
   remove: Törlés
   replay: Visszajátszás
   restart: Újraindítás

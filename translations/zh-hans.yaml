@@ -1,10 +1,6 @@
 ---
 languageName: "简体中文"
 languageContribute: "帮助翻译 Rancher"
-
-##############################
-# Really generic things used in multiple places (use sparingly)
-##############################
 generic:
   actions: 操作
   activate: 激活
@@ -46,7 +42,7 @@ generic:
   moreActions: 更多操作
   na: '不适用'
   name: 名称
-  "no": "取消"
+  no: "取消"
   noRating: 无评价
   none: 无
   ports: 端口
@@ -60,8 +56,6 @@ generic:
   select: 选择
   service: 服务
   services: 服务
-  stack: 应用
-  stacks: 应用
   state: 状态
   tags: 标签
   test: 测试
@@ -71,7 +65,7 @@ generic:
   type: 类型
   unknown: 未知
   uuid: UUID
-  "yes": "确定"
+  yes: "确定"
 realmNames:
   all: 全部
   usWest: 美国西部
@@ -79,35 +73,21 @@ realmNames:
   asia: 亚洲
   euWest: 欧洲西部
   euEast: 欧洲东部
-
-##############################
-# Routes
-##############################
 accountsPage:
   index:
-    header: 账号
-    localLink: 添加账号
     table:
       id: ID
       kind: 类型
       username: 用户名
       identity: 标识
-      noData: 当前无访问账号
       noName: 无
   new:
-    header: 添加账号
-    errors:
-      usernameReq: 必须填写用户名
-      usernameInExists: 该用户名已被占用. 请选择别的用户名
-      pwReq: 必须输入密码
     form:
       username:
-        labelText: 登录用户名
         placeholder: "例如:jsmith"
       password:
         labelText: 密码
       name:
-        labelText: 姓名
         placeholder: "例如:John Smith"
       type:
         labelText: 账号类型
@@ -406,65 +386,28 @@ catalogPage:
       notCompatible: 不兼容
       alreadyDeployed: 已部署
 certificatesPage:
-  table:
-    cn: 域名
-    expiresDate: 过期时间
   detail:
     header: '证书: {name}'
-    description: 描述
-    info:
-      labelText: 信息
-      valid: 生效时间
-      expires: 过期时间
-      algorithm: 算法
-      issuer: 发布机构
-      serialNumber: 序列号
-      version: 版本
-    domainNames:
-      labelText: 域名
   index:
     header: 证书
     linkTo: 添加证书
-    table:
-      header:
-        state: 状态
-        name: 名称
-        domain: 域名
-        expires: 过期时间
-      body:
-        noData: 当前未添加任何证书
   new:
     header: 添加证书
     form:
       name:
-        placeholder: '例如:mydomain.com'
+        placeholder: 例如:mydomain.com
       description:
-        placeholder: '例如:mydomain.com的EV证书'
+        placeholder: 例如:mydomain.com的EV证书
 clustersPage:
-  header: 集群与环境
   newCluster: 添加集群
-  newProject: 添加环境
   import: 外部导入
-  newHost: 添加主机
   alert: 找不到任何可用的环境。在其他操作之前，请创建或者激活一个环境。
-  mode:
-    list: 环境列表
-    grouped: 按集群分组
-  subtext: |
-    <h4>{appName} 支持将资源分配到多个<b class="text-info">集群</b>和<b class="text-info">环境</b>中。</h4>
-    <div class="row">
-    <div class="col span-6"><p><b class="text-info">环境:</b> 一个定义应用，服务和容器的命名空间。环境中的容器可以通过共享的托管网络互相通信。同时您可以授权给不同的用户／组来管理环境中的资源。</p></div>
-    <div class="col span-6"><p><b class="text-info">集群:</b> 一组物理的或者虚拟的计算资源。一个环境绑定一个集群。环境中全部的容器都运行在这个集群的主机上。一个集群可以被多个环境共享。</p></div>
-    </div>
-    <p class="banner bg-info text-small p-10">例如，您可以给公司的每个团队都创建一个由物理机组成的 <em>“生产”</em> 集群，并且给每个团队创建一个只有这个团队可以访问的专用环境。同时创建一个共享的由虚拟机组成的 <em>“沙盒”</em> 集群，任何员工都可以在该集群上创建自己的独立的开发和测试环境。</p>
   cluster:
     label: 集群名称
   environment:
     label: 环境名称
   projects:
     label: 环境
-  hosts:
-    label: 主机
   memory:
     label: 内存
   storage:
@@ -533,7 +476,6 @@ editDns:
     label: 目标主机名
     placeholder: '例如: foobar.com'
   errors:
-    ipRequired: '必须填写一个或多个"目标 IP 地址"'
     hostnameRequired: '必须填写"目标主机名"'
     serviceRequired: '必须填写一个或多个"目标"'
     selectorRequired: '"容器选择器"是需要'
@@ -603,7 +545,6 @@ helpPage:
       在添加第一个服务或容器之前，必须至少添加一台支持Docker{minVersion} 或以上版本的Linux主机，该主机需要能够通过HTTP方式访问{appName} 服务器。{appName} 支持添加多种形式的Linux主机，
       包括由任何公有云、私有云或裸机方式提供的虚拟机或物理机。
     contentLink: 了解更多
-    addHostLink: 添加主机
   stacks:
     header: 什么是应用栈和服务？
     content:
@@ -613,7 +554,6 @@ helpPage:
       link: 了解更多
     addServiceLink: 管理服务
     addCatalogLink: 通过应用商店添加服务
-    noHosts: 当前环境未添加主机。请在添加服务前先添加主机。
     manageServiceLink: 管理服务
   issues:
     header:
@@ -658,10 +598,6 @@ hostsPage:
   cloudHostsPage:
     addPage:
       launch: 启动
-      header: 添加主机
-      name:
-        label: 主机名
-        placeholder: 例如 host01
       transferUnit: TB
       instance: '类型:'
       storage: '存储:'
@@ -673,33 +609,12 @@ hostsPage:
       driver: '驱动：'
       template: '模板名称：'
   addContainer: 添加容器
-  index:
-    header: 主机
-    addHost: 添加主机
-    tooltip:
-      listView: 列表
-      iconView: 状态标签
-      groupedView: 分组
-    columns:
-      emptyMessage: 当前没有主机或容器
-    table:
-      memory: 内存
-      docker: Docker
-      instanceState: 容器状态
-      instanceStateWithIcon: 状态
-      noData: 当前无任何主机
-      noMatch: 没有符合当前搜索的主机
   new:
     header:
       customText: 添加自定义宿主
-      text: 添加主机
     manageLink: 管理docker-machine驱动
     custom: 添加自定义宿主
-    name:
-      placeholder: 例如 host01
   hostPage:
-    header:
-      title: '主机: {name}'
     limits:
       cpu: 'CPU 限制：'
       memory: '内存限制：'
@@ -745,39 +660,6 @@ k8sImport:
   header: 使用外部已安装好的Kubernetes
   instructions: '复制，粘贴，然后在已有的Kubernetes中运行下面的命令。{appName}就会使用这个已经安装好的Kubernetes作为一个集群。'
   generating: 正在生成命令行
-k8sAdvancedTab:
-  dashboard:
-    title: 仪表盘
-    detail: 在新窗口中访问Kubernetes原生管理界面。
-    button: 打开仪表盘
-  shell:
-    title: 命令行
-    detail: 在浏览器中执行Kubernetes的<code>kubectl</code>命令行。
-    button: 执行kubectl命令行
-  configFile:
-    title: 配置文件
-    detail: 生成一个在您的本机可以使用的<code>kubectl</code>配置文件。
-    button: 下载kubeconfig
-k8sTab:
-  dashboard:
-    header: Kubernetes 仪表盘
-    dashboard:
-      header: 仪表盘
-      content: Kubernetes 仪表板是一种用于管理 Kubernetes 集群 WEB UI。它允许用户管理在群集中运行的应用程序，以及管理群集本身。
-      button: Kubernetes UI
-  kubectl:
-    header: Kubernetes CLI
-    stepOne:
-      generateConfigText: |
-        '要在客户端使用 <a href="{downloadUrl}" target="_blank">kubectl</a> (v1.4+ 以上) , 单击以下按钮生成API Key和配置文件:'
-      generateButton: 生成配置
-    stepTwo:
-      progress: 生成中...
-    stepThree:
-      helpText: |
-        将设置保存到 <code>~/.kube/config</code>:
-      downloadText: |
-        然后 <a href="{downloadUrl}" target="_blank">下载</a> (如果需要) 并运行 <code>kubectl</code>
 loginPage:
   greeting: "你好！<br>欢迎使用 {appName}"
   githubMessage: "{appName} 使用GitHub管理账号和团队。点击以下按钮以登录，我们将仅使用基本的GitHub账号信息。"
@@ -788,19 +670,14 @@ loginPage:
     generic: "尝试登录时发生错误 ({errorCode})。请重试。"
   error:
     authFailed: 用户名或密码不正确。
-    timedOut: 您的会话已超时。 请重新登录以继续。
 machinePage:
-  header: 主机驱动
   inactive: 未激活
-  subtext: "此处可添加额外的 <code>docker-machine</code> 驱动并在添加主机界面使用。"
-  add: 添加主机驱动
   builtin: 内置
 notFoundPage:
   header: "查看的页面不存在！"
   linkTo: 回到首页
 registriesPage:
   index:
-    header: 镜像库
     linkTo: 添加镜像库
     table:
       header:
@@ -808,21 +685,19 @@ registriesPage:
         address: 地址
         username: 用户名
         created: 创建时间
-      body:
-        noData: "当前未创建任何镜像库"
   new:
     header: 添加镜像库
     form:
       custom:
         labelText: 地址
-        placeholder: '例如:registry.example.com'
-        help: '仅添加主机名或IP地址, 不要包含协议 (https://)'
+        placeholder: 例如:registry.example.com
+        help: 仅添加主机名或IP地址, 不要包含协议 (https://)
       username:
         labelText: 用户名
-        placeholder: '例如:username'
+        placeholder: 例如:username
       password:
         labelText: 密码
-        placeholder: '例如:password'
+        placeholder: 例如:password
 secretsPage:
   index:
     header: 秘密
@@ -860,16 +735,16 @@ servicePage:
   new:
     form:
       name:
-        placeholder: '例如:myapp'
+        placeholder: 例如:myapp
       description:
-        placeholder: '例如:我的应用'
+        placeholder: 例如:我的应用
   newBalancer:
     upgradeImage: "负载均衡器镜像版本将由 <code>{from}</code> 升级到 <code>{to}</code>."
     form:
       name:
-        placeholder: '例如:website'
+        placeholder: 例如:website
       description:
-        placeholder: '例如:mycompany.com的负载均衡'
+        placeholder: 例如:mycompany.com的负载均衡
   portsTab:
     title: 端口
     detail: '从主机IP映射到容器监听的端口。'
@@ -892,8 +767,6 @@ servicePage:
     tabHeader: 从容器
     header: 服务与从容器
     helpBlock: 服务的配置与该服务从容器的配置。
-settingsPage:
-  header: 设置
 signupPage:
   header: '注册{appName}'
   form:
@@ -964,12 +837,10 @@ newStack:
   description:
     placeholder: '例如: MyApp Stack'
   files:
-    label: Compose文件
+    label: 额外的Compose文件
     addActionLabel: 添加Compose文件
-    uploadActionLabel: 从本地读取
     namePlaceholder: 文件名
     valuePlaceholder: 文件内容
-    protipLabel: 支持 {appName} <code>compose.yml</code>，<code>docker-compose.yml</code>，和Kubernetes manifest文件。
   answers:
     label: 应答 (变量替换)
     addActionLabel: 添加应答
@@ -989,8 +860,6 @@ userPreferencesPage:
       label: 用户名
     email:
       label: 邮件地址
-    password:
-      text: 编辑账号
 processesPage:
   header: Processes
   tab:
@@ -1044,18 +913,10 @@ waitingPage:
   hosts:
     setup:
       kubernetes: 设置Kubernetes
-
-##############################
-# Partials
-##############################
 hostPartial:
   host:
     addCommon:
       quanity: 数量
-      new:
-        form:
-          name:
-            placeholder: '例如:host01'
 ldap:
   providerName:
     openldap: OpenLDAP
@@ -1120,19 +981,9 @@ ldap:
     header: "1. 配置 {providerName} 服务器"
     subtext1: "请输入地址、端口及协议以连接你的 {providerName} 服务器。<code>389</code> 是标准端口（未加密）, <code>636</code> 是加密连接（TLS）端口。"
     subtext2: "{appName} 需要一个对所有登录域有只读权限的服务账号"
-    hostName:
-      labelText: 主机名或IP地址
     port:
       labelText: 端口
       checkbox: TLS
-    serviceUsername:
-      labelText: 服务账号用户名
-    servicePassword:
-      labelText: 服务账号密码
-    userSearchBase:
-      labelText: '用户搜索起点:'
-      placeholder: "例如: ou=Users,dc=mycompany,dc=com"
-      helpText: "该搜索起点下仅有用户会被使用."
     groupSearchBase:
       labelText: '组搜索起点:'
       placeholder: "例如: ou=Groups,dc=mycompany,dc=com"
@@ -1190,10 +1041,6 @@ servicePartial:
     label: 没有容器
     inactive:
       start: 启动
-
-##############################
-# Components
-##############################
 accordionRow:
   status:
     none: 无
@@ -1232,8 +1079,6 @@ caasLogin:
   form:
     email: 邮箱
 catalogSettings:
-  header: 应用商店
-  subtext: 应用商店包含应用的rancher-compose模板，用户能够在回答设置问题后简单快速的进行应用部署。
   certified:
     header:
       rancher: "{appName} 认证库"
@@ -1250,7 +1095,6 @@ catalogSettings:
       pl: 由社区成员创建并维护的模板
   more:
     header: 更多
-    helpText: '此处可以添加自定义的应用商店。每个应用商店必须有唯一的名称和一个支持 <code>git clone</code> 操作的URL。（更多信息请参考此 <a href="https://git-scm.com/docs/git-clone#_git_urls_a_id_urls_a" target="_blank">文档</a>）'
     addActionLabel: 添加应用商店
     name:
       label: 名称
@@ -1267,22 +1111,19 @@ catalogSettings:
 clusterRow:
   noMatch: 没有匹配当前搜索的环境。
   noData: 集群中还没有任何环境。
-  noHosts: 外部集群没有任何主机
   noClusterMatch: 没有匹配当前搜索的集群。
   noClusterData: 没有任何集群。
-  addHost: 添加主机
   importCluster: 使用已有的Kubernetes
   loginDefault: 登陆
 clusterWelcome:
   welcome: 欢迎
   noHost: 集群中还没有任何主机。您想要添加主机还是使用已有的Kubernetes呢?
-  addHost: 添加主机
   select: 选择
   importCluster: 使用已有的Kubernetes
   importClusterDescription: |
     <p>部署容器到已有的Kubernetes环境，并使用它的主机和网络。</p>
     <p>基础设施资源将在{appName}外部进行管理。</p>
-
+    
     <p>支持本地部署的K8S，或者类似以下的托管的K8S服务:</p>
   embeddedDescription: |
     <p>{appName}将自动部署并且管理Kubernetes。</p>
@@ -1291,8 +1132,7 @@ clusterWelcome:
     <p>为容器提供安全的Overlay网络，使容器相互之间可以安全的进行跨主机通信。</p>
 confirmDelete:
   title: '是否确认要删除'
-  environmentNote: '注意:此环境内的所有资源都将被永久性的删除，包括通过{appName}创建的主机。'
-  protip: '高级技巧:在点击删除时按住 {key} 键以跳过确认操作。'
+  protip: 高级技巧:在点击删除时按住 {key} 键以跳过确认操作。
   confirmAction: 删除
   cancelAction: 取消
   largeDeleteText: '{key} 及 {othersCount} 其他'
@@ -1316,7 +1156,7 @@ containerShell:
   protip: '高级技巧: 点击运行命令行时按住 {key} 键在新窗口中打开'
   status:
     initializing: 初始化...
-    error: '错误:{error}'
+    error: 错误:{error}
     connecting: 连接中...
     connected: 已连接
     disconnected: 已断开
@@ -1326,7 +1166,6 @@ copyToClipboard:
   copied: 已复制
 dangerZone:
   header: 高级设置
-  subtext: "注意：通常情况下用户无需修改此类设置。不正确的设置可能会导致 {appName} 部署损坏。被修改的设置会用粗体显示。"
   showLabel: 我确认已经知道修改高级设置可能导致问题
 devicePermissions:
   all: 全部
@@ -1337,17 +1176,12 @@ editAccount:
   title: 编辑账号
   form:
     name:
-      label: 名称
-      placeholder: '例如:John Smith'
+      placeholder: 例如:John Smith
     kind:
       label: 账号类型
-      user: 用户
-      admin: 管理员
     description:
       label: 描述
-      placeholder: '例如:John Smith的账号'
-    publicValue:
-      label: 登录用户名
+      placeholder: 例如:John Smith的账号
     oldPassword:
       label: 当前密码
     newPassword:
@@ -1366,19 +1200,19 @@ editApiKey:
   secretValue:
     label: Secret Key (密码)
   name:
-    placeholder: '例如:App servers'
+    placeholder: 例如:App servers
   description:
-    placeholder: '例如:用于app server部署容器'
+    placeholder: 例如:用于app server部署容器
   saveWarning1: 请保存上面的Key！Secret Key仅显示一次
   saveWarning2: 如果忘记了Secret Key，您需要重新创建新的API Key
   noteOptional: 名称和描述均为可选项（有助于记录API Key的用途），您可以直接点击创建按钮。
 editCertificate:
   title: 编辑证书
   name:
-    placeholder: '例如:mydomain.com'
+    placeholder: 例如:mydomain.com
   description:
-    placeholder: '例如:mydomain.com的EV证书'
-  noteKeyWriteOnly: '注意:Private Key部分为只写(write only)因而显示为空白。更新证书时您需要重新上传Private Key，即便Private Key未发生变化。'
+    placeholder: 例如:mydomain.com的EV证书
+  noteKeyWriteOnly: 注意:Private Key部分为只写(write only)因而显示为空白。更新证书时您需要重新上传Private Key，即便Private Key未发生变化。
 editCluster:
   title:
     new: 添加集群
@@ -1403,21 +1237,19 @@ editContainer:
     vm: 编辑虚拟机
     container: 编辑容器
   name:
-    placeholder: '例如:myapp'
+    placeholder: 例如:myapp
   description:
-    placeholder: '例如:我的应用'
+    placeholder: 例如:我的应用
 editHost:
   title: 编辑主机
   hostname:
     label: 主机名
-    help: 由主机操作系统获取
   customName:
     label: 自定义名称
-    placeholder: '例如:dev1'
+    placeholder: 例如:dev1
     help: 如果此处未设置，名称将显示为主机名
   description:
     label: 描述
-    placeholder: '例如:我的开发主机'
   labels:
     label: 标签
   ips:
@@ -1428,7 +1260,6 @@ editHost:
     help: 如果设置，调度器将从中选择一个IP地址并将发布的端口绑定到该地址。
   requireAny:
     label: 容器标签需求
-    help: 如果设置，容器必须具备设置的一个或者多个标签才能够被调度到该主机。如果仅设置Key而Value留空，具备相应Key的容器可以被调度到该主机而忽略Value的值。<code>io.rancher.container.system</code>标签是运行系统容器所必须的。
     addActionLabel: 添加标签需求
 editRegistry:
   title: 编辑镜像库
@@ -1436,33 +1267,28 @@ editRegistry:
     label: 地址
   email:
     label: 邮箱
-    placeholder: '例如:you@example.com'
+    placeholder: 例如:you@example.com
   username:
     label: 用户名
-    placeholder: '例如:username'
+    placeholder: 例如:username
   password:
     label: 密码
-    placeholder: '例如:password'
+    placeholder: 例如:password
 editService:
   title: 编辑服务
 editStack:
-  title: 编辑应用栈
   name:
     label: 名称
-    placeholder: '例如:myapp'
+    placeholder: 例如:myapp
   description:
     label: 描述
-    placeholder: '例如:MyApp Stack'
   group:
     label: 标签
     placeholder: '例如: frontend, production'
-    help: 逗号分隔的标签列表，应用列表可以根据相应的标签进行过滤。
 envCatalog:
   header: 管理应用商店
-  subtext: '可以在这里定义自定义的应用商店源，该应用商店仅对当前环境的用户可见。全局应用商店对所有环境可见，仅能由管理员在管理设置中修改。应用商店需要一个唯一的名称并且支持 <code>git clone</code> 的URL地址 (参考 <a href="https://git-scm.com/docs/git-clone#_git_urls_a_id_urls_a" target="_blank">文档</a> 以获取更多信息)。'
   addActionLabel: 添加应用商店
 stackHeader:
-  title: '应用: {name}'
   outputs: 输出
 stacksPage:
   table:
@@ -1476,8 +1302,6 @@ formatIp:
 formBalancerConfig:
   title: 自定义配置文件
   detail: 提供您的自定义配置文件，这个配置将会被应用到{appName}自动生产的配置上方。
-  custom: |
-    请参考<a href="https://cbonte.github.io/haproxy-dconv/1.6/configuration.html" target="_blank" rel="nofollow noopener">haproxy文档</a>了解更多关于该配置文件的参数。当重写<code>backend</code>或包括目标容器IP的某行时，请使用<code>$IP</code>来代替IP地址，{appName}将会自动转换成相应的配置。
   config:
     prompt: 自定义haproxy.cfg内容
 formBalancerListeners:
@@ -1555,18 +1379,15 @@ formCommand:
   detail: 配置容器启动时将运行的可执行文件。
   command:
     label: 命令
-    placeholder: '例如:/usr/sbin/httpd -f httpd.conf'
+    placeholder: 例如:/usr/sbin/httpd -f httpd.conf
   entryPoint:
     label: 入口
-    placeholder: '例如:/bin/sh'
+    placeholder: 例如:/bin/sh
   environment:
     label: 环境标签
   workingDir:
     label: 工作目录
-    placeholder: '例如:/myapp'
-  user:
-    label: 用户
-    placeholder: '例如:apache'
+    placeholder: 例如:/myapp
   console:
     label: 控制台
     both: '交互 &amp; TTY终端 <span class="text-muted">(-i -t)</span>'
@@ -1575,7 +1396,7 @@ formCommand:
     none: 无
   autoRestart:
     label: 自动重启
-    "no": 从不
+    no: 从不
     onFailure: '失败时 <span class="text-muted">(非0退出代码)</span> 总是'
     onFailureCondPrefix: 失败时，最多
     onFailureCondSuffix: |
@@ -1584,23 +1405,6 @@ formCommand:
       other {次}
       }
     always: 总是
-  logDriver:
-    label: 日志驱动
-    placeholder: '例如: syslog; 默认: 主机Docker Daemon所设置的日志驱动'
-  logConfig:
-    label: 日志选项
-    addActionLabel: 添加选项
-    keyPlaceholder: '例如: syslog-facility'
-    valuePlaceholder: '例如: daemon'
-  stopTimeout:
-    label: 停止超时时间
-    helpText: 容器可以在这个时间内自己停止，超时后将被强制终止。
-  stopSignal:
-    label: 停止信号
-    custom:
-      label: 自定义
-    helpText: 容器将会在被停止时收到该信号。
-    prompt: "选择一个停止信号:"
 formContainerLinks:
   title: 链接
   detail: 定义此容器和其他容器的关联关系
@@ -1609,7 +1413,7 @@ formContainerLinks:
     label: 目标容器
   alias:
     label: 名称
-    placeholder: '例如:database'
+    placeholder: 例如:database
   noData: 没有容器链接
   noMatch: 没有匹配当前搜索的链接
 formCount:
@@ -1620,7 +1424,7 @@ formDisks:
   name:
     rootDisk: 根磁盘
     label: 名称
-    placeholder: '例如:data'
+    placeholder: 例如:data
   size:
     label: 大小
     rootDisk: 由系统镜像决定
@@ -1635,17 +1439,17 @@ formDisks:
 formEngineOpts:
   engineInstallUrl:
     label: Docker安装URL
-    placeholder: '例如:http://get.docker.com'
+    placeholder: 例如:http://get.docker.com
     recommended: 推荐
     latest: 最新
   engineStorageDriver:
     label: 存储驱动
-    placeholder: '例如:overlay'
+    placeholder: 例如:overlay
   engineOpts:
     label: 引擎选项
     addActionLabel: 添加引擎选项
-    keyPlaceholder: '例如:log-driver'
-    valuePlaceholder: '例如:syslog'
+    keyPlaceholder: 例如:log-driver
+    valuePlaceholder: 例如:syslog
   engineLabels:
     label: 引擎标签
     addActionLabel: 添加引擎标签
@@ -1654,18 +1458,18 @@ formEngineOpts:
     label: 引擎环境
     addActionLabel: 添加环境变量
     keyLabel: 变量
-    keyPlaceholder: '例如:HTTP_PROXY'
-    valuePlaceholder: '例如:http://your-proxy:8080'
+    keyPlaceholder: 例如:HTTP_PROXY
+    valuePlaceholder: 例如:http://your-proxy:8080
   engineInsecureRegistry:
     label: 非安全镜像库
     addActionLabel: 添加非安全镜像库
     valueLabel: 镜像库域名
-    valuePlaceholder: '例如:registry.example.com'
+    valuePlaceholder: 例如:registry.example.com
   engineRegistryMirror:
     label: 镜像库镜像
     addActionLabel: 添加镜像库镜像
     valueLabel: 镜像URL
-    valuePlaceholder: '例如:https://my-mirror.example.com:5000'
+    valuePlaceholder: 例如:https://my-mirror.example.com:5000
 formEnvVar:
   title: 环境变量
   detail: 在创建时添加的环境变量。
@@ -1681,48 +1485,14 @@ formEnvVar:
     value: 值
 formHealthCheck:
   title: 健康检查
-  detail: 周期性的向容器发送请求，来探测容器是否可以正常响应。不健康的容器将会被负载均衡和服务发现自动剔除。
-  detailDns: 健康检查允许 {appName} 知道外部资源是否健康。不健康的目标将从负载均衡中排除。
   checkType:
     none: 无
-    tcp: 检查TCP连接是否正常
-    http: 检查HTTP请求是否返回正常状态码(2xx或3xx)
-  request:
-    label: HTTP请求
-  method:
-    prompt: "选择HTTP方法"
-  path:
-    placeholder: '请求路径，例如:/healthcheck'
-  version:
-    prompt: "选择HTTP版本"
   host:
     label: 主机头信息
-    placeholder: '例如:www.example.com'
   port:
-    label: 监听端口
-    placeholder: '例如:80'
-  initializingTimeout:
-    label: 初始化超时
-    unit: 毫秒
+    placeholder: 例如:80
   reinitializingTimeout:
     label: 重新初始化超时
-    unit: 毫秒
-  interval:
-    label: 检查间隔
-    unit: 毫秒
-  timeout:
-    label: 检查超时
-    unit: 毫秒
-  healthyThreshold:
-    label: 健康阈值
-    unit: 次成功
-  unhealthyThreshold:
-    label: 不健康阈值
-    unit: 次失败
-  strategy:
-    label: 不健康时
-    none: 不进行操作
-    recreate: 重新创建
 formKeyValue:
   addAction: 添加键值对
   key:
@@ -1813,15 +1583,6 @@ formNetwork:
 formPorts:
   header: 端口映射
   addAction: 添加端口
-  bindAddress:
-    label: 公开主机IP (可选)
-    placeholder: '默认: All'
-  public:
-    label: 公开主机端口
-    placeholder: "例如: 80"
-  private:
-    label: 私有容器端口
-    placeholder: "例如:8080"
   protocol:
     label: 协议
   noPorts: 当前容器没有端口映射
@@ -1835,44 +1596,16 @@ formScale:
   label: 伸缩
   showAdvanced: 伸缩选项
   mode:
-    containerPrefix: "独立容器"
-    servicePrefix: "由"
-    serviceSuffix: |
-      {scale, plural,
-      =1 {个容器组成的服务}
-      other {个容器组成的服务}
-      }
-    globalPrefix: "由每台主机"
-    globalSuffix: |
-      {scale, plural,
-      =1 {个容器组成的全局服务}
-      other {个容器组成的全局服务}
-      }
-    sidekickInactive: '从容器: 数量和调度规则遵照服务'
     sidekickPrefix: '从容器: 数量和调度规则遵照'
 formScheduling:
-  title: 主机调度
-  detail: 选择容器将被部署到哪些主机
   status: |
     {count, plural,
     =0 {没有规则}
     =1 {# 个规则}
     other {# 个规则}
     }
-  canRequestHost:
-    vm: 在指定主机上运行 <b>全部</b> 虚拟机
-    containers: 在指定主机上运行 <b>全部</b> 容器
-  runSpecific: 在指定主机上运行
-  noRules: 没有调度规则，在任何主机上运行容器。
-  autoRun: "自动在符合调度规则的每一台主机上运行:"
-  autoPick:
-    vm: "为每一个虚拟机自动选择符合调度规则的主机:"
-    container: "为每一个容器自动选择符合调度规则的主机:"
-    host: "自动选择符合调度规则的主机:"
-  addRule: 添加调度规则
   condition: 条件
   field: 字段
-  key: 键
   value: 值
   scaling:
     minMaxDetail: 如果设置，用户将无法通过界面或API请求使容器数量低于最小数量或超过最大数量。
@@ -1881,7 +1614,6 @@ formScheduling:
   scaleMin: 最小数量
   scaleMax: 最大数量
   scaleIncrement: 伸缩增量
-  hostMax: 最大主机数
   perHost: 每个主机
 formSecrets:
   title: 密文
@@ -1911,19 +1643,10 @@ formSecurity:
   detail: 授予或限制容器影响所运行主机的能力
   pullImage:
     label: 拉取镜像
-    enableService: 每次新容器创建时
-    enableContainer: 即使主机上已经存在
-    disable: 仅当主机无镜像时
   privileged:
     label: 特权
-    disable: 取消
     enable: '有: 容器有完全主机访问权限'
-  pidMode:
-    label: PID 模式
-    disable: 正常
-    enable: 主机
   memoryLimit:
-    label: 物理内存
     unlimited: 无限制
     set: 限制为
   swapLimit:
@@ -1962,7 +1685,6 @@ formSecurity:
       label: 权限
   memoryReservation:
     label: 内存预留
-    placeholder: 调度器将为容器预留相应数量的内存
   milliCpuReservation:
     label: CPU预留
   isolation:
@@ -1977,7 +1699,7 @@ formServiceLinks:
     label: 目标服务
   name:
     label: 名称
-    placeholder: '例如:database'
+    placeholder: 例如:database
 formSslTermination:
   title: SSL/TLS 证书
   detail: 配置即将应用于加密端口请求的证书。
@@ -1993,21 +1715,6 @@ formSslTermination:
   helpBlock: |
     "注意: 一些旧的 SSL/TLS 客户的不支持 <a href="https://en.wikipedia.org/wiki/Server_Name_Indication" target="_blank">Server Name Indication (SNI)</a> 功能，对于这些客户端将只提供主证书。 对于支持SNI功能的现代客户端将根据匹配结果从备选证书列表中选择一个合适的证书。"
   notNeeded: 没有配置了有效的目标规则的 SSL/TLS 的监听端口。
-formStack:
-  label:
-    reuse: 应用栈
-    create: 应用栈
-  toggle:
-    simple: 自定义
-    reuse: 使用现有的应用栈
-    create: 添加到新应用
-  reuse:
-    prompt: 选择一个应用...
-  create:
-    placeholder: '例如: myapp'
-  errors:
-    noneChosen: 必须选择一个应用
-    validation: '应用: {error}'
 formStickiness:
   title: 目标路由
   detail: 配置负载均衡将请求转发到指定的同一个容器或者到与该负载均衡所在主机相同的容器。
@@ -2034,10 +1741,10 @@ formTargets:
   addAction: 添加目标
   hostname:
     label: 请求头信息
-    placeholder: '例如:svc.com'
+    placeholder: 例如:svc.com
   srcPort:
     label: 源端口
-    placeholder: '例如:80'
+    placeholder: 例如:80
   value:
     label: 目标服务
   path:
@@ -2045,7 +1752,7 @@ formTargets:
     placeholder: '例如: /svc'
   dstPort:
     label: 目标端口
-    placeholder: '例如:8080'
+    placeholder: 例如:8080
   advanced:
     toggle: 显示高级路由选项
     detail: 根据端口、主机头或请求路径等信息将请求转发到不同服务
@@ -2069,13 +1776,8 @@ formUserLabels:
   separator: "="
   value:
     label: 值
-    placeholder: '例如:bar'
+    placeholder: 例如:bar
   protip: '高级技巧: 粘贴一行或多行的 key=value键值对能够批量输入。'
-formMetadata:
-  detail: 设置容器的Metadata。
-  errors:
-    invalidJSON: Metadata的JSON格式不合法。
-    topLevelValueInvalid: JSON格式的Metadata最顶层值应该是个object。
 formUpgrade:
   title: 更新策略
   detail: 配置升级过程中替换容器的策略。
@@ -2103,9 +1805,6 @@ formValueArray:
   valueLabel: 值
   valuePlaceholder: 值
   protip: '高级技巧: 在任意输入栏中粘贴一行或多行的 value能够批量输入。'
-formVirtualMachines:
-  vcpus: vCPU
-  memory: 内存
 formVolumeRow:
   mode:
     volume: 已有的卷
@@ -2178,7 +1877,6 @@ hookPage:
     detailPrefix: "扩缩容动作 {action} "
     detailSuffix: "以步长 {amount}"
   scaleHost:
-    label: 扩缩容主机
     detail: "符合标签 {labels} {action} 以步长 {amount}"
   serviceUpgrade:
     label: 升级服务
@@ -2217,18 +1915,6 @@ hostPod:
     namespace: '命名空间:'
     stack: '应用:'
     standalone: 独立容器
-machineTemplatesPage:
-  title: 添加主机
-  new:
-    title: 从头开始
-    helpText: 创建一台主机，可重用的（主机模版）可以用来创建相同配置的主机。
-    btn: 设置
-  custom: 添加一台运行着Docker的现有自定义主机
-  templateBox:
-    button: 启动
-    labels:
-      region: 区域
-      zone: 区域
 identityBlock:
   loading: 加载中...
 infoMultiStats:
@@ -2248,18 +1934,6 @@ infoMultiStats:
     labelText: 存储
     read: 读
     write: 写
-inputCertificate:
-  key:
-    label: 私钥
-    placeholder: "粘贴或导入私钥，以-----BEGIN RSA PRIVATE KEY-----开头"
-  cert:
-    label: 证书
-    placeholder: "粘贴或导入证书，以-----BEGIN CERTIFICATE-----开头"
-  certChain:
-    label: 证书链
-    placeholder: "可选:粘贴或导入额外的证书链，以-----BEGIN CERTIFICATE-----开头"
-  metaXML:
-    placeholder: "粘贴 IDP Metadata XML"
 inputIdentity:
   placeholder:
     github: 添加GitHub用户或组织名称
@@ -2291,7 +1965,7 @@ loginGithub:
 loginUserPass:
   userLabel: 用户名
   caasLabel: 邮箱
-  userPlaceholder: '例如:jsmith'
+  userPlaceholder: 例如:jsmith
   loginLabel: 登录
   loggingInLabel: 登录中...
   passwordLabel: 密码
@@ -2310,19 +1984,19 @@ machine:
     region:
       label: 区域
     accessKeyHelp: "在此粘贴你的AWS密钥对，我们将用秘钥创建新的实例。"
-    loginAction: '下一步:验证及选择网络'
+    loginAction: 下一步:验证及选择网络
     loadingAvailability: 从EC2加载可用区和VPC信息...
     vpcSection: 可用区 & VPC
     availabilityZone: 可用区
-    securityGroupSelect: '下一步:选择安全组'
+    securityGroupSelect: 下一步:选择安全组
     loadingSecurity: 从EC2加载安全组信息...
     securityGroupSection: 安全组
     securityGroup:
       label: 安全组
       choose: 选择一个存在的安全组
-      defaultExisting: '标准:使用现有的 <code>{groupName}</code> 安全组'
-      defaultCreate: '标准:自动创建新的 <code>{groupName}</code> 安全组'
-      custom: '自定义:选择现有安全组'
+      defaultExisting: 标准:使用现有的 <code>{groupName}</code> 安全组
+      defaultCreate: 标准:自动创建新的 <code>{groupName}</code> 安全组
+      custom: 自定义:选择现有安全组
       updating: 更新安全组...
       creating: 创建安全组...
     portHelp:
@@ -2333,7 +2007,7 @@ machine:
       item1: 从 {appName} 服务器到主机的 <code>TCP</code> 端口 <code>22</code> <span class="text-muted">(SSH连接以安置配置Docker)</span>
       item2: 与其他所有主机之间的 <code>UDP</code> 端口 <code>500</code> 和 <code>4500</code> <span class="text-muted">(用于IPsec网络)</span></li>
       item3: 这些规则 <b>不会</b> 被自动添加
-    setInstanceAction: '下一步:设置实例选项'
+    setInstanceAction: 下一步:设置实例选项
     instanceSection: 实例
     instanceOptionsSection: 实例选项
     instanceType:
@@ -2346,7 +2020,7 @@ machine:
       rancherList: RancherOS AMI列表
     sshUser:
       label: SSH用户
-      placeholder: '例如:ubuntu'
+      placeholder: 例如:ubuntu
     iam:
       label: IAM配置文件
     privateIp:
@@ -2432,7 +2106,6 @@ machine:
     windows:
       windowsHeader: Windows主机
       linuxHeader: Linux主机
-      step1: '运行一台Windows 2016主机并安装最新版本的 <a href="https://msdn.microsoft.com/en-us/virtualization/windowscontainers/quick_start/quick_start_windows_server" target="_blank" rel="noreferrer nofollow">Docker</a> on it.'
       step2: "创建一个 transparent Docker 网络:"
       step3: 复制粘贴下面的命令到Powershell命令行中运行以启动 {appName} agent
   driverDigitalocean:
@@ -2472,14 +2145,14 @@ machine:
       placeholder: 你的Exoscale secret key
       provided: 已提供
     accountHelp: 在此粘贴你的Exoscale密钥对，我们将用秘钥创建新的实例。
-    loginAction: '下一步:验证及选择安全组'
+    loginAction: 下一步:验证及选择安全组
     loadingSecurity: 从Exoscale加载安全组...
     securityGroupSection: 安全组
     securityGroup:
       label: 安全组
-      defaultExisting: '标准:使用现有的 <code>{groupName}</code> 安全组'
-      defaultCreate: '标准:自动创建 <code>{groupName}</code> 安全组'
-      custom: '自定义:选择现有安全组'
+      defaultExisting: 标准:使用现有的 <code>{groupName}</code> 安全组
+      defaultCreate: 标准:自动创建 <code>{groupName}</code> 安全组
+      custom: 自定义:选择现有安全组
       updating: 更新安全组...
       creating: 创建安全组...
     portHelp:
@@ -2490,7 +2163,7 @@ machine:
       item1: 从 {appName} 服务器到主机的 <code>TCP</code> 端口 <code>22</code> <span class="text-muted">(SSH连接以安装配置Docker)</span>
       item2: 与其他所有主机之间的 <code>UDP</code> 端口 <code>500</code> 和 <code>4500</code> <span class="text-muted">(用于IPsec网络)</span>
       item3: 这些规则 <b>不会</b> 被自动添加
-    selectSecurityGroupAction: '下一步:设置实例选项'
+    selectSecurityGroupAction: 下一步:设置实例选项
     loadingInstance: 读取可用实例配置...
     instanceSection: 实例
     instanceOptionsSection: 实例选项
@@ -2570,7 +2243,7 @@ machine:
       unit: MB
     boot2dockerUrl:
       label: 操作系统ISO下载地址
-      placeholder: '缺省:最新的boot2docker镜像'
+      placeholder: 缺省:最新的boot2docker镜像
     schedulingSection: 计划
     dataCenter:
       label: 数据中心
@@ -2728,7 +2401,7 @@ modalContainerToService:
   action: 转换
 modalConfirmDeactivate:
   header: 是否确认要
-  protip: '高级技巧:在点击 {isServiceButton} 时按住 {key}  键以跳过确认操作'
+  protip: 高级技巧:在点击 {isServiceButton} 时按住 {key}  键以跳过确认操作
   cancel: 取消
   buttons:
     project:
@@ -2745,16 +2418,11 @@ modalConfirmRemovePayment:
   title: '是否确认要删除'
   card: '以 {card} 结尾的信用卡'
 modalEditDriver:
-  header:
-    create: 添加Machine 驱动
-    edit: 编辑Machine 驱动
   url:
     label: 下载URL
-    help: 64位Linux Docker-Machine驱动下载地址
   uiUrl:
     label: 自定义UI URL
-    help: '可选:加载该驱动自定义添加主机界面的URL'
-    link: '参考 <a href="https://github.com/rancher/ui-driver-skel" target="_blank">ui-driver-skel</a> 以了解更多信息。'
+    link: 参考 <a href="https://github.com/rancher/ui-driver-skel" target="_blank">ui-driver-skel</a> 以了解更多信息。
   checksum:
     label: 校验和
     help: '可选: 检验下载的驱动是否匹配期望的校验和'
@@ -2793,7 +2461,7 @@ modalRollbackService:
   difference:
     label: 区别
 modalShell:
-  title: '命令行:{instanceName}'
+  title: 命令行:{instanceName}
 modalShortcuts:
   world: 世界
   time: 时间
@@ -2806,11 +2474,10 @@ modalShortcuts:
   c: 容器
   d: DNS
   e: 管理集群与环境
-  h: 主机
   k: API 密钥
   other: 其他的东西
   g: 切换分组视图
-  "n": "添加新的[the current resource]"
+  n: "添加新的[the current resource]"
   s: 切换系统视图
   t: 下一页 »
   v: 数据卷
@@ -2860,7 +2527,6 @@ newCatalog:
   selectVersionAdd: 选择一个模板版本部署
   selectVersionUpgrade: 选择一个模板版本升级
   selectVersionConfigure: 选择一个模板版本设置
-  newStack: 新应用栈
   config: 配置选项
   unknownType: "未识别问题类型:"
   startService: 创建后启动服务
@@ -2869,9 +2535,6 @@ newCatalog:
   noConfig: 该模板没有配置选项
 newContainer:
   add:
-    container: 添加容器
-    service: 添加服务
-    globalService: 添加全局服务
     sidekick: '添加从容器'
     sidekickName: '添加 "{name}" 的从容器'
   upgrade:
@@ -2884,9 +2547,9 @@ newContainer:
   saveUpgrade: 升级
   saveNew: 启动
   name:
-    placeholder: '例如:myapp'
+    placeholder: 例如:myapp
   description:
-    placeholder: '例如:我的应用'
+    placeholder: 例如:我的应用
   environment:
     label: 环境变量
     addAction: 添加变量
@@ -2925,11 +2588,7 @@ newReceiver:
     mostRecent: 最近创建的主机
     leastRecent: 最旧的主机
   hostSelector:
-    label: 主机选择器
     addActionLabel: 添加选择器标签
-    help:
-      up: 符合标签的主机将被作为模板用于创建新的 {by, plural, =1 {host} other {hosts}}.
-      down: 符合标签的主机在成为缩容时的候选主机.
   image:
     label: Docker镜像名称
   service:
@@ -2953,17 +2612,6 @@ newReceiver:
     label: 镜像标签
     placeholder: "例如: latest"
     help: 仅当镜像库中对应标签的镜像更新时才会触发服务更新.
-newSecret:
-  title:
-    edit: 编辑密文
-    add: 添加密文
-  name:
-    placeholder: '例如: api-token'
-  description:
-    placeholder: '例如: Secret token for the API'
-  value:
-    label: 密文值
-    placeholder: 密文值
 orchestrationWelcome:
   simple:
     title: 简单
@@ -2987,16 +2635,6 @@ pagination:
     =0 {无证书}
     =1 {{count} {count, plural, =1 {个证书} other {个证书}}}
     other {{count}个证书中的 {from} - {to}}}
-  container: |
-    {pages, plural,
-    =0 {无容器}
-    =1 {{count} {count, plural, =1 {个容器} other {个容器}}}
-    other {{count}个容器中的 {from} - {to}}}
-  containerService: |
-    {pages, plural,
-    =0 {无容器 / 服务}
-    =1 {{count} {count, plural, =1 {个容器 / 服务} other {个容器 / 服务}}}
-    other {{count}个容器 / 服务中的 {from} - {to}}}
   dnsRecord: |
     {pages, plural,
     =0 {无DNS记录}
@@ -3022,11 +2660,6 @@ pagination:
     =0 {无实例}
     =1 {{count} {count, plural, =1 {个实例} other {个实例}}}
     other {{count}个实例中的 {from} - {to}}}
-  host: |
-    {pages, plural,
-    =0 {无主机}
-    =1 {{count} {count, plural, =1 {个主机} other {个主机}}}
-    other {{count}个主机中的 {from} - {to}}}
   link: |
     {pages, plural,
     =0 {无链接}
@@ -3037,21 +2670,11 @@ pagination:
     =0 {无负载均衡}
     =1 {{count} {count, plural, =1 {个负载均衡} other {个负载均衡}}}
     other {{count}个负载均衡中的 {from} - {to}}}
-  mounts: |
-    {pages, plural,
-    =0 {无挂载}
-    =1 {{count} {count, plural, =1 {个挂载} other {个挂载}}}
-    other {{count}个挂载中的 {from} - {to}}}
   port: |
     {pages, plural,
     =0 {无端口}
     =1 {{count} {count, plural, =1 {个端口} other {个端口}}}
     other {{count}个端口中的 {from} - {to}}}
-  project: |
-    {pages, plural,
-    =0 {无环境}
-    =1 {{count} {count, plural, =1 {个环境} other {个环境}}}
-    other {{count}个环境中的 {from} - {to}}}
   rule: |
     {pages, plural,
     =0 {无规则}
@@ -3067,8 +2690,6 @@ pagination:
     =0 {没有卷}
     =1 {{count} {count, plural, =1 {个卷} other {个卷}}}
     other {{count}个卷中的 {from} - {to}}}
-  containerHighlightSubset: "<b>{count}个</b>容器中的<b>{subset}</b>"
-  containerNoSubset: "0 到 {count} 个容器"
 projectRow:
   none: 无描述
   orchestration: 编排
@@ -3103,8 +2724,8 @@ saveCancel:
   cancel: 取消
 schema:
   inputBoolean:
-    "y": "是"
-    "n": "否"
+    y: "是"
+    n: "否"
   inputCertificate:
     prompt: 选择证书...
   inputContainer:
@@ -3155,9 +2776,6 @@ siteAccess:
   users: 用户
   groups: 组
   organizations: 组织
-stackRow:
-  label: '应用: {name}'
-  standalone: 独立容器
 svgServiceContainer:
   sidekicks: 从容器
 tableCountSelect:
@@ -3191,9 +2809,9 @@ upgradeBtn:
 viewEditDescription:
   form:
     name:
-      placeholder: '例如:lab'
+      placeholder: 例如:lab
     description:
-      placeholder: '例如:开发实验环境'
+      placeholder: 例如:开发实验环境
 viewEditProject:
   showEdit:
     edit: "编辑环境"
@@ -3254,7 +2872,7 @@ volumesPage:
       noData: 没有挂载
 vmConsole:
   header: "控制台:"
-  protip: '高级技巧:启动命令行时按下 {key} 键可在新窗口中打开.'
+  protip: 高级技巧:启动命令行时按下 {key} 键可在新窗口中打开.
   canvas: 暂不提供Canvas支持
   footerActions:
     buttonSend: 发送Ctrl-Alt-Delete
@@ -3270,27 +2888,11 @@ waitKubernetes:
   createStack: '创建 Kubernetes 系统应用栈'
   startServices: '启动服务'
   waitApi: '等待 Kubernetes API'
-
-##############################
-# Mixins
-##############################
 containerChoices:
-  hostGroup: '主机:{name}'
-  hostGroupWithState: '主机:{name}{state}'
-  unknownHost: '主机:???'
+  hostGroup: 主机:{name}
+  hostGroupWithState: 主机:{name}{state}
+  unknownHost: 主机:???
   containerOption: "{name}"
-driver:
-  multiHostNames: "主机将被命名为 <b>{first}</b> &mdash; <b>{last}</b>"
-
-##############################
-# Services
-##############################
-allServices:
-  stackGroup: '应用:{name}'
-
-##############################
-# Navigation
-##############################
 nav:
   srToggleDropdown: 切换下拉菜单
   environment:
@@ -3299,14 +2901,10 @@ nav:
     all: 所有环境
     your: 你的环境
     selected: 当前环境
-    manage: 环境管理
     edit: '编辑 "{name}"'
-  notReady: 设置中...
   containers:
-    tab: 容器
     systemTab: 系统
     balancers: 均衡器
-    containers: 容器
     dns: 域名解析服务器
     volumes: 数据卷
     k8s: 高级
@@ -3314,21 +2912,11 @@ nav:
     addBalancer: 添加负载均衡
     addDns: 添加DNS记录
     addVolume: 添加卷
-    groupNone: 容器视角
-    groupService: 服务视角
-    groupStack: 应用视角
     importCompose: 导入compose.yml
-  hosts:
-    tab: 主机
-    addHost: 添加主机
   catalog:
     all: 全部
     library: 官方认证
     community: 社区贡献
-  apps:
-    tab: 应用
-    apps: 应用列表
-    launch: 从应用商店添加
   infra:
     tab: 资源
     storagePage: 存储
@@ -3338,27 +2926,13 @@ nav:
     keys: API 密钥
     hooks: Webhooks
     templateKeys: 模板Keys
-  admin:
-    tab: 系统管理
-    audit: 审计日志
-    processes: 系统进程
-    accounts: 账号设置
-    access: 访问控制
-    machine: 主机驱动
-    settings: 系统设置
-    ha: 高可用性
   user:
-    label: '用户菜单:{username}'
+    label: 用户菜单:{username}
     logout: 注销
   userPreferences:
     link: "设定"
-
-##############################
-# Resource Actions
-##############################
 action:
   activate: 激活
-  addContainer: 添加容器
   addSidekick: 添加从容器
   clone: 克隆
   console: 打开控制台
@@ -3371,9 +2945,7 @@ action:
   exportConfig: 导出配置
   garbageCollect: 清理
   logs: 查看日志
-  machineConfig: 主机配置
   pause: 暂停
-  pauseAll: 全部暂停
   remove: 删除
   replay: 重播
   restart: 重启
@@ -3381,19 +2953,13 @@ action:
   rollback: 回滚
   setDefault: 设置为缺省
   start: 启动
-  startAll: 全部启动
   stop: 停止
-  stopAll: 全部停止
   upgrade: 升级
   upgradeOrEdit: 升级/编辑
   viewConfig: 查看配置
   viewGraph: 查看图形
   viewInApi: API查看
   viewInstance: 查看实例
-
-##############################
-# Resource Actions
-##############################
 validation:
   required: '"{key}" 必须设置'
   arrayLength:
@@ -3412,10 +2978,6 @@ validation:
     min: '"{key}" 应当至少为 {val}'
     max: '"{key}" 应当至多为 {val}'
   chars: '"{key}" 包含 {count, plural, =1 {an invalid character} other {# invalid characters}}: {chars}'
-
-##############################
-# Model Properties
-##############################
 model:
   account:
     kind:
@@ -3443,18 +3005,3 @@ model:
     min: 最小数量
     max: 最大数量
     amount: 以
-
-growl:
-  webSocket:
-    connecting:
-      title: WebSocket连接失败
-      warning:  浏览器无法连接WebSocket。如果您在服务器之前设置了反向代理服务器，请确保该反向代理支持WebSocket连接。在此问题解决之前，监控状态、日志和命令行都无法正常工作，UI上显示的数据也无法自动更新。
-      safariCertWarning: 另一种情况可能是因为Safari不支持WebSocket连接到一个自签名证书或者无法识别的证书。请使用http://来代替https://，或者用合法的证书来重新配置服务器。
-      disconnectedWarning: 与服务器的连接断开，正在尝试重连...
-
-##############################
-# Only For Chinese Language
-##############################
-modalWechat:
-  wechat: 微信
-  title: 扫码关注Rancher中国微信技术群
