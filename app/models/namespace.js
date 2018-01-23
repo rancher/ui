@@ -87,7 +87,7 @@ var Namespace = Resource.extend(StateCounts, {
     },
 
     edit() {
-      this.get('modalService').toggleModal('modal-edit-stack', this);
+      this.get('modalService').toggleModal('modal-edit-namespace', this);
     },
 
     exportConfig() {
