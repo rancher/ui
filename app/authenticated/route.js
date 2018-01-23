@@ -64,7 +64,7 @@ export default Route.extend(Preload, {
         this.loadClusters(),
         this.loadProjects(),
         this.loadPreferences(),
-        //this.loadPublicSettings(),
+        this.loadPublicSettings(),
       ]);
     }).catch((err) => {
       return this.loadingError(err, transition);
@@ -142,13 +142,7 @@ export default Route.extend(Preload, {
   },
 
   loadPublicSettings() {
-    return get(this,'globalStore').find('setting', null, {
-      url: 'settings',
-      forceReload: true,
-      filter: {
-        all: 'false'
-      }
-    });
+    return get(this,'globalStore').find('setting', null, { url: 'settings' });
   },
 
   loadSecrets() {
