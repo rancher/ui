@@ -4,7 +4,7 @@
 <td class="pr-10">
   {{#if owner}}
     {{owner.displayName}}
-  {{else if editing}}
+  {{else if (and editing (not resource.id))}}
     {{searchable-select content=userList value=member.role.subjectName}}
   {{else}}
     {{member.role.user.displayName}}
