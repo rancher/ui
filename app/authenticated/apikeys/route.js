@@ -1,10 +1,11 @@
 import { hash } from 'rsvp';
 import Route from '@ember/routing/route';
+import C from 'ui/utils/constants';
 
 export default Route.extend({
   model: function() {
     return hash({
-      environment: this.get('store').findAll('apikey', null, {forceReload: true}),
+      tokens: this.get('globalStore').findAll('token'),
     });
   },
 });

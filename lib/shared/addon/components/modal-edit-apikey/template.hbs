@@ -10,15 +10,9 @@
     </div>
 
     <div class="input-group mt-10">
-      <span class="input-group-addon bg-default">{{t 'editApiKey.publicValue.label'}}</span>
-      <code class="form-control">{{clone.publicValue}}</code>
-      <span class="input-group-addon bg-default">{{copy-to-clipboard clipboardText=clone.publicValue}}</span>
-    </div>
-
-    <div class="input-group mt-10">
-      <span class="input-group-addon bg-default">{{t 'editApiKey.secretValue.label'}}</span>
-      <code class="form-control">{{clone.secretValue}}</code>
-      <span class="input-group-addon bg-default">{{copy-to-clipboard clipboardText=clone.secretValue}}</span>
+      <span class="input-group-addon bg-default">{{t 'editApiKey.token.label'}}</span>
+      <code class="form-control">{{clone.token}}</code>
+      <span class="input-group-addon bg-default">{{copy-to-clipboard clipboardText=clone.token}}</span>
     </div>
 
     <div class="banner bg-warning">
@@ -36,27 +30,20 @@
   {{else}}
     <h2>{{t (if editing 'editApiKey.title.editing' 'editApiKey.title.new')}}</h2>
     <hr/>
-    {{#if editing}}
-      <div class="row">
-        <div class="">
-          <label>{{t 'editApiKey.publicValue.label'}}</label>
-          <div>{{originalModel.publicValue}}</div>
-        </div>
-      </div>
-    {{/if}}
 
-    {{form-name-description
-        model=model
-        namePlaceholder="editApiKey.name.placeholder"
-        descriptionPlaceholder="editApiKey.description.placeholder"
-    }}
+    <div>
+      <label class="acc-label">{{t 'generic.description'}}</label>
+      {{textarea-autogrow
+        id="api-description"
+        value=model.description
+        classNames="form-control no-resize description"
+        rows="1"
+        placeholder='editApiKey.description.placeholder'
+      }}
+    </div>
 
     {{#unless editing}}
-      <div class="row">
-        <div class="">
-          <p class="text-info">{{t 'editApiKey.noteOptional'}}</p>
-        </div>
-      </div>
+      <p class="text-info">{{t 'editApiKey.noteOptional'}}</p>
     {{/unless}}
 
     {{save-cancel editing=editing save="save" cancel="cancel"}}

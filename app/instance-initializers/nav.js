@@ -29,13 +29,6 @@ const rootNav = [
     ctx: [getProjectId],
     submenu: [
       {
-        id: 'infra-keys',
-        localizedLabel: 'nav.infra.keys',
-        icon: 'icon icon-key',
-        route: 'authenticated.project.apikeys',
-        ctx: [getProjectId],
-      },
-      {
         id: 'infra-certificates',
         localizedLabel: 'nav.infra.certificates',
         icon: 'icon icon-certificate',

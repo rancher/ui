@@ -224,29 +224,18 @@ rolesPage:
         addAction: Add Policy
 
 apiPage:
-  header: Environment API Keys
-  actionButton: Add Environment API Key
-  content: |
-    Environment API keys are tied to this specific Environment (<code>{displayName}</code>) and can only manipulate resources within there.  Other accounts with access to this Environment can also manage these keys.
+  header: API & Keys
+  actionButton: Add Key
   currentEndpoint: 'Endpoint:'
+  detail: API Keys are tied to your specific user ({name}) and can create, delete, and manipulate all Clusters and Projects which you have access to.
   table:
     state: State
-    name: Name
+    name: Token Prefix
     description: Description
-    publicValue: Access Key
     created: Created
-    noData: There are no keys for this Environment yet.
-    noName: None
-    noDescription: None
-    noPublicValue: No public value
-  account:
-    header: Account API Keys
-    buttonText: Add Account API Key
-    content:
-      paragraph1: Account API Keys are tied to your specific account
-      paragraph2: "and can create, delete, and manipulate all Environments which you have access to."
-    table:
-      noData: There are no keys for this Account yet.
+    expires:
+      label: Expires
+      never: Never
 
 auditLogsPage:
   header: Audit Logs
@@ -1801,17 +1790,13 @@ editApiKey:
     justCreated: API Key Created
     editing: Edit API Key
     new: New API Key
-  publicValue:
-    label: Access Key (Username)
-  secretValue:
-    label: Secret Key (Password)
-  name:
-    placeholder: e.g. App servers
+  token:
+    label: Bearer Token
   description:
     placeholder: e.g. This key is used by the app servers to deploy containers
-  saveWarning1: Save the keys above!  This is the only time you'll be able to see the secret.
+  saveWarning1: Save the token above!  This is the only time you'll be able to see it.
   saveWarning2: If you lose it, you'll need to create a new API key.
-  noteOptional: Name and/or description are optional to help you remember what it's used for.  You can just create a key by clicking Create.
+  noteOptional: Description is optional to help you remember what it's used for.  You can just create a key by clicking Create.
 
 editCertificate:
   title: Edit Certificate
@@ -4478,6 +4463,8 @@ nav:
     logout: Log Out
   userPreferences:
     link: "Preferences"
+  api:
+    link: "API & Keys"
 
 ##############################
 # Resource Actions
