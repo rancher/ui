@@ -1,0 +1,24 @@
+<section class="header">
+  <h1>Custom Roles</h1>
+</section>
+<section>
+  {{#accordion-list-item
+       title=(t 'formScopedRoles.title' type=type)
+       detail=(t 'formScopedRoles.description' type=type)
+       expandOnInit=true
+       showExpand=false
+  }}
+    <div class="pl-20">
+      {{#each custom as |row|}}
+        <div class="box p-10 mt-5 mb-5">
+          <label>
+            {{input type="checkbox" checked=row.active}} {{row.role.displayName}}
+            <p class="help-block">{{row.role.detail}}</p>
+          </label>
+        </div>
+      {{/each}}
+    </div>
+  {{/accordion-list-item}}
+</section>
+
+{{save-cancel save="save" cancel="goBack" createLabel="generic.save"}}
