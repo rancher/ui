@@ -6,8 +6,10 @@ generic:
   activate: Aktivieren
   all: Alle
   any: Irgendein
+  as: als
   cancel: Abbrechen
   closeModal: Schließen
+  cluster: Cluster
   collapseAll: Alles schliessen
   command: Befehl
   confirm: Bestätigen
@@ -41,7 +43,7 @@ generic:
   moreActions: Weitere Aktionen
   na: 'Keine Angabe'
   name: Name
-  "no": "Nein"
+  no: "Nein"
   noRating: Keine Bewertung
   none: Kein
   ports: Ports
@@ -54,8 +56,9 @@ generic:
   seconds: Sekunden
   select: Markieren
   service: Service
-  stack: Stack
+  services: Dienste
   state: Status
+  tags: Tags
   test: Test
   testing: Testet
   to: Zu
@@ -63,7 +66,7 @@ generic:
   type: Typ
   unknown: Unbekannt
   uuid: UUID
-  "yes": "Ja"
+  yes: "Ja"
 realmNames:
   all: Alle
   usWest: US Westküste
@@ -73,29 +76,19 @@ realmNames:
   euEast: EU Ost
 accountsPage:
   index:
-    header: Konten
-    localLink: Konto hinzufügen
     table:
       id: Id
       kind: Typ
       username: Benutzername
       identity: Identität
-      noData: Noch keine Accounts vorhanden
       noName: Kein
   new:
-    header: Konto hinzufügen
-    errors:
-      usernameReq: Benutzername ist erforderlich.
-      usernameInExists: Benutzername ist bereits vergeben. Bitte einen neuen wählen.
-      pwReq: Passwort wird benötigt.
     form:
       username:
-        labelText: Login Benutzername
         placeholder: "z.B. mmuster"
       password:
         labelText: Passwort
       name:
-        labelText: Name
         placeholder: "z.B. Max Muster"
       type:
         labelText: Account Typ
@@ -313,6 +306,9 @@ authPage:
       pre: Mit Azure authentifizieren
       post: Warte auf Feedback von Azure
   localAuth:
+    header:
+      enabled: 'Lokale Authentifizierung ist aktiviert'
+      disabled: 'Lokale Authentifizierung ist nicht konfiguriert'
     subtext:
       enabled:
         text: '{appName} ist für den Zugriff durch Accounts in der lokalen Datenbank konfiguriert.'
@@ -346,6 +342,10 @@ authPage:
         post: 'Aktiviere...'
   0:
     header: Zugriffskontrolle
+balancerPage:
+  noMatch: Keine Balancer gefunden, die den Suchkriterien entsprechen
+  table:
+    target: Ziel
 catalogPage:
   index:
     header: Katalog
@@ -370,33 +370,11 @@ catalogPage:
       notCompatible: Nicht kompatibel
       alreadyDeployed: Bereits eingesetzt
 certificatesPage:
-  table:
-    cn: Domainname
-    expiresDate: Läuft ab
   detail:
     header: 'Zertifikat: {name}'
-    description: Beschreibung
-    info:
-      labelText: Info
-      valid: Gültiger Beginn
-      expires: Läuft ab
-      algorithm: Algorithmus
-      issuer: Aussteller
-      serialNumber: Seriennummer
-      version: Version
-    domainNames:
-      labelText: Domain Namen
   index:
     header: Zertifikate
     linkTo: Zertifikat hinzufügen
-    table:
-      header:
-        state: Status
-        name: Name
-        domain: Domainname
-        expires: Läuft ab
-      body:
-        noData: Keine Zertifikate vorhanden.
   new:
     header: Zertifikat hinzufügen
     form:
@@ -404,6 +382,20 @@ certificatesPage:
         placeholder: z.B. mydomain.com
       description:
         placeholder: z.B. EV cert for mydomain.com
+clustersPage:
+  newCluster: Cluster hinzufügen
+  cluster:
+    label: Clustername
+  environment:
+    label: Umgebungsname
+  projects:
+    label: Umgebungen
+  cpu:
+    label: CPU
+  memory:
+    label: RAM
+  storage:
+    label: Datenträger
 containerPage:
   header: 'Container: {name}'
   portsTab:
@@ -411,11 +403,15 @@ containerPage:
     hostPrimaryIp: '({ip})'
   linksTab:
     header: Links
+    detail: 'Diese Eigenschaften zeigen die Links zwischen Containern in diesem Container.'
+    noData: Dieser Container hat keine Links
   volumesTab:
     header: Laufwerke
+    detail: 'Diese Eigenschaften zeigen die an Ihren Container angehängten Volumes an.'
     table:
       path: Einhängepunkt
       shared: Geteilt mit
+      writable: Schreibbar
       noMatch: Keine Volumes zur aktuellen Suche gefunden
 containersPage:
   table:
@@ -429,6 +425,7 @@ containerSubpod:
   childContainers: Container
   childSidekicks: Sidekicks
 dnsPage:
+  noData: Es gibt keine DNS-Datensätze zum Anzeigen
   table:
     target: Ziel
 editDns:
@@ -442,8 +439,6 @@ editDns:
     add: Ziel-IP-Adresse hinzufügen
   hostname:
     placeholder: z.B. beispiel.de
-  errors:
-    ipRequired: 'Eine oder mehrere "IP-Zieladressen" werden benötigt'
 editVolume:
   add:
     global: Volume hinzufügen
@@ -463,6 +458,7 @@ editVolume:
     efs: Rancher EFS
     longhorn: Rancher Longhorn
   driverOpts:
+    label: Treiberoptionen
     addAction: Option hinzufügen
 failWhalePage:
   header: Fehler
@@ -495,7 +491,6 @@ helpPage:
       Bevor ein Service oder Container gestartet werden kann, muss mindestens ein Linux Host mit Unterstützung für Docker {minVersion} oder höher verfügbar sein und den {appName} Server via HTTP erreichen können. {appName} unterstützt das Hinzufügen von Linux Hosts in Form von virtuellen oder physikalischen
       Maschinen von beliebigen Cloud Providern, privat gehosteten Clouds oder auch Bare-Metal Systemen.
     contentLink: Mehr erfahren
-    addHostLink: Host hinzufügen
   stacks:
     header: Was sind Stacks und Services?
     content:
@@ -505,7 +500,6 @@ helpPage:
       link: Mehr erfahren
     addServiceLink: Services verwalten
     addCatalogLink: Aus dem Katalog hinzufügen
-    noHosts: Aktuell sind keine Hosts vorhanden. Bitte fügen Sie zunächst einen Host hinzu.
     manageServiceLink: Services verwalten
   issues:
     header:
@@ -550,10 +544,6 @@ hostsPage:
   cloudHostsPage:
     addPage:
       launch: Ausführen
-      header: Host hinzufügen
-      name:
-        label: Servername
-        placeholder: z.B. host01
       transferUnit: TB
       instance: 'Typ:'
       storage: 'Speicher:'
@@ -565,32 +555,12 @@ hostsPage:
       driver: 'Treiber:'
       template: 'Vorlagenname:'
   addContainer: Container hinzufügen
-  index:
-    header: Hosts
-    addHost: Host hinzufügen
-    tooltip:
-      listView: Auflisten
-      groupedView: Gruppierte Stacks & Sidekicks
-    columns:
-      emptyMessage: Noch keine Hosts oder Container vorhanden.
-    table:
-      memory: Arbeitsspeicher
-      docker: Docker
-      instanceState: Container Stati
-      instanceStateWithIcon: Stati
-      noData: Sie haben noch keine Hosts hinzugefügt
-      noMatch: Keine Hosts zur aktuellen Suche gefunden
   new:
     header:
       customText: Eigenen Host hinzufügen
-      text: Host hinzufügen
     manageLink: Vorhandene Machine Treiber verwalten
     custom: Eigenen Host hinzufügen
-    name:
-      placeholder: z.B. host01
   hostPage:
-    header:
-      title: 'Host: {name}'
     limits:
       cpu: 'CPU-Limit:'
       memory: 'Speicherlimit:'
@@ -632,26 +602,6 @@ hostsPage:
           mounts: Einhängepunkte
         body:
           noData: Dieser Host hat noch keine Volumes.
-k8sTab:
-  dashboard:
-    header: Kubernetes Dashboard
-    dashboard:
-      header: Hauptmenü
-      content: Das Kubernetes Dashboard ist ein web-basiertes Benutzerinterface, welches die Verwaltung von Anwendungen und Clustern sowie die Suche nach Fehlern in den laufenden Anwendungen ermöglicht.
-      button: Kubernetes Benutzeroberfläche
-  kubectl:
-    header: Kubernetes Konsole
-    stepOne:
-      generateConfigText: |
-        Klicken Sie <a href="{downloadUrl}" target="_blank"> Kubectl</a> (nur v1. 4 +) auf Ihrer Workstation verwenden die Schaltfläche, um einen API-Schlüssel und eine Konfigurationsdatei zu generieren:
-      generateButton: Konfiguration generieren
-    stepTwo:
-      progress: Generiere...
-    stepThree:
-      helpText: |
-        Fügen Sie das in <code>~/.kube/config</code> hinzu:
-      downloadText: |
-        Dann <a href="{downloadUrl}" target="_blank">laden Sie</a> (wenn benötigt) und führen Sie <code>kubectl</code> aus
 loginPage:
   greeting: "Howdy!<br><span>Willkommen bei {appName}</span>"
   githubMessage: "{appName} nutzt GitHub um Acocunts und Teams zu verwalten.  Klicken Sie den Button um sich einzuloggen und uns lesenden Zugriff auf ihre GitHub Zugangsinformationen zu geben."
@@ -662,19 +612,14 @@ loginPage:
     generic: "Bei der Anmeldung ist ein Problem ({errorCode}) aufgetreten, bitte versuchen Sie es erneut."
   error:
     authFailed: Benutzername oder Passwort falsch.
-    timedOut: Ihre Sitzung ist abgelaufen.  Melden Sie sich erneut an, um fortzufahren.
 machinePage:
-  header: Machine Treiber
   inactive: Inaktiv
-  subtext: "Hier können zusätzliche <code>docker-machine</code> Treiber heruntergeladen und dann im Hosts Dialog verwendet werden."
-  add: Machine Treiber hinzufügen
   builtin: Integriert
 notFoundPage:
   header: "Diese Seite existiert nicht!"
   linkTo: Zur Startseite
 registriesPage:
   index:
-    header: Registries
     linkTo: Registry hinzufügen
     table:
       header:
@@ -682,15 +627,13 @@ registriesPage:
         address: Addresse
         username: Benutzername
         created: Erstellt
-      body:
-        noData: "Sie haben noch keine Registries."
   new:
     header: Registry hinzufügen
     form:
       custom:
         labelText: Addresse
         placeholder: z.B. registry.example.com
-        help: 'Nur der Hostname oder die IP Adresse, ohne Protokoll (https://)'
+        help: Nur der Hostname oder die IP Adresse, ohne Protokoll (https://)
       username:
         labelText: Benutzername
         placeholder: z.B. username
@@ -733,22 +676,42 @@ servicePage:
       description:
         placeholder: z.B. Balancer für mycompany.com
   portsTab:
+    title: Ports
     notActive: Ports sind nur verfügbar wenn der Service aktiv ist.
   type:
+    service: Service
     loadbalancerservice: Load Balancer
+    dnsservice: Alias
+    externalservice-ip: Externe IP
+    externalservice-host: Externer Name
     kubernetesservice: K8s Service
     composeservice: Compose Service
     networkdriverservice: Netzwerk Service
     storagedriverservice: Speicher Service
-settingsPage:
-  header: Einstellungen
+  sidekick:
+    tabHeader: Sidekick
+    header: Service & Sidekicks
+signupPage:
+  form:
+    labels:
+      loginUsername: Name
+      email: E-Mail
+stackPage:
+  loadBalancers:
+    header: Load Balancer
+newStack:
+  files:
+    label: Dateien
+    addActionLabel: Datei hinzufügen
+    uploadActionLabel: Von der Festplatte lesen
+    namePlaceholder: Dateiname
 userPreferencesPage:
   header: Einstellungen
   theme:
     header: Farbschema
     light: Hell
     auto: Automatisch
-    autoDetail: 'Automatisch wird von 18:00 Uhr bis 6:00 Uhr "Dunkel" einstellen'
+    autoDetail: Automatisch wird von 18:00 Uhr bis 6:00 Uhr "Dunkel" einstellen
     dark: Dunkel
   generalInfo:
     header: Mein Konto
@@ -758,8 +721,6 @@ userPreferencesPage:
       label: Benutzername
     email:
       label: E-Mail
-    password:
-      text: Konto bearbeiten
 processesPage:
   header: Prozesse
   tab:
@@ -817,10 +778,6 @@ hostPartial:
   host:
     addCommon:
       quanity: Anzahl
-      new:
-        form:
-          name:
-            placeholder: z.B. host01
 ldap:
   providerName:
     openldap: OpenLDAP
@@ -885,19 +842,9 @@ ldap:
     header: "1. Einen {providerName} Server konfigurieren"
     subtext1: "Geben Sie Adresse, Port und Protokoll für die Verbindung zum {providerName} Server ein. <code>389</code> ist der Stadardport für eine unsichere, <code>636</code> für eine via TLS gesicherte Verbindung."
     subtext2: "{appName} erfordert einen Serviceaccount der lesenden Zugriff auf alle Domains für die eine Anmeldung möglich sein soll. Auf diesem Weg ermitteln wir die Gruppen eines Benutzers sobald diese eine API Abfrage durchführen."
-    hostName:
-      labelText: Hostname oder IP Addresse
     port:
       labelText: Port
       checkbox: TLS
-    serviceUsername:
-      labelText: Service Zugang Benutzername
-    servicePassword:
-      labelText: Service Zugang Passwort
-    userSearchBase:
-      labelText: Basis für Benutzersuche
-      placeholder: "z.B. ou=Benutzer,dc=meinefirma,dc=de"
-      helpText: "Nur Benutzer und Gruppen unterhalb der Basis werden genutzt."
     groupSearchBase:
       placeholder: "z.B. ou=Benutzer,dc=meinefirma,dc=de"
     defaultDomain:
@@ -951,6 +898,7 @@ servicePartial:
 accordionRow:
   status:
     none: Keine
+    error: Fehler
     countConfigured: "{count} konfiguriert"
     standard: Standard
     custom: Individuell angepasst
@@ -973,8 +921,6 @@ caasLogin:
   form:
     email: E-Mail
 catalogSettings:
-  header: Katalog
-  subtext: Kataloge enthalten rancher-compose Templates die es Benutzern erlauben Anwendungen mit wenigen Fragen auszurollen.
   certified:
     header:
       rancher: "{appName} Zertifizierte Bibliothek"
@@ -988,7 +934,6 @@ catalogSettings:
       pl: Templates die von der Community erstellt und gepflegt werden.
   more:
     header: Benutzerdefininert
-    helpText: 'Hier können Sie eigene Kataloge hinzufügen.  Jeder Katalog benötigt einen eindeutigen Namen und eine URL die <code>git clone</code> verarbeiten kann (siehe <a href="https://git-scm.com/docs/git-clone#_git_urls_a_id_urls_a" target="_blank">Git URLs</a> für weitere Informationen).'
     addActionLabel: Katalog hinzufügen
     name:
       label: Name
@@ -1000,9 +945,10 @@ catalogSettings:
       helm: Helm
     branch:
       placeholder: 'z. B. master'
+clusterWelcome:
+  welcome: Willkommen
 confirmDelete:
   title: 'Sind SIe sicher, dass Sie Löschen wollen?'
-  environmentNote: 'Hinweis: Alle Ressourcen in dieser Umgebung werden permanent entfernt, inklusive aller Hosts die durch {appName} erstellt wurden.'
   protip: 'ProTip: Beim Klicken auf Entfernen die {key} Taste gedrückt halten um diese Bestätigung zu überspringen.'
   confirmAction: Löschen
   cancelAction: Abbrechen
@@ -1045,16 +991,12 @@ editAccount:
   title: Zugang bearbeiten
   form:
     name:
-      label: Name
       placeholder: z.B. John Smith
     kind:
       label: Typ des Zugangs
-      user: Anwender
     description:
       label: Beschreibung
       placeholder: z.B. Dieser Zugang ist für John Smith
-    publicValue:
-      label: Login Benutzer
     oldPassword:
       label: Aktuelles Passwort
     newPassword:
@@ -1095,15 +1037,12 @@ editContainer:
     placeholder: z.B. Meine Application
 editHost:
   title: Host bearbeiten
-  hostname:
-    help: Wie vom Betriebssystem gemeldet.
   customName:
     label: Benutzerdefinierter Name
     placeholder: z.B. dev1
     help: Sofern leer, wird der Hostname als Name angezeigt.
   description:
     label: Beschreibung
-    placeholder: z.B. Mein Entwicklungssystem
   ips:
     addActionLabel: IP hinzufügen
     help: Wenn angegeben, wird der Scheduler die veröffentlichten Ports an eine der angegebenen IP-Adressen binden.
@@ -1123,13 +1062,11 @@ editRegistry:
 editService:
   title: Service bearbeiten
 editStack:
-  title: Stack bearbeiten
   name:
     label: Name
     placeholder: z.B. myapp
   description:
     label: Beschreibung
-    placeholder: z.B. MyApp Stack
   group:
     label: Tags
 formatIp:
@@ -1154,9 +1091,6 @@ formCommand:
   workingDir:
     label: Arbeitsverzeichnis
     placeholder: z.B. /myapp
-  user:
-    label: Benutzer
-    placeholder: z.B. apache
   console:
     label: Konsole
     both: 'Interaktiv &amp; TTY <span class="text-muted">(-i -t)</span>'
@@ -1164,7 +1098,7 @@ formCommand:
     none: Kein
   autoRestart:
     label: Automatischer Neustart
-    "no": Nie
+    no: Nie
     onFailure: 'Im  Fall eines Fehlers <span class="text-muted">(non-0 Exitcode)</span>, immer'
     onFailureCondPrefix: Im Fehlerfall, bis zu
     onFailureCondSuffix: |
@@ -1192,7 +1126,7 @@ formDisks:
 formEngineOpts:
   engineInstallUrl:
     label: Docker Installations URL
-    placeholder: 'z.B. http://get.docker.com/'
+    placeholder: z.B. http://get.docker.com/
     recommended: Empfohlen
     latest: Neueste
   engineStorageDriver:
@@ -1209,7 +1143,7 @@ formEngineOpts:
     label: Engine Umgebung
     addActionLabel: Umgebungsvariable hinzufügen
     keyPlaceholder: z.B. HTTP_PROXY
-    valuePlaceholder: 'z.B. http://your-proxy:8080'
+    valuePlaceholder: z.B. http://your-proxy:8080
   engineInsecureRegistry:
     label: Unsichere Registries
     addActionLabel: Unsichere Registry hinzufügen
@@ -1218,35 +1152,12 @@ formEngineOpts:
     label: Registry Spiegel
     addActionLabel: Registry Spiegel hinzufügen
     valueLabel: Spiegel URL
-    valuePlaceholder: 'z.B. https://my-mirror.example.com:5000'
+    valuePlaceholder: z.B. https://my-mirror.example.com:5000
 formHealthCheck:
   checkType:
     none: Keine
-  request:
-    label: HTTP Anfrage
-  method:
-    prompt: "HTTP Method auswählen:"
-  path:
-    placeholder: Request Path z.B. /healthcheck
-  version:
-    prompt: "HTTP Version auswählen:"
-  host:
-    placeholder: z.B. www.example.com
   port:
     placeholder: z.B. 80
-  initializingTimeout:
-    label: Timeout für Initialisierung
-  interval:
-    label: Prüfungsintervall
-  timeout:
-    label: Prüfungs Timeout
-  healthyThreshold:
-    unit: erfolge
-  unhealthyThreshold:
-    unit: fehlschläge
-  strategy:
-    label: Wenn nicht Ordnung
-    none: Nichts unternehmen
 formKeyValue:
   addAction: Schlüsselpaar hinzufügen
   key:
@@ -1277,30 +1188,16 @@ formNetwork:
     label: DNS-Suchdomains
     placeholder: z. B. prod.example.com
 formPorts:
-  private:
-    placeholder: "z.B. 8080"
   protocol:
     label: Protokoll
   noPorts: Dieser Container hat keine Port Mappings.
 formScheduling:
-  canRequestHost:
-    vm: Führe <b>alle</b> virtuellen Maschinen auf einem spezifischen Host aus.
-    containers: Führe <b>alle</b> Container auf einem spezifischen Host aus.
-  runSpecific: Auf einem spezifischen Host ausführen
-  autoRun: "Automatisch auf allen Hosts ausführen die den folgenden Planungsregeln entsprechen:"
-  autoPick:
-    vm: "Für jede virtuelle Maschine automatisch Hosts auswählen, die den folgenden Planungsregeln entsprechen:"
-    container: "Für jeden Container automatisch Hosts auswählen, die den folgenden Planungsregeln entsprechen:"
-    host: "Automatisch Hosts auswählen, die den folgenden Planungsregeln entsprechen:"
-  addRule: Planungsregel hinzufügen
   condition: Bedingung
   field: Feld
-  key: Schlüssel
   value: Wert
 formSecurity:
   privileged:
     label: Privilegiert
-    disable: "Nein"
   shares:
     placeholder: z.B. 1024
   capabilities:
@@ -1381,9 +1278,6 @@ formValueArray:
   addActionLabel: Wert hinzufügen
   valueLabel: Wert
   protip: 'ProTip: Füge mehrere Zeilen mit key=value Paaren in ein beliebiges Feld ein um mehrere Datensätze anzulegen.'
-formVirtualMachines:
-  vcpus: vCPUs
-  memory: Hauptspeicher
 formVolumes:
   value:
     prompt: Einen Container auswählen...
@@ -1430,16 +1324,6 @@ infoMultiStats:
     labelText: Speicherplatz
     read: Lesen
     write: Schreiben
-inputCertificate:
-  key:
-    label: Privater Key
-    placeholder: "Privaten Key hier einfügen, beginnend mit -----BEGIN RSA PRIVATE KEY-----"
-  cert:
-    label: Zertifikat
-    placeholder: "Primäres Zertifikat hier einfügen, beginnend mit -----BEGIN CERTIFICATE-----"
-  certChain:
-    label: Zertifikatskette
-    placeholder: "Optional; Zusätzliche Zertifikatskette hier einfügen, beginnend mit -----BEGIN CERTIFICATE-----"
 inputIdentity:
   placeholder:
     github: Einen GitHub Benutzer oder eine Organisation hinzufügen
@@ -1625,15 +1509,9 @@ modalConfirmDeactivate:
       message: deaktiveren
       button: Deaktivieren
 modalEditDriver:
-  header:
-    create: Machine Treiber hinzufügen
-    edit: Machine Driver bearbeiten
-  url:
-    help: Die URL um die machine Treiber Datei für 64-bit Linux herunterzuladen.
   uiUrl:
     label: Benutzerdefinierte UI URL
-    help: 'Optional: Die URL für den benutzerdefinierten ''Hosts hinzufügen'' Dialog dieses Treibers.'
-    link: 'Siehe <a href="https://github.com/rancher/ui-driver-skel" target="_blank">ui-driver-skel</a> für Hintergrundinformationen.'
+    link: Siehe <a href="https://github.com/rancher/ui-driver-skel" target="_blank">ui-driver-skel</a> für Hintergrundinformationen.
   checksum:
     label: Prüfsumme
 modalProcessError:
@@ -1651,7 +1529,6 @@ newCatalog:
   maintainer: "Verwalter:"
   license: "Lizenz:"
   url: "Projekt URL:"
-  newStack: Neuer Stack
   config: Konfigurationsparameter
   unknownType: "Unbekannter Fragetyp:"
   startService: Services nach der Erstellung starten
@@ -1686,8 +1563,8 @@ saveCancel:
   cancel: Abbrechen
 schema:
   inputBoolean:
-    "y": "Wahr"
-    "n": "Falsch"
+    y: "Wahr"
+    n: "Falsch"
   inputCertificate:
     prompt: Zertifikat auswählen...
   inputEnum:
@@ -1760,8 +1637,6 @@ waitKubernetes:
   createStack: 'Erstelle Kubernetes System-Stack'
   startServices: 'Starte Services'
   waitApi: 'Warte auf Kubernetes API'
-driver:
-  multiHostNames: "Hosts werden umbenannt <b>{first}</b> &mdash; <b>{last}</b>"
 nav:
   srToggleDropdown: Dropdown einblenden
   environment:
@@ -1777,14 +1652,6 @@ nav:
     storagePage: Speicher
     certificates: Zertificate
     registries: Registries
-  admin:
-    tab: Administrator
-    audit: Protokollierung
-    processes: Prozesse
-    accounts: Zugänge
-    access: Zugriffskontrolle
-    machine: Machine Treiber
-    settings: Einstellungen
   user:
     label: 'User Menü: {username}'
     logout: Abmelden
@@ -1797,7 +1664,6 @@ action:
   execute: Shell ausführen
   exportConfig: Konfiguration exportieren
   logs: Logs betrachten
-  machineConfig: Konfiguration der Maschine
   remove: Löschen
   restart: Neustart
   retry: Erneuter Versuch

@@ -19,6 +19,9 @@ export default Resource.extend({
     return get(x, 'subjectKind') === 'User';
   }),
 
+  avatarSrc: function() {
+    return 'data:image/png;base64,' + new Identicon(AWS.util.crypto.md5(this.get('id')||'Unknown'), 80, 0.01).toString();
+  }.property('id'),
 
   displayName: computed('name','username','id', function() {
     let name = get(this, 'name');

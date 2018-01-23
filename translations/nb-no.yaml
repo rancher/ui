@@ -29,7 +29,7 @@ generic:
   moreActions: Flere handlinger
   na: 'Ikke tilgjengelig'
   name: Navn
-  "no": "Nei"
+  no: "Nei"
   none: Ingen
   ports: Porter
   remove: Fjern
@@ -48,29 +48,24 @@ generic:
   type: Type
   unknown: Ukjent
   uuid: UUID
-  "yes": "Ja"
+  yes: "Ja"
 realmNames:
   asia: Asia
 accountsPage:
   index:
-    header: Kontoer
-    localLink: Legg til konto
     table:
       id: ID
       kind: Type
       username: Brukernavn
       identity: Identitet
-      noData: Det finnes ingen kontoer ennå
       noName: Ingen
   new:
-    header: Legg til konto
     form:
       username:
         placeholder: "f.eks onormann"
       password:
         labelText: Passord
       name:
-        labelText: Navn
         placeholder: "f.eks Ola Normann"
       type:
         labelText: Kontotype
@@ -280,31 +275,9 @@ catalogPage:
       notCompatible: Ikke kompatibel
       alreadyDeployed: Allerede distribuert
 certificatesPage:
-  table:
-    cn: Domenenavn
-    expiresDate: Utløper
-  detail:
-    description: Beskrivelse
-    info:
-      labelText: Info
-      expires: Utløper
-      algorithm: Algoritme
-      issuer: Utsteder
-      serialNumber: Serienummer
-      version: Versjon
-    domainNames:
-      labelText: Domenenavn
   index:
     header: Sertifikater
     linkTo: Legge til sertifikat
-    table:
-      header:
-        state: Tilstand
-        name: Navn
-        domain: Domenenavn
-        expires: Utløper
-      body:
-        noData: Du har ikke noen sertifikater ennå.
   new:
     header: Legge til sertifikat
     form:
@@ -362,7 +335,6 @@ helpPage:
   host:
     header: Hva er en vert?
     contentLink: Få mer informasjon
-    addHostLink: Legg til vert
   stacks:
     content:
       link: Få mer informasjon
@@ -403,8 +375,6 @@ helpPage:
 hostsPage:
   cloudHostsPage:
     addPage:
-      name:
-        placeholder: f.eks tjener01
       transferUnit: TB
       instance: 'Type:'
       storage: 'Lagring:'
@@ -416,20 +386,7 @@ hostsPage:
       driver: 'Driver:'
       template: 'Malnavn:'
   addContainer: Legge til en beholder
-  index:
-    header: Verter
-    addHost: Legge til vert
-    table:
-      memory: RAM
-      docker: Docker
-  new:
-    header:
-      text: Legge til vert
-    name:
-      placeholder: f.eks tjener01
   hostPage:
-    header:
-      title: 'Vert: {name}'
     limits:
       cpu: 'Grense for CPU:'
       memory: 'Minnegrense:'
@@ -456,22 +413,13 @@ hostsPage:
           container: Beholder
         body:
           noData: Denne verten har ikke noen porter
-k8sTab:
-  dashboard:
-    dashboard:
-      header: Instrumentpanel
-  kubectl:
-    stepTwo:
-      progress: Genererer...
 loginPage:
   shibbolethError:
     401: "Uautorisert"
   error:
     authFailed: Feil brukernavn og/eller passord.
-    timedOut: Økten ble tidsavbrutt.  Logg inn igjen for å fortsette.
 machinePage:
   inactive: Inaktiv
-  add: Legg til maskindriver
   builtin: Innebygd
 notFoundPage:
   linkTo: Gå til startsiden
@@ -509,8 +457,6 @@ servicePage:
         placeholder: f.eks nettsted
       description:
         placeholder: f.eks lastbalanserer for mittfirma.no
-settingsPage:
-  header: Innstillinger
 newStack:
   name:
     placeholder: f.eks minapplikasjon
@@ -531,13 +477,6 @@ waitingPage:
   hosts:
     setup:
       kubernetes: Definer Kubernetes
-hostPartial:
-  host:
-    addCommon:
-      new:
-        form:
-          name:
-            placeholder: f.eks tjener01
 ldap:
   header:
     enabled:
@@ -552,10 +491,6 @@ ldap:
         other {# brukere}
         }.
   accessConfig:
-    hostName:
-      labelText: Vertsnavn eller IP-adresse
-    userSearchBase:
-      placeholder: "f.eks ou=Brukere,dc=mittfirma,dc=no"
     groupSearchBase:
       placeholder: "f.eks ou=Gruppe,dc=mittfirma,dc=no"
     defaultDomain:
@@ -576,7 +511,6 @@ servicePartial:
   noContainers:
     label: Ingen beholdere ennå.
 catalogSettings:
-  header: Katalog
   more:
     addActionLabel: Legge til katalog
     name:
@@ -626,12 +560,9 @@ editAccount:
   title: Rediger konto
   form:
     name:
-      label: Navn
       placeholder: f.eks Ola Normann
     kind:
       label: Kontotype
-      user: Bruker
-      admin: Administrator
     description:
       label: Beskrivelse
       placeholder: f.eks denne kontoen er for Ola Normann
@@ -672,13 +603,11 @@ editContainer:
 editHost:
   hostname:
     label: Vertsnavn
-    help: Som rapportert av vertsoperativsystemet.
   customName:
     label: Egendefinert navn
     placeholder: f.eks dev1
   description:
     label: Beskrivelse
-    placeholder: f.eks min utviklingsvert
   labels:
     label: Etiketter
   ips:
@@ -737,16 +666,13 @@ formCommand:
   workingDir:
     label: Arbeidsmappe
     placeholder: f.eks /minapplikasjon
-  user:
-    label: Bruker
-    placeholder: f.eks apache
   console:
     label: Konsoll
     terminal: 'TTY <span class="text-muted">(-t)</span>'
     none: Ingen
   autoRestart:
     label: Automatisk omstart
-    "no": Aldri
+    no: Aldri
     always: Alltid
 formContainerLinks:
   addActionLabel: Legg til kobling
@@ -770,7 +696,7 @@ formDisks:
 formEngineOpts:
   engineInstallUrl:
     label: Docker installasjons URL
-    placeholder: 'f.eks http://get.docker.com/'
+    placeholder: f.eks http://get.docker.com/
   engineOpts:
     valuePlaceholder: f.eks syslog
   engineLabels:
@@ -778,37 +704,16 @@ formEngineOpts:
   engineEnv:
     addActionLabel: Legg til miljøvariabel
     keyPlaceholder: f.eks HTTP_PROXY
-    valuePlaceholder: 'f.eks http://din-proxy:8080'
+    valuePlaceholder: f.eks http://din-proxy:8080
   engineInsecureRegistry:
     valuePlaceholder: f.eks registry.eksempel.no
   engineRegistryMirror:
-    valuePlaceholder: 'f.eks https://min-klone.eksempel.no:5000'
+    valuePlaceholder: f.eks https://min-klone.eksempel.no:5000
 formHealthCheck:
   checkType:
     none: Ingen
-  version:
-    prompt: "Velg en HTTP-versjon:"
-  host:
-    placeholder: f.eks eksempel.no
   port:
     placeholder: f.eks 80
-  initializingTimeout:
-    unit: ms
-  reinitializingTimeout:
-    unit: ms
-  interval:
-    unit: ms
-  timeout:
-    unit: ms
-  healthyThreshold:
-    label: Marker som frisk etter
-    unit: vellykkede
-  unhealthyThreshold:
-    label: Marker som problematisk etter
-    unit: problemer
-  strategy:
-    label: Når er det et problem
-    none: Ikke utfør noen handling
 formKeyValue:
   key:
     label: Nøkkel
@@ -846,14 +751,8 @@ formNetwork:
     label: Søk i domener
     placeholder: f.eks produksjon.eksempel.no
     addActionLabel: Legg til domene
-formPorts:
-  public:
-    placeholder: "f.eks 80"
-  private:
-    placeholder: "f.eks 8080"
 formScheduling:
   field: Felt
-  key: Nøkkel
   value: Verdi
 formSecrets:
   name:
@@ -868,8 +767,6 @@ formSecrets:
   mode:
     placeholder: f.eks 0444 (oktale)
 formSecurity:
-  privileged:
-    disable: Nei
   cpuPinning:
     placeholder: 'f.eks 0,1,3; Standard: Alle'
   shares:
@@ -894,9 +791,6 @@ formServiceLinks:
 formSslTermination:
   alternateCerts: Alternative sertifikater
   addAlternate: Legg til alternativt sertifikat
-formStack:
-  create:
-    placeholder: f.eks minapplikasjon
 formStickiness:
   none: Ingen
   domain: Domene
@@ -924,9 +818,6 @@ formUserLabels:
 formValueArray:
   addActionLabel: Legge til verdi
   valueLabel: Verdi
-formVirtualMachines:
-  vcpus: vCPUer
-  memory: Minne
 hookPage:
   fields:
     detail:
@@ -961,12 +852,6 @@ infoMultiStats:
     labelText: Lagring
     read: Les
     write: Skriv
-inputCertificate:
-  key:
-    label: Privatnøkkel
-    placeholder: "Lim inn i den private nøkkelen som starter med---BEGIN RSA PRIVATE KEY---"
-  cert:
-    label: Sertifikat
 inputIdentity:
   dropdownLabel:
     groups: Dine grupper
@@ -1214,9 +1099,6 @@ newReceiver:
     placeholder: f.eks 20
   tag:
     placeholder: "f.eks siste"
-newSecret:
-  name:
-    placeholder: f.eks api-token
 pageFooter:
   issues: Rapporter et problem
 projectRow:
@@ -1238,8 +1120,8 @@ saveCancel:
   cancel: Avbryt
 schema:
   inputBoolean:
-    "y": "Sann"
-    "n": "Falsk"
+    y: "Sann"
+    n: "Falsk"
   inputCertificate:
     prompt: Velg et sertifikat...
   inputEnum:

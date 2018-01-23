@@ -36,6 +36,7 @@ Router.map(function() {
     this.route('dummy-dev', {path: '/dev'});
 
     this.route('prefs');
+    this.route('apikeys');
 
     // Global
     this.route('host-new', {path: '/add-host'});
@@ -133,11 +134,6 @@ Router.map(function() {
       });
 
       // Resources
-      // @TODO-2.0
-      this.route('apikeys', {path: '/api/keys'}, function() {
-        this.route('account', {path: '/account'});
-        this.route('project', {path: '/project'});
-      });
 
       // @TODO-2.0
       this.route('stack', {path: '/stack/:stack_id', resetNamespace: true}, function() {

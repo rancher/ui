@@ -2,6 +2,7 @@ import { alias } from '@ember/object/computed';
 import { inject as service } from '@ember/service';
 import Controller, { inject as controller } from '@ember/controller';
 import C from 'ui/utils/constants';
+import { get, computed } from '@ember/object';
 
 export default Controller.extend({
   access:            service(),
@@ -26,6 +27,7 @@ export default Controller.extend({
       name:           'name',
       sort:           ['name','id'],
       translationKey: 'apiPage.table.name',
+      width:          150,
     },
     {
       name:           'description',
@@ -33,48 +35,35 @@ export default Controller.extend({
       translationKey: 'apiPage.table.description',
     },
     {
-      name:           'publicValue',
-      sort:           ['publicValue','id'],
-      translationKey: 'apiPage.table.publicValue',
-    },
-    {
       name:           'created',
       sort:           ['created','name','id'],
       translationKey: 'apiPage.table.created',
-      width:          150,
+      width:          200,
+    },
+    {
+      name:           'expires',
+      sort:           ['expiresAt','name','id'],
+      translationKey: 'apiPage.table.expires.label',
+      width:          200,
     },
   ],
 
-  filtered: function() {
-    var me = this.get(`session.${C.SESSION.ACCOUNT_ID}`);
-    return this.get('model.account').filter((row) => {
-      return row.get('accountId') === me;
-    });
-  }.property('model.account.@each.accountId'),
-
   actions: {
-    applyBulkAction(name, selectedElements) {
-      this.get('bulkActionHandler')[name](selectedElements);
-    },
-
     newApikey: function(kind) {
-      var cred;
-      if ( kind === 'account' )
-      {
-        cred = this.get('globalStore').createRecord({
-          type: 'apikey',
-          accountId: this.get(`session.${C.SESSION.ACCOUNT_ID}`),
-        });
-      }
-      else
-      {
-        cred = this.get('store').createRecord({
-          type: 'apikey',
-          accountId: this.get('scope.currentProject.id'),
-        });
-      }
+      const cred = this.get('globalStore').createRecord({
+        type: 'token',
+        ttl: 365*86400*1000,
+      });
 
       this.get('modalService').toggleModal('modal-edit-apikey', cred);
     },
   },
+
+  rows: computed('model.tokens.[]', function() {
+    return get(this,'model.tokens').filter((token) => {
+      const labels = get(token, 'labels');
+      const expired = get(token, 'expired');
+      return !expired || !labels || !labels['ui-session'];
+    });
+  }),
 });

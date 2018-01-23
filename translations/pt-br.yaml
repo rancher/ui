@@ -13,10 +13,12 @@ generic:
   created: Criado
   default: Padrão
   description: Descrição
+  details: Detalhes
   disable: Desativar
   disabled: Desativado
   domainName: Nome do Domínio
   enabled: Ativado
+  environment: Ambiente
   healthy: Sem erros
   id: Identificador
   image: Imagem
@@ -35,29 +37,24 @@ generic:
   saved: Salvo
   saving: Salvando
   state: Estado
+  to: Para
   type: Tipo
   unknown: Desconhecido
 accountsPage:
   index:
-    header: Contas
-    localLink: Adicionar Conta
     table:
       id: Identificador
       kind: Tipo
       username: Nome de Usuário
       identity: Identidade
-      noData: Não há contas ainda
       noName: Nenhum
   new:
-    header: Adicionar Conta
     form:
       username:
-        labelText: Nome de usuário de Login*
         placeholder: "p.ex. joaosilva"
       password:
         labelText: Senha*
       name:
-        labelText: Nome
         placeholder: "p.ex. João da Silva"
       type:
         labelText: Tipo de Conta
@@ -112,6 +109,9 @@ auditLogsPage:
     resourceTypeId: "ID:Tempo de Recurso"
     identity: Identidade
 authPage:
+  shibboleth:
+    enabled:
+      header: "{providerName} está habilitado"
   root:
     header: Access Control
   github:
@@ -208,33 +208,11 @@ catalogPage:
       singular: Não há templates compatíveis.
       plural: Não há templates compatíveis neste catálogo.
 certificatesPage:
-  table:
-    cn: Nome do domínio
-    expiresDate: Expira
   detail:
     header: 'Certificado:'
-    description: Descrição
-    info:
-      labelText: Informação
-      valid: Início Validade
-      expires: Expira
-      algorithm: Algoritmo
-      issuer: Emissor
-      serialNumber: Número de série
-      version: Versão
-    domainNames:
-      labelText: Nomes de domínio
   index:
     header: Certificados
     linkTo: Adicionar Certificado
-    table:
-      header:
-        state: Estado
-        name: Nome
-        domain: Nome do domínio
-        expires: Expira
-      body:
-        noData: Você não tem nenhum certificados ainda.
   new:
     header: Adicionar Certificado
     form:
@@ -269,7 +247,6 @@ helpPage:
       Antes de adicionar o seu primeiro serviço ou iniciar um contêiner, você deve adicionar pelo menos um único host Linux que suporta Docker {minVersion} ou superior e ser capaz de alcançar o {appName} servidor via HTTP. {appName} suporta adicionando hosts Linux sob a forma de um virtual ou físico
       máquina de provedores de nuvem pública, host nuvem privada, ou até mesmo servidores bare metal.
     contentLink: Saiba Mais
-    addHostLink: Adicionar Host
   stacks:
     header: O que são pilhas e serviços?
     content:
@@ -279,7 +256,6 @@ helpPage:
       link: Saiba Mais
     addServiceLink: Gerenciar serviços
     addCatalogLink: Adicionar do Catálogo
-    noHosts: Você não tem atualmente nenhum host. Por favor, adicione um host antes de adicionar serviços.
     manageServiceLink: Gerenciar Serviços
   issues:
     header:
@@ -317,16 +293,7 @@ helpPage:
       No Rancher Labs nós fornecemos, suporte comercial de nível empresarial para {appName}, incluindo uma equipe de suporte 24x7 disponível e correções de bugs prioritários.  Além disso, oferecemos implementação, integração e serviços de consultoria para organizações que procuram implementar e escala {appName}.  Para mais informações sobre qualquer um desses serviços, por favor enviar e-mail nossa equipe de vendas. <a href="mailto:sales@rancher.com">sales@rancher.com</a>
 hostsPage:
   addContainer: Adicionar Contêiner
-  index:
-    addHost: Adicionar Host
-    tooltip:
-      listView: Lista
-      groupedView: Pilhas Agrupadas & Sidekicks
-    columns:
-      emptyMessage: Sem hosts ou contêineres ainda.
   new:
-    header:
-      text: Adicionar Host
     manageLink: Gerenciar machine drivers disponíveis
   hostPage:
     infoMultiStats:
@@ -350,17 +317,6 @@ hostsPage:
           mounts: Montagens
         body:
           noData: Este host não tem nenhum volumes.
-k8sTab:
-  kubectl:
-    stepOne:
-      generateButton: Gerar Configuração
-    stepTwo:
-      progress: Gerando...
-    stepThree:
-      helpText: |
-        Colocar isso em <code>~/.kube/config</code>:
-      downloadText: |
-        Em seguida <a href="{downloadUrl}" target="_blank">baixar</a> (se necessário) e execute <code>kubectl</code>
 loginPage:
   greeting: "Olá!<br>Bem-vindo à {appName}"
   githubMessage: "{appName} usar GitHub para gerenciar contas e equipes.  Clique no botão a seguir para entrar e dar-nos acesso somente leitura às suas informações básicas sobre a conta GitHub."
@@ -369,7 +325,6 @@ notFoundPage:
   linkTo: Ir para Página Inicial
 registriesPage:
   index:
-    header: Registros
     linkTo: Adicionar Registro
     table:
       header:
@@ -377,8 +332,6 @@ registriesPage:
         address: Endereço
         username: Nome de usuário
         created: Criado
-      body:
-        noData: "Você não tem nenhum registros ainda."
   new:
     header: Adicionar Registro
     form:
@@ -422,10 +375,6 @@ hostPartial:
   host:
     addCommon:
       quanity: Quantidade
-      new:
-        form:
-          name:
-            placeholder: p.ex. host01
 ldap:
   accessEnabled:
     header: Autenticação
@@ -459,14 +408,8 @@ ldap:
     header: "1. configurar um servidor {providerName}"
     subtext1: "Digite o endereço, porta e protocolo para conectar ao seu servidor {providerName}.  <code>389</code> ié a porta padrão para inseguro, <code>636</code> para TLS."
     subtext2: "{appName} precisa de uma conta de serviço que tenha acesso (somente leitura) a todos os domínios que será capaz de fazer login, para que possamos determinar quais grupos um usuário é membro de quando eles fazem um pedido com uma Chave de API."
-    hostName:
-      labelText: Nome do Host ou Endereço de IP*
     port:
       labelText: Porta
-    serviceUsername:
-      labelText: Nome de usuário da Conta de Serviço*
-    servicePassword:
-      labelText: Senha da Conta de Serviço*
     defaultDomain:
       helpText: "Este domínio será usado se um usuário fizer logon sem especificar um."
       labelText: Domínio de logon padrão*
@@ -512,8 +455,6 @@ servicePartial:
     inactive:
       start: Iniciar
 catalogSettings:
-  header: Catálogo
-  subtext: Catálogos contêm templates rancher-compose que permitem aos usuários facilmente implantar aplicativos, respondendo a algumas perguntas
   community:
     header:
       rancher: Contribuição da Comunidade
@@ -523,11 +464,9 @@ catalogSettings:
       pl: Templates criados e mantidos pelos membros da comunidade.
   more:
     header: Mais
-    helpText: 'Você pode definir suas próprias fontes de catálogo personalizado aqui.  Cada um precisa de um nome único e uma URL que <code>git clone</code> pode aguentar (veja o <a href="https://git-scm.com/docs/git-clone#_git_urls_a_id_urls_a" target="_blank">docs</a> para mais informações).'
     addActionLabel: Adicionar Catálogo
 confirmDelete:
   title: 'Tem certeza de que deseja excluir'
-  environmentNote: 'Nota: Todos os recursos dentro deste ambiente serão removidos permanentemente, incluindo todas as máquinas que foram criadas através {appName}.'
   protip: 'Dica: Mantenha a chave {key} enquanto clicar Delete para ignorar essa confirmação.'
   confirmAction: Excluir
   cancelAction: Cancelar
@@ -567,16 +506,12 @@ editAccount:
   title: Editar Conta
   form:
     name:
-      label: Nome
       placeholder: p.ex. João da Silva
     kind:
       label: Tipo de Conta
-      user: Usuário
     description:
       label: Descrição
       placeholder: p.ex. Esta conta é para João da Silva
-    publicValue:
-      label: Nome de Usuário de Login
     oldPassword:
       label: Senha Atual
     newPassword:
@@ -619,14 +554,12 @@ editHost:
   title: Editar Host
   hostname:
     label: Nome do Host
-    help: Conforme relatado pelo sistema operacional do host.
   customName:
     label: Nome Personalizado
     placeholder: p.ex. dev1
     help: Se for deixado vazio, será mostrado o nome do host como o nome.
   description:
     label: Descrição
-    placeholder: p.ex. Meu host de desenvolvimento
   labels:
     label: Rótulos
 editRegistry:
@@ -645,13 +578,11 @@ editRegistry:
 editService:
   title: Editar Serviço
 editStack:
-  title: Editar Pilha
   name:
     label: Nome
     placeholder: p.ex. myapp
   description:
     label: Descrição
-    placeholder: p.ex. Pilha MyApp
 formatIp:
   noIp: Nenhum
 formCommand:
@@ -661,16 +592,13 @@ formCommand:
   workingDir:
     label: Dir. de Trabalho
     placeholder: p.ex. /myapp
-  user:
-    label: Usuário
-    placeholder: p.ex. apache
   console:
     both: 'Interativo &amp; TTY <span class="text-muted">(-i -t)</span>'
     interactive: 'Interativo <span class="text-muted">(-i)</span>'
     none: Nenhum
   autoRestart:
     label: Reinício Automático
-    "no": Nunca
+    no: Nunca
     onFailure: 'Em caso de falha <span class="text-muted">(non-0 exit code)</span>, para sempre'
     onFailureCondPrefix: Em caso de falha, até
     onFailureCondSuffix: |
@@ -694,7 +622,7 @@ formDisks:
 formEngineOpts:
   engineInstallUrl:
     label: URL de instalação do Docker
-    placeholder: 'p.ex. http://get.docker.com/'
+    placeholder: p.ex. http://get.docker.com/
   engineStorageDriver:
     label: Driver de Armazenamento
     placeholder: p.ex. overlay
@@ -711,7 +639,7 @@ formEngineOpts:
     label: Ambiente de Engine
     addActionLabel: Adicionar Variável de Ambiente
     keyPlaceholder: p.ex. HTTP_PROXY
-    valuePlaceholder: 'p.ex. http://your-proxy:8080'
+    valuePlaceholder: p.ex. http://your-proxy:8080
   engineInsecureRegistry:
     label: Registros Inseguros
     addActionLabel: Adicionar Registro Inseguro
@@ -721,37 +649,14 @@ formEngineOpts:
     label: Espelhos de Registro
     addActionLabel: Adicionar Espelho de Registro
     valueLabel: URL Espelho
-    valuePlaceholder: 'p.ex. https://meu-espelho.exemplo.com:5000'
+    valuePlaceholder: p.ex. https://meu-espelho.exemplo.com:5000
 formHealthCheck:
   checkType:
     none: Nenhum
-    tcp: Conexões TCP Abertas
-  request:
-    label: Pedido HTTP
-  method:
-    prompt: "Selecione um Método HTTP:"
-  path:
-    placeholder: Caminho do pedido p.ex. /healthcheck
-  version:
-    prompt: "Selecione uma Versão HTTP:"
   host:
     label: Cabeçalho do Host
-    placeholder: p.ex. www.exemplo.com
   port:
     placeholder: p.ex. 80
-  initializingTimeout:
-    label: Timeout de Inicialização
-  interval:
-    label: Intervalo de Verificação
-  timeout:
-    label: Timeout de Verificação
-  healthyThreshold:
-    unit: sucessos
-  unhealthyThreshold:
-    unit: falhas
-  strategy:
-    label: Quando Insalubre
-    none: Não faça nada
 formKeyValue:
   addAction: Adicionar Par
   key:
@@ -774,15 +679,9 @@ formNameDescription:
     placeholder: Descrição
 formPorts:
   addAction: Mapa de Porta
-  private:
-    label: Porta Privata do Contêiner
-    placeholder: "p.ex. 8080"
   protocol:
     label: Protocolo
   noPorts: Este contêiner não tem nenhuma mapa de porta.
-formSecurity:
-  privileged:
-    disable: Nunca
 formServiceLinks:
   addAction: Ligações de Serviço
   service:
@@ -871,16 +770,6 @@ infoMultiStats:
     labelText: Armazenamento
     read: Leitura
     write: Escrita
-inputCertificate:
-  key:
-    label: Chave Privada
-    placeholder: "Colr na chave privada, começando com -----BEGIN RSA PRIVATE KEY-----"
-  cert:
-    label: Certificado
-    placeholder: "Colar no certificado principal, começando com -----BEGIN CERTIFICATE-----"
-  certChain:
-    label: Cadeia de Certificados
-    placeholder: "Opcional; Colar na cadeia de certificados adicional, começando com -----BEGIN CERTIFICATE-----"
 inputIdentity:
   placeholder:
     github: Adicionar um nome de usuário ou organização do GitHub
@@ -1103,16 +992,11 @@ modalConfirmDeactivate:
   protip: 'Dica: Mantenha pressionada a tecla {key} enquanto clicar em {isServiceButton} para contornar essa confirmação.'
   cancel: Cancelar
 modalEditDriver:
-  header:
-    create: Adicionar Driver de Máquina
-    edit: Editar Driver de Máquina
   url:
     label: URL de Download
-    help: A URL para baixar o binário do driver de máquina Linux 64 bits.
   uiUrl:
     label: URL de UI Personalizada
-    help: 'Opcional: A URL para carregar para a tela de adicionar Hosts personalizada para este driver.'
-    link: 'Ver <a href="https://github.com/rancher/ui-driver-skel" target="_blank">ui-driver-skel</a> para mais informações.'
+    link: Ver <a href="https://github.com/rancher/ui-driver-skel" target="_blank">ui-driver-skel</a> para mais informações.
   checksum:
     help: 'Opcional: Verifique se o driver baixado corresponde ao checksum esperada.'
 modalProcessError:
@@ -1135,7 +1019,6 @@ newCatalog:
   license: "Licença:"
   url: "URL do Projeto:"
   templateVersion: Versão do Template
-  newStack: Nova Pilha
   config: Opções de Configuração
   unknownType: "Tipo de pergunta não reconhecida:"
   startService: Iniciar os serviços depois de criar
@@ -1165,8 +1048,8 @@ saveCancel:
   cancel: Cancelar
 schema:
   inputBoolean:
-    "y": "Verdade"
-    "n": "Falso"
+    y: "Verdade"
+    n: "Falso"
   inputCertificate:
     prompt: Escolher um Certificado...
   inputEnum:
@@ -1203,10 +1086,6 @@ vmConsole:
   footerActions:
     buttonSend: Enviar Ctrl-Alt-Delete
     buttonCancel: Fechar
-driver:
-  multiHostNames: "Hosts serão nomeados <b>{first}</b> &mdash; <b>{last}</b>"
-allServices:
-  stackGroup: 'Pilha: {name}'
 nav:
   srToggleDropdown: Alternar Dropdown
   environment:
@@ -1221,12 +1100,6 @@ nav:
     tab: Infra-estrutura
     certificates: Certificados
     registries: Registros
-  admin:
-    audit: Log de Auditoria
-    processes: Processos
-    accounts: Contas
-    access: Controle de Acesso
-    settings: Configurações
   user:
     label: 'Menu do Usuário: {username}'
     logout: Sair
@@ -1239,7 +1112,6 @@ action:
   execute: Executar Shell
   exportConfig: Configuração de Exportação
   logs: Exibir Logs
-  machineConfig: Configuração da Máquina
   remove: Excluir
   restart: Reiniciar
   retry: Tente novamente

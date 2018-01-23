@@ -1,5 +1,4 @@
 import Route from '@ember/routing/route';
-import { getOwner } from '@ember/application';
 
 export function initialize(/*application */) {
   Route.reopen({

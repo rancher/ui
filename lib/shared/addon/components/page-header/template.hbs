@@ -92,7 +92,7 @@
     <li>
       <a class="btn dropdown-toggle" role="button" aria-haspopup="true" aria-expanded="false" aria-label="{{t 'nav.user.label' username=session.user}}"  data-toggle="header-user-menu">
         {{#if accessEnabled}}
-          {{identity-avatar link=false identity=access.identity}}
+          {{identity-avatar link=false identity=access.me}}
         {{else}}
           <div class="gh-avatar">
             <div class="gh-placeholder">
@@ -104,7 +104,7 @@
         <i class="icon icon-chevron-down"></i>
       </a>
 
-      <ul class="dropdown-menu dropdown-menu-right" data-dropdown-id="header-user-menu">
+      <ul class="dropdown-menu dropdown-menu-right text-right" data-dropdown-id="header-user-menu">
         {{#if accessEnabled}}
           <li role="presentation" class="user-auth">
             {{identity-block avatar=false identity=access.me}}
@@ -116,12 +116,11 @@
           <li>{{#link-to "global-admin.clusters"}}{{t 'nav.environment.manage'}}{{/link-to}}</li>
         {{/if}}
 
-        <li>{{#link-to "authenticated.prefs"}}{{t 'nav.userPreferences.link'}}{{/link-to}}</li>
-
-        {{#if accessEnabled}}
-          <li role="separator" class="divider"></li>
-          <li>{{#link-to "logout" class="user-logout"}}<i class="icon icon-logout"></i> {{t 'nav.user.logout'}}{{/link-to}}</li>
-        {{/if}}
+        <li>{{#link-to "authenticated.apikeys"}}{{t 'nav.api.link'}} <i class="icon icon-key icon-fw"/>{{/link-to}}</li>
+        <li role="separator" class="divider"></li>
+        <li>{{#link-to "authenticated.prefs"}}{{t 'nav.userPreferences.link'}} <i class="icon icon-gear icon-fw"/>{{/link-to}}</li>
+        <li role="separator" class="divider"></li>
+        <li>{{#link-to "logout" class="user-logout"}}{{t 'nav.user.logout'}} <i class="icon icon-logout icon-fw"/>{{/link-to}}</li>
       </ul>
     </li>
   </ul>

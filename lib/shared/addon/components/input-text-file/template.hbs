@@ -1,9 +1,9 @@
 <div class="row">
-  <div class="col span-6 clip">
+  {{!-- <div class="col span-6 clip vertical-middle"> --}}
     {{#if (and canChangeName shouldChangeName)}}
       {{input value=name placeholder=(if namePlaceholder (t namePlaceholder) '')}}
     {{else}}
-      <label class="acc-label form-control-static" style="font-size: 15px;">
+      <h4 class="mb-0 vertical-middle">
         {{#if label}}
           {{t label}}
         {{else}}
@@ -13,10 +13,10 @@
         {{#if canChangeName}}
           <button class="btn btn-sm bg-link p-0 pl-10 acc-label-hover" {{action "wantsChange"}}>{{t 'action.edit'}}</button>
         {{/if}}
-      </label>
+      </h4>
     {{/if}}
-  </div>
-  <div class="col span-6 text-right">
+  {{!-- </div> --}}
+  <div class="pull-right vertical-middle">
     {{#if canUpload}}
       {{#if showUploadLabel}}
         <button class="btn bg-link icon-btn" {{action "click"}}>
@@ -32,6 +32,7 @@
     {{yield}}
   </div>
 </div>
+<hr/>
 <div class="row">
   <div class="col span-12 m-0 p-0">
     {{textarea-autogrow

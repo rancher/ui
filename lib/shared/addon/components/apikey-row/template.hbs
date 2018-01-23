@@ -1,24 +1,31 @@
-<td data-title="{{t 'apiPage.table.state'}}:">
+<td class="row-check" valign="middle" style="padding-top: 2px;">
+  {{check-box nodeId=model.id}}
+</td>
+<td data-title="{{dt.state}}">
   {{badge-state model=model}}
 </td>
-<td data-title="{{t 'apiPage.table.name'}}:">
-  {{#if model.name}}{{model.displayName}}{{else}}<span class="text-muted">{{t 'apiPage.table.noName'}}</span>{{/if}}
+<td data-title="{{dt.name}}">
+  {{#copy-to-clipboard clipboardText=model.displayName size="small"}}
+    {{model.displayName}}
+  {{/copy-to-clipboard}}
 </td>
-<td data-title="{{t 'apiPage.table.description'}}:">
-  {{#if model.description}}{{model.description}}{{else}}<span class="text-muted">{{t 'apiPage.table.noDescription'}}</span>{{/if}}
-</td>
-<td data-title="{{t 'apiPage.table.publicValue'}}:">
-  {{#if model.publicValue}}
-    {{#copy-to-clipboard clipboardText=model.publicValue size="small"}}
-      {{model.publicValue}}
-    {{/copy-to-clipboard}}
+<td data-title="{{dt.description}}">
+  {{#if model.description}}
+    {{model.description}}
   {{else}}
-    <span class="text-muted">{{t 'apiPage.table.noPublicValue'}}</span>
+    <span class="text-muted">{{t 'generic.none'}}</span>
   {{/if}}
 </td>
-<td data-title="{{t 'apiPage.table.created'}}:">
+<td data-title="{{dt.created}}">
   {{date-calendar model.created}}
 </td>
-<td data-title="{{t 'generic.actions'}}:" class="actions">
+<td data-title="{{dt.expires}}">
+  {{#if model.expiresAt}}
+    {{date-calendar model.expiresAt}}
+  {{else}}
+    <span class="text-muted">{{t 'generic.none'}}</span>
+  {{/if}}
+</td>
+<td data-title="{{dt.actions}}" class="actions">
   {{action-menu model=model}}
 </td>
