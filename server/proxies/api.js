@@ -6,10 +6,15 @@ module.exports = function(app, options) {
 
   var config = require('../../config/environment')().APP;
 
+  var target = config.apiServer;
+  if ( target.indexOf('://') === -1 ) {
+    target = 'https://' + target;
+  }
+
   var proxy = HttpProxy.createProxyServer({
     ws: true,
     xfwd: false,
-    target: config.apiServer,
+    target: target,
     secure: false,
   });
 
@@ -39,7 +44,7 @@ module.exports = function(app, options) {
     'Version': '/version',
   }
 
-  console.log('Proxying APIs to', config.apiServer);
+  console.log('Proxying APIs to', target);
   Object.keys(map).forEach(function(label) {
     let base = map[label];
     app.use(base, function(req, res, next) {

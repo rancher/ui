@@ -1,7 +1,6 @@
 import { alias } from '@ember/object/computed';
 import { inject as service } from '@ember/service';
 import Controller, { inject as controller } from '@ember/controller';
-import C from 'ui/utils/constants';
 import { get, computed } from '@ember/object';
 
 export default Controller.extend({
@@ -49,7 +48,7 @@ export default Controller.extend({
   ],
 
   actions: {
-    newApikey: function(kind) {
+    newApikey() {
       const cred = this.get('globalStore').createRecord({
         type: 'token',
         ttl: 365*86400*1000,

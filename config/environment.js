@@ -76,11 +76,11 @@ module.exports = function(environment) {
 
     contentSecurityPolicy: {
       // Allow the occasional <elem style="blah">...
-      'style-src':  "'self' releases.rancher.com localhost:3000 'unsafe-inline'",
+      'style-src':  "'self' releases.rancher.com localhost:8000 'unsafe-inline'",
       'font-src':   "'self' releases.rancher.com",
-      'script-src': "'self' releases.rancher.com localhost:3000",
+      'script-src': "'self' releases.rancher.com localhost:8000",
       'object-src': "'self' releases.rancher.com",
-      'img-src':    "'self' releases.rancher.com avatars.githubusercontent.com gravatar.com localhost:3000 data:",
+      'img-src':    "'self' releases.rancher.com avatars.githubusercontent.com gravatar.com localhost:8000 data:",
       'frame-src':  "'self' releases.rancher.com",
 
       // Allow connect to anywhere, for console and event stream socket
@@ -101,7 +101,7 @@ module.exports = function(environment) {
       clusterToken: '%CLUSTERID%',
       projectToken: '%PROJECTID%',
 
-      apiServer: 'http://localhost:8080',
+      apiServer: 'https://localhost:30443',
       apiEndpoint: '/v3',
       clusterEndpoint: '/v3/clusters/%CLUSTERID%',
       projectEndpoint: '/v3/projects/%PROJECTID%',
