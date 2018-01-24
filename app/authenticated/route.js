@@ -52,7 +52,7 @@ export default Route.extend(Preload, {
     get(this,'session').set(C.SESSION.BACK_TO, undefined);
 
 
-    return get(this, 'scope').startSwitchToGlobal().then(() => {
+    return get(this, 'scope').startSwitchToGlobal(true).then(() => {
       return PromiseAll([
         this.loadSchemas('globalStore'),
         this.preload('roleTemplate', 'globalStore', {url: 'roleTemplates'}),
