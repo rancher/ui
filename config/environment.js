@@ -101,7 +101,7 @@ module.exports = function(environment) {
       clusterToken: '%CLUSTERID%',
       projectToken: '%PROJECTID%',
 
-      apiServer: 'https://localhost:30443',
+      apiServer: 'https://localhost:8443',
       apiEndpoint: '/v3',
       clusterEndpoint: '/v3/clusters/%CLUSTERID%',
       projectEndpoint: '/v3/projects/%PROJECTID%',
