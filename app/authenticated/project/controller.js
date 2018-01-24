@@ -42,9 +42,17 @@ export default Controller.extend({
         list.addObject(instId);
       }
     },
+
+    hideWarning() {
+      this.set('prefs.projects-warning','hide'); 
+    }
   },
 
+  showWarning: function() {
+    return this.get('prefs.projects-warning') !== 'hide';
+  }.property('prefs.projects-warning'),
   showClusterWelcome: function() {
+
     return this.get('scope.currentCluster.state') === 'inactive' && !this.get('nodes.length');
   }.property('scope.currentCluster.state','nodes.[]'),
 

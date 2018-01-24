@@ -116,12 +116,6 @@ export default Route.extend(Preload, {
 
   loadPreferences() {
     return get(this,'globalStore').find('preference', null, {url: 'preference'}).then((res) => {
-      // Save the account ID from the response headers into session
-      if ( res )
-      {
-        set(this,`session.${C.SESSION.ACCOUNT_ID}`, res.xhr.headers.get(C.HEADER.ACCOUNT_ID));
-      }
-
       get(this,'language').initLanguage(true);
       get(this,'userTheme').setupTheme();
 
