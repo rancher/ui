@@ -8,7 +8,7 @@ export default Route.extend({
     let store = this.get('store');
     return hash({
       volumes: store.findAll('volume'),
-      volumeTemplates: store.findAll('volumetemplate'),
+//      volumeTemplates: store.findAll('volumetemplate'),
     });
   },
 

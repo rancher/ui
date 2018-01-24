@@ -55,13 +55,13 @@ const rootNav = [
         resource: ["namespacedsecret", "secret"],
         resourceScope: 'project',
       },
-      {
-        id: 'infra-hooks',
-        localizedLabel: 'nav.infra.hooks',
-        icon: 'icon icon-link',
-        route: 'authenticated.project.hooks',
-        ctx: [getProjectId],
-      },
+//      {
+//        id: 'infra-hooks',
+//        localizedLabel: 'nav.infra.hooks',
+//        icon: 'icon icon-link',
+//        route: 'authenticated.project.hooks',
+//        ctx: [getProjectId],
+//      },
     ],
   },
   {
@@ -75,7 +75,7 @@ const rootNav = [
       {
         id: 'project-security-roles',
         localizedLabel: 'nav.admin.security.members',
-        icon: 'icon icon-key',
+        icon: 'icon icon-users',
         route: 'authenticated.project.security.members.index',
         resource: ['projectroletemplatebinding'],
         resourceScope: 'global',
@@ -132,7 +132,7 @@ const rootNav = [
       {
         id: 'cluster-security-roles',
         localizedLabel: 'nav.admin.security.members',
-        icon: 'icon icon-key',
+        icon: 'icon icon-users',
         route: 'authenticated.cluster.security.members.index',
         resource: ['clusterroletemplatebinding'],
         resourceScope: 'global',

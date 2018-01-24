@@ -68,12 +68,12 @@ export default Controller.extend({
     let showNamespace = this.get('showNamespace');
 
     // VolumeTemplates
-    let out = this.get('model.volumeTemplates').slice().filter((obj) => {
+    let out = (this.get('model.volumeTemplates')||[]).slice().filter((obj) => {
       return showNamespace[obj.get('stackId')];
     });
 
     if ( !this.get('tags') ) {
-      out.pushObjects(this.get('model.volumes').filterBy('volumeTemplateId',null).filter((obj) => {
+      out.pushObjects((this.get('model.volumes')||[]).filterBy('volumeTemplateId',null).filter((obj) => {
         let stackId = obj.get('stackId');
         return !stackId || showNamespace[stackId];
       }));
