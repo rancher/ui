@@ -25,12 +25,6 @@ export default Controller.extend({
     this.set('namespaces', this.get('store').all('namespace'));
     this.set('nodes', this.get('store').all('node'));
     this.set('expandedInstances',[]);
-
-    scheduleOnce('afterRender', () => {
-      let key = `prefs.${C.PREFS.CONTAINER_VIEW}`;
-      const group = this.get(key) || this.get('group');
-      this.transitionToRoute({queryParams: {group}});
-    });
   },
 
   actions: {
@@ -44,7 +38,7 @@ export default Controller.extend({
     },
 
     hideWarning() {
-      this.set('prefs.projects-warning','hide'); 
+      this.set('prefs.projects-warning','hide');
     }
   },
 
