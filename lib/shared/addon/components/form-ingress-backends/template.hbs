@@ -53,7 +53,7 @@
               {{#if editing}}
                 {{schema/input-dns-record selectClass="input-sm" selected=path.serviceId culsterIpNotNull=false}}
               {{else}}
-                {{schema/input-dns-record selectClass="input-sm" disabled=true selected=(concat-str ingress.namespaceId ':' path.serviceId character='') culsterIpNotNull=false}}
+                {{path.service.targetWorkloadIds}}
               {{/if}}
             {{else if (eq path.backendType 'workload')}}
               {{schema/input-workload selectClass="input-sm" selected=path.serviceId}}

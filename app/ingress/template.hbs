@@ -3,13 +3,18 @@
     <h1 class="vertical-middle">
       {{t 'ingressPage.header' name=model.ingress.displayName}}
     </h1>
-    <p class="text-info">{{model.ingress.description}}</p>
   </div>
   <div class="right-buttons">
     {{badge-state model=model.ingress}}
     {{action-menu model=model.ingress showPrimary=false classNames="ml-10 inline-block" size="sm"}}
   </div>
 </section>
+
+{{#if model.ingress.description}}
+  <div class="row mb-30">
+    {{banner-message color='bg-secondary mb-0 mt-10' message=(linkify model.ingress.description)}}
+  </div>
+{{/if}}
 
 <section class="mt-40 horizontal-form container-fluid">
   {{form-ingress-rule
