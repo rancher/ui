@@ -24,7 +24,7 @@ export default Route.extend({
         return this.modelForExisting(workload, true, params);
       });
     }
-    else if ( params.containerId )
+    else if ( params.podId )
     {
       // Existing Pod
       return store.find('pod', params.podId).then((pod) => {

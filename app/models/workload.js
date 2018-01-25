@@ -119,6 +119,7 @@ var Workload = Resource.extend(DisplayImage, StateCounts, EndpointPorts, {
       switch ( get(this, 'lcType') )
       {
         case 'service':             route = 'containers.run'; break;
+        case 'workload':            route = 'containers.run'; break;
         case 'scalinggroup':        route = 'containers.run'; break;
         case 'dnsservice':          route = 'dns.new';        break;
         case 'loadbalancerservice': route = 'balancers.run';  break;
@@ -127,8 +128,7 @@ var Workload = Resource.extend(DisplayImage, StateCounts, EndpointPorts, {
       }
 
       get(this, 'router').transitionTo(route, {queryParams: {
-        serviceId: get(this, 'id'),
-        stackId: get(this, 'stackId'),
+        workloadId: get(this, 'id'),
       }});
     },
 
