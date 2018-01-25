@@ -20,7 +20,9 @@
       <div>
         <select class="form-control" onchange={{action "changeDriver"}}>
           <option value="scaleService" selected={{eq model.driver 'scaleService'}} >{{t 'hookPage.scaleService.label'}}</option>
+          {{#if (not projects.current.isWindows)}}
           <option value="scaleHost" selected={{eq model.driver 'scaleHost'}} >{{t 'hookPage.scaleHost.label'}}</option>
+          {{/if}}
           <option value="serviceUpgrade" selected={{eq model.driver 'serviceUpgrade'}} >{{t 'hookPage.serviceUpgrade.label'}}</option>
         </select>
       </div>
