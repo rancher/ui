@@ -31,7 +31,7 @@ export default Ember.Component.extend({
     this.set('ungroupedContent', Ember.computed('content.@each.'+this.get('optionGroupPath'), () => {
       var groupPath = this.get('optionGroupPath');
       var out = [];
-      this.get('content').forEach((opt) => {
+      (this.get('content')||[]).forEach((opt) => {
         var key = Ember.get(opt, groupPath);
         if ( !key )
         {
@@ -46,7 +46,7 @@ export default Ember.Component.extend({
       var groupPath = this.get('optionGroupPath');
       var out = [];
 
-      this.get('content').forEach((opt) => {
+      (this.get('content')||[]).forEach((opt) => {
         var key = Ember.get(opt, groupPath);
         if ( key )
         {
@@ -90,26 +90,23 @@ export default Ember.Component.extend({
     const selectEl = this.$()[0];
     const selectedIndex = selectEl.selectedIndex;
     const selectedValue = selectEl.options[selectedIndex].value;
-    const content = this.get('content');
+    const content = (this.get('content')||[]);
 
     const selection = content.filterBy(this.get('optionValuePath'), selectedValue)[0];
 
-    // set the local, shadowed selection to avoid leaking
-    // changes to `selection` out via 2-way binding
-    this.set('_selection', selection);
+    if ( selection ) {
+      // set the local, shadowed selection to avoid leaking
+      // changes to `selection` out via 2-way binding
+      this.set('_selection', selection);
 
-    const changeCallback = this.get('action');
-    if ( changeCallback )
-    {
-      changeCallback(selection);
-    }
+      const changeCallback = this.get('action');
+      if ( changeCallback )
+      {
+        changeCallback(selection);
+      }
 
-    if ( selection )
-    {
       this.set('value', Ember.get(selection, this.get('optionValuePath')));
-    }
-    else
-    {
+    } else {
       this.set('value', null);
     }
   }
