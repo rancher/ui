@@ -41,12 +41,36 @@ export let regions = {
       "displayName": "West Europe",
     },
     {
+      "name": "ukwest",
+      "displayName": "UK West",
+    },
+    {
+      "name": "uksouth",
+      "displayName": "UK South",
+    },
+    {
+      "name": "francecentral",
+      "displayName": "France Central",
+    },
+    {
+      "name": "francesouth",
+      "displayName": "France South",
+    },
+    {
       "name": "japanwest",
       "displayName": "Japan West",
     },
     {
       "name": "japaneast",
       "displayName": "Japan East",
+    },
+    {
+      "name": "koreacentral",
+      "displayName": "Korea Central",
+    },
+    {
+      "name": "koreasouth",
+      "displayName": "Korea South",
     },
     {
       "name": "brazilsouth",
@@ -59,6 +83,14 @@ export let regions = {
     {
       "name": "australiasoutheast",
       "displayName": "Australia Southeast",
+    },
+    {
+      "name": "australiacentral1",
+      "displayName": "Australia Central 1",
+    },
+    {
+      "name": "australiacentral2",
+      "displayName": "Australia Central 2",
     },
     {
       "name": "southindia",
@@ -79,6 +111,14 @@ export let regions = {
     {
       "name": "canadaeast",
       "displayName": "Canada East",
+    },
+    {
+      "name": "southafricawest",
+      "displayName": "South Africa West",
+    },
+    {
+      "name": "southafricanorth",
+      "displayName": "South Africa North",
     },
     {
       "name": "westcentralus",
@@ -124,8 +164,16 @@ export let regions = {
     },
     {
       "name": "usgovTexas",
-      "displayName": "US GovTexas",
-    }
+      "displayName": "US Gov Texas",
+    },
+    {
+      "name": "usdodeast",
+      "displayName": "US DoD East",
+    },
+    {
+      "name": "usdodcentral",
+      "displayName": "US DoD Central",
+    },
   ].sortBy('name')
 };
 
