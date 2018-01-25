@@ -17,7 +17,7 @@
           type=type
       }}
       {{#each memberArray as |member|}}
-        {{#unless member.toDelete}}
+        {{#unless (or member.toDelete member.pendingDelete)}}
           {{project-member-row
               member=member
               editing=editing
