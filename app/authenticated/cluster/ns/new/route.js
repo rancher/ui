@@ -1,4 +1,5 @@
 import { get } from '@ember/object';
+import { hash } from 'rsvp';
 import { inject as service } from '@ember/service';
 import Route from '@ember/routing/route';
 
@@ -16,11 +17,10 @@ export default Route.extend({
       clusterId: get(this,'scope.currentCluster.id'),
     });
 
-    let allProjects = get(this,'globalStore').all('project').filterBy('clusterId', get(this,'scope.currentCluster.id'));
-
-    return {
+    return hash({
       namespace,
-      allProjects
-    };
+      namespaces: get(this, 'clusterStore').findAll('namespace'),
+      allProjects: get(this,'globalStore').all('project').filterBy('clusterId', get(this,'scope.currentCluster.id')),
+    });
   },
 });
