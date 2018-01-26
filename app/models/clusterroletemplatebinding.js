@@ -1,8 +1,8 @@
 import Resource from 'ember-api-store/models/resource';
 import { reference } from 'ember-api-store/utils/denormalize';
 import { get, computed } from '@ember/object';
+import C from 'ui/utils/constants';
 
-const ROLE_BASE = ['cluster-owner', 'cluster-member'];
 
 export default Resource.extend({
   type:    'clusterRoleTemplateBinding',
@@ -11,7 +11,7 @@ export default Resource.extend({
   roleTemplate: reference('roleTemplateId'),
   user: reference('subjectName', 'user'),
   isCustom: computed('roleTemplateId', function() {
-    return !ROLE_BASE.includes(get(this, 'roleTemplateId'));
+    return !C.BASIC_ROLE_TEMPLATE_ROLES.includes(get(this, 'roleTemplateId'));
   }),
 
   availableActions: computed('links.remove', 'name', function() {
