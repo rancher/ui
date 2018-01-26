@@ -9,7 +9,7 @@ export default Resource.extend({
 
   cluster: reference('clusterId'),
   roleTemplate: reference('roleTemplateId'),
-  user: reference('subjectName', 'user'),
+  user: reference('userId', 'user'),
   isCustom: computed('roleTemplateId', function() {
     return !C.BASIC_ROLE_TEMPLATE_ROLES.includes(get(this, 'roleTemplateId'));
   }),

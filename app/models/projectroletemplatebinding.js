@@ -7,7 +7,7 @@ export default Resource.extend({
   type: 'projectRoleTemplateBinding',
   project: reference('projectId'),
   roleTemplate: reference('roleTemplateId'),
-  user: reference('subjectName', 'user'),
+  user: reference('userId', 'user'),
   displayName: computed('name','id', function() {
     let name = get(this, 'name');
     if ( name ) {
