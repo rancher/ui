@@ -4,6 +4,7 @@ import { hasMany } from 'ember-api-store/utils/denormalize';
 import Resource from 'ember-api-store/models/resource';
 import C from 'ui/utils/constants';
 import { reference } from 'ember-api-store/utils/denormalize';
+import { alias } from '@ember/object/computed';
 
 export default Resource.extend({
   access: service(),
@@ -19,6 +20,7 @@ export default Resource.extend({
 
   cluster: reference('clusterId', 'cluster'),
   projectRoleTemplateBindings: hasMany('id', 'projectRoleTemplateBinding', 'projectId'), // 2.0 bug projectId is wrong in the ptrb should be <cluster-id>:<project-id> instead of just <project-id>
+  roleTemplateBindings: alias('projectRoleTemplateBindings'),
 
   actions: {
     edit: function () {

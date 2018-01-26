@@ -17,7 +17,7 @@
           type=type
       }}
       {{#each memberArray as |member|}}
-        {{#unless (or member.toDelete member.pendingDelete)}}
+        {{#unless member.pendingDelete}}
           {{project-member-row
               member=member
               editing=editing
@@ -25,8 +25,7 @@
               roles=filteredRoles
               users=filteredUsers
               pageType=primaryResource.type
-              remove="removeMember"
-              alertNewCustoms=(action "setCustomToAdd")
+              remove=(action "removeMember")
           }}
         {{/unless}}
       {{/each}}

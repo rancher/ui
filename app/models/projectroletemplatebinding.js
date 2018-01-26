@@ -2,6 +2,8 @@ import Resource from 'ember-api-store/models/resource';
 import { reference } from 'ember-api-store/utils/denormalize';
 import { get, computed } from '@ember/object';
 
+const ROLE_BASE = ['project-owner', 'project-member'];
+
 export default Resource.extend({
   type: 'projectRoleTemplateBinding',
   project: reference('projectId'),
@@ -14,6 +16,9 @@ export default Resource.extend({
     }
 
     return '(' + get(this,'id') + ')';
+  }),
+  isCustom: computed('roleTemplateId', function() {
+    return !ROLE_BASE.includes(get(this, 'roleTemplateId'));
   }),
 
 

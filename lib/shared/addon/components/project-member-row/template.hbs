@@ -4,16 +4,14 @@
 <td class="pr-10">
   {{#if owner}}
     {{owner.displayName}}
-  {{else if member.toAdd}}
-    {{searchable-select content=userList value=member.role.subjectName}}
   {{else}}
-    {{member.role.user.displayName}}
+    {{searchable-select content=userList value=member.memberId}}
   {{/if}}
 </td>
 <td class="pr-10">
   {{#if owner}}
     {{if (eq type 'project') 'Project Owner' 'Cluster Owner'}}
-  {{else if showMxRoleLabel}}
+  {{else if hasCustom}}
     Custom Roles <span class="edit btn-sm hand" {{action "showEdit" member}}><i class="icon icon-edit"></i></span>
   {{else}}
     {{searchable-select content=choices value=roleTemplateId}}
@@ -22,7 +20,7 @@
 <td>&nbsp;</td>
 <div class="input-group-btn">
   {{#unless  owner}}
-    <button class="btn bg-primary btn-sm" {{action "remove"}}>
+    <button class="btn bg-primary btn-sm" {{action remove member}}>
       <i class="icon icon-minus" />
     </button>
   {{/unless}}

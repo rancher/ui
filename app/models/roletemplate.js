@@ -1,10 +1,15 @@
-import { get } from '@ember/object';
+import { get, computed } from '@ember/object';
 import { inject as service } from '@ember/service';
 import Resource from 'ember-api-store/models/resource';
+
+const ROLE_BASE = ['cluster-owner', 'cluster-member', 'project-owner', 'project-member'];
 
 export default Resource.extend({
   type: 'roleTemplate',
   router: service(),
+  isCustom: computed('roleTemplateId', function() {
+    return !ROLE_BASE.includes(get(this, 'id'));
+  }),
 
   actions: {
     edit: function() {
