@@ -23,4 +23,11 @@ export default Route.extend({
       allProjects: get(this,'globalStore').all('project').filterBy('clusterId', get(this,'scope.currentCluster.id')),
     });
   },
+
+  resetController: function (controller, isExiting/*, transition*/) {
+    if (isExiting)
+    {
+      controller.set('errors', null);
+    }
+  }
 });
