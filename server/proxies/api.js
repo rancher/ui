@@ -7,9 +7,6 @@ module.exports = function(app, options) {
   var config = require('../../config/environment')().APP;
 
   var target = config.apiServer;
-  if ( target.indexOf('://') === -1 ) {
-    target = 'https://' + target;
-  }
 
   var proxy = HttpProxy.createProxyServer({
     ws: true,
