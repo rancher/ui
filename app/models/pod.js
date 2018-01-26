@@ -2,11 +2,14 @@ import C from 'ui/utils/constants';
 import Resource from 'ember-api-store/models/resource';
 import { reference } from 'ember-api-store/utils/denormalize';
 import { get, computed } from '@ember/object';
+import { inject as service } from "@ember/service";
 import { strPad } from 'ui/utils/util';
 import { formatSi } from 'shared/utils/parse-unit';
 import DisplayImage from 'shared/mixins/display-image';
 
 var Pod = Resource.extend(DisplayImage, {
+  router: service(),
+
   namespace: reference('namespaceId'),
   node: reference('nodeId'),
 
@@ -52,6 +55,14 @@ var Pod = Resource.extend(DisplayImage, {
     }
   }),
 
+  actions: {
+    clone() {
+      get(this, 'router').transitionTo('containers.run', {queryParams: {
+        podId: get(this, 'id'),
+      }});
+    },
+  },
+
   combinedState: function() {
     var node = this.get('node.state');
     var resource = this.get('state');
@@ -96,8 +107,8 @@ var Pod = Resource.extend(DisplayImage, {
   }),
 
   displayIp: function() {
-    return this.get('primaryAssociatedIpAddress') || this.get('primaryIpAddress') || null;
-  }.property('primaryIpAddress','primaryAssociatedIpAddress'),
+    return this.get('status.podIp') || null;
+  }.property('status.podIp'),
 
   sortIp: function() {
     var ip = this.get('primaryAssociatedIpAddress') || this.get('primaryIpAddress');

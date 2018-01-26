@@ -20,6 +20,7 @@ export default Route.extend(Preload,{
             this.preload('workload'),
             this.preload('dnsRecord'),
             this.preload('secret'),
+            this.preload('service'),
             this.preload('namespacedSecret'),
           ]).then(() => {
             return EmberObject.create({

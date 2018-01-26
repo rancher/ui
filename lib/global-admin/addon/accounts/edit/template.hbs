@@ -15,7 +15,7 @@
 <div class="row">
   <div class="col span-12">
     <label class="pb-5 acc-label">{{t 'editUser.form.name.label'}}</label>
-    {{input type="text" value=primaryResource.name classNames="form-control" placeholder=(t 'editUser.form.name.placeholder')}}
+    {{input type="text" value=primaryResource.name classNames="form-control user-display-name" placeholder=(t 'editUser.form.name.placeholder')}}
   </div>
 </div>
 
@@ -32,11 +32,9 @@
     {{input type="password" value=confirm classNames="form-control"}}
   </div>
   {{#unless passwordsMatch}}
-  <div class="row mt-0">
-    <div class="col span-12">
-      <p class="help-text text-error span-12">{{t 'editUser.form.password.error'}}</p>
-    </div>
-  </div>
+    <p class="text-error text-small mt-0 mb-0">
+      {{t 'editUser.form.password.error'}}
+    </p>
   {{/unless}}
   <div class="col span-12">
     <label>

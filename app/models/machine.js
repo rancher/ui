@@ -11,7 +11,7 @@ import ResourceUsage from 'shared/mixins/resource-usage';
 
 var Machine = Resource.extend(StateCounts, ResourceUsage, {
   type: 'machine',
-  
+
   modalService: service('modal'),
   settings: service(),
   prefs: service(),
@@ -58,7 +58,7 @@ var Machine = Resource.extend(StateCounts, ResourceUsage, {
     },
 
     machineConfig: function() {
-      var url = this.linkFor('config');
+      var url = this.linkFor('machineConfig');
       if ( url )
       {
         download(url);
@@ -71,7 +71,7 @@ var Machine = Resource.extend(StateCounts, ResourceUsage, {
     let l = get(this,'links');
 
     let out = [
-      { label: 'action.machineConfig', icon: 'icon icon-download', action: 'machineConfig', enabled: !!l.config},
+      { label: 'action.machineConfig', icon: 'icon icon-download', action: 'machineConfig', enabled: !!l.machineConfig},
       { divider: true },
       { label: 'action.edit', icon: 'icon icon-edit', action: 'edit', enabled: !!l.update },
       { divider: true },
