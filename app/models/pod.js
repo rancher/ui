@@ -107,8 +107,8 @@ var Pod = Resource.extend(DisplayImage, {
   }),
 
   displayIp: function() {
-    return this.get('primaryAssociatedIpAddress') || this.get('primaryIpAddress') || null;
-  }.property('primaryIpAddress','primaryAssociatedIpAddress'),
+    return this.get('status.podIp') || null;
+  }.property('status.podIp'),
 
   sortIp: function() {
     var ip = this.get('primaryAssociatedIpAddress') || this.get('primaryIpAddress');
