@@ -570,7 +570,7 @@ membersPage:
       noMatch: No members match the current search
       userId: User
       subjectKind: Kind
-      template: Template
+      template: Role
 
 namespacesPage:
   header: Namespaces
@@ -686,16 +686,14 @@ clustersPage:
       header: Add Cluster
       new:
         addHost: Add a new node
-        controlPlane:
-          header: Control Plane
         nodes:
           header: Nodes
         radio:
           embedded:
-            label: Embedded
+            label: Embedded Control Plane
             detail: Shared etcd and control plane running inside {appName} server.
           dedicated:
-            label: Dedicated
+            label: Dedicated Control Plane
             detail: Control-plane and etcd running on nodes dedicated to only this cluster.
         name:
           placeholder: e.g. production
@@ -720,7 +718,7 @@ clustersPage:
           label: Customize
           detail: "Optional configuration options for the Kubernetes installation"
       minimums:
-        label: Number of nodes required
+        label: Nodes required for an operational cluster
         cluster: 1, 3, or 5
         nocluster: You have no nodes. Minimum 1 node. 3 nodes recommended.
         management: At least one
@@ -1919,8 +1917,8 @@ editUser:
       confirm: Confirm Password
       error: Passwords must match
       mustChangePassword:
-        new: Require user to change their password on first login
-        edit: Require user to change their password on next login
+        new: Ask user to change their password on first login
+        edit: Ask user to change their password on next login
 
 envCatalog:
   header: Catalog
@@ -3053,11 +3051,15 @@ machineTemplatesPage:
   title: Add Node
   new:
     title: Start from scratch
-    helpText: Launch a new node, as well as a repeatable configuration (node template) that can be used to launch additional node with the same configuration.
+    helpText: Launch a new node and create a template that can be used to create future nodes with the same configuration.
     btn: Configure
+  import:
+    title: Import via SSH
+    helpText: Use any exiting machine that already has a supported version of Docker installed and is reachable by SSH.
+    btn: Import
   custom: Custom add an existing node that is already running Docker
   templateBox:
-    button: Launch
+    button: Select
     labels:
       region: Region
       zone: Zone
@@ -3362,32 +3364,16 @@ machine:
       label: Region
 
   driverCustom:
-    instructions: 'Copy, paste, and run the command below to register a host running a <a href="{docsBase}/hosts/#supported-docker-versions" target="_blank">supported version</a> of Docker with {appName}.  The host should pop up within a minute.'
-    detail:
-      ip: The IP address to register the host with typically will be detected automatically.
-      ipLabel: Registration IP Address
-      manual: 'If the host is behind a NAT or the same machine that is running the <code>{rancherImage}</code> container you may need to explicitly specify the IP to use in the advanced section below.'
-      firewall: The host agent initiates a connection to the server, so make sure firewalls or security groups allow it to reach the URL in the command.
-      networking: All hosts in the environment will also need to allow traffic between each other for cross-host networking
-      ipsec: 'IPSec: <code>500/udp</code> and <code>4500/udp</code>'
-      vxlan: 'VXLAN: <code>4789/udp</code>'
-
-    detected: |
-      {count, plural,
-        =1 {One new host has registered!}
-        other {# new hosts have registered!}
-      }
-    agentIp:
-        label: Specify the public IP that this host should register as.  If left empty, Rancher will auto-detect the IP to use.
-        placeholder: e.g. 1.2.3.4
-    generating: "Generating registration URL..."
-    windows:
-      windowsHeader: Windows Host
-      linuxHeader: Linux Host
-      step1: Start up a Windows Server 2016 machine somewhere and install the latest version of <a href="https://msdn.microsoft.com/en-us/virtualization/windowscontainers/quick_start/quick_start_windows_server" target="_blank" rel="noreferrer noopener nofollow">Docker</a> on it.
-      step2: "Create a transparent Docker Network:"
-      step2Copy: docker network create -d transparent transparent
-      step3: Copy, paste, and run the command below in PowerShell to start the {appName} agent.
+    instructions: 'Use this for an exiting machine that already has a supported version of Docker installed and is reachable by SSH from the {appName} server container.'
+    address:
+      label: Hostname or IP Address
+      placeholder: e.g. 192.168.2.24
+    user:
+      label: SSH Username
+      placeholder: e.g. root
+    sshKey:
+      label: SSH Private Key
+      placeholder: Paste in your private key starting with -----BEGIN RSA PRIVATE KEY-----
 
   driverDigitalocean:
     sizeLabel: |

@@ -1,96 +1,49 @@
-{{#if cluster.isWindows}}
-  <section class="box mt-20">
-    <h3>{{t 'machine.driverCustom.windows.windowsHeader'}}</h3>
-    <div class="container-fluid">
-      <div class="row inline-form">
-        <ol>
-          <li>
-            {{t 'machine.driverCustom.windows.step1' htmlSafe=true}}
-          </li>
-          <li>
-            {{t 'machine.driverCustom.windows.step2' htmlSafe=true}}
-            <div class="copy-pre">
-              <pre id="network-command">{{t 'machine.driverCustom.windows.step2Copy'}}</pre>
-              {{copy-to-clipboard clipboardText=(t 'machine.driverCustom.windows.step2Copy')}}
-            </div>
-          </li>
-          <li>
-            {{t 'machine.driverCustom.windows.step3' appName=settings.appName}}
-            <div class="copy-pre">
-              <pre id="registration-command">{{registrationCommandWindows}}</pre>
-              {{copy-to-clipboard clipboardText=registrationCommandWindows}}
-            </div>
-          </li>
-          <li>
-            {{t 'machine.driverCustom.step5Close.part1'}} {{#link-to "hosts"}}{{t 'machine.driverCustom.step5Close.link'}}{{/link-to}} {{t 'machine.driverCustom.step5Close.part2'}}
-          </li>
-        </ol>
-      </div>
+  {{banner-message color="bg-secondary" message=(t 'machine.driverCustom.instructions' appName=settings.appName)}}
+
+<section>
+  <div class="row">
+    <div class="col span-12">
+      {{form-name-description
+        model=primaryResource
+        nameRequired=true
+        namePlaceholder="hostsPage.new.name.placeholder"
+        descriptionShown=true
+      }}
     </div>
-  </section>
-{{/if}}
+  </div>
 
-<section class="box mt-20">
-  {{#if cluster.isWindows}}
-    <h4>{{t 'machine.driverCustom.windows.linuxHeader'}}</h4>
-  {{/if}}
-
-  {{t 'machine.driverCustom.instructions'
-    appName=settings.appName
-    docsBase=settings.docsBase
-    htmlSafe=true
-  }}
-
-  {{#if loading}}
-    <div><i class="icon icon-spinner icon-spin"></i> {{t 'machine.driverCustom.generating'}}</div>
-  {{else}}
-    <div class="copy-pre m-20">
-      {{copy-to-clipboard clipboardText=registrationCommand tagName="div" classNames="copy-to-pre"}}
-      <pre id="registration-command" style="font-size: 14px;">{{registrationCommand}}</pre>
+  <div class="row">
+    <div class="col span-12">
+      <label class="acc-label">{{t 'machine.driverCustom.address.label'}}{{field-required}}</label>
+      {{input value=customConfig.address placeholder=(t 'machine.driverCustom.address.placeholder')}}
     </div>
-  {{/if}}
+  </div>
 
-  <hr/>
+  <div class="row">
+    <div class="col span-12">
+      <label class="acc-label">{{t 'machine.driverCustom.user.label'}}{{field-required}}</label>
+      {{input value=customConfig.user placeholder=(t 'machine.driverCustom.user.placeholder')}}
+    </div>
+  </div>
 
-  <ul class="mt-20">
-    <li class="pt-10">
-      {{t 'machine.driverCustom.detail.ip'}}
-      <ul>
-        <li>{{t 'machine.driverCustom.detail.manual' rancherImage=settings.rancherImage htmlSafe=true}}</li>
-      </ul>
-    </li>
-    <li class="pt-10">{{t 'machine.driverCustom.detail.firewall'}}</li>
-    <li class="pt-10">
-      {{t 'machine.driverCustom.detail.networking'}}
-      <ul>
-        <li>{{t 'machine.driverCustom.detail.ipsec' htmlSafe=true}}</li>
-        <li>{{t 'machine.driverCustom.detail.vxlan' htmlSafe=true}}</li>
-      </ul>
-    </li>
-  </ul>
+  <div class="row">
+    <div class="col span-12 mt-20">
+      {{input-text-file
+        label='machine.driverCustom.sshKey.label'
+        value=customConfig.sshKey
+        accept="text/*"
+        minHeight=60
+        canChangeName=false
+        nameRequired=true
+        placeholder="machine.driverCustom.sshKey.placeholder"
+      }}
+    </div>
+  </div>
 </section>
-
-{{#advanced-section}}
-  <div class="box mt-20 mb-20 p-10">
-    <label class="acc-label">{{t 'machine.driverCustom.detail.ipLabel'}}</label>
-    {{input type="text" value=cattleAgentIp classNames="form-control" placeholder=(t 'machine.driverCustom.agentIp.placeholder')}}
-    <p class="help-block">{{t 'machine.driverCustom.agentIp.label'}}</p>
-  </div>
-
-  {{form-user-labels setLabels=(action 'setLabels') expandAll=null expandOnInit=true}}
-{{/advanced-section}}
-
-{{#if newHosts}}
-  <div class="banner bg-success">
-    <div class="banner-icon"><span class="icon icon-success"></span></div>
-    <div class="banner-message">
-      <p>{{t 'machine.driverCustom.detected' count=newHosts}}</p>
-    </div>
-  </div>
-{{/if}}
 
 <section>
   <div class="footer-actions">
-    <button {{action "cancel"}} class="btn bg-primary">{{t 'generic.closeModal'}}</button>
+    {{top-errors errors=errors}}
+    {{save-cancel save="save" cancel="cancel" editing=true}}
   </div>
 </section>
