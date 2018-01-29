@@ -1,14 +1,14 @@
 <div class="login">
   {{#if changePassword}}
     <div class="header">
-      <h1>{{t 'modalEditPassword.title'}}</h1>
-      <p class="help-text">{{t 'modalEditPassword.help'}}</p>
+      <h1>{{t (concat 'modalEditPassword.' (if newInstall 'newInstall' 'edit') '.title') appName=settings.appName}}</h1>
+      <p class="help-text">{{t (concat 'modalEditPassword.' (if newInstall 'newInstall' 'edit') '.help') appName=settings.appName htmlSafe=true}}</p>
     </div>
     {{input-edit-password
         complete="complete"
         user=user
         currentPassword=code.localCredential.password
-        inputCurrent=false
+        showCurrent=false
         cancelDisabled=true
     }}
   {{else}}

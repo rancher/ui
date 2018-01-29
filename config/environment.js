@@ -6,19 +6,17 @@ var YAML = require('yamljs');
 var mode = process.env.UI_MODE || 'oss'; // 'caas' or 'oss'
 var signup = process.env.UI_SIGNUP !== 'false'; // set to false to hide signup
 
-// host can be an ip "1.2.3.4" -> http://1.2.3.4:8080
+// host can be an ip "1.2.3.4" -> https://1.2.3.4:30443
 // or a URL+port
 function normalizeHost(host,defaultPort) {
-  if ( host.indexOf('http') !== 0 )
-  {
-    if ( host.indexOf(':') === -1 )
-    {
-      host = 'http://' + host + (defaultPort ? ':'+defaultPort : '');
-    }
-    else
-    {
-      host = 'http://' + host;
-    }
+  if ( host.indexOf('http') === 0 ) {
+    return host;
+  }
+
+  if ( host.indexOf(':') === -1 ) {
+    host = 'https://' + host + (defaultPort ? ':'+defaultPort : '');
+  } else {
+    host = 'https://' + host;
   }
 
   return host;
@@ -101,7 +99,7 @@ module.exports = function(environment) {
       clusterToken: '%CLUSTERID%',
       projectToken: '%PROJECTID%',
 
-      apiServer: 'https://localhost:8443',
+      apiServer: 'https://localhost:30443',
       apiEndpoint: '/v3',
       clusterEndpoint: '/v3/clusters/%CLUSTERID%',
       projectEndpoint: '/v3/projects/%PROJECTID%',
@@ -157,7 +155,7 @@ module.exports = function(environment) {
   var server = process.env.RANCHER;
   if ( server )
   {
-    ENV.APP.apiServer = normalizeHost(server,8080);
+    ENV.APP.apiServer = normalizeHost(server,443);
   }
   else if (environment === 'production')
   {
