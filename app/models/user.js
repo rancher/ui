@@ -7,15 +7,15 @@ export default Resource.extend({
   router: service(),
   globalStore: service(),
 
-  globalRoleBindings: hasMany('id', 'globalRoleBinding', 'subjectName', 'globalStore', function(x) {
+  globalRoleBindings: hasMany('id', 'globalRoleBinding', 'userId', 'globalStore', function(x) {
     return get(x, 'subjectKind') === 'User';
   }),
 
-  clusterRoleBindings: hasMany('id', 'clusterRoleTemplateBinding', 'subjectName', 'globalStore', function(x) {
+  clusterRoleBindings: hasMany('id', 'clusterRoleTemplateBinding', 'userId', 'globalStore', function(x) {
     return get(x, 'subjectKind') === 'User';
   }),
 
-  projectRoleBindings: hasMany('id', 'projectRoleTemplateBinding', 'subjectName', 'globalStore', function(x) {
+  projectRoleBindings: hasMany('id', 'projectRoleTemplateBinding', 'userId', 'globalStore', function(x) {
     return get(x, 'subjectKind') === 'User';
   }),
 

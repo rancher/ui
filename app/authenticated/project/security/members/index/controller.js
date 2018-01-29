@@ -6,7 +6,7 @@ import { get } from '@ember/object';
 
 const headers = [
   {
-    translationKey: 'membersPage.index.table.subjectName',
+    translationKey: 'membersPage.index.table.userId',
     name: 'user.displayName',
     sort: ['user.dispalyName', 'name', 'id'],
   },

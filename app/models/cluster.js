@@ -1,8 +1,10 @@
-import { computed } from '@ember/object';
+import { get, computed } from '@ember/object';
 import { inject as service } from '@ember/service';
 import Resource from 'ember-api-store/models/resource';
 import { hasMany } from 'ember-api-store/utils/denormalize';
 import ResourceUsage from 'shared/mixins/resource-usage';
+import { alias } from '@ember/object/computed';
+
 
 var Cluster = Resource.extend(ResourceUsage, {
   scope:        service(),
@@ -12,6 +14,7 @@ var Cluster = Resource.extend(ResourceUsage, {
   projects: hasMany('id', 'project', 'clusterId'),
   machines: hasMany('id', 'machine', 'clusterId'),
   clusterRoleTemplateBindings: hasMany('id', 'clusterRoleTemplateBinding', 'clusterId'),
+  roleTemplateBindings: alias('clusterRoleTemplateBindings'),
 
   canAddNode: computed('rancherKubernetesEngineConfig', function() {
     return !!this.get('rancherKubernetesEngineConfig');

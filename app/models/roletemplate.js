@@ -1,10 +1,14 @@
-import { get } from '@ember/object';
+import { get, computed } from '@ember/object';
 import { inject as service } from '@ember/service';
 import Resource from 'ember-api-store/models/resource';
+import C from 'ui/utils/constants';
 
 export default Resource.extend({
   type: 'roleTemplate',
   router: service(),
+  isCustom: computed('roleTemplateId', function() {
+    return !C.BASIC_ROLE_TEMPLATE_ROLES.includes(get(this, 'id'));
+  }),
 
   actions: {
     edit: function() {
