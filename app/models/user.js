@@ -6,6 +6,7 @@ import Resource from 'ember-api-store/models/resource';
 export default Resource.extend({
   router: service(),
   globalStore: service(),
+  access: service(),
 
   globalRoleBindings: hasMany('id', 'globalRoleBinding', 'userId', 'globalStore', function(x) {
     return get(x, 'subjectKind') === 'User';
@@ -69,6 +70,10 @@ export default Resource.extend({
     return false;
   }),
 
+  isMe: computed('access.me', function () {
+    return get(this, 'access.me.id') === get(this, 'id');
+  }),
+
   actions: {
     deactivate() {
       return this.doAction('deactivate');
@@ -97,7 +102,7 @@ export default Resource.extend({
       { label: 'action.activate',   icon: 'icon icon-play',         action: 'activate',     enabled: !!a.activate , bulkable: true},
       { label: 'action.deactivate', icon: 'icon icon-pause',        action: 'deactivate',   enabled: !!a.deactivate , bulkable: true},
       { divider: true },
-      { label: 'action.remove',     icon: 'icon icon-trash',        action: 'promptDelete', enabled: !!l.remove, altAction: 'delete', bulkable: true },
+      { label: 'action.remove',     icon: 'icon icon-trash',        action: 'promptDelete', enabled: (!!l.remove) && !get(this, 'isMe'), altAction: 'delete', bulkable: true },
       { divider: true },
       { label: 'action.viewInApi',  icon: 'icon icon-external-link',action: 'goToApi',      enabled: true },
     ];
