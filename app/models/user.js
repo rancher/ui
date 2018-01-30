@@ -8,17 +8,11 @@ export default Resource.extend({
   globalStore: service(),
   access: service(),
 
-  globalRoleBindings: hasMany('id', 'globalRoleBinding', 'userId', 'globalStore', function(x) {
-    return get(x, 'subjectKind') === 'User';
-  }),
+  globalRoleBindings: hasMany('id', 'globalRoleBinding', 'userId'),
 
-  clusterRoleBindings: hasMany('id', 'clusterRoleTemplateBinding', 'userId', 'globalStore', function(x) {
-    return get(x, 'subjectKind') === 'User';
-  }),
+  clusterRoleBindings: hasMany('id', 'clusterRoleTemplateBinding', 'userId'),
 
-  projectRoleBindings: hasMany('id', 'projectRoleTemplateBinding', 'userId', 'globalStore', function(x) {
-    return get(x, 'subjectKind') === 'User';
-  }),
+  projectRoleBindings: hasMany('id', 'projectRoleTemplateBinding', 'userId'),
 
   avatarSrc: function() {
     return 'data:image/png;base64,' + new Identicon(AWS.util.crypto.md5(this.get('id')||'Unknown', 'hex'), 80, 0.01).toString();
@@ -39,35 +33,19 @@ export default Resource.extend({
   }),
 
   hasAdmin: computed('globalRoleBindings.[]', function() {
-    if ( get(this, 'globalRoleBindings').findBy('globalRole.isAdmin', true) ) {
-      return true;
-    }
-
-    return false;
+    return get(this, 'globalRoleBindings').findBy('globalRole.isAdmin', true);
   }),
 
   hasCustom: computed('globalRoleBindings.[]', function() {
-    if ( get(this, 'globalRoleBindings').findBy('globalRole.isCustom', true) ) {
-      return true;
-    }
-
-    return false;
+    return get(this, 'globalRoleBindings').findBy('globalRole.isCustom', true);
   }),
 
   hasUser: computed('globalRoleBindings.[]', function() {
-    if ( get(this, 'globalRoleBindings').findBy('globalRole.isUser', true) ) {
-      return true;
-    }
-
-    return false;
+    return get(this, 'globalRoleBindings').findBy('globalRole.isUser', true);
   }),
 
   hasBase: computed('globalRoleBindings.[]', function() {
-    if ( get(this, 'globalRoleBindings').findBy('globalRole.isBase', true) ) {
-      return true;
-    }
-
-    return false;
+    return get(this, 'globalRoleBindings').findBy('globalRole.isBase', true);
   }),
 
   isMe: computed('access.me', function () {
