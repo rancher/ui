@@ -155,6 +155,99 @@
               }}
             </div>
           </div>
+
+          {{#advanced-section}}
+            <div class="row">
+              <div class="col span-12">
+                <label>{{t 'clustersPage.addPage.rke.new.options.kubelet.label'}}</label>
+                <div class="box">
+                  <label class="acc-label">{{t 'generic.image'}}</label>
+                  {{input type="text" value=config.services.kubelet.image}}
+                  <label class="acc-label mt-10">{{t 'clustersPage.addPage.rke.new.options.kubelet.infra'}}</label>
+                  {{input type="text" value=config.services.kubelet.infraContainerImage}}
+                  <label class="acc-label mt-10">{{t 'clustersPage.addPage.rke.new.options.kubelet.domain'}}</label>
+                  {{input type="text" value=config.services.kubelet.clusterDomain}}
+                  <label class="acc-label mt-10">{{t 'clustersPage.addPage.rke.new.options.kubelet.dns'}}</label>
+                  {{input type="text" value=config.services.kubelet.clusterDnsServer}}
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col span-12">
+                <label>{{t 'clustersPage.addPage.rke.new.options.kubeController.label'}}</label>
+                <div class="box">
+                  <label class="acc-label">{{t 'generic.image'}}</label>
+                  {{input type="text" value=config.services.kubeController.image}}
+                  <label class="acc-label mt-10">{{t 'clustersPage.addPage.rke.new.options.kubeController.ipRange'}}</label>
+                  {{input type="text" value=config.services.kubeController.serviceClusterIpRange}}
+                  <label class="acc-label mt-10">{{t 'clustersPage.addPage.rke.new.options.kubeController.cidr'}}</label>
+                  {{input type="text" value=config.services.kubeController.clusterCidr}}
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col span-12">
+                <label>{{t 'clustersPage.addPage.rke.new.options.kubeApi.label'}}</label>
+                <div class="box">
+                  <label class="acc-label">{{t 'generic.image'}}</label>
+                  {{input type="text" value=config.services.kubeApi.image}}
+                  <label class="acc-label mt-10">{{t 'clustersPage.addPage.rke.new.options.kubeApi.ipRange'}}</label>
+                  {{input type="text" value=config.services.kubeApi.serviceClusterIpRange}}
+                  <label class="acc-label mt-10">{{t 'clustersPage.addPage.rke.new.options.kubeApi.podSecurityPolicy'}}</label>
+                  <div class="radio">
+                    <label>{{radio-button selection=config.services.kubeApi.podSecurityPolicy value=true}} {{t 'generic.yes'}}</label>
+                  </div>
+                  <div class="radio">
+                    <label>{{radio-button selection=config.services.kubeApi.podSecurityPolicy value=false}} {{t 'generic.no'}}</label>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col span-12">
+                <label>{{t 'clustersPage.addPage.rke.new.options.etcd.label'}}</label>
+                <div class="box">
+                  <label class="acc-label">{{t 'generic.image'}}</label>
+                  {{input type="text" value=config.services.etcd.image}}
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col span-12">
+                <label>{{t 'clustersPage.addPage.rke.new.options.kubeproxy.label'}}</label>
+                <div class="box">
+                  <label class="acc-label">{{t 'generic.image'}}</label>
+                  {{input type="text" value=config.services.kubeproxy.image}}
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col span-12">
+                <label>{{t 'clustersPage.addPage.rke.new.options.scheduler.label'}}</label>
+                <div class="box">
+                  <label class="acc-label">{{t 'generic.image'}}</label>
+                  {{input type="text" value=config.services.scheduler.image}}
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <label>
+                {{t 'clustersPage.addPage.rke.new.options.systemImages.label'}}
+              </label>
+              <div class="col span-12">
+                {{form-key-value
+                    initialMap=config.systemImages
+                    changed=(action (mut config.systemImages))
+                    allowRemove=false
+                    allowAdd=false
+                    allowEditKey=false
+                    keyLabel="clustersPage.addPage.rke.new.options.systemImages.header.name"
+                    valueLabel="clustersPage.addPage.rke.new.options.systemImages.header.image"
+                    editing=true
+                }}
+              </div>
+            </div>
+          {{/advanced-section}}
         {{/accordion-list-item}}
       </div>
     {{/if}}
