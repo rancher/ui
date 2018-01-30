@@ -55,7 +55,7 @@ export default Ember.Component.extend({
 
     if ( this.get('showRegion') === null ) {
       rules.forEach((rule) => {
-        if ( rule.region ) {
+        if ( rule.environment ) {
           this.set('showRegion', true);
         }
       });
