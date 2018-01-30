@@ -8,7 +8,7 @@
   <table class="table fixed no-lines small mb-10">
     <thead>
       <tr class="hidden-sm">
-        <th>{{t keyLabel}}{{#if editing}}{{field-required}}{{/if}}</th>
+        <th>{{t keyLabel}}{{#if (and editing allowEditKey)}}{{field-required}}{{/if}}</th>
         <th width="30">&nbsp;</th>
         <th>{{t valueLabel}}</th>
         <th width="10">&nbsp;</th>
@@ -20,7 +20,7 @@
       <tr>
         <td data-title="{{t keyLabel}}:">
           {{#if editing}}
-            {{input-paste pasted="pastedValues" class="form-control input-sm key" type="text" value=row.key placeholder=keyPlaceholder disabled=(eq row.editable false)}}
+            {{input-paste pasted="pastedValues" class="form-control input-sm key" type="text" value=row.key placeholder=keyPlaceholder disabled=(or (not allowEditKey) (eq row.editable false))}}
           {{else}}
             {{row.key}}
           {{/if}}
@@ -45,7 +45,7 @@
         </td>
         <td>&nbsp;</td>
         <td class="valign-top text-right">
-          {{#if editing}}
+          {{#if (and editing allowRemove)}}
             <button class="btn bg-primary btn-sm" {{action "remove" row}}><i class="icon icon-minus"/><span class="sr-only">{{t 'generic.remove'}}</span></button>
           {{/if}}
         </td>
@@ -60,7 +60,7 @@
   {{/unless}}
 {{/if}}
 
-{{#if editing}}
+{{#if (and editing allowAdd)}}
   <div style="margin-top: 1px;">
     <button class="btn bg-link icon-btn p-0" {{action "add"}}>
       <span class="darken"><i class="icon icon-plus text-small"/></span>
