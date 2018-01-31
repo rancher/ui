@@ -8,7 +8,13 @@
         </div>
       {{/if}}
 
-    {{input id=(concat elementId '-form-name') type="text" value=_name classNames="form-control" placeholder=(t namePlaceholder) disabled=nameDisabled}}
+      {{#if nameDisabled}}
+        <div class="form-control">
+          {{name}}
+        </div>
+      {{else}}
+        {{input id=(concat elementId '-form-name') type="text" value=_name classNames="form-control" placeholder=(t namePlaceholder) }}
+      {{/if}}
     {{#if nameHelpText}}<p class="text-info">{{nameHelpText}}</p>{{/if}}
   </div>
   {{#if hasBlock}}
