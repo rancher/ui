@@ -1,3 +1,146 @@
-<div class="text-center mt-50">
-  <img src="{{app.baseAssets}}assets/images/lobby.gif"/>
+<div class="row">
+  {{form-name-description model=primaryResource nameRequired=true}}
 </div>
+<div class="box mt-20">
+  <h4>{{t 'cloud.driverAzure.placement.label'}}</h4>
+  <div class="row">
+    <div class="col span-6">
+      <label class="acc-label">{{t 'cloud.driverAzure.location.label'}}</label>
+      {{new-select
+          classNames="form-control"
+          optionValuePath="name"
+          optionLabelPath="displayName"
+          prompt="cloud.driverAzure.location.prompt"
+          content=zones
+          value=config.location
+          localizedPrompt=true
+      }}
+    </div>
+    <div class="col span-6 mb-0">
+      <label class="acc-label">{{t 'cloud.driverAzure.resourceGroup.label'}}</label>
+      {{input type="text" value=config.resourceGroup classNames="form-control" placeholder=(t 'cloud.driverAzure.resourceGroup.placeholder')}}
+    </div>
+  </div>
+</div>
+
+<div class="box mt-20">
+  <h4>{{t 'machine.driverAzure.accountAccessSection'}}</h4>
+
+  <div class="row">
+    <div class="col span-4">
+      <label class="acc-label">{{t 'machine.driverAzure.subscriptionId.label'}}{{field-required}}</label>
+      {{input type="text" value=config.subscriptionId classNames="form-control" placeholder=(t 'machine.driverAzure.subscriptionId.placeholder')}}
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col span-6 mb-0">
+      <label class="acc-label">{{t 'cloud.driverAzure.clientId.label'}}{{field-required}}</label>
+      {{input type="text" value=config.clientId classNames="form-control" placeholder=(t 'cloud.driverAzure.clientId.placeholder')}}
+      <p class="text-info text-small mb-0">{{t 'cloud.driverAzure.helpBlock' htmlSafe=true}}</p>
+    </div>
+
+    <div class="col span-6 mb-0">
+      <label class="acc-label">{{t 'cloud.driverAzure.clientSecret.label'}}{{field-required}}</label>
+      {{input type="password" value=config.clientSecret classNames="form-control" placeholder=(t 'cloud.driverAzure.clientSecret.placeholder')}}
+    </div>
+  </div>
+</div>
+
+<div class="box mt-30">
+  <h4>{{t 'cloud.machine'}}</h4>
+  <div class="row">
+    <div class="col span-6">
+      <label class="acc-label">{{t 'cloud.nodeCount.label'}}</label>
+      {{input-number min=1 value=config.nodeCount}}
+    </div>
+    <div class="col span-6">
+      <label class="acc-label">{{t 'cloud.driverAzure.admin.label'}}</label>
+      {{input type="text" value=config.adminUsername classNames="form-control" placeholder=(t 'cloud.driverAzure.admin.placeholder')}}
+    </div>
+  </div>
+  <div class="row">
+    <div class="col span-6">
+      <label class="acc-label">{{t 'cloud.driverAzure.machineType.label'}}</label>
+      {{new-select
+          classNames="form-control"
+          optionValuePath="value"
+          optionLabelPath="value"
+          content=machineSizes
+          value=config.agentVmSize
+          prompt="cloud.driverAzure.machineType.prompt"
+          localizedPrompt=true
+      }}
+    </div>
+    <div class="col span-6">
+      <label class="acc-label">{{t 'cloud.driverAzure.diskSizeGb.label'}}</label>
+      <div class="input-group">
+        {{input-number min=0 value=config.osDiskSizeGb}}
+        <span class="input-group-addon bg-default">{{t 'generic.gigabyte'}}</span>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col span-12">
+      <label>{{t 'cloud.driverAzure.ssh.label'}}{{field-required}}</label>
+      {{textarea value=config.sshPublicKeyContents classNames="form-control no-resize" rows="6"}}
+    </div>
+  </div>
+</div>
+
+<div class="box mt-30">
+  <h4>{{t 'cloud.driverAzure.security.label'}}</h4>
+  <div class="row">
+    <div class="col span-12">
+      <label class="acc-label">{{t 'cloud.driverAzure.members.label'}}</label>
+      {{form-members
+          creator=userData.me
+          editing=true
+          memberConfig=memberConfig
+          primaryResource=primaryResource
+          roles=userData.roles
+          users=userData.users
+          type="cluster"
+          initAlert=(action "initAlert")
+      }}
+    </div>
+
+    <div class="col span-12">
+      <label class="acc-label mb-20">{{t 'cloud.driverAzure.pod.label'}}</label>
+      {{form-pod-sec-policy
+          config=primaryResource.defaultPodSecurityPolicyTemplateId
+          policies=model.policies
+      }}
+    </div>
+  </div>
+</div>
+
+
+{{#accordion-list showExpandAll=false as |al expandFn|}}
+  <div class="mt-30">
+    {{#accordion-list-item
+         title=(t 'cloud.driverAzure.customize.label')
+         detail=(t 'cloud.driverAzure.customize.detail')
+         expandAll=al.expandAll
+         expand=(action expandFn)
+    }}
+      <div class="row">
+        <div class="col span-4">
+          <label class="acc-label">{{t 'cloud.driverAzure.masterVersion.label'}}</label>
+          {{new-select
+              classNames="form-control"
+              content=versions
+              optionValuePath="value"
+              optionLabelPath="value"
+              value=config.kubernetesVersion
+              prompt="cloud.driverAzure.masterVersion.prompt"
+              localizedPrompt=true
+          }}
+        </div>
+      </div>
+    {{/accordion-list-item}}
+  </div>
+{{/accordion-list}}
+
+{{top-errors errors=errors}}
+{{save-cancel save="save" cancel=cancel}}
