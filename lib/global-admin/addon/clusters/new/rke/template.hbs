@@ -12,246 +12,173 @@
     }}
   </div>
 
-  <div class="box mt-20">
-    <div class="row">
-      <div class="col span-6">
+  <div class="row mt-10">
+    <div class="col span-6">
+      <div class="box">
         <label>{{radio-button selection=scope value="embedded" disabled=true}} {{t 'clustersPage.addPage.rke.new.radio.embedded.label'}}</label>
         <p class="text-info mb-0">{{t 'clustersPage.addPage.rke.new.radio.embedded.detail' appName=settings.appName}} &mdash; Coming Soon</p>
       </div>
-      <div class="col span-6">
+    </div>
+    <div class="col span-6">
+      <div class="box">
         <label>{{radio-button selection=scope value="dedicated"}} {{t 'clustersPage.addPage.rke.new.radio.dedicated.label'}}</label>
         <p class="text-info mb-0">{{t 'clustersPage.addPage.rke.new.radio.dedicated.detail' appName=settings.appName}}</p>
       </div>
     </div>
   </div>
 
-  <div class="box mt-30">
-    <h4>{{t 'clustersPage.addPage.rke.new.nodes.header'}}</h4>
-    {{#sortable-table
-         classNames="grid sortable-table"
-         body=filteredMachines
-         sortBy=sortBy
-         suffix=true
-         search=false
-         bulkActions=false
-         rowActions=false
-         pagingLabel="pagination.host"
-         headers=(if (eq scope "dedicated") headersAll workerHeaders)
-         as |sortable kind host dt|}}
-      {{#if (eq kind "row")}}
-        <tr class="main-row">
-          <td data-title="{{dt.state}}" class="state">
-            {{badge-state model=host}}
-          </td>
-          <td data-title="{{dt.name}}">
-            {{host.displayName}}
-          </td>
-          {{#if (eq scope "dedicated")}}
-            <td data-title="{{dt.all}}">
-              {{input type="checkbox" checked=(array-includes host.role 'worker' 'controlplane' 'etcd') change=(action 'selectAllRoles' host)}}
-            </td>
-          {{/if}}
-          {{#if (eq scope "dedicated")}}
-            <td data-title="{{dt.etcd}}">
-              {{input type="checkbox" checked=(array-includes host.role 'etcd') change=(action 'addRole' host 'etcd')}}
-            </td>
-            <td data-title="{{dt.controlplane}}">
-              {{input type="checkbox" checked=(array-includes host.role 'controlplane') change=(action 'addRole' host 'controlplane')}}
-            </td>
-          {{/if}}
-          <td data-title="{{dt.worker}}">
-            {{input type="checkbox" checked=(array-includes host.role 'worker') change=(action 'addRole' host 'worker')}}
-          </td>
-
-        </tr>
-      {{else if (eq kind "norows")}}
-        <tr><td colspan="{{sortable.fullColspan}}" class="text-center text-muted pt-40 pb-40">{{t 'nodesPage.table.noData'}}</td></tr>
-      {{else if (eq kind "suffix")}}
-        <tr class="banner bg-info suffix">
-          <td colspan="3" class="text-right pr-20">{{t 'clustersPage.addPage.rke.minimums.label'}}:</td>
-          {{#if (eq scope "dedicated")}}
-            <td class="{{if etcdSafe "text-success" "text-error text-bold"}}">
-              <i class="icon {{if etcdSafe "icon-success" "icon-x-circle"}}"></i>
-              {{t 'clustersPage.addPage.rke.minimums.cluster'}}
-            </td>
-            <td class="{{if cpSafe "text-success" "text-error text-bold"}}">
-              <i class="icon {{if cpSafe "icon-success" "icon-x-circle"}}"></i>
-              {{t 'clustersPage.addPage.rke.minimums.management'}}
-            </td>
-          {{/if}}
-          <td colspan="1" class="{{if workerSafe "text-success" "text-error text-bold"}}">
-            <i class="icon {{if workerSafe "icon-success" "icon-x-circle"}}"></i>
-            {{t 'clustersPage.addPage.rke.minimums.nodes'}}
-          </td>
-        </tr>
-      {{/if}}
-    {{/sortable-table}}
-
-    <div class="mt-20">
-      <button class="btn bg-primary icon-btn p-0" {{action "addHost"}}>
-        <span class="darken"><i class="icon icon-plus text-small"/></span>
-        <span>{{t 'clustersPage.addPage.rke.new.addHost'}}</span>
-      </button>
-    </div>
-  </div>
-
-  <div class="box mt-30">
-    <h4>Security</h4>
-    <div class="row">
-      <div class="col span-12">
-        <label class="acc-label">Member Roles</label>
-        {{form-members
-            creator=model.me
-            editing=true
-            memberConfig=memberConfig
-            primaryResource=primaryResource
-            roles=model.roles
-            users=model.users
-            type="cluster"
-            initAlert=(action "initAlert")
-        }}
-      </div>
-
-      <div class="col span-12">
-        <label class="acc-label mb-20">Pod Security Policy</label>
-        {{form-pod-sec-policy
-            config=secPolicy
-            policies=model.policies
-        }}
-      </div>
-    </div>
-  </div>
-
   {{#accordion-list showExpandAll=false as |al expandFn|}}
-    {{#if (eq scope "dedicated")}}
-      <div class="col span-12 mt-30">
-        {{#accordion-list-item
-             title=(t 'clustersPage.addPage.rke.new.customize.label')
-             detail=(t 'clustersPage.addPage.rke.new.customize.detail')
-             expandAll=al.expandAll
-             expand=(action expandFn)
-        }}
-          <div class="row">
-            <div class="col span-6">
-              <label>
-                {{t 'clustersPage.addPage.rke.new.options.auth.label'}}
-              </label>
-              {{new-select
-                  classNames="form-control"
-                  content=authChoices
-                  localizedLabel=true
-                  value=config.authentication.strategy
-              }}
-            </div>
-            <div class="col span-6">
-              <label>
-                {{t 'clustersPage.addPage.rke.new.options.network.label'}}
-              </label>
-              {{new-select
-                  classNames="form-control"
-                  content=networkChoices
-                  localizedLabel=true
-                  value=config.network.plugin
-              }}
-            </div>
-          </div>
-
-          {{#advanced-section}}
-            <div class="row">
-              <div class="col span-12">
-                <label>{{t 'clustersPage.addPage.rke.new.options.kubelet.label'}}</label>
-                <div class="box">
-                  <label class="acc-label">{{t 'generic.image'}}</label>
-                  {{input type="text" value=config.services.kubelet.image}}
-                  <label class="acc-label mt-10">{{t 'clustersPage.addPage.rke.new.options.kubelet.infra'}}</label>
-                  {{input type="text" value=config.services.kubelet.infraContainerImage}}
-                  <label class="acc-label mt-10">{{t 'clustersPage.addPage.rke.new.options.kubelet.domain'}}</label>
-                  {{input type="text" value=config.services.kubelet.clusterDomain}}
-                  <label class="acc-label mt-10">{{t 'clustersPage.addPage.rke.new.options.kubelet.dns'}}</label>
-                  {{input type="text" value=config.services.kubelet.clusterDnsServer}}
-                </div>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col span-12">
-                <label>{{t 'clustersPage.addPage.rke.new.options.kubeController.label'}}</label>
-                <div class="box">
-                  <label class="acc-label">{{t 'generic.image'}}</label>
-                  {{input type="text" value=config.services.kubeController.image}}
-                  <label class="acc-label mt-10">{{t 'clustersPage.addPage.rke.new.options.kubeController.ipRange'}}</label>
-                  {{input type="text" value=config.services.kubeController.serviceClusterIpRange}}
-                  <label class="acc-label mt-10">{{t 'clustersPage.addPage.rke.new.options.kubeController.cidr'}}</label>
-                  {{input type="text" value=config.services.kubeController.clusterCidr}}
-                </div>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col span-12">
-                <label>{{t 'clustersPage.addPage.rke.new.options.kubeApi.label'}}</label>
-                <div class="box">
-                  <label class="acc-label">{{t 'generic.image'}}</label>
-                  {{input type="text" value=config.services.kubeApi.image}}
-                  <label class="acc-label mt-10">{{t 'clustersPage.addPage.rke.new.options.kubeApi.ipRange'}}</label>
-                  {{input type="text" value=config.services.kubeApi.serviceClusterIpRange}}
-                  <label class="acc-label mt-10">{{t 'clustersPage.addPage.rke.new.options.kubeApi.podSecurityPolicy'}}</label>
-                  <div class="radio">
-                    <label>{{radio-button selection=config.services.kubeApi.podSecurityPolicy value=true}} {{t 'generic.yes'}}</label>
-                  </div>
-                  <div class="radio">
-                    <label>{{radio-button selection=config.services.kubeApi.podSecurityPolicy value=false}} {{t 'generic.no'}}</label>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col span-12">
-                <label>{{t 'clustersPage.addPage.rke.new.options.etcd.label'}}</label>
-                <div class="box">
-                  <label class="acc-label">{{t 'generic.image'}}</label>
-                  {{input type="text" value=config.services.etcd.image}}
-                </div>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col span-12">
-                <label>{{t 'clustersPage.addPage.rke.new.options.kubeproxy.label'}}</label>
-                <div class="box">
-                  <label class="acc-label">{{t 'generic.image'}}</label>
-                  {{input type="text" value=config.services.kubeproxy.image}}
-                </div>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col span-12">
-                <label>{{t 'clustersPage.addPage.rke.new.options.scheduler.label'}}</label>
-                <div class="box">
-                  <label class="acc-label">{{t 'generic.image'}}</label>
-                  {{input type="text" value=config.services.scheduler.image}}
-                </div>
-              </div>
-            </div>
-            <div class="row">
-              <label>
-                {{t 'clustersPage.addPage.rke.new.options.systemImages.label'}}
-              </label>
-              <div class="col span-12">
-                {{form-key-value
-                    initialMap=config.systemImages
-                    changed=(action (mut config.systemImages))
-                    allowRemove=false
-                    allowAdd=false
-                    allowEditKey=false
-                    keyLabel="clustersPage.addPage.rke.new.options.systemImages.header.name"
-                    valueLabel="clustersPage.addPage.rke.new.options.systemImages.header.image"
-                    editing=true
-                }}
-              </div>
-            </div>
-          {{/advanced-section}}
-        {{/accordion-list-item}}
+    {{#accordion-list-item
+      title=(t 'clustersPage.addPage.rke.new.nodes.header')
+      detail=(t 'clustersPage.addPage.rke.new.nodes.detail')
+      showExpand=false
+      expandOnInit=true
+      expandAll=al.expandAll
+      expand=(action expandFn)
+    }}
+      <div class="radio">
+        <label>{{radio-button selection=createNodes value=false}} {{t 'clustersPage.addPage.rke.new.nodes.createLater'}}</label>
       </div>
-    {{/if}}
+      <div class="radio">
+        <label>{{radio-button selection=createNodes value=true}} {{t 'clustersPage.addPage.rke.new.nodes.createNow'}}</label>
+      </div>
+      {{#liquid-if createNodes}}
+        {{#sortable-table
+            classNames="grid sortable-table"
+            body=filteredMachines
+            sortBy=sortBy
+            suffix=true
+            search=false
+            bulkActions=false
+            rowActions=false
+            pagingLabel="pagination.host"
+            headers=(if isDedicated headersAll workerHeaders)
+            as |sortable kind host dt|}}
+          {{#if (eq kind "row")}}
+            <tr class="main-row">
+              <td data-title="{{dt.state}}" class="state">
+                {{badge-state model=host}}
+              </td>
+              <td data-title="{{dt.name}}">
+                {{host.displayName}}
+              </td>
+              {{#if isDedicated}}
+                <td data-title="{{dt.etcd}}" class="text-center">
+                  {{input type="checkbox" checked=(array-includes host.role 'etcd') change=(action 'addRole' host 'etcd')}}
+                </td>
+                <td data-title="{{dt.controlplane}}" class="text-center">
+                  {{input type="checkbox" checked=(array-includes host.role 'controlplane') change=(action 'addRole' host 'controlplane')}}
+                </td>
+              {{/if}}
+              <td data-title="{{dt.worker}}" class="text-center">
+                {{input type="checkbox" checked=(array-includes host.role 'worker') change=(action 'addRole' host 'worker')}}
+              </td>
+
+            </tr>
+          {{else if (eq kind "norows")}}
+            <tr><td colspan="{{sortable.fullColspan}}" class="text-center text-muted pt-40 pb-40">{{t 'nodesPage.table.noData'}}</td></tr>
+          {{else if (eq kind "suffix")}}
+            <tr class="banner bg-info suffix">
+              <td colspan="2" class="pl-20 text-bold">{{t 'clustersPage.addPage.rke.requirements.label'}}</td>
+              {{#if isDedicated}}
+                <td class="text-center {{if etcdSafe "text-success" "text-error text-bold"}}">
+                  <i class="icon {{if etcdSafe "icon-success" "icon-x-circle"}}"></i>
+                  {{t 'clustersPage.addPage.rke.requirements.cluster'}}
+                </td>
+                <td class="text-center {{if cpSafe "text-success" "text-error text-bold"}}">
+                  <i class="icon {{if cpSafe "icon-success" "icon-x-circle"}}"></i>
+                  {{t 'clustersPage.addPage.rke.requirements.management'}}
+                </td>
+              {{/if}}
+              <td class="text-center {{if workerSafe "text-success" "text-error text-bold"}}">
+                <i class="icon {{if workerSafe "icon-success" "icon-x-circle"}}"></i>
+                {{t 'clustersPage.addPage.rke.requirements.nodes'}}
+              </td>
+            </tr>
+          {{/if}}
+        {{/sortable-table}}
+
+        <div class="mt-20">
+          <button class="btn bg-primary icon-btn p-0" {{action "addHost"}}>
+            <span class="darken"><i class="icon icon-plus text-small"/></span>
+            <span>{{t 'clustersPage.addPage.rke.new.addHost'}}</span>
+          </button>
+        </div>
+      {{else}}
+        <span class="text-muted mt-20 mb-20">{{t 'clustersPage.addPage.rke.new.nodes.createLaterDetail'}}</span>
+      {{/liquid-if}}
+    {{/accordion-list-item}}
+
+    {{#accordion-list-item
+      title="Members"
+      detail="Control who can use this cluster and the resources inside it"
+      showExpand=false
+      expandOnInit=true
+      expandAll=al.expandAll
+      expand=(action expandFn)
+    }}
+      {{form-members
+        creator=model.me
+        editing=true
+        memberConfig=memberConfig
+        primaryResource=primaryResource
+        roles=model.roles
+        users=model.users
+        type="cluster"
+        initAlert=(action "initAlert")
+      }}
+    {{/accordion-list-item}}
+
+    {{#accordion-list-item
+      title=(t 'clustersPage.addPage.rke.new.customize.label')
+      detail=(t 'clustersPage.addPage.rke.new.customize.detail')
+      expandAll=al.expandAll
+      expand=(action expandFn)
+    }}
+      <div class="row">
+        <div class="col span-4">
+          <label class="acc-label">{{t 'clustersPage.addPage.rke.new.version.label'}}</label>
+          {{new-select
+              classNames="form-control"
+              content=versionChoices
+              localizedLabel=true
+              value=config.version
+              disabled=true
+          }}
+        </div>
+        <div class="col span-4">
+          <label class="acc-label">{{t 'clustersPage.addPage.rke.new.network.label'}}</label>
+          {{new-select
+              classNames="form-control"
+              content=networkChoices
+              localizedLabel=true
+              value=config.network.plugin
+          }}
+        </div>
+
+        <div class="col span-4">
+          <label class="acc-label">{{t 'clustersPage.addPage.rke.new.psp.label'}}</label>
+          {{form-pod-sec-policy
+              config=secPolicy
+              policies=model.policies
+          }}
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col span-12">
+          <label class="acc-label">{{t 'clustersPage.addPage.rke.new.registry.label'}}</label>
+          <div class="radio">
+            <label>{{radio-button selection=registry value="default"}} {{t 'clustersPage.addPage.rke.new.registry.default'}}</label>
+          </div>
+          <div class="radio">
+            <label>{{radio-button selection=registry value="custom" disabled=true}} {{t 'clustersPage.addPage.rke.new.registry.custom'}}</label>
+          </div>
+        </div>
+      </div>
+    {{/accordion-list-item}}
   {{/accordion-list}}
+
   {{top-errors errors=errors}}
   {{save-cancel save="save" cancel="cancel"}}
 </form>

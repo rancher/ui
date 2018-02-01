@@ -19,8 +19,8 @@
     {{#each ary as |row|}}
       <tr>
         <td data-title="{{t keyLabel}}:">
-          {{#if editing}}
-            {{input-paste pasted="pastedValues" class="form-control input-sm key" type="text" value=row.key placeholder=keyPlaceholder disabled=(or (not allowEditKey) (eq row.editable false))}}
+          {{#if (and editing allowEditKey (not-eq row.editable false))}}
+            {{input-paste pasted="pastedValues" class="form-control input-sm key" type="text" value=row.key placeholder=keyPlaceholder}}
           {{else}}
             {{row.key}}
           {{/if}}

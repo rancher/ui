@@ -42,7 +42,6 @@ export default Resource.extend({
   },
 
   availableActions: computed('actionLinks.{activate,deactivate}', 'links.{update,remove}', function () {
-    let a = get(this,'actionLinks');
     let l = get(this,'links');
 
     var choices = [

@@ -1,9 +1,12 @@
 <h4>{{t 'hostsPage.new.addCluster.label' htmlSafe=true }}</h4>
 <div class="row">
   <div class="col span-6">
-    <label class="acc-label" for="">{{t 'hostsPage.new.addCluster.cluster.label'}}</label>
+    <label>
+      {{t 'hostsPage.new.addCluster.cluster.label'}}
+      {{#unless hasCluster}}{{field-required}}{{/unless}}
+    </label>
     {{#if hasCluster }}
-      <input name="" type="text" value="{{requestedClusterName}}" disabled=true />
+      <input type="text" value="{{requestedClusterName}}" disabled=true />
     {{else}}
       {{searchable-select content=filteredClusters value=requestedClusterId optionLabelPath="name" optionValuePath="id" localizedLabel=false}}
     {{/if}}
@@ -13,20 +16,20 @@
     <table class="table fixed no-lines no-top-padding">
       <thead>
         <tr>
-          <th>{{t 'hostsPage.new.addCluster.table.label.etcd'}}</th>
-          <th>{{t 'hostsPage.new.addCluster.table.label.control'}}</th>
-          <th>{{t 'hostsPage.new.addCluster.table.label.worker'}}</th>
+          <th class="text-center">{{t 'hostsPage.new.addCluster.table.label.etcd'}}</th>
+          <th class="text-center">{{t 'hostsPage.new.addCluster.table.label.control'}}</th>
+          <th class="text-center">{{t 'hostsPage.new.addCluster.table.label.worker'}}</th>
         </tr>
       </thead>
       <tbody>
         <tr>
-          <td data-title="">
+          <td class="text-center">
             {{input type="checkbox" change=(action 'addRole' 'etcd')}}
           </td>
-          <td data-title="">
+          <td class="text-center">
             {{input type="checkbox" change=(action 'addRole' 'controlplane')}}
           </td>
-          <td data-title="">
+          <td class="text-center">
             {{input type="checkbox" change=(action 'addRole' 'worker')}}
           </td>
         </tr>

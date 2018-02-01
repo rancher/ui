@@ -692,6 +692,10 @@ clustersPage:
         addHost: Add a new node
         nodes:
           header: Nodes
+          detail: Configure the role for each computer that will make up the cluster.
+          createLater: Seutp nodes for the cluster later
+          createNow: Create new nodes for the cluster now
+          createLaterDetail: The cluster will not be able to run workloads until you add nodes.
         radio:
           embedded:
             label: Embedded Control Plane
@@ -703,39 +707,22 @@ clustersPage:
           placeholder: e.g. production
         description:
           placeholder: e.g. Our production cluster
-        options:
-          auth:
-            label: Auth Choices
-            x509: x509
-          network:
-            label: Network Choices
-            flannel: Flannel
-            calico: Calico
-            canal: Canal
-          etcd:
-            label: ETCD
-          kubeApi:
-            label: Kube API
-            ipRange: Service Cluster IP Range
-            podSecurityPolicy: Pod Security Policy
-          kubeController:
-            label: Kube Controller
-            cidr: Cluster CIDR
-            ipRange: Service Cluster IP Range
-          kubelet:
-            label: Kubelet
-            domain: Cluster Domain
-            dns: Cluster DNS Server
-            infra: Pod Infra Container Image
-          kubeproxy:
-            label: Kubeproxy
-          scheduler:
-            label: Scheduler
-          systemImages:
-            label: System Images
-            header:
-              name: Name
-              image: Image
+        auth:
+          label: Auth Provider
+          x509: x509
+        network:
+          label: Network Provider
+          flannel: Flannel
+          calico: Calico
+          canal: Canal
+        psp:
+          label: Pod Security Policy
+        version:
+          label: Kubernetes Version
+        registry:
+          label: Pull Kubernetes Images From
+          default: The default registry (DockerHub)
+          custom: "A custom registry:"
         headers:
           labels:
             etcd: Use for etcd
@@ -745,18 +732,15 @@ clustersPage:
         customize:
           label: Customize
           detail: "Optional configuration options for the Kubernetes installation"
-      minimums:
-        label: Nodes required for an operational cluster
-        cluster: 1, 3, or 5
-        nocluster: You have no nodes. Minimum 1 node. 3 nodes recommended.
+      requirements:
+        label: "Number of nodes required:"
+        cluster: Exactly 1, 3, or 5
         management: At least one
-        noManagement: You have no management nodes. Minimum 1 node. 3 nodes recommended.
         nodes: At least one
-        noNodes: You have no nodes. Minimum 1 node.
-      error:
-        etcd: Number of nodes should be 1, 3, or 5.
-        management: Please select at least one node for management.
-        node: Please select at least one node as worker.
+      errors:
+        etcd: Please select 1, 3, or 5 nodes to use for etcd.
+        management: Please select at least one node to use for for management.
+        node: Please select at least one node to use as a worker.
 ingressPage:
   header: 'Ingress: {name}'
   table:
@@ -3076,13 +3060,8 @@ hostPod:
 machineTemplatesPage:
   title: Add Node
   new:
-    title: Start from scratch
-    helpText: Launch a new node and create a template that can be used to create future nodes with the same configuration.
+    helpText: Launch a new node or import one already running Docker via SSH.
     btn: Configure
-  import:
-    title: Import via SSH
-    helpText: Use any exiting machine that already has a supported version of Docker installed and is reachable by SSH.
-    btn: Import
   custom: Custom add an existing node that is already running Docker
   templateBox:
     button: Select
@@ -3438,16 +3417,19 @@ machine:
       label: Region
 
   driverCustom:
-    instructions: 'Use this for an exiting machine that already has a supported version of Docker installed and is reachable by SSH from the {appName} server container.'
-    address:
-      label: Hostname or IP Address
-      placeholder: e.g. 192.168.2.24
-    user:
-      label: SSH Username
-      placeholder: e.g. root
-    sshKey:
-      label: SSH Private Key
-      placeholder: Paste in your private key starting with -----BEGIN RSA PRIVATE KEY-----
+    command:
+      instructions: 'Run this command on an existing machine already running a supported version of Docker.'
+    ssh:
+      instructions: 'Use this for an exiting machine that already has a supported version of Docker installed and is reachable by SSH from the {appName} server container.'
+      address:
+        label: Hostname or IP Address
+        placeholder: e.g. 192.168.2.24
+      user:
+        label: SSH Username
+        placeholder: e.g. root
+      sshKey:
+        label: SSH Private Key
+        placeholder: Paste in your private key starting with -----BEGIN RSA PRIVATE KEY-----
 
   driverDigitalocean:
     sizeLabel: |
@@ -3822,8 +3804,8 @@ modalEditPassword:
   mismatch: Passwords do not match
   actionButton: Change
   mode:
-    generate: Use a new randomly generated password
-    manual: Set a specific password to use
+    generate: 'Use a new randomly generated password:'
+    manual: 'Set a specific password to use:'
 
 modalFeedback:
   header: Welcome to {appName}!
