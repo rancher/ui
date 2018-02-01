@@ -5,9 +5,9 @@
   {{badge-state model=model}}
 </td>
 <td data-title="{{t 'projects.table.project.label'}}:">
-  <a href="#" {{action "switchProject" model }} class="clip project-link">
-    {{model.name}}
-  </a>
+  {{#link-to 'authenticated.project' model.id class="clip project-link"}}
+    {{model.displayName}}
+  {{/link-to}}
 </td>
 <td data-title="{{t 'projects.table.created.label'}}:">
   {{date-calendar model.created}}
