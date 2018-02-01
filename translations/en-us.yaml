@@ -3220,6 +3220,9 @@ loginUserPass:
   passwordLabel: Password
 
 cloud:
+  machine: Node Configuration
+  nodeCount:
+    label: Quantity
   driverGoogle:
     checkServiceAccount: "Next"
     accessSection: Account Access
@@ -3228,7 +3231,6 @@ cloud:
       placeholder: Service account private key JSON file
       helpText: |
         Create a <a href="https://console.cloud.google.com/projectselector/iam-admin/serviceaccounts" target="_blank" rel="nofollow noopener noreferrer">Service Account</a> with a JSON private key and provide the JSON here.  See <a href="https://cloud.google.com/compute/docs/access/create-enable-service-accounts-for-instances" target="_blank" rel="nofollow noopener noreferrer">Google Cloud docs</a> for more info about creating a service account. Three IAM roles are required: <code>project/viewer</code>, <code>kubernetes-engine/admin</code> and <code>service-account/user</code>, more info on roles can be found <a href="https://cloud.google.com/kubernetes-engine/docs/how-to/iam-integration" target="_blank" rel="nofollow noopener noreferrer">here.</a>
-    machine: Node Configuration
     location: Location
     customize: Customize
     zone:
@@ -3237,8 +3239,6 @@ cloud:
     project:
       label: Project
       placeholder: e.g. my-project
-    nodeCount:
-      label: Quantity
     machineType:
       label: Machine Type
       prompt: Choose a Type...
@@ -3252,6 +3252,54 @@ cloud:
       placeholder: e.g. 10.42.0.0/16
     alphaFeatures:
       label: Alpha Features
+  driverAzure:
+    accessSection: Account Access
+    placement:
+      label: Placement
+    location:
+      label: Location
+      prompt: Choose a location...
+    helpBlock: 'You can find instructions on how to create a Client ID and Secret <a href="https://www.packer.io/docs/builders/azure-setup.html" target="_blank">here</a>.'
+    accountAccessSection:
+      label: Account Access
+    subscriptionId:
+      label: Subscription ID
+      placeholder: Your Azure subscription ID
+    machineType:
+      label: VM Agent Size
+      prompt: Choose a size...
+    diskSizeGb:
+      label: OS Disk Size
+    ssh:
+      label: Public SSH Key
+    security:
+      label: Security
+    members:
+      label: Member Roles
+    customize:
+      label: Customize
+      detail: "Optional configuration options for the Kubernetes installation"
+    pod:
+      label: Pod Security Policies
+    masterVersion:
+      label: Kubernetes Version
+      prompt: Choose a Version...
+    resourceGroup:
+      label: Resource Group
+      placeholder: 'docker-machine'
+    sshUser:
+      label: SSH User
+      placeholder: usr1
+    clientId:
+      label: Client ID
+      placeholder: Your Client ID
+    clientSecret:
+      label: Client Secret
+      placeholder: Your Client Secret
+    admin:
+      label: Admin Username
+      placeholder: user-1
+
 
 
 machine:
