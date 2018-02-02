@@ -1,4 +1,4 @@
-import { get, computed } from '@ember/object';
+import { computed } from '@ember/object';
 import { inject as service } from '@ember/service';
 import Resource from 'ember-api-store/models/resource';
 import { hasMany } from 'ember-api-store/utils/denormalize';
