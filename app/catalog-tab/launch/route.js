@@ -39,7 +39,6 @@ export default Route.extend({
       let newNS = store.createRecord({
         type: 'namespace',
         name: '',
-        answers: {},
       });
       let newNSName = '';
 
@@ -57,6 +56,9 @@ export default Route.extend({
 
       results.namespace = newNS;
 
+
+      let tplCatalog = this.modelFor(get(this, 'parentRoute')).get('catalogs').findBy('id', get(results, 'tpl.catalogId'));
+      let kind = get(tplCatalog, 'kind') ? get(tplCatalog, 'kind') : 'native';
       var links;
 
       if ( results.upgrade ) {
@@ -82,19 +84,21 @@ export default Route.extend({
       }
 
       return EmberObject.create({
-        namespace: results.namespace,
-        tpl: results.tpl,
-        upgrade: results.upgrade,
-        versionLinks: links,
-        versionsArray: verArr,
         allTemplates: this.modelFor(get(this, 'parentRoute')).get('catalog'),
-        templateBase: this.modelFor(get(this, 'parentRoute')).get('templateBase'),
         catalogApp: store.createRecord({
           type: 'app', // should be app after new api
           externalID: null,
           installNamespace: results.namespace.name,
           name: results.namespace.name,
+          answers: [],
         }),
+        namespace: results.namespace,
+        templateBase: this.modelFor(get(this, 'parentRoute')).get('templateBase'),
+        tpl: results.tpl,
+        tplKind: kind,
+        upgrade: results.upgrade,
+        versionLinks: links,
+        versionsArray: verArr,
       });
     });
   },

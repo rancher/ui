@@ -18,6 +18,9 @@
       <small><strong>{{t 'newCatalog.catalog'}}</strong> <span class="text-capitalize">{{templateResource.catalogId}}</span></small>
     </div>
     <div>
+      <small><strong>{{t 'newCatalog.kind'}}</strong> <span class="text-capitalize">{{templateKind}}</span></small>
+    </div>
+    <div>
       <small><strong>{{t 'newCatalog.category'}}</strong> {{join-array templateResource.categoryArray}}</small>
     </div>
     {{#if (eq templateResource.certifiedType 'rancher')}}
@@ -51,17 +54,15 @@
   {{/if}}
 </section>
 
-{{#if (and showName selectedTemplateModel)}}
-  <section class="{{sectionClass}}">
-    <h4>{{t 'newCatalog.newNamespace'}}</h4>
+<section class="{{sectionClass}}">
+  <h4>{{t 'newCatalog.newNamespace'}}</h4>
 
-    {{form-name-description
+  {{form-name-description
       model=primaryResource
       nameRequired=true
-    }}
+  }}
 
-  </section>
-{{/if}}
+</section>
 
 
 <section class="{{sectionClass}}">
@@ -91,9 +92,18 @@
   {{/if}}
 
   {{#if selectedTemplateModel}}
-    {{input-answers
-        selectedTemplate=selectedTemplateModel
-    }}
+    {{#if (eq templateKind 'native')}}
+      {{input-answers
+          selectedTemplate=selectedTemplateModel
+      }}
+    {{else}}
+      <h4>{{t 'newCatalog.helm.label'}}</h4>
+      <div class="span-12">
+        <label class="acc-label pb-5">{{t 'newCatalog.answers.label'}}</label>
+        {{input type="text" value=catalogApp.answers classNames="form-control"}}
+        <div class="protip pt-10"> {{t 'newCatalog.helm.protip'}} </div>
+      </div>
+    {{/if}}
 
   {{/if}}
 </section>
