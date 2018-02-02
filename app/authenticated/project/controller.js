@@ -1,4 +1,3 @@
-import { scheduleOnce } from '@ember/runloop';
 import { inject as service } from '@ember/service';
 import Controller from '@ember/controller';
 import C from 'ui/utils/constants';
