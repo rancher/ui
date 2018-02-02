@@ -1,18 +1,3 @@
-<div class="radio">
-  <label>
-    {{radio-button selection=mode value="command" disabled=inModal}}
-    Run a command on one or more nodes to register them.  Nodes open an outbound connection to the server container (NAT-friendly).
-    {{#if inModal}}
-      <div class="text-muted">This mode is only available after the cluster has been created.</div>
-    {{/if}}
-  </label>
-
-  <label>
-    {{radio-button selection=mode value="ssh"}}
-    Connect from the server container to a node via SSH.
-  </label>
-</div>
-
 {{#unless inModal}}
   <div class="row">
     <div class="col span-12">
@@ -27,32 +12,47 @@
   </div>
 {{/unless}}
 
+{{form-user-labels setLabels=(action 'setLabels') expandAll=null expandOnInit=true}}
+<hr/>
+
+<div class="radio">
+  <label class="block">
+    {{radio-button selection=mode value="command" disabled=inModal}}
+    Run a docker container on one or more nodes to register them.
+    {{#if inModal}}
+      <div class="text-muted">This mode is only available after the cluster has been created.</div>
+    {{/if}}
+  </label>
+
+  <label class="block">
+    {{radio-button selection=mode value="ssh"}}
+    Connect from the server container to a single node via SSH.
+  </label>
+</div>
 
 {{#if (eq mode "command")}}
-  {{t 'machine.driverCustom.command.instructions'
+  <div class="mt-20">
+    {{t 'machine.driverCustom.command.instructions'
       appName=settings.appName
       docsBase=settings.docsBase
       htmlSafe=true
     }}
+  </div>
 
-    {{#if loading}}
-      <div><i class="icon icon-spinner icon-spin"></i> {{t 'machine.driverCustom.command.generating'}}</div>
-    {{else}}
-      <div class="copy-pre m-20">
-        {{copy-to-clipboard clipboardText=command tagName="div" classNames="copy-to-pre"}}
-        <pre id="registration-command" style="font-size: 14px;">{{command}}</pre>
-      </div>
-    {{/if}}
+  {{#if loading}}
+    <div><i class="icon icon-spinner icon-spin"></i> {{t 'machine.driverCustom.command.generating'}}</div>
+  {{else}}
+    <div class="copy-pre mt-20 mb-20">
+      {{copy-to-clipboard clipboardText=command tagName="div" classNames="copy-to-pre"}}
+      <pre id="registration-command" style="font-size: 14px;">{{command}}</pre>
+    </div>
+  {{/if}}
 
-    <hr/>
-
-    {{form-user-labels setLabels=(action 'setLabels') expandAll=null expandOnInit=true}}
-
-  {{#if newNodeCount}}
+  {{#if newMachineCount}}
     <div class="banner bg-success">
       <div class="banner-icon"><span class="icon icon-success"></span></div>
       <div class="banner-message">
-        <p>{{t 'machine.driverCustom.detected' count=newNodeCount}}</p>
+        <p>{{t 'machine.driverCustom.detected' count=newMachineCount}}</p>
       </div>
     </div>
   {{/if}}
