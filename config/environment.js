@@ -101,6 +101,7 @@ module.exports = function(environment) {
 
       apiServer: 'https://localhost:30443',
       apiEndpoint: '/v3',
+      publicApiEndpoint: '/v3-public',
       clusterEndpoint: '/v3/clusters/%CLUSTERID%',
       projectEndpoint: '/v3/projects/%PROJECTID%',
       proxyEndpoint: '/meta/proxy',
