@@ -10,7 +10,6 @@ import { get/* , set */ } from '@ember/object';
 
 export default Route.extend({
   session:     service(),
-  accountId:   alias(`session.${C.SESSION.ACCOUNT_ID}`),
   scope:       service(),
   globalStore: service(),
 

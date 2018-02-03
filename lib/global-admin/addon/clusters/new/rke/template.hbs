@@ -51,29 +51,31 @@
             search=false
             bulkActions=false
             rowActions=false
-            pagingLabel="pagination.host"
+            pagingLabel="pagination.node"
             headers=(if isDedicated headersAll workerHeaders)
-            as |sortable kind host dt|}}
+            as |sortable kind node dt|}}
           {{#if (eq kind "row")}}
             <tr class="main-row">
               <td data-title="{{dt.state}}" class="state">
-                {{badge-state model=host}}
+                {{badge-state model=node}}
               </td>
               <td data-title="{{dt.name}}">
-                {{host.displayName}}
+                {{node.displayName}}
               </td>
               {{#if isDedicated}}
                 <td data-title="{{dt.etcd}}" class="text-center">
-                  {{input type="checkbox" checked=(array-includes host.role 'etcd') change=(action 'addRole' host 'etcd')}}
+                  {{input type="checkbox" checked=(array-includes node.role 'etcd') change=(action 'toggleRole' node 'etcd')}}
                 </td>
                 <td data-title="{{dt.controlplane}}" class="text-center">
-                  {{input type="checkbox" checked=(array-includes host.role 'controlplane') change=(action 'addRole' host 'controlplane')}}
+                  {{input type="checkbox" checked=(array-includes node.role 'controlplane') change=(action 'toggleRole' node 'controlplane')}}
                 </td>
               {{/if}}
               <td data-title="{{dt.worker}}" class="text-center">
-                {{input type="checkbox" checked=(array-includes host.role 'worker') change=(action 'addRole' host 'worker')}}
+                {{input type="checkbox" checked=(array-includes node.role 'worker') change=(action 'toggleRole' node 'worker')}}
               </td>
-
+              <td data-title="{{dt.remove}}" class="text-center">
+                <button class="btn bg-primary btn-sm" {{action "removeNode" node}}><i class="icon icon-minus"/></button>
+              </td>
             </tr>
           {{else if (eq kind "norows")}}
             <tr><td colspan="{{sortable.fullColspan}}" class="text-center text-muted pt-40 pb-40">{{t 'nodesPage.table.noData'}}</td></tr>
@@ -94,14 +96,18 @@
                 <i class="icon {{if workerSafe "icon-success" "icon-x-circle"}}"></i>
                 {{t 'clustersPage.addPage.rke.requirements.nodes'}}
               </td>
+              <td></td>
             </tr>
           {{/if}}
         {{/sortable-table}}
 
         <div class="mt-20">
-          <button class="btn bg-primary icon-btn p-0" {{action "addHost"}}>
+          <button class="btn bg-transparent p-0 pull-right btn-sm" {{action "pickRoles"}}>
+            {{t 'clustersPage.addPage.rke.new.setRoles'}}
+          </button>
+          <button class="btn bg-primary icon-btn p-0" {{action "addNode"}}>
             <span class="darken"><i class="icon icon-plus text-small"/></span>
-            <span>{{t 'clustersPage.addPage.rke.new.addHost'}}</span>
+            <span>{{t 'clustersPage.addPage.rke.new.addNode'}}</span>
           </button>
         </div>
       {{else}}
