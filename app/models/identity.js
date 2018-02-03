@@ -30,8 +30,8 @@ var Identity = Resource.extend({
   }.property('externalIdType'),
 
   isMyRancher: function() {
-    return this.get('externalIdType') === C.PROJECT.TYPE_RANCHER &&
-      this.get('externalId') === this.get('session').get(C.SESSION.ACCOUNT_ID);
+    // @TODO-2.0
+    return false
   }.property('{externalId,externalIdType}'),
 
   logicalType: function() {

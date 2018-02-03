@@ -93,12 +93,8 @@ export default Route.extend({
       let access = get(this, 'access');
 
       access.clearToken().finally(() => {
-        session.set(C.SESSION.ACCOUNT_ID,null);
-
         get(this, 'tab-session').clear();
         set(this, `session.${C.SESSION.CONTAINER_ROUTE}`, undefined);
-
-        access.clearSessionKeys();
 
         if ( transition && !session.get(C.SESSION.BACK_TO) ) {
           session.set(C.SESSION.BACK_TO, window.location.href);
