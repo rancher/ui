@@ -30,6 +30,7 @@ module.exports = function(app, options) {
     'Project': config.projectEndpoint.replace(config.projectToken, ''),
     'Cluster': config.clusterEndpoint.replace(config.clusterToken, ''),
     'Global':  config.apiEndpoint,
+    'Public':  config.publicApiEndpoint,
     'Magic': config.magicEndpoint,
 
     // @TODO-2.0
