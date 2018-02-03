@@ -44,11 +44,6 @@ export default Route.extend(Preload, {
   },
 
   model(params, transition) {
-    // Save whether the user is admin
-    //let type = get(this,`session.${C.SESSION.USER_TYPE}`);
-    //let isAdmin = (type === C.USER.TYPE_ADMIN) || !get(this,'access.enabled');
-    //set(this,'access.admin', isAdmin);
-
     get(this,'session').set(C.SESSION.BACK_TO, undefined);
 
 
