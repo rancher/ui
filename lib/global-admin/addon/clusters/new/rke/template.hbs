@@ -176,6 +176,61 @@
           </div>
         </div>
       </div>
+
+      {{#advanced-section}}
+        <div class="row">
+          <div class="col span-12">
+            <label class="acc-label">{{t 'clustersPage.addPage.rke.new.ignoreDockerVersion.label'}}</label>
+            <div class="radio">
+              <label>{{radio-button selection=config.ignoreDockerVersion value=true}} {{t 'generic.yes'}}</label>
+            </div>
+            <div class="radio">
+              <label>{{radio-button selection=config.ignoreDockerVersion value=false}} {{t 'generic.no'}}</label>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col span-12">
+            <label class="acc-label">{{t 'clustersPage.addPage.rke.new.kubelet.label'}}</label>
+            <div class="box">
+              <label class="acc-label">{{t 'clustersPage.addPage.rke.new.kubelet.infra'}}</label>
+              {{input type="text" value=config.services.kubelet.infraContainerImage}}
+              <label class="acc-label mt-10">{{t 'clustersPage.addPage.rke.new.kubelet.domain'}}</label>
+              {{input type="text" value=config.services.kubelet.clusterDomain}}
+              <label class="acc-label mt-10">{{t 'clustersPage.addPage.rke.new.kubelet.dns'}}</label>
+              {{input type="text" value=config.services.kubelet.clusterDnsServer}}
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col span-12">
+            <label class="acc-label">{{t 'clustersPage.addPage.rke.new.kubeController.label'}}</label>
+            <div class="box">
+              <label class="acc-label">{{t 'clustersPage.addPage.rke.new.kubeController.ipRange'}}</label>
+              {{input type="text" value=config.services.kubeController.serviceClusterIpRange}}
+              <label class="acc-label mt-10">{{t 'clustersPage.addPage.rke.new.kubeController.cidr'}}</label>
+              {{input type="text" value=config.services.kubeController.clusterCidr}}
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col span-12">
+            <label class="acc-label">{{t 'clustersPage.addPage.rke.new.kubeApi.label'}}</label>
+            <div class="box">
+              <label class="acc-label">{{t 'clustersPage.addPage.rke.new.kubeApi.ipRange'}}</label>
+              {{input type="text" value=config.services.kubeApi.serviceClusterIpRange}}
+              <label class="acc-label mt-10">{{t 'clustersPage.addPage.rke.new.kubeApi.podSecurityPolicy'}}</label>
+              <div class="radio">
+                <label>{{radio-button selection=config.services.kubeApi.podSecurityPolicy value=true}} {{t 'generic.yes'}}</label>
+              </div>
+              <div class="radio">
+                <label>{{radio-button selection=config.services.kubeApi.podSecurityPolicy value=false}} {{t 'generic.no'}}</label>
+              </div>
+            </div>
+          </div>
+        </div>
+      {{/advanced-section}}
     {{/accordion-list-item}}
   {{/accordion-list}}
 
