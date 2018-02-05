@@ -99,6 +99,7 @@ export default Route.extend({
         upgrade: results.upgrade,
         versionLinks: links,
         versionsArray: verArr,
+        allTemplateVersions: store.get('templateVersion'),
       });
     });
   },
