@@ -42,10 +42,10 @@
       <div class="radio">
         <label>{{radio-button selection=createNodes value=true}} {{t 'clustersPage.addPage.rke.new.nodes.createNow'}}</label>
       </div>
-      {{#liquid-if createNodes}}
+      {{#if createNodes}}
         {{#sortable-table
             classNames="grid sortable-table"
-            body=filteredMachines
+            body=model.cluster.nodes
             sortBy=sortBy
             suffix=true
             search=false
@@ -102,9 +102,15 @@
         {{/sortable-table}}
 
         <div class="mt-20">
-          <button class="btn bg-transparent p-0 pull-right btn-sm" {{action "pickRoles"}}>
-            {{t 'clustersPage.addPage.rke.new.setRoles'}}
-          </button>
+          <div class="pull-right">
+            <button class="btn bg-transparent p-0 mr-20 btn-sm" {{action "clearRoles"}}>
+              {{t 'clustersPage.addPage.rke.new.clearRoles'}}
+            </button>
+            <button class="btn bg-transparent p-0 btn-sm" {{action "pickRoles"}}>
+              {{t 'clustersPage.addPage.rke.new.setRoles'}}
+            </button>
+          </div>
+
           <button class="btn bg-primary icon-btn p-0" {{action "addNode"}}>
             <span class="darken"><i class="icon icon-plus text-small"/></span>
             <span>{{t 'clustersPage.addPage.rke.new.addNode'}}</span>
@@ -112,7 +118,7 @@
         </div>
       {{else}}
         <span class="text-muted mt-20 mb-20">{{t 'clustersPage.addPage.rke.new.nodes.createLaterDetail'}}</span>
-      {{/liquid-if}}
+      {{/if}}
     {{/accordion-list-item}}
 
     {{#accordion-list-item
