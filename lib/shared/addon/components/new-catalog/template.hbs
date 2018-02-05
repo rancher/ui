@@ -99,9 +99,18 @@
     {{else}}
       <h4>{{t 'newCatalog.helm.label'}}</h4>
       <div class="span-12">
-        <label class="acc-label pb-5">{{t 'newCatalog.answers.label'}}</label>
-        {{input type="text" value=catalogApp.answers classNames="form-control"}}
-        <div class="protip pt-10"> {{t 'newCatalog.helm.protip'}} </div>
+        {{form-key-value
+            initialMap=catalogApp.answers
+            changed=(action (mut catalogApp.answers))
+            allowEmptyValue=false
+            editing=true
+            header=(t 'newCatalog.answers.label')
+            addActionLabel="newCatalog.answers.addAction"
+            keyLabel="newContainer.environment.keyLabel"
+            keyPlaceholder="newContainer.environment.keyPlaceholder"
+            valueLabel="newContainer.environment.valueLabel"
+            valuePlaceholder="newContainer.environment.valuePlaceholder"
+        }}
       </div>
     {{/if}}
 
