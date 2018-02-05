@@ -46,7 +46,7 @@ export default Route.extend({
         newNSName = `${results.tpl.get('defaultName')}-1`;
       } else {
         if ((results.namespaces||[]).findBy('name', results.tpl.get('defaultName'))) {
-          newNSName = `${results.tpl.get('defaultName')}-1`;
+          newNSName = `${results.tpl.get('defaultName')}-1`; // TODO 2.0 this isn't perfect
         } else {
           newNSName = results.tpl.get('defaultName');
         }
