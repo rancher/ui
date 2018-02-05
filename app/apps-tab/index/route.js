@@ -11,7 +11,7 @@ export default Route.extend({
   model() {
     const catalog = get(this, 'catalog');
 
-    return this.get('store').findAll('namespace').then((namespaces) => {
+    return this.get('store').findAll('app').then((namespaces) => {
       let deps = [];
 
       namespaces.filterBy('isFromCatalog', true).forEach((stack) => {

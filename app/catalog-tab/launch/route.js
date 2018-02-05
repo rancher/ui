@@ -87,8 +87,6 @@ export default Route.extend({
         allTemplates: this.modelFor(get(this, 'parentRoute')).get('catalog'),
         catalogApp: store.createRecord({
           type: 'app', // should be app after new api
-          externalID: null,
-          installNamespace: results.namespace.name,
           name: results.namespace.name,
           answers: [],
         }),
@@ -99,7 +97,6 @@ export default Route.extend({
         upgrade: results.upgrade,
         versionLinks: links,
         versionsArray: verArr,
-        allTemplateVersions: store.get('templateVersion'),
       });
     });
   },
