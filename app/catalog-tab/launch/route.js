@@ -2,7 +2,7 @@ import EmberObject from '@ember/object';
 import { hash } from 'rsvp';
 import { inject as service } from '@ember/service';
 import Route from '@ember/routing/route';
-import { get, set } from '@ember/object';
+import { get/* , set */ } from '@ember/object';
 
 export default Route.extend({
   modalService: service('modal'),
@@ -33,37 +33,25 @@ export default Route.extend({
       dependencies.namespace = store.find('namespace', params.namespaceId);
     }
 
-    dependencies.namespaces = store.find('namespace');
-
     return hash(dependencies, 'Load dependencies').then((results) => {
-      let newNS = store.createRecord({
-        type: 'namespace',
-        name: '',
-      });
-      let newNSName = '';
-
-      if ( results.namespace ) {
-        newNSName = `${results.tpl.get('defaultName')}-1`;
-      } else {
-        if ((results.namespaces||[]).findBy('name', results.tpl.get('defaultName'))) {
-          newNSName = `${results.tpl.get('defaultName')}-1`; // TODO 2.0 this isn't perfect
-        } else {
-          newNSName = results.tpl.get('defaultName');
-        }
+      if ( !results.namespace )
+      {
+        results.namespace = store.createRecord({
+          type: 'namespace',
+          name: results.tpl.get('defaultName'),
+          answers: {},
+        });
       }
-
-      set(newNS, 'name', newNSName);
-
-      results.namespace = newNS;
-
 
       let tplCatalog = this.modelFor(get(this, 'parentRoute')).get('catalogs').findBy('id', get(results, 'tpl.catalogId'));
       let kind = get(tplCatalog, 'kind') ? get(tplCatalog, 'kind') : 'native';
       var links;
-
-      if ( results.upgrade ) {
+      if ( results.upgrade )
+      {
         links = results.upgrade.upgradeVersionLinks;
-      } else {
+      }
+      else
+      {
         links = results.tpl.versionLinks;
       }
 

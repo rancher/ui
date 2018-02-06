@@ -7,21 +7,23 @@ import { parseExternalId } from 'ui/utils/parse-externalid';
 
 export default Route.extend({
   catalog: service(),
+  globalStore: service(),
 
   model() {
     const catalog = get(this, 'catalog');
 
-    return this.get('store').findAll('app').then((namespaces) => {
+    return this.get('globalStore').find('app').then((apps) => {
+      debugger;
       let deps = [];
 
-      namespaces.filterBy('isFromCatalog', true).forEach((stack) => {
+      apps.forEach((stack) => {
         let extInfo = parseExternalId(stack.get('externalId'));
         deps.push(catalog.fetchTemplate(extInfo.templateId, false));
       });
 
       return allSettled(deps).then(() => {
         return EmberObject.create({
-          namespaces,
+          apps,
         });
       });
     });
