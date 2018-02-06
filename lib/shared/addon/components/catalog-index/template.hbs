@@ -5,7 +5,9 @@
     </div>
 
     <div class="right-buttons">
-      <button type="button" class="btn bg-primary icon-btn" disabled={{eq updating 'yes'}} {{action "update"}}>
+      {{!-- <button type="button" class="btn bg-primary icon-btn" disabled={{eq updating 'yes'}} {{action "update"}}> --}}
+      {{!-- currently no refresh button --}}
+      <button type="button" class="btn bg-primary icon-btn" disabled={{eq updating 'no'}} {{action "update"}}>
         {{#if (eq updating "yes")}}
           <span class="darken"><i class="icon icon-spinner icon-spin"></i></span>
         {{else}}
@@ -40,9 +42,14 @@
         <div class="dropdown filter-group">
           <button type="button" class="btn bg-default btn-md dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="text-align: left;"><i class="icon icon-chevron-down pull-right"></i><span class="text-capitalize">{{catalogId}}</span></button>
           <ul class="dropdown-menu dropdown-menu-right">
+            <li class="text-capitalize {{if (eq catalogId 'all') 'active'}}">
+              <a href="#" {{action (action filterAction)}}>
+                {{t 'generic.all'}}
+              </a>
+            </li>
             {{#each filters as |opt|}}
-              <li class="text-capitalize {{if (eq catalogId opt.queryParams.catalogId) 'active'}}">
-                <a href="#" {{action (action filterAction opt.queryParams.catalogId )}}>
+              <li class="{{if (eq catalogId opt.catalogId) 'active'}}">
+                <a href="#" {{action (action filterAction opt.catalogId )}}>
                   <i class="{{opt.icon}}"></i>
                   {{#if opt.localizedLabel}}
                     {{t opt.localizedLabel}}
@@ -59,15 +66,9 @@
     </div>
     <ul class="container-categories list-unstyled">
       <li class=" {{if (eq category 'all') 'active' ''}}">
-        {{#if preFetchCategory}}
-          <a href="#" {{action (action categoryAction 'all' catalogId)}} class="btn has-label bg-default btn-md">
-            <span class="btn-label">{{totalCategories}}</span><span class="clip">{{t 'generic.all'}}</span>
-          </a>
-        {{else}}
-          <a href="#" {{action (action categoryAction 'all' catalogId)}} class="btn has-label bg-default btn-md">
-            <span class="btn-label">{{totalCategories}}</span><span class="clip">{{t 'generic.all'}}</span>
-          </a>
-        {{/if}}
+        <a href="#" {{action (action categoryAction 'all' catalogId)}} class="btn has-label bg-default btn-md">
+          <span class="btn-label">{{totalCategories}}</span><span class="clip">{{t 'generic.all'}}</span>
+        </a>
       </li>
       {{#each-in categoryWithCounts as |norm cat|}}
         <li class=" {{if (eq cat.name category) 'active' ''}}">
@@ -85,14 +86,14 @@
           <h3>
             {{#if (eq catalogItem.templateBase 'infra')}}
               {{#if catalogItem.exists}}
-                <a href="#" {{action (action launch catalogItem.id true) allowedKeys="meta ctrl"}}>{{catalogItem.name}}</a>
+                <a href="#" {{action (action launch catalogItem.id true) allowedKeys="meta ctrl"}}>{{catalogItem.displayName}}</a>
               {{else if catalogItem.supported}}
-                <a href="#"  {{action (action launch catalogItem.id )}}>{{catalogItem.name}}</a>
+                <a href="#"  {{action (action launch catalogItem.id )}}>{{catalogItem.displayName}}</a>
               {{else}}
-                <a href="#"  {{action (action launch catalogItem.id true ) allowedKeys="meta ctrl"}}>{{catalogItem.name}}</a>
+                <a href="#"  {{action (action launch catalogItem.id true ) allowedKeys="meta ctrl"}}>{{catalogItem.displayName}}</a>
               {{/if}}
             {{else}}
-                <a href="#"  {{action (action launch catalogItem.id )}}>{{catalogItem.name}}</a>
+                <a href="#"  {{action (action launch catalogItem.id )}}>{{catalogItem.displayName}}</a>
             {{/if}}
           </h3>
           <div class="mt-10 description">{{catalogItem.description}}</div>

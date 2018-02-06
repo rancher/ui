@@ -13,7 +13,6 @@ export default Route.extend({
     const catalog = get(this, 'catalog');
 
     return this.get('globalStore').find('app').then((apps) => {
-      debugger;
       let deps = [];
 
       apps.forEach((stack) => {
