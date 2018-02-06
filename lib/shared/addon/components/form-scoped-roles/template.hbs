@@ -35,11 +35,14 @@
   {{#if (eq mode 'custom')}}
     <div class="pl-20">
       {{#each custom as |row|}}
-        <div class="box p-10 mt-5 mb-5">
-          <label>
-            {{input type="checkbox" checked=row.active}} {{row.role.displayName}}
-            <p class="help-block">{{row.role.detail}}</p>
+        <div class="input-group mb-10 border">
+          <label class="input-group-addon bg-default p-10 vertical-middle">
+            {{input type="checkbox" checked=row.active}}
           </label>
+          <div class="form-control p-10 vertical-middle">
+            {{row.role.displayName}}
+            <p class="help-block">{{row.role.detail}}</p>
+          </div>
         </div>
       {{/each}}
     </div>
@@ -49,3 +52,12 @@
 
 {{top-errors errors=errors}}
 {{save-cancel save="save" cancel="cancel"}}
+
+        <div class="input-group">
+          <label class="input-group-addon bg-default">
+            <div class="bg-body form-control">
+              {{input type="checkbox" checked=row.active}} {{row.role.displayName}}
+              <p class="help-block">{{row.role.detail}}</p>
+            </div>
+          </label>
+        </div>
