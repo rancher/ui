@@ -1,0 +1,41 @@
+<div class="row nav nav-boxes checked-current mv-30 {{if (eq currentTarget 'embedded') 'embedded'}}  logging-targets">
+  {{#each targets as |target|}}
+    {{#if target.available}}
+      {{#link-to "logging" (query-params targetType=target.type)
+        alt=target.label
+        classNames=(concat "col span-2 nav-box-item driver " target.css)
+        disabled=target.disabled
+        href=false
+      }}
+        {{#if (eq target.type 'embedded')}}
+          <div class="badge-thirdparty">
+            <strong>Experimental</strong>
+          </div>
+        {{/if}}
+        <p>{{target.label}}</p>
+      {{/link-to}}
+    {{/if}}
+  {{/each}}
+</div>
+
+<section>
+  <div class="text-center text-muted">
+    {{#if (eq targetType 'none')}}
+      {{#if (not hasCurrentTarget)}}
+        Logging is disabled in the current {{pageScope}}.
+      {{else}}
+        The current logging target is <code class="text-capitalize">{{currentTarget}}</code>, Click the save buttom below will disable logging in current {{pageScope}}.
+      {{/if}}
+    {{else if hasCurrentTarget}}
+      The current logging target is <code class="text-capitalize">{{currentTarget}}</code>,
+      {{#unless (eq currentTarget targetType)}}
+        click the save buttom below to set <span class="text-info text-capitalize">{{targetType}}</span> as the logging target.
+      {{else}}
+        click the save buttom below to update the <span class="text-info text-capitalize">{{targetType}}</span> configuration.
+      {{/unless}}
+    {{else}}
+      No logging target, click the save buttom below to set <code class="text-capitalize">{{targetType}}</code> as the logging target.
+    {{/if}}
+  </div>
+  <hr/>
+</section>

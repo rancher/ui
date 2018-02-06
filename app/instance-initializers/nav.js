@@ -83,7 +83,23 @@ const rootNav = [
       },
     ],
   },
-
+  {
+    scope: 'project',
+    id: 'project-tools',
+    localizedLabel: 'nav.tools.tab',
+    ctx: [getProjectId],
+    submenu: [
+      {
+        id: 'tools-logging',
+        localizedLabel: 'nav.tools.logging',
+        // icon: 'icon icon-key',
+        route: 'logging',
+        resourceScope: 'global',
+        resource: [],
+        ctx: [getProjectId],
+      },
+    ],
+  },
   // Cluster
   {
     scope: 'cluster',
@@ -136,6 +152,25 @@ const rootNav = [
         route: 'authenticated.cluster.security.members.index',
         resource: ['clusterroletemplatebinding'],
         resourceScope: 'global',
+        ctx: [getClusterId],
+      },
+    ],
+  },
+  {
+    scope: 'cluster',
+    id: 'cluster-tools',
+    localizedLabel: 'nav.tools.tab',
+    ctx: [getClusterId],
+    resource: [],
+    resourceScope: 'global',
+    submenu: [
+      {
+        id: 'cluster-tools-logging',
+        localizedLabel: 'nav.tools.logging',
+        // icon: 'icon icon-key',
+        route: 'authenticated.cluster.logging',
+        resourceScope: 'global',
+        resource: [],
         ctx: [getClusterId],
       },
     ],

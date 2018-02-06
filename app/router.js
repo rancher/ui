@@ -83,11 +83,13 @@ Router.map(function() {
           this.route('new', {path: '/add'});
         });
       });
+      this.mount('logging', {path: '/logging'});
     });
 
     // Per-Project
     this.route('project', {path: '/p/:project_id'}, function() {
       this.route('index', {path: '/'});
+      this.mount('logging', {path: '/logging', resetNamespace: true});
 
       // Workload
       this.route('containers', {resetNamespace: true}, function() {

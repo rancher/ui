@@ -1,0 +1,67 @@
+<h2 class="pt-30">Kafka Configuration</h2>
+<hr/>
+
+<div class="box mb-10">
+  <div>
+    Entrypoint:
+    <label class="mr-10">{{radio-button selection=brokerType value="zookeeper"}} Zookeeper</label>
+    <label class="mr-10">{{radio-button selection=brokerType value="broker"}} Broker</label>
+    <p class="text-info text-small">Use either Zookeeper or Broker list as the Kafka connection entrypoint.</p>
+  </div>
+  <hr/>
+  <section class="mb-30">
+  {{#if (eq brokerType 'zookeeper')}}
+    <div>
+      <label class="acc-label" for="">Endpoint{{field-required}}</label>
+      {{input
+          type="text"
+          value=config.zookeeperEndpoint
+          classNames="form-control"
+          placeholder="e.g. https://192.168.1.10:2181"
+      }}
+    </div>
+    <p class="text-info text-small mb-0">Zookeeper is for building coordination, configuration management, leader detection, detecting node update in kafka cluster.</p>
+  {{else}}
+    {{#each brokerEndpoints as |item|}}
+      <div class="row">
+        <div class="col span-11">
+          <label class="acc-label" for="">Endpoint{{field-required}}</label>
+          {{input
+              type="text"
+              value=item.endpoint
+              classNames="form-control"
+              placeholder="e.g. https://192.168.1.10:9092"
+          }}
+        </div>
+        <div class="col span-1" style="padding-top: 29px">
+          <button class="btn bg-primary icon-btn {{if canRemove '' 'disabled'}}" {{action "remove" item}}>
+            <span class="darken"><i class="icon icon-minus"></i></span>
+          </button>
+        </div>
+      </div>
+    {{/each}}
+    <p class="text-info text-small mb-0">A Kafka cluster consists of one or more Brokers, config the host and port for each Broker. </p>
+    <div class="mt-20">
+      <button class="btn bg-link icon-btn p-0" {{action "add"}}>
+        <span class="darken"><i class="icon icon-plus text-small"/></span>
+        <span>Add Endpoint</span>
+      </button>
+    </div>
+  {{/if}}
+  </section>
+  <hr/>
+  <div class="row">
+    <div class="col span-6 mt-0 pt-0">
+      <label class="acc-label" for="">Topic{{field-required}}</label>
+      {{input
+          type="text"
+          value=config.topic
+          classNames="form-control"
+          placeholder="e.g. message"
+      }}
+      <p class="text-info text-small">Logs will be send to this topic.</p>
+    </div>
+  </div>
+</div>
+
+{{logging/form-log-format logPreview=logPreview model=model}}

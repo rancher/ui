@@ -1,0 +1,39 @@
+<main class="row mt-20">
+  <div class="col span-6 logging-format">
+    <h2 class="mt-0">Log Format Preview</h2>
+    <hr/>
+    {{code-block code=logPreview}}
+  </div>
+  <div class="col span-6">
+    <h2 class="mt-0">Additional Logging Configuration</h2>
+    <hr/>
+    <section class="box additional-logging-configuration-content">
+      <h4>Custom Log Fields</h4>
+      <div class="mb-30">
+        <p class="text-info text-small">You can add custom fields as key/value pairs for better filtering.</p>
+        {{form-key-value
+            addActionLabel="loggingPage.tags.addActionLabel"
+            initialMap=model.outputTags
+            changed=(action (mut model.outputTags))
+        }}
+      </div>
+      <h4>Flush Interval</h4>
+      <div class="row">
+        <div class="col span-8">
+          <span class="acc-label">Flush Interval</span>
+          <div class="input-group">
+            {{input-integer
+                min=1
+                value=model.outputFlushInterval
+                class="form-control"
+                placeholder="e.g. 1"
+                aria-describedby="basic-addon2"
+            }}
+            <span class="input-group-addon bg-default" id="basic-addon2">sec</span>
+          </div>
+          <p class="text-info text-small mb-0">How often buffered logs would be flushed.</p>
+        </div>
+      </div>
+    </section>
+  </div>
+</main>

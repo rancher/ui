@@ -1,0 +1,139 @@
+.logging-targets.nav-boxes.checked-current.embedded .current:after {
+  z-index: 999;
+}
+.nav-boxes.logging-targets {
+  .nav-box-item {
+    opacity           : 1;
+    background-color  : white;
+    border-color      : $light-grey;
+    position: relative;
+    filter         : none;
+    -webkit-filter : none;
+    -moz-filter    : none;
+    -ms-filter     : none;
+    -o-filter      : none;
+  }
+  .nav-box-item.active {
+    border-color: $info;
+  }
+  .badge-rancher {
+    position: absolute;
+    z-index: 1;
+    background: $warning;
+    color: black;
+    padding: 1px 10px;
+    right: -13px;
+    top: 5px;
+    font-size: .75em;
+    color: white;
+
+    &:before {
+      content: "";
+      border-style: solid;
+      border-color: $warning;
+      border-left-color: transparent;
+      position: absolute;
+      top: 0;
+      left: -16px;
+      border-width: 11.5px;
+      z-index: 2;
+    }
+
+    &:after {
+      content: "";
+      border-color: darken($warning, 20%) transparent transparent darken($warning, 20%);
+      border-style: solid;
+      border-width: 5px;
+      right: 2px;
+      bottom: -10px;
+      display: block;
+      position: absolute;
+    }
+  }
+  .badge-thirdparty {
+    @extend .badge-rancher;
+    background-color: $info;
+
+    &:before {
+      border-color: $info;
+      border-left-color: transparent;
+    }
+
+    &:after {
+      border-color: darken($info, 30%) transparent transparent darken($info, 30%);
+    }
+  }
+
+  .driver p {
+    position: absolute;
+    bottom: -8px!important;
+    font-size: 0.9em;
+  }
+  .none {
+    background-image: url('images/providers/none.svg');
+    background-size: 180px 110px;
+  }
+  .elasticsearch {
+    background-image: url('images/providers/elasticsearch.svg');
+    background-size: 70px 70px;
+    background-position: center 30%!important;
+  }
+  .splunk {
+    background-image: url('images/providers/splunk.svg');
+    background-size: 160px 90px;
+  }
+  .embedded {
+    background-image: url('images/providers/elasticsearch-embedded.svg');
+    background-size: 150px 110px;
+    background-position: center 30%!important;
+  }
+  .kafka {
+    background-image: url('images/providers/kafka.svg');
+    background-size: 130px 80px;
+  }
+  .syslog {
+    background-image: url('images/providers/syslog.svg');
+    background-size: 150px 120px;
+  }
+}
+
+.nav-boxes.notifier-types {
+  .driver p {
+    position: absolute;
+    bottom: -8px!important;
+    font-size: 0.9em;
+  }
+  .slack {
+    background-image: url('images/providers/slack.svg');
+    background-size: 56px 56px;
+  }
+  .email {
+    background-image: url('images/providers/email.svg');
+    background-size: 100px 100px;
+  }
+  .pagerduty {
+    background-image: url('images/providers/pagerduty.svg');
+    background-size: 110px 110px;
+  }
+  .webhook {
+    background-image: url('images/providers/webhook.svg');
+    background-size: 58px 58px;
+  }
+}
+
+.nav-boxes {
+  &.checked-current .current:after {
+    content          : $icon-check;
+    top              : -15px;
+    right            : -15px;
+    font-family      : 'rancher-icons';
+    font-size        : 18px;
+    position         : absolute;
+    background-color : $info;
+    height           : 29px;
+    width            : 29px;
+    line-height      : 30px;
+    border-radius    : 50%;
+    color            : white;
+  }
+}
