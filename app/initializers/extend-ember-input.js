@@ -10,8 +10,10 @@ export function initialize(/*application */) {
   Checkbox.reopen(SafeStyle);
 
   // Disable iOS auto-capitalization
+  //
   TextField.reopen({
     attributeBindings: ['autocapitalize','spellcheck','autocomplete'],
+    autocomplete: 'off',
     autocapitalize: 'none',
   });
 }
