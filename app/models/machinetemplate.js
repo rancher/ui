@@ -1,9 +1,7 @@
 import Resource from 'ember-api-store/models/resource';
 
-var MachineTemplate = Resource.extend({
+export default Resource.extend({
   type: 'machinetemplate',
-  actions: {
-  },
 
   availableActions: function() {
     let l = this.get('links');
@@ -15,5 +13,3 @@ var MachineTemplate = Resource.extend({
     ];
   }.property('links.{remove}'),
 });
-
-export default MachineTemplate;
