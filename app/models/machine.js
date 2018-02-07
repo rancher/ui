@@ -89,7 +89,7 @@ var Machine = Resource.extend(StateCounts, ResourceUsage, {
 
   displayIp: alias('ipAddress'),
 
-  displayName: computed('name','nodeName','id', function() {
+  displayName: computed('name','nodeName','requestedHostname','id', function() {
     let name = get(this,'name');
     if ( name ) {
       return name;
