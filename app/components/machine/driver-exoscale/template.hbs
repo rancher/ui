@@ -46,22 +46,65 @@
 
 <section class="horizontal-form r-pt0 {{unless isStep2 'hide'}}">
   <div class="text-center">
-    <i class="icon icon-spinner icon-spin"></i> {{t 'machine.driverExoscale.loadingSecurity'}}
+    <i class="icon icon-spinner icon-spin"></i> {{t 'machine.driverExoscale.loadingZone'}}
   </div>
 </section>
 
 <section class="horizontal-form r-pt0 {{unless isGteStep3 'hide'}}">
   <div class="container-fluid">
     <div class="over-hr r-mt20 r-mb20">
-      <span>{{t 'machine.driverExoscale.securityGroupSection'}}</span>
+      <span>{{t 'machine.driverExoscale.zoneSection'}}</span>
     </div>
 
     <div class="row {{if isStep3 'form-group'}}">
       <div class="col-md-2 form-label">
-        <label class="form-control-static">{{t 'machine.driverExoscale.securityGroup.label'}}</label>
+        <label class="form-control-static">{{t 'machine.driverExoscale.zone.label'}}</label>
       </div>
       <div class="col-md-10">
         {{#if isStep3}}
+         {{#each allZones as |choice|}}
+          <div class="radio r-pt10"><label>
+            {{radio-button selection=whichZone value=choice.id}}
+            {{ choice.name }}
+          </label></div>
+        {{/each}}
+        {{else}}
+          <div class="form-control-static">
+            {{exoscaleConfig.zoneName}}
+          </div>
+        {{/if}}
+      </div>
+    </div>
+  </div>
+  {{#if isStep3}}
+    {{top-errors errors=errors}}
+
+    <div class="footer-actions">
+      <button {{action "selectZone"}} class="btn btn-primary">{{t 'machine.driverExoscale.selectZoneAction'}}</button>
+      <button {{action "cancel"}} class="btn btn-link">Cancel</button>
+    </div>
+  {{/if}}
+</section>
+
+
+<section class="horizontal-form r-pt0 {{unless isStep4 'hide'}}">
+  <div class="text-center">
+    <i class="icon icon-spinner icon-spin"></i> {{t 'machine.driverExoscale.loadingSecurity'}}
+  </div>
+</section>
+
+<section class="horizontal-form r-pt0 {{unless isGteStep5 'hide'}}">
+  <div class="container-fluid">
+    <div class="over-hr r-mt20 r-mb20">
+      <span>{{t 'machine.driverExoscale.securityGroupSection'}}</span>
+    </div>
+
+    <div class="row {{if isStep5 'form-group'}}">
+      <div class="col-md-2 form-label">
+        <label class="form-control-static">{{t 'machine.driverExoscale.securityGroup.label'}}</label>
+      </div>
+      <div class="col-md-10">
+        {{#if isStep5}}
           <div class="radio r-pt10"><label>
             {{radio-button selection=whichSecurityGroup value="default"}}
             {{#if defaultSecurityGroup}}
@@ -98,7 +141,7 @@
       </div>
     </div>
   </div>
-  {{#if isStep3}}
+  {{#if isStep5}}
     {{top-errors errors=errors}}
 
     <div class="footer-actions">
@@ -108,7 +151,7 @@
   {{/if}}
 </section>
 
-<section class="horizontal-form {{unless isStep4 'hide'}}" style="padding-top: 0">
+<section class="horizontal-form {{unless isStep6 'hide'}}" style="padding-top: 0">
   <div class="text-center">
     <i class="icon icon-spinner icon-spin"></i>
     {{#if defaultSecurityGroup}}
@@ -119,13 +162,13 @@
   </div>
 </section>
 
-<section class="horizontal-form r-pt0 {{unless isStep5 'hide'}}">
+<section class="horizontal-form r-pt0 {{unless isStep7 'hide'}}">
   <div class="text-center">
     <i class="icon icon-spinner icon-spin"></i> {{t 'machine.driverExoscale.loadingInstance'}}
   </div>
 </section>
 
-<section class="horizontal-form r-pt0 {{unless isGteStep6 'hide'}}">
+<section class="horizontal-form r-pt0 {{unless isGteStep8 'hide'}}">
   <div class="container-fluid">
     <div class="over-hr r-mt20 r-mb20">
       <span>{{t 'machine.driverExoscale.instanceSection'}}</span>
@@ -157,6 +200,16 @@
     </div>
 
     <div class="row form-group">
+      <div class="col-md-2 form-label">
+        <label class="form-control-static">{{t 'machine.driverExoscale.template.label'}}</label>
+      </div>
+      <div class="col-md-4">
+        <select class="form-control" onchange={{action (mut exoscaleConfig.template) value="target.value"}}>
+          {{#each allTemplates as |choice|}}
+            <option value={{choice}} selected={{eq exoscaleConfig.template choice}}>{{choice}}</option>
+          {{/each}}
+        </select>
+      </div>
       <div class="col-md-2 form-label">
         <label class="form-control-static">{{t 'machine.driverExoscale.sshUser.label'}}</label>
       </div>

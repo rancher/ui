@@ -2,7 +2,6 @@ import Ember from 'ember';
 import Driver from 'ui/mixins/driver';
 import { ajaxPromise } from 'ember-api-store/utils/ajax-promise';
 
-let RANCHER_TEMPLATE      = 'Linux Ubuntu 14.04 LTS 64-bit';
 let RANCHER_GROUP         = 'rancher-machine';
 let RANCHER_INGRESS_RULES = [
   {
@@ -44,7 +43,12 @@ export default Ember.Component.extend(Driver, {
 
   allDiskSizes             : null,
   allInstanceProfiles      : null,
+  allTemplates             : null,
 
+  allZones                 : null,
+  selectedZone             : null,
+  defaultZone              : 'ch-dk-2',
+  whichZone                : '91e5e9e4-c9ed-4b76-bee4-427004b3baf9',
   allSecurityGroups        : null,
   selectedSecurityGroup    : null,
   defaultSecurityGroup     : null,
@@ -60,10 +64,14 @@ export default Ember.Component.extend(Driver, {
   isStep4                  : Ember.computed.equal('step',4),
   isStep5                  : Ember.computed.equal('step',5),
   isStep6                  : Ember.computed.equal('step',6),
+  isStep7                  : Ember.computed.equal('step',7),
+  isStep8                  : Ember.computed.equal('step',8),
   isGteStep3               : Ember.computed.gte('step',3),
   isGteStep4               : Ember.computed.gte('step',4),
   isGteStep5               : Ember.computed.gte('step',5),
   isGteStep6               : Ember.computed.gte('step',6),
+  isGteStep7               : Ember.computed.gte('step',7),
+  isGteStep8               : Ember.computed.gte('step',8),
 
   bootstrap: function() {
     let config = this.get('store').createRecord({
@@ -71,8 +79,9 @@ export default Ember.Component.extend(Driver, {
       apiKey: '',
       apiSecretKey: '',
       diskSize: 50,
-      instanceProfile: 'small',
-      securityGroup: 'rancher-machine'
+      template: 'Linux Ubuntu 14.04 LTS 64-bit',
+      instanceProfile: 'Medium',
+      securityGroup: 'rancher-machine',
     });
 
     this.set('model', this.get('store').createRecord({
@@ -112,11 +121,58 @@ export default Ember.Component.extend(Driver, {
       this.set('exoscaleConfig.apiKey', (this.get('exoscaleConfig.apiKey')||'').trim());
       this.set('exoscaleConfig.apiSecretKey', (this.get('exoscaleConfig.apiSecretKey')||'').trim());
 
+
+      this.apiRequest('listZones').then((res) => {
+        let zones = [];
+        let defaultZone = null;
+
+        (res.listzonesresponse.zone || []).forEach((zone) => {
+          let obj = {
+            id : zone.id,
+            name : zone.name,
+            isDefault : zone.name === this.get('defaultZone'),
+          };
+
+          zones.push(obj);
+          if (zone.isDefault && !defaultZone) {
+            defaultZone = obj;
+          }
+        });
+
+        this.set('step', 3);
+        this.set('allZones', zones);
+        this.set('defaultZone', defaultZone);
+        this.set('selectedZone', this.get('exoscaleConfig.zone') || this.get('allZones.firstObject.id'));
+      }, (err) => {
+        let errors = this.get('errors') || [];
+        errors.pushObject(this.apiErrorMessage(
+            err,
+            'listzonesresponse',
+            'While requesting zones',
+            'Authentication failure: please check the provided access credentials'
+        ));
+          this.set('errors', errors);
+          this.set('step', 1);
+      });
+    },
+
+    /* Zone selection */
+    selectZone: function() {
+      this.set('errors',null);
+
+      this.set('exoscaleConfig.zone', this.get('selectedZone'));
+      (this.get('allZones') || []).forEach((zone) => {
+        if (zone.id === this.get('selectedZone')) {
+          this.set('exoscaleConfig.zoneName', zone.name);
+        }
+      });
+
+      this.set('step', 4);
       this.apiRequest('listSecurityGroups').then((res) => {
         let groups       = [];
         let defaultGroup = null;
 
-        /* Retrieve the list of security groups. */
+        // Retrieve the list of security groups.
         (res.listsecuritygroupsresponse.securitygroup || [])
           .forEach((group) => {
             let obj = {
@@ -132,8 +188,8 @@ export default Ember.Component.extend(Driver, {
             }
           });
 
-        /* Move to next step */
-        this.set('step', 3);
+        // Move to next step
+        this.set('step', 5);
         this.set('allSecurityGroups', groups);
         this.set('defaultSecurityGroup', defaultGroup);
         this.set('selectedSecurityGroup', this.get('exoscaleConfig.securityGroup') || this.get('allSecurityGroups.firstObject.id'));
@@ -144,7 +200,7 @@ export default Ember.Component.extend(Driver, {
                                                'While requesting security groups',
                                                'Authentication failure: please check the provided access credentials'));
         this.set('errors', errors);
-        this.set('step', 1);
+        this.set('step', 3);
       });
     },
 
@@ -170,7 +226,7 @@ export default Ember.Component.extend(Driver, {
       }
 
       /* We need to create the security group */
-      this.set('step', 4);
+      this.set('step', 6);
       this.apiRequest('createSecurityGroup', {
         name        : this.get('defaultSecurityGroupName'),
         description : this.get('settings.appName') + ' default security group'
@@ -191,7 +247,7 @@ export default Ember.Component.extend(Driver, {
                                                    'While setting default security group',
                                                    'Unable to configure the default security group'));
             this.set('errors', errors);
-            this.set('step', 3);
+            this.set('step', 5);
           } else {
             this.fetchInstanceSettings();
           }
@@ -203,21 +259,29 @@ export default Ember.Component.extend(Driver, {
                                                  'While creating default security group',
                                                  'Unable to create the default security group'));
           this.set('errors', errors);
-          this.set('step', 3);
+          this.set('step', 5);
       });
     }
   },
 
   fetchInstanceSettings: function() {
-    this.set('step', 5);
+    this.set('step', 7);
 
     /* First, get a list of templates to get available disk sizes */
     this.apiRequest('listTemplates', {
       templatefilter : 'featured',
-      name           : RANCHER_TEMPLATE
+      zoneid         : this.get('exoscaleConfig.zone')
     }).then((res) => {
+      this.set('allTemplates',
+               res.listtemplatesresponse.template
+                 .filter((item) => item.name.startsWith('Linux'))
+                 .map((item) => item.name)
+                 .sort()
+                 .uniq());
+      console.log(this.get('allTemplates'));
       this.set('allDiskSizes',
                res.listtemplatesresponse.template
+                 .filter((item) => item.name.startsWith('Linux') && item.size)
                  .map((item) => Math.round(item.size / 1024 / 1024 / 1024))
                  .sort((a, b) => (a - b)).uniq());
       /* Also get the instance types */
@@ -236,7 +300,7 @@ export default Ember.Component.extend(Driver, {
                      return 0;
                    })
                    .map((item) => ({ name: item.name, displaytext: item.displaytext })));
-        this.set('step', 6);
+        this.set('step', 8);
       }, (err) => {
         let errors = this.get('errors')||[];
         errors.pushObject(this.apiErrorMessage(err,
@@ -244,7 +308,7 @@ export default Ember.Component.extend(Driver, {
                                              'While getting list of instance types',
                                              'Unable to get list of instance types'));
         this.set('errors', errors);
-        this.set('step', 3);
+        this.set('step', 5);
       });
     }, (err) => {
       let errors = this.get('errors')||[];
@@ -253,7 +317,7 @@ export default Ember.Component.extend(Driver, {
                                              'While getting list of available images',
                                              'Unable to get list of available images'));
       this.set('errors', errors);
-      this.set('step', 3);
+      this.set('step', 5);
     });
   },
 
