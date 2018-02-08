@@ -16,6 +16,21 @@ var Cluster = Resource.extend(ResourceUsage, {
   clusterRoleTemplateBindings: hasMany('id', 'clusterRoleTemplateBinding', 'clusterId'),
   roleTemplateBindings: alias('clusterRoleTemplateBindings'),
 
+  configType: computed('azureKubernetesServiceConfig', 'googleKubernetesEngineConfig', 'rancherKubernetesEngineConfig', 'embeddedConfig', function () {
+    if (get(this, 'azureKubernetesServiceConfig')) {
+      return 'azureaks';
+    }
+    if (get(this, 'googleKubernetesEngineConfig')) {
+      return 'googlegke';
+    }
+    if (get(this, 'rancherKubernetesEngineConfig')) {
+      return 'rancher';
+    }
+    if (get(this, 'embeddedConfig')) {
+      return 'embedded';
+    }
+  }),
+
   canAddNode: computed('rancherKubernetesEngineConfig', function() {
     return !!this.get('rancherKubernetesEngineConfig');
   }),

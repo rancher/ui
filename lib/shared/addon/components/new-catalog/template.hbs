@@ -18,6 +18,9 @@
       <small><strong>{{t 'newCatalog.catalog'}}</strong> <span class="text-capitalize">{{templateResource.catalogId}}</span></small>
     </div>
     <div>
+      <small><strong>{{t 'newCatalog.kind'}}</strong> <span class="text-capitalize">{{templateKind}}</span></small>
+    </div>
+    <div>
       <small><strong>{{t 'newCatalog.category'}}</strong> {{join-array templateResource.categoryArray}}</small>
     </div>
     {{#if (eq templateResource.certifiedType 'rancher')}}
@@ -52,6 +55,22 @@
 </section>
 
 <section class="{{sectionClass}}">
+  <h4>{{t 'newCatalog.newNamespace'}}</h4>
+
+  {{form-name-description
+      model=primaryResource
+      nameRequired=true
+  }}
+
+  {{form-namespace
+      namespace=primaryResource
+      errors=namespaceErrors
+  }}
+
+</section>
+
+
+<section class="{{sectionClass}}">
   <h4>{{t 'newCatalog.templateVersion'}}</h4>
   <div class="row">
     <div class="col span-6">
@@ -70,18 +89,6 @@
   </div>
 </section>
 
-{{#if (and showName selectedTemplateModel)}}
-  <section class="{{sectionClass}}">
-    <h4>{{t 'newCatalog.newNamespace'}}</h4>
-
-    {{form-name-description
-      model=namespaceResource
-      nameRequired=true
-    }}
-
-  </section>
-{{/if}}
-
 <section class="{{sectionClass}}">
   {{#if getTemplate.isRunning}}
     <div class="text-center">
@@ -90,9 +97,27 @@
   {{/if}}
 
   {{#if selectedTemplateModel}}
-    {{input-answers
-        selectedTemplate=selectedTemplateModel
-    }}
+    {{#if (eq templateKind 'native')}}
+      {{input-answers
+          selectedTemplate=selectedTemplateModel
+      }}
+    {{else}}
+      <h4>{{t 'newCatalog.helm.label'}}</h4>
+      <div class="span-12">
+        {{form-key-value
+            initialMap=catalogApp.answers
+            changed=(action (mut catalogApp.answers))
+            allowEmptyValue=false
+            editing=true
+            header=(t 'newCatalog.answers.label')
+            addActionLabel="newCatalog.answers.addAction"
+            keyLabel="newContainer.environment.keyLabel"
+            keyPlaceholder="newContainer.environment.keyPlaceholder"
+            valueLabel="newContainer.environment.valueLabel"
+            valuePlaceholder="newContainer.environment.valuePlaceholder"
+        }}
+      </div>
+    {{/if}}
 
   {{/if}}
 </section>

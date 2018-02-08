@@ -10,16 +10,16 @@ export default Controller.extend({
   intl:              service(),
   tags:              alias('projectController.tags'),
   sortBy:            'name',
-  expandedNamespaces:    null,
+  expandedApps:    null,
 
   init() {
     this._super(...arguments);
-    this.set('expandedNamespaces',[]);
+    this.set('expandedApps',[]);
   },
 
   actions: {
     toggleExpand(instId) {
-      let list = get(this,'expandedNamespaces');
+      let list = get(this,'expandedApps');
       if ( list.includes(instId) ) {
         list.removeObject(instId);
       } else {
@@ -28,11 +28,11 @@ export default Controller.extend({
     },
   },
 
-  filteredNamespaces: computed('model.namespaces.@each.{type,isFromCatalog,tags,state}','tags', function() {
+  filteredApps: computed('model.apps.@each.{type,isFromCatalog,tags,state}','tags', function() {
     var needTags = get(this,'tags');
 
-    var out = get(this,'model.namespaces').filter((ns) => {
-      return get(ns,'isFromCatalog') && !C.REMOVEDISH_STATES.includes(get(ns,'state'));
+    var out = get(this,'model.apps').filter((ns) => {
+      return !C.REMOVEDISH_STATES.includes(get(ns,'state'));
     });
 
     if ( needTags.length ) {
