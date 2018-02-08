@@ -6,19 +6,31 @@
   <div class="row">
     <div class="col span-6">
       <label class="acc-label">{{t 'cloud.driverAzure.location.label'}}</label>
-      {{new-select
-          classNames="form-control"
-          optionValuePath="name"
-          optionLabelPath="displayName"
-          prompt="cloud.driverAzure.location.prompt"
-          content=zones
-          value=config.location
-          localizedPrompt=true
-      }}
+      {{#if editing}}
+        <div>
+          {{config.location}}
+        </div>
+      {{else}}
+        {{new-select
+            classNames="form-control"
+            optionValuePath="name"
+            optionLabelPath="displayName"
+            prompt="cloud.driverAzure.location.prompt"
+            content=zones
+            value=config.location
+            localizedPrompt=true
+        }}
+      {{/if}}
     </div>
     <div class="col span-6 mb-0">
       <label class="acc-label">{{t 'cloud.driverAzure.resourceGroup.label'}}</label>
-      {{input type="text" value=config.resourceGroup classNames="form-control" placeholder=(t 'cloud.driverAzure.resourceGroup.placeholder')}}
+      {{#if editing}}
+        <div>
+          {{config.resourceGroup}}
+        </div>
+      {{else}}
+        {{input type="text" value=config.resourceGroup classNames="form-control" placeholder=(t 'cloud.driverAzure.resourceGroup.placeholder')}}
+      {{/if}}
     </div>
   </div>
 </div>
@@ -29,24 +41,49 @@
   <div class="row">
     <div class="col span-6 mb-0">
       <label class="acc-label">{{t 'machine.driverAzure.subscriptionId.label'}}{{field-required}}</label>
-      {{input type="text" value=config.subscriptionId classNames="form-control" placeholder=(t 'machine.driverAzure.subscriptionId.placeholder')}}
+      {{#if editing}}
+        <div>
+          {{config.subscriptionId}}
+        </div>
+      {{else}}
+        {{input type="text" value=config.subscriptionId classNames="form-control" placeholder=(t 'machine.driverAzure.subscriptionId.placeholder')}}
+      {{/if}}
     </div>
     <div class="col span-6 mb-0">
       <label class="acc-label">{{t 'machine.driverAzure.tenant.label'}}{{field-required}}</label>
-      {{input type="text" value=config.tenantId classNames="form-control" placeholder=(t 'machine.driverAzure.tenant.placeholder')}}
+      {{#if editing}}
+        <div>
+          {{config.tenantId}}
+        </div>
+      {{else}}
+        {{input type="text" value=config.tenantId classNames="form-control" placeholder=(t 'machine.driverAzure.tenant.placeholder')}}
+      {{/if}}
     </div>
   </div>
 
   <div class="row">
     <div class="col span-6 mb-0">
       <label class="acc-label">{{t 'cloud.driverAzure.clientId.label'}}{{field-required}}</label>
-      {{input type="text" value=config.clientId classNames="form-control" placeholder=(t 'cloud.driverAzure.clientId.placeholder')}}
-      <p class="text-info text-small mb-0">{{t 'cloud.driverAzure.helpBlock' htmlSafe=true}}</p>
+      {{#if editing}}
+        <div>
+          {{config.clientId}}
+        </div>
+      {{else}}
+        {{input type="text" value=config.clientId classNames="form-control" placeholder=(t 'cloud.driverAzure.clientId.placeholder')}}
+        <p class="text-info text-small mb-0">{{t 'cloud.driverAzure.helpBlock' htmlSafe=true}}</p>
+      {{/if}}
     </div>
 
     <div class="col span-6 mb-0">
       <label class="acc-label">{{t 'cloud.driverAzure.clientSecret.label'}}{{field-required}}</label>
-      {{input type="password" value=config.clientSecret classNames="form-control" placeholder=(t 'cloud.driverAzure.clientSecret.placeholder')}}
+      {{#if editing}}
+        <div>
+          {{t 'generic.na'}}
+        </div>
+      {{else}}
+        {{input type="text" value=config.clientId classNames="form-control" placeholder=(t 'cloud.driverAzure.clientId.placeholder')}}
+        <p class="text-info text-small mb-0">{{t 'cloud.driverAzure.helpBlock' htmlSafe=true}}</p>
+      {{/if}}
     </div>
   </div>
 </div>
@@ -60,34 +97,58 @@
     </div>
     <div class="col span-6">
       <label class="acc-label">{{t 'cloud.driverAzure.admin.label'}}</label>
-      {{input type="text" value=config.adminUsername classNames="form-control" placeholder=(t 'cloud.driverAzure.admin.placeholder')}}
+      {{#if editing}}
+        <div>
+          {{config.adminUsername}}
+        </div>
+      {{else}}
+        {{input type="text" value=config.adminUsername classNames="form-control" placeholder=(t 'cloud.driverAzure.admin.placeholder')}}
+      {{/if}}
     </div>
   </div>
   <div class="row">
     <div class="col span-6">
       <label class="acc-label">{{t 'cloud.driverAzure.machineType.label'}}</label>
-      {{new-select
-          classNames="form-control"
-          optionValuePath="value"
-          optionLabelPath="value"
-          content=machineSizes
-          value=config.agentVmSize
-          prompt="cloud.driverAzure.machineType.prompt"
-          localizedPrompt=true
-      }}
+      {{#if editing}}
+        <div>
+          {{config.agentVmSize}}
+        </div>
+      {{else}}
+        {{new-select
+            classNames="form-control"
+            optionValuePath="value"
+            optionLabelPath="value"
+            content=machineSizes
+            value=config.agentVmSize
+            prompt="cloud.driverAzure.machineType.prompt"
+            localizedPrompt=true
+        }}
+      {{/if}}
     </div>
     <div class="col span-6">
       <label class="acc-label">{{t 'cloud.driverAzure.diskSizeGb.label'}}</label>
-      <div class="input-group">
-        {{input-number min=0 value=config.osDiskSizeGb}}
-        <span class="input-group-addon bg-default">{{t 'generic.gigabyte'}}</span>
-      </div>
+      {{#if editing}}
+        <div>
+          {{config.agentVmSize}}
+        </div>
+      {{else}}
+        <div class="input-group">
+          {{input-number min=0 value=config.osDiskSizeGb}}
+          <span class="input-group-addon bg-default">{{t 'generic.gigabyte'}}</span>
+        </div>
+      {{/if}}
     </div>
   </div>
   <div class="row">
     <div class="col span-12">
       <label>{{t 'cloud.driverAzure.ssh.label'}}{{field-required}}</label>
-      {{textarea value=config.sshPublicKeyContents classNames="form-control no-resize" rows="6"}}
+      {{#if editing}}
+        <div>
+          {{config.sshPublicKeyContents}}
+        </div>
+      {{else}}
+        {{textarea value=config.sshPublicKeyContents classNames="form-control no-resize" rows="6"}}
+      {{/if}}
     </div>
   </div>
 </div>
