@@ -1,36 +1,47 @@
+{{!--
+            <section class="horizontal-form container-fluid">
+            {{form-name-description
+            model=primaryResource
+            nameRequired=true
+            }}
+            </section>
+
+            {{#accordion-list showExpandAll=false as | al expandFn | }}
+            {{#accordion-list-item
+            title="Members"
+            detail="Configure who has access to the resources in this project and what permissions they have"
+            status=(t 'pagination.member' pages=1 count=memberArray.length)
+            statusClass=(if memberArray.length 'text-success' 'text-error')
+            expandAll=al.expandAll
+            expand=(action expandFn)
+            expandOnInit=true
+            }}
+            {{form-members
+            creator=model.me
+            editing=true
+            memberConfig=memberConfig
+            primaryResource=primaryResource
+            roles=model.roles
+            users=model.users
+            type="cluster"
+            initAlert=(action "initAlert")
+            }}
+            {{/accordion-list-item}}
+            {{/accordion-list}}
+
+            {{top-errors errors=errors}}
+            {{save-cancel createLabel=(if editing 'projectsPage.saveEdit' 'projectsPage.saveNew') save="save" cancel="cancel"}}
+            --}}
 <section class="header clearfix">
   <h1>{{t 'clusterPage.edit'}}</h1>
 </section>
 
-<section class="horizontal-form container-fluid">
-  {{form-name-description
-    model=primaryResource
-    nameRequired=true
+<form class="form text-left">
+  {{component 'driver/driver-googlegke'
+      editing=true
+      cancel=(action 'cancel')
+      cluster=model.cluster
+      userData=model
+      driver=(concat driver 'Config')
   }}
-</section>
-
-{{#accordion-list showExpandAll=false as | al expandFn | }}
-  {{#accordion-list-item
-        title="Members"
-        detail="Configure who has access to the resources in this project and what permissions they have"
-        status=(t 'pagination.member' pages=1 count=memberArray.length)
-        statusClass=(if memberArray.length 'text-success' 'text-error')
-        expandAll=al.expandAll
-        expand=(action expandFn)
-        expandOnInit=true
-  }}
-    {{form-members
-        creator=model.me
-        editing=true
-        memberConfig=memberConfig
-        primaryResource=primaryResource
-        roles=model.roles
-        users=model.users
-        type="cluster"
-        initAlert=(action "initAlert")
-    }}
-  {{/accordion-list-item}}
-{{/accordion-list}}
-
-{{top-errors errors=errors}}
-{{save-cancel createLabel=(if editing 'projectsPage.saveEdit' 'projectsPage.saveNew') save="save" cancel="cancel"}}
+</form>
