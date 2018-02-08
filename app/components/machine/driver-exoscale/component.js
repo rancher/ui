@@ -130,18 +130,18 @@ export default Ember.Component.extend(Driver, {
           let obj = {
             id : zone.id,
             name : zone.name,
-            isDefault : zone.name == this.get('defaultZone'),
+            isDefault : zone.name === this.get('defaultZone'),
           };
 
           zones.push(obj);
           if (zone.isDefault && !defaultZone) {
             defaultZone = obj;
           }
-        })
+        });
 
         this.set('step', 3);
-        this.set('allZones', zones)
-        this.set('defaultZone', defaultZone)
+        this.set('allZones', zones);
+        this.set('defaultZone', defaultZone);
         this.set('selectedZone', this.get('exoscaleConfig.zone') || this.get('allZones.firstObject.id'));
       }, (err) => {
         let errors = this.get('errors') || [];
@@ -162,8 +162,8 @@ export default Ember.Component.extend(Driver, {
 
       this.set('exoscaleConfig.zone', this.get('selectedZone'));
       (this.get('allZones') || []).forEach((zone) => {
-        if (zone.id == this.get('selectedZone')) {
-          this.set('exoscaleConfig.zoneName', zone.name)
+        if (zone.id === this.get('selectedZone')) {
+          this.set('exoscaleConfig.zoneName', zone.name);
         }
       });
 
