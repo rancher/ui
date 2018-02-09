@@ -19,12 +19,12 @@ export default Ember.Component.extend({
   init() {
     this._super(...arguments);
 
-    let def = this.get('field.default');
+    let def = this.get('value') ? this.get('value') : this.get('field.default');
     if ( def && !this.get('selected') ) {
       var exact, justService;
 
       this.get('allServices.list').forEach((service) => {
-        if ( def === service.value )
+        if (def === `${service.stackName}/${service.name}`)
         {
           exact = service.id;
         }
