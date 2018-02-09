@@ -1,8 +1,8 @@
-{{#if true}}
-  <div class="text-center mt-50">
-    <img src="{{app.baseAssets}}assets/images/lobby.gif"/>
-  </div>
-{{else}}
+<div class="row">
+  {{form-name-description model=primaryResource nameRequired=true}}
+</div>
+<div class="box mt-20">
+  <h4>{{t 'cloud.driverAzure.placement.label'}}</h4>
   <div class="row">
     <div class="col span-6">
       <label class="acc-label">{{t 'cloud.driverAzure.location.label'}}</label>
@@ -33,9 +33,10 @@
       {{/if}}
     </div>
   </div>
+</div>
 
-  <div class="box mt-20">
-    <h4>{{t 'machine.driverAzure.accountAccessSection'}}</h4>
+<div class="box mt-20">
+  <h4>{{t 'machine.driverAzure.accountAccessSection'}}</h4>
 
   <div class="row">
     <div class="col span-6 mb-0">
@@ -58,6 +59,7 @@
         {{input type="text" value=config.tenantId classNames="form-control" placeholder=(t 'machine.driverAzure.tenant.placeholder')}}
       {{/if}}
     </div>
+  </div>
 
   <div class="row">
     <div class="col span-6 mb-0">
@@ -84,6 +86,7 @@
       {{/if}}
     </div>
   </div>
+</div>
 
 <div class="box mt-30">
   <h4>{{t 'cloud.machine'}}</h4>
@@ -148,61 +151,61 @@
       {{/if}}
     </div>
   </div>
+</div>
 
-  <div class="box mt-30">
-    <h4>{{t 'cloud.driverAzure.security.label'}}</h4>
-    <div class="row">
-      <div class="col span-12">
-        <label class="acc-label">{{t 'cloud.driverAzure.members.label'}}</label>
-        {{form-members
-            creator=userData.me
-            editing=true
-            memberConfig=memberConfig
-            primaryResource=primaryResource
-            roles=userData.roles
-            users=userData.users
-            type="cluster"
-            initAlert=(action "initAlert")
-        }}
-      </div>
+<div class="box mt-30">
+  <h4>{{t 'cloud.driverAzure.security.label'}}</h4>
+  <div class="row">
+    <div class="col span-12">
+      <label class="acc-label">{{t 'cloud.driverAzure.members.label'}}</label>
+      {{form-members
+          creator=userData.me
+          editing=true
+          memberConfig=memberConfig
+          primaryResource=primaryResource
+          roles=userData.roles
+          users=userData.users
+          type="cluster"
+          initAlert=(action "initAlert")
+      }}
+    </div>
 
-      <div class="col span-12">
-        <label class="acc-label mb-20">{{t 'cloud.driverAzure.pod.label'}}</label>
-        {{form-pod-sec-policy
-            config=primaryResource.defaultPodSecurityPolicyTemplateId
-            policies=model.policies
-        }}
-      </div>
+    <div class="col span-12">
+      <label class="acc-label mb-20">{{t 'cloud.driverAzure.pod.label'}}</label>
+      {{form-pod-sec-policy
+          config=primaryResource.defaultPodSecurityPolicyTemplateId
+          policies=model.policies
+      }}
     </div>
   </div>
+</div>
 
 
-  {{#accordion-list showExpandAll=false as |al expandFn|}}
-    <div class="mt-30">
-      {{#accordion-list-item
-          title=(t 'cloud.driverAzure.customize.label')
-          detail=(t 'cloud.driverAzure.customize.detail')
-          expandAll=al.expandAll
-          expand=(action expandFn)
-      }}
-        <div class="row">
-          <div class="col span-4">
-            <label class="acc-label">{{t 'cloud.driverAzure.masterVersion.label'}}</label>
-            {{new-select
-                classNames="form-control"
-                content=versions
-                optionValuePath="value"
-                optionLabelPath="value"
-                value=config.kubernetesVersion
-                prompt="cloud.driverAzure.masterVersion.prompt"
-                localizedPrompt=true
-            }}
-          </div>
+{{#accordion-list showExpandAll=false as |al expandFn|}}
+  <div class="mt-30">
+    {{#accordion-list-item
+         title=(t 'cloud.driverAzure.customize.label')
+         detail=(t 'cloud.driverAzure.customize.detail')
+         expandAll=al.expandAll
+         expand=(action expandFn)
+    }}
+      <div class="row">
+        <div class="col span-4">
+          <label class="acc-label">{{t 'cloud.driverAzure.masterVersion.label'}}</label>
+          {{new-select
+              classNames="form-control"
+              content=versions
+              optionValuePath="value"
+              optionLabelPath="value"
+              value=config.kubernetesVersion
+              prompt="cloud.driverAzure.masterVersion.prompt"
+              localizedPrompt=true
+          }}
         </div>
-      {{/accordion-list-item}}
-    </div>
-  {{/accordion-list}}
+      </div>
+    {{/accordion-list-item}}
+  </div>
+{{/accordion-list}}
 
-  {{top-errors errors=errors}}
-  {{save-cancel save="save" cancel=cancel}}
-{{/if}}
+{{top-errors errors=errors}}
+{{save-cancel save="save" cancel=cancel}}
