@@ -1,0 +1,53 @@
+<h2 class="pt-30">Syslog Configuration</h2>
+<hr/>
+<section class="box">
+  <div class="row">
+      <label class="acc-label" for="">Endpoint{{field-required}}</label>
+      <div class="input-group">
+        {{input
+            type="text"
+            value=config.endpoint
+            classNames="form-control"
+            placeholder="e.g. 192.168.1.1:514"
+        }}
+        <div class="input-group-btn bg-primary">
+          <button
+            type="button"
+            class="btn bg-primary dropdown-toggle text-uppercase"
+            data-toggle="dropdown"
+            aria-expanded="false"
+          >
+            <span class="pr-5">{{config.protocol}}</span><i class="icon icon-chevron-down"></i>
+          </button>
+          <ul class="dropdown-menu dropdown-menu-right" role="menu">
+            <li><a {{action "changeProtocol" 'tcp'}}>TCP</a></li>
+            <li><a {{action "changeProtocol" 'udp'}}>UDP</a></li>
+          </ul>
+        </div>
+      </div>
+    <p class="text-info text-small mb-0">Input your syslog server endpoint herecluster.</p>
+  </div>
+
+  <div class="row">
+    <div class="col span-6 mt-0 pt-0">
+      <label class="acc-label" for="">Program</label>
+      {{input
+          type="text"
+          value=config.program
+          classNames="form-control"
+          placeholder="Your program"
+      }}
+      <p class="text-info text-small">The program name of the log.</p>
+    </div>
+  </div>
+
+  <div>
+    <span class="mr-10">Log Severity:</span>
+    {{#each severities as |item|}}
+        <label class="mr-10 text-capitalize">{{radio-button selection=config.severity value=item.value }} {{item.label}}</label>
+    {{/each}}
+    <p class="text-info text-small">The severity of logs, list of severities definition could be found here <a href="https://tools.ietf.org/html/rfc5424#section-6.2.1" target="_blank">here.</a></p>
+  </div>
+</section>
+
+{{logging/form-log-format logPreview=logPreview model=model}}

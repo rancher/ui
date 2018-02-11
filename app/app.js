@@ -63,7 +63,25 @@ const App = Application.extend({
           'logout':                'logout'
         }
       }
-    }
+    },
+    logging: {
+      dependencies: {
+        services: [
+          'app',
+          'clusterStore',
+          'globalStore',
+          'intl',
+          'modal',
+          'router',
+          'resource-actions',
+          'scope',
+          'store',
+          'tooltip',
+        ],
+        externalRoutes: {
+        }
+      }
+    },
   }
 });
 

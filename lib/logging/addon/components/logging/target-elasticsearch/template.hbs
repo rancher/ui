@@ -1,0 +1,70 @@
+<h2 class="mt-30">Elasticsearch Configuration</h2>
+<hr/>
+<div class="box">
+  <section class="mb-30">
+    <div>
+      <label class="acc-label" for="">Endpoint{{field-required}}</label>
+      {{input
+          type="text"
+          value=config.endpoint
+          classNames="form-control"
+          placeholder="e.g. https://192.168.1.10:9200"
+      }}
+    </div>
+    <p class="text-info text-small">Copy your endpoint from Elastic Cloud, or input the reachable endpoint of your self-hosted Elacticsearch.</p>
+  </section>
+  <h4>X-Pack Security <span class="text-muted">(Optional)</span></h4>
+  <section>
+    <p class="text-info text-small">
+      If your Elasticsearch use X-Pack built-in native authentication features, put your username and password below.
+    </p>
+    <div class="row">
+      <div class="col span-6">
+        <label class="acc-label" for="">Username</label>
+        {{input
+            type="text"
+            value=config.authUsername
+            classNames="form-control"
+            placeholder="e.g. username"
+        }}
+      </div>
+      <div class="col span-6">
+        <label class="acc-label">Password</label>
+        {{input
+            type="password"
+            value=config.authPassword
+            classNames="form-control"
+            placeholder="Your Password"
+        }}
+      </div>
+    </div>
+  </section>
+  <h4 class="mt-20">Index Patterns</h4>
+  <p class="text-info text-small">Index patterns are used to generate Elacticsearch index</p>
+  <section>
+    <div class="row">
+      <div class="col span-6">
+        <label class="acc-label">Prefix{{field-required}}</label>
+        {{input
+            type="text"
+            value=config.indexPrefix
+            className="form-control"
+            placeholder="e.g. logstash"
+        }}
+      </div>
+      <div class="col span-6">
+        <div style="margin-top: 34px;">
+          <label>Date Format: </label>
+          <label class="mr-10">{{radio-button selection=config.dateFormat value="YYYY-MM-DD"}} YYYY-MM-DD</label>
+          <label class="mr-10">{{radio-button selection=config.dateFormat value="YYYY-MM"}} YYY-MMM</label>
+          <label class="mr-10">{{radio-button selection=config.dateFormat value="YYYY"}} YYYY</label>
+        </div>
+      </div>
+    </div>
+    <div>
+      The generated index will be: <code class="text-italic">{{esIndex}}</code>, by default the index patters is {{if (eq pageScope 'cluster') '${clusterName}-${dateFormat}'  '${clusterName}_${projectName}-${dateFormat}'}}
+    </div>
+  </section>
+</div>
+
+{{logging/form-log-format logPreview=logPreview model=model}}

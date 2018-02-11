@@ -1,0 +1,93 @@
+<section class="header clearfix">
+  <h1 class="pull-left text-capitalize">{{pageScope}} Logging</h1>
+</section>
+
+<div class="banner bg-info">
+  <div class="banner-icon p-20"><i class="icon icon-info"></i></div>
+  <div class="banner-message p-20">
+    {{#if isClusterLevel}}
+      We will collect the standard output and standard error for each container, the log files which under path<code> /var/log/containers/ </code>on each host. The log will be shipped to the target you choose below.
+    {{else}}
+      <ul>
+        <li style="list-style: circle;">
+          We will collect the standard output and standard error for each container, the log files which under path<code> /var/log/containers/ </code>on each host. The log will be shipped to the target you choose below.
+        </li>
+        <li style="list-style: circle;">
+          {{#if clusterTargetType}}
+            The cluster logging target is <code class="text-capitalize">{{clusterTargetType}}</code>. If project logging is enabled, logs will be shipped to both cluster target and project logging target.
+          {{else}}
+            Logging is disabled at current cluster.
+          {{/if}}
+        </li>
+      </ul>
+    {{/if}}
+  </div>
+</div>
+{{logging/targets-nav
+    originalModel=originalModel
+    targetType=targetType
+    isClusterLevel=isClusterLevel
+    pageScope=pageScope
+}}
+
+{{#if (eq targetType 'embedded')}}
+  <div class="banner bg-warning">
+    <div class="banner-icon p-20"><i class="icon icon-alert"></i></div>
+    <div class="banner-message p-10">
+      <ul>
+        <li style="list-style: circle;">
+      Embedded Elasticsearch is experimental, no persistent storage will be provided.
+        </li>
+        <li style="list-style: circle;">The embedded deployment includes ElasticSearch and Kibana. Elasticsearch requests at least 2 CPU and 4G MEM available on the node it is deployed.</li>
+
+      </ul>
+    </div>
+  </div>
+
+  {{!-- if the current saved target is embedded --}}
+  {{#if originalModel.embeddedConfig}}
+    <div class="banner bg-success">
+      <div class="banner-icon p-20"><i class="icon icon-check"></i></div>
+      <div class="banner-message p-10">
+        <ul style="font-size:1.1em;">
+          <li style="list-style: circle;">
+            Elascticsearch Endpoint: <a href="http://47.88.57.141:30022" target="_blank">http://47.88.57.141:30022</a>
+          </li>
+          <li style="list-style: circle;">
+            Kibana Endpoint: <a href="http://47.88.57.141:30024" target="_blank">http://47.88.57.141:30024</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  {{/if}}
+{{/if}}
+
+{{#if (eq targetType 'elasticsearch')}}
+  {{logging/target-elasticsearch
+       targetType=targetType
+       model=model.elasticsearch
+  }}
+{{else if (eq targetType 'embedded')}}
+  {{#if isClusterLevel}}
+    {{logging/target-embedded
+        model=model.embedded
+        targetType=targetType
+    }}
+  {{/if}}
+{{else if (eq targetType 'splunk')}}
+  {{logging/target-splunk
+      model=model.splunk
+  }}
+{{else if (eq targetType 'kafka')}}
+  {{logging/target-kafka
+      model=model.kafka
+  }}
+{{else if (eq targetType 'syslog')}}
+  {{logging/target-syslog
+      model=model.syslog
+  }}
+{{/if}}
+
+{{top-errors errors=errors}}
+
+{{save-cancel saveDisabled=saveDisabled disabled=true cancelDisabled=true editing=true save="save"}}

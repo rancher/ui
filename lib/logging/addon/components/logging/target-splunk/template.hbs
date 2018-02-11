@@ -1,0 +1,50 @@
+<h2 class="pt-30">
+  Splunk HTTP Event Collector Configuration
+  <span class="text-info text-small">
+  You can find instructions on how to configre Splunk HEC(HTTP Event Collector)
+  <a href="http://docs.splunk.com/Documentation/Splunk/7.0.0/Data/UsetheHTTPEventCollector" target="_blank">here</a>.
+  </span>
+</h2>
+<hr/>
+<section class="box">
+  <div class="mb-30">
+    <label class="acc-label" for="">Endpoint{{field-required}}</label>
+    {{input
+        type="text"
+        value=config.endpoint
+        classNames="form-control"
+        placeholder="e.g. https://192.168.1.10:8088"
+    }}
+  </div>
+
+  <div class="row">
+    <div class="col span-6 mt-0 pt-0">
+      <label class="acc-label" for="">Token{{field-required}}</label>
+      {{input
+          type="text"
+          value=config.token
+          classNames="form-control"
+          placeholder="Your token"
+      }}
+      <p class="text-info text-small">
+        Tokens are entities that let logging agents and HTTP clients connect to the HEC input.
+        <a href="http://docs.splunk.com/Documentation/Splunk/7.0.0/Data/UsetheHTTPEventCollector#Configure_HTTP_Event_Collector_on_Splunk_Enterprise" target="_blank">Detail</a>
+      </p>
+    </div>
+    <div class="col span-6 mt-0 pt-0">
+      <label class="acc-label" for="">Source</label>
+      {{input
+          type="text"
+          value=config.source
+          classNames="form-control"
+          placeholder="e.g. fluentd"
+      }}
+      <p class="text-info text-small">
+        A default field that identifies the source of an event, that is, where the event originated.
+        <a href="https://docs.splunk.com/Splexicon:Source" target="_blank">Detail</a>
+      </p>
+    </div>
+  </div>
+</section>
+
+{{logging/form-log-format logPreview=logPreview model=model}}

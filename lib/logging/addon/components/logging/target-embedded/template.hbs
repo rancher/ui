@@ -1,0 +1,31 @@
+<h2 class="mt-30">Embedded Elasticsearch Configuration</h2>
+<hr/>
+
+<section class="box">
+  <h4>Index Patterns</h4>
+  <p class="text-info text-small">Index patterns are used to generate Elacticsearch index</p>
+  <div class="row">
+    <div class="col span-6">
+      <label class="acc-label">Prefix{{field-required}}</label>
+      {{input
+          type="text"
+          value=config.indexPrefix
+          className="form-control"
+          placeholder="e.g. logstash"
+      }}
+    </div>
+    <div class="col span-6">
+      <div style="margin-top: 34px;">
+        <label>Date Format: </label>
+        <label class="mr-10">{{radio-button selection=config.dateFormat value="YYYY-MM-DD"}} YYYY-MM-DD</label>
+        <label class="mr-10">{{radio-button selection=config.dateFormat value="YYYY-MM"}} YYY-MMM</label>
+        <label class="mr-10">{{radio-button selection=config.dateFormat value="YYYY"}} YYYY</label>
+      </div>
+    </div>
+  </div>
+  <div>
+    The generated index will be: <code class="text-italic">{{esIndex}}</code>, by default the index patters is ${clusterName}-${dateFormat}
+  </div>
+</section>
+
+{{logging/form-log-format logPreview=logPreview model=model}}
