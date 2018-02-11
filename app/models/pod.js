@@ -37,7 +37,7 @@ var Pod = Resource.extend(DisplayImage, {
       { divider: true },
       { label: 'action.execute',          icon: 'icon icon-terminal',     action: 'shell',            enabled: isRunning, altAction:'popoutShell'},
       { label: 'action.console',          icon: 'icon icon-terminal',     action: 'console',          enabled: !!a.console, altAction:'popoutShellVm' },
-      { label: 'action.logs',             icon: 'icon icon-file',         action: 'logs',             enabled: !!a.logs, altAction: 'popoutLogs' },
+      { label: 'action.logs',             icon: 'icon icon-file',         action: 'logs',             enabled: isRunning, altAction: 'popoutLogs' },
       { divider: true },
       { label: 'action.restart',          icon: 'icon icon-refresh',      action: 'restart',          enabled: !!a.restart, bulkable: true},
       { label: 'action.start',            icon: 'icon icon-play',         action: 'start',            enabled: !!a.start, bulkable: true},
@@ -69,6 +69,10 @@ var Pod = Resource.extend(DisplayImage, {
         model: this,
         escToClose: false,
       });
+    },
+
+    logs: function() {
+      get(this, 'modalService').toggleModal('modal-container-logs', this);
     },
   },
 

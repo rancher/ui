@@ -7,18 +7,7 @@
 <h2>
   <i class="icon icon-file"></i> {{t 'containerLogs.title' instanceName=instance.displayName}}
 </h2>
-{{#if onlyCombinedLog}}
-  <div class="text-muted">{{t 'containerLogs.onlyCombined' htmlSafe=true}}</div>
-{{else}}
-  <div class="has-tabs p-0">
-    <ul class="tab-nav">
-      <li role="presentation" class="hand {{if isCombined 'active'}}"><a {{action "changeShow" "combined"}}>{{t 'containerLogs.combined'}}</a></li>
-      <li role="presentation" class="hand {{if isStdOut 'active'}}"><a {{action "changeShow" "stdout"}}>{{t 'containerLogs.stdout'}}</a></li>
-      <li role="presentation" class="hand {{if isStdErr 'active'}}"><a {{action "changeShow" "stderr"}}>{{t 'containerLogs.stderr'}}</a></li>
-    </ul>
-  </div>
-{{/if}}
-<pre class="log-body {{unless stdErrVisible 'hide-stderr'}} {{unless stdOutVisible 'hide-stdout'}}">
+<pre class="log-body">
 </pre>
 {{yield}}
 <div class="footer-actions">
