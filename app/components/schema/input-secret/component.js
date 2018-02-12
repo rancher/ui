@@ -17,7 +17,7 @@ export default Ember.Component.extend({
 
     this.set('allSecrets', this.get('store').all('secret'));
 
-    let def = this.get('field.default');
+    let def = this.get('value') ? this.get('value') : this.get('field.default');
     if ( def && !this.get('selected') ) {
       var exact;
 
