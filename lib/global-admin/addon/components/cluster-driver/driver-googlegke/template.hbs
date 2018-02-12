@@ -1,56 +1,68 @@
 {{#if (eq step 1)}}
   {{#input-text-file
-      label='cloud.driverGoogle.credential.label'
+      label='clusterNew.googlegke.credential.label'
       value=config.credential
       accept="text/*, .json"
       minHeight=60
       canChangeName=false
       nameRequired=true
-      placeholder="cloud.driverGoogle.credential.placeholder"
+      placeholder="clusterNew.googlegke.credential.placeholder"
       fileChosen=(action "checkServiceAccount")
       as |section|
   }}
     {{#if (eq section 'description')}}
       <div class="row help">
         <div class="col span-12 help-block wrap mb-0">
-          {{t 'cloud.driverGoogle.credential.helpText' htmlSafe=true}}
+          {{t 'clusterNew.googlegke.credential.helpText' htmlSafe=true}}
         </div>
       </div>
     {{/if}}
   {{/input-text-file}}
 
   {{top-errors errors=errors}}
-  {{save-cancel createLabel="cloud.driverGoogle.checkServiceAccount" save="checkServiceAccount" cancel=cancel}}
+  {{save-cancel
+    createLabel="clusterNew.googlegke.checkServiceAccount"
+    save=(action "checkServiceAccount") 
+    cancel=close
+  }}
+
 {{else if (eq step 2)}}
+
   <div class="row">
     <div class="text-center m-30"><i class="icon icon-spinner icon-spin"/> {{t 'generic.loading'}}</div>
   </div>
 {{else}}
   <div class="row">
-    <label class="acc-label">{{t 'cloud.driverGoogle.credential.label'}}</label>
-    <div class="form-control-static"><i>Configured for {{config.projectId}} project</i></div>
+    <label class="acc-label">{{t 'clusterNew.googlegke.credential.label'}}</label>
+    <div class="form-control-static text-italic">{{t 'clusterNew.googlegke.credential.configured' project=config.projectId}}</div>
   </div>
 
   <div class="row">
-    {{form-name-description model=cluster nameRequired=true}}
+    {{form-name-description
+      model=model
+      nameRequired=true
+      nameLabel='clusterNew.name.label'
+      namePlaceholder='clusterNew.name.placeholder'
+      descriptionPlaceholder='clusterNew.description.placeholder'
+    }}
   </div>
 
   <div class="box mt-30">
-    <h4>{{t 'cloud.driverGoogle.location'}}</h4>
+    <h4>{{t 'clusterNew.googlegke.location'}}</h4>
     <div class="row">
       <div class="col span-12">
-        <label class="acc-label">{{t 'cloud.driverGoogle.zone.label'}}</label>
+        <label class="acc-label">{{t 'clusterNew.googlegke.zone.label'}}</label>
         {{#if editing}}
           {{config.zone}}
         {{else}}
           {{new-select
-              classNames="form-control"
-              optionValuePath="name"
-              optionLabelPath="name"
-              content=zoneChoices
-              value=config.zone
-              prompt="cloud.driverGoogle.zone.prompt"
-              localizedPrompt=true
+            classNames="form-control"
+            optionValuePath="name"
+            optionLabelPath="name"
+            content=zoneChoices
+            value=config.zone
+            prompt="clusterNew.googlegke.zone.prompt"
+            localizedPrompt=true
           }}
         {{/if}}
       </div>
@@ -65,7 +77,7 @@
         {{input-number min=1 value=config.nodeCount}}
       </div>
       <div class="col span-4">
-        <label class="acc-label">{{t 'cloud.driverGoogle.machineType.label'}}</label>
+        <label class="acc-label">{{t 'clusterNew.googlegke.machineType.label'}}</label>
         {{#if editing}}
           <div>
             {{editedMachineChoice.displayName}}
@@ -77,13 +89,13 @@
               optionLabelPath="displayName"
               content=machineChoices
               value=config.machineType
-              prompt="cloud.driverGoogle.machineType.prompt"
+              prompt="clusterNew.googlegke.machineType.prompt"
               localizedPrompt=true
           }}
         {{/if}}
       </div>
       <div class="col span-4">
-        <label class="acc-label">{{t 'cloud.driverGoogle.diskSizeGb.label'}}</label>
+        <label class="acc-label">{{t 'clusterNew.googlegke.diskSizeGb.label'}}</label>
         <div class="input-group">
         {{#if editing}}
           {{config.diskSizeGb}}{{t 'generic.gigabyte'}}
@@ -102,14 +114,14 @@
       <div class="col span-12">
         <label class="acc-label">Member Roles</label>
         {{form-members
-            creator=userData.me
             editing=true
             memberConfig=memberConfig
             primaryResource=primaryResource
-            roles=userData.roles
-            users=userData.users
+            creator=model.me
+            roles=model.roleTemplates
+            users=model.users
             type="cluster"
-            initAlert=(action "initAlert")
+            registerHook=(action "registerHook")
         }}
       </div>
 
@@ -133,19 +145,19 @@
       }}
         <div class="row">
           <div class="col span-4">
-            <label class="acc-label">{{t 'cloud.driverGoogle.masterVersion.label'}}</label>
+            <label class="acc-label">{{t 'clusterNew.googlegke.masterVersion.label'}}</label>
             {{new-select
                 classNames="form-control"
                 content=versionChoices
                 optionValuePath="value"
                 optionLabelPath="value"
                 value=config.masterVersion
-                prompt="cloud.driverGoogle.masterVersion.prompt"
+                prompt="clusterNew.googlegke.masterVersion.prompt"
                 localizedPrompt=true
             }}
           </div>
           <div class="col span-4">
-            <label class="acc-label">{{t 'cloud.driverGoogle.alphaFeatures.label'}}</label>
+            <label class="acc-label">{{t 'clusterNew.googlegke.alphaFeatures.label'}}</label>
             <div class="form-control-static">
               <label class="mr-20 hand">
                 {{radio-button selection=config.enableAlphaFeature value=true disabled=editing}} {{t 'generic.enabled'}}
@@ -156,8 +168,8 @@
             </div>
           </div>
           <div class="col span-4">
-            <label class="acc-label">{{t 'cloud.driverGoogle.clusterIpv4Cidr.label'}}</label>
-            {{input value=config.clusterIpv4Cidr placeholder=(t 'cloud.driverGoogle.clusterIpv4Cidr.placeholder') disabled=editing}}
+            <label class="acc-label">{{t 'clusterNew.googlegke.clusterIpv4Cidr.label'}}</label>
+            {{input value=config.clusterIpv4Cidr placeholder=(t 'clusterNew.googlegke.clusterIpv4Cidr.placeholder') disabled=editing}}
           </div>
         </div>
       {{/accordion-list-item}}

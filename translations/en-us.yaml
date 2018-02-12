@@ -680,84 +680,6 @@ clustersPage:
       header: Import an Existing Cluster
       desc: Use an existing Kubernetes installation and the nodes it provides.
 
-
-  addPage:
-    host:
-      clusterName: User
-      hostName: Node Name
-      ssh: SSH Key
-    rke:
-      header: Add Cluster
-      new:
-        addNode: Add a new node
-        clearRoles: Clear all roles
-        setRoles: Pick roles for me
-        nodes:
-          header: Nodes
-          detail: Configure the role for each computer that will make up the cluster.
-          createLater: Setup nodes for the cluster later
-          createNow: Create new nodes for the cluster now
-          createLaterDetail: The cluster will not be able to run workloads until you add nodes.
-        radio:
-          embedded:
-            label: Embedded Control Plane
-            detail: Shared etcd and control plane running inside {appName} server.
-          dedicated:
-            label: Dedicated Control Plane
-            detail: Control-plane and etcd running on nodes dedicated to only this cluster.
-        name:
-          placeholder: e.g. production
-        description:
-          placeholder: e.g. Our production cluster
-        auth:
-          label: Auth Provider
-          x509: x509
-        network:
-          label: Network Provider
-          flannel: Flannel
-          calico: Calico
-          canal: Canal
-        psp:
-          label: Pod Security Policy
-        version:
-          label: Kubernetes Version
-        registry:
-          label: Pull Kubernetes Images From
-          default: The default registry (DockerHub)
-          custom: "A custom registry:"
-        ignoreDockerVersion:
-          label: Allow Unsupported Docker Versions
-        headers:
-          labels:
-            etcd: Use for etcd
-            control: Use for management
-            worker: Use as worker node
-            all: Select all roles
-        customize:
-          label: Customize
-          detail: "Optional configuration options for the Kubernetes installation"
-        kubeApi:
-          label: Kube API
-          ipRange: Service Cluster IP Range
-          podSecurityPolicy: Pod Security Policy
-        kubeController:
-          label: Kube Controller
-          cidr: Cluster CIDR
-          ipRange: Service Cluster IP Range
-        kubelet:
-          label: Kubelet
-          domain: Cluster Domain
-          dns: Cluster DNS Server
-          infra: Pod Infra Container Image
-      requirements:
-        label: "Number of nodes required:"
-        cluster: Exactly 1, 3, or 5
-        management: At least one
-        nodes: At least one
-      errors:
-        etcd: Please select 1, 3, or 5 nodes to use for etcd.
-        management: Please select at least one node to use for for management.
-        node: Please select at least one node to use as a worker.
 ingressPage:
   header: 'Ingress: {name}'
   table:
@@ -3213,16 +3135,22 @@ loginUserPass:
   loggingInLabel: Logging In...
   passwordLabel: Password
 
-cloud:
-  machine: Node Configuration
-  nodeCount:
-    label: Quantity
-  driverGoogle:
-    checkServiceAccount: "Next"
-    accessSection: Account Access
+clusterNew:
+  name:
+    label: Cluster Name
+    placeholder: e.g. sandbox
+  description:
+    placeholder: e.g. Cluster for dev and test workloads
+  members:
+    label: Member Roles
+    detail: Control who as access to the cluster and what permission they have to change it
+  googlegke:
+    label: Google Kubernetes Engine
+    checkServiceAccount: "Next: Configure Nodes"
     credential:
       label: Service Account
       placeholder: Service account private key JSON file
+      configured: Configured for {project} project
       helpText: |
         Create a <a href="https://console.cloud.google.com/projectselector/iam-admin/serviceaccounts" target="_blank" rel="nofollow noopener noreferrer">Service Account</a> with a JSON private key and provide the JSON here.  See <a href="https://cloud.google.com/compute/docs/access/create-enable-service-accounts-for-instances" target="_blank" rel="nofollow noopener noreferrer">Google Cloud docs</a> for more info about creating a service account. Three IAM roles are required: <code>project/viewer</code>, <code>kubernetes-engine/admin</code> and <code>service-account/user</code>, more info on roles can be found <a href="https://cloud.google.com/kubernetes-engine/docs/how-to/iam-integration" target="_blank" rel="nofollow noopener noreferrer">here.</a>
     location: Location
@@ -3246,7 +3174,74 @@ cloud:
       placeholder: e.g. 10.42.0.0/16
     alphaFeatures:
       label: Alpha Features
-  driverAzure:
+
+  rke:
+    config:
+      label: Basic Configuration
+      detail: Customize the basic setup of the Kubernetes cluster
+    customize:
+      label: Customize
+      detail: "Optional configuration options for the Kubernetes installation"
+    nodes:
+      title: Node Pools
+      detail: Configure the machines that will make up the cluster.
+      add: Add Node Pool
+      header: Node Template
+    auth:
+      label: Auth Provider
+      x509: x509
+    network:
+      label: Network Provider
+      flannel: Flannel
+      calico: Calico
+      canal: Canal
+    psp:
+      label: Pod Security Policy
+    version:
+      label: Kubernetes Version
+    registry:
+      label: Pull Kubernetes Images From
+      default: The default registry (DockerHub)
+      custom: "A custom registry:"
+      url:
+        label: URL
+        placeholder: e.g. quay.io
+      user:
+        label: Username
+      password:
+        label: Password
+    ignoreDockerVersion:
+      label: Docker version on nodes
+      disabled: Allow unsupported versions
+      enabled: Require a supproted version
+    role:
+      header:
+        etcd: Use for etcd
+        controlplane: Use for management
+        worker: Use as worker node
+      requirements:
+        label: "Number of nodes required:"
+        etcd: Exactly 1, 3, or 5
+        controlplane: At least one
+        worker: At least one
+    kubeApi:
+      label: Kube API
+      ipRange: Service Cluster IP Range
+      podSecurityPolicy: Pod Security Policy
+    kubeController:
+      label: Kube Controller
+      cidr: Cluster CIDR
+      ipRange: Service Cluster IP Range
+    kubelet:
+      label: Kubelet
+      domain: Cluster Domain
+      dns: Cluster DNS Server
+    errors:
+      etcd: Please select 1, 3, or 5 nodes to use for etcd.
+      management: Please select at least one node to use for for management.
+      node: Please select at least one node to use as a worker.
+
+  azureaks:
     accessSection: Account Access
     placement:
       label: Placement
@@ -3270,9 +3265,6 @@ cloud:
       label: Security
     members:
       label: Member Roles
-    customize:
-      label: Customize
-      detail: "Optional configuration options for the Kubernetes installation"
     pod:
       label: Pod Security Policies
     masterVersion:
@@ -4250,6 +4242,7 @@ saveCancel:
   saving: Saving...
   saved: Saved!
   edit: Save
+  next: Next
   create: Create
   cancel: Cancel
 

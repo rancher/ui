@@ -1,12 +1,13 @@
-import { get, computed } from '@ember/object';
+import { get, set, computed } from '@ember/object';
 import { inject as service } from '@ember/service';
 import Resource from 'ember-api-store/models/resource';
 import { hasMany } from 'ember-api-store/utils/denormalize';
 import ResourceUsage from 'shared/mixins/resource-usage';
 import { alias } from '@ember/object/computed';
+import { resolve } from 'rsvp';
 
 
-var Cluster = Resource.extend(ResourceUsage, {
+export default Resource.extend(ResourceUsage, {
   scope:        service(),
   router:       service(),
 
@@ -16,20 +17,28 @@ var Cluster = Resource.extend(ResourceUsage, {
   clusterRoleTemplateBindings: hasMany('id', 'clusterRoleTemplateBinding', 'clusterId'),
   roleTemplateBindings: alias('clusterRoleTemplateBindings'),
 
-  configType: computed('azureKubernetesServiceConfig', 'googleKubernetesEngineConfig', 'rancherKubernetesEngineConfig', 'embeddedConfig', function () {
-    if (get(this, 'azureKubernetesServiceConfig')) {
-      return 'azureaks';
+  configName: computed(function() {
+    const keys = this.allKeys().filter(x => x.endsWith('Config'));
+    for ( let key, i = 0 ; i < keys.length ; i++ ) {
+      key = keys[i];
+      if ( get(this,key) ) {
+        return key;
+      }
     }
-    if (get(this, 'googleKubernetesEngineConfig')) {
-      return 'googlegke';
-    }
-    if (get(this, 'rancherKubernetesEngineConfig')) {
-      return 'rancher';
-    }
-    if (get(this, 'embeddedConfig')) {
-      return 'embedded';
-    }
+
+    return null;
   }),
+
+  clearProvidersExcept(keep) {
+    const keys = this.allKeys().filter(x => x.endsWith('Config'));
+
+    for ( let key, i = 0 ; i < keys.length ; i++ ) {
+      key = keys[i];
+      if ( key !== keep && get(this,key) ) {
+        set(this, key, null);
+      }
+    }
+  },
 
   canAddNode: computed('rancherKubernetesEngineConfig', function() {
     return !!this.get('rancherKubernetesEngineConfig');
@@ -68,10 +77,6 @@ var Cluster = Resource.extend(ResourceUsage, {
     return out;
   }),
 
-  systemProject: computed('projects.@each.{clusterOwner}', function() {
-    return this.get('projects').findBy('clusterOwner', true);
-  }),
-
   availableActions: computed('actionLinks.{activate,deactivate}','links.{update,remove}', function() {
     //    let a = this.get('actionLinks');
     let l = this.get('links');
@@ -89,11 +94,20 @@ var Cluster = Resource.extend(ResourceUsage, {
 
     return choices;
   }),
-});
 
-Cluster.reopenClass({
-  pollTransitioningDelay: 1000,
-  pollTransitioningInterval: 5000,
-});
+  getOrCreateToken() {
+    const id = get(this, 'id');
 
-export default Cluster;
+    let token = get(this, 'tokens').filterBy('clusterId', id)[0];
+    if ( token ) {
+      return resolve(token);
+    } else {
+      token = get(this, 'globalStore').createRecord({
+        type: 'clusterRegistrationToken',
+        clusterId: id
+      });
+
+      return token.save();
+    }
+  },
+});
