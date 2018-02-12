@@ -2,10 +2,10 @@
   {{form-name-description model=primaryResource nameRequired=true}}
 </div>
 <div class="box mt-20">
-  <h4>{{t 'cloud.driverAzure.placement.label'}}</h4>
+  <h4>{{t 'clusterNew.azureaks.placement.label'}}</h4>
   <div class="row">
     <div class="col span-6">
-      <label class="acc-label">{{t 'cloud.driverAzure.location.label'}}</label>
+      <label class="acc-label">{{t 'clusterNew.azureaks.location.label'}}</label>
       {{#if editing}}
         <div>
           {{config.location}}
@@ -15,7 +15,7 @@
             classNames="form-control"
             optionValuePath="name"
             optionLabelPath="displayName"
-            prompt="cloud.driverAzure.location.prompt"
+            prompt="clusterNew.azureaks.location.prompt"
             content=zones
             value=config.location
             localizedPrompt=true
@@ -23,13 +23,13 @@
       {{/if}}
     </div>
     <div class="col span-6 mb-0">
-      <label class="acc-label">{{t 'cloud.driverAzure.resourceGroup.label'}}</label>
+      <label class="acc-label">{{t 'clusterNew.azureaks.resourceGroup.label'}}</label>
       {{#if editing}}
         <div>
           {{config.resourceGroup}}
         </div>
       {{else}}
-        {{input type="text" value=config.resourceGroup classNames="form-control" placeholder=(t 'cloud.driverAzure.resourceGroup.placeholder')}}
+        {{input type="text" value=config.resourceGroup classNames="form-control" placeholder=(t 'clusterNew.azureaks.resourceGroup.placeholder')}}
       {{/if}}
     </div>
   </div>
@@ -63,26 +63,26 @@
 
   <div class="row">
     <div class="col span-6 mb-0">
-      <label class="acc-label">{{t 'cloud.driverAzure.clientId.label'}}{{field-required}}</label>
+      <label class="acc-label">{{t 'clusterNew.azureaks.clientId.label'}}{{field-required}}</label>
       {{#if editing}}
         <div>
           {{config.clientId}}
         </div>
       {{else}}
-        {{input type="text" value=config.clientId classNames="form-control" placeholder=(t 'cloud.driverAzure.clientId.placeholder')}}
-        <p class="text-info text-small mb-0">{{t 'cloud.driverAzure.helpBlock' htmlSafe=true}}</p>
+        {{input type="text" value=config.clientId classNames="form-control" placeholder=(t 'clusterNew.azureaks.clientId.placeholder')}}
+        <p class="text-info text-small mb-0">{{t 'clusterNew.azureaks.helpBlock' htmlSafe=true}}</p>
       {{/if}}
     </div>
 
     <div class="col span-6 mb-0">
-      <label class="acc-label">{{t 'cloud.driverAzure.clientSecret.label'}}{{field-required}}</label>
+      <label class="acc-label">{{t 'clusterNew.azureaks.clientSecret.label'}}{{field-required}}</label>
       {{#if editing}}
         <div>
           {{t 'generic.na'}}
         </div>
       {{else}}
-        {{input type="text" value=config.clientId classNames="form-control" placeholder=(t 'cloud.driverAzure.clientId.placeholder')}}
-        <p class="text-info text-small mb-0">{{t 'cloud.driverAzure.helpBlock' htmlSafe=true}}</p>
+        {{input type="text" value=config.clientId classNames="form-control" placeholder=(t 'clusterNew.azureaks.clientId.placeholder')}}
+        <p class="text-info text-small mb-0">{{t 'clusterNew.azureaks.helpBlock' htmlSafe=true}}</p>
       {{/if}}
     </div>
   </div>
@@ -96,19 +96,19 @@
       {{input-number min=1 value=config.nodeCount}}
     </div>
     <div class="col span-6">
-      <label class="acc-label">{{t 'cloud.driverAzure.admin.label'}}</label>
+      <label class="acc-label">{{t 'clusterNew.azureaks.admin.label'}}</label>
       {{#if editing}}
         <div>
           {{config.adminUsername}}
         </div>
       {{else}}
-        {{input type="text" value=config.adminUsername classNames="form-control" placeholder=(t 'cloud.driverAzure.admin.placeholder')}}
+        {{input type="text" value=config.adminUsername classNames="form-control" placeholder=(t 'clusterNew.azureaks.admin.placeholder')}}
       {{/if}}
     </div>
   </div>
   <div class="row">
     <div class="col span-6">
-      <label class="acc-label">{{t 'cloud.driverAzure.machineType.label'}}</label>
+      <label class="acc-label">{{t 'clusterNew.azureaks.machineType.label'}}</label>
       {{#if editing}}
         <div>
           {{config.agentVmSize}}
@@ -120,13 +120,13 @@
             optionLabelPath="value"
             content=machineSizes
             value=config.agentVmSize
-            prompt="cloud.driverAzure.machineType.prompt"
+            prompt="clusterNew.azureaks.machineType.prompt"
             localizedPrompt=true
         }}
       {{/if}}
     </div>
     <div class="col span-6">
-      <label class="acc-label">{{t 'cloud.driverAzure.diskSizeGb.label'}}</label>
+      <label class="acc-label">{{t 'clusterNew.azureaks.diskSizeGb.label'}}</label>
       {{#if editing}}
         <div>
           {{config.agentVmSize}}
@@ -141,7 +141,7 @@
   </div>
   <div class="row">
     <div class="col span-12">
-      <label>{{t 'cloud.driverAzure.ssh.label'}}{{field-required}}</label>
+      <label>{{t 'clusterNew.azureaks.ssh.label'}}{{field-required}}</label>
       {{#if editing}}
         <div>
           {{config.sshPublicKeyContents}}
@@ -153,58 +153,46 @@
   </div>
 </div>
 
-<div class="box mt-30">
-  <h4>{{t 'cloud.driverAzure.security.label'}}</h4>
-  <div class="row">
-    <div class="col span-12">
-      <label class="acc-label">{{t 'cloud.driverAzure.members.label'}}</label>
-      {{form-members
-          creator=userData.me
-          editing=true
-          memberConfig=memberConfig
-          primaryResource=primaryResource
-          roles=userData.roles
-          users=userData.users
-          type="cluster"
-          initAlert=(action "initAlert")
-      }}
-    </div>
-
-    <div class="col span-12">
-      <label class="acc-label mb-20">{{t 'cloud.driverAzure.pod.label'}}</label>
-      {{form-pod-sec-policy
-          config=primaryResource.defaultPodSecurityPolicyTemplateId
-          policies=model.policies
-      }}
-    </div>
-  </div>
-</div>
-
-
 {{#accordion-list showExpandAll=false as |al expandFn|}}
-  <div class="mt-30">
-    {{#accordion-list-item
-         title=(t 'cloud.driverAzure.customize.label')
-         detail=(t 'cloud.driverAzure.customize.detail')
-         expandAll=al.expandAll
-         expand=(action expandFn)
+  {{#accordion-list-item
+    title=(t 'clusterNew.members.label')
+    detail=(t 'clusterNew.members.detail')
+    expandAll=al.expandAll
+    expand=(action expandFn)
+  }}
+    {{form-members
+      editing=true
+      memberConfig=memberConfig
+      primaryResource=primaryResource
+      creator=model.me
+      roles=model.roleTemplates
+      users=model.users
+      type="cluster"
+      registerHook=(action "registerHook")
     }}
-      <div class="row">
-        <div class="col span-4">
-          <label class="acc-label">{{t 'cloud.driverAzure.masterVersion.label'}}</label>
-          {{new-select
-              classNames="form-control"
-              content=versions
-              optionValuePath="value"
-              optionLabelPath="value"
-              value=config.kubernetesVersion
-              prompt="cloud.driverAzure.masterVersion.prompt"
-              localizedPrompt=true
-          }}
-        </div>
+  {{/accordion-list-item}}
+
+  {{#accordion-list-item
+        title=(t 'clusterNew.azureaks.customize.label')
+        detail=(t 'clusterNew.azureaks.customize.detail')
+        expandAll=al.expandAll
+        expand=(action expandFn)
+  }}
+    <div class="row">
+      <div class="col span-4">
+        <label class="acc-label">{{t 'clusterNew.azureaks.masterVersion.label'}}</label>
+        {{new-select
+            classNames="form-control"
+            content=versions
+            optionValuePath="value"
+            optionLabelPath="value"
+            value=config.kubernetesVersion
+            prompt="clusterNew.azureaks.masterVersion.prompt"
+            localizedPrompt=true
+        }}
       </div>
-    {{/accordion-list-item}}
-  </div>
+    </div>
+  {{/accordion-list-item}}
 {{/accordion-list}}
 
 {{top-errors errors=errors}}

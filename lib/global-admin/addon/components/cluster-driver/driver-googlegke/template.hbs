@@ -108,72 +108,61 @@
     </div>
   </div>
 
-  <div class="box mt-30">
-    <h4>Security</h4>
-    <div class="row">
-      <div class="col span-12">
-        <label class="acc-label">Member Roles</label>
-        {{form-members
-            editing=true
-            memberConfig=memberConfig
-            primaryResource=primaryResource
-            creator=model.me
-            roles=model.roleTemplates
-            users=model.users
-            type="cluster"
-            registerHook=(action "registerHook")
-        }}
-      </div>
-
-      <div class="col span-12">
-        <label class="acc-label mb-20">Pod Security Policy</label>
-        {{form-pod-sec-policy
-            config=model.cluster.defaultPodSecurityPolicyTemplateId
-            policies=model.policies
-        }}
-      </div>
-    </div>
-  </div>
-
   {{#accordion-list showExpandAll=false as |al expandFn|}}
-    <div class="mt-30">
-      {{#accordion-list-item
-           title=(t 'clustersPage.addPage.rke.new.customize.label')
-           detail=(t 'clustersPage.addPage.rke.new.customize.detail')
-           expandAll=al.expandAll
-           expand=(action expandFn)
+    {{#accordion-list-item
+      title=(t 'clusterNew.members.label')
+      detail=(t 'clusterNew.members.detail')
+      expandAll=al.expandAll
+      expand=(action expandFn)
+    }}
+      {{form-members
+        editing=true
+        memberConfig=memberConfig
+        primaryResource=primaryResource
+        creator=model.me
+        roles=model.roleTemplates
+        users=model.users
+        type="cluster"
+        registerHook=(action "registerHook")
       }}
-        <div class="row">
-          <div class="col span-4">
-            <label class="acc-label">{{t 'clusterNew.googlegke.masterVersion.label'}}</label>
-            {{new-select
-                classNames="form-control"
-                content=versionChoices
-                optionValuePath="value"
-                optionLabelPath="value"
-                value=config.masterVersion
-                prompt="clusterNew.googlegke.masterVersion.prompt"
-                localizedPrompt=true
-            }}
-          </div>
-          <div class="col span-4">
-            <label class="acc-label">{{t 'clusterNew.googlegke.alphaFeatures.label'}}</label>
-            <div class="form-control-static">
-              <label class="mr-20 hand">
-                {{radio-button selection=config.enableAlphaFeature value=true disabled=editing}} {{t 'generic.enabled'}}
-              </label>
-              <label class="hand">
-                {{radio-button selection=config.enableAlphaFeature value=false disabled=editing}} {{t 'generic.disabled'}}
-              </label>
-            </div>
-          </div>
-          <div class="col span-4">
-            <label class="acc-label">{{t 'clusterNew.googlegke.clusterIpv4Cidr.label'}}</label>
-            {{input value=config.clusterIpv4Cidr placeholder=(t 'clusterNew.googlegke.clusterIpv4Cidr.placeholder') disabled=editing}}
+    {{/accordion-list-item}}
+
+    {{#accordion-list-item
+      title=(t 'clustersPage.addPage.rke.new.customize.label')
+      detail=(t 'clustersPage.addPage.rke.new.customize.detail')
+      expandAll=al.expandAll
+      expand=(action expandFn)
+    }}
+      <div class="row">
+        <div class="col span-4">
+          <label class="acc-label">{{t 'clusterNew.googlegke.masterVersion.label'}}</label>
+          {{new-select
+              classNames="form-control"
+              content=versionChoices
+              optionValuePath="value"
+              optionLabelPath="value"
+              value=config.masterVersion
+              prompt="clusterNew.googlegke.masterVersion.prompt"
+              localizedPrompt=true
+          }}
+        </div>
+        <div class="col span-4">
+          <label class="acc-label">{{t 'clusterNew.googlegke.alphaFeatures.label'}}</label>
+          <div class="form-control-static">
+            <label class="mr-20 hand">
+              {{radio-button selection=config.enableAlphaFeature value=true disabled=editing}} {{t 'generic.enabled'}}
+            </label>
+            <label class="hand">
+              {{radio-button selection=config.enableAlphaFeature value=false disabled=editing}} {{t 'generic.disabled'}}
+            </label>
           </div>
         </div>
-      {{/accordion-list-item}}
-    </div>
+        <div class="col span-4">
+          <label class="acc-label">{{t 'clusterNew.googlegke.clusterIpv4Cidr.label'}}</label>
+          {{input value=config.clusterIpv4Cidr placeholder=(t 'clusterNew.googlegke.clusterIpv4Cidr.placeholder') disabled=editing}}
+        </div>
+      </div>
+    {{/accordion-list-item}}
   {{/accordion-list}}
 
   {{top-errors errors=errors}}

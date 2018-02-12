@@ -3144,6 +3144,100 @@ clusterNew:
   members:
     label: Member Roles
     detail: Control who as access to the cluster and what permission they have to change it
+
+
+  azureaks:
+    accessSection: Account Access
+    networkSection: Network
+    instanceSection: Instance
+    instanceOptionsSection: Instance Options
+    placement:
+      label: Placement
+    location:
+      label: Location
+      prompt: Choose a location...
+    helpBlock: 'You can find instructions on how to create a Client ID and Secret <a href="https://www.packer.io/docs/builders/azure-setup.html" target="_blank">here</a>.'
+    accountAccessSection:
+      label: Account Access
+    subscriptionId:
+      label: Subscription ID
+      placeholder: Your Azure subscription ID
+    machineType:
+      label: VM Agent Size
+      prompt: Choose a size...
+    diskSizeGb:
+      label: OS Disk Size
+    ssh:
+      label: Public SSH Key
+    security:
+      label: Security
+    members:
+      label: Member Roles
+    pod:
+      label: Pod Security Policies
+    masterVersion:
+      label: Kubernetes Version
+      prompt: Choose a Version...
+    admin:
+      label: Admin Username
+      placeholder: user-1
+    tenant:
+      label: Tenant ID
+      placeholder: Your Azure tenant ID
+    image:
+      label: Image
+      placeholder: 'canonical:UbuntuServer:16.04.0-LTS:latest'
+    size:
+      label: Size
+    dockerPort:
+      label: Docker Port
+      placeholder: '2376'
+    publishSettingsFile:
+      label: Publish Settings
+      placeholder: Your Publish Settings file
+    environment:
+      label: Environment
+    resourceGroup:
+      label: Resource Group
+      placeholder: 'docker-machine'
+    sshUser:
+      label: SSH User
+      placeholder: usr1
+    storageType:
+      label: Storage Type
+    vnet:
+      label: VNet
+      placeholder: '[resourcegroup:]name'
+    subnet:
+      label: Subnet
+      placeholder: example-sub-name
+    subnetPrefix:
+      label: Subnet Prefix
+      placeholder: 128.42.0.0/21
+    availabilitySet:
+      label: Availability Set
+      placeholder: availability-set-name
+    openPort:
+      label: Open Port
+      placeholder: 'Comma-separated, e.g. 80,443'
+    privateIpAddress:
+      label: Private IP
+      placeholder: 127.0.0.1
+    usePrivateIp:
+      label: Use Private IP To Connect
+    staticPublicIp:
+      label: Public IP
+    noPublicIp:
+      label: No Public IP
+    clientId:
+      label: Client ID
+      placeholder: Your Client ID
+    clientSecret:
+      label: Client Secret
+      placeholder: Your Client Secret
+    region:
+      label: Region
+
   googlegke:
     label: Google Kubernetes Engine
     checkServiceAccount: "Next: Configure Nodes"
@@ -3184,7 +3278,7 @@ clusterNew:
       detail: "Optional configuration options for the Kubernetes installation"
     nodes:
       title: Nodes
-      detail: Configure the machines that will make up the cluster.
+      detail: Configure the machines that will make up the cluster
       add: Add Nodes
       header: Node Template
     detected: |
@@ -3224,7 +3318,7 @@ clusterNew:
       enabled: Require a supproted version
     role:
       title: Node Role
-      detail: Choose what roles the node will have in the cluster.
+      detail: Choose what roles the node will have in the cluster
       header:
         etcd: Use for etcd
         controlplane: Use for management
@@ -3250,52 +3344,6 @@ clusterNew:
       etcd: Please select 1, 3, or 5 nodes to use for etcd.
       management: Please select at least one node to use for for management.
       node: Please select at least one node to use as a worker.
-
-  azureaks:
-    accessSection: Account Access
-    placement:
-      label: Placement
-    location:
-      label: Location
-      prompt: Choose a location...
-    helpBlock: 'You can find instructions on how to create a Client ID and Secret <a href="https://www.packer.io/docs/builders/azure-setup.html" target="_blank">here</a>.'
-    accountAccessSection:
-      label: Account Access
-    subscriptionId:
-      label: Subscription ID
-      placeholder: Your Azure subscription ID
-    machineType:
-      label: VM Agent Size
-      prompt: Choose a size...
-    diskSizeGb:
-      label: OS Disk Size
-    ssh:
-      label: Public SSH Key
-    security:
-      label: Security
-    members:
-      label: Member Roles
-    pod:
-      label: Pod Security Policies
-    masterVersion:
-      label: Kubernetes Version
-      prompt: Choose a Version...
-    resourceGroup:
-      label: Resource Group
-      placeholder: 'docker-machine'
-    sshUser:
-      label: SSH User
-      placeholder: usr1
-    clientId:
-      label: Client ID
-      placeholder: Your Client ID
-    clientSecret:
-      label: Client Secret
-      placeholder: Your Client Secret
-    admin:
-      label: Admin Username
-      placeholder: user-1
-
 
 
 machine:
@@ -3370,73 +3418,6 @@ machine:
       label: Private IP
     onlyPrivate:
       label: Use only private IP address
-
-  driverAzure:
-    helpBlock: 'You can find instructions on how to create a Client ID and Secret <a href="https://www.packer.io/docs/builders/azure-setup.html" target="_blank">here</a>.'
-    accountAccessSection: Account Access
-    placementSection: Placement
-    networkSection: Network
-    subscriptionId:
-      label: Subscription ID
-      placeholder: Your Azure subscription ID
-    tenant:
-      label: Tenant ID
-      placeholder: Your Azure tenant ID
-    instanceSection: Instance
-    instanceOptionsSection: Instance Options
-    image:
-      label: Image
-      placeholder: 'canonical:UbuntuServer:16.04.0-LTS:latest'
-    size:
-      label: Size
-    dockerPort:
-      label: Docker Port
-      placeholder: '2376'
-    publishSettingsFile:
-      label: Publish Settings
-      placeholder: Your Publish Settings file
-    environment:
-      label: Environment
-    resourceGroup:
-      label: Resource Group
-      placeholder: 'docker-machine'
-    sshUser:
-      label: SSH User
-      placeholder: usr1
-    storageType:
-      label: Storage Type
-    vnet:
-      label: VNet
-      placeholder: '[resourcegroup:]name'
-    subnet:
-      label: Subnet
-      placeholder: example-sub-name
-    subnetPrefix:
-      label: Subnet Prefix
-      placeholder: 128.42.0.0/21
-    availabilitySet:
-      label: Availability Set
-      placeholder: availability-set-name
-    openPort:
-      label: Open Port
-      placeholder: 'Comma-separated, e.g. 80,443'
-    privateIpAddress:
-      label: Private IP
-      placeholder: 127.0.0.1
-    usePrivateIp:
-      label: Use Private IP To Connect
-    staticPublicIp:
-      label: Public IP
-    noPublicIp:
-      label: No Public IP
-    clientId:
-      label: Client ID
-      placeholder: Your Client ID
-    clientSecret:
-      label: Client Secret
-      placeholder: Your Client Secret
-    region:
-      label: Region
 
   driverDigitalocean:
     sizeLabel: |
