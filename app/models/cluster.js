@@ -8,6 +8,7 @@ import { resolve } from 'rsvp';
 
 
 export default Resource.extend(ResourceUsage, {
+  globalStore:  service(),
   scope:        service(),
   router:       service(),
 
@@ -96,18 +97,21 @@ export default Resource.extend(ResourceUsage, {
   }),
 
   getOrCreateToken() {
+    const globalStore = get(this, 'globalStore');
     const id = get(this, 'id');
 
-    let token = get(this, 'tokens').filterBy('clusterId', id)[0];
-    if ( token ) {
-      return resolve(token);
-    } else {
-      token = get(this, 'globalStore').createRecord({
-        type: 'clusterRegistrationToken',
-        clusterId: id
-      });
+    return globalStore.findAll('token').then((tokens) => {
+      let token = tokens.filterBy('clusterId', id)[0];
+      if ( token ) {
+        return resolve(token);
+      } else {
+        token = get(this, 'globalStore').createRecord({
+          type: 'clusterRegistrationToken',
+          clusterId: id
+        });
 
-      return token.save();
-    }
+        return token.save();
+      }
+    });
   },
 });

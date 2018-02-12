@@ -3183,10 +3183,18 @@ clusterNew:
       label: Customize
       detail: "Optional configuration options for the Kubernetes installation"
     nodes:
-      title: Node Pools
+      title: Nodes
       detail: Configure the machines that will make up the cluster.
-      add: Add Node Pool
+      add: Add Nodes
       header: Node Template
+    detected: |
+      {count, plural,
+        =1 {# new node has registered}
+        other {# new nodes have registered}
+      }
+    command:
+      instructions: 'Run this command on one or more existing machines already running a supported version of Docker.'
+
     auth:
       label: Auth Provider
       x509: x509
@@ -3215,6 +3223,8 @@ clusterNew:
       disabled: Allow unsupported versions
       enabled: Require a supproted version
     role:
+      title: Node Role
+      detail: Choose what roles the node will have in the cluster.
       header:
         etcd: Use for etcd
         controlplane: Use for management
@@ -3427,26 +3437,6 @@ machine:
       placeholder: Your Client Secret
     region:
       label: Region
-
-  driverCustom:
-    detected: |
-      {count, plural,
-        =1 {# new node has registered}
-        other {# new nodes have registered}
-      }
-    command:
-      instructions: 'Run this command on an existing machine already running a supported version of Docker.'
-    ssh:
-      instructions: 'Use this for an exiting machine that already has a supported version of Docker installed and is reachable by SSH from the {appName} server container.'
-      address:
-        label: Hostname or IP Address
-        placeholder: e.g. 192.168.2.24
-      user:
-        label: SSH Username
-        placeholder: e.g. root
-      sshKey:
-        label: SSH Private Key
-        placeholder: Paste in your private key starting with -----BEGIN RSA PRIVATE KEY-----
 
   driverDigitalocean:
     sizeLabel: |

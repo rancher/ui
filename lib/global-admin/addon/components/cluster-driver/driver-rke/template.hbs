@@ -196,15 +196,23 @@
 
   {{#accordion-list showExpandAll=false as |al expandFn|}}
     {{#accordion-list-item
-      title=(t 'clusterNew.members.label')
-      detail=(t 'clusterNew.members.detail')
+      title=(t 'clusterNew.rke.role.title')
+      detail=(t 'clusterNew.rke.role.detail')
       expandOnInit=true
       expandAll=al.expandAll
       expand=(action expandFn)
     }}
-      <label>{{input type="checkbox" checked=etcd}} {{t 'clusterNew.rke.role.header.etcd'}}</label>
-      <label>{{input type="checkbox" checked=controlplane}} {{t 'clusterNew.rke.role.header.controlplane'}}</label>
-      <label>{{input type="checkbox" checked=worker}} {{t 'clusterNew.rke.role.header.worker'}}</label>
+      <div class="row">
+        <div class="col span-4 text-center">
+          <label>{{input type="checkbox" checked=etcd}} {{t 'clusterNew.rke.role.header.etcd'}}</label>
+        </div>
+        <div class="col span-4 text-center">
+          <label>{{input type="checkbox" checked=controlplane}} {{t 'clusterNew.rke.role.header.controlplane'}}</label>
+        </div>
+        <div class="col span-4 text-center">
+          <label>{{input type="checkbox" checked=worker}} {{t 'clusterNew.rke.role.header.worker'}}</label>
+        </div>
+      </div>
     {{/accordion-list-item}}
 
     {{form-user-labels
@@ -215,17 +223,17 @@
     }}
   {{/accordion-list}}
 
+  <div class="copy-pre mt-20 mb-20">
+    {{copy-to-clipboard clipboardText=command tagName="div" classNames="copy-to-pre"}}
+    <pre id="registration-command" style="font-size: 14px;">{{command}}</pre>
+  </div>
+
   <div class="mt-20">
-    {{t 'clusterNew.custom.command.instructions'
+    {{t 'clusterNew.rke.command.instructions'
       appName=settings.appName
       docsBase=settings.docsBase
       htmlSafe=true
     }}
-  </div>
-
-  <div class="copy-pre mt-20 mb-20">
-    {{copy-to-clipboard clipboardText=command tagName="div" classNames="copy-to-pre"}}
-    <pre id="registration-command" style="font-size: 14px;">{{command}}</pre>
   </div>
 
   {{#if newNodeCount}}
