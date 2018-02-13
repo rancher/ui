@@ -9,8 +9,8 @@ import { reference } from 'ember-api-store/utils/denormalize';
 import ResourceUsage from 'shared/mixins/resource-usage';
 
 
-var Machine = Resource.extend(StateCounts, ResourceUsage, {
-  type: 'machine',
+var Node = Resource.extend(StateCounts, ResourceUsage, {
+  type: 'node',
 
   modalService: service('modal'),
   settings: service(),
@@ -301,8 +301,8 @@ var Machine = Resource.extend(StateCounts, ResourceUsage, {
   }.property(`labels.${C.LABEL.REQUIRE_ANY}`),
 });
 
-Machine.reopenClass({
+Node.reopenClass({
   defaultSortBy: 'name,hostname',
 });
 
-export default Machine;
+export default Node;

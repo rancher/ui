@@ -1,0 +1,20 @@
+<div class="mt-20">
+  {{banner-message color="bg-info" message=(t 'clusterNew.import.command.instructions'
+    appName=settings.appName
+    docsBase=settings.docsBase
+    htmlSafe=true
+  )}}
+</div>
+
+<div class="copy-pre mt-20 mb-20">
+  {{#if loading}}
+    <i class="icon icon-spinner icon-spin"/> {{t 'generic.loading'}}
+  {{else}}
+    {{copy-to-clipboard clipboardText=token.command tagName="div" classNames="copy-to-pre"}}
+    <pre id="registration-command" style="font-size: 14px;">{{token.command}}</pre>
+  {{/if}}
+</div>
+
+<div class="footer-actions">
+  <button {{action "close"}} class="btn bg-primary">{{t 'clusterNew.rke.done'}}</button>
+</div>

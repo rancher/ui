@@ -105,7 +105,7 @@ module.exports = function(environment) {
       clusterEndpoint: '/v3/clusters/%CLUSTERID%',
       projectEndpoint: '/v3/projects/%PROJECTID%',
       proxyEndpoint: '/meta/proxy',
-      globalSubscribeEndpoint: '/meta/subscribe',
+      globalSubscribeEndpoint: '/v3/subscribe',
       clusterSubscribeEndpoint: '/v3/clusters/%CLUSTERID%/subscribe',
       projectSubscribeEndpoint: '/v3/projects/%PROJECTID%/subscribe',
       magicEndpoint: '/r',
