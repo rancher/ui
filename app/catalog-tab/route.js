@@ -32,7 +32,6 @@ export default Route.extend({
     this._super(...arguments);
 
     return hash({
-      namespaces: this.get('store').findAll('namespace'),
       catalogs: this.get('catalog').fetchCatalogs({
         headers: {
           [C.HEADER.PROJECT_ID]: this.get('scope.currentProject.id')
@@ -40,21 +39,21 @@ export default Route.extend({
       }),
     }).then((hash) => {
       this.set('catalogs', hash.catalogs);
-      this.set('namespaces', hash.namespaces);
     });
   },
 
   model(params) {
+    const project = this.get('scope.currentProject');
+
     if (params.launchCluster) {
       params.plusInfra = true;
     } else {
-      params.plusInfra = this.get('scope.currentProject.clusterOwner') === true;
+      params.plusInfra = project.get('clusterOwner') === true;
     }
 
-    let namespaces = this.get('namespaces');
     return this.get('catalog').fetchTemplates(params).then((res) => {
       res.catalog.forEach((tpl) => {
-        let exists = namespaces.findBy('externalIdInfo.templateId', tpl.get('id'));
+        let exists = this.get('project.namespaces').findBy('externalIdInfo.templateId', tpl.get('id'));
         tpl.set('exists', !!exists);
       });
       res.catalogs = this.get('catalogs');
