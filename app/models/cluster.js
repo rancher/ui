@@ -14,7 +14,7 @@ export default Resource.extend(ResourceUsage, {
 
   namespaces: hasMany('id', 'namespace', 'clusterId'),
   projects: hasMany('id', 'project', 'clusterId'),
-  machines: hasMany('id', 'machine', 'clusterId'),
+  machines: hasMany('id', 'node', 'clusterId'),
   clusterRoleTemplateBindings: hasMany('id', 'clusterRoleTemplateBinding', 'clusterId'),
   roleTemplateBindings: alias('clusterRoleTemplateBindings'),
 
@@ -100,7 +100,7 @@ export default Resource.extend(ResourceUsage, {
     const globalStore = get(this, 'globalStore');
     const id = get(this, 'id');
 
-    return globalStore.findAll('token').then((tokens) => {
+    return globalStore.findAll('clusterRegistrationToken').then((tokens) => {
       let token = tokens.filterBy('clusterId', id)[0];
       if ( token ) {
         return resolve(token);

@@ -53,7 +53,7 @@ const Template = Resource.extend({
   }),
 
   machineHasIcon: computed('templateBase', function(){
-    if (this.get('templateBase') === 'machine') {
+    if (this.get('templateBase') === 'node') {
       if (this.get('links.icon')) {
         return this.get('links.icon');
       }

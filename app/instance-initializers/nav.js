@@ -91,7 +91,7 @@ const rootNav = [
     localizedLabel: 'nav.cluster.dashboard',
     route: 'authenticated.cluster.index',
     ctx: [getClusterId],
-    resource: ['machine'],
+    resource: ['node'],
     resourceScope: 'global',
   },
   {
@@ -118,7 +118,7 @@ const rootNav = [
     localizedLabel: 'nav.cluster.nodes',
     route: 'authenticated.cluster.nodes',
     ctx: [getClusterId],
-    resource: ['machine'],
+    resource: ['node'],
     resourceScope: 'global',
   },
   {
@@ -169,7 +169,7 @@ const rootNav = [
     id: 'global-machine-drivers',
     localizedLabel: 'nav.admin.machineDrivers',
     route: 'global-admin.machine-drivers',
-    resource: ['machinedriver'],
+    resource: ['nodedriver'],
     resourceScope: 'global',
   },
   {

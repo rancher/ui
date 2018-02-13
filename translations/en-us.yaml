@@ -643,16 +643,7 @@ projectsPage:
 clustersPage:
   header: Clusters
   newCluster: Add Cluster
-  import: Import External
-  alert: There are no active environments.  You will need to create or activate one before you can do anything else.
-  subtext: |
-    <h4>{appName} supports grouping resources into multiple <b class="text-info">clusters</b> and <b class="text-info">environments</b>.</h4>
-    <div class="row">
-    <div class="col span-6"><p><b class="text-info">Cluster:</b> A group of physical (or virtual) compute resources.  Each environment is tied to one cluster and will run all its containers on cluster's hosts, and a cluster can be shared with more than one environment.</p></div>
-
-    <div class="col span-6"><p><b class="text-info">Environment:</b> A namespace where applications, services, and containers are defined.  The containers in an environment can communicate with each other over a shared managed network, and different users/groups can be given access to manage the resources of the environment.</p></div></div>
-    <p class="banner bg-info text-small p-10">For example, you might create a <em>"production"</em> cluster for each team in your company with bare-metal hosts and a single dedicated environment with restricted access, and a shared <em>"sandbox"</em> cluster with shared virtual machines that any employee can use to create their own isolated dev & test environments.</p>
-
+  newClusterName: "Add Cluster: {name}"
   cluster:
     label: Cluster Name
   environment:
@@ -669,16 +660,6 @@ clustersPage:
     label: Pods
   storage:
     label: Disk
-  indexPage:
-    cloud:
-      header: Launch a Cloud Cluster
-      desc: Launch a new cluster on a hosted cloud Kubernetes provider (e.g Google GKE).  The cloud provider manages the care and feeding of the nodes and cluster.
-    rke:
-      header: Create a Cluster
-      desc: Deploy and automatically manage a Kubernetes cluster with Rancher Kubernetes Engine (RKE).  Import existing nodes or launch new ones to use with the cluster.  Supports bare-metal and virtual machines in cloud infrastructure providers on on-premise.
-    import:
-      header: Import an Existing Cluster
-      desc: Use an existing Kubernetes installation and the nodes it provides.
 
 ingressPage:
   header: 'Ingress: {name}'
@@ -3144,38 +3125,45 @@ clusterNew:
   members:
     label: Member Roles
     detail: Control who as access to the cluster and what permission they have to change it
-
+  config:
+    label: Provider
+    detail: Choose where the nodes for the cluster will come from
+  nodes:
+    title: Nodes
+    detail: Customize the nodes that will be created
+  customize:
+    title: Cluster Options
+    detail: Customize the cluster that will be created
 
   azureaks:
-    accessSection: Account Access
-    networkSection: Network
-    instanceSection: Instance
-    instanceOptionsSection: Instance Options
+    access:
+      title: Account Access
+      detail: Configure the credentials that will be used to talk to Azure
+      help: 'You can find instructions on how to create a Client ID and Secret <a href="https://www.packer.io/docs/builders/azure-setup.html" target="_blank">here</a>.'
     placement:
       label: Placement
     location:
       label: Location
       prompt: Choose a location...
-    helpBlock: 'You can find instructions on how to create a Client ID and Secret <a href="https://www.packer.io/docs/builders/azure-setup.html" target="_blank">here</a>.'
     accountAccessSection:
       label: Account Access
     subscriptionId:
       label: Subscription ID
       placeholder: Your Azure subscription ID
     machineType:
-      label: VM Agent Size
+      label: VM Size
       prompt: Choose a size...
     diskSizeGb:
       label: OS Disk Size
     ssh:
-      label: Public SSH Key
+      label: SSH Public Key
     security:
       label: Security
     members:
       label: Member Roles
     pod:
       label: Pod Security Policies
-    masterVersion:
+    kubernetesVersion:
       label: Kubernetes Version
       prompt: Choose a Version...
     admin:
@@ -3241,14 +3229,13 @@ clusterNew:
   googlegke:
     label: Google Kubernetes Engine
     checkServiceAccount: "Next: Configure Nodes"
+    checkingServiceAccount: Authenticating...
     credential:
       label: Service Account
       placeholder: Service account private key JSON file
       configured: Configured for {project} project
       helpText: |
         Create a <a href="https://console.cloud.google.com/projectselector/iam-admin/serviceaccounts" target="_blank" rel="nofollow noopener noreferrer">Service Account</a> with a JSON private key and provide the JSON here.  See <a href="https://cloud.google.com/compute/docs/access/create-enable-service-accounts-for-instances" target="_blank" rel="nofollow noopener noreferrer">Google Cloud docs</a> for more info about creating a service account. Three IAM roles are required: <code>project/viewer</code>, <code>kubernetes-engine/admin</code> and <code>service-account/user</code>, more info on roles can be found <a href="https://cloud.google.com/kubernetes-engine/docs/how-to/iam-integration" target="_blank" rel="nofollow noopener noreferrer">here.</a>
-    location: Location
-    customize: Customize
     zone:
       label: Zone
       prompt: Choose a Zone...
@@ -3257,6 +3244,9 @@ clusterNew:
       placeholder: e.g. my-project
     machineType:
       label: Machine Type
+      prompt: Choose a Type...
+    nodeCount:
+      label: Node Count
       prompt: Choose a Type...
     diskSizeGb:
       label: Root Disk Size
@@ -3277,15 +3267,18 @@ clusterNew:
       label: Customize
       detail: "Optional configuration options for the Kubernetes installation"
     nodes:
-      title: Nodes
+      title: Node Pools
       detail: Configure the machines that will make up the cluster
-      add: Add Nodes
-      header: Node Template
+      add: Add Node Pool
+      prefix: Name Prefix
+      count: Count
+      template: Template
     detected: |
       {count, plural,
         =1 {# new node has registered}
         other {# new nodes have registered}
       }
+    done: Done
     command:
       instructions: 'Run this command on one or more existing machines already running a supported version of Docker.'
 
@@ -3315,19 +3308,19 @@ clusterNew:
     ignoreDockerVersion:
       label: Docker version on nodes
       disabled: Allow unsupported versions
-      enabled: Require a supproted version
+      enabled: Require a supported Docker version
     role:
       title: Node Role
       detail: Choose what roles the node will have in the cluster
       header:
-        etcd: Use for etcd
-        controlplane: Use for management
-        worker: Use as worker node
+        etcd: etcd
+        controlplane: Control
+        worker: Worker
       requirements:
         label: "Number of nodes required:"
-        etcd: Exactly 1, 3, or 5
-        controlplane: At least one
-        worker: At least one
+        etcd: 1, 3, or 5
+        controlplane: 1 or more
+        worker: 1 or more
     kubeApi:
       label: Kube API
       ipRange: Service Cluster IP Range
@@ -3344,6 +3337,10 @@ clusterNew:
       etcd: Please select 1, 3, or 5 nodes to use for etcd.
       management: Please select at least one node to use for for management.
       node: Please select at least one node to use as a worker.
+
+  import:
+    command:
+      instructions: Run the kubectl command below on an existing Kubernetes 1.8.x cluster to import it into {appName}
 
 
 machine:

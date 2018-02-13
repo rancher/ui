@@ -7,7 +7,7 @@
       canChangeName=false
       nameRequired=true
       placeholder="clusterNew.googlegke.credential.placeholder"
-      fileChosen=(action "checkServiceAccount")
+      fileChosen=(action "clickNext")
       as |section|
   }}
     {{#if (eq section 'description')}}
@@ -22,119 +22,87 @@
   {{top-errors errors=errors}}
   {{save-cancel
     createLabel="clusterNew.googlegke.checkServiceAccount"
-    save=(action "checkServiceAccount") 
+    savingLabel="clusterNew.googlegke.checkingServiceAccount"
+    save=(action "checkServiceAccount")
     cancel=close
   }}
 
-{{else if (eq step 2)}}
-
-  <div class="row">
-    <div class="text-center m-30"><i class="icon icon-spinner icon-spin"/> {{t 'generic.loading'}}</div>
-  </div>
 {{else}}
-  <div class="row">
-    <label class="acc-label">{{t 'clusterNew.googlegke.credential.label'}}</label>
-    <div class="form-control-static text-italic">{{t 'clusterNew.googlegke.credential.configured' project=config.projectId}}</div>
-  </div>
-
-  <div class="row">
-    {{form-name-description
-      model=model
-      nameRequired=true
-      nameLabel='clusterNew.name.label'
-      namePlaceholder='clusterNew.name.placeholder'
-      descriptionPlaceholder='clusterNew.description.placeholder'
-    }}
-  </div>
-
-  <div class="box mt-30">
-    <h4>{{t 'clusterNew.googlegke.location'}}</h4>
-    <div class="row">
-      <div class="col span-12">
-        <label class="acc-label">{{t 'clusterNew.googlegke.zone.label'}}</label>
-        {{#if editing}}
-          {{config.zone}}
-        {{else}}
-          {{new-select
-            classNames="form-control"
-            optionValuePath="name"
-            optionLabelPath="name"
-            content=zoneChoices
-            value=config.zone
-            prompt="clusterNew.googlegke.zone.prompt"
-            localizedPrompt=true
-          }}
-        {{/if}}
-      </div>
-    </div>
-  </div>
-
-  <div class="box mt-30">
-    <h4>{{t 'cloud.machine'}}</h4>
-    <div class="row">
-      <div class="col span-4">
-        <label class="acc-label">{{t 'cloud.nodeCount.label'}}</label>
-        {{input-number min=1 value=config.nodeCount}}
-      </div>
-      <div class="col span-4">
-        <label class="acc-label">{{t 'clusterNew.googlegke.machineType.label'}}</label>
-        {{#if editing}}
-          <div>
-            {{editedMachineChoice.displayName}}
-          </div>
-        {{else}}
-          {{new-select
-              classNames="form-control"
-              optionValuePath="name"
-              optionLabelPath="displayName"
-              content=machineChoices
-              value=config.machineType
-              prompt="clusterNew.googlegke.machineType.prompt"
-              localizedPrompt=true
-          }}
-        {{/if}}
-      </div>
-      <div class="col span-4">
-        <label class="acc-label">{{t 'clusterNew.googlegke.diskSizeGb.label'}}</label>
-        <div class="input-group">
-        {{#if editing}}
-          {{config.diskSizeGb}}{{t 'generic.gigabyte'}}
-        {{else}}
-          {{input-number min=1 value=config.diskSizeGb}}
-          <span class="input-group-addon bg-default">{{t 'generic.gigabyte'}}</span>
-        {{/if}}
-        </div>
-      </div>
-    </div>
-  </div>
-
   {{#accordion-list showExpandAll=false as |al expandFn|}}
     {{#accordion-list-item
-      title=(t 'clusterNew.members.label')
-      detail=(t 'clusterNew.members.detail')
-      expandAll=al.expandAll
-      expand=(action expandFn)
-    }}
-      {{form-members
-        editing=true
-        memberConfig=memberConfig
-        primaryResource=primaryResource
-        creator=model.me
-        roles=model.roleTemplates
-        users=model.users
-        type="cluster"
-        registerHook=(action "registerHook")
-      }}
-    {{/accordion-list-item}}
-
-    {{#accordion-list-item
-      title=(t 'clustersPage.addPage.rke.new.customize.label')
-      detail=(t 'clustersPage.addPage.rke.new.customize.detail')
+      title=(t 'clusterNew.nodes.title')
+      detail=(t 'clusterNew.nodes.detail')
+      showExpand=false
+      expandOnInit=true
       expandAll=al.expandAll
       expand=(action expandFn)
     }}
       <div class="row">
-        <div class="col span-4">
+        <div class="col span-6">
+          <label class="acc-label">{{t 'clusterNew.googlegke.zone.label'}}</label>
+          {{#if editing}}
+            {{config.zone}}
+          {{else}}
+            {{new-select
+              classNames="form-control"
+              optionValuePath="name"
+              optionLabelPath="name"
+              content=zoneChoices
+              value=config.zone
+              prompt="clusterNew.googlegke.zone.prompt"
+              localizedPrompt=true
+            }}
+          {{/if}}
+        </div>
+        <div class="col span-6">
+          <label class="acc-label">{{t 'clusterNew.googlegke.machineType.label'}}</label>
+          {{#if editing}}
+            <div>
+              {{editedMachineChoice.displayName}}
+            </div>
+          {{else}}
+            {{new-select
+                classNames="form-control"
+                optionValuePath="name"
+                optionLabelPath="displayName"
+                content=machineChoices
+                value=config.machineType
+                prompt="clusterNew.googlegke.machineType.prompt"
+                localizedPrompt=true
+            }}
+          {{/if}}
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col span-6">
+          <label class="acc-label">{{t 'clusterNew.googlegke.nodeCount.label'}}</label>
+          {{input-number min=1 value=config.nodeCount}}
+        </div>
+        <div class="col span-6">
+          <label class="acc-label">{{t 'clusterNew.googlegke.diskSizeGb.label'}}</label>
+          <div class="input-group">
+          {{#if editing}}
+            {{config.diskSizeGb}}{{t 'generic.gigabyte'}}
+          {{else}}
+            {{input-number min=1 value=config.diskSizeGb}}
+            <span class="input-group-addon bg-default">{{t 'generic.gigabyte'}}</span>
+          {{/if}}
+          </div>
+        </div>
+      </div>
+    {{/accordion-list-item}}
+
+    {{#accordion-list-item
+      title=(t 'clusterNew.customize.title')
+      detail=(t 'clusterNew.customize.detail')
+      showExpand=false
+      expandOnInit=true
+      expandAll=al.expandAll
+      expand=(action expandFn)
+    }}
+      <div class="row">
+        <div class="col span-6">
           <label class="acc-label">{{t 'clusterNew.googlegke.masterVersion.label'}}</label>
           {{new-select
               classNames="form-control"
@@ -146,7 +114,13 @@
               localizedPrompt=true
           }}
         </div>
-        <div class="col span-4">
+        <div class="col span-6">
+          <label class="acc-label">{{t 'clusterNew.googlegke.clusterIpv4Cidr.label'}}</label>
+          {{input value=config.clusterIpv4Cidr placeholder=(t 'clusterNew.googlegke.clusterIpv4Cidr.placeholder') disabled=editing}}
+        </div>
+      </div>
+      <div class="row">
+        <div class="col span-6">
           <label class="acc-label">{{t 'clusterNew.googlegke.alphaFeatures.label'}}</label>
           <div class="form-control-static">
             <label class="mr-20 hand">
@@ -157,14 +131,10 @@
             </label>
           </div>
         </div>
-        <div class="col span-4">
-          <label class="acc-label">{{t 'clusterNew.googlegke.clusterIpv4Cidr.label'}}</label>
-          {{input value=config.clusterIpv4Cidr placeholder=(t 'clusterNew.googlegke.clusterIpv4Cidr.placeholder') disabled=editing}}
-        </div>
       </div>
     {{/accordion-list-item}}
   {{/accordion-list}}
 
   {{top-errors errors=errors}}
-  {{save-cancel save="save" cancel=cancel}}
+  {{save-cancel save="save" cancel=close}}
 {{/if}}

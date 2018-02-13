@@ -15,7 +15,6 @@ export default Route.extend(Preload,{
       return get(this,'scope').startSwitchToProject(project).then(() => {
         return this.loadSchemas('store').then(() =>  {
           return PromiseAll([
-            this.preload('namespace'),
             this.preload('pod'),
             this.preload('workload'),
             this.preload('dnsRecord'),
