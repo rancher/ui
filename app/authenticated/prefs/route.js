@@ -1,11 +1,6 @@
 import EmberObject from '@ember/object';
-// import { resolve } from 'rsvp';
-import { alias } from '@ember/object/computed';
 import { inject as service } from '@ember/service';
 import Route from '@ember/routing/route';
-// import { loadScript } from 'ui/utils/load-script';
-import C from 'ui/utils/constants';
-// import fetch from 'ember-api-store/utils/fetch';
 import { get/* , set */ } from '@ember/object';
 
 export default Route.extend({

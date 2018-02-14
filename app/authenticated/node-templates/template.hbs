@@ -1,0 +1,28 @@
+<section class="header clearfix">
+  <div class="right-buttons">
+    <button class="btn btn-sm bg-primary" {{action "newTemplate"}}>{{t 'nodeTemplatesPage.actionButton'}}</button>
+  </div>
+
+  <h1>{{t 'nodeTemplatesPage.header'}}</h1>
+</section>
+
+<section>
+  {{#sortable-table
+      tableClassNames="bordered"
+      bulkActions=true
+      paging=false
+      search=false
+      sortBy=sortBy
+      headers=headers
+      body=model.nodeTemplates
+      as |sortable kind row dt|
+  }}
+    {{#if (eq kind "row")}}
+      {{node-template-row model=row dt=dt}}
+    {{else if (eq kind "norows")}}
+      <tr>
+        <td colspan="{{sortable.fullColspan}}" class="text-center text-muted pt-20 pb-20">{{t 'nodeTemplatesPage.table.noData'}}</td>
+      </tr>
+    {{/if}}
+  {{/sortable-table}}
+</section>
