@@ -35,8 +35,9 @@ Router.map(function() {
     this.mount('global-admin', { path: '/g', resetNamespace: true});
     this.route('dummy-dev', {path: '/dev'});
 
-    this.route('prefs');
     this.route('apikeys');
+    this.route('node-templates');
+    this.route('prefs');
 
     // Global
     this.route('host-new', {path: '/add-host'});

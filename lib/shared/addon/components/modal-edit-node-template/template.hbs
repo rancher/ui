@@ -1,0 +1,20 @@
+{{#if loading}}
+  <div class="text-center m-40"><i class="icon icon-spinner icon-spin"/> {{t 'generic.loading'}}</div>
+{{else}}
+  {{#if showPicker}}
+    <section class="pt-10">
+      <div class="row nav nav-boxes checked-active">
+        {{#each availableDrivers as |choice|}}
+          <a {{action "switchDriver" choice.name}} alt={{choice.name}} class="col span-2 nav-box-item driver machine-driver {{choice.name}} {{if (eq choice.name driver) 'active'}}" href="#"><p class="sr-only">{{choice.displayName}}</p></a>
+        {{/each}}
+      </div>
+    </section>
+  {{/if}}
+
+  {{#if driver}}
+    {{component (concat 'node-driver/driver-' driver)
+      model=clonedModel
+      close=(action "close")
+    }}
+  {{/if}}
+{{/if}}

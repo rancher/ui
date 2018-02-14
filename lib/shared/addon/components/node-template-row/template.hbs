@@ -1,0 +1,30 @@
+<td class="row-check" valign="middle" style="padding-top: 2px;">
+  {{check-box nodeId=model.id}}
+</td>
+
+<td data-title="{{dt.state}}" class="state">
+  {{badge-state model=model}}
+</td>
+
+<td data-title="{{dt.name}}" class="clip">
+  {{model.displayName}}
+  {{#if model.showTransitioningMessage}}
+    <div class="clip text-small {{model.stateColor}}">{{model.transitioningMessage}}</div>
+  {{/if}}
+</td>
+
+<td data-title="{{dt.provider}}" class="clip">
+  {{model.driver}}
+</td>
+
+<td data-title="{{dt.location}}" class="clip">
+  {{model.displayLocation}}
+</td>
+
+<td data-title="{{dt.size}}" class="clip">
+  {{model.displaySize}}
+</td>
+
+<td data-title="{{dt.actions}}" class="actions">
+  {{action-menu model=model}}
+</td>
