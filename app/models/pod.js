@@ -9,6 +9,7 @@ import DisplayImage from 'shared/mixins/display-image';
 
 var Pod = Resource.extend(DisplayImage, {
   router: service(),
+  modalService:  service('modal'),
 
   namespace: reference('namespaceId'),
   node: reference('nodeId'),
@@ -26,6 +27,7 @@ var Pod = Resource.extend(DisplayImage, {
     let isNative = false
     let canConvert = !!a.converttoservice && !isSystem && !isService && !isNative;
     let canEditService = !!this.get('service.links.update');
+    let isRunning = get(this, 'combinedState') === 'running';
 
     var choices = [
       { label: 'action.edit',             icon: 'icon icon-edit',         action: 'edit',             enabled: !!a.upgrade && !isService && !isNative },
@@ -33,9 +35,9 @@ var Pod = Resource.extend(DisplayImage, {
       { label: 'action.convertToService', icon: 'icon icon-service',      action: 'convertToService', enabled: canConvert},
       { label: 'action.clone',            icon: 'icon icon-copy',         action: 'clone',            enabled: !isSystem && !isService && !isNative},
       { divider: true },
-      { label: 'action.execute',          icon: 'icon icon-terminal',     action: 'shell',            enabled: !!a.execute, altAction:'popoutShell'},
+      { label: 'action.execute',          icon: 'icon icon-terminal',     action: 'shell',            enabled: isRunning, altAction:'popoutShell'},
       { label: 'action.console',          icon: 'icon icon-terminal',     action: 'console',          enabled: !!a.console, altAction:'popoutShellVm' },
-      { label: 'action.logs',             icon: 'icon icon-file',         action: 'logs',             enabled: !!a.logs, altAction: 'popoutLogs' },
+      { label: 'action.logs',             icon: 'icon icon-file',         action: 'logs',             enabled: isRunning, altAction: 'popoutLogs' },
       { divider: true },
       { label: 'action.restart',          icon: 'icon icon-refresh',      action: 'restart',          enabled: !!a.restart, bulkable: true},
       { label: 'action.start',            icon: 'icon icon-play',         action: 'start',            enabled: !!a.start, bulkable: true},
@@ -60,6 +62,17 @@ var Pod = Resource.extend(DisplayImage, {
       get(this, 'router').transitionTo('containers.run', {queryParams: {
         podId: get(this, 'id'),
       }});
+    },
+
+    shell() {
+      get(this, 'modalService').toggleModal('modal-shell', {
+        model: this,
+        escToClose: false,
+      });
+    },
+
+    logs: function() {
+      get(this, 'modalService').toggleModal('modal-container-logs', this);
     },
   },
 
