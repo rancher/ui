@@ -8,6 +8,7 @@ export default Route.extend({
   modalService: service('modal'),
   catalog:      service(),
   scope: service(),
+  clusterStore: service(),
 
   parentRoute:  'catalog-tab',
 
@@ -18,6 +19,7 @@ export default Route.extend({
   },
   model: function(params/*, transition*/) {
     var store = get(this, 'store');
+    var clusterStore = get(this, 'clusterStore');
 
     var dependencies = {
       tpl: get(this, 'catalog').fetchTemplate(params.template),
@@ -30,13 +32,13 @@ export default Route.extend({
 
     if ( params.namespaceId )
     {
-      dependencies.namespace = store.find('namespace', params.namespaceId);
+      dependencies.namespace = clusterStore.find('namespace', params.namespaceId);
     }
 
     return hash(dependencies, 'Load dependencies').then((results) => {
       if ( !results.namespace )
       {
-        results.namespace = store.createRecord({
+        results.namespace = clusterStore.createRecord({
           type: 'namespace',
           name: results.tpl.get('defaultName'),
           answers: {},

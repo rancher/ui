@@ -1,4 +1,5 @@
 import { scheduleOnce } from '@ember/runloop';
+import { alias } from '@ember/object/computed';
 import { inject as service } from '@ember/service';
 import Controller from '@ember/controller';
 import C from 'ui/utils/constants';
@@ -16,13 +17,12 @@ export default Controller.extend({
   group: NAMESPACE,
   queryParams: ['tags','group'],
 
-  namespaces: null,
+  namespaces: alias('scope.currentProject.namespaces'),
   nodes: null,
   expandedInstances: null,
 
   init() {
     this._super(...arguments);
-    this.set('namespaces', this.get('store').all('namespace'));
     this.set('nodes', this.get('store').all('node'));
     this.set('expandedInstances',[]);
   },
@@ -50,15 +50,6 @@ export default Controller.extend({
     return this.get('scope.currentCluster.state') === 'inactive' && !this.get('nodes.length');
   }.property('scope.currentCluster.state','nodes.[]'),
 
-  simpleMode: false,
-  /*
-  simpleMode: function() {
-    let list = this.get('namespaces');
-    let bad = list.findBy('isDefault', false);
-    return !bad;
-  }.property('namespaces.@each.{system,isDefault}'),
-  */
-
   groupTableBy: function() {
     if ( this.get('group') === NAMESPACE && !this.get('simpleMode') ) {
       return 'namespace';
@@ -81,6 +72,7 @@ export default Controller.extend({
 
     let out = {};
     let ok;
+
     this.get('namespaces').forEach((obj) => {
       ok = true;
 

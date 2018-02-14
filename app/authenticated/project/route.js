@@ -13,8 +13,12 @@ export default Route.extend(Preload,{
   model(params, transition) {
     return get(this, 'globalStore').find('project', params.project_id).then((project) => {
       return get(this,'scope').startSwitchToProject(project).then(() => {
-        return this.loadSchemas('store').then(() =>  {
+        return PromiseAll([
+          this.loadSchemas('clusterStore'),
+          this.loadSchemas('store'),
+        ]).then(() => {
           return PromiseAll([
+            this.preload('namespace','clusterStore'),
             this.preload('pod'),
             this.preload('workload'),
             this.preload('dnsRecord'),

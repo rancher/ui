@@ -7,6 +7,7 @@ import C from 'ui/utils/constants';
 
 export default Route.extend({
   prefs: service(),
+  clusterStore: service(),
 
   queryParams: {
     containerName: {
@@ -125,15 +126,15 @@ export default Route.extend({
   },
 
   getNamespaceId(params) {
-    const store = this.get('store');
+    const clusterStore = this.get('clusterStore');
 
     let ns = null;
     if ( params.namespaceId ) {
-      ns = store.getById('namespace', params.namespaceId);
+      ns = clusterStore.getById('namespace', params.namespaceId);
     }
 
     if ( !ns ) {
-      ns = store.getById('namespace', this.get(`prefs.${C.PREFS.LAST_NAMESPACE}`));
+      ns = clusterStore.getById('namespace', this.get(`prefs.${C.PREFS.LAST_NAMESPACE}`));
     }
 
     let namespaceId = null;
