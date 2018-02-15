@@ -2085,6 +2085,8 @@ formDisks:
     label: Driver
 
 formEngineOpts:
+  title: Engine Options
+  detail: Customize the configuration of the Docker daemon
   engineInstallUrl:
     label: Docker Install URL
     placeholder: e.g. http://get.docker.com/
@@ -3358,22 +3360,23 @@ clusterNew:
       instructions: Run the kubectl command below on an existing Kubernetes 1.8.x cluster to import it into {appName}
 
 
-machine:
-  driver:
+nodeDriver:
+  displayName:
+    aliyunecs: Aliyun ECS
     amazonec2: Amazon EC2
-    azure: Azure
     digitalocean: DigitalOcean
     exoscale: Exoscale
-    generic: Generic
     openstack: OpenStack
+    otc: Open Telekom Cloud
     packet: Packet
     rackspace: RackSpace
-    vmwarevsphere: VMware vSphere
-    other: Other
-    custom: Custom
-    aliyunecs: Aliyun ECS
+    softlayer: SoftLayer
+    vmwarevsphere: vSphere
 
-  driverAmazon:
+  driverOptions: "{driver} Options"
+  templateOptions: "{appName} Template"
+
+  amazonec2:
     accessSection: Account Access
     accessKey:
       label: Access Key
@@ -3431,30 +3434,29 @@ machine:
     onlyPrivate:
       label: Use only private IP address
 
-  driverDigitalocean:
+  digitalocean:
+    droplet:
+      title: Droplet Options
+      detail: Configure the options for the Droplets that will be created by this template.
     sizeLabel: |
       {highMem, select, true {High Memory: } other {}}{memoryGb} GB RAM, {disk} GB Disk, {vcpus, plural,
         =1 {# vCPU}
         other {# vCPUs}
       }
-    accountSection: Account Access
     authAccountButton: 'Next: Configure Droplet'
     accessToken:
       label: Access Token
       placeholder: Your DigitalOcean API access token
       help: |
-        A Personal Access Token from the DigitalOcean
-        <a href="https://cloud.digitalocean.com/settings/applications" target="_blank">Apps & API</a> screen
-    instanceSection: Instance
-    instanceOptionsSection: Instance Options
+        Paste in a Personal Access Token from the DigitalOcean
+        <a href="https://cloud.digitalocean.com/settings/api/tokens" target="_blank" rel="nofollow noreferer noopener">Applications & API</a> screen
     image:
       label: Image
     sshUser:
       label: SSH User
       placeholder: 'e.g. root'
     size:
-      label: Size
-    regionSection: Region
+      label: Droplet Size
     region:
       label: Region
     optionsSection: Options
@@ -3465,7 +3467,7 @@ machine:
     privateNetworking:
       label: Enable Private Networking
 
-  driverExoscale:
+  exoscale:
     accountSection: Account Access
     apiKey:
       label: API Key
@@ -3505,14 +3507,7 @@ machine:
       label: SSH User
       placeholder: 'usr1'
 
-  driverOther:
-    driverSection: Driver
-    driver:
-      label: Driver
-    optionsSection: "{driverName} Options"
-    instanceSection: Instance
-
-  driverPacket:
+  packet:
     accountSection: Account Access
     projectId:
       label: Project
@@ -3540,7 +3535,7 @@ machine:
     region:
       label: Region
 
-  driverRackspace:
+  rackspace:
     accountSection: Account Access
     username:
       label: Username
@@ -3557,7 +3552,7 @@ machine:
     flavor:
       label: Flavor
 
-  driverVsphere:
+  vmwarevsphere:
     accountSection: Account Access
     vcenter:
       label: vCenter Host
@@ -3594,7 +3589,7 @@ machine:
     dataStore:
       label: Data Store
 
-  driverAliyunecs:
+  aliyunecs:
     accountSection: Account Access Section
     accessKey:
       label: Access Key*
@@ -4034,6 +4029,10 @@ newSecret:
     label: Secrets Values
   addActionLabel: Add Secret Value
 
+nodeConfigRow:
+  singleHostname: "e.g. <b>{first}</b>"
+  multiHostnames: "e.g. <b>{first}</b> &mdash; <b>{last}</b>"
+
 optionallyNamespaced:
   scope:
     label: Scope
@@ -4150,6 +4149,11 @@ pagination:
     =0 {No Nodes}
     =1 {{count} {count, plural, =1 {Node} other {Nodes}}}
     other {{from} - {to} of {count} Nodes}}
+  nodeTemplate: |
+    {pages, plural,
+    =0 {No Node Templates}
+    =1 {{count} {count, plural, =1 {Node Template} other {Node Templates}}}
+    other {{from} - {to} of {count} Node NodeTemplates}}
   pod: |
     {pages, plural,
     =0 {No Pods}
@@ -4438,9 +4442,6 @@ containerChoices:
   unknownHost: "Host: ???"
   containerOption: "{name}"
 
-driver:
-  multiHostNames: "Nodes will be named <b>{first}</b> &mdash; <b>{last}</b>"
-
 ##############################
 # Services
 ##############################
@@ -4642,7 +4643,7 @@ model:
     role:
       worker: Worker
       etcd: etcd
-      controlplane: Control
+      controlPlane: Control
   openldapconfig:
     server:
       label: Hostname or IP Address

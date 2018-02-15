@@ -1,117 +1,122 @@
-<div class="box mt-20">
-{{#if showEngineUrl}}
-  <div class="row inline-form">
-    <div class="col span-2 col-inline">
-      <label class="acc-label">{{t 'formEngineOpts.engineInstallUrl.label'}}</label>
-    </div>
-    <div class="col span-10">
-      <div class="input-group">
-        {{input type="text" value=machine.engineInstallUrl classNames="form-control" placeholder=(t 'formEngineOpts.engineInstallUrl.placeholder')}}
-        <div class="input-group-btn bg-default">
-          <button type="button" class="btn bg-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="icon icon-chevron-down"></i></button>
-          <ul class="dropdown-menu dropdown-menu-right" role="menu" style="min-width: 250px; max-height: 300px; overflow-y: auto;">
-            {{#each engineUrlChoices as |choice|}}
-              <li><a href="#" {{action "setEngine" choice.value}}>{{choice.label}}</a></li>
-            {{/each}}
-          </ul>
+{{#accordion-list-item
+  title=(t 'formEngineOpts.title')
+  detail=(t 'formEngineOpts.detail')
+  expandAll=expandAll
+  expand=(action expandFn)
+}}
+  {{#if showEngineUrl}}
+    <div class="row inline-form">
+      <div class="col span-2 col-inline">
+        <label class="acc-label">{{t 'formEngineOpts.engineInstallUrl.label'}}</label>
+      </div>
+      <div class="col span-10">
+        <div class="input-group">
+          {{input type="text" value=machine.engineInstallUrl classNames="form-control" placeholder=(t 'formEngineOpts.engineInstallUrl.placeholder')}}
+          <div class="input-group-btn bg-default">
+            <button type="button" class="btn bg-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="icon icon-chevron-down"></i></button>
+            <ul class="dropdown-menu dropdown-menu-right" role="menu" style="min-width: 250px; max-height: 300px; overflow-y: auto;">
+              {{#each engineUrlChoices as |choice|}}
+                <li><a href="#" {{action "setEngine" choice.value}}>{{choice.label}}</a></li>
+              {{/each}}
+            </ul>
+          </div>
         </div>
       </div>
     </div>
+    <hr />
+  {{/if}}
+
+  <div class="row inline-form">
+    <div class="col span-2 col-inline">
+      <label class="acc-label">{{t 'formEngineOpts.engineStorageDriver.label'}}</label>
+    </div>
+    <div class="col span-10">
+      {{input type="text" value=machine.engineStorageDriver classNames="form-control" placeholder=(t 'formEngineOpts.engineStorageDriver.placeholder')}}
+    </div>
   </div>
+
+  <hr/>
+
+  <div class="row inline-form">
+    <div class="col span-2 col-inline">
+      <label class="acc-label">{{t 'formEngineOpts.engineOpts.label'}}</label>
+    </div>
+    <div class="col span-10">
+      {{form-key-value
+        initialMap=machine.engineOpt
+        changed=(action (mut machine.engineOpt))
+        addActionLabel="formEngineOpts.engineOpts.addActionLabel"
+        keyPlaceholder="formEngineOpts.engineOpts.keyPlaceholder"
+        valuePlaceholder="formEngineOpts.engineOpts.valuePlaceholder"
+      }}
+    </div>
+  </div>
+
   <hr />
-{{/if}}
 
-<div class="row inline-form">
-  <div class="col span-2 col-inline">
-    <label class="acc-label">{{t 'formEngineOpts.engineStorageDriver.label'}}</label>
+  <div class="row inline-form">
+    <div class="col span-2 col-inline">
+      <label class="acc-label">{{t 'formEngineOpts.engineLabels.label'}}</label>
+    </div>
+    <div class="col span-10">
+      {{form-key-value
+        initialMap=machine.engineLabel
+        changed=(action (mut machine.engineLabel))
+        addActionLabel="formEngineOpts.engineLabels.addActionLabel"
+        keyLabel="formEngineOpts.engineLabels.keyLabel"
+      }}
+    </div>
   </div>
-  <div class="col span-10">
-    {{input type="text" value=machine.engineStorageDriver classNames="form-control" placeholder=(t 'formEngineOpts.engineStorageDriver.placeholder')}}
-  </div>
-</div>
 
-<hr/>
+  <hr />
 
-<div class="row inline-form">
-  <div class="col span-2 col-inline">
-    <label class="acc-label">{{t 'formEngineOpts.engineOpts.label'}}</label>
+  <div class="row inline-form">
+    <div class="col span-2 col-inline">
+      <label class="acc-label">{{t 'formEngineOpts.engineEnv.label'}}</label>
+    </div>
+    <div class="col span-10">
+      {{form-key-value
+        initialMap=machine.engineEnv
+        changed=(action (mut machine.engineEnv))
+        addActionLabel="formEngineOpts.engineEnv.addActionLabel"
+        keyLabel="formEngineOpts.engineEnv.keyLabel"
+        keyPlaceholder="formEngineOpts.engineEnv.keyPlaceholder"
+        valuePlaceholder="formEngineOpts.engineEnv.valuePlaceholder"
+      }}
+    </div>
   </div>
-  <div class="col span-10">
-    {{form-key-value
-      initialMap=machine.engineOpt
-      changed=(action (mut machine.engineOpt))
-      addActionLabel="formEngineOpts.engineOpts.addActionLabel"
-      keyPlaceholder="formEngineOpts.engineOpts.keyPlaceholder"
-      valuePlaceholder="formEngineOpts.engineOpts.valuePlaceholder"
-    }}
-  </div>
-</div>
 
-<hr />
+  <hr />
 
-<div class="row inline-form">
-  <div class="col span-2 col-inline">
-    <label class="acc-label">{{t 'formEngineOpts.engineLabels.label'}}</label>
+  <div class="row inline-form">
+    <div class="col span-2 col-inline">
+      <label class="acc-label">{{t 'formEngineOpts.engineInsecureRegistry.label'}}</label>
+    </div>
+    <div class="col span-10">
+      {{form-value-array
+        initialValues=machine.engineInsecureRegistry
+        changed=(action (mut machine.engineInsecureRegistry))
+        addActionLabel="formEngineOpts.engineInsecureRegistry.addActionLabel"
+        valueLabel="formEngineOpts.engineInsecureRegistry.valueLabel"
+        valuePlaceholder="formEngineOpts.engineInsecureRegistry.valuePlaceholder"
+      }}
+    </div>
   </div>
-  <div class="col span-10">
-    {{form-key-value
-      initialMap=machine.engineLabel
-      changed=(action (mut machine.engineLabel))
-      addActionLabel="formEngineOpts.engineLabels.addActionLabel"
-      keyLabel="formEngineOpts.engineLabels.keyLabel"
-    }}
-  </div>
-</div>
 
-<hr />
+  <hr />
 
-<div class="row inline-form">
-  <div class="col span-2 col-inline">
-    <label class="acc-label">{{t 'formEngineOpts.engineEnv.label'}}</label>
+  <div class="row inline-form">
+    <div class="col span-2 col-inline">
+      <label class="acc-label">{{t 'formEngineOpts.engineRegistryMirror.label'}}</label>
+    </div>
+    <div class="col span-10">
+      {{form-value-array
+        initialValues=machine.engineRegistryMirror
+        changed=(action (mut machine.engineRegistryMirror))
+        addActionLabel="formEngineOpts.engineRegistryMirror.addActionLabel"
+        valueLabel="formEngineOpts.engineRegistryMirror.valueLabel"
+        valuePlaceholder="formEngineOpts.engineRegistryMirror.valuePlaceholder"
+      }}
+    </div>
   </div>
-  <div class="col span-10">
-    {{form-key-value
-      initialMap=machine.engineEnv
-      changed=(action (mut machine.engineEnv))
-      addActionLabel="formEngineOpts.engineEnv.addActionLabel"
-      keyLabel="formEngineOpts.engineEnv.keyLabel"
-      keyPlaceholder="formEngineOpts.engineEnv.keyPlaceholder"
-      valuePlaceholder="formEngineOpts.engineEnv.valuePlaceholder"
-    }}
-  </div>
-</div>
-
-<hr />
-
-<div class="row inline-form">
-  <div class="col span-2 col-inline">
-    <label class="acc-label">{{t 'formEngineOpts.engineInsecureRegistry.label'}}</label>
-  </div>
-  <div class="col span-10">
-    {{form-value-array
-      initialValues=machine.engineInsecureRegistry
-      changed=(action (mut machine.engineInsecureRegistry))
-      addActionLabel="formEngineOpts.engineInsecureRegistry.addActionLabel"
-      valueLabel="formEngineOpts.engineInsecureRegistry.valueLabel"
-      valuePlaceholder="formEngineOpts.engineInsecureRegistry.valuePlaceholder"
-    }}
-  </div>
-</div>
-
-<hr />
-
-<div class="row inline-form">
-  <div class="col span-2 col-inline">
-    <label class="acc-label">{{t 'formEngineOpts.engineRegistryMirror.label'}}</label>
-  </div>
-  <div class="col span-10">
-    {{form-value-array
-      initialValues=machine.engineRegistryMirror
-      changed=(action (mut machine.engineRegistryMirror))
-      addActionLabel="formEngineOpts.engineRegistryMirror.addActionLabel"
-      valueLabel="formEngineOpts.engineRegistryMirror.valueLabel"
-      valuePlaceholder="formEngineOpts.engineRegistryMirror.valuePlaceholder"
-    }}
-  </div>
-</div>
-</div>
+{{/accordion-list-item}}

@@ -12,16 +12,4 @@ export default Resource.extend({
 
     return '('+get(this,'id')+')';
   }),
-
-  configName: computed(function() {
-    const keys = this.allKeys().filter((x) => x.endsWtih('Config'));
-    for ( let key, i = 0 ; i < keys.length ; i++ ) {
-      key = keys[i];
-      if ( get(this,key) ) {
-        return key;
-      }
-    }
-
-    return null;
-  }),
 });

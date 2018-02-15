@@ -25,7 +25,7 @@ function displayUrl(url) {
 }
 
 export default Resource.extend({
-  type: 'machineDriver',
+  type: 'nodeDriver',
   modalService: service('modal'),
   catalog: service(),
   intl: service(),
@@ -62,7 +62,7 @@ export default Resource.extend({
   displayName: computed('name', 'intl.locale', function() {
     const intl = get(this,'intl');
     const name = get(this, 'name');
-    const key = `machine.driver.${name}`;
+    const key = `nodeDriver.displayName.${name}`;
 
     if ( name && intl.exists(key) ) {
       return intl.t(key);

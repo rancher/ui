@@ -8,7 +8,6 @@ import { inject as service } from "@ember/service";
 import { reference } from 'ember-api-store/utils/denormalize';
 import ResourceUsage from 'shared/mixins/resource-usage';
 
-
 var Node = Resource.extend(StateCounts, ResourceUsage, {
   type: 'node',
 
@@ -112,11 +111,15 @@ var Node = Resource.extend(StateCounts, ResourceUsage, {
     return '('+get(this,'id')+')';
   }),
 
-  displayRoles: computed('role.[]', function() {
-    const intl = get(this, 'intl');
-    let roles = get(this, 'role')||[];
+  rolesArray: computed('etcd','controlPlane','worker', function() {
+    return ['etcd','controlPlane','worker'].filter(x => !!get(this,x));
+  }),
 
-    if ( roles.sort().join(",").toLowerCase() === 'controlplane,etcd,worker' ) {
+  displayRoles: computed('rolesArray.[]', function() {
+    const intl = get(this, 'intl');
+    const roles = get(this, 'rolesArray');
+
+    if ( roles.length >= 3 ) {
       return [intl.t('generic.all')];
     }
 
@@ -130,14 +133,14 @@ var Node = Resource.extend(StateCounts, ResourceUsage, {
     });
   }),
 
-  sortRole: computed('role.[]', function() {
-    let roles = (get(this, 'role')||[]).map(x => x.toLowerCase());
+  sortRole: computed('rolesArray.[]', function() {
+    let roles = get(this, 'rolesArray');
 
     if ( roles.length >= 3 ) {
       return 1;
     }
 
-    if ( roles.includes('controlplane') ) {
+    if ( roles.includes('controlPlane') ) {
       return 2;
     }
 
