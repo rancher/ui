@@ -1,16 +1,18 @@
 {{yield}}
 {{#if avatar}}
   <div class="gh-avatar">
-    {{#if avatarSrc}}
-      {{#if (and url link)}}
-        <a href="{{url}}" target="_blank">
-          <img src="{{avatarSrc}}" width="{{size}}" height="{{size}}">
+    {{#if principal.avatarSrc}}
+      {{#if (and principal.profileURL link)}}
+        <a href="{{principal.profileURL}}" target="_blank">
+          <img src="{{principal.avatarSrc}}" width="{{size}}" height="{{size}}">
         </a>
       {{else}}
-        <img src="{{avatarSrc}}" width="{{size}}" height="{{size}}">
+        <img src="{{principal.avatarSrc}}" width="{{size}}" height="{{size}}">
       {{/if}}
     {{else}}
-      <div class="gh-placeholder"></div>
+      <div class="gh-placeholder">
+        <img src="{{avatarSrc}}" width="{{size}}" height="{{size}}">
+      </div>
     {{/if}}
   </div>
 {{/if}}
@@ -19,11 +21,13 @@
     {{#if loading}}
       {{t 'identityBlock.loading'}}
     {{else}}
-      {{#if (and url link)}}
-        <a href="{{url}}" target="_blank">{{login}}</a>
+      {{#if (and principal.profileURL link)}}
+        <a href="{{principal.profileURL}}" target="_blank">{{login}}</a>
       {{else}}
-        {{#if login}}
-          {{login}}
+        {{#if principal.displayName}}
+          {{principal.displayName}}
+        {{else if principal.loginName}}
+            {{principal.loginName}}
         {{else}}
           &nbsp;
         {{/if}}
@@ -31,8 +35,8 @@
     {{/if}}
   </div>
   <div class="gh-block-detail text-small clip">
-    {{#if displayDescription}}
-      {{displayDescription}}
+    {{#if principal.logicalType}}
+      {{principal.logicalType}}
     {{else}}
       &nbsp;
     {{/if}}
