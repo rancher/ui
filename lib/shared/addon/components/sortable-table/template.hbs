@@ -1,7 +1,7 @@
-<table class="fixed grid sortable-table {{if bulkActions 'has-actions'}} {{if groupByKey 'bordered'}} {{if subRows 'has-sub-rows bordered'}} {{tableClassNames}}">
+<table class="fixed grid sortable-table {{if internalBulkActions 'has-actions'}} {{if groupByKey 'bordered'}} {{if subRows 'has-sub-rows bordered'}} {{tableClassNames}}">
   <thead>
     <tr class="fixed-header-placeholder">
-      {{#if bulkActions}}
+      {{#if internalBulkActions}}
         <th width="{{checkWidth}}"></th>
       {{/if}}
       {{#each headers as |header idx|}}
@@ -13,7 +13,7 @@
     </tr>
     {{#if showHeader}}
       <div class="fixed-header-actions row clearfix">
-        {{#if bulkActions}}
+        {{#if internalBulkActions}}
           <div class="bulk-actions pull-left">
             {{#each availableActions as |action index|}}
               {{#if action.enabled}}
@@ -54,7 +54,7 @@
     {{/if}}
 
     <tr class="fixed-header">
-      {{#if bulkActions}}
+      {{#if internalBulkActions}}
         <th width="{{checkWidth}}" class="row-check">
           {{check-box classNames="select-all-check" checked=isAll}}
         </th>
