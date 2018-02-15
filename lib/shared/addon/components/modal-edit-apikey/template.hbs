@@ -3,16 +3,30 @@
     <h2>{{t 'editApiKey.title.justCreated'}}</h2>
     <hr/>
 
-    <div class="input-group">
-      <span class="input-group-addon bg-default">{{t 'apiPage.currentEndpoint'}}</span>
-      <div class="bg-body form-control"><code class="ml-20"><a href="{{linkEndpoint}}" target="_blank" rel="nofollow noreferer">{{displayEndpoint}}</a></code></div>
-      <span class="input-group-addon bg-link text-white">{{copy-to-clipboard clipboardText=linkEndpoint}}</span>
+    <div>
+      <label class="acc-label">{{t 'apiPage.currentEndpoint'}}</label>
+      <code class="ml-20"><a href="{{linkEndpoint}}" target="_blank" rel="nofollow noreferer">{{displayEndpoint}}</a></code>
+      {{copy-to-clipboard clipboardText=linkEndpoint}}
     </div>
 
-    <div class="input-group mt-10">
-      <span class="input-group-addon bg-default">{{t 'editApiKey.token.label'}}</span>
-      <div class="bg-body form-control"><code class="ml-20">{{clone.token}}</code></div>
-      <span class="input-group-addon bg-link text-white">{{copy-to-clipboard clipboardText=clone.token}}</span>
+    <div>
+      <label class="acc-label">{{t 'editApiKey.accessKey'}}</label>
+      <code class="ml-20">{{clone.name}}</code>
+      {{copy-to-clipboard clipboardText=clone.name}}
+    </div>
+
+    <div>
+      <label class="acc-label">{{t 'editApiKey.secretKey'}}</label>
+      <code class="ml-20">{{displayPassword}}</code>
+      {{copy-to-clipboard clipboardText=displayPassword}}
+    </div>
+
+    <p>{{t 'editApiKey.basicAuth'}}</p>
+
+    <div>
+      <label class="acc-label">{{t 'editApiKey.token'}}</label>
+      <code class="ml-20">{{clone.token}}</code>
+      {{copy-to-clipboard clipboardText=clone.token}}
     </div>
 
     <div class="banner bg-warning">

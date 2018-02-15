@@ -3,57 +3,59 @@
 </section>
 
 {{#if (eq step 1)}}
-  <div class="row">
-    {{form-name-description
-      model=cluster
-      nameRequired=true
-      nameLabel='clusterNew.name.label'
-      namePlaceholder='clusterNew.name.placeholder'
-      descriptionPlaceholder='clusterNew.description.placeholder'
-    }}
-  </div>
-
-  {{#accordion-list showExpandAll=false as |al expandFn|}}
-    {{#accordion-list-item
-      title=(t 'clusterNew.members.label')
-      detail=(t 'clusterNew.members.detail')
-      showExpand=false
-      expandOnInit=true
-      expandAll=al.expandAll
-      expand=(action expandFn)
-    }}
-      {{form-members
-          editing=true
-          memberConfig=memberConfig
-          primaryResource=cluster
-          creator=model.me
-          roles=model.roleTemplates
-          users=model.users
-          type="cluster"
-          registerHook=(action "registerHook")
+  <form onsubmit={{action "clickNext"}}>
+    <div class="row">
+      {{form-name-description
+        model=cluster
+        nameRequired=true
+        nameLabel='clusterNew.name.label'
+        namePlaceholder='clusterNew.name.placeholder'
+        descriptionPlaceholder='clusterNew.description.placeholder'
       }}
-    {{/accordion-list-item}}
+    </div>
 
-    {{#accordion-list-item
-      title=(t 'clusterNew.config.label')
-      detail=(t 'clusterNew.config.detail')
-      showExpand=false
-      expandOnInit=true
-      expandAll=al.expandAll
-      expand=(action expandFn)
-    }}
-      <div class="row nav nav-boxes checked-active">
-        {{#each providerChoices as |choice|}}
-          {{#link-to (query-params provider=choice.name) class=(concat "col span-2 nav-box-item driver machine-driver " choice.name)}}
-            <p class="sr-only">{{choice.displayName}}</p>
-          {{/link-to}}
-        {{/each}}
-      </div>
-    {{/accordion-list-item}}
-  {{/accordion-list}}
+    {{#accordion-list showExpandAll=false as |al expandFn|}}
+      {{#accordion-list-item
+        title=(t 'clusterNew.members.label')
+        detail=(t 'clusterNew.members.detail')
+        showExpand=false
+        expandOnInit=true
+        expandAll=al.expandAll
+        expand=(action expandFn)
+      }}
+        {{form-members
+            editing=true
+            memberConfig=memberConfig
+            primaryResource=cluster
+            creator=model.me
+            roles=model.roleTemplates
+            users=model.users
+            type="cluster"
+            registerHook=(action "registerHook")
+        }}
+      {{/accordion-list-item}}
 
-  {{top-errors errors=errors}}
-  {{save-cancel createLabel='saveCancel.next' save='save' cancel=cancel}}
+      {{#accordion-list-item
+        title=(t 'clusterNew.config.label')
+        detail=(t 'clusterNew.config.detail')
+        showExpand=false
+        expandOnInit=true
+        expandAll=al.expandAll
+        expand=(action expandFn)
+      }}
+        <div class="row nav nav-boxes checked-active">
+          {{#each providerChoices as |choice|}}
+            {{#link-to (query-params provider=choice.name) class=(concat "col span-2 nav-box-item driver machine-driver " choice.name)}}
+              <p class="sr-only">{{choice.displayName}}</p>
+            {{/link-to}}
+          {{/each}}
+        </div>
+      {{/accordion-list-item}}
+    {{/accordion-list}}
+
+    {{top-errors errors=errors}}
+    {{save-cancel createLabel='saveCancel.next' save='save' cancel=cancel}}
+  </form>
 {{else}}
   {{component driverInfo.driverComponent
     editing=false

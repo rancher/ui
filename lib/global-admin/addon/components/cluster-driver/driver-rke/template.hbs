@@ -22,9 +22,9 @@
         }}
           {{#if (eq kind "row")}}
             <tr class="main-row">
-              <td data-title="{{dt.prefix}}">
+              <td data-title="{{dt.hostnamePrefix}}">
                 <div class="mr-20">
-                  {{input class="input-sm" value=node.prefix}}
+                  {{input class="input-sm" value=node.hostnamePrefix}}
                 </div>
               </td>
               <td data-title="{{dt.quantity}}">
@@ -35,7 +35,7 @@
               </td>
               <td data-title="{{dt.nodeTemplate}}">
                 {{#if filteredNodeTemplates.length}}
-                  <div class="input-group">
+                  <div class="input-group input-sm">
                     {{new-select
                       class="input-sm"
                       content=filteredNodeTemplates
@@ -45,8 +45,8 @@
                       optionValuePath="id"
                       value=node.nodeTemplateId
                     }}
-                    <div class="input-group-btn input-sm bg-primary">
-                      <button type="button" class="btn bg-primary" {{action "addNodeTemplate" node}}><i class="icon icon-plus"></i></button>
+                    <div class="input-group-btn bg-primary">
+                      <button type="button" class="btn btn-sm bg-primary" {{action "addNodeTemplate" node}}><i class="icon icon-plus"></i></button>
                     </div>
                   </div>
                 {{else}}
