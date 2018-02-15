@@ -170,58 +170,62 @@ export default Route.extend({
       this.controllerFor('application').set('isPopup', true);
     }
 
-    if ( params.isTest ) {
-      if ( github.stateMatches(params.state) ) {
-        reply(params.error_description, params.code);
-      } else {
-        reply(stateMsg);
-      }
+    // if (params.fromAuthProvider) {
+    //   return this.transitionTo('verify-auth', {queryParams: {code: params.code, state: params.state, authProvider: params.fromAuthProvider}});
+    // }
 
-      transition.abort();
+    // if ( params.isTest ) {
+    //   if ( github.stateMatches(params.state) ) {
+    //     reply(params.error_description, params.code);
+    //   } else {
+    //     reply(stateMsg);
+    //   }
 
-      return reject('isTest');
+    //   transition.abort();
 
-    } else if ( params.code ) {
+    //   return reject('isTest');
 
-      if ( github.stateMatches(params.state) ) {
-        return get(this, 'access').login(params.code).then(() => {
-          // Abort the orignial transition that was coming in here since
-          // we'll redirect the user manually in finishLogin
-          // if we dont then model hook runs twice to finish the transition itself
-          transition.abort();
-          // Can't call this.send() here because the initial transition isn't done yet
-          this.finishLogin();
-        }).catch((err) => {
-          transition.abort();
-          this.transitionTo('login', {queryParams: { errorMsg: err.message, errorCode: err.status}});
-        }).finally(() => {
-          this.controllerFor('application').setProperties({
-            state: null,
-            code: null,
-          });
-        });
+    // } else if ( params.code ) {
 
-      } else {
+    //   if ( github.stateMatches(params.state) ) {
+    //     return get(this, 'access').login(params.code).then(() => {
+    //       // Abort the orignial transition that was coming in here since
+    //       // we'll redirect the user manually in finishLogin
+    //       // if we dont then model hook runs twice to finish the transition itself
+    //       transition.abort();
+    //       // Can't call this.send() here because the initial transition isn't done yet
+    //       this.finishLogin();
+    //     }).catch((err) => {
+    //       transition.abort();
+    //       this.transitionTo('login', {queryParams: { errorMsg: err.message, errorCode: err.status}});
+    //     }).finally(() => {
+    //       this.controllerFor('application').setProperties({
+    //         state: null,
+    //         code: null,
+    //       });
+    //     });
 
-        let obj = {message: stateMsg, code: 'StateMismatch'};
+    //   } else {
 
-        this.controllerFor('application').set('error', obj);
+    //     let obj = {message: stateMsg, code: 'StateMismatch'};
 
-        return reject(obj);
-      }
-    }
+    //     this.controllerFor('application').set('error', obj);
 
-    function reply(err,code) {
-      try {
-        window.opener.window.onGithubTest(err,code);
-        setTimeout(function() {
-          window.close();
-        },250);
-        return new RSVP.promise();
-      } catch(e) {
-        window.close();
-      }
-    }
+    //     return reject(obj);
+    //   }
+    // }
+
+    // function reply(err,code) {
+    //   try {
+    //     window.opener.window.onGithubTest(err,code);
+    //     setTimeout(function() {
+    //       window.close();
+    //     },250);
+    //     return new RSVP.promise();
+    //   } catch(e) {
+    //     window.close();
+    //   }
+    // }
   },
 
   updateWindowTitle: function() {

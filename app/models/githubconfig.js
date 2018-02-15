@@ -1,7 +1,9 @@
 import Resource from 'ember-api-store/models/resource';
+import { hasMany } from 'ember-api-store/utils/denormalize';
 
 var GithubConfig = Resource.extend({
   type: 'githubConfig',
+  allowedPrincipals: hasMany('id', 'principal', 'allowedPrincipalIds'),
 });
 
 // Projects don't get pushed by /subscribe WS, so refresh more often
