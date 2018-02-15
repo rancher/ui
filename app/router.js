@@ -46,6 +46,8 @@ Router.map(function() {
       this.route('index', {path: '/'});
       this.route('edit');
 
+      this.mount('pipeline');
+
       this.route('ns', {path: '/namespaces'}, function() {
         this.route('index', {path: '/'});
         this.route('edit', {path: '/:namespace_id'});
@@ -94,6 +96,8 @@ Router.map(function() {
       // alert/logging
       this.mount('logging', {path: '/logging'});
       this.mount('alert', {path: '/alerts'});
+
+      this.mount('pipeline');
 
       // Workload
       this.route('containers', {resetNamespace: true}, function() {

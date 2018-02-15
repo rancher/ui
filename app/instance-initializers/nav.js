@@ -8,7 +8,7 @@ const rootNav = [
     localizedLabel: 'nav.containers.tab',
     route: 'authenticated.project',
     ctx: [getProjectId],
-    moreCurrentWhen: ['containers','ingresses',/*'dns',*/'volumes'],
+    moreCurrentWhen: ['containers','ingresses',/*'dns',*/'volumes', 'authenticated.project.pipeline'],
     resource: ["workload", "ingress", "dnsrecord"],
     resourceScope: 'project',
   },
@@ -204,6 +204,14 @@ const rootNav = [
     ],
   },
 
+  {
+    scope: 'cluster',
+    id: 'cluster-pipeline',
+    localizedLabel: 'nav.pipelines.tab',
+    route: 'authenticated.cluster.pipeline.settings',
+    ctx: [getClusterId],
+    resourceScope: 'cluster',
+  },
   // Global
   {
     scope: 'global',

@@ -1,0 +1,31 @@
+<section class="header clearfix">
+  {{#if (eq modalOpts.mode 'review')}}
+    <h2 style="display: inline-block;">{{model.name}}</h2>
+  {{else}}
+    <h2 style="display: inline-block;">{{t (if editing 'newPipelineStage.header.edit' 'newPipelineStage.header.create')}}</h2>
+    {{#if editing}}
+      <div class="right-buttons pb-0 pt-0">
+        <button class="btn bg-error" {{action 'remove'}}>
+          {{t 'generic.remove'}}
+        </button>
+      </div>
+    {{/if}}
+  {{/if}}
+</section>
+
+{{#if (not-eq modalOpts.mode 'review')}}
+<div class="inline-form">
+  <label>{{t 'newPipelineStage.name'}}{{field-required}}</label>
+  {{input class="form-control" value=model.name }}
+</div>
+{{/if}}
+
+{{top-errors errors=errors}}
+
+{{#if (eq modalOpts.mode 'review')}}
+  <div style="text-align: center" class="mt-20 text-center">
+    <button {{action "cancel"}} class="btn bg-transparent">{{t "generic.cancel"}}</button>
+  </div>
+{{else}}
+  {{save-cancel editing=editing createLabel="generic.add" save="add" cancel="cancel"}}
+{{/if}}

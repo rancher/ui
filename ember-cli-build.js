@@ -23,7 +23,11 @@ module.exports = function(defaults) {
     },
     storeConfigInMeta: false,
     inlineContent: inline,
-
+    codemirror: {
+      modes: ['yaml', 'dockerfile', 'shell', 'markdown'],
+      themes: ['monokai'],
+      addons: ['hint/show-hint.js','hint/anyword-hint.js'],
+    },
     outputPaths: {
       app: {
         css: {

@@ -1,0 +1,26 @@
+{{#if filteredPipelineHistory.length}}
+    {{!-- {{#accordion-list as |al expandFn| }} --}}
+      {{#each filteredPipelineHistory as |activity index|}}
+        {{#accordion-list-item
+          title=(concat-str '#' activity.run ' ' activity.repository)
+          showStatus=true
+          detail=(concat-str activity.branch ' ' (sub-str activity.commit 0 8) ' ' (date-str activity.started))
+          status=activity.statusLabel
+          statusClass=activity.statusClass
+          expandAll=(if (eq index 0) true false)
+          expand=(action expandFn)
+          componentName='activity-table'
+          className=(concat-str "header-pipeline" model.activities.statusClass)
+          as | parent |
+        }}
+          {{table-activity-row
+            activity=activity
+            logStatus=logStatus
+            index=index
+          }}
+        {{/accordion-list-item}}
+      {{/each}}
+    {{!-- {{/accordion-list}} --}}
+{{else}}
+  <p class="text-center text-muted">{{t 'pipelineHistories.empty'}}</p>
+{{/if}}
