@@ -40,11 +40,7 @@ export default Controller.extend({
 
   actions: {
     newTemplate() {
-      const cred = get(this,'globalStore').createRecord({
-        type: 'nodeTemplate',
-      });
-
-      get(this,'modalService').toggleModal('modal-edit-node-template', cred);
+      get(this,'modalService').toggleModal('modal-edit-node-template');
     },
   },
 });

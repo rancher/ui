@@ -64,9 +64,6 @@ Router.map(function() {
 
       this.route('nodes', function() {
         this.route('index', {path: '/'});
-        this.route('templates');
-        this.route('launch', {path: '/launch/:template_id'});
-        this.route('configure');
         this.route('node', {path: '/:node_id', resetNamespace: true});
       });
 
