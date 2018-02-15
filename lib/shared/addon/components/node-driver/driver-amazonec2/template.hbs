@@ -301,6 +301,15 @@
         <span>{{settings.appName}}</span>
       </div>
 
+      {{#accordion-list showExpandAll=false as | al expandFn |}}
+        {{form-user-labels
+          initialLabels=labelResource.labels
+          setLabels=(action 'setLabels')
+          expand=(action expandFn)
+          expandAll=null
+        }}
+      {{/accordion-list}}
+
       {{#advanced-section}}
         {{limit-parameters model=model}}
         {{form-engine-opts machine=model showEngineUrl=showEngineUrl}}

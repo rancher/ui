@@ -35,15 +35,22 @@
               </td>
               <td data-title="{{dt.nodeTemplate}}">
                 {{#if filteredNodeTemplates.length}}
-                  {{new-select
-                    class="input-sm"
-                    content=filteredNodeTemplates
-                    optionLabelPath="displayName"
-                    optionValuePath="id"
-                    value=node.nodeTemplateId
-                  }}
+                  <div class="input-group">
+                    {{new-select
+                      class="input-sm"
+                      content=filteredNodeTemplates
+                      prompt="clusterNew.rke.nodes.templatePrompt"
+                      localizedPrompt=true
+                      optionLabelPath="displayName"
+                      optionValuePath="id"
+                      value=node.nodeTemplateId
+                    }}
+                    <div class="input-group-btn input-sm bg-primary">
+                      <button type="button" class="btn bg-primary" {{action "addNodeTemplate" node}}><i class="icon icon-plus"></i></button>
+                    </div>
+                  </div>
                 {{else}}
-                  <button class="btn bg-primary" {{action "addNodeTemplate"}}>{{t 'clusterNew.rke.addNodeTemplate'}}</button>
+                  <button class="btn bg-primary" {{action "addNodeTemplate" node}}>{{t 'clusterNew.rke.nodes.addTemplate'}}</button>
                 {{/if}}
               </td>
               <td data-title="{{dt.etcd}}" class="text-center">
@@ -146,7 +153,7 @@
             <label class="acc-label">{{t 'clusterNew.rke.registry.user.label'}}</label>
             {{input type="text" value=registryUser}}
             <label class="acc-label">{{t 'clusterNew.rke.registry.password.label'}}</label>
-            {{input type="password" value=registryPassword}}
+            {{input type="password" value=registryPass}}
           {{/if}}
         </div>
 
@@ -165,11 +172,13 @@
             </label>
           </div>
 
-          <label class="acc-label">{{t 'clusterNew.rke.psp.label'}}</label>
-          {{form-pod-sec-policy
-            config=secPolicy
-            policies=model.policies
-          }}
+          <div class="mt-20">
+            <label class="acc-label">{{t 'clusterNew.rke.psp.label'}}</label>
+            {{form-pod-sec-policy
+              config=secPolicy
+              policies=model.policies
+            }}
+          </div>
         </div>
       </div>
     {{/accordion-list-item}}
