@@ -33,8 +33,8 @@ export default Resource.extend(ResourceUsage, {
 
   displayProvider: computed('configName','nodePools.@each.nodeTemplateId', function() {
     const intl = get(this, 'intl');
-    const pools = get(this,'nodePools');
-    const firstPool = (get(this,'nodePools')||[],'firstObject');
+    const pools = get(this,'nodePools')||[];
+    const firstTemplate = get(pools,'firstObject.nodeTemplate');
 
     switch ( get(this,'configName') ) {
       case 'azureKubernetesServiceConfig':
@@ -43,8 +43,8 @@ export default Resource.extend(ResourceUsage, {
         return intl.t('clusterNew.googlegke.shortLabel');
       case 'rancherKubernetesEngineConfig':
         if ( !!pools ) {
-          if ( firstPool ) {
-            return get(firstPool, 'displayProvider');
+          if ( firstTemplate ) {
+            return get(firstTemplate, 'displayProvider');
           } else {
             return intl.t('clusterNew.rke.shortLabel');
           }

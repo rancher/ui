@@ -14,6 +14,8 @@ export default Controller.extend({
   modalService:      service('modal'),
   bulkActionHandler: service(),
 
+  expire: 'never',
+
   sortBy:            'name',
   headers: [
     {
@@ -51,7 +53,6 @@ export default Controller.extend({
     newApikey() {
       const cred = this.get('globalStore').createRecord({
         type: 'token',
-        ttl: 365*86400*1000,
       });
 
       this.get('modalService').toggleModal('modal-edit-apikey', cred);
