@@ -96,6 +96,15 @@ const rootNav = [
   },
   {
     scope: 'cluster',
+    id: 'cluster-nodes',
+    localizedLabel: 'nav.cluster.nodes',
+    route: 'authenticated.cluster.nodes',
+    ctx: [getClusterId],
+    resource: ['node'],
+    resourceScope: 'global',
+  },
+  {
+    scope: 'cluster',
     id: 'cluster-projects',
     localizedLabel: 'nav.cluster.projects',
     route: 'authenticated.cluster.projects.index',
@@ -111,15 +120,6 @@ const rootNav = [
     ctx: [getClusterId],
     resource: ['namespace'],
     resourceScope: 'cluster',
-  },
-  {
-    scope: 'cluster',
-    id: 'cluster-nodes',
-    localizedLabel: 'nav.cluster.nodes',
-    route: 'authenticated.cluster.nodes',
-    ctx: [getClusterId],
-    resource: ['node'],
-    resourceScope: 'global',
   },
   {
     scope: 'cluster',

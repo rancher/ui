@@ -1,47 +1,19 @@
 <section class="horizontal-form">
-  {{#if showNameScale}}
+  {{#if (eq step 1)}}
     <div class="box mt-20">
-      <h4>{{t 'nodeDriver.digitalocean.instanceSection'}}</h4>
       <div class="row">
-        <div class="row">
-          <div class="col span-11-of-23 mt-0 mb-0">
-            {{form-name-description
-                name=prefix
-                nameRequired=true
-                namePlaceholder="hostsPage.new.name.placeholder"
-                nameHelpText=nameCountLabel
-                descriptionShown=true
-            }}
-          </div>
-          <div class="col span-11-of-23 mt-0 mb-0 offset-1-of-23">
-            {{form-count
-                min=0
-                initialScale=1
-                setScale=(action (mut count))
-            }}
-          </div>
-        </div>
+        <label class="acc-label">{{t 'nodeDriver.digitalocean.accessToken.label'}}</label>
+        {{input type="password" value=config.accessToken classNames="form-control" placeholder=(t 'nodeDriver.digitalocean.accessToken.placeholder')}}
+        <p class="text-info">{{t 'nodeDriver.digitalocean.accessToken.help' htmlSafe=true}}</p>
       </div>
     </div>
-  {{/if}}
-
-  {{#if (eq step 1)}}
-    <form>
-      <div class="box mt-20">
-        <div class="row">
-          <label class="acc-label">{{t 'nodeDriver.digitalocean.accessToken.label'}}</label>
-          {{input type="password" value=config.accessToken classNames="form-control" placeholder=(t 'nodeDriver.digitalocean.accessToken.placeholder')}}
-          <p class="text-info">{{t 'nodeDriver.digitalocean.accessToken.help' htmlSafe=true}}</p>
-        </div>
-      </div>
-      {{top-errors errors=errors}}
-      {{save-cancel
-        save="getData"
-        cancel="cancel"
-        createLabel="nodeDriver.digitalocean.authAccountButton"
-        savingLabel="generic.loading"
-      }}
-    </form>
+    {{top-errors errors=errors}}
+    {{save-cancel
+      save="getData"
+      cancel="cancel"
+      createLabel="nodeDriver.digitalocean.authAccountButton"
+      savingLabel="generic.loading"
+    }}
   {{else}}
     {{#accordion-list showExpandAll=false as | al expandFn |}}
       <div class="over-hr mb-20"><span>{{driverOptionsTitle}}</span></div>

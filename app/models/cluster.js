@@ -14,7 +14,8 @@ export default Resource.extend(ResourceUsage, {
 
   namespaces: hasMany('id', 'namespace', 'clusterId'),
   projects: hasMany('id', 'project', 'clusterId'),
-  machines: hasMany('id', 'node', 'clusterId'),
+  nodes: hasMany('id', 'node', 'clusterId'),
+  machines: alias('nodes'),
   clusterRoleTemplateBindings: hasMany('id', 'clusterRoleTemplateBinding', 'clusterId'),
   roleTemplateBindings: alias('clusterRoleTemplateBindings'),
 
@@ -30,6 +31,31 @@ export default Resource.extend(ResourceUsage, {
     return null;
   }),
 
+  displayProvider: computed('configName','nodePools.@each.nodeTemplateId', function() {
+    const intl = get(this, 'intl');
+    const pools = get(this,'nodePools');
+    const firstPool = (get(this,'nodePools')||[],'firstObject');
+
+    switch ( get(this,'configName') ) {
+      case 'azureKubernetesServiceConfig':
+        return intl.t('clusterNew.azureaks.shortLabel');
+      case 'googleKubernetesEngineConfig':
+        return intl.t('clusterNew.googlegke.shortLabel');
+      case 'rancherKubernetesEngineConfig':
+        if ( !!pools ) {
+          if ( firstPool ) {
+            return get(firstPool, 'displayProvider');
+          } else {
+            return intl.t('clusterNew.rke.shortLabel');
+          }
+        } else {
+            return intl.t('clusterNew.custom.shortLabel');
+        }
+      default:
+        return intl.t('clusterNew.import.shortLabel');
+    }
+  }),
+
   clearProvidersExcept(keep) {
     const keys = this.allKeys().filter(x => x.endsWith('Config'));
 
@@ -40,10 +66,6 @@ export default Resource.extend(ResourceUsage, {
       }
     }
   },
-
-  canAddNode: computed('rancherKubernetesEngineConfig', function() {
-    return !!this.get('rancherKubernetesEngineConfig');
-  }),
 
   actions: {
     edit() {

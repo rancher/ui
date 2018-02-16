@@ -32,19 +32,13 @@ Router.map(function() {
   this.route('logout');
 
   this.route('authenticated', {path: '/'}, function() {
+    // Global
     this.mount('global-admin', { path: '/g', resetNamespace: true});
     this.route('dummy-dev', {path: '/dev'});
 
     this.route('apikeys');
     this.route('node-templates');
     this.route('prefs');
-
-    // Global
-    this.route('host-new', {path: '/add-host'});
-    this.route('host-templates', {path: '/launch-host'}, function() {
-      this.route('index', {path: '/'});
-      this.route('launch', {path: '/:template_id'});
-    });
 
     // Per-Cluster
     this.route('cluster', {path: '/c/:cluster_id'}, function() {

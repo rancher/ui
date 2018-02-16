@@ -49,14 +49,15 @@ export default Resource.extend({
 
   // All the SANs that aren't the CN
   displaySans: computed('cn','subjectAlternativeNames.[]', function() {
-    // subjectAlternativeNames can be null:
-    if (get(this, 'subjectAlternativeNames') === null) {
+    const sans = get(this,'subjectAlternativeNames')||'';
+    const cn = get(this, 'cn')||'';
+
+    if ( !sans ) {
       return [];
     }
 
-    return (get(this, 'subjectAlternativeNames').split(',')||[])
-      .slice()
-      .removeObject(get(this, 'cn'))
+    return sans.split(',')
+      .removeObject(cn)
       .filter((san) => {
         return (san+'').indexOf('@') === -1;
       });

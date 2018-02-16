@@ -3,12 +3,6 @@
 {{else}}
   <section class="header clearfix">
     <div class="pull-left"><h1>{{t 'nodesPage.header'}}</h1></div>
-
-    <div class="right-buttons">
-      {{#if scope.currentCluster.canAddNode}}
-        {{#link-to "authenticated.cluster.nodes.templates" classNames="btn btn-sm bg-primary" disabled=(rbac-prevents resource="machine" scope="global" permission="create") }}{{t 'nodesPage.addNode'}}{{/link-to}}
-      {{/if}}
-    </div>
   </section>
 
   {{#if rows.length}}
@@ -36,13 +30,6 @@
       {{/if}}
     {{/sortable-table}}
   {{else}}
-    {{empty-table
-      resource="container"
-      showNew=scope.currentCluster.canAddNode
-      newRoute="authenticated.cluster.nodes.templates"
-      newTranslationKey="nodesPage.addNode"
-      disabled=(rbac-prevents resource="machine" scope="global" permission="create")
-      ctx=""
-    }}
+    You don't have any nodes yet
   {{/if}}
 {{/if}}

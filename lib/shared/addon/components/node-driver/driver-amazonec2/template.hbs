@@ -1,112 +1,85 @@
-<section class="horizontal-form">
-  <form>
-    <div class="container-fluid">
-      {{#if showNameScale}}
-        <div class="box mt-20">
-          <h4>{{t 'machine.driverAmazon.instanceSection'}}</h4>
-          <div class="row">
-            <div class="row">
-              <div class="col span-11-of-23 mt-0 mb-0">
-                {{form-name-description
-                    name=prefix
-                    nameRequired=true
-                    namePlaceholder="hostsPage.new.name.placeholder"
-                    nameHelpText=nameCountLabel
-                    descriptionShown=true
-                }}
-              </div>
-              <div class="col span-11-of-23 mt-0 mb-0 offset-1-of-23">
-                {{form-count
-                    min=0
-                    initialScale=1
-                    setScale=(action (mut count))
-                }}
-              </div>
-            </div>
-          </div>
-        </div>
-      {{/if}}
+{{#accordion-list showExpandAll=false as | al expandFn |}}
+  <div class="over-hr"><span>{{driverOptionsTitle}}</span></div>
 
-      <div class="box mt-20">
-        <h4>{{t 'machine.driverAmazon.accessSection'}}</h4>
-        <div class="row">
-          <div class="col span-4 {{if isStep1 'inline-form'}}">
-              <label class="acc-label">{{t 'machine.driverAmazon.region.label'}}</label>
-              {{#if isStep1}}
-                <select class="form-control" onchange={{action (mut amazonec2Config.region) value="target.value"}}>
-                  {{#each regionChoices as |choice|}}
-                    <option value={{choice}} selected={{eq amazonec2Config.region choice}}>{{choice}}</option>
-                  {{/each}}
-                </select>
-              {{else}}
-                <div>{{amazonec2Config.region}}</div>
-              {{/if}}
-          </div>
-          <div class="col span-4 {{if isStep1 'inline-form'}}">
-              <label class="acc-label">{{t 'machine.driverAmazon.accessKey.label'}}</label>
-              {{#if isStep1}}
-                {{input type="text" name="username" classNames="form-control" placeholder=(t 'machine.driverAmazon.accessKey.placeholder') value=amazonec2Config.accessKey}}
-              {{else}}
-                <div>{{amazonec2Config.accessKey}}</div>
-              {{/if}}
-          </div>
-          <div class="col span-4 {{if isStep1 'inline-form'}}">
-              <label class="acc-label">{{t 'machine.driverAmazon.secretKey.label'}}</label>
-              {{#if isStep1}}
-                {{input type="password" name="password" classNames="form-control" placeholder=(t 'machine.driverAmazon.secretKey.placeholder') value=amazonec2Config.secretKey}}
-              {{else}}
-                <div class="text-muted text-italic">{{t 'machine.driverAmazon.secretKey.provided'}}</div>
-              {{/if}}
-          </div>
-        </div>
-        <div class="row">
-          <div class="span-8 offset-4">
-            {{#if isStep1}}
-              <p class="text-info text-small m-0">{{t 'machine.driverAmazon.accessKeyHelp'}}</p>
-            {{/if}}
-          </div>
-        </div>
+  {{#accordion-list-item
+    title=(t 'nodeDriver.amazonec2.access.title')
+    detail=(t 'nodeDriver.amazonec2.access.detail')
+    expandAll=expandAll
+    expand=(action expandFn)
+    expandOnInit=true
+  }}
+    <div class="row">
+      <div class="col span-4">
+        <label class="acc-label">{{t 'nodeDriver.amazonec2.region.label'}}</label>
+        {{#if (eq step 1)}}
+          <select class="form-control" onchange={{action (mut config.region) value="target.value"}}>
+            {{#each regionChoices as |choice|}}
+              <option value={{choice}} selected={{eq config.region choice}}>{{choice}}</option>
+            {{/each}}
+          </select>
+        {{else}}
+          <div>{{config.region}}</div>
+        {{/if}}
+      </div>
+
+      <div class="col span-4">
+        <label class="acc-label">{{t 'nodeDriver.amazonec2.accessKey.label'}}</label>
+        {{#if (eq step 1)}}
+          {{input type="text" name="username" classNames="form-control" placeholder=(t 'nodeDriver.amazonec2.accessKey.placeholder') value=config.accessKey}}
+        {{else}}
+          <div>{{config.accessKey}}</div>
+        {{/if}}
+      </div>
+
+      <div class="col span-4">
+        <label class="acc-label">{{t 'nodeDriver.amazonec2.secretKey.label'}}</label>
+        {{#if (eq step 1)}}
+          {{input type="password" name="password" classNames="form-control" placeholder=(t 'nodeDriver.amazonec2.secretKey.placeholder') value=config.secretKey}}
+        {{else}}
+          <div class="text-muted text-italic">{{t 'nodeDriver.amazonec2.secretKey.provided'}}</div>
+        {{/if}}
       </div>
     </div>
-    {{#if isStep1}}
-      {{top-errors errors=errors}}
 
-      <div class="footer-actions pt-20">
-        <button {{action "awsLogin"}} name="submit" class="btn bg-primary">{{t 'machine.driverAmazon.loginAction'}}</button>
-        <button {{action "cancel"}} class="btn bg-transparent">{{t 'generic.cancel'}}</button>
+    {{#if (eq step 1)}}
+      <div class="row">
+        <div class="span-8 offset-4">
+          <p class="text-info text-small m-0">{{t 'nodeDriver.amazonec2.access.help'}}</p>
+        </div>
       </div>
     {{/if}}
-  </form>
-</section>
+  {{/accordion-list-item}}
 
-<section class="horizontal-form {{unless isStep2 'hide'}}">
-  <div class="text-center p-20">
-    <i class="icon icon-spinner icon-spin"></i> {{t 'machine.driverAmazon.loadingAvailability'}}
-  </div>
-</section>
+  {{#if (eq step 1)}}
+    {{top-errors errors=errors}}
+    {{save-cancel
+      save="awsLogin"
+      cancel="cancel"
+      createLabel="nodeDriver.amazonec2.access.next"
+      savingLabel="nodeDriver.amazonec2.access.loading"
+    }}
+  {{/if}}
 
-<section class="horizontal-form {{unless isGteStep3 'hide'}}" style="padding-top: 0">
-  <div class="box mt-20">
-      <h4>{{t 'machine.driverAmazon.vpcSection'}}</h4>
-    <div class="row {{if isStep3 'inline-form'}}">
-      <label class="acc-label">{{t 'machine.driverAmazon.availabilityZone'}}</label>
-      {{#if isStep3}}
-        <select class="form-control" onchange={{action (mut selectedZone) value="target.value"}}>
-          {{#each zoneChoices as |choice|}}
-            <option value={{choice}} selected={{eq selectedZone choice}}>{{choice}}</option>
-          {{/each}}
-        </select>
-      {{else}}
-        <div>
-          {{amazonec2Config.region}}{{amazonec2Config.zone}}
+  <div class="{{unless (gte step 2) 'hide'}}">
+    {{#accordion-list-item
+      title=(t 'nodeDriver.amazonec2.zone.title')
+      detail=(t 'nodeDriver.amazonec2.zone.detail')
+      expandAll=expandAll
+      expand=(action expandFn)
+      expandOnInit=true
+    }}
+      {{#if (eq step 2)}}
+        <div class="row">
+          <label class="acc-label">{{t 'nodeDriver.amazonec2.availabilityZone'}}</label>
+          <select class="form-control" onchange={{action (mut selectedZone) value="target.value"}}>
+            {{#each zoneChoices as |choice|}}
+              <option value={{choice}} selected={{eq selectedZone choice}}>{{choice}}</option>
+            {{/each}}
+          </select>
         </div>
-      {{/if}}
-    </div>
-    <div class="row {{if isStep3 'inline-form'}}">
 
-        <label class="acc-label pt-20">{{t 'machine.driverAmazon.subnet'}}</label>
-
-        {{#if isStep3}}
+        <div class="row">
+          <label class="acc-label pt-20">{{t 'nodeDriver.amazonec2.subnet'}}</label>
           {{#if subnetChoices.length}}
             {{#each subnetChoices as |choice|}}
               {{#if choice.isVpc}}
@@ -121,7 +94,6 @@
                     {{/each}}
                   </label>
                 </div>
-
               {{else}}
                 <div class="radio">
                 <label class="ml-20">
@@ -134,62 +106,66 @@
                   {{/each}}
                 </label>
                 </div>
-             {{/if}}
+              {{/if}}
             {{/each}}
+          {{else}}
+            There are no subnets to choose from.
           {{/if}}
-        {{else}}
-          <div>
-            {{#if amazonec2Config.subnetId}}
-              {{amazonec2Config.subnetId}}
+        </div>
+      {{else}}
+        <div class="row">
+          <div class="span-6">
+            <label class="acc-label">{{t 'nodeDriver.amazonec2.availabilityZone'}}</label>
+            {{config.region}}{{config.zone}}
+          </div>
+          <div class="span-6">
+            <label class="acc-label pt-20">{{t 'nodeDriver.amazonec2.subnet'}}</label>
+            {{#if config.subnetId}}
+              {{config.subnetId}}
             {{else}}
-              {{amazonec2Config.vpcId}}
+              {{config.vpcId}}
             {{/if}}
           </div>
-        {{/if}}
+        </div>
+      {{/if}}
+    {{/accordion-list-item}}
 
-    </div>
+    {{#if (eq step 2)}}
+      {{top-errors errors=errors}}
+      {{save-cancel
+        save="selectSubnet"
+        cancel="cancel"
+        createLabel="nodeDriver.amazonec2.zone.next"
+        savingLabel="nodeDriver.amazonec2.zone.loading"
+      }}
+    {{/if}}
   </div>
-  {{#if isStep3}}
-    {{top-errors errors=errors}}
 
-    <div class="footer-actions pt-20">
-      <button {{action "selectSubnet"}} class="btn bg-primary">{{t 'machine.driverAmazon.securityGroupSelect'}}</button>
-      <button {{action "cancel"}} class="btn bg-transparent">{{t 'generic.cancel'}}</button>
-    </div>
-  {{/if}}
-</section>
-
-<section class="horizontal-form {{unless isStep4 'hide'}}" style="padding-top: 0">
-  <div class="text-center">
-    <i class="icon icon-spinner icon-spin"></i> {{t 'machine.driverAmazon.loadingSecurity'}}
-  </div>
-</section>
-
-<section class="horizontal-form {{unless isGteStep5 'hide'}}" style="padding-top: 0">
-  <div class="box mt-20">
-    <h4>{{t 'machine.driverAmazon.securityGroupSection'}}</h4>
-
-    <div class="row {{if isStep5 'inline-form'}}">
-      {{!-- <div class="col span-2 col-inline"> --}}
-        <label class="acc-label">{{t 'machine.driverAmazon.securityGroup.label'}}</label>
-      {{!-- </div>
-      <div class="col span-8"> --}}
-        {{#if isStep5}}
+  <div class="{{unless (gte step 3) 'hide'}}">
+    {{#accordion-list-item
+      title=(t 'nodeDriver.amazonec2.securityGroup.title')
+      detail=(t 'nodeDriver.amazonec2.securityGroup.detail')
+      expandAll=expandAll
+      expand=(action expandFn)
+      expandOnInit=true
+    }}
+      <div class="row">
+        {{#if (eq step 3)}}
           <div class="radio pt-10">
             <label>
               {{radio-button selection=whichSecurityGroup value="default"}}
-                {{t 'machine.driverAmazon.securityGroup.defaultCreate' groupName=defaultSecurityGroupName htmlSafe=true}}
+                {{t 'nodeDriver.amazonec2.securityGroup.defaultCreate' groupName=defaultSecurityGroupName htmlSafe=true}}
             </label>
           </div>
 
           {{#if (and settings.isRancher (not isCustomSecurityGroup))}}
-            <p class="text-info ml-20"><a href="{{settings.docsBase}}/hosts/amazon/#required-ports-for-rancher-to-work" target="_blank">{{t 'machine.driverAmazon.portHelp.link'}}</a> {{t 'machine.driverAmazon.portHelp.text'}}</p>
+            <p class="text-info ml-20"><a href="{{settings.docsBase}}/hosts/amazon/#required-ports-for-rancher-to-work" target="_blank">{{t 'nodeDriver.amazonec2.portHelp.link'}}</a> {{t 'nodeDriver.amazonec2.portHelp.text'}}</p>
           {{/if}}
 
           <div class="radio pt-10">
             <label>
               {{radio-button selection=whichSecurityGroup value="custom"}}
-              {{t 'machine.driverAmazon.securityGroup.choose'}}
+              {{t 'nodeDriver.amazonec2.securityGroup.choose'}}
             </label>
           </div>
 
@@ -202,9 +178,9 @@
           {{/if}}
         {{else}}
           <div>
-            {{#if (is-array amazonec2Config.securityGroup)}}
+            {{#if (is-array config.securityGroup)}}
               <div class="comma-seperated-list">
-                {{#each amazonec2Config.securityGroup as |group|}}
+                {{#each config.securityGroup as |group|}}
                   <span>{{group}}</span>
                 {{/each}}
               </div>
@@ -213,102 +189,102 @@
             {{/if}}
           </div>
         {{/if}}
-      {{!-- </div> --}}
-    </div>
+      </div>
+    {{/accordion-list-item}}
+
+    {{#if (eq step 3)}}
+      {{top-errors errors=errors}}
+      {{save-cancel
+        save="selectSecurityGroup"
+        cancel="cancel"
+        createLabel="nodeDriver.amazonec2.securityGroup.next"
+        savingLabel="nodeDriver.amazonec2.securityGroup.loading"
+      }}
+    {{/if}}
   </div>
-  {{#if isStep5}}
+
+  <div class="{{unless (gte step 4) 'hide'}}">
+    {{#accordion-list-item
+      title=(t 'nodeDriver.amazonec2.instance.title')
+      detail=(t 'nodeDriver.amazonec2.instance.detail')
+      expandAll=expandAll
+      expand=(action expandFn)
+      expandOnInit=true
+    }}
+      <div class="row">
+        <div class="col span-6">
+          <label class="acc-label">{{t 'nodeDriver.amazonec2.instanceType.label'}}</label>
+          {{new-select
+            classNames="form-control"
+            value=config.instanceType
+            content=instanceTypes
+            optionValuePath="name"
+            optionLabelPath="name"
+            optionGroupPath="group"
+          }}
+        </div>
+
+        <div class="col span-6">
+          <label class="acc-label">{{t 'nodeDriver.amazonec2.rootSize.label'}}</label>
+          <div class="input-group">
+            {{input type="text" classNames="form-control" placeholder="" value=config.rootSize}}
+            <span class="input-group-addon bg-default">{{t 'nodeDriver.amazonec2.rootSize.unit'}}</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col span-6">
+          <label class="acc-label">{{t 'nodeDriver.amazonec2.ami.label'}}</label>
+          {{input type="text" classNames="form-control" placeholder=(t 'nodeDriver.amazonec2.ami.placeholder') value=config.ami}}
+          {{#if settings.isRancher}}
+            <p class="help-block">
+              <a href="https://github.com/rancher/os/blob/master/README.md/#user-content-amazon" target="_blank">{{t 'nodeDriver.amazonec2.ami.rancherList'}}</a>
+            </p>
+          {{/if}}
+        </div>
+
+        <div class="col span-6">
+          <label class="acc-label">{{t 'nodeDriver.amazonec2.sshUser.label'}}</label>
+          {{input type="text" classNames="form-control" placeholder=(t 'nodeDriver.amazonec2.sshUser.placeholder') value=config.sshUser}}
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col span-6">
+          <label class="acc-label">{{t 'nodeDriver.amazonec2.iam.label'}}</label>
+          {{input type="text" classNames="form-control" value=config.iamInstanceProfile}}
+        </div>
+
+        <div class="col span-6">
+          <label class="acc-label">{{t 'nodeDriver.amazonec2.privateIp.label'}}</label>
+          <div class="checkbox">
+            <label class="acc-label">{{input type="checkbox" checked=config.privateAddressOnly}} {{t 'nodeDriver.amazonec2.onlyPrivate.label'}}</label>
+          </div>
+        </div>
+      </div>
+    {{/accordion-list-item}}
+
+    <div class="over-hr"><span>{{templateOptionsTitle}}</span></div>
+
+    {{form-name-description
+      model=model
+      nameRequired=true
+    }}
+
+    {{form-user-labels
+      initialLabels=labelResource.labels
+      setLabels=(action 'setLabels')
+      expandAll=expandAll
+      expand=(action expandFn)
+    }}
+
+    {{form-engine-opts
+      machine=model
+      showEngineUrl=showEngineUrl
+    }}
+
     {{top-errors errors=errors}}
-
-    <div class="footer-actions pt-20">
-      <button {{action "selectSecurityGroup"}} class="btn bg-primary">{{t 'machine.driverAmazon.setInstanceAction'}}</button>
-      <button {{action "cancel"}} class="btn bg-transparent">{{t 'generic.cancel'}}</button>
-    </div>
-  {{/if}}
-</section>
-
-<section class="horizontal-form {{unless isStep6 'hide'}}" style="padding-top: 0">
-  <div class="text-center">
-    <i class="icon icon-spinner icon-spin"></i>
-    {{#if defaultSecurityGroup}}
-      {{t 'machine.driverAmazon.securityGroup.updating'}}
-    {{else}}
-      {{t 'machine.driverAmazon.securityGroup.creating'}}
-    {{/if}}
+    {{save-cancel save="save" cancel="cancel"}}
   </div>
-</section>
-
-<section class="horizontal-form {{unless isGteStep7 'hide'}}" style="padding-top: 0;">
-  <div class="container-fluid">
-    <div class="over-hr mt-20 mb-20">
-      <span>{{t 'machine.driverAmazon.instanceOptionsSection'}}</span>
-    </div>
-    <div class="box">
-    <div class="row">
-     <div class="col span-6">
-        <label class="acc-label">{{t 'machine.driverAmazon.instanceType.label'}}</label>
-        {{new-select
-          classNames="form-control"
-          value=amazonec2Config.instanceType
-          content=instanceTypes
-          optionValuePath="name"
-          optionLabelPath="name"
-          optionGroupPath="group"
-        }}
-      </div>
-
-      <div class="col span-6">
-        <label class="acc-label">{{t 'machine.driverAmazon.rootSize.label'}}</label>
-        <div class="input-group">
-          {{input type="text" classNames="form-control" placeholder="" value=amazonec2Config.rootSize}}
-          <span class="input-group-addon bg-default">{{t 'machine.driverAmazon.rootSize.unit'}}</span>
-        </div>
-      </div>
-    </div>
-
-    <div class="row">
-      <div class="col span-6">
-        <label class="acc-label">{{t 'machine.driverAmazon.ami.label'}}</label>
-        {{input type="text" classNames="form-control" placeholder=(t 'machine.driverAmazon.ami.placeholder') value=amazonec2Config.ami}}
-        {{#if settings.isRancher}}
-          <p class="help-block">
-            <a href="https://github.com/rancher/os/blob/master/README.md/#user-content-amazon" target="_blank">{{t 'machine.driverAmazon.ami.rancherList'}}</a>
-          </p>
-        {{/if}}
-      </div>
-
-      <div class="col span-6">
-        <label class="acc-label">{{t 'machine.driverAmazon.sshUser.label'}}</label>
-        {{input type="text" classNames="form-control" placeholder=(t 'machine.driverAmazon.sshUser.placeholder') value=amazonec2Config.sshUser}}
-      </div>
-    </div>
-
-    <div class="row">
-      <div class="col span-6">
-        <label class="acc-label">{{t 'machine.driverAmazon.iam.label'}}</label>
-        {{input type="text" classNames="form-control" value=amazonec2Config.iamInstanceProfile}}
-      </div>
-
-      <div class="col span-6">
-        <label class="acc-label">{{t 'machine.driverAmazon.privateIp.label'}}</label>
-        <div class="checkbox">
-          <label class="acc-label">{{input type="checkbox" checked=amazonec2Config.privateAddressOnly}} {{t 'machine.driverAmazon.onlyPrivate.label'}}</label>
-        </div>
-      </div>
-    </div>
-
-    {{#if model}}
-      <div class="over-hr mt-40 mb-30">
-        <span>{{settings.appName}}</span>
-      </div>
-
-      {{#advanced-section}}
-        {{limit-parameters model=model}}
-        {{form-engine-opts machine=model showEngineUrl=showEngineUrl}}
-      {{/advanced-section}}
-    {{/if}}
-    </div>
-  </div>
-
-  {{top-errors errors=errors}}
-  {{save-cancel save="save" cancel="cancel"}}
-</section>
+{{/accordion-list}}
