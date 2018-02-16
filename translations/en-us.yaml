@@ -646,11 +646,9 @@ clustersPage:
   newClusterName: "Add Cluster: {name}"
   cluster:
     label: Cluster Name
-  environment:
-    label: Environment Name
-  projects:
-    label: Environments
-  hosts:
+  provider:
+    label: Provider
+  nodes:
     label: Nodes
   cpu:
     label: CPU
@@ -3155,6 +3153,8 @@ clusterNew:
     detail: Customize the cluster that will be created
 
   azureaks:
+    label: Azure Container Service
+    shortLabel: Azure AKS
     access:
       title: Account Access
       detail: Configure the credentials that will be used to talk to Azure
@@ -3247,6 +3247,7 @@ clusterNew:
 
   googlegke:
     label: Google Kubernetes Engine
+    shortLabel: Google GKE
     checkServiceAccount: "Next: Configure Nodes"
     checkingServiceAccount: Authenticating...
     credential:
@@ -3279,6 +3280,8 @@ clusterNew:
       label: Alpha Features
 
   rke:
+    label: '{appName} Kubernetes Engine'
+    shortLabel: RKE
     config:
       label: Basic Configuration
       detail: Customize the basic setup of the Kubernetes cluster
@@ -3359,12 +3362,20 @@ clusterNew:
       controlPlane: Please select at least one node to use for for management.
       worker: Please select at least one node to use as a worker.
 
+  custom:
+    label: Custom
+    shortLabel: Custom
+
   import:
+    label: Imported
+    shortLabel: Imported
     command:
       instructions: Run the kubectl command below on an existing Kubernetes 1.8.x cluster to import it into {appName}
 
 
 nodeDriver:
+  addTemplate: Add Node Template
+
   displayName:
     aliyunecs: Aliyun ECS
     amazonec2: Amazon EC2
@@ -3381,7 +3392,17 @@ nodeDriver:
   templateOptions: "{appName} Template"
 
   amazonec2:
-    accessSection: Account Access
+    access:
+      title: 1. Account Access
+      detail: Choose the region and API Key that will be used to launch EC2 Instances
+      next: "Next: Authenticate & select a network"
+      loading: Loading Availablility Zone and VPC info from EC2...
+      help: "Paste in your AWS key pair here. We'll use this key to create your new Instances."
+    zone:
+      title: 2. Zone and Network
+      detail: Select the Availability Zone and VPC/Subnet for Instances
+      next: "Next: Select a Security Group"
+      loading: Loading security group info from EC2...
     accessKey:
       label: Access Key
       placeholder: Your AWS access key
@@ -3391,23 +3412,19 @@ nodeDriver:
       provided: Provided
     region:
       label: Region
-    accessKeyHelp: "Paste in your AWS key pair here. We'll use this key to create your new Instances."
-    loginAction: "Next: Authenticate & select a network"
-    loadingAvailability: Loading Availablility Zone and VPC info from EC2...
-    vpcSection: Availability Zone & VPC
     availabilityZone: Availability Zone
     subnet: VPC/Subnet
-    securityGroupSelect: "Next: Select a Security Group"
-    loadingSecurity: Loading security group info from EC2...
-    securityGroupSection: Security Group
     securityGroup:
-      label: Security Group
-      choose:  Choose an existing group
+      title: 3. Security Groups
+      detail: Choose the security groups that will be applied to Instances
+      choose:  Choose one or more existing groups
       defaultExisting: "Standard: Use the existing <code>{groupName}</code> group"
       defaultCreate: "Standard: Automatically create a <code>{groupName}</code> group"
-      custom: "Custom: Choose an existing group"
-      updating: Updating Security Group...
-      creating: Creating Security Group...
+      next: "Next: Set Instance options"
+      loading: Loading Instance options...
+    instance:
+      title: 4. Instance
+      detail: Customize the EC2 Instance that will be created.
     portHelp:
       link: Learn more
       text: about the ports that will be opened.
@@ -3416,8 +3433,6 @@ nodeDriver:
       item1: From the {appName} server to <code>TCP</code> port <code>22</code> <span class="text-muted">(SSH to install and configure Docker)</span>
       item2: From and To all other hosts on <code>UDP</code> ports <code>500</code> and <code>4500</code> <span class="text-muted">(for IPsec networking)</span></li>
       item3: These rules will <b>not</b> be added automatically.
-    setInstanceAction: "Next: Set Instance options"
-    instanceSection: Instance
     instanceOptionsSection: Instance Options
     instanceType:
       label: Instance Type

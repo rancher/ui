@@ -1,21 +1,19 @@
 <section class="horizontal-form">
   {{#if (eq step 1)}}
-    <form>
-      <div class="box mt-20">
-        <div class="row">
-          <label class="acc-label">{{t 'nodeDriver.digitalocean.accessToken.label'}}</label>
-          {{input type="password" value=config.accessToken classNames="form-control" placeholder=(t 'nodeDriver.digitalocean.accessToken.placeholder')}}
-          <p class="text-info">{{t 'nodeDriver.digitalocean.accessToken.help' htmlSafe=true}}</p>
-        </div>
+    <div class="box mt-20">
+      <div class="row">
+        <label class="acc-label">{{t 'nodeDriver.digitalocean.accessToken.label'}}</label>
+        {{input type="password" value=config.accessToken classNames="form-control" placeholder=(t 'nodeDriver.digitalocean.accessToken.placeholder')}}
+        <p class="text-info">{{t 'nodeDriver.digitalocean.accessToken.help' htmlSafe=true}}</p>
       </div>
-      {{top-errors errors=errors}}
-      {{save-cancel
-        save="getData"
-        cancel="cancel"
-        createLabel="nodeDriver.digitalocean.authAccountButton"
-        savingLabel="generic.loading"
-      }}
-    </form>
+    </div>
+    {{top-errors errors=errors}}
+    {{save-cancel
+      save="getData"
+      cancel="cancel"
+      createLabel="nodeDriver.digitalocean.authAccountButton"
+      savingLabel="generic.loading"
+    }}
   {{else}}
     {{#accordion-list showExpandAll=false as | al expandFn |}}
       <div class="over-hr mb-20"><span>{{driverOptionsTitle}}</span></div>
