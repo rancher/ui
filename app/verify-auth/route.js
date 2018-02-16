@@ -50,8 +50,8 @@ export default Route.extend({
 
         return gh.testConfig(config).then((resp) => {
           // TODO build with url building Util
-          let redirect = `${get(resp, 'redirectUrl')}&redirect_uri=${window.location.origin}/verify-auth?authProvider=github&state=${openerController.get('github.state')}&scope=read:org`;
-          window.location.href = redirect;
+          // let redirect = `${get(resp, 'redirectUrl')}&redirect_uri=${window.location.origin}/verify-auth?authProvider=github&state=${}&scope=read:org`;
+          gh.getAuthorizeUrl(resp, openerController.get('github.state'));
         }).catch(err => {
           this.send('gotError', err);
         });
@@ -70,15 +70,15 @@ export default Route.extend({
     }
 
     if (get(params, 'code') && get(params, 'login')) {
-      // state match
       if (get(this, 'github').stateMatches(get(params, 'state'))) {
         let ghProvider = get(this, 'access.providers').findBy('id', 'github');
         return ghProvider.doAction('login', {
           code: get(params, 'code'),
           responseType: 'cookie',
         }).then(() => {
-          debugger;
-          this.transitionTo('/');
+          return this.transitionTo('authenticated');
+        }).catch((err) => {
+          return this.transitionTo('login', {queryParams: {errorMsg: err.statusText, errorCode: err.status}});
         });
       }
       // return get(this, 'globalStore').request({
