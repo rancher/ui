@@ -21,13 +21,23 @@
 
 {{#if isEnabled}}
   <section class="box mt-30">
-    <h3>{{t 'authPage.github.authenticated.header.text'}}</h3>
+    <div class="header clear-fix mb-15 pb-0">
+      <h3 class="pull-left">{{t 'authPage.github.authenticated.header.text'}}</h3>
+      <div class="vertical-middle"></div>
+      <div class="right-buttons">
+        <button class="btn btn-sm right-divider-btn" {{action "promptDisable"}} disabled=true>
+          {{t 'generic.edit'}}
+        </button>
+        <button class="btn btn-sm right-divider-btn bg-error" {{action "promptDisable"}}>
+          {{t 'authPage.github.authenticated.disableAccess.disable'}}
+        </button>
+      </div>
+    </div>
     <hr/>
     {{#if isEnterprise }}
       <div><b>{{t 'authPage.github.authenticated.header.enterpriseHostName'}} </b> <span class="text-muted">{{githubConfig.hostname}}</span></div>
     {{/if}}
     <div><b>{{t 'authPage.github.authenticated.header.clientId.text'}} </b> <span class="text-muted">{{githubConfig.clientId}}</span></div>
-    <p class="text-info">{{t 'authPage.github.authenticated.header.clientId.helpText'}}</p>
   </section>
 
   {{site-access
@@ -35,26 +45,6 @@
       principals=model.principals
       collection='siteAccess.organizations'
   }}
-
-  <section class="box mt-30">
-    <h3>{{t 'authPage.github.authenticated.disableAccess.header' htmlSafe=true}}</h3>
-    <hr/>
-
-    <p>
-      {{t 'authPage.github.authenticated.disableAccess.warning' appName=settings.appName htmlSafe=true}}
-    </p>
-
-    {{#if confirmDisable}}
-      <button class="btn bg-error" {{action "disable"}}>
-        <i class="icon icon-alert"></i> {{t 'authPage.github.authenticated.disableAccess.confirmDisable'}}
-      </button>
-    {{else}}
-      <button class="btn bg-error" {{action "promptDisable"}}>
-        <i class="icon icon-umbrella"></i> {{t 'authPage.github.authenticated.disableAccess.disable'}}
-      </button>
-    {{/if}}
-
-  </section>
 {{/if}}
 
 {{#unless isEnabled}}
