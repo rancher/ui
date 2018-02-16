@@ -28,36 +28,82 @@ export default Route.extend({
     },
     error_description: {
       refreshModel: false
+    },
+    login: {
+      refreshModel: false
     }
 
   },
 
   model(params/* , transition */) {
-    let openerController = window.opener.lc('security.authentication.github');
-    let openerStore      = get(openerController, 'globalStore');
-    let qp               = get(params, 'config') || get(params, 'authProvider');
-    let type             = `${qp}Config`;
-    let config           = openerStore.getById(type, qp);
-    let gh = get(this, 'github');
-    let stateMsg = 'Authorization state did not match, please try again.';
+    debugger;
+    if (window.opener) {
+      let openerController = window.opener.lc('security.authentication.github');
+      let openerStore      = get(openerController, 'globalStore');
+      let qp               = get(params, 'config') || get(params, 'authProvider');
+      let type             = `${qp}Config`;
+      let config           = openerStore.getById(type, qp);
+      let gh = get(this, 'github');
+      let stateMsg = 'Authorization state did not match, please try again.';
 
-    if (get(params, 'config') === 'github') {
+      if (get(params, 'config') === 'github') {
 
-      return gh.testConfig(config).then((resp) => {
-        // TODO build with url building Util
-        let redirect = `${get(resp, 'redirectUrl')}&redirect_uri=${window.location.origin}/verify-auth?authProvider=github&state=${openerController.get('github.state')}&scope=read:org`;
-        window.location.href = redirect;
-      }).catch(err => {
-        this.send('gotError', err);
-      });
+        return gh.testConfig(config).then((resp) => {
+          // TODO build with url building Util
+          let redirect = `${get(resp, 'redirectUrl')}&redirect_uri=${window.location.origin}/verify-auth?authProvider=github&state=${openerController.get('github.state')}&scope=read:org`;
+          window.location.href = redirect;
+        }).catch(err => {
+          this.send('gotError', err);
+        });
 
-    } else if (get(params, 'code')) {
-      if (openerController.get('github').stateMatches(get(params, 'state'))) {
-        reply(params.error_description, params.code);
-      } else {
-        reply(stateMsg);
       }
+
+      if (get(params, 'code')) {
+        // TODO see if session.githubState works here
+        if (openerController.get('github').stateMatches(get(params, 'state'))) {
+          reply(params.error_description, params.code);
+        } else {
+          reply(stateMsg);
+        }
+      }
+
     }
+
+    if (get(params, 'code') && get(params, 'login')) {
+      // state match
+      if (get(this, 'github').stateMatches(get(params, 'state'))) {
+        let ghProvider = get(this, 'access.providers').findBy('id', 'github');
+        return ghProvider.doAction('login', {
+          code: get(params, 'code'),
+          responseType: 'cookie',
+        }).then(() => {
+          debugger;
+          this.transitionTo('/');
+        });
+      }
+      // return get(this, 'globalStore').request({
+      //   url: '/v3-public/githubProviders',
+      // }).then((providers) => {
+
+      //   if ( providers && get(providers,'length') ) {
+
+      //     set(this, 'providers', providers);
+      //     if (get(providers, 'length') === 1) {
+      //       set(this, 'provider', get(providers, 'firstObject.id'));
+      //     }
+      //   } else {
+      //     set(this, 'providers', null);
+      //   }
+      //   return done();
+
+      // }).catch(() => {
+
+      //   set(this, 'providers', null);
+      //   return done();
+      // });
+
+    }
+
     // if ( params.isTest ) {
     //   if ( github.stateMatches(params.state) ) {
     //     reply(params.error_description, params.code);
