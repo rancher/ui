@@ -1,14 +1,16 @@
 import { get, set, computed } from '@ember/object';
+
 import { inject as service } from '@ember/service';
 import Resource from 'ember-api-store/models/resource';
 import { hasMany } from 'ember-api-store/utils/denormalize';
 import ResourceUsage from 'shared/mixins/resource-usage';
 import { alias } from '@ember/object/computed';
 import { resolve } from 'rsvp';
-
+import { later } from '@ember/runloop';
 
 export default Resource.extend(ResourceUsage, {
   globalStore:  service(),
+  growl:        service(),
   scope:        service(),
   router:       service(),
 
@@ -18,6 +20,28 @@ export default Resource.extend(ResourceUsage, {
   machines: alias('nodes'),
   clusterRoleTemplateBindings: hasMany('id', 'clusterRoleTemplateBinding', 'clusterId'),
   roleTemplateBindings: alias('clusterRoleTemplateBindings'),
+
+  actions: {
+    edit() {
+      this.get('router').transitionTo('global-admin.clusters.detail.edit', this.get('id'));
+    },
+
+    scaleDownPool(uuid) {
+      const pool = (get(this,'nodePools')||[]).findBy('uuid', uuid);
+      if ( pool ) {
+        set(pool, 'quantity', Math.max(0, get(pool, 'quantity')||0 - 1 ));
+      }
+      this.savePoolScale();
+    },
+
+    scaleUpPool(uuid) {
+      const pool = (get(this,'nodePools')||[]).findBy('uuid', uuid);
+      if ( pool ) {
+        set(pool, 'quantity', get(pool, 'quantity')||0 + 1 );
+      }
+      this.savePoolScale();
+    },
+  },
 
   configName: computed(function() {
     const keys = this.allKeys().filter(x => x.endsWith('Config'));
@@ -56,6 +80,26 @@ export default Resource.extend(ResourceUsage, {
     }
   }),
 
+  suppportsNodePools: computed('configName', function() {
+    const configName = get(this, 'configName');
+    return configName === 'rancherKubernetesEngineConfig' || configName === 'localConfig';
+  }),
+
+  scaleTimer: null,
+  savePoolScale() {
+    if ( get(this, 'scaleTimer') ) {
+      cancel(get(this, 'scaleTimer'));
+    }
+
+    var timer = later(this, function() {
+      this.save().catch((err) => {
+        get(this, 'growl').fromError('Error updating scale',err);
+      });
+    }, 500);
+
+    set(this, 'scaleTimer', timer);
+  },
+
   clearProvidersExcept(keep) {
     const keys = this.allKeys().filter(x => x.endsWith('Config'));
 
@@ -65,12 +109,6 @@ export default Resource.extend(ResourceUsage, {
         set(this, key, null);
       }
     }
-  },
-
-  actions: {
-    edit() {
-      this.get('router').transitionTo('global-admin.clusters.detail.edit', this.get('id'));
-    },
   },
 
   delete: function(/*arguments*/) {

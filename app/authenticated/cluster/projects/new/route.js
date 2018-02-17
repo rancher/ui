@@ -9,11 +9,12 @@ export default Route.extend({
 
   model() {
     const store = get(this, 'globalStore');
+    const cluster = this.modelFor('authenticated.cluster');
 
     const project = store.createRecord({
       type: 'project',
       name: '',
-      clusterId: get(this,'scope.currentCluster.id'),
+      clusterId: get(cluster, 'id'),
     });
 
     return hash({
