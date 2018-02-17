@@ -2,19 +2,18 @@
   <div class="pull-left"><h1>{{t 'nav.apps.apps'}}</h1></div>
 
   <div class="right-buttons">
-    {{#link-to "catalog-tab" classNames="btn btn-sm bg-primary mr-10" disabled=(rbac-prevents resource="namespace" scope="project" permission="create")}}{{t 'nav.apps.launch'}}{{/link-to}}
+    {{#link-to "catalog-tab" classNames="btn btn-sm bg-primary mr-10" disabled=(rbac-prevents resource="app" scope="project" permission="create")}}{{t 'nav.apps.launch'}}{{/link-to}}
   </div>
 </section>
 
 <section class="pl-0 pr-0">
   {{#each filteredApps as |ns|}}
-    {{log ns}}
     {{namespace-app
       model=ns
       toggle=(action "toggleExpand" ns.id)
       expanded=(array-includes expandedApps ns.id)
     }}
   {{else}}
-    {{empty-table disabled=(rbac-prevents resource="namespace" scope="project" permission="create") resource="container" newRoute="catalog-tab" newTranslationKey="nav.apps.launch"}}
+    {{empty-table disabled=(rbac-prevents resource="app" scope="project" permission="create") resource="container" newRoute="catalog-tab" newTranslationKey="nav.apps.launch"}}
   {{/each}}
 </section>

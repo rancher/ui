@@ -23,6 +23,7 @@ export default Route.extend({
 
     var dependencies = {
       tpl: get(this, 'catalog').fetchTemplate(params.template),
+      namespaces: clusterStore.findAll('namespace')
     };
 
     if ( params.upgrade )
@@ -38,9 +39,15 @@ export default Route.extend({
     return hash(dependencies, 'Load dependencies').then((results) => {
       if ( !results.namespace )
       {
+        let neuNSN = results.tpl.get('defaultName');
+
+        if (results.namespaces.findBy('id', neuNSN)){
+          neuNSN = `${neuNSN}-1`;
+        }
         results.namespace = clusterStore.createRecord({
           type: 'namespace',
-          name: results.tpl.get('defaultName'),
+          name: neuNSN,
+          id: neuNSN,
           answers: {},
         });
       }

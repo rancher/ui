@@ -19,7 +19,7 @@ const rootNav = [
     localizedLabel: 'nav.apps.tab',
     route: 'apps-tab',
     ctx: [getProjectId],
-    resource: ["namespace"], // app
+    resource: ["app"],
     resourceScope: 'project',
   },
   {

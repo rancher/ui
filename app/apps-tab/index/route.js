@@ -7,12 +7,12 @@ import { parseExternalId } from 'ui/utils/parse-externalid';
 
 export default Route.extend({
   catalog: service(),
-  globalStore: service(),
+  store: service(),
 
   model() {
     const catalog = get(this, 'catalog');
 
-    return this.get('globalStore').find('app').then((apps) => {
+    return this.get('store').find('app').then((apps) => {
       let deps = [];
 
       apps.forEach((stack) => {
