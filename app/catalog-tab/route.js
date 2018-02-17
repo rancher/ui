@@ -43,7 +43,7 @@ export default Route.extend({
   },
 
   model(params) {
-    const project = this.get('scope.currentProject');
+    const project = this.modelFor('authenticated.project').get('project');
 
     if (params.launchCluster) {
       params.plusInfra = true;
@@ -53,7 +53,7 @@ export default Route.extend({
 
     return this.get('catalog').fetchTemplates(params).then((res) => {
       res.catalog.forEach((tpl) => {
-        let exists = this.get('project.namespaces').findBy('externalIdInfo.templateId', tpl.get('id'));
+        let exists = project.get('apps').findBy('externalIdInfo.templateId', tpl.get('id'));
         tpl.set('exists', !!exists);
       });
       res.catalogs = this.get('catalogs');

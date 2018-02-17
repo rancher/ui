@@ -22,8 +22,7 @@
       <br/>
       {{#unless promptPasswordReset}}
         {{#if isGithub}}
-          <p>{{t 'loginPage.githubMessage' appName=settings.appName}}</p>
-          <br/>
+          {{login-github action="started" waiting=waiting}}
         {{/if}}
 
         {{#if isShibboleth}}
@@ -43,14 +42,6 @@
             {{/if}}
           </div>
         {{/if}}
-
-        {{#if (or isLocal isActiveDirectory isOpenLdap isAzureAd)}}
-          {{login-user-pass action="authenticate" waiting=waiting}}
-        {{/if}}
-
-        {{#if isGithub}}
-          {{login-github action="started" waiting=waiting}}
-        {{/if}}
         {{#if isShibboleth}}
           {{login-shibboleth action="started" waiting=waiting}}
         {{/if}}
@@ -59,6 +50,14 @@
       {{#if isCaas}}
         {{caas-login promptReset=(mut promptPasswordReset)}}
       {{/if}}
+
+      {{!-- {{#if (or isLocal isActiveDirectory isOpenLdap isAzureAd)}} --}}
+
+
+      {{#if (or isLocal)}}
+        {{login-user-pass action="authenticate" waiting=waiting}}
+      {{/if}}
+
     </section>
   {{/if}}
 </div>

@@ -22,6 +22,7 @@ export default Resource.extend({
   cluster: reference('clusterId', 'cluster'),
   projectRoleTemplateBindings: hasMany('id', 'projectRoleTemplateBinding', 'projectId'), // 2.0 bug projectId is wrong in the ptrb should be <cluster-id>:<project-id> instead of just <project-id>
   roleTemplateBindings: alias('projectRoleTemplateBindings'),
+  apps: hasMany('id', 'apps', 'projectId'),
 
   namespaces: hasMany('id', 'namespace', 'projectId', 'clusterStore'),
 

@@ -53,22 +53,24 @@
     <p>{{templateResource.description}}</p>
   {{/if}}
 </section>
-
 <section class="{{sectionClass}}">
-  <h4>{{t 'newCatalog.newNamespace'}}</h4>
-
+  <h4>{{t 'newCatalog.newApp'}}</h4>
   {{form-name-description
-      model=primaryResource
+      model=templateResource
       nameRequired=true
+      descriptionShow=false
   }}
+  {{#advanced-section}}
+    <hr class="mt-20 mb-20"/>
 
-  {{form-namespace
-      namespace=primaryResource
-      errors=namespaceErrors
-  }}
+    {{form-namespace
+        namespace=primaryResource
+        mode='reuse'
+        errors=namespaceErrors
+    }}
+  {{/advanced-section}}
 
 </section>
-
 
 <section class="{{sectionClass}}">
   <h4>{{t 'newCatalog.templateVersion'}}</h4>

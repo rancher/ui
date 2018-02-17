@@ -19,15 +19,16 @@
     </div>
     <div class="col span-5">
       {{#if showList}}
-        {{input-identity allowTeams=false action="addAuthorized" onError="showError"}}
+        {{input-identity allowTeams=false action="addAuthorized" onError="gotError"}}
 
         <hr/>
         <h5>{{t 'siteAccess.listHeader' individuals=(t individuals) collection=(t collection)}}</h5>
 
         <ul class="list-unstyled gh-block-list mt-10">
-          {{#each copy.allowedIdentities as |item|}}
+          {{log copy.allowedPrincipals}}
+              {{#each copy.allowedPrincipals as |item|}}
             <li>
-              {{#identity-block identity=item}}
+              {{#identity-block principal=item}}
                 <button class="btn bg-primary btn-sm pull-right gh-action" {{action "removeIdentity" item}} disabled={{eq item.id access.identity.id}}><i class="icon icon-minus"/></button>
               {{/identity-block}}
             </li>
@@ -44,7 +45,7 @@
 
   {{top-errors errors=errors}}
 
-  <div class="inline-block">
+  <div class="row">
     {{save-cancel cancelDisabled=true saved=saved savedDisabled=saved editing=true save="save"}}
   </div>
 </section>

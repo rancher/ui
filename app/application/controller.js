@@ -7,7 +7,7 @@ export default Controller.extend({
   settings: service(),
 
   // GitHub auth params
-  queryParams     : ['error_description','state','code','isTest', 'isPopup','redirectTo'],
+  queryParams     : [/*'error_description', 'state','code', */'isTest', 'isPopup','redirectTo', 'fromAuthProvider'],
 
   resourceActions : service('resource-actions'),
   tooltipService  : service('tooltip'),
