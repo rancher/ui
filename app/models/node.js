@@ -15,6 +15,7 @@ var Node = Resource.extend(StateCounts, ResourceUsage, {
   settings: service(),
   prefs: service(),
   router: service(),
+  globalStore: service(),
   clusterStore: service(),
   intl: service(),
 
@@ -56,8 +57,8 @@ var Node = Resource.extend(StateCounts, ResourceUsage, {
       get(this,'modalService').toggleModal('modal-edit-host', this);
     },
 
-    machineConfig: function() {
-      var url = this.linkFor('machineConfig');
+    nodeConfig: function() {
+      var url = this.linkFor('nodeConfig');
       if ( url )
       {
         download(url);
@@ -70,7 +71,7 @@ var Node = Resource.extend(StateCounts, ResourceUsage, {
     let l = get(this,'links');
 
     let out = [
-      { label: 'action.machineConfig', icon: 'icon icon-download', action: 'machineConfig', enabled: !!l.machineConfig},
+      { label: 'action.nodeConfig', icon: 'icon icon-download', action: 'nodeConfig', enabled: !!l.nodeConfig},
       { divider: true },
       { label: 'action.edit', icon: 'icon icon-edit', action: 'edit', enabled: !!l.update },
       { divider: true },
@@ -149,6 +150,12 @@ var Node = Resource.extend(StateCounts, ResourceUsage, {
     }
 
     return 4;
+  }),
+
+  nodePool: computed('nodePoolUuid','cluster.nodePools.[]', function() {
+    const uuid = get(this, 'nodePoolUuid');
+    const cluster = get(this, 'cluster');
+    return (get(cluster,'nodePools')||[]).findBy('uuid', uuid);
   }),
 
 /*
