@@ -76,70 +76,8 @@ export default Route.extend({
           return this.transitionTo('authenticated');
         });
       }
-      // return get(this, 'globalStore').request({
-      //   url: '/v3-public/githubProviders',
-      // }).then((providers) => {
-
-      //   if ( providers && get(providers,'length') ) {
-
-      //     set(this, 'providers', providers);
-      //     if (get(providers, 'length') === 1) {
-      //       set(this, 'provider', get(providers, 'firstObject.id'));
-      //     }
-      //   } else {
-      //     set(this, 'providers', null);
-      //   }
-      //   return done();
-
-      // }).catch(() => {
-
-      //   set(this, 'providers', null);
-      //   return done();
-      // });
 
     }
-
-    // if ( params.isTest ) {
-    //   if ( github.stateMatches(params.state) ) {
-    //     reply(params.error_description, params.code);
-    //   } else {
-    //     reply(stateMsg);
-    //   }
-
-    //   transition.abort();
-
-    //   return reject('isTest');
-
-    // } else if ( params.code ) {
-
-    //   if ( github.stateMatches(params.state) ) {
-    //     return get(this, 'access').login(params.code).then(() => {
-    //       // Abort the orignial transition that was coming in here since
-    //       // we'll redirect the user manually in finishLogin
-    //       // if we dont then model hook runs twice to finish the transition itself
-    //       transition.abort();
-    //       // Can't call this.send() here because the initial transition isn't done yet
-    //       this.finishLogin();
-    //     }).catch((err) => {
-    //       transition.abort();
-    //       this.transitionTo('login', {queryParams: { errorMsg: err.message, errorCode: err.status}});
-    //     }).finally(() => {
-    //       this.controllerFor('application').setProperties({
-    //         state: null,
-    //         code: null,
-    //       });
-    //     });
-    //     debugger;
-
-    //   } else {
-
-    //     let obj = {message: stateMsg, code: 'StateMismatch'};
-
-    //     this.controllerFor('application').set('error', obj);
-
-    //     return reject(obj);
-    //   }
-    // }
 
     function reply(err,code) {
       try {
