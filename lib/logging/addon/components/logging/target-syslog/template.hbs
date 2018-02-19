@@ -1,0 +1,56 @@
+<h2 class="pt-30">{{t 'loggingPage.syslog.header'}}</h2>
+<hr/>
+<section class="box">
+  <div class="row">
+      <label class="acc-label">{{t 'loggingPage.endpoint'}}{{field-required}}</label>
+      <div class="input-group">
+        {{input
+            type="text"
+            value=config.endpoint
+            classNames="form-control"
+            placeholder=(t 'loggingPage.endpointPlaceholder')
+        }}
+        <div class="input-group-btn bg-primary">
+          <button
+            type="button"
+            class="btn bg-primary dropdown-toggle text-uppercase"
+            data-toggle="dropdown"
+            aria-expanded="false"
+          >
+            <span class="pr-5">{{config.protocol}}</span><i class="icon icon-chevron-down"></i>
+          </button>
+          <ul class="dropdown-menu dropdown-menu-right" role="menu">
+            <li><a {{action "changeProtocol" 'tcp'}}>TCP</a></li>
+            <li><a {{action "changeProtocol" 'udp'}}>UDP</a></li>
+          </ul>
+        </div>
+      </div>
+    <p class="text-info text-small mb-0">{{t 'loggingPage.syslog.endpointHelpText'}}</p>
+  </div>
+
+  <div class="row">
+    <div class="col span-6 mt-0 pt-0">
+      <label class="acc-label" for="">{{t 'loggingPage.syslog.program'}}</label>
+      {{input
+          type="text"
+          value=config.program
+          classNames="form-control"
+          placeholder=(t 'loggingPage.syslog.programPlaceholder')
+      }}
+      <p class="text-info text-small">{{t 'loggingPage.syslog.programHelpText'}}</p>
+    </div>
+  </div>
+
+  <div>
+    <span class="mr-10">Log Severity:</span>
+    {{#each severities as |item|}}
+      <label class="mr-10 text-capitalize">
+        {{radio-button selection=config.severity value=item.value }}
+        {{t item.label}}
+      </label>
+    {{/each}}
+    {{t 'loggingPage.syslog.severityHelpText' htmlSafe=true}}
+  </div>
+</section>
+
+{{logging/form-log-format logPreview=logPreview model=model}}
