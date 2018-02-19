@@ -2,27 +2,6 @@ import Resource from 'ember-api-store/models/resource';
 import { get, computed } from '@ember/object';
 
 export default Resource.extend({
-  expiresAt: computed('created','ttl', function() {
-    const created = get(this, 'created');
-    const ttl = get(this, 'ttl');
-
-    if ( created && ttl ) {
-      return moment(created).add(ttl,'ms').toDate();
-    }
-
-    return null;
-  }),
-
-  expired: computed('expiresAt', function() {
-    const expiresDate = get(this,'expiresAt');
-    if ( !expiresDate ) {
-      return false;
-    }
-
-    const now = moment();
-    return now.diff(moment(expiresDate)) > 0;
-  }).volatile(),
-
   state: computed('expired', function() {
     if ( get(this, 'expired') ) {
       return 'expired';
