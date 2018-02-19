@@ -40,14 +40,15 @@ export default Route.extend({
       if ( !results.namespace )
       {
         let neuNSN = results.tpl.get('defaultName');
+        let dupe = '';
 
-        if (results.namespaces.findBy('id', neuNSN)){
-          neuNSN = `${neuNSN}-1`;
+        if ( dupe = results.namespaces.findBy('id', neuNSN)){
+          neuNSN = `${dupe.name}-${Math.random().toString(36).substring(7)}`; // generate a random 5 char string for the dupename
         }
         results.namespace = clusterStore.createRecord({
           type: 'namespace',
           name: neuNSN,
-          id: neuNSN,
+          projectId: this.modelFor('authenticated.project').get('project.id'),
           answers: {},
         });
       }
