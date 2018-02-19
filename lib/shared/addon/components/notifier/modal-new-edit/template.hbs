@@ -1,0 +1,214 @@
+<div class="row nav nav-boxes mv-30 notifier-types">
+  {{#each types as |item|}}
+    <a
+      {{action "switchType" item.type}}
+      class="col span-2 nav-box-item driver {{if (eq item.type 'smtp') 'email' item.type}} {{if (eq item.type currentType) 'active' ''}}"
+      disabled={{item.disabled}}
+      alt={{item.type}}
+    >
+      {{#if item.label}}
+        <p style="position:absolute;bottom:-8px;">{{t item.label}}</p>
+      {{/if}}
+    </a>
+  {{/each}}
+</div>
+<hr />
+
+{{#if (eq currentType 'slack')}}
+  <div class="row">
+    <div class="col span-12 mt-0 mb-0">
+      {{form-name-description
+          name=model.name
+          nameDisabled=false
+          description=model.description
+          bothColClass="col span-6 mt-0"
+          colClass="col span-12 mt-0"
+      }}
+    </div>
+  </div>
+  <div class="row">
+    <div class="col span-12">
+      <div class="acc-label text-capitalize">{{t 'notifierPage.slack.url'}}{{field-required}}</div>
+      {{input
+          classNames="form-control"
+          value=model.slackConfig.url
+          placeholder=(t 'notifierPage.slack.urlPlaceholder')
+      }}
+    </div>
+  </div>
+  <div class="row">
+    <div class="col span-6">
+      <div class="acc-label text-capitalize">{{t 'notifierPage.slack.defaultChannel'}}{{field-required}}</div>
+      {{input
+          classNames="form-control"
+          value=model.slackConfig.defaultRecipient
+          placeholder=(t 'notifierPage.slack.defaultRecipientPlaceholder')
+      }}
+    </div>
+  </div>
+{{else if (eq currentType 'email')}}
+  <div class="row">
+    <div class="col span-12 mt-0 mb-0">
+      {{form-name-description
+          name=model.name
+          nameDisabled=false
+          description=model.description
+          bothColClass="col span-6 mt-0"
+          colClass="col span-12 mt-0"
+      }}
+    </div>
+  </div>
+
+  <div class="acc-label text-capitalize">{{t 'notifierPage.smtp.server'}}</div>
+  <section class="box">
+    <div class="row">
+      <div class="col span-6">
+        <div class="acc-label text-capitalize">{{t 'notifierPage.smtp.host'}}{{field-required}}</div>
+        {{input
+            classNames="form-control"
+            value=model.smtpConfig.host
+            placeholder=(t 'notifierPage.smtp.hostPlaceholder')
+        }}
+      </div>
+
+      <div class="col span-4">
+        <div class="acc-label text-capitalize">{{t 'notifierPage.smtp.port'}}{{field-required}}</div>
+        {{input classNames="form-control" value=model.smtpConfig.port placeholder=(t 'notifierPage.smtp.portPlaceholder')}}
+      </div>
+      <div class="col span-2" style="margin-top: 43px;">
+        {{input type="checkbox" classNames="form-control" checked=model.smtpConfig.tls}} Use TLS
+      </div>
+    </div>
+    <div class="row">
+      <div class="col span-6">
+        <div class="acc-label text-capitalize">{{t 'notifierPage.smtp.userName'}}{{field-required}}</div>
+        {{input
+            classNames="form-control"
+            autocomplete="off"
+            value=model.smtpConfig.username
+            placeholder=(t 'notifierPage.smtp.userNamePlaceholder')
+        }}
+      </div>
+      <div class="col span-6">
+        <div class="acc-label text-capitalize">{{t 'notifierPage.smtp.password'}}{{field-required}}</div>
+        {{input
+            type="password"
+            autocomplete="off"
+            classNames="form-control"
+            value=model.smtpConfig.password
+            placeholder=(t 'notifierPage.smtp.passwordPlaceholder')
+        }}
+      </div>
+    </div>
+  </section>
+  <div class="row">
+    <div class="col span-6">
+      <div class="acc-label text-capitalize">{{t 'notifierPage.smtp.defaultRecipient'}}{{field-required}}</div>
+      {{input
+          classNames="form-control"
+          value=model.smtpConfig.defaultRecipient
+          placeholder=(t 'notifierPage.smtp.defaultRecipient')
+      }}
+    </div>
+  </div>
+{{else if (eq currentType 'pagerduty')}}
+  <div class="row">
+    <div class="col span-12 mt-0 mb-0">
+      {{form-name-description
+          name=model.name
+          nameDisabled=false
+          description=model.description
+          bothColClass="col span-6 mt-0"
+          colClass="col span-12 mt-0"
+      }}
+    </div>
+  </div>
+  <div class="row">
+    <div class="col span-12">
+      <div class="acc-label text-capitalize">{{t 'notifierPage.pagerduty.serviceKey'}}{{field-required}}</div>
+      {{input
+          classNames="form-control"
+          value=model.pagerdutyConfig.serviceKey
+          placeholder=(t 'notifierPage.pagerduty.serviceKeyPlaceholder')
+      }}
+    </div>
+  </div>
+{{else if (eq currentType 'webhook')}}
+  <div class="row">
+    <div class="col span-12 mt-0 mb-0">
+      {{form-name-description
+          name=model.name
+          nameDisabled=false
+          description=model.description
+          bothColClass="col span-6 mt-0"
+          colClass="col span-12 mt-0"
+      }}
+    </div>
+  </div>
+  <div class="row">
+    <div class="col span-12">
+      <div class="acc-label text-capitalize">{{t 'notifierPage.webhook.url'}}{{field-required}}</div>
+      {{input
+          classNames="form-control"
+          value=model.webhookConfig.url
+          placeholder=(t 'notifierPage.webhook.urlPlaceholder')
+      }}
+    </div>
+  </div>
+{{/if}}
+
+{{top-errors errors=errors}}
+
+<div class="over-hr mt-40">
+  <span>
+    {{#if testing}}
+      <button
+        style="color: white;"
+        class="btn bg-info btn-disabled"
+      >
+        <i class="icon icon-spinner icon-spin"></i>{{t 'notifierPage.testAction.testing'}}
+      </button>
+    {{else}}
+      {{#if tested}}
+        <button
+          {{action "test"}}
+          class="btn  btn-disabled {{if testOk 'bg-success' 'bg-error'}}"
+          style="color: white;"
+        >
+          {{if testOk (t 'notifierPage.testAction.testOk') (t 'notifierPage.testAction.testFailed')}}
+        </button>
+      {{else}}
+        <button
+          {{action "test"}}
+          class="btn bg-info"
+          style="color: white;"
+        >
+          {{t 'notifierPage.testAction.test'}}
+        </button>
+      {{/if}}
+    {{/if}}
+  </span>
+</div>
+
+<div class="footer-actions">
+  {{save-cancel createLabel=addBtnLabel save="save" cancel="cancel"}}
+</div>
+
+{{#if (eq currentType 'slack')}}
+  <div class="box mt-20">
+    <h3></h3>
+    <h3> {{t 'notifierPage.slack.helpTitle'}}</h3>
+    <ol>
+      {{t 'notifierPage.slack.helpText' htmlSafe=true}}
+    </ol>
+  </div>
+{{/if}}
+
+{{#if (eq currentType 'pagerduty')}}
+  <div class="box mt-20">
+    <h3> {{t 'notifierPage.pagerduty.helpTitle'}}</h3>
+    <ol>
+      {{t 'notifierPage.pagerduty.helpText' htmlSafe=true}}
+    </ol>
+  </div>
+{{/if}}

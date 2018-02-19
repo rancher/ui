@@ -71,11 +71,23 @@ Router.map(function() {
           this.route('new', {path: '/add'});
         });
       });
+
+      this.mount('logging', {path: '/logging'});
+      this.mount('alert', {path: '/alerts'});
+      this.route('notifier', {path: '/notifiers'}, function() {
+        this.route('index', {path: '/'});
+        this.route('new', {path: '/add'});
+        this.route('edit', {path: '/:notifier_id'});
+      });
     });
 
     // Per-Project
     this.route('project', {path: '/p/:project_id'}, function() {
       this.route('index', {path: '/'});
+
+      // alert/logging
+      this.mount('logging', {path: '/logging'});
+      this.mount('alert', {path: '/alerts'});
 
       // Workload
       this.route('containers', {resetNamespace: true}, function() {
