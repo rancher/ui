@@ -1,0 +1,12 @@
+<section class="header clearfix">
+  <div class="pull-left pt-10"><h1 class="text-capitalize">{{if (eq pageScope 'cluster') (t 'alertPage.cluster') (t 'alertPage.project')}} {{t 'alertPage.alerts'}}</h1></div>
+  <div class="right-buttons">
+    {{#link-to "new" classNames="btn btn-sm bg-primary"}}{{t 'alertPage.index.addAlert'}}{{/link-to}}
+  </div>
+</section>
+
+{{alert-table
+    pageScope=pageScope
+    notifiers=notifiers
+    model=alerts
+}}
