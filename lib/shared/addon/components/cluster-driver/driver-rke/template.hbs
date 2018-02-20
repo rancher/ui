@@ -1,19 +1,8 @@
 {{#if (eq step 1)}}
   {{#accordion-list showExpandAll=false as |al expandFn|}}
-    {{#unless isCustom}}
-      {{cru-node-pools
-        cluster=cluster
-        driver=nodeWhich
-        nodeTemplates=model.nodeTemplates
-        registerHook=(action "registerHook")
-      }}
-    {{/unless}}
-
     {{#accordion-list-item
-      title=(t 'clusterNew.rke.config.label')
-      detail=(t 'clusterNew.rke.config.detail')
-      showExpand=false
-      expandOnInit=true
+      title=(t 'clusterNew.rke.customize.label')
+      detail=(t 'clusterNew.rke.customize.detail')
       expandAll=al.expandAll
       expand=(action expandFn)
     }}
@@ -36,14 +25,6 @@
           }}
         </div>
       </div>
-    {{/accordion-list-item}}
-
-    {{#accordion-list-item
-      title=(t 'clusterNew.rke.customize.label')
-      detail=(t 'clusterNew.rke.customize.detail')
-      expandAll=al.expandAll
-      expand=(action expandFn)
-    }}
       <div class="row">
         <div class="col span-6">
           <label class="acc-label">{{t 'clusterNew.rke.registry.label'}}</label>
@@ -96,8 +77,19 @@
     {{/accordion-list-item}}
   {{/accordion-list}}
 
+  {{#unless isCustom}}
+    {{cru-node-pools
+      mode=mode
+      cluster=cluster
+      driver=nodeWhich
+      nodeTemplates=model.nodeTemplates
+      registerHook=(action "registerHook")
+      setNodePoolErrors=(action "setNodePoolErrors")
+    }}
+  {{/unless}}
+
   {{top-errors errors=errors}}
-  {{save-cancel createLabel=(if isCustom 'saveCancel.next' 'saveCancel.create') save=(action 'driverSave') cancel=cancel}}
+  {{save-cancel createLabel=(if isCustom 'saveCancel.next' 'saveCancel.create') save="driverSave" cancel="close"}}
 {{else}}
 
   <div class="mt-20">

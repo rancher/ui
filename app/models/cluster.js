@@ -27,20 +27,18 @@ export default Resource.extend(ResourceUsage, {
       this.get('router').transitionTo('authenticated.cluster.edit', this.get('id'));
     },
 
-    scaleDownPool(uuid) {
-      const pool = (get(this,'nodePools')||[]).findBy('uuid', uuid);
+    scaleDownPool(id) {
+      const pool = (get(this,'nodePools')||[]).findBy('id', id);
       if ( pool ) {
-        set(pool, 'quantity', Math.max(0, get(pool, 'quantity')||0 - 1 ));
+        pool.incrementQuantity(-1);
       }
-      this.savePoolScale();
     },
 
-    scaleUpPool(uuid) {
-      const pool = (get(this,'nodePools')||[]).findBy('uuid', uuid);
+    scaleUpPool(id) {
+      const pool = (get(this,'nodePools')||[]).findBy('id', id);
       if ( pool ) {
-        set(pool, 'quantity', get(pool, 'quantity')||0 + 1 );
+        pool.incrementQuantity(1);
       }
-      this.savePoolScale();
     },
   },
 
@@ -110,21 +108,6 @@ export default Resource.extend(ResourceUsage, {
     const configName = get(this, 'configName');
     return configName === 'rancherKubernetesEngineConfig' || configName === 'localConfig';
   }),
-
-  scaleTimer: null,
-  savePoolScale() {
-    if ( get(this, 'scaleTimer') ) {
-      cancel(get(this, 'scaleTimer'));
-    }
-
-    var timer = later(this, function() {
-      this.save().catch((err) => {
-        get(this, 'growl').fromError('Error updating scale',err);
-      });
-    }, 500);
-
-    set(this, 'scaleTimer', timer);
-  },
 
   clearProvidersExcept(keep) {
     const keys = this.allKeys().filter(x => x.endsWith('Config'));

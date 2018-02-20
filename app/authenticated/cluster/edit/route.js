@@ -7,11 +7,11 @@ export default Route.extend({
   access: service(),
   globalStore: service(),
 
-  model(params) {
+  model() {
     let globalStore = this.get('globalStore');
 
     return hash({
-      cluster: globalStore.find('cluster', params.cluster_id),
+      cluster: this.modelFor('authenticated.cluster').clone(),
       nodeTemplates: globalStore.findAll('nodeTemplate'),
       nodeDrivers: globalStore.findAll('nodeDriver'),
       psps: globalStore.findAll('podSecurityPolicyTemplate'),

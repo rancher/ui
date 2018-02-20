@@ -4,12 +4,12 @@ import { alias } from '@ember/object/computed';
 export default Controller.extend({
   cluster: alias('model.cluster'),
 
-  provider: 'googlegke',
   queryParams: ['provider'],
+  provider: '',
 
   actions: {
     close() {
-      this.transitionToRoute('clusters.index');
+      this.transitionToRoute('authenticated.cluster');
     },
   },
 });

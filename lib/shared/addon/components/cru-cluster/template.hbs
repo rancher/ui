@@ -10,15 +10,17 @@
   </h1>
 </section>
 
-<div class="row nav nav-boxes checked-active">
-  {{#each providerChoices as |choice|}}
-    {{#link-to (query-params provider=choice.name) class=(concat "col span-2 nav-box-item driver machine-driver " choice.name)}}
-      <p class="sr-only">{{choice.displayName}}</p>
-    {{/link-to}}
-  {{/each}}
-</div>
+{{#unless initialProvider}}
+  <div class="row nav nav-boxes checked-active">
+    {{#each providerChoices as |choice|}}
+      {{#link-to (query-params provider=choice.name) class=(concat "col span-2 nav-box-item driver machine-driver " choice.name)}}
+        <p class="sr-only">{{choice.displayName}}</p>
+      {{/link-to}}
+    {{/each}}
+  </div>
+{{/unless}}
 
-{{#if (or isEdit (eq step 1))}}
+{{#if (eq step 1)}}
   <form onsubmit={{action "clickNext"}}>
     <div class="row">
       {{form-name-description
@@ -52,20 +54,15 @@
     {{/accordion-list}}
 
     {{top-errors errors=errors}}
-    {{#if (and isNew driverInfo.preSave)}}
-      {{save-cancel createLabel='saveCancel.next' save='maybeSave' cancel='close'}}
-    {{/if}}
   </form>
 {{/if}}
 
-{{#unless (and isNew driverInfo.preSave)}}
-  {{component driverInfo.driverComponent
-    mode=mode
-    nodeComponent=driverInfo.nodeComponent
-    nodeWhich=driverInfo.nodeWhich
-    model=model
-    save=(action 'save')
-    close=(action 'close')
-    registerHook=(action "registerHook")
-  }}
-{{/unless}}
+{{component driverInfo.driverComponent
+  mode=mode
+  nodeComponent=driverInfo.nodeComponent
+  nodeWhich=driverInfo.nodeWhich
+  model=model
+  save=(action 'save')
+  close=(action 'close')
+  registerHook=(action "registerHook")
+}}

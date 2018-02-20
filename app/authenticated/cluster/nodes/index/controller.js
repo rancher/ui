@@ -19,12 +19,12 @@ export default Controller.extend({
   ],
 
   actions: {
-    scaleDownPool(uuid) {
-      get(this,'model.cluster').send('scaleDownPool',uuid);
+    scaleDownPool(id) {
+      get(this,'model.cluster').send('scaleDownPool',id);
     },
 
-    scaleUpPool(uuid) {
-      get(this,'model.cluster').send('scaleUpPool',uuid);
+    scaleUpPool(id) {
+      get(this,'model.cluster').send('scaleUpPool',id);
     },
   },
 

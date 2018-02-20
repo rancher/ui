@@ -30,6 +30,46 @@
 {{else}}
   {{#accordion-list showExpandAll=false as |al expandFn|}}
     {{#accordion-list-item
+      title=(t 'clusterNew.customize.title')
+      detail=(t 'clusterNew.customize.detail')
+      everExpandede=true
+      expandAll=al.expandAll
+      expand=(action expandFn)
+    }}
+      <div class="row">
+        <div class="col span-6">
+          <label class="acc-label">{{t 'clusterNew.googlegke.masterVersion.label'}}</label>
+          {{new-select
+              classNames="form-control"
+              content=versionChoices
+              optionValuePath="value"
+              optionLabelPath="value"
+              value=config.masterVersion
+              prompt="clusterNew.googlegke.masterVersion.prompt"
+              localizedPrompt=true
+          }}
+        </div>
+        <div class="col span-6">
+          <label class="acc-label">{{t 'clusterNew.googlegke.clusterIpv4Cidr.label'}}</label>
+          {{input value=config.clusterIpv4Cidr placeholder=(t 'clusterNew.googlegke.clusterIpv4Cidr.placeholder') disabled=editing}}
+        </div>
+      </div>
+      <div class="row">
+        <div class="col span-6">
+          <label class="acc-label">{{t 'clusterNew.googlegke.alphaFeatures.label'}}</label>
+          <div class="form-control-static">
+            <label class="mr-20 hand">
+              {{radio-button selection=config.enableAlphaFeature value=true disabled=editing}} {{t 'generic.enabled'}}
+            </label>
+            <label class="hand">
+              {{radio-button selection=config.enableAlphaFeature value=false disabled=editing}} {{t 'generic.disabled'}}
+            </label>
+          </div>
+        </div>
+      </div>
+    {{/accordion-list-item}}
+
+    {{#accordion-list-item
       title=(t 'clusterNew.nodes.title')
       detail=(t 'clusterNew.nodes.detail')
       showExpand=false
@@ -92,49 +132,8 @@
         </div>
       </div>
     {{/accordion-list-item}}
-
-    {{#accordion-list-item
-      title=(t 'clusterNew.customize.title')
-      detail=(t 'clusterNew.customize.detail')
-      showExpand=false
-      expandOnInit=true
-      expandAll=al.expandAll
-      expand=(action expandFn)
-    }}
-      <div class="row">
-        <div class="col span-6">
-          <label class="acc-label">{{t 'clusterNew.googlegke.masterVersion.label'}}</label>
-          {{new-select
-              classNames="form-control"
-              content=versionChoices
-              optionValuePath="value"
-              optionLabelPath="value"
-              value=config.masterVersion
-              prompt="clusterNew.googlegke.masterVersion.prompt"
-              localizedPrompt=true
-          }}
-        </div>
-        <div class="col span-6">
-          <label class="acc-label">{{t 'clusterNew.googlegke.clusterIpv4Cidr.label'}}</label>
-          {{input value=config.clusterIpv4Cidr placeholder=(t 'clusterNew.googlegke.clusterIpv4Cidr.placeholder') disabled=editing}}
-        </div>
-      </div>
-      <div class="row">
-        <div class="col span-6">
-          <label class="acc-label">{{t 'clusterNew.googlegke.alphaFeatures.label'}}</label>
-          <div class="form-control-static">
-            <label class="mr-20 hand">
-              {{radio-button selection=config.enableAlphaFeature value=true disabled=editing}} {{t 'generic.enabled'}}
-            </label>
-            <label class="hand">
-              {{radio-button selection=config.enableAlphaFeature value=false disabled=editing}} {{t 'generic.disabled'}}
-            </label>
-          </div>
-        </div>
-      </div>
-    {{/accordion-list-item}}
   {{/accordion-list}}
 
   {{top-errors errors=errors}}
-  {{save-cancel save="driverSave" cancel=close}}
+  {{save-cancel editing=(eq mode 'edit')  save="driverSave" cancel=close}}
 {{/if}}
