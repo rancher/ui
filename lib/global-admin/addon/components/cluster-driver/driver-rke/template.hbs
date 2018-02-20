@@ -1,100 +1,12 @@
 {{#if (eq step 1)}}
   {{#accordion-list showExpandAll=false as |al expandFn|}}
     {{#unless isCustom}}
-      {{#accordion-list-item
-        title=(t 'clusterNew.rke.nodes.title')
-        detail=(t 'clusterNew.rke.nodes.detail')
-        showExpand=false
-        expandOnInit=true
-        expandAll=al.expandAll
-        expand=(action expandFn)
+      {{cru-node-pools
+        cluster=cluster
+        driver=nodeWhich
+        nodeTemplates=model.nodeTemplates
+        registerHook=(action "registerHook")
       }}
-        {{#sortable-table
-          classNames="grid sortable-table"
-          body=cluster.nodePools
-          suffix=true
-          search=false
-          bulkActions=false
-          rowActions=false
-          pagingLabel="pagination.node"
-          headers=headers
-          as |sortable kind node dt|
-        }}
-          {{#if (eq kind "row")}}
-            <tr class="main-row">
-              <td data-title="{{dt.hostnamePrefix}}">
-                <div class="mr-20">
-                  {{input class="input-sm" value=node.hostnamePrefix}}
-                </div>
-              </td>
-              <td data-title="{{dt.quantity}}">
-                <div class="input-group mr-20">
-                  {{input class="input-sm" type="number" min="1" value=node.quantity}}
-                  <span class="input-group-addon bg-default">x</span>
-                </div>
-              </td>
-              <td data-title="{{dt.nodeTemplate}}">
-                {{#if filteredNodeTemplates.length}}
-                  <div class="input-group input-sm">
-                    {{new-select
-                      class="input-sm"
-                      content=filteredNodeTemplates
-                      prompt="clusterNew.rke.nodes.templatePrompt"
-                      localizedPrompt=true
-                      optionLabelPath="displayName"
-                      optionValuePath="id"
-                      value=node.nodeTemplateId
-                    }}
-                    <div class="input-group-btn bg-primary">
-                      <button type="button" class="btn btn-sm bg-primary" {{action "addNodeTemplate" node}}><i class="icon icon-plus"></i></button>
-                    </div>
-                  </div>
-                {{else}}
-                  <button class="btn bg-primary" {{action "addNodeTemplate" node}}>{{t 'clusterNew.rke.nodes.addTemplate'}}</button>
-                {{/if}}
-              </td>
-              <td data-title="{{dt.etcd}}" class="text-center">
-                {{input type="checkbox" checked=node.etcd}}
-              </td>
-              <td data-title="{{dt.controlplane}}" class="text-center">
-                {{input type="checkbox" checked=node.controlPlane}}
-              </td>
-              <td data-title="{{dt.worker}}" class="text-center">
-                {{input type="checkbox" checked=node.worker}}
-              </td>
-              <td data-title="{{dt.remove}}" class="text-center">
-                <button class="btn bg-primary btn-sm" {{action "removeNode" node}}><i class="icon icon-minus"/></button>
-              </td>
-            </tr>
-          {{else if (eq kind "norows")}}
-            <tr><td colspan="{{sortable.fullColspan}}" class="text-center text-muted pt-40 pb-40">{{t 'nodesPage.table.noData'}}</td></tr>
-          {{else if (eq kind "suffix")}}
-            <tr class="banner bg-info suffix">
-              <td colspan="3" class="pl-20 text-bold">{{t 'clusterNew.rke.role.requirements.label'}}</td>
-              <td class="text-center {{if etcdOk "text-success" "text-error text-bold"}}">
-                <i class="icon {{if etcdOk "icon-success" "icon-x-circle"}}"></i>
-                {{t 'clusterNew.rke.role.requirements.etcd'}}
-              </td>
-              <td class="text-center {{if controlPlaneOk "text-success" "text-error text-bold"}}">
-                <i class="icon {{if controlPlaneOk "icon-success" "icon-x-circle"}}"></i>
-                {{t 'clusterNew.rke.role.requirements.controlplane'}}
-              </td>
-              <td class="text-center {{if workerOk "text-success" "text-error text-bold"}}">
-                <i class="icon {{if workerOk "icon-success" "icon-x-circle"}}"></i>
-                {{t 'clusterNew.rke.role.requirements.worker'}}
-              </td>
-              <td></td>
-            </tr>
-          {{/if}}
-        {{/sortable-table}}
-
-        <div class="mt-20">
-          <button class="btn bg-primary icon-btn p-0" {{action "addPool"}}>
-            <span class="darken"><i class="icon icon-plus text-small"/></span>
-            <span>{{t 'clusterNew.rke.nodes.add'}}</span>
-          </button>
-        </div>
-      {{/accordion-list-item}}
     {{/unless}}
 
     {{#accordion-list-item
@@ -185,7 +97,7 @@
   {{/accordion-list}}
 
   {{top-errors errors=errors}}
-  {{save-cancel createLabel=(if isCustom 'saveCancel.next' 'saveCancel.create') save="save" cancel=cancel}}
+  {{save-cancel createLabel=(if isCustom 'saveCancel.next' 'saveCancel.create') save=(action 'driverSave') cancel=cancel}}
 {{else}}
 
   <div class="mt-20">

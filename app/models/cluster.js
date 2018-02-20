@@ -17,13 +17,14 @@ export default Resource.extend(ResourceUsage, {
   namespaces: hasMany('id', 'namespace', 'clusterId'),
   projects: hasMany('id', 'project', 'clusterId'),
   nodes: hasMany('id', 'node', 'clusterId'),
+  nodePools: hasMany('id', 'nodePool', 'clusterId'),
   machines: alias('nodes'),
   clusterRoleTemplateBindings: hasMany('id', 'clusterRoleTemplateBinding', 'clusterId'),
   roleTemplateBindings: alias('clusterRoleTemplateBindings'),
 
   actions: {
     edit() {
-      this.get('router').transitionTo('global-admin.clusters.detail.edit', this.get('id'));
+      this.get('router').transitionTo('authenticated.cluster.edit', this.get('id'));
     },
 
     scaleDownPool(uuid) {
@@ -53,6 +54,31 @@ export default Resource.extend(ResourceUsage, {
     }
 
     return null;
+  }),
+
+  provider: computed('configName','nodePools.@each.nodeTemplateId', function() {
+    const intl = get(this, 'intl');
+    const pools = get(this,'nodePools')||[];
+    const firstTemplate = get(pools,'firstObject.nodeTemplate');
+
+    switch ( get(this,'configName') ) {
+      case 'azureKubernetesServiceConfig':
+        return 'azureaks';
+      case 'googleKubernetesEngineConfig':
+        return 'googlegke';
+      case 'rancherKubernetesEngineConfig':
+        if ( !!pools ) {
+          if ( firstTemplate ) {
+            return get(firstTemplate, 'driver');
+          } else {
+            return null;
+          }
+        } else {
+          return 'custom';
+        }
+      default:
+        return 'import';
+    }
   }),
 
   displayProvider: computed('configName','nodePools.@each.nodeTemplateId', function() {
