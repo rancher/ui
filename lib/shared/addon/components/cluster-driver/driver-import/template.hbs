@@ -2,16 +2,29 @@
   {{save-cancel save="driverSave" cancel="close"}}
 {{else}}
   <div class="mt-20">
-    {{banner-message color="bg-info" message=(t 'clusterNew.import.command.instructions'
+    {{t 'clusterNew.import.command.instructions'
       appName=settings.appName
       docsBase=settings.docsBase
       htmlSafe=true
-    )}}
+    }}
   </div>
 
   <div class="copy-pre mt-20 mb-20">
     {{copy-to-clipboard clipboardText=token.command tagName="div" classNames="copy-to-pre"}}
     <pre id="registration-command" style="font-size: 14px;">{{token.command}}</pre>
+  </div>
+
+  <div class="mt-20">
+    {{t 'clusterNew.import.command.instructionsInsecure'
+      appName=settings.appName
+      docsBase=settings.docsBase
+      htmlSafe=true
+    }}
+  </div>
+
+  <div class="copy-pre mt-20 mb-20">
+    {{copy-to-clipboard clipboardText=token.insecureCommand tagName="div" classNames="copy-to-pre"}}
+    <pre id="registration-command" style="font-size: 14px;">{{token.insecureCommand}}</pre>
   </div>
 
   <div class="footer-actions">
