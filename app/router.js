@@ -46,11 +46,6 @@ Router.map(function() {
       this.route('index', {path: '/'});
       this.route('edit');
 
-      this.route('import');
-
-      this.route('storage');
-      this.route('networking');
-
       this.route('ns', {path: '/namespaces'}, function() {
         this.route('index', {path: '/'});
         this.route('edit', {path: '/:namespace_id'});
