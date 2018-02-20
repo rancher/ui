@@ -23,7 +23,7 @@
     }}
   {{else if (eq kind "group")}}
     <tr class="group-row">
-      <td colspan={{sub sortable.fullColspan 2}} class="pl-10">
+      <td colspan={{sub sortable.fullColspan 3}} class="pl-10">
         {{t 'nodesPage.nodePoolGroup' name=node.ref.hostnamePrefix}}
         {{#if node.ref.nodeTemplate}}
           <span class="text-muted">({{node.ref.nodeTemplate.name}} &ndash; {{node.ref.nodeTemplate.displayProvider}} &ndash;  {{node.ref.nodeTemplate.displayLocation}}/{{node.ref.nodeTemplate.displaySize}})</span>
@@ -31,8 +31,11 @@
       </td>
       <td colspan="2" data-title="{{dt.actions}}" class="actions">
         {{t 'pagination.node' pages=1 count=node.ref.quantity}}
-        <button class="btn btn-xs bg-primary" {{action "scaleDownPool" node.ref.uuid}} disabled={{lte node.ref.quantity 1}}><i class="icon icon-minus icon-fw"/></button>
-        <button style="margin-left: -5px;" class="btn btn-xs bg-primary" {{action "scaleUpPool" node.ref.uuid}}><i class="icon icon-plus icon-fw"/></button>
+        <button class="btn btn-xs bg-primary" {{action "scaleDownPool" node.ref.id}} disabled={{lte node.ref.quantity 1}}><i class="icon icon-minus icon-fw"/></button>
+        <button style="margin-left: -5px;" class="btn btn-xs bg-primary" {{action "scaleUpPool" node.ref.id}}><i class="icon icon-plus icon-fw"/></button>
+      </td>
+      <td data-title="{{dt.actions}}" class="actions">
+        {{action-menu model=node.ref}}
       </td>
     </tr>
   {{else if (eq kind "nomatch")}}

@@ -1,0 +1,20 @@
+{{#if (and (eq mode "new") (eq step 1))}}
+  {{save-cancel save="driverSave" cancel="close"}}
+{{else}}
+  <div class="mt-20">
+    {{banner-message color="bg-info" message=(t 'clusterNew.import.command.instructions'
+      appName=settings.appName
+      docsBase=settings.docsBase
+      htmlSafe=true
+    )}}
+  </div>
+
+  <div class="copy-pre mt-20 mb-20">
+    {{copy-to-clipboard clipboardText=token.command tagName="div" classNames="copy-to-pre"}}
+    <pre id="registration-command" style="font-size: 14px;">{{token.command}}</pre>
+  </div>
+
+  <div class="footer-actions">
+    <button {{action "close"}} class="btn bg-primary">{{t 'clusterNew.rke.done'}}</button>
+  </div>
+{{/if}}

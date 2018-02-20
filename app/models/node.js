@@ -20,6 +20,7 @@ var Node = Resource.extend(StateCounts, ResourceUsage, {
   intl: service(),
 
   cluster: reference('clusterId','cluster'),
+  nodePool: reference('nodePoolUuid','nodePool'),
 
   init() {
     this._super(...arguments);
@@ -150,12 +151,6 @@ var Node = Resource.extend(StateCounts, ResourceUsage, {
     }
 
     return 4;
-  }),
-
-  nodePool: computed('nodePoolUuid','cluster.nodePools.[]', function() {
-    const uuid = get(this, 'nodePoolUuid');
-    const cluster = get(this, 'cluster');
-    return (get(cluster,'nodePools')||[]).findBy('uuid', uuid);
   }),
 
 /*

@@ -1,5 +1,26 @@
 {{#accordion-list showExpandAll=false as |al expandFn|}}
   {{#accordion-list-item
+        title=(t 'clusterNew.customize.title')
+        detail=(t 'clusterNew.customize.detail')
+        expandAll=al.expandAll
+        expand=(action expandFn)
+  }}
+    <div class="row">
+      <div class="col span-6">
+        <label class="acc-label">{{t 'clusterNew.azureaks.kubernetesVersion.label'}}</label>
+        {{new-select
+            classNames="form-control"
+            content=versions
+            optionValuePath="value"
+            optionLabelPath="value"
+            value=config.kubernetesVersion
+            prompt="clusterNew.azureaks.kubernetesVersion.prompt"
+            localizedPrompt=true
+        }}
+      </div>
+    </div>
+  {{/accordion-list-item}}
+  {{#accordion-list-item
     title=(t 'clusterNew.azureaks.access.title')
     detail=(t 'clusterNew.azureaks.access.detail')
     showExpand=false
@@ -165,29 +186,7 @@
       </div>
     </div>
   {{/accordion-list-item}}
-
-  {{#accordion-list-item
-        title=(t 'clusterNew.customize.title')
-        detail=(t 'clusterNew.customize.detail')
-        expandAll=al.expandAll
-        expand=(action expandFn)
-  }}
-    <div class="row">
-      <div class="col span-6">
-        <label class="acc-label">{{t 'clusterNew.azureaks.kubernetesVersion.label'}}</label>
-        {{new-select
-            classNames="form-control"
-            content=versions
-            optionValuePath="value"
-            optionLabelPath="value"
-            value=config.kubernetesVersion
-            prompt="clusterNew.azureaks.kubernetesVersion.prompt"
-            localizedPrompt=true
-        }}
-      </div>
-    </div>
-  {{/accordion-list-item}}
 {{/accordion-list}}
 
 {{top-errors errors=errors}}
-{{save-cancel save="save" cancel=cancel}}
+{{save-cancel editing=(eq mode 'edit')  save="driverSave" cancel=close}}

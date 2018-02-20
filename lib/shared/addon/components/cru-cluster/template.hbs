@@ -1,0 +1,68 @@
+<section class="header">
+  <h1>
+    {{#if cluster.id}}
+      {{t 'clustersPage.editClusterName' name=cluster.displayName}}
+    {{else if (eq step 1)}}
+      {{t 'clustersPage.newCluster'}}
+    {{else}}
+      {{t 'clustersPage.newClusterName' name=cluster.displayName}}
+    {{/if}}
+  </h1>
+</section>
+
+{{#unless initialProvider}}
+  <div class="row nav nav-boxes checked-active">
+    {{#each providerChoices as |choice|}}
+      {{#link-to (query-params provider=choice.name) class=(concat "col span-2 nav-box-item driver machine-driver " choice.name)}}
+        <p class="sr-only">{{choice.displayName}}</p>
+      {{/link-to}}
+    {{/each}}
+  </div>
+{{/unless}}
+
+{{#if (eq step 1)}}
+  <form onsubmit={{action "clickNext"}}>
+    <div class="row">
+      {{form-name-description
+        model=model.cluster
+        nameRequired=true
+        nameLabel='clusterNew.name.label'
+        namePlaceholder='clusterNew.name.placeholder'
+        descriptionPlaceholder='clusterNew.description.placeholder'
+      }}
+    </div>
+
+    {{#accordion-list showExpandAll=false as |al expandFn|}}
+      {{#accordion-list-item
+        title=(t 'clusterNew.members.label')
+        detail=(t 'clusterNew.members.detail')
+        expandAll=al.expandAll
+        everExpanded=true
+        expand=(action expandFn)
+      }}
+        {{form-members
+          editing=notView
+          memberConfig=memberConfig
+          primaryResource=cluster
+          creator=model.me
+          roles=model.roleTemplates
+          users=model.users
+          type="cluster"
+          registerHook=(action "registerHook")
+        }}
+      {{/accordion-list-item}}
+    {{/accordion-list}}
+
+    {{top-errors errors=errors}}
+  </form>
+{{/if}}
+
+{{component driverInfo.driverComponent
+  mode=mode
+  nodeComponent=driverInfo.nodeComponent
+  nodeWhich=driverInfo.nodeWhich
+  model=model
+  save=(action 'save')
+  close=(action 'close')
+  registerHook=(action "registerHook")
+}}
