@@ -28,8 +28,8 @@ export default Controller.extend({
     },
   },
 
-  groupByKey: computed('model.cluster.suppportsNodePools', function() {
-    if ( get(this, 'model.cluster.suppportsNodePools') ) {
+  groupByKey: computed('model.cluster.nodePools.length', function() {
+    if ( get(this, 'model.cluster.nodePools.length') ) {
       return 'nodePoolUuid';
     }
 
