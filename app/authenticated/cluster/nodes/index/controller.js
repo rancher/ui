@@ -26,11 +26,15 @@ export default Controller.extend({
     scaleUpPool(id) {
       get(this,'model.cluster').send('scaleUpPool',id);
     },
+
+    editCluster() {
+      get(this,'model.cluster').send('edit');
+    },
   },
 
   groupByKey: computed('model.cluster.nodePools.length', function() {
     if ( get(this, 'model.cluster.nodePools.length') ) {
-      return 'nodePoolUuid';
+      return 'nodePoolId';
     }
 
     return null;

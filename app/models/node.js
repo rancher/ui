@@ -20,7 +20,7 @@ var Node = Resource.extend(StateCounts, ResourceUsage, {
   intl: service(),
 
   cluster: reference('clusterId','cluster'),
-  nodePool: reference('nodePoolUuid','nodePool'),
+  nodePool: reference('nodePoolId'),
 
   init() {
     this._super(...arguments);
