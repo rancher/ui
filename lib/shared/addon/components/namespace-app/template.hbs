@@ -5,7 +5,9 @@
   <div class="stack-info-row box">
     <div class="stack-info-top row">
       <div class="col span-6">
-        {{#link-to "stack" scope.currentProject.id model.id}}{{model.displayName}}{{/link-to}}
+        {{!-- TODO --}}
+        {{!--{{#link-to "stack" scope.currentProject.id model.id}}{{model.displayName}}{{/link-to}} --}}
+        {{model.displayName}}
       </div>
       <div class="col span-6 text-right">
         {{badge-state model=model classNames="btn-xs"}}
@@ -22,14 +24,25 @@
             tooltipValues=model.serviceStates.byName
         }}
       </div>
+      {{#if upgradeAvailable}}
+        <button class="btn">
+          {{model.externalIdInfo.version}}
+          {{t (concat-str 'upgradeBtn.status.' status character='')}}
+        </button>
+      {{else}}
+        {{t (concat-str 'upgradeBtn.status.' status character='')}}
+      {{/if}}
+
+      {{!--
       {{#upgrade-btn model=model classNames="btn-sm" as |btn|}}
-        {{#if btn.upgradeInfo.version}}
-          {{btn.upgradeInfo.version}}
-          {{t (concat-str 'upgradeBtn.status.' btn.upgradeStatus character='')}}
-        {{else}}
-          {{t (concat-str 'upgradeBtn.status.' btn.upgradeStatus character='')}}
-        {{/if}}
+      {{#if btn.upgradeInfo.version}}
+      {{btn.upgradeInfo.version}}
+      {{t (concat-str 'upgradeBtn.status.' btn.upgradeStatus character='')}}
+      {{else}}
+      {{t (concat-str 'upgradeBtn.status.' btn.upgradeStatus character='')}}
+      {{/if}}
       {{/upgrade-btn}}
+      --}}
     </div>
   </div>
 </div>
