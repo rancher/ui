@@ -1,44 +1,18 @@
-{{top-errors errors=errors}}
-
 <section class="horizontal-form">
-  <div class="container-fluid">
-    {{#if showNameScale}}
-      <div class="box mt-20">
-        <h4>{{t 'machine.driverVsphere.instanceSection'}}</h4>
-        <div class="row mb-20">
-          <div class="row">
-            <div class="col span-11-of-23 mt-0 mb-0">
-              {{form-name-description
-                  name=prefix
-                  nameRequired=true
-                  namePlaceholder="hostsPage.new.name.placeholder"
-                  nameHelpText=nameCountLabel
-                  descriptionShown=true
-              }}
-            </div>
-            <div class="col span-11-of-23 mt-0 mb-0 offset-1-of-23">
-              {{form-count
-                  min=0
-                  initialScale=1
-                  setScale=(action (mut count))
-              }}
-            </div>
-          </div>
-        </div>
-      </div>
-    {{/if}}
+  {{#accordion-list showExpandAll=false as | al expandFn |}}
+    <div class="over-hr mb-20"><span>{{driverOptionsTitle}}</span></div>
 
     <div class="row box mt-20">
-      <h4>{{t 'machine.driverVsphere.accountSection'}}</h4>
+      <h4>{{t 'nodeDriver.vmwarevspheree.accountSection'}}</h4>
       <div class="row">
         <div class="col span-2 col-inline">
-          <label>{{t 'machine.driverVsphere.vcenter.label'}}{{field-required}}</label>
+          <label>{{t 'nodeDriver.vmwarevspheree.vcenter.label'}}{{field-required}}</label>
         </div>
         <div class="col span-4">
-          {{input type="text" class="form-control" value=config.vcenter placeholder=(t 'machine.driverVsphere.vcenter.placeholder')}}
+          {{input type="text" class="form-control" value=config.vcenter placeholder=(t 'nodeDriver.vmwarevspheree.vcenter.placeholder')}}
         </div>
         <div class="col span-2 col-inline">
-          <label>{{t 'machine.driverVsphere.vcenterPort.label'}}{{field-required}}</label>
+          <label>{{t 'nodeDriver.vmwarevspheree.vcenterPort.label'}}{{field-required}}</label>
         </div>
         <div class="col span-4">
           {{input-integer min=1 max=65535 class="form-control" value=config.vcenterPort}}
@@ -47,14 +21,14 @@
 
       <div class="row">
         <div class="col span-2 col-inline">
-          <label>{{t 'machine.driverVsphere.username.label'}}{{field-required}}</label>
+          <label>{{t 'nodeDriver.vmwarevspheree.username.label'}}{{field-required}}</label>
         </div>
         <div class="col span-4">
           {{input type="text" value=config.username classNames="form-control"}}
         </div>
 
         <div class="col span-2 col-inline">
-          <label>{{t 'machine.driverVsphere.password.label'}}{{field-required}}</label>
+          <label>{{t 'nodeDriver.vmwarevspheree.password.label'}}{{field-required}}</label>
         </div>
         <div class="col span-4">
           {{input type="password" value=vmwarevsphereConfig.password classNames="form-control"}}
@@ -63,10 +37,10 @@
     </div>
 
     <div class="row box mt-20">
-      <h4>{{t 'machine.driverVsphere.instanceOptionsSection'}}</h4>
+      <h4>{{t 'nodeDriver.vmwarevspheree.instanceOptionsSection'}}</h4>
       <div class="row">
         <div class="col span-2 col-inline">
-          <label>{{t 'machine.driverVsphere.cpuCount.label'}}</label>
+          <label>{{t 'nodeDriver.vmwarevspheree.cpuCount.label'}}</label>
         </div>
 
         <div class="col span-1">
@@ -77,71 +51,71 @@
         </div>
 
         <div class="col span-2 col-inline">
-          <label>{{t 'machine.driverVsphere.memorySize.label'}}</label>
+          <label>{{t 'nodeDriver.vmwarevspheree.memorySize.label'}}</label>
         </div>
         <div class="col span-4">
           <div class="input-group">
             {{input-integer min=1 value=config.memorySize classNames="form-control"}}
-            <div class="input-group-addon bg-default">{{t 'machine.driverVsphere.memorySize.unit'}}</div>
+            <div class="input-group-addon bg-default">{{t 'nodeDriver.vmwarevspheree.memorySize.unit'}}</div>
           </div>
         </div>
       </div>
 
       <div class="row">
         <div class="col span-2 col-inline">
-          <label>{{t 'machine.driverVsphere.diskSize.label'}}</label>
+          <label>{{t 'nodeDriver.vmwarevspheree.diskSize.label'}}</label>
         </div>
         <div class="col span-4">
           <div class="input-group">
             {{input-integer min=1 value=config.diskSize classNames="form-control"}}
-            <div class="input-group-addon bg-default">{{t 'machine.driverVsphere.diskSize.unit'}}</div>
+            <div class="input-group-addon bg-default">{{t 'nodeDriver.vmwarevspheree.diskSize.unit'}}</div>
           </div>
         </div>
 
         <div class="col span-2 col-inline">
-          <label>{{t 'machine.driverVsphere.boot2dockerUrl.label'}}</label>
+          <label>{{t 'nodeDriver.vmwarevspheree.boot2dockerUrl.label'}}</label>
         </div>
         <div class="col span-4">
-          {{input type="text" value=config.boot2dockerUrl classNames="form-control" placeholder=(t 'machine.driverVsphere.boot2dockerUrl.placeholder')}}
+          {{input type="text" value=config.boot2dockerUrl classNames="form-control" placeholder=(t 'nodeDriver.vmwarevspheree.boot2dockerUrl.placeholder')}}
         </div>
       </div>
     </div>
 
     <div class="row box mt-20">
-      <h4>{{t 'machine.driverVsphere.schedulingSection'}}</h4>
+      <h4>{{t 'nodeDriver.vmwarevspheree.schedulingSection'}}</h4>
       <div class="row">
         <div class="col span-2 col-inline">
-          <label>{{t 'machine.driverVsphere.dataCenter.label'}}</label>
+          <label>{{t 'nodeDriver.vmwarevspheree.dataCenter.label'}}</label>
         </div>
         <div class="col span-2">
           {{input type="text" value=config.datacenter classNames="form-control"}}
         </div>
 
         <div class="col span-2 col-inline">
-          <label>{{t 'machine.driverVsphere.pool.label'}}</label>
+          <label>{{t 'nodeDriver.vmwarevspheree.pool.label'}}</label>
         </div>
         <div class="col span-2">
           {{input type="text" value=config.pool classNames="form-control"}}
         </div>
 
         <div class="col span-2 col-inline">
-          <label>{{t 'machine.driverVsphere.host.label'}}</label>
+          <label>{{t 'nodeDriver.vmwarevspheree.host.label'}}</label>
         </div>
         <div class="col span-2">
-          {{input type="text" value=config.hostsystem classNames="form-control" placeholder=(t 'machine.driverVsphere.host.placeholder')}}
+          {{input type="text" value=config.hostsystem classNames="form-control" placeholder=(t 'nodeDriver.vmwarevspheree.host.placeholder')}}
         </div>
       </div>
 
       <div class="row">
         <div class="col span-2 col-inline">
-          <label>{{t 'machine.driverVsphere.network.label'}}</label>
+          <label>{{t 'nodeDriver.vmwarevspheree.network.label'}}</label>
         </div>
         <div class="col span-4">
           {{input type="text" value=config.network classNames="form-control"}}
         </div>
 
         <div class="col span-2 col-inline">
-          <label>{{t 'machine.driverVsphere.dataStore.label'}}</label>
+          <label>{{t 'nodeDriver.vmwarevspheree.dataStore.label'}}</label>
         </div>
         <div class="col span-4">
           {{input type="text" value=config.datastore classNames="form-control"}}
@@ -149,18 +123,26 @@
       </div>
     </div>
 
-    <div class="row mt-5">
-      <div class="col span-12">
-        {{form-user-labels initialLabels=labelResource.labels setLabels=(action 'setLabels') expandAll=null}}
-      </div>
-    </div>
+    <div class="over-hr"><span>{{templateOptionsTitle}}</span></div>
 
-    {{#advanced-section}}
-      {{limit-parameters model=model}}
-      {{form-engine-opts machine=model showEngineUrl=showEngineUrl}}
-    {{/advanced-section}}
+    {{form-name-description
+      model=model
+      nameRequired=true
+    }}
 
-  </div>
+    {{form-user-labels
+      initialLabels=labelResource.labels
+      setLabels=(action 'setLabels')
+      expandAll=expandAll
+      expand=(action expandFn)
+    }}
 
+    {{form-engine-opts
+      machine=model
+      showEngineUrl=showEngineUrl
+    }}
+  {{/accordion-list}}
+
+  {{top-errors errors=errors}}
   {{save-cancel save="save" cancel="cancel"}}
 </section>
