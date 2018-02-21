@@ -59,16 +59,20 @@
       model=catalogApp
       nameRequired=true
       descriptionShow=false
+      nameDisabled=(not showName)
   }}
-  {{#advanced-section}}
-    <hr class="mt-20 mb-20"/>
 
-    {{form-namespace
-        namespace=primaryResource
-        mode='reuse'
-        errors=namespaceErrors
-    }}
-  {{/advanced-section}}
+  {{#if showName}}
+    {{#advanced-section}}
+      <hr class="mt-20 mb-20"/>
+
+      {{form-namespace
+          namespace=primaryResource
+          mode='reuse'
+          errors=namespaceErrors
+      }}
+    {{/advanced-section}}
+  {{/if}}
 
 </section>
 
