@@ -88,7 +88,6 @@ module.exports = function(defaults) {
   app.import('vendor/json-sanitizer/json-sanitizer.js');
   app.import('bower_components/identicon.js/pnglib.js');
   app.import('bower_components/identicon.js/identicon.js');
-  app.import('bower_components/commonmark/dist/commonmark.js');
   app.import('bower_components/momentjs/moment.js');
   app.import('bower_components/ember-shortcuts/ember-shortcuts.js');
   app.import('bower_components/jsondiffpatch/public/build/jsondiffpatch.js');
