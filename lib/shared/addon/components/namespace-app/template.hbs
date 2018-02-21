@@ -25,12 +25,16 @@
         }}
       </div>
       {{#if upgradeAvailable}}
-        <button class="btn">
-          {{model.externalIdInfo.version}}
-          {{t (concat-str 'upgradeBtn.status.' status character='')}}
+        <button class="btn bg-warning" onclick={{action "doUpgrade"}}>
+          {{#tooltip-element type="tooltip-basic" model=latestVersion tooltipTemplate='tooltip-static' aria-describedby="tooltip-base" tooltipFor="upgrade"}}
+            {{model.externalIdInfo.version}}
+            {{t (concat-str 'upgradeBtn.status.' status character='')}}
+          {{/tooltip-element}}
         </button>
       {{else}}
-        {{t (concat-str 'upgradeBtn.status.' status character='')}}
+        <button class="btn bg-transparent">
+          {{t (concat-str 'upgradeBtn.status.' status character='')}}
+        </button>
       {{/if}}
 
       {{!--

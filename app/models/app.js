@@ -11,5 +11,17 @@ const App = Resource.extend({
   catalogTemplate: computed('externalIdInfo.templateId', function() {
     return this.get('catalog').getTemplateFromCache(this.get('externalIdInfo.templateId'));
   }),
+  availableActions: computed('actionLinks.{rollback,upgrade}', function () {
+    let al = get(this, 'actionLinks')
+
+    var choices = [
+      { label: 'action.rollback', icon: 'icon icon-backup', action: 'rollback', enabled: !!al.rollback, bulkable: false },
+      { label: 'action.upgrade', icon: 'icon icon-arrow-circle-up', action: 'upgrade', enabled: !!al.upgrade, bulkable: false },
+      // { divider: true },
+      // { label: 'action.self', icon: 'icon icon-external-link', action: 'goToApi', enabled: true },
+    ];
+
+    return choices;
+  }),
 });
 export default App;

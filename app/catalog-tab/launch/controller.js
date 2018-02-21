@@ -1,9 +1,13 @@
 import Controller from '@ember/controller';
 
 export default Controller.extend({
-  queryParams: ['stackId','upgrade'],
+  queryParams: ['appId', 'stackId', 'upgrade', 'catalog', 'namespaceId'],
   stackId: null,
   upgrade: null,
+  showName: true,
+  catalog: null,
+  namespaceId: null,
+  appId: null,
 
   parentRoute: 'catalog-tab',
 

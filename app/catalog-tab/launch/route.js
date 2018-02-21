@@ -18,6 +18,7 @@ export default Route.extend({
     },
   },
   model: function(params/*, transition*/) {
+    // debugger;
     var store = get(this, 'store');
     var clusterStore = get(this, 'clusterStore');
 
@@ -28,7 +29,11 @@ export default Route.extend({
 
     if ( params.upgrade )
     {
-      dependencies.upgrade = get(this, 'catalog').fetchTemplate(params.upgrade, true);
+      dependencies.upgrade = get(this, 'catalog').fetchTemplate(`${params.template}-${params.upgrade}`, true);
+    }
+
+    if (params.appId) {
+      dependencies.app = store.find('app', params.appId);
     }
 
     if ( params.namespaceId )
@@ -55,15 +60,15 @@ export default Route.extend({
 
       let tplCatalog = this.modelFor(get(this, 'parentRoute')).get('catalogs').findBy('id', get(results, 'tpl.catalogId'));
       let kind = get(tplCatalog, 'kind') ? get(tplCatalog, 'kind') : 'native';
+      let neuApp = null;
       var links;
-      if ( results.upgrade )
-      {
-        links = results.upgrade.upgradeVersionLinks;
-      }
-      else
-      {
-        links = results.tpl.versionLinks;
-      }
+
+      links = results.tpl.versionLinks;
+      // if ( results.upgrade ) {
+      //   links = results.upgrade.upgradeVersionLinks;
+      // } else {
+      //   links = results.tpl.versionLinks;
+      // }
 
       var verArr = Object.keys(links).filter((key) => {
         // Filter out empty values for rancher/rancher#5494
@@ -81,29 +86,41 @@ export default Route.extend({
         });
       }
 
-      return EmberObject.create({
-        allTemplates: this.modelFor(get(this, 'parentRoute')).get('catalog'),
-        catalogApp: store.createRecord({
+      if (results.app) {
+        neuApp = results.app;
+      } else {
+        neuApp = store.createRecord({
           type: 'app', // should be app after new api
           name: results.namespace.name,
           answers: [],
-        }),
+        })      }
+
+      return EmberObject.create({
+        allTemplates: this.modelFor(get(this, 'parentRoute')).get('catalog'),
+        catalogApp: neuApp,
         namespace: results.namespace,
         templateBase: this.modelFor(get(this, 'parentRoute')).get('templateBase'),
         tpl: results.tpl,
         tplKind: kind,
-        upgrade: results.upgrade,
+        upgradeTemplate: results.upgrade,
         versionLinks: links,
         versionsArray: verArr,
       });
     });
   },
-
+  setupController(controller, model) {
+    this._super(controller, model);
+    if (model.upgradeTemplate) {
+      controller.set('showName', false);
+    }
+  },
   resetController: function (controller, isExiting/*, transition*/) {
     if (isExiting)
     {
       controller.set('namespaceId', null);
       controller.set('upgrade', null);
+      controller.set('catalog', null);
+      controller.set('namespaceId', null);
     }
   }
 });
