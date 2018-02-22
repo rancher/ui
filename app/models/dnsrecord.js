@@ -2,9 +2,11 @@ import Resource from 'ember-api-store/models/resource';
 import { reference } from 'ember-api-store/utils/denormalize';
 import { computed, get } from '@ember/object';
 import { arrayOfReferences } from 'ember-api-store/utils/denormalize';
+import { inject as service } from '@ember/service';
 
 export default Resource.extend({
-  namespace: reference('namespaceId'),
+  clusterStore: service(),
+  namespace: reference('namespaceId', 'namespace', 'clusterStore'),
   targetDnsRecords: arrayOfReferences('targetDnsRecordIds'),
   targetWorkloads: arrayOfReferences('targetWorkloadIds'),
 

@@ -19,8 +19,9 @@ var Workload = Resource.extend(DisplayImage, StateCounts, EndpointPorts, {
   allWorkloads:  service(),
   scope:         service(),
   router:        service(),
+  clusterStore: service(),
 
-  namespace:    reference('namespaceId'),
+  namespace: reference('namespaceId', 'namespace', 'clusterStore'),
   pods:         hasMany('id', 'pod', 'workloadId'),
 
   init() {

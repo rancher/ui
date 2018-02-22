@@ -37,9 +37,9 @@ export default Route.extend({
   },
 
   modelForNew(params) {
-    let mode = this.get(`prefs.${C.PREFS.LAST_SCALE_MODE}`) || 'container';
+    let mode = this.get(`prefs.${C.PREFS.LAST_SCALE_MODE}`) || 'service';
 
-    let isService = (mode && mode !== 'container');
+    let isService = true;
     //let isGlobal = (mode === 'global');
 
     return EmberObject.create({

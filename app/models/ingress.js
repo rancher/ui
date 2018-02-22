@@ -1,11 +1,13 @@
 import { computed, get } from '@ember/object';
 import Resource from 'ember-api-store/models/resource';
 import { reference } from 'ember-api-store/utils/denormalize';
+import { inject as service } from '@ember/service';
 
 var Ingress = Resource.extend({
   type: 'ingress',
 
-  namespace: reference('namespaceId'),
+  clusterStore: service(),
+  namespace: reference('namespaceId', 'namespace', 'clusterStore'),
 
   actions: {
     edit: function () {
