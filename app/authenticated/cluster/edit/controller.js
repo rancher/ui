@@ -5,7 +5,7 @@ export default Controller.extend({
   cluster: alias('model.cluster'),
 
   queryParams: ['provider'],
-  provider: '',
+  provider: null,
 
   actions: {
     close() {

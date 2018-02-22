@@ -79,6 +79,12 @@ Router.map(function() {
         this.route('new', {path: '/add'});
         this.route('edit', {path: '/:notifier_id'});
       });
+
+      this.route('storageClasses', {path: '/storage-classes'}, function() {
+        this.route('index', {path: '/'});
+        this.route('edit', {path: '/:storage_class_id'});
+        this.route('new', {path: '/add'});
+      });
     });
 
     // Per-Project

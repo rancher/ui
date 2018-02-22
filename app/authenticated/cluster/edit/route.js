@@ -9,9 +9,11 @@ export default Route.extend({
 
   model() {
     let globalStore = this.get('globalStore');
+    const cluster = this.modelFor('authenticated.cluster');
 
     return hash({
-      cluster: this.modelFor('authenticated.cluster').clone(),
+      originalCluster: cluster,
+      cluster: cluster.clone(),
       nodeTemplates: globalStore.findAll('nodeTemplate'),
       nodeDrivers: globalStore.findAll('nodeDriver'),
       psps: globalStore.findAll('podSecurityPolicyTemplate'),
@@ -25,5 +27,12 @@ export default Route.extend({
   setupController(controller/*, model*/) {
     this._super(...arguments);
     set(controller, 'step', 1);
+  },
+
+  resetController(controller, isExisting /*, transition*/ ) {
+    if (isExisting) {
+      controller.set('errors', null);
+      controller.set('provider', null);
+    }
   }
 });

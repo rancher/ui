@@ -1,7 +1,7 @@
 import { inject as service } from '@ember/service';
-import Controller, { inject as controller } from '@ember/controller';
+import Controller from '@ember/controller';
 import { headersCluster as hostHeaders } from 'shared/components/node-row/component';
-import { computed , get } from '@ember/object';
+import { get, computed } from '@ember/object';
 
 export default Controller.extend({
   growl:             service(),
@@ -40,22 +40,7 @@ export default Controller.extend({
     return null;
   }),
 
-  scaleTimer: null,
-  saveScale() {
-    if ( get(this, 'scaleTimer') ) {
-      cancel(get(this, 'scaleTimer'));
-    }
-
-    var timer = later(this, function() {
-      this.save().catch((err) => {
-        get(this, 'growl').fromError('Error updating pool',err);
-      });
-    }, 500);
-
-    set(this, 'scaleTimer', timer);
-  },
-
-  rows: computed('model.nodes.@each.clusterId', function() {
+    rows: computed('model.nodes.@each.clusterId', function() {
     return get(this,'model.nodes').filterBy('clusterId', get(this,'model.cluster.id'));
   }),
 });
