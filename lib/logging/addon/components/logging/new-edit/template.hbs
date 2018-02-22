@@ -1,0 +1,85 @@
+<section class="header clearfix">
+  <h1 class="pull-left text-capitalize">{{t headerLabel}}</h1>
+</section>
+
+<div class="banner bg-info">
+  <div class="banner-icon p-20"><i class="icon icon-info"></i></div>
+  <div class="banner-message p-20">
+    {{#if isClusterLevel}}
+      {{t 'loggingPage.helpText.cluster' htmlSafe=true}}
+    {{else}}
+      <ul>
+        <li style="list-style: circle;"> {{t 'loggingPage.helpText.cluster' htmlSafe=true}} </li>
+        <li style="list-style: circle;">
+          {{#if (and clusterTargetType (not-eq clusterTargetType 'none'))}}
+            {{t 'loggingPage.helpText.clusterTarget' clusterTargetType=clusterTargetType htmlSafe=true}}
+          {{else}}
+            {{t 'loggingPage.helpText.noClusterTarget'}}
+          {{/if}}
+        </li>
+      </ul>
+    {{/if}}
+  </div>
+</div>
+{{logging/targets-nav
+    originalModel=originalModel
+    targetType=targetType
+    isClusterLevel=isClusterLevel
+    pageScope=pageScope
+}}
+
+{{#if (eq targetType 'embedded')}}
+  <div class="banner bg-warning">
+    <div class="banner-icon p-20"><i class="icon icon-alert"></i></div>
+    <div class="banner-message p-10">
+      <ul>
+        <li style="list-style: circle;"> {{t 'loggingPage.embedded.helpText.persistantStorage'}} </li>
+        <li style="list-style: circle;"> {{t 'loggingPage.embedded.helpText.requirements'}} </li>
+      </ul>
+    </div>
+  </div>
+
+  {{!-- if the current saved target is embedded --}}
+  {{#if originalModel.embeddedConfig}}
+    <div class="banner bg-success">
+      <div class="banner-icon p-20"><i class="icon icon-check"></i></div>
+      <div class="banner-message p-10">
+        <ul style="font-size:1.1em;">
+          <li style="list-style: circle;"> {{t 'loggingPage.embedded.helpText.esEndpoint' htmlSafe=true}} </li>
+          <li style="list-style: circle;"> {{t 'loggingPage.embedded.helpText.kibanaEndpoint' htmlSafe=true}} </li>
+        </ul>
+      </div>
+    </div>
+  {{/if}}
+{{/if}}
+
+{{#if (eq targetType 'elasticsearch')}}
+  {{logging/target-elasticsearch
+       targetType=targetType
+       model=model.elasticsearch
+       pageScope=pageScope
+  }}
+{{else if (eq targetType 'embedded')}}
+  {{#if isClusterLevel}}
+    {{logging/target-embedded
+        model=model.embedded
+        targetType=targetType
+    }}
+  {{/if}}
+{{else if (eq targetType 'splunk')}}
+  {{logging/target-splunk
+      model=model.splunk
+  }}
+{{else if (eq targetType 'kafka')}}
+  {{logging/target-kafka
+      model=model.kafka
+  }}
+{{else if (eq targetType 'syslog')}}
+  {{logging/target-syslog
+      model=model.syslog
+  }}
+{{/if}}
+
+{{top-errors errors=errors}}
+
+{{save-cancel saveDisabled=saveDisabled disabled=true cancelDisabled=true editing=true save="save"}}

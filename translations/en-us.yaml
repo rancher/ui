@@ -1352,6 +1352,64 @@ waitingPage:
     setup:
       kubernetes: Setting up Kubernetes
 
+notifierPage:
+  notifiers: Notifiers
+  testedBtnLabel: OK
+  testingBtnLabel: Testing
+  notifierTypes:
+    slack: Slack
+    email: Email
+    pagerduty: Pagerdudy
+    webhook: Webhook
+  slack:
+    url: Slack Webhook URL
+    urlPlaceholder: e.g. https://hooks.slack.com/services/T00000000/B00000000/XXXXXXXXXXXXXXXXXXXXXXXX
+    defaultChannel: Default Channel
+    defaultRecipientPlaceholder: 'e.g. #example'
+    helpTitle: Don't know How to create a slack webhook URL?
+    helpText: |
+        <li><a role="button" class="btn pl-0 btn-sm bg-transparent" target="_blank" rel="nofollow noreferer" href="https://rancher.slack.com/apps/A0F7XDUAZ-incoming-webhooks?page=1">Click here</a>to go to the<span class="text-muted ml-10 mr-10">Incoming WebHooks</span>page. If you haven't logined yet, please login first.</li>
+        <li>After logined, click the left<span class="text-muted ml-10 mr-10">Add Configuration</span>button to enter the<span class="text-muted ml-10 mr-10">New configuration</span>page.</li>
+        <li>At the bottom of the<span class="text-muted ml-10 mr-10">New configuration</span>page, choose a existing channel from the dropdown input box or click the <span class="text-muted ml-10 mr-10">create a new channel</span> link to create a new channel.</li>
+        <li>With a channel selected, click the<span class="text-muted ml-10 mr-10">Add Incomming WebHooks Intergration</span>button to generate a Webhook URL. The generated Webhook URL looks like: <code class="ml-10 mr-10">https://hooks.slack.com/services/T00000000/B00000000/XXXXXXXXXXXXXXXXXXXXXXXX</code></li>
+        <li>Copy the generated Webhook URL, paste it in the above input box and then click the save button.</li>
+  smtp:
+    server: Smtp Server
+    host: Host
+    hostPlaceholder: e.g. 192.168.1.121
+    port: Port
+    portPlaceholder: e.g. 465
+    userName: Username
+    userNamePlaceholder: e.g. John
+    password: Password
+    passwordPlaceholder: Your Password
+    defaultRecipient: Default Recipient Address
+    defaultRecipientPlaceholder: e.g. admin@example.com
+  pagerduty:
+    serviceKey: Service Key
+    serviceKeyPlaceholder: Your pagerduty serviceKey
+    helpTitle: Don't know How to create a Pagerduty service key?
+    helpText: |
+      <li>Click <a role="button" class="btn pl-0 btn-sm bg-transparent" target="_blank" rel="nofollow noreferer" href="https://www.pagerduty.com">here</a>to go to the pagerduty website. If you haven't logined yet, please login first.</li>
+      <li>After logined, navigate to<span class="text-muted ml-10 mr-10">Configuration > Service</span>to go to the Services pages.</li>
+      <li>If you want to use existing service, go to the detail page. If you want to create a new service, Click<span class="text-muted ml-10 mr-10">Add New Service</span></li>
+      <li>In the detailed service page, you can click<span class="text-muted ml-10 mr-10">New Integration</span>to add new key or use the key for existing integration.</li>
+  webhook:
+    url: Webhook URL
+    urlPlaceholder: Your webhook URL
+  testAction:
+    testing: TESTING
+    testOk: OK!
+    testFailed: NO!
+    test: TEST
+  clone: Clone
+  index:
+    addActionLabel: Add Notifier
+    table:
+      createdAt: Created
+      noData: No Notifiers
+      noMatch: No Match
+
 ##############################
 # Partials
 ##############################
@@ -4563,7 +4621,11 @@ nav:
     link: "Node Templates"
   api:
     link: "API & Keys"
-
+  tools:
+    tab: Tools
+    alerts: Alerts
+    notifiers: Notifiers
+    logging: Logging
 ##############################
 # Resource Actions
 ##############################
@@ -4602,6 +4664,9 @@ action:
   viewGraph: View Graph
   viewInApi: View in API
   viewInstance: View Instance
+  test: Test
+  mute: Mute
+  unmute: Umute
 
 ##############################
 # Resource Actions

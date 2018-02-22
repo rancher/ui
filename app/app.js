@@ -63,7 +63,50 @@ const App = Application.extend({
           'logout':                'logout'
         }
       }
-    }
+    },
+        logging: {
+      dependencies: {
+        services: [
+          'app',
+          'clusterStore',
+          'globalStore',
+          'intl',
+          'modal',
+          'router',
+          'resource-actions',
+          'scope',
+          'store',
+          'tooltip',
+        ],
+        externalRoutes: {
+        }
+      }
+    },
+    alert: {
+      dependencies: {
+        services: [
+          'app',
+          'clusterStore',
+          'globalStore',
+          'resource-actions',
+          'intl',
+          'modal',
+          'router',
+          'scope',
+          'store',
+          'tooltip',
+        ],
+        externalRoutes: {
+          notifier: 'authenticated.cluster.notifier',
+          'authenticated.project.alert.edit':           'authenticated.project.alert.edit',
+          'authenticated.cluster.alert.edit':           'authenticated.cluster.alert.edit',
+          'authenticated.project.alert.index':           'authenticated.project.alert.index',
+          'authenticated.cluster.alert.index':           'authenticated.cluster.alert.index',
+          'authenticated.project.alert.new':           'authenticated.project.alert.new',
+          'authenticated.cluster.alert.new':           'authenticated.cluster.alert.new',
+        }
+      }
+    },
   }
 });
 

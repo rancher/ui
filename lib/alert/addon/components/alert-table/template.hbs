@@ -1,0 +1,33 @@
+{{#sortable-table
+  tableClassNames="bordered"
+  classNames="grid sortable-table"
+  bulkActions=bulkActions
+  paging=paging
+  fullRows=fullRows
+  search=search
+  sortBy=sortBy
+  searchText=searchText
+  headers=headers
+  body=filteredAlerts
+  fullRows=fullRows
+  subRow=subRow
+  as |sortable kind row dt|
+}}
+  {{#if (eq kind "row")}}
+    {{#if (eq pageScope 'cluster')}}
+      {{cluster-alert-row notifiers=notifiers model=row}}
+    {{else if (eq pageScope 'project')}}
+      {{project-alert-row notifiers=notifiers model=row}}
+    {{else}}
+      <div>Oops, it's impossible</div>
+    {{/if}}
+  {{else if (eq kind "nomatch")}}
+    <tr>
+      <td colspan="{{sortable.fullColspan}}" class="text-center text-muted pt-20 pb-20">{{t 'alertPage.index.table.noMatch'}}</td>
+    </tr>
+  {{else if (eq kind "norows")}}
+    <tr>
+      <td colspan="{{sortable.fullColspan}}" class="text-center text-muted pt-20 pb-20">{{t 'alertPage.index.table.noData'}}</td>
+    </tr>
+  {{/if}}
+{{/sortable-table}}
