@@ -41,7 +41,6 @@ export default Ember.Component.extend(Driver, {
   model                    : null,
   exoscaleConfig           : Ember.computed.alias('model.exoscaleConfig'),
 
-  allDiskSizes             : null,
   allInstanceProfiles      : null,
   allTemplates             : null,
 
@@ -278,12 +277,6 @@ export default Ember.Component.extend(Driver, {
                  .map((item) => item.name)
                  .sort()
                  .uniq());
-      console.log(this.get('allTemplates'));
-      this.set('allDiskSizes',
-               res.listtemplatesresponse.template
-                 .filter((item) => item.name.startsWith('Linux') && item.size)
-                 .map((item) => Math.round(item.size / 1024 / 1024 / 1024))
-                 .sort((a, b) => (a - b)).uniq());
       /* Also get the instance types */
       return this.apiRequest('listServiceOfferings', {
         issystem: 'false'
