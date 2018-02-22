@@ -16,7 +16,6 @@
       {{t 'loginPage.greeting' appName=settings.appName htmlSafe=true}}
       <div class="logo"></div>
     </h1>
-    <span style="position:absolute; color:white;">{{access.provider}}</span><!---shhh (^_^) [o_o] (^.^)  (".") ($.$)-->
     <section class="pb-0">
       {{language-dropdown login=true class='mt-10'}}
       <br/>
@@ -55,6 +54,15 @@
 
       {{#if isLocal}}
         {{login-user-pass action="authenticate" waiting=waiting shown=onlyLocal}}
+      {{/if}}
+
+      {{#if app.initError}}
+        {{banner-message color='bg-error' icon='icon-alert' message=app.initError.message}}
+
+        <button class="btn bg-primary icon-btn p-0" {{action "reload"}}>
+          <span class="darken"><i class="icon icon-refresh text-small"/></span>
+          <span>Reload</span>
+        </button>
       {{/if}}
     </section>
   {{/if}}
