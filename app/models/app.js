@@ -13,12 +13,14 @@ const App = Resource.extend({
   }),
   availableActions: computed('actionLinks.{rollback,upgrade}', function () {
     let al = get(this, 'actionLinks')
+    let l = get(this,'links');
 
     var choices = [
-      { label: 'action.rollback', icon: 'icon icon-backup', action: 'rollback', enabled: !!al.rollback, bulkable: false },
-      { label: 'action.upgrade', icon: 'icon icon-arrow-circle-up', action: 'upgrade', enabled: !!al.upgrade, bulkable: false },
-      // { divider: true },
-      // { label: 'action.self', icon: 'icon icon-external-link', action: 'goToApi', enabled: true },
+      { label:   'action.rollback', icon:   'icon icon-backup', action:          'rollback', enabled:     !!al.rollback, bulkable: false },
+      { label:   'action.upgrade', icon:    'icon icon-arrow-circle-up', action: 'upgrade', enabled:      !!al.upgrade, bulkable:  false },
+      { label:   'action.remove',     icon: 'icon icon-trash',        action:    'promptDelete', enabled: !!l.remove, altAction:   'delete', bulkable: true},
+      { divider: true },
+      { label:   'action.viewInApi',  icon: 'icon icon-external-link', action:   'goToApi',      enabled: true},
     ];
 
     return choices;

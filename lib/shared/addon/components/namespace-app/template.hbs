@@ -24,29 +24,14 @@
             tooltipValues=model.serviceStates.byName
         }}
       </div>
-      {{#if upgradeAvailable}}
-        <button class="btn bg-warning" onclick={{action "doUpgrade"}}>
-          {{#tooltip-element type="tooltip-basic" model=latestVersion tooltipTemplate='tooltip-static' aria-describedby="tooltip-base" tooltipFor="upgrade"}}
-            {{model.externalIdInfo.version}}
-            {{t (concat-str 'upgradeBtn.status.' status character='')}}
-          {{/tooltip-element}}
-        </button>
-      {{else}}
-        <button class="btn bg-transparent">
-          {{t (concat-str 'upgradeBtn.status.' status character='')}}
-        </button>
-      {{/if}}
-
-      {{!--
       {{#upgrade-btn model=model classNames="btn-sm" as |btn|}}
-      {{#if btn.upgradeInfo.version}}
-      {{btn.upgradeInfo.version}}
-      {{t (concat-str 'upgradeBtn.status.' btn.upgradeStatus character='')}}
-      {{else}}
-      {{t (concat-str 'upgradeBtn.status.' btn.upgradeStatus character='')}}
-      {{/if}}
+        {{#if btn.model.externalIdInfo.version}}
+          {{btn.model.externalIdInfo.version}}
+          {{t (concat-str 'upgradeBtn.status.' btn.upgradeStatus character='')}}
+        {{else}}
+          {{t (concat-str 'upgradeBtn.status.' btn.upgradeStatus character='')}}
+        {{/if}}
       {{/upgrade-btn}}
-      --}}
     </div>
   </div>
 </div>
