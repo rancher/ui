@@ -1,6 +1,4 @@
-{{#if (and (eq mode "new") (eq step 1))}}
-  {{save-cancel save="driverSave" cancel="close"}}
-{{else}}
+{{#if (and (eq step 2) (eq cluster.state "pending"))}}
   <div class="mt-20">
     {{t 'clusterNew.import.command.instructions'
       appName=settings.appName
@@ -27,7 +25,13 @@
     <pre id="registration-command" style="font-size: 14px;">{{token.insecureCommand}}</pre>
   </div>
 
-  <div class="footer-actions">
-    <button {{action "close"}} class="btn bg-primary">{{t 'clusterNew.rke.done'}}</button>
-  </div>
+  {{#if isEdit}}
+    {{save-cancel save="driverSave" editing=true cancel="close"}}
+  {{else}}
+    <div class="footer-actions">
+      <button {{action "close"}} class="btn bg-primary">{{t 'clusterNew.rke.done'}}</button>
+    </div>
+  {{/if}}
+{{else}}
+  {{save-cancel save="driverSave" editing=isEdit cancel="close"}}
 {{/if}}

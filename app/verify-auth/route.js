@@ -48,7 +48,7 @@ export default Route.extend({
       if (get(params, 'config') === 'github') {
 
         return gh.testConfig(config).then((resp) => {
-          gh.getAuthorizeUrl(resp, openerController.get('github.state'));
+          gh.authorize(resp, openerController.get('github.state'));
         }).catch(err => {
           this.send('gotError', err);
         });

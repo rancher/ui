@@ -66,22 +66,13 @@ const rootNav = [
   },
   {
     scope: 'project',
-    id: 'project-security',
-    localizedLabel: 'nav.admin.security.tab',
-    ctx: [getProjectId],
+    id: 'project-security-roles',
+    localizedLabel: 'nav.infra.members',
+    icon: 'icon icon-users',
+    route: 'authenticated.project.security.members.index',
     resource: ['projectroletemplatebinding'],
     resourceScope: 'global',
-    submenu: [
-      {
-        id: 'project-security-roles',
-        localizedLabel: 'nav.admin.security.members',
-        icon: 'icon icon-users',
-        route: 'authenticated.project.security.members.index',
-        resource: ['projectroletemplatebinding'],
-        resourceScope: 'global',
-        ctx: [getProjectId],
-      },
-    ],
+    ctx: [getProjectId],
   },
   {
     scope: 'project',
@@ -130,6 +121,25 @@ const rootNav = [
   },
   {
     scope: 'cluster',
+    id: 'cluster-storage',
+    localizedLabel: 'nav.cluster.storage.tab',
+    ctx: [getClusterId],
+    resource: ['clusterroletemplatebinding'],
+    resourceScope: 'global',
+    submenu: [
+      {
+        scope: 'cluster',
+        id: 'cluster-storage-classes',
+        localizedLabel: 'nav.cluster.storage.classes',
+        route: 'authenticated.cluster.storageClasses.index',
+        ctx: [getClusterId],
+        resource: ['project'],
+        resourceScope: 'global',
+      },
+    ]
+  },
+  {
+    scope: 'cluster',
     id: 'cluster-projects',
     localizedLabel: 'nav.cluster.projects',
     route: 'authenticated.cluster.projects.index',
@@ -148,22 +158,13 @@ const rootNav = [
   },
   {
     scope: 'cluster',
-    id: 'cluster-security',
-    localizedLabel: 'nav.admin.security.tab',
-    ctx: [getClusterId],
+    id: 'cluster-security-roles',
+    localizedLabel: 'nav.cluster.members',
+    icon: 'icon icon-users',
+    route: 'authenticated.cluster.security.members.index',
     resource: ['clusterroletemplatebinding'],
     resourceScope: 'global',
-    submenu: [
-      {
-        id: 'cluster-security-roles',
-        localizedLabel: 'nav.admin.security.members',
-        icon: 'icon icon-users',
-        route: 'authenticated.cluster.security.members.index',
-        resource: ['clusterroletemplatebinding'],
-        resourceScope: 'global',
-        ctx: [getClusterId],
-      },
-    ],
+    ctx: [getClusterId],
   },
   {
     scope: 'cluster',
@@ -202,20 +203,6 @@ const rootNav = [
       },
     ],
   },
-//  {
-//    scope: 'cluster',
-//    id: 'cluster-networking',
-//    localizedLabel: 'nav.cluster.networking',
-//    route: 'authenticated.cluster.networking',
-//    ctx: [getClusterId],
-//  },
-//  {
-//    scope: 'cluster',
-//    id: 'cluster-storage',
-//    localizedLabel: 'nav.cluster.storage',
-//    route: 'authenticated.cluster.storage',
-//    ctx: [getClusterId],
-//  },
 
   // Global
   {

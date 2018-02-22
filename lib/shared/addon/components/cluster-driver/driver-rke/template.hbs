@@ -1,4 +1,4 @@
-{{#if (eq step 1)}}
+{{#if (or isEdit (eq step 1))}}
   {{#accordion-list showExpandAll=false as |al expandFn|}}
     {{#accordion-list-item
       title=(t 'clusterNew.rke.customize.label')
@@ -87,11 +87,9 @@
       setNodePoolErrors=(action "setNodePoolErrors")
     }}
   {{/unless}}
+{{/if}}
 
-  {{top-errors errors=errors}}
-  {{save-cancel createLabel=(if isCustom 'saveCancel.next' 'saveCancel.create') save="driverSave" cancel="close"}}
-{{else}}
-
+{{#if (eq step 2) }}
   <div class="mt-20">
     {{banner-message color="bg-info" message=(t 'clusterNew.rke.command.instructions'
       appName=settings.appName
@@ -142,7 +140,12 @@
       </div>
     </div>
   {{/if}}
+{{/if}}
 
+{{top-errors errors=errors}}
+{{#if (or isEdit (eq step 1))}}
+  {{save-cancel createLabel=(if isCustom 'saveCancel.next' 'saveCancel.create') editing=isEdit save="driverSave" cancel="close"}}
+{{else}}
   <div class="footer-actions">
     <button {{action "close"}} class="btn bg-primary">{{t 'clusterNew.rke.done'}}</button>
   </div>

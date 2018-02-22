@@ -1,4 +1,3 @@
-import RSVP, { reject } from 'rsvp';
 import { cancel, next, scheduleOnce } from '@ember/runloop';
 import { inject as service } from '@ember/service';
 import Route from '@ember/routing/route';

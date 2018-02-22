@@ -104,11 +104,6 @@ export default Resource.extend(ResourceUsage, {
     }
   }),
 
-  suppportsNodePools: computed('configName', function() {
-    const configName = get(this, 'configName');
-    return configName === 'rancherKubernetesEngineConfig' || configName === 'localConfig';
-  }),
-
   clearProvidersExcept(keep) {
     const keys = this.allKeys().filter(x => x.endsWith('Config'));
 
