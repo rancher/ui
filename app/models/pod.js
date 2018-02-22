@@ -10,8 +10,9 @@ import DisplayImage from 'shared/mixins/display-image';
 var Pod = Resource.extend(DisplayImage, {
   router: service(),
   modalService:  service('modal'),
+  clusterStore:  service(),
 
-  namespace: reference('namespaceId'),
+  namespace: reference('namespaceId','namespace','clusterStore'),
   node: reference('nodeId'),
 
   availableActions: function() {
