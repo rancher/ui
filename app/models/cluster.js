@@ -6,7 +6,6 @@ import { hasMany } from 'ember-api-store/utils/denormalize';
 import ResourceUsage from 'shared/mixins/resource-usage';
 import { alias } from '@ember/object/computed';
 import { resolve } from 'rsvp';
-import { later } from '@ember/runloop';
 
 export default Resource.extend(ResourceUsage, {
   globalStore:  service(),
@@ -55,7 +54,6 @@ export default Resource.extend(ResourceUsage, {
   }),
 
   provider: computed('configName','nodePools.@each.nodeTemplateId', function() {
-    const intl = get(this, 'intl');
     const pools = get(this,'nodePools')||[];
     const firstTemplate = get(pools,'firstObject.nodeTemplate');
 

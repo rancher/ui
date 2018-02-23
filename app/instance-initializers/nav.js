@@ -131,7 +131,7 @@ const rootNav = [
         scope: 'cluster',
         id: 'cluster-storage-classes',
         localizedLabel: 'nav.cluster.storage.classes',
-        route: 'authenticated.cluster.storageClasses.index',
+        route: 'authenticated.cluster.storage-classes.index',
         ctx: [getClusterId],
         resource: ['project'],
         resourceScope: 'global',

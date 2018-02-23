@@ -1102,7 +1102,7 @@ secretsPage:
   index:
     header: Secrets
     linkTo: Add Secret
-    noData: You do not have any Secrets yet
+    noData: You do not have any secrets yet
     noMatch: No Secrets match the current search
   table:
     keys: Keys
@@ -1270,9 +1270,19 @@ nodeTemplatesPage:
     location: Location
     size: Size
     usedBy: Used By
-    noData: You do not have any Node Templates yet.
+    noData: You do not have any node templates yet.
     usedByNone: No Clusters
     unknown: Unknown
+
+storageClassPage:
+  header: Storage Classes
+  addActionLabel: Add Class
+  noData: You do not have any storage classes yet.
+  noMatch: No storage classes match the current search
+  provisioner:
+    label: Provisioner
+  default:
+    label: Default
 
 userPreferencesPage:
   header: Preferences
@@ -1292,43 +1302,6 @@ userPreferencesPage:
       label: Email
     password:
       text: Change Password
-
-processesPage:
-  header: Processes
-  tab:
-    summary: Summary
-    pools: Pools
-    running: Running
-    delayed: Delayed
-    ready: Ready
-    completed: Recently Completed
-  summary:
-    noData: No processes are currently scheduled
-    table:
-      running: Running
-      ready: Ready
-      delay: Delayed
-  pools:
-    noData: No pools found
-    noMatch: No pools match the current search
-    table:
-      activeTasks: Active
-      poolSize: Pool Size
-      rejectedTasks: Rejected
-      completedTasks: Completed
-      queueSize: Queue Size
-      queueRemainingCapacity: Queue Remain
-
-  list:
-    table:
-      resource: Resource
-      exitReason: Exit Reason
-      startTime: Start Time
-      endTime: End Time
-      runTime: Run Time
-      runAfter: Run After
-    noData: 'No processes are currently {which}'
-    noMatch: No processes match the current search
 
 verifyPage:
   header: "You've successfully verified your email!"
@@ -4268,6 +4241,11 @@ pagination:
     =0 {No Services}
     =1 {{count} {count, plural, =1 {Service} other {Services}}}
     other {{from} - {to} of {count} Services}}
+  storageClass: |
+    {pages, plural,
+    =0 {No Storage Classes}
+    =1 {{count} {count, plural, =1 {Storage Class} other {Storage Classes}}}
+    other {{from} - {to} of {count} Storage Classes}}
   volume: |
     {pages, plural,
     =0 {No Volumes}
@@ -4644,6 +4622,7 @@ action:
   exportConfig: Export Config
   garbageCollect: Cleanup
   logs: View Logs
+  makeDefault: Set as default
   nodeConfig: Download Keys
   move: Move
   pause: Pause Operations

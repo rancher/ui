@@ -1,7 +1,6 @@
-import C from 'ui/utils/constants';
 import Route from '@ember/routing/route';
-import RSVP, { reject } from 'rsvp';
-import { get, set } from '@ember/object';
+import RSVP from 'rsvp';
+import { get } from '@ember/object';
 import { inject as service } from '@ember/service';
 
 export default Route.extend({
