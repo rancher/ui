@@ -7,7 +7,7 @@
       <div class="col span-6">
         {{!-- TODO --}}
         {{!--{{#link-to "stack" scope.currentProject.id model.id}}{{model.displayName}}{{/link-to}} --}}
-        {{model.displayName}} <span class="help-block">v{{model.externalIdInfo.version}}</span>
+        {{model.displayName}}
       </div>
       <div class="col span-6 text-right">
         {{badge-state model=model classNames="btn-xs"}}
@@ -25,8 +25,8 @@
         }}
       </div>
       {{#upgrade-btn model=model classNames="btn-sm" as |btn|}}
+        {{model.externalIdInfo.version}}
         {{#if btn.model.externalIdInfo.version}}
-          {{btn.latestVersion}}
           {{t (concat-str 'upgradeBtn.status.' btn.upgradeStatus character='')}}
         {{else}}
           {{t (concat-str 'upgradeBtn.status.' btn.upgradeStatus character='')}}
