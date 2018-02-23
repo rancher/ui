@@ -5,8 +5,6 @@
   <div class="stack-info-row box">
     <div class="stack-info-top row">
       <div class="col span-6">
-        {{!-- TODO --}}
-        {{!--{{#link-to "stack" scope.currentProject.id model.id}}{{model.displayName}}{{/link-to}} --}}
         {{model.displayName}}
       </div>
       <div class="col span-6 text-right">
@@ -28,6 +26,7 @@
         {{model.externalIdInfo.version}}
         {{#if btn.model.externalIdInfo.version}}
           {{t (concat-str 'upgradeBtn.status.' btn.upgradeStatus character='')}}
+          <span class="text-small">({{btn.latestVersion}})</span>
         {{else}}
           {{t (concat-str 'upgradeBtn.status.' btn.upgradeStatus character='')}}
         {{/if}}
