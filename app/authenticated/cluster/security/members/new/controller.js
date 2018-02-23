@@ -24,7 +24,7 @@ export default Controller.extend(NewOrEdit, {
   kinds: ROLE_KINDS,
   defaultUser: null,
   filteredUsers: computed('model.users.@each.{id,state}', function() {
-    return get(this, 'model.users').filter(u => !u.hasOwnProperty('me')).sortBy('username');
+    return get(this, 'model.users').filter(u => !u.hasOwnProperty('me') || get(u, 'me') === false).sortBy('username');
   }),
   actions: {
     doneSaving() {
