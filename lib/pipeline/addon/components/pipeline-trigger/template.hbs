@@ -1,0 +1,68 @@
+<div class="inline-form">
+  <label>{{t 'newPipelineStep.stepType.scm.trigger'}}</label>
+  <div class="pt-10"></div>
+  <div class="inline-form">
+    {{input disabled=disabled type="checkbox" id="webhook" checked=pipeline.triggerWebhook}}
+    <label for="webhook">
+      {{t 'newPipelineStage.trigger.webhook'}}
+    </label>
+  </div>
+  <div class="pt-10"></div>
+  <div class="inline-form">
+    {{input disabled=disabled type="checkbox" id="cron" checked=state.setCustomCron}}
+    <label for="cron">
+      {{t 'newPipelineStage.trigger.cron'}}
+    </label>
+  </div>
+  {{#if state.setCustomCron}}
+    <div class="pt-10"></div>
+    <div class="inline-form pl-10">
+      In <div class="inline-block" style="width: 500px">{{searchable-select
+            content=timezones
+            value=pipeline.triggerCronTimezone
+            optionLabelPath="text"
+            optionValuePath="utcStr"
+            readOnly=(if (eq cronType 'everyday') disabled true)
+          }}</div>
+    </div>
+    <div class="pt-10"></div>
+    <div class="inline-form pl-10">
+      {{radio-button id="everyday" disabled=disabled selection=cronType value="everyday"}}
+      <label for="everyday">
+        {{t 'newPipelineStage.trigger.everyday'}} <div class="inline-block">{{input 
+        class="form-control input-sm" 
+        type="number"
+        min='0'
+        max='11'
+        value=cron.hour
+        disabled=(if (eq cronType 'everyday') disabled true)
+      }}</div> : <div class="inline-block">{{input
+        class="form-control input-sm" 
+        type="number" 
+        value=cron.min
+        min='0'
+        max='59'
+        disabled=(if (eq cronType 'everyday') disabled true)
+      }}</div>
+      </label>
+    </div>
+    <div class="pt-10"></div>
+    <div class="inline-form pl-10">
+      {{radio-button id="custom" disabled=disabled selection=cronType value="custom"}}
+      <label for="custom">
+        {{t 'newPipelineStage.trigger.custom'}} <div class="inline-block" style="display: relative;top:0">{{input 
+        class="form-control input-sm" 
+        type="text"
+        value=customCron
+        disabled=(if (eq cronType 'custom') disabled true)
+      }}</div>
+      </label>
+      {{#if customCron }}
+        {{#if (eq cronType 'custom')}}
+          <p class="text-success mt-5 mb-0 ml-20">{{pretty-cron customCron 'toString'}}</p>
+        {{/if}}
+      {{/if}}
+    </div>
+    
+  {{/if}}
+</div>

@@ -1,0 +1,43 @@
+{{#if (eq type 'scm')}}
+  <div class="banner bg-info">
+    <div class="banner-icon"><span class="icon icon-info"></span></div>
+    <div class="banner-message">
+      <p>{{t 'newPipelineStep.stepType.scm.warning'}}</p>
+    </div>
+  </div>
+  {{step-scm
+    selectedModel=selectedModel
+    modalOpts=modalOpts
+  }}
+{{else}}
+  <div class="inline-form">
+    <label>{{t 'newPipelineStep.stepType.label'}}</label>
+    <div class="pt-10"></div>
+    <div>
+    {{new-select
+      content=stepsTypeChoices
+      optionLabelPath="name"
+      optionValuePath="id"
+      value=type
+      disabled=(if (eq modalOpts.type 'review') true false)
+    }}
+    </div>
+  </div>
+{{/if}}
+
+{{#if (eq type 'task')}}
+  {{pipeline-step-task
+    pipeline=pipeline
+    selectedModel=selectedModel
+    modalOpts=modalOpts
+  }}
+{{/if}}
+
+{{#if (eq type 'build')}}
+  {{step-build
+    pipeline=pipeline
+    selectedModel=selectedModel
+    modalOpts=modalOpts
+    modalState=modalState
+  }}
+{{/if}}

@@ -1,0 +1,48 @@
+<div class="inline-block" style="width: {{width}}">
+  <label>{{t 'generic.registry'}}{{field-required}}</label>
+  <div class="pt-10"></div>
+  {{searchable-select class="form-control" readOnly=disabled content=state.registries value=state.imageRegistry allowCustom=true}}
+</div>
+<span> / </span>
+<div class="inline-block" style="width: {{width}}">
+  <label>{{t 'generic.repository'}}{{field-required}}</label>
+  <div class="pt-10"></div>
+  {{input class="form-control" value=state.imageRepo disabled=disabled}}
+</div>
+<span> : </span>
+<div class="inline-block" style="{{state.width}}">
+  <label>{{t 'generic.tag'}}{{field-required}}</label>
+  <div class="pt-10"></div>
+  {{input class="form-control" value=state.imageTag disabled=disabled}}
+</div>
+{{#if registryField}}
+  {{#if state.registryExist}}
+  {{banner-message icon="icon-success" color='bg-success mb-0 mt-10' message=(concat-str "Registry " state.imageRegistry " exist")}}
+  {{else}}
+  {{banner-message color='bg-warning mb-0 mt-10' message=(concat-str "Please add registry " state.imageRegistry " first")}}
+  <div class="box mt-10">
+    <p class="mt-0 mb-0">{{t 'newPipelineStep.stepType.build.scope'}}</p>
+    <p class="mt-10 mb-0">{{t 'registriesPage.new.form.custom.labelText'}}: {{state.imageRegistry}}</p>
+    <div class="row">
+      <div class="col span-12">
+        <div>
+          <label class="acc-label">{{t 'registriesPage.new.form.username.labelText'}}</label>
+          {{input class="form-control" value=state.username}}
+        </div>
+        <div>
+          <label class="acc-label">{{t 'registriesPage.new.form.password.labelText'}}</label>
+          {{input type="password" class="form-control" value=state.password}}
+        </div>
+      </div>
+      <div class="col span-12">
+        <button class="btn bg-primary" {{action "saveRegistry"}} disabled={{state.savingRegistry}}>
+          {{#if state.savingRegistry}}
+            <i class="icon icon-spin icon-spinner"></i>
+          {{/if}}
+          {{t 'newPipeline.save'}}
+        </button>
+      </div>
+    </div>
+  </div>
+  {{/if}}
+{{/if}}

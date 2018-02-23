@@ -1,0 +1,20 @@
+{{#containers-header tags=tags simpleMode=true showGroup=false}}
+  {{!-- {{#link-to "pipelines.project.import" classNames="btn btn-sm bg-default mr-10"}}{{t 'pipelinesPage.import'}}{{/link-to}} --}}
+  <div class="btn bg-link btn-sm icon-btn p-0">
+  {{#link-to "new-pipeline" class="btn bg-link icon-btn p-0"}}
+    <span class="darken"><i class="icon icon-plus text-small"/></span>
+    <span>{{t 'pipelinesPage.add'}}</span>
+  {{/link-to}}
+  </div>
+{{/containers-header}}
+
+<div class="mt-10"></div>
+<section class="instances">
+  {{pipeline-jobs-table
+      body=model
+      sortBy=sortBy
+      bulkActions=true
+      search=true
+      paging=true
+    }}
+</section>

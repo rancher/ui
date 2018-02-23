@@ -6,6 +6,8 @@ import { reject } from 'rsvp';
 
 export default Route.extend(Preload, {
   scope: service(),
+  globalStore: service(),
+  clusterStore: service(),
 
   model(params, transition) {
     return get(this, 'globalStore').find('cluster', params.cluster_id).then((cluster) => {
