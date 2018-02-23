@@ -4,11 +4,8 @@
   </td>
 {{/if}}
 
-<td data-title="{{dt.type}}" class="clip">
-  <div class="text-capitalize">{{model.notifierType}} </div>
-  {{#if showNotifierValue}}
-    <div class="text-muted text-small">{{model.notifierLabel}}: {{model.notifierValue}}</div>
-  {{/if}}
+<td data-title="{{dt.state}}" class="clip">
+  {{badge-state model=model}}
 </td>
 
 <td data-title="{{dt.name}}" >
@@ -16,8 +13,15 @@
    <div class="text-muted text-small">{{model.description}}</div>
 </td>
 
+<td data-title="{{dt.type}}" class="clip">
+  <div class="text-capitalize">{{model.notifierType}} </div>
+  {{#if showNotifierValue}}
+    <div class="text-muted text-small">{{model.notifierLabel}}: {{model.notifierValue}}</div>
+  {{/if}}
+</td>
+
 <td data-title="{{dt.created}}" class="clip">
-  {{created}}
+  {{model.displayCreated}}
 </td>
 
 <td data-title="{{t 'generic.actions'}}" class="actions">

@@ -77,6 +77,11 @@ const Notifier = Resource.extend({
 
   }.property('slackConfig', 'pagerdutyConfig', 'emailConfig', 'webhookConfig'),
 
+  displayCreated: function() {
+    const d = get(this , 'created');
+    return moment(d).fromNow();
+  }.property('created'),
+
   notifierLabel: function() {
     const sc = this.get('slackConfig');
     const pc = this.get('pagerdutyConfig');
