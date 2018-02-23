@@ -30,7 +30,7 @@
           {{radio-button selection=model._targetType value="normalEvent"}} {{t 'alertPage.newOrEdit.normal'}}
         </label>
         <label>
-          {{radio-button selection=model._targetType value="warningEvent"}} {{t 'alertPage.newOrEdit.normal'}}
+          {{radio-button selection=model._targetType value="warningEvent"}} {{t 'alertPage.newOrEdit.warning'}}
         </label>
       </div>
       <div class="col span-8 mt-0">
@@ -53,11 +53,11 @@
       </div>
       <div class="col span-8 mt-0">
         {{searchable-select
-            content=nodes
+            content=resourceMap.nodes
             class="form-control"
             value=model.targetNode.nodeId
             optionValuePath="id"
-            optionLabelPath="name"
+            optionLabelPath="displayName"
             placeholder=(t 'alertPage.newOrEdit.nodePlaceholder')
             readOnly=(not-eq model._targetType 'node')
         }}
