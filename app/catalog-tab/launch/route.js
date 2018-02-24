@@ -94,7 +94,8 @@ export default Route.extend({
           type: 'app', // should be app after new api
           name: results.namespace.name,
           answers: [],
-        })      }
+        });
+      }
 
       return EmberObject.create({
         allTemplates: this.modelFor(get(this, 'parentRoute')).get('catalog'),

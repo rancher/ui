@@ -4,12 +4,10 @@
   </div>
   <div class="stack-info-row box">
     <div class="stack-info-top row">
-      <div class="col span-6">
-        {{!-- TODO --}}
-        {{!--{{#link-to "stack" scope.currentProject.id model.id}}{{model.displayName}}{{/link-to}} --}}
+      <div class="col">
         {{model.displayName}}
       </div>
-      <div class="col span-6 text-right">
+      <div class="col text-right pull-right">
         {{badge-state model=model classNames="btn-xs"}}
         {{action-menu model=model classNames="inline-block"}}
       </div>
@@ -25,9 +23,10 @@
         }}
       </div>
       {{#upgrade-btn model=model classNames="btn-sm" as |btn|}}
+        {{model.externalIdInfo.version}}
         {{#if btn.model.externalIdInfo.version}}
-          {{btn.model.externalIdInfo.version}}
           {{t (concat-str 'upgradeBtn.status.' btn.upgradeStatus character='')}}
+          <span class="text-small">({{btn.latestVersion}})</span>
         {{else}}
           {{t (concat-str 'upgradeBtn.status.' btn.upgradeStatus character='')}}
         {{/if}}
