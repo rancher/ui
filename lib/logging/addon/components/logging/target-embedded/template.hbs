@@ -1,11 +1,11 @@
 <h2 class="mt-30">{{t 'loggingPage.embedded.header'}}</h2>
 <hr/>
 
-<section class="box">
+<section class="">
   <h4>{{t 'loggingPage.embedded.indexPatterns.header'}}</h4>
   <p class="text-info text-small">{{t 'loggingPage.embedded.indexPatterns.helpText'}}</p>
-  <div class="row">
-    <div class="col span-6">
+
+
       <label class="acc-label">{{t 'loggingPage.embedded.indexPatterns.prefix'}}{{field-required}}</label>
       {{input
           type="text"
@@ -13,16 +13,15 @@
           className="form-control"
           placeholder=(t 'loggingPage.embedded.indexPatterns.prefixPlaceholder')
       }}
-    </div>
-    <div class="col span-6">
+
       <div style="margin-top: 34px;">
         <label>{{t 'loggingPage.embedded.indexPatterns.dateFormat'}}</label>
         <label class="mr-10">{{radio-button selection=config.dateFormat value="YYYY-MM-DD"}} YYYY-MM-DD</label>
         <label class="mr-10">{{radio-button selection=config.dateFormat value="YYYY-MM"}} YYY-MMM</label>
         <label class="mr-10">{{radio-button selection=config.dateFormat value="YYYY"}} YYYY</label>
       </div>
-    </div>
-  </div>
+
+
   <div>
   {{t 'loggingPage.embedded.generatedIndex'
     esIndex=esIndex
@@ -30,5 +29,5 @@
     }}
   </div>
 </section>
-
+<hr class="mt-30 mb-30" />
 {{logging/form-log-format logPreview=logPreview model=model}}

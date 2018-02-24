@@ -8,12 +8,12 @@
   <div class="col span-10">
 
     <div class="row">
-      <div class="col span-3">
-        <label>
+      <div class="col span-2">
+        <label class="acc-label">
           {{radio-button selection=model._targetType value="systemService"}} {{t 'alertPage.targetTypes.systemService'}}
         </label>
       </div>
-      <div class="col span-8 mt-0">
+      <div class="col span-9 mt-0">
         {{searchable-select
             content=systemServices
             class="form-control"
@@ -25,15 +25,12 @@
     </div>
 
     <div class="row">
-      <div class="col span-3">
-        <label class="pr-5">
+      <div class="col span-2">
+        <label class="acc-label">
           {{radio-button selection=model._targetType value="normalEvent"}} {{t 'alertPage.newOrEdit.normal'}}
         </label>
-        <label>
-          {{radio-button selection=model._targetType value="warningEvent"}} {{t 'alertPage.newOrEdit.warning'}}
-        </label>
       </div>
-      <div class="col span-8 mt-0">
+      <div class="col span-9 mt-0">
         {{searchable-select
             content=resourceKinds
             class="form-control"
@@ -46,12 +43,12 @@
     </div>
 
     <div class="row">
-      <div class="col span-3">
-        <label>
+      <div class="col span-2">
+        <label class="acc-label">
           {{radio-button selection=model._targetType value="node"}} {{t 'alertPage.targetTypes.node'}}
         </label>
       </div>
-      <div class="col span-8 mt-0">
+      <div class="col span-9 mt-0">
         {{searchable-select
             content=resourceMap.nodes
             class="form-control"
@@ -64,12 +61,12 @@
       </div>
     </div>
     <div class="row">
-      <div class="col span-3">
-        <label>
+      <div class="col span-2">
+        <label class="acc-label">
           {{radio-button selection=model._targetType value="nodeSelector"}} {{t 'alertPage.targetTypes.nodeSelector'}}
         </label>
       </div>
-      <div class="col span-8 mt-0">
+      <div class="col span-9 mt-0">
         {{#if (eq model._targetType 'nodeSelector')}}
           {{form-key-value
               addActionLabel="alertPage.addSelectorLabel"
@@ -93,14 +90,14 @@
   </div>
   <div class="col span-10">
   {{#if (eq model._targetType 'systemService')}}
-    <label class="mr-10 pt-5">
+    <label class="acc-label">
       {{radio-button selection="whatever" value="whatever"}} {{t 'alertPage.newOrEdit.unhealthy'}}
     </label>
   {{else if (or (eq model._targetType 'node') (eq model._targetType 'nodeSelector'))}}
-    <label class="mr-10">
+    <label class="acc-label">
       {{radio-button selection=model.targetNode.condition value="notready"}} {{t 'alertPage.newOrEdit.notReady'}}
     </label>
-    <label class="ml-10">
+    <label class="acc-label">
       {{radio-button selection=model.targetNode.condition value="cpu"}} {{t 'alertPage.newOrEdit.cpuUsage'}}
     </label>
     <div style="display:inline-block;width:60px;">
@@ -135,8 +132,8 @@
     {{t 'alertPage.newOrEdit.sendA'}}
   </div>
   <div class="col span-10">
-    <label class="mr-10">{{radio-button selection=model.severity value="critical"}} {{t 'alertPage.newOrEdit.critical'}}</label>
-    <label class="mr-10">{{radio-button selection=model.severity value="warning"}} {{t 'alertPage.newOrEdit.warning'}}</label>
-    <label class="mr-10">{{radio-button selection=model.severity value="info"}} {{t 'alertPage.newOrEdit.info'}}</label>
+    <label class="acc-label mr-10">{{radio-button selection=model.severity value="critical"}} {{t 'alertPage.newOrEdit.critical'}}</label>
+    <label class="acc-label mr-10">{{radio-button selection=model.severity value="warning"}} {{t 'alertPage.newOrEdit.warning'}}</label>
+    <label class="acc-label mr-10">{{radio-button selection=model.severity value="info"}} {{t 'alertPage.newOrEdit.info'}}</label>
   </div>
 </section>

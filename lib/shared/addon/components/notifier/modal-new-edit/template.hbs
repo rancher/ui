@@ -161,7 +161,17 @@
   </div>
 {{/if}}
 
+{{#if (eq currentType 'slack')}}
+  <div class="">
+    {{t 'notifierPage.slack.helpText' htmlSafe=true}}
+  </div>
+{{/if}}
+
 {{top-errors errors=errors}}
+
+{{#if (eq currentType 'pagerduty')}}
+  {{t 'notifierPage.pagerduty.helpText' htmlSafe=true}}
+{{/if}}
 
 <div class="over-hr mt-40">
   <span>
@@ -197,22 +207,3 @@
 <div class="footer-actions">
   {{save-cancel createLabel=addBtnLabel save="save" cancel="cancel"}}
 </div>
-
-{{#if (eq currentType 'slack')}}
-  <div class="box mt-20">
-    <h3></h3>
-    <h3> {{t 'notifierPage.slack.helpTitle'}}</h3>
-    <ol>
-      {{t 'notifierPage.slack.helpText' htmlSafe=true}}
-    </ol>
-  </div>
-{{/if}}
-
-{{#if (eq currentType 'pagerduty')}}
-  <div class="box mt-20">
-    <h3> {{t 'notifierPage.pagerduty.helpTitle'}}</h3>
-    <ol>
-      {{t 'notifierPage.pagerduty.helpText' htmlSafe=true}}
-    </ol>
-  </div>
-{{/if}}
