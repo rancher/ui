@@ -9,14 +9,13 @@
   searchText=searchText
   headers=headers
   body=filteredAlerts
-  fullRows=fullRows
   as |sortable kind row dt|
 }}
   {{#if (eq kind "row")}}
     {{#if (eq pageScope 'cluster')}}
-      {{cluster-alert-row notifiers=notifiers model=row}}
+      {{cluster-alert-row notifiers=filteredNotifiers model=row}}
     {{else if (eq pageScope 'project')}}
-      {{project-alert-row notifiers=notifiers model=row}}
+      {{project-alert-row notifiers=filteredNotifiers model=row}}
     {{else}}
       <div>Oops, it's impossible</div>
     {{/if}}

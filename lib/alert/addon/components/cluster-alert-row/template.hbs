@@ -36,7 +36,7 @@
     {{/if}}
   {{else if (eq model.targetType 'node')}}
     <div class="text-muted text-small">
-      {{model.targetNode.nodeId}}
+      {{model.nodeName}}
     </div>
   {{else if (eq model.targetType 'systemService')}}
     <div class="text-muted text-small">
@@ -44,7 +44,7 @@
     </div>
   {{else if (eq model.targetType 'event')}}
     <div class="text-muted text-small">
-      <span class="text-capicalize">{{resourceKind}}</span> {{t 'alertPage.targetTypes.event'}}
+      <span class="text-capicalize">{{model.resourceKind}}</span> {{t 'alertPage.targetTypes.event'}}
     </div>
   {{/if}}
 </td>
@@ -58,9 +58,10 @@
     {{#if (eq model.recipients.length 1)}}
       <div class="clip">
         <div class="text-capitalize">{{item.notifierType}}</div>
-        {{#if firstRecipient}}
-          {{firstRecipient.name}}
+        {{#if model.firstRecipient}}
+          {{model.firstRecipient}}
         {{else}}
+          {{t 'alertPage.na'}}
         {{/if}}
       </div>
     {{else if (gt model.recipients.length 1)}}
