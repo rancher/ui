@@ -738,23 +738,32 @@ editDns:
   selector:
     label: Container Label Selector
     placeholder: e.g. mylabel=somevalue
-  mode:
+  recordType:
     label: "Resolves To"
-    dnsservice: One or more other services
-    selectorservice: The set of containers which match a selector
-    externalip: One or more external IP addresses
-    externalhostname: An external hostname
-  targetIp:
-    label: Target IP Addresses
-    add: Add Target IP Address
-  hostname:
-    label: Target Hostname
-    placeholder: e.g. foobar.com
+    arecord: One or more external IP addresses
+    cname: An external hostname
+    alias: Another DNS record's value
+    workload: One or more workloads
+    selector: The set of pods which match a selector
+  target:
+    arecord: Target IP Addresses
+    cname: Target Hostname
+    alias: Target DNS Records
+    workload: Target Workloads
+    selector: Target Pod Selectors
+  add:
+    arecord: Add Target IP
+    alias: Add Target Record
+    workload: Add Target Workload
+    selector: Add Target Selector
+  placeholder:
+    arecord: e.g. 19.82.2.24
+    cname: e.g. example.com
   errors:
-    ipRequired: 'One or more "Target IP Addresses" are required'
-    hostnameRequired: '"Target Hostname" is required'
-    serviceRequired: 'One or more "Targets" are required'
-    selectorRequired: '"Container Selector" is required'
+    targetRequired: 'One or more "Targets" are required'
+    selectorRequired: 'One or more "Pod selectors" are required'
+    mixedAlias: An Alias cannot target a mix of A and CNAME records
+    multipleCname: An Alias cannot point to more than one CNAME record
 
 editVolume:
   define:

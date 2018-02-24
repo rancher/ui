@@ -1,10 +1,10 @@
 <section class="header clearfix">
-  <h1>{{t (if editing 'editDns.title.edit' 'editDns.title.new')}}</h1>
+  <h1>{{t (if isEdit 'editDns.title.edit' 'editDns.title.new')}}</h1>
 </section>
 
 <section class="horizontal-form container-fluid">
   <div class="row">
-    <div class="col span-11-of-24">
+    <div class="col span-6">
       {{form-name-description
         model=record
         namePlaceholder="editDns.name.placeholder"
@@ -12,102 +12,61 @@
         descriptionPlaceholder="editDns.description.placeholder"
       }}
     </div>
-    <div class="col span-11-of-24 offset-1-of-24">
-      {{#unless editing}}
-        {{form-namespace
-          namespace=namespace
-          errors=namespaceErrors
-        }}
-      {{/unless}}
+    <div class="col span-6">
+      {{form-namespace
+        editable=isNew
+        namespace=namespace
+        errors=namespaceErrors
+        registerHook=(action "registerHook")
+      }}
     </div>
   </div>
 
   <div class="row">
     <div class="col span-6">
       <div>
-        <label class="acc-label">{{t 'editDns.mode.label'}}</label>
+        <label class="acc-label">{{t 'editDns.recordType.label'}}</label>
       </div>
       <div class="mb-20">
         <div class="radio">
-          <label>{{radio-button selection=mode value="externalip"}}&nbsp;{{t 'editDns.mode.externalip'}}</label>
+          <label>{{radio-button selection=recordType value="arecord"}}&nbsp;{{t 'editDns.recordType.arecord'}}</label>
         </div>
         <div class="radio">
-          <label>{{radio-button selection=mode value="externalhostname"}}&nbsp;{{t 'editDns.mode.externalhostname'}}</label>
+          <label>{{radio-button selection=recordType value="cname"}}&nbsp;{{t 'editDns.recordType.cname'}}</label>
         </div>
         <div class="radio">
-          <label>{{radio-button selection=mode value="dnsservice"}}&nbsp;{{t 'editDns.mode.dnsservice'}}</label>
+          <label>{{radio-button selection=recordType value="alias"}}&nbsp;{{t 'editDns.recordType.alias'}}</label>
         </div>
         <div class="radio">
-          <label>{{radio-button selection=mode value="selectorservice"}}&nbsp;{{t 'editDns.mode.selectorservice'}}</label>
+          <label>{{radio-button selection=recordType value="workload"}}&nbsp;{{t 'editDns.recordType.workload'}}</label>
+        </div>
+        <div class="radio">
+          <label>{{radio-button selection=recordType value="selector"}}&nbsp;{{t 'editDns.recordType.selector'}}</label>
         </div>
       </div>
     </div>
     <div class="col span-6">
-      {{#if (eq mode "dnsservice")}}
-        {{container/form-service-links
-          service=record
-          stack=stack
-          expandOnInit=true
-          withAlias=false
+      {{#if (eq recordType "arecord")}}
+        {{form-value-array
+          initialValues=model.ipAddresses
+          addActionLabel='editDns.add.arecord'
+          valueLabel='editDns.target.arecord'
+          valuePlaceholder='editDns.placeholder.arecord'
+          changed=(action (mut model.ipAddresses))
         }}
-      {{else}}
-        <div class="box">
-          {{#if (eq mode "externalip")}}
-            <div class="mb-20">
-              <label>{{t 'editDns.targetIp.label'}}{{field-required}}</label>
-            </div>
-            <div>
-              <button class="btn bg-link icon-btn" {{action "addTargetIp"}}>
-                <span class="darken"><i class="icon icon-plus text-small"/></span>
-                <span>{{t 'editDns.targetIp.add'}}</span>
-              </button>
-            </div>
-            {{#if targetIpArray.length}}
-              <div class="row">
-                <div class="col span-12">
-                  <table class="table fixed no-lines no-top-padding">
-                    <tbody>
-                      {{#each targetIpArray as |tgt|}}
-                        <tr>
-                          <td class="pr-0 pl-0 pb-10">
-                            {{input type="text" class="form-control input-sm target-ip" value=tgt.value placeholder="e.g. 192.168.2.24"}}
-                          </td>
-                          <td width="30" class="text-right pr-0 pl-0 pb-10">
-                            <button class="btn bg-primary btn-sm" {{action "removeTargetIp" tgt}}><i class="icon icon-minus"/></button>
-                          </td>
-                        </tr>
-                      {{/each}}
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-            {{/if}}
-          {{else if (eq mode "externalhostname")}}
-            <div class="mb-20">
-              <label>{{t 'editDns.hostname.label'}}{{field-required}}</label>
-            </div>
-            {{input value=record.hostname placeholder=(t 'editDns.hostname.placeholder')}}
-          {{else if (eq mode "selectorservice")}}
-            <div class="mb-20">
-              <label>{{t 'editDns.selector.label'}}{{field-required}}</label>
-            </div>
-            {{input value=record.selector placeholder=(t 'editDns.selector.placeholder')}}
-          {{/if}}
-        </div>
+      {{else if (eq recordType "cname")}}
+        <label class="acc-label">{{t 'editDns.target.cname'}}{{field-required}}</label>
+        {{input value=model.hostname placeholder=(t 'editDns.placeholder.cname')}}
+      {{else if (eq recordType "alias")}}
+        Alias...
+      {{else if (eq recordType "workload")}}
+        Workload...
+      {{else if (eq recordType "selector")}}
+        Selector
       {{/if}}
     </div>
   </div>
 </section>
 
-{{#if canHealthCheck}}
-  {{form-healthcheck
-      isService=true
-      showStrategy=false
-      healthCheck=record.healthCheck
-      dnsNote=true
-      expandFn=expand
-  }}
-{{/if}}
-
 {{top-errors errors=errors}}
-{{save-cancel editing=editing save="save" cancel="cancel"}}
+{{save-cancel editing=isEdit save="save" cancel="cancel"}}

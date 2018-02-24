@@ -1,16 +1,13 @@
+<label class="acc-label block">{{t valueLabel}}</label>
 {{#if ary.length}}
   <table class="table fixed no-lines mb-10">
-    <tr class="hidden-xs hidden-sm">
-      <th class="acc-label">{{t valueLabel}}</th>
-      <th width="30">&nbsp;</th>
-    </tr>
     {{#each ary as |row|}}
       <tr>
         <td data-title="{{t valueLabel}}">
           {{input-paste pasted="pastedValues" class="form-control input-sm value" type="text" value=row.value placeholder=valuePlaceholder}}
         </td>
 
-        <td class="text-right">
+        <td width="30" class="text-right">
           <button class="btn bg-primary btn-sm" {{action "remove" row}}><i class="icon icon-minus"/><span class="sr-only">{{t 'generic.remove'}}</span></button>
         </td>
       </tr>

@@ -1,8 +1,15 @@
 import Resource from 'ember-api-store/models/resource';
 import { reference } from 'ember-api-store/utils/denormalize';
-import { computed, get } from '@ember/object';
+import { computed, get, set } from '@ember/object';
 import { arrayOfReferences } from 'ember-api-store/utils/denormalize';
 import { inject as service } from '@ember/service';
+
+export const ARECORD = 'arecord';
+export const CNAME = 'cname';
+export const ALIAS = 'alias';
+export const WORKLOAD = 'workload';
+export const SELECTOR = 'selector';
+export const UNKNOWN = 'unknown';
 
 export default Resource.extend({
   clusterStore: service(),
@@ -35,29 +42,47 @@ export default Resource.extend({
   'targetWorkloadIds.length', function() {
 
     if ( get(this, 'ipAddresses.length')) {
-      return 'arecord';
+      return ARECORD;
     }
 
     if ( get(this, 'hostname') ) {
-      return 'cname';
+      return CNAME;
     }
 
     if ( get(this, 'targetDnsRecordIds.length') ) {
-      return 'alias';
+      return ALIAS;
     }
 
     if ( get(this, 'targetWorkloadIds.length') ) {
-      return 'workload';
+      return WORKLOAD;
     }
 
     const selector = get(this, 'selector');
     if ( selector && Object.keys(selector).length ) {
-      return 'selector';
+      return SELECTOR;
     }
 
 
-    return 'unknown';
+    return UNKNOWN;
   }),
+
+  clearTypesExcept(type) {
+    const fields = ['ipAddresses','hostname','targetDnsRecordIds','targetWorkloadIds','selector'];
+    let keep = null;
+
+    switch ( type ) {
+      case ARECORD:  keep = 'ipAddresses';      break;
+      case CNAME:    keep = 'hostname';         break;
+      case ALIAS:    keep = 'targetDnsRecords'; break;
+      case WORKLOAD: keep = 'targetWorkloads';  break;
+      case SELECTOR: keep = 'selector';         break;
+    }
+
+    fields.removeObject(keep);
+    fields.forEach((key) => {
+      set(this, key, null);
+    });
+  },
 
   displayTarget: computed('recordType','ipAddresses.[]','hostname','selector','targetDnsRecords.[]','targetWorkloads.[]', function() {
     const selectors = get(this, 'selector')||{};
@@ -65,15 +90,15 @@ export default Resource.extend({
     const workloads = get(this, 'targetWorkloads')||{};
 
     switch ( get(this, 'recordType') ) {
-      case 'arecord':
+      case ARECORD:
         return get(this, 'ipAddresses').join('\n');
-      case 'cname':
+      case CNAME:
         return get(this, 'hostname');
-      case 'selector':
+      case SELECTOR:
         return Object.keys(selectors).map((k) => `${k}=${selectors[k]}`).join('\n');
-      case 'alias':
+      case ALIAS:
         return records.map(x => get(x, 'displayName')).join('\n');
-      case 'workload':
+      case WORKLOAD:
         return workloads.map(x => get(x, 'displayName')).join('\n');
       default:
         return 'Unknown';
