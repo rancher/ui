@@ -16,19 +16,7 @@ export default Controller.extend({
   queryParams: ['sortBy'],
   sortBy: 'name',
 
-  actions: {
-    toggleExpand() {
-      this.get('projectController').send('toggleExpand', ...arguments);
-    },
-  },
-
   headers: [
-    {
-      name: 'expand',
-      sort: false,
-      searchField: null,
-      width: 30
-    },
     {
       name: 'state',
       sort: ['stack.isDefault:desc','stack.displayName','sortState','displayName'],
@@ -56,11 +44,5 @@ export default Controller.extend({
     },
   ],
 
-  rows: function() {
-    let showNamespace = this.get('showNamespace');
-
-    return this.get('model.records').filter((obj) => {
-      return showNamespace[obj.get('namespaceId')] && !obj.get('isReal');
-    });
-  }.property('showNamespace','model.dns.@each.namespaceId'),
+  rows: alias('model.records'),
 });

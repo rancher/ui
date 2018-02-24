@@ -7,8 +7,8 @@ import { inject as service } from '@ember/service';
 export default Resource.extend({
   clusterStore: service(),
   namespace: reference('namespaceId', 'namespace', 'clusterStore'),
-  targetDnsRecords: arrayOfReferences('targetDnsRecordIds'),
-  targetWorkloads: arrayOfReferences('targetWorkloadIds'),
+  targetDnsRecords: arrayOfReferences('targetDnsRecordIds','dnsRecord'),
+  targetWorkloads: arrayOfReferences('targetWorkloadIds','workload'),
 
   selectedPods: computed('selector', function() {
     const rules = get(this, 'selector');
@@ -27,7 +27,13 @@ export default Resource.extend({
     return pods;
   }),
 
-  recordType: computed('ipAddresses.length','hostname','selector','targetDnsRecordIds.length','targetWorkloadIds.length', function() {
+  recordType: computed(
+  'ipAddresses.length',
+  'hostname',
+  'selector',
+  'targetDnsRecordIds.length',
+  'targetWorkloadIds.length', function() {
+
     if ( get(this, 'ipAddresses.length')) {
       return 'arecord';
     }
@@ -36,40 +42,52 @@ export default Resource.extend({
       return 'cname';
     }
 
+    if ( get(this, 'targetDnsRecordIds.length') ) {
+      return 'alias';
+    }
+
+    if ( get(this, 'targetWorkloadIds.length') ) {
+      return 'workload';
+    }
+
     const selector = get(this, 'selector');
     if ( selector && Object.keys(selector).length ) {
       return 'selector';
     }
 
-    if ( get(this, 'targetDnsRecordIds.length') || get(this, 'targetWorkloadIds.length') ) {
-      return 'alias';
-    }
 
     return 'unknown';
   }),
 
-  getIpAddresses: function() {
-    const addresses = get(this, 'ipAddresses');
-    if ( addresses.length > 2 ) {
-      let other = addresses.length - 1;
-      return addresses[0] + ' and ' + other + ' others';
-    }
-    return get(this, 'ipAddresses').join(', ')
-  },
-
   displayTarget: computed('recordType','ipAddresses.[]','hostname','selector','targetDnsRecords.[]','targetWorkloads.[]', function() {
+    const selectors = get(this, 'selector')||{};
+    const records = get(this, 'targetDnsRecords')||[];
+    const workloads = get(this, 'targetWorkloads')||{};
+
     switch ( get(this, 'recordType') ) {
       case 'arecord':
-        return this.getIpAddresses();
+        return get(this, 'ipAddresses').join('\n');
       case 'cname':
         return get(this, 'hostname');
       case 'selector':
-        return get(this, 'selector');
+        return Object.keys(selectors).map((k) => `${k}=${selectors[k]}`).join('\n');
       case 'alias':
-        return 'Some things'
+        return records.map(x => get(x, 'displayName')).join('\n');
+      case 'workload':
+        return workloads.map(x => get(x, 'displayName')).join('\n');
       default:
         return 'Unknown';
     }
+  }),
+
+  selectorArray: computed('selector', function() {
+    const selectors = get(this, 'selector')||{};
+    const out = [];
+    Object.keys(selectors).map((k) => {
+      out.push({key: k, value: selectors[k]});
+    });
+
+    return out;
   }),
 
   availableActions: computed('links.{update,remove}', function() {

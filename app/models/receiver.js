@@ -1,14 +1,14 @@
 import { inject as service } from '@ember/service';
 import Resource from 'ember-api-store/models/resource';
 import PolledResource from 'ui/mixins/cattle-polled-resource';
-import { denormalizeId } from 'ember-api-store/utils/denormalize';
+import { reference } from 'ember-api-store/utils/denormalize';
 
 var Receiver = Resource.extend(PolledResource, {
   regularStore: service('store'),
   intl:         service(),
   router:       service(),
 
-  service: denormalizeId('opt.serviceId','service','regularStore'),
+  service: reference('opt.serviceId','service'),
 
   displayKind: function() {
     return this.get('intl').t('hookPage.' + this.get('driver') + '.label');

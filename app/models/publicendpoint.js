@@ -1,6 +1,6 @@
 import { isArray } from '@ember/array';
 import Resource from 'ember-api-store/models/resource';
-import { denormalizeId } from 'ember-api-store/utils/denormalize';
+import { reference } from 'ember-api-store/utils/denormalize';
 
 const BIND_ANY = ['0.0.0.0','::'];
 
@@ -36,8 +36,8 @@ function portMatch(ports, equals, endsWith) {
 }
 
 var PublicEndpoint = Resource.extend({
-  instance: denormalizeId('instanceId'),
-  service: denormalizeId('serviceId'),
+  instance: reference('instanceId'),
+  service: reference('serviceId'),
 
   tls: null, // loadbalancerservice sets this based on the listener
 

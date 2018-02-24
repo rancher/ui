@@ -1,14 +1,14 @@
 import { notEmpty } from '@ember/object/computed';
 import { inject as service } from '@ember/service';
 import Resource from 'ember-api-store/models/resource';
-import { denormalizeId } from 'ember-api-store/utils/denormalize';
+import { reference } from 'ember-api-store/utils/denormalize';
 
 var Volume = Resource.extend({
   type: 'volume',
 
   intl: service(),
 
-  stack: denormalizeId('stackId'),
+  stack: reference('stackId'),
   isRoot: notEmpty('instanceId'),
 
   scope: function() {

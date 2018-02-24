@@ -2,9 +2,9 @@
   <table class="table fixed">
     <thead>
       <tr>
-        <th width="150">{{t 'projectsPage.new.form.members.kind.label'}}</th>
-        <th>{{t 'projectsPage.new.form.members.name.label'}}</th>
-        <th>{{t 'projectsPage.new.form.members.role.label'}}</th>
+        <th width="150">{{t 'projectsPage.members.kind.label'}}</th>
+        <th>{{t 'projectsPage.members.name.label'}}</th>
+        <th>{{t 'projectsPage.members.role.label'}}</th>
         <th width="10">&nbsp;</th>
         <th width="40"></th>
       </tr>
@@ -36,34 +36,34 @@
     {{#if (and (eq filteredUsers.length 0) (eq access.provider 'local'))}}
       {{#tooltip-element
            type="tooltip-basic"
-           model=(t 'projectsPage.new.form.members.noAddUser')
+           model=(t 'projectsPage.members.noAddUser')
            tooltipTemplate='tooltip-static'
            aria-describedby="tooltip-base"
            tooltipFor="tooltipNoUsers"
       }}
         <button class="btn bg-link icon-btn p-0" disabled=true>
           <span class="darken"><i class="icon icon-plus text-small"/></span>
-          <span>{{t 'projectsPage.new.form.members.addUser'}}</span>
+          <span>{{t 'projectsPage.members.addUser'}}</span>
         </button>
       {{/tooltip-element}}
     {{else}}
       <button class="btn bg-link icon-btn p-0" {{action "addMember" "User"}}>
         <span class="darken"><i class="icon icon-plus text-small"/></span>
-        <span>{{t 'projectsPage.new.form.members.addUser'}}</span>
+        <span>{{t 'projectsPage.members.addUser'}}</span>
       </button>
     {{/if}}
 
     {{!-- TODO - 2.0 --}}
     <button class="btn bg-link icon-btn p-0" {{action "addMember" "Group"}} disabled="true">
       <span class="darken"><i class="icon icon-plus text-small"/></span>
-      <span>{{t 'projectsPage.new.form.members.addGroup'}}</span>
+      <span>{{t 'projectsPage.members.addGroup'}}</span>
     </button>
 
     {{!-- TODO - 2.0 --}}
     <!--
     <button class="btn bg-link icon-btn p-0" {{action "addMember" "ServiceAccount"}} disabled="true">
       <span class="darken"><i class="icon icon-plus text-small"/></span>
-      <span>{{t 'projectsPage.new.form.members.addServiceAccount'}}</span>
+      <span>{{t 'projectsPage.members.addServiceAccount'}}</span>
     </button>
     -->
   </div>

@@ -16,7 +16,6 @@ var Workload = Resource.extend(DisplayImage, StateCounts, EndpointPorts, {
   intl:          service(),
   growl:         service(),
   modalService:  service('modal'),
-  allWorkloads:  service(),
   scope:         service(),
   router:        service(),
   clusterStore: service(),
@@ -212,18 +211,6 @@ var Workload = Resource.extend(DisplayImage, StateCounts, EndpointPorts, {
     return sortableNumericSuffix(get(this, 'displayName'));
   }.property('displayName'),
 
-  linkedServices: function() {
-    let allWorkloads = get(this, 'allWorkloads');
-    let stack = get(this, 'stack');
-    return (get(this, 'serviceLinks')||[]).map((link) => {
-      return {
-        name: link.name,
-        alias: link.alias,
-        service: allWorkloads.matching(link.name, stack),
-      };
-    });
-  }.property('serviceLinks.@each.{name,alias}'),
-
   combinedState: function() {
     var service = get(this, 'state');
     var health = get(this, 'healthState');
@@ -333,39 +320,6 @@ var Workload = Resource.extend(DisplayImage, StateCounts, EndpointPorts, {
   isK8s: function() {
     return ['kubernetesservice'].indexOf(get(this, 'lcType')) >= 0;
   }.property('lcType'),
-
-  displayType: function() {
-    let known = [
-      'loadbalancerservice',
-      'dnsservice',
-      'externalservice',
-      'kubernetesservice',
-      'composeservice',
-      'networkdriverservice',
-      'selectorservice',
-      'storagedriverservice',
-      'service'
-    ];
-
-    let type = get(this, 'lcType');
-    if ( get(this, 'isSelector') ) {
-      type = 'selectorservice';
-    }
-
-    if ( !known.includes(type) ) {
-      type = 'service';
-    }
-
-    if ( type === 'externalservice' ) {
-      if ( get(this, 'hostname') ) {
-        type += '-host';
-      } else {
-        type += '-ip';
-      }
-    }
-
-    return get(this, 'intl').t('servicePage.type.'+ type);
-  }.property('lcType','isSelector','intl.locale'),
 
   hasSidekicks: gt('containers.length', 1),
 
