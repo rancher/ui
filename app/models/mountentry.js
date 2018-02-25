@@ -2,15 +2,15 @@ import { computed } from '@ember/object';
 import { equal } from '@ember/object/computed';
 import { inject as service } from '@ember/service';
 import Resource from 'ember-api-store/models/resource';
-import { denormalizeId } from 'ember-api-store/utils/denormalize';
+import { reference } from 'ember-api-store/utils/denormalize';
 
 export default Resource.extend({
   intl:        service(),
   isReadWrite: equal('permission','rw'),
   isReadOnly:  equal('permission','ro'),
 
-  instance:    denormalizeId('instanceId'),
-  volume:      denormalizeId('volumeId'),
+  instance:    reference('instanceId'),
+  volume:      reference('volumeId'),
 
   displayVolumeName: computed('volumeName', function() {
     let name = this.get('volumeName');

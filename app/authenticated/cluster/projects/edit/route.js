@@ -5,6 +5,7 @@ import { inject as service } from '@ember/service';
 
 export default Route.extend({
   globalStore: service(),
+  access: service(),
 
   model(params) {
     const store = get(this, 'globalStore');
@@ -13,9 +14,9 @@ export default Route.extend({
       projects:                    store.findAll('project'),
       roles:                       store.findAll('roleTemplate'),
       projectRoleTemplateBindings: store.find('projectRoleTemplateBinding'),
-      policies:                    store.find('podSecurityPolicyTemplate'),
+      psps:                        store.find('podSecurityPolicyTemplate'),
       users:                       store.find('user', null, {forceReload: true}),
-      me:                          store.find('user', null, {filter:      {me: true}}).then(users => get(users, 'firstObject'))
+      me:                          get(this, 'access.me'),
     });
   },
 });

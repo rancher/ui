@@ -1,11 +1,11 @@
 import Resource from 'ember-api-store/models/resource';
-import { denormalizeId, denormalizeIdArray } from 'ember-api-store/utils/denormalize';
+import { reference, arrayOfReferences } from 'ember-api-store/utils/denormalize';
 
 export default Resource.extend({
   type: 'lbConfig',
 
-  defaultCertificate: denormalizeId('defaultCertificateId','certificate'),
-  certificates: denormalizeIdArray('certificateIds'),
+  defaultCertificate: reference('defaultCertificateId','certificate'),
+  certificates: arrayOfReferences('certificateIds'),
 
   needsCertificate: function() {
     return !!this.get('portRules').findBy('needsCertificate',true);

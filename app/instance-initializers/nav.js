@@ -175,15 +175,6 @@ const rootNav = [
     resourceScope: 'global',
     submenu: [
       {
-        id: 'tools-notifiers',
-        localizedLabel: 'nav.tools.notifiers',
-        // icon: 'icon icon-key',
-        route: 'authenticated.cluster.notifier',
-        resourceScope: 'global',
-        resource: [],
-        ctx: [getClusterId],
-      },
-      {
         id: 'cluster-tools-alert',
         localizedLabel: 'nav.tools.alerts',
         // icon: 'icon icon-key',
@@ -201,17 +192,25 @@ const rootNav = [
         resource: [],
         ctx: [getClusterId],
       },
+      {
+        id: 'cluster-tools-notifiers',
+        localizedLabel: 'nav.tools.notifiers',
+        // icon: 'icon icon-key',
+        route: 'authenticated.cluster.notifier',
+        resourceScope: 'global',
+        resource: [],
+        ctx: [getClusterId],
+      },
+      {
+        id: 'cluster-tools-pipeline',
+        localizedLabel: 'nav.tools.pipeline',
+        route: 'authenticated.cluster.pipeline.settings',
+        ctx: [getClusterId],
+        resourceScope: 'cluster',
+      },
     ],
   },
 
-  {
-    scope: 'cluster',
-    id: 'cluster-pipeline',
-    localizedLabel: 'nav.pipelines.tab',
-    route: 'authenticated.cluster.pipeline.settings',
-    ctx: [getClusterId],
-    resourceScope: 'cluster',
-  },
   // Global
   {
     scope: 'global',

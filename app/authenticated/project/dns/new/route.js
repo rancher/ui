@@ -1,14 +1,18 @@
 import { hash } from 'rsvp';
+import { set } from '@ember/object';
 import Route from '@ember/routing/route';
 
 export default Route.extend({
   model: function(params/*, transition*/) {
-    var store = this.get('store');
+    const store = this.get('store');
 
-    var deps = {};
-    if ( params.serviceId )
-    {
-      deps['service'] = store.find('service', params.serviceId);
+    const deps = {
+      dnsRecords: store.findAll('dnsRecord'),
+      workloads: store.findAll('workload'),
+    };
+
+    if ( params.dnsRecordId ) {
+      deps['existing'] = store.find('dnsRecordId', params.dnsRecordId);
     }
 
     return hash(deps, 'Load dependencies').then(function(hash) {
@@ -28,30 +32,26 @@ export default Route.extend({
         }
       }
 
-      if ( hash.existing )
-      {
+      if ( hash.existing ) {
         record = hash.existing.cloneForNew();
+        delete hash.existing;
       }
-      else
-      {
+      else {
         record = store.createRecord({
-          type: 'service',
-          name: '',
+          type: 'dnsRecord',
           namespaceId: namespaceId,
         });
       }
 
-      return {
-        record: record,
-      };
+      hash.record = record;
+      return hash;
     });
   },
 
   resetController: function (controller, isExisting/*, transition*/) {
-    if (isExisting)
-    {
-      controller.set('namespaceId', null);
-      controller.set('serviceId', null);
+    if (isExisting) {
+      set(controller, 'namespaceId', null);
+      set(controller, 'dnsRecordId', null);
     }
   },
 });

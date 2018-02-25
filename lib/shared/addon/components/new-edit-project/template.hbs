@@ -11,10 +11,20 @@
 <section class="horizontal-form container-fluid">
   {{form-name-description
       model=model.project
-      nameLabel="projectsPage.new.form.name.label"
+      nameLabel="projectsPage.name.label"
       nameRequired=true
       nameDisabled=editing
-      namePlaceholder="projectsPage.new.form.name.placeholder"
+      namePlaceholder="projectsPage.name.placeholder"
+  }}
+
+  <label class="acc-label">{{t 'projectsPage.psp.label'}}</label>
+  {{new-select
+    content=model.psps
+    optionLabelPath='displayName'
+    optionValuePath='id'
+    prompt='generic.none'
+    localizedPrompt=true
+    value=model.project.podSecurityPolicyTemplateId
   }}
 </section>
 
@@ -42,25 +52,8 @@
       }}
     {{/accordion-list-item}}
   </div>
-
-  <div class="col span-12">
-    {{#accordion-list-item
-         title=(t 'podSecurityPoliciesPage.index.header')
-         detail=(t 'podSecurityPoliciesPage.index.description')
-         expandAll=expandAll
-         expand=(action expandFn)
-         expandOnInit=true
-         showStatus=false
-    }}
-      {{form-pod-sec-policy
-          config=secPolicy
-          policies=model.policies
-          expandAll=false
-      }}
-    {{/accordion-list-item}}
-  </div>
 {{/accordion-list}}
 </div>
 
 {{top-errors errors=errors}}
-{{save-cancel createLabel=(if editing 'projectsPage.saveEdit' 'projectsPage.saveNew') save="save" cancel="cancel"}}
+{{save-cancel editing=editing save="save" cancel="cancel"}}

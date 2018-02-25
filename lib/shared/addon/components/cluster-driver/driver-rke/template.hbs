@@ -7,7 +7,7 @@
       expand=(action expandFn)
     }}
       <div class="row">
-        <div class="col span-6">
+        <div class="col span-4">
           <label class="acc-label">{{t 'clusterNew.rke.version.label'}}</label>
           {{new-select
             content=versionChoices
@@ -15,7 +15,7 @@
             value=config.kubernetesVersion
           }}
         </div>
-        <div class="col span-6">
+        <div class="col span-4">
           <label class="acc-label">{{t 'clusterNew.rke.network.label'}}</label>
           {{new-select
             classNames="form-control"
@@ -24,9 +24,20 @@
             value=config.network.plugin
           }}
         </div>
+        <div class="col span-4">
+          <label class="acc-label">{{t 'clusterNew.psp.label'}}</label>
+          {{new-select
+            content=model.psps
+            optionLabelPath='displayName'
+            optionValuePath='id'
+            prompt='generic.none'
+            localizedPrompt=true
+            value=cluster.defaultPodSecurityPolicyTemplateId
+          }}
+        </div>
       </div>
       <div class="row">
-        <div class="col span-6">
+        <div class="col span-4">
           <label class="acc-label">{{t 'clusterNew.rke.registry.label'}}</label>
           <div class="radio">
             <label>
@@ -50,7 +61,7 @@
           {{/if}}
         </div>
 
-        <div class="col span-6">
+        <div class="col span-8">
           <label class="acc-label">{{t 'clusterNew.rke.ignoreDockerVersion.label'}}</label>
           <div class="radio">
             <label>
@@ -63,14 +74,6 @@
               {{radio-button selection=config.ignoreDockerVersion value=true}}
               {{t 'clusterNew.rke.ignoreDockerVersion.enabled'}}
             </label>
-          </div>
-
-          <div class="mt-20">
-            <label class="acc-label">{{t 'clusterNew.rke.psp.label'}}</label>
-            {{form-pod-sec-policy
-              config=secPolicy
-              policies=model.policies
-            }}
           </div>
         </div>
       </div>

@@ -1,14 +1,36 @@
 import Resource from 'ember-api-store/models/resource';
 import { reference } from 'ember-api-store/utils/denormalize';
-import { computed, get } from '@ember/object';
+import { computed, get, set } from '@ember/object';
 import { arrayOfReferences } from 'ember-api-store/utils/denormalize';
 import { inject as service } from '@ember/service';
 
+export const ARECORD = 'arecord';
+export const CNAME = 'cname';
+export const ALIAS = 'alias';
+export const WORKLOAD = 'workload';
+export const SELECTOR = 'selector';
+export const UNKNOWN = 'unknown';
+
+const FIELD_MAP = {
+  [ARECORD]:  'ipAddresses',
+  [CNAME]:    'hostname',
+  [ALIAS]:    'targetDnsRecordIds',
+  [WORKLOAD]: 'targetWorkloadIds',
+  [SELECTOR]: 'selector',
+};
+
 export default Resource.extend({
   clusterStore: service(),
+  router: service(),
   namespace: reference('namespaceId', 'namespace', 'clusterStore'),
-  targetDnsRecords: arrayOfReferences('targetDnsRecordIds'),
-  targetWorkloads: arrayOfReferences('targetWorkloadIds'),
+  targetDnsRecords: arrayOfReferences('targetDnsRecordIds','dnsRecord'),
+  targetWorkloads: arrayOfReferences('targetWorkloadIds','workload'),
+
+  actions: {
+    edit() {
+      get(this, 'router').transitionTo('authenticated.project.dns.detail.edit', this.get('id'));
+    },
+  },
 
   selectedPods: computed('selector', function() {
     const rules = get(this, 'selector');
@@ -27,49 +49,82 @@ export default Resource.extend({
     return pods;
   }),
 
-  recordType: computed('ipAddresses.length','hostname','selector','targetDnsRecordIds.length','targetWorkloadIds.length', function() {
+  nameWithType: computed('displayName','recordType','intl.locale', function() {
+    const name =  get(this, 'displayName');
+    const recordType =  get(this,'recordType');
+    const type = get(this, 'intl').t('dnsPage.type.' + recordType);
+    return `${name} (${type})`;
+  }),
+
+  recordType: computed(
+  'ipAddresses.length',
+  'hostname',
+  'selector',
+  'targetDnsRecordIds.length',
+  'targetWorkloadIds.length', function() {
+
     if ( get(this, 'ipAddresses.length')) {
-      return 'arecord';
+      return ARECORD;
     }
 
     if ( get(this, 'hostname') ) {
-      return 'cname';
+      return CNAME;
+    }
+
+    if ( get(this, 'targetDnsRecordIds.length') ) {
+      return ALIAS;
+    }
+
+    if ( get(this, 'targetWorkloadIds.length') ) {
+      return WORKLOAD;
     }
 
     const selector = get(this, 'selector');
     if ( selector && Object.keys(selector).length ) {
-      return 'selector';
+      return SELECTOR;
     }
 
-    if ( get(this, 'targetDnsRecordIds.length') || get(this, 'targetWorkloadIds.length') ) {
-      return 'alias';
-    }
 
-    return 'unknown';
+    return UNKNOWN;
   }),
 
-  getIpAddresses: function() {
-    const addresses = get(this, 'ipAddresses');
-    if ( addresses.length > 2 ) {
-      let other = addresses.length - 1;
-      return addresses[0] + ' and ' + other + ' others';
-    }
-    return get(this, 'ipAddresses').join(', ')
+  clearTypesExcept(type) {
+    Object.keys(FIELD_MAP).forEach((key) => {
+      if ( key !== type ) {
+        set(this, FIELD_MAP[key], null);
+      }
+    });
   },
 
   displayTarget: computed('recordType','ipAddresses.[]','hostname','selector','targetDnsRecords.[]','targetWorkloads.[]', function() {
+    const selectors = get(this, 'selector')||{};
+    const records = get(this, 'targetDnsRecords')||[];
+    const workloads = get(this, 'targetWorkloads')||{};
+
     switch ( get(this, 'recordType') ) {
-      case 'arecord':
-        return this.getIpAddresses();
-      case 'cname':
+      case ARECORD:
+        return get(this, 'ipAddresses').join('\n');
+      case CNAME:
         return get(this, 'hostname');
-      case 'selector':
-        return get(this, 'selector');
-      case 'alias':
-        return 'Some things'
+      case SELECTOR:
+        return Object.keys(selectors).map((k) => `${k}=${selectors[k]}`).join('\n');
+      case ALIAS:
+        return records.map(x => get(x, 'displayName')).join('\n');
+      case WORKLOAD:
+        return workloads.map(x => get(x, 'displayName')).join('\n');
       default:
         return 'Unknown';
     }
+  }),
+
+  selectorArray: computed('selector', function() {
+    const selectors = get(this, 'selector')||{};
+    const out = [];
+    Object.keys(selectors).map((k) => {
+      out.push({key: k, value: selectors[k]});
+    });
+
+    return out;
   }),
 
   availableActions: computed('links.{update,remove}', function() {

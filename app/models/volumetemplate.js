@@ -1,10 +1,10 @@
 import Resource from 'ember-api-store/models/resource';
-import { denormalizeId } from 'ember-api-store/utils/denormalize';
+import { reference } from 'ember-api-store/utils/denormalize';
 
 var VolumeTemplate = Resource.extend({
   type: 'volumeTemplate',
 
-  stack: denormalizeId('stackId'),
+  stack: reference('stackId'),
 
   _allVolumes: null,
   volumes: function() {

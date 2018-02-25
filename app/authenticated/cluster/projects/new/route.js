@@ -6,6 +6,7 @@ import Route from '@ember/routing/route';
 export default Route.extend({
   globalStore: service(),
   scope: service(),
+  access: service(),
 
   model() {
     const store = get(this, 'globalStore');
@@ -21,9 +22,9 @@ export default Route.extend({
       project,
       projects: store.findAll('project'),
       roles: store.findAll('roleTemplate'),
-      policies: store.find('podSecurityPolicyTemplate'),
+      psps: store.findAll('podSecurityPolicyTemplate'),
       users: store.find('user', null, {forceReload: true}),
-      me: store.find('user', null, {filter: {me: true}}).then(users => get(users, 'firstObject'))
+      me: get(this, 'access.me'),
     });
   },
 });

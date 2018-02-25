@@ -603,38 +603,32 @@ projectsPage:
   header: Projects
   addProject: Add Project
   editProject: Edit Project
-  saveEdit: Edit
-  saveNew: Create
-  table:
-    noMatch: No projects match the current search.
-    noData: This cluster doesn't have any projects yet.
-    header:
-      project:
-        label: Project Name
-      created:
-        label: Created
-  new:
-    form:
-      name:
-        placeholder: e.g. lab
-        label: Project Name
-      members:
-        user: User
-        group: Group
-        serviceaccount: Service Account
-        labelText: Members
-        addUser: Add User
-        noAddUser: You are the only active registered user.
-        addGroup: Add Group
-        addServiceAccount: Add Service Account
-        multipleRoles: Multiple Roles
-        customRoles: Custom Roles
-        kind:
-          label: Kind
-        name:
-          label: Name
-        role:
-          label: Role
+  noMatch: No projects match the current search.
+  noData: This cluster doesn't have any projects yet.
+  name:
+    label: Project Name
+    placeholder: e.g. lab
+  created:
+    label: Created
+  psp:
+    label: Pod Security Policy
+  members:
+    user: User
+    group: Group
+    serviceaccount: Service Account
+    labelText: Members
+    addUser: Add User
+    noAddUser: You are the only active registered user.
+    addGroup: Add Group
+    addServiceAccount: Add Service Account
+    multipleRoles: Multiple Roles
+    customRoles: Custom Roles
+    kind:
+      label: Kind
+    name:
+      label: Name
+    role:
+      label: Role
     errors:
       nameReq: Name is required.
       nameInExists: Name is already exists. Please use a new project name.
@@ -727,6 +721,7 @@ dnsPage:
     arecord: A Record
     cname: CNAME
     alias: Alias
+    workload: Workload
     selector: Selector
     unknown: Unknown
   table:
@@ -736,30 +731,44 @@ editDns:
   title:
     new: Add DNS Record
     edit: Edit DNS Record
+    view: "DNS Record: {name}"
   name:
     placeholder: e.g. myapp
   description:
     placeholder: e.g. Current version of MyApp
   selector:
     label: Container Label Selector
-    placeholder: e.g. mylabel=somevalue
-  mode:
+    keyLabel: Label
+    addActionLabel: Add Selector
+  recordType:
     label: "Resolves To"
-    dnsservice: One or more other services
-    selectorservice: The set of containers which match a selector
-    externalip: One or more external IP addresses
-    externalhostname: An external hostname
-  targetIp:
-    label: Target IP Addresses
-    add: Add Target IP Address
-  hostname:
-    label: Target Hostname
-    placeholder: e.g. foobar.com
+    arecord: One or more external IP addresses
+    cname: An external hostname
+    alias: Another DNS record's value
+    workload: One or more workloads
+    selector: The set of pods which match a selector
+  target:
+    arecord: Target IP Addresses
+    cname: Target Hostname
+    alias: Target DNS Records
+    workload: Target Workloads
+    selector: Target Pod Selectors
+  add:
+    arecord: Add Target IP
+    alias: Add Target Record
+    workload: Add Target Workload
+    selector: Add Target Selector
+  placeholder:
+    arecord: e.g. 19.82.2.24
+    cname: e.g. example.com
+  prompt:
+    alias: Select a DNS Record...
+    workload: Select a Workload...
   errors:
-    ipRequired: 'One or more "Target IP Addresses" are required'
-    hostnameRequired: '"Target Hostname" is required'
-    serviceRequired: 'One or more "Targets" are required'
-    selectorRequired: '"Container Selector" is required'
+    targetRequired: 'One or more "Targets" are required'
+    selectorRequired: 'One or more "Pod selectors" are required'
+    mixedAlias: An Alias cannot target a mix of CNAME and other records
+    multipleCname: An Alias cannot target more than one CNAME record
 
 editVolume:
   define:
@@ -1108,7 +1117,7 @@ secretsPage:
     keys: Keys
 
 servicePage:
-  header: '{type}: {name}'
+  header: 'Workload: {name}'
   globalScale: '{scale} per host'
   multistat:
     fqdn: 'FQDN:'
@@ -3183,6 +3192,8 @@ clusterNew:
   customize:
     title: Cluster Options
     detail: Customize the cluster that will be created
+  psp:
+    label: Default Pod Security Policy
 
   azureaks:
     label: Azure Container Service
@@ -3345,8 +3356,6 @@ clusterNew:
       flannel: Flannel
       calico: Calico
       canal: Canal
-    psp:
-      label: Pod Security Policy
     version:
       label: Kubernetes Version
     registry:
@@ -4402,34 +4411,6 @@ viewEditDescription:
       placeholder: e.g. lab
     description:
       placeholder: e.g. Environment for developer experimentation
-
-viewEditProject:
-  showEdit:
-    edit: "Edit Environment:"
-    add: Add Environment
-    template: Environment Template
-    cluster:
-      label: Cluster
-      prompt: Select a Cluster...
-    accessControl: Access Control
-    noMembers: Add one or more members who can use this environment.
-  networkPolicy:
-    label: Network Policy
-    description: Control what containers are allowed to communicate with each other over the Managed Network.
-    unsupported: This environment has network policy rules which are not yet supported by the UI.  Please use the API to manage the policy.
-    noManager: Network Policies are available only for environments using Cattle Orchestration with the Network Policy Manager infrastructure template deployed.
-    withinStack: Within Stack
-    withinService: Within Service
-    withinLinked: Between Linked Services
-    default: Everything Else
-    allow: Allow
-    deny: Deny
-
-  header: "Environment:"
-  description: Description
-  helpBlock: |
-    Access Control is not enabled.<br/>
-    Anybody with access to the API/UI acts as an admin and will be able to use any environment.
 
 volumesPage:
   title: Volume

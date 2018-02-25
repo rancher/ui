@@ -1,7 +1,7 @@
 import { later } from '@ember/runloop';
 import { alias } from '@ember/object/computed';
 import Resource from 'ember-api-store/models/resource';
-import { denormalizeId } from 'ember-api-store/utils/denormalize';
+import { reference } from 'ember-api-store/utils/denormalize';
 
 function setTlsPort() {
   if ( this.get('targetPort') ) {
@@ -27,7 +27,7 @@ let PortRule = Resource.extend({
   type: 'portRule',
   reservedKeys: ['access','isSelector'],
 
-  service: denormalizeId('serviceId'),
+  service: reference('serviceId'),
 
   isTls: function() {
     return ['tls','https','sni'].includes(this.get('protocol'));
