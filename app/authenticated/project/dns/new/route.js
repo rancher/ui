@@ -6,9 +6,12 @@ export default Route.extend({
   model: function(params/*, transition*/) {
     const store = this.get('store');
 
-    const deps = {};
-    if ( params.dnsRecordId )
-    {
+    const deps = {
+      dnsRecords: store.findAll('dnsRecord'),
+      workloads: store.findAll('workload'),
+    };
+
+    if ( params.dnsRecordId ) {
       deps['existing'] = store.find('dnsRecordId', params.dnsRecordId);
     }
 
@@ -31,6 +34,7 @@ export default Route.extend({
 
       if ( hash.existing ) {
         record = hash.existing.cloneForNew();
+        delete hash.existing;
       }
       else {
         record = store.createRecord({
@@ -39,9 +43,8 @@ export default Route.extend({
         });
       }
 
-      return {
-        record: record,
-      };
+      hash.record = record;
+      return hash;
     });
   },
 

@@ -731,13 +731,15 @@ editDns:
   title:
     new: Add DNS Record
     edit: Edit DNS Record
+    view: "DNS Record: {name}"
   name:
     placeholder: e.g. myapp
   description:
     placeholder: e.g. Current version of MyApp
   selector:
     label: Container Label Selector
-    placeholder: e.g. mylabel=somevalue
+    keyLabel: Label
+    addActionLabel: Add Selector
   recordType:
     label: "Resolves To"
     arecord: One or more external IP addresses
@@ -759,11 +761,14 @@ editDns:
   placeholder:
     arecord: e.g. 19.82.2.24
     cname: e.g. example.com
+  prompt:
+    alias: Select a DNS Record...
+    workload: Select a Workload...
   errors:
     targetRequired: 'One or more "Targets" are required'
     selectorRequired: 'One or more "Pod selectors" are required'
-    mixedAlias: An Alias cannot target a mix of A and CNAME records
-    multipleCname: An Alias cannot point to more than one CNAME record
+    mixedAlias: An Alias cannot target a mix of CNAME and other records
+    multipleCname: An Alias cannot target more than one CNAME record
 
 editVolume:
   define:

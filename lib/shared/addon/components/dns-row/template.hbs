@@ -6,7 +6,7 @@
     {{badge-state model=model}}
   </td>
   <td data-title="{{dt.name}}" class="clip">
-    {{model.displayName}}
+    <a href="{{href-to "authenticated.project.dns.detail" model.id}}">{{model.displayName}}</a>
     {{#if model.showTransitioningMessage}}
       <div class="clip text-small {{model.stateColor}}">{{model.transitioningMessage}}</div>
     {{/if}}
@@ -18,7 +18,13 @@
     {{#if (eq model.recordType "workload")}}
       {{#each model.targetWorkloads as |record idx|}}
         <div>
-          {{#link-to "workload" record.id}}{{record.displayName}}{{/link-to}}
+          <a href="{{href-to "workload" record.id}}">{{record.displayName}}</a>
+        </div>
+      {{/each}}
+    {{else if (eq model.recordType "alias")}}
+      {{#each model.targetDnsRecords as |record idx|}}
+        <div>
+          <a href="{{href-to "authenticated.project.dns.detail" record.id}}">{{record.displayName}}</a>
         </div>
       {{/each}}
     {{else if (eq model.recordType "selector")}}

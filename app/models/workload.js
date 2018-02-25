@@ -33,10 +33,6 @@ var Workload = Resource.extend(DisplayImage, StateCounts, EndpointPorts, {
   }),
 
   actions: {
-    editDns() {
-      get(this, 'modalService').toggleModal('modal-edit-dns', this);
-    },
-
     activate() {
       return this.doAction('activate');
     },
@@ -183,7 +179,6 @@ var Workload = Resource.extend(DisplayImage, StateCounts, EndpointPorts, {
 
     let choices = [
       { label: 'action.edit',           icon: 'icon icon-edit',             action: 'upgrade',        enabled: !!l.update &&  isReal },
-      { label: 'action.edit',           icon: 'icon icon-pencil',           action: 'editDns',        enabled: !!l.update && !isReal },
       { label: 'action.rollback',       icon: 'icon icon-history',          action: 'rollback',       enabled: !!a.rollback && isReal && !!get(this, 'previousRevisionId') },
       { label: 'action.garbageCollect', icon: 'icon icon-garbage',          action: 'garbageCollect', enabled: canCleanup},
       { label: 'action.clone',          icon: 'icon icon-copy',             action: 'clone',          enabled: true},

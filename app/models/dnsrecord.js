@@ -11,11 +11,26 @@ export const WORKLOAD = 'workload';
 export const SELECTOR = 'selector';
 export const UNKNOWN = 'unknown';
 
+const FIELD_MAP = {
+  [ARECORD]:  'ipAddresses',
+  [CNAME]:    'hostname',
+  [ALIAS]:    'targetDnsRecordIds',
+  [WORKLOAD]: 'targetWorkloadIds',
+  [SELECTOR]: 'selector',
+};
+
 export default Resource.extend({
   clusterStore: service(),
+  router: service(),
   namespace: reference('namespaceId', 'namespace', 'clusterStore'),
   targetDnsRecords: arrayOfReferences('targetDnsRecordIds','dnsRecord'),
   targetWorkloads: arrayOfReferences('targetWorkloadIds','workload'),
+
+  actions: {
+    edit() {
+      get(this, 'router').transitionTo('authenticated.project.dns.detail.edit', this.get('id'));
+    },
+  },
 
   selectedPods: computed('selector', function() {
     const rules = get(this, 'selector');
@@ -32,6 +47,13 @@ export default Resource.extend({
     }
 
     return pods;
+  }),
+
+  nameWithType: computed('displayName','recordType','intl.locale', function() {
+    const name =  get(this, 'displayName');
+    const recordType =  get(this,'recordType');
+    const type = get(this, 'intl').t('dnsPage.type.' + recordType);
+    return `${name} (${type})`;
   }),
 
   recordType: computed(
@@ -67,20 +89,10 @@ export default Resource.extend({
   }),
 
   clearTypesExcept(type) {
-    const fields = ['ipAddresses','hostname','targetDnsRecordIds','targetWorkloadIds','selector'];
-    let keep = null;
-
-    switch ( type ) {
-      case ARECORD:  keep = 'ipAddresses';      break;
-      case CNAME:    keep = 'hostname';         break;
-      case ALIAS:    keep = 'targetDnsRecords'; break;
-      case WORKLOAD: keep = 'targetWorkloads';  break;
-      case SELECTOR: keep = 'selector';         break;
-    }
-
-    fields.removeObject(keep);
-    fields.forEach((key) => {
-      set(this, key, null);
+    Object.keys(FIELD_MAP).forEach((key) => {
+      if ( key !== type ) {
+        set(this, FIELD_MAP[key], null);
+      }
     });
   },
 

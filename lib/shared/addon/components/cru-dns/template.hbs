@@ -1,0 +1,125 @@
+<section class="header clearfix">
+  {{#if isView}}
+    <div class="right-buttons">{{action-menu model=model size="sm"}}</div>
+  {{/if}}
+  <h1>{{t (concat 'editDns.title.' mode) name=model.displayName}}</h1>
+</section>
+
+<section class="horizontal-form container-fluid">
+  <div class="row">
+    <div class="col span-6">
+      {{form-name-description
+        model=model
+        namePlaceholder="editDns.name.placeholder"
+        nameRequired=true
+        descriptionPlaceholder="editDns.description.placeholder"
+        editing=editing
+      }}
+    </div>
+    <div class="col span-6">
+      {{form-namespace
+        editable=isNew
+        namespace=namespace
+        errors=namespaceErrors
+        registerHook=(action "registerHook")
+        editing=editing
+      }}
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col span-6">
+      <div>
+        <label class="acc-label">{{t 'editDns.recordType.label'}}</label>
+      </div>
+      <div class="mb-20">
+        {{#if editing}}
+          <div class="radio">
+            <label>{{radio-button selection=recordType value="arecord"}}&nbsp;{{t 'editDns.recordType.arecord'}}</label>
+          </div>
+          <div class="radio">
+            <label>{{radio-button selection=recordType value="cname"}}&nbsp;{{t 'editDns.recordType.cname'}}</label>
+          </div>
+          <div class="radio">
+            <label>{{radio-button selection=recordType value="alias"}}&nbsp;{{t 'editDns.recordType.alias'}}</label>
+          </div>
+          <div class="radio">
+            <label>{{radio-button selection=recordType value="workload"}}&nbsp;{{t 'editDns.recordType.workload'}}</label>
+          </div>
+          <div class="radio">
+            <label>{{radio-button selection=recordType value="selector"}}&nbsp;{{t 'editDns.recordType.selector'}}</label>
+          </div>
+        {{else}}
+          {{t (concat 'editDns.recordType.' recordType)}}
+        {{/if}}
+      </div>
+    </div>
+    <div class="col span-6">
+      {{#if (eq recordType "arecord")}}
+        {{form-value-array
+          initialValues=model.ipAddresses
+          addActionLabel='editDns.add.arecord'
+          valueLabel='editDns.target.arecord'
+          valuePlaceholder='editDns.placeholder.arecord'
+          changed=(action (mut model.ipAddresses))
+          editing=editing
+        }}
+      {{else if (eq recordType "cname")}}
+        <label class="acc-label">{{t 'editDns.target.cname'}}{{field-required}}</label>
+        {{input value=model.hostname placeholder=(t 'editDns.placeholder.cname')}}
+      {{else if (eq recordType "alias")}}
+        {{#form-value-array
+          initialValues=model.targetDnsRecordIds
+          addActionLabel='editDns.add.alias'
+          changed=(action "setAlias")
+          as |row|
+        }}
+          {{new-select
+            classNames="form-control"
+            optionValuePath="id"
+            optionLabelPath="nameWithType"
+            prompt="editDns.prompt.workload"
+            localizedPrompt=true
+            content=dnsRecords
+            value=row.value
+            showProTip=false
+            editing=editing
+          }}
+        {{/form-value-array}}
+      {{else if (eq recordType "workload")}}
+        {{#form-value-array
+          initialValues=model.targetWorkloadIds
+          addActionLabel='editDns.add.workload'
+          changed=(action (mut model.targetWorkloadIds))
+          changed=(action "setWorkload")
+          as |row|
+        }}
+          {{new-select
+            classNames="form-control"
+            optionValuePath="id"
+            optionLabelPath="displayName"
+            prompt="editDns.prompt.workload"
+            localizedPrompt=true
+            content=workloads
+            value=row.value
+            showProTip=false
+            editing=editing
+          }}
+        {{/form-value-array}}
+      {{else if (eq recordType "selector")}}
+        {{form-key-value
+          initialMap=model.selector
+          changed=(action "setSelector")
+          addActionLabel="editDns.selector.addActionLabel"
+          keyLabel="editDns.selector.keyLabel"
+          editing=editing
+        }}
+      {{/if}}
+    </div>
+  </div>
+</section>
+
+{{#if editing}}
+  {{top-errors errors=errors}}
+  {{save-cancel editing=isEdit save="save" cancel="cancel"}}
+{{/if}}

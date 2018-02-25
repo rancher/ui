@@ -61,7 +61,7 @@ module.exports = {
     "dot-notation": 0,
     "strict": 0,
     "no-eq-null": 2,
-    "no-unused-vars": 2,
+    "no-unused-vars": 1,
     "no-useless-escape": 0,
     "ember/use-ember-get-and-set": 0,
     "ember/order-in-controllers": 0,
