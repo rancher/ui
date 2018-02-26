@@ -8,7 +8,7 @@
 
 <section>
   {{#if model.githubConfig}}
-    {{banner-message icon="icon-success" color='bg-success mb-0 mt-10' message=(t 'authPage.github.header.enabled.label' github=(upper-case selectedOauthType))}}
+    {{banner-message icon="icon-success" color='bg-success mb-0 mt-10' message=(t 'authPage.github.header.enabled.label' github='GitHub')}}
   {{else}}
     <div class="banner bg-warning">
       <div class="banner-icon"><span class="icon icon-alert"></span></div>
@@ -44,15 +44,12 @@
           {{#if revoking}}
             <button class="btn bg-disabled" disabled="disabled">
               <i class="icon icon-spinner icon-spin"></i> {{t 'generic.destroying'}}
-            }
           </button>
           {{else}}
           <button class="btn bg-error" {{action "disable"}}>
             <i class="icon icon-alert"></i> {{t 'pipelinesSetting.sureToDisableOAuth'}}
-          }
           </button>
           {{/if}}
-        
       {{else}}
         <button class="btn bg-error" {{action "promptDisable"}}>
           <i class="icon icon-umbrella"></i> {{t 'pipelinesSetting.disableOAuth'}}
@@ -72,7 +69,7 @@
 
 {{#unless model.githubConfig}}
   <section class="box mt-30">
-    <h3>{{t 'authPage.github.notAuthenticated.headerVariable' GitHub=(upper-case selectedOauthType)}}</h3>
+    <h3>{{t 'authPage.github.notAuthenticated.headerVariable' GitHub='GitHub'}}</h3>
     <hr/>
     <p>
       <ol class="alphalist ml-40">
@@ -133,7 +130,7 @@
 
   <form autcomplete="on">
     <section class="box mt-30">
-      <h3>{{t 'authPage.github.notAuthenticated.form.headerVariable' appName='Rancher Pipeline' SCM=selectedOauthType }}</h3>
+      <h3>{{t 'authPage.github.notAuthenticated.form.headerVariable' appName='Rancher Pipeline' SCM='GitHub' }}</h3>
       <div class="row">
         <div class="col span-6">
           <div class="inline-form">
