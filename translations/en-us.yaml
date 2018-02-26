@@ -66,6 +66,7 @@ generic:
   ports: Ports
   remove: Remove
   role: Role
+  random: Random
   save: Save
   saved: Saved
   saving: Saving
@@ -2400,24 +2401,38 @@ formNetwork:
 formPorts:
   header: Port Mapping
   addAction: Add Port
+  kind:
+    label: Publish on
+    HostPort: Every node
+    NodePort: Nodes running the pod
+    ClusterIP: Internal cluster IP
+    LoadBalancer: Load Balancer
   hostIp:
     label: Host IP
-    placeholder: "Default: All"
-  hostPort:
-    label: Host Port
+    placeholder: "Optional: Host IP e.g. 1.2.3.4"
+  sourcePort:
+    label: Source Port
     placeholder: "e.g. 80"
+  nodePort:
+    placeholder: "e.g. 30000"
   containerPort:
     label: Container Port
     placeholder: "e.g. 8080"
   protocol:
     label: Protocol
+  name:
+    label: Name
+    placeholder: "e.g. backend"
+  dnsName:
+    label: DNS Name
+    placeholder: "e.g. example"
   noPorts: This container has no port maps.
   error:
     privateRequired: Private Container Port is required for each port rule.
     publicRequired: Public Host Port is required if Host IP is specified.
     mixedIpPort: "Port {ip}:{port}/{proto} has more than one mapping."
     mixedPort: "Port {port}/{proto} has more than one mapping."
-  showIpLink: Customize Host IPs
+  showNamingLink: Show Port Naming Options
 
 formScale:
   label: Scale
