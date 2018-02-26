@@ -1,14 +1,15 @@
 <section>
-    {{#if isEnabled}}
-      <p>{{t 'ldap.header.enabled.label' providerName=(t providerName)}}</p>
-    {{else}}
-      <div class="banner bg-warning">
-        <div class="banner-icon"><span class="icon icon-alert"></span></div>
-        <div class="banner-message">
-          <p>{{t 'ldap.header.disabled.label' providerName=(t providerName)}}</p>
-         </div>
+  {{#if isEnabled}}
+    <h3>{{t 'ldap.header.enabled.label' providerName=(t providerName)}}</h3>
+    <hr/>
+  {{else}}
+    <div class="banner bg-warning">
+      <div class="banner-icon"><span class="icon icon-alert"></span></div>
+      <div class="banner-message">
+        <p>{{t 'ldap.header.disabled.label' providerName=(t providerName)}}</p>
       </div>
-    {{/if}}
+    </div>
+  {{/if}}
 
   <div>
     {{#if isEnabled}}
@@ -21,7 +22,18 @@
 
 {{#if isEnabled}}
   <section class="box mt-30">
-    <h3>{{t 'ldap.accessEnabled.header'}}</h3>
+    <div class="header clear-fix mb-15 pb-0">
+      <h3 class="pull-left">{{t 'ldap.accessEnabled.header'}}</h3>
+      <div class="vertical-middle"></div>
+      <div class="right-buttons">
+        <button class="btn btn-sm right-divider-btn" disabled=true>
+          {{t 'generic.edit'}}
+        </button>
+        <button class="btn btn-sm right-divider-btn bg-error" {{action "disable"}}>
+          {{t 'ldap.accessEnabled.disable.confirmDisable.pre'}}
+        </button>
+      </div>
+    </div>
     <hr/>
     <p class="text-info">{{t 'ldap.accessEnabled.subtext'}}</p>
 
@@ -59,26 +71,6 @@
       model=model.activeDirectory
       collection='siteAccess.organizations'
   }}
-
-  <section class="box mt-30">
-    <h3>{{t 'ldap.accessEnabled.disable.header' htmlSafe=true}}</h3>
-    <hr/>
-
-    <p>
-      {{t 'ldap.accessEnabled.disable.warning' appName=settings.appName htmlSafe=true}}
-    </p>
-
-    {{#if confirmDisable}}
-      <button class="btn bg-error" {{action "disable"}}>
-        <i class="icon icon-alert"></i> {{t 'ldap.accessEnabled.disable.confirmDisable.post'}}
-      </button>
-    {{else}}
-      <button class="btn bg-error" {{action "promptDisable"}}>
-        <i class="icon icon-umbrella"></i> {{t 'ldap.accessEnabled.disable.confirmDisable.pre'}}
-      </button>
-    {{/if}}
-
-  </section>
 {{/if}}
 
 {{#unless isEnabled}}
@@ -221,7 +213,6 @@
     <h3>{{t 'ldap.testAuth.header'}}</h3>
     <hr/>
     <p class="text-info">{{t 'ldap.testAuth.helpText' providerName=(t providerName)}}</p>
-    {{top-errors errors=errors}}
 
     <div class="row">
       <div class="col span-5">
