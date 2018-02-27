@@ -37,6 +37,7 @@ module.exports = function(app, options) {
     'Telemetry': config.telemetryEndpoint,
     'WebHook': config.webhookEndpoint,
 
+    'K8s': '/k8s',
     'Meta': '/meta',
     'Swagger': '/swaggerapi',
     'Version': '/version',
