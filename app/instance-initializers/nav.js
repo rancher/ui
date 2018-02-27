@@ -184,15 +184,6 @@ const rootNav = [
         ctx: [getClusterId],
       },
       {
-        id: 'cluster-tools-logging',
-        localizedLabel: 'nav.tools.logging',
-        // icon: 'icon icon-key',
-        route: 'authenticated.cluster.logging',
-        resourceScope: 'global',
-        resource: [],
-        ctx: [getClusterId],
-      },
-      {
         id: 'cluster-tools-notifiers',
         localizedLabel: 'nav.tools.notifiers',
         // icon: 'icon icon-key',
@@ -201,6 +192,17 @@ const rootNav = [
         resource: [],
         ctx: [getClusterId],
       },
+      {divider: true},
+      {
+        id: 'cluster-tools-logging',
+        localizedLabel: 'nav.tools.logging',
+        // icon: 'icon icon-key',
+        route: 'authenticated.cluster.logging',
+        resourceScope: 'global',
+        resource: [],
+        ctx: [getClusterId],
+      },
+      {divider: true},
       {
         id: 'cluster-tools-pipeline',
         localizedLabel: 'nav.tools.pipeline',
