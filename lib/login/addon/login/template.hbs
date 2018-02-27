@@ -21,7 +21,7 @@
       <br/>
       {{#unless promptPasswordReset}}
         {{#if isGithub}}
-          {{login-github action="started" waiting=waiting}}
+          {{login-github action="started"}}
         {{/if}}
 
         {{#if isShibboleth}}
@@ -51,9 +51,23 @@
       {{/if}}
 
       {{!-- {{#if (or isLocal isActiveDirectory isOpenLdap isAzureAd)}} --}}
+      {{#if isActiveDirectory}}
+        {{login-user-pass
+            classNames="row pt-10 pb-10"
+            action="authenticate"
+            waiting=waiting
+            provider="activedirectory"
+        }}
+      {{/if}}
 
       {{#if isLocal}}
-        {{login-user-pass action="authenticate" waiting=waiting shown=onlyLocal}}
+        {{login-user-pass
+            classNames="row pt-10 pb-10"
+            action="authenticate"
+            waiting=waiting
+            shown=onlyLocal
+            provider="local"
+        }}
       {{/if}}
 
       {{#if app.initError}}

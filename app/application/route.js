@@ -144,9 +144,9 @@ export default Route.extend({
   },
 
   model(params, transition) {
-    get(this, 'language').initLanguage();
 
     transition.finally(() => {
+      get(this, 'language').initLanguage();
       this.controllerFor('application').setProperties({
         state: null,
         code: null,
