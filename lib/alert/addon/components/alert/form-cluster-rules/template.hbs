@@ -27,7 +27,8 @@
     <div class="row">
       <div class="col span-2">
         <label class="acc-label">
-          {{radio-button selection=model._targetType value="normalEvent"}} {{t 'alertPage.newOrEdit.normal'}}
+          <span class="pr-10"> {{radio-button selection=model._targetType value="normalEvent"}} {{t 'alertPage.newOrEdit.normal'}} </span>
+          {{radio-button selection=model._targetType value="warningEvent"}} {{t 'alertPage.newOrEdit.warning'}}
         </label>
       </div>
       <div class="col span-9 mt-0">
@@ -86,7 +87,7 @@
 <hr/>
 <section class="row">
   <div class="col span-1">
-    <div style="{{if (eq _targetType 'systemService') '' 'padding-top: 6px;'}}">{{if isEventTarget (t 'alertPage.newOrEdit.happens') (t 'alertPage.newOrEdit.is')}}</div>
+    <div style="{{if (or (eq model._targetType 'node') (eq model._targetType 'nodeSelector')) 'padding-top: 6px;' ''}}">{{if isEventTarget (t 'alertPage.newOrEdit.happens') (t 'alertPage.newOrEdit.is')}}</div>
   </div>
   <div class="col span-10">
   {{#if (eq model._targetType 'systemService')}}
