@@ -16,7 +16,6 @@ const App = Resource.extend({
     edit() {
       let templateId = get(this, 'externalIdInfo.templateId');
 
-      let versionId  = get(this, 'externalIdInfo.version');
       let catalogId  = get(this, 'externalIdInfo.catalog');
 
       get(this, 'router').transitionTo('catalog-tab.launch', templateId, {queryParams: {
@@ -28,7 +27,6 @@ const App = Resource.extend({
     }
   },
   availableActions: computed('actionLinks.{rollback,upgrade}', function () {
-    let al = get(this, 'actionLinks')
     let l = get(this,'links');
 
     var choices = [

@@ -12,6 +12,7 @@ export default Resource.extend(ResourceUsage, {
   growl:        service(),
   scope:        service(),
   router:       service(),
+  intl:         service(),
 
   namespaces: hasMany('id', 'namespace', 'clusterId'),
   projects: hasMany('id', 'project', 'clusterId'),
