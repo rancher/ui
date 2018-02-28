@@ -1,5 +1,5 @@
 import Resource from 'ember-api-store/models/resource';
-import { get, computed } from '@ember/object';
+import { get, set, computed } from '@ember/object';
 import { inject as service } from '@ember/service';
 import { ucFirst } from 'shared/utils/util';
 import { getDisplayLocation, getDisplaySize } from 'shared/mixins/node-driver';
@@ -56,6 +56,17 @@ export default Resource.extend({
       }
     } else {
       return intl.t('generic.unknown');
+    }
+  },
+
+  clearConfigsExcept(keep) {
+    const keys = this.allKeys().filter(x => x.endsWith('Config'));
+
+    for ( let key, i = 0 ; i < keys.length ; i++ ) {
+      key = keys[i];
+      if ( key !== keep && get(this,key) ) {
+        set(this, key, null);
+      }
     }
   },
 });

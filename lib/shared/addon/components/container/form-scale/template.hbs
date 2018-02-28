@@ -7,37 +7,51 @@
   {{/if}}
 </div>
 
-{{#if (and canScale advancedShown)}}
+{{#if (and advancedShown canChangeScaleMode)}}
   <div class="radio">
     <label>
-      {{radio-button selection=mode value="service"}}
+      {{radio-button selection=scaleMode value="deployment"}}
       <i class="icon icon-lg icon-service"></i>
-      {{t 'formScale.mode.servicePrefix' scale=asInteger}}
-      {{#if (eq mode "service")}}
+      {{t 'formScale.mode.deploymentPrefix' scale=asInteger}}
+      {{#if (eq scaleMode "deployment")}}
         {{input-integer safeStyle="width: 60px; padding: 0 2px; display: inline-block" value=userInput min=min max=max}}
       {{else}}
         {{asInteger}}
       {{/if}}
-      {{t 'formScale.mode.serviceSuffix' scale=asInteger}}
+      {{t 'formScale.mode.scaleSuffix' scale=asInteger}}
     </label>
   </div>
   <div class="radio">
     <label>
-      {{radio-button selection=mode value="global"}}
+      {{radio-button selection=scaleMode value="daemonSet"}}
       <i class="icon icon-lg icon-globe"></i>
-      {{t 'formScale.mode.globalPrefix' scale=asInteger}}
-      {{#if (eq mode "global")}}
+      {{t 'formScale.mode.daemonSet'}}
+    </label>
+  </div>
+  <div class="radio">
+    <label>
+      {{radio-button selection=scaleMode value="cronJob"}}
+      <i class="icon icon-lg icon-history"></i>
+      {{t 'formScale.mode.cronJob'}}
+    </label>
+  </div>
+  <div class="radio">
+    <label>
+      {{radio-button selection=scaleMode value="statefulSet"}}
+      <i class="icon icon-lg icon-database"></i>
+      {{t 'formScale.mode.statefulSetPrefix' scale=asInteger}}
+      {{#if (eq scaleMode "statefulSet")}}
         {{input-integer safeStyle="width: 60px; padding: 0 2px; display: inline-block" value=userInput min=min max=max}}
       {{else}}
         {{asInteger}}
       {{/if}}
-      {{t 'formScale.mode.globalSuffix' scale=asInteger}}
+      {{t 'formScale.mode.scaleSuffix' scale=asInteger}}
     </label>
   </div>
   {{#if showSidekick}}
     <div class="radio">
       <label>
-        {{radio-button selection=mode value="sidekick"}}
+        {{radio-button selection=scaleMode value="sidekick"}}
         <i class="icon icon-lg icon-sidekick"></i>
         {{#if (eq mode "sidekick")}}
           {{t 'formScale.mode.sidekickPrefix'}}
@@ -51,25 +65,42 @@
   {{/if}}
 {{else}}
   <div class="form-control-static">
-    {{#if (eq mode "container")}}
-      <i class="icon icon-lg icon-container"></i>
-      {{t 'formScale.mode.containerPrefix'}}
-      {{t 'formScale.mode.containerSuffix'}}
-    {{else if (eq mode "service")}}
+    {{#if (eq scaleMode "deployment")}}
       <i class="icon icon-lg icon-service"></i>
-      {{t 'formScale.mode.servicePrefix' scale=asInteger}}
+      {{t 'formScale.mode.deploymentPrefix' scale=asInteger}}
       {{asInteger}}
-      {{t 'formScale.mode.serviceSuffix' scale=asInteger}}
-    {{else if (eq mode "global")}}
+      {{t 'formScale.mode.scaleSuffix' scale=asInteger}}
+    {{else if (eq scaleMode "statefulSet")}}
+      <i class="icon icon-lg icon-service"></i>
+      {{t 'formScale.mode.statefulSetPrefix' scale=asInteger}}
+      {{asInteger}}
+      {{t 'formScale.mode.scaleSuffix' scale=asInteger}}
+    {{else if (eq scaleMode "replicaSet")}}
+      <i class="icon icon-lg icon-service"></i>
+      {{t 'formScale.mode.replicaSetPrefix' scale=asInteger}}
+      {{asInteger}}
+      {{t 'formScale.mode.scaleSuffix' scale=asInteger}}
+    {{else if (eq scaleMode "replicationController")}}
+      <i class="icon icon-lg icon-service"></i>
+      {{t 'formScale.mode.replicationControllerPrefix' scale=asInteger}}
+      {{asInteger}}
+      {{t 'formScale.mode.scaleSuffix' scale=asInteger}}
+    {{else if (eq scaleMode "daemonSet")}}
       <i class="icon icon-lg icon-globe"></i>
-      {{t 'formScale.mode.globalPrefix' scale=asInteger}}
-      {{asInteger}}
-      {{t 'formScale.mode.globalSuffix' scale=asInteger}}
-    {{else if (eq mode "sidekick")}}
+      {{t 'formScale.scaleMode.daemonSet'}}
+    {{else if (eq scaleMode "job")}}
+      <i class="icon icon-lg icon-file"></i>
+      {{t 'formScale.scaleMode.job'}}
+    {{else if (eq scaleMode "cronJob")}}
+      <i class="icon icon-lg icon-history"></i>
+      {{t 'formScale.scaleMode.cronJob'}}
+    {{else if (eq scaleMode "sidekick")}}
       <i class="icon icon-lg icon-sidekick"></i>
       {{t 'formScale.mode.sidekickPrefix'}}
       &quot;{{service.displayName}}&quot;
       {{t 'formScale.mode.sidekickSuffix'}}
+    {{else}}
+      {{scaleMode}}?
     {{/if}}
   </div>
 {{/if}}

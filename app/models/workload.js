@@ -173,14 +173,11 @@ var Workload = Resource.extend(DisplayImage, StateCounts, EndpointPorts, {
     let l = get(this, 'links');
 
     let isReal = get(this, 'isReal');
-    let canHaveContainers = get(this, 'canHaveContainers');
     let containerForShell = get(this, 'containerForShell');
-    let canCleanup = !!a.garbagecollect && get(this, 'canCleanup');
 
     let choices = [
       { label: 'action.edit',           icon: 'icon icon-edit',             action: 'upgrade',        enabled: !!l.update &&  isReal },
       { label: 'action.rollback',       icon: 'icon icon-history',          action: 'rollback',       enabled: !!a.rollback && isReal && !!get(this, 'previousRevisionId') },
-      { label: 'action.garbageCollect', icon: 'icon icon-garbage',          action: 'garbageCollect', enabled: canCleanup},
       { label: 'action.clone',          icon: 'icon icon-copy',             action: 'clone',          enabled: true},
       { label: 'action.addSidekick',    icon: 'icon icon-plus-circle',      action: 'addSidekick',    enabled: get(this, 'canHaveSidekicks') },
       { divider: true },
@@ -189,7 +186,7 @@ var Workload = Resource.extend(DisplayImage, StateCounts, EndpointPorts, {
       { divider: true },
       { label: 'action.pause',          icon: 'icon icon-pause',            action: 'pause',          enabled: !!a.pause, bulkable: true},
       { label: 'action.start',          icon: 'icon icon-play',             action: 'start',          enabled: !!a.activate, bulkable: true},
-      { label: 'action.restart',        icon: 'icon icon-refresh',          action: 'restart',        enabled: !!a.restart && canHaveContainers, bulkable: true },
+      { label: 'action.restart',        icon: 'icon icon-refresh',          action: 'restart',        enabled: !!a.restart, bulkable: true },
       { label: 'action.stop',           icon: 'icon icon-stop',             action: 'promptStop',     enabled: !!a.deactivate, altAction: 'stop', bulkable: true},
       { divider: true },
       { label: 'action.remove',         icon: 'icon icon-trash',            action: 'promptDelete',   enabled: !!l.remove, altAction: 'delete', bulkable: true},
@@ -199,7 +196,7 @@ var Workload = Resource.extend(DisplayImage, StateCounts, EndpointPorts, {
 
     return choices;
   }.property('actionLinks.{activate,deactivate,pause,restart,rollback,garbagecollect}','links.{update,remove}','previousRevisionId',
-    'canHaveContainers','canHaveSidekicks','containerForShell'
+    'canHaveSidekicks','containerForShell'
   ),
 
   sortName: function() {
@@ -258,63 +255,23 @@ var Workload = Resource.extend(DisplayImage, StateCounts, EndpointPorts, {
     }
   }.property('scale','isGlobalScale'),
 
-  canHaveContainers: function() {
-    if ( get(this, 'isReal') || get(this, 'isSelector') ) {
-      return true;
-    }
+  canHaveSidekicks: true,
 
-    return [
-      'kubernetesservice',
-      'composeservice',
-    ].includes(get(this, 'lcType'));
-  }.property('isReal','isSelector','lcType'),
+  hasPorts: true,
+  hasImage: true,
+  canUpgrade: true,
+  canHaveLabels: true,
+  canScale: true,
+  realButNotLb: true,
+  canHaveLinks: true,
+  canChangeNetworking: true,
+  canChangeSecurity: true,
+  canHaveSecrets: true,
+  canHaveEnvironment: true,
+  canHaveHealthCheck: true,
+  isBalancer: false,
 
-  isReal: true,
-  isSelector: false,
-
-  canHaveSidekicks: function() {
-    return ['service','scalinggroup'].includes(get(this, 'lcType'));
-  }.property('lcType'),
-
-  hasPorts: alias('isReal'),
-  hasImage: alias('isReal'),
-  canUpgrade: alias('isReal'),
-  canHaveLabels: alias('isReal'),
-  canScale: alias('isReal'),
-
-  realButNotLb: function() {
-    return get(this, 'isReal') && !get(this, 'isBalancer');
-  }.property('isReal','isBalancer'),
-
-  canHaveLinks: alias('realButNotLb'),
-  canChangeNetworking: alias('realButNotLb'),
-  canChangeSecurity: alias('realButNotLb'),
-  canHaveSecrets: alias('realButNotLb'),
-  canHaveEnvironment: alias('realButNotLb'),
-
-  canHaveHealthCheck: function() {
-    return [
-      'service',
-      'scalinggroup',
-      'externalservice',
-    ].includes(get(this, 'lcType'));
-  }.property('lcType'),
-
-  isBalancer: function() {
-    return ['loadbalancerservice'].indexOf(get(this, 'lcType')) >= 0;
-  }.property('lcType'),
-
-  canBalanceTo: function() {
-    if ( get(this, 'lcType') === 'externalservice' && get(this, 'hostname') !== null) {
-      return false;
-    }
-
-    return true;
-  }.property('lcType','hostname'),
-
-  isK8s: function() {
-    return ['kubernetesservice'].indexOf(get(this, 'lcType')) >= 0;
-  }.property('lcType'),
+  canBalanceTo: true,
 
   hasSidekicks: gt('containers.length', 1),
 
@@ -332,9 +289,16 @@ var Workload = Resource.extend(DisplayImage, StateCounts, EndpointPorts, {
     return get(this, 'pods').findBy('combinedState','running');
   }.property('pods.@each.combinedState'),
 
-  canCleanup: function() {
-    return !!get(this, 'pods').findBy('desired',false);
-  }.property('pods.@each.desired'),
+  clearConfigsExcept(keep) {
+    const keys = this.allKeys().filter(x => x.endsWith('Config'));
+
+    for ( let key, i = 0 ; i < keys.length ; i++ ) {
+      key = keys[i];
+      if ( key !== keep && get(this,key) ) {
+        set(this, key, null);
+      }
+    }
+  },
 });
 
 export function activeIcon(service)

@@ -2440,25 +2440,23 @@ formPorts:
   showNamingLink: Show Port Naming Options
 
 formScale:
-  label: Scale
-  showAdvanced: Scaling options
+  label: Workload Type
+  showAdvanced: More options
   mode:
-    containerPrefix: "Standalone pod"
-    containerSuffix: ""
-    servicePrefix: "Workload with a scale of"
-    serviceSuffix: |
+    deploymentPrefix: "Scalable deployment of"
+    replicationControllerPrefix: "Replication Controller of"
+    replicaSetPrefix: "Replica Set of"
+    statefulSetPrefix: "Stateful set of"
+    scaleSuffix: |
       {scale, plural,
         =1 {pod}
         other {pods}
       }
-    globalPrefix: "Global workload with a scale of"
-    globalSuffix: |
-      {scale, plural,
-        =1 {pod}
-        other {pods}
-      } per node
-    sidekickInactive: "Sidekick: Match the scale and scheduling of a workload"
-    sidekickPrefix: "Sidekick: Match the scale and scheduling of"
+    daemonSet: "Run one pod on each node"
+    cronJob: "Run on a timed schedule"
+    job: Job
+    sidekickInactive: "Sidecar: Add a container to an existing pod"
+    sidekickPrefix: "Sidecar: Add a container to"
     sidekickSuffix: ""
 
 formScheduling:
