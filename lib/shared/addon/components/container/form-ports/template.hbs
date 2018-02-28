@@ -53,7 +53,7 @@
             </td>
             <td>&nbsp;</td>
             <td data-title="{{t 'formPorts.sourcePort.label'}}">
-              {{#if (eq port.kind "HostPort")}}
+              {{#if (eq port.kind "NodePort")}}
                 {{#if editing}}
                   {{input-random-port min="30000" max="32767" value=port.sourcePort placeholder="formPorts.nodePort.placeholder"}}
                 {{else if port.sourcePort}}
@@ -61,7 +61,7 @@
                 {{else}}
                   {{t 'generic.random'}}
                 {{/if}}
-              {{else if (eq port.kind "NodePort")}}
+              {{else if (eq port.kind "HostPort")}}
                 <div class="row">
                   {{#if editing}}
                     <div class="col span-15-of-24 p-0">
