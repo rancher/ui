@@ -1,5 +1,5 @@
 {{#outside-click onOutsideClick=(action 'hide')}}
-  {{input disabled=readOnly class=(concat 'form-control input-search search ' class) placeholder=placeholder type="text" autocomplete="off" value=filter}}
+  {{input disabled=readOnly class=(concat 'form-control input-search search ' class) placeholder=placeholder type="text" autocomplete="off" value=filter key-up="search"}}
 
   {{#if showOptions}}
     <section class="searchable-options" style={{optionsMaxHeightCss}}>
@@ -61,13 +61,16 @@
         </div>
       {{/each}}
 
-      {{#unless filtered.length}}
+      {{#unless noMatch}}
         <div class="text-muted no-match">
+          {{t missingMessage}}
+          {{!--
           {{#if content.length}}
-            {{t 'searchableSelect.noMatch'}}
+          {{t 'searchableSelect.noMatch'}}
           {{else}}
-            {{t 'searchableSelect.noOptions'}}
+          {{t 'searchableSelect.noOptions'}}
           {{/if}}
+          --}}
         </div>
       {{/unless}}
 
