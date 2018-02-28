@@ -58,12 +58,7 @@
   {{#if model.recipients.length}}
     {{#if (eq model.recipients.length 1)}}
       <div class="clip">
-        <div class="text-capitalize">{{item.notifierType}}</div>
-        {{#if model.firstRecipient}}
-          {{model.firstRecipient}}
-        {{else}}
-          {{t 'alertPage.na'}}
-        {{/if}}
+        {{model.displayRecipient}}
       </div>
     {{else if (gt model.recipients.length 1)}}
       {{#tooltip-element
@@ -71,8 +66,9 @@
            model=recipientsTip
            tooltipTemplate='tooltip-static'
            aria-describedby="tooltip-base"
+           tooltipFor="tooltipLink"
       }}
-        <span class="text-link">{{model.recipients.length}} {{t 'alertPage.items'}}</span>
+          <div class="text-link">{{model.displayRecipient}}</div>
       {{/tooltip-element}}
     {{/if}}
   {{else}}
