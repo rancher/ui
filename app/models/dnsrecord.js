@@ -9,6 +9,7 @@ export const CNAME = 'cname';
 export const ALIAS = 'alias';
 export const WORKLOAD = 'workload';
 export const SELECTOR = 'selector';
+export const CLUSTERIP = 'clusterIp';
 export const UNKNOWN = 'unknown';
 
 const FIELD_MAP = {
@@ -17,6 +18,7 @@ const FIELD_MAP = {
   [ALIAS]:    'targetDnsRecordIds',
   [WORKLOAD]: 'targetWorkloadIds',
   [SELECTOR]: 'selector',
+  [CLUSTERIP]: 'clusterIp',
 };
 
 export default Resource.extend({
@@ -61,7 +63,8 @@ export default Resource.extend({
   'hostname',
   'selector',
   'targetDnsRecordIds.length',
-  'targetWorkloadIds.length', function() {
+  'targetWorkloadIds.length',
+  'clusterIp', function() {
 
     if ( get(this, 'ipAddresses.length')) {
       return ARECORD;
@@ -84,6 +87,9 @@ export default Resource.extend({
       return SELECTOR;
     }
 
+    if ( get(this, 'clusterIp') ) {
+      return CLUSTERIP;
+    }
 
     return UNKNOWN;
   }),
@@ -112,6 +118,8 @@ export default Resource.extend({
         return records.map(x => get(x, 'displayName')).join('\n');
       case WORKLOAD:
         return workloads.map(x => get(x, 'displayName')).join('\n');
+      case CLUSTERIP:
+        return get(this, 'clusterIp');
       default:
         return 'Unknown';
     }

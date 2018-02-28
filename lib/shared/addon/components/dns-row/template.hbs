@@ -13,6 +13,7 @@
   </td>
   <td data-title="{{dt.displayType}}">
     {{t (concat 'dnsPage.type.' model.recordType)}}
+    {{#if (and (not-eq model.recordType "clusterIp") model.clusterIp)}}<div class="text-small text-muted">{{model.clusterIp}}</div>{{/if}}
   </td>
   <td data-title="{{dt.target}}">
     {{#if (eq model.recordType "workload")}}

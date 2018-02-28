@@ -35,6 +35,7 @@ export default Controller.extend({
       sort: ['displayType','displayName','id'],
       searchField: 'displayType',
       translationKey: 'generic.type',
+      width: 150,
     },
     {
       name: 'target',

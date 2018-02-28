@@ -257,6 +257,8 @@ var Workload = Resource.extend(DisplayImage, StateCounts, EndpointPorts, {
 
   canHaveSidekicks: true,
 
+  // @TODO-2.0 cleanup all these...
+  isReal: true,
   hasPorts: true,
   hasImage: true,
   canUpgrade: true,
@@ -327,7 +329,7 @@ Workload.reopenClass({
     'rolling-back':       {icon: 'icon icon-history',         color: 'text-info'},
     'upgraded':           {icon: 'icon icon-arrow-circle-up', color: 'text-info'},
     'upgrading':          {icon: 'icon icon-arrow-circle-up', color: 'text-info'},
-  }
+  },
 });
 
 export default Workload;

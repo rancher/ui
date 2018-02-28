@@ -72,7 +72,7 @@
           initialValues=model.targetDnsRecordIds
           addActionLabel='editDns.add.alias'
           changed=(action "setAlias")
-          as |row|
+          as |c row|
         }}
           {{new-select
             classNames="form-control"
@@ -87,12 +87,12 @@
           }}
         {{/form-value-array}}
       {{else if (eq recordType "workload")}}
+      w
         {{#form-value-array
           initialValues=model.targetWorkloadIds
           addActionLabel='editDns.add.workload'
-          changed=(action (mut model.targetWorkloadIds))
           changed=(action "setWorkload")
-          as |row|
+          as |c row|
         }}
           {{new-select
             classNames="form-control"

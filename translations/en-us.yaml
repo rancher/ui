@@ -726,6 +726,7 @@ dnsPage:
     alias: Alias
     workload: Workload
     selector: Selector
+    clusterIp: Cluster IP
     unknown: Unknown
   table:
     target: Target
@@ -2413,12 +2414,11 @@ formPorts:
     HostPort: Nodes running the workload
     ClusterIP: Internal cluster IP
     LoadBalancer: Load Balancer
-  hostIp:
-    label: Host IP
-    placeholder: "Optional: Host IP e.g. 1.2.3.4"
   sourcePort:
     label: Source Port
     placeholder: "e.g. 80"
+    ipPlaceholder: "e.g. 80 or 19.82.2.24:80"
+    clusterIpDefault: "Same as container port"
   nodePort:
     placeholder: "e.g. 30000"
   containerPort:
@@ -2438,7 +2438,7 @@ formPorts:
     publicRequired: Public Host Port is required if Host IP is specified.
     mixedIpPort: "Port {ip}:{port}/{proto} has more than one mapping."
     mixedPort: "Port {port}/{proto} has more than one mapping."
-  showNamingLink: Show Port Naming Options
+  showAdvanced: Show Port Naming Options
 
 formScale:
   label: Workload Type
