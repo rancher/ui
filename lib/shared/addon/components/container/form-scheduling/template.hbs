@@ -8,11 +8,7 @@
     {{#if canRequestHost}}
       <div class="radio mb-0">
         <label>{{radio-button selection=isRequestedHost value=true}}
-          {{#if isService}}
-              {{t 'formScheduling.canRequestHost.containers' htmlSafe=true}}
-          {{else}}
-            {{t 'formScheduling.runSpecific'}}
-          {{/if}}
+          {{t 'formScheduling.canRequestHost.containers' htmlSafe=true}}
         </label>
           {{#if isRequestedHost}}
             <div class="mb-10 mt-10">
@@ -31,38 +27,26 @@
 
       <div class="radio mb-0">
         <label>{{radio-button selection=isRequestedHost value=false}}
-          {{#if isService}}
-            {{#if isGlobal}}
-              {{t 'formScheduling.autoRun'}}
-            {{else}}
-              {{t 'formScheduling.autoPick.container'}}
-            {{/if~}}
+          {{#if isGlobal}}
+            {{t 'formScheduling.autoRun'}}
           {{else}}
-            {{t 'formScheduling.autoPick.host'}}
-          {{/if}}
+            {{t 'formScheduling.autoPick.container'}}
+          {{/if~}}
         </label>
       </div>
     {{else}}
-      {{#if isService}}
-        {{#if isGlobal}}
-          <label class="acc-label">{{t 'formScheduling.autoRun'}}</label>
-        {{else}}
-          <label class="acc-label">{{t 'formScheduling.autoPick.container'}}</label>
-        {{/if~}}
+      {{#if isGlobal}}
+        <label class="acc-label">{{t 'formScheduling.autoRun'}}</label>
       {{else}}
-        <label class="acc-label">{{t 'formScheduling.autoPick.host'}}</label>
-      {{/if}}
+        <label class="acc-label">{{t 'formScheduling.autoPick.container'}}</label>
+      {{/if~}}
     {{/if}}
   {{else if isGlobal}}
     <label class="acc-label">{{t 'formScheduling.autoRun'}}</label>
   {{else if requestedHostId}}
     <div class="row">
       <label>
-        {{#if isService}}
-          {{t 'formScheduling.canRequestHost.containers' htmlSafe=true}}
-        {{else}}
-          {{t 'formScheduling.runSpecific'}}
-        {{/if}}
+        {{t 'formScheduling.canRequestHost.containers' htmlSafe=true}}
       </label>
       <span class="form-static-control">{{selectedChoice.name}}</span>
     </div>

@@ -19,12 +19,11 @@
       initialLabels=launchConfig.labels
       initialScale=scale
       isGlobal=isGlobal
-      isService=isService
       launchConfigIndex=launchConfigIndex
       service=service
       isUpgrade=isUpgrade
       errors=scaleErrors
-      mode=mode
+      scaleMode=scaleMode
       setScale=(action (mut scale))
     }}
   </div>
@@ -81,7 +80,6 @@
 {{#accordion-list as | al expandFn | }}
   {{#unless isSidekick}}
     {{container/form-scheduling
-      isService=isService
       isGlobal=isGlobal
       initialHostId=service.scheduling.node.nodeId
       service=service
@@ -124,7 +122,6 @@
     <div class="row">
       <div class="col {{if separateLivenessCheck 'span-6' 'span-12'}}">
         {{form-healthcheck
-          isService=isService
           initialCheck=launchConfig.readycheck
           changed=(action (mut launchConfig.readycheck))
           errors=healthCheckErrors
@@ -134,7 +131,6 @@
       {{#if separateLivenessCheck}}
         <div class="col span-6">
           {{form-healthcheck
-            isService=isService
             initialCheck=launchConfig.healthcheck
             changed=(action (mut launchConfig.healthcheck))
             errors=healthCheckErrors
@@ -147,7 +143,6 @@
 
   {{#advanced-section advanced=false}}
     {{container/form-volumes
-      isService=isService
       isSidekick=isSidekick
       launchConfig=launchConfig
       service=service
@@ -158,7 +153,7 @@
       expandFn=expandFn
     }}
 
-    {{#if (and isService (not isSidekick))}}
+    {{#if (not isSidekick)}}
       {{container/form-upgrade
         service=service
         instance=launchConfig
@@ -173,7 +168,6 @@
         classNames="accordion-wrapper"
         instance=launchConfig
         errors=commandErrors
-        isService=isService
         service=service
         expandAll=al.expandAll
         expandFn=expandFn
@@ -183,7 +177,6 @@
         classNames="accordion-wrapper"
         instance=launchConfig
         errors=networkingErrors
-        isService=isService
         service=service
         editing=true
         expandAll=al.expandAll
@@ -218,7 +211,6 @@
 
     {{container/form-security
         instance=launchConfig
-        isService=isService
         service=service
         errors=securityErrors
         editing=true

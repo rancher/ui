@@ -18,12 +18,8 @@
         <li class="disabled"><a {{!--action "addNewVolume"--}}>{{t 'formVolumes.add.new'}} (Coming Soon)</a></li>
         <li><a {{action "addBindMount"}}>{{t 'formVolumes.add.bindMount'}}</a></li>
         <li><a {{action "addTmpfs"}}>{{t 'formVolumes.add.tmpfs'}}</a></li>
-        {{#if isService}}
-          {{#if hasSidekicks}}
-            <li><a {{action "addVolumesFromLaunchConfig"}}>{{t 'formVolumes.add.fromLaunchConfig'}}</a></li>
-          {{/if}}
-        {{else}}
-          <li><a {{action "addVolumesFromContainer"}}>{{t 'formVolumes.add.fromContainer'}}</a></li>
+        {{#if hasSidekicks}}
+          <li><a {{action "addVolumesFromLaunchConfig"}}>{{t 'formVolumes.add.fromLaunchConfig'}}</a></li>
         {{/if}}
         <li class="divider"></li>
         <li class="disabled"><a {{action "addCustom"}}>{{t 'formVolumes.add.custom'}} (Coming Soon)</a></li>
@@ -51,7 +47,6 @@
               {{container/form-volume-row
                 model=vol
                 stack=stack
-                isService=isService
                 requestedHostId=launchConfig.requestedHostId
                 remove=(action "remove" vol)
               }}

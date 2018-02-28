@@ -22,14 +22,7 @@ export default Route.extend({
     {
       // Existing Service
       return store.find('workload', params.workloadId).then((workload) => {
-        return this.modelForExisting(workload, true, params);
-      });
-    }
-    else if ( params.podId )
-    {
-      // Existing Pod
-      return store.find('pod', params.podId).then((pod) => {
-        return this.modelForExisting(pod, false, params);
+        return this.modelForExisting(workload, params);
       });
     } else {
       return this.modelForNew(params);
@@ -37,21 +30,22 @@ export default Route.extend({
   },
 
   modelForNew(params) {
-    let mode = this.get(`prefs.${C.PREFS.LAST_SCALE_MODE}`) || 'service';
+    let scaleMode = this.get(`prefs.${C.PREFS.LAST_SCALE_MODE}`) || 'deployment';
+    if ( scaleMode === 'container' || scaleMode === 'service' ) {
+      scaleMode = 'deployment';
+    }
 
-    let isService = true;
     //let isGlobal = (mode === 'global');
 
     return EmberObject.create({
-      mode,
+      scaleMode,
       workload: this.emptyWorkload(params),
       container: this.emptyContainer(params),
-      isService,
       isUpgrade: false,
     });
   },
 
-  modelForExisting(_workload, isService, params) {
+  modelForExisting(_workload, params) {
     if ( !_workload ) {
       return Ember.RVP.reject('Workload not found');
     }
@@ -63,10 +57,9 @@ export default Route.extend({
     // Add a sidekick
     if ( params.addSidekick ) {
       return EmberObject.create({
-        mode: 'sidekick',
+        scaleMode: 'sidekick',
         workload: clone,
         container: this.emptyContainer(params),
-        isService,
         isUpgrade: false,
       });
     } else if ( containerName === null ) {
@@ -101,11 +94,10 @@ export default Route.extend({
     if ( params.upgrade ) {
       // Upgrade workload
       let out = EmberObject.create({
-        mode: (containerName ? 'sidekick' : 'service'),
+        scaleMode: (containerName ? 'sidekick' : 'deployment'),
         workload: clone,
         container,
         containerName,
-        isService,
         isUpgrade: true
       });
 
@@ -118,7 +110,6 @@ export default Route.extend({
         mode: 'service',
         workload: neu,
         container,
-        isService,
         isUpgrade: false
         // no launchConfigIndex because this will be a new service or sidekick
       });
