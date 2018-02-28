@@ -41,16 +41,34 @@
 
   {{!-- if the current saved target is embedded --}}
   {{#if originalModel.embeddedConfig}}
-    <div class="banner bg-success">
-      <div class="banner-icon p-20"><i class="icon icon-check"></i></div>
-      <div class="banner-message p-10">
-        <ul style="font-size:1.1em;">
-          <li style="list-style: circle;"> {{t 'loggingPage.embedded.helpText.esEndpoint' htmlSafe=true}} </li>
-          <li style="list-style: circle;"> {{t 'loggingPage.embedded.helpText.kibanaEndpoint' htmlSafe=true}} </li>
-        </ul>
+
+      <div class="banner {{esDeployState.background}}">
+        <div class="banner-icon p-20"><i class="{{esDeployState.icon}}"></i></div>
+        <div class="banner-message p-10">
+          {{esDeployState.message}}
+          {{#if (eq esDeploy.state 'success')}}
+            <a href="{{originalModel.embeddedConfig.elasticsearchEndpoint}}">
+              {{originalModel.embeddedConfig.elasticsearchEndpoint}}
+            </a>
+            {{copy-to-clipboard size='small' clipboardText=originalModel.embeddedConfig.elasticsearchEndpoint htmlSafe=true}}
+          {{/if}}
+        </div>
       </div>
-    </div>
+
+      <div class="banner {{kibanaDeployState.background}}">
+        <div class="banner-icon p-20"><i class="{{kibanaDeployState.icon}}"></i></div>
+        <div class="banner-message p-10">
+          {{kibanaDeployState.message}}
+          {{#if (eq kibanaDeploy.state 'success')}}
+            <a href="{{originalModel.embeddedConfig.kibanaEndpoint}}">
+              {{originalModel.embeddedConfig.kibanaEndpoint}}
+            </a>
+            {{copy-to-clipboard size='small' clipboardText=originalModel.embeddedConfig.kibanaEndpoint htmlSafe=true}}
+          {{/if}}
+        </div>
+      </div>
   {{/if}}
+
 {{/if}}
 
 {{#if (eq targetType 'elasticsearch')}}
