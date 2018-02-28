@@ -23,11 +23,11 @@
         dragEndHook=(action "dragEnd")
         }}
             {{#if (eq index 0)}}
-              <div class="stage-name text-muted clip">
+              <div class="stage-name clip">
                 {{index-add index}}. {{item.name}}
               </div>
             {{else}}
-              <div class="stage-name text-muted clip" style="curosor: pointer;" {{action 'editStage' index}}>
+              <div class="stage-name clip" style="curosor: pointer;" {{action 'editStage' index}}>
                 <a href="javascript:void(0);">{{index-add index}}. {{item.name}}</a>
               </div>
             {{/if}}
@@ -69,7 +69,7 @@
   {{else}}
     {{#each pipeline.stages as |item index|}}
     <div class="stage-wrap">
-      <div class="stage-name text-muted clip" {{action 'editStage' index}}>
+      <div class="stage-name clip" {{action 'editStage' index}}>
         {{index-add index}}. {{item.name}}
       </div>
         {{pipeline-steps
@@ -92,7 +92,7 @@
     {{/each}}
   {{/if}}
 </section>
-{{!-- 
+{{!--
 {{pipeline-input-var-hint
   hintAry=envvars
   loading=envvarsLoading
