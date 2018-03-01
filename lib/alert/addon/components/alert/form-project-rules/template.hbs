@@ -31,16 +31,7 @@
           {{radio-button selection=model._targetType value="workload"}} {{t 'alertPage.targetTypes.workload'}}
         </label>
       </div>
-      <div class="col span-4 mt-0">
-        {{searchable-select
-            content=workloadTypes
-            class="form-control"
-            value=model.targetWorkload.workloadType
-            placeholder=(t 'alertPage.newOrEdit.workloadTypePlaceholder')
-            readOnly=(not-eq model._targetType 'workload')
-        }}
-      </div>
-      <div class="col span-4 mt-0">
+      <div class="col span-8 mt-0">
         {{searchable-select
             content=workloads
             class="form-control"
@@ -59,27 +50,18 @@
         </label>
       </div>
       <div class="col span-8 mt-0">
-        {{searchable-select
-            content=workloadTypes
-            class="form-control"
-            value=model.targetWorkload.type
-            placeholder=(t 'alertPage.newOrEdit.workloadTypePlaceholder')
-            readOnly=(not-eq model._targetType 'workloadSelector')
-        }}
-        <div class="mt-20">
-          {{#if (eq model._targetType 'workloadSelector')}}
-            {{form-key-value
-                addActionLabel="alertPage.addSelectorLabel"
-                initialMap=model.targetWorkload.selector
-                changed=(action (mut model.targetWorkload.selector))
-            }}
-          {{else}}
-            <button {{action "noop"}} style="cursor:not-allowed;" class="btn bg-disabled icon-btn">
-              <span class="darken"><i class="icon icon-plus text-small"/></span>
-              <span>{{t 'alertPage.addSelectorLabel'}}</span>
-            </button>
-          {{/if}}
-        </div>
+        {{#if (eq model._targetType 'workloadSelector')}}
+          {{form-key-value
+              addActionLabel="alertPage.addSelectorLabel"
+              initialMap=model.targetWorkload.selector
+              changed=(action (mut model.targetWorkload.selector))
+          }}
+        {{else}}
+          <button {{action "noop"}} style="cursor:not-allowed;" class="btn bg-disabled icon-btn">
+            <span class="darken"><i class="icon icon-plus text-small"/></span>
+            <span>{{t 'alertPage.addSelectorLabel'}}</span>
+          </button>
+        {{/if}}
       </div>
 
     </div>
