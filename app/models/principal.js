@@ -11,7 +11,7 @@ var Principal = Resource.extend({
   isUser: equal('parsedExternalType', C.PROJECT.TYPE_USER),
   isTeam: equal('parsedExternalType', C.PROJECT.TYPE_TEAM),
   isOrg: equal('parsedExternalType', C.PROJECT.TYPE_ORG),
-  
+
   parsedExternalType: computed('id', function() {
     return get(this, 'id').split(':').get('firstObject');
   }),
@@ -29,7 +29,7 @@ var Principal = Resource.extend({
 
   isGithub: computed('parsedExternalType', function() {
     // console.log('is github?', get(this, 'provider'));
-    return get(this, 'provider').toLowerCase() === 'github';
+    return (get(this, 'provider')||'').toLowerCase() === 'github';
   }),
 
   isMyRancher: computed('{id,parsedExternalType}', function() {
