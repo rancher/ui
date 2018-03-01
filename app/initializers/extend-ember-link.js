@@ -8,15 +8,24 @@ export function initialize(/*application */) {
     // class to the parent element (like <li>{{link-to}}</li>)
     activeParent: false,
 
-    addActiveObserver: function() {
-      if ( this.get('activeParent') ) {
+    addActiveObserver: function () {
+      if (this.get('activeParent')) {
         this.addObserver('active', this, 'activeChanged');
         this.activeChanged();
       }
     }.on('didInsertElement'),
 
+    isOnlyCurrentWhen() {
+      if (!this.get('onlyCurrentWhen')) {
+        return false;
+      }
+      let currentRouteName = this.get('application.currentRouteName');
+      const route = this.get('params.firstObject');
+      return !this.get('onlyCurrentWhen').some(r => currentRouteName.startsWith(r));
+    },
+
     activeChanged() {
-      if ( this.isDestroyed || this.isDestroying ) {
+      if (this.isDestroyed || this.isDestroying) {
         return;
       }
 
@@ -35,7 +44,11 @@ export function initialize(/*application */) {
         }
       }
 
-      this.$().parent().toggleClass('active', !!this.get('active'));
+      if (this.get('active') && !this.isOnlyCurrentWhen()) {
+        this.$().parent().toggleClass('active', true);
+      } else {
+        this.$().parent().toggleClass('active', false);
+      }
     }
   });
 

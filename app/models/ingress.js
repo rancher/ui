@@ -7,10 +7,15 @@ var Ingress = Resource.extend({
   type: 'ingress',
 
   clusterStore: service(),
+  router: service(),
   namespace: reference('namespaceId', 'namespace', 'clusterStore'),
 
   actions: {
     edit: function () {
+      get(this,'router').transitionTo('ingresses.run', {queryParams: {
+        ingressId: get(this, 'id'),
+        upgrade: true,
+      }});
     },
   },
 

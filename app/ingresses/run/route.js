@@ -5,12 +5,14 @@ import Route from '@ember/routing/route';
 export default Route.extend({
   model: function (params) {
     const store = get(this, 'store');
+
     const dependencies = {
-      allCertificates: store.findAll('certificate'),
+      namespacedcertificates: store.findAll('namespacedcertificate'),
+      certificates: store.findAll('certificate'),
     };
 
-    if (params.id) {
-      dependencies['existingIngress'] = store.find('ingress', params.id);
+    if (params.ingressId) {
+      dependencies['existingIngress'] = store.find('ingress', params.ingressId);
     }
 
     return hash(dependencies).then((hash) => {
@@ -38,7 +40,7 @@ export default Route.extend({
 
   resetController: function (controller, isExisting) {
     if (isExisting) {
-      set(controller, 'id', null);
+      set(controller, 'ingressId', null);
       set(controller, 'upgrade', null);
     }
   },

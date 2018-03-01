@@ -12,7 +12,6 @@ export default Resource.extend(ResourceUsage, {
   growl:        service(),
   scope:        service(),
   router:       service(),
-  intl:         service(),
 
   namespaces: hasMany('id', 'namespace', 'clusterId'),
   projects: hasMany('id', 'project', 'clusterId'),
@@ -79,27 +78,26 @@ export default Resource.extend(ResourceUsage, {
   }),
 
   displayProvider: computed('configName','nodePools.@each.nodeTemplateId', function() {
-    const intl = get(this, 'intl');
     const pools = get(this,'nodePools')||[];
     const firstTemplate = get(pools,'firstObject.nodeTemplate');
 
     switch ( get(this,'configName') ) {
       case 'azureKubernetesServiceConfig':
-        return intl.t('clusterNew.azureaks.shortLabel');
+        return 'clusterNew.azureaks.shortLabel';
       case 'googleKubernetesEngineConfig':
-        return intl.t('clusterNew.googlegke.shortLabel');
+        return 'clusterNew.googlegke.shortLabel';
       case 'rancherKubernetesEngineConfig':
         if ( !!pools ) {
           if ( firstTemplate ) {
             return get(firstTemplate, 'displayProvider');
           } else {
-            return intl.t('clusterNew.rke.shortLabel');
+            return 'clusterNew.rke.shortLabel';
           }
         } else {
-            return intl.t('clusterNew.custom.shortLabel');
+            return 'clusterNew.custom.shortLabel';
         }
       default:
-        return intl.t('clusterNew.import.shortLabel');
+        return 'clusterNew.import.shortLabel';
     }
   }),
 

@@ -1,8 +1,8 @@
 import Controller from '@ember/controller';
 
 export default Controller.extend({
-  queryParams: ['id', 'upgrade'],
-  id: null,
+  queryParams: ['ingressId', 'upgrade'],
+  ingressId: null,
   upgrade: null,
 
   actions: {

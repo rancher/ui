@@ -7,7 +7,8 @@ export default Route.extend({
     const store = get(this, 'store');
     return hash({
       ingress: store.find('ingress', params.ingress_id),
-      allCertificates: store.findAll('certificate'),
+      certificates: store.findAll('certificate'),
+      namespacedCertificates: store.findAll('namespacedcertificate'),
     });
   },
 });
