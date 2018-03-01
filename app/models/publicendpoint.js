@@ -1,32 +1,31 @@
 import { isArray } from '@ember/array';
+import { get } from '@ember/object';
 import Resource from 'ember-api-store/models/resource';
-import { reference } from 'ember-api-store/utils/denormalize';
-
-const BIND_ANY = ['0.0.0.0','::'];
+import { inject as service } from '@ember/service';
 
 function portMatch(ports, equals, endsWith) {
-  if ( !isArray(ports) ) {
+  if (!isArray(ports)) {
     ports = [ports];
   }
 
-  if ( !isArray(equals) ) {
+  if (!isArray(equals)) {
     equals = [equals];
   }
 
-  if ( !isArray(endsWith) ) {
+  if (!isArray(endsWith)) {
     endsWith = [endsWith];
   }
 
-  for ( let i = 0 ; i < ports.length ; i++ ) {
-    let port= ports[i];
-    if ( equals.includes(port) ) {
+  for (let i = 0; i < ports.length; i++) {
+    let port = ports[i];
+    if (equals.includes(port)) {
       return true;
     }
 
-    for ( let j = 0 ; j < endsWith.length ; j++ ) {
-      let suffix = endsWith[j]+'';
-      let portStr = port+'';
-      if ( portStr !== suffix && portStr.endsWith(suffix) ) {
+    for (let j = 0; j < endsWith.length; j++) {
+      let suffix = endsWith[j] + '';
+      let portStr = port + '';
+      if (portStr !== suffix && portStr.endsWith(suffix)) {
         return true;
       }
     }
@@ -36,93 +35,64 @@ function portMatch(ports, equals, endsWith) {
 }
 
 var PublicEndpoint = Resource.extend({
-  instance: reference('instanceId'),
-  service: reference('serviceId'),
+  globalStore: service(),
 
-  tls: null, // loadbalancerservice sets this based on the listener
-
-  target: function() {
-    return this.get('service') || this.get('instance');
-  }.property('instance','service'),
-
-  portProto: function() {
-    let out = this.get('publicPort') + '/' + this.get('protocol');
+  portProto: function () {
+    let out = this.get('port') + '/' + this.get('protocol').toLowerCase();
     return out;
-  }.property('publicPort','protocol'),
-
-  hasBoundIp: function() {
-    let bind = this.get('bindIpAddress');
-    return bind && !BIND_ANY.includes(bind);
-  }.property('bindIpAddress'),
+  }.property('port', 'protocol'),
 
   // ip:port
-  endpoint: function() {
+  endpoint: function () {
     let out = '';
-    let fqdn = this.get('fqdn');
-    let agent = this.get('agentIpAddress');
 
-    if ( fqdn ) {
-      out = fqdn;
-    } else if ( this.get('hasBoundIp') ) {
-      out = this.get('bindIpAddress');
-    } else if ( agent ) {
-      out = agent;
+    if (get(this, 'address') === 'NodePort') {
+      const store = get(this, 'globalStore');
+      const nodes = store.all('node');
+      const node = get(nodes, 'firstObject');
+      const ipAddress = get(node, 'ipAddress');
+      out = ipAddress;
     }
 
-    if ( out ) {
-      out += ':' + this.get('publicPort');
+    if (out) {
+      out += ':' + this.get('port');
     }
 
     return out;
-  }.property('fqdn','hasBoundIp','bindIpAddress','agentIpAddress','publicPort'),
+  }.property('port', 'address'),
 
   // [ip:]port[/udp]
-  displayEndpoint: function() {
+  displayEndpoint: function () {
     let out = '';
-
-    let fqdn = this.get('fqdn');
-    if ( fqdn ) {
-      out = fqdn;
-    } else if ( this.get('hasBoundIp') ) {
-      out = this.get('bindIpAddress');
-    }
-
-    out += (out ? ':' : '') + this.get('publicPort');
-
-    let proto = this.get('protocol');
-    if ( proto !== 'tcp' ) {
+    out += this.get('port');
+    let proto = this.get('protocol').toLowerCase();
+    if (proto !== 'tcp') {
       out += '/' + proto;
     }
-
     return out;
-  }.property('fqdn','hasBoundIp','bindIpAddress','publicPort','protocol'),
+  }.property('port', 'protocol'),
 
-  linkEndpoint: function() {
-    if ( this.get('isMaybeHttp') ) {
+  linkEndpoint: function () {
+    if (this.get('isTcp')) {
       let out = this.get('endpoint');
 
-      if ( this.get('isMaybeSecure') ) {
-        out = 'https://' + out.replace(/:443$/,'');
+      if (this.get('isMaybeSecure')) {
+        out = 'https://' + out.replace(/:443$/, '');
       } else {
-        out = 'http://' + out.replace(/:80$/,'');
+        out = 'http://' + out.replace(/:80$/, '');
       }
 
       return out;
     }
-  }.property('isMaybeHttp','isMaybeSecure','displayEndpoint'),
+  }.property('isTcp', 'isMaybeSecure', 'displayEndpoint'),
 
-  isMaybeHttp: function() {
-    return portMatch([this.get('publicPort'),this.get('privatePort')], [80,8000,8080,3000,4000,5000], '80');
-  }.property('privatePort','publicPort'),
+  isTcp: function () {
+    return this.get('protocol').toLowerCase() === 'tcp';
+  }.property('port', 'protocol'),
 
-  isMaybeSecure: function() {
-    let tls = this.get('tls');
-    if ( tls !== null ) {
-      return tls;
-    }
-
-    return portMatch([this.get('publicPort'),this.get('privatePort')], [443,8443], '443');
-  }.property('tls','publicPort','publicPort'),
+  isMaybeSecure: function () {
+    return portMatch([this.get('port')], [443, 8443], '443');
+  }.property('port'),
 });
 
 export default PublicEndpoint;
