@@ -63,16 +63,16 @@
 <hr class="mt-30 mb-30" />
 <div class="row">
   {{form-key-value
-      initialMap=launchConfig.environment
-      changed=(action (mut launchConfig.environment))
-      allowEmptyValue=true
-      editing=true
-      header=(t 'newContainer.environment.label')
-      addActionLabel="newContainer.environment.addAction"
-      keyLabel="newContainer.environment.keyLabel"
-      keyPlaceholder="newContainer.environment.keyPlaceholder"
-      valueLabel="newContainer.environment.valueLabel"
-      valuePlaceholder="newContainer.environment.valuePlaceholder"
+    initialMap=launchConfig.environment
+    changed=(action (mut launchConfig.environment))
+    allowEmptyValue=true
+    editing=true
+    header=(t 'newContainer.environment.label')
+    addActionLabel="newContainer.environment.addAction"
+    keyLabel="newContainer.environment.keyLabel"
+    keyPlaceholder="newContainer.environment.keyPlaceholder"
+    valueLabel="newContainer.environment.valueLabel"
+    valuePlaceholder="newContainer.environment.valuePlaceholder"
   }}
 </div>
 
@@ -155,12 +155,12 @@
 
     {{#if (not isSidekick)}}
       {{container/form-upgrade
-        service=service
-        instance=launchConfig
+        workload=service
+        scaleMode=scaleMode
         editing=true
         isUpgrade=isUpgrade
         expandAll=al.expandAll
-      expandFn=expandFn
+        expandFn=expandFn
       }}
     {{/if}}
 
@@ -194,7 +194,7 @@
 
     {{form-annotations
       classNames="accordion-wrapper"
-      service=service
+      model=service
       errors=annotationErrors
       expandAll=al.expandAll
       expandFn=expandFn
