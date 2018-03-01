@@ -2,10 +2,13 @@ import Resource from 'ember-api-store/models/resource';
 import { reference } from 'ember-api-store/utils/denormalize';
 import { cancel, later } from '@ember/runloop'
 import { get, set, computed } from '@ember/object';
+import { alias } from '@ember/object/computed';
 
 export default Resource.extend({
   type: 'nodePool',
   nodeTemplate: reference('nodeTemplateId'),
+
+  displayProvider: alias('nodeTemplate.displayProvider'),
 
   quantityTimer: null,
   incrementQuantity(by) {
