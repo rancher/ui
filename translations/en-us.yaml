@@ -699,7 +699,7 @@ containersPage:
 
 containerSubpod:
   childContainers: Containers
-  childSidekicks: Sidekicks
+  childSidekicks: Sidecars
 
 clusterDashboard:
   cpu: CPU
@@ -1186,9 +1186,9 @@ servicePage:
     networkdriverservice: Network Service
     storagedriverservice: Storage Service
   sidekick:
-    tabHeader: Sidekick
-    header: Service & Sidekicks
-    helpBlock: Select the main service launch config or one of the sidekick launch configs
+    tabHeader: Sidecars
+    header: Workload & Sidecars
+    helpBlock: Select the main container or one of the sidecars
 
 signupPage:
   header: 'Signup for {appName}'
@@ -2260,7 +2260,7 @@ formHealthCheck:
     tcp: TCP connection opens successfully
     http: HTTP request returns a successful status (2xx or 3xx)
     https: HTTPS request returns  a successful status (2xx or 3xx)
-    command: Command run inside the container exits status 0
+    command: Command run inside the container exits with status 0
   command:
     label: Command
     placeholder: e.g. cat /tmp/health
@@ -2330,37 +2330,6 @@ formNetwork:
     label: DNS Policy
     clusterFirstWithHostNet: "Cluster first with host network"
     clusterFirst: "Cluster first"
-  networkMode:
-    label: Network
-    bridge:
-      label: Bridged
-      detail: Attach to the default docker0 bridge
-    default:
-      label: default
-      detail: Default
-    container:
-      label: Container
-      detail: Attach to the network namespace of an existing container
-    host:
-      label: Host
-      detail: Attach to the network namespace of the host
-    managed:
-      label: Managed
-      detail: Automatic mesh network between all containers
-    sidekick:
-      label: Sidekick
-      detail: Same as the network mode for the parent service
-    nat:
-      label: NAT
-      detail: Network Address Translation on the physical host
-    ipsec:
-      label: IPSec
-    transparent:
-      label: Transparent
-      detail: Direct access to the physical host network
-    none:
-      label: None
-      detail: No networking
   container:
     label: Container
   requestedIp:
@@ -2411,7 +2380,7 @@ formPorts:
   kind:
     label: Publish on
     NodePort: Every node
-    HostPort: Nodes running the workload
+    HostPort: Nodes running a pod
     ClusterIP: Internal cluster IP
     LoadBalancer: Load Balancer
   sourcePort:
@@ -2782,27 +2751,21 @@ formAnnotations:
     topLevelValueInvalid: Annotation JSON top-level value must be an object.
 
 formUpgrade:
-  title: Upgrade Policy
-  detail: Configure how containers are replaced when performing an upgrade.
-  batchSize:
-    label: Batch Size
-    detail: Up to this many containers will be replaced at once.
-  interval:
-    label: Batch Interval
-    detail: After finishing a batch of containers, wait this long before starting the next batch
-  behavior:  Replacement Behavior
-  startFirst:
-    label: Start new, then stop old
-    detail: Start new containers before stopping the old ones.  If the service publishes a port, there must be enough eligible hosts availeble to run Batch Size new containers, because the old containers are still actively using the ports.
-  stopFirst:
-    label: Stop old, then start new
-    detail: Stop the old containers (up to the Batch Size), then start new ones.  This allows the reuse of published ports.  Adjust Batch Size to ensure that you keep enough active capacity to run your application.
-  prePull:
-    label: Pre-Pull Image
-    detail: The new image can be pre-pulled onto hosts before the upgrade is started, to minimize the disruption of launching the new containers.
-    all: On all hosts
-    existing: On the hosts that the service is currently on
-    none: On no hosts
+  title: Scaling/Upgrade Policy
+  detail: Configure how pods are replaced when performing an upgrade.
+  strategy:
+    label: Upgrade Strategy
+    onDelete: Start upgraded pods only when old ones are manually deleted
+    recreate: Kill ALL pods and then start new
+    startFirst: Rolling start new pods, then kill old
+    stopFirst: Rolling kill old pods, then start new
+    batchSize: Batch Size
+    custom: Custom
+    maxSurge:
+      label: Max Surge
+    maxUnavailable:
+      label: Max Unavailable
+
 
 formValueArray:
   addActionLabel: Add Value
@@ -2865,7 +2828,6 @@ formVolumes:
     new: Create a new volume
     bindMount: Bind-mount a host directory
     fromContainer: Use volumes from another container
-    fromLaunchConfig: Use volumes from a sidekick
     tmpfs: Add an in-memory tmpfs
     custom: Add custom volume entry
   table:
@@ -3903,7 +3865,7 @@ modalProcessError:
 
 modalRollbackService:
   title: 'Rollback "{instanceName}"'
-  titleWithSidekicks: 'Rollback "{instanceName}" & {count, plural, =1 {# sidekick} other {# sidekicks}}'
+  titleWithSidekicks: 'Rollback "{instanceName}" & {count, plural, =1 {# sidecar} other {# sidecar}}'
   action: Rollback
   current:
     label: Current Revision
@@ -4012,14 +3974,14 @@ newContainer:
     container: Deploy Pod
     service: Deploy Workload
     globalService: Deploy Global Workload
-    sidekick: 'Deploy Sidekick'
-    sidekickName: 'Deploy Sidekick of "{name}"'
+    sidekick: 'Deploy Sidecar'
+    sidekickName: 'Deploy Sidecar of "{name}"'
   upgrade:
     container: Upgrade Container
     service: Upgrade Service
     globalService: Upgrade Global Service
-    sidekick: Upgrade Sidekick
-    sidekickName: 'Upgrade Sidekick of "{name}"'
+    sidekick: Upgrade Sidecar
+    sidekickName: 'Upgrade Sidecar of "{name}"'
   selectUpgrade: Select one or more services to upgrade.
   saveUpgrade: Upgrade
   saveNew: Launch
@@ -4037,13 +3999,13 @@ newContainer:
   sidekick:
     header: Upgrade service
     title: Select service launch config to upgrade
-    detail: '"{service}" has sidekicks.  Which launch config do you want to upgrade?'
+    detail: '"{service}" has sidecars.  Which container do you want to upgrade?'
     primary: Primary
-    sidekick: Sidekick
+    sidekick: Sidecar
 
   errors:
-    noSidekick: Choose a service to add the sidekick to
-    duplicateName: 'There is already a sidekick named "{name}" in the service "{service}"'
+    noSidekick: Choose a service to add the sidecar to
+    duplicateName: 'There is already a sidecar named "{name}" in the service "{service}"'
 
 newPassword:
   placeholder: New Password
@@ -4388,7 +4350,7 @@ namespaceGroup:
   project: All Namespaces in this Project
 
 svgServiceContainer:
-  sidekicks: Sidekicks
+  sidekicks: Sidecars
 
 tableCountSelect:
   header: Table Rows per Page
@@ -4605,7 +4567,7 @@ nav:
 action:
   activate: Activate
   addContainer: Deploy Pod
-  addSidekick: Add a Sidekick
+  addSidekick: Add a Sidecar
   clone: Clone
   console: Open Console
   convertToService: Convert to Service

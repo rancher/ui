@@ -1,11 +1,15 @@
 {{#accordion-list-item
-     title=(t 'formAnnotations.title')
-     detail=(t detailKey appName=settings.appName)
-     status=status
-     statusClass=statusClass
-     showStatus=true
-     expandAll=expandAll
-     expand=(action expandFn)
+  title=(t 'formAnnotations.title')
+  detail=(t detailKey appName=settings.appName)
+  status=status
+  statusClass=statusClass
+  showStatus=true
+  expandAll=expandAll
+  expand=(action expandFn)
 }}
-  {{json-editor json=service.annotations isValid=valid}}
+  {{form-key-value
+    initialMap=model.annotations
+    changed=(action (mut model.annotations))
+    addActionLabel="formAnnotations.addActionLabel"
+  }}
 {{/accordion-list-item}}

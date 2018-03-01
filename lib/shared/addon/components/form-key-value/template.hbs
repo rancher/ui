@@ -50,7 +50,9 @@
           {{/if}}
         </td>
       </tr>
-      <div class="pb-10"></div>
+      {{#unless editing}}
+        <div class="pb-10"></div>
+      {{/unless}}
     {{/each}}
     </tbody>
   </table>
@@ -61,15 +63,15 @@
 {{/if}}
 
 {{#if (and editing allowAdd)}}
-  <div style="margin-top: 1px;">
+  <div>
     <button class="btn bg-link icon-btn p-0" {{action "add"}}>
       <span class="darken"><i class="icon icon-plus text-small"/></span>
       <span>{{t addActionLabel}}</span>
     </button>
     {{#if ary.length}}
-      <div class="protip pt-10">
+      <span class="protip pl-20">
         {{t 'formKeyValue.protip'}}
-      </div>
+      </span>
     {{/if}}
   </div>
 {{/if}}
