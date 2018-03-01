@@ -39,12 +39,9 @@ var Pod = Resource.extend(DisplayImage, {
     const a = get(this,'actionLinks');
     const l = get(this,'links');
 
-    let canEditService = !!get(this,'workload.links.update');
     let isRunning = get(this, 'combinedState') === 'running';
 
     var choices = [
-      { label: 'action.editService',      icon: 'icon icon-edit',         action: 'editService',      enabled: canEditWorkload },
-      { divider: true },
       { label: 'action.execute',          icon: 'icon icon-terminal',     action: 'shell',            enabled: isRunning, altAction:'popoutShell'},
       { label: 'action.logs',             icon: 'icon icon-file',         action: 'logs',             enabled: isRunning, altAction: 'popoutLogs' },
       { divider: true },
