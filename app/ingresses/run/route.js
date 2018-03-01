@@ -11,8 +11,8 @@ export default Route.extend({
       certificates: store.findAll('certificate'),
     };
 
-    if (params.id) {
-      dependencies['existingIngress'] = store.find('ingress', params.id);
+    if (params.ingressId) {
+      dependencies['existingIngress'] = store.find('ingress', params.ingressId);
     }
 
     return hash(dependencies).then((hash) => {
@@ -40,7 +40,7 @@ export default Route.extend({
 
   resetController: function (controller, isExisting) {
     if (isExisting) {
-      set(controller, 'id', null);
+      set(controller, 'ingressId', null);
       set(controller, 'upgrade', null);
     }
   },
