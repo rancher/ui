@@ -2412,7 +2412,7 @@ formPorts:
 formScale:
   label: Workload Type
   showAdvanced: More options
-  mode:
+  scaleMode:
     deploymentPrefix: "Scalable deployment of"
     replicationControllerPrefix: "Replication Controller of"
     replicaSetPrefix: "Replica Set of"
@@ -2755,6 +2755,8 @@ formUpgrade:
   detail: Configure how pods are replaced when performing an upgrade.
   strategy:
     label: Upgrade Strategy
+    orderedReady: Strict serial update in order and wait for readiness
+    parallel: Start all new and stop all old pods in parallel
     onDelete: Start upgraded pods only when old ones are manually deleted
     recreate: Kill ALL pods and then start new
     startFirst: Rolling start new pods, then kill old

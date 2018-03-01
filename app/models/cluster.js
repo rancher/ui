@@ -77,27 +77,28 @@ export default Resource.extend(ResourceUsage, {
     }
   }),
 
-  displayProvider: computed('configName','nodePools.@each.nodeTemplateId', function() {
-    const pools = get(this,'nodePools')||[];
-    const firstTemplate = get(pools,'firstObject.nodeTemplate');
+  displayProvider: computed('configName','nodePools.firstObject.displayProvider','intl.locale', function() {
+    const intl = get(this, 'intl');
+    const pools = get(this,'nodePools');
+    const firstPool = (pools||[]).objectAt(0);
 
     switch ( get(this,'configName') ) {
       case 'azureKubernetesServiceConfig':
-        return 'clusterNew.azureaks.shortLabel';
+        return intl.t('clusterNew.azureaks.shortLabel');
       case 'googleKubernetesEngineConfig':
-        return 'clusterNew.googlegke.shortLabel';
+        return intl.t('clusterNew.googlegke.shortLabel');
       case 'rancherKubernetesEngineConfig':
         if ( !!pools ) {
-          if ( firstTemplate ) {
-            return get(firstTemplate, 'displayProvider');
+          if ( firstPool ) {
+            return get(firstPool, 'displayProvider');
           } else {
-            return 'clusterNew.rke.shortLabel';
+            return intl.t('clusterNew.rke.shortLabel');
           }
         } else {
-            return 'clusterNew.custom.shortLabel';
+            return intl.t('clusterNew.custom.shortLabel');
         }
       default:
-        return 'clusterNew.import.shortLabel';
+        return intl.t('clusterNew.import.shortLabel');
     }
   }),
 
