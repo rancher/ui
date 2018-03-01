@@ -6,7 +6,7 @@ const rootNav = [
     scope: 'project',
     id: 'containers',
     localizedLabel: 'nav.containers.tab',
-    route: 'authenticated.project',
+    route: 'authenticated.project.index',
     ctx: [getProjectId],
     onlyCurrentWhen: ['containers','ingresses','authenticated.project.dns','volumes', 'authenticated.project.pipeline'],
     resource: ["workload", "ingress", "dnsrecord"],
