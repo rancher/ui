@@ -7,6 +7,7 @@
     {{form-name-description
       name=name
       nameDisabled=isUpgrade
+      nameRequired=true
       bothColClass="col span-12 mt-0"
       colClass="col span-12 mt-0"
       description=description
@@ -140,6 +141,19 @@
     </div>
   {{/accordion-list-item}}
 
+  {{#if (not isSidekick)}}
+    {{container/form-upgrade
+      workload=service
+      scaleMode=scaleMode
+      editing=true
+      isUpgrade=isUpgrade
+      expandAll=al.expandAll
+      expandFn=expandFn
+      expandOnInit=true
+    }}
+  {{/if}}
+
+
   {{#advanced-section advanced=false}}
     {{container/form-volumes
       isSidekick=isSidekick
@@ -151,17 +165,6 @@
       expandAll=al.expandAll
       expandFn=expandFn
     }}
-
-    {{#if (not isSidekick)}}
-      {{container/form-upgrade
-        workload=service
-        scaleMode=scaleMode
-        editing=true
-        isUpgrade=isUpgrade
-        expandAll=al.expandAll
-        expandFn=expandFn
-      }}
-    {{/if}}
 
     {{container/form-command
         classNames="accordion-wrapper"

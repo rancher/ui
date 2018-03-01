@@ -68,7 +68,11 @@
     {{#if (eq scaleMode "deployment")}}
       <i class="icon icon-lg icon-service"></i>
       {{t 'formScale.scaleMode.deploymentPrefix' scale=asInteger}}
-      {{asInteger}}
+      {{#if canAdvanced}}
+        {{input-integer safeStyle="width: 60px; padding: 0 2px; display: inline-block" value=userInput min=min max=max}}
+      {{else}}
+        {{asInteger}}
+      {{/if}}
       {{t 'formScale.scaleMode.scaleSuffix' scale=asInteger}}
     {{else if (eq scaleMode "statefulSet")}}
       <i class="icon icon-lg icon-service"></i>

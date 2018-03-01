@@ -9,11 +9,12 @@
     <a href="{{href-to "authenticated.project.dns.detail" model.id}}">{{model.displayName}}</a>
     {{#if model.showTransitioningMessage}}
       <div class="clip text-small {{model.stateColor}}">{{model.transitioningMessage}}</div>
+    {{else if (and (not-eq model.recordType "clusterIp") model.clusterIp)}}
+      <div class="text-small text-muted">{{t 'dnsPage.table.clusterIpDetail' ip=model.clusterIp}}</div>
     {{/if}}
   </td>
   <td data-title="{{dt.displayType}}">
-    {{t (concat 'dnsPage.type.' model.recordType)}}
-    {{#if (and (not-eq model.recordType "clusterIp") model.clusterIp)}}<div class="text-small text-muted">{{model.clusterIp}}</div>{{/if}}
+    {{model.displayType}}
   </td>
   <td data-title="{{dt.target}}">
     {{#if (eq model.recordType "workload")}}
