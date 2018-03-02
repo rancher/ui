@@ -47,11 +47,6 @@ export default Resource.extend({
       set(get(this,'prefs'), C.PREFS.PROJECT_DEFAULT, get(this,'id'));
     },
 
-    switchTo: function () {
-      // @TODO bad
-      window.lc('authenticated').send('switchProject', get(this,'id'));
-    },
-
     promptStop: function () {
       get(this,'modalService').toggleModal('modal-confirm-deactivate', {
         originalModel: this,

@@ -194,8 +194,8 @@ Router.map(function() {
       this.route('help');
 
       // Popup Routes
-      this.route('console', {path: '/console', resetNamespace: true});
-      this.route('container-log', {path: '/container-log', resetNamespace: true});
+      this.route('console');
+      this.route('container-log');
 
     });
 

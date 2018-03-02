@@ -1,17 +1,16 @@
+<h2>
+  <i class="icon icon-file"></i> {{t 'containerLogs.title' instanceName=instance.displayName}}
+  <div class="console-status text-muted pull-right">{{t (concat-str 'containerLogs.status' status character='.')}}</div>
+</h2>
 {{#if showProtip}}
   <div class="protip">
       {{t 'containerLogs.protip' key=alternateLabel}}
   </div>
-  <hr class="mt-0">
 {{/if}}
-<h2>
-  <i class="icon icon-file"></i> {{t 'containerLogs.title' instanceName=instance.displayName}}
-</h2>
 <pre class="log-body">
 </pre>
 {{yield}}
 <div class="footer-actions">
-  <div class="console-status text-muted">{{t (concat-str 'containerLogs.status' status character='.')}}</div>
   <button {{action "scrollToTop"}} class="btn bg-default">{{t 'containerLogs.scrollTop'}}</button>
   <button {{action "scrollToBottom"}} class="btn bg-default">{{t 'containerLogs.scrollBottom'}}</button>
   <button {{action "clear"}} class="btn bg-default">{{t 'containerLogs.clear'}}</button>

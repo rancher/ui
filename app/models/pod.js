@@ -5,12 +5,14 @@ import { get, computed } from '@ember/object';
 import { inject as service } from "@ember/service";
 import { strPad } from 'ui/utils/util';
 import { formatSi } from 'shared/utils/parse-unit';
+import { later } from '@ember/runloop';
 import DisplayImage from 'shared/mixins/display-image';
 
 var Pod = Resource.extend(DisplayImage, {
   router: service(),
   modalService:  service('modal'),
   clusterStore:  service(),
+  scope: service(),
 
   namespace: reference('namespaceId','namespace','clusterStore'),
   node: reference('nodeId'),
@@ -30,8 +32,26 @@ var Pod = Resource.extend(DisplayImage, {
       });
     },
 
+    popoutShell() {
+      const projectId = get(this, 'scope.currentProject.id');
+      const podId = get(this, 'id');
+      const route = get(this,'router').urlFor('authenticated.project.console', projectId);
+      later(() => {
+        window.open(`//${window.location.host}${route}?podId=${podId}&isPopup=true`, '_blank', "toolbars=0,width=900,height=700,left=200,top=200");
+      });
+    },
+
     logs: function() {
       get(this, 'modalService').toggleModal('modal-container-logs', this);
+    },
+
+    popoutLogs() {
+      const projectId = get(this, 'scope.currentProject.id');
+      const podId = get(this, 'id');
+      const route = get(this,'router').urlFor('authenticated.project.container-log', projectId);
+      later(() => {
+        window.open(`//${window.location.host}${route}?podId=${podId}&isPopup=true`, '_blank', "toolbars=0,width=900,height=700,left=200,top=200");
+      });
     },
   },
 

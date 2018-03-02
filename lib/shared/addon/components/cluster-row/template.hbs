@@ -13,31 +13,8 @@
   </td>
   {{#if (eq model.state "inactive")}}
     <td colspan="4" class="text-center">
-      {{#if (or model.registrationToken.hostCommand model.registrationToken.clusterCommand)}}
-        {{#if model.registrationToken.hostCommand}}
-          <div class="input-group inline-block" style="vertical-align: middle;" >
-            <span class="input-group-btn">
-              <button type="button" class="btn btn-sm bg-primary icon-btn" onclick={{action (action launchOnCluster) model}}>
-                <span class="darken"><i class="icon icon-host"></i></span>
-                <span>{{t 'clusterRow.addHost'}}</span>
-              </button>
-            </span>
-          </div>
-        {{/if}}
-        {{#if model.registrationToken.clusterCommand}}
-          <div class="input-group inline-block" style="vertical-align: middle;" >
-            <span class="input-group-btn">
-              <button type="button" class="btn btn-sm bg-primary icon-btn ml-20" onclick={{action (action useKubernetes) model}}>
-                <span class="darken"><i class="icon icon-download"></i></span>
-                <span>{{t 'clusterRow.importCluster'}}</span>
-              </button>
-            </span>
-          </div>
-        {{/if}}
-      {{else}}
-        {{t 'clusterRow.noHosts'}}
-      {{/if}}
-    </td>
+      {{t 'clusterRow.noHosts'}}
+    /td>
   {{else}}
     <td data-title="{{dt.hosts}}">
       {{model.machines.length}}

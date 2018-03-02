@@ -11,25 +11,30 @@ export default Route.extend(Preload,{
   globalStore: service(),
 
   model(params, transition) {
+    const isPopup = this.controllerFor('application').get('isPopup');
+
     return get(this, 'globalStore').find('project', params.project_id).then((project) => {
-      return get(this,'scope').startSwitchToProject(project).then(() => {
+      return get(this,'scope').startSwitchToProject(project, !isPopup).then(() => {
         return PromiseAll([
           this.loadSchemas('clusterStore'),
           this.loadSchemas('store'),
         ]).then(() => {
-          return PromiseAll([
-            this.preload('namespace','clusterStore'),
-            this.preload('pod'),
-            this.preload('workload'),
-            this.preload('dnsRecord'),
-            this.preload('secret'),
-            this.preload('service'),
-            this.preload('namespacedSecret'),
-          ]).then(() => {
-            return EmberObject.create({
-              project,
-            });
-          })
+          const out = EmberObject.create({project});
+          if ( isPopup ) {
+            return out;
+          } else {
+            return PromiseAll([
+              this.preload('namespace','clusterStore'),
+              this.preload('pod'),
+              this.preload('workload'),
+              this.preload('dnsRecord'),
+              this.preload('secret'),
+              this.preload('service'),
+              this.preload('namespacedSecret'),
+            ]).then(() => {
+              return out;
+            })
+          }
         });
       });
     }).catch((err) => {

@@ -34,7 +34,6 @@ const App = Application.extend({
           'clusterStore',
           'catalog',
           'endpoint',
-          'external-utils',
           'github',
           'globalStore',
           'intl',
