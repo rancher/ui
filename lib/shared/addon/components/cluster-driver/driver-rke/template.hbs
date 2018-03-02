@@ -25,15 +25,19 @@
           }}
         </div>
         <div class="col span-4">
-          <label class="acc-label">{{t 'clusterNew.psp.label'}}</label>
-          {{new-select
-            content=model.psps
-            optionLabelPath='displayName'
-            optionValuePath='id'
-            prompt='generic.none'
-            localizedPrompt=true
-            value=cluster.defaultPodSecurityPolicyTemplateId
-          }}
+          <label class="acc-label">{{t 'clusterNew.rke.podSecurityPolicy.label'}}</label>
+          <div class="radio">
+            <label>
+              {{radio-button selection=config.services.kubeApi.podSecurityPolicy value=true}}
+              {{t 'generic.enabled'}}
+            </label>
+          </div>
+          <div class="radio">
+            <label>
+              {{radio-button selection=config.services.kubeApi.podSecurityPolicy value=false}}
+              {{t 'generic.disabled'}}
+            </label>
+          </div>
         </div>
       </div>
       <div class="row">
@@ -61,7 +65,7 @@
           {{/if}}
         </div>
 
-        <div class="col span-8">
+        <div class="col span-4">
           <label class="acc-label">{{t 'clusterNew.rke.ignoreDockerVersion.label'}}</label>
           <div class="radio">
             <label>
@@ -75,6 +79,19 @@
               {{t 'clusterNew.rke.ignoreDockerVersion.enabled'}}
             </label>
           </div>
+        </div>
+
+        <div class="col span-4">
+          <label class="acc-label">{{t 'clusterNew.psp.label'}}</label>
+          {{new-select
+            content=model.psps
+            optionLabelPath='displayName'
+            optionValuePath='id'
+            prompt='generic.none'
+            localizedPrompt=true
+            value=cluster.defaultPodSecurityPolicyTemplateId
+            disabled=(not config.services.kubeApi.podSecurityPolicy)
+          }}
         </div>
       </div>
     {{/accordion-list-item}}
