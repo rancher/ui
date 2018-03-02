@@ -1,6 +1,6 @@
   <div class="box mb-10 pt-5">
     <div class="row">
-      {{#if (gt rules.length 1 )}}
+      {{#if (and editing (gt rules.length 1))}}
         <div class="pull-right">
           {{#if (lte rules.length 1 )}}
             <button class="btn btn-disabled-transparent text-small vertical-middle" disabled="true">
@@ -30,5 +30,5 @@
       <hr class="mt-20 mb-20" />
     {{/unless}}
 
-    {{form-ingress-backends ingress=ingress checked=checked rule=rule editing=editing}}
+    {{form-ingress-backends errors=errors ingress=ingress checked=checked rule=rule editing=editing}}
   </div>

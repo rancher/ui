@@ -70,6 +70,7 @@
       {{else if (eq recordType "alias")}}
         {{#form-value-array
           initialValues=model.targetDnsRecordIds
+          editing=(not isView)
           addActionLabel='editDns.add.alias'
           changed=(action "setAlias")
           as |c row|
@@ -82,6 +83,7 @@
             localizedPrompt=true
             content=dnsRecords
             value=row.value
+            disabled=isView
             showProTip=false
             editing=editing
           }}

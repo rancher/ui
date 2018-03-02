@@ -24,10 +24,10 @@
     <thead>
       <tr>
         {{#unless checked}}
-          <th>{{t 'formIngressBackends.path.label'}}{{#if editing}}{{field-required}}{{/if}}</th>
+          <th>{{t 'formIngressBackends.path.label'}}</th>
         {{/unless}}
 
-        <th class="divided">{{t 'formIngressBackends.target'}}{{#if editing}}{{field-required}}{{/if}}</th>
+        <th class="divided">{{t 'formIngressBackends.target'}}</th>
 
         <th width="100" class="divided">{{t 'formIngressBackends.targetPort.label'}}{{#if editing}}{{field-required}}{{/if}}</th>
 
@@ -50,11 +50,7 @@
 
           <td class="divided p-5" data-title="{{t (concat-str 'formIngressBackends' path.backendType 'label' character='.')}}">
             {{#if (eq path.backendType 'service')}}
-              {{#if editing}}
-                {{schema/input-dns-record selectClass="input-sm" selected=path.serviceId culsterIpNotNull=false}}
-              {{else}}
-                {{path.service.targetWorkloadIds}}
-              {{/if}}
+              {{schema/input-dns-record selectClass="input-sm" selected=path.serviceId disabled=(not editing) culsterIpNotNull=false}}
             {{else if (eq path.backendType 'workload')}}
               {{schema/input-workload selectClass="input-sm" selected=path.serviceId readOnly=(not editing)}}
             {{/if}}
