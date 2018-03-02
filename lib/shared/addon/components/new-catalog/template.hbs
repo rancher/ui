@@ -1,9 +1,9 @@
 {{#if showHeader}}
   <section class="header clearfix">
     {{#if editing}}
-      <h1>{{t 'newCatalog.upgrade'}} <span style="font-weight: normal">{{namespaceResource.name}}</span></h1>
+      <h1>{{t 'newCatalog.upgrade'}} <span style="font-weight: normal">{{catalogApp.displayName}}</span></h1>
     {{else}}
-      <h1>{{#link-to parentRoute}}{{t 'newCatalog.catalog'}}{{/link-to}}</h1>
+      <h1>{{#link-to parentRoute}}{{t 'newCatalog.catalog'}} {{templateResource.displayName}}{{/link-to}}</h1>
     {{/if}}
   </section>
 {{/if}}
@@ -81,14 +81,14 @@
   <div class="row">
     <div class="col span-6">
       {{new-select
-        classNames="form-control"
-        content=sortedVersions
-        prompt="newCatalog.version.prompt"
-        localizedPrompt=true
-        optionLabelPath="version"
-        optionValuePath="link"
-        value=selectedTemplateUrl
-        disabled=getTemplate.isRunning
+          classNames="form-control"
+          content=sortedVersions
+          prompt="newCatalog.version.prompt"
+          localizedPrompt=true
+          optionLabelPath="version"
+          optionValuePath="link"
+          value=selectedTemplateUrl
+          disabled=getTemplate.isRunning
       }}
       <p class="text-info">{{t (if editing selectVersionUpgrade selectVersionAdd)}}</p>
     </div>
@@ -135,19 +135,23 @@
 
       {{#if previewOpen}}
         <div class="tabs">
-        <ul class="tab-header" role="tablist">
-          {{#each selectedTemplateModel.filesAsArray as |file|}}
-            <li role="tab" class="{{if (eq previewTab file.name) 'active'}}" {{action "selectPreviewTab" file.name}}><a href="#">{{file.name}} {{copy-to-clipboard clipboardText=file.body size="small"}}</a></li>
-          {{/each}}
-          <li role="tab" class="{{if (eq previewTab 'answers') 'active'}}" {{action "selectPreviewTab" "answers"}}><a href="#">{{t 'newCatalog.txt'}} {{copy-to-clipboard clipboardText=answersString size="small"}}</a></li>
-        </ul>
+          <div class="tab-header row">
+            <div class="col span-4">
+              <label class="acc-label">Template Files</label>
+              {{searchable-select
+                  content=filenames
+                  value=previewTab
+                  readOnly=readOnly
+              }}
+            </div>
+          </div>
 
-        <div class="tab-content" role="tabpanel">
-          {{#each selectedTemplateModel.filesAsArray as |file|}}
-            {{code-block code=file.body language="yaml" hide=(not-eq previewTab file.name)}}
-          {{/each}}
-          {{code-block code=answersString language="yaml" hide=(not-eq  previewTab 'answers')}}
-        </div>
+          <div class="tab-content" role="tabpanel">
+            {{#each selectedTemplateModel.filesAsArray as |file|}}
+              {{code-block code=file.body language="yaml" hide=(not-eq previewTab file.name)}}
+            {{/each}}
+            {{code-block code=answersString language="yaml" hide=(not-eq  previewTab 'answers')}}
+          </div>
         </div>
       {{/if}}
     </section>
