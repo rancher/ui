@@ -335,6 +335,15 @@ Workload.reopenClass({
     'upgraded':           {icon: 'icon icon-arrow-circle-up', color: 'text-info'},
     'upgrading':          {icon: 'icon icon-arrow-circle-up', color: 'text-info'},
   },
+
+  mangleIn(data) {
+    if ( data && data.publicEndpoints ) {
+      data.publicEndpoints.forEach((endpoint) => {
+        endpoint.type = 'publicEndpoint';
+      })
+    }
+    return data;
+  }
 });
 
 export default Workload;

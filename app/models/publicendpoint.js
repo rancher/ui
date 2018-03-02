@@ -1,5 +1,5 @@
 import { isArray } from '@ember/array';
-import { get } from '@ember/object';
+import { get, computed } from '@ember/object';
 import Resource from 'ember-api-store/models/resource';
 import { inject as service } from '@ember/service';
 
@@ -36,49 +36,51 @@ function portMatch(ports, equals, endsWith) {
 
 var PublicEndpoint = Resource.extend({
   globalStore: service(),
+  scope: service(),
 
-  portProto: function () {
-    let out = this.get('port') + '/' + this.get('protocol').toLowerCase();
+  portProto: computed('port', 'protocol', function () {
+    let out = get(this,'port') + '/' + get(this,'protocol').toLowerCase();
     return out;
-  }.property('port', 'protocol'),
+  }),
 
   // ip:port
-  endpoint: function () {
-    let out = '';
+  endpoint: computed('port', 'address', function() {
+    const address = get(this, 'address');
 
-    if (get(this, 'address') === 'NodePort') {
-      const store = get(this, 'globalStore');
-      const nodes = store.all('node');
-      const node = get(nodes, 'firstObject');
-      const ipAddress = get(node, 'ipAddress');
-      out = ipAddress;
+    let out = '';
+    if ( address && address !== 'NodePort' ) {
+      out = address;
     } else {
-      out = get(this, 'address');
+      const globalStore = get(this, 'globalStore');
+      const node = globalStore.all('node').findBy('clusterId', get(this,'scope.currentCluster.id'));
+      if ( node ) {
+        out = get(node, 'ipAddress');
+      }
     }
 
     if (out) {
-      out += ':' + this.get('port');
+      out += ':' + get(this,'port');
     }
 
     return out;
-  }.property('port', 'address'),
+  }),
 
   // [ip:]port[/udp]
-  displayEndpoint: function () {
+  displayEndpoint: computed('port','protocol', function() {
     let out = '';
-    out += this.get('port');
-    let proto = this.get('protocol').toLowerCase();
+    out += get(this,'port');
+    let proto = get(this,'protocol').toLowerCase();
     if (proto !== 'tcp') {
       out += '/' + proto;
     }
     return out;
-  }.property('port', 'protocol'),
+  }),
 
-  linkEndpoint: function () {
-    if (this.get('isTcp')) {
-      let out = this.get('endpoint');
+  linkEndpoint: computed('isTcp', 'isMaybeSecure', 'displayEndpoint', function() {
+    if (get(this,'isTcp')) {
+      let out = get(this,'endpoint');
 
-      if (this.get('isMaybeSecure')) {
+      if (get(this,'isMaybeSecure')) {
         out = 'https://' + out.replace(/:443$/, '');
       } else {
         out = 'http://' + out.replace(/:80$/, '');
@@ -86,15 +88,15 @@ var PublicEndpoint = Resource.extend({
 
       return out;
     }
-  }.property('isTcp', 'isMaybeSecure', 'displayEndpoint'),
+  }),
 
-  isTcp: function () {
-    return this.get('protocol').toLowerCase() === 'tcp';
-  }.property('port', 'protocol'),
+  isTcp: computed('protocol', function() {
+    return get(this,'protocol').toLowerCase() === 'tcp';
+  }),
 
-  isMaybeSecure: function () {
-    return portMatch([this.get('port')], [443, 8443], '443');
-  }.property('port'),
+  isMaybeSecure: computed('port', function() {
+    return portMatch([get(this,'port')], [443, 8443], '443');
+  }),
 });
 
 export default PublicEndpoint;
