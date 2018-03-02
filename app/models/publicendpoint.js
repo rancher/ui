@@ -52,6 +52,8 @@ var PublicEndpoint = Resource.extend({
       const node = get(nodes, 'firstObject');
       const ipAddress = get(node, 'ipAddress');
       out = ipAddress;
+    } else {
+      out = get(this, 'address');
     }
 
     if (out) {
