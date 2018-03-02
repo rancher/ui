@@ -1,7 +1,7 @@
 <div class="row">
   <div class="col span-6">
-    <label class="acc-label">{{t 'generic.user'}}</label>
-    {{searchable-select content=filtered value=primaryResource.userId optionValuePath="id" optionLabelPath="username"}}
+    <label class="acc-label">{{t 'generic.member'}}</label>
+    {{principal-search errors=(mut errors) principalId=principal}}
   </div>
   <div class="col span-12">
   </div>
@@ -25,6 +25,15 @@
       <p class="help-block">{{t 'formScopedRoles.mode.admin.detail' type=cTyped}}</p>
     </label>
   </div>
+  {{#each userRoles as |role| }}
+    {{log role}}
+    <div class="radio">
+      <label>
+        {{radio-button selection=mode value=role}} {{role.role.displayName}}
+        <p class="help-block">{{t 'formScopedRoles.mode.userDef.detail'}}</p>
+      </label>
+    </div>
+  {{/each}}
   <div class="radio">
     <label>
       {{radio-button selection=mode value="custom"}} {{t 'formScopedRoles.mode.custom.label' type=cTyped}}
