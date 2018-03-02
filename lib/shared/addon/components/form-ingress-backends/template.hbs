@@ -50,11 +50,7 @@
 
           <td class="divided p-5" data-title="{{t (concat-str 'formIngressBackends' path.backendType 'label' character='.')}}">
             {{#if (eq path.backendType 'service')}}
-              {{#if editing}}
-                {{schema/input-dns-record selectClass="input-sm" selected=path.serviceId culsterIpNotNull=false}}
-              {{else}}
-                {{path.service.targetWorkloadIds}}
-              {{/if}}
+              {{schema/input-dns-record selectClass="input-sm" selected=path.serviceId disabled=(not editing) culsterIpNotNull=false}}
             {{else if (eq path.backendType 'workload')}}
               {{schema/input-workload selectClass="input-sm" selected=path.serviceId readOnly=(not editing)}}
             {{/if}}
