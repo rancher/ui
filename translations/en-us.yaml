@@ -2424,9 +2424,9 @@ formScale:
         other {pods}
       }
     daemonSet: "Run one pod on each node"
-    cronJob: "Run on a timed schedule"
+    cronJob: "Run on a cron schedule"
     job: Job
-    sidekickInactive: "Sidecar: Add a container to an existing pod"
+    sidekickInactive: "Sidecar: Add a container to an existing workload"
     sidekickPrefix: "Sidecar: Add a container to"
     sidekickSuffix: ""
 
@@ -2759,15 +2759,26 @@ formUpgrade:
     orderedReady: Strict serial update in order and wait for readiness
     parallel: Start all new and stop all old pods in parallel
     onDelete: Start upgraded pods only when old ones are manually deleted
-    recreate: Kill ALL pods and then start new
-    startFirst: Rolling start new pods, then kill old
-    stopFirst: Rolling kill old pods, then start new
-    batchSize: Batch Size
+    recreate: Kill ALL pods, then start new
+    rollingUpdate: Rolling Update
+    startFirst: 'Rolling: start new pods, then stop old'
+    stopFirst: 'Rolling: stop old pods, then start new'
     custom: Custom
+    batchSize:
+      label: Batch Size
+      detail: Pods will be started and stopped this many at a time
     maxSurge:
       label: Max Surge
+      detail: The maximum number of pods allowed beyond the desired scale at any given time.
     maxUnavailable:
       label: Max Unavailable
+      detail: The maximum number of pods which can be unavailable at any given time.
+    minReadySeconds:
+      label: Minimum Ready Time
+      detail: Containers in the pods must be up for at least this long before the pod is considered available.
+    progressDeadlineSeconds:
+      label: Progress Deadline
+      detail: How long to wait without seeing progress before marking the deployment as stalled.
 
 
 formValueArray:
@@ -4209,6 +4220,11 @@ pagination:
     other {{from} - {to} of {count} Pods}}
   podHighlightSubset: "<b>{subset} of {count}</b> Pods"
   podNoSubset: "0 of {count} Pods"
+  podLabel: | 
+    {count, plural,
+      =1 {Pod}
+      other {Pods}
+    }
   port: |
     {pages, plural,
     =0 {No Ports}

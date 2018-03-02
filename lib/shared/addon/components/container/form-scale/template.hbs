@@ -30,13 +30,6 @@
   </div>
   <div class="radio">
     <label>
-      {{radio-button selection=scaleMode value="cronJob"}}
-      <i class="icon icon-lg icon-history"></i>
-      {{t 'formScale.scaleMode.cronJob'}}
-    </label>
-  </div>
-  <div class="radio">
-    <label>
       {{radio-button selection=scaleMode value="statefulSet"}}
       <i class="icon icon-lg icon-database"></i>
       {{t 'formScale.scaleMode.statefulSetPrefix' scale=asInteger}}
@@ -48,12 +41,25 @@
       {{t 'formScale.scaleMode.scaleSuffix' scale=asInteger}}
     </label>
   </div>
+  <div class="radio">
+    <label>
+      {{radio-button selection=scaleMode value="cronJob"}}
+      <i class="icon icon-lg icon-history"></i>
+      {{t 'formScale.scaleMode.cronJob'}}
+    </label>
+    {{#if (eq scaleMode "cronJob")}}
+      <div class="mt-10 ml-50 mr-50">
+        {{input value=workload.cronJobConfig.schedule}}
+        <p class="text-small text-muted">{{pretty-cron workload.cronJobConfig.schedule 'toString'}}</p>
+      </div>
+    {{/if}}
+  </div>
   {{#if showSidekick}}
     <div class="radio">
-      <label>
-        {{radio-button selection=scaleMode value="sidekick"}}
+      <label class="text-muted">
+        {{radio-button selection=scaleMode value="sidekick" disabled=true}}
         <i class="icon icon-lg icon-sidekick"></i>
-        {{#if (eq mode "sidekick")}}
+        {{#if (eq scaleMode "sidekick")}}
           {{t 'formScale.scaleMode.sidekickPrefix'}}
           {{schema/input-workload selectClass="input-sm ml-45 mt-5" withPods=true obj=workload}}
           {{t 'formScale.scaleMode.sidekickSuffix'}}

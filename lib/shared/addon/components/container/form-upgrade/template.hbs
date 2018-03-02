@@ -4,84 +4,96 @@
       status=status
       statusClass=statusClass
       expandAll=expandAll
+      expandOnInit=expandOnInit
       expand=(action expandFn)
 }}
 
-  None of this works yet, move along...
-
-  <div class="radio mb-10">
-    <label>{{radio-button selection=strategy value="startFirst"}} {{t 'formUpgrade.strategy.startFirst'}}</label>'
-  </div>
-  <div class="radio mb-10">
-    <label>{{radio-button selection=strategy value="stopFirst"}} {{t 'formUpgrade.strategy.stopFirst'}}</label>'
-  </div>
-  <div class="radio mb-10">
-    <label>{{radio-button selection=strategy value="recreate"}} {{t 'formUpgrade.strategy.recreate'}}</label>'
-  </div>
-  <div class="radio mb-10">
-    <label>{{radio-button selection=strategy value="onDelete"}} {{t 'formUpgrade.strategy.onDelete'}}</label>'
-  </div>
-
-  {{#input-or-display editable=editing value=service.startFirst}}
-    <label class="acc-label pb-0">{{t 'formUpgrade.behavior'}}</label>
-    <div class="row">
-      <div class="col span-6">
-        <div class="radio mb-10">
-          <label>{{radio-button selection=service.startFirst value=false}} {{t 'formUpgrade.stopFirst.label'}}</label>
-          <p class="help-block">{{t 'formUpgrade.stopFirst.detail'}}</p>
-        </div>
-      </div>
-      <div class="col span-6">
-        <div class="radio mb-10">
-          <label>{{radio-button selection=service.startFirst value=true}} {{t 'formUpgrade.startFirst.label'}}</label>
-          <p class="help-block">{{t 'formUpgrade.startFirst.detail'}}</p>
-        </div>
-      </div>
-    </div>
-  {{/input-or-display}}
-
-  <hr/>
-
-  <div class="row box">
+  <div class="row">
     <div class="col span-6">
-      <label class="acc-label">{{t 'formUpgrade.batchSize.label'}}</label>
-      {{#input-or-display editable=editing value=service.batchSize}}
-        <div class="input-group">
-          {{input-integer min=1 step=100 classNames="form-control" value=service.batchSize}}
-          <span class="input-group-addon bg-default">{{t 'generic.containers'}}</span>
+      {{#if (eq scaleMode "deployment")}}
+        <div class="radio mb-10">
+          <label>{{radio-button selection=_strategy value="startFirst"}} {{t 'formUpgrade.strategy.startFirst'}}</label>
         </div>
-        <p class="help-block">{{t 'formUpgrade.batchSize.detail'}}</p>
-      {{/input-or-display}}
+        <div class="radio mb-10">
+          <label>{{radio-button selection=_strategy value="stopFirst"}} {{t 'formUpgrade.strategy.stopFirst'}}</label>
+        </div>
+        <div class="radio mb-10">
+          <label>{{radio-button selection=_strategy value="recreate"}} {{t 'formUpgrade.strategy.recreate'}}</label>
+        </div>
+        <div class="radio mb-10">
+          <label>{{radio-button selection=_strategy value="custom"}} {{t 'formUpgrade.strategy.custom'}}</label>
+        </div>
+      {{else if (or (eq scaleMode 'statefulSet') (eq scaleMode 'daemonSet'))}}
+        <div class="radio mb-10">
+          <label>{{radio-button selection=workloadConfig.strategy value="RollingUpdate"}} {{t 'formUpgrade.strategy.rollingUpdate'}}</label>
+        </div>
+        <div class="radio mb-10">
+          <label>{{radio-button selection=workloadConfig.strategy value="OnDelete"}} {{t 'formUpgrade.strategy.onDelete'}}</label>
+        </div>
+      {{/if}}
     </div>
-
     <div class="col span-6">
-      <label class="acc-label">{{t 'formUpgrade.interval.label'}}</label>
-      {{#input-or-display editable=editing value=interval}}
-        <div class="input-group">
-          {{input-number min=0 classNames="form-control" value=interval}}
-          <span class="input-group-addon bg-default">{{t 'generic.seconds'}}</span>
-        </div>
-      {{/input-or-display}}
-      <p class="help-block">{{t 'formUpgrade.interval.detail'}}</p>
-    </div>
-  </div>
+      {{#if (eq scaleMode "deployment")}}
+        {{#if (or (eq _strategy 'startFirst') (eq _strategy 'stopFirst'))}}
+          <div class="box mb-10">
+            <label class="acc-label">{{t 'formUpgrade.strategy.batchSize.label'}}</label>
+            {{#input-or-display editable=editing value=batchSize}}
+              <div class="input-group">
+                {{input-integer min=1 step=1 classNames="form-control" value=batchSize}}
+                <span class="input-group-addon bg-default">{{t 'pagination.podLabel' count=batchSize}}</span>
+              </div>
+              <p class="help-block">{{t 'formUpgrade.strategy.batchSize.detail'}}</p>
+            {{/input-or-display}}
+          </div>
+        {{else if (eq _strategy 'custom')}}
+          <div class="box mb-10">
+            <label class="acc-label">{{t 'formUpgrade.strategy.maxSurge.label'}}</label>
+            {{#input-or-display editable=editing value=workloadConfig.maxSurge}}
+              <div class="input-group">
+                {{input classNames="form-control" value=workloadConfig.maxSurge}}
+                <span class="input-group-addon bg-default">{{t 'pagination.podLabel' count=workloadConfig.maxSurge}}</span>
+              </div>
+              <p class="help-block">{{t 'formUpgrade.strategy.maxSurge.detail'}}</p>
+            {{/input-or-display}}
+          </div>
+        {{/if}}
+      {{/if}}
 
-  <div class="row box mt-10">
-    <div class="row span-12">
-      <label class="acc-label">{{t 'formUpgrade.prePull.label'}}</label>
-      <p class="help-block">{{t 'formUpgrade.prePull.detail'}}</p>
-      {{#if editing}}
-        <div class="radio">
-          <label>{{radio-button selection=instance.prePullOnUpgrade value="all"}} {{t 'formUpgrade.prePull.all'}}</label>
+      {{#if (or (eq scaleMode "daemonSet") (and (eq scaleMode 'deployment') (eq _strategy '_custom')))}}
+        <div class="box mt-10">
+          <label class="acc-label">{{t 'formUpgrade.strategy.maxUnavailable.label'}}</label>
+          {{#input-or-display editable=editing value=workloadConfig.maxUnavailable}}
+            <div class="input-group">
+              {{input classNames="form-control" value=workloadConfig.maxUnavailable}}
+              <span class="input-group-addon bg-default">{{t 'pagination.podLabel' count=workloadConfig.maxUnavailable}}</span>
+            </div>
+            <p class="help-block">{{t 'formUpgrade.strategy.maxUnavailable.detail'}}</p>
+          {{/input-or-display}}
         </div>
-        <div class="radio">
-          <label>{{radio-button selection=instance.prePullOnUpgrade value="existing"}} {{t 'formUpgrade.prePull.existing'}}</label>
+      {{/if}}
+      {{#if hasMinReady}}
+        <div class="box mb-10">
+          <label class="acc-label">{{t 'formUpgrade.strategy.minReadySeconds.label'}}</label>
+          {{#input-or-display editable=editing value=workloadConfig.minReadySeconds}}
+            <div class="input-group">
+              {{input classNames="form-control" value=workloadConfig.minReadySeconds}}
+              <span class="input-group-addon bg-default">{{t 'generic.seconds'}}</span>
+            </div>
+            <p class="help-block">{{t 'formUpgrade.strategy.minReadySeconds.detail'}}</p>
+          {{/input-or-display}}
         </div>
-        <div class="radio">
-          <label>{{radio-button selection=instance.prePullOnUpgrade value="none"}} {{t 'formUpgrade.prePull.none'}}</label>
+      {{/if}}
+      {{#if (eq scaleMode 'deployment')}}
+        <div class="box" mb-10>
+          <label class="acc-label">{{t 'formUpgrade.strategy.progressDeadlineSeconds.label'}}</label>
+          {{#input-or-display editable=editing value=workloadConfig.progressDeadlineSeconds}}
+            <div class="input-group">
+              {{input-integer classNames="form-control" value=workloadConfig.progressDeadlineSeconds}}
+              <span class="input-group-addon bg-default">{{t 'generic.seconds'}}</span>
+            </div>
+            <p class="help-block">{{t 'formUpgrade.strategy.progressDeadlineSeconds.detail'}}</p>
+          {{/input-or-display}}
         </div>
-      {{else}}
-        {{t (concat 'formUpgrade.prePull.' (if instance.prePullOnUpgrade instance.prePullOnUpgrade 'none'))}}
       {{/if}}
     </div>
   </div>

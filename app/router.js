@@ -100,7 +100,7 @@ Router.map(function() {
       this.mount('pipeline');
 
       // Workload
-      this.route('containers', {resetNamespace: true}, function() {
+      this.route('containers', {path: '/workloads', resetNamespace: true}, function() {
         this.route('run', {path: '/run'});
         this.route('index', {path: '/'});
 

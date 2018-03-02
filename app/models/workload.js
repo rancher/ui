@@ -179,7 +179,7 @@ var Workload = Resource.extend(DisplayImage, StateCounts, EndpointPorts, {
       { label: 'action.edit',           icon: 'icon icon-edit',             action: 'upgrade',        enabled: !!l.update &&  isReal },
       { label: 'action.rollback',       icon: 'icon icon-history',          action: 'rollback',       enabled: !!a.rollback && isReal && !!get(this, 'previousRevisionId') },
       { label: 'action.clone',          icon: 'icon icon-copy',             action: 'clone',          enabled: true},
-      { label: 'action.addSidekick',    icon: 'icon icon-plus-circle',      action: 'addSidekick',    enabled: get(this, 'canHaveSidekicks') },
+//      { label: 'action.addSidekick',    icon: 'icon icon-plus-circle',      action: 'addSidekick',    enabled: get(this, 'canHaveSidekicks') },
       { divider: true },
       { label: 'action.execute',        icon: 'icon icon-terminal',         action: 'shell',          enabled: !!containerForShell, altAction:'popoutShell'},
 //      { label: 'action.logs',           icon: 'icon icon-file',             action: 'logs',           enabled: !!a.logs, altAction: 'popoutLogs' },
@@ -263,7 +263,9 @@ var Workload = Resource.extend(DisplayImage, StateCounts, EndpointPorts, {
   hasImage: true,
   canUpgrade: true,
   canHaveLabels: true,
-  canScale: true,
+  canScale: computed('lcType', function() {
+    return get(this,'lcType') !== 'cronjob';
+  }),
   realButNotLb: true,
   canHaveLinks: true,
   canChangeNetworking: true,
@@ -301,18 +303,21 @@ var Workload = Resource.extend(DisplayImage, StateCounts, EndpointPorts, {
       }
     }
   },
+
+  launchConfig: alias('containers.firstObject'),
+  secondaryLaunchConfigs: computed('containers.[]', function() {
+    return (get(this, 'containers')||[]).slice(1);
+  }),
 });
 
-export function activeIcon(service)
+export function activeIcon(workload)
 {
   var out = 'icon icon-services';
-  switch ( service.get('lcType') )
-  {
-    case 'loadbalancerservice': out = 'icon icon-fork';    break;
-    case 'dnsservice':          out = 'icon icon-compass'; break;
-    case 'externalservice':     out = 'icon icon-cloud';   break;
-    case 'kubernetesservice':   out = 'icon icon-kubernetes'; break;
-    case 'composeservice':      out = 'icon icon-docker'; break;
+  switch ( workload.get('lcType') ) {
+    case 'pod':                 out = 'icon icon-container';    break;
+    case 'cronjob':             out = 'icon icon-backup';    break;
+    case 'daemonset':           out = 'icon icon-globe'; break;
+    case 'statefulset':         out = 'icon icon-database';   break;
   }
 
   return out;
