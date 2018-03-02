@@ -51,7 +51,7 @@ export default Controller.extend({
 
   groupTableBy: function() {
     if ( this.get('group') === NAMESPACE && !this.get('simpleMode') ) {
-      return 'namespace';
+      return 'namespaceId';
     } else {
       return null;
     }

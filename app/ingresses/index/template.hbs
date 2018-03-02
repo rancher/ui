@@ -9,16 +9,17 @@
   {{#if rows.length}}
     <section class="pl-0 pr-0">
       {{#sortable-table
-           classNames="grid sortable-table"
-           body=rows
-           searchText=searchText
-           sortBy=sortBy
-           bulkActions=true
-           groupByKey=groupTableBy
-           groupByRef="namespace"
-           pagingLabel="pagination.ingress"
-           subSearchField="instances"
-           headers=headers as |sortable kind inst dt|}}
+        classNames="grid sortable-table"
+        body=rows
+        searchText=searchText
+        sortBy=sortBy
+        bulkActions=true
+        groupByKey="namespaceId"
+        groupByRef="namespace"
+        pagingLabel="pagination.ingress"
+        subSearchField="instances"
+        headers=headers as |sortable kind inst dt|
+      }}
         {{#if (eq kind "row")}}
           <tr class="main-row">
             <td class="row-check" valign="middle" style="padding-top: 2px;">
