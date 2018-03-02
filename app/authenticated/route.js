@@ -46,23 +46,31 @@ export default Route.extend(Preload, {
   model(params, transition) {
     get(this,'session').set(C.SESSION.BACK_TO, undefined);
 
+    const isPopup = this.controllerFor('application').get('isPopup');
 
-    return get(this, 'scope').startSwitchToGlobal(true).then(() => {
-      return PromiseAll([
+    return get(this, 'scope').startSwitchToGlobal(!isPopup).then(() => {
+      const list = [
         this.loadSchemas('globalStore'),
-        this.preload('roleTemplate', 'globalStore', {url: 'roleTemplates'}),
-        this.preload('noedPool', 'globalStore', {url: 'nodePools'}),
-        this.preload('noedTemplates', 'globalStore', {url: 'nodeTemplates'}),
-        this.preload('clusterRoleTemplateBindings', 'globalStore', {url: 'clusterRoleTemplateBindings'}),
-        this.preload('projectRoleTemplateBinding', 'globalStore', {url: 'projectRoleTemplateBinding'}),
-        this.preload('globalRole', 'globalStore', {url: 'globalRole'}),
-        this.preload('globalRoleBinding', 'globalStore', {url: 'globalRoleBinding'}),
-        this.preload('user', 'globalStore', {url: 'user'}),
         this.loadClusters(),
         this.loadProjects(),
         this.loadPreferences(),
         this.loadPublicSettings(),
-      ]);
+      ];
+
+      if ( !isPopup ) {
+        list.addObjects([
+          this.preload('roleTemplate', 'globalStore', {url: 'roleTemplates'}),
+          this.preload('noedPool', 'globalStore', {url: 'nodePools'}),
+          this.preload('noedTemplates', 'globalStore', {url: 'nodeTemplates'}),
+          this.preload('clusterRoleTemplateBindings', 'globalStore', {url: 'clusterRoleTemplateBindings'}),
+          this.preload('projectRoleTemplateBinding', 'globalStore', {url: 'projectRoleTemplateBinding'}),
+          this.preload('globalRole', 'globalStore', {url: 'globalRole'}),
+          this.preload('globalRoleBinding', 'globalStore', {url: 'globalRoleBinding'}),
+          this.preload('user', 'globalStore', {url: 'user'}),
+        ]);
+      }
+
+      return PromiseAll(list)
     }).catch((err) => {
       return this.loadingError(err, transition);
     });
@@ -77,6 +85,7 @@ export default Route.extend(Preload, {
     this._super(...arguments);
 
     if ( this.controllerFor('application').get('isPopup') ) {
+      $('BODY').addClass('popup');
       return;
     }
 
@@ -194,17 +203,6 @@ export default Route.extend(Preload, {
 
     showAbout() {
       this.controllerFor('application').set('showAbout', true);
-    },
-
-    switchCluster(clusterId, transitionTo='global-admin.clusters', transitionArgs) {
-      console.log('Switch to Cluster:' + clusterId);
-      PromiseAll([
-        get(this, 'scope.subscribeCluster').disconnect(),
-        get(this, 'scope.subscribeProject').disconnect(),
-      ]).then(() => {
-        console.log('Switch is disconnected');
-        this.send('finishSwitch', `cluster:${clusterId}`, transitionTo, transitionArgs);
-      });
     },
 
     switchProject(projectId, transitionTo='authenticated', transitionArgs) {

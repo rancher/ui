@@ -138,16 +138,17 @@ var Workload = Resource.extend(DisplayImage, StateCounts, EndpointPorts, {
 
     shell() {
       get(this, 'modalService').toggleModal('modal-shell', {
-        model: get(this, 'containerForShell'),
+        model: get(this, 'podForShell'),
         escToClose: false,
       });
     },
 
     popoutShell() {
-      let proj = get(this, 'scope.currentProject.id');
-      let id = get(this, 'containerForShell.id');
+      const projectId = get(this, 'scope.currentProject.id');
+      const podId = get(this, 'podForShell.id');
+      const route = get(this,'router').urlFor('authenticated.project.console', projectId);
       later(() => {
-        window.open(`//${window.location.host}/env/${proj}/infra/console?instanceId=${id}&isPopup=true`, '_blank', "toolbars=0,width=900,height=700,left=200,top=200");
+        window.open(`//${window.location.host}${route}?podId=${podId}&isPopup=true`, '_blank', "toolbars=0,width=900,height=700,left=200,top=200");
       });
     },
   },
@@ -173,7 +174,7 @@ var Workload = Resource.extend(DisplayImage, StateCounts, EndpointPorts, {
     let l = get(this, 'links');
 
     let isReal = get(this, 'isReal');
-    let containerForShell = get(this, 'containerForShell');
+    let podForShell = get(this, 'podForShell');
 
     let choices = [
       { label: 'action.edit',           icon: 'icon icon-edit',             action: 'upgrade',        enabled: !!l.update &&  isReal },
@@ -181,7 +182,7 @@ var Workload = Resource.extend(DisplayImage, StateCounts, EndpointPorts, {
       { label: 'action.clone',          icon: 'icon icon-copy',             action: 'clone',          enabled: true},
 //      { label: 'action.addSidekick',    icon: 'icon icon-plus-circle',      action: 'addSidekick',    enabled: get(this, 'canHaveSidekicks') },
       { divider: true },
-      { label: 'action.execute',        icon: 'icon icon-terminal',         action: 'shell',          enabled: !!containerForShell, altAction:'popoutShell'},
+      { label: 'action.execute',        icon: 'icon icon-terminal',         action: 'shell',          enabled: !!podForShell, altAction:'popoutShell'},
 //      { label: 'action.logs',           icon: 'icon icon-file',             action: 'logs',           enabled: !!a.logs, altAction: 'popoutLogs' },
       { divider: true },
       { label: 'action.pause',          icon: 'icon icon-pause',            action: 'pause',          enabled: !!a.pause, bulkable: true},
@@ -196,7 +197,7 @@ var Workload = Resource.extend(DisplayImage, StateCounts, EndpointPorts, {
 
     return choices;
   }.property('actionLinks.{activate,deactivate,pause,restart,rollback,garbagecollect}','links.{update,remove}','previousRevisionId',
-    'canHaveSidekicks','containerForShell'
+    'canHaveSidekicks','podForShell'
   ),
 
   sortName: function() {
@@ -289,7 +290,7 @@ var Workload = Resource.extend(DisplayImage, StateCounts, EndpointPorts, {
     }
   }),
 
-  containerForShell: function() {
+  podForShell: function() {
     return get(this, 'pods').findBy('combinedState','running');
   }.property('pods.@each.combinedState'),
 
@@ -314,10 +315,10 @@ export function activeIcon(workload)
 {
   var out = 'icon icon-services';
   switch ( workload.get('lcType') ) {
-    case 'pod':                 out = 'icon icon-container';    break;
+    case 'pod':                 out = 'icon icon-container'; break;
     case 'cronjob':             out = 'icon icon-backup';    break;
-    case 'daemonset':           out = 'icon icon-globe'; break;
-    case 'statefulset':         out = 'icon icon-database';   break;
+    case 'daemonset':           out = 'icon icon-globe';     break;
+    case 'statefulset':         out = 'icon icon-database';  break;
   }
 
   return out;
@@ -326,14 +327,6 @@ export function activeIcon(workload)
 Workload.reopenClass({
   stateMap: {
     'active':             {icon: activeIcon,                  color: 'text-success'},
-    'canceled-rollback':  {icon: 'icon icon-life-ring',       color: 'text-info'},
-    'canceled-upgrade':   {icon: 'icon icon-life-ring',       color: 'text-info'},
-    'canceling-rollback': {icon: 'icon icon-life-ring',       color: 'text-info'},
-    'canceling-upgrade':  {icon: 'icon icon-life-ring',       color: 'text-info'},
-    'finishing-upgrade':  {icon: 'icon icon-arrow-circle-up', color: 'text-info'},
-    'rolling-back':       {icon: 'icon icon-history',         color: 'text-info'},
-    'upgraded':           {icon: 'icon icon-arrow-circle-up', color: 'text-info'},
-    'upgrading':          {icon: 'icon icon-arrow-circle-up', color: 'text-info'},
   },
 
   mangleIn(data) {
