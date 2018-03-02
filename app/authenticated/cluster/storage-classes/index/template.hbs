@@ -1,10 +1,7 @@
 <section class="header clearfix">
   <div class="right-buttons">
-    {{#link-to "authenticated.cluster.storage-classes.new" class="btn bg-primary btn-sm icon-btn" disabled=(rbac-prevents resource="storageclass" scope="cluster" permission="create")}}
-      <span class="darken">
-        <i class="icon icon-plus"></i>
-      </span>
-      <span>{{t 'storageClassPage.addActionLabel'}}</span>
+    {{#link-to "authenticated.cluster.storage-classes.new" class="btn btn-sm bg-primary" disabled=(or true (rbac-prevents resource="storageclass" scope="cluster" permission="create"))}}
+      {{t 'storageClassPage.addActionLabel'}}
     {{/link-to}}
   </div>
 

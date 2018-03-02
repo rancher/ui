@@ -24,6 +24,7 @@ const FIELD_MAP = {
 export default Resource.extend({
   clusterStore: service(),
   router: service(),
+  intl: service(),
   namespace: reference('namespaceId', 'namespace', 'clusterStore'),
   targetDnsRecords: arrayOfReferences('targetDnsRecordIds','dnsRecord'),
   targetWorkloads: arrayOfReferences('targetWorkloadIds','workload'),
@@ -92,6 +93,10 @@ export default Resource.extend({
     }
 
     return UNKNOWN;
+  }),
+
+  displayType: computed('recordType','intl.locale', function() {
+    return get(this, 'intl').t('dnsPage.type.' + get(this, 'recordType'));
   }),
 
   clearTypesExcept(type) {

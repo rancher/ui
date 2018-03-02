@@ -7,7 +7,7 @@ export default Route.extend({
   model() {
     let store = this.get('store');
     return hash({
-      volumes: store.findAll('volume'),
+//      volumes: store.findAll('volume'),
 //      volumeTemplates: store.findAll('volumetemplate'),
     });
   },

@@ -40,6 +40,7 @@ export default Route.extend({
         record = store.createRecord({
           type: 'dnsRecord',
           namespaceId: namespaceId,
+          ipAddresses: [''],
         });
       }
 
