@@ -90,6 +90,7 @@
         {{/form-value-array}}
       {{else if (eq recordType "workload")}}
         {{#form-value-array
+          editing=(not isView)
           initialValues=model.targetWorkloadIds
           addActionLabel='editDns.add.workload'
           changed=(action "setWorkload")
@@ -105,6 +106,7 @@
             value=row.value
             showProTip=false
             editing=editing
+            disabled=isView
           }}
         {{/form-value-array}}
       {{else if (eq recordType "selector")}}
