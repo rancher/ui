@@ -3,14 +3,14 @@
     {{owner.displayName}}
   {{else}}
     {{!-- {{searchable-select content=userList value=member.memberId}}  --}}
-    {{principal-search errors=(mut errors) principalId=principal}}
+    {{principal-search errors=(mut errors) principal=principal external=external}}
   {{/if}}
 </td>
 <td class="pr-10">
   {{#if owner}}
     {{t 'generic.owner'}}
   {{else}}
-    {{searchable-select change="onSelect" content=choices value=roleTemplateId}}
+    {{searchable-select change="onSelect" content=choices value=roleTemplateId readOnly=noUpdate}}
   {{/if}}
 </td>
 <td>&nbsp;</td>
