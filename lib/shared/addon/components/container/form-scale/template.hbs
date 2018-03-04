@@ -46,12 +46,12 @@
       {{radio-button selection=scaleMode value="cronJob"}}
       <i class="icon icon-lg icon-history"></i>
       {{t 'formScale.scaleMode.cronJob'}}
+      {{~#if (eq scaleMode "cronJob")~}}
+        : {{input safeStyle="width: 150px; padding: 0 2px; display: inline-block;" value=workload.cronJobConfig.schedule}}
+      {{~/if~}}
     </label>
     {{#if (eq scaleMode "cronJob")}}
-      <div class="mt-10 ml-50 mr-50">
-        {{input value=workload.cronJobConfig.schedule}}
-        <p class="text-small text-muted">{{pretty-cron workload.cronJobConfig.schedule 'toString'}}</p>
-      </div>
+      <p class="text-small text-muted" style="margin: 0 0 0 45px;">{{pretty-cron workload.cronJobConfig.schedule 'toString'}}</p>
     {{/if}}
   </div>
   {{#if showSidekick}}
