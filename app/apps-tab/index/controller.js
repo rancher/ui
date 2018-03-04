@@ -15,7 +15,7 @@ export default Controller.extend({
 
 
   templatesObsvr: observer('model.apps.[]', function() {
-    once(() => this.send('fetchDeps', get(this, 'model.apps'), 'route'));
+    once(() => this.get('catalog').fetchAppTemplates(get(this, 'model.apps')));
   }),
 
   filteredApps: computed('model.apps.@each.{type,isFromCatalog,tags,state}','tags', function() {
