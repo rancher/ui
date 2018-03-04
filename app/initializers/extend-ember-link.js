@@ -20,7 +20,6 @@ export function initialize(/*application */) {
         return false;
       }
       let currentRouteName = this.get('application.currentRouteName');
-      const route = this.get('params.firstObject');
       return !this.get('onlyCurrentWhen').some(r => currentRouteName.startsWith(r));
     },
 

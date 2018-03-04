@@ -94,7 +94,7 @@ export default Route.extend({
     if ( params.upgrade ) {
       // Upgrade workload
       let out = EmberObject.create({
-        scaleMode: (containerName ? 'sidekick' : 'deployment'),
+        scaleMode: (containerName ? 'sidekick' : clone.type),
         workload: clone,
         container,
         containerName,

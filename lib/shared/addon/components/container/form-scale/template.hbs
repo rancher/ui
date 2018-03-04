@@ -46,12 +46,12 @@
       {{radio-button selection=scaleMode value="cronJob"}}
       <i class="icon icon-lg icon-history"></i>
       {{t 'formScale.scaleMode.cronJob'}}
+      {{~#if (eq scaleMode "cronJob")~}}
+        : {{input safeStyle="width: 150px; padding: 0 2px; display: inline-block;" value=workload.cronJobConfig.schedule}}
+      {{~/if~}}
     </label>
     {{#if (eq scaleMode "cronJob")}}
-      <div class="mt-10 ml-50 mr-50">
-        {{input value=workload.cronJobConfig.schedule}}
-        <p class="text-small text-muted">{{pretty-cron workload.cronJobConfig.schedule 'toString'}}</p>
-      </div>
+      <p class="text-small text-muted" style="margin: 0 0 0 45px;">{{pretty-cron workload.cronJobConfig.schedule 'toString'}}</p>
     {{/if}}
   </div>
   {{#if showSidekick}}
@@ -74,26 +74,22 @@
     {{#if (eq scaleMode "deployment")}}
       <i class="icon icon-lg icon-service"></i>
       {{t 'formScale.scaleMode.deploymentPrefix' scale=asInteger}}
-      {{#if canAdvanced}}
-        {{input-integer safeStyle="width: 60px; padding: 0 2px; display: inline-block" value=userInput min=min max=max}}
-      {{else}}
-        {{asInteger}}
-      {{/if}}
+      {{input-integer safeStyle="width: 60px; padding: 0 2px; display: inline-block" value=userInput min=min max=max}}
       {{t 'formScale.scaleMode.scaleSuffix' scale=asInteger}}
     {{else if (eq scaleMode "statefulSet")}}
       <i class="icon icon-lg icon-service"></i>
       {{t 'formScale.scaleMode.statefulSetPrefix' scale=asInteger}}
-      {{asInteger}}
+      {{input-integer safeStyle="width: 60px; padding: 0 2px; display: inline-block" value=userInput min=min max=max}}
       {{t 'formScale.scaleMode.scaleSuffix' scale=asInteger}}
     {{else if (eq scaleMode "replicaSet")}}
       <i class="icon icon-lg icon-service"></i>
       {{t 'formScale.scaleMode.replicaSetPrefix' scale=asInteger}}
-      {{asInteger}}
+      {{input-integer safeStyle="width: 60px; padding: 0 2px; display: inline-block" value=userInput min=min max=max}}
       {{t 'formScale.scaleMode.scaleSuffix' scale=asInteger}}
     {{else if (eq scaleMode "replicationController")}}
       <i class="icon icon-lg icon-service"></i>
       {{t 'formScale.scaleMode.replicationControllerPrefix' scale=asInteger}}
-      {{asInteger}}
+      {{input-integer safeStyle="width: 60px; padding: 0 2px; display: inline-block" value=userInput min=min max=max}}
       {{t 'formScale.scaleMode.scaleSuffix' scale=asInteger}}
     {{else if (eq scaleMode "daemonSet")}}
       <i class="icon icon-lg icon-globe"></i>
@@ -104,6 +100,10 @@
     {{else if (eq scaleMode "cronJob")}}
       <i class="icon icon-lg icon-history"></i>
       {{t 'formScale.scaleMode.cronJob'}}
+      <div class="mt-10 ml-50 mr-50">
+        {{input value=workload.cronJobConfig.schedule}}
+        <p class="text-small text-muted">{{pretty-cron workload.cronJobConfig.schedule 'toString'}}</p>
+      </div>
     {{else if (eq scaleMode "sidekick")}}
       <i class="icon icon-lg icon-sidekick"></i>
       {{t 'formScale.scaleMode.sidekickPrefix'}}

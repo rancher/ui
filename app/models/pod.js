@@ -86,7 +86,7 @@ var Pod = Resource.extend(DisplayImage, {
   combinedState: computed('node.state','workload.state','state','healthState','healthCheck', function() {
     var node = get(this,'node.state');
     var resource = get(this,'state');
-    var workload = get(this,'workload.state');
+    //var workload = get(this,'workload.state');
     var health = get(this,'healthState');
     var hasCheck = !!get(this,'healthCheck');
 
