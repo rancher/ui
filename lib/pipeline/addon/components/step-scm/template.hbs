@@ -76,7 +76,7 @@
       {{#each branchTypes as |type| }}
         <div class="pipeline-input-group">
           <div class="label-wrap">
-            {{radio-button disabled=(if (eq modalOpts.type 'review') true false) id=type.value selection=selectedModel.sourceCodeConfig.branchCondition value=type.value}}
+            {{radio-button disabled=(or (eq modalOpts.type 'review') (and (not-eq type.value 'only') allowOnly)) id=type.value selection=selectedModel.sourceCodeConfig.branchCondition value=type.value}}
             <label class="acc-label" for={{type.value}}>
               {{type.label}}
             </label>
@@ -94,6 +94,7 @@
   {{#pipeline-trigger
     selectedModel=selectedModel
     modalOpts=modalOpts
+    triggerOptionsChange=(action 'triggerOptionsChange')
     disabled=(if (eq modalOpts.type 'review') true false)
     }}
   {{/pipeline-trigger}}
