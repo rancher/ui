@@ -4,32 +4,44 @@
   <div class="pt-20"></div>
   <div class="inline-form">
     <label>{{t 'newPipelineStep.stepType.scm.user'}}{{field-required}}</label>
-
-    {{#if accountsInfo}}
-    <div class="row">
-      <div class="col span-12">
-        {{#identity-block
-          principal=profileComponent
-          link=false
-        }}
-        {{/identity-block}}
-      </div>
-      {{!-- <div class="col span-4 text-right">
-        <button class="btn bg-primary"
-        {{action "setState" "Oauth" true}}
-        data-ember-action="" data-ember-action-2540="2540">
-          <i class="icon icon-github"></i> Change User
-      </button>
-      </div> --}}
-    </div>
-    {{else}}
+    {{#if (eq modalOpts.type 'review')}}
       <div class="row">
-        <button class="btn bg-primary"
-        {{action "authenticate"}}
-        >
-          <i class="icon icon-github"></i> {{t 'generic.loginIn'}}
-        </button>
+        <div class="col span-12">
+          {{#identity-block
+            principal=profileComponent
+            link=false
+          }}
+          {{/identity-block}}
+        </div>
       </div>
+    {{else}}
+      {{#if accountsInfo}}
+      <div class="row">
+        <div class="col span-12">
+          {{#identity-block
+            principal=profileComponent
+            link=false
+          }}
+          {{/identity-block}}
+        </div>
+      </div>
+      {{else}}
+        <div class="row">
+          {{#unless testing}}
+            <button class="btn bg-primary"
+            {{action "authenticate"}}
+            >
+              <i class="icon icon-github"></i> {{t 'generic.loginIn'}}
+            </button>
+          {{else}}
+            <button class="btn bg-primary"
+              disabled="disabled" 
+            >
+              <i class="icon icon-spinner icon-spin"></i> {{t 'authPage.github.testAuth.buttonText.post'}}
+            </button>
+          {{/unless}}
+        </div>
+      {{/if}}
     {{/if}}
   </div>
 
@@ -40,16 +52,16 @@
       <label>
         {{t 'pipelineHistories.repository'}}{{field-required}}
         {{#if (not-eq modalOpts.type 'review')}}
-        {{#unless state.repoRefresh}}
-          {{#tooltip-element
-          type="tooltip-basic"
-          model='Refresh repository'
-          tooltipTemplate='tooltip-static'
-          aria-describedby="tooltip-base"
-          tooltipFor="audit-log"}}
-          <button {{action "reloadRepo"}} class="btn bg-transparent"><i class="icon icon-refresh"></i></button>
-          {{/tooltip-element}}
-        {{/unless}}
+          {{#unless state.repoRefresh}}
+            {{#tooltip-element
+            type="tooltip-basic"
+            model='Refresh repository'
+            tooltipTemplate='tooltip-static'
+            aria-describedby="tooltip-base"
+            tooltipFor="audit-log"}}
+            <button {{action "reloadRepo"}} class="btn bg-transparent"><i class="icon icon-refresh"></i></button>
+            {{/tooltip-element}}
+          {{/unless}}
         {{/if}}
       </label>
 
