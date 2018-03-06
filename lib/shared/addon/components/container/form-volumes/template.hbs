@@ -8,23 +8,25 @@
   {{#if scope.currentProject.isWindows}}
     <div class="text-center p-20">Volume support is not currently available for Windows.</div>
   {{else}}
-    <div class="dropdown">
-      <button type="button" class="btn bg-link p-0 icon-btn dropdown-toggle pl-10" data-toggle="dropdown" aria-expanded="false">
-        <span>{{t 'formVolumes.add.label'}}</span>
-        <span class="darken"><i class="icon icon-chevron-down"></i></span>
-      </button>
-      <ul class="dropdown-menu" role="menu">
-        <li><a {{action "addBindMount"}}>{{t 'formVolumes.add.bindMount'}}</a></li>
-        <li class="disabled"><a {{!--action "addVolume"--}}>{{t 'formVolumes.add.existing'}} (Coming Soon)</a></li>
-        <li class="disabled"><a {{!--action "addNewVolume"--}}>{{t 'formVolumes.add.new'}} (Coming Soon)</a></li>
-        <li class="disabled"><a {{action "addTmpfs"}}>{{t 'formVolumes.add.tmpfs'}} (Coming Soon)</a></li>
-        {{#if hasSidekicks}}
-          <li><a {{action "addVolumesFromLaunchConfig"}}>{{t 'formVolumes.add.fromLaunchConfig'}}</a></li>
-        {{/if}}
-        <li class="divider"></li>
-        <li class="disabled"><a {{action "addCustom"}}>{{t 'formVolumes.add.custom'}} (Coming Soon)</a></li>
-      </ul>
-    </div>
+    {{#if editing}}
+      <div class="dropdown">
+        <button type="button" class="btn bg-link p-0 icon-btn dropdown-toggle pl-10" data-toggle="dropdown" aria-expanded="false">
+          <span>{{t 'formVolumes.add.label'}}</span>
+          <span class="darken"><i class="icon icon-chevron-down"></i></span>
+        </button>
+        <ul class="dropdown-menu" role="menu">
+          <li><a {{action "addBindMount"}}>{{t 'formVolumes.add.bindMount'}}</a></li>
+          <li class="disabled"><a {{!--action "addVolume"--}}>{{t 'formVolumes.add.existing'}} (Coming Soon)</a></li>
+          <li class="disabled"><a {{!--action "addNewVolume"--}}>{{t 'formVolumes.add.new'}} (Coming Soon)</a></li>
+          <li class="disabled"><a {{action "addTmpfs"}}>{{t 'formVolumes.add.tmpfs'}} (Coming Soon)</a></li>
+          {{#if hasSidekicks}}
+            <li><a {{action "addVolumesFromLaunchConfig"}}>{{t 'formVolumes.add.fromLaunchConfig'}}</a></li>
+          {{/if}}
+          <li class="divider"></li>
+          <li class="disabled"><a {{action "addCustom"}}>{{t 'formVolumes.add.custom'}} (Coming Soon)</a></li>
+        </ul>
+      </div>
+    {{/if}}
 
     {{#if volumesArray.length}}
       <div class="mt-20">
@@ -46,6 +48,7 @@
             {{#each volumesArray as |vol|}}
               {{container/form-volume-row
                 model=vol
+                editing=editing
                 stack=stack
                 requestedHostId=launchConfig.requestedHostId
                 remove=(action "remove" vol)
@@ -54,8 +57,9 @@
           </tbody>
         </table>
       </div>
+    {{else if (not editing)}}
+      <span class="text-muted">Coming soon...</span>
     {{/if}}
-
 
     {{#if hasCustom}}
       <div class="mt-20">

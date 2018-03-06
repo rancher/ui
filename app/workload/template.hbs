@@ -50,28 +50,6 @@
       </div>
     {{/if}}
 
-    {{#if fixedLaunchConfig.memoryReservation}}
-      <div class="vertical-middle">
-        <label class="acc-label vertical-middle p-0">{{t 'containersPage.containerPage.infoMultiStats.memoryReservation.labelText'}}</label>
-        {{fixedLaunchConfig.memoryReservationBlurb}}
-      </div>
-    {{/if}}
-
-    {{#if fixedLaunchConfig.milliCpuReservation}}
-      <div class="vertical-middle">
-        <label class="acc-label vertical-middle p-0">{{t 'containersPage.containerPage.infoMultiStats.milliCpuReservation.labelText'}}</label>
-        {{fixedLaunchConfig.milliCpuReservation}}
-      </div>
-    {{/if}}
-
-    {{#if service.fqdn}}
-      <div class="vertical-middle">
-        <label class="acc-label vertical-middle p-0">{{t 'servicePage.multistat.fqdn'}}</label>
-        <a href="http://{{service.fqdn}}">{{service.fqdn}}</a> {{copy-to-clipboard clipboardText=service.fqdn size="small"}}
-      </div>
-      <hr>
-    {{/if}}
-
     {{#if service.canScale}}
       <div class="vertical-middle">
         <label class="acc-label vertical-middle p-0">{{t 'servicePage.multistat.scale'}}</label>
@@ -84,78 +62,56 @@
         </div>
       </div>
     {{/if}}
+  </div>
+</section>
 
+<section>
+  <div class="row banner bg-info basics">
+    <div class="vertical-middle">
+      <label class="acc-label vertical-middle p-0">{{t 'servicePage.multistat.namesapce'}}</label>
+      {{service.namespace.displayName}}
+    </div>
 
-    {{#if model.stack}}
-      <div class="vertical-middle">
-        <label class="acc-label vertical-middle p-0">{{t 'generic.stack'}}:</label>
-        {{#link-to "stack" scope.currentProject.id model.stack.id}}{{model.stack.displayName}}{{/link-to}}
-      </div>
-    {{/if}}
+    <div class="vertical-middle">
+      <label class="acc-label vertical-middle p-0">{{t 'servicePage.multistat.type'}}</label>
+      {{service.type}}
+    </div>
+
+    <div class="vertical-middle">
+      <label class="acc-label vertical-middle p-0">{{t 'servicePage.multistat.created'}}</label>
+      {{date-calendar service.created}}
+    </div>
 
   </div>
 </section>
 
 <section>
   {{#accordion-list as |al expandFn|}}
-    {{#if service.canHaveContainers}}
-      {{#accordion-list-item
-        title=(t 'servicePage.containersTab.title')
-        detail=(t 'servicePage.containersTab.detail')
-        status=(t 'pagination.container' pages=(if service.instances.length 1 0) count=service.instances.length)
-        statusClass=(if service.instances.length 'bg-success' 'text-muted')
-        expandOnInit=true
+    {{#if service.canHaveEnvironment}}
+      {{form-env-var
+        model=displayEnvironmentVars
         expandAll=al.expandAll
-        expand=(action expandFn)
-        componentName='container-table'
-        as |parent|
+        expandFn=expandFn
       }}
-        {{component parent.intent
-          body=service.instances
-          bulkActions=true
-          search=true
-          searchText=searchText
-          showNode=true
-        }}
-      {{/accordion-list-item}}
     {{/if}}
 
     {{#if service.isReal}}
       {{#accordion-list-item
         title=(t 'containerPage.portsTab.header')
         detail=(t 'containerPage.portsTab.detail')
-        status=(t 'pagination.port' pages=(if model.container.publicEndpoints.length 1 0) count=model.container.publicEndpoints.length)
-        statusClass=(if model.container.publicEndpoints.length 'bg-success' 'text-muted')
         expandAll=al.expandAll
         expand=(action expandFn)
       }}
         {{container/form-ports
-          initialPorts=model.service.launchConfig.ports
+          initialPorts=service.launchConfig.ports
           editing=false
         }}
-        {{#if model.service.launchConfig.ports.length}}
-          <hr/>
-          <div class="mt-20">
-            <label class="acc-label">{{t 'containerPage.portsTab.header'}}</label>
-            {{public-endpoints
-                model=model.service
-            }}
-          </div>
-        {{/if}}
-      {{/accordion-list-item}}
-
-      {{#accordion-list-item
-        title=(t 'servicePage.logTab.title')
-        detail=(t 'servicePage.logTab.detail')
-        expandAll=al.expandAll
-        expand=(action expandFn)
-      }}
-        {{service-log model=service}}
       {{/accordion-list-item}}
 
       {{container/form-scheduling
         initialHostId=model.workload.nodeId
-        isGlobal=service.isGlobalScale
+        service=service
+        scheduling=service.scheduling
         editing=false
         expandAll=al.expandAll
         expandFn=expandFn
@@ -163,58 +119,59 @@
       }}
     {{/if}}
 
-    {{#if model.service.canHaveLinks}}
+    {{#if service.canHaveHealthCheck}}
       {{#accordion-list-item
-        title=(t 'servicePage.linksTab.header')
-        detail=(t 'servicePage.linksTab.detail')
-        status=(t 'pagination.link' pages=(if service.serviceLinks.length 1 0) count=service.serviceLinks.length)
-        statusClass=(if service.serviceLinks.length 'bg-success' 'text-muted')
+        title=(t 'formHealthCheck.title')
+        detail=(t 'formHealthCheck.detail')
         expandAll=al.expandAll
         expand=(action expandFn)
       }}
-        <ul class="list-unstyled list-inline with-room">
-          {{#each serviceLinksNamed as |link|}}
-            <li>{{consumed-service-link link=link stackId=service.stackId service=service}}</li>
-          {{else}}
-            <li class="text-muted text-center">{{t 'servicePage.linksTab.noData'}}</li>
-          {{/each}}
-        </ul>
+        <div class="row">
+          <div class="col span-6 mt-0 mb-0">
+            <label class="acc-label">{{t 'formHealthCheck.readiness'}}</label>
+          </div>
+          <div class="col span-6 mt-0 mb-0">
+            {{#if service.launchConfig.healthcheck}}
+              <label class="acc-label">{{t 'formHealthCheck.liveness'}}</label>
+            {{/if}}
+          </div>
+        </div>
+        <div class="row">
+          <div class="col {{if service.launchConfig.healthcheck 'span-6' 'span-12'}}">
+            {{form-healthcheck
+              initialCheck=service.launchConfig.readycheck
+              editing=false
+            }}
+          </div>
+          {{#if service.launchConfig.healthcheck}}
+            <div class="col span-6">
+              {{form-healthcheck
+                initialCheck=service.launchConfig.healthcheck
+                editing=true
+              }}
+            </div>
+          {{/if}}
+        </div>
       {{/accordion-list-item}}
     {{/if}}
 
-    {{#if model.service.canUpgrade}}
-      {{container/form-upgrade
-        service=service
-        editing=false
-        errors=upgradeErrors
-        isUpgrade=isUpgrade
-        expandAll=al.expandAll
-        expandFn=expandFn
-      }}
-    {{/if}}
+    {{container/form-upgrade
+      workload=service
+      scaleMode=service.type
+      editing=false
+      expandAll=al.expandAll
+      expandFn=expandFn
+    }}
 
-    <hr/>
+    {{container/form-volumes
+      launchConfig=activeLaunchConfig
+      service=service
+      editing=false
+      expandAll=al.expandAll
+      expandFn=expandFn
+    }}
 
-    {{#if service.hasSidekicks}}
-      <hr/>
-      <div class="header has-tabs mt-20">
-
-        <div class="title">
-          <span class="m-0">{{t 'servicePage.sidekick.header'}}</span>
-          <p class="help-block">{{t 'servicePage.sidekick.helpBlock'}}</p>
-        </div>
-
-        <ul class="tab-nav">
-          <li><a href="#" class="{{if (eq activeLaunchConfig.type 'launchConfig') 'active'}}" {{action 'selectMaster'}}>{{service.displayName}}</a></li>
-          {{#each service.secondaryLaunchConfigs as |sidekick index|}}
-            <li><a href="#"  class="{{if (eq activeLaunchConfig.name sidekick.name) 'active'}}" {{action 'selectSidekick' index}}>{{t 'servicePage.sidekick.tabHeader'}}: {{sidekick.name}}</a></li>
-          {{/each}}
-        </ul>
-
-      </div>
-    {{/if}}
-
-    {{#if (and service.isReal (not service.isBalancer))}}
+    {{#if service.isReal}}
       {{container/form-command
         tagName=''
         instance=activeLaunchConfig
@@ -226,81 +183,30 @@
       }}
     {{/if}}
 
-    {{#if service.lbConfig}}
-      {{#if service.isBalancer}}
-        {{#accordion-list-item
-          title=(t 'servicePage.certsTab.title')
-          detail=(t 'servicePage.certsTab.detail')
-          status=(t 'pagination.certificate' pages=(if rmodel.service.lbConfig.certificateIds.length 1 0) count=model.service.lbConfig.certificateIds.length)
-          statusClass=(if model.service.lbConfig.certificateIds.length 'bg-success' 'text-muted')
-          expandAll=al.expandAll
-          expand=(action expandFn)
-        }}
-          <div class="row">
-            <div class="box col span-6">
-              <label class="acc-label">{{t 'servicePage.certsTab.default'}}:</label>
-              {{#if model.service.lbConfig.defaultCertificateId}}
-                <a href="{{href-to "authenticated.project.certificates.detail" model.service.lbConfig.defaultCertificateId}}">{{model.service.lbConfig.defaultCertificate.displayName}}</a>
-              {{else}}
-                <div class="text-muted">{{t 'generic.none'}}</div>
-              {{/if}}
-            </div>
-            <div class="box col span-6">
-              <label class="acc-label">{{t 'servicePage.certsTab.additional'}}:</label>
-              {{#if model.service.lbConfig.certificateIds.length}}
-                <ul class="list-unstyled">
-                  {{#each model.service.lbConfig.certificates as |cert|}}
-                    <li>
-                      <a href="{{href-to "authenticated.project.certificates.detail" cert.id}}">{{cert.displayName}}</a>
-                    </li>
-                  {{/each}}
-                </ul>
-              {{else}}
-                <div class="text-muted">{{t 'generic.none'}}</div>
-              {{/if}}
-            </div>
-          </div>
-        {{/accordion-list-item}}
-      {{/if}}
-    {{/if}}
-
-
-    {{#if service.canHaveEnvironment}}
-      {{form-env-var
-        model=activeLaunchConfig.displayEnvironmentVars
-        expandAll=al.expandAll
-        expandFn=expandFn
-      }}
-    {{/if}}
-
-    {{#if service.canHaveHealthCheck}}
-      {{form-healthcheck
-        healthCheck=activeLaunchConfig.healthCheck
-        editing=false
-        expandAll=al.expandAll
-        expandFn=expandFn
-        classNames="accordion"
-      }}
-    {{/if}}
+    {{container/form-networking
+      classNames="accordion-wrapper"
+      instance=activeLaunchConfig
+      service=service
+      editing=false
+      expandAll=al.expandAll
+      expandFn=expandFn
+    }}
 
     {{#if service.canHaveLabels}}
       {{labels-section
-        model=activeLaunchConfig
-        tagName=''
+        model=service
         expandAll=al.expandAll
         expandFn=expandFn
       }}
     {{/if}}
 
-    {{#if service.canChangeNetworking}}
-      {{container/form-networking
-        editing=false
-        service=service
-        initialLabels=activeLaunchConfig.labels
-        expandAll=al.expandAll
-        expandFn=expandFn
-      }}
-    {{/if}}
+    {{form-annotations
+      classNames="accordion-wrapper"
+      model=service
+      editing=false
+      expandAll=al.expandAll
+      expandFn=expandFn
+    }}
 
     {{#if service.canHaveSecrets}}
       {{container/form-secrets
@@ -315,16 +221,6 @@
     {{#if service.canChangeSecurity}}
       {{container/form-security
         instance=activeLaunchConfig
-        editing=false
-        expandAll=al.expandAll
-        expandFn=expandFn
-      }}
-    {{/if}}
-
-    {{#if service.isBalancer}}
-      {{form-stickiness
-        initialLabels=activeLaunchConfig.labels
-        service=service
         editing=false
         expandAll=al.expandAll
         expandFn=expandFn
