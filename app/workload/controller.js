@@ -104,6 +104,15 @@ export default Controller.extend({
     }
   },
 
+  displayEnvironmentVars: computed('service.launchConfig.environment', function() {
+    var envs = [];
+    var environment = this.get('service.launchConfig.environment')||{};
+    Object.keys(environment).forEach((key) => {
+      envs.pushObject({key: key, value: environment[key]})
+    });
+    return envs;
+  }),
+
   serviceLinksNamed: computed('service.serviceLinks.[]', function() {
     let as = this.get('allWorkloads');
 
