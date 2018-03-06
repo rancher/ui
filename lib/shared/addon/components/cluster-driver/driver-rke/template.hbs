@@ -28,14 +28,17 @@
           <label class="acc-label">{{t 'clusterNew.rke.podSecurityPolicy.label'}}</label>
           <div class="radio">
             <label>
-              {{radio-button selection=config.services.kubeApi.podSecurityPolicy value=true}}
-              {{t 'generic.enabled'}}
+              {{radio-button selection=config.services.kubeApi.podSecurityPolicy value=false disabled=(not model.psps.length)}}
+              {{t 'generic.disabled'}}
             </label>
           </div>
           <div class="radio">
-            <label>
-              {{radio-button selection=config.services.kubeApi.podSecurityPolicy value=false}}
-              {{t 'generic.disabled'}}
+            <label class={{unless model.psps.length 'text-muted'}}>
+              {{radio-button selection=config.services.kubeApi.podSecurityPolicy value=true disabled=(not model.psps.length)}}
+              {{t 'generic.enabled'}}
+              {{#unless model.psps.length}}
+                &mdash; {{t 'clusterNew.psp.none'}}
+              {{/unless}}
             </label>
           </div>
         </div>
@@ -82,16 +85,21 @@
         </div>
 
         <div class="col span-4">
-          <label class="acc-label">{{t 'clusterNew.psp.label'}}</label>
-          {{new-select
-            content=model.psps
-            optionLabelPath='displayName'
-            optionValuePath='id'
-            prompt='generic.none'
-            localizedPrompt=true
-            value=cluster.defaultPodSecurityPolicyTemplateId
-            disabled=(not config.services.kubeApi.podSecurityPolicy)
-          }}
+          {{#if config.services.kubeApi.podSecurityPolicy}}
+            <label class="acc-label">{{t 'clusterNew.psp.label'}}{{field-required}}</label>
+            {{new-select
+              content=model.psps
+              optionLabelPath='displayName'
+              optionValuePath='id'
+              prompt='clusterNew.psp.prompt'
+              localizedPrompt=true
+              value=cluster.defaultPodSecurityPolicyTemplateId
+              disabled=(not config.services.kubeApi.podSecurityPolicy)
+            }}
+          {{else}}
+            <label class="acc-label">{{t 'clusterNew.psp.label'}}</label>
+            <div class="form-control-static">{{t 'generic.none'}}</div>
+          {{/if}}
         </div>
       </div>
     {{/accordion-list-item}}
