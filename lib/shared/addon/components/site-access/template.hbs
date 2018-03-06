@@ -8,34 +8,35 @@
   <div class="row">
     <div class="col span-7">
       <div class="radio">
-        <label>{{radio-button selection=copy.accessMode value="unrestricted"}} {{t 'siteAccess.unrestricted' individuals=(t individuals) collection=(t collection)}}</label>
+        <label>{{radio-button selection=model.accessMode value="unrestricted"}} {{t 'siteAccess.unrestricted' individuals=(t individuals) collection=(t collection)}}</label>
       </div>
       <div class="radio">
-        <label>{{radio-button selection=copy.accessMode value="restricted"}} {{t 'siteAccess.restricted' individuals=(t individuals) collection=(t collection)}}</label>
+        <label>{{radio-button selection=model.accessMode value="restricted"}} {{t 'siteAccess.restricted' individuals=(t individuals) collection=(t collection)}}</label>
       </div>
       <div class="radio">
-        <label>{{radio-button selection=copy.accessMode value="required"}} {{t 'siteAccess.required' individuals=(t individuals) collection=(t collection)}}</label>
+        <label>{{radio-button selection=model.accessMode value="required"}} {{t 'siteAccess.required' individuals=(t individuals) collection=(t collection)}}</label>
       </div>
     </div>
     <div class="col span-5">
       {{#if showList}}
-        {{input-identity allowTeams=false action="addAuthorized" onError="gotError"}}
+        {{input-identity allowTeams=true action="addAuthorized" onError="gotError"}}
 
         <hr/>
         <h5>{{t 'siteAccess.listHeader' individuals=(t individuals) collection=(t collection)}}</h5>
 
         <ul class="list-unstyled gh-block-list mt-10">
-          {{#each copy.allowedPrincipals as |item|}}
+          {{#each model.allowedPrincipals as |item|}}
             <li>
               {{#identity-block principal=item}}
                 <button class="btn bg-primary btn-sm pull-right gh-action" {{action "removeAuthorized" item.id}} disabled={{array-includes access.me.principalIds item.id}}><i class="icon icon-minus"/></button>
               {{/identity-block}}
             </li>
+          {{else}}
+            <li>
+              <span class="text-muted">{{t 'siteAccess.noIdentity'}}</span>
+            </li>
           {{/each}}
         </ul>
-        {{#if (eq copy.allowedIdentities.length 0)}}
-          <span class="text-muted">{{t 'siteAccess.noIdentity'}}</span>
-        {{/if}}
       {{/if}}
     </div>
   </div>
