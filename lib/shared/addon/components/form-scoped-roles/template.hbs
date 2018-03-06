@@ -1,7 +1,7 @@
 <div class="row">
   <div class="col span-6">
     <label class="acc-label">{{t 'generic.member'}}</label>
-    {{principal-search errors=(mut errors) principal=principal}}
+    {{input-identity allowTeams=true action="addAuthorized" onError="gotError"}}
   </div>
   <div class="col span-12">
   </div>
@@ -15,14 +15,14 @@
 }}
   <div class="radio">
     <label>
-      {{radio-button selection=mode value=stdUser}} {{t 'formScopedRoles.mode.user.label' type=cTyped}}
-      <p class="help-block">{{t 'formScopedRoles.mode.user.detail' type=cTyped}}</p>
+      {{radio-button selection=mode value=admin}} {{t 'formScopedRoles.mode.admin.label' type=cTyped}}
+      <p class="help-block">{{t 'formScopedRoles.mode.admin.detail' type=cTyped}}</p>
     </label>
   </div>
   <div class="radio">
     <label>
-      {{radio-button selection=mode value=admin}} {{t 'formScopedRoles.mode.admin.label' type=cTyped}}
-      <p class="help-block">{{t 'formScopedRoles.mode.admin.detail' type=cTyped}}</p>
+      {{radio-button selection=mode value=stdUser}} {{t 'formScopedRoles.mode.user.label' type=cTyped}}
+      <p class="help-block">{{t 'formScopedRoles.mode.user.detail' type=cTyped}}</p>
     </label>
   </div>
   {{#each userRoles as |role| }}
