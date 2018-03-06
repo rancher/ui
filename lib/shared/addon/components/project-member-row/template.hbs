@@ -2,15 +2,22 @@
   {{#if owner}}
     {{owner.displayName}}
   {{else}}
-    {{!-- {{searchable-select content=userList value=member.memberId}}  --}}
-    {{principal-search errors=(mut errors) principal=principal external=external readOnly=noUpdate}}
+    {{#if noUpdate}}
+      {{principal.displayName}}
+    {{else}}
+      {{input-identity allowTeams=true action="addAuthorized" onError="gotError"}}
+    {{/if}}
   {{/if}}
 </td>
 <td class="pr-10">
   {{#if owner}}
     {{t 'generic.owner'}}
   {{else}}
-    {{searchable-select change="onSelect" content=choices value=roleTemplateId readOnly=noUpdate}}
+    {{#if noUpdate}}
+      {{roleTemplateId}}
+    {{else}}
+      {{searchable-select change="onSelect" content=choices value=roleTemplateId readOnly=noUpdate}}
+    {{/if}}
   {{/if}}
 </td>
 <td>&nbsp;</td>

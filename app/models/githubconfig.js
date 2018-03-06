@@ -41,7 +41,6 @@ var GithubConfig = Resource.extend({
           principals.push(principal);
         });
 
-        console.log('_principals', principals);
         set(this, '_principals', principals);
       })
     }
