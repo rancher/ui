@@ -10,6 +10,15 @@ export default Resource.extend({
     return !C.BASIC_ROLE_TEMPLATE_ROLES.includes(get(this, 'id'));
   }),
 
+  displayName: computed('name','id', function() {
+    let name = get(this, 'name');
+    if ( name ) {
+      return name;
+    }
+
+    return '(' + get(this,'id') + ')';
+  }),
+
   actions: {
     edit: function() {
       this.get('router').transitionTo('global-admin.security.roles.edit', this.get('id'));
