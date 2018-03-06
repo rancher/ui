@@ -28,7 +28,7 @@
           {{#each copy.allowedPrincipals as |item|}}
             <li>
               {{#identity-block principal=item}}
-                <button class="btn bg-primary btn-sm pull-right gh-action" {{action "removeIdentity" item}} disabled={{eq item.id access.identity.id}}><i class="icon icon-minus"/></button>
+                <button class="btn bg-primary btn-sm pull-right gh-action" {{action "removeAuthorized" item.id}} disabled={{array-includes access.me.principalIds item.id}}><i class="icon icon-minus"/></button>
               {{/identity-block}}
             </li>
           {{/each}}
