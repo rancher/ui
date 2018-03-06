@@ -345,27 +345,29 @@ authPage:
     header:
       enabled:
         label: "{github} is enabled"
-        required: |
-          {appName} is configured to allow access to {orgs, plural,
-            =0 {no organizations}
-            =1 {# organization}
-            other {# organizations}
-          } and {users, plural,
-            =0 {no users}
-            =1 {# user}
-            other {# users}
-          }.
-        restricted: |
-          {appName} is configured to allow access to environment members, {orgs, plural,
-            =0 {no organizations}
-            =1 {# organization}
-            other {# organizations}
-          } and {users, plural,
-            =0 {no users}
-            =1 {# user}
-            other {# users}
-          }.
-        unrestricted: "{appName} is configured to allow access to any {github} user."
+        required: "{appName} is configured to allow access to authorized users and organizations."
+        restricted: "{appName} is configured to allow access to project members, authorized users and organizations."
+#        required: |
+#          {appName} is configured to allow access to {orgs, plural,
+#            =0 {no organizations}
+#            =1 {# organization}
+#            other {# organizations}
+#          } and {users, plural,
+#            =0 {no users}
+#            =1 {# user}
+#            other {# users}
+#          }.
+#        restricted: |
+#          {appName} is configured to allow access to project members, {orgs, plural,
+#            =0 {no organizations}
+#            =1 {# organization}
+#            other {# organizations}
+#          } and {users, plural,
+#            =0 {no users}
+#            =1 {# user}
+#            other {# users}
+#          }.
+#        unrestricted: "{appName} is configured to allow access to any {github} user."
       disabled:
         label: GitHub is not configured
         warning: "{appName} can be configured to restrict access to a set of GitHub users and organization members.  This is not currently set up, so anybody that reach this page (or the API) has full control over the system."
@@ -3172,11 +3174,11 @@ loginShibboleth:
   buttonText: Authenticate with Shibboleth
 
 loginGithub:
-  buttonText: GitHub
+  buttonText: Log In With GitHub
   thirdPartyAccessLimitation: One possible reason may be due to third-party access limitations. You can find more information at <a href="https://help.github.com/articles/about-third-party-application-restrictions/" target="_blank">github</a>.
 
 loginUserPass:
-  local: Local
+  local: Use a Local User
   provider: "{kind}"
   userLabel: Username
   caasLabel: Email
@@ -4372,7 +4374,7 @@ siteAccess:
   header: Site Access
   helpText: "Configure who should be allowed to log in and use {appName}."
   unrestricted: "Allow any valid {individuals}"
-  restricted: "Allow members of Environments, plus Authorized {individuals} and {collection}"
+  restricted: "Allow members of Projects, plus Authorized {individuals} and {collection}"
   required: "Restrict access to only Authorized {individuals} and {collection}"
   listHeader: "Authorized {individuals} and {collection}"
   noIdentity: None
