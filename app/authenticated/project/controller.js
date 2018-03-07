@@ -41,11 +41,7 @@ export default Controller.extend({
     }
   },
 
-  showWarning: function() {
-    return this.get('prefs.projects-warning') !== 'hide';
-  }.property('prefs.projects-warning'),
   showClusterWelcome: function() {
-
     return this.get('scope.currentCluster.state') === 'inactive' && !this.get('nodes.length');
   }.property('scope.currentCluster.state','nodes.[]'),
 
