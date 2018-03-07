@@ -19,16 +19,16 @@
     </div>
     <div class="col span-5">
       {{#if showList}}
-        {{input-identity allowTeams=true action="addAuthorized" onError="gotError"}}
+        {{input-identity allowTeams=true action="addAuthorized" onError="gotError" selectExactOnBlur=false}}
 
         <hr/>
         <h5>{{t 'siteAccess.listHeader' individuals=(t individuals) collection=(t collection)}}</h5>
 
         <ul class="list-unstyled gh-block-list mt-10">
-          {{#each model.allowedPrincipals as |item|}}
+          {{#each model.allowedPrincipalIds as |id|}}
             <li>
-              {{#identity-block principal=item}}
-                <button class="btn bg-primary btn-sm pull-right gh-action" {{action "removeAuthorized" item.id}} disabled={{array-includes access.me.principalIds item.id}}><i class="icon icon-minus"/></button>
+              {{#identity-block id=id}}
+                <button class="btn bg-primary btn-sm pull-right gh-action" {{action "removeAuthorized" id}} disabled={{array-includes access.me.principalIds id}}><i class="icon icon-minus"/></button>
               {{/identity-block}}
             </li>
           {{else}}

@@ -21,7 +21,11 @@
   </td>
 {{/if}}
 <td data-title="{{t 'generic.name'}}:" >
-  {{model.name}}
+  {{#if model.name}}
+    {{model.name}}
+  {{else}}
+    <span class="text-muted">{{t 'generic.none'}}</span>
+  {{/if}}
 </td>
 <td data-title="{{t 'generic.actions'}}:" class="actions">
   {{action-menu model=model}}

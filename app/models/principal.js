@@ -23,7 +23,9 @@ var Principal = Resource.extend({
     }
     else
     {
-      return `data:image/png;base64,${new Identicon(AWS.util.crypto.md5(get(this, 'principalId')||'Unknown', 'hex'), 80, 0.01).toString()}`;
+      let id = get(this,'id') || 'Unknown';
+      id = id.replace("local://",'');
+      return `data:image/png;base64,${new Identicon(AWS.util.crypto.md5(id, 'hex'), 80, 0.01).toString()}`;
     }
   }),
 

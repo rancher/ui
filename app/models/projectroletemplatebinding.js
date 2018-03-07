@@ -20,6 +20,9 @@ export default Resource.extend({
     return !C.BASIC_ROLE_TEMPLATE_ROLES.includes(get(this, 'roleTemplateId'));
   }),
 
+  principalId: computed('userPrincipalId','groupPrincipalId', function() {
+    return get(this, 'groupPrincipalId') || get(this, 'userPrincipalId') || null;
+  }),
 
   availableActions: computed('links.remove','name', function() {
     const l = get(this, 'links');
