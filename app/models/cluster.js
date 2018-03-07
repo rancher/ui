@@ -6,6 +6,7 @@ import { hasMany } from 'ember-api-store/utils/denormalize';
 import ResourceUsage from 'shared/mixins/resource-usage';
 import { alias } from '@ember/object/computed';
 import { resolve } from 'rsvp';
+import C from 'ui/utils/constants';
 
 export default Resource.extend(ResourceUsage, {
   globalStore:  service(),
@@ -20,6 +21,14 @@ export default Resource.extend(ResourceUsage, {
   machines: alias('nodes'),
   clusterRoleTemplateBindings: hasMany('id', 'clusterRoleTemplateBinding', 'clusterId'),
   roleTemplateBindings: alias('clusterRoleTemplateBindings'),
+
+  nodesCount: computed('nodes.@each.{state}', function() {
+    const nodes = get(this, 'nodes');
+    const activeNodes = nodes.filter(node => {
+      return C.ACTIVEISH_STATES.indexOf(node.get('state')) !== -1;
+    });
+    return activeNodes.get('length');
+  }),
 
   actions: {
     edit() {
