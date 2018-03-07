@@ -57,6 +57,8 @@ export default Route.extend(Preload, {
         this.loadPublicSettings(),
       ];
 
+      const globalStore = get(this, 'globalStore');
+
       if ( !isPopup ) {
         list.addObjects([
           this.preload('roleTemplate', 'globalStore', {url: 'roleTemplates'}),
@@ -66,7 +68,24 @@ export default Route.extend(Preload, {
           this.preload('projectRoleTemplateBinding', 'globalStore', {url: 'projectRoleTemplateBinding'}),
           this.preload('globalRole', 'globalStore', {url: 'globalRole'}),
           this.preload('globalRoleBinding', 'globalStore', {url: 'globalRoleBinding'}),
-          this.preload('user', 'globalStore', {url: 'user'}),
+          this.preload('user', 'globalStore', {url: 'user'}).then((users) => {
+            users.forEach((u) => {
+              globalStore._typeify({
+                id: u.principalIds[0],
+                type: 'principal',
+                principalType: 'user',
+                provider: 'local',
+                name: get(u,'displayName'),
+                loginName: get(u,'username'),
+              });
+            });
+          }),
+
+          globalStore.findAll('principal').then((principals) => {
+            principals.forEach((p) => {
+              set(p, '_mine', true);
+            });
+          }),
         ]);
       }
 

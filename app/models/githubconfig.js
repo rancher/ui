@@ -6,6 +6,8 @@ import { allSettled } from 'rsvp';
 var GithubConfig = Resource.extend({
   type:        'githubConfig',
   globalStore: service(),
+
+/*
   _principals: null,
 
   init() {
@@ -49,6 +51,8 @@ var GithubConfig = Resource.extend({
   allowedPrincipals: computed('_principals.@each.{id}', function() {
     return get(this, '_principals').sortBy('displayName')
   }),
+*/
+
 });
 
 export default GithubConfig;

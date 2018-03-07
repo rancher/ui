@@ -23,7 +23,15 @@
           {{check-box nodeId=row.id}}
         </td>
         <td data-title="{{t 'membersPage.index.table.userId'}}:" >
-          {{row.user.displayName}}
+          {{#if row.principalId}}
+            {{identity-block id=row.principalId}}
+          {{else if row.user}}
+            {{row.user.displayName}}
+          {{else if row.group}}
+            {{row.group.displayName}}
+          {{else}}
+            <span class="text-muted">Unknown</span>
+          {{/if}}
         </td>
         <td data-title="{{t 'membersPage.index.table.template'}}:" >
           {{row.roleTemplate.displayName}}
