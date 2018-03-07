@@ -142,11 +142,11 @@ export default Resource.extend({
 
   availableActions: computed('links.{update,remove}', function() {
     var l = get(this, 'links');
-
+    const isIngress = get(this, ('ownerReferences.firstObject.kind')) === 'Ingress';
     var choices = [
-      { label: 'action.edit',       icon: 'icon icon-edit',           action: 'edit',         enabled: !!l.update },
+      { label: 'action.edit',       icon: 'icon icon-edit',           action: 'edit',         enabled: !!l.update && !isIngress },
       { divider: true },
-      { label: 'action.remove',     icon: 'icon icon-trash',          action: 'promptDelete', enabled: !!l.remove, altAction: 'delete', bulkable: true },
+      { label: 'action.remove',     icon: 'icon icon-trash',          action: 'promptDelete', enabled: !!l.remove && !isIngress, altAction: 'delete', bulkable: true },
       { divider: true },
       { label: 'action.viewInApi',  icon: 'icon icon-external-link',  action: 'goToApi',      enabled: true },
     ];
