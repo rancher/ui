@@ -30,12 +30,11 @@ export default Route.extend({
     },
     login: {
       refreshModel: false
-    }
-
+    },
   },
 
   model(params/* , transition */) {
-    if (window.opener) {
+    if (window.opener && !get(params, 'login')) {
       let openerController = window.opener.lc('security.authentication.github');
       let openerStore      = get(openerController, 'globalStore');
       let qp               = get(params, 'config') || get(params, 'authProvider');
