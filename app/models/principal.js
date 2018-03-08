@@ -6,7 +6,6 @@ import {get, computed} from '@ember/object'
 
 var Principal = Resource.extend({
   intl: service(),
-  _displayName: null,
 
   isUser: equal('parsedExternalType', C.PROJECT.TYPE_USER),
   isTeam: equal('parsedExternalType', C.PROJECT.TYPE_TEAM),
@@ -32,11 +31,6 @@ var Principal = Resource.extend({
   isGithub: computed('parsedExternalType', function() {
     // console.log('is github?', get(this, 'provider'));
     return (get(this, 'provider')||'').toLowerCase() === 'github';
-  }),
-
-  isMyRancher: computed('{id,parsedExternalType}', function() {
-    // @TODO-2.0
-    return false
   }),
 
   logicalType: computed('parsedExternalType', function() {
