@@ -416,7 +416,6 @@ function getStacksSubtree() {
         icon: 'icon icon-tag',
         route: 'stacks',
         ctx: [getProjectId],
-        condition: isOwner,
         queryParams: {which: C.EXTERNAL_ID.KIND_ALL, tags: choice},
       });
     });
