@@ -3495,7 +3495,6 @@ nodeDriver:
       item1: From the {appName} server to <code>TCP</code> port <code>22</code> <span class="text-muted">(SSH to install and configure Docker)</span>
       item2: From and To all other hosts on <code>UDP</code> ports <code>500</code> and <code>4500</code> <span class="text-muted">(for IPsec networking)</span></li>
       item3: These rules will <b>not</b> be added automatically.
-    instanceOptionsSection: Instance Options
     instanceType:
       label: Instance Type
     rootSize:
@@ -3634,7 +3633,17 @@ nodeDriver:
       label: Flavor
 
   vmwarevsphere:
-    accountSection: Account Access
+    access:
+      title: 1. Account Access
+      detail: Configure where to find the VCenter or ESXi server
+      help: "Note: The free ESXi liecense does not support API access.  Only paid license servers are supported."
+    instance:
+      title: 2. Instance Options
+      detail: Choose the size and OS of the virtual machine
+    scheduling:
+      title: 3. Scheduling
+      detail: Choose what hypervisor the virtual machine will be scheduled to
+
     vcenter:
       label: vCenter Host
       placeholder: vCenter or ESXi hostname/IP
@@ -3648,6 +3657,7 @@ nodeDriver:
     instanceOptionsSection: Instance Options
     cpuCount:
       label: CPUs
+      unit: '{cores, plural, =1 {Core} other {Cores}}'
     memorySize:
       label: Memory
       unit: MB
