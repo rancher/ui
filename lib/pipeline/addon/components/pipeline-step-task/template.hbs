@@ -4,14 +4,15 @@
   <div class="pt-10"></div>
   {{#each environmentTypes as |envType| }}
     {{radio-button id=envType.label selection=selectedType value=envType.label disabled=(if (eq modalOpts.type 'review') true false)}}
-    <label for={{envType.label}}>
+    <label class="acc-label" for={{envType.label}}>
       {{envType.label}}
     </label>
     <span class="mr-10"></span>
   {{/each}}
 </div>
 
-<div class="pt-20"></div>
+<hr class="mt-30 mb-30" />
+
 <div class="inline-form">
   <label>{{t 'newPipelineStep.stepType.image'}}{{field-required}}</label>
   <div class="pt-10"></div>
@@ -31,14 +32,14 @@
     {{else}}
       {{customImage.repo}}:
       <div class="inline-block">
-        {{searchable-select 
-          content=customImage.selectableTags 
-          value=customImage.tag 
+        {{searchable-select
+          content=customImage.selectableTags
+          value=customImage.tag
           allowCustom=true
         }}
       </div>
     {{/if}}
-    
+
     {{!-- (if (not-eq selectedType 'custom') true false) --}}
   {{/if}}
 </div>
@@ -54,16 +55,16 @@
       disabled=true
     }}
   {{else}}
-    {{searchable-select 
-      content=environmentTypes 
-      value=selectedModel.image 
+    {{searchable-select
+      content=environmentTypes
+      value=selectedModel.image
       allowCustom=true
       optionLabelPath="value"
     }}
   {{/if}}
 </div>
  --}}
-<section class="header has-tabs clearfix p-0">
+<section class="header has-tabs clearfix p-0 pt-30">
   <ul class="tab-nav">
     <li {{action "changeTaskModel" true}}>
       <a href="javascript:void(0);" class="{{if (eq runScriptConfig.isShell true) 'active' (if (eq modalOpts.type 'review') 'hide')}} ember-view">{{t 'newPipelineStep.stepType.task.shellScript'}}</a>
