@@ -18,7 +18,6 @@ export default Route.extend({
     },
   },
   model: function(params/*, transition*/) {
-    // debugger;
     var store = get(this, 'store');
     var clusterStore = get(this, 'clusterStore');
 
