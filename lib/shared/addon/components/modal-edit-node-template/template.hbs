@@ -16,8 +16,9 @@
   {{/if}}
 
   {{#if driver}}
-    {{component (concat 'node-driver/driver-' driver)
+    {{component (if (or (not driverObj) driverObj.hasUi) (concat 'node-driver/driver-' driver) 'node-driver/driver-other')
       model=model
+      driverName=driver
       editing=editing
       hidePicker=(action "hidePicker")
       saved=(action "saved")
