@@ -78,6 +78,23 @@
             optionValuePath="url"
             readOnly=readOnly
           }}
+          <button {{action "fetchPipelineFromRepo"}} 
+            disabled={{if selectedModel.sourceCodeConfig.url fetchPipelineFromRepoState true}} 
+            class="mt-10 btn bg-info" 
+            style="color:white;"
+            >
+            {{#if fetchPipelineFromRepoState}}
+              <i class="icon icon-spin icon-spinner"></i> 
+            {{/if}}
+            {{t 'newPipelineStep.stepType.scm.importFromRepo'}}
+          </button>
+          {{#if fetchPipelineFromRepoMessageShow}}
+              {{#if fetchPipelineFromRepoMessageSuccess}}
+                {{banner-message color='bg-success mb-0 mt-10' message=(t 'newPipelineStep.stepType.scm.importPipelineSuccess' htmlSafe=true branch=importFromBranch)}}
+              {{else}}
+                {{banner-message color='bg-warning mb-0 mt-10' message=(t 'newPipelineStep.stepType.scm.importPipelineFail') }}
+              {{/if}}
+            {{/if}}
         {{/if}}
       {{/if}}
     </div>
