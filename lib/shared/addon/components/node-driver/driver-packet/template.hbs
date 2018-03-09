@@ -7,14 +7,14 @@
         <div class="row inline-form">
           <div class="col span-6">
             <label class="acc-label">{{t 'nodeDriver.packet.projectId.label'}}{{field-required}}</label>
-            {{#input-or-display editable=(not dataFetched) value=packetConfig.projectId}}
-              {{input type="text" name="username" value=packetConfig.projectId classNames="form-control" placeholder=(t 'nodeDriver.packet.projectId.placeholder')}}
+            {{#input-or-display editable=(not dataFetched) value=config.projectId}}
+              {{input type="text" name="username" value=config.projectId classNames="form-control" placeholder=(t 'nodeDriver.packet.projectId.placeholder')}}
             {{/input-or-display}}
           </div>
           <div class="col span-6">
             <label class="acc-label">{{t 'nodeDriver.packet.apiKey.label'}}{{field-required}}</label>
-            {{#input-or-display editable=(not dataFetched) value=packetConfig.apiKey obfuscate=true}}
-              {{input type="password" name="password" value=packetConfig.apiKey classNames="form-control" placeholder=(t 'nodeDriver.packet.apiKey.placeholder')}}
+            {{#input-or-display editable=(not dataFetched) value=config.apiKey obfuscate=true}}
+              {{input type="password" name="password" value=config.apiKey classNames="form-control" placeholder=(t 'nodeDriver.packet.apiKey.placeholder')}}
             {{/input-or-display}}
             <p class="text-info">{{t 'nodeDriver.packet.apiKeyHelp' htmlSafe=true}}</p>
           </div>
@@ -37,9 +37,9 @@
             <label>{{t 'nodeDriver.packet.region.label'}}</label>
           </div>
           <div class="col span-10">
-            <select class="form-control" onchange={{action (mut packetConfig.facility) value="target.value"}}>
+            <select class="form-control" onchange={{action (mut config.facility) value="target.value"}}>
               {{#each facilityChoices as |choice|}}
-                <option value={{choice.code}} selected={{eq packetConfig.facilityCode choice.code}}>{{choice.name}}</option>
+                <option value={{choice.code}} selected={{eq config.facilityCode choice.code}}>{{choice.name}}</option>
               {{/each}}
             </select>
           </div>
@@ -52,18 +52,18 @@
         <div class="row inline-form">
           <div class="col span-6">
             <label class="acc-label">{{t 'nodeDriver.packet.image.label'}}</label>
-            <select class="form-control" onchange={{action (mut packetConfig.os) value="target.value"}}>
+            <select class="form-control" onchange={{action (mut config.os) value="target.value"}}>
               {{#each osChoices as |choice|}}
-                <option value={{choice.slug}} selected={{eq packetConfig.os choice.slug}}>{{choice.name}}</option>
+                <option value={{choice.slug}} selected={{eq config.os choice.slug}}>{{choice.name}}</option>
               {{/each}}
             </select>
           </div>
 
           <div class="col span-6">
             <label class="acc-label">{{t 'nodeDriver.packet.size.label'}}</label>
-            <select class="form-control" onchange={{action (mut packetConfig.plan) value="target.value"}}>
+            <select class="form-control" onchange={{action (mut config.plan) value="target.value"}}>
               {{#each planChoices as |choice|}}
-                <option value={{choice.slug}} selected={{eq packetConfig.plan choice.slug}}>{{choice.name}} (${{choice.pricing.hour}}/hr)</option>
+                <option value={{choice.slug}} selected={{eq config.plan choice.slug}}>{{choice.name}} (${{choice.pricing.hour}}/hr)</option>
               {{/each}}
             </select>
           </div>

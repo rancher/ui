@@ -4,7 +4,7 @@
   <div class="container-fluid">
     {{#if showNameScale}}
       <div class="box mt-20">
-        <h4>{{t 'machine.driverRackspace.instanceSection'}}</h4>
+        <h4>{{t 'nodeDriver.rackspace.instanceSection'}}</h4>
         <div class="row mb-20">
           <div class="row">
             <div class="col span-11-of-23 mt-0 mb-0">
@@ -29,57 +29,57 @@
     {{/if}}
 
     <div class="over-hr mt-20 mb-20">
-      <span>{{t 'machine.driverRackspace.accountSection'}}</span>
+      <span>{{t 'nodeDriver.rackspace.accountSection'}}</span>
     </div>
 
     <div class="row inline-form">
       <div class="col span-2 col-inline">
-        <label>{{t 'machine.driverRackspace.username.label'}}{{field-required}}</label>
+        <label>{{t 'nodeDriver.rackspace.username.label'}}{{field-required}}</label>
       </div>
       <div class="col span-10">
-        {{input type="text" value=rackspaceConfig.username classNames="form-control" placeholder=(t 'machine.driverRackspace.username.placeholder')}}
+        {{input type="text" value=config.username classNames="form-control" placeholder=(t 'nodeDriver.rackspace.username.placeholder')}}
       </div>
     </div>
 
     <div class="row inline-form">
       <div class="col span-2 col-inline">
-        <label>{{t 'machine.driverRackspace.apiKey.label'}}{{field-required}}</label>
+        <label>{{t 'nodeDriver.rackspace.apiKey.label'}}{{field-required}}</label>
       </div>
       <div class="col span-10">
-        {{input type="password" value=rackspaceConfig.apiKey classNames="form-control" placeholder=(t 'machine.driverRackspace.apiKey.placeholder')}}
-        <p class="text-info">{{t 'machine.driverRackspace.accountHelp'}}</p>
+        {{input type="password" value=config.apiKey classNames="form-control" placeholder=(t 'nodeDriver.rackspace.apiKey.placeholder')}}
+        <p class="text-info">{{t 'nodeDriver.rackspace.accountHelp'}}</p>
       </div>
     </div>
 
     <div class="over-hr mt-20 mb-20">
-      <span>{{t 'machine.driverRackspace.regionSection'}}</span>
+      <span>{{t 'nodeDriver.rackspace.regionSection'}}</span>
     </div>
 
     <div class="row inline-form">
       <div class="col span-2 col-inline">
-        <label>{{t 'machine.driverRackspace.region.label'}}</label>
+        <label>{{t 'nodeDriver.rackspace.region.label'}}</label>
       </div>
       <div class="col span-10">
-        <select class="form-control" onchange={{action (mut rackspaceConfig.region) value="target.value"}}>
+        <select class="form-control" onchange={{action (mut config.region) value="target.value"}}>
           {{#each regionChoices as |choice|}}
-            <option value={{choice.value}} selected={{eq rackspaceConfig.region choice.value}}>{{choice.label}}</option>
+            <option value={{choice.value}} selected={{eq config.region choice.value}}>{{choice.label}}</option>
           {{/each}}
         </select>
       </div>
     </div>
 
     <div class="over-hr mt-20 mb-20">
-      <span>{{t 'machine.driverRackspace.instanceOptionsSection'}}</span>
+      <span>{{t 'nodeDriver.rackspace.instanceOptionsSection'}}</span>
     </div>
 
     <div class="row inline-form">
       <div class="col span-2 col-inline">
-        <label>{{t 'machine.driverRackspace.flavor.label'}}</label>
+        <label>{{t 'nodeDriver.rackspace.flavor.label'}}</label>
       </div>
       <div class="col span-10">
-        <select class="form-control" onchange={{action (mut rackspaceConfig.flavorId) value="target.value"}}>
+        <select class="form-control" onchange={{action (mut config.flavorId) value="target.value"}}>
           {{#each flavorChoices as |choice|}}
-            <option value={{choice.value}} selected={{eq rackspaceConfig.flavorId choice.value}}>{{choice.label}}</option>
+            <option value={{choice.value}} selected={{eq config.flavorId choice.value}}>{{choice.label}}</option>
           {{/each}}
         </select>
       </div>
@@ -96,7 +96,6 @@
     </div>
 
     {{#advanced-section}}
-      {{limit-parameters model=model}}
       {{form-engine-opts machine=model showEngineUrl=showEngineUrl}}
     {{/advanced-section}}
   </div>
