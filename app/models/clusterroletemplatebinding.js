@@ -2,9 +2,10 @@ import Resource from 'ember-api-store/models/resource';
 import { reference } from 'ember-api-store/utils/denormalize';
 import { get, computed } from '@ember/object';
 import C from 'ui/utils/constants';
+import PrincipalReference from 'ui/mixins/principal-reference';
 
 
-export default Resource.extend({
+export default Resource.extend(PrincipalReference, {
   type:    'clusterRoleTemplateBinding',
 
   cluster: reference('clusterId'),
