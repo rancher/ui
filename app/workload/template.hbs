@@ -137,16 +137,16 @@
           </div>
         </div>
         <div class="row">
-          <div class="col {{if service.launchConfig.healthcheck 'span-6' 'span-12'}}">
+          <div class="col {{if service.launchConfig.livenessProbe 'span-6' 'span-12'}}">
             {{form-healthcheck
-              initialCheck=service.launchConfig.readycheck
+              initialCheck=service.launchConfig.readinessProbe
               editing=false
             }}
           </div>
-          {{#if service.launchConfig.healthcheck}}
+          {{#if service.launchConfig.livenessProbe}}
             <div class="col span-6">
               {{form-healthcheck
-                initialCheck=service.launchConfig.healthcheck
+                initialCheck=service.launchConfig.livenessProbe
                 editing=true
               }}
             </div>

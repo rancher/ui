@@ -15,15 +15,11 @@
           <span class="darken"><i class="icon icon-chevron-down"></i></span>
         </button>
         <ul class="dropdown-menu" role="menu">
-          <li><a {{action "addBindMount"}}>{{t 'formVolumes.add.bindMount'}}</a></li>
-          <li class="disabled"><a {{!--action "addVolume"--}}>{{t 'formVolumes.add.existing'}} (Coming Soon)</a></li>
-          <li class="disabled"><a {{!--action "addNewVolume"--}}>{{t 'formVolumes.add.new'}} (Coming Soon)</a></li>
-          <li class="disabled"><a {{action "addTmpfs"}}>{{t 'formVolumes.add.tmpfs'}} (Coming Soon)</a></li>
-          {{#if hasSidekicks}}
-            <li><a {{action "addVolumesFromLaunchConfig"}}>{{t 'formVolumes.add.fromLaunchConfig'}}</a></li>
-          {{/if}}
-          <li class="divider"></li>
-          <li class="disabled"><a {{action "addCustom"}}>{{t 'formVolumes.add.custom'}} (Coming Soon)</a></li>
+          <li class="disabled"><a href="#">Coming Soon...</a></li>
+          <li class="disabled"><a {{!--action "addBindMount"--}}>{{t 'formVolumes.add.bindMount'}}</a></li>
+          <li class="disabled"><a {{!--action "addVolume"--}}>{{t 'formVolumes.add.existing'}}</a></li>
+          <li class="disabled"><a {{!--action "addNewVolume"--}}>{{t 'formVolumes.add.new'}}</a></li>
+          <li class="disabled"><a {{action "addTmpfs"}}>{{t 'formVolumes.add.tmpfs'}}</a></li>
         </ul>
       </div>
     {{/if}}
@@ -49,7 +45,6 @@
               {{container/form-volume-row
                 model=vol
                 editing=editing
-                stack=stack
                 requestedHostId=launchConfig.requestedHostId
                 remove=(action "remove" vol)
               }}
