@@ -67,7 +67,7 @@ export default {
       }
       else
       {
-        str = err.get('message');
+        str = err.get('message') || err.get('xhr.message');
         if ( err.get('detail') )
         {
           if ( str )

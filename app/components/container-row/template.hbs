@@ -17,10 +17,12 @@
   </td>
 {{/if}}
 <td data-title="{{t 'containersPage.table.image'}}:" class="clip">
-  {{model.displayImage}}
-  {{#if (and (eq showCommand "inline") model.command)~}}
-    ({{model.command}})
-  {{/if}}
+  {{#tooltip-element inlineBlock=true type="tooltip-basic" tooltipTemplate="tooltip-static" model=model.displayImage tagName="span"}}
+    {{model.displayImage}}
+    {{#if (and (eq showCommand "inline") model.command)~}}
+      ({{model.command}})
+    {{/if}}
+  {{/tooltip-element~}}
 </td>
 {{#if showStats}}
   <td data-title="{{t 'containersPage.table.stats'}}:" class="spark-td">
