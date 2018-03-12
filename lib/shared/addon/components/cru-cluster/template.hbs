@@ -11,13 +11,15 @@
 </section>
 
 {{#unless initialProvider}}
-  <div class="row nav nav-boxes checked-active">
-    {{#each providerChoices as |choice|}}
-      {{#link-to (query-params provider=choice.name) class=(concat "col span-2 nav-box-item driver generic machine-driver " choice.name)}}
-        <p class="sr-only">{{choice.displayName}}</p>
-      {{/link-to}}
-    {{/each}}
-  </div>
+  {{#each providerGroups as |choices|}}
+    <div class="row nav nav-boxes checked-active">
+      {{#each choices as |choice|}}
+        {{#link-to (query-params provider=choice.name) class=(concat "col span-2 col-inline nav-box-item driver generic machine-driver " choice.name)}}
+          <p class="sr-only">{{choice.displayName}}</p>
+        {{/link-to}}
+      {{/each}}
+    </div>
+  {{/each}}
 {{/unless}}
 
 {{#if (eq step 1)}}
