@@ -191,11 +191,7 @@
         <label class="form-control-static">{{t 'machine.driverExoscale.diskSize.label'}}</label>
       </div>
       <div class="col-md-4">
-        <select class="form-control" onchange={{action (mut exoscaleConfig.diskSize) value="target.value"}}>
-          {{#each allDiskSizes as |choice|}}
-            <option value={{choice}} selected={{eq exoscaleConfig.diskSize choice}}>{{choice}}</option>
-          {{/each}}
-        </select>
+        {{input type="number" classNames="form-control" min=10 max=1600 step=10 value=exoscaleConfig.diskSize}}
       </div>
     </div>
 
