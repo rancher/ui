@@ -14,13 +14,16 @@
     </div>
     <hr>
     <div class="stack-info-bottom">
-      <div class="multi-bar">
+      <div class="multi-bar text-center">
         {{progress-bar-multi
             labelKey="state"
             valueKey="count"
-            values=model.serviceStates.byColor
-            tooltipValues=model.serviceStates.byName
+            values=model.podStates.byColor
+            tooltipValues=model.podStates.byName
         }}
+        <small class="text-muted">
+          {{model.pods.length}}
+        </small>
       </div>
       {{#upgrade-btn model=model classNames="btn-sm" as |btn|}}
         {{model.externalIdInfo.version}}
