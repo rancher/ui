@@ -1,11 +1,20 @@
 import Resource from 'ember-api-store/models/resource';
+import { hasMany } from 'ember-api-store/utils/denormalize';
 import { computed, get } from '@ember/object';
 import { parseHelmExternalId } from 'ui/utils/parse-externalid';
+import StateCounts from 'ui/mixins/state-counts';
 import { inject as service } from '@ember/service';
 
-const App = Resource.extend({
+const App = Resource.extend(StateCounts, {
   catalog:      service(),
   router:       service(),
+  pods:         hasMany('installNamespace', 'pod', 'namespaceId'),
+
+  init() {
+    this._super(...arguments);
+    this.defineStateCounts('pods', 'podStates', 'podCountSort');
+  },
+
   externalIdInfo: computed('externalId', function() {
     return parseHelmExternalId(get(this, 'externalId'));
   }),
