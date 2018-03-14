@@ -13,6 +13,9 @@
           className=(concat-str "header-pipeline" model.activities.statusClass)
           as | parent |
         }}
+          {{#if activity.showTransitioningMessage}}
+            {{banner-message icon=activity.bannerIcon color=(concat-str activity.bannerClass ' mb-0 mt-10') message=activity.transitioningMessage}}
+          {{/if}}
           {{table-activity-row
             activity=activity
             logStatus=logStatus
