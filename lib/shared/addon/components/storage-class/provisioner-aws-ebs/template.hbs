@@ -11,7 +11,9 @@
         </div>
       {{/each}}
     {{else}}
-      {{t (concat 'cruStorageClass.aws-ebs.type.' volumeType)}}
+      <div>
+        {{t (concat 'cruStorageClass.aws-ebs.type.' volumeType)}}
+      </div>
     {{/if}}
 
     {{#if supportsIops}}
@@ -22,7 +24,9 @@
           <span class="input-group-addon bg-default">{{t 'cruStorageClass.aws-ebs.iopsPerGB.unit'}}</span>
         </div>
       {{else}}
-        {{iopsPerGB}} {{t 'cruStorageClass.aws-ebs.iopsPerGB.unit'}}
+        <div>
+          {{iopsPerGB}} {{t 'cruStorageClass.aws-ebs.iopsPerGB.unit'}}
+        </div>
       {{/if}}
     {{/if}}
 
@@ -46,11 +50,13 @@
         {{textarea-autogrow spellcheck="false" required=true value=zones}}
       {{/unless}}
     {{else}}
-      {{#if zoneAutomatic}}
-        {{t 'cruStorageClass.aws-ebs.zone.automatic'}}
-      {{else}}
-        {{zones}}
-      {{/if}}
+      <div>
+        {{#if zoneAutomatic}}
+          {{t 'cruStorageClass.aws-ebs.zone.automatic'}}
+        {{else}}
+          {{zones}}
+        {{/if}}
+      </div>
     {{/if}}
   </div>
   <div class="col span-4">
@@ -69,7 +75,9 @@
         </label>
       </div>
     {{else}}
-      {{t (if encrypted 'generic.enabled' 'generic.disabled')}}
+      <div>
+        {{t (if encrypted 'generic.enabled' 'generic.disabled')}}
+      </div>
     {{/if}}
 
     {{#if encrypted}}
@@ -92,9 +100,13 @@
           {{input value=kmsKeyId}}
         {{/unless}}
       {{else if kmsAutomatic}}
-        {{t 'cruStorageClass.aws-ebs.kmsKeyId.automatic'}}
+        <div>
+          {{t 'cruStorageClass.aws-ebs.kmsKeyId.automatic'}}
+        </div>
       {{else}}
-        {{kmsKeyId}}
+        <div>
+          {{kmsKeyId}}
+        </div>
       {{/if}}
     {{/if}}
   </div>
