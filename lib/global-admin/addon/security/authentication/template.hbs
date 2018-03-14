@@ -4,19 +4,9 @@
   <div class="row nav nav-boxes checked-active">
     {{#each drivers as |driver|}}
       {{#if driver.available}}
-        {{#if (eq driver.label "Active Directory")}}
-          {{#if (eq app.environment "development")}}
-            {{#link-to driver.route alt=driver.label classNames=(concat "col span-2 nav-box-item driver auth-driver " driver.css) href=false}}
-              <p class="sr-only">{{driver.label}}</p>
-            {{/link-to}}
-          {{else}}
-            <a class="col span-2 nav-box-item driver auth-driver {{driver.css}} disabled ad-coming-soon" href="#"></a>
-          {{/if}}
-        {{else}}
-          {{#link-to driver.route alt=driver.label classNames=(concat "col span-2 nav-box-item driver auth-driver " driver.css) href=false}}
-            <p class="sr-only">{{driver.label}}</p>
-          {{/link-to}}
-        {{/if}}
+        {{#link-to driver.route alt=driver.label classNames=(concat "col span-2 nav-box-item driver auth-driver " driver.css) href=false}}
+          <p class="sr-only">{{driver.label}}</p>
+        {{/link-to}}
       {{/if}}
     {{/each}}
   </div>
