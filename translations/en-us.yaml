@@ -1718,6 +1718,52 @@ cruRegistry:
     label: Password
     saved: Saved
 
+cruStorageClass:
+  title:
+    new: Add Storage Class
+    edit: 'Edit Storage Class: {name}'
+    view: 'Storage Class: {name}'
+  allowVolumeExpansion:
+    label: Allow users to expand volumes
+  mountOptions:
+    label: Mount Options
+    addActionLabel: Add Option
+  parameters:
+    title: Parameters
+    detail: Configure the provider-specific parameters for the storage class
+    addActionLabel: Add Parameter
+  customize:
+    title: Customize
+    detail: Customize Advanced options
+  provisioner:
+    label: Provisioner
+  reclaimPolicy:
+    label: Reclaim Policy
+    Delete: Delete volumes and underlying device when released by workloads
+    Retain: Retain the volume for manual cleanup
+    Recycle: "Recycle: Empty the contents and then preserve the volume for future workloads"
+  aws-ebs:
+    type:
+      label: Volume Type
+      gp2: 'GP2 - General Purpose SSD'
+      io1: 'IO1 - Provisioned IOPS SSD'
+      st1: 'ST1 - Throughput-Optimized HDD'
+      sc1: 'SC1 - Cold-Storage HDD'
+    zone:
+      label: Availability Zone
+      automatic: "Automatic: Zones the cluster has a node in"
+      manual: "Manual: Choose specific zones"
+    iopsPerGB:
+      label: Provisioned IOPS
+      unit: per second, per GB
+    encrypted:
+      label: Encryption
+    kmsKeyId:
+      label: KMS Key ID for Encryption
+      automatic: "Automatic: Generate a key"
+      manual: "Manual: Use a specific key (full ARN)"
+
+
 dangerZone:
   header: Advanced Settings
   subtext: "Typical users will not need to change these.  Proceed with caution, incorrect values can break your {appName} installation.<br/>Settings which have been customized from default settings  are shown in <b>bold</b>."
@@ -3433,7 +3479,6 @@ clusterNew:
       instructions: "Run the kubectl command below on an existing Kubernetes 1.8.x cluster to import it into {appName}:"
       instructionsInsecure: "If you get an error about 'certificate signed by unknown authority' because your {appName} installation is not running with a SSL certificate signed by a recognized public CA, run the command below instead to bypass the certificate check:"
 
-
 nodeDriver:
   addTemplate: Add Node Template
 
@@ -3497,7 +3542,7 @@ nodeDriver:
     instanceType:
       label: Instance Type
     rootSize:
-      label: Root Size
+      label: Root Disk Size
       unit: GB
     ami:
       label: AMI
@@ -3581,7 +3626,7 @@ nodeDriver:
     instanceProfile:
       label: Instance Profile
     diskSize:
-      label: Root Size
+      label: Root Disk Size
     sshUser:
       label: SSH User
       placeholder: 'usr1'
@@ -4755,3 +4800,31 @@ growl:
       warning: Unable to establish a WebSocket connection to the server.  If your server is behind a proxy or SSL-termination device, Browser can not connect to WebSocket. If you run the server behind a proxy, please make sure the proxy supports WebSockets.  Streaming stats, logs, shell/console, and auto-updating of the state of resources may not work until this is resolved.
       safariCertWarning: Another possible cause is that Safari does not allow WebSocket connections using an unrecognized certificate, even if you say to Continue to bypass the warning.  The server must have a certificate signed by a recognized authority Safari automatically trusts.
       disconnectedWarning: "Disconnected from server, attempting to reconnect..."
+
+storageClass:
+  aws-ebs:
+    title: Amazon EBS Disk
+  gce-pd:
+    title: Google GCE Persistent Disk
+  glusterfs:
+    title: Gluster Volume
+  cinder:
+    title: Openstack Cinder Volume
+  vsphere-volume:
+    title: VMWare vSphere Volume
+  rbd:
+    title: Ceph RBD
+  quobyte:
+    title: Quobyte Volume
+  azure-disk:
+    title: Azure Disk
+  azure-file:
+    title: Azure File
+  portworx-volume:
+    title: Portworx Volume
+  scaleio:
+    title: ScaleIO Volume
+  storageos:
+    title: StorageOS
+  local:
+    title: Local Node Disk
