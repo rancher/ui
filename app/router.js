@@ -84,8 +84,10 @@ Router.map(function() {
 
       this.route('storage-classes', {path: '/storage-classes'}, function() {
         this.route('index', {path: '/'});
-        this.route('edit', {path: '/:storage_class_id'});
         this.route('new', {path: '/add'});
+        this.route('detail', {path: '/:storage_class_id'}, function() {
+          this.route('edit');
+        });
       });
     });
 

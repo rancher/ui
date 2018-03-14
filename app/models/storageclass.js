@@ -5,6 +5,41 @@ import { all } from 'rsvp';
 
 const DEFAULT_ANNOTATION = 'storageclass.kubernetes.io/is-default-class';
 
+const PROVISIONERS = [];
+registerProvisioner('aws-ebs',        'kubernetes.io/aws-ebs',        true);
+registerProvisioner('gce-pd',         'kubernetes.io/gce-pd',         );
+registerProvisioner('glusterfs',      'kubernetes.io/glusterfs',      );
+registerProvisioner('cinder',         'kubernetes.io/cinder',         );
+registerProvisioner('vsphere-volume', 'kubernetes.io/vpshere-volume', );
+registerProvisioner('rbd',            'kubernetes.io/rbd',            );
+registerProvisioner('quobyte',        'kubernetes.io/quobyte',        );
+registerProvisioner('azure-disk',     'kubernetes.io/azure-disk',     );
+registerProvisioner('azure-file',     'kubernetes.io/azure-file',     );
+registerProvisioner('portworx-volume','kubernetes.io/portworx-volume',);
+registerProvisioner('scaleio',        'kubernetes.io/scaleio',        );
+registerProvisioner('storageos',      'kubernetes.io/storageos',      );
+
+export function registerProvisioner(name, provisioner, component) {
+  if ( component === true ) {
+    component = name;
+  }
+
+  const existing = PROVISIONERS.findBy('name', name);
+  if ( existing ) {
+    PROVISIONERS.removeObject(existing);
+  }
+
+  PROVISIONERS.push({
+    name: name,
+    value: provisioner,
+    component: component,
+  });
+}
+
+export function getProvisioners() {
+  return JSON.parse(JSON.stringify(PROVISIONERS));
+}
+
 export default Resource.extend({
   clusterStore: service(),
 
@@ -58,5 +93,20 @@ export default Resource.extend({
     ];
 
     return out;
+  }),
+
+  displayProvisioner: computed('provisioner', 'intl.locale', function() {
+    const intl = get(this, 'intl');
+    const provisioner = get(this, 'provisioner');
+    const entry = PROVISIONERS.findBy('value', provisioner)
+
+    if ( provisioner && entry ) {
+      const key = `storageClass.${entry.name}.title`;
+      if ( intl.exists(key) ) {
+        return intl.t(key);
+      }
+    }
+
+    return provisioner;
   }),
 });

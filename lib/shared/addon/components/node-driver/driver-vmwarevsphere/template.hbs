@@ -1,148 +1,135 @@
-<section class="horizontal-form">
-  {{#accordion-list showExpandAll=false as | al expandFn |}}
-    <div class="over-hr mb-20"><span>{{driverOptionsTitle}}</span></div>
+{{#accordion-list showExpandAll=false as | al expandFn |}}
+  <div class="over-hr"><span>{{driverOptionsTitle}}</span></div>
 
-    <div class="row box mt-20">
-      <h4>{{t 'nodeDriver.vmwarevsphere.accountSection'}}</h4>
-      <div class="row">
-        <div class="col span-2 col-inline">
-          <label>{{t 'nodeDriver.vmwarevsphere.vcenter.label'}}{{field-required}}</label>
-        </div>
-        <div class="col span-4">
-          {{input type="text" class="form-control" value=config.vcenter placeholder=(t 'nodeDriver.vmwarevsphere.vcenter.placeholder')}}
-        </div>
-        <div class="col span-2 col-inline">
-          <label>{{t 'nodeDriver.vmwarevsphere.vcenterPort.label'}}{{field-required}}</label>
-        </div>
-        <div class="col span-4">
-          {{input-integer min=1 max=65535 class="form-control" value=config.vcenterPort}}
+  {{#accordion-list-item
+    title=(t 'nodeDriver.vmwarevsphere.access.title')
+    detail=(t 'nodeDriver.vmwarevsphere.access.detail')
+    expandAll=expandAll
+    expand=(action expandFn)
+    expandOnInit=true
+  }}
+    <div class="row">
+      <div class="col span-6">
+        <label class="acc-label">{{t 'nodeDriver.vmwarevsphere.vcenter.label'}}{{field-required}}</label>
+        {{input type="text" class="form-control" value=config.vcenter placeholder=(t 'nodeDriver.vmwarevsphere.vcenter.placeholder')}}
+      </div>
+      <div class="col span-6">
+        <label class="acc-label">{{t 'nodeDriver.vmwarevsphere.vcenterPort.label'}}{{field-required}}</label>
+        {{input-integer min=1 max=65535 class="form-control" value=config.vcenterPort}}
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col span-6">
+        <label class="acc-label">{{t 'nodeDriver.vmwarevsphere.username.label'}}{{field-required}}</label>
+        {{input type="text" value=config.username classNames="form-control"}}
+      </div>
+
+      <div class="col span-6">
+        <label class="acc-label">{{t 'nodeDriver.vmwarevsphere.password.label'}}{{field-required}}</label>
+        {{input type="password" value=config.password classNames="form-control"}}
+      </div>
+    </div>
+    <p class="help-block">{{t 'nodeDriver.vmwarevsphere.access.help'}}</p>
+  {{/accordion-list-item}}
+
+  {{#accordion-list-item
+    title=(t 'nodeDriver.vmwarevsphere.instance.title')
+    detail=(t 'nodeDriver.vmwarevsphere.instance.detail')
+    expandAll=expandAll
+    expand=(action expandFn)
+    expandOnInit=true
+  }}
+    <div class="row">
+      <div class="col span-6">
+        <label class="acc-label">{{t 'nodeDriver.vmwarevsphere.cpuCount.label'}}</label>
+        <div class="input-group">
+          {{input-integer min=1 max=32 value=config.cpuCount classNames="form-control"}}
+          <div class="input-group-addon bg-default">{{t 'nodeDriver.vmwarevsphere.cpuCount.unit' cores=config.cpuCount}}</div>
         </div>
       </div>
 
-      <div class="row">
-        <div class="col span-2 col-inline">
-          <label>{{t 'nodeDriver.vmwarevsphere.username.label'}}{{field-required}}</label>
-        </div>
-        <div class="col span-4">
-          {{input type="text" value=config.username classNames="form-control"}}
-        </div>
-
-        <div class="col span-2 col-inline">
-          <label>{{t 'nodeDriver.vmwarevsphere.password.label'}}{{field-required}}</label>
-        </div>
-        <div class="col span-4">
-          {{input type="password" value=config.password classNames="form-control"}}
+      <div class="col span-6">
+        <label class="acc-label">{{t 'nodeDriver.vmwarevsphere.memorySize.label'}}</label>
+        <div class="input-group">
+          {{input-integer min=1 value=config.memorySize classNames="form-control"}}
+          <div class="input-group-addon bg-default">{{t 'nodeDriver.vmwarevsphere.memorySize.unit'}}</div>
         </div>
       </div>
     </div>
 
-    <div class="row box mt-20">
-      <h4>{{t 'nodeDriver.vmwarevsphere.instanceOptionsSection'}}</h4>
-      <div class="row">
-        <div class="col span-2 col-inline">
-          <label>{{t 'nodeDriver.vmwarevsphere.cpuCount.label'}}</label>
-        </div>
-
-        <div class="col span-1">
-          {{config.cpuCount}}
-        </div>
-        <div class="col span-3">
-          {{input-slider value=config.cpuCount valueMin=1 valueMax=32}}
-        </div>
-
-        <div class="col span-2 col-inline">
-          <label>{{t 'nodeDriver.vmwarevsphere.memorySize.label'}}</label>
-        </div>
-        <div class="col span-4">
-          <div class="input-group">
-            {{input-integer min=1 value=config.memorySize classNames="form-control"}}
-            <div class="input-group-addon bg-default">{{t 'nodeDriver.vmwarevsphere.memorySize.unit'}}</div>
-          </div>
+    <div class="row">
+      <div class="col span-6">
+        <label class="acc-label">{{t 'nodeDriver.vmwarevsphere.diskSize.label'}}</label>
+        <div class="input-group">
+          {{input-integer min=1 value=config.diskSize classNames="form-control"}}
+          <div class="input-group-addon bg-default">{{t 'nodeDriver.vmwarevsphere.diskSize.unit'}}</div>
         </div>
       </div>
 
-      <div class="row">
-        <div class="col span-2 col-inline">
-          <label>{{t 'nodeDriver.vmwarevsphere.diskSize.label'}}</label>
-        </div>
-        <div class="col span-4">
-          <div class="input-group">
-            {{input-integer min=1 value=config.diskSize classNames="form-control"}}
-            <div class="input-group-addon bg-default">{{t 'nodeDriver.vmwarevsphere.diskSize.unit'}}</div>
-          </div>
-        </div>
+      <div class="col span-6">
+        <label class="acc-label">{{t 'nodeDriver.vmwarevsphere.boot2dockerUrl.label'}}</label>
+        {{input type="text" value=config.boot2dockerUrl classNames="form-control" placeholder=(t 'nodeDriver.vmwarevsphere.boot2dockerUrl.placeholder')}}
+      </div>
+    </div>
+  {{/accordion-list-item}}
 
-        <div class="col span-2 col-inline">
-          <label>{{t 'nodeDriver.vmwarevsphere.boot2dockerUrl.label'}}</label>
-        </div>
-        <div class="col span-4">
-          {{input type="text" value=config.boot2dockerUrl classNames="form-control" placeholder=(t 'nodeDriver.vmwarevsphere.boot2dockerUrl.placeholder')}}
-        </div>
+  {{#accordion-list-item
+    title=(t 'nodeDriver.vmwarevsphere.scheduling.title')
+    detail=(t 'nodeDriver.vmwarevsphere.scheduling.detail')
+    expandAll=expandAll
+    expand=(action expandFn)
+    expandOnInit=true
+  }}
+    <div class="row">
+      <div class="col span-4">
+        <label class="acc-label">{{t 'nodeDriver.vmwarevsphere.dataCenter.label'}}</label>
+        {{input type="text" value=config.datacenter classNames="form-control"}}
+      </div>
+
+      <div class="col span-4">
+        <label class="acc-label">{{t 'nodeDriver.vmwarevsphere.pool.label'}}</label>
+        {{input type="text" value=config.pool classNames="form-control"}}
+      </div>
+
+      <div class="col span-4">
+        <label class="acc-label">{{t 'nodeDriver.vmwarevsphere.host.label'}}</label>
+        {{input type="text" value=config.hostsystem classNames="form-control" placeholder=(t 'nodeDriver.vmwarevsphere.host.placeholder')}}
       </div>
     </div>
 
-    <div class="row box mt-20">
-      <h4>{{t 'nodeDriver.vmwarevsphere.schedulingSection'}}</h4>
-      <div class="row">
-        <div class="col span-2 col-inline">
-          <label>{{t 'nodeDriver.vmwarevsphere.dataCenter.label'}}</label>
-        </div>
-        <div class="col span-2">
-          {{input type="text" value=config.datacenter classNames="form-control"}}
-        </div>
-
-        <div class="col span-2 col-inline">
-          <label>{{t 'nodeDriver.vmwarevsphere.pool.label'}}</label>
-        </div>
-        <div class="col span-2">
-          {{input type="text" value=config.pool classNames="form-control"}}
-        </div>
-
-        <div class="col span-2 col-inline">
-          <label>{{t 'nodeDriver.vmwarevsphere.host.label'}}</label>
-        </div>
-        <div class="col span-2">
-          {{input type="text" value=config.hostsystem classNames="form-control" placeholder=(t 'nodeDriver.vmwarevsphere.host.placeholder')}}
-        </div>
+    <div class="row">
+      <div class="col span-6">
+        <label class="acc-label">{{t 'nodeDriver.vmwarevsphere.network.label'}}</label>
+        {{input type="text" value=network classNames="form-control"}}
       </div>
 
-      <div class="row">
-        <div class="col span-2 col-inline">
-          <label>{{t 'nodeDriver.vmwarevsphere.network.label'}}</label>
-        </div>
-        <div class="col span-4">
-          {{input type="text" value=config.network classNames="form-control"}}
-        </div>
-
-        <div class="col span-2 col-inline">
-          <label>{{t 'nodeDriver.vmwarevsphere.dataStore.label'}}</label>
-        </div>
-        <div class="col span-4">
-          {{input type="text" value=config.datastore classNames="form-control"}}
-        </div>
+      <div class="col span-6">
+        <label class="acc-label">{{t 'nodeDriver.vmwarevsphere.dataStore.label'}}</label>
+        {{input type="text" value=config.datastore classNames="form-control"}}
       </div>
     </div>
+  {{/accordion-list-item}}
 
-    <div class="over-hr"><span>{{templateOptionsTitle}}</span></div>
+  <div class="over-hr"><span>{{templateOptionsTitle}}</span></div>
 
-    {{form-name-description
-      model=model
-      nameRequired=true
-    }}
+  {{form-name-description
+    model=model
+    nameRequired=true
+  }}
 
-    {{form-user-labels
-      initialLabels=labelResource.labels
-      setLabels=(action 'setLabels')
-      expandAll=expandAll
-      expand=(action expandFn)
-    }}
+  {{form-user-labels
+    initialLabels=labelResource.labels
+    setLabels=(action 'setLabels')
+    expandAll=expandAll
+    expand=(action expandFn)
+  }}
 
-    {{form-engine-opts
-      machine=model
-      showEngineUrl=showEngineUrl
-    }}
-  {{/accordion-list}}
+  {{form-engine-opts
+    machine=model
+    showEngineUrl=showEngineUrl
+  }}
 
   {{top-errors errors=errors}}
   {{save-cancel save="save" cancel="cancel"}}
-</section>
+{{/accordion-list}}

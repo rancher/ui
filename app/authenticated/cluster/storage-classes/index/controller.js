@@ -18,7 +18,7 @@ export const headers = [
   {
     name: 'provisioner',
     sort: ['provisioner','name','id'],
-    searchField: 'provisioner',
+    searchField: ['displayProvisioner', 'provisioner'],
     translationKey: 'storageClassPage.provisioner.label',
   },
   {

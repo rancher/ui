@@ -1718,6 +1718,52 @@ cruRegistry:
     label: Password
     saved: Saved
 
+cruStorageClass:
+  title:
+    new: Add Storage Class
+    edit: 'Edit Storage Class: {name}'
+    view: 'Storage Class: {name}'
+  allowVolumeExpansion:
+    label: Allow users to expand volumes
+  mountOptions:
+    label: Mount Options
+    addActionLabel: Add Option
+  parameters:
+    title: Parameters
+    detail: Configure the provider-specific parameters for the storage class
+    addActionLabel: Add Parameter
+  customize:
+    title: Customize
+    detail: Customize Advanced options
+  provisioner:
+    label: Provisioner
+  reclaimPolicy:
+    label: Reclaim Policy
+    Delete: Delete volumes and underlying device when released by workloads
+    Retain: Retain the volume for manual cleanup
+    Recycle: "Recycle: Empty the contents and then preserve the volume for future workloads"
+  aws-ebs:
+    type:
+      label: Volume Type
+      gp2: 'GP2 - General Purpose SSD'
+      io1: 'IO1 - Provisioned IOPS SSD'
+      st1: 'ST1 - Throughput-Optimized HDD'
+      sc1: 'SC1 - Cold-Storage HDD'
+    zone:
+      label: Availability Zone
+      automatic: "Automatic: Zones the cluster has a node in"
+      manual: "Manual: Choose specific zones"
+    iopsPerGB:
+      label: Provisioned IOPS
+      unit: per second, per GB
+    encrypted:
+      label: Encryption
+    kmsKeyId:
+      label: KMS Key ID for Encryption
+      automatic: "Automatic: Generate a key"
+      manual: "Manual: Use a specific key (full ARN)"
+
+
 dangerZone:
   header: Advanced Settings
   subtext: "Typical users will not need to change these.  Proceed with caution, incorrect values can break your {appName} installation.<br/>Settings which have been customized from default settings  are shown in <b>bold</b>."
@@ -2383,14 +2429,14 @@ formNetwork:
     label: Subdomain
     placeholder: e.g. foo
   hostAlias:
-    addActionLabel: Add Node Alias
-    label: Host Aliases
+    addActionLabel: Add Host Alias
+    label: Host Aliases (/etc/hosts entries)
     host:
-      label: Host
-      placeholder: e.g. example
+      label: Hostname
+      placeholder: e.g. database
     ip:
-      label: IP
-      placeholder: e.g. 192.168.1.101
+      label: IP Address
+      placeholder: e.g. 192.168.0.1
 
 formPorts:
   header: Port Mapping
@@ -2860,7 +2906,6 @@ formVolumes:
     existing: Use an existing volume
     new: Create a new volume
     bindMount: Bind-mount a host directory
-    fromContainer: Use volumes from another container
     tmpfs: Add an in-memory tmpfs
     custom: Add custom volume entry
   table:
@@ -3434,7 +3479,6 @@ clusterNew:
       instructions: "Run the kubectl command below on an existing Kubernetes 1.8.x cluster to import it into {appName}:"
       instructionsInsecure: "If you get an error about 'certificate signed by unknown authority' because your {appName} installation is not running with a SSL certificate signed by a recognized public CA, run the command below instead to bypass the certificate check:"
 
-
 nodeDriver:
   addTemplate: Add Node Template
 
@@ -3495,11 +3539,10 @@ nodeDriver:
       item1: From the {appName} server to <code>TCP</code> port <code>22</code> <span class="text-muted">(SSH to install and configure Docker)</span>
       item2: From and To all other hosts on <code>UDP</code> ports <code>500</code> and <code>4500</code> <span class="text-muted">(for IPsec networking)</span></li>
       item3: These rules will <b>not</b> be added automatically.
-    instanceOptionsSection: Instance Options
     instanceType:
       label: Instance Type
     rootSize:
-      label: Root Size
+      label: Root Disk Size
       unit: GB
     ami:
       label: AMI
@@ -3583,7 +3626,7 @@ nodeDriver:
     instanceProfile:
       label: Instance Profile
     diskSize:
-      label: Root Size
+      label: Root Disk Size
     sshUser:
       label: SSH User
       placeholder: 'usr1'
@@ -3634,7 +3677,17 @@ nodeDriver:
       label: Flavor
 
   vmwarevsphere:
-    accountSection: Account Access
+    access:
+      title: 1. Account Access
+      detail: Configure where to find the VCenter or ESXi server
+      help: "Note: The free ESXi liecense does not support API access.  Only paid license servers are supported."
+    instance:
+      title: 2. Instance Options
+      detail: Choose the size and OS of the virtual machine
+    scheduling:
+      title: 3. Scheduling
+      detail: Choose what hypervisor the virtual machine will be scheduled to
+
     vcenter:
       label: vCenter Host
       placeholder: vCenter or ESXi hostname/IP
@@ -3648,6 +3701,7 @@ nodeDriver:
     instanceOptionsSection: Instance Options
     cpuCount:
       label: CPUs
+      unit: '{cores, plural, =1 {Core} other {Cores}}'
     memorySize:
       label: Memory
       unit: MB
@@ -4746,3 +4800,31 @@ growl:
       warning: Unable to establish a WebSocket connection to the server.  If your server is behind a proxy or SSL-termination device, Browser can not connect to WebSocket. If you run the server behind a proxy, please make sure the proxy supports WebSockets.  Streaming stats, logs, shell/console, and auto-updating of the state of resources may not work until this is resolved.
       safariCertWarning: Another possible cause is that Safari does not allow WebSocket connections using an unrecognized certificate, even if you say to Continue to bypass the warning.  The server must have a certificate signed by a recognized authority Safari automatically trusts.
       disconnectedWarning: "Disconnected from server, attempting to reconnect..."
+
+storageClass:
+  aws-ebs:
+    title: Amazon EBS Disk
+  gce-pd:
+    title: Google GCE Persistent Disk
+  glusterfs:
+    title: Gluster Volume
+  cinder:
+    title: Openstack Cinder Volume
+  vsphere-volume:
+    title: VMWare vSphere Volume
+  rbd:
+    title: Ceph RBD
+  quobyte:
+    title: Quobyte Volume
+  azure-disk:
+    title: Azure Disk
+  azure-file:
+    title: Azure File
+  portworx-volume:
+    title: Portworx Volume
+  scaleio:
+    title: ScaleIO Volume
+  storageos:
+    title: StorageOS
+  local:
+    title: Local Node Disk
