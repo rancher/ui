@@ -3,7 +3,7 @@ import {  set } from '@ember/object';
 
 export default Route.extend({
   model() {
-    const original = this.modelFor('authenticated.cluster.storage-classes.detail');
+    const original = this.modelFor('authenticated.cluster.storage.classes.detail');
     set(this, 'originalModel', original);
 
     return original.clone();
@@ -11,6 +11,6 @@ export default Route.extend({
 
   setupController(controller/*, model*/) {
     this._super(...arguments);
-    set(controller,'originalModel', this.modelFor('authenticated.cluster.storage-classes.detail'));
+    set(controller,'originalModel', this.modelFor('authenticated.cluster.storage.classes.detail'));
   }
 });

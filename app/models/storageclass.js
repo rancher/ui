@@ -61,7 +61,7 @@ export default Resource.extend({
     },
 
     edit() {
-      get(this, 'router').transitionTo('authenticated.cluster.storage-classes.detail.edit', get(this, 'id'));
+      get(this, 'router').transitionTo('authenticated.cluster.storage.classes.detail.edit', get(this, 'id'));
     },
   },
 
