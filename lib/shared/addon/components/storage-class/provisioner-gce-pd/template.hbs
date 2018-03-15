@@ -1,0 +1,43 @@
+<div class="row">
+  <div class="col span-4">
+    <label class="acc-label">{{t 'cruStorageClass.gce-pd.type.label'}}</label>
+    {{#if editing}}
+      {{#each volumeTypes as |name|}}
+        <div class="radio">
+          <label>
+            {{radio-button selection=volumeType value=name}}
+            {{t (concat 'cruStorageClass.gce-pd.type.' name)}}
+          </label>
+        </div>
+      {{/each}}
+    {{else}}
+      {{t (concat 'cruStorageClass.gce-pd.type.' volumeType)}}
+    {{/if}}
+  </div>
+  <div class="col span-4">
+    <label class="acc-label">{{t 'cruStorageClass.gce-pd.zone.label'}}</label>
+    {{#if editing}}
+      <div class="radio">
+        <label>
+          {{radio-button selection=zoneAutomatic value=true}}
+          {{t 'cruStorageClass.gce-pd.zone.automatic'}}
+        </label>
+      </div>
+      <div class="radio">
+        <label>
+          {{radio-button selection=zoneAutomatic value=false}}
+          {{t 'cruStorageClass.gce-pd.zone.manual'}}
+        </label>
+      </div>
+      {{#unless zoneAutomatic}}
+        {{textarea-autogrow placeholder="cruStorageClass.gce-pd.zone.placeholder" spellcheck="false" required=true value=zones}}
+      {{/unless}}
+    {{else}}
+      {{#if zoneAutomatic}}
+        {{t 'cruStorageClass.gce-pd.zone.automatic'}}
+      {{else}}
+        {{zones}}
+      {{/if}}
+    {{/if}}
+  </div>
+</div>

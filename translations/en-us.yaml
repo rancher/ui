@@ -1719,6 +1719,10 @@ cruRegistry:
     saved: Saved
 
 cruStorageClass:
+  name:
+    placeholder: e.g. storage
+  description:
+    placeholder: e.g. AWS EBS Storage
   title:
     new: Add Storage Class
     edit: 'Edit Storage Class: {name}'
@@ -1753,6 +1757,7 @@ cruStorageClass:
       label: Availability Zone
       automatic: "Automatic: Zones the cluster has a node in"
       manual: "Manual: Choose specific zones"
+      placeholder: "us-east-1d, us-east-1c"
     iopsPerGB:
       label: Provisioned IOPS
       unit: per second, per GB
@@ -1762,7 +1767,215 @@ cruStorageClass:
       label: KMS Key ID for Encryption
       automatic: "Automatic: Generate a key"
       manual: "Manual: Use a specific key (full ARN)"
-
+  gce-pd:
+    type:
+      label: Volume Type
+      pd-standard: 'Standard'
+      pd-ssd: 'SSD'
+    zone:
+      label: Availability Zone
+      automatic: "Automatic: Zones the cluster has a node in"
+      manual: "Manual: Choose specific zones"
+      placeholder: "us-central1-a, us-central1-b"
+  cinder:
+    type:
+      label: Volume Type
+      placeholder: "e.g. fast"
+    availability:
+      label: Availability Zone
+      placeholder: "e.g. nova"
+  vsphere-volume:
+    diskformat:
+      label: Disk Format
+      placeholder: "e.g. thin"
+    storagePolicyName:
+      label: Storage Policy Name
+      placeholder: "e.g. gold"
+    datastore:
+      label: Datastore
+      placeholder: "e.g. VSANDatastore"
+    fstype:
+      label: FS Type
+      placeholder: "e.g. ext3"
+    hostFailuresToTolerate:
+      label: Host Failures To Tolerate
+      placeholder: "e.g. 2"
+    cachereservation:
+      label: Cache Reservation
+      placeholder: "e.g. 20"
+  azure-disk:
+    skuName:
+      label: Sku Name
+      placeholder: "e.g. Standard_LRS"
+    location:
+      label: Location
+      placeholder: "e.g. eastus"
+    storageAccount:
+      label: Storage Account
+      placeholder: "e.g. azure_storage_account_name"
+    storageaccounttype:
+      label: Storage Account Type
+      placeholder: "e.g. Standard_LRS"
+    kind:
+      label: Kind
+      placeholder: "e.g. Shared"
+  azure-file:
+    skuName:
+      label: Sku Name
+      placeholder: "e.g. Standard_LRS"
+    location:
+      label: Location
+      placeholder: "e.g. eastus"
+    storageAccount:
+      label: Storage Account
+      placeholder: "e.g. azure_storage_account_name"
+  portworx-volume:
+    fs:
+      label: Filesystem
+      placeholder: "e.g. ext4"
+    block_size:
+      label: Block Size
+      placeholder: "e.g. 32"
+    repl:
+      label: Repl
+      placeholder: "e.g. 1"
+    io_priority:
+      label: I/O Priority
+      placeholder: "e.g. low"
+    snap_interval:
+      label: Snapshots Interval
+      placeholder: "e.g. 70"
+    aggregation_level:
+      label: Aggregation Level
+      placeholder: "e.g. 0"
+    ephemeral:
+      label: Ephemeral
+      placeholder: "e.g. true"
+  scaleio:
+    gateway:
+      label: Gateway
+      placeholder: "e.g. https://192.168.99.200:443/api"
+    system:
+      label: System
+      placeholder: "e.g. scaleio"
+    protectionDomain:
+      label: Protection Domain
+      placeholder: "e.g. pd0"
+    storagePool:
+      label: Storage Pool
+      placeholder: "e.g. sp1"
+    storageMode:
+      label: Storage Mode
+      placeholder: "e.g. ThinProvisioned"
+    secretRef:
+      label: Secret Ref
+      placeholder: "e.g. sio-secret"
+    readOnly:
+      label: Read Only
+      placeholder: "e.g. false"
+    fsType:
+      label: FS Type
+      placeholder: "e.g. xfs"
+  storageos:
+    pool:
+      label: Pool
+      placeholder: "e.g. default"
+    description:
+      label: Description
+      placeholder: "e.g. Kubernetes volume"
+    adminSecretNamespace:
+      label: Admin Secret Namespace
+      placeholder: "e.g. default"
+    adminSecretName:
+      label: Admin Secret Name
+      placeholder: "e.g. storageos-secret"
+    fsType:
+      label: FS Type
+      placeholder: "e.g. ext4"
+  quobyte:
+    quobyteAPIServer:
+      label: Quobyte API Server
+      placeholder: "e.g. http://138.68.74.142:7860"
+    registry:
+      label: Registry
+      placeholder: "e.g. 138.68.74.142:7861"
+    adminSecretNamespace:
+      label: Admin Secret Namespace
+      placeholder: "e.g. kube-system"
+    adminSecretName:
+      label: Admin Secret Name
+      placeholder: "e.g. quobyte-admin-secret"
+    user:
+      label: User
+      placeholder: "e.g. root"
+    group:
+      label: Group
+      placeholder: "e.g. root"
+    quobyteConfig:
+      label: Quobyte Config
+      placeholder: "e.g. BASE"
+    quobyteTenant:
+      label: Quobyte Tenant
+      placeholder: "e.g. DEFAULT"
+  rbd:
+    monitors:
+      label: Monitors
+      placeholder: "e.g. 10.16.153.105:6789"
+    adminId:
+      label: Admin ID
+      placeholder: "e.g. kube"
+    adminSecretNamespace:
+      label: Admin Secret Namespace
+      placeholder: "e.g. kube-system"
+    adminSecret:
+      label: Admin Secret
+      placeholder: "e.g. secret"
+    pool:
+      label: Pool
+      placeholder: "e.g. kube"
+    userId:
+      label: User ID
+      placeholder: "e.g. kube"
+    userSecretName:
+      label: User Secret Name
+      placeholder: "e.g. ceph-secret-user"
+    fsType:
+      label: FS Type
+      placeholder: "e.g. ext4"
+    imageFormat:
+      label: Image Format
+      placeholder: "e.g. 2"
+    imageFeatures:
+      label: Image Features
+      placeholder: "e.g. layering"
+  glusterfs:
+    resturl:
+      label: REST URL
+      placeholder: "e.g. http://127.0.0.1:8081"
+    restuser:
+      label: REST User
+      placeholder: "e.g. admin"
+    restuserkey:
+      label: REST User Key
+      placeholder: "e.g. password"
+    secretNamespace:
+      label: Secret Namespace
+      placeholder: "e.g. default"
+    secretName:
+      label: Secret Name
+      placeholder: "e.g. heketi-secret"
+    clusterid:
+      label: Cluster ID
+      placeholder: "e.g. 630372ccdc720a92c681fb928f27b53f"
+    gidMin:
+      label: GID MIN
+      placeholder: "e.g. 40000"
+    gidMax:
+      label: GID MAX
+      placeholder: "e.g. 50000"
+    volumetype:
+      label: Volume Type
+      placeholder: "e.g. replicate:3"
 
 dangerZone:
   header: Advanced Settings
@@ -2850,6 +3063,7 @@ formValueArray:
   addActionLabel: Add Value
   valueLabel: Value
   valuePlaceholder: Value
+  noData: No Data
   protip: "ProTip: Paste one or more lines of values into any field for easy bulk entry."
 
 formVolumeRow:

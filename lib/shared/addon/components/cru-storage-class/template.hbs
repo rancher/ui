@@ -16,9 +16,10 @@
 {{else}}
   {{form-name-description
     model=primaryResource
-    nameRequired=true
-    namePlaceholder="newSecret.name.placeholder"
-    descriptionPlaceholder="newSecret.description.placeholder"
+    nameRequired=false
+    nameDisabled=isEdit
+    namePlaceholder="cruStorageClass.name.placeholder"
+    descriptionPlaceholder="cruStorageClass.description.placeholder"
   }}
 {{/if}}
 
@@ -99,7 +100,7 @@
           </div>
           <div class="radio">
             <label>
-              {{radio-button selection=primaryResource.allowVolumeExpansion value=nalse}}
+              {{radio-button selection=primaryResource.allowVolumeExpansion value=false}}
               {{t 'generic.no'}}
             </label>
           </div>
@@ -108,6 +109,7 @@
       <div class="col span-6">
         {{form-value-array
           initialValues=primaryResource.mountOptions
+          editing=(not isView)
           valueLabel="cruStorageClass.mountOptions.label"
           addActionLabel="cruStorageClass.mountOptions.addActionLabel"
           changed=(action "updateOptions")
