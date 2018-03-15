@@ -42,6 +42,7 @@ export function getProvisioners() {
 
 export default Resource.extend({
   clusterStore: service(),
+  router: service(),
 
   type: 'storageClass',
   state: 'active',
@@ -60,6 +61,7 @@ export default Resource.extend({
     },
 
     edit() {
+      get(this,'router').transitionTo('authenticated.cluster.storage-classes.detail.edit', get(this,'id'));
     },
   },
 
