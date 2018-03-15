@@ -1,0 +1,101 @@
+<div class="row">
+  <div class="col span-4">
+    <label class="acc-label">{{t 'cruStorageClass.aws-ebs.type.label'}}</label>
+    {{#if editing}}
+      {{#each volumeTypes as |name|}}
+        <div class="radio">
+          <label>
+            {{radio-button selection=volumeType value=name}}
+            {{t (concat 'cruStorageClass.aws-ebs.type.' name)}}
+          </label>
+        </div>
+      {{/each}}
+    {{else}}
+      {{t (concat 'cruStorageClass.aws-ebs.type.' volumeType)}}
+    {{/if}}
+
+    {{#if supportsIops}}
+      <label class="acc-label mt-20">{{t 'cruStorageClass.aws-ebs.iopsPerGB.label'}}</label>
+      {{#if editing}}
+        <div class="input-group">
+          {{input-integer classNames="form-control" value=iopsPerGB}}
+          <span class="input-group-addon bg-default">{{t 'cruStorageClass.aws-ebs.iopsPerGB.unit'}}</span>
+        </div>
+      {{else}}
+        {{iopsPerGB}} {{t 'cruStorageClass.aws-ebs.iopsPerGB.unit'}}
+      {{/if}}
+    {{/if}}
+
+  </div>
+  <div class="col span-4">
+    <label class="acc-label">{{t 'cruStorageClass.aws-ebs.zone.label'}}</label>
+    {{#if editing}}
+      <div class="radio">
+        <label>
+          {{radio-button selection=zoneAutomatic value=true}}
+          {{t 'cruStorageClass.aws-ebs.zone.automatic'}}
+        </label>
+      </div>
+      <div class="radio">
+        <label>
+          {{radio-button selection=zoneAutomatic value=false}}
+          {{t 'cruStorageClass.aws-ebs.zone.manual'}}
+        </label>
+      </div>
+      {{#unless zoneAutomatic}}
+        {{textarea-autogrow spellcheck="false" required=true value=zones}}
+      {{/unless}}
+    {{else}}
+      {{#if zoneAutomatic}}
+        {{t 'cruStorageClass.aws-ebs.zone.automatic'}}
+      {{else}}
+        {{zones}}
+      {{/if}}
+    {{/if}}
+  </div>
+  <div class="col span-4">
+    <label class="acc-label">{{t 'cruStorageClass.aws-ebs.encrypted.label'}}</label>
+    {{#if editing}}
+      <div class="radio">
+        <label>
+          {{radio-button selection=encrypted value=true}}
+          {{t 'generic.enabled'}}
+        </label>
+      </div>
+      <div class="radio">
+        <label>
+          {{radio-button selection=encrypted value=false}}
+          {{t 'generic.disabled'}}
+        </label>
+      </div>
+    {{else}}
+      {{t (if encrypted 'generic.enabled' 'generic.disabled')}}
+    {{/if}}
+
+    {{#if encrypted}}
+      <label class="acc-label mt-20">{{t 'cruStorageClass.aws-ebs.kmsKeyId.label'}}</label>
+      {{#if editing}}
+        <div class="radio">
+          <label>
+            {{radio-button selection=kmsAutomatic value=true}}
+            {{t 'cruStorageClass.aws-ebs.kmsKeyId.automatic'}}
+          </label>
+        </div>
+        <div class="radio">
+          <label>
+            {{radio-button selection=kmsAutomatic value=false}}
+            {{t 'cruStorageClass.aws-ebs.kmsKeyId.manual'}}
+          </label>
+        </div>
+
+        {{#unless kmsAutomatic}}
+          {{input value=kmsKeyId}}
+        {{/unless}}
+      {{else if kmsAutomatic}}
+        {{t 'cruStorageClass.aws-ebs.kmsKeyId.automatic'}}
+      {{else}}
+        {{kmsKeyId}}
+      {{/if}}
+    {{/if}}
+  </div>
+</div>
