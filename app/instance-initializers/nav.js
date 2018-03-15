@@ -126,12 +126,22 @@ const rootNav = [
     ctx: [getClusterId],
     resource: ['clusterroletemplatebinding'],
     resourceScope: 'global',
+    route: 'authenticated.cluster.storage',
     submenu: [
+      {
+        scope: 'cluster',
+        id: 'cluster-storage-volumes',
+        localizedLabel: 'nav.cluster.storage.volumes',
+        route: 'authenticated.cluster.storage.persistent-volumes.index',
+        ctx: [getClusterId],
+        resource: ['project'],
+        resourceScope: 'global',
+      },
       {
         scope: 'cluster',
         id: 'cluster-storage-classes',
         localizedLabel: 'nav.cluster.storage.classes',
-        route: 'authenticated.cluster.storage-classes.index',
+        route: 'authenticated.cluster.storage.classes.index',
         ctx: [getClusterId],
         resource: ['project'],
         resourceScope: 'global',

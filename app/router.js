@@ -82,11 +82,21 @@ Router.map(function() {
         this.route('edit', {path: '/:notifier_id'});
       });
 
-      this.route('storage-classes', {path: '/storage-classes'}, function() {
-        this.route('index', {path: '/'});
-        this.route('new', {path: '/add'});
-        this.route('detail', {path: '/:storage_class_id'}, function() {
-          this.route('edit');
+      this.route('storage', function() {
+        this.route('classes', function() {
+          this.route('index', {path: '/'});
+          this.route('new', {path: '/add'});
+          this.route('detail', {path: '/:storage_class_id'}, function() {
+            this.route('edit');
+          });
+        });
+
+        this.route('persistent-volumes', function() {
+          this.route('index', {path: '/'});
+          this.route('new', {path: '/add'});
+          this.route('detail', {path: '/:persistent_volume_id'}, function() {
+            this.route('edit');
+          });
         });
       });
     });

@@ -6,18 +6,18 @@ import { all } from 'rsvp';
 const DEFAULT_ANNOTATION = 'storageclass.kubernetes.io/is-default-class';
 
 const PROVISIONERS = [];
-registerProvisioner('aws-ebs',        'kubernetes.io/aws-ebs',        true);
-registerProvisioner('gce-pd',         'kubernetes.io/gce-pd',         );
-registerProvisioner('glusterfs',      'kubernetes.io/glusterfs',      );
-registerProvisioner('cinder',         'kubernetes.io/cinder',         );
-registerProvisioner('vsphere-volume', 'kubernetes.io/vpshere-volume', );
-registerProvisioner('rbd',            'kubernetes.io/rbd',            );
-registerProvisioner('quobyte',        'kubernetes.io/quobyte',        );
-registerProvisioner('azure-disk',     'kubernetes.io/azure-disk',     );
-registerProvisioner('azure-file',     'kubernetes.io/azure-file',     );
-registerProvisioner('portworx-volume','kubernetes.io/portworx-volume',);
-registerProvisioner('scaleio',        'kubernetes.io/scaleio',        );
-registerProvisioner('storageos',      'kubernetes.io/storageos',      );
+registerProvisioner('aws-ebs',        'kubernetes.io/aws-ebs',         true);
+registerProvisioner('gce-pd',         'kubernetes.io/gce-pd',          true);
+registerProvisioner('glusterfs',      'kubernetes.io/glusterfs',       true);
+registerProvisioner('cinder',         'kubernetes.io/cinder',          true);
+registerProvisioner('vsphere-volume', 'kubernetes.io/vpshere-volume',  true);
+registerProvisioner('rbd',            'kubernetes.io/rbd',             true);
+registerProvisioner('quobyte',        'kubernetes.io/quobyte',         true);
+registerProvisioner('azure-disk',     'kubernetes.io/azure-disk',      true);
+registerProvisioner('azure-file',     'kubernetes.io/azure-file',      true);
+registerProvisioner('portworx-volume','kubernetes.io/portworx-volume', true);
+registerProvisioner('scaleio',        'kubernetes.io/scaleio',         true);
+registerProvisioner('storageos',      'kubernetes.io/storageos',       true);
 
 export function registerProvisioner(name, provisioner, component) {
   if ( component === true ) {
@@ -42,6 +42,7 @@ export function getProvisioners() {
 
 export default Resource.extend({
   clusterStore: service(),
+  router: service(),
 
   type: 'storageClass',
   state: 'active',
@@ -60,6 +61,7 @@ export default Resource.extend({
     },
 
     edit() {
+      get(this, 'router').transitionTo('authenticated.cluster.storage.classes.detail.edit', get(this, 'id'));
     },
   },
 

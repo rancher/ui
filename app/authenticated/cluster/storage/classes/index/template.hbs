@@ -1,6 +1,6 @@
 <section class="header clearfix">
   <div class="right-buttons">
-    {{#link-to "authenticated.cluster.storage-classes.new" class="btn btn-sm bg-primary" disabled=(rbac-prevents resource="storageclass" scope="cluster" permission="create")}}
+    {{#link-to "authenticated.cluster.storage.classes.new" class="btn btn-sm bg-primary" disabled=(rbac-prevents resource="storageclass" scope="cluster" permission="create")}}
       {{t 'storageClassPage.addActionLabel'}}
     {{/link-to}}
   </div>
@@ -27,7 +27,7 @@
         {{badge-state model=obj}}
       </td>
       <td data-title="{{dt.name}}">
-        {{obj.displayName}}
+        <a href="{{href-to "authenticated.cluster.storage.classes.detail" obj.id}}">{{obj.displayName}}</a>
       </td>
       <td data-title="{{dt.provisioner}}">
         {{obj.displayProvisioner}}

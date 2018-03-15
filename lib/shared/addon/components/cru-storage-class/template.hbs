@@ -16,9 +16,10 @@
 {{else}}
   {{form-name-description
     model=primaryResource
-    nameRequired=true
-    namePlaceholder="newSecret.name.placeholder"
-    descriptionPlaceholder="newSecret.description.placeholder"
+    nameRequired=false
+    nameDisabled=isEdit
+    namePlaceholder="cruStorageClass.name.placeholder"
+    descriptionPlaceholder="cruStorageClass.description.placeholder"
   }}
 {{/if}}
 
@@ -59,7 +60,9 @@
       <div class="col span-6">
         <label class="acc-label">{{t 'cruStorageClass.reclaimPolicy.label'}}</label>
         {{#if isView}}
-          {{t (concat 'cruStorageClass.reclaimPolicy.' primaryResource.reclaimPolicy)}}
+          <div>
+            {{t (concat 'cruStorageClass.reclaimPolicy.' primaryResource.reclaimPolicy)}}
+          </div>
         {{else}}
           <div class="radio">
             <label>
@@ -85,7 +88,9 @@
 
         <label class="acc-label mt-20">{{t 'cruStorageClass.allowVolumeExpansion.label'}}</label>
         {{#if isView}}
-          {{t (if primaryResource.allowVolumeExpansion 'generic.yes' 'generic.no')}}
+          <div>
+            {{t (if primaryResource.allowVolumeExpansion 'generic.yes' 'generic.no')}}
+          </div>
         {{else}}
           <div class="radio">
             <label>
@@ -95,7 +100,7 @@
           </div>
           <div class="radio">
             <label>
-              {{radio-button selection=primaryResource.allowVolumeExpansion value=nalse}}
+              {{radio-button selection=primaryResource.allowVolumeExpansion value=false}}
               {{t 'generic.no'}}
             </label>
           </div>
@@ -104,6 +109,7 @@
       <div class="col span-6">
         {{form-value-array
           initialValues=primaryResource.mountOptions
+          editing=(not isView)
           valueLabel="cruStorageClass.mountOptions.label"
           addActionLabel="cruStorageClass.mountOptions.addActionLabel"
           changed=(action "updateOptions")
