@@ -1,12 +1,36 @@
-{{#each fieldsGroup as |fields|}}
-  <div class="row mb-20">
-    {{#each fields as |field|}}
-    <div class="col span-4">
-      <label class="acc-label">{{t (concat 'cruStorageClass.' provisioner '.' field '.label')}}</label>
-      {{#input-or-display editable=editing value=(get model field)}}
-        {{input type="text" value=(get model field) classNames="form-control" placeholder=(t (concat 'cruStorageClass.' provisioner '.' field '.placeholder'))}}
-      {{/input-or-display}}
-    </div>
-    {{/each}}
+<div class="row">
+  <div class="col span-4">
+    <label class="acc-label">{{t 'cruStorageClass.cinder.type.label'}}</label>
+    {{#input-or-display editable=editing value=type}}
+      {{input type="text" value=type classNames="form-control" placeholder=(t 'cruStorageClass.cinder.type.placeholder')}}
+    {{/input-or-display}}
   </div>
-{{/each}}
+  <div class="col span-4">
+    <label class="acc-label">{{t 'cruStorageClass.cinder.availability.label'}}</label>
+    {{#if editing}}
+      <div class="radio">
+        <label>
+          {{radio-button selection=zoneAutomatic value=true}}
+          {{t 'cruStorageClass.cinder.availability.automatic'}}
+        </label>
+      </div>
+      <div class="radio">
+        <label>
+          {{radio-button selection=zoneAutomatic value=false}}
+          {{t 'cruStorageClass.cinder.availability.manual'}}
+        </label>
+      </div>
+      {{#unless zoneAutomatic}}
+        {{textarea-autogrow placeholder="cruStorageClass.cinder.availability.placeholder" spellcheck="false" required=true value=availability}}
+      {{/unless}}
+    {{else}}
+      <div>
+        {{#if zoneAutomatic}}
+          {{t 'cruStorageClass.cinder.availability.automatic'}}
+        {{else}}
+          {{zones}}
+        {{/if}}
+      </div>
+    {{/if}}
+  </div>
+</div>
