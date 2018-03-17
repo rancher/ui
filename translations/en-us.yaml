@@ -1311,6 +1311,14 @@ storageClassPage:
   default:
     label: Default
 
+persistentVolumePage:
+  header: Persistent Volumes
+  addActionLabel: Add Volume
+  noData: You do not have any persistent volumes yet.
+  noMatch: No persistent volumes match the current search
+  source:
+    label: Source
+
 userPreferencesPage:
   header: Preferences
   theme:
@@ -1721,6 +1729,39 @@ cruRegistry:
     label: Password
     saved: Saved
 
+cruPersistentVolume:
+  name:
+    placeholder: e.g. myvolume
+  description:
+    placeholder: e.g. Volume for production database
+  title:
+    new: Add Persistent Volume
+    edit: 'Edit Persistent Volume: {name}'
+    view: 'Persistent Volume: {name}'
+  storageClass:
+    label: Storage Class
+    prompt: No storage class
+  accessModes:
+    label: Access Modes
+    accessRWO: Single Node Read-Write
+    accessROM: Many Nodes Read-Only
+    accessRWM: Many Nodes Read-Write
+  capacity:
+    label: Capacity
+    unit: GiB
+  source:
+    label: Volume Plugin
+    title: Plugin Configuration
+    detail: Configure options for the selected volume plugin
+    prompt: Choose a volume plugin...
+  customize:
+    title: Customize
+    detail: Customize Advanced options
+  mountOptions:
+    label: Mount Options
+    addActionLabel: Add Option
+    noData: No Mount Options
+
 cruStorageClass:
   name:
     placeholder: e.g. storage
@@ -1735,6 +1776,7 @@ cruStorageClass:
   mountOptions:
     label: Mount Options
     addActionLabel: Add Option
+    noData: No Mount Options
   parameters:
     title: Parameters
     detail: Configure the provider-specific parameters for the storage class
@@ -5032,27 +5074,85 @@ growl:
 storageClass:
   aws-ebs:
     title: Amazon EBS Disk
-  gce-pd:
-    title: Google GCE Persistent Disk
-  glusterfs:
-    title: Gluster Volume
-  cinder:
-    title: Openstack Cinder Volume
-  vsphere-volume:
-    title: VMWare vSphere Volume
-  rbd:
-    title: Ceph RBD
-  quobyte:
-    title: Quobyte Volume
   azure-disk:
     title: Azure Disk
   azure-file:
     title: Azure File
+  cinder:
+    title: Openstack Cinder Volume
+  gce-pd:
+    title: Google Persistent Disk
+  glusterfs:
+    title: Gluster Volume
+  local:
+    title: Local Node Disk
   portworx-volume:
     title: Portworx Volume
+  quobyte:
+    title: Quobyte Volume
+  rbd:
+    title: Ceph RBD
   scaleio:
     title: ScaleIO Volume
   storageos:
     title: StorageOS
+  vsphere-volume:
+    title: VMWare vSphere Volume
+
+volumeSource:
+  aws-ebs:
+    title: Amazon EBS Disk
+  azure-disk:
+    title: Azure Disk
+  azure-file:
+    title: Azure Filesystem
+  cephfs:
+    title: Ceph Filesystem
+  cinder:
+    title: Openstack Cinder Volume
+  fc:
+    title: Fibre Channel
+  flex-volume:
+    title: Flex Volume
+  flocker:
+    title: Flocker
+  gce-pd:
+    title: Google Persistent Disk
+  glusterfs:
+    title: Gluster Volume
+  host-path:
+    title: Local Node Path
+    path:
+      label: Path on the Node
+      placeholder: e.g. /data
+    kind:
+      label: The target path must be
+      Any: "Anything: do no check the target path"
+      DirectoryOrCreate: A directory, or create if it does not exist
+      FileOrCreate: A file, or create if it does not exist
+      Directory: An existing directory
+      File: An existing file
+      Socket: An existing socket
+      CharDevice: An existing character device
+      BlockDevice: An existing block device
+  iscsi:
+    title: iSCSI Target
   local:
     title: Local Node Disk
+  nfs:
+    title: NFS Share
+  photon:
+    title: Photon Volume
+  portworx:
+    title: Portworx Volume
+  quobyte:
+    title: Quobyte Volume
+  rbd:
+    title: Ceph RBD
+  scaleio:
+    title: ScaleIO Volume
+  storageos:
+    title: StorageOS
+  vsphere-volume:
+    title: VMWare vSphere Volume
+

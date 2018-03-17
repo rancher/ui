@@ -1,0 +1,35 @@
+<div class="row">
+  <div class="col span-6">
+    <label class="acc-label">{{t 'volumeSource.host-path.path.label'}}</label>
+    {{#input-or-display editable=editing value=config.path}}
+      {{input value=config.path}}
+    {{/input-or-display}}
+  </div>
+  <div class="col span-6">
+    <label class="acc-label">{{t 'volumeSource.host-path.kind.label'}}</label>
+    {{#if editing}}
+      <div class="radio">
+        <label>
+          {{radio-button selection=config.kind value=""}}
+          {{t 'volumeSource.host-path.kind.Any'}}
+        </label>
+      </div>
+      {{#each kindChoices as |name|}}
+        <div class="radio">
+          <label>
+            {{radio-button selection=config.kind value=name}}
+            {{t (concat 'volumeSource.host-path.kind.' name)}}
+          </label>
+        </div>
+      {{/each}}
+    {{else if config.kind}}
+      <div>
+        {{t (concat 'volumeSource.host-path.kind.' config.kind)}}
+      </div>
+    {{else}}
+      <div>
+        {{t 'volumeSource.host-path.kind.Any'}}
+      </div>
+    {{/if}}
+  </div>
+</div>

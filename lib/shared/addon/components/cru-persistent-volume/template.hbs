@@ -1,0 +1,138 @@
+<section class="header clearfix">
+  {{#if isView}}
+    <div class="right-buttons pull-right">
+      {{badge-state model=model}}
+      {{action-menu model=model showPrimary=false classNames="ml-10 inline-block" size="sm"}}
+    </div>
+  {{/if}}
+
+  <h1>{{title}}</h1>
+</section>
+
+{{#if isView}}
+  {{#if model.description}}
+    {{banner-message color='bg-secondary mb-0 mt-10' message=(linkify model.description)}}
+  {{/if}}
+{{else}}
+  {{form-name-description
+    model=primaryResource
+    nameRequired=false
+    nameDisabled=isEdit
+    namePlaceholder="cruPersistentVolume.name.placeholder"
+    descriptionPlaceholder="cruPersistentVolume.description.placeholder"
+    editing=editing
+  }}
+{{/if}}
+
+<div class="row">
+  <div class="col span-6">
+    <label class="acc-label">{{t 'cruPersistentVolume.source.label'}}{{field-required}}</label>
+    {{#if editing}}
+      {{new-select
+        content=sourceChoices
+        prompt="cruPersistentVolume.source.prompt"
+        localizedPrompt=true
+        optionValuePath="name"
+        value=sourceName
+        readOnly=isView
+      }}
+    {{else}}
+      {{t (concat 'volumeSource.' sourceName '.title')}}
+    {{/if}}
+  </div>
+  <div class="col span-6">
+    <label class="acc-label">{{t 'cruPersistentVolume.storageClass.label'}}</label>
+    {{#if editing}}
+      {{new-select
+        content=storageClasses
+        prompt="cruPersistentVolume.storageClass.prompt"
+        localizedPrompt=true
+        optionLabelPath="displayName"
+        optionValuePath="id"
+        value=primaryResource.storageClassName
+      }}
+    {{else}}
+      <a href="{{href-to "authenticated.cluster.storage.classes.detail.index" primaryResource.storageClass.id}}">
+        {{primaryResource.storageClass.displayName}}
+      </a>
+    {{/if}}
+  </div>
+</div>
+<hr/>
+
+<div class="row">
+  <div class="col span-6">
+    <label class="acc-label">{{t 'cruPersistentVolume.capacity.label'}}</label>
+    <div class="input-group">
+      {{input-number classNames="form-control" value=capacity}}
+      <span class="input-group-addon bg-default">{{t 'cruPersistentVolume.capacity.unit'}}</span>
+    </div>
+  </div>
+</div>
+
+{{#accordion-list showExpandAll=false as | al expandFn |}}
+  {{#unless useStorageClass}}
+    {{#accordion-list-item
+      title=(t 'cruPersistentVolume.source.title')
+      detail=(t 'cruPersistentVolume.source.detail')
+      expandAll=expandAll
+      expand=(action expandFn)
+      expandOnInit=true
+    }}
+      {{#if sourceComponent}}
+        {{component sourceComponent
+          editing=notView
+          volume=model
+        }}
+      {{else}}
+        <p class="text-muted">Choose a Volume Source above...</p>
+      {{/if}}
+    {{/accordion-list-item}}
+  {{/unless}}
+
+  {{#accordion-list-item
+    title=(t 'cruPersistentVolume.customize.title')
+    detail=(t 'cruPersistentVolume.customize.detail')
+    expandAll=expandAll
+    expand=(action expandFn)
+  }}
+    <div class="row">
+      <div class="col span-6">
+        <label class="acc-label">{{t 'cruPersistentVolume.accessModes.label'}}</label>
+        <div class="checkbox">
+          <label>
+            {{input type="checkbox" checked=accessRWO}}
+            {{t 'cruPersistentVolume.accessModes.accessRWO'}}
+          </label>
+        </div>
+        <div class="checkbox">
+          <label>
+            {{input type="checkbox" checked=accessROM}}
+            {{t 'cruPersistentVolume.accessModes.accessROM'}}
+          </label>
+        </div>
+        <div class="checkbox">
+          <label>
+            {{input type="checkbox" checked=accessRWM}}
+            {{t 'cruPersistentVolume.accessModes.accessRWM'}}
+          </label>
+        </div>
+      </div>
+      <div class="col span-6">
+        {{form-value-array
+          initialValues=primaryResource.mountOptions
+          editing=(not isView)
+          valueLabel="cruPersistentVolume.mountOptions.label"
+          addActionLabel="cruPersistentVolume.mountOptions.addActionLabel"
+          noDataLabel="cruPersistentVolume.mountOptions.noData"
+          changed=(action "updateOptions")
+        }}
+      </div>
+    </div>
+  {{/accordion-list-item}}
+{{/accordion-list}}
+
+{{#unless isView}}
+  {{top-errors errors=errors}}
+  {{save-cancel editing=true save="save" cancel="viewEditCancel"}}
+{{/unless}}
