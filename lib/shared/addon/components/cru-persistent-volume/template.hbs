@@ -80,9 +80,11 @@
       expandOnInit=true
     }}
       {{#if sourceComponent}}
-        {{component sourceComponent
+        {{component sourceComponent.component
+          plugin=sourceComponent.field
           editing=notView
           volume=model
+          changed=(action "updateParams")
         }}
       {{else}}
         <p class="text-muted">Choose a Volume Source above...</p>
