@@ -4,7 +4,7 @@ import { cancel, later } from '@ember/runloop'
 import { get, set, computed } from '@ember/object';
 import { alias } from '@ember/object/computed';
 
-export default Resource.extend({
+const NodePool = Resource.extend({
   type: 'nodePool',
   nodeTemplate: reference('nodeTemplateId'),
 
@@ -45,3 +45,15 @@ export default Resource.extend({
   }),
 
 });
+
+NodePool.reopenClass({
+  mangleOut(data) {
+    if ( data && data.hostnamePrefix ) {
+      data.hostnamePrefix = data.hostnamePrefix.toLowerCase();
+    }
+
+    return data;
+  }
+});
+
+export default NodePool;
