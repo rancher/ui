@@ -1,0 +1,123 @@
+<div class="row mb-20">
+  <div class="col span-6">
+    <label class="acc-label">{{t 'cruPersistentVolume.iscsi.chapAuthDiscovery.label'}}</label>
+    {{#if editing}}
+      <div class="text-muted">
+        <label>
+          {{radio-button selection=config.chapAuthDiscovery value=true}} {{t 'generic.yes'}}
+        </label>
+        <label>
+          {{radio-button selection=config.chapAuthDiscovery value=false}} {{t 'generic.no'}}
+        </label>
+      </div>
+    {{else}}
+      <div class="text-muted">
+        {{config.chapAuthDiscovery}}
+      </div>
+    {{/if}}
+  </div>
+  <div class="col span-6">
+    <label class="acc-label">{{t 'cruPersistentVolume.iscsi.chapAuthSession.label'}}</label>
+    {{#if editing}}
+      <div class="text-muted">
+        <label>
+          {{radio-button selection=config.chapAuthSession value=true}} {{t 'generic.yes'}}
+        </label>
+        <label>
+          {{radio-button selection=config.chapAuthSession value=false}} {{t 'generic.no'}}
+        </label>
+      </div>
+    {{else}}
+      <div class="text-muted">
+        {{config.chapAuthSession}}
+      </div>
+    {{/if}}
+  </div>
+</div>
+
+<div class="row mb-20">
+  <div class="col span-6">
+    <label class="acc-label">{{t 'cruPersistentVolume.iscsi.fsType.label'}}</label>
+    {{#input-or-display editable=editing value=config.fsType}}
+      {{input type="text" value=config.fsType classNames="form-control" placeholder=(t 'cruPersistentVolume.iscsi.fsType.placeholder')}}
+    {{/input-or-display}}
+  </div>
+
+  <div class="col span-6">
+    <label class="acc-label">{{t 'cruPersistentVolume.iscsi.initiatorName.label'}}</label>
+    {{#input-or-display editable=editing value=config.initiatorName}}
+      {{input type="text" value=config.initiatorName classNames="form-control" placeholder=(t 'cruPersistentVolume.iscsi.initiatorName.placeholder')}}
+    {{/input-or-display}}
+  </div>
+</div>
+
+<div class="row mb-20">
+  <div class="col span-6">
+    <label class="acc-label">{{t 'cruPersistentVolume.iscsi.iqn.label'}}</label>
+    {{#input-or-display editable=editing value=config.iqn}}
+      {{input type="text" value=config.iqn classNames="form-control" placeholder=(t 'cruPersistentVolume.iscsi.iqn.placeholder')}}
+    {{/input-or-display}}
+  </div>
+
+  <div class="col span-6">
+    <label class="acc-label">{{t 'cruPersistentVolume.iscsi.iscsiInterface.label'}}</label>
+    {{#input-or-display editable=editing value=config.iscsiInterface}}
+      {{input type="text" value=config.iscsiInterface classNames="form-control" placeholder=(t 'cruPersistentVolume.iscsi.iscsiInterface.placeholder')}}
+    {{/input-or-display}}
+  </div>
+</div>
+
+<div class="row mb-20">
+  <div class="col span-6">
+    <label class="acc-label">{{t 'cruPersistentVolume.iscsi.lun.label'}}</label>
+      {{#input-or-display editable=editing value=config.lun}}
+        {{input-integer type="text" value=config.lun classNames="form-control" placeholder=(t 'cruPersistentVolume.iscsi.lun.placeholder')}}
+      {{/input-or-display}}
+  </div>
+
+  <div class="col span-6">
+    {{form-value-array
+      initialValues=config.portals
+      editing=editing
+      valueLabel="cruPersistentVolume.iscsi.portals.label"
+      addActionLabel="cruPersistentVolume.iscsi.portals.addActionLabel"
+      changed=(action "updateOptions" "portals")
+    }}
+  </div>
+</div>
+
+<div class="row mb-20">
+  <div class="col span-6">
+    <label class="acc-label">{{t 'cruPersistentVolume.iscsi.readOnly.label'}}</label>
+    {{#if editing}}
+      <div class="text-muted">
+        <label>
+          {{radio-button selection=config.readOnly value=true}} {{t 'generic.yes'}}
+        </label>
+        <label>
+          {{radio-button selection=config.readOnly value=false}} {{t 'generic.no'}}
+        </label>
+      </div>
+    {{else}}
+      <div class="text-muted">
+        {{config.readOnly}}
+      </div>
+    {{/if}}
+  </div>
+
+  <div class="col span-6">
+    <label class="acc-label">{{t 'cruPersistentVolume.iscsi.secretRef.label'}}</label>
+    {{#input-or-display editable=editing value=config.secretRef.name}}
+      {{input type="text" value=config.secretRef.name classNames="form-control" placeholder=(t 'cruPersistentVolume.iscsi.secretRef.placeholder')}}
+    {{/input-or-display}}
+  </div>
+</div>
+
+<div class="row">
+  <div class="col span-6">
+    <label class="acc-label">{{t 'cruPersistentVolume.iscsi.targetPortal.label'}}</label>
+      {{#input-or-display editable=editing value=config.targetPortal}}
+        {{input type="text" value=config.targetPortal classNames="form-control" placeholder=(t 'cruPersistentVolume.iscsi.targetPortal.placeholder')}}
+      {{/input-or-display}}
+  </div>
+</div>

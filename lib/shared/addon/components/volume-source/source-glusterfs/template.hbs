@@ -1,0 +1,35 @@
+  <div class="row mb-20">
+    <div class="col span-6">
+      <label class="acc-label">{{t 'cruPersistentVolume.glusterfs.endpoints.label'}}</label>
+      {{#input-or-display editable=editing value=config.endpoints}}
+        {{input type="text" value=config.endpoints classNames="form-control" placeholder=(t 'cruPersistentVolume.glusterfs.endpoints.placeholder')}}
+      {{/input-or-display}}
+    </div>
+
+    <div class="col span-6">
+      <label class="acc-label">{{t 'cruPersistentVolume.glusterfs.path.label'}}</label>
+      {{#input-or-display editable=editing value=config.path}}
+        {{input type="text" value=config.path classNames="form-control" placeholder=(t 'cruPersistentVolume.glusterfs.path.placeholder')}}
+      {{/input-or-display}}
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col span-6">
+      <label class="acc-label">{{t 'cruPersistentVolume.glusterfs.readOnly.label'}}</label>
+      {{#if editing}}
+        <div class="text-muted">
+          <label>
+            {{radio-button selection=config.readOnly value=true}} {{t 'generic.yes'}}
+          </label>
+          <label>
+            {{radio-button selection=config.readOnly value=false}} {{t 'generic.no'}}
+          </label>
+        </div>
+      {{else}}
+        <div class="text-muted">
+          {{config.readOnly}}
+        </div>
+      {{/if}}
+    </div>
+  </div>

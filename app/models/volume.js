@@ -4,26 +4,26 @@ import Resource from 'ember-api-store/models/resource';
 
 const SOURCES = [];
 registerSource('aws-ebs',        'awsElasticBlockStore', true);
-registerSource('azure-disk',     'azureDisk',            '');
-registerSource('azure-file',     'azureFile',            '');
-registerSource('cephfs',         'cephfs',               '');
-registerSource('cinder',         'cinder',               '');
-registerSource('fc',             'fc',                   '');
-registerSource('flex-volume',    'flexVolume',           '');
-registerSource('flocker',        'flocker',              '');
-registerSource('gce-pd',         'gcePersistentDisk',    '');
-registerSource('glusterfs',      'glusterfs',            '');
-registerSource('host-path',      'hostPath',             '');
-registerSource('iscsi',          'iscsi',                '');
-registerSource('local',          'local',                '');
-registerSource('nfs',            'nfs',                  '');
-registerSource('photon',         'photonPersistentDisk', '');
-registerSource('portworx',       'portworxVolume',       '');
-registerSource('quobyte',        'quobyte',              '');
-registerSource('rbd',            'rbd',                  '');
-registerSource('scaleio',        'scaleIO',              '');
-registerSource('storageos',      'storageos',            '');
-registerSource('vsphere-volume', 'vsphereVolume',        '');
+registerSource('azure-disk',     'azureDisk',            true);
+registerSource('azure-file',     'azureFile',            true);
+registerSource('cephfs',         'cephfs',               true);
+registerSource('cinder',         'cinder',               true);
+registerSource('fc',             'fc',                   true);
+registerSource('flex-volume',    'flexVolume',           true);
+registerSource('flocker',        'flocker',              true);
+registerSource('gce-pd',         'gcePersistentDisk',    true);
+registerSource('glusterfs',      'glusterfs',            true);
+registerSource('host-path',      'hostPath',             true);
+registerSource('iscsi',          'iscsi',                true);
+registerSource('local',          'local',                true);
+registerSource('nfs',            'nfs',                  true);
+registerSource('photon',         'photonPersistentDisk', true);
+registerSource('portworx',       'portworxVolume',       true);
+registerSource('quobyte',        'quobyte',              true);
+registerSource('rbd',            'rbd',                  true);
+registerSource('scaleio',        'scaleIO',              true);
+registerSource('storageos',      'storageos',            true);
+registerSource('vsphere-volume', 'vsphereVolume',        true);
 
 export function registerSource(name, field, component) {
   if ( component === true ) {
