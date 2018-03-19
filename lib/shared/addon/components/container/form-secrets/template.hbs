@@ -10,7 +10,7 @@
     <span class="darken"><i class="icon icon-plus icon-small"></i></span>
     <span>{{t 'formSecrets.addLabel'}}</span>
   </button>
-  <div class="clearfix {{unless editing 'box'}}">
+  <div class="clearfix pt-20">
     {{#if secrets.length}}
       <table class="table fixed no-lines small mb-10">
         <thead>
@@ -25,39 +25,11 @@
         </thead>
         <tbody>
           {{#each secrets as |secret|}}
-            <tr>
-              <td data-title="{{t 'formSecrets.kind.label'}}">
-                {{#if editing}}
-                  {{searchable-select
-                      classNames="form-control"
-                      optionValuePath="id"
-                      optionLabelPath="label"
-                      content=allSecrets
-                      value=secret.sourceName
-                  }}
-                {{else}}
-                  {{#if secret}}
-                    {{secret.sourceName}}
-                  {{else}}
-                    <span class="text-muted">{{t 'generic.na'}}</span>
-                  {{/if}}
-                {{/if}}
-              </td>
-              <td>&nbsp;</td>
-              <td data-title="{{t 'formSecrets.prefixOrKey.label'}}">
-              </td>
-              <td>&nbsp;</td>
-
-              <td data-title="{{t 'formSecrets.containerPort.label'}}">
-              </td>
-              <td>
-                {{#if editing}}
-                  <button class="btn bg-primary btn-sm" {{action "removeSecret" secret}}>
-                    <i class="icon icon-minus"/><span class="sr-only">{{t 'generic.remove'}}</span>
-                  </button>
-                {{/if}}
-              </td>
-            </tr>
+            {{form-secrets-row
+                secret=secret
+                secrets=_allSecrets
+                editing=editing
+            }}
           {{/each}}
         </tbody>
       </table>
