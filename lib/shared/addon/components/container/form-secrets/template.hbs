@@ -6,91 +6,65 @@
     expandAll=expandAll
     expand=(action expandFn)
 }}
-  {{#if true}}
-    <span class="text-muted">Coming Soon...</span>
-  {{else}}
-  {{#if haveAny}}
-    {{#if editing}}
-      <button class="btn bg-link icon-btn" {{action "addSecret"}}>
-        <span class="darken"><i class="icon icon-plus text-small"/></span>
-        <span>{{t 'formSecrets.addLabel'}}</span>
-      </button>
-    {{/if}}
-
+  <button type="button" class="btn bg-link icon-btn" {{action "addSecret"}}>
+    <span class="darken"><i class="icon icon-plus icon-small"></i></span>
+    <span>{{t 'formSecrets.addLabel'}}</span>
+  </button>
+  <div class="clearfix {{unless editing 'box'}}">
     {{#if secrets.length}}
-      <table class="grid fixed no-lines mt-10 cell-padding">
-        <tr>
-          <th class="text-muted">{{t 'formSecrets.secret.label'}}{{field-required}}</th>
-          <th width="30">&nbsp;</th>
-          <th class="text-muted">{{t 'formSecrets.name.label'}}</th>
-          {{#if showPermissions}}
-            <th class="divided text-muted">{{t 'formSecrets.uid.label'}}</th>
-            <th class="text-muted">{{t 'formSecrets.gid.label'}}</th>
-            <th class="text-muted">{{t 'formSecrets.mode.label'}}</th>
-          {{/if}}
-          <th width="40">&nbsp;</th>
-        </tr>
-        {{#each secrets as |row|}}
-          <tr>
-            <td data-title="{{t 'formSecrets.secret.label'}}: ">
-              {{#if editing}}
-                {{schema/input-secret selectClass="form-control input-sm" selected=row.secretId}}
-              {{else}}
-                {{row.alias}}
-              {{/if}}
-            </td>
-
-            <td class="text-center">
-              <p><i class="icon icon-chevron-right"></i></p>
-            </td>
-
-            <td data-title="{{t 'formSecrets.name.label'}}: ">
-              {{#input-or-display editable=editing value=row.name}}
-                {{input type="text" class="form-control input-sm" value=row.name placeholder=(t 'formSecrets.name.placeholder')}}
-              {{/input-or-display}}
-            </td>
-
-            {{#if showPermissions}}
-              <td class="divided" data-title="{{t 'formSecrets.uid.label'}}: ">
-                {{#input-or-display editable=editing value=row.uid}}
-                  {{input-integer type="text" class="form-control input-sm" value=row.uid placeholder=(t 'formSecrets.uid.placeholder')}}
-                {{/input-or-display}}
-              </td>
-              <td data-title="{{t 'formSecrets.gid.label'}}: ">
-                {{#input-or-display editable=editing value=row.gid}}
-                  {{input-integer class="form-control input-sm" value=row.gid placeholder=(t 'formSecrets.gid.placeholder')}}
-                {{/input-or-display}}
-              </td>
-
-              <td data-title="{{t 'formSecrets.mode.label'}}: ">
-                {{#input-or-display editable=editing value=row.mode}}
-                  {{input-integer class="form-control input-sm" value=row.mode placeholder=(t 'formSecrets.mode.placeholder')}}
-                {{/input-or-display}}
-              </td>
-            {{/if}}
-
-              <td class="text-right">
+      <table class="table fixed no-lines small mb-10">
+        <thead>
+          <tr class="hidden-sm">
+            <th width="220" class="{{unless editing 'acc-label'}}">{{t 'formSecrets.secret.label'}}</th>
+            <th width="10"></th>
+            <th class="{{unless editing 'acc-label'}}">{{t 'formSecrets.prefixOrKey.label'}}{{#if editing}}{{field-required}}{{/if}}</th>
+            <th width="10"></th>
+            <th class="{{unless editing 'acc-label'}}">{{t 'formSecrets.prefix.label'}}{{#if editing}}{{field-required}}{{/if}}</th>
+            <th width="40">&nbsp;</th>
+          </tr>
+        </thead>
+        <tbody>
+          {{#each secrets as |secret|}}
+            <tr>
+              <td data-title="{{t 'formSecrets.kind.label'}}">
                 {{#if editing}}
-                  <button class="btn bg-primary btn-sm" {{action "removeSecret" row}}><i class="icon icon-minus"/><span class="sr-only">{{t 'generic.remove'}}</span></button>
+                  {{searchable-select
+                      classNames="form-control"
+                      optionValuePath="id"
+                      optionLabelPath="label"
+                      content=allSecrets
+                      value=secret.sourceName
+                  }}
+                {{else}}
+                  {{#if secret}}
+                    {{secret.sourceName}}
+                  {{else}}
+                    <span class="text-muted">{{t 'generic.na'}}</span>
+                  {{/if}}
                 {{/if}}
               </td>
-          </tr>
-        {{/each}}
+              <td>&nbsp;</td>
+              <td data-title="{{t 'formSecrets.prefixOrKey.label'}}">
+              </td>
+              <td>&nbsp;</td>
+
+              <td data-title="{{t 'formSecrets.containerPort.label'}}">
+              </td>
+              <td>
+                {{#if editing}}
+                  <button class="btn bg-primary btn-sm" {{action "removeSecret" secret}}>
+                    <i class="icon icon-minus"/><span class="sr-only">{{t 'generic.remove'}}</span>
+                  </button>
+                {{/if}}
+              </td>
+            </tr>
+          {{/each}}
+        </tbody>
       </table>
-      <p class="help-block">
-        {{t 'formSecrets.help.prefix' htmlSafe=true}}
-        {{#unless showPermissions}}
-          <a href="#" {{action "showPermissions"}}>
-            {{t 'formSecrets.help.showPermissionsLink'}}
-          </a>
-        {{/unless}}
-        {{t 'formSecrets.help.suffix' htmlSafe=true}}
-      </p>
-    {{else if (not editing)}}
-      <span class="text-muted">{{t 'formSecrets.noData'}}</span>
+    {{else}}
+      {{#unless editing}}
+        <span class="text-center text-muted">{{t 'formSecrets.noSecrets'}}</span>
+      {{/unless}}
     {{/if}}
-  {{else}}
-    {{t 'formSecrets.noneDefined'}}
-  {{/if}}
-  {{/if}}
+  </div>
 {{/accordion-list-item}}
