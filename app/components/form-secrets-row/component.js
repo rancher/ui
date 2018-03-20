@@ -57,7 +57,7 @@ export default Component.extend({
     },
   }),
   prefixOrKeys: computed('allSecrets.[]', 'secret.sourceName', function() {
-    let prefix = { id: 'prefix', label: 'Prefix'};
+    let prefix = { id: 'prefix', label: 'All'};
     let selectedSecret = get(this, 'secret.sourceName');
     let out = [prefix];
     if (selectedSecret) {
