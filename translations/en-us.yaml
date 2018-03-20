@@ -786,41 +786,25 @@ editDns:
     mixedAlias: An Alias cannot target a mix of CNAME and other records
     multipleCname: An Alias cannot target more than one CNAME record
 
-editVolume:
+cruPersistentVolumeClaim:
+  title:
+    define: Define Volume Claim
+    new: Add Volume Claim
+    edit: 'Edit Volume Claim: {name}'
+    view: 'Persistent Volume: {name}'
   define:
-    global: Define Volume
-    stack: Define Volume Template
-    container: Define Volume Template
-    action: Define
-  add:
-    global: Add Volume
-    stack: Add Volume Template
-    container: Add Volume Template
-  edit:
-    global: Edit Volume
-    stack: Edit Volume Template
-    container: Edit Volume Template
+    addActionLabel: Define
   name:
     placeholder: e.g. myvol
-  scope:
-    label: Scope
-    global: One volume for the whole environment
-    stack: One volume within a specific stack
-    container: Separate volumes for each container
-  driver:
-    label: Driver
-    local: Local host disk
-    nfs: Rancher NFS
-    ebs: Rancher EBS
-    efs: Rancher EFS
-    longhorn: Rancher Longhorn
-    standard: Standard
-    custom:
-      label: Custom
-      placeholder: Custom driver name
-  driverOpts:
-    label: Driver Options
-    addAction: Add Option
+  source:
+    pv: Use an existing persistent volume
+    storageClass: Use a Storage Class to provision a new persistent volume
+  pv:
+    label: Persistent Volume
+    prompt: Select a persistent volume...
+  storageClass:
+    label: Storage Class
+    prompt: Select a storage class...
 
 # If you change translations here also change the translation in app/utils/constants.js under the FALLBACK_TRANSLATIONS key
 # those are present in case we have an error in the app and can not load the translations file
