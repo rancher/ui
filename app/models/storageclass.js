@@ -3,6 +3,7 @@ import { get, computed } from '@ember/object';
 import { inject as service } from '@ember/service';
 import { all } from 'rsvp';
 
+const BETA_ANNOTATION = 'storageclass.beta.kubernetes.io/is-default-class';
 const DEFAULT_ANNOTATION = 'storageclass.kubernetes.io/is-default-class';
 
 const PROVISIONERS = [];
@@ -66,15 +67,20 @@ export default Resource.extend({
   },
 
   isDefault: computed('annotations', function() {
-    return (get(this,'annotations')||{})[DEFAULT_ANNOTATION] === 'true';
+    const annotations = get(this, 'annotations') || {};
+
+    return annotations[DEFAULT_ANNOTATION] === 'true' ||
+      annotations[BETA_ANNOTATION] === 'true';
   }),
 
   setDefault(on) {
     const annotations = get(this,'annotations')||{};
     if ( on ) {
       annotations[DEFAULT_ANNOTATION] = 'true';
+      annotations[BETA_ANNOTATION] = 'true';
     } else {
       delete annotations[DEFAULT_ANNOTATION];
+      delete annotations[BETA_ANNOTATION];
     }
 
     this.save();
