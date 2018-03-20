@@ -137,8 +137,7 @@ Router.map(function() {
       this.route('volumes', {path: '/volumes', resetNamespace: true}, function() {
         this.route('index', {path: '/'});
         this.route('new', {path: '/add'});
-
-        this.route('volume', {path: '/volume/:volume_id', resetNamespace: true});
+        this.route('detail', {path: '/:volume_id'});
       });
 
       this.route('workload', {path: '/workload/:workload_id', resetNamespace: true});
@@ -156,15 +155,6 @@ Router.map(function() {
       });
 
       // Resources
-
-      // @TODO-2.0
-      this.route('stack', {path: '/stack/:stack_id', resetNamespace: true}, function() {
-        this.route('index', {path: '/'});
-        this.route('code',  {path: '/code'});
-        this.route('graph', {path: '/graph'});
-        this.route('chart', {path: '/chart'});
-      });
-
       this.route('security', function() {
         this.route('index', {path: '/'});
         this.route('members', function() {

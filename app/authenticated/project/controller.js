@@ -12,9 +12,8 @@ export default Controller.extend({
   prefs: service(),
   scope: service(),
 
-  tags: '',
   group: NAMESPACE,
-  queryParams: ['tags','group'],
+  queryParams: ['group'],
 
   namespaces: alias('scope.currentProject.namespaces'),
   nodes: null,
@@ -46,12 +45,12 @@ export default Controller.extend({
   }.property('scope.currentCluster.state','nodes.[]'),
 
   groupTableBy: function() {
-    if ( this.get('group') === NAMESPACE && !this.get('simpleMode') ) {
+    if ( this.get('group') === NAMESPACE ) {
       return 'namespaceId';
     } else {
       return null;
     }
-  }.property('simpleMode', 'group'),
+  }.property('group'),
 
   preSorts: function() {
     if ( this.get('groupTableBy') ) {
@@ -60,26 +59,6 @@ export default Controller.extend({
       return null;
     }
   }.property('groupTableBy'),
-
-  showNamespace: function() {
-    let needTags = tagsToArray(this.get('tags'));
-    let simpleMode = this.get('simpleMode');
-
-    let out = {};
-    let ok;
-
-    this.get('namespaces').forEach((obj) => {
-      ok = true;
-
-      if ( ok && !simpleMode && !obj.hasTags(needTags) ) {
-        ok = false;
-      }
-
-      out[obj.get('id')] = ok;
-    });
-
-    return out;
-  }.property('namespaces.@each.{grouping,system}','tags','simpleMode'), // Grouping is used for tags
 
   groupChanged: function() {
     let key = `prefs.${C.PREFS.CONTAINER_VIEW}`;

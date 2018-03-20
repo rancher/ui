@@ -27,55 +27,47 @@
         {{#if isShibboleth}}
           <p>{{t 'loginPage.shibbolethMessage' appName=settings.appName}}</p>
           <br/>
+          {{login-shibboleth
+            action="started"
+            waiting=waiting
+          }}
         {{/if}}
 
-        {{#if infoMsg}}
-          <div class="banner p-10 {{if errorMsg 'bg-error' 'bg-warning'}}" role="alert">
-            {{infoMsg}}
-            {{#if (and isGithub isForbidden)}}
-              <br/>
-              <br/>
-              <div>
-                {{t 'loginGithub.thirdPartyAccessLimitation' htmlSafe=true}}
-              </div>
-            {{/if}}
-          </div>
+        {{#if isCaas}}
+          {{caas-login promptReset=(mut promptPasswordReset)}}
         {{/if}}
-        {{#if isShibboleth}}
-          {{login-shibboleth action="started" waiting=waiting}}
-        {{/if}}
-      {{/unless}}
 
-      {{#if isCaas}}
-        {{caas-login promptReset=(mut promptPasswordReset)}}
-      {{/if}}
-
-      {{!-- {{#if (or isLocal isActiveDirectory isOpenLdap isAzureAd)}} --}}
-      {{#if isActiveDirectory}}
-        {{login-user-pass
+        {{#if isActiveDirectory}}
+          {{login-user-pass
             classNames="row"
             action="authenticate"
             waiting=waiting
             provider="activedirectory"
-        }}
-      {{/if}}
+          }}
+        {{/if}}
 
-      {{#if isLocal}}
-        {{login-user-pass
+        {{#if isLocal}}
+          {{login-user-pass
             classNames="row"
             action="authenticate"
             waiting=waiting
             shown=onlyLocal
             provider="local"
-        }}
-      {{/if}}
+          }}
+        {{/if}}
+
+        {{#if infoMsg}}
+          <div class="banner p-10 {{if errorMsg 'bg-error' 'bg-warning'}}" role="alert">
+            {{infoMsg}}
+          </div>
+        {{/if}}
+      {{/unless}}
 
       {{#if app.initError}}
         {{banner-message color='bg-error' icon='icon-alert' message=app.initError.message}}
 
-        <button class="btn bg-primary icon-btn p-0" {{action "reload"}}>
-          <span class="darken"><i class="icon icon-refresh text-small"/></span>
-          <span>Reload</span>
+        <button class="btn bg-primary" {{action "reload"}}>
+          <i class="icon icon-refresh text-small"/> Reload
         </button>
       {{/if}}
     </section>

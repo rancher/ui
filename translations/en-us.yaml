@@ -79,6 +79,7 @@ generic:
   select: Select
   service: Service
   services: Services
+  size: Size
   state: State
   tags: Tags
   test: Test
@@ -785,41 +786,29 @@ editDns:
     mixedAlias: An Alias cannot target a mix of CNAME and other records
     multipleCname: An Alias cannot target more than one CNAME record
 
-editVolume:
+cruPersistentVolumeClaim:
+  title:
+    define: Define Volume Claim
+    new: Add Volume Claim
+    edit: 'Edit Volume Claim: {name}'
+    view: 'Persistent Volume: {name}'
   define:
-    global: Define Volume
-    stack: Define Volume Template
-    container: Define Volume Template
-    action: Define
-  add:
-    global: Add Volume
-    stack: Add Volume Template
-    container: Add Volume Template
-  edit:
-    global: Edit Volume
-    stack: Edit Volume Template
-    container: Edit Volume Template
+    addActionLabel: Define
+  capacity:
+    label: Capacity
+    unit: GiB
   name:
     placeholder: e.g. myvol
-  scope:
-    label: Scope
-    global: One volume for the whole environment
-    stack: One volume within a specific stack
-    container: Separate volumes for each container
-  driver:
-    label: Driver
-    local: Local host disk
-    nfs: Rancher NFS
-    ebs: Rancher EBS
-    efs: Rancher EFS
-    longhorn: Rancher Longhorn
-    standard: Standard
-    custom:
-      label: Custom
-      placeholder: Custom driver name
-  driverOpts:
-    label: Driver Options
-    addAction: Add Option
+  source:
+    label: Source
+    pv: Use an existing persistent volume
+    storageClass: Use a Storage Class to provision a new persistent volume
+  pv:
+    label: Persistent Volume
+    prompt: Select a persistent volume...
+  storageClass:
+    label: Storage Class
+    prompt: Use the default class
 
 # If you change translations here also change the translation in app/utils/constants.js under the FALLBACK_TRANSLATIONS key
 # those are present in case we have an error in the app and can not load the translations file
@@ -1078,7 +1067,8 @@ loginPage:
     500: "Internal Server Error"
     generic: "There was an error ({errorCode}) while trying to log you in. Please try again."
   error:
-    authFailed: Username or Password incorrect.
+    authFailedCreds: "Logging in failed: Check credentials, or your account may not be authorized to log in."
+    authFailed: "Logging in failed: Your account may not be authorized to log in."
 
 
 machinePage:
@@ -1739,13 +1729,8 @@ cruPersistentVolume:
     edit: 'Edit Persistent Volume: {name}'
     view: 'Persistent Volume: {name}'
   storageClass:
-    label: Storage Class
-    prompt: No storage class
-  accessModes:
-    label: Access Modes
-    accessRWO: Single Node Read-Write
-    accessROM: Many Nodes Read-Only
-    accessRWM: Many Nodes Read-Write
+    label: Assign to Storage Class
+    prompt: None
   capacity:
     label: Capacity
     unit: GiB
@@ -1763,7 +1748,7 @@ cruPersistentVolume:
     noData: No Mount Options
   awsElasticBlockStore:
     fsType:
-      label: FS Type
+      label: Filesystem Type
       placeholder: "e.g. ext4"
     readOnly:
       label: Read Only
@@ -1784,7 +1769,7 @@ cruPersistentVolume:
       label: Disk URI
       placeholder: "e.g. https://example.com/disk"
     fsType:
-      label: FS Type
+      label: Filesystem Type
       placeholder: "e.g. ext4"
     kind:
       label: Kind
@@ -1828,7 +1813,7 @@ cruPersistentVolume:
       placeholder: "e.g. root"
   rbd:
     fsType:
-      label: FS Type
+      label: Filesystem Type
       placeholder: "e.g. ext4"
     image:
       label: Image
@@ -1852,7 +1837,7 @@ cruPersistentVolume:
       placeholder: "e.g. root"
   fc:
     fsType:
-      label: FS Type
+      label: Filesystem Type
       placeholder: "e.g. ext4"
     lun:
       label: Lun
@@ -1870,7 +1855,7 @@ cruPersistentVolume:
       label: Driver
       placeholder: "e.g. driver"
     fsType:
-      label: FS Type
+      label: Filesystem Type
       placeholder: "e.g. ext4"
     options:
       label: Options
@@ -1898,13 +1883,13 @@ cruPersistentVolume:
       label: Read Only
   gcePersistentDisk:
     fsType:
-      label: FS Type
+      label: Filesystem Type
       placeholder: "e.g. ext4"
     partition:
       label: Partition
       placeholder: "e.g. 1"
     pdName:
-      label: PD Name
+      label: Persistent Disk Name
       placeholder: "e.g. abc"
     readOnly:
       label: Read Only
@@ -1914,7 +1899,7 @@ cruPersistentVolume:
     chapAuthSession:
       label: Chap Auth Session
     fsType:
-      label: FS Type
+      label: Filesystem Type
       placeholder: "e.g. ext4"
     initiatorName:
       label: Initiator Name
@@ -1954,7 +1939,7 @@ cruPersistentVolume:
       placeholder: "e.g. 10.244.1.4"
   cinder:
     fsType:
-      label: FS Type
+      label: Filesystem Type
       placeholder: "e.g. ext4"
     readOnly:
       label: Read Only
@@ -1963,14 +1948,14 @@ cruPersistentVolume:
       placeholder: "e.g. vol"
   photonPersistentDisk:
     fsType:
-      label: FS Type
+      label: Filesystem Type
       placeholder: "e.g. ext4"
     pdID:
       label: PD ID
       placeholder: "e.g. abc"
   portworxVolume:
     fsType:
-      label: FS Type
+      label: Filesystem Type
       placeholder: "e.g. ext4"
     readOnly:
       label: Read Only
@@ -1994,7 +1979,7 @@ cruPersistentVolume:
       placeholder: "e.g. vol"
   scaleIO:
     fsType:
-      label: FS Type
+      label: Filesystem Type
       placeholder: "e.g. ext4"
     gateway:
       label: Gateway
@@ -2028,7 +2013,7 @@ cruPersistentVolume:
       placeholder: "e.g. vol-0"
   storageos:
     fsType:
-      label: FS Type
+      label: Filesystem Type
       placeholder: "e.g. ext4"
     readOnly:
       label: Read Only
@@ -2048,7 +2033,7 @@ cruPersistentVolume:
       placeholder: "e.g. default"
   vsphereVolume:
     fsType:
-      label: FS Type
+      label: Filesystem Type
       placeholder: "e.g. ext4"
     storagePolicyID:
       label: Storage Policy ID
@@ -2141,7 +2126,7 @@ cruStorageClass:
       label: Datastore
       placeholder: "e.g. VSANDatastore"
     fstype:
-      label: FS Type
+      label: Filesystem Type
       placeholder: "e.g. ext3"
     hostFailuresToTolerate:
       label: Host Failures To Tolerate
@@ -2226,7 +2211,7 @@ cruStorageClass:
       label: Read Only
       placeholder: "e.g. false"
     fsType:
-      label: FS Type
+      label: Filesystem Type
       placeholder: "e.g. xfs"
   storageos:
     pool:
@@ -2242,7 +2227,7 @@ cruStorageClass:
       label: Admin Secret Name
       placeholder: "e.g. storageos-secret"
     fsType:
-      label: FS Type
+      label: Filesystem Type
       placeholder: "e.g. ext4"
   quobyte:
     quobyteAPIServer:
@@ -2292,7 +2277,7 @@ cruStorageClass:
       label: User Secret Name
       placeholder: "e.g. ceph-secret-user"
     fsType:
-      label: FS Type
+      label: Filesystem Type
       placeholder: "e.g. ext4"
     imageFormat:
       label: Image Format
@@ -3373,6 +3358,12 @@ formUserLabels:
     placeholder: e.g. bar
   protip: "ProTip: Paste one or more lines of key=value pairs into any key field for easy bulk entry."
 
+formAccessModes:
+  label: Access Modes
+  accessRWO: Single Node Read-Write
+  accessROX: Many Nodes Read-Only
+  accessRWX: Many Nodes Read-Write
+
 formAnnotations:
   addActionLabel: Add Annotation
   title: Annotations
@@ -3479,31 +3470,6 @@ formVolumes:
     source: Source
     mountPoint: Mount Point
     opts: Access/Options
-
-hookPage:
-  receiver:
-    header: Receiver Hooks
-    buttonText: Add Receiver
-    content: "Receiver hooks give you a URL that can be hit to trigger an action inside of {appName}."
-    noData: No receiver hooks.
-  scaleService:
-    label: Scale a Service or Load Balancer
-    detailPrefix: "Scale {action} "
-    detailLink: "{displayService}"
-    detailSuffix: "by {amount}"
-  scaleHost:
-    label: Scale the number of Nodes
-    detail: "Matching {labels} {action} by {amount}"
-  serviceUpgrade:
-    label: Upgrade a Service
-    detail: "Matching {labels} when <code>{tag}</code> changes"
-  fields:
-    kind:
-      label: Kind
-    detail:
-      label: Detail
-    url:
-      label: Trigger URL
 
 formCapabilityPodSecurityPolicy:
   title: Capability Policies
@@ -3784,11 +3750,10 @@ labelsSection:
   noData: No labels
 
 loginShibboleth:
-  buttonText: Authenticate with Shibboleth
+  buttonText: Log In with Shibboleth
 
 loginGithub:
-  buttonText: Log In With GitHub
-  thirdPartyAccessLimitation: One possible reason may be due to third-party access limitations. You can find more information at <a href="https://help.github.com/articles/about-third-party-application-restrictions/" target="_blank">github</a>.
+  buttonText: Log In with GitHub
 
 loginUserPass:
   local: Use a Local User
@@ -4662,61 +4627,14 @@ newContainer:
     sidekick: Sidecar
 
   errors:
-    noSidekick: Choose a service to add the sidecar to
-    duplicateName: 'There is already a sidecar named "{name}" in the service "{service}"'
+    noSidekick: Choose a workload to add the sidecar to
+    duplicateName: 'There is already a sidecar named "{name}" in the workload "{service}"'
 
 newPassword:
   placeholder: New Password
   password: New Password
   confirmPassword: Confirm Password
   passwordNoMatch: Passwords do not match
-
-newReceiver:
-  title:
-    edit: Edit Receiver
-    add: Add Receiver
-  name:
-    placeholder: "e.g. scale-web"
-  driver:
-    label: Kind
-  action:
-    label: Action
-    up: Scale Up
-    down: Scale Down
-  deleteOption:
-    label: When Scaling Down, Remove
-    mostRecent: The most recently created Host
-    leastRecent: The oldest Host
-  hostSelector:
-    label: Host Template
-    addActionLabel: Add Selector Label
-    help:
-      up: Nodes with matching labels will be used as the template for deploying the new {by, plural, =1 {host} other {hosts}}.
-      down: Nodes with matching labels will be candidates for being removed during scale down.
-  image:
-    label: Docker Image name
-  service:
-    label: Target Service
-  serviceSelector:
-    label: Service Selector
-    addActionLabel: Add Selector Label
-    help: Services matching the given label will be upgraded
-  amount:
-    label: By
-  min:
-    label: Minimum Scale
-    placeholder: e.g. 1
-  max:
-    label: Maximum Scale
-    placeholder: e.g. 20
-  payloadFormat:
-    label: Webhook Payload Format
-    alicloud: Alibaba Cloud Docker Hub
-    dockerhub: Docker Hub
-  tag:
-    label: Image Tag
-    placeholder: "e.g. latest"
-    help: Only registry pushes to the given tag will cause a service upgrade.
 
 newSecret:
   title:
@@ -4999,7 +4917,7 @@ siteAccess:
   header: Site Access
   helpText: "Configure who should be allowed to log in and use {appName}."
   unrestricted: "Allow any valid {individuals}"
-  restricted: "Allow members of Projects, plus Authorized {individuals} and {collection}"
+  restricted: "Allow members of Clusters, Projects, plus Authorized {individuals} and {collection}"
   required: "Restrict access to only Authorized {individuals} and {collection}"
   listHeader: "Authorized {individuals} and {collection}"
   noIdentity: None
@@ -5059,38 +4977,17 @@ viewEditDescription:
       placeholder: e.g. Environment for developer experimentation
 
 volumesPage:
-  title: Volume
-  noMatch: No volumes match the current search
-  banner:
-    driver: Driver
-    size: Size
-    stack: Stack
-    uri: URI
-    perCont: On Container
-    host: Host
-  scope:
-    label: Scope
-    stack: Stack
-    container: Per Container
-    standalone: Environment
-  driver:
-    label: Driver
-  driverOptions:
-    title: Driver Options
-    detail: Map of key value pairs representing driver options
-    labels:
-      key: Key
-      value: Value
-      noData: No Options
-  mounts:
-    label: Mounts
-    detail: Physical mounts related to the volume
-    table:
-      instance: Instance
-      path: Path
-      permission: Permissions
-      volume: Volume
-      noData: No Mounts
+  title: Volume Claims
+  addActionLabel: Add Volume Claim
+  noData: You do not have any persistent volume claims yet.
+  noMatch: No persistent volume claims match the current search
+  claimName:
+    label: Claim Name
+  volume:
+    label: Persistent Volume
+  storageClass:
+    label: Storage Class
+
 
 vmConsole:
   header: "Console:"

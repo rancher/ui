@@ -26,7 +26,7 @@
 
 <div class="row">
   <div class="col span-6">
-    <label class="acc-label">{{t 'cruPersistentVolume.source.label'}}{{field-required}}</label>
+    <label class="acc-label">{{t 'cruPersistentVolume.source.label'}}{{field-required editing=editing}}</label>
     {{#if editing}}
       {{new-select
         content=sourceChoices
@@ -37,88 +37,61 @@
         readOnly=isView
       }}
     {{else}}
-      {{t (concat 'volumeSource.' sourceName '.title')}}
+      <div>
+        {{t (concat 'volumeSource.' sourceName '.title')}}
+      </div>
     {{/if}}
   </div>
   <div class="col span-6">
-    <label class="acc-label">{{t 'cruPersistentVolume.storageClass.label'}}</label>
+    <label class="acc-label">{{t 'cruPersistentVolume.capacity.label'}}{{field-required editing=editing}}</label>
     {{#if editing}}
-      {{new-select
-        content=storageClasses
-        prompt="cruPersistentVolume.storageClass.prompt"
-        localizedPrompt=true
-        optionLabelPath="displayName"
-        optionValuePath="id"
-        value=primaryResource.storageClassName
-      }}
+      <div class="input-group">
+        {{input-number classNames="form-control" value=capacity}}
+        <span class="input-group-addon bg-default">{{t 'cruPersistentVolume.capacity.unit'}}</span>
+      </div>
     {{else}}
-      <a href="{{href-to "authenticated.cluster.storage.classes.detail.index" primaryResource.storageClass.id}}">
-        {{primaryResource.storageClass.displayName}}
-      </a>
+      <div>
+        {{capacity}} {{t 'cruPersistentVolume.capacity.unit'}}
+      </div>
     {{/if}}
   </div>
 </div>
-<hr/>
 
-<div class="row">
-  <div class="col span-6">
-    <label class="acc-label">{{t 'cruPersistentVolume.capacity.label'}}</label>
-    <div class="input-group">
-      {{input-number classNames="form-control" value=capacity}}
-      <span class="input-group-addon bg-default">{{t 'cruPersistentVolume.capacity.unit'}}</span>
-    </div>
-  </div>
-</div>
+<hr class="mb-20" />
 
 {{#accordion-list showExpandAll=false as | al expandFn |}}
-  {{#unless useStorageClass}}
-    {{#accordion-list-item
-      title=(t 'cruPersistentVolume.source.title')
-      detail=(t 'cruPersistentVolume.source.detail')
-      expandAll=expandAll
-      expand=(action expandFn)
-      expandOnInit=true
-    }}
-      {{#if sourceComponent}}
-        {{component sourceComponent.component
-          plugin=sourceComponent.field
-          editing=notView
-          volume=model
-          changed=(action "updateParams")
-        }}
-      {{else}}
-        <p class="text-muted">Choose a Volume Source above...</p>
-      {{/if}}
-    {{/accordion-list-item}}
-  {{/unless}}
+  {{#accordion-list-item
+    title=(t 'cruPersistentVolume.source.title')
+    detail=(t 'cruPersistentVolume.source.detail')
+    expandAll=expandAll
+    expand=(action expandFn)
+    expandOnInit=true
+  }}
+    {{#if sourceComponent}}
+      {{component sourceComponent.component
+        plugin=sourceComponent.field
+        editing=notView
+        volume=model
+        changed=(action "updateParams")
+      }}
+    {{else}}
+      <p class="text-muted">Choose a Volume Source above...</p>
+    {{/if}}
+  {{/accordion-list-item}}
 
   {{#accordion-list-item
     title=(t 'cruPersistentVolume.customize.title')
     detail=(t 'cruPersistentVolume.customize.detail')
     expandAll=expandAll
     expand=(action expandFn)
+    everExpanded=true
   }}
     <div class="row">
       <div class="col span-6">
-        <label class="acc-label">{{t 'cruPersistentVolume.accessModes.label'}}</label>
-        <div class="checkbox">
-          <label>
-            {{input type="checkbox" checked=accessRWO}}
-            {{t 'cruPersistentVolume.accessModes.accessRWO'}}
-          </label>
-        </div>
-        <div class="checkbox">
-          <label>
-            {{input type="checkbox" checked=accessROM}}
-            {{t 'cruPersistentVolume.accessModes.accessROM'}}
-          </label>
-        </div>
-        <div class="checkbox">
-          <label>
-            {{input type="checkbox" checked=accessRWM}}
-            {{t 'cruPersistentVolume.accessModes.accessRWM'}}
-          </label>
-        </div>
+        {{form-access-modes
+          model=primaryResource
+          mode=mode
+        }}
       </div>
       <div class="col span-6">
         {{form-value-array
@@ -129,6 +102,27 @@
           noDataLabel="cruPersistentVolume.mountOptions.noData"
           changed=(action "updateOptions")
         }}
+      </div>
+    </div>
+    <div class="row">
+      <div class="col span-6">
+        <label class="acc-label">{{t 'cruPersistentVolume.storageClass.label'}}</label>
+        {{#if editing}}
+          {{new-select
+            content=storageClasses
+            prompt="cruPersistentVolume.storageClass.prompt"
+            localizedPrompt=true
+            optionLabelPath="displayName"
+            optionValuePath="id"
+            value=primaryResource.storageClassId
+          }}
+        {{else}}
+          <div>
+            <a href="{{href-to "authenticated.cluster.storage.classes.detail.index" primaryResource.storageClass.id}}">
+              {{primaryResource.storageClass.displayName}}
+            </a>
+          </div>
+        {{/if}}
       </div>
     </div>
   {{/accordion-list-item}}

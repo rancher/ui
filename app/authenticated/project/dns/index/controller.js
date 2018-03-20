@@ -6,10 +6,7 @@ export default Controller.extend({
   projectController: controller('authenticated.project'),
   scope: service(),
 
-  tags: alias('projectController.tags'),
-  simpleMode: alias('projectController.simpleMode'),
   groupTableBy: alias('projectController.groupTableBy'),
-  showNamespace: alias('projectController.showNamespace'),
   expandedInstances: alias('projectController.expandedInstances'),
   preSorts: alias('projectController.preSorts'),
 
