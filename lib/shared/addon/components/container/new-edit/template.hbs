@@ -52,30 +52,45 @@
 <hr class="mt-30 mb-30" />
 <div class="row">
   {{container/form-ports
-    initialPorts=launchConfig.ports
-    changed=(action (mut launchConfig.ports))
-    errors=portErrors
-    editing=true
-  }}
-</div>
-<hr class="mt-30 mb-30" />
-<div class="row">
-  {{form-key-value
-    initialMap=launchConfig.environment
-    changed=(action (mut launchConfig.environment))
-    allowEmptyValue=true
-    editing=true
-    header=(t 'newContainer.environment.label')
-    addActionLabel="newContainer.environment.addAction"
-    keyLabel="newContainer.environment.keyLabel"
-    keyPlaceholder="newContainer.environment.keyPlaceholder"
-    valueLabel="newContainer.environment.valueLabel"
-    valuePlaceholder="newContainer.environment.valuePlaceholder"
+      initialPorts=launchConfig.ports
+      changed=(action (mut launchConfig.ports))
+      errors=portErrors
+      editing=true
   }}
 </div>
 
 <hr class="mt-30 mb-30" />
 {{#accordion-list as | al expandFn | }}
+  {{#accordion-list-item
+       title=(t 'newContainer.environment.label')
+       detail=(t 'newContainer.environment.detail' appName=settings.appName)
+       status=status
+       statusClass=statusClass
+       expandAll=al.expandAll
+       expand=(action expandFn)
+  }}
+    {{form-key-value
+        initialMap=launchConfig.environment
+        changed=(action (mut launchConfig.environment))
+        allowEmptyValue=true
+        editing=true
+        header=(t 'newContainer.environment.label')
+        addActionLabel="newContainer.environment.addAction"
+        keyLabel="newContainer.environment.keyLabel"
+        keyPlaceholder="newContainer.environment.keyPlaceholder"
+        valueLabel="newContainer.environment.valueLabel"
+        valuePlaceholder="newContainer.environment.valuePlaceholder"
+    }}
+    <hr class="mt-30 mb-30" />
+    {{container/form-secrets
+        classNames="accordion-wrapper"
+        secrets=launchConfig.environmentFrom
+        errors=secretErrors
+        editing=true
+    }}
+
+  {{/accordion-list-item}}
+
   {{container/form-volumes
     launchConfig=launchConfig
     workload=service
@@ -197,15 +212,6 @@
       errors=annotationErrors
       expandAll=al.expandAll
       expandFn=expandFn
-    }}
-
-    {{container/form-secrets
-        classNames="accordion-wrapper"
-        secrets=launchConfig.environmentFrom
-        errors=secretErrors
-        editing=true
-        expandAll=al.expandAll
-        expandFn=expandFn
     }}
 
     {{container/form-security

@@ -1,51 +1,64 @@
-  <td data-title="{{t 'formSecrets.kind.label'}}">
-    {{#if editing}}
-      {{searchable-select
-          classNames="form-control"
-          optionValuePath="id"
-          optionLabelPath="label"
-          content=allSecrets
-          value=secret.sourceName
-      }}
+<td data-title="{{t 'formSecrets.kind.label'}}">
+  {{#if editing}}
+    {{new-select
+        classNames="form-control"
+        content=sources
+        value=secret.source
+    }}
+  {{else}}
+    {{#if secret.source}}
+      {{secret.source}}
     {{else}}
-      {{#if secret}}
-        {{secret.sourceName}}
-      {{else}}
-        <span class="text-muted">{{t 'generic.na'}}</span>
-      {{/if}}
+      <span class="text-muted">{{t 'generic.na'}}</span>
     {{/if}}
-  </td>
-  <td>&nbsp;</td>
-  <td data-title="{{t 'formSecrets.prefixOrKey.label'}}">
+  {{/if}}
+</td>
+<td>&nbsp;</td>
+<td data-title="{{t 'formSecrets.kind.label'}}">
+  {{#if editing}}
     {{searchable-select
         classNames="form-control"
         optionValuePath="id"
         optionLabelPath="label"
-        content=prefixOrKeys
-        value=sourceKey
-        readOnly=secretSet
+        content=allSecrets
+        value=secret.sourceName
     }}
-  </td>
-  <td>&nbsp;</td>
-
-  <td data-title="{{t 'formSecrets.prefix.label'}}">
-    <div class="row">
-      <div class="col span-2 p-10" style="min-width:60px;">
-        {{#if (eq sourceKey 'prefix')}}
-          {{sourceKey}}
-        {{else}}
-          {{t 'generic.as'}}
-        {{/if}}
-      </div>
-      <div class="col span-10">
-        {{input type="text" value=prefixOrTarget classNames="form-control" disabled=disableTarget}}
-      </div>
-    </div>
-  </td>
-  <td>
-    {{#if editing}}
-      <button class="btn bg-primary btn-sm" {{action "removeSecret" secret}}>
-        <i class="icon icon-minus"/><span class="sr-only">{{t 'generic.remove'}}</span>
-      </button>
+  {{else}}
+    {{#if secret}}
+      {{secret.sourceName}}
+    {{else}}
+      <span class="text-muted">{{t 'generic.na'}}</span>
     {{/if}}
-  </td>
+  {{/if}}
+</td>
+<td>&nbsp;</td>
+<td data-title="{{t 'formSecrets.prefixOrKey.label'}}">
+  {{searchable-select
+      classNames="form-control"
+      optionValuePath="id"
+      optionLabelPath="label"
+      content=prefixOrKeys
+      value=sourceKey
+      readOnly=secretSet
+  }}
+</td>
+<td>
+  <div class="text-center">
+    {{#if (eq sourceKey 'prefix')}}
+      {{sourceKey}}
+    {{else}}
+      {{t 'generic.as'}}
+    {{/if}}
+  </div>
+</td>
+
+<td data-title="{{t 'formSecrets.prefix.label'}}">
+  {{input type="text" value=prefixOrTarget classNames="form-control" disabled=disableTarget}}
+</td>
+<td>
+  {{#if editing}}
+    <button class="btn bg-primary btn-sm" {{action remove secret}}>
+      <i class="icon icon-minus"/><span class="sr-only">{{t 'generic.remove'}}</span>
+    </button>
+  {{/if}}
+</td>

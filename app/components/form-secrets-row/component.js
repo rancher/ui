@@ -2,23 +2,32 @@ import Component from '@ember/component';
 import layout from './template';
 import { get, set, computed } from '@ember/object';
 
+const SOURCES = [
+  {id: 'configMap', label: 'Config Map', disabled: true},
+  {id: 'field', label: 'Field', disabled: true},
+  {id: 'resource', label: 'Resource', disabled: true},
+  {id: 'secret', label: 'Secret', disabled: false}
+];
+
 export default Component.extend({
   layout,
-  tagName: 'tr',
-  secrets: null,
+  tagName:       'tr',
+  secrets:       null,
+  secret:        null,
+  usePrefix:     false,
+  editing:       true,
+  disableTarget: true,
+  sources:       SOURCES,
+
   allSecrets: computed('secrets.@each.{sourceName}', function() {
     return get(this, 'secrets').map(s => { return {id: get(s, 'name'), label: get(s, 'name')} }).sortBy('label');
   }),
-  secret: null,
-  usePrefix: false,
-  editing: true,
-  disableTarget: true,
   secretSet: computed('secret.sourceName', function() {
     return get(this, 'secret.sourceName') ? false : true;
   }),
 
   prefixOrTarget: computed('sourceKey', {
-    get(key) {
+    get(/* key */) {
       if (get(this, 'sourceKey') === 'prefix') {
         return get(this, 'secret.prefix');
       } else {
@@ -33,6 +42,7 @@ export default Component.extend({
       }
     }
   }),
+
   sourceKey: computed({
     get(key) {
       let nue = key;
@@ -42,10 +52,9 @@ export default Component.extend({
       return get(this, `secret.${nue}`);
     },
     set(key, value) {
-      let out = get(this, 'secret.sourceKey');
+      let out = get(this, 'secret.sourceKey') || value;
 
       if (value === 'prefix') {
-        // TODO verify that when prefix is set we do not set the sourceKey
         out = "prefix";
       } else {
         set(this, 'secret.sourceKey', value);
@@ -56,13 +65,18 @@ export default Component.extend({
       return out;
     },
   }),
+
   prefixOrKeys: computed('allSecrets.[]', 'secret.sourceName', function() {
-    let prefix = { id: 'prefix', label: 'All'};
+    let prefix         = { id: 'prefix', label: 'All'};
     let selectedSecret = get(this, 'secret.sourceName');
-    let out = [prefix];
+    let out            = [prefix];
+
     if (selectedSecret) {
       let secret = get(this, 'secrets').findBy('name', selectedSecret);
       let secretKeys = Object.keys(get(secret, 'data'));
+
+      set(this, 'sourceKey', 'prefix');
+
       if (secretKeys) {
         secretKeys.forEach((sk) => {
           out.addObject({id: sk, label: sk});

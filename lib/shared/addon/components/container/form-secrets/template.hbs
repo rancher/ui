@@ -1,42 +1,39 @@
-{{#accordion-list-item
-    title=(t 'formSecrets.title')
-    detail=(t 'formSecrets.detail' appName=settings.appName)
-    status=status
-    statusClass=statusClass
-    expandAll=expandAll
-    expand=(action expandFn)
-}}
-  <div class="clearfix pt-20">
-    {{#if secrets.length}}
-      <table class="table fixed no-lines small mb-10">
-        <thead>
-          <tr class="hidden-sm">
-            <th width="220" class="{{unless editing 'acc-label'}}">{{t 'formSecrets.secret.label'}}</th>
-            <th width="10"></th>
-            <th class="{{unless editing 'acc-label'}}">{{t 'formSecrets.prefixOrKey.label'}}{{#if editing}}{{field-required}}{{/if}}</th>
-            <th width="10"></th>
-            <th class="{{unless editing 'acc-label'}}">{{t 'formSecrets.prefix.label'}}</th>
-            <th width="40">&nbsp;</th>
-          </tr>
-        </thead>
-        <tbody>
-          {{#each secrets as |secret|}}
-            {{form-secrets-row
-                secret=secret
-                secrets=_allSecrets
-                editing=editing
-            }}
-          {{/each}}
-        </tbody>
-      </table>
+<div class="clearfix">
+  <label class="acc-label">{{t 'newContainer.environment.from'}}</label>
+</div>
+<div>
+  {{#if secrets.length}}
+    <table class="table fixed no-lines small mb-10">
+      <thead>
+        <tr class="hidden-sm">
+          <th width="140" class="{{unless editing 'acc-label'}}">{{t 'formSecrets.type.label'}}{{#if editing}}{{field-required}}{{/if}}</th>
+          <th width="10"></th>
+          <th width="220" class="{{unless editing 'acc-label'}}">{{t 'formSecrets.source.label'}}{{#if editing}}{{field-required}}{{/if}}</th>
+          <th width="10"></th>
+          <th class="{{unless editing 'acc-label'}}">{{t 'formSecrets.prefixOrKey.label'}}{{#if editing}}{{field-required}}{{/if}}</th>
+          <th width="70"></th>
+          <th class="{{unless editing 'acc-label'}}">{{t 'formSecrets.prefix.label'}}</th>
+          <th width="40">&nbsp;</th>
+        </tr>
+      </thead>
+      <tbody>
+        {{#each secrets as |secret|}}
+          {{form-secrets-row
+              secret=secret
+              secrets=_allSecrets
+              editing=editing
+              remove=(action "removeSecret")
+          }}
+        {{/each}}
+      </tbody>
+    </table>
     {{else}}
-      {{#unless editing}}
-        <span class="text-center text-muted">{{t 'formSecrets.noSecrets'}}</span>
-      {{/unless}}
-    {{/if}}
-    <button type="button" class="btn bg-link icon-btn" {{action "addSecret"}}>
-      <span class="darken"><i class="icon icon-plus icon-small"></i></span>
-      <span>{{t 'formSecrets.addLabel'}}</span>
-    </button>
-  </div>
-{{/accordion-list-item}}
+    {{#unless editing}}
+      <span class="text-center text-muted">{{t 'formSecrets.noSecrets'}}</span>
+    {{/unless}}
+  {{/if}}
+  <button type="button" class="btn bg-link icon-btn" {{action "addSecret"}}>
+    <span class="darken"><i class="icon icon-plus icon-small"></i></span>
+    <span>{{t 'newContainer.environment.addFrom'}}</span>
+  </button>
+</div>
