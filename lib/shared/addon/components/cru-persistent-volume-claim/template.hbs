@@ -71,18 +71,6 @@
           required=true
           value=primaryResource.storageClassId
         }}
-
-        <label class="acc-label mt-20">{{t 'cruPersistentVolume.capacity.label'}}</label>
-        {{#if editing}}
-          <div class="input-group">
-            {{input-number classNames="form-control" value=capacity}}
-            <span class="input-group-addon bg-default">{{t 'cruPersistentVolume.capacity.unit'}}</span>
-          </div>
-        {{else}}
-          <div>
-            {{capacity}} {{t 'cruPersistentVolume.capacity.unit'}}
-          </div>
-        {{/if}}
       {{else}}
         <div>
           <a href="{{href-to "authenticated.cluster.storage.classes.detail.index" primaryResource.storageClass.id}}">
@@ -112,6 +100,19 @@
     {{/if}}
   </div>
 </div>
+
+
+        <label class="acc-label mt-20">{{t 'cruPersistentVolume.capacity.label'}}</label>
+        {{#if editing}}
+          <div class="input-group">
+            {{input-number classNames="form-control" value=capacity}}
+            <span class="input-group-addon bg-default">{{t 'cruPersistentVolume.capacity.unit'}}</span>
+          </div>
+        {{else}}
+          <div>
+            {{capacity}} {{t 'cruPersistentVolume.capacity.unit'}}
+          </div>
+        {{/if}}
 
 <hr/>
 
