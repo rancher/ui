@@ -29,7 +29,18 @@
   <td>&nbsp;</td>
 
   <td data-title="{{t 'formSecrets.prefix.label'}}">
-    {{input type="text" value=prefixTarget classNames="form-control" disabled=disableTarget}}
+    <div class="row">
+      <div class="col span-2">
+        {{#if (eq sourceKey 'prefix')}}
+          {{sourceKey}}
+        {{else}}
+          {{t 'generic.as'}}
+        {{/if}}
+      </div>
+      <div class="col span-10">
+        {{input type="text" value=prefixOrTarget classNames="form-control" disabled=disableTarget}}
+      </div>
+    </div>
   </td>
   <td>
     {{#if editing}}
