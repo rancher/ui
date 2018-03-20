@@ -26,8 +26,8 @@
 
 <div class="row">
   <div class="col span-6">
-    <label class="acc-label">{{t 'cruPersistentVolume.source.label'}}{{field-required}}</label>
     {{#if editing}}
+      <label class="acc-label">{{t 'cruPersistentVolume.source.label'}}{{field-required}}</label>
       {{new-select
         content=sourceChoices
         prompt="cruPersistentVolume.source.prompt"
@@ -37,7 +37,10 @@
         readOnly=isView
       }}
     {{else}}
-      {{t (concat 'volumeSource.' sourceName '.title')}}
+      <label class="acc-label">{{t 'cruPersistentVolume.source.label'}}</label>
+      <div>
+        {{t (concat 'volumeSource.' sourceName '.title')}}
+      </div>
     {{/if}}
   </div>
   <div class="col span-6">
@@ -49,12 +52,14 @@
         localizedPrompt=true
         optionLabelPath="displayName"
         optionValuePath="id"
-        value=primaryResource.storageClassName
+        value=primaryResource.storageClassId
       }}
     {{else}}
-      <a href="{{href-to "authenticated.cluster.storage.classes.detail.index" primaryResource.storageClass.id}}">
-        {{primaryResource.storageClass.displayName}}
-      </a>
+      <div>
+        <a href="{{href-to "authenticated.cluster.storage.classes.detail.index" primaryResource.storageClass.id}}">
+          {{primaryResource.storageClass.displayName}}
+        </a>
+      </div>
     {{/if}}
   </div>
 </div>
@@ -63,10 +68,16 @@
 <div class="row">
   <div class="col span-6">
     <label class="acc-label">{{t 'cruPersistentVolume.capacity.label'}}</label>
-    <div class="input-group">
-      {{input-number classNames="form-control" value=capacity}}
-      <span class="input-group-addon bg-default">{{t 'cruPersistentVolume.capacity.unit'}}</span>
-    </div>
+    {{#if editing}}
+      <div class="input-group">
+        {{input-number classNames="form-control" value=capacity}}
+        <span class="input-group-addon bg-default">{{t 'cruPersistentVolume.capacity.unit'}}</span>
+      </div>
+    {{else}}
+      <div>
+        {{capacity}} {{t 'cruPersistentVolume.capacity.unit'}}
+      </div>
+    {{/if}}
   </div>
 </div>
 
@@ -100,25 +111,10 @@
   }}
     <div class="row">
       <div class="col span-6">
-        <label class="acc-label">{{t 'cruPersistentVolume.accessModes.label'}}</label>
-        <div class="checkbox">
-          <label>
-            {{input type="checkbox" checked=accessRWO}}
-            {{t 'cruPersistentVolume.accessModes.accessRWO'}}
-          </label>
-        </div>
-        <div class="checkbox">
-          <label>
-            {{input type="checkbox" checked=accessROM}}
-            {{t 'cruPersistentVolume.accessModes.accessROM'}}
-          </label>
-        </div>
-        <div class="checkbox">
-          <label>
-            {{input type="checkbox" checked=accessRWM}}
-            {{t 'cruPersistentVolume.accessModes.accessRWM'}}
-          </label>
-        </div>
+        {{form-access-modes
+          model=primaryResource
+          mode=mode
+        }}
       </div>
       <div class="col span-6">
         {{form-value-array

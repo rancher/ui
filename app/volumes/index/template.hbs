@@ -1,6 +1,6 @@
-{{#containers-header simpleMode=simpleMode tags=tags showGroup=false}}
+{{#containers-header showGroup=false}}
   {{#link-to "new-stack" classNames="btn btn-sm bg-default mr-10" disabled=(or true (rbac-prevents resource="ingress" scope="project" permission="create"))}}{{t 'nav.containers.importCompose'}}{{/link-to}}
-  {{#link-to "volumes.new" projects.current.id class="btn btn-sm bg-primary" disabled=true}}{{t 'nav.containers.addVolume'}}{{/link-to}}
+  {{#link-to "volumes.new" projects.current.id class="btn btn-sm bg-primary"}}{{t 'nav.containers.addVolume'}}{{/link-to}}
 {{/containers-header}}
 
 {{#if rows.length}}
@@ -17,17 +17,43 @@
           pagingLabel="pagination.volume"
           subHeaders=containerHeaders
           subSearchField="instances"
-          headers=headers as |sortable kind inst dt|}}
+          headers=headers as |sortable kind obj dt|}}
       {{#if (eq kind "row")}}
-        {{volume-row
-            model=inst
-            toggle=(action "toggleExpand" inst.id)
-            expanded=(array-includes expandedInstances inst.id)
-            searchText=searchText
-            subMatches=sortable.subMatches
-            fullColspan=sortable.fullColspan
-            dt=dt
-        }}
+        <tr class="main-row">
+          <td class="row-check" valign="middle" style="padding-top: 2px;">
+            {{check-box nodeId=obj.id}}
+          </td>
+          <td data-title="{{dt.state}}">
+            {{badge-state model=obj}}
+          </td>
+          <td data-title="{{dt.name}}">
+            <a href="{{href-to "volumes.detail" obj.id}}">{{obj.displayName}}</a>
+          </td>
+          <td data-title="{{dt.size}}">
+            {{obj.displaySize}}
+          </td>
+          <td data-title="{{dt.volume}}">
+            {{#if obj.persistentVolume}}
+              <a href="{{href-to "authenticated.cluster.storage.persistent-volumes.detail" scope.currentCluster.id obj.persistentVolume.id}}">
+                {{obj.persistentVolume.displayName}}
+              </a>
+            {{else}}
+              <span class="text-muted">&ndash;</span>
+            {{/if}}
+          </td>
+          <td data-title="{{dt.storageClass}}">
+            {{#if obj.storageClass}}
+              <a href="{{href-to "authenticated.cluster.storage.classes.detail" scope.currentCluster.id obj.storageClass.id}}">
+                {{obj.storageClass.displayName}}
+              </a>
+            {{else}}
+              <span class="text-muted">&ndash;</span>
+            {{/if}}
+          </td>
+          <td data-title="{{dt.actions}}" class="actions">
+            {{action-menu model=obj}}
+          </td>
+        </tr>
       {{else if (eq kind "group")}}
         {{namespace-group model=inst.ref fullColspan=sortable.fullColspan}}
       {{else if (eq kind "nomatch")}}

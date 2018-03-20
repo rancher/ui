@@ -39,15 +39,6 @@ export function normalizeTags(ary) {
   return (ary||[]).map(normalizeTag).filter(str => str.length > 0);
 }
 
-export function tagChoices(all) {
-  let choices = [];
-  (all||[]).forEach((ns) => {
-    choices.addObjects(ns.get('tags')||[]);
-  });
-
-  return choices;
-}
-
 var Namespace = Resource.extend(StateCounts, {
   type:         'namespace',
   k8s:          service(),

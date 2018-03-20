@@ -15,7 +15,7 @@ registerSource('gce-pd',         'gcePersistentDisk',    true);
 registerSource('glusterfs',      'glusterfs',            true);
 registerSource('host-path',      'hostPath',             true);
 registerSource('iscsi',          'iscsi',                true);
-registerSource('local',          'local',                true);
+//registerSource('local',          'local',                true);
 registerSource('nfs',            'nfs',                  true);
 registerSource('photon',         'photonPersistentDisk', true);
 registerSource('portworx',       'portworxVolume',       true);

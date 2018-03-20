@@ -106,7 +106,7 @@ var Workload = Resource.extend(DisplayImage, StateCounts, EndpointPorts, {
         workloadId: get(this, 'id'),
         upgrade: true,
         upgradeImage: upgradeImage,
-        stackId: get(this, 'stackId'),
+        namespaceId: get(this, 'namespaceId'),
       }});
     },
 

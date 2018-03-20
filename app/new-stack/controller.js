@@ -1,6 +1,5 @@
 import Controller from '@ember/controller';
 import NewOrEdit from 'ui/mixins/new-or-edit';
-import { tagChoices } from 'ui/models/namespace';
 
 export default Controller.extend(NewOrEdit, {
   error:     null,
@@ -41,10 +40,6 @@ export default Controller.extend(NewOrEdit, {
     this.set('primaryResource.templates', outFiles);
     return this._super(...arguments);
   },
-
-  tagChoices: function() {
-    return tagChoices(this.get('allStacks')).sort();
-  }.property('allStacks.@each.grouping'),
 
   doneSaving: function() {
     return this.transitionToRoute('stack', this.get('primaryResource.id'));

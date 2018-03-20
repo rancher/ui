@@ -55,11 +55,8 @@ export default Controller.extend({
     },
   },
 
-  tags: alias('projectController.tags'),
-  simpleMode: alias('projectController.simpleMode'),
   group: alias('projectController.group'),
   groupTableBy: alias('projectController.groupTableBy'),
-  showNamespace: alias('projectController.showNamespace'),
   expandedInstances: alias('projectController.expandedInstances'),
   preSorts: alias('projectController.preSorts'),
 
@@ -69,22 +66,17 @@ export default Controller.extend({
 
   rows: function() {
     let groupNone = this.get('group') === 'none';
-    let showNamespace = this.get('showNamespace');
 
     // Containers
     let out = this.get('model.pods').filter((obj) => {
-      return (groupNone || !obj.get('workloadId')) &&
-              showNamespace[obj.get('namespaceId')];
+      return (groupNone || !obj.get('workloadId'));
     });
 
     // Services
     if ( !groupNone ) {
-      out.pushObjects(this.get('model.workloads').filter((obj) => {
-        return showNamespace[obj.get('namespaceId')] &&
-                !obj.get('isBalancer');
-      }));
+      out.pushObjects(this.get('model.workloads').slice());
     }
 
     return out;
-  }.property('group','showNamespace','tags','model.workloads.@each.{namespaceId,isBalancer}','model.pods.@each.{workloadId,namespaceId}'),
+  }.property('group','model.workloads.@each.{namespaceId,isBalancer}','model.pods.@each.{workloadId,namespaceId}'),
 });

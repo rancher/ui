@@ -6,7 +6,7 @@ import { reference } from 'ember-api-store/utils/denormalize';
 var PersistentVolume = Volume.extend({
   router: service(),
 
-  storageClass: reference('storageClassName','storageClass'),
+  storageClass: reference('storageClassId'),
 
   type: 'persistentVolume',
 
@@ -22,7 +22,7 @@ var PersistentVolume = Volume.extend({
     return [
       { label:   'action.edit',           icon: 'icon icon-edit',           action: 'edit',             enabled: !!l.update },
       { divider: true },
-      { label: 'action.remove',           icon: 'icon icon-trash',          action: 'promptDelete',      enabled: !!l.remove, altAction: 'delete' },
+      { label: 'action.remove',           icon: 'icon icon-trash',          action: 'promptDelete',      enabled: !!l.remove, altAction: 'delete', bulkable: true },
       { divider: true },
       { label: 'action.viewInApi',        icon: 'icon icon-external-link',  action: 'goToApi',           enabled: true },
     ];

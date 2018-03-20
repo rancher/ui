@@ -6,11 +6,8 @@ export default Controller.extend({
   projectController: controller('authenticated.project'),
   scope:             service(),
 
-  tags:              alias('projectController.tags'),
-  simpleMode:        alias('projectController.simpleMode'),
   group:             alias('projectController.group'),
   groupTableBy:      alias('projectController.groupTableBy'),
-  showNamespace:     alias('projectController.showNamespace'),
 
   rows:              alias('model.ingresses'),
 

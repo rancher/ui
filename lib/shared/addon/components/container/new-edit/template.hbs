@@ -41,14 +41,12 @@
   </div>
 
   <div class="col span-11-of-23 mt-0 mb-0 offset-1-of-23">
-    {{#if (or isSidekick isUpgrade)}}
-      {{!-- Only a new primary service or container picks stack --}}
-    {{else}}
-      {{form-namespace
-        namespace=namespace
-        errors=namespaceErrors
-      }}
-    {{/if}}
+    {{form-namespace
+      namespace=namespace
+      errors=namespaceErrors
+      editing=(not (or isUpgrade isSidekick))
+      registerHook=(action "registerHook")
+    }}
   </div>
 </div>
 <hr class="mt-30 mb-30" />
@@ -78,6 +76,17 @@
 
 <hr class="mt-30 mb-30" />
 {{#accordion-list as | al expandFn | }}
+  {{container/form-volumes
+    launchConfig=launchConfig
+    workload=service
+    namespace=namespace
+    errors=volumeErrors
+    registerHook=(action "registerHook")
+    expandAll=al.expandAll
+    expandFn=expandFn
+    expandOnInit=true
+  }}
+
   {{#unless isSidekick}}
     {{container/form-scheduling
       isGlobal=isGlobal
@@ -153,19 +162,7 @@
     }}
   {{/if}}
 
-
   {{#advanced-section advanced=false}}
-    {{container/form-volumes
-      isSidekick=isSidekick
-      launchConfig=launchConfig
-      workload=service
-      stack=stack
-      errors=volumeErrors
-      volumesToCreate=volumesToCreate
-      expandAll=al.expandAll
-      expandFn=expandFn
-    }}
-
     {{container/form-command
         classNames="accordion-wrapper"
         instance=launchConfig
