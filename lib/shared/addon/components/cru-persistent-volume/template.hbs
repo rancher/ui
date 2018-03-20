@@ -26,8 +26,8 @@
 
 <div class="row">
   <div class="col span-6">
+    <label class="acc-label">{{t 'cruPersistentVolume.source.label'}}{{field-required editing=editing}}</label>
     {{#if editing}}
-      <label class="acc-label">{{t 'cruPersistentVolume.source.label'}}{{field-required}}</label>
       {{new-select
         content=sourceChoices
         prompt="cruPersistentVolume.source.prompt"
@@ -37,37 +37,13 @@
         readOnly=isView
       }}
     {{else}}
-      <label class="acc-label">{{t 'cruPersistentVolume.source.label'}}</label>
       <div>
         {{t (concat 'volumeSource.' sourceName '.title')}}
       </div>
     {{/if}}
   </div>
   <div class="col span-6">
-    <label class="acc-label">{{t 'cruPersistentVolume.storageClass.label'}}</label>
-    {{#if editing}}
-      {{new-select
-        content=storageClasses
-        prompt="cruPersistentVolume.storageClass.prompt"
-        localizedPrompt=true
-        optionLabelPath="displayName"
-        optionValuePath="id"
-        value=primaryResource.storageClassId
-      }}
-    {{else}}
-      <div>
-        <a href="{{href-to "authenticated.cluster.storage.classes.detail.index" primaryResource.storageClass.id}}">
-          {{primaryResource.storageClass.displayName}}
-        </a>
-      </div>
-    {{/if}}
-  </div>
-</div>
-<hr/>
-
-<div class="row">
-  <div class="col span-6">
-    <label class="acc-label">{{t 'cruPersistentVolume.capacity.label'}}</label>
+    <label class="acc-label">{{t 'cruPersistentVolume.capacity.label'}}{{field-required editing=editing}}</label>
     {{#if editing}}
       <div class="input-group">
         {{input-number classNames="form-control" value=capacity}}
@@ -81,27 +57,27 @@
   </div>
 </div>
 
+<hr class="mb-20" />
+
 {{#accordion-list showExpandAll=false as | al expandFn |}}
-  {{#unless useStorageClass}}
-    {{#accordion-list-item
-      title=(t 'cruPersistentVolume.source.title')
-      detail=(t 'cruPersistentVolume.source.detail')
-      expandAll=expandAll
-      expand=(action expandFn)
-      expandOnInit=true
-    }}
-      {{#if sourceComponent}}
-        {{component sourceComponent.component
-          plugin=sourceComponent.field
-          editing=notView
-          volume=model
-          changed=(action "updateParams")
-        }}
-      {{else}}
-        <p class="text-muted">Choose a Volume Source above...</p>
-      {{/if}}
-    {{/accordion-list-item}}
-  {{/unless}}
+  {{#accordion-list-item
+    title=(t 'cruPersistentVolume.source.title')
+    detail=(t 'cruPersistentVolume.source.detail')
+    expandAll=expandAll
+    expand=(action expandFn)
+    expandOnInit=true
+  }}
+    {{#if sourceComponent}}
+      {{component sourceComponent.component
+        plugin=sourceComponent.field
+        editing=notView
+        volume=model
+        changed=(action "updateParams")
+      }}
+    {{else}}
+      <p class="text-muted">Choose a Volume Source above...</p>
+    {{/if}}
+  {{/accordion-list-item}}
 
   {{#accordion-list-item
     title=(t 'cruPersistentVolume.customize.title')
@@ -126,6 +102,27 @@
           noDataLabel="cruPersistentVolume.mountOptions.noData"
           changed=(action "updateOptions")
         }}
+      </div>
+    </div>
+    <div class="row">
+      <div class="col span-6">
+        <label class="acc-label">{{t 'cruPersistentVolume.storageClass.label'}}</label>
+        {{#if editing}}
+          {{new-select
+            content=storageClasses
+            prompt="cruPersistentVolume.storageClass.prompt"
+            localizedPrompt=true
+            optionLabelPath="displayName"
+            optionValuePath="id"
+            value=primaryResource.storageClassId
+          }}
+        {{else}}
+          <div>
+            <a href="{{href-to "authenticated.cluster.storage.classes.detail.index" primaryResource.storageClass.id}}">
+              {{primaryResource.storageClass.displayName}}
+            </a>
+          </div>
+        {{/if}}
       </div>
     </div>
   {{/accordion-list-item}}

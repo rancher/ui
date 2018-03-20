@@ -40,11 +40,11 @@
 
 <div class="row">
   <div class="col span-6">
-    <label class="acc-label">{{t 'cruPersistentVolume.source.label'}}</label>
+    <label class="acc-label">{{t 'cruPersistentVolumeClaim.source.label'}}</label>
     {{#if editing}}
       <div class="radio">
-        <label>
-          {{radio-button selection=useStorageClass value=true}}
+        <label class="{{unless canUseStorageClass 'text-muted'}}">
+          {{radio-button selection=useStorageClass value=true disabled=(not canUseStorageClass)}}
           {{t 'cruPersistentVolumeClaim.source.storageClass'}}
         </label>
         <label>
@@ -60,7 +60,7 @@
   </div>
   <div class="col span-6">
     {{#if useStorageClass}}
-      <label class="acc-label">{{t 'cruPersistentVolumeClaim.storageClass.label'}}{{field-required}}</label>
+      <label class="acc-label">{{t 'cruPersistentVolumeClaim.storageClass.label'}}</label>
       {{#if editing}}
         {{new-select
           content=storageClasses
@@ -71,6 +71,18 @@
           required=true
           value=primaryResource.storageClassId
         }}
+
+        <label class="acc-label mt-20">{{t 'cruPersistentVolumeClaim.capacity.label'}}{{field-required editing=editing}}</label>
+        {{#if editing}}
+          <div class="input-group">
+            {{input-number classNames="form-control" value=capacity}}
+            <span class="input-group-addon bg-default">{{t 'cruPersistentVolumeClaim.capacity.unit'}}</span>
+          </div>
+        {{else}}
+          <div>
+            {{capacity}} {{t 'cruPersistentVolumeClaim.capacity.unit'}}
+          </div>
+        {{/if}}
       {{else}}
         <div>
           <a href="{{href-to "authenticated.cluster.storage.classes.detail.index" primaryResource.storageClass.id}}">
@@ -82,11 +94,9 @@
       <label class="acc-label">{{t 'cruPersistentVolumeClaim.pv.label'}}</label>
       {{#if editing}}
         {{new-select
-          content=persistentVolumes
+          content=persistentVolumeChoices
           prompt="cruPersistentVolumeClaim.pv.prompt"
           localizedPrompt=true
-          optionLabelPath="displayName"
-          optionValuePath="id"
           required=true
           value=primaryResource.volumeId
         }}
@@ -100,19 +110,6 @@
     {{/if}}
   </div>
 </div>
-
-
-        <label class="acc-label mt-20">{{t 'cruPersistentVolume.capacity.label'}}</label>
-        {{#if editing}}
-          <div class="input-group">
-            {{input-number classNames="form-control" value=capacity}}
-            <span class="input-group-addon bg-default">{{t 'cruPersistentVolume.capacity.unit'}}</span>
-          </div>
-        {{else}}
-          <div>
-            {{capacity}} {{t 'cruPersistentVolume.capacity.unit'}}
-          </div>
-        {{/if}}
 
 <hr/>
 

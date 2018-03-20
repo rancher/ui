@@ -794,9 +794,13 @@ cruPersistentVolumeClaim:
     view: 'Persistent Volume: {name}'
   define:
     addActionLabel: Define
+  capacity:
+    label: Capacity
+    unit: GiB
   name:
     placeholder: e.g. myvol
   source:
+    label: Source
     pv: Use an existing persistent volume
     storageClass: Use a Storage Class to provision a new persistent volume
   pv:
@@ -804,7 +808,7 @@ cruPersistentVolumeClaim:
     prompt: Select a persistent volume...
   storageClass:
     label: Storage Class
-    prompt: Select a storage class...
+    prompt: Use the default class
 
 # If you change translations here also change the translation in app/utils/constants.js under the FALLBACK_TRANSLATIONS key
 # those are present in case we have an error in the app and can not load the translations file
@@ -1725,8 +1729,8 @@ cruPersistentVolume:
     edit: 'Edit Persistent Volume: {name}'
     view: 'Persistent Volume: {name}'
   storageClass:
-    label: Storage Class
-    prompt: No storage class
+    label: Assign to Storage Class
+    prompt: None
   capacity:
     label: Capacity
     unit: GiB
@@ -1744,7 +1748,7 @@ cruPersistentVolume:
     noData: No Mount Options
   awsElasticBlockStore:
     fsType:
-      label: FS Type
+      label: Filesystem Type
       placeholder: "e.g. ext4"
     readOnly:
       label: Read Only
@@ -1765,7 +1769,7 @@ cruPersistentVolume:
       label: Disk URI
       placeholder: "e.g. https://example.com/disk"
     fsType:
-      label: FS Type
+      label: Filesystem Type
       placeholder: "e.g. ext4"
     kind:
       label: Kind
@@ -1809,7 +1813,7 @@ cruPersistentVolume:
       placeholder: "e.g. root"
   rbd:
     fsType:
-      label: FS Type
+      label: Filesystem Type
       placeholder: "e.g. ext4"
     image:
       label: Image
@@ -1833,7 +1837,7 @@ cruPersistentVolume:
       placeholder: "e.g. root"
   fc:
     fsType:
-      label: FS Type
+      label: Filesystem Type
       placeholder: "e.g. ext4"
     lun:
       label: Lun
@@ -1851,7 +1855,7 @@ cruPersistentVolume:
       label: Driver
       placeholder: "e.g. driver"
     fsType:
-      label: FS Type
+      label: Filesystem Type
       placeholder: "e.g. ext4"
     options:
       label: Options
@@ -1879,13 +1883,13 @@ cruPersistentVolume:
       label: Read Only
   gcePersistentDisk:
     fsType:
-      label: FS Type
+      label: Filesystem Type
       placeholder: "e.g. ext4"
     partition:
       label: Partition
       placeholder: "e.g. 1"
     pdName:
-      label: PD Name
+      label: Persistent Disk Name
       placeholder: "e.g. abc"
     readOnly:
       label: Read Only
@@ -1895,7 +1899,7 @@ cruPersistentVolume:
     chapAuthSession:
       label: Chap Auth Session
     fsType:
-      label: FS Type
+      label: Filesystem Type
       placeholder: "e.g. ext4"
     initiatorName:
       label: Initiator Name
@@ -1935,7 +1939,7 @@ cruPersistentVolume:
       placeholder: "e.g. 10.244.1.4"
   cinder:
     fsType:
-      label: FS Type
+      label: Filesystem Type
       placeholder: "e.g. ext4"
     readOnly:
       label: Read Only
@@ -1944,14 +1948,14 @@ cruPersistentVolume:
       placeholder: "e.g. vol"
   photonPersistentDisk:
     fsType:
-      label: FS Type
+      label: Filesystem Type
       placeholder: "e.g. ext4"
     pdID:
       label: PD ID
       placeholder: "e.g. abc"
   portworxVolume:
     fsType:
-      label: FS Type
+      label: Filesystem Type
       placeholder: "e.g. ext4"
     readOnly:
       label: Read Only
@@ -1975,7 +1979,7 @@ cruPersistentVolume:
       placeholder: "e.g. vol"
   scaleIO:
     fsType:
-      label: FS Type
+      label: Filesystem Type
       placeholder: "e.g. ext4"
     gateway:
       label: Gateway
@@ -2009,7 +2013,7 @@ cruPersistentVolume:
       placeholder: "e.g. vol-0"
   storageos:
     fsType:
-      label: FS Type
+      label: Filesystem Type
       placeholder: "e.g. ext4"
     readOnly:
       label: Read Only
@@ -2029,7 +2033,7 @@ cruPersistentVolume:
       placeholder: "e.g. default"
   vsphereVolume:
     fsType:
-      label: FS Type
+      label: Filesystem Type
       placeholder: "e.g. ext4"
     storagePolicyID:
       label: Storage Policy ID
@@ -2122,7 +2126,7 @@ cruStorageClass:
       label: Datastore
       placeholder: "e.g. VSANDatastore"
     fstype:
-      label: FS Type
+      label: Filesystem Type
       placeholder: "e.g. ext3"
     hostFailuresToTolerate:
       label: Host Failures To Tolerate
@@ -2207,7 +2211,7 @@ cruStorageClass:
       label: Read Only
       placeholder: "e.g. false"
     fsType:
-      label: FS Type
+      label: Filesystem Type
       placeholder: "e.g. xfs"
   storageos:
     pool:
@@ -2223,7 +2227,7 @@ cruStorageClass:
       label: Admin Secret Name
       placeholder: "e.g. storageos-secret"
     fsType:
-      label: FS Type
+      label: Filesystem Type
       placeholder: "e.g. ext4"
   quobyte:
     quobyteAPIServer:
@@ -2273,7 +2277,7 @@ cruStorageClass:
       label: User Secret Name
       placeholder: "e.g. ceph-secret-user"
     fsType:
-      label: FS Type
+      label: Filesystem Type
       placeholder: "e.g. ext4"
     imageFormat:
       label: Image Format
