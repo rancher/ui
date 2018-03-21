@@ -1,0 +1,64 @@
+<td data-title="{{t 'formSecrets.kind.label'}}">
+  {{#if editing}}
+    {{new-select
+        classNames="form-control"
+        content=sources
+        value=secret.source
+    }}
+  {{else}}
+    {{#if secret.source}}
+      {{secret.source}}
+    {{else}}
+      <span class="text-muted">{{t 'generic.na'}}</span>
+    {{/if}}
+  {{/if}}
+</td>
+<td>&nbsp;</td>
+<td data-title="{{t 'formSecrets.kind.label'}}">
+  {{#if editing}}
+    {{searchable-select
+        classNames="form-control"
+        optionValuePath="id"
+        optionLabelPath="label"
+        content=allSecrets
+        value=secret.sourceName
+    }}
+  {{else}}
+    {{#if secret}}
+      {{secret.sourceName}}
+    {{else}}
+      <span class="text-muted">{{t 'generic.na'}}</span>
+    {{/if}}
+  {{/if}}
+</td>
+<td>&nbsp;</td>
+<td data-title="{{t 'formSecrets.prefixOrKey.label'}}">
+  {{searchable-select
+      classNames="form-control"
+      optionValuePath="id"
+      optionLabelPath="label"
+      content=prefixOrKeys
+      value=sourceKey
+      readOnly=secretSet
+  }}
+</td>
+<td>
+  <div class="text-center">
+    {{#if (eq sourceKey 'prefix')}}
+      {{sourceKey}}
+    {{else}}
+      {{t 'generic.as'}}
+    {{/if}}
+  </div>
+</td>
+
+<td data-title="{{t 'formSecrets.prefix.label'}}">
+  {{input type="text" value=prefixOrTarget classNames="form-control" disabled=disableTarget}}
+</td>
+<td>
+  {{#if editing}}
+    <button class="btn bg-primary btn-sm" {{action remove secret}}>
+      <i class="icon icon-minus"/><span class="sr-only">{{t 'generic.remove'}}</span>
+    </button>
+  {{/if}}
+</td>
