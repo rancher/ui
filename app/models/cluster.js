@@ -53,6 +53,10 @@ export default Resource.extend(ResourceUsage, {
     return null;
   }),
 
+  isRKE: computed('configName', function() {
+    return get(this, 'configName') === 'rancherKubernetesEngineConfig';
+  }),
+
   provider: computed('configName','nodePools.@each.nodeTemplateId', function() {
     const pools = get(this,'nodePools')||[];
     const firstTemplate = get(pools,'firstObject.nodeTemplate');
