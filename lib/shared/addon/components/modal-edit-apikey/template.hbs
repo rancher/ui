@@ -46,25 +46,6 @@
     <hr/>
 
     <div>
-      <label class="acc-label">{{t 'editApiKey.ttl.label'}}</label>
-
-      <div class="row">
-        <div class="col span-3">
-          <label>{{radio-button selection=expire value="never"}} {{t 'editApiKey.ttl.never'}}</label>
-        </div>
-        <div class="col span-3">
-          <label>{{radio-button selection=expire value="day"}} {{t 'editApiKey.ttl.day'}}</label>
-        </div>
-        <div class="col span-3">
-          <label>{{radio-button selection=expire value="month"}} {{t 'editApiKey.ttl.month'}}</label>
-        </div>
-        <div class="col span-3">
-          <label>{{radio-button selection=expire value="year"}} {{t 'editApiKey.ttl.year'}}</label>
-        </div>
-      </div>
-    </div>
-
-    <div>
       <label class="acc-label">{{t 'generic.description'}}</label>
       {{textarea-autogrow
         id="api-description"
@@ -75,9 +56,21 @@
       }}
     </div>
 
-    {{#unless editing}}
-      <p class="text-info">{{t 'editApiKey.noteOptional'}}</p>
-    {{/unless}}
+    <div class="mt-20">
+      <label class="acc-label">{{t 'editApiKey.ttl.label'}}</label>
+      <div class="radio">
+          <label>{{radio-button selection=expire value="never"}} {{t 'editApiKey.ttl.never'}}</label>
+      </div>
+      <div class="radio">
+        <label>{{radio-button selection=expire value="day"}} {{t 'editApiKey.ttl.day'}}</label>
+      </div>
+      <div class="radio">
+        <label>{{radio-button selection=expire value="month"}} {{t 'editApiKey.ttl.month'}}</label>
+      </div>
+      <div class="radio">
+        <label>{{radio-button selection=expire value="year"}} {{t 'editApiKey.ttl.year'}}</label>
+      </div>
+    </div>
 
     {{save-cancel editing=editing save="save" cancel="cancel"}}
   {{/if}}
