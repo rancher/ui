@@ -11,6 +11,37 @@
         showCurrent=false
         cancelDisabled=true
     }}
+  {{else if setServerUrl}}
+    {{#if settingLoading}}
+      Loading
+    {{else}}
+      <div class="header">
+        <h1>{{t 'loginPage.serverSettings.url.label'}}</h1>
+        <p class="help-text">{{t 'loginPage.serverSettings.url.detail'}}</p>
+      </div>
+      <form class="horizontal-form container-fluid text-left" {{action 'save' on="submit"}}>
+        <label for="server-url" class="acc-label">Server Url</label>
+        {{input-url
+            classNames="form-control"
+            id="server-url"
+            isInvalid=(action (mut urlInvalid))
+            value=serverUrl
+        }}
+        {{#if urlInvalid}}
+          <p class="text-right text-error" style="font-size:11px;margin-top:5px;">Invalid URL</p>
+        {{/if}}
+        {{top-errors
+            errors=errors
+        }}
+        {{save-cancel
+            cancelDisabled=true
+            editLabel="loginPage.serverSettings.url.button.save"
+            editing=true
+            save="saveServerUrl"
+            saveDisabled=(or urlInvalid (not serverUrl null))
+        }}
+      </form>
+    {{/if}}
   {{else}}
     <h1>
       {{t 'loginPage.greeting' appName=settings.appName htmlSafe=true}}
