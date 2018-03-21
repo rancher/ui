@@ -3,26 +3,34 @@
 {{else}}
   <div class="pt-20"></div>
   <div class="inline-form">
-    <label>{{t 'newPipelineStep.stepType.scm.user'}}{{field-required}}</label>
+    <label>{{t 'newPipelineStep.stepType.scm.user'}}</label>
     {{#if (eq modalOpts.type 'review')}}
       <div class="row">
         <div class="col span-12">
-          {{#identity-block
-            principal=profileComponent
-            link=false
-          }}
-          {{/identity-block}}
+          {{#if profileComponent}}
+            {{#identity-block
+              principal=profileComponent
+              link=false
+            }}
+            {{/identity-block}}
+          {{else}}
+            N/A
+          {{/if}}
         </div>
       </div>
     {{else}}
       {{#if accountsInfo}}
       <div class="row">
         <div class="col span-12">
-          {{#identity-block
-            principal=profileComponent
-            link=false
-          }}
+          {{#if profileComponent}}
+            {{#identity-block
+              principal=profileComponent
+              link=false
+            }}
           {{/identity-block}}
+          {{else}}
+            N/A
+          {{/if}}
         </div>
       </div>
       {{else}}
@@ -73,6 +81,7 @@
         {{else}}
           {{searchable-select
             content=repositories
+            allowCustom=true
             value=selectedModel.sourceCodeConfig.url
             optionLabelPath="url"
             optionValuePath="url"
