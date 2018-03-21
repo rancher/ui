@@ -25,7 +25,7 @@ export default Controller.extend({
       return !C.REMOVEDISH_STATES.includes(get(ns,'state'));
     });
 
-    if ( needTags.length ) {
+    if ( needTags && needTags.length ) {
       out = out.filter((obj) => obj.hasTags(needTags));
     }
 
