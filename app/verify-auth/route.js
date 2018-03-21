@@ -2,6 +2,7 @@ import Route from '@ember/routing/route';
 import RSVP from 'rsvp';
 import { get } from '@ember/object';
 import { inject as service } from '@ember/service';
+import C from 'shared/utils/constants';
 
 export default Route.extend({
   access         : service(),
@@ -70,6 +71,8 @@ export default Route.extend({
         return ghProvider.doAction('login', {
           code: get(params, 'code'),
           responseType: 'cookie',
+          description: C.SESSION.DESCRIPTION,
+          ttl: C.SESSION.TTL,
         }).then(() => {
           return this.transitionTo('authenticated');
         });
