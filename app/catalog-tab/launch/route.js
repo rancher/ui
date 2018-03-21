@@ -57,8 +57,7 @@ export default Route.extend({
         });
       }
 
-      let tplCatalog = this.modelFor(get(this, 'parentRoute')).get('catalogs').findBy('id', get(results, 'tpl.catalogId'));
-      let kind = get(tplCatalog, 'kind') ? get(tplCatalog, 'kind') : 'native';
+      let kind = get(results, 'tpl.catalogId') ? get(results, 'tpl.catalogId') : 'native';
       let neuApp = null;
       var links;
 

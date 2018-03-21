@@ -17,15 +17,17 @@
       namePlaceholder="projectsPage.name.placeholder"
   }}
 
-  <label class="acc-label">{{t 'projectsPage.psp.label'}}</label>
-  {{new-select
-    content=model.psps
-    optionLabelPath='displayName'
-    optionValuePath='id'
-    prompt='generic.none'
-    localizedPrompt=true
-    value=model.project.podSecurityPolicyTemplateId
-  }}
+  {{#if model.project.cluster.isRKE}}
+    <label class="acc-label">{{t 'projectsPage.psp.label'}}</label>
+    {{new-select
+      content=model.psps
+      optionLabelPath='displayName'
+      optionValuePath='id'
+      prompt='generic.none'
+      localizedPrompt=true
+      value=model.project.podSecurityPolicyTemplateId
+    }}
+  {{/if}}
 </section>
 
 <div class="row">
