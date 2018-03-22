@@ -1,83 +1,29 @@
-<tr>
-  <td>
-    {{t (concat 'formVolumeRow.mode.' model.mode)}}
-  </td>
-  <td></td>
+<div class="box">
+  <div class="row">
+    <div class="col span-3" style="border-right: 1px solid gray;">
+      <label class="acc-label">{{t 'formVolumeRow.mode.label'}}</label>
+      <div>
+        {{t (concat 'formVolumeRow.mode.' model.mode)}}
+        {{#if (eq mode "newPvc")}}
+          <a action={{action 'defineNewPvc'}}> <i class="icon icon-edit"/></a>
+        {{else if (eq mode "newVolume")}}
+          <a action={{action 'defineNewVolume'}}> <i class="icon icon-edit"/></a>
+        {{/if}}
+      </div>
 
-  {{#if (eq model.mode "custom")}}
-    <td colspan="5">
-      {{input value=model.str placeholder=(t 'formVolumeRow.custom.placeholder')}}
-    </td>
-    <td></td>
-  {{else if (eq model.mode "newVolume")}}
-    <td>
-      {{model.volume.displayName}} <button class="btn bg-transparent" {{action 'defineNew'}}>{{t 'formVolumeRow.edit'}}</button>
-    </td>
-    <td></td>
-  {{else if (eq model.mode "volume")}}
-    <td>
-      {{new-select
-        prompt=(t 'formVolumeRow.volume.prompt')
-        action=(action (mut model.volume))
-        content=volumeChoices
-        optionValuePath="id"
-        optionLabelPath="displayNameScope"
-      }}
-    </td>
-    <td></td>
-  {{else if (eq model.mode "bindMount")}}
-    <td>
-      {{input value=model.hostPath placeholder=(t 'formVolumeRow.hostPath.placeholder')}}
-    </td>
-    <td></td>
-  {{else if (eq model.mode "volumesFrom")}}
-    <td colspan="5">
-      {{new-select
-        prompt=(t 'formVolumeRow.volumesFrom.prompt')
-        action=(mut model.instance)
-        content=containerChoices
-        optionValuePath="id"
-        optionLabelPath="name"
-      }}
-    </td>
-    <td></td>
-  {{else if (eq model.mode "volumesFromLaunchConfig")}}
-    <td>
-      {{new-select
-        prompt=(t 'formVolumeRow.volumesFromLaunchConfig.prompt')
-        value=vol.launchConfig
-        content=launchConfigChoices
-        optionValuePath="name"
-        optionLabelPath="name"
-      }}
-    </td>
-    <td></td>
-  {{else if (eq model.mode "tmpfs")}}
-    <td>
-      {{t 'formVolumeRow.tmpfsSource'}}
-    </td>
-    <td></td>
-  {{/if}}
+      <label class="acc-label">{{t 'formVolumeRow.name.label'}}</label>
+      {{input type="text" value=model.volume.name placeholder=(t 'formVolumeRow.name.placeholder')}}
 
-  {{#if showOpts}}
-    <td>
-      {{input value=model.mountPoint placeholder=(t 'formVolumeRow.mountPoint.placeholder')}}
-    </td>
-    <td></td>
-    <td>
-      {{#if customOpts}}
-        {{input value=model.opts placeholder=(t 'formVolumeRow.opts.custom.placeholder')}}
-      {{else}}
-        <select onchange={{action (mut model.opts) value="target.value"}}>
-          <option selected={{eq model.opts "rw"}} value="rw">{{t 'formVolumeRow.opts.rw'}}</option>
-          <option selected={{eq model.opts "ro"}} value="ro">{{t 'formVolumeRow.opts.ro'}}</option>
-          <option selected={{eq model.opts ""}} value="">{{t 'formVolumeRow.opts.custom.label'}}</option>
-        </select>
-      {{/if}}
-    </td>
-    <td></td>
-  {{/if}}
-  <td>
-    <button class="btn bg-primary btn-sm" {{action "remove"}}><i class="icon icon-minus"/><span class="sr-only">{{t 'generic.remove'}}</span></button>
-  </td>
-</tr>
+      <button class="btn bg-primary btn-sm" {{action "remove"}}>
+        <i class="icon icon-minus"/> Remove Volume
+        <span class="sr-only">{{t 'generic.remove'}}</span>
+      </button>
+    </div>
+    <div class="col span-9">
+      <label class="acc-label">Mounts</label>
+      {{#each model.mounts as |mnt|}}
+        {{input value=mnt.mountPath}}
+      {{/each}}
+    </div>
+  </div>
+</div>

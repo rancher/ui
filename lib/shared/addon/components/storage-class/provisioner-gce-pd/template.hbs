@@ -11,7 +11,9 @@
         </div>
       {{/each}}
     {{else}}
-      {{t (concat 'cruStorageClass.gce-pd.type.' volumeType)}}
+      <div>
+        {{t (concat 'cruStorageClass.gce-pd.type.' volumeType)}}
+      </div>
     {{/if}}
   </div>
   <div class="col span-4">
@@ -33,11 +35,13 @@
         {{textarea-autogrow placeholder="cruStorageClass.gce-pd.zone.placeholder" spellcheck="false" required=true value=zones}}
       {{/unless}}
     {{else}}
-      {{#if zoneAutomatic}}
-        {{t 'cruStorageClass.gce-pd.zone.automatic'}}
-      {{else}}
-        {{zones}}
-      {{/if}}
+      <div>
+        {{#if zoneAutomatic}}
+          {{t 'cruStorageClass.gce-pd.zone.automatic'}}
+        {{else}}
+          {{zones}}
+        {{/if}}
+      </div>
     {{/if}}
   </div>
 </div>

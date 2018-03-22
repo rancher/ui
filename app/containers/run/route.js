@@ -1,6 +1,6 @@
 import EmberObject from '@ember/object';
 import { inject as service } from '@ember/service';
-import { get } from '@ember/object';
+import { get} from '@ember/object';
 import Route from '@ember/routing/route';
 import Ember from 'ember';
 import C from 'ui/utils/constants';
@@ -16,7 +16,7 @@ export default Route.extend({
   },
 
   model: function(params/*, transition*/) {
-    var store = this.get('store');
+    var store = get(this,'store');
 
     if ( params.workloadId )
     {
@@ -30,12 +30,10 @@ export default Route.extend({
   },
 
   modelForNew(params) {
-    let scaleMode = this.get(`prefs.${C.PREFS.LAST_SCALE_MODE}`) || 'deployment';
+    let scaleMode = get(this,`prefs.${C.PREFS.LAST_SCALE_MODE}`) || 'deployment';
     if ( scaleMode === 'container' || scaleMode === 'service' ) {
       scaleMode = 'deployment';
     }
-
-    //let isGlobal = (mode === 'global');
 
     return EmberObject.create({
       scaleMode,
@@ -104,7 +102,7 @@ export default Route.extend({
       return out;
     } else {
       // Clone workload with one container
-      let neu = this.get('store').createRecord(clone.serializeForNew());
+      let neu = get(this,'store').createRecord(clone.serializeForNew());
 
       return EmberObject.create({
         mode: 'service',
@@ -117,7 +115,7 @@ export default Route.extend({
   },
 
   getNamespaceId(params) {
-    const clusterStore = this.get('clusterStore');
+    const clusterStore = get(this,'clusterStore');
 
     let ns = null;
     if ( params.namespaceId ) {
@@ -125,7 +123,7 @@ export default Route.extend({
     }
 
     if ( !ns ) {
-      ns = clusterStore.getById('namespace', this.get(`prefs.${C.PREFS.LAST_NAMESPACE}`));
+      ns = clusterStore.getById('namespace', get(this,`prefs.${C.PREFS.LAST_NAMESPACE}`));
     }
 
     let namespaceId = null;
@@ -136,7 +134,7 @@ export default Route.extend({
   },
 
   emptyWorkload(params) {
-    const store = this.get('store');
+    const store = get(this,'store');
     return store.createRecord({
       type: 'workload',
       namespaceId: this.getNamespaceId(params),
@@ -148,7 +146,7 @@ export default Route.extend({
   },
 
   emptyContainer(params) {
-    return this.get('store').createRecord({
+    return get(this,'store').createRecord({
       type: 'container',
       tty: true,
       stdin: true,
