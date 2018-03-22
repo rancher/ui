@@ -52,10 +52,13 @@
             {{date-from-now inst.nextStart}}
           {{/tooltip-element}}
         {{/if}}
-        {{#if inst.triggerWebhook}}
-            <p class="mt-5 mb-0">{{t 'pipelinesPage.awaitingWebhook'}}</p>
+        {{#if inst.triggerWebhookPush}}
+            <p class="mt-5 mb-0">{{t 'pipelinesPage.awaitingWebhookPush'}}</p>
         {{/if}}
-        {{#unless (or inst.triggerWebhook inst.nextStart)}}
+        {{#if inst.triggerWebhookPr}}
+            <p class="mt-5 mb-0">{{t 'pipelinesPage.awaitingWebhookPR'}}</p>
+        {{/if}}
+        {{#unless (or inst.triggerWebhookPush inst.triggerWebhookPr inst.nextStart)}}
           {{t 'pipelinesPage.triggerManually'}}
         {{/unless}}
         </td>

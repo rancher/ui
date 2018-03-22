@@ -3,10 +3,27 @@
   <label>{{t 'newPipelineStep.stepType.scm.trigger'}}</label>
   <div class="pt-10"></div>
   <div class="inline-form">
-    {{input disabled=disabled type="checkbox" id="webhook" checked=pipeline.triggerWebhook}}
+    {{input disabled=(or disabled webhookDisabled) type="checkbox" id="webhook" checked=pipeline.triggerWebhookPush}}
     <label class="acc-label" for="webhook">
       {{t 'newPipelineStage.trigger.webhook'}}
     </label>
+    {{#if selectedModel.sourceCodeConfig.url}}
+      {{#unless selectedRepo.permissions.admin}}
+        {{banner-message color='bg-warning mb-0 mt-10' message='No permission to set webhook'}}
+      {{/unless}}
+    {{/if}}
+  </div>
+  <div class="pt-10"></div>
+  <div class="inline-form">
+    {{input disabled=(or disabled webhookDisabled) type="checkbox" id="webhookPR" checked=pipeline.triggerWebhookPr}}
+    <label class="acc-label" for="webhook">
+      {{t 'newPipelineStage.trigger.webhookPR'}}
+    </label>
+    {{#if selectedModel.sourceCodeConfig.url}}
+      {{#unless selectedRepo.permissions.admin}}
+        {{banner-message color='bg-warning mb-0 mt-10' message='No permission to set webhook'}}
+      {{/unless}}
+    {{/if}}
   </div>
   <div class="pt-10"></div>
   <div class="inline-form">

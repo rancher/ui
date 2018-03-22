@@ -3,26 +3,34 @@
 {{else}}
   <div class="pt-20"></div>
   <div class="inline-form">
-    <label>{{t 'newPipelineStep.stepType.scm.user'}}{{field-required}}</label>
+    <label>{{t 'newPipelineStep.stepType.scm.user'}}</label>
     {{#if (eq modalOpts.type 'review')}}
       <div class="row">
         <div class="col span-12">
-          {{#identity-block
-            principal=profileComponent
-            link=false
-          }}
-          {{/identity-block}}
+          {{#if profileComponent}}
+            {{#identity-block
+              principal=profileComponent
+              link=false
+            }}
+            {{/identity-block}}
+          {{else}}
+            N/A
+          {{/if}}
         </div>
       </div>
     {{else}}
       {{#if accountsInfo}}
       <div class="row">
         <div class="col span-12">
-          {{#identity-block
-            principal=profileComponent
-            link=false
-          }}
+          {{#if profileComponent}}
+            {{#identity-block
+              principal=profileComponent
+              link=false
+            }}
           {{/identity-block}}
+          {{else}}
+            N/A
+          {{/if}}
         </div>
       </div>
       {{else}}
@@ -59,12 +67,12 @@
             tooltipTemplate='tooltip-static'
             aria-describedby="tooltip-base"
             tooltipFor="audit-log"}}
-            <button {{action "reloadRepo"}} class="btn bg-transparent"><i class="icon icon-refresh"></i></button>
+            <button {{action "reloadRepo"}} class="btn bg-transparent pt-0 pb-0"><i class="icon icon-refresh"></i></button>
             {{/tooltip-element}}
           {{/unless}}
         {{/if}}
       </label>
-
+      <div class="pt-10"></div>
       {{#if (eq modalOpts.type 'review')}}
         {{input class="form-control" value=selectedModel.sourceCodeConfig.url disabled=(if (eq modalOpts.type 'review') true false)}}
       {{else}}
@@ -73,6 +81,7 @@
         {{else}}
           {{searchable-select
             content=repositories
+            allowCustom=true
             value=selectedModel.sourceCodeConfig.url
             optionLabelPath="url"
             optionValuePath="url"
@@ -101,7 +110,7 @@
 
     <div class="col span-6">
       <label>{{t 'newPipelineStep.stepType.scm.branch'}}{{field-required}}</label>
-
+      <div class="pt-10"></div>
       {{#each branchTypes as |type| }}
         <div class="pipeline-input-group">
           <div class="label-wrap">
@@ -123,6 +132,7 @@
   {{#pipeline-trigger
     selectedModel=selectedModel
     modalOpts=modalOpts
+    selectedRepo=selectedRepo
     triggerOptionsChange=(action 'triggerOptionsChange')
     disabled=(if (eq modalOpts.type 'review') true false)
     }}

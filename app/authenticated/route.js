@@ -84,7 +84,7 @@ export default Route.extend(Preload, {
           globalStore.findAll('principal').then((principals) => {
             const me = principals.filter(p => p.me === true);
             if (me.length > 0) {
-              set(this, 'access.me', get(me, 'firstObject'));
+              set(this, 'access.principal', get(me, 'firstObject'));
             }
             principals.forEach((p) => {
               set(p, '_mine', true);

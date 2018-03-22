@@ -20,7 +20,7 @@ export default Route.extend({
       roleTemplates: globalStore.findAll('roleTemplate'),
       users: globalStore.findAll('user'),
       clusterRoleTemplateBinding: globalStore.findAll('clusterRoleTemplateBinding'),
-      me: get(this, 'access.me'),
+      me: get(this, 'access.principal'),
     });
   },
 
