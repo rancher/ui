@@ -13,22 +13,34 @@
     }}
   {{else if setServerUrl}}
     {{#if settingLoading}}
-      Loading
-    {{else}}
       <div class="header">
         <h1>{{t 'loginPage.serverSettings.url.label'}}</h1>
         <p class="help-text">{{t 'loginPage.serverSettings.url.detail'}}</p>
       </div>
       <form class="horizontal-form container-fluid text-left" {{action 'save' on="submit"}}>
         <label for="server-url" class="acc-label">Server Url</label>
-        {{input-url
-            classNames="form-control"
-            id="server-url"
-            isInvalid=(action (mut urlInvalid))
-            value=serverUrl
-        }}
+        <div class="input-group">
+          <span class="input-group-addon bg-default">
+            <label>https://</label>
+          </span>
+          {{input-url
+              classNames="form-control"
+              id="server-url"
+              isInvalid=(action (mut urlInvalid))
+              urlWarning=(action (mut urlWarning))
+              urlError=(action (mut urlError))
+              value=serverUrl
+          }}
+        </div>
         {{#if urlInvalid}}
-          <p class="text-right text-error" style="font-size:11px;margin-top:5px;">Invalid URL</p>
+          {{#each urlError as |error|}}
+            <div class="banner bg-{{error.type}} mt-30">
+              <div class="banner-icon"><i class="icon icon-info"></i></div>
+              <div class="banner-message">
+                <p>{{error.msg}}</p>
+              </div>
+            </div>
+          {{/each}}
         {{/if}}
         {{top-errors
             errors=errors
@@ -41,6 +53,16 @@
             saveDisabled=(or urlInvalid (not serverUrl null))
         }}
       </form>
+      <div>
+        {{#each urlWarning as |warning|}}
+          <div class="banner bg-{{warning.type}} mt-30">
+            <div class="banner-icon"><i class="icon icon-info"></i></div>
+            <div class="banner-message">
+              <p>{{warning.msg}}</p>
+            </div>
+          </div>
+        {{/each}}
+      </div>
     {{/if}}
   {{else}}
     <h1>
