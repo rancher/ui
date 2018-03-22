@@ -30,16 +30,16 @@
   <div class="row banner bg-info basics">
     {{#if service.externalIpAddresses}}
       <div class="vertical-middle">
-        <label class="text-muted ml-15">{{t 'servicePage.external.externalIp' count=service.externalIpAddresses.length}}</label>
+        <label class="acc-label vertical-middle p-0">{{t 'servicePage.external.externalIp' count=service.externalIpAddresses.length}}</label>
         {{join-array service.externalIpAddresses}}
       </div>
     {{else if service.hostname}}
       <div class="vertical-middle">
-        <label class="text-muted">{{t 'servicePage.external.externalHostname'}} </label> {{service.hostname}}
+        <label class="acc-label vertical-middle p-0">{{t 'servicePage.external.externalHostname'}} </label> {{service.hostname}}
       </div>
     {{else if service.selector}}
       <div class="vertical-middle">
-        <label class="text-muted">{{t 'servicePage.selector.label'}} </label> {{service.selector}}
+        <label class="acc-label vertical-middle p-0">{{t 'servicePage.selector.label'}} </label> {{service.selector}}
       </div>
     {{/if}}
 
@@ -58,7 +58,7 @@
         </span>
         <div class="btn-group btn-group-xs p-0">
           <button class="btn btn-xs bg-primary" {{action "scaleDown" target=service}} disabled={{not service.canScaleDown}}><i class="icon icon-minus icon-fw"/></button>
-          <button style="margin-left: -5px;" class="btn btn-xs bg-primary" {{action "scaleUp" target=service}} disabled={{not service.canScaleUp}}><i class="icon icon-plus icon-fw"/></button>
+          <button style="margin-left: -1px;" class="btn btn-xs bg-primary" {{action "scaleUp" target=service}} disabled={{not service.canScaleUp}}><i class="icon icon-plus icon-fw"/></button>
         </div>
       </div>
     {{/if}}
@@ -207,16 +207,6 @@
       expandAll=al.expandAll
       expandFn=expandFn
     }}
-
-    {{#if service.canHaveSecrets}}
-      {{container/form-secrets
-        instance=activeLaunchConfig
-        editing=false
-        expandAll=al.expandAll
-        expandFn=expandFn
-        classNames="accordion"
-      }}
-    {{/if}}
 
     {{#if service.canChangeSecurity}}
       {{container/form-security
