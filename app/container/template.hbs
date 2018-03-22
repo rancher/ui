@@ -3,9 +3,6 @@
     <h1 class="vertical-middle">
       {{t 'containerPage.header' name=model.container.displayName}}
     </h1>
-    <div class="vertical-middle" style="height: 30px;">
-      {{info-multi-stats model=model.container largeTargetId="largeStats"}}
-    </div>
   </div>
   <div class="right-buttons">
     {{badge-state model=model.container}}
@@ -20,15 +17,17 @@
   {{banner-message color='bg-secondary mb-0 mt-10' message=(linkify model.container.description)}}
 {{/if}}
 
+{{#if model.container.showTransitioningMessage}}
+  <div class="{{model.container.stateColor}}"><p>{{model.container.transitioningMessage}}</p></div>
+{{/if}}
+
 <section>
-  <div class="banner bg-info basics">
-    <div class="inline-block">
-      <label class="acc-label p-0">{{t 'generic.image'}}:</label>
-      {{#copy-inline clipboardText=model.container.image}}
-        {{model.container.image}}
-      {{/copy-inline}}
-    </div>
-    <div class="inline-block">
+  <div class="row banner bg-info basics">
+    <div class="vertical-middle">
+        <label class="acc-label vertical-middle p-0">{{t 'generic.image'}}:</label>
+        {{model.instance.image}} {{copy-to-clipboard clipboardText=model.instance.image size="small"}}
+      </div>
+    <div class="vertical-middle">
       <label class="acc-label p-0">{{t 'generic.ipAddress'}}:</label>
       {{#if model.container.displayIp}}
         {{#copy-inline clipboardText=model.container.displayIp}}
@@ -38,38 +37,8 @@
         {{t 'generic.none'}}
       {{/if}}
     </div>
-    {{#if model.container.serviceId}}
-      <div class="inline-block">
-        <label class="acc-label p-0">{{t 'generic.service'}}:</label>
-        {{#link-to "workload" projects.current.id model.container.serviceId}}{{model.service.name}}{{/link-to}}
-      </div>
-    {{/if}}
-    {{#if model.container.stack}}
-      <div class="inline-block">
-        <label class="acc-label p-0">{{t 'generic.stack'}}:</label>
-        {{#link-to "stack" projects.current.id model.container.stack.id}}{{model.container.stack.displayName}}{{/link-to}}
-      </div>
-    {{/if}}
-    {{#if model.container.primaryHost}}
-      <div class="inline-block">
-        <label class="acc-label p-0">{{t 'generic.host'}}:</label>
-        {{#link-to "host" model.container.primaryHost.id}}{{model.container.primaryHost.displayName}}{{/link-to}}
-      </div>
-    {{/if}}
-    {{#if model.container.displayExternalId}}
-      <div class="inline-block">
-        <label class="acc-label p-0">{{t 'generic.dockerId'}}:</label>
-        {{#copy-inline clipboardText=model.container.externalId}}
-          {{model.container.displayExternalId}}
-        {{/copy-inline}}
-      </div>
-    {{/if}}
   </div>
 </section>
-
-{{#if model.container.showTransitioningMessage}}
-  <div class="{{model.container.stateColor}}"><p>{{model.container.transitioningMessage}}</p></div>
-{{/if}}
 
 <section>
   {{#accordion-list as |al expandFn|}}
@@ -94,12 +63,39 @@
     </div>
 
     <div class="mt-20">
-      {{form-healthcheck
-        healthCheck=model.container.readinessProbe
-        editing=false
+      {{#accordion-list-item
+        title=(t 'formHealthCheck.title')
+        detail=(t 'formHealthCheck.detail')
         expandAll=al.expandAll
-        expandFn=expandFn
+        expand=(action expandFn)
       }}
+        <div class="row">
+          <div class="col span-6 mt-0 mb-0">
+            <label class="acc-label">{{t 'formHealthCheck.readiness'}}</label>
+          </div>
+          <div class="col span-6 mt-0 mb-0">
+            {{#if model.instance.livenessProbe}}
+              <label class="acc-label">{{t 'formHealthCheck.liveness'}}</label>
+            {{/if}}
+          </div>
+        </div>
+        <div class="row">
+          <div class="col {{if model.instance.livenessProbe 'span-6' 'span-12'}}">
+            {{form-healthcheck
+              initialCheck=model.instance.readinessProbe
+              editing=false
+            }}
+          </div>
+          {{#if model.instance.livenessProbe}}
+            <div class="col span-6">
+              {{form-healthcheck
+                initialCheck=model.instance.livenessProbe
+                editing=false
+              }}
+            </div>
+          {{/if}}
+        </div>
+      {{/accordion-list-item}}
     </div>
 
     <div class="mt-20">
@@ -168,15 +164,6 @@
 
     <div class="mt-20">
       {{container/form-security
-        instance=model.container
-        editing=false
-        expandAll=al.expandAll
-        expandFn=expandFn
-      }}
-    </div>
-
-    <div class="mt-20">
-      {{container/form-secrets
         instance=model.container
         editing=false
         expandAll=al.expandAll
