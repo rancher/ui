@@ -16,7 +16,7 @@ export default Route.extend({
       projectRoleTemplateBindings: store.find('projectRoleTemplateBinding'),
       psps:                        store.find('podSecurityPolicyTemplate'),
       users:                       store.find('user', null, {forceReload: true}),
-      me:                          get(this, 'access.me'),
+      me:                          get(this, 'access.principal'),
     });
   },
 });

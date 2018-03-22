@@ -24,7 +24,7 @@ export default Route.extend({
       roles: store.findAll('roleTemplate'),
       psps: store.findAll('podSecurityPolicyTemplate'),
       users: store.find('user', null, {forceReload: true}),
-      me: get(this, 'access.me'),
+      me: get(this, 'access.principal'),
     });
   },
 });
