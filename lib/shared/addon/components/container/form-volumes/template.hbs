@@ -18,42 +18,26 @@
           <span class="darken"><i class="icon icon-chevron-down"></i></span>
         </button>
         <ul class="dropdown-menu" role="menu">
-          <li class="disabled"><a href="#">Coming Soon...</a></li>
-          <li class="disabled"><a {{!--action "addBindMount"--}}>{{t 'formVolumes.add.bindMount'}}</a></li>
-          <li class="disabled"><a {{!--action "addVolume"--}}>{{t 'formVolumes.add.existing'}}</a></li>
-          <li class="disabled"><a {{!--action "addNewVolume"--}}>{{t 'formVolumes.add.new'}}</a></li>
-          <li class="disabled"><a {{action "addTmpfs"}}>{{t 'formVolumes.add.tmpfs'}}</a></li>
+          <li><a {{action "addVolume"}}>{{t 'formVolumes.add.newVolume'}}</a></li>
+          <li><a {{action "addNewPvc"}}>{{t 'formVolumes.add.newPvc'}}</a></li>
+          <li><a {{action "addPvc"}}>{{t 'formVolumes.add.existingPvc'}}</a></li>
+          <li><a {{action "addBindMount"}}>{{t 'formVolumes.add.bindMount'}}</a></li>
+          <li><a {{action "addTmpfs"}}>{{t 'formVolumes.add.tmpfs'}}</a></li>
+          <li><a {{action "addSecret"}}>{{t 'formVolumes.add.secret'}}</a></li>
         </ul>
       </div>
     {{/if}}
 
     {{#if volumesArray.length}}
       <div class="mt-20">
-        <table class="table fixed no-lines mt-20">
-          <thead>
-            <tr>
-              <td width="150">{{t 'formVolumes.table.kind'}}</td>
-              <td width="20"></td>
-              <td>{{t 'formVolumes.table.source'}}</td>
-              <td width="20"></td>
-              <td>{{t 'formVolumes.table.mountPoint'}}</td>
-              <td width="20"></td>
-              <td width="150">{{t 'formVolumes.table.opts'}}</td>
-              <td width="20"></td>
-              <td width="40" class="actions"></td>
-            </tr>
-          </thead>
-          <tbody>
-            {{#each volumesArray as |vol|}}
-              {{container/form-volume-row
-                model=vol
-                editing=editing
-                requestedHostId=launchConfig.requestedHostId
-                remove=(action "remove" vol)
-              }}
-            {{/each}}
-          </tbody>
-        </table>
+        {{#each volumesArray as |row|}}
+          {{container/form-volume-row
+            model=row
+            namespace=namespace
+            editing=editing
+            remove=(action "remove" row)
+          }}
+        {{/each}}
       </div>
     {{else if (not editing)}}
       <span class="text-muted">Coming soon...</span>

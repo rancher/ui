@@ -3424,36 +3424,17 @@ formValueArray:
   protip: "ProTip: Paste one or more lines of values into any field for easy bulk entry."
 
 formVolumeRow:
+  name:
+    label: Volume Name
+    placeholder: e.g. vol1
   mode:
-    volume: Existing volume
-    newVolume: New volume
-    bindMount: Bind-mount
-    volumesFrom: Volumes from
-    volumesFromLaunchConfig: Volumes from
+    label: Volume Type
+    newVolume: Ephemeral Volume
+    newPvc: New Volume Claim
+    existingPvc: Volume Claim
+    bindMount: Bind-Mount
     tmpfs: Tmpfs
-    custom: Custom
-  edit: Edit
-  tmpfsSource: Memory
-  hostPath:
-    label: Host Path
-    placeholder: e.g. /home/foo
-  mountPoint:
-    label: Mount Point
-    placeholder: e.g. /mnt/foo
-  volume:
-    prompt: Select a Volume...
-  volumesFrom:
-    prompt: Select a Container...
-  volumesFromLaunchConfig:
-    prompt: Select a Launch Config...
-  custom:
-    placeholder: Custom --volume value
-  opts:
-    ro: Read-Only
-    rw: Read-Write
-    custom:
-      label: Custom
-      placeholder: e.g. rw,z
+    secret: Secret
 
 formVolumes:
   title: Volumes
@@ -3474,11 +3455,12 @@ formVolumes:
     absoluteMountPoint: Volume mount points must be absolute paths
   add:
     label: Add Volume...
-    existing: Use an existing volume
-    new: Create a new volume
+    newVolume: Add an ephemeral volume
+    newPvc: Add a new persistent volume (claim)
+    existingPvc: Use an existing persistent volume (claim)
     bindMount: Bind-mount a host directory
     tmpfs: Add an in-memory tmpfs
-    custom: Add custom volume entry
+    secret: Use a secret
   table:
     kind: Kind
     source: Source
@@ -4628,8 +4610,8 @@ newContainer:
     placeholder: e.g. My Application
   environment:
     label: Environment Variables
-    from: Environment Variables From Source
-    detail: Environment Variables allow you to inject passwords, keys, or other sensitive information into the containers that need them.
+    from: Inject Values From Another Resource
+    detail: Set the environment that will be visible to the container, including injecting values from other resources like Secrets.
     addAction: Add Variable
     addFrom: Add From Source
     keyLabel: Variable

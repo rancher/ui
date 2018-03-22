@@ -25,12 +25,15 @@ export default Route.extend(Preload,{
           } else {
             return PromiseAll([
               this.preload('namespace','clusterStore'),
+              this.preload('storageClass','clusterStore'),
+              this.preload('persistentVolume','clusterStore'),
               this.preload('pod'),
               this.preload('workload'),
               this.preload('dnsRecord'),
               this.preload('secret'),
               this.preload('service'),
               this.preload('namespacedSecret'),
+              this.preload('persistentVolumeClaim'),
             ]).then(() => {
               return out;
             })

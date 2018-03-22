@@ -28,14 +28,16 @@
       }}
     {{/if}}
   </div>
-  <div class="col span-6">
-    {{form-namespace
-      namespace=namespace
-      errors=namespaceErrors
-      editing=editing
-      registerHook=(action "registerHook")
-    }}
-  </div>
+  {{#if selectNamespace}}
+    <div class="col span-6">
+      {{form-namespace
+        namespace=namespace
+        errors=namespaceErrors
+        editing=editing
+        registerHook=(action "registerHook")
+      }}
+    </div>
+  {{/if}}
 </div>
 
 <div class="row">
@@ -134,6 +136,5 @@
 
 {{#unless isView}}
   {{top-errors errors=errors}}
-  {{save-cancel createLabel=(if actuallySave 'saveCancel.create' 'cruPersistentVolumeClaim.define.action') save="save" cancel="viewEditCancel"}}
+  {{save-cancel createLabel=(if actuallySave 'saveCancel.create' 'cruPersistentVolumeClaim.define.addActionLabel') save="save" cancel="viewEditCancel"}}
 {{/unless}}
-
