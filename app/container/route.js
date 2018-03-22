@@ -9,9 +9,6 @@ export default Route.extend({
         instance: get(container, 'containers.firstObject'),
         container: container,
       };
-      if (container.serviceId) {
-        out.service = get(this, 'store').getById('service', container.serviceId);
-      }
       return out;
     });
   },
