@@ -57,7 +57,8 @@ export default Route.extend({
         });
       }
 
-      let kind = get(results, 'tpl.catalogId') ? get(results, 'tpl.catalogId') : 'native';
+      let templateBase = this.modelFor(get(this, 'parentRoute')).get('templateBase');
+      let kind = templateBase === 'kubernetes' ? 'helm' : 'native';
       let neuApp = null;
       var links;
 
@@ -85,7 +86,6 @@ export default Route.extend({
         neuApp = store.createRecord({
           type: 'app',
           name: results.namespace.name,
-          answers: [],
         });
       }
 
@@ -93,7 +93,7 @@ export default Route.extend({
         allTemplates: this.modelFor(get(this, 'parentRoute')).get('catalog'),
         catalogApp: neuApp,
         namespace: results.namespace,
-        templateBase: this.modelFor(get(this, 'parentRoute')).get('templateBase'),
+        templateBase: templateBase,
         tpl: results.tpl,
         tplKind: kind,
         upgradeTemplate: results.upgrade,
