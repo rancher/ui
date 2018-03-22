@@ -4,7 +4,7 @@ import Resource from 'ember-api-store/models/resource';
 import C from 'ui/utils/constants';
 import { parseExternalId } from 'ui/utils/parse-externalid';
 
-export const BUILT_IN_UI = ['amazonec2','digitalocean','exoscale','packet','rackspace','vmwarevsphere','aliyunecs'];
+export const BUILT_IN_UI = ['amazonec2','digitalocean', 'azure', 'exoscale','packet','rackspace','vmwarevsphere','aliyunecs'];
 
 function displayUrl(url) {
   url = url||'';
