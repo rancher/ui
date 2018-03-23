@@ -8,50 +8,31 @@
   expand=(action expandFn)
   everExpanded=true
 }}
-  {{#if scope.currentProject.isWindows}}
-    <div class="text-center p-20">Volume support is not currently available for Windows.</div>
-  {{else}}
-    {{#if editing}}
-      <div class="dropdown">
-        <button type="button" class="btn bg-link p-0 icon-btn dropdown-toggle pl-10" data-toggle="dropdown" aria-expanded="false">
-          <span>{{t 'formVolumes.add.label'}}</span>
-          <span class="darken"><i class="icon icon-chevron-down"></i></span>
-        </button>
-        <ul class="dropdown-menu" role="menu">
-          <li><a {{action "addVolume"}}>{{t 'formVolumes.add.newVolume'}}</a></li>
-          <li><a {{action "addNewPvc"}}>{{t 'formVolumes.add.newPvc'}}</a></li>
-          <li><a {{action "addPvc"}}>{{t 'formVolumes.add.existingPvc'}}</a></li>
-          <li><a {{action "addBindMount"}}>{{t 'formVolumes.add.bindMount'}}</a></li>
-          <li><a {{action "addTmpfs"}}>{{t 'formVolumes.add.tmpfs'}}</a></li>
-          <li><a {{action "addSecret"}}>{{t 'formVolumes.add.secret'}}</a></li>
-        </ul>
-      </div>
-    {{/if}}
+  {{#if editing}}
+    <div class="dropdown">
+      <button type="button" class="btn bg-link p-0 icon-btn dropdown-toggle pl-10" data-toggle="dropdown" aria-expanded="false">
+        <span>{{t 'formVolumes.add.label'}}</span>
+        <span class="darken"><i class="icon icon-chevron-down"></i></span>
+      </button>
+      <ul class="dropdown-menu" role="menu">
+        <li><a {{action "addVolume"}}>{{t 'formVolumes.add.newVolume'}}</a></li>
+        <li><a {{action "addNewPvc"}}>{{t 'formVolumes.add.newPvc'}}</a></li>
+        <li><a {{action "addPvc"}}>{{t 'formVolumes.add.existingPvc'}}</a></li>
+        <li><a {{action "addBindMount"}}>{{t 'formVolumes.add.bindMount'}}</a></li>
+        <li class="hide"><a {{action "addTmpfs"}}>{{t 'formVolumes.add.tmpfs'}}</a></li>
+        <li><a {{action "addSecret"}}>{{t 'formVolumes.add.secret'}}</a></li>
+      </ul>
+    </div>
+  {{/if}}
 
-    {{#if volumesArray.length}}
-      <div class="mt-20">
-        {{#each volumesArray as |row|}}
-          {{container/form-volume-row
-            model=row
-            namespace=namespace
-            editing=editing
-            remove=(action "remove" row)
-          }}
-        {{/each}}
-      </div>
-    {{else if (not editing)}}
-      <span class="text-muted">Coming soon...</span>
-    {{/if}}
-
-    {{#if hasCustom}}
-      <div class="mt-20">
-        <label class="acc-label" for="volumeDriver">{{t 'formVolumes.volumeDriver.label'}}</label>
-        {{input-suggest
-          value=launchConfig.volumeDriver
-          grouped=driverChoices
-          placeholder=(t 'formVolumes.volumeDriver.placeholder')
-        }}
-      </div>
-    {{/if}}
+  {{#if volumesArray.length}}
+    {{#each volumesArray as |row|}}
+      {{container/form-volume-row
+        model=row
+        namespace=namespace
+        editing=editing
+        remove=(action "remove" row)
+      }}
+    {{/each}}
   {{/if}}
 {{/accordion-list-item}}

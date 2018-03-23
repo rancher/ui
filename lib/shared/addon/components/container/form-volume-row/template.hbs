@@ -1,29 +1,108 @@
-<div class="box">
+<div class="box mt-20">
   <div class="row">
-    <div class="col span-3" style="border-right: 1px solid gray;">
-      <label class="acc-label">{{t 'formVolumeRow.mode.label'}}</label>
-      <div>
-        {{t (concat 'formVolumeRow.mode.' model.mode)}}
-        {{#if (eq mode "newPvc")}}
-          <a action={{action 'defineNewPvc'}}> <i class="icon icon-edit"/></a>
-        {{else if (eq mode "newVolume")}}
-          <a action={{action 'defineNewVolume'}}> <i class="icon icon-edit"/></a>
-        {{/if}}
-      </div>
-
+    <div class="col span-6">
       <label class="acc-label">{{t 'formVolumeRow.name.label'}}</label>
       {{input type="text" value=model.volume.name placeholder=(t 'formVolumeRow.name.placeholder')}}
-
-      <button class="btn bg-primary btn-sm" {{action "remove"}}>
-        <i class="icon icon-minus"/> Remove Volume
-        <span class="sr-only">{{t 'generic.remove'}}</span>
-      </button>
     </div>
-    <div class="col span-9">
-      <label class="acc-label">Mounts</label>
-      {{#each model.mounts as |mnt|}}
-        {{input value=mnt.mountPath}}
-      {{/each}}
+    <div class="col span-4">
+      <label class="acc-label">{{t 'formVolumeRow.mode.label'}}</label>
+      <div class="form-control-static">
+        {{t (concat 'formVolumeRow.mode.' model.mode)}}
+        {{#if (eq model.mode "newPvc")}}
+          <button class="btn bg-transparent" action={{action 'defineNewPvc'}}>
+            <i class="icon icon-edit"/>
+            {{t 'generic.edit'}}
+          </button>
+        {{else if (eq model.mode "newVolume")}}
+          <button class="btn bg-transparent" action={{action 'defineNewVolume'}}>
+            <i class="icon icon-edit"/>
+            {{t 'generic.edit'}}
+          </button>
+        {{/if}}
+      </div>
+    </div>
+    <div class="col span-2 text-right">
+      <label class="acc-label">&nbsp;</label>
+      <div>
+        <button class="btn bg-link icon-btn" {{action "remove"}}>
+          <span class="darken"><i class="icon icon-minus text-small"/></span>
+          <span>Remove Volume</span>
+        </button>
+      </div>
+    </div>
+  </div>
+  {{#if (eq model.mode "existingPvc")}}
+    {{!--volume-source/source-persistent-volume-claim
+      config=model.volume.persistentVolumeClaim
+      editing=true
+    !--}}
+    <div class="row">
+      <div class="col span-6">
+        <label class="acc-label">Persistent Volume Claim {{field-required}}</label>
+        {{new-select
+          value=model.volume.persistentVolumeClaim.persistentVolumeClaimId
+          content=pvcChoices
+          prompt="Select a Persistent Volume Claim..."
+          localizedPrompt=false
+        }}
+      </div>
+    </div>
+  {{else if (eq model.mode "bindMount")}}
+    {{volume-source/source-host-path
+      config=model.volume.hostPath
+      editing=true
+    }}
+  {{else if (eq model.mode "secret")}}
+    {{volume-source/source-secret
+      config=model.volume.secret
+      editing=true
+    }}
+  {{/if}}
+  <hr/>
+  <div class="row">
+    <div class="col span-12">
+      {{#if model.mounts.length}}
+        <table class="fixed">
+        <tr>
+          <th>Mount Point{{field-required}}</th>
+          <th width="20">&nbsp;</th>
+          <th>Sub Path in Volume</th>
+          <th width="20">&nbsp;</th>
+          <th width="100" class="text-center">Read-Only</th>
+          <th width="40">&nbsp;</th>
+        </tr>
+        {{#each model.mounts as |mnt|}}
+          <tr>
+            <td>
+              {{input value=mnt.mountPath}}
+            </td>
+            <td></td>
+            <td>
+              {{input value=mnt.subPath}}
+            </td>
+            <td></td>
+            <td class="text-center">
+              {{input type="checkbox" classNames="form-control" checked=mnt.readOnly}}
+            </td>
+            <td>
+              <button class="btn bg-primary btn-sm" {{action "removeMount" mnt}}>
+                <i class="icon icon-minus"/>
+                <span class="sr-only">{{t 'generic.remove'}}</span>
+              </button>
+            </td>
+          </tr>
+        {{/each}}
+        </table>
+      {{else}}
+        The volume will not be mounted in the current container.  It may be used by other containers in the pod.
+      {{/if}}
+
+      <div class="mt-20">
+        <button class="btn bg-link icon-btn" {{action "addMount"}}>
+          <span class="darken"><i class="icon icon-plus text-small"/></span>
+          <span>Add Mount</span>
+        </button>
+      </div>
     </div>
   </div>
 </div>

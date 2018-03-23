@@ -179,7 +179,7 @@ var Workload = Resource.extend(DisplayImage, StateCounts, EndpointPorts, {
     let choices = [
       { label: 'action.edit',           icon: 'icon icon-edit',             action: 'upgrade',        enabled: !!l.update &&  isReal },
       { label: 'action.rollback',       icon: 'icon icon-history',          action: 'rollback',       enabled: !!a.rollback && isReal && !!get(this, 'previousRevisionId') },
-      { label: 'action.clone',          icon: 'icon icon-copy',             action: 'clone',          enabled: true},
+//      { label: 'action.clone',          icon: 'icon icon-copy',             action: 'clone',          enabled: true},
 //      { label: 'action.addSidekick',    icon: 'icon icon-plus-circle',      action: 'addSidekick',    enabled: get(this, 'canHaveSidekicks') },
       { divider: true },
       { label: 'action.execute',        icon: 'icon icon-terminal',         action: 'shell',          enabled: !!podForShell, altAction:'popoutShell'},
