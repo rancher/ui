@@ -1796,6 +1796,24 @@ cruPersistentVolume:
       placeholder: "e.g. PersistentVolumeClaim"
     readOnly:
       label: Read Only
+  secret:
+    defaultMode:
+      label: Default Mode
+      placeholder: "e.g. 256"
+    optional:
+      label: Optional
+    secretId:
+      label: Secret
+    items:
+      label: Items
+  emptyDir:
+    medium:
+      label: Medium
+      default: Node's Default Medium
+      memory: Memory
+    sizeLimit:
+      label: Size Limit
+      placeholder: "e.g. 300Mi"
   azureFile:
     secretName:
       label: Secret Name
@@ -2927,6 +2945,21 @@ formHealthCheck:
   failureTheshold:
     label: Unhealthy After
     unit: failures
+
+formKeyToPath:
+  addAction: Add Item
+  header: Items
+  default: All Keys
+  specific: Select Specific Keys
+  key:
+    label: Key
+    placeholder: "e.g. username"
+  path:
+    label: Path
+    placeholder: "e.g. my-group/my-username"
+  mode:
+    label: Mode
+    placeholder: "e.g. 511"
 
 formKeyValue:
   addAction: Add Pair
@@ -5392,6 +5425,10 @@ volumeSource:
     title: Ceph Filesystem
   cinder:
     title: Openstack Cinder Volume
+  secret:
+    title: Secret Volume
+  empty-dir:
+    title: Empty Dir Volume
   fc:
     title: Fibre Channel
   flex-volume:

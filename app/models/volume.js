@@ -24,8 +24,10 @@ registerSource('rbd',            'rbd',                  true);
 registerSource('scaleio',        'scaleIO',              true);
 registerSource('storageos',      'storageos',            true);
 registerSource('vsphere-volume', 'vsphereVolume',        true);
+registerSource('secret',         'secret',               true,      true);
+registerSource('empty-dir',      'emptyDir',             true,      true);
 
-export function registerSource(name, field, component) {
+export function registerSource(name, field, component, ephemeral) {
   if ( component === true ) {
     component = name;
   }
@@ -39,11 +41,16 @@ export function registerSource(name, field, component) {
     name: name,
     value: field,
     component: component,
+    ephemeral: !!ephemeral,
   });
 }
 
-export function getSources() {
-  return JSON.parse(JSON.stringify(SOURCES));
+export function getSources(ephemeral) {
+  if (ephemeral) {
+    return JSON.parse(JSON.stringify(SOURCES));
+  } else {
+    return JSON.parse(JSON.stringify(SOURCES.filter(s => !s.ephemeral)));
+  }
 }
 
 var Volume = Resource.extend({

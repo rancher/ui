@@ -1,0 +1,70 @@
+{{#if ary.length}}
+  <table class="table fixed no-lines small mb-10">
+    <thead>
+      <tr class="hidden-sm">
+        <th>{{t 'formKeyToPath.key.label'}}{{#if editing}}{{field-required}}{{/if}}</th>
+        <th width="10">&nbsp;</th>
+        <th>{{t 'formKeyToPath.path.label'}}{{#if editing}}{{field-required}}{{/if}}</th>
+        <th width="10">&nbsp;</th>
+        <th>{{t 'formKeyToPath.mode.label'}}</th>
+        <th width="10">&nbsp;</th>
+        <th width="30">&nbsp;</th>
+      </tr>
+    </thead>
+    <tbody>
+    {{#each ary as |row|}}
+      <tr>
+        <td data-title="{{t 'formKeyToPath.key.label'}}:">
+          {{#if editing}}
+            {{searchable-select
+                content=keys
+                value=row.key
+                placeholder=(t 'formKeyToPath.key.placeholder')
+            }}
+          {{else}}
+            {{row.key}}
+          {{/if}}
+        </td>
+        <td>&nbsp;</td>
+        <td data-title="{{t 'formKeyToPath.path.label'}}:">
+          {{#if editing}}
+            {{input class="form-control value" spellcheck="false" type="text" value=row.path placeholder=(t 'formKeyToPath.path.placeholder')}}
+          {{else}}
+            <span>{{row.path}}</span>
+          {{/if}}
+        </td>
+        <td>&nbsp;</td>
+        <td data-title="{{t 'formKeyToPath.mode.label'}}:">
+          {{#if editing}}
+            {{input-integer class="form-control value" value=row.mode placeholder=(t 'formKeyToPath.mode.placeholder')}}
+          {{else}}
+            <span>{{row.mode}}</span>
+          {{/if}}
+        </td>
+        <td>&nbsp;</td>
+        <td class="valign-top text-right">
+          {{#if editing}}
+            <button class="btn bg-primary btn-sm" {{action "remove" row}}><i class="icon icon-minus"/><span class="sr-only">{{t 'generic.remove'}}</span></button>
+          {{/if}}
+        </td>
+      </tr>
+      {{#unless editing}}
+        <div class="pb-10"></div>
+      {{/unless}}
+    {{/each}}
+    </tbody>
+  </table>
+{{else}}
+  {{#unless editing}}
+    <div>{{t 'generic.none'}}</div>
+  {{/unless}}
+{{/if}}
+
+{{#if editing}}
+  <div>
+    <button class="btn bg-link icon-btn p-0" {{action "add"}}>
+      <span class="darken"><i class="icon icon-plus text-small"/></span>
+      <span>{{t 'formKeyToPath.addAction'}}</span>
+    </button>
+  </div>
+{{/if}}
