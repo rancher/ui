@@ -1,7 +1,5 @@
 import Resource from 'ember-api-store/models/resource';
-import { get, set, computed, observer } from '@ember/object';
 import { inject as service } from '@ember/service';
-import { allSettled } from 'rsvp';
 
 var GithubConfig = Resource.extend({
   type:        'githubConfig',
