@@ -208,6 +208,23 @@
       expandFn=expandFn
     }}
 
+   {{#if service.canHaveSecrets}}
+      {{#accordion-list-item
+        title=(t 'formSecrets.title')
+        detail=(t 'formSecrets.detail')
+        expandAll=al.expandAll
+        expand=(action expandFn)
+      }}
+        {{container/form-secrets
+          instance=activeLaunchConfig
+          editing=false
+          expandAll=al.expandAll
+          expandFn=expandFn
+          classNames="accordion"
+        }}
+      {{/accordion-list-item}}
+    {{/if}}
+
     {{#if service.canChangeSecurity}}
       {{container/form-security
         instance=activeLaunchConfig

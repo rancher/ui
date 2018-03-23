@@ -171,6 +171,23 @@
       }}
     </div>
 
+   <div class="mt-20">
+      {{#accordion-list-item
+        title=(t 'formSecrets.title')
+        detail=(t 'formSecrets.detail')
+        expandAll=al.expandAll
+        expand=(action expandFn)
+      }}
+        {{container/form-secrets
+          instance=model.container
+          editing=false
+          expandAll=al.expandAll
+          expandFn=expandFn
+          classNames="accordion"
+        }}
+      {{/accordion-list-item}}
+    </div>
+
     <div class="mt-20">
       {{#accordion-list-item
           title=(t 'containerPage.volumesTab.header')

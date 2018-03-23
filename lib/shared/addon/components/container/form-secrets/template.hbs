@@ -29,11 +29,13 @@
     </table>
     {{else}}
     {{#unless editing}}
-      <span class="text-center text-muted">{{t 'formSecrets.noSecrets'}}</span>
+      <span class="text-center text-muted">{{t 'formSecrets.noData'}}</span>
     {{/unless}}
   {{/if}}
-  <button type="button" class="btn bg-link icon-btn" {{action "addSecret"}}>
-    <span class="darken"><i class="icon icon-plus icon-small"></i></span>
-    <span>{{t 'newContainer.environment.addFrom'}}</span>
-  </button>
+  {{#if editing}}
+    <button type="button" class="btn bg-link icon-btn" {{action "addSecret"}}>
+      <span class="darken"><i class="icon icon-plus icon-small"></i></span>
+      <span>{{t 'newContainer.environment.addFrom'}}</span>
+    </button>
+  {{/if}}
 </div>
