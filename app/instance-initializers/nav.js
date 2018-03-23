@@ -283,6 +283,10 @@ const rootNav = [
         localizedLabel: 'nav.admin.security.authentication',
         icon: 'icon icon-users',
         route: 'global-admin.security.authentication',
+        condition: function() {
+          const authConfigs = this.get('globalStore').all('authConfig');
+          return authConfigs.get('length') > 0;
+        }
       },
     ],
   },
