@@ -118,9 +118,13 @@
           }}
         {{else}}
           <div>
-            <a href="{{href-to "authenticated.cluster.storage.classes.detail.index" primaryResource.storageClass.id}}">
-              {{primaryResource.storageClass.displayName}}
-            </a>
+            {{#if primaryResource.storageClassId}}
+              <a href="{{href-to "authenticated.cluster.storage.classes.detail.index" primaryResource.storageClassId}}">
+                {{primaryResource.storageClass.displayName}}
+              </a>
+            {{else}}
+              <span class="text-muted">{{t 'generic.none'}}</span>
+            {{/if}}
           </div>
         {{/if}}
       </div>

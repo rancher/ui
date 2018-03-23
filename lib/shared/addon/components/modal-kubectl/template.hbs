@@ -1,25 +1,8 @@
-{{#if loading}}
-  <div class="m-20">
-    <i class="icon icon-spinner icon-spin"></i> {{t 'generic.loading'}}
-  </div>
-{{else if error}}
-  <div class="banner bg-error">
-    <div class="banner-icon">
-      <span class="icon icon-x"></span>
-    </div>
-    <div class="banner-message">
-      <p>{{error}}</p>
-    </div>
-    </div>
-{{else}}
-  {{#container-shell
-    instance=model
-    command=command
-    dismiss=(action "cancel")
-    disconncted=(action "cancel")
-  }}
-  {{/container-shell}}
-{{/if}}
+{{container-shell
+  url=url
+  dismiss=(action "cancel")
+  disconncted=(action "cancel")
+}}
 
 <div class="footer-actions">
   <button {{action "cancel"}} class="btn bg-primary">{{t 'generic.closeModal'}}</button>

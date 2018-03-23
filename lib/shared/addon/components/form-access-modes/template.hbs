@@ -1,19 +1,31 @@
 <label class="acc-label">{{t 'formAccessModes.label'}}</label>
-<div class="checkbox">
-  <label>
-    {{#if editing}}{{input type="checkbox" checked=accessRWO}}{{/if}}
-    {{t 'formAccessModes.accessRWO'}}
-  </label>
-</div>
-<div class="checkbox">
-  <label>
-    {{#if editing}}{{input type="checkbox" checked=accessROX}}{{/if}}
-    {{t 'formAccessModes.accessROX'}}
-  </label>
-</div>
-<div class="checkbox">
-  <label>
-    {{#if editing}}{{input type="checkbox" checked=accessRWX}}{{/if}}
-    {{t 'formAccessModes.accessRWX'}}
-  </label>
-</div>
+{{#if editing}}
+  <div class="checkbox">
+    <label>
+      {{input type="checkbox" checked=accessRWO}}
+      {{t 'formAccessModes.accessRWO'}}
+    </label>
+  </div>
+  <div class="checkbox">
+    <label>
+      {{input type="checkbox" checked=accessROX}}
+      {{t 'formAccessModes.accessROX'}}
+    </label>
+  </div>
+  <div class="checkbox">
+    <label>
+      {{input type="checkbox" checked=accessRWX}}
+      {{t 'formAccessModes.accessRWX'}}
+    </label>
+  </div>
+{{else}}
+  {{#if accessRWO}}
+    <div>{{t 'formAccessModes.accessRWO'}}</div>
+  {{/if}}
+  {{#if accessROX}}
+    <div>{{t 'formAccessModes.accessROX'}}</div>
+  {{/if}}
+  {{#if accessRWX}}
+    <div>{{t 'formAccessModes.accessRWX'}}</div>
+  {{/if}}
+{{/if}}
