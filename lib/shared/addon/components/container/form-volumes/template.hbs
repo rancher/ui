@@ -8,6 +8,17 @@
   expand=(action expandFn)
   everExpanded=true
 }}
+  {{#if volumesArray.length}}
+    {{#each volumesArray as |row|}}
+      {{container/form-volume-row
+        model=row
+        namespace=namespace
+        editing=editing
+        remove=(action "remove" row)
+      }}
+    {{/each}}
+  {{/if}}
+
   {{#if editing}}
     <div class="dropdown">
       <button type="button" class="btn bg-link p-0 icon-btn dropdown-toggle pl-10" data-toggle="dropdown" aria-expanded="false">
@@ -25,14 +36,4 @@
     </div>
   {{/if}}
 
-  {{#if volumesArray.length}}
-    {{#each volumesArray as |row|}}
-      {{container/form-volume-row
-        model=row
-        namespace=namespace
-        editing=editing
-        remove=(action "remove" row)
-      }}
-    {{/each}}
-  {{/if}}
 {{/accordion-list-item}}
