@@ -1,11 +1,11 @@
 {{#if showHeader}}
   <div class="header">
-    <h1>{{t 'loginPage.serverSettings.url.label'}}</h1>
-    <p class="help-text">{{t 'loginPage.serverSettings.url.detail'}}</p>
+    <h1>{{t 'serverUrl.header.label'}}</h1>
+    <p class="help-text">{{t 'serverUrl.header.detail'}}</p>
   </div>
 {{/if}}
 <form class="horizontal-form container-fluid text-left" {{action 'saveServerUrl' on="submit"}}>
-  <label for="server-url" class="acc-label">Server Url</label>
+  <label for="server-url" class="acc-label">{{t 'generic.url'}}</label>
   <div class="input-group">
     <span class="input-group-addon bg-default">
       <label>{{scheme}}</label>
@@ -34,7 +34,7 @@
   }}
   {{save-cancel
       cancelDisabled=true
-      editLabel="loginPage.serverSettings.url.button.save"
+      editLabel="serverUrl.button.save"
       editing=true
       save="saveServerUrl"
       saveDisabled=(or urlInvalid (not serverUrl null))

@@ -4,8 +4,8 @@ import { get } from '@ember/object';
 import C from 'ui/utils/constants';
 
 export default Route.extend({
-  access:       service(),
-  settings:     service(),
+  access:      service(),
+  settings:    service(),
   globalStore: service(),
 
   activate() {
