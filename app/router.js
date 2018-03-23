@@ -32,6 +32,8 @@ Router.map(function() {
   this.route('logout');
 
   this.route('verify-auth');
+  this.route('update-password', {path: '/update-password'});
+
   this.route('authenticated', {path: '/'}, function() {
     // Global
     this.mount('global-admin', { path: '/g', resetNamespace: true});

@@ -22,7 +22,8 @@ const App = Application.extend({
         ],
         externalRoutes: {
           index: 'index',
-          authenticated: 'authenticated'
+          authenticated: 'authenticated',
+          'update-password': 'update-password'
         }
       }
     },

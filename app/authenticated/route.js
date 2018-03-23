@@ -33,7 +33,11 @@ export default Route.extend(Preload, {
       this.testAuthToken();
     }, CHECK_AUTH_TIMER));
 
-    return this.testAuthToken();
+    return this.testAuthToken().then(() => {
+      if (get(this, 'access.mustChangePassword')) {
+        this.transitionTo('update-password');
+      }
+    });
   },
 
   testAuthToken() {
