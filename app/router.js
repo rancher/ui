@@ -33,6 +33,7 @@ Router.map(function() {
 
   this.route('verify-auth');
   this.route('update-password', {path: '/update-password'});
+  this.route('update-critical-settings', {path: '/update-setting'});
 
   this.route('authenticated', {path: '/'}, function() {
     // Global

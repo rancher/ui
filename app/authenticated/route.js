@@ -34,9 +34,17 @@ export default Route.extend(Preload, {
     }, CHECK_AUTH_TIMER));
 
     return this.testAuthToken().then(() => {
+
       if (get(this, 'access.mustChangePassword')) {
         this.transitionTo('update-password');
       }
+
+      return this.loadPublicSettings().then(() => {
+        if (get(this, 'settings.serverUrlIsEmpty')) {
+          get(this, 'router').transitionTo('update-critical-settings');
+        }
+      });
+
     });
   },
 
@@ -58,7 +66,7 @@ export default Route.extend(Preload, {
         this.loadClusters(),
         this.loadProjects(),
         this.loadPreferences(),
-        this.loadPublicSettings(),
+        // this.loadPublicSettings(),
       ];
 
       const globalStore = get(this, 'globalStore');
