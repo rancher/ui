@@ -67,7 +67,7 @@ export default Resource.extend(ResourceUsage, {
       case 'googleKubernetesEngineConfig':
         return 'googlegke';
       case 'rancherKubernetesEngineConfig':
-        if ( !!pools ) {
+        if ( pools.length > 0 ) {
           if ( firstTemplate ) {
             return get(firstTemplate, 'driver');
           } else {

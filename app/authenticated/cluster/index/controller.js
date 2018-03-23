@@ -1,4 +1,3 @@
-import { later } from '@ember/runloop';
 import { alias } from '@ember/object/computed';
 import { inject as service } from '@ember/service';
 import { get, computed } from '@ember/object';
@@ -17,7 +16,7 @@ export default Controller.extend({
   //    window.open(this.get('k8s.kubernetesDashboard'),'_blank');
     },
 
-    kubectl(e) {
+    kubectl() {
 /* @TODO-2.0
    if (e.metaKey) {
         let proj = this.get('scope.currentProject.id');
