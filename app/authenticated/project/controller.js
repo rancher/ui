@@ -2,7 +2,6 @@ import { alias } from '@ember/object/computed';
 import { inject as service } from '@ember/service';
 import Controller from '@ember/controller';
 import C from 'ui/utils/constants';
-import { tagsToArray } from 'ui/models/namespace';
 
 //const NONE = 'none';
 //const WORKLOAD = 'workload';
