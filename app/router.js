@@ -188,6 +188,14 @@ Router.map(function() {
         });
       });
 
+      this.route('config-maps', function() {
+        this.route('new', {path: '/add'});
+        this.route('index', {path: '/'});
+        this.route('detail', {path: '/:config_map_id'}, function() {
+          this.route('edit');
+        });
+      });
+
       this.route('hooks', {path: '/api/hooks'}, function() {
         this.route('new-receiver', {path: '/add-receiver'});
         this.route('edit-receiver', {path: '/receiver/:receiver_id'});
