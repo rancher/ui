@@ -73,9 +73,10 @@ export default Route.extend(Preload, {
 
       if ( !isPopup ) {
         list.addObjects([
-          this.preload('roleTemplate', 'globalStore', {url: 'roleTemplates'}),
-          this.preload('noedPool', 'globalStore', {url: 'nodePools'}),
+          this.preload('node', 'globalStore', {url: 'nodes'}),
+          this.preload('nodePool', 'globalStore', {url: 'nodePools'}),
           this.preload('noedTemplates', 'globalStore', {url: 'nodeTemplates'}),
+          this.preload('roleTemplate', 'globalStore', {url: 'roleTemplates'}),
           this.preload('clusterRoleTemplateBindings', 'globalStore', {url: 'clusterRoleTemplateBindings'}),
           this.preload('projectRoleTemplateBinding', 'globalStore', {url: 'projectRoleTemplateBinding'}),
           this.preload('globalRole', 'globalStore', {url: 'globalRole'}),

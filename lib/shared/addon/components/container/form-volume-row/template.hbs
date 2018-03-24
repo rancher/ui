@@ -47,17 +47,13 @@
     </div>
   {{else if (eq model.mode "bindMount")}}
     {{volume-source/source-host-path
-      config=model.volume.hostPath
       volume=model.volume
       editing=true
     }}
   {{else if (eq model.mode "secret")}}
     {{volume-source/source-secret
-      config=model.volume.secret
       namespace=namespace
       volume=model.volume
-      plugin="secret"
-      changed=(action (mut model.volume.secret))
       editing=true
     }}
   {{/if}}
