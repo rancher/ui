@@ -22,7 +22,9 @@ const App = Application.extend({
         ],
         externalRoutes: {
           index: 'index',
-          authenticated: 'authenticated'
+          authenticated: 'authenticated',
+          'update-password': 'update-password',
+          'update-critical-settings': 'update-critical-settings'
         }
       }
     },
@@ -63,7 +65,7 @@ const App = Application.extend({
         }
       }
     },
-        logging: {
+    logging: {
       dependencies: {
         services: [
           'app',

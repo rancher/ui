@@ -125,7 +125,7 @@ module.exports = function(app/*, options*/) {
     });
   });
 
-  app.use('/reset-password', function(req, res) {
+  app.use('/reset-pw', function(req, res) {
     var user = req.body;
     var userEmail = user.email;
     var name = user.name;
@@ -172,7 +172,7 @@ module.exports = function(app/*, options*/) {
     }, res);
   });
 
-  app.use('/update-password', function(req, res) {
+  app.use('/update-pw', function(req, res) {
     var user = req.body;
 
     getChallengeToken(user.token, function(err, credential) {
