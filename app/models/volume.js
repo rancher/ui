@@ -9,7 +9,7 @@ registerSource('azure-disk',     'azureDisk',              true,     true,     t
 registerSource('azure-file',     'azureFile',              true,     true,     true);
 registerSource('cephfs',         'cephfs',                 true,     true,     true);
 registerSource('cinder',         'cinder',                 true,     true,     true);
-//registerSource('config-map',     'configMap',              true,     true,     false);
+registerSource('config-map',     'configMap',              true,     true,     false);
 //registerSource('downward-api',   'downwardAPI',            true,     true,     false);
 registerSource('empty-dir',      'emptyDir',               true,     true,     false);
 registerSource('fc',             'fc',                     true,     true,     true);
