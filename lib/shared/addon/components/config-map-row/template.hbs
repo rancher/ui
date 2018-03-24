@@ -1,0 +1,32 @@
+<tr class="main-row">
+  <td class="row-check" valign="middle" style="padding-top: 2px;">
+    {{check-box nodeId=model.id}}
+  </td>
+  <td data-title="{{dt.state}}" class="state">
+    {{badge-state model=model}}
+  </td>
+  <td data-title="{{dt.name}}">
+    {{#link-to-external 'authenticated.project.config-maps.detail' model.id}}{{model.displayName}}{{/link-to-external}}
+    {{#if model.description}}
+      <p data-title="{{t 'generic.description'}}" class="text-small text-muted m-0 clip">
+        {{model.description}}
+      </p>
+    {{/if}}
+  </td>
+  <td data-title="{{dt.namespace}}">
+    {{#if model.namespace}}
+      {{model.namespace.displayName}}
+    {{else}}
+      <span class="text-muted">{{t 'generic.all'}}</span>
+    {{/if}}
+  </td>
+  <td data-title="{{dt.keys}}">
+    {{join-array model.keys}}
+  </td>
+  <td data-title="{{dt.created}}">
+    {{date-from-now model.created}}
+  </td>
+  <td data-title="{{dt.actions}} "class="actions">
+    {{action-menu model=model}}
+  </td>
+</tr>

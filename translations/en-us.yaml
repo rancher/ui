@@ -41,7 +41,6 @@ generic:
   hardware: Hardware
   healthy: Healthy
   help: Help
-  host: Host
   id: ID
   image: Image
   internal: Internal
@@ -60,6 +59,7 @@ generic:
   namespaces: Namespaces
   never: Never
   no: "No"
+  node: Node
   noRating: No Rating
   none: None
   owner: Owner
@@ -1135,6 +1135,15 @@ secretsPage:
   table:
     keys: Keys
 
+configMapsPage:
+  index:
+    header: Config Maps
+    linkTo: Add Config Map
+    noData: You do not have any config maps yet
+    noMatch: No Config Maps match the current search
+  table:
+    keys: Keys
+
 servicePage:
   header: 'Workload: {name}'
   globalScale: '{scale} per host'
@@ -2024,7 +2033,7 @@ cruPersistentVolume:
       label: Read Only
     partition:
       label: Partition
-      placeholder: "e.g. 1"
+      placeholder: "e.g. 1; 0 for entire device"
     volumeID:
       label: Volume ID
       placeholder: "e.g. volume1"
@@ -2056,6 +2065,15 @@ cruPersistentVolume:
       label: Secret
     items:
       label: Items
+  configMap:
+    defaultMode:
+      label: Default Mode
+      placeholder: "e.g. 256"
+    optional:
+      label: Optional
+    name:
+      label: Config Map Name
+      placeholder: "e.g. map"
   emptyDir:
     medium:
       label: Medium
@@ -2175,7 +2193,7 @@ cruPersistentVolume:
       placeholder: "e.g. ext4"
     partition:
       label: Partition
-      placeholder: "e.g. 1"
+      placeholder: "e.g. 1; 0 for entire device"
     pdName:
       label: Persistent Disk Name
       placeholder: "e.g. abc"
@@ -2463,6 +2481,7 @@ cruStorageClass:
     repl:
       label: Repl
       placeholder: "e.g. 1"
+      placeholder: "e.g. 1; 0 for entire device"
     io_priority:
       label: I/O Priority
       placeholder: "e.g. low"
@@ -3209,7 +3228,7 @@ formKeyToPath:
     placeholder: "e.g. my-group/my-username"
   mode:
     label: Mode
-    placeholder: "e.g. 511"
+    placeholder: "e.g. 400"
 
 formKeyValue:
   addAction: Add Pair
@@ -4731,6 +4750,19 @@ nodeDriver:
       label: SSH Password
       placeholder: Set Instance SSH Password, Blank for Auto set
 
+newConfigMap:
+  title:
+    new: Add Config Map
+    edit: 'Edit Config Map: {name}'
+    view: 'Config Map: {name}'
+  name:
+    placeholder: e.g. map
+  description:
+    placeholder: e.g. app
+  values:
+    label: Config Map Values
+  addActionLabel: Add Config Map Value
+
 optionallyNamespaced:
   scope:
     label: Scope
@@ -5187,6 +5219,7 @@ nav:
     tab: Resources
     storagePage: Storage
     certificates: Certificates
+    configMaps: Config Maps
     registries: Registries
     secrets: Secrets
     members: Members
@@ -5402,6 +5435,8 @@ volumeSource:
     title: Azure Filesystem
   cephfs:
     title: Ceph Filesystem
+  config-map:
+    title: Config Map Volume
   cinder:
     title: Openstack Cinder Volume
   secret:
