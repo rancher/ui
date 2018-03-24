@@ -1,0 +1,53 @@
+<section class="header clearfix">
+  {{#if isView}}
+    <div class="right-buttons pull-right">
+      {{badge-state model=model}}
+      {{action-menu model=model showPrimary=false classNames="ml-10 inline-block" size="sm"}}
+    </div>
+  {{/if}}
+
+  <h1>{{title}}</h1>
+</section>
+
+{{#if (and isView model.description)}}
+  {{banner-message color='bg-secondary mb-0 mt-10' message=(linkify model.description)}}
+{{/if}}
+
+<div class="row">
+  {{#if notView}}
+    <div class="col span-6">
+      {{form-name-description
+        model=primaryResource
+        rowClass=''
+        colClass=''
+        nameRequired=true
+        namePlaceholder="newConfigMap.name.placeholder"
+        descriptionPlaceholder="newConfigMap.description.placeholder"
+      }}
+    </div>
+  {{/if}}
+
+  <div class="col span-6">
+    {{form-namespace
+      editing=isNew
+      namespace=namespace
+      errors=namespaceErrors
+    }}
+  </div>
+</div>
+
+<div class="box mt-10">
+  <label class="acc-label">{{t 'newConfigMap.values.label'}}</label>
+  {{form-key-value
+    initialMap=primaryResource.data
+    addActionLabel="newConfigMap.addActionLabel"
+    addInitialEmptyRow=true
+    editing=notView
+    changed=(action "updateData")
+  }}
+</div>
+
+{{#unless isView}}
+  {{top-errors errors=errors}}
+  {{save-cancel editing=true save="save" cancel="viewEditCancel"}}
+{{/unless}}

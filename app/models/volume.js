@@ -26,6 +26,7 @@ registerSource('storageos',      'storageos',            true);
 registerSource('vsphere-volume', 'vsphereVolume',        true);
 registerSource('secret',         'secret',               true,      true);
 registerSource('empty-dir',      'emptyDir',             true,      true);
+registerSource('config-map',      'configMap',             true,      true);
 
 export function registerSource(name, field, component, ephemeral) {
   if ( component === true ) {

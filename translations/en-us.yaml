@@ -1141,6 +1141,15 @@ secretsPage:
   table:
     keys: Keys
 
+configMapsPage:
+  index:
+    header: Config Maps
+    linkTo: Add Config Map
+    noData: You do not have any config maps yet
+    noMatch: No Config Maps match the current search
+  table:
+    keys: Keys
+
 servicePage:
   header: 'Workload: {name}'
   globalScale: '{scale} per host'
@@ -1806,6 +1815,15 @@ cruPersistentVolume:
       label: Secret
     items:
       label: Items
+  configMap:
+    defaultMode:
+      label: Default Mode
+      placeholder: "e.g. 256"
+    optional:
+      label: Optional
+    name:
+      label: Config Map Name
+      placeholder: "e.g. map"
   emptyDir:
     medium:
       label: Medium
@@ -4770,6 +4788,19 @@ newSecret:
     label: Secrets Values
   addActionLabel: Add Secret Value
 
+newConfigMap:
+  title:
+    new: Add Config Map
+    edit: 'Edit Config Map: {name}'
+    view: 'Config Map: {name}'
+  name:
+    placeholder: e.g. map
+  description:
+    placeholder: e.g. app
+  values:
+    label: Config Map Values
+  addActionLabel: Add Config Map Value
+
 optionallyNamespaced:
   scope:
     label: Scope
@@ -5208,6 +5239,7 @@ nav:
     tab: Resources
     storagePage: Storage
     certificates: Certificates
+    configMaps: Config Maps
     registries: Registries
     secrets: Secrets
     members: Members
@@ -5423,6 +5455,8 @@ volumeSource:
     title: Azure Filesystem
   cephfs:
     title: Ceph Filesystem
+  config-map:
+    title: Config Map Volume
   cinder:
     title: Openstack Cinder Volume
   secret:

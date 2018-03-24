@@ -38,6 +38,15 @@ const rootNav = [
         resourceScope: 'project',
       },
       {
+        id: 'infra-config-maps',
+        localizedLabel: 'nav.infra.configMaps',
+        icon: 'icon icon-file',
+        route: 'authenticated.project.config-maps',
+        ctx: [getProjectId],
+        resource: ["configmap"],
+        resourceScope: 'project',
+      },
+      {
         id: 'infra-registries',
         localizedLabel: 'nav.infra.registries',
         icon: 'icon icon-database',
