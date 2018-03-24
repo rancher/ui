@@ -1,4 +1,4 @@
-  <div class="row mb-20">
+  <div class="row">
     <div class="col span-6">
       <label class="acc-label">{{t 'cruPersistentVolume.secret.defaultMode.label'}}</label>
       {{#input-or-display editable=editing value=defaultMode}}
@@ -27,7 +27,11 @@
   <div class="row mb-20">
     <div class="col span-6">
       <label class="acc-label">{{t 'cruPersistentVolume.secret.secretId.label'}}</label>
-      {{schema/input-secret value=config.secretId valueKey='id'}}
+      {{schema/input-secret
+        namespace=namespace
+        value=config.secretId
+        valueKey='id'
+      }}
     </div>
     {{#if config.secretId}}
       <div class="col span-6">

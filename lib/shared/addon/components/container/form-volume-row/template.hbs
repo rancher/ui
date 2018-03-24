@@ -1,4 +1,4 @@
-<div class="box mt-20">
+<div class="box mb-20">
   <div class="row">
     <div class="col span-6">
       <label class="acc-label">{{t 'formVolumeRow.name.label'}}</label>
@@ -21,14 +21,11 @@
         {{/if}}
       </div>
     </div>
-    <div class="col span-2 text-right">
-      <label class="acc-label">&nbsp;</label>
-      <div>
-        <button class="btn bg-link icon-btn" {{action "remove"}}>
-          <span class="darken"><i class="icon icon-minus text-small"/></span>
-          <span>Remove Volume</span>
-        </button>
-      </div>
+    <div class="col span-2 text-right mt-0">
+      <button class="btn bg-link icon-btn" {{action "remove"}}>
+        <span class="darken"><i class="icon icon-minus text-small"/></span>
+        <span>Remove Volume</span>
+      </button>
     </div>
   </div>
   {{#if (eq model.mode "existingPvc")}}
@@ -57,12 +54,14 @@
   {{else if (eq model.mode "secret")}}
     {{volume-source/source-secret
       config=model.volume.secret
+      namespace=namespace
       volume=model.volume
       plugin="secret"
+      changed=(action (mut model.volume.secret))
       editing=true
     }}
   {{/if}}
-  <hr/>
+  <hr class="mt-20">
   <div class="row">
     <div class="col span-12">
       {{#if model.mounts.length}}
