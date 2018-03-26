@@ -15,7 +15,8 @@ export default Route.extend({
 
   model: function() {
     return {
-      user: get(this, 'access.me')
+      user: get(this, 'access.me'),
+      code: get(this, 'access.userCode')||'',
     };
   },
 });
