@@ -80,6 +80,7 @@ export default Route.extend(Preload, {
           this.preload('clusterRoleTemplateBindings', 'globalStore', {url: 'clusterRoleTemplateBindings'}),
           this.preload('projectRoleTemplateBinding', 'globalStore', {url: 'projectRoleTemplateBinding'}),
           this.preload('globalRole', 'globalStore', {url: 'globalRole'}),
+          this.preload('authConfig', 'globalStore', {url: 'authConfigs'}),
           this.preload('globalRoleBinding', 'globalStore', {url: 'globalRoleBinding'}),
           this.preload('user', 'globalStore', {url: 'user'}).then((users) => {
             users.forEach((u) => {
