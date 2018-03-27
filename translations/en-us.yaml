@@ -4328,6 +4328,7 @@ nodeDriver:
     rackspace: RackSpace
     softlayer: SoftLayer
     vmwarevsphere: vSphere
+    zstack: ZStack
   driverOptions: "{driver} Options"
   templateOptions: "{appName} Template"
   amazonec2:
@@ -4716,6 +4717,48 @@ nodeDriver:
     sshPassword:
       label: SSH Password
       placeholder: Set Instance SSH Password, Blank for Auto set
+  zstack:
+    access:
+      title: 1. Account Access
+      detail: Choose the endpoint, account name and account password that will be used to launch ZStack Instances
+      next: "Next: Authenticate & select a network"
+      loading: Loading Zone, Cluster, Network info from ZStack...
+    endpoint:
+      label: Endpoint
+      placeholder: e.g. https://192.168.1.42:8443/
+    accountName:
+      label: Account Name
+      placeholder: Your account name
+    accountPassword:
+      label: Account Password
+      placeholder: Your account password
+      provided: Provided
+    zone:
+      title: 2. Zone, Cluster and Network
+      detail: Select the Zone, Cluster and Network for Instances
+      next: "Next: Set Instance options"
+      loading: Loading instance options from ZStack...
+      label: Zone
+    cluster:
+      label: Cluster
+    network:
+      defaultCreate: "Standard: Automatically create a <code>{groupName}</code> network"
+      choose:  Choose existing network
+      label: Network
+    portHelp:
+      link: Learn more
+      text: about the ports that will be opened.
+    instance:
+      title: 3. Instance
+      detail: Customize the EC2 Instance that will be created.
+    instanceOffering:
+      label: Instance Type
+    systemDiskOffering:
+      label: System Disk
+    imageName:
+      label: Image Name
+    dataDiskOffering:
+      label: Data Disk
 
 newConfigMap:
   title:
