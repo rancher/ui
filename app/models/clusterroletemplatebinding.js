@@ -12,7 +12,6 @@ export default Resource.extend(PrincipalReference, {
   roleTemplate: reference('roleTemplateId'),
   user: reference('userId', 'user'),
   isCustom: computed('roleTemplateId', function() {
-    console.log(get(this, 'roleTemplateId'))
     return !C.BASIC_ROLE_TEMPLATE_ROLES.includes(get(this, 'roleTemplateId'));
   }),
 
