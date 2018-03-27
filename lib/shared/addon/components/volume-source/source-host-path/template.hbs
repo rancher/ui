@@ -8,20 +8,11 @@
   <div class="col span-6">
     <label class="acc-label">{{t 'volumeSource.host-path.kind.label'}}</label>
     {{#if editing}}
-      <div class="radio">
-        <label>
-          {{radio-button selection=config.kind value=""}}
-          {{t 'volumeSource.host-path.kind.Any'}}
-        </label>
-      </div>
-      {{#each kindChoices as |name|}}
-        <div class="radio">
-          <label>
-            {{radio-button selection=config.kind value=name}}
-            {{t (concat 'volumeSource.host-path.kind.' name)}}
-          </label>
-        </div>
-      {{/each}}
+      {{new-select
+        value=config.kind
+        content=kindChoices
+        localizedLabel=true
+      }}
     {{else if config.kind}}
       <div>
         {{t (concat 'volumeSource.host-path.kind.' config.kind)}}
