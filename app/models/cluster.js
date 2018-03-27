@@ -81,7 +81,7 @@ export default Resource.extend(ResourceUsage, {
     }
   }),
 
-  displayProvider: computed('configName','nodePools.firstObject.displayProvider','intl.locale', function() {
+  displayProvider: computed('configName','nodePools.@each.displayProvider','intl.locale', function() {
     const intl = get(this, 'intl');
     const pools = get(this,'nodePools');
     const firstPool = (pools||[]).objectAt(0);
