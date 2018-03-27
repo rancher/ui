@@ -29,31 +29,32 @@
   <form onsubmit={{action "clickNext"}}>
     <div class="row">
       {{form-name-description
-        model=model.cluster
-        nameRequired=true
-        nameLabel='clusterNew.name.label'
-        namePlaceholder='clusterNew.name.placeholder'
-        descriptionPlaceholder='clusterNew.description.placeholder'
+          model=model.cluster
+          nameRequired=true
+          nameLabel='clusterNew.name.label'
+          namePlaceholder='clusterNew.name.placeholder'
+          descriptionPlaceholder='clusterNew.description.placeholder'
       }}
     </div>
 
     {{#accordion-list showExpandAll=false as |al expandFn|}}
       {{#accordion-list-item
-        title=(t 'clusterNew.members.label')
-        detail=(t 'clusterNew.members.detail')
-        expandAll=al.expandAll
-        everExpanded=true
-        expand=(action expandFn)
+           title=(t 'clusterNew.members.label')
+           detail=(t 'clusterNew.members.detail')
+           expandAll=al.expandAll
+           everExpanded=true
+           expand=(action expandFn)
       }}
         {{form-members
-          editing=notView
-          memberConfig=memberConfig
-          primaryResource=cluster
-          creator=model.me
-          roles=model.roleTemplates
-          users=model.users
-          type="cluster"
-          registerHook=(action "registerHook")
+            editing=notView
+            isNew=isNew
+            memberConfig=memberConfig
+            primaryResource=cluster
+            creator=model.me
+            roles=model.roleTemplates
+            users=model.users
+            type="cluster"
+            registerHook=(action "registerHook")
         }}
       {{/accordion-list-item}}
     {{/accordion-list}}
@@ -63,12 +64,12 @@
 {{/if}}
 
 {{component driverInfo.driverComponent
-  mode=mode
-  nodeWhich=driverInfo.nodeWhich
-  model=model
-  save=(action 'save')
-  close=(action 'close')
-  registerHook=(action "registerHook")
+    mode=mode
+    nodeWhich=driverInfo.nodeWhich
+    model=model
+    save=(action 'save')
+    close=(action 'close')
+    registerHook=(action "registerHook")
 }}
 
 {{#if (and isEdit (not provider))}}

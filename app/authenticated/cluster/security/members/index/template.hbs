@@ -10,14 +10,15 @@
 
 <section class="instances">
   {{#sortable-table
-    classNames="grid sortable-table"
-    sortBy=sortBy
-    headers=headers
-    searchText=searchText
-    body=filtered
-    as |sortable kind row dt|
+       classNames="grid sortable-table"
+       sortBy=sortBy
+       headers=headers
+       searchText=searchText
+       body=filtered
+       as |sortable kind row dt|
   }}
     {{#if (eq kind "row")}}
+      {{log row.roleTemplateId}}
       <tr class="main-row">
         <td valign="middle" class="row-check" style="padding-top: 2px;">
           {{check-box nodeId=row.id}}
