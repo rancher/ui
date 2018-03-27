@@ -13,7 +13,7 @@
             <i class="icon icon-edit"/>
             {{t 'generic.edit'}}
           </button>
-        {{else if (eq model.mode "newVolume")}}
+        {{else if (or (eq model.mode "existingVolume") (eq model.mode "newVolume"))}}
           <button class="btn bg-transparent" action={{action 'defineNewVolume'}}>
             <i class="icon icon-edit"/>
             {{t 'generic.edit'}}
@@ -29,11 +29,6 @@
     </div>
   </div>
   {{#if (eq model.mode "existingPvc")}}
-    {{!--volume-source/source-persistent-volume-claim
-      config=model.volume.persistentVolumeClaim
-      volume=model.volume
-      editing=true
-    !--}}
     <div class="row">
       <div class="col span-6">
         <label class="acc-label">Persistent Volume Claim {{field-required}}</label>
@@ -41,7 +36,7 @@
           value=model.volume.persistentVolumeClaim.persistentVolumeClaimId
           content=pvcChoices
           prompt="Select a Persistent Volume Claim..."
-          localizedPrompt=false
+          localizedLabel=false
         }}
       </div>
     </div>
