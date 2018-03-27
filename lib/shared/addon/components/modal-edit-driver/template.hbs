@@ -25,4 +25,14 @@
   <span class="text-info">{{t 'modalEditDriver.checksum.help'}}</span>
 </div>
 
+<div class="inline-form pt-20">
+  {{form-value-array
+    initialValues=primaryResource.whitelistDomains
+    valueLabel="modalEditDriver.whitelist.label"
+    addActionLabel="modalEditDriver.whitelist.addActionLabel"
+    noDataLabel="modalEditDriver.whitelist.noData"
+    changed=(action "updateWhitelist")
+  }}
+</div>
+
 {{save-cancel editing=editing save="save" cancel="cancel"}}
