@@ -3,7 +3,7 @@ import { inject as service } from '@ember/service';
 import Resource from 'ember-api-store/models/resource';
 
 const SOURCES = [];
-//             name/component    field                     component ephemeral persistent
+//             name/component    field                     component ephemeral persistent driver
 registerSource('aws-ebs',        'awsElasticBlockStore',   true,     true,     true);
 registerSource('azure-disk',     'azureDisk',              true,     true,     true);
 registerSource('azure-file',     'azureFile',              true,     true,     true);
@@ -14,6 +14,7 @@ registerSource('config-map',     'configMap',              true,     true,     f
 registerSource('empty-dir',      'emptyDir',               true,     true,     false);
 registerSource('fc',             'fc',                     true,     true,     true);
 registerSource('flex-volume',    'flexVolume',             true,     true,     true);
+registerSource('flex-volume-longhorn',    'flexVolume',    true,     true,     true,    'rancher.io/longhorn');
 registerSource('flocker',        'flocker',                true,     true,     true);
 registerSource('gce-pd',         'gcePersistentDisk',      true,     true,     true);
 //registerSource('git-repo',       'gitRepo',                true,     true,     false);
@@ -33,7 +34,7 @@ registerSource('secret',         'secret',                 true,     true,     f
 registerSource('storageos',      'storageos',              true,     true,     true);
 registerSource('vsphere-volume', 'vsphereVolume',          true,     true,     true);
 
-export function registerSource(name, field, component, ephemeral=true, persistent=true) {
+export function registerSource(name, field, component, ephemeral=true, persistent=true, driver='') {
   if ( component === true ) {
     component = name;
   }
@@ -46,6 +47,7 @@ export function registerSource(name, field, component, ephemeral=true, persisten
   SOURCES.push({
     name: name,
     value: field,
+    driver,
     component: component,
     ephemeral: !!ephemeral,
     persistent: !!persistent,
@@ -91,14 +93,29 @@ var Volume = Resource.extend({
       return get(this, key);
     }
   }),
-
-  displaySource: computed('configName','intl.locale', function() {
-    const intl = get(this, 'intl');
+  sourceName: computed('configName', function(){
     const key = get(this, 'configName');
-    const entry = SOURCES.findBy('value', key);
-
-    if ( key ) {
-      return intl.t(`volumeSource.${entry.name}.title`);
+    if ( !key ) {
+      return
+    }
+    let entry;
+    let driver = get(this, key).driver;
+    entry = SOURCES.findBy('value', key);
+    if(key === 'flexVolume' && driver){
+      let specialSource = SOURCES.findBy('driver', driver);
+      if(specialSource){
+        entry = specialSource;
+      }
+    }
+    if(entry){
+      return entry.name;
+    }
+  }),
+  displaySource: computed('sourceName','intl.locale', function() {
+    const intl = get(this, 'intl');
+    const sourceName = get(this, 'sourceName');
+    if ( sourceName ) {
+      return intl.t(`volumeSource.${sourceName}.title`);
     }
   }),
 
