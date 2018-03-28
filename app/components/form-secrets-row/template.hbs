@@ -16,12 +16,10 @@
 <td>&nbsp;</td>
 <td data-title="{{t 'formSecrets.kind.label'}}">
   {{#if editing}}
-    {{searchable-select
-        classNames="form-control"
-        optionValuePath="id"
-        optionLabelPath="label"
-        content=allSecrets
-        value=secret.sourceName
+    {{schema/input-secret
+      namespace=namespace
+      value=secret.sourceName
+      valueKey='name'
     }}
   {{else}}
     {{#if secret}}
