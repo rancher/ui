@@ -14,26 +14,26 @@ export const headers = [
   },
   {
     name: 'state',
-    sort: ['sortState','displayName'],
+    sort: ['sortState', 'displayName'],
     searchField: 'displayState',
     translationKey: 'generic.state',
     width: 120
   },
   {
     name: 'name',
-    sort: ['sortName','id'],
+    sort: ['sortName', 'id'],
     searchField: 'displayName',
     translationKey: 'generic.name',
   },
   {
     name: 'image',
-    sort: ['image','displayName'],
+    sort: ['image', 'displayName'],
     searchField: 'image',
     translationKey: 'generic.image',
   },
   {
     name: 'scale',
-    sort: ['scale:desc','isGlobalScale:desc','displayName'],
+    sort: ['scale:desc', 'isGlobalScale:desc', 'displayName'],
     searchField: null,
     translationKey: 'stacksPage.table.scale',
     classNames: 'text-center',
@@ -61,22 +61,35 @@ export default Controller.extend({
   preSorts: alias('projectController.preSorts'),
 
   headers: headers,
-  extraSearchFields: ['id:prefix','displayIp:ip'],
+  extraSearchFields: ['id:prefix', 'displayIp:ip'],
   extraSearchSubFields: containerSearchFields,
 
-  rows: function() {
-    let groupNone = this.get('group') === 'none';
+  rows: function () {
+    const groupBy = this.get('group');
+    let out = [];
 
-    // Containers
-    let out = this.get('model.pods').filter((obj) => {
-      return (groupNone || !obj.get('workloadId'));
-    });
-
-    // Services
-    if ( !groupNone ) {
-      out.pushObjects(this.get('model.workloads').slice());
+    switch (groupBy) {
+      case 'none':
+        out = this.get('model.pods');
+        break;
+      case 'node':
+        out = this.get('model.pods');
+        break;
+      default:
+        out = this.get('model.pods').filter(obj => !obj.get('workloadId'));
+        out.pushObjects(this.get('model.workloads').slice());
+        break
     }
 
     return out;
-  }.property('group','model.workloads.@each.{namespaceId,isBalancer}','model.pods.@each.{workloadId,namespaceId}'),
+  }.property('group', 'model.workloads.@each.{namespaceId,isBalancer}', 'model.pods.@each.{workloadId,namespaceId}'),
+
+  groupByRef: function() {
+    const group = this.get('group');
+    if(group === 'node') {
+      return 'nodeId';
+    } else {
+      return group
+    }
+  }.property('group'),
 });

@@ -6,6 +6,7 @@ import C from 'ui/utils/constants';
 //const NONE = 'none';
 //const WORKLOAD = 'workload';
 const NAMESPACE = 'namespace';
+const NODE = 'node'
 
 export default Controller.extend({
   prefs: service(),
@@ -46,6 +47,8 @@ export default Controller.extend({
   groupTableBy: function() {
     if ( this.get('group') === NAMESPACE ) {
       return 'namespaceId';
+    } else if ( this.get('group') === NODE ) {
+      return 'nodeId';
     } else {
       return null;
     }

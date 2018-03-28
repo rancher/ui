@@ -1,0 +1,38 @@
+<tr class="group-row">
+  <td colspan={{nameSpan}} class="pl-10">
+    {{#if model.clusterId}}
+      <a href="{{href-to 'node' model.clusterId model.id}}">
+        {{t 'nodeGroup.label' name=model.displayName}}
+      </a>
+    {{else}}
+      {{t 'nodeGroup.label' name=model.displayName}}
+    {{/if}}
+  </td>
+  {{#if afterName}}
+    <td colspan="{{afterName}}"></td>
+  {{/if}}
+  {{#if showState}}
+    <td data-title="{{dt.instanceState}}" class="{{alignState}}">
+      {{#if model}}
+        {{badge-state model=model classNames="btn-xs"}}
+      {{/if}}
+    </td>
+  {{/if}}
+  {{#if afterState}}
+    <td colspan="{{afterState}}"></td>
+  {{/if}}
+  {{#if showActions}}
+    <td data-title="{{dt.actions}}" class="actions">
+      {{#if model}}
+        {{action-menu model=model}}
+      {{/if}}
+    </td>
+  {{/if}}
+</tr>
+{{#if model.showTransitioningMessage}}
+  <tr class="group-row group-row-error">
+    <td colspan="{{fullColspan}}" class="text-small {{model.stateColor}}">
+      {{model.transitioningMessage}}
+    </td>
+  </tr>
+{{/if}}
