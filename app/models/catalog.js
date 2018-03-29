@@ -1,11 +1,10 @@
-import PolledResource from 'ui/mixins/cattle-polled-resource';
 import Resource from 'ember-api-store/models/resource';
 import { inject as service } from '@ember/service';
 import { computed } from '@ember/object';
 import { get } from '@ember/object';
 import { ucFirst } from 'shared/utils/util';
 
-var Catalog = Resource.extend(PolledResource, {
+var Catalog = Resource.extend({
   modalService: service('modal'),
 
   actions: {

@@ -1,7 +1,6 @@
 import Resource from 'ember-api-store/models/resource';
-import PolledResource from 'ui/mixins/cattle-polled-resource';
 
-var GoogleKubernetesEngineConfig = Resource.extend(PolledResource, {
+var GoogleKubernetesEngineConfig = Resource.extend({
   type: 'googleKubernetesEngineConfig',
 
   reservedKeys: [],

@@ -1,8 +1,7 @@
 import { inject as service } from '@ember/service';
 import Resource from 'ember-api-store/models/resource';
-import PolledResource from 'ui/mixins/cattle-polled-resource';
 
-var PodSecurityPolicyTemplate = Resource.extend(PolledResource, {
+var PodSecurityPolicyTemplate = Resource.extend({
   type: 'podSecurityPolicyTemplate',
   router: service(),
 
