@@ -4,6 +4,7 @@
   <div class="pt-20"></div>
   <div class="inline-form">
     <label>{{t 'newPipelineStep.stepType.scm.user'}}</label>
+    <div class="pt-10"></div>
     {{#if (eq modalOpts.type 'review')}}
       <div class="row">
         <div class="col span-12">
@@ -35,6 +36,7 @@
       </div>
       {{else}}
         <div class="row">
+          {{top-errors errors=authErrors}}
           {{#unless testing}}
             <button class="btn bg-primary"
             {{action "authenticate"}}

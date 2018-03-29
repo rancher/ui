@@ -19,6 +19,7 @@ registerProvisioner('azure-file',     'kubernetes.io/azure-file',      true);
 registerProvisioner('portworx-volume','kubernetes.io/portworx-volume', true);
 registerProvisioner('scaleio',        'kubernetes.io/scaleio',         true);
 registerProvisioner('storageos',      'kubernetes.io/storageos',       true);
+registerProvisioner('longhorn',      'rancher.io/longhorn',       true);
 
 export function registerProvisioner(name, provisioner, component) {
   if ( component === true ) {
