@@ -225,21 +225,15 @@
           expandFn=expandFn
       }}
 
-      {{form-user-labels
-          classNames="accordion-wrapper"
-          errors=labelErrors
-          initialLabels=service.labels
-          setLabels=(action 'setLabels' 'user')
-          expandAll=al.expandAll
-          expandFn=expandFn
-      }}
-
-      {{form-annotations
+      {{form-labels-annotations
         classNames="accordion-wrapper"
-        model=service
-        errors=annotationErrors
+        labelErrors=labelErrors
+        initialLabels=service.labels
+        setLabels=(action 'setLabels' 'user')
         expandAll=al.expandAll
         expandFn=expandFn
+        model=service
+        annotationErrors=annotationErrors
       }}
     {{/unless}}
 
