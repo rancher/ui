@@ -190,40 +190,38 @@ export default Route.extend(Preload, {
     }
   },
 
-  _gotoRoute(name, withProjectId=true) {
+  _gotoRoute(name, scope='global') {
     // Don't go to routes if in a form page, because you can easily not be on an input
     // and leave the page accidentally.
     if ( $('FORM').length > 0 ) {
       return;
     }
 
-    if ( withProjectId ) {
-      this.transitionTo(name, get(this,'scope.currentProject.id'));
-    } else {
+    const clusterId = get(this, 'scope.currentCluster.id');
+    const projectId = get(this, 'scope.currentProject.id');
+
+    if ( scope === 'cluster' && clusterId ) {
+      this.transitionTo(name, clusterId);
+    } else if ( scope === 'project' && projectId ) {
+      this.transitionTo(name, projectId);
+    } else if ( scope === 'global' ) {
       this.transitionTo(name);
     }
   },
 
+  _gotoMembers() {
+    const clusterId = get(this, 'scope.currentCluster.id');
+    const projectId = get(this, 'scope.currentProject.id');
+
+    if ( projectId ) {
+      this._gotoRoute('authenticated.project.security.members.index', 'project');
+    } else if ( clusterId ) {
+      this._gotoRoute('authenticated.cluster.security.members.index', 'cluster');
+    }
+  },
+
+
   actions: {
-    changeTheme() {
-      var userTheme = get(this,'userTheme');
-      var currentTheme  = userTheme.getTheme();
-
-      switch (currentTheme) {
-      case 'ui-light':
-        userTheme.setTheme('ui-dark');
-        break;
-      case 'ui-dark':
-        userTheme.setTheme('ui-auto');
-        break;
-      case 'ui-auto':
-        userTheme.setTheme('ui-light');
-        break;
-      default:
-        break;
-      }
-    },
-
     error(err,transition) {
       // Unauthorized error, send back to login screen
       if ( err && err.status === 401 )
@@ -273,25 +271,11 @@ export default Route.extend(Preload, {
       console.log('Switch finished');
     },
 
-    gotoA() { this._gotoRoute('apps-tab.index'); },
-    gotoB() { this._gotoRoute('ingresses.index'); },
-    gotoD() { this._gotoRoute('authenticated.project.dns.index'); },
-    gotoE() { this._gotoRoute('global-admin.clusters.index', false); },
-    gotoH() { this._gotoRoute('hosts.index'); },
-    gotoK() { this._gotoRoute('authenticated.project.apikeys'); },
-    gotoV() { this._gotoRoute('volumes.index'); },
-    gotoW() { this._gotoRoute('workloads.index'); },
-
     help()  {
       get(this,'modalService').toggleModal('modal-shortcuts');
     },
 
-    gotoP() {
-      if ( get(this,'access.admin') ) {
-        this._gotoRoute('global-admin.processes', false);
-      }
-    },
-
+    // Special
     nextTab() {
       if ( $('.tab-nav').length ) {
         let cur = $('.tab-nav .active');
@@ -307,15 +291,6 @@ export default Route.extend(Preload, {
       }
     },
 
-    neu() {
-      let elem = $('.right-buttons a:last')[0];
-      if ( elem ) {
-        event.stopPropagation();
-        event.preventDefault();
-        elem.click();
-      }
-    },
-
     search(event)  {
       let elem = $("INPUT[type='search']")[0];
       if ( elem ) {
@@ -328,23 +303,69 @@ export default Route.extend(Preload, {
     delete() {
       $('.bulk-actions .icon-trash').closest('a').click();
     },
+
+    // Global
+    gotoc() { this._gotoRoute('global-admin.clusters.index','global'); },
+    gotou() { this._gotoRoute('global-admin.accounts.index','global'); },
+    gotoK() { this._gotoRoute('authenticated.apikeys','global'); },
+    gotoP() { this._gotoRoute('authenticated.prefs','global'); },
+    gotoT() { this._gotoRoute('authenticated.node-templates','global'); },
+
+    // Cluster or Project
+    gotom() { this._gotoMembers(); },
+
+    // Cluster
+    gotod() { this._gotoRoute('authenticated.cluster.index','cluster'); },
+    goton() { this._gotoRoute('authenticated.cluster.nodes','cluster'); },
+    gotop() { this._gotoRoute('authenticated.cluster.projects','cluster'); },
+    gotoV() { this._gotoRoute('authenticated.cluster.storage.persistent-volumes','cluster'); },
+
+    doom() {
+      const clusterId = get(this, 'scope.currentCluster.id');
+      if ( clusterId ) {
+        this.get('modalService').toggleModal('modal-kubectl');
+      }
+    },
+
+    // Project
+    gotow() { this._gotoRoute('containers','project'); },
+    gotob() { this._gotoRoute('ingresses','project'); },
+    gotos() { this._gotoRoute('authenticated.project.dns','project'); },
+    gotov() { this._gotoRoute('volumes','project'); },
+    gotoa() { this._gotoRoute('apps-tab.index','project'); },
+
   },
 
   shortcuts: {
-    'a': 'gotoA',
-    'b': 'gotoB',
-    'd': 'gotoD',
-    'e': 'gotoE',
-    'h': 'gotoH',
+    // Global
+    'c': 'gotoc',
+    'u': 'gotou',
     'shift+k': 'gotoK',
-    'n': 'neu',
-    'p': 'gotoP',
+    'shift+p': 'gotoP',
+    'shift+t': 'gotoT',
+
+    // Cluster or Proejct
+    'shift+`': 'doom',
+    'm': 'gotom',
+
+    // Cluster
+    'd': 'gotod',
+    'n': 'goton',
+    'p': 'gotop',
+    'shift+v': 'gotoV',
+
+    // Project
+    'w': 'gotow',
+    'b': 'gotob',
+    's': 'gotos',
+    'v': 'gotov',
+    'a': 'gotoa',
+
+    // Other
+    // 'g': Defined in subroutes
     't': 'nextTab',
-    'v': 'gotoV',
-    'w': 'gotoW',
     '/': 'search',
     'shift+/': 'help',
-    'shift+t': 'changeTheme',
     'backspace': 'delete',
     'delete': 'delete',
   },

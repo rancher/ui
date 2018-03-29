@@ -87,17 +87,6 @@
 <hr class="mt-30 mb-30" />
 {{#accordion-list as | al expandFn | }}
 
-  {{container/form-volumes
-    launchConfig=launchConfig
-    workload=service
-    namespace=namespace
-    errors=volumeErrors
-    registerHook=(action "registerHook")
-    expandAll=al.expandAll
-    expandFn=expandFn
-    expandOnInit=true
-  }}
-
   {{#accordion-list-item
     title=(t 'newContainer.environment.label')
     detail=(t 'newContainer.environment.detail' appName=settings.appName)
@@ -192,6 +181,16 @@
       {{/if}}
     </div>
   {{/accordion-list-item}}
+
+  {{container/form-volumes
+    launchConfig=launchConfig
+    workload=service
+    namespace=namespace
+    errors=volumeErrors
+    registerHook=(action "registerHook")
+    expandAll=al.expandAll
+    expandFn=expandFn
+  }}
 
   {{#unless isSidekick}}
     {{container/form-upgrade

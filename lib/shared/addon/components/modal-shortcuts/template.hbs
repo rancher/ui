@@ -27,90 +27,45 @@
   <h1 class="text-mono text-center pt-20">{{t 'modalShortcuts.title.pl'}}</h1>
 {{/if}}
 
-<div class="row">
+<div class="row m-20">
   <div class="col span-6">
-      <h3 class="m-0">{{t 'modalShortcuts.navigation'}}</h3>
-      <hr class="mt-5 mb-15">
-      <p class="m-5">
-        <span width="90"><code>a</code></span>
-        <span>{{t 'modalShortcuts.a'}}</span>
-      </p>
-      <p class="m-5">
-        <span><code>b</code></span>
-        <span>{{t 'modalShortcuts.b'}}</span>
-      </p>
-      <p class="m-5">
-        <span><code>c</code></span>
-        <span>{{t 'modalShortcuts.c'}}</span>
-      </p>
-      <p class="m-5">
-        <span><code>d</code></span>
-        <span>{{t 'modalShortcuts.d'}}</span>
-      </p>
-      <p class="m-5">
-        <span><code>e</code></span>
-        <span>{{t 'modalShortcuts.e'}}</span>
-      </p>
-      <p class="m-5">
-        <span><code>h</code></span>
-        <span>{{t 'modalShortcuts.h'}}</span>
-      </p>
-      <p class="m-5">
-        <span><code>Shift-K</code></span>
-        <span>{{t 'modalShortcuts.k'}}</span>
-      </p>
-     <p class="m-5">
-        <span><code>v</code></span>
-        <span>{{t 'modalShortcuts.v'}}</span>
-      </p>
+      <h3 class="m-0">{{t 'modalShortcuts.global'}}</h3>
+      <hr class="mt-5 mb-5">
+      {{shortcut-key key='c' label='nav.admin.clusters'}}
+      {{shortcut-key key='u' label='nav.admin.accounts'}}
+      {{shortcut-key key='K' modifier='shift' label='nav.api.link'}}
+      {{shortcut-key key='P' modifier='shift' label='nav.userPreferences.link'}}
+      {{shortcut-key key='T' modifier='shift' label='nav.nodeTemplates.link'}}
+
+      <h3 class="m-0 mt-20">{{t 'modalShortcuts.project'}}</h3>
+      <hr class="mt-5 mb-5">
+      {{shortcut-key key='a' label='nav.apps.tab'}}
+      {{shortcut-key key='b' label='nav.containers.ingresses'}}
+      {{shortcut-key key='m' label='nav.cluster.members'}}
+      {{shortcut-key key='s' label='nav.containers.dns'}}
+      {{shortcut-key key='w' label='nav.containers.containers'}}
+      {{shortcut-key key='v' label='nav.containers.volumes'}}
   </div>
   <div class="col span-6">
-      <h3 class="m-0">{{t 'modalShortcuts.other'}}</h3>
-      <hr class="mt-5 mb-15">
-      <p class="m-5">
-        <span width="90"><code>g</code></span>
-        <span>{{t 'modalShortcuts.g'}}</span>
-      </p>
-      <p class="m-5">
-        <span width="90"><code>n</code></span>
-        <span>{{t 'modalShortcuts.n'}}</span>
-      </p>
-      <!--
-      <p class="m-5">
-        <span><code>s</code></span>
-        <span>{{t 'modalShortcuts.s'}}</span>
-      </p>
-      -->
-      <p class="m-5">
-        <span width="90"><code>t</code></span>
-        <span>{{t 'modalShortcuts.t'}}</span>
-      </p>
-      <p class="m-5">
-        <span width="90"><code>Shift-T</code></span>
-        <span>{{t 'modalShortcuts.theme' currentTheme=currentTheme}}</span>
-      </p>
-      <p class="m-5">
-        <span><code>/</code></span>
-        <span>{{t 'modalShortcuts.slash'}}</span>
-      </p>
-      <p class="m-5">
-        <span><code>?</code></span>
-        <span>{{t 'modalShortcuts.question'}}</span>
-      </p>
+      <h3 class="m-0">{{t 'modalShortcuts.cluster'}}</h3>
+      <hr class="mt-5 mb-5">
+      {{shortcut-key key='d' label='nav.cluster.dashboard'}}
+      {{shortcut-key key='m' label='nav.cluster.members'}}
+      {{shortcut-key key='n' label='nav.cluster.nodes'}}
+      {{shortcut-key key='p' label='nav.cluster.projects'}}
+      {{shortcut-key key='V' modifier='shift' label='nav.cluster.storage.volumes'}}
 
-    {{#if isAdmin}}
-      <div class="mt-20">
-        <h3 class="m-0">{{t 'modalShortcuts.admin'}}</h3>
-        <hr class="mt-5 mb-15">
-        <p class="m-5">
-          <span width="90"><code>p</code></span>
-          <span>{{t 'modalShortcuts.p'}}</span>
-        </p>
-      </div>
-    {{/if}}
+      <h3 class="m-0 mt-20">{{t 'modalShortcuts.other'}}</h3>
+      <hr class="mt-5 mb-5">
+      {{shortcut-key key='delete' label='modalShortcuts.delete'}}
+      {{shortcut-key key='g' label='modalShortcuts.viewGroup'}}
+      {{shortcut-key key='t' label='modalShortcuts.nextTab'}}
+      {{shortcut-key key='/' label='modalShortcuts.search'}}
+      {{shortcut-key key='~' modifier='shift' label='modalShortcuts.shell'}}
+      {{shortcut-key key='?' modifier='shift' label='modalShortcuts.shortcuts'}}
   </div>
 </div>
 
-<div class="footer-actions">
+<div class="footer-actions pb-20">
   <button {{action "cancel"}} class="btn bg-primary">{{t 'generic.closeModal'}}</button>
 </div>

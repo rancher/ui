@@ -52,7 +52,7 @@ export default Route.extend(Preload,{
 
   actions: {
     toggleGrouping() {
-      let choices = ['none','service','stack'];
+      let choices = ['none','node','workload','namespace'];
       let cur = this.get('controller.group');
       let neu = choices[((choices.indexOf(cur)+1) % choices.length)];
       next(() => {
