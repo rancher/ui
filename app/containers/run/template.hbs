@@ -1,14 +1,14 @@
 {{#if model.selectLaunchConfig}}
   <section class="header">
-    <h1>{{t 'newContainer.sidekick.header' service=model.service.displayName}}</h1>
+    <h1>{{t 'newContainer.sidekick.header' service=model.workload.displayName}}</h1>
   </section>
-  <h2>{{t 'newContainer.sidekick.title' service=model.service.displayName}}</h2>
-  <p class="help-block">{{t 'newContainer.sidekick.detail' service=model.service.displayName}}</p>
+  <h2>{{t 'newContainer.sidekick.title' service=model.workload.displayName}}</h2>
+  <p class="help-block">{{t 'newContainer.sidekick.detail' service=model.workload.displayName}}</p>
 
   <div class="clearfix">
     {{#catalog-box
       classNames='bg-secondary'
-      model=model.service.launchConfig
+      model=model.workload.launchConfig
       showIcon=false
       showDescription=false
       as |section|
@@ -19,14 +19,14 @@
             <i class="icon icon-service icon-4x"/>
           </div>
         {{else if (eq section 'body')}}
-          <h3 class="text-muted">{{model.service.name}}</h3>
+          <h3 class="text-muted">{{model.workload.name}}</h3>
           <p class="help-block">{{t 'newContainer.sidekick.primary'}}</p>
         {{else if (eq section 'footer')}}
-          {{#link-to (query-params launchConfigIndex=-1) class="btn bg-info"}}{{t 'action.upgrade'}}{{/link-to}}
+          {{#link-to (query-params launchConfigIndex=-1) class="btn bg-info" disabled=deleting}}{{t 'action.upgrade'}}{{/link-to}}
         {{/if}}
     {{/catalog-box}}
 
-    {{#each model.service.secondaryLaunchConfigs as |slc index|}}
+    {{#each model.workload.secondaryLaunchConfigs as |slc index|}}
       {{#catalog-box
         model=slc
         showIcon=false
@@ -41,8 +41,10 @@
           <h3>{{slc.name}}</h3>
           <p class="help-block">{{t 'newContainer.sidekick.sidekick'}}</p>
         {{else if (eq section 'footer')}}
-          <button class="btn bg-error" {{action "promptRemove" index}}>{{t 'action.remove'}}</button>
-          {{#link-to (query-params launchConfigIndex=index) class="btn bg-primary"}}{{t 'action.upgrade'}}{{/link-to}}
+          <button class="btn bg-error" {{action "promptRemove" index}} disabled={{deleting}}>
+            {{t 'action.remove'}}
+          </button>
+          {{#link-to (query-params launchConfigIndex=index) class="btn bg-primary" disabled=deleting}}{{t 'action.upgrade'}}{{/link-to}}
         {{/if}}
       {{/catalog-box}}
     {{/each}}
@@ -56,7 +58,7 @@
     isUpgrade=model.isUpgrade
     service=model.workload
     launchConfig=model.container
-    containerName=model.containerName
+    launchConfigIndex=launchConfigIndex
     done=(action 'done')
     cancel=(action 'cancel')
     editing=false

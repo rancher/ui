@@ -2,53 +2,78 @@
   <h1>{{header}}</h1>
 </section>
 
-<div class="row">
-  <div class="col span-11-of-23 mt-0 mb-0">
-    {{form-name-description
-      name=name
-      nameDisabled=isUpgrade
-      nameRequired=true
-      bothColClass="col span-12 mt-0"
-      colClass="col span-12 mt-0"
-      description=description
-      namePlaceholder="newContainer.name.placeholder"
-      descriptionPlaceholder="newContainer.description.placeholder"
-    }}
+{{#if isSidekick}}
+  <div class="row">
+    <div class="col span-11-of-23 mt-0 mb-0">
+      {{form-name-description
+        name=name
+        nameDisabled=isUpgrade
+        nameRequired=true
+        bothColClass="col span-12 mt-0"
+        colClass="col span-12 mt-0"
+        description=description
+        namePlaceholder="newContainer.name.placeholder"
+        descriptionPlaceholder="newContainer.description.placeholder"
+      }}
+    </div>
+    <div class="col span-11-of-23 mt-0 mb-0">
+      {{container/form-image
+        initialValue=launchConfig.image
+        errors=imageErrors
+        changed=(action 'setImage')
+      }}
+    </div>
   </div>
-  <div class="col span-11-of-23 mt-0 mb-0 offset-1-of-23">
-    {{container/form-scale
-      initialScale=scale
-      isGlobal=isGlobal
-      launchConfigIndex=launchConfigIndex
-      workload=service
-      isUpgrade=isUpgrade
-      errors=scaleErrors
-      scaleMode=scaleMode
-      setScale=(action (mut scale))
-    }}
+{{else}}
+  <div class="row">
+    <div class="col span-11-of-23 mt-0 mb-0">
+      {{form-name-description
+        name=name
+        nameDisabled=isUpgrade
+        nameRequired=true
+        bothColClass="col span-12 mt-0"
+        colClass="col span-12 mt-0"
+        description=description
+        namePlaceholder="newContainer.name.placeholder"
+        descriptionPlaceholder="newContainer.description.placeholder"
+      }}
+    </div>
+    <div class="col span-11-of-23 mt-0 mb-0 offset-1-of-23">
+      {{container/form-scale
+        initialScale=scale
+        isGlobal=isGlobal
+        launchConfigIndex=launchConfigIndex
+        workload=service
+        isUpgrade=isUpgrade
+        errors=scaleErrors
+        scaleMode=scaleMode
+        setScale=(action (mut scale))
+      }}
+    </div>
   </div>
-</div>
 
-<hr class="mt-30 mb-30" />
+  <hr class="mt-30 mb-30" />
 
-<div class="row">
-  <div class="col span-11-of-23 mt-0 mb-0">
-    {{container/form-image
-      initialValue=launchConfig.image
-      errors=imageErrors
-      changed=(action 'setImage')
-    }}
-  </div>
+  <div class="row">
+    <div class="col span-11-of-23 mt-0 mb-0">
+      {{container/form-image
+        initialValue=launchConfig.image
+        errors=imageErrors
+        changed=(action 'setImage')
+      }}
+    </div>
 
-  <div class="col span-11-of-23 mt-0 mb-0 offset-1-of-23">
-    {{form-namespace
-      namespace=namespace
-      errors=namespaceErrors
-      editing=(not (or isUpgrade isSidekick))
-      registerHook=(action "registerHook")
-    }}
+    <div class="col span-11-of-23 mt-0 mb-0 offset-1-of-23">
+      {{form-namespace
+        namespace=namespace
+        errors=namespaceErrors
+        editing=(not (or isUpgrade isSidekick))
+        registerHook=(action "registerHook")
+      }}
+    </div>
   </div>
-</div>
+{{/if}}
+
 <hr class="mt-30 mb-30" />
 <div class="row">
   {{container/form-ports
@@ -167,7 +192,7 @@
     </div>
   {{/accordion-list-item}}
 
-  {{#if (not isSidekick)}}
+  {{#unless isSidekick}}
     {{container/form-upgrade
       workload=service
       scaleMode=scaleMode
@@ -176,7 +201,7 @@
       expandAll=al.expandAll
       expandFn=expandFn
     }}
-  {{/if}}
+  {{/unless}}
 
   {{#advanced-section advanced=false}}
     {{container/form-command
@@ -184,41 +209,45 @@
         instance=launchConfig
         errors=commandErrors
         service=service
+        isSidekick=isSidekick
         expandAll=al.expandAll
         expandFn=expandFn
     }}
 
-    {{container/form-networking
+    {{#unless isSidekick}}
+      {{container/form-networking
+          classNames="accordion-wrapper"
+          instance=launchConfig
+          errors=networkingErrors
+          service=service
+          editing=true
+          expandAll=al.expandAll
+          expandFn=expandFn
+      }}
+
+      {{form-user-labels
+          classNames="accordion-wrapper"
+          errors=labelErrors
+          initialLabels=service.labels
+          setLabels=(action 'setLabels' 'user')
+          expandAll=al.expandAll
+          expandFn=expandFn
+      }}
+
+      {{form-annotations
         classNames="accordion-wrapper"
-        instance=launchConfig
-        errors=networkingErrors
-        service=service
-        editing=true
+        model=service
+        errors=annotationErrors
         expandAll=al.expandAll
         expandFn=expandFn
-    }}
-
-    {{form-user-labels
-        classNames="accordion-wrapper"
-        errors=labelErrors
-        initialLabels=service.labels
-        setLabels=(action 'setLabels' 'user')
-        expandAll=al.expandAll
-        expandFn=expandFn
-    }}
-
-    {{form-annotations
-      classNames="accordion-wrapper"
-      model=service
-      errors=annotationErrors
-      expandAll=al.expandAll
-      expandFn=expandFn
-    }}
+      }}
+    {{/unless}}
 
     {{container/form-security
         instance=launchConfig
         service=service
         errors=securityErrors
+        isSidekick=isSidekick
         editing=true
         expandAll=al.expandAll
         expandFn=expandFn

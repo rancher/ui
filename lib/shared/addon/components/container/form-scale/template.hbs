@@ -56,21 +56,6 @@
       <p class="text-small text-muted" style="margin: 0 0 0 45px;">{{pretty-cron workload.cronJobConfig.schedule 'toString'}}</p>
     {{/if}}
   </div>
-  {{#if showSidekick}}
-    <div class="radio">
-      <label class="text-muted">
-        {{radio-button selection=scaleMode value="sidekick" disabled=true}}
-        <i class="icon icon-lg icon-sidekick"></i>
-        {{#if (eq scaleMode "sidekick")}}
-          {{t 'formScale.scaleMode.sidekickPrefix'}}
-          {{schema/input-workload selectClass="input-sm ml-45 mt-5" withPods=true obj=workload}}
-          {{t 'formScale.scaleMode.sidekickSuffix'}}
-        {{else}}
-          {{t 'formScale.scaleMode.sidekickInactive'}}
-        {{/if}}
-      </label>
-    </div>
-  {{/if}}
 {{else}}
   <div class="form-control-static">
     {{#if (eq scaleMode "deployment")}}
@@ -126,11 +111,6 @@
         {{/if}}
         <p class="text-small text-muted">{{pretty-cron workload.cronJobConfig.schedule 'toString'}}</p>
       </div>
-    {{else if (eq scaleMode "sidekick")}}
-      <i class="icon icon-lg icon-sidekick"></i>
-      {{t 'formScale.scaleMode.sidekickPrefix'}}
-      &quot;{{workload.displayName}}&quot;
-      {{t 'formScale.scaleMode.sidekickSuffix'}}
     {{else}}
       {{scaleMode}}?
     {{/if}}

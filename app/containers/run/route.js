@@ -1,6 +1,6 @@
 import EmberObject from '@ember/object';
 import { inject as service } from '@ember/service';
-import { get} from '@ember/object';
+import { get, set } from '@ember/object';
 import Route from '@ember/routing/route';
 import Ember from 'ember';
 import C from 'ui/utils/constants';
@@ -10,16 +10,14 @@ export default Route.extend({
   clusterStore: service(),
 
   queryParams: {
-    containerName: {
+    launchConfigIndex: {
       refreshModel: true
     }
   },
 
-  model: function(params/*, transition*/) {
-    var store = get(this,'store');
-
-    if ( params.workloadId )
-    {
+  model: function (params/*, transition*/) {
+    var store = get(this, 'store');
+    if (params.workloadId) {
       // Existing Service
       return store.find('workload', params.workloadId).then((workload) => {
         return this.modelForExisting(workload, params);
@@ -30,8 +28,8 @@ export default Route.extend({
   },
 
   modelForNew(params) {
-    let scaleMode = get(this,`prefs.${C.PREFS.LAST_SCALE_MODE}`) || 'deployment';
-    if ( scaleMode === 'container' || scaleMode === 'service' ) {
+    let scaleMode = get(this, `prefs.${C.PREFS.LAST_SCALE_MODE}`) || 'deployment';
+    if (scaleMode === 'container' || scaleMode === 'service') {
       scaleMode = 'deployment';
     }
 
@@ -44,26 +42,36 @@ export default Route.extend({
   },
 
   modelForExisting(_workload, params) {
-    if ( !_workload ) {
+    if (!_workload) {
       return Ember.RVP.reject('Workload not found');
     }
 
     const clone = _workload.clone();
+
     const containerNames = clone.containers.map(x => get(x, 'name'));
-    let containerName = params.containerName;
+    let containerName = null;
+
+    if (params.launchConfigIndex !== null) {
+      const launchConfigIndex = parseInt(params.launchConfigIndex, 10)
+      if (launchConfigIndex > -1) {
+        containerName = clone.containers[launchConfigIndex + 1].name;
+      } else if (launchConfigIndex === -1) {
+        containerName = '';
+      }
+    }
 
     // Add a sidekick
-    if ( params.addSidekick ) {
+    if (params.addSidekick) {
       return EmberObject.create({
         scaleMode: 'sidekick',
         workload: clone,
-        container: this.emptyContainer(params),
+        container: this.emptyContainer(params, get(clone, 'namespaceId')),
         isUpgrade: false,
       });
-    } else if ( containerName === null ) {
+    } else if (containerName === null) {
       // Figure out the container name
-      if ( containerNames.length > 1 ) {
-        if ( params.upgrade ) {
+      if (containerNames.length > 1) {
+        if (params.upgrade) {
           // If there are sidekicks, you need to pick one & come back
           return EmberObject.create({
             workload: clone,
@@ -81,7 +89,7 @@ export default Route.extend({
     }
 
     let container;
-    if ( containerName === "" ) {
+    if (containerName === "") {
       // The primary/only container
       container = clone.containers[0];
     } else {
@@ -89,20 +97,19 @@ export default Route.extend({
       container = clone.containers.findBy('name', containerName);
     }
 
-    if ( params.upgrade ) {
+    if (params.upgrade) {
       // Upgrade workload
       let out = EmberObject.create({
         scaleMode: (containerName ? 'sidekick' : clone.type),
         workload: clone,
         container,
-        containerName,
         isUpgrade: true
       });
 
       return out;
     } else {
       // Clone workload with one container
-      let neu = get(this,'store').createRecord(clone.serializeForNew());
+      let neu = get(this, 'store').createRecord(clone.serializeForNew());
 
       return EmberObject.create({
         mode: 'service',
@@ -115,26 +122,26 @@ export default Route.extend({
   },
 
   getNamespaceId(params) {
-    const clusterStore = get(this,'clusterStore');
+    const clusterStore = get(this, 'clusterStore');
 
     let ns = null;
-    if ( params.namespaceId ) {
+    if (params.namespaceId) {
       ns = clusterStore.getById('namespace', params.namespaceId);
     }
 
-    if ( !ns ) {
-      ns = clusterStore.getById('namespace', get(this,`prefs.${C.PREFS.LAST_NAMESPACE}`));
+    if (!ns) {
+      ns = clusterStore.getById('namespace', get(this, `prefs.${C.PREFS.LAST_NAMESPACE}`));
     }
 
     let namespaceId = null;
-    if ( ns ) {
+    if (ns) {
       namespaceId = ns.get('id');
     }
     return namespaceId;
   },
 
   emptyWorkload(params) {
-    const store = get(this,'store');
+    const store = get(this, 'store');
     return store.createRecord({
       type: 'workload',
       namespaceId: this.getNamespaceId(params),
@@ -145,8 +152,8 @@ export default Route.extend({
     });
   },
 
-  emptyContainer(params) {
-    return get(this,'store').createRecord({
+  emptyContainer(params, namespaceId) {
+    return get(this, 'store').createRecord({
       type: 'container',
       tty: true,
       stdin: true,
@@ -154,7 +161,7 @@ export default Route.extend({
       allowPrivilegeEscalation: false,
       readOnly: false,
       runAsNonRoot: false,
-      namespaceId : this.getNamespaceId(params),
+      namespaceId: namespaceId ? namespaceId : this.getNamespaceId(params),
       resources: {
         cpu: {},
         memory: {},
@@ -165,14 +172,13 @@ export default Route.extend({
   },
 
   resetController(controller, isExiting/*, transition*/) {
-    if (isExiting)
-    {
-      controller.set('namespaceId', null);
-      controller.set('workloadId', null);
-      controller.set('podId', null);
-      controller.set('containerName', null);
-      controller.set('upgrade', null);
-      controller.set('addSidekick', null);
+    if (isExiting) {
+      set(controller, 'namespaceId', null);
+      set(controller, 'workloadId', null);
+      set(controller, 'podId', null);
+      set(controller, 'upgrade', null);
+      set(controller, 'addSidekick', null);
+      set(controller, 'launchConfigIndex', null);
     }
   }
 });

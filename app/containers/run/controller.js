@@ -1,4 +1,5 @@
 import { inject as service } from '@ember/service';
+import { get, set } from '@ember/object';
 import Controller from '@ember/controller';
 
 export default Controller.extend({
@@ -6,17 +7,17 @@ export default Controller.extend({
   scope: service(),
   modalService: service('modal'),
 
-  queryParams: ['namespaceId','workloadId','podId','addSidekick','containerName','upgrade'],
+  queryParams: ['namespaceId', 'workloadId', 'podId', 'addSidekick', 'upgrade', 'launchConfigIndex'],
   namespaceId: null,
   serviceId: null,
   containerId: null,
-  ddSidekick: null,
-  containerName: null,
+  addSidekick: null,
   upgrade: false,
+  deleting: false,
 
   actions: {
     transitionOut() {
-      this.transitionToRoute('containers.index', this.get('scope.currentProject.id'));
+      this.transitionToRoute('containers.index', get(this, 'scope.currentProject.id'));
     },
 
     done() {
@@ -27,28 +28,34 @@ export default Controller.extend({
       this.send('transitionOut');
     },
 
-    promptRemove(idx){
-      let slc = this.get('model.service.secondaryLaunchConfigs').objectAt(idx);
+    promptRemove(idx) {
+      let slc = get(this, 'model.workload.secondaryLaunchConfigs').objectAt(idx);
       let resources = [{
         cb: () => { this.removeSidekick(idx) },
-        displayName: slc.get('name'),
+        displayName: get(slc, 'name'),
       }];
 
-      this.get('modalService').toggleModal('confirm-delete', {resources: resources, showProtip: false});
+      get(this, 'modalService').toggleModal('confirm-delete', { resources: resources, showProtip: false });
     },
   },
 
   removeSidekick(idx) {
-    let service = this.get('model.service').clone();
-    service.set('completeLaunchConfigs', true);
-    service.set('completeUpdate', true);
+    let workload = get(this, 'model.workload').clone();
+    set(workload, 'completeLaunchConfigs', true);
+    set(workload, 'completeUpdate', true);
 
-    let slcs = service.get('secondaryLaunchConfigs');
+    let slcs = get(workload, 'secondaryLaunchConfigs');
     slcs.removeAt(idx);
-    service.save().then(() => {
+    const containers = [get(workload, 'containers.firstObject')];
+    containers.pushObjects(slcs);
+    set(workload, 'containers', containers)
+    set(this, 'deleting', true);
+    workload.save().then(() => {
       this.send('done');
+      set(this, 'deleting', false);
     }).catch((err) => {
-      this.get('growl').fromError(err);
+      get(this, 'growl').fromError(err);
+      set(this, 'deleting', false);
     });
   },
 });
