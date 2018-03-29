@@ -55,28 +55,30 @@
         </div>
       {{/input-or-display}}
     </div>
-    <div class="col span-4">
-      <label class="acc-label">{{t 'formSecurity.pidMode.label'}}</label>
-      {{#input-or-display editable=editing value=service.pid}}
-        <div class="radio">
-          <label>{{radio-button selection=service.pid value="pod"}} {{t 'formSecurity.pidMode.disable'}}</label>
-        </div>
-        <div class="radio">
-          <label>{{radio-button selection=service.pid value="host"}} {{t 'formSecurity.pidMode.enable'}}</label>
-        </div>
-      {{/input-or-display}}
-    </div>
-    <div class="col span-4">
-      <label class="acc-label">{{t 'formSecurity.ipcMode.label'}}</label>
-      {{#input-or-display editable=editing value=service.ipc}}
-        <div class="radio">
-          <label>{{radio-button selection=service.ipc value="pod"}} {{t 'formSecurity.ipcMode.disable'}}</label>
-        </div>
-        <div class="radio">
-          <label>{{radio-button selection=service.ipc value="host"}} {{t 'formSecurity.ipcMode.enable'}}</label>
-        </div>
-      {{/input-or-display}}
-    </div>
+    {{#unless isSidekick}}
+      <div class="col span-4">
+        <label class="acc-label">{{t 'formSecurity.pidMode.label'}}</label>
+        {{#input-or-display editable=editing value=service.pid}}
+          <div class="radio">
+            <label>{{radio-button selection=service.pid value="pod"}} {{t 'formSecurity.pidMode.disable'}}</label>
+          </div>
+          <div class="radio">
+            <label>{{radio-button selection=service.pid value="host"}} {{t 'formSecurity.pidMode.enable'}}</label>
+          </div>
+        {{/input-or-display}}
+      </div>
+      <div class="col span-4">
+        <label class="acc-label">{{t 'formSecurity.ipcMode.label'}}</label>
+        {{#input-or-display editable=editing value=service.ipc}}
+          <div class="radio">
+            <label>{{radio-button selection=service.ipc value="pod"}} {{t 'formSecurity.ipcMode.disable'}}</label>
+          </div>
+          <div class="radio">
+            <label>{{radio-button selection=service.ipc value="host"}} {{t 'formSecurity.ipcMode.enable'}}</label>
+          </div>
+        {{/input-or-display}}
+      </div>
+    {{/unless}}
   </div>
   <div class="row box mt-20">
     <div class="col span-4">
@@ -91,6 +93,7 @@
       {{/input-or-display}}
     </div>
   </div>
+
   <div class="row box mt-20">
     <div class="col span-4">
       <label class="acc-label">{{t 'formSecurity.memoryLimit.label'}}</label>

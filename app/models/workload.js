@@ -130,9 +130,8 @@ var Workload = Resource.extend(DisplayImage, StateCounts, EndpointPorts, {
 
     addSidekick() {
       get(this, 'router').transitionTo('containers.run', {queryParams: {
-        serviceId: get(this, 'id'),
+        workloadId: get(this, 'id'),
         addSidekick: true,
-        launchConfigIndex: (get(this, 'secondaryLaunchConfigs')||[]).length
       }});
     },
 
@@ -180,7 +179,7 @@ var Workload = Resource.extend(DisplayImage, StateCounts, EndpointPorts, {
       { label: 'action.edit',           icon: 'icon icon-edit',             action: 'upgrade',        enabled: !!l.update &&  isReal },
       { label: 'action.rollback',       icon: 'icon icon-history',          action: 'rollback',       enabled: !!a.rollback && isReal && !!get(this, 'previousRevisionId') },
 //      { label: 'action.clone',          icon: 'icon icon-copy',             action: 'clone',          enabled: true},
-//      { label: 'action.addSidekick',    icon: 'icon icon-plus-circle',      action: 'addSidekick',    enabled: get(this, 'canHaveSidekicks') },
+      { label: 'action.addSidekick',    icon: 'icon icon-plus-circle',      action: 'addSidekick',    enabled: get(this, 'canHaveSidekicks') },
       { divider: true },
       { label: 'action.execute',        icon: 'icon icon-terminal',         action: 'shell',          enabled: !!podForShell, altAction:'popoutShell'},
 //      { label: 'action.logs',           icon: 'icon icon-file',             action: 'logs',           enabled: !!a.logs, altAction: 'popoutLogs' },

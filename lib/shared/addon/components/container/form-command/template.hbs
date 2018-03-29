@@ -59,56 +59,60 @@
       {{/input-or-display}}
     </div>
 
-    <div class="col span-6 box">
-      <label class="acc-label">{{t 'formCommand.autoRestart.label'}}</label>
-      <div class="row {{unless editing 'inline-form'}}">
-        {{#if editing}}
-          <div class="radio">
-            <label>{{radio-button selection=service.restart value="Never"}} {{t 'formCommand.autoRestart.no'}}</label>
-          </div>
+    {{#unless isSidekick}}
+      <div class="col span-6 box">
+        <label class="acc-label">{{t 'formCommand.autoRestart.label'}}</label>
+        <div class="row {{unless editing 'inline-form'}}">
+          {{#if editing}}
+            <div class="radio">
+              <label>{{radio-button selection=service.restart value="Never"}} {{t 'formCommand.autoRestart.no'}}</label>
+            </div>
 
-          <div class="radio">
-            <label>{{radio-button selection=service.restart value="Always"}} {{t 'formCommand.autoRestart.always'}}</label>
-          </div>
+            <div class="radio">
+              <label>{{radio-button selection=service.restart value="Always"}} {{t 'formCommand.autoRestart.always'}}</label>
+            </div>
 
-          <div class="radio">
-            <label>{{radio-button selection=service.restart value="OnFailure"}} {{t 'formCommand.autoRestart.onFailure' htmlSafe=true}}</label>
+            <div class="radio">
+              <label>{{radio-button selection=service.restart value="OnFailure"}} {{t 'formCommand.autoRestart.onFailure' htmlSafe=true}}</label>
+            </div>
+          {{else if (eq service.restart "OnFailure")}}
+            <div>
+              {{t 'formCommand.autoRestart.onFailure' htmlSafe=true}}
+            </div>
+          {{else if (eq service.restart "Always")}}
+            <div>
+              {{t 'formCommand.autoRestart.always'}}
+            </div>
+          {{else if (eq service.restart "Never")}}
+            <div>
+              {{t 'formCommand.autoRestart.no'}}
+            </div>
+          {{else}}
+            <div>{{t 'generic.none'}}</div>
+          {{/if}}
+        </div>
+      </div>
+    {{/unless}}
+  </div>
+
+  {{#unless isSidekick}}
+    <div class="row">
+      <div class="col span-6 box">
+        <label class="acc-label">{{t 'formCommand.fsgid.label'}}</label>
+        {{#input-or-display editable=editing value=service.fsgid}}
+          {{input-integer min=0 value=service.fsgid classNames="form-control" placeholder=(t 'formCommand.fsgid.placeholder')}}
+        {{/input-or-display}}
+      </div>
+      <div class="col span-6 box">
+        <label class="acc-label">{{t 'formCommand.terminationGracePeriodSeconds.label'}}</label>
+        {{#input-or-display editable=editing value=service.terminationGracePeriodSeconds}}
+          <div class="input-group">
+            {{input-integer min=0 value=service.terminationGracePeriodSeconds}}
+            <span class="input-group-addon bg-default">{{t 'generic.seconds'}}</span>
           </div>
-        {{else if (eq service.restart "OnFailure")}}
-          <div>
-            {{t 'formCommand.autoRestart.onFailure' htmlSafe=true}}
-          </div>
-        {{else if (eq service.restart "Always")}}
-          <div>
-            {{t 'formCommand.autoRestart.always'}}
-          </div>
-        {{else if (eq service.restart "Never")}}
-          <div>
-            {{t 'formCommand.autoRestart.no'}}
-          </div>
-        {{else}}
-          <div>{{t 'generic.none'}}</div>
-        {{/if}}
+        {{/input-or-display}}
+        <p class="help-block">{{t 'formCommand.terminationGracePeriodSeconds.helpText'}}</p>
       </div>
     </div>
-  </div>
-
-  <div class="row">
-    <div class="col span-6 box">
-      <label class="acc-label">{{t 'formCommand.fsgid.label'}}</label>
-      {{#input-or-display editable=editing value=service.fsgid}}
-        {{input-integer min=0 value=service.fsgid classNames="form-control" placeholder=(t 'formCommand.fsgid.placeholder')}}
-      {{/input-or-display}}
-    </div>
-    <div class="col span-6 box">
-      <label class="acc-label">{{t 'formCommand.terminationGracePeriodSeconds.label'}}</label>
-      {{#input-or-display editable=editing value=service.terminationGracePeriodSeconds}}
-        <div class="input-group">
-          {{input-integer min=0 value=service.terminationGracePeriodSeconds}}
-          <span class="input-group-addon bg-default">{{t 'generic.seconds'}}</span>
-        </div>
-      {{/input-or-display}}
-      <p class="help-block">{{t 'formCommand.terminationGracePeriodSeconds.helpText'}}</p>
-    </div>
-  </div>
+  {{/unless}}
 {{/accordion-list-item}}
