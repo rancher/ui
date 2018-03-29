@@ -8,7 +8,7 @@
   <td data-title="{{dt.name}}" class="clip">
     <a href="{{href-to "authenticated.project.dns.detail" model.id}}">{{model.displayName}}</a>
     {{#if model.showTransitioningMessage}}
-      <div class="clip text-small {{model.stateColor}}">{{model.transitioningMessage}}</div>
+      <div class="clip text-small {{model.stateColor}}">{{uc-first model.transitioningMessage}}</div>
     {{else if (and (not-eq model.recordType "clusterIp") model.clusterIp)}}
       <div class="text-small text-muted">{{t 'dnsPage.table.clusterIpDetail' ip=model.clusterIp}}</div>
     {{/if}}

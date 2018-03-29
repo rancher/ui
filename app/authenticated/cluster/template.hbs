@@ -1,0 +1,9 @@
+{{#unless model.isActive}}
+  {{#banner-message color='bg-error m-0'}}
+    <p>{{t 'clusterDashboard.notActive' state=model.displayState htmlSafe=true}}</p>
+    {{#if model.showTransitioningMessage}}
+      <p class="{{model.stateColor}}">{{uc-first model.transitioningMessage}}</p>
+    {{/if}}
+  {{/banner-message}}
+{{/unless}}
+{{outlet}}

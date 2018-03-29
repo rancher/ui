@@ -1,7 +1,6 @@
 import Resource from 'ember-api-store/models/resource';
-import PolledResource from 'ui/mixins/cattle-polled-resource';
 
-var AzureKubernetesServiceConfig = Resource.extend(PolledResource, {
+var AzureKubernetesServiceConfig = Resource.extend({
   type: 'azureKubernetesServiceConfig',
 
   reservedKeys: [],

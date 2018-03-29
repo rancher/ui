@@ -1,7 +1,6 @@
 import Resource from 'ember-api-store/models/resource';
-import PolledResource from 'ui/mixins/cattle-polled-resource';
 
-var RancherKubernetesEngineConfig = Resource.extend(PolledResource, {
+var RancherKubernetesEngineConfig = Resource.extend({
   type: 'rancherKubernetesEngineConfig',
 
   reservedKeys: [],

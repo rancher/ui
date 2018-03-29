@@ -29,6 +29,15 @@ const rootNav = [
     ctx: [getProjectId],
     submenu: [
       {
+        id: 'tools-alerts',
+        localizedLabel: 'nav.tools.alerts',
+        icon: 'icon icon-alert',
+        route: 'authenticated.project.alert',
+        resource: [],
+        ctx: [getProjectId],
+        resourceScope: 'global',
+      },
+      {
         id: 'infra-certificates',
         localizedLabel: 'nav.infra.certificates',
         icon: 'icon icon-certificate',
@@ -45,6 +54,15 @@ const rootNav = [
         ctx: [getProjectId],
         resource: ["configmap"],
         resourceScope: 'project',
+      },
+      {
+        id: 'tools-logging',
+        localizedLabel: 'nav.tools.logging',
+        icon: 'icon icon-files',
+        route: 'authenticated.project.logging',
+        resourceScope: 'global',
+        resource: [],
+        ctx: [getProjectId],
       },
       {
         id: 'infra-registries',
@@ -64,13 +82,6 @@ const rootNav = [
         resource: ["namespacedsecret", "secret"],
         resourceScope: 'project',
       },
-//      {
-//        id: 'infra-hooks',
-//        localizedLabel: 'nav.infra.hooks',
-//        icon: 'icon icon-link',
-//        route: 'authenticated.project.hooks',
-//        ctx: [getProjectId],
-//      },
     ],
   },
   {
@@ -83,32 +94,7 @@ const rootNav = [
     resourceScope: 'global',
     ctx: [getProjectId],
   },
-  {
-    scope: 'project',
-    id: 'project-tools',
-    localizedLabel: 'nav.tools.tab',
-    ctx: [getProjectId],
-    submenu: [
-      {
-        id: 'tools-alerts',
-        localizedLabel: 'nav.tools.alerts',
-        // icon: 'icon icon-key',
-        route: 'authenticated.project.alert',
-        resource: [],
-        ctx: [getProjectId],
-        resourceScope: 'global',
-      },
-      {
-        id: 'tools-logging',
-        localizedLabel: 'nav.tools.logging',
-        // icon: 'icon icon-key',
-        route: 'authenticated.project.logging',
-        resourceScope: 'global',
-        resource: [],
-        ctx: [getProjectId],
-      },
-    ],
-  },
+
   // Cluster
   {
     scope: 'cluster',

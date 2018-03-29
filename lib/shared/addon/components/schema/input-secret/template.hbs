@@ -1,6 +1,7 @@
-<select class="{{selectClass}}" onchange={{action (mut selected) value="target.value"}}>
-  <option selected={{eq selected null}}>{{t 'schema.inputSecret.prompt'}}</option>
-  {{#each filtered as |secret|}}
-    <option selected={{eq selected secret.id}} value={{secret.id}}>{{secret.name}}</option>
-  {{/each}}
-</select>
+{{new-select
+  classNames="form-control"
+  content=filtered
+  prompt="schema.inputSecret.prompt"
+  localizedPrompt=true
+  value=seleted
+ }}

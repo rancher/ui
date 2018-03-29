@@ -87,43 +87,33 @@
 <hr class="mt-30 mb-30" />
 {{#accordion-list as | al expandFn | }}
 
-  {{container/form-volumes
-    launchConfig=launchConfig
-    workload=service
-    namespace=namespace
-    errors=volumeErrors
-    registerHook=(action "registerHook")
-    expandAll=al.expandAll
-    expandFn=expandFn
-    expandOnInit=true
-  }}
-
   {{#accordion-list-item
-       title=(t 'newContainer.environment.label')
-       detail=(t 'newContainer.environment.detail' appName=settings.appName)
-       status=status
-       statusClass=statusClass
-       expandAll=al.expandAll
-       expand=(action expandFn)
+    title=(t 'newContainer.environment.label')
+    detail=(t 'newContainer.environment.detail' appName=settings.appName)
+    status=status
+    statusClass=statusClass
+    expandAll=al.expandAll
+    expand=(action expandFn)
   }}
     {{form-key-value
-        initialMap=launchConfig.environment
-        changed=(action (mut launchConfig.environment))
-        allowEmptyValue=true
-        editing=true
-        header=(t 'newContainer.environment.label')
-        addActionLabel="newContainer.environment.addAction"
-        keyLabel="newContainer.environment.keyLabel"
-        keyPlaceholder="newContainer.environment.keyPlaceholder"
-        valueLabel="newContainer.environment.valueLabel"
-        valuePlaceholder="newContainer.environment.valuePlaceholder"
+      initialMap=launchConfig.environment
+      changed=(action (mut launchConfig.environment))
+      allowEmptyValue=true
+      editing=true
+      header=(t 'newContainer.environment.label')
+      addActionLabel="newContainer.environment.addAction"
+      keyLabel="newContainer.environment.keyLabel"
+      keyPlaceholder="newContainer.environment.keyPlaceholder"
+      valueLabel="newContainer.environment.valueLabel"
+      valuePlaceholder="newContainer.environment.valuePlaceholder"
     }}
     <hr class="mt-30 mb-30" />
     {{container/form-secrets
-        classNames="accordion-wrapper"
-        secrets=launchConfig.environmentFrom
-        errors=secretErrors
-        editing=true
+      namespace=namespace
+      classNames="accordion-wrapper"
+      secrets=launchConfig.environmentFrom
+      errors=secretErrors
+      editing=true
     }}
 
   {{/accordion-list-item}}
@@ -191,6 +181,16 @@
       {{/if}}
     </div>
   {{/accordion-list-item}}
+
+  {{container/form-volumes
+    launchConfig=launchConfig
+    workload=service
+    namespace=namespace
+    errors=volumeErrors
+    registerHook=(action "registerHook")
+    expandAll=al.expandAll
+    expandFn=expandFn
+  }}
 
   {{#unless isSidekick}}
     {{container/form-upgrade
