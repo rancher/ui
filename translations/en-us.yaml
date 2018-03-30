@@ -256,32 +256,6 @@ apiPage:
       never: Never
     noData: You do not have any API keys yet.
 
-auditLogsPage:
-  header: Audit Logs
-  form:
-    eventType:
-      placeholder: Event Type
-    resourceType:
-      placeholder: "Resource Type:"
-      dropdownPlaceholder: 'Select a Resource Type:'
-    resourceId:
-      placeholder: Resource ID
-    requestIp:
-      placeholder: Request IP
-    authType:
-      placeholder: "Auth Type:"
-      dropdownPlaceholder: 'Select an Auth Type:'
-    clearButtonText: Clear Filters
-    searchButtonText: Search
-  table:
-    time: Time
-    eventType: Event Type
-    description: Description
-    environment: Environment
-    resourceTypeId: "Resource Type:ID"
-    identity: Identity
-    authIp: "Auth & IP"
-
 authPage:
   shibboleth:
     enabled:
@@ -711,10 +685,6 @@ containersPage:
     orchestrator: Install another orchestrator
     kubernetesLink: Install Kubernetes
 
-containerSubpod:
-  childContainers: Containers
-  childSidekicks: Sidecars
-
 clusterDashboard:
   cpu: CPU
   memory: Memory
@@ -864,75 +834,6 @@ haPage:
     port: Port
     heartbeat: Last Seen
     clustered: Clustered
-
-helpPage:
-  header: Helpful links & Information
-  banner: 'Latest Release {released}:'
-  environment:
-    header: What is an environment?
-    content: |
-      <p>{appName} supports grouping resources into multiple environments. Each one gets its own set of services and infrastructure resources, and is owned by one or more GitHub users, teams or organizations.</p>
-        <p>For example, you might create separate "dev", "test", and "production" environments to keep things isolated from each other, and give "dev" access to your entire organization but restrict the "production" environment to a smaller team.</p>
-    manageLink: Manage Environments
-  host:
-    header: What is a host?
-    content: |
-      Before adding your first service or launching a container, you must add at least a single Linux host that supports Docker {minVersion} or higher and be able to reach the {appName} server via HTTP. {appName} supports adding Linux hosts in the form of a virtual or physical
-          machine from any public cloud providers, privately hosted clouds, or even bare metal servers.
-    contentLink: Learn More
-    addHostLink: Add Node
-  stacks:
-    header: What are stacks and services?
-    content:
-      paragraph1: |
-        A service is simply a group of containers created from the same Docker image but extends Docker's "link" concept to leverage {appName}'s lightweight distributed DNS service for service discovery. Services can be added individually or by deploying an item from the Catalog.
-      paragraph2: A service is also capable of leveraging other {appName} built-in services such as load balancers, health monitoring, upgrade support, and high availability.
-      #' fixes syntax highlighting so i dont go crazy
-      link: Learn More
-    addServiceLink: Manage Services
-    addCatalogLink: Add From Catalog
-    noHosts: You currently have no nodes. Please add a node before adding Services.
-    manageServiceLink: Manage Services
-  issues:
-    header:
-      text: Issues & Documentation
-      tagline: Uh oh, Find an issue?
-      fileBug: File a Bug
-    content:
-      paragraph1: |
-        {appName} is an open source software platform that implements a purpose-built infrastructure for running containers in production. Docker containers, as an increasingly popular application workload, create new requirements in infrastructure services such as networking, storage, load balancer, security, service discovery, and resource management.
-      graphic1:
-        text: Find a bug?
-        link: File an issue on GitHub.
-      graphic2:
-        text: For more information
-        link: |
-          <a href="{docsLink}" target="_blank">about using {appName} Visit our docs.</a>
-          <br/>or <a href="{companyLink}/learn/" target="_blank">check out our getting started documentation.</a>
-      graphic3:
-        text: Need help troubleshooting?
-        link: Check out our FAQs
-  forums:
-    header: From the Forums
-    tagline: Join the conversation
-    buttonText: On the forums
-    announcements:
-      header: Announcements
-      buttonText: View More Annoucement Topics
-    general:
-      header: General
-      buttonText: View More General Topics
-    rancherOs:
-      header: RancherOS
-      buttonText: View More RancherOS Topics
-    rancher:
-      header: Rancher
-      buttonText: View More Rancher Topics
-  commercial:
-    header: Commercial Support
-    content: |
-      At Rancher Labs we provide commercial, enterprise-grade support for {appName}, including an available 24x7 support team, and priority bug fixes.  In addition we provide implementation, integration and consulting services for organizations looking to implement and scale {appName}.  For more information on any of these services, please email our sales team: <a href="mailto:sales@rancher.com">sales@rancher.com</a>
-
 
 nodesPage:
   header: Nodes
@@ -2675,14 +2576,6 @@ dangerZone:
     'ui$sendgrid$template$verify_password': 'SendGrid template for confirming password reset'
     'upgrade$manager': 'Automatic upgrades of infrastructure stacks'
 
-
-devicePermissions:
-  all: All
-  none: None
-  read: Read
-  write: Write
-  mknod: Mknod
-
 editAccount:
   title: Edit Account
   form:
@@ -2789,20 +2682,6 @@ editHost:
     label: Require Container Label
     help: If provided, containers must have one or more of the given labels in order to be eligible for scheduling onto this node.  If the value is left empty, a container with a matching key is eligible regardless of value.  <code>io.rancher.container.system</code> is required to allow system containers on to the node.
     addActionLabel: Add Required Label
-
-editRegistry:
-  title: Edit Registry
-  address:
-    label: Address
-  email:
-    label: Email
-    placeholder: e.g. you@example.com
-  username:
-    label: Username
-    placeholder: e.g. username
-  password:
-    label: Password
-    placeholder: e.g. password
 
 editService:
   title: Edit Service
@@ -3604,16 +3483,6 @@ formSecurity:
     default: Default (Container)
     hyperv: HyperV (VM)
 
-formServiceLinks:
-  title: Links
-  detail: Define relationships between this and other services.
-  addAction: Add Link
-  service:
-    label: Destination Service
-  name:
-    label: As Name
-    placeholder: e.g. database
-
 formSslTermination:
   title: SSL/TLS Certificates
   detail: Configure the certificates that will be presented for requests to encrypted ports.
@@ -3654,55 +3523,6 @@ formNamespace:
   errors:
     noneChosen: You must choose a namespace.
     validation: "Namespace: {error}"
-
-formStickiness:
-  title: Target Routing
-  detail: Configure the balancer to send requests for a given client to a consistent target container or to the same host the balancer is running on..
-  balancerTarget: Target Container Preference
-  any: Send requests to a healthy target container on any host.
-  preferLocal: Prefer containers on the same host as the balancer.  (If none are healthy, send to containers on a different host)
-  onlyLocal: "Use only containers on the same host as the balancer.  (If none are healthy, return <code>503</code>)"
-  sticky: Sticky Sessions
-  none: None
-  newCookie: Load Balancer defines a stickiness cookie
-  cookieName: Cookie Name
-  mode: Mode
-  domain: Domain
-  options: Options
-  indirect: Indirect
-  sendHeader: Send no-cache header
-  onPost: Only set cookie on POST
-  noPorts: There are no valid Target Rules configured for a HTTP listener.
-  placeholder:
-    sticky: e.g. sticky
-    domain: e.g. mydomain.com
-
-formTargets:
-  title: Targets
-  addAction: Add Target
-  hostname:
-    label: Request Host Header
-    placeholder: e.g. svc.com
-  srcPort:
-    label: Source Port
-    placeholder: e.g. 80
-  value:
-    label: Target Service
-  path:
-    label: Request Path
-    placeholder: e.g. /svc
-  dstPort:
-    label: Target Port
-    placeholder: e.g. 8080
-  advanced:
-    toggle: Show advanced routing options
-    detail: Direct requests to different services based on port, Host header, or request path
-    help1: |
-      If Request Host and/or Path are specified, connections to HTTP listening ports will be routed to the appropriate target based on the request.
-      For example, you could use this to send traffic for domain1.com to a different service than domain2.com, or domain3.com/admin to a different service than domain3.com.
-    help2: |
-      Matching requests will be sent to the Target Service on the Target Port.
-      If that is not set, then the Default Target port for the Source Port.  If that is also not set, then the Source Port.
 
 formUserData:
   placeholder: "e.g. Configuration information for the container"
@@ -4140,22 +3960,12 @@ modalAddPayment:
     dollar: "US Dollar ($)"
 
 
-modalAuditlogInfo:
-  header: Additional Log Info
-  request: "Request Object:"
-  response: "Response Object:"
-
 modalContainerStop:
   header: "Are you sure you want to stop"
   helpText: "The container will be forcibly terminated if it does not stop itself before the timeout expires"
   protip: "ProTip: Hold the {key} key while clicking stop to bypass this confirmation."
   label: Timeout
   button: Stop
-
-modalContainerToService:
-  title: 'Convert "{instanceName}" to a Service'
-  detail: 'This will create a new service based on this container and make this container part of the service.'
-  action: Convert
 
 modalConfirmDeactivate:
   header: Are you sure you want to
@@ -5051,22 +4861,6 @@ schedulingRuleRow:
   serviceName: service with the name
   containerName: container with the name
 
-serviceLink:
-  withAlias:
-      sameStack: "{service} as {alias}"
-      differentStack: "{stack}/{service} as {alias}"
-  noAlias:
-      sameStack: "{service}"
-      differentStack: "{stack}/{service}"
-
-serviceLog:
-  time: Time
-  level: Level
-  event: Event
-  detail: Detail
-  noMatch: No events match the current search
-  noData: No events have occurred recently
-
 serverUrl:
   header:
     label: Rancher Server URL
@@ -5100,10 +4894,6 @@ systemInfoSection:
   operatingSystem: Operating System Image
   osType: Operating System
   noMatch: No system information match the current search
-
-
-svgServiceContainer:
-  sidekicks: Sidecars
 
 tableCountSelect:
   header: Table Rows per Page
