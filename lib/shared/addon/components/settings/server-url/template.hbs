@@ -10,6 +10,7 @@
     <span class="input-group-addon bg-default">
       <label>{{scheme}}</label>
     </span>
+
     {{input-url
         classNames="form-control"
         id="server-url"
@@ -19,21 +20,38 @@
         value=serverUrl
     }}
   </div>
-  {{#if urlInvalid}}
-    {{#each urlError as |error|}}
-      <div class="banner bg-{{error.type}} mt-30">
+  <div>
+    {{#if urlInvalid}}
+      {{#each urlError as |error|}}
+        <div class="banner bg-{{error.type}} mt-30">
+          <div class="banner-icon"><i class="icon icon-info"></i></div>
+          <div class="banner-message">
+            <p>
+              {{t error.msg
+                  activeValue=serverUrl
+                  htmlSafe=true
+              }}
+            </p>
+          </div>
+        </div>
+      {{/each}}
+    {{/if}}
+  </div>
+  <div>
+    {{#each urlWarning as |warning|}}
+      <div class="banner bg-{{warning.type}} mt-30">
         <div class="banner-icon"><i class="icon icon-info"></i></div>
         <div class="banner-message">
           <p>
-            {{t error.msg
-                 activeValue=serverUrl
-                 htmlSafe=true
-             }}
+            {{t warning.msg
+                activeValue=serverUrl
+                htmlSafe=true
+            }}
           </p>
         </div>
       </div>
     {{/each}}
-  {{/if}}
+  </div>
   {{top-errors
       errors=errors
   }}
@@ -45,18 +63,3 @@
       saveDisabled=(or urlInvalid (not serverUrl null))
   }}
 </form>
-<div>
-  {{#each urlWarning as |warning|}}
-    <div class="banner bg-{{warning.type}} mt-30">
-      <div class="banner-icon"><i class="icon icon-info"></i></div>
-      <div class="banner-message">
-        <p>
-          {{t warning.msg
-              activeValue=serverUrl
-              htmlSafe=true
-          }}
-        </p>
-      </div>
-    </div>
-  {{/each}}
-</div>
