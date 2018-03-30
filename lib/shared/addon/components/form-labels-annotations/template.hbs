@@ -55,51 +55,34 @@
         <span class="darken"><i class="icon icon-plus text-small"/></span>
         <span>{{t 'formUserLabels.addAction'}}</span>
       </button>
-
     </div>
     {{else}}
       {{#if model.canHaveLabels}}
-        <div class="col span-12">
-          <div class="clearfix">
-            <label class="acc-label">{{t 'formUserLabels.title'}}</label>
-          </div>
-          {{#sortable-table
-               classNames="grid fixed mb-0 sortable-table"
-               bulkActions=false
-               rowActions=false
-               paging=false
-               search=true
-               sortBy=sortBy
-               stickyHeader=false
-               descending=descending
-               headers=headers
-               body=labelArray
-               as |sortable kind label|
-          }}
-            {{#if (eq kind "row")}}
-              <tr>
-                <td data-title="{{t 'labelsSection.key'}}:" class="force-wrap">{{label.key}}</td>
-                <td data-title="{{t 'labelsSection.value'}}:" class="force-wrap">{{pretty-json value=label.value}}</td>
-              </tr>
-            {{else if (eq kind "norows")}}
-              <tr>
-                <td colspan="{{sortable.fullColspan}}" class="text-center text-muted pt-20 pb-20">{{t 'labelsSection.noData'}}</td>
-              </tr>
-            {{/if}}
-          {{/sortable-table}}
-        </div>
+        {{table-labels
+          header=(t 'formUserLabels.title')
+          model=model.labels
+        }}
       {{/if}}
     {{/if}}
-    <div class="col span-6">
-      <div class="clearfix">
-        <label class="acc-label">{{t 'formAnnotations.title'}}</label>
-      </div>
-      {{form-key-value
-        editing=editing
-        initialMap=model.annotations
-        changed=(action (mut model.annotations))
-        addActionLabel="formAnnotations.addActionLabel"
-      }}
+    {{#unless editing}}
+      <div class="pt-20"></div>
+    {{/unless}}
+    <div class="col {{if editing 'span-6' 'span-12'}}">
+      {{#if editing}}
+         {{form-key-value
+            header=(t 'formAnnotations.title')
+            editing=editing
+            initialMap=model.annotations
+            changed=(action (mut model.annotations))
+            addActionLabel="formAnnotations.addActionLabel"
+          }}
+      {{else}}
+        {{table-labels
+          header=(t 'formAnnotations.title')
+          model=model.annotations
+          labelIntlSec="annotationsSection"
+        }}
+      {{/if}}
     </div>
   </div>
 {{/accordion-list-item}}
