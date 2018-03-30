@@ -45,6 +45,10 @@ var Workload = Resource.extend(DisplayImage, StateCounts, EndpointPorts, {
       return this.doAction('pause');
     },
 
+    resume() {
+      return this.doAction('pause');
+    },
+
     restart() {
       return this.doAction('restart', {rollingRestartStrategy: {}});
     },
@@ -175,6 +179,8 @@ var Workload = Resource.extend(DisplayImage, StateCounts, EndpointPorts, {
     let isReal = get(this, 'isReal');
     let podForShell = get(this, 'podForShell');
 
+    let isPaused = get(this, 'isPaused');
+
     let choices = [
       { label: 'action.edit',           icon: 'icon icon-edit',             action: 'upgrade',        enabled: !!l.update &&  isReal },
       { label: 'action.rollback',       icon: 'icon icon-history',          action: 'rollback',       enabled: !!a.rollback && isReal },
@@ -184,7 +190,8 @@ var Workload = Resource.extend(DisplayImage, StateCounts, EndpointPorts, {
       { label: 'action.execute',        icon: 'icon icon-terminal',         action: 'shell',          enabled: !!podForShell, altAction:'popoutShell'},
 //      { label: 'action.logs',           icon: 'icon icon-file',             action: 'logs',           enabled: !!a.logs, altAction: 'popoutLogs' },
       { divider: true },
-      { label: 'action.pause',          icon: 'icon icon-pause',            action: 'pause',          enabled: !!a.pause, bulkable: true},
+      { label: 'action.pause',          icon: 'icon icon-pause',            action: 'pause',          enabled: !!a.pause && !isPaused, bulkable: true},
+      { label: 'action.resume',         icon: 'icon icon-play',             action: 'resume',          enabled: !!a.pause && isPaused,  bulkable: true},
       { divider: true },
       { label: 'action.remove',         icon: 'icon icon-trash',            action: 'promptDelete',   enabled: !!l.remove, altAction: 'delete', bulkable: true},
       { divider: true },
@@ -193,7 +200,7 @@ var Workload = Resource.extend(DisplayImage, StateCounts, EndpointPorts, {
 
     return choices;
   }.property('actionLinks.{activate,deactivate,pause,restart,rollback,garbagecollect}','links.{update,remove}',
-    'canHaveSidekicks','podForShell'
+    'canHaveSidekicks','podForShell', 'isPaused'
   ),
 
   sortName: function() {
