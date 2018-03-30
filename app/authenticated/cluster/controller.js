@@ -1,6 +1,17 @@
 import Controller from '@ember/controller';
+import { get, set, observer } from '@ember/object';
 
 export default Controller.extend({
-  // might be an ember bug but if we dont have an empty controller here the transtion from the cluster managemnt page
-  // via launchOnCluster and useKubernetes fails because of a missing lookup.
+
+  wasReady: true,
+  watchReady: observer('model.isReady', function() {
+    const wasReady = get(this,'wasReady');
+    const isReady = get(this,'model.isReady');
+
+    set(this,'wasReady', isReady);
+
+    if ( isReady && !wasReady ) {
+      this.send('becameReady');
+    }
+  })
 });

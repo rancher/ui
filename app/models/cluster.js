@@ -53,6 +53,10 @@ export default Resource.extend(ResourceUsage, {
     return null;
   }),
 
+  isReady: computed('conditions.@each.status', function() {
+    return this.hasCondition('Ready');
+  }),
+
   isRKE: computed('configName', function() {
     return get(this, 'configName') === 'rancherKubernetesEngineConfig';
   }),
