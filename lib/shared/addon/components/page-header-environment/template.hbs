@@ -64,7 +64,7 @@
         Cluster: {{entry.cluster.displayName}}
       {{/link-to}}
     </li>
-    {{#if (eq entry.cluster.relevantState 'active')}}
+    {{#if entry.cluster.isReady}}
       {{#each entry.projects as |p|}}
         <li class="{{if (and (eq pageScope "project") p.active) 'active selected' (unless entry.active 'inactive')}} subitem text-muted">
           {{#link-to 'authenticated.project' p.id class="clip project-link"}}
