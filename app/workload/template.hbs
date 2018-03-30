@@ -27,7 +27,47 @@
 {{/if}}
 
 <section>
-  <div class="row banner bg-info basics">
+  <div class="row banner bg-info basics mb-0" style="border-bottom: none;">
+    <div class="vertical-middle">
+      <label class="acc-label vertical-middle p-0">{{t 'servicePage.multistat.namesapce'}}</label>
+      {{service.namespace.displayName}}
+    </div>
+
+    <div class="vertical-middle">
+      <label class="acc-label vertical-middle p-0">{{t 'servicePage.multistat.type'}}</label>
+      {{service.displayType}}
+    </div>
+
+    {{#if service.hasImage}}
+      <div class="vertical-middle">
+        <label class="acc-label vertical-middle p-0">{{t 'servicePage.multistat.image'}}</label>
+        {{fixedLaunchConfig.image}} {{copy-to-clipboard clipboardText=fixedLaunchConfig.image size="small"}}
+      </div>
+    {{/if}}
+  </div>
+
+  <div class="row banner bg-info basics mt-0" style="border-top: none;">
+    {{#if service.canScale}}
+      <div class="vertical-middle">
+        <label class="acc-label vertical-middle p-0">{{t 'servicePage.multistat.scale'}}</label>
+        {{#if (eq service.type 'daemonSet')}}
+          {{t "servicePage.multistat.daemonSetScale"}}
+        {{else}}
+          <span class="pr-5">
+            {{service.displayScale}}
+          </span>
+          <div class="btn-group btn-group-xs p-0">
+            <button class="btn btn-xs bg-primary" {{action "scaleDown" target=service}} disabled={{not service.canScaleDown}}><i class="icon icon-minus icon-fw"/></button>
+            <button style="margin-left: -1px;" class="btn btn-xs bg-primary" {{action "scaleUp" target=service}} disabled={{not service.canScaleUp}}><i class="icon icon-plus icon-fw"/></button>
+          </div>
+        {{/if}}
+      </div>
+    {{/if}}
+    <div class="vertical-middle">
+      <label class="acc-label vertical-middle p-0">{{t 'servicePage.multistat.created'}}</label>
+      {{date-calendar service.created}}
+    </div>
+
     {{#if service.externalIpAddresses}}
       <div class="vertical-middle">
         <label class="acc-label vertical-middle p-0">{{t 'servicePage.external.externalIp' count=service.externalIpAddresses.length}}</label>
@@ -37,56 +77,18 @@
       <div class="vertical-middle">
         <label class="acc-label vertical-middle p-0">{{t 'servicePage.external.externalHostname'}} </label> {{service.hostname}}
       </div>
-    {{else if service.selector}}
-      <div class="vertical-middle">
-        <label class="acc-label vertical-middle p-0">{{t 'servicePage.selector.label'}} </label> {{service.selector}}
-      </div>
     {{/if}}
-
-    {{#if service.hasImage}}
-      <div class="vertical-middle">
-        <label class="acc-label vertical-middle p-0">{{t 'servicePage.multistat.image'}}</label>
-        {{fixedLaunchConfig.image}} {{copy-to-clipboard clipboardText=fixedLaunchConfig.image size="small"}}
-      </div>
-    {{/if}}
-
-    {{#if service.canScale}}
-      <div class="vertical-middle">
-        <label class="acc-label vertical-middle p-0">{{t 'servicePage.multistat.scale'}}</label>
-        <span class="pr-5">
-          {{service.displayScale}}
-        </span>
-        <div class="btn-group btn-group-xs p-0">
-          <button class="btn btn-xs bg-primary" {{action "scaleDown" target=service}} disabled={{not service.canScaleDown}}><i class="icon icon-minus icon-fw"/></button>
-          <button style="margin-left: -1px;" class="btn btn-xs bg-primary" {{action "scaleUp" target=service}} disabled={{not service.canScaleUp}}><i class="icon icon-plus icon-fw"/></button>
-        </div>
-      </div>
-    {{/if}}
-  </div>
-</section>
-
-<section>
-  <div class="row banner bg-info basics">
-    <div class="vertical-middle">
-      <label class="acc-label vertical-middle p-0">{{t 'servicePage.multistat.namesapce'}}</label>
-      {{service.namespace.displayName}}
-    </div>
-
-    <div class="vertical-middle">
-      <label class="acc-label vertical-middle p-0">{{t 'servicePage.multistat.type'}}</label>
-      {{service.type}}
-    </div>
-
-    <div class="vertical-middle">
-      <label class="acc-label vertical-middle p-0">{{t 'servicePage.multistat.created'}}</label>
-      {{date-calendar service.created}}
-    </div>
-
   </div>
 </section>
 
 <section>
   {{#accordion-list as |al expandFn|}}
+    {{accordion-pod
+      pods=service.pods
+      expandAll=al.expandAll
+      expandFn=expandFn
+    }}
+
     {{#if service.canHaveEnvironment}}
       {{form-env-var
         model=displayEnvironmentVars
@@ -192,15 +194,7 @@
       expandFn=expandFn
     }}
 
-    {{#if service.canHaveLabels}}
-      {{labels-section
-        model=service
-        expandAll=al.expandAll
-        expandFn=expandFn
-      }}
-    {{/if}}
-
-    {{form-annotations
+    {{form-labels-annotations
       classNames="accordion-wrapper"
       model=service
       editing=false

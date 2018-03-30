@@ -5,7 +5,7 @@
 </div>
 
 {{#if ary.length}}
-  <table class="table fixed no-lines small mb-10">
+  <table class="table fixed no-lines">
     <thead>
       <tr class="hidden-sm">
         <th>{{t keyLabel}}{{#if (and editing allowEditKey)}}{{field-required}}{{/if}}</th>
@@ -56,6 +56,11 @@
     {{/each}}
     </tbody>
   </table>
+  {{#if ary.length}}
+    <div class="protip mb-5">
+      {{t 'formKeyValue.protip'}}
+    </div>
+  {{/if}}
 {{else}}
   {{#unless editing}}
     <div>{{t 'generic.none'}}</div>
@@ -68,10 +73,5 @@
       <span class="darken"><i class="icon icon-plus text-small"/></span>
       <span>{{t addActionLabel}}</span>
     </button>
-    {{#if ary.length}}
-      <span class="protip pl-20">
-        {{t 'formKeyValue.protip'}}
-      </span>
-    {{/if}}
   </div>
 {{/if}}

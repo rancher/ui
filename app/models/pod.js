@@ -99,7 +99,13 @@ var Pod = Resource.extend(DisplayImage, {
       return resource;
     }
   }),
-
+  image: function () {
+    let containers = this.get('containers');
+    if(!containers.length){
+      return
+    }
+    return containers[0].image;
+  }.property('containers'),
   isOn: function() {
     return ['running','migrating','restarting'].indexOf(get(this,'state')) >= 0;
   }.property('state'),

@@ -89,6 +89,8 @@ module.exports = function(defaults) {
   app.import('bower_components/async/dist/async.js');
   app.import('bower_components/position-calculator/dist/position-calculator.js');
   app.import('vendor/aws-sdk-ec2.js');
+  app.import('vendor/codemirror/show-hint.js');
+  app.import('vendor/codemirror/show-hint.css');
   app.import('vendor/json-sanitizer/json-sanitizer.js');
   app.import('bower_components/identicon.js/pnglib.js');
   app.import('bower_components/identicon.js/identicon.js');
@@ -96,7 +98,6 @@ module.exports = function(defaults) {
   app.import('bower_components/ember-shortcuts/ember-shortcuts.js');
   app.import('bower_components/jsondiffpatch/public/build/jsondiffpatch.js');
   app.import('bower_components/jsondiffpatch/public/build/jsondiffpatch-formatters.js');
-//  app.import('node_modules/prettycron/prettycron.js');
 
   app.import('vendor/icons/style.css');
   app.import('vendor/icons/fonts/rancher-icons.svg',   { destDir: 'assets/fonts/'});
