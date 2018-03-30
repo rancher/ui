@@ -195,7 +195,10 @@ var Workload = Resource.extend(DisplayImage, StateCounts, EndpointPorts, {
   }.property('actionLinks.{activate,deactivate,pause,restart,rollback,garbagecollect}','links.{update,remove}','previousRevisionId',
     'canHaveSidekicks','podForShell'
   ),
-
+  displayType: function () {
+    let type = this.get('type');
+    return get(this, 'intl').t(`servicePage.serviceType.${type}`);
+  }.property('type'),
   sortName: function() {
     return sortableNumericSuffix(get(this, 'displayName'));
   }.property('displayName'),
