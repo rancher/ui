@@ -9,7 +9,6 @@ export default Controller.extend({
   allWorkloads:       service(),
 
   service:            oneWay('model.workload'),
-  rules:              oneWay('service.lbConfig.portRules'),
 
   sortBy:             'priority',
   fixedLaunchConfig:  null,
