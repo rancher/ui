@@ -87,6 +87,12 @@
 
 <section>
   {{#accordion-list as |al expandFn|}}
+    {{accordion-pod
+      pods=service.pods
+      expandAll=al.expandAll
+      expandFn=expandFn
+    }}
+
     {{#if service.canHaveEnvironment}}
       {{form-env-var
         model=displayEnvironmentVars

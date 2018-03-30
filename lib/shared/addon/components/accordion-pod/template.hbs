@@ -1,0 +1,44 @@
+{{#accordion-list-item
+  title=(t 'podsSection.title')
+  detail=(t 'podsSection.detail')
+  expandAll=initExpandAll
+  expand=(action expandFn)
+  componentName='sortable-table'
+  as | parent |
+}}
+  {{#sortable-table
+    tableClassNames="double-rows"
+    bulkActions=false
+    body=pods
+    sortBy=sortBy
+    stickyHeader=stickyHeader
+    fullRows=true
+    search=search
+    groupByKey=groupByKey
+    groupByRef=groupByRef
+    headers=headers as |sortable kind inst dt|
+    }}
+    {{#if (eq kind "row")}}
+      <tr class="main-row">
+        <td data-title="{{dt.displayState}}" class="state">
+          {{badge-state model=inst}}
+        </td>
+        <td data-title="{{dt.name}}">
+          {{inst.name}}
+        </td>
+        <td data-title="{{dt.image}}">
+          {{inst.image}}
+        </td>
+        <td data-title="{{dt.displayIp}}">
+          {{inst.displayIp}}
+        </td>
+      </tr>
+    {{else if (eq kind "nomatch")}}
+      <tr><td colspan="{{sortable.fullColspan}}" class="text-center text-muted lacsso pt-20 pb-20">{{t 'pipelinesPage.table.noMatch'}}</td></tr>
+    {{else if (eq kind "norows")}}
+      <tr>
+        <td colspan="{{sortable.fullColspan}}" class="text-center text-muted pt-20 pb-20">{{t 'labelsSection.noData'}}</td>
+      </tr>
+    {{/if}}
+  {{/sortable-table}}
+{{/accordion-list-item}}
