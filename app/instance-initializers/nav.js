@@ -255,14 +255,8 @@ const rootNav = [
     scope: 'global',
     id: 'global-settings',
     localizedLabel: 'nav.settings.tab',
+    route: 'global-admin.settings.advanced',
     resourceScope: 'global',
-    submenu: [
-      {
-        id: 'global-settings-advanced',
-        localizedLabel: 'nav.settings.advanced',
-        route: 'global-admin.settings.advanced',
-      },
-    ],
   },
   {
     scope: 'global',
