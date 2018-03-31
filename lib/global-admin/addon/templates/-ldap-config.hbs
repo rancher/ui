@@ -22,13 +22,10 @@
 
 {{#if isEnabled}}
   <section class="box mt-30">
-    <div class="header clear-fix mb-15 pb-0">
+    <div class="header-borderless  clear-fix mb-15 pb-0">
       <h3 class="pull-left">{{t 'ldap.accessEnabled.header'}}</h3>
       <div class="vertical-middle"></div>
       <div class="right-buttons">
-        <button class="btn btn-sm right-divider-btn" disabled=true>
-          {{t 'generic.edit'}}
-        </button>
         <button class="btn btn-sm right-divider-btn bg-error" {{action "disable"}}>
           {{t 'ldap.accessEnabled.disable.confirmDisable.pre'}}
         </button>
@@ -95,6 +92,23 @@
         </div>
       </div>
     </div>
+    {{#if adConfig.tls}}
+      <hr/>
+      <div class="row pt-10">
+        <div class="col span-12 input-group mt-0">
+          {{input-text-file
+              label='ldap.customizeSchema.cert.labelText'
+              value=adConfig.certificate
+              canChangeName=false
+              accept="text/plain,.pem,.pkey,.key"
+              minHeight=60
+              placeholder="ldap.customizeSchema.cert.placeholder"
+              shouldChangeName=false
+          }}
+          <p class="help-block">{{t 'ldap.customizeSchema.cert.helpText'}}</p>
+        </div>
+      </div>
+    {{/if}}
     <hr class="mt-30 mb-30"/>
     <p class="text-info mb-0">{{t 'ldap.accessConfig.subtext2' appName=settings.appName}}</p>
     <div class="row">
@@ -139,81 +153,74 @@
     </div>
   </section>
 
-  <section class="box mt-30">
-    <h3>{{t 'ldap.customizeSchema.header'}}</h3>
-    <hr/>
-    <p class="text-info">{{t 'ldap.customizeSchema.helpText'}}</p>
-    <div class="row">
-      <div class="col span-6">
-        <h3>{{t 'ldap.customizeSchema.users.header'}}</h3>
-        <div class="pb-20">
-          <label class="acc-label pb-5">{{t 'ldap.customizeSchema.users.objectClass.labelText'}}</label>
-          {{input value=adConfig.userObjectClass classNames="form-control"}}
-        </div>
-        <div class="pb-20">
-          <label class="acc-label pb-5">{{t 'ldap.customizeSchema.users.name.labelText'}}</label>
-          {{input value=adConfig.userNameAttribute classNames="form-control"}}
-        </div>
-        <div class="pb-20">
-          <label class="acc-label pb-5">{{t 'ldap.customizeSchema.users.login.labelText'}}</label>
-          {{input value=adConfig.userLoginAttribute classNames="form-control"}}
-        </div>
-        <div class="pb-20">
-          <label class="acc-label pb-5">{{t 'ldap.customizeSchema.users.search.labelText'}}</label>
-          {{input value=adConfig.userSearchAttribute classNames="form-control"}}
-        </div>
-        <div class="pb-20">
-          <label class="acc-label pb-5">{{t 'ldap.customizeSchema.users.enabledAttribute.labelText'}}</label>
-          {{input value=adConfig.userEnabledAttribute classNames="form-control"}}
-        </div>
-        <div class="pb-20">
-          <label class="acc-label pb-5">{{t 'ldap.customizeSchema.users.disabledBitMask.labelText'}}</label>
-          {{input-integer value=adConfig.userDisabledBitMask min=1 classNames="form-control"}}
-        </div>
-      </div>
-      <div class="col span-6">
-        <h3>{{t 'ldap.customizeSchema.groups.header'}}</h3>
-        <div class="pb-20">
-          <label class="acc-label pb-5">{{t 'ldap.customizeSchema.groups.objectClass.labelText'}}</label>
-          {{input value=adConfig.groupObjectClass classNames="form-control"}}
-        </div>
-        <div class="pb-20">
-          <label class="acc-label pb-5">{{t 'ldap.customizeSchema.groups.name.labelText'}}</label>
-          {{input value=adConfig.groupNameAttribute classNames="form-control"}}
-        </div>
-        <div class="pb-20">
-          <label class="acc-label pb-5">{{t 'ldap.customizeSchema.groups.groupMemberUser.labelText'}}</label>
-          {{input value=adConfig.groupMemberUserAttribute classNames="form-control" placeholder=(t 'ldap.customizeSchema.groups.groupMemberUser.placeholder')}}
-        </div>
-        <div class="pb-20">
-          <label class="acc-label pb-5">{{t 'ldap.customizeSchema.groups.search.labelText'}}</label>
-          {{input value=adConfig.groupSearchAttribute classNames="form-control"}}
-        </div>
-        <div class="pb-20">
-          <label class="acc-label pb-5">{{t 'ldap.customizeSchema.groups.groupMemberMapping.labelText'}}</label>
-          {{input value=adConfig.groupMemberMappingAttribute classNames="form-control"}}
-        </div>
-        <div class="pb-20">
-          <label class="acc-label pb-5">{{t 'ldap.customizeSchema.groups.groupDN.labelText'}}</label>
-          {{input value=adConfig.groupDNAttribute classNames="form-control" placeholder=(t 'ldap.customizeSchema.groups.groupDN.placeholder')}}
-        </div>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col span-12 input-group mt-0">
-        <div class="clearfix">
-          <label class="acc-label pb-5">{{t 'ldap.customizeSchema.cert.labelText'}}</label>
-        </div>
-        {{input-text-file
-            value=adConfig.certificate
-            canChangeName=false
-            accept="text/plain,.pem,.pkey,.key"
-            minHeight=60
-            placeholder="newCertificate.key.placeholder"
-            shouldChangeName=false
+  <section class="mt-30">
+    {{#accordion-list showExpandAll=false  as |al expandFn|}}
+      <div class="mt-20">
+        {{#accordion-list-item
+             title=(t 'ldap.customizeSchema.header')
+             detail=(t 'ldap.customizeSchema.helpText')
+             expandAll=al.expandAll
+             expand=(action expandFn)
         }}
+          <div class="row">
+            <div class="col span-6">
+              <h3>{{t 'ldap.customizeSchema.users.header'}}</h3>
+              <div class="pb-20">
+                <label class="acc-label pb-5">{{t 'ldap.customizeSchema.users.objectClass.labelText'}}</label>
+                {{input value=adConfig.userObjectClass classNames="form-control"}}
+              </div>
+              <div class="pb-20">
+                <label class="acc-label pb-5">{{t 'ldap.customizeSchema.users.name.labelText'}}</label>
+                {{input value=adConfig.userNameAttribute classNames="form-control"}}
+              </div>
+              <div class="pb-20">
+                <label class="acc-label pb-5">{{t 'ldap.customizeSchema.users.login.labelText'}}</label>
+                {{input value=adConfig.userLoginAttribute classNames="form-control"}}
+              </div>
+              <div class="pb-20">
+                <label class="acc-label pb-5">{{t 'ldap.customizeSchema.users.search.labelText'}}</label>
+                {{input value=adConfig.userSearchAttribute classNames="form-control"}}
+              </div>
+              <div class="pb-20">
+                <label class="acc-label pb-5">{{t 'ldap.customizeSchema.users.enabledAttribute.labelText'}}</label>
+                {{input value=adConfig.userEnabledAttribute classNames="form-control"}}
+              </div>
+              <div class="pb-20">
+                <label class="acc-label pb-5">{{t 'ldap.customizeSchema.users.disabledBitMask.labelText'}}</label>
+                {{input-integer value=adConfig.userDisabledBitMask min=1 classNames="form-control"}}
+              </div>
+            </div>
+            <div class="col span-6">
+              <h3>{{t 'ldap.customizeSchema.groups.header'}}</h3>
+              <div class="pb-20">
+                <label class="acc-label pb-5">{{t 'ldap.customizeSchema.groups.objectClass.labelText'}}</label>
+                {{input value=adConfig.groupObjectClass classNames="form-control"}}
+              </div>
+              <div class="pb-20">
+                <label class="acc-label pb-5">{{t 'ldap.customizeSchema.groups.name.labelText'}}</label>
+                {{input value=adConfig.groupNameAttribute classNames="form-control"}}
+              </div>
+              <div class="pb-20">
+                <label class="acc-label pb-5">{{t 'ldap.customizeSchema.groups.groupMemberUser.labelText'}}</label>
+                {{input value=adConfig.groupMemberUserAttribute classNames="form-control" placeholder=(t 'ldap.customizeSchema.groups.groupMemberUser.placeholder')}}
+              </div>
+              <div class="pb-20">
+                <label class="acc-label pb-5">{{t 'ldap.customizeSchema.groups.search.labelText'}}</label>
+                {{input value=adConfig.groupSearchAttribute classNames="form-control"}}
+              </div>
+              <div class="pb-20">
+                <label class="acc-label pb-5">{{t 'ldap.customizeSchema.groups.groupMemberMapping.labelText'}}</label>
+                {{input value=adConfig.groupMemberMappingAttribute classNames="form-control"}}
+              </div>
+              <div class="pb-20">
+                <label class="acc-label pb-5">{{t 'ldap.customizeSchema.groups.groupDN.labelText'}}</label>
+                {{input value=adConfig.groupDNAttribute classNames="form-control" placeholder=(t 'ldap.customizeSchema.groups.groupDN.placeholder')}}
+              </div>
+            </div>
+          </div>
+        {{/accordion-list-item}}
       </div>
-    </div>
+    {{/accordion-list}}
   </section>
 
   <section class="box mt-30">
@@ -222,26 +229,30 @@
     <p class="text-info">{{t 'ldap.testAuth.helpText' providerName=(t providerName)}}</p>
 
     <div class="row">
-      <div class="col span-5">
+      <div class="col span-6">
         <div class="inline-form">
           <label class="acc-label pb-5">{{t 'ldap.testAuth.userName.labelText'}}{{field-required}}</label>
           {{input value=username classNames="form-control"}}
         </div>
       </div>
-      <div class="col span-5">
+      <div class="col span-6">
         <div class="inline-form">
           <label class="acc-label pb-5">{{t 'ldap.testAuth.password.labelText'}}{{field-required}}</label>
           {{input type="password" value=password classNames="form-control"}}
         </div>
       </div>
-      <div class="col span-2">
-        <a style="height: 38px; line-height: 28px;" disabled={{createDisabled}} class="btn bg-primary mt-25"  {{action "test"}}>
-          {{#if testing}}
-            <i class="icon icon-spinner icon-spin"></i> {{t 'ldap.testAuth.authenticate.post'}}
-          {{else}}
-            {{t 'ldap.testAuth.authenticate.pre'}}
-          {{/if}}
-        </a>
+    </div>
+    <div class="row">
+      <div class="col span-12">
+        {{save-cancel
+            editing=editing
+            save="test"
+            saveDisabled=createDisabled
+            cancelDisabled=true
+            createLabel='ldap.testAuth.authenticate.pre'
+            savingLabel='ldap.testAuth.authenticate.post'
+            saving=testing
+        }}
       </div>
     </div>
   </section>

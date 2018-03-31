@@ -14,18 +14,18 @@
   <hr />
   <div class="row">
     <div class="col span-6">
-        <label class="acc-label pb-5">{{t 'authPage.shibboleth.disabled.name.labelText'}}{{field-required}}</label>
-        {{input type="text" value=config.displayNameField classNames="form-control"}}
+      <label class="acc-label pb-5">{{t 'authPage.shibboleth.disabled.name.labelText'}}{{field-required}}</label>
+      {{input type="text" value=config.displayNameField classNames="form-control"}}
     </div>
     <div class="col span-6">
-        <label class="acc-label pb-5">{{t 'authPage.shibboleth.disabled.username.labelText'}}{{field-required}}</label>
-        {{input type="text" value=config.userNameField classNames="form-control"}}
+      <label class="acc-label pb-5">{{t 'authPage.shibboleth.disabled.username.labelText'}}{{field-required}}</label>
+      {{input type="text" value=config.userNameField classNames="form-control"}}
     </div>
-    </div>
-    <div class="row">
+  </div>
+  <div class="row">
     <div class="col span-6">
-        <label class="acc-label pb-5">{{t 'authPage.shibboleth.disabled.uid.labelText'}}{{field-required}}</label>
-        {{input type="text" value=config.uidField classNames="form-control"}}
+      <label class="acc-label pb-5">{{t 'authPage.shibboleth.disabled.uid.labelText'}}{{field-required}}</label>
+      {{input type="text" value=config.uidField classNames="form-control"}}
     </div>
     <div class="col span-6">
       <label class="acc-label pb-5">{{t 'authPage.shibboleth.disabled.groups.labelText'}}{{field-required}}</label>
@@ -37,10 +37,11 @@
       <div class="inline-form">
         <label class="acc-label pb-5">{{t 'inputCertificate.key.label'}}{{field-required}}</label>
         {{input-text-file
-          value=config.spKey
-          accept="text/*, .pem, .pkey, .key"
-          minHeight=60
-          placeholder="inputCertificate.key.placeholder"
+            value=config.spKey
+            accept="text/*, .pem, .pkey, .key"
+            minHeight=60
+            placeholder="inputCertificate.key.placeholder"
+            classNames="box"
         }}
       </div>
     </div>
@@ -48,10 +49,11 @@
       <div class="inline-form">
         <label class="acc-label pb-5">{{t 'inputCertificate.cert.label'}}{{field-required}}</label>
         {{input-text-file
-          accept="text/*, .pem, .crt"
-          value=config.spCert
-          minHeight=60
-          placeholder="inputCertificate.cert.placeholder"
+            accept="text/*, .pem, .crt"
+            value=config.spCert
+            minHeight=60
+            placeholder="inputCertificate.cert.placeholder"
+            classNames="box"
         }}
       </div>
     </div>
@@ -59,28 +61,29 @@
       <div class="inline-form">
         <label class="acc-label pb-5">{{t 'inputCertificate.metaXML.label'}}{{field-required}}</label>
         {{input-text-file
-          accept="text/xml"
-          value=config.idpMetadataContent
-          minHeight=60
-          placeholder="inputCertificate.metaXML.placeholder"
+            accept="text/xml"
+            value=config.idpMetadataContent
+            minHeight=60
+            placeholder="inputCertificate.metaXML.placeholder"
+            classNames="box"
         }}
       </div>
     </div>
   </div>
   <div class="row">
-      <div class="inline-form">
-        <label class="acc-label pb-5">&nbsp;</label>
-        <button class="btn bg-primary" style="display: block;margin: 0 auto;" {{action "save"}}>
-          {{#if saving}}
-            <i class="icon icon-spinner icon-spin"></i> {{t 'generic.saving'}}
-          {{else if saved}}
-            {{t 'generic.saved'}}
-          {{else}}
-            {{t 'generic.save'}}
-          {{/if}}
-        </button>
-      </div>
+    <div class="inline-form">
+      <label class="acc-label pb-5">&nbsp;</label>
+      <button class="btn bg-primary" style="display: block;margin: 0 auto;" {{action "save"}}>
+        {{#if saving}}
+          <i class="icon icon-spinner icon-spin"></i> {{t 'generic.saving'}}
+        {{else if saved}}
+          {{t 'generic.saved'}}
+        {{else}}
+          {{t 'generic.save'}}
+        {{/if}}
+      </button>
     </div>
+  </div>
 </section>
 <section class="box mt-30">
   <h3>{{t 'authPage.shibboleth.disabled.testAuth.header'}}</h3>

@@ -253,6 +253,19 @@ const rootNav = [
   },
   {
     scope: 'global',
+    id: 'global-settings',
+    localizedLabel: 'nav.settings.tab',
+    resourceScope: 'global',
+    submenu: [
+      {
+        id: 'global-settings-advanced',
+        localizedLabel: 'nav.settings.advanced',
+        route: 'global-admin.settings.advanced',
+      },
+    ],
+  },
+  {
+    scope: 'global',
     id: 'global-security',
     localizedLabel: 'nav.admin.security.tab',
     route: 'global-admin.security',

@@ -1,14 +1,15 @@
 {{#if (eq step 1)}}
   {{#input-text-file
-      label='clusterNew.googlegke.credential.label'
-      value=config.credential
-      accept="text/*, .json"
-      minHeight=60
-      canChangeName=false
-      nameRequired=true
-      placeholder="clusterNew.googlegke.credential.placeholder"
-      fileChosen=(action "clickNext")
-      as |section|
+       classNames="box"
+       label='clusterNew.googlegke.credential.label'
+       value=config.credential
+       accept="text/*, .json"
+       minHeight=60
+       canChangeName=false
+       nameRequired=true
+       placeholder="clusterNew.googlegke.credential.placeholder"
+       fileChosen=(action "clickNext")
+       as |section|
   }}
     {{#if (eq section 'description')}}
       <div class="row help">
@@ -21,20 +22,20 @@
 
   {{top-errors errors=errors}}
   {{save-cancel
-    createLabel="clusterNew.googlegke.checkServiceAccount"
-    savingLabel="clusterNew.googlegke.checkingServiceAccount"
-    save=(action "checkServiceAccount")
-    cancel=close
+      createLabel="clusterNew.googlegke.checkServiceAccount"
+      savingLabel="clusterNew.googlegke.checkingServiceAccount"
+      save=(action "checkServiceAccount")
+      cancel=close
   }}
 
 {{else}}
   {{#accordion-list showExpandAll=false as |al expandFn|}}
     {{#accordion-list-item
-      title=(t 'clusterNew.customize.title')
-      detail=(t 'clusterNew.customize.detail')
-      everExpanded=true
-      expandAll=al.expandAll
-      expand=(action expandFn)
+         title=(t 'clusterNew.customize.title')
+         detail=(t 'clusterNew.customize.detail')
+         everExpanded=true
+         expandAll=al.expandAll
+         expand=(action expandFn)
     }}
       <div class="row">
         <div class="col span-6">
@@ -70,12 +71,12 @@
     {{/accordion-list-item}}
 
     {{#accordion-list-item
-      title=(t 'clusterNew.nodes.title')
-      detail=(t 'clusterNew.nodes.detail')
-      showExpand=false
-      expandOnInit=true
-      expandAll=al.expandAll
-      expand=(action expandFn)
+         title=(t 'clusterNew.nodes.title')
+         detail=(t 'clusterNew.nodes.detail')
+         showExpand=false
+         expandOnInit=true
+         expandAll=al.expandAll
+         expand=(action expandFn)
     }}
       <div class="row">
         <div class="col span-6">
@@ -84,13 +85,13 @@
             {{config.zone}}
           {{else}}
             {{new-select
-              classNames="form-control"
-              optionValuePath="name"
-              optionLabelPath="name"
-              content=zoneChoices
-              value=config.zone
-              prompt="clusterNew.googlegke.zone.prompt"
-              localizedPrompt=true
+                classNames="form-control"
+                optionValuePath="name"
+                optionLabelPath="name"
+                content=zoneChoices
+                value=config.zone
+                prompt="clusterNew.googlegke.zone.prompt"
+                localizedPrompt=true
             }}
           {{/if}}
         </div>
@@ -122,12 +123,12 @@
         <div class="col span-6">
           <label class="acc-label">{{t 'clusterNew.googlegke.diskSizeGb.label'}}</label>
           <div class="input-group">
-          {{#if editing}}
-            {{config.diskSizeGb}}{{t 'generic.gigabyte'}}
-          {{else}}
-            {{input-number min=1 value=config.diskSizeGb}}
-            <span class="input-group-addon bg-default">{{t 'generic.gigabyte'}}</span>
-          {{/if}}
+            {{#if editing}}
+              {{config.diskSizeGb}}{{t 'generic.gigabyte'}}
+            {{else}}
+              {{input-number min=1 value=config.diskSizeGb}}
+              <span class="input-group-addon bg-default">{{t 'generic.gigabyte'}}</span>
+            {{/if}}
           </div>
         </div>
       </div>
