@@ -44,18 +44,19 @@ var PublicEndpoint = Resource.extend({
   }),
 
   // ip:port
-  endpoint: computed('port', 'address', function() {
-    const address = get(this, 'address');
+  endpoint: computed('port', 'addresses', 'allNodes', function() {
+    const addresses = get(this, 'addresses');
+    const allNodes = get(this, 'allNodes');
 
     let out = '';
-    if ( address && address !== 'NodePort' ) {
-      out = address;
-    } else {
+    if ( allNodes ) {
       const globalStore = get(this, 'globalStore');
       const node = globalStore.all('node').findBy('clusterId', get(this,'scope.currentCluster.id'));
       if ( node ) {
         out = get(node, 'ipAddress');
       }
+    } else if ( addresses && addresses.length ) {
+      out = addresses[0];
     }
 
     if (out) {
@@ -65,7 +66,7 @@ var PublicEndpoint = Resource.extend({
     return out;
   }),
 
-  // [ip:]port[/udp]
+  // port[/udp]
   displayEndpoint: computed('port','protocol', function() {
     let out = '';
     out += get(this,'port');
