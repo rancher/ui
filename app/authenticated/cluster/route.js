@@ -9,18 +9,29 @@ export default Route.extend(Preload, {
   globalStore: service(),
   clusterStore: service(),
 
+  actions: {
+    becameReady() {
+      get(this,'clusterStore').reset();
+      this.refresh();
+    },
+  },
+
   model(params, transition) {
     return get(this, 'globalStore').find('cluster', params.cluster_id).then((cluster) => {
       return get(this, 'scope').startSwitchToCluster(cluster).then(() => {
-        return this.loadSchemas('clusterStore').then(() => {
-          return PromiseAll([
-            this.preload('namespace','clusterStore'),
-            this.preload('storageClass','clusterStore'),
-            this.preload('persistentVolume','clusterStore'),
-          ]).then(() => {
-            return cluster;
+        if ( get(cluster,'isReady') ) {
+          return this.loadSchemas('clusterStore').then(() => {
+            return PromiseAll([
+              this.preload('namespace','clusterStore'),
+              this.preload('storageClass','clusterStore'),
+              this.preload('persistentVolume','clusterStore'),
+            ]).then(() => {
+              return cluster;
+            });
           });
-        });
+        } else {
+          return cluster;
+        }
       }).catch((err) => {
         // @TODO-2.0 right now the API can't return schemas for a not-active cluster
         if ( err.status === 404 ) {

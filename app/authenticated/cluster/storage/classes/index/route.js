@@ -6,7 +6,7 @@ export default Route.extend({
   model() {
     let cluster = this.modelFor('authenticated.cluster');
 
-    if ( get(cluster,'state') !== 'active' ) {
+    if ( !get(cluster,'isReady') ) {
       this.transitionTo('authenticated.cluster.index');
     }
 

@@ -55,17 +55,6 @@ export default Resource.extend({
     },
   },
 
-  combinedState: computed('state', 'cluster.state', function() {
-    var project = get(this,'state');
-    var cluster = get(this,'cluster.state');
-
-    if ( cluster === 'active' ) {
-      return project;
-    } else {
-      return cluster;
-    }
-  }),
-
   availableActions: computed('actionLinks.{activate,deactivate}', 'links.{update,remove}', function () {
     // let a = get(this,'actionLinks');
     // let l = get(this,'links');
