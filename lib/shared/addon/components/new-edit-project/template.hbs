@@ -44,13 +44,15 @@
     }}
       {{form-members
           creator=creator
-          editing=true
+          editing=(not primaryResource.id)
+          expanded=expanded
+          isNew=isNew
           memberConfig=memberConfig
           primaryResource=primaryResource
-          roles=model.roles
-          users=model.users
-          type="project"
           registerHook=(action "registerHook")
+          roles=model.roles
+          type="project"
+          users=model.users
       }}
     {{/accordion-list-item}}
   </div>
