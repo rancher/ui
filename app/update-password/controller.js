@@ -1,17 +1,18 @@
 import Controller from '@ember/controller';
 import { inject as service } from '@ember/service';
-import { get, computed } from '@ember/object';
+import { set, get, computed } from '@ember/object';
 import C from 'ui/utils/constants';
 
 export default Controller.extend({
   router: service(),
   access: service(),
-  showCurrent: computed('access.userCode.password', function() {
-    if (get(this, 'access.userCode.password')) {
-      return false;
-    }
-    return true;
-  }),
+
+  showCurrent: null,
+
+  init() {
+    this._super(...arguments);
+    set(this, 'showCurrent', !get(this, 'access.userCode.password'));
+  },
   currentPassword: computed('', function() {
     return get(this, 'access.userCode.password') || null;
   }),

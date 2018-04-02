@@ -1,61 +1,28 @@
+import { alias } from '@ember/object/computed';
 import { inject as service } from '@ember/service';
-import Controller from '@ember/controller';
+import Controller, { inject as controller } from '@ember/controller';
+import { get, set, observer, computed } from '@ember/object';
+import { once } from '@ember/runloop';
 
 export default Controller.extend({
-  scope: service(),
+  selectedContainer: null,
+
+  containerDidChange: observer('model.containers.[]', function () {
+    once(() => set(this, 'selectedContainer', get(this, 'model.containers.firstObject')));
+  }),
 
   actions: {
-    changeContainer(container) {
-      this.transitionToRoute('container', container.get('id'));
+    select(container) {
+      set(this, 'selectedContainer', container);
     }
   },
-  portSortBy: 'privatePort',
-  queryParams: ['sortBy'],
-  searchText: '',
 
-  portHeaders: [
-    {
-      name: 'publicIp',
-      sort: ['displayPublicIp','privatePort','protocol'],
-      searchField: 'displayPublicIp',
-      translationKey: 'generic.ipAddress',
-    },
-    {
-      name: 'publicPort',
-      sort: ['publicPort','privatePort','protocol'],
-      searchField: 'publicPort',
-      translationKey: 'containerPage.portsTab.table.public',
-    },
-    {
-      name: 'privatePort',
-      sort: ['privatePort','protocol'],
-      searchField: 'privatePort',
-      translationKey: 'containerPage.portsTab.table.private',
-    },
-    {
-      name: 'protocol',
-      sort: ['protocol','privatePort'],
-      searchField: 'protocol',
-      translationKey: 'containerPage.portsTab.table.protocol',
-    },
-  ],
-  storageSortBy: 'state',
-  storageHeaders:  [
-    {
-      name:           'state',
-      sort:           ['sortState','displayUri','id'],
-      translationKey: 'hostsPage.hostPage.storageTab.table.header.state',
-      width:          125,
-    },
-    {
-      name:           'hostPath',
-      sort:           ['displayUri','id'],
-      translationKey: 'hostsPage.hostPage.storageTab.table.header.hostPath',
-    },
-    {
-      name:           'mounts',
-      sort:           false,
-      translationKey: 'hostsPage.hostPage.storageTab.table.header.mounts',
-    },
-  ],
+  displayEnvironmentVars: computed('selectedContainer', function() {
+    var envs = [];
+    var environment = this.get('selectedContainer.environment')||{};
+    Object.keys(environment).forEach((key) => {
+      envs.pushObject({key: key, value: environment[key]})
+    });
+    return envs;
+  }),
 });
