@@ -6,6 +6,7 @@ import { inject as service } from "@ember/service";
 import { strPad } from 'ui/utils/util';
 import { formatSi } from 'shared/utils/parse-unit';
 import { later } from '@ember/runloop';
+import { gt } from '@ember/object/computed';
 import DisplayImage from 'shared/mixins/display-image';
 
 var Pod = Resource.extend(DisplayImage, {
@@ -18,6 +19,7 @@ var Pod = Resource.extend(DisplayImage, {
   namespace: reference('namespaceId','namespace','clusterStore'),
   node: reference('nodeId','node','globalStore'),
   workload: reference('workloadId'),
+  hasSidekicks: gt('containers.length', 1),
 
   actions: {
     clone() {
