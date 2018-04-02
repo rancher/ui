@@ -2,42 +2,54 @@
   <div class="row">
     <div class="col span-6">
       <label class="acc-label">{{t 'formVolumeRow.name.label'}}</label>
-      {{input type="text" value=model.volume.name placeholder=(t 'formVolumeRow.name.placeholder')}}
+      {{#input-or-display editable=editing value=model.volume.name}}
+        {{input type="text" value=model.volume.name placeholder=(t 'formVolumeRow.name.placeholder')}}
+      {{/input-or-display}}
     </div>
     <div class="col span-4">
       <label class="acc-label">{{t 'formVolumeRow.mode.label'}}</label>
       <div class="form-control-static">
         {{t (concat 'formVolumeRow.mode.' model.mode)}}
-        {{#if (eq model.mode "newPvc")}}
-          <button class="btn bg-transparent" action={{action 'defineNewPvc'}}>
-            <i class="icon icon-edit"/>
-            {{t 'generic.edit'}}
-          </button>
-        {{else if (or (eq model.mode "existingVolume") (eq model.mode "newVolume"))}}
-          <button class="btn bg-transparent" action={{action 'defineNewVolume'}}>
-            <i class="icon icon-edit"/>
-            {{t 'generic.edit'}}
-          </button>
+        {{#if editing}}
+          {{#if (eq model.mode "newPvc")}}
+            <button class="btn bg-transparent" action={{action 'defineNewPvc'}}>
+              <i class="icon icon-edit"/>
+              {{t 'generic.edit'}}
+            </button>
+          {{else if (or (eq model.mode "existingVolume") (eq model.mode "newVolume"))}}
+            <button class="btn bg-transparent" action={{action 'defineNewVolume'}}>
+              <i class="icon icon-edit"/>
+              {{t 'generic.edit'}}
+            </button>
+          {{/if}}
         {{/if}}
       </div>
     </div>
-    <div class="col span-2 text-right mt-0">
-      <button class="btn bg-link icon-btn" {{action "remove"}}>
-        <span class="darken"><i class="icon icon-minus text-small"/></span>
-        <span>Remove Volume</span>
-      </button>
-    </div>
+    {{#if editing}}
+      <div class="col span-2 text-right mt-0">
+        <button class="btn bg-link icon-btn" {{action "remove"}}>
+          <span class="darken"><i class="icon icon-minus text-small"/></span>
+          <span>{{t "formVolumeRow.remove"}}</span>
+        </button>
+      </div>
+    {{/if}}
   </div>
   {{#if (eq model.mode "existingPvc")}}
     <div class="row">
       <div class="col span-6">
-        <label class="acc-label">Persistent Volume Claim {{field-required}}</label>
-        {{new-select
-          value=model.volume.persistentVolumeClaim.persistentVolumeClaimId
-          content=pvcChoices
-          prompt="Select a Persistent Volume Claim..."
-          localizedLabel=false
-        }}
+        <label class="acc-label">{{t "formVolumeRow.mode.existingPvc"}} {{field-required}}</label>
+        {{#if editing}}
+          {{new-select
+            value=model.volume.persistentVolumeClaim.persistentVolumeClaimId
+            content=pvcChoices
+            prompt="Select a Persistent Volume Claim..."
+            localizedLabel=false
+          }}
+        {{else}}
+          <div>
+            {{model.volume.persistentVolumeClaim.persistentVolumeClaimId}}
+          </div>
+        {{/if}}
       </div>
     </div>
   {{else if (eq model.mode "bindMount")}}
@@ -58,45 +70,58 @@
       {{#if model.mounts.length}}
         <table class="fixed">
         <tr>
-          <th>Mount Point{{field-required}}</th>
+          <th>{{t "formVolumes.table.mountPoint"}}{{field-required}}</th>
           <th width="20">&nbsp;</th>
-          <th>Sub Path in Volume</th>
+          <th>{{t "formVolumeRow.subPath"}}</th>
           <th width="20">&nbsp;</th>
-          <th width="100" class="text-center">Read-Only</th>
-          <th width="40">&nbsp;</th>
+          <th width="100" class="text-center">{{t "formVolumeRow.readOnly"}}</th>
+          {{#if editing}}
+            <th width="40">&nbsp;</th>
+          {{/if}}
         </tr>
         {{#each model.mounts as |mnt|}}
           <tr>
             <td>
-              {{input value=mnt.mountPath}}
+              {{#input-or-display editable=editing value=mnt.mountPath}}
+                {{input value=mnt.mountPath}}
+              {{/input-or-display}}
             </td>
             <td></td>
             <td>
-              {{input value=mnt.subPath}}
+              {{#input-or-display editable=editing value=mnt.subPath}}
+                {{input value=mnt.subPath}}
+              {{/input-or-display}}
             </td>
             <td></td>
             <td class="text-center">
-              {{input type="checkbox" classNames="form-control" checked=mnt.readOnly}}
+              {{#if editing}}
+                {{input type="checkbox" classNames="form-control" checked=mnt.readOnly}}
+              {{else}}
+                {{mnt.readOnly}}
+              {{/if}}
             </td>
-            <td>
-              <button class="btn bg-primary btn-sm" {{action "removeMount" mnt}}>
-                <i class="icon icon-minus"/>
-                <span class="sr-only">{{t 'generic.remove'}}</span>
-              </button>
-            </td>
+            {{#if editing}}
+              <td>
+                <button class="btn bg-primary btn-sm" {{action "removeMount" mnt}}>
+                  <i class="icon icon-minus"/>
+                  <span class="sr-only">{{t 'generic.remove'}}</span>
+                </button>
+              </td>
+            {{/if}}
           </tr>
         {{/each}}
         </table>
       {{else}}
-        The volume will not be mounted in the current container.  It may be used by other containers in the pod.
+        {{t "formVolumeRow.noVolume"}}
       {{/if}}
-
-      <div class="mt-20">
-        <button class="btn bg-link icon-btn" {{action "addMount"}}>
-          <span class="darken"><i class="icon icon-plus text-small"/></span>
-          <span>Add Mount</span>
-        </button>
-      </div>
+      {{#if editing}}
+        <div class="mt-20">
+          <button class="btn bg-link icon-btn" {{action "addMount"}}>
+            <span class="darken"><i class="icon icon-plus text-small"/></span>
+            <span>{{t "formVolumeRow.addMount"}}</span>
+          </button>
+        </div>
+      {{/if}}
     </div>
   </div>
 </div>

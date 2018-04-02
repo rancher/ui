@@ -2,6 +2,7 @@ import { computed } from '@ember/object';
 import { oneWay } from '@ember/object/computed';
 import { inject as service } from '@ember/service';
 import Controller, { inject as controller } from '@ember/controller';
+import { get, set } from '@ember/object';
 
 export default Controller.extend({
   application:        controller(),
@@ -9,12 +10,23 @@ export default Controller.extend({
   allWorkloads:       service(),
 
   service:            oneWay('model.workload'),
-
+  namespace: "", 
   sortBy:             'priority',
   fixedLaunchConfig:  null,
   activeLaunchConfig: null,
   portSortBy:         'privatePort',
+  init(){
+    this._super(...arguments);
+    let namespaceId = null;
+    namespaceId = get(this, 'service.namespaceId');
 
+    if (namespaceId) {
+      let namespace = get(this, 'clusterStore').getById('namespace', namespaceId);
+      if (namespace) {
+        set(this, 'namespace', namespace);
+      }
+    }
+  },
   headers: [
     {
       name:           'priority',
