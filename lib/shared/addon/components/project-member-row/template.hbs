@@ -3,7 +3,23 @@
     {{owner.displayName}}
   {{else}}
     {{#if noUpdate}}
-      {{identity-block principal=principal}}
+      {{#if principal}}
+        {{identity-block principal=principal}}
+      {{else if principalId}}
+        <div class="gh-block">
+          <div class="gh-avatar">
+            <img src="{{principalGravatarSrc}}" width="35" height="35">
+          </div>
+          <div class="gh-block-content">
+            <div class="clip gh-block-name">
+              {{principalId}}
+            </div>
+          </div>
+        </div>
+      {{else}}
+        {{!-- we should never get here, but if we did you can start with a error in principal search by id --}}
+        {{t 'generic.unknown'}}&nbsp;{{t 'generic.user'}}
+      {{/if}}
     {{else}}
       {{input-identity allowTeams=true action="addAuthorized" onError="gotError"}}
     {{/if}}
