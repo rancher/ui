@@ -20,6 +20,7 @@ var Pod = Resource.extend(DisplayImage, {
   node: reference('nodeId','node','globalStore'),
   workload: reference('workloadId'),
   hasSidekicks: gt('containers.length', 1),
+  canHaveLabels: true,
 
   actions: {
     clone() {
@@ -130,6 +131,11 @@ var Pod = Resource.extend(DisplayImage, {
   displayIp: function() {
     return get(this,'status.podIp') || null;
   }.property('status.podIp'),
+
+
+  nodeIp: function() {
+    return get(this,'status.nodeIp') || null;
+  }.property('status.nodeIp'),
 
   sortIp: function() {
     var ip = get(this,'primaryAssociatedIpAddress') || get(this,'primaryIpAddress');
