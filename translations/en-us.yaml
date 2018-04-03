@@ -3621,6 +3621,9 @@ formVolumeRow:
   readOnly: Read-Only
   noVolume: The volume will not be mounted in the current container.  It may be used by other containers in the pod.
   addMount: Add Mount
+  customLogPath:
+    helpText: We will deploy a flexvolume driver to create a volume and mount the log to the host.
+
 formVolumes:
   title: Volumes
   detail: Persist and share data separate from the lifecycle of an individual container.
@@ -3647,6 +3650,7 @@ formVolumes:
     bindMount: Bind-mount a host directory
     tmpfs: Add an in-memory tmpfs
     secret: Use a secret
+    customLogPath: Read log files from a directory
   table:
     kind: Kind
     source: Source
@@ -5347,3 +5351,12 @@ volumeSource:
     title: StorageOS
   vsphere-volume:
     title: VMWare vSphere Volume
+  customLogPath:
+    mountPath:
+      label: Log Path
+      placeholder: e.g. /var/www
+      helpText: The path to your container's log directory.
+    logFormat:
+      label: Log Format
+      placeholder: e.g. json
+      helpText: The format of your container's log.

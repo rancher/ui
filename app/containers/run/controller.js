@@ -1,5 +1,6 @@
 import { inject as service } from '@ember/service';
 import { get, set } from '@ember/object';
+import { alias } from '@ember/object/computed';
 import Controller from '@ember/controller';
 
 export default Controller.extend({
@@ -14,6 +15,7 @@ export default Controller.extend({
   addSidekick: null,
   upgrade: false,
   deleting: false,
+  dataMap: alias('model.dataMap'),
 
   actions: {
     transitionOut() {
@@ -29,7 +31,7 @@ export default Controller.extend({
     },
 
     promptRemove(idx) {
-      let slc = get(this, 'model.workload.secondaryLaunchConfigs').objectAt(idx);
+      let slc = get(this, 'dataMap.workload.secondaryLaunchConfigs').objectAt(idx);
       let resources = [{
         cb: () => { this.removeSidekick(idx) },
         displayName: get(slc, 'name'),
@@ -40,7 +42,7 @@ export default Controller.extend({
   },
 
   removeSidekick(idx) {
-    let workload = get(this, 'model.workload').clone();
+    let workload = get(this, 'dataMap.workload').clone();
     set(workload, 'completeLaunchConfigs', true);
     set(workload, 'completeUpdate', true);
 
