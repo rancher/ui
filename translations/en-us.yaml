@@ -3420,36 +3420,27 @@ formSecurity:
     label: Privilege Escalation
     disable: "No"
     enable: "Yes: container can gain more privileges than its parent process"
-  ipcMode:
+  hostIPC:
     label: Use Host's IPC Namespace
-    disable: "No"
-    enable: "Yes"
   runAsNonRoot:
-    label: Run as Non Root
+    label: Run as Non-Root
     disable: "No"
     enable: "Yes: container must run as a non-root user"
   readOnlyRootFilesystem:
-    label: ReadOnly Root Filesystem
+    label: Read-Only Root Filesystem
     disable: "No"
     enable: "Yes: container has a read-only root filesystem"
-  pidMode:
+  hostPID:
     label: Use Host's PID Namespace
-    disable: "No"
-    enable: "Yes"
   memoryLimit:
-    label: Memory
-    unlimited: Unlimited
+    label: Memory Limit
+    unlimited: No Limit
     set: Limit to
   cpuLimit:
-    label: CPU
-    unlimited: Unlimited
+    label: CPU Limit
+    unlimited: No Limit
     set: Limit to
     unit: milli CPUs
-  gpuLimit:
-    label: Nvidia GPU
-    unlimited: Unlimited
-    set: Limit to
-    unit: milli GPUs
   swapLimit:
     label: Swap Memory
     unlimited: Unlimited
@@ -3486,15 +3477,15 @@ formSecurity:
       label: Permissions
   memoryReservation:
     label: Memory Reservation
-    placeholder: reserve this much RAM
+    placeholder: e.g. 128
   milliCpuReservation:
     label: CPU Reservation
-    placeholder: reserve this much CPU
+    placeholder: e.g. 1000
     unit: milli CPUs
-  milliGpuReservation:
-    label: GPU Reservation
-    placeholder: reserve this much GPU
-    unit: milli GPUs
+  gpuReservation:
+    label: NVIDIA GPU Reservation
+    placeholder: e.g. 1
+    unit: GPUs
   isolation:
     label: Isolation
     default: Default (Container)
