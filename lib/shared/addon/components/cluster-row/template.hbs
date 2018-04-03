@@ -9,7 +9,12 @@
     {{#link-to-external 'authenticated.cluster' model.id}}{{model.displayName}}{{/link-to-external}}
   </td>
   <td data-title="{{dt.provider}}">
-    {{model.displayProvider}}
+    {{#if model.version.gitVersion}}
+      <small>{{model.displayProvider}}</small>
+      <p class="text-small text-muted m-0">{{model.version.gitVersion}}</p>
+    {{else}}
+      {{model.displayProvider}}
+    {{/if}}
   </td>
   {{#if (eq model.state "inactive")}}
     <td colspan="4" class="text-center">
@@ -21,7 +26,8 @@
     </td>
     <td data-title="{{dt.cpu}}">
       {{#if model.cpuUsage}}
-        {{model.cpuUsage}}
+        <small>{{model.cpuUsage}}</small>
+        <p class="text-small text-muted m-0">{{model.cpuPercent}}</p>
       {{else}}
         <span class="text-muted">
           {{t 'generic.na'}}
@@ -31,7 +37,8 @@
 
     <td data-title="{{dt.memory}}">
       {{#if model.memoryUsage}}
-        {{model.memoryUsage}}
+        <small>{{model.memoryUsage}}</small>
+        <p class="text-small text-muted m-0">{{model.memoryPercent}}</p>
       {{else}}
         <span class="text-muted">
           {{t 'generic.na'}}

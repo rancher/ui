@@ -22,13 +22,12 @@ export default Controller.extend({
       name:           'state',
       sort:           ['sortState','name','id'],
       translationKey: 'apiPage.table.state',
-      width:          125,
+      width:          80,
     },
     {
       name:           'name',
       sort:           ['name','id'],
       translationKey: 'apiPage.table.name',
-      width:          150,
     },
     {
       name:           'description',
@@ -39,13 +38,13 @@ export default Controller.extend({
       name:           'created',
       sort:           ['created','name','id'],
       translationKey: 'apiPage.table.created',
-      width:          200,
+      width:          150,
     },
     {
       name:           'expires',
       sort:           ['expiresAt','name','id'],
       translationKey: 'apiPage.table.expires.label',
-      width:          200,
+      width:          150,
     },
   ],
 
