@@ -44,7 +44,7 @@ export default Controller.extend({
       name:           'expires',
       sort:           ['expiresAt','name','id'],
       translationKey: 'apiPage.table.expires.label',
-      width:          150,
+      width:          175,
     },
   ],
 

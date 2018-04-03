@@ -236,6 +236,10 @@ export default Route.extend(Preload, {
       }
     },
 
+    becameReady() {
+      // This absorbs became ready in case it's not handled elsewhere
+    },
+
     showAbout() {
       this.controllerFor('application').set('showAbout', true);
     },
