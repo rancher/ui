@@ -51,9 +51,15 @@ var PublicEndpoint = Resource.extend({
     let out = '';
     if ( allNodes ) {
       const globalStore = get(this, 'globalStore');
-      const node = globalStore.all('node').findBy('clusterId', get(this,'scope.currentCluster.id'));
+      const nodes = globalStore.all('node').filterBy('clusterId', get(this,'scope.currentCluster.id'));
+      let node = nodes.findBy('externalIpAddress');
       if ( node ) {
-        out = get(node, 'ipAddress');
+        out = get(node, 'externalIpAddress');
+      } else {
+        node = nodes.findBy('ipAddress');
+        if ( node ) {
+          out = get(node, 'ipAddress');
+        }
       }
     } else if ( addresses && addresses.length ) {
       out = addresses[0];
