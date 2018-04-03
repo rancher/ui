@@ -27,8 +27,10 @@
       <button disabled={{waiting}} class="btn bg-primary" {{action "authenticate"}}>
         {{#if waiting}}
           <i class="icon icon-spinner icon-spin"></i> {{t 'loginUserPass.loggingInLabel'}}
-        {{else}}
+        {{else if readableProvider}}
           {{t 'loginUserPass.loginLabel' provider=readableProvider}}
+        {{else}}
+          {{t 'loginUserPass.genericLoginLabel'}}
         {{/if}}
       </button>
     </p>
