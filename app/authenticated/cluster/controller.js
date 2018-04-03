@@ -1,5 +1,6 @@
 import Controller from '@ember/controller';
 import { get, set, observer } from '@ember/object';
+import { next } from '@ember/runloop';
 
 export default Controller.extend({
 
@@ -11,7 +12,9 @@ export default Controller.extend({
     set(this,'wasReady', isReady);
 
     if ( isReady && !wasReady ) {
-      this.send('becameReady');
+      next(() => {
+        this.send('becameReady');
+      });
     }
   })
 });
