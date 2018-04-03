@@ -1,6 +1,7 @@
 import Controller from '@ember/controller';
 import { inject as service } from '@ember/service';
 import { set, get, computed } from '@ember/object';
+import { alias } from '@ember/object/computed';
 import C from 'ui/utils/constants';
 
 export default Controller.extend({
@@ -8,6 +9,8 @@ export default Controller.extend({
   access: service(),
 
   showCurrent: null,
+
+  firstLogin: alias('access.firstLogin'),
 
   init() {
     this._super(...arguments);
