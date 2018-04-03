@@ -4,12 +4,8 @@
 <td data-title="{{dt.state}}">
   {{badge-state model=model}}
 </td>
-<td data-title="{{dt.name}}">
-  {{#copy-to-clipboard clipboardText=model.displayName size="small"}}
-    <span class="clip vertical-middle" style="max-width:100px">
-      {{model.displayName}}
-    </span>
-  {{/copy-to-clipboard}}
+<td class="force-wrap" data-title="{{dt.name}}">
+  {{model.displayName}}
 </td>
 <td data-title="{{dt.description}}">
   {{#if model.description}}
@@ -19,13 +15,13 @@
   {{/if}}
 </td>
 <td data-title="{{dt.created}}">
-  {{date-calendar model.created}}
+  {{date-from-now model.created}}
 </td>
 <td data-title="{{dt.expires}}">
   {{#if model.expiresAt}}
-    {{date-calendar model.expiresAt}}
+    {{date-from-now model.expiresAt}}
   {{else}}
-    <span class="text-muted">{{t 'generic.none'}}</span>
+    <span class="text-muted">{{t 'generic.never'}}</span>
   {{/if}}
 </td>
 <td data-title="{{dt.actions}}" class="actions">
