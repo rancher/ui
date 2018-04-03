@@ -1,5 +1,5 @@
 import { computed, get } from '@ember/object';
-import { alias } from '@ember/object/computed';
+import { alias, or } from '@ember/object/computed';
 import Resource from 'ember-api-store/models/resource';
 import { download } from 'shared/utils/util';
 import C from 'ui/utils/constants';
@@ -88,7 +88,7 @@ var Node = Resource.extend(StateCounts, ResourceUsage, {
     return out;
   }.property('actionLinks.{activate,deactivate,evacuate}','links.{update,remove,config}','driver'),
 
-  displayIp: alias('ipAddress'),
+  displayIp: or('externalIpAddress','ipAddress'),
 
   displayName: computed('name','nodeName','requestedHostname','id', function() {
     let name = get(this,'name');
