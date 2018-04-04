@@ -311,8 +311,6 @@ authPage:
         buttonText:
           pre: Authenticate with IDP
           post: Waiting to hear back from IDP
-
-
     providerName:
       shibboleth: Shibboleth
   root:
@@ -323,33 +321,32 @@ authPage:
     header:
       enabled:
         label: "{github} is enabled"
-        required: "{appName} is configured to allow access to authorized users and organizations."
-        restricted: "{appName} is configured to allow access to project members, authorized users and organizations."
-#        required: |
-#          {appName} is configured to allow access to {orgs, plural,
-#            =0 {no organizations}
-#            =1 {# organization}
-#            other {# organizations}
-#          } and {users, plural,
-#            =0 {no users}
-#            =1 {# user}
-#            other {# users}
-#          }.
-#        restricted: |
-#          {appName} is configured to allow access to project members, {orgs, plural,
-#            =0 {no organizations}
-#            =1 {# organization}
-#            other {# organizations}
-#          } and {users, plural,
-#            =0 {no users}
-#            =1 {# user}
-#            other {# users}
-#          }.
-#        unrestricted: "{appName} is configured to allow access to any {github} user."
+        # required: "{appName} is configured to allow access to authorized users and organizations."
+        # restricted: "{appName} is configured to allow access to project members, authorized users and organizations."
+        required: |
+          {appName} is configured to allow access to {orgs, plural,
+            =0 {no organizations}
+            =1 {# organization}
+            other {# organizations}
+          } and {users, plural,
+            =0 {no users}
+            =1 {# user}
+            other {# users}
+          }.
+        restricted: |
+          {appName} is configured to allow access to project members, {orgs, plural,
+            =0 {no organizations}
+            =1 {# organization}
+            other {# organizations}
+          } and {users, plural,
+            =0 {no users}
+            =1 {# user}
+            other {# users}
+          }.
+       # unrestricted: "{appName} is configured to allow access to any {github} user."
       disabled:
         label: GitHub is not configured
         warning: "{appName} can be configured to restrict access to a set of GitHub users and organization members."
-
     authenticated:
       header:
         text: Authentication
@@ -398,7 +395,6 @@ authPage:
       buttonText:
         pre: Authenticate with GitHub
         post: Waiting to hear back from GitHub
-
   azuread:
     header:
       enabled: 'Azure AD Authentication is <b>enabled</b>'
@@ -439,8 +435,6 @@ authPage:
         label: Login Password
       pre: Authenticate with Azure
       post: Waiting to hear back from Azure
-
-
   localAuth:
     header:
       enabled: 'Local Authentication is enabled'
