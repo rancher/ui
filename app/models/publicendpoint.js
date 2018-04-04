@@ -77,14 +77,12 @@ var PublicEndpoint = Resource.extend({
     let out = '';
     out += get(this,'port');
     let proto = get(this,'protocol').toLowerCase();
-    if (proto !== 'tcp') {
-      out += '/' + proto;
-    }
+    out += '/' + proto;
     return out;
   }),
 
-  linkEndpoint: computed('isTcp', 'isMaybeSecure', 'displayEndpoint', function() {
-    if (get(this,'isTcp')) {
+  linkEndpoint: computed('isTcpish', 'isMaybeSecure', 'displayEndpoint', 'port', function() {
+    if (get(this,'isTcpish') && get(this, 'port') > 0 ) {
       let out = get(this,'endpoint');
 
       if (get(this,'isMaybeSecure')) {
@@ -97,8 +95,9 @@ var PublicEndpoint = Resource.extend({
     }
   }),
 
-  isTcp: computed('protocol', function() {
-    return get(this,'protocol').toLowerCase() === 'tcp';
+  isTcpish: computed('protocol', function() {
+    const proto = get(this, 'protocol').toLowerCase();
+    return ( ['tcp','http','https'].includes(proto) );
   }),
 
   isMaybeSecure: computed('port', function() {
