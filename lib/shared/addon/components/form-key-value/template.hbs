@@ -56,11 +56,6 @@
     {{/each}}
     </tbody>
   </table>
-  {{#if ary.length}}
-    <div class="protip mb-5">
-      {{t 'formKeyValue.protip'}}
-    </div>
-  {{/if}}
 {{else}}
   {{#unless editing}}
     <div>{{t 'generic.none'}}</div>
@@ -68,6 +63,11 @@
 {{/if}}
 
 {{#if (and editing allowAdd)}}
+  {{#if ary.length}}
+    <div class="protip mb-5">
+      {{t 'formKeyValue.protip'}}
+    </div>
+  {{/if}}
   <div>
     <button class="btn bg-link icon-btn p-0" {{action "add"}}>
       <span class="darken"><i class="icon icon-plus text-small"/></span>

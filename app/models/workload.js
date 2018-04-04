@@ -255,12 +255,16 @@ var Workload = Resource.extend(DisplayImage, StateCounts, EndpointPorts, {
   }.property('canScale','scaleMin','scaleIncrement','scale'),
 
   displayScale: function() {
+    let lcType = get(this, 'lcType');
+    if (lcType){
+      return get(this, 'intl').t('servicePage.multistat.daemonSetScale');
+    }
     if ( get(this, 'isGlobalScale') ) {
       return get(this, 'intl').t('servicePage.globalScale', {scale: get(this, 'scale')});
     } else {
       return get(this, 'scale');
     }
-  }.property('scale','isGlobalScale'),
+  }.property('scale','isGlobalScale', 'lcType'),
 
   canHaveSidekicks: true,
 
@@ -271,7 +275,8 @@ var Workload = Resource.extend(DisplayImage, StateCounts, EndpointPorts, {
   canUpgrade: true,
   canHaveLabels: true,
   canScale: computed('lcType', function() {
-    return get(this,'lcType') !== 'cronjob';
+    let lcType = get(this, 'lcType');
+    return  lcType !== 'cronjob' && lcType !== 'daemonset';
   }),
   realButNotLb: true,
   canHaveLinks: true,

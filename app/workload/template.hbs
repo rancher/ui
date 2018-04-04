@@ -47,22 +47,16 @@
   </div>
 
   <div class="row banner bg-info basics mt-0" style="border-top: none;">
-    {{#if service.canScale}}
-      <div class="vertical-middle">
-        <label class="acc-label vertical-middle p-0">{{t 'servicePage.multistat.scale'}}</label>
-        {{#if (eq service.type 'daemonSet')}}
-          {{t "servicePage.multistat.daemonSetScale"}}
-        {{else}}
-          <span class="pr-5">
-            {{service.displayScale}}
-          </span>
-          <div class="btn-group btn-group-xs p-0">
-            <button class="btn btn-xs bg-primary" {{action "scaleDown" target=service}} disabled={{not service.canScaleDown}}><i class="icon icon-minus icon-fw"/></button>
-            <button style="margin-left: -1px;" class="btn btn-xs bg-primary" {{action "scaleUp" target=service}} disabled={{not service.canScaleUp}}><i class="icon icon-plus icon-fw"/></button>
-          </div>
-        {{/if}}
+    <div class="vertical-middle">
+      <label class="acc-label vertical-middle p-0">{{t 'servicePage.multistat.scale'}}</label>
+      <span class="pr-5">
+        {{service.displayScale}}
+      </span>
+      <div class="btn-group btn-group-xs p-0">
+        <button class="btn btn-xs bg-primary" {{action "scaleDown" target=service}} disabled={{not service.canScaleDown}}><i class="icon icon-minus icon-fw"/></button>
+        <button style="margin-left: -1px;" class="btn btn-xs bg-primary" {{action "scaleUp" target=service}} disabled={{not service.canScaleUp}}><i class="icon icon-plus icon-fw"/></button>
       </div>
-    {{/if}}
+    </div>
     <div class="vertical-middle">
       <label class="acc-label vertical-middle p-0">{{t 'servicePage.multistat.created'}}</label>
       {{date-calendar service.created}}
