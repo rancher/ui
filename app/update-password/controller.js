@@ -7,6 +7,7 @@ import C from 'ui/utils/constants';
 export default Controller.extend({
   router: service(),
   access: service(),
+  settings: service(),
 
   showCurrent: null,
 
@@ -23,6 +24,7 @@ export default Controller.extend({
     let backTo = get(this, 'session').get(C.SESSION.BACK_TO)
     let router = get(this, 'router');
     if (success) {
+      get(this, 'access').set('firstLogin', false);
       get(this, 'access').set('userCode', null);
       if ( backTo ) {
         // console.log('Going back to', backTo);
