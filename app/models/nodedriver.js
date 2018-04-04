@@ -5,6 +5,7 @@ import C from 'ui/utils/constants';
 import { parseExternalId } from 'ui/utils/parse-externalid';
 
 export const BUILT_IN_UI = ['amazonec2','digitalocean', 'azure', 'exoscale','packet','rackspace','vmwarevsphere','aliyunecs'];
+export const BUILT_IN_ICON_ONLY = ['openstack'];
 
 function displayUrl(url) {
   url = url||'';
@@ -97,6 +98,10 @@ export default Resource.extend({
 
   hasBuiltinUi: function() {
     return BUILT_IN_UI.indexOf(get(this,'name')) >= 0;
+  }.property('name'),
+
+  hasBuiltinIconOnly: function() {
+    return BUILT_IN_ICON_ONLY.indexOf(get(this,'name')) >= 0;
   }.property('name'),
 
   isCustom: function() {
