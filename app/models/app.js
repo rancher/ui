@@ -1,14 +1,27 @@
 import Resource from 'ember-api-store/models/resource';
-import { hasMany } from 'ember-api-store/utils/denormalize';
+import { hasMany, reference } from 'ember-api-store/utils/denormalize';
 import { computed, get } from '@ember/object';
 import { parseHelmExternalId } from 'ui/utils/parse-externalid';
 import StateCounts from 'ui/mixins/state-counts';
 import { inject as service } from '@ember/service';
 
 const App = Resource.extend(StateCounts, {
-  catalog:      service(),
-  router:       service(),
-  pods:         hasMany('installNamespace', 'pod', 'namespaceId'),
+  catalog:   service(),
+  router:    service(),
+  // pods:      hasMany('id', 'pod', 'appId'),
+  // services:  hasMany('id', 'service', 'appId'),
+  // workloads: hasMany('id', 'workload', 'appId'),
+  // secrets:   hasMany('id', 'secret', 'appId'),
+  // ingress:   hasMany('id', 'ingress', 'appId'),
+  // volumes:   hasMany('id', 'persistentVolumeClaim', 'appId'),
+  pods:      hasMany('installNamespace', 'pod', 'namespaceId'),
+  services:  hasMany('installNamespace', 'service', 'namespaceId'),
+  workloads: hasMany('installNamespace', 'workload', 'namespaceId'),
+  secrets:   hasMany('installNamespace', 'secret', 'namespaceId'),
+  ingress:   hasMany('installNamespace', 'ingress', 'namespaceId'),
+  volumes:   hasMany('installNamespace', 'persistentVolumeClaim', 'namespaceId'),
+  namespace: reference('namespaceId', 'namespace', 'clusterStore'),
+  //workloads on pod
 
   init() {
     this._super(...arguments);
