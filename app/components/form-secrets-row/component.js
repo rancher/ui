@@ -73,7 +73,7 @@ export default Component.extend({
     let secret = get(this, 'selectedSecret');
 
     if (secretSourceName) {
-      if (get(secret, 'data')) {
+      if (secret && get(secret, 'data')) {
         let secretKeys = Object.keys(get(secret, 'data'));
 
 
