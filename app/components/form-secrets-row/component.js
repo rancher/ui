@@ -65,23 +65,25 @@ export default Component.extend({
       return out;
     },
   }),
-
+  selectedSecret: null,
   prefixOrKeys: computed('allSecrets.[]', 'secret.sourceName', function() {
     let prefix         = { id: 'prefix', label: 'All'};
-    let selectedSecret = get(this, 'secret.sourceName');
+    let secretSourceName = get(this, 'secret.sourceName');
     let out            = [prefix];
+    let secret = get(this, 'selectedSecret');
 
-    if (selectedSecret) {
-      let secret = get(this, 'secrets').findBy('name', selectedSecret);
-      let secretKeys = Object.keys(get(secret, 'data'));
+    if (secretSourceName) {
+      if (secret && get(secret, 'data')) {
+        let secretKeys = Object.keys(get(secret, 'data'));
 
-      set(this, 'sourceKey', 'prefix');
 
-      if (secretKeys) {
-        secretKeys.forEach((sk) => {
-          out.addObject({id: sk, label: sk});
-        })
+        if (secretKeys) {
+          secretKeys.forEach((sk) => {
+            out.addObject({id: sk, label: sk});
+          })
+        }
       }
+      set(this, 'sourceKey', 'prefix');
     }
 
     return out;
