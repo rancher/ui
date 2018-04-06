@@ -27,6 +27,27 @@
   </div>
 {{/if}}
 
+<div class="row banner bg-info basics">
+  <div class="vertical-middle">
+    <label class="acc-label vertical-middle p-0">{{t 'clustersPage.provider.label'}}</label>
+    {{model.cluster.displayProvider}} {{copy-to-clipboard clipboardText=model.cluster.displayProvider size="small"}}
+  </div>
+  {{#if model.cluster.version.gitVersion}}
+    <div class="vertical-middle">
+      <label class="acc-label vertical-middle p-0">{{t 'clustersPage.version.label'}}</label>
+      {{model.cluster.version.gitVersion}} {{copy-to-clipboard clipboardText=model.cluster.version.gitVersion size="small"}}
+    </div>
+  {{/if}}
+  <div class="vertical-middle">
+    <label class="acc-label vertical-middle p-0">{{t 'clustersPage.nodes.label'}}</label>
+    {{#if (eq model.cluster.state "inactive")}}
+      {{t 'clusterRow.noHosts'}}
+    {{else}}
+      {{model.cluster.machines.length}}
+    {{/if}}
+  </div>
+</div>
+
 <section class="text-center">
   {{cluster-dashboard nodes=currentClusterNodes}}
 </section>
