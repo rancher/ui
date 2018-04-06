@@ -5,6 +5,7 @@ import C from 'ui/utils/constants';
 import { parseExternalId } from 'ui/utils/parse-externalid';
 
 export const BUILT_IN_UI = ['amazonec2','digitalocean', 'azure', 'exoscale','packet','rackspace','vmwarevsphere','aliyunecs'];
+export const BUILT_IN_ICON_ONLY = ['openstack'];
 
 function displayUrl(url) {
   url = url||'';
@@ -83,34 +84,38 @@ export default Resource.extend({
     }
   }),
 
-  displayUrl: function() {
+  displayUrl: computed('url', function() {
     return displayUrl(get(this,'url'));
-  }.property('url'),
+  }),
 
   displayChecksum: computed('checksum', function() {
     return get(this,'checksum').substring(0, 8);
   }),
 
-  displayUiUrl: function() {
+  displayUiUrl: computed('uiUrl', function() {
     return displayUrl(get(this,'uiUrl'));
-  }.property('uiUrl'),
+  }),
 
-  hasBuiltinUi: function() {
+  hasBuiltinUi: computed('name', function() {
     return BUILT_IN_UI.indexOf(get(this,'name')) >= 0;
-  }.property('name'),
+  }),
 
-  isCustom: function() {
+  hasBuiltinIconOnly: computed('name', function() {
+    return BUILT_IN_ICON_ONLY.indexOf(get(this,'name')) >= 0;
+  }),
+
+  isCustom: computed('builtin','externalId', function() {
     return !get(this,'builtin') && !get(this,'externalId');
-  }.property('builtin','externalId'),
+  }),
 
-  hasUi: function() {
+  hasUi: computed('hasBuiltinUi', function() {
     return get(this,'hasBuiltinUi') || !!get(this,'uiUrl');
-  }.property('hasBuiltinUi'),
+  }),
 
-  newExternalId: function() {
+  newExternalId: computed('isSystem','selectedTemplateModel.id', function() {
     var externalId = C.EXTERNAL_ID.KIND_CATALOG + C.EXTERNAL_ID.KIND_SEPARATOR + get(this,'selectedTemplateModel.id');
     return externalId;
-  }.property('isSystem','selectedTemplateModel.id'),
+  }),
 
   availableActions: computed('links.{update,remove}','actionLinks.{activate,deactivate}','builtin', function() {
     let a = get(this,'actionLinks');
@@ -129,7 +134,7 @@ export default Resource.extend({
     ];
   }),
 
-  externalIdInfo: function() {
+  externalIdInfo: computed('externalId', function() {
     return parseExternalId(get(this,'externalId'));
-  }.property('externalId'),
+  }),
 });
