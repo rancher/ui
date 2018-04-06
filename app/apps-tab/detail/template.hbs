@@ -11,19 +11,11 @@
   </div>
 </section>
 
-{{log model}}
-{{log model.app.pods}}
-{{log model.app.services}}
-{{log model.app.workloads}}
-{{log model.app.secrets}}
-{{log model.app.ingress}}
-{{log model.app.volumes}}
-{{log model.app.namespace}}
-
 <section>
   {{#accordion-list as |al expandFn|}}
     {{#accordion-list-item
-         title="App Output"
+         title=(t 'appDetailPage.output.title')
+         detail=(t 'appDetailPage.output.detail')
          expandAll=al.expandAll
          expand=(action expandFn)
          expandOnInit=true
@@ -32,7 +24,8 @@
     {{/accordion-list-item}}
 
     {{#accordion-list-item
-         title="Workloads"
+         title=(t 'appDetailPage.workloads.title')
+         detail=(t 'appDetailPage.workloads.detail')
          expandAll=al.expandAll
          expand=(action expandFn)
          expandOnInit=true
@@ -76,7 +69,7 @@
         {{else if (eq kind "nomatch")}}
           <tr><td colspan="{{sortable.fullColspan}}" class="text-center text-muted lacsso pt-20 pb-20">{{t 'containersPage.table.noMatch'}}</td></tr>
         {{else if (eq kind "norows")}}
-          <tr><td colspan="{{sortable.fullColspan}}" class="text-center text-muted lacsso pt-20 pb-20">{{t 'containersPage.table.noData'}}</td></tr>
+          <tr><td colspan="{{sortable.fullColspan}}" class="text-center text-muted lacsso pt-20 pb-20">{{t 'appDetailPage.workloads.nodata'}}</td></tr>
         {{/if}}
       {{/sortable-table}}
       {{!--
@@ -84,7 +77,8 @@
     {{/accordion-list-item}}
 
     {{#accordion-list-item
-         title="Ingress Rules"
+         title=(t 'appDetailPage.ingress.title')
+         detail=(t 'appDetailPage.ingress.detail')
          expandAll=al.expandAll
          expand=(action expandFn)
          expandOnInit=true
@@ -121,14 +115,15 @@
           {{else if (eq kind "nomatch")}}
             <tr><td colspan="{{sortable.fullColspan}}" class="text-center text-muted lacsso pt-20 pb-20">{{t 'ingressPage.table.noMatch'}}</td></tr>
           {{else if (eq kind "norows")}}
-            <tr><td colspan="{{sortable.fullColspan}}" class="text-center text-muted pt-20 pb-20">{{t 'ingressPage.table.noData'}}</td></tr>
+            <tr><td colspan="{{sortable.fullColspan}}" class="text-center text-muted lacsso pt-20 pb-20">{{t 'appDetailPage.ingress.nodata'}}</td></tr>
           {{/if}}
         {{/sortable-table}}
       </section>
     {{/accordion-list-item}}
 
     {{#accordion-list-item
-         title="Services"
+         title=(t 'appDetailPage.services.title')
+         detail=(t 'appDetailPage.services.detail')
          expandAll=al.expandAll
          expand=(action expandFn)
          expandOnInit=true
@@ -152,13 +147,14 @@
         {{else if (eq kind "nomatch")}}
           <tr><td colspan="{{sortable.fullColspan}}" class="text-center text-muted pt-20 pb-20">{{t 'dnsPage.noMatch'}}</td></tr>
         {{else if (eq kind "norows")}}
-          <tr><td colspan="{{sortable.fullColspan}}" class="text-center text-muted pt-20 pb-20">{{t 'dnsPage.noData'}}</td></tr>
+          <tr><td colspan="{{sortable.fullColspan}}" class="text-center text-muted lacsso pt-20 pb-20">{{t 'appDetailPage.services.nodata'}}</td></tr>
         {{/if}}
       {{/sortable-table}}
     {{/accordion-list-item}}
 
     {{#accordion-list-item
-         title="Volumes"
+         title=(t 'appDetailPage.volumes.title')
+         detail=(t 'appDetailPage.volumes.detail')
          expandAll=al.expandAll
          expand=(action expandFn)
          expandOnInit=true
@@ -212,14 +208,15 @@
           {{else if (eq kind "nomatch")}}
             <tr><td colspan="{{sortable.fullColspan}}" class="text-center text-muted lacsso pt-20 pb-20">{{t 'volumesPage.noMatch'}}</td></tr>
           {{else if (eq kind "norows")}}
-            <tr><td colspan="{{sortable.fullColspan}}" class="text-center text-muted pt-20 pb-20">{{t 'volumesPage.noData'}}</td></tr>
+            <tr><td colspan="{{sortable.fullColspan}}" class="text-center text-muted lacsso pt-20 pb-20">{{t 'appDetailPage.volumes.nodata'}}</td></tr>
           {{/if}}
         {{/sortable-table}}
       </section>
     {{/accordion-list-item}}
 
     {{#accordion-list-item
-         title="Secrets"
+         title=(t 'appDetailPage.secrets.title')
+         detail=(t 'appDetailPage.secrets.detail')
          expandAll=al.expandAll
          expand=(action expandFn)
          expandOnInit=true
@@ -234,12 +231,10 @@
       }}
         {{#if (eq kind "row")}}
           {{secret-row model=row dt=dt}}
-        {{else if (eq kind "group")}}
-          {{namespace-group model=row.ref noGroup="namespaceGroup.project" fullColspan=sortable.fullColspan}}
         {{else if (eq kind "nomatch")}}
           <tr><td colspan="{{sortable.fullColspan}}" class="text-center text-muted pt-20 pb-20">{{t 'secretsPage.index.noMatch'}}</td></tr>
         {{else if (eq kind "norows")}}
-          <tr><td colspan="{{sortable.fullColspan}}" class="text-center text-muted pt-20 pb-20">{{t 'secretsPage.index.noData'}}</td></tr>
+          <tr><td colspan="{{sortable.fullColspan}}" class="text-center text-muted lacsso pt-20 pb-20">{{t 'appDetailPage.secrets.nodata'}}</td></tr>
         {{/if}}
       {{/sortable-table}}
     {{/accordion-list-item}}

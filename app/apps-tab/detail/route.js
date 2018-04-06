@@ -9,22 +9,8 @@ export default Route.extend({
 
   model(params) {
     const store = get(this, 'store');
-    return store.find('app', get(params, 'app_id')).then( app => {
-      return hash({
-        workloads: store.find('workload'),
-        pods: store.find('pod'),
-        services: store.find('service'),
-        volumes: store.find('persistentVolumeClaim'),
-        secrets: store.find('secret'),
-      }).then( (/* hash */) => {
-        return {
-          app: app,
-        }
-      });
+    return hash({
+      app: store.find('app', get(params, 'app_id')),
     });
-
-    // return hash({
-    //   app: store.find('app', get(params, 'app_id')),
-    // });
   },
 });
