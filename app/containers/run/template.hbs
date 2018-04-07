@@ -1,14 +1,14 @@
-{{#if model.selectLaunchConfig}}
+{{#if dataMap.selectLaunchConfig}}
   <section class="header">
-    <h1>{{t 'newContainer.sidekick.header' service=model.workload.displayName}}</h1>
+    <h1>{{t 'newContainer.sidekick.header' service=dataMap.workload.displayName}}</h1>
   </section>
-  <h2>{{t 'newContainer.sidekick.title' service=model.workload.displayName}}</h2>
-  <p class="help-block">{{t 'newContainer.sidekick.detail' service=model.workload.displayName}}</p>
+  <h2>{{t 'newContainer.sidekick.title' service=dataMap.workload.displayName}}</h2>
+  <p class="help-block">{{t 'newContainer.sidekick.detail' service=dataMap.workload.displayName}}</p>
 
   <div class="clearfix">
     {{#catalog-box
       classNames='bg-secondary'
-      model=model.workload.launchConfig
+      model=dataMap.workload.launchConfig
       showIcon=false
       showDescription=false
       as |section|
@@ -19,14 +19,14 @@
             <i class="icon icon-service icon-4x"/>
           </div>
         {{else if (eq section 'body')}}
-          <h3 class="text-muted">{{model.workload.name}}</h3>
+          <h3 class="text-muted">{{dataMap.workload.name}}</h3>
           <p class="help-block">{{t 'newContainer.sidekick.primary'}}</p>
         {{else if (eq section 'footer')}}
           {{#link-to (query-params launchConfigIndex=-1) class="btn bg-info" disabled=deleting}}{{t 'action.upgrade'}}{{/link-to}}
         {{/if}}
     {{/catalog-box}}
 
-    {{#each model.workload.secondaryLaunchConfigs as |slc index|}}
+    {{#each dataMap.workload.secondaryLaunchConfigs as |slc index|}}
       {{#catalog-box
         model=slc
         showIcon=false
@@ -54,16 +54,17 @@
   </div>
 {{else}}
   {{container/new-edit
-    scaleMode=model.scaleMode
-    isUpgrade=model.isUpgrade
-    service=model.workload
-    launchConfig=model.container
+    loggingEnabled=model.loggingEnabled
+    scaleMode=dataMap.scaleMode
+    isUpgrade=dataMap.isUpgrade
+    service=dataMap.workload
+    launchConfig=dataMap.container
     launchConfigIndex=launchConfigIndex
     done=(action 'done')
     cancel=(action 'cancel')
     editing=false
-    primaryResource=model.workload
-    primaryService=model.workload
-    allHosts=model.allHosts
+    primaryResource=dataMap.workload
+    primaryService=dataMap.workload
+    allHosts=dataMap.allHosts
   }}
 {{/if}}

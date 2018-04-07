@@ -1,6 +1,7 @@
 import EmberObject from '@ember/object';
 import { inject as service } from '@ember/service';
 import { get, set } from '@ember/object';
+import { hash, resolve } from 'rsvp';
 import Route from '@ember/routing/route';
 import Ember from 'ember';
 import C from 'ui/utils/constants';
@@ -8,6 +9,7 @@ import C from 'ui/utils/constants';
 export default Route.extend({
   prefs: service(),
   clusterStore: service(),
+  globalStore: service(),
 
   queryParams: {
     launchConfigIndex: {
@@ -17,14 +19,42 @@ export default Route.extend({
 
   model: function (params/*, transition*/) {
     var store = get(this, 'store');
+
+    const gs = get(this, 'globalStore');
+    const project = window.l('route:application').modelFor('authenticated.project').get('project');
+    const projectId = project.get('id');
+    const clusterId = project.get('clusterId');
+
+    const clusterLogging = gs.find('clusterLogging').then((res) => {
+      const logging = res.filterBy('clusterId', clusterId).get('firstObject');
+      return !!logging;
+    });
+
+    const projectLogging = gs.find('projectLogging').then((res) => {
+      const logging = res.filterBy('projectId', projectId).get('firstObject');
+      return !!logging;
+    });
+
+    let promise = null;
     if (params.workloadId) {
       // Existing Service
-      return store.find('workload', params.workloadId).then((workload) => {
+      const promise = store.find('workload', params.workloadId).then((workload) => {
         return this.modelForExisting(workload, params);
       });
     } else {
-      return this.modelForNew(params);
+      promise = resolve(this.modelForNew(params));
     }
+
+    return hash({
+      dataMap: promise,
+      clusterLogging,
+      projectLogging,
+    }).then(hash => {
+      return {
+        loggingEnabled: hash.clusterLogging || hash.projectLogging,
+        dataMap: hash.dataMap,
+      }
+    })
   },
 
   modelForNew(params) {
