@@ -1,10 +1,58 @@
 <h2 class="mt-30">{{t 'loggingPage.embedded.header'}}</h2>
 <hr/>
 
-<section class="">
-  <h4>{{t 'loggingPage.embedded.indexPatterns.header'}}</h4>
-  <p class="text-info text-small">{{t 'loggingPage.embedded.indexPatterns.helpText'}}</p>
+<section class="box">
+  <h4>{{t 'loggingPage.embedded.resouceRequestsAndLimits'}}</h4>
+  <div class="row mb-20">
+    <div class="col span-6">
+      <label class="acc-label">{{t 'loggingPage.embedded.cpuRequests.label'}}{{field-required}}</label>
+      {{input-number
+          min=1
+          type="number"
+          value=requestsCpu
+          className="form-control"
+          placeholder=(t 'loggingPage.embedded.cpuRequests.placeholder')
+      }}
+    </div>
 
+    <div class="col span-6">
+      <label class="acc-label">{{t 'loggingPage.embedded.cpuLimits.label'}}{{field-required}}</label>
+      {{input-number
+          min=1
+          type="number"
+          value=limitsCpu
+          className="form-control"
+          placeholder=(t 'loggingPage.embedded.cpuLimits.placeholder')
+      }}
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col span-6">
+      <label class="acc-label">{{t 'loggingPage.embedded.memRequests.label'}}{{field-required}}</label>
+      {{input-number
+          min=500
+          type="number"
+          value=config.requestsMemory
+          className="form-control"
+          placeholder=(t 'loggingPage.embedded.memRequests.placeholder')
+      }}
+    </div>
+
+    <div class="col span-6">
+      <label class="acc-label">{{t 'loggingPage.embedded.memLimits.label'}}{{field-required}}</label>
+      {{input-number
+          min=1000
+          type="number"
+          value=config.limitsMemory
+          className="form-control"
+          placeholder=(t 'loggingPage.embedded.memLimits.placeholder')
+      }}
+    </div>
+  </div>
+
+  <h4 class="mt-20">{{t 'loggingPage.embedded.indexPatterns.header'}}</h4>
+  <p class="text-info text-small">{{t 'loggingPage.embedded.indexPatterns.helpText'}}</p>
 
       <label class="acc-label">{{t 'loggingPage.embedded.indexPatterns.prefix'}}{{field-required}}</label>
       {{input
@@ -21,7 +69,6 @@
         <label class="mr-10">{{radio-button selection=config.dateFormat value="YYYY"}} YYYY</label>
       </div>
 
-
   <div>
   {{t 'loggingPage.embedded.generatedIndex'
     esIndex=esIndex
@@ -29,5 +76,4 @@
     }}
   </div>
 </section>
-<hr class="mt-30 mb-30" />
 {{logging/form-log-format logPreview=logPreview model=model}}
