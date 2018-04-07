@@ -16,7 +16,7 @@
         <br/>
         {{login-shibboleth
             action="started"
-            waiting=waiting
+            waiting=shibbolethWaiting
         }}
       {{/if}}
 
@@ -25,23 +25,23 @@
       {{/if}}
 
       {{#if isActiveDirectory}}
-        {{login-ad
-            classNames="row"
+        {{login-user-pass
             action="authenticate"
-            waiting=waiting
-            shown=true
+            classNames="row"
             provider="activedirectory"
+            shown=true
+            waiting=adWaiting
         }}
       {{/if}}
 
       {{#if isLocal}}
         {{login-user-pass
-            classNames="row"
             action="authenticate"
-            waiting=waiting
-            shown=onlyLocal
+            classNames="row"
             onlyLocal=onlyLocal
             provider="local"
+            shown=onlyLocal
+            waiting=localWaiting
         }}
       {{/if}}
 

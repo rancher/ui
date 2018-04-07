@@ -8,131 +8,134 @@
   </section>
 {{/if}}
 
-<section class="{{sectionClass}} row">
-  <div class="col span-3">
-    {{#if templateResource.links.icon}}
-      <img src={{templateResource.links.icon}} alt={{templateResource.name}} class="mr-20" style="height:75px;max-width: 100%;">
-    {{/if}}
-
-    <div>
-      <small><strong>{{t 'newCatalog.catalog'}}</strong> <span class="text-capitalize">{{templateResource.catalogId}}</span></small>
+<div class="accordion"> {{!-- container-section --}}
+  <div class="accordion-header"> {{!-- header-section --}}
+    <div class="title">
+      <span class="m-0 ">{{t 'newCatalog.appInfo'}}</span>
     </div>
-    <div>
-      <small><strong>{{t 'newCatalog.kind'}}</strong> <span class="text-capitalize">{{templateKind}}</span></small>
+  </div>
+  <div class="accordion-content row"> {{!-- content-section --}}
+    <div class="col span-12 text-center">
+      {{#if templateResource.links.icon}}
+        <img src={{templateResource.links.icon}} alt={{templateResource.name}} class="mr-20" style="height:75px;max-width: 100%;">
+      {{/if}}
     </div>
-    <div>
-      <small><strong>{{t 'newCatalog.category'}}</strong> {{join-array templateResource.categoryArray}}</small>
-    </div>
-    {{#if (eq templateResource.certifiedType 'rancher')}}
-      <small><strong>{{t 'newCatalog.support'}} </strong>{{t 'newCatalog.official'}}</small>
+    {{#if readmeContent}}
+      <div class="col span-12" style="overflow-y: auto; max-height: 500px;">
+        {{marked-down markdown=readmeContent}}
+      </div>
     {{else}}
-      <small><strong>{{t 'newCatalog.support'}} </strong>{{t 'newCatalog.maintainedBy'}}</small>
-    {{/if}}
-    {{#if templateResource.maintainer}}
-      <div>
-        <small><strong>{{t 'newCatalog.maintainer'}}</strong> {{templateResource.maintainer}}</small>
-      </div>
-    {{/if}}
-    {{#if templateResource.license}}
-      <div>
-        <small><strong>{{t 'newCatalog.license'}}</strong> {{templateResource.license}}</small>
-      </div>
-    {{/if}}
-    {{#if templateResource.links.project}}
-      <small class="force-wrap"><strong>{{t 'newCatalog.url'}}</strong> <a href="{{templateResource.cleanProjectUrl}}" target="_blank">{{templateResource.cleanProjectUrl}}</a></small>
+      <h2 class="mb-10">
+        {{t (if editing titleUpgrade titleAdd) name=templateResource.name}}
+      </h2>
+      <p>{{templateResource.description}}</p>
     {{/if}}
   </div>
-  {{#if readmeContent}}
-    <div class="col span-9" style="overflow-y: auto; max-height: 500px;">
-      {{marked-down markdown=readmeContent}}
-    </div>
-  {{else}}
-    <h2 class="mb-10">
-      {{t (if editing titleUpgrade titleAdd) name=templateResource.name}}
-    </h2>
-    <p>{{templateResource.description}}</p>
-  {{/if}}
-</section>
-<section class="{{sectionClass}}">
-  <h4>{{t 'newCatalog.newApp'}}</h4>
-  {{form-name-description
-      model=catalogApp
-      nameRequired=true
-      descriptionShow=false
-      nameDisabled=showName
-  }}
+</div>
 
-  {{#if showName}}
-    {{#advanced-section}}
-      <hr class="mt-20 mb-20"/>
 
-      {{form-namespace
-          namespace=primaryResource
-          mode='reuse'
-          errors=namespaceErrors
-      }}
-    {{/advanced-section}}
-  {{/if}}
-
-</section>
-
-<section class="{{sectionClass}}">
-  <h4>{{t 'newCatalog.templateVersion'}}</h4>
-  <div class="row">
-    <div class="col span-6">
-      {{new-select
-          classNames="form-control"
-          content=sortedVersions
-          prompt="newCatalog.version.prompt"
-          localizedPrompt=true
-          optionLabelPath="version"
-          optionValuePath="link"
-          value=selectedTemplateUrl
-          disabled=getTemplate.isRunning
-      }}
-      <p class="text-info">{{t (if editing selectVersionUpgrade selectVersionAdd)}}</p>
+<div class="accordion">
+  <div class="accordion-header">
+    <div class="title">
+      <span class="m-0 ">{{t 'newCatalog.newApp'}}</span>
     </div>
   </div>
-</section>
+  <div class="accordion-content row">
+    <div class="row">
+      <div class="col span-6">
+        {{form-name-description
+            model=catalogApp
+            nameRequired=true
+            descriptionShow=false
+            nameDisabled=showName
+            bothColClass="col span-12"
+            colClass="col span-12"
+        }}
+      </div>
+      <div class="col span-6" style="padding-top: 6px;"> {{!-- matches styles of form-name-description --}}
+        <label for="" class="acc-label">{{t 'newCatalog.templateVersion'}}</label>
+        {{new-select
+            classNames="form-control"
+            content=sortedVersions
+            prompt="newCatalog.version.prompt"
+            localizedPrompt=true
+            optionLabelPath="version"
+            optionValuePath="link"
+            value=selectedTemplateUrl
+            disabled=getTemplate.isRunning
+        }}
+        <p class="text-info">{{t (if editing selectVersionUpgrade selectVersionAdd)}}</p>
+      </div>
+    </div>
+    <div class="col span-12">
+      {{#if showName}}
+        {{#advanced-section}}
+          <hr class="mt-20 mb-20"/>
 
-<section class="{{sectionClass}}">
-  {{#if getTemplate.isRunning}}
+          {{form-namespace
+              namespace=primaryResource
+              mode='reuse'
+              errors=namespaceErrors
+          }}
+        {{/advanced-section}}
+      {{/if}}
+    </div>
+  </div>
+</div>
+
+{{#if getTemplate.isRunning}}
+  <section class="row">
     <div class="text-center">
       <i class="icon icon-spinner icon-spin" style="font-size:36px;"></i>
     </div>
-  {{/if}}
-
-  {{#if selectedTemplateModel}}
-    {{#if (eq templateKind 'native')}}
-      {{input-answers
-          selectedTemplate=selectedTemplateModel
-      }}
-    {{else}}
-      <h4>{{t 'newCatalog.helm.label'}}</h4>
-      <div class="span-12">
-        {{#if selectedTemplateModel.questions}}
-          {{input-answers
-              selectedTemplate=selectedTemplateModel
-          }}
+  </section>
+{{else}}
+  <div class="accordion">
+    <div class="accordion-header">
+      <div class="title">
+        {{#if (or (eq templateKind 'native') selectedTemplateModel.questions)}}
+          <span class="m-0 block">{{t 'inputAnswers.config'}}</span>
+          <span class="help-block">{{t 'inputAnswers.protip'}}</span>
         {{else}}
-          {{form-key-value
-              initialMap=catalogApp.answers
-              changed=(action (mut catalogApp.answers))
-              allowEmptyValue=false
-              editing=true
-              header=(t 'newCatalog.answers.label')
-              addActionLabel="newCatalog.answers.addAction"
-              keyLabel="newContainer.environment.keyLabel"
-              keyPlaceholder="newContainer.environment.keyPlaceholder"
-              valueLabel="newContainer.environment.valueLabel"
-              valuePlaceholder="newContainer.environment.valuePlaceholder"
-          }}
+          <span class="m-0 block">{{t 'newCatalog.helm.label'}}</span>
+          <span class="help-block">{{t 'newCatalog.helm.protip'}}</span>
         {{/if}}
       </div>
-    {{/if}}
-
-  {{/if}}
-</section>
+    </div>
+    <div class="accordion-content row">
+      {{#if selectedTemplateModel}}
+        {{#if (eq templateKind 'native')}}
+          {{input-answers
+              selectedTemplate=selectedTemplateModel
+              showHeader=false
+          }}
+        {{else}}
+          <div class="span-12">
+            {{#if selectedTemplateModel.questions}}
+              {{input-answers
+                  selectedTemplate=selectedTemplateModel
+                  showHeader=false
+              }}
+            {{else}}
+              {{form-key-value
+                  initialMap=catalogApp.answers
+                  changed=(action (mut catalogApp.answers))
+                  allowEmptyValue=false
+                  editing=true
+                  header=(t 'newCatalog.answers.label')
+                  addActionLabel="newCatalog.answers.addAction"
+                  keyLabel="newContainer.environment.keyLabel"
+                  keyPlaceholder="newContainer.environment.keyPlaceholder"
+                  valueLabel="newContainer.environment.valueLabel"
+                  valuePlaceholder="newContainer.environment.valuePlaceholder"
+              }}
+            {{/if}}
+          </div>
+        {{/if}}
+      {{/if}}
+    </div>
+  </div>
+{{/if}}
 
 {{#if (and selectedTemplateModel (not getTemplate.isRunning))}}
   {{#if showPreview}}

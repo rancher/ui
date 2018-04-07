@@ -150,11 +150,13 @@ Router.map(function() {
       // Catalog
       this.route('apps-tab', {path: '/apps', resetNamespace: true}, function() {
         this.route('index', {path: '/'});
+        this.route('detail', {path: '/:app_id'});
 
         this.route('catalog-tab', {path: '/catalog', resetNamespace: true}, function() {
           this.route('index', {path: '/'});
           this.route('launch', {path: '/:template'});
         });
+
       });
 
       // Resources
