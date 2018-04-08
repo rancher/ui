@@ -115,19 +115,7 @@ var Workload = Resource.extend(DisplayImage, StateCounts, EndpointPorts, {
     },
 
     clone() {
-      var route;
-      switch ( get(this, 'lcType') )
-      {
-        case 'service':             route = 'containers.run'; break;
-        case 'workload':            route = 'containers.run'; break;
-        case 'scalinggroup':        route = 'containers.run'; break;
-        case 'dnsservice':          route = 'dns.new';        break;
-        case 'loadbalancerservice': route = 'balancers.run';  break;
-        case 'externalservice':     route = 'dns.new';        break;
-        default: return void this.send('error','Unknown service type: ' + get(this, 'type'));
-      }
-
-      get(this, 'router').transitionTo(route, {queryParams: {
+      get(this, 'router').transitionTo('containers.run', {queryParams: {
         workloadId: get(this, 'id'),
       }});
     },
@@ -184,7 +172,7 @@ var Workload = Resource.extend(DisplayImage, StateCounts, EndpointPorts, {
     let choices = [
       { label: 'action.edit',           icon: 'icon icon-edit',             action: 'upgrade',        enabled: !!l.update &&  isReal },
       { label: 'action.rollback',       icon: 'icon icon-history',          action: 'rollback',       enabled: !!a.rollback && isReal },
-//      { label: 'action.clone',          icon: 'icon icon-copy',             action: 'clone',          enabled: true},
+      { label: 'action.clone',          icon: 'icon icon-copy',             action: 'clone',          enabled: !get(this, 'hasSidekicks')},
       { label: 'action.addSidekick',    icon: 'icon icon-plus-circle',      action: 'addSidekick',    enabled: get(this, 'canHaveSidekicks') },
       { divider: true },
       { label: 'action.execute',        icon: 'icon icon-terminal',         action: 'shell',          enabled: !!podForShell, altAction:'popoutShell'},

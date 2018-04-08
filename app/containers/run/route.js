@@ -142,7 +142,7 @@ export default Route.extend({
       let neu = get(this, 'store').createRecord(clone.serializeForNew());
 
       return EmberObject.create({
-        mode: 'service',
+        scaleMode: clone.type,
         workload: neu,
         container,
         isUpgrade: false
