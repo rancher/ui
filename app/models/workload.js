@@ -46,7 +46,7 @@ var Workload = Resource.extend(DisplayImage, StateCounts, EndpointPorts, {
     },
 
     resume() {
-      return this.doAction('pause');
+      return this.doAction('resume');
     },
 
     restart() {
