@@ -38,7 +38,7 @@ export default Route.extend({
     let promise = null;
     if (params.workloadId) {
       // Existing Service
-      const promise = store.find('workload', params.workloadId).then((workload) => {
+      promise = store.find('workload', params.workloadId).then((workload) => {
         return this.modelForExisting(workload, params);
       });
     } else {
