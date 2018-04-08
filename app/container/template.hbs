@@ -20,6 +20,18 @@
 
 <section>
   <div class="row banner bg-info basics">
+    {{#each model.containers as |container|}}
+      <div class="vertical-middle">
+        <label class="acc-label vertical-middle p-0">
+          {{#if (gt model.containers.length 1)}}
+            {{t 'podPage.containerImage' container=container.name}}
+          {{else}}
+            {{t 'podPage.image'}}
+          {{/if}}
+        </label>
+        {{container.image}} {{copy-to-clipboard clipboardText=container.image size="small"}}
+      </div>
+    {{/each}}
     <div class="vertical-middle">
       <label class="acc-label vertical-middle p-0">{{t 'podPage.podIp'}}:</label>
       {{#if model.displayIp}}
