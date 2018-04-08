@@ -10,12 +10,12 @@
 </section>
 
 <div class="row">
-  <div class="col span-6">
-    {{#if isView}}
-      {{#if model.description}}
-        {{banner-message color='bg-secondary mb-0 mt-10' message=(linkify model.description)}}
-      {{/if}}
-    {{else}}
+  {{#if isView}}
+    {{#if model.description}}
+      {{banner-message color='bg-secondary mb-0 mt-10' message=(linkify model.description)}}
+    {{/if}}
+  {{else}}
+    <div class="col span-6">
       {{form-name-description
         model=primaryResource
         nameRequired=false
@@ -26,8 +26,9 @@
         bothColClass="col span-12 mt-0"
         colClass="col span-12 mt-0"
       }}
-    {{/if}}
-  </div>
+    </div>
+  {{/if}}
+
   {{#if selectNamespace}}
     <div class="col span-6">
       {{form-namespace
@@ -40,10 +41,46 @@
   {{/if}}
 </div>
 
-<div class="row">
-  <div class="col span-6">
-    <label class="acc-label">{{t 'cruPersistentVolumeClaim.source.label'}}</label>
-    {{#if editing}}
+{{#if isView}}
+  {{#if primaryResource.storageClass}}
+    <div class="row">
+      <div class="col span-6">
+        <label class="acc-label">{{t 'cruPersistentVolumeClaim.source.label'}}</label>
+        <div>
+          {{t 'cruPersistentVolumeClaim.source.storageClass'}}
+        </div>
+      </div>
+      <div class="col span-6">
+        <label class="acc-label">{{t 'cruPersistentVolumeClaim.storageClass.label'}}</label>
+        <div>
+          <a href="{{href-to "authenticated.cluster.storage.classes.detail.index" scope.currentCluster.id primaryResource.storageClass.id}}">
+            {{primaryResource.storageClass.displayName}}
+          </a>
+        </div>
+      </div>
+    </div>
+  {{else if primaryResource.persistentVolume}}
+    <div class="row">
+      <div class="col span-6">
+        <label class="acc-label">{{t 'cruPersistentVolumeClaim.pv.label'}}</label>
+        <div>
+          {{t 'cruPersistentVolumeClaim.source.pv'}}
+        </div>
+      </div>
+      <div class="col span-6">
+        <label class="acc-label">{{t 'cruPersistentVolumeClaim.storageClass.label'}}</label>
+        <div>
+          <a href="{{href-to "authenticated.cluster.storage.persistent-volumes.detail.index" scope.currentCluster.id primaryResource.persistentVolume.id}}">
+            {{primaryResource.persistentVolume.displayName}}
+          </a>
+        </div>
+      </div>
+    </div>
+  {{/if}}
+{{else}}
+  <div class="row">
+    <div class="col span-6">
+      <label class="acc-label">{{t 'cruPersistentVolumeClaim.source.label'}}</label>
       <div class="radio">
         <label class="{{unless canUseStorageClass 'text-muted'}}">
           {{radio-button selection=useStorageClass value=true disabled=(not canUseStorageClass)}}
@@ -54,16 +91,10 @@
           {{t 'cruPersistentVolumeClaim.source.pv'}}
         </label>
       </div>
-    {{else}}
-      <div>
-        {{t (if useStorageClass 'cruPersistentVolumeClaim.source.storageClass' 'cruPersistentVolumeClaim.source.pv')}}
-      </div>
-    {{/if}}
-  </div>
-  <div class="col span-6">
-    {{#if useStorageClass}}
-      <label class="acc-label">{{t 'cruPersistentVolumeClaim.storageClass.label'}}</label>
-      {{#if editing}}
+    </div>
+    <div class="col span-6">
+      {{#if useStorageClass}}
+        <label class="acc-label">{{t 'cruPersistentVolumeClaim.storageClass.label'}}</label>
         {{new-select
           content=storageClasses
           prompt="cruPersistentVolumeClaim.storageClass.prompt"
@@ -75,26 +106,12 @@
         }}
 
         <label class="acc-label mt-20">{{t 'cruPersistentVolumeClaim.capacity.label'}}{{field-required editing=editing}}</label>
-        {{#if editing}}
-          <div class="input-group">
-            {{input-number classNames="form-control" value=capacity}}
-            <span class="input-group-addon bg-default">{{t 'cruPersistentVolumeClaim.capacity.unit'}}</span>
-          </div>
-        {{else}}
-          <div>
-            {{capacity}} {{t 'cruPersistentVolumeClaim.capacity.unit'}}
-          </div>
-        {{/if}}
-      {{else}}
-        <div>
-          <a href="{{href-to "authenticated.cluster.storage.classes.detail.index" primaryResource.storageClass.id}}">
-            {{primaryResource.storageClass.displayName}}
-          </a>
+        <div class="input-group">
+          {{input-number classNames="form-control" value=capacity}}
+          <span class="input-group-addon bg-default">{{t 'cruPersistentVolumeClaim.capacity.unit'}}</span>
         </div>
-      {{/if}}
-    {{else}}
-      <label class="acc-label">{{t 'cruPersistentVolumeClaim.pv.label'}}</label>
-      {{#if editing}}
+      {{else}}
+        <label class="acc-label">{{t 'cruPersistentVolumeClaim.pv.label'}}</label>
         {{new-select
           content=persistentVolumeChoices
           prompt="cruPersistentVolumeClaim.pv.prompt"
@@ -102,16 +119,10 @@
           required=true
           value=primaryResource.volumeId
         }}
-      {{else}}
-        <div>
-          <a href="{{href-to "authenticated.cluster.storage.persistent-volumes.detail.index" primaryResource.persistentVolume.id}}">
-            {{primaryResource.persistentVolume.displayName}}
-          </a>
-        </div>
       {{/if}}
-    {{/if}}
+    </div>
   </div>
-</div>
+{{/if}}
 
 <hr/>
 
