@@ -80,6 +80,16 @@
           {{input type="text" value=digitaloceanConfig.sshUser classNames="form-control" placeholder=(t 'machine.driverDigitalocean.sshUser.placeholder')}}
         </div>
       </div>
+      <div class="row form-group">
+        <div class="col-md-6">
+          {{form-value-array
+            changed=(action (mut tags))
+            addActionLabel='machine.driverDigitalocean.tags.addActionLabel'
+            valueLabel='machine.driverDigitalocean.tags.valueLabel'
+            valuePlaceholder='machine.driverDigitalocean.tags.placeholder'
+          }}
+        </div>
+      </div>
 
       <div class="over-hr r-mt20 r-mb20">
         <span>{{t 'machine.driverDigitalocean.optionsSection'}}</span>
@@ -100,6 +110,11 @@
           <td style="padding: 0 10px;">
             <div class="form-label checkbox">
               <label>{{input type="checkbox" checked=digitaloceanConfig.privateNetworking}} {{t 'machine.driverDigitalocean.privateNetworking.label'}}</label>
+            </div>
+          </td>
+          <td style="padding: 0 10px;">
+            <div class="form-label checkbox">
+              <label>{{input type="checkbox" checked=digitaloceanConfig.monitoring}} {{t 'machine.driverDigitalocean.monitoring.label'}}</label>
             </div>
           </td>
         </tr>

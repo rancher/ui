@@ -30,6 +30,7 @@ export default Ember.Component.extend(Driver, {
   sizeChoices:         null,
   imageChoices:        null,
   gettingData:         false,
+  tags:                null,
 
   filteredSizeChoices: Ember.computed('digitaloceanConfig.region', function(){
     let region = this.get('regionChoices').findBy('slug', this.get('digitaloceanConfig.region'));
@@ -114,6 +115,9 @@ export default Ember.Component.extend(Driver, {
     }));
   },
 
+  tagsDidChange: Ember.observer('tags', function() {
+    this.set('digitaloceanConfig.tags', this.get('tags').join(','));
+  }),
 
   validate: function() {
     this._super();
