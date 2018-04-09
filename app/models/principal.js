@@ -42,6 +42,7 @@ var Principal = Resource.extend({
       case C.PROJECT.TYPE_LDAP_USER:
       case C.PROJECT.TYPE_OPENLDAP_USER:
       case C.PROJECT.TYPE_SHIBBOLETH_USER:
+      case C.PROJECT.TYPE_ACTIVE_DIRECTORY_USER:
       return C.PROJECT.PERSON;
 
       case C.PROJECT.TYPE_GITHUB_TEAM:
@@ -52,6 +53,7 @@ var Principal = Resource.extend({
       case C.PROJECT.TYPE_LDAP_GROUP:
       case C.PROJECT.TYPE_OPENLDAP_GROUP:
       case C.PROJECT.TYPE_SHIBBOLETH_GROUP:
+      case C.PROJECT.TYPE_ACTIVE_DIRECTORY_GROUP:
       return C.PROJECT.ORG;
     }
   }),
