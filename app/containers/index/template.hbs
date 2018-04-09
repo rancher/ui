@@ -33,6 +33,7 @@
               scalePlaceholder=true
               fullColspan=sortable.fullColspan
               toggle=(action "toggleExpand" inst.id)
+              showNode=(not-eq groupTableBy 'nodeId')
               expanded=(array-includes expandedInstances inst.id)
             }}
           {{else}}
@@ -47,7 +48,7 @@
             }}
           {{/if}}
         {{else if (and (eq kind "group") (eq groupTableBy 'nodeId'))}}
-          {{node-group nodes=model.nodes hostname=inst.ref fullColspan=sortable.fullColspan showUpgrade=true showState=true}}
+          {{node-group nodes=model.nodes nodeId=inst.ref fullColspan=sortable.fullColspan showUpgrade=true showState=true}}
         {{else if (eq kind "group")}}
           {{namespace-group model=inst.ref fullColspan=sortable.fullColspan showUpgrade=true showState=true}}
         {{else if (eq kind "nomatch")}}

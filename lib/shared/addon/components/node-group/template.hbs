@@ -1,11 +1,11 @@
 <tr class="group-row">
   <td colspan={{nameSpan}} class="pl-10">
-    {{#if model.clusterId}}
+    {{#if (and model.id model.clusterId)}}
       <a href="{{href-to 'node' model.clusterId model.id}}">
         {{t 'nodeGroup.label' name=model.displayName}}
       </a>
     {{else}}
-      {{t 'nodeGroup.label' name=model.displayName}}
+      {{t 'nodeGroup.label' name=nodeId}}
     {{/if}}
   </td>
   {{#if afterName}}
