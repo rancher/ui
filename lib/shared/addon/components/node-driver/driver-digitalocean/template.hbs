@@ -58,23 +58,40 @@
           </div>
         </div>
         <div class="row">
-          <div class="col span-4 text-center">
+          <div class="col span-3 text-center">
             <label class="acc-label">
               {{input type="checkbox" checked=config.backups}}
               {{t 'nodeDriver.digitalocean.backups.label'}}
             </label>
           </div>
-          <div class="col span-4 text-center">
+          <div class="col span-3 text-center">
             <label class="acc-label">
               {{input type="checkbox" checked=config.privateNetworking}}
               {{t 'nodeDriver.digitalocean.privateNetworking.label'}}
             </label>
           </div>
-          <div class="col span-4 text-center">
+          <div class="col span-3 text-center">
             <label class="acc-label">
               {{input type="checkbox" checked=config.ipv6}}
               {{t 'nodeDriver.digitalocean.ipv6.label'}}
             </label>
+          </div>
+          <div class="col span-3 text-center">
+            <label class="acc-label">
+              {{input type="checkbox" checked=config.monitoring}}
+              {{t 'nodeDriver.digitalocean.monitoring.label'}}
+            </label>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col span-6">
+            {{form-value-array
+              initialValues=tags
+              addActionLabel='nodeDriver.digitalocean.tags.addActionLabel'
+              valueLabel='nodeDriver.digitalocean.tags.valueLabel'
+              valuePlaceholder='nodeDriver.digitalocean.tags.placeholder'
+              changed=(action (mut tags))
+            }}
           </div>
         </div>
       {{/accordion-list-item}}
