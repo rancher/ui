@@ -12,8 +12,8 @@ const Deployment = Workload.extend({
     return service;
   }),
 
-  isPaused: computed('deploymentConfig.paused', function () {
-    return !!get(this, 'deploymentConfig.paused');
+  isPaused: computed('paused', function () {
+    return !!get(this, 'paused');
   }),
 });
 

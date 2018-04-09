@@ -38,7 +38,7 @@ export default Route.extend({
     let promise = null;
     if (params.workloadId) {
       // Existing Service
-      const promise = store.find('workload', params.workloadId).then((workload) => {
+      promise = store.find('workload', params.workloadId).then((workload) => {
         return this.modelForExisting(workload, params);
       });
     } else {
@@ -142,7 +142,7 @@ export default Route.extend({
       let neu = get(this, 'store').createRecord(clone.serializeForNew());
 
       return EmberObject.create({
-        mode: 'service',
+        scaleMode: clone.type,
         workload: neu,
         container,
         isUpgrade: false

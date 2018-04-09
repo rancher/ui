@@ -8,6 +8,7 @@ var PersistentVolumeClaim = Resource.extend({
   clusterStore: service(),
   storageClass: reference('storageClassId', 'storageClass', 'clusterStore'),
   persistentVolume: reference('volumeId','persistentVolume', 'clusterStore'),
+  namespace: reference('namespaceId','namespace','clusterStore'),
 
   type: 'persistentVolumeClaim',
 

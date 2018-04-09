@@ -697,6 +697,8 @@ podPage:
   header: 'Pod: {name}'
   nodeIp: Node IP
   podIp: Pod IP
+  containerImage: 'Image of {container}'
+  image: Image
 
 containersPage:
   table:
@@ -875,6 +877,7 @@ nodesPage:
     disk: Disk
     pod: Pods
     docker: Docker
+    unschedulable: Unschedulable
     instanceState: Container States
     instanceStateWithIcon: States
     noData: This cluster does not have any nodes yet
@@ -1812,6 +1815,10 @@ clusterNew:
       flannel: Flannel
       calico: Calico
       canal: Canal
+    ingress:
+      label: Ingress Provider
+      none: None
+      nginx: Nginx
     version:
       label: Kubernetes Version
     registry:
@@ -3298,7 +3305,10 @@ formPorts:
   error:
     privateRequired: Private Container Port is required for each port rule.
     publicRequired: Source Port is required if Host IP is specified.
-    sourcePortRequired: Source Port is required for Nodes running a pod.
+    hostPort:
+      sourcePortRequired: Source Port is required for Nodes running a pod.
+    loadBalancer:
+      sourcePortRequired: Source Port is required for Load Balancer.
     mixedIpPort: "Port {ip}:{port}/{proto} has more than one mapping."
     mixedPort: "Port {port}/{proto} has more than one mapping."
   showAdvanced: Show Port Naming Options
@@ -4343,6 +4353,12 @@ nodeDriver:
       label: Private IP
     onlyPrivate:
       label: Use only private IP address
+    requestSpotInstance:
+      label: Spot Instance
+      enable: Request spot instance
+    spotPrice:
+      label: Spot Price
+      unit: $
   digitalocean:
     droplet:
       title: Droplet Options
@@ -4375,6 +4391,12 @@ nodeDriver:
       label: Enable IPv6
     privateNetworking:
       label: Enable Private Networking
+    monitoring:
+      label: Enable Monitoring
+    tags:
+      addActionLabel: Add Droplet Tag
+      valueLabel: Tags
+      placeholder: e.g. dev
   exoscale:
     accountSection: Account Access
     apiKey:

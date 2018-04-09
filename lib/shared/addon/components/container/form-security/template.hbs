@@ -95,7 +95,7 @@
   <div class="row mt-20">
     <div class="col box span-4">
       <label class="acc-label">{{t 'formSecurity.memoryReservation.label'}}</label>
-      {{#input-or-display editable=editing value=memoryReservationMb classesForDisplay="text-muted form-control-static"}}
+      {{#input-or-display editable=editing value=requests.memory classesForDisplay="text-muted form-control-static"}}
         <div class="input-group">
           {{input-integer min="4" step="1" value=memoryReservationMb classNames="form-control" placeholder=(t 'formSecurity.memoryReservation.placeholder')}}
           <div class="input-group-addon bg-default">{{t 'generic.mibibyte'}}</div>
@@ -103,7 +103,7 @@
       {{/input-or-display}}
 
       <label class="acc-label mt-20">{{t 'formSecurity.memoryLimit.label'}}</label>
-      {{#input-or-display editable=editing value=memoryMode classesForDisplay="text-muted form-control-static"}}
+      {{#input-or-display editable=editing value=limits.memory classesForDisplay="text-muted form-control-static"}}
         <div class="radio">
           <label>{{radio-button selection=memoryMode value="unlimited"}} {{t 'formSecurity.memoryLimit.unlimited'}}</label>
         </div>
@@ -123,7 +123,7 @@
 
     <div class="col box span-4">
       <label class="acc-label">{{t 'formSecurity.milliCpuReservation.label'}}</label>
-      {{#input-or-display editable=editing value=cpuReservationMillis classesForDisplay="text-muted form-control-static"}}
+      {{#input-or-display editable=editing value=requests.cpu classesForDisplay="text-muted form-control-static"}}
         <span class="with-input">
           <div class="input-group">
             {{input-integer min="0" step="100" value=cpuReservationMillis classNames="form-control" placeholder=(t 'formSecurity.milliCpuReservation.placeholder')}}
@@ -133,7 +133,7 @@
       {{/input-or-display}}
 
       <label class="acc-label mt-20">{{t 'formSecurity.cpuLimit.label'}}</label>
-      {{#input-or-display editable=editing value=cpuMode classesForDisplay="text-muted form-control-static"}}
+      {{#input-or-display editable=editing value=limits.cpu classesForDisplay="text-muted form-control-static"}}
         <div class="radio">
           <label>{{radio-button selection=cpuMode value="unlimited"}} {{t 'formSecurity.cpuLimit.unlimited'}}</label>
         </div>
