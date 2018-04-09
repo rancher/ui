@@ -1,0 +1,53 @@
+<label class="acc-label">Cloud Provider</label>
+
+<div class="row">
+  <div class="col span-6">
+    <div class="radio">
+      <label>
+        {{radio-button selection=useCloudProvider value=false}} {{t 'generic.none'}}
+      </label>
+    </div>
+    <div class="radio">
+      <label>
+        {{radio-button selection=useCloudProvider value=true}} {{driverName}}
+      </label>
+    </div>
+  </div>
+  <div class="col span-6">
+    <div class="banner bg-warning">
+      <div class="banner-icon">
+        <i class="icon icon-alert"></i>
+      </div>
+      <div class="banner-message">
+        Using a cloud provider without passing a cloud provider config could cause your cluster to not provision correctly. It is recomendded that you add a cloud provider config before you create a cluster.
+      </div>
+    </div>
+  </div>
+</div>
+
+{{#if useCloudProvider}}
+  <div class="row">
+    {{#if hasBuiltIn}}
+      {{form-key-value
+          initialMap=intialAnswers
+          changed=(action (mut configAnswers))
+          allowEmptyValue=false
+          allowRemove=false
+          allowEditKey=false
+          allowAdd=false
+          allowMultilineValue=true
+          editing=true
+          showHeader=false
+      }}
+    {{else}}
+      {{form-key-value
+          initialMap=intialAnswers
+          changed=(action (mut configAnswers))
+          allowEmptyValue=false
+          editing=true
+          showHeader=false
+          addInitialEmptyRow=true
+      }}
+    {{/if}}
+  </div>
+{{/if}}
