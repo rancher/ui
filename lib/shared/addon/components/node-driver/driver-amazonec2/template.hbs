@@ -263,6 +263,25 @@
           </div>
         </div>
       </div>
+
+      <div class="row">
+        <div class="col span-6">
+          <label class="acc-label">{{t 'nodeDriver.amazonec2.requestSpotInstance.label'}}</label>
+          <div class="checkbox">
+            <label class="acc-label">{{input type="checkbox" checked=config.requestSpotInstance}} {{t 'nodeDriver.amazonec2.requestSpotInstance.enable'}}</label>
+          </div>
+        </div>
+
+        {{#if config.requestSpotInstance}}
+          <div class="col span-6">
+            <label class="acc-label">{{t 'nodeDriver.amazonec2.spotPrice.label'}}</label>
+            <div class="input-group">
+              {{input type="text" classNames="form-control" placeholder="" value=config.spotPrice}}
+              <span class="input-group-addon bg-default">{{t 'nodeDriver.amazonec2.spotPrice.unit'}}</span>
+            </div>
+          </div>
+        {{/if}}
+      </div>
     {{/accordion-list-item}}
 
     <div class="over-hr"><span>{{templateOptionsTitle}}</span></div>
