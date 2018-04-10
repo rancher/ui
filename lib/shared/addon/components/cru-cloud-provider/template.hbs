@@ -30,20 +30,39 @@
 {{#if useCloudProvider}}
   <div class="row">
     {{#if (eq driver 'azure')}}
-      {{form-key-value
-          initialMap=intialAnswers
-          changed=(action (mut configAnswers))
-          allowEmptyValue=false
-          allowRemove=false
-          allowEditKey=false
-          allowAdd=false
-          allowMultilineValue=true
-          editing=true
-          showHeader=false
-      }}
-    {{else if (eq driver 'amazonec2')}}
+      <table class="table fixed no-lines">
+        <thead>
+          <tr class="hidden-sm">
+            <th>Key</th>
+            <th width="30">&nbsp;</th>
+            <th>Value</th>
+            <th width="10">&nbsp;</th>
+            <th width="30">&nbsp;</th>
+          </tr>
+        </thead>
+        <tbody>
+          {{#each-in configAnswers as |key value|}}
+            <tr>
+              <td data-title="Key">
+                {{key}}
+              </td>
 
-    {{else}}
+              <td class="valign-top text-center">
+                {{t 'formKeyValue.separator'}}
+              </td>
+
+              <td data-title="Value">
+                {{textarea-autogrow class="form-control input-sm value" spellcheck="false" required=true value=value placeholder='generic.emptyString'}}
+              </td>
+              <td>&nbsp;</td>
+              <td class="valign-top text-right">
+                &nbsp;
+              </td>
+            </tr>
+          {{/each-in}}
+        </tbody>
+      </table>
+    {{else if (and (not-eq driver 'amazonec2') (not-eq driver 'azure'))}}
       <div class="pb-10">
         <label class="acc-label">Cloud Provider Name</label>
         {{input type="text" value=configName  id="cloud-provider-name"}}

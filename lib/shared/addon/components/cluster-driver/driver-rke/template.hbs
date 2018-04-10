@@ -25,13 +25,22 @@
           }}
         </div>
         <div class="col span-4">
-          <label class="acc-label">{{t 'clusterNew.rke.ingress.label'}}</label>
-          {{new-select
-            classNames="form-control"
-            content=ingressChoices
-            localizedLabel=true
-            value=config.ingress.provider
-          }}
+          <label class="acc-label">{{t 'clusterNew.rke.podSecurityPolicy.label'}}</label>
+          <div class="radio">
+            <label>
+              {{radio-button selection=config.services.kubeApi.podSecurityPolicy value=false disabled=(not model.psps.length)}}
+              {{t 'generic.disabled'}}
+            </label>
+          </div>
+          <div class="radio">
+            <label class={{unless model.psps.length 'text-muted'}}>
+              {{radio-button selection=config.services.kubeApi.podSecurityPolicy value=true disabled=(not model.psps.length)}}
+              {{t 'generic.enabled'}}
+              {{#unless model.psps.length}}
+                &mdash; {{t 'clusterNew.psp.none'}}
+              {{/unless}}
+            </label>
+          </div>
         </div>
       </div>
       <div class="row">
@@ -76,26 +85,6 @@
         </div>
 
         <div class="col span-4">
-          <label class="acc-label">{{t 'clusterNew.rke.podSecurityPolicy.label'}}</label>
-          <div class="radio">
-            <label>
-              {{radio-button selection=config.services.kubeApi.podSecurityPolicy value=false disabled=(not model.psps.length)}}
-              {{t 'generic.disabled'}}
-            </label>
-          </div>
-          <div class="radio">
-            <label class={{unless model.psps.length 'text-muted'}}>
-              {{radio-button selection=config.services.kubeApi.podSecurityPolicy value=true disabled=(not model.psps.length)}}
-              {{t 'generic.enabled'}}
-              {{#unless model.psps.length}}
-                &mdash; {{t 'clusterNew.psp.none'}}
-              {{/unless}}
-            </label>
-          </div>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col span-4">
           {{#if config.services.kubeApi.podSecurityPolicy}}
             <label class="acc-label">{{t 'clusterNew.psp.label'}}{{field-required}}</label>
             {{new-select
@@ -113,16 +102,14 @@
           {{/if}}
         </div>
       </div>
-      {{#unless (eq nodeWhich 'azure')}}
-        <div class="row">
-          <div class="col span-12">
-            {{cru-cloud-provider
-                cluster=model.cluster
-                driver=nodeWhich
-            }}
-          </div>
+      <div class="row">
+        <div class="col span-12">
+          {{cru-cloud-provider
+              cluster=model.cluster
+              driver=nodeWhich
+          }}
         </div>
-      {{/unless}}
+      </div>
     {{/accordion-list-item}}
   {{/accordion-list}}
 
