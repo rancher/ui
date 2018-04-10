@@ -113,15 +113,16 @@
           {{/if}}
         </div>
       </div>
-      <div class="row">
-        {{log model.cluster.rancherKubernetesEngineConfig}}
-        <div class="col span-12">
-          {{cru-cloud-provider
-              cluster=model.cluster
-              driver=nodeWhich
-          }}
+      {{#unless (eq nodeWhich 'azure')}}
+        <div class="row">
+          <div class="col span-12">
+            {{cru-cloud-provider
+                cluster=model.cluster
+                driver=nodeWhich
+            }}
+          </div>
         </div>
-      </div>
+      {{/unless}}
     {{/accordion-list-item}}
   {{/accordion-list}}
 

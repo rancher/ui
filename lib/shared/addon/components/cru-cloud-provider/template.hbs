@@ -13,21 +13,23 @@
       </label>
     </div>
   </div>
-  <div class="col span-6">
-    <div class="banner bg-warning">
-      <div class="banner-icon">
-        <i class="icon icon-alert"></i>
-      </div>
-      <div class="banner-message">
-        Using a cloud provider without passing a cloud provider config could cause your cluster to not provision correctly. It is recomendded that you add a cloud provider config before you create a cluster.
+  {{#unless (eq driver 'amazonec2')}}
+    <div class="col span-6">
+      <div class="banner bg-warning">
+        <div class="banner-icon">
+          <i class="icon icon-alert"></i>
+        </div>
+        <div class="banner-message">
+          Using a cloud provider without passing a cloud provider config could cause your cluster to not provision correctly. It is recomendded that you add a cloud provider config before you create a cluster.
+        </div>
       </div>
     </div>
-  </div>
+  {{/unless}}
 </div>
 
 {{#if useCloudProvider}}
   <div class="row">
-    {{#if hasBuiltIn}}
+    {{#if (eq driver 'azure')}}
       {{form-key-value
           initialMap=intialAnswers
           changed=(action (mut configAnswers))
@@ -39,15 +41,23 @@
           editing=true
           showHeader=false
       }}
+    {{else if (eq driver 'amazonec2')}}
+
     {{else}}
-      {{form-key-value
-          initialMap=intialAnswers
-          changed=(action (mut configAnswers))
-          allowEmptyValue=false
-          editing=true
-          showHeader=false
-          addInitialEmptyRow=true
-      }}
+      <div class="pb-10">
+        <label class="acc-label">Cloud Provider Name</label>
+        {{input type="text" value=configName  id="cloud-provider-name"}}
+      </div>
+      <div>
+        {{form-key-value
+            initialMap=intialAnswers
+            changed=(action (mut configAnswers))
+            allowEmptyValue=false
+            editing=true
+            showHeader=false
+            addInitialEmptyRow=true
+        }}
+      </div>
     {{/if}}
   </div>
 {{/if}}
