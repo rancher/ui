@@ -70,8 +70,6 @@ export default Controller.extend({
 
     switch (groupBy) {
       case 'none':
-        out = this.get('model.pods');
-        break;
       case 'node':
         out = this.get('model.pods');
         break;

@@ -1,3 +1,139 @@
-<div class="text-center mt-50">
-  <img src="{{app.baseAssets}}assets/images/lobby.gif"/>
-</div>
+{{#accordion-list showExpandAll=false as | al expandFn |}}
+  {{#accordion-list-item
+    title=(t 'nodeDriver.amazonec2.access.title')
+    detail=(t 'nodeDriver.amazonec2.access.detail')
+    expandAll=expandAll
+    expand=(action expandFn)
+    expandOnInit=true
+  }}
+    <div class="row">
+      <div class="col span-4">
+        <label class="acc-label">{{t 'nodeDriver.amazonec2.region.label'}}</label>
+        {{#if (eq step 1)}}
+          <select class="form-control" onchange={{action (mut config.region) value="target.value"}}>
+            {{#each regionChoices as |choice|}}
+              <option value={{choice}} selected={{eq config.region choice}}>{{choice}}</option>
+            {{/each}}
+          </select>
+        {{else}}
+          <div>{{config.region}}</div>
+        {{/if}}
+      </div>
+
+      <div class="col span-4">
+        <label class="acc-label">{{t 'nodeDriver.amazonec2.accessKey.label'}}</label>
+        {{#if (eq step 1)}}
+          {{input type="text" name="username" classNames="form-control" placeholder=(t 'nodeDriver.amazonec2.accessKey.placeholder') value=config.accessKey}}
+        {{else}}
+          <div>{{config.accessKey}}</div>
+        {{/if}}
+      </div>
+
+      <div class="col span-4">
+        <label class="acc-label">{{t 'nodeDriver.amazonec2.secretKey.label'}}</label>
+        {{#if (eq step 1)}}
+          {{input type="password" name="password" classNames="form-control" placeholder=(t 'nodeDriver.amazonec2.secretKey.placeholder') value=config.secretKey}}
+        {{else}}
+          <div class="text-muted text-italic">{{t 'nodeDriver.amazonec2.secretKey.provided'}}</div>
+        {{/if}}
+      </div>
+    </div>
+
+    {{#if (eq step 1)}}
+      <div class="row">
+        <div class="span-8 offset-4">
+          <p class="text-info text-small m-0">{{t 'nodeDriver.amazonec2.access.help'}}</p>
+        </div>
+      </div>
+    {{/if}}
+  {{/accordion-list-item}}
+
+  {{#if (eq step 1)}}
+    {{top-errors errors=errors}}
+    {{save-cancel
+      save="awsLogin"
+      cancel="cancel"
+      createLabel="nodeDriver.amazonec2.access.next"
+      savingLabel="nodeDriver.amazonec2.access.loading"
+    }}
+  {{/if}}
+
+  {{#if (eq step 2)}}
+    {{#accordion-list-item
+      title=(t 'clusterNew.customize.title')
+      detail=(t 'clusterNew.customize.detail')
+      everExpanded=true
+      expandAll=al.expandAll
+      expand=(action expandFn)
+    }}
+      <div class="row">
+        <div class="col span-6">
+          <label class="acc-label">{{t 'clusterNew.googlegke.masterVersion.label'}}</label>
+          {{new-select
+            classNames="form-control"
+            content=versionChoices
+            optionValuePath="value"
+            optionLabelPath="value"
+            value=config.masterVersion
+            prompt="clusterNew.googlegke.masterVersion.prompt"
+            localizedPrompt=true
+            disabled=true
+          }}
+        </div>
+        <div class="col span-6">
+          <label class="acc-label">{{t 'clusterNew.googlegke.clusterIpv4Cidr.label'}}</label>
+          {{input value=config.clusterIpv4Cidr placeholder=(t 'clusterNew.googlegke.clusterIpv4Cidr.placeholder') disabled=true}}
+        </div>
+      </div>
+      <div class="row">
+        <div class="col span-6">
+          <label class="acc-label">{{t 'clusterNew.googlegke.alphaFeatures.label'}}</label>
+          <div class="form-control-static">
+            <label class="mr-20 hand">
+              {{radio-button selection=config.enableAlphaFeature value=true disabled=true}} {{t 'generic.enabled'}}
+            </label>
+            <label class="hand">
+              {{radio-button selection=config.enableAlphaFeature value=false disabled=true}} {{t 'generic.disabled'}}
+            </label>
+          </div>
+        </div>
+      </div>
+    {{/accordion-list-item}}
+
+    {{#accordion-list-item
+      title=(t 'clusterNew.nodes.title')
+      detail=(t 'clusterNew.nodes.detail')
+      showExpand=false
+      expandOnInit=true
+      expandAll=al.expandAll
+      expand=(action expandFn)
+    }}
+      <div class="row">
+        <div class="col span-4">
+          <label class="acc-label">{{t 'nodeDriver.amazonec2.instanceType.label'}}</label>
+          {{new-select
+            classNames="form-control"
+            value=config.instanceType
+            content=instanceTypes
+            optionValuePath="name"
+            optionLabelPath="name"
+            optionGroupPath="group"
+          }}
+        </div>
+
+        <div class="col span-4">
+          <label class="acc-label">Minimum ASG Size</label>
+          {{input value=config.nodesMin}}
+        </div>
+
+        <div class="col span-4">
+          <label class="acc-label">Maximum ASG Size</label>
+          {{input value=config.nodesMax}}
+        </div>
+      </div>
+    {{/accordion-list-item}}
+
+    {{top-errors errors=errors}}
+    {{save-cancel editing=(eq mode 'edit')  save="driverSave" cancel=close}}
+  {{/if}}
+{{/accordion-list}}

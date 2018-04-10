@@ -6,9 +6,6 @@ export function initialize(instance) {
   var cookies = instance.lookup('service:cookies');
 
   store.reopen(StoreTweaks);
-  store.reopen({
-    removeAfterDelete: false
-  });
   store.baseUrl = application.apiEndpoint;
 
   let timeout = cookies.get('timeout');

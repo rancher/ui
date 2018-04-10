@@ -84,6 +84,11 @@ export default Resource.extend({
   displayDomainName: computed('cn','countableSans.length', function() {
     const intl = get(this, 'intl');
     const cn = get(this, 'cn');
+
+    if ( !cn ) {
+      return intl.t('generic.none');
+    }
+
     const sans = get(this, 'countableSans.length');
     const wildcard = cn.substr(0,1) === '*';
 

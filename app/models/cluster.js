@@ -66,6 +66,8 @@ export default Resource.extend(ResourceUsage, {
     const firstTemplate = get(pools,'firstObject.nodeTemplate');
 
     switch ( get(this,'configName') ) {
+      case 'amazonElasticContainerServiceConfig':
+        return 'amazoneks';
       case 'azureKubernetesServiceConfig':
         return 'azureaks';
       case 'googleKubernetesEngineConfig':
@@ -91,6 +93,8 @@ export default Resource.extend(ResourceUsage, {
     const firstPool = (pools||[]).objectAt(0);
 
     switch ( get(this,'configName') ) {
+      case 'amazonElasticContainerServiceConfig':
+        return intl.t('clusterNew.amazoneks.shortLabel');
       case 'azureKubernetesServiceConfig':
         return intl.t('clusterNew.azureaks.shortLabel');
       case 'googleKubernetesEngineConfig':
