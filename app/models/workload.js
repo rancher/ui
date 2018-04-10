@@ -212,8 +212,9 @@ var Workload = Resource.extend(DisplayImage, StateCounts, EndpointPorts, {
   }.property('state', 'healthState'),
 
   isGlobalScale: function() {
-    return (get(this, 'launchConfig.labels')||{})[C.LABEL.SCHED_GLOBAL] + '' === 'true';
-  }.property('launchConfig.labels'),
+    let lcType = get(this, 'lcType');
+    return lcType === 'daemonset';
+  }.property('lcType'),
 
   canScaleUp: function() {
     if ( !get(this, 'canScale') ) {
@@ -243,12 +244,8 @@ var Workload = Resource.extend(DisplayImage, StateCounts, EndpointPorts, {
   }.property('canScale','scaleMin','scaleIncrement','scale'),
 
   displayScale: function() {
-    let lcType = get(this, 'lcType');
-    if (lcType){
-      return get(this, 'intl').t('servicePage.multistat.daemonSetScale');
-    }
     if ( get(this, 'isGlobalScale') ) {
-      return get(this, 'intl').t('servicePage.globalScale', {scale: get(this, 'scale')});
+      return get(this, 'intl').t('servicePage.multistat.daemonSetScale');
     } else {
       return get(this, 'scale');
     }

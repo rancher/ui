@@ -58,25 +58,6 @@ var Namespace = Resource.extend(StateCounts, {
   },
 
   actions: {
-    startAll() {
-      return this.doAction('startall');
-    },
-
-    pauseAll() {
-      return this.doAction('pauseall');
-    },
-
-    stopAll() {
-      return this.doAction('stopall');
-    },
-
-    promptStop() {
-      this.get('modalService').toggleModal('modal-confirm-deactivate', {
-        originalModel: this,
-        action: 'stopAll'
-      });
-    },
-
     edit() {
       this.get('modalService').toggleModal('modal-edit-namespace', this);
     },
@@ -111,7 +92,7 @@ var Namespace = Resource.extend(StateCounts, {
     },
   },
 
-  availableActions: computed('actionLinks.{exportconfig}','links.{update,remove}','externalIdInfo.kind','canStartAll','canPauseAll','canStopAll', function() {
+  availableActions: computed('actionLinks.{exportconfig}','links.{update,remove}','externalIdInfo.kind', function() {
     let a = this.get('actionLinks');
     let l = this.get('links');
 
@@ -122,10 +103,6 @@ var Namespace = Resource.extend(StateCounts, {
     let out    = [
       { label:   'action.move',           icon: 'icon icon-fork',           action: 'move',             enabled: true, bulkable: true},
       { label:   'action.addContainer',   icon: 'icon icon-container',      action: 'addContainer',     enabled: !!this.get('projectId') },
-      { divider: true },
-      { label:   'action.pause',          icon: 'icon icon-pause',          action: 'pauseAll',         enabled: this.get('canPauseAll')},
-      { label:   'action.startAll',       icon: 'icon icon-play',           action: 'startAll',         enabled: this.get('canStartAll')},
-      { label:   'action.stopAll',        icon: 'icon icon-stop',           action: 'promptStop',       enabled: this.get('canStopAll'), altAction: 'stopAll' },
       { divider: true },
       { label:   'action.edit',           icon: 'icon icon-edit',           action: 'edit',             enabled: !!l.update },
       { label:   'action.viewConfig',     icon: 'icon icon-files',          action: 'viewCode',         enabled: !!a.exportconfig },
@@ -138,49 +115,6 @@ var Namespace = Resource.extend(StateCounts, {
     ];
 
     return out;
-  }),
-
-  canStartAll: computed('services.@each.state','actionLinks.startall', function() {
-    if ( !this.hasAction('startall') ) {
-      return false;
-    }
-
-    var count = this.get('services.length') || 0;
-    if ( count === 0 ) {
-      return false;
-    }
-
-    return this.get('services').filterBy('actionLinks.activate').get('length') > 0;
-  }),
-
-  canPauseAll: computed('services.@each.state','actionLinks.pauseall', function() {
-    if ( !this.hasAction('pauseall') ) {
-      return false;
-    }
-
-    var count = this.get('services.length') || 0;
-    if ( count === 0 ) {
-      return false;
-    }
-
-    return this.get('services').filterBy('actionLinks.pause').get('length') > 0;
-  }),
-
-  canStopAll: computed('services.@each.state','actionLinks.stopall', function() {
-    if ( !this.hasAction('stopall') ) {
-      return false;
-    }
-
-    var services = this.get('workloads');
-    var containers = this.get('pods').filterBy('workloadId', null);
-    var countS = (services.length || 0);
-    var countC = (containers.length || 0);
-
-    if ( (countS + countC) === 0 ) {
-      return false;
-    }
-
-    return services.filterBy('actionLinks.deactivate').get('length') > 0 && containers.filterBy('actionLinks.stop').get('length');
   }),
 
   canViewConfig: computed('actionLinks.exportconfig', function() {
