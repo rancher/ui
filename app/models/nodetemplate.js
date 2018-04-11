@@ -5,19 +5,33 @@ import { ucFirst } from 'shared/utils/util';
 import { getDisplayLocation, getDisplaySize } from 'shared/mixins/node-driver';
 
 export default Resource.extend({
-  intl: service(),
+  intl:         service(),
+  modalService: service('modal'),
 
   type: 'nodeTemplate',
 
-  availableActions: function() {
+  actions: {
+    edit() {
+      let driver = get(this, 'driver');
+      get(this,'modalService').toggleModal('modal-edit-node-template', {
+        driver: driver,
+        config: get(this, `${driver}Config`),
+        nodeTemplate: this,
+      });
+    },
+  },
+
+  availableActions: computed('links.{update,remove}', function() {
     let l = get(this,'links');
 
     return [
+      { label: 'action.edit', icon: 'icon icon-edit', action: 'edit', enabled: !!l.update },
+      { divider: true },
       { label: 'action.remove',     icon: 'icon icon-trash',  action: 'promptDelete', enabled: !!l.remove, altAction: 'delete', bulkable: true},
       { divider: true },
       { label: 'action.viewInApi',  icon: 'icon icon-external-link',action: 'goToApi', enabled: true},
     ];
-  }.property('links.{update,remove}'),
+  }),
 
   config: computed('driver', function() {
     const driver = get(this, 'driver');
