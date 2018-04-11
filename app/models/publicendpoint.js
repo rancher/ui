@@ -44,12 +44,15 @@ var PublicEndpoint = Resource.extend({
   }),
 
   // ip:port
-  endpoint: computed('port', 'addresses', 'allNodes', function() {
+  endpoint: computed('port', 'addresses', 'allNodes', 'isIngress', 'hostname', function() {
     const addresses = get(this, 'addresses');
     const allNodes = get(this, 'allNodes');
-
+    const hostname = get(this,'hostname') || '';
+    
     let out = '';
-    if ( allNodes ) {
+    if (get(this,'isIngress') && hostname !==''){
+      out = hostname;
+    } else if ( allNodes ) {
       const globalStore = get(this, 'globalStore');
       const nodes = globalStore.all('node').filterBy('clusterId', get(this,'scope.currentCluster.id'));
       let node = nodes.findBy('externalIpAddress');
@@ -73,15 +76,18 @@ var PublicEndpoint = Resource.extend({
   }),
 
   // port[/udp]
-  displayEndpoint: computed('port','protocol', function() {
+  displayEndpoint: computed('port','protocol', 'path', function() {
     let out = '';
+    let path = get(this,'path') || '';
     out += get(this,'port');
     let proto = get(this,'protocol').toLowerCase();
     out += '/' + proto;
+    out += path
     return out;
   }),
 
-  linkEndpoint: computed('isTcpish', 'isMaybeSecure', 'displayEndpoint', 'port', function() {
+  linkEndpoint: computed('isTcpish', 'isMaybeSecure', 'displayEndpoint', 'port', 'isIngress', 'path', function() {
+    let path = get(this,'path') || '';
     if (get(this,'isTcpish') && get(this, 'port') > 0 ) {
       let out = get(this,'endpoint');
 
@@ -89,6 +95,10 @@ var PublicEndpoint = Resource.extend({
         out = 'https://' + out.replace(/:443$/, '');
       } else {
         out = 'http://' + out.replace(/:80$/, '');
+      }
+
+      if (get(this,'isIngress')) {
+        out = out + path;
       }
 
       return out;
@@ -100,8 +110,13 @@ var PublicEndpoint = Resource.extend({
     return ( ['tcp','http','https'].includes(proto) );
   }),
 
-  isMaybeSecure: computed('port', function() {
-    return portMatch([get(this,'port')], [443, 8443], '443');
+  isMaybeSecure: computed('port','protocol', function() {
+    const proto = get(this, 'protocol').toLowerCase();
+    return portMatch([get(this,'port')], [443, 8443], '443') || proto==='https';
+  }),
+
+  isIngress : computed('ingressId', function(){
+    return get(this,'ingressId') !=='' && get(this,'ingressId') !== null;
   }),
 });
 
