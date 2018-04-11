@@ -2,7 +2,7 @@ import EmberObject from '@ember/object';
 import { hash } from 'rsvp';
 import { inject as service } from '@ember/service';
 import Route from '@ember/routing/route';
-import { get/* , set */ } from '@ember/object';
+import { get, set } from '@ember/object';
 
 export default Route.extend({
   modalService: service('modal'),
@@ -71,15 +71,6 @@ export default Route.extend({
         return {version: key, sortVersion: key, link: links[key]};
       });
 
-      if ( results.upgrade )
-      {
-        verArr.unshift({
-          sortVersion: results.upgrade.version,
-          version: results.upgrade.version + ' (current)',
-          link: results.upgrade.links.self
-        });
-      }
-
       if (results.app) {
         neuApp = results.app;
       } else {
@@ -87,6 +78,13 @@ export default Route.extend({
           type: 'app',
           name: results.namespace.name,
         });
+      }
+
+      if ( neuApp.id ) {
+        verArr.filter(ver => ver.version === get(neuApp, 'externalIdInfo.version'))
+          .forEach(ver => {
+            set(ver, 'version', `${ver.version} (current)`);
+          })
       }
 
       return EmberObject.create({
