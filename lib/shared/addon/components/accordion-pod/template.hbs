@@ -24,13 +24,16 @@
           {{badge-state model=inst}}
         </td>
         <td data-title="{{dt.name}}">
-          {{inst.name}}
+          <a href="{{href-to "container" inst.id}}">{{inst.displayName}}</a>
         </td>
         <td data-title="{{dt.displayImage}}">
           {{inst.displayImage}}
         </td>
         <td data-title="{{dt.displayIp}}">
           {{inst.displayIp}}
+        </td>
+        <td data-title="{{dt.actions}}" class="actions">
+          {{action-menu model=inst}}
         </td>
       </tr>
     {{else if (eq kind "nomatch")}}
