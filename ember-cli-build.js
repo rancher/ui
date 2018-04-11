@@ -87,9 +87,11 @@ module.exports = function(defaults) {
   app.import('bower_components/prism/components/prism-yaml.js');
   app.import('bower_components/prism/components/prism-bash.js');
   app.import('bower_components/async/dist/async.js');
+  app.import('bower_components/jszip/dist/jszip.js')
   app.import('bower_components/position-calculator/dist/position-calculator.js');
   app.import('vendor/aws-sdk-ec2.js');
   app.import('vendor/codemirror/show-hint.js');
+  app.import('vendor/file-saver/fileSaver.mini.js');
   app.import('vendor/codemirror/show-hint.css');
   app.import('vendor/json-sanitizer/json-sanitizer.js');
   app.import('bower_components/identicon.js/pnglib.js');
