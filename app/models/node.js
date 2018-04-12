@@ -117,7 +117,7 @@ var Node = Resource.extend(StateCounts, ResourceUsage, {
     return ['etcd','controlPlane','worker'].filter(x => !!get(this,x));
   }),
 
-  displayRoles: computed('rolesArray.[]', function() {
+  displayRoles: computed('intl.locale','rolesArray.[]', function() {
     const intl = get(this, 'intl');
     const roles = get(this, 'rolesArray');
 

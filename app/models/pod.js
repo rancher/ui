@@ -67,7 +67,7 @@ var Pod = Resource.extend(DisplayImage, {
 
     var choices = [
       { label: 'action.execute',          icon: 'icon icon-terminal',     action: 'shell',            enabled: isRunning, altAction:'popoutShell'},
-      { label: 'action.logs',             icon: 'icon icon-file',         action: 'logs',             enabled: isRunning, altAction: 'popoutLogs' },
+      { label: 'action.logs',             icon: 'icon icon-file',         action: 'logs',             enabled: true, altAction: 'popoutLogs' },
       { divider: true },
       { label: 'action.remove',           icon: 'icon icon-trash',        action: 'promptDelete',     enabled: !!l.remove, altAction: 'delete', bulkable: true},
       { divider: true },
