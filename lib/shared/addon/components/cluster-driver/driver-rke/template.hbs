@@ -142,8 +142,12 @@
   </div>
 
   <div class="copy-pre mt-20 mb-20">
-    {{copy-to-clipboard clipboardText=command tagName="div" classNames="copy-to-pre"}}
-    <pre id="registration-command" style="font-size: 14px;">{{command}}</pre>
+    {{#if loading}}
+      <div class="text-center"><i class="icon icon-spinner icon-spin"></i> {{t 'generic.loading'}}</div>
+    {{else}}
+      {{copy-to-clipboard clipboardText=command tagName="div" classNames="copy-to-pre"}}
+      <pre id="registration-command" style="font-size: 14px;">{{command}}</pre>
+    {{/if}}
   </div>
 
   {{#accordion-list showExpandAll=false as |al expandFn|}}
@@ -163,6 +167,25 @@
         </div>
         <div class="col span-4 text-center">
           <label>{{input type="checkbox" checked=worker}} {{t 'clusterNew.rke.role.header.worker'}}</label>
+        </div>
+      </div>
+    {{/accordion-list-item}}
+
+    {{#accordion-list-item
+      title=(t 'clusterNew.rke.address.title')
+      detail=(t 'clusterNew.rke.address.detail')
+      expandOnInit=true
+      expandAll=al.expandAll
+      expand=(action expandFn)
+    }}
+      <div class="row">
+        <div class="col span-6">
+          <label class="acc-label">{{t 'clusterNew.rke.address.public.label'}}</label>
+          {{input type="text" value=address placeholder=(t 'clusterNew.rke.address.public.placeholder')}}
+        </div>
+        <div class="col span-6">
+          <label class="acc-label">{{t 'clusterNew.rke.address.private.label'}}</label>
+          {{input type="text" value=internalAddress placeholder=(t 'clusterNew.rke.address.private.placeholder')}}
         </div>
       </div>
     {{/accordion-list-item}}
