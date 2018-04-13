@@ -1,9 +1,10 @@
 <td data-title="{{t 'formSources.kind.label'}}">
   {{#if editing}}
     {{new-select
-        classNames="form-control"
-        content=sources
-        value=source.source
+      classNames="form-control"
+      optionValuePath="id"
+      content=sources
+      value=source.source
     }}
   {{else}}
     {{#if source.source}}
@@ -21,6 +22,13 @@
         value=source.sourceName
         valueKey='name'
         selectedSecret=selectedSecret
+    }}
+  {{else if (and editing (eq source.source 'configMap'))}}
+    {{schema/input-config-map
+        namespace=namespace
+        value=source.sourceName
+        valueKey='name'
+        selectedConfigMap=selectedConfigMap
     }}
   {{else}}
     {{#if source}}
