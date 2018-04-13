@@ -32,7 +32,9 @@ export default Controller.extend({
     },
 
     kubeconfig() {
-      this.get('modalService').toggleModal('modal-kubeconfig');
+      this.get('modalService').toggleModal('modal-kubeconfig', {
+        escToClose: true,
+      });
     },
   },
 
