@@ -21,6 +21,7 @@ var Pod = Resource.extend(DisplayImage, {
   workload: reference('workloadId'),
   hasSidekicks: gt('containers.length', 1),
   canHaveLabels: true,
+  escToClose: true,
 
   actions: {
     clone() {
@@ -32,7 +33,7 @@ var Pod = Resource.extend(DisplayImage, {
     shell() {
       get(this, 'modalService').toggleModal('modal-shell', {
         model: this,
-        escToClose: false,
+        escToClose: true,
       });
     },
 
