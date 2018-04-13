@@ -6,9 +6,30 @@
   <div>
     {{#each current as |row|}}
       <div class="advanced-setting">
-        <div class="edit btn bg-warning" {{action "showEdit" row.key}}><i class="icon icon-edit"></i></div>
-        <div class="text-mono force-wrap {{unless (or (not row.obj) row.obj.isDefault) 'text-bold'}}">{{row.key}}={{#if row.obj.value}}{{row.obj.value}}{{else}}<span class="text-muted">&lt;none&gt;</span>{{/if}}</div>
-        <p class="text-info">{{t row.descriptionKey}}</p>
+        {{action-menu model=row.obj showPrimary=false classNames="pull-right mt-5" size="xs"}}
+        <div>
+          <label class="acc-label">{{row.key}}</label>
+          <p class="text-info">{{t row.descriptionKey}}</p>
+        </div>
+        {{!-- <div class="edit btn bg-warning" {{action "showEdit" row.key}}><i class="icon icon-edit"></i></div> --}}
+        {{#if row.hide}}
+          <div class="row text-center">
+            <div class="btn bg-info btn-sm" {{action "showNode" row}}>Show {{row.key}}</div>
+          </div>
+        {{else}}
+          <pre class="{{unless (or (not row.obj) (eq row.obj.default row.obj.value)) 'text-bold'}}">
+            {{#if row.obj.value}}
+              {{row.obj.value}}
+            {{else}}
+              <span class="text-muted">&lt;none&gt;</span>
+            {{/if}}
+          </pre>
+          <div class="row text-center">
+            {{#if (eq row.kind 'multiline')}}
+              <div class="btn bg-info btn-sm" {{action "showNode" row}}>Hide {{row.key}}</div>
+            {{/if}}
+          </div>
+        {{/if}}
       </div>
     {{/each}}
   </div>
