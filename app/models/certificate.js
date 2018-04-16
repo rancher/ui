@@ -15,20 +15,6 @@ export default Resource.extend({
     },
   },
 
-  availableActions: computed('links.{update,remove}', function() {
-    let l = get(this, 'links');
-
-    let choices = [
-      { label: 'action.edit',       icon: 'icon icon-edit',           action: 'edit',         enabled: !!l.update },
-      { divider: true },
-      { label: 'action.remove',     icon: 'icon icon-trash',          action: 'promptDelete', enabled: !!l.remove, altAction: 'delete', bulkable: true },
-      { divider: true },
-      { label: 'action.viewInApi',  icon: 'icon icon-external-link',  action: 'goToApi',      enabled: true },
-    ];
-
-    return choices;
-  }),
-
   issuedDate: computed('issuedAt', function() {
     return new Date(get(this, 'issuedAt'));
   }),

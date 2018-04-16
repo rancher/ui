@@ -30,20 +30,6 @@ const NodePool = Resource.extend({
 
     set(this, 'quantityTimer', timer);
   },
-
-  availableActions: computed('links.{remove}', function() {
-    //let a = get(this,'actionLinks');
-    let l = get(this,'links');
-
-    let out = [
-      { label: 'action.remove',     icon: 'icon icon-trash',        action: 'promptDelete', enabled: !!l.remove, altAction: 'delete', bulkable: true},
-      { divider: true },
-      { label: 'action.viewInApi',  icon: 'icon icon-external-link',action: 'goToApi',      enabled: true},
-    ];
-
-    return out;
-  }),
-
 });
 
 NodePool.reopenClass({

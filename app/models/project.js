@@ -55,21 +55,6 @@ export default Resource.extend({
     },
   },
 
-  availableActions: computed('actionLinks.{activate,deactivate}', 'links.{update,remove}', function () {
-    // let a = get(this,'actionLinks');
-    // let l = get(this,'links');
-
-    var choices = [
-      { label: 'action.edit', icon: 'icon icon-edit', action: 'edit', enabled: true },
-      { divider: true },
-      { label: 'action.remove', icon: 'icon icon-trash', action: 'promptDelete', enabled: true, altAction: 'delete', bulkable: true },
-      { divider: true },
-      { label: 'action.viewInApi', icon: 'icon icon-external-link', action: 'goToApi', enabled: true },
-    ];
-
-    return choices;
-  }),
-
   delete(/*arguments*/) {
     var promise = this._super.apply(this, arguments);
     return promise.then(() => {

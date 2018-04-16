@@ -25,15 +25,11 @@ export default Resource.extend({
     },
   },
 
-  availableActions: function () {
-    const builtIn = get(this,'builtin') === true;
+  canEdit: computed('links.update', 'builtin', function() {
+    return !!get(this, 'links.update') && !get(this,'builtin');
+  }),
 
-    return [
-      { label: 'action.edit', icon: 'icon icon-edit', action: 'edit', enabled: !builtIn },
-      { divider: true },
-      { label: 'action.remove', icon: 'icon icon-trash', action: 'promptDelete', enabled: !builtIn, altAction: 'delete', bulkable: true },
-      { divider: true },
-      { label: 'action.viewInApi', icon: 'icon icon-external-link', action: 'goToApi', enabled: true },
-    ];
-  }.property('builtin'),
+  canRemove: computed('links.remove', 'builtin', function() {
+    return !!get(this, 'links.remove') && !get(this,'builtin');
+  }),
 });

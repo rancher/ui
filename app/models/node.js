@@ -50,10 +50,6 @@ var Node = Resource.extend(StateCounts, ResourceUsage, {
       get(this,'router').transitionTo('containers.run', {queryParams: {hostId: get(this,'model.id')}});
     },
 
-    clone: function() {
-      get(this,'router').transitionTo('hosts.new', {queryParams: {hostId: get(this,'id'), driver: get(this,'driver')}});
-    },
-
     edit: function() {
       get(this,'modalService').toggleModal('modal-edit-host', this);
     },
@@ -67,26 +63,16 @@ var Node = Resource.extend(StateCounts, ResourceUsage, {
     }
   },
 
-  availableActions: function() {
-    //let a = get(this,'actionLinks');
+  availableActions: computed('links.{nodeConfig}', function() {
     let l = get(this,'links');
 
     let out = [
       { label: 'action.nodeConfig', icon: 'icon icon-download', action: 'nodeConfig', enabled: !!l.nodeConfig},
       { divider: true },
-      { label: 'action.edit', icon: 'icon icon-edit', action: 'edit', enabled: !!l.update },
-      { divider: true },
-//      { label: 'action.activate',   icon: 'icon icon-play',         action: 'activate',     enabled: !!a.activate, bulkable: true},
-//      { label: 'action.deactivate', icon: 'icon icon-pause',        action: 'deactivate',   enabled: !!a.deactivate, bulkable: true},
-//      { label: 'action.evacuate',   icon: 'icon icon-snapshot',     action: 'promptEvacuate',enabled: !!a.evacuate, altAction: 'evacuate', bulkable: true},
-//      { divider: true },
-      { label: 'action.remove',     icon: 'icon icon-trash',        action: 'promptDelete', enabled: !!l.remove, altAction: 'delete', bulkable: true},
-      { divider: true },
-      { label: 'action.viewInApi',  icon: 'icon icon-external-link',action: 'goToApi',      enabled: true},
     ];
 
     return out;
-  }.property('actionLinks.{activate,deactivate,evacuate}','links.{update,remove,config}','driver'),
+  }),
 
   displayIp: or('externalIpAddress','ipAddress'),
 

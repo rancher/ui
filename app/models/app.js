@@ -31,9 +31,11 @@ const App = Resource.extend(StateCounts, {
   externalIdInfo: computed('externalId', function() {
     return parseHelmExternalId(get(this, 'externalId'));
   }),
+
   catalogTemplate: computed('externalIdInfo.templateId', function() {
     return this.get('catalog').getTemplateFromCache(this.get('externalIdInfo.templateId'));
   }),
+
   actions: {
     edit() {
       let templateId = get(this, 'externalIdInfo.templateId');
@@ -48,17 +50,5 @@ const App = Resource.extend(StateCounts, {
 
     }
   },
-  availableActions: computed('actionLinks.{rollback,upgrade}', function () {
-    let l = get(this,'links');
-
-    var choices = [
-      { label:   'action.edit',       icon: 'icon icon-edit',           action: 'edit',         enabled: !!l.update },
-      { label:   'action.remove',     icon: 'icon icon-trash',          action: 'promptDelete', enabled: !!l.remove, altAction: 'delete', bulkable: true},
-      { divider: true },
-      { label:   'action.viewInApi',  icon: 'icon icon-external-link', action:  'goToApi',      enabled: true},
-    ];
-
-    return choices;
-  }),
 });
 export default App;

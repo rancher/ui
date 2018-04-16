@@ -57,13 +57,5 @@ export default Resource.extend({
     return '';
   }),
 
-  availableActions: computed('links.remove', function () {
-    //    let l = get(this, 'links');
-
-    return [
-      //      { label: 'action.remove',     icon: 'icon icon-trash',        action: 'promptDelete', enabled: !!l.remove, altAction: 'delete', bulkable: true },
-      //      { divider: true },
-      { label: 'action.viewInApi', icon: 'icon icon-external-link', action: 'goToApi', enabled: true },
-    ];
-  }),
+  canRemove: false,
 });

@@ -1,7 +1,7 @@
 import { inject as service } from '@ember/service';
 import Resource from 'ember-api-store/models/resource';
 
-var PodSecurityPolicyTemplate = Resource.extend({
+export default Resource.extend({
   type: 'podSecurityPolicyTemplate',
   router: service(),
 
@@ -10,21 +10,4 @@ var PodSecurityPolicyTemplate = Resource.extend({
       this.get('router').transitionTo('global-admin.security.policies.edit', this.get('id'));
     },
   },
-
-  availableActions: function () {
-    return [
-      { label: 'action.edit', icon: 'icon icon-edit', action: 'edit', enabled: true },
-      { divider: true },
-      { label: 'action.remove', icon: 'icon icon-trash', action: 'promptDelete', enabled: true, altAction: 'delete', bulkable: true },
-      { divider: true },
-      { label: 'action.viewInApi', icon: 'icon icon-external-link', action: 'goToApi', enabled: true },
-    ];
-  }.property(),
 });
-
-PodSecurityPolicyTemplate.reopenClass({
-  pollTransitioningDelay: 1000,
-  pollTransitioningInterval: 5000,
-});
-
-export default PodSecurityPolicyTemplate;

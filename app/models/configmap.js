@@ -23,20 +23,4 @@ export default Resource.extend({
   }),
 
   firstKey: alias('keys.firstObject'),
-
-  availableActions: computed('links.{update,remove,yaml}', function() {
-    var l = get(this, 'links');
-
-    var choices = [
-      { label: 'action.edit',       icon: 'icon icon-edit',           action: 'edit',         enabled: !!l.update },
-      { divider: true },
-      { label: 'action.downloadYaml',       icon: 'icon icon-download',           action: 'downloadYaml',         enabled: !!l.yaml, bulkable: true },
-      { divider: true },
-      { label: 'action.remove',     icon: 'icon icon-trash',          action: 'promptDelete', enabled: !!l.remove, altAction: 'delete', bulkable: true },
-      { divider: true },
-      { label: 'action.viewInApi',  icon: 'icon icon-external-link',  action: 'goToApi',      enabled: true },
-    ];
-
-    return choices;
-  }),
 });

@@ -1,9 +1,8 @@
 import { later, cancel } from '@ember/runloop';
 import { computed, get, set } from '@ember/object';
-import { alias, gt } from '@ember/object/computed';
+import { alias, gt, not } from '@ember/object/computed';
 
 import Resource from 'ember-api-store/models/resource';
-import C from 'ui/utils/constants';
 import { sortableNumericSuffix } from 'shared/utils/util';
 import { formatSi } from 'shared/utils/parse-unit';
 import { reference, hasMany } from 'ember-api-store/utils/denormalize';
@@ -100,7 +99,7 @@ var Workload = Resource.extend(DisplayImage, StateCounts, EndpointPorts, {
       this.saveScale();
     },
 
-    upgrade(upgradeImage='false') {
+    edit(upgradeImage='false') {
       var route = 'containers.run';
       if ( get(this, 'lcType') === 'loadbalancerservice' ) {
         route = 'balancers.run';
@@ -160,9 +159,14 @@ var Workload = Resource.extend(DisplayImage, StateCounts, EndpointPorts, {
     set(this, 'scaleTimer', timer);
   },
 
+  canEdit: computed('links.update', 'isReal', function() {
+    return !!get(this,'links.update') && get(this,'isReal');
+  }),
+
+  canClone: not('hasSidekicks'),
+
   availableActions: function() {
     let a = get(this, 'actionLinks');
-    let l = get(this, 'links');
 
     let isReal = get(this, 'isReal');
     let podForShell = get(this, 'podForShell');
@@ -170,9 +174,7 @@ var Workload = Resource.extend(DisplayImage, StateCounts, EndpointPorts, {
     let isPaused = get(this, 'isPaused');
 
     let choices = [
-      { label: 'action.edit',           icon: 'icon icon-edit',             action: 'upgrade',        enabled: !!l.update &&  isReal },
       { label: 'action.rollback',       icon: 'icon icon-history',          action: 'rollback',       enabled: !!a.rollback && isReal },
-      { label: 'action.clone',          icon: 'icon icon-copy',             action: 'clone',          enabled: !get(this, 'hasSidekicks')},
       { label: 'action.addSidekick',    icon: 'icon icon-plus-circle',      action: 'addSidekick',    enabled: get(this, 'canHaveSidekicks') },
       { divider: true },
       { label: 'action.execute',        icon: 'icon icon-terminal',         action: 'shell',          enabled: !!podForShell, altAction:'popoutShell'},
@@ -180,10 +182,6 @@ var Workload = Resource.extend(DisplayImage, StateCounts, EndpointPorts, {
       { divider: true },
       { label: 'action.pause',          icon: 'icon icon-pause',            action: 'pause',          enabled: !!a.pause && !isPaused, bulkable: true},
       { label: 'action.resume',         icon: 'icon icon-play',             action: 'resume',          enabled: !!a.pause && isPaused,  bulkable: true},
-      { divider: true },
-      { label: 'action.remove',         icon: 'icon icon-trash',            action: 'promptDelete',   enabled: !!l.remove, altAction: 'delete', bulkable: true},
-      { divider: true },
-      { label: 'action.viewInApi',      icon: 'icon icon-external-link',    action: 'goToApi',        enabled: true },
     ];
 
     return choices;

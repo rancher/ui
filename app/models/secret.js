@@ -4,7 +4,7 @@ import { computed, get } from '@ember/object';
 import Resource from 'ember-api-store/models/resource';
 
 export default Resource.extend({
-  router:       service(),
+  router: service(),
 
   state: 'active',
 
@@ -19,18 +19,4 @@ export default Resource.extend({
   }),
 
   firstKey: alias('keys.firstObject'),
-
-  availableActions: computed('links.{update,remove}', function() {
-    var l = get(this, 'links');
-
-    var choices = [
-      { label: 'action.edit',       icon: 'icon icon-edit',           action: 'edit',         enabled: !!l.update },
-      { divider: true },
-      { label: 'action.remove',     icon: 'icon icon-trash',          action: 'promptDelete', enabled: !!l.remove, altAction: 'delete', bulkable: true },
-      { divider: true },
-      { label: 'action.viewInApi',  icon: 'icon icon-external-link',  action: 'goToApi',      enabled: true },
-    ];
-
-    return choices;
-  }),
 });

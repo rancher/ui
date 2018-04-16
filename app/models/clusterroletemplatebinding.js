@@ -19,14 +19,7 @@ export default Resource.extend(PrincipalReference, {
     return get(this, 'groupPrincipalId') || get(this, 'userPrincipalId') || null;
   }),
 
-  availableActions: computed('links.remove', 'name', function() {
-    const l = get(this, 'links');
-    const canRemove = !!l.remove && get(this,'name') !== 'creator';
-
-    return [
-      { label: 'action.remove',     icon: 'icon icon-trash',        action: 'promptDelete', enabled: canRemove, altAction: 'delete', bulkable: true },
-      { divider: true },
-      { label: 'action.viewInApi',  icon: 'icon icon-external-link',action: 'goToApi',      enabled: true },
-    ];
+  canRemove: computed('links.remove','name', function() {
+    return !!get(this,'links.remove') && get(this,'name') !== 'creator';
   }),
 });
