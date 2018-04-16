@@ -67,6 +67,7 @@ generic:
   port: Port
   ports: Ports
   project: Project
+  prefix: prefix
   remove: Remove
   role: Role
   random: Random
@@ -1788,6 +1789,15 @@ clusterNew:
     alphaFeatures:
       label: Alpha Features
   rke:
+    address:
+      title: Node Address
+      detail: Configure the public address and internal address for machines
+      public:
+        label: Public Address
+        placeholder: e.g. 1.2.3.4
+      private:
+        label: Internal Address
+        placeholder: e.g. 1.2.3.4
     label: '{appName} Kubernetes Engine'
     shortLabel: RKE
     customize:
@@ -1818,6 +1828,13 @@ clusterNew:
       flannel: Flannel
       calico: Calico
       canal: Canal
+      options:
+        flannel:
+          iface:
+            label: Interface
+        calico:
+          cloudProvider:
+            label: Cloud Provider
     ingress:
       label: Ingress Provider
       none: None
@@ -3409,17 +3426,11 @@ formScheduling:
     custom:
       placeholder: 'e.g. foo > 42 && bar != baz'
 
-formSecrets:
-  title: Secrets
-  detail: Secrets allow you to inject passwords, keys, or other sensitive information into the containers that need them.
-  noneDefined: You do not have any secrets to use.
-  noData: No Secrets
-  addLabel: Add Secret
-  name:
-    label: As Name
-    placeholder: e.g. db_password
-  secret:
-    label: Secret
+formSources:
+  title: Environments From Sources
+  detail: Environments from sources allow you to inject passwords, keys, or other information into the containers that need them.
+  noData: No Sources
+  addLabel: Add Source
   type:
     label: Type
   source:
@@ -3428,19 +3439,6 @@ formSecrets:
     label: Key
   prefix:
     label: Prefix or Alias
-  uid:
-    label: User ID
-    placeholder: e.g. 0 (root)
-  gid:
-    label: Group ID
-    placeholder: e.g. 0 (wheel)
-  mode:
-    label: File Mode (octal)
-    placeholder: e.g. 0444 (octal)
-  help:
-    prefix: "Secrets will be available in <code>/run/secrets/</code> inside the Container with the given filename.  "
-    showPermissionsLink: "Customize file ownership & permissions"
-    suffix: ""
 
 formSecurity:
   title: Security & Host Config
@@ -3946,9 +3944,13 @@ newCertificate:
     view: 'Certificate: {name}'
   key:
     label: Private Key
+    required: Private Key is required.
+    invalidFormat: Private Key is invalid.
     placeholder: "Paste in the private key, starting with -----BEGIN RSA PRIVATE KEY-----"
   cert:
     label: Certificate
+    required: Certificate is required.
+    invalidFormat: Certificate is invalid.
     placeholder: "Paste in the certificate and any necessary chain certificates, starting with -----BEGIN CERTIFICATE-----"
     protip: Please include any chain certificates that are needed.
   certChain:
@@ -3957,6 +3959,14 @@ newCertificate:
   metaXML:
     label: Metadata XML
     placeholder: "Paste in the IDP Metadata XML"
+  errors:
+    encrypted: The private key cannot be password-protected.
+    key:
+      required: Private Key is required.
+      invalidFormat: Private Key is invalid. Please make sure it is a RSA key.
+    cert:
+      required: Certificate is required.
+      invalidFormat: Certificate is invalid.
 
 modalAboutComponent:
   component: Component
@@ -4910,6 +4920,8 @@ schema:
     prompt: Choose a Certificate...
   inputContainer:
     prompt: Choose a Container...
+  inputConfigMap:
+    prompt: Choose a Config Map...
   inputEnum:
     option: Choose an option...
   inputHost:

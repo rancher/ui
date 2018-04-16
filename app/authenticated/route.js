@@ -327,7 +327,9 @@ export default Route.extend(Preload, {
     doom() {
       const clusterId = get(this, 'scope.currentCluster.id');
       if ( clusterId ) {
-        this.get('modalService').toggleModal('modal-kubectl');
+        this.get('modalService').toggleModal('modal-kubectl', {
+          escToClose: true,
+        });
       }
     },
 

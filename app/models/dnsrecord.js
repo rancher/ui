@@ -60,6 +60,22 @@ export default Resource.extend({
     return `${name} (${type})`;
   }),
 
+  availablePorts: computed('recordType', 'ports.@each.{targetPort,port}', function () {
+    const list = [];
+    const ports = get(this, 'ports');
+    if (get(this, 'recordType') === WORKLOAD) {
+      ports.forEach(p => {
+        list.push(p.targetPort.toString());
+        list.push(p.port.toString());
+      })
+    }
+    return list.uniq().map(p => {
+      return {
+        port: p
+      };
+    });
+  }),
+
   recordType: computed(
   'ipAddresses.length',
   'hostname',

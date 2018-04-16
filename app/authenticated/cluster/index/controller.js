@@ -25,12 +25,16 @@ export default Controller.extend({
         });
       } else {
 */
-        this.get('modalService').toggleModal('modal-kubectl');
+        this.get('modalService').toggleModal('modal-kubectl', {
+          escToClose: true,
+        });
  //     }
     },
 
     kubeconfig() {
-      this.get('modalService').toggleModal('modal-kubeconfig');
+      this.get('modalService').toggleModal('modal-kubeconfig', {
+        escToClose: true,
+      });
     },
   },
 

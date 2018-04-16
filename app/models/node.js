@@ -139,6 +139,11 @@ var Node = Resource.extend(StateCounts, ResourceUsage, {
     return 4;
   }),
 
+  isUnschedulable: computed('taints.@each.{effect,key}', function(){
+    const taints = get(this, 'taints') || [];
+    return taints.some(taint=> taint.effect === 'NoExecute' && taint.key === 'node-role.kubernetes.io/etcd');
+  }),
+
 /*
   osBlurb: function() {
     var out = get(this,'info.osInfo.operatingSystem')||'';

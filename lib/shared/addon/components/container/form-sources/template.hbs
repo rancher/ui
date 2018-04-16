@@ -1,0 +1,41 @@
+<div class="clearfix">
+  <label class="acc-label">{{t 'newContainer.environment.from'}}</label>
+</div>
+<div>
+  {{#if sources.length}}
+    <table class="table fixed no-lines small mb-10">
+      <thead>
+        <tr class="hidden-sm">
+          <th width="140" class="{{unless editing 'acc-label'}}">{{t 'formSources.type.label'}}{{#if editing}}{{field-required}}{{/if}}</th>
+          <th width="10"></th>
+          <th width="220" class="{{unless editing 'acc-label'}}">{{t 'formSources.source.label'}}{{#if editing}}{{field-required}}{{/if}}</th>
+          <th width="10"></th>
+          <th class="{{unless editing 'acc-label'}}">{{t 'formSources.prefixOrKey.label'}}{{#if editing}}{{field-required}}{{/if}}</th>
+          <th width="70"></th>
+          <th class="{{unless editing 'acc-label'}}">{{t 'formSources.prefix.label'}}</th>
+          <th width="40">&nbsp;</th>
+        </tr>
+      </thead>
+      <tbody>
+        {{#each sources as |source|}}
+          {{form-sources-row
+            source=source
+            namespace=namespace
+            editing=editing
+            remove=(action "removeSource")
+          }}
+        {{/each}}
+      </tbody>
+    </table>
+    {{else}}
+    {{#unless editing}}
+      <span class="text-center text-muted">{{t 'formSources.noData'}}</span>
+    {{/unless}}
+  {{/if}}
+  {{#if editing}}
+    <button type="button" class="btn bg-link icon-btn" {{action "addSource"}}>
+      <span class="darken"><i class="icon icon-plus icon-small"></i></span>
+      <span>{{t 'newContainer.environment.addFrom'}}</span>
+    </button>
+  {{/if}}
+</div>

@@ -33,7 +33,14 @@ export default Resource.extend({
 
   actions: {
     activate: function() {
-      return this.doAction('activate');
+      return this.doAction('activate').then((newNodeDriver)=> {
+        newNodeDriver.waitForState('active').then(() => {
+          get(this,'store').findAll('schema', {
+            url: '/v3/schemas',
+            forceReload: true
+          });
+        });
+      });
     },
 
     deactivate: function() {
