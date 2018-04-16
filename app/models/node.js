@@ -108,11 +108,16 @@ var Node = Resource.extend(StateCounts, ResourceUsage, {
     const roles = get(this, 'rolesArray');
 
     if ( roles.length >= 3 ) {
-      return ['generic.all'];
+      return [intl.t('generic.all')];
     }
 
     return roles.map(role => {
-      return `model.machine.role.${role}`;
+      let key = `model.machine.role.${role}`;
+      if ( intl.exists(key) ) {
+        return intl.t(key);
+      }
+
+      return key;
     });
   }),
 
