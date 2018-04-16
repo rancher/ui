@@ -129,7 +129,6 @@ var Workload = Resource.extend(DisplayImage, StateCounts, EndpointPorts, {
     shell() {
       get(this, 'modalService').toggleModal('modal-shell', {
         model: get(this, 'podForShell'),
-        escToClose: true,
       });
     },
 

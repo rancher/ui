@@ -33,7 +33,6 @@ var Pod = Resource.extend(DisplayImage, {
     shell() {
       get(this, 'modalService').toggleModal('modal-shell', {
         model: this,
-        escToClose: true,
       });
     },
 
