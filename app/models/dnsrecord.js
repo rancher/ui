@@ -1,6 +1,7 @@
 import Resource from 'ember-api-store/models/resource';
 import { reference } from 'ember-api-store/utils/denormalize';
 import { computed, get, set } from '@ember/object';
+import { equal } from '@ember/object/computed';
 import { arrayOfReferences } from 'ember-api-store/utils/denormalize';
 import { inject as service } from '@ember/service';
 
@@ -140,17 +141,13 @@ export default Resource.extend({
     return out;
   }),
 
-  availableActions: computed('links.{update,remove}', function() {
-    var l = get(this, 'links');
-    const isIngress = get(this, ('ownerReferences.firstObject.kind')) === 'Ingress';
-    var choices = [
-      { label: 'action.edit',       icon: 'icon icon-edit',           action: 'edit',         enabled: !!l.update && !isIngress },
-      { divider: true },
-      { label: 'action.remove',     icon: 'icon icon-trash',          action: 'promptDelete', enabled: !!l.remove && !isIngress, altAction: 'delete', bulkable: true },
-      { divider: true },
-      { label: 'action.viewInApi',  icon: 'icon icon-external-link',  action: 'goToApi',      enabled: true },
-    ];
+  isIngress: equal('ownerReferences.firstObject.kind','Ingress'),
 
-    return choices;
+  canEdit: computed('links.update','isIngress', function() {
+    return !!get(this, 'links.update') && !get(this,'isIngress');
+  }),
+
+  canRemove: computed('links.remove','isIngress', function() {
+    return !!get(this, 'links.remove') && !get(this,'isIngress');
   }),
 });

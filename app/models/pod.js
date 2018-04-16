@@ -59,19 +59,12 @@ var Pod = Resource.extend(DisplayImage, {
     },
   },
 
-  availableActions: computed('actionLinks.{restart,start,stop}','links.{remove}','workload.links.update', function() {
-    const a = get(this,'actionLinks');
-    const l = get(this,'links');
-
+  availableActions: computed('combinedState', function() {
     let isRunning = get(this, 'combinedState') === 'running';
 
     var choices = [
       { label: 'action.execute',          icon: 'icon icon-terminal',     action: 'shell',            enabled: isRunning, altAction:'popoutShell'},
       { label: 'action.logs',             icon: 'icon icon-file',         action: 'logs',             enabled: true, altAction: 'popoutLogs' },
-      { divider: true },
-      { label: 'action.remove',           icon: 'icon icon-trash',        action: 'promptDelete',     enabled: !!l.remove, altAction: 'delete', bulkable: true},
-      { divider: true },
-      { label: 'action.viewInApi',        icon: 'icon icon-external-link',action: 'goToApi',          enabled: true },
     ];
 
     return choices;

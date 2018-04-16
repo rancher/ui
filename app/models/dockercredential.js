@@ -25,18 +25,6 @@ var DockerCredential = Resource.extend({
     },
   },
 
-  availableActions: computed('links.{update,remove}', function() {
-    let l = this.get('links');
-
-    return [
-      { label: 'action.edit',       icon: 'icon icon-edit',         action: 'edit',         enabled: !!l.update },
-      { divider: true },
-      { label: 'action.remove',     icon: 'icon icon-trash',        action: 'promptDelete', enabled: !!l.remove, altAction: 'delete', bulkable: true },
-      { divider: true },
-      { label: 'action.viewInApi',  icon: 'icon icon-external-link',action: 'goToApi',      enabled: true },
-    ];
-  }),
-
   asArray: computed('registries', function() {
     const all = get(this, 'registries') || {};
 

@@ -12,16 +12,6 @@ var PersistentVolumeClaim = Resource.extend({
 
   type: 'persistentVolumeClaim',
 
-  availableActions: computed('links.{remove}', function() {
-    var l = get(this,'links');
-
-    return [
-      { label: 'action.remove',           icon: 'icon icon-trash',          action: 'promptDelete',      enabled: !!l.remove, altAction: 'delete', bulkable: true },
-      { divider: true },
-      { label: 'action.viewInApi',        icon: 'icon icon-external-link',  action: 'goToApi',           enabled: true },
-    ];
-  }),
-
   sizeBytes: computed('status.capacity.storage', function() {
     const str = get(this, 'status.capacity.storage');
     if ( str ) {

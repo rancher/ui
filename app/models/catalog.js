@@ -4,7 +4,7 @@ import { computed } from '@ember/object';
 import { get } from '@ember/object';
 import { ucFirst } from 'shared/utils/util';
 
-var Catalog = Resource.extend({
+export default Resource.extend({
   modalService: service('modal'),
 
   actions: {
@@ -13,30 +13,7 @@ var Catalog = Resource.extend({
     }
   },
 
-  availableActions: function() {
-    const canRemove = !!get(this,'links.remove');
-
-    var choices = [
-      { label: 'action.edit',             icon: 'icon icon-edit',         action: 'edit',             enabled: true },
-      { divider: true },
-      { label: 'action.remove',           icon: 'icon icon-trash',        action: 'promptDelete',     enabled: canRemove, altAction: 'delete', bulkable: true},
-      { divider: true },
-      { label: 'action.viewInApi',        icon: 'icon icon-external-link',action: 'goToApi',          enabled: true },
-    ];
-
-    return choices;
-  }.property('links.remove'),
-
-
   displayKind: computed('kind', function() {
     return ucFirst(get(this, 'kind') || 'native');
   }),
 });
-
-export default Catalog;
-
-Catalog.reopenClass({
-  pollTransitioningDelay: 1000,
-  pollTransitioningInterval: 5000,
-});
-

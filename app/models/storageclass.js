@@ -87,18 +87,11 @@ export default Resource.extend({
     this.save();
   },
 
-  availableActions: computed('links.{update,remove}','isDefault', function() {
-    const l = get(this,'links');
+  availableActions: computed('isDefault', function() {
     const isDefault = get(this, 'isDefault');
 
     let out = [
       { label:   'action.makeDefault',     icon: 'icon icon-star-fill',      action: 'makeDefault',      enabled: !isDefault },
-      { divider: true },
-      { label:   'action.edit',           icon: 'icon icon-edit',           action: 'edit',             enabled: !!l.update },
-      { divider: true },
-      { label:   'action.remove',         icon: 'icon icon-trash',          action: 'promptDelete',     enabled: !!l.remove, bulkable: true, altAction: 'delete'},
-      { divider: true },
-      { label:   'action.viewInApi',      icon: 'icon icon-external-link',  action: 'goToApi',          enabled: true },
     ];
 
     return out;

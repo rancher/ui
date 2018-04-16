@@ -2,7 +2,7 @@ import Resource from 'ember-api-store/models/resource';
 import { inject as service } from '@ember/service';
 import { get } from '@ember/object';
 
-const Notifier = Resource.extend({
+export default Resource.extend({
   type: 'notifier',
 
   modalService: service('modal'),
@@ -102,40 +102,4 @@ const Notifier = Resource.extend({
     }
     return 'Notifier';
   }.property('slackConfig', 'pagerdutyConfig', 'emailConfig', 'webhookConfig'),
-
-  availableActions: function() {
-    // let a = this.get('actionLinks');
-    let l = this.get('links');
-    return [
-      {
-        label: 'action.edit',
-        icon: 'icon icon-edit',
-        action: 'edit',
-        enabled: true,
-      },
-      {
-        label: 'action.clone',
-        action: 'clone',
-        icon: 'icon icon-copy',
-        enabled: true,
-      },
-      {
-        label: 'action.remove',
-        icon: 'icon icon-trash',
-        action: 'promptDelete',
-        enabled: !!l.remove,
-        altAction: 'delete',
-        bulkable: true,
-      },
-      {divider: true},
-      {
-        label: 'action.viewInApi',
-        icon: 'icon icon-external-link',
-        action: 'goToApi',
-        enabled: true
-      },
-    ];
-  }.property('actionLinks.{activate,deactivate}','links.{update,remove}'),
 });
-
-export default Notifier;

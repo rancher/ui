@@ -92,26 +92,11 @@ var Namespace = Resource.extend(StateCounts, {
     },
   },
 
-  availableActions: computed('actionLinks.{exportconfig}','links.{update,remove}','externalIdInfo.kind', function() {
-    let a = this.get('actionLinks');
-    let l = this.get('links');
-
-    if ( this.get('externalIdInfo.kind') === C.EXTERNAL_ID.KIND_KUBERNETES ) {
-      return [];
-    }
-
-    let out    = [
+  availableActions: computed('projectId', function() {
+    let out = [
       { label:   'action.move',           icon: 'icon icon-fork',           action: 'move',             enabled: true, bulkable: true},
       { label:   'action.addContainer',   icon: 'icon icon-container',      action: 'addContainer',     enabled: !!this.get('projectId') },
       { divider: true },
-      { label:   'action.edit',           icon: 'icon icon-edit',           action: 'edit',             enabled: !!l.update },
-      { label:   'action.viewConfig',     icon: 'icon icon-files',          action: 'viewCode',         enabled: !!a.exportconfig },
-      { label:   'action.exportConfig',   icon: 'icon icon-download',       action: 'exportConfig',     enabled: !!a.exportconfig },
-//      { label: 'action.viewGraph',      icon: 'icon icon-share',          action: 'viewGraph',        enabled: true },
-      { divider: true },
-      { label:   'action.remove',         icon: 'icon icon-trash',          action: 'promptDelete',     enabled: !!l.remove, bulkable: true, altAction: 'delete'},
-      { divider: true },
-      { label:   'action.viewInApi',      icon: 'icon icon-external-link',  action: 'goToApi',          enabled: true },
     ];
 
     return out;
