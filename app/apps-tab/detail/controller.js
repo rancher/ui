@@ -185,14 +185,28 @@ export default Controller.extend({
   sortBy: 'name',
   extraSearchFields: ['id:prefix', 'displayIp:ip'],
   extraSearchSubFields: containerSearchFields,
+  expandedInstances: null,
+
   actions: {
-    toggleExpand() {
-      // ???
+    toggleExpand(instId) {
+      let list = this.get('expandedInstances');
+      if ( list.includes(instId) ) {
+        list.removeObject(instId);
+      } else {
+        list.addObject(instId);
+      }    
     },
   },
+  
+  init() {
+    this._super(...arguments);
+    this.set('expandedInstances',[]);
+  },
+
   stdOut: computed('model.app.stdOut', function() {
     return get(this, 'model.app.status.stdOutput');
   }),
+
   stderr: computed('model.app.stdErr', function() {
     return get(this, 'model.app.status.stdError');
   }),
