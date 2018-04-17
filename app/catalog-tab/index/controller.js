@@ -1,6 +1,7 @@
 import { alias } from '@ember/object/computed';
 import Controller, { inject as controller } from '@ember/controller';
 import { isAlternate } from 'ui/utils/platform';
+import { getOwner } from '@ember/application';
 
 export default Controller.extend({
   application:       controller(),
@@ -22,6 +23,10 @@ export default Controller.extend({
       }
 
       this.transitionToRoute(this.get('launchRoute'), id);
+    },
+    refresh() {
+      let catalogTab = getOwner(this).lookup('route:catalog-tab');
+      catalogTab.send('refresh');
     },
 
   }
