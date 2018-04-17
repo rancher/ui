@@ -34,13 +34,12 @@
 </div>
 <hr/>
 <div class="row">
-  <div class="col span-12 m-0 p-0">
-    {{textarea-autogrow
+  <div class="col span-12 m-0 p-0" style="max-height: 400px; overflow: auto;">
+    {{ivy-codemirror
       value=value
-      classNames="form-control text-small"
+      valueUpdated=(if valueUpdated valueUpdated (action (mut value)) )
+      options=(hash autofocus=true theme="monokai" lineNumbers=true mode=mode readOnly=(if (eq modalOpts.type 'review') true false) gutters=gutters lint=true viewportMargin=viewportMargin)
       placeholder=placeholder
-      minHeight=minHeight
-      maxHeight=maxHeight
     }}
   </div>
 </div>

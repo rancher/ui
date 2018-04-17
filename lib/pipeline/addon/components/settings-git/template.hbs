@@ -93,7 +93,10 @@
       </div>
     </section>
     <section class="box mt-30">
-      <h3>{{t 'authPage.github.notAuthenticated.headerVariable'}} <div class="pull-right"><a href="javascript:void();" class="{{if globalGithubConfig.enabled  "" "text-line-through text-muted"}}" {{action 'changeOauthSource' true}}>{{t 'pipelinesSetting.globalConfigChangeLabel'}}</a></div></h3>
+      {{#if globalGithubConfig.enabled
+      }}
+        <h3>{{t 'authPage.github.notAuthenticated.headerVariable'}} <div class="pull-right"><a href="javascript:void();" class="{{if globalGithubConfig.enabled  "" "text-line-through text-muted"}}" {{action 'changeOauthSource' true}}>{{t 'pipelinesSetting.globalConfigChangeLabel'}}</a></div></h3>
+      {{/if}}
       <hr/>
       <p>
         <ol class="alphalist ml-40">

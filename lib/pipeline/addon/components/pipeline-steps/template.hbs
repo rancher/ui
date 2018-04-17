@@ -2,39 +2,13 @@
   <div class="steps-line"></div>
   <div class="steps-head-dot js-dragHandle {{dotClass}}" class={{if stagesDraggable 'draggable' ''}}></div>
   <div class="steps-wrap">
-    {{#if stepsDraggble}}
-      {{#sortable-objects
-        class=(if stagesDraggable 'draggable' '')
-        sortableObjectList=model
-        enableSort=true
-        sortingScope=sortingScope}}
-        {{#each model as |item index|}}
-          {{#draggable-object
-            isDraggable=false
-            class="step-content"
-            content=item
-            overrideClass='sortObject'
-            isSortable=true
-            sortingScope=sortingScope
-            dragStartAction="dragStart"
-            dragStartHook=(action 'startHook')
-            dragEndHook=(action "dragEnd")
-            }}
-              <div class="step-name text-muted" {{action 'editStep' index}}>
-                {{pipeline-step model=item }}
-              </div>
-          {{/draggable-object}}
-        {{/each}}
-      {{/sortable-objects}}
-    {{else}}
-      {{#each model as |item index|}}
-        <div class="step-content">
+    {{#each model as |item index|}}
+      <div class="step-content">
           <div class="step-name text-muted" {{action 'editStep' index}}>
-           {{pipeline-step model=item}}
+            {{pipeline-step model=item }}
           </div>
-        </div>
-      {{/each}}
-    {{/if}}
+      </div>
+    {{/each}}
     {{#if editable}}
       {{#unless (eq stepMode 'scm')}}
         <button class="mt-10 btn bg-link icon-btn p-0" {{action 'addStep'}} style="margin: 0 auto;">
