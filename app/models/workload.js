@@ -180,7 +180,7 @@ var Workload = Resource.extend(DisplayImage, StateCounts, EndpointPorts, {
 //      { label: 'action.logs',           icon: 'icon icon-file',             action: 'logs',           enabled: !!a.logs, altAction: 'popoutLogs' },
       { divider: true },
       { label: 'action.pause',          icon: 'icon icon-pause',            action: 'pause',          enabled: !!a.pause && !isPaused, bulkable: true},
-      { label: 'action.resume',         icon: 'icon icon-play',             action: 'resume',          enabled: !!a.pause && isPaused,  bulkable: true},
+      { label: 'action.resume',         icon: 'icon icon-play',             action: 'resume',          enabled: !!a.pause && isPaused, bulkable: true},
     ];
 
     return choices;

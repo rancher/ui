@@ -19,7 +19,7 @@
     {{/if}}
     {{#if (or model.externalIpAddress model.ipAddress)}}
       <div class="text-small text-muted clip">
-        {{#if model.externalIpAddress}}
+        {{#if (and model.externalIpAddress (not-eq model.externalIpAddress model.ipAddress))}}
           {{#copy-inline clipboardText=model.externalIpAddress size="small"}}
             {{format-ip model.externalIpAddress}}
           {{/copy-inline}}
