@@ -182,10 +182,26 @@
         <div class="col span-6">
           <label class="acc-label">{{t 'clusterNew.rke.address.public.label'}}</label>
           {{input type="text" value=address placeholder=(t 'clusterNew.rke.address.public.placeholder')}}
+          {{#unless isAddressValid}}
+            <div class="banner bg-warning">
+              <div class="banner-icon"><span class="icon icon-alert"></span></div>
+              <div class="banner-message">
+                <p>{{t 'clusterNew.rke.address.warning'}}</p>
+              </div>
+            </div>
+          {{/unless}}
         </div>
         <div class="col span-6">
           <label class="acc-label">{{t 'clusterNew.rke.address.private.label'}}</label>
           {{input type="text" value=internalAddress placeholder=(t 'clusterNew.rke.address.private.placeholder')}}
+          {{#unless isInternalAddressValid}}
+            <div class="banner bg-warning">
+              <div class="banner-icon"><span class="icon icon-alert"></span></div>
+              <div class="banner-message">
+                <p>{{t 'clusterNew.rke.address.warning'}}</p>
+              </div>
+            </div>
+          {{/unless}}
         </div>
       </div>
     {{/accordion-list-item}}
