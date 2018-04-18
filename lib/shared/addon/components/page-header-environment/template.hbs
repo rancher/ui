@@ -34,26 +34,6 @@
 </a>
 
 <ul class="dropdown-menu cluster-menu" role="menu" data-dropdown-id="environment">
-  <li class="header {{if (eq pageScope "global") 'active selected' 'inactive'}}">
-    <a href="{{href-to "global-admin"}}">
-      <i class="icon icon-globe icon-fw"></i>
-      {{t 'nav.admin.tab'}}
-    </a>
-  </li>
-  <li role="presentation" class="divider"></li>
-
-  {{#if projectIsMissing}}
-    <li role="presentation" class="dropdown-header">{{t 'nav.environment.selected'}}</li>
-    <li class="{{if (and (eq pageScope "project") project.active) 'active selected'}}">
-      <a href="#" {{action "switchProject" project}} class="clip">
-        <i class="icon {{project.icon}}"></i>
-        &nbsp;
-        {{project.displayName}}
-      </a>
-    </li>
-    <li role="presentation" class="divider"></li>
-  {{/if}}
-
   {{#each byCluster as |entry idx|}}
     {{#if (gt idx 0)}}
       <li role="presentation" class="divider"></li>
@@ -78,4 +58,24 @@
       <p class="text-small text-muted m-0 p-0 pl-50">{{entry.cluster.displayState}}</p>
     {{/if}}
   {{/each}}
+
+  {{#if projectIsMissing}}
+    <li role="presentation" class="divider"></li>
+    <li role="presentation" class="dropdown-header">{{t 'nav.environment.selected'}}</li>
+    <li class="{{if (and (eq pageScope "project") project.active) 'active selected'}}">
+      <a href="#" {{action "switchProject" project}} class="clip">
+        <i class="icon {{project.icon}}"></i>
+        &nbsp;
+        {{project.displayName}}
+      </a>
+    </li>
+  {{/if}}
+
+  <li role="presentation" class="divider"></li>
+  <li class="header {{if (eq pageScope "global") 'active selected' 'inactive'}}">
+    <a href="{{href-to "global-admin"}}">
+      <i class="icon icon-globe icon-fw"></i>
+      {{t 'nav.admin.tab'}}
+    </a>
+  </li>
 </ul>
