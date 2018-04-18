@@ -1,11 +1,40 @@
 <section class="header clearfix">
-  <h1 class="pull-left">{{t 'projectsPage.header'}}</h1>
+  {{#if (eq groupedBy 'project')}}
+    <h1 class="pull-left">{{t 'projectsPage.header'}}</h1>
+  {{else}}
+    <h1 class="pull-left">{{t 'projectsPage.headerNS'}}</h1>
+  {{/if}}
   <div class="vertical-middle"></div>
 
   <div class="right-buttons">
+    <div class="btn-group p-0 mr-10">
+      {{~#tooltip-element type="tooltip-basic" model=(t 'nav.project.none') tooltipTemplate='tooltip-static' aria-describedby="tooltip-base" tooltipFor="tooltipLink"~}}
+      {{~#link-to (query-params group="project") classNames="btn btn-sm bg-default"~}}<i class="icon icon-container"></i>{{~/link-to~}}
+      {{~/tooltip-element~}}
+      {{~#tooltip-element type="tooltip-basic" model=(t 'nav.project.namespaces') tooltipTemplate='tooltip-static' aria-describedby="tooltip-base" tooltipFor="tooltipLink"~}}
+      {{~#link-to (query-params group="namespace") classNames="btn btn-sm bg-default"~}}<i class="icon icon-list-nested"></i>{{~/link-to~}}
+      {{~/tooltip-element~}}
+    </div>
     {{#link-to "authenticated.cluster.projects.new" class="btn bg-primary btn-sm" disabled=(rbac-prevents resource="project" scope="global" permission="create")}}
       {{t 'projectsPage.addProject'}}
     {{/link-to}}
+    {{#link-to "authenticated.cluster.ns.new" class="btn bg-primary btn-sm ml-10" disabled=(rbac-prevents resource="namespace" scope="cluster" permission="create")}}
+      {{t 'namespacesPage.addNamespace'}}
+    {{/link-to}}
   </div>
+
 </section>
-{{project-table model=rows}}
+
+{{#if (eq groupedBy 'project')}}
+
+  {{#each projectsWithNamespaces as |row|}}
+    {{namespace-table model=row}}
+  {{/each}}
+
+  {{project-table model=projectsWithoutNamespaces}}
+
+{{else}}
+
+  {{namespace-list model=namespaceRows}}
+
+{{/if}}

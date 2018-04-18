@@ -8,7 +8,7 @@ export default Controller.extend(NewOrEdit, {
 
   actions: {
     cancel() {
-      this.transitionToRoute('authenticated.cluster.ns.index');
+      this.transitionToRoute('authenticated.cluster.projects.index');
     },
   },
 

@@ -153,15 +153,16 @@ const rootNav = [
     resource: ['project'],
     resourceScope: 'global',
   },
-  {
-    scope: 'cluster',
-    id: 'cluster-namespaces',
-    localizedLabel: 'nav.cluster.namespaces',
-    route: 'authenticated.cluster.ns.index',
-    ctx: [getClusterId],
-    resource: ['namespace'],
-    resourceScope: 'cluster',
-  },
+  // This is going to be under projects now and list namespaces with out projects and in this project
+  // {
+  //   scope: 'cluster',
+  //   id: 'cluster-namespaces',
+  //   localizedLabel: 'nav.cluster.namespaces',
+  //   route: 'authenticated.cluster.ns.index',
+  //   ctx: [getClusterId],
+  //   resource: ['namespace'],
+  //   resourceScope: 'cluster',
+  // },
   {
     scope: 'cluster',
     id: 'cluster-security-roles',
