@@ -11,7 +11,6 @@ var PersistentVolumeClaim = Resource.extend({
   namespace: reference('namespaceId','namespace','clusterStore'),
 
   type: 'persistentVolumeClaim',
-  canClone: false,
   canEdit: false,
 
   sizeBytes: computed('status.capacity.storage', function() {

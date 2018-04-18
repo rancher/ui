@@ -27,8 +27,6 @@ const App = Resource.extend(StateCounts, {
 
   canEdit: false,
 
-  canClone: false,
-
   externalIdInfo: computed('externalId', function () {
     return parseHelmExternalId(get(this, 'externalId'));
   }),

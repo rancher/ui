@@ -6,7 +6,6 @@ import { inject as service } from '@ember/service';
 export default Resource.extend({
   type: 'ingress',
 
-  canClone: false,
   clusterStore: service(),
   router: service(),
   namespace: reference('namespaceId', 'namespace', 'clusterStore'),

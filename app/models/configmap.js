@@ -18,8 +18,6 @@ export default Resource.extend({
     },
   },
 
-  canClone: false,
-
   keys: computed('data', function() {
     return Object.keys(get(this, 'data')||{}).sort();
   }),

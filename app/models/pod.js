@@ -24,7 +24,6 @@ var Pod = Resource.extend(DisplayImage, {
   escToClose: true,
 
   canEdit: false,
-  canClone: false,
 
   actions: {
     clone() {

@@ -22,8 +22,6 @@ var Node = Resource.extend(StateCounts, ResourceUsage, {
   cluster: reference('clusterId','cluster'),
   nodePool: reference('nodePoolId'),
 
-  canClone: false,
-
   init() {
     this._super(...arguments);
     this.defineStateCounts('arrangedInstances', 'instanceStates', 'instanceCountSort');

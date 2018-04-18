@@ -23,6 +23,5 @@ export default Resource.extend(PrincipalReference, {
     return !!get(this,'links.remove') && get(this,'name') !== 'creator';
   }),
 
-  canClone: false,
   canEdit: false,
 });

@@ -10,8 +10,6 @@ export default Volume.extend({
 
   type: 'persistentVolume',
 
-  canClone: false,
-
   actions: {
     edit() {
       get(this, 'router').transitionTo('authenticated.cluster.storage.persistent-volumes.detail.edit', get(this, 'id'));

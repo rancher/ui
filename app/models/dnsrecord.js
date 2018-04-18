@@ -159,7 +159,6 @@ export default Resource.extend({
 
   isIngress: equal('ownerReferences.firstObject.kind','Ingress'),
 
-  canClone: false,
   canEdit: computed('links.update','isIngress', function() {
     return !!get(this, 'links.update') && !get(this,'isIngress');
   }),
