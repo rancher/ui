@@ -9,10 +9,23 @@
 {{/if}}
 
 <section>
-  <div class="col span-12 text-center">
-    {{#if templateResource.links.icon}}
-      <img src={{templateResource.links.icon}} alt={{templateResource.name}} class="mr-20" style="height:75px;max-width: 100%;">
-    {{/if}}
+  <div class="row">
+    <div class="col span-4 text-center">
+      {{#if templateResource.links.icon}}
+        <img src={{templateResource.links.icon}} alt={{templateResource.name}} class="mr-20" style="max-height:150px;max-width: 100%;">
+      {{/if}}
+    </div>
+    <div class="col span-8">
+      {{#unless appReadmeContent}}
+        {{#unless noAppReadme}}
+          <div class="text-center">
+            <i class="icon icon-spinner icon-spin" style="font-size:36px;"></i>
+          </div>
+        {{/unless}}
+      {{else}}
+        {{marked-down markdown=appReadmeContent}}
+      {{/unless}}
+    </div>
   </div>
 </section>
 

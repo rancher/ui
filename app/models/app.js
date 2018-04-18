@@ -12,13 +12,25 @@ const App = Resource.extend(StateCounts, {
   router: service(),
   clusterStore: service(),
 
-  namespace: reference('installNamespace', 'namespace', 'clusterStore'),
-  pods: alias('namespace.pods'),
-  services: alias('namespace.services'),
-  workloads: alias('namespace.workloads'),
-  secrets: alias('namespace.secrets'),
-  ingress: alias('namespace.ingress'),
-  volumes: alias('namespace.volumes'),
+  namespace: reference('targetNamespace', 'namespace', 'clusterStore'),
+  pods: computed('namespace.pods', function() {
+    return get(this, 'namespace.pods').filter((item) => get(item, 'labels.app') === get(this, 'name'));
+  }),
+  services: computed('namespace.services', function() {
+    return get(this, 'namespace.services').filter((item) => get(item, 'labels.app') === get(this, 'name'));
+  }),
+  workloads: computed('namespace.workloads', function() {
+    return get(this, 'namespace.workloads').filter((item) => get(item, 'labels.app') === get(this, 'name'));
+  }),
+  secrets: computed('namespace.secrets', function() {
+    return get(this, 'namespace.secrets').filter((item) => get(item, 'labels.app') === get(this, 'name'));
+  }),
+  ingress: computed('namespace.ingress', function() {
+    return get(this, 'namespace.ingress').filter((item) => get(item, 'labels.app') === get(this, 'name'));
+  }),
+  volumes: computed('namespace.volumes', function() {
+    return get(this, 'namespace.volumes').filter((item) => get(item, 'labels.app') === get(this, 'name'));
+  }),
 
   init() {
     this._super(...arguments);
@@ -40,11 +52,11 @@ const App = Resource.extend(StateCounts, {
       let templateId = get(this, 'externalIdInfo.templateId');
 
       let catalogId = get(this, 'externalIdInfo.catalog');
-
+      
       get(this, 'router').transitionTo('catalog-tab.launch', templateId, {
         queryParams: {
           catalog: catalogId,
-          namespaceId: get(this, 'model.installNamespace'),
+          namespaceId: get(this, 'targetNamespace'),
           appId: get(this, 'id')
         }
       });

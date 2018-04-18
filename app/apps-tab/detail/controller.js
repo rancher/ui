@@ -171,7 +171,6 @@ const secretsHeaders = [
 
 export default Controller.extend({
   // TODO =- expand logic?
-  expandedInstances: [],
   ingressHeaders: ingressHeaders,
   servicesHeaders: servicesHeaders,
   volumesHeaders: volumesHeaders,
