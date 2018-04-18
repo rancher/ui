@@ -27,6 +27,7 @@ const rootNav = [
     id: 'infra',
     localizedLabel: 'nav.infra.tab',
     ctx: [getProjectId],
+    route: 'authenticated.project.alert',
     submenu: [
       {
         id: 'tools-alerts',
