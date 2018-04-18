@@ -1,9 +1,5 @@
 <section class="header clearfix">
-  {{#if (eq groupedBy 'project')}}
-    <h1 class="pull-left">{{t 'projectsPage.header'}}</h1>
-  {{else}}
-    <h1 class="pull-left">{{t 'projectsPage.headerNS'}}</h1>
-  {{/if}}
+  <h1 class="pull-left">{{t 'projectsPage.header'}}</h1>
   <div class="vertical-middle"></div>
 
   <div class="right-buttons">
@@ -27,11 +23,8 @@
 
 {{#if (eq groupedBy 'project')}}
 
-  {{#each projectsWithNamespaces as |row|}}
-    {{namespace-table model=row}}
-  {{/each}}
+  {{namespace-table model=model.namespaces prns=projectsWithoutNamespaces}}
 
-  {{project-table model=projectsWithoutNamespaces}}
 
 {{else}}
 

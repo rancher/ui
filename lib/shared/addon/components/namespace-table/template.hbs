@@ -6,16 +6,14 @@
      headers=headers
      groupByKey="projectId"
      groupByRef="project"
-     body=model.namespaces
+     body=model
+     suffix=true
      sortBy=sortBy
      searchText=searchText
      subRows=true
      as |sortable kind ns dt|
 }}
   {{#if (eq kind "row")}}
-    <tr class="separator-row">
-      <td colspan="{{fullColspan}}"></td>
-    </tr>
     <tr class="sub-row">
       <td valign="middle" class="row-check" style="padding-top: 2px;">
         {{check-box nodeId=ns.id}}
@@ -24,7 +22,7 @@
         {{badge-state model=ns}}
       </td>
       <td>
-        <a href="{{href-to "authenticated.cluster.ns" ns.id}}"> {{ns.name}} </a>
+        {{ns.name}}
       </td>
       <td>
         {{date-calendar ns.created}}
@@ -33,15 +31,20 @@
         {{action-menu model=ns}}
       </td>
     </tr>
+    <tr class="separator-row">
+      <td colspan="{{fullColspan}}"></td>
+    </tr>
   {{else if (eq kind "group")}}
-    {{project-group model=model noGroup="namespaceGroup.project" fullColspan=sortable.fullColspan}}
+    {{project-group model=ns.ref noGroup="namespaceGroup.project" fullColspan=sortable.fullColspan}}
   {{else if (eq kind "nomatch")}}
     <tr><td colspan="{{sortable.fullColspan}}" class="text-center text-muted lacsso pt-20 pb-20">{{t 'projectsPage.noMatch'}}</td></tr>
   {{else if (eq kind "norows")}}
-    {{#if model.id}}
-      {{project-row switchProject=(route-action "switchProject") model=model dt=dt fullColspan=sortable.fullColspan}}
-    {{else}}
-      <tr><td colspan="{{sortable.fullColspan}}" class="text-center text-muted lacsso pt-20 pb-20">{{t 'projectsPage.noData'}}</td></tr>
-    {{/if}}
+    <tr><td colspan="{{sortable.fullColspan}}" class="text-center text-muted lacsso pt-20 pb-20">{{t 'projectsPage.noData'}}</td></tr>
+  {{else if (eq kind "suffix")}}
+    <tbody class="group">
+      {{#each prns as |project|}}
+        {{project-group model=project noGroup="namespaceGroup.project" fullColspan=sortable.fullColspan}}
+      {{/each}}
+    </tbody>
   {{/if}}
 {{/sortable-table}}
