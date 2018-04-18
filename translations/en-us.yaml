@@ -96,6 +96,7 @@ generic:
   uuid: UUID
   url: URL
   value: Value
+  version: Version
   yes: "Yes"
 
 realmNames:
@@ -173,7 +174,7 @@ appDetailPage:
   header: "App: {appName}"
   output:
     title: Launch Output
-    detail: ''
+    detail: 'Launch Output for this application'
   workloads:
     title: Workloads
     detail: Workloads created for this application.
@@ -510,7 +511,8 @@ catalogPage:
   index:
     header: Catalog
     refreshBtn: Refresh
-    all: All Catalogs
+    allCatalogs: All Catalogs
+    allCategories: All Categories
     manage: Manage
     search:
       label: Search
@@ -1767,7 +1769,7 @@ clusterNew:
       placeholder: Service account private key JSON file
       configured: Configured for {project} project
       helpText: |
-        Create a <a href="https://console.cloud.google.com/projectselector/iam-admin/serviceaccounts" target="_blank" rel="nofollow noopener noreferrer">Service Account</a> with a JSON private key and provide the JSON here.  See <a href="https://cloud.google.com/compute/docs/access/create-enable-service-accounts-for-instances" target="_blank" rel="nofollow noopener noreferrer">Google Cloud docs</a> for more info about creating a service account. Three IAM roles are required: <code>project/viewer</code>, <code>kubernetes-engine/admin</code> and <code>service-account/user</code>, more info on roles can be found <a href="https://cloud.google.com/kubernetes-engine/docs/how-to/iam-integration" target="_blank" rel="nofollow noopener noreferrer">here.</a>
+        Create a <a href="https://console.cloud.google.com/projectselector/iam-admin/serviceaccounts" target="_blank" rel="nofollow noopener noreferrer">Service Account</a> with a JSON private key and provide the JSON here.  See <a href="https://cloud.google.com/compute/docs/access/create-enable-service-accounts-for-instances" target="_blank" rel="nofollow noopener noreferrer">Google Cloud docs</a> for more info about creating a service account. Three IAM roles are required: <code>computer/viewer</code>, <code>project/viewer</code>, <code>kubernetes-engine/admin</code> and <code>service-account/user</code>, more info on roles can be found <a href="https://cloud.google.com/kubernetes-engine/docs/how-to/iam-integration" target="_blank" rel="nofollow noopener noreferrer">here.</a>
     zone:
       label: Zone
       prompt: Choose a Zone...
@@ -3197,7 +3199,7 @@ formHealthCheck:
   successThreshold:
     label: Healthy After
     unit: successes
-  failureTheshold:
+  failureThreshold:
     label: Unhealthy After
     unit: failures
 
@@ -4136,6 +4138,17 @@ modalRollbackService:
   difference:
     label: Differences
 
+modalRollbackApp:
+  title: 'Rollback "{appName}"'
+  action: Rollback
+  current:
+    label: Current Revision
+  revision:
+    label: Rollback to Revision
+    prompt: Choose a Revision...
+  difference:
+    label: Differences
+
 modalShell:
   title: "Shell: "
 
@@ -4213,7 +4226,9 @@ newCatalog:
   maintainer: "Maintainer:"
   newNamespace: New Namespace
   newApp: New Application
+  newAppDetail: Choose application version and namespace for the application
   appInfo: Application Read Me
+  appInfoDetail: Application information and user guid
   noConfig: This template has no configuration options
   official: Officially Certified
   preview: Preview
@@ -4537,15 +4552,24 @@ nodeDriver:
     schedulingSection: Scheduling
     dataCenter:
       label: Data Center
+      placeholder: "datacenter_name"
+      help: "Datacenter for Docker VM (must be set to ha-datacenter when connecting to a single host)."
     pool:
       label: Pool
+      placeholder: "/dc_name/host/host_name/Resources/pool_name"
+      help: "Resource pool for Docker VM."
     host:
       label: Host
-      placeholder: "Use '/' if using a cluster"
+      placeholder: "cluster_name/host_name"
+      help: "vSphere compute resource where the docker VM is instantiated. This can be omitted if using a cluster with DRS."
     network:
       label: Network
+      placeholder: "VM Traffic"
+      help: "Network where the Docker VM is attached."
     dataStore:
       label: Data Store
+      placeholder: "datastore_cluster_name/datastore_name"
+      help: "Datastore for Docker VM."
   azure:
     placement:
       title: Placement

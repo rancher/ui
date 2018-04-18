@@ -27,6 +27,7 @@ const rootNav = [
     id: 'infra',
     localizedLabel: 'nav.infra.tab',
     ctx: [getProjectId],
+    route: 'authenticated.project.alert',
     submenu: [
       {
         id: 'tools-alerts',
@@ -178,6 +179,7 @@ const rootNav = [
     ctx: [getClusterId],
     resource: [],
     resourceScope: 'global',
+    route: 'authenticated.cluster.alert',
     submenu: [
       {
         id: 'cluster-tools-alert',

@@ -65,7 +65,8 @@ export default Route.extend({
   resetController: function (controller, isExiting/*, transition*/) {
     if (isExiting)
     {
-      controller.set('category', 'all');
+      controller.set('category', '');
+      controller.set('catalogId', '');
       controller.set('templateBase', '');
     }
   }

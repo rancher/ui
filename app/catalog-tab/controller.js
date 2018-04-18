@@ -2,8 +2,8 @@ import Controller from '@ember/controller';
 
 export default Controller.extend({
   queryParams: ['category', 'catalogId','templateBase', 'launchCluster'],
-  category: 'all',
+  category: '',
   templateBase: '',
-  catalogId: 'all',
+  catalogId: '',
   launchCluster: false
 });
