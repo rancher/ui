@@ -178,6 +178,7 @@ const rootNav = [
     ctx: [getClusterId],
     resource: [],
     resourceScope: 'global',
+    route: 'authenticated.cluster.alert',
     submenu: [
       {
         id: 'cluster-tools-alert',
