@@ -1,22 +1,10 @@
-<section class="header clearfix">
-  <h1>{{t (if editing 'modalYaml.title.edit' 'modalYaml.title.new') type=(uc-first model.resource.type)}}</h1>
-</section>
-
-<section class="container-fluid">
-  {{input-yaml
-    name=filename
-    canChangeName=false
-    value=model.yaml
-    maxHeight="auto"
-  }}
-</section>
+{{input-yaml
+  title=(if editing (t 'modalYaml.title.edit' name=model.resource.displayName) (t 'modalYaml.title.new' type=(uc-first model.resource.displayName)))
+  name=filename
+  canChangeName=false
+  value=model.yaml
+  maxHeight="auto"
+}}
 
 {{top-errors errors=errors}}
-{{#save-cancel save="save" cancel="cancel" editing=editing}}
-  <div class="pull-right">
-    <button class="btn bg-link icon-btn p-0" {{action "download"}}>
-      <span class="darken"><i class="icon icon-download text-small"/></span>
-      <span>{{t 'generic.download'}}</span>
-    </button>
-  </div>
-{{/save-cancel}}
+{{save-cancel save="save" cancel="cancel" editing=editing}}

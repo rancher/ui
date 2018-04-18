@@ -1,36 +1,30 @@
-<div class="row">
-  {{#if (and canChangeName shouldChangeName)}}
-    {{input value=name placeholder=(if namePlaceholder (t namePlaceholder) '')}}
-  {{else}}
-    <h4 class="mb-0 vertical-middle">
-      {{#if label}}
-        {{t label}}
-      {{else}}
-        {{name}}
-      {{/if}}
-      {{#if nameRequired}}{{field-required}}{{/if}}
-      {{#if canChangeName}}
-        <button class="btn btn-sm bg-link p-0 pl-10 acc-label-hover" {{action "wantsChange"}}>{{t 'action.edit'}}</button>
-      {{/if}}
-    </h4>
-  {{/if}}
-  <div class="pull-right vertical-middle">
-    {{#if canUpload}}
-      {{#if showUploadLabel}}
-        <button class="btn bg-link icon-btn" {{action "click"}}>
-          <span class="darken"><i class="icon icon-upload text-small"/></span>
-          <span>{{t 'inputTextFile.tooltip'}}</span>
-        </button>
-      {{else}}
-        {{#tooltip-element type="tooltip-basic" model=(t 'inputTextFile.tooltip') tooltipTemplate="tooltip-static" aria-describedby="tooltip-base" tooltipFor="inputTextFile"}}
-          <button type="button" class="btn bg-link" {{action "click"}}><i class="icon icon-upload"></i></button>
-        {{/tooltip-element}}
-      {{/if}}
-    {{/if}}
-    {{yield}}
+{{#if title}}
+  <section class="header clearfix">
+    <div class="right-buttons">
+      <button class="btn bg-link icon-btn" {{action "click"}}>
+        <span class="darken"><i class="icon icon-upload text-small"/></span>
+        <span>{{t 'inputTextFile.tooltip'}}</span>
+      </button>
+      <button class="btn bg-link icon-btn p-0" {{action "download"}}>
+        <span class="darken"><i class="icon icon-download text-small"/></span>
+        <span>{{t 'generic.download'}}</span>
+      </button>
+    </div>
+    <h1>{{title}}</h1>
+  </section>
+{{else}}
+  <div class="text-right">
+    <button class="btn bg-link icon-btn" {{action "click"}}>
+      <span class="darken"><i class="icon icon-upload text-small"/></span>
+      <span>{{t 'inputTextFile.tooltip'}}</span>
+    </button>
+    <button class="btn bg-link icon-btn p-0" {{action "download"}}>
+      <span class="darken"><i class="icon icon-download text-small"/></span>
+      <span>{{t 'generic.download'}}</span>
+    </button>
   </div>
-</div>
-<hr/>
+{{/if}}
+
 <div class="row">
   <div class="col span-12 m-0 p-0 codemirror-container" style="overflow: auto;">
     {{ivy-codemirror
@@ -41,7 +35,7 @@
         autofocus=true
         theme="monokai"
         lineNumbers=true
-        mode=mode
+        mode="yaml"
         readOnly=(if (eq modalOpts.type 'review') true false)
         gutters=gutters
         lint=true
