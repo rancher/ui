@@ -1,19 +1,21 @@
 <div class="row">
-  {{#if (and canChangeName shouldChangeName)}}
-    {{input value=name placeholder=(if namePlaceholder (t namePlaceholder) '')}}
-  {{else}}
-    <h4 class="mb-0 vertical-middle">
-      {{#if label}}
-        {{t label}}
-      {{else}}
-        {{name}}
-      {{/if}}
-      {{#if nameRequired}}{{field-required}}{{/if}}
-      {{#if canChangeName}}
-        <button class="btn btn-sm bg-link p-0 pl-10 acc-label-hover" {{action "wantsChange"}}>{{t 'action.edit'}}</button>
-      {{/if}}
-    </h4>
-  {{/if}}
+  {{!-- <div class="col span-6 clip vertical-middle"> --}}
+    {{#if (and canChangeName shouldChangeName)}}
+      {{input value=name placeholder=(if namePlaceholder (t namePlaceholder) '')}}
+    {{else}}
+      <h4 class="mb-0 vertical-middle">
+        {{#if label}}
+          {{t label}}
+        {{else}}
+          {{name}}
+        {{/if}}
+        {{#if nameRequired}}{{field-required}}{{/if}}
+        {{#if canChangeName}}
+          <button class="btn btn-sm bg-link p-0 pl-10 acc-label-hover" {{action "wantsChange"}}>{{t 'action.edit'}}</button>
+        {{/if}}
+      </h4>
+    {{/if}}
+  {{!-- </div> --}}
   <div class="pull-right vertical-middle">
     {{#if canUpload}}
       {{#if showUploadLabel}}
@@ -32,22 +34,13 @@
 </div>
 <hr/>
 <div class="row">
-  <div class="col span-12 m-0 p-0 codemirror-container" style="overflow: auto;">
-    {{ivy-codemirror
-      placeholder=placeholder
+  <div class="col span-12 m-0 p-0">
+    {{textarea-autogrow
       value=value
-      valueUpdated=(if valueUpdated valueUpdated (action (mut value)) )
-      options=(hash
-        autofocus=true
-        theme="monokai"
-        lineNumbers=true
-        mode=mode
-        readOnly=(if (eq modalOpts.type 'review') true false)
-        gutters=gutters
-        lint=true
-        lineWrapping=true
-        viewportMargin=viewportMargin
-      )
+      classNames="form-control text-small"
+      placeholder=placeholder
+      minHeight=minHeight
+      maxHeight=maxHeight
     }}
   </div>
 </div>
