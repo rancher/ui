@@ -9,6 +9,8 @@ export default Resource.extend({
 
   state: 'active',
 
+  canClone: false,
+
   actions: {
     edit() {
       get(this, 'router').transitionTo('authenticated.project.certificates.detail.edit', get(this, 'id'));

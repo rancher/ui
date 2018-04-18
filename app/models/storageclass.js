@@ -49,6 +49,8 @@ export default Resource.extend({
   type: 'storageClass',
   state: 'active',
 
+  canClone: false,
+
   actions: {
     makeDefault() {
       const cur = get(this,'clusterStore').all('storageClass').filterBy('isDefault',true);

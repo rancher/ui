@@ -22,4 +22,7 @@ export default Resource.extend(PrincipalReference, {
   canRemove: computed('links.remove','name', function() {
     return !!get(this,'links.remove') && get(this,'name') !== 'creator';
   }),
+
+  canClone: false,
+  canEdit: false,
 });

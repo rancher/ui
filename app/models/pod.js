@@ -23,6 +23,9 @@ var Pod = Resource.extend(DisplayImage, {
   canHaveLabels: true,
   escToClose: true,
 
+  canEdit: false,
+  canClone: false,
+
   actions: {
     clone() {
       get(this, 'router').transitionTo('containers.run', {queryParams: {

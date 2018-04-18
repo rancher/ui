@@ -21,6 +21,8 @@ export default Resource.extend(ResourceUsage, {
   clusterRoleTemplateBindings: hasMany('id', 'clusterRoleTemplateBinding', 'clusterId'),
   roleTemplateBindings: alias('clusterRoleTemplateBindings'),
 
+  canClone: false,
+
   actions: {
     edit() {
       this.get('router').transitionTo('authenticated.cluster.edit', this.get('id'));

@@ -26,6 +26,8 @@ export default Resource.extend({
 
   namespaces: hasMany('id', 'namespace', 'projectId'),
 
+  canClone: false,
+
   actions: {
     edit: function () {
       get(this,'router').transitionTo('authenticated.cluster.projects.edit', get(this,'id'));

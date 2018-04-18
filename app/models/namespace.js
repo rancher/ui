@@ -106,6 +106,8 @@ var Namespace = Resource.extend(StateCounts, {
     return out;
   }),
 
+  canClone: false,
+
   canViewConfig: computed('actionLinks.exportconfig', function() {
     return !!this.get('actionLinks.exportconfig');
   }),

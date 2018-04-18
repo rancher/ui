@@ -18,6 +18,7 @@ var DockerCredential = Resource.extend({
   router: service(),
 
   state: 'active',
+  canClone: false,
 
   actions: {
     edit() {

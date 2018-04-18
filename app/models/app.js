@@ -25,6 +25,10 @@ const App = Resource.extend(StateCounts, {
     this.defineStateCounts('pods', 'podStates', 'podCountSort');
   },
 
+  canEdit: false,
+
+  canClone: false,
+
   externalIdInfo: computed('externalId', function () {
     return parseHelmExternalId(get(this, 'externalId'));
   }),
