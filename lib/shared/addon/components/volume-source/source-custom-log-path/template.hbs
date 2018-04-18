@@ -9,13 +9,28 @@
     <p class="text-info text-small">{{t 'volumeSource.customLogPath.mountPath.helpText'}}</p>
   </div>
   <div class="col span-6">
-    <label class="acc-label">{{t 'volumeSource.customLogPath.logFormat.label'}}</label>
-    {{searchable-select
-        allowCustom=true
-        content=formats
-        value=config.options.format
-        readOnly=false
-    }}
-    <p class="text-info text-small">{{t 'volumeSource.customLogPath.logFormat.helpText' htmlSafe=true}}</p>
+    <div>
+      <label class="acc-label pull-left">{{t 'volumeSource.customLogPath.logFormat.label'}}</label>
+      <a role="button" class="btn bg-transparent p-0 text-small pull-right" {{action "useCustomRegex"}}>
+        {{#if useCustomRegex}}
+          {{t 'volumeSource.customLogPath.logFormat.useExistingLogFormat'}}
+        {{else}}
+          {{t 'volumeSource.customLogPath.logFormat.useCustomRegex'}}
+        {{/if}}
+      </a>
+    </div>
+    {{#if useCustomRegex}}
+      {{input
+          type="text"
+          value=config.options.format
+      }}
+      <p class="text-info text-small">{{t 'volumeSource.customLogPath.logFormat.helpText' htmlSafe=true}}</p>
+    {{else}}
+      {{new-select
+          classNames="form-control"
+          content=formats
+          value=config.options.format
+      }}
+    {{/if}}
   </div>
 </div>
