@@ -1,11 +1,9 @@
 import Resource from 'ember-api-store/models/resource';
-import { hasMany, reference } from 'ember-api-store/utils/denormalize';
-import { observer, computed, get } from '@ember/object';
+import { reference } from 'ember-api-store/utils/denormalize';
+import { computed, get } from '@ember/object';
 import { parseHelmExternalId } from 'ui/utils/parse-externalid';
 import StateCounts from 'ui/mixins/state-counts';
 import { inject as service } from '@ember/service';
-import { alias } from '@ember/object/computed';
-import { next } from '@ember/runloop';
 
 const App = Resource.extend(StateCounts, {
   catalog: service(),
@@ -14,22 +12,22 @@ const App = Resource.extend(StateCounts, {
 
   namespace: reference('targetNamespace', 'namespace', 'clusterStore'),
   pods: computed('namespace.pods', function() {
-    return get(this, 'namespace.pods').filter((item) => get(item, 'labels.app') === get(this, 'name'));
+    return (get(this, 'namespace.pods')||[]).filterBy('labels.app', get(this, 'name'));
   }),
   services: computed('namespace.services', function() {
-    return get(this, 'namespace.services').filter((item) => get(item, 'labels.app') === get(this, 'name'));
+    return (get(this, 'namespace.services')||[]).filterBy('labels.app', get(this, 'name'));
   }),
   workloads: computed('namespace.workloads', function() {
-    return get(this, 'namespace.workloads').filter((item) => get(item, 'labels.app') === get(this, 'name'));
+    return (get(this, 'namespace.workloads')||[]).filterBy('labels.app', get(this, 'name'));
   }),
   secrets: computed('namespace.secrets', function() {
-    return get(this, 'namespace.secrets').filter((item) => get(item, 'labels.app') === get(this, 'name'));
+    return (get(this, 'namespace.secrets')||[]).filterBy('labels.app', get(this, 'name'));
   }),
   ingress: computed('namespace.ingress', function() {
-    return get(this, 'namespace.ingress').filter((item) => get(item, 'labels.app') === get(this, 'name'));
+    return (get(this, 'namespace.ingress')||[]).filterBy('labels.app', get(this, 'name'));
   }),
   volumes: computed('namespace.volumes', function() {
-    return get(this, 'namespace.volumes').filter((item) => get(item, 'labels.app') === get(this, 'name'));
+    return (get(this, 'namespace.volumes')||[]).filterBy('labels.app', get(this, 'name'));
   }),
 
   init() {
@@ -52,7 +50,7 @@ const App = Resource.extend(StateCounts, {
       let templateId = get(this, 'externalIdInfo.templateId');
 
       let catalogId = get(this, 'externalIdInfo.catalog');
-      
+
       get(this, 'router').transitionTo('catalog-tab.launch', templateId, {
         queryParams: {
           catalog: catalogId,
@@ -70,7 +68,6 @@ const App = Resource.extend(StateCounts, {
   },
 
   availableActions: computed('actionLinks.{rollback,upgrade}', function () {
-    let l = get(this, 'links');
     let a = get(this, 'actionLinks');
 
     var choices = [
@@ -82,4 +79,4 @@ const App = Resource.extend(StateCounts, {
   })
 })
 
-export default App
+export default App;
