@@ -10,9 +10,10 @@ export default Resource.extend({
   modalService: service('modal'),
   settings:     service(),
   allowed:      C.SETTING.ALLOWED,
+  canRemove:    false,
 
   actions: {
-    update() {
+    edit() {
       let key = get(this, 'id');
       let obj =  this.get('settings').findByName(key);
       let details = this.get('allowed')[key];
@@ -56,8 +57,6 @@ export default Resource.extend({
     let a = get(this,'links');
 
     return [
-      { label: 'action.edit',         icon: 'icon icon-edit',             action: 'update',       enabled: !!a.update},
-      { divider: true},
       { label: 'action.revert',       icon: 'icon icon-history',          action: 'revert',       enabled: !isEmpty(get(this, 'default')) && !get(this, 'isDefault'),  altAction: 'bypassRevert' },
     ];
   }),

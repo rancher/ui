@@ -19,13 +19,17 @@
               <div class="btn bg-info btn-sm" {{action "showNode" row}}>Show {{row.key}}</div>
             </div>
           {{else}}
-            <div class="pt-10">
-              <pre class="{{unless (or (not row.obj) (eq row.obj.default row.obj.value)) 'text-bold'}} m-0 p-0">
-                {{#if row.obj.value}}
-                  {{row.obj.value}}
-                {{else}}
+            <div class="">
+              <pre class="">
+                {{~#if row.obj.value~}}
+                  {{~#if (or (not row.obj) (eq row.obj.default row.obj.value))~}}
+                    {{~row.obj.value~}}
+                  {{~else~}}
+                    <b>{{~row.obj.value~}}</b>
+                  {{~/if~}}
+                {{~else~}}
                   <span class="text-muted">&lt;none&gt;</span>
-                {{/if}}
+                {{~/if~}}
               </pre>
               <div class="row text-center">
                 {{#if (eq row.kind 'multiline')}}
