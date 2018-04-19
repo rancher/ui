@@ -63,6 +63,16 @@
 
   <div class="acc-label text-capitalize">{{t 'notifierPage.smtp.server'}}</div>
   <section class="box">
+    <div>
+      <div class="acc-label text-capitalize">{{t 'notifierPage.smtp.sender'}}{{field-required}}</div>
+      {{input
+          type="text"
+          autocomplete="off"
+          classNames="form-control"
+          value=model.smtpConfig.sender
+      }}
+    </div>
+
     <div class="row">
       <div class="col span-6">
         <div class="acc-label text-capitalize">{{t 'notifierPage.smtp.host'}}{{field-required}}</div>
@@ -72,7 +82,6 @@
             placeholder=(t 'notifierPage.smtp.hostPlaceholder')
         }}
       </div>
-
       <div class="col span-4">
         <div class="acc-label text-capitalize">{{t 'notifierPage.smtp.port'}}{{field-required}}</div>
         {{input classNames="form-control" value=model.smtpConfig.port placeholder=(t 'notifierPage.smtp.portPlaceholder')}}
@@ -83,7 +92,7 @@
     </div>
     <div class="row">
       <div class="col span-6">
-        <div class="acc-label text-capitalize">{{t 'notifierPage.smtp.userName'}}{{field-required}}</div>
+        <div class="acc-label text-capitalize">{{t 'notifierPage.smtp.userName'}}</div>
         {{input
             classNames="form-control"
             autocomplete="off"
@@ -92,7 +101,7 @@
         }}
       </div>
       <div class="col span-6">
-        <div class="acc-label text-capitalize">{{t 'notifierPage.smtp.password'}}{{field-required}}</div>
+        <div class="acc-label text-capitalize">{{t 'notifierPage.smtp.password'}}</div>
         {{input
             type="password"
             autocomplete="off"
