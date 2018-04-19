@@ -5,10 +5,36 @@
 {{else}}
   <div>
     {{#each current as |row|}}
-      <div class="advanced-setting">
-        <div class="edit btn bg-warning" {{action "showEdit" row.key}}><i class="icon icon-edit"></i></div>
-        <div class="text-mono force-wrap {{unless (or (not row.obj) row.obj.isDefault) 'text-bold'}}">{{row.key}}={{#if row.obj.value}}{{row.obj.value}}{{else}}<span class="text-muted">&lt;none&gt;</span>{{/if}}</div>
-        <p class="text-info">{{t row.descriptionKey}}</p>
+      <div class="accordion"> {{!-- container-section --}}
+        <div class="accordion-header"> {{!-- header-section --}}
+          <div class="title">
+            <label class="">{{row.key}}</label>
+            <p class="help-block">{{t row.descriptionKey}}</p>
+          </div>
+          {{action-menu model=row.obj showPrimary=false classNames="pull-right mt-5" size="xs"}}
+        </div>
+        <div class="accordion-content row"> {{!-- content-section --}}
+          {{#if row.hide}}
+            <div class="row ml-10 mt-10">
+              <div class="btn bg-info btn-sm" {{action "showNode" row}}>Show {{row.key}}</div>
+            </div>
+          {{else}}
+            <div class="pt-10">
+              <pre class="{{unless (or (not row.obj) (eq row.obj.default row.obj.value)) 'text-bold'}} m-0 p-0">
+                {{#if row.obj.value}}
+                  {{row.obj.value}}
+                {{else}}
+                  <span class="text-muted">&lt;none&gt;</span>
+                {{/if}}
+              </pre>
+              <div class="row text-center">
+                {{#if (eq row.kind 'multiline')}}
+                  <div class="btn bg-info btn-sm" {{action "showNode" row}}>Hide {{row.key}}</div>
+                {{/if}}
+              </div>
+            </div>
+          {{/if}}
+        </div>
       </div>
     {{/each}}
   </div>

@@ -62,7 +62,7 @@ Router.map(function() {
         this.route('node', {path: '/:node_id', resetNamespace: true});
       });
 
-      this.route('projects', {path: '/projects'}, function() {
+      this.route('projects', {path: '/projects-namespaces'}, function() {
         this.route('index', {path: '/'});
         this.route('edit', {path: '/:project_id'});
         this.route('new', {path: '/add'});
