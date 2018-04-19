@@ -50,13 +50,15 @@
     </div>
   {{/accordion-list-item}}
 
+
   {{#accordion-list-item
-      title=(t 'newCatalog.newApp')
-      detail=(t 'newCatalog.newAppDetail')
-      expandAll=al.expandAll
-      expandOnInit=true
-      expand=(action expandFn)
+    title=(t (if (or (eq templateKind 'native') selectedTemplateModel.questions) 'inputAnswers.config' 'newCatalog.helm.label'))
+    detail=(t (if (or (eq templateKind 'native') selectedTemplateModel.questions) 'inputAnswers.protip' 'newCatalog.helm.protip'))
+    expandAll=al.expandAll
+    expandOnInit=true
+    expand=(action expandFn)
   }}
+
     <div class="row">
       <div class="col span-6">
         {{form-name-description
@@ -98,22 +100,16 @@
         {{/if}}
       </div>
     </div>
-  {{/accordion-list-item}}
 
-  {{#if getTemplate.isRunning}}
-    <section class="row">
-      <div class="text-center">
-        <i class="icon icon-spinner icon-spin" style="font-size:36px;"></i>
-      </div>
-    </section>
-  {{else}}
-    {{#accordion-list-item
-      title=(t (if (or (eq templateKind 'native') selectedTemplateModel.questions) 'inputAnswers.config' 'newCatalog.helm.label'))
-      detail=(t (if (or (eq templateKind 'native') selectedTemplateModel.questions) 'inputAnswers.protip' 'newCatalog.helm.protip'))
-      expandAll=al.expandAll
-      expandOnInit=true
-      expand=(action expandFn)
-    }}
+    <hr/>
+    
+    {{#if getTemplate.isRunning}}
+      <section class="row">
+        <div class="text-center">
+          <i class="icon icon-spinner icon-spin" style="font-size:36px;"></i>
+        </div>
+      </section>
+    {{else}}
       <div class="row">
         {{#if selectedTemplateModel}}
           {{#if (eq templateKind 'native')}}
@@ -146,8 +142,8 @@
           {{/if}}
         {{/if}}
       </div>
-    {{/accordion-list-item}}
-  {{/if}}
+    {{/if}}
+  {{/accordion-list-item}}
 
 {{/accordion-list}}
 
