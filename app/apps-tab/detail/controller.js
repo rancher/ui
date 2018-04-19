@@ -1,4 +1,5 @@
 import Controller from '@ember/controller';
+import { inject as service } from '@ember/service';
 import { get, computed } from '@ember/object';
 import {
   searchFields as containerSearchFields
@@ -170,7 +171,8 @@ const secretsHeaders = [
 ]
 
 export default Controller.extend({
-  // TODO =- expand logic?
+  scope: service(),
+
   ingressHeaders: ingressHeaders,
   servicesHeaders: servicesHeaders,
   volumesHeaders: volumesHeaders,
@@ -201,14 +203,6 @@ export default Controller.extend({
     this._super(...arguments);
     this.set('expandedInstances',[]);
   },
-
-  stdOut: computed('model.app.stdOut', function() {
-    return get(this, 'model.app.status.stdOutput');
-  }),
-
-  stderr: computed('model.app.stdErr', function() {
-    return get(this, 'model.app.status.stdError');
-  }),
 
   workloadsAndPods: computed('model.app.workloads', 'model.app.pods', function() {
     let out = [];

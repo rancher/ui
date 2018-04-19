@@ -11,23 +11,56 @@ const App = Resource.extend(StateCounts, {
   clusterStore: service(),
 
   namespace: reference('targetNamespace', 'namespace', 'clusterStore'),
-  pods: computed('namespace.pods', function() {
-    return (get(this, 'namespace.pods')||[]).filterBy('labels.app', get(this, 'name'));
+  pods: computed('namespace.pods', 'workloads', function() {
+    return (get(this, 'namespace.pods') || []).filter((item) => {
+      if ( item['labels'] ) {
+        const inApp = item['labels']['io.cattle.field/appId'] === get(this, 'name');
+        if ( inApp ) {
+          return true;
+        }
+      }
+
+      const workload = get(item, 'workload');
+      if ( workload ) {
+        const found = get(this, 'workloads').filterBy('id', get(workload, 'id'));
+        return found.length > 0;
+      }
+    });
   }),
   services: computed('namespace.services', function() {
-    return (get(this, 'namespace.services')||[]).filterBy('labels.app', get(this, 'name'));
+    return (get(this, 'namespace.services') || []).filter((item) => {
+      if ( item['labels'] ) {
+        return item['labels']['io.cattle.field/appId'] === get(this, 'name');
+      }
+    });
   }),
   workloads: computed('namespace.workloads', function() {
-    return (get(this, 'namespace.workloads')||[]).filterBy('labels.app', get(this, 'name'));
+    return (get(this, 'namespace.workloads') || []).filter((item) => {
+      if ( item['workloadLabels'] ) {
+        return item['workloadLabels']['io.cattle.field/appId'] === get(this, 'name');
+      }
+    });
   }),
   secrets: computed('namespace.secrets', function() {
-    return (get(this, 'namespace.secrets')||[]).filterBy('labels.app', get(this, 'name'));
+    return (get(this, 'namespace.secrets') || []).filter((item) => {
+      if ( item['labels'] ) {
+        return item['labels']['io.cattle.field/appId'] === get(this, 'name');
+      }
+    });
   }),
   ingress: computed('namespace.ingress', function() {
-    return (get(this, 'namespace.ingress')||[]).filterBy('labels.app', get(this, 'name'));
+    return (get(this, 'namespace.ingress') || []).filter((item) => {
+      if ( item['labels'] ) {
+        return item['labels']['io.cattle.field/appId'] === get(this, 'name');
+      }
+    });
   }),
   volumes: computed('namespace.volumes', function() {
-    return (get(this, 'namespace.volumes')||[]).filterBy('labels.app', get(this, 'name'));
+    return (get(this, 'namespace.volumes') || []).filter((item) => {
+      if ( item['labels'] ) {
+        return item['labels']['io.cattle.field/appId'] === get(this, 'name');
+      }
+    });
   }),
 
   init() {
@@ -37,11 +70,11 @@ const App = Resource.extend(StateCounts, {
 
   canEdit: false,
 
-  externalIdInfo: computed('externalId', function () {
+  externalIdInfo: computed('externalId', function() {
     return parseHelmExternalId(get(this, 'externalId'));
   }),
 
-  catalogTemplate: computed('externalIdInfo.templateId', function () {
+  catalogTemplate: computed('externalIdInfo.templateId', function() {
     return this.get('catalog').getTemplateFromCache(this.get('externalIdInfo.templateId'));
   }),
 
@@ -67,7 +100,7 @@ const App = Resource.extend(StateCounts, {
     }
   },
 
-  availableActions: computed('actionLinks.{rollback,upgrade}', function () {
+  availableActions: computed('actionLinks.{rollback,upgrade}', function() {
     let a = get(this, 'actionLinks');
 
     var choices = [

@@ -34,15 +34,17 @@
 
 <section>
   {{#accordion-list as |al expandFn|}}
-    {{#accordion-list-item
-         title=(t 'appDetailPage.output.title')
-         detail=(t 'appDetailPage.output.detail')
-         expandAll=al.expandAll
-         expand=(action expandFn)
-         expandOnInit=false
-    }}
-      <pre class="log-body" style="margin:0; font-size: 80%; color: whitesmoke;">{{stdOut}}</pre>
-    {{/accordion-list-item}}
+    {{#if model.app.status.notes}}
+      {{#accordion-list-item
+          title=(t 'appDetailPage.notes.title')
+          detail=(t 'appDetailPage.notes.detail')
+          expandAll=al.expandAll
+          expand=(action expandFn)
+          expandOnInit=false
+      }}
+        <pre class="log-body" style="margin:0; font-size: 80%; color: whitesmoke;">{{model.app.status.notes}}</pre>
+      {{/accordion-list-item}}
+    {{/if}}
 
     {{resource-condition-list
         conditions=model.app.status.conditions
