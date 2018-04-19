@@ -13,17 +13,21 @@
       </div>
     </div>
 
-    <div class="col span-8">
-      <label class="acc-label">{{t 'modalRollbackApp.revision.label'}}</label>
-      {{new-select
-        content=choices
-        value=selectedRevision
-        prompt="modalRollbackApp.revision.prompt"
-        localizedPrompt=true
-        optionLabelPath="label"
-        optionValuePath="value"
-      }}
-    </div>
+    {{#if loading}}
+      <i class="icon icon-spinner icon-spin"/> {{t 'generic.loading'}}
+    {{else}}
+      <div class="col span-8">
+        <label class="acc-label">{{t 'modalRollbackApp.revision.label'}}</label>
+        {{new-select
+          content=choices
+          value=revisionId
+          prompt="modalRollbackApp.revision.prompt"
+          localizedPrompt=true
+          optionLabelPath="label"
+          optionValuePath="value"
+        }}
+      </div>
+    {{/if}}
   </div>
 
   {{#if (and diff diff.string)}}

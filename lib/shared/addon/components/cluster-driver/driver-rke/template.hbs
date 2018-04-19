@@ -110,6 +110,22 @@
         </div>
       </div>
       <div class="row">
+        <div class="col span-4">
+          <label class="acc-label mt-5">{{t 'clusterNew.rke.etcd.heartbeat.label'}}</label>
+          <div class="input-group">
+            {{input-integer min="0" step="100" value=config.services.etcd.extraArgs.heartbeat-interval classNames="form-control" placeholder=(t 'clusterNew.rke.etcd.heartbeat.placeholder')}}
+            <div class="input-group-addon bg-default">{{t 'generic.milliseconds'}}</div>
+          </div>
+        </div>
+        <div class="col span-4">
+          <label class="acc-label mt-5">{{t 'clusterNew.rke.etcd.election.label'}}</label>
+          <div class="input-group">
+            {{input-integer min="0" step="1000" value=config.services.etcd.extraArgs.election-timeout classNames="form-control" placeholder=(t 'clusterNew.rke.etcd.election.placeholder')}}
+            <div class="input-group-addon bg-default">{{t 'generic.milliseconds'}}</div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
         <div class="col span-12">
           {{cru-cloud-provider
               cluster=model.cluster

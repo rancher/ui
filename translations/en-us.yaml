@@ -39,6 +39,7 @@ generic:
   environment: Environment
   expandAll: Expand All
   gigabyte: 'GB'
+  generic: 'Generic'
   hardware: Hardware
   healthy: Healthy
   help: Help
@@ -52,6 +53,7 @@ generic:
   loading: "Loading..."
   mibibyte: 'MiB'
   missing: "*%MISSING%*"
+  milliseconds: 'Milliseconds'
   member: Member
   moreActions: More Actions
   na: 'n/a'
@@ -172,9 +174,9 @@ accountsPage:
 
 appDetailPage:
   header: "App: {appName}"
-  output:
-    title: Launch Output
-    detail: 'Launch Output for this application'
+  notes:
+    title: Notes
+    detail: 'Notes for this application'
   workloads:
     title: Workloads
     detail: Workloads created for this application.
@@ -1570,6 +1572,13 @@ caasLogin:
   form:
     email: Email
 
+cloudProvider:
+  name: Cloud Provider Name
+  helpText: |
+    Read more about <a href="https://kubernetes.io/docs/concepts/cluster-administration/cloud-providers/" target="_blank" rel="nofollow noopener noreferrer">cloud provider</a>.
+  warning:
+    Using a cloud provider without passing a cloud provider config could cause your cluster to not provision correctly. It is recomendded that you add a cloud provider config before you create a cluster.
+
 catalogSettings:
   header: Catalogs
   notAvailable: "Not available: there is a custom catalog called <code>{name}</code>"
@@ -1669,6 +1678,9 @@ clusterNew:
   amazoneks:
     label: Amazon Elastic Container Service for Kubernetes
     shortLabel: Amazon EKS
+    access:
+      title: Account Access
+      detail: Choose the region and API Key that will be used to launch Amazon EKS
   azureaks:
     label: Azure Container Service
     shortLabel: Azure AKS
@@ -1797,6 +1809,13 @@ clusterNew:
     alphaFeatures:
       label: Alpha Features
   rke:
+    etcd:
+      heartbeat:
+        label: Etcd Heartbeat Interval
+        placeholder: Time of a heartbeat interval
+      election:
+        label: Etcd Election Timeout
+        placeholder: Time for an election to timeout
     address:
       title: Node Address
       detail: Configure the public address and internal address for machines
@@ -4234,9 +4253,8 @@ newCatalog:
   maintainedBy: Maintained by community members
   maintainer: "Maintainer:"
   newNamespace: New Namespace
-  newApp: New Application
   newAppDetail: Choose application version and namespace for the application
-  appInfo: Application Read Me
+  appInfo: Detailed Description
   appInfoDetail: Application information and user guid
   noConfig: This template has no configuration options
   official: Officially Certified
