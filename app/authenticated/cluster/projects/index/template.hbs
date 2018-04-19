@@ -14,9 +14,11 @@
     {{#link-to "authenticated.cluster.projects.new" class="btn bg-primary btn-sm" disabled=(rbac-prevents resource="project" scope="global" permission="create")}}
       {{t 'projectsPage.addProject'}}
     {{/link-to}}
-    {{#link-to "authenticated.cluster.ns.new" (query-params addTo=null) class="btn bg-primary btn-sm ml-10" disabled=(rbac-prevents resource="namespace" scope="cluster" permission="create")}}
-      {{t 'namespacesPage.addNamespace'}}
-    {{/link-to}}
+    {{#unless (eq groupedBy 'project')}}
+      {{#link-to "authenticated.cluster.ns.new" (query-params addTo=null) class="btn bg-primary btn-sm ml-10" disabled=(rbac-prevents resource="namespace" scope="cluster" permission="create")}}
+        {{t 'namespacesPage.addNamespace'}}
+      {{/link-to}}
+    {{/unless}}
   </div>
 
 </section>
