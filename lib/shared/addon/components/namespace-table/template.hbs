@@ -1,16 +1,16 @@
 {{#sortable-table
+     body=model
      classNames="mt-30"
-     tableClassNames="bordered"
-     paging=true
-     pagingLabel="pagination.project"
-     headers=headers
      groupByKey="projectId"
      groupByRef="project"
-     body=model
-     suffix=true
-     sortBy=sortBy
+     headers=headers
+     paging=true
+     pagingLabel="pagination.project"
      searchText=searchText
+     sortBy=sortBy
      subRows=true
+     suffix=true
+     tableClassNames="bordered"
      as |sortable kind ns dt|
 }}
   {{#if (eq kind "row")}}
@@ -35,15 +35,28 @@
       <td colspan="{{fullColspan}}"></td>
     </tr>
   {{else if (eq kind "group")}}
-    {{project-group model=ns.ref noGroup="namespaceGroup.project" fullColspan=sortable.fullColspan}}
+    {{project-group
+        model=ns.ref
+        noGroup="namespaceGroup.project"
+        fullColspan=sortable.fullColspan
+    }}
   {{else if (eq kind "nomatch")}}
-    <tr><td colspan="{{sortable.fullColspan}}" class="text-center text-muted lacsso pt-20 pb-20">{{t 'projectsPage.noMatch'}}</td></tr>
+    <tr>
+      <td colspan="{{sortable.fullColspan}}" class="text-center text-muted lacsso pt-20 pb-20">{{t 'projectsPage.noMatch'}}</td>
+    </tr>
   {{else if (eq kind "norows")}}
-    <tr><td colspan="{{sortable.fullColspan}}" class="text-center text-muted lacsso pt-20 pb-20">{{t 'projectsPage.noData'}}</td></tr>
+    <tr>
+      <td colspan="{{sortable.fullColspan}}" class="text-center text-muted lacsso pt-20 pb-20">{{t 'projectsPage.noData'}}</td>
+    </tr>
   {{else if (eq kind "suffix")}}
     <tbody class="group">
       {{#each prns as |project|}}
-        {{project-group model=project noGroup="namespaceGroup.project" fullColspan=sortable.fullColspan}}
+        {{project-group
+            model=project
+            noGroup="namespaceGroup.project"
+            fullColspan=sortable.fullColspan
+            noNamespace=true
+        }}
       {{/each}}
     </tbody>
   {{/if}}
