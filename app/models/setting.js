@@ -10,7 +10,7 @@ export default Resource.extend({
   modalService: service('modal'),
   settings:     service(),
   allowed:      C.SETTING.ALLOWED,
-  canRemove: false,
+  canRemove:    false,
 
   actions: {
     edit() {
