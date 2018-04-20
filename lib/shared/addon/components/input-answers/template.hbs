@@ -21,10 +21,10 @@
       }}
       <span class="pull-right btn btn-xs bg-transparent mb-10" {{action 'cancel'}}>Cancel</span>
     {{else}}
-      <div class="container-flex">
-        {{#each questions as |question|}}
-          <div class="flex-item-half">
-            <div class="col span-12 mr-15">
+     {{#each answerGroups as |group|}}
+        <div class="row">
+          {{#each group as |question|}}
+            <div class="col span-6">
               <label class="acc-label">{{or question.label question.variable}}{{#if question.required}}{{field-required}}{{/if}}</label>
 
               {{#if question.supported}}
@@ -36,11 +36,11 @@
 
               <p class="help-block">{{question.description}}</p>
             </div>
-          </div>
-        {{else}}
-          <span class="text-muted">{{t 'inputAnswers.noConfig'}}</span>
-        {{/each}}
-      </div>
+          {{else}}
+            <span class="text-muted">{{t 'inputAnswers.noConfig'}}</span>
+          {{/each}}
+        </div>
+     {{/each}}
     {{/if}}
   </div>
 </form>

@@ -50,6 +50,10 @@ var Namespace = Resource.extend(StateCounts, {
 
   pods:      hasMany('id', 'pod', 'namespaceId', 'store'),
   workloads: hasMany('id', 'workload', 'namespaceId', 'store'),
+  services:  hasMany('id', 'service', 'namespaceId', 'store'),
+  secrets:   hasMany('id', 'namespacedSecret', 'namespaceId', 'store'),
+  ingress:   hasMany('id', 'ingress', 'namespaceId', 'store'),
+  volumes:   hasMany('id', 'persistentVolumeClaim', 'namespaceId', 'store'),
   project:   reference('projectId', 'project', 'globalStore'),
 
   init() {

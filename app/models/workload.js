@@ -173,14 +173,14 @@ var Workload = Resource.extend(DisplayImage, StateCounts, EndpointPorts, {
     let isPaused = get(this, 'isPaused');
 
     let choices = [
-      { label: 'action.rollback',       icon: 'icon icon-history',          action: 'rollback',       enabled: !!a.rollback && isReal },
       { label: 'action.addSidekick',    icon: 'icon icon-plus-circle',      action: 'addSidekick',    enabled: get(this, 'canHaveSidekicks') },
+      { label: 'action.rollback',       icon: 'icon icon-history',          action: 'rollback',       enabled: !!a.rollback && isReal },
       { divider: true },
       { label: 'action.execute',        icon: 'icon icon-terminal',         action: 'shell',          enabled: !!podForShell, altAction:'popoutShell'},
 //      { label: 'action.logs',           icon: 'icon icon-file',             action: 'logs',           enabled: !!a.logs, altAction: 'popoutLogs' },
       { divider: true },
       { label: 'action.pause',          icon: 'icon icon-pause',            action: 'pause',          enabled: !!a.pause && !isPaused, bulkable: true},
-      { label: 'action.resume',         icon: 'icon icon-play',             action: 'resume',          enabled: !!a.pause && isPaused,  bulkable: true},
+      { label: 'action.resume',         icon: 'icon icon-play',             action: 'resume',          enabled: !!a.pause && isPaused, bulkable: true},
     ];
 
     return choices;

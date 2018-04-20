@@ -1,4 +1,4 @@
-import { get } from '@ember/object';
+import { get, set } from '@ember/object';
 import { hash } from 'rsvp';
 import { inject as service } from '@ember/service';
 import Route from '@ember/routing/route';
@@ -7,8 +7,13 @@ export default Route.extend({
   globalStore: service(),
   clusterStore: service(),
   scope: service(),
+  queryParams: {
+    addTo: {
+      refreshModel: true
+    }
+  },
 
-  model() {
+  model(params) {
     const clusterStore = get(this, 'clusterStore');
 
     const namespace = clusterStore.createRecord({
@@ -17,10 +22,14 @@ export default Route.extend({
       clusterId: get(this,'scope.currentCluster.id'),
     });
 
+    if (params.addTo) {
+      set(namespace, 'projectId', get(params, 'addTo'));
+    }
+
     return hash({
       namespace,
       namespaces: get(this, 'clusterStore').findAll('namespace'),
-      allProjects: get(this,'globalStore').all('project').filterBy('clusterId', get(this,'scope.currentCluster.id')),
+      allProjects: get(this,'globalStore').findAll('project'),
     });
   },
 

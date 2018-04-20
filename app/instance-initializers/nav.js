@@ -27,6 +27,7 @@ const rootNav = [
     id: 'infra',
     localizedLabel: 'nav.infra.tab',
     ctx: [getProjectId],
+    route: 'authenticated.project.alert',
     submenu: [
       {
         id: 'tools-alerts',
@@ -152,15 +153,16 @@ const rootNav = [
     resource: ['project'],
     resourceScope: 'global',
   },
-  {
-    scope: 'cluster',
-    id: 'cluster-namespaces',
-    localizedLabel: 'nav.cluster.namespaces',
-    route: 'authenticated.cluster.ns.index',
-    ctx: [getClusterId],
-    resource: ['namespace'],
-    resourceScope: 'cluster',
-  },
+  // This is going to be under projects now and list namespaces with out projects and in this project
+  // {
+  //   scope: 'cluster',
+  //   id: 'cluster-namespaces',
+  //   localizedLabel: 'nav.cluster.namespaces',
+  //   route: 'authenticated.cluster.ns.index',
+  //   ctx: [getClusterId],
+  //   resource: ['namespace'],
+  //   resourceScope: 'cluster',
+  // },
   {
     scope: 'cluster',
     id: 'cluster-security-roles',
@@ -178,6 +180,7 @@ const rootNav = [
     ctx: [getClusterId],
     resource: [],
     resourceScope: 'global',
+    route: 'authenticated.cluster.alert',
     submenu: [
       {
         id: 'cluster-tools-alert',

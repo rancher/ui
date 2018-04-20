@@ -30,6 +30,7 @@ generic:
   dockerId: Docker ID
   domainName: Domain Name
   done: Done
+  download: Download
   edit: Edit
   emptyString: ""
   enable: Enable
@@ -38,6 +39,7 @@ generic:
   environment: Environment
   expandAll: Expand All
   gigabyte: 'GB'
+  generic: 'Generic'
   hardware: Hardware
   healthy: Healthy
   help: Help
@@ -51,6 +53,7 @@ generic:
   loading: "Loading..."
   mibibyte: 'MiB'
   missing: "*%MISSING%*"
+  milliseconds: 'Milliseconds'
   member: Member
   moreActions: More Actions
   na: 'n/a'
@@ -95,6 +98,7 @@ generic:
   uuid: UUID
   url: URL
   value: Value
+  version: Version
   yes: "Yes"
 
 realmNames:
@@ -170,9 +174,9 @@ accountsPage:
 
 appDetailPage:
   header: "App: {appName}"
-  output:
-    title: Launch Output
-    detail: ''
+  notes:
+    title: Notes
+    detail: 'Notes for this application'
   workloads:
     title: Workloads
     detail: Workloads created for this application.
@@ -509,7 +513,8 @@ catalogPage:
   index:
     header: Catalog
     refreshBtn: Refresh
-    all: All Catalogs
+    allCatalogs: All Catalogs
+    allCategories: All Categories
     manage: Manage
     search:
       label: Search
@@ -611,11 +616,15 @@ clusterPage:
   edit: Edit Cluster
 
 projectsPage:
-  header: Projects
+  header: Projects/Namespaces
+  headerNS: Namespaces
   addProject: Add Project
   editProject: Edit Project
   noMatch: No projects match the current search.
   noData: This cluster doesn't have any projects defined
+  ns:
+    label: Namespace Name
+    placeholder: e.g. lab
   name:
     label: Project Name
     placeholder: e.g. lab
@@ -877,6 +886,7 @@ nodesPage:
     memory: RAM
     disk: Disk
     pod: Pods
+    version: Version
     docker: Docker
     unschedulable: Unschedulable
     instanceState: Container States
@@ -1562,6 +1572,13 @@ caasLogin:
   form:
     email: Email
 
+cloudProvider:
+  name: Cloud Provider Name
+  helpText: |
+    Read more about <a href="https://kubernetes.io/docs/concepts/cluster-administration/cloud-providers/" target="_blank" rel="nofollow noopener noreferrer">cloud provider</a>.
+  warning:
+    Using a cloud provider without passing a cloud provider config could cause your cluster to not provision correctly. It is recomendded that you add a cloud provider config before you create a cluster.
+
 catalogSettings:
   header: Catalogs
   notAvailable: "Not available: there is a custom catalog called <code>{name}</code>"
@@ -1661,6 +1678,9 @@ clusterNew:
   amazoneks:
     label: Amazon Elastic Container Service for Kubernetes
     shortLabel: Amazon EKS
+    access:
+      title: Account Access
+      detail: Choose the region and API Key that will be used to launch Amazon EKS
   azureaks:
     label: Azure Container Service
     shortLabel: Azure AKS
@@ -1765,7 +1785,7 @@ clusterNew:
       placeholder: Service account private key JSON file
       configured: Configured for {project} project
       helpText: |
-        Create a <a href="https://console.cloud.google.com/projectselector/iam-admin/serviceaccounts" target="_blank" rel="nofollow noopener noreferrer">Service Account</a> with a JSON private key and provide the JSON here.  See <a href="https://cloud.google.com/compute/docs/access/create-enable-service-accounts-for-instances" target="_blank" rel="nofollow noopener noreferrer">Google Cloud docs</a> for more info about creating a service account. Three IAM roles are required: <code>project/viewer</code>, <code>kubernetes-engine/admin</code> and <code>service-account/user</code>, more info on roles can be found <a href="https://cloud.google.com/kubernetes-engine/docs/how-to/iam-integration" target="_blank" rel="nofollow noopener noreferrer">here.</a>
+        Create a <a href="https://console.cloud.google.com/projectselector/iam-admin/serviceaccounts" target="_blank" rel="nofollow noopener noreferrer">Service Account</a> with a JSON private key and provide the JSON here.  See <a href="https://cloud.google.com/compute/docs/access/create-enable-service-accounts-for-instances" target="_blank" rel="nofollow noopener noreferrer">Google Cloud docs</a> for more info about creating a service account. Three IAM roles are required: <code>computer/viewer</code>, <code>project/viewer</code>, <code>kubernetes-engine/admin</code> and <code>service-account/user</code>, more info on roles can be found <a href="https://cloud.google.com/kubernetes-engine/docs/how-to/iam-integration" target="_blank" rel="nofollow noopener noreferrer">here.</a>
     zone:
       label: Zone
       prompt: Choose a Zone...
@@ -1789,9 +1809,17 @@ clusterNew:
     alphaFeatures:
       label: Alpha Features
   rke:
+    etcd:
+      heartbeat:
+        label: Etcd Heartbeat Interval
+        placeholder: Time of a heartbeat interval
+      election:
+        label: Etcd Election Timeout
+        placeholder: Time for an election to timeout
     address:
       title: Node Address
       detail: Configure the public address and internal address for machines
+      warning: This doesn't look like an address
       public:
         label: Public Address
         placeholder: e.g. 1.2.3.4
@@ -1799,7 +1827,7 @@ clusterNew:
         label: Internal Address
         placeholder: e.g. 1.2.3.4
     label: '{appName} Kubernetes Engine'
-    shortLabel: RKE
+    shortLabel: Custom
     customize:
       label: Cluster Options
       detail: "Customize Kubernetes options for the cluster"
@@ -2605,44 +2633,48 @@ dangerZone:
   subtext: "Typical users will not need to change these.  Proceed with caution, incorrect values can break your {appName} installation.<br/>Settings which have been customized from default settings  are shown in <b>bold</b>."
   showLabel: I understand that I can break things by changing advanced settings.
   description:
-    'access$log': 'Path to write access logs to (HA installation only)'
-    'api$auth$jwt$token$expiry': 'Authorization token/UI session lifetime (milliseconds)'
-    'api$auth$realm': 'HTTP Basic Auth realm for requests without Authorization header'
-    'api$auth$restrict$concurrent$sessions': 'Limit active session tokens to one per account.  This mainly prevents users from logging in to the UI from multiple computers simultaneously.  Note: Existing sessions may continue to be valid until they expire when this is initially enabled.'
-    'api$interceptor$config': 'JSON configuration for API Interceptor'
-    'api$proxy$allow': 'Allow use of /v1/proxy to talk to whitelisted domains, for custom Add Host UIs'
-    'api$proxy$whitelist': 'Whitelist of domains to that can be proxied through /v1/proxy to, for custom Add Host UIs'
-    'api$ui$css$url': 'CSS location for the API UI'
-    'api$ui$js$url': 'JavaScript location for the API UI'
-    'audit_log$purge$after$seconds': 'Auto-purge Audit Log entries after this long (seconds)'
-    'catalog$refresh$interval$seconds': 'Refresh Catalog git repos after this long (seconds)'
-    'container$event$max$size': 'Maximum number of outstanding container events allowed per host before dropping events'
-    'default$cluster$template': 'Template to use when creating a new cluster.  This includes the default catalog items which are deployed to the System environment and the configurations of each item.'
-    'db$cattle$maxidle': 'Database pool: maximum idle connections (change requires restart)'
-    'db$cattle$maxtotal': 'Database pool: maximum total connections (change requires restart)'
-    'db$prep$stmt$cache$size': 'Database pool: Prepared statement cache size (per connection; change requires restart)'
-    'events$purge$after$seconds': 'Auto-purge Event entries after this long (seconds)'
-    'graphite$host': 'Graphite: Server hostname or IP (change requires restart)'
-    'graphite$options': 'Graphite: Additional options'
-    'graphite$port': 'Graphite: Server port'
-    'host$remove$delay$seconds': 'Automatically remove hosts that are disconnected for more than this long (seconds)'
-    'lb$instance$image': 'Default docker image for Load Balancer Services'
-    'main_tables$purge$after$seconds': 'Auto-purge deleted entries from most tables after this long (seconds)'
-    'newest$docker$version': 'The newest supported version of Docker at the time of this release.  A Docker version that does not satisfy supported docker range but is newer than this will be marked as untested'
-    'project$create$default': 'Automatically create an Environment for users on first login, if they have access to no other Environments.'
-    'registry$default': 'Pull images with no registry specified from this registry instead of DockerHub'
-    'registry$whitelist': 'Allow containers images only from the specified registries (if specified; comma-separated)'
-    'secrets$backend': 'Backend storage provider for secrets'
-    'service_log$purge$after$seconds': 'Auto-purge Service Log entries after this long (seconds)'
-    'settings$public': 'The settings that are visible to non-admin users.  These are primarily needed for the UI.'
-    'supported$docker$range': 'Semver range for suported Docker engine versions.  Versions which do not satisfy this range will be marked unsupported in the UI'
-    'ui$pl': 'Private-Label company name'
-    'ui$show$custom$host': 'Show the Custom host option on the Add Host screen.  Note that disabling this does not prevent a user from using the API to add custom hosts.'
-    'ui$sendgrid$api_key': 'SendGrid API key'
-    'ui$sendgrid$template$password_reset': 'SendGrid template for initiating password reset'
-    'ui$sendgrid$template$create_user': 'SendGrid template for confirming email'
-    'ui$sendgrid$template$verify_password': 'SendGrid template for confirming password reset'
-    'upgrade$manager': 'Automatic upgrades of infrastructure stacks'
+    'access-log': 'Path to write access logs to (HA installation only)'
+    'api-auth-jwt-token-expiry': 'Authorization token/UI session lifetime (milliseconds)'
+    'api-auth-realm': 'HTTP Basic Auth realm for requests without Authorization header'
+    'api-auth-restrict-concurrent-sessions': 'Limit active session tokens to one per account.  This mainly prevents users from logging in to the UI from multiple computers simultaneously.  Note: Existing sessions may continue to be valid until they expire when this is initially enabled.'
+    'api-interceptor-config': 'JSON configuration for API Interceptor'
+    'api-proxy-allow': 'Allow use of /v1/proxy to talk to whitelisted domains, for custom Add Host UIs'
+    'api-proxy-whitelist': 'Whitelist of domains to that can be proxied through /v1/proxy to, for custom Add Host UIs'
+    'api-ui-css-url': 'CSS location for the API UI'
+    'api-ui-js-url': 'JavaScript location for the API UI'
+    'audit_log-purge-after-seconds': 'Auto-purge Audit Log entries after this long (seconds)'
+    'cacerts': 'Default certificate'
+    'catalog-refresh-interval-seconds': 'Refresh Catalog git repos after this long (seconds)'
+    'container-event-max-size': 'Maximum number of outstanding container events allowed per host before dropping events'
+    'default-cluster-template': 'Template to use when creating a new cluster.  This includes the default catalog items which are deployed to the System environment and the configurations of each item.'
+    'db-cattle-maxidle': 'Database pool: maximum idle connections (change requires restart)'
+    'db-cattle-maxtotal': 'Database pool: maximum total connections (change requires restart)'
+    'db-prep-stmt-cache-size': 'Database pool: Prepared statement cache size (per connection; change requires restart)'
+    'engine-newest-version': 'The newest supported version of Docker at the time of this release.  A Docker version that does not satisfy supported docker range but is newer than this will be marked as untested'
+    'engine-supported-range': 'Semver range for suported Docker engine versions.  Versions which do not satisfy this range will be marked unsupported in the UI'
+    'engine-install-url': 'Docker engine URL'
+    'events-purge-after-seconds': 'Auto-purge Event entries after this long (seconds)'
+    'graphite-host': 'Graphite: Server hostname or IP (change requires restart)'
+    'graphite-options': 'Graphite: Additional options'
+    'graphite-port': 'Graphite: Server port'
+    'host-remove-delay-seconds': 'Automatically remove hosts that are disconnected for more than this long (seconds)'
+    'lb-instance-image': 'Default docker image for Load Balancer Services'
+    'main_tables-purge-after-seconds': 'Auto-purge deleted entries from most tables after this long (seconds)'
+    'project-create-default': 'Automatically create an Environment for users on first login, if they have access to no other Environments.'
+    'registry-default': 'Pull images with no registry specified from this registry instead of DockerHub'
+    'registry-whitelist': 'Allow containers images only from the specified registries (if specified; comma-separated)'
+    'secrets-backend': 'Backend storage provider for secrets'
+    'service_log-purge-after-seconds': 'Auto-purge Service Log entries after this long (seconds)'
+    'server-url': 'Default Rancher install url. Must be HTTPS. All nodes in your cluster must be able to reach this.'
+    'settings-public': 'The settings that are visible to non-admin users.  These are primarily needed for the UI.'
+    'ui-pl': 'Private-Label company name'
+    'ui-index': 'HTML index location for the UI.'
+    'ui-show-custom-host': 'Show the Custom host option on the Add Host screen.  Note that disabling this does not prevent a user from using the API to add custom hosts.'
+    'ui-sendgrid-api_key': 'SendGrid API key'
+    'ui-sendgrid-template-password_reset': 'SendGrid template for initiating password reset'
+    'ui-sendgrid-template-create_user': 'SendGrid template for confirming email'
+    'ui-sendgrid-template-verify_password': 'SendGrid template for confirming password reset'
+    'upgrade-manager': 'Automatic upgrades of infrastructure stacks'
 
 editAccount:
   title: Edit Account
@@ -3195,7 +3227,7 @@ formHealthCheck:
   successThreshold:
     label: Healthy After
     unit: successes
-  failureTheshold:
+  failureThreshold:
     label: Unhealthy After
     unit: failures
 
@@ -3304,7 +3336,7 @@ formPorts:
     ClusterIP: Internal cluster IP
     LoadBalancer: Load Balancer
   sourcePort:
-    label: Source Port
+    label: Listening Port
     placeholder: "e.g. 80"
     ipPlaceholder: "e.g. 80 or 19.82.2.24:80"
     clusterIpDefault: "Same as container port"
@@ -4134,6 +4166,17 @@ modalRollbackService:
   difference:
     label: Differences
 
+modalRollbackApp:
+  title: 'Rollback "{appName}"'
+  action: Rollback
+  current:
+    label: Current Revision
+  revision:
+    label: Rollback to Revision
+    prompt: Choose a Revision...
+  difference:
+    label: Differences
+
 modalShell:
   title: "Shell: "
 
@@ -4156,6 +4199,11 @@ modalShortcuts:
   search: Focus the search field
   shortcuts: You are here
 
+modalYaml:
+  title:
+    new: Import {type} YAML
+    edit: 'Edit YAML: {name}'
+
 modalWelcome:
   header: Welcome to {appName}!
   closeModal: Got It
@@ -4163,7 +4211,7 @@ modalWelcome:
 namespaceGroup:
   label: "Namespace: {name}"
   none: Pod
-  project: All Namespaces in this Project
+  project: All Namespaces without a Project
 
 nodeGroup:
   label: "Node: {name}"
@@ -4205,8 +4253,9 @@ newCatalog:
   maintainedBy: Maintained by community members
   maintainer: "Maintainer:"
   newNamespace: New Namespace
-  newApp: New Application
-  appInfo: Application Read Me
+  newAppDetail: Choose application version and namespace for the application
+  appInfo: Detailed Description
+  appInfoDetail: Application information and user guid
   noConfig: This template has no configuration options
   official: Officially Certified
   preview: Preview
@@ -4292,6 +4341,7 @@ newSecret:
 
 nodeDriver:
   addTemplate: Add Node Template
+  editTemplate: "Edit Node Template: {name}"
   displayName:
     aliyunecs: Aliyun ECS
     amazonec2: Amazon EC2
@@ -4304,6 +4354,7 @@ nodeDriver:
     rackspace: RackSpace
     softlayer: SoftLayer
     vmwarevsphere: vSphere
+    zstack: ZStack
   driverOptions: "{driver} Options"
   templateOptions: "{appName} Template"
   amazonec2:
@@ -4529,15 +4580,24 @@ nodeDriver:
     schedulingSection: Scheduling
     dataCenter:
       label: Data Center
+      placeholder: "datacenter_name"
+      help: "Datacenter for Docker VM (must be set to ha-datacenter when connecting to a single host)."
     pool:
       label: Pool
+      placeholder: "/dc_name/host/host_name/Resources/pool_name"
+      help: "Resource pool for Docker VM."
     host:
       label: Host
-      placeholder: "Use '/' if using a cluster"
+      placeholder: "cluster_name/host_name"
+      help: "vSphere compute resource where the docker VM is instantiated. This can be omitted if using a cluster with DRS."
     network:
       label: Network
+      placeholder: "VM Traffic"
+      help: "Network where the Docker VM is attached."
     dataStore:
       label: Data Store
+      placeholder: "datastore_cluster_name/datastore_name"
+      help: "Datastore for Docker VM."
   azure:
     placement:
       title: Placement
@@ -4683,6 +4743,48 @@ nodeDriver:
     sshPassword:
       label: SSH Password
       placeholder: Set Instance SSH Password, Blank for Auto set
+  zstack:
+    access:
+      title: 1. Account Access
+      detail: Choose the endpoint, account name and account password that will be used to launch ZStack Instances
+      next: "Next: Authenticate & select a network"
+      loading: Loading Zone, Cluster, Network info from ZStack...
+    endpoint:
+      label: Endpoint
+      placeholder: e.g. https://192.168.1.42:8443/
+    accountName:
+      label: Account Name
+      placeholder: Your account name
+    accountPassword:
+      label: Account Password
+      placeholder: Your account password
+      provided: Provided
+    zone:
+      title: 2. Zone, Cluster and Network
+      detail: Select the Zone, Cluster and Network for Instances
+      next: "Next: Set Instance options"
+      loading: Loading instance options from ZStack...
+      label: Zone
+    cluster:
+      label: Cluster
+    network:
+      defaultCreate: "Standard: Automatically create a <code>{groupName}</code> network"
+      choose:  Choose existing network
+      label: Network
+    portHelp:
+      link: Learn more
+      text: about the ports that will be opened.
+    instance:
+      title: 3. Instance
+      detail: Customize the EC2 Instance that will be created.
+    instanceOffering:
+      label: Instance Type
+    systemDiskOffering:
+      label: System Disk
+    imageName:
+      label: Image Name
+    dataDiskOffering:
+      label: Data Disk
 
 newConfigMap:
   title:
@@ -4696,6 +4798,12 @@ newConfigMap:
   values:
     label: Config Map Values
   addActionLabel: Add Config Map Value
+
+projectGroup:
+  label: "Project: {name}"
+  none: Namespace
+  project: All Namespaces in this Project
+  noNS: This Project contains no Namespaces.
 
 optionallyNamespaced:
   scope:
@@ -5099,7 +5207,7 @@ nav:
       tab: Storage
       classes: Storage Classes
       volumes: Persistent Volumes
-    projects: Projects
+    projects: Projects/Namespaces
   containers:
     tab: Workloads
     systemTab: System
@@ -5175,6 +5283,9 @@ nav:
     alerts: Alerts
     notifiers: Notifiers
     logging: Logging
+  project:
+    none: Grouped Projects/Namespaces
+    namespaces: List Namespaces
 
 
 ##############################
@@ -5191,6 +5302,7 @@ action:
   downloadYaml: Download YAML
   edit: Edit
   editService: Edit Service
+  editYaml: View/Edit YAML
   evacuate: Evacuate
   execute: Execute Shell
   exportConfig: Export Config
@@ -5206,6 +5318,7 @@ action:
   restart: Restart
   retry: Retry
   resume: Resume Orchestration
+  revert: Revert to Default
   rollback: Rollback
   setDefault: Set as Login Environment
   start: Start
@@ -5425,3 +5538,6 @@ volumeSource:
       label: Log Format
       placeholder: e.g. json
       helpText: The format of your container's log.
+
+yamlPage:
+  errors: There are errors in the yaml.

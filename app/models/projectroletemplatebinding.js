@@ -9,6 +9,7 @@ export default Resource.extend(PrincipalReference, {
   project: reference('projectId'),
   roleTemplate: reference('roleTemplateId'),
   user: reference('userId', 'user'),
+  canEdit: false,
   displayName: computed('name','id', function() {
     let name = get(this, 'name');
     if ( name ) {

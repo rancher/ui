@@ -8,39 +8,57 @@
   </section>
 {{/if}}
 
-<div class="accordion"> {{!-- container-section --}}
-  <div class="accordion-header"> {{!-- header-section --}}
-    <div class="title">
-      <span class="m-0 ">{{t 'newCatalog.appInfo'}}</span>
-    </div>
-  </div>
-  <div class="accordion-content row"> {{!-- content-section --}}
-    <div class="col span-12 text-center">
+<section>
+  <div class="row">
+    <div class="col span-4 text-center">
       {{#if templateResource.links.icon}}
-        <img src={{templateResource.links.icon}} alt={{templateResource.name}} class="mr-20" style="height:75px;max-width: 100%;">
+        <img src={{templateResource.links.icon}} alt={{templateResource.name}} class="mr-20" style="max-height:150px;max-width: 100%;">
       {{/if}}
     </div>
-    {{#if readmeContent}}
-      <div class="col span-12" style="overflow-y: auto; max-height: 500px;">
-        {{marked-down markdown=readmeContent}}
-      </div>
-    {{else}}
-      <h2 class="mb-10">
-        {{t (if editing titleUpgrade titleAdd) name=templateResource.name}}
-      </h2>
-      <p>{{templateResource.description}}</p>
-    {{/if}}
-  </div>
-</div>
-
-
-<div class="accordion">
-  <div class="accordion-header">
-    <div class="title">
-      <span class="m-0 ">{{t 'newCatalog.newApp'}}</span>
+    <div class="col span-8">
+      {{#unless appReadmeContent}}
+        {{#unless noAppReadme}}
+          <div class="text-center">
+            <i class="icon icon-spinner icon-spin" style="font-size:36px;"></i>
+          </div>
+        {{/unless}}
+      {{else}}
+        {{marked-down markdown=appReadmeContent}}
+      {{/unless}}
     </div>
   </div>
-  <div class="accordion-content row">
+</section>
+
+{{#accordion-list as |al expandFn|}}
+  {{#accordion-list-item
+      title=(t 'newCatalog.appInfo')
+      detail=(t 'newCatalog.appInfoDetail')
+      expandAll=al.expandAll
+      expand=(action expandFn)
+  }}
+    <div class="row">
+      {{#if readmeContent}}
+        <div class="col span-12" style="overflow-y: auto; max-height: 500px;">
+          {{marked-down markdown=readmeContent}}
+        </div>
+      {{else}}
+        <h2 class="mb-10">
+          {{t (if editing titleUpgrade titleAdd) name=templateResource.name}}
+        </h2>
+        <p>{{templateResource.description}}</p>
+      {{/if}}
+    </div>
+  {{/accordion-list-item}}
+
+
+  {{#accordion-list-item
+    title=(t (if (or (eq templateKind 'native') selectedTemplateModel.questions) 'inputAnswers.config' 'newCatalog.helm.label'))
+    detail=(t (if (or (eq templateKind 'native') selectedTemplateModel.questions) 'inputAnswers.protip' 'newCatalog.helm.protip'))
+    expandAll=al.expandAll
+    expandOnInit=true
+    expand=(action expandFn)
+  }}
+
     <div class="row">
       <div class="col span-6">
         {{form-name-description
@@ -67,80 +85,72 @@
         <p class="text-info">{{t (if editing selectVersionUpgrade selectVersionAdd)}}</p>
       </div>
     </div>
-    <div class="col span-12">
-      {{#if showName}}
-        {{#advanced-section}}
-          <hr class="mt-20 mb-20"/>
+    <div class="row">
+      <div class="col span-12">
+        {{#if showName}}
+          {{#advanced-section}}
+            <hr class="mt-20 mb-20"/>
 
-          {{form-namespace
-              namespace=primaryResource
-              mode='reuse'
-              errors=namespaceErrors
-          }}
-        {{/advanced-section}}
-      {{/if}}
-    </div>
-  </div>
-</div>
-
-{{#if getTemplate.isRunning}}
-  <section class="row">
-    <div class="text-center">
-      <i class="icon icon-spinner icon-spin" style="font-size:36px;"></i>
-    </div>
-  </section>
-{{else}}
-  <div class="accordion">
-    <div class="accordion-header">
-      <div class="title">
-        {{#if (or (eq templateKind 'native') selectedTemplateModel.questions)}}
-          <span class="m-0 block">{{t 'inputAnswers.config'}}</span>
-          <span class="help-block">{{t 'inputAnswers.protip'}}</span>
-        {{else}}
-          <span class="m-0 block">{{t 'newCatalog.helm.label'}}</span>
-          <span class="help-block">{{t 'newCatalog.helm.protip'}}</span>
+            {{form-namespace
+                namespace=primaryResource
+                mode='reuse'
+                errors=namespaceErrors
+            }}
+          {{/advanced-section}}
         {{/if}}
       </div>
     </div>
-    <div class="accordion-content row">
-      {{#if selectedTemplateModel}}
-        {{#if (eq templateKind 'native')}}
-          {{input-answers
-              selectedTemplate=selectedTemplateModel
-              showHeader=false
-          }}
-        {{else}}
-          <div class="span-12">
-            {{#if selectedTemplateModel.questions}}
-              {{input-answers
-                  selectedTemplate=selectedTemplateModel
-                  showHeader=false
-              }}
-            {{else}}
-              {{form-key-value
-                  initialMap=catalogApp.answers
-                  changed=(action (mut catalogApp.answers))
-                  allowEmptyValue=false
-                  editing=true
-                  header=(t 'newCatalog.answers.label')
-                  addActionLabel="newCatalog.answers.addAction"
-                  keyLabel="newContainer.environment.keyLabel"
-                  keyPlaceholder="newContainer.environment.keyPlaceholder"
-                  valueLabel="newContainer.environment.valueLabel"
-                  valuePlaceholder="newContainer.environment.valuePlaceholder"
-              }}
-            {{/if}}
-          </div>
+
+    <hr/>
+    
+    {{#if getTemplate.isRunning}}
+      <section class="row">
+        <div class="text-center">
+          <i class="icon icon-spinner icon-spin" style="font-size:36px;"></i>
+        </div>
+      </section>
+    {{else}}
+      <div class="row">
+        {{#if selectedTemplateModel}}
+          {{#if (eq templateKind 'native')}}
+            {{input-answers
+                selectedTemplate=selectedTemplateModel
+                showHeader=false
+            }}
+          {{else}}
+            <div class="col span-12">
+              {{#if selectedTemplateModel.questions}}
+                {{input-answers
+                    selectedTemplate=selectedTemplateModel
+                    showHeader=false
+                }}
+              {{else}}
+                {{form-key-value
+                    initialMap=catalogApp.answers
+                    changed=(action (mut catalogApp.answers))
+                    allowEmptyValue=false
+                    editing=true
+                    header=(t 'newCatalog.answers.label')
+                    addActionLabel="newCatalog.answers.addAction"
+                    keyLabel="newContainer.environment.keyLabel"
+                    keyPlaceholder="newContainer.environment.keyPlaceholder"
+                    valueLabel="newContainer.environment.valueLabel"
+                    valuePlaceholder="newContainer.environment.valuePlaceholder"
+                }}
+              {{/if}}
+            </div>
+          {{/if}}
         {{/if}}
-      {{/if}}
-    </div>
-  </div>
-{{/if}}
+      </div>
+    {{/if}}
+  {{/accordion-list-item}}
+
+{{/accordion-list}}
 
 {{#if (and selectedTemplateModel (not getTemplate.isRunning))}}
   {{#if showPreview}}
     <section>
-      <div class="over-hr"><span {{action "togglePreview"}}>{{t 'newCatalog.preview'}} <i class="icon {{if previewOpen 'icon-chevron-up' 'icon-chevron-down'}}"></i></span></div>
+      <div class="over-hr hand no-select"><span {{action "togglePreview"}}>{{t 'newCatalog.preview'}} <i class="icon {{if previewOpen 'icon-chevron-up' 'icon-chevron-down'}}"></i></span></div>
 
       {{#if previewOpen}}
         <div class="tabs">

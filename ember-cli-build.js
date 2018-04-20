@@ -26,7 +26,7 @@ module.exports = function(defaults) {
     codemirror: {
       modes: ['yaml', 'dockerfile', 'shell', 'markdown'],
       themes: ['monokai'],
-      addons: ['hint/show-hint.js','hint/anyword-hint.js'],
+      addonFiles: ['lint/lint.css', 'lint/lint.js', 'hint/show-hint.js', 'hint/show-hint.css', 'hint/anyword-hint.js', 'lint/yaml-lint.js']
     },
     outputPaths: {
       app: {
@@ -89,11 +89,6 @@ module.exports = function(defaults) {
   app.import('bower_components/async/dist/async.js');
   app.import('bower_components/jszip/dist/jszip.js')
   app.import('bower_components/position-calculator/dist/position-calculator.js');
-  app.import('vendor/aws-sdk-ec2.js');
-  app.import('vendor/codemirror/show-hint.js');
-  app.import('vendor/file-saver/fileSaver.mini.js');
-  app.import('vendor/codemirror/show-hint.css');
-  app.import('vendor/json-sanitizer/json-sanitizer.js');
   app.import('bower_components/identicon.js/pnglib.js');
   app.import('bower_components/identicon.js/identicon.js');
   app.import('bower_components/momentjs/moment.js');
@@ -109,6 +104,9 @@ module.exports = function(defaults) {
   app.import('vendor/prompt/prompt-v1-latin-300.woff2',{ destDir: 'assets/fonts/'});
   app.import('vendor/prompt/prompt-v1-latin-600.woff', { destDir: 'assets/fonts/'});
   app.import('vendor/prompt/prompt-v1-latin-600.woff2',{ destDir: 'assets/fonts/'});
+  app.import('vendor/aws-sdk-ec2.js');
+  app.import('vendor/file-saver/fileSaver.mini.js');
+  app.import('vendor/json-sanitizer/json-sanitizer.js');
   app.import('vendor/dropdown/bootstrap.js');
   app.import('vendor/dropdown/bootstrap.css');
 

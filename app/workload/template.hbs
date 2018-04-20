@@ -91,6 +91,23 @@
       }}
     {{/if}}
 
+    {{#if service.canHaveSecrets}}
+      {{#accordion-list-item
+        title=(t 'formSources.title')
+        detail=(t 'formSources.detail')
+        expandAll=al.expandAll
+        expand=(action expandFn)
+      }}
+          {{container/form-sources
+            sources=activeLaunchConfig.environmentFrom
+            editing=false
+            expandAll=al.expandAll
+            expandFn=expandFn
+            classNames="accordion"
+          }}
+      {{/accordion-list-item}}
+    {{/if}}
+
     {{#if service.isReal}}
       {{#accordion-list-item
         title=(t 'containerPage.portsTab.header')
@@ -195,23 +212,6 @@
       expandAll=al.expandAll
       expandFn=expandFn
     }}
-
-   {{#if service.canHaveSecrets}}
-      {{#accordion-list-item
-        title=(t 'formSources.title')
-        detail=(t 'formSources.detail')
-        expandAll=al.expandAll
-        expand=(action expandFn)
-      }}
-        {{container/form-sources
-          sources=activeLaunchConfig.environmentFrom
-          editing=false
-          expandAll=al.expandAll
-          expandFn=expandFn
-          classNames="accordion"
-        }}
-      {{/accordion-list-item}}
-    {{/if}}
 
     {{#if service.canChangeSecurity}}
       {{container/form-security

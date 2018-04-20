@@ -11,17 +11,47 @@
   </div>
 </section>
 
+{{#if model.app.description}}
+  {{banner-message color='bg-secondary mb-0 mt-10' message=(linkify model.app.description)}}
+{{/if}}
+
+<section>
+  <div class="row banner bg-info basics mb-0">
+    <div class="vertical-middle">
+      <label class="acc-label vertical-middle p-0">{{t 'generic.version'}}</label>
+      {{model.app.externalIdInfo.version}}
+    </div>
+    <div class="vertical-middle">
+      <label class="acc-label vertical-middle p-0">{{t 'generic.namespace'}}</label>
+      {{model.app.namespace.displayName}} {{copy-to-clipboard clipboardText=model.app.namespace.id size="small"}}
+    </div>
+    <div class="vertical-middle">
+      <label class="acc-label vertical-middle p-0">{{t 'generic.created'}}</label>
+      {{date-calendar model.app.created}}
+    </div>
+  </div>
+</section>
+
 <section>
   {{#accordion-list as |al expandFn|}}
-    {{#accordion-list-item
-         title=(t 'appDetailPage.output.title')
-         detail=(t 'appDetailPage.output.detail')
-         expandAll=al.expandAll
-         expand=(action expandFn)
-         expandOnInit=true
+    {{#if model.app.status.notes}}
+      {{#accordion-list-item
+          title=(t 'appDetailPage.notes.title')
+          detail=(t 'appDetailPage.notes.detail')
+          expandAll=al.expandAll
+          expand=(action expandFn)
+          expandOnInit=false
+      }}
+        <pre class="log-body" style="margin:0; font-size: 80%; color: whitesmoke;">{{model.app.status.notes}}</pre>
+      {{/accordion-list-item}}
+    {{/if}}
+
+    {{resource-condition-list
+        conditions=model.app.status.conditions
+        expandAll=al.expandAll
+        expandFn=expandFn
+        expandOnInit=false
     }}
-      <pre class="log-body" style="margin:0; font-size: 80%; color: whitesmoke;">{{stdOut}}</pre>
-    {{/accordion-list-item}}
 
     {{#accordion-list-item
          title=(t 'appDetailPage.workloads.title')

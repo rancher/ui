@@ -1,0 +1,65 @@
+{{#sortable-table
+     body=model
+     classNames="mt-30"
+     groupByKey="projectId"
+     groupByRef="project"
+     headers=headers
+     paging=true
+     pagingLabel="pagination.project"
+     searchText=searchText
+     sortBy=sortBy
+     subRows=true
+     suffix=true
+     tableClassNames="bordered"
+     as |sortable kind ns dt|
+}}
+  {{#if (eq kind "row")}}
+    <tr class="main-row">
+      <td valign="middle" class="row-check" style="padding-top: 2px;">
+        {{check-box nodeId=ns.id}}
+      </td>
+      <td>
+        {{badge-state model=ns}}
+      </td>
+      <td>
+        {{ns.name}}
+      </td>
+      <td>
+        {{date-calendar ns.created}}
+      </td>
+      <td data-title="{{t 'generic.actions'}}:" class="actions">
+        {{action-menu model=ns}}
+      </td>
+    </tr>
+    <tr class="separator-row">
+      <td colspan="{{fullColspan}}"></td>
+    </tr>
+  {{else if (eq kind "group")}}
+    {{project-group
+        model=ns.ref
+        noGroup="namespaceGroup.project"
+        fullColspan=sortable.fullColspan
+    }}
+  {{else if (eq kind "nomatch")}}
+    <tr>
+      <td colspan="{{sortable.fullColspan}}" class="text-center text-muted lacsso pt-20 pb-20">{{t 'projectsPage.noMatch'}}</td>
+    </tr>
+  {{else if (eq kind "norows")}}
+    <tr>
+      <td colspan="{{sortable.fullColspan}}" class="text-center text-muted lacsso pt-20 pb-20">{{t 'projectsPage.noData'}}</td>
+    </tr>
+  {{else if (eq kind "suffix")}}
+    {{#if prns.length}}
+      <tbody class="group">
+        {{#each prns as |project|}}
+          {{project-group
+              model=project
+              noGroup="namespaceGroup.project"
+              fullColspan=sortable.fullColspan
+              noNamespace=true
+          }}
+        {{/each}}
+      </tbody>
+    {{/if}}
+  {{/if}}
+{{/sortable-table}}
