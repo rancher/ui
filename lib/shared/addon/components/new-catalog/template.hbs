@@ -52,8 +52,8 @@
 
 
   {{#accordion-list-item
-    title=(t (if (or (eq templateKind 'native') selectedTemplateModel.questions) 'inputAnswers.config' 'newCatalog.helm.label'))
-    detail=(t (if (or (eq templateKind 'native') selectedTemplateModel.questions) 'inputAnswers.protip' 'newCatalog.helm.protip'))
+    title=(t (if selectedTemplateModel.questions 'inputAnswers.config' 'newCatalog.helm.label'))
+    detail=(t (if selectedTemplateModel.questions 'inputAnswers.protip' 'newCatalog.helm.protip'))
     expandAll=al.expandAll
     expandOnInit=true
     expand=(action expandFn)
@@ -112,34 +112,27 @@
     {{else}}
       <div class="row">
         {{#if selectedTemplateModel}}
-          {{#if (eq templateKind 'native')}}
-            {{input-answers
-                selectedTemplate=selectedTemplateModel
-                showHeader=false
-            }}
-          {{else}}
-            <div class="col span-12">
-              {{#if selectedTemplateModel.questions}}
-                {{input-answers
-                    selectedTemplate=selectedTemplateModel
-                    showHeader=false
-                }}
-              {{else}}
-                {{form-key-value
-                    initialMap=catalogApp.answers
-                    changed=(action (mut catalogApp.answers))
-                    allowEmptyValue=false
-                    editing=true
-                    header=(t 'newCatalog.answers.label')
-                    addActionLabel="newCatalog.answers.addAction"
-                    keyLabel="newContainer.environment.keyLabel"
-                    keyPlaceholder="newContainer.environment.keyPlaceholder"
-                    valueLabel="newContainer.environment.valueLabel"
-                    valuePlaceholder="newContainer.environment.valuePlaceholder"
-                }}
-              {{/if}}
-            </div>
-          {{/if}}
+          <div class="col span-12">
+            {{#if selectedTemplateModel.questions}}
+              {{input-answers
+                  selectedTemplate=selectedTemplateModel
+                  showHeader=false
+              }}
+            {{else}}
+              {{form-key-value
+                  initialMap=catalogApp.answers
+                  changed=(action (mut catalogApp.answers))
+                  allowEmptyValue=false
+                  editing=true
+                  header=(t 'newCatalog.answers.label')
+                  addActionLabel="newCatalog.answers.addAction"
+                  keyLabel="newContainer.environment.keyLabel"
+                  keyPlaceholder="newContainer.environment.keyPlaceholder"
+                  valueLabel="newContainer.environment.valueLabel"
+                  valuePlaceholder="newContainer.environment.valuePlaceholder"
+              }}
+            {{/if}}
+          </div>
         {{/if}}
       </div>
     {{/if}}

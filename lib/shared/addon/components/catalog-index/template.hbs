@@ -93,31 +93,11 @@
   {{#catalog-box model=catalogItem showSource=showCatalogDropdown as |section|}}
     {{#if (eq section 'body')}}
       <h3>
-        {{#if (eq catalogItem.templateBase 'infra')}}
-          {{#if catalogItem.exists}}
-            <a href="#" {{action (action launch catalogItem.id true) allowedKeys="meta ctrl"}}>{{catalogItem.displayName}}</a>
-          {{else if catalogItem.supported}}
-            <a {{action (action launch catalogItem.id )}}>{{catalogItem.displayName}}</a>
-          {{else}}
-            <a {{action (action launch catalogItem.id true ) allowedKeys="meta ctrl"}}>{{catalogItem.displayName}}</a>
-          {{/if}}
-        {{else}}
-            <a {{action (action launch catalogItem.id )}}>{{catalogItem.displayName}}</a>
-        {{/if}}
+        <a {{action (action launch catalogItem.id )}}>{{catalogItem.displayName}}</a>
       </h3>
       <div class="mt-10 description">{{catalogItem.description}}</div>
     {{else if (eq section 'footer')}}
-      {{#if (eq catalogItem.templateBase 'infra')}}
-        {{#if catalogItem.exists}}
-          <button type="button" class="btn btn-sm bg-default bg-disabled" {{action (action launch catalogItem.id true ) allowedKeys="meta ctrl"}}>{{t 'catalogPage.index.action.alreadyDeployed'}}</button>
-        {{else if catalogItem.supported}}
-          <button class="btn btn-sm bg-primary" {{action (action launch catalogItem.id )}}>{{t 'catalogPage.index.action.launch'}}</button>
-        {{else}}
-          <button type="button" class="btn btn-sm bg-default bg-disabled" {{action (action launch catalogItem.id true ) allowedKeys="meta ctrl"}}>{{t 'catalogPage.index.action.notCompatible'}}</button>
-        {{/if}}
-      {{else}}
-        <button type="button" class="btn btn-sm bg-primary" {{action (action launch catalogItem.id )}}>{{t 'catalogPage.index.action.launch'}}</button>
-      {{/if}}
+      <button type="button" class="btn btn-sm bg-primary" {{action (action launch catalogItem.id )}}>{{t 'catalogPage.index.action.launch'}}</button>
     {{/if}}
   {{/catalog-box}}
 {{else}}

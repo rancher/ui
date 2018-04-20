@@ -57,8 +57,7 @@ export default Route.extend({
         });
       }
 
-      let templateBase = this.modelFor(get(this, 'parentRoute')).get('templateBase');
-      let kind = templateBase === 'kubernetes' ? 'helm' : 'native';
+      let kind = 'helm';
       let neuApp = null;
       var links;
 
@@ -91,7 +90,6 @@ export default Route.extend({
         allTemplates: this.modelFor(get(this, 'parentRoute')).get('catalog'),
         catalogApp: neuApp,
         namespace: results.namespace,
-        templateBase: templateBase,
         tpl: results.tpl,
         tplKind: kind,
         upgradeTemplate: results.upgrade,
