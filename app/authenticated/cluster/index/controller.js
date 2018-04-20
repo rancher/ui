@@ -25,9 +25,7 @@ export default Controller.extend({
         });
       } else {
 */
-        this.get('modalService').toggleModal('modal-kubectl', {
-          escToClose: true,
-        });
+        this.get('modalService').toggleModal('modal-kubectl', {});
  //     }
     },
 

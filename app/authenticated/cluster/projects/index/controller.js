@@ -5,9 +5,9 @@ import { computed , get } from '@ember/object';
 export default Controller.extend({
   scope: service(),
   queryParams: {
-    groupedBy: 'group',
+    group: 'group',
   },
-  groupedBy: 'project',
+  group: 'project',
 
   actions: {
     changeView() {

@@ -5,31 +5,25 @@
   <div class="right-buttons">
     <div class="btn-group p-0 mr-10">
       {{~#tooltip-element type="tooltip-basic" model=(t 'nav.project.none') tooltipTemplate='tooltip-static' aria-describedby="tooltip-base" tooltipFor="tooltipLink"~}}
-      {{~#link-to (query-params group="project") classNames="btn btn-sm bg-default"~}}<i class="icon icon-container"></i>{{~/link-to~}}
+      {{~#link-to (query-params group="none") classNames="btn btn-sm bg-default"~}}<i class="icon icon-folder"></i>{{~/link-to~}}
       {{~/tooltip-element~}}
       {{~#tooltip-element type="tooltip-basic" model=(t 'nav.project.namespaces') tooltipTemplate='tooltip-static' aria-describedby="tooltip-base" tooltipFor="tooltipLink"~}}
-      {{~#link-to (query-params group="namespace") classNames="btn btn-sm bg-default"~}}<i class="icon icon-list-nested"></i>{{~/link-to~}}
+      {{~#link-to (query-params group="project") classNames="btn btn-sm bg-default"~}}<i class="icon icon-list-nested"></i>{{~/link-to~}}
       {{~/tooltip-element~}}
     </div>
     {{#link-to "authenticated.cluster.projects.new" class="btn bg-primary btn-sm" disabled=(rbac-prevents resource="project" scope="global" permission="create")}}
       {{t 'projectsPage.addProject'}}
     {{/link-to}}
-    {{#unless (eq groupedBy 'project')}}
+    {{#unless (eq group 'project')}}
       {{#link-to "authenticated.cluster.ns.new" (query-params addTo=null) class="btn bg-primary btn-sm ml-10" disabled=(rbac-prevents resource="namespace" scope="cluster" permission="create")}}
         {{t 'namespacesPage.addNamespace'}}
       {{/link-to}}
     {{/unless}}
   </div>
-
 </section>
 
-{{#if (eq groupedBy 'project')}}
-
+{{#if (eq group 'project')}}
   {{namespace-table model=model.namespaces prns=projectsWithoutNamespaces}}
-
-
 {{else}}
-
   {{namespace-list model=namespaceRows}}
-
 {{/if}}

@@ -327,9 +327,7 @@ export default Route.extend(Preload, {
     quake() {
       const clusterId = get(this, 'scope.currentCluster.id');
       if ( clusterId ) {
-        this.get('modalService').toggleModal('modal-kubectl', {
-          escToClose: true,
-        });
+        this.get('modalService').toggleModal('modal-kubectl', {});
       }
     },
 

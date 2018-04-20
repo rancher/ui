@@ -66,26 +66,9 @@ var Namespace = Resource.extend(StateCounts, {
       this.get('modalService').toggleModal('modal-edit-namespace', this);
     },
 
-    exportConfig() {
-      download(this.linkFor('composeConfig'));
-    },
-
-    addContainer() {
-      this.get('router').transitionTo('containers.run', this.get('projectId'), {queryParams: {namespaceId: this.get('id')}});
-    },
-
-    viewCode() {
-      this.get('router').transitionTo('stack.code', this.get('id'));
-    },
-
-    viewGraph() {
-      this.get('router').transitionTo('stack.graph', this.get('id'));
-    },
-
     delete() {
       return this._super().then(() => {
-        if ( this.get('application.currentRouteName') === 'stack.index' )
-        {
+        if ( this.get('application.currentRouteName') === 'stack.index' ) {
           this.get('router').transitionTo('containers');
         }
       });
@@ -99,15 +82,10 @@ var Namespace = Resource.extend(StateCounts, {
   availableActions: computed('projectId', function() {
     let out = [
       { label:   'action.move',           icon: 'icon icon-fork',           action: 'move',             enabled: true, bulkable: true},
-      { label:   'action.addContainer',   icon: 'icon icon-container',      action: 'addContainer',     enabled: !!this.get('projectId') },
       { divider: true },
     ];
 
     return out;
-  }),
-
-  canViewConfig: computed('actionLinks.exportconfig', function() {
-    return !!this.get('actionLinks.exportconfig');
   }),
 
   combinedState: computed('state', 'healthState', function() {
