@@ -11,7 +11,7 @@ const App = Resource.extend(StateCounts, {
   clusterStore: service(),
 
   namespace: reference('targetNamespace', 'namespace', 'clusterStore'),
-  pods: computed('namespace.pods', 'workloads', function() {
+  pods: computed('namespace.pods.@each.workloadId', 'workloads.@each.workloadLabels', function() {
     return (get(this, 'namespace.pods') || []).filter((item) => {
       if ( item['labels'] ) {
         const inApp = item['labels']['io.cattle.field/appId'] === get(this, 'name');

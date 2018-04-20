@@ -53,9 +53,6 @@ export default Resource.extend({
     });
   },
   availableActions: computed('actionLinks.{update,remove}', function() {
-    // debugger;
-    let a = get(this,'links');
-
     return [
       { label: 'action.revert',       icon: 'icon icon-history',          action: 'revert',       enabled: !isEmpty(get(this, 'default')) && !get(this, 'isDefault'),  altAction: 'bypassRevert' },
     ];

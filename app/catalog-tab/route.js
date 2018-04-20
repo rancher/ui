@@ -11,7 +11,6 @@ export default Route.extend({
   queryParams: {
     category: { refreshModel: true },
     catalogId: { refreshModel: true },
-    templateBase: { refreshModel: true },
   },
 
   actions: {
@@ -45,12 +44,6 @@ export default Route.extend({
   model(params) {
     const project = this.modelFor('authenticated.project').get('project');
 
-    if (params.launchCluster) {
-      params.plusInfra = true;
-    } else {
-      params.plusInfra = project.get('clusterOwner') === true;
-    }
-
     return this.get('catalog').fetchTemplates(params).then((res) => {
       res.catalog.forEach((tpl) => {
         let exists = project.get('apps').findBy('externalIdInfo.templateId', tpl.get('id'));
@@ -67,7 +60,6 @@ export default Route.extend({
     {
       controller.set('category', '');
       controller.set('catalogId', '');
-      controller.set('templateBase', '');
     }
   }
 });

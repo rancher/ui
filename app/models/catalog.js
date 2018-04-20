@@ -14,6 +14,6 @@ export default Resource.extend({
   },
 
   displayKind: computed('kind', function() {
-    return ucFirst(get(this, 'kind') || 'native');
+    return ucFirst(get(this, 'kind'));
   }),
 });
