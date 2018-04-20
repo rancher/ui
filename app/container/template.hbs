@@ -120,11 +120,16 @@
         }}
       {{/accordion-list-item}}
 
-      {{form-env-var
-        model=displayEnvironmentVars
+      {{#accordion-list-item
+        title=(t 'containerPage.portsTab.header')
+        detail=(t 'containerPage.portsTab.detail')
         expandAll=al.expandAll
-        expandFn=expandFn
+        expand=(action expandFn)
       }}
+        {{form-env-var
+          model=displayEnvironmentVars
+        }}
+      {{/accordion-list-item}}
 
       {{container/form-command
         instance=container

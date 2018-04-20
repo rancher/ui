@@ -84,11 +84,16 @@
     }}
 
     {{#if service.canHaveEnvironment}}
-      {{form-env-var
-        model=displayEnvironmentVars
+      {{#accordion-list-item
+        title=(t 'formEnvVar.title')
+        detail=(t 'formEnvVar.detail')
         expandAll=al.expandAll
-        expandFn=expandFn
+        expand=(action expandFn)
       }}
+        {{form-env-var
+          model=displayEnvironmentVars
+        }}
+      {{/accordion-list-item}}
     {{/if}}
 
     {{#if service.isReal}}
