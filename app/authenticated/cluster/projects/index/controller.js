@@ -15,18 +15,17 @@ export default Controller.extend({
     },
   },
 
-  projectsWithNamespaces: computed('rows.@each.{id,state,clusterId}', 'rows.@each.namespaces', function(){
-    return get(this, 'rows').filter(p => get(p, 'namespaces.length') > 0);
+  rows: computed('model.namespaces.@each.displayName', 'scope.currentCluster.id', function() {
+    return get(this, 'model.namespaces')
+      .filterBy('displayName');
   }),
 
-  projectsWithoutNamespaces: computed('rows.@each.{id,state,clusterId}', 'rows.@each.namespaces', function(){
-    return get(this, 'rows').filter(p => get(p, 'namespaces.length') <= 0);
-  }),
-
-  rows: computed('model.projects.@each.clusterId', function() {
+  projects: computed('model.projects.@each.clusterId', 'scope.currentCluster.id', function() {
     return get(this,'model.projects').filterBy('clusterId', get(this,'scope.currentCluster.id'));
   }),
-  namespaceRows: computed('model.namespaces.@each.{id,state}', function() {
-    return get(this, 'model.namespaces').filterBy('displayName');
+
+  projectsWithoutNamespaces: computed('projects.@each.{id,state,clusterId}', 'rows.@each.namespaces', function(){
+    return get(this, 'projects').filter(p => get(p, 'namespaces.length') <= 0);
   }),
+
 });

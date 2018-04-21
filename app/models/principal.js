@@ -34,8 +34,7 @@ var Principal = Resource.extend({
   }),
 
   logicalType: computed('parsedExternalType', function() {
-    switch ( get(this, 'parsedExternalType') )
-    {
+    switch ( get(this, 'parsedExternalType') ) {
       case C.PROJECT.TYPE_RANCHER:
       case C.PROJECT.TYPE_AZURE_USER:
       case C.PROJECT.TYPE_GITHUB_USER:
@@ -43,10 +42,10 @@ var Principal = Resource.extend({
       case C.PROJECT.TYPE_OPENLDAP_USER:
       case C.PROJECT.TYPE_SHIBBOLETH_USER:
       case C.PROJECT.TYPE_ACTIVE_DIRECTORY_USER:
-      return C.PROJECT.PERSON;
+        return C.PROJECT.PERSON;
 
       case C.PROJECT.TYPE_GITHUB_TEAM:
-      return C.PROJECT.TEAM;
+        return C.PROJECT.TEAM;
 
       case C.PROJECT.TYPE_GITHUB_ORG:
       case C.PROJECT.TYPE_AZURE_GROUP:
@@ -54,13 +53,12 @@ var Principal = Resource.extend({
       case C.PROJECT.TYPE_OPENLDAP_GROUP:
       case C.PROJECT.TYPE_SHIBBOLETH_GROUP:
       case C.PROJECT.TYPE_ACTIVE_DIRECTORY_GROUP:
-      return C.PROJECT.ORG;
+        return C.PROJECT.ORG;
     }
   }),
 
   logicalTypeSort: computed('logicalType', function() {
-    switch (get(this, 'logicalType') )
-    {
+    switch (get(this, 'logicalType') ) {
       case C.PROJECT.ORG: return 1;
       case C.PROJECT.TEAM: return 2;
       case C.PROJECT.PERSON: return 3;
@@ -71,32 +69,36 @@ var Principal = Resource.extend({
   displayType: computed('parsedExternalType','intl.locale', function() {
     let key = 'model.identity.displayType.unknown';
     let type = get(this, 'parsedExternalType');
-    switch ( type )
-    {
+
+    switch ( type ) {
       case C.PROJECT.TYPE_GITHUB_USER:
       case C.PROJECT.TYPE_AZURE_USER:
       case C.PROJECT.TYPE_LDAP_USER:
       case C.PROJECT.TYPE_OPENLDAP_USER:
       case C.PROJECT.TYPE_SHIBBOLETH_USER:
       case C.PROJECT.TYPE_ACTIVE_DIRECTORY_USER:
-      key = 'model.identity.displayType.user';
-      break;
+        key = 'model.identity.displayType.user';
+        break;
+
       case C.PROJECT.TYPE_AZURE_GROUP:
       case C.PROJECT.TYPE_LDAP_GROUP:
       case C.PROJECT.TYPE_OPENLDAP_GROUP:
       case C.PROJECT.TYPE_SHIBBOLETH_GROUP:
       case C.PROJECT.TYPE_ACTIVE_DIRECTORY_GROUP:
-      key = 'model.identity.displayType.group';
-      break;
+        key = 'model.identity.displayType.group';
+        break;
+
       case C.PROJECT.TYPE_GITHUB_TEAM:
-      key = 'model.identity.displayType.team';
-      break;
+        key = 'model.identity.displayType.team';
+        break;
+
       case C.PROJECT.TYPE_GITHUB_ORG:
-      key = 'model.identity.displayType.org';
-      break;
+        key = 'model.identity.displayType.org';
+        break;
+
       case C.PROJECT.TYPE_RANCHER:
-      key = 'model.identity.displayType.localUser';
-      break;
+        key = 'model.identity.displayType.localUser';
+        break;
     }
 
     return get(this, 'intl').t(key, {type: type});

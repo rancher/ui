@@ -46,6 +46,7 @@ generic:
   help: Help
   id: ID
   image: Image
+  import: Import
   internal: Internal
   ipAddress: IP Address
   key: Key
@@ -3592,6 +3593,7 @@ formNamespace:
   label:
     reuse: Namespace
     create: Namespace
+    default: Default Namespace
   toggle:
     simple: Customize
     reuse: Use an existing namespace
@@ -4151,6 +4153,17 @@ modalHostEvacuate:
   protip: "ProTip: Hold the {key} key while clicking stop to bypass this confirmation."
   button: Evacuate
 
+modalImport:
+  title: Import YAML
+  mode:
+    label: Import Mode
+    cluster: "Cluster: Direct import of any resources into this cluster"
+    project: "Project: Import resources into this project"
+    namespace: "Namespace: Import resources into a specific namespace"
+  defaultNamespace:
+    label: Default namespace for resources that don't specify one
+
+
 modalProcessError:
   header: Exception Info
   cause: "Cause:"
@@ -4552,7 +4565,7 @@ nodeDriver:
     access:
       title: 1. Account Access
       detail: Configure where to find the VCenter or ESXi server
-      help: "Note: The free ESXi liecense does not support API access.  Only paid license servers are supported."
+      help: "Note: The free ESXi liecense does not support API access.  Only servers with a valid or evaluation license are supported."
     instance:
       title: 2. Instance Options
       detail: Choose the size and OS of the virtual machine
@@ -4560,10 +4573,10 @@ nodeDriver:
       title: 3. Scheduling
       detail: Choose what hypervisor the virtual machine will be scheduled to
     vcenter:
-      label: vCenter Host
+      label: vCenter or ESXi Server
       placeholder: vCenter or ESXi hostname/IP
     vcenterPort:
-      label: vCenter Port
+      label: Port
     username:
       label: Username
     password:
@@ -4585,24 +4598,24 @@ nodeDriver:
     schedulingSection: Scheduling
     dataCenter:
       label: Data Center
-      placeholder: "datacenter_name"
-      help: "Datacenter for Docker VM (must be set to ha-datacenter when connecting to a single host)."
+      placeholder: "e.g. datacenter_name"
+      help: "Data Center to create VM in (leave blank for standalone ESXi)"
     pool:
       label: Pool
-      placeholder: "/dc_name/host/host_name/Resources/pool_name"
-      help: "Resource pool for Docker VM."
+      placeholder: "e.g. /dc_name/host/host_name/Resources/pool_name"
+      help: "Resource Pool to create VM in (leave blank for standalone ESXi)"
     host:
       label: Host
-      placeholder: "cluster_name/host_name"
-      help: "vSphere compute resource where the docker VM is instantiated. This can be omitted if using a cluster with DRS."
+      placeholder: "e.g. cluster_name/host_name"
+      help: "Specific host to create VM on (leave blank for standalon ESXi or for cluster with DRS)"
     network:
       label: Network
-      placeholder: "VM Traffic"
-      help: "Network where the Docker VM is attached."
+      placeholder: "e.g. VM Network"
+      help: "Network to attach VM to"
     dataStore:
       label: Data Store
-      placeholder: "datastore_cluster_name/datastore_name"
-      help: "Datastore for Docker VM."
+      placeholder: "e.g. datastore_cluster_name/datastore_name"
+      help: "Datastore to create VM disk on"
   azure:
     placement:
       title: Placement

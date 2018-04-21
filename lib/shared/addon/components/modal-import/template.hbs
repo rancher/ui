@@ -1,0 +1,38 @@
+
+{{input-yaml
+  title=(t 'modalImport.title')
+  name="import.yaml"
+  canChangeName=false
+  value=yaml
+  autoResize=true
+  resizeFooter=250
+  showDownload=false
+}}
+
+<div class="mt-20 row">
+  <div class="col span-6">
+    <label class="acc-label">{{t 'modalImport.mode.label'}}</label>
+    <div>
+      <label>{{radio-button selection=mode value="cluster"}} {{t 'modalImport.mode.cluster'}}</label>
+    </div>
+    <div>
+      <label>{{radio-button selection=mode value="project"}} {{t 'modalImport.mode.project'}}</label>
+    </div>
+    <div>
+      <label>{{radio-button selection=mode value="namespace"}} {{t 'modalImport.mode.namespace'}}</label>
+    </div>
+  </div>
+  <div class="col span-6">
+    {{#unless (eq mode 'cluster')}}
+      {{form-namespace
+        reuseLabel=(if (eq mode 'project') 'formNamespace.label.default' 'formNamespace.label.reuse')
+        namespace=namespace
+        errors=namespaceErrors
+        registerHook=(action "registerHook")
+      }}
+    {{/unless}}
+  </div>
+</div>
+
+{{top-errors errors=errors}}
+{{save-cancel save="save" cancel="cancel" editing=editing createLabel='generic.import'}}
