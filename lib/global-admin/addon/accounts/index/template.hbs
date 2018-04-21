@@ -15,9 +15,11 @@
     as |sortable kind row dt|
   }}
     {{#if (eq kind "row")}}
-      {{account-row model=row isLocal=isLocal}}
+      {{account-row model=row}}
+    {{else if (eq kind "nomatch")}}
+      <tr><td colspan="{{sortable.fullColspan}}" class="text-center text-muted lacsso pt-20 pb-20">{{t 'accountsPage.index.table.noMatch'}}</td></tr>
     {{else if (eq kind "norows")}}
-      <td colspan="{{if isLocal '6' '5'}}" class="text-center text-muted pt-20 pb-20">{{t 'accountsPage.index.table.noData'}}</td>
+      <tr><td colspan="{{sortable.fullColspan}}" class="text-center text-muted pt-20 pb-20">{{t 'accountsPage.index.table.noData'}}</td></tr>
     {{/if}}
   {{/sortable-table}}
 </section>

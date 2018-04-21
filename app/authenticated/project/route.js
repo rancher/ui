@@ -9,6 +9,7 @@ export default Route.extend(Preload,{
   access: service(),
   scope: service(),
   globalStore: service(),
+  modalService: service('modal'),
 
   model(params, transition) {
     const isPopup = this.controllerFor('application').get('isPopup');
@@ -58,6 +59,10 @@ export default Route.extend(Preload,{
       next(() => {
         this.set('controller.group', neu);
       });
+    },
+
+    importYaml() {
+      get(this,'modalService').toggleModal('modal-import', {mode: 'project', projectId: get(this,'scope.currentProject.id')});
     },
   },
 

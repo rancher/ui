@@ -144,7 +144,6 @@ Router.map(function() {
       });
 
       this.route('workload', {path: '/workload/:workload_id', resetNamespace: true});
-      this.route('new-stack', {path: '/import-yaml', resetNamespace: true});
 
 
       // Catalog

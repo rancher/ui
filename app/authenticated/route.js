@@ -324,12 +324,10 @@ export default Route.extend(Preload, {
     gotop() { this._gotoRoute('authenticated.cluster.projects','cluster'); },
     gotoV() { this._gotoRoute('authenticated.cluster.storage.persistent-volumes','cluster'); },
 
-    doom() {
+    quake() {
       const clusterId = get(this, 'scope.currentCluster.id');
       if ( clusterId ) {
-        this.get('modalService').toggleModal('modal-kubectl', {
-          escToClose: true,
-        });
+        this.get('modalService').toggleModal('modal-kubectl', {});
       }
     },
 
@@ -351,7 +349,8 @@ export default Route.extend(Preload, {
     'shift+t': 'gotoT',
 
     // Cluster or Proejct
-    'shift+`': 'doom',
+    '`': 'quake',
+    'shift+`': 'quake',
     'm': 'gotom',
 
     // Cluster

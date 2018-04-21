@@ -9,28 +9,21 @@
       {{t noGroup}}
     {{/if}}
   </td>
-  <td data-title="{{dt.actions}}" class="actions text-right" colspan="2">
+  <td class="text-right">
+    {{#link-to "authenticated.cluster.ns.new" (query-params addTo=(or model.id null)) class="btn bg-primary btn-sm mr-10" disabled=(rbac-prevents resource="namespace" scope="cluster" permission="create")}}
+      {{t 'namespacesPage.addNamespace'}}
+    {{/link-to}}
+  </td>
+  <td data-title="{{dt.actions}}" class="actions">
     {{#if model}}
-      {{#link-to "authenticated.cluster.ns.new" (query-params addTo=(or model.id null)) class="btn bg-primary btn-sm" disabled=(rbac-prevents resource="namespace" scope="cluster" permission="create")}}
-        {{t 'namespacesPage.addNamespace'}}
-      {{/link-to}}
       {{action-menu model=model classNames="inline-block mr-5"}}
-    {{else}}
-      {{#link-to "authenticated.cluster.ns.new" (query-params addTo=(or model.id null)) class="btn bg-primary btn-sm mr-30" disabled=(rbac-prevents resource="namespace" scope="cluster" permission="create")}}
-        {{t 'namespacesPage.addNamespace'}}
-      {{/link-to}}
     {{/if}}
   </td>
-  {{#if showActions}}
-  {{/if}}
 </tr>
 {{#if noNamespace}}
   <tr class="main-row">
     <td colspan="{{fullColspan}}" class="text-center p-20">
-      <div>{{t 'projectGroup.noNS'}}</div>
-      {{#link-to "authenticated.cluster.ns.new" (query-params addTo=model.id) class="btn bg-primary btn-sm ml-10" disabled=(rbac-prevents resource="namespace" scope="cluster" permission="create")}}
-        {{t 'namespacesPage.addNamespace'}}
-      {{/link-to}}
+      <div class="text-muted">{{t 'projectGroup.noNS'}}</div>
     </td>
   </tr>
 {{/if}}
