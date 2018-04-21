@@ -1,9 +1,10 @@
 // Code
 $code-color                          : $info !default;
 $code-bg                             : $text-color !default;
-$pre-bg                              : rgba($light-grey, .3) !default;
+$pre-bg                              : $text-color !default;
 $pre-color                           : $dark-grey !default;
 $pre-border-color                    : $light-grey !default;
+$setting-bg                          : rgba($light-grey, .3) !default;
 
 code {
     padding: 5px 10px;
@@ -23,12 +24,18 @@ pre {
   white-space: pre-wrap;
 
   code {
+    color: $light-grey;
     background-color: transparent;
     padding: 0;
   }
   &.normal-wrap {
 
   }
+}
+
+.bg-setting {
+  @include bg-color($setting-bg);
+  @include contrasted($setting-bg);
 }
 
 .bg-code {
