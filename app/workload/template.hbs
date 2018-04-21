@@ -84,27 +84,21 @@
     }}
 
     {{#if service.canHaveEnvironment}}
-      {{form-env-var
-        model=displayEnvironmentVars
-        expandAll=al.expandAll
-        expandFn=expandFn
-      }}
-    {{/if}}
-
-    {{#if service.canHaveSecrets}}
       {{#accordion-list-item
-        title=(t 'formSources.title')
-        detail=(t 'formSources.detail')
+        title=(t 'formEnvVar.title')
+        detail=(t 'formEnvVar.detail')
         expandAll=al.expandAll
         expand=(action expandFn)
       }}
-          {{container/form-sources
-            sources=activeLaunchConfig.environmentFrom
-            editing=false
-            expandAll=al.expandAll
-            expandFn=expandFn
-            classNames="accordion"
-          }}
+        {{form-env-var
+          model=displayEnvironmentVars
+        }}
+        <hr class="mt-30 mb-30" />
+        {{container/form-sources
+          namespace=service.namespace
+          sources=activeLaunchConfig.environmentFrom
+          editing=false
+        }}
       {{/accordion-list-item}}
     {{/if}}
 

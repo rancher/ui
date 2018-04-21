@@ -42,11 +42,12 @@
           expand=(action expandFn)
           expandOnInit=false
       }}
-        <pre class="log-body" style="margin:0; font-size: 80%; color: whitesmoke;">{{model.app.status.notes}}</pre>
+        {{marked-down markdown=model.app.status.notes}}
       {{/accordion-list-item}}
     {{/if}}
 
     {{resource-condition-list
+        resourceType=(t 'generic.application')
         conditions=model.app.status.conditions
         expandAll=al.expandAll
         expandFn=expandFn

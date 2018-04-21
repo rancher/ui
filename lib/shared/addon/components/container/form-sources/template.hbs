@@ -1,41 +1,73 @@
-<div class="clearfix">
-  <label class="acc-label">{{t 'newContainer.environment.from'}}</label>
-</div>
-<div>
-  {{#if sources.length}}
-    <table class="table fixed no-lines small mb-10">
-      <thead>
-        <tr class="hidden-sm">
-          <th width="140" class="{{unless editing 'acc-label'}}">{{t 'formSources.type.label'}}{{#if editing}}{{field-required}}{{/if}}</th>
-          <th width="10"></th>
-          <th width="220" class="{{unless editing 'acc-label'}}">{{t 'formSources.source.label'}}{{#if editing}}{{field-required}}{{/if}}</th>
-          <th width="10"></th>
-          <th class="{{unless editing 'acc-label'}}">{{t 'formSources.prefixOrKey.label'}}{{#if editing}}{{field-required}}{{/if}}</th>
-          <th width="70"></th>
-          <th class="{{unless editing 'acc-label'}}">{{t 'formSources.prefix.label'}}</th>
-          <th width="40">&nbsp;</th>
-        </tr>
-      </thead>
-      <tbody>
-        {{#each sources as |source|}}
-          {{form-sources-row
-            source=source
-            namespace=namespace
-            editing=editing
-            remove=(action "removeSource")
-          }}
-        {{/each}}
-      </tbody>
-    </table>
-    {{else}}
-    {{#unless editing}}
-      <span class="text-center text-muted">{{t 'formSources.noData'}}</span>
-    {{/unless}}
-  {{/if}}
-  {{#if editing}}
+{{#if editing}}
+  <div class="clearfix">
+    <label class="acc-label">{{t 'newContainer.environment.from'}}</label>
+  </div>
+  <div>
+    {{#if sources.length}}
+      <table class="table fixed no-lines small mb-10">
+        <thead>
+          <tr class="hidden-sm">
+            <th width="140">{{t 'formSources.type.label'}}{{field-required}}</th>
+            <th width="10"></th>
+            <th width="220">{{t 'formSources.source.label'}}{{field-required}}</th>
+            <th width="10"></th>
+            <th>{{t 'formSources.prefixOrKey.label'}}{{field-required}}</th>
+            <th width="70"></th>
+            <th>{{t 'formSources.prefix.label'}}</th>
+            <th width="40">&nbsp;</th>
+          </tr>
+        </thead>
+        <tbody>
+          {{#each sources as |source|}}
+            {{form-sources-row
+              source=source
+              namespace=namespace
+              remove=(action "removeSource")
+            }}
+          {{/each}}
+        </tbody>
+      </table>
+    {{/if}}
     <button type="button" class="btn bg-link icon-btn" {{action "addSource"}}>
       <span class="darken"><i class="icon icon-plus icon-small"></i></span>
       <span>{{t 'newContainer.environment.addFrom'}}</span>
     </button>
-  {{/if}}
-</div>
+  </div>
+{{else}}
+  {{#sortable-table
+      classNames="grid fixed mb-0 sortable-table"
+      bulkActions=false
+      rowActions=false
+      paging=false
+      search=true
+      sortBy=sortBy
+      stickyHeader=false
+      descending=descending
+      headers=headers
+      body=sources
+      as |sortable kind source|
+  }}
+    {{#if (eq kind "row")}}
+      <tr>
+        <td data-title="{{t 'formSources.type.label'}}:" class="force-wrap">{{source.source}}</td>
+        <td data-title="{{t 'formSources.source.label'}}:" class="force-wrap">{{source.sourceName}}</td>
+        <td data-title="{{t 'formSources.prefixOrKey.label'}}:" class="force-wrap">
+          {{#if source.sourceKey}}
+            {{source.sourceKey}}
+          {{else}}
+            {{t 'generic.all'}}
+          {{/if}}
+        </td>
+        <td data-title="{{t 'formSources.prefix.label'}}:" class="force-wrap">{{source.targetKey}}</td>
+      </tr>
+    {{else if (eq kind "nomatch")}}
+      <tr>
+        <td colspan="{{sortable.fullColspan}}" class="text-center text-muted pt-20 pb-20">{{t 'formSources.noMatch'}}</td>
+      </tr>
+    {{else if (eq kind "norows")}}
+      <tr>
+        <td colspan="{{sortable.fullColspan}}" class="text-center text-muted pt-20 pb-20">{{t 'formSources.noData'}}</td>
+      </tr>
+    {{/if}}
+  {{/sortable-table}}
+{{/if}}

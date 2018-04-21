@@ -34,7 +34,7 @@ const App = Resource.extend(StateCounts, {
       }
     });
   }),
-  workloads: computed('namespace.workloads', function() {
+  workloads: computed('namespace.workloads.@each.workloadLabels', function() {
     return (get(this, 'namespace.workloads') || []).filter((item) => {
       if ( item['workloadLabels'] ) {
         return item['workloadLabels']['io.cattle.field/appId'] === get(this, 'name');
