@@ -10,6 +10,12 @@ export default Route.extend({
   scope: service(),
 
   model() {
+    let cluster = this.modelFor('authenticated.cluster');
+
+    if ( !get(cluster,'isReady') ) {
+      this.transitionTo('authenticated.cluster.index');
+    }
+
     return hash({
       projects: get(this, 'globalStore').findAll('project'),
       namespaces: get(this, 'clusterStore').findAll('namespace')

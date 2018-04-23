@@ -111,6 +111,10 @@ var Namespace = Resource.extend(StateCounts, {
     return (get(this, 'pods.length')||0 + get(this, 'workloads.length')||0) === 0;
   }),
 
+  hasProject: computed('project', function() {
+    return !!get(this,'project');
+  }),
+
   isFromCatalog: computed('externalIdInfo.kind', function() {
     let kind = this.get('externalIdInfo.kind');
     return kind === C.EXTERNAL_ID.KIND_CATALOG || kind === C.EXTERNAL_ID.KIND_SYSTEM_CATALOG;

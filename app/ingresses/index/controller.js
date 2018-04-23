@@ -20,20 +20,27 @@ export default Controller.extend({
       sort: ['sortState','displayName'],
       searchField: 'displayState',
       translationKey: 'generic.state',
-      width: 120
+      width: 120,
     },
     {
       name: 'name',
       sort: ['sortName','id'],
       searchField: 'displayName',
       translationKey: 'generic.name',
+      width: 200,
+    },
+    {
+      name: 'targets',
+      sort: false,
+      search: false,
+      translationKey: 'ingressPage.table.targets.label',
     },
     {
       name: 'created',
       sort: ['created','id'],
-      classNames: 'text-right pr-20',
       searchField: 'created',
       translationKey: 'generic.created',
+      width: 200,
     },
   ],
 });
