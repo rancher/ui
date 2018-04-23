@@ -37,7 +37,7 @@
                 {{#if opt.localizedLabel}}
                   {{t opt.localizedLabel}}
                 {{else}}
-                  {{opt.label}}
+                  <div class="text-capitalize">{{opt.label}}</div>
                 {{/if}}
               </a>
             </li>
@@ -93,7 +93,7 @@
   {{#catalog-box model=catalogItem showSource=showCatalogDropdown as |section|}}
     {{#if (eq section 'body')}}
       <h3>
-        <a {{action (action launch catalogItem.id )}}>{{catalogItem.displayName}}</a>
+        <a class="pointer" {{action (action launch catalogItem.id )}}>{{catalogItem.catalogId}}/{{catalogItem.displayName}}</a>
       </h3>
       <div class="mt-10 description">{{catalogItem.description}}</div>
     {{else if (eq section 'footer')}}
