@@ -15,13 +15,13 @@ export default Resource.extend({
     const store = get(this, 'store');
 
     let tlsHosts = [];
-    get(this, 'tls').forEach((entry) => {
+    (get(this, 'tls')||[]).forEach((entry) => {
       tlsHosts.addObjects(entry.hosts||[]);
     });
     tlsHosts = tlsHosts.uniq();
 
     let entries, entry, reference;
-    get(this,'rules').forEach((rule) => {
+    (get(this,'rules')||[]).forEach((rule) => {
       entries = get(rule, 'paths')||{};
       Object.keys(entries).forEach((path) => {
         entry = entries[path];
