@@ -1,34 +1,16 @@
 <tr class="group-row">
-  <td colspan={{nameSpan}} class="pl-10">
+  <td colspan={{sub fullColspan 1}} class="pl-10">
     {{#if model}}
-      <a href="{{href-to 'authenticated.cluster.ns.index' model.project.clusterId}}">{{t 'namespaceGroup.label' name=model.displayName}}</a>
-      {{#each model.tags as |tag|}}
-        <span class="tag-xs bg-info"><i class="icon icon-tag"></i> {{tag}}</span>
-      {{/each}}
+      {{t 'namespaceGroup.label' name=model.displayName}}
     {{else}}
       {{t noGroup}}
     {{/if}}
   </td>
-  {{#if afterName}}
-    <td colspan="{{afterName}}"></td>
-  {{/if}}
-  {{#if showState}}
-    <td data-title="{{dt.instanceState}}" class="{{alignState}}">
-      {{#if model}}
-        {{badge-state model=model classNames="btn-xs"}}
-      {{/if}}
-    </td>
-  {{/if}}
-  {{#if afterState}}
-    <td colspan="{{afterState}}"></td>
-  {{/if}}
-  {{#if showActions}}
-    <td data-title="{{dt.actions}}" class="actions">
-      {{#if model}}
-        {{action-menu model=model}}
-      {{/if}}
-    </td>
-  {{/if}}
+  <td data-title="{{dt.actions}}" class="actions">
+    {{#if model}}
+      {{action-menu model=model}}
+    {{/if}}
+  </td>
 </tr>
 {{#if model.showTransitioningMessage}}
   <tr class="group-row group-row-error">

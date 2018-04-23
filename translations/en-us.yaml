@@ -685,8 +685,11 @@ clustersPage:
 ingressPage:
   header: 'Ingress: {name}'
   table:
+    targets:
+      label: Targets
     noMatch: No ingresses match the current search.
     noData: There are no ingress rules defined
+
 containerPage:
   header: 'Container: {name}'
   portsTab:
@@ -1242,7 +1245,7 @@ stackPage:
       noMatch: No volumes match the current search
 
 newStack:
-  header: Import from YAML
+  header: Import YAML
   name:
     placeholder: e.g. myapp
   description:
@@ -1588,13 +1591,16 @@ catalogSettings:
   header: Catalogs
   notAvailable: "Not available: there is a custom catalog called <code>{name}</code>"
   helpText: Currently only Helm catalogs are supported
+  library:
+    label: Library
+    detail: Official repository of curated application templates maintained by {appName}.
   helm:
     stable:
       label: Helm Stable
-      detail: Official repository of curated application definitions. Application definitions from Stable meet all technical requirements criteria.
+      detail: Official repository of curated applications maintained by the Kubernetes community.
     incubator:
       label:  Helm Incubator
-      detail: Official repository of curated application definitions. Application definitions from Incubator do not meet the technical requirements criteria and are essentially beta.
+      detail: Additional beta-quality Helm application templates which are not ready to be promoted to Stable yet.
   certified:
     header:
       rancher: "{appName} Certified Library"
@@ -3577,12 +3583,12 @@ formSslTermination:
   noCertificates: There are no certificates to use.
   noCertificatesConfiged: No Certificates.
   noAlternateCertificates: There are no other certificates to use.
-  hosts: Nodes
-  noHosts: No Nodes
+  hosts: Hosts
+  noHosts: No Hosts
   host:
     label: Host
     placeholder: e.g. example.com
-  addHostLabel: Add Node
+  addHostLabel: Add Hosts
   helpBlock: |
     "Note: Some older SSL/TLS clients do not support <a href="https://en.wikipedia.org/wiki/Server_Name_Indication" target="_blank">Server Name Indication (SNI)</a>; these clients will always be offered the main Certificate.  Modern clients will be offered an appropriate certificate from the Alternate Certificates list if a match is found."
   notNeeded: There are no SSL/TLS Listening Ports configured with a valid Target Rule.
@@ -4209,7 +4215,7 @@ modalShortcuts:
   other: Other Stuff
   shift: Shift-{key}
   delete: Delete selected (in table views)
-  shell: Shell
+  kubectl: Kubectl Shell
 
   viewGroup: Toggle view grouping
   nextTab: Next page tab

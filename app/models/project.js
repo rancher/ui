@@ -24,7 +24,7 @@ export default Resource.extend({
   roleTemplateBindings: alias('projectRoleTemplateBindings'),
   apps: hasMany('id', 'apps', 'projectId'),
 
-  namespaces: hasMany('id', 'namespace', 'projectId'),
+  namespaces: hasMany('id', 'namespace', 'projectId', 'clusterStore'),
 
   actions: {
     edit: function () {

@@ -1,16 +1,13 @@
 <tr class="group-row">
   <td colspan=3 class="pl-10">
     {{#if model}}
-      <a href="{{href-to 'authenticated.cluster.ns.index' model.clusterId}}">{{t 'projectGroup.label' name=model.name}}</a>
-      {{#each model.tags as |tag|}}
-        <span class="tag-xs bg-info"><i class="icon icon-tag"></i> {{tag}}</span>
-      {{/each}}
+      <a href="{{href-to 'authenticated.project' model.id}}">{{t 'projectGroup.label' name=model.displayName}}</a>
     {{else}}
       {{t noGroup}}
     {{/if}}
   </td>
   <td class="text-right">
-    {{#link-to "authenticated.cluster.ns.new" (query-params addTo=(or model.id null)) class="btn bg-primary btn-sm mr-10" disabled=(rbac-prevents resource="namespace" scope="cluster" permission="create")}}
+    {{#link-to "authenticated.cluster.projects.new-ns" (query-params addTo=(or model.id null)) class="btn bg-primary btn-sm mr-10" disabled=(rbac-prevents resource="namespace" scope="cluster" permission="create")}}
       {{t 'namespacesPage.addNamespace'}}
     {{/link-to}}
   </td>

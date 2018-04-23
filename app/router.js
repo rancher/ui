@@ -51,12 +51,6 @@ Router.map(function() {
 
       this.mount('pipeline');
 
-      this.route('ns', {path: '/namespaces'}, function() {
-        this.route('index', {path: '/'});
-        this.route('edit', {path: '/:namespace_id'});
-        this.route('new', {path: '/add'});
-      });
-
       this.route('nodes', function() {
         this.route('index', {path: '/'});
         this.route('node', {path: '/:node_id', resetNamespace: true});
@@ -64,8 +58,10 @@ Router.map(function() {
 
       this.route('projects', {path: '/projects-namespaces'}, function() {
         this.route('index', {path: '/'});
-        this.route('edit', {path: '/:project_id'});
-        this.route('new', {path: '/add'});
+        this.route('edit', {path: '/project/:project_id'});
+        this.route('new', {path: '/project/add'});
+        this.route('edit-ns', {path: '/ns/:namespace_id'});
+        this.route('new-ns', {path: '/ns/add'});
       });
 
       this.route('security', function() {
