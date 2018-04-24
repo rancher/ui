@@ -1,5 +1,20 @@
 <h2>
-  <i class="icon icon-file"></i> {{t 'containerLogs.title' instanceName=instance.displayName}}
+  <i class="icon icon-file"></i> {{t 'containerLogs.title'}}
+  {{#if displayName}}
+    {{displayName}}
+  {{else if (gt instance.containers.length 1)}}
+    <div class="container-select">
+      {{new-select
+        classNames="form-control"
+        optionValuePath="name"
+        optionLabelPath="name"
+        content=instance.containers
+        value=containerName
+      }}
+    </div>
+  {{else}}
+     {{containerName}}
+  {{/if}}
   <div class="console-status text-muted pull-right">{{t (concat 'containerLogs.status.' status)}}</div>
 </h2>
 {{#if showProtip}}
