@@ -52,7 +52,7 @@ const Template = Resource.extend({
   }.property('category','categories.[]'),
 
   categoryLowerArray: function() {
-    return this.get('categoryArray').map(x => (x||'').toLowerCase());
+    return this.get('categoryArray').map(x => (x||'').underscore().toLowerCase());
   }.property('categoryArray.[]'),
 
   supported: function() {

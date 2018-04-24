@@ -24,8 +24,11 @@ export default Controller.extend({
     return get(this,'model.projects').filterBy('clusterId', get(this,'scope.currentCluster.id'));
   }),
 
-  projectsWithoutNamespaces: computed('projects.@each.{id,state,clusterId}', 'rows.@each.namespaces', function(){
-    return get(this, 'projects').filter(p => get(p, 'namespaces.length') <= 0);
+  projectsWithoutNamespaces: computed('projects.@each.{id,state,clusterId}', 'rows.@each.projectId', function(){
+    return get(this, 'projects').filter(p => {
+      const namespaces = get(this, 'rows').filterBy('projectId', get(p, 'id')) || [];
+      return get(namespaces, 'length') <= 0;
+    });
   }),
 
 });

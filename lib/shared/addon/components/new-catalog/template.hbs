@@ -16,15 +16,23 @@
       {{/if}}
     </div>
     <div class="col span-8">
-      {{#unless appReadmeContent}}
-        {{#unless noAppReadme}}
-          <div class="text-center">
-            <i class="icon icon-spinner icon-spin" style="font-size:36px;"></i>
-          </div>
-        {{/unless}}
-      {{else}}
+      {{#if appReadmeContent}}
         {{marked-down markdown=appReadmeContent}}
-      {{/unless}}
+      {{else if (not noAppReadme)}}
+        <div class="text-center">
+          <i class="icon icon-spinner icon-spin" style="font-size:36px;"></i>
+        </div>
+      {{else if noAppReadme}}
+        <h1 class="mb-10 text-capitalize">
+          {{templateResource.name}}
+        </h1>
+        <p>{{templateResource.description}}</p>
+        <div class="row">
+          <button class="btn btn-sm bg-transparent pl-0" {{action 'toogleDetailedDescriptions'}}>
+            {{t 'newCatalog.seeMore'}}
+          </button>
+        </div>
+      {{/if}}
     </div>
   </div>
 </section>
@@ -35,6 +43,7 @@
       detail=(t 'newCatalog.appInfoDetail')
       expandAll=al.expandAll
       expand=(action expandFn)
+      expanded=detailExpanded
   }}
     <div class="row">
       {{#if readmeContent}}
@@ -65,7 +74,7 @@
             model=catalogApp
             nameRequired=true
             descriptionShow=false
-            nameDisabled=showName
+            nameDisabled=editing
             bothColClass="col span-12"
             colClass="col span-12"
         }}
@@ -86,17 +95,25 @@
       </div>
     </div>
     <div class="row">
+      {{#unless customizeNamespace}}
+        <div class="col span-12">
+          {{t 'newCatalog.customizeNamespace' namespaceId=primaryResource.name htmlSafe=true}}
+          {{#unless editing}}
+            <button class="btn btn-sm bg-transparent pl-0" {{action 'toogleNamespace'}}>
+              {{t 'generic.customize'}}
+            </button>
+          {{/unless}}
+        </div>
+      {{/unless}}
       <div class="col span-12">
-        {{#if showName}}
-          {{#advanced-section}}
-            <hr class="mt-20 mb-20"/>
+        {{#if customizeNamespace}}
+          <hr class="mt-20 mb-20"/>
 
-            {{form-namespace
-                namespace=primaryResource
-                mode='reuse'
-                errors=namespaceErrors
-            }}
-          {{/advanced-section}}
+          {{form-namespace
+              namespace=primaryResource
+              mode='reuse'
+              errors=namespaceErrors
+          }}
         {{/if}}
       </div>
     </div>

@@ -62,6 +62,10 @@ export default Resource.extend({
       });
     },
 
+    resetDefault() {
+      this.setDefault(false)
+    },
+
     edit() {
       get(this, 'router').transitionTo('authenticated.cluster.storage.classes.detail.edit', get(this, 'id'));
     },
@@ -80,8 +84,8 @@ export default Resource.extend({
       annotations[DEFAULT_ANNOTATION] = 'true';
       annotations[BETA_ANNOTATION] = 'true';
     } else {
-      delete annotations[DEFAULT_ANNOTATION];
-      delete annotations[BETA_ANNOTATION];
+      annotations[DEFAULT_ANNOTATION] = 'false';
+      annotations[BETA_ANNOTATION] = 'false';
     }
 
     this.save();
@@ -92,6 +96,7 @@ export default Resource.extend({
 
     let out = [
       { label:   'action.makeDefault',     icon: 'icon icon-star-fill',      action: 'makeDefault',      enabled: !isDefault },
+      { label:   'action.resetDefault',   icon: 'icon icon-star-line',            action: 'resetDefault',     enabled: isDefault },
     ];
 
     return out;

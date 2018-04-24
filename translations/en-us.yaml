@@ -22,6 +22,7 @@ generic:
   containers: Containers
   created: Created
   createdDate: "Created {date}"
+  customize: Customize
   default: Default
   description: Description
   details: Details
@@ -39,6 +40,7 @@ generic:
   entrypoint: Entrypoint
   environment: Environment
   expandAll: Expand All
+  from: from
   gigabyte: 'GB'
   generic: 'Generic'
   hardware: Hardware
@@ -178,6 +180,13 @@ accountsPage:
 
 appDetailPage:
   header: "App: {appName}"
+  endpoints:
+    title: Endpoints
+    detail: 'Public Endpoints of this application'
+    endpoint: Endpoint
+    protocol: Protocol
+    noData: No public endpoints were created for this application.
+    noMatch: No public endpoints match the current search.
   notes:
     title: Notes
     detail: 'Instructions on how to use this application'
@@ -1957,7 +1966,7 @@ confirmDelete:
   largeDeleteText: '{key} and {othersCount} others'
 
 containerLogs:
-  title: "Logs: {instanceName}"
+  title: "Logs: "
   onlyCombined: "<b>Note:</b> Only combined stdout/stderr logs are available for this container because it was run with the TTY (-t) flag."
   combined: Combined
   stdout: Standard Out
@@ -3934,6 +3943,9 @@ inputPassword:
 inputTextFile:
   tooltip: Read from a file
 
+uploadFile: 
+  label: Read from File
+
 podsSection:
   title: Pods
   detail: Pods in this workload
@@ -4277,12 +4289,14 @@ newCatalog:
   maintainedBy: Maintained by community members
   maintainer: "Maintainer:"
   newNamespace: New Namespace
+  customizeNamespace: "This application will be deployed into the <code>{namespaceId}</code> namespace"
   newAppDetail: Choose application version and namespace for the application
   appInfo: Detailed Descriptions
   appInfoDetail: Application information and user guid
   noConfig: This template has no configuration options
   official: Officially Certified
   preview: Preview
+  seeMore: More information...
   saveConfigure: Configure
   saveNew: Launch
   saveUpgrade: Upgrade
@@ -5064,6 +5078,8 @@ schema:
     custom: Custom
   inputDnsRecord:
     prompt: Choose a Service...
+  inputStorageClass:
+    prompt: Use the default class...
   inputSecret:
     prompt: Choose a Secret...
 
@@ -5334,6 +5350,7 @@ action:
   garbageCollect: Cleanup
   logs: View Logs
   makeDefault: Set as default
+  resetDefault: Reset default
   nodeConfig: Download Keys
   move: Move
   pause: Pause Orchestration

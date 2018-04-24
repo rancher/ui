@@ -204,6 +204,16 @@ export default Controller.extend({
     this.set('expandedInstances',[]);
   },
 
+  publicEndpoints: computed('model.app.workloads.@each.publicEndpoints', function() {
+    let out = [];
+    get(this, 'model.app.workloads').forEach((workload) => {
+      (get(workload, 'publicEndpoints') || []).forEach((endpoint) => {
+        out.push(endpoint);
+      });
+    });
+    return out;
+  }),
+
   workloadsAndPods: computed('model.app.workloads', 'model.app.pods', function() {
     let out = [];
     out = this.get('model.app.pods').filter(obj => !obj.get('workloadId'));

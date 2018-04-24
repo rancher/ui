@@ -1,0 +1,36 @@
+{{#sortable-table
+    classNames="grid fixed mb-0 sortable-table"
+    bulkActions=false
+    rowActions=false
+    paging=false
+    search=true
+    sortBy=sortBy
+    stickyHeader=false
+    descending=descending
+    headers=headers
+    body=model
+    as |sortable kind endpoint|
+}}
+  {{#if (eq kind "row")}}
+    <tr>
+      <td data-title="{{t 'appDetailPage.endpoints.endpoint'}}:" class="force-wrap">
+        {{#if endpoint.linkEndpoint}}
+          <a target="_blank" rel="noreferrer nofollow" href="{{endpoint.linkEndpoint}}">{{endpoint.linkEndpoint}}</a>
+        {{else}}
+          {{endpoint.linkEndpoint}}
+        {{/if}}
+      </td>
+      <td data-title="{{t 'appDetailPage.endpoints.protocol'}}:" class="force-wrap">
+        <div class="text-uppercase">{{endpoint.protocol}}</div>
+      </td>
+    </tr>
+  {{else if (eq kind "nomatch")}}
+    <tr>
+      <td colspan="{{sortable.fullColspan}}" class="text-center text-muted pt-20 pb-20">{{t 'appDetailPage.endpoints.noMatch'}}</td>
+    </tr>
+  {{else if (eq kind "norows")}}
+    <tr>
+      <td colspan="{{sortable.fullColspan}}" class="text-center text-muted pt-20 pb-20">{{t 'appDetailPage.endpoints.noData'}}</td>
+    </tr>
+  {{/if}}
+{{/sortable-table}}

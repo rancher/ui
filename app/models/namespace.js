@@ -46,14 +46,16 @@ var Namespace = Resource.extend(StateCounts, {
   catalog:      service(),
   scope:        service(),
   router:       service(),
+  projectStore: service('store'),
   globalStore:  service(),
+  clusterStore: service(),
 
-  pods:      hasMany('id', 'pod', 'namespaceId', 'store'),
-  workloads: hasMany('id', 'workload', 'namespaceId', 'store'),
-  services:  hasMany('id', 'service', 'namespaceId', 'store'),
-  secrets:   hasMany('id', 'namespacedSecret', 'namespaceId', 'store'),
-  ingress:   hasMany('id', 'ingress', 'namespaceId', 'store'),
-  volumes:   hasMany('id', 'persistentVolumeClaim', 'namespaceId', 'store'),
+  pods:      hasMany('id', 'pod', 'namespaceId', 'projectStore', null, 'clusterStore'),
+  workloads: hasMany('id', 'workload', 'namespaceId', 'projectStore', null, 'clusterStore'),
+  services:  hasMany('id', 'service', 'namespaceId', 'projectStore', null, 'clusterStore'),
+  secrets:   hasMany('id', 'namespacedSecret', 'namespaceId', 'projectStore', null, 'clusterStore'),
+  ingress:   hasMany('id', 'ingress', 'namespaceId', 'projectStore', null, 'clusterStore'),
+  volumes:   hasMany('id', 'persistentVolumeClaim', 'namespaceId', 'projectStore', null, 'clusterStore'),
   project:   reference('projectId', 'project', 'globalStore'),
 
   init() {
