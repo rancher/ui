@@ -98,12 +98,6 @@ export default Route.extend({
       });
     });
   },
-  setupController(controller, model) {
-    this._super(controller, model);
-    if (model.upgradeTemplate) {
-      controller.set('showName', false);
-    }
-  },
   resetController: function (controller, isExiting/*, transition*/) {
     if (isExiting)
     {
