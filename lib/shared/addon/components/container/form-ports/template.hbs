@@ -4,19 +4,41 @@
     <table class="table fixed no-lines small mb-10">
       <thead>
         <tr class="hidden-sm">
-          <th width="220" class="{{unless editing 'acc-label'}}">{{t 'formPorts.kind.label'}}</th>
-          <th width="10"></th>
-          <th class="{{unless editing 'acc-label'}}">{{t 'formPorts.sourcePort.label'}}{{#if editing}}{{field-required}}{{/if}}</th>
-          <th width="10"></th>
           <th class="{{unless editing 'acc-label'}}">{{t 'formPorts.containerPort.label'}}{{#if editing}}{{field-required}}{{/if}}</th>
           <th width="10"></th>
           <th class="{{unless editing 'acc-label'}}" width="80">{{t 'formPorts.protocol.label'}}</th>
+          <th width="10"></th>
+          <th width="350" class="{{unless editing 'acc-label'}}">{{t 'formPorts.kind.label'}}</th>
+          <th width="10"></th>
+          <th class="{{unless editing 'acc-label'}}">{{t 'formPorts.sourcePort.label'}}{{#if editing}}{{field-required}}{{/if}}</th>
           <th width="40">&nbsp;</th>
         </tr>
       </thead>
       <tbody>
         {{#each ports as |port|}}
           <tr>
+            <td data-title="{{t 'formPorts.containerPort.label'}}">
+              {{#if editing}}
+                {{input-integer class="form-control input-sm public" min="1" max="65535" value=port.containerPort placeholder=(t 'formPorts.containerPort.placeholder')}}
+              {{else}}
+                {{port.containerPort}}
+              {{/if}}
+            </td>
+            <td>&nbsp;</td>
+
+            <td data-title="{{t 'formPorts.protocol.label'}}">
+              {{#if editing}}
+                {{new-select
+                    class="form-control input-sm"
+                    content=protocolOptions
+                    value=port.protocol
+                }}
+              {{else}}
+                {{port.protocol}}
+              {{/if}}
+            </td>
+            <td>&nbsp;</td>
+
             <td data-title="{{t 'formPorts.kind.label'}}">
               {{#if editing}}
                 {{new-select
@@ -63,28 +85,7 @@
                 {{/if}}
               {{/if}}
             </td>
-            <td>&nbsp;</td>
 
-            <td data-title="{{t 'formPorts.containerPort.label'}}">
-              {{#if editing}}
-                {{input-integer class="form-control input-sm public" min="1" max="65535" value=port.containerPort placeholder=(t 'formPorts.containerPort.placeholder')}}
-              {{else}}
-                {{port.containerPort}}
-              {{/if}}
-            </td>
-            <td>&nbsp;</td>
-
-            <td data-title="{{t 'formPorts.protocol.label'}}">
-              {{#if editing}}
-                {{new-select
-                    class="form-control input-sm"
-                    content=protocolOptions
-                    value=port.protocol
-                }}
-              {{else}}
-                {{port.protocol}}
-              {{/if}}
-            </td>
             <td>
               {{#if editing}}
                 <button class="btn bg-primary btn-sm" {{action "removePort" port}}>

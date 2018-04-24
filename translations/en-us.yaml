@@ -3341,20 +3341,20 @@ formPorts:
   header: Port Mapping
   addAction: Add Port
   kind:
-    label: Publish on
-    NodePort: Every node
-    HostPort: Nodes running a pod
-    ClusterIP: Internal cluster IP
-    LoadBalancer: Load Balancer
+    label: As a
+    NodePort: NodePort (On every node)
+    HostPort: HostPort (Nodes running a pod)
+    ClusterIP: Cluster IP (Internal only)
+    LoadBalancer: Layer-4 Load Balancer
   sourcePort:
-    label: Listening Port
+    label: On listening port
     placeholder: "e.g. 80"
     ipPlaceholder: "e.g. 80 or 19.82.2.24:80"
     clusterIpDefault: "Same as container port"
   nodePort:
     placeholder: "e.g. 30000"
   containerPort:
-    label: Container Port
+    label: Publish the container port
     placeholder: "e.g. 8080"
   protocol:
     label: Protocol
@@ -5246,7 +5246,7 @@ nav:
     addIngress: Add Ingress
     addDns: Add Record
     addVolume: Add Volume
-    importCompose: Import from YAML
+    importCompose: Import YAML
   group:
     none: Flat List
     node: Group by Node
@@ -5424,6 +5424,8 @@ model:
       org: Organization
       localUser: Local User
       unknown: "{type}?"
+  ingress:
+    displayKind: L7 Ingress
   machine:
     role:
       worker: Worker
@@ -5446,10 +5448,10 @@ model:
       owner: Owner
       readonly: Read-Only
       restricted: Restricted
-  scaleService:
-    min: Minimum Scale
-    max: Maximum Scale
-    amount: By
+  service:
+    displayKind:
+      generic: Service
+      loadBalancer: L4 Balancer
 
 growl:
   webSocket:

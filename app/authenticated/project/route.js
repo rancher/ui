@@ -62,7 +62,11 @@ export default Route.extend(Preload,{
     },
 
     importYaml() {
-      get(this,'modalService').toggleModal('modal-import', {mode: 'project', projectId: get(this,'scope.currentProject.id')});
+      get(this,'modalService').toggleModal('modal-import', {
+        escToClose: true,
+        mode: 'project',
+        projectId: get(this,'scope.currentProject.id')
+      });
     },
   },
 

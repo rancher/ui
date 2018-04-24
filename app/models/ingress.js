@@ -10,6 +10,15 @@ export default Resource.extend({
   router: service(),
   namespace: reference('namespaceId', 'namespace', 'clusterStore'),
 
+  actions: {
+    edit: function () {
+      get(this,'router').transitionTo('ingresses.run', {queryParams: {
+        ingressId: get(this, 'id'),
+        upgrade: true,
+      }});
+    },
+  },
+
   targets: computed('rules.@each.paths', function() {
     const out = [];
     const store = get(this, 'store');
@@ -20,45 +29,50 @@ export default Resource.extend({
     });
     tlsHosts = tlsHosts.uniq();
 
-    let entries, entry, reference;
-    (get(this,'rules')||[]).forEach((rule) => {
-      entries = get(rule, 'paths')||{};
-      Object.keys(entries).forEach((path) => {
-        entry = entries[path];
 
-        if ( entry.serviceId ) {
-          reference = store.getById('service', entry.serviceId);
-          out.push({
-            host: rule.host,
-            tls: tlsHosts.includes(rule.host),
-            path: path,
-            refernece: entry.serviceId,
-            service: reference,
-          });
-        } else if ( entry.workloadIds ) {
-          (entry.workloadIds||[]).forEach((id) => {
-            reference = store.getById('workload', id);
-            out.push({
-              host: rule.host,
-              tls: tlsHosts.includes(rule.host),
-              path: path,
-              refernece: id,
-              workload: reference,
-            });
-          });
-        }
+    let def = get(this, 'defaultBackend');
+    if ( def ) {
+      addRow(null, null, def);
+    }
+
+    (get(this,'rules')||[]).forEach((rule) => {
+      let entries = get(rule, 'paths')||{};
+      Object.keys(entries).forEach((path) => {
+        addRow(rule.host, path, entries[path])
       });
     });
+
+    function addRow(host, path, entry) {
+      let reference;
+
+      if ( entry.serviceId ) {
+        reference = store.getById('service', entry.serviceId);
+        out.push({
+          host: host,
+          tls: tlsHosts.includes(host),
+          path: path,
+          reference: entry.serviceId,
+          service: reference,
+        });
+      } else if ( entry.workloadIds ) {
+        (entry.workloadIds||[]).forEach((id) => {
+          reference = store.getById('workload', id);
+          out.push({
+            host: host,
+            tls: tlsHosts.includes(host),
+            path: path,
+            reference: id,
+            workload: reference,
+          });
+        });
+      }
+    }
 
     return out;
   }),
 
-  actions: {
-    edit: function () {
-      get(this,'router').transitionTo('ingresses.run', {queryParams: {
-        ingressId: get(this, 'id'),
-        upgrade: true,
-      }});
-    },
-  },
+  displayKind: computed('intl.locale', function() {
+    const intl = get(this, 'intl');
+    return intl.t('model.ingress.displayKind');
+  }),
 });
