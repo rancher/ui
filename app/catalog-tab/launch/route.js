@@ -102,9 +102,10 @@ export default Route.extend({
     if (isExiting)
     {
       controller.set('namespaceId', null);
+      controller.set('template', null);
       controller.set('upgrade', null);
       controller.set('catalog', null);
-      controller.set('namespaceId', null);
+      controller.set('appId', null);
     }
   }
 });
