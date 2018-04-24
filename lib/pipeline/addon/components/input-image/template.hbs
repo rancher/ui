@@ -16,10 +16,17 @@
   {{input class="form-control" value=state.imageTag disabled=disabled}}
 </div>
 {{#if registryField}}
-  {{#if state.registryExist}}
-  {{banner-message icon="icon-success" color='bg-success mb-0 mt-10' message=(concat "Registry " state.imageRegistry " exists")}}
+  {{#if (and state.registryExist state.noEditingRegistry)}}
+  {{#banner-message icon="icon-success" color='bg-success mb-0 mt-10'}}
+    {{t 'newPipelineStep.stepType.build.registryExist' registry=state.imageRegistry username=state.selectedRegistry.username}}
+    <button {{action "setState" "state.noEditingRegistry" false}} class="btn bg-transparent btn-sm pull-right mr-10">Edit Registry</button>
+  {{/banner-message}}
   {{else}}
-  {{banner-message color='bg-warning mb-0 mt-10' message=(concat "Please add registry " state.imageRegistry " first")}}
+  {{#if state.noEditingRegistry}}
+    {{banner-message color='bg-warning mb-0 mt-10' message=(concat "Please add registry " state.imageRegistry " first")}}
+  {{else}}
+    {{banner-message color='bg-info mb-0 mt-10' message=(concat "Edit registry " state.imageRegistry)}}
+  {{/if}}
   <div class="box mt-10">
     <p class="mt-0 mb-0">{{t 'newPipelineStep.stepType.build.scope'}}</p>
     <p class="mt-10 mb-0">{{t 'registriesPage.new.form.custom.labelText'}}: {{state.imageRegistry}}</p>
@@ -27,7 +34,7 @@
       <div class="col span-12">
         <div>
           <label class="acc-label">{{t 'registriesPage.new.form.username.labelText'}}</label>
-          {{input class="form-control" value=state.username}}
+          {{input class="form-control" autofocus=true value=state.username}}
         </div>
         <div>
           <label class="acc-label">{{t 'registriesPage.new.form.password.labelText'}}</label>
@@ -41,6 +48,11 @@
           {{/if}}
           {{t 'newPipeline.save'}}
         </button>
+        {{#unless state.noEditingRegistry}}
+          <button class="btn bg-transparent" {{action "setState" "state.noEditingRegistry" true}} disabled={{or state.savingRegistry (eq state.imageRegistry '')}}>
+            {{t 'generic.cancel'}}
+          </button>
+        {{/unless}}
       </div>
     </div>
   </div>
