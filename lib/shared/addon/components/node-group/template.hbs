@@ -1,5 +1,5 @@
 <tr class="group-row">
-  <td colspan={{nameSpan}} class="pl-10">
+  <td colspan={{sub fullColspan 2}} class="pl-10">
     {{#if (and model.id model.clusterId)}}
       <a href="{{href-to 'node' model.clusterId model.id}}">
         {{t 'nodeGroup.label' name=model.displayName}}
@@ -8,19 +8,11 @@
       {{t 'nodeGroup.label' name=nodeId}}
     {{/if}}
   </td>
-  {{#if afterName}}
-    <td colspan="{{afterName}}"></td>
-  {{/if}}
-  {{#if showState}}
-    <td data-title="{{dt.instanceState}}" class="{{alignState}}">
-      {{#if model}}
-        {{badge-state model=model classNames="btn-xs"}}
-      {{/if}}
-    </td>
-  {{/if}}
-  {{#if afterState}}
-    <td colspan="{{afterState}}"></td>
-  {{/if}}
+  <td data-title="{{dt.instanceState}}" class="{{alignState}}">
+    {{#if model}}
+      {{badge-state model=model classNames="btn-xs"}}
+    {{/if}}
+  </td>
   {{#if showActions}}
     <td data-title="{{dt.actions}}" class="actions">
       {{#if model}}

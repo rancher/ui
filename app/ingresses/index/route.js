@@ -8,6 +8,7 @@ export default Route.extend({
     const store = this.get('store');
     return hash({
       ingresses: store.findAll('ingress'),
+      services: store.findAll('service'),
     });
   },
 
