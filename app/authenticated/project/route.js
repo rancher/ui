@@ -33,6 +33,7 @@ export default Route.extend(Preload,{
               this.preload('dnsRecord'),
               this.preload('secret'),
               this.preload('service'),
+              this.preload('configmap'),
               this.preload('namespacedSecret'),
               this.preload('persistentVolumeClaim'),
             ]).then(() => {
