@@ -1,10 +1,14 @@
 import Resource from 'ember-api-store/models/resource';
 import { inject as service } from '@ember/service';
-import { get } from '@ember/object';
+import { computed, get } from '@ember/object';
+import { hash, reject } from 'rsvp';
 
 export default Resource.extend({
   type: 'notifier',
+  growl: service(),
+  intl: service(),
 
+  globalStore: service(),
   modalService: service('modal'),
 
   init(...args) {
@@ -33,6 +37,46 @@ export default Resource.extend({
 
   }.property('slackConfig', 'pagerdutyConfig', 'emailConfig', 'webhookConfig'),
 
+  findAlerts() {
+    const globalStore = get(this, 'globalStore');
+    const clusterId = get(this, 'clusterId');
+    const clusterAlerts = globalStore.findAll('clusterAlert', {filter: {clusterId}});
+    const projectAlerts = globalStore.findAll('projectAlert');
+    return hash({
+      clusterAlerts,
+      projectAlerts,
+    }).then(({
+      clusterAlerts,
+      projectAlerts,
+    }) => {
+      const alerts = [
+        ...clusterAlerts.content,
+        ...projectAlerts.content,
+      ].filter(alert => {
+        const recipients = get(alert, 'recipients');
+        if (!recipients || recipients.length === 0) {
+          return false;
+        }
+        return recipients.some(recipient => recipient.notifierId === get(this, 'id'));
+      });
+
+      return alerts;
+    });
+  },
+  delete() {
+    const self = this;
+    const sup = self._super;
+    return this.findAlerts().then(alerts => {
+      if (alerts.length) {
+        const alertNames = alerts.map(alert => get(alert, 'displayName')).join(',');
+        get(this, 'growl')
+          .error(get(this, 'intl')
+          .t('notifierPage.deleteErrorMessage', {displayName: get(this, 'displayName'), alertNames}));
+      } else {
+        sup.apply(self, arguments);
+      }
+    });
+  },
   actions: {
     edit() {
       this.get('modalService').toggleModal('notifier/modal-new-edit', {
