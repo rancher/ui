@@ -4,66 +4,105 @@ languageContribute: "Rancher の翻訳にご協力ください"
 generic:
   actions: アクション
   activate: アクティベート
+  add: 追加
   all: 全て
+  any: Any
+  as: as
+  application: アプリケーション
   cancel: キャンセル
   closeModal: 閉じる
   cluster: クラスター
   collapseAll: すべて折りたたむ
   command: コマンド
+  comingSoon: Coming Soon
   confirm: 確認
   containers: コンテナ
   created: 作成日
   createdDate: "{date} 作成"
+  customize: カスタマイズ
   default: デフォルト
   description: 詳細情報
   details: 詳細
   disable: 無効
   disabled: 無効
+  displayName: 表示名
   dockerId: Docker ID
   domainName: ドメイン名
+  done: 完了
+  download: ダウンロード
+  edit: 編集
+  emptyString: ""
   enable: 有効
   enabled: 有効
   entrypoint: エントリーポイント
   environment: 環境
   expandAll: すべて開く
+  from: from
+  gigabyte: 'GB'
+  generic: 一般
   hardware: ハードウェア
   healthy: ヘルス
-  host: ホスト
+  help: ヘルプ
   id: ID
   image: イメージ
+  import: インポート
   internal: 内部
   ipAddress: IP アドレス
+  key: キー
   limit: 制限
   limits: 制限
   loading: "読込中..."
   mibibyte: 'MiB'
   missing: "*%MISSING%*"
+  milliseconds: ミリ秒
+  member: メンバー
   moreActions: その他の操作
   na: 'n/a'
   name: 名前
+  namespace: 名前空間
+  namespaces: 名前空間
+  never: 失効しない
   no: "いいえ"
+  node: ノード
   noRating: 評価なし
   none: None
+  owner: オーナー
+  paste: ペースト
+  pod: ポッド
+  port: ポート
   ports: ポート
+  project: プロジェクト
+  prefix: プリフィックス
   remove: 削除
   role: ロール
+  random: ランダム
   save: 保存
   saved: 保存済み
   saving: 保存中
   search: 検索
+  searching: "検索中..."
+  searchOrCustomInput: Search or input your custom value.
   seconds: 秒
   select: 選択
   service: サービス
   services: サービス
+  size: サイズ
   state: 状態
   tags: タグ
   test: テスト
   testing: テスト中
+  to: To
   total: 合計
   type: タイプ
   unknown: 不明
+  user: ユーザー
+  upload: アップロード
   uuid: UUID
+  url: URL
+  value: 値
+  version: バージョン
   yes: "はい"
+
 realmNames:
   all: 全て
   usWest: US 西部
@@ -71,76 +110,190 @@ realmNames:
   asia: アジア
   euWest: EU 西部
   euEast: EU 東部
+
 accountsPage:
+  detail:
+    header: ユーザー詳細
+    table:
+      headers:
+        permission: 権限
+        role: ロール
+        clusterName: クラスター
+        projectName: プロジェクト
+        active: アクティブ
+        created: Granted
+      global:
+        title: グローバル権限
+        description: Access to manage things that affect the entire installation
+        admin: This user is an administrator and has all permissions.
+        noRoles: このユーザーにはグローバルロールはありません
+      cluster:
+        title: クラスターロール
+        description: Roles granted to this user for individual clusters
+        noRoles: このユーザーにはクラスターロールはありません
+      project:
+        title: プロジェクトロール
+        description: Roles granted to this user for individual project
+        noRoles: このユーザーにはプロジェクトロールはありません
+      roles:
+        title: ロール
   index:
+    header: ユーザー
+    localLink: ユーザーを追加
     table:
       id: ID
       kind: 種類
       username: ユーザー名
       identity: ID
+      noData: まだユーザーはありません
+      noMatch: 検索条件に一致するユーザーはいません
       noName: None
   new:
+    header: ユーザーを追加
+    errors:
+      usernameReq: ユーザー名が必要です
+      usernameInExists: ログインユーザー名は既に利用されています。他のユーザー名を選択してください。
+      pwReq: パスワードが必要です
+      role: 新規ユーザーはロールに所属する必要があります。リストからロールを選択してください。
     form:
       username:
+        labelText: ユーザー名
         placeholder: "例: jsmith"
       password:
         labelText: パスワード
       name:
+        labelText: 表示名
         placeholder: "例: ジョン ・ スミス"
       type:
         labelText: アカウントタイプ
       description:
         labelText: 詳細情報
         placeholder: "例: このアカウントは、ジョン ・ スミス用"
+  modal:
+    password: パスワードを変更
+
+appDetailPage:
+  header: "アプリケーション: {appName}"
+  endpoints:
+    title: エンドポイント
+    detail: 'このアプリケーションの公開エンドポイント'
+    endpoint: エンドポイント
+    protocol: プロトコル
+    noData: このアプリケーションには公開エンドポイントは作成されていません
+    noMatch: 検索条件に一致する公開エンドポイントはありません
+  notes:
+    title: Notes
+    detail: 'このアプリケーションを利用するための手順です'
+  workloads:
+    title: ワークロード
+    detail: このアプリケーションに作られたワークロードです
+    nodata: このアプリケーションにワークロードは作成されていません
+  ingress:
+    title: イングレスルール
+    detail: このアプリケーションに作られたイングレスルールです
+    nodata: このアプリケーションにイングレスルールは作成されていません
+  services:
+    title: サービス
+    detail: このアプリケーションに作成されたサービスです
+    nodata: このアプリケーションにサービスは作成されていません
+  volumes:
+    title: ボリューム
+    detail: このアプリケーションに作られた永続ボリューム要求です
+    nodata: このアプリケーションにボリューム要求は作成されていません
+  secrets:
+    title: シークレット
+    detail: このアプリケーションに割り当てられているシークレットです
+    nodata: このアプリケーションにシークレットは作成されていません
+
+podSecurityPoliciesPage:
+  index:
+    header: ポッドセキュリティポリシー
+    description: Apply Policies to Pods created by a user with this Role
+    table:
+      name: 名前
+      created: 作成日
+      noData: まだポッドセキュリティポリシーは定義されていません
+      noMatch: 検索条件に一致するセキュリティポリシーはありません
+  addPodSecurityPolicy: ポリシーを追加
+  editPodSecurityPolicy: ポリシーを編集
+  detail:
+    header: ポリシー
+  saveEdit: 編集
+  saveNew: 作成
+  new:
+    errors:
+      nameReq: 名前が必要です
+      nameInExists: 名前は既に存在します。新しいポッドセキュリティポリシー名を使用してください。
+    form:
+      name:
+        labelText: 名前
+        placeholder: "例: policy"
+
+rolesPage:
+  title: ロール
+  index:
+    localLink: ロールを追加
+    table:
+      name: 名前
+      created: 作成日
+      builtin: ビルトイン
+      noData: まだロールはありません
+      noMatch: 検索条件に一致するロールはありません
+      userId: ユーザー
+      subjectKind: 種類
+      template: テンプレート
+  addRole: ロールを追加
+  editRole: ロールを編集
+  saveEdit: 編集
+  saveNew: 作成
+  new:
+    errors:
+      nameReq: 名前が必要です
+      memberReq: メンバーが必要です
+      nameInExists: 名前は既に存在します。新しいロール名を使用してください。
+      ruleResourceReq: ルールはリソースが必要です
+      roleTemplate: ロールテンプレートが必要です
+    form:
+      name:
+        labelText: 名前
+        placeholder: "例: Developers"
+      context:
+        labelText: コンテキスト
+      allow:
+        create: 作成
+        delete: 削除
+        deletecollection: 'Delete Collection'
+        get: 取得
+        list: リスト
+        patch: パッチ
+        update: 更新
+        watch: 監視
+        labelText: Allow
+        resource: リソース
+        addAction: リソースを追加
+      otherRole:
+        labelText: 他の役割を含める
+        role: ロール
+        addAction: ロールを追加
+      policy:
+        policy: ポリシー
+        addAction: ポリシーを追加
+
 apiPage:
-  header: 環境 API キー
-  actionButton: 環境 API キーを追加
-  content: |
-    環境 API キーはこの環境 (<code>{displayName}</code>) に紐付けられ、環境内のリソースのみ操作できます。また、この環境にアクセス可能な他のアカウントはこれらのキーを管理できます。
+  header: API & キー
+  actionButton: キーを追加
   currentEndpoint: 'エンドポイント:'
+  detail: API キーは特定のユーザー({name}) に紐付けられ、アクセス可能な全てのクラスターやプロジェクトに対しての作成、削除、操作が可能です。
   table:
     state: 状態
-    name: 名前
+    name: アクセスキー
     description: 詳細情報
-    publicValue: アクセスキー
     created: 作成日
-    noData: まだこの環境向けのキーはありません
-    noName: None
-    noDescription: None
-    noPublicValue: 公開値はありません
-  account:
-    header: アカウント API キー
-    buttonText: アカウント API キーを追加
-    content:
-      paragraph1: アカウント API キーは自身のアカウントに紐付きます。
-      paragraph2: "また、アクセス可能な環境に対して作成/削除/操作が行えます。"
-    table:
-      noData: このアカウントにはまだキーがありません
-auditLogsPage:
-  header: 監査ログ
-  form:
-    eventType:
-      placeholder: イベントタイプ
-    resourceType:
-      placeholder: "リソースタイプ:"
-      dropdownPlaceholder: 'リソースタイプの選択:'
-    resourceId:
-      placeholder: リソース ID
-    requestIp:
-      placeholder: IP をリクエスト
-    authType:
-      placeholder: "認証タイプ:"
-      dropdownPlaceholder: '認証タイプの選択:'
-    clearButtonText: フィルターをクリア
-    searchButtonText: 検索
-  table:
-    time: 時間
-    eventType: イベントタイプ
-    description: 詳細情報
-    environment: 環境
-    resourceTypeId: "リソース時間:ID"
-    identity: ID
-    authIp: "認証 & IP"
+    expires:
+      label: 失効日
+      never: 失効しない
+    noData: まだ API キーは定義されていません
+
 authPage:
   shibboleth:
     enabled:
@@ -226,7 +379,7 @@ authPage:
           =1 {# ユーザー}
           other {# ユーザー}
           }の環境メンバーに対してアクセス許可が設定されています。
-        unrestricted: "{appName} は全ての {github} ユーザーがアクセスできるよう設定されています"
+       # unrestricted: "{appName} は全ての {github} ユーザーがアクセスできるよう設定されています"
       disabled:
         label: GitHub が設定されていません
         warning: "{appName} はいくつかの GitHub ユーザーや組織のメンバーに対してアクセスを制限するよう設定できます。 現在はこの設定がされていないため、このページ(または API)にアクセスできる誰でもシステムを介しフルコントロールできます。"
@@ -241,7 +394,7 @@ authPage:
         header: "Danger Zone&trade;"
         warning: '<b class="text-danger">注意:</b> アクセスコントロールを無効化すると、このページや API にアクセスできる全ての人が {appName} 経由でフルコントロールすることができます。'
         confirmDisable: "本当によろしいですか? アクセスコントロールを無効化する場合は再度クリックしてください"
-        disable: アクセスコントロールを無効化
+        disable: Github アクセスを無効化
     notAuthenticated:
       header: "1. GithHub アプリケーションをセットアップする"
       ul:
@@ -252,7 +405,7 @@ authPage:
         li2:
           text: '"新規アプリケーションの登録" をクリックし、必要事項を入力してください:'
           ul:
-            li1: '<b>アプリケーション名:</b> <span class="text-muted">自由記載, e.g. My {appName}</span>'
+            li1: '<b>アプリケーション名:</b> <span class="text-muted">自由記載, 例: My {appName}</span>'
             li2: ホームページ URL
             li3: '<b>アプリケーションの詳細情報:</b> <span class="text-muted">自由記載(オプション)</span>'
             li4: 認証コールバック URL
@@ -325,6 +478,7 @@ authPage:
     subtext:
       enabled:
         text: '{appName} はローカルデータベースを利用したアクセス許可が設定されています。'
+        alwaysOn: 'ローカル認証は常に有効化されていますが追加で他の認証方法を選択することができます。'
         linkText: アカウントを管理
       disabled: '{appName} は {appName} データベースで定義されたいくつかのアカウントに対してアクセスを制限するよう設定できます。現在はこの設定がされていないため、このページ(または API)にアクセスできる全ての人がシステムを介してフルコントロールすることができます。'
     accessEnabled:
@@ -353,17 +507,19 @@ authPage:
       buttonText:
         pre: ローカル認証を有効化
         post: '有効化中...'
-  0:
-    header: アクセスコントロール
+
 balancerPage:
-  noMatch: 検索条件に一致するバランサーがありません
+  noMatch: 検索条件に一致するバランサーはありません
   noData: 表示するバランサーはありません
   table:
     target: 対象
+
 catalogPage:
   index:
     header: カタログ
     refreshBtn: 再読み込み
+    allCatalogs: 全てのカタログ
+    allCategories: 全てのカテゴリ
     manage: 管理
     search:
       label: 検索
@@ -383,12 +539,38 @@ catalogPage:
       launch: 詳細を見る
       notCompatible: 互換性がありません
       alreadyDeployed: 既にデプロイ済みです
+
 certificatesPage:
+  cn: ドメイン名
+  expiresDate: 有効期限
+  fingerprint: フィンガー プリント
+  valid: 有効な発行日
+  expires: 有効期限
+  algorithm: アルゴリズム
+  issuer: Issuer
+  serialNumber: シリアルナンバー
+  domainNames:
+    labelText: ドメイン名
+    single: '<a href="https://{cn}" target="_blank" rel="nofollow nefererrer noopener">{cn} <i class="icon icon-sm icon-external-link"/></a>'
+    withSan: |
+      <a href="https://{cn}" target="_blank" rel="nofollow nefererrer noopener">{cn} <i class="icon icon-sm icon-external-link"/></a> +
+      {sans, plural,
+      =1 {1 other}
+      other {# others}
+      }
+    wildcardSingle: '{cn}'
+    wildcardWithSan: |
+      {cn} +
+      {sans, plural,
+      =1 {1 other}
+      other {# others}
+      }
   detail:
     header: '証明書: {name}'
   index:
     header: 証明書
     linkTo: 証明書を追加
+    noData: まだ証明書は定義されていません
   new:
     header: 証明書を追加
     form:
@@ -396,20 +578,119 @@ certificatesPage:
         placeholder: '例: mydomain.com'
       description:
         placeholder: '例: mydomain.com の EV 証明書'
+
+membersPage:
+  title: メンバー
+  add:
+    title: '{type} メンバーを追加'
+    form:
+      member: メンバー
+      role: ロール
+      kind: 種類
+  index:
+    localLink: 'メンバーを追加'
+    table:
+      name: 名前
+      created: 作成日
+      noData: まだメンバーはいません
+      noMatch: 検索条件に一致するメンバーがいません
+      userId: ユーザー
+      subjectKind: 種類
+      template: ロール
+
+namespacesPage:
+  header: 名前空間
+  addNamespace: 名前空間を追加
+  noMatch: 検索条件に一致する名前空間はありません
+  noData: このクラスタでははまだ名前空間は定義されていません
+  table:
+    name:
+      label: 名前空間
+    description:
+      label: 詳細情報
+    project:
+      label: プロジェクト
+    pods:
+      label: ポッド
+    workloads:
+      label: ワークロード
+    created:
+      label: 作成日
+
+clusterPage:
+  edit: クラスターを編集
+
+projectsPage:
+  header: プロジェクト/名前空間
+  headerNS: 名前空間
+  addProject: プロジェクトを追加
+  editProject: プロジェクトを編集
+  noMatch: 検索条件に一致するプロジェクトはありません
+  noData: このクラスターではまだプロジェウトは定義されていません
+  ns:
+    label: 名前空間名
+    placeholder: '例: lab'
+  name:
+    label: プロジェクト名
+    placeholder: "例: lab"
+  created:
+    label: Created
+  psp:
+    label: ポッドセキュリティポリシー
+  members:
+    user: ユーザー
+    group: グループ
+    serviceaccount: サービスアカウント
+    labelText: メンバー
+    addMember: メンバーを追加
+    addUser: ユーザーを追加
+    noAddUser: You are the only active registered user.
+    addGroup: グループを追加
+    addServiceAccount: サービスアカウントを追加
+    multipleRoles: 複数ロール
+    customRoles: カスタムロール
+    kind:
+      label: 種類
+    name:
+      label: 名前
+    role:
+      label: ロール
+    errors:
+      nameReq: 名前が必要です
+      nameInExists: 名前は既に存在しています。別のプロジェクト名を利用してください。
+      memberNameReq: メンバーは名前が必要です
+      memberRoleReq: メンバーはロールが必要です
+
 clustersPage:
+  header: クラスター
   newCluster: クラスターを追加
+  newClusterName: "クラスターを追加: {name}"
+  editClusterName: "クラスターを編集: {name}"
   cluster:
     label: クラスター名
-  environment:
-    label: 環境名
-  projects:
-    label: 環境
+  provider:
+    label: プロバイダー
+  version:
+    label: バージョン
+  nodes:
+    label: ノード数
   cpu:
     label: CPU
   memory:
     label: RAM
+  pod:
+    label: ポッド
   storage:
     label: ディスク
+
+ingressPage:
+  header: 'イングレス: {name}'
+  table:
+    targets:
+      label: ターゲット
+    noMatch: 検索条件に一致するイングレスはありません
+    noData: まだイングレスルールは定義されていません
+
 containerPage:
   header: 'コンテナ: {name}'
   portsTab:
@@ -428,89 +709,166 @@ containerPage:
       shared: 共有対象
       writable: 書き込み可能
       noData: このコンテナにはマウントされているボリュームがありません
-      noMatch: 検索条件に一致するボリュームがありません
+      noMatch: 検索条件に一致するボリュームはありません
       noContainers: コンテナはありません
+
+podPage:
+  header: 'ポッド: {name}'
+  nodeIp: ノード IP
+  podIp: ポッド IP
+  containerImage: '{container} イメージ'
+  image: イメージ
+
 containersPage:
   table:
-    sparkPrefixCpu: 'CPU: '
-    sparkPrefixMemory: 'メモリ: '
-    sparkPrefixNetwork: 'ネットワーク: '
-    sparkPrefixStorage: 'ストレージ: '
+    sparkPrefixCpu: "CPU: "
+    sparkPrefixMemory: "メモリ: "
+    sparkPrefixNetwork: "ネットワーク: "
+    sparkPrefixStorage: "ストレージ: "
     noData: 表示するコンテナはありません
-    noMatch: 検索条件に一致するコンテナがありません
+    noMatch: 検索条件に一致するコンテナはありません
   welcome:
+    container: Get started right away
     containerLink: コンテナを追加
     orchestrator: 他のオーケストレーターをインストール
     kubernetesLink: Kubernetes をインストール
-containerSubpod:
-  childContainers: コンテナ
-  childSidekicks: サイドキック
+
+clusterDashboard:
+  cpu: CPU
+  memory: メモリ
+  pods: ポッド
+  subtitle: "{used} of {total} used"
+  node: ノード
+  etcd: Etcd
+  scheduler: Scheduler
+  controllerManager: Controller Manager
+  value: Value
+  notActive: このクラスターは現在 {state} 状態です。名前空間の管理など一部の操作はアクティブ状態でないと利用できません。
+  notReady: このクラスターは現在 <b>{state}</b> 状態です; API が準備されるまでこのページでの直接の操作はできません。
+  noNodes: ノードはありません
+  alert:
+    node: "アラート: ノード {node} はアクティブではありません"
+    component: "アラート: コンポーネント {component} は異常状態です"
+
 dnsPage:
   noMatch: 検索条件に一致するレコードはありません
   noData: 表示する DNS レコードはありません
+  type:
+    arecord: 外部 IP
+    cname: ホスト名
+    alias: エイリアス
+    workload: ワークロード
+    selector: セレクター
+    clusterIp: クラスター IP
+    unknown: 不明
   table:
     target: 対象
+    clusterIpDetail: 'クラスター IP: {ip}'
+
 editDns:
   title:
     new: DNS レコードを追加
     edit: DNS レコードを編集
+    view: "DNS レコード: {name}"
   name:
     placeholder: '例: myapp'
   description:
     placeholder: '例: 最新版の MyApp'
   selector:
     label: コンテナ ラベルセレクター
-    placeholder: e.g. mylabel=somevalue
-  mode:
-    label: "解決方法"
-    dnsservice: 1 つまたは複数の他のサービス
-    selectorservice: セレクターに一致するコンテナのセット
-    externalip: 1 つまたは複数の外部 IP アドレス
-    externalhostname: 外部ホスト名
-  targetIp:
-    label: ターゲット IP アドレス
-    add: ターゲット IP アドレスを追加
-  hostname:
-    label: ターゲット ホスト名
-    placeholder: '例: foobar.com'
-  errors:
-    hostnameRequired: 'ターゲットホスト名が必要です'
-    serviceRequired: '1 つまたは複数のターゲットが必要です'
-    selectorRequired: 'コンテナセレクターが必要です'
-editVolume:
+    keyLabel: ラベル
+    addActionLabel: セレクターを追加
+  recordType:
+    label: "レコードタイプ"
+    arecord: 1つ以上の外部 IP アドレス
+    cname: 外部ホスト名
+    alias: 別 DNS レコード値のエイリアス
+    workload: 1つ以上のワークロード
+    selector: セレクターに一致するポッドのセット
+  target:
+    arecord: ターゲット IP アドレス
+    cname: ターゲット ホスト名
+    alias: ターゲット DNS レコード
+    workload: ターゲット ワークロード
+    selector: ターゲット ポッドセレクター
   add:
-    global: ボリュームを追加
-    stack: ボリュームテンプレートを追加
-    container: ボリュームテンプレートを追加
-  edit:
-    global: ボリュームを編集
-    stack: ボリュームテンプレートを編集
-    container: ボリュームテンプレートを編集
+    arecord: ターゲット IP を追加
+    alias: ターゲット レコードを追加
+    workload: ターゲット ワークロードを追加
+    selector: ターゲット セレクターを追加
+  placeholder:
+    arecord: "例: 19.82.2.24"
+    cname: '例: example.com'
+  prompt:
+    alias: DNS レコードを選択してください...
+    workload: ワークロードを選択してください...
+  errors:
+    targetRequired: '1つ以上の "ターゲット IP アドレス" が必要です'
+    selectorRequired: '1つ以上の "ポッドセレクター" が必要です'
+    mixedAlias: エイリアスは CNAME と他のレコードを組み合わせて指定することはできません
+    multipleCname: エイリアスは複数の CNAME レコードを指定することはできませんAn Alias cannot target more than one CNAME record
+
+cruPersistentVolumeClaim:
+  title:
+    define: ボリューム要求を定義
+    new: ボリューム要求を追加
+    edit: 'ボリューム要求を編集: {name}'
+    view: '永続ボリューム: {name}'
+  define:
+    addActionLabel: 定義
+  capacity:
+    label: 容量
+    unit: GiB
   name:
-    placeholder: '例: myvol'
-  scope:
-    label: スコープ
-    global: 環境全体に対して 1 つのボリューム
-    stack: 特定スタック内に 1 つのボリューム
-    container: コンテナ毎に別ボリューム
-  driver:
-    label: ドライバー
-    local: ローカルホストのディスク
-    nfs: Rancher NFS
-    ebs: Rancher EBS
-    efs: Rancher EFS
-    longhorn: Rancher Longhorn
-    custom:
-      label: カスタム
-      placeholder: カスタムドライバー名
-  driverOpts:
-    label: ドライバーオプション
-    addAction: オプションを追加
+    placeholder: "例: myvol"
+  source:
+    label: ソース
+    pv: 既存の永続ボリュームを使用
+    storageClass: 新しい永続ボリュームの作成にストレージクラスを使用
+  pv:
+    label: 永続ボリューム
+    prompt: 永続ボリュームを選択してください...
+  storageClass:
+    label: ストレージクラス
+    prompt: デフォルトクラスを使用
+
+cruVolume:
+  title:
+    new: エフェメラルボリュームを定義
+  define:
+    addActionLabel: 定義
+  name:
+    placeholder: "例: myvol"
+  source:
+    label: ソース
+    title: ソース設定
+    detail: 選択中のボリュームソースのオプションを設定します
+    prompt: ボリュームソースを選択してください...
+
 failWhalePage:
   header: エラー
   reloadButton: |
     再度試してみるために以下を実施してください<br> <a href="#" onclick="window.location.href = window.location.href; return false;">再読み込み</a>または
   logoutButton: ログアウト
+
+time:
+  now: 現在
+  mins: |
+    {mins, plural,
+    =1 {# 分}
+    other {# 分}
+    }
+  minsAgo: |
+    {mins, plural,
+    =1 {# 分前}
+    other {# 分前}
+    }
+  secsAgo: |
+    {secs, plural,
+    =1 {# 秒前}
+    other {# 秒前}
+    }
+
 haPage:
   header: 高可用性
   setup:
@@ -522,73 +880,34 @@ haPage:
     port: ポート
     heartbeat: 最終通知時刻
     clustered: クラスター
-helpPage:
-  header: リンク & インフォメーション
-  banner: '最新リリース {released}:'
-  environment:
-    header: 環境とは?
-    content: |
-      <p>{appName} は複数の環境に対してリソースのグループ化をサポートします。 それぞれ、個別に複数サービスやインフラストラクチャのリソースを持ち、1人もしくは複数の GitHub ユーザーやチーム、組織により管理されます。</p>
-      <p>例えば、 それぞれの環境を隔離するために "dev", "test" もしくは "production" といった分離された環境を作成し、 "dev" に対しては組織の全員がアクセスできるが、 "production" に対しては小さなチームのみに制限するといったことが可能です。</p>
-    manageLink: 環境を管理
-  host:
-    header: ホストとは?
-    content: |
-      最初のサービスまたはコンテナを起動する前に少なくとも Docker {minVersion} もしくはそれ以上のバージョンをサポートしており、 {appName} サーバーに HTTP 経由でアクセス可能な単一なホストが必要となります。 {appName} はパブリッククラウドプロバイダーやプライベートクラウド、ベアメタルサーバー上の仮想マシンもしくは物理マシン形式の Linux ホストの追加をサポートしています。
-    contentLink: 詳細を見る
-  stacks:
-    header: スタック、サービスとは?
-    content:
-      paragraph1: |
-        サービスは同一の Docker イメージから作成されたコンテナのシンプルなグループですが {appName} におけるサービス検出向けの軽量な分散 DNS サービスを利用するため Docker の 'リンク' コンセプトを拡張しています。サービスは個別に追加することもできますしカタログから選択してデプロイすることもできます。
-      paragraph2: サービスはロードバランサーやヘルスモニタリング、アップグレードサポート、高可用性のような他の {appName} ビルトインサービスを利用することもできます。
-      link: 詳細を見る
-    addServiceLink: サービスを管理
-    addCatalogLink: カタログから追加
-    manageServiceLink: サービスを管理
-  issues:
-    header:
-      text: バグ & ドキュメント
-      tagline: バグをお探しですか?
-      fileBug: バグを報告
-    content:
-      paragraph1: |
-        {appName} は商用でのコンテナ向けインフラストラクチャ構築のためのオープンソースのソフトウェアプラットフォームでであり、アプリケーションのワークロードに Docker を利用しています。是非、ネットワーク、ストレージ、ロードバランサー、セキュリティ、サービスディスカバリ、リソース管理などのインフラストラクチャサービスに関する要望をお聞かせ下さい。
-      graphic1:
-        text: バグをお探しですか?
-        link: GitHub でバグを報告。
-      graphic2:
-        text: さらなる情報を見る
-        link: |
-          <a href="{docsLink}" target="_blank">{appName} の使い方に関しては私達のドキュメントを参照ください。</a>
-          <br/>または <a href="{companyLink}/learn/" target="_blank">Getting Started ドキュメントを参照ください。</a>
-      graphic3:
-        text: トラブルシューティングが必要ですか?
-        link: FAQ を参照ください
-  forums:
-    header: フォーラム
-    tagline: 議論に参加する
-    buttonText: フォーラムへ
-    announcements:
-      header: アナウンス
-      buttonText: さらにアナウンストピックを見る
-    general:
-      header: 一般
-      buttonText: もっと一般トピックを見る
-    rancherOs:
-      header: RancherOS
-      buttonText: もっと RancherOS トピックを見る
-    rancher:
-      header: Rancher
-      buttonText: もっと Rancher トピックを見る
-  commercial:
-    header: 商用サポート
-    content: |
-      Rancher Labs では {appName} に関して商用またはエンタープライズレベルのサポートを提供しており、24x7 でのサポートチームの利用や優先バグフィックスなどが含まれます。また、実際の構築や {appName} のスケールに興味のある方向けに構築やインテグレーション、コンサルティングサービスなども提供しています。これらのサービスに関して詳細を知りたい方は我々の営業チームまでご連絡ください。<a href="mailto:sales@rancher.com">sales@rancher.com</a>
+
+nodesPage:
+  header: ノード
+  editCluster: クラスターを編集
+  nodePoolGroup: "プール: {name}"
+  table:
+    clusterName: クラスター
+    role: ロール
+    cpu: CPU
+    memory: RAM
+    disk: ディスク
+    pod: ポッド
+    version: バージョン
+    docker: Docker
+    unschedulable: 未スケジュール
+    instanceState: コンテナ状態
+    instanceStateWithIcon: 状態
+    noData: このクラスターではまだノードは定義されていません
+    noMatch: 検索条件に一致するノードはありません
+
 hostsPage:
   cloudHostsPage:
     addPage:
       launch: 起動
+      header: ノードを追加
+      name:
+        label: ノード名
+        placeholder: '例: node01'
       transferUnit: TB
       instance: 'タイプ:'
       storage: 'ストレージ'
@@ -603,9 +922,34 @@ hostsPage:
   new:
     header:
       customText: カスタムホストを追加
+      text: ノードを追加
     manageLink: 利用可能なマシンドライバーを管理
     custom: カスタムホストを追加
+    name:
+      placeholder: '例: node01'
+    addCluster:
+      label: "クラスターオプション"
+      description: Attach this new node to a cluster, delegate roles, etc.
+      cluster:
+        label: クラスター
+      roles:
+        label: ロール
+      table:
+        label:
+          etcd: etcdとして利用
+          control: 管理ノードとして利用
+          worker: ワーカーノードとして利用
   hostPage:
+    header:
+      title: 'ノード: {name}'
+    hostname: ホスト名
+    ipAddress: IP アドレス
+    version: バージョン
+    conditions:
+      diskSpace: ディスクスペース
+      diskPressure: Disk Pressure
+      memoryPressure: Memory Pressure
+      ready: Kubelet
     limits:
       cpu: 'CPU 制限:'
       memory: 'メモリ制限:'
@@ -647,6 +991,38 @@ hostsPage:
           mounts: マウント
         body:
           noData: まだこのホストにはボリュームがありません
+
+k8sImport:
+  header: 既存の Kubernetes 環境を利用
+  name:
+    label: クラスター名
+    placeholder: "例: my-imported-cluster"
+  kubeConfig:
+    label: Kubeconfig file to import
+    placeholder: Import or paste in the Kubeconfig file of the cluster to use.
+  actionLabel: インポート
+
+k8sPage:
+  header: Kubernetes
+  dashboard:
+    title: ダッシュボード
+    detail: Kubernetes のネイティブダッシュボードにアクセス
+    button: ダッシュボードを起動
+  shell:
+    title: シェル
+    detail: Run <code>kubectl</code> commands from your browser.
+    button: kubectlを起動
+  configFile:
+    title: Config File
+    detail: <code>kubectl</code> コマンドをデスクトップで利用するための Kubernetes 設定ファイルを生成します
+    button: Kubeconfig ファイル
+    generating: 生成中...
+    usage:
+      helpText: |
+        以下の内容を <code>~/.kube/config</code> に追記してください:
+      downloadText: |
+        その後必要に応じてクライアントを <a href="{downloadUrl}" target="_blank">ダウンロード</a> し <code>kubectl</code> を実行してください
+
 loginPage:
   greeting: "こんにちは！<br><span>{appName} へようこそ</span>"
   githubMessage: "{appName} はアカウントやチームの管理に GitHub を利用しています。 ログインしてあなたの GitHub アカウント情報に読み込み権限でアクセスするために以下のボタンを押して下さい。"
@@ -654,17 +1030,26 @@ loginPage:
   shibbolethError:
     401: "認証に失敗しました"
     500: "サーバ内部エラー"
-    generic: "ログイン中にエラー {errorCode} が発生しました。もう一度やり直してください。"
+    generic: "ログイン中にエラー {{errorCode}} が発生しました。もう一度やり直してください。"
   error:
+    authFailed: "Logging in failed: Your account may not be authorized to log in."
     authFailed: ユーザーネームまたはパスワードが正しくありません。
+
 machinePage:
+  header: ノードドライバー
   inactive: 休止
+  subtext: "Additional <code>docker-machine</code> drivers can be loaded here and used in the Add Node screen."
+  add: ノードドライバーを追加
   builtin: ビルトイン
+  url: Location
+
 notFoundPage:
   header: "お探しのページは存在しません!"
   linkTo: ホームに戻る
+
 registriesPage:
   index:
+    header: レジストリ
     linkTo: レジストリを追加
     table:
       header:
@@ -672,6 +1057,8 @@ registriesPage:
         address: アドレス
         username: ユーザー名
         created: 作成日
+      body:
+        noData: "まだレジストリ証明書はありません"
   new:
     header: レジストリを追加
     form:
@@ -685,23 +1072,57 @@ registriesPage:
       password:
         labelText: パスワード
         placeholder: '例: password'
+
 secretsPage:
   index:
     header: シークレット
     linkTo: シークレットを追加
-    noData: まだシークレットはありません
-    noMatch: 検索条件に一致するシークレットがありません
+    noData: まだシークレットは定義されていません
+    noMatch: 検索条件に一致するシークレットはありません
+  table:
+    keys: キー
+
+configMapsPage:
+  index:
+    header: コンフィグマップ
+    linkTo: コンフィグマップを追加
+    noData: まだコンフィグマップは定義されていません
+    noMatch: 検索条件に一致するコンフィグマップはありません
+  table:
+    keys: キー
+
 servicePage:
-  header: '{type}: {name}'
+  header: 'ワークロード: {name}'
   globalScale: 'ホスト毎に {scale}'
   multistat:
+    type: 'ワークロードタイプ:'
     fqdn: 'FQDN:'
     scale: 'スケール:'
     image: 'イメージ:'
+    namesapce: '名前空間:'
+    created: '作成日:'
+    daemonSetScale: 'ノード毎に 1 つ'
+  serviceType:
+    deployment: デプロイメント
+    replicaSet: レプリカセット
+    statefulSet: ステートフルセット
+    daemonSet: デーモンセット
+    replicationController: レプリケーションコントローラー
+    job: ジョブ
+    cronJob: クーロンジョブ
+    pod: スタンドアローンポッド
   external:
+    externalIp: |
+      {count, plural,
+      =1 {外部 IP:}
+      other {倍具 IPs:}
+      }
     externalHostname: '外部ホスト名:'
+  selector:
+    label: 'セレクター:'
   containersTab:
     title: 'コンテナ'
+    detail: 'The containers that make up this service.'
   linksTab:
     header: リンク
     detail: 'これらの属性値はこのサービスと他のコンテナ間のリンク情報を示します'
@@ -724,8 +1145,15 @@ servicePage:
         placeholder: '例: ウェブサイト'
       description:
         placeholder: '例: mycompany.com に対してのバランサー'
+  newIngress:
+    form:
+      name:
+        placeholder: e.g. website
+      description:
+        placeholder: e.g. Ingress for mycompany.com
   portsTab:
     title: ポート
+    detail: 'Ports mapped from a host IP to the listening ports of a container.'
     notActive: ポートはサービスがアクティブの場合のみ利用できます。
   logTab:
     title: サービスログ
@@ -736,10 +1164,16 @@ servicePage:
     loadbalancerservice: ロードバランサー
     dnsservice: エイリアス
     externalservice-ip: 外部 IP アドレス
+    externalservice-host: 外部名
     kubernetesservice: K8s サービス
     composeservice: 構成サービス
     networkdriverservice: ネットワークサービス
     storagedriverservice: ストレージサービス
+  sidekick:
+    tabHeader: サイドカー
+    header: ワークロード & サイドカー
+    helpBlock: メインコンテナもしくはサイドカーを選択してください
+
 signupPage:
   header: '{appName} にサインアップ'
   form:
@@ -752,12 +1186,16 @@ signupPage:
     confirm:
       subtext: 送信済みのメールから確認用リンクをクリックしてください
       resend: メールを再送信
+
 stackPage:
   header:
     singleBanner: 単一スタックビュー
     backLink: 全てのスタック表示に戻る
+  basics:
+    tagsCopy: Copy Tags as comma seperated list
   containers:
     header: コンテナ
+    detail: スタンドアローンコンテナとサービスがこのスタックに含まれます
     status: |
       {count, plural,
       =0 {コンテナはありません}
@@ -782,6 +1220,25 @@ stackPage:
       =1 {# エントリー}
       other {# エントリー}
       }
+  scalingGroups:
+    header: Scaling groups
+    detail: 'Containers existing in this scaling group'
+    status: |
+      {count, plural,
+      =0 {コンテナはありません}
+      =1 {# コンテナ}
+      other {# containers}
+      }
+  volumesTab:
+    header: Volumes
+    detail: 'These properties show the volumes attached to your container.'
+    table:
+      path: Mount Point
+      shared: Shared With
+      writable: Writable
+      noData: This stack has no volumes mounted
+      noMatch: No volumes match the current search
+
 newStack:
   header: YAML からインポート
   name:
@@ -798,6 +1255,40 @@ newStack:
   answers:
     label: 回答(変数置換を含む)
     addActionLabel: 回答を追加
+
+nodeTemplatesPage:
+  header: ノードテンプレート
+  actionButton: テンプレートを追加
+  detail: ノードテンプレートはインフラストラクチャプロバイダー上のクラスターに所属するノードを展開する際に利用されます
+  table:
+    state: 状態
+    name: 名前
+    provider: プロバイダー
+    location: ロケーション
+    size: サイズ
+    usedBy: Used By
+    noData: まだノードテンプレートは定義されていません
+    usedByNone: No Clusters
+    unknown: 不明
+
+storageClassPage:
+  header: ストレージクラス
+  addActionLabel: クラスを追加
+  noData: まだストレージクラスは定義されていません
+  noMatch: 検索条件に一致するストレージクラスはありません
+  provisioner:
+    label: プロビジョナー
+  default:
+    label: デフォルト
+
+persistentVolumePage:
+  header: 永続ボリューム
+  addActionLabel: ボリュームを追加
+  noData: まだ永続ボリュームはありません
+  noMatch: 検索条件に一致する永続ボリュームはありません
+  source:
+    label: ソース
+
 userPreferencesPage:
   header: アカウント設定
   theme:
@@ -814,41 +1305,9 @@ userPreferencesPage:
       label: ユーザー名
     email:
       label: E メールアドレス
-processesPage:
-  header: プロセス
-  tab:
-    summary: 概要
-    pools: プール
-    running: 起動中
-    delayed: 遅延
-    ready: 準備完了
-    completed: 直近で完了
-  summary:
-    noData: スケジュールされているプロセスはありません
-    table:
-      running: 起動中
-      ready: 準備完了
-      delay: 遅延
-  pools:
-    noData: プールはありません
-    noMatch: 検索条件に一致するプールがありません
-    table:
-      activeTasks: アクティブ
-      poolSize: プールサイズ
-      rejectedTasks: 却下
-      completedTasks: 完了
-      queueSize: キューサイズ
-      queueRemainingCapacity: 残りキュー
-  list:
-    table:
-      resource: リソース
-      exitReason: 終了理由
-      startTime: 開始日時
-      endTime: 終了日時
-      runTime: 実行時間
-      runAfter: 実開始時間
-    noData: '{which} のプロセスはありません'
-    noMatch: 検索条件に一致するプロセスがありません
+    password:
+      text: パスワードを変更
+
 verifyPage:
   header: "E メールアドレスの検証に成功しました!"
   subtext: アカウント情報の処理を完了する前にさらにいくつかの情報を入力する必要があります
@@ -856,6 +1315,7 @@ verifyPage:
     header: アカウントは作成されました
     subtext: ログインページに移動するには、以下のリンクをクリックします
     linkText: ログイン
+
 verifyResetPasswordPage:
   header: パスワードをリセット
   button: パスワードを更新
@@ -863,14 +1323,63 @@ verifyResetPasswordPage:
     header: パスワードはリセットされました!
     subtext: ログインページに移動するには、以下のリンクをクリックします
     linkText: ログイン
+
 waitingPage:
   hosts:
     setup:
       kubernetes: Kubernetes をセットアップ
-hostPartial:
-  host:
-    addCommon:
-      quanity: 数
+
+notifierPage:
+  notifiers: 通知
+  testedBtnLabel: OK
+  testingBtnLabel: テスト中
+  deleteErrorMessage: '通知 {displayName} は {alertNames} で利用されています'
+  notifierTypes:
+    slack: Slack
+    email: E メール
+    pagerduty: Pagerdudy
+    webhook: Webhook
+  slack:
+    url: URL
+    urlPlaceholder: "例: https://hooks.slack.com/services/T00000000/B00000000/XXXXXXXXXXXXXXXXXXXXXXXX"
+    defaultRecipient: デフォルト受信先(チャンネル)
+    defaultRecipientPlaceholder: '例: #example'
+    helpText: |
+        Slack 用 <a href="https://get.slack.help/hc/en-us/articles/115005265063-Incoming-WebHooks-for-Slack">incoming WebHooks の作成</a> を参照してください
+  smtp:
+    server: SMTP サーバー
+    host: ホスト
+    hostPlaceholder: "例: 192.168.1.121"
+    port: ポート
+    portPlaceholder: "例: 465"
+    sender: 送信者
+    userName: ユーザー名
+    userNamePlaceholder: "例: John"
+    password: パスワード
+    passwordPlaceholder: あなたのパスワード
+    defaultRecipient: デフォルト受信先(アドレス)
+    defaultRecipientPlaceholder: "例: admin@example.com"
+  pagerduty:
+    serviceKey: サービスキー
+    serviceKeyPlaceholder: あなたの pagerduty サービスキー
+    helpText: |
+      Pagerduty 用 <a href="https://support.pagerduty.com/docs/webhooks">incoming WebHooks の作成</a> を参照してください
+  webhook:
+    url: URL
+    urlPlaceholder: あなたの webhook URL
+  testAction:
+    testing: TESTING
+    testOk: 選択したアプリケーションを確認してください
+    testFailed: 何かが正しくないようです。入力内容を確認してください。
+    test: TEST
+  clone: クローン
+  index:
+    addActionLabel: 通知を追加
+    table:
+      created: 作成日
+      noData: まだ通知は定義されていません
+      noMatch: 一致しません
+
 ldap:
   providerName:
     openldap: OpenLDAP
@@ -919,7 +1428,7 @@ ldap:
       name: "Name Field:"
       search: "Search Field:"
       enabled: "Status Field:"
-      disabledBitMask: "Disabled BitMask:"
+      disabledBitMask: "無効化されたビットマスク:"
     group:
       header: グループ
       objectClass: "オブジェクトクラス:"
@@ -942,6 +1451,9 @@ ldap:
       labelText: グループ サーチベース
       placeholder: "例: ou=Groups,dc=mycompany,dc=com"
       helpText: "設定した場合、ユーザー検索ベースの代わりにこちらのベースがグループの検索に利用されます"
+    userSearchBase:
+      labelText: ユーザーサーチベース
+      placeholder: "例: ou=users,dc=mycompany,dc=com"
     defaultDomain:
       helpText: "一部を除き、ユーザーがログインする際このドメインが使用されます。"
       labelText: デフォルト ログインドメイン
@@ -949,20 +1461,26 @@ ldap:
   customizeSchema:
     header: "2. スキーマのカスタマイズ"
     helpText: "スキーマが標準的な ActiveDirectory フォーマットに一致しない場合、こちらでカスタマイズすることができます。"
+    cert:
+      labelText: CA 証明書
+      helpText: 必要に応じて CA 証明書を入力してください
+      placeholder: "-----BEGIN CERTIFICATE----- から始まる証明書をペーストしてください"
     users:
       header: ユーザー
       objectClass:
         labelText: オブジェクトクラス
       login:
-        labelText: Login Field
+        labelText: ログイン属性
       name:
-        labelText: Name Field
+        labelText: ユーザー名属性
       search:
-        labelText: Search Field
-      status:
-        labelText: Status Field
+        labelText: サーチ属性
+      searchBase:
+        labelText: ユーザーサーチベース
+      enabledAttribute:
+        labelText: ユーザー有効化属性
       disabledBitMask:
-        labelText: Disabled Status Bitmask
+        labelText: 無効化されたステータスビットマスク
       userMemberAttribute:
         labelText: ユーザーメンバー属性
     groups:
@@ -970,16 +1488,16 @@ ldap:
       objectClass:
         labelText: オブジェクトクラス
       name:
-        labelText: Name Field
+        labelText: 名前属性
       search:
-        labelText: Search Field
+        labelText: サーチ属性
       groupMemberUser:
         labelText: グループメンバーのユーザー属性
         placeholder: uid
       groupMemberMapping:
         labelText: グループメンバー マッピング属性
       groupDN:
-        labelText: グループ DN フィールド
+        labelText: グループ DN 属性
         placeholder: 識別名
   testAuth:
     header: "3. テストのうえ認証を有効化する"
@@ -991,36 +1509,52 @@ ldap:
     authenticate:
       pre: 認証
       post: "テスト中..."
+
 servicePartial:
   noContainers:
     label: まだコンテナはありません
     inactive:
       start: 開始
+
 accordionRow:
   status:
-    incomplete: 未完了
-    error: エラー
-    notConfigured: 未設定
+    any: Any
     configured: 設定済み
     countConfigured: "{count} 設定済み"
-    standard: デフォルト
     custom: カスタマイズ済み
+    error: エラー
+    incomplete: 未完了
+    none: None
+    notConfigured: 未設定
     rule: "{count, plural, =1 {# ルール} other {# ルール}}"
+    specific: Specific
+    standard: デフォルト
+
 advancedSection:
   showText: 詳細オプションを表示
   hideText: 詳細オプションを隠す
+
+annotationsSection:
+  title: アノテーション
+  detail: キー/バリュー メタデータ
+  key: キー
+  value: 値
+  noData: アノテーションはありません
+  noMatch: 検索条件に一致するアノテーションはありません
+
 billingInfo:
   header: 請求情報
   addNew: 支払い方法を追加
-  card: '{brand}: ...{last}'
+  card: "{brand}: ...{last}"
   noSub: アクティブな請求情報がありません
   table:
     title:
-      cardType: 'ブランド: {brand}'
-      last4: '下4桁: {last}'
-      exp: '有効期限: {exp}'
-      name: 'カード記載名: {name}'
+      cardType: "ブランド: {brand}"
+      last4: "下4桁: {last}"
+      exp: "有効期限: {exp}"
+      name: "カード記載名: {name}"
       actions: アクション
+
 caasLogin:
   resetHeader: パスワードリセット
   new: アカウントを作成
@@ -1031,13 +1565,35 @@ caasLogin:
   login: ログインページ
   form:
     email: E メールアドレス
+
+cloudProvider:
+  name: クラウドプロバイダー名
+  helpText: |
+    詳細は <a href="https://kubernetes.io/docs/concepts/cluster-administration/cloud-providers/" target="_blank" rel="nofollow noopener noreferrer">クラウドプロバイダーについて</a> を参照してください
+  warning:
+    設定をせずにクラウドプロバイダーを利用すると正常にクラスターが作成されないことがあります。クラスターを作成するまえにクラウドプロバイダーの設定を追加するようご注意ください。
+
 catalogSettings:
+  header: カタログ
+  notAvailable: "利用不可: カスタムカタログ <code>{name}</code> が含まれています"
+  helpText: 現在は Helm カタログのみサポートされます
+  library:
+    label: ライブラリ
+    detail: 公式に管理されているアプリケーション定義のリポジトリであり、{appName} によりメンテナンスされています。
+  helm:
+    stable:
+      label: 安定版 Helm
+      detail: 公式に管理されているアプリケーション定義のリポジトリであり、Kubernetes コミュニティによりメンテナンスされています。
+    incubator:
+      label: インキュベーター版 Helm
+      detail: まだ安定していないベータ版アプリケーション定義のリポジトリです。
   certified:
     header:
       rancher: "{appName} 認証済みライブラリ"
       pl: 認証済みライブラリ
     detail:
       rancher: テンプレートは Kubernetes オーケストレーションサポートのような Rancher のコアとなる機能に必要となり、Rancher Labs によりメンテナンス、サポートされます。
+      pl: Officially maintained templates required for core features such as Kubernetes.
   community:
     header:
       rancher: コミュニティサポート
@@ -1047,7 +1603,12 @@ catalogSettings:
       pl: テンプレートはコミュニティメンバーによって作成、メンテナンスされ、
   more:
     header: カスタム
+    helpText: 'ここでは独自のカスタムカタログソースを定義できます。それぞれユニークな名前と <code>git clone</code> によってハンドリングされる URL が必要となります (詳細は <a href="https://git-scm.com/docs/git-clone#_git_urls_a_id_urls_a" target="_blank" rel="nofollow noopener noreferrer">docs</a> を参照してください)'
     addActionLabel: カタログを追加
+    noMatch: 検索条件に一致するカタログはありません
+    noData: まだカスタムカタログは定義されていません
+    addHeader: カタログを追加
+    editHeader: カタログを編集
     name:
       label: 名前
       placeholder: '例: my catalog'
@@ -1061,37 +1622,332 @@ catalogSettings:
     branch:
       label: ブランチ
       placeholder: '例: master'
+
 clusterRow:
+  noMatch: 検索条件に一致する環境はありません
+  noData: このクラスターにはまだ環境はありません
+  noHosts: 外部クラスターにはまだノードはありません
+  noClusterMatch: 検索条件に一致するクラスターはありません
+  noClusterData: まだクラスターはありません
+  addHost: ノードを追加
   importCluster: 既存の Kubernetes を利用
   loginDefault: ログイン
+
 clusterWelcome:
   welcome: ようこそ！
   noHost: このクラスターにはまだホストが存在しません。新たにホストを追加しますか? それとも既存の Kubernetes 環境を利用しますか?
+  addHost: ノードを追加
   select: 選択
   importCluster: 既存の Kubernetes を利用
   importClusterDescription: |
     <p>既存の Kubernetes 環境に対しコンテナをデプロイし、そこに含まれるホストやネットワークを利用します。</p>
     <p>インフラ関連のリソースは {appName} の外部で管理され、</p>
-
     <p>オンプレミスでのインストレーションや以下のようなホスティッドサービスがサポートされます:</p>
   embeddedDescription: |
     <p>{appName} は自動的に Kubernetes をデプロイし管理します。</p>
     <p>{appName} がサポートするクラウドプロバイダー上にホストをデプロイするか Docker がインストールされている既存ホストを利用することができます。</p>
     <p>仮想マシンやベアメタル、オンプレミスやパブリッククラウドなど様々な組み合わせがサポートされ、</p>
-    <p>ホスト間を超えたコンテナ間の通信にはセキュアなオーバーレイネットワークが提供されます。
-    </p>
+    <p>ホスト間を超えたコンテナ間の通信にはセキュアなオーバーレイネットワークが提供されます。</p>
+
+clusterNew:
+  name:
+    label: クラスター名
+    placeholder: '例: sandbox'
+  description:
+    placeholder: '例: 開発/テスト用クラスター'
+  members:
+    label: メンバーロール
+    detail: クラスターに誰がアクセスでき、どのような権限を保持するかを制御します
+  config:
+    label: プロバイダー
+    detail: Choose where the nodes for the cluster will come from
+  nodes:
+    title: ノード
+    detail: 作成されるノードをカスタマイズします
+  customize:
+    title: クラスターオプション
+    detail: 作成されるクラスターのカスタマイズ用オプションです
+  psp:
+    label: デフォルトのポッドセキュリティポリシー
+    prompt: ポッドセキュリティポリシーを選択してください...
+    none: ポリシーが定義されていません
+    required: サポートが有効されている場合、デフォルトのポッドセキュリティポリシーが必要です
+  amazoneks:
+    label: Amazon Elastic Container Service for Kubernetes
+    shortLabel: Amazon EKS
+    access:
+      title: アカウントアクセス
+      detail: Amazon EKS を立ち上げるリージョンと API キーを選択してください
+  azureaks:
+    label: Azure Container Service
+    shortLabel: Azure AKS
+    access:
+      title: アカウントアクセス
+      detail: Azure と連携するための証明書情報を設定します
+      help: 'クライアント ID とシークレットを作成する手順は <a href="https://www.packer.io/docs/builders/azure-setup.html" target="_blank">こちら</a> から参照できます。'
+    placement:
+      label: Placement
+    count:
+      label: ノード数
+    location:
+      label: ロケーション
+      prompt: ロケーションを選択してください...
+    accountAccessSection:
+      label: アカウントアクセス
+    subscriptionId:
+      label: サブスクリプション ID
+      placeholder: あなたの Azure サブスクリプション ID
+    machineType:
+      label: VM サイズ
+      prompt: サイズを選択してください...
+    diskSizeGb:
+      label: OS ディスクサイズ
+    ssh:
+      label: SSH 公開鍵
+    security:
+      label: セキュリティ
+    members:
+      label: メンバーロール
+    pod:
+      label: ポッドセキュリティポリシー
+    kubernetesVersion:
+      label: Kubernetes バージョン
+      prompt: バージョンを選択してください...
+    admin:
+      label: 管理者ユーザー名
+      placeholder: user-1
+    tenant:
+      label: テナント ID
+      placeholder: あなたの Azure テナント ID
+    image:
+      label: イメージ
+      placeholder: 'canonical:UbuntuServer:16.04.0-LTS:latest'
+    size:
+      label: サイズ
+    dockerPort:
+      label: Docker ポート
+      placeholder: '2376'
+    publishSettingsFile:
+      label: 公開設定
+      placeholder: あなたの公開設定ファイル
+    environment:
+      label: 環境
+    resourceGroup:
+      label: リソースグループ
+      placeholder: 'docker-machine'
+    sshUser:
+      label: SSH ユーザー名
+      placeholder: usr1
+    storageType:
+      label: ストレージタイプ
+    vnet:
+      label: VNet
+      placeholder: '[resourcegroup:]name'
+    subnet:
+      label: サブネット
+      placeholder: example-sub-name
+    subnetPrefix:
+      label: サブネットプリフィックス
+      placeholder: 128.42.0.0/21
+    availabilitySet:
+      label: アベイラビリティセット
+      placeholder: availability-set-name
+    openPort:
+      label: 公開ポート
+      placeholder: 'Comma-separated, e.g. 80,443'
+    privateIpAddress:
+      label: プライベート IP
+      placeholder: 127.0.0.1
+    usePrivateIp:
+      label: 接続にプライベート IP を利用する
+    staticPublicIp:
+      label: パブリック IP
+    noPublicIp:
+      label: パブリック IP を使わない
+    clientId:
+      label: クライアント ID
+      placeholder: あなたのクライアント ID
+    clientSecret:
+      label: クライアントシークレット
+      placeholder: あなたのクライアントシークレット
+    region:
+      label: リージョン
+  googlegke:
+    label: Google Kubernetes Engine
+    shortLabel: Google GKE
+    checkServiceAccount: "次へ: ノードを設定"
+    checkingServiceAccount: Authenticating...
+    credential:
+      label: サービスアカウント
+      placeholder: サービスアカウントのプライベートキー JSON ファイル
+      configured: Configured for {project} project
+      helpText: |
+        <a href="https://console.cloud.google.com/projectselector/iam-admin/serviceaccounts" target="_blank" rel="nofollow noopener noreferrer">サービスアカウント</a> を JSON 形式のプライベートキーとともに作成し、ここに記載してください。サービスアカウントの作成に関する詳細は <a href="https://cloud.google.com/compute/docs/access/create-enable-service-accounts-for-instances" target="_blank" rel="nofollow noopener noreferrer">Google Cloud ドキュメント</a> を参照してください。また、次の3つの IAM アカウントが必要となりますのでご注意ください: <code>project/viewer</code>, <code>kubernetes-engine/admin</code>, <code>service-account/user</code>, ロールに関しての詳細な情報は <a href="https://cloud.google.com/kubernetes-engine/docs/how-to/iam-integration" target="_blank" rel="nofollow noopener noreferrer">こちら</a> を参照してください。
+    zone:
+      label: ゾーン
+      prompt: ゾーンを選択してください...
+    project:
+      label: プロジェクト
+      placeholder: '例: my-project'
+    machineType:
+      label: マシンタイプ
+      prompt: タイプを選択してください...
+    nodeCount:
+      label: ノード数
+      prompt: タイプを選択してください...
+    diskSizeGb:
+      label: ルートディスクサイズ
+    masterVersion:
+      label: Kubernetes バージョン
+      prompt: バージョンを選択してください...
+    clusterIpv4Cidr:
+      label: コンテナアドレス範囲
+      placeholder: '例: 10.42.0.0/16'
+    alphaFeatures:
+      label: アルファ機能
+  rke:
+    etcd:
+      heartbeat:
+        label: etcd ハートビート間隔
+        placeholder: ハートビートのインターバル時間
+      election:
+        label: etcd 選出タイムアウト
+        placeholder: 選出がタイムアウトするまでの時間
+    address:
+      title: ノードアドレス
+      detail: ノードのパブリック IP とプライベート IP を設定します
+      warning: 不正なアドレスです
+      public:
+        label: パブリック IP
+        placeholder: '例: 1.2.3.4'
+      private:
+        label: プライベート IP
+        placeholder: '例: 1.2.3.4'
+    label: '{appName} Kubernetes Engine'
+    shortLabel: RKE
+    customize:
+      label: クラスターオプション
+      detail: "クラスター用カスタム Kubernetes オプションです"
+    nodes:
+      title: ノードプール
+      detail: クラスターに所属するマシンの設定します
+      add: ノードプールを追加
+      addTemplate: ノードテンプレートを追加
+      templatePrompt: "テンプレートを選択してください..."
+      hostnamePrefix: ノード名プリフィックス
+      count: 数
+      template: テンプレート
+    detected: |
+      {count, plural,
+        =1 {# 台の新しいノードが登録されました}
+        other {# 台の新しいノードが登録されました}
+      }
+    done: 完了
+    command:
+      instructions: '以下のコマンドを既にサポート済みバージョンの Docker が動作している既存マシン上で実行してください'
+    auth:
+      label: 認証プロバイダー
+      x509: x509
+    network:
+      label: ネットワークプロバイダー
+      flannel: Flannel
+      calico: Calico
+      canal: Canal
+      options:
+        flannel:
+          iface:
+            label: インターフェース
+        calico:
+          cloudProvider:
+            label: クラウドプロバイダー
+    ingress:
+      label: イングレス プロバイダー
+      none: None
+      nginx: Nginx
+    version:
+      label: Kubernetes バージョン
+    registry:
+      label: Kubernetes イメージの取得先
+      default: デフォルトのレジストリ (DockerHub)
+      custom: "カスタムレジストリ:"
+      url:
+        label: URL
+        placeholder: "例: quay.io"
+      user:
+        label: ユーザー名
+      password:
+        label: パスワード
+    ignoreDockerVersion:
+      label: ノードの Docker バージョン
+      enabled: 未サポートのバージョンを許可
+      disabled: サポートされている Docker バージョンを要求
+    podSecurityPolicy:
+      label: ポッドセキュリティポリシー サポート
+    role:
+      title: ノードロール
+      detail: ノードがクラスター内でどのロールとして動作するか選択してください
+      header:
+        etcd: etcd
+        controlplane: Control
+        worker: Worker
+      requirements:
+        label: "必要なノード数:"
+        etcd: 1, 3, または 5
+        controlplane: 1 つ以上
+        worker: 1 つ以上
+    kubeApi:
+      label: Kube API
+      ipRange: Service Cluster IP Range
+      podSecurityPolicy: Pod Security Policy
+    kubeController:
+      label: Kube Controller
+      cidr: Cluster CIDR
+      ipRange: Service Cluster IP Range
+    kubelet:
+      label: Kubelet
+      domain: Cluster Domain
+      dns: Cluster DNS Server
+    errors:
+      etcd: Please select 1, 3, or 5 nodes to use for etcd.
+      controlPlane: Please select at least one node to use for for management.
+      worker: Please select at least one node to use as a worker.
+  custom:
+    label: Custom
+    shortLabel: Custom
+  import:
+    label: Imported
+    shortLabel: Imported
+    command:
+      instructions: "{appName} にインポートするには以下の kubectl コマンドを既存の Kubernetes 1.8.x クラスター上で実行してください:"
+      instructionsInsecure: "'certificate signed by unknown authority' のようなエラーが発生した場合はあなたの {appName} が公式の CA から署名された SSL 証明書を利用していないことが原因です。証明書チェックを回避するには以下のコマンドを実行してください。:"
+
+conditionSections:
+  title: コンディション
+  detail: このノードの現在のコンディションです
+  table:
+    type: タイプ
+    status: 状態
+    lastUpdate: 最終更新日
+    reason: 理由
+    message: メッセージ
+  noData: コンディションはありません
+  noMatch: 検索条件に一致するコンディションはありません
+
 confirmDelete:
   title: '本当に削除してもよろしいですか?'
+  environmentNote: 'Note: この環境下にある {appName} により作られたノードを含むの全てのリソースは完全に削除されます'
   protip: 'ProTip: この確認画面を飛ばす場合は削除ボタンのクリック時に {key} キーを長押ししてください。'
   confirmAction: 削除
   cancelAction: キャンセル
+  largeDeleteText: '{key} and {othersCount} others'
+
 containerLogs:
-  title: 'ログ: '
+  title: "ログ: {instanceName}"
   onlyCombined: "<b>Note:</b> このコンテナでは TTY (-t) フラグが有効なため、標準出力/標準エラー出力が結合されたログのみが利用可能です。"
   combined: 結合された出力
   stdout: 標準出力
   stderr: 標準エラー出力
-  protip: 'ProTip: 新しいウィンドウで起動する場合はログを開く際に {key} を長押ししてください。'
+  protip: "ProTip: 新しいウィンドウで起動する場合はログを開く際に {key} を長押ししてください。"
   scrollTop: トップにスクロール
   scrollBottom: 下部にスクロール
   clear: スクリーンをクリア
@@ -1101,37 +1957,738 @@ containerLogs:
     connected: 接続完了
     disconnected: 切断
     closed: 閉じる
+
 containerShell:
-  protip: 'ProTip: 新しいウィンドウで起動する場合はシェルアクセスを開く際に {key} を長押ししてください。'
+  protip: "ProTip: 新しいウィンドウで起動する場合はシェルアクセスを開く際に {key} を長押ししてください。"
   status:
     initializing: 初期化中...
-    error: 'エラー: {error}'
+    error: "エラー: {error}"
     connecting: 接続中...
     connected: 接続完了
     disconnected: 切断
     closed: 閉じる
+
 copyToClipboard:
   tooltip: クリップボードにコピー
   copied: コピーしました!
+
+cruRegistry:
+  title:
+    new: レジストリを追加
+    edit: 'レジストリを編集: {name}'
+    view: 'レジストリ: {name}'
+  address:
+    label: アドレス
+    dockerhub: DockerHub
+    quay: Quay.io
+    custom: カスタム
+    placeholder: "例: registry.example.com"
+  multiple: 複数
+  auth:
+    label: 認証トークン
+    saved: 保存
+  username:
+    label: ユーザー名
+  password:
+    label: パスワード
+    saved: 保存
+
+cruPersistentVolume:
+  name:
+    placeholder: "例: myvolume"
+  description:
+    placeholder: "例: Volume for production database"
+  title:
+    new: 永続ボリュームを追加
+    edit: '永続ボリュームを編集: {name}'
+    view: '永続ボリューム: {name}'
+  storageClass:
+    label: ストレージクラスに割当
+    prompt: None
+  capacity:
+    label: 容量
+    unit: GiB
+  source:
+    label: ボリュームプラグイン
+    title: プラグイン設定
+    detail: 選択したボリュームプラグインにオプションを設定します
+    prompt: ボリュームプラグインを選択してください...
+  customize:
+    title: カスタマイズ
+    detail: カスタマイズ用の拡張オプションです
+  mountOptions:
+    label: マウントオプション
+    addActionLabel: オプションを追加
+    noData: マウントオプションはありません
+  awsElasticBlockStore:
+    fsType:
+      label: ファイルシステムタイプ
+      placeholder: "例: ext4"
+    readOnly:
+      label: 読み込みのみ
+    partition:
+      label: パーティション
+      placeholder: "例: 1; 0 for entire device"
+    volumeID:
+      label: ボリューム ID
+      placeholder: "例: volume1"
+  azureDisk:
+    cachingMode:
+      label: キャッシュモード
+      placeholder: "例: None"
+    diskName:
+      label: ディスク名
+      placeholder: "例: kubernetes-pvc"
+    diskURI:
+      label: ディスク URI
+      placeholder: "例: https://example.com/disk"
+    fsType:
+      label: ファイルシステムタイプ
+      placeholder: "例: ext4"
+    kind:
+      label: 種類
+      placeholder: "例: PersistentVolumeClaim"
+    readOnly:
+      label: 読み込みのみ
+  secret:
+    defaultMode:
+      label: デフォルトモード
+      placeholder: "例: 256"
+    optional:
+      label: オプション
+    secretId:
+      label: シークレット
+    items:
+      label: 項目
+  configMap:
+    defaultMode:
+      label: デフォルトモード
+      placeholder: "例: 256"
+    optional:
+      label: オプション
+    name:
+      label: コンフィグマップ名
+      placeholder: "例: map"
+  emptyDir:
+    medium:
+      label: Medium
+      default: Node's Default Medium
+      memory: メモリ
+    sizeLimit:
+      label: サイズ制限
+      placeholder: "例: 300Mi"
+  azureFile:
+    secretName:
+      label: シークレット名
+      placeholder: "例: secret"
+    secretNamespace:
+      label: シークレット名前空間
+      placeholder: "例: default"
+    shareName:
+      label: 共有名
+      placeholder: "例: abc"
+    readOnly:
+      label: 読み込みのみ
+  cephfs:
+    monitors:
+      label: モニター
+      addActionLabel: 追加
+    path:
+      label: パス
+      placeholder: "例: /var"
+    readOnly:
+      label: 読み込みのみ
+    secretFile:
+      label: シークレットファイル
+      placeholder: "例: secret"
+    secretRef:
+      name:
+        label: 名前
+        placeholder: "例: abc"
+      namespace:
+        label: 名前空間
+        placeholder: "例: default"
+      label: シークレット
+    user:
+      label: ユーザー
+      placeholder: "例: root"
+  rbd:
+    fsType:
+      label: ファイルシステムタイプ
+      placeholder: "例: ext4"
+    image:
+      label: イメージ
+      placeholder: "例: image"
+    keyring:
+      label: キーリング
+      placeholder: "例: /etc/ceph/keyring"
+    monitors:
+      label: モニター
+      addActionLabel: 追加
+    pool:
+      label: プール
+      placeholder: "例: rbd"
+    readOnly:
+      label: 読み込みのみ
+    secretRef:
+      label: シークレット
+      placeholder: "例: secret"
+    user:
+      label: ユーザー
+      placeholder: "例: root"
+  fc:
+    fsType:
+      label: ファイルシステムタイプ
+      placeholder: "例: ext4"
+    lun:
+      label: LUN 番号
+      placeholder: "例: 2"
+    readOnly:
+      label: 読み込みのみ
+    targetWWNs:
+      label: ターゲット WWN
+      addActionLabel: 追加
+    wwids:
+      label: WWID
+      addActionLabel: 追加
+  flexVolume:
+    driver:
+      label: ドライバー
+      placeholder: "例: driver"
+    fsType:
+      label: ファイルシステムタイプ
+      placeholder: "例: ext4"
+    options:
+      label: オプション
+      addActionLabel: 追加
+    readOnly:
+      label: 読み込みのみ
+    secretRef:
+      label: シークレット
+      placeholder: "例: secret"
+  flocker:
+    datasetName:
+      label: データセット名
+      placeholder: "例: dataset"
+    datasetUUID:
+      label: データセット UUID
+      placeholder: "例: uuid"
+  glusterfs:
+    endpoints:
+      label: エンドポイント
+      placeholder: "例: 10.240.106.152:1"
+    path:
+      label: パス
+      placeholder: "例: kube_vol"
+    readOnly:
+      label: 読み込みのみ
+  gcePersistentDisk:
+    fsType:
+      label: ファイルシステムタイプ
+      placeholder: "例: ext4"
+    partition:
+      label: パーティション
+      placeholder: "例: 1; 0 for entire device"
+    pdName:
+      label: 永続ディスク名
+      placeholder: "例: abc"
+    readOnly:
+      label: 読み込みのみ
+  iscsi:
+    chapAuthDiscovery:
+      label: CHAP 認証ディスカバリー
+    chapAuthSession:
+      label: CHAP 認証セッション
+    fsType:
+      label: ファイルシステムタイプ
+      placeholder: "例: ext4"
+    initiatorName:
+      label: イニシエーター名
+      placeholder: "例: abc"
+    iqn:
+      label: IQN 番号
+      placeholder: "例: 2"
+    iscsiInterface:
+      label: iSCSI インターフェース
+      placeholder: "例: interface"
+    lun:
+      label: LUN 番号
+      placeholder: "例: 2"
+    portals:
+      label: ポータル
+      addActionLabel: 追加
+    readOnly:
+      label: 読み込みのみ
+    secretRef:
+      label: シークレット
+      placeholder: "例: secret"
+    targetPortal:
+      label: ターゲットポータル
+      placeholder: "例: portal"
+  local:
+    path:
+      label: パス
+      placeholder: "例: /var"
+  nfs:
+    path:
+      label: パス
+      placeholder: "例: /var"
+    readOnly:
+      label: 読み込みのみ
+    server:
+      label: サーバー
+      placeholder: "例: 10.244.1.4"
+  cinder:
+    fsType:
+      label: ファイルシステムタイプ
+      placeholder: "例: ext4"
+    readOnly:
+      label: 読み込みのみ
+    volumeID:
+      label: ボリューム ID
+      placeholder: "例: vol"
+  photonPersistentDisk:
+    fsType:
+      label: ファイルシステムタイプ
+      placeholder: "例: ext4"
+    pdID:
+      label: PD ID
+      placeholder: "例: abc"
+  portworxVolume:
+    fsType:
+      label: ファイルシステムタイプ
+      placeholder: "例: ext4"
+    readOnly:
+      label: 読み込みのみ
+    volumeID:
+      label: ボリューム ID
+      placeholder: "例: abc"
+  quobyte:
+    group:
+      label: グループ
+      placeholder: "例: abc"
+    readOnly:
+      label: 読み込みのみ
+    registry:
+      label: レジストリ
+      placeholder: "例: abc"
+    user:
+      label: ユーザー
+      placeholder: "例: root"
+    volume:
+      label: ボリューム
+      placeholder: "例: vol"
+  scaleIO:
+    fsType:
+      label: ファイルシステムタイプ
+      placeholder: "例: ext4"
+    gateway:
+      label: ゲートウェイ
+      placeholder: "例: https://localhost:443/api"
+    protectionDomain:
+      label: 保護ドメイン
+      placeholder: "例: pd01"
+    readOnly:
+      label: 読み込みのみ
+    secretRef:
+      name:
+        label: 名前
+        placeholder: "例: secret"
+      namespace:
+        label: 名前空間
+        placeholder: "例: default"
+      label: シークレット
+    sslEnabled:
+      label: SSL 有効
+    storageMode:
+      label: ストレージモード
+      placeholder: "例: ThinProvisioned"
+    storagePool:
+      label: ストレージプール
+      placeholder: "例: sp01"
+    system:
+      label: システム
+      placeholder: "例: scaleio"
+    volumeName:
+      label: ボリューム名
+      placeholder: "例: vol-0"
+  storageos:
+    fsType:
+      label: ファイルシステムタイプ
+      placeholder: "例: ext4"
+    readOnly:
+      label: 読み込みのみ
+    secretRef:
+      name:
+        label: 名前
+        placeholder: "例: secret"
+      namespace:
+        label: 名前空間
+        placeholder: "例: default"
+      label: シークレット
+    volumeName:
+      label: ボリューム名
+      placeholder: "例: vol"
+    volumeNamespace:
+      label: ボリューム名前空間
+      placeholder: "例: default"
+  vsphereVolume:
+    fsType:
+      label: ファイルシステムタイプ
+      placeholder: "例: ext4"
+    storagePolicyID:
+      label: ストレージポリシー ID
+      placeholder: "例: sp1"
+    storagePolicyName:
+      label: ストレージポリシー名
+      placeholder: "例: sp"
+    volumePath:
+      label: ボリュームパス
+      placeholder: "例: /"
+
+cruStorageClass:
+  name:
+    placeholder: "例: storage"
+  description:
+    placeholder: "例: AWS EBS Storage"
+  title:
+    new: ストレージクラスを追加
+    edit: 'ストレージクラスを編集: {name}'
+    view: 'ストレージクラス: {name}'
+  allowVolumeExpansion:
+    label: ユーザーがボリュームを拡張することを許容
+  mountOptions:
+    label: マウントオプション
+    addActionLabel: オプションを追加
+    noData: マウントオプションはありません
+  parameters:
+    title: パラメーター
+    detail: Configure the provider-specific parameters for the storage class
+    addActionLabel: パラメーターを追加
+  customize:
+    title: Customize
+    detail: Customize Advanced options
+  provisioner:
+    label: Provisioner
+  reclaimPolicy:
+    label: Reclaim Policy
+    Delete: Delete volumes and underlying device when released by workloads
+    Retain: Retain the volume for manual cleanup
+    Recycle: "Recycle: Empty the contents and then preserve the volume for future workloads"
+  aws-ebs:
+    type:
+      label: Volume Type
+      gp2: 'GP2 - General Purpose SSD'
+      io1: 'IO1 - Provisioned IOPS SSD'
+      st1: 'ST1 - Throughput-Optimized HDD'
+      sc1: 'SC1 - Cold-Storage HDD'
+    zone:
+      label: Availability Zone
+      automatic: "Automatic: Zones the cluster has a node in"
+      manual: "Manual: Choose specific zones"
+      placeholder: "us-east-1d, us-east-1c"
+    iopsPerGB:
+      label: Provisioned IOPS
+      unit: per second, per GB
+    encrypted:
+      label: Encryption
+    kmsKeyId:
+      label: KMS Key ID for Encryption
+      automatic: "Automatic: Generate a key"
+      manual: "Manual: Use a specific key (full ARN)"
+  gce-pd:
+    type:
+      label: Volume Type
+      pd-standard: 'Standard'
+      pd-ssd: 'SSD'
+    zone:
+      label: Availability Zone
+      automatic: "Automatic: Zones the cluster has a node in"
+      manual: "Manual: Choose specific zones"
+      placeholder: "us-central1-a, us-central1-b"
+  cinder:
+    type:
+      label: Volume Type
+      placeholder: "e.g. fast"
+    availability:
+      label: Availability Zone
+      automatic: "Automatic: Zones the cluster has a node in"
+      manual: "Manual: Choose specific zones"
+      placeholder: "e.g. nova"
+  vsphere-volume:
+    diskformat:
+      label: Disk Format
+      thin: Thin
+      zeroedthick: Zeroed Thick
+      eagerzeroedthick: Eager Zeroed Thick
+    storagePolicyName:
+      label: Storage Policy Name
+      placeholder: "e.g. gold"
+    datastore:
+      label: Datastore
+      placeholder: "e.g. VSANDatastore"
+    fstype:
+      label: Filesystem Type
+      placeholder: "e.g. ext3"
+    hostFailuresToTolerate:
+      label: Host Failures To Tolerate
+      placeholder: "e.g. 2"
+    cachereservation:
+      label: Cache Reservation
+      placeholder: "e.g. 20"
+  azure-disk:
+    new: New Azure Disk
+    unmanaged: Azure Unmanaged Disk
+    skuName:
+      label: Sku Name
+      placeholder: "e.g. Standard_LRS"
+    location:
+      label: Location
+      placeholder: "e.g. eastus"
+    storageAccount:
+      label: Storage Account
+      placeholder: "e.g. azure_storage_account_name"
+    storageaccounttype:
+      label: Storage Account Type
+      placeholder: "e.g. Standard_LRS"
+    kind:
+      label: Kind
+      shared: Shared
+      dedicated: Dedicated
+      managed: Managed
+      placeholder: "e.g. Shared"
+  azure-file:
+    skuName:
+      label: Sku Name
+      placeholder: "e.g. Standard_LRS"
+    location:
+      label: Location
+      placeholder: "e.g. eastus"
+    storageAccount:
+      label: Storage Account
+      placeholder: "e.g. azure_storage_account_name"
+  portworx-volume:
+    fs:
+      label: Filesystem
+      placeholder: "e.g. ext4"
+    block_size:
+      label: Block Size
+      placeholder: "e.g. 32"
+    repl:
+      label: Repl
+      placeholder: "e.g. 1; 0 for entire device"
+    io_priority:
+      label: I/O Priority
+      placeholder: "e.g. low"
+    snap_interval:
+      label: Snapshots Interval
+      placeholder: "e.g. 70"
+    aggregation_level:
+      label: Aggregation Level
+      placeholder: "e.g. 0"
+    ephemeral:
+      label: Ephemeral
+      placeholder: "e.g. true"
+  scaleio:
+    gateway:
+      label: Gateway
+      placeholder: "e.g. https://192.168.99.200:443/api"
+    system:
+      label: System
+      placeholder: "e.g. scaleio"
+    protectionDomain:
+      label: Protection Domain
+      placeholder: "e.g. pd0"
+    storagePool:
+      label: Storage Pool
+      placeholder: "e.g. sp1"
+    storageMode:
+      label: Storage Mode
+      ThinProvisioned: Thin Provisioned
+      ThickProvisioned: Thick Provisioned
+    secretRef:
+      label: Secret Ref
+      placeholder: "e.g. sio-secret"
+    readOnly:
+      label: Read Only
+      placeholder: "e.g. false"
+    fsType:
+      label: Filesystem Type
+      placeholder: "e.g. xfs"
+  storageos:
+    pool:
+      label: Pool
+      placeholder: "e.g. default"
+    description:
+      label: Description
+      placeholder: "e.g. Kubernetes volume"
+    adminSecretNamespace:
+      label: Admin Secret Namespace
+      placeholder: "e.g. default"
+    adminSecretName:
+      label: Admin Secret Name
+      placeholder: "e.g. storageos-secret"
+    fsType:
+      label: Filesystem Type
+      placeholder: "e.g. ext4"
+  longhorn:
+    numberOfReplicas:
+      label: Number Of Relicas
+      placeholder: "e.g. 3"
+    staleReplicaTimeout:
+      label: Stale Replica Timeout
+      placeholder: "e.g. 30"
+    fromBackup:
+      label: From Backup
+      placeholder: ""
+  quobyte:
+    quobyteAPIServer:
+      label: Quobyte API Server
+      placeholder: "e.g. http://138.68.74.142:7860"
+    registry:
+      label: Registry
+      placeholder: "e.g. 138.68.74.142:7861"
+    adminSecretNamespace:
+      label: Admin Secret Namespace
+      placeholder: "e.g. kube-system"
+    adminSecretName:
+      label: Admin Secret Name
+      placeholder: "e.g. quobyte-admin-secret"
+    user:
+      label: User
+      placeholder: "e.g. root"
+    group:
+      label: Group
+      placeholder: "e.g. root"
+    quobyteConfig:
+      label: Quobyte Config
+      placeholder: "e.g. BASE"
+    quobyteTenant:
+      label: Quobyte Tenant
+      placeholder: "e.g. DEFAULT"
+  rbd:
+    monitors:
+      label: Monitors
+      placeholder: "e.g. 10.16.153.105:6789"
+    adminId:
+      label: Admin ID
+      placeholder: "e.g. kube"
+    adminSecretNamespace:
+      label: Admin Secret Namespace
+      placeholder: "e.g. kube-system"
+    adminSecret:
+      label: Admin Secret
+      placeholder: "e.g. secret"
+    pool:
+      label: Pool
+      placeholder: "e.g. kube"
+    userId:
+      label: User ID
+      placeholder: "e.g. kube"
+    userSecretName:
+      label: User Secret Name
+      placeholder: "e.g. ceph-secret-user"
+    fsType:
+      label: Filesystem Type
+      placeholder: "e.g. ext4"
+    imageFormat:
+      label: Image Format
+      placeholder: "e.g. 2"
+    imageFeatures:
+      label: Image Features
+      placeholder: "e.g. layering"
+  glusterfs:
+    resturl:
+      label: REST URL
+      placeholder: "e.g. http://127.0.0.1:8081"
+    restuser:
+      label: REST User
+      placeholder: "e.g. admin"
+    restuserkey:
+      label: REST User Key
+      placeholder: "e.g. password"
+    secretNamespace:
+      label: Secret Namespace
+      placeholder: "e.g. default"
+    secretName:
+      label: Secret Name
+      placeholder: "e.g. heketi-secret"
+    clusterid:
+      label: Cluster ID
+      placeholder: "e.g. 630372ccdc720a92c681fb928f27b53f"
+    gidMin:
+      label: GID MIN
+      placeholder: "e.g. 40000"
+    gidMax:
+      label: GID MAX
+      placeholder: "e.g. 50000"
+    volumetype:
+      label: Volume Type
+      placeholder: "e.g. replicate:3"
+
 dangerZone:
   header: 拡張設定
+  subtext: "Typical users will not need to change these.  Proceed with caution, incorrect values can break your {appName} installation.<br/>Settings which have been customized from default settings  are shown in <b>bold</b>."
   showLabel: 私は拡張設定を変更することで問題が生じる可能性があると理解しています。
-devicePermissions:
-  all: 全て
-  none: None
-  read: 読み込み
-  write: 書き込み
-  mknod: Mknod
+  description:
+    'access-log': 'Path to write access logs to (HA installation only)'
+    'api-auth-jwt-token$expiry': 'Authorization token/UI session lifetime (milliseconds)'
+    'api-auth-realm': 'HTTP Basic Auth realm for requests without Authorization header'
+    'api-auth-restrict-concurrent-sessions': 'Limit active session tokens to one per account.  This mainly prevents users from logging in to the UI from multiple computers simultaneously.  Note: Existing sessions may continue to be valid until they expire when this is initially enabled.'
+    'api-interceptor-config': 'JSON configuration for API Interceptor'
+    'api-proxy-allow': 'Allow use of /v1/proxy to talk to whitelisted domains, for custom Add Host UIs'
+    'api-proxy-whitelist': 'Whitelist of domains to that can be proxied through /v1/proxy to, for custom Add Host UIs'
+    'api-ui-css-url': 'CSS location for the API UI'
+    'api-ui-js-url': 'JavaScript location for the API UI'
+    'audit_log-purge-after-seconds': 'Auto-purge Audit Log entries after this long (seconds)'
+    'cacerts': 'Default certificate'
+    'catalog-refresh-interval-seconds': 'Refresh Catalog git repos after this long (seconds)'
+    'container-event-max-size': 'Maximum number of outstanding container events allowed per host before dropping events'
+    'default-cluster-template': 'Template to use when creating a new cluster.  This includes the default catalog items which are deployed to the System environment and the configurations of each item.'
+    'db-cattle-maxidle': 'Database pool: maximum idle connections (change requires restart)'
+    'db-cattle-maxtotal': 'Database pool: maximum total connections (change requires restart)'
+    'db-prep-stmt-cache-size': 'Database pool: Prepared statement cache size (per connection; change requires restart)'
+    'engine-newest-version': 'The newest supported version of Docker at the time of this release.  A Docker version that does not satisfy supported docker range but is newer than this will be marked as untested'
+    'engine-supported-range': 'Semver range for suported Docker engine versions.  Versions which do not satisfy this range will be marked unsupported in the UI'
+    'engine-install-url': 'Docker engine URL'
+    'events-purge-after-seconds': 'Auto-purge Event entries after this long (seconds)'
+    'graphite-host': 'Graphite: Server hostname or IP (change requires restart)'
+    'graphite-options': 'Graphite: Additional options'
+    'graphite-port': 'Graphite: Server port'
+    'host-remove-delay-seconds': 'Automatically remove hosts that are disconnected for more than this long (seconds)'
+    'lb-instance-image': 'Default docker image for Load Balancer Services'
+    'main_tables-purge-after-seconds': 'Auto-purge deleted entries from most tables after this long (seconds)'
+    'project-create-default': 'Automatically create an Environment for users on first login, if they have access to no other Environments.'
+    'registry-default': 'Pull images with no registry specified from this registry instead of DockerHub'
+    'registry-whitelist': 'Allow containers images only from the specified registries (if specified; comma-separated)'
+    'secrets-backend': 'Backend storage provider for secrets'
+    'service_log-purge-after-seconds': 'Auto-purge Service Log entries after this long (seconds)'
+    'server-url': 'Default Rancher install url. Must be HTTPS. All nodes in your cluster must be able to reach this.'
+
+    'settings-public': 'The settings that are visible to non-admin users.  These are primarily needed for the UI.'
+    'ui-pl': 'Private-Label company name'
+    'ui-show-custom-host': 'Show the Custom host option on the Add Host screen.  Note that disabling this does not prevent a user from using the API to add custom hosts.'
+    'ui-sendgrid-api_key': 'SendGrid API key'
+    'ui-sendgrid-template-password_reset': 'SendGrid template for initiating password reset'
+    'ui-sendgrid-template-create_user': 'SendGrid template for confirming email'
+    'ui-sendgrid-template-verify_password': 'SendGrid template for confirming password reset'
+    'upgrade-manager': 'Automatic upgrades of infrastructure stacks'
+
 editAccount:
   title: アカウントを編集
   form:
     name:
+      label: 表示名
       placeholder: '例: ジョン スミス'
     kind:
       label: アカウントタイプ
+      user: Normal User
+      admin: "Admin: Full access to manage everything in all clusters"
     description:
       label: 詳細情報
       placeholder: '例: このアカウントは、ジョン ・ スミス用です'
+    publicValue:
+      label: Username
     oldPassword:
       label: 現在のパスワード
     newPassword:
@@ -1140,28 +2697,36 @@ editAccount:
       label: 新しいパスワード(確認用)
     identity:
       label: ID
+
 editApiKey:
   title:
     justCreated: API Key は作成されました
     editing: API キーを編集
     new: 新しい API キー
-  publicValue:
-    label: アクセスキー (ユーザー名)
-  secretValue:
-    label: 秘密キー (パスワード)
-  name:
-    placeholder: '例: アプリケーション サーバー'
+  accessKey: アクセスキー(username)
+  secretKey: 秘密キー(password)
+  basicAuth: "アクセスキーと秘密キーは HTTP ベーシック認証においてユーザー名とパスワードとして認証リクエストを送信できます。また、これらを結合し Bearer トークンとしても利用できます:"
+  token: Bearer トークン
+  ttl:
+    label: 自動での失効日設定
+    never: 失効しない
+    day: 現在から 1 日
+    month: 現在から 1 ヶ月
+    year: 現在から 1 年
   description:
-    placeholder: e.g. このキーはアプリケーションサーバーでコンテナをデプロイするのに使われます
+    placeholder: "オプション 例: このキーはアプリケーションサーバーでコンテナをデプロイするのに使われます"
   saveWarning1: 上記のキーを保存してください!  以降、秘密キーは参照できません。
   saveWarning2: もしキーを無くしてしまった場合、新しい API キーを作成する必要があります。
   noteOptional: 名前と詳細情報は何のために利用されるかを示すためのオプションです。 作成をクリックすることで単純に作成することもできます。
+
 editCertificate:
   title: 証明書を編集
   name:
     placeholder: '例: mydomain.com'
   description:
     placeholder: '例: mydomain.com の EV 証明書'
+  noteKeyWriteOnly: "Note: The Private Key is intentionally blank because the field is write-only.  You will do not need to provide the Private Key unless you are intending on changing it."
+
 editCluster:
   title:
     new: クラスターを追加
@@ -1180,7 +2745,8 @@ editCluster:
     add: スタックを追加
     cancel: システムスタックの追加をキャンセル
   modal:
-    onCluster: '重要: 現在の環境を所有するクラスターを削除しようとしています。このクラスターを削除する前に、別のクラスター内の新しい環境を選択してください'
+    onCluster: "重要: 現在の環境を所有するクラスターを削除しようとしています。このクラスターを削除する前に、別のクラスター内の新しい環境を選択してください"
+
 editContainer:
   title:
     vm: VM を編集
@@ -1189,16 +2755,19 @@ editContainer:
     placeholder: '例: myapp'
   description:
     placeholder: '例: マイアプリケーション'
+
 editHost:
-  title: ホストを編集
+  title: ノードを編集
   hostname:
     label: ホスト名
+    help: ノードのオペレーティングシステムから取得されたホスト名です
   customName:
     label: カスタム名
     placeholder: '例: dev1'
     help: 空の場合、ホスト名が表示されます。
   description:
     label: 詳細情報
+    placeholder: "例: My development node"
   labels:
     label: ラベル
   ips:
@@ -1209,36 +2778,65 @@ editHost:
     help: 入力された場合、スケジューラが与えられたパブリック IP アドレス群から対象を選択し公開ポートをバインドします。
   requireAny:
     label: 必要となるコンテナラベル
+    help: If provided, containers must have one or more of the given labels in order to be eligible for scheduling onto this node.  If the value is left empty, a container with a matching key is eligible regardless of value.  <code>io.rancher.container.system</code> is required to allow system containers on to the node.
     addActionLabel: 必要となるラベルを追加
-editRegistry:
-  title: レジストリを編集
-  address:
-    label: アドレス
-  email:
-    label: Email
-    placeholder: '例: you@example.com'
-  username:
-    label: ユーザー名
-    placeholder: '例: username'
-  password:
-    label: パスワード
-    placeholder: '例: password'
+
 editService:
   title: サービスを編集
+
 editStack:
+  title: 名前空間を編集
   name:
     label: 名前
+    error: Namespace name is already in use. Please choose a new namespace name.
     placeholder: '例: myapp'
+  project:
+    label: プロジェクト
+    prompt: プロジェクトを選択してください...
   description:
     label: 詳細情報
+    placeholder: '例: MyApp namespace'
   group:
     label: タグ
     placeholder: '例: frontend, production'
+    help: Comma-separated list of tags for the new Stack.  The workload lists can be filtered by individual tags.
+
+editUser:
+  title: ユーザーを編集
+  form:
+    name:
+      label: 表示名
+      placeholder: '例: John Smith'
+    username:
+      label: ユーザー名
+    otherRoles:
+      label: ロールを削除
+    password:
+      label: パスワード変更
+      new: 新しいパスワード
+      confirm: パスワードの確認
+      error: パスワードは一致している必要があります
+      mustChangePassword:
+        new: 最初のログイン時にパスワードを変更するようユーザーに要求する
+        edit: 次のログイン時にパスワードを変更するようユーザーに要求する
+
 envCatalog:
   header: カタログ
+  subtext: 'You can define your own custom catalog sources here. Catalogs added here will only be availabel to the environemnt in which they were added. Each one needs a unique name and a URL that <code>git clone</code> can handle (see <a href="https://git-scm.com/docs/git-clone#_git_urls_a_id_urls_a" target="_blank" rel="nofollow noopener noreferrer">docs</a> for more info).'
   addActionLabel: カタログを追加
+
+moveNamespace:
+  title: |
+    Move {count, plural,
+    =1 {名前空間: {name}}
+    other {# 名前空間:}}
+  to: "To project:"
+  actionLabel: Move
+
 stackHeader:
+  title: '名前空間: {name}'
   outputs: 出力
+
 stacksPage:
   table:
     standalone: 独立型コンテナ
@@ -1246,15 +2844,55 @@ stacksPage:
     scale: スケール数
     instanceState: コンテナの状態
     instanceStateWithIcon: 状態
+
 formatIp:
   noIp: None
+
 formBalancerConfig:
   title: カスタムの設定ファイル
   detail: '{appName} によって生成された設定より上位に適用するためのカスタム設定ファイルを指定してください'
+  custom: |
+    See <a href="https://cbonte.github.io/haproxy-dconv/1.6/configuration.html" target="_blank" rel="nofollow noopener noreferrer">haproxy documentation</a> fore more info about specific options that can go into the the config file.  When overriding the <code>backend</code> or similar lines which include the IP address of the target container, use <code>$IP</code> where the address goes and {appName} will generate the appropriate line(s).
   config:
     prompt: カスタムされた haproxy.cfg の内容
+
+formIngress:
+  defaultBackend:
+    label: このルールをデフォルトバックエンドとして設定
+    mark: デフォルトバックエンド
+  label: ルール
+  addRuleLabel: ルールを追加
+  removeRuleLabel: このルールを削除
+  noRules: ルールはありません
+  host:
+    label: リクエストホスト
+    placeholder: "例: example.com"
+  backendType:
+    label: バックエンドタイプ
+  mode:
+    workload: ワークロード
+    service: DNS レコード
+
+formIngressBackends:
+  label: ターゲットバックエンド
+  noRules: バックエンドはありません
+  addServiceLabel: DNS レコードを追加
+  addWorkloadLabel: サービスを追加
+  service:
+    label: サービス
+  workload:
+    label: ワークロード
+  targetPort:
+    label: ポート
+    placeholder: "例: 80"
+  path:
+    label: パス
+    placeholder: "例: /foo"
+  target: ターゲット
+
 formBalancerListeners:
   label: リスナー & ターゲットルール
+  detail: Control the mapping of requests coming into the balancer to the desired target.
   status: |
     {count, plural,
     =0 {ルールはありません}
@@ -1273,13 +2911,15 @@ formBalancerListeners:
     label: プロトコル
   sourceIp:
     label: ホスト IP
-    placeholder: '例: 1.2.3.4; デフォルト: All'
+    placeholder: "例: 1.2.3.4; デフォルト: All"
   sourcePort:
     label: リスニングポート
     placeholder: '例: 80'
   help: "ホストとパスルールは表示順の上部から下部に向かって評価されます。バックエンドはデフォルトではランダムの名前がつけられ、生成されるバックエンド名をカスタマイズする場合は名前を付与することでカスタマイズされた haproxy.cfg 内部で指定した名前を参照します。"
+
 formBalancerRules:
   label: ターゲットルール
+  detail: Map requests to different targets depending on host, port, path, or IP address.
   status: |
     {count, plural,
     =0 {ルールはありません}
@@ -1299,7 +2939,7 @@ formBalancerRules:
     label: プロトコル
   sourceIp:
     label: ホスト IP
-    placeholder: '例: 1.2.3.4; デフォルト: All'
+    placeholder: "例: 1.2.3.4; デフォルト: All"
   sourcePort:
     label: リッスンポート
     placeholder: '例: 80'
@@ -1321,6 +2961,7 @@ formBalancerRules:
   selector:
     label: セレクタ
     placeholder: '例: foo=bar'
+
 formCommand:
   title: コマンド
   detail: コンテナ起動時に実行されるコマンドを設定します
@@ -1335,6 +2976,9 @@ formCommand:
   workingDir:
     label: ワーキングディレクトリ
     placeholder: '例: /myapp'
+  uid:
+    label: User ID
+    placeholder: e.g. 501
   console:
     label: コンソール
     both: 'インタラクティブ &amp; TTY <span class="text-muted">(-i -t)</span>'
@@ -1352,6 +2996,13 @@ formCommand:
       other {回}
       }再起動
     always: 常に
+  terminationGracePeriodSeconds:
+    label: Stop Timeout
+    helpText: The container will have this long to stop on its own before it is forcefully terminated.
+  fsgid:
+    label: Filesystem Group
+    placeholder: e.g. 501
+
 formContainerLinks:
   title: リンク
   detail: このコンテナと他のコンテナーの関係性を定義します
@@ -1360,9 +3011,13 @@ formContainerLinks:
     label: 対象コンテナ
   alias:
     label: エイリアス名
+    placeholder: e.g. database
   noData: コンテナリンクはありません
+  noMatch: No links match the current search
+
 formCount:
   label: 数
+
 formDisks:
   addDiskLabel: ディスクを追加
   addRootDiskLabel: ルートディスクを追加
@@ -1381,7 +3036,10 @@ formDisks:
     placeholder: '例: 1000'
   driver:
     label: ドライバー
+
 formEngineOpts:
+  title: エンジンオプション
+  detail: Docker デーモンの設定をカスタマイズします
   engineInstallUrl:
     label: Docker インストール URL
     placeholder: '例: http://get.docker.com/'
@@ -1415,6 +3073,7 @@ formEngineOpts:
     addActionLabel: レジストリミラーを追加
     valueLabel: ミラー URL
     valuePlaceholder: '例: https://my-mirror.example.com:5000'
+
 formEnvVar:
   title: 環境変数
   detail: 作成時に追加された環境変数
@@ -1428,16 +3087,164 @@ formEnvVar:
   labels:
     key: キー
     value: 値
+
+formGlobalRoles:
+  title: グローバル権限
+  description: ユーザーが {appName} 環境全体を管理する際に必要なアクセス権を制御します
+  mode:
+    admin:
+      label: 管理者
+      detail: 管理者は、環境全体およびすべてのクラスタ内のすべてのリソースを完全に制御できます
+    user:
+      label: 一般ユーザー
+      detail: 一般ユーザーは、新しいクラスターを作成しアクセスが許可されているクラスターおよびプロジェクトを管理できます
+    custom:
+      label: カスタム
+      detail: ユーザー個別のアクセス許可を選択します
+  role:
+    create-clusters:
+      label: 新しいクラスタの作成
+      detail: ユーザーが新しいクラスターを作成し、そのクラスターの所有者になることを許可します。一般ユーザーは、デフォルトでこのアクセス許可を持っています。
+    manage-authn:
+      label: 認証の設定
+      detail: ユーザーがすべての認証プロバイダ設定を有効化、設定、および無効化できるようにします
+    manage-catalogs:
+      label: カタログの設定
+      detail: ユーザーがカタログを追加、編集、および削除できるようにします
+    manage-clusters:
+      label: 全てのクラスタの管理
+      detail: ユーザーがメンバーとして所属していないクラスタを含め、すべてのクラスタを管理できるようにします
+    manage-node-drivers:
+      label: ノードドライバーの設定
+      detail: ユーザーがすべてのノードドライバー設定を有効化、設定、および削除できるようにします
+    manage-node-templates:
+      label: ノードテンプレートの管理
+      detail: ユーザーがノードテンプレートを定義、編集、および削除できるようにします
+    manage-roles:
+      label: ロールの管理
+      detail: ユーザーがロールを定義、編集、および削除できるようにします
+    manage-users:
+      label: ユーザーの管理
+      detail: ユーザーがすべてのユーザーの作成、削除、およびパスワードの設定をできるようにします
+    use-catalogs:
+      label: カタログの利用
+      detail: ユーザーがカタログからテンプレートを表示およびデプロイできるようにします。一般ユーザーはデフォルトでこのアクセス許可を持っています。
+    use-node-templates:
+      label: ノードテンプレートの利用
+      detail: ユーザーが既存のノードテンプレートを使用して新しいノードをデプロイできるようにします
+    base:
+      label: ログインアクセス
+
+formMembers:
+  members:
+    user: ユーザー
+    group: グループ
+    serviceaccount: サービスアカウント
+    labelText: メンバー
+    addMember: メンバーを追加
+    addUser: ユーザーを追加
+    noAddUser: You are the only active registered user.
+    addGroup: グループを追加
+    addServiceAccount: サービスアカウントを追加
+    multipleRoles: 複数ロール
+    customRoles: カスタムロール
+    kind:
+      label: 種類
+    name:
+      label: 名前
+    role:
+      label: ロール
+    errors:
+      nameReq: 名前は必要です
+      nameInExists: 名前は既に存在しています。新しいプロジェクト名を使用してください。
+      memberNameReq: メンバーには名前が必要です
+      memberRoleReq: メンバーにはロールが必要です
+      ownerReq: 少なくとも1人オーナーロールのメンバーが必要です
+
+formScopedRoles:
+  title: '{type} 権限'
+  description: TBD.
+  mode:
+    admin:
+      label: オーナー
+      detail: オーナーは {type} とその内部のリソースに対してフルコントロール権限を持ちます
+    user:
+      label: メンバー
+      detail: メンバーは {type} の内部リソースに対して管理権限を持ちますが {type} 自体の変更はできません
+    custom:
+      label: カスタム
+      detail: このユーザーに対して個別のロールを選択します
+    readOnly:
+      label: 読み込みのみ
+      detail: メンバーは {type} の内部リソースを参照することはできますが {type} 自体の変更はできません
+    userDef:
+      detail: ユーザー定義のロール
+    role:
+      read-only:
+        label: 読み込みのみ
+        detail: 全てを参照することができますが変更はできません
+
 formHealthCheck:
   title: ヘルスチェック
+  detail: 対象が正常に稼働しレスポンス可能か定期的にコンテナに対しリクエストを発行します
+  readiness: Readiness チェック
+  liveness: Liveness チェック
+  separateLivenessCheck: Define a separate liveness check
+  combinedLivenessCheck: Use the same check for liveness and readiness
   checkType:
     none: None
+    tcp: TCP 接続が正常にオープンしているか確認
+    http: HTTP リクエストに対し成功が返ってくるか確認 (2xx または 3xx)
+    https: HTTPS リクエストに対し成功が返ってくるか確認 (2xx または 3xx)
+    command: コンテナ内でコマンドを実行し 0 が返ってくるか確認
+  command:
+    label: コマンド
+    placeholder: '例: cat /tmp/health'
+  path:
+    label: リクエストパス
+    placeholder: '例: /healthcheck'
+  httpHeaders:
+    label: 追加ヘッダー
+    addActionLabel: ヘッダーを追加
+    keyLabel: ヘッダー名
+    keyPlaceholder: '例: User-Agent'
+    valuePlaceholder: '例: Health-Check'
   host:
     label: ホストヘッダー
+    placeholder: '例: example.com'
   port:
+    label: 対象コンテナポート
     placeholder: '例: 80'
+  initialDelaySeconds:
+    label: Start Checking After
   reinitializingTimeout:
     label: 再初期化タイムアウト
+  periodSeconds:
+    label: チェック間隔
+  timeoutSeconds:
+    label: タイムアウト
+  successThreshold:
+    label: Healthy After
+    unit: successes
+  failureTheshold:
+    label: Unhealthy After
+    unit: failures
+
+formKeyToPath:
+  addAction: アイテムを追加
+  header: アイテム
+  default: 全てのキー
+  specific: 特定のキーを選択してください
+  key:
+    label: キー
+    placeholder: "例: username"
+  path:
+    label: パス
+    placeholder: "例: my-group/my-username"
+  mode:
+    label: モード
+    placeholder: "例: 400"
+
 formKeyValue:
   addAction: ペアを追加
   key:
@@ -1448,10 +3255,12 @@ formKeyValue:
     label: 値
     placeholder: 値
   protip: 'ProTip: 簡単に入力するには key=value ペアをペーストしてください。'
+
 formImage:
   label: Docker イメージ
   container:
     placeholder: "例: ubuntu:xenial"
+
 formNameDescription:
   name:
     label: 名前
@@ -1460,34 +3269,18 @@ formNameDescription:
     label: 詳細情報
     placeholder: 詳細情報
     expand: 詳細情報を追加
+
 formNetwork:
   title: ネットワーク
   detail: コンテナに対しネットワークと DNS オプションを設定します
-  networkMode:
-    label: ネットワーク
-    bridge:
-      label: ブリッジ
-      detail: デフォルトの docker0 ブリッジをアタッチする
-    container:
-      label: コンテナ
-      detail: 既存コンテナのネットワーク名前空間をアタッチします
-    host:
-      label: ホスト
-      detail: ホストのネットワーク名前空間をアタッチします
-    managed:
-      label: 管理
-      detail: 全てのコンテナ間で自動的なメッシュネットワークを構築します
-    nat:
-      label: NAT
-      detail: 物理ホスト上でネットワークアドレス変換を実施します
-    ipsec:
-      label: IPSec
-    transparent:
-      label: 透過
-      detail: 物理ホストのネットワークに直接接続します
-    none:
-      label: None
-      detail: ネットワークなし
+  netMode:
+    label: ホストのネットワーク名前空間を使用
+    disable: "No"
+    enable: "Yes"
+  dnsPolicy:
+    label: DNS ポリシー
+    clusterFirstWithHostNet: "Cluster first with host network"
+    clusterFirst: "Cluster first"
   container:
     label: コンテナ
   requestedIp:
@@ -1519,70 +3312,202 @@ formNetwork:
     label: サーチドメイン
     placeholder: '例: prod.example.com'
     addActionLabel: ドメインを追加
+  subdomain:
+    label: Subdomain
+    placeholder: e.g. foo
+  hostAlias:
+    addActionLabel: Add Node Alias
+    label: Host Aliases
+    host:
+      label: Host
+      placeholder: e.g. example
+    ip:
+      label: IP
+      placeholder: e.g. 192.168.1.101
+
 formPorts:
   header: ポートマッピング
   addAction: ポートを追加
+  kind:
+    label: 公開対象
+    NodePort: 全てのノード
+    HostPort: ポッドが稼働しているノード
+    ClusterIP: 内部クラスター IP
+    LoadBalancer: ロードバランサー
+  sourcePort:
+    label: ソースポート
+    placeholder: "例: 80"
+    ipPlaceholder: "例: 80 または 19.82.2.24:80"
+    clusterIpDefault: "コンテナポートと同様"
+  nodePort:
+    placeholder: "例: 30000"
+  containerPort:
+    label: コンテナポート
+    placeholder: "例: 8080"
   protocol:
     label: プロトコル
+  name:
+    label: 名前
+    placeholder: "例: backend"
+  dnsName:
+    label: DNS 名
+    placeholder: "例: example"
   noPorts: このコンテナにはポートマップがありません
   error:
-    privateRequired: 各ポートルールにはプライベートコンテナ ポートが必要になります。
-    publicRequired: ホスト IP を指定した場合はパブリックホスト ポートを指定する必要があります。
+    privateRequired: 各ポートルールにはプライベートコンテナ ポートが必要になります
+    publicRequired: ホスト IP を指定した場合はソースポートを指定する必要があります
+    hostPort:
+      sourcePortRequired: ポッドが稼働しているノードに対してはソースポートが必要になります
+    loadBalancer:
+      sourcePortRequired: ロードバランサーにはスースポートが必要になります
     mixedIpPort: "ポート {ip}:{port}/{proto} は、1 つ以上のマッピングを保持しています。"
     mixedPort: "ポート {port}/{proto} は、1 つ以上のマッピングを保持しています。"
-  showIpLink: ホスト IP をカスタマイズ
+  showAdvanced: ポート名オプションを見る
+
 formScale:
-  label: スケール
-  showAdvanced: スケーリングオプション
+  label: ワークロードタイプ
+  showAdvanced: 詳細オプションを表示
+  scaleMode:
+    deploymentPrefix: "スケーラブルデプロイメント:"
+    replicationControllerPrefix: "レプリケーションコントローラー:"
+    replicaSetPrefix: "レプリカセット:"
+    statefulSetPrefix: "ステートフルセット:"
+    scaleSuffix: |
+      {scale, plural,
+        =1 {ポッド}
+        other {ポッド}
+      }
+    daemonSet: "各ノード上で単一ポッドとして動作"
+    cronJob: "クーロンスケジュールとして動作"
+    job: ジョブ
+    sidekickInactive: "サイドカー: 既存ワークロードにコンテナを追加する"
+    sidekickPrefix: "サイドカー: 次のワークロードにコンテナを追加"
+    sidekickSuffix: ""
+
 formScheduling:
+  title: ノードスケジューリング
+  detail: ポッドが展開されるノードを設定します
   status: |
     {count, plural,
     =0 {ルールはありません}
     =1 {# ルール}
     other {# ルール}
     }
+  canRequestHost:
+    vm: 仮想マシンを <b>全て</b> 特定ノード上で起動
+    containers: このワークロード用のポッドを <b>全て</b> 特定ノード上で起動
+  runSpecific: このポッドを特定ノード上で起動
+  noRules: ルール無し
+  noToleration: No tolerations.
+  autoRun: "スケジューリングルールに一致した全てのノード上で自動的に起動されます:"
+  autoPick:
+    vm: "スケジューリングルールに一致するそれぞれの仮想マシンのノードを自動的に選択します:"
+    container: "スケジューリングルールに一致するそれぞれのポッドのノードを自動的に選択します:"
+    host: "スケジューリングルールに一致するノードを自動的に選択します:"
+  addRule: ルールを追加
+  addCustom: カスタムルールを追加
   condition: 条件
   field: フィールド
+  key: Label Key
   value: 値
+  operator: Operator
+  effect: Effect
+  time: Time
+  toleration:
+    title: Toleration
+    add: Add Toleration
   scaling:
     minMaxDetail: 設定することでユーザー操作や API 呼び出しによるスケーリング時に制限を設けられます
     incrementDetail: 設定することでスケール時に複数台ずつ増加されます
+    hostMaxDetail: If set, schedule containers for this service to a maximum of this many hosts.
   scaleMin: 最小スケール
   scaleMax: 最大スケール
   scaleIncrement: 増加数
-formSecrets:
-  title: シークレット
-  detail: シークレットを使用してパスワードやキー、その他機密情報のコンテナへの挿入ができるようになります
-  noneDefined: 利用可能なシークレットはありません
-  noData: シークレットはありません
-  addLabel: シークレットを追加
-  name:
-    label: エイリアス名
-    placeholder: '例: db_password'
-  secret:
-    label: シークレット
-  uid:
-    label: ユーザー ID
-    placeholder: '例: 0 (root)'
-  gid:
-    label: グループ ID
-    placeholder: '例: 0 (wheel)'
-  mode:
-    label: ファイルモード
-    placeholder: ' 例: 0444 (octal)'
-  help:
-    prefix: "シークレットはコンテナの <code>/run/secrets/</code> 内にある指定されたファイル名で利用できます。"
-    showPermissionsLink: "ファイルの所有権 & 権限のカスタマイズ"
+  hostMax: Maximum Nodes
+  perHost: per host
+  priority:
+    label: Priority
+    placeholder: e.g. 3
+  priorityClassName:
+    label: Priority Class Name
+    placeholder: e.g. high
+  scheduler:
+    label: Scheduler
+    placeholder: e.g. myScheduler
+  nodeSelector:
+    requireAll: "Require ALL of:"
+    requireAny: "Require Any of:"
+    preferred: "Prefer Any of:"
+    operator:
+      lt: '<'
+      le: |
+        &le;
+      eq: '='
+      ne: |
+        &ne;
+      gt: '>'
+      ge: |
+        &ge;
+      in: 'in list'
+      notIn: 'not in list'
+      exists: 'is set'
+      notExists: 'is not set'
+    multiple:
+      placeholder: '例: foo, bar, baz'
+    custom:
+      placeholder: '例: foo > 42 && bar != baz'
+
+formSources:
+  title: Environments From Sources
+  detail: Environments from sources allow you to inject passwords, keys, or other information into the containers that need them.
+  noData: No Environments From Sources
+  noMatch: No Environments From Sources match the current search
+  addLabel: Add Source
+  type:
+    label: タイプ
+  source:
+    label: ソース
+  prefixOrKey:
+    label: キー
+  prefix:
+    label: プリフィックスまたはエイリアス
+
 formSecurity:
   title: セキュリティ & ホスト設定
   detail: 動作するホスト上でのコンテナのリソース保証または制限を設定します
   pullImage:
     label: イメージの取得
+    always: 常に
+    ifNotPresent: ホストに存在しない場合のみ
   privileged:
     label: 特権モード
+    disable: "いいえ"
+    enable: "はい: コンテナはホストに対してフルアクセス権限を持ちます"
+  allowPrivilegeEscalation:
+    label: 権限昇格
+    disable: "いいえ"
+    enable: "はい: コンテナは親プロセスより強い特権を持てます"
+  hostIPC:
+    label: ホストの IPC 名前空間を利用
+  runAsNonRoot:
+    label: 非ルートとして起動
+    disable: "いいえ"
+    enable: "はい: コンテナは非ルートユーザーとして起動します"
+  readOnlyRootFilesystem:
+    label: リードオンリー ルートファイルシステム
+    disable: "いいえ"
+    enable: "はい: コンテナはリードオンリーのルートファイルシステムを持ちます"
+  hostPID:
+    label: ホストの PID 名前空間を利用
   memoryLimit:
+    label: メモリ制限
     unlimited: 無制限
     set: 制限値
+  cpuLimit:
+    label: CPU 制限
+    unlimited: 無制限
+    set: 制限値
+    unit: ミリ CPUs
   swapLimit:
     label: メモリスワップ
     unlimited: 無制限
@@ -1591,11 +3516,12 @@ formSecurity:
     none: スワップを許可しない
   swappiness:
     label: スワップ値
+    default: ホストのデフォルトを利用
     none: 最小
     set: カスタム (1-100)
   cpuPinning:
     label: CPU ピンニング
-    placeholder: '例: 0,1,3; デフォルト: All'
+    placeholder: "例: 0,1,3; デフォルト: All"
   shares:
     label: CPU シェア
     placeholder: '例: 1024'
@@ -1618,22 +3544,20 @@ formSecurity:
       label: 権限
   memoryReservation:
     label: メモリ予約
+    placeholder: '例: 128'
   milliCpuReservation:
     label: CPU 予約
+    placeholder: '例: 1000'
     unit: ミリ CPUs
+  gpuReservation:
+    label: NVIDIA GPU 予約
+    placeholder: '例: 1'
+    unit: GPUs
   isolation:
     label: 分離
     default: デフォルト(コンテナ)
     hyperv: HyperV (VM)
-formServiceLinks:
-  title: リンク
-  detail: このサービスと他のサービス間の関係性を定義します
-  addAction: リンクを追加
-  service:
-    label: 対象サービス
-  name:
-    label: 名前
-    placeholder: '例: database'
+
 formSslTermination:
   title: SSL/TLS 証明書
   detail: 暗号化されたポートへのリクエストに対し提示される証明書を設定します
@@ -1645,62 +3569,48 @@ formSslTermination:
   alternateCerts: 代替証明書
   addAlternate: 代替証明書を追加
   noCertificates: 利用可能な証明書はありません
+  noCertificatesConfiged: No Certificates.
   noAlternateCertificates: 他の利用可能な証明書はありません。
+  hosts: ノード
+  noHosts: No Nodes
+  host:
+    label: Host
+    placeholder: e.g. example.com
+  addHostLabel: Add Node
+  helpBlock: |
+    "Note: Some older SSL/TLS clients do not support <a href="https://en.wikipedia.org/wiki/Server_Name_Indication" target="_blank">Server Name Indication (SNI)</a>; these clients will always be offered the main Certificate.  Modern clients will be offered an appropriate certificate from the Alternate Certificates list if a match is found."
   notNeeded: 有効なターゲットルールで構成された SSL/TLS リッスンポートはありません
-formStickiness:
-  title: ターゲットルーティング
-  detail: バランサーがクライアントからのリクエストを不変のターゲットコンテナやバランサーと同一ホスト上のコンテナに対しリクエストを送信するよう設定します
-  balancerTarget: ターゲットとするコンテナ
-  any: 任意のホスト上に存在する正常なターゲットコンテナにリクエストを送る
-  preferLocal: バランサーと同一ホストに存在するコンテナをターゲットとする(正常なコンテナが存在しないばい他のホスト上のコンテナにリクエストを送る)
-  onlyLocal: "バランサーと同一ホスト上に存在するコンテナのみターゲットとする(正常なコンテナが存在しない場合 <code>503</code> を返す)"
-  sticky: スティッキー セッション
-  none: None
-  newCookie: ロードバランサーはスティッキーネス Cookie を定義しています
-  cookieName: Cookie 名
-  mode: モード
-  domain: ドメイン
-  options: オプション
-  indirect: Indirect
-  sendHeader: no-cache ヘッダーを送信
-  onPost: POST にのみ cookie を設定
-  noPorts: HTTP リスナー用に適切なターゲットルールが設定されていません
-  placeholder:
-    sticky: '例: sticky'
-    domain: '例: mydomain.com'
-formTargets:
-  title: 対象
-  addAction: ターゲットを追加
-  hostname:
-    label: リクエストホストヘッダー
-    placeholder: '例: svc.com'
-  srcPort:
-    label: 元ポート
-    placeholder: '例: 80'
-  value:
-    label: 対象サービス
-  path:
-    label: リクエストパス
-    placeholder: '例: /svc'
-  dstPort:
-    label: 対象ポート
-    placeholder: '例: 8080'
-  advanced:
-    toggle: 拡張ルーティングオプションを表示
-    detail: ポートベースでの異なるサービスへの直接リクエスト、ホストヘッダーまたはリクエストパス
-    help1: |
-      リクエストホストやパスを指定した場合、HTTP のリッスンポートへのコネクションはリクエストベースで適切な対象にルーティングされます。
-      例えば、domain1.com 宛のトラフィックを別サービスである domain2.com に送信したり、domain3.com/admin 宛のトラフィックを別サービスである domain3.com に送信することができます。TODO For example, you could use this to send traffic for domain1.com to a different service than domain2.com, or domain3.com/admin to a different service than domain3.com.
-    help2: |
-      一致したリクエストは対象サービスの対象ポートに対して送信されます。
-      設定されていない場合、デフォルトの対象ポートが元ポートに使用されます。それも設定されていない場合は元ポートが使用されます。
+  removeCertLabel: Remove this Certificate
+  addCertLabel: Add Certificate
+
+formNamespace:
+  label:
+    reuse: 名前空間
+    create: 名前空間
+  toggle:
+    simple: Customize
+    reuse: 既存の名前空間を使用する
+    create: 新しい名前空間を追加
+  reuse:
+    prompt: 名前空間を選択してください...
+  create:
+    placeholder: "例: myapp"
+  errors:
+    noneChosen: 名前空間を選択する必要があります
+    validation: "名前空間: {error}"
+
 formUserData:
   placeholder: "e.g. コンテナ用設定情報"
   isVmPlaceholder: "e.g. 仮想マシン用設定情報"
+
+formLabelsAnnotations:
+  title: ラベル & アノテーション
+  detail: コンテナ用のラベル/アノテーションに利用されるキー/バリューペアを指定し、スケジューリングを決定します
+
 formUserLabels:
   title: ラベル
   detail: ラベルはコンテナに注釈を付与しスケジューリングの決定に利用されるキー/値のペアです
-  hostDetail: ラベルはホストに適用されコンテナのスケジューリングの決定に利用されるキー/値のペアです
+  nodeDetail: ラベルはノードに適用されコンテナのスケジューリングの決定に利用されるキー/値のペアです
   addAction: ラベルを追加
   key:
     label: キー
@@ -1709,34 +3619,79 @@ formUserLabels:
   value:
     label: 値
     placeholder: '例: bar'
-  protip: 'ProTip: 簡単に入力するには1行以上の key=value ペアをペースト>してください。'
+  protip: "ProTip: 簡単に入力するには1行以上の key=value ペアをペースト>してください。"
+
+formAccessModes:
+  label: アクセスモード
+  accessRWO: 単一ノード読み書き
+  accessROX: 複数ノード読み込みのみ
+  accessRWX: 複数ノード読み書き
+
+formAnnotations:
+  addActionLabel: アノテーションを追加
+  title: アノテーション
+  detail: コンテナ用のアノテーション(キー/バリュー メタデータ)を設定します
+  errors:
+    invalidJSON: アノテーション JSON フォーマットが不正です
+    topLevelValueInvalid: アノテーション JSON のトップレベルの値はオブジェクトである必要があります
+
 formUpgrade:
-  title: アップグレード ポリシー
-  detail: アップグレードを実行した際のコンテナの置換方法を設定します
-  batchSize:
-    label: バッチサイズ
-    detail: この値を増加させると一度にリプレイスされるコンテナの数が増えます
-  interval:
-    label: バッチ間隔
-    detail: バッチ処理の完了後、指定された値分待ってから次のバッチ処理が開始されます
-  behavior: リプレイス時の挙動
-  startFirst:
-    label: 新しいコンテナを起動後、古いコンテナを停止
-    detail: 古いコンテナを停止する前に新しいコンテナを起動します。もしサービスがポートを公開している場合は古いコンテナが対象ポートを利用中のため、バッチサイズ毎に新しいコンテナを起動するための適切なホスト数が必要になります。
-  stopFirst:
-    label: 古いコンテナを停止後、新しいコンテナを起動
-    detail: 古いコンテナを停止しバッチサイズ毎に新しいコンテナを起動させます。この方式では公開ポートを再利用することができます。また、アプリケーションを起動させるための十分なキャパシティを維持できるようバッチサイズには注意してください。
-  prePull:
-    label: 事前にイメージを取得
-    detail: アップグレードが開始される前に新しいイメージは対象ホストに pull されます
-    all: 全てのホスト
-    existing: サービスが現在稼働しているホスト
-    none: pull しない
+  title: スケーリング/アップグレード ポリシー
+  detail: アップグレードを実行した際のポッドの置換方法を設定します
+  strategy:
+    label: アップグレードストラテジー
+    orderedReady: Strict serial update in order and wait for readiness
+    parallel: 全てのポッドを作成後、古いポッドを並列で削除
+    onDelete: アップグレード後のポッドのみ起動し、古いポッドは手動で削除
+    recreate: 全てのポッドを削除後、新しいポッドを作成
+    rollingUpdate: ローリングアップグレード
+    startFirst: 'ローリング: 新しいポッドを起動後、古いポッドを停止'
+    stopFirst: 'ローリング: 古いポッドを停止後、新しいポッドを起動'
+    custom: カスタム
+    batchSize:
+      label: バッチサイズ
+      detail: 指定された回数だけポッドは起動、停止します
+    maxSurge:
+      label: 最大サージ
+      detail: 必要なポッドの数を超えて作成できるポッドの最大数です
+    maxUnavailable:
+      label: 最大利用不可
+      detail: The maximum number of pods which can be unavailable at any given time.
+    minReadySeconds:
+      label: 最小準備時間
+      detail: Containers in the pods must be up for at least this long before the pod is considered available.
+    progressDeadlineSeconds:
+      label: Progress Deadline
+      detail: How long to wait without seeing progress before marking the deployment as stalled.
+
 formValueArray:
   addActionLabel: 値を追加
   valueLabel: 値
   valuePlaceholder: 値
-  protip: 'ProTip: 簡単に入力するには1行以上の値をペーストしてください。'
+  noData: データはありません
+  protip: "ProTip: 簡単に入力するには1行以上の値をペーストしてください。"
+
+formVolumeRow:
+  name:
+    label: ボリューム名
+    placeholder: "例: vol1"
+  mode:
+    label: ボリュームタイプ
+    newVolume: エフェメラルボリューム
+    existingVolume: 既存ボリューム
+    newPvc: 新規ボリューム要求
+    existingPvc: 永続ボリューム要求
+    bindMount: バインド
+    tmpfs: Tmpfs
+    secret: シークレット
+  remove: ボリュームを削除
+  subPath: ボリューム内サブパス
+  readOnly: 読み込みのみ
+  noVolume: The volume will not be mounted in the current container.  It may be used by other containers in the pod.
+  addMount: マウントを追加
+  customLogPath:
+    helpText: We will deploy a flexvolume driver to create a volume and mount the log to the host.
+
 formVolumes:
   title: ボリューム
   detail: 個々のコンテナのライフサイクルから分離され、永続化やデータ共有に利用されます
@@ -1745,34 +3700,157 @@ formVolumes:
   volumes: ボリューム
   volumesFrom: 他コンテナのボリューム
   volumeDriver:
+    label: Driver for custom volumes
     placeholder: '例: rancher-nfs; デフォルト: local'
     suggestion: '使用中のボリュームドライバー:'
   noLaunchConfigs: このサービスにはボリュームを共有するための起動設定がありません。
   noHostContainers: このホストには他コンテナのボリュームを利用するためのコンテナがありません。
   onlySingleHost: 特定ホストにコンテナを追加した場合のみ利用できます
-hookPage:
-  receiver:
-    header: レシーバー フック
-    buttonText: レシーバーを追加
-    content: "レシーバー フックでは、{appName} の内部アクションをトリガーするための URL が提供されます。"
-    noData: レシーバーフックはありません
-  scaleService:
-    label: サービスまたはロードバランサーをスケール
-    detailPrefix: "{action} を拡張"
-    detailLink: "{displayService}"
-    detailSuffix: "by {amount}"
-  scaleHost:
-    detail: "{labels} に一致した場合に {amount} ずつ {action}"
-  serviceUpgrade:
-    label: サービスをアップグレード
-    detail: "{labels} に一致しており <code>{tag}</code> に変更があった場合にアップグレード"
-  fields:
-    kind:
-      label: 種類
-    detail:
-      label: 詳細
-    url:
-      label: トリガー URL
+  errors:
+    incomplete: Incomplete volume definition
+    absoluteMountPoint: Volume mount points must be absolute paths
+  add:
+    label: ボリュームを追加...
+    newVolume: エフェメラルボリュームを追加
+    existingVolume: 既存エフェメラルボリューム
+    newPvc: 新しい永続ボリューム(要求)を作成
+    existingPvc: 既存の永続ボリューム(要求)を使用
+    bindMount: ノードからディレクトリをバインド
+    tmpfs: インメモリ tmpfs を追加
+    secret: シークレットを使用
+    customLogPath: ディレクトリからログファイルを読み込み
+  table:
+    kind: 種類
+    source: ソース
+    mountPoint: マウントポイント
+    opts: アクセス/オプション
+
+formCapabilityPodSecurityPolicy:
+  title: ケーパビリティポリシー
+  detail: ケーパビリティポリシーに関する設定です
+  capabilities:
+    allow: 許可されたケーパビリティ
+    add: デフォルトで追加されるケーパビリティ
+    drop: ドロップされるべきケーパビリティ
+
+formVolumePodSecurityPolicy:
+  title: ボリュームポリシー
+  detail: 利用可能なボリュームタイプを制御します
+  volumes: ボリューム
+
+formAllowedHostPathsPodSecurityPolicy:
+  title: 許可されたホストパスポリシー
+  detail: 許可されたホストパスのホワイトリストです
+  path:
+    addLabel: パスプリフィックスを追加
+    placeholder: '例: /foo'
+
+formFsGroupPodSecurityPolicy:
+  title: FS グループポリシー
+  detail: ポッドのボリュームを所有する FS グループを割り当てます
+  rule:
+    mustRunAs: MustRunAs  - 少なくとも1つの範囲を指定する必要があります。最初の範囲の最小値をデフォルト値として使用します。最初の範囲の最初のIDに対して検証します。
+    runAsAny: RunAsAny  - デフォルトはありません。任意の fsGroup ID を指定できます。
+  range:
+    addLabel: 範囲を追加
+    max:
+      label: 最大
+      placeholder: "例: 6"
+    min:
+      label: 最小
+      placeholder: "例: 1"
+
+formHostPortsPodSecurityPolicy:
+  title: ホストポートポリシー
+  detail: 使用するホストポートを設定します
+  port:
+    addLabel: ポート範囲を追加
+    max:
+      label: 最大
+      placeholder: '例: 7000'
+    min:
+      label: 最小
+      placeholder: '例: 6000'
+
+formRunAsUserPodSecurityPolicy:
+  title: ユーザー実行ポリシー
+  detail: ユーザー ID
+  rule:
+    mustRunAs: MustRunAs - 範囲を設定する必要があります。範囲の最初の値はデフォルト値として利用され、設定された範囲に関してバリデーションされます。
+    mustRunAsNonRoot: MustRunAsNonRoot - ポッドに対し runAsUser が0以外、または USER ディレクティブがイメージ内で定義されている必要があります。デフォルト値は提供されません。
+    runAsAny: RunAsAny - デフォルト値は提供されず、runAsUser に指定されたもの全てが許容されます。
+  range:
+    addLabel: 範囲を追加
+    max:
+      label: 最大
+      placeholder: "例: 6"
+    min:
+      label: 最小
+      placeholder: "例: 1"
+
+formSeLinuxodSecurityPolicy:
+  title: SELinux ポリシー
+  detail: コンテナに対する SELinux コンテキストを設定します
+  rule:
+    mustRunAs: MustRunAs - seLinuxOptions をデフォルトで利用し、内容をバリデーションします。
+    runAsAny: RunAsAny - 指定している全ての seLinuxOptions を許容します。
+  level:
+    label: レベル
+    placeholder: "例: level"
+  role:
+    label: ロール
+    placeholder: "例: role"
+  user:
+    label: ユーザー
+    placeholder: "例: user"
+
+formSupplementalGroupsPodSecurityPolicy:
+  title: 補足のグループポリシー
+  detail: 許容される補足的なグループポリシーを設定します
+  rule:
+    mustRunAs: MustRunAs - 少なくとも 1 つの範囲を設定する必要があります。最初の範囲の最小値はデフォルトとして利用され、全ての範囲に関してバリデーションされます。
+    runAsAny: RunAsAny - デフォルトは提供されません。supplementalGroups に指定されたもの全てが許容されます。
+  range:
+    addLabel: 範囲を追加
+    max:
+      label: 最大
+      placeholder: "例: 6"
+    min:
+      label: 最小
+      placeholder: "例: 1"
+
+formBasicPodSecurityPolicy:
+  title: 基本ポリシー
+  detail: 基本的なポッドセキュリティポリシーに関する設定です
+  allowPrivilegeEscalation:
+    label: 権限昇格を許可する
+    enable: "はい: コンテナの実行時に親からの権限昇格を許可します"
+    disable: いいえ
+  defaultAllowPrivilegeEscalation:
+    label: デフォルトの権限昇格を許可する
+    enable: "はい: プロセスが親プロセスより多くの権限を取得できるかどうかを制御します"
+    disable: いいえ
+  hostIPC:
+    label: ホスト IPC
+    enable: "はい: ホストの IPC 名前空間を使用します"
+    disable: いいえ
+  hostNetwork:
+    label: ホストネットワーク
+    enable: "はい: ホストネットワーキングを使用します"
+    disable: いいえ
+  hostPID:
+    label: ホスト PID
+    enable: "はい: ホストの PID 名前空間を使用します"
+    disable: いいえ
+  privileged:
+    label: 特権モード
+    enable: "はい: 特権付きコンテナを実行します"
+    disable: いいえ
+  readOnlyRootFilesystem:
+    label: 読み取り専用ルートファイルシステム
+    enable: "はい：読み取り専用のルートファイルシステムを使用する必要があります"
+    disable: いいえ
+
 hostSettings:
   header: ホスト登録 URL
   subtext: '{appName} API に接続するための URL は何にしますか?'
@@ -1792,6 +3870,7 @@ hostSettings:
   badTld:
     alert: |
       トップレベルドメインである <code>.local</code> はRFC6742 でマルチキャスト DNS 向けに予約されています。そのため登録 URL に利用することは推奨されず、利用した場合 DNS 上の問題が発生する可能性があります。他のホスト名または IP を指定してください。
+
 hostPod:
   supportState:
     unsupported: サポートされていない Docker バージョン
@@ -1800,8 +3879,10 @@ hostPod:
     namespace: '名前空間:'
     stack: 'スタック:'
     standalone: 独立型コンテナ
+
 identityBlock:
   loading: 読込中...
+
 infoMultiStats:
   connecting: 接続中...
   utilizationStats: 利用率の統計はアクティブ/起動中の場合のみ利用できます。
@@ -1820,6 +3901,13 @@ infoMultiStats:
     labelText: ストレージ
     read: 読み込み
     write: 書き込み
+
+inputAnswers:
+  config: 設定オプション
+  unknownType: "認識できない質問タイプです:"
+  noConfig: このテンプレートには設定オプションがありません
+  protip: "Paste and Read actions require their repective answers to be in a yml/yaml format"
+
 inputIdentity:
   placeholder:
     github: GitHub ユーザーまたは組織名を追加
@@ -1827,10 +3915,20 @@ inputIdentity:
   dropdownLabel:
     teams: あなたのチームと組織
     groups: あなたのグループ
+
 inputPassword:
   buttonText: 生成
+
 inputTextFile:
   tooltip: ファイルから読み込む
+
+uploadFile:
+  label: ファイルから読み込む
+
+podsSection:
+  title: Pods
+  detail: Pods in this workload
+
 labelsSection:
   kind: 種類
   title: ラベル
@@ -1844,397 +3942,77 @@ labelsSection:
   key: キー
   value: 値
   noData: ラベルはありません
+
 loginShibboleth:
   buttonText: シボレスで認証
+
 loginGithub:
   buttonText: GitHub で認証
+
 loginUserPass:
+  local: ローカルユーザーを使用
+  provider: "{kind}"
   userLabel: ユーザー名
   caasLabel: E メールアドレス
+  remember: パスワードを保存
   userPlaceholder: '例: jsmith'
+  genericLoginLabel: ログイン
   loginLabel: ログイン
   loggingInLabel: ログイン中...
   passwordLabel: パスワード
-machine:
-  driver:
-    amazonec2: Amazon EC2
-    azure: Azure
-    digitalocean: DigitalOcean
-    exoscale: Exoscale
-    openstack: OpenStack
-    packet: Packet
-    rackspace: RackSpace
-    vmwarevsphere: VMware vSphere
-    custom: カスタム
-    aliyunecs: Aliyun ECS
-  driverAmazon:
-    accessSection: アカウントアクセス
-    accessKey:
-      label: アクセスキー
-      placeholder: あなたの AWS アクセスキー
-    secretKey:
-      label: 秘密キー
-      placeholder: あなたの AWS 秘密キー
-      provided: 取得済み
-    region:
-      label: リージョン
-    accessKeyHelp: "AWS のキーペアを貼り付けてください。新しいインスタンス作成にこのキーを利用します。"
-    loginAction: '次へ: 認証とネットワークの選択'
-    loadingAvailability: EC2 からアベイラビリティゾーンと VPC 情報を読み込んでいます...
-    vpcSection: アベイラビリティゾーン & VPC
-    availabilityZone: アベイラビリティゾーン
-    subnet: VPC/サブネット
-    securityGroupSelect: '次へ: セキュリティグループの選択'
-    loadingSecurity: EC2 からセキュリティグループの情報を読み込んでいます...
-    securityGroupSection: セキュリティグループ
-    securityGroup:
-      label: セキュリティグループ
-      choose: 既存のグループを選択
-      defaultExisting: '通常: 既存の <code>{groupName}</code> グループを利用'
-      defaultCreate: '通常: <code>{groupName}</code> グループを自動的に作成'
-      custom: 'カスタム: 既存のグループを選択'
-      updating: セキュリティグループを更新中...
-      creating: セキュリティグループを作成中...
-    portHelp:
-      link: 詳細を見る
-      text: 公開されるポート番号について
-    needs:
-      label: "{appName} が正常に機能するためにはセキュリティグループで以下のトラフィックを許可する必要があります:"
-      item1: '{appName} サーバーから <code>TCP 22</code> 番ポート <span class=''text-muted''>(Docker を SSH 経由でインストール,設定するため)</span>'
-      item2: 他のホストへ、または他のホストからの <code>UDP 500</code> 番ポートと <code>4500</code> 番ポート <span class="text-muted">(IPsec ネットワークのため)</span></li>
-      item3: これらのルールは自動的に追加 <b>されません</b>。
-    setInstanceAction: '次へ: インスタンスオプションの設定'
-    instanceSection: インスタンス
-    instanceOptionsSection: インスタンスオプション
-    instanceType:
-      label: インスタンスタイプ
-    rootSize:
-      label: ルートサイズ
-      unit: GB
-    ami:
-      label: AMI
-      placeholder: Ubuntu AMI
-      rancherList: RancherOS AMI リスト
-    sshUser:
-      label: SSH ユーザー
-      placeholder: '例: ubuntu'
-    iam:
-      label: IAM プロファイル
-    privateIp:
-      label: プライベート IP
-    onlyPrivate:
-      label: プライベート IP アドレスのみ使用
-  driverAzure:
-    helpBlock: 'クライアント ID と秘密鍵の作成方法は<a href="https://www.packer.io/docs/builders/azure-setup.html" target="_blank">こちら</a>を参照してください'
-    accountAccessSection: アカウントアクセス
-    placementSection: 配置
-    networkSection: ネットワーク
-    subscriptionId:
-      label: サブスクリプション ID
-      placeholder: あなたの Azure サブスクリプション ID
-    instanceSection: インスタンス
-    instanceOptionsSection: インスタンスオプション
-    image:
-      label: イメージ
-      placeholder: 'canonical:UbuntuServer:16.04.0-LTS:latest'
-    size:
-      label: サイズ
-    dockerPort:
-      label: Docker ポート
-      placeholder: '2376'
-    publishSettingsFile:
-      label: 公開設定
-      placeholder: あなたの公開設定ファイル
-    environment:
-      label: 環境
-    resourceGroup:
-      label: リソースグループ
-      placeholder: 'docker-machine'
-    sshUser:
-      label: SSH ユーザー
-      placeholder: usr1
-    storageType:
-      label: ストレージタイプ
-    vnet:
-      label: VNet
-      placeholder: '[resourcegroup:]name'
-    subnet:
-      label: サブネット
-      placeholder: example-sub-name
-    subnetPrefix:
-      label: サブネットプリフィックス
-      placeholder: 128.42.0.0/21
-    availabilitySet:
-      label: 可用性セット
-      placeholder: 可用性セット名
-    openPort:
-      label: 解放するポート
-      placeholder: 'カンマ区切り, e.g. 80,443'
-    privateIpAddress:
-      label: プライベート IP
-      placeholder: 127.0.0.1
-    usePrivateIp:
-      label: プライベート IP を使用して接続
-    staticPublicIp:
-      label: パブリック IP
-    noPublicIp:
-      label: パブリック IP はありません
-    clientId:
-      label: クライアント ID
-      placeholder: あなたのクライアント ID
-    clientSecret:
-      label: クライアント秘密鍵
-      placeholder: あなたのクライアント秘密鍵
-    region:
-      label: リージョン
-  driverCustom:
-    instructions: '<a href="{docsBase}/hosts/#supported-docker-versions" target="_blank">サポートされるバージョン</a> の Docker がインストールされたホスト上で以下のコマンドをコピー&ペースト、実行しホストを登録します。ホストは数分で画面上に表示されます。'
-    detail:
-      ip: ホストとして登録される IP アドレスは通常、自動的に検出されます。
-      ipLabel: 登録 IP アドレス
-      manual: 'ホストが NAT 環境下、もしくは <code>{rancherImage}</code> コンテナが起動している同一マシンを対象とする場合、以下の詳細セクションにて明確に IP アドレスを指定する必要があります。'
-      firewall: ホスト上でエージェントはサーバーに対しての接続を開始します。そのためファイアウォールやセキュリティグループでコマンド内の URL に対しての通信が許可されていることを確認してください。
-      networking: 環境内の全てのホストはホスト間ネットワーク用に互いに通信が許可されている必要があります。
-      ipsec: 'IPSec: <code>500/udp</code> と <code>4500/udp</code>'
-      vxlan: 'VXLAN: <code>4789/udp</code>'
-    detected: |
-      {count, plural,
-      =1 {1つの新しいホストが登録されました!}
-      other {# 台の新しいホストが登録されました!}
-      }
-    agentIp:
-      label: このホストとして登録すべきパブリック ip アドレスを指定します。 空の場合、Rancher は利用する IP アドレスを自動的に検出します。
-      placeholder: '例: 1.2.3.4'
-    generating: "登録用 URL を生成中..."
-    windows:
-      windowsHeader: Windows ホスト
-      linuxHeader: Linux ホスト
-      step2: "透過 Docker ネットワークを作成:"
-      step2Copy: docker network create -d transparent transparent
-      step3: '{appName} エージェントを起動するため、以下のコマンド をPowerShell にコピー&ペーストし実行してください。'
-  driverDigitalocean:
-    sizeLabel: |
-      {highMem, select, true {高メモリ: } other {}}{memoryGb} GB RAM, {disk} GB Disk, {vcpus, plural,
-      =1 {# vCPU}
-      other {# vCPUs}
-      }
-    accountSection: アカウントアクセス
-    authAccountButton: '次へ: ドロップレットの設定'
-    accessToken:
-      label: アクセストークン
-      placeholder: あなたの DigitalOcean API アクセストークン
-      help: |
-        DigitalOcean <a href="https://cloud.digitalocean.com/settings/applications" target="_blank">Apps & API</a> 画面からパーソナルアクセストークンを取得してください
-    instanceSection: インスタンス
-    instanceOptionsSection: インスタンスオプション
-    image:
-      label: イメージ
-    sshUser:
-      label: SSH ユーザー
-    size:
-      label: サイズ
-    regionSection: リージョン
-    region:
-      label: リージョン
-    optionsSection: オプション
-    backups:
-      label: バックアップを有効化
-    ipv6:
-      label: IPv6 を有効化
-    privateNetworking:
-      label: プライベートネットワークを有効化
-  driverExoscale:
-    accountSection: アカウントアクセス
-    apiKey:
-      label: API キー
-      placeholder: あなたの Exoscale API キー
-    secretKey:
-      label: 秘密キー
-      placeholder: あなたの Exoscale 秘密キー
-      provided: 取得済み
-    accountHelp: ここに Exoscale のキーペアをペーストしてください。このキーは新しいインスタンスを作成するのに利用されます。
-    loginAction: '次へ: 認証とセキュリティグループの選択'
-    loadingSecurity: Exoscale からセキュリティグループの情報を読み込んでいます...
-    securityGroupSection: セキュリティグループ
-    securityGroup:
-      label: セキュリティグループ
-      defaultExisting: '通常: 既存の <code>{groupName}</code> グループを利用'
-      defaultCreate: '通常: <code>{groupName}</code> グループを自動的に作成'
-      custom: 'カスタム: 既存のグループを選択'
-      updating: セキュリティグループを更新中...
-      creating: セキュリティグループを作成中...
-    portHelp:
-      link: 詳細を見る
-      text: 公開されるポート番号について。
-    needs:
-      label: "{appName} が正常に機能するためにはセキュリティグループで以下のトラフィックを許可する必要があります:"
-      item1: '{appName} サーバーから <code>TCP 22</code> 番ポート <span class=''text-muted''>(Docker を SSH 経由でインストール,設定するため)</span>'
-      item2: 他のホストへ、または他のホストからの <code>UDP 500</code> 番ポートと <code>4500</code> 番ポート <span class="text-muted">(IPsec ネットワークのため)</span></li>
-      item3: これらのルールは自動的に追加 <b>されません</b>。
-    selectSecurityGroupAction: '次へ: インスタンスオプションの設定'
-    loadingInstance: 利用可能なインスタンス設定を取得中...
-    instanceSection: インスタンス
-    instanceOptionsSection: インスタンスオプション
-    instanceProfile:
-      label: インスタンスプロファイル
-    diskSize:
-      label: ルートサイズ
-    sshUser:
-      label: SSH ユーザー
-      placeholder: 'usr1'
-  driverOther:
-    driverSection: ドライバー
-    driver:
-      label: ドライバー
-    optionsSection: "{driverName} オプション"
-    instanceSection: インスタンス
-  driverPacket:
-    accountSection: アカウントアクセス
-    projectId:
-      label: プロジェクト
-      placeholder: あなたの Packet プロジェクト ID
-    apiKey:
-      label: API キー
-      placeholder: あなたの Packet API キー
-    apiKeyHelp: 'Packet <a href="https://app.packet.net/portal#/api-keys" target="_blank">API Keys</a> 画面より取得してください'
-    instanceSection: インスタンス
-    instanceOptionsSection: インスタンスオプション
-    image:
-      label: イメージ
-    size:
-      label: サイズ
-    regionSection: リージョン
-    region:
-      label: リージョン
-  driverRackspace:
-    accountSection: アカウントアクセス
-    username:
-      label: ユーザー名
-      placeholder: あなたの RackSpace ユーザー名
-    apiKey:
-      label: API キー
-      placeholder: あなたの RackSpace API キー
-    accountHelp: RackSpace コントロールパネルの Account Settings 画面より取得してください
-    regionSection: リージョン
-    region:
-      label: リージョン
-    instanceSection: インスタンス
-    instanceOptionsSection: インスタンスオプション
-    flavor:
-      label: フレバー
-  driverVsphere:
-    accountSection: アカウントアクセス
-    vcenter:
-      label: vCenter ホスト
-      placeholder: vCenter もしくは ESXi ホスト名/IP
-    vcenterPort:
-      label: vCenter ポート番号
-    username:
-      label: ユーザー名
-    password:
-      label: パスワード
-    instanceSection: インスタンス
-    instanceOptionsSection: インスタンスオプション
-    cpuCount:
-      label: CPUs
-    memorySize:
-      label: メモリ
-      unit: MB
-    diskSize:
-      label: ディスク
-      unit: MB
-    boot2dockerUrl:
-      label: OS ISO URL
-      placeholder: 'デフォルト: 最新の boot2docker イメージ'
-    schedulingSection: スケジューリング
-    dataCenter:
-      label: データセンター
-    pool:
-      label: プール
-    host:
-      label: ホスト
-      placeholder: "クラスターを利用している場合は間に '/' を付与してください"
-    network:
-      label: ネットワーク
-    dataStore:
-      label: データストア
-  driverAliyunecs:
-    accountSection: アカウントアクセス
-    accessKey:
-      label: アクセスキー*
-      placeholder: あなたの Aliyun アカウントのアクセスキー
-    accessKeySecret:
-      label: 秘密キー*
-      placeholder: あなたの秘密キー
-    apiEndpoint:
-      label: API エンドポイント
-      placeholder: プライベート Aliyun API サーバーのエンドポイント
-    instanceSection: インスタンス
-    instanceOptionsSection: インスタンスオプション セクション
-    instanceDescription:
-      label: インスタンスの詳細情報
-      placeholder: インスタンスの詳細情報
-    instanceType:
-      label: インスタンスタイプ
-      placeholder: インスタンスタイプ
-    systemImage:
-      label: システムイメージ
-      placeholder: システムイメージ
-    instanceTag:
-      label: インスタンスタグ
-      placeholder: Your Instance Tag in Aliyun
-    internetMaxBandwidth:
-      label: インターネット最大帯域幅
-      placeholder: 1 to 100
-    aliyunSLB:
-      label: Aliyun SLB ID
-      placeholder: Aliyun SLB ID
-    storageSection: ストレージ情報
-    systemDiskCategory:
-      label: システムディスクのカテゴリ
-      placeholder: ストレージが最適化されるときに、cloud_efficiency、cloud_ssd または ephemeral_ssd を入力できます
-    dataDiskCategory:
-      label: データディスクのカテゴリ
-      placeholder: ストレージが最適化されるときに、cloud_efficiency、cloud_ssd または ephemeral_ssd を入力できます
-    dataDiskSize:
-      label: データディスクのサイズ
-      placeholder: ディスクサイズ
-    region:
-      label: リージョン
-      placeholder: リージョン
-    zone:
-      label: アベイラビリティゾーン
-      placeholder: 自動選択するには空白にしてください
-    networkSection: ネットワーク
-    routeCIDR:
-      label: ルート CIDR
-      placeholder: '例: 192.168.1.0/24'
-    vpcId:
-      label: Aliyun VPC ID
-      placeholder: Aliyun VPC ID
-    vswitchId:
-      label: Aliyun Vswitch ID
-      placeholder: Aliyun Vswitch ID
-    privateIp:
-      label: プライベート IP
-      placeholder: プライベートネットワーク上のプライベート IP
-    privateAddressOnly:
-      label: プライベートアドレスのみ
-    securitySection: セキュリティ
-    securityGroup:
-      label: セキュリティグループ
-      placeholder: セキュリティグループ
-    sshPassword:
-      label: SSH のパスワード
-      placeholder: インスタンスの SSH パスワードを設定してください。自動設定するには空白を指定してください。
+
+machineTemplatesPage:
+  title: Add Node
+  new:
+    helpText: Launch a new node or import one already running Docker via SSH.
+    btn: Configure
+  custom: Custom add an existing node that is already running Docker
+  templateBox:
+    button: Select
+    labels:
+      region: Region
+      zone: Zone
+
+newCertificate:
+  title:
+    new: 証明書を追加
+    edit: '証明書を編集: {name}'
+    view: '証明書: {name}'
+  key:
+    label: プライベートキー
+    required: プライベートキーは必須です
+    invalidFormat: 不正なプライベートキーです
+    placeholder: "-----BEGIN RSA PRIVATE KEY----- から始まるプライベートキーをペーストしてください"
+  cert:
+    label: 証明書
+    required: 証明書は必須です
+    invalidFormat: 不正な証明書です
+    placeholder: "-----BEGIN CERTIFICATE----- から始まる証明書または証明書チェーンをペーストしてください"
+    protip: 必要に応じて証明書チェーンも含めてください
+  certChain:
+    label: 証明書チェーン
+    placeholder: "オプション; -----BEGIN CERTIFICATE----- から始まる追加の証明書チェーンをペーストしてください"
+  metaXML:
+    label: メタデータ XML
+    placeholder: "IDP メタデータ XML をペーストしてください"
+  errors:
+    encrypted: プライベートキーはパスワードによって保護されていません
+    key:
+      required: プライベートキーは必須です
+      invalidFormat: 不正なプライベートキーです。RSA キーか確認してください。
+    cert:
+      required: 証明書は必須です
+      invlidFormat: 不正な証明書です
+
 modalAboutComponent:
   component: コンポーネント
   version: バージョン
   cattle: Cattle
   cli: CLI
   ui: User Interface
-  compose: Compose
-  machineService: Machine Service
+  helm: Helm
+  machine: Machine
+
 modalAddPayment:
   header: 新しい支払い方法を追加
   save: 保存
@@ -2256,6 +4034,7 @@ modalAddPayment:
       label: デフォルトカード
     name:
       label: クレジットカード記載名
+      placeholder: 'John Smith'
     exp:
       label: 有効期限
       placeholder: '••/••'
@@ -2265,36 +4044,37 @@ modalAddPayment:
     address:
       addressLine1:
         label: 番地
+        placeholder: 742 Evergreen Terrace
       addressLine2:
         label: ビル・建物名
+        placeholder: Apt. 123
       city:
         label: 市区町村
+        placeholder: Springfield
       state:
         label: 州
+        placeholder: OR
       zip:
         label: 郵便番号
+        placeholder: '99999'
       country:
         label: 国名
+        placeholder: United States
   currencies:
     yuan: "中国元 (¥)"
     euro: "ユーロ (€)"
     dollar: "US ドル($)"
-modalAuditlogInfo:
-  header: 追加のログ情報
-  request: "リクエストオブジェクト:"
-  response: "レスポンスオブジェクト:"
+
 modalContainerStop:
   header: "本当に停止してもよろしいですか?"
   helpText: "タイムアウト時間内に停止しない場合、コンテナは強制終了されます"
-  protip: 'ProTip: この確認画面を飛ばす場合は停止ボタンのクリック時に {key} キーを長押ししてください。'
+  protip: "ProTip: この確認画面を飛ばす場合は停止ボタンのクリック時に {key} キーを長押ししてください。"
   label: タイムアウト
   button: 停止
-modalContainerToService:
-  title: '"{instanceName}" をサービスに変換'
-  action: 変換
+
 modalConfirmDeactivate:
   header: 本当にこの処理を行ってよろしいですか?
-  protip: 'ProTip: この確認画面を飛ばす場合は {isServiceButton} クリック時に {key} キーを長押ししてください。'
+  protip: "ProTip: この確認画面を飛ばす場合は {isServiceButton} クリック時に {key} キーを長押ししてください。"
   cancel: キャンセル
   buttons:
     project:
@@ -2306,106 +4086,226 @@ modalConfirmDeactivate:
     default:
       message: 非アクティブ化
       button: 非アクティブ化
+
 modalConfirmRemovePayment:
+  header: 'Confirm Payment Removal'
   title: '本当に削除してもよろしいですか?'
+  card: 'Card ending in {card}'
+
 modalEditDriver:
+  header:
+    create: ノードドライバーを追加
+    edit: ノードドライバーを編集
   url:
     label: ダウンロード URL
+    help: 64-bit Linux 向けのノードドライバー バイナリをダウンロードする URL です
   uiUrl:
     label: カスタム UI URL
+    help: "オプション: このドライバー向けにカスタマイズされたノード追加画面を読み込むための URL です。"
     link: 詳細は <a href="https://github.com/rancher/ui-driver-skel" target="_blank">ui-driver-skel</a> を参照してください。
   checksum:
     label: チェックサム
-    help: 'オプション: 期待されたチェックサムかどうかダウンロードされたマシンドライバーの整合性を確認します。'
+    help: "オプション: 期待されたチェックサムかどうかダウンロードされたマシンドライバーの整合性を確認します。"
+  whitelist:
+    label: ホワイトリスト ドメイン
+    addActionLabel: ドメインを追加
+    noData: ドメインはありません
+
 modalEditSetting:
   title: 拡張設定を編集
   name:
     label: 名前
   value:
     label: 値
+    prompt: Select a Value...
   reset:
     label: ディフォルトにリセット
+
+modalEditPassword:
+  firstLogin:
+    title: '{appName} へようこそ'
+    help: 最初のステップはデフォルトの <code>admin</code> ユーザーに対し強力なパスワードを設定することです
+    actionButton: 続ける
+  edit:
+    title: パスワード変更
+    help: 新しいパスワードの変更方法を選択してください
+  current: 現在のパスワード
+  new: 新しいパスワード
+  confirm: パスワードの確認
+  mismatch: パスワードが一致しません
+  actionButton: 変更
+  mode:
+    generate: 'ランダムに生成されたパスワードを使う:'
+    manual: '手動でパスワードを設定する:'
+
 modalFeedback:
   header: '{appName} へようこそ!'
   subtitle: "開始する前にあなたのことについて少し教えてください..."
   send: はじめに
+
 modalHostEvacuate:
   header: "本当に退避してもよろしいですか?"
   helpText: "この操作はホストを非アクティブ化しインフラストラクチャ コンテナ以外の全ての起動中コンテナを削除します。"
-  protip: この確認画面を飛ばす場合は退避ボタンのクリック時に {key} キーを長押ししてください。
+  protip: "この確認画面を飛ばす場合は退避ボタンのクリック時に {key} キーを長押ししてください。"
   button: 退避
+
+modalImport:
+  title: YAML をインポート
+  mode:
+    label: モードをインポート
+    cluster: "クラスター: リソースをクラスターに直接インポート"
+    project: "プロジェクト: リソースをプロジェクトにインポート"
+    namespace: "名前空間: リソースを特定の名前空間にインポート"
+  defaultNamespace:
+    label: Default namespace for resources that don't specify one
+
 modalProcessError:
   header: 例外情報
   cause: "理由:"
+  none: N/A
   stackTrace: "スタックトレース:"
   close: 閉じる
+
 modalRollbackService:
   title: '"{instanceName}" をロールバック'
   titleWithSidekicks: '"{instanceName}" と{count, plural, =1 {# サイドキック} other {# サイドキック}} をロールバック'
   action: ロールバック
+  current:
+    label: 現在のリビジョン
+  revisionId:
+    label: ロールバックするリビジョン
+    prompt: リビジョンを選択してください...
+  difference:
+    label: 差分
+
+modalRollbackApp:
+  title: '"{appName}" をロールバック'
+  action: ロールバック
+  current:
+    label: 現在のリビジョン
+  revision:
+    label: ロールバックするリビジョン
+    prompt: リボジョンを選択してください...
+  difference:
+    label: 差分
+
 modalShell:
-  title: 'シェル: '
+  title: "シェル: "
+
 modalShortcuts:
+  world: World
+  time: Time
   title:
     rancher: "ワープゾーンへようこそ!"
     pl: キーボードショートカット
-  a: Apps
-  b: バランサー
-  c: コンテナ
-  d: DNS
-  k: API キー
-  question: 現在地
+  global: グローバル
+  cluster: クラスター
+  project: プロジェクト
+  other: Other Stuff
+  shift: Shift-{key}
+  delete: Delete selected (in table views)
+  kubectl: Kubectl シェル
+  viewGroup: Toggle view grouping
+  nextTab: Next page tab
+  search: Focus the search field
+  shortcuts: You are here
+
+modalYaml:
+  title:
+    new: "{type} YAML をインポート"
+    edit: 'YAML を編集: {name}'
+
 modalWelcome:
   header: '{appName} へようこそ!'
   closeModal: 完了!
+
+namespaceGroup:
+  label: "名前空間: {name}"
+  none: ポッド
+  project: Not in a project
+
+nodeGroup:
+  label: "ノード: {name}"
+
+newIngress:
+  header:
+    add: イングレスを追加
+    edit: イングレスを編集
+  error:
+    noRules: "1つ以上のルールを追加する必要があります"
+
 newBalancer:
   header:
     add: ロードバランサーを追加
     edit: ロードバランサーを編集
     upgrade: ロードバランサーをアップグレード
   error:
+    noRules: "You must have one or more listening ports and target rules"
     noSourcePort: "各ルールにはソースポートが必要です"
-    invalidSourcePort: '無効なソースポート: ''{num}'''
-    invalidTargetPort: '無効な対象ポート: ''{num}'''
+    invalidSourcePort: "無効なソースポート: '{num}'"
+    invalidTargetPort: "無効な対象ポート: '{num}'"
     mixedPort: "ポート {num} はアクセスするプロトコルが競合する複数のルールを持っています"
     noTarget: "各ルールには対象が必要です"
+    noTargetPort: "Target Port is required on each rule"
     needsCertificate: "SSL/TLS ポートルールであるため証明書が必要です"
+    stackName: "A new stack needs a name"
+
 newCatalog:
-  version:
-    prompt: バージョンを選択してください...
-  saveUpgrade: アップグレード
-  saveNew: 起動
-  saveConfigure: 設定
-  upgrade: "アップグレード:"
+  answers:
+    label: アンサー
+    addAction: アンサーを追加
   catalog: "カタログ:"
   category: "カテゴリー:"
-  support: "サポート:"
-  official: 公式に認証済み
+  config: 設定オプション
+  helm:
+    label: 設定オプション
+    protip: Helm テンプレートではカンマ区切りの文字列リストが許容されます
+  kind: "カタログ種別:"
+  license: "ライセンス:"
   maintainedBy: コミュニティメンバーによるメンテナンス
   maintainer: "メンテナー:"
-  license: "ライセンス:"
-  url: "プロジェクト URL:"
-  titleAdd: "{name} スタックを追加"
-  titleUpgrade: "{name} スタックをアップグレード"
-  titleConfigure: "{name} スタックを設定"
-  templateVersion: テンプレートバージョン
-  selectVersionAdd: デプロイするテンプレートのバージョンを選択してください
-  selectVersionUpgrade: アップグレードするテンプレートのバージョンを選択してください
-  selectVersionConfigure: 設定するテンプレートのバージョンを選択してください
-  config: 設定オプション
-  unknownType: "有効でないパラメータータイプ:"
-  startService: 作成後にサービスを起動
-  preview: プレビュー
-  txt: answers.txt
+  newNamespace: 新しい名前空間
+  customizeNamespace: "このアプリケーションは <code>{namespaceId}</code> 名前空間内で起動します"
+  newAppDetail: Choose application version and namespace for the application
+  appInfo: 詳細情報
+  appInfoDetail: アプリケーション情報とユーザーガイド
   noConfig: このテンプレートには設定オプションがありません
+  official: 公式に認証済み
+  preview: プレビュー
+  seeMore: より詳細な情報...
+  saveConfigure: 設定
+  saveNew: 起動
+  saveUpgrade: アップグレード
+  selectVersionAdd: デプロイするテンプレートのバージョンを選択してください
+  selectVersionConfigure: 設定するテンプレートのバージョンを選択してください
+  selectVersionUpgrade: アップグレードするテンプレートのバージョンを選択してください
+  startService: 作成後にサービスを起動
+  support: "サポート:"
+  templateVersion: テンプレートバージョン
+  titleAdd: "{name} アプリケーションを追加"
+  titleConfigure: "{name} アプリケーションを設定"
+  titleUpgrade: "{name} アプリケーションをアップグレード"
+  txt: answers.txt
+  unknownType: "有効でないパラメータータイプ:"
+  upgrade: "アップグレード:"
+  url: "プロジェクト URL:"
+  version:
+    prompt: バージョンを選択してください...
+    default: "デフォルトのバージョン (現在: {version})"
+
 newContainer:
   add:
-    sidekick: 'サイドキックを追加'
-    sidekickName: '"{name}" のサイドキックを追加'
+    container: ポッドを展開
+    service: ワークロードを展開
+    globalService: グローバルワークロードを展開
+    sidekick: 'サイドカーを展開'
+    sidekickName: '"{name}" のサイドカーを展開'
   upgrade:
     container: コンテナをアップグレード
-    sidekick: サイドキックをアップグレード
-    sidekickName: '"{name}" のサイドキックをアップグレード'
+    service: サービスをアップグレード
+    globalService: グローバルサービスをアップグレード
+    sidekick: サイドカーをアップグレード
+    sidekickName: '"{name}" のサイドカーをアップグレード'
   selectUpgrade: アップグレードするサービスを1つ以上選択してください
   saveUpgrade: アップグレード
   saveNew: 起動
@@ -2415,60 +4315,522 @@ newContainer:
     placeholder: '例: マイアプリケーション'
   environment:
     label: 環境変数
+    from: 他のリソースからの投入値
+    detail: シークレットなどの他のリソースから投入する値のようなコンテナから参照可能な環境変数を設定します
     addAction: 環境変数を追加
+    addFrom: 投入元を追加
     keyLabel: 変数
     keyPlaceholder: '例: FOO'
     valueLabel: 値
     valuePlaceholder: '例: bar'
   sidekick:
+    header: サービスをアップグレード
+    title: アップグレード用のサービス起動設定を選択してください
+    detail: '"{service}" にはサイドカーが含まれます。どのコンテナをアップグレードしますか?'
     primary: 基本サービス
-    sidekick: サイドキック
+    sidekick: サイドカー
   errors:
-    noSidekick: サイドキックとして追加したいサービスを選択してください
-    duplicateName: '"{service}" 内には "{name}" という名前のサイドキックが既に存在しています'
+    noSidekick: サイドカーを追加したいワークロードを選択してください
+    duplicateName: '"{service}" 内には "{name}" という名前のサイドカーが既に存在しています'
+
 newPassword:
   placeholder: 新しいパスワード
   password: 新しいパスワード
   confirmPassword: 新しいパスワード(確認用)
   passwordNoMatch: パスワードが一致しません
-newReceiver:
+
+newSecret:
   title:
-    edit: レシーバーを編集
-    add: レシーバーを追加
+    new: シークレットを追加
+    edit: 'シークレットを編集: {name}'
+    view: 'シークレット: {name}'
   name:
-    placeholder: "例: scale-web"
-  driver:
-    label: 種類
-  action:
-    label: アクション
-    up: スケールアップ
-    down: スケールダウン
-  deleteOption:
-    label: いつ スケールダウン, 削除するか
-    mostRecent: 直近で作成されたホスト
-    leastRecent: もっとも古いホスト
-  hostSelector:
-    addActionLabel: セレクターラベルを追加
-  image:
-    label: Docker イメージ名
-  service:
-    label: 対象サービス
-  serviceSelector:
-    label: サービスセレクター
-    addActionLabel: セレクターラベルを追加
-    help: ラベルに一致したサービスはアップグレードされます。
-  amount:
-    label: Scale up/down 単位
-  min:
-    label: 最小スケール
-    placeholder: '例: 1'
-  max:
-    label: 最大スケール
-    placeholder: '例: 20'
-  tag:
-    label: イメージタグ
-    placeholder: "例: latest"
-    help: 指定されたタグでレジストリにプッシュされた時のみサービスがアップグレードされます。
+    placeholder: "例: api-key"
+  description:
+    placeholder: "例: S3 key pair"
+  values:
+    label: シークレット値
+  addActionLabel: シークレット値を追加
+
+nodeDriver:
+  addTemplate: ノードテンプレートを追加
+  editTemplate: "ノードテンプレートを編集: {name}"
+  editWarning: Editing a node template will only affect new nodes created by a node pool; existing nodes will not be updated or replaced automatically.<br>If you delete nodes from a pool, new ones will be created using the new settings in the template.
+  displayName:
+    aliyunecs: Aliyun ECS
+    amazonec2: Amazon EC2
+    azure: Azure
+    digitalocean: DigitalOcean
+    exoscale: Exoscale
+    openstack: OpenStack
+    otc: Open Telekom Cloud
+    packet: Packet
+    rackspace: RackSpace
+    softlayer: SoftLayer
+    vmwarevsphere: vSphere
+    zstack: ZStack
+  driverOptions: "{driver} オプション"
+  templateOptions: "{appName} テンプレート"
+  amazonec2:
+    access:
+      title: 1. アカウントアクセス
+      detail: EC2 インスタンスを起動する際に利用するリージョンと API キーを選択してください
+      next: "次へ: 認証とネットワークの選択"
+      loading: EC2 からアベイラビリティゾーンと VPC 情報を読み込んでいます...
+      help: "AWS のキーペアを貼り付けてください。新しいインスタンス作成にこのキーを利用します"
+    zone:
+      title: 2. ゾーンとネットワーク
+      detail: インスタンスに対するアベイラビリティゾーンと VPC/サブネット を選択してください
+      next: "次へ: セキュリティグループの選択"
+      loading: EC2 からセキュリテイぃグループ情報を読み込んでいます...
+    accessKey:
+      label: アクセスキー
+      placeholder: あなたの AWS アクセスキー
+    secretKey:
+      label: 秘密キー
+      placeholder: あなたの AWS 秘密キー
+      provided: Provided
+    region:
+      label: リージョン
+    availabilityZone: アベイラビリティゾーン
+    subnet: VPC/サブネット
+    securityGroup:
+      title: 3. セキュリティグループ
+      detail: インスタンスに適用するセキュリティグループを選択してください
+      choose:  既存のグループを選択
+      defaultExisting: "通常: 既存の <code>{groupName}</code> グループを利用"
+      defaultCreate: "通常: <code>{groupName}</code> グループを自動的に作成"
+      next: "次へ: インスタンスオプションの設定"
+      loading: インスタンスオプションを読み込んできます...
+    instance:
+      title: 4. インスタンス
+      detail: 作成される EC2 インスタンスをカスタマイズします
+    portHelp:
+      link: 詳細を見る
+      text: 公開されるポート番号について
+    needs:
+      label: "{appName} が正常に機能するためにはセキュリティグループで以下のトラフィックを許可する必要があります:"
+      item1: '{appName} サーバーから <code>TCP 22</code> 版ポート<span class="text-muted">(Docker を SSH 経由でインストール,設定するため)</span>"'
+      item2: '他のホストへ、または他のホストからの <code>UDP 500</code> 番ポートと <code>4500</code> 番ポート<span class="text-muted">(IPsec ネットワークのため)</span></li>'
+      item3: これらのルールは自動的に追加 <b>されません</b>
+    instanceType:
+      label: インスタンスタイプ
+    rootSize:
+      label: ルートディスクサイズ
+      unit: GB
+    ami:
+      label: AMI
+      placeholder: Ubuntu AMI
+      rancherList: RancherOS AMI リスト
+    sshUser:
+      label: SSH ユーザー
+      placeholder: "例: ubuntu"
+    iam:
+      label: IAM プロファイル
+    privateIp:
+      label: プライベート IP
+    onlyPrivate:
+      label: プライベート IP アドレスのみ使用
+    requestSpotInstance:
+      label: スポットインスタンス
+      enable: スポットインスタンスをリクエスト
+    spotPrice:
+      label: スポット価格
+      unit: $
+  digitalocean:
+    droplet:
+      title: ドロップレットオプション
+      detail: このテンプレートにより作成されたドロップレットのオプションを設定してください
+    sizeLabel: |
+      {highMem, select, true {High Memory: } other {}}{memoryGb} GB RAM, {disk} GB Disk, {vcpus, plural,
+        =1 {# vCPU}
+        other {# vCPUs}
+      }
+    authAccountButton: '次へ: ドロップレットの設定'
+    accessToken:
+      label: アクセストークン
+      placeholder: あなたの DigitalOcean API アクセストークン
+      help: |
+        DigitalOcean <a href="https://cloud.digitalocean.com/settings/api/tokens" target="_blank" rel="nofollow noreferrer noopener">Applications & API</a> 画面から
+        パーソナルアクセストークンを取得してください
+    image:
+      label: イメージ
+    sshUser:
+      label: SSH ユーザー
+      placeholder: '例: root'
+    size:
+      label: ドロップレット サイズ
+    region:
+      label: リージョン
+    optionsSection: オプション
+    backups:
+      label: バックアップを有効化
+    ipv6:
+      label: IPv6 を有効化
+    privateNetworking:
+      label: プライベートネットワークを有効化
+    monitoring:
+      label: モニタリングを有効化
+    tags:
+      addActionLabel: ドロップレットタグを追加
+      valueLabel: タグ
+      placeholder: "例: dev"
+  exoscale:
+    accountSection: アカウントアクセス
+    apiKey:
+      label: API キー
+      placeholder: あたたの Exoscale API キー
+    secretKey:
+      label: 秘密キー
+      placeholder: Your Exoscale secret key
+      provided: Provided
+    accountHelp: Paste in your Exoscale key pair here.  We'll use this key to create your new Instances.
+    loginAction: "Next: Authenticate & select a Security Group"
+    loadingSecurity: Loading security group info from Exoscale...
+    securityGroupSection: Security Group
+    securityGroup:
+      label: Security Group
+      defaultExisting: "Standard: Use the existing <code>{groupName}</code> group"
+      defaultCreate: "Standard: Automatically create a <code>{groupName}</code> group"
+      custom: "Custom: Choose an existing group"
+      updating: Updating Security Group...
+      creating: Creating Security Group...
+    portHelp:
+      link: Learn more
+      text: about the ports that will be opened.
+    needs:
+      label: "For {appName} to work correctly your security group will need to allow traffic:"
+      item1: From the {appName} server to <code>TCP</code> port <code>22</code> <span class="text-muted">(SSH to install and configure Docker)</span>
+      item2: From and To all other hosts on <code>UDP</code> ports <code>500</code> and <code>4500</code> <span class="text-muted">(for IPsec networking)</span></li>
+      item3: These rules will <b>not</b> be added automatically.
+    selectSecurityGroupAction: "Next: Set Instance options"
+    loadingInstance: Fetching available Instance settings...
+    instanceSection: Instance
+    instanceOptionsSection: Instance Options
+    instanceProfile:
+      label: Instance Profile
+    diskSize:
+      label: Root Disk Size
+    sshUser:
+      label: SSH User
+      placeholder: 'usr1'
+  packet:
+    accountSection: Account Access
+    projectId:
+      label: Project
+      placeholder: Your Packet project ID
+    apiKey:
+      label: API Key
+      placeholder: Your Packet API key
+    apiKeyHelp: From the Packet <a href="https://app.packet.net/portal#/api-keys" target="_blank">API Keys</a> screen
+    instanceSection: Instance
+    instanceOptionsSection: Instance Options
+    loginAction: "Next: Authenticate & select an instance"
+    authentication: Authenticating
+    location: Location
+    planDetails:
+      label: Instance Details
+      cpu: CPUs
+      memory: Memory
+      drives: Drives
+      network: NICs
+    image:
+      label: Image
+    size:
+      label: Size
+    regionSection: Region
+    region:
+      label: Region
+  rackspace:
+    accountSection: Account Access
+    username:
+      label: Username
+      placeholder: Your RackSpace username
+    apiKey:
+      label: API Key
+      placeholder: Your RackSpace API key
+    accountHelp: From the Account Settings screen of the RackSpace control panel
+    regionSection: Region
+    region:
+      label: Region
+    instanceSection: Instance
+    instanceOptionsSection: Instance Options
+    flavor:
+      label: Flavor
+  vmwarevsphere:
+    access:
+      title: 1. アカウントアクセス
+      detail: vCenter や ESXi サーバーのアクセス情報を設定します
+      help: "Note: 試用版の ESXi ライセンスでは API アクセスがサポートされません。商用版ライセンスが適用されたサーバーのみサポートされます。"
+    instance:
+      title: 2. インスタンスオプション
+      detail: 仮想マシンの OS とサイズを選択してください
+    scheduling:
+      title: 3. スケジューリング
+      detail: 仮想マシンが配置されるホストを選択してください
+    vcenter:
+      label: vCenter ホスト
+      placeholder: vCenter もしくは ESXi ホスト名/IP
+    vcenterPort:
+      label: vCenter ポート番号
+    username:
+      label: ユーザー名
+    password:
+      label: パスワード
+    instanceSection: インスタンス
+    instanceOptionsSection: インスタンスオプション
+    cpuCount:
+      label: CPUs
+      unit: '{cores, plural, =1 {コア} other {コア}}'
+    memorySize:
+      label: メモリ
+      unit: MB
+    diskSize:
+      label: ディスク
+      unit: MB
+    boot2dockerUrl:
+      label: OS ISO URL
+      placeholder: "デフォルト: 最新の boot2docker イメージ"
+    schedulingSection: スケジューリング
+    dataCenter:
+      label: データセンター
+      placeholder: "例: datacenter_name"
+      help: "VM を作成するデータセンターです(スタンドアローンの ESXi の場合は空白にしてください)"
+    pool:
+      label: リソースプール
+      placeholder: "例: /dc_name/host/host_name/Resources/pool_name"
+      help: "VM を作成するリソースプールです(スタンドアローンの ESXi の場合は空白にしてください)"
+    host:
+      label: ホスト
+      placeholder: "例: cluster_name/host_name"
+      help: "VM を作成する特定ホストです(スタンドアローンの ESXi もしくは DRS が有効なクラスターの場合は空白にしてください)"
+    network:
+      label: ネットワーク
+      placeholder: "例: VM Network"
+      help: "VM にアタッチするネットワークです"
+    dataStore:
+      label: データストア
+      placeholder: "例: datastore_cluster_name/datastore_name"
+      help: "VM ディスクを配置するデータストアです"
+  azure:
+    placement:
+      title: 配置
+      detail: このテンプレートにより作成されたインスタンスの配置先を選択してください
+    access:
+      title: アカウントアクセス
+      detail: Azure インスタンスを起動するのに API キーが利用されます
+    network:
+      title: ネットワーク
+      detail: このテンプレートにより作成されたインスタンスが接続するネットワークを設定してください
+    instance:
+      title: インスタンス
+      detail: 作成された Azure インスタンスをカスタマイズします
+    subscriptionId:
+      label: サブスクリプション ID
+      placeholder: あなたの Azure サブスクリプション ID
+    subscriptionCert:
+      label: サブスクリプション証明書
+      placeholder: あなたの Azure サブスクリプション証明書
+    image:
+      label: イメージ
+      placeholder: 'canonical:UbuntuServer:16.04.0-LTS:latest'
+    size:
+      label: サイズ
+    dockerPort:
+      label: Docker ポート
+      placeholder: '2376'
+    publishSettingsFile:
+      label: 公開設定
+      placeholder: あなたの公開設定ファイル
+    environment:
+      label: 環境
+      placeholder: 'AzurePublicCloud'
+    resourceGroup:
+      label: リソースグループ
+      placeholder: 'docker-machine'
+    sshUser:
+      label: SSH ユーザー
+      placeholder: usr1
+    storageType:
+      label: ストレージタイプ
+    vnet:
+      label: VNet
+      placeholder: '[resourcegroup:]name'
+    subnet:
+      label: サブネット
+      placeholder: example-sub-name
+    subnetPrefix:
+      label: サブネットプリフィックス
+      placeholder: 128.42.0.0/21
+    availabilitySet:
+      label: アベイラビリティセット
+      placeholder: availability-set-name
+    openPort:
+      label: 公開ポート
+      placeholder: 'Comma-separated, 例: 80,443'
+    privateIpAddress:
+      label: プライベート IP
+      placeholder: 127.0.0.1
+    usePrivateIp:
+      label: 接続にプライベート IP を利用
+    staticPublicIp:
+      label: パブリック IP
+    noPublicIp:
+      label: パブリック IP はありません
+    clientId:
+      label: クライアント ID
+      placeholder: あなたのクライアント ID
+    clientSecret:
+      label: クライアントシークレット
+      placeholder: あなたのクライアントシークレット
+    region:
+      label: リージョン
+  aliyunecs:
+    accountSection: Account Access Section
+    accessKey:
+      label: Access Key*
+      placeholder: Your Aliyun Account Access Key
+    accessKeySecret:
+      label: Access Key Secret*
+      placeholder: Your Key's secret
+    apiEndpoint:
+      label: Api Endpoint
+      placeholder: Private Aliyun Api Server Endpoint
+    instanceSection: Instance Section
+    instanceOptionsSection: Instance Options Section
+    instanceDescription:
+      label: Instance Description
+      placeholder: Instance Description
+    instanceType:
+      label: Instance Type
+      placeholder: Instance Type
+    systemImage:
+      label: System image
+      placeholder: System image
+    instanceTag:
+      label: Instance Tag
+      placeholder: Your Instance Tag in Aliyun
+    internetMaxBandwidth:
+      label: Internet Max Bandwidth
+      placeholder: 1 to 100
+    aliyunSLB:
+      label: Aliyun SLB ID
+      placeholder: Aliyun SLB ID
+    storageSection: Storage Info
+    ioOptimized:
+      label: Instance Storage I/O Optimized
+      placeholder: none or optimized
+    systemDiskCategory:
+      label: System Disk Category
+      placeholder: When Storage is optimized, you can input cloud_efficiency, cloud_ssd or ephemeral_ssd.
+    dataDiskCategory:
+      label: Data Disk Category
+      placeholder: When Storage is optimized, you can input cloud_efficiency, cloud_ssd or ephemeral_ssd.
+    dataDiskSize:
+      label: Data Disk Size
+      placeholder: Disk Size
+    region:
+      label: Region
+      placeholder: Region
+    zone:
+      label: Available Zone
+      placeholder: Blank for auto select
+    networkSection: Network Section
+    routeCIDR:
+      label: Route CIDR
+      placeholder: e.g. 192.168.1.0/24
+    vpcId:
+      label: Aliyun VPC ID
+      placeholder: Aliyun VPC ID
+    vswitchId:
+      label: Aliyun Vswitch ID
+      placeholder: Aliyun Vswitch ID
+    privateIp:
+      label: Private IP
+      placeholder: Private IP in Private Network
+    privateAddressOnly:
+      label: Private Address Only
+    securitySection: Security Section
+    securityGroup:
+      label: Security Group
+      placeholder: Security Group
+    sshPassword:
+      label: SSH Password
+      placeholder: Set Instance SSH Password, Blank for Auto set
+  zstack:
+    access:
+      title: 1. Account Access
+      detail: Choose the endpoint, account name and account password that will be used to launch ZStack Instances
+      next: "Next: Authenticate & select a network"
+      loading: Loading Zone, Cluster, Network info from ZStack...
+    endpoint:
+      label: Endpoint
+      placeholder: e.g. https://192.168.1.42:8443/
+    accountName:
+      label: Account Name
+      placeholder: Your account name
+    accountPassword:
+      label: Account Password
+      placeholder: Your account password
+      provided: Provided
+    zone:
+      title: 2. Zone, Cluster and Network
+      detail: Select the Zone, Cluster and Network for Instances
+      next: "Next: Set Instance options"
+      loading: Loading instance options from ZStack...
+      label: Zone
+    cluster:
+      label: Cluster
+    network:
+      defaultCreate: "Standard: Automatically create a <code>{groupName}</code> network"
+      choose:  Choose existing network
+      label: Network
+    portHelp:
+      link: Learn more
+      text: about the ports that will be opened.
+    instance:
+      title: 3. Instance
+      detail: Customize the EC2 Instance that will be created.
+    instanceOffering:
+      label: Instance Type
+    systemDiskOffering:
+      label: System Disk
+    imageName:
+      label: Image Name
+    dataDiskOffering:
+      label: Data Disk
+
+newConfigMap:
+  title:
+    new: コンフィグマップを追加
+    edit: 'コンフィグマップを編集: {name}'
+    view: 'コンフィグマップ: {name}'
+  name:
+    placeholder: "例: map"
+  description:
+    placeholder: "例: app"
+  values:
+    label: コンフィグマップ値
+  addActionLabel: コンフィグマップ値を追加
+
+projectGroup:
+  label: "プロジェクト: {name}"
+  none: 名前空間
+  project: Not in a project
+  noNS: このプロジェクトには名前空間がありません
+
+optionallyNamespaced:
+  scope:
+    label: スコープ
+    project: このプロジェクト内の全ての名前空間
+    namespace: 単一名前空間のみ
+
+orchestrationWelcome:
+  simple:
+    title: Simple
+  enhanced:
+    title: Enhanced with Kubernetes
+
 pageFooter:
   notARelease: (未リリース)
   help: 'ヘルプ & ドキュメント'
@@ -2481,15 +4843,160 @@ pageFooter:
     windows: Windows
     linux: Linux
   showSystem: システムコンテナを表示
+
 pagination:
+  catalog: |
+    {pages, plural,
+    =0 {カタログはありません}
+    =1 {{count} {count, plural, =1 {カタログ} other {カタログ}}}
+    other {{from} - {to} of {count} Catalogs}}
+  certificate: |
+    {pages, plural,
+    =0 {証明書はありません}
+    =1 {{count} {count, plural, =1 {証明書} other {証明書}}}
+    other {{from} - {to} of {count} Certificates}}
+  container: |
+    {pages, plural,
+    =0 {クラスターはありません}
+    =1 {{count} {count, plural, =1 {クラスター} other {クラスター}}}
+    other {{from} - {to} of {count} Clusters}}
+  cluster: |
+    {pages, plural,
+    =0 {クラスターはありません}
+    =1 {{count} {count, plural, =1 {クラスター} other {クラスター}}}
+    other {{from} - {to} of {count} Clusters}}
   dnsRecord: |
     {pages, plural,
     =0 {DNS レコードはありません}
     =1 {{count} {count, plural, =1 {DNS レコード} other {DNS レコード}}}
     other {{from} - {to} 個の {count} DNS レコード}}
+  driver: |
+    {pages, plural,
+    =0 {ドライバーはありません}
+    =1 {{count} {count, plural, =1 {ドライバー} other {ドライバー}}}
+    other {{from} - {to} of {count} Drivers}}
+  driverOptions: |
+    {pages, plural,
+    =0 {オプションはありません}
+    =1 {{count} {count, plural, =1 {ドライバーオプション} other {ドライバーオプション}}}
+    other {{from} - {to} of {count} Driver Options}}
+  entry: |
+    {pages, plural,
+    =0 {エントリーはありません}
+    =1 {{count} {count, plural, =1 {エントリー} other {エントリー}}}
+    other {{from} - {to} of {count} Entries}}
+  event: |
+    {pages, plural,
+    =0 {イベントはありません}
+    =1 {{count} {count, plural, =1 {イベント} other {イベント}}}
+    other {{from} - {to} of {count} Events}}
+  generic: |
+    {pages, plural,
+    =0 {項目はありません}
+    =1 {{count} {count, plural, =1 {項目} other {項目}}}
+    other {{from} - {to} of {count} Items}}
+  image: |
+    {pages, plural,
+    =0 {イメージはありません}
+    =1 {{count} {count, plural, =1 {イメージ} other {イメージ}}}
+    other {{from} - {to} of {count} Images}}
+  link: |
+    {pages, plural,
+    =0 {リンクはありません}
+    =1 {{count} {count, plural, =1 {リンク} other {リンク}}}
+    other {{from} - {to} of {count} Links}}
+  loadBalancer: |
+    {pages, plural,
+    =0 {ロードバランサーはありません}
+    =1 {{count} {count, plural, =1 {ロードバランサー} other {ロードバランサー}}}
+    other {{from} - {to} of {count} Load Balancers}}
+  ingress: |
+    {pages, plural,
+    =0 {イングレスはありません}
+    =1 {{count} {count, plural, =1 {イングレス} other {イングレス}}}
+    other {{from} - {to} of {count} Ingresses}}
+  member: |
+    {pages, plural,
+    =0 {メンバーはいません}
+    =1 {{count} {count, plural, =1 {メンバー} other {メンバー}}}
+    other {{from} - {to} of {count} Members}}
+  mount: |
+    {pages, plural,
+    =0 {マウントはありません}
+    =1 {{count} {count, plural, =1 {マウント} other {マウント}}}
+    other {{from} - {to} of {count} Mounts}}
+  namespace: |
+    {pages, plural,
+    =0 {名前空間はありません}
+    =1 {{count} {count, plural, =1 {名前空間} other {名前空間}}}
+    other {{from} - {to} of {count} Namespaces}}
+  node: |
+    {pages, plural,
+    =0 {ノードはありません}
+    =1 {{count} {count, plural, =1 {ノード} other {ノード}}}
+    other {{from} - {to} of {count} Nodes}}
+  nodePool: |
+    {pages, plural,
+    =0 {ノードプールはありません}
+    =1 {{count} {count, plural, =1 {ノードプール} other {ノードプール}}}
+    other {{from} - {to} of {count} Node Pools}}
+  nodeTemplate: |
+    {pages, plural,
+    =0 {ノードテンプレートはありません}
+    =1 {{count} {count, plural, =1 {ノードテンプレート} other {ノードテンプレート}}}
+    other {{from} - {to} of {count} Node NodeTemplates}}
+  pod: |
+    {pages, plural,
+    =0 {ポッドはありません}
+    =1 {{count} {count, plural, =1 {ポッド} other {ポッド}}}
+    other {{from} - {to} of {count} Pods}}
+  podHighlightSubset: "<b>{subset} of {count}</b> Pods"
+  podNoSubset: "0 of {count} Pods"
+  podLabel: |
+    {count, plural,
+      =1 {ポッド}
+      other {ポッド}
+    }
+  port: |
+    {pages, plural,
+    =0 {ポートはありません}
+    =1 {{count} {count, plural, =1 {ポート} other {ポート}}}
+    other {{from} - {to} of {count} Ports}}
+  project: |
+    {pages, plural,
+    =0 {プロジェクトはありません}
+    =1 {{count} {count, plural, =1 {プロジェクト} other {プロジェクト}}}
+    other {{from} - {to} of {count} Projects}}
+  rule: |
+    {pages, plural,
+    =0 {ルールはありません}
+    =1 {{count} {count, plural, =1 {ルール} other {ルール}}}
+    other {{from} - {to} of {count} Rules}}
+  service: |
+    {pages, plural,
+    =0 {サービスはありません}
+    =1 {{count} {count, plural, =1 {サービス} other {サービス}}}
+    other {{from} - {to} of {count} Services}}
+  storageClass: |
+    {pages, plural,
+    =0 {ストレージクラスはありません}
+    =1 {{count} {count, plural, =1 {ストレージクラス} other {ストレージクラス}}}
+    other {{from} - {to} of {count} Storage Classes}}
+  volume: |
+    {pages, plural,
+    =0 {ボリュームはありません}
+    =1 {{count} {count, plural, =1 {ボリューム} other {ボリューム}}}
+    other {{from} - {to} of {count} Volumes}}
+  workload: |
+    {pages, plural,
+    =0 {ワークロードはありません}
+    =1 {{count} {count, plural, =1 {ワークロード} other {ワークロード}}}
+    other {{from} - {to} of {count} Workloads}}
+
 projectRow:
   none: 詳細情報はありません
   orchestration: オーケストレーション
+
 publicEndpoints:
   endpoint: エンドポイント
   bindIpAddress: バインド IP
@@ -2498,13 +5005,16 @@ publicEndpoints:
   privatePort: コンテナポート
   noData: 公開されているポートはありません
   noMatch: 検索条件に一致するポートはありません
+
 physicalStats:
   title: 物理マシン属性
   detail: 物理マシンの属性情報です
+
 registryRow:
   address: アドレス
   username: ユーザー名
   created: 作成日
+
 reservationParameters:
   label: リソース制限
   memory:
@@ -2515,12 +5025,15 @@ reservationParameters:
     labelText: CPU
     placeholder: 'デフォルト: 全ホスト'
     unit: 'mCPU'
+
 saveCancel:
   saving: 保存中...
   saved: 完了!
   edit: 保存
+  next: 次へ
   create: 作成
   cancel: キャンセル
+
 schema:
   inputBoolean:
     y: "はい"
@@ -2529,14 +5042,22 @@ schema:
     prompt: 証明書を選択してください...
   inputContainer:
     prompt: コンテナを選択してください...
+  inputConfigMap:
+    prompt: コンフィグマップを選択してください...
   inputEnum:
     option: オプションを選択してください...
   inputHost:
     label: ホストを選択してください...
   inputService:
     prompt: サービスを選択してください...
+    custom: Custom
+  inputDnsRecord:
+    prompt: DNS レコードを選択してください...
+  inputStorageClass:
+    prompt: デフォルトクラスを使う...
   inputSecret:
     prompt: シークレットを選択してください...
+
 schedulingRuleRow:
   theHost: ホスト
   must: must
@@ -2549,19 +5070,14 @@ schedulingRuleRow:
   containerLabel: ラベル付きコンテナ
   serviceName: 名前付きサービス
   containerName: 名前付きコンテナ
-serviceLink:
-  withAlias:
-    sameStack: "{service} を {alias} とする"
-    differentStack: "{stack}/{service} を {alias} とする"
-  noAlias:
-    sameStack: "{service}"
-    differentStack: "{stack}/{service}"
-serviceLog:
-  time: 時刻
-  level: ログレベル
-  event: イベント
-  noMatch: 検索条件に一致するイベントはありません
-  noData: 直近で発生したイベントはありません
+
+serverUrl:
+  header:
+    label: Rancher サーバー URL
+    detail: "どのような URL をこの {appName} サーバーに利用しますか? クラスター内の全てのノードはこの URL に通信可能である必要があります。"
+  button:
+    save: URL を保存する
+
 siteAccess:
   header: サイトアクセス
   helpText: "誰がログインし {appName} を利用できるか設定してください"
@@ -2573,10 +5089,25 @@ siteAccess:
   users: ユーザー
   groups: グループ
   organizations: 組織
-svgServiceContainer:
-  sidekicks: サイドキック
+
+systemInfoSection:
+  title: システム情報
+  detail: システムと Kubernetes の情報です
+  key: キー
+  value: 値
+  noData: データはありません
+  arch: アーキテクチャ
+  dockerVersion: Docker バージョン
+  kernelVersion: Kernel バージョン
+  kubeletVersion: Kubelet バージョン
+  kubeProxyVersion: Kube Proxy バージョン
+  operatingSystem: OS イメージ
+  osType: OS
+  noMatch: 検索条件に一致するシステム情報はありません
+
 tableCountSelect:
   header: ページ毎のテーブル行数
+
 telemetryOpt:
   header: 統計情報
   subtext: |
@@ -2584,12 +5115,15 @@ telemetryOpt:
   learnMore:
     label: 詳細を見る
   label: 匿名の統計情報の収集を許可する
+
 tooltipLink:
   list: リスト
   composeYaml: Compose YAML
+
 tooltipWarning:
   notConfigured: アクセスコントロールは設定されていません
   dismiss: 表示しない
+
 upgradeBtn:
   version:
     current: '現行'
@@ -2603,127 +5137,249 @@ upgradeBtn:
     notfound: 'テンプレートバージョンが見つかりません'
     error: 'アップグレードのチェックに失敗しました'
     required: 'アップグレードが必要です'
+
+jsonEditor:
+  placeholder: "Please input in JSON format"
+
 viewEditDescription:
   form:
     name:
       placeholder: '例: ラボ'
     description:
       placeholder: e.g. 開発者向けテスト用環境
-viewEditProject:
-  showEdit:
-    edit: "環境を編集:"
-    add: 環境を追加
-    template: 環境のテンプレート
-    accessControl: アクセスコントロール
-    noMembers: この環境を利用することができる 1 つまたは複数のメンバーを追加します。
-  networkPolicy:
-    label: ネットワークポリシー
-    description: 管理ネットワーク経由での相互通信を許可するコンテナをコントロールします。
-    unsupported: この環境には UI ではサポートされていない ネットワークポリシー ルール が存在します。ポリシーを管理するには API を利用してください。
-    noManager: ネットワークポリシーは Network Policy Manager テンプレートがデプロイされており Cattle オーケストレーションを利用している環境下でのみ利用できます。
-    withinStack: スタック内
-    withinService: サービス内
-    withinLinked: リンクされたサービス間
-    default: その他全て
-    allow: 許可
-    deny: 拒否
-  header: "環境:"
-  description: 詳細情報
-  helpBlock: |
-    アクセスコントロールが有効化されていません。<br/>
-    API/UI にアクセスできる誰でも管理者として全ての環境を利用できます。
+
 volumesPage:
-  noMatch: 検索条件に一致するボリュームがありません
-  scope:
-    label: スコープ
-    stack: スタック
-    container: コンテナ毎
-  driver:
-    label: ドライバー
-  mounts:
-    label: マウント
+  title: ボリューム要求
+  addActionLabel: ボリューム要求を追加
+  noData: まだ永続ボリューム要求は定義されていません
+  noMatch: 検索条件に一致する永続ボリューム要求はありません
+  claimName:
+    label: 要求名
+  volume:
+    label: 永続ボリューム
+  storageClass:
+    label: ストレージクラス
+
 vmConsole:
   header: "コンソール:"
-  protip: 'ProTip: 新しいウィンドウで起動する場合はシェルアクセスを開く際に {key} を長押ししてください。'
+  protip: "ProTip: 新しいウィンドウで起動する場合はシェルアクセスを開く際に {key} を長押ししてください。"
   canvas: キャンバスがサポートされていません。
   footerActions:
     buttonSend: Ctrl-Alt-Delete を送る
     buttonCancel: 閉じる
+
+volumeRow:
+  mounts:
+    readOnly: "(read-only)"
+
+waitOrchestration:
+  count: '({sub} of {count})'
+
 waitKubernetes:
   addHost: '1台のホストを追加しています'
   activateHost: 'ホストがアクティブになるのを待っています'
   createStack: 'Kubernetes のシステムスタックを作成中'
   startServices: 'サービスを起動中'
   waitApi: 'Kubernetes API を待っています'
+
+searchableSelect:
+  noMatch: No match
+  noOptions: 利用可能なオプションはありません
+
 containerChoices:
-  hostGroup: 'ホスト: {name}'
-  hostGroupWithState: 'ホスト: {name} ({state})'
-  unknownHost: 'ホスト: ???'
+  hostGroup: "ホスト: {name}"
+  hostGroupWithState: "ホスト: {name} ({state})"
+  unknownHost: "ホスト: ???"
   containerOption: "{name}"
+
+allWorkloads:
+  namespace: "Namespace: {name}"
+
 nav:
   srToggleDropdown: ドロップダウンを切り替え
   environment:
+    cluster: クラスター
     label: 環境
     all: 全ての環境
     your: あなたの環境
     selected: 選択された環境
     edit: '"{name}" を編集'
+  cluster:
+    dashboard: ダッシュボード
+    members: メンバー
+    nodes: ノード
+    namespaces: 名前空間
+    storage:
+      tab: ストレージ
+      classes: ストレージクラス
+      volumes: 永続ボリューム
+    projects: プロジェクト
   containers:
+    tab: ワークロード
     systemTab: システム
-    balancers: バランサー
+    ingresses: ロードバランサー
+    containers: ワークロード
     dns: DNS
     volumes: ボリューム
-    k8s: 詳細
+    pipelines: パイプライン
+    deploy: デプロイ
     addContainer: コンテナを追加
     addBalancer: バランサーを追加
+    addIngress: イングレスを追加
     addDns: レコードを追加
     addVolume: ボリュームを追加
     importCompose: YAML からインポート
+  group:
+    none: フラットリスト
+    node: ノードによるグループ化
+    workload: ワークロードによるグループ化
+    namespace: 名前空間によるグループ化
+    namespaceWorkload: 名前空間/ワークロードによるグループ化
+  hosts:
+    tab: ノード
+    addHost: ノードを追加
   catalog:
     all: 全て
     library: ライブラリ
     community: コミュニティ
+  apps:
+    tab: カタログアプリ
+    apps: カタログアプリ
+    launch: 起動
   infra:
     tab: リソース
     storagePage: ストレージ
     certificates: 証明書
+    configMaps: コンフィグマップ
     registries: レジストリ
     secrets: シークレット
-    keys: API キー
-    hooks: Webhooks
-    templateKeys: テンプレートキー
+    members: メンバー
+  admin:
+    tab: グローバル
+    accounts: ユーザー
+    clusters: クラスター
+    machines: ノード
+    nodeDrivers: ノードドライバー
+    catalogs: カタログ
+    security:
+      tab: セキュリティ
+      roles: ロール
+      members: メンバー
+      podSecurityPolicies: ポッドセキュリティポリシー
+      authentication: 認証
+    settings:
+      tab: 設定
+      auth: アクセスコントロール
+      registration: ホスト登録
+      advanced: Advanced
   user:
-    label: 'ユーザーメニュー: {username}'
+    label: "ユーザーメニュー: {username}"
     logout: ログアウト
   userPreferences:
     link: "アカウント設定"
+  nodeTemplates:
+    link: ノードテンプレート
+  api:
+    link: API & キー
+  settings:
+    tab: 設定
+    advanced: Advanced
+  tools:
+    tab: ツール
+    alerts: アラート
+    notifiers: 通知
+    logging: ログ
+  project:
+    none: グループ化されたプロジェクト/名前空間
+    namespaces: 名前空間のリスト
+
 action:
   activate: アクティブ化
+  addContainer: ポッドを追加
+  addSidekick: サイドカーを追加
   clone: クローン
   console: コンソールを開く
   convertToService: サービスに変換
   deactivate: 非アクティブ化
+  downloadYaml: YAML をダウンロード
   edit: 編集
+  editService: サービスを編集
+  editYaml: YAML の参照/編集
   evacuate: 退避
   execute: シェルを実行
   exportConfig: 設定をエクスポート
   garbageCollect: クリーンアップ
   logs: ログを見る
+  makeDefault: デフォルトに設定
+  resetDefault: デフォルトをリセット
+  nodeConfig: キーをダウンロード
+  move: 移動
+  pause: 一時停止
+  pauseAll: 全て一時停止
   remove: 削除
   replay: 再実行
   restart: 再起動
   retry: リトライ
+  resume: 再開
+  revert: デフォルトに戻す
   rollback: ロールバック
+  setDefault: ログイン環境に設定
   start: 開始
+  startAll: 全て開始
   stop: 停止
+  stopAll: 全て停止
   upgrade: アップグレード
   upgradeOrEdit: アップグレード/編集
   viewConfig: 設定を見る
   viewGraph: グラフを見る
   viewInApi: API を見る
   viewInstance: インスタンスを見る
+  test: テスト
+  mute: ミュート
+  unmute: ミュート解除
+
 validation:
   required: '"{key}" が必要です'
+  arrayLength:
+    exactly: '"{key}" は {count, plural, =1 {# 個} other {# 個}} 含まれている必要があります'
+    between: '"{key}" は {min} から {max} {max, plural, =1 {個} other {個}} 含まれている必要があります'
+    min: '"{key}" は少なくとも {count} {count, plural, =1 {個} other {個}} 含まれている必要があります'
+    max: '"{key}" は最大で {count} {count, plural, =1 {item} other {items}} まで含めることができます'
+  stringLength:
+    exactly: '"{key}" は {count, plural, =1 {# 文字} other {# 文字}} である必要があります'
+    between: '"{key}" は {min} から {max} {max, plural, =1 {文字} other {文字}} である必要があります'
+    min: '"{key}" は少なくとも {count} {count, plural, =1 {文字} other {文字}} である必要があります'
+    max: '"{key}" は最大で {count} {count, plural, =1 {文字} other {文字}} まで設定できます'
+  number:
+    exactly: '"{key}" は {val} である必要があります'
+    between: '"{key}" は {min} から {max} である必要があります'
+    min: '"{key}" は少なくとも {val} である必要があります'
+    max: '"{key}" は最大で  {val} まで設定できます'
+  chars: '"{key}" には {count, plural, =1 {個の不正な文字} other {# 個の不正な文字}} が含まれています: {chars}'
+  dns:
+    doubleHyphen: 2 つの連続したハイフンは含められません
+    hostname:
+      startDot: '"{key}" はドットから開始することはできません'
+      empty: '"{key}" は少なくとも1つ以上の文字である必要があります'
+      tooLong: '"{key}" は {max} 文字より短い必要があります'
+      startHyphen: '"{key}" は小文字または数字から開始する必要があります'
+      endHyphen: '"{key}" は小文字または数字で終了する必要があります'
+      emptyLabel: '"{key}" は連続したドットを含めることができません'
+      tooLongLabel: '"{key}" は {max} 文字より長いセクションを持つことはできません'
+    label:
+      startHyphen: '"{key}" は小文字または数字から開始する必要があります'
+      endHyphen: '"{key}" は小文字または数字で終了する必要があります'
+      emptyLabel: '"{key}" は空にできません'
+      tooLongLabel: '"{key}" は {max} 文字より短い必要があります'
+  k8s:
+    identifier:
+      startLetter: '"{key}" は小文字または数字から開始する必要があります'
+      endLetter: '"{key}" は小文字または数字で終了する必要があります'
+      emptyPrefix: '"{key}" は空のプリフィックスを持つことはできません'
+      tooLongPrefix: '"{key}" は {max} 文字より長いプリフィックスを持つことはできません'
+      emptyLabel: '"{key}" は空のキーを持つことはできません'
+      tooLongKey: '"{key}" は {max} 文字より長いキーを持つことはできません'
+
 model:
   account:
     kind:
@@ -2741,13 +5397,147 @@ model:
       org: 組織
       localUser: ローカルユーザー
       unknown: "{type}?"
+  ingress:
+    displayKind: L7 イングレス
+  machine:
+    role:
+      worker: ワーカー
+      etcd: etcd
+      controlplane: Control
+  openldapconfig:
+    server:
+      label: ホスト名または IP アドレス
+    serviceAccountUsername:
+      label: サービスアカウント ユーザー名
+    serviceAccountPassword:
+      label: サービスアカウント パスワード
+    domain:
+      label: ユーザーサーチベース
+      placeholder: "例: ou=Users,dc=mycompany,dc=com"
+      help: "このベース配下のユーザーのみが利用されます。"
   projectMember:
     role:
       member: メンバー
       owner: オーナー
       readonly: Read-Only
       restricted: 制限済み
-  scaleService:
-    min: 最小スケール
-    max: 最大スケール
-    amount: Scale up/down 単位
+  service:
+    displayKind:
+      generic: サービス
+      loadBalancer: L4 バランサー
+
+growl:
+  webSocket:
+    connecting:
+      title: Error connecting to WebSocket
+      warning: Unable to establish a WebSocket connection to the server.  If your server is behind a proxy or SSL-termination device, Browser can not connect to WebSocket. If you run the server behind a proxy, please make sure the proxy supports WebSockets.  Streaming stats, logs, shell/console, and auto-updating of the state of resources may not work until this is resolved.
+      safariCertWarning: Another possible cause is that Safari does not allow WebSocket connections using an unrecognized certificate, even if you say to Continue to bypass the warning.  The server must have a certificate signed by a recognized authority Safari automatically trusts.
+      disconnectedWarning: "Disconnected from server, attempting to reconnect..."
+
+storageClass:
+  aws-ebs:
+    title: Amazon EBS ディスク
+  azure-disk:
+    title: Azure ディスク
+  azure-file:
+    title: Azure ファイル
+  cinder:
+    title: Openstack Cinder ボリューム
+  gce-pd:
+    title: Google 永続ディスク
+  glusterfs:
+    title: Gluster ボリューム
+  local:
+    title: ローカルノードのディスク
+  longhorn:
+    title: Longhorn
+  portworx-volume:
+    title: Portworx ボリューム
+  quobyte:
+    title: Quobyte ボリューム
+  rbd:
+    title: Ceph RBD
+  scaleio:
+    title: ScaleIO ボリューム
+  storageos:
+    title: StorageOS
+  vsphere-volume:
+    title: VMWare vSphere ボリューム
+
+volumeSource:
+  aws-ebs:
+    title: Amazon EBS ディスク
+  azure-disk:
+    title: Azure ディスク
+  azure-file:
+    title: Azure ファイルシステム
+  cephfs:
+    title: Ceph ファイルシステム
+  config-map:
+    title: コンフィグマップボリューム
+  cinder:
+    title: Openstack Cinder ボリューム
+  secret:
+    title: シークレットボリューム
+  empty-dir:
+    title: Empty Dir Volume
+  fc:
+    title: Fibre Channel
+  flex-volume:
+    title: Flex Volume
+  flex-volume-longhorn:
+    title: Longhorn
+  flocker:
+    title: Flocker
+  gce-pd:
+    title: Google 永続ディスク
+  glusterfs:
+    title: Gluster ボリューム
+  host-path:
+    title: ローカルノードパス
+    path:
+      label: ノード上のパス
+      placeholder: "例: /data"
+    kind:
+      label: ノード上のパス条件
+      Any: "どれでも: ターゲットのパスをチェックしない"
+      DirectoryOrCreate: ディレクトリ、または存在しない場合は作成する
+      FileOrCreate: ファイル、または存在しない場合は作成する
+      Directory: 存在するディレクトリ
+      File: 存在するファイル
+      Socket: 存在するソケット
+      CharDevice: 存在するキャラクターデバイス
+      BlockDevice: 存在するブロックデバイス
+  iscsi:
+    title: iSCSI Target
+  local:
+    title: ローカルノードディスク
+  nfs:
+    title: NFS 共有
+  photon:
+    title: Photon ボリューム
+  portworx:
+    title: Portworx ボリューム
+  quobyte:
+    title: Quobyte ボリューム
+  rbd:
+    title: Ceph RBD
+  scaleio:
+    title: ScaleIO ボリューム
+  storageos:
+    title: StorageOS
+  vsphere-volume:
+    title: VMWare vSphere ボリューム
+  customLogPath:
+    mountPath:
+      label: ログパス
+      placeholder: "例: /var/www"
+      helpText: コンテナのログディレクトリへのパスです
+    logFormat:
+      label: ログフォーマット
+      useCustomRegex: カスタムの Fluentd 正規表現を利用
+      useExistingLogFormat: 既存のLogFormatを利用
+      helpText: <a href="http://fluentular.herokuapp.com/" target="_blank"こちら</a> から正規表現のテストができます
+
+yamlPage:
+  errors: yaml でエラーが起きました
