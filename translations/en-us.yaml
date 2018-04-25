@@ -956,6 +956,11 @@ hostsPage:
     hostname: Hostname
     ipAddress: IP Address
     version: Version
+    kubeletVersion: Kubelet Version
+    kubeProxyVersion: Kube Proxy Version
+    dockerVersion: Docker Version
+    kernelVersion: Kernel Version
+    operatingSystem: Operating System
     conditions:
       diskSpace: Disk Space
       diskPressure: Disk Pressure
@@ -2092,7 +2097,8 @@ cruPersistentVolume:
       label: Optional
     name:
       label: Config Map Name
-      placeholder: "e.g. map"
+    items:
+      label: Items
   emptyDir:
     medium:
       label: Medium
@@ -3706,6 +3712,7 @@ formVolumeRow:
     bindMount: Bind-Mount
     tmpfs: Tmpfs
     secret: Secret
+    configmap: Config Map
   remove: Remove Volume
   subPath: Sub Path in Volume
   readOnly: Read-Only
@@ -3739,6 +3746,7 @@ formVolumes:
     bindMount: Bind-mount a directory from the node
     tmpfs: Add an in-memory tmpfs
     secret: Use a secret
+    configMap: Use a config map
     customLogPath: Read log files from a directory
   table:
     kind: Kind

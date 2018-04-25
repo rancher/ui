@@ -1,35 +1,77 @@
-<div class="row mb-20">
-  <div class="col span-6">
-    <label class="acc-label">{{t 'cruPersistentVolume.configMap.defaultMode.label'}}</label>
-    {{#input-or-display editable=editing value=config.defaultMode}}
-      {{input-integer type="text" value=config.defaultMode classNames="form-control" placeholder=(t 'cruPersistentVolume.secret.defaultMode.placeholder')}}
-    {{/input-or-display}}
-  </div>
+  <div class="row">
+    <div class="col span-6">
+      <label class="acc-label">{{t 'cruPersistentVolume.configMap.defaultMode.label'}}</label>
+      {{#input-or-display editable=editing value=defaultMode}}
+        {{input-integer type="text" value=defaultMode classNames="form-control" placeholder=(t 'cruPersistentVolume.configMap.defaultMode.placeholder')}}
+      {{/input-or-display}}
+    </div>
 
-  <div class="col span-6">
-    <label class="acc-label">{{t 'cruPersistentVolume.configMap.optional.label'}}</label>
-    {{#if editing}}
-      <div class="text-muted">
-        <label>
-          {{radio-button selection=config.optional value=true}} {{t 'generic.yes'}}
-        </label>
-        <label>
-          {{radio-button selection=config.optional value=false}} {{t 'generic.no'}}
-        </label>
-      </div>
-    {{else}}
-      <div class="text-muted">
-        {{config.optional}}
+    <div class="col span-6">
+      <label class="acc-label">{{t 'cruPersistentVolume.configMap.optional.label'}}</label>
+      {{#if editing}}
+        <div class="text-muted">
+          <label>
+            {{radio-button selection=config.optional value=true}} {{t 'generic.yes'}}
+          </label>
+          <label>
+            {{radio-button selection=config.optional value=false}} {{t 'generic.no'}}
+          </label>
+        </div>
+      {{else}}
+        <div class="text-muted">
+          {{config.optional}}
+        </div>
+      {{/if}}
+    </div>
+  </div>
+  <div class="row mb-20">
+    <div class="col span-6">
+      <label class="acc-label">{{t 'cruPersistentVolume.configMap.name.label'}}</label>
+      {{schema/input-config-map
+        namespace=namespace
+        value=config.name
+        valueKey='name'
+      }}
+    </div>
+    {{#if config.name}}
+      <div class="col span-6">
+        <label class="acc-label">{{t 'cruPersistentVolume.configMap.items.label'}}</label>
+        {{#if editing}}
+          <div class="text-muted">
+            <div>
+              <label>
+                {{radio-button selection=specific value=false}} {{t 'formKeyToPath.default'}}
+              </label>
+            </div>
+            <div>
+              <label>
+                {{radio-button selection=specific value=true}} {{t 'formKeyToPath.specific'}}
+              </label>
+            </div>
+          </div>
+        {{else if specific}}
+          <div class="text-muted">
+            {{t 'formKeyToPath.default'}}
+          </div>
+        {{else if (not specific)}}
+          <div class="text-muted">
+            {{t 'formKeyToPath.specific'}}
+          </div>
+        {{/if}}
       </div>
     {{/if}}
   </div>
-</div>
 
-<div class="row">
-  <div class="col span-6">
-    <label class="acc-label">{{t 'cruPersistentVolume.configMap.name.label'}}</label>
-    {{#input-or-display editable=editing value=config.name}}
-      {{input type="text" value=config.name classNames="form-control" placeholder=(t 'cruPersistentVolume.configMap.name.placeholder')}}
-    {{/input-or-display}}
-  </div>
-</div>
+  {{#if (and config.name specific)}}
+    <div class="row">
+      <div class="col span-12">
+        {{form-key-to-path
+          initialItems=config.items
+          configMapName=config.name
+          mode='configmap'
+          editing=editing
+          changed=(action (mut config.items))
+        }}
+      </div>
+    </div>
+  {{/if}}
