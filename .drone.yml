@@ -4,20 +4,17 @@ pipeline:
     privileged: true
     image: rancher/dind:v0.3.0
     commands:
+      - ENABLE_DOCKER=true ./scripts/ci
+
+  latest:
+    privileged: true
+    image: rancher/dind:v0.3.0
+    commands:
       - ENABLE_DOCKER=true UPLOAD_LATEST=true ./scripts/ci
     when:
       branch: "master"
       event:
         exclude: [pull_request]
-
-  build:
-    privileged: true
-    image: rancher/dind:v0.3.0
-    commands:
-      - ENABLE_DOCKER=true ./scripts/ci
-    when:
-      branch:
-       exclude: ["master"]
 
   # Needs envvar SLACK_TOKEN
   #  slack_blame:
