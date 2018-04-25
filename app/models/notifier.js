@@ -1,7 +1,7 @@
 import Resource from 'ember-api-store/models/resource';
 import { inject as service } from '@ember/service';
-import { computed, get } from '@ember/object';
-import { hash, reject } from 'rsvp';
+import {  get } from '@ember/object';
+import { hash } from 'rsvp';
 
 export default Resource.extend({
   type: 'notifier',

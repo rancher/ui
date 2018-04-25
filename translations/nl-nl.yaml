@@ -4,6 +4,7 @@ languageContribute: "Help Rancher vertalen"
 generic:
   actions: Acties
   activate: Activeer
+  add: Toevoegen
   all: Alles
   any: Maakt niet uit
   cancel: Annuleren
@@ -19,8 +20,11 @@ generic:
   details: Details
   disable: Uitschakelen
   disabled: Uitgeschakeld
+  displayName: Weergavenaam
   dockerId: Docker ID
   domainName: Domeinnaam
+  done: Gereed
+  edit: Bewerken
   enable: Inschakelen
   enabled: Ingeschakeld
   entrypoint: Toegangspunt
@@ -28,7 +32,7 @@ generic:
   expandAll: Alles uitklappen
   hardware: Hardware
   healthy: Gezond
-  host: Host
+  help: Help
   id: ID
   image: Image
   internal: Intern
@@ -61,6 +65,8 @@ generic:
   total: Totaal
   type: Type
   unknown: Onbekend
+  user: Gebruiker
+  upload: Upload
   uuid: UUID
   yes: "Ja"
 realmNames:
@@ -71,16 +77,27 @@ realmNames:
   euWest: EU West
   euEast: EU Oost
 accountsPage:
+  detail:
+    table:
+      headers:
+        projectName: Project
+        active: Actief
   index:
     table:
       id: ID
       kind: Soort
-      username: Gebruikersnaam
       identity: Identiteit
+      noData: Er zijn nog geen gebruikers
       noName: Geen
   new:
+    header: Gebruiker toevoegen
+    errors:
+      usernameReq: Gebruikersnaam is vereist.
+      usernameInExists: Gebruikersnaam is al in gebruik. Kies een nieuwe gebruikersnaam.
+      pwReq: Wachtwoord is vereist.
     form:
       username:
+        labelText: Gebruikersnaam
         placeholder: "bijv. jjansen"
       password:
         labelText: Wachtwoord
@@ -91,37 +108,18 @@ accountsPage:
       description:
         labelText: Omschrijving
         placeholder: "bijv. Deze account is van Jan Jansen"
+  modal:
+    password: Wachtwoord wijzigen
+podSecurityPoliciesPage:
+  index:
+    table:
+      name: Naam
 apiPage:
-  header: Omgeving API Keys
-  actionButton: Omgeving API Key toevoegen
-  content: |
-    Omgeving API keys zijn gebonden aan deze specifieke omgeving (<code>{displayName}</code>) en kunnen alleen bronnen daar binnen manipuleren. Andere accounts met toegang tot deze omgeving kunnen ook deze keys beheren.
   currentEndpoint: 'Eindpunt:'
   table:
     state: Status
-    name: Naam
     description: Omschrijving
-    publicValue: Toegangssleutel
     created: Aangemaakt
-    noData: Er zijn nog geen sleutels voor deze Omgeving.
-    noName: Geen
-    noDescription: Geen
-    noPublicValue: Geen publieke waarde
-auditLogsPage:
-  header: Auditlogs
-  form:
-    resourceId:
-      placeholder: Resource-ID
-    requestIp:
-      placeholder: Request IP
-    clearButtonText: Filters wissen
-    searchButtonText: Zoeken
-  table:
-    time: Tijd
-    description: Omschrijving
-    environment: Omgeving
-    identity: Identiteit
-    authIp: "Auth & IP"
 authPage:
   shibboleth:
     enabled:
@@ -161,7 +159,6 @@ authPage:
         header: "Gevarenzone&trade;"
         warning: '<b class="text-danger">Opgelet:</b>Toegangsbeheer uitschakelen geeft volledige toegang tot {appName} aan iedereen die deze pagina kan bereiken of de API.'
         confirmDisable: "Weet U het zeker? Klik nogmaals om toegangsbeheer echt uit te schakelen"
-        disable: Toegangsbeheer uitschakelen
     notAuthenticated:
       form:
         isGHEnterprise:
@@ -219,51 +216,8 @@ certificatesPage:
 editDns:
   name:
     placeholder: bijv. myapp
-editVolume:
-  scope:
-    global: Een volume voor de gehele omgeving
 failWhalePage:
   header: Fout
-helpPage:
-  header: Behulpzame links & Informatie
-  environment:
-    header: Wat is een omgeving?
-    manageLink: Beheer Omgevingen
-  stacks:
-    header: Wat zijn stacks en services?
-    addServiceLink: Services Beheren
-    addCatalogLink: Toevoegen Vanuit Catalogus
-  issues:
-    header:
-      text: Problemen & Documentatie
-      tagline: Oh oh, Probleem gevonden?
-      fileBug: Meld een Bug
-    content:
-      graphic1:
-        text: Bug gevonden?
-        link: Meld een probleem op GitHub.
-      graphic2:
-        text: Voor meer informatie
-      graphic3:
-        link: Bekijk onze FAQs
-  forums:
-    header: Van de Forums
-    tagline: Converseer mee
-    buttonText: Op de forums
-    announcements:
-      header: Aankondigingen
-      buttonText: Toon Meer Aankondiging Onderwerpen
-    general:
-      header: Algemeen
-      buttonText: Toon Meer Algemene Onderwerpen
-    rancherOs:
-      header: RancherOS
-      buttonText: Toon Meer RancherOS Onderwerpen
-    rancher:
-      header: Rancher
-      buttonText: Toon Meer Rancher Onderwerpen
-  commercial:
-    header: Commerciële Ondersteuning
 hostsPage:
   cloudHostsPage:
     addPage:
@@ -283,8 +237,6 @@ loginPage:
   shibbolethError:
     401: "Ongeautoriseerd"
     500: "Interne Server Fout"
-  error:
-    authFailed: Gebruikersnaam of Wachtwoord onjuist.
 registriesPage:
   index:
     table:
@@ -365,19 +317,13 @@ containerLogs:
   stderr: Standaardfout
 containerShell:
   status:
-    error: 'Fout: {error}'
+    error: "Fout: {error}"
 editAccount:
   form:
     name:
       placeholder: bijv. Jan Jansen
     description:
       placeholder: bijv. Dit account is van Jan Jansen
-editRegistry:
-  username:
-    placeholder: bijv. gebruikersnaam
-  password:
-    label: Wachtwoord
-    placeholder: bijv. wachtwoord
 editStack:
   name:
     placeholder: bijv. myapp
@@ -389,12 +335,12 @@ formBalancerListeners:
   access:
     label: Toegang
   sourceIp:
-    placeholder: 'bijv. 1.2.3.4; Standaard: Alles'
+    placeholder: "bijv. 1.2.3.4; Standaard: Alles"
 formBalancerRules:
   access:
     label: Toegang
   sourceIp:
-    placeholder: 'bijv. 1.2.3.4; Standaard: Alles'
+    placeholder: "bijv. 1.2.3.4; Standaard: Alles"
   sourcePort:
     placeholder: bijv. 80
   path:
@@ -463,18 +409,7 @@ formNetwork:
     placeholder: bijv. 8.8.4.4
   searchDomains:
     placeholder: bijv. prod.example.com
-formSecrets:
-  name:
-    placeholder: bijv. db_password
-  uid:
-    placeholder: bijv. 0 (root)
-  gid:
-    placeholder: bijv. 0 (wheel)
-  mode:
-    placeholder: bijv. 0444 (octaal)
 formSecurity:
-  memoryLimit:
-    unlimited: Ongelimiteerd
   swapLimit:
     unlimited: Ongelimiteerd
   swappiness:
@@ -488,25 +423,9 @@ formSecurity:
       placeholder: bijv. /dev/xsdc
   isolation:
     default: Standaard (Container)
-formServiceLinks:
-  name:
-    placeholder: bijv. database
 formSslTermination:
   defaultCertificate:
     prompt: Kies een Certificaat...
-formStickiness:
-  placeholder:
-    sticky: bijv. sticky
-    domain: bijv. mydomain.com
-formTargets:
-  hostname:
-    placeholder: bijv. svc.com
-  srcPort:
-    placeholder: bijv. 80
-  path:
-    placeholder: bijv. /svc
-  dstPort:
-    placeholder: bijv. 8080
 formUserLabels:
   key:
     label: Sleutel
@@ -529,56 +448,8 @@ labelsSection:
 loginUserPass:
   userPlaceholder: bijv. jjansen
   passwordLabel: Wachtwoord
-machine:
-  driverAmazon:
-    accessSection: Account toegang
-    accessKey:
-      label: Toegangssleutel
-    secretKey:
-      label: Geheime Sleutel
-    sshUser:
-      placeholder: bijv. ubuntu
-  driverAzure:
-    accountAccessSection: Account toegang
-    dockerPort:
-      label: Docker Poort
-      placeholder: '2376'
-    environment:
-      label: Omgeving
-    resourceGroup:
-      placeholder: 'docker-machine'
-    openPort:
-      placeholder: 'Kommagescheiden, bijv. 80,443'
-  driverCustom:
-    windows:
-      step2Copy: docker network create -d transparent transparent
-  driverDigitalocean:
-    accessToken:
-      label: Toegangstoken
-  driverExoscale:
-    apiKey:
-      label: API-sleutel
-    secretKey:
-      label: Geheime Sleutel
-  driverPacket:
-    apiKey:
-      label: API-sleutel
-  driverRackspace:
-    apiKey:
-      label: API-sleutel
-  driverVsphere:
-    password:
-      label: Wachtwoord
-    boot2dockerUrl:
-      label: OS ISO URL
-      placeholder: 'Standaard: Laatste boot2docker image'
-  driverAliyunecs:
-    accessKey:
-      label: Toegangssleutel*
-    routeCIDR:
-      placeholder: bijv. 192.168.1.0/24
-    sshPassword:
-      label: SSH wachtwoord
+modalAboutComponent:
+  version: Versie
 modalAddPayment:
   errors:
     state: Een status is noodzakelijk.
@@ -619,9 +490,6 @@ newPassword:
   placeholder: Nieuw wachtwoord
   password: Nieuw wachtwoord
   passwordNoMatch: Wachtwoorden komen niet overeen
-newReceiver:
-  image:
-    label: Docker Image naam
 pageFooter:
   help: 'Hulp & Documentatie'
 telemetryOpt:
@@ -633,20 +501,8 @@ viewEditDescription:
       placeholder: bijv. lab
     description:
       placeholder: bijv. Omgeving voor het experimeteren van ontwikkelaars
-viewEditProject:
-  showEdit:
-    edit: "Bewerk Omgeving:"
-    add: Omgeving Toevoegen
-    template: Omgevingsjabloon
-    noMembers: Voeg een of meerdere leden toe die deze omgeving kunnen gebruiken.
-  networkPolicy:
-    default: Al het overige
-  header: "Omgeving:"
-  helpBlock: |
-    Toegangsbeheer is niet ingeschakeld.<br/>
-    Iedereen met toegang tot de API/UI functioneert als een beheerder en kan iedere omgeving gebruiken.
 containerChoices:
-  hostGroupWithState: 'Host: {name} ({state})'
+  hostGroupWithState: "Host: {name} ({state})"
 nav:
   environment:
     label: Omgeving
@@ -654,8 +510,6 @@ nav:
     your: Uw Omgevingen
     selected: Geselecteerde Omgeving
     edit: 'Bewerk "{name}"'
-  infra:
-    keys: API-sleutels
 validation:
   required: '"{key}" is vereist'
 model:

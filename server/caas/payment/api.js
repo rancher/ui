@@ -19,7 +19,7 @@ module.exports = function(app/*, options*/) {
           req.body.customerId,
           req.body.cardId,
           function(err, confirmation) {
-            if (err) return generateError('payment', err, res);
+            if (err) {return generateError('payment', err, res);}
             return res.status(200).json({type: 'success', status: 200, message: confirmation});
           }
         );
@@ -30,17 +30,17 @@ module.exports = function(app/*, options*/) {
         var account = req.body.account;
 
         getUserEmail(account.id, res, (err, email) => {
-          if (err) return generateError('account', 'No email found ', res);
+          if (err) {return generateError('account', 'No email found ', res);}
 
           // need to do something with the stripe id here, if they have an account already what do we do?
           stripe.customers.create({
             source: card.token,
             email: email
           }, function(err, customer) {
-            if (err) return generateError('subscription', err, res);
+            if (err) {return generateError('subscription', err, res);}
 
             addCustomerToAccount(account.id, customer.id, (err/* , account */) => {
-              if (err) return generateError('subscription', err, res);
+              if (err) {return generateError('subscription', err, res);}
 
               stripe.subscriptions.create({
                 customer: customer.id,
@@ -64,7 +64,7 @@ module.exports = function(app/*, options*/) {
           stripe.customers.retrieve(
             stripeId,
             function(err, customer) {
-              if (err) return generateError('subscription', 'stripe error', res);
+              if (err) {return generateError('subscription', 'stripe error', res);}
 
               let model = [];
 
