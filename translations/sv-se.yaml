@@ -29,7 +29,6 @@ generic:
   expandAll: Expandera allt
   hardware: Hårdvara
   healthy: Frisk
-  host: Värd
   id: Id
   image: Bild
   internal: Intern
@@ -78,7 +77,6 @@ accountsPage:
     table:
       id: Id
       kind: Typ
-      username: Användarnamn
       identity: Identitet
       noName: Inget
   new:
@@ -95,42 +93,11 @@ accountsPage:
         labelText: Beskrivning
         placeholder: "t.ex. detta konto är för Anders Svensson"
 apiPage:
-  header: Miljö API-nycklar
-  actionButton: Lägg till miljö API-nyckel
   currentEndpoint: 'Slutpunkt:'
   table:
     state: Status
-    name: Namn
     description: Beskrivning
     created: Skapad
-    noName: Ingen
-    noDescription: Ingen
-    noPublicValue: Inget offentligt värde
-auditLogsPage:
-  header: Ändringslogg
-  form:
-    eventType:
-      placeholder: Händelsetyp
-    resourceType:
-      placeholder: "Resurstyp:"
-      dropdownPlaceholder: 'Välj en resurstyp:'
-    resourceId:
-      placeholder: Resurs-ID
-    requestIp:
-      placeholder: Begär IP
-    authType:
-      placeholder: "Autentiseringstyp:"
-      dropdownPlaceholder: 'Välj en Autentiseringstyp:'
-    clearButtonText: Rensa filter
-    searchButtonText: Sök
-  table:
-    time: Tid
-    eventType: Händelsetyp
-    description: Beskrivning
-    environment: Miljö
-    resourceTypeId: "Resurstyp:ID"
-    identity: Identitet
-    authIp: "Auth & IP"
 authPage:
   shibboleth:
     enabled:
@@ -173,8 +140,6 @@ authPage:
         enterpriseHostName: "Enterprise-värd:"
         clientId:
           text: "Klient-ID:"
-      disableAccess:
-        disable: Inaktivera åtkomstkontroll
     notAuthenticated:
       ul:
         li3:
@@ -222,6 +187,7 @@ authPage:
           placeholder: 't.ex. Anders Svensson'
         password:
           labelText: Lösenord
+  0: ""
 catalogPage:
   index:
     certified:
@@ -238,25 +204,15 @@ certificatesPage:
     linkTo: Lägga till certifikat
 containersPage:
   table:
-    sparkPrefixCpu: 'CPU: '
-    sparkPrefixMemory: 'Minne: '
-    sparkPrefixNetwork: 'Nätverk: '
-    sparkPrefixStorage: 'Lagring: '
+    sparkPrefixCpu: "CPU: "
+    sparkPrefixMemory: "Minne: "
+    sparkPrefixNetwork: "Nätverk: "
+    sparkPrefixStorage: "Lagring: "
 failWhalePage:
   header: Fel
 haPage:
   table:
     port: Port
-helpPage:
-  issues:
-    content:
-      graphic1:
-        text: Hittat en bugg?
-  forums:
-    rancherOs:
-      header: RancherOS
-    rancher:
-      header: Rancher
 hostsPage:
   hostPage:
     infoMultiStats:
@@ -270,6 +226,10 @@ hostsPage:
         header:
           ip: IP-adress
           port: Port
+loginPage:
+  shibbolethError:
+    401: "Unauthorized"
+    500: "Internal Server Error"
 machinePage:
   inactive: Inaktiv
 registriesPage:
@@ -295,18 +255,6 @@ servicePage:
     image: 'Bild:'
   linksTab:
     header: Länkar
-processesPage:
-  tab:
-    pools: Pooler
-    ready: Redo
-  summary:
-    table:
-      ready: Redo
-  list:
-    table:
-      startTime: Starttid
-      endTime: Sluttid
-      runTime: Körtid
 ldap:
   accessEnabled:
     general:
@@ -350,14 +298,8 @@ containerLogs:
     closed: Stängd
 containerShell:
   status:
-    error: 'Fel: {error}'
+    error: "Fel: {error}"
     closed: Stängd
-devicePermissions:
-  all: Alla
-  none: Ingen
-  read: Läs
-  write: Skriv
-  mknod: Mknod
 editAccount:
   form:
     description:
@@ -368,9 +310,6 @@ editAccount:
       label: Nytt lösenord
     confirmPassword:
       label: Bekräfta lösenord
-editApiKey:
-  secretValue:
-    label: Hemlig nyckel (lösenord)
 editHost:
   hostname:
     label: Värdnamn
@@ -382,17 +321,6 @@ editHost:
     valueLabel: IP-adress
     valuePlaceholder: t.ex. 1.2.3.4
     addActionLabel: Lägg till IP
-editRegistry:
-  address:
-    label: Adress
-  email:
-    label: E-post
-  username:
-    label: Användarnamn
-    placeholder: t.ex. användarnamn
-  password:
-    label: Lösenord
-    placeholder: t.ex. lösenord
 editStack:
   name:
     label: Namn
@@ -464,11 +392,6 @@ formNetwork:
 formScheduling:
   field: Fält
   value: Värde
-formSecrets:
-  name:
-    label: Som namn
-  uid:
-    placeholder: t.ex. 0 (root)
 formSecurity:
   shares:
     placeholder: t.ex. 1024
@@ -477,30 +400,11 @@ formSecurity:
       placeholder: t.ex. /dev/sdc
     pathContainer:
       placeholder: t.ex. /dev/xsdc
-formServiceLinks:
-  name:
-    label: Som namn
-    placeholder: t.ex. databas
-formStickiness:
-  domain: Domän
-  placeholder:
-    domain: t.ex. mydomain.com
-formTargets:
-  hostname:
-    placeholder: t.ex. svc.com
-  path:
-    placeholder: t.ex. / svc
-  dstPort:
-    placeholder: t.ex. 8080
 formUserLabels:
   separator: "≈"
   value:
     label: Värde
     placeholder: t.ex. bar
-hookPage:
-  fields:
-    detail:
-      label: Detalj
 infoMultiStats:
   cpuSection:
     labelText: CPU
@@ -510,70 +414,6 @@ inputPassword:
 loginUserPass:
   userLabel: Användarnamn
   passwordLabel: Lösenord
-machine:
-  driverAmazon:
-    secretKey:
-      label: Hemlig nyckel
-    rootSize:
-      unit: GB
-    sshUser:
-      label: SSH användare
-  driverAzure:
-    networkSection: Nätverk
-    sshUser:
-      label: SSH användare
-    subnet:
-      label: Subnät
-    privateIpAddress:
-      placeholder: 127.0.0.1
-    clientId:
-      label: Klient-ID
-      placeholder: Din klient-ID
-    clientSecret:
-      label: Klienthemlighet
-      placeholder: Din klienthemlighet
-  driverCustom:
-    windows:
-      windowsHeader: Windows-värd
-      linuxHeader: Linux-värd
-  driverDigitalocean:
-    sshUser:
-      label: SSH användare
-  driverExoscale:
-    secretKey:
-      label: Hemlig nyckel
-    sshUser:
-      label: SSH användare
-  driverPacket:
-    apiKey:
-      label: API-nyckel
-  driverRackspace:
-    username:
-      label: Användarnamn
-      placeholder: Ditt användarnamn på RackSpace
-    apiKey:
-      label: API-nyckel
-  driverVsphere:
-    vcenter:
-      label: vCenter värd
-    username:
-      label: Användarnamn
-    password:
-      label: Lösenord
-    memorySize:
-      unit: MB
-    diskSize:
-      unit: MB
-    host:
-      label: Värd
-    network:
-      label: Nätverk
-  driverAliyunecs:
-    region:
-      label: Region
-      placeholder: Region
-    sshPassword:
-      label: SSH lösenord
 modalAboutComponent:
   version: Version
   cli: CLI
@@ -590,9 +430,6 @@ newCatalog:
   saveUpgrade: Uppgradera
 newContainer:
   saveUpgrade: Uppgradera
-newReceiver:
-  amount:
-    label: Av
 pageFooter:
   forums: Forum
 projectRow:
@@ -618,14 +455,10 @@ schedulingRuleRow:
 siteAccess:
   users: Användare
   groups: Grupper
-viewEditProject:
-  networkPolicy:
-    allow: Tillåt
-  description: Beskrivning
 containerChoices:
-  hostGroup: 'Värd: {name}'
-  hostGroupWithState: 'Värd: {name} ({state})'
-  unknownHost: 'Värd: ???'
+  hostGroup: "Värd: {name}"
+  hostGroupWithState: "Värd: {name} ({state})"
+  unknownHost: "Värd: ???"
   containerOption: "{name}"
 nav:
   catalog:
@@ -654,5 +487,3 @@ model:
     role:
       member: Medlem
       owner: Ägare
-  scaleService:
-    amount: Av
