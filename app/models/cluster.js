@@ -61,6 +61,18 @@ export default Resource.extend(ResourceUsage, {
     return get(this, 'configName') === 'rancherKubernetesEngineConfig';
   }),
 
+  isOurIngress: computed('rancherKubernetesEngineConfig.ingress.provider', function() {
+    const config = get(this, 'rancherKubernetesEngineConfig');
+    if ( config ) {
+      const provider = get(config, 'ingress.provider');
+      if ( provider === undefined || provider === 'nginx' ) {
+        return true;
+      }
+    }
+
+    return false;
+  }),
+
   provider: computed('configName','nodePools.@each.nodeTemplateId', function() {
     const pools = get(this,'nodePools')||[];
     const firstTemplate = get(pools,'firstObject.nodeTemplate');
