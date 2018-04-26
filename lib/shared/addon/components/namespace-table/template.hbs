@@ -4,12 +4,12 @@
      groupByKey="projectId"
      groupByRef="project"
      headers=headers
-     paging=true
+     paging=paging
      pagingLabel="pagination.project"
      searchText=searchText
      sortBy=sortBy
-     subRows=true
-     suffix=true
+     subRows=subRows
+     suffix=suffix
      tableClassNames="bordered"
      as |sortable kind ns dt|
 }}
@@ -35,11 +35,13 @@
       <td colspan="{{fullColspan}}"></td>
     </tr>
   {{else if (eq kind "group")}}
-    {{project-group
-        model=ns.ref
-        noGroup="namespaceGroup.project"
-        fullColspan=sortable.fullColspan
-    }}
+    {{#if ns.ref}}
+      {{project-group
+          model=ns.ref
+          noGroup="namespaceGroup.project"
+          fullColspan=sortable.fullColspan
+      }}
+    {{/if}}
   {{else if (eq kind "nomatch")}}
     <tr>
       <td colspan="{{sortable.fullColspan}}" class="text-center text-muted lacsso pt-20 pb-20">{{t 'projectsPage.noMatch'}}</td>

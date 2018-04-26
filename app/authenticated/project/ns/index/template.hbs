@@ -1,0 +1,11 @@
+<section class="header clearfix">
+  <h1 class="pull-left">{{t 'projectsListNamespacePage.header'}}</h1>
+  <div class="vertical-middle"></div>
+  <div class="right-buttons">
+    <a href="#" {{action "newNs"}} class="btn bg-primary btn-sm ml-10" disabled={{rbac-prevents resource="namespace" scope="cluster" permission="create"}}>{{t 'namespacesPage.addNamespace'}}</a>
+  </div>
+</section>
+
+<section>
+  {{namespace-list model=allNamespace sortBy="project" descending=true}}
+</section>

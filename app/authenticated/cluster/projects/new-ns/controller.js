@@ -3,16 +3,25 @@ import NewOrEdit from 'ui/mixins/new-or-edit';
 import { alias } from '@ember/object/computed';
 import { computed, get/* , set */ } from '@ember/object';
 import { inject as service } from '@ember/service';
+import C from 'ui/utils/constants';
 
 export default Controller.extend(NewOrEdit, {
-  scope: service(),
+
+  scope:           service(),
+
   primaryResource: alias('model.namespace'),
-  queryParams: ['addTo'],
-  addTo: null,
+  queryParams:     ['addTo'],
+  addTo:           null,
 
   actions: {
     cancel() {
-      this.transitionToRoute('authenticated.cluster.projects.index');
+      let backTo = get(this, 'session').get(C.SESSION.BACK_TO)
+
+      if (backTo) {
+        window.location.href = backTo;
+      } else {
+        this.transitionToRoute('authenticated.cluster.projects.index');
+      }
     },
   },
 
