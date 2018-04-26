@@ -8,7 +8,13 @@
       <div class="accordion"> {{!-- container-section --}}
         <div class="accordion-header"> {{!-- header-section --}}
           <div class="title">
-            <label class="">{{row.key}}</label>
+            <label class="">
+              {{~#if (or (not row.obj) (eq row.obj.default row.obj.value))~}}
+                {{~row.key~}}
+              {{~else~}}
+                <b>{{~row.key~}}</b>
+              {{~/if~}}
+            </label>
             <p class="help-block">{{t row.descriptionKey}}</p>
           </div>
           {{action-menu model=row.obj showPrimary=false classNames="pull-right mt-5" size="xs"}}
@@ -20,18 +26,14 @@
             </div>
           {{else}}
             <div class="">
-              <pre class="bg-setting">
+              <pre class="bg-setting m-0">
                 {{~#if row.obj.value~}}
-                  {{~#if (or (not row.obj) (eq row.obj.default row.obj.value))~}}
-                    {{~row.obj.value~}}
-                  {{~else~}}
-                    <b>{{~row.obj.value~}}</b>
-                  {{~/if~}}
+                  {{~row.obj.value~}}
                 {{~else~}}
                   <span class="text-muted">&lt;none&gt;</span>
                 {{~/if~}}
               </pre>
-              <div class="row text-center">
+              <div class="row mt-5">
                 {{#if (eq row.kind 'multiline')}}
                   <div class="btn bg-info btn-sm" {{action "showNode" row}}>Hide {{row.key}}</div>
                 {{/if}}
