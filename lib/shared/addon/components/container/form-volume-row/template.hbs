@@ -70,7 +70,7 @@
   {{else if (eq model.mode "bindMount")}}
     {{volume-source/source-host-path
       volume=model.volume
-      editing=true
+      editing=editing
     }}
   {{else if (eq model.mode "customLogPath")}}
     {{volume-source/source-custom-log-path
@@ -78,19 +78,19 @@
         model=model
         volume=model.volume
         mounts=model.mounts
-        editing=true
+        editing=editing
     }}
   {{else if (eq model.mode "secret")}}
     {{volume-source/source-secret
       namespace=namespace
       volume=model.volume
-      editing=true
+      editing=editing
     }}
   {{else if (eq model.mode "configmap")}}
     {{volume-source/source-config-map
       namespace=namespace
       volume=model.volume
-      editing=true
+      editing=editing
     }}
   {{/if}}
   {{#if (eq model.mode "customLogPath")}}
@@ -99,47 +99,66 @@
     <div class="row">
       <div class="col span-12">
         {{#if model.mounts.length}}
-          <table class="fixed">
-          <tr>
-            <th>Mount Point{{field-required}}</th>
-            <th width="20">&nbsp;</th>
-            <th>Sub Path in Volume</th>
-            <th width="20">&nbsp;</th>
-            <th width="100" class="text-center">Read-Only</th>
-            <th width="40">&nbsp;</th>
-          </tr>
-          {{#each model.mounts as |mnt|}}
-            <tr>
-              <td>
-                {{input value=mnt.mountPath}}
-              </td>
-              <td></td>
-              <td>
-                {{input value=mnt.subPath}}
-              </td>
-              <td></td>
-              <td class="text-center">
-                {{input type="checkbox" classNames="form-control" checked=mnt.readOnly}}
-              </td>
-              <td>
-                <button class="btn bg-primary btn-sm" {{action "removeMount" mnt}}>
-                  <i class="icon icon-minus"/>
-                  <span class="sr-only">{{t 'generic.remove'}}</span>
-                </button>
-              </td>
-            </tr>
-          {{/each}}
-          </table>
+          <table class="table fixed no-lines">
+            <thead>
+              <tr>
+                <th>{{t "formVolumeRow.mounts.mountPoint"}}{{#if editing}}{{field-required}}{{/if}}</th>
+                <th width="20">&nbsp;</th>
+                <th>{{t "formVolumeRow.mounts.subPath"}}</th>
+                <th width="20">&nbsp;</th>
+                <th width="100" class="text-center">{{t "formVolumeRow.mounts.readOnly"}}</th>
+                <th width="40">&nbsp;</th>
+              </tr>
+            </thead>
+            <tbody>
+              {{#each model.mounts as |mnt|}}
+                <tr>
+                  <td>
+                    {{#if editing}}
+                      {{input value=mnt.mountPath}}
+                    {{else}}
+                      {{mnt.mountPath}}
+                    {{/if}}
+                  </td>
+                  <td></td>
+                  <td>
+                    {{#if editing}}
+                      {{input value=mnt.subPath}}
+                    {{else}}
+                      {{mnt.subPath}}
+                    {{/if}}
+                  </td>
+                  <td></td>
+                  <td class="text-center">
+                    {{#if editing}}
+                      {{input type="checkbox" classNames="form-control" checked=mnt.readOnly}}
+                    {{else}}
+                      {{mnt.readOnly}}
+                    {{/if}}
+                  </td>
+                  <td>
+                    {{#if editing}}
+                      <button class="btn bg-primary btn-sm" {{action "removeMount" mnt}}>
+                        <i class="icon icon-minus"/>
+                        <span class="sr-only">{{t 'generic.remove'}}</span>
+                      </button>
+                    {{/if}}
+                  </td>
+                </tr>
+              {{/each}}
+            </tbody>
+        </table>
         {{else}}
-          The volume will not be mounted in the current container.  It may be used by other containers in the pod.
+          {{t "formVolumeRow.mounts.helper"}}
         {{/if}}
-
-        <div class="mt-20">
-          <button class="btn bg-link icon-btn" {{action "addMount"}}>
-            <span class="darken"><i class="icon icon-plus text-small"/></span>
-            <span>{{t "formVolumeRow.addMount"}}</span>
-          </button>
-        </div>
+        {{#if editing}}
+          <div class="mt-20">
+            <button class="btn bg-link icon-btn" {{action "addMount"}}>
+              <span class="darken"><i class="icon icon-plus text-small"/></span>
+              <span>{{t "formVolumeRow.addMount"}}</span>
+            </button>
+          </div>
+        {{/if}}
       </div>
     </div>
   {{/if}}

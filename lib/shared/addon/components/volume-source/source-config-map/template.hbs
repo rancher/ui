@@ -18,7 +18,7 @@
           </label>
         </div>
       {{else}}
-        <div class="text-muted">
+        <div>
           {{config.optional}}
         </div>
       {{/if}}
@@ -27,11 +27,17 @@
   <div class="row mb-20">
     <div class="col span-6">
       <label class="acc-label">{{t 'cruPersistentVolume.configMap.name.label'}}</label>
-      {{schema/input-config-map
-        namespace=namespace
-        value=config.name
-        valueKey='name'
-      }}
+      {{#if editing}}
+        {{schema/input-config-map
+          namespace=namespace
+          value=config.name
+          valueKey='name'
+        }}
+      {{else}}
+        <div>
+          {{config.name}}
+        </div>
+      {{/if}}
     </div>
     {{#if config.name}}
       <div class="col span-6">
@@ -50,12 +56,12 @@
             </div>
           </div>
         {{else if specific}}
-          <div class="text-muted">
-            {{t 'formKeyToPath.default'}}
+          <div>
+            {{t 'formKeyToPath.specific'}}
           </div>
         {{else if (not specific)}}
-          <div class="text-muted">
-            {{t 'formKeyToPath.specific'}}
+          <div>
+            {{t 'formKeyToPath.default'}}
           </div>
         {{/if}}
       </div>
