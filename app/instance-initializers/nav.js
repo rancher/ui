@@ -95,7 +95,15 @@ const rootNav = [
     resourceScope: 'global',
     ctx: [getProjectId],
   },
-
+  {
+    scope: 'project',
+    id: 'namespaces',
+    localizedLabel: 'nav.project.namespaces',
+    route: 'authenticated.project.ns.index',
+    ctx: [getProjectId],
+    resource: ["namespace"],
+    resourceScope: 'cluster',
+  },
   // Cluster
   {
     scope: 'cluster',
