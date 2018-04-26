@@ -4,9 +4,10 @@ import { inject as service } from '@ember/service';
 import Route from '@ember/routing/route';
 
 export default Route.extend({
-  globalStore: service(),
+  globalStore:  service(),
   clusterStore: service(),
-  scope: service(),
+  scope:        service(),
+
   queryParams: {
     addTo: {
       refreshModel: true
