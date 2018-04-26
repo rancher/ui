@@ -152,9 +152,6 @@ const rootNav = [
     ctx: [getClusterId],
     resource: ['project'],
     resourceScope: 'global',
-    condition: function() {
-      return this.get('cluster.isReady');
-    }
   },
   {
     scope: 'cluster',

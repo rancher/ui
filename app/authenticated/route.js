@@ -276,7 +276,7 @@ export default Route.extend(Preload, {
     },
 
     help()  {
-      get(this,'modalService').toggleModal('modal-shortcuts');
+      get(this,'modalService').toggleModal('modal-shortcuts', {escToClose: true});
     },
 
     // Special

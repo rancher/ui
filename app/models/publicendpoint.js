@@ -48,7 +48,7 @@ var PublicEndpoint = Resource.extend({
     const addresses = get(this, 'addresses');
     const allNodes = get(this, 'allNodes');
     const hostname = get(this,'hostname') || '';
-    
+
     let out = '';
     if (get(this,'isIngress') && hostname !==''){
       out = hostname;
@@ -77,12 +77,15 @@ var PublicEndpoint = Resource.extend({
 
   // port[/udp]
   displayEndpoint: computed('port','protocol', 'path', function() {
-    let out = '';
     let path = get(this,'path') || '';
+    if ( path ) {
+      return path;
+    }
+
+    let out = '';
     out += get(this,'port');
     let proto = get(this,'protocol').toLowerCase();
     out += '/' + proto;
-    out += path
     return out;
   }),
 

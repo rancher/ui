@@ -81,7 +81,7 @@ generic:
   saving: 保存中
   search: 検索
   searching: "検索中..."
-  searchOrCustomInput: Search or input your custom value.
+  searchOrCustomInput: カスタム値を検索または入力してください。
   seconds: 秒
   select: 選択
   service: サービス
@@ -113,7 +113,7 @@ realmNames:
 
 accountsPage:
   detail:
-    header: ユーザー詳細
+    header: ユーザーの詳細
     table:
       headers:
         permission: 権限
@@ -121,19 +121,19 @@ accountsPage:
         clusterName: クラスター
         projectName: プロジェクト
         active: アクティブ
-        created: Granted
+        created: 付与日
       global:
         title: グローバル権限
-        description: Access to manage things that affect the entire installation
-        admin: This user is an administrator and has all permissions.
+        description: インストール全体に影響を与えるものを管理するためのアクセス権
+        admin: このユーザーは管理者であり、すべての権限を持っています。
         noRoles: このユーザーにはグローバルロールはありません
       cluster:
         title: クラスターロール
-        description: Roles granted to this user for individual clusters
+        description: 個々のクラスターに対してこのユーザーに付与されるロール
         noRoles: このユーザーにはクラスターロールはありません
       project:
         title: プロジェクトロール
-        description: Roles granted to this user for individual project
+        description: 個々のプロジェクトに対してこのユーザーに付与されるロール
         noRoles: このユーザーにはプロジェクトロールはありません
       roles:
         title: ロール
@@ -143,7 +143,6 @@ accountsPage:
     table:
       id: ID
       kind: 種類
-      username: ユーザー名
       identity: ID
       noData: まだユーザーはありません
       noMatch: 検索条件に一致するユーザーはいません
@@ -208,12 +207,12 @@ appDetailPage:
 podSecurityPoliciesPage:
   index:
     header: ポッドセキュリティポリシー
-    description: Apply Policies to Pods created by a user with this Role
+    description: このロールを持つユーザーが作成したポッドにポリシーを適用する
     table:
       name: 名前
       created: 作成日
       noData: まだポッドセキュリティポリシーは定義されていません
-      noMatch: 検索条件に一致するセキュリティポリシーはありません
+      noMatch: 検索条件に一致するポッドセキュリティポリシーはありません
   addPodSecurityPolicy: ポリシーを追加
   editPodSecurityPolicy: ポリシーを編集
   detail:
@@ -251,7 +250,7 @@ rolesPage:
       nameReq: 名前が必要です
       memberReq: メンバーが必要です
       nameInExists: 名前は既に存在します。新しいロール名を使用してください。
-      ruleResourceReq: ルールはリソースが必要です
+      ruleResourceReq: ルールにはリソースが必要です。
       roleTemplate: ロールテンプレートが必要です
     form:
       name:
@@ -262,13 +261,13 @@ rolesPage:
       allow:
         create: 作成
         delete: 削除
-        deletecollection: 'Delete Collection'
+        deletecollection: 'コレクションを削除'
         get: 取得
         list: リスト
         patch: パッチ
         update: 更新
         watch: 監視
-        labelText: Allow
+        labelText: 許可
         resource: リソース
         addAction: リソースを追加
       otherRole:
@@ -283,7 +282,7 @@ apiPage:
   header: API & キー
   actionButton: キーを追加
   currentEndpoint: 'エンドポイント:'
-  detail: API キーは特定のユーザー({name}) に紐付けられ、アクセス可能な全てのクラスターやプロジェクトに対しての作成、削除、操作が可能です。
+  detail: API キーは特定のユーザー({name}) に紐付けられ、アクセス可能な全てのクラスターやプロジェクトに対しての作成、削除、操作が可能です
   table:
     state: 状態
     name: アクセスキー
@@ -382,7 +381,7 @@ authPage:
        # unrestricted: "{appName} は全ての {github} ユーザーがアクセスできるよう設定されています"
       disabled:
         label: GitHub が設定されていません
-        warning: "{appName} はいくつかの GitHub ユーザーや組織のメンバーに対してアクセスを制限するよう設定できます。 現在はこの設定がされていないため、このページ(または API)にアクセスできる誰でもシステムを介しフルコントロールできます。"
+        warning: "{appName} は GitHubユーザーと組織メンバーへのアクセスを制限するように設定できます"
     authenticated:
       header:
         text: 認証
@@ -477,8 +476,8 @@ authPage:
       disabled: 'ローカル認証は設定されていません'
     subtext:
       enabled:
-        text: '{appName} はローカルデータベースを利用したアクセス許可が設定されています。'
-        alwaysOn: 'ローカル認証は常に有効化されていますが追加で他の認証方法を選択することができます。'
+        text: '{appName} はローカルデータベースを利用したアクセス許可が設定されています'
+        alwaysOn: 'ローカル認証は常に有効化されていますが追加で他の認証方法を選択することができます'
         linkText: アカウントを管理
       disabled: '{appName} は {appName} データベースで定義されたいくつかのアカウントに対してアクセスを制限するよう設定できます。現在はこの設定がされていないため、このページ(または API)にアクセスできる全ての人がシステムを介してフルコントロールすることができます。'
     accessEnabled:
@@ -547,7 +546,7 @@ certificatesPage:
   valid: 有効な発行日
   expires: 有効期限
   algorithm: アルゴリズム
-  issuer: Issuer
+  issuer: 報告者
   serialNumber: シリアルナンバー
   domainNames:
     labelText: ドメイン名
@@ -634,7 +633,7 @@ projectsPage:
     label: プロジェクト名
     placeholder: "例: lab"
   created:
-    label: Created
+    label: 作成日
   psp:
     label: ポッドセキュリティポリシー
   members:
@@ -644,7 +643,7 @@ projectsPage:
     labelText: メンバー
     addMember: メンバーを追加
     addUser: ユーザーを追加
-    noAddUser: You are the only active registered user.
+    noAddUser: あなたが唯一の有効な登録済みユーザーです
     addGroup: グループを追加
     addServiceAccount: サービスアカウントを追加
     multipleRoles: 複数ロール
@@ -658,8 +657,8 @@ projectsPage:
     errors:
       nameReq: 名前が必要です
       nameInExists: 名前は既に存在しています。別のプロジェクト名を利用してください。
-      memberNameReq: メンバーは名前が必要です
-      memberRoleReq: メンバーはロールが必要です
+      memberNameReq: メンバーには名前が必要です
+      memberRoleReq: メンバーにはロールが必要です
 
 clustersPage:
   header: クラスター
@@ -728,7 +727,7 @@ containersPage:
     noData: 表示するコンテナはありません
     noMatch: 検索条件に一致するコンテナはありません
   welcome:
-    container: Get started right away
+    container: 始めましょう
     containerLink: コンテナを追加
     orchestrator: 他のオーケストレーターをインストール
     kubernetesLink: Kubernetes をインストール
@@ -737,18 +736,18 @@ clusterDashboard:
   cpu: CPU
   memory: メモリ
   pods: ポッド
-  subtitle: "{used} of {total} used"
+  subtitle: "{total} のうち {used} を使用中"
   node: ノード
-  etcd: Etcd
+  etcd: etcd
   scheduler: Scheduler
   controllerManager: Controller Manager
-  value: Value
-  notActive: このクラスターは現在 {state} 状態です。名前空間の管理など一部の操作はアクティブ状態でないと利用できません。
+  value: 値
+  notActive: このクラスターは現在 <b>{state}</b> 状態です
   notReady: このクラスターは現在 <b>{state}</b> 状態です; API が準備されるまでこのページでの直接の操作はできません。
   noNodes: ノードはありません
   alert:
-    node: "アラート: ノード {node} はアクティブではありません"
-    component: "アラート: コンポーネント {component} は異常状態です"
+    node: "注意: ノード {node} はアクティブではありません"
+    component: "注意: コンポーネント {component} は不健全です"
 
 dnsPage:
   noMatch: 検索条件に一致するレコードはありません
@@ -779,7 +778,7 @@ editDns:
     keyLabel: ラベル
     addActionLabel: セレクターを追加
   recordType:
-    label: "レコードタイプ"
+    label: "Resolves To"
     arecord: 1つ以上の外部 IP アドレス
     cname: 外部ホスト名
     alias: 別 DNS レコード値のエイリアス
@@ -806,7 +805,7 @@ editDns:
     targetRequired: '1つ以上の "ターゲット IP アドレス" が必要です'
     selectorRequired: '1つ以上の "ポッドセレクター" が必要です'
     mixedAlias: エイリアスは CNAME と他のレコードを組み合わせて指定することはできません
-    multipleCname: エイリアスは複数の CNAME レコードを指定することはできませんAn Alias cannot target more than one CNAME record
+    multipleCname: エイリアスは複数の CNAME レコードを指定することはできません
 
 cruPersistentVolumeClaim:
   title:
@@ -929,7 +928,7 @@ hostsPage:
       placeholder: '例: node01'
     addCluster:
       label: "クラスターオプション"
-      description: Attach this new node to a cluster, delegate roles, etc.
+      description: この新しいノードをクラスターに接続し、役割を委任するなど
       cluster:
         label: クラスター
       roles:
@@ -947,8 +946,8 @@ hostsPage:
     version: バージョン
     conditions:
       diskSpace: ディスクスペース
-      diskPressure: Disk Pressure
-      memoryPressure: Memory Pressure
+      diskPressure: ディスク使用率
+      memoryPressure: メモリ使用率
       ready: Kubelet
     limits:
       cpu: 'CPU 制限:'
@@ -993,13 +992,13 @@ hostsPage:
           noData: まだこのホストにはボリュームがありません
 
 k8sImport:
-  header: 既存の Kubernetes 環境を利用
+  header: 既存の Kubernetes 環境をインポート
   name:
     label: クラスター名
     placeholder: "例: my-imported-cluster"
   kubeConfig:
-    label: Kubeconfig file to import
-    placeholder: Import or paste in the Kubeconfig file of the cluster to use.
+    label: インポート用 Kubeconfig ファイル
+    placeholder: 使用するクラスターの Kubeconfig ファイルをインポートまたはペーストします
   actionLabel: インポート
 
 k8sPage:
@@ -1010,10 +1009,10 @@ k8sPage:
     button: ダッシュボードを起動
   shell:
     title: シェル
-    detail: Run <code>kubectl</code> commands from your browser.
+    detail: ブラウザから <code>kubectl</code> コマンドを実行します
     button: kubectlを起動
   configFile:
-    title: Config File
+    title: 設定ファイル
     detail: <code>kubectl</code> コマンドをデスクトップで利用するための Kubernetes 設定ファイルを生成します
     button: Kubeconfig ファイル
     generating: 生成中...
@@ -1032,16 +1031,16 @@ loginPage:
     500: "サーバ内部エラー"
     generic: "ログイン中にエラー {{errorCode}} が発生しました。もう一度やり直してください。"
   error:
+    authFailedCreds: "Logging in failed: Check credentials, or your account may not be authorized to log in."
     authFailed: "Logging in failed: Your account may not be authorized to log in."
-    authFailed: ユーザーネームまたはパスワードが正しくありません。
 
 machinePage:
   header: ノードドライバー
   inactive: 休止
-  subtext: "Additional <code>docker-machine</code> drivers can be loaded here and used in the Add Node screen."
+  subtext: "追加の <code>docker-machine</code> ドライバーをここからロードして、ノードの追加画面で利用することができます"
   add: ノードドライバーを追加
   builtin: ビルトイン
-  url: Location
+  url: ロケーション
 
 notFoundPage:
   header: "お探しのページは存在しません!"
@@ -1058,7 +1057,7 @@ registriesPage:
         username: ユーザー名
         created: 作成日
       body:
-        noData: "まだレジストリ証明書はありません"
+        noData: "まだレジストリの証明書がありません"
   new:
     header: レジストリを追加
     form:
@@ -1115,14 +1114,14 @@ servicePage:
     externalIp: |
       {count, plural,
       =1 {外部 IP:}
-      other {倍具 IPs:}
+      other {外部 IP:}
       }
     externalHostname: '外部ホスト名:'
   selector:
     label: 'セレクター:'
   containersTab:
     title: 'コンテナ'
-    detail: 'The containers that make up this service.'
+    detail: 'このサービスを構成するコンテナ。'
   linksTab:
     header: リンク
     detail: 'これらの属性値はこのサービスと他のコンテナ間のリンク情報を示します'
@@ -1148,13 +1147,13 @@ servicePage:
   newIngress:
     form:
       name:
-        placeholder: e.g. website
+        placeholder: '例: website'
       description:
-        placeholder: e.g. Ingress for mycompany.com
+        placeholder: '例: mycompany.comのイングレス'
   portsTab:
     title: ポート
-    detail: 'Ports mapped from a host IP to the listening ports of a container.'
-    notActive: ポートはサービスがアクティブの場合のみ利用できます。
+    detail: 'ホスト IP からコンテナのリスニングポートにマッピングされたポート'
+    notActive: ポートはサービスがアクティブの場合のみ利用できます
   logTab:
     title: サービスログ
     detail: 'このサービスに関して直近のオーケストレーションで発生したイベント情報です'
@@ -1192,10 +1191,10 @@ stackPage:
     singleBanner: 単一スタックビュー
     backLink: 全てのスタック表示に戻る
   basics:
-    tagsCopy: Copy Tags as comma seperated list
+    tagsCopy: タグをカンマ区切りリストとしてコピーする
   containers:
     header: コンテナ
-    detail: スタンドアローンコンテナとサービスがこのスタックに含まれます
+    detail: このスタックに含まれるスタンドアローンコンテナとサービス
     status: |
       {count, plural,
       =0 {コンテナはありません}
@@ -1221,26 +1220,26 @@ stackPage:
       other {# エントリー}
       }
   scalingGroups:
-    header: Scaling groups
-    detail: 'Containers existing in this scaling group'
+    header: スケーリンググループ
+    detail: 'このスケーリンググループに存在するコンテナ'
     status: |
       {count, plural,
       =0 {コンテナはありません}
       =1 {# コンテナ}
-      other {# containers}
+      other {# コンテナ}
       }
   volumesTab:
-    header: Volumes
-    detail: 'These properties show the volumes attached to your container.'
+    header: ボリューム
+    detail: 'これらのプロパティは、コンテナに接続されたボリュームを示します。'
     table:
-      path: Mount Point
-      shared: Shared With
-      writable: Writable
-      noData: This stack has no volumes mounted
-      noMatch: No volumes match the current search
+      path: マウントポイント
+      shared: 共有者
+      writable: 書き込み可能
+      noData: このスタックにはマウントされているボリュームがありません
+      noMatch: 検索条件に一致するボリュームがありません
 
 newStack:
-  header: YAML からインポート
+  header: YAML をインポート
   name:
     placeholder: '例: myapp'
   description:
@@ -1266,9 +1265,9 @@ nodeTemplatesPage:
     provider: プロバイダー
     location: ロケーション
     size: サイズ
-    usedBy: Used By
+    usedBy: 利用クラスター
     noData: まだノードテンプレートは定義されていません
-    usedByNone: No Clusters
+    usedByNone: クラスターに利用されていません
     unknown: 不明
 
 storageClassPage:
@@ -1284,7 +1283,7 @@ storageClassPage:
 persistentVolumePage:
   header: 永続ボリューム
   addActionLabel: ボリュームを追加
-  noData: まだ永続ボリュームはありません
+  noData: まだ永続ボリュームは定義されていません
   noMatch: 検索条件に一致する永続ボリュームはありません
   source:
     label: ソース
@@ -1368,10 +1367,10 @@ notifierPage:
     url: URL
     urlPlaceholder: あなたの webhook URL
   testAction:
-    testing: TESTING
-    testOk: 選択したアプリケーションを確認してください
+    testing: テスト中
+    testOk: 設定が確認されました
     testFailed: 何かが正しくないようです。入力内容を確認してください。
-    test: TEST
+    test: テスト
   clone: クローン
   index:
     addActionLabel: 通知を追加
@@ -1518,17 +1517,17 @@ servicePartial:
 
 accordionRow:
   status:
-    any: Any
+    none: なし
+    incomplete: 未完了
+    error: エラー
+    notConfigured: 未設定
     configured: 設定済み
     countConfigured: "{count} 設定済み"
-    custom: カスタマイズ済み
-    error: エラー
-    incomplete: 未完了
-    none: None
-    notConfigured: 未設定
-    rule: "{count, plural, =1 {# ルール} other {# ルール}}"
-    specific: Specific
     standard: デフォルト
+    custom: カスタマイズ済み
+    specific: Specific
+    any: Any
+    rule: "{count, plural, =1 {# ルール} other {# ルール}}"
 
 advancedSection:
   showText: 詳細オプションを表示
@@ -1536,7 +1535,7 @@ advancedSection:
 
 annotationsSection:
   title: アノテーション
-  detail: キー/バリュー メタデータ
+  detail: キー/値 メタデータ
   key: キー
   value: 値
   noData: アノテーションはありません
@@ -1575,7 +1574,7 @@ cloudProvider:
 
 catalogSettings:
   header: カタログ
-  notAvailable: "利用不可: カスタムカタログ <code>{name}</code> が含まれています"
+  notAvailable: "利用不可: <code>{name}</code> というカスタムカタログがあります"
   helpText: 現在は Helm カタログのみサポートされます
   library:
     label: ライブラリ
@@ -1593,7 +1592,7 @@ catalogSettings:
       pl: 認証済みライブラリ
     detail:
       rancher: テンプレートは Kubernetes オーケストレーションサポートのような Rancher のコアとなる機能に必要となり、Rancher Labs によりメンテナンス、サポートされます。
-      pl: Officially maintained templates required for core features such as Kubernetes.
+      pl: 公式にメンテナンスされているテンプレートは Kubernetes のようなコアとなる機能に必要となります。
   community:
     header:
       rancher: コミュニティサポート
@@ -1603,7 +1602,7 @@ catalogSettings:
       pl: テンプレートはコミュニティメンバーによって作成、メンテナンスされ、
   more:
     header: カスタム
-    helpText: 'ここでは独自のカスタムカタログソースを定義できます。それぞれユニークな名前と <code>git clone</code> によってハンドリングされる URL が必要となります (詳細は <a href="https://git-scm.com/docs/git-clone#_git_urls_a_id_urls_a" target="_blank" rel="nofollow noopener noreferrer">docs</a> を参照してください)'
+    helpText: '独自のカスタムされたカタログソースを定義できます。それぞれのソースには固有の名前と、<code>git clone</code> 可能な URL が必要です。(詳細は<a href="https://git-scm.com/docs/git-clone#_git_urls_a_id_urls_a" target="_blank" rel="nofollow noopener noreferrer">こちら</a>を参照してください。)'
     addActionLabel: カタログを追加
     noMatch: 検索条件に一致するカタログはありません
     noData: まだカスタムカタログは定義されていません
@@ -1654,13 +1653,13 @@ clusterNew:
     label: クラスター名
     placeholder: '例: sandbox'
   description:
-    placeholder: '例: 開発/テスト用クラスター'
+    placeholder: '例: 開発やテスト用のクラスター'
   members:
     label: メンバーロール
     detail: クラスターに誰がアクセスでき、どのような権限を保持するかを制御します
   config:
     label: プロバイダー
-    detail: Choose where the nodes for the cluster will come from
+    detail: クラスターに追加されるノードをどこに起動するか選択してください
   nodes:
     title: ノード
     detail: 作成されるノードをカスタマイズします
@@ -1677,14 +1676,14 @@ clusterNew:
     shortLabel: Amazon EKS
     access:
       title: アカウントアクセス
-      detail: Amazon EKS を立ち上げるリージョンと API キーを選択してください
+      detail: Amazon EKSの起動に使用するリージョンとAPIキーを選択してください
   azureaks:
     label: Azure Container Service
     shortLabel: Azure AKS
     access:
       title: アカウントアクセス
-      detail: Azure と連携するための証明書情報を設定します
-      help: 'クライアント ID とシークレットを作成する手順は <a href="https://www.packer.io/docs/builders/azure-setup.html" target="_blank">こちら</a> から参照できます。'
+      detail: Azure の操作に使用する認証情報を設定する
+      help: 'クライアント ID とシークレットを作成する手順は <a href="https://www.packer.io/docs/builders/azure-setup.html" target="_blank">こちら</a> から参照できます'
     placement:
       label: Placement
     count:
@@ -1750,7 +1749,7 @@ clusterNew:
       label: サブネットプリフィックス
       placeholder: 128.42.0.0/21
     availabilitySet:
-      label: アベイラビリティセット
+      label: 可用性セット
       placeholder: availability-set-name
     openPort:
       label: 公開ポート
@@ -1923,7 +1922,7 @@ clusterNew:
 
 conditionSections:
   title: コンディション
-  detail: このノードの現在のコンディションです
+  detail: "{resourceType} の現在のコンディションです"
   table:
     type: タイプ
     status: 状態
@@ -1935,14 +1934,14 @@ conditionSections:
 
 confirmDelete:
   title: '本当に削除してもよろしいですか?'
-  environmentNote: 'Note: この環境下にある {appName} により作られたノードを含むの全てのリソースは完全に削除されます'
+  environmentNote: 'Note: このプロジェクト内にある {appName} により作られた名前空間を含むの全てのリソースは完全に削除されます'
   protip: 'ProTip: この確認画面を飛ばす場合は削除ボタンのクリック時に {key} キーを長押ししてください。'
   confirmAction: 削除
   cancelAction: キャンセル
   largeDeleteText: '{key} and {othersCount} others'
 
 containerLogs:
-  title: "ログ: {instanceName}"
+  title: "ログ: "
   onlyCombined: "<b>Note:</b> このコンテナでは TTY (-t) フラグが有効なため、標準出力/標準エラー出力が結合されたログのみが利用可能です。"
   combined: 結合された出力
   stdout: 標準出力
@@ -1986,12 +1985,11 @@ cruRegistry:
   multiple: 複数
   auth:
     label: 認証トークン
-    saved: 保存
+    saved: 保存しました
   username:
     label: ユーザー名
   password:
     label: パスワード
-    saved: 保存
 
 cruPersistentVolume:
   name:
@@ -2025,7 +2023,7 @@ cruPersistentVolume:
       label: ファイルシステムタイプ
       placeholder: "例: ext4"
     readOnly:
-      label: 読み込みのみ
+      label: 読み取り専用
     partition:
       label: パーティション
       placeholder: "例: 1; 0 for entire device"
@@ -2049,7 +2047,7 @@ cruPersistentVolume:
       label: 種類
       placeholder: "例: PersistentVolumeClaim"
     readOnly:
-      label: 読み込みのみ
+      label: 読み取り専用
   secret:
     defaultMode:
       label: デフォルトモード
@@ -2088,7 +2086,7 @@ cruPersistentVolume:
       label: 共有名
       placeholder: "例: abc"
     readOnly:
-      label: 読み込みのみ
+      label: 読み取り専用
   cephfs:
     monitors:
       label: モニター
@@ -2097,7 +2095,7 @@ cruPersistentVolume:
       label: パス
       placeholder: "例: /var"
     readOnly:
-      label: 読み込みのみ
+      label: 読み取り専用
     secretFile:
       label: シークレットファイル
       placeholder: "例: secret"
@@ -2129,7 +2127,7 @@ cruPersistentVolume:
       label: プール
       placeholder: "例: rbd"
     readOnly:
-      label: 読み込みのみ
+      label: 読み取り専用
     secretRef:
       label: シークレット
       placeholder: "例: secret"
@@ -2144,7 +2142,7 @@ cruPersistentVolume:
       label: LUN 番号
       placeholder: "例: 2"
     readOnly:
-      label: 読み込みのみ
+      label: 読み取り専用
     targetWWNs:
       label: ターゲット WWN
       addActionLabel: 追加
@@ -2162,7 +2160,7 @@ cruPersistentVolume:
       label: オプション
       addActionLabel: 追加
     readOnly:
-      label: 読み込みのみ
+      label: 読み取り専用
     secretRef:
       label: シークレット
       placeholder: "例: secret"
@@ -2181,7 +2179,7 @@ cruPersistentVolume:
       label: パス
       placeholder: "例: kube_vol"
     readOnly:
-      label: 読み込みのみ
+      label: 読み取り専用
   gcePersistentDisk:
     fsType:
       label: ファイルシステムタイプ
@@ -2193,7 +2191,7 @@ cruPersistentVolume:
       label: 永続ディスク名
       placeholder: "例: abc"
     readOnly:
-      label: 読み込みのみ
+      label: 読み取り専用
   iscsi:
     chapAuthDiscovery:
       label: CHAP 認証ディスカバリー
@@ -2218,7 +2216,7 @@ cruPersistentVolume:
       label: ポータル
       addActionLabel: 追加
     readOnly:
-      label: 読み込みのみ
+      label: 読み取り専用
     secretRef:
       label: シークレット
       placeholder: "例: secret"
@@ -2234,7 +2232,7 @@ cruPersistentVolume:
       label: パス
       placeholder: "例: /var"
     readOnly:
-      label: 読み込みのみ
+      label: 読み取り専用
     server:
       label: サーバー
       placeholder: "例: 10.244.1.4"
@@ -2243,7 +2241,7 @@ cruPersistentVolume:
       label: ファイルシステムタイプ
       placeholder: "例: ext4"
     readOnly:
-      label: 読み込みのみ
+      label: 読み取り専用
     volumeID:
       label: ボリューム ID
       placeholder: "例: vol"
@@ -2259,7 +2257,7 @@ cruPersistentVolume:
       label: ファイルシステムタイプ
       placeholder: "例: ext4"
     readOnly:
-      label: 読み込みのみ
+      label: 読み取り専用
     volumeID:
       label: ボリューム ID
       placeholder: "例: abc"
@@ -2268,7 +2266,7 @@ cruPersistentVolume:
       label: グループ
       placeholder: "例: abc"
     readOnly:
-      label: 読み込みのみ
+      label: 読み取り専用
     registry:
       label: レジストリ
       placeholder: "例: abc"
@@ -2289,7 +2287,7 @@ cruPersistentVolume:
       label: 保護ドメイン
       placeholder: "例: pd01"
     readOnly:
-      label: 読み込みのみ
+      label: 読み取り専用
     secretRef:
       name:
         label: 名前
@@ -2317,7 +2315,7 @@ cruPersistentVolume:
       label: ファイルシステムタイプ
       placeholder: "例: ext4"
     readOnly:
-      label: 読み込みのみ
+      label: 読み取り専用
     secretRef:
       name:
         label: 名前
@@ -2363,15 +2361,15 @@ cruStorageClass:
     noData: マウントオプションはありません
   parameters:
     title: パラメーター
-    detail: Configure the provider-specific parameters for the storage class
+    detail: ストレージクラスにプロバイダー固有のパラメーターを設定する
     addActionLabel: パラメーターを追加
   customize:
-    title: Customize
-    detail: Customize Advanced options
+    title: カスタマイズ
+    detail: 拡張オプションをカスタマイズ
   provisioner:
-    label: Provisioner
+    label: プロビジョナー
   reclaimPolicy:
-    label: Reclaim Policy
+    label: ポリシーを要求
     Delete: Delete volumes and underlying device when released by workloads
     Retain: Retain the volume for manual cleanup
     Recycle: "Recycle: Empty the contents and then preserve the volume for future workloads"
@@ -2628,7 +2626,7 @@ cruStorageClass:
 
 dangerZone:
   header: 拡張設定
-  subtext: "Typical users will not need to change these.  Proceed with caution, incorrect values can break your {appName} installation.<br/>Settings which have been customized from default settings  are shown in <b>bold</b>."
+  subtext: "一般的なユーザーの場合、これらを変更する必要はありません。間違った値を指定するとあなたの {appName} が壊れる可能性がありますので、慎重に進めてください。<br/>既定の値から変更された設定値は<b>太字</b>で表示されます。"
   showLabel: 私は拡張設定を変更することで問題が生じる可能性があると理解しています。
   description:
     'access-log': 'Path to write access logs to (HA installation only)'
@@ -2682,13 +2680,13 @@ editAccount:
       placeholder: '例: ジョン スミス'
     kind:
       label: アカウントタイプ
-      user: Normal User
-      admin: "Admin: Full access to manage everything in all clusters"
+      admin: "管理者：すべてのクラスタのすべてを管理するフルアクセス"
+      user: 一般ユーザー
     description:
       label: 詳細情報
       placeholder: '例: このアカウントは、ジョン ・ スミス用です'
     publicValue:
-      label: Username
+      label: ユーザー名
     oldPassword:
       label: 現在のパスワード
     newPassword:
@@ -2702,7 +2700,7 @@ editApiKey:
   title:
     justCreated: API Key は作成されました
     editing: API キーを編集
-    new: 新しい API キー
+    new: API キーを追加
   accessKey: アクセスキー(username)
   secretKey: 秘密キー(password)
   basicAuth: "アクセスキーと秘密キーは HTTP ベーシック認証においてユーザー名とパスワードとして認証リクエストを送信できます。また、これらを結合し Bearer トークンとしても利用できます:"
@@ -2725,7 +2723,7 @@ editCertificate:
     placeholder: '例: mydomain.com'
   description:
     placeholder: '例: mydomain.com の EV 証明書'
-  noteKeyWriteOnly: "Note: The Private Key is intentionally blank because the field is write-only.  You will do not need to provide the Private Key unless you are intending on changing it."
+  noteKeyWriteOnly: "注意: プライベートキーは書き込み専用のためあえて空にしています。プライベートキーを変更する場合を除いて、これを入力する必要はありません。"
 
 editCluster:
   title:
@@ -2733,10 +2731,10 @@ editCluster:
     edit: クラスターを編集
   name:
     label: 名前
-    placeholder: e.g. Sandbox
+    placeholder: '例: Sandbox'
   description:
     label: 詳細情報
-    placeholder: e.g. Shared cluster for development
+    placeholder: '例: Shared cluster for development'
   systemStacks:
     hr: クラスターオプション
     title: システムカタログスタック
@@ -2767,7 +2765,7 @@ editHost:
     help: 空の場合、ホスト名が表示されます。
   description:
     label: 詳細情報
-    placeholder: "例: My development node"
+    placeholder: '例: 私の開発用ノード'
   labels:
     label: ラベル
   ips:
@@ -2778,7 +2776,7 @@ editHost:
     help: 入力された場合、スケジューラが与えられたパブリック IP アドレス群から対象を選択し公開ポートをバインドします。
   requireAny:
     label: 必要となるコンテナラベル
-    help: If provided, containers must have one or more of the given labels in order to be eligible for scheduling onto this node.  If the value is left empty, a container with a matching key is eligible regardless of value.  <code>io.rancher.container.system</code> is required to allow system containers on to the node.
+    help: 指定した場合、このノードに適切にスケジューリングされるようコンテナは1つまたは複数のラベルを設定する必要があります。値を空のままにした場合一致するキーの有無に関わらずコンテナはスケジュールされます。システムコンテナをこのノードにスケジューリングするには<code>io.rancher.container.system</code> が必要となります。
     addActionLabel: 必要となるラベルを追加
 
 editService:
@@ -2788,18 +2786,18 @@ editStack:
   title: 名前空間を編集
   name:
     label: 名前
-    error: Namespace name is already in use. Please choose a new namespace name.
+    error: 名前空間の名前は既に使われています。新しい名前空間の名前を設定してください。
     placeholder: '例: myapp'
   project:
     label: プロジェクト
     prompt: プロジェクトを選択してください...
   description:
     label: 詳細情報
-    placeholder: '例: MyApp namespace'
+    placeholder: '例: MyApp 名前空間'
   group:
     label: タグ
     placeholder: '例: frontend, production'
-    help: Comma-separated list of tags for the new Stack.  The workload lists can be filtered by individual tags.
+    help: 新しいスタックのタグのカンマ区切りリスト。ワークロードの一覧は個々のタグでフィルタリングすることができます。
 
 editUser:
   title: ユーザーを編集
@@ -2812,26 +2810,30 @@ editUser:
     otherRoles:
       label: ロールを削除
     password:
-      label: パスワード変更
+      label: パスワードを変更
       new: 新しいパスワード
-      confirm: パスワードの確認
-      error: パスワードは一致している必要があります
+      confirm: 新しいパスワード(確認用)
+      error: パスワードが一致しません
       mustChangePassword:
         new: 最初のログイン時にパスワードを変更するようユーザーに要求する
         edit: 次のログイン時にパスワードを変更するようユーザーに要求する
 
 envCatalog:
   header: カタログ
-  subtext: 'You can define your own custom catalog sources here. Catalogs added here will only be availabel to the environemnt in which they were added. Each one needs a unique name and a URL that <code>git clone</code> can handle (see <a href="https://git-scm.com/docs/git-clone#_git_urls_a_id_urls_a" target="_blank" rel="nofollow noopener noreferrer">docs</a> for more info).'
+  subtext: '独自のカスタムされたカタログソースを定義できます。カタログは、追加された環境下でのみ利用できます。それぞれのカタログには固有の名前と <code>git clone</code> 可能な URL が必要です。(詳細は <a href="https://git-scm.com/docs/git-clone#_git_urls_a_id_urls_a" target="_blank" rel="nofollow noopener noreferrer">docs</a> を参照してください)。'
   addActionLabel: カタログを追加
 
 moveNamespace:
   title: |
-    Move {count, plural,
-    =1 {名前空間: {name}}
-    other {# 名前空間:}}
-  to: "To project:"
-  actionLabel: Move
+    {count, plural,
+    =1 {個の名前空間: {name}}
+    other {# 個の名前空間}
+    }の移動: 
+  to: "移動先のプロジェクト:"
+
+envCatalog:
+  header: カタログ
+  addActionLabel: カタログを追加
 
 stackHeader:
   title: '名前空間: {name}'
@@ -2858,8 +2860,8 @@ formBalancerConfig:
 
 formIngress:
   defaultBackend:
-    label: このルールをデフォルトバックエンドとして設定
-    mark: デフォルトバックエンド
+    label: このルールをデフォルトのバックエンドとして設定する
+    mark: デフォルトのバックエンド
   label: ルール
   addRuleLabel: ルールを追加
   removeRuleLabel: このルールを削除
@@ -2876,23 +2878,18 @@ formIngress:
 formIngressBackends:
   label: ターゲットバックエンド
   noRules: バックエンドはありません
-  addServiceLabel: DNS レコードを追加
-  addWorkloadLabel: サービスを追加
+  addServiceLabel: サービスを追加
+  addWorkloadLabel: ワークロードを追加
   service:
     label: サービス
   workload:
     label: ワークロード
   targetPort:
     label: ポート
-    placeholder: "例: 80"
-  path:
-    label: パス
-    placeholder: "例: /foo"
-  target: ターゲット
 
 formBalancerListeners:
   label: リスナー & ターゲットルール
-  detail: Control the mapping of requests coming into the balancer to the desired target.
+  detail: バランサーに入ってくるリクエストを目的のターゲットにマッピングするよう制御します。
   status: |
     {count, plural,
     =0 {ルールはありません}
@@ -2919,7 +2916,7 @@ formBalancerListeners:
 
 formBalancerRules:
   label: ターゲットルール
-  detail: Map requests to different targets depending on host, port, path, or IP address.
+  detail: ホストまたはポート、パス、IPアドレスに応じて、異なるターゲットにリクエストをマップします。
   status: |
     {count, plural,
     =0 {ルールはありません}
@@ -2977,8 +2974,8 @@ formCommand:
     label: ワーキングディレクトリ
     placeholder: '例: /myapp'
   uid:
-    label: User ID
-    placeholder: e.g. 501
+    label: ユーザー ID
+    placeholder: '例: 501'
   console:
     label: コンソール
     both: 'インタラクティブ &amp; TTY <span class="text-muted">(-i -t)</span>'
@@ -2997,11 +2994,11 @@ formCommand:
       }再起動
     always: 常に
   terminationGracePeriodSeconds:
-    label: Stop Timeout
-    helpText: The container will have this long to stop on its own before it is forcefully terminated.
+    label: 停止時のタイムアウト
+    helpText: コンテナの停止時に指定された時間を超えた場合、強制的に終了されます。
   fsgid:
-    label: Filesystem Group
-    placeholder: e.g. 501
+    label: ファイルシステムグループ
+    placeholder: '例: 501'
 
 formContainerLinks:
   title: リンク
@@ -3011,9 +3008,9 @@ formContainerLinks:
     label: 対象コンテナ
   alias:
     label: エイリアス名
-    placeholder: e.g. database
+    placeholder: '例: database'
   noData: コンテナリンクはありません
-  noMatch: No links match the current search
+  noMatch: 検索条件に一致するリンクがありません
 
 formCount:
   label: 数
@@ -3143,7 +3140,7 @@ formMembers:
     labelText: メンバー
     addMember: メンバーを追加
     addUser: ユーザーを追加
-    noAddUser: You are the only active registered user.
+    noAddUser: あなたが唯一のアクティブな登録済みユーザーです
     addGroup: グループを追加
     addServiceAccount: サービスアカウントを追加
     multipleRoles: 複数ロール
@@ -3155,7 +3152,7 @@ formMembers:
     role:
       label: ロール
     errors:
-      nameReq: 名前は必要です
+      nameReq: 名前が必要です
       nameInExists: 名前は既に存在しています。新しいプロジェクト名を使用してください。
       memberNameReq: メンバーには名前が必要です
       memberRoleReq: メンバーにはロールが必要です
@@ -3163,7 +3160,7 @@ formMembers:
 
 formScopedRoles:
   title: '{type} 権限'
-  description: TBD.
+  description: '{type} に対するユーザーのアクセス権を制御します'
   mode:
     admin:
       label: オーナー
@@ -3173,24 +3170,24 @@ formScopedRoles:
       detail: メンバーは {type} の内部リソースに対して管理権限を持ちますが {type} 自体の変更はできません
     custom:
       label: カスタム
-      detail: このユーザーに対して個別のロールを選択します
+      detail: このユーザーのロールを選択します
     readOnly:
-      label: 読み込みのみ
+      label: 読み込み専用
       detail: メンバーは {type} の内部リソースを参照することはできますが {type} 自体の変更はできません
     userDef:
       detail: ユーザー定義のロール
     role:
       read-only:
-        label: 読み込みのみ
-        detail: 全てを参照することができますが変更はできません
+        label: 読み取り専用
+        detail: 全てを参照することができますが変更は行えません。
 
 formHealthCheck:
   title: ヘルスチェック
-  detail: 対象が正常に稼働しレスポンス可能か定期的にコンテナに対しリクエストを発行します
+  detail: 定期的にコンテナへリクエストを送り、コンテナが生存していて正しく応答するかどうかを確認します。
   readiness: Readiness チェック
   liveness: Liveness チェック
-  separateLivenessCheck: Define a separate liveness check
-  combinedLivenessCheck: Use the same check for liveness and readiness
+  separateLivenessCheck: 個別の liveness チェックを定義
+  combinedLivenessCheck: liveness と readiness に同様のチェックを利用
   checkType:
     none: None
     tcp: TCP 接続が正常にオープンしているか確認
@@ -3216,19 +3213,19 @@ formHealthCheck:
     label: 対象コンテナポート
     placeholder: '例: 80'
   initialDelaySeconds:
-    label: Start Checking After
+    label: チェック開始タイミング
   reinitializingTimeout:
     label: 再初期化タイムアウト
   periodSeconds:
     label: チェック間隔
   timeoutSeconds:
-    label: タイムアウト
+    label: チェックタイムアウト
   successThreshold:
-    label: Healthy After
-    unit: successes
+    label: 正常とする回数
+    unit: 成功
   failureTheshold:
-    label: Unhealthy After
-    unit: failures
+    label: 不健全とする回数
+    unit: 失敗
 
 formKeyToPath:
   addAction: アイテムを追加
@@ -3274,9 +3271,9 @@ formNetwork:
   title: ネットワーク
   detail: コンテナに対しネットワークと DNS オプションを設定します
   netMode:
-    label: ホストのネットワーク名前空間を使用
-    disable: "No"
-    enable: "Yes"
+    label: ホストのネットワーク名前空間を使用する
+    disable: "いいえ"
+    enable: "はい"
   dnsPolicy:
     label: DNS ポリシー
     clusterFirstWithHostNet: "Cluster first with host network"
@@ -3313,27 +3310,27 @@ formNetwork:
     placeholder: '例: prod.example.com'
     addActionLabel: ドメインを追加
   subdomain:
-    label: Subdomain
-    placeholder: e.g. foo
+    label: サブドメイン
+    placeholder: '例: foo'
   hostAlias:
-    addActionLabel: Add Node Alias
-    label: Host Aliases
+    addActionLabel: ホストエイリアスを追加
+    label: ホストエイリアス (/etc/hosts エントリー)
     host:
-      label: Host
-      placeholder: e.g. example
+      label: ホスト
+      placeholder: '例: example'
     ip:
-      label: IP
-      placeholder: e.g. 192.168.1.101
+      label: IP アドレス
+      placeholder: '例: 192.168.1.101'
 
 formPorts:
   header: ポートマッピング
   addAction: ポートを追加
   kind:
     label: 公開対象
-    NodePort: 全てのノード
-    HostPort: ポッドが稼働しているノード
-    ClusterIP: 内部クラスター IP
-    LoadBalancer: ロードバランサー
+    NodePort: ノードポート(全てのノード上)
+    HostPort: ホストポート(ポッドが稼働しているノード)
+    ClusterIP: クラスター IP(内部のみ)
+    LoadBalancer: L4 ロードバランサー
   sourcePort:
     label: ソースポート
     placeholder: "例: 80"
@@ -3342,7 +3339,7 @@ formPorts:
   nodePort:
     placeholder: "例: 30000"
   containerPort:
-    label: コンテナポート
+    label: コンテナポートを公開
     placeholder: "例: 8080"
   protocol:
     label: プロトコル
@@ -3359,7 +3356,7 @@ formPorts:
     hostPort:
       sourcePortRequired: ポッドが稼働しているノードに対してはソースポートが必要になります
     loadBalancer:
-      sourcePortRequired: ロードバランサーにはスースポートが必要になります
+      sourcePortRequired: ロードバランサーにはソースポートが必要になります
     mixedIpPort: "ポート {ip}:{port}/{proto} は、1 つ以上のマッピングを保持しています。"
     mixedPort: "ポート {port}/{proto} は、1 つ以上のマッピングを保持しています。"
   showAdvanced: ポート名オプションを見る
@@ -3377,7 +3374,7 @@ formScale:
         =1 {ポッド}
         other {ポッド}
       }
-    daemonSet: "各ノード上で単一ポッドとして動作"
+    daemonSet: "各ノード上で単一のポッドを実行"
     cronJob: "クーロンスケジュールとして動作"
     job: ジョブ
     sidekickInactive: "サイドカー: 既存ワークロードにコンテナを追加する"
@@ -3385,8 +3382,8 @@ formScale:
     sidekickSuffix: ""
 
 formScheduling:
-  title: ノードスケジューリング
-  detail: ポッドが展開されるノードを設定します
+  title: ノード スケジューリング
+  detail: ポッドがどのノード上でデプロイされるかを設定します。
   status: |
     {count, plural,
     =0 {ルールはありません}
@@ -3394,46 +3391,46 @@ formScheduling:
     other {# ルール}
     }
   canRequestHost:
-    vm: 仮想マシンを <b>全て</b> 特定ノード上で起動
+    vm: <b>すべて</b> の仮想マシンを特定のノード上で起動する
     containers: このワークロード用のポッドを <b>全て</b> 特定ノード上で起動
-  runSpecific: このポッドを特定ノード上で起動
-  noRules: ルール無し
-  noToleration: No tolerations.
-  autoRun: "スケジューリングルールに一致した全てのノード上で自動的に起動されます:"
+  runSpecific: 特定のノードでこのポッドを実行する
+  noRules: ルールはありません
+  noToleration: トレランスはありません
+  autoRun: "スケジューリングルールに一致した全てのノード上で自動的に起動:"
   autoPick:
-    vm: "スケジューリングルールに一致するそれぞれの仮想マシンのノードを自動的に選択します:"
-    container: "スケジューリングルールに一致するそれぞれのポッドのノードを自動的に選択します:"
-    host: "スケジューリングルールに一致するノードを自動的に選択します:"
+    vm: "全ての仮想マシンに対しスケジューリングルールに一致したノードを自動的に選択:"
+    container: "全てのポッドに対しスケジューリングルールに一致したノードを自動的に選択:"
+    host: "スケジューリングルールに一致したノードを自動的に選択:"
   addRule: ルールを追加
   addCustom: カスタムルールを追加
   condition: 条件
   field: フィールド
-  key: Label Key
+  key: ラベルキー
   value: 値
-  operator: Operator
-  effect: Effect
+  operator: オペレーター
+  effect: 効果
   time: Time
   toleration:
-    title: Toleration
-    add: Add Toleration
+    title: トレランス
+    add: トレランスを追加
   scaling:
     minMaxDetail: 設定することでユーザー操作や API 呼び出しによるスケーリング時に制限を設けられます
     incrementDetail: 設定することでスケール時に複数台ずつ増加されます
-    hostMaxDetail: If set, schedule containers for this service to a maximum of this many hosts.
+    hostMaxDetail: 設定されている場合は、このサービスのコンテナをこのホストの最大数にスケジュールします。
   scaleMin: 最小スケール
   scaleMax: 最大スケール
   scaleIncrement: 増加数
-  hostMax: Maximum Nodes
+  hostMax: 最大ノード数
   perHost: per host
   priority:
-    label: Priority
-    placeholder: e.g. 3
+    label: 優先度
+    placeholder: '例: 3'
   priorityClassName:
-    label: Priority Class Name
-    placeholder: e.g. high
+    label: 優先クラス名
+    placeholder: '例: high'
   scheduler:
-    label: Scheduler
-    placeholder: e.g. myScheduler
+    label: スケジューラー
+    placeholder: '例: myScheduler'
   nodeSelector:
     requireAll: "Require ALL of:"
     requireAny: "Require Any of:"
@@ -3462,7 +3459,7 @@ formSources:
   detail: Environments from sources allow you to inject passwords, keys, or other information into the containers that need them.
   noData: No Environments From Sources
   noMatch: No Environments From Sources match the current search
-  addLabel: Add Source
+  addLabel: ソースを追加
   type:
     label: タイプ
   source:
@@ -3486,17 +3483,17 @@ formSecurity:
   allowPrivilegeEscalation:
     label: 権限昇格
     disable: "いいえ"
-    enable: "はい: コンテナは親プロセスより強い特権を持てます"
+    enable: "はい: コンテナは親プロセスよりも多くの権限を取得できます"
   hostIPC:
     label: ホストの IPC 名前空間を利用
   runAsNonRoot:
-    label: 非ルートとして起動
+    label: 非rootとして起動
     disable: "いいえ"
-    enable: "はい: コンテナは非ルートユーザーとして起動します"
+    enable: "はい: コンテナは非rootのユーザーとして実行する必要があります"
   readOnlyRootFilesystem:
-    label: リードオンリー ルートファイルシステム
+    label: 読み取り専用ルートファイルシステム
     disable: "いいえ"
-    enable: "はい: コンテナはリードオンリーのルートファイルシステムを持ちます"
+    enable: "はい: コンテナは読み取り専用のルートファイルシステムを持ちます"
   hostPID:
     label: ホストの PID 名前空間を利用
   memoryLimit:
@@ -3516,7 +3513,7 @@ formSecurity:
     none: スワップを許可しない
   swappiness:
     label: スワップ値
-    default: ホストのデフォルトを利用
+    default: ホストのデフォルトを使用する
     none: 最小
     set: カスタム (1-100)
   cpuPinning:
@@ -3569,26 +3566,27 @@ formSslTermination:
   alternateCerts: 代替証明書
   addAlternate: 代替証明書を追加
   noCertificates: 利用可能な証明書はありません
-  noCertificatesConfiged: No Certificates.
+  noCertificatesConfiged: 証明書はありません。
   noAlternateCertificates: 他の利用可能な証明書はありません。
-  hosts: ノード
-  noHosts: No Nodes
+  hosts: ホスト
+  noHosts: ホストはありません
   host:
-    label: Host
-    placeholder: e.g. example.com
-  addHostLabel: Add Node
+    label: ホスト
+    placeholder: '例: example.com'
+  addHostLabel: ホストを追加
   helpBlock: |
-    "Note: Some older SSL/TLS clients do not support <a href="https://en.wikipedia.org/wiki/Server_Name_Indication" target="_blank">Server Name Indication (SNI)</a>; these clients will always be offered the main Certificate.  Modern clients will be offered an appropriate certificate from the Alternate Certificates list if a match is found."
+    "注意: いくつかの古い SSL/TLS クライアントは <a href="https://en.wikipedia.org/wiki/Server_Name_Indication" target="_blank">Server Name Indication (SNI)</a> をサポートしていません。これらのクライアントでは常にメイン証明書の提示を求められますが、比較的新しいクライアントでは一致するものが見つかると代替証明書のリストから適切な証明書を求めてきます。"
   notNeeded: 有効なターゲットルールで構成された SSL/TLS リッスンポートはありません
-  removeCertLabel: Remove this Certificate
-  addCertLabel: Add Certificate
+  removeCertLabel: この証明書を削除する
+  addCertLabel: 証明書を追加
 
 formNamespace:
   label:
     reuse: 名前空間
     create: 名前空間
+    default: デフォルト名前空間
   toggle:
-    simple: Customize
+    simple: カスタマイズ
     reuse: 既存の名前空間を使用する
     create: 新しい名前空間を追加
   reuse:
@@ -3600,8 +3598,8 @@ formNamespace:
     validation: "名前空間: {error}"
 
 formUserData:
-  placeholder: "e.g. コンテナ用設定情報"
-  isVmPlaceholder: "e.g. 仮想マシン用設定情報"
+  placeholder: "例: コンテナ用設定情報"
+  isVmPlaceholder: "例: 仮想マシン用設定情報"
 
 formLabelsAnnotations:
   title: ラベル & アノテーション
@@ -3623,16 +3621,16 @@ formUserLabels:
 
 formAccessModes:
   label: アクセスモード
-  accessRWO: 単一ノード読み書き
-  accessROX: 複数ノード読み込みのみ
-  accessRWX: 複数ノード読み書き
+  accessRWO: 単一ノード読み取り/書き込み
+  accessROX: 複数ノード読み取り専用
+  accessRWX: 複数ノード読み取り/書き込み
 
 formAnnotations:
   addActionLabel: アノテーションを追加
   title: アノテーション
-  detail: コンテナ用のアノテーション(キー/バリュー メタデータ)を設定します
+  detail: コンテナのアノテーション(キー/値 メタデータ)を設定します
   errors:
-    invalidJSON: アノテーション JSON フォーマットが不正です
+    invalidJSON: アノテーションのJSONフォーマットが無効です
     topLevelValueInvalid: アノテーション JSON のトップレベルの値はオブジェクトである必要があります
 
 formUpgrade:
@@ -3640,7 +3638,7 @@ formUpgrade:
   detail: アップグレードを実行した際のポッドの置換方法を設定します
   strategy:
     label: アップグレードストラテジー
-    orderedReady: Strict serial update in order and wait for readiness
+    orderedReady: 厳密な順次アップデートを行い、準備が完了するのを待機
     parallel: 全てのポッドを作成後、古いポッドを並列で削除
     onDelete: アップグレード後のポッドのみ起動し、古いポッドは手動で削除
     recreate: 全てのポッドを削除後、新しいポッドを作成
@@ -3655,14 +3653,14 @@ formUpgrade:
       label: 最大サージ
       detail: 必要なポッドの数を超えて作成できるポッドの最大数です
     maxUnavailable:
-      label: 最大利用不可
-      detail: The maximum number of pods which can be unavailable at any given time.
+      label: 最大利用不可数
+      detail: 与えられた時間内で利用不可状態を許容する最大のポッド数
     minReadySeconds:
       label: 最小準備時間
-      detail: Containers in the pods must be up for at least this long before the pod is considered available.
+      detail: ポッド内のコンテナは、ポッドが利用可能とみなされる前に少なくともこの期間は稼動していなければなりません
     progressDeadlineSeconds:
-      label: Progress Deadline
-      detail: How long to wait without seeing progress before marking the deployment as stalled.
+      label: 進行期限
+      detail: 停滞しているデプロイメントをマークするまでにに進行状況を見ることがなく待機する時間
 
 formValueArray:
   addActionLabel: 値を追加
@@ -3686,11 +3684,11 @@ formVolumeRow:
     secret: シークレット
   remove: ボリュームを削除
   subPath: ボリューム内サブパス
-  readOnly: 読み込みのみ
-  noVolume: The volume will not be mounted in the current container.  It may be used by other containers in the pod.
+  readOnly: 読み取り専用
+  noVolume: ボリュームは現在のコンテナにマウントされません。ポッド内の他のコンテナで使用することができます。
   addMount: マウントを追加
   customLogPath:
-    helpText: We will deploy a flexvolume driver to create a volume and mount the log to the host.
+    helpText: Flexvolume ドライバーを配備してボリュームを作成し、そのログをホストにマウントします。この機能は現在 GKE クラスターでサポートされています。
 
 formVolumes:
   title: ボリューム
@@ -3700,15 +3698,15 @@ formVolumes:
   volumes: ボリューム
   volumesFrom: 他コンテナのボリューム
   volumeDriver:
-    label: Driver for custom volumes
+    label: カスタムボリューム用のドライバ
     placeholder: '例: rancher-nfs; デフォルト: local'
     suggestion: '使用中のボリュームドライバー:'
   noLaunchConfigs: このサービスにはボリュームを共有するための起動設定がありません。
   noHostContainers: このホストには他コンテナのボリュームを利用するためのコンテナがありません。
   onlySingleHost: 特定ホストにコンテナを追加した場合のみ利用できます
   errors:
-    incomplete: Incomplete volume definition
-    absoluteMountPoint: Volume mount points must be absolute paths
+    incomplete: 不完全なボリューム定義
+    absoluteMountPoint: ボリュームマウントポイントは絶対パスでなければなりません
   add:
     label: ボリュームを追加...
     newVolume: エフェメラルボリュームを追加
@@ -3771,14 +3769,13 @@ formHostPortsPodSecurityPolicy:
     min:
       label: 最小
       placeholder: '例: 6000'
-
 formRunAsUserPodSecurityPolicy:
   title: ユーザー実行ポリシー
   detail: ユーザー ID
   rule:
-    mustRunAs: MustRunAs - 範囲を設定する必要があります。範囲の最初の値はデフォルト値として利用され、設定された範囲に関してバリデーションされます。
-    mustRunAsNonRoot: MustRunAsNonRoot - ポッドに対し runAsUser が0以外、または USER ディレクティブがイメージ内で定義されている必要があります。デフォルト値は提供されません。
-    runAsAny: RunAsAny - デフォルト値は提供されず、runAsUser に指定されたもの全てが許容されます。
+    mustRunAs: MustRunAs - 少なくとも1つの範囲を設定する必要があります。範囲の最初の値をデフォルト値として使用します。検証は設定された範囲に対して行われます。
+    mustRunAsNonRoot: MustRunAsNonRoot - ポッドに runAsUser が0以外で提出されるか、USER ディレクティブがイメージ内で定義されている必要があります。デフォルトは提供されていません。
+    runAsAny: RunAsAny - デフォルトはありません。任意の runAsUser を指定できます。
   range:
     addLabel: 範囲を追加
     max:
@@ -3792,8 +3789,8 @@ formSeLinuxodSecurityPolicy:
   title: SELinux ポリシー
   detail: コンテナに対する SELinux コンテキストを設定します
   rule:
-    mustRunAs: MustRunAs - seLinuxOptions をデフォルトで利用し、内容をバリデーションします。
-    runAsAny: RunAsAny - 指定している全ての seLinuxOptions を許容します。
+    mustRunAs: MustRunAs - デフォルトとして seLinuxOptions を使用します。検証は seLinuxOptions に対して行います。
+    runAsAny: RunAsAny - 任意の seLinuxOptions を指定できるようにする
   level:
     label: レベル
     placeholder: "例: level"
@@ -3808,8 +3805,8 @@ formSupplementalGroupsPodSecurityPolicy:
   title: 補足のグループポリシー
   detail: 許容される補足的なグループポリシーを設定します
   rule:
-    mustRunAs: MustRunAs - 少なくとも 1 つの範囲を設定する必要があります。最初の範囲の最小値はデフォルトとして利用され、全ての範囲に関してバリデーションされます。
-    runAsAny: RunAsAny - デフォルトは提供されません。supplementalGroups に指定されたもの全てが許容されます。
+    mustRunAs: MustRunAs - 少なくとも1つの範囲を指定する必要があります。最初の範囲の最小値をデフォルト値として使用します。すべての範囲の ID に対して検証します。
+    runAsAny: RunAsAny - デフォルトはありません。任意の supplementalGroups を指定できます。
   range:
     addLabel: 範囲を追加
     max:
@@ -3904,9 +3901,9 @@ infoMultiStats:
 
 inputAnswers:
   config: 設定オプション
-  unknownType: "認識できない質問タイプです:"
+  unknownType: "有効でないパラメータータイプ:"
   noConfig: このテンプレートには設定オプションがありません
-  protip: "Paste and Read actions require their repective answers to be in a yml/yaml format"
+  protip: "ペーストと読み取り処理では、列挙されたパラメーターが yml/yaml 形式である必要があります"
 
 inputIdentity:
   placeholder:
@@ -3926,13 +3923,13 @@ uploadFile:
   label: ファイルから読み込む
 
 podsSection:
-  title: Pods
-  detail: Pods in this workload
+  title: ポッド
+  detail: このワークロード内のポッド
 
 labelsSection:
   kind: 種類
   title: ラベル
-  detail: ホストスケジューリングルールや他の詳細設定項目として設定可能な キー/値 型のデータです
+  detail: ノードスケジューリングルールやその他の詳細オプション設定の一部で利用されるキー/値 データ
   status: |
     {count, plural,
     =0 {ラベルはありません}
@@ -3944,10 +3941,10 @@ labelsSection:
   noData: ラベルはありません
 
 loginShibboleth:
-  buttonText: シボレスで認証
+  buttonText: シボレスでログイン
 
 loginGithub:
-  buttonText: GitHub で認証
+  buttonText: GitHub でログイン
 
 loginUserPass:
   local: ローカルユーザーを使用
@@ -3957,21 +3954,21 @@ loginUserPass:
   remember: パスワードを保存
   userPlaceholder: '例: jsmith'
   genericLoginLabel: ログイン
-  loginLabel: ログイン
+  loginLabel: "{provider} でログイン"
   loggingInLabel: ログイン中...
   passwordLabel: パスワード
 
 machineTemplatesPage:
-  title: Add Node
+  title: ノードを追加
   new:
-    helpText: Launch a new node or import one already running Docker via SSH.
-    btn: Configure
-  custom: Custom add an existing node that is already running Docker
+    helpText: 新しいノードを起動、またはすでにSSH経由でDockerを実行しているノードをインポートしてください。
+    btn: 設定
+  custom: Docker を既に実行している既存のノードをカスタムして追加
   templateBox:
-    button: Select
+    button: 選択
     labels:
-      region: Region
-      zone: Zone
+      region: リージョン
+      zone: ゾーン
 
 newCertificate:
   title:
@@ -3981,17 +3978,18 @@ newCertificate:
   key:
     label: プライベートキー
     required: プライベートキーは必須です
-    invalidFormat: 不正なプライベートキーです
+    invalidFormat: 無効なプライベートキーです
     placeholder: "-----BEGIN RSA PRIVATE KEY----- から始まるプライベートキーをペーストしてください"
   cert:
     label: 証明書
     required: 証明書は必須です
-    invalidFormat: 不正な証明書です
-    placeholder: "-----BEGIN CERTIFICATE----- から始まる証明書または証明書チェーンをペーストしてください"
-    protip: 必要に応じて証明書チェーンも含めてください
+    invalidFormat: 無効な証明書です
+    placeholder: "-----BEGIN CERTIFICATE----- から始まる証明書と任意の必要な証明書チェーンをペーストしてください"
+    protip: 必要な証明書チェーンを含めてください。
   certChain:
     label: 証明書チェーン
     placeholder: "オプション; -----BEGIN CERTIFICATE----- から始まる追加の証明書チェーンをペーストしてください"
+    placeholder: "-----BEGIN CERTIFICATE----- から始まる追加の証明書チェーンをペーストしてください（オプション）"
   metaXML:
     label: メタデータ XML
     placeholder: "IDP メタデータ XML をペーストしてください"
@@ -3999,10 +3997,10 @@ newCertificate:
     encrypted: プライベートキーはパスワードによって保護されていません
     key:
       required: プライベートキーは必須です
-      invalidFormat: 不正なプライベートキーです。RSA キーか確認してください。
+      invalidFormat: 無効なプライベートキーです。RSA キーか確認してください。
     cert:
       required: 証明書は必須です
-      invlidFormat: 不正な証明書です
+      invlidFormat: 無効な証明書です
 
 modalAboutComponent:
   component: コンポーネント
@@ -4053,7 +4051,7 @@ modalAddPayment:
         placeholder: Springfield
       state:
         label: 州
-        placeholder: OR
+        placeholder: または
       zip:
         label: 郵便番号
         placeholder: '99999'
@@ -4088,9 +4086,9 @@ modalConfirmDeactivate:
       button: 非アクティブ化
 
 modalConfirmRemovePayment:
-  header: 'Confirm Payment Removal'
+  header: '支払いの削除の確認'
   title: '本当に削除してもよろしいですか?'
-  card: 'Card ending in {card}'
+  card: 'カードは {card} で失効します'
 
 modalEditDriver:
   header:
@@ -4098,7 +4096,7 @@ modalEditDriver:
     edit: ノードドライバーを編集
   url:
     label: ダウンロード URL
-    help: 64-bit Linux 向けのノードドライバー バイナリをダウンロードする URL です
+    help: 64-bit Linux 向けのマシンドライバー バイナリをダウンロードする URL です
   uiUrl:
     label: カスタム UI URL
     help: "オプション: このドライバー向けにカスタマイズされたノード追加画面を読み込むための URL です。"
@@ -4117,9 +4115,9 @@ modalEditSetting:
     label: 名前
   value:
     label: 値
-    prompt: Select a Value...
+    prompt: 値を選択してください...
   reset:
-    label: ディフォルトにリセット
+    label: デフォルトにリセット
 
 modalEditPassword:
   firstLogin:
@@ -4127,11 +4125,11 @@ modalEditPassword:
     help: 最初のステップはデフォルトの <code>admin</code> ユーザーに対し強力なパスワードを設定することです
     actionButton: 続ける
   edit:
-    title: パスワード変更
+    title: パスワードを変更
     help: 新しいパスワードの変更方法を選択してください
   current: 現在のパスワード
   new: 新しいパスワード
-  confirm: パスワードの確認
+  confirm: 新しいパスワード(確認用)
   mismatch: パスワードが一致しません
   actionButton: 変更
   mode:
@@ -4152,12 +4150,12 @@ modalHostEvacuate:
 modalImport:
   title: YAML をインポート
   mode:
-    label: モードをインポート
+    label: インポートモード
     cluster: "クラスター: リソースをクラスターに直接インポート"
     project: "プロジェクト: リソースをプロジェクトにインポート"
     namespace: "名前空間: リソースを特定の名前空間にインポート"
   defaultNamespace:
-    label: Default namespace for resources that don't specify one
+    label: 指定していないリソースのデフォルト名前空間
 
 modalProcessError:
   header: 例外情報
@@ -4168,7 +4166,7 @@ modalProcessError:
 
 modalRollbackService:
   title: '"{instanceName}" をロールバック'
-  titleWithSidekicks: '"{instanceName}" と{count, plural, =1 {# サイドキック} other {# サイドキック}} をロールバック'
+  titleWithSidekicks: '"{instanceName}" と {count, plural, =1 {# サイドカー} other {# サイドカー}} をロールバック'
   action: ロールバック
   current:
     label: 現在のリビジョン
@@ -4222,7 +4220,7 @@ modalWelcome:
 namespaceGroup:
   label: "名前空間: {name}"
   none: ポッド
-  project: Not in a project
+  project: プロジェクト内にありません
 
 nodeGroup:
   label: "ノード: {name}"
@@ -4240,15 +4238,15 @@ newBalancer:
     edit: ロードバランサーを編集
     upgrade: ロードバランサーをアップグレード
   error:
-    noRules: "You must have one or more listening ports and target rules"
+    noRules: "1つ以上のリスニングポートとターゲットルールが必要です"
     noSourcePort: "各ルールにはソースポートが必要です"
     invalidSourcePort: "無効なソースポート: '{num}'"
     invalidTargetPort: "無効な対象ポート: '{num}'"
     mixedPort: "ポート {num} はアクセスするプロトコルが競合する複数のルールを持っています"
     noTarget: "各ルールには対象が必要です"
-    noTargetPort: "Target Port is required on each rule"
+    noTargetPort: "各ルールにはターゲットポートが必要です"
     needsCertificate: "SSL/TLS ポートルールであるため証明書が必要です"
-    stackName: "A new stack needs a name"
+    stackName: "新しいスタックには名前が必要です"
 
 newCatalog:
   answers:
@@ -4266,8 +4264,8 @@ newCatalog:
   maintainer: "メンテナー:"
   newNamespace: 新しい名前空間
   customizeNamespace: "このアプリケーションは <code>{namespaceId}</code> 名前空間内で起動します"
-  newAppDetail: Choose application version and namespace for the application
-  appInfo: 詳細情報
+  newAppDetail: アプリケーションバージョンと名前空間を選択してください
+  appInfo: 詳細な説明
   appInfoDetail: アプリケーション情報とユーザーガイド
   noConfig: このテンプレートには設定オプションがありません
   official: 公式に認証済み
@@ -4295,11 +4293,11 @@ newCatalog:
 
 newContainer:
   add:
-    container: ポッドを展開
-    service: ワークロードを展開
-    globalService: グローバルワークロードを展開
-    sidekick: 'サイドカーを展開'
-    sidekickName: '"{name}" のサイドカーを展開'
+    container: ポッドをデプロイ
+    service: ワークロードをデプロイ
+    globalService: グローバルワークロードをデプロイ
+    sidekick: 'サイドカーをデプロイ'
+    sidekickName: '"{name}" のサイドカーをデプロイ'
   upgrade:
     container: コンテナをアップグレード
     service: サービスをアップグレード
@@ -4316,9 +4314,9 @@ newContainer:
   environment:
     label: 環境変数
     from: 他のリソースからの投入値
-    detail: シークレットなどの他のリソースから投入する値のようなコンテナから参照可能な環境変数を設定します
+    detail: シークレットなどの他のリソースから投入する値を含めコンテナから参照可能な環境変数を設定します
     addAction: 環境変数を追加
-    addFrom: 投入元を追加
+    addFrom: ソースを追加
     keyLabel: 変数
     keyPlaceholder: '例: FOO'
     valueLabel: 値
@@ -4355,7 +4353,7 @@ newSecret:
 nodeDriver:
   addTemplate: ノードテンプレートを追加
   editTemplate: "ノードテンプレートを編集: {name}"
-  editWarning: Editing a node template will only affect new nodes created by a node pool; existing nodes will not be updated or replaced automatically.<br>If you delete nodes from a pool, new ones will be created using the new settings in the template.
+  editWarning: 編集されたノードテンプレートはノードプールによって作成された新しいノードにのみ影響します。既存のノードは自動的に更新または置換されません。<br>プールからノードを削除した場合はテンプレート内の新しい設定を仕様して新しいノードが作成されます。
   displayName:
     aliyunecs: Aliyun ECS
     amazonec2: Amazon EC2
@@ -4389,7 +4387,7 @@ nodeDriver:
     secretKey:
       label: 秘密キー
       placeholder: あなたの AWS 秘密キー
-      provided: Provided
+      provided: 入力済み
     region:
       label: リージョン
     availabilityZone: アベイラビリティゾーン
@@ -4482,8 +4480,8 @@ nodeDriver:
       placeholder: あたたの Exoscale API キー
     secretKey:
       label: 秘密キー
-      placeholder: Your Exoscale secret key
-      provided: Provided
+      placeholder: あなたの Exoscale 秘密キー
+      provided: 入力済み
     accountHelp: Paste in your Exoscale key pair here.  We'll use this key to create your new Instances.
     loginAction: "Next: Authenticate & select a Security Group"
     loadingSecurity: Loading security group info from Exoscale...
@@ -4496,7 +4494,7 @@ nodeDriver:
       updating: Updating Security Group...
       creating: Creating Security Group...
     portHelp:
-      link: Learn more
+      link: 詳細を見る
       text: about the ports that will be opened.
     needs:
       label: "For {appName} to work correctly your security group will need to allow traffic:"
@@ -4515,23 +4513,23 @@ nodeDriver:
       label: SSH User
       placeholder: 'usr1'
   packet:
-    accountSection: Account Access
+    accountSection: アカウントアクセス
     projectId:
-      label: Project
-      placeholder: Your Packet project ID
+      label: プロジェクト
+      placeholder: あなたの Packet プロジェクト ID
     apiKey:
-      label: API Key
-      placeholder: Your Packet API key
-    apiKeyHelp: From the Packet <a href="https://app.packet.net/portal#/api-keys" target="_blank">API Keys</a> screen
-    instanceSection: Instance
-    instanceOptionsSection: Instance Options
-    loginAction: "Next: Authenticate & select an instance"
-    authentication: Authenticating
-    location: Location
+      label: API キー
+      placeholder: あなたの Packet API キー
+    apiKeyHelp: Packet <a href="https://app.packet.net/portal#/api-keys" target="_blank">API Keys</a> 画面より取得してください
+    instanceSection: インスタンス
+    instanceOptionsSection: インスタンスオプション
+    loginAction: "次へ: 認証とインスタンスの選択"
+    authentication: 認証
+    location: ロケーション
     planDetails:
-      label: Instance Details
+      label: インスタンス詳細
       cpu: CPUs
-      memory: Memory
+      memory: メモリ
       drives: Drives
       network: NICs
     image:
@@ -4663,11 +4661,11 @@ nodeDriver:
       label: サブネットプリフィックス
       placeholder: 128.42.0.0/21
     availabilitySet:
-      label: アベイラビリティセット
+      label: 可用性セット
       placeholder: availability-set-name
     openPort:
       label: 公開ポート
-      placeholder: 'Comma-separated, 例: 80,443'
+      placeholder: 'カンマ区切りの番号, 例: 80,443'
     privateIpAddress:
       label: プライベート IP
       placeholder: 127.0.0.1
@@ -4816,20 +4814,20 @@ newConfigMap:
 projectGroup:
   label: "プロジェクト: {name}"
   none: 名前空間
-  project: Not in a project
+  project: プロジェクト内にありません
   noNS: このプロジェクトには名前空間がありません
 
 optionallyNamespaced:
   scope:
     label: スコープ
-    project: このプロジェクト内の全ての名前空間
-    namespace: 単一名前空間のみ
+    project: このプロジェクトの全ての名前空間で利用可能
+    namespace: 単一名前空間で利用可能
 
 orchestrationWelcome:
   simple:
-    title: Simple
+    title: シンプル
   enhanced:
-    title: Enhanced with Kubernetes
+    title: Kubernetesによる強化
 
 pageFooter:
   notARelease: (未リリース)
@@ -4950,8 +4948,8 @@ pagination:
     =0 {ポッドはありません}
     =1 {{count} {count, plural, =1 {ポッド} other {ポッド}}}
     other {{from} - {to} of {count} Pods}}
-  podHighlightSubset: "<b>{subset} of {count}</b> Pods"
-  podNoSubset: "0 of {count} Pods"
+  podHighlightSubset: "<b>{count} のうち {subset} </b> ポッド"
+  podNoSubset: "{count} ポッドのうち 0 ポッド"
   podLabel: |
     {count, plural,
       =1 {ポッド}
@@ -5049,10 +5047,10 @@ schema:
   inputHost:
     label: ホストを選択してください...
   inputService:
-    prompt: サービスを選択してください...
-    custom: Custom
+    prompt: ワークロードを選択してください...
+    custom: カスタム
   inputDnsRecord:
-    prompt: DNS レコードを選択してください...
+    prompt: サービスを選択してください...
   inputStorageClass:
     prompt: デフォルトクラスを使う...
   inputSecret:
@@ -5082,7 +5080,7 @@ siteAccess:
   header: サイトアクセス
   helpText: "誰がログインし {appName} を利用できるか設定してください"
   unrestricted: "全ての有効な {individuals} を許可"
-  restricted: "環境のメンバーと認証済み {individuals}、{collection} を許可"
+  restricted: "クラスターのメンバーと認証済み {individuals}、{collection} を許可"
   required: "認証済み {individuals} と {collection} のみに制限"
   listHeader: "認証済み {individuals} と {collection}"
   noIdentity: None
@@ -5095,14 +5093,14 @@ systemInfoSection:
   detail: システムと Kubernetes の情報です
   key: キー
   value: 値
-  noData: データはありません
+  noData: データがありません
   arch: アーキテクチャ
   dockerVersion: Docker バージョン
-  kernelVersion: Kernel バージョン
+  kernelVersion: カーネルバージョン
   kubeletVersion: Kubelet バージョン
   kubeProxyVersion: Kube Proxy バージョン
-  operatingSystem: OS イメージ
-  osType: OS
+  operatingSystem: オペレーティングシステムイメージ
+  osType: オペレーティングシステム
   noMatch: 検索条件に一致するシステム情報はありません
 
 tableCountSelect:
@@ -5128,7 +5126,7 @@ upgradeBtn:
   version:
     current: '現行'
   status:
-    none: 'None'
+    none: 'アップグレード: None'
     loading: 'アップグレードを確認中...'
     current: '最新'
     available: 'アップグレードが利用できます'
@@ -5139,14 +5137,14 @@ upgradeBtn:
     required: 'アップグレードが必要です'
 
 jsonEditor:
-  placeholder: "Please input in JSON format"
+  placeholder: "JSON 形式で入力してください"
 
 viewEditDescription:
   form:
     name:
       placeholder: '例: ラボ'
     description:
-      placeholder: e.g. 開発者向けテスト用環境
+      placeholder: '例: 開発者向けテスト用環境'
 
 volumesPage:
   title: ボリューム要求
@@ -5170,10 +5168,10 @@ vmConsole:
 
 volumeRow:
   mounts:
-    readOnly: "(read-only)"
+    readOnly: "(読み取り専用)"
 
 waitOrchestration:
-  count: '({sub} of {count})'
+  count: '{count} のうち {sub}'
 
 waitKubernetes:
   addHost: '1台のホストを追加しています'
@@ -5183,7 +5181,7 @@ waitKubernetes:
   waitApi: 'Kubernetes API を待っています'
 
 searchableSelect:
-  noMatch: No match
+  noMatch: 該当なし
   noOptions: 利用可能なオプションはありません
 
 containerChoices:
@@ -5193,7 +5191,7 @@ containerChoices:
   containerOption: "{name}"
 
 allWorkloads:
-  namespace: "Namespace: {name}"
+  namespace: "名前空間: {name}"
 
 nav:
   srToggleDropdown: ドロップダウンを切り替え
@@ -5205,7 +5203,7 @@ nav:
     selected: 選択された環境
     edit: '"{name}" を編集'
   cluster:
-    dashboard: ダッシュボード
+    dashboard: クラスター
     members: メンバー
     nodes: ノード
     namespaces: 名前空間
@@ -5213,13 +5211,13 @@ nav:
       tab: ストレージ
       classes: ストレージクラス
       volumes: 永続ボリューム
-    projects: プロジェクト
+    projects: プロジェクト/名前空間
   containers:
     tab: ワークロード
     systemTab: システム
     ingresses: ロードバランサー
     containers: ワークロード
-    dns: DNS
+    dns: サービスディスカバリ
     volumes: ボリューム
     pipelines: パイプライン
     deploy: デプロイ
@@ -5228,7 +5226,7 @@ nav:
     addIngress: イングレスを追加
     addDns: レコードを追加
     addVolume: ボリュームを追加
-    importCompose: YAML からインポート
+    importCompose: YAML をインポート
   group:
     none: フラットリスト
     node: ノードによるグループ化
@@ -5271,7 +5269,7 @@ nav:
       tab: 設定
       auth: アクセスコントロール
       registration: ホスト登録
-      advanced: Advanced
+      advanced: 詳細
   user:
     label: "ユーザーメニュー: {username}"
     logout: ログアウト
@@ -5283,7 +5281,7 @@ nav:
     link: API & キー
   settings:
     tab: 設定
-    advanced: Advanced
+    advanced: 詳細
   tools:
     tab: ツール
     alerts: アラート
@@ -5295,7 +5293,7 @@ nav:
 
 action:
   activate: アクティブ化
-  addContainer: ポッドを追加
+  addContainer: ポッドをデプロイ
   addSidekick: サイドカーを追加
   clone: クローン
   console: コンソールを開く
@@ -5323,7 +5321,7 @@ action:
   resume: 再開
   revert: デフォルトに戻す
   rollback: ロールバック
-  setDefault: ログイン環境に設定
+  setDefault: ログイン環境として設定
   start: 開始
   startAll: 全て開始
   stop: 停止
@@ -5341,44 +5339,44 @@ action:
 validation:
   required: '"{key}" が必要です'
   arrayLength:
-    exactly: '"{key}" は {count, plural, =1 {# 個} other {# 個}} 含まれている必要があります'
-    between: '"{key}" は {min} から {max} {max, plural, =1 {個} other {個}} 含まれている必要があります'
-    min: '"{key}" は少なくとも {count} {count, plural, =1 {個} other {個}} 含まれている必要があります'
-    max: '"{key}" は最大で {count} {count, plural, =1 {item} other {items}} まで含めることができます'
+    exactly: '"{key}" には {count, plural, =1 {# 項目} other {# 項目}} を含める必要があります'
+    between: '"{key}" には {min} から {max} {max, plural, =1 {個} other {個}}の項目を含める必要があります'
+    min: '"{key}" には少なくとも {count} {count,plural,=1 {個} other {個}}の項目を含める必要があります'
+    max: '"{key}" に含まれる項目は {count} {count,plural,=1 {個} other {個}}以下である必要があります'
   stringLength:
-    exactly: '"{key}" は {count, plural, =1 {# 文字} other {# 文字}} である必要があります'
-    between: '"{key}" は {min} から {max} {max, plural, =1 {文字} other {文字}} である必要があります'
-    min: '"{key}" は少なくとも {count} {count, plural, =1 {文字} other {文字}} である必要があります'
-    max: '"{key}" は最大で {count} {count, plural, =1 {文字} other {文字}} まで設定できます'
+    exactly: '"{key}" は  {count,plural,=1 {# 文字} other {# 文字}}である必要があります'
+    between: '"{key}" の文字数は {min} 文字から {max} {max,plural,=1 {文字} other {文字}}である必要があります'
+    min: '"{key}" には少なくとも {count} {count,plural,=1 {文字} other {文字}}を含める必要があります'
+    max: '"{key}" は {count} {count,plural,=1 {文字} other {文字}}以下である必要があります'
   number:
-    exactly: '"{key}" は {val} である必要があります'
-    between: '"{key}" は {min} から {max} である必要があります'
+    exactly: '"{key}" はちょうど {val} である必要があります'
+    between: '"{key}" は {min} から {max} の間である必要があります'
     min: '"{key}" は少なくとも {val} である必要があります'
-    max: '"{key}" は最大で  {val} まで設定できます'
-  chars: '"{key}" には {count, plural, =1 {個の不正な文字} other {# 個の不正な文字}} が含まれています: {chars}'
+    max: '"{key}" は {val} 以下である必要があります'
+  chars: '"{key}" には {count, plural,=1 {# 個} other {# 個}} の無効な文字が含まれています: {chars}'
   dns:
-    doubleHyphen: 2 つの連続したハイフンは含められません
+    doubleHyphen: 2つの連続したハイフンを含むことはできません
     hostname:
-      startDot: '"{key}" はドットから開始することはできません'
-      empty: '"{key}" は少なくとも1つ以上の文字である必要があります'
-      tooLong: '"{key}" は {max} 文字より短い必要があります'
-      startHyphen: '"{key}" は小文字または数字から開始する必要があります'
-      endHyphen: '"{key}" は小文字または数字で終了する必要があります'
-      emptyLabel: '"{key}" は連続したドットを含めることができません'
-      tooLongLabel: '"{key}" は {max} 文字より長いセクションを持つことはできません'
+      startDot: '"{key}" をドットで始めることはできません'
+      empty: '"{key}" は少なくとも1文字でなければなりません'
+      tooLong: '"{key}" は {max} 文字を超えることはできません'
+      startHyphen: '"{key}" は文字または数字で始まる必要があります'
+      endHyphen: '"{key}" は文字または数字で終わる必要があります'
+      emptyLabel: '"{key}" は2つの連続したドットを持つことはできません'
+      tooLongLabel: '"{key}" は {max} 文字を超えるセクションを持つことはできません'
     label:
-      startHyphen: '"{key}" は小文字または数字から開始する必要があります'
-      endHyphen: '"{key}" は小文字または数字で終了する必要があります'
+      startHyphen: '"{key}" は文字または数字で始まる必要があります'
+      endHyphen: '"{key}" は文字または数字で終わる必要があります'
       emptyLabel: '"{key}" は空にできません'
-      tooLongLabel: '"{key}" は {max} 文字より短い必要があります'
+      tooLongLabel: '"{key}" は {max} 文字を超えることはできません'
   k8s:
     identifier:
-      startLetter: '"{key}" は小文字または数字から開始する必要があります'
-      endLetter: '"{key}" は小文字または数字で終了する必要があります'
-      emptyPrefix: '"{key}" は空のプリフィックスを持つことはできません'
-      tooLongPrefix: '"{key}" は {max} 文字より長いプリフィックスを持つことはできません'
+      startLetter: '"{key}" は文字または数字で始まる必要があります'
+      endLetter: '"{key}" は文字または数字で終わる必要があります'
+      emptyPrefix: '"{key}" は空の接頭辞を持つことはできません'
+      tooLongPrefix: '"{key}" は {max} 文字を超える接頭辞を持つことはできません'
       emptyLabel: '"{key}" は空のキーを持つことはできません'
-      tooLongKey: '"{key}" は {max} 文字より長いキーを持つことはできません'
+      tooLongKey: '"{key}" は {max} 文字を超えるキーを持つことはできません'
 
 model:
   account:
@@ -5403,7 +5401,7 @@ model:
     role:
       worker: ワーカー
       etcd: etcd
-      controlplane: Control
+      controlplane: コントロール
   openldapconfig:
     server:
       label: ホスト名または IP アドレス
@@ -5414,12 +5412,12 @@ model:
     domain:
       label: ユーザーサーチベース
       placeholder: "例: ou=Users,dc=mycompany,dc=com"
-      help: "このベース配下のユーザーのみが利用されます。"
+      help: "ベース配下の以下のユーザーのみ検索に利用されます"
   projectMember:
     role:
       member: メンバー
       owner: オーナー
-      readonly: Read-Only
+      readonly: 読み込み専用
       restricted: 制限済み
   service:
     displayKind:
@@ -5429,10 +5427,10 @@ model:
 growl:
   webSocket:
     connecting:
-      title: Error connecting to WebSocket
-      warning: Unable to establish a WebSocket connection to the server.  If your server is behind a proxy or SSL-termination device, Browser can not connect to WebSocket. If you run the server behind a proxy, please make sure the proxy supports WebSockets.  Streaming stats, logs, shell/console, and auto-updating of the state of resources may not work until this is resolved.
-      safariCertWarning: Another possible cause is that Safari does not allow WebSocket connections using an unrecognized certificate, even if you say to Continue to bypass the warning.  The server must have a certificate signed by a recognized authority Safari automatically trusts.
-      disconnectedWarning: "Disconnected from server, attempting to reconnect..."
+      title: WebSocket への接続中にエラーが発生しました
+      warning: サーバーへの WebSocket 接続を確立できません。サーバーがプロキシや SSL 終端装置の背後にある場合、ブラウザは WebSocket に接続できません。サーバーがプロキシの背後にある場合は、プロキシが WebSocket をサポートしていることを確認してください。この問題が解決されるまで、ストリーミング統計、ログ、シェル/コンソール、リソースの状態の自動更新は動作しません。
+      safariCertWarning: 考えられる別の原因は、たとえ警告をバイパスするために継続するよう回答したとしても、Safari が認識されない証明書を使用した WebSocket 接続を許可しないことです。Safari が自動的に信頼するためにはサーバー上に承認された機関によって署名された証明書を配置する必要があります。
+      disconnectedWarning: "サーバーから切断されました。再接続を試みます..."
 
 storageClass:
   aws-ebs:
@@ -5480,9 +5478,9 @@ volumeSource:
   secret:
     title: シークレットボリューム
   empty-dir:
-    title: Empty Dir Volume
+    title: 空ディレクトリボリューム
   fc:
-    title: Fibre Channel
+    title: ファイバチャネル
   flex-volume:
     title: Flex Volume
   flex-volume-longhorn:
@@ -5501,15 +5499,15 @@ volumeSource:
     kind:
       label: ノード上のパス条件
       Any: "どれでも: ターゲットのパスをチェックしない"
-      DirectoryOrCreate: ディレクトリ、または存在しない場合は作成する
-      FileOrCreate: ファイル、または存在しない場合は作成する
-      Directory: 存在するディレクトリ
-      File: 存在するファイル
-      Socket: 存在するソケット
-      CharDevice: 存在するキャラクターデバイス
-      BlockDevice: 存在するブロックデバイス
+      DirectoryOrCreate: ディレクトリ、存在しない場合は作成する
+      FileOrCreate: ファイル、存在しない場合は作成する
+      Directory: 既存のディレクトリ
+      File: 既存のファイル
+      Socket: 既存のソケット
+      CharDevice: 既存のキャラクターデバイス
+      BlockDevice: 既存のブロックデバイス
   iscsi:
-    title: iSCSI Target
+    title: iSCSI ターゲット
   local:
     title: ローカルノードディスク
   nfs:
@@ -5532,11 +5530,11 @@ volumeSource:
     mountPath:
       label: ログパス
       placeholder: "例: /var/www"
-      helpText: コンテナのログディレクトリへのパスです
+      helpText: コンテナ内のログパスです
     logFormat:
-      label: ログフォーマット
+      label: ログ形式
       useCustomRegex: カスタムの Fluentd 正規表現を利用
-      useExistingLogFormat: 既存のLogFormatを利用
+      useExistingLogFormat: 既存のログ形式を利用
       helpText: <a href="http://fluentular.herokuapp.com/" target="_blank"こちら</a> から正規表現のテストができます
 
 yamlPage:

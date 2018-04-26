@@ -746,7 +746,7 @@ clusterDashboard:
   pods: Pods
   subtitle: "{used} of {total} used"
   node: Nodes
-  etcd: Etcd
+  etcd: etcd
   scheduler: Scheduler
   controllerManager: Controller Manager
   value: Value
@@ -774,9 +774,9 @@ dnsPage:
 
 editDns:
   title:
-    new: Add DNS Record
-    edit: Edit DNS Record
-    view: "DNS Record: {name}"
+    new: Add Record
+    edit: Edit Record
+    view: "Record: {name}"
   name:
     placeholder: e.g. myapp
   description:
@@ -956,6 +956,11 @@ hostsPage:
     hostname: Hostname
     ipAddress: IP Address
     version: Version
+    kubeletVersion: Kubelet Version
+    kubeProxyVersion: Kube Proxy Version
+    dockerVersion: Docker Version
+    kernelVersion: Kernel Version
+    operatingSystem: Operating System
     conditions:
       diskSpace: Disk Space
       diskPressure: Disk Pressure
@@ -1832,10 +1837,10 @@ clusterNew:
   rke:
     etcd:
       heartbeat:
-        label: Etcd Heartbeat Interval
+        label: etcd Heartbeat Interval
         placeholder: Time of a heartbeat interval
       election:
-        label: Etcd Election Timeout
+        label: etcd Election Timeout
         placeholder: Time for an election to timeout
     address:
       title: Node Address
@@ -2092,7 +2097,8 @@ cruPersistentVolume:
       label: Optional
     name:
       label: Config Map Name
-      placeholder: "e.g. map"
+    items:
+      label: Items
   emptyDir:
     medium:
       label: Medium
@@ -3706,6 +3712,7 @@ formVolumeRow:
     bindMount: Bind-Mount
     tmpfs: Tmpfs
     secret: Secret
+    configmap: Config Map
   remove: Remove Volume
   subPath: Sub Path in Volume
   readOnly: Read-Only
@@ -3739,6 +3746,7 @@ formVolumes:
     bindMount: Bind-mount a directory from the node
     tmpfs: Add an in-memory tmpfs
     secret: Use a secret
+    configMap: Use a config map
     customLogPath: Read log files from a directory
   table:
     kind: Kind

@@ -4,6 +4,7 @@ languageContribute: "Rancher 번역을 도와주세요"
 generic:
   actions: 동작
   activate: 활성화
+  add: 추가
   all: 전체
   any: 아무거나
   cancel: 취소
@@ -14,25 +15,31 @@ generic:
   confirm: 확인
   containers: 컨테이너
   created: 생성됨
+  createdDate: "생성일 {date}"
   default: 기본값
   description: 설명
   details: 상세 정보
   disable: 비활성화
   disabled: 비활성화됨
+  displayName: 표시되는 이름
   dockerId: Docker ID
   domainName: 도메인 이름
+  done: 완료
+  edit: 수정하기
   enable: 활성화
   enabled: 활성화됨
   entrypoint: Entrypoint
   environment: 환경
   expandAll: 모두 확장 
+  gigabyte: 'GB'
   hardware: 하드웨어
   healthy: 정상
-  host: 호스트
+  help: 도움말
   id: ID
   image: 이미지
   internal: 내부
   ipAddress: IP 주소
+  key: 키
   limit: 제한
   limits: 제한
   loading: "로딩중..."
@@ -41,9 +48,12 @@ generic:
   moreActions: 더 많은 작업
   na: '해당 없음'
   name: 이름
+  namespace: 네임스페이스
+  namespaces: 네임 스페이스
   no: "아니요"
   noRating: No Rating
   none: 없음
+  paste: 붙여넣기
   ports: 포트
   remove: 제거
   role: 역할
@@ -51,17 +61,23 @@ generic:
   saved: 저장됨
   saving: 저장 중
   search: 찾기
+  searchOrCustomInput: 사용자 정의 값을 검색하거나 입력하십시오.
   seconds: 초
   select: 선택
   service: 서비스
+  services: 서비스
   state: 상태
+  tags: 태그
   test: 테스트
   testing: 테스트 중
   to: 에게
   total: 총합계
   type: 타입
   unknown: 알수 없음
+  user: 사용자
+  upload: 업로드
   uuid: UUID
+  value: 값
   yes: "예"
 realmNames:
   all: 전체
@@ -71,75 +87,106 @@ realmNames:
   euWest: 유럽 서부
   euEast: 유럽 동부
 accountsPage:
+  detail:
+    header: 사용자 세부정보
+    table:
+      headers:
+        permission: 권한
+        role: 역할
+        clusterName: 클러스터
+        projectName: 프로젝트
+        active: 활성
+        created: 부여 됨
+      global:
+        title: 전역 권한
+        description: 전체 설치에 영향을 미치는 항목 관리에 대한 액세스
+        admin: 이 사용자는 관리자이며 모든 권한을 가집니다.
+      cluster:
+        title: 클러스터 역할
+        description: 개별 클러스터에 대해 해당 사용자에게 부여된 역할
+        noRoles: 이 사용자에게는 클러스터 역할이 없습니다.
+      project:
+        title: 프로젝트 역할
+      roles:
+        title: 역할
   index:
+    header: 사용자
+    localLink: 사용자 추가
     table:
       id: ID
       kind: 종류
-      username: 사용자 이름
       identity: 신원
+      noData: 아직 사용자가 없습니다.
       noName: 없음
   new:
+    header: 사용자 추가
+    errors:
+      usernameReq: 사용자 이름은 반드시 입력해야 합니다.
+      pwReq: 비밀번호는 필수항목입니다.
     form:
       username:
+        labelText: 사용자 이름
         placeholder: "예를 들어 jsmith"
       password:
         labelText: 암호
       name:
+        labelText: 표시되는 이름
         placeholder: "예를 들어 존 스미스"
       type:
         labelText: 계정 유형
       description:
         labelText: 설명
         placeholder: "예: 이 계정은 Johon Smith 입니다."
+  modal:
+    password: 비밀번호 변경하기
+podSecurityPoliciesPage:
+  index:
+    header: Pod 보안 정책
+    table:
+      name: 이름
+      created: 생성 시간
+  addPodSecurityPolicy: 정책 추가
+  editPodSecurityPolicy: 정책 편집
+  detail:
+    header: 정책
+  saveEdit: 수정
+  saveNew: 생성
+  new:
+    errors:
+      nameReq: 이름은 필수 입력사항입니다.
+    form:
+      name:
+        labelText: 이름
+rolesPage:
+  title: 역할
+  index:
+    localLink: 역할 추가
+    table:
+      name: 이름
+      created: 생성 시간
+  addRole: 역할 추가
+  saveEdit: 편집
+  saveNew: 생성
+  new:
+    form:
+      name:
+        labelText: 이름
+      allow:
+        create: 생성
+        delete: 삭제
+        update: 수정
+        labelText: 허용
+        resource: 리소스
+      otherRole:
+        role: 역할
+      policy:
+        policy: 정책
 apiPage:
-  header: 환경 API 키
-  actionButton: 환경 API 키 추가
-  content: |
-    이 환경(<code>{displayName}</code>)에 환경 API 키가 묶여있으며, 관련 자원만 제어할 수 있습니다.
-    이 환경에 접근 가능한 다른 계정들도 이 키들을 관리할 수 있습니다.
   currentEndpoint: '엔드포인트'
   table:
     state: 상태
-    name: 이름
     description: 설명
-    publicValue: Access Key
     created: 생성됨
-    noData: 이 환경에 대 한 열쇠는 아직 존재하지 않습니다.
-    noName: 없음
-    noDescription: 없음
-    noPublicValue: 공개 값 없음
-  account:
-    header: 계정 API 키
-    buttonText: 계정 API 키 추가
-    content:
-      paragraph1: 계정 API 키는 특정 계정과 연결되어 있습니다.
-    table:
-      noData: 해당 계정의 사용을 위한 Key가 아직 발부되지 않았습니다.
-auditLogsPage:
-  header: 감시 로그
-  form:
-    eventType:
-      placeholder: 이벤트 유형
-    resourceType:
-      placeholder: "리소스 유형:"
-      dropdownPlaceholder: '리소스 종류를 선택 합니다.'
-    resourceId:
-      placeholder: 리소스 ID
-    requestIp:
-      placeholder: IP 요청
-    authType:
-      placeholder: "인증 유형:"
-      dropdownPlaceholder: '인증 유형을 선택 합니다.'
-    clearButtonText: 필터 재설정
-    searchButtonText: 검색
-  table:
-    time: 시간
-    eventType: 이벤트 유형
-    description: 상세내역
-    environment: Environment
-    resourceTypeId: "리소스 유형: ID"
-    identity: 신원
-    authIp: "인증 및 IP"
 authPage:
   shibboleth:
     enabled:
@@ -175,13 +222,16 @@ authPage:
     authenticated:
       header:
         text: 인증
-      disableAccess:
-        disable: 액세스 제어 사용 안 함
+        clientId:
+          text: "클라이언트 ID:"
     notAuthenticated:
       ul:
         li2:
           ul:
             li2: 홈페이지 URL
+      form:
+        clientId:
+          labelText: 클라이언트 ID
   azuread:
     configure:
       domain:
@@ -214,6 +264,25 @@ certificatesPage:
     linkTo: 인증서 추가
   new:
     header: 인증서 추가
+membersPage:
+  add:
+    form:
+      role: 역할
+  index:
+    table:
+      name: 이름
+clusterPage:
+  edit: 클러스터 편집
+projectsPage:
+  addProject: 프로젝트 추가
+  editProject: 프로젝트 편집
+clustersPage:
+  cpu:
+    label: CPU
+  memory:
+    label: RAM
+  storage:
+    label: 디스크
 containerPage:
   header: '컨테이너: {name}'
   linksTab:
@@ -225,47 +294,13 @@ containerPage:
       writable: 쓰기가능
 containersPage:
   table:
-    sparkPrefixCpu: 'CPU: '
-    sparkPrefixMemory: '메모리: '
-    sparkPrefixNetwork: '네트워크: '
-    sparkPrefixStorage: '저장소: '
+    sparkPrefixCpu: "CPU: "
+    sparkPrefixMemory: "메모리: "
+    sparkPrefixNetwork: "네트워크: "
+    sparkPrefixStorage: "저장소: "
   welcome:
     containerLink: 컨테이너 추가
     kubernetesLink: Kubernetes 설치
-containerSubpod:
-  childContainers: 컨테이너
-editDns:
-  mode:
-    dnsservice: 하나 이상의 다른 서비스
-    externalhostname: 외부 호스트 이름
-  targetIp:
-    label: 대상 IP 주소
-    add: 대상 IP 주소 추가
-  hostname:
-    label: 대상 호스트 이름
-    placeholder: '예: foobar.com'
-editVolume:
-  add:
-    global: 볼륨 추가
-    stack: 볼륨 템플릿 추가
-  scope:
-    label: Scope
-    global: 전체 환경에 대한 하나의 볼륨
-    stack: 특정 스택 내에서 하나의 볼륨
-    container: 각 컨테이너에 대한 별도 볼륨
-  driver:
-    label: 드라이버
-    local: 로컬 호스트 디스크
-    nfs: Rancher NFS
-    ebs: Rancher EBS
-    efs: Rancher EFS
-    longhorn: Rancher Longhorn
-    custom:
-      label: 사용자 지정
-      placeholder: 사용자 지정 드라이버 이름
-  driverOpts:
-    label: 드라이버 옵션
-    addAction: 옵션 추가
 failWhalePage:
   header: 에러
   reloadButton: |
@@ -279,24 +314,21 @@ haPage:
     suffix: " 설치 및 사용에 관한 정보."
   table:
     port: 포트
-helpPage:
-  environment:
-    manageLink: 환경 설정
-  stacks:
-    addServiceLink: 서비스 관리
-    addCatalogLink: 카탈로그에서 추가
-  issues:
-    content:
-      graphic1:
-        text: 버그를 찾으셨습니까?
-  forums:
-    tagline: 대화에 참여
-    announcements:
-      header: 공지사항
-    general:
-      header: 일반
-      buttonText: 더 많은 일반 주제 보기
+nodesPage:
+  table:
+    role: 역할
+    docker: 도커
 hostsPage:
+  cloudHostsPage:
+    addPage:
+      header: 노드 추가
+      name:
+        label: 노드 이름
+      transferUnit: TB
+  new:
+    addCluster:
+      roles:
+        label: 역할
   hostPage:
     limits:
       cpu: 'CPU 제한:'
@@ -316,7 +348,24 @@ hostsPage:
       detail: 이 호스트에서 실행 하는 컨테이너의 목록
     portsTab:
       header: 포트
+      table:
+        header:
+          ip: IP 주소
+          service: 서비스
+    storageTab:
+      header: 볼륨
+      table:
+        header:
+          state: 상태
+loginPage:
+  shibbolethError:
+    401: "Unauthorized"
+    500: "Internal Server Error"
 registriesPage:
+  index:
+    table:
+      header:
+        username: 사용자 이름
   new:
     form:
       username:
@@ -370,26 +419,6 @@ userPreferencesPage:
       label: 사용자 이름
     email:
       label: 이메일
-processesPage:
-  tab:
-    summary: 요약
-    running: 실행 중
-    delayed: 지연 됨
-    ready: 준비 됨
-    completed: 최근에 완료됨
-  summary:
-    table:
-      running: 실행 중
-      ready: 준비 됨
-      delay: 지연 됨
-  pools:
-    table:
-      activeTasks: 활성화
-  list:
-    table:
-      startTime: 시작 시간
-      endTime: 종료 시간
-      runTime: 실행 시간
 verifyPage:
   account:
     linkText: 로그인
@@ -410,9 +439,49 @@ catalogSettings:
 confirmDelete:
   confirmAction: 제거
   cancelAction: 취소
+containerLogs:
+  clear: 화면 지우기
+  status:
+    initializing: 초기화 중...
+    connected: 연결됨
+containerShell:
+  status:
+    connected: 연결됨
+    disconnected: 연결 끊김
+    closed: 닫힘
+copyToClipboard:
+  copied: 복사되었습니다!
+cruRegistry:
+  address:
+    dockerhub: DockerHub
+editAccount:
+  form:
+    name:
+      placeholder: '예: 홍길동'
+editCluster:
+  name:
+    label: 이름
+editContainer:
+  title:
+    vm: VM 수정
+editHost:
+  ips:
+    addActionLabel: IP 추가
+formIngressBackends:
+  targetPort:
+    placeholder: '예: 80'
+formBalancerListeners:
+  access:
+    internal: 내부
+  sourcePort:
+    placeholder: '예: 80'
 formBalancerRules:
+  access:
+    internal: 내부
   protocol:
     label: 프로토콜
+  sourceIp:
+    placeholder: "예: 1.2.3.4; 기본값 : 모두"
 formCommand:
   console:
     label: 콘솔
@@ -421,9 +490,12 @@ formCommand:
     always: 항상
 formContainerLinks:
   addActionLabel: 링크 추가
+  alias:
+    placeholder: '예: 데이터베이스'
 formDisks:
   name:
     label: 이름
+    placeholder: '예: 데이터'
   size:
     label: 크기
   driver:
@@ -443,3 +515,6 @@ formEnvVar:
 formKeyValue:
   key:
     label: 키
+formSeLinuxodSecurityPolicy:
+  role:
+    label: 역할

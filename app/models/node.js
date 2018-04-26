@@ -1,5 +1,5 @@
 import { computed, get } from '@ember/object';
-import { alias, or } from '@ember/object/computed';
+import { or } from '@ember/object/computed';
 import Resource from 'ember-api-store/models/resource';
 import { download } from 'shared/utils/util';
 import C from 'ui/utils/constants';

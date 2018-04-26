@@ -19,7 +19,7 @@ export default Controller.extend({
       sort: ['sortState','displayName'],
       searchField: 'displayState',
       translationKey: 'generic.state',
-      width: 80,
+      width: 120,
     },
     {
       name: 'name',

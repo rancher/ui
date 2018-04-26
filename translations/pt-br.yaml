@@ -4,129 +4,247 @@ languageContribute: "Ajude a traduzir o Rancher"
 generic:
   actions: Ações
   activate: Ativar
+  add: Adicionar
   all: Todos
   any: Qualquer
+  as: como
   cancel: Cancelar
   closeModal: Fechar
+  cluster: Cluster
+  collapseAll: Recolher tudo
   command: Comando
   confirm: Confirmar
+  containers: Contêineres
   created: Criado
+  createdDate: "Criado em {date}"
   default: Padrão
   description: Descrição
   details: Detalhes
   disable: Desativar
   disabled: Desativado
+  displayName: Nome de exibição
+  dockerId: ID do Docker
   domainName: Nome do Domínio
+  done: Concluído
+  edit: Editar
+  enable: Habilitar
   enabled: Ativado
+  entrypoint: Ponto de entrada
   environment: Ambiente
+  expandAll: Expandir tudo
+  gigabyte: 'GB'
+  hardware: Hardware
   healthy: Sem erros
+  help: Ajuda
   id: Identificador
   image: Imagem
   internal: Interno
   ipAddress: Endereço de IP
+  key: Chave
+  limit: Limite
+  limits: Limites
   loading: "Carregando..."
+  mibibyte: 'MiB'
   missing: "*%FALTANDO%*"
   moreActions: Mais Ações
   na: 'N/D'
   name: Nome
+  namespace: Namespace
+  namespaces: Namespaces
+  never: Nunca
+  no: "Não"
+  noRating: Sem avaliação
   none: Nenhum
+  paste: Colar
   ports: Portas
   remove: Remover
   role: Função
   save: Salvar
   saved: Salvo
   saving: Salvando
+  search: Busca
+  searchOrCustomInput: Procure ou insira seu valor personalizado.
+  seconds: segundos
+  select: Selecionar
+  service: Serviço
+  services: Serviços
   state: Estado
+  tags: Rótulos
+  test: Teste
+  testing: Testando
   to: Para
+  total: Total
   type: Tipo
   unknown: Desconhecido
+  user: Usuário
+  upload: Enviar
+  uuid: UUID
+  value: Valor
+  yes: "Sim"
+realmNames:
+  all: Todos
+  usWest: Oeste dos EUA
+  usEast: Leste dos EUA
+  asia: Ásia
+  euWest: Oeste da Europa
+  euEast: Leste da Europa
 accountsPage:
+  detail:
+    header: Detalhes do Usuário
+    table:
+      headers:
+        permission: Permissões
+        role: Função
+        clusterName: Cluster
+        projectName: Projeto
+        active: Ativo
+        created: Concedido
+      global:
+        title: Permissões globais
+        description: Acesso para gerenciar as coisas que afetam toda a instalação
+        admin: Este usuário é um administrador e possui todas as permissões.
+      cluster:
+        title: Funções de Cluster
+        description: Funções concedidas a este usuário para clusters individuais
+        noRoles: Este usuário não possui funções de cluster
+      project:
+        title: Funções do projeto
+        description: Funções concedidas a este usuário para este projeto
+        noRoles: Este usuário não possui funções de projeto
+      roles:
+        title: Funções
   index:
+    header: Usuários
+    localLink: Adicionar Usuário
     table:
       id: Identificador
       kind: Tipo
-      username: Nome de Usuário
       identity: Identidade
+      noData: Ainda não há usuários
       noName: Nenhum
   new:
+    header: Adicionar Usuário
+    errors:
+      usernameReq: Nome de usuário é necessário.
+      usernameInExists: O nome de usuário já está em uso. Escolha um novo nome de usuário.
+      pwReq: É necessária uma senha.
     form:
       username:
+        labelText: Usuario
         placeholder: "p.ex. joaosilva"
       password:
         labelText: Senha*
       name:
+        labelText: Nome de exibição
         placeholder: "p.ex. João da Silva"
       type:
         labelText: Tipo de Conta
       description:
         labelText: Descrição
         placeholder: "p.ex. Esta conta é para João da Silva"
+  modal:
+    password: Alterar Senha
+podSecurityPoliciesPage:
+  index:
+    header: Políticas de Segurança Pod
+    description: Aplicar Políticas de Pods criado por um usuário com essa Função
+    table:
+      name: Nome
+      created: Horário de Criação
+      noMatch: Nenhuma política de segurança do pod coincide com a pesquisa atual
+  addPodSecurityPolicy: Adicionar política
+  editPodSecurityPolicy: Editar Política
+  detail:
+    header: Política do site
+  saveEdit: Editar
+  saveNew: Criar
+  new:
+    errors:
+      nameReq: Nome é obrigatório.
+      nameInExists: O nome já existe. Use um novo nome de política de segurança do pod.
+    form:
+      name:
+        labelText: Nome
+        placeholder: "ex: política"
+rolesPage:
+  title: Função
+  index:
+    localLink: Adicionar Função
+    table:
+      name: Nome
+      created: Horário de Criação
+      builtin: Interno
+      noData: Ainda não existem funções
+      subjectKind: Tipo
+  addRole: Adicionar Função
+  editRole: Editar Função
+  saveEdit: Editar
+  saveNew: Criar
+  new:
+    errors:
+      nameReq: Nome é obrigatório.
+      nameInExists: O nome já existe. Por favor, use um novo nome de função.
+      ruleResourceReq: Recurso é necessário para uma regra.
+    form:
+      name:
+        labelText: Nome
+        placeholder: "exemplo: Desenvolvedores"
+      allow:
+        create: Criar
+        delete: Excluir
+        update: Atualizar
+        watch: Assistir
+        labelText: Permitir
+        resource: Recurso
+        addAction: Adicionar Recurso
+      otherRole:
+        labelText: Incluir outras funções
+        role: Função
+        addAction: Adicionar Função
+      policy:
+        policy: Política do site
+        addAction: Adicionar política
 apiPage:
-  header: Chaves de API do Ambiente
-  actionButton: Adicionar a Chave de API do Ambiente
-  content: |
-    Chaves de API de ambiente estão ligadas a este ambiente específico (<code>{displayName}</code>) e só podem manipular recursos dentro dele mesmo. Outras contas com acesso a este ambiente também podem gerenciar estas chaves.
   table:
     state: Estado
-    name: Nome
     description: Descrição
-    publicValue: Chave de Acesso
     created: Criado
-    noData: Não há chaves para este ambiente ainda.
-    noName: Nenhum
-    noDescription: Nenhum
-    noPublicValue: Nenhum valor público
-  account:
-    header: Chaves de API de Conta
-    buttonText: Adicionar Chave de API de Conta
-    content:
-      paragraph1: Chaves de API de Conta estão ligadas a sua conta específica
-      paragraph2: "e podem criar, apagar e manipular todos os ambientes que você tem acesso."
-    table:
-      noData: Você ainda não tem nenhuma Chave de API de Conta.
-auditLogsPage:
-  header: Logs de Auditoria
-  form:
-    eventType:
-      placeholder: Tipo de Evento
-    resourceType:
-      placeholder: "Tipo de Recurso:"
-      dropdownPlaceholder: 'Selecione um Tipo de Recurso:'
-    resourceId:
-      placeholder: ID do Recurso
-    requestIp:
-      placeholder: IP de Pedido
-    authType:
-      placeholder: "Tipo de Auth:"
-      dropdownPlaceholder: 'Selecione um Tipo de Auth:'
-    clearButtonText: Limpar tudo
-    searchButtonText: Pesquisar
-  table:
-    time: Tempo
-    eventType: Tipo de Evento
-    description: Descrição
-    environment: Ambiente
-    resourceTypeId: "ID:Tempo de Recurso"
-    identity: Identidade
 authPage:
   shibboleth:
     enabled:
       header: "{providerName} está habilitado"
+      authenticated:
+        header:
+          text: Autenticação
+    disabled:
+      username:
+        labelText: Nome de usuário
+      uid:
+        labelText: Campo UID
+      testAuth:
+        subtext: 'Verifique se sua aplicação está configurada corretamente testando sua autenticação:'
+        buttonText:
+          pre: Autenticar com IDP
   root:
     header: Access Control
   github:
     standard: GitHub
     enterprise: GitHub Enterprise
+    header:
+      enabled:
+        label: "{github} está habilitado"
+      disabled:
+        label: Github não está configurado
     authenticated:
       header:
         text: Autenticação
         clientId:
+          text: "ID do cliente:"
           helpText: "Para alterar a aplicação GitHub configurado, desativar o controle de acesso abaixo e, em seguida, configurá-lo novamente."
       disableAccess:
         header: "Zona Perigosa&trade;"
         warning: '<b class="text-danger">Cuidado:</b> A desativação de controle de acesso dará o controle completo sobre {appName} a qualquer um que pode chegar a esta página ou a API.'
         confirmDisable: "Você tem certeza?  Clique novamente para realmente desativar o controle de acesso"
-        disable: Desativar controle de acesso
     notAuthenticated:
       header: "1. Configurar um aplicativo GitHub"
       ul:
@@ -138,6 +256,7 @@ authPage:
           text: 'Clique em "Register new application" e preencha o formulário:'
           ul:
             li1: '<b>Application name:</b> <span class="text-muted">Qualquer coisa que você goste, p.ex. my {appName}</span>'
+            li2: URL da Página inicial
             li3: '<b>Application description:</b> <span class="text-muted">Qualquer coisa que você gosta, opcional</span>'
         li3:
           text: 'Clique em "Register Application" '
@@ -163,11 +282,33 @@ authPage:
         post: Esperando para ouvir de volta do GitHub
   azuread:
     enabled:
+      reallyDisable: 'Você tem certeza?  Clique novamente para realmente desativar o controle de acesso'
       promptDisable: Desativar controle de acesso
     configure:
+      header: '1. Configure a Conta Azure AD'
       tenantId:
         label: ID do inquilino
+      clientId:
+        label: ID do cliente
+      domain:
+        label: Domínio
+      adminAccountUsername:
+        placeholder: eg rancher-admin
+        help: Um usuário que pode ler informações sobre outros usuários
+      adminAccountPassword:
+        label: Senha da conta admin
+    test:
+      header: '2. Teste e habilite a autenticação'
+      username:
+        label: Nome de Usuário de Login
+        placeholder: 'e.g. jsmith'
+      password:
+        label: Sua Senha
+      pre: Autenticar com Azure
+      post: Esperando ouvir de volta do Azure
   localAuth:
+    header:
+      enabled: 'Autenticação local está ativado'
     subtext:
       enabled:
         text: '{appName} é configurado para permitir o acesso a contas, na sua base de dados local.'
@@ -201,9 +342,17 @@ authPage:
         post: 'Ativando...'
   0:
     header: Access Control
+balancerPage:
+  noData: Nenhuma alteração a mostrar.
+  table:
+    target: Target
 catalogPage:
   index:
     header: 'Catálogo:'
+    refreshBtn: Atualizar
+    manage: Gerenciar
+    search:
+      label: Busca
     noData:
       singular: Não há templates compatíveis.
       plural: Não há templates compatíveis neste catálogo.
@@ -220,77 +369,31 @@ certificatesPage:
         placeholder: p.ex. meudominio.com
       description:
         placeholder: p.ex. EV cert para meudominio.com
+membersPage:
+  index:
+    table:
+      noData: Não há usuários ainda
+clustersPage:
+  header: Cluster
+  newCluster: Adicionar Cluster
+  cluster:
+    label: Nome do Cluster
+  cpu:
+    label: CPU
+  memory:
+    label: RAM
+  pod:
+    label: Pods
 containersPage:
   table:
-    sparkPrefixMemory: 'Memória: '
-    sparkPrefixNetwork: 'Rede: '
-    sparkPrefixStorage: 'Armazenamento: '
-containerSubpod:
-  childContainers: Contêineres
+    sparkPrefixMemory: "Memória: "
+    sparkPrefixNetwork: "Rede: "
+    sparkPrefixStorage: "Armazenamento: "
 failWhalePage:
   header: Erro
   reloadButton: |
     <a href="#" onclick="window.location.href = window.location.href; return false;">Recarregar</a> para tentar novamente ou
   logoutButton: Sair
-helpPage:
-  header: Links úteis & Informações
-  banner: 'Avisos'
-  environment:
-    header: O que é um ambiente?
-    content: |
-      <p>{appName} uporta o agrupamento de recursos em vários ambientes. Cada um recebe seu próprio conjunto de recursos de infra-estrutura e serviços, e é possuído por um ou mais usuários GitHub, equipes ou organizações.</p>
-      <p>Por exemplo, você pode criar separado ambientes "dev", "test", e "production" para manter as coisas isoladas umas das outras e dar "dev" acesso a toda a organização, mas restringir o ambiente "production" para uma equipe menor.</p>
-    manageLink: Gerenciar Ambientes
-  host:
-    header: O que é um host?
-    content: |
-      Antes de adicionar o seu primeiro serviço ou iniciar um contêiner, você deve adicionar pelo menos um único host Linux que suporta Docker {minVersion} ou superior e ser capaz de alcançar o {appName} servidor via HTTP. {appName} suporta adicionando hosts Linux sob a forma de um virtual ou físico
-      máquina de provedores de nuvem pública, host nuvem privada, ou até mesmo servidores bare metal.
-    contentLink: Saiba Mais
-  stacks:
-    header: O que são pilhas e serviços?
-    content:
-      paragraph1: |
-        Um serviço é simplesmente um grupo de contêineres, criado a partir da mesma imagem Docker, mas estende Docker "link" conceito para alavancar {appName}'s serviço DNS distribuído leve para descoberta de serviço. Serviços podem ser adicionados individualmente ou por meio da implantação de um item do catálogo.
-      paragraph2: Um serviço também é capaz de alavancar outros {appName} serviços internos como balanceadores de carga, monitoramento de integridade, suporte de atualização e alta disponibilidade.
-      link: Saiba Mais
-    addServiceLink: Gerenciar serviços
-    addCatalogLink: Adicionar do Catálogo
-    manageServiceLink: Gerenciar Serviços
-  issues:
-    header:
-      text: Issues & documentação
-      tagline: Uh oh, encontrar uma issue?
-      fileBug: Registre um Bug
-    content:
-      paragraph1: |
-        {appName} é uma plataforma de software de código aberto que implementa uma infra-estrutura desenvolvido especificamente para a execução de contêineres em produção. Docker contêineres, como uma carga de trabalho do aplicativo cada vez mais popular, criar novas exigências nos serviços de infra-estrutura, como rede, armazenamento, carga balanceador, segurança, serviço de descoberta e gestão de recursos.
-      graphic1:
-        text: Encontrar um bug?
-        link: Registre a issue no GitHub.
-      graphic2:
-        text: Para obter mais informações
-        link: |
-          <a href="{docsLink}" target="_blank">sobre o uso de {appName} Visite a nossos documentação.</a>
-          <br/>ou <a href="{companyLink}/learn/" target="_blank">Confira nossa documentação Guia de introdução.</a>
-      graphic3:
-        text: Precisa de ajuda para solução de problemas?
-        link: Veja aqui as nossas FAQs
-  forums:
-    header: A partir dos Fóruns
-    tagline: Junte-se a conversa
-    buttonText: Sobre os fóruns
-    general:
-      header: Geral
-      buttonText: Ver Mais Tópicos Gerais
-    rancherOs:
-      buttonText: Ver Mais Tópicos RancherOS
-    rancher:
-      buttonText: Ver Mais Tópicos Rancher
-  commercial:
-    header: Suporte Comercial
-    content: |
-      No Rancher Labs nós fornecemos, suporte comercial de nível empresarial para {appName}, incluindo uma equipe de suporte 24x7 disponível e correções de bugs prioritários.  Além disso, oferecemos implementação, integração e serviços de consultoria para organizações que procuram implementar e escala {appName}.  Para mais informações sobre qualquer um desses serviços, por favor enviar e-mail nossa equipe de vendas. <a href="mailto:sales@rancher.com">sales@rancher.com</a>
 hostsPage:
   addContainer: Adicionar Contêiner
   new:
@@ -320,6 +423,9 @@ hostsPage:
 loginPage:
   greeting: "Olá!<br>Bem-vindo à {appName}"
   githubMessage: "{appName} usar GitHub para gerenciar contas e equipes.  Clique no botão a seguir para entrar e dar-nos acesso somente leitura às suas informações básicas sobre a conta GitHub."
+  shibbolethError:
+    401: "Unauthorized"
+    500: "Internal Server Error"
 notFoundPage:
   header: "A página que você estava procurando não existe!"
   linkTo: Ir para Página Inicial
@@ -345,7 +451,6 @@ registriesPage:
         labelText: Senha
         placeholder: p.ex. senha
 servicePage:
-  header: 'Serviço:'
   multistat:
     scale: 'Escala:'
     image: 'Imagem:'
@@ -371,10 +476,6 @@ waitingPage:
   hosts:
     setup:
       kubernetes: Configurando Kubernetes
-hostPartial:
-  host:
-    addCommon:
-      quanity: Quantidade
 ldap:
   accessEnabled:
     header: Autenticação
@@ -421,24 +522,12 @@ ldap:
       header: Usuários
       objectClass:
         labelText: Classe de Objeto
-      login:
-        labelText: Campo Login
-      name:
-        labelText: Campo Nome
-      search:
-        labelText: Campo Pesquisar
-      status:
-        labelText: Campo Status
       disabledBitMask:
         labelText: Máscara de bits Desativado
     groups:
       header: Grupos
       objectClass:
         labelText: Classe de Objeto
-      name:
-        labelText: Campo Nome
-      search:
-        labelText: Campo Pesquisar
   testAuth:
     header: "3. Testar e ativar a autenticação"
     helpText: "Verificar se tudo está configurado corretamente pela autenticação de testes com a sua conta {providerName}:"
@@ -475,7 +564,7 @@ containerLogs:
   combined: Combinado
   stdout: Saída Padrão
   stderr: Erro Padrão
-  protip: 'Dica: Mantenha pressionada a tecla {key} ao abrir os logs para iniciar uma nova janela.'
+  protip: "Dica: Mantenha pressionada a tecla {key} ao abrir os logs para iniciar uma nova janela."
   scrollTop: Rolar para Cima
   scrollBottom: Rolar para Baixo
   clear: Limpar Tela
@@ -486,10 +575,10 @@ containerLogs:
     disconnected: Desconectada
     closed: Fechado
 containerShell:
-  protip: 'Dica: Mantenha pressionada a tecla {key} ao abrir o acesso shell para iniciar uma nova janela.'
+  protip: "Dica: Mantenha pressionada a tecla {key} ao abrir o acesso shell para iniciar uma nova janela."
   status:
     initializing: Inicializando...
-    error: 'Erro: {error}'
+    error: "Erro: {error}"
     connecting: Conectando...
     connected: Conectado
     disconnected: Desconectada
@@ -497,11 +586,6 @@ containerShell:
 copyToClipboard:
   tooltip: Copiar para Área de Transferência
   copied: Copiado!
-devicePermissions:
-  all: Todos
-  none: Nenhum
-  read: Leitura
-  write: Escrita
 editAccount:
   title: Editar Conta
   form:
@@ -524,18 +608,7 @@ editApiKey:
   title:
     justCreated: Chave de API Criada
     editing: Editar a chave de API
-    new: Nova chave de API
-  publicValue:
-    label: Chave de acesso (Nome de usuário)
-  secretValue:
-    label: Chave secreta (Senha)
-  name:
-    placeholder: p.ex. Servidores de aplicação
-  description:
-    placeholder: p.ex. Esta chave é usada pelos servidores do app para implantar contêineres
-  saveWarning1: Salve as chaves acima!  Esta é a única vez que você será capaz de ver o segredo.
   saveWarning2: Se você perdê-lo, você precisará criar uma nova chave de API.
-  noteOptional: Nome e/ou descrição é opcional para ajudar a lembrar o que é usado para.  Você só pode criar uma chave clicando em criar.
 editCertificate:
   title: Editar Certificado
   name:
@@ -551,7 +624,6 @@ editContainer:
   description:
     placeholder: p.ex. Minha Aplicação
 editHost:
-  title: Editar Host
   hostname:
     label: Nome do Host
   customName:
@@ -562,19 +634,6 @@ editHost:
     label: Descrição
   labels:
     label: Rótulos
-editRegistry:
-  title: Editar Registro
-  address:
-    label: Endereço
-  email:
-    label: E-mail
-    placeholder: p.ex. voce@exemplo.com
-  username:
-    label: Nome de Usuário
-    placeholder: p.ex. usuario
-  password:
-    label: Senha
-    placeholder: p.ex. senha
 editService:
   title: Editar Serviço
 editStack:
@@ -682,43 +741,11 @@ formPorts:
   protocol:
     label: Protocolo
   noPorts: Este contêiner não tem nenhuma mapa de porta.
-formServiceLinks:
-  addAction: Ligações de Serviço
-  service:
-    label: Serviço de Destino
-  name:
-    label: Como Nome
-    placeholder: p.ex. database
 formSslTermination:
   defaultCertificate:
     prompt: Escolha um Certificado...
   alternateCertificate:
     prompt: Escolha um Certificado...
-formTargets:
-  title: Destinos
-  addAction: Adicionar Serviço
-  hostname:
-    placeholder: p.ex. svc.com
-  srcPort:
-    label: Porta de Origem
-    placeholder: p.ex. 80
-  value:
-    label: Serviço de Destino
-  path:
-    label: Caminho do Pedido
-    placeholder: p.ex. /svc
-  dstPort:
-    label: Porta de Destino
-    placeholder: p.ex. 8080
-  advanced:
-    toggle: Mostrar opções avançadas de roteamento
-    detail: Direcionar pedidos de serviços diferentes, baseados em Porta, cabeçalho de Host ou o caminho de pedido
-    help1: |
-      Se o Host pedir e/ou caminho é especificado, conexões para portas de escuta de HTTP serão roteadas para o destino apropriado com base no pedido.
-      Por exemplo, Você pode usar isto para enviar tráfego para dominio1.com para um serviço diferente de dominio2.com, ou dominio3.com/admin para um serviço diferente que dominio3.com.
-    help2: |
-      Pedidos correspondentes serão enviadas para o serviço de destino na porta de destino.
-      Se isso não está definido, Então a Porta Padrão de Destino será usada para a Porta de Origem.  Se isso também não está definido, então será usado a Porta de Origem.
 formUserLabels:
   addAction: Adicionar Rótulo
   key:
@@ -727,11 +754,11 @@ formUserLabels:
   value:
     label: Valor
     placeholder: p.ex. bar
-  protip: 'Dica: Colar uma ou mais linhas de pares chave=valor em qualquer campo de chave para a fácil entrada em massa.'
+  protip: "Dica: Colar uma ou mais linhas de pares chave=valor em qualquer campo de chave para a fácil entrada em massa."
 formValueArray:
   addActionLabel: Adicionar Valor
   valueLabel: Valor
-  protip: 'Dica: Cole um ou mais linhas de valores em qualquer campo para a fácil entrada em massa.'
+  protip: "Dica: Cole um ou mais linhas de valores em qualquer campo para a fácil entrada em massa."
 formVolumes:
   value:
     prompt: Selecione um Contêiner...
@@ -783,213 +810,18 @@ labelsSection:
   key: Chave
   value: Valor
   noData: Sem rótulos
-loginGithub:
-  buttonText: Autenticar com GitHub
 loginUserPass:
   userLabel: Nome de Usuário
   userPlaceholder: p.ex. joaosilva
-  loginLabel: Entrar
   loggingInLabel: Entrando...
   passwordLabel: Senha
-machine:
-  driverAmazon:
-    accessSection: Conta de Acesso
-    accessKey:
-      label: Chave de Acesso
-      placeholder: Sua chave de acesso AWS
-    secretKey:
-      label: Chave Secreta
-      placeholder: Sua chave secreta AWS
-      provided: Fornecido
-    accessKeyHelp: "Colar o seu par de chaves AWS aqui. Vamos usar esta chave para criar suas novas instâncias."
-    loginAction: 'Próximo: Autenticar & selecionar uma rede'
-    loadingAvailability: Carregando Zona de Disponibilidade e informação VPC do EC2...
-    vpcSection: Zona de Disponibilidade & VPC
-    availabilityZone: Zona de Disponibilidade
-    subnet: VPC/Sub-rede
-    securityGroupSelect: 'Próximo: Selecione um grupo de segurança'
-    loadingSecurity: Carregando informações do grupo de segurança do EC2...
-    securityGroupSection: Grupo de Segurança
-    securityGroup:
-      label: Grupo de Segurança
-      defaultExisting: 'Padrão: Usar o grupo existente <code>{groupName}</code>'
-      defaultCreate: 'Padrão: Criar automaticamente um grupo <code>{groupName}</code>'
-      custom: 'Personalizado: Escolha um grupo existente'
-      updating: Atualizando Grupo de Segurança...
-      creating: Criando Grupo de Segurança...
-    portHelp:
-      link: Aprender mais
-      text: sobre as portas que serão abertas.
-    needs:
-      label: "Para {appName} funcionar corretamente o seu grupo de segurança terá de permitir o tráfego:"
-      item1: Do servidor {appName} para porta <code>TCP</code> <code>22</code> <span class="text-muted">(SSH para instalar e configurar o Docker)</span>
-      item2: De e para todos os outros hosts nas portas <code>UDP</code> <code>500</code> e <code>4500</code> <span class="text-muted">(para redes de IPsec)</span></li>
-      item3: Estas regras <b>não</b> serão adicionadas automaticamente.
-    setInstanceAction: 'Próximo: Definir opções de Instância'
-    instanceSection: Instância
-    instanceOptionsSection: Opções de Instância
-    instanceType:
-      label: Tipo Instância
-    rootSize:
-      label: Tamanho da Raiz
-    ami:
-      placeholder: Uma AMI Ubuntu
-      rancherList: Lista AMI RancherOS
-    sshUser:
-      label: Usuário SSH
-      placeholder: p.ex. ubuntu
-    iam:
-      label: Perfil IAM
-    privateIp:
-      label: IP Privado
-    onlyPrivate:
-      label: Use apenas um endereço de IP privado
-  driverAzure:
-    accountAccessSection: Conta de Acesso
-    subscriptionId:
-      label: ID de Assinatura
-      placeholder: Seu ID de assinatura Azure
-    instanceSection: Instância
-    image:
-      label: Imagem
-    size:
-      label: Tamanho
-    dockerPort:
-      label: Porta Docker
-      placeholder: 'p.ex. 2376'
-    publishSettingsFile:
-      label: Configurações de Publicação
-      placeholder: Seu arquivo de Configurações de Publicação
-    region:
-      label: Região
-  driverCustom:
-    generating: "Gerando URL de registro..."
-  driverDigitalocean:
-    accountSection: Conta de Acesso
-    accessToken:
-      placeholder: Seu token de acesso da API DigitalOcean
-      help: |
-        Um Token de acesso pessoal da DigitalOcean
-        tela <a href="https://cloud.digitalocean.com/settings/applications" target="_blank">Apps & API</a>
-    instanceSection: Instância
-    image:
-      label: Imagem
-    size:
-      label: Tamanho
-    regionSection: Região
-    region:
-      label: Região
-    optionsSection: Opções
-    backups:
-      label: Ativar Backups
-    ipv6:
-      label: Ativar IPv6
-    privateNetworking:
-      label: Ativar Rede Privada
-  driverExoscale:
-    accountSection: Conta de Acesso
-    apiKey:
-      label: Chave de API
-      placeholder: Sua chave de API Exoscale
-    secretKey:
-      label: Chave Secreta
-      placeholder: Sua chave secreta de Exoscale
-      provided: fornecido
-    accountHelp: Colar seu par de chaves do Exoscale aqui.  Vamos usar esta chave para criar suas novas instâncias.
-    loginAction: 'Próximo: Autenticar & selecione um Grupo de Segurança'
-    loadingSecurity: Carregando informações do grupo de segurança da Exoscale...
-    securityGroupSection: Grupo de Segurança
-    securityGroup:
-      label: Grupo de Segurança
-      defaultExisting: 'Padrão: Usar o grupo existente <code>{groupName}</code>'
-      defaultCreate: 'Padrão: Criar automaticamente um grupo <code>{groupName}</code>'
-      custom: 'Personalizado: Escolha um grupo existente'
-      updating: Atualizando Grupo de Segurança...
-      creating: Criando Grupo de Segurança...
-    portHelp:
-      link: Aprender mais
-      text: sobre as portas que serão abertas.
-    needs:
-      label: "Para {appName} funcionar corretamente o seu grupo de segurança terá de permitir o tráfego:"
-      item1: Do servidor {appName} para porta <code>TCP</code> <code>22</code> <span class="text-muted">(SSH para instalar e configurar o Docker)</span>
-      item2: De e para todos os outros hosts nas portas <code>UDP</code> <code>500</code> e <code>4500</code> <span class="text-muted">(para redes de IPsec)</span></li>
-      item3: Estas regras <b>não</b> serão adicionadas automaticamente.
-    selectSecurityGroupAction: 'Próximo: Definir opções de Instância'
-    loadingInstance: Buscando configurações de instâncias disponíveis...
-    instanceSection: Instância
-    instanceProfile:
-      label: Perfil de Instância
-    diskSize:
-      label: Tamanho da Raiz
-  driverOther:
-    optionsSection: "{driverName} Opções"
-  driverPacket:
-    accountSection: Conta de Acesso
-    projectId:
-      label: Projeto
-      placeholder: O seu ID de projeto Packet
-    apiKey:
-      label: Chave de API
-      placeholder: Sua chaves de API Packet
-    apiKeyHelp: 'A partir da tela <a href="https://app.packet.net/portal#/api-keys" target="_blank">Chaves de API</a> Packet'
-    instanceSection: Instância
-    image:
-      label: Imagem
-    size:
-      label: Tamanho
-    regionSection: Região
-    region:
-      label: Região
-  driverRackspace:
-    accountSection: Conta de Acesso
-    username:
-      label: Nome de Usuário
-      placeholder: Seu Nome de Usuário RackSpace
-    apiKey:
-      label: Chave de API
-      placeholder: Sua chave de API RackSpace
-    accountHelp: Na tela de configurações da conta no painel de controle da RackSpace
-    regionSection: Região
-    region:
-      label: Região
-    instanceSection: Instância
-  driverVsphere:
-    accountSection: Conta de Acesso
-    vcenter:
-      placeholder: vCenter ou ESXi nome do host/IP
-    vcenterPort:
-      label: Porta vCenter
-    username:
-      label: Nome de Usuário
-    password:
-      label: Senha
-    instanceSection: Instância
-    memorySize:
-      label: Memória
-    diskSize:
-      label: Disco
-    boot2dockerUrl:
-      label: URL OS ISO
-      placeholder: 'Padrão: Imagem boot2docker mais recente'
-    schedulingSection: Agendamento
-    host:
-      placeholder: "Usar '/' se estiver usando um cluster"
-    network:
-      label: Rede
-    dataStore:
-      label: Armazenamento de Dados
 modalAboutComponent:
   component: Componente
   version: Versão
   ui: Interface de Usuário
-  machineService: Serviço de Máquina
-modalAuditlogInfo:
-  header: Informação de Log Adicionais
-  request: "Objeto do Pedido:"
-  response: "Objeto de Resposta:"
 modalConfirmDeactivate:
   header: Tem certeza que você quer
-  protip: 'Dica: Mantenha pressionada a tecla {key} enquanto clicar em {isServiceButton} para contornar essa confirmação.'
+  protip: "Dica: Mantenha pressionada a tecla {key} enquanto clicar em {isServiceButton} para contornar essa confirmação."
   cancel: Cancelar
 modalEditDriver:
   url:
@@ -998,31 +830,31 @@ modalEditDriver:
     label: URL de UI Personalizada
     link: Ver <a href="https://github.com/rancher/ui-driver-skel" target="_blank">ui-driver-skel</a> para mais informações.
   checksum:
-    help: 'Opcional: Verifique se o driver baixado corresponde ao checksum esperada.'
+    help: "Opcional: Verifique se o driver baixado corresponde ao checksum esperada."
 modalProcessError:
   header: Informação de Exceção
   cause: "Causa:"
   none: N/D
   close: Fechar
 newCatalog:
-  version:
-    prompt: Escolha uma versão...
-  saveUpgrade: Atualizar
-  saveNew: Iniciar
-  upgrade: "Atualizar:"
   catalog: "Catálogo:"
   category: "Categoria:"
-  support: "Suporte:"
-  official: Oficialmente Certificado
+  config: Opções de Configuração
+  license: "Licença:"
   maintainedBy: Mantido por membros da comunidade
   maintainer: "Mantenedor:"
-  license: "Licença:"
-  url: "URL do Projeto:"
-  templateVersion: Versão do Template
-  config: Opções de Configuração
-  unknownType: "Tipo de pergunta não reconhecida:"
-  startService: Iniciar os serviços depois de criar
+  official: Oficialmente Certificado
   preview: Visualizar
+  saveNew: Iniciar
+  saveUpgrade: Atualizar
+  startService: Iniciar os serviços depois de criar
+  support: "Suporte:"
+  templateVersion: Versão do Template
+  unknownType: "Tipo de pergunta não reconhecida:"
+  upgrade: "Atualizar:"
+  url: "URL do Projeto:"
+  version:
+    prompt: Escolha uma versão...
 newContainer:
   selectUpgrade: Selecione um ou mais serviços para atualizar.
   saveUpgrade: Atualizar
@@ -1054,8 +886,6 @@ schema:
     prompt: Escolher um Certificado...
   inputEnum:
     option: Escolha uma Opção...
-  inputService:
-    prompt: Escolha um Serviço...
 schedulingRuleRow:
   theHost: O host
   haveA: tem um
@@ -1071,17 +901,8 @@ viewEditDescription:
       placeholder: p.ex. lab
     description:
       placeholder: p.ex. Ambiente para experimentação de desenvolvedor
-viewEditProject:
-  showEdit:
-    edit: "Editar Ambiente:"
-    add: Adicionar Ambiente
-  header: "Ambiente:"
-  description: Descrição
-  helpBlock: |
-    Controle de acesso não está habilitado.<br/>
-    Qualquer pessoa com acesso à API/interface do usuário atua como um administrador e será capaz de usar qualquer ambiente.
 vmConsole:
-  protip: 'Dica: Mantenha pressionada a tecla {key} ao abrir acesso shell para iniciar uma nova janela.'
+  protip: "Dica: Mantenha pressionada a tecla {key} ao abrir acesso shell para iniciar uma nova janela."
   canvas: Canvas não é suportado.
   footerActions:
     buttonSend: Enviar Ctrl-Alt-Delete
@@ -1101,7 +922,7 @@ nav:
     certificates: Certificados
     registries: Registros
   user:
-    label: 'Menu do Usuário: {username}'
+    label: "Menu do Usuário: {username}"
     logout: Sair
 action:
   activate: Ativar

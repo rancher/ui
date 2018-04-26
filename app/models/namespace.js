@@ -3,7 +3,6 @@ import { inject as service } from '@ember/service';
 import Resource from 'ember-api-store/models/resource';
 import { parseExternalId } from 'ui/utils/parse-externalid';
 import C from 'ui/utils/constants';
-import { download } from 'shared/utils/util';
 import { hasMany, reference } from 'ember-api-store/utils/denormalize';
 import StateCounts from 'ui/mixins/state-counts';
 

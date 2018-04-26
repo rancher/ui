@@ -86,6 +86,12 @@
       volume=model.volume
       editing=true
     }}
+  {{else if (eq model.mode "configmap")}}
+    {{volume-source/source-config-map
+      namespace=namespace
+      volume=model.volume
+      editing=true
+    }}
   {{/if}}
   {{#if (eq model.mode "customLogPath")}}
   {{else}}

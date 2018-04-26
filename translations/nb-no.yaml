@@ -18,7 +18,6 @@ generic:
   enabled: Aktivert
   hardware: Maskinvare
   healthy: Frisk
-  host: Vert
   id: ID
   image: Bilde
   internal: Intern
@@ -56,7 +55,6 @@ accountsPage:
     table:
       id: ID
       kind: Type
-      username: Brukernavn
       identity: Identitet
       noName: Ingen
   new:
@@ -73,41 +71,9 @@ accountsPage:
         labelText: Beskrivelse
         placeholder: "f.eks denne kontoen er for Ola Normann"
 apiPage:
-  header: Miljø API-nøkler
-  actionButton: Legge til miljø API-nøkkel
-  content: |
-    Miljø API-nøkler er knyttet til dette bestemte miljøet (<code>{displayName}</code>) og kan bare endre ressurser i dette miljøet. Andre kontoer med tilgang til dette miljøet kan også administrere disse nøklene.
   table:
-    name: Navn
     description: Beskrivelse
-    publicValue: Tilgangsnøkkel
     created: Oppprettet
-    noData: Det finnes ingen nøkler for dette miljøet ennå.
-    noName: Ingen
-    noDescription: Ingen
-  account:
-    header: Konto API-nøkler
-    buttonText: Legg til konto API-nøkler
-    content:
-      paragraph2: "kan opprette, slette og redigere alle miljøene som du har tilgang til."
-auditLogsPage:
-  header: Overvåkingslogger
-  form:
-    eventType:
-      placeholder: Hendelsestype
-    resourceType:
-      placeholder: "Ressurstype:"
-      dropdownPlaceholder: 'Velg en ressurstype:'
-    resourceId:
-      placeholder: Ressurs-ID
-    clearButtonText: Fjern filtre
-    searchButtonText: Søk
-  table:
-    time: Tidspunkt
-    eventType: Hendelsestype
-    description: Beskrivelse
-    environment: Miljø
-    identity: Identitet
 authPage:
   shibboleth:
     enabled:
@@ -171,17 +137,6 @@ authPage:
           =1 {# bruker}
           other {# brukere}
           }.
-        restricted: |
-          {appName} er konfigurert til å tillate tilgang til miljø medlemmer for {organisasjoner, plural,
-          =0 {ingen organisasjoner}
-          =1 {# organisasjon}
-          other {# organisasjoner}
-          } og {brukere, plural,
-          =0 {ingen brukere}
-          =1 {# bruker}
-          other {# brukere}
-          }.
-        unrestricted: "{appName} er konfigurert til å tillate tilgang fra alle {github} brukere."
       disabled:
         label: GitHub er ikke konfigurert
     authenticated:
@@ -191,7 +146,6 @@ authPage:
           text: "Klient-ID:"
       disableAccess:
         header: "Danger Zone&trade;"
-        disable: Deaktiver tilgangskontroll
     notAuthenticated:
       header: "1. Opprett en GitHub applikasjon"
       ul:
@@ -296,25 +250,17 @@ containerPage:
       writable: Skrivbar
 containersPage:
   table:
-    sparkPrefixCpu: 'CPU: '
-    sparkPrefixMemory: 'Minne: '
-    sparkPrefixNetwork: 'Network: '
-    sparkPrefixStorage: 'Lagring: '
-containerSubpod:
-  childContainers: Beholdere
-  childSidekicks: Hjelpere
+    sparkPrefixCpu: "CPU: "
+    sparkPrefixMemory: "Minne: "
+    sparkPrefixNetwork: "Network: "
+    sparkPrefixStorage: "Lagring: "
 dnsPage:
   noMatch: Ingen oppføringer stemmer med det gjeldende søket
 editDns:
-  title:
-    new: Legge til DNS-oppføring
-    edit: Redigere DNS-oppføring
   name:
     placeholder: f.eks minapplikasjon
   description:
     placeholder: f.eks gjeldende versjon av minapplikasjon
-  hostname:
-    placeholder: f.eks foobar.com
 failWhalePage:
   header: Feil
   logoutButton: Logg ut
@@ -326,52 +272,6 @@ haPage:
   table:
     port: Port
     heartbeat: Sist sett
-helpPage:
-  header: Nyttige lenker & informasjon
-  banner: 'Siste utgivelse {released}:'
-  environment:
-    header: Hva er et miljø?
-    manageLink: Administrere miljøer
-  host:
-    header: Hva er en vert?
-    contentLink: Få mer informasjon
-  stacks:
-    content:
-      link: Få mer informasjon
-    addServiceLink: Administrer tjenester
-    addCatalogLink: Legge til katalog
-    manageServiceLink: Administrer tjenester
-  issues:
-    header:
-      text: Problemer & dokumentasjon
-      tagline: Uh oh, oppdaget du et problem?
-      fileBug: Rapporter en feil
-    content:
-      graphic1:
-        text: Funnet en feil?
-        link: Rapporter en feil på GitHub.
-      graphic2:
-        text: For mer informasjon
-      graphic3:
-        text: Trenger du hjelp med å feilsøke?
-        link: Sjekk ut vår FAQ
-  forums:
-    header: Fra forumet
-    tagline: Ta del i samtalen
-    announcements:
-      header: Kunngjøringer
-      buttonText: Vis flere kunngjøringer
-    general:
-      header: Generelt
-      buttonText: Vis flere generelle emner
-    rancherOs:
-      header: RancherOS
-      buttonText: Vis flere RancherOS emner
-    rancher:
-      header: Rancher
-      buttonText: Vise flere Rancher emner
-  commercial:
-    header: Kommersiell bistand
 hostsPage:
   cloudHostsPage:
     addPage:
@@ -416,8 +316,7 @@ hostsPage:
 loginPage:
   shibbolethError:
     401: "Uautorisert"
-  error:
-    authFailed: Feil brukernavn og/eller passord.
+    500: "Internal Server Error"
 machinePage:
   inactive: Inaktiv
   builtin: Innebygd
@@ -460,19 +359,6 @@ servicePage:
 newStack:
   name:
     placeholder: f.eks minapplikasjon
-processesPage:
-  tab:
-    summary: Oppsummering
-    running: Kjører
-    delayed: Forsinket
-  summary:
-    table:
-      running: Kjører
-      delay: Forsinket
-  pools:
-    table:
-      activeTasks: Aktiv
-      rejectedTasks: Avvist
 waitingPage:
   hosts:
     setup:
@@ -540,7 +426,7 @@ containerLogs:
 containerShell:
   status:
     initializing: Initialiserer...
-    error: 'Feil: {error}'
+    error: "Feil: {error}"
     connecting: Kobler til...
     connected: Tilkoblet
     disconnected: Frakoblet
@@ -550,12 +436,6 @@ copyToClipboard:
   copied: Kopiert!
 dangerZone:
   header: Avanserte innstillinger
-devicePermissions:
-  all: Alle
-  none: Ingen
-  read: Les
-  write: Skriv
-  mknod: Mknod
 editAccount:
   title: Rediger konto
   form:
@@ -576,16 +456,6 @@ editApiKey:
   title:
     justCreated: API-nøkkel opprettet
     editing: Redigere API-nøkkel
-    new: Ny API-nøkkel
-  publicValue:
-    label: Tilgangsnøkkel (Brukernavn)
-  secretValue:
-    label: Hemmelig nøkkel (passord)
-  name:
-    placeholder: f.eks applikasjons tjenere
-  description:
-    placeholder: f.eks denne nøkkelen er brukt av applikasjons-tjeneren til å distribuere beholdere
-  saveWarning1: Spar på nøklene ovenfor!  Dette er den eneste gangen du vil kunne se hemmeligheten for dem.
   saveWarning2: Dersom du mister denne, så må du lage et par med nye API-nøkler.
 editCertificate:
   name:
@@ -614,18 +484,6 @@ editHost:
     valueLabel: IP-adresse
     valuePlaceholder: f.eks 1.2.3.4
     addActionLabel: Legge til IP-addresse
-editRegistry:
-  address:
-    label: Adresse
-  email:
-    label: E-post
-    placeholder: f.eks dittnavn@eksempel.no
-  username:
-    label: Brukernavn
-    placeholder: f.eks brukernavn
-  password:
-    label: Passord
-    placeholder: f.eks passord
 editStack:
   name:
     label: Navn
@@ -638,12 +496,12 @@ formatIp:
   noIp: Ingen
 formBalancerListeners:
   sourceIp:
-    placeholder: 'f.eks 1.2.3.4; Standard: Alle'
+    placeholder: "f.eks 1.2.3.4; Standard: Alle"
   sourcePort:
     placeholder: f.eks 80
 formBalancerRules:
   sourceIp:
-    placeholder: 'f.eks 1.2.3.4; Standard: Alle'
+    placeholder: "f.eks 1.2.3.4; Standard: Alle"
   sourcePort:
     placeholder: f.eks 80
   path:
@@ -733,8 +591,6 @@ formNameDescription:
     label: Beskrivelse
     placeholder: Beskrivelse
 formNetwork:
-  networkMode:
-    label: Nettverk
   requestedIp:
     placeholder: Valgfritt; f.eks 10.42.2.24
   hostname:
@@ -754,21 +610,9 @@ formNetwork:
 formScheduling:
   field: Felt
   value: Verdi
-formSecrets:
-  name:
-    label: Som navn
-    placeholder: f.eks database_password
-  uid:
-    label: Bruker-ID
-    placeholder: f.eks 0 (root)
-  gid:
-    label: Gruppe-ID
-    placeholder: f.eks 0 (wheel)
-  mode:
-    placeholder: f.eks 0444 (oktale)
 formSecurity:
   cpuPinning:
-    placeholder: 'f.eks 0,1,3; Standard: Alle'
+    placeholder: "f.eks 0,1,3; Standard: Alle"
   shares:
     placeholder: f.eks 1024
   capabilities:
@@ -784,28 +628,9 @@ formSecurity:
   isolation:
     label: Isolasjon
     hyperv: HyperV (VM)
-formServiceLinks:
-  name:
-    label: Som navn
-    placeholder: f.eks database
 formSslTermination:
   alternateCerts: Alternative sertifikater
   addAlternate: Legg til alternativt sertifikat
-formStickiness:
-  none: Ingen
-  domain: Domene
-  indirect: Indirekte
-  placeholder:
-    domain: f.eks mittdomene.no
-formTargets:
-  hostname:
-    placeholder: f.eks svc.no
-  srcPort:
-    placeholder: f.eks 80
-  path:
-    placeholder: f.eks /svc
-  dstPort:
-    placeholder: f.eks 8080
 formUserLabels:
   addAction: Legg til etikett
   key:
@@ -818,10 +643,6 @@ formUserLabels:
 formValueArray:
   addActionLabel: Legge til verdi
   valueLabel: Verdi
-hookPage:
-  fields:
-    detail:
-      label: Detaljer
 hostSettings:
   hostUrl:
     new:
@@ -863,180 +684,7 @@ labelsSection:
 loginUserPass:
   userLabel: Brukernavn
   userPlaceholder: f.eks onormann
-  loginLabel: Logg inn
   loggingInLabel: Logger inn...
-machine:
-  driverAmazon:
-    accessKey:
-      label: Tilgangsnøkkel
-    secretKey:
-      label: Hemmelig nøkkel
-      placeholder: Din AWS hemmelige nøkkel
-    portHelp:
-      link: Få mer informasjon
-    setInstanceAction: 'Neste: Sett alternativer for forekomst'
-    instanceSection: Forekomst
-    instanceOptionsSection: Alternativer for forekomst
-    instanceType:
-      label: Forekomsttype
-    rootSize:
-      label: Root størrelse
-      unit: GB
-    ami:
-      label: AMI
-      placeholder: En Ubuntu AMI
-    sshUser:
-      label: SSH bruker
-      placeholder: f.eks ubuntu
-    iam:
-      label: IAM profil
-    privateIp:
-      label: Private IP-adresse
-    onlyPrivate:
-      label: Bruk bare privat IP-adresse
-  driverAzure:
-    networkSection: Nettverk
-    instanceSection: Forekomst
-    dockerPort:
-      placeholder: '2376'
-    environment:
-      label: Miljø
-    sshUser:
-      label: SSH bruker
-      placeholder: bruker1
-    subnetPrefix:
-      placeholder: 128.42.0.0/21
-    openPort:
-      placeholder: 'Kommaseparert, f.eks 80,443'
-    privateIpAddress:
-      label: Private IP-adresse
-      placeholder: 127.0.0.1
-    staticPublicIp:
-      label: Offentlig IP-addresse
-    clientId:
-      label: Klient-ID
-      placeholder: Din klient-ID
-    region:
-      label: Region
-  driverCustom:
-    agentIp:
-      placeholder: f.eks 1.2.3.4
-    windows:
-      windowsHeader: Windows-vert
-      linuxHeader: Linux-vert
-  driverDigitalocean:
-    instanceSection: Forekomst
-    sshUser:
-      label: SSH bruker
-    size:
-      label: Størrelse
-    regionSection: Region
-    region:
-      label: Region
-    ipv6:
-      label: Aktiver IPv6
-  driverExoscale:
-    apiKey:
-      label: API-nøkkel
-      placeholder: Din Exoscale API-nøkkel
-    secretKey:
-      label: Hemmelig nøkkel
-      placeholder: Din Exoscale hemmelige nøkkel
-    portHelp:
-      link: Få mer informasjon
-    selectSecurityGroupAction: 'Neste: Sett alternativer for forekomst'
-    loadingInstance: Henter tilgjengelig innstillinger for forekomst...
-    instanceSection: Forekomst
-    instanceProfile:
-      label: Forekomstens profil
-    diskSize:
-      label: Root størrelse
-    sshUser:
-      label: SSH bruker
-      placeholder: 'bruker1'
-  driverOther:
-    driverSection: Driver
-    driver:
-      label: Driver
-  driverPacket:
-    apiKey:
-      label: API-nøkkel
-      placeholder: Din Packet API-nøkkel
-    apiKeyHelp: 'Fra skjermbildet hos Packet som viser <a href="https://app.packet.net/portal#/api-keys" target="_blank"> API nøkler</a>'
-    instanceSection: Forekomst
-    size:
-      label: Størrelse
-    regionSection: Region
-    region:
-      label: Region
-  driverRackspace:
-    username:
-      label: Brukernavn
-    apiKey:
-      label: API-nøkkel
-      placeholder: Din RackSpace API-nøkkel
-    accountHelp: Fra skjermbildet som viser kontoinnstillingene inne i RackSpace sitt kontrollpanel
-    regionSection: Region
-    region:
-      label: Region
-    instanceSection: Forekomst
-  driverVsphere:
-    vcenter:
-      label: vCenter vert
-    vcenterPort:
-      label: vCenter port
-    username:
-      label: Brukernavn
-    password:
-      label: Passord
-    instanceSection: Forekomst
-    cpuCount:
-      label: CPUer
-    memorySize:
-      label: Minne
-      unit: MB
-    diskSize:
-      label: Disk
-      unit: MB
-    network:
-      label: Nettverk
-  driverAliyunecs:
-    accessKey:
-      label: Tilgangsnøkkel*
-      placeholder: Din Aliyun konto sin tilgangsnøkkel
-    accessKeySecret:
-      label: Tilgangsnøkkelen sin hemmelighet*
-      placeholder: Din nøkkel sin hemmelighet
-    instanceSection: Del av forekomst
-    instanceDescription:
-      label: Beskrivelse av forekomst
-      placeholder: Beskrivelse av forekomst
-    instanceType:
-      label: Forekomsttype
-      placeholder: Forekomsttype
-    internetMaxBandwidth:
-      placeholder: 1-100
-    aliyunSLB:
-      label: Aliyun SLB-ID
-      placeholder: Aliyun SLB-ID
-    region:
-      label: Region
-      placeholder: Region
-    routeCIDR:
-      placeholder: f.eks 192.168.1.0/24
-    vpcId:
-      label: Aliyun VPC-ID
-      placeholder: Aliyun VPC-ID
-    vswitchId:
-      label: Aliyun Vswitch-ID
-      placeholder: Aliyun Vswitch-ID
-    privateIp:
-      label: Private IP-adresse
-    securityGroup:
-      label: Sikkerhetsgruppe
-      placeholder: Sikkerhetsgruppe
-    sshPassword:
-      label: SSH passord
 modalAboutComponent:
   component: Komponent
   version: Versjon
@@ -1071,18 +719,18 @@ modalProcessError:
 modalWelcome:
   header: Velkommen til {appName}!
 newCatalog:
-  saveUpgrade: Oppgrader
-  upgrade: "Oppgrader:"
   catalog: "Katalog:"
   category: "Kategori:"
-  support: "Støtte:"
-  official: Offisielt sertifisert
   maintainedBy: Vedlikeholdes av fellesskapmedlemmer
   maintainer: "Utvikler:"
-  startService: Start tjenestene etter opprettelse
-  preview: Forhåndsvisning
-  txt: svar.txt
   noConfig: Denne malen har ingen konfigurasjonsalternativer
+  official: Offisielt sertifisert
+  preview: Forhåndsvisning
+  saveUpgrade: Oppgrader
+  startService: Start tjenestene etter opprettelse
+  support: "Støtte:"
+  txt: svar.txt
+  upgrade: "Oppgrader:"
 newContainer:
   saveUpgrade: Oppgrader
   name:
@@ -1092,13 +740,6 @@ newContainer:
   environment:
     keyPlaceholder: f.eks FOO
     valuePlaceholder: f.eks bar
-newReceiver:
-  min:
-    placeholder: f.eks 1
-  max:
-    placeholder: f.eks 20
-  tag:
-    placeholder: "f.eks siste"
 pageFooter:
   issues: Rapporter et problem
 projectRow:
@@ -1126,8 +767,6 @@ schema:
     prompt: Velg et sertifikat...
   inputEnum:
     option: Velg et alternativ...
-  inputService:
-    prompt: Velg en tjeneste...
 schedulingRuleRow:
   must: må
   should: bør
@@ -1136,13 +775,6 @@ schedulingRuleRow:
   haveA: ha en
   hostLabel: vert etikett
   serviceName: tjenesten med navnet
-serviceLink:
-  withAlias:
-    sameStack: "{service} som {alias}"
-    differentStack: "{stack}/{service} som {alias}"
-  noAlias:
-    sameStack: "{service}"
-    differentStack: "{stack}/{service}"
 siteAccess:
   header: Områdetilgang
   noIdentity: Ingen
@@ -1150,23 +782,10 @@ telemetryOpt:
   header: Statistikker
   learnMore:
     label: Få mer informasjon
-upgradeBtn:
-  status:
-    none: 'Ingen'
 viewEditDescription:
   form:
     name:
       placeholder: f.eks lab
-viewEditProject:
-  showEdit:
-    edit: "Rediger miljø:"
-    add: Legg til et miljø
-  networkPolicy:
-    default: Alt annet
-  header: "Miljø:"
-  description: Beskrivelse
-  helpBlock: |
-    Tilgangskontroll er ikke aktivert. <br/> Alle med tilgang til API/UI fungerer som administratorer og vil kunne bruke alle miljøer.
 vmConsole:
   footerActions:
     buttonCancel: Lukk
@@ -1176,9 +795,9 @@ volumeRow:
 waitOrchestration:
   count: '({sub} av {count})'
 containerChoices:
-  hostGroup: 'Vert: {name}'
-  hostGroupWithState: 'Vert: {name} ({state})'
-  unknownHost: 'Vert: ???'
+  hostGroup: "Vert: {name}"
+  hostGroupWithState: "Vert: {name} ({state})"
+  unknownHost: "Vert: ???"
   containerOption: "{name}"
 nav:
   environment:

@@ -1,5 +1,4 @@
 #!/bin/bash
-
 set -e
 
 BUILD_DEBUG="${BUILD_DEBUG:-}"
@@ -18,17 +17,21 @@ fi
 
 if [[ "${ENABLE_DOCKER}" == "true" ]]; then
   wrapdocker
+fi
+
+if [[ "${UPLOAD_LATEST}" == "true" ]]; then
   docker pull google/cloud-sdk
 fi
 
-./scripts/clean
+rm -rf node_modules bower_components build dist tmp
+
 ./scripts/bootstrap
 
+./node_modules/.bin/eslint --max-warnings 0 .
+
 if [[ "${UPLOAD_LATEST}" == "true" ]] && [[ "${ENABLE_DOCKER}" == "true" ]]; then
-  ./scripts/build
-  ./scripts/build-static -l -u
-  # (build-static contains a call to test)
+  ./scripts/build-static -l -u -v latest2
+  # (build-static contains a call to test & build)
 else
-  ./scripts/build
-  ./scripts/test
+  yarn test
 fi
