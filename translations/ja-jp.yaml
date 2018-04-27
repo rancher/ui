@@ -143,6 +143,7 @@ accountsPage:
     table:
       id: ID
       kind: 種類
+      username: ローカルユーザー名
       identity: ID
       noData: まだユーザーはありません
       noMatch: 検索条件に一致するユーザーはいません
@@ -619,6 +620,9 @@ namespacesPage:
 clusterPage:
   edit: クラスターを編集
 
+projectsListNamespacePage:
+  header: 名前空間
+
 projectsPage:
   header: プロジェクト/名前空間
   headerNS: 名前空間
@@ -944,6 +948,11 @@ hostsPage:
     hostname: ホスト名
     ipAddress: IP アドレス
     version: バージョン
+    kubeletVersion: Kubelet バージョン
+    kubeProxyVersion: Kube Proxy バージョン
+    dockerVersion: Docker バージョン
+    kernelVersion: カーネルバージョン
+    operatingSystem: オペレーティングシステム
     conditions:
       diskSpace: ディスクスペース
       diskPressure: ディスク使用率
@@ -1934,7 +1943,8 @@ conditionSections:
 
 confirmDelete:
   title: '本当に削除してもよろしいですか?'
-  environmentNote: 'Note: このプロジェクト内にある {appName} により作られた名前空間を含むの全てのリソースは完全に削除されます'
+  environmentNote: 'ノート: このプロジェクト内にある {appName} により作られた名前空間を含むの全てのリソースは完全に削除されます'
+  clusterNote: 'ノート: クラウドプロバイダーによって作成された永続ボリュームとロードバランサーは自動的に削除されません'
   protip: 'ProTip: この確認画面を飛ばす場合は削除ボタンのクリック時に {key} キーを長押ししてください。'
   confirmAction: 削除
   cancelAction: キャンセル
@@ -1942,7 +1952,7 @@ confirmDelete:
 
 containerLogs:
   title: "ログ: "
-  onlyCombined: "<b>Note:</b> このコンテナでは TTY (-t) フラグが有効なため、標準出力/標準エラー出力が結合されたログのみが利用可能です。"
+  onlyCombined: "<b>ノート:</b> このコンテナでは TTY (-t) フラグが有効なため、標準出力/標準エラー出力が結合されたログのみが利用可能です。"
   combined: 結合された出力
   stdout: 標準出力
   stderr: 標準エラー出力
@@ -1990,6 +2000,7 @@ cruRegistry:
     label: ユーザー名
   password:
     label: パスワード
+    saved: 保存しました
 
 cruPersistentVolume:
   name:
@@ -2066,7 +2077,8 @@ cruPersistentVolume:
       label: オプション
     name:
       label: コンフィグマップ名
-      placeholder: "例: map"
+    items:
+      label: 項目
   emptyDir:
     medium:
       label: Medium
@@ -2629,48 +2641,15 @@ dangerZone:
   subtext: "一般的なユーザーの場合、これらを変更する必要はありません。間違った値を指定するとあなたの {appName} が壊れる可能性がありますので、慎重に進めてください。<br/>既定の値から変更された設定値は<b>太字</b>で表示されます。"
   showLabel: 私は拡張設定を変更することで問題が生じる可能性があると理解しています。
   description:
-    'access-log': 'Path to write access logs to (HA installation only)'
-    'api-auth-jwt-token$expiry': 'Authorization token/UI session lifetime (milliseconds)'
-    'api-auth-realm': 'HTTP Basic Auth realm for requests without Authorization header'
-    'api-auth-restrict-concurrent-sessions': 'Limit active session tokens to one per account.  This mainly prevents users from logging in to the UI from multiple computers simultaneously.  Note: Existing sessions may continue to be valid until they expire when this is initially enabled.'
-    'api-interceptor-config': 'JSON configuration for API Interceptor'
-    'api-proxy-allow': 'Allow use of /v1/proxy to talk to whitelisted domains, for custom Add Host UIs'
-    'api-proxy-whitelist': 'Whitelist of domains to that can be proxied through /v1/proxy to, for custom Add Host UIs'
-    'api-ui-css-url': 'CSS location for the API UI'
-    'api-ui-js-url': 'JavaScript location for the API UI'
-    'audit_log-purge-after-seconds': 'Auto-purge Audit Log entries after this long (seconds)'
-    'cacerts': 'Default certificate'
-    'catalog-refresh-interval-seconds': 'Refresh Catalog git repos after this long (seconds)'
-    'container-event-max-size': 'Maximum number of outstanding container events allowed per host before dropping events'
-    'default-cluster-template': 'Template to use when creating a new cluster.  This includes the default catalog items which are deployed to the System environment and the configurations of each item.'
-    'db-cattle-maxidle': 'Database pool: maximum idle connections (change requires restart)'
-    'db-cattle-maxtotal': 'Database pool: maximum total connections (change requires restart)'
-    'db-prep-stmt-cache-size': 'Database pool: Prepared statement cache size (per connection; change requires restart)'
+    'cacerts': "CA Certificates needed to verify the server's certificate"
+    'engine-install-url': 'Default Docker engine installation URL (for most node drivers)'
+    'engine-iso-url': 'Default OS installation URL (for vSphere driver)'
     'engine-newest-version': 'The newest supported version of Docker at the time of this release.  A Docker version that does not satisfy supported docker range but is newer than this will be marked as untested'
     'engine-supported-range': 'Semver range for suported Docker engine versions.  Versions which do not satisfy this range will be marked unsupported in the UI'
-    'engine-install-url': 'Docker engine URL'
-    'events-purge-after-seconds': 'Auto-purge Event entries after this long (seconds)'
-    'graphite-host': 'Graphite: Server hostname or IP (change requires restart)'
-    'graphite-options': 'Graphite: Additional options'
-    'graphite-port': 'Graphite: Server port'
-    'host-remove-delay-seconds': 'Automatically remove hosts that are disconnected for more than this long (seconds)'
-    'lb-instance-image': 'Default docker image for Load Balancer Services'
-    'main_tables-purge-after-seconds': 'Auto-purge deleted entries from most tables after this long (seconds)'
-    'project-create-default': 'Automatically create an Environment for users on first login, if they have access to no other Environments.'
-    'registry-default': 'Pull images with no registry specified from this registry instead of DockerHub'
-    'registry-whitelist': 'Allow containers images only from the specified registries (if specified; comma-separated)'
-    'secrets-backend': 'Backend storage provider for secrets'
-    'service_log-purge-after-seconds': 'Auto-purge Service Log entries after this long (seconds)'
     'server-url': 'Default Rancher install url. Must be HTTPS. All nodes in your cluster must be able to reach this.'
-
-    'settings-public': 'The settings that are visible to non-admin users.  These are primarily needed for the UI.'
+    'system-default-registry': 'Private registry to be used for all system Docker images'
+    'ui-index': 'HTML index location for the UI.'
     'ui-pl': 'Private-Label company name'
-    'ui-show-custom-host': 'Show the Custom host option on the Add Host screen.  Note that disabling this does not prevent a user from using the API to add custom hosts.'
-    'ui-sendgrid-api_key': 'SendGrid API key'
-    'ui-sendgrid-template-password_reset': 'SendGrid template for initiating password reset'
-    'ui-sendgrid-template-create_user': 'SendGrid template for confirming email'
-    'ui-sendgrid-template-verify_password': 'SendGrid template for confirming password reset'
-    'upgrade-manager': 'Automatic upgrades of infrastructure stacks'
 
 editAccount:
   title: アカウントを編集
@@ -2723,7 +2702,7 @@ editCertificate:
     placeholder: '例: mydomain.com'
   description:
     placeholder: '例: mydomain.com の EV 証明書'
-  noteKeyWriteOnly: "注意: プライベートキーは書き込み専用のためあえて空にしています。プライベートキーを変更する場合を除いて、これを入力する必要はありません。"
+  noteKeyWriteOnly: "ノート: プライベートキーは書き込み専用のためあえて空にしています。プライベートキーを変更する場合を除いて、これを入力する必要はありません。"
 
 editCluster:
   title:
@@ -2831,10 +2810,6 @@ moveNamespace:
     }の移動: 
   to: "移動先のプロジェクト:"
 
-envCatalog:
-  header: カタログ
-  addActionLabel: カタログを追加
-
 stackHeader:
   title: '名前空間: {name}'
   outputs: 出力
@@ -2886,6 +2861,11 @@ formIngressBackends:
     label: ワークロード
   targetPort:
     label: ポート
+    placeholder: '例: 80'
+  path:
+    label: パス
+    placeholder: '例: /foo'
+  target: ターゲット
 
 formBalancerListeners:
   label: リスナー & ターゲットルール
@@ -3575,7 +3555,7 @@ formSslTermination:
     placeholder: '例: example.com'
   addHostLabel: ホストを追加
   helpBlock: |
-    "注意: いくつかの古い SSL/TLS クライアントは <a href="https://en.wikipedia.org/wiki/Server_Name_Indication" target="_blank">Server Name Indication (SNI)</a> をサポートしていません。これらのクライアントでは常にメイン証明書の提示を求められますが、比較的新しいクライアントでは一致するものが見つかると代替証明書のリストから適切な証明書を求めてきます。"
+    "ノート: いくつかの古い SSL/TLS クライアントは <a href="https://en.wikipedia.org/wiki/Server_Name_Indication" target="_blank">Server Name Indication (SNI)</a> をサポートしていません。これらのクライアントでは常にメイン証明書の提示を求められますが、比較的新しいクライアントでは一致するものが見つかると代替証明書のリストから適切な証明書を求めてきます。"
   notNeeded: 有効なターゲットルールで構成された SSL/TLS リッスンポートはありません
   removeCertLabel: この証明書を削除する
   addCertLabel: 証明書を追加
@@ -3682,11 +3662,17 @@ formVolumeRow:
     bindMount: バインド
     tmpfs: Tmpfs
     secret: シークレット
+    configmap: コンフィグマップ
   remove: ボリュームを削除
   subPath: ボリューム内サブパス
   readOnly: 読み取り専用
   noVolume: ボリュームは現在のコンテナにマウントされません。ポッド内の他のコンテナで使用することができます。
   addMount: マウントを追加
+  mounts:
+    mountPoint: マウントポイント
+    subPath: ボリューム内サブパス
+    readOnly: 読み取り専用
+    helper: ボリュームは現在のコンテナにマウントされません。ポッド内の他のコンテナで使用することができます。
   customLogPath:
     helpText: Flexvolume ドライバーを配備してボリュームを作成し、そのログをホストにマウントします。この機能は現在 GKE クラスターでサポートされています。
 
@@ -3716,6 +3702,7 @@ formVolumes:
     bindMount: ノードからディレクトリをバインド
     tmpfs: インメモリ tmpfs を追加
     secret: シークレットを使用
+    configMap: コンフィグマップを使用
     customLogPath: ディレクトリからログファイルを読み込み
   table:
     kind: 種類
@@ -3769,6 +3756,7 @@ formHostPortsPodSecurityPolicy:
     min:
       label: 最小
       placeholder: '例: 6000'
+
 formRunAsUserPodSecurityPolicy:
   title: ユーザー実行ポリシー
   detail: ユーザー ID
@@ -3988,7 +3976,6 @@ newCertificate:
     protip: 必要な証明書チェーンを含めてください。
   certChain:
     label: 証明書チェーン
-    placeholder: "オプション; -----BEGIN CERTIFICATE----- から始まる追加の証明書チェーンをペーストしてください"
     placeholder: "-----BEGIN CERTIFICATE----- から始まる追加の証明書チェーンをペーストしてください（オプション）"
   metaXML:
     label: メタデータ XML
@@ -4400,6 +4387,10 @@ nodeDriver:
       defaultCreate: "通常: <code>{groupName}</code> グループを自動的に作成"
       next: "次へ: インスタンスオプションの設定"
       loading: インスタンスオプションを読み込んできます...
+    tags:
+      addActionLabel: AWS タグを追加
+      valueLabel: タグ
+      placeholder: '例: dev'
     instance:
       title: 4. インスタンス
       detail: 作成される EC2 インスタンスをカスタマイズします
