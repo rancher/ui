@@ -1788,7 +1788,7 @@ clusterNew:
     credential:
       label: サービスアカウント
       placeholder: サービスアカウントのプライベートキー JSON ファイル
-      configured: {project} プロジェクト用に設定されています
+      configured: "{project} プロジェクト用に設定されています"
       helpText: |
         <a href="https://console.cloud.google.com/projectselector/iam-admin/serviceaccounts" target="_blank" rel="nofollow noopener noreferrer">サービスアカウント</a> を JSON 形式のプライベートキーとともに作成し、ここに記載してください。サービスアカウントの作成に関する詳細は <a href="https://cloud.google.com/compute/docs/access/create-enable-service-accounts-for-instances" target="_blank" rel="nofollow noopener noreferrer">Google Cloud ドキュメント</a> を参照してください。また、次の3つの IAM アカウントが必要となりますのでご注意ください: <code>project/viewer</code>, <code>kubernetes-engine/admin</code>, <code>service-account/user</code>, ロールに関しての詳細な情報は <a href="https://cloud.google.com/kubernetes-engine/docs/how-to/iam-integration" target="_blank" rel="nofollow noopener noreferrer">こちら</a> を参照してください。
     zone:
@@ -2641,15 +2641,15 @@ dangerZone:
   subtext: "一般的なユーザーの場合、これらを変更する必要はありません。間違った値を指定するとあなたの {appName} が壊れる可能性がありますので、慎重に進めてください。<br/>既定の値から変更された設定値は<b>太字</b>で表示されます。"
   showLabel: 私は拡張設定を変更することで問題が生じる可能性があると理解しています。
   description:
-    'cacerts': "CA Certificates needed to verify the server's certificate"
-    'engine-install-url': 'Default Docker engine installation URL (for most node drivers)'
-    'engine-iso-url': 'Default OS installation URL (for vSphere driver)'
-    'engine-newest-version': 'The newest supported version of Docker at the time of this release.  A Docker version that does not satisfy supported docker range but is newer than this will be marked as untested'
-    'engine-supported-range': 'Semver range for suported Docker engine versions.  Versions which do not satisfy this range will be marked unsupported in the UI'
-    'server-url': 'Default Rancher install url. Must be HTTPS. All nodes in your cluster must be able to reach this.'
-    'system-default-registry': 'Private registry to be used for all system Docker images'
-    'ui-index': 'HTML index location for the UI.'
-    'ui-pl': 'Private-Label company name'
+    'cacerts': "CA 証明書はサーバーの証明書を検証するために必要となります"
+    'engine-install-url': 'デフォルトの Docker エンジン インストール用 URL です(多くのノードドライバー向け)'
+    'engine-iso-url': 'デフォルトの OS インストール用 URL(vSphere ドライバー向け)'
+    'engine-newest-version': 'このリリースにおける最新のサポートされる Docker バージョンです。サポートされる Docker バージョンより新しいバージョンを利用することも出来ますが未テストのマークが付きます。'
+    'engine-supported-range': 'サポートされる Docker エンジンバージョンの範囲です。この範囲外のバージョンは UI 上で未サポートのマークが付きます。'
+    'server-url': 'デフォルトの Rancher がインストールされた URL です。HTTPS でなければならずクラスターに属する全てのノードが通信可能である必要があります。'
+    'system-default-registry': '全てのシステム Docker イメージ用のプライベートレジストリです'
+    'ui-index': 'UI 向けの HTML index ファイルの場所です'
+    'ui-pl': 'プライベートブランド用の会社名です'
 
 editAccount:
   title: アカウントを編集
@@ -4386,7 +4386,7 @@ nodeDriver:
       defaultExisting: "通常: 既存の <code>{groupName}</code> グループを利用"
       defaultCreate: "通常: <code>{groupName}</code> グループを自動的に作成"
       next: "次へ: インスタンスオプションの設定"
-      loading: インスタンスオプションを読み込んできます...
+      loading: インスタンスオプションを読み込んでいます...
     tags:
       addActionLabel: AWS タグを追加
       valueLabel: タグ
@@ -4431,7 +4431,7 @@ nodeDriver:
       title: ドロップレットオプション
       detail: このテンプレートにより作成されたドロップレットのオプションを設定してください
     sizeLabel: |
-      {highMem, select, true {High Memory: } other {}}{memoryGb} GB RAM, {disk} GB Disk, {vcpus, plural,
+      {highMem, select, true {高メモリ: } other {}}{memoryGb} GB RAM, {disk} GB ディスク, {vcpus, plural,
         =1 {# vCPU}
         other {# vCPUs}
       }
@@ -4473,35 +4473,35 @@ nodeDriver:
       label: 秘密キー
       placeholder: あなたの Exoscale 秘密キー
       provided: 入力済み
-    accountHelp: Paste in your Exoscale key pair here.  We'll use this key to create your new Instances.
-    loginAction: "Next: Authenticate & select a Security Group"
-    loadingSecurity: Loading security group info from Exoscale...
-    securityGroupSection: Security Group
+    accountHelp: あなたの Exoscale キーペアをここにペーストしてください。キーペアは新しいインスタンスの作成に利用されます。
+    loginAction: "次へ: 認証とセキュリティグループの選択"
+    loadingSecurity: Exoscale からセキュリティグループ情報を読み込んでいます...
+    securityGroupSection: セキュリティグループ
     securityGroup:
-      label: Security Group
-      defaultExisting: "Standard: Use the existing <code>{groupName}</code> group"
-      defaultCreate: "Standard: Automatically create a <code>{groupName}</code> group"
-      custom: "Custom: Choose an existing group"
-      updating: Updating Security Group...
-      creating: Creating Security Group...
+      label: セキュリティグループ
+      defaultExisting: "標準: 既存の <code>{groupName}</code> グループを利用"
+      defaultCreate: "標準: 自動的に <code>{groupName}</code> グループを作成"
+      custom: "カスタム: 既存のグループを選択"
+      updating: セキュリティグループを更新中...
+      creating: セキュリティグループを作成中...
     portHelp:
       link: 詳細を見る
-      text: about the ports that will be opened.
+      text: 公開されるポート番号について
     needs:
-      label: "For {appName} to work correctly your security group will need to allow traffic:"
-      item1: From the {appName} server to <code>TCP</code> port <code>22</code> <span class="text-muted">(SSH to install and configure Docker)</span>
-      item2: From and To all other hosts on <code>UDP</code> ports <code>500</code> and <code>4500</code> <span class="text-muted">(for IPsec networking)</span></li>
-      item3: These rules will <b>not</b> be added automatically.
-    selectSecurityGroupAction: "Next: Set Instance options"
-    loadingInstance: Fetching available Instance settings...
-    instanceSection: Instance
-    instanceOptionsSection: Instance Options
+      label: "{appName} が正常に機能するためにはセキュリティグループで以下のトラフィックを許可する必要があります:"
+      item1: '{appName} サーバーから <code>TCP 22</code> 版ポート<span class="text-muted">(Docker を SSH 経由でインストール,設定するため)</span>"'
+      item2: '他のホストへ、または他のホストからの <code>UDP 500</code> 番ポートと <code>4500</code> 番ポート<span class="text-muted">(IPsec ネットワークのため)</span></li>'
+      item3: これらのルールは自動的に追加 <b>されません</b>
+    selectSecurityGroupAction: "次へ: インスタンスオプションの設定"
+    loadingInstance: 利用可能なインスタンス設定を取得中...
+    instanceSection: インスタンス
+    instanceOptionsSection: インスタンスオプション
     instanceProfile:
-      label: Instance Profile
+      label: インスタンスプロファイル
     diskSize:
-      label: Root Disk Size
+      label: ルートディスクサイズ
     sshUser:
-      label: SSH User
+      label: SSH ユーザー
       placeholder: 'usr1'
   packet:
     accountSection: アカウントアクセス
@@ -4521,31 +4521,31 @@ nodeDriver:
       label: インスタンス詳細
       cpu: CPUs
       memory: メモリ
-      drives: Drives
+      drives: ドライブ
       network: NICs
     image:
-      label: Image
+      label: イメージ
     size:
-      label: Size
-    regionSection: Region
+      label: サイズ
+    regionSection: リージョン
     region:
-      label: Region
+      label: リージョン
   rackspace:
-    accountSection: Account Access
+    accountSection: アカウントアクセス
     username:
-      label: Username
-      placeholder: Your RackSpace username
+      label: ユーザー名
+      placeholder: あなたの RackSpace ユーザー名
     apiKey:
-      label: API Key
-      placeholder: Your RackSpace API key
-    accountHelp: From the Account Settings screen of the RackSpace control panel
-    regionSection: Region
+      label: API キー
+      placeholder: あなたの RackSpace API キー
+    accountHelp: RackSpace コントロールパネルのアカウント設定画面から取得してください
+    regionSection: リージョン
     region:
-      label: Region
-    instanceSection: Instance
-    instanceOptionsSection: Instance Options
+      label: リージョン
+    instanceSection: インスタンス
+    instanceOptionsSection: インスタンスオプション
     flavor:
-      label: Flavor
+      label: フレーバー
   vmwarevsphere:
     access:
       title: 1. アカウントアクセス
@@ -4558,10 +4558,10 @@ nodeDriver:
       title: 3. スケジューリング
       detail: 仮想マシンが配置されるホストを選択してください
     vcenter:
-      label: vCenter ホスト
-      placeholder: vCenter もしくは ESXi ホスト名/IP
+      label: vCenter または ESXi サーバー
+      placeholder: vCenter または ESXi ホスト名/IP
     vcenterPort:
-      label: vCenter ポート番号
+      label: ポート番号
     username:
       label: ユーザー名
     password:
@@ -4653,7 +4653,7 @@ nodeDriver:
       placeholder: 128.42.0.0/21
     availabilitySet:
       label: 可用性セット
-      placeholder: availability-set-name
+      placeholder: 可用性セット名
     openPort:
       label: 公開ポート
       placeholder: 'カンマ区切りの番号, 例: 80,443'
@@ -4661,7 +4661,7 @@ nodeDriver:
       label: プライベート IP
       placeholder: 127.0.0.1
     usePrivateIp:
-      label: 接続にプライベート IP を利用
+      label: プライベート IP を使用して接続
     staticPublicIp:
       label: パブリック IP
     noPublicIp:
@@ -4675,119 +4675,119 @@ nodeDriver:
     region:
       label: リージョン
   aliyunecs:
-    accountSection: Account Access Section
+    accountSection: アカウントアクセスセクション
     accessKey:
-      label: Access Key*
-      placeholder: Your Aliyun Account Access Key
+      label: アクセスキー*
+      placeholder: あなたの Aliyu アカウントアクセスキー
     accessKeySecret:
-      label: Access Key Secret*
-      placeholder: Your Key's secret
+      label: アクセスキーシークレット*
+      placeholder: あなたのキーのシークレット
     apiEndpoint:
-      label: Api Endpoint
-      placeholder: Private Aliyun Api Server Endpoint
-    instanceSection: Instance Section
-    instanceOptionsSection: Instance Options Section
+      label: API エンドポイント
+      placeholder: プライベート Aliyun API サーバーのエンドポイント
+    instanceSection: インスタンスセクション
+    instanceOptionsSection: インスタンスオプションセクション
     instanceDescription:
-      label: Instance Description
-      placeholder: Instance Description
+      label: インスタンス詳細
+      placeholder: インスタンス詳細
     instanceType:
-      label: Instance Type
-      placeholder: Instance Type
+      label: インスタンスタイプ
+      placeholder: インスタンスタイプ
     systemImage:
-      label: System image
-      placeholder: System image
+      label: システムイメージ
+      placeholder: システムイメージ
     instanceTag:
-      label: Instance Tag
-      placeholder: Your Instance Tag in Aliyun
+      label: インスタンスタグ
+      placeholder: Aliyu 上のあなたのインスタンスタグ
     internetMaxBandwidth:
-      label: Internet Max Bandwidth
-      placeholder: 1 to 100
+      label: インターネット最大帯域幅
+      placeholder: 1 から 100
     aliyunSLB:
       label: Aliyun SLB ID
       placeholder: Aliyun SLB ID
-    storageSection: Storage Info
+    storageSection: ストレージ情報
     ioOptimized:
-      label: Instance Storage I/O Optimized
-      placeholder: none or optimized
+      label: インスタンス ストレージ I/O 最適化
+      placeholder: none または 最適化
     systemDiskCategory:
-      label: System Disk Category
-      placeholder: When Storage is optimized, you can input cloud_efficiency, cloud_ssd or ephemeral_ssd.
+      label: システムディスクカテゴリ
+      placeholder: ストレージを最適化していた場合、cloud_efficiency, cloud_ssd または ephemeral_ssd を入力できます
     dataDiskCategory:
-      label: Data Disk Category
-      placeholder: When Storage is optimized, you can input cloud_efficiency, cloud_ssd or ephemeral_ssd.
+      label: データディスクカテゴリ
+      placeholder: ストレージを最適化していた場合、cloud_efficiency, cloud_ssd または ephemeral_ssd を入力できます
     dataDiskSize:
-      label: Data Disk Size
-      placeholder: Disk Size
+      label: データディスクサイズ
+      placeholder: ディスクサイズ
     region:
-      label: Region
-      placeholder: Region
+      label: リージョン
+      placeholder: リージョン
     zone:
-      label: Available Zone
-      placeholder: Blank for auto select
-    networkSection: Network Section
+      label: アベイラブルゾーン
+      placeholder: 空の場合自動選択されます
+    networkSection: ネットワークセクション
     routeCIDR:
-      label: Route CIDR
-      placeholder: e.g. 192.168.1.0/24
+      label: ルート CIDR
+      placeholder: '例: 192.168.1.0/24'
     vpcId:
       label: Aliyun VPC ID
       placeholder: Aliyun VPC ID
     vswitchId:
-      label: Aliyun Vswitch ID
-      placeholder: Aliyun Vswitch ID
+      label: Aliyun 仮想スイッチ ID
+      placeholder: Aliyun 仮想スイッチ ID
     privateIp:
-      label: Private IP
-      placeholder: Private IP in Private Network
+      label: プライベート IP
+      placeholder: プライベートネットワーク内のプライベート IP
     privateAddressOnly:
-      label: Private Address Only
-    securitySection: Security Section
+      label: プライベートアドレスのみ
+    securitySection: セキュリティセクション
     securityGroup:
-      label: Security Group
-      placeholder: Security Group
+      label: セキュリティグループ
+      placeholder: セキュリティグループ
     sshPassword:
-      label: SSH Password
-      placeholder: Set Instance SSH Password, Blank for Auto set
+      label: SSH パスワード
+      placeholder: インスタンスの SSH パスワードを設定してください。空の場合自動的に設定されます。
   zstack:
     access:
-      title: 1. Account Access
-      detail: Choose the endpoint, account name and account password that will be used to launch ZStack Instances
-      next: "Next: Authenticate & select a network"
-      loading: Loading Zone, Cluster, Network info from ZStack...
+      title: 1. アカウントアクセス
+      detail: ZStack インスタンスを起動するためのエンドポイントとアカウント名、アカウントパスワードを選択してください
+      next: "次へ: 認証とネットワークの選択"
+      loading: ZStack からゾーン、クラスター、ネットワーク情報を読み込み中...
     endpoint:
-      label: Endpoint
-      placeholder: e.g. https://192.168.1.42:8443/
+      label: エンドポイント
+      placeholder: '例: https://192.168.1.42:8443/'
     accountName:
-      label: Account Name
-      placeholder: Your account name
+      label: アカウント名
+      placeholder: あなたのアカウント名
     accountPassword:
-      label: Account Password
-      placeholder: Your account password
-      provided: Provided
+      label: アカウントパスワード
+      placeholder: あなたのアカウントパスワード
+      provided: 入力済み
     zone:
-      title: 2. Zone, Cluster and Network
-      detail: Select the Zone, Cluster and Network for Instances
-      next: "Next: Set Instance options"
-      loading: Loading instance options from ZStack...
-      label: Zone
+      title: 2. ゾーン、クラスター、ネットワークの設定
+      detail: インスタンス用のゾーン、クラスター、ネットワークを選択してください
+      next: "次へ: インスタンスオプションの設定"
+      loading: ZStack からインスタンスオプションを読み込み中...
+      label: ゾーン
     cluster:
-      label: Cluster
+      label: クラスター
     network:
-      defaultCreate: "Standard: Automatically create a <code>{groupName}</code> network"
-      choose:  Choose existing network
-      label: Network
+      defaultCreate: "標準: 自動的に <code>{groupName}</code> ネットワークを作成"
+      choose:  既存のネットワークを選択
+      label: ネットワーク
     portHelp:
-      link: Learn more
-      text: about the ports that will be opened.
+      link: 詳細を見る
+      text: 公開されるポート番号について
     instance:
-      title: 3. Instance
-      detail: Customize the EC2 Instance that will be created.
+      title: 3. インスタンス
+      detail: 作成される EC2 インスタンスをカスタマイズします
     instanceOffering:
-      label: Instance Type
+      label: インスタンスタイプ
     systemDiskOffering:
-      label: System Disk
+      label: システムディスク
     imageName:
-      label: Image Name
+      label: イメージ名
     dataDiskOffering:
-      label: Data Disk
+      label: データディスク
 
 newConfigMap:
   title:
