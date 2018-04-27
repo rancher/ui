@@ -23,7 +23,12 @@ var Pod = Resource.extend(DisplayImage, {
   canHaveLabels: true,
   escToClose: true,
 
+  canEditYaml: computed('links.update', 'actions.edit', function() {
+    return !!get(this, 'links.update') && !!get(this, 'actions.edit');
+  }),
+
   canEdit: false,
+  canClone: false,
 
   actions: {
     clone() {

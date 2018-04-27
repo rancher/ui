@@ -51,31 +51,7 @@
         </div>
       </div>
       <div class="row">
-        <div class="col span-4">
-          <label class="acc-label">{{t 'clusterNew.rke.registry.label'}}</label>
-          <div class="radio">
-            <label>
-              {{radio-button selection=registry value="default"}}
-              {{t 'clusterNew.rke.registry.default'}}
-            </label>
-          </div>
-          <div class="radio">
-            <label>
-              {{radio-button selection=registry value="custom"}}
-              {{t 'clusterNew.rke.registry.custom'}}
-            </label>
-          </div>
-          {{#if (eq registry 'custom')}}
-            <label class="acc-label">{{t 'clusterNew.rke.registry.url.label'}}</label>
-            {{input type="text" value=registryUrl}}
-            <label class="acc-label">{{t 'clusterNew.rke.registry.user.label'}}</label>
-            {{input type="text" value=registryUser}}
-            <label class="acc-label">{{t 'clusterNew.rke.registry.password.label'}}</label>
-            {{input type="password" value=registryPass}}
-          {{/if}}
-        </div>
-
-        <div class="col span-4">
+        <div class="col span-6">
           <label class="acc-label">{{t 'clusterNew.rke.ignoreDockerVersion.label'}}</label>
           <div class="radio">
             <label>
@@ -91,7 +67,7 @@
           </div>
         </div>
 
-        <div class="col span-4">
+        <div class="col span-6">
           {{#if config.services.kubeApi.podSecurityPolicy}}
             <label class="acc-label">{{t 'clusterNew.psp.label'}}{{field-required}}</label>
             {{new-select
@@ -110,14 +86,14 @@
         </div>
       </div>
       <div class="row">
-        <div class="col span-4">
+        <div class="col span-6">
           <label class="acc-label mt-5">{{t 'clusterNew.rke.etcd.heartbeat.label'}}</label>
           <div class="input-group">
             {{input-integer min="0" step="100" value=config.services.etcd.extraArgs.heartbeat-interval classNames="form-control" placeholder=(t 'clusterNew.rke.etcd.heartbeat.placeholder')}}
             <div class="input-group-addon bg-default">{{t 'generic.milliseconds'}}</div>
           </div>
         </div>
-        <div class="col span-4">
+        <div class="col span-6">
           <label class="acc-label mt-5">{{t 'clusterNew.rke.etcd.election.label'}}</label>
           <div class="input-group">
             {{input-integer min="0" step="1000" value=config.services.etcd.extraArgs.election-timeout classNames="form-control" placeholder=(t 'clusterNew.rke.etcd.election.placeholder')}}
