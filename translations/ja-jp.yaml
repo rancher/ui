@@ -1694,7 +1694,7 @@ clusterNew:
       detail: Azure の操作に使用する認証情報を設定する
       help: 'クライアント ID とシークレットを作成する手順は <a href="https://www.packer.io/docs/builders/azure-setup.html" target="_blank">こちら</a> から参照できます'
     placement:
-      label: Placement
+      label: 配置
     count:
       label: ノード数
     location:
@@ -1759,10 +1759,10 @@ clusterNew:
       placeholder: 128.42.0.0/21
     availabilitySet:
       label: 可用性セット
-      placeholder: availability-set-name
+      placeholder: 可用性セット名
     openPort:
       label: 公開ポート
-      placeholder: 'Comma-separated, e.g. 80,443'
+      placeholder: 'カンマ区切りの番号, 例: 80,443'
     privateIpAddress:
       label: プライベート IP
       placeholder: 127.0.0.1
@@ -1784,11 +1784,11 @@ clusterNew:
     label: Google Kubernetes Engine
     shortLabel: Google GKE
     checkServiceAccount: "次へ: ノードを設定"
-    checkingServiceAccount: Authenticating...
+    checkingServiceAccount: 認証中...
     credential:
       label: サービスアカウント
       placeholder: サービスアカウントのプライベートキー JSON ファイル
-      configured: Configured for {project} project
+      configured: {project} プロジェクト用に設定されています
       helpText: |
         <a href="https://console.cloud.google.com/projectselector/iam-admin/serviceaccounts" target="_blank" rel="nofollow noopener noreferrer">サービスアカウント</a> を JSON 形式のプライベートキーとともに作成し、ここに記載してください。サービスアカウントの作成に関する詳細は <a href="https://cloud.google.com/compute/docs/access/create-enable-service-accounts-for-instances" target="_blank" rel="nofollow noopener noreferrer">Google Cloud ドキュメント</a> を参照してください。また、次の3つの IAM アカウントが必要となりますのでご注意ください: <code>project/viewer</code>, <code>kubernetes-engine/admin</code>, <code>service-account/user</code>, ロールに関しての詳細な情報は <a href="https://cloud.google.com/kubernetes-engine/docs/how-to/iam-integration" target="_blank" rel="nofollow noopener noreferrer">こちら</a> を参照してください。
     zone:
@@ -1809,7 +1809,7 @@ clusterNew:
       label: Kubernetes バージョン
       prompt: バージョンを選択してください...
     clusterIpv4Cidr:
-      label: コンテナアドレス範囲
+      label: コンテナのアドレス範囲
       placeholder: '例: 10.42.0.0/16'
     alphaFeatures:
       label: アルファ機能
@@ -1817,14 +1817,14 @@ clusterNew:
     etcd:
       heartbeat:
         label: etcd ハートビート間隔
-        placeholder: ハートビートのインターバル時間
+        placeholder: ハートビート間隔の時間
       election:
         label: etcd 選出タイムアウト
-        placeholder: 選出がタイムアウトするまでの時間
+        placeholder: 選出タイムアウトまでの時間
     address:
       title: ノードアドレス
       detail: ノードのパブリック IP とプライベート IP を設定します
-      warning: 不正なアドレスです
+      warning: 無効なアドレスです
       public:
         label: パブリック IP
         placeholder: '例: 1.2.3.4'
@@ -1832,13 +1832,13 @@ clusterNew:
         label: プライベート IP
         placeholder: '例: 1.2.3.4'
     label: '{appName} Kubernetes Engine'
-    shortLabel: RKE
+    shortLabel: カスタム
     customize:
       label: クラスターオプション
-      detail: "クラスター用カスタム Kubernetes オプションです"
+      detail: "クラスター用 Kubernetes オプションをカスタマイズします"
     nodes:
       title: ノードプール
-      detail: クラスターに所属するマシンの設定します
+      detail: クラスターに所属するマシンを設定します
       add: ノードプールを追加
       addTemplate: ノードテンプレートを追加
       templatePrompt: "テンプレートを選択してください..."
@@ -1905,26 +1905,26 @@ clusterNew:
         worker: 1 つ以上
     kubeApi:
       label: Kube API
-      ipRange: Service Cluster IP Range
-      podSecurityPolicy: Pod Security Policy
+      ipRange: サービスクラスターの IP 範囲
+      podSecurityPolicy: ポッドセキュリティポリシー
     kubeController:
       label: Kube Controller
-      cidr: Cluster CIDR
-      ipRange: Service Cluster IP Range
+      cidr: クラスター CIDR
+      ipRange: サービスクラスターの IP 範囲
     kubelet:
       label: Kubelet
-      domain: Cluster Domain
-      dns: Cluster DNS Server
+      domain: クラスタードメイン
+      dns: クラスター DNS サーバー
     errors:
-      etcd: Please select 1, 3, or 5 nodes to use for etcd.
-      controlPlane: Please select at least one node to use for for management.
-      worker: Please select at least one node to use as a worker.
+      etcd: etcd を使うには 1, 3 または 5 台のノードを選択してください
+      controlPlane: Control を使うには少なくとも1台のノードを選択してください
+      worker: Worker を使うには少なくとも1台のノードを選択してください
   custom:
-    label: Custom
-    shortLabel: Custom
+    label: カスタム
+    shortLabel: カスタム
   import:
-    label: Imported
-    shortLabel: Imported
+    label: インポート
+    shortLabel: インポート
     command:
       instructions: "{appName} にインポートするには以下の kubectl コマンドを既存の Kubernetes 1.8.x クラスター上で実行してください:"
       instructionsInsecure: "'certificate signed by unknown authority' のようなエラーが発生した場合はあなたの {appName} が公式の CA から署名された SSL 証明書を利用していないことが原因です。証明書チェックを回避するには以下のコマンドを実行してください。:"
