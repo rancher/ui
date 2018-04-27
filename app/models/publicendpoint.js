@@ -50,8 +50,10 @@ var PublicEndpoint = Resource.extend({
     const hostname = get(this,'hostname') || '';
 
     let out = '';
-    if (get(this,'isIngress') && hostname !==''){
+    if (get(this,'isIngress') && hostname !== '' ) {
       out = hostname;
+    } else if ( addresses && addresses.length ) {
+      out = addresses[0];
     } else if ( allNodes ) {
       const globalStore = get(this, 'globalStore');
       const nodes = globalStore.all('node').filterBy('clusterId', get(this,'scope.currentCluster.id'));
@@ -64,8 +66,6 @@ var PublicEndpoint = Resource.extend({
           out = get(node, 'ipAddress');
         }
       }
-    } else if ( addresses && addresses.length ) {
-      out = addresses[0];
     }
 
     if (out) {
