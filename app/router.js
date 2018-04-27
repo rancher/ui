@@ -104,6 +104,10 @@ Router.map(function() {
     this.route('project', {path: '/p/:project_id'}, function() {
       this.route('index', {path: '/'});
 
+      this.route('ns', {path: '/ns'}, function() {
+        this.route('index', {path: '/'});
+      });
+
       // alert/logging
       this.mount('logging', {path: '/logging'});
       this.mount('alert', {path: '/alerts'});
