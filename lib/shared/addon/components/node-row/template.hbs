@@ -30,6 +30,21 @@
             {{format-ip model.ipAddress}}
           {{/copy-inline}}
         {{/if}}
+        {{#if model.info.os.dockerVersion}}
+          <span>
+            <i class="icon icon-docker"></i>
+            {{model.info.os.dockerVersion}}
+          </span>
+        {{/if}}
+        {{#if model.osBlurb}}
+          <span>
+            <i class="icon icon-linux"></i> 
+            {{model.osBlurb}}
+            {{#if model.info.os.kernelVersion}} 
+              ({{model.info.os.kernelVersion}}) 
+            {{/if}}
+          </span>
+        {{/if}}
       </div>
     {{/if}}
   </td>
