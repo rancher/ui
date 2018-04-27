@@ -29,13 +29,28 @@
   <hr class="mt-30 mb-30" />
 </section>
 
-{{form-ssl-termination
-  editing=true
-  ingress=ingress
-  namespace=namespace
-  namespacedCertificates=namespacedCertificates
-  certificates=certificates
-}}
+{{#accordion-list as | al expandFn | }}
+  {{form-ssl-termination
+    editing=true
+    ingress=ingress
+    namespace=namespace
+    namespacedCertificates=namespacedCertificates
+    certificates=certificates
+    expandAll=al.expandAll
+    expandFn=expandFn
+  }}
+
+  {{form-labels-annotations
+    classNames="accordion-wrapper"
+    labelErrors=labelErrors
+    initialLabels=ingress.labels
+    setLabels=(action 'setLabels')
+    expandAll=al.expandAll
+    expandFn=expandFn
+    model=ingress
+    annotationErrors=annotationErrors
+  }}
+{{/accordion-list}}
 
 {{top-errors errors=errors}}
 {{save-cancel editing=true save="save" cancel="cancel"}}
