@@ -18,17 +18,32 @@
       {{/if}}
     </div>
 
-    {{#unless checked}}
-      <div class="row">
-        <div class="col span-11-of-23 mt-0 mb-0">
+    <div class="row">
+      <div class="col span-6 mt-0 mb-0">
+        {{#if settings.ingress-ip-domain}}
+          <div class="radio">
+            <label>{{radio-button selection=mode value="automatic"}} {{t 'formIngress.hostMode.automatic' domain=settings.ingress-ip-domain htmlSafe=true}}</label>
+          </div>
+        {{/if}}
+        <div class="radio">
+          <label>{{radio-button selection=mode value="manual"}} {{t 'formIngress.hostMode.manual'}}</label>
+        </div>
+        <div class="radio">
+          <label class="{{if defaultDisabled 'text-muted'}}">{{radio-button selection=mode value="default" disabled=defaultDisabled}} {{t 'formIngress.hostMode.default'}}</label>
+        </div>
+      </div>
+
+      {{#if (eq mode "manual")}}
+        <div class="col span-6 mt-0 mb-0">
           <label class="acc-label">{{t 'formIngress.host.label'}}</label>
           {{#input-or-display editable=editing value=rule.host classesForDisplay="clip"}}
             {{input type="text" class="form-control input-sm" value=rule.host placeholder=(t 'formIngress.host.placeholder')}}
           {{/input-or-display}}
         </div>
-      </div>
-      <hr class="mt-20 mb-20" />
-    {{/unless}}
+      {{/if}}
+    </div>
 
-    {{form-ingress-backends ingress=ingress checked=checked rule=rule editing=editing}}
+    <hr class="mt-20 mb-20" />
+
+    {{form-ingress-backends ingress=ingress isDefault=isDefault rule=rule editing=editing}}
   </div>

@@ -23,7 +23,7 @@
     {{#if (and (not-eq driver 'amazonec2') (not-eq driver 'azure'))}}
       <div class="radio">
         <label>
-          {{radio-button selection=selectedCloudProvider value='generic'}} {{t 'generic.generic'}}
+          {{radio-button selection=selectedCloudProvider value='generic'}} {{t 'generic.custom'}}
         </label>
       </div>
     {{/if}}
@@ -44,16 +44,16 @@
 
 {{#if (eq selectedCloudProvider 'azure')}}
   <div class="row">
-        {{form-key-value
-            initialMap=configAnswers
-            changed=(action (mut configAnswers))
-            allowEmptyValue=true
-            allowAdd=false
-            allowRemove=false
-            allowEditKey=false
-            editing=true
-            showHeader=false
-        }}
+    {{form-key-value
+      initialMap=configAnswers
+      changed=(action (mut configAnswers))
+      allowEmptyValue=true
+      allowAdd=false
+      allowRemove=false
+      allowEditKey=false
+      editing=true
+      showHeader=false
+    }}
   </div>
 {{else if (eq selectedCloudProvider 'generic')}}
   <div class="pb-10">
