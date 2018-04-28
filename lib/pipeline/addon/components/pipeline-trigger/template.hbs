@@ -25,6 +25,20 @@
       {{/unless}}
     {{/if}}
   </div>
+
+  <div class="pt-10"></div>
+  <div class="inline-form">
+    {{input disabled=(or disabled webhookDisabled) type="checkbox" id="webhookTag" checked=pipeline.triggerWebhookTag}}
+    <label class="acc-label" for="webhookTag">
+      {{t 'newPipelineStage.trigger.webhookTag'}}
+    </label>
+    {{#if selectedModel.sourceCodeConfig.url}}
+      {{#unless selectedRepo.permissions.admin}}
+        {{banner-message color='bg-warning mb-0 mt-10' message='No permission to set webhook'}}
+      {{/unless}}
+    {{/if}}
+  </div>
+
   <div class="pt-10"></div>
   <div class="inline-form">
     {{input disabled=disabled type="checkbox" id="cron" checked=state.setCustomCron}}
