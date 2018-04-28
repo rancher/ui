@@ -5,6 +5,7 @@
      groupByRef="project"
      headers=headers
      paging=paging
+     sortGroupedFirst=true
      pagingLabel="pagination.project"
      searchText=searchText
      sortBy=sortBy
@@ -41,6 +42,12 @@
           noGroup="namespaceGroup.project"
           fullColspan=sortable.fullColspan
       }}
+    {{else}}
+      <tr class="group-row">
+        <td colspan="{{sortable.fullColspan}}" class="pl-10">
+          {{t 'projectsListNamespacePage.notIn'}}
+        </td>
+      </tr>
     {{/if}}
   {{else if (eq kind "nomatch")}}
     <tr>

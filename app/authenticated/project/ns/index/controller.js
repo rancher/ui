@@ -4,11 +4,36 @@ import { get, computed } from '@ember/object';
 import { isEmpty } from '@ember/utils';
 import C from 'ui/utils/constants';
 
+export const headers = [
+  {
+    name: 'state',
+    sort: ['sortState','displayName'],
+    searchField: 'displayState',
+    translationKey: 'generic.state',
+    width: 120
+  },
+  {
+    name: 'name',
+    sort: ['sortName','id'],
+    searchField: 'displayName',
+    translationKey: 'namespacesPage.table.name.label',
+  },
+  {
+    name: 'created',
+    sort: ['created','id'],
+    searchField: 'created',
+    translationKey: 'namespacesPage.table.created.label',
+    width: 250,
+  },
+];
+
 export default Controller.extend({
 
   scope:   service(),
   router:  service(),
   session: service(),
+  sortBy:  'name',
+  headers: headers,
 
   actions: {
     newNs() {
@@ -24,6 +49,14 @@ export default Controller.extend({
     return ns.filter( n => {
       return get(n, 'projectId') === pId || isEmpty(get(n, 'projectId'));
     });
+  }),
+
+  projectNamespaces: computed('model.namespaces', function() {
+    return get(this, 'model.namespaces').filter( ns => get(ns, 'projectId') === get(this, 'scope.currentProject.id'));
+  }),
+
+  projectlessNamespaces: computed('model.namespaces', function() {
+    return get(this, 'model.namespaces').filter( ns => isEmpty(get(ns, 'projectId')) );
   }),
 
 });
