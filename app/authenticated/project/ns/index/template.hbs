@@ -6,6 +6,56 @@
   </div>
 </section>
 
-<section>
-  {{namespace-list model=allNamespace sortBy="project" descending=true}}
+<section class="mt-30">
+  {{#sortable-table
+       tableClassNames="bordered"
+       paging=true
+       pagingLabel="pagination.namespace"
+       groupByKey="projectId"
+       groupByRef="project"
+       headers=headers
+       sortGroupedFirst=true
+       bulkActions=true
+       body=allNamespace
+       sortBy=sortBy
+       as |sortable kind obj dt|
+  }}
+    {{#if (eq kind "row")}}
+      <tr class="main-row">
+        <td class="row-check" valign="middle" style="padding-top: 2px;">
+          {{check-box nodeId=obj.id}}
+        </td>
+        <td>
+          {{badge-state model=obj}}
+        </td>
+        <td>
+          {{obj.name}}
+        </td>
+        <td>
+          {{date-calendar obj.created}}
+        </td>
+        <td data-title="{{t 'generic.actions'}}:" class="actions">
+          {{action-menu model=obj}}
+        </td>
+      </tr>
+    {{else if (eq kind "group")}}
+      {{#if obj.ref}}
+        <tr class="group-row">
+          <td colspan="{{sortable.fullColspan}}" class="pl-10">
+            {{t 'projectsListNamespacePage.current'}}
+          </td>
+        </tr>
+      {{else}}
+        <tr class="group-row">
+          <td colspan="{{sortable.fullColspan}}" class="pl-10">
+            {{t 'projectsListNamespacePage.notIn'}}
+          </td>
+        </tr>
+      {{/if}}
+    {{else if (eq kind "nomatch")}}
+      <tr><td colspan="{{sortable.fullColspan}}" class="text-center text-muted lacsso pt-20 pb-20">{{t 'namespacesPage.noMatch'}}</td></tr>
+    {{else if (eq kind "norows")}}
+      <tr><td colspan="{{sortable.fullColspan}}" class="text-center text-muted lacsso pt-20 pb-20">{{t 'namespacesPage.noData'}}</td></tr>
+    {{/if}}
+  {{/sortable-table}}
 </section>
