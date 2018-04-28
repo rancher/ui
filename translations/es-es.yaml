@@ -8,15 +8,18 @@ generic:
   all: Todos
   any: Cualquier
   as: como
+  application: aplicación
   cancel: Cancelar
   closeModal: Cerrar
   cluster: Clúster
   collapseAll: Contraer todo
   command: Command
+  comingSoon: Próximamente
   confirm: Confirmar
   containers: Contenedores
   created: Creado
   createdDate: "Creado en {date}"
+  customize: Personalizar
   default: Predeterminado
   description: Descripción
   details: Detalles
@@ -26,18 +29,22 @@ generic:
   dockerId: Docker ID
   domainName: Nombre del dominio
   done: Hecho
+  download: Descarga
   edit: Editar
   enable: Activar
   enabled: Activado
   entrypoint: Entrypoint
   environment: Entorno
   expandAll: Expandir todo
+  from: de
   gigabyte: 'GB'
+  generic: 'Genérico'
   hardware: Hardware
   healthy: Correcta
   help: Ayuda
   id: ID
   image: Imágen
+  import: Importar
   internal: Interno
   ipAddress: Dirección IP
   key: Llave
@@ -46,6 +53,8 @@ generic:
   loading: "Cargando..."
   mibibyte: 'MiB'
   missing: "*%PERDIDO%*"
+  milliseconds: 'Milisegundos'
+  member: Miembro
   moreActions: Más acciones
   na: 'n/d'
   name: Nombre
@@ -53,21 +62,30 @@ generic:
   namespaces: Espacio de nombres
   never: Nunca
   no: "No"
+  node: Nodo
   noRating: Sin Calificación
   none: Ninguno
+  owner: Propietario
   paste: Pegar
+  pod: pod
+  port: Puerto
   ports: Puertos
+  project: Proyecto
+  prefix: prefijo
   remove: Eliminar
   role: Rol
+  random: Aleatorio
   save: Guardar
   saved: Guardado
   saving: Guardando
   search: Buscar
+  searching: 'Buscando...'
   searchOrCustomInput: Busque o ingrese su valor personalizado.
   seconds: segundos
   select: Seleccionar
   service: Servicio
   services: Servicios
+  size: Tamaño
   state: Estado
   tags: Etiquetas
   test: Prueba
@@ -79,7 +97,9 @@ generic:
   user: Usuario
   upload: Subir
   uuid: UUID
+  url: URL
   value: Valor
+  version: Versión
   yes: "Sí"
 realmNames:
   all: Todos
@@ -103,6 +123,7 @@ accountsPage:
         title: Permisos globales
         description: Acceso para administrar elementos que afectan toda la instalación
         admin: Este usuario es un administrador y tiene todos los permisos.
+        noRoles: Este usuario no tiene roles globales
       cluster:
         title: Roles del clúster
         description: Roles otorgados a este usuario para clústers individuales
@@ -119,8 +140,10 @@ accountsPage:
     table:
       id: ID
       kind: Tipo
+      username: Nombre de usuario local
       identity: Identidad
       noData: Todavía no hay usuarios
+      noMatch: Ningún usuario coincide con la búsqueda
       noName: Ninguno
   new:
     header: Añadir usuario
@@ -128,6 +151,7 @@ accountsPage:
       usernameReq: Se requiere un nombre de usuario.
       usernameInExists: El nombre de usuario está en uso. Por favor, elija un nuevo nombre de usuario.
       pwReq: Se requiere una contraseña.
+      role: Los nuevos usuarios requieren de un rol. Seleccione un rol de la lista.
     form:
       username:
         labelText: Nombre de usuario
@@ -144,6 +168,38 @@ accountsPage:
         placeholder: "Por ejemplo, esta cuenta es para John Smith"
   modal:
     password: Cambio de contraseña
+appDetailPage:
+  header: "App: {appName}"
+  endpoints:
+    title: Endpoints
+    detail: 'Endpoints públicos de esta aplicación'
+    endpoint: Endpoint
+    protocol: Protocolo
+    noData: No se crearon endpoints públicos para esta aplicación.
+    noMatch: Ningún endpoint público coincide con la búsqueda.
+  notes:
+    title: Notas
+    detail: 'Instrucciones de cómo usar esta aplicación'
+  workloads:
+    title: Cargas de trabajo
+    detail: Cargas de trabajo creadas para esta aplicación.
+    nodata: No se crearon cargas de trabajo para esta aplicación.
+  ingress:
+    title: Reglas de Entrada
+    detail: Reglas de entrada creadas para esta aplicación.
+    nodata: No se crearon reglas de entrada para esta aplicación.
+  services:
+    title: Servicios
+    detail: Servicios creados con esta aplicación
+    nodata: No se crearon servicios para esta aplicación.
+  volumes:
+    title: Volúmenes
+    detail: Reclamaciones de volumen persistente creados con esta aplicación
+    nodata: Ninguna reclamación de volumen fue realizada para esta aplicación.
+  secrets:
+    title: Secretos
+    detail: Secretos asociados con esta aplicación
+    nodata: Esta aplicación no tiene secretos
 podSecurityPoliciesPage:
   index:
     header: Políticas de Seguridad de Pod
@@ -151,6 +207,7 @@ podSecurityPoliciesPage:
     table:
       name: Nombre
       created: Momento de creación
+      noData: No hay políticas de seguridad de pod definidas
       noMatch: Ninguna política de seguridad de pod coincide con la búsqueda actual
   addPodSecurityPolicy: Agregar política
   editPodSecurityPolicy: Editar política
@@ -176,6 +233,7 @@ rolesPage:
       builtin: Incorporado
       noData: Aún no hay roles
       noMatch: Ningún rol coincide con el criterio de búsqueda
+      userId: Usuario
       subjectKind: Tipo
       template: Plantilla
   addRole: Agregar rol
@@ -500,11 +558,23 @@ clusterPage:
 projectsPage:
   addProject: Añadir Proyecto
   editProject: Editar project
+  members:
+    errors:
+      memberNameReq: Se requiere el nombre para un miembro
+      memberRoleReq: Se requiere rol para un miembro
 clustersPage:
   header: Clúster
   newCluster: Añadir Clúster
+  newClusterName: "Agregar Clúster: {name}"
+  editClusterName: "Editar Clúster: {name}"
   cluster:
     label: Nombre del Clúster
+  provider:
+    label: Proveedor
+  version:
+    label: Versión
+  nodes:
+    label: Nodos
   cpu:
     label: CPU
   memory:
@@ -515,6 +585,11 @@ clustersPage:
     label: Disco
 ingressPage:
   header: 'Ingrese: {name}'
+  table:
+    targets:
+      label: Destinos
+    noMatch: Ninguna entrada coincide con la búsqueda actual.
+    noData: No hay reglas de ingreso definidas
 containerPage:
   header: 'Contenedor: {name}'
   portsTab:
@@ -535,6 +610,12 @@ containerPage:
       noData: Este contenedor no posee volúmenes montados
       noMatch: Ningún volumen coincide con el criterio de búsqueda
       noContainers: No hay otros contenedores
+podPage:
+  header: 'Pod: {name}'
+  nodeIp: IP del nodo
+  podIp: IP del Pod
+  containerImage: 'Imagen de {container}'
+  image: Imagen
 containersPage:
   table:
     sparkPrefixCpu: "CPU: "
@@ -548,18 +629,59 @@ containersPage:
     containerLink: Añadir contenedor
     orchestrator: Instalar otro orquestador
     kubernetesLink: Instalar Kubernetes
+clusterDashboard:
+  cpu: CPU
+  memory: Memoria
+  pods: Pods
+  subtitle: "{used} de {total} usado"
+  node: Nodos
+  etcd: etcd
+  scheduler: Planificador
+  controllerManager: Gestor del Controlador
+  value: Valor
+  notActive: Este clúster está <b>{state}</b>.
+  notReady: Este clúster está <b>{state}</b>; las áreas que interactúan directamente con él no estarán disponibles hasta que la API está lista.
+  noNodes: No hay nodos.
+  alert:
+    node: "Alerta: el nodo {node} no está activo."
+    component: "Alerta: el componente {component} no está saludable."
 dnsPage:
   noMatch: Ningún registro coincide con la búsqueda actual
   noData: No hay registros DNS que mostrar
+  type:
+    arecord: IP externa
+    cname: Nombre de host
+    alias: Alias
+    workload: Carga de trabajo
+    selector: Selector
+    clusterIp: IP del Clúster
+    unknown: Desconocido
   table:
     target: Destino
+    clusterIpDetail: 'IP del clúster: {ip}'
 editDns:
+  title:
+    new: Añadir Registro
+    edit: Editar Registro
+    view: "Registro: {name}"
   name:
     placeholder: ej. miapp
   description:
     placeholder: ej. Versión actual de MiApp
   selector:
     label: Selector de Etiqueta de Contenedor
+    keyLabel: Etiqueta
+    addActionLabel: Añadir Selector
+  recordType:
+    label: "Resuelve A"
+    arecord: Una o más direcciones IP externas
+    cname: Un nombre de host externo
+    alias: Alias ​​del valor de otro registro DNS
+    workload: Una o más cargas de trabajo
+    selector: El conjunto de pods que coinciden con un selector
+  target:
+    arecord: Direcciónes IP de Destino
+    cname: Nombre de Host de Destino
 failWhalePage:
   header: Error
   reloadButton: |
@@ -576,6 +698,13 @@ haPage:
     port: Puerto
     heartbeat: Visto por Última Vez
     clustered: Clusterizado
+nodesPage:
+  table:
+    version: Versión
+    docker: Docker
+    unschedulable: No programable
+    instanceState: Estados de Contenedores
+    instanceStateWithIcon: Estados
 hostsPage:
   cloudHostsPage:
     addPage:
