@@ -20,25 +20,30 @@
       }}
       <span class="pull-right btn btn-xs bg-transparent mb-10" {{action 'cancel'}}>Cancel</span>
     {{else}}
-     {{#each answerGroups as |group|}}
-        <div class="row">
-          {{#each group as |question|}}
-            <div class="col span-6">
-              <label class="acc-label">{{or question.label question.variable}}{{#if question.required}}{{field-required}}{{/if}}</label>
+     {{#each answerSections as |section index|}}
+        {{#unless (eq index 0)}}
+          <hr>
+        {{/unless}}
+        {{#each section as |group|}}
+          <div class="row">
+            {{#each group as |question|}}
+              <div class="col span-6">
+                <label class="acc-label">{{or question.label question.variable}}{{#if question.required}}{{field-required}}{{/if}}</label>
 
-              {{#if question.supported}}
-                {{component question.inputComponent field=question value=question.answer}}
-              {{else}}
-                {{input type="text" value=question.answer class="form-control"}}
-                <p>{{t 'inputAnswers.unknownType'}} {{question.type}}</p>
-              {{/if}}
+                {{#if question.supported}}
+                  {{component question.inputComponent field=question value=question.answer}}
+                {{else}}
+                  {{input type="text" value=question.answer class="form-control"}}
+                  <p>{{t 'inputAnswers.unknownType'}} {{question.type}}</p>
+                {{/if}}
 
-              <p class="help-block">{{question.description}}</p>
-            </div>
-          {{else}}
-            <span class="text-muted">{{t 'inputAnswers.noConfig'}}</span>
-          {{/each}}
-        </div>
+                <p class="help-block">{{question.description}}</p>
+              </div>
+            {{/each}}
+          </div>
+        {{/each}}
+     {{else}}
+        <span class="text-muted">{{t 'inputAnswers.noConfig'}}</span>
      {{/each}}
     {{/if}}
   </div>

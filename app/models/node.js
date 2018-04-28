@@ -144,6 +144,16 @@ var Node = Resource.extend(StateCounts, ResourceUsage, {
     return taints.some(taint=> taint.effect === 'NoExecute' && taint.key === 'node-role.kubernetes.io/etcd');
   }),
 
+  osBlurb: computed('info.os.operatingSystem', function() {
+    var out = get(this,'info.os.operatingSystem')||'';
+
+    out = out.replace(/\s+\(.*?\)/,''); // Remove details in parens
+    out = out.replace(/;.*$/,''); // Or after semicolons
+    out = out.replace('Red Hat Enterprise Linux Server','RHEL'); // That's kinda long
+
+    return out;
+  }),
+
 /*
   osBlurb: function() {
     var out = get(this,'info.osInfo.operatingSystem')||'';
