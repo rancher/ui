@@ -29,7 +29,11 @@
               {{badge-state model=inst}}
             </td>
             <td data-title="{{dt.name}}" class="clip">
-              <a href="{{href-to "ingress" inst.id}}">{{inst.displayName}}</a>
+              {{#if (eq inst.type "service")}}
+                {{inst.displayName}}
+              {{else}}
+                <a href="{{href-to "ingress" inst.id}}">{{inst.displayName}}</a>
+              {{/if}}
               <div class="text-small text-muted">{{inst.displayKind}}</div>
             </td>
             <td data-title="{{dt.targets}}" class="force-wrap">
