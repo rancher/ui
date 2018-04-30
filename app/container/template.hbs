@@ -20,18 +20,12 @@
 
 <section>
   <div class="row banner bg-info basics">
-    {{#each model.containers as |container|}}
-      <div class="vertical-middle">
-        <label class="acc-label vertical-middle p-0">
-          {{#if (gt model.containers.length 1)}}
-            {{t 'podPage.containerImage' container=container.name}}
-          {{else}}
-            {{t 'podPage.image'}}
-          {{/if}}
-        </label>
+    {{#if (eq model.containers.length 1)}}
+      <label class="acc-label vertical-middle p-0">
+        {{t 'podPage.image'}}:
         {{container.image}} {{copy-to-clipboard clipboardText=container.image size="small"}}
-      </div>
-    {{/each}}
+      </label>
+    {{/if}}
     <div class="vertical-middle">
       <label class="acc-label vertical-middle p-0">{{t 'podPage.podIp'}}:</label>
       {{#if model.displayIp}}
@@ -95,11 +89,14 @@
   {{/accordion-list}}
 </section>
 
-<section class="header has-tabs clearfix">
+<section class="header has-tabs clearfix pb-0">
   <ul class="tab-nav">
     {{#each model.containers as |container|}}
       <li>
-        <a class="{{if (eq container.name selectedContainer.name) 'active'}} hand" {{action 'select' container}}>{{container.name}}</a>
+        <a class="{{if (eq container.name selectedContainer.name) 'active'}} hand" {{action 'select' container}}>
+          <i class="{{container.stateIcon}} {{container.stateColor}} dot"></i>
+          {{container.name}}
+        </a>
       </li>
     {{/each}}
   </ul>
@@ -107,6 +104,22 @@
 
 {{#each model.containers as |container|}}
   <section class="{{if (eq container.name selectedContainer.name) '' 'hide'}}">
+    {{#if container.showTransitioningMessage}}
+      <div class="{{container.stateColor}}"><p>{{uc-first container.transitioningMessage}}</p></div>
+    {{/if}}
+
+    <section class="header clearfix" style="border-bottom: 0;">
+      <div class="pull-left">
+        <h1 class="vertical-middle">
+          {{t 'podPage.image'}}:
+          {{container.image}} {{copy-to-clipboard clipboardText=container.image size="small"}}
+        </h1>
+      </div>
+      <div class="right-buttons">
+        {{badge-state model=model}}
+      </div>
+    </section>
+
     {{#accordion-list as |al expandFn|}}
       {{#accordion-list-item
         title=(t 'containerPage.portsTab.header')

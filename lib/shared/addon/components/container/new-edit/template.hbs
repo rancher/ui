@@ -2,43 +2,29 @@
   <h1>{{header}}</h1>
 </section>
 
-{{#if isSidekick}}
-  <div class="row">
-    <div class="col span-11-of-23 mt-0 mb-0">
-      {{form-name-description
-        name=name
-        nameDisabled=isUpgrade
-        nameRequired=true
-        bothColClass="col span-12 mt-0"
-        colClass="col span-12 mt-0"
-        description=description
-        namePlaceholder="newContainer.name.placeholder"
-        descriptionPlaceholder="newContainer.description.placeholder"
-      }}
-    </div>
-    <div class="col span-11-of-23 mt-0 mb-0">
-      {{container/form-image
-        initialValue=launchConfig.image
-        errors=imageErrors
-        changed=(action 'setImage')
-      }}
-    </div>
+<div class="row">
+  <div class="col span-11-of-23 mt-0 mb-0">
+    {{form-name-description
+      name=name
+      nameDisabled=isUpgrade
+      nameRequired=true
+      bothColClass="col span-12 mt-0"
+      colClass="col span-12 mt-0"
+      description=description
+      namePlaceholder="newContainer.name.placeholder"
+      descriptionPlaceholder="newContainer.description.placeholder"
+    }}
   </div>
-{{else}}
-  <div class="row">
-    <div class="col span-11-of-23 mt-0 mb-0">
-      {{form-name-description
-        name=name
-        nameDisabled=isUpgrade
-        nameRequired=true
-        bothColClass="col span-12 mt-0"
-        colClass="col span-12 mt-0"
-        description=description
-        namePlaceholder="newContainer.name.placeholder"
-        descriptionPlaceholder="newContainer.description.placeholder"
-      }}
-    </div>
-    <div class="col span-11-of-23 mt-0 mb-0 offset-1-of-23">
+  <div class="col span-11-of-23 mt-0 mb-0 offset-1-of-23">
+    {{#if isSidekick}}
+      <label class="acc-label">{{t 'newContainer.containerType.title'}}</label>
+      <div class="radio">
+        <label>{{radio-button selection=launchConfig.initContainer value=false}} {{t 'newContainer.containerType.standard'}}</label>
+      </div>
+      <div class="radio">
+        <label>{{radio-button selection=launchConfig.initContainer value=true}} {{t 'newContainer.containerType.init'}}</label>
+      </div>
+    {{else}}
       {{container/form-scale
         initialScale=scale
         isGlobal=isGlobal
@@ -49,20 +35,22 @@
         scaleMode=scaleMode
         setScale=(action (mut scale))
       }}
-    </div>
+    {{/if}}
+  </div>
+</div>
+
+<hr class="mt-30 mb-30" />
+
+<div class="row">
+  <div class="col span-11-of-23 mt-0 mb-0">
+    {{container/form-image
+      initialValue=launchConfig.image
+      errors=imageErrors
+      changed=(action 'setImage')
+    }}
   </div>
 
-  <hr class="mt-30 mb-30" />
-
-  <div class="row">
-    <div class="col span-11-of-23 mt-0 mb-0">
-      {{container/form-image
-        initialValue=launchConfig.image
-        errors=imageErrors
-        changed=(action 'setImage')
-      }}
-    </div>
-
+  {{#unless isSidekick}}
     <div class="col span-11-of-23 mt-0 mb-0 offset-1-of-23">
       {{form-namespace
         namespace=namespace
@@ -71,8 +59,8 @@
         registerHook=(action "registerHook")
       }}
     </div>
-  </div>
-{{/if}}
+  {{/unless}}
+</div>
 
 <hr class="mt-30 mb-30" />
 <div class="row">
