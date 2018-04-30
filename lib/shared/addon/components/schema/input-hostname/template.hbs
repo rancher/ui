@@ -1,0 +1,20 @@
+{{#if settings.ingress-ip-domain}}
+  <div class="radio">
+    <label>{{radio-button selection=mode value="automatic"}} {{t 'formIngress.hostMode.automatic' domain=settings.ingress-ip-domain htmlSafe=true}}</label>
+  </div>
+  <div class="radio">
+    <label>
+      {{radio-button selection=mode value="manual"}} 
+      {{t 'formIngress.hostMode.manual'}}
+      <span class="with-input" style="width: 175px;height: 29px;">
+        {{#if (eq mode 'manual')}}
+          <div class="input-group input-xs">
+            {{schema/input-string value=value}}
+          </div>
+        {{/if}}
+      </span>
+    </label>
+  </div>
+{{else}}
+  {{schema/input-string value=value}}
+{{/if}}
