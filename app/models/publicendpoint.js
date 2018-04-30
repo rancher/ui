@@ -78,7 +78,7 @@ var PublicEndpoint = Resource.extend({
   // port[/udp]
   displayEndpoint: computed('port','protocol', 'path', function() {
     let path = get(this,'path') || '';
-    if ( path ) {
+    if ( path && path !== '/' ) {
       return path;
     }
 
