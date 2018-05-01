@@ -10,8 +10,9 @@ export default Controller.extend(NewOrEdit, {
   scope:           service(),
 
   primaryResource: alias('model.namespace'),
-  queryParams:     ['addTo'],
+  queryParams:     ['addTo', 'from'],
   addTo:           null,
+  from:            null,
 
   actions: {
     cancel() {

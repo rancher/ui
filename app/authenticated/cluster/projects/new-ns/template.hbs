@@ -12,16 +12,18 @@
     {{t 'editStack.name.error'}}
   </p>
 {{/if}}
-<label class="pt-20 pb-5 acc-label">{{t 'editStack.project.label'}}</label>
-{{new-select
-    classNames="form-control"
-    optionValuePath="id"
-    optionLabelPath="displayName"
-    content=allProjects
-    value=model.namespace.projectId
-    prompt="editStack.project.prompt"
-    localizedPrompt=true
-}}
+{{#unless from}}
+  <label class="pt-20 pb-5 acc-label">{{t 'editStack.project.label'}}</label>
+  {{new-select
+      classNames="form-control"
+      optionValuePath="id"
+      optionLabelPath="displayName"
+      content=allProjects
+      value=model.namespace.projectId
+      prompt="editStack.project.prompt"
+      localizedPrompt=true
+  }}
+{{/unless}}
 
 {{top-errors errors=errors}}
 {{save-cancel editing=false save="save" cancel="cancel"}}
