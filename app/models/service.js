@@ -5,6 +5,8 @@ import { inject as service } from '@ember/service';
 export default Resource.extend({
   intl: service(),
 
+  canEditYaml: true,
+
   displayKind: computed('intl.locale', 'kind', function() {
     const intl = get(this, 'intl');
 

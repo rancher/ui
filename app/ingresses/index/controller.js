@@ -47,7 +47,7 @@ export default Controller.extend({
     return get(this,'model.services').filterBy('kind','LoadBalancer');
   }),
 
-  rows: computed('model.ingresses.[]','balancerServices', function() {
+  rows: computed('model.ingresses.[]','balancerServices.[]', function() {
     const out = (get(this,'balancerServices')||[]).slice();
     out.addObjects(get(this,'model.ingresses')||[]);
     return out;
