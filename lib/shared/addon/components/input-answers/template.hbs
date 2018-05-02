@@ -9,7 +9,7 @@
     {{/if}}
     &nbsp;
   </div>
-  <div class="mt-20">
+  <div class="mt-25">
     {{#if pasteOrUpload}}
       {{textarea-autogrow
           value=pastedAnswers
@@ -21,10 +21,12 @@
       <span class="pull-right btn btn-xs bg-transparent mb-10" {{action 'cancel'}}>Cancel</span>
     {{else}}
      {{#each answerSections as |section index|}}
-        {{#unless (eq index 0)}}
+        {{#if section.title}}
+          <div class="over-hr"><span>{{section.title}}</span></div>
+        {{else if (gt index 0)}}
           <hr>
-        {{/unless}}
-        {{#each section as |group|}}
+        {{/if}}
+        {{#each section.data as |group|}}
           <div class="row">
             {{#each group as |question|}}
               <div class="col span-6">
