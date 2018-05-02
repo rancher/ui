@@ -21,6 +21,7 @@
     {{/if}}
   </div>
 </div>
+
 {{logging/targets-nav
     originalModel=originalModel
     targetType=targetType
@@ -39,35 +40,50 @@
     </div>
   </div>
 
-  {{!-- if the current saved target is embedded --}}
-  {{#if originalModel.embeddedConfig}}
-
-      <div class="banner {{esDeployState.background}}">
-        <div class="banner-icon p-20"><i class="{{esDeployState.icon}}"></i></div>
-        <div class="banner-message p-10">
-          {{esDeployState.message}}
-          {{#if (eq esDeployState.state 'success')}}
-            <a target="_blank" rel="nofollow noreferrer noopener" href="{{originalModel.embeddedConfig.elasticsearchEndpoint}}">
-              {{originalModel.embeddedConfig.elasticsearchEndpoint}}
-            </a>
-            {{copy-to-clipboard size='small' clipboardText=originalModel.embeddedConfig.elasticsearchEndpoint htmlSafe=true}}
-          {{/if}}
-        </div>
+  {{#if (and originalModel.showTransitioningMessage (not-eq originalModel.targetType 'none'))}}
+    <div class="banner {{originalModel.stateBackground}}">
+      <div class="banner-icon p-20"><i class="icon {{originalModel.stateIcon}}"></i></div>
+      <div class="banner-message p-20">
+        <table>
+          {{error-sub-row fullColspan=fullColspan model=originalModel}}
+        </table>
       </div>
-
-      <div class="banner {{kibanaDeployState.background}}">
-        <div class="banner-icon p-20"><i class="{{kibanaDeployState.icon}}"></i></div>
-        <div class="banner-message p-10">
-          {{kibanaDeployState.message}}
-          {{#if (eq kibanaDeployState.state 'success')}}
-            <a target="_blank" rel="nofollow noreferrer noopener" href="{{originalModel.embeddedConfig.kibanaEndpoint}}">
-              {{originalModel.embeddedConfig.kibanaEndpoint}}
-            </a>
-            {{copy-to-clipboard size='small' clipboardText=originalModel.embeddedConfig.kibanaEndpoint htmlSafe=true}}
-          {{/if}}
-        </div>
-      </div>
+    </div>
   {{/if}}
+
+  {{#if originalModel.embeddedConfig.elasticsearchEndpoint}}
+      <div class="banner bg-success">
+        <div class="banner-icon p-20"><i class="icon icon-check text-success"></i></div>
+        <div class="banner-message p-10">
+          {{t 'loggingPage.embedded.elasticsearchEndpoint'}}
+          <a target="_blank" rel="nofollow noreferrer noopener" href="{{originalModel.embeddedConfig.elasticsearchEndpoint}}">
+            {{originalModel.embeddedConfig.elasticsearchEndpoint}}
+          </a>
+          {{copy-to-clipboard
+              size='small'
+              clipboardText=originalModel.embeddedConfig.elasticsearchEndpoint
+              htmlSafe=true
+          }}
+        </div>
+      </div>
+    {{/if}}
+
+    {{#if originalModel.embeddedConfig.kibanaEndpoint}}
+      <div class="banner bg-success">
+        <div class="banner-icon p-20"><i class="icon icon-check text-success"></i></div>
+        <div class="banner-message p-10">
+          {{t 'loggingPage.embedded.kibanaEndpoint'}}
+          <a target="_blank" rel="nofollow noreferrer noopener" href="{{originalModel.embeddedConfig.kibanaEndpoint}}">
+            {{originalModel.embeddedConfig.kibanaEndpoint}}
+          </a>
+          {{copy-to-clipboard
+              size='small'
+              clipboardText=originalModel.embeddedConfig.kibanaEndpoint
+              htmlSafe=true
+          }}
+        </div>
+      </div>
+    {{/if}}
 
 {{/if}}
 
