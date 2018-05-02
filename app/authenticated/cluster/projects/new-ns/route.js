@@ -11,6 +11,9 @@ export default Route.extend({
   queryParams: {
     addTo: {
       refreshModel: true
+    },
+    from: {
+      refreshModel: false
     }
   },
 

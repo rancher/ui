@@ -20,7 +20,7 @@
 {{/if}}
 
 <div class="gh-block-content">
-  <div class="clip gh-block-name">
+  <div class="gh-block-name">
     {{#if loading}}
       {{t 'identityBlock.loading'}}
     {{else}}
@@ -28,7 +28,9 @@
         <a href="{{principal.profileURL}}" target="_blank">{{login}}</a>
       {{else}}
         {{#if principal.displayName}}
-          {{principal.displayName}} <small>(&nbsp;{{principal.loginName}}&nbsp;)</small>
+          <div>
+            {{principal.displayName}} {{#if principal.loginName }}<small>(&nbsp;{{principal.loginName}}&nbsp;)</small>{{/if}}
+          </div>
         {{else if principal.loginName}}
             {{principal.loginName}}
         {{else}}

@@ -36,7 +36,7 @@ export default Resource.extend({
       });
     },
     bypassRevert() {
-      set(this, 'value', get(this, 'default'));
+      set(this, 'value', get(this, 'default')||'');
 
       this.save();
     },
@@ -44,6 +44,10 @@ export default Resource.extend({
 
   isDefault: computed('value', 'default', function() {
     return get(this, 'default') === get(this, 'value');
+  }),
+
+  canRevert: computed('default', function() {
+    return !isEmpty(get(this, 'default')) && !get(this, 'isDefault');
   }),
 
   delete() {
@@ -54,7 +58,7 @@ export default Resource.extend({
   },
   availableActions: computed('actionLinks.{update,remove}', function() {
     return [
-      { label: 'action.revert',       icon: 'icon icon-history',          action: 'revert',       enabled: !isEmpty(get(this, 'default')) && !get(this, 'isDefault'),  altAction: 'bypassRevert' },
+      { label: 'action.revert',       icon: 'icon icon-history',          action: 'revert',       enabled: get(this, 'canRevert'),  altAction: 'bypassRevert' },
     ];
   }),
 });
