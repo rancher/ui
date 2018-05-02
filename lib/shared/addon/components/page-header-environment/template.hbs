@@ -1,81 +1,88 @@
-<a class="dropdown-toggle {{if twoLine 'two-line'}} text-white" aria-haspopup="true" aria-expanded="false" aria-label="{{t 'nav.environment.cluster'}}" data-toggle="environment">
-  {{#if (eq pageScope "project")}}
-    <div class="clip">
-      <i class="icon icon-cluster icon-fw"></i>
-      {{project.cluster.displayName}}
-    </div>
-    <div class="pl-15 clip text-muted">
-      <i class="{{project.icon}} project-icon icon-fw"></i>
-      {{project.displayName}}
-    </div>
-  {{else if (eq pageScope "cluster")}}
-    <div class="clip">
-      <i class="icon icon-cluster icon-fw"></i>
-      {{cluster.displayName}}
-    </div>
-  {{else if (eq pageScope "clusters")}}
-    <div class="clip">
-      {{t 'nav.environment.manage'}}
-    </div>
-  {{else if (eq pageScope "global")}}
-    <div class="clip">
-      <i class="icon icon-globe icon-fw"></i>
-      {{t 'nav.admin.tab'}}
-    </div>
-  {{else}}
-    <div class="clip">
-      <i class="icon icon-question icon-fw"></i>
-      {{pageScope}}
-    </div>
-  {{/if}}
+{{#basic-dropdown-hover
+     horizontalPosition="left"
+     delay=150
+     as |dd|}}
+  {{#dd.trigger  ariaLabel=(t 'nav.environment.cluster') }}
+    <a class="{{if twoLine 'two-line'}} text-white">
+      {{#if (eq pageScope "project")}}
+        <div class="clip">
+          <i class="icon icon-cluster icon-fw"></i>
+          {{project.cluster.displayName}}
+        </div>
+        <div class="pl-15 clip text-muted">
+          <i class="{{project.icon}} project-icon icon-fw"></i>
+          {{project.displayName}}
+        </div>
+      {{else if (eq pageScope "cluster")}}
+        <div class="clip">
+          <i class="icon icon-cluster icon-fw"></i>
+          {{cluster.displayName}}
+        </div>
+      {{else if (eq pageScope "clusters")}}
+        <div class="clip">
+          {{t 'nav.environment.manage'}}
+        </div>
+      {{else if (eq pageScope "global")}}
+        <div class="clip">
+          <i class="icon icon-globe icon-fw"></i>
+          {{t 'nav.admin.tab'}}
+        </div>
+      {{else}}
+        <div class="clip">
+          <i class="icon icon-question icon-fw"></i>
+          {{pageScope}}
+        </div>
+      {{/if}}
 
-  <i class="icon icon-chevron-down chevron"></i>
-  <span class="sr-only">{{t 'nav.srToggleDropdown'}}</span>
-</a>
+      <i class="icon icon-chevron-down chevron"></i>
+      <span class="sr-only">{{t 'nav.srToggleDropdown'}}</span>
+    </a>
+  {{/dd.trigger}}
 
-<ul class="dropdown-menu cluster-menu" role="menu" data-dropdown-id="environment">
-  {{#each byCluster as |entry idx|}}
-    {{#if (gt idx 0)}}
-      <li role="presentation" class="divider"></li>
-    {{/if}}
-    <li class="header {{if entry.active (if (eq pageScope 'cluster') 'active selected') 'inactive'}}">
-      {{#link-to 'authenticated.cluster' entry.cluster.id}}
-        <i class="icon icon-cluster icon-fw"></i>
-        Cluster: {{entry.cluster.displayName}}
-      {{/link-to}}
-    </li>
-    {{#if entry.cluster.isReady}}
-      {{#each entry.projects as |p|}}
-        <li class="{{if (and (eq pageScope "project") p.active) 'active selected' (unless entry.active 'inactive')}} subitem text-muted">
-          {{#link-to 'authenticated.project' p.id class="clip project-link"}}
-            <i class="icon {{p.icon}} icon-fw"></i>
+  {{#dd.content class="cluster-menu"}}
+    {{#each byCluster as |entry idx|}}
+      {{#if (gt idx 0)}}
+        <li role="presentation" class="divider"></li>
+      {{/if}}
+      <li class="header {{if entry.active (if (eq pageScope 'cluster') 'active selected') 'inactive'}}">
+        {{#link-to 'authenticated.cluster' entry.cluster.id}}
+          <i class="icon icon-cluster icon-fw"></i>
+          Cluster: {{entry.cluster.displayName}}
+        {{/link-to}}
+      </li>
+      {{#if entry.cluster.isReady}}
+        {{#each entry.projects as |p|}}
+          <li class="{{if (and (eq pageScope "project") p.active) 'active selected' (unless entry.active 'inactive')}} subitem text-muted">
+            {{#link-to 'authenticated.project' p.id class="clip project-link"}}
+              <i class="icon {{p.icon}} icon-fw"></i>
 
-            {{p.displayName}}
-          {{/link-to}}
-        </li>
-      {{/each}}
+              {{p.displayName}}
+            {{/link-to}}
+          </li>
+        {{/each}}
     {{else}}
-      <p class="text-small text-muted m-0 p-0 pl-50">{{entry.cluster.displayState}}</p>
-    {{/if}}
-  {{/each}}
+        <p class="text-small text-muted m-0 p-0 pl-50">{{entry.cluster.displayState}}</p>
+      {{/if}}
+    {{/each}}
 
-  {{#if projectIsMissing}}
+    {{#if projectIsMissing}}
+      <li role="presentation" class="divider"></li>
+      <li role="presentation" class="dropdown-header">{{t 'nav.environment.selected'}}</li>
+      <li class="{{if (and (eq pageScope "project") project.active) 'active selected'}}">
+        <a href="#" {{action "switchProject" project}} class="clip">
+          <i class="icon {{project.icon}}"></i>
+          &nbsp;
+          {{project.displayName}}
+        </a>
+      </li>
+    {{/if}}
+
     <li role="presentation" class="divider"></li>
-    <li role="presentation" class="dropdown-header">{{t 'nav.environment.selected'}}</li>
-    <li class="{{if (and (eq pageScope "project") project.active) 'active selected'}}">
-      <a href="#" {{action "switchProject" project}} class="clip">
-        <i class="icon {{project.icon}}"></i>
-        &nbsp;
-        {{project.displayName}}
+    <li class="header {{if (eq pageScope "global") 'active selected' 'inactive'}}">
+      <a href="{{href-to "global-admin"}}">
+        <i class="icon icon-globe icon-fw"></i>
+        {{t 'nav.admin.tab'}}
       </a>
     </li>
-  {{/if}}
-
-  <li role="presentation" class="divider"></li>
-  <li class="header {{if (eq pageScope "global") 'active selected' 'inactive'}}">
-    <a href="{{href-to "global-admin"}}">
-      <i class="icon icon-globe icon-fw"></i>
-      {{t 'nav.admin.tab'}}
-    </a>
-  </li>
-</ul>
+  {{/dd.content}}
+{{/basic-dropdown-hover}}

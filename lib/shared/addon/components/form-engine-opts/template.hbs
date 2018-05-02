@@ -13,12 +13,21 @@
         <div class="input-group">
           {{input type="text" value=machine.engineInstallURL classNames="form-control" placeholder=(t 'formEngineOpts.engineInstallUrl.placeholder')}}
           <div class="input-group-btn bg-default">
-            <button type="button" class="btn bg-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="icon icon-chevron-down"></i></button>
-            <ul class="dropdown-menu dropdown-menu-right" role="menu" style="min-width: 250px; max-height: 300px; overflow-y: auto;">
-              {{#each engineUrlChoices as |choice|}}
-                <li><a href="#" {{action "setEngine" choice.value}}>{{choice.label}}</a></li>
-              {{/each}}
-            </ul>
+            {{#basic-dropdown
+                 delay=150
+                 horizontalPosition="right"
+                 as |dd|}}
+              {{#dd.trigger class="btn bg-default"}}
+                <i class="icon icon-chevron-down"></i>
+              {{/dd.trigger}}
+
+              {{#dd.content}}
+                {{#each engineUrlChoices as |choice|}}
+                  <li><a href="#" {{action "setEngine" choice.value}}>{{choice.label}}</a></li>
+                {{/each}}
+              {{/dd.content}}
+
+            {{/basic-dropdown}}
           </div>
         </div>
       </div>

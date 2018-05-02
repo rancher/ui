@@ -12,18 +12,20 @@
             id="syslog-endpoint"
         }}
         <div class="input-group-btn bg-primary">
-          <button
-            type="button"
-            class="btn bg-primary dropdown-toggle text-uppercase"
-            data-toggle="dropdown"
-            aria-expanded="false"
-          >
-            <span class="pr-5">{{config.protocol}}</span><i class="icon icon-chevron-down"></i>
-          </button>
-          <ul class="dropdown-menu dropdown-menu-right" role="menu">
-            <li><a {{action "changeProtocol" 'tcp'}}>TCP</a></li>
-            <li><a {{action "changeProtocol" 'udp'}}>UDP</a></li>
-          </ul>
+          {{#basic-dropdown
+               delay=150
+               horizontalPosition="right"
+               as |dd|}}
+            {{#dd.trigger class="btn bg-default text-uppercase"}}
+              <span class="pr-5">{{config.protocol}}</span><i class="icon icon-chevron-down"></i>
+            {{/dd.trigger}}
+
+            {{#dd.content}}
+              <li><a {{action "changeProtocol" 'tcp'}}>TCP</a></li>
+              <li><a {{action "changeProtocol" 'udp'}}>UDP</a></li>
+            {{/dd.content}}
+
+          {{/basic-dropdown}}
         </div>
       </div>
     <p class="text-info text-small mb-0">{{t 'loggingPage.syslog.endpointHelpText'}}</p>

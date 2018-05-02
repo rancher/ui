@@ -14,61 +14,85 @@
         {{/if}}
       </div>
 
-      <div class="dropdown filter-group pull-right ml-20">
-        <button type="button" class="btn bg-default btn-md pt-5 pb-5 dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="text-align: left;"><i class="icon icon-chevron-down pull-right ml-10"></i>
-          <span class="text-capitalize">
-            {{#if (eq catalogId '')}}
-              {{t 'catalogPage.index.allCatalogs'}}
-            {{else}}
-              {{catalogId}}
-            {{/if}}
-          </span>
-        </button>
-        <ul class="dropdown-menu dropdown-menu-right">
-          <li class="text-capitalize {{if (eq catalogId '') 'active'}}">
-            <a href="#" {{action (action filterAction '')}}>
-              {{t 'catalogPage.index.allCatalogs'}}
-            </a>
-          </li>
-          {{#each filters as |opt|}}
-            <li class="{{if (eq catalogId opt.catalogId) 'active'}}">
-              <a href="#" {{action (action filterAction opt.catalogId )}}>
-                <i class="{{opt.icon}}"></i>
-                {{#if opt.localizedLabel}}
-                  {{t opt.localizedLabel}}
-                {{else}}
-                  <div class="text-capitalize">{{opt.label}}</div>
-                {{/if}}
+      <div class="filter-group pull-right ml-20">
+        {{#basic-dropdown
+             delay=150
+             horizontalPosition="right"
+             as |dd|}}
+          {{#dd.trigger
+               class="btn bg-default btn-md pt-5 pb-5 "
+          }}
+            <i class="icon icon-chevron-down pull-right ml-10"></i>
+            <span class="text-capitalize">
+              {{#if (eq catalogId '')}}
+                {{t 'catalogPage.index.allCatalogs'}}
+              {{else}}
+                {{catalogId}}
+              {{/if}}
+            </span>
+          {{/dd.trigger}}
+
+          {{#dd.content
+               class="text-right"
+          }}
+            <li class="text-capitalize {{if (eq catalogId '') 'active'}}">
+              <a href="#" {{action (action filterAction '')}}>
+                {{t 'catalogPage.index.allCatalogs'}}
               </a>
             </li>
-          {{/each}}
-        </ul>
+            {{#each filters as |opt|}}
+              <li class="{{if (eq catalogId opt.catalogId) 'active'}}">
+                <a href="#" {{action (action filterAction opt.catalogId )}}>
+                  <i class="{{opt.icon}}"></i>
+                  {{#if opt.localizedLabel}}
+                    {{t opt.localizedLabel}}
+                  {{else}}
+                    <div class="text-capitalize">{{opt.label}}</div>
+                  {{/if}}
+                </a>
+              </li>
+            {{/each}}
+          {{/dd.content}}
+        {{/basic-dropdown}}
       </div>
 
       <div class="dropdown filter-group pull-right ml-20">
-        <button type="button" class="btn bg-default btn-md pt-5 pb-5 dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="text-align: left;"><i class="icon icon-chevron-down pull-right ml-10"></i>
-          <span class="text-capitalize">
-            {{#if (eq category '')}}
-              {{t 'catalogPage.index.allCategories'}}
-            {{else}}
-              {{category}}
-            {{/if}}
-          </span>
-        </button>
-        <ul class="dropdown-menu dropdown-menu-right">
-          <li class="text-capitalize {{if (eq category '') 'active'}}">
-            <a href="#" {{action (action categoryAction '' catalogId)}}>
-              {{t 'catalogPage.index.allCategories'}}
-            </a>
-          </li>
-          {{#each categoryWithCounts as |opt|}}
-            <li class="{{if (eq category opt.category) 'active'}}">
-              <a href="#" {{action (action categoryAction opt.category catalogId )}}>
-                <div class="text-capitalize">{{opt.name}}</div>
+        {{#basic-dropdown
+             delay=150
+             horizontalPosition="right"
+             as |dd|}}
+          {{#dd.trigger
+               class="btn bg-default btn-md pt-5 pb-5 "
+          }}
+            <i class="icon icon-chevron-down pull-right ml-10"></i>
+            <span class="text-capitalize">
+              {{#if (eq category '')}}
+                {{t 'catalogPage.index.allCategories'}}
+              {{else}}
+                {{category}}
+              {{/if}}
+            </span>
+          {{/dd.trigger}}
+
+          {{#dd.content
+               class="text-right"
+          }}
+            <li class="text-capitalize {{if (eq category '') 'active'}}">
+              <a href="#" {{action (action categoryAction '' catalogId)}}>
+                {{t 'catalogPage.index.allCategories'}}
               </a>
             </li>
-          {{/each}}
-        </ul>
+            {{#each categoryWithCounts as |opt|}}
+              <li class="{{if (eq category opt.category) 'active'}}">
+                <a href="#" {{action (action categoryAction opt.category catalogId )}}>
+                  <div class="text-capitalize">{{opt.name}}</div>
+                </a>
+              </li>
+            {{/each}}
+          {{/dd.content}}
+
+        {{/basic-dropdown}}
+
       </div>
 
       <div class="pull-right">

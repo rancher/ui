@@ -21,12 +21,18 @@
   {{/if}}
 
   {{#if editing}}
-    <div class="dropdown">
-      <button type="button" class="btn bg-link p-0 icon-btn dropdown-toggle pl-10" data-toggle="dropdown" aria-expanded="false">
+    {{#basic-dropdown
+         delay=150
+         horizontalPosition="left"
+         as |dd|}}
+      {{#dd.trigger
+           class="btn bg-link p-0 icon-btn pl-10"
+      }}
         <span>{{t 'formVolumes.add.label'}}</span>
         <span class="darken"><i class="icon icon-chevron-down"></i></span>
-      </button>
-      <ul class="dropdown-menu" role="menu">
+      {{/dd.trigger}}
+
+      {{#dd.content}}
         <li><a {{action "addVolume"}}>{{t 'formVolumes.add.newVolume'}}</a></li>
         <li><a {{action "addNewPvc"}}>{{t 'formVolumes.add.newPvc'}}</a></li>
         <li><a {{action "addPvc"}}>{{t 'formVolumes.add.existingPvc'}}</a></li>
@@ -37,8 +43,8 @@
         {{#if loggingEnabled}}
           <li><a {{action "addCustomLogPath"}}>{{t 'formVolumes.add.customLogPath'}}</a></li>
         {{/if}}
-      </ul>
-    </div>
+      {{/dd.content}}
+    {{/basic-dropdown}}
   {{/if}}
 
 {{/accordion-list-item}}
