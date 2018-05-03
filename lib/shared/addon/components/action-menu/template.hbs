@@ -1,6 +1,5 @@
-{{#basic-dropdown
-     delay=150
-     as |dd|}}
+{{#basic-dropdown as |dd|}}
+
   {{#dd.trigger
        ariaLabel=(t 'generic.moreActions')
        class=(concat "btn bg-transparent more-actions " sizeClass)
@@ -10,12 +9,19 @@
   {{/dd.trigger}}
 
   {{#dd.content class="resource-actions global-actions"}}
+
     <li class="resource-actions-tabbable"><a tabindex="-1" id="resource-actions-first" aria-label="Select an Action below"></a></li>
+
     {{#each resourceActions.activeActions as |item|}}
+
       {{#if item.divider}}
+
         <li class="divider"></li>
+
       {{else}}
-        <li {{action "closeLater" dd}}>
+
+        {{!-- the close action is on the LI in this case because the action menu item is capturing the click action --}}
+        <li {{action dd.actions.close}}>
           {{action-menu-item
               label=item.label
               icon=item.icon
@@ -24,9 +30,15 @@
               altActionArg=item.altAction
           }}
         </li>
+
       {{/if}}
+
     {{else}}
+
       <li><a href="#" onclick="return false;" disabled="true">No actions available</a></li>
+
     {{/each}}
+
   {{/dd.content}}
+
 {{/basic-dropdown}}

@@ -3,19 +3,29 @@
 
   <ul class="nav-main nav-list no-inline-space">
     {{page-header-environment
-      pageScope=pageScope
+        pageScope=pageScope
     }}
 
     {{#each navTree as |item|}}
+
       {{#if item.submenu.length}}
+
         {{! Has a submenu }}
-        {{#basic-dropdown-hover
-             delay=150
+        {{#basic-dropdown
+             tagName="li"
+             class="nav-item"
              as |dd|}}
-          <li class="nav-item">
-            {{#dd.trigger}}
+
+            {{#dd.trigger
+                 onMouseDown=(action "prevent")
+                 onMouseEnter=(action "open")
+                 onMouseLeave=(action "closeLater")
+            }}
+
               {{#if (or (not item.resource) (rbac-allows resource=item.resource scope=item.resourceScope))}}
+
                 {{#if item.route}}
+
                   {{#link-to-as-attrs
                        item.route
                        models=item.ctx
@@ -29,19 +39,32 @@
                     {{maybe-t item.localizedLabel item.label}}
                     <span class="icon icon-chevron-down"/>
                   {{/link-to-as-attrs}}
+
                 {{else}}
+
                   <a role="button" aria-haspopup="true" aria-label={{maybe-t item.localizedLabel item.label}}>
                     {{maybe-t item.localizedLabel item.label}}
                     <span class="icon icon-chevron-down"/>
                   </a>
+
                 {{/if}}
+
               {{/if}}
+
             {{/dd.trigger}}
 
-            {{#dd.content class="" tagName="ul"}}
+            {{#dd.content
+                 onMouseEnter=(action "open")
+                 onMouseLeave=(action "closeLater")
+                 tagName="ul"
+            }}
+
               {{#each item.submenu as |subitem|}}
+
                 {{#if subitem.route}}
+
                   {{#if (or (not subitem.resource) (rbac-allows resource=subitem.resource scope=subitem.resourceScope))}}
+
                     <li>
                       {{#link-to-as-attrs
                            subitem.route
@@ -54,21 +77,32 @@
                         <i class="{{subitem.icon}}"/> {{maybe-t subitem.localizedLabel subitem.label}}
                       {{/link-to-as-attrs}}
                     </li>
+
                   {{/if}}
+
                 {{else if subitem.divider}}
+
                   <li class="divider"></li>
+
                 {{else}}
+
                   {{! Just a label }}
                   <li class="dropdown-header">
                     <i class="{{subitem.icon}}"/> {{maybe-t subitem.localizedLabel subitem.label}}
                   </li>
+
                 {{/if}}
+
               {{/each}}
+
             {{/dd.content}}
-          </li>
-        {{/basic-dropdown-hover}}
+
+        {{/basic-dropdown}}
+
       {{else if item.route}}
+
         {{#if (or (not item.resource) (rbac-allows resource=item.resource scope=item.resourceScope))}}
+
           {{! No submenu }}
           <li class="nav-item">
             {{#link-to-as-attrs
@@ -82,22 +116,37 @@
               {{maybe-t item.localizedLabel item.label}}
             {{/link-to-as-attrs}}
           </li>
+
         {{/if}}
+
       {{else}}
+
         {{! Just a label }}
         <li class="dropdown-header">
           {{maybe-t item.localizedLabel item.label}}
         </li>
+
       {{/if}}
+
     {{/each}}
+
   </ul>
 
-  {{#basic-dropdown-hover
+  {{#basic-dropdown
+       tagName="ul"
+       class="nav-user"
        horizontalPosition="right"
        delay=250
-       as |dd|}}
-    <ul class="nav-user">
-      {{#dd.trigger class="btn" ariaLabel=(t 'nav.user.label' username=session.user)}}
+       as |dd|
+  }}
+    {{!-- <ul class="nav-user"> --}}
+      {{#dd.trigger
+           class="btn"
+           ariaLabel=(t 'nav.user.label' username=session.user)
+           onMouseDown=(action "prevent")
+           onMouseEnter=(action "open")
+           onMouseLeave=(action "closeLater")
+      }}
         {{#if accessEnabled}}
           {{identity-avatar link=false identity=access.principal}}
         {{else}}
@@ -111,7 +160,12 @@
         <i class="icon icon-chevron-down"></i>
       {{/dd.trigger}}
 
-      {{#dd.content class="text-right" tagName="ul"}}
+      {{#dd.content
+           class="text-right"
+           tagName="ul"
+           onMouseEnter=(action "open")
+           onMouseLeave=(action "closeLater")
+      }}
         {{#if accessEnabled}}
           <li role="presentation" class="user-auth">
             {{identity-block principal=access.principal}}
@@ -130,6 +184,6 @@
         <li role="separator" class="divider"></li>
         <li>{{#link-to "logout" class="user-logout"}}{{t 'nav.user.logout'}} <i class="icon icon-logout icon-fw"/>{{/link-to}}</li>
       {{/dd.content}}
-    </ul>
-  {{/basic-dropdown-hover}}
+      {{!-- </ul> --}}
+  {{/basic-dropdown}}
 </nav>

@@ -1,8 +1,15 @@
-{{#basic-dropdown-hover
+{{#basic-dropdown
      horizontalPosition="left"
-     delay=150
-     as |dd|}}
-  {{#dd.trigger  ariaLabel=(t 'nav.environment.cluster') }}
+     as |dd|
+}}
+
+  {{#dd.trigger
+       onMouseDown=(action "prevent")
+       onMouseEnter=(action "open")
+       onMouseLeave=(action "closeLater")
+       ariaLabel=(t 'nav.environment.cluster')
+  }}
+
     <a class="{{if twoLine 'two-line'}} text-white">
       {{#if (eq pageScope "project")}}
         <div class="clip">
@@ -37,21 +44,32 @@
       <i class="icon icon-chevron-down chevron"></i>
       <span class="sr-only">{{t 'nav.srToggleDropdown'}}</span>
     </a>
+
   {{/dd.trigger}}
 
-  {{#dd.content class="cluster-menu"}}
+  {{#dd.content
+       onMouseEnter=(action "open")
+       onMouseLeave=(action "closeLater")
+       class="cluster-menu"
+  }}
+
     {{#each byCluster as |entry idx|}}
+
       {{#if (gt idx 0)}}
         <li role="presentation" class="divider"></li>
       {{/if}}
+
       <li class="header {{if entry.active (if (eq pageScope 'cluster') 'active selected') 'inactive'}}">
         {{#link-to 'authenticated.cluster' entry.cluster.id}}
           <i class="icon icon-cluster icon-fw"></i>
           Cluster: {{entry.cluster.displayName}}
         {{/link-to}}
       </li>
+
       {{#if entry.cluster.isReady}}
+
         {{#each entry.projects as |p|}}
+
           <li class="{{if (and (eq pageScope "project") p.active) 'active selected' (unless entry.active 'inactive')}} subitem text-muted">
             {{#link-to 'authenticated.project' p.id class="clip project-link"}}
               <i class="icon {{p.icon}} icon-fw"></i>
@@ -59,13 +77,19 @@
               {{p.displayName}}
             {{/link-to}}
           </li>
+
         {{/each}}
-    {{else}}
+
+      {{else}}
+
         <p class="text-small text-muted m-0 p-0 pl-50">{{entry.cluster.displayState}}</p>
+
       {{/if}}
+
     {{/each}}
 
     {{#if projectIsMissing}}
+
       <li role="presentation" class="divider"></li>
       <li role="presentation" class="dropdown-header">{{t 'nav.environment.selected'}}</li>
       <li class="{{if (and (eq pageScope "project") project.active) 'active selected'}}">
@@ -75,14 +99,18 @@
           {{project.displayName}}
         </a>
       </li>
+
     {{/if}}
 
     <li role="presentation" class="divider"></li>
+
     <li class="header {{if (eq pageScope "global") 'active selected' 'inactive'}}">
       <a href="{{href-to "global-admin"}}">
         <i class="icon icon-globe icon-fw"></i>
         {{t 'nav.admin.tab'}}
       </a>
     </li>
+
   {{/dd.content}}
-{{/basic-dropdown-hover}}
+
+{{/basic-dropdown}}
