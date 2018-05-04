@@ -35,6 +35,11 @@ export default Controller.extend(NewOrEdit, {
   }),
 
   nameExists: computed('primaryResource.name', 'model.namespaces.@each.name', function () {
-    return get(this, 'primaryResource.name') && get(this, 'model.namespaces').findBy('name', get(this, 'primaryResource.name'));
+    const name = get(this, 'primaryResource.name');
+    if ( name ) {
+      const found = get(this, 'model.namespaces').findBy('name', name);
+      return found && get(this, 'primaryResource.id') !== get(found, 'id');
+    }
+    return false;
   }),
 });
