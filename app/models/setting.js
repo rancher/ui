@@ -26,6 +26,7 @@ export default Resource.extend({
         canDelete: obj && !obj.get('isDefault'),
       });
     },
+
     revert() {
       let key = get(this, 'id');
       let details = this.get('allowed')[key];
@@ -46,7 +47,7 @@ export default Resource.extend({
     return get(this, 'default') === get(this, 'value');
   }),
 
-  canRevert: computed('default', function() {
+  canRevert: computed('default', 'isDefault', function() {
     return !isEmpty(get(this, 'default')) && !get(this, 'isDefault');
   }),
 
