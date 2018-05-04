@@ -72,7 +72,14 @@
           <label>{{t 'nodeDriver.aliyunecs.instanceType.label'}}</label>
         </div>
         <div class="col span-4">
-          {{input type="text" class="form-control" value=config.instanceType placeholder=(t 'nodeDriver.aliyunecs.instanceType.placeholder')}}
+          {{!-- {{input type="text" class="form-control" value=config.instanceType placeholder=(t 'nodeDriver.aliyunecs.instanceType.placeholder')}} --}}
+            {{new-select
+            classNames="form-control"
+            content=instanceType
+            optionLabelPath='description'
+            optionValuePath='value'
+            value=config.instanceType
+            }}
         </div>
       </div>
 
@@ -81,7 +88,14 @@
           <label>{{t 'nodeDriver.aliyunecs.systemImage.label'}}</label>
         </div>
         <div class="col span-4">
-          {{input type="text" class="form-control" value=config.imageId placeholder=(t 'nodeDriver.aliyunecs.systemImage.placeholder')}}
+          {{!-- {{input type="text" class="form-control" value=config.imageId placeholder=(t 'nodeDriver.aliyunecs.systemImage.placeholder')}} --}}
+            {{new-select
+            classNames="form-control"
+            content=images
+            optionLabelPath='description'
+            optionValuePath='value'
+            value=config.imageId
+            }}
         </div>
 
         <div class="col span-2 col-inline">
@@ -133,7 +147,13 @@
           <label>{{t 'nodeDriver.aliyunecs.systemDiskCategory.label'}}</label>
         </div>
         <div class="col span-4">
-          {{input type="text" class="form-control" value=config.systemDiskCategory placeholder=(t 'nodeDriver.aliyunecs.systemDiskCategory.placeholder')}}
+          {{!-- {{input type="text" class="form-control" value=config.systemDiskCategory placeholder=(t 'nodeDriver.aliyunecs.systemDiskCategory.placeholder')}} --}}
+            {{new-select
+            classNames="form-control"
+            content=systemDiskCategory
+            optionLabelPath='value'
+            value=config.systemDiskCategory
+            }}
         </div>
       </div>
 
@@ -142,7 +162,14 @@
           <label>{{t 'nodeDriver.aliyunecs.dataDiskCategory.label'}}</label>
         </div>
         <div class="col span-4">
-          {{input type="text" class="form-control" value=config.diskCategory placeholder=(t 'nodeDriver.aliyunecs.dataDiskCategory.placeholder')}}
+          {{!-- {{input type="text" class="form-control" value=config.diskCategory placeholder=(t 'nodeDriver.aliyunecs.dataDiskCategory.placeholder')}} --}}
+            {{new-select
+            classNames="form-control"
+            content=dataDiskCategory
+            optionLabelPath='value'
+            value=config.diskCategory
+            }}
+        
         </div>
 
         <div class="col span-2 col-inline">
@@ -161,7 +188,13 @@
           <label>{{t 'nodeDriver.aliyunecs.region.label'}}</label>
         </div>
         <div class="col span-4">
-          {{input type="text" class="form-control" value=config.region placeholder=(t 'nodeDriver.aliyunecs.region.placeholder')}}
+          {{!-- {{input type="text" class="form-control" value=config.region placeholder=(t 'nodeDriver.aliyunecs.region.placeholder')}} --}}
+            {{new-select
+            classNames="form-control"
+            content=regions
+            optionLabelPath='value'
+            value=config.region
+            }}
         </div>
 
         <div class="col span-2 col-inline">
@@ -237,21 +270,23 @@
       </div>
     </div>
 
-    <div class="over-hr mt-40 mb-30">
-      <span>{{settings.appName}}</span>
-    </div>
-
-    <div class="row">
-      <div class="col span-12">
-        {{form-user-labels initialLabels=labelResource.labels setLabels=(action 'setLabels') expandAll=null}}
-      </div>
-    </div>
-
-    {{#advanced-section}}
-      {{form-engine-opts machine=model showEngineUrl=showEngineUrl}}
-    {{/advanced-section}}
   </div>
+  <div class="over-hr mt-40 mb-30"><span>{{templateOptionsTitle}}</span></div>
+  {{form-name-description
+    model=model
+    nameRequired=true
+  }}
 
+  {{form-user-labels
+    initialLabels=labelResource.labels
+    setLabels=(action 'setLabels')
+    expandAll=null
+  }}
+
+  {{form-engine-opts
+    machine=model
+    showEngineUrl=showEngineUrl
+  }}
 
   {{top-errors errors=errors}}
 
