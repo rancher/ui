@@ -1,6 +1,6 @@
 ---
 languageName: "简体中文"
-languageContribute: "帮助翻译 Rancher"
+languageContribute: "帮助翻译Rancher"
 generic:
   actions: 操作
   activate: 激活
@@ -20,6 +20,7 @@ generic:
   created: 创建
   createdDate: "创建于{date}"
   customize: 定制
+  custom: 自定义
   default: 默认
   description: 描述
   details: 详情
@@ -31,6 +32,7 @@ generic:
   done: 完成
   download: 下载
   edit: 编辑
+  emptyString: ""
   enable: 启用
   enabled: 启用
   entrypoint: 入口
@@ -115,22 +117,22 @@ accountsPage:
       headers:
         permission: 权限
         role: 角色
-        clusterName: 聚集
+        clusterName: 集群
         projectName: 项目
-        active: 激活的
-        created: 授权
+        active: 激活
+        created: 已授权
       global:
         title: 全局权限
         description: 访问管理影响整个安装的事情
         admin: 此用户是管理员并拥有所有权限。
         noRoles: 此用户没有全局角色
       cluster:
-        title: 群集角色
-        description: 授予此用户的单个群集的角色
+        title: 集群角色
+        description: 授予此用户的单个集群的角色
         noRoles: 此用户没有项目角色
       project:
         title: 项目角色
-        description: 授予此用户的单个群集的角色
+        description: 授予此用户的单个项目的角色
         noRoles: 此用户没有项目角色
       roles:
         title: 角色
@@ -143,6 +145,7 @@ accountsPage:
       username: 本地用户
       identity: 标识
       noData: 目前还没有用户
+      noMatch: 没有用户匹配当前搜索
       noName: 无
   new:
     header: 添加用户
@@ -150,6 +153,7 @@ accountsPage:
       usernameReq: 必须填写用户名
       usernameInExists: 用户名已存在。请选择一个新的用户名。
       pwReq: 密码是必须的。
+      role: 新用户需要具备角色。从列表中选择一个角色。
     form:
       username:
         labelText: 用户名
@@ -170,20 +174,34 @@ appDetailPage:
   header: "App: {appName}"
   endpoints:
     title: 终端
+    detail: '此应用的公开终端'
     endpoint: 终端
     protocol: 协议
+    noData: 此应用未创建公开终端
+    noMatch: 没有满足当前搜索的公开终端
   notes:
     title: 注释
+    detail: '关于如何使用此应用的说明'
   workloads:
     title: 工作负载
+    detail: 此应用创建的工作负载。
+    nodata: 此应用未创建工作负载。
   ingress:
     title: Ingress规则
+    detail: 此应用创建的入口规则。
+    nodata: 此应用未创建入口规则。
   services:
     title: 服务
+    detail: 此应用创建的服务
+    nodata: 此应用未创建服务。
   volumes:
-    title: 数据卷
+    title: 卷
+    detail: 此应用创建的持久化卷声明（PVC）
+    nodata: 此应用未创建持久化卷声明。
   secrets:
     title: 密文
+    detail: 此应用相关的密文（Secrets）
+    nodata: 此应用未使用密文
 podSecurityPoliciesPage:
   index:
     header: Pod安全策略
@@ -191,11 +209,12 @@ podSecurityPoliciesPage:
     table:
       name: 名称
       created: 创建时间
+      noData: 未定义pod安全策略
       noMatch: 没有 pod 安全策略与当前搜索匹配
   addPodSecurityPolicy: 添加策略
   editPodSecurityPolicy: 编辑策略
   detail:
-    header: 相关策略
+    header: 策略
   saveEdit: 编辑
   saveNew: 创建
   new:
@@ -205,13 +224,13 @@ podSecurityPoliciesPage:
     form:
       name:
         labelText: 名称
-        placeholder: "例如:策略"
+        placeholder: "例如：策略"
 rolesPage:
   title: 角色
   index:
     localLink: 添加角色
     table:
-      name: 姓名
+      name: 名称
       created: 创建时间
       builtin: 内置
       noData: 目前还没有角色
@@ -226,15 +245,20 @@ rolesPage:
   new:
     errors:
       nameReq: 名称（必填）
+      memberReq: 成员是必需的
       nameInExists: 名字是已经存在。 请用一个新的角色名称。
       ruleResourceReq: 资源是规则所必需的。
+      roleTemplate: 角色模板是必需的。
     form:
       name:
         labelText: 姓名
-        placeholder: "例如开发者"
+        placeholder: "例如：开发者"
+      context:
+        labelText: 上下文
       allow:
         create: 创建
         delete: 删除
+        deletecollection: '删除集合'
         get: 获取
         list: 列表
         patch: 修补程序
@@ -254,14 +278,16 @@ apiPage:
   header: API & Keys
   actionButton: 添加Key
   currentEndpoint: '端点:'
+  detail: API密钥与您的特定用户（{name}）绑定，并且可以创建，删除和操作您有权访问的所有集群和项目。
   table:
     state: 状态
     name: 访问密钥
     description: 描述
-    created: 已创建
+    created: 创建时间
     expires:
       label: 过期时间
       never: 从不
+    noData: 没有定义API密钥
 authPage:
   shibboleth:
     enabled:
@@ -337,8 +363,19 @@ authPage:
           =1 {# 个用户}
           other {# 个用户}
           } 访问.
+        restricted: |
+          {appName} 已被设置为允许 {orgs, plural,
+          =0 {无组织}
+          =1 {# 个组织}
+          other {# 个组织}
+          } and {users, plural,
+          =0 {无用户}
+          =1 {# 个用户}
+          other {# 个用户}
+          } 以环境成员身份访问。
       disabled:
         label: GitHub 未设置
+        warning: "{appName} 可以配置为限制对一组GitHub用户和组织成员的访问。"
     authenticated:
       header:
         text: 认证信息
@@ -350,6 +387,7 @@ authPage:
         header: "危险区域&trade;"
         warning: '<b class="text-danger">警告:</b> 禁用访问控制将导致任何能够访问此页面或API的用户拥有对  {appName}  的完全控制权限。'
         confirmDisable: "确认? 再次点击将关闭访问控制。"
+        disable: 禁用Github访问
     notAuthenticated:
       header: "1. 设置GitHub应用"
       ul:
@@ -433,6 +471,7 @@ authPage:
     subtext:
       enabled:
         text: '{appName} 已设置为允许本地数据库中的账号访问。'
+        alwaysOn: '本地身份验证将始终启用，您可以在本地身份验证基础之上添加另一个身份验证方案。'
         linkText: 管理账号
       disabled: '{appName} 能够被设置为仅允许 {appName} 本地数据库中定义的用户访问。 当前系统未进行设置， 因此任何访问此页面（或API）的用户都具有系统的完全控制权限。'
     accessEnabled:
@@ -523,6 +562,7 @@ certificatesPage:
   index:
     header: 证书
     linkTo: 添加证书
+    noData: 没有定义证书
   new:
     header: 添加证书
     form:
@@ -552,6 +592,7 @@ namespacesPage:
   header: 命名空间
   addNamespace: 添加命名空间
   noMatch: 没有符合搜索的命名空间
+  noData: 此集群未创建任何命名空间（namespaces）
   table:
     name:
       label: 命名空间
@@ -564,16 +605,18 @@ namespacesPage:
     workloads:
       label: 工作负载
     created:
-      label: 已创建
+      label: 创建时间
 clusterPage:
   edit: 编辑集群
+projectsListNamespacePage:
+  header: 命名空间
 projectsPage:
   header: 项目/命名空间
   headerNS: 命名空间
   addProject: 添加项目
   editProject: 编辑项目
   noMatch: 没有与当前搜索匹配的项目。
-  noData: 此群集没有定义任何项目
+  noData: 此集群没有定义任何项目
   ns:
     label: 命名空间名称
     placeholder: 例如:lab
@@ -581,7 +624,7 @@ projectsPage:
     label: 项目名称
     placeholder: 例如:lab
   created:
-    label: 已创建
+    label: 创建时间
   psp:
     label: Pod安全策略
   members:
@@ -591,6 +634,7 @@ projectsPage:
     labelText: 成员
     addMember: 添加成员
     addUser: 添加用户
+    noAddUser: 您是唯一的活动注册用户。
     addGroup: 添加组
     addServiceAccount: 添加服务帐户
     multipleRoles: 多个角色
@@ -609,8 +653,8 @@ projectsPage:
 clustersPage:
   header: 集群
   newCluster: 添加集群
-  newClusterName: "添加群集： {name}"
-  editClusterName: "编辑群集： {name}"
+  newClusterName: "添加集群： {name}"
+  editClusterName: "编辑集群： {name}"
   cluster:
     label: 集群名称
   provider:
@@ -618,7 +662,7 @@ clustersPage:
   version:
     label: 版本
   nodes:
-    label: '节点:'
+    label: 主机
   cpu:
     label: 处理器
   memory:
@@ -656,7 +700,7 @@ containerPage:
       noContainers: 无其他容器
 podPage:
   header: 'Pod： {name}'
-  nodeIp: 节点IP
+  nodeIp: 主机IP
   podIp: Pod IP
   containerImage: '{container} 的镜像'
   image: 镜像
@@ -678,14 +722,16 @@ clusterDashboard:
   memory: 内存
   pods: Pods
   subtitle: "已用 {total} 中的 {used}"
-  node: '节点:'
+  node: 主机
   etcd: etcd
   scheduler: 调度
   controllerManager: 控制器管理
   value: 值
-  noNodes: 没有节点。
+  notActive: 此集群当前为 <b>{state}</b>。
+  notReady: 此集群当前为 <b>{state}</b>; 在API准备就绪之前，直接与其交互的区域将不可用。
+  noNodes: 没有主机
   alert:
-    node: "警告：节点{node} 没有激活。"
+    node: "警告：主机{node} 没有激活。"
     component: "警告：组件{component} 不健康。"
 dnsPage:
   noMatch: 没有匹配当前搜索的记录
@@ -694,12 +740,13 @@ dnsPage:
     arecord: 外部 IP
     cname: 主机名
     alias: 别名
+    workload: 工作负载
     selector: 选择器
-    clusterIp: 群集ip
+    clusterIp: 集群ip
     unknown: 未知
   table:
     target: 目标
-    clusterIpDetail: '群集IP： {ip}'
+    clusterIpDetail: '集群IP： {ip}'
 editDns:
   title:
     new: 添加DNS记录
@@ -717,7 +764,9 @@ editDns:
     label: "解析到"
     arecord: 一个或多个外部 IP 地址
     cname: 一个外部主机名
+    alias: 另一个DNS记录值的别名
     workload: 一个或多个工作负载
+    selector: 与选择器匹配的一组pod
   target:
     arecord: 目标IP地址
     cname: 目标主机名
@@ -738,7 +787,14 @@ editDns:
   errors:
     targetRequired: '必须填写一个或多个"目标"'
     selectorRequired: '必须填写一个或多个"目标选择器"'
+    mixedAlias: 别名不能以 CNAME 和其他记录的组合为目标
+    multipleCname: 别名不能指向多个 CNAME 记录
 cruPersistentVolumeClaim:
+  title:
+    define: 定义卷声明
+    new: 添加卷声明
+    edit: '编辑卷声明： {name}'
+    view: '持久化卷： {name}'
   define:
     addActionLabel: 定义
   capacity:
@@ -748,7 +804,17 @@ cruPersistentVolumeClaim:
     placeholder: 例如 myvol
   source:
     label: 源
+    pv: 使用已有的持久化卷
+    storageClass: 使用存储类来配置新的持久化卷
+  pv:
+    label: 持久化卷
+    prompt: 选择一个持久化卷...
+  storageClass:
+    label: 存储类
+    prompt: 使用默认的类
 cruVolume:
+  title:
+    new: 定义临时卷
   define:
     addActionLabel: 定义
   name:
@@ -756,6 +822,8 @@ cruVolume:
   source:
     label: 源
     title: 源配置
+    detail: 配置选定卷源的选项
+    prompt: 选择一个卷源...
 failWhalePage:
   header: 错误
   reloadButton: |
@@ -788,9 +856,9 @@ haPage:
     address: 主机地址
     port: 端口
     heartbeat: 上次在线
-    clustered: 群集
+    clustered: 集群
 nodesPage:
-  header: '节点:'
+  header: 主机
   editCluster: 编辑集群
   nodePoolGroup: "Pool:{name}"
   table:
@@ -805,14 +873,15 @@ nodesPage:
     unschedulable: 不可调度
     instanceState: 容器状态
     instanceStateWithIcon: 状态
+    noData: 此集群没有定义任何主机
     noMatch: 没有符合当前搜索的主机
 hostsPage:
   cloudHostsPage:
     addPage:
       launch: 启动
-      header: 添加节点...
+      header: 添加主机
       name:
-        label: 节点名称
+        label: 主机名称
         placeholder: 例如node01
       transferUnit: TB
       instance: '类型:'
@@ -828,14 +897,14 @@ hostsPage:
   new:
     header:
       customText: 添加自定义宿主
-      text: 添加节点...
+      text: 添加主机
     manageLink: 管理docker-machine驱动
     custom: 添加自定义宿主
     name:
       placeholder: 例如node01
     addCluster:
       label: "集群选项"
-      description: 将此新节点附加到群集，委派角色等
+      description: 将此新主机附加到集群，委派角色等
       cluster:
         label: 集群
       roles:
@@ -851,6 +920,11 @@ hostsPage:
     hostname: 主机名
     ipAddress: IP地址
     version: 版本
+    kubeletVersion: Kubelet版本
+    kubeProxyVersion: Kube Proxy版本
+    dockerVersion: Docker版本
+    kernelVersion: 内核版本
+    operatingSystem: 操作系统
     conditions:
       diskSpace: 磁盘空间
       diskPressure: 磁盘负载
@@ -902,10 +976,14 @@ k8sImport:
   name:
     label: 集群名称
     placeholder: 例如my-imported-cluster
+  kubeConfig:
+    label: 要导入的 Kubeconfig 文件
+    placeholder: 导入或粘贴集群的Kubeconfig文件以供使用。
+  actionLabel: 导入
 k8sPage:
   header: Kubernets
   dashboard:
-    title: 仪表盘
+    title: 控制面板
     detail: 访问本地Kubernetes仪表盘。
     button: 打开仪表盘
   shell:
@@ -930,10 +1008,13 @@ loginPage:
     401: "未授权"
     500: "内部服务器错误"
     generic: "尝试登录时发生错误 ({errorCode})。请重试。"
+  error:
+    authFailedCreds: "登录失败：检查凭据，或者您的帐户可能无权登录。"
+    authFailed: "登录失败：您的帐户可能无权登录。"
 machinePage:
   header: 主机驱动
   inactive: 未激活
-  subtext: "另外 <code>docker-machine</code> 驱动可在此加载并在添加节点界面使用。"
+  subtext: "另外 <code>docker-machine</code> 驱动可在此加载并在添加主机界面使用。"
   add: 添加主机驱动
   builtin: 内置
   url: 位置
@@ -967,27 +1048,38 @@ registriesPage:
         placeholder: 例如:password
 secretsPage:
   index:
-    header: 秘密
-    linkTo: 添加秘密
+    header: 密文
+    linkTo: 添加密文
+    noData: 未定义任何密文
     noMatch: 没有符合搜索条件的密文
   table:
     keys: 键
 configMapsPage:
   index:
     header: 配置映射
+    linkTo: 添加配置映射
+    noData: 没有定义配置映射
+    noMatch: 没有配置映射与当前搜索匹配
   table:
     keys: 键
 servicePage:
+  header: '工作负载： {name}'
   globalScale: '每个主机 {scale}'
   multistat:
+    type: '工作负载类型:'
     fqdn: 'FQDN:'
     scale: '数量:'
     image: '镜像:'
     namesapce: '命名空间:'
-    created: '已创建:'
+    created: '创建时间:'
+    daemonSetScale: '每主机1个'
   serviceType:
     deployment: 部署
     replicaSet: 副本集
+    statefulSet: 有状态集
+    daemonSet: 守护程序集
+    replicationController: 复制控制器
+    job: 任务
     cronJob: Cron任务
     pod: 独立容器
   external:
@@ -1048,6 +1140,10 @@ servicePage:
     composeservice: Compose服务
     networkdriverservice: 网络服务
     storagedriverservice: 存储服务
+  sidekick:
+    tabHeader: Sidecars
+    header: 工作负载与Sidecar
+    helpBlock: 选择主容器或其中一个sidecar容器
 signupPage:
   header: '注册{appName}'
   form:
@@ -1130,11 +1226,15 @@ newStack:
 nodeTemplatesPage:
   header: 主机模板
   actionButton: 添加模板
+  detail: 主机模板用于在基础设施提供商上部署组成集群的主机。
   table:
     state: 状态
     name: 名称
+    provider: 提供者
     location: 位置
     size: 大小
+    usedBy: 使用者
+    noData: 没有定义主机模板
     usedByNone: 没有集群
     unknown: 未知
 storageClassPage:
@@ -1142,11 +1242,15 @@ storageClassPage:
   addActionLabel: 添加类
   noData: 没有定义存储类
   noMatch: 没有存储类别与当前搜索匹配
+  provisioner:
+    label: 提供者
   default:
     label: 默认
 persistentVolumePage:
   header: 持久卷
   addActionLabel: 添加卷
+  noData: 没有定义持久化卷
+  noMatch: 没有符合当前搜索的持久化卷
   source:
     label: 源
 userPreferencesPage:
@@ -1189,13 +1293,19 @@ notifierPage:
   notifiers: 通知
   testedBtnLabel: Ok
   testingBtnLabel: 测试
+  deleteErrorMessage: '通知程序 {displayName} 正在由 {alertNames} 使用'
   notifierTypes:
     slack: Slack
     email: 电子邮箱
+    pagerduty: PagerDuty
     webhook: Webhook
   slack:
     url: URL
+    urlPlaceholder: 例如 https://hooks.slack.com/services/T00000000/B00000000/XXXXXXXXXXXXXXXXXXXXXXXX
+    defaultRecipient: 默认接收人（频道）
     defaultRecipientPlaceholder: '例如: example.com'
+    helpText: |
+      以下是 <a href="https://get.slack.help/hc/en-us/articles/115005265063-Incoming-WebHooks-for-Slack">创建传入WebHooks</a> 的方法。
   smtp:
     server: Smtp服务器
     host: 主机
@@ -1204,14 +1314,31 @@ notifierPage:
     portPlaceholder: '例如: 465'
     sender: 发送人
     userName: 用户名
+    userNamePlaceholder: 例如：John
     password: 密码
     passwordPlaceholder: 你的密码
+    defaultRecipient: 默认收件人（地址）
     defaultRecipientPlaceholder: 例如:you@example.com
+  pagerduty:
+    serviceKey: 服务密钥
+    serviceKeyPlaceholder: 您的PagerDuty服务密钥
+    helpText: |
+      以下是 <a href="https://support.pagerduty.com/docs/webhooks">为PagerDuty创建传入WebHooks</a> 的方法。
   webhook:
     url: URL
     urlPlaceholder: 您的webhook URL
   testAction:
     testing: 测试
+    testOk: 设置已验证
+    testFailed: 出了点问题，请检查输入的信息。
+    test: 测试
+  clone: 克隆
+  index:
+    addActionLabel: 添加通知
+    table:
+      created: 创建时间
+      noData: 没有定义通知
+      noMatch: 不匹配
 ldap:
   providerName:
     openldap: OpenLDAP
@@ -1283,6 +1410,9 @@ ldap:
       labelText: '组搜索起点:'
       placeholder: "例如: ou=Groups,dc=mycompany,dc=com"
       helpText: "设置后，会在此搜索起点下搜索组而不会在用户搜索起点下搜索组."
+    userSearchBase:
+      labelText: 用户搜索起点
+      placeholder: "例如：ou=Users,dc=mycompany,dc=com"
     defaultDomain:
       helpText: "当用户未指定登录域时使用该域"
       labelText: 默认登录域
@@ -1293,16 +1423,21 @@ ldap:
     cert:
       labelText: CA 证书
       helpText: 如果需要，请输入CA证书
+      placeholder: "粘贴或导入证书，以-----BEGIN CERTIFICATE-----开头"
     users:
       header: 用户
       objectClass:
         labelText: 对象类型
+      login:
+        labelText: 登录属性
       name:
         labelText: 用户名属性
       search:
         labelText: 搜索属性
       searchBase:
         labelText: '用户搜索起点:'
+      enabledAttribute:
+        labelText: 用户启用的属性
       disabledBitMask:
         labelText: 禁用状态位掩码
       userMemberAttribute:
@@ -1311,12 +1446,17 @@ ldap:
       header: 组
       objectClass:
         labelText: 对象分类
+      name:
+        labelText: 名称属性
+      search:
+        labelText: 搜索属性
       groupMemberUser:
         labelText: 组成员用户属性
         placeholder: uid
       groupMemberMapping:
         labelText: 组成员映射属性
       groupDN:
+        labelText: 组DN属性
         placeholder: 专有名称
   testAuth:
     header: "3. 测试并启用验证"
@@ -1378,11 +1518,25 @@ caasLogin:
   login: 登录页面
   form:
     email: 邮箱
+cloudProvider:
+  name: 云提供商名称
+  helpText: |
+    详细了解 <a href="https://kubernetes.io/docs/concepts/cluster-administration/cloud-providers/" target="_blank" rel="nofollow noopener noreferrer">云提供商</a>。
+  warning: 使用云提供程序而不传递云提供程序配置可能会导致您的集群无法正确配置。推荐您在创建集群之前添加云提供程序配置。
 catalogSettings:
   header: 应用商店
   notAvailable: "不可用：咦有名为 <code>{name}</code>的自定义目录"
+  helpText: 目前只支持Helm目录
   library:
     label: 官方认证
+    detail: 由 {appName} 维护的应用程序模板的官方仓库。
+  helm:
+    stable:
+      label: Helm Stable
+      detail: 由 Kubernetes 社区维护的应用程序模板的官方仓库。
+    incubator:
+      label: Helm Incubator
+      detail: 附加的beta状态的Helm应用程序模板仓库。
   certified:
     header:
       rancher: "{appName} 认证库"
@@ -1424,15 +1578,19 @@ clusterRow:
   noHosts: 外部集群没有任何主机
   noClusterMatch: 没有匹配当前搜索的集群。
   noClusterData: 没有任何集群。
-  addHost: 添加节点...
+  addHost: 添加主机...
   importCluster: 使用已有的Kubernetes
   loginDefault: 登陆
 clusterWelcome:
   welcome: 欢迎
   noHost: 集群中还没有任何主机。您想要添加主机还是使用已有的Kubernetes呢?
-  addHost: 添加节点...
+  addHost: 添加主机
   select: 选择
   importCluster: 使用已有的Kubernetes
+  importClusterDescription: |
+    <p>将容器部署到已有的Kubernetes安装中，并使用该环境的主机和网络。</p>
+    <p>基础设施资源将在{appName} 外部进行管理。</p>
+    <p>支持本地部署，或托管的服务，如:</p>
   embeddedDescription: |
     <p>{appName}将自动部署并且管理Kubernetes。</p>
     <p>可以在{appName}界面上，部署主流云厂商提供的云主机，或者用已有的安装有Docker的任何主机。</p>
@@ -1442,29 +1600,53 @@ clusterNew:
   name:
     label: 集群名称
     placeholder: 例如 Sandbox
+  description:
+    placeholder: 例如：用于开发和测试工作负载的集群
   members:
-    label: 成员角色：
+    label: 成员角色
+    detail: 控制哪些用户可以访问集群, 以及他们拥有的对其进行更改的权限。
+  config:
+    label: 供应商
+    detail: 选择集群主机的来源
   nodes:
-    title: '节点:'
+    title: 主机
+    detail: 自定义将要创建的主机
   customize:
     title: 集群选项
+    detail: 自定义将要创建的集群
   psp:
     label: 默认的Pod安全策略
     prompt: 选择一个Pod安全策略...
+    none: 没有定义策略
+    required: 启用时需要设置一个默认Pod安全策略
   amazoneks:
+    label: AWS的基于Kubernetes的弹性容器服务
     shortLabel: 亚马逊EKS
     access:
       title: 账户访问
+      detail: 选择将用于启动Amazon EKS的区域和API密钥
   azureaks:
+    label: Azure容器服务
     shortLabel: Azure AKS
     access:
       title: 账户访问
+      detail: 配置用于与Azure通讯的凭据
+      help: '参考<a href="https://www.packer.io/docs/builders/azure-setup.html" target="_blank">链接文档</a>创建客户端ID和秘钥'
+    placement:
+      label: 位置
+    count:
+      label: 主机数量
     location:
       label: 位置
+      prompt: 选择一个位置...
     accountAccessSection:
       label: 账户访问
     subscriptionId:
       label: 订阅ID
+      placeholder: Azure订阅ID
+    machineType:
+      label: VM规格
+      prompt: 选择一个规格...
     diskSizeGb:
       label: OS磁盘大小
     ssh:
@@ -1472,7 +1654,29 @@ clusterNew:
     security:
       label: 安全
     members:
-      label: 成员角色：
+      label: 成员角色
+    pod:
+      label: Pod安全策略
+    kubernetesVersion:
+      label: Kubernetes版本
+      prompt: 选择版本...
+    admin:
+      label: 管理员名称
+      placeholder: user-1
+    tenant:
+      label: 租户ID
+      placeholder: 你的Azure租户ID
+    image:
+      label: 镜像
+      placeholder: 'canonical:UbuntuServer:16.04.0-LTS:latest'
+    size:
+      label: 规格
+    dockerPort:
+      label: Docker端口
+      placeholder: '2376'
+    publishSettingsFile:
+      label: 发布配置
+      placeholder: 发布配置文件
     environment:
       label: 环境
     resourceGroup:
@@ -1488,11 +1692,16 @@ clusterNew:
       placeholder: '[resourcegroup:]name'
     subnet:
       label: 子网
+      placeholder: 示例-子网名称
     subnetPrefix:
       label: 子网Prefix
       placeholder: 128.42.0.0/21
+    availabilitySet:
+      label: 可用性集
+      placeholder: 可用集名称
     openPort:
       label: 开放端口
+      placeholder: '逗号分隔, 例如：80,443'
     privateIpAddress:
       label: 私有IP
       placeholder: 127.0.0.1
@@ -1513,21 +1722,25 @@ clusterNew:
   googlegke:
     label: Google Kubernetes引擎
     shortLabel: Google GKE
-    checkServiceAccount: "Next：配置节点"
+    checkServiceAccount: "下一步：配置主机"
     checkingServiceAccount: 认证
     credential:
       label: 服务账号
       placeholder: 服务帐号私钥JSON文件
+      configured: 为 {project} 项目配置
+      helpText: |
+        创建一个拥有JSON私钥的 <a href="https://console.cloud.google.com/projectselector/iam-admin/serviceaccounts" target="_blank" rel="nofollow noopener noreferrer">Service Account</a> ，并在此处提供JSON。有关创建服务帐户的更多信息，请参阅 <a href="https://cloud.google.com/compute/docs/access/create-enable-service-accounts-for-instances" target="_blank" rel="nofollow noopener noreferrer">Google Cloud文档</a> 。需要三个IAM角色： <code>计算者/观察者</code>， <code>项目/观察者</code>， <code>kubernetes-engine / 管理</code> 和 <code>服务帐户/用户</code>，更多关于角色的信息可在 <a href="https://cloud.google.com/kubernetes-engine/docs/how-to/iam-integration" target="_blank" rel="nofollow noopener noreferrer">此处</a>找到。
     zone:
       label: 区域
       prompt: 选择一个区域...
     project:
       label: 项目
-      placeholder: 例如:MyApp Project
+      placeholder: 例如：my-project
     machineType:
       label: 虚拟机类型
       prompt: 选择类型...
     nodeCount:
+      label: 主机数量
       prompt: 选择类型...
     diskSizeGb:
       label: 根磁盘大小
@@ -1542,22 +1755,90 @@ clusterNew:
   rke:
     etcd:
       heartbeat:
-        label: etcd心跳间隔
-        placeholder: 心跳间隔的时间
+        label: etcd心跳间隔时间
+        placeholder: 心跳间隔时间
+      election:
+        label: etcd选举超时时间
+        placeholder: 选举超时时间
+    address:
+      title: 主机地址
+      detail: 为主机配置公共地址和内部地址
+      warning: 这似乎不是一个IP地址
+      public:
+        label: 公网地址
+        placeholder: 例如：1.2.3.4
+      private:
+        label: 内网地址
+        placeholder: 例如：1.2.3.4
+    label: '{appName} Kubernetes引擎'
+    shortLabel: 自定义
+    customize:
+      label: 集群选项
+      detail: "为集群自定义Kubernetes选项"
+    nodes:
+      title: 主机池
+      detail: 配置组成集群的主机
+      add: 添加主机池
+      addTemplate: 添加主机模板
+      templatePrompt: "选择模板..."
+      hostnamePrefix: 名称前缀
+      count: 数量
+      template: 模板
+    detected: |
+      {count, plural,
+      =1 {# 台新主机注册成功}
+      other {# 台新主机注册成功}
+      }
+    done: 完成
+    command:
+      instructions: '在已运行支持的Docker版本的一台或多台现有主机上运行此命令。'
+    auth:
+      label: 认证提供者
+      x509: x509
+    network:
+      label: 网络组件
+      flannel: Flannel
+      calico: Calico
+      canal: Canal
+      options:
+        flannel:
+          iface:
+            label: 接口
+        calico:
+          cloudProvider:
+            label: 云提供商
+    ingress:
+      label: Ingress提供者
+      none: 无
+      nginx: Nginx
+    version:
+      label: Kubernetes版本
+    registry:
+      label: 从以下仓库拉取Kubernetes镜像
+      default: 默认的镜像仓库(DockerHub)
+      custom: "自定义镜像仓库："
+      url:
+        label: URL
+        placeholder: 例如：quay.io
+      user:
+        label: 用户名
+      password:
+        label: 密码
     ignoreDockerVersion:
-      label: 节点上的Docker版本
+      label: 主机Docker版本
       enabled: 允许不受支持的版本
-      disabled: 需要支持的Docker版本
+      disabled: 需要支持的版本
     podSecurityPolicy:
       label: Pod安全策略支持
     role:
-      title: 节点角色
+      title: 主机角色
+      detail: 指定主机在集群中的角色
       header:
         etcd: etcd
-        controlplane: 控制
-        worker: 工作节点
+        controlplane: Control
+        worker: Worker
       requirements:
-        label: "所需的节点数:"
+        label: "所需的主机数："
         etcd: 1,3或5
         controlplane: 1或更多
         worker: 1或更多
@@ -1571,19 +1852,24 @@ clusterNew:
       ipRange: 服务集群IP范围
     kubelet:
       label: Kubelet
-      dns: 群集DNS服务器
+      domain: 集群域
+      dns: 集群DNS服务器
     errors:
-      etcd: 请选择1个，3个或5个节点用于etcd。
-      controlPlane: 请至少选择一个用于management的节点。
-      worker: 请至少选择一个用于worker的节点。
+      etcd: 请选择1个，3个或5个主机用于etcd。
+      controlPlane: 请至少选择一个用于management的主机。
+      worker: 请至少选择一个用于worker的主机。
   custom:
     label: 自定义
     shortLabel: 自定义
   import:
     label: 已导入
     shortLabel: 已导入
+    command:
+      instructions: "在现有的Kubernetes 1.8.x集群上运行下面的kubectl命令，将其导入到 {appName}中："
+      instructionsInsecure: "如果由于 {appName} 安装正在使用不受信任/自签名的 SSL 证书运行而出现 \"由未知颁发机构签名的证书\" 错误, 请运行下面的命令, 以绕过证书检查:"
 conditionSections:
   title: 状态
+  detail: '{resourceType}当前的状态 '
   table:
     type: 类型
     status: 状态
@@ -1594,11 +1880,14 @@ conditionSections:
   noMatch: 没有条件与当前搜索匹配
 confirmDelete:
   title: '是否确认要删除'
+  environmentNote: '注意: 此环境内的所有资源都将被永久性的删除，包括通过 {appName} 创建的主机。'
+  clusterNote: '注意：在云平台中创建的关联资源（如卷，负载均衡器和网络）不会自动删除。'
   protip: '高级技巧:在点击删除时按住 {key} 键以跳过确认操作。'
   confirmAction: 删除
   cancelAction: 取消
   largeDeleteText: '{key} 及 {othersCount} 其他'
 containerLogs:
+  title: "日志: "
   onlyCombined: "<b>注意:</b> 此容器运行时带有TTY(-t)参数，仅有合并的标准输出和标准错误日志可见"
   combined: 合并日志
   stdout: 标准输出
@@ -1646,7 +1935,16 @@ cruRegistry:
     label: 密码
     saved: 已保存
 cruPersistentVolume:
+  name:
+    placeholder: 例如：myvolume
+  description:
+    placeholder: 例如：生产数据库的卷
+  title:
+    new: 添加持久卷
+    edit: '编辑持久卷： {name}'
+    view: '持久卷： {name}'
   storageClass:
+    label: 分配给存储类
     prompt: 无
   capacity:
     label: 容量
@@ -1654,34 +1952,120 @@ cruPersistentVolume:
   source:
     label: 卷插件
     title: 插件配置
+    detail: 配置选定卷插件的选项
+    prompt: 选择一个卷插件...
   customize:
+    title: 自定义
     detail: 自定义高级选项
+  mountOptions:
+    label: 挂载选项
+    addActionLabel: 添加选项
+    noData: 没有挂载选项
+  awsElasticBlockStore:
+    fsType:
+      label: 文件系统类型
+      placeholder: "例如：ext4"
+    readOnly:
+      label: 只读
+    partition:
+      label: 分区
+      placeholder: "例如：1; 0为整个设备"
+    volumeID:
+      label: 卷ID
+      placeholder: "例如：volume1"
+  azureDisk:
+    cachingMode:
+      label: 缓存模式
+      placeholder: "例如：None"
+    diskName:
+      label: 磁盘名称
+      placeholder: "例如：kubernetes-pvc"
+    diskURI:
+      label: 磁盘URI
+      placeholder: "例如：https://example.com/disk"
+    fsType:
+      label: 文件系统类型
+      placeholder: "例如：ext4"
+    kind:
+      label: 类型
+      placeholder: "例如：PersistentVolumeClaim"
+    readOnly:
+      label: 只读
+  secret:
+    defaultMode:
+      label: 默认模式
+      placeholder: "例如：256"
+    optional:
+      label: 可选
+    secretId:
+      label: 密文
+    items:
+      label: 项目
+  configMap:
+    defaultMode:
+      label: 默认模式
+      placeholder: "例如：256"
+    optional:
+      label: 可选
+    name:
+      label: 配置映射名
+    items:
+      label: 项目
   emptyDir:
+    medium:
+      label: 存储介质
+      default: 主机的默认存储
+      memory: 内存
     sizeLimit:
+      label: 大小限制
       placeholder: "例如300Mi"
+  azureFile:
+    secretName:
+      label: 密文名称
+      placeholder: "例如：secret"
+    secretNamespace:
+      label: 密文命名空间
+      placeholder: "例如：default"
+    shareName:
+      label: 共享名
+      placeholder: "例如：abc"
+    readOnly:
+      label: 只读
   cephfs:
     monitors:
+      label: 监控
       addActionLabel: 添加
     path:
       label: 路径
       placeholder: "例如/ var"
     readOnly:
       label: 只读
+    secretFile:
+      label: 密文文件
+      placeholder: "例如：secret"
     secretRef:
       name:
         label: 名称
         placeholder: "例如:lab"
+      namespace:
+        label: 命名空间
+        placeholder: "例如：default"
+      label: 密文
     user:
       label: 用户
       placeholder: "例如: root"
   rbd:
     fsType:
       label: 文件系统类型
+      placeholder: "例如：ext4"
     image:
       label: 镜像
+      placeholder: "例如：镜像"
     keyring:
+      label: 密钥文件
       placeholder: "例如 /etc/ceph/keyring"
     monitors:
+      label: 监控
       addActionLabel: 添加
     pool:
       label: 池
@@ -1690,16 +2074,512 @@ cruPersistentVolume:
       label: 只读
     secretRef:
       label: 密文
+      placeholder: "例如：secret"
     user:
       label: 用户
       placeholder: "例如: root"
   fc:
     fsType:
       label: 文件系统类型
+      placeholder: "例如 ext4"
+    lun:
+      label: Lun
+      placeholder: "例如：2"
+    readOnly:
+      label: 只读
+    targetWWNs:
+      label: 目标的WWNs
+      addActionLabel: 添加
+    wwids:
+      label: Wwids
+      addActionLabel: 添加
+  flexVolume:
+    driver:
+      label: 驱动
+      placeholder: "例如：driver"
+    fsType:
+      label: 文件系统类型
+      placeholder: "例如：ext4"
+    options:
+      label: 选项
+      addActionLabel: 添加
+    readOnly:
+      label: 只读
+    secretRef:
+      label: 密文
+      placeholder: "例如：secret"
+  flocker:
+    datasetName:
+      label: 数据集名称
+      placeholder: "例如：database"
+    datasetUUID:
+      label: 数据集UUID
+      placeholder: "例如：uuid"
+  glusterfs:
+    endpoints:
+      label: 终端
+      placeholder: "例如：10.240.106.152:1"
+    path:
+      label: 路径
+      placeholder: "例如：kube_vol"
+    readOnly:
+      label: 只读
+  gcePersistentDisk:
+    fsType:
+      label: 文件系统类型
+      placeholder: "例如：ext4"
+    partition:
+      label: 分区
+      placeholder: "例如：1; 0为整个设备"
+    pdName:
+      label: 持久化磁盘名称
+      placeholder: "例如：abc"
+    readOnly:
+      label: 只读
+  iscsi:
+    chapAuthDiscovery:
+      label: Chap验证发现
+    chapAuthSession:
+      label: Chap验证会话
+    fsType:
+      label: 文件系统类型
+      placeholder: "例如：ext4"
+    initiatorName:
+      label: 启动器名称
+      placeholder: "例如：abc"
+    iqn:
+      label: IQN
+      placeholder: "例如：2"
+    iscsiInterface:
+      label: iSCSI接口
+      placeholder: "例如：interface"
+    lun:
+      label: Lun
+      placeholder: "例如：2"
+    portals:
+      label: 门户
+      addActionLabel: 添加
+    readOnly:
+      label: 只读
+    secretRef:
+      label: 密文
+      placeholder: "例如：secret"
+    targetPortal:
+      label: 目标门户
+      placeholder: "例如：portal"
+  local:
+    path:
+      label: 路径
+      placeholder: "例如：/var"
+  nfs:
+    path:
+      label: 路径
+      placeholder: "例如：/var"
+    readOnly:
+      label: 只读
+    server:
+      label: 服务器
+      placeholder: "例如: 10.244.1.4"
+  cinder:
+    fsType:
+      label: 文件系统类型
+      placeholder: "例如：ext4"
+    readOnly:
+      label: 只读
+    volumeID:
+      label: 卷ID
+      placeholder: "例如：vol"
+  photonPersistentDisk:
+    fsType:
+      label: 文件系统类型
+      placeholder: "例如：ext4"
+    pdID:
+      label: PD ID
+      placeholder: "例如：abc"
+  portworxVolume:
+    fsType:
+      label: 文件系统类型
+      placeholder: "例如：ext4"
+    readOnly:
+      label: 只读
+    volumeID:
+      label: 卷ID
+      placeholder: "例如：abc"
+  quobyte:
+    group:
+      label: 组
+      placeholder: "例如：abc"
+    readOnly:
+      label: 只读
+    registry:
+      label: 镜像库
+      placeholder: "例如：abc"
+    user:
+      label: 用户
+      placeholder: "例如：root"
+    volume:
+      label: 卷
+      placeholder: "例如：vol"
+  scaleIO:
+    fsType:
+      label: 文件系统类型
+      placeholder: "例如：ext4"
+    gateway:
+      label: 网关
+      placeholder: "例如：https://localhost:443/api"
+    protectionDomain:
+      label: 保护域
+      placeholder: "例如：pd01"
+    readOnly:
+      label: 只读
+    secretRef:
+      name:
+        label: 名称
+        placeholder: "例如：secret"
+      namespace:
+        label: 命名空间
+        placeholder: "例如：default"
+      label: 密文
+    sslEnabled:
+      label: SSL已启用
+    storageMode:
+      label: 存储模式
+      placeholder: "例如：ThinProvisioned"
+    storagePool:
+      label: 存储池
+      placeholder: "例如：sp01"
+    system:
+      label: 系统
+      placeholder: "例如：scaleio"
+    volumeName:
+      label: 卷名
+      placeholder: "例如：vol-0"
+  storageos:
+    fsType:
+      label: 文件系统类型
+      placeholder: "例如：ext4"
+    readOnly:
+      label: 只读
+    secretRef:
+      name:
+        label: 名称
+        placeholder: "例如：secret"
+      namespace:
+        label: 命名空间
+        placeholder: "例如：default"
+      label: 密文
+    volumeName:
+      label: 卷名
+      placeholder: "例如：vol"
+    volumeNamespace:
+      label: 卷命名空间
+      placeholder: "例如：default"
+  vsphereVolume:
+    fsType:
+      label: 文件系统类型
+      placeholder: "例如：ext4"
+    storagePolicyID:
+      label: 存储策略ID
+      placeholder: "例如：sp1"
+    storagePolicyName:
+      label: 存储策略名称
+      placeholder: "例如：sp"
+    volumePath:
+      label: 卷路径
+      placeholder: "例如：/"
+cruStorageClass:
+  name:
+    placeholder: 例如：储存
+  description:
+    placeholder: 例如：AWS EBS存储
+  title:
+    new: 添加存储类
+    edit: '编辑存储类：{name}'
+    view: '存储类: {name}'
+  allowVolumeExpansion:
+    label: 允许用户扩展卷
+  mountOptions:
+    label: 挂载选项
+    addActionLabel: 添加选项
+    noData: 没有挂载选项
+  parameters:
+    title: 参数
+    detail: 为存储类配置特定的参数
+    addActionLabel: 添加参数
+  customize:
+    title: 自定义
+    detail: 自定义高级选项
+  provisioner:
+    label: 提供者
+  reclaimPolicy:
+    label: 回收策略
+    Delete: 在工作负载释放后删除卷和底层设备
+    Retain: 保留卷以进行手动清理
+    Recycle: "回收：清空内容, 然后为以后的工作负载保留卷"
+  aws-ebs:
+    type:
+      label: 卷类型
+      gp2: 'GP2 - General Purpose SSD'
+      io1: 'IO1 - Provisioned IOPS SSD'
+      st1: 'ST1 - Throughput-Optimized HDD'
+      sc1: 'SC1 - Cold-Storage HDD'
+    zone:
+      label: 可用区
+      automatic: "自动：集群中有主机的区域"
+      manual: "手动：选择特定区域"
+      placeholder: "us-east-1d，us-east-1c"
+    iopsPerGB:
+      label: 预置IOPS
+      unit: 每秒每GB
+    encrypted:
+      label: 加密
+    kmsKeyId:
+      label: 用于加密的KMS Key ID
+      automatic: "自动：生成密钥"
+      manual: "手动：使用特定的秘钥（完整的ARN）"
+  gce-pd:
+    type:
+      label: 卷类型
+      pd-standard: '标准'
+      pd-ssd: 'SSD'
+    zone:
+      label: 可用区
+      automatic: "自动：集群中有主机的区域"
+      manual: "手动：选择特定区域"
+      placeholder: "us-central1-a，us-central1-b"
+  cinder:
+    type:
+      label: 卷类型
+      placeholder: "例如：fast"
+    availability:
+      label: 可用区
+      automatic: "自动：集群中有主机的区域"
+      manual: "手动：选择特定区域"
+      placeholder: "例如：nova"
+  vsphere-volume:
+    diskformat:
+      label: 磁盘格式
+      thin: 精简
+      zeroedthick: 厚置备延迟置零
+      eagerzeroedthick: 厚置备置零
+    storagePolicyName:
+      label: 存储策略名称
+      placeholder: "例如：gold"
+    datastore:
+      label: 数据存储
+      placeholder: "例如：VSANDatastore"
+    fstype:
+      label: 文件系统类型
+      placeholder: "例如：ext3"
+    hostFailuresToTolerate:
+      label: 主机失败容忍
+      placeholder: "例如：2"
+    cachereservation:
+      label: 缓存预留
+      placeholder: "例如: 20"
+  azure-disk:
+    new: 新建Azure磁盘
+    unmanaged: Azure非托管磁盘
+    skuName:
+      label: Sku名称
+      placeholder: "例如：Standard_LRS"
+    location:
+      label: 位置
+      placeholder: "例如 eastus"
+    storageAccount:
+      label: 存储帐户
+      placeholder: "例如：azure_storage_account_name"
+    storageaccounttype:
+      label: 存储帐户类型
+      placeholder: "例如：Standard_LRS"
+    kind:
+      label: 类型
+      shared: 共享
+      dedicated: 专用
+      managed: 托管
+      placeholder: "例如：共享"
+  azure-file:
+    skuName:
+      label: Sku名称
+      placeholder: "例如：Standard_LRS"
+    location:
+      label: 位置
+      placeholder: "例如：eastus"
+    storageAccount:
+      label: 存储帐户
+      placeholder: "例如：azure_storage_account_name"
+  portworx-volume:
+    fs:
+      label: 文件系统
+      placeholder: "例如：ext4"
+    block_size:
+      label: 块大小
+      placeholder: "例如: 32"
+    repl:
+      label: Repl
+      placeholder: "例如：1; 0为整个设备"
+    io_priority:
+      label: I/O 优先级
+      placeholder: "例如: low"
+    snap_interval:
+      label: 快照间隔
+      placeholder: "例如: 70"
+    aggregation_level:
+      label: 聚合级别
+      placeholder: "例如: 0"
+    ephemeral:
+      label: 临时的
+      placeholder: "例如: true"
+  scaleio:
+    gateway:
+      label: 网关
+      placeholder: "例如：https://192.168.99.200:443/api"
+    system:
+      label: 系统
+      placeholder: "例如：scaleio"
+    protectionDomain:
+      label: 保护域
+      placeholder: "例如：pd0"
+    storagePool:
+      label: 存储池
+      placeholder: "例如：sp1"
+    storageMode:
+      label: 存储模式
+      ThinProvisioned: 精简配置
+      ThickProvisioned: 精简置备
+    secretRef:
+      label: 密文
+      placeholder: "例如：sio-secret"
+    readOnly:
+      label: 只读
+      placeholder: "例如：false"
+    fsType:
+      label: 文件系统类型
+      placeholder: "例如：xfs"
+  storageos:
+    pool:
+      label: 池
+      placeholder: "例如：default"
+    description:
+      label: 描述
+      placeholder: "例如：Kubernetes 卷"
+    adminSecretNamespace:
+      label: 管理密文命名空间
+      placeholder: "例如：default"
+    adminSecretName:
+      label: 管理密文名
+      placeholder: "例如：storageos-secret"
+    fsType:
+      label: 文件系统类型
+      placeholder: "例如：ext4"
+  longhorn:
+    numberOfReplicas:
+      label: 副本数量
+      placeholder: "例如：3"
+    staleReplicaTimeout:
+      label: 陈旧副本超时
+      placeholder: "例如：30"
+    fromBackup:
+      label: 从备份
+      placeholder: ""
+  quobyte:
+    quobyteAPIServer:
+      label: Quobyte API服务器
+      placeholder: "例如：https://138.68.74.142:7860"
+    registry:
+      label: 镜像库
+      placeholder: "例如：138.68.74.142"
+    adminSecretNamespace:
+      label: 管理密文命名空间
+      placeholder: "例如：kube-system"
+    adminSecretName:
+      label: 管理密文名称
+      placeholder: "例如：quobyte-admin-secret"
+    user:
+      label: 用户
+      placeholder: "例如：root"
+    group:
+      label: 组
+      placeholder: "例如：root"
+    quobyteConfig:
+      label: Quobyte配置
+      placeholder: "例如：BASE"
+    quobyteTenant:
+      label: Quobyte租户
+      placeholder: "例如：DEFAULT"
+  rbd:
+    monitors:
+      label: 监控
+      placeholder: "例如：10.16.153.105:6789"
+    adminId:
+      label: 管理员ID
+      placeholder: "例如：kube"
+    adminSecretNamespace:
+      label: 管理密文命名空间
+      placeholder: "例如：kube-system"
+    adminSecret:
+      label: 管理密文
+      placeholder: "例如：secret"
+    pool:
+      label: 池
+      placeholder: "例如：kube"
+    userId:
+      label: 用户ID
+      placeholder: "例如：kube"
+    userSecretName:
+      label: 用户密文名称
+      placeholder: "例如：ceph-secret-user"
+    fsType:
+      label: 文件系统类型
+      placeholder: "例如：ext4"
+    imageFormat:
+      label: 镜像格式
+      placeholder: "例如：2"
+    imageFeatures:
+      label: 镜像功能
+      placeholder: "例如：layering"
+  glusterfs:
+    resturl:
+      label: REST URL
+      placeholder: "例如：https://127.0.0.1:8081"
+    restuser:
+      label: REST 用户
+      placeholder: "例如：admin"
+    restuserkey:
+      label: REST 用户密钥
+      placeholder: "例如：password"
+    secretNamespace:
+      label: 密文命名空间
+      placeholder: "例如：default"
+    secretName:
+      label: 密文名称
+      placeholder: "例如：heketi-secret"
+    clusterid:
+      label: 集群ID
+      placeholder: "例如：630372ccdc720a92c681fb928f27b53f"
+    gidMin:
+      label: GID MIN
+      placeholder: "例如：40000"
+    gidMax:
+      label: GID MAX
+      placeholder: "例如：50000"
+    volumetype:
+      label: 卷类型
+      placeholder: "例如：replicate:3"
 dangerZone:
   header: 高级设置
-  subtext: "典型的用户无须改变这里。请谨慎操作，错误的值可能会破坏 {appName} 的安装。<br/> 默认设置以<b>粗体</b>显示。"
+  subtext: "通常情况下用户不需要修改以下设置。请谨慎操作，不正确的值可能损坏你的 {appName} 部署。<br/>从默认设置修改的自定义设置将以 <b>粗体</b>显示。"
   showLabel: 我确认已经知道修改高级设置可能导致问题
+  description:
+    'cacerts': "验证服务器证书所需的 CA 证书"
+    'engine-install-url': '默认的Docker引擎安装 URL (对于大多数主机驱动程序)'
+    'engine-iso-url': '默认 OS 安装 URL (用于 vSphere 驱动程序)'
+    'engine-newest-version': '本次发布时最新支持的Docker版本。不满足支持的Docker版本但比此更新的Docker版本将被标记为未经测试。'
+    'engine-supported-range': '支持的Docker引擎版本的范围，不满足此范围的版本将在 UI 中标记为不受支持。'
+    'ingress-ip-domain': 'Wildcard DNS domain to use for automatically generated Ingress hostnames. <ingress-name>.<namespace-name>.<ip address of ingress controller> will be added to the domain.'' 'server-url': '默认的Rancher安装 url。必须是 HTTPS。集群中的所有主机都必须能够访问此地址。'
+    'system-default-registry': '用于所有系统Docker镜像的私有镜像仓库'
+    'ui-index': 'UI 的 HTML 索引位置。'
+    'ui-pl': '公司名称专用标签'
 editAccount:
   title: 编辑账号
   form:
@@ -1709,7 +2589,7 @@ editAccount:
     kind:
       label: 账号类型
       user: 普通用户
-      admin: "管理员: 完全访问管理所有群集中的所有内容"
+      admin: "管理员: 完全访问管理所有集群中的所有内容"
     description:
       label: 描述
       placeholder: 例如:John Smith的账号
@@ -1727,7 +2607,22 @@ editApiKey:
   title:
     justCreated: API Key已创建
     editing: 编辑API Key
+    new: 添加API Key
+  accessKey: Access Key (用户名)
+  secretKey: Secret Key (密码)
+  basicAuth: "访问键和密钥可以作为 HTTP 基本身份验证的用户名和密码发送, 以授权请求。 您还可以将它们组合为承载标记："
+  token: 无记名令牌
+  ttl:
+    label: 自动失效
+    never: 从不
+    day: 从现在起 1 天
+    month: 从现在起1个月
+    year: 从现在起 1 年
+  description:
+    placeholder: "可选：例如，此密钥由应用程序服务器用于部署容器"
+  saveWarning1: 请保存上面的信息！这些信息仅显示一次。
   saveWarning2: 如果忘记了Secret Key，您需要重新创建新的API Key
+  noteOptional: 说明是可选项, 以帮助您记住此密钥将用于何种用途。
 editCertificate:
   title: 编辑证书
   name:
@@ -1763,6 +2658,7 @@ editContainer:
   description:
     placeholder: 例如:我的应用
 editHost:
+  title: 编辑主机
   hostname:
     label: 主机名
     help: 由主机操作系统获取
@@ -1783,7 +2679,7 @@ editHost:
     help: 如果设置，调度器将从中选择一个IP地址并将发布的端口绑定到该地址。
   requireAny:
     label: 容器标签需求
-    help: 如果设置，容器必须具备设置的一个或者多个标签才能够被调度到该节点。如果仅设置Key而Value留空，具备相应Key的容器可以被调度到该节点而忽略Value的值。<code>io.rancher.container.system</code>标签是运行系统容器所必须的。
+    help: 如果设置，容器必须具备设置的一个或者多个标签才能够被调度到该主机。如果仅设置Key而Value留空，具备相应Key的容器可以被调度到该主机而忽略Value的值。<code>io.rancher.container.system</code>标签是运行系统容器所必须的。
     addActionLabel: 添加标签需求
 editService:
   title: 编辑服务
@@ -1791,6 +2687,7 @@ editStack:
   title: 编辑命名空间
   name:
     label: 名称
+    error: 命名空间名称已被使用，请选择一个新的命名空间名称。
     placeholder: 例如:myapp
   project:
     label: 项目
@@ -1817,11 +2714,18 @@ editUser:
       new: 新密码
       confirm: 确认密码
       error: 密码必须相同
+      mustChangePassword:
+        new: 要求用户在首次登录时更改密码
+        edit: 要求用户在下次登录时更改密码
 envCatalog:
   header: 管理应用商店
   subtext: '可以在这里定义自定义的应用商店源，该应用商店仅对当前环境的用户可见。全局应用商店对所有环境可见，仅能由管理员在管理设置中修改。应用商店需要一个唯一的名称并且支持 <code>git clone</code> 的URL地址 (参考 <a href="https://git-scm.com/docs/git-clone#_git_urls_a_id_urls_a" target="_blank" rel="nofollow noopener noreferrer">文档</a> 以获取更多信息)。'
   addActionLabel: 添加应用商店
 moveNamespace:
+  title: |
+    移动 {count, plural,
+    =1 {命名空间: {name}}
+    other {# 命名空间:}}
   to: "转到目标项目："
   actionLabel: 移动
 stackHeader:
@@ -1849,7 +2753,7 @@ formIngress:
     mark: 默认后端
   label: 规则
   addRuleLabel: 添加规则
-  removeRuleLabel: 删除此规则
+  removeRuleLabel: 移除此规则
   noRules: 没有规则
   host:
     label: 请求主机
@@ -1860,7 +2764,10 @@ formIngress:
     workload: 工作负载
     service: DNS记录
 formIngressBackends:
+  label: 目标后端
   noRules: 没有后端
+  addServiceLabel: 服务
+  addWorkloadLabel: 工作负载
   service:
     label: 服务
   workload:
@@ -1978,6 +2885,7 @@ formCommand:
     always: 总是
   terminationGracePeriodSeconds:
     label: 停止超时
+    helpText: 容器可以在这个时间内自己停止，超时后将被强制终止。
   fsgid:
     label: 文件系统组
     placeholder: '例如: 501'
@@ -2013,6 +2921,8 @@ formDisks:
   driver:
     label: 驱动
 formEngineOpts:
+  title: 引擎选项
+  detail: 自定义Docker守护进程的配置
   engineInstallUrl:
     label: Docker安装URL
     placeholder: 例如:http://get.docker.com
@@ -2061,20 +2971,21 @@ formEnvVar:
     value: 值
 formGlobalRoles:
   title: 全局权限
+  description: 控制用户管理整个 {appName} 安装的访问权限。
   mode:
     admin:
       label: 管理员
       detail: 管理员完全控制所有集群中的全部安装和所有资源
     user:
       label: 标准用户
-      detail: 标准用户可以创建新的群集并管理他们已被授权访问的群集和项目。
+      detail: 标准用户可以创建新的集群并管理他们已被授权访问的集群和项目。
     custom:
       label: 自定义
       detail: 为这个用户选择独立的权限
   role:
     create-clusters:
-      label: 创建新的群集
-      detail: 允许用户创建新的群集并成为它们的所有者。标准用户默认具有此权限。
+      label: 创建新的集群
+      detail: 允许用户创建新的集群并成为它们的所有者。标准用户默认具有此权限。
     manage-authn:
       label: 配置身份验证
       detail: 允许用户启用，配置和禁用所有身份验证程序设置。
@@ -2082,14 +2993,14 @@ formGlobalRoles:
       label: 配置应用商店
       detail: 允许用户添加，编辑和删除应用商店
     manage-clusters:
-      label: 管理所有群集
+      label: 管理所有集群
       detail: 允许用户管理全部集群，即使这个用户不是被管理集群中的成员也可以管理。
     manage-node-drivers:
       label: 配置主机驱动
       detail: 允许用户启用，配置和移除所有节点驱动设置。
     manage-node-templates:
-      label: 管理节点模板
-      detail: 允许用户定义，编辑和删除节点模板
+      label: 管理主机模板
+      detail: 允许用户定义，编辑和删除主机模板
     manage-roles:
       label: 管理角色
       detail: 允许用户定义，编辑和删除角色定义
@@ -2100,18 +3011,53 @@ formGlobalRoles:
       label: 使用应用商店
       detail: 允许用户查看和应用商店中的模板。标准用户默认具有此权限。
     use-node-templates:
-      label: 使用节点模板
-      detail: 允许用户使用现有的节点模板部署新的节点。
+      label: 使用主机模板
+      detail: 允许用户使用现有的主机模板部署新的主机。
+    base:
+      label: 登录访问
+formMembers:
+  members:
+    user: 用户
+    group: 组
+    serviceaccount: 服务账号
+    labelText: 成员
+    addMember: 添加成员
+    addUser: 添加用户
+    noAddUser: 您是唯一的活动注册用户。
+    addGroup: 添加组
+    addServiceAccount: 添加服务帐户
+    multipleRoles: 多个角色
+    customRoles: 自定义角色
+    kind:
+      label: 类型
+    name:
+      label: 名称
+    role:
+      label: 角色
+    errors:
+      nameReq: 名称（必填）
+      nameInExists: 名称已经存在。请使用新的项目名称。
+      memberNameReq: 成员名称是必须的
+      memberRoleReq: 成员角色是必须的
+      ownerReq: 必须至少有一个具有所有者角色的成员。
 formScopedRoles:
   title: '{type} 权限'
+  description: '控制用户对 {type}的访问权限。'
   mode:
     admin:
       label: 所有者
+      detail: 所有者完全控制 {type} 及其内部的所有资源。
     user:
       label: 成员
+      detail: 成员可以管理 {type} 内部的资源，但不能更改 {type} 本身。
     custom:
       label: 自定义
       detail: 为此用户选择个人角色
+    readOnly:
+      label: 只读
+      detail: 成员可以查看 {type} 中的资源，但不能更改 {type} 本身。
+    userDef:
+      detail: 用户定义的角色
     role:
       read-only:
         label: 只读
@@ -2128,6 +3074,7 @@ formHealthCheck:
     tcp: 检查TCP连接是否正常
     http: HTTP 请求返回成功状态 (2xx 或 3xx)
     https: HTTPS 请求返回成功状态 (2xx 或 3xx)
+    command: 在容器内运行的命令退出状态为0
   command:
     label: 命令
     placeholder: 例如 cat /tmp/health
@@ -2157,6 +3104,23 @@ formHealthCheck:
   successThreshold:
     label: 健康阈值
     unit: 成功
+  failureThreshold:
+    label: 不健康阈值
+    unit: 失败
+formKeyToPath:
+  addAction: 添加项目
+  header: 项目
+  default: 所有秘钥
+  specific: 选择特定的秘钥
+  key:
+    label: 键
+    placeholder: "例如：username"
+  path:
+    label: 路径
+    placeholder: "例如：my-group/my-username"
+  mode:
+    label: 模式
+    placeholder: "例如：400"
 formKeyValue:
   addAction: 添加键值对
   key:
@@ -2189,7 +3153,7 @@ formNetwork:
   dnsPolicy:
     label: DNS策略
     clusterFirstWithHostNet: "首先与主机网络集群"
-    clusterFirst: "群集优先"
+    clusterFirst: "集群优先"
   container:
     label: 容器
   requestedIp:
@@ -2224,21 +3188,75 @@ formNetwork:
   subdomain:
     label: 子域
     placeholder: '例如: foo'
+  hostAlias:
+    addActionLabel: 添加主机别名
+    label: 主机别名（/etc/hosts条目）
+    host:
+      label: 主机名
+      placeholder: 例如：database
+    ip:
+      label: IP地址
+      placeholder: 例如：192.168.0.1
 formPorts:
   header: 端口映射
   addAction: 添加端口
+  kind:
+    label: 作为一个
+    NodePort: NodePort（在每个主机上）
+    HostPort: HostPort（运行pod的主机）
+    ClusterIP: 集群IP(仅限集群内部)
+    LoadBalancer: 4层负载均衡器
+  sourcePort:
+    label: 监听端口
+    placeholder: "例如：80"
+    ipPlaceholder: "例如：80 或 19.82.2.24:80"
+    clusterIpDefault: "与容器端口相同"
+  nodePort:
+    placeholder: "例如：30000"
   containerPort:
+    label: 发布容器端口
     placeholder: "例如:8080"
   protocol:
     label: 协议
+  name:
+    label: 名称
+    placeholder: "例如： backend"
+  dnsName:
+    label: DNS名称
+    placeholder: "例如：example"
   noPorts: 当前容器没有端口映射
   error:
     privateRequired: 每条端口规则必须有私有容器端口
+    publicRequired: 如果指定了主机IP，则需要源端口。
+    hostPort:
+      sourcePortRequired: 对于运行pod的主机，源端口是必需的。
+    loadBalancer:
+      sourcePortRequired: 每条规则必须设置源端口.
     mixedIpPort: "Port {ip}:{port}/{proto} 有超过一条映射规则"
     mixedPort: "Port {port}/{proto} 有超过一条映射规则"
+  showAdvanced: 显示端口命名选项
+formScale:
+  label: 工作负载类型
+  showAdvanced: 更多选项
+  scaleMode:
+    deploymentPrefix: "可扩展的部署"
+    replicationControllerPrefix: "复制控制器"
+    replicaSetPrefix: "副本集"
+    statefulSetPrefix: "有状态集"
+    scaleSuffix: |
+      {scale, plural,
+      =1 {pod}
+      other {pods}
+      }
+    daemonSet: "在每个主机上运行一个 pod"
+    cronJob: "按照cron计划运行"
+    job: Job
+    sidekickInactive: "Sidecar：将容器添加到现有工作负载"
+    sidekickPrefix: "Sidecar：添加容器到"
+    sidekickSuffix: ""
 formScheduling:
-  title: 节点调度
-  detail: 配置Pod可以部署到的节点。
+  title: 主机调度
+  detail: 配置Pod可以部署到的主机。
   status: |
     {count, plural,
     =0 {没有规则}
@@ -2246,11 +3264,12 @@ formScheduling:
     other {# 个规则}
     }
   canRequestHost:
-    vm: 在指定节点上运行 <b>所有</b> 虚拟机
-  runSpecific: 在特定节点上运行此pod
+    vm: 在指定主机上运行 <b>所有</b> 虚拟机
+    containers: 在特定主机上为此工作负载运行 <b>所有</b> pod
+  runSpecific: 在指定主机上运行此pod
   noRules: 没有规则.
   noToleration: 不容忍节点污点
-  autoRun: "在匹配调度规则的每个节点上自动运行："
+  autoRun: "在匹配调度规则的每个主机上自动运行："
   autoPick:
     vm: "为每一个虚拟机自动选择符合调度规则的主机:"
     container: "为每一个pod自动选择符合调度规则的主机:"
@@ -2280,6 +3299,7 @@ formScheduling:
     label: 优先级
     placeholder: '例如: 3'
   priorityClassName:
+    label: Priority Class名称
     placeholder: 例如高
   scheduler:
     label: 调度
@@ -2303,31 +3323,57 @@ formScheduling:
       exists: '已设置'
       notExists: '未设置'
     multiple:
-      placeholder: '例如foo，bar，baz'
+      placeholder: '例如：foo，bar，baz'
     custom:
       placeholder: '例如 foo > 42 && bar != baz'
+formSources:
+  title: 来自其他源的环境变量
+  detail: 来自其他源的环境变量允许您将密码、密钥或其他信息注入需要它们的容器中。
+  noData: 没有来自其他源的环境变量
+  noMatch: 没有匹配当前搜索的来自其他源的环境变量
+  addLabel: 添加源
+  type:
+    label: 类型
+  source:
+    label: 源
+  prefixOrKey:
+    label: 键
+  prefix:
+    label: 前缀或别名
 formSecurity:
   title: 安全及主机设置
   detail: 授予或限制容器影响所运行主机的能力
   pullImage:
     label: 拉取镜像
+    always: 总是
+    ifNotPresent: 仅当主机无镜像时
   privileged:
     label: 特权
-    disable: "取消"
+    disable: "否"
     enable: "有: 容器有完全主机访问权限"
   allowPrivilegeEscalation:
     label: 提升特权
-    disable: "取消"
+    disable: "否"
     enable: "是的：容器可以获得比其父进程更多的特权"
+  hostIPC:
+    label: 使用主机的IPC命名空间
   runAsNonRoot:
-    disable: "取消"
+    label: 以非root用户身份运行
+    disable: "否"
     enable: "是：容器必须以非root用户身份运行"
   readOnlyRootFilesystem:
+    label: 只读根文件系统
     disable: "否"
     enable: "是的：容器有一个只读的根文件系统"
+  hostPID:
+    label: 使用主机的PID命名空间
   memoryLimit:
+    label: 内存限制
+    unlimited: 无限制
     set: 限制为
   cpuLimit:
+    label: CPU 限制
+    unlimited: 无限制
     set: 限制为
     unit: milli CPUs
   swapLimit:
@@ -2366,9 +3412,15 @@ formSecurity:
       label: 权限
   memoryReservation:
     label: 内存预留
+    placeholder: 例如：128
   milliCpuReservation:
     label: CPU预留
+    placeholder: 例如：1000
     unit: milli CPUs
+  gpuReservation:
+    label: NVIDIA GPU预留
+    placeholder: 例如：1
+    unit: GPUs
   isolation:
     label: 隔离
     default: 默认 (容器)
@@ -2384,11 +3436,14 @@ formSslTermination:
   alternateCerts: 备选证书
   addAlternate: 添加备选证书
   noCertificates: 没有可用的证书。
-  noCertificatesConfiged: 没有证书。
+  noCertificatesConfiged: 没有证书
   noAlternateCertificates: 没有其他可用的证书。
+  hosts: 主机
+  noHosts: 没有主机
   host:
     label: 主机
     placeholder: '例如: example.com'
+  addHostLabel: 添加主机
   helpBlock: |
     "注意: 一些旧的 SSL/TLS 客户的不支持 <a href="https://en.wikipedia.org/wiki/Server_Name_Indication" target="_blank">Server Name Indication (SNI)</a> 功能，对于这些客户端将只提供主证书。 对于支持SNI功能的现代客户端将根据匹配结果从备选证书列表中选择一个合适的证书。"
   notNeeded: 没有配置了有效的目标规则的 SSL/TLS 的监听端口。
@@ -2398,6 +3453,7 @@ formNamespace:
   label:
     reuse: 命名空间
     create: 命名空间
+    default: 默认命名空间
   toggle:
     simple: 自定义
     reuse: 使用现有的名称空间
@@ -2412,9 +3468,13 @@ formNamespace:
 formUserData:
   placeholder: "例如: 容器的配置信息"
   isVmPlaceholder: "例如: 虚拟机的配置信息"
+formLabelsAnnotations:
+  title: 标签和注释
+  detail: 可用于标识/注释容器并用于调度决策的键值对
 formUserLabels:
   title: 标签
   detail: 标签是可用于注释容器并进行调度决策的键值对
+  nodeDetail: 键/值对形式的标签将应用于主机上，用于容器的调度决策。
   addAction: 添加标签
   key:
     label: 键
@@ -2424,19 +3484,78 @@ formUserLabels:
     label: 值
     placeholder: 例如:bar
   protip: "高级技巧: 粘贴一行或多行的 key=value键值对能够批量输入。"
+formAccessModes:
+  label: 访问模式
+  accessRWO: 单主机读写
+  accessROX: 多主机只读
+  accessRWX: 多主机读写
 formAnnotations:
+  addActionLabel: 没有注释
   title: 注释
   detail: 配置容器的注释（键/值元数据）。
   errors:
     invalidJSON: 注释的JSON格式无效。
+    topLevelValueInvalid: 注释JSON顶级值必须是一个对象。
+formUpgrade:
+  title: 缩放/升级策略
+  detail: 配置升级过程中替换Pod的策略。
+  strategy:
+    label: 升级策略
+    orderedReady: 严格按顺序更新并等待准备就绪
+    parallel: 启动全部新的Pod和停止全部旧的Pod并行执行
+    onDelete: 仅当手动删除旧的Pod时才启动升级的Pod
+    recreate: 杀死所有pod，然后重新开始
+    rollingUpdate: 滚动更新
+    startFirst: '滚动：启动新的pod，然后停止旧的pod'
+    stopFirst: '滚动：停止旧的pod，然后开始新的pod'
+    custom: 自定义
+    batchSize:
+      label: 批量大小
+      detail: Pod将被一次启动或停止如下数量
+    maxSurge:
+      label: 最大浪涌
+      detail: 在任何给定时间内允许超出所需规模的最大pod数量。
+    maxUnavailable:
+      label: 最大不可用
+      detail: 在任意给定时间最大不可用的pod数量
+    minReadySeconds:
+      label: 最短准备时间
+      detail: Pod内的容器需至少启动运行以下时长才被视为可用
+    progressDeadlineSeconds:
+      label: 进度截止日期
+      detail: 将进度不可见的部署标记为停滞状态的等待时间
 formValueArray:
   addActionLabel: 添加值
   valueLabel: 值
   valuePlaceholder: 值
+  noData: 没有数据
   protip: "高级技巧: 在任意输入栏中粘贴一行或多行的 value能够批量输入。"
 formVolumeRow:
+  name:
+    label: 卷名
+    placeholder: 例如：vol1
   mode:
+    label: 卷类型
+    newVolume: 临时卷
+    existingVolume: 已有的卷
+    newPvc: 添加卷声明
+    existingPvc: 持久化卷声明
+    bindMount: 挂载
     tmpfs: Tmpfs
+    secret: 密文
+    configmap: 配置映射
+  remove: 删除卷
+  subPath: 卷中的子路径
+  readOnly: 只读
+  noVolume: 卷不会被挂载到当前容器中。 它可能被pod中的其他容器使用。
+  addMount: 添加挂载
+  mounts:
+    mountPoint: 挂载点
+    subPath: 卷中的子路径
+    readOnly: 只读
+    helper: 卷不会被挂载到当前容器中。 它可能被pod中的其他容器使用。
+  customLogPath:
+    helpText: 我们将部署一个flexvolume驱动程序来创建卷并将日志挂载到主机。 GKE集群现在支持该功能。
 formVolumes:
   title: 卷
   detail: 持久化及共享数据并与独立容器的生命周期分离
@@ -2456,7 +3575,15 @@ formVolumes:
     absoluteMountPoint: 卷挂载点必须使用绝对路径。
   add:
     label: 添加卷...
+    newVolume: 添加一个临时卷
+    existingVolume: 现有的临时卷
+    newPvc: 添加新的持久化卷 （声明）
+    existingPvc: 使用现有的持久化卷（声明）
+    bindMount: 从主机中挂载目录
     tmpfs: 添加一个内存中的tmpfs
+    secret: 使用密文
+    configMap: 使用配置映射
+    customLogPath: 从目录读取日志文件
   table:
     kind: 类型
     source: 源
@@ -2468,6 +3595,7 @@ formCapabilityPodSecurityPolicy:
   capabilities:
     allow: 启用的功能
     add: 默认添加的能力
+    drop: 必须禁用的内核能力
 formVolumePodSecurityPolicy:
   title: 卷策略
   detail: 控制卷类型的使用
@@ -2483,6 +3611,7 @@ formFsGroupPodSecurityPolicy:
   detail: 分配拥有 pod 卷的 FSGroup
   rule:
     mustRunAs: MustRunAs-至少需要指定一个范围。使用第一个范围的最小值作为默认值。对照第一个范围中的第一个 ID 进行验证。
+    runAsAny: RunAsAny - 没有默认值。允许指定任何fsGroup ID。
   range:
     addLabel: 添加一个范围
     max:
@@ -2505,6 +3634,10 @@ formHostPortsPodSecurityPolicy:
 formRunAsUserPodSecurityPolicy:
   title: 作为用户策略运行
   detail: User ID
+  rule:
+    mustRunAs: MustRunAs - 需要配置一个范围。使用范围的第一个值作为默认值。根据配置的范围进行验证。
+    mustRunAsNonRoot: MustRunAsNonRoot - 要求使用非零runAsUser启动pod，或者在镜像中定义USER指令。不提供默认值。
+    runAsAny: RunAsAny - 无默认值。 允许任何runAsUser来指定。
   range:
     addLabel: 添加一个范围
     max:
@@ -2516,6 +3649,9 @@ formRunAsUserPodSecurityPolicy:
 formSeLinuxodSecurityPolicy:
   title: SELinux策略
   detail: 容器的 SELinux 上下文
+  rule:
+    mustRunAs: MustRunAs - 使用seLinuxOptions作为默认值。根据seLinuxOptions进行验证。
+    runAsAny: RunAsAny - 允许指定任何seLinuxOptions设置
   level:
     label: 等级
     placeholder: 例如:dev1
@@ -2526,6 +3662,11 @@ formSeLinuxodSecurityPolicy:
     label: 用户
     placeholder: 例如 master
 formSupplementalGroupsPodSecurityPolicy:
+  title: 补充组策略
+  detail: 配置允许的补充组
+  rule:
+    mustRunAs: MustRunAs - 需要至少指定一个范围。使用第一个范围的最小值作为默认值。针对所有范围进行验证。
+    runAsAny: RunAsAny - 无默认值。允许指定任何补充组。
   range:
     addLabel: 添加一个范围
     max:
@@ -2540,23 +3681,31 @@ formBasicPodSecurityPolicy:
   allowPrivilegeEscalation:
     label: 允许提升特权
     enable: "是：运行允许从其父级升级特权的容器"
+    disable: "No"
   defaultAllowPrivilegeEscalation:
     label: 默认允许提升特权
+    enable: "Yes：控制进程可以获得父进程获得更多特权"
+    disable: "No"
   hostIPC:
     label: 主持IPC
     enable: "是：使用主机的IPC命名空间"
+    disable: "No"
   hostNetwork:
     label: 主机网络
     enable: "是的：使用主机网络"
+    disable: "否"
   hostPID:
     label: 主机PID
     enable: "是的：使用主机的PID名称空间"
+    disable: "否"
   privileged:
     label: 特权
     enable: "是的：运行特权容器"
+    disable: "否"
   readOnlyRootFilesystem:
     label: 只读根文件系统
     enable: "是的：需要采用一个只读根文件系统"
+    disable: "否"
 hostSettings:
   header: 主机注册URL
   subtext: 主机连接{appName} API的Base URL是？
@@ -2608,6 +3757,7 @@ inputAnswers:
   config: 配置选项
   unknownType: "未识别问题类型:"
   noConfig: 该模板没有配置选项
+  protip: "粘贴和读取操作要求其各自答案为 yml/yaml 格式"
 inputIdentity:
   placeholder:
     github: 添加GitHub用户或组织名称
@@ -2619,9 +3769,15 @@ inputPassword:
   buttonText: 生成
 inputTextFile:
   tooltip: 从文件读取
+uploadFile:
+  label: 从文件读取
+podsSection:
+  title: Pods
+  detail: 此工作负载中的Pods
 labelsSection:
   kind: 类型
   title: 标签
+  detail: 键/值可以被用在主机调度规则里和一些其他的高级设置中。
   status: |
     {count, plural,
     =0 {无标签}
@@ -2631,18 +3787,29 @@ labelsSection:
   key: 键
   value: 值
   noData: 无标签
+loginShibboleth:
+  buttonText: 用Shibboleth账号登录
+loginGithub:
+  buttonText: 用GitHub帐号登录
 loginUserPass:
+  local: 使用本地用户
+  provider: "{kind}"
   userLabel: 用户名
   caasLabel: 邮箱
+  remember: 记住登录
   userPlaceholder: 例如:jsmith
+  genericLoginLabel: 登录
+  loginLabel: 登录{provider}
   loggingInLabel: 登录中...
   passwordLabel: 密码
 machineTemplatesPage:
-  title: 添加节点...
+  title: 添加主机
   new:
+    helpText: 启动一个新的主机或通过SSH导入一个已经在运行的Docker
     btn: 设置
   custom: 自定义添加一台现有的正在运行docker的主机
   templateBox:
+    button: 选择
     labels:
       region: 实例所在地区
       zone: 区域
@@ -2653,22 +3820,37 @@ newCertificate:
     view: '证书: {name}'
   key:
     label: 私钥
+    required: 私钥是必需的。
+    invalidFormat: 私钥无效。
     placeholder: "粘贴或导入私钥，以-----BEGIN RSA PRIVATE KEY-----开头"
   cert:
     label: 证书
+    required: 证书是必需的。
+    invalidFormat: 证书无效。
     placeholder: "粘贴或导入证书，以-----BEGIN CERTIFICATE-----开头"
+    protip: 请包括任何需要的链证书。
   certChain:
     label: 证书链
     placeholder: "粘贴或导入证书，以-----BEGIN CERTIFICATE-----开头"
   metaXML:
     label: 元数据XML
     placeholder: "粘贴 IDP Metadata XML"
+  errors:
+    encrypted: 私钥不能被密码保护。
+    key:
+      required: 私钥是必需的。
+      invalidFormat: 私钥无效。请确保它是一个RSA密钥。
+    cert:
+      required: 证书是必需的。
+      invalidFormat: 证书无效。
 modalAboutComponent:
   component: 组件
   version: 版本
   cattle: Cattle
   cli: 命令行
   ui: 用户界面
+  helm: Helm
+  machine: 主机
 modalAddPayment:
   header: 添加新的付款方式
   save: 保存
@@ -2700,6 +3882,7 @@ modalAddPayment:
     address:
       addressLine1:
         label: 地址栏1
+        placeholder: 742 Evergreen Terrace
       addressLine2:
         label: 地址栏2
         placeholder: Apt. 123
@@ -2752,11 +3935,15 @@ modalEditDriver:
     help: 64位Linux Docker-Machine驱动下载地址
   uiUrl:
     label: 自定义UI URL
-    help: "可选项：用于加载本驱动程序的自定义添加节点界面的URL"
+    help: "可选项：用于加载本驱动程序的自定义添加主机界面的URL"
     link: 参考 <a href="https://github.com/rancher/ui-driver-skel" target="_blank">ui-driver-skel</a> 以了解更多信息。
   checksum:
     label: 校验和
     help: "可选: 检验下载的驱动是否匹配期望的校验和"
+  whitelist:
+    label: 域名白名单
+    addActionLabel: 添加域名
+    noData: 没有域名
 modalEditSetting:
   title: 编辑高级设置
   name:
@@ -2767,10 +3954,21 @@ modalEditSetting:
   reset:
     label: 重置为默认值
 modalEditPassword:
+  firstLogin:
+    title: 欢迎使用 {appName}
+    help: 第一步请为默认 <code>admin</code> 用户设置强密码。
+    actionButton: 继续
+  edit:
+    title: 修改密码
+    help: 请输入一个新密码。
   current: 当前密码
   new: 新密码
   confirm: 确认密码
   mismatch: 密码不匹配
+  actionButton: 修改
+  mode:
+    generate: '使用新的随机生成的密码：'
+    manual: '设置一个特定的密码来使用：'
 modalFeedback:
   header: 欢迎使用 {appName}!
   subtitle: "在开始使用前, 请让我们了解关于您的信息..."
@@ -2780,6 +3978,15 @@ modalHostEvacuate:
   helpText: "此操作将停用该主机并删除主机上所有运行的非基础设施容器。"
   protip: "进阶提示: 在点击时按住 {key}  键以跳过确认操作。"
   button: 疏散
+modalImport:
+  title: 导入YAML
+  mode:
+    label: 导入模式
+    cluster: "集群：直接将任何资源导入到此集群中"
+    project: "项目：将资源导入此项目"
+    namespace: "命名空间：将资源导入特定的命名空间"
+  defaultNamespace:
+    label: 资源未指定时使用的默认命名空间
 modalProcessError:
   header: 异常信息
   cause: "原因:"
@@ -2788,6 +3995,7 @@ modalProcessError:
   close: 关闭
 modalRollbackService:
   title: '回滚 "{instanceName}"'
+  titleWithSidekicks: '回滚"{instanceName}"&{count, plural,=1 {#sidecar} other {#sidecars}}'
   action: 回滚
   current:
     label: 当前版本
@@ -2796,18 +4004,48 @@ modalRollbackService:
     prompt: 选择版本..
   difference:
     label: 区别
+modalRollbackApp:
+  title: '回滚 "{appName}"'
+  action: 回滚
+  current:
+    label: 当前版本
+  revision:
+    label: 回滚到版本
+    prompt: 选择版本...
+  difference:
+    label: 差异
+modalShell:
+  title: "命令行："
 modalShortcuts:
   world: 世界
   time: 时间
   title:
     rancher: "欢迎来到传送门！"
     pl: 快捷键
+  global: 全局
+  cluster: 集群
+  project: 项目
   other: 其他的东西
+  shift: Shift-{key}
+  delete: 删除所选择的(在表视图中)
+  kubectl: Kubectl shell
+  viewGroup: 切换分组视图
+  nextTab: 下一页
+  search: 聚焦搜索字段
+  shortcuts: 你在这里
+modalYaml:
+  title:
+    new: 导入 {type} YAML
+    edit: '编辑YAML： {name}'
 modalWelcome:
   header: 欢迎使用 {appName}!
   closeModal: 确认
 namespaceGroup:
   label: "命名空间：{name}"
+  none: Pod
+  project: 不在项目中
+nodeGroup:
+  label: "主机：{name}"
 newIngress:
   header:
     add: 添加Ingress
@@ -2830,16 +4068,28 @@ newBalancer:
     needsCertificate: "设置SSL/TLS规则时需要证书"
     stackName: "请输入新应用的名称"
 newCatalog:
+  answers:
+    label: 回答
+    addAction: 添加应答
   catalog: "应用商店:"
   category: "类别:"
   config: 配置选项
+  helm:
+    label: 配置选项
+    protip: Helm模板接受逗号做为分隔符的字符串列表
+  kind: "应用分类："
   license: "授权:"
   maintainedBy: 由社区成员维护
   maintainer: "维护者:"
   newNamespace: 新的命名空间
+  customizeNamespace: "此应用程序将被部署到<code>{namespaceId}</code>命名空间"
+  newAppDetail: 选择应用程序版本和对应的命名空间
+  appInfo: 详细描述
+  appInfoDetail: 应用程序信息和用户guid
   noConfig: 该模板没有配置选项
   official: 官方认证
   preview: 预览
+  seeMore: 更多信息...
   saveConfigure: 设置
   saveNew: 启动
   saveUpgrade: 升级
@@ -2849,6 +4099,9 @@ newCatalog:
   startService: 创建后启动服务
   support: "支持:"
   templateVersion: 模板版本
+  titleAdd: "添加{name} 应用"
+  titleConfigure: "设置 {name} 应用"
+  titleUpgrade: "升级 {name} 应用"
   txt: answers.txt
   unknownType: "未识别问题类型:"
   upgrade: "升级:"
@@ -2857,10 +4110,18 @@ newCatalog:
     prompt: 选择版本...
     default: 当前默认 (当前版本 {version})
 newContainer:
+  add:
+    container: 部署Pod
+    service: 部署工作负载
+    globalService: 添加全局工作负载
+    sidekick: '部署Sidecar'
+    sidekickName: '部署 "{name}" 的Sidecar'
   upgrade:
     container: 升级容器
     service: 升级服务
     globalService: 升级全局服务
+    sidekick: 升级Sidecar
+    sidekickName: '升级 "{name}" 的Sidecar'
   selectUpgrade: 选择一个或者多个服务进行升级
   saveUpgrade: 升级
   saveNew: 启动
@@ -2870,7 +4131,10 @@ newContainer:
     placeholder: 例如:我的应用
   environment:
     label: 环境变量
+    from: 从另一个资源注入值
+    detail: 设置容器可见的环境变量，包括从其他资源如密文等的注入值。
     addAction: 添加变量
+    addFrom: 添加新的源
     keyLabel: 变量
     keyPlaceholder: '例如: FOO'
     valueLabel: 值
@@ -2878,7 +4142,12 @@ newContainer:
   sidekick:
     header: 升级服务
     title: 选择加载配置的服务来升级
+    detail: '“{service}”有多个容器，希望升级哪个容器？'
     primary: 主容器
+    sidekick: Sidecars
+  errors:
+    noSidekick: 选择要添加sidecar的工作负载
+    duplicateName: '工作负载{service} 中已经存在名为{name} 的sidecar'
 newPassword:
   placeholder: 新密码
   password: 新密码
@@ -2887,7 +4156,7 @@ newPassword:
 newSecret:
   title:
     new: 添加密文
-    edit: '编辑秘密：{name}'
+    edit: '编辑密文：{name}'
     view: '密文：{name}'
   name:
     placeholder: 例如api-key
@@ -2896,6 +4165,473 @@ newSecret:
   values:
     label: 密文值
   addActionLabel: 添加密文值
+nodeDriver:
+  addTemplate: 添加主机模板
+  editTemplate: "编辑主机模板：{name}"
+  editWarning: 编辑主机模板只会影响由主机池创建的新主机，现有主机将不会自动更新或替换。<br>如果从池中删除主机，将使用模板中的新设置创建新主机。
+  displayName:
+    aliyunecs: 阿里云ECS
+    amazonec2: 亚马逊EC2
+    azure: Azure
+    digitalocean: DigitalOcean
+    exoscale: Exoscale
+    openstack: Openstack
+    otc: 打开Telekom云
+    packet: Packet
+    rackspace: Rackspace
+    softlayer: 软件层
+    vmwarevsphere: vSphere
+    zstack: ZStack
+  driverOptions: "{driver} 选项"
+  templateOptions: "{appName} 模板"
+  amazonec2:
+    access:
+      title: 1. 帐户访问
+      detail: 选择将用于启动EC2实例的区域和API密钥
+      next: "下一步：验证和选择一个网络"
+      loading: 从EC2加载可用区和VPC信息...
+      help: "在此粘贴你的AWS密钥对，我们将用秘钥创建新的实例。"
+    zone:
+      title: 2. 区域和网络
+      detail: 为实例选择可用区和VPC/子网
+      next: "下一步: 选择安全组"
+      loading: 从EC2加载安全组信息...
+    accessKey:
+      label: 访问密钥
+      placeholder: 你的AWS access key
+    secretKey:
+      label: 加密秘钥
+      placeholder: 你的AWS secret key
+      provided: 已提供
+    region:
+      label: 区域
+    availabilityZone: 可用区
+    subnet: VPC/Subnet
+    securityGroup:
+      title: 3. 安全组
+      detail: 选择安全组将应用到实例
+      choose: 选择一个或多个现有的组
+      defaultExisting: "标准：使用现有的 <code>{groupName}</code> 安全组"
+      defaultCreate: "标准：自动创建 <code>{groupName}</code> 安全组"
+      next: "下一步：设置实例选项"
+      loading: 正在加载实例选项...
+    tags:
+      addActionLabel: 添加AWS标签
+      valueLabel: 标签
+      placeholder: 例如：dev
+    instance:
+      title: 4. 实例
+      detail: 自定义将要创建的EC2实例。
+    portHelp:
+      link: 了解更多
+      text: 将要开放端口的详细信息
+    needs:
+      label: "为了使{appName} 正常使用，你的安全组需要配置允许以下流量通过："
+      item1: 从{appName} 服务器到主机的<code>TCP</code>端口<code>22</code><span class="text-muted">(SSH连接用于安装docker)
+      item2: 主机之间需要开放<code>UDP</code> 端口 <code>500</code>和<code>4500</code> <span class="text-muted">(ipsec网络)</span></li>
+      item3: 这些规则<b>不会</b>自动添加。
+    instanceType:
+      label: 实例类型
+    rootSize:
+      label: 根磁盘大小
+      unit: GB
+    ami:
+      label: AMI
+      placeholder: Ubuntu AMI
+      rancherList: RancherOS AMI列表
+    sshUser:
+      label: SSH 用户
+      placeholder: 例如：ubuntu
+    iam:
+      label: IAM配置文件
+    privateIp:
+      label: 私有IP
+    onlyPrivate:
+      label: 仅使用私有IP地址
+    requestSpotInstance:
+      label: 竞价实例
+      enable: 请求竞价实例
+    spotPrice:
+      label: 竞价价格
+      unit: '$'
+  digitalocean:
+    droplet:
+      title: Droplet选项
+      detail: 配置将由此模板创建的Droplets的选项。
+    sizeLabel: |
+      {highMem, select, true {High Memory: } other {}}{memoryGb} GB RAM, {disk} GB Disk, {vcpus, plural,
+      =1 {# vCPU}
+      other {# vCPUs}
+      }
+    authAccountButton: '下一步：配置 Droplet'
+    accessToken:
+      label: 访问令牌
+      placeholder: 你的DigitalOceanAPI访问令牌
+      help: |
+        从<a href="https://cloud.digitalocean.com/settings/api/tokens" target="_blank" rel="nofollow noreferrer noopener">Applications & API</a> 页面获取DigitalOcean的个人访问token
+    image:
+      label: 镜像
+    sshUser:
+      label: SSH 用户
+      placeholder: '例如：root'
+    size:
+      label: Droplet规格
+    region:
+      label: 区域
+    optionsSection: 选项
+    backups:
+      label: 启用备份
+    ipv6:
+      label: 启用IPv6
+    privateNetworking:
+      label: 启用私有网络
+    monitoring:
+      label: 启用监控
+    tags:
+      addActionLabel: 添加Droplet标签
+      valueLabel: 标签
+      placeholder: 例如：dev
+  exoscale:
+    accountSection: 账户访问
+    apiKey:
+      label: API Key
+      placeholder: 你的Exoscale API密钥
+    secretKey:
+      label: 加密秘钥
+      placeholder: 你的Exoscale secret密钥
+      provided: 已提供
+    accountHelp: 在此粘贴你的Exoscale密钥对，我们将用秘钥创建新的实例。
+    loginAction: "下一步: 验证及选择安全组"
+    loadingSecurity: 从Exoscale加载安全组...
+    securityGroupSection: 安全组
+    securityGroup:
+      label: 安全组
+      defaultExisting: "标准: 使用现有的 <code>{groupName}</code> 安全组"
+      defaultCreate: "标准：自动创建 <code>{groupName}</code> 安全组"
+      custom: "自定义：选择现有安全组"
+      updating: 更新安全组...
+      creating: 创建安全组...
+    portHelp:
+      link: 了解更多
+      text: 关于将要开放的端口信息
+    needs:
+      label: "{appName} 正常工作需要安全组允许以下通讯："
+      item1: 从{appName} 服务器到主机的<code>TCP</code>端口<code>22</code><span class="text-muted">(SSH连接用于安装docker)
+      item2: 与其他所有主机之间的 <code>UDP</code> 端口 <code>500</code> 和 <code>4500</code> <span class="text-muted">(用于IPsec网络)</span>
+      item3: 这些规则<b>不会</b>自动添加
+    selectSecurityGroupAction: "下一步: 设置实例选项"
+    loadingInstance: 读取可用实例配置...
+    instanceSection: 实例
+    instanceOptionsSection: 实例选项
+    instanceProfile:
+      label: 实例配置文件
+    diskSize:
+      label: 根磁盘大小
+    sshUser:
+      label: SSH 用户
+      placeholder: 'usr1'
+  packet:
+    accountSection: 账户访问
+    projectId:
+      label: 项目
+      placeholder: 你的Packet项目ID
+    apiKey:
+      label: API Key
+      placeholder: 你的Packet API Key
+    apiKeyHelp: '由Packet的 <a href="https://app.packet.net/portal#/api-keys" target="_blank">API Keys</a> 页面获取'
+    instanceSection: 实例
+    instanceOptionsSection: 实例选项
+    loginAction: "下一步: 认证并且选择一个实例"
+    authentication: 验证
+    location: 所在地区
+    planDetails:
+      label: 实例详情
+      cpu: CPUs
+      memory: 内存
+      drives: 驱动
+      network: NICs
+    image:
+      label: 镜像
+    size:
+      label: 规格
+    regionSection: 区域
+    region:
+      label: 区域
+  rackspace:
+    accountSection: 账户访问
+    username:
+      label: 用户名
+      placeholder: 你的RackSpace用户名
+    apiKey:
+      label: API Key
+      placeholder: 你的RackSpace APK Key
+    accountHelp: 从RackSpace控制面板的帐户设置页面获取
+    regionSection: 区域
+    region:
+      label: 区域
+    instanceSection: 实例
+    instanceOptionsSection: 实例选项
+    flavor:
+      label: 偏好
+  vmwarevsphere:
+    access:
+      title: 1. 帐户访问
+      detail: 配置在哪里查找vCenter或ESXi服务器
+      help: "注意：免费的ESXi liecense不支持API访问。只支持具有有效或评估许可证的服务器。"
+    instance:
+      title: 2. 实例选项
+      detail: 选择虚拟机的大小和操作系统
+    scheduling:
+      title: 3. 调度
+      detail: 选择将虚拟机调度到何种hypervisor
+    vcenter:
+      label: vCenter或ESXi服务器
+      placeholder: vCenter或者ESXi主机名/IP
+    vcenterPort:
+      label: 端口
+    username:
+      label: 用户名
+    password:
+      label: 密码
+    instanceSection: 实例
+    instanceOptionsSection: 实例选项
+    cpuCount:
+      label: CPUs
+      unit: '{cores, plural, =1 {Core} other {Cores}}'
+    memorySize:
+      label: 内存
+      unit: MB
+    diskSize:
+      label: 磁盘
+      unit: MB
+    boot2dockerUrl:
+      label: 操作系统ISO下载地址
+      placeholder: "缺省: 最新的boot2docker镜像"
+    schedulingSection: 调度
+    dataCenter:
+      label: 数据中心
+      placeholder: "例如：datacenter_name"
+      help: "用于创建虚拟机的数据中心（对于独立ESXi保留空白）"
+    pool:
+      label: 池
+      placeholder: "例如：/dc_name/host/host_name /Resources / pool_name"
+      help: "用于创建VM的资源池（对于独立ESXi保留空白）"
+    host:
+      label: 主机
+      placeholder: "例如：cluster_name / host_name"
+      help: "用于创建虚拟机的特定主机（对于独立ESXi或具有DRS的集群留空）"
+    network:
+      label: 网络
+      placeholder: "例如：VM网络"
+      help: "VM连接到的网络"
+    dataStore:
+      label: 数据存储
+      placeholder: "例如：datastore_cluster_name / datastore_name"
+      help: "创建VM磁盘的数据存储"
+  azure:
+    placement:
+      title: 位置
+      detail: 选择将由此模板创建的实例的位置。
+    access:
+      title: 账户访问
+      detail: 将用于启动Azure实例的API密钥。
+    network:
+      title: 网络
+      detail: 为此模板创建的实例配置网络
+    instance:
+      title: 实例
+      detail: 自定义将要创建的Azure实例
+    subscriptionId:
+      label: 订阅ID
+      placeholder: 您的Azure订阅ID
+    subscriptionCert:
+      label: 订阅证书
+      placeholder: 您的Azure订阅证书
+    image:
+      label: 镜像
+      placeholder: '推荐:UbuntuServer:16.04.0-LTS:latest'
+    size:
+      label: 规格
+    dockerPort:
+      label: Docker端口
+      placeholder: '2376'
+    publishSettingsFile:
+      label: 发布配置
+      placeholder: 发布配置文件
+    environment:
+      label: 环境
+      placeholder: 'AzurePublicCloud'
+    resourceGroup:
+      label: 资源组
+      placeholder: 'docker-machine'
+    sshUser:
+      label: SSH 用户
+      placeholder: usr1
+    storageType:
+      label: 存储类型
+    vnet:
+      label: VNet
+      placeholder: '[资源组：]名称'
+    subnet:
+      label: 子网
+      placeholder: 示例别名
+    subnetPrefix:
+      label: 子网前缀
+      placeholder: 128.42.0.0/21
+    availabilitySet:
+      label: 可用性集
+      placeholder: 可用集名称
+    openPort:
+      label: 开放端口
+      placeholder: '使用逗号分隔符，例如：80，443'
+    privateIpAddress:
+      label: 私有IP
+      placeholder: 127.0.0.1
+    usePrivateIp:
+      label: 使用私有IP连接
+    staticPublicIp:
+      label: 公网IP
+    noPublicIp:
+      label: 无公网IP
+    clientId:
+      label: 客户端ID
+      placeholder: 您的客户端 ID
+    clientSecret:
+      label: 客户端秘钥
+      placeholder: 你的客户端秘钥
+    region:
+      label: 区域
+  aliyunecs:
+    accountSection: 帐号可以访问部分
+    accessKey:
+      label: 访问密钥*
+      placeholder: 您的阿里云账户访问密钥
+    accessKeySecret:
+      label: 访问秘钥令牌*
+      placeholder: 阿里云账号Access Key 对应的Secret
+    apiEndpoint:
+      label: Api终端地址
+      placeholder: 私有阿里云API Server终端
+    instanceSection: 实例部分
+    instanceOptionsSection: 实例选项部分
+    instanceDescription:
+      label: 实例描述
+      placeholder: 实例描述
+    instanceType:
+      label: 实例类型
+      placeholder: 实例类型
+    systemImage:
+      label: 系统镜像
+      placeholder: 系统镜像
+    instanceTag:
+      label: 实例标签
+      placeholder: 阿里云中的标签
+    internetMaxBandwidth:
+      label: 最大网络带宽
+      placeholder: 1 到 100
+    aliyunSLB:
+      label: 阿里云SLB ID
+      placeholder: 阿里云SLB ID
+    storageSection: 存储信息
+    ioOptimized:
+      label: 是否存储IO优化(none代表不优化,optimized代表优化)
+      placeholder: 不优化或者优化
+    systemDiskCategory:
+      label: 系统盘种类
+      placeholder: 当存储优化后，您可以输入cloud_efficiency、cloud_ssd或ephemeral_ssd。
+    dataDiskCategory:
+      label: 数据盘种类
+      placeholder: 当选择存储优化时，您可以输入cloud_efficiency, cloud_ssd 或ephemeral_ssd.
+    dataDiskSize:
+      label: 数据磁盘大小
+      placeholder: 磁盘大小
+    region:
+      label: 区域
+      placeholder: 区域
+    zone:
+      label: 可用区
+      placeholder: 留空代表自动选择
+    networkSection: 网络设置
+    routeCIDR:
+      label: 路由CIDR
+      placeholder: 例如：192.168.1.0/24
+    vpcId:
+      label: 阿里云VPC ID
+      placeholder: 阿里云VPC ID
+    vswitchId:
+      label: 阿里云Vswitch ID
+      placeholder: 阿里云Vswitch ID
+    privateIp:
+      label: 私有IP
+      placeholder: 专用网络中的私有IP
+    privateAddressOnly:
+      label: 仅私网IP
+    securitySection: 安全设置
+    securityGroup:
+      label: 安全组
+      placeholder: 安全组
+    sshPassword:
+      label: SSH 密码
+      placeholder: 创建实例后SSH远程登录密码, 留空则自动设置
+  zstack:
+    access:
+      title: 1. 帐户访问
+      detail: 选择将用于启动ZStack实例的endpoint，帐户名称和帐户密码
+      next: "下一步：验证&选择一个网络"
+      loading: 从ZStack加载区域、集群、网络信息...
+    endpoint:
+      label: 终端
+      placeholder: 例如：https://192.168.1.42:8443/
+    accountName:
+      label: 帐户名称
+      placeholder: 您的帐户
+    accountPassword:
+      label: 帐户密码
+      placeholder: 您的帐户密码
+      provided: 已提供
+    zone:
+      title: 2. 区域、集群和网络
+      detail: 选择实例的区域，集群和网络
+      next: "下一步：设置实例选项"
+      loading: 从ZStack加载实例选项...
+      label: 区域
+    cluster:
+      label: 集群
+    network:
+      defaultCreate: "标准: 自动创建 <code>{groupName}</code> 安全组"
+      choose: 连接到现有网络
+      label: 网络
+    portHelp:
+      link: 了解更多
+      text: 将要开放的端口的详细信息
+    instance:
+      title: 3. 实例
+      detail: 自定义将要创建的EC2实例。
+    instanceOffering:
+      label: 实例类型
+    systemDiskOffering:
+      label: 系统磁盘
+    imageName:
+      label: 镜像名称
+    dataDiskOffering:
+      label: 数据磁盘
+newConfigMap:
+  title:
+    new: 添加ConfigMap
+    edit: '编辑配置映射: {name}'
+    view: '配置映射：{name}'
+  name:
+    placeholder: 例如：map
+  description:
+    placeholder: 例如：app
+  values:
+    label: 配置映射值
+  addActionLabel: 添加配置映射值
+projectGroup:
+  label: "项目：{name}"
+  none: 命名空间
+  project: 不在项目中
+  noNS: 这个项目没有包含该namespace
 optionallyNamespaced:
   scope:
     label: 作用域
@@ -2919,16 +4655,36 @@ pageFooter:
     linux: Linux
   showSystem: 显示系统容器
 pagination:
+  catalog: |
+    {pages, plural,
+    =0 {无应用目录}
+    =1 {{count} {count, plural, =1 {个应用目录} other {个应用目录}}}
+    other {{count} 个应用目录中的{from} - {to}}}
   certificate: |
     {pages, plural,
     =0 {无证书}
     =1 {{count} {count, plural, =1 {个证书} other {个证书}}}
     other {{count}个证书中的 {from} - {to}}}
+  container: |
+    {pages, plural,
+    =0 {无集群}
+    =1 {{count} {count, plural, =1 {个集群} other {个集群}}}
+    other {{count} 个集群中的{from} - {to}}}
+  cluster: |
+    {pages, plural,
+    =0 {无集群}
+    =1 {{count} {count, plural, =1 {个集群} other {个集群}}}
+    other {{count} 个集群中的{from} - {to}}}
   dnsRecord: |
     {pages, plural,
     =0 {无DNS记录}
     =1 {{count} {count, plural, =1 {个DNS记录} other {个DNS记录}}}
     other {{count}个DNS记录中的 {from} - {to}}}
+  driver: |
+    {pages, plural,
+    =0 {无驱动}
+    =1 {{count} {count, plural, =1 {个驱动} other {个驱动}}}
+    other {{count}个驱动中的 {from} - {to}}}
   driverOptions: |
     {pages, plural,
     =0 {无驱动选项}
@@ -2949,6 +4705,11 @@ pagination:
     =0 {无实例}
     =1 {{count} {count, plural, =1 {个实例} other {个实例}}}
     other {{count}个实例中的 {from} - {to}}}
+  image: |
+    {pages, plural,
+    =0 {无镜像}
+    =1 {{count} {count, plural, =1 {个镜像} other {个镜像}}}
+    other {{count}个镜像中的 {from} - {to}}}
   link: |
     {pages, plural,
     =0 {无链接}
@@ -2959,11 +4720,63 @@ pagination:
     =0 {无负载均衡}
     =1 {{count} {count, plural, =1 {个负载均衡} other {个负载均衡}}}
     other {{count}个负载均衡中的 {from} - {to}}}
+  ingress: |
+    {pages, plural,
+    =0 {无Ingresses}
+    =1 {{count} {count, plural, =1 {个Ingresses} other {个Ingresses}}}
+    other {{count}个Ingresses中的 {from} - {to}}}
+  member: |
+    {pages, plural,
+    =0 {无成员}
+    =1 {{count} {count, plural, =1 {个成员} other {个成员}}}
+    other {{count}个成员中的 {from} - {to}}}
+  mount: |
+    {pages, plural,
+    =0 {无挂载}
+    =1 {{count} {count, plural, =1 {个挂载} other {个挂载}}}
+    other {{count}个挂载中的 {from} - {to}}}
+  namespace: |
+    {pages, plural,
+    =0 {无命名空间}
+    =1 {{count} {count, plural, =1 {个命名空间} other {个命名空间}}}
+    other {{count}个命名空间中的 {from} - {to}}}
+  node: |
+    {pages, plural,
+    =0 {无主机}
+    =1 {{count} {count, plural, =1 {台主机} other {台主机}}}
+    other {{count}台主机中的 {from} - {to}}}
+  nodePool: |
+    {pages, plural,
+    =0 {无主机池}
+    =1 {{count} {count, plural, =1 {个主机池} other {个主机池}}}
+    other {{count} 个主机池中的{from} - {to}}}
+  nodeTemplate: |
+    {pages, plural,
+    =0 {无主机模板}
+    =1 {{count} {count, plural, =1 {个主机模板} other {个主机模板}}}
+    other {{count}个主机模板中的 {from} - {to}}}
+  pod: |
+    {pages, plural,
+    =0 {无Pod}
+    =1 {{count} {count, plural, =1 {个Pod} other {个Pods}}}
+    other {{count}个Pods中的 {from} - {to}}}
+  podHighlightSubset: "<b>{subset} of {count}</b> Pods"
+  podNoSubset: "0 of {count} Pods"
+  podLabel: |
+    {count, plural,
+    =1 {Pod}
+    other {Pods}
+    }
   port: |
     {pages, plural,
     =0 {无端口}
     =1 {{count} {count, plural, =1 {个端口} other {个端口}}}
     other {{count}个端口中的 {from} - {to}}}
+  project: |
+    {pages, plural,
+    =0 {无项目}
+    =1 {{count} {count, plural, =1 {个项目} other {个项目}}}
+    other {{count} 个项目中的{from} - {to}}}
   rule: |
     {pages, plural,
     =0 {无规则}
@@ -2974,11 +4787,21 @@ pagination:
     =0 {无服务}
     =1 {{count} {count, plural, =1 {个服务} other {个服务}}}
     other {{count}个服务中的 {from} - {to}}}
+  storageClass: |
+    {pages, plural,
+    =0 {无存储类}
+    =1 {{count} {count, plural, =1 {个存储类} other {个存储类}}}
+    other {{count} 个存储类中的{from} - {to}}}
   volume: |
     {pages, plural,
     =0 {没有卷}
     =1 {{count} {count, plural, =1 {个卷} other {个卷}}}
     other {{count}个卷中的 {from} - {to}}}
+  workload: |
+    {pages, plural,
+    =0 {无工作负载}
+    =1 {{count} {count, plural, =1 {个工作负载} other {个工作负载}}}
+    other {{count} 个工作负载中的{from} - {to}}}
 projectRow:
   none: 无描述
   orchestration: 编排
@@ -3011,6 +4834,7 @@ saveCancel:
   saving: 保存中...
   saved: 已保存!
   edit: 保存
+  next: 下一步
   create: 创建
   cancel: 取消
 schema:
@@ -3021,12 +4845,19 @@ schema:
     prompt: 选择证书...
   inputContainer:
     prompt: 选择一个容器...
+  inputConfigMap:
+    prompt: 选择一个 ConfigMap
   inputEnum:
     option: 选择选项...
   inputHost:
     label: 选择主机...
   inputService:
+    prompt: 选择工作负载...
     custom: 自定义
+  inputDnsRecord:
+    prompt: 选择服务...
+  inputStorageClass:
+    prompt: 使用默认的类
   inputSecret:
     prompt: 选择密文...
 schedulingRuleRow:
@@ -3041,10 +4872,17 @@ schedulingRuleRow:
   containerLabel: 容器标签
   serviceName: 服务名称
   containerName: 容器名称
+serverUrl:
+  header:
+    label: Rancher Server URL
+    detail: "{appName} 安装使用的地址，集群中的所有节点都需要能够访问此地址。"
+  button:
+    save: 保存URL
 siteAccess:
   header: 站点访问
   helpText: "配置允许哪些人登录和使用 {appName}."
   unrestricted: "允许任何有效的 {individuals}"
+  restricted: "允许集群成员，项目成员以及授权的 {individuals} 和 {collection}"
   required: "仅允许授权的 {individuals} 和 {collection}"
   listHeader: "授权的 {individuals} 和 {collection}"
   noIdentity: 无
@@ -3084,6 +4922,7 @@ upgradeBtn:
   version:
     current: '当前版本'
   status:
+    none: '升级：无'
     loading: '检查更新...'
     current: '已经是最新版本'
     available: '有可用更新'
@@ -3100,6 +4939,17 @@ viewEditDescription:
       placeholder: 例如:lab
     description:
       placeholder: 例如:开发实验环境
+volumesPage:
+  title: Volume Claims
+  addActionLabel: 添加Volume Claim
+  noData: 没有定义持久卷声明
+  noMatch: 没有符合当前搜索的持久化卷
+  claimName:
+    label: Claim的名称
+  volume:
+    label: 持久卷
+  storageClass:
+    label: 存储类
 vmConsole:
   header: "控制台:"
   protip: "高级技巧:启动命令行时按下 {key} 键可在新窗口中打开."
@@ -3138,27 +4988,39 @@ nav:
     selected: 当前环境
     edit: '编辑 "{name}"'
   cluster:
-    nodes: '节点:'
+    dashboard: 集群
+    members: 成员
+    nodes: 主机
     namespaces: 命名空间
+    storage:
+      tab: 存储
+      classes: 存储类
+      volumes: 持久卷
+    projects: 项目/命名空间
   containers:
     tab: 工作负载
     systemTab: 系统
+    ingresses: 负载均衡
     containers: 工作负载
+    dns: 服务发现
     volumes: 数据卷
+    pipelines: 流水线
     deploy: 部署
     addContainer: 添加容器
     addBalancer: 添加负载均衡
     addIngress: 添加Ingress
     addDns: 添加DNS记录
     addVolume: 添加卷
+    importCompose: 导入YAML
   group:
     none: 列表视图
+    node: 按主机分组
     workload: 按负载量分组
     namespace: 按名称空间分组
     namespaceWorkload: 按名称空间/工作负载分组
   hosts:
-    tab: '节点:'
-    addHost: 添加节点...
+    tab: 主机
+    addHost: 添加主机
   catalog:
     all: 全部
     library: 官方认证
@@ -3171,13 +5033,16 @@ nav:
     tab: 资源
     storagePage: 存储
     certificates: 证书
+    configMaps: 配置映射
     registries: 镜像库
     secrets: 密文
+    members: 成员
   admin:
     tab: 全局
     accounts: 用户
     clusters: 集群
-    machines: '节点:'
+    machines: 主机
+    nodeDrivers: 主机驱动
     catalogs: 应用商店
     security:
       tab: 安全
@@ -3195,25 +5060,50 @@ nav:
     logout: 注销
   userPreferences:
     link: "设定"
+  nodeTemplates:
+    link: "主机模板"
+  api:
+    link: "API & Keys"
+  settings:
+    tab: 系统设置
+    advanced: 高级
+  tools:
+    tab: 工具
+    alerts: 告警
+    notifiers: 通知
+    logging: 日志
+  project:
+    none: 项目/命名空间
+    namespaces: 命名空间
 action:
   activate: 激活
+  addContainer: 部署Pod
+  addSidekick: 添加Sidecar
   clone: 克隆
   console: 打开控制台
   convertToService: 转换为服务
   deactivate: 停用
+  downloadYaml: 下载YAML
   edit: 编辑
   editService: 编辑服务
+  editYaml: 查看/编辑YAML
   evacuate: 疏散
   execute: 执行命令行
   exportConfig: 导出配置
   garbageCollect: 清理
   logs: 查看日志
+  makeDefault: 设置为缺省
+  resetDefault: 重置默认设置
+  nodeConfig: 下载密钥
   move: 移动
+  pause: 暂停编排
   pauseAll: 全部暂停
   remove: 删除
   replay: 重播
   restart: 重启
   retry: 重试
+  resume: 恢复编排
+  revert: 恢复默认值
   rollback: 回滚
   setDefault: 设置为缺省
   start: 启动
@@ -3226,6 +5116,9 @@ action:
   viewGraph: 查看图形
   viewInApi: API查看
   viewInstance: 查看实例
+  test: 测试
+  mute: 静默
+  unmute: 取消静默
 validation:
   required: '"{key}" 必须设置'
   arrayLength:
@@ -3284,10 +5177,13 @@ model:
       org: 组织
       localUser: 本地用户
       unknown: "{type}？"
+  ingress:
+    displayKind: L7 Ingress
   machine:
     role:
-      worker: 工作节点
+      worker: Worker
       etcd: etcd
+      controlPlane: 控制
   openldapconfig:
     server:
       label: 主机名或IP地址
@@ -3305,6 +5201,10 @@ model:
       owner: 所有者
       readonly: 只读
       restricted: 受限
+  service:
+    displayKind:
+      generic: 服务
+      loadBalancer: 4层负载均衡
 growl:
   webSocket:
     connecting:
@@ -3312,3 +5212,108 @@ growl:
       warning: 无法建立到服务器的WebSocket连接。如果您的服务器位于代理或SSL终端设备后面，则浏览器无法连接到WebSocket。如果您在代理后面运行服务器，请确保代理支持WebSockets。在解决问题之前，流量统计，日志，shell/控制台和资源状态的自动更新可能无法正常工作。
       safariCertWarning: 另一个可能的原因是Safari不允许使用无法识别的证书进行WebSocket连接，即使您继续绕过警告也是如此。服务器必须拥有由Safari自动信任的认可机构签署的证书。
       disconnectedWarning: "断开与服务器的连接，尝试重新连接..."
+storageClass:
+  aws-ebs:
+    title: Amazon EBS磁盘
+  azure-disk:
+    title: Azure 磁盘
+  azure-file:
+    title: Azure 文件
+  cinder:
+    title: Openstack Cinder卷
+  gce-pd:
+    title: Google持久磁盘
+  glusterfs:
+    title: Gluster卷
+  local:
+    title: 本地磁盘
+  longhorn:
+    title: Longhorn
+  portworx-volume:
+    title: Portworx卷
+  quobyte:
+    title: Quobyte卷
+  rbd:
+    title: Ceph RBD
+  scaleio:
+    title: ScaleIO卷
+  storageos:
+    title: StorageOS
+  vsphere-volume:
+    title: VMWare vSphere卷
+volumeSource:
+  aws-ebs:
+    title: Amazon EBS磁盘
+  azure-disk:
+    title: Azure磁盘
+  azure-file:
+    title: Azure文件系统
+  cephfs:
+    title: Ceph文件系统
+  config-map:
+    title: 配置映射卷
+  cinder:
+    title: Openstack Cinder卷
+  secret:
+    title: 密文卷
+  empty-dir:
+    title: 空的目录卷
+  fc:
+    title: 光纤通道
+  flex-volume:
+    title: Flex卷
+  flex-volume-longhorn:
+    title: Longhorn
+  flocker:
+    title: Flocker
+  gce-pd:
+    title: Google持久磁盘
+  glusterfs:
+    title: Gluster 卷
+  host-path:
+    title: 本地路径
+    path:
+      label: 主机路径
+      placeholder: 例如：/data
+    kind:
+      label: 主机路径必须被设置
+      Any: "任意：不检查目标路径"
+      DirectoryOrCreate: 目录，如果不存在则创建
+      FileOrCreate: 文件，如果不存在则创建
+      Directory: 现有的目录
+      File: 现有的文件
+      Socket: 现有的套接字
+      CharDevice: 现有的字符设备
+      BlockDevice: 现有的块设备
+  iscsi:
+    title: iSCSI目标
+  local:
+    title: 本地磁盘
+  nfs:
+    title: NFS 共享
+  photon:
+    title: Photon 卷
+  portworx:
+    title: Portworx卷
+  quobyte:
+    title: Quobyte卷
+  rbd:
+    title: Ceph RBD
+  scaleio:
+    title: ScaleIO卷
+  storageos:
+    title: StorageOS
+  vsphere-volume:
+    title: VMWare vSphere卷
+  customLogPath:
+    mountPath:
+      label: 日志路径
+      placeholder: 例如：/var/www
+      helpText: 您的容器中的日志路径
+    logFormat:
+      label: 日志格式
+      useCustomRegex: 使用一个自定义Fluentd regex
+      useExistingLogFormat: 使用现有的日志格式
+      helpText: 你可以在</a>这里<a href="http://fluentular.herokuapp.com/" target="_blank">测试你的正则表达式。
+yamlPage:
+  errors: yaml中存在错误。
