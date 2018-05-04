@@ -6,7 +6,9 @@
   <section class="pb-0">
     {{language-dropdown login=true class='mb-10'}}
     <br/>
-    {{#unless promptPasswordReset}}
+    {{#if isInsecure}}
+      {{banner-message color='bg-error text-left' icon='icon-certificate' message=(t 'loginPage.insecure' appName=settings.appName htmlSafe=true) }}
+    {{else}}
       {{#if isGithub}}
         {{login-github action="started"}}
       {{/if}}
@@ -50,7 +52,7 @@
           {{infoMsg}}
         </div>
       {{/if}}
-    {{/unless}}
+    {{/if}}
 
     {{#if app.initError}}
       {{banner-message color='bg-error' icon='icon-alert' message=app.initError.message}}
