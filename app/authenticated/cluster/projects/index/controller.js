@@ -28,7 +28,7 @@ export default Controller.extend({
     return get(this, 'projects').filter(p => {
       const namespaces = get(this, 'rows').filterBy('projectId', get(p, 'id')) || [];
       return get(namespaces, 'length') <= 0;
-    });
+    }).sortBy('displayName');
   }),
 
 });
