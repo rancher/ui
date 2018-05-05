@@ -22,7 +22,9 @@
     </td>
   {{else}}
     <td data-title="{{dt.hosts}}">
-      {{model.machines.length}}
+      {{#link-to-external 'authenticated.cluster.nodes' model.id}}
+        {{model.machines.length}}
+      {{/link-to-external}}
     </td>
     <td data-title="{{dt.cpu}}">
       {{#if model.cpuUsage}}
