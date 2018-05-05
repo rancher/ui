@@ -23,14 +23,6 @@
 
   {{#if (eq model.supplementalGroups.rule "MustRunAs")}}
     <div class="row mt-20">
-      {{#unless readOnly}}
-        <div>
-          <button class="btn bg-link icon-btn" {{action "add"}}>
-            <span class="darken"><i class="icon icon-plus text-small"/></span>
-            <span>{{t 'formSupplementalGroupsPodSecurityPolicy.range.addLabel'}}</span>
-          </button>
-        </div>
-      {{/unless}}
       {{#if (eq model.supplementalGroups.rule "MustRunAs")}}
         <table class="table fixed no-lines no-top-padding mt-10">
           <tr class="hidden-sm hidden-xs">
@@ -59,6 +51,15 @@
           {{/each}}
         </table>
       {{/if}}
+
+      {{#unless readOnly}}
+        <div>
+          <button class="btn bg-link icon-btn" {{action "add"}}>
+            <span class="darken"><i class="icon icon-plus text-small"/></span>
+            <span>{{t 'formSupplementalGroupsPodSecurityPolicy.range.addLabel'}}</span>
+          </button>
+        </div>
+      {{/unless}}
     </div>
   {{/if}}
 

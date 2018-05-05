@@ -7,15 +7,6 @@
      expand=(action expandFn)
 }}
   <div class="row">
-    {{#unless readOnly}}
-      <div>
-        <button class="btn bg-link icon-btn" {{action "add"}}>
-          <span class="darken"><i class="icon icon-plus text-small"/></span>
-          <span>{{t 'formHostPortsPodSecurityPolicy.port.addLabel'}}</span>
-        </button>
-      </div>
-    {{/unless}}
-
     {{#if model.hostPorts.length}}
       <table class="table fixed no-lines no-top-padding mt-10">
         <tr class="hidden-sm hidden-xs">
@@ -46,5 +37,14 @@
     {{else if readOnly}}
        <div>{{t 'generic.none'}}</div>
     {{/if}}
+
+    {{#unless readOnly}}
+      <div>
+        <button class="btn bg-link icon-btn" {{action "add"}}>
+          <span class="darken"><i class="icon icon-plus text-small"/></span>
+          <span>{{t 'formHostPortsPodSecurityPolicy.port.addLabel'}}</span>
+        </button>
+      </div>
+    {{/unless}}
   </div>
 {{/accordion-list-item}}
