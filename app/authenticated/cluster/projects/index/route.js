@@ -1,8 +1,10 @@
 import { inject as service } from '@ember/service';
-import { get } from '@ember/object';
+import { get, set } from '@ember/object';
 import Route from '@ember/routing/route';
 import { hash } from 'rsvp';
 import { next } from '@ember/runloop';
+import { on } from '@ember/object/evented';
+import C from 'ui/utils/constants';
 
 export default Route.extend({
   globalStore: service(),
@@ -32,6 +34,10 @@ export default Route.extend({
       });
     },
   },
+
+  setDefaultRoute: on('activate', function() {
+    set(this, `session.${C.SESSION.CLUSTER_ROUTE}`,'authenticated.cluster.projects');
+  }),
 
   shortcuts: {
     'g': 'toggleGrouping',

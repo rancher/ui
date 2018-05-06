@@ -3,6 +3,13 @@ import { inject as service } from '@ember/service';
 import { get } from '@ember/object';
 import Preload from 'ui/mixins/preload';
 import { reject, all as PromiseAll } from 'rsvp';
+import C from 'ui/utils/constants';
+
+const VALID_ROUTES = ['authenticated.cluster.nodes', 'authenticated.cluster.storage.classes',
+  'authenticated.cluster.storage.persistent-volumes', 'authenticated.cluster.notifier',
+  'authenticated.cluster.alert', 'authenticated.cluster.logging',
+  'authenticated.cluster.security.members.index', 'authenticated.cluster.projects', 
+  'authenticated.cluster.pipeline'];
 
 export default Route.extend(Preload, {
   scope: service(),
@@ -48,5 +55,12 @@ export default Route.extend(Preload, {
   setupController(controller, model) {
     this._super(...arguments);
     get(this, 'scope').finishSwitchToCluster(model);
+  },
+
+  redirect() {
+    let route = this.get(`session.${C.SESSION.CLUSTER_ROUTE}`);
+    if ( VALID_ROUTES.includes(route) ) {
+      this.replaceWith(route);
+    }
   },
 });
