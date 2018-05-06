@@ -4,6 +4,13 @@ import { inject as service } from '@ember/service';
 import Route from '@ember/routing/route';
 import { all as PromiseAll } from 'rsvp';
 import Preload from 'ui/mixins/preload';
+import C from 'ui/utils/constants';
+
+const VALID_ROUTES = ['apps-tab', 'authenticated.project.security.members.index', 
+  'authenticated.project.ns' ,'authenticated.project.certificates' ,
+  'authenticated.project.secrets' ,'authenticated.project.config-maps' ,
+  'authenticated.project.registries', 'authenticated.project.alert',
+  'authenticated.project.logging'];
 
 export default Route.extend(Preload,{
   access: service(),
@@ -50,6 +57,13 @@ export default Route.extend(Preload,{
   setupController(controller, model) {
     this._super(...arguments);
     get(this, 'scope').finishSwitchToProject(get(model,'project'));
+  },
+
+  redirect() {
+    let route = this.get(`session.${C.SESSION.PROJECT_ROUTE}`);
+    if ( VALID_ROUTES.includes(route) ) {
+      this.replaceWith(route);
+    }
   },
 
   actions: {
