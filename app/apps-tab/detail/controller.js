@@ -3,7 +3,7 @@ import { inject as service } from '@ember/service';
 import { get, computed } from '@ember/object';
 import {
   searchFields as containerSearchFields
-} from 'shared/components/pod-dots/component';
+} from 'ui/components/pod-dots/component';
 
 const podsHeaders = [
   {
@@ -195,10 +195,10 @@ export default Controller.extend({
         list.removeObject(instId);
       } else {
         list.addObject(instId);
-      }    
+      }
     },
   },
-  
+
   init() {
     this._super(...arguments);
     this.set('expandedInstances',[]);
