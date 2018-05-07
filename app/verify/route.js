@@ -5,11 +5,11 @@ import fetch from 'ember-api-store/utils/fetch';
 export default Route.extend({
 
   activate: function() {
-    $('BODY').addClass('container-farm');
+    $('BODY').addClass('container-farm'); // eslint-disable-line
   },
 
   deactivate: function() {
-    $('BODY').removeClass('container-farm');
+    $('BODY').removeClass('container-farm'); // eslint-disable-line
   },
 
   model: function(params) {

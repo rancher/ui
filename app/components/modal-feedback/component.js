@@ -31,8 +31,8 @@ export default Component.extend(ModalBase, {
           errorClass: 'form-control',
           onFormReady: function() {
             self.styleForm();
-            $('INPUT[name=rancher_account_id]')[0].value = self.get('access.principal.id');
-            $('INPUT[name=github_username]')[0].value = self.get('access.identity.login');
+            $('INPUT[name=rancher_account_id]')[0].value = self.get('access.principal.id');// eslint-disable-line
+            $('INPUT[name=github_username]')[0].value = self.get('access.identity.login');// eslint-disable-line
             self.set('loading',false);
           },
           onFormSubmit: function() {
@@ -49,7 +49,7 @@ export default Component.extend(ModalBase, {
   styleForm() {
     var self = this;
 
-    let form = $('#feedback-form');
+    let form = $('#feedback-form'); // eslint-disable-line
 
     form.find('.field').not('.hs_sandbox_acknowledgement').addClass('col-md-6');
     form.find('.field.hs_sandbox_acknowledgement').addClass('span-12');
@@ -70,7 +70,7 @@ export default Component.extend(ModalBase, {
 
   actions: {
     submit() {
-      let form = $('#feedback-form');
+      let form = $('#feedback-form'); // eslint-disable-line
       form.find('INPUT[type=submit]').click();
     },
 

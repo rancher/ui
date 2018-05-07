@@ -9,11 +9,11 @@ export default Route.extend({
   globalStore: service(),
 
   activate() {
-    $('BODY').addClass('container-farm');
+    $('BODY').addClass('container-farm'); // eslint-disable-line
   },
 
   deactivate() {
-    $('BODY').removeClass('container-farm');
+    $('BODY').removeClass('container-farm'); // eslint-disable-line
   },
 
   model: function() {

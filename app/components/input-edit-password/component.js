@@ -58,7 +58,7 @@ export default Component.extend({
   }),
 
   focusStart() {
-    const elem = $('.start')[0];
+    const elem = $('.start')[0]; // eslint-disable-line
     if ( elem ) {
       elem.focus();
     }

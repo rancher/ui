@@ -2,7 +2,7 @@ import Route from '@ember/routing/route';
 
 export default Route.extend({
   activate: function() {
-    $('BODY').addClass('container-farm');
+    $('BODY').addClass('container-farm'); // eslint-disable-line
   },
 
   model() {
@@ -14,6 +14,6 @@ export default Route.extend({
     };
   },
   deactivate: function() {
-    $('BODY').removeClass('container-farm');
+    $('BODY').removeClass('container-farm'); // eslint-disable-line
   }
 });

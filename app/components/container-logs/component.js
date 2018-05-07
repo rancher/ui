@@ -45,7 +45,7 @@ export default Component.extend({
 
   init() {
     this._super(...arguments);
-    
+
     const containerName = get(this, 'instance.containers.firstObject.name');
     set(this, 'containerName', containerName);
   },
@@ -54,7 +54,7 @@ export default Component.extend({
     this._super();
     next(this, () => {
       this.exec();
-      var btn = $('.scroll-bottom')[0];
+      var btn = $('.scroll-bottom')[0]; // eslint-disable-line
       if ( btn ) {
         btn.focus();
       }
@@ -79,7 +79,7 @@ export default Component.extend({
     set(this, 'socket', socket);
 
     var body = this.$('.log-body')[0];
-    var $body = $(body);
+    var $body = $(body); // eslint-disable-line
 
     set(this, 'status', 'initializing');
 

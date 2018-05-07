@@ -34,7 +34,7 @@ export default Component.extend(ModalBase, {
   didInsertElement: function () {
     this._super();
     next(this, () => {
-      var btn = $('.close-kubeconfig')[0];
+      var btn = $('.close-kubeconfig')[0]; // eslint-disable-line
       if ( btn ) {
         btn.focus();
       }

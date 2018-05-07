@@ -49,9 +49,9 @@ export default Component.extend(HoverDropdown, {
   stacks:           null,
 
   willRender() {
-    if ($('BODY').hasClass('touch') && $('header > nav').hasClass('nav-open')) {
+    if ($('BODY').hasClass('touch') && $('header > nav').hasClass('nav-open')) {// eslint-disable-line
       run.later(() => {
-        $('header > nav').removeClass('nav-open');
+        $('header > nav').removeClass('nav-open');// eslint-disable-line
       });
     }
   },
