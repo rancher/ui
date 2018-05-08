@@ -1,33 +1,74 @@
 import { inject as service } from '@ember/service';
+import { validateChars, validateLength } from 'ember-api-store/utils/validate';
 import Resource from 'ember-api-store/models/resource';
+import { get, computed } from '@ember/object';
+import { evaluate } from 'shared/utils/evaluate';
 import C from 'ui/utils/constants';
 
 export default Resource.extend({
   scope: service(),
+  intl:  service(),
 
-  headers: function() {
+  validationErrors() {
+    const intl = get(this, 'intl');
+    let errors = [];
+    const questions = get(this, 'allQuestions');
+    const filteredQuestions = questions.filter((q) => evaluate(q, questions));
+    if ( filteredQuestions ) {
+      filteredQuestions.forEach((item) => {
+        if ( item.required && item.type !== 'boolean' && !item.answer ) {
+          errors.push(intl.t('validation.required', {key: item.label}));
+        }
+
+        if ( item.answer ) {
+          validateLength(item.answer, item, item.label, intl, errors);
+          validateChars(item.answer, item, item.label, intl, errors);
+        }
+      });
+    }
+    if ( errors.length > 0 ) {
+      return errors;
+    }
+    errors = this._super(...arguments);
+    return errors;
+  },
+  
+  headers: computed('project.current.id', function () {
     return {
-      [C.HEADER.PROJECT_ID]: this.get('scope.currentProject.id')
+      [C.HEADER.PROJECT_ID]: get(this, 'scope.currentProject.id')
     };
-  }.property('project.current.id'),
+  }),
 
-  filesAsArray: function() {
-    var obj = (this.get('files')||{});
+  filesAsArray: computed('files', function () {
+    var obj = (get(this, 'files') || {});
     var out = [];
 
     Object.keys(obj).forEach((key) => {
-      out.push({name: key, body: obj[key]});
+      out.push({
+        name: key,
+        body: obj[key]
+      });
     });
 
     return out;
-  }.property('files'),
+  }),
 
-  supportsOrchestration(orch) {
-    orch = orch.replace(/.*\*/,'');
-    if ( orch === 'k8s' ) {
-      orch = 'kubernetes';
-    }
-    let list = ((this.get('labels')||{})[C.LABEL.ORCHESTRATION_SUPPORTED]||'').split(/\s*,\s*/).filter((x) => x.length > 0);
-    return list.length === 0 || list.includes(orch);
-  },
+  allQuestions: computed('questions', function () {
+    const out = [];
+    const originQuestions = get(this, 'questions') || [];
+    originQuestions.forEach((q) => {
+      out.push(q);
+      const subquestions = get(q, 'subquestions');
+      if ( subquestions ) {
+        subquestions.forEach((subq) => {
+          subq.showIf = `${q.variable}=${q.showSubquestionIf}`;
+          if ( q.group ) {
+            subq.group = q.group;
+          }
+        });
+        out.pushObjects(subquestions);
+      }
+    });
+    return out;
+  }),
 });
