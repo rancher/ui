@@ -17,12 +17,121 @@ $dropdown-header-color               : $mid-grey !default;
 $dropdown-caret-color                : $mid-grey !default;
 
 
-// The dropdown wrapper (div)
-.dropup,
-.dropdown {
-  position: relative;
-}
+$header                              : $secondary !default;
+$header-link                         : $light-grey !default;
+$header-link-active                  : $primary !default;
+$user-btn                            : darken($header, 10%) !default;
+$nav-spacing: 4px;
 
+//BASIC DROPDOWN
+$ember-basic-dropdown-content-background-color: $dropdown-bg;
+$ember-basic-dropdown-content-z-index: 1500;
+
+.ember-basic-dropdown-content {
+  list-style: none;
+  text-align: left; // Ensures proper alignment if parent has it changed (e.g., modal footer)
+  border: 1px solid $dropdown-border; // IE8 fallback
+  border: 1px solid $dropdown-border;
+  background-clip: padding-box;
+
+
+  .nav-user {
+    display:table-cell;
+    background: $user-btn;
+    border-radius: 0 3px 3px 0;
+    margin: 0;
+
+    > li > a {
+      display: block;
+      padding: 4px 10px;
+
+      &:hover {
+        border-bottom-color: transparent;
+      }
+    }
+
+  }
+  .user-auth {
+    line-height: initial;
+    padding: 10px 20px 10px 10px;
+    background: $accent-bg;
+  }
+
+  // Links within the dropdown menu
+  > li > a {
+    display: block;
+    padding: 8px 18px;
+    clear: both;
+    font-weight: normal;
+    color: $dropdown-link-color;
+    white-space: nowrap; // prevent links from randomly breaking onto new lines
+    cursor: pointer;
+    @extend .clip;
+
+    // Hover/Focus state
+    &:hover,
+    &:focus {
+      text-decoration: none;
+      color: $dropdown-link-hover-color;
+      background-color: $dropdown-link-hover-bg;
+    }
+  }
+
+  // Active state
+  > .active > a {
+    & {
+      color: $dropdown-link-active-color;
+      text-decoration: none;
+      outline: 0;
+      background-color: $dropdown-link-active-bg;
+    }
+
+    &:hover,
+    &:focus {
+      color: $dropdown-link-hover-color;
+      background-color: $dropdown-link-hover-bg;
+    }
+  }
+
+  // Disabled state
+  //
+  // Gray out text and ensure the hover/focus state remains gray
+  > .disabled > a {
+    &,
+    &:hover,
+    &:focus {
+      color: $dropdown-link-disabled-color;
+    }
+
+    // Nuke hover/focus effects
+    &:hover,
+    &:focus {
+      text-decoration: none;
+      background-color: transparent;
+      // cursor: @cursor-disabled;
+    }
+  }
+
+  .divider {
+    margin: 0;
+    border-top: 1px solid $dropdown-divider-bg;
+  }
+
+  .header {
+    font-weight: bold;
+    padding: 0;
+    margin: 0;
+    border-bottom: 0;
+
+    A {
+      font-weight: bold;
+    }
+  }
+
+  .subitem A {
+    padding-left: 30px;
+  }
+}
 // The dropdown menu (ul)
 .dropdown-menu {
   position: absolute;
@@ -118,18 +227,20 @@ $dropdown-caret-color                : $mid-grey !default;
 }
 
 .resource-actions {
-  &.dropdown-menu {
-    min-width: 200px;
-    max-width: 200px;
-  }
-  >li {
-    > a {
+  > li {
+     a {
       cursor: default;
       transition: ease-in-out all .25s;
     }
   }
 }
+
 .resource-actions-tabbable {
   height: 0;
   visibility: hidden;
+}
+.principal-search-list {
+  min-width: 250px;
+  max-height: 300px;
+  overflow-y: auto;
 }

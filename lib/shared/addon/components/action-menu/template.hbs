@@ -1,3 +1,44 @@
-<button type="button" aria-label="{{t 'generic.moreActions'}}" aria-controls="resource-actions" class="btn bg-transparent {{sizeClass}} more-actions" data-toggle="dropdown" data-target=".resource-actions" aria-expanded="false">
-  <i class="icon icon-fw icon-vertical-ellipsis"></i>
-</button>
+{{#basic-dropdown as |dd|}}
+
+  {{#dd.trigger
+       ariaLabel=(t 'generic.moreActions')
+       class=(concat "btn bg-transparent more-actions " sizeClass)
+       onMouseEnter=(action "preload")
+  }}
+    <i class="icon icon-fw icon-vertical-ellipsis"></i>
+  {{/dd.trigger}}
+
+  {{#dd.content class="resource-actions global-actions"}}
+
+    <li class="resource-actions-tabbable"><a tabindex="-1" id="resource-actions-first" aria-label="Select an Action below"></a></li>
+
+    {{#each resourceActions.activeActions as |item|}}
+
+      {{#if item.divider}}
+
+        <li class="divider"></li>
+
+      {{else}}
+
+        {{!-- the close action is on the LI in this case because the action menu item is capturing the click action --}}
+        <li {{action dd.actions.close}}>
+          {{action-menu-item
+              label=item.label
+              icon=item.icon
+              action="clickedAction"
+              actionArg=item.action
+              altActionArg=item.altAction
+          }}
+        </li>
+
+      {{/if}}
+
+    {{else}}
+
+      <li><a href="#" onclick="return false;" disabled="true">No actions available</a></li>
+
+    {{/each}}
+
+  {{/dd.content}}
+
+{{/basic-dropdown}}

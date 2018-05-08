@@ -1,6 +1,5 @@
 <form {{action "add" on="submit"}}>
   <div class="input-group">
-
     {{principal-search
         add="add"
         filter=filter
@@ -13,9 +12,15 @@
 
     <div class="input-group-btn">
       {{#if showDropdown}}
-        <button type="button" class="btn bg-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="icon icon-chevron-down"></i></button>
-        <ul class="dropdown-menu dropdown-menu-right" role="menu" style="min-width: 250px; max-height: 300px; overflow-y: auto;">
-          <li role="presentation" class="dropdown-header">{{dropdownLabel}}</li>
+        {{#basic-dropdown
+             horizontalPosition="right"
+             as |dd|}}
+          {{#dd.trigger class="btn bg-default"}}
+            <i class="icon icon-chevron-down"></i>
+          {{/dd.trigger}}
+
+          {{#dd.content class="principal-search-list"}}
+            <li role="presentation" class="dropdown-header">{{dropdownLabel}}</li>
             {{#each dropdownChoices as |item|}}
               <li>
                 <a {{action "addObject" item}}>
@@ -23,7 +28,9 @@
                 </a>
               </li>
             {{/each}}
-        </ul>
+          {{/dd.content}}
+
+        {{/basic-dropdown}}
       {{/if}}
     </div>
   </div>

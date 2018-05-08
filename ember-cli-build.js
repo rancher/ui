@@ -107,8 +107,6 @@ module.exports = function(defaults) {
   app.import('vendor/aws-sdk-ec2.js');
   app.import('vendor/file-saver/fileSaver.mini.js');
   app.import('vendor/json-sanitizer/json-sanitizer.js');
-  app.import('vendor/dropdown/bootstrap.js');
-  app.import('vendor/dropdown/bootstrap.css');
 
   return app.toTree();
 };
