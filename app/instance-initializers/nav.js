@@ -87,6 +87,15 @@ const rootNav = [
   },
   {
     scope: 'project',
+    id: 'namespaces',
+    localizedLabel: 'nav.project.namespaces',
+    route: 'authenticated.project.ns.index',
+    ctx: [getProjectId],
+    resource: ["namespace"],
+    resourceScope: 'cluster',
+  },
+  {
+    scope: 'project',
     id: 'project-security-roles',
     localizedLabel: 'nav.infra.members',
     icon: 'icon icon-users',
@@ -94,15 +103,6 @@ const rootNav = [
     resource: ['projectroletemplatebinding'],
     resourceScope: 'global',
     ctx: [getProjectId],
-  },
-  {
-    scope: 'project',
-    id: 'namespaces',
-    localizedLabel: 'nav.project.namespaces',
-    route: 'authenticated.project.ns.index',
-    ctx: [getProjectId],
-    resource: ["namespace"],
-    resourceScope: 'cluster',
   },
   // Cluster
   {
