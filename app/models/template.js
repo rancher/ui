@@ -28,15 +28,6 @@ const Template = Resource.extend({
     return htmlSafe(projectUrl);
   }),
 
-  supportsOrchestration(orch) {
-    orch = orch.replace(/.*\*/,'');
-    if ( orch === 'k8s' ) {
-      orch = 'kubernetes';
-    }
-    let list = ((this.get('labels')||{})[C.LABEL.ORCHESTRATION_SUPPORTED]||'').split(/\s*,\s*/).filter((x) => x.length > 0);
-    return list.length === 0 || list.includes(orch);
-  },
-
   categoryArray: function() {
     let out = this.get('categories');
     if ( !out || !out.length ) {
@@ -54,16 +45,6 @@ const Template = Resource.extend({
   categoryLowerArray: function() {
     return this.get('categoryArray').map(x => (x||'').underscore().toLowerCase());
   }.property('categoryArray.[]'),
-
-  supported: function() {
-    let orch = this.get('projects.current.orchestration')||'cattle';
-    if ( this.get('categoryLowerArray').includes('orchestration') ) {
-      return orch === 'cattle';
-    } else {
-      return this.supportsOrchestration(orch);
-    }
-  }.property('labels','projects.current.orchestration'),
-
 
   certifiedType: function() {
     let str = null;
