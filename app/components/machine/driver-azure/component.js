@@ -1,15 +1,18 @@
 import Ember from 'ember';
-import { regions, sizes, storageTypes, environments } from 'ui/utils/azure-choices';
+import { regions, storageTypes, environments } from 'ui/utils/azure-choices';
+import { sizes } from 'ui/utils/azure-vm-choices';
 import Driver from 'ui/mixins/driver';
 
 export default Ember.Component.extend(Driver, {
   azureConfig      : Ember.computed.alias('model.azureConfig'),
   environments     : environments.sortBy('value'),
-  sizeChoices      : sizes.sortBy('value'),
+  vmTypeChoices    : sizes,
+  vmSizeChoices    : null,
   driverName       : 'azure',
   model            : null,
   openPorts        : null,
   publicIpChoice   : null,
+  selectedVmType   : null,
   publicIpChoices  : [
     {
       'name': 'Static',
@@ -65,6 +68,28 @@ export default Ember.Component.extend(Driver, {
       return this.get('publicIpChoices').findBy('name', 'Dynamic').value;
     }
   },
+
+  vmSizeChoices: Ember.computed('azureConfig.location', 'selectedVmType', function() {
+    const location = this.get('azureConfig.location');
+    const selectedVmType = this.get('selectedVmType');
+    const found = sizes.findBy('label', selectedVmType);
+    const out = [];
+    if ( found && found.series ) {
+      found.series.filter((ss) => !ss.invalidRegions || ss.invalidRegions.indexOf(location) === -1).forEach(((s) => {
+        s.sizes.forEach((item) => {
+          out.push({
+            group: s.label,
+            label: `${item.size} ( ${item.cpu} ${item.cpu > 1 ? 'Cores': 'Core'} ${item.memory}GB RAM )`,
+            value: item.size,
+          });
+        });
+      }));
+    }
+    if ( out.length === 0 ) {
+      this.set('azureConfig.size', null);
+    }
+    return out;
+  }),
 
   regionChoices: Ember.computed('azureConfig.environment', function() {
       let environment = this.get('azureConfig.environment');
