@@ -19,6 +19,7 @@ export default Route.extend({
   },
 
   setDefaultRoute: on('activate', function() {
-    set(this, `session.${C.SESSION.PROJECT_ROUTE}`,'containers');
+    set(this, `session.${C.SESSION.CONTAINER_ROUTE}`,'containers');
+    set(this, `session.${C.SESSION.PROJECT_ROUTE}`, undefined);
   }),
 });

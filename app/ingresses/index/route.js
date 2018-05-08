@@ -14,6 +14,7 @@ export default Route.extend({
   },
 
   setDefaultRoute: on('activate', function() {
-    set(this, `session.${C.SESSION.PROJECT_ROUTE}`,'ingresses');
+    set(this, `session.${C.SESSION.CONTAINER_ROUTE}`,'ingresses');
+    set(this, `session.${C.SESSION.PROJECT_ROUTE}`, undefined);
   }),
 });

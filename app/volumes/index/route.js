@@ -13,6 +13,7 @@ export default Route.extend({
   },
 
   setDefaultRoute: on('activate', function() {
-    set(this,`session.${C.SESSION.PROJECT_ROUTE}`,'volumes');
+    set(this, `session.${C.SESSION.CONTAINER_ROUTE}`,'volumes');
+    set(this, `session.${C.SESSION.PROJECT_ROUTE}`, undefined);
   }),
 });

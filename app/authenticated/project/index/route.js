@@ -6,7 +6,7 @@ const VALID_ROUTES = [DEFAULT_ROUTE,'scaling-groups','ingresses', 'authenticated
 
 export default Route.extend({
   redirect() {
-    let route = this.get(`session.${C.SESSION.PROJECT_ROUTE}`);
+    let route = this.get(`session.${C.SESSION.CONTAINER_ROUTE}`);
     if ( !VALID_ROUTES.includes(route) ) {
       route = DEFAULT_ROUTE;
     }
