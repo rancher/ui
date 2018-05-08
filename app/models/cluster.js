@@ -4,7 +4,7 @@ import { inject as service } from '@ember/service';
 import Resource from 'ember-api-store/models/resource';
 import { hasMany } from 'ember-api-store/utils/denormalize';
 import ResourceUsage from 'shared/mixins/resource-usage';
-import { alias } from '@ember/object/computed';
+import { equal, alias } from '@ember/object/computed';
 import { resolve } from 'rsvp';
 
 export default Resource.extend(ResourceUsage, {
@@ -20,6 +20,7 @@ export default Resource.extend(ResourceUsage, {
   machines: alias('nodes'),
   clusterRoleTemplateBindings: hasMany('id', 'clusterRoleTemplateBinding', 'clusterId'),
   roleTemplateBindings: alias('clusterRoleTemplateBindings'),
+  isGKE: equal('driver', 'googleKubernetesEngine'),
 
   actions: {
     edit() {
