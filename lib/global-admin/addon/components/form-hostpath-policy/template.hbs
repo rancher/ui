@@ -7,23 +7,13 @@
      expand=(action expandFn)
 }}
   <div class="row">
-
-    {{#unless readOnly}}
-      <div>
-        <button class="btn bg-link icon-btn" {{action "add"}}>
-          <span class="darken"><i class="icon icon-plus text-small"/></span>
-          <span>{{t 'formAllowedHostPathsPodSecurityPolicy.path.addLabel'}}</span>
-        </button>
-      </div>
-    {{/unless}}
-
     {{#if paths.length}}
       <div>
         {{#each paths as |item|}}
           {{#if readOnly}}
             <div>{{item.pathPrefix}}</div>
           {{else}}
-            <div class="row pt-20">
+            <div class="row">
               <div class="col span-11">{{input type="text" value=item.pathPrefix classNames="form-control input-sm" placeholder=(t 'formAllowedHostPathsPodSecurityPolicy.path.placeholder')}}</div>
               <div class="col"><button class="btn bg-primary btn-sm" {{action "remove" item}}><i class="icon icon-minus"/></button></div>
             </div>
@@ -33,5 +23,13 @@
     {{else if readOnly}}
       <div>{{t 'generic.none'}}</div>
     {{/if}}
+    {{#unless readOnly}}
+      <div>
+        <button class="btn bg-link icon-btn" {{action "add"}}>
+          <span class="darken"><i class="icon icon-plus text-small"/></span>
+          <span>{{t 'formAllowedHostPathsPodSecurityPolicy.path.addLabel'}}</span>
+        </button>
+      </div>
+    {{/unless}}
   </div>
 {{/accordion-list-item}}
