@@ -80,34 +80,33 @@ module.exports = function(defaults) {
   // modules that you would like to import into your application
   // please specify an object with the list of modules as keys
   // along with the exports of each module as its value.
-  app.import('bower_components/jgrowl/jquery.jgrowl.js');
-  app.import('bower_components/jgrowl/jquery.jgrowl.css');
-  app.import('bower_components/d3/d3.js');
-  app.import('bower_components/prism/prism.js');
-  app.import('bower_components/prism/components/prism-yaml.js');
-  app.import('bower_components/prism/components/prism-bash.js');
-  app.import('bower_components/async/dist/async.js');
-  app.import('bower_components/jszip/dist/jszip.js')
-  app.import('bower_components/position-calculator/dist/position-calculator.js');
-  app.import('bower_components/identicon.js/pnglib.js');
-  app.import('bower_components/identicon.js/identicon.js');
-  app.import('bower_components/momentjs/moment.js');
-  app.import('bower_components/ember-shortcuts/ember-shortcuts.js');
-  app.import('bower_components/jsondiffpatch/public/build/jsondiffpatch.js');
-  app.import('bower_components/jsondiffpatch/public/build/jsondiffpatch-formatters.js');
+  app.import('node_modules/async/dist/async.js');
+  app.import('node_modules/d3/d3.js');
+  app.import('node_modules/identicon.js/identicon.js');
+  app.import('node_modules/identicon.js/pnglib.js');
+  app.import('node_modules/jgrowl/jquery.jgrowl.css');
+  app.import('node_modules/jgrowl/jquery.jgrowl.js');
+  app.import('node_modules/jsondiffpatch/public/build/jsondiffpatch-formatters.js');
+  app.import('node_modules/jsondiffpatch/public/build/jsondiffpatch.js');
+  app.import('node_modules/jszip/dist/jszip.js')
+  app.import('node_modules/moment/moment.js');
+  app.import('node_modules/prismjs/prism.js');
+  app.import('node_modules/prismjs/components/prism-bash.js');
+  app.import('node_modules/prismjs/components/prism-yaml.js');
 
-  app.import('vendor/icons/style.css');
+  app.import('vendor/aws-sdk-ec2.js');
+  app.import('vendor/ember-shortcuts.js');
+  app.import('vendor/file-saver/fileSaver.mini.js');
   app.import('vendor/icons/fonts/rancher-icons.svg',   { destDir: 'assets/fonts/'});
   app.import('vendor/icons/fonts/rancher-icons.ttf',   { destDir: 'assets/fonts/'});
   app.import('vendor/icons/fonts/rancher-icons.woff',  { destDir: 'assets/fonts/'});
+  app.import('vendor/icons/style.css');
+  app.import('vendor/json-sanitizer/json-sanitizer.js');
   app.import('vendor/prompt/prompt-v1-latin-300.woff', { destDir: 'assets/fonts/'});
   app.import('vendor/prompt/prompt-v1-latin-300.woff2',{ destDir: 'assets/fonts/'});
   app.import('vendor/prompt/prompt-v1-latin-600.woff', { destDir: 'assets/fonts/'});
   app.import('vendor/prompt/prompt-v1-latin-600.woff2',{ destDir: 'assets/fonts/'});
-  app.import('vendor/aws-sdk-ec2.js');
   app.import('vendor/aliyun-sdk.js');
-  app.import('vendor/file-saver/fileSaver.mini.js');
-  app.import('vendor/json-sanitizer/json-sanitizer.js');
 
   return app.toTree();
 };

@@ -8,7 +8,6 @@ Perhaps you like managing Cattle.
 ## Usage
 
 Prerequisites:
-* [Bower](from http://bower.io/)
 * [Git](http://git-scm.com/)
 * [Node.js](http://nodejs.org/) 0.12.x (with NPM)
 * [Yarn](https://yarnpkg.com/en/docs/install) (Note Path Setup)
@@ -16,7 +15,6 @@ Prerequisites:
 If you're on a Mac and use Homebrew, you can follow these steps:
 ```bash
   brew install node watchman yarn
-  yarn global add bower
 ```
 
 Setup:
