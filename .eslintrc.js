@@ -22,6 +22,7 @@ module.exports = {
     "Ui": true,
     "async": true,
     "AWS": true,
+    "ALY": true,
     "Identicon": true,
     "md5": true,
     "_": true,

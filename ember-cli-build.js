@@ -105,6 +105,7 @@ module.exports = function(defaults) {
   app.import('vendor/prompt/prompt-v1-latin-600.woff', { destDir: 'assets/fonts/'});
   app.import('vendor/prompt/prompt-v1-latin-600.woff2',{ destDir: 'assets/fonts/'});
   app.import('vendor/aws-sdk-ec2.js');
+  app.import('vendor/aliyun-sdk.js');
   app.import('vendor/file-saver/fileSaver.mini.js');
   app.import('vendor/json-sanitizer/json-sanitizer.js');
 
