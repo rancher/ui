@@ -3,7 +3,7 @@ import { inject as service } from '@ember/service';
 import Controller, { inject as controller } from '@ember/controller';
 import {
   searchFields as containerSearchFields
-} from 'shared/components/pod-dots/component';
+} from 'ui/components/pod-dots/component';
 
 export const headers = [
   {

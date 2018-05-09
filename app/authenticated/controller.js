@@ -3,6 +3,8 @@ import { alias } from '@ember/object/computed';
 import { inject as service } from '@ember/service';
 import Controller, { inject as controller } from '@ember/controller';
 import C from 'ui/utils/constants';
+import { computed } from '@ember/object';
+import { on } from '@ember/object/evented';
 
 export default Controller.extend({
   application: controller(),
@@ -14,7 +16,7 @@ export default Controller.extend({
   isPopup:     alias('application.isPopup'),
   pageScope:   alias('scope.currentPageScope'),
 
-  bootstrap: function() {
+  bootstrap: on('init', function() {
     schedule('afterRender', this, () => {
       this.get('application').setProperties({
         error: null,
@@ -24,13 +26,13 @@ export default Controller.extend({
 
       let bg = this.get(`prefs.${C.PREFS.BODY_BACKGROUND}`);
       if ( bg ) {
-        $('BODY').css('background', bg);
+        $('BODY').css('background', bg); // eslint-disable-line
       }
     });
-  }.on('init'),
+  }),
 
-  hasHosts: function() {
+  hasHosts: computed('model.hosts.length', function() {
     return (this.get('model.hosts.length') > 0);
-  }.property('model.hosts.length'),
+  }),
 
 });

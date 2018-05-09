@@ -1,7 +1,7 @@
 export function initialize(/* application*/) {
   // Add 'touch' or 'no-touch' to the <body> so CSS can depend on the device type.
 
-  var body = $('BODY');
+  var body = $('BODY'); // eslint-disable-line
   if ('ontouchstart' in document.documentElement)
   {
     // Has touch, like an iPad

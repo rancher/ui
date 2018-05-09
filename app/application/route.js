@@ -31,8 +31,8 @@ export default Route.extend({
         set(this, 'loadingShown', true);
         //console.log('Loading Show', id);
 
-        $('#loading-underlay').stop().show().fadeIn({duration: 100, queue: false, easing: 'linear', complete: function() {
-          $('#loading-overlay').stop().show().fadeIn({duration: 200, queue: false, easing: 'linear'});
+        $('#loading-underlay').stop().show().fadeIn({duration: 100, queue: false, easing: 'linear', complete: function() { // eslint-disable-line
+          $('#loading-overlay').stop().show().fadeIn({duration: 200, queue: false, easing: 'linear'}); // eslint-disable-line
         }});
       }
 
@@ -41,8 +41,8 @@ export default Route.extend({
         function hide() {
           //console.log('Loading hide', id);
           self.set('loadingShown', false);
-          $('#loading-overlay').stop().fadeOut({duration: 200, queue: false, easing: 'linear', complete: function() {
-            $('#loading-underlay').stop().fadeOut({duration: 100, queue: false, easing: 'linear'});
+          $('#loading-overlay').stop().fadeOut({duration: 200, queue: false, easing: 'linear', complete: function() { // eslint-disable-line
+            $('#loading-underlay').stop().fadeOut({duration: 100, queue: false, easing: 'linear'}); // eslint-disable-line
           }});
         }
 

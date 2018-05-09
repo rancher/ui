@@ -1,6 +1,6 @@
 import { inject as service } from '@ember/service';
 import Controller from '@ember/controller';
-import { headersCluster as hostHeaders } from 'shared/components/node-row/component';
+import { headersCluster as hostHeaders } from 'ui/components/node-row/component';
 import { get, computed } from '@ember/object';
 
 export default Controller.extend({

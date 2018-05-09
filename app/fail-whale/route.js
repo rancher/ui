@@ -7,11 +7,11 @@ export default Route.extend({
 
   actions: {
     activate: function() {
-      $('BODY').addClass('farm');
+      $('BODY').addClass('farm'); // eslint-disable-line
     },
 
     deactivate: function() {
-      $('BODY').removeClass('farm');
+      $('BODY').removeClass('farm'); // eslint-disable-line
     },
   },
 
