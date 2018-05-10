@@ -18,6 +18,10 @@
             localizedPrompt=true
         }}
       </div>
+      <div class="col span-6">
+        <label class="acc-label">{{t 'clusterNew.azureaks.dns.label'}}</label>
+        {{input type="text" value=config.masterDnsPrefix classNames="form-control" placeholder=(t 'clusterNew.azureaks.dns.placeholder')}}
+      </div>
     </div>
   {{/accordion-list-item}}
   {{#accordion-list-item
@@ -70,7 +74,7 @@
             {{t 'generic.na'}}
           </div>
         {{else}}
-          {{input type="text" value=config.clientSecret classNames="form-control" placeholder=(t 'clusterNew.azureaks.clientSecret.placeholder')}}
+          {{input type="password" value=config.clientSecret classNames="form-control" placeholder=(t 'clusterNew.azureaks.clientSecret.placeholder')}}
         {{/if}}
       </div>
     </div>
@@ -111,7 +115,7 @@
         {{/if}}
       </div>
       <div class="col span-6">
-        <label class="acc-label">{{t 'clusterNew.azureaks.resourceGroup.label'}}</label>
+        <label class="acc-label">{{t 'clusterNew.azureaks.resourceGroup.label'}}{{field-required}}</label>
         {{#if editing}}
           <div>
             {{config.resourceGroup}}
