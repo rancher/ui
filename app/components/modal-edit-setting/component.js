@@ -1,4 +1,5 @@
 import { alias } from '@ember/object/computed';
+import { next } from '@ember/runloop';
 import { inject as service } from '@ember/service';
 import Component from '@ember/component';
 import { normalizeName } from 'shared/settings/service';
@@ -19,6 +20,21 @@ export default Component.extend(ModalBase, {
   init() {
     this._super(...arguments);
     this.set('value', this.get('model.obj.value')||'');
+  },
+
+  didInsertElement() {
+    next(() => {
+      if ( this.isDestroyed || this.isDestroying ) {
+        return;
+      }
+
+      const elem = this.$('.form-control')[0]
+      if ( elem ) {
+        setTimeout(()=>{
+          elem.focus();
+        }, 250);
+      }
+    });
   },
 
   actions: {
