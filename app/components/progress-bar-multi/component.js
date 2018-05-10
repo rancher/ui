@@ -1,4 +1,4 @@
-import { computed, get } from '@ember/object';
+import { defineProperty, computed, get } from '@ember/object';
 import Component from '@ember/component';
 import layout from './template';
 
@@ -31,7 +31,7 @@ export default Component.extend({
     let valueKey = this.get('valueKey');
 
     let valueDep = `values.@each.{${colorKey},${labelKey},${valueKey}}`;
-    this.set('pieces', computed('min','max',valueDep, () => {
+    defineProperty(this, 'pieces', computed('min','max',valueDep, () => {
 
       let min = this.get('min');
       let max = this.get('max');
@@ -73,7 +73,7 @@ export default Component.extend({
     }));
 
     valueDep = `tooltipValues.@each.{${labelKey},${valueKey}}`;
-    this.set('tooltipContent', computed(valueDep, () => {
+    defineProperty(this, 'tooltipContent', computed(valueDep, () => {
       let labelKey = this.get('labelKey');
       let valueKey = this.get('valueKey');
 
