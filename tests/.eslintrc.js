@@ -85,6 +85,7 @@ module.exports = {
     "comma-spacing": "error",
     "func-call-spacing": [ "error", "never" ],
     "implicit-arrow-linebreak": "error",
+    "indent": ["error", 2],
     "key-spacing": [ "error", {
       "align": {
         "beforeColon": false,
@@ -110,6 +111,12 @@ module.exports = {
     "object-curly-spacing": [ "error", "always" ],
     "object-property-newline": "error",
     "padded-blocks": "error",
+    quotes: [
+      "error",
+      "single",
+      { "avoidEscape": true },
+      { "allowTemplateLiterals": true }
+    ],
     "space-before-function-paren": [ "error", "never" ],
     "space-in-parens": [ "error", "always" ],
     "space-infix-ops": "error",
