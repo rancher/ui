@@ -7,7 +7,6 @@ const formats = [
   'json',
   'apache2',
   'nginx',
-  'syslog',
   "rfc3164",
   "rfc5424",
 ].map(value => ({
