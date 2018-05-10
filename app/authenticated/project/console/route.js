@@ -1,4 +1,4 @@
-import { get, set, computed } from '@ember/object';
+import { defineProperty, get, computed } from '@ember/object';
 import { inject as service } from '@ember/service';
 import Route from '@ember/routing/route';
 import C from 'ui/utils/constants';
@@ -20,7 +20,7 @@ export default Route.extend({
     this._super(controller, model);
 
     if (controller.get('kubernetes')) {
-      set(controller, 'command', computed('model.labels', function() {
+      defineProperty(controller, 'command', computed('model.labels', function() {
         var labels = get(this,'model.labels')||{};
         if ( labels[C.LABEL.K8S_TOKEN]+'' === 'true' ) {
           return [
