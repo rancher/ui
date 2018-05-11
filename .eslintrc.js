@@ -116,11 +116,12 @@ module.exports = {
     quotes: [
       "error",
       "single",
-      { "avoidEscape": true },
-      { "allowTemplateLiterals": true }
+      {
+       "avoidEscape": true,
+        "allowTemplateLiterals": true
+      },
     ],
     "space-before-function-paren": [ "error", "never" ],
-    "space-in-parens": [ "error", "always" ],
     "space-infix-ops": "error",
     "space-unary-ops": [
       "error",
