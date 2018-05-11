@@ -26,6 +26,9 @@
           {{#if (eq config.network.plugin 'flannel')}}
             <label class="acc-label mt-5">{{t 'clusterNew.rke.network.options.flannel.iface.label'}}</label>
             {{input type="text" value=config.network.flannelNetworkProvider.iface}}
+          {{else if (eq config.network.plugin 'canal')}}
+            <label class="acc-label mt-5">{{t 'clusterNew.rke.network.options.canal.iface.label'}}</label>
+            {{input type="text" value=config.network.canalNetworkProvider.iface}}
           {{else if (eq config.network.plugin 'calico')}}
              <label class="acc-label mt-5">{{t 'clusterNew.rke.network.options.calico.cloudProvider.label'}}</label>
              {{input type="text" value=config.network.calicoNetworkProvider.cloudProvider}}
