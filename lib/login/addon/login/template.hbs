@@ -36,6 +36,16 @@
         }}
       {{/if}}
 
+      {{#if isAzureAd}}
+        {{login-user-pass
+            action="authenticate"
+            classNames="row"
+            provider="azuread"
+            shown=true
+            waiting=adWaiting
+        }}
+      {{/if}}
+
       {{#if isLocal}}
         {{login-user-pass
             action="authenticate"
