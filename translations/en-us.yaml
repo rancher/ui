@@ -443,11 +443,32 @@ authPage:
         post: Waiting to hear back from GitHub
   azuread:
     header:
-      enabled: 'Azure AD Authentication is <b>enabled</b>'
-      disabled: 'Azure AD Authentication is not configured'
-    subtext:
-      enabled: '{appName} is configured to allow access to accounts in Azure AD'
-      disabled: '{appName} can be configured to restrict access to a set of accounts defined in the {appName} database.  This is not currently set up, so anybody that reach this page (or the API) has full control over the system.'
+      enabled:
+        label: "Azure AD is enabled"
+        required: |
+          {appName} is configured to allow access to {groups, plural,
+            =0 {no groups}
+            =1 {# group}
+            other {# groups}
+          } and {users, plural,
+            =0 {no users}
+            =1 {# user}
+            other {# users}
+          }.
+        restricted: |
+          {appName} is configured to allow access to environment members, {groups, plural,
+            =0 {no groups}
+            =1 {# group}
+            other {# groups}
+          } and {users, plural,
+            =0 {no users}
+            =1 {# user}
+            other {# users}
+          }.
+        unrestricted: "{appName} is configured to allow access to any Azure AD user."
+      disabled:
+        label: "Azure AD is not configured"
+        warning: "{appName} can be configured to restrict access to a set of Azure AD users and groups"
     enabled:
       header: 'Danger Zone&trade;'
       warning: '<b class="text-danger">Caution:</b> Disabling access control will give complete control over {appName} to anyone that can reach this page or the API.'
@@ -455,22 +476,25 @@ authPage:
       promptDisable: Disable access control
     configure:
       header: '1. Configure Azure AD Account'
-      tenantId:
-        label: Tenant ID
-        placeholder: A long UUID string
-        help: From the Azure AD portal
-      clientId:
-        label: Client ID
-        placeholder: A long UUID string
-      domain:
-        label: Domain
-        placeholder: e.g. youcompany.onmicrosoft.com
       adminAccountUsername:
         label: Admin Account Username
         placeholder: e.g. rancher-admin
         help: A user that can read information about other users
       adminAccountPassword:
         label: Admin Account Password
+      clientId:
+        label: Client ID
+        placeholder: A long UUID string
+      clientSecret:
+        label: Client Secret
+        placeholder: Your Client Secret
+      domain:
+        label: Domain
+        placeholder: e.g. youcompany.onmicrosoft.com
+      tenantId:
+        label: Tenant ID
+        placeholder: A long UUID string
+        help: From the Azure AD portal
     test:
       header: '2. Test and enable authentication'
       help: 'Check that everything is configured correctly by testing authentication with your account:'
