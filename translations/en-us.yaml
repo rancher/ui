@@ -1616,7 +1616,7 @@ cloudProvider:
   helpText: |
     Read more about <a href="https://kubernetes.io/docs/concepts/cluster-administration/cloud-providers/" target="_blank" rel="nofollow noopener noreferrer">cloud provider</a>.
   warning:
-    Using a cloud provider without passing a cloud provider config could cause your cluster to not provision correctly. It is recommended that you add a cloud provider config before you create a cluster.
+    Configuring a Cloud Provider in your cluster without configuring the prerequisites will cause your cluster to not provision correctly. Prerequisites needed for supported cloud providers can be found in the Rancher documentation on Cloud Providers.
 
 catalogSettings:
   header: Catalogs
@@ -1902,6 +1902,9 @@ clusterNew:
         flannel:
           iface:
             label: Interface
+        canal:
+          iface:
+            label: Interface
         calico:
           cloudProvider:
             label: Cloud Provider
@@ -1983,6 +1986,7 @@ conditionSections:
 
 confirmDelete:
   title: 'Are you sure you want to delete'
+  boundPVNote: 'Note: Bound Persistent Volume will not be deleted before deleting the persistent volume claim.'
   environmentNote: 'Note: All resources inside this Project will be permanently removed, including any namespaces that were created through {appName}.'
   clusterNote: 'Note: Associated resources such as volumes, balancers, and networks that were created in the cloud provider will not be automatically removed.'
   protip: 'ProTip: Hold the {key} key while clicking Delete to bypass this confirmation.'
@@ -4581,7 +4585,9 @@ nodeDriver:
     region:
       label: Region
   rackspace:
-    accountSection: Account Access
+    account:
+      title: 1. Account Access
+      detail: Username and API Key will be used to launch Rackspace Instances.
     username:
       label: Username
       placeholder: Your RackSpace username
@@ -4589,11 +4595,10 @@ nodeDriver:
       label: API Key
       placeholder: Your RackSpace API key
     accountHelp: From the Account Settings screen of the RackSpace control panel
-    regionSection: Region
     region:
+      title: 2. Region and Flavor
+      detail: Choose the region and flavor that will be used to launch Rackspace Instances.
       label: Region
-    instanceSection: Instance
-    instanceOptionsSection: Instance Options
     flavor:
       label: Flavor
   vmwarevsphere:
@@ -4651,6 +4656,21 @@ nodeDriver:
       label: Data Store
       placeholder: "e.g. datastore_cluster_name/datastore_name"
       help: "Datastore to create VM disk on"
+    cloudinit:
+      label: Cloud Init
+      placeholder: "e.g. http://my_host/cloud-config.yml"
+      help: "Cloud-init file or url to set in the guestinfo"
+    folder:
+      label: Folder
+      placeholder: "e.g. /folder"
+      help: "Folder for the VM. This folder must already exist in the datacenter."
+    cfgparam:
+      key:
+        placeholder: "e.g. guestinfo.hostname"
+      value:
+        placeholder: "e.g. myrancherhost"
+      label: Configuration Parameters used for guestinfo
+      addActionLabel: Add Parameter
   azure:
     placement:
       title: Placement

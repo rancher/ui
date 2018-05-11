@@ -51,6 +51,10 @@ export default Component.extend({
       }
     }
 
+    if ( actualStrategy === 'Recreate' ) {
+      changes['_strategy'] = 'recreate';
+    }
+
     setProperties(this, changes);
     this.strategyChanged();
   },

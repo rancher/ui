@@ -1,6 +1,6 @@
 import { computed } from '@ember/object';
 import { inject as service } from '@ember/service';
-import { get, set } from '@ember/object';
+import { observer, get, set } from '@ember/object';
 import Component from '@ember/component';
 import layout from './template';
 
@@ -34,48 +34,47 @@ export default Component.extend({
     this._super(...arguments);
     set(this, '_allNodes', get(this, 'globalStore').all('node'));
     set(this, 'advanced', !get(this, 'editing'));
-    if (get(this, 'initialHostId')) {
+    if ( get(this, 'initialHostId') ) {
       set(this, 'isRequestedHost', true);
-      set(this, 'requestedHostId', get(this, 'initialHostId'));
+      set(this, 'requestedHostId', `${get(this, 'scope.currentCluster.id')}:${get(this, 'initialHostId')}`);
     }
   },
 
   didReceiveAttrs() {
-    if (!get(this, 'expandFn')) {
+    if ( !get(this, 'expandFn') ) {
       set(this, 'expandFn', function (item) {
         item.toggleProperty('expanded');
       });
     }
   },
 
-  isRequestedHostDidChange: function () {
+  isRequestedHostDidChange: observer('isRequestedHost', function () {
     const scheduling = get(this, 'scheduling');
-    if (get(this, 'isRequestedHost')) {
-      var hostId = get(this, 'requestedHostId') || get(this, 'hostChoices.firstObject.id');
+    if ( get(this, 'isRequestedHost') ) {
+      const hostId = get(this, 'requestedHostId') || get(this, 'hostChoices.firstObject.id');
       Object.keys(scheduling).forEach(key => {
         delete scheduling.node[key];
       });
       set(this, 'requestedHostId', hostId);
-    }
-    else {
+    } else {
       set(this, 'requestedHostId', null);
       delete scheduling.node['nodeId'];
     }
-  }.observes('isRequestedHost'),
-
-  requestedHostIdDidChange: function () {
-    var hostId = get(this, 'requestedHostId');
-    set(this, 'scheduling.node.nodeId', hostId);
-  }.observes('requestedHostId'),
-
-  selectedChoice: computed('_allNodes.@each.{id,clusterId,name,state}', function () {
-    return get(this, 'hostChoices').findBy('id', get(this, 'initialHostId'));
   }),
 
-  hostChoices: function () {
-    var list = get(this, '_allNodes').filter((node) => !get(node, 'isUnschedulable')).filterBy('clusterId', get(this, 'scope.currentCluster.id')).map((host) => {
-      var hostLabel = get(host, 'hostname');
-      if (get(host, 'state') !== 'active') {
+  requestedHostIdDidChange: observer('requestedHostId', function () {
+    const hostId = get(this, 'requestedHostId');
+    set(this, 'scheduling.node.nodeId', hostId);
+  }),
+
+  selectedChoice: computed('_allNodes.@each.{id,clusterId,name,state}', function () {
+    return get(this, 'hostChoices').findBy('id', `${get(this, 'scope.currentCluster.id')}:${get(this, 'initialHostId')}`);
+  }),
+
+  hostChoices: computed('_allNodes.@each.{id,clusterId,name,state}', function () {
+    const list = get(this, '_allNodes').filter((node) => !get(node, 'isUnschedulable')).filterBy('clusterId', get(this, 'scope.currentCluster.id')).map((host) => {
+      let hostLabel = get(host, 'hostname');
+      if ( get(host, 'state') !== 'active' ) {
         hostLabel += ' (' + get(host, 'state') + ')';
       }
 
@@ -86,8 +85,5 @@ export default Component.extend({
     });
 
     return list.sortBy('name', 'id');
-  }.property('_allNodes.@each.{id,clusterId,name,state}'),
-
-  statusClass: null,
-  status: null,
+  }),
 });
