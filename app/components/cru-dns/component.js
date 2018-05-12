@@ -33,6 +33,7 @@ export default Component.extend(ViewNewEdit, ChildHook, {
       if ( get(this, 'model.targetWorkloads').some((target) => target.namespaceId !== get(this, 'namespace.id')) ) {
         set(this, 'model.targetWorkloadIds', null);
         set(this, 'recordType', null);
+        
         next(() => {
           set(this, 'recordType', 'workload');
         });
