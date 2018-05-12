@@ -1,6 +1,7 @@
 import { inject as service } from '@ember/service';
 import { get, set, setProperties, computed, observer} from '@ember/object';
 import Component from '@ember/component';
+import { next } from '@ember/runloop';
 import ViewNewEdit from 'shared/mixins/view-new-edit';
 import layout from './template';
 import { ARECORD, CNAME, ALIAS, WORKLOAD, SELECTOR } from 'ui/models/dnsrecord';
@@ -29,7 +30,13 @@ export default Component.extend(ViewNewEdit, ChildHook, {
 
   namespaceDidChange: observer('namespace.id', function () {
     if(get(this, 'recordType') === 'workload') {
-      set(this, 'model.targetWorkloadIds', null);
+      if ( get(this, 'model.targetWorkloads').some((target) => target.namespaceId !== get(this, 'namespace.id')) ) {
+        set(this, 'model.targetWorkloadIds', null);
+        set(this, 'recordType', null);
+        next(() => {
+          set(this, 'recordType', 'workload');
+        });
+      }
     }
   }),
 
