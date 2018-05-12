@@ -59,7 +59,18 @@ export default Component.extend({
     },
 
     set(key, value) {
-      let qa = YAML.parse(value);
+      let qa;
+
+      try {
+        qa = YAML.parse(value);
+      } catch ( err ) {
+        set(this, 'yamlErrors', [`YAML Parse Error: ${ err.snippet } - ${ err.message }`]);
+
+        return value;
+      }
+
+      set(this, 'yamlErrors', []);
+
       let questions = get(this, 'questions');
       const answers = {};
 

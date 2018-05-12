@@ -386,7 +386,14 @@ export default Component.extend(NewOrEdit, {
         });
 
       set(this, 'selectedTemplateModel', selectedTemplateModel);
-      set(this, 'previewTab', Object.keys(selectedTemplateModel.get('files') || [])[0]);
+
+      const files = Object.keys(selectedTemplateModel.get('files')) || [];
+
+      if ( files.length > 0 ) {
+        const valuesYaml = files.find((file) => file.endsWith('/values.yaml'));
+
+        set(this, 'previewTab', valuesYaml ? valuesYaml : files[0]);
+      }
     } else {
       set(this, 'selectedTemplateModel', null);
       set(this, 'readmeContent', null);
