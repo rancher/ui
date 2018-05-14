@@ -8,9 +8,15 @@ const rootNav = [
     localizedLabel: 'nav.containers.tab',
     route: 'authenticated.project.index',
     ctx: [getProjectId],
-    onlyCurrentWhen: ['containers','ingresses','authenticated.project.dns','volumes', 'authenticated.project.pipeline'],
     resource: ["workload", "ingress", "dnsrecord"],
     resourceScope: 'project',
+    moreCurrentWhen: [
+      'containers','workload',
+      'ingresses',
+      'authenticated.project.dns',
+      'volumes',
+      'authenticated.project.pipeline'
+    ],
   },
 
   {
@@ -99,7 +105,7 @@ const rootNav = [
     id: 'project-security-roles',
     localizedLabel: 'nav.infra.members',
     icon: 'icon icon-users',
-    route: 'authenticated.project.security.members.index',
+    route: 'authenticated.project.security.members',
     resource: ['projectroletemplatebinding'],
     resourceScope: 'global',
     ctx: [getProjectId],
