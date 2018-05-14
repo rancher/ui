@@ -2,121 +2,92 @@
   <a class="nav-logo logo-{{app.mode}} btn bg-transparent"><span class="sr-only">{{settings.appName}}</span></a>
 
   <ul class="nav-main nav-list no-inline-space">
-    {{page-header-environment
-        pageScope=pageScope
-    }}
+    {{page-header-environment pageScope=pageScope}}
 
     {{#each navTree as |item|}}
-
       {{#if item.submenu.length}}
-
         {{! Has a submenu }}
         {{#basic-dropdown
-             tagName="li"
-             class="nav-item"
-             as |dd|}}
-
-            {{#dd.trigger
-                 onMouseDown=(action "prevent")
-                 onMouseEnter=(action "open")
-                 onMouseLeave=(action "closeLater")
-            }}
-
-              {{#if (or (not item.resource) (rbac-allows resource=item.resource scope=item.resourceScope))}}
-
-                {{#if item.route}}
-
-                  {{#link-to-as-attrs
-                       item.route
-                       models=item.ctx
-                       qp=item.qp
-                       onlyCurrentWhen=item.onlyCurrentWhen
-                       activeParent=true
-                       role="button"
-                       aria-haspopup="true"
-                       aria-expanded="false"
-                  }}
-                    {{maybe-t item.localizedLabel item.label}}
-                    <span class="icon icon-chevron-down"/>
-                  {{/link-to-as-attrs}}
-
-                {{else}}
-
-                  <a role="button" aria-haspopup="true" aria-label={{maybe-t item.localizedLabel item.label}}>
-                    {{maybe-t item.localizedLabel item.label}}
-                    <span class="icon icon-chevron-down"/>
-                  </a>
-
-                {{/if}}
-
+          tagName="li"
+          class="nav-item"
+          as |dd|
+        }}
+          {{#dd.trigger
+            onMouseDown=(action "prevent")
+            onMouseEnter=(action "open")
+            onMouseLeave=(action "closeLater")
+          }}
+            {{#if (or (not item.resource) (rbac-allows resource=item.resource scope=item.resourceScope))}}
+              {{#if item.route}}
+                {{#link-to-as-attrs
+                  item.route
+                  models=item.ctx
+                  qp=item.qp
+                  currentWhen=item.currentWhen
+                  activeParent="LI"
+                  role="button"
+                  aria-haspopup="true"
+                  aria-expanded="false"
+                }}
+                  {{maybe-t item.localizedLabel item.label}}
+                  <span class="icon icon-chevron-down"/>
+                {{/link-to-as-attrs}}
+              {{else}}
+                <a role="button" aria-haspopup="true" aria-label={{maybe-t item.localizedLabel item.label}}>
+                  {{maybe-t item.localizedLabel item.label}}
+                  <span class="icon icon-chevron-down"/>
+                </a>
               {{/if}}
+            {{/if}}
+          {{/dd.trigger}}
 
-            {{/dd.trigger}}
-
-            {{#dd.content
-                 onMouseEnter=(action "open")
-                 onMouseLeave=(action "closeLater")
-                 tagName="ul"
-            }}
-
-              {{#each item.submenu as |subitem|}}
-
-                {{#if subitem.route}}
-
-                  {{#if (or (not subitem.resource) (rbac-allows resource=subitem.resource scope=subitem.resourceScope))}}
-
-                    <li>
-                      {{#link-to-as-attrs
-                           subitem.route
-                           models=subitem.ctx
-                           qp=subitem.qp
-                           activeParent=true
-                           onlyCurrentWhen=subitem.onlyCurrentWhen
-                           submenuItem=true
-                      }}
-                        <i class="{{subitem.icon}}"/> {{maybe-t subitem.localizedLabel subitem.label}}
-                      {{/link-to-as-attrs}}
-                    </li>
-
-                  {{/if}}
-
-                {{else if subitem.divider}}
-
-                  <li class="divider"></li>
-
-                {{else}}
-
-                  {{! Just a label }}
-                  <li class="dropdown-header">
-                    <i class="{{subitem.icon}}"/> {{maybe-t subitem.localizedLabel subitem.label}}
+          {{#dd.content
+            onMouseEnter=(action "open")
+            onMouseLeave=(action "closeLater")
+            tagName="ul"
+          }}
+            {{#each item.submenu as |subitem|}}
+              {{#if subitem.route}}
+                {{#if (or (not subitem.resource) (rbac-allows resource=subitem.resource scope=subitem.resourceScope))}}
+                  <li>
+                    {{#link-to-as-attrs
+                      subitem.route
+                      models=subitem.ctx
+                      qp=subitem.qp
+                      activeParent="LI"
+                    }}
+                      <i class="{{subitem.icon}}"/> {{maybe-t subitem.localizedLabel subitem.label}}
+                    {{/link-to-as-attrs}}
                   </li>
-
                 {{/if}}
-
-              {{/each}}
-
-            {{/dd.content}}
-
+              {{else if subitem.divider}}
+                <li class="divider"></li>
+              {{else}}
+                {{! Just a label }}
+                <li class="dropdown-header">
+                  <i class="{{subitem.icon}}"/> {{maybe-t subitem.localizedLabel subitem.label}}
+                </li>
+              {{/if}}
+            {{/each}}
+          {{/dd.content}}
         {{/basic-dropdown}}
 
       {{else if item.route}}
 
         {{#if (or (not item.resource) (rbac-allows resource=item.resource scope=item.resourceScope))}}
-
           {{! No submenu }}
           <li class="nav-item">
             {{#link-to-as-attrs
               item.route
               models=item.ctx
               qp=item.qp
-              activeParent=true
-              onlyCurrentWhen=item.onlyCurrentWhen
+              activeParent="LI"
+              currentWhen=item.currentWhen
               class="nav-link"
             }}
               {{maybe-t item.localizedLabel item.label}}
             {{/link-to-as-attrs}}
           </li>
-
         {{/if}}
 
       {{else}}
@@ -127,25 +98,23 @@
         </li>
 
       {{/if}}
-
     {{/each}}
-
   </ul>
 
   {{#basic-dropdown
-       tagName="ul"
-       class="nav-user"
-       horizontalPosition="right"
-       delay=250
-       as |dd|
+    tagName="ul"
+    class="nav-user"
+    horizontalPosition="right"
+    delay=250
+    as |dd|
   }}
     {{!-- <ul class="nav-user"> --}}
       {{#dd.trigger
-           class="btn"
-           ariaLabel=(t 'nav.user.label' username=session.user)
-           onMouseDown=(action "prevent")
-           onMouseEnter=(action "open")
-           onMouseLeave=(action "closeLater")
+        class="btn"
+        ariaLabel=(t 'nav.user.label' username=session.user)
+        onMouseDown=(action "prevent")
+        onMouseEnter=(action "open")
+        onMouseLeave=(action "closeLater")
       }}
         {{#if accessEnabled}}
           {{identity-avatar link=false identity=access.principal}}

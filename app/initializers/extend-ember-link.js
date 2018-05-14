@@ -1,53 +1,47 @@
 import LinkComponent from '@ember/routing/link-component';
+import { get } from '@ember/object'
 
 export function initialize(/*application */) {
   LinkComponent.reopen({
     attributeBindings: ['tooltip', 'data-placement'],
 
-    // Set activeParent=true on a {{link-to}} to automatically propagate the active
-    // class to the parent element (like <li>{{link-to}}</li>)
-    activeParent: false,
+    // Set activeParent=LI on a {{link-to}} to automatically propagate the active
+    // class to the parent element of that tag name (like <li>{{link-to}}</li>)
+    activeParent: null,
 
     addActiveObserver: function () {
-      if (this.get('activeParent')) {
+      if ( this.get('activeParent') ) {
         this.addObserver('active', this, 'activeChanged');
+        this.addObserver('application.currentRouteName', this, 'activeChanged');
         this.activeChanged();
       }
     }.on('didInsertElement'),
 
-    isOnlyCurrentWhen() {
-      if (!this.get('onlyCurrentWhen')) {
-        return false;
-      }
-      let currentRouteName = this.get('application.currentRouteName');
-      return !this.get('onlyCurrentWhen').some(r => currentRouteName.startsWith(r));
-    },
-
     activeChanged() {
-      if (this.isDestroyed || this.isDestroying) {
+      if ( this.isDestroyed || this.isDestroying ) {
         return;
       }
 
-      // need to mark the parent drop down as active as well
-      if (!!this.get('active')) {
-        if (this.get('submenuItem')) {
-          if (!this.$().closest('li.dropdown.active').length) {
-            var $dropdown = this.$().closest('li.dropdown');
-            $dropdown.addClass('active');
-            $dropdown.siblings('li.active').removeClass('active');
-          }
-        } else {
-          if (this.$().parent().siblings('li.dropdown.active').length) {
-            this.$().parent().siblings('li.dropdown.active').removeClass('active');
+      const parent = this.$().closest(get(this, 'activeParent'));
+      if ( !parent || !parent.length ) {
+        return;
+      }
+
+      let active = !!get(this, 'active');
+      let more = get(this, 'currentWhen');
+      if ( !active && more && more.length) {
+        const currentRouteName = get(this, 'application.currentRouteName');
+        for ( let i = 0 ; i < get(more, 'length') ; i++ )  {
+          const entry = more.objectAt(i);
+
+          if ( currentRouteName === entry || currentRouteName.startsWith(`${entry}.`) ) {
+            active = true;
+            break;
           }
         }
       }
 
-      if (this.get('active') && !this.isOnlyCurrentWhen()) {
-        this.$().parent().toggleClass('active', true);
-      } else {
-        this.$().parent().toggleClass('active', false);
-      }
+      parent.toggleClass('active', active);
     }
   });
 
