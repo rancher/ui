@@ -214,7 +214,7 @@ export default Component.extend(NewOrEdit, ChildHook, {
     let readinessProbe = get(lc, 'readinessProbe');
     if (!get(this, 'separateLivenessCheck')) {
       if ( readinessProbe ) {
-        const livenessProbe = readinessProbe.clone();
+        const livenessProbe = Object.assign({}, readinessProbe);
         set(livenessProbe, 'successThreshold', 1);
         set(lc, 'livenessProbe', livenessProbe);
       } else {
