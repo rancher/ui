@@ -27,6 +27,10 @@ export default Component.extend(ThrottledResize, {
     }));
 
     next(this, () => {
+      if ( this.isDestroyed || this.isDestroying ) {
+        return
+      }
+
       set(this, 'ready', true);
     });
   },
