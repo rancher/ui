@@ -144,17 +144,30 @@
       <div class="col-md-4">
         {{input type="text" value=azureConfig.image classNames="form-control" placeholder=(t 'machine.driverAzure.image.placeholder')}}
       </div>
+    </div>
+    
+    <div class="row form-group">
+      <div class="col-md-2 form-label">
+        <label class="form-control-static">{{t 'machine.driverAzure.vmType.label'}}</label>
+      </div>
+      <div class="col-md-4">
+        {{new-select
+          classNames="form-control"
+          content=vmTypeChoices
+          optionValuePath='label'
+          value=selectedVmType
+        }}
+      </div>
       <div class="col-md-2 form-label">
         <label class="form-control-static">{{t 'machine.driverAzure.size.label'}}</label>
       </div>
       <div class="col-md-4">
         {{new-select
           classNames="form-control"
-          content=sizeChoices
-          optionLabelPath='value'
+          content=vmSizeChoices
           optionGroupPath='group'
           value=azureConfig.size
-        }}
+        }} 
       </div>
     </div>
 

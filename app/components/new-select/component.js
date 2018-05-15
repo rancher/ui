@@ -89,6 +89,10 @@ export default Ember.Component.extend({
   _change() {
     const selectEl = this.$()[0];
     const selectedIndex = selectEl.selectedIndex;
+    if ( selectedIndex === -1 ) {
+      return;
+    }
+    
     const selectedValue = selectEl.options[selectedIndex].value;
     const content = (this.get('content')||[]);
 
