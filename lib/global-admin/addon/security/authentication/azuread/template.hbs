@@ -35,7 +35,10 @@
 
       <section class="">
         <div class="clearfix">
-          <div class="pull-right">
+          <div class="pull-right mt-10">
+            <button class="btn btn-sm bg-primary" {{action "edit"}}>
+              {{t 'generic.edit'}}
+            </button>
             <button class="btn btn-sm right-divider-btn bg-error" {{action "disable"}}>
               {{t 'authPage.azuread.enabled.promptDisable'}}
             </button>
@@ -69,7 +72,7 @@
   {{/if}}
 
 
-  {{#unless isEnabled}}
+  {{#if (or (not isEnabled) editing)}}
     <section class="box mt-30">
 
       <div class="row">
@@ -164,5 +167,6 @@
         </div>
       </div>
     </section>
-  {{/unless}}
+  {{/if}}
+
 {{/accordion-list}}
