@@ -3,9 +3,8 @@ import Component from '@ember/component';
 import layout from './template';
 import { inject as service } from '@ember/service'
 import { computed } from '@ember/object';
-import HoverDropdown from 'shared/mixins/hover-dropdowns';
 
-export default Component.extend(HoverDropdown,{
+export default Component.extend({
   layout,
   access:            service(),
   scope:             service(),
