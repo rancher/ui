@@ -1,32 +1,63 @@
 ---
 languageName: "简体中文"
-languageContribute: "帮助翻译 Rancher"
+languageContribute: "帮助翻译Rancher"
 
-# pipeline
+
+##############################
+# Really generic things used in multiple places (use sparingly)
+##############################
+generic:
+  branch: 分支
+  repository: 代码库
+  registry: 镜像库
+  tag: Tag
+  destroying: 销毁
+  deploy: 部署
+  image: 镜像
+  loginIn: 登录
+##############################
+# Resource Actions
+##############################
+action:
+  approve: 批准
+  rerun: 重新运行
+  run: 运行一次
+
+nav:
+  tools:
+    pipeline: Pipeline
+
 pipelinesPage:
   table:
     status: 状态
-    noData: 当前没有创建然后Pipeline.
-    noMatch: 没有匹配的Pipeline.
-  add: 添加流水线
-  pipelines: 流水线
-  import: 导入 pipeline.yml
-  active: Active
-  inactive: Inactive
-  lastActivity: 最近的活动
-  nextRun: 下次运行时间
-
+    noData: 没有定义Pipeline
+    noMatch: 没有Pipeline符合当前搜索
+  add: 添加Pipeline
+  pipelines: Pipelines
+  import: 导入pipeline.yaml
+  importPlaceHolder: 文件内容
+  active: 已激活
+  inactive: 未激活
+  lastActivity: 持续活动
+  nextRun: 下次运行
+  awaitingWebhookPush: 等待上传
+  awaitingWebhookPR: 等待PR
+  triggerManually: 手动触发
+  notDeployed: Pipeline没有启用, 点击<a href="{route}">这里</a>启用Pipline
 pipelinesSetting:
-  gitAuthentication: Git 授权
-  authenticateWithGit: 授权使用您的git仓库
-  changeConfiguration: 改变{oauthType}应用, 取消下面的授权，并重新进行授权。
+  globalConfigChangeLabel: 使用OAuth应用程序去认证
+  customConfigChangeLabel: 使用另一个OAuthe应用程序
+  userGlobalConfig: GitHub身份验证已启用，您可以使用它来直接启用Pipline
+  gitAuthentication: Git验证
+  authenticateWithGit: 用Git进行身份验证
+  changeConfiguration: 要更改已配置的{oauthType}应用, 请在下面禁用OAuth认证，然后重新进行授权
   authenticatedUsers: 已授权的用户
-  sureToDisableOAuth: 您确定要取消授权吗?
+  sureToDisableOAuth: 您确定要取消授权吗？
   disableOAuth: 取消授权
-  dataClear: 数据清除
-  resetData: 重置所有流水线相关的数据.
+  dataClear: 清除数据
+  resetData: 重置所有与Pipeline相关的数据
   clearing: 清除中
-  sureToClearData: 确定要清除所有数据吗?
+  sureToClearData: 你确定要清除数据吗？
   clearData: 清除数据
 pipelineHistories:
   history: 历史
@@ -34,17 +65,17 @@ pipelineHistories:
   running: 运行中
   success: 成功
   fail: 失败
-  pending: 挂起
+  pending: 等待
   pipline: Pipeline
-  repository: 代码仓库
+  repository: 代码库
   time: 时间
   status: 状态
   deny: 拒绝
-  approve: 通过
-  rerun: 重跑
-  waitingApproval: 等待审核
+  approve: 批准
+  rerun: 重新运行
+  waitingApproval: 等待批准
   runPipeline: 运行Pipeline
-
+  empty: 没有活动的
 newPipeline:
   header: 添加Pipeline
   name:
@@ -53,30 +84,31 @@ newPipeline:
     placeholder: 描述
   approvers:
     label: 审核人
+    noAccounts: 如果没有特定的用户选择，每个人都可以批准它。
   build:
     variable: 构建变量
     add: 添加
   git:
     repo:
-      label: Repository
-      placeholder: e.g. https://github.com/mycompany/mypipeline.git
-    branch: Branch
+      label: 代码库
+      placeholder: 例如：https://github.com/mycompany/mypipeline.git
+    branch: 分支
   image:
-    label: Target image
-    placeholder: builded
+    label: 目标镜像
+    placeholder: 构建
   builder:
-    label: Builder Image
+    label: 构建镜像
     buildIn: Build In
-    custom: Custom
+    custom: 自定义
   save: 保存
-  add: 添加
+  add: 完成
   schedule:
     title: 定时任务
     detail: 定时触发Pipeline
     interval: 时间间隔
     custom: 自定义
     cronSyntax: Cron语法
-    everyDay: 每天（凌晨 4:00 am）
+    everyDay: 每天(凌晨4:00 am)
     cronTimezone: Cron时区
     tip: 当有新push时才触发Pipeline
   parameters: 变量
@@ -100,7 +132,13 @@ newPipelineStage:
   value: 值
   name: 名称
   addStep: 添加一个步骤
-
+  trigger:
+    webhook: 当有新代码push时，自动触发Pipeline
+    cron: 定时自动构建pipeline
+    everyday: 每天
+    custom: 使用自定义时间表
+    webhookPR: 每当有新的PR时，自动构建Pipeline任务
+    webhookTag: 每当有新tag时,自动构建Pipeline任务
 newPipelineStep:
   header:
     create: 添加步骤
@@ -108,7 +146,9 @@ newPipelineStep:
   stepType:
     label: 步骤类型
     image: 镜像
+    env: 环境变量
     scm:
+      add: 添加代码库
       label: 源码管理
       warning: 选择一个代码库来创建你的Pipeline
       user: 用户
@@ -123,59 +163,45 @@ newPipelineStep:
       finishOauth1: 已经完成授权？
       finishOauth2: 点击这里
       finishOauth3: 加载代码仓库
+      trigger: 构建触发器(可选)
+      importFromRepo: 从代码库导入Pipeline
+      importPipelineSuccess: 从<span class="text-info">{branch}</span>分支导入
+      importPipelineFail: 没有发现Pipeline
     build:
       here: 这里
-      label: 镜像构建
-      source: Dockerfile地址
-      readSourceCode: 从代码仓库获取
-      readFile: 从上传文件获取
-      dockerFilePath: Dockerfile路径(相对于代码仓库根目录)
-      imageTag: 镜像标签
-      buildPath: 构建上下文(相对于代码仓库根目录)
-      push: 推送
-      pushTo: 这个镜像将会被推送至
-      pushWarning1: 此Registry
-      pushWarning2: 还没有进行授权, 点击
-      pushWarning3: 就行授权.
+      label: 上传镜像
+      source: Dockerfile地址源
+      readSourceCode: 读取源代码
+      readFile: 从文件读取
+      dockerFilePath: Dockerfile路径(相对于工作区)
+      imageTag: 镜像Tag
+      buildPath: 构建上下文(相对于工作区)
+      push: 推送到镜像库
+      pushTo: 这个镜像将被推送到
+      pushWarning1: 这个镜像库
+      pushWarning2: 未经认证，单击
+      pushWarning3: 去认证
+      scope: "范围：可用于此项目中的所有命名空间"
+      registryExist: 使用{username}注册的镜像仓库{registry} 
     task:
-      label: Task
-      runAsService: 启动一个服务
-      runAsServiceTip: 选择此选项使这个容器成为一个长进程.
-      shellScript: Shell Script
+      label: 运行一个脚本
+      runAsService: 作为服务运行
+      runAsServiceTip: 单击此按钮使之成为一个长时间运行的进程/容器
+      shellScript: shell脚本
       customEntryPoint: 自定义Entrypoint
-      command: 命令
+      command: Command
       commandLabel: 'sh'
       entryPoint: EntryPoint
-    stack:
-      label: 升级栈
-      stackName: 栈名
-      editTemplate: 使用CI变量来编辑模版
-      editTemplateTip: 你只需要编写又改变的部分即可
-    catalog:
-      label: 升级应用
-      select: 选择
-      authWarning: 请先进行代码仓库授权
-      selectApp: 选择应用
-      selectAppTip: 选择你要升级的应用
-      editTemplate: 使用CI变量来编辑模版
-      selectTemplate: 以老版本为模版
-      selectTemplateTip: 选择一个老版本作为升级的模版
-      upgrade: 升级应用至最新版本
-      upgradeTip: 这个选项将帮助你把应用升级至最新版本
-    deploy:
-      label: Deploy
-      name: Name
-      count: Count
-    timeout: 过期时间
-    timeoutWarning: 如果这个步骤没有在指定时间（默认3分钟）内完成，则会被判定为失败.
+    timeout: 超时时间
+    timeoutWarning: 如果某个步骤在指定时间(以分钟为单位，默认3分钟)内未完成，则构建将自动终止并标记为“失败”
     minutes: 分钟
     conditions: 条件
     addExpression: 添加表达式
-    noExpression: 暂无表达式
+    noExpression: 当前没有表达式
     allThese: 任意
-    allTheseInfo: 当任意表达式满足时，此条件为真
+    allTheseInfo: 满足任意一个条件时运行
     anyThese: 所有
-    anyTheseInfo: 当所有表达式均满足时，此条件为真
+    anyTheseInfo: 满足所有条件时运行
     targetEnv:
       label: 目标环境非本环境
       tip: 默认目标环境为本环境，如果要将目标环境设定为其他环境，请勾选本选项
@@ -186,68 +212,70 @@ authPage:
     enterprise: GitHub企业版
     header:
       enabled:
-        label: "{github} 已启用"
+        label: "GitHub已启用"
         required: |
-          {appName} 已被设置为允许 {orgs, plural,
-          =0 {无组织}
-          =1 {# 个组织}
-          other {# 个组织}
-          } 和 {users, plural,
-          =0 {无用户}
-          =1 {# 个用户}
-          other {# 个用户}
-          } 访问.
+          {appName}已被设置为允许{orgs, plural,
+            =0{无组织}
+            =1{# 个组织}
+            other{# 个组织}
+          }和{users, plural,
+            =0{无用户}
+            =1{# 个用户}
+            other {# 个用户}
+          }.
         restricted: |
-          {appName} 已被设置为允许 {orgs, plural,
-          =0 {无组织}
-          =1 {# 个组织}
-          other {# 个组织}
-          } and {users, plural,
-          =0 {无用户}
-          =1 {# 个用户}
-          other {# 个用户}
-          } 以环境成员身份访问.
-        unrestricted: "{appName} 已被设置为允许任何 {github} 用户访问."
+          {appName}已被设置为允许{orgs, plural,
+            =0{无组织}
+            =1{# 个组织}
+            other{# 个组织}
+          }和{users, plural,
+            =0{无用户}
+            =1{# 个用户}
+            other {# 个用户}
+          }.
+        unrestricted: "已被设置为允许任何{github}用户访问"
       disabled:
-        label: GitHub 未设置
-        labelGitlab: GitLab 未设置
-        warning: "{appName} 可以设置为允许一组 GitHub 用户和组织成员访问。 由于当前未完成此设置，所以任何可以访问此页面(或API)的用户都对系统有完全控制权限。"
+        label: GitHub未配置
+        labelGitlab: GitLab未设置
+        warning: "{appName}可以设置为允许一组GitHub用户和组织成员访问。由于当前未完成此设置，所以任何可以访问此页面(或API)的用户都对系统有完全控制权限"
+
     authenticated:
       header:
         text: 认证信息
         enterpriseHostName: "企业版主机:"
         clientId:
           text: "客户端ID:"
-          helpText: "要修改设置的GitHub应用，请在下方禁用访问控制后重新设置。"
+          helpText: "要修改设置的GitHub应用，请在下方禁用访问控制后重新设置"
       disableAccess:
         header: "危险区域&trade;"
-        warning: '<b class="text-danger">警告:</b> 禁用访问控制将导致任何能够访问此页面或API的用户拥有对  {appName}  的完全控制权限。'
-        confirmDisable: "确认? 再次点击将关闭访问控制。"
+        warning: '<b class="text-danger">警告:</b>禁用访问控制将导致任何能够访问此页面或API的用户拥有对{appName}的完全控制权限'
+        confirmDisable: "确认? 再次点击将关闭访问控制"
         disable: 关闭访问控制
     notAuthenticated:
       header: "1. 设置GitHub应用"
       headerVariable: "1. 设置{GitHub}应用"
       ul:
         li1:
-          text: '标准GitHub， <a href="https://github.com/settings/developers" target="_blank">点击此处</a> 在弹出的新窗口中进行应用设置。'
-          gitlabText: '标准GitLab， <a target="blank" href="https://gitlab.com/profile/applications">点击此处</a> 在弹出的新窗口中进行应用设置。'
+          text: '标准GitHub，<a href="https://github.com/settings/developers" target="_blank">点击此处</a>在弹出的新窗口中进行应用设置'
+          gitlabText: '标准GitLab，<a target="blank" href="https://gitlab.com/profile/applications">点击此处</a>在弹出的新窗口中进行应用设置'
           ul:
-            li1: "企业版GitHub，请登录你的账号，点击Settings，然后点击Applications进行设置。"
+            li1: "企业版GitHub，请登录你的账号，点击Settings，然后点击Applications进行设置"
         li2:
-          text: '点击 "Register new application" 并填写表单内容:'
+          text: '点击"Register new application"并填写表单内容:'
           text2: '填写"Add new application"表格:'
           ul:
-            li1: '<b>Application name:</b> <span class="text-muted">任何您喜欢的应用名称, 例如 My {appName}</span>'
-            li1_2: '<b>Name:</b> <span class="text-muted">任何您喜欢的应用名称, 例如 My {appName}</span>'
-            li2: 主页 URL
-            li3: '<b>Application description:</b> <span class="text-muted">任何你喜欢的描述，可选</span>'
-            li4: 授权回调 URL
+            li1: '<b>Application name：</b> <span class="text-muted">应用名称, 例如：My {appName}</span>'
+            li1_2: '<b>Name：</b> <span class="text-muted">应用名称, 例如：My {appName}</span>'
+            li2: 主页URL：
+            li3: '<b>Application description：</b> <span class="text-muted">应用描述，可选</span>'
+            li4: 授权回调URL：
+            li4_2: '重定向URL：'
         li3:
-          text: '点击 "Register Application" '
-          text2: '点击 "Save application" '
+          text: '点击"Register Application"'
+          text2: '点击"Save application" '
       form:
-        header: '2. 设置 {appName} 使用你的GitHub应用验证'
-        headerVariable: '2. 设置 {appName} 使用你的 {SCM} 应用验证'
+        header: '2. 配置{appName}使用你的GitHub应用验证'
+        headerVariable: '2. 设置{appName}使用你的{SCM}应用验证'
         subtext: '将新创建GitHub应用的Client ID和Secret复制粘贴到下方的对应输入框中'
         subtextVariable: '将新创建{GitHub}应用的Client ID和Secret复制粘贴到下方的对应输入框中'
         clientId:
@@ -260,14 +288,16 @@ authPage:
           labelText: 使用私有GitLab部署
         isGHEnterprise:
           labelText: 使用安全连接
+        glEnterprise:
+          labelText: 使用私有GitHub企业版部署
         enterpriseHost:
           labelText: 企业版主机
-          placeholder: '例如:github.example.com'
-          placeholder2: '例如:gitlab.example.com'
+          placeholder: '例如：github.example.com'
+          placeholder2: '例如：gitlab.example.com'
     testAuth:
       header: '3. 测试并启用验证'
-      subtext: '测试以确认你的配置是否正确'
+      subtext: '通过测试认证来检查你的应用程序是否配置正确: '
       buttonText:
         pre: GitHub验证
-        preVariable: '{GitHub}验证'
+        preVariable: 启用Pipeline
         post: 等待GitHub返回
