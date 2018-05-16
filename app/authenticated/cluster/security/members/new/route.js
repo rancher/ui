@@ -15,7 +15,7 @@ export default Route.extend({
 
     return hash({
       cluster: gs.find('cluster', cid.cluster_id, {forceReload: true}),
-      roles:   get(this, 'roleTemplateService').allFilteredRoleTemplates(),
+      roles:   get(this, 'roleTemplateService').get('allFilteredRoleTemplates'),
       users:   gs.findAll('user'),
     });
   },

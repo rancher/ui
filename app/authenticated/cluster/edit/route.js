@@ -18,7 +18,7 @@ export default Route.extend({
       nodeTemplates:              globalStore.findAll('nodeTemplate'),
       nodeDrivers:                globalStore.findAll('nodeDriver'),
       psps:                       globalStore.findAll('podSecurityPolicyTemplate'),
-      roleTemplates:              get(this, 'roleTemplateService').allFilteredRoleTemplates(),
+      roleTemplates:              get(this, 'roleTemplateService').get('allFilteredRoleTemplates'),
       users:                      globalStore.findAll('user'),
       clusterRoleTemplateBinding: globalStore.findAll('clusterRoleTemplateBinding'),
       me:                         get(this, 'access.principal'),

@@ -16,6 +16,9 @@
         <td valign="middle" class="row-check" style="padding-top: 2px;">
           {{check-box nodeId=row.id}}
         </td>
+        <td valign="middle">
+          {{badge-state model=row}}
+        </td>
         <td data-title="{{t 'rolesPage.index.table.name'}}:" class="clip">
           {{#link-to "security.roles.detail" row.id}}
             {{row.name}}
@@ -23,20 +26,6 @@
         </td>
         <td data-title="{{t 'rolesPage.index.table.builtin'}}:" >
           {{#if row.builtin}}
-            <i class="icon icon-check"/>
-          {{else}}
-            <span class="text-muted">&ndash;</span>
-          {{/if}}
-        </td>
-        <td data-title="{{t 'rolesPage.index.table.enabled'}}:" >
-          {{#if row.enabled}}
-            <i class="icon icon-check"/>
-          {{else}}
-            <span class="text-muted">&ndash;</span>
-          {{/if}}
-        </td>
-        <td data-title="{{t 'rolesPage.index.table.hidden'}}:" >
-          {{#if row.hidden}}
             <i class="icon icon-check"/>
           {{else}}
             <span class="text-muted">&ndash;</span>

@@ -13,7 +13,7 @@ export default Route.extend({
 
     return hash({
       project: gs.find('project', pid.project_id, {forceReload: true}),
-      roles:   get(this, 'roleTemplateService').allFilteredRoleTemplates(),
+      roles:   get(this, 'roleTemplateService').get('allFilteredRoleTemplates'),
       users:   gs.findAll('user'),
     });
   },

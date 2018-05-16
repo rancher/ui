@@ -39,48 +39,31 @@
     }}
   </div>
 </div>
+
+<div class="row">
+  <div class="col span-6">
+    <div class="radio">
+      <label>{{radio-button selection=primaryResource.enabled value=true}} {{t 'rolesPage.new.form.enabled.enabled'}}</label>
+    </div>
+    <div class="radio">
+      <label>{{radio-button selection=primaryResource.enabled value=false}} {{t 'rolesPage.new.form.enabled.disabled'}}</label>
+    </div>
+  </div>
+</div>
+
 <hr class="mt-30 mb-30" />
 
 {{#accordion-list showExpandAll=false as |al expandFn|}}
-  <div class="row">
-    <div class="col span-12">
-      {{#accordion-list-item
-           title="Visability"
-           detail="Set role hidden or disabled"
-           expandAll=al.expandAll
-           expand=(action expandFn)
-           expandOnInit=false
-           showStatus=false
-      }}
-        <div class="row">
-          <div class="col span-3">
-            <div class="radio">
-              <label>
-                {{input type="checkbox" name="enabled" checked=primaryResource.enabled}} Enabled
-              </label>
-            </div>
-          </div>
-          <div class="col span-3">
-            <div class="radio">
-              <label>
-                {{input type="checkbox" name="hidden" checked=primaryResource.hidden}} Hidden
-              </label>
-            </div>
-          </div>
-        </div>
-      {{/accordion-list-item}}
-    </div>
-  </div>
 
   <div class="row">
     <div class="col span-12">
       {{#accordion-list-item
-           title="Grant Resources"
-           detail="Grant access to specific operations on Kubernetes resources"
-           expandAll=al.expandAll
+           detail=(t 'rolesPage.resources.detail')
            expand=(action expandFn)
+           expandAll=al.expandAll
            expandOnInit=true
            showStatus=false
+           title=(t 'rolesPage.resources.title')
       }}
         {{#if ruleArray.length}}
           <table class="table fixed no-lines">

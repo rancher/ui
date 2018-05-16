@@ -6,6 +6,11 @@ import C from 'ui/utils/constants';
 export default Resource.extend({
   type: 'roleTemplate',
   router: service(),
+
+  state: computed('enabled', function() {
+    return get(this, 'enabled') ? 'active' : 'inactive';
+  }),
+
   isCustom: computed('roleTemplateId', function() {
     return !C.BASIC_ROLE_TEMPLATE_ROLES.includes(get(this, 'id'));
   }),
