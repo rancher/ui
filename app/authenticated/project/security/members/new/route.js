@@ -4,16 +4,17 @@ import { get } from '@ember/object';
 import { hash } from 'rsvp';
 
 export default Route.extend({
-  globalStore: service(),
+  globalStore:  service(),
+  roleTemplateService: service('roleTemplate'),
 
   model() {
     const gs = get(this, 'globalStore');
     const pid = this.paramsFor('authenticated.project');
 
     return hash({
-      users: gs.findAll('user'),
       project: gs.find('project', pid.project_id, {forceReload: true}),
-      roles: gs.findAll('roleTemplate'),
+      roles:   get(this, 'roleTemplateService').allFilteredRoleTemplates(),
+      users:   gs.findAll('user'),
     });
   },
   setupController(controller, model) {

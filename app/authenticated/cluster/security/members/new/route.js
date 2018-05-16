@@ -4,7 +4,8 @@ import { get } from '@ember/object';
 import { hash } from 'rsvp';
 
 export default Route.extend({
-  globalStore: service(),
+  globalStore:  service(),
+  roleTemplateService: service('roleTemplate'),
 
   // need to get all roles, we should have two roles and custom like the global perms
   // cluster owner, cluster-member, custom
@@ -13,9 +14,9 @@ export default Route.extend({
     const cid = this.paramsFor('authenticated.cluster');
 
     return hash({
-      users: gs.findAll('user'),
       cluster: gs.find('cluster', cid.cluster_id, {forceReload: true}),
-      roles: gs.findAll('roleTemplate'),
+      roles:   get(this, 'roleTemplateService').allFilteredRoleTemplates(),
+      users:   gs.findAll('user'),
     });
   },
   setupController(controller, model) {

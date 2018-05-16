@@ -42,44 +42,78 @@
 <hr class="mt-30 mb-30" />
 
 {{#accordion-list showExpandAll=false as |al expandFn|}}
-  {{#accordion-list-item
-    title=(t 'rolesPage.resources.title')
-    detail=(t 'rolesPage.resources.detail')
-    expandAll=al.expandAll
-    expand=(action expandFn)
-    expandOnInit=true
-    showStatus=false
-  }}
-    {{#if ruleArray.length}}
-      <table class="table fixed no-lines">
-        <thead>
-          <tr>
-            {{#each ruleVerbs as |verb|}}
-              <th width="80" class="text-center">{{t verb}}</th>
-            {{/each}}
-            <th>{{t 'rolesPage.new.form.allow.resource'}}</th>
-            <th width="10">&nbsp;</th>
-            <th width="40"></th>
-          </tr>
-        </thead>
-        <tbody>
-          {{#each ruleArray as |rule|}}
-            {{role-rule-row readOnly=readOnly roleType=roleType rule=rule remove=(action "removeRule")}}
-          {{/each}}
-        </tbody>
-      </table>
+  <div class="row">
+    <div class="col span-12">
+      {{#accordion-list-item
+           title="Visability"
+           detail="Set role hidden or disabled"
+           expandAll=al.expandAll
+           expand=(action expandFn)
+           expandOnInit=false
+           showStatus=false
+      }}
+        <div class="row">
+          <div class="col span-3">
+            <div class="radio">
+              <label>
+                {{input type="checkbox" name="enabled" checked=primaryResource.enabled}} Enabled
+              </label>
+            </div>
+          </div>
+          <div class="col span-3">
+            <div class="radio">
+              <label>
+                {{input type="checkbox" name="hidden" checked=primaryResource.hidden}} Hidden
+              </label>
+            </div>
+          </div>
+        </div>
+      {{/accordion-list-item}}
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col span-12">
+      {{#accordion-list-item
+           title="Grant Resources"
+           detail="Grant access to specific operations on Kubernetes resources"
+           expandAll=al.expandAll
+           expand=(action expandFn)
+           expandOnInit=true
+           showStatus=false
+      }}
+        {{#if ruleArray.length}}
+          <table class="table fixed no-lines">
+            <thead>
+              <tr>
+                {{#each ruleVerbs as |verb|}}
+                  <th width="80" class="text-center">{{t verb}}</th>
+                {{/each}}
+                <th>{{t 'rolesPage.new.form.allow.resource'}}</th>
+                <th width="10">&nbsp;</th>
+                <th width="40"></th>
+              </tr>
+            </thead>
+            <tbody>
+              {{#each ruleArray as |rule|}}
+                {{role-rule-row readOnly=readOnly roleType=roleType rule=rule remove=(action "removeRule")}}
+              {{/each}}
+            </tbody>
+          </table>
     {{else if readOnly}}
-      <span class="text-muted">{{t 'generic.none'}}</span>
-    {{/if}}
-    {{#unless readOnly}}
-      <div>
-        <button class="btn bg-primary icon-btn p-0" {{action "addRule"}}>
-          <span class="darken"><i class="icon icon-plus text-small"/></span>
-          <span>{{t 'rolesPage.new.form.allow.addAction'}}</span>
-        </button>
-      </div>
-    {{/unless}}
-  {{/accordion-list-item}}
+          <span class="text-muted">{{t 'generic.none'}}</span>
+        {{/if}}
+        {{#unless readOnly}}
+          <div>
+            <button class="btn bg-primary icon-btn p-0" {{action "addRule"}}>
+              <span class="darken"><i class="icon icon-plus text-small"/></span>
+              <span>{{t 'rolesPage.new.form.allow.addAction'}}</span>
+            </button>
+          </div>
+        {{/unless}}
+      {{/accordion-list-item}}
+    </div>
+  </div>
 
   <div class="row">
     <div class="col span-12">
