@@ -7,16 +7,12 @@
     {{#each navTree as |item|}}
       {{#if item.submenu.length}}
         {{! Has a submenu }}
-        {{#basic-dropdown
+        {{#hover-dropdown
           tagName="li"
           class="nav-item"
           as |dd|
         }}
-          {{#dd.trigger
-            onMouseDown=(action "prevent")
-            onMouseEnter=(action "open")
-            onMouseLeave=(action "closeLater")
-          }}
+          {{#dd.trigger}}
             {{#if (or (not item.resource) (rbac-allows resource=item.resource scope=item.resourceScope))}}
               {{#if item.route}}
                 {{#link-to-as-attrs
@@ -42,8 +38,6 @@
           {{/dd.trigger}}
 
           {{#dd.content
-            onMouseEnter=(action "open")
-            onMouseLeave=(action "closeLater")
             tagName="ul"
           }}
             {{#each item.submenu as |subitem|}}
@@ -70,7 +64,7 @@
               {{/if}}
             {{/each}}
           {{/dd.content}}
-        {{/basic-dropdown}}
+        {{/hover-dropdown}}
 
       {{else if item.route}}
 
@@ -101,7 +95,7 @@
     {{/each}}
   </ul>
 
-  {{#basic-dropdown
+  {{#hover-dropdown
     tagName="ul"
     class="nav-user"
     horizontalPosition="right"
@@ -112,9 +106,6 @@
       {{#dd.trigger
         class="btn"
         ariaLabel=(t 'nav.user.label' username=session.user)
-        onMouseDown=(action "prevent")
-        onMouseEnter=(action "open")
-        onMouseLeave=(action "closeLater")
       }}
         {{#if accessEnabled}}
           {{identity-avatar link=false identity=access.principal}}
@@ -132,8 +123,6 @@
       {{#dd.content
            class="text-right"
            tagName="ul"
-           onMouseEnter=(action "open")
-           onMouseLeave=(action "closeLater")
       }}
         {{#if accessEnabled}}
           <li role="presentation" class="user-auth">
@@ -154,5 +143,5 @@
         <li>{{#link-to "logout" class="user-logout"}}{{t 'nav.user.logout'}} <i class="icon icon-logout icon-fw"/>{{/link-to}}</li>
       {{/dd.content}}
       {{!-- </ul> --}}
-  {{/basic-dropdown}}
+  {{/hover-dropdown}}
 </nav>

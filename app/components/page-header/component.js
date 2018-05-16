@@ -7,7 +7,6 @@ import layout from './template';
 import C from 'shared/utils/constants';
 import { get as getTree } from 'shared/utils/navigation-tree';
 import { run } from '@ember/runloop';
-import HoverDropdown from 'shared/mixins/hover-dropdowns';
 
 function fnOrValue(val, ctx) {
   if ( typeof val === 'function' )
@@ -21,7 +20,7 @@ function fnOrValue(val, ctx) {
 }
 
 
-export default Component.extend(HoverDropdown, {
+export default Component.extend({
   layout,
   // Inputs
   pageScope:        null,
