@@ -238,6 +238,12 @@ rolesPage:
       userId: 用户
       subjectKind: 类型
       template: 模板
+  resources:
+    title: 授权资源
+    detail: 对Kubernetes资源的具体操作进行授权
+  inherit:
+    title: 继承角色
+    detail: 继承其他角色的所以权限
   addRole: 添加角色
   editRole: 编辑角色
   saveEdit: 编辑
@@ -610,6 +616,9 @@ clusterPage:
   edit: 编辑集群
 projectsListNamespacePage:
   header: 命名空间
+  notIn: 不属于任何项目
+  current: 当前项目
+
 projectsPage:
   header: 项目/命名空间
   headerNS: 命名空间
@@ -628,6 +637,8 @@ projectsPage:
   psp:
     label: Pod安全策略
   members:
+    title: 成员
+    detail: 配置可以访问该项目中资源的用户以及用户权限。
     user: 用户
     group: 组
     serviceaccount: 服务账号
@@ -680,6 +691,9 @@ ingressPage:
     noData: 没有定义ingress规则
 containerPage:
   header: '容器: {name}'
+  envTab:
+    header: 环境变量
+    detail: '在创建容器时配置到容器内的环境变量。'
   portsTab:
     header: 端口
     detail: '容器监听端口到主机公用IP地址端口的映射关系。'
@@ -718,6 +732,7 @@ containersPage:
     orchestrator: 安装另一个编排引擎
     kubernetesLink: 安装 Kubernetes
 clusterDashboard:
+  title: 仪表盘
   cpu: CPU
   memory: Memory
   pods: Pods
@@ -813,6 +828,7 @@ cruPersistentVolumeClaim:
     label: 存储类
     prompt: 使用默认的类
 cruVolume:
+  sourcePrompt: 需要先选择一个上面的卷插件...
   title:
     new: 定义临时卷
   define:
@@ -2750,6 +2766,10 @@ formBalancerConfig:
   config:
     prompt: 自定义haproxy.cfg内容
 formIngress:
+  hostMode:
+    automatic: 自动生成一个 <code>.{domain}</code> 的主机名
+    manual: 指定主机名
+    default: 作为默认后端
   defaultBackend:
     label: 将此规则设置为默认后端
     mark: 默认后端
@@ -4511,46 +4531,52 @@ nodeDriver:
     region:
       label: 区域
   aliyunecs:
-    accountSection: 帐号可以访问部分
+    accountSection: 
+      label: 1. 访问令牌
+      detail: 配置用于创建阿里云主机的访问令牌。
+      next: "下一步: 认证 & 配置网络"
+      loading: 正在获取阿里云区域信息...
     accessKey:
-      label: 访问密钥*
-      placeholder: 您的阿里云账户访问密钥
+      label: 访问秘钥
+      placeholder: 你的阿里云访问秘钥
     accessKeySecret:
-      label: 访问秘钥令牌*
-      placeholder: 阿里云账号Access Key对应的Secret
+      label: 访问秘钥令牌
+      placeholder: 你的阿里云访问秘钥所对应的令牌
+      provided: 已提供
     apiEndpoint:
-      label: Api终端地址
-      placeholder: 私有阿里云API Server终端
-    instanceSection: 实例部分
-    instanceOptionsSection: 实例选项部分
+      label: API地址
+      placeholder: 私有阿里云的API服务器地址
+    instanceOptionsSection:
+      label: 实例
+      detail: 设置即将创建的阿里云实例。
     instanceDescription:
       label: 实例描述
-      placeholder: 实例描述
+      placeholder: 该实例的描述
     instanceType:
       label: 实例类型
       placeholder: 实例类型
     systemImage:
       label: 系统镜像
       placeholder: 系统镜像
-    instanceTag:
-      label: 实例标签
-      placeholder: 阿里云中的标签
     internetMaxBandwidth:
       label: 最大网络带宽
       placeholder: 1到100
     aliyunSLB:
       label: 阿里云SLB ID
       placeholder: 阿里云SLB ID
-    storageSection: 存储信息
+    storageSection: 
+      label: 存储
+      detail: 配置通过该模版创建的实例的存储选项。
+      next: "下一步: 配置阿里云实例选项"
+      loading: 正在获取主机类型和系统镜像...
     ioOptimized:
-      label: 是否存储IO优化(none代表不优化,optimized代表优化)
-      placeholder: 不优化或者优化
+      label: 存储IO优化
+      optimized: 优化
+      none: 不优化
     systemDiskCategory:
       label: 系统盘种类
-      placeholder: 当存储优化后，您可以输入cloud_efficiency、cloud_ssd或ephemeral_ssd。
     dataDiskCategory:
       label: 数据盘种类
-      placeholder: 当选择存储优化时，您可以输入cloud_efficiency, cloud_ssd或ephemeral_ssd.
     dataDiskSize:
       label: 数据磁盘大小
       placeholder: 磁盘大小
@@ -4559,29 +4585,47 @@ nodeDriver:
       placeholder: 区域
     zone:
       label: 可用区
-      placeholder: 留空代表自动选择
-    networkSection: 网络设置
+      prompt: 选择一个可用区...
+    networkSection:
+      label: 网络
+      detail: 配置通过该模版创建的实例的网络选项。
+      next: "下一步: 配置存储选项"
+      loading: 正在获取阿里云存储类型...
     routeCIDR:
       label: 路由CIDR
-      placeholder: 例如：192.168.1.0/24
+      placeholder: 例如 192.168.1.0/24
     vpcId:
-      label: 阿里云VPC ID
-      placeholder: 阿里云VPC ID
+      label: VPC
+      prompt: 选择VPC...
     vswitchId:
-      label: 阿里云Vswitch ID
-      placeholder: 阿里云Vswitch ID
+      label: VSwitch
+      prompt: 选择VSwitch...
     privateIp:
       label: 私有IP
       placeholder: 专用网络中的私有IP
     privateAddressOnly:
       label: 仅私网IP
-    securitySection: 安全设置
+    securitySection: 
+      label: 安全
+      detail: 选择实例所需要配置的安全组。
     securityGroup:
       label: 安全组
       placeholder: 安全组
+      prompt: 选择安全组...
     sshPassword:
-      label: SSH 密码
+      label: SSH密码
       placeholder: 创建实例后SSH远程登录密码, 留空则自动设置
+      provided: 已提供
+    tags:
+      addActionLabel: 添加实例标签
+      valueLabel: 标签
+      placeholder: 例如 dev
+    errors:
+      accessKeyRequired: 请输入访问秘钥。
+      accessSecretRequired: 请输入访问秘钥令牌。
+      sshPasswordLengthNotValid: SSH密码的长度应为8至30之间
+      sshPasswordInvalidCharacter: SSH密码包含非法字符
+      sshPasswordFormatError: "SSH密码必须至少包括大写字符，小写字符，数字和特殊字符中的三种。"
   zstack:
     access:
       title: 1. 帐户访问
@@ -5326,3 +5370,4 @@ volumeSource:
       helpText: 你可以在</a>这里<a href="http://fluentular.herokuapp.com/" target="_blank">测试你的正则表达式。
 yamlPage:
   errors: yaml中存在错误。
+  

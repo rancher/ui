@@ -36,7 +36,7 @@ export default Component.extend({
     set(this, 'advanced', !get(this, 'editing'));
     if ( get(this, 'initialHostId') ) {
       set(this, 'isRequestedHost', true);
-      set(this, 'requestedHostId', `${get(this, 'scope.currentCluster.id')}:${get(this, 'initialHostId')}`);
+      set(this, 'requestedHostId', get(this, 'initialHostId'));
     }
   },
 
@@ -68,7 +68,7 @@ export default Component.extend({
   }),
 
   selectedChoice: computed('_allNodes.@each.{id,clusterId,name,state}', function () {
-    return get(this, 'hostChoices').findBy('id', `${get(this, 'scope.currentCluster.id')}:${get(this, 'initialHostId')}`);
+    return get(this, 'hostChoices').findBy('id', get(this, 'initialHostId'));
   }),
 
   hostChoices: computed('_allNodes.@each.{id,clusterId,name,state}', function () {
