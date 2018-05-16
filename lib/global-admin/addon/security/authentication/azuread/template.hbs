@@ -1,117 +1,187 @@
 <section>
-  {{#if access.enabled}}
-    <p>{{t 'authPage.azuread.header.enabled'}}</p>
-    {{t 'authPage.azuread.subtext.enabled' appName=settings.appName}}
+  {{#if isEnabled}}
+    <p>{{t (concat 'authPage.azuread.header.enabled.' azureADConfig.accessMode)
+           appName=settings.appName
+           groups=numGroups
+           users=numUsers
+           htmlSafe=true
+       }}</p>
   {{else}}
     <div class="banner bg-warning">
       <div class="banner-icon">
         <span class="icon icon-alert"></span>
       </div>
       <div class="banner-message">
-        <p>{{t 'authPage.azuread.header.disabled'}}</p>
+        <p>{{t 'authPage.azuread.header.disabled.label' htmlSafe=true}}</p>
       </div>
     </div>
-    <p>{{t 'authPage.azuread.subtext.disabled' appName=settings.appName}}</p>
+    <p>{{t 'authPage.azuread.header.disabled.warning' appName=settings.appName}}</p>
   {{/if}}
 </section>
 
-{{#if access.enabled}}
-  <section class="box mt-30">
-    <h3>{{t 'authPage.azuread.enabled.header' htmlSafe=true}}</h3>
-    <hr/>
 
-    <p>
-      {{t 'authPage.azuread.enabled.warning' appName=settings.appName htmlSafe=true}}
-    </p>
+{{#accordion-list showExpandAll=false  as |al expandFn|}}
 
-    {{#if confirmDisable}}
-      <button class="btn bg-error" {{action "disable"}}>
-        <i class="icon icon-alert"></i> {{t 'authPage.azuread.enabled.reallyDisable'}}
-      </button>
-    {{else}}
-      <button class="btn bg-error" {{action "promptDisable"}}>
-        <i class="icon icon-umbrella"></i> {{t 'authPage.azuread.enabled.promptDisable'}}
-      </button>
-    {{/if}}
+  {{#if isEnabled}}
 
-  </section>
-{{/if}}
+    {{#accordion-list-item
+         detail=(t 'authPage.azuread.configure.help')
+         expand=(action expandFn)
+         expandAll=al.expandAll
+         expandOnInit=true
+         expanded=true
+         showExpand=false
+         title=(t 'authPage.github.authenticated.header.text')
+    }}
 
-{{#unless access.enabled}}
-  <section class="box mt-30">
-    <h3>{{t 'authPage.azuread.configure.header'}}</h3>
-    <hr/>
+      <section class="">
+        <div class="clearfix">
+          <div class="pull-right">
+            <button class="btn btn-sm bg-primary" {{action "edit"}}>
+              {{t 'generic.edit'}}
+            </button>
+            <button class="btn btn-sm right-divider-btn bg-error" {{action "disable"}}>
+              {{t 'authPage.azuread.enabled.promptDisable'}}
+            </button>
+          </div>
+          <span class="help-block">{{t 'authPage.azuread.configure.help'}}</span>
+        </div>
+        <hr/>
+        <div class="row">
+          <div class="col span-12">
+            <h3>{{t 'authPage.azuread.enabled.general.header'}}</h3>
+            <div>
+              <b>{{t 'authPage.azuread.configure.tenantId.label'}}: </b> <span class="text-muted">{{azureADConfig.tenantId}}</span>
+            </div>
+            <div>
+              <b>{{t 'authPage.azuread.configure.clientId.label'}}: </b> <span class="text-muted">{{azureADConfig.clientId}}</span>
+            </div>
+            <div>
+              <b>{{t 'authPage.azuread.configure.domain.label'}}: </b> <span class="text-muted">{{azureADConfig.domain}}</span>
+            </div>
+          </div>
+        </div>
+      </section>
 
-    <div class="row">
-      <div class="col span-4">
-        <div class="inline-form">
-          <label class="acc-label pb-5">{{t 'authPage.azuread.configure.tenantId.label'}}{{field-required}}</label>
-          {{input type="text" value=model.tenantId placeholder=(t 'authPage.azuread.configure.tenantId.placeholder') classNames="form-control"}}
-          <p class="help-block">{{t 'authPage.azuread.configure.tenantId.help'}}</p>
-        </div>
-      </div>
-      <div class="col span-4">
-        <div class="inline-form">
-          <label class="acc-label pb-5">{{t 'authPage.azuread.configure.clientId.label'}}{{field-required}}</label>
-          {{input type="text" value=model.clientId placeholder=(t 'authPage.azuread.configure.clientId.placeholder') classNames="form-control"}}
-        </div>
-      </div>
-      <div class="col span-4">
-        <div class="inline-form">
-          <label class="acc-label pb-5">{{t 'authPage.azuread.configure.domain.label'}}{{field-required}}</label>
-          {{input type="text" value=model.domain placeholder=(t 'authPage.azuread.configure.domain.placeholder') classNames="form-control"}}
-        </div>
-      </div>
-    </div>
+    {{/accordion-list-item}}
 
-    <div class="row">
-      <div class="col span-6">
-        <div class="inline-form">
-          <label class="acc-label pb-5">{{t 'authPage.azuread.configure.adminAccountUsername.label'}}{{field-required}}</label>
-          {{input type="text" value=model.adminAccountUsername placeholder=(t 'authPage.azuread.configure.adminAccountUsername.placeholder') classNames="form-control"}}
-          <p class="help-block">{{t 'authPage.azuread.configure.adminAccountUsername.help'}}</p>
-        </div>
-      </div>
-      <div class="col span-6">
-        <div class="inline-form">
-          <label class="acc-label pb-5">{{t 'authPage.azuread.configure.adminAccountPassword.label'}}{{field-required}}</label>
-          {{input type="password" value=model.adminAccountPassword classNames="form-control"}}
-        </div>
-      </div>
-    </div>
-  </section>
+    {{#accordion-list-item
+         classNames="mt-30"
+         detail=(t 'siteAccess.helpText' appName=settings.appName htmlSafe=true)
+         expand=(action expandFn)
+         expandAll=al.expandAll
+         expandOnInit=true
+         expanded=true
+         showExpand=false
+         title=(t 'siteAccess.header')
+    }}
 
-  <section class="box mt-30">
-    <h3>{{t 'authPage.azuread.test.header'}}</h3>
-    <hr/>
-    <p class="text-info">{{t 'authPage.azuread.test.help'}}</p>
-    {{top-errors errors=errors}}
+      {{site-access
+          model=azureADConfig
+          principals=model.principals
+          collection='siteAccess.organizations'
+      }}
 
-    <div class="row">
-      <div class="col span-4">
-        <div class="inline-form">
-          <label class="acc-label pb-5">{{t 'authPage.azuread.test.username.label'}}{{field-required}}</label>
-          {{input type="text" value=loginUsername prompt=(t 'authPage.azuread.test.username.placeholder') classNames="form-control"}}
+    {{/accordion-list-item}}
+
+  {{/if}}
+
+
+  {{#if (or (not isEnabled) editing)}}
+    {{#accordion-list-item
+         classNames="mt-30"
+         detail=(t 'authPage.azuread.configure.help')
+         expand=(action expandFn)
+         expandAll=al.expandAll
+         expandOnInit=true
+         expanded=true
+         showExpand=false
+         title=(t 'authPage.azuread.configure.header')
+    }}
+
+      <section>
+        <div class="row">
+          <div class="pull-right btn-group no-inline-space p-0">
+            <button class="btn btn-link btn-sm {{if (eq mode 'global') 'bg-primary' 'bg-deafult'}}" {{action 'toggleMode'}}>Global</button>
+            <button class="btn btn-link btn-sm bg-defualt {{if (eq mode 'china') 'bg-primary' 'bg-deafult'}}" {{action 'toggleMode'}}>China</button>
+          </div>
         </div>
-      </div>
-      <div class="col span-4">
-        <div class="inline-form">
-          <label class="acc-label pb-5">{{t 'authPage.azuread.test.password.label'}}{{field-required}}</label>
-          {{input type="password" value=loginPassword classNames="form-control"}}
+        <hr/>
+
+        <div class="row">
+          <div class="col {{modeClass}}">
+            <div class="inline-form">
+              <label class="acc-label pb-5">{{t 'authPage.azuread.configure.tenantId.label'}}{{field-required}}</label>
+              {{input type="text" value=azureADConfig.tenantId placeholder=(t 'authPage.azuread.configure.tenantId.placeholder') classNames="form-control"}}
+              <p class="help-block">{{t 'authPage.azuread.configure.tenantId.help'}}</p>
+            </div>
+          </div>
+          <div class="col {{modeClass}}">
+            <div class="inline-form">
+              <label class="acc-label pb-5">{{t 'authPage.azuread.configure.clientId.label'}}{{field-required}}</label>
+              {{input type="text" value=azureADConfig.clientId placeholder=(t 'authPage.azuread.configure.clientId.placeholder') classNames="form-control"}}
+            </div>
+          </div>
+          {{#unless (eq mode 'global')}}
+            <div class="col span-3">
+              <div class="inline-form">
+                <label class="acc-label pb-5">{{t 'authPage.azuread.configure.clientSecret.label'}}{{field-required}}</label>
+                {{input type="password" value=azureADConfig.clientSecret placeholder=(t 'authPage.azuread.configure.clientSecret.placeholder') classNames="form-control"}}
+              </div>
+            </div>
+          {{/unless}}
+          <div class="col {{modeClass}}">
+            <div class="inline-form">
+              <label class="acc-label pb-5">{{t 'authPage.azuread.configure.domain.label'}}{{field-required}}</label>
+              {{input type="text" value=azureADConfig.domain placeholder=(t 'authPage.azuread.configure.domain.placeholder') classNames="form-control"}}
+            </div>
+          </div>
         </div>
-      </div>
-      <div class="col span-4">
-        <div class="inline-form">
-          <label class="acc-label pb-5">&nbsp;</label>
-          <button class="btn bg-primary mt-25" style="height: 38px; line-height: 28px;" {{action "test"}}>
-            {{#if testing}}
-              <i class="icon icon-spinner icon-spin"></i> {{t 'authPage.azuread.test.post'}}
-            {{else}}
-              {{t 'authPage.azuread.test.pre'}}
-            {{/if}}
-          </button>
+      </section>
+
+    {{/accordion-list-item}}
+
+    {{#accordion-list-item
+         classNames="mt-30"
+         detail=(t 'authPage.azuread.test.help')
+         expand=(action expandFn)
+         expandAll=al.expandAll
+         expandOnInit=true
+         expanded=true
+         showExpand=false
+         title=(t 'authPage.azuread.test.header')
+    }}
+
+      <section>
+        {{top-errors errors=errors}}
+        <div class="row">
+          <div class="col span-6">
+            <div class="inline-form">
+              <label class="acc-label pb-5">{{t 'authPage.azuread.test.username.label'}}{{field-required}}</label>
+              {{input type="text" value=loginUsername prompt=(t 'authPage.azuread.test.username.placeholder') classNames="form-control"}}
+            </div>
+          </div>
+          <div class="col span-6">
+            <div class="inline-form">
+              <label class="acc-label pb-5">{{t 'authPage.azuread.test.password.label'}}{{field-required}}</label>
+              {{input type="password" value=loginPassword classNames="form-control"}}
+            </div>
+          </div>
         </div>
-      </div>
-    </div>
-  </section>
-{{/unless}}
+        <div class="row mt-10">
+          <div class="inline-form">
+            <button class="btn bg-primary" style="display: block;margin: 0 auto;" {{action "test"}}>
+              {{#if testing}}
+                <i class="icon icon-spinner icon-spin"></i> {{t 'authPage.azuread.test.post'}}
+              {{else}}
+                {{t 'authPage.azuread.test.pre'}}
+              {{/if}}
+            </button>
+          </div>
+        </div>
+      </section>
+
+    {{/accordion-list-item}}
+  {{/if}}
+
+{{/accordion-list}}

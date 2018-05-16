@@ -449,36 +449,62 @@ authPage:
         post: Waiting to hear back from GitHub
   azuread:
     header:
-      enabled: 'Azure AD Authentication is <b>enabled</b>'
-      disabled: 'Azure AD Authentication is not configured'
-    subtext:
-      enabled: '{appName} is configured to allow access to accounts in Azure AD'
-      disabled: '{appName} can be configured to restrict access to a set of accounts defined in the {appName} database.  This is not currently set up, so anybody that reach this page (or the API) has full control over the system.'
+      enabled:
+        label: "Azure AD is enabled"
+        required: |
+          {appName} is configured to allow access to {groups, plural,
+            =0 {no groups}
+            =1 {# group}
+            other {# groups}
+          } and {users, plural,
+            =0 {no users}
+            =1 {# user}
+            other {# users}
+          }.
+        restricted: |
+          {appName} is configured to allow access to environment members, {groups, plural,
+            =0 {no groups}
+            =1 {# group}
+            other {# groups}
+          } and {users, plural,
+            =0 {no users}
+            =1 {# user}
+            other {# users}
+          }.
+        unrestricted: "{appName} is configured to allow access to any Azure AD user."
+      disabled:
+        label: "Azure AD is not configured"
+        warning: "{appName} can be configured to restrict access to a set of Azure AD users and groups"
     enabled:
       header: 'Danger Zone&trade;'
-      warning: '<b class="text-danger">Caution:</b> Disabling access control will give complete control over {appName} to anyone that can reach this page or the API.'
       reallyDisable: 'Are you sure?  Click again to really disable access control'
-      promptDisable: Disable access control
+      promptDisable: Disable Azure AD
+      general:
+        header: General
     configure:
-      header: '1. Configure Azure AD Account'
-      tenantId:
-        label: Tenant ID
-        placeholder: A long UUID string
-        help: From the Azure AD portal
-      clientId:
-        label: Client ID
-        placeholder: A long UUID string
-      domain:
-        label: Domain
-        placeholder: e.g. youcompany.onmicrosoft.com
+      header: 'Configure Azure AD Account'
+      help: Enter the Tenant ID, Client ID, and Admin user details to connect to your Azure AD auth account.
       adminAccountUsername:
         label: Admin Account Username
         placeholder: e.g. rancher-admin
         help: A user that can read information about other users
       adminAccountPassword:
         label: Admin Account Password
+      clientId:
+        label: Client ID
+        placeholder: A long UUID string
+      clientSecret:
+        label: Client Secret
+        placeholder: Your Client Secret
+      domain:
+        label: Domain
+        placeholder: e.g. youcompany.onmicrosoft.com
+      tenantId:
+        label: Tenant ID
+        placeholder: A long UUID string
+        help: From the Azure AD portal
     test:
-      header: '2. Test and enable authentication'
+      header: 'Test and enable authentication'
       help: 'Check that everything is configured correctly by testing authentication with your account:'
       username:
         label: Login Username
@@ -1076,6 +1102,10 @@ loginPage:
   error:
     authFailedCreds: "Logging in failed: Check credentials, or your account may not be authorized to log in."
     authFailed: "Logging in failed: Your account may not be authorized to log in."
+  readableProviders:
+    ad: Active Directory
+    azureAd: Azure AD
+    local: a Local User
 
 machinePage:
   header: Node Drivers
@@ -1757,6 +1787,9 @@ clusterNew:
       prompt: Choose a size...
     diskSizeGb:
       label: OS Disk Size
+    dns:
+      label: DNS Prfix
+      placeholder: "e.g. example"
     ssh:
       label: SSH Public Key
     security:
@@ -4763,7 +4796,7 @@ nodeDriver:
     region:
       label: Region
   aliyunecs:
-    accountSection: 
+    accountSection:
       label: 1. Account Access
       detail: API Keys will be used to launch Aliyun ECS Instances.
       next: "Next: Authenticate & Config network options"
@@ -4796,7 +4829,7 @@ nodeDriver:
     aliyunSLB:
       label: Aliyun SLB ID
       placeholder: Aliyun SLB ID
-    storageSection: 
+    storageSection:
       label: Storage
       detail: Configure the storage for the instances that will be created by this template.
       next: "Next: Config Aliyun ECS Instance options"
@@ -4837,7 +4870,7 @@ nodeDriver:
       placeholder: Private IP in Private Network
     privateAddressOnly:
       label: Private Address Only
-    securitySection: 
+    securitySection:
       label: Security
       detail: Choose the security groups that will be applied to Instances
     securityGroup:
