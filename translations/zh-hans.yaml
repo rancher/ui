@@ -300,24 +300,24 @@ authPage:
       header: "{providerName}已启用"
       required: |
         {appName}已被设置为允许{orgs, plural,
-        =0 {无组织}
-        =1 {# 个组织}
-        other {# 个组织}
-        } 和 {users, plural,
-        =0 {无用户}
-        =1 {# 个用户}
-        other {# 个用户}
-        } 访问.
+        =0{无组织}
+        =1{# 个组织}
+        other{# 个组织}
+        }和{users, plural,
+        =0{无用户}
+        =1{# 个用户}
+        other{# 个用户}
+        }访问.
       restricted: |
         {appName}已被设置为允许{orgs, plural,
-        =0 {无组织}
-        =1 {#个组织}
-        other {#个组织}
-        } and {users, plural,
-        =0 {无用户}
-        =1 {# 个用户}
-        other {# 个用户}
-        } 以环境成员身份访问.
+        =0{无组织}
+        =1{#个组织}
+        other{#个组织}
+        }和{users, plural,
+        =0{无用户}
+        =1{# 个用户}
+        other{# 个用户}
+        }以环境成员身份访问.
       unrestricted: "{appName}已被设置为允许任何{providerName}用户访问."
       authenticated:
         header:
@@ -340,7 +340,7 @@ authPage:
       username:
         labelText: 用户名字段
       uid:
-        labelText: UID 字段
+        labelText: UID字段
       groups:
         labelText: 组织字段
       testAuth:
@@ -371,14 +371,14 @@ authPage:
           }访问.
         restricted: |
           {appName} 已被设置为允许 {orgs, plural,
-          =0 {无组织}
-          =1 {# 个组织}
-          other {# 个组织}
-          } and {users, plural,
-          =0 {无用户}
-          =1 {# 个用户}
-          other {# 个用户}
-          } 以环境成员身份访问。
+          =0{无组织}
+          =1{# 个组织}
+          other{# 个组织}
+          }和{users, plural,
+          =0{无用户}
+          =1{# 个用户}
+          other{# 个用户}
+          }以环境成员身份访问。
       disabled:
         label: GitHub未设置
         warning: "{appName}可以配置为限制对一组GitHub用户和组织成员的访问。"
@@ -404,10 +404,10 @@ authPage:
         li2:
           text: '点击 "Register new application" 并填写表单内容:'
           ul:
-            li1: '<b>Application name:</b> <span class="text-muted">任何您喜欢的应用名称, 例如：My{appName}</span>'
-            li2: 主页URL
-            li3: '<b>Application description:</b><span class="text-muted">任何你喜欢的描述，可选</span>'
-            li4: 授权回调URL
+            li1: '<b>应用名称：</b><span class="text-muted">任何您喜欢的应用名称, 例如：My {appName}</span>'
+            li2: 主页URL：
+            li3: '<b>应用描述：</b><span class="text-muted">应用描述, 可选</span>'
+            li4: 授权回调URL：
         li3:
           text: '点击 "Register Application" '
       form:
@@ -553,15 +553,15 @@ certificatesPage:
     withSan: |
       <a href="https://{cn}" target="_blank" rel="nofollow nefererrer noopener">{cn} <i class="icon icon-sm icon-external-link"/></a> +
       {sans, plural,
-      =1 {1 other}
-      other {# others}
+      =1{1 other}
+      other{# others}
       }
     wildcardSingle: '{cn}'
     wildcardWithSan: |
       {cn} +
       {sans, plural,
-      =1 {1 other}
-      other {# others}
+      =1{1 other}
+      other{# others}
       }
   detail:
     header: '证书: {name}'
@@ -664,8 +664,8 @@ projectsPage:
 clustersPage:
   header: 集群
   newCluster: 添加集群
-  newClusterName: "添加集群：{name}"
-  editClusterName: "编辑集群：{name}"
+  newClusterName: "添加集群： {name}"
+  editClusterName: "编辑集群： {name}"
   cluster:
     label: 集群名称
   provider:
@@ -761,7 +761,7 @@ dnsPage:
     unknown: 未知
   table:
     target: 目标
-    clusterIpDetail: '集群IP：{ip}'
+    clusterIpDetail: '集群IP： {ip}'
 editDns:
   title:
     new: 添加DNS记录
@@ -849,18 +849,18 @@ time:
   now: 现在
   mins: |
     {mins, plural,
-    =1 {# 分钟}
-    other {# 分钟}
+    =1{# 分钟}
+    other{# 分钟}
     }
   minsAgo: |
     {mins, plural,
-    =1 {# 分钟前}
-    other {# 分钟前}
+    =1{# 分钟前}
+    other{# 分钟前}
     }
   secsAgo: |
     {secs, plural,
-    =1 {# 秒前}
-    other {# 秒前}
+    =1{# 秒前}
+    other{# 秒前}
     }
 haPage:
   header: 高可用性(HA)
@@ -991,7 +991,7 @@ k8sImport:
   header: 导入现有的Kubernetes
   name:
     label: 集群名称
-    placeholder: 例如my-imported-cluster
+    placeholder: 例如：my-imported-cluster
   kubeConfig:
     label: 要导入的Kubeconfig 文件
     placeholder: 导入或粘贴集群的Kubeconfig文件以供使用。
@@ -1079,7 +1079,7 @@ configMapsPage:
   table:
     keys: 键
 servicePage:
-  header: '工作负载：{name}'
+  header: '工作负载： {name}'
   globalScale: '每个主机{scale}'
   multistat:
     type: '工作负载类型:'
@@ -1101,8 +1101,8 @@ servicePage:
   external:
     externalIp: |
       {count, plural,
-      =1 {个外部IP:}
-      other {个外部IP:}
+      =1{个外部IP:}
+      other{个外部IP:}
       }
     externalHostname: '外部主机名:'
   selector:
@@ -1129,7 +1129,7 @@ servicePage:
     upgradeImage: "负载均衡器镜像版本将由<code>{from}</code>升级到<code>{to}</code>."
     form:
       name:
-        placeholder: 例如:website
+        placeholder: 例如：website
       description:
         placeholder: 例如：mycompany.com的负载均衡
   newIngress:
@@ -1183,36 +1183,36 @@ stackPage:
     detail: 应用中所包含的独立容器和服务。
     status: |
       {count, plural,
-      =0 {没有容器}
-      =1 {# 个容器}
-      other {# 个容器}
+      =0{没有容器}
+      =1{# 个容器}
+      other{# 个容器}
       }
   loadBalancers:
     header: 负载均衡
     detail: '属于该应用的负载均衡容器。'
     status: |
       {count, plural,
-      =0 {没有负载均衡}
-      =1 {# 个负载均衡}
-      other {# 个负载均衡}
+      =0{没有负载均衡}
+      =1{# 个负载均衡}
+      other{# 个负载均衡}
       }
   dnsServices:
     header: DNS记录
     detail: '属于该应用的DNS记录。'
     status: |
       {count, plural,
-      =0 {没有记录}
-      =1 {# 个记录}
-      other {# 个记录}
+      =0{没有记录}
+      =1{# 个记录}
+      other{# 个记录}
       }
   scalingGroups:
     header: 扩容组
     detail: '属于该扩容组的容器'
     status: |
       {count, plural,
-      =0 {没有容器}
-      =1 {# 个容器}
-      other {# 个容器}
+      =0{没有容器}
+      =1{# 个容器}
+      other{# 个容器}
       }
   volumesTab:
     header: 卷
@@ -1319,7 +1319,7 @@ notifierPage:
     url: URL
     urlPlaceholder: 例如：https://hooks.slack.com/services/T00000000/B00000000/XXXXXXXXXXXXXXXXXXXXXXXX
     defaultRecipient: 默认接收人(频道)
-    defaultRecipientPlaceholder: '例如: example.com'
+    defaultRecipientPlaceholder: '例如：example.com'
     helpText: |
       以下是 <a href="https://get.slack.help/hc/en-us/articles/115005265063-Incoming-WebHooks-for-Slack">创建传入WebHooks</a>的方法。
   smtp:
@@ -1364,23 +1364,23 @@ ldap:
       label: "{providerName}已启用"
       required: |
         {appName}已被设置为允许{groups, plural,
-        =0 {无组}
-        =1 {# 个组}
-        other {# 个组}
-        } 和 {users, plural,
-        =0 {无用户}
-        =1 {# 个用户}
-        other {# 个用户}
+        =0{无组}
+        =1{# 个组}
+        other{# 个组}
+        }和{users, plural,
+        =0{无用户}
+        =1{# 个用户}
+        other{# 个用户}
         }访问.
       restricted: |
         {appName}已被设置为允许{groups, plural,
-        =0 {无组}
-        =1 {# 个组}
-        other {# 个组}
-        } 和 {users, plural,
-        =0 {无用户}
-        =1 {# 个用户}
-        other {# 个用户}
+        =0{无组}
+        =1{# 个组}
+        other{# 个组}
+        }和{users, plural,
+        =0{无用户}
+        =1{# 个用户}
+        other{# 个用户}
         }以环境成员身份访问.
       unrestricted: "{appName}已设置为允许任何{providerName}用户访问。"
     disabled:
@@ -1432,7 +1432,7 @@ ldap:
     defaultDomain:
       helpText: "当用户未指定登录域时使用该域"
       labelText: 默认登录域
-      placeholder: "例如:mycompany"
+      placeholder: "例如：mycompany"
   customizeSchema:
     header: "2. 自定义架构"
     helpText: "如果你的活动目录架构(Schema)不是标准格式，可以在这里进行自定义设置。"
@@ -1537,7 +1537,7 @@ caasLogin:
 cloudProvider:
   name: 云提供商名称
   helpText: |
-    详细了解 <a href="https://kubernetes.io/docs/concepts/cluster-administration/cloud-providers/" target="_blank" rel="nofollow noopener noreferrer">云提供商</a>。
+    详细了解<a href="https://kubernetes.io/docs/concepts/cluster-administration/cloud-providers/" target="_blank" rel="nofollow noopener noreferrer">云提供商</a>。
   warning: 使用云提供程序而不传递云提供程序配置可能会导致您的集群无法正确配置。推荐您在创建集群之前添加云提供程序配置。
 catalogSettings:
   header: 应用商店
@@ -1569,7 +1569,7 @@ catalogSettings:
       pl: 由社区成员创建并维护的模板
   more:
     header: 更多
-    helpText: '此处可以添加自定义的目录,每个目录须有唯一的名称和一个支持<code>git clone</code>操作的URL。(更多信息请参考 <a href="https://git-scm.com/docs/git-clone#_git_urls_a_id_urls_a" target="_blank" rel="nofollow noopener noreferrer">此文档</a>）'
+    helpText: '此处可以添加自定义的目录,每个目录须有唯一的名称和一个支持<code>git clone</code>操作的URL。更多信息请参考 <a href="https://git-scm.com/docs/git-clone#_git_urls_a_id_urls_a" target="_blank" rel="nofollow noopener noreferrer">此文档</a>）'
     addActionLabel: 添加应用商店
     noMatch: 没有符合当前搜索条件的目录
     noData: 没有定义自定义应用商店。
@@ -1599,7 +1599,7 @@ clusterRow:
   loginDefault: 登陆
 clusterWelcome:
   welcome: 欢迎
-  noHost: 集群中还没有任何主机。您想要添加主机还是使用已有的Kubernetes呢?
+  noHost: 集群中还没有任何主机，您想要添加主机还是使用已有的Kubernetes呢?
   addHost: 添加主机
   select: 选择
   importCluster: 使用已有的Kubernetes
@@ -1765,7 +1765,7 @@ clusterNew:
       prompt: 选择版本...
     clusterIpv4Cidr:
       label: 容器地址范围
-      placeholder: '例如: 10.42.0.0/16'
+      placeholder: 例如：10.42.0.0/16
     alphaFeatures:
       label: Alpha功能
   rke:
@@ -1802,12 +1802,12 @@ clusterNew:
       template: 模板
     detected: |
       {count, plural,
-      =1 {# 台新主机注册成功}
-      other {# 台新主机注册成功}
+      =1{# 台新主机注册成功}
+      other{# 台新主机注册成功}
       }
     done: 完成
     command:
-      instructions: '在一台或多台已安装支持Docker版本的主机上运行此命令'
+      instructions: '在一台或多台已安装支持Docker版本的主机上运行以下命令'
     auth:
       label: 认证提供者
       x509: x509
@@ -1958,8 +1958,8 @@ cruPersistentVolume:
     placeholder: 例如：生产数据库的卷
   title:
     new: 添加持久卷
-    edit: '编辑持久卷：{name}'
-    view: '持久卷：{name}'
+    edit: '编辑持久卷： {name}'
+    view: '持久卷： {name}'
   storageClass:
     label: 分配给存储类
     prompt: 无
@@ -2633,9 +2633,9 @@ editApiKey:
   ttl:
     label: 自动失效
     never: 从不
-    day: 从现在起 1 天
+    day: 从现在起1天
     month: 从现在起1个月
-    year: 从现在起 1 年
+    year: 从现在起1年
   description:
     placeholder: "可选：例如，此密钥由应用程序服务器用于部署容器"
   saveWarning1: 请保存上面的信息！这些信息仅显示一次。
@@ -2644,7 +2644,7 @@ editApiKey:
 editCertificate:
   title: 编辑证书
   name:
-    placeholder: 例如:mydomain.com
+    placeholder: 例如：mydomain.com
   description:
     placeholder: 例如:mydomain.com的EV证书
   noteKeyWriteOnly: "注意:Private Key部分为只写(write only)因而显示为空白。更新证书时您需要重新上传Private Key，即便Private Key未发生变化。"
@@ -2712,7 +2712,7 @@ editStack:
     prompt: '选择一个项目:'
   description:
     label: 描述
-    placeholder: 例如MyApp命名空间
+    placeholder: 例如：MyApp命名空间
   group:
     label: 标签
     placeholder: '例如: frontend, production'
@@ -2742,8 +2742,8 @@ envCatalog:
 moveNamespace:
   title: |
     移动 {count, plural,
-    =1 {命名空间: {name}}
-    other {# 命名空间:}}
+    =1{命名空间: {name}}
+    other{# 命名空间:}}
   to: "转到目标项目："
   actionLabel: 移动
 stackHeader:
@@ -2806,9 +2806,9 @@ formBalancerListeners:
   detail: 配置负载均衡，使其将请求转发到目标地址。
   status: |
     {count, plural,
-    =0 {没有规则}
-    =1 {# 个规则}
-    other {# 个规则}
+    =0{没有规则}
+    =1{# 个规则}
+    other{# 个规则}
     }
   noRules: 没有端口
   addPortLabel: 添加一个监听端口
@@ -2832,9 +2832,9 @@ formBalancerRules:
   detail: 根据主机、 端口、 路径或IP地址映射请求到不同的目标。
   status: |
     {count, plural,
-    =0 {没有规则}
-    =1 {# 个规则}
-    other {# 个规则}
+    =0{没有规则}
+    =1{# 个规则}
+    other{# 个规则}
     }
   noRules: 无规则
   addServiceLabel: 添加服务
@@ -2890,7 +2890,7 @@ formCommand:
     placeholder: '例如: 501'
   console:
     label: 控制台
-    both: '交互 &amp;TTY终端<span class="text-muted">(-i -t)</span>'
+    both: '交互&amp;TTY终端<span class="text-muted">(-i -t)</span>'
     interactive: '交互<span class="text-muted">(-i)</span>'
     terminal: 'TTY终端<span class="text-muted">(-t)</span>'
     none: 无
@@ -2901,8 +2901,8 @@ formCommand:
     onFailureCondPrefix: 失败时，最多
     onFailureCondSuffix: |
       {limit, plural,
-      =1 {次}
-      other {次}
+      =1{次}
+      other{次}
       }
     always: 总是
   terminationGracePeriodSeconds:
@@ -2919,7 +2919,7 @@ formContainerLinks:
     label: 目标容器
   alias:
     label: 名称
-    placeholder: 例如:database
+    placeholder: 例如：database
   noData: 没有容器链接
   noMatch: 没有匹配当前搜索的链接
 formCount:
@@ -2984,9 +2984,9 @@ formEnvVar:
   noData: 没有环境变量
   status: |
     {count, plural,
-    =0 {尚未配置}
-    =1 {# 个变量}
-    other {# 个变量}
+    =0{尚未配置}
+    =1{# 个变量}
+    other{# 个变量}
     }
   labels:
     key: 键
@@ -3267,7 +3267,7 @@ formScale:
     statefulSetPrefix: "有状态集"
     scaleSuffix: |
       {scale, plural,
-      =1 {pod}
+      =1{pod}
       other{pods}
       }
     daemonSet: "在每个主机上运行一个pod"
@@ -3281,8 +3281,8 @@ formScheduling:
   detail: 配置Pod可以部署到的主机。
   status: |
     {count, plural,
-    =0 {没有规则}
-    =1 {# 个规则}
+    =0{没有规则}
+    =1{# 个规则}
     other{# 个规则}
     }
   canRequestHost:
@@ -3612,7 +3612,7 @@ formVolumes:
     mountPoint: 挂载点
     opts: 权限/选项
 formCapabilityPodSecurityPolicy:
-  title: 容量策略集
+  title: 内核安全策略
   detail: 配置一组功能策略
   capabilities:
     allow: 启用的功能
@@ -3654,7 +3654,7 @@ formHostPortsPodSecurityPolicy:
       label: 最小值
       placeholder: '例如: 6000'
 formRunAsUserPodSecurityPolicy:
-  title: 作为用户策略运行
+  title: 用户运行策略
   detail: User ID
   rule:
     mustRunAs: MustRunAs - 需要配置一个范围，使用范围的第一个值作为默认值。根据配置的范围进行验证。
@@ -3802,8 +3802,8 @@ labelsSection:
   detail: 键/值可以被用在主机调度规则里和一些其他的高级设置中。
   status: |
     {count, plural,
-    =0 {无标签}
-    =1 {# 个标签}
+    =0{无标签}
+    =1{# 个标签}
     other{# 个标签}
     }
   key: 键
@@ -3861,7 +3861,7 @@ newCertificate:
     encrypted: 私钥不能被密码保护。
     key:
       required: 私钥是必需的。
-      invalidFormat: 私钥无效。请确保它是一个RSA密钥。
+      invalidFormat: 私钥无效，请确保它是一个RSA密钥。
     cert:
       required: 证书是必需的。
       invalidFormat: 证书无效。
@@ -4230,7 +4230,7 @@ nodeDriver:
       provided: 已提供
     region:
       label: 区域
-    availabilityZone: 可用区
+    availabilityZone: 可用区域
     subnet: VPC/Subnet
     securityGroup:
       title: 3. 安全组
@@ -4285,15 +4285,15 @@ nodeDriver:
       detail: 配置将由此模板创建的Droplets的选项。
     sizeLabel: |
       {highMem, select, true {High Memory: }other{}}{memoryGb}GB RAM,{disk}GB Disk,{vcpus, plural,
-      =1 {# vCPU}
-      other {# vCPUs}
+      =1{# vCPU}
+      other{# vCPUs}
       }
     authAccountButton: '下一步：配置Droplet'
     accessToken:
       label: 访问令牌
       placeholder: 你的DigitalOceanAPI访问令牌
       help: |
-        从<a href="https://cloud.digitalocean.com/settings/api/tokens" target="_blank" rel="nofollow noreferrer noopener">Applications & API</a>页面获取DigitalOcean的个人访问token
+        从<a href="https://cloud.digitalocean.com/settings/api/tokens" target="_blank" rel="nofollow noreferrer noopener">Applications&API</a>页面获取DigitalOcean的个人访问token
     image:
       label: 镜像
     sshUser:
@@ -4426,7 +4426,7 @@ nodeDriver:
     instanceOptionsSection: 实例选项
     cpuCount:
       label: CPUs
-      unit: '{cores, plural, =1 {Core}other{Cores}}'
+      unit: '{cores, plural,=1{Core}other{Cores}}'
     memorySize:
       label: 内存
       unit: MB
@@ -4710,151 +4710,151 @@ pageFooter:
 pagination:
   catalog: |
     {pages, plural,
-    =0 {无应用目录}
-    =1 {{count} {count, plural,=1{个应用目录}other{个应用目录}}}
-    other {{count} 个应用目录中的{from} - {to}}}
+    =0{无应用目录}
+    =1{{count}{count, plural,=1{个应用目录}other{个应用目录}}}
+    other{{count}个应用目录中的{from}-{to}}}
   certificate: |
     {pages, plural,
-    =0 {无证书}
-    =1 {{count} {count, plural, =1 {个证书}other{个证书}}}
-    other {{count}个证书中的 {from} - {to}}}
+    =0{无证书}
+    =1{{count}{count, plural,=1{个证书}other{个证书}}}
+    other{{count}个证书中的{from}-{to}}}
   container: |
     {pages, plural,
-    =0 {无集群}
-    =1 {{count} {count, plural, =1 {个集群} other {个集群}}}
-    other {{count} 个集群中的{from} - {to}}}
+    =0{无集群}
+    =1{{count}{count, plural,=1{个集群}other{个集群}}}
+    other{{count}个集群中的{from}-{to}}}
   cluster: |
     {pages, plural,
-    =0 {无集群}
-    =1 {{count} {count, plural, =1 {个集群} other {个集群}}}
-    other {{count} 个集群中的{from} - {to}}}
+    =0{无集群}
+    =1{{count}{count, plural,=1{个集群}other{个集群}}}
+    other{{count}个集群中的{from}-{to}}}
   dnsRecord: |
     {pages, plural,
-    =0 {无DNS记录}
-    =1 {{count} {count, plural, =1 {个DNS记录} other {个DNS记录}}}
-    other {{count}个DNS记录中的 {from} - {to}}}
+    =0{无DNS记录}
+    =1{{count}{count, plural,=1{个DNS记录}other{个DNS记录}}}
+    other{{count}个DNS记录中的{from}-{to}}}
   driver: |
     {pages, plural,
-    =0 {无驱动}
-    =1 {{count} {count, plural, =1 {个驱动} other {个驱动}}}
-    other {{count}个驱动中的 {from} - {to}}}
+    =0{无驱动}
+    =1{{count}{count, plural,=1{个驱动}other{个驱动}}}
+    other{{count}个驱动中的{from}-{to}}}
   driverOptions: |
     {pages, plural,
-    =0 {无驱动选项}
-    =1 {{count} {count, plural, =1 {个驱动选项} other {个驱动选项}}}
-    other {{count}个驱动选项中的 {from} - {to}}}
+    =0{无驱动选项}
+    =1{{count}{count, plural,=1{个驱动选项}other{个驱动选项}}}
+    other{{count}个驱动选项中的{from}-{to}}}
   entry: |
     {pages, plural,
-    =0 {无条目}
-    =1 {{count} {count, plural, =1 {个条目} other {个条目}}}
-    other {{count}个条目中的 {from} - {to}}}
+    =0{无条目}
+    =1{{count}{count, plural,=1{个条目}other{个条目}}}
+    other{{count}个条目中的{from}-{to}}}
   event: |
     {pages, plural,
-    =0 {无事件}
-    =1 {{count} {count, plural, =1 {个事件} other {个事件}}}
-    other {{count}个事件中的 {from} - {to}}}
+    =0{无事件}
+    =1{{count}{count, plural,=1{个事件}other{个事件}}}
+    other{{count}个事件中的{from}-{to}}}
   generic: |
     {pages, plural,
-    =0 {无实例}
-    =1 {{count} {count, plural, =1 {个实例} other {个实例}}}
-    other {{count}个实例中的 {from} - {to}}}
+    =0{无实例}
+    =1{{count}{count, plural,=1{个实例}other{个实例}}}
+    other{{count}个实例中的{from}-{to}}}
   image: |
     {pages, plural,
-    =0 {无镜像}
-    =1 {{count} {count, plural, =1 {个镜像} other {个镜像}}}
-    other {{count}个镜像中的 {from} - {to}}}
+    =0{无镜像}
+    =1{{count}{count, plural,=1{个镜像}other{个镜像}}}
+    other{{count}个镜像中的{from}-{to}}}
   link: |
     {pages, plural,
-    =0 {无链接}
-    =1 {{count} {count, plural, =1 {个链接} other {个链接}}}
-    other {{count}个链接中的 {from} - {to}}}
+    =0{无链接}
+    =1{{count}{count, plural,=1{个链接}other{个链接}}}
+    other{{count}个链接中的{from}-{to}}}
   loadBalancer: |
     {pages, plural,
-    =0 {无负载均衡}
-    =1 {{count} {count, plural, =1 {个负载均衡} other {个负载均衡}}}
-    other {{count}个负载均衡中的 {from} - {to}}}
+    =0{无负载均衡}
+    =1{{count}{count, plural,=1{个负载均衡}other{个负载均衡}}}
+    other{{count}个负载均衡中的{from}-{to}}}
   ingress: |
     {pages, plural,
-    =0 {无Ingresses}
-    =1 {{count} {count, plural, =1 {个Ingresses} other {个Ingresses}}}
-    other {{count}个Ingresses中的 {from} - {to}}}
+    =0{无Ingresses}
+    =1{{count}{count, plural,=1{个Ingresses}other{个Ingresses}}}
+    other{{count}个Ingresses中的{from}-{to}}}
   member: |
     {pages, plural,
-    =0 {无成员}
-    =1 {{count} {count, plural, =1 {个成员} other {个成员}}}
-    other {{count}个成员中的 {from} - {to}}}
+    =0{无成员}
+    =1{{count}{count, plural,=1{个成员}other{个成员}}}
+    other{{count}个成员中的{from}-{to}}}
   mount: |
     {pages, plural,
-    =0 {无挂载}
-    =1 {{count} {count, plural, =1 {个挂载} other {个挂载}}}
-    other {{count}个挂载中的 {from} - {to}}}
+    =0{无挂载}
+    =1{{count}{count, plural,=1{个挂载}other{个挂载}}}
+    other{{count}个挂载中的{from}-{to}}}
   namespace: |
     {pages, plural,
-    =0 {无命名空间}
-    =1 {{count} {count, plural, =1 {个命名空间} other {个命名空间}}}
-    other {{count}个命名空间中的 {from} - {to}}}
+    =0{无命名空间}
+    =1{{count}{count, plural,=1{个命名空间}other{个命名空间}}}
+    other{{count}个命名空间中的{from}-{to}}}
   node: |
     {pages, plural,
-    =0 {无主机}
-    =1 {{count} {count, plural, =1 {台主机} other {台主机}}}
-    other {{count}台主机中的 {from} - {to}}}
+    =0{无主机}
+    =1{{count}{count, plural,=1{台主机}other{台主机}}}
+    other{{count}台主机中的{from}-{to}}}
   nodePool: |
     {pages, plural,
-    =0 {无主机池}
-    =1 {{count} {count, plural, =1 {个主机池} other {个主机池}}}
-    other {{count} 个主机池中的{from} - {to}}}
+    =0{无主机池}
+    =1{{count}{count, plural,=1{个主机池}other{个主机池}}}
+    other{{count}个主机池中的{from}-{to}}}
   nodeTemplate: |
     {pages, plural,
-    =0 {无主机模板}
-    =1 {{count} {count, plural, =1 {个主机模板} other {个主机模板}}}
-    other {{count}个主机模板中的 {from} - {to}}}
+    =0{无主机模板}
+    =1{{count}{count, plural,=1{个主机模板}other{个主机模板}}}
+    other{{count}个主机模板中的{from}-{to}}}
   pod: |
     {pages, plural,
-    =0 {无Pod}
-    =1 {{count} {count, plural, =1 {个Pod} other {个Pods}}}
-    other {{count}个Pods中的 {from} - {to}}}
-  podHighlightSubset: "<b>{subset} of {count}</b> Pods"
-  podNoSubset: "0 of {count} Pods"
+    =0{无Pod}
+    =1{{count}{count, plural,=1{个Pod}other{个Pods}}}
+    other{{count}个Pods中的{from}-{to}}}
+  podHighlightSubset: "<b>{subset}of{count}</b>Pods"
+  podNoSubset: "0of{count}Pods"
   podLabel: |
     {count, plural,
-    =1 {Pod}
-    other {Pods}
+    =1{Pod}
+    other{Pods}
     }
   port: |
     {pages, plural,
-    =0 {无端口}
-    =1 {{count} {count, plural, =1 {个端口} other {个端口}}}
-    other {{count}个端口中的 {from} - {to}}}
+    =0{无端口}
+    =1{{count}{count, plural,=1{个端口}other{个端口}}}
+    other{{count}个端口中的{from}-{to}}}
   project: |
     {pages, plural,
-    =0 {无项目}
-    =1 {{count} {count, plural, =1 {个项目} other {个项目}}}
-    other {{count} 个项目中的{from} - {to}}}
+    =0{无项目}
+    =1{{count}{count, plural,=1{个项目}other{个项目}}}
+    other{{count}个项目中的{from}-{to}}}
   rule: |
     {pages, plural,
-    =0 {无规则}
-    =1 {{count} {count, plural, =1 {个规则} other {个规则}}}
-    other {{count}个规则中的 {from} - {to}}}
+    =0{无规则}
+    =1{{count}{count, plural,=1{个规则}other{个规则}}}
+    other{{count}个规则中的{from}-{to}}}
   service: |
     {pages, plural,
-    =0 {无服务}
-    =1 {{count} {count, plural, =1 {个服务} other {个服务}}}
-    other {{count}个服务中的 {from} - {to}}}
+    =0{无服务}
+    =1{{count}{count, plural,=1{个服务}other{个服务}}}
+    other{{count}个服务中的{from}-{to}}}
   storageClass: |
     {pages, plural,
-    =0 {无存储类}
-    =1 {{count} {count, plural, =1 {个存储类} other {个存储类}}}
-    other {{count} 个存储类中的{from} - {to}}}
+    =0{无存储类}
+    =1{{count}{count, plural,=1{个存储类}other{个存储类}}}
+    other{{count}个存储类中的{from}-{to}}}
   volume: |
     {pages, plural,
-    =0 {没有卷}
-    =1 {{count} {count, plural, =1 {个卷} other {个卷}}}
-    other {{count}个卷中的 {from} - {to}}}
+    =0{没有卷}
+    =1{{count}{count, plural,=1{个卷}other{个卷}}}
+    other{{count}个卷中的{from}-{to}}}
   workload: |
     {pages, plural,
-    =0 {无工作负载}
-    =1 {{count} {count, plural, =1 {个工作负载} other {个工作负载}}}
-    other {{count} 个工作负载中的{from} - {to}}}
+    =0{无工作负载}
+    =1{{count}{count, plural,=1{个工作负载}other{个工作负载}}}
+    other{{count}个工作负载中的{from}-{to}}}
 projectRow:
   none: 无描述
   orchestration: 编排
@@ -5173,23 +5173,23 @@ action:
   mute: 静默
   unmute: 取消静默
 validation:
-  required: '"{key}" 必须设置'
+  required: '"{key}"必须设置'
   arrayLength:
-    exactly: '"{key}"应当包含{count, plural, =1 {# item} other {# items}}'
-    between: '"{key}"应当介于{min} 和 {max} 之间 {max, plural, =1 {item} other {items}}'
-    min: '"{key}"应当至少为{count} {count, plural, =1 {item} other {items}}'
-    max: '"{key}"应当至多为{count} {count, plural, =1 {item} other {items}}'
+    exactly: '"{key}"应当包含{count, plural,=1{# item}other{# items}}'
+    between: '"{key}"应当介于{min}和{max}之间{max, plural,=1{item}other{items}}'
+    min: '"{key}"应当至少为{count}{count, plural,=1{item}other{items}}'
+    max: '"{key}"应当至多为{count}{count, plural,=1{item}other{items}}'
   stringLength:
-    exactly: '"{key}"应当为{count, plural, =1 {# character} other {# characters}}'
-    between: '"{key}"应当介于 {min} 和 {max} 之间 {max, plural, =1 {character} other {characters}}'
-    min: '"{key}" 应当至少为{count} {count, plural, =1 {character} other {characters}}'
-    max: '"{key}" 应当至多为{count} {count, plural, =1 {character} other {characters}}'
+    exactly: '"{key}"应当为{count, plural,=1{# character}other{# characters}}'
+    between: '"{key}"应当介于{min}和{max}之间{max, plural,=1{character}other{characters}}'
+    min: '"{key}"应当至少为{count}{count, plural,=1{character}other{characters}}'
+    max: '"{key}"应当至多为{count}{count, plural,=1{character}other{characters}}'
   number:
-    exactly: '"{key}"应当为 {val}'
+    exactly: '"{key}"应当为{val}'
     between: '"{key}"应当介于 {min} 和 {max} 之间'
-    min: '"{key}"应当至少为 {val}'
-    max: '"{key}"应当至多为 {val}'
-  chars: '"{key}"包含{count, plural, =1 {an invalid character}other{# invalid characters}}:{chars}'
+    min: '"{key}"应当至少为{val}'
+    max: '"{key}"应当至多为{val}'
+  chars: '"{key}"包含{count, plural,=1{an invalid character}other{# invalid characters}}:{chars}'
   dns:
     doubleHyphen: 不能包含两个连续的连字符
     hostname:
