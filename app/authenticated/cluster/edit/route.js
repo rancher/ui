@@ -1,16 +1,16 @@
 import { get, set } from '@ember/object';
 import { inject as service } from '@ember/service';
 import Route from '@ember/routing/route';
-import { hash/* , all */ } from 'rsvp';
+import { hash } from 'rsvp';
 
 export default Route.extend({
-  access: service(),
-  globalStore: service(),
+  access:              service(),
+  globalStore:         service(),
   roleTemplateService: service('roleTemplate'),
 
   model() {
-    let globalStore = this.get('globalStore');
-    const cluster = this.modelFor('authenticated.cluster');
+    const globalStore = this.get('globalStore');
+    const cluster     = this.modelFor('authenticated.cluster');
 
     return hash({
       originalCluster:            cluster,
