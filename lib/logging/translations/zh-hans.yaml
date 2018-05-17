@@ -6,12 +6,12 @@ loggingPage:
   targetNav:
     experimental: 实验性
     tips:
-      caseA: 当前{pageScope}日志收集被禁用
+      caseA: 当前{pageScope}日志收集未启用
       caseB: 当前日志收集目标是<code class="text-capitalize">{currentTarget}</code>,点击下面的保存按钮将禁止当前{pageScope}的日志收集
       caseC: 当前日志收集目标是<code class="text-capitalize">{currentTarget}</code>
       caseD: 点击下面的保存按钮去设置<span class="text-info text-capitalize">{targetType}</span>为日志收集目标
       caseE: 点击下面的保存按钮来更新<span class="text-info text-capitalize">{targetType}</span>配置
-      caseF: 没有日志收集目标, 点击下面的保存按钮去设置<code class="text-capitalize">{targetType}</code>为日志收集目标
+      caseF: 没有日志收集目标服务, 点击下面的保存按钮去设置<code class="text-capitalize">{targetType}</code>为日志收集目标服务
   targetTypes:
     embedded: Embedded
     elasticsearch: Elasticsearch
@@ -25,7 +25,7 @@ loggingPage:
   clusterHeader: 集群日志收集
   projectHeader: 项目日志收集
   helpText:
-    cluster: 我们将为每个容器收集标准输出和标准错误，这<code>/var/log/containers/</code>是每个主机路径下的日志文件，日志将被发送到您在下面选择的目标服务
+    cluster: 我们将为每个容器收集标准输出和标准错误，<code>/var/log/containers/</code>是每个主机日志文件路径，日志将被发送到您在下面选择的目标服务
     clusterTarget: 当前日志收集目标是<code class="text-capitalize">{clusterTargetType}</code>. 如果项目日志收集启用，日志将被发送到集群目标和项目目标
     noClusterTarget: 当前集群日志收集已禁用
   tags:
@@ -106,10 +106,10 @@ loggingPage:
     generatedIndex: '生成的索引格式为: <code class="text-italic">{esIndex}</code>, 默认情况下，索引模式为：{indexFormat}'
   splunk:
     header: Splunk HTTP事件收集配置
-    helpText: '您可以找到如何配置Splunk HEC(HTTP事件收集器)说明,<a href="http://docs.splunk.com/Documentation/Splunk/7.0.0/Data/UsetheHTTPEventCollector" target="_blank">点击这里</a>.'
+    helpText: '您可以找到如何配置Splunk HEC(HTTP事件收集器)的说明,<a href="http://docs.splunk.com/Documentation/Splunk/7.0.0/Data/UsetheHTTPEventCollector" target="_blank">点击这里</a>.'
     token: Token
     tokenPlaceholder: Your Token
-    tokenHelpText: 'Token是允许日志收集程序和HTTP客户端连接到HEC验证信息，<a href="http://docs.splunk.com/Documentation/Splunk/7.0.0/Data/UsetheHTTPEventCollector#Configure_HTTP_Event_Collector_on_Splunk_Enterprise" target="_blank">了解详情</a>'
+    tokenHelpText: 'Token是允许日志收集程序和HTTP客户端连接到HEC的验证信息,<a href="http://docs.splunk.com/Documentation/Splunk/7.0.0/Data/UsetheHTTPEventCollector#Configure_HTTP_Event_Collector_on_Splunk_Enterprise" target="_blank">了解详情</a>'
     source: 日志源
     sourcePlaceholder: 例如：fluentd
     sourceHelpText: '标识事件来源的默认字段，即事件发生的位置，<a href="https://docs.splunk.com/Splexicon:Source" target="_blank">了解详情</a>'
