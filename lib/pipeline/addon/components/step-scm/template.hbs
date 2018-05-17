@@ -45,7 +45,7 @@
             </button>
           {{else}}
             <button class="btn bg-primary"
-              disabled="disabled" 
+              disabled="disabled"
             >
               <i class="icon icon-spinner icon-spin"></i> {{t 'authPage.github.testAuth.buttonText.post'}}
             </button>
@@ -89,13 +89,13 @@
             optionValuePath="url"
             readOnly=readOnly
           }}
-          <button {{action "fetchPipelineFromRepo"}} 
-            disabled={{if selectedModel.sourceCodeConfig.url fetchPipelineFromRepoState true}} 
-            class="mt-10 btn bg-info" 
+          <button {{action "fetchPipelineFromRepo"}}
+            disabled={{if selectedModel.sourceCodeConfig.url fetchPipelineFromRepoState true}}
+            class="mt-10 btn bg-info"
             style="color:white;"
             >
             {{#if fetchPipelineFromRepoState}}
-              <i class="icon icon-spin icon-spinner"></i> 
+              <i class="icon icon-spin icon-spinner"></i>
             {{/if}}
             {{t 'newPipelineStep.stepType.scm.importFromRepo'}}
           </button>
@@ -118,7 +118,7 @@
           <div class="label-wrap">
             {{radio-button disabled=(or (eq modalOpts.type 'review') (and (not-eq type.value 'only') allowOnly)) id=type.value selection=selectedModel.sourceCodeConfig.branchCondition value=type.value}}
             <label class="acc-label" for={{type.value}}>
-              {{type.label}}
+              {{t type.label}}
             </label>
           </div>
           {{#if (not-eq type.value 'all')}}

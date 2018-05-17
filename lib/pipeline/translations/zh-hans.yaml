@@ -167,6 +167,11 @@ newPipelineStep:
       importFromRepo: 从代码库导入Pipeline配置
       importPipelineSuccess: 从<span class="text-info">{branch}</span>分支导入
       importPipelineFail: 没有发现Pipeline
+      branchConditionsEnums:
+        only: Only the branch
+        except: Everything but
+        all: All branches
+      noWebhook: No permission to set webhook
     build:
       here: 这里
       label: 上传镜像
@@ -183,15 +188,22 @@ newPipelineStep:
       pushWarning3: 去认证
       scope: "范围：可用于此项目中的所有命名空间"
       registryExist: 使用{username}注册的镜像仓库{registry}
+      stepsChoices:
+        task: run a script
+        build: 发布镜像
     task:
       label: 运行一个脚本
       runAsService: 作为服务运行
       runAsServiceTip: 单击此按钮使之成为一个长时间运行的进程/容器
       shellScript: Shell脚本
       customEntryPoint: 自定义Entrypoint
-      command: Command
+      command:
+        label: 命令
+        placeholder: Arguments of entrypoint
       commandLabel: 'sh'
-      entryPoint: EntryPoint
+      entryPoint:
+        label: EntryPoint
+        placeholder: If you want use the default entrypoint, just leave me empty
     timeout: 超时时间
     timeoutWarning: 如果某个步骤在指定时间(以分钟为单位，默认3分钟)内未完成，则构建将自动终止并标记为“失败”
     minutes: 分钟
@@ -205,6 +217,8 @@ newPipelineStep:
     targetEnv:
       label: 目标环境非本环境
       tip: 默认目标环境为本环境，如果要将目标环境设定为其他环境，请勾选本选项
+    language:
+      header: 语言环境
 
 authPage:
   github:
@@ -301,3 +315,5 @@ authPage:
         pre: GitHub验证
         preVariable: 启用Pipeline
         post: 等待GitHub返回
+importPage:
+  header: 导入 pipeline.yaml

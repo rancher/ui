@@ -166,6 +166,11 @@ newPipelineStep:
       importFromRepo: Import Pipeline From Repository
       importPipelineSuccess: Imported From Branch <span class="text-info">{branch}</span>
       importPipelineFail: No Pipeline Found
+      branchConditionsEnums:
+        only: Only the branch
+        except: Everything but
+        all: All branches
+      noWebhook: No permission to set webhook
     build:
       here: here
       label: publish an image
@@ -182,15 +187,22 @@ newPipelineStep:
       pushWarning3: to authenticate it.
       scope: "Scope: Available to all namespaces in this project"
       registryExist: Registry {registry} registered with {username}
+      stepsChoices:
+        task: run a script
+        build: publish an image
     task:
       label: run a script
       runAsService: Run As a Service
       runAsServiceTip: Click this to make it a long running process/container.
       shellScript: Shell Script
       customEntryPoint: Custom Entrypoint
-      command: Command
+      command:
+        label: Command
+        placeholder: Arguments of entrypoint
       commandLabel: 'sh'
-      entryPoint: EntryPoint
+      entryPoint:
+        label: EntryPoint
+        placeholder: If you want use the default entrypoint, just leave me empty
     timeout: Timeout
     timeoutWarning: If a step does not complete by the specified amount of time (in minutes; at least 3), then the build will be terminated automatically and marked as Fail.
     minutes: minutes
@@ -204,6 +216,8 @@ newPipelineStep:
     targetEnv:
       label: Target another environment
       tip: Default target is current environment, if you want target another enviroment, then check this option.
+    language:
+      header: Language Environment
 
 authPage:
   github:
@@ -300,3 +314,6 @@ authPage:
         pre: Authenticate with GitHub
         preVariable: Enable Pipeline
         post: Creating
+
+importPage:
+  header: Import pipeline.yaml

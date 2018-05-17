@@ -1,6 +1,6 @@
 <div class="pt-20"></div>
 <div class="inline-form">
-  <label>Language Environment</label>
+  <label>{{t 'newPipelineStep.stepType.language.header'}}</label>
   <div class="pt-10"></div>
   {{#each environmentTypes as |envType| }}
     {{radio-button id=envType.label selection=selectedType value=envType.label disabled=(if (eq modalOpts.type 'review') true false)}}
@@ -89,21 +89,21 @@
   </div>
 {{else}}
   <div class="inline-form">
-    <label>{{t 'newPipelineStep.stepType.task.entryPoint'}}</label>
+    <label>{{t 'newPipelineStep.stepType.task.entryPoint.label'}}</label>
     <div class="pt-10"></div>
     {{input
       value=runScriptConfig.entrypoint
-      placeholder="If you want use the default entrypoint, just leave me empty"
+      placeholder=(t 'newPipelineStep.stepType.task.entryPoint.placeholder')
       disabled=(if (eq modalOpts.type 'review') true false)
     }}
   </div>
   <div class="pt-20"></div>
   <div class="inline-form">
-    <label>{{t 'newPipelineStep.stepType.task.command'}}</label>
+    <label>{{t 'newPipelineStep.stepType.task.command.label'}}</label>
     <div class="pt-10"></div>
     {{input
       value=runScriptConfig.command
-      placeholder="Arguments of entrypoint"
+      placeholder=(t 'newPipelineStep.stepType.task.command.placeholder')
       disabled=(if (eq modalOpts.type 'review') true false)
     }}
   </div>
