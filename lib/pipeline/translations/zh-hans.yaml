@@ -50,7 +50,7 @@ pipelinesSetting:
   userGlobalConfig: GitHub身份验证已启用，您可以使用它来直接启用Pipline
   gitAuthentication: Git验证
   authenticateWithGit: 用Git进行身份验证
-  changeConfiguration: 要更改已配置的{oauthType}应用, 请在下面禁用OAuth认证，然后重新进行授权
+  changeConfiguration: 要更改已配置的{oauthType}应用, 先取消下面的授权，然后重新进行授权
   authenticatedUsers: 已授权的用户
   sureToDisableOAuth: 您确定要取消授权吗？
   disableOAuth: 取消授权
@@ -117,24 +117,24 @@ newPipeline:
 
 newPipelineStage:
   header:
-    create: 添加一个阶段
+    create: 添加阶段
     edit: 编辑阶段
-  runningMode: 步骤运行模式
+  runningMode: 运行模式
   modeParallel: 并行
   modeSerial: 串行
-  parallelTip: 使步骤并行运行
-  serialTip: 使步骤串行运行
-  conditions: 条件 
+  parallelTip: 并行运行
+  serialTip: 串行运行
+  conditions: 条件
   requireApproval: 需要审核
   approvers: 审核人
   env: 变量
   operator: 操作符
   value: 值
   name: 名称
-  addStep: 添加一个步骤
+  addStep: 添加步骤
   trigger:
-    webhook: 当有新代码push时，自动触发Pipeline
-    cron: 定时自动构建pipeline
+    webhook: 当有新代码push时，自动触发Pipeline任务
+    cron: 定时自动构建pipeline任务
     everyday: 每天
     custom: 使用自定义时间表
     webhookPR: 每当有新的PR时，自动构建Pipeline任务
@@ -164,7 +164,7 @@ newPipelineStep:
       finishOauth2: 点击这里
       finishOauth3: 加载代码仓库
       trigger: 构建触发器(可选)
-      importFromRepo: 从代码库导入Pipeline
+      importFromRepo: 从代码库导入Pipeline配置
       importPipelineSuccess: 从<span class="text-info">{branch}</span>分支导入
       importPipelineFail: 没有发现Pipeline
     build:
@@ -182,12 +182,12 @@ newPipelineStep:
       pushWarning2: 未经认证，单击
       pushWarning3: 去认证
       scope: "范围：可用于此项目中的所有命名空间"
-      registryExist: 使用{username}注册的镜像仓库{registry} 
+      registryExist: 使用{username}注册的镜像仓库{registry}
     task:
       label: 运行一个脚本
       runAsService: 作为服务运行
       runAsServiceTip: 单击此按钮使之成为一个长时间运行的进程/容器
-      shellScript: shell脚本
+      shellScript: Shell脚本
       customEntryPoint: 自定义Entrypoint
       command: Command
       commandLabel: 'sh'
@@ -274,10 +274,10 @@ authPage:
           text: '点击"Register Application"'
           text2: '点击"Save application" '
       form:
-        header: '2. 配置{appName}使用你的GitHub应用验证'
+        header: '2. 配置{appName}使用你的GitHub验证'
         headerVariable: '2. 设置{appName}使用你的{SCM}应用验证'
-        subtext: '将新创建GitHub应用的Client ID和Secret复制粘贴到下方的对应输入框中'
-        subtextVariable: '将新创建{GitHub}应用的Client ID和Secret复制粘贴到下方的对应输入框中'
+        subtext: '将新创建的GitHub应用Client ID和Secret复制粘贴到上方的对应的输入框中'
+        subtextVariable: '将新创建的{GitHub}应用Client ID和Secret复制粘贴到上方对应输入框中'
         clientId:
           labelText: 客户端ID
         clientSecret:
