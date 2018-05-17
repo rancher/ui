@@ -5,6 +5,7 @@ generic:
   actions: 操作
   activate: 激活
   add: 添加
+  advanced: 高级
   all: 全部
   any: 任何
   as: 以
@@ -169,6 +170,7 @@ accountsPage:
         labelText: 描述
         placeholder: "例如：这是John Smith的账号"
   modal:
+	
     password: 修改密码
 appDetailPage:
   header: "App: {appName}"
@@ -261,6 +263,9 @@ rolesPage:
         placeholder: "例如：开发者"
       context:
         labelText: 上下文
+      enabled:
+        enabled: "启用: Role is visible to all users within all resources."
+        disabled: "禁止: 仅对全局管理员可见的角色"
       allow:
         create: 创建
         delete: 删除
@@ -281,7 +286,7 @@ rolesPage:
         policy: 策略
         addAction: 添加策略
 apiPage:
-  header: API & Keys
+  header: API&Keys
   actionButton: 添加Key
   currentEndpoint: '端点:'
   detail: API密钥与您的特定用户({name})绑定，并且可以创建、删除和操作您有权访问的所有集群和项目。
@@ -370,7 +375,7 @@ authPage:
           other{# 个用户}
           }访问.
         restricted: |
-          {appName} 已被设置为允许 {orgs, plural,
+          {appName}已被设置为允许{orgs, plural,
           =0{无组织}
           =1{# 个组织}
           other{# 个组织}
@@ -404,7 +409,7 @@ authPage:
         li2:
           text: '点击 "Register new application" 并填写表单内容:'
           ul:
-            li1: '<b>应用名称：</b><span class="text-muted">任何您喜欢的应用名称, 例如：My {appName}</span>'
+            li1: '<b>应用名称：</b><span class="text-muted">的应用名称, 例如：My {appName}</span>'
             li2: 主页URL：
             li3: '<b>应用描述：</b><span class="text-muted">应用描述, 可选</span>'
             li4: 授权回调URL：
@@ -626,6 +631,9 @@ projectsPage:
   editProject: 编辑项目
   noMatch: 没有与当前搜索匹配的项目。
   noData: 此集群没有定义任何项目
+  groups:
+    none: 命名空间列表
+    namespaces: 项目/命名空间分组
   ns:
     label: 命名空间名称
     placeholder: 例如:lab
@@ -684,6 +692,7 @@ clustersPage:
     label: 存储
 ingressPage:
   header: 'Ingress：{name}'
+  gkeIngressWarning: '对于Kubernetes引擎来说，分配一个外部IP地址并准备负载均衡器可能需要几分钟的时间。同时，您可能会遇到诸如HTTP 404和HTTP 500这样的错误，直到负载均衡器准备就绪。'
   table:
     targets:
       label: 目标
@@ -947,7 +956,7 @@ hostsPage:
       memoryPressure: 内存负载
       ready: Kubelet
     limits:
-      cpu: 'CPU 限制：'
+      cpu: 'CPU限制：'
       memory: '内存限制：'
       storage: '本地卷限制：'
     infoMultiStats:
@@ -1027,6 +1036,10 @@ loginPage:
   error:
     authFailedCreds: "登录失败：检查凭据，或者您的帐户可能无权登录。"
     authFailed: "登录失败：您的帐户可能无权登录。"
+  readableProviders:
+    ad: Active Directory
+    azureAd: Azure AD
+    local: 本地用户
 machinePage:
   header: 主机驱动
   inactive: 未激活
@@ -1321,7 +1334,7 @@ notifierPage:
     defaultRecipient: 默认接收人(频道)
     defaultRecipientPlaceholder: '例如：example.com'
     helpText: |
-      以下是 <a href="https://get.slack.help/hc/en-us/articles/115005265063-Incoming-WebHooks-for-Slack">创建传入WebHooks</a>的方法。
+      以下是<a href="https://get.slack.help/hc/en-us/articles/115005265063-Incoming-WebHooks-for-Slack">创建传入WebHooks</a>的方法。
   smtp:
     server: Smtp服务器
     host: 主机
@@ -1339,7 +1352,7 @@ notifierPage:
     serviceKey: 服务密钥
     serviceKeyPlaceholder: 您的PagerDuty服务密钥
     helpText: |
-      以下是 <a href="https://support.pagerduty.com/docs/webhooks">为PagerDuty创建传入WebHooks</a>的方法。
+      以下是<a href="https://support.pagerduty.com/docs/webhooks">为PagerDuty创建传入WebHooks</a>的方法。
   webhook:
     url: URL
     urlPlaceholder: 您的webhook URL
@@ -1437,7 +1450,7 @@ ldap:
     header: "2. 自定义架构"
     helpText: "如果你的活动目录架构(Schema)不是标准格式，可以在这里进行自定义设置。"
     cert:
-      labelText: CA 证书
+      labelText: CA证书
       helpText: 如果需要，请输入CA证书
       placeholder: "粘贴或导入证书，以-----BEGIN CERTIFICATE-----开头"
     users:
@@ -1541,7 +1554,7 @@ cloudProvider:
   warning: 使用云提供程序而不传递云提供程序配置可能会导致您的集群无法正确配置。推荐您在创建集群之前添加云提供程序配置。
 catalogSettings:
   header: 应用商店
-  notAvailable: "不可用：咦有名为<code>{name}</code>的自定义目录"
+  notAvailable: "不可用：这是名为<code>{name}</code>的自定义商店"
   helpText: 目前只支持Helm目录
   library:
     label: 官方认证
@@ -1558,14 +1571,14 @@ catalogSettings:
       rancher: "{appName}认证库"
       pl: 认证的库
     detail:
-      rancher: Rancher核心功能所依赖的模板，例如Kubernetes/Mesos/Swarm编排支持。由Rancher官方维护并提供支持。
+      rancher: Rancher核心功能所依赖的模板，例如Kubernetes/Mesos/Swarm编排支持，由Rancher官方维护并提供支持。
       pl: 由官方维护的核心功能所需要的模板，例如Kubernetes/Mesos/Swarm等
   community:
     header:
       rancher: 社区贡献
       pl: 社区贡献
     detail:
-      rancher: 由社区成员创建并维护的模板 未经过Rancher Labs认证
+      rancher: 由社区成员创建并维护的模板，未经过Rancher Labs认证。
       pl: 由社区成员创建并维护的模板
   more:
     header: 更多
@@ -1665,6 +1678,9 @@ clusterNew:
       prompt: 选择一个规格...
     diskSizeGb:
       label: OS磁盘大小
+    dns:
+      label: DNS前缀
+      placeholder: "例如：example"
     ssh:
       label: 公共密钥
     security:
@@ -1820,6 +1836,9 @@ clusterNew:
         flannel:
           iface:
             label: 接口
+        canal:
+          iface:
+            label: 接口
         calico:
           cloudProvider:
             label: 云提供商
@@ -1869,7 +1888,10 @@ clusterNew:
     kubelet:
       label: Kubelet
       domain: 集群域
-      dns: 集群DNS服务器
+      dns: 集群DNS服务
+    warning:
+      aws:
+        iam: '在使用云提供商Amazon时，应在节点模板中提供IAM角色名。'
     errors:
       etcd: 请选择1个，3个或5个主机用于etcd。
       controlPlane: 请至少选择一个用于management的主机。
@@ -2741,7 +2763,7 @@ envCatalog:
   addActionLabel: 添加应用商店
 moveNamespace:
   title: |
-    移动 {count, plural,
+    移动{count, plural,
     =1{命名空间: {name}}
     other{# 命名空间:}}
   to: "转到目标项目："
@@ -3058,12 +3080,12 @@ formMembers:
       label: 角色
     errors:
       nameReq: 名称(必填)
-      nameInExists: 名称已经存在。请使用新的项目名称。
+      nameInExists: 名称已经存在，请使用新的项目名称。
       memberNameReq: 成员名称是必须的
       memberRoleReq: 成员角色是必须的
       ownerReq: 必须至少有一个具有所有者角色的成员。
 formScopedRoles:
-  title: '{type} 权限'
+  title: '{type}权限'
   description: '控制用户对{type}的访问权限。'
   mode:
     admin:
@@ -3776,6 +3798,7 @@ infoMultiStats:
     read: 读
     write: 写
 inputAnswers:
+  yaml: 编辑YAML
   config: 配置选项
   unknownType: "未识别问题类型:"
   noConfig: 该模板没有配置选项
@@ -4170,6 +4193,10 @@ newContainer:
     detail: '“{service}”有多个容器，希望升级哪个容器？'
     primary: 主容器
     sidekick: Sidecars
+  containerType:
+    title: Sidecar Type
+    standard: Standard Container
+    init: Init Container
   errors:
     noSidekick: 选择要添加sidecar的工作负载
     duplicateName: '工作负载{service}中已经存在名为{name}的sidecar'
@@ -4200,10 +4227,10 @@ nodeDriver:
     azure: Azure
     digitalocean: DigitalOcean
     exoscale: Exoscale
-    openstack: Openstack
+    openstack: OpenStack
     otc: Open Telekom Cloud
     packet: Packet
-    rackspace: Rackspace
+    rackspace: RackSpace
     softlayer: SoftLayer
     vmwarevsphere: vSphere
     zstack: ZStack
@@ -4457,6 +4484,21 @@ nodeDriver:
       label: 数据存储
       placeholder: "例如：datastore_cluster_name/datastore_name"
       help: "创建VM磁盘的数据存储"
+    cloudinit:
+      label: Cloud Init
+      placeholder: "例如：http://my_host/cloud-config.yml"
+      help: "Cloud-init file or url to set in the guestinfo"
+    folder:
+      label: Folder
+      placeholder: "例如：/folder"
+      help: "Folder for the VM. This folder must already exist in the datacenter."
+    cfgparam:
+      key:
+        placeholder: "例如：guestinfo.hostname"
+      value:
+        placeholder: "例如：myrancherhost"
+      label: Configuration Parameters used for guestinfo
+      addActionLabel: Add Parameter
   azure:
     placement:
       title: 位置
@@ -4626,6 +4668,7 @@ nodeDriver:
       sshPasswordLengthNotValid: SSH密码的长度应为8至30之间
       sshPasswordInvalidCharacter: SSH密码包含非法字符
       sshPasswordFormatError: "SSH密码必须至少包括大写字符，小写字符，数字和特殊字符中的三种。"
+      nameNotValidForApp: 此名称无效，请根据{appName}命名规则重新命名。
   zstack:
     access:
       title: 1. 帐户访问
@@ -4899,7 +4942,7 @@ schema:
   inputContainer:
     prompt: 选择一个容器...
   inputConfigMap:
-    prompt: 选择一个 ConfigMap
+    prompt: 选择一个ConfigMap
   inputEnum:
     option: 选择选项...
   inputHost:
@@ -5116,7 +5159,7 @@ nav:
   nodeTemplates:
     link: "主机模板"
   api:
-    link: "API & Keys"
+    link: "API&Keys"
   settings:
     tab: 系统设置
     advanced: 高级
@@ -5186,7 +5229,7 @@ validation:
     max: '"{key}"应当至多为{count}{count, plural,=1{character}other{characters}}'
   number:
     exactly: '"{key}"应当为{val}'
-    between: '"{key}"应当介于 {min} 和 {max} 之间'
+    between: '"{key}"应当介于{min}和{max}之间'
     min: '"{key}"应当至少为{val}'
     max: '"{key}"应当至多为{val}'
   chars: '"{key}"包含{count, plural,=1{an invalid character}other{# invalid characters}}:{chars}'
@@ -5300,7 +5343,7 @@ volumeSource:
   azure-disk:
     title: Azure Disk
   azure-file:
-    title: Azure 
+    title: Azure Filesystem
   cephfs:
     title: Ceph Filesystem
   config-map:
@@ -5339,7 +5382,7 @@ volumeSource:
       CharDevice: 现有的字符设备
       BlockDevice: 现有的块设备
   iscsi:
-    title: iscsi Target
+    title: iSCSI Target
   local:
     title: 本地磁盘
   nfs:
@@ -5362,7 +5405,7 @@ volumeSource:
     mountPath:
       label: 日志路径
       placeholder: 例如：/var/www
-      helpText: 您的容器中的日志路径
+      helpText: 容器中的日志路径
     logFormat:
       label: 日志格式
       useCustomRegex: 使用一个自定义Fluentd regex
