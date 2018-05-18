@@ -13,19 +13,25 @@
      expandOnInit=true
      showExpand=false
 }}
-  <div class="radio">
-    <label>
-      {{radio-button selection=mode value=admin}} {{t 'formScopedRoles.mode.admin.label'}}
-      <p class="help-block">{{t 'formScopedRoles.mode.admin.detail' type=cTyped}}</p>
-    </label>
-  </div>
-  <div class="radio">
-    <label>
-      {{radio-button selection=mode value=stdUser}} {{t 'formScopedRoles.mode.user.label'}}
-      <p class="help-block">{{t 'formScopedRoles.mode.user.detail' type=cTyped}}</p>
-    </label>
-  </div>
-  {{#if (eq type 'project')}}
+  {{#if showAdmin}}
+    <div class="radio">
+      <label>
+        {{radio-button selection=mode value=admin}} {{t 'formScopedRoles.mode.admin.label'}}
+        <p class="help-block">{{t 'formScopedRoles.mode.admin.detail' type=cTyped}}</p>
+      </label>
+    </div>
+  {{/if}}
+
+  {{#if showStdUser}}
+    <div class="radio">
+      <label>
+        {{radio-button selection=mode value=stdUser}} {{t 'formScopedRoles.mode.user.label'}}
+        <p class="help-block">{{t 'formScopedRoles.mode.user.detail' type=cTyped}}</p>
+      </label>
+    </div>
+  {{/if}}
+
+  {{#if (and showReadOnly (eq type 'project'))}}
     <div class="radio">
       <label>
         {{radio-button selection=mode value="read-only"}} {{t 'formScopedRoles.mode.readOnly.label'}}
@@ -33,6 +39,7 @@
       </label>
     </div>
   {{/if}}
+
   {{#each userRoles as |role| }}
     <div class="radio">
       <label>
