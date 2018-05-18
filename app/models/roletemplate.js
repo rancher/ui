@@ -7,8 +7,8 @@ export default Resource.extend({
   type:   'roleTemplate',
   router: service(),
 
-  state: computed('enabled', function() {
-    return get(this, 'enabled') ? 'active' : 'inactive';
+  state: computed('locked', function() {
+    return get(this, 'locked') ? 'locked' : 'active';
   }),
 
   isCustom: computed('roleTemplateId', function() {
