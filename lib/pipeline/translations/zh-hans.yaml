@@ -10,11 +10,20 @@ generic:
   branch: 分支
   repository: 代码库
   registry: 镜像库
-  tag: Tag
+  tag: 标签
   destroying: 销毁
   deploy: 部署
   image: 镜像
   loginIn: 登录
+  Fail: 失败
+  Success: 成功
+  Building: 运行中
+  Waiting: 等待中
+  Denied: 已拒绝
+  Abort: 已取消
+  add: 添加
+  pipeline: 流水线
+
 ##############################
 # Resource Actions
 ##############################
@@ -38,8 +47,8 @@ pipelinesPage:
   importPlaceHolder: 文件内容
   active: 已激活
   inactive: 未激活
-  lastActivity: 持续活动
-  nextRun: 下次运行
+  lastActivity: 上次构建
+  nextRun: 下次构建
   awaitingWebhookPush: 等待上传
   awaitingWebhookPR: 等待PR
   triggerManually: 手动触发
@@ -93,6 +102,10 @@ newPipeline:
       label: 代码库
       placeholder: 例如：https://github.com/mycompany/mypipeline.git
     branch: 分支
+    noPermission: 无权限创建webhook
+    onlyBranch: 仅限分支
+    everythingBut: 除了分支
+    allBranches: 所有分支
   image:
     label: 目标镜像
     placeholder: 构建
@@ -100,6 +113,8 @@ newPipeline:
     label: 构建镜像
     buildIn: Build In
     custom: 自定义
+    languageEnvironment: 语言环境
+    editRegistry: 编辑Registry
   save: 保存
   add: 完成
   schedule:

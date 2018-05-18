@@ -34,12 +34,12 @@
         </td>
         <td data-title="{{dt.repository}}" class="clip text-muted">
           <p class="mt-10 mb-5">{{inst.repository}}</p>
-          <p class="mt-5 mb-10"><b>{{inst.branchConditionLabel}}</b> {{#if (not-eq inst.branchConditionLabel 'All branches')}}{{inst.branch}}{{/if}}</p>
+          <p class="mt-5 mb-10"><b>{{t inst.branchConditionLabel}}</b> {{#if (not-eq inst.branchCondition 'all')}}{{inst.branch}}{{/if}}</p>
         </td>
         <td data-title="{{dt.runCount}}" class="clip text-muted">
           {{#if inst.lastExecutionId}}
             {{#tooltip-element style="100%;" inlineBlock=true type="tooltip-basic" tooltipTemplate="tooltip-static" model=(date-str inst.lastStarted) tagName="span" tooltipFor="tooltip-basic"}}
-              <p class="mt-0 mb-0">#{{inst.lastRun}} {{inst.lastRunState}}</p>
+              <p class="mt-0 mb-0">#{{inst.lastRun}} {{t (concat 'generic.' inst.lastRunState)}}</p>
               <p class="text-muted text-italic text-small mt-0 mb-0">{{date-from-now inst.lastStarted}}</p>
             {{/tooltip-element}}
           {{else}}
