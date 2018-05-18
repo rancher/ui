@@ -1,0 +1,13 @@
+<div class="text-small {{if textMuted 'text-muted' }} clip">
+  {{#if (and model.externalIpAddress (not-eq model.externalIpAddress model.ipAddress))}}
+    {{#copy-inline clipboardText=model.externalIpAddress size="small"}}
+      {{format-ip model.externalIpAddress}}
+    {{/copy-inline}}
+    &nbsp;/&nbsp;
+  {{/if}}
+  {{#if model.ipAddress}}
+    {{#copy-inline clipboardText=model.ipAddress size="small"}}
+      {{format-ip model.ipAddress}}
+    {{/copy-inline}}
+  {{/if}}
+</div>
