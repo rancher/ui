@@ -1,6 +1,14 @@
 {{#each verbs as |verb|}}
   <td class="text-center"  data-title="{{verb.key}}" >
-    {{input type="checkbox" checked=verb.value disabled=readOnly}}
+    {{#if readOnly}}
+      {{#if verb.value}}
+        <i class="icon icon-check"/>
+      {{else}}
+        <span class="text-muted">&ndash;</span>
+      {{/if}}
+    {{else}}
+      {{input type="checkbox" checked=verb.value disabled=readOnly}}
+    {{/if}}
   </td>
 {{/each}}
 <td>

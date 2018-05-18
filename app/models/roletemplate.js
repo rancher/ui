@@ -7,8 +7,8 @@ export default Resource.extend({
   type:   'roleTemplate',
   router: service(),
 
-  state: computed('enabled', function() {
-    return get(this, 'enabled') ? 'active' : 'inactive';
+  state: computed('locked', function() {
+    return get(this, 'locked') ? 'locked' : 'active';
   }),
 
   isCustom: computed('roleTemplateId', function() {
@@ -29,10 +29,6 @@ export default Resource.extend({
       this.get('router').transitionTo('global-admin.security.roles.edit', this.get('id'));
     },
   },
-
-  canEdit: computed('links.update', 'builtin', function() {
-    return !!get(this, 'links.update') && !get(this,'builtin');
-  }),
 
   canRemove: computed('links.remove', 'builtin', function() {
     return !!get(this, 'links.remove') && !get(this,'builtin');
