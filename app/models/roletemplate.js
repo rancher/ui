@@ -30,10 +30,6 @@ export default Resource.extend({
     },
   },
 
-  canEdit: computed('links.update', 'builtin', function() {
-    return !!get(this, 'links.update') && !get(this,'builtin');
-  }),
-
   canRemove: computed('links.remove', 'builtin', function() {
     return !!get(this, 'links.remove') && !get(this,'builtin');
   }),
