@@ -139,6 +139,14 @@ if ( [[ $TAG -eq 1 ]] || [[ $UPLOAD -ne 0 ]] ) && [[ "${BRANCH}" != "master" ]];
   fi
 fi
 
+REMOTE=$(git config --get remote.origin.url)
+if [[ $TAG -eq 1 ]] && [[ ! "${REMOTE}" =~ .*rancher/ui.* ]]; then
+  echo "You can only tag when origin is the main rancher/ui repo (you are on '${REMOTE}')."
+  if [[ $FORCE -ne 1 ]]; then
+    exit 1;
+  fi
+fi
+
 if [[ "${FORCE_VERSION}" != "" ]]; then
   VERSION=${FORCE_VERSION}
 else
@@ -151,6 +159,14 @@ fi
 
 if [[ $LATEST -eq 1 ]]; then
   FINGERPRINT="no"
+fi
+
+EXISTING=$(git tag -l "v${VERSION}")
+if [[ $TAG -eq 1 ]] && [[ "${EXISTING}" = "v${VERSION}" ]]; then
+  echo "There is already an existing tag v${VERSION}"
+  if [[ $FORCE -ne 1 ]]; then
+    exit 1;
+  fi
 fi
 
 BUILD_PAR="dist/static"
@@ -197,10 +213,10 @@ UI_MODE="${MODE}" FINGERPRINT="${FINGERPRINT}" RANCHER="" CATALOG="" BASE_ASSETS
 # Create a file containing the version
 echo "${PKG_VERSION}" > ${BUILD_DIR}/VERSION.txt
 
-#if [[ $TAG -eq 1 ]]; then
-  #runCmd git tag v${VERSION}
-  #runCmd git push --tags
-#fi
+if [[ $TAG -eq 1 ]]; then
+  runCmd git tag v${VERSION}
+  runCmd git push --tags
+fi
 
 # Upload asset, either from laptop or from CI pipeline
 if [[ -n "$UPLOAD" ]]; then
