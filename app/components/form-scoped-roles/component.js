@@ -24,6 +24,71 @@ export default Component.extend(NewOrEdit,{
   admin: null,
   principal: null,
 
+  init() {
+    this._super(...arguments);
+
+    let dfu = get(this, 'defaultUser');
+    let model = {
+      type: `${get(this, 'type')}RoleTemplateBinding`,
+    };
+
+    set(model, `${get(this, 'type')}Id`, get(this, `model.${get(this, 'type')}.id`))
+
+    setProperties(this, {
+      primaryResource: this.make(model),
+      defaultUser: dfu,
+      stdUser: `${get(this, 'type')}-member`,
+      admin: `${get(this, 'type')}-owner`,
+      cTyped: get(this, 'type').capitalize(),
+    });
+  },
+
+  showAdmin: computed('model.roles.@each.id', 'mode', function() {
+    const id = `${get(this, 'type')}-owner`;
+    const role = get(this, 'model.roles').findBy('id', id);
+
+    if ( get(this, 'mode') === id ) {
+      return true;
+    }
+
+    if ( role && get(role,'locked') !== true ) {
+      return true;
+    }
+
+    return false;
+  }),
+
+  showStdUser: computed('model.roles.@each.id', 'mode', function() {
+    const id = `${get(this, 'type')}-member`;
+    const role = get(this, 'model.roles').findBy('id', id);
+
+    if ( get(this, 'mode') === id ) {
+      return true;
+    }
+
+    if ( role && get(role,'locked') !== true ) {
+      return true;
+    }
+
+    return false;
+  }),
+
+  showReadOnly: computed('model.roles.@each.id', 'mode', function() {
+    const id = 'read-only';
+    const role = get(this, 'model.roles').findBy('id', id);
+
+    if ( get(this, 'mode') === id ) {
+      return true;
+    }
+
+    if ( role && get(role,'locked') !== true ) {
+      return true;
+    }
+
+    return false;
+  }),
+
+
   baseRoles: computed(function () {
     return [
       `${get(this, 'type')}-admin`,
@@ -32,6 +97,7 @@ export default Component.extend(NewOrEdit,{
       'read-only'
     ];
   }),
+
   userRoles: computed('model.roles.[]', function() {
     let roles = get(this, 'model.roles');
     let current = get(this, 'defaultUser').get(`${get(this, 'type')}RoleBindings`);
@@ -82,7 +148,13 @@ export default Component.extend(NewOrEdit,{
       } else if (editing && current.length > 1){
         mode = CUSTOM;
       } else {
-        mode = `${get(this, 'type')}-member`;
+        const id = `${get(this, 'type')}-member`;
+        const role = get(this, 'model.roles').findBy('id', id);
+        if ( role && get(role, 'locked') !== true ) {
+          mode = `${get(this, 'type')}-member`;
+        } else {
+          mode = CUSTOM;
+        }
       }
 
       return mode;
@@ -102,25 +174,6 @@ export default Component.extend(NewOrEdit,{
       return value;
     },
   }),
-
-  init() {
-    this._super(...arguments);
-
-    let dfu = get(this, 'defaultUser');
-    let model = {
-      type: `${get(this, 'type')}RoleTemplateBinding`,
-    };
-
-    set(model, `${get(this, 'type')}Id`, get(this, `model.${get(this, 'type')}.id`))
-
-    setProperties(this, {
-      primaryResource: this.make(model),
-      defaultUser: dfu,
-      stdUser: `${get(this, 'type')}-member`,
-      admin: `${get(this, 'type')}-owner`,
-      cTyped: get(this, 'type').capitalize()
-    });
-  },
 
   make(role) {
     return get(this, 'globalStore').createRecord(role);
