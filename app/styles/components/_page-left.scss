@@ -1,0 +1,110 @@
+// Header
+$header                              : $secondary !default;
+$header-link                         : $light-grey !default;
+$user-btn                            : darken($header, 10%) !default;
+$nav-spacing                         : 4px;
+
+.page-left {
+  @include no-select;
+  NAV {
+    display: none;
+    font-size: .9em;
+    border-collapse: collapse;
+    border-spacing: 0px;
+
+    &.sidebar {
+      display: block;
+      &.hide-menu {
+        display: none;
+      }
+      width: $sidebar-width;
+      position: fixed;
+      top: $topbar-height;
+      bottom: 0;
+      left: 0;
+      background-color: $secondary;
+      overflow: scroll;
+
+      ul { 
+        background-color: $header;
+        border-radius: 3px 0 0 3px;
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        vertical-align: middle;
+
+        li {
+          list-style-type: none;
+
+          a {
+            color: $header-link;
+            text-decoration: none;
+            display: block;
+            padding: 5px 11px;
+            border-bottom: solid $nav-spacing transparent;
+            border-top: solid $nav-spacing transparent;
+  
+            .icon-chevron-down {
+              font-size: .75em;
+            }
+          }
+          
+          &.active {
+            > a {
+              background-color: $bg-primary;
+              text-decoration: none;
+              margin: 0;
+            }
+          }
+
+          > a:not(.active) {  
+            &:hover {
+              background-color: lighten($secondary, 10%);
+              color: white;
+              text-decoration: none;
+            }
+          }
+        }
+
+        &.submenu {
+          background-color: mix($user-btn, black, 80%);
+        }
+      }
+    }
+  }
+
+  .nav-item {
+    position: relative;
+  }
+
+  .ember-basic-dropdown-trigger {
+    &.active {
+      > a {
+        color: $info;
+        border-bottom: solid $nav-spacing mix($user-btn, black, 50%);
+        text-decoration: none;
+        margin: 0;
+      }
+    }
+
+    > a {
+      color: $header-link;
+      display: block;
+      padding: 11px;
+      border-bottom: solid $nav-spacing transparent;
+      border-top: solid $nav-spacing transparent;
+
+      &:hover {
+        background-color: mix($user-btn, black, 80%);
+        color: white;
+        text-decoration: none;
+        border-bottom: solid $nav-spacing transparent;
+      }
+
+      .icon-chevron-down {
+        font-size: .75em;
+      }
+    }
+
+  }
+}

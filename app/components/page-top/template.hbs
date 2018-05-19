@@ -1,0 +1,108 @@
+<div class="pull-left">
+  <div class="nav-left-item">
+    <a class="nav-logo logo-{{app.mode}} btn bg-transparent"><span class="sr-only">{{settings.appName}}</span></a>
+  </div>
+  <div class="hand nav-left-item nav-hamburger pl-10 pr-10">
+    <button class="btn bg-transparent" {{action 'toogleMenu'}}><i class="icon icon-hamburger-nav"></i></button>
+  </div>
+  <div class="nav-menu">
+    <div class="page-header">
+      <nav class="clearfix full">
+        <ul class="nav-main nav-list no-inline-space">
+          {{page-header-environment pageScope=pageScope}}
+        </ul>
+      </nav>
+    </div>
+  </div>
+</div>
+<div class="pull-right">
+  {{#if settings.isRancher}}
+    <div class="nav-menu">
+      <div class="inline-block dropdown">
+        {{#basic-dropdown
+            verticalPosition="below"
+            horizontalPosition="right"
+            as |dd|}}
+          {{#dd.trigger
+              class="hand btn btn-sm bg-transparent"
+          }}
+            <i class="icon icon-help"></i> {{t 'pageFooter.support'}} <i class="icon icon-chevron-down"></i>
+          {{/dd.trigger}}
+
+          {{#dd.content class="text-right"}}
+            <li><a href="#" {{action "showAbout"}} aria-label="About Rancher">{{if settings.rancherVersion settings.rancherVersion (t 'pageFooter.notARelease')}}</a></li>
+            <li><a target="blank" rel="nofollow noreferrer noopener" href="{{settings.docsBase}}">{{t 'pageFooter.help'}}</a></li>
+            <li><a target="blank" rel="nofollow noreferrer noopener" href="{{forumBase}}">{{t 'pageFooter.forums'}}</a></li>
+            <li><a target="blank" rel="nofollow noreferrer noopener" href="{{slackBase}}">{{t 'pageFooter.slack'}}</a></li>
+            {{#if showWechat}}
+              <li><a {{action "showWechat"}}>{{t 'modalWechat.wechat'}}</a></li>
+              <li><a target="blank" rel="nofollow noreferrer noopener" href="https://forums.cnrancher.com">{{t 'pageFooter.chinaForums'}}</a></li>
+            {{/if}}
+            <li><a target="blank" rel="nofollow noreferrer noopener" href="{{settings.issueUrl}}">{{t 'pageFooter.issues'}}</a></li>
+          {{/dd.content}}
+        {{/basic-dropdown}}
+      </div>
+    </div>
+  {{/if}}
+  <div class="nav-menu">
+    <div class="compose-download inline-block dropdown">
+      {{#basic-dropdown
+          verticalPosition="below"
+          horizontalPosition="right"
+          as |dd|}}
+        {{#dd.trigger
+            class="hand btn btn-sm bg-transparent"
+        }}
+          <i class="icon icon-download"></i> {{t 'pageFooter.download.link'}} <i class="icon icon-chevron-down"></i>
+        {{/dd.trigger}}
+
+        {{#dd.content class="text-right"}}
+          <li><a href="{{cli.darwin}}">{{t 'pageFooter.download.mac'}} <i class="icon icon-fw icon-apple"></i></a></li>
+          <li><a href="{{cli.windows}}">{{t 'pageFooter.download.windows'}} <i class="icon icon-fw icon-windows"></i></a></li>
+          <li><a href="{{cli.linux}}">{{t 'pageFooter.download.linux'}} <i class="icon icon-fw icon-linux"></i></a></li>
+        {{/dd.content}}
+      {{/basic-dropdown}}
+    </div>
+  </div>
+  <div class="nav-menu">
+    {{language-dropdown classNames="dropdown"}}
+  </div>
+  <div class="nav-menu">
+    {{#basic-dropdown
+      tagName="ul"
+      class="nav-user"
+      horizontalPosition="right"
+      delay=250
+      as |dd|
+    }}
+      {{#dd.trigger
+        class="btn"
+        ariaLabel=(t 'nav.user.label' username=session.user)
+      }}
+        {{#if accessEnabled}}
+          {{identity-avatar link=false identity=access.principal}}
+        {{else}}
+          <div class="gh-avatar">
+            <div class="gh-placeholder">
+              <i class="icon icon-user"></i>
+            </div>
+          </div>
+        {{/if}}
+        <span class="sr-only">{{t 'nav.srToggleDropdown'}}</span>
+        <i class="icon icon-chevron-down"></i>
+      {{/dd.trigger}}
+
+      {{#dd.content
+           class="text-right"
+           tagName="ul"
+      }}
+        {{#if accessEnabled}}
+          <li role="presentation" class="user-auth">
+            {{identity-block principal=access.principal}}
+          </li>
+        {{/if}}
+        <li>{{#link-to "logout" class="user-logout"}}{{t 'nav.user.logout'}} <i class="icon icon-logout icon-fw"/>{{/link-to}}</li>
+      {{/dd.content}}
+  {{/basic-dropdown}}
+  </div>
+</div>

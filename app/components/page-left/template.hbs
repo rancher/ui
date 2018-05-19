@@ -1,0 +1,70 @@
+<nav class="clearfix {{if hideMenu "hide-menu"}} {{if sidebar 'sidebar'}}" role="navigation">
+  <ul class="nav-sidebar nav-list no-inline-space">
+    {{#each navTree as |item|}}
+      {{#if item.submenu.length}}
+        {{#if (or (not item.resource) (rbac-allows resource=item.resource scope=item.resourceScope))}}
+            <li>
+              <a role="button" {{action 'toogleExpand' item}}>
+                {{maybe-t item.localizedLabel item.label}}
+                <div class="pull-right">
+                  <span class="icon icon-chevron-down"/>
+                </div>
+              </a>
+            </li>
+        {{/if}}
+
+        <ul class="{{unless item.expanded 'hide'}} submenu">
+          {{#each item.submenu as |subitem|}}
+            {{#if subitem.route}}
+              {{#if (or (not subitem.resource) (rbac-allows resource=subitem.resource scope=subitem.resourceScope))}}
+                <li>
+                  {{#link-to-as-attrs
+                      subitem.route
+                      models=subitem.ctx
+                      qp=subitem.qp
+                      activeParent="LI"
+                  }}
+                    <i class="{{subitem.icon}}"/> {{maybe-t subitem.localizedLabel subitem.label}}
+                  {{/link-to-as-attrs}}
+                </li>
+              {{/if}}
+            {{/if}}
+          {{/each}}
+        </ul>
+      {{else if item.route}}
+        {{#if (or (not item.resource) (rbac-allows resource=item.resource scope=item.resourceScope))}}
+          <li class="nav-item">
+            {{#link-to-as-attrs
+              item.route
+              models=item.ctx
+              qp=item.qp
+              activeParent="LI"
+              currentWhen=item.currentWhen
+              class="nav-link"
+            }}
+              {{maybe-t item.localizedLabel item.label}}
+            {{/link-to-as-attrs}}
+          </li>
+        {{/if}}
+      {{/if}}
+    {{/each}}
+
+    <li>
+      <a role="button" {{action 'toogleUserMenu'}}>
+        {{t 'nav.userMenu'}}
+        <div class="pull-right">
+          <span class="icon icon-chevron-down"/>
+        </div>
+      </a>
+    </li>
+    <ul class="{{unless userMenuExpanded 'hide'}} submenu">
+      {{#each userMenus as |item|}}
+        <li>
+          {{#link-to-as-attrs item.route activeParent='LI'}}
+            <i class="icon {{item.icon}} icon-fw"/> {{t item.localizedLabel}}
+          {{/link-to-as-attrs}}
+        </li>
+      {{/each}}
+    </ul>
+  </ul>
+</nav>

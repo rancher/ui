@@ -1,14 +1,31 @@
 {{#unless isPopup}}
   {{page-header
+    sidebar=sidebar
+    class=(if sidebar "page-header sidebar" "page-header")
     pageScope=pageScope
     goToPrevious="goToPrevious"
   }}
+  {{page-left
+    sidebar=sidebar
+    responsiveNav=false
+    hideMenu=hideMenu
+    class=(if sidebar "page-left sidebar" "page-left")
+    pageScope=pageScope
+    goToPrevious="goToPrevious"
+  }}
+  {{page-top
+    class=(if sidebar "sidebar" "full")
+    pageScope=pageScope
+    showAbout="showAbout"
+  }}
 {{/unless}}
-<main class="clearfix">
+<main class="clearfix {{if hideMenu "hide-menu"}} {{if sidebar "sidebar" "full"}}">
   {{outlet}}
 </main>
 {{#unless isPopup}}
   {{page-footer
+    class=(if sidebar "sidebar" "full")
+    sidebar=sidebar
     showAbout="showAbout"
   }}
 {{/unless}}

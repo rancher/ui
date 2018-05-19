@@ -8,6 +8,20 @@ import C from 'shared/utils/constants';
 import { get as getTree } from 'shared/utils/navigation-tree';
 import { run } from '@ember/runloop';
 
+const USER_MENU = [{
+  route: 'authenticated.apikeys',
+  icon: 'icon-key',
+  localizedLabel: 'nav.api.link',
+}, {
+  route: 'authenticated.node-templates',
+  icon: 'icon-host',
+  localizedLabel: 'nav.nodeTemplates.link',
+}, {
+  route: 'authenticated.prefs',
+  icon: 'icon-gear',
+  localizedLabel: 'nav.userPreferences.link',
+}];
+
 function fnOrValue(val, ctx) {
   if ( typeof val === 'function' )
   {
@@ -24,6 +38,8 @@ export default Component.extend({
   layout,
   // Inputs
   pageScope:        null,
+  classNames:       null,
+  responsiveNav:    true,
 
   // Injections
   intl:             service(),
@@ -42,10 +58,51 @@ export default Component.extend({
 
   // Component options
   tagName:          'header',
-  classNames:       ['page-header'],
   dropdownSelector: '.navbar .dropdown',
 
   stacks:           null,
+  userMenuExpanded: false,
+  userMenus:        USER_MENU,
+
+  actions: {
+    toogleExpand(selected) {
+      get(this, 'navTree').forEach((item) => {
+        if ( item === selected ) {
+          set(item, 'expanded', !get(item, 'expanded'));
+        } else {
+          set(item, 'expanded', false);
+        }
+      });
+      
+      set(this, 'userMenuExpanded', false);
+    },
+
+    toogleUserMenu() {
+      get(this, 'navTree').forEach((item) => {
+        set(item, 'expanded', false);
+      });
+      set(this, 'userMenuExpanded', !get(this, 'userMenuExpanded'));
+    }
+  },
+
+  routeDidChange: observer('application.currentRouteName', function() {
+    const currentRouteName = this.get('application.currentRouteName');
+    
+    get(this, 'navTree').forEach((item) => {
+      if ( get(item, 'expanded') ) {
+        const submenuActive = (get(item, 'submenu') || []).some((subitem) => currentRouteName.startsWith(get(subitem, 'route')));
+        if ( !submenuActive ) {
+          set(item, 'expanded', false);
+        }
+      }
+    });
+    if ( get(this, 'userMenuExpanded') ) {
+      const submenuActive = get(this, 'userMenus').some((subitem) => currentRouteName.startsWith(get(subitem, 'route')));
+      if ( !submenuActive ) {
+        set(this, 'userMenuExpanded', false);
+      }
+    }
+  }),
 
   willRender() {
     if ($('BODY').hasClass('touch') && $('header > nav').hasClass('nav-open')) {// eslint-disable-line
@@ -68,6 +125,9 @@ export default Component.extend({
     this.updateNavTree();
 
     run.scheduleOnce('render', () => {
+      if ( !get(this, 'responsiveNav') ) {
+        return;
+      }
       //responsive nav 63-87
       var responsiveNav = document.getElementById('js-responsive-nav');
 
@@ -91,6 +151,8 @@ export default Component.extend({
   // This computed property generates the active list of choices to display
   navTree: null,
   updateNavTree() {
+    const currentRouteName = this.get('application.currentRouteName');
+
     let currentScope = get(this, 'pageScope');
 
     let out = getTree().filter((item) => {
@@ -121,6 +183,10 @@ export default Component.extend({
           return false;
         }
 
+        if ( currentRouteName.startsWith(get(subitem, 'route')) ) {
+          set(item, 'expanded', true);
+        }
+
         setProperties(subitem, {
           localizedLabel: fnOrValue(get(subitem, 'localizedLabel'), this),
           label:          fnOrValue(get(subitem, 'label'), this),
@@ -135,6 +201,11 @@ export default Component.extend({
     });
 
     set(this, 'navTree', out);
+
+    const userMenuActive = get(this, 'userMenus').some((subitem) => currentRouteName.startsWith(get(subitem, 'route')));
+    if ( userMenuActive ) {
+      set(this, 'userMenuExpanded', true);
+    }
   },
 
   shouldUpdateNavTree: observer(
