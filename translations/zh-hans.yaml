@@ -284,7 +284,7 @@ apiPage:
   header: API&Keys
   actionButton: 添加Key
   currentEndpoint: '端点:'
-  detail: API密钥与您的特定用户({name})绑定，并且可以创建、删除和操作您有权访问的所有集群和项目。
+  detail: API密钥与特定用户(例如：{name})绑定，可以创建、删除和操作有权访问的所有集群和项目。
   table:
     state: 状态
     name: 访问密钥
@@ -2591,10 +2591,10 @@ dangerZone:
     'cacerts': "验证服务器ssl证书所需的CA证书"
     'engine-install-url': '默认的Docker引擎安装URL(用于大多数Machine Drivers)'
     'engine-iso-url': '默认OS安装URL(用于Machine vSphere Drivers)'
-    'engine-newest-version': '当前版本支持的Docker最新版本，不支持或比版本新的将被标记为未测试。'
-    'engine-supported-range': '支持的Docker版本范围，不满足此范围的版本将在UI中标记为不受支持。'
+    'engine-newest-version': '当前Rancher Server支持的Docker最新版本，不支持的版本或比此Docker版本新的将被标记为未测试。'
+    'engine-supported-range': '当前Rancher Server支持的Docker版本范围，不满足此范围的Docker版本将在UI中标记为不受支持。'
     'ingress-ip-domain': '用于自动生成Ingress主机名的通配DNS域。<入口名>.<命名空间名>.<入口控制器的IP地址>将被添加到域名中。'
-    'server-url': '默认的Rancher安装url，必须是HTTPS。集群中的所有主机都必须能够访问此地址。'
+    'server-url': '默认的Rancher Server访问地址，必须是HTTPS。集群中的所有主机都必须能够访问此地址。'
     'system-default-registry': '用于RKE部署基础服务时系统镜像的拉取，拉取其他服务镜像不生效'
     'ui-index': 'UI的HTML索引位置。'
     'ui-pl': '公司名称专用标签'
@@ -2603,14 +2603,14 @@ editAccount:
   form:
     name:
       label: 显示名称
-      placeholder: 例如:John Smith
+      placeholder: 例如：John Smith
     kind:
       label: 账号类型
       user: 普通用户
       admin: "管理员: 完全访问管理所有集群中的所有内容"
     description:
       label: 描述
-      placeholder: 例如:John Smith的账号
+      placeholder: 例如：John Smith的账号
     publicValue:
       label: 用户名
     oldPassword:
@@ -2628,16 +2628,16 @@ editApiKey:
     new: 添加API Key
   accessKey: Access Key(用户名)
   secretKey: Secret Key(密码)
-  basicAuth: "访问键和密钥可以作为HTTP基本身份验证的用户名和密码发送, 以授权请求。您还可以将它们组合为承载标记："
-  token: 无记名令牌
+  basicAuth: "Access Key和Secret Key可以作为HTTP基本身份验证的用户名和密码发送, 以授权请求。您也可以将它们组合为Bearer Token:"
+  token: Bearer Token
   ttl:
-    label: 自动失效
+    label: 自动失效时间
     never: 永不过期
     day: 从现在开始，有效期1天
     month: 从现在开始，有效期1个月
     year: 从现在开始，有效期1年
   description:
-    placeholder: "可选：例如，此密钥由应用程序服务器用于部署容器"
+    placeholder: "可选：例如，此密钥由应用服务器使用，用于容器部署"
   saveWarning1: 请保存上面的信息！这些信息仅显示一次。
   saveWarning2: 如果忘记了Secret Key，您需要重新创建新的API Key
   noteOptional: 说明是可选项, 以帮助您记住此密钥将用于何种用途。
@@ -2706,7 +2706,7 @@ editStack:
   name:
     label: 名称
     error: 命名空间名称已被使用，请选择一个新的命名空间名称。
-    placeholder: 例如:myapp
+    placeholder: 例如：myapp
   project:
     label: 项目
     prompt: '选择一个项目:'
@@ -2722,7 +2722,7 @@ editUser:
   form:
     name:
       label: 显示名称
-      placeholder: 例如:John Smith
+      placeholder: 例如：John Smith
     username:
       label: 用户名
     otherRoles:
@@ -2795,12 +2795,12 @@ formIngressBackends:
   workload:
     label: 工作负载
   targetPort:
-    label: 端口
+    label: 服务端口
     placeholder: '例如: 80'
   path:
     label: 路径
     placeholder: 例如：/foo
-  target: 目标
+  target: 目标服务
 formBalancerListeners:
   label: 监听器与目标规则
   detail: 配置负载均衡，使其将请求转发到目标地址。
@@ -3221,22 +3221,22 @@ formNetwork:
       placeholder: 例如：192.168.0.1
 formPorts:
   header: 端口映射
-  addAction: 添加端口
+  addAction: 添加规则
   kind:
-    label: 作为一个
+    label: 运行模式
     NodePort: NodePort(在每个主机上)
     HostPort: HostPort(运行pod的主机)
     ClusterIP: 集群IP(仅限集群内部)
     LoadBalancer: 4层负载均衡器
   sourcePort:
-    label: 监听端口
+    label: 主机端口
     placeholder: "例如：80"
     ipPlaceholder: "例如：80或19.82.2.24:80"
     clusterIpDefault: "与容器端口相同"
   nodePort:
-    placeholder: "例如：30000"
+    placeholder: "端口范围30000-32768，例如：30000"
   containerPort:
-    label: 发布容器端口
+    label: 容器端口
     placeholder: "例如：8080"
   protocol:
     label: 协议
@@ -3248,10 +3248,10 @@ formPorts:
     placeholder: "例如：example"
   noPorts: 当前容器没有端口映射
   error:
-    privateRequired: 每条端口规则必须有私有容器端口
+    privateRequired: 每条映射规则必须设置容器端口
     publicRequired: 如果指定了主机IP，则需要源端口。
     hostPort:
-      sourcePortRequired: 对于运行pod的主机，源端口是必需的。
+      sourcePortRequired: 对于运行pod的主机，必须始终源端口。
     loadBalancer:
       sourcePortRequired: 每条规则必须设置源端口.
     mixedIpPort: "Port{ip}:{port}/{proto}有超过一条映射规则"
