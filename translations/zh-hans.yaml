@@ -4595,11 +4595,11 @@ nodeDriver:
       label: 路由CIDR
       placeholder: 例如 192.168.1.0/24
     vpcId:
-      label: VPC
-      prompt: 选择VPC...
+      label: 专有网络
+      prompt: 选择专有网络...
     vswitchId:
-      label: VSwitch
-      prompt: 选择VSwitch...
+      label: 交换机
+      prompt: 选择交换机...
     privateIp:
       label: 私有IP
       placeholder: 专用网络中的私有IP
@@ -4612,15 +4612,18 @@ nodeDriver:
       label: 安全组
       placeholder: 安全组
       prompt: 选择安全组...
+      defaultCreate: "自动创建<code>{groupName}</code>安全组"
     sshPassword:
       label: SSH密码
-      placeholder: 创建实例后SSH远程登录密码, 留空则自动设置
+      placeholder: 创建实例后SSH远程登录密码（非必填）
       provided: 已提供
     tags:
       addActionLabel: 添加实例标签
       valueLabel: 标签
       placeholder: 例如 dev
     errors:
+      vpcIdRequired: 请选择专有网络。
+      vswitchIdRequired: 请选择交换机。
       accessKeyRequired: 请输入访问秘钥。
       accessSecretRequired: 请输入访问秘钥令牌。
       sshPasswordLengthNotValid: SSH密码的长度应为8至30之间

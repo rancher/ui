@@ -61,50 +61,39 @@
           {{/input-or-display}}
         </div>
         <div class="col span-6">
+          <label class="acc-label">{{t 'nodeDriver.aliyunecs.zone.label'}}</label>
+          {{#input-or-display editable=(eq step 2) value=config.zone}}
+            {{new-select classNames="form-control" content=zones value=config.zone optionLabelPath='raw.LocalName' prompt="nodeDriver.aliyunecs.zone.prompt" localizedPrompt=true}}
+          {{/input-or-display}}
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col span-6">
           <label class="acc-label">{{t 'nodeDriver.aliyunecs.vpcId.label'}}</label>
           {{#input-or-display editable=(eq step 2) value=config.vpcId}}
             {{new-select classNames="form-control" content=vpcs value=config.vpcId prompt="nodeDriver.aliyunecs.vpcId.prompt" localizedPrompt=true}}
           {{/input-or-display}}
         </div>
-      </div>
-
-      <div class="row">
         <div class="col span-6">
           <label class="acc-label">{{t 'nodeDriver.aliyunecs.securityGroup.label'}}</label>
           {{#input-or-display editable=(eq step 2) value=config.securityGroup}}
             {{new-select classNames="form-control" content=securityGroups value=config.securityGroup prompt="nodeDriver.aliyunecs.securityGroup.prompt" localizedPrompt=true}}
+            {{#if (or (not config.securityGroup) (eq config.securityGroup 'docker-machine'))}}
+              <p class="help-block">{{t 'nodeDriver.aliyunecs.securityGroup.defaultCreate' groupName='docker-machine' htmlSafe=true}}</p>
+            {{/if}}
           {{/input-or-display}}
         </div>
+      </div>
+
+      <div class="row">
         <div class="col span-6">
           <label class="acc-label">{{t 'nodeDriver.aliyunecs.vswitchId.label'}}</label>
           {{#input-or-display editable=(eq step 2) value=config.vswitchId}}
-            {{new-select classNames="form-control" content=vswitches value=config.vswitchId prompt="nodeDriver.aliyunecs.vswitchId.prompt" localizedPrompt=true}}
+            {{new-select classNames="form-control" content=filteredVSwitches value=config.vswitchId prompt="nodeDriver.aliyunecs.vswitchId.prompt" localizedPrompt=true}}
           {{/input-or-display}}
         </div>
-      </div>
 
-      <div class="row">
-        <div class="col span-6">
-          <label class="acc-label">{{t 'nodeDriver.aliyunecs.zone.label'}}</label>
-          {{#input-or-display editable=(eq step 2) value=config.zone}}
-            {{new-select classNames="form-control" content=zones value=config.zone prompt="nodeDriver.aliyunecs.zone.prompt" localizedPrompt=true}}
-          {{/input-or-display}}
-        </div>
-        <div class="col span-6">
-          <label class="acc-label">{{t 'nodeDriver.aliyunecs.routeCIDR.label'}}</label>
-          {{#input-or-display editable=(eq step 2) value=config.routeCidr}}
-            {{input type="text" class="form-control" value=config.routeCidr placeholder=(t 'nodeDriver.aliyunecs.routeCIDR.placeholder')}}
-          {{/input-or-display}}
-        </div>
-      </div>
-
-      <div class="row">
-        <div class="col span-6">
-          <label class="acc-label">{{t 'nodeDriver.aliyunecs.privateIp.label'}}</label>
-          {{#input-or-display editable=(eq step 2) value=config.privateIp}}
-            {{input type="text" class="form-control" value=config.privateIp placeholder=(t 'nodeDriver.aliyunecs.privateIp.placeholder')}}
-          {{/input-or-display}}
-        </div>
         <div class="col span-6">
           <label class="acc-label">{{t 'nodeDriver.aliyunecs.privateAddressOnly.label'}}</label>
           {{#input-or-display editable=(eq step 2) value=config.privateAddressOnly}}
@@ -209,7 +198,7 @@
       <div class="row">
         <div class="col span-6">
           <label class="acc-label">{{t 'nodeDriver.aliyunecs.systemImage.label'}}</label>
-          {{new-select classNames="form-control" content=images optionLabelPath='raw.OSName' optionValuePath='value' value=config.imageId}}
+          {{new-select classNames="form-control" content=images optionValuePath='value' value=config.imageId}}
         </div>
         <div class="col span-6">
           <label class="acc-label">{{t 'nodeDriver.aliyunecs.internetMaxBandwidth.label'}}</label>
@@ -224,11 +213,6 @@
         <div class="col span-6">
           <label class="acc-label">{{t 'nodeDriver.aliyunecs.aliyunSLB.label'}}</label>
           {{input type="text" class="form-control" value=config.slbId placeholder=(t 'nodeDriver.aliyunecs.aliyunSLB.placeholder')}}
-        </div>
-
-        <div class="col span-6">
-          <label class="acc-label">{{t 'nodeDriver.aliyunecs.sshPassword.label'}}</label>
-          {{input type="password" class="form-control" value=config.sshPassword placeholder=(t 'nodeDriver.aliyunecs.sshPassword.placeholder')}}
         </div>
       </div>
 
