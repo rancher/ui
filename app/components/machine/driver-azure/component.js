@@ -7,7 +7,6 @@ export default Ember.Component.extend(Driver, {
   azureConfig      : Ember.computed.alias('model.azureConfig'),
   environments     : environments.sortBy('value'),
   vmTypeChoices    : sizes,
-  vmSizeChoices    : null,
   driverName       : 'azure',
   model            : null,
   openPorts        : null,
