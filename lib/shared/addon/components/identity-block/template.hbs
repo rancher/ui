@@ -33,6 +33,8 @@
           </div>
         {{else if principal.loginName}}
           {{principal.loginName}}
+        {{else if unknownUser}}
+          <span class="text-error">{{t 'generic.unknownUser'}}</span>
         {{else}}
           &nbsp;
         {{/if}}
@@ -42,6 +44,10 @@
   <div class="gh-block-detail text-small clip">
     {{#if principal.displayType}}
       {{principal.displayType}}
+    {{else if unknownUser}}
+      <span class="clip">
+        {{principalId}}
+      </span>
     {{else}}
       &nbsp;
     {{/if}}
