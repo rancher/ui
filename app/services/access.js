@@ -60,8 +60,19 @@ export default Ember.Service.extend({
       url: 'token',
     })
     .then((xhr) => {
+      var session = this.get('session');
       // If we get a good response back, the API supports authentication
       var token = xhr.body.data[0];
+
+      var interesting = {};
+      C.TOKEN_TO_SESSION_KEYS.forEach((key) => {
+        if (  typeof token[key] !== 'undefined' && typeof session.get(key) === 'undefined' )
+        {
+          interesting[key] = token[key];
+        }
+      });
+
+      session.setProperties(interesting);
 
       this.setProperties({
         'enabled': token.security,
