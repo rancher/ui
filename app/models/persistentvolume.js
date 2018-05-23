@@ -1,5 +1,5 @@
 import Volume from './volume';
-import { get } from '@ember/object'
+import { get, computed } from '@ember/object'
 import { inject as service } from '@ember/service';
 import { reference } from 'ember-api-store/utils/denormalize';
 
@@ -9,6 +9,10 @@ export default Volume.extend({
   storageClass: reference('storageClassId'),
 
   type: 'persistentVolume',
+
+  canRemove: computed('links.remove', 'state', function() {
+    return !!get(this,'links.remove') && get(this,'state') !== 'bound';
+  }),
 
   actions: {
     edit() {
