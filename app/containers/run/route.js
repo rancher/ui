@@ -177,6 +177,7 @@ export default Route.extend({
       namespaceId: this.getNamespaceId(params),
       scale: 1,
       dnsPolicy: "ClusterFirst",
+      restartPolicy: "Always",
       labels: {},
       containers: [],
     });

@@ -27,7 +27,7 @@
 {{/if}}
 
 <section>
-  <div class="row banner bg-info basics mb-0" style="border-bottom: none;">
+  <div class="row banner bg-info basics mb-0">
     <div class="vertical-middle">
       <label class="acc-label vertical-middle p-0">{{t 'servicePage.multistat.namesapce'}}</label>
       {{service.namespace.displayName}}
@@ -38,15 +38,11 @@
       {{service.displayType}}
     </div>
 
-    {{#if service.hasImage}}
-      <div class="vertical-middle">
-        <label class="acc-label vertical-middle p-0">{{t 'servicePage.multistat.image'}}</label>
-        {{fixedLaunchConfig.image}} {{copy-to-clipboard clipboardText=fixedLaunchConfig.image size="small"}}
-      </div>
-    {{/if}}
-  </div>
+    <div class="vertical-middle">
+      <label class="acc-label vertical-middle p-0">{{t 'servicePage.multistat.image'}}</label>
+      {{launchConfig.image}} {{copy-to-clipboard clipboardText=launchConfig.image size="small"}}
+    </div>
 
-  <div class="row banner bg-info basics mt-0" style="border-top: none;">
     <div class="vertical-middle">
       <label class="acc-label vertical-middle p-0">{{t 'servicePage.multistat.scale'}}</label>
       <span class="pr-5">
@@ -61,17 +57,6 @@
       <label class="acc-label vertical-middle p-0">{{t 'servicePage.multistat.created'}}</label>
       {{date-calendar service.created}}
     </div>
-
-    {{#if service.externalIpAddresses}}
-      <div class="vertical-middle">
-        <label class="acc-label vertical-middle p-0">{{t 'servicePage.external.externalIp' count=service.externalIpAddresses.length}}</label>
-        {{join-array service.externalIpAddresses}}
-      </div>
-    {{else if service.hostname}}
-      <div class="vertical-middle">
-        <label class="acc-label vertical-middle p-0">{{t 'servicePage.external.externalHostname'}} </label> {{service.hostname}}
-      </div>
-    {{/if}}
   </div>
 </section>
 
@@ -96,7 +81,7 @@
         <hr class="mt-30 mb-30" />
         {{container/form-sources
           namespace=service.namespace
-          sources=activeLaunchConfig.environmentFrom
+          sources=launchConfig.environmentFrom
           editing=false
         }}
       {{/accordion-list-item}}
@@ -171,7 +156,7 @@
     }}
 
     {{container/form-volumes
-      launchConfig=activeLaunchConfig
+      launchConfig=launchConfig
       workload=service
       namespace=service.namespace
       editing=false
@@ -182,9 +167,9 @@
     {{#if service.isReal}}
       {{container/form-command
         tagName=''
-        instance=activeLaunchConfig
+        instance=launchConfig
         service=model.workload
-        initialLabels=activeLaunchConfig.labels
+        initialLabels=launchConfig.labels
         editing=false
         expandAll=al.expandAll
         expandFn=expandFn
@@ -193,7 +178,7 @@
 
     {{container/form-networking
       classNames="accordion-wrapper"
-      instance=activeLaunchConfig
+      instance=launchConfig
       service=service
       editing=false
       expandAll=al.expandAll
@@ -210,7 +195,7 @@
 
     {{#if service.canChangeSecurity}}
       {{container/form-security
-        instance=activeLaunchConfig
+        instance=launchConfig
         editing=false
         expandAll=al.expandAll
         expandFn=expandFn

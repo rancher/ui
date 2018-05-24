@@ -253,7 +253,6 @@ var Workload = Resource.extend(DisplayImage, StateCounts, EndpointPorts, {
   // @TODO-2.0 cleanup all these...
   isReal: true,
   hasPorts: true,
-  hasImage: true,
   canUpgrade: true,
   canHaveLabels: true,
   canScale: computed('lcType', function() {

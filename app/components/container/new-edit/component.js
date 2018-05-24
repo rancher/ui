@@ -221,6 +221,10 @@ export default Component.extend(NewOrEdit, ChildHook, {
         set(lc, 'livenessProbe', null);
       }
     }
+    const uid = get(lc, 'uid'); 
+    if ( uid === '' ) {
+      set(lc, 'uid', null);
+    }
 
     if (get(this, 'isSidekick')) {
       let errors = [];

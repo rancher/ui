@@ -20,6 +20,11 @@
 
     <div class="row">
       <div class="col span-6 mt-0 mb-0">
+        {{#unless rule.new}}
+          <div class="radio">
+            <label>{{radio-button selection=mode value="existing"}} {{t 'formIngress.hostMode.existing' domain=(if existingHost existingHost 'n/a') htmlSafe=true}}</label>
+          </div>
+        {{/unless}}
         {{#if settings.ingress-ip-domain}}
           <div class="radio">
             <label>{{radio-button selection=mode value="automatic"}} {{t 'formIngress.hostMode.automatic' domain=settings.ingress-ip-domain htmlSafe=true}}</label>

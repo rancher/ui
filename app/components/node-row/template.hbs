@@ -18,19 +18,7 @@
       <a href="{{href-to 'node' model.clusterId model.id}}">{{model.displayName}}</a>
     {{/if}}
     {{#if (or model.externalIpAddress model.ipAddress)}}
-      <div class="text-small text-muted clip">
-        {{#if (and model.externalIpAddress (not-eq model.externalIpAddress model.ipAddress))}}
-          {{#copy-inline clipboardText=model.externalIpAddress size="small"}}
-            {{format-ip model.externalIpAddress}}
-          {{/copy-inline}}
-          &nbsp;/&nbsp;
-        {{/if}}
-        {{#if model.ipAddress}}
-          {{#copy-inline clipboardText=model.ipAddress size="small"}}
-            {{format-ip model.ipAddress}}
-          {{/copy-inline}}
-        {{/if}}
-      </div>
+      {{node-ip model=model}}
     {{/if}}
   </td>
 

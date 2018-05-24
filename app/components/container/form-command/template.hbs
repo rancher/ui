@@ -31,7 +31,7 @@
     <div class="col span-6 box">
       <label class="acc-label">{{t 'formCommand.uid.label'}}</label>
       {{#if editing}}
-        {{input type="text" value=instance.uid classNames="form-control" placeholder=(t 'formCommand.uid.placeholder')}}
+        {{input-integer min=0 value=instance.uid classNames="form-control" placeholder=(t 'formCommand.uid.placeholder')}}
       {{else if instance.uid}}
         <div>{{instance.uid}}</div>
       {{else}}
@@ -65,25 +65,25 @@
         <div class="row {{unless editing 'inline-form'}}">
           {{#if editing}}
             <div class="radio">
-              <label>{{radio-button selection=service.restart value="Never"}} {{t 'formCommand.autoRestart.no'}}</label>
+              <label>{{radio-button selection=service.restartPolicy value="Never"}} {{t 'formCommand.autoRestart.no'}}</label>
             </div>
 
             <div class="radio">
-              <label>{{radio-button selection=service.restart value="Always"}} {{t 'formCommand.autoRestart.always'}}</label>
+              <label>{{radio-button selection=service.restartPolicy value="Always"}} {{t 'formCommand.autoRestart.always'}}</label>
             </div>
 
             <div class="radio">
-              <label>{{radio-button selection=service.restart value="OnFailure"}} {{t 'formCommand.autoRestart.onFailure' htmlSafe=true}}</label>
+              <label>{{radio-button selection=service.restartPolicy value="OnFailure"}} {{t 'formCommand.autoRestart.onFailure' htmlSafe=true}}</label>
             </div>
-          {{else if (eq service.restart "OnFailure")}}
+          {{else if (eq service.restartPolicy "OnFailure")}}
             <div>
               {{t 'formCommand.autoRestart.onFailure' htmlSafe=true}}
             </div>
-          {{else if (eq service.restart "Always")}}
+          {{else if (eq service.restartPolicy "Always")}}
             <div>
               {{t 'formCommand.autoRestart.always'}}
             </div>
-          {{else if (eq service.restart "Never")}}
+          {{else if (eq service.restartPolicy "Never")}}
             <div>
               {{t 'formCommand.autoRestart.no'}}
             </div>

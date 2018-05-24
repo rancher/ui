@@ -17,8 +17,7 @@ export default Route.extend({
     let lc = model.get('workload.containers.firstObject');
 
     controller.setProperties({
-      fixedLaunchConfig:  lc,
-      activeLaunchConfig: lc,
+      launchConfig:  lc,
     });
   }
 });
