@@ -40,7 +40,7 @@
     </div>
   </div>
 
-  {{#if (and originalModel.showTransitioningMessage (not-eq originalModel.targetType 'none'))}}
+  {{#if (and originalModel.showTransitioningMessage (eq originalModel.targetType 'embedded'))}}
     <div class="banner {{originalModel.stateBackground}}">
       <div class="banner-icon p-20"><i class="icon {{originalModel.stateIcon}}"></i></div>
       <div class="banner-message p-20">
@@ -85,6 +85,19 @@
       </div>
     {{/if}}
 
+{{/if}}
+
+{{#if (not-eq targetType 'embedded')}}
+  {{#if (and originalModel.showTransitioningMessage (eq originalModel.targetType targetType))}}
+    <div class="banner {{originalModel.stateBackground}}">
+      <div class="banner-icon p-20"><i class="icon {{originalModel.stateIcon}}"></i></div>
+      <div class="banner-message p-20">
+        <table>
+          {{error-sub-row fullColspan=fullColspan model=originalModel}}
+        </table>
+      </div>
+    </div>
+  {{/if}}
 {{/if}}
 
 {{#if (eq targetType 'elasticsearch')}}
