@@ -1,4 +1,4 @@
-<label class="acc-label mt-5">Cloud Provider</label>
+<label class="acc-label mt-5">{{t 'cloudProvider.title'}}</label>
 <div class="row">
   <div class="col span-6">
     <div class="radio">
@@ -9,14 +9,14 @@
     {{#if (or (eq driver 'amazonec2') (eq driver 'custom'))}}
       <div class="radio">
         <label>
-          {{radio-button selection=selectedCloudProvider value='amazonec2'}} Amazon
+          {{radio-button selection=selectedCloudProvider value='amazonec2'}} {{t 'cloudProvider.amazon'}}
         </label>
       </div>
     {{/if}}
     {{#if (or (eq driver 'azure') (eq driver 'custom'))}}
       <div class="radio">
         <label>
-          {{radio-button selection=selectedCloudProvider value='azure'}} Azure
+          {{radio-button selection=selectedCloudProvider value='azure'}} {{t 'cloudProvider.azure'}}
         </label>
       </div>
     {{/if}}
@@ -43,18 +43,17 @@
 </div>
 
 {{#if (eq selectedCloudProvider 'azure')}}
-  <div class="row">
-    {{form-key-value
-      initialMap=configAnswers
-      changed=(action (mut configAnswers))
-      allowEmptyValue=true
-      allowAdd=false
-      allowRemove=false
-      allowEditKey=false
-      editing=true
-      showHeader=false
-    }}
-  </div>
+  {{#each-in configAnswers as |key value|}}
+    <div class="row">
+      <div class="col span-6">
+        <label class="acc-label pb-0">{{key}}</label>
+        <p class="help-block mt-0">{{t (get (get azureDescriptions key) "description")}}</p>
+      </div>
+      <div class="col span-6">
+        {{input class="form-control input-sm value" spellcheck="false" type="text" value=value placeholder=(t 'generic.value')}}
+      </div>
+    </div>
+  {{/each-in}}
 {{else if (eq selectedCloudProvider 'generic')}}
   <div class="pb-10">
     <label class="acc-label">{{t 'cloudProvider.name'}}</label>
