@@ -76,7 +76,7 @@ export default Route.extend({
       this.controllerFor('application').set('error',err);
       this.transitionTo('failWhale');
 
-      console.log('Application Error', (err ? err.stack : undefined));
+      // console.log('Application Error', (err ? err.stack : undefined));
     },
 
     goToPrevious(def) {
@@ -138,7 +138,7 @@ export default Route.extend({
     session.set(C.SESSION.BACK_TO, undefined);
 
     if ( backTo ) {
-      console.log('Going back to', backTo);
+      // console.log('Going back to', backTo);
       window.location.href = backTo;
     } else {
       this.replaceWith('authenticated');
