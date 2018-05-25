@@ -127,7 +127,8 @@ export default Route.extend(Preload, {
     }
 
     let FALSE = false;
-    if ( FALSE && get(this,'settings.isRancher') ) // @TODO-2.0
+    // @TODO-2.0
+    if ( FALSE && get(this,'settings.isRancher') )
     {
       let form = get(this,`settings.${C.SETTING.FEEDBACK_FORM}`);
 
@@ -245,17 +246,17 @@ export default Route.extend(Preload, {
     },
 
     switchProject(projectId, transitionTo='authenticated', transitionArgs) {
-      console.log('Switch to Project:' + projectId);
+      // console.log('Switch to Project:' + projectId);
       PromiseAll([
         get(this, 'scope.subscribeProject').disconnect(),
       ]).then(() => {
-        console.log('Switch is disconnected');
+        // console.log('Switch is disconnected');
         this.send('finishSwitch', `project:${projectId}`, transitionTo, transitionArgs);
       });
     },
 
     finishSwitch(id, transitionTo, transitionArgs) {
-      console.log('Switch finishing');
+      // console.log('Switch finishing');
 
       const cookies = get(this,'cookies');
       var [whichCookie, idOut] = id.split(':');
@@ -272,7 +273,7 @@ export default Route.extend(Preload, {
 
       this.refresh();
 
-      console.log('Switch finished');
+      // console.log('Switch finished');
     },
 
     help()  {

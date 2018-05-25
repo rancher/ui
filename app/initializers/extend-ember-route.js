@@ -34,7 +34,7 @@ export function initialize(/*application */) {
         {
           appRoute.set('previousRoute', info.name);
           appRoute.set('previousParams', params);
-          console.log('Set previous route to', info.name, params);
+          // console.log('Set previous route to', info.name, params);
         }
       }
     },

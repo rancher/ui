@@ -2,7 +2,7 @@ import { alias } from '@ember/object/computed';
 import { inject as service } from '@ember/service';
 import Component from '@ember/component';
 import layout from './template';
-import { get, set, computed, observer/* , setProperties  */ } from '@ember/object';
+import { get, set, computed, observer } from '@ember/object';
 import NewOrEdit from 'ui/mixins/new-or-edit';
 import ChildHook from 'shared/mixins/child-hook';
 import { isEmpty } from '@ember/utils';
