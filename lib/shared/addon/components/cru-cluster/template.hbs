@@ -11,18 +11,62 @@
 </section>
 
 {{#unless initialProvider}}
-  {{#each providerGroups as |choices|}}
-    <div class="row nav nav-boxes checked-active">
-      {{#each choices as |choice|}}
-        {{#link-to (query-params provider=choice.name) class=(concat "mb-20 col span-2 col-inline nav-box-item driver generic machine-driver " choice.name)}}
-          <p class="sr-only">{{driver-name choice.name}}</p>
-          {{#if choice.genericIcon}}
-            <p class="text-link text-bold">{{driver-name choice.name}}</p>
-          {{/if}}
-        {{/link-to}}
-      {{/each}}
+
+  <div class="row">
+    <div class="col span-4 offset-1 mb-0 pb-0">
+      <label class="acc-label">Create clusters in hoseted Kubernetes Provider</label>
     </div>
-  {{/each}}
+    <div class="col span-2 offset-4 mb-0 pb-0">
+      <label class="acc-label">Import Cluster</label>
+    </div>
+  </div>
+  <div class="row nav nav-boxes checked-active">
+    {{#each (get providerGroups "cloudGroup") as |choice|}}
+      {{#link-to (query-params provider=choice.name) class=(concat "mb-20 mt-10 col span-2 col-inline nav-box-item driver generic machine-driver " choice.name)}}
+        <p class="sr-only">{{driver-name choice.name}}</p>
+        {{#if choice.genericIcon}}
+          <p class="text-link text-bold">{{driver-name choice.name}}</p>
+        {{/if}}
+      {{/link-to}}
+    {{/each}}
+
+    {{#each (get providerGroups "emportGroup") as |choice|}}
+      {{#link-to (query-params provider=choice.name) class=(concat "mb-20 mt-10 col span-2 offset-2 col-inline nav-box-item driver generic machine-driver " choice.name)}}
+        <p class="sr-only">{{driver-name choice.name}}</p>
+        {{#if choice.genericIcon}}
+          <p class="text-link text-bold">{{driver-name choice.name}}</p>
+        {{/if}}
+      {{/link-to}}
+    {{/each}}
+  </div>
+
+  <div class="row">
+    <div class="col span-4 offset-1 mb-0 pb-0">
+      <label class="acc-label">Create clusters in an infrastructure Provider</label>
+    </div>
+    <div class="col span-2 offset-4 mb-0 pb-0">
+      <label class="acc-label">Bring your own nodes</label>
+    </div>
+  </div>
+  <div class="row nav nav-boxes checked-active">
+    {{#each (get providerGroups "rkeGroup") as |choice|}}
+      {{#link-to (query-params provider=choice.name) class=(concat "mb-20 mt-10 col span-2 col-inline nav-box-item driver generic machine-driver " choice.name)}}
+        <p class="sr-only">{{driver-name choice.name}}</p>
+        {{#if choice.genericIcon}}
+          <p class="text-link text-bold">{{driver-name choice.name}}</p>
+        {{/if}}
+      {{/link-to}}
+    {{/each}}
+
+    {{#each (get providerGroups "customGroup") as |choice|}}
+      {{#link-to (query-params provider=choice.name) class=(concat "mb-20 mt-10 col span-2 col-inline nav-box-item driver generic machine-driver " choice.name)}}
+        <p class="sr-only">{{driver-name choice.name}}</p>
+        {{#if choice.genericIcon}}
+          <p class="text-link text-bold">{{driver-name choice.name}}</p>
+        {{/if}}
+      {{/link-to}}
+    {{/each}}
+  </div>
 {{/unless}}
 
 {{#if (eq step 1)}}
