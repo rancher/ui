@@ -349,6 +349,8 @@ export default Component.extend(NewOrEdit, {
     return C.EXTERNAL_ID.KIND_CATALOG + C.EXTERNAL_ID.KIND_SEPARATOR + get(this, 'selectedTemplateModel.id');
   }),
 
+  requiredNamespace: alias('selectedTemplateModel.requiredNamespace'),
+
   willSave() {
     set(this, 'errors', null);
     var ok = this.validate();
@@ -391,8 +393,9 @@ export default Component.extend(NewOrEdit, {
         return err;
       });
     } else {
+      const requiredNamespace = get(this, 'requiredNamespace');
       setProperties(app, {
-        targetNamespace: neu.name,
+        targetNamespace: requiredNamespace ? requiredNamespace : neu.name,
         externalId: get(this, 'selectedTemplateModel.externalId'),
         projectId: get(neu, 'projectId'),
       });
