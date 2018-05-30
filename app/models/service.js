@@ -1,7 +1,6 @@
 import Resource from 'ember-api-store/models/resource';
 import { get, computed } from '@ember/object';
 import { inject as service } from '@ember/service';
-import Util from 'ui/utils/util';
 
 export default Resource.extend({
   intl: service(),
