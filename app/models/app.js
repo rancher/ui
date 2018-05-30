@@ -4,8 +4,9 @@ import { computed, get } from '@ember/object';
 import { parseHelmExternalId } from 'ui/utils/parse-externalid';
 import StateCounts from 'ui/mixins/state-counts';
 import { inject as service } from '@ember/service';
+import EndpointPorts from 'ui/mixins/endpoint-ports';
 
-const App = Resource.extend(StateCounts, {
+const App = Resource.extend(StateCounts, EndpointPorts, {
   catalog: service(),
   router: service(),
   clusterStore: service(),
@@ -27,7 +28,7 @@ const App = Resource.extend(StateCounts, {
       }
     });
   }),
-  services: computed('namespace.services', function() {
+  services: computed('namespace.services.@each.labels', function() {
     return (get(this, 'namespace.services') || []).filter((item) => {
       if ( item['labels'] ) {
         return item['labels']['io.cattle.field/appId'] === get(this, 'name');
@@ -61,6 +62,21 @@ const App = Resource.extend(StateCounts, {
         return item['labels']['io.cattle.field/appId'] === get(this, 'name');
       }
     });
+  }),
+
+  publicEndpoints: computed('workloads.@each.publicEndpoints', 'services.@each.proxyEndpoints', function() {
+    let out = [];
+    get(this, 'workloads').forEach((workload) => {
+      (get(workload, 'publicEndpoints') || []).forEach((endpoint) => {
+        out.push(endpoint);
+      });
+    });
+    get(this, 'services').forEach((service) => {
+      (get(service, 'proxyEndpoints') || []).forEach((endpoint) => {
+        out.push(endpoint);
+      });
+    });
+    return out;
   }),
 
   init() {
