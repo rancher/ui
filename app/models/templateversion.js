@@ -61,7 +61,12 @@ export default Resource.extend({
       const subquestions = get(q, 'subquestions');
       if ( subquestions ) {
         subquestions.forEach((subq) => {
-          subq.showIf = `${q.variable}=${q.showSubquestionIf}`;
+          if ( get(subq, 'showIf.length') > 0 ) {
+            subq.showIf = `${q.variable}=${q.showSubquestionIf}&&${subq.showIf}`;
+          } else {
+            subq.showIf = `${q.variable}=${q.showSubquestionIf}`;
+          }
+
           if ( q.group ) {
             subq.group = q.group;
           }

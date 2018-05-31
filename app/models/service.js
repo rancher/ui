@@ -4,6 +4,7 @@ import { inject as service } from '@ember/service';
 
 export default Resource.extend({
   intl: service(),
+  scope: service(),
 
   canEditYaml: true,
 
@@ -15,5 +16,22 @@ export default Resource.extend({
     } else {
       return intl.t('model.service.displayKind.generic');
     }
+  }),
+
+  proxyEndpoints: computed('labels', function(){
+    const parts = []
+    const labels = get(this, 'labels');
+    if ( labels && labels['kubernetes.io/cluster-service'] === 'true' ) {
+      (get(this, 'ports') || []).forEach((port) => {
+        const linkEndpoint = `${location.protocol}//${location.host}/k8s/clusters/${get(this, 'scope.currentCluster.id')}/api/v1/namespaces/${get(this, 'namespaceId')}/services/${get(port, 'targetPort')}:${get(this, 'name')}:/proxy/`;
+        parts.push({
+          linkEndpoint: linkEndpoint,
+          displayEndpoint: '/index.html',
+          protocol: location.protocol.substr(0, location.protocol.length -1),
+          isTcpish: true,
+        });
+      });
+    }
+    return parts;
   }),
 });

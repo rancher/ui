@@ -1,6 +1,6 @@
 import Controller from '@ember/controller';
 import { inject as service } from '@ember/service';
-import { get, computed } from '@ember/object';
+import { computed } from '@ember/object';
 import {
   searchFields as containerSearchFields
 } from 'ui/components/pod-dots/component';
@@ -203,16 +203,6 @@ export default Controller.extend({
     this._super(...arguments);
     this.set('expandedInstances',[]);
   },
-
-  publicEndpoints: computed('model.app.workloads.@each.publicEndpoints', function() {
-    let out = [];
-    get(this, 'model.app.workloads').forEach((workload) => {
-      (get(workload, 'publicEndpoints') || []).forEach((endpoint) => {
-        out.push(endpoint);
-      });
-    });
-    return out;
-  }),
 
   workloadsAndPods: computed('model.app.workloads', 'model.app.pods', function() {
     let out = [];
