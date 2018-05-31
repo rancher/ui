@@ -11,10 +11,14 @@
 </section>
 
 {{#unless initialProvider}}
-  {{#each providerGroups as |choices|}}
-    <div class="row nav nav-boxes checked-active">
-      {{#each choices as |choice|}}
-        {{#link-to (query-params provider=choice.name) class=(concat "mb-20 col span-2 col-inline nav-box-item driver generic machine-driver " choice.name)}}
+
+  <div class="row nav nav-boxes checked-active inline-form">
+    <div class="col span-8 col-inline">
+      <div>
+        <label class="acc-label">{{t 'clusterNew.driverLabels.cloud'}}</label>
+      </div>
+      {{#each (get providerGroups "cloudGroup") as |choice|}}
+        {{#link-to (query-params provider=choice.name) class=(concat "mb-20 mt-10 col span-3 col-inline nav-box-item driver generic machine-driver " choice.name)}}
           <p class="sr-only">{{driver-name choice.name}}</p>
           {{#if choice.genericIcon}}
             <p class="text-link text-bold">{{driver-name choice.name}}</p>
@@ -22,7 +26,52 @@
         {{/link-to}}
       {{/each}}
     </div>
-  {{/each}}
+
+    <div class="col span-2 col-inline">
+      <div>
+        <label class="acc-label">{{t 'clusterNew.driverLabels.import'}}</label>
+      </div>
+      {{#each (get providerGroups "importGroup") as |choice|}}
+        {{#link-to (query-params provider=choice.name) class=(concat "mb-20 mt-10 col span-12 col-inline nav-box-item driver generic machine-driver " choice.name)}}
+          <p class="sr-only">{{driver-name choice.name}}</p>
+          {{#if choice.genericIcon}}
+            <p class="text-link text-bold">{{driver-name choice.name}}</p>
+          {{/if}}
+        {{/link-to}}
+      {{/each}}
+    </div>
+
+  </div>
+
+  <div class="row nav nav-boxes checked-active inline-form">
+    <div class="col span-8 col-inline">
+      <div>
+        <label class="acc-label">{{t 'clusterNew.driverLabels.infra'}}</label>
+      </div>
+      {{#each (get providerGroups "rkeGroup") as |choice|}}
+        {{#link-to (query-params provider=choice.name) class=(concat "mb-20 mt-10 col span-3 col-inline nav-box-item driver generic machine-driver " choice.name)}}
+          <p class="sr-only">{{driver-name choice.name}}</p>
+          {{#if choice.genericIcon}}
+            <p class="text-link text-bold">{{driver-name choice.name}}</p>
+          {{/if}}
+        {{/link-to}}
+      {{/each}}
+    </div>
+
+    <div class="col span-2 col-inline">
+      <div>
+        <label class="acc-label">{{t 'clusterNew.driverLabels.custom'}}</label>
+      </div>
+      {{#each (get providerGroups "customGroup") as |choice|}}
+        {{#link-to (query-params provider=choice.name) class=(concat "mb-20 mt-10 col span-12 col-inline nav-box-item driver generic machine-driver " choice.name)}}
+          <p class="sr-only">{{driver-name choice.name}}</p>
+          {{#if choice.genericIcon}}
+            <p class="text-link text-bold">{{driver-name choice.name}}</p>
+          {{/if}}
+        {{/link-to}}
+      {{/each}}
+    </div>
+  </div>
 {{/unless}}
 
 {{#if (eq step 1)}}
