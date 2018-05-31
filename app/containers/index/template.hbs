@@ -1,63 +1,59 @@
-{{#if projectController.showClusterWelcome}}
-  {{cluster-welcome}}
-{{else}}
-  {{#containers-header}}
-    <button {{action 'importYaml'}} class="btn btn-sm bg-default mr-10" disabled={{rbac-prevents resource="workload" scope="project" permission="create"}}>{{t 'nav.containers.importCompose'}}</button>
-    {{#link-to "containers.run" scope.currentProject.id class="btn btn-sm bg-primary" disabled=(rbac-prevents resource="workload" scope="project" permission="create")}}{{t 'nav.containers.deploy'}}{{/link-to}}
-  {{/containers-header}}
+{{#containers-header}}
+  <button {{action 'importYaml'}} class="btn btn-sm bg-default mr-10" disabled={{rbac-prevents resource="workload" scope="project" permission="create"}}>{{t 'nav.containers.importCompose'}}</button>
+  {{#link-to "containers.run" scope.currentProject.id class="btn btn-sm bg-primary" disabled=(rbac-prevents resource="workload" scope="project" permission="create")}}{{t 'nav.containers.deploy'}}{{/link-to}}
+{{/containers-header}}
 
-  {{#if rows.length}}
-    <section class="instances">
-      {{#sortable-table
-           tableClassNames="double-rows"
-           classNames="grid sortable-table"
-           body=rows
-           searchText=searchText
-           sortBy=sortBy
-           bulkActions=true
-           subRows=true
-           groupByKey=groupTableBy
-           groupByRef=groupByRef
-           pagingLabel="pagination.workload"
-           subSearchField="pods"
-           extraSearchFields=extraSearchFields
-           extraSearchSubFields=extraSearchSubFields
-           headers=headers as |sortable kind inst dt|}}
-        {{#if (eq kind "row")}}
-          {{#if (eq inst.type "pod")}}
-            {{pod-row
-              model=inst
-              dt=dt
-              expandPlaceholder=true
-              scalePlaceholder=true
-              fullColspan=sortable.fullColspan
-              toggle=(action "toggleExpand" inst.id)
-              showNode=(not-eq groupTableBy 'nodeId')
-              expanded=(array-includes expandedInstances inst.id)
-            }}
-          {{else}}
-            {{workload-row
-              model=inst
-              toggle=(action "toggleExpand" inst.id)
-              expanded=(array-includes expandedInstances inst.id)
-              searchText=searchText
-              subMatches=sortable.subMatches
-              fullColspan=sortable.fullColspan
-              dt=dt
-            }}
-          {{/if}}
-        {{else if (and (eq kind "group") (eq groupTableBy 'nodeId'))}}
-          {{node-group nodes=model.nodes nodeId=inst.ref fullColspan=sortable.fullColspan}}
-        {{else if (eq kind "group")}}
-          {{namespace-group model=inst.ref fullColspan=sortable.fullColspan}}
-        {{else if (eq kind "nomatch")}}
-          <tr><td colspan="{{sortable.fullColspan}}" class="text-center text-muted lacsso pt-20 pb-20">{{t 'containersPage.table.noMatch'}}</td></tr>
-        {{else if (eq kind "norows")}}
-          <tr><td colspan="{{sortable.fullColspan}}" class="text-center text-muted lacsso pt-20 pb-20">{{t 'containersPage.table.noData'}}</td></tr>
+{{#if rows.length}}
+  <section class="instances">
+    {{#sortable-table
+          tableClassNames="double-rows"
+          classNames="grid sortable-table"
+          body=rows
+          searchText=searchText
+          sortBy=sortBy
+          bulkActions=true
+          subRows=true
+          groupByKey=groupTableBy
+          groupByRef=groupByRef
+          pagingLabel="pagination.workload"
+          subSearchField="pods"
+          extraSearchFields=extraSearchFields
+          extraSearchSubFields=extraSearchSubFields
+          headers=headers as |sortable kind inst dt|}}
+      {{#if (eq kind "row")}}
+        {{#if (eq inst.type "pod")}}
+          {{pod-row
+            model=inst
+            dt=dt
+            expandPlaceholder=true
+            scalePlaceholder=true
+            fullColspan=sortable.fullColspan
+            toggle=(action "toggleExpand" inst.id)
+            showNode=(not-eq groupTableBy 'nodeId')
+            expanded=(array-includes expandedInstances inst.id)
+          }}
+        {{else}}
+          {{workload-row
+            model=inst
+            toggle=(action "toggleExpand" inst.id)
+            expanded=(array-includes expandedInstances inst.id)
+            searchText=searchText
+            subMatches=sortable.subMatches
+            fullColspan=sortable.fullColspan
+            dt=dt
+          }}
         {{/if}}
-      {{/sortable-table}}
-    </section>
-  {{else}}
-    {{empty-table disabled=(rbac-prevents resource="workload" scope="project" permission="create") resource="container" newRoute="containers.run" newTranslationKey="nav.containers.deploy"}}
-  {{/if}}
+      {{else if (and (eq kind "group") (eq groupTableBy 'nodeId'))}}
+        {{node-group nodes=model.nodes nodeId=inst.ref fullColspan=sortable.fullColspan}}
+      {{else if (eq kind "group")}}
+        {{namespace-group model=inst.ref fullColspan=sortable.fullColspan}}
+      {{else if (eq kind "nomatch")}}
+        <tr><td colspan="{{sortable.fullColspan}}" class="text-center text-muted lacsso pt-20 pb-20">{{t 'containersPage.table.noMatch'}}</td></tr>
+      {{else if (eq kind "norows")}}
+        <tr><td colspan="{{sortable.fullColspan}}" class="text-center text-muted lacsso pt-20 pb-20">{{t 'containersPage.table.noData'}}</td></tr>
+      {{/if}}
+    {{/sortable-table}}
+  </section>
+{{else}}
+  {{empty-table disabled=(rbac-prevents resource="workload" scope="project" permission="create") resource="container" newRoute="containers.run" newTranslationKey="nav.containers.deploy"}}
 {{/if}}
