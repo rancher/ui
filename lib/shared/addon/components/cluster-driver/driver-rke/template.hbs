@@ -23,16 +23,6 @@
             localizedLabel=true
             value=config.network.plugin
           }}
-          {{#if (eq config.network.plugin 'flannel')}}
-            <label class="acc-label mt-5">{{t 'clusterNew.rke.network.options.flannel.iface.label'}}</label>
-            {{input type="text" value=config.network.flannelNetworkProvider.iface}}
-          {{else if (eq config.network.plugin 'canal')}}
-            <label class="acc-label mt-5">{{t 'clusterNew.rke.network.options.canal.iface.label'}}</label>
-            {{input type="text" value=config.network.canalNetworkProvider.iface}}
-          {{else if (eq config.network.plugin 'calico')}}
-             <label class="acc-label mt-5">{{t 'clusterNew.rke.network.options.calico.cloudProvider.label'}}</label>
-             {{input type="text" value=config.network.calicoNetworkProvider.cloudProvider}}
-          {{/if}}
         </div>
         <div class="col span-4">
           <label class="acc-label">{{t 'clusterNew.rke.podSecurityPolicy.label'}}</label>
@@ -89,22 +79,6 @@
         </div>
       </div>
       <div class="row">
-        <div class="col span-6">
-          <label class="acc-label mt-5">{{t 'clusterNew.rke.etcd.heartbeat.label'}}</label>
-          <div class="input-group">
-            {{input-integer min="0" step="100" value=config.services.etcd.extraArgs.heartbeat-interval classNames="form-control" placeholder=(t 'clusterNew.rke.etcd.heartbeat.placeholder')}}
-            <div class="input-group-addon bg-default">{{t 'generic.milliseconds'}}</div>
-          </div>
-        </div>
-        <div class="col span-6">
-          <label class="acc-label mt-5">{{t 'clusterNew.rke.etcd.election.label'}}</label>
-          <div class="input-group">
-            {{input-integer min="0" step="1000" value=config.services.etcd.extraArgs.election-timeout classNames="form-control" placeholder=(t 'clusterNew.rke.etcd.election.placeholder')}}
-            <div class="input-group-addon bg-default">{{t 'generic.milliseconds'}}</div>
-          </div>
-        </div>
-      </div>
-      <div class="row">
         <div class="col span-12">
           {{cru-cloud-provider
               cluster=model.cluster
@@ -112,6 +86,9 @@
           }}
         </div>
       </div>
+      {{#advanced-section advanced=advanced}}
+        {{cluster-options-rke errors=clusterOptErrors config=cluster.rancherKubernetesEngineConfig advanced=advanced}}
+      {{/advanced-section}}
     {{/accordion-list-item}}
   {{/accordion-list}}
 
@@ -222,6 +199,7 @@
 {{top-errors errors=errors}}
 {{top-errors errors=clusterErrors}}
 {{top-errors errors=otherErrors}}
+{{top-errors errors=clusterOptErrors}}
 {{#if (or isEdit (eq step 1))}}
   {{save-cancel createLabel=(if isCustom 'saveCancel.next' 'saveCancel.create') editing=isEdit save="driverSave" cancel="close"}}
 {{else}}
