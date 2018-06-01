@@ -36,6 +36,18 @@ var Node = Resource.extend(StateCounts, ResourceUsage, {
       return this.doAction('deactivate');
     },
 
+    cordon: function() {
+      return this.doAction('cordon');
+    },
+
+    uncordon: function() {
+      return this.doAction('uncordon');
+    },
+
+    drain: function() {
+      return this.doAction('drain');
+    },
+
     promptEvacuate: function() {
       get(this,'modalService').toggleModal('modal-host-evacuate', {
         model: [this]
@@ -63,10 +75,15 @@ var Node = Resource.extend(StateCounts, ResourceUsage, {
     }
   },
 
-  availableActions: computed('links.{nodeConfig}', function() {
+  availableActions: computed('links.{nodeConfig}', 'actionLinks.{cordon,uncordon,drain}', function() {
     let l = get(this,'links');
+    const a = get(this, 'actionLinks');
 
     let out = [
+      { label: 'action.cordon', icon: 'icon icon-pause', action: 'cordon', enabled: !!a.cordon, bulkable: true},
+      { label: 'action.uncordon', icon: 'icon icon-play', action: 'uncordon', enabled: !!a.uncordon, bulkable: true},
+      { label: 'action.drain', icon: 'icon icon-snapshot', action: 'drain', enabled: !!a.drain, bulkable: true},
+      { divider: true},
       { label: 'action.nodeConfig', icon: 'icon icon-download', action: 'nodeConfig', enabled: !!l.nodeConfig},
       { divider: true },
     ];
