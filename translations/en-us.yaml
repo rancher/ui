@@ -1801,8 +1801,9 @@ clusterWelcome:
     <p>Deploy hosts with popular providers inside of {appName}, or use any existing hosts with Docker installed.</p>
     <p>Supports any combination of virtual machines or bare-metal, running on-premise or cloud-hosted.</p>
     <p>Provides secure overlay network for containers to communicate with each other across hosts.</p>
-
 clusterNew:
+  advanced:
+    label: Advanced Options
   name:
     label: Cluster Name
     placeholder: e.g. sandbox
@@ -5775,3 +5776,38 @@ volumeSource:
 
 yamlPage:
   errors: There are errors in the yaml.
+
+rkeConfigComment:
+  network: |
+    ""
+    "  # If you are using calico on AWS"
+    ""
+    "     network:"
+    "       plugin: calico"
+    "       calicoNetworkProvider:"
+    "         cloudProvider: aws"
+    ""
+    "  # To specify flannel interface"
+    ""
+    "     network:"
+    "       plugin: flannel"
+    "       flannelNetworkProvider:"
+    "         iface: eth1"
+    ""
+    "  # To specify flannel interface for canal plugin"
+    ""
+    "     network:"
+    "       plugin: canal"
+    "       canalNetworkProvider:"
+    "         iface: eth1"
+  services: |
+    ""
+    "     services:"
+    "       kubeApi:"
+    "         serviceClusterIpRange: 10.43.0.0/16"
+    "       kubeController:"
+    "         clusterCidr: 10.42.0.0/16"
+    "         serviceClusterIpRange: 10.43.0.0/16"
+    "       kubelet:"
+    "         clusterDomain: cluster.local"
+    "         clusterDnsServer: 10.43.0.10"
