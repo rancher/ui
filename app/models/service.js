@@ -21,9 +21,10 @@ export default Resource.extend({
   proxyEndpoints: computed('labels', function(){
     const parts = []
     const labels = get(this, 'labels');
+    const location = window.location;
     if ( labels && labels['kubernetes.io/cluster-service'] === 'true' ) {
       (get(this, 'ports') || []).forEach((port) => {
-        const linkEndpoint = `${location.protocol}//${location.host}/k8s/clusters/${get(this, 'scope.currentCluster.id')}/api/v1/namespaces/${get(this, 'namespaceId')}/services/${get(port, 'targetPort')}:${get(this, 'name')}:/proxy/`;
+        const linkEndpoint = `${location.origin}/k8s/clusters/${get(this, 'scope.currentCluster.id')}/api/v1/namespaces/${get(this, 'namespaceId')}/services/${get(port, 'targetPort')}:${get(this, 'name')}:/proxy/`;
         parts.push({
           linkEndpoint: linkEndpoint,
           displayEndpoint: '/index.html',
