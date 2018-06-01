@@ -38,7 +38,10 @@ export default Component.extend(ModalBase, ChildHook, {
 
     save(cb) {
       let yaml = get(this,'yaml');
-      let lintError = CodeMirror.lint.yaml(yaml);
+      const lintError = [];
+      jsyaml.safeLoadAll(yaml, (y) => {
+        lintError.pushObjects(CodeMirror.lint.yaml(y));
+      });
 
       if( lintError.length ) {
         set(this,'errors', [get(this,'intl').t('yamlPage.errors')]);
@@ -85,7 +88,10 @@ export default Component.extend(ModalBase, ChildHook, {
 
   lintObserver: observer('yaml', function() {
     const yaml = get(this,'yaml');
-    const lintError = CodeMirror.lint.yaml(yaml);
+    const lintError = [];
+    jsyaml.safeLoadAll(yaml, (y) => {
+      lintError.pushObjects(CodeMirror.lint.yaml(y));
+    });
 
     if ( lintError.length ) {
       set(this,'errors', null);
