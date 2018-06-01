@@ -1,80 +1,76 @@
-{{#if projectController.showClusterWelcome}}
-  {{cluster-welcome}}
+{{#containers-header showGroup=false}}
+  <button {{action 'importYaml'}} class="btn btn-sm bg-default mr-10" disabled={{rbac-prevents resource="ingress" scope="project" permission="create"}}>{{t 'nav.containers.importCompose'}}</button>
+  {{#link-to "ingresses.run" scope.currentProject.id class="btn btn-sm bg-primary" disabled=(rbac-prevents resource="ingress" scope="project" permission="create")}}{{t 'nav.containers.addIngress'}}{{/link-to}}
+{{/containers-header}}
+
+{{#if rows.length}}
+  <section class="pl-0 pr-0">
+    {{#sortable-table
+      classNames="grid sortable-table"
+      body=rows
+      searchText=searchText
+      sortBy=sortBy
+      bulkActions=true
+      groupByKey="namespaceId"
+      groupByRef="namespace"
+      pagingLabel="pagination.ingress"
+      subSearchField="instances"
+      headers=headers as |sortable kind inst dt|
+    }}
+      {{#if (eq kind "row")}}
+        <tr class="main-row">
+          <td class="row-check" valign="middle" style="padding-top: 2px;">
+            {{check-box nodeId=inst.id}}
+          </td>
+          <td data-title="{{dt.state}}" class="state">
+            {{badge-state model=inst}}
+          </td>
+          <td data-title="{{dt.name}}" class="clip">
+            {{#if (eq inst.type "service")}}
+              {{inst.displayName}}
+            {{else}}
+              <a href="{{href-to "ingress" inst.id}}">{{inst.displayName}}</a>
+            {{/if}}
+            <div class="text-small text-muted">{{inst.displayKind}}</div>
+          </td>
+          <td data-title="{{dt.targets}}" class="force-wrap">
+            {{#each inst.targets as |tgt|}}
+              <div class="text-small">
+                {{#if tgt.host}}
+                  <a href="{{if tgt.tls 'https' 'http'}}://{{tgt.host}}{{tgt.path}}" target="_blank" rel="noopener noreferrer nofollow">{{tgt.host}}{{tgt.path}}</a>
+                {{else if tgt.path}}
+                  {{tgt.path}}
+                {{else}}
+                  {{t 'generic.default'}}
+                {{/if}}
+
+                {{#if tgt.service}}
+                  <i class="icon icon-chevron-right"/>
+                  <a href="{{href-to "authenticated.project.dns.detail" tgt.service.id}}">{{tgt.service.displayName}}</a>
+                {{else if tgt.workload}}
+                  <i class="icon icon-chevron-right"/>
+                  <a href="{{href-to "workload" tgt.workload.id}}">{{tgt.workload.displayName}}</a>
+                {{else}}
+                  <i class="icon icon-chevron-right"/>
+                  {{tgt.reference}}
+                {{/if}}
+              </div>
+            {{/each}}
+          </td>
+          <td data-title="{{dt.created}}">
+            {{date-calendar inst.created}}
+          </td>
+          <td data-title="{{dt.actions}}" class="actions">
+            {{action-menu model=inst}}
+          </td>
+        </tr>
+      {{else if (eq kind "group")}}
+        {{namespace-group model=inst.ref fullColspan=sortable.fullColspan}}
+      {{else if (eq kind "nomatch")}}
+        <tr><td colspan="{{sortable.fullColspan}}" class="text-center text-muted lacsso pt-20 pb-20">{{t 'ingressPage.table.noMatch'}}</td></tr>
+      {{/if}}
+    {{/sortable-table}}
+  </section>
 {{else}}
-  {{#containers-header showGroup=false}}
-    <button {{action 'importYaml'}} class="btn btn-sm bg-default mr-10" disabled={{rbac-prevents resource="ingress" scope="project" permission="create"}}>{{t 'nav.containers.importCompose'}}</button>
-    {{#link-to "ingresses.run" scope.currentProject.id class="btn btn-sm bg-primary" disabled=(rbac-prevents resource="ingress" scope="project" permission="create")}}{{t 'nav.containers.addIngress'}}{{/link-to}}
-  {{/containers-header}}
-
-  {{#if rows.length}}
-    <section class="pl-0 pr-0">
-      {{#sortable-table
-        classNames="grid sortable-table"
-        body=rows
-        searchText=searchText
-        sortBy=sortBy
-        bulkActions=true
-        groupByKey="namespaceId"
-        groupByRef="namespace"
-        pagingLabel="pagination.ingress"
-        subSearchField="instances"
-        headers=headers as |sortable kind inst dt|
-      }}
-        {{#if (eq kind "row")}}
-          <tr class="main-row">
-            <td class="row-check" valign="middle" style="padding-top: 2px;">
-              {{check-box nodeId=inst.id}}
-            </td>
-            <td data-title="{{dt.state}}" class="state">
-              {{badge-state model=inst}}
-            </td>
-            <td data-title="{{dt.name}}" class="clip">
-              {{#if (eq inst.type "service")}}
-                {{inst.displayName}}
-              {{else}}
-                <a href="{{href-to "ingress" inst.id}}">{{inst.displayName}}</a>
-              {{/if}}
-              <div class="text-small text-muted">{{inst.displayKind}}</div>
-            </td>
-            <td data-title="{{dt.targets}}" class="force-wrap">
-              {{#each inst.targets as |tgt|}}
-                <div class="text-small">
-                  {{#if tgt.host}}
-                    <a href="{{if tgt.tls 'https' 'http'}}://{{tgt.host}}{{tgt.path}}" target="_blank" rel="noopener noreferrer nofollow">{{tgt.host}}{{tgt.path}}</a>
-                  {{else if tgt.path}}
-                    {{tgt.path}}
-                  {{else}}
-                    {{t 'generic.default'}}
-                  {{/if}}
-
-                  {{#if tgt.service}}
-                    <i class="icon icon-chevron-right"/>
-                    <a href="{{href-to "authenticated.project.dns.detail" tgt.service.id}}">{{tgt.service.displayName}}</a>
-                  {{else if tgt.workload}}
-                    <i class="icon icon-chevron-right"/>
-                    <a href="{{href-to "workload" tgt.workload.id}}">{{tgt.workload.displayName}}</a>
-                  {{else}}
-                    <i class="icon icon-chevron-right"/>
-                    {{tgt.reference}}
-                  {{/if}}
-                </div>
-              {{/each}}
-            </td>
-            <td data-title="{{dt.created}}">
-              {{date-calendar inst.created}}
-            </td>
-            <td data-title="{{dt.actions}}" class="actions">
-              {{action-menu model=inst}}
-            </td>
-          </tr>
-        {{else if (eq kind "group")}}
-          {{namespace-group model=inst.ref fullColspan=sortable.fullColspan}}
-        {{else if (eq kind "nomatch")}}
-          <tr><td colspan="{{sortable.fullColspan}}" class="text-center text-muted lacsso pt-20 pb-20">{{t 'ingressPage.table.noMatch'}}</td></tr>
-        {{/if}}
-      {{/sortable-table}}
-    </section>
-  {{else}}
-    {{empty-table disabled=(rbac-prevents resource="ingress" scope="project" permission="create") resource="container" newRoute="ingresses.run" newTranslationKey="nav.containers.addIngress"}}
-  {{/if}}
+  {{empty-table disabled=(rbac-prevents resource="ingress" scope="project" permission="create") resource="container" newRoute="ingresses.run" newTranslationKey="nav.containers.addIngress"}}
 {{/if}}
