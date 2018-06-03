@@ -38,9 +38,9 @@ export default Component.extend(ModalBase, {
 
   actions: {
     save(cb) {
-      const revision = get(this, 'choices').findIndex(r => r.value === get(this, 'revisionId')) + 1;
+      const id = get(this, 'selected.id');
       get(this, 'model').doAction('rollback', {
-        revision,
+        replicaSetId: id,
       }).then(() => {
         this.send('cancel');
       }).finally(() => {
@@ -74,7 +74,6 @@ export default Component.extend(ModalBase, {
   },
 
   choices: computed('revisions.[]', function () {
-    const currentId = get(this, 'current.id');
 
     return (get(this, 'revisions') || [])
       .sortBy('createdTS')
@@ -87,14 +86,14 @@ export default Component.extend(ModalBase, {
           value: id,
           ts: get(r, 'createdTS'),
           data: r,
-          disabled: id === currentId
+          disabled: r.workloadAnnotations[C.LABEL.DEPLOYMENT_REVISION] === get(this, 'model.workloadAnnotations')[C.LABEL.DEPLOYMENT_REVISION]
         };
       });
   }),
 
   current: computed('revisions.@each.workloadAnnotations', function () {
-    const currentRevision = get(this,`model.workloadAnnotations.${C.LABEL.DEPLOYMENT_REVISION}`);
-    return (get(this,'revisions')||[]).findBy(`workloadAnnotations.${C.LABEL.DEPLOYMENT_REVISION}`, currentRevision);
+    const currentRevision = get(this, 'model.workloadAnnotations')[C.LABEL.DEPLOYMENT_REVISION];
+    return (get(this,'revisions')||[]).find((r) => get(r, 'workloadAnnotations')[C.LABEL.DEPLOYMENT_REVISION] === currentRevision);
   }),
 
   selected: computed('revisionId', 'revisions.[]', function () {

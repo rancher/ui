@@ -86,8 +86,8 @@ module.exports = function(defaults) {
   app.import('node_modules/identicon.js/identicon.js');
   app.import('node_modules/jgrowl/jquery.jgrowl.css');
   app.import('node_modules/jgrowl/jquery.jgrowl.js');
-  app.import('node_modules/jsondiffpatch/public/build/jsondiffpatch-formatters.js');
   app.import('node_modules/jsondiffpatch/public/build/jsondiffpatch.js');
+  app.import('node_modules/jsondiffpatch/public/build/jsondiffpatch-formatters.js');
   app.import('node_modules/jszip/dist/jszip.js')
   app.import('node_modules/moment/moment.js');
   app.import('node_modules/prismjs/prism.js');
