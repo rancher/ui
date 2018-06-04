@@ -65,6 +65,7 @@
 .pipeline-container {
   white-space: nowrap;
   padding: 10px;
+  overflow: scroll;
 }
 
 .pipeline-wrap-header-button {
@@ -83,9 +84,23 @@
       cursor: move;
   }
   .stage-name {
-    text-align: center;
-    line-height: 3;
+    padding: 8px 8px 8px 16px;
+    line-height: 2;
     width: 100%;
+    background: #3497DA;
+    color: white;
+  }
+  .new-stage-button {
+    background: #f5f5f5;
+    color: #40a9ff;
+    border: 1px dashed #d9d9d9;
+    text-align: center;
+    cursor: pointer;
+  }
+  .new-stage-button:hover {
+    color: #40a9ff;
+    background-color: #fff;
+    border-color: #40a9ff;
   }
   .chrome-shim{
     position:relative;
@@ -102,15 +117,50 @@
   .stage-wrap {
     display: inline-block;
     vertical-align: top;
-    width: 168px;
-    margin-right: 20px;
+    width: 184px;
+    margin-right: 40px;
+  }
+  .stage-container {
+    background-color: #fff;
+    box-shadow: 0 2px 2px 0 rgba(0,0,0,0.16), 0 0 0 1px rgba(0,0,0,0.08);
+  }
+  .arrow-down {
+    height: 0;
+  	width: 0;
+  	border-top: 7px solid #3497DA;
+  	border-bottom: 7px solid transparent;
+  	border-left: 7px solid transparent;
+  	border-right: 7px solid transparent;
+    margin: 0 auto;
+  }
+  .arrow-next {
+    position: relative;
+    border-color: transparent;
+    left: 184px;
+    top: -40px;
+    .line {
+      border: 2px solid #3497DA;
+      float: left;
+      border-left-width: 25px;
+    }
+    .arrow-right {
+      height: 0;
+      width: 0;
+      border-top: 7px solid transparent;
+      border-bottom: 7px solid transparent;
+      border-left: 7px solid #3497DA;
+      border-right: 7px solid transparent;
+      float:left;
+      margin-top: -5px;
+    }
   }
 }
 
 .pipeline-steps {
+  text-align: center;
   position: relative;
   top: 0;
-  padding-top: 30px;
+  padding: 0px 8px 10px 8px;
   > .steps-head-dot {
     position: absolute;
     top: 0;
@@ -138,18 +188,17 @@
   }
   >.steps-wrap {
     padding: 4px;
-    text-align: center;
   }
   .step-content {
+    text-align: left;
     position: relative;
     top: 0;
     z-index: 1;
     border: 1px solid $border;
     border-radius: 3px;
     margin-top: 10px;
-    padding: 0 10px;
+    padding: 8px 0px 8px 10px;
     width: 160px;
-    line-height: 28px;
     background-color: white;
     cursor: pointer;
     &:first-child {
@@ -167,9 +216,30 @@
       text-overflow: ellipsis;
       overflow-y: hidden;
     }
+    .title {
+      color: rgba(0,0,0,.85);
+      font-size: 16px;
+      line-height: 24px;
+    }
+    .content {
+      color: rgba(0,0,0,.45);
+      font-size: 12px;
+      line-height: 20px;
+    }
   }
   .step-add {
     text-align: center;
+  }
+  .step-button {
+    background: #f5f5f5;
+    color: #40a9ff;
+    line-height: 32px;
+    border: 1px dashed #d9d9d9;
+  }
+  .step-button:hover {
+    color: #40a9ff;
+    background-color: #fff;
+    border-color: #40a9ff;
   }
 }
 
@@ -206,7 +276,7 @@
           }
         }
       }
-      &.Fail {
+      &.Failed, &.Aborted {
         background-color: rgba(241, 83, 84, 0.2);
         color: $error;
         *{
@@ -250,9 +320,9 @@
       }
 
       .text-cell {
-        display: inline-block;
         width: 200px;
         height: 20px;
+        margin-bottom: 9.5px;
         text-overflow: ellipsis;
         white-space: nowrap;
         overflow: hidden;
@@ -316,4 +386,57 @@
 
 .text-line-through{
   text-decoration: line-through !important;
+}
+
+.language-select input{
+  padding: 0 6px;
+}
+
+.scm-source {
+  min-height: 80px !important;
+}
+
+.scm-opacity {
+  opacity: 1 !important;
+}
+
+.branch-select {
+  width: 200px;
+  display: inline-block;
+}
+
+.committer-avatar {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+}
+
+.commit-message {
+  margin: 0;
+  line-height: 22px;
+  min-height: 22px;
+  font-size: 15px;
+  font-weight: normal;
+  overflow: hidden;
+  display: box;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  line-clamp: 1;
+  -webkit-box-orient: vertical;
+  box-orient: vertical;
+}
+.searchable-option-active {
+  .btn-authorize {
+    color: white!important;
+    width:100%;
+    display: block;
+    text-align:left;
+  }
+}
+
+.log-actions {
+  position: sticky;
+  top: 0px;
+  text-align: right;
+  margin-right: 2px;
 }

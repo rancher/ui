@@ -1,0 +1,64 @@
+{{#sortable-table
+  body=executions
+  sortBy=sortBy
+  descending=true
+  headers=headers as |sortable kind inst dt|
+  }}
+  {{#if (eq kind "row")}}
+    <tr class="main-row">
+      <td valign="middle" class="row-check" style="padding-top: 2px;">
+        {{check-box nodeId=inst.id}}
+      </td>
+      <td data-title="{{dt.run}}" class="clip">
+        {{#link-to "pipelines.run" inst.pipelineId inst.run}}
+          #{{inst.run}}
+        {{/link-to}}
+      </td>
+      <td data-title="{{dt.executionState}}" class="state">
+        {{badge-state model=inst}}
+      </td>
+      <td data-title="{{dt.branch}}" class="clip">
+        {{#link-to "pipelines.run" inst.pipelineId inst.run}}
+          {{inst.branch}}
+        {{/link-to}}
+      </td>
+      <td data-title="{{dt.commit}}" class="state">
+        <div class="row">
+          <div class="col span-1 pt-10">
+            <img src="{{inst.avatarUrl}}" class="committer-avatar"/>
+          </div>
+          <div class="col span-11">
+            <div class="commit-message">
+              {{inst.message}}
+            </div>
+            <div class="text-small text-muted">
+              <a href="{{inst.commitUrl}}" target="_blank" rel="nofollow noreferrer">{{inst.shortCommit}}</a>
+            </div>
+          </div>
+        </div>
+        {{#if inst.showTransitioning}}
+          <div class="clip text-small {{inst.stateColor}}">{{uc-first inst.transitioningMessage}}</div>
+        {{/if}}
+      </td>
+      <td data-title="{{dt.startedTimeStamp}}" class="clip">
+        {{~#tooltip-element style="100%;" inlineBlock=true type="tooltip-basic" tooltipTemplate="tooltip-static" model=(date-str inst.startedTimeStamp) tagName="span" tooltipFor="tooltip-basic"}}
+          <div>
+            {{date-from-now inst.startedTimeStamp}}
+          </div>
+        {{~/tooltip-element}}
+        {{#if inst.duration}}
+          <div class="text-small text-muted">
+            {{date-duration inst.duration}}
+          </div>
+        {{/if}}
+      </td>
+      <td data-title="{{dt.actions}}" class="actions">
+        {{action-menu model=inst showPrimary=true}}
+      </td>
+    </tr>
+  {{else if (eq kind "nomatch")}}
+    <tr><td colspan="{{sortable.fullColspan}}" class="text-center text-muted lacsso pt-20 pb-20">{{t 'pipelineDetailPage.activity.table.noMatch'}}</td></tr>
+  {{else if (eq kind "norows")}}
+    <tr><td colspan="{{sortable.fullColspan}}" class="text-center text-muted lacsso pt-20 pb-20">{{t 'pipelineDetailPage.activity.table.noData'}}</td></tr>
+  {{/if}}
+{{/sortable-table}}

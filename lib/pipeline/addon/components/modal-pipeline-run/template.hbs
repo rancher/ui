@@ -1,8 +1,27 @@
-<div class="inline-form">
-  <label>{{t 'generic.branch'}}{{field-required}}</label>
-  <div class="pt-10"></div>
-  {{input class="form-control" value=branch }}
-</div>
+<h2>
+  {{t 'runPipeline.title' name=model.displayName}}
+</h2>
 
-{{top-errors errors=errors}}
-{{save-cancel editing=editing createLabel="action.run" save="save" cancel="cancel"}}
+{{#if loading}}
+  <i class="icon icon-spinner icon-spin"/> {{t 'generic.loading'}}
+{{else if branchesChoices.length}}
+  <div class="row mb-10">
+    <div class="col span-12">
+      <label class="acc-label">{{t 'runPipeline.branch.label'}}{{field-required}}</label>
+      {{searchable-select
+        class="form-control"
+        content=branchesChoices
+        value=branch
+      }}
+    </div>
+  </div>
+  {{top-errors errors=errors}}
+  {{save-cancel editing=editing createLabel="action.run" save="save" cancel="cancel"}}
+{{else}}
+  <div class="mt-20 mb-20">
+    {{t 'runPipeline.noBranch' htmlSafe=true}}
+  </div>
+  <div class="footer-actions">
+    <button {{action "cancel"}} class="btn bg-primary">{{t 'generic.closeModal'}}</button>
+  </div>
+{{/if}}
