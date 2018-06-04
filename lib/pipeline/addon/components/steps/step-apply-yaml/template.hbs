@@ -1,0 +1,29 @@
+<div class="row mt-10 mb-10">
+  <label class='acc-label pb-5'>{{t 'newPipelineStep.stepType.applyYaml.yaml'}}{{field-required}}</label>
+  {{input class="form-control" value=config.applyYamlConfig.path}}
+</div>
+{{#advanced-section}}
+  <div class='row mt-10 mb-20'>
+    <label class='acc-label pb-5'>{{t 'newPipelineStep.stepType.env'}}</label>
+    {{form-key-value
+      allowMultilineValue=false
+      initialMap=config.env
+      changed=(action (mut config.env))
+      allowEmptyValue=false
+      normalHeader=(t 'newContainer.environment.label')
+      addActionLabel='newContainer.environment.addAction'
+      keyLabel='newContainer.environment.keyLabel'
+      keyPlaceholder='newContainer.environment.keyPlaceholder'
+      valueLabel='newContainer.environment.valueLabel'
+      valuePlaceholder='e.g. bar'
+    }}
+  </div>
+
+  <div class="row mb-20">
+    {{pipeline-env-from sources=config.envFrom changed=(action (mut config.envFrom))}}
+  </div>
+  
+  {{pipeline-condition type="step" config=config.when}}
+{{/advanced-section}}
+{{top-errors errors=errors}}
+{{save-cancel saveDisabled=state.saveDisabled editing=editing createLabel="generic.add" save="save" cancel="cancel"}}

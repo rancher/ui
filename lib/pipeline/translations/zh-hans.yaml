@@ -7,313 +7,287 @@ languageContribute: "帮助翻译Rancher"
 # Really generic things used in multiple places (use sparingly)
 ##############################
 generic:
+  authorize: 认证 & 同步你自己的代码库
   branch: 分支
+  commit: 提交
   repository: 代码库
   registry: 镜像库
-  tag: Tag
-  destroying: 销毁
-  deploy: 部署
   image: 镜像
-  loginIn: 登录
+  imageName: 镜像名称
+  loginIn: 登入
+  logout: 退出用户 {user}
+  pipeline: 流水线
+  is: 是
+  push: 提交到代码库
 ##############################
 # Resource Actions
 ##############################
 action:
-  approve: 批准
   rerun: 重新运行
-  run: 运行一次
-
-nav:
-  tools:
-    pipeline: Pipeline
+  run: 运行
 
 pipelinesPage:
   table:
     status: 状态
-    noData: 没有定义Pipeline
-    noMatch: 没有Pipeline符合当前搜索
-  add: 添加Pipeline
-  pipelines: Pipelines
-  import: 导入pipeline.yaml
-  importPlaceHolder: 文件内容
-  active: 已激活
-  inactive: 未激活
-  lastActivity: 持续活动
-  nextRun: 下次运行
-  awaitingWebhookPush: 等待上传
-  awaitingWebhookPR: 等待PR
-  triggerManually: 手动触发
-  notDeployed: Pipeline没有启用, 点击<a href="{route}">这里</a>启用Pipline
+    noData: 没有任何流水线
+    noMatch: 没有流水线符合当前搜索
+  pipelines: 流水线
+  lastActivity: 最新运行
+
 pipelinesSetting:
   globalConfigChangeLabel: 使用OAuth应用程序去认证
   customConfigChangeLabel: 使用另一个OAuthe应用程序
   userGlobalConfig: GitHub身份验证已启用，您可以使用它来直接启用Pipline
   gitAuthentication: Git验证
   authenticateWithGit: 用Git进行身份验证
-  changeConfiguration: 要更改已配置的{oauthType}应用, 先取消下面的授权，然后重新进行授权
   authenticatedUsers: 已授权的用户
   sureToDisableOAuth: 您确定要取消授权吗？
   disableOAuth: 取消授权
   dataClear: 清除数据
-  resetData: 重置所有与Pipeline相关的数据
+  resetData: 重置所有与流水线相关的数据
   clearing: 清除中
   sureToClearData: 你确定要清除数据吗？
   clearData: 清除数据
-pipelineHistories:
-  history: 历史
-  all: 所有
-  running: 运行中
-  success: 成功
-  fail: 失败
-  pending: 等待
-  pipline: Pipeline
-  repository: 代码库
-  time: 时间
-  status: 状态
-  deny: 拒绝
-  approve: 批准
-  rerun: 重新运行
-  waitingApproval: 等待批准
-  runPipeline: 运行Pipeline
-  empty: 没有活动的
+
+repositories: 
+  header: 代码库
+  enable: 设置代码库
+  message: 你可以选择一个示例代码库或者使用你自己的代码库来设置流水线。
+  table:
+    repository: 代码库
+    noData: 没有任何代码库
+    noMatch: 没有代码库符合当前搜索
+
 newPipeline:
-  header: 添加Pipeline
-  name:
-    placeholder: 名称
-  description:
-    placeholder: 描述
-  approvers:
-    label: 审核人
-    noAccounts: 如果没有特定的用户选择，每个人都可以批准它。
-  build:
-    variable: 构建变量
-    add: 添加
-  git:
-    repo:
-      label: 代码库
-      placeholder: 例如：https://github.com/mycompany/mypipeline.git
-    branch: 分支
-  image:
-    label: 目标镜像
-    placeholder: 构建
-  builder:
-    label: 构建镜像
-    buildIn: Build In
-    custom: 自定义
+  steps:
+    label: 流水线配置
   save: 保存
-  add: 完成
-  schedule:
-    title: 定时任务
-    detail: 定时触发Pipeline
-    interval: 时间间隔
-    custom: 自定义
-    cronSyntax: Cron语法
-    everyDay: 每天(凌晨4:00 am)
-    cronTimezone: Cron时区
-    tip: 当有新push时才触发Pipeline
-  parameters: 变量
-  parameterTip: 设定流水线环境变量
-  active: 激活
 
 newPipelineStage:
+  errors:
+    name:
+      required: 请输入名称。
   header:
     create: 添加阶段
     edit: 编辑阶段
-  runningMode: 运行模式
-  modeParallel: 并行
-  modeSerial: 串行
-  parallelTip: 并行运行
-  serialTip: 串行运行
-  conditions: 条件
-  requireApproval: 需要审核
-  approvers: 审核人
-  env: 变量
-  operator: 操作符
-  value: 值
-  name: 名称
+  name:
+    placeholder: "例如: compile"
   addStep: 添加步骤
   trigger:
-    webhook: 当有新代码push时，自动触发Pipeline任务
-    cron: 定时自动构建pipeline任务
-    everyday: 每天
-    custom: 使用自定义时间表
-    webhookPR: 每当有新的PR时，自动构建Pipeline任务
-    webhookTag: 每当有新tag时,自动构建Pipeline任务
+    webhook: Push
+    webhookPR: Pull Request
+    webhookTag: Tag
+
 newPipelineStep:
   header:
     create: 添加步骤
     edit: 编辑步骤
   stepType:
     label: 步骤类型
-    image: 镜像
+    image: 基础镜像
     env: 环境变量
+    enableBranch: 设置流水线。
+    applyYaml:
+      label: 部署YAML
+      yaml: YAML路径
+      env: 
+        header: 环境变量
+        addActionLabel: 添加变量
+        keyPlaceholder: IMAGE_TAG
+      errors:
+        path:
+          required: 请输入YAML路径。
     scm:
-      add: 添加代码库
-      label: 源码管理
-      warning: 选择一个代码库来创建你的Pipeline
+      noYaml: 代码库中没有<code>.rancher-pipeline.yml</code>文件。
+      demoGroup: 示例代码库
+      selectRepository: 代码库
+      add: 选择代码库
+      refresh: 刷新代码库
       user: 用户
-      branch: 分支
-      webhook: Webhook
-      webhookTip: 当有新push时，自动触发Pipeline
-      noPermission: 没有权限
-      settingWarning1: 请完成代码仓库授权，
-      settingWarning2: 点击这里
-      settingWarning3: 加载代码仓库
-      note: 注意
-      finishOauth1: 已经完成授权？
-      finishOauth2: 点击这里
-      finishOauth3: 加载代码仓库
-      trigger: 构建触发器(可选)
-      importFromRepo: 从代码库导入Pipeline配置
-      importPipelineSuccess: 从<span class="text-info">{branch}</span>分支导入
-      importPipelineFail: 没有发现Pipeline
-      branchConditionsEnums:
-        only: Only the branch
-        except: Everything but
-        all: All branches
-      noWebhook: No permission to set webhook
+      trigger: 流水线触发
+      noWebhook: 没有设置代码库Webhook的权限
     build:
-      here: 这里
-      label: 上传镜像
-      source: Dockerfile地址源
-      readSourceCode: 读取源代码
-      readFile: 从文件读取
-      dockerFilePath: Dockerfile路径(相对于工作区)
-      imageTag: 镜像Tag
-      buildPath: 构建上下文(相对于工作区)
-      push: 推送到镜像库
-      pushTo: 这个镜像将被推送到
-      pushWarning1: 这个镜像库
-      pushWarning2: 未经认证，单击
-      pushWarning3: 去认证
-      scope: "范围：可用于此项目中的所有命名空间"
-      registryExist: 使用{username}注册的镜像仓库{registry}
-      stepsChoices:
-        task: run a script
-        build: 发布镜像
+      imageName:
+        placeholder: "例如：example/app:v1"
+      errors:
+        tag:
+          required: 请输入镜像名称。
+        dockerfilePath:
+          required: 请输入Dockerfile的路径。
+        registry:
+          required: 请选择镜像仓库。
+      noRegistry: 没有配置镜像仓库。你可以点击<a href="{route}" target="_blank">这里</a>配置镜像仓库。
+      pushRemote: 推送镜像到远端镜像仓库。
+      label: 构建并发布镜像
+      dockerFilePath: Dockerfile路径
+      buildContext: 构建上下文
     task:
-      label: 运行一个脚本
-      runAsService: 作为服务运行
-      runAsServiceTip: 单击此按钮使之成为一个长时间运行的进程/容器
-      shellScript: Shell脚本
-      customEntryPoint: 自定义Entrypoint
+      label: 运行脚本
+      shellScript: 脚本
+      customEntryPoint: 自定义EntryPoint
+      secret: 从密文中注入环境变量
+      errors:
+        image:
+          required: 请输入基础镜像。
+        shellScript:
+          required: 请输入要运行的脚本。
+      privileged:
+        label: 以特权模式运行该步骤。
+      shell: 
+        label: 脚本
       command:
         label: 命令
-        placeholder: Arguments of entrypoint
-      commandLabel: 'sh'
+        placeholder: EntryPoint的参数
       entryPoint:
         label: EntryPoint
-        placeholder: If you want use the default entrypoint, just leave me empty
-    timeout: 超时时间
-    timeoutWarning: 如果某个步骤在指定时间(以分钟为单位，默认3分钟)内未完成，则构建将自动终止并标记为“失败”
-    minutes: 分钟
-    conditions: 条件
-    addExpression: 添加表达式
-    noExpression: 当前没有表达式
-    allThese: 任意
-    allTheseInfo: 满足任意一个条件时运行
-    anyThese: 所有
-    anyTheseInfo: 满足所有条件时运行
-    targetEnv:
-      label: 目标环境非本环境
-      tip: 默认目标环境为本环境，如果要将目标环境设定为其他环境，请勾选本选项
-    language:
-      header: 语言环境
+        placeholder: 该项留空将使用默认的EntryPoint
 
 authPage:
-  github:
-    standard: GitHub
-    enterprise: GitHub企业版
+  setting:
+    executor: 
+      label: 最大流水线运行个数
+      scale: 数量
+  header: 流水线设置
+  setup: "1. 配置{type}应用"
+  authenticated:
     header:
-      enabled:
-        label: "GitHub已启用"
-        required: |
-          {appName}已被设置为允许{orgs, plural,
-            =0{无组织}
-            =1{# 个组织}
-            other{# 个组织}
-          }和{users, plural,
-            =0{无用户}
-            =1{# 个用户}
-            other {# 个用户}
-          }.
-        restricted: |
-          {appName}已被设置为允许{orgs, plural,
-            =0{无组织}
-            =1{# 个组织}
-            other{# 个组织}
-          }和{users, plural,
-            =0{无用户}
-            =1{# 个用户}
-            other {# 个用户}
-          }.
-        unrestricted: "已被设置为允许任何{github}用户访问"
-      disabled:
-        label: GitHub未配置
-        labelGitlab: GitLab未设置
-        warning: "{appName}可以设置为允许一组GitHub用户和组织成员访问。由于当前未完成此设置，所以任何可以访问此页面(或API)的用户都对系统有完全控制权限"
+      text: 代码库认证信息
+      enterpriseHostName: "地址:"
+      clientId:
+        text: "客户端ID:"
+  testAuth:
+    header: '3. 测试并启用验证'
+    subtext: '通过测试认证来检查你的应用程序是否配置正确:'
+    buttonText:
+      preVariable: 授权
+      post: 保存中
+  form:
+    headerVariable: '2. 配置流水线使用你的{SCM}验证'
+    isEnterprise:
+      labelText: 使用https连接
+    enterprise:
+      labelText: 使用私有{type}企业版部署
+    enterpriseHost:
+      labelText: 地址
+      placeholder: '例如 example.com'
+  gitlab:
+    auth: '标准GitLab，<a href="https://gitlab.com/profile/applications" target="_blank">点击此处</a>在弹出的新窗口中进行应用设置。'
+    enterpriseAuth: "企业版GitLab，请登录你的账号，点击Settings，然后点击Applications进行设置"
+    ul:
+      li2:
+        text: '填写表单内容:'
+        ul:
+          li1: '<b>名称：</b> <span class="text-muted">应用名称，例如：My Pipeline</span>'
+          li2: 回调URL：
+      li3:
+        text: '点击"Save application"'
+    form:
+      subtextVariable: '将新创建应用的应用ID和秘钥复制粘贴到对应的输入框中'
+      clientId:
+        labelText: 应用ID
+      clientSecret:
+        labelText: 秘钥
 
-    authenticated:
-      header:
-        text: 认证信息
-        enterpriseHostName: "企业版主机:"
-        clientId:
-          text: "客户端ID:"
-          helpText: "要修改设置的GitHub应用，请在下方禁用访问控制后重新设置"
-      disableAccess:
-        header: "危险区域&trade;"
-        warning: '<b class="text-danger">警告:</b>禁用访问控制将导致任何能够访问此页面或API的用户拥有对{appName}的完全控制权限'
-        confirmDisable: "确认? 再次点击将关闭访问控制"
-        disable: 关闭访问控制
-    notAuthenticated:
-      header: "1. 设置GitHub应用"
-      headerVariable: "1. 设置{GitHub}应用"
-      ul:
-        li1:
-          text: '标准GitHub，<a href="https://github.com/settings/developers" target="_blank">点击此处</a>在弹出的新窗口中进行应用设置'
-          gitlabText: '标准GitLab，<a target="blank" href="https://gitlab.com/profile/applications">点击此处</a>在弹出的新窗口中进行应用设置'
-          ul:
-            li1: "企业版GitHub，请登录你的账号，点击Settings，然后点击Applications进行设置"
-        li2:
-          text: '点击"Register new application"并填写表单内容:'
-          text2: '填写"Add new application"表格:'
-          ul:
-            li1: '<b>Application name：</b> <span class="text-muted">应用名称, 例如：My {appName}</span>'
-            li1_2: '<b>Name：</b> <span class="text-muted">应用名称, 例如：My {appName}</span>'
-            li2: 主页URL：
-            li3: '<b>Application description：</b> <span class="text-muted">应用描述，可选</span>'
-            li4: 授权回调URL：
-            li4_2: '重定向URL：'
-        li3:
-          text: '点击"Register Application"'
-          text2: '点击"Save application" '
-      form:
-        header: '2. 配置{appName}使用你的GitHub验证'
-        headerVariable: '2. 设置{appName}使用你的{SCM}应用验证'
-        subtext: '将新创建的GitHub应用Client ID和Secret复制粘贴到上方的对应的输入框中'
-        subtextVariable: '将新创建的{GitHub}应用Client ID和Secret复制粘贴到上方对应输入框中'
-        clientId:
-          labelText: 客户端ID
-        clientSecret:
-          labelText: 客户端秘钥
-        ghEnterprise:
-          labelText: 使用私有GitHub企业版部署
-        glPrivate:
-          labelText: 使用私有GitLab部署
-        isGHEnterprise:
-          labelText: 使用安全连接
-        glEnterprise:
-          labelText: 使用私有GitHub企业版部署
-        enterpriseHost:
-          labelText: 企业版主机
-          placeholder: '例如：github.example.com'
-          placeholder2: '例如：gitlab.example.com'
-    testAuth:
-      header: '3. 测试并启用验证'
-      subtext: '通过测试认证来检查你的应用程序是否配置正确: '
-      buttonText:
-        pre: GitHub验证
-        preVariable: 启用Pipeline
-        post: 等待GitHub返回
-importPage:
-  header: 导入 pipeline.yaml
+  github:
+    auth: '标准GitHub，<a href="https://github.com/settings/developers" target="_blank">点击此处</a>在弹出的新窗口中进行应用设置。'
+    enterpriseAuth: "企业版GitHub，请登录你的账号，点击Settings，然后点击Applications进行设置"
+    ul:
+      li2:
+        text: '点击"Register new application"并填写表单内容:'
+        ul:
+          li1: '<b>应用名称：</b> <span class="text-muted">应用名称，例如：My Pipeline</span>'
+          li2: 主页URL：
+          li3: '<b>应用描述：</b> <span class="text-muted">应用描述，可选</span>'
+          li4: 授权回调URL：
+      li3:
+        text: '点击"Register Application"'
+    form:
+      subtextVariable: '将新创建应用的Client ID和Secret复制粘贴到对应的输入框中'
+      clientId:
+        labelText: 客户端ID
+      clientSecret:
+        labelText: 客户端秘钥
+
+pipelineDetailPage:
+  header: '流水线: {name}'
+  repositry: 代码库
+  lastRun: 最新运行
+  triggered: 触发时间
+  commitMessage: 提交信息
+  activity:
+    title: 运行
+    detail: 流水线的历史运行列表
+    table:
+      noData: 没有任何运行。
+      noMatch: 没有运行符合当前搜索。
+      status: 状态
+      branch: 分支
+      runNumber: 运行
+      commit: 提交信息
+      triggered: 触发时间
+
+runPipeline:
+  title: '运行 "{name}"'
+  noBranch: 该代码库没有任何<code>.rancher-pipeline.yml</code>文件。你可以点击<b>编辑配置</b>来通过向导的方式配置流水线，也可以点击<b>查看/编辑YAML</b>直接修改配置。
+  branch: 
+    label: '分支'
+
+pipelineSetting:
+  title: '流水线设置 "{name}"'
+
+buildDetailPage:
+  header: '流水线运行: #{name}'
+  duration: 运行时间
+  stillRunning: 仍在运行
+  log:
+    title: 详细日志
+    detail: 当前流水线运行的详细日志。
+
+
+enablePipeline:
+  header: 启用代码库认证
+  configNow: 马上设置
+  helpText:
+    代码库认证尚未开启。你需要先开启代码库认证。
+  noPermission:
+    代码库认证尚未开启。你需要联系项目管理员设置认证。
+
+editYamlPipeline:
+  title: '查看/编辑 YAML "{name}"'
+  branch: 
+    label: '分支'
+
+editPipelineConfig:
+  header: 修改流水线配置
+  pushToReop: 将如下的流水线配置自动推送到远端代码库。
+  download: 仅下载流水线配置。
+  timeout:
+    label: 超时时间
+    helpText: 如果Build在该时间内没有执行完成，则终止本次Build。
+pipelineSelector:
+  header: 触发规则
+  table:
+    type: 类型
+    value: 值
+  title: 
+    include: '运行该{type}当:'
+    exclude: '不运行该{type}当:'
+  addRule: 添加规则
+  branch: 分支
+  event: 事件
+  pr: Pull Request
+  push: Push
+  tag: Tag
+
+fromSecret:
+  addFrom: 从密文中添加
+  secret:
+    label: 密文
+  prefixOrKey:
+    label: 键
+  prefix:
+    label: 别名
+  keyLabel: 变量
+  keyPlaceholder: 例如： FOO
+  valueLabel: 值
+  valuePlaceholder: 例如： bar

@@ -1,0 +1,27 @@
+<div class="row">
+  <div class="anchor-top"></div>
+  <div class="col span-4" style="position: sticky;top: 0px;display:inline-block;vertical-align: top;">
+    {{build-stages
+      stageInfo=activity.pipelineConfig.stages
+      body=activity.stages
+      stageIndexLog=logIndex.stageIndex
+      stepIndexLog=logIndex.stepIndex
+      logKeyChanged=(action "logKeyChanged")
+      activity=activity
+      sortBy=sortBy
+      bulkActions=true
+      search=true
+      paging=true
+      showHost=true
+      showInstanceState=false
+      groupByKey=groupBy
+      groupByRef="stack"
+    }}
+  </div>
+  <div class="col span-8 pull-right" style="display:inline-block;">
+    {{log-view 
+      activity=activity
+      logIndex=logIndex
+    }}
+  </div>
+</div>

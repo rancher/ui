@@ -1,0 +1,23 @@
+<div class="accordion-header header-pipeline item pipeline-step mb-10 {{if notRun 'Waiting' step.state}}" {{action 'showLogs' stageIndex stepIndex}}>
+  <div class="title">
+    <div class="text-cell">{{pipeline-stages-info stageInfo stageIndex stepIndex true}}</div>
+    <div class="text-cell">
+      <i class="icon" class={{pipeline-status-to-icon step.state}}></i>&nbsp;
+      {{#unless notRun}}
+        {{step.state}}
+      {{/unless}}
+    </div>
+  </div>
+  {{#unless waiting}}
+    <div class="badge-state">
+      <p class="mt-0 mb-0"><i class="icon icon-history"></i>
+        {{#if (eq step.state 'Building')}}
+          {{date-duration dateNow step.started}}
+        {{else}}
+          {{date-duration step.ended step.started}}
+        {{/if}}
+      </p>
+    </div>
+  {{/unless}}
+  <i role="button" class="icon icon-play eased btn text-small p-10 icon-rotate-180 {{if (eq stageIndexLog stageIndex) (if (eq stepIndexLog stepIndex) '' 'hide') 'hide'}}" style="position: absolute;top: 2px;right: -32px;color: #3d3d3d !important;font-size: 20px;"></i>
+</div>

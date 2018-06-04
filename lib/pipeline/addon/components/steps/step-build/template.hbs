@@ -1,0 +1,25 @@
+<div class="row mt-10 mb-10">
+  <label class='acc-label pb-5'>{{t 'newPipelineStep.stepType.build.dockerFilePath'}}{{field-required}}</label>
+  {{input class="form-control" value=config.publishImageConfig.dockerfilePath}}
+</div>
+
+<dvi class="row mt-10 mb-10">
+  <label class='acc-label pb-5'>{{t 'generic.imageName'}}{{field-required}}</label>
+  {{input class="form-control" value=config.publishImageConfig.tag placeholder=(t 'newPipelineStep.stepType.build.imageName.placeholder')}}
+</dvi>
+
+<div class="row mt-10 mb-10">
+  {{input-registry
+    registries=registries
+    config=config.publishImageConfig
+  }}
+</div>
+{{#advanced-section}}
+  <div class="row mb-10">
+    <label class='acc-label pb-5'>{{t 'newPipelineStep.stepType.build.buildContext'}}</label>
+    {{input class="form-control" value=config.publishImageConfig.buildContext}}
+  </div>
+  {{pipeline-condition type="step" config=config.when}}
+{{/advanced-section}}
+{{top-errors errors=errors}}
+{{save-cancel saveDisabled=state.saveDisabled editing=editing createLabel="generic.add" save="save" cancel="cancel"}}

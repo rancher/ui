@@ -15,7 +15,8 @@ const rootNav = [
       'ingresses',
       'authenticated.project.dns',
       'volumes',
-      'authenticated.project.pipeline'
+      'authenticated.project.pipeline.pipelines',
+      'authenticated.project.pipeline.repositories',
     ],
   },
 
@@ -70,6 +71,14 @@ const rootNav = [
         resourceScope:  'global',
         resource:       [],
         ctx:            [getProjectId],
+      },
+      {
+        id:             'tools-pipeline',
+        localizedLabel: 'nav.tools.pipeline',
+        icon:           'icon icon-garbage',
+        route:          'authenticated.project.pipeline.settings',
+        resource:       ['sourcecodeproviderconfig'],
+        resourceScope:  'project',
       },
       {
         id:             'infra-registries',
@@ -222,14 +231,6 @@ const rootNav = [
         resourceScope:  'global',
         resource:       [],
         ctx:            [getClusterId],
-      },
-      { divider: true },
-      {
-        id:             'cluster-tools-pipeline',
-        localizedLabel: 'nav.tools.pipeline',
-        route:          'authenticated.cluster.pipeline.settings',
-        ctx:            [getClusterId],
-        resourceScope:  'cluster',
       },
     ],
   },

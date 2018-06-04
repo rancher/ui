@@ -6,315 +6,286 @@ languageContribute: "Help Translate Rancher"
 # Really generic things used in multiple places (use sparingly)
 ##############################
 generic:
+  authorize: Authorize & Fetch Your Own Repositories
   branch: Branch
+  commit: Commit
   repository: Repository
   registry: Registry
-  tag: Tag
-  destroying: Destroying
-  deploy: Deploy
   image: Image
+  imageName: Image Name
   loginIn: Login in
+  logout: Log Out User {user}
+  pipeline: Pipeline
+  is: is
+  push: Push to Repository
 ##############################
 # Resource Actions
 ##############################
 action:
-  approve: Approve
   rerun: Rerun
-  run: Run Once
-
-nav:
-  tools:
-    pipeline: Pipeline
+  run: Run
 
 pipelinesPage:
   table:
     status: Status
     noData: There are no pipelines defined
     noMatch: No pipelines match the current search.
-  add: Add Pipeline
   pipelines: Pipelines
-  import: Import YAML
-  importPlaceHolder: File Contents
-  active: Active
-  inactive: Inactive
-  lastActivity: LastActivity
-  nextRun: NextRun
-  awaitingWebhookPush: Awaiting Push
-  awaitingWebhookPR: Awaiting PR
-  triggerManually: Trigger Manually
-  notDeployed: Pipeline is not enabled, click <a href="{route}">here</a> to enable Pipeline
+  lastActivity: Last Run
+
 pipelinesSetting:
   globalConfigChangeLabel: Use OAuth Application in Authentication
   customConfigChangeLabel: Use another OAuth Application
-  userGlobalConfig: GitHub Authentication is enabled, you can use it to enable Pipeline directly.
+  userGlobalConfig: GitHub Authentication is enabled, you can use it directly.
   gitAuthentication: Git Authentication
   authenticateWithGit: Authenticate with git repository
-  changeConfiguration: To change the configured {oauthType} application, disable OAuth Authentication below and then set it up again.
   authenticatedUsers: Authenticated Users
-  sureToDisableOAuth: Are You Sure To Disable Pipeline?
-  disableOAuth: Disable Pipeline
+  sureToDisableOAuth: Are You Sure To Disable Repository Authentication?
+  disableOAuth: Disable Repository Authentication
   dataClear: Data Clear
   resetData: Reset all of the pipeline related data.
   clearing: Clearing
   sureToClearData: Are You Sure To Clear Data?
   clearData: Clear Data
-pipelineHistories:
-  history: History
-  all: All
-  running: Running
-  success: Success
-  fail: Fail
-  pending: Pending
-  pipline: Pipeline
-  repository: Repository
-  time: Time
-  status: Status
-  deny: Deny
-  approve: Approve
-  rerun: Rerun
-  waitingApproval: Waiting Approval
-  runPipeline: Run Pipeline
-  empty: No Activity
+
+repositories: 
+  header: Repositories
+  enable: Configure Repositories
+  message: You can select an example repository or fetch your own repositories to setup pipelines.
+  table:
+    repository: Repository
+    noData: There are no repositories
+    noMatch: No repositories match the current search
+
 newPipeline:
-  header: Add Pipeline
-  name:
-    placeholder: Name
-  description:
-    placeholder: Description
-  approvers:
-    label: Approvers
-    noAccounts: Every one can approve it if there are no specific users selected
-  build:
-    variable: Build Variables
-    add: Add Another
-  git:
-    repo:
-      label: Repository
-      placeholder: e.g. https://github.com/mycompany/mypipeline.git
-    branch: Branch
-  image:
-    label: Target image
-    placeholder: builded
-  builder:
-    label: Builder Image
-    buildIn: Build In
-    custom: Custom
+  steps:
+    label: Configuration
   save: Save
-  add: Add
-  schedule:
-    title: Schedule
-    detail: Schedule to trigger pipeline
-    interval: Interval Pattern
-    custom: Custom
-    cronSyntax: Cron Syntax
-    everyDay: Every day(at 4:00am)
-    cronTimezone: Cron Timezone
-    tip: Run when there is new commit
-  parameters: Parameters
-  parameterTip: Set the pipeline environment variables
-  active: Active
 
 newPipelineStage:
+  errors:
+    name:
+      required: Name is required.
   header:
-    create: Add a Stage
+    create: Add Stage
     edit: Edit Stage
-  runningMode: Step Running Mode
-  modeParallel: parallel
-  modeSerial: serial
-  parallelTip: Make steps running simultaneously
-  serialTip: Make steps running sequentially
-  conditions: Conditions
-  requireApproval: Requires Approval
-  approvers: Approvers
-  env: Env
-  operator: Operator
-  value: Value
-  name: Name
+  name:
+    placeholder: e.g. compile
   addStep: Add a Step
   trigger:
-    webhook: Automatically build this pipeline whenever there is a git commit
-    cron: Automatically build this pipeline
-    everyday: Every day at
-    custom: Using a custom schedule
-    webhookPR: Automatically build this pipeline whenever there is a new PR
-    webhookTag: Automatically build this pipeline whenever there is a new Tag
+    webhook: Push
+    webhookPR: Pull Request
+    webhookTag: Tag
+
 newPipelineStep:
   header:
-    create: Add a step to stage
-    edit: Edit step
+    create: Add Step
+    edit: Edit Step
   stepType:
     label: Step Type
-    image: Image
+    image: Base Image
     env: Environment Variables
+    enableBranch: Configure pipeline for this branch.
+    applyYaml:
+      label: Deploy YAML
+      yaml: YAML Path
+      env: 
+        header: Environment Variables
+        addActionLabel: Add Variable
+        keyPlaceholder: IMAGE_TAG
+      errors:
+        path:
+          required: YAML Path is required.
     scm:
-      add: Add Repository
-      label: Source Code Management
-      warning: To create your pipeline, please specify the source code repository
+      noYaml: There is no <code>.rancher-pipeline.yml</code> file in the repository.
+      demoGroup: Example repositories
+      selectRepository: Repository
+      add: Select Repository
+      refresh: Refresh Repositories
       user: User
-      branch: Branch
-      webhook: Webhook
-      webhookTip: Automatically run pipeline after commits
-      noPermission: no permissions
-      settingWarning1: Please finish the OAuth of GitHub in
-      settingWarning2: click here
-      settingWarning3: to load your repository
-      note: Note
-      finishOauth1: Have finished the OAuth?
-      finishOauth2: click here
-      finishOauth3: to load your repository
-      trigger: Optional build trigger
-      importFromRepo: Import Pipeline From Repository
-      importPipelineSuccess: Imported From Branch <span class="text-info">{branch}</span>
-      importPipelineFail: No Pipeline Found
-      importPipelineError: The yaml in the repository is invalid.
-      branchConditionsEnums:
-        only: Only the branch
-        except: Everything but
-        all: All branches
-      noWebhook: No permission to set webhook
+      trigger: Pipeline Trigger
+      noWebhook: No permission to set repositry webhooks
     build:
-      here: here
-      label: publish an image
-      source: Source of Dockerfile
-      readSourceCode: Read from source code
-      readFile: Read from a file
-      dockerFilePath: Dockerfile Path(relative to workspace)
-      imageTag: Image Tag
-      buildPath: Build Context(relative to workspace)
-      push: push to registry
-      pushTo: This image will be pushed to
-      pushWarning1: The registry
-      pushWarning2: haven't been authenticated, click
-      pushWarning3: to authenticate it.
-      scope: "Scope: Available to all namespaces in this project"
-      registryExist: Registry {registry} registered with {username}
-      stepsChoices:
-        task: run a script
-        build: publish an image
+      imageName:
+        placeholder: e.g. example/app:v1
+      errors:
+        tag:
+          required: Image Name is required.
+        dockerfilePath:
+          required: Dockerfile Path is required.
+        registry:
+          required: Registry is required.
+      noRegistry: There is no registries. You can click <a href="{route}" target="_blank">here</a> to add a registry.
+      pushRemote: Push image to remote repository.
+      label: Build and Publish Image
+      dockerFilePath: Dockerfile Path
+      buildContext: Build Context
     task:
-      label: run a script
-      runAsService: Run As a Service
-      runAsServiceTip: Click this to make it a long running process/container.
+      label: Run Script
       shellScript: Shell Script
       customEntryPoint: Custom Entrypoint
+      secret: Inject Environment Variables From Secrets
+      errors:
+        image:
+          required: Base Image is required.
+        shellScript:
+          required: Shell Script is required.
+      privileged:
+        label: Run this step in privileged mode.
+      shell: 
+        label: Shell
       command:
         label: Command
         placeholder: Arguments of entrypoint
-      commandLabel: 'sh'
       entryPoint:
         label: EntryPoint
         placeholder: If you want use the default entrypoint, just leave me empty
-    timeout: Timeout
-    timeoutWarning: If a step does not complete by the specified amount of time (in minutes; at least 3), then the build will be terminated automatically and marked as Fail.
-    minutes: minutes
-    conditions: Conditions
-    addExpression: Add Expressions
-    noExpression: No Expressions yet.
-    allThese: Any of these
-    allTheseInfo: Run when at least one of the conditions are met
-    anyThese: All of these
-    anyTheseInfo: Run when all of the conditions are met
-    targetEnv:
-      label: Target another environment
-      tip: Default target is current environment, if you want target another enviroment, then check this option.
-    language:
-      header: Language Environment
 
 authPage:
-  github:
-    standard: GitHub
-    enterprise: GitHub Enterprise
+  setting:
+    executor: 
+      label: The maximum number of pipeline executors
+      scale: Scale
+  header: Pipeline Setting
+  setup: "1. Setup a {type} application"
+  authenticated:
     header:
-      enabled:
-        label: "GitHub is enabled"
-        required: |
-          {appName} is configured to allow access to {orgs, plural,
-            =0 {no organizations}
-            =1 {# organization}
-            other {# organizations}
-          } and {users, plural,
-            =0 {no users}
-            =1 {# user}
-            other {# users}
-          }.
-        restricted: |
-          {appName} is configured to allow access to environment members, {orgs, plural,
-            =0 {no organizations}
-            =1 {# organization}
-            other {# organizations}
-          } and {users, plural,
-            =0 {no users}
-            =1 {# user}
-            other {# users}
-          }.
-        unrestricted: "{appName} is configured to allow access to any {github} user."
-      disabled:
-        label: GitHub is not configured
-        labelGitlab: GitLab is not configured
-        warning: "{appName} can be configured to restrict access to a set of GitHub users and organization members.  This is not currently set up, so anybody that reach this page (or the API) has full control over the system."
+      text: Repository Authentication Information
+      enterpriseHostName: "Host:"
+      clientId:
+        text: "Client ID:"
+  testAuth:
+    header: '3. Test and enable authentication'
+    subtext: 'Check that your application is configured correctly by testing authentication with it:'
+    buttonText:
+      preVariable: Authenticate
+      post: Creating
+  form:
+    headerVariable: '2. Configure pipeline to use your {SCM} for authentication'
+    isEnterprise:
+      labelText: Use a https connection
+    enterprise:
+      labelText: Use a private {type} enterprise installation
+    enterpriseHost:
+      labelText: Enterprise Host
+      placeholder: 'e.g. example.com'
+  gitlab:
+    auth: 'For standard GitLab, <a href="https://gitlab.com/profile/applications" target="_blank">click here</a> to go applications settings in a new window.'
+    enterpriseAuth: "For GitLab Enterprise, login to your account.  Click on Settings, then Applications."
+    ul:
+      li2:
+        text: 'Fill out the form:'
+        ul:
+          li1: '<b>Name:</b> <span class="text-muted">Anything you like, e.g. My Pipeline</span>'
+          li2: Redirect URI
+      li3:
+        text: 'Click "Save application" '
+    form:
+      subtextVariable: 'Copy and paste the Application Id and Secret from your newly-created application.'
+      clientId:
+        labelText: Application Id
+      clientSecret:
+        labelText: Secret
+  github:
+    auth: 'For standard GitHub, <a href="https://github.com/settings/developers" target="_blank">click here</a> to go applications settings in a new window.'
+    enterpriseAuth: "For Github Enterprise, login to your account.  Click on Settings, then Applications."
+    ul:
+      li2:
+        text: 'Click "Register new application" and fill out the form:'
+        ul:
+          li1: '<b>Application name:</b> <span class="text-muted">Anything you like, e.g. My Pipeline</span>'
+          li2: Homepage URL
+          li3: '<b>Application description:</b> <span class="text-muted">Anything you like, optional</span>'
+          li4: Authorization callback URL
+      li3:
+        text: 'Click "Register Application" '
+    form:
+      subtextVariable: 'Copy and paste the Client ID and Secret from the upper-right corner of your newly-created application.'
+      clientId:
+        labelText: Client ID
+      clientSecret:
+        labelText: Client Secret
 
-    authenticated:
-      header:
-        text: Authentication
-        enterpriseHostName: "Enterprise Host:"
-        clientId:
-          text: "Client ID:"
-          helpText: "To change the configured GitHub application, disable access control below and then set it up again."
-      disableAccess:
-        header: "Danger Zone&trade;"
-        warning: '<b class="text-danger">Caution:</b> Disabling access control will give complete control over {appName} to anyone that can reach this page or the API.'
-        confirmDisable: "Are you sure?  Click again to really disable access control"
-        disable: Disable access control
-    notAuthenticated:
-      header: "1. Setup a GitHub Application"
-      headerVariable: "1. Setup a GitHub Application"
-      ul:
-        li1:
-          text: 'For standard GitHub, <a href="https://github.com/settings/developers" target="_blank">click here</a> to go applications settings in a new window.'
-          gitlabText: 'For standard GitLab, click <a target="blank" href="https://gitlab.com/profile/applications">here</a> to go applications settings in a new window.'
-          ul:
-            li1: "For Github Enterprise, login to your account.  Click on Settings, then Applications."
-        li2:
-          text: 'Click "Register new application" and fill out the form:'
-          text2: 'Fill out the "Add new application" form:'
-          ul:
-            li1: '<b>Application name:</b> <span class="text-muted">Anything you like, e.g. My {appName}</span>'
-            li1_2: '<b>Name:</b> <span class="text-muted">Anything you like, e.g. My {appName}</span>'
-            li2: Homepage URL
-            li3: '<b>Application description:</b> <span class="text-muted">Anything you like, optional</span>'
-            li4: Authorization callback URL
-            li4_2: 'Redirect URI:'
-        li3:
-          text: 'Click "Register Application" '
-          text2: 'Click "Save application" '
-      form:
-        header: '2. Configure {appName} to use your application for authentication'
-        headerVariable: '2. Configure {appName} to use your {SCM} for authentication'
-        subtext: 'Copy and paste the Client ID and Secret from the upper-right corner of your newly-created application.'
-        subtextVariable: 'Copy and paste the Client ID and Secret from the upper-right corner of your newly-created application.'
-        clientId:
-          labelText: Client ID
-        clientSecret:
-          labelText: Client Secret
-        ghEnterprise:
-          labelText: Use a private GitHub Enterprise installation
-        glPrivate:
-          labelText: Use a private GitLab installation
-        isGHEnterprise:
-          labelText: Use a secure connection
-        glEnterprise:
-          labelText: Use a private GitLab Enterprise installation
-        enterpriseHost:
-          labelText: Enterprise Host
-          placeholder: 'e.g. github.example.com'
-          placeholder2: 'e.g. gitlab.example.com'
-    testAuth:
-      header: '3. Test and enable authentication'
-      subtext: 'Check that your application is configured correctly by testing authentication with it:'
-      buttonText:
-        pre: Authenticate with GitHub
-        preVariable: Enable Pipeline
-        post: Creating
+pipelineDetailPage:
+  header: 'Pipeline: {name}'
+  repositry: Repositry
+  lastRun: Last Run
+  triggered: Triggered
+  commitMessage: Commit Message
+  activity:
+    title: Activities
+    detail: Build history of this pipeline.
+    table:
+      noData: There are no activities.
+      noMatch: No activities match the current search.
+      status: Status
+      branch: Branch
+      runNumber: Run
+      commit: Commit
+      triggered: Triggered
 
-importPage:
-  header: Import pipeline.yaml
+runPipeline:
+  title: 'Run "{name}"'
+  noBranch: There is no <code>.rancher-pipeline.yml</code> file in the repository. You can click <b>Edit Config</b> to edit it in wizard or click <b>View/Edit YAML</b> to edit in YAML.
+  branch: 
+    label: 'Branch'
+
+pipelineSetting:
+  title: 'Pipeline Setting "{name}"'
+
+buildDetailPage:
+  header: 'Pipeline Run: #{name}'
+  duration: Duration
+  stillRunning: Still Running
+  log:
+    title: Detailed Log
+    detail: The detailed log of the current pileine run.
+
+
+enablePipeline:
+  header: Enable Repository Authentication
+  configNow: Config Now
+  helpText:
+    Repository authentication is not enabled. You need to enable it first.
+  noPermission:
+    Repository authentication is not enabled. You need to contact project owner to enalbe it first.
+
+editYamlPipeline:
+  title: 'View/Edit YAML "{name}"'
+  branch: 
+    label: 'Branch'
+
+editPipelineConfig:
+  header: Edit Pipeline Configuration
+  pushToReop: Push the modified configuration to remote repository automatically.
+  download: Download the modified configuration only.
+  timeout:
+    label: Timeout
+    helpText: How long to wait without seeing build finished before aborting the build.
+pipelineSelector:
+  header: Trigger Rules
+  table:
+    type: Type
+    value: Value
+  title: 
+    include: 'Run this {type} when:'
+    exclude: 'Do Not Run this {type} when:'
+  addRule: Add Rule
+  branch: Branch
+  event: Event
+  pr: Pull Request
+  push: Push
+  tag: Tag
+
+fromSecret:
+  addFrom: Add From Secret
+  secret:
+    label: Secret
+  prefixOrKey:
+    label: Key
+  prefix:
+    label: Alias
+  keyLabel: Variable
+  keyPlaceholder: e.g. FOO
+  valueLabel: Value
+  valuePlaceholder: e.g. bar

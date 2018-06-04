@@ -1,0 +1,23 @@
+<div class="accordion-header header-pipeline {{if statusClass statusClass 'Waiting'}}">
+  <div class="expand" {{action 'showLogs' stageIndex stepIndex}} style="padding-top: 20px;color:white !important;">{{index}}</div>
+  <div class="title" {{action 'showLogs' stageIndex stepIndex}}>
+    <div class="text-cell">{{title}}</div>
+    {{#if notRun}}
+      <div class="text-cell">
+        <i class="icon" class={{pipeline-status-to-icon status}}></i>&nbsp;
+      </div>
+    {{else}}
+      <div class="text-cell">
+        <i class="icon" class={{pipeline-status-to-icon status}}></i>&nbsp;{{status}}
+      </div>
+    {{/if}}
+  </div>
+  {{#if (and (not waiting) (not building))}}
+    <div class="badge-state" {{action 'showLogs' stageIndex stepIndex}}>
+      <p class="mt-0 mb-0"><i class="icon icon-history"></i>&nbsp;{{duration}}</p>
+    </div>
+  {{/if}}
+</div>
+<div class="accordion-content content-pipeline {{unless expanded 'hide'}}">
+  {{yield this}}
+</div>
