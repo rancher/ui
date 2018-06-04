@@ -1,21 +1,25 @@
 <div class="pipeline-steps">
-  <div class="steps-line"></div>
-  <div class="steps-head-dot js-dragHandle {{dotClass}} {{if stagesDraggable 'draggable' ''}}"></div>
   <div class="steps-wrap">
-    {{#each model as |item index|}}
+    {{#each steps as |step index|}}
       <div class="step-content">
-          <div class="step-name text-muted" {{action 'editStep' index}}>
-            {{pipeline-step model=item }}
+        {{#if isScm}}
+          <div class="step-name text-muted">
+            {{step-summary model=step pipeline=pipeline}}
           </div>
+        {{else}}
+          <div class="step-name text-muted" {{action 'editStep' index}}>
+            {{step-summary model=step pipeline=pipeline}}
+          </div>         
+        {{/if}}
       </div>
     {{/each}}
-    {{#if editable}}
-      {{#unless (eq stepMode 'scm')}}
-        <button class="js-add-step-{{stageIndex}} mt-10 btn bg-link icon-btn p-0" {{action 'addStep'}} style="margin: 0 auto;">
-          <span class="darken"><i class="icon icon-plus text-small"/></span>
-          <span>{{t 'newPipelineStage.addStep'}}</span>
-        </button>
-      {{/unless}}
-    {{/if}}
+    {{#unless isScm}}
+      <div class="mt-10 p-0 step-button step-content text-center" {{action 'addStep'}} style="margin: 0 auto;">
+        <span>
+          <i class="icon icon-plus"/>
+          {{t 'newPipelineStage.addStep'}}
+        </span>
+      </div>
+    {{/unless}}
   </div>
 </div>

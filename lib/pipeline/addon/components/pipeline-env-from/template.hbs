@@ -1,0 +1,32 @@
+<label class='acc-label pb-5'>{{t 'newPipelineStep.stepType.task.secret'}}</label>
+<div class="row">
+  {{#if sources.length}}
+    <table class="table fixed no-lines small mb-10">
+      <thead>
+        <tr class="hidden-sm">
+          <th width="220">{{t 'fromSecret.secret.label'}}{{field-required}}</th>
+          <th width="10"></th>
+          <th>{{t 'fromSecret.prefixOrKey.label'}}{{field-required}}</th>
+          <th width="70"></th>
+          <th>{{t 'fromSecret.prefix.label'}}</th>
+          <th width="40">&nbsp;</th>
+        </tr>
+      </thead>
+      <tbody>
+        {{#each sources as |source|}}
+          {{form-sources-row
+            source=source
+            namespace=namespace
+            secretOnly=true
+            specificKeyOnly=true
+            remove=(action "removeSource")
+          }}
+        {{/each}}
+      </tbody>
+    </table>
+  {{/if}}
+  <button type="button" class="btn bg-link icon-btn" {{action "addSource"}}>
+    <span class="darken"><i class="icon icon-plus icon-small"></i></span>
+    <span>{{t 'fromSecret.addFrom'}}</span>
+  </button>
+</div>

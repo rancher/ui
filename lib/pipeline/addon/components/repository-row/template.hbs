@@ -1,0 +1,16 @@
+<td data-title="{{t 'repositories.table.repository'}}:" >
+  {{row.url}}
+</td>
+<td data-title="actions:" >
+  {{#if row.pipeline}}
+    <div class="btn-group no-inline-space">
+      <button class="btn btn-link btn-sm bg-default" {{action "disable"}} disabled={{toggling}} style="width: 80px;">{{#if toggling}}<i class="icon icon-spinner icon-spin"></i> {{/if}}{{t 'generic.disable'}}</button>
+      <button class="btn btn-link btn-sm bg-success" style="cursor: not-allowed;width: 80px;">{{t 'generic.enabled'}}</button>
+    </div>
+  {{else}}
+    <div class="btn-group no-inline-space">
+      <button class="btn btn-link btn-sm bg-primary" style="cursor: not-allowed;width: 80px;">{{t 'generic.disabled'}}</button>
+      <button class="btn btn-link btn-sm bg-defualt" {{action "enable"}} disabled={{toggling}} style="width: 80px;">{{#if toggling}}<i class="icon icon-spinner icon-spin"></i> {{/if}}{{t 'generic.enable'}}</button>
+    </div>
+  {{/if}}
+</td>

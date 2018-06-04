@@ -3,13 +3,9 @@
     <h2>{{t 'newPipelineStep.stepType.scm.add'}}</h2>
   {{else}}
     <div class="modal-pipeline-head">
-      {{#if (eq modalOpts.type 'review')}}
-        <h2>{{modalOpts.stageIndex}}. {{modalOpts.stageInfo}}</h2>
-      {{else}}
-        <h2>{{t (if editing 'newPipelineStep.header.edit' 'newPipelineStep.header.create')}}</h2>
-        <br>
-        <p class="text-muted">{{modalOpts.stageIndex}}. {{modalOpts.stageInfo}}</p>
-      {{/if}}
+      <h2>{{t (if editing 'newPipelineStep.header.edit' 'newPipelineStep.header.create')}}</h2>
+      <br>
+      <p class="text-muted">{{modalOpts.stageIndex}}. {{modalOpts.stageInfo}}</p>
     </div>
     {{#if editing}}
       <div class="right-buttons">
@@ -19,21 +15,11 @@
       </div>
     {{/if}}
   {{/if}}
-  
 </section>
 {{pipeline-step-form
-  pipeline=modalOpts.pipeline
-  model=editingModels
-  type=type
+  projectDockerCredentials=modalOpts.projectDockerCredentials
+  model=step
   editing=editing
-  modalOpts=modalOpts
-  modalState=state
+  save=(action 'save')
+  cancel=(action 'cancel')
 }}
-{{top-errors errors=errors}}
-{{#if (eq modalOpts.type 'review')}}
-  <div style="text-align: center" class="mt-20 text-center">
-    <button {{action "cancel"}} class="btn bg-transparent">{{t "generic.cancel"}}</button>
-  </div>
-{{else}}
-  {{save-cancel saveDisabled=state.saveDisabled editing=editing createLabel="generic.add" save="add" cancel="cancel"}}
-{{/if}}

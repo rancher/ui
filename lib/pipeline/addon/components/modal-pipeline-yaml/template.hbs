@@ -1,0 +1,34 @@
+<h2>
+  {{t 'editYamlPipeline.title' name=model.displayName}}
+</h2>
+
+{{#if loading}}
+  <i class="icon icon-spinner icon-spin"/> {{t 'generic.loading'}}
+{{else if branchesChoices.length}}
+  <div class="row mb-10">
+    <div class="col span-12">
+      <label class="acc-label">{{t 'editYamlPipeline.branch.label'}}{{field-required}}</label>
+      {{#searchable-select
+        optionLabelPath="branch"
+        optionValuePath="branch"
+        value=branch
+        customLabel=true
+        content=branchesChoices as |item|
+      }}
+        <div class="{{item.stateColor}}">{{item.branch}}</div>
+      {{/searchable-select}}
+    </div>
+  </div>
+  <div class="row mb-10">
+    {{input-yaml
+      showUpload=false
+      showDownload=false
+      canChangeName=false
+      value=config
+      autoResize=true
+    }}
+  </div>
+  {{copy-to-clipboard tooltipText="" buttonText="copyToClipboard.tooltip" clipboardText=config class="with-clip"}}
+  {{top-errors errors=errors}}
+  {{save-cancel createLabel="generic.push" save="save" cancel="cancel"}}
+{{/if}}

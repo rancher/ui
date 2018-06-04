@@ -1,0 +1,78 @@
+<section class="header clearfix">
+  <div class="pull-left">
+    <h1 class="vertical-middle">
+      {{t 'buildDetailPage.header' name=build.run}}
+    </h1>
+  </div>
+  <div class="right-buttons">
+    {{badge-state model=build}}
+    {{action-menu model=build showPrimary=false classNames="ml-10 pull-right" size="sm"}}
+  </div>
+</section>
+
+{{#if build.message}}
+  {{#banner-message color='bg-secondary mb-0 mt-10'}}
+    <p><label class="acc-label vertical-middle p-0 pr-10">{{t 'pipelineDetailPage.commitMessage'}}</label>{{linkify build.message}}</p>
+  {{/banner-message}}
+{{/if}}
+
+{{#if build.showTransitioningMessage}}
+  <div class="{{build.stateColor}}"><p>{{uc-first build.transitioningMessage}}</p></div>
+{{/if}}
+
+<section>
+  <div class="row banner bg-info basics">
+    <div class="vertical-middle">
+      <label class="acc-label vertical-middle p-0">{{t 'generic.pipeline'}}</label>
+      {{#link-to "pipelines.detail" build.pipeline.id}}{{build.pipeline.displayName}}{{/link-to}}  
+    </div>
+    <div class="vertical-middle">
+      <label class="acc-label vertical-middle p-0">{{t 'pipelineDetailPage.repositry'}}</label>
+      <a href="{{build.repositoryUrl}}" target="_blank" rel="nofollow noreferrer">{{build.repositoryUrl}}</a>
+    </div>
+    <div class="vertical-middle">
+      <label class="acc-label vertical-middle p-0">{{t 'generic.branch'}}</label>
+      <a href="{{build.branchUrl}}" target="_blank" rel="nofollow noreferrer">{{build.branch}}</a>
+    </div>
+  </div>
+
+  <div class="row banner bg-info basics">
+    <div class="vertical-middle">
+      <label class="acc-label vertical-middle p-0">{{t 'generic.commit'}}</label>
+      <a href="{{build.commitUrl}}" target="_blank" rel="nofollow noreferrer">{{build.shortCommit}}</a>
+    </div>
+    <div class="vertical-middle">
+      <label class="acc-label vertical-middle p-0">{{t 'pipelineDetailPage.triggered'}}</label>
+      {{~#tooltip-element inlineBlock=true type="tooltip-basic" tooltipTemplate="tooltip-static" model=(date-str build.startedTimeStamp) tagName="span" tooltipFor="tooltip-basic"}}
+        <div class="pl-5">
+          {{date-from-now build.startedTimeStamp}}
+        </div>
+      {{~/tooltip-element}}
+    </div>
+    <div class="vertical-middle">
+      <label class="acc-label vertical-middle p-0">{{t 'buildDetailPage.duration'}}</label>
+      {{#if build.duration}}
+        {{date-duration build.duration}}
+      {{else}}
+        {{t 'buildDetailPage.stillRunning'}}
+      {{/if}}
+    </div>
+  </div>
+</section>
+
+{{#if build}}
+  <section>
+    {{#accordion-list expandAll=true as |al expandFn|}}
+      {{#accordion-list-item
+        title=(t 'buildDetailPage.log.title')
+        detail=(t 'buildDetailPage.log.detail')
+        expandOnInit=true
+        expandAll=al.expandAll
+        expand=(action expandFn)
+        as | parent |
+      }}
+        {{build-log activity=build}}
+      {{/accordion-list-item}}
+    {{/accordion-list}}
+  </section>
+{{/if}}

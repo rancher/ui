@@ -1,0 +1,31 @@
+<td>
+  {{#if branchOnly}}
+    {{t 'generic.branch'}}
+  {{else}}
+    {{new-select
+      class="form-control input-sm"
+      content=typeChoices
+      localizedLabel=true
+      value=rule.key
+      style="display: inline-block; width: auto;"
+    }}
+  {{/if}}
+</td>
+<td class="text-center">{{t 'generic.is'}}</td>
+<td>
+  {{#if (eq rule.key 'event')}}
+    {{new-select
+      class="form-control input-sm"
+      content=eventChoices
+      localizedLabel=true
+      value=rule.value
+      style="display: inline-block; width: auto;"
+    }}
+  {{else}}
+    {{input type="text" class="form-control input-sm" value=rule.value}}
+  {{/if}}
+</td>
+<td>&nbsp;</td>
+<div class="input-group-btn">
+  <button class="btn bg-primary btn-sm" {{action "removeRule" rule}}><i class="icon icon-minus"/></button>
+</div>

@@ -29,10 +29,11 @@ const SOURCES = [
 
 export default Component.extend({
   layout,
-  tagName: 'tr',
-
-  source:  null,
-  editing: true,
+  tagName:         'tr',
+  source:          null,
+  editing:         true,
+  secretOnly:      false,
+  specificKeyOnly: false,
 
   selectedSecret: null,
   sources:        SOURCES,
@@ -74,7 +75,7 @@ export default Component.extend({
     };
     let sourceType = get(this, 'source.source');
     let sourceName = get(this, 'source.sourceName');
-    let out = [prefix];
+    let out = get(this, 'specificKeyOnly') ? [] : [prefix];
     let selected;
 
     switch (sourceType) {

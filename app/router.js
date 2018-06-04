@@ -60,8 +60,6 @@ Router.map(function() {
       this.route('index', { path: '/' });
       this.route('edit');
 
-      this.mount('pipeline');
-
       this.route('nodes', function() {
 
         this.route('index', { path: '/' });

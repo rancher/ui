@@ -47,24 +47,44 @@
             {{#if showOptionIcon}}
               <img width="32" height="32" alt="logo" src="{{item.imgUrl}}" class="p-5" style="margin-left:-5px" />
             {{/if}}
-            {{if localizedLabel (t (get item optionLabelPath))  (get item optionLabelPath)}}
+            {{#if item.custom}}
+              {{get item optionLabelPath}}
+            {{else if localizedLabel}}
+              {{t (get item optionLabelPath)}}
+            {{else if localizedHtmlLabel}}
+              {{t (get item optionLabelPath) htmlSafe=true}}
+            {{else if customLabel}}
+              {{yield item}}
+            {{else}}
+              {{get item optionLabelPath}}
+            {{/if}}
           </div>
         {{/each}}
 
         {{#each groupedContent as |group|}}
           <div class="searchable-group">
-            <div class="group-label">{{group.group}}</div>
+            <div class="group-label">{{maybe-t group.group}}</div>
             {{#each group.options as |item idx|}}
               <div
-                class="searchable-option"
-                {{action 'selectGroupedItem' group.options idx}}
+                class={{if item.customClickHandler '' 'searchable-option'}}
+                onmousedown={{action 'selectGroupedItem' group.options idx item}}
                 onmouseenter={{action 'mouseEnter'}}
                 onmouseleave={{action 'mouseLeave'}}
               >
                 {{#if (eq value (get item optionValuePath))}}
                   <i class="icon icon-check"></i>
                 {{/if}}
-                {{if localizedLabel (t (get item optionLabelPath))  (get item optionLabelPath)}}
+                {{#if item.custom}}
+                  {{get item optionLabelPath}}
+                {{else if customLabel}}
+                  {{yield item}}
+                {{else if localizedLabel}}
+                  {{t (get item optionLabelPath)}}
+                {{else if localizedHtmlLabel}}
+                  {{t (get item optionLabelPath) htmlSafe=true}}
+                {{else}}
+                  {{get item optionLabelPath}}
+                {{/if}}
               </div>
             {{/each}}
           </div>
