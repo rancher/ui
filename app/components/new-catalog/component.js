@@ -46,7 +46,6 @@ export default Component.extend(NewOrEdit, {
   catalogApp:               null,
   primaryResource:          alias('namespaceResource'),
   editing:                  notEmpty('catalogApp.id'),
-  decoded:                  false,
   srcSet:                   false,
 
   detailExpanded:           false,
@@ -59,6 +58,7 @@ export default Component.extend(NewOrEdit, {
   appReadmeContent:         null,
   pastedAnswers:            null,
   noAppReadme:              null,
+  selectedFileContetnt:     null,
 
   actions: {
     toogleDetailedDescriptions: function () {
@@ -74,10 +74,6 @@ export default Component.extend(NewOrEdit, {
     },
 
     togglePreview: function() {
-      if (!get(this, 'previewOpen') && !get(this, 'decoded')) {
-        this.decodeFiles();
-        set(this, 'decoded', true);
-      }
       this.toggleProperty('previewOpen');
     },
 
@@ -89,10 +85,6 @@ export default Component.extend(NewOrEdit, {
   init() {
     this._super(...arguments);
     set(this, 'selectedTemplateModel', null);
-
-    if (get(this, 'previewOpen')) {
-      this.decodeFiles();
-    }
 
     scheduleOnce('afterRender', () => {
       if ( get(this, 'selectedTemplateUrl') ) {
@@ -200,17 +192,22 @@ export default Component.extend(NewOrEdit, {
     return null;
   }),
 
-  decodeFiles: function() {
-    let files = (get(this, 'selectedTemplateModel.files')||[]);
+  previewTabDidChange: observer('previewTab', function() {
+    let files = (get(this, 'selectedTemplateModel.filesAsArray')||[]);
+    const previewTab = get(this, 'previewTab');
+    const found = files.findBy('name', previewTab);
 
-    if (get(this, 'templateKind') === 'helm' && Object.keys(files).length) {
-      Object.keys(files).forEach( f => {
-        files[f] = atob(files[f]);
-        // console.log('decoded file: ', files[f]);
-      });
+    if ( !found ) {
+      return;
     }
-
-  },
+    
+    if ( !found.decoded ) {
+      set(found, 'body', atob(found.body));
+      set(found, 'decoded', true);
+    }
+    
+    set(this, 'selectedFileContetnt', found.body);
+  }),
 
   getTemplate: task(function * () {
     var url = get(this, 'selectedTemplateUrl');

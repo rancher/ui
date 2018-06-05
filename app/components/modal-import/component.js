@@ -72,6 +72,8 @@ export default Component.extend(ModalBase, ChildHook, {
       } else {
         return this.applyHooks('_beforeSaveHooks').then(() => {
           this.send('actuallySave', opts, cb);
+        }).catch(() => {
+          cb(false);
         });
       }
     },
