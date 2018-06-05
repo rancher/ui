@@ -77,6 +77,21 @@ export default Route.extend({
     }
 
     const clone = _workload.clone();
+    
+    if ( !params.upgrade ) {
+      delete clone['workloadAnnotations'];
+      delete clone['workloadLabels'];
+      delete clone['publicEndpoints'];
+      if ( clone.labels ) {
+        delete clone.labels['workload.user.cattle.io/workloadselector'];
+      }
+      if ( clone.selector && clone.selector.matchLabels) {
+        delete clone.selector.matchLabels['workload.user.cattle.io/workloadselector'];
+        if ( !Object.keys(clone.selector.matchLabels).length ) {
+          delete clone.selector['matchLabels'];
+        }
+      }
+    }
 
     const containerNames = clone.containers.map(x => get(x, 'name'));
     let containerName = null;
