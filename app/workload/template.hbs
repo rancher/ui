@@ -27,20 +27,32 @@
 {{/if}}
 
 <section>
-  <div class="row banner bg-info basics mb-0">
+  <div class="row banner bg-info basics">
     <div class="vertical-middle">
       <label class="acc-label vertical-middle p-0">{{t 'servicePage.multistat.namesapce'}}</label>
       {{service.namespace.displayName}}
     </div>
 
     <div class="vertical-middle">
-      <label class="acc-label vertical-middle p-0">{{t 'servicePage.multistat.type'}}</label>
-      {{service.displayType}}
+      <label class="acc-label vertical-middle p-0">{{t 'servicePage.multistat.image'}}</label>
+      {{launchConfig.image}} {{copy-to-clipboard clipboardText=launchConfig.image size="small"}}
     </div>
 
     <div class="vertical-middle">
-      <label class="acc-label vertical-middle p-0">{{t 'servicePage.multistat.image'}}</label>
-      {{launchConfig.image}} {{copy-to-clipboard clipboardText=launchConfig.image size="small"}}
+      <label class="acc-label vertical-middle p-0">{{t 'servicePage.multistat.type'}}</label>
+      {{service.displayType}}
+    </div>
+  </div>
+  <div class="row banner bg-info basics">
+    <div class="vertical-middle">
+      <label class="acc-label vertical-middle p-0">{{t 'servicePage.endpoints'}}</label>
+      {{#if service.displayEndpoints}}
+        <label class="clip text-small">
+          {{service.displayEndpoints}}
+        </label>
+      {{else}}
+        {{t 'generic.na'}}
+      {{/if}}
     </div>
 
     <div class="vertical-middle">
@@ -53,6 +65,7 @@
         <button style="margin-left: -1px;" class="btn btn-xs bg-primary" {{action "scaleUp" target=service}} disabled={{not service.canScaleUp}}><i class="icon icon-plus icon-fw"/></button>
       </div>
     </div>
+
     <div class="vertical-middle">
       <label class="acc-label vertical-middle p-0">{{t 'servicePage.multistat.created'}}</label>
       {{date-calendar service.created}}
