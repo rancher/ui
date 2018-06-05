@@ -176,10 +176,11 @@
           </div>
 
           <div class="tab-content" role="tabpanel">
-            {{#each selectedTemplateModel.filesAsArray as |file|}}
-              {{code-block code=file.body language="yaml" hide=(not-eq previewTab file.name)}}
-            {{/each}}
-            {{code-block code=answersString language="yaml" hide=(not-eq  previewTab 'answers')}}
+            {{#if (eq  previewTab 'answers')}}
+              {{code-block code=answersString language="yaml"}}
+            {{else}}
+              {{code-block code=selectedFileContetnt language="yaml"}}
+            {{/if}}
           </div>
         </div>
       {{/if}}
