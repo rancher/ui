@@ -13,8 +13,8 @@ export default Component.extend({
   editing: true,
 
   pvcs: null,
-  pvcChoices: computed('pvcs.@each.{name,state}', function() {
-    return get(this, 'pvcs').map((v) => {
+  pvcChoices: computed('pvcs.@each.{name,state}', 'namespace.id', function() {
+    return get(this, 'pvcs').filterBy('namespaceId', get(this, 'namespace.id')).map((v) => {
       let label = get(v, 'displayName');
       const state = get(v, 'state');
       const disabled = false;
