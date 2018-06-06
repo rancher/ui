@@ -1,10 +1,12 @@
-{{input-yaml
-  title=(if editing (t 'modalYaml.title.edit' name=model.resource.displayName) (t 'modalYaml.title.new' type=(uc-first model.resource.displayName)))
-  name=filename
-  canChangeName=false
-  value=model.yaml
-  autoResize=true
-}}
+<div class="modal-yaml">
+  {{input-yaml
+    title=(if editing (t 'modalYaml.title.edit' name=model.resource.displayName) (t 'modalYaml.title.new' type=(uc-first model.resource.displayName)))
+    name=filename
+    canChangeName=false
+    value=model.yaml
+    autoResize=true
+  }}
+</div>
 
 {{top-errors errors=errors}}
 {{save-cancel save="save" cancel="cancel" editing=editing}}
