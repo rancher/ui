@@ -52,12 +52,14 @@ module.exports = {
     "ember/no-observers": "off",
     "ember/no-on-calls-in-components": "off",
     "ember/no-side-effects": "off",
-    "ember/order-in-components": "off",
-    "ember/order-in-controllers": "off",
-    "ember/order-in-models": "off",
-    "ember/order-in-routes": "off",
+    "ember/no-old-shims": "error",
+    "ember/order-in-components": "error",
+    "ember/order-in-controllers": "error",
+    "ember/order-in-models": "error",
+    "ember/order-in-routes": "error",
     "ember/use-brace-expansion": "off",
     "ember/use-ember-get-and-set": "off",
+    "ember/new-module-imports": "error",
     "eqeqeq": "error",
     "generator-star-spacing": "off",
     "guard-for-in": "off",
@@ -112,6 +114,25 @@ module.exports = {
     "object-curly-spacing": [ "error", "always" ],
     "object-property-newline": "error",
     "padded-blocks": "error",
+    "padding-line-between-statements": [
+      "error",
+      {
+        "blankLine": "always",
+        "prev": "*",
+        "next": "return",
+      },
+      // This configuration would require blank lines after every sequence of variable declarations
+      {
+        blankLine: "always",
+        prev: ["const", "let", "var"],
+        next: "*"
+      },
+      {
+        blankLine: "any",
+        prev: ["const", "let", "var"],
+        next: ["const", "let", "var"]
+      }
+    ],
     quotes: [
       "error",
       "single",
