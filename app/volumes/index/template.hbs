@@ -13,7 +13,7 @@
           bulkActions=true
           subRows=true
           groupByKey=groupTableBy
-          groupByRef="stack"
+          groupByRef="namespace"
           pagingLabel="pagination.volume"
           subHeaders=containerHeaders
           subSearchField="instances"
@@ -55,7 +55,7 @@
           </td>
         </tr>
       {{else if (eq kind "group")}}
-        {{namespace-group model=inst.ref fullColspan=sortable.fullColspan}}
+        {{namespace-group model=obj.ref fullColspan=sortable.fullColspan}}
       {{else if (eq kind "nomatch")}}
         <tr><td colspan="{{sortable.fullColspan}}" class="text-center text-muted lacsso pt-20 pb-20">{{t 'volumesPage.noMatch'}}</td></tr>
       {{/if}}
