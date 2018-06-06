@@ -1,7 +1,7 @@
 {{#if prompt}}
   <option selected={{not selection}}>
     {{#if localizedPrompt}}
-      {{t prompt}}
+      {{maybe-t prompt}}
     {{else}}
       {{prompt}}
     {{/if}}
@@ -11,7 +11,7 @@
 {{#each ungroupedContent as |item|}}
   <option value="{{get item optionValuePath}}" selected={{eq value (get item optionValuePath)}} disabled={{get item optionDisabledPath}}>
     {{#if localizedLabel}}
-      {{t (get item optionLabelPath)}}
+      {{maybe-t (get item optionLabelPath)}}
     {{else if localizedHtmlLabel}}
       {{t (get item optionLabelPath) htmlSafe=true}}
     {{else}}
@@ -25,7 +25,7 @@
     {{#each group.options as |item|}}
       <option value="{{get item optionValuePath}}" selected={{eq value (get item optionValuePath)}} disabled={{get item optionDisabledPath}}>
         {{#if localizedLabel}}
-          {{t (get item optionLabelPath)}}
+          {{maybe-t (get item optionLabelPath)}}
         {{else}}
           {{get item optionLabelPath}}
         {{/if}}
