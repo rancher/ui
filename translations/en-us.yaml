@@ -317,6 +317,35 @@ apiPage:
     noData: There are no API keys defined
 
 authPage:
+  freeipa:
+    providerName: FreeIPA
+    header:
+      enabled:
+        label: "{providerName} is enabled"
+        required: |
+          {appName} is configured to allow access to {groups, plural,
+            =0 {no groups}
+            =1 {# group}
+            other {# groups}
+          } and {users, plural,
+            =0 {no users}
+            =1 {# user}
+            other {# users}
+          }.
+        restricted: |
+          {appName} is configured to allow access to environment members, {groups, plural,
+            =0 {no groups}
+            =1 {# group}
+            other {# groups}
+          } and {users, plural,
+            =0 {no users}
+            =1 {# user}
+            other {# users}
+          }.
+        unrestricted: "{appName} is configured to allow access to any {providerName} user."
+      disabled:
+        label: "{providerName} is not configured"
+        warning: "{appName} can be configured to restrict access to a set of {providerName} users and groups.  This is not currently set up, so anybody that reach this page (or the API) has full control over the system."
   shibboleth:
     enabled:
       header: "{providerName} is enabled"
