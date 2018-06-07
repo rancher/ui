@@ -16,6 +16,7 @@ export default Component.extend({
   prefs:        service(),
   githubBase:   C.EXT_REFERENCES.GITHUB,
   forumBase:    C.EXT_REFERENCES.FORUM,
+  cnforumBase:  C.EXT_REFERENCES.CN_FORUM,
   slackBase:    C.EXT_REFERENCES.SLACK,
 
   projectId   : alias(`cookies.${C.COOKIE.PROJECT}`),
