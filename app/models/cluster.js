@@ -157,7 +157,7 @@ export default Resource.extend(ResourceUsage, {
     const globalStore = get(this, 'globalStore');
     const id = get(this, 'id');
 
-    return globalStore.findAll('clusterRegistrationToken').then((tokens) => {
+    return globalStore.findAll('clusterRegistrationToken', {forceReload: true}).then((tokens) => {
       let token = tokens.filterBy('clusterId', id)[0];
       if ( token ) {
         return resolve(token);
