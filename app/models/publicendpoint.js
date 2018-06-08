@@ -2,6 +2,7 @@ import { isArray } from '@ember/array';
 import { get, computed } from '@ember/object';
 import Resource from 'ember-api-store/models/resource';
 import { inject as service } from '@ember/service';
+import C from 'shared/utils/constants';
 
 function portMatch(ports, equals, endsWith) {
   if (!isArray(ports)) {
@@ -37,6 +38,7 @@ function portMatch(ports, equals, endsWith) {
 var PublicEndpoint = Resource.extend({
   globalStore: service(),
   scope: service(),
+  settings: service(),
 
   portProto: computed('port', 'protocol', function () {
     let out = get(this,'port') + '/' + get(this,'protocol').toLowerCase();
@@ -120,6 +122,17 @@ var PublicEndpoint = Resource.extend({
 
   isIngress : computed('ingressId', function(){
     return get(this,'ingressId') !=='' && get(this,'ingressId') !== null;
+  }),
+
+  isReady : computed('hostname',function(){
+    const xip = get(this, `settings.${C.SETTING.INGRESS_IP_DOMAIN}`);
+    const hostname = get(this,'hostname') || '';
+    if ( get(this, 'isIngress') ){
+      if ( xip === hostname ){
+        return false
+      }
+    }
+    return true
   }),
 });
 
