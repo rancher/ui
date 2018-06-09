@@ -166,7 +166,7 @@
         <div class="tabs">
           <div class="tab-header row">
             <div class="col span-4">
-              <label class="acc-label">Template Files</label>
+              <label class="acc-label">{{t 'newCatalog.templateFiles'}}</label>
               {{searchable-select
                   content=filenames
                   value=previewTab
@@ -175,11 +175,19 @@
             </div>
           </div>
 
-          <div class="tab-content" role="tabpanel">
-            {{#if (eq  previewTab 'answers')}}
-              {{code-block code=answersString language="yaml"}}
+          <div class="row">
+            {{#if decoding}}
+              <section class="row">
+                <div class="text-center">
+                  <i class="icon icon-spinner icon-spin" style="font-size:36px;"></i>
+                </div>
+              </section>
             {{else}}
-              {{code-block code=selectedFileContetnt language="yaml"}}
+              {{#if (eq  previewTab 'answers')}}
+                {{code-block code=answersString language="yaml"}}
+              {{else}}
+                {{code-block code=selectedFileContetnt language="yaml"}}
+              {{/if}}
             {{/if}}
           </div>
         </div>
