@@ -42,7 +42,7 @@ export default Controller.extend({
     },
   },
 
-  allNamespace: computed('model.namespaces', function() {
+  allNamespace: computed('model.namespaces.[]', function() {
     let ns = get(this, 'model.namespaces');
     let pId = get(this, 'scope.currentProject.id');
 
