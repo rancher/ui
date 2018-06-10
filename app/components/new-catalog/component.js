@@ -12,6 +12,7 @@ import YAML from 'npm:yamljs';
 import layout from './template';
 import { stringifyAnswer } from 'shared/utils/evaluate';
 import { isEmpty } from '@ember/utils';
+import { next } from '@ember/runloop';
 
 export default Component.extend(NewOrEdit, {
   layout,
@@ -34,6 +35,7 @@ export default Component.extend(NewOrEdit, {
   showHeader:               true,
   showPreview:              true,
   customizeNamespace:       false,
+  decoding:                 false,
   titleAdd:                 'newCatalog.titleAdd',
   titleUpgrade:             'newCatalog.titleUpgrade',
   selectVersionAdd:         'newCatalog.selectVersionAdd',
@@ -201,13 +203,19 @@ export default Component.extend(NewOrEdit, {
     if ( !found ) {
       return;
     }
-    
-    if ( !found.decoded ) {
-      set(found, 'body', atob(found.body));
-      set(found, 'decoded', true);
-    }
-    
-    set(this, 'selectedFileContetnt', found.body);
+    set(this, 'decoding', true);
+    next(()=> {
+      if ( !found.decoded ) {
+        setProperties(found, {
+          body: atob(found.body),
+          decoded: true
+        });
+      }
+      setProperties(this, {
+        selectedFileContetnt: found.body,
+        decoding: false
+      });
+    });
   }),
 
   getTemplate: task(function * () {
