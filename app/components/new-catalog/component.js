@@ -11,6 +11,7 @@ import { task } from 'ember-concurrency';
 import YAML from 'npm:yamljs';
 import layout from './template';
 import { stringifyAnswer } from 'shared/utils/evaluate';
+import { isEmpty } from '@ember/utils';
 
 export default Component.extend(NewOrEdit, {
   layout,
@@ -320,7 +321,7 @@ export default Component.extend(NewOrEdit, {
     if (get(model, 'questions')) {
       let neu = {};
       (get(this, 'answersArray')||[]).forEach((a) => {
-        neu[a.variable] = a.answer || a.default;
+        neu[a.variable] = isEmpty(a.answer) ? a.default : a.answer;
       });
       return YAML.stringify(neu);
     } else {
