@@ -2,26 +2,43 @@
   <h1 class="pull-left">{{t (if editing 'catalogSettings.more.editHeader' 'catalogSettings.more.addHeader')}}</h1>
 </section>
 
-<label class="acc-label pb-5">{{t 'catalogSettings.more.name.label'}}</label>
-{{input type="text" value=primaryResource.name classNames="form-control" placeholder=(t 'catalogSettings.more.name.placeholder') disabled=editing}}
+<section>
 
-<label class="pt-20 pb-5">{{t 'catalogSettings.more.kind.label'}}</label>
-{{new-select
-    classNames="form-control"
-    content=kindChoices
-    optionValuePath="value"
-    optionLabelPath="translationKey"
-    value=primaryResource.kind
-    localizedLabel=true
-    disabled=true
-}}
-<p class="help-block">{{t 'catalogSettings.helpText'}}</p>
+  <div class="row">
+    <div class="col span-12">
+      <label class="acc-label pb-5">{{t 'catalogSettings.more.name.label'}}</label>
+      {{input type="text" value=primaryResource.name classNames="form-control" placeholder=(t 'catalogSettings.more.name.placeholder') disabled=editing}}
+    </div>
+  </div>
 
-<label class="acc-label pb-5">{{t 'catalogSettings.more.url.label'}}</label>
-{{input type="text" value=primaryResource.url classNames="form-control" placeholder=(t 'catalogSettings.more.url.placeholder')}}
+  <div class="row">
+    <div class="col span-12">
+      <label class="acc-label pb-5">{{t 'catalogSettings.more.url.label'}}</label>
+      {{input type="text" value=primaryResource.url classNames="form-control" placeholder=(t 'catalogSettings.more.url.placeholder')}}
+    </div>
+  </div>
 
-<label class="acc-label pb-5">{{t 'catalogSettings.more.branch.label'}}</label>
-{{input type="text" value=primaryResource.branch classNames="form-control" placeholder=(t 'catalogSettings.more.branch.placeholder')}}
+  <div class="row">
+    <div class="col span-6">
+      <label class="acc-label pb-5">{{t 'catalogSettings.more.kind.label'}}</label>
+      {{new-select
+          classNames="form-control"
+          content=kindChoices
+          optionValuePath="value"
+          optionLabelPath="translationKey"
+          value=primaryResource.kind
+          localizedLabel=true
+          disabled=true
+      }}
+      <p class="help-block">{{t 'catalogSettings.helpText'}}</p>
+    </div>
+    <div class="col span-6">
+      <label class="acc-label pb-5">{{t 'catalogSettings.more.branch.label'}}</label>
+      {{input type="text" value=primaryResource.branch classNames="form-control" placeholder=(t 'catalogSettings.more.branch.placeholder')}}
+    </div>
+  </div>
 
-{{top-errors errors=errors}}
-{{save-cancel editing=editing save="save" cancel="cancel"}}
+  {{top-errors errors=errors}}
+  {{save-cancel editing=editing save="save" cancel="cancel"}}
+
+</section>
