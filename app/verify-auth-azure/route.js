@@ -29,7 +29,7 @@ export default Route.extend(VerifyAuth, {
     if (get(params, 'code') && !window.opener) {
 
 
-      let azureProvider = get(this, 'access.providers').findBy('id', 'azure');
+      let azureProvider = get(this, 'access.providers').findBy('id', 'azuread');
 
       return azureProvider.doAction('login', {
         code:         get(params, 'code'),
