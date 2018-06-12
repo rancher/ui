@@ -32,6 +32,7 @@ Router.map(function() {
   this.route('logout');
 
   this.route('verify-auth');
+  this.route('verify-auth-azure');
   this.route('update-password', {path: '/update-password'});
   this.route('update-critical-settings', {path: '/update-setting'});
 
