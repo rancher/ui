@@ -54,23 +54,8 @@
       </div>
     </div>
   {{/each-in}}
-{{else if (eq selectedCloudProvider 'generic')}}
-  <div class="pb-10">
-    <label class="acc-label">{{t 'cloudProvider.name'}}</label>
-    {{input type="text" value=configName  id="cloud-provider-name"}}
-  </div>
-  <div>
-    {{form-key-value
-        initialMap=intialAnswers
-        changed=(action (mut configAnswers))
-        allowEmptyValue=false
-        editing=true
-        showHeader=false
-        addInitialEmptyRow=true
-    }}
-  </div>
 {{/if}}
 
 <p class="text-info">
-  {{t 'cloudProvider.helpText' htmlSafe=true}}
+  {{#if (eq selectedCloudProvider 'generic')}}{{t 'cloudProvider.custom.helpText'}} {{/if}}{{t 'cloudProvider.helpText' htmlSafe=true}}
 </p>
