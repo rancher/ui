@@ -1,6 +1,6 @@
 import Mixin from '@ember/object/mixin';
 import { inject as service } from '@ember/service';
-import C from 'shared/utils/constants';
+// import C from 'shared/utils/constants';
 
 export default Mixin.create({
   access         : service(),

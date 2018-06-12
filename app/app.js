@@ -41,7 +41,7 @@ const App = Application.extend({
           'clusterStore',
           'catalog',
           'endpoint',
-          'azure',
+          'azureAd',
           'github',
           'globalStore',
           'intl',
