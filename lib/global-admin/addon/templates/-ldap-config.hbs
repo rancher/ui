@@ -137,13 +137,13 @@
               </div>
             </div>
           {{/unless}}
-          <div class="col span-4">
+          <div class="col {{if isOpenLdap "span-6" "span-4"}}">
             <div class="inline-form">
               <label class="acc-label pb-5">{{t 'model.openldapconfig.serviceAccountUsername.label'}}{{field-required}}</label>
               {{input value=adConfig.serviceAccountUsername classNames="form-control"}}
             </div>
           </div>
-          <div class="col span-4">
+          <div class="col {{if isOpenLdap "span-6" "span-4"}}">
             <div class="inline-form">
               <label class="acc-label pb-5">{{t 'model.openldapconfig.serviceAccountPassword.label'}}{{field-required}}</label>
               {{input type="password" value=adConfig.serviceAccountPassword classNames="form-control"}}
@@ -191,6 +191,10 @@
             <div class="pb-20">
               <label class="acc-label pb-5">{{t 'ldap.customizeSchema.users.login.labelText'}}</label>
               {{input value=adConfig.userLoginAttribute classNames="form-control"}}
+            </div>
+            <div class="pb-20">
+              <label class="acc-label pb-5">{{t 'ldap.customizeSchema.users.userMemberAttribute.labelText'}}</label>
+              {{input value=openLDAPConfig.userMemberAttribute classNames="form-control"}}
             </div>
             <div class="pb-20">
               <label class="acc-label pb-5">{{t 'ldap.customizeSchema.users.search.labelText'}}</label>
@@ -290,7 +294,7 @@
          title=(t 'siteAccess.header')
     }}
       {{site-access
-          model=model.activeDirectory
+          model=adConfig
           collection='siteAccess.organizations'
       }}
     {{/accordion-list-item}}
