@@ -1,5 +1,4 @@
 import Route from '@ember/routing/route';
-import RSVP from 'rsvp';
 import { get } from '@ember/object';
 import { inject as service } from '@ember/service';
 import C from 'shared/utils/constants';
@@ -54,8 +53,6 @@ export default Route.extend(VerifyAuth, {
         setTimeout(function() {
           window.close();
         },250);
-
-        return new RSVP.promise();
 
       } else {
 
