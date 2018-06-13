@@ -78,7 +78,7 @@ export default Route.extend({
 
     const clone = _workload.clone();
     
-    if ( !params.upgrade ) {
+    if ( !params.upgrade && params.addSidekick !== 'true' ) {
       delete clone['workloadAnnotations'];
       delete clone['workloadLabels'];
       delete clone['publicEndpoints'];
