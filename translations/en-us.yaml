@@ -317,6 +317,35 @@ apiPage:
     noData: There are no API keys defined
 
 authPage:
+  freeipa:
+    providerName: FreeIPA
+    header:
+      enabled:
+        label: "{providerName} is enabled"
+        required: |
+          {appName} is configured to allow access to {groups, plural,
+            =0 {no groups}
+            =1 {# group}
+            other {# groups}
+          } and {users, plural,
+            =0 {no users}
+            =1 {# user}
+            other {# users}
+          }.
+        restricted: |
+          {appName} is configured to allow access to environment members, {groups, plural,
+            =0 {no groups}
+            =1 {# group}
+            other {# groups}
+          } and {users, plural,
+            =0 {no users}
+            =1 {# user}
+            other {# users}
+          }.
+        unrestricted: "{appName} is configured to allow access to any {providerName} user."
+      disabled:
+        label: "{providerName} is not configured"
+        warning: "{appName} can be configured to restrict access to a set of {providerName} users and groups.  This is not currently set up, so anybody that reach this page (or the API) has full control over the system."
   shibboleth:
     enabled:
       header: "{providerName} is enabled"
@@ -491,22 +520,23 @@ authPage:
         header: General
     configure:
       header: 'Configure Azure AD Account'
+      replyUrl: "Azure AD requires a pre-approved Reply Url for your Rancher server before beginning this setup. Please ensure that <code>{replyUrl}</code> is set in your Reply Url's section of your Azure Portal."
       help: Enter the Tenant ID, Client ID, and Admin user details to connect to your Azure AD auth account.
-      adminAccountUsername:
-        label: Admin Account Username
-        placeholder: e.g. rancher-admin
-        help: A user that can read information about other users
-      adminAccountPassword:
-        label: Admin Account Password
-      clientId:
-        label: Client ID
+      applicationId:
+        label: Application ID
         placeholder: A long UUID string
-      clientSecret:
-        label: Client Secret
-        placeholder: Your Client Secret
-      domain:
-        label: Domain
-        placeholder: e.g. youcompany.onmicrosoft.com
+      applicationSecret:
+        label: Application Secret
+      serverURL:
+        label: Rancher Server Url
+      azureADEndpoint:
+        label: Endpoint
+      azureADGraphEndpoint:
+        label: Graph Endpoint
+      azureADTokenEndpoint:
+        label: Token Endpoint
+      azureADAuthEndpoint:
+        label: Auth Endpoint
       tenantId:
         label: Tenant ID
         placeholder: A long UUID string
@@ -4084,6 +4114,9 @@ loginShibboleth:
 
 loginGithub:
   buttonText: Log In with GitHub
+
+loginAzure:
+  buttonText: Log In with Azure AD
 
 loginUserPass:
   local: Use a Local User

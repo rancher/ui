@@ -3,36 +3,10 @@ import RSVP from 'rsvp';
 import { get } from '@ember/object';
 import { inject as service } from '@ember/service';
 import C from 'shared/utils/constants';
+import VerifyAuth from 'ui/mixins/verify-auth';
 
-export default Route.extend({
-  access         : service(),
-  cookies        : service(),
+export default Route.extend(VerifyAuth, {
   github         : service(),
-  modal          : service(),
-  prefs          : service(),
-  settings       : service(),
-  globalStore    : service(),
-
-  queryParams: {
-    config: {
-      refreshModel: false
-    },
-    code: {
-      refreshModel: false
-    },
-    state: {
-      refreshModel: false
-    },
-    authProvider: {
-      refreshModel: false
-    },
-    error_description: {
-      refreshModel: false
-    },
-    login: {
-      refreshModel: false
-    },
-  },
 
   model(params/* , transition */) {
     if (window.opener && !get(params, 'login')) {
@@ -41,8 +15,8 @@ export default Route.extend({
       let qp               = get(params, 'config') || get(params, 'authProvider');
       let type             = `${qp}Config`;
       let config           = openerStore.getById(type, qp);
-      let gh = get(this, 'github');
-      let stateMsg = 'Authorization state did not match, please try again.';
+      let gh               = get(this, 'github');
+      let stateMsg         = 'Authorization state did not match, please try again.';
 
       if (get(params, 'config') === 'github') {
 
@@ -92,4 +66,5 @@ export default Route.extend({
       }
     }
   }
+
 });
