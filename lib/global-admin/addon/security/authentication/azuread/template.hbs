@@ -89,69 +89,71 @@
     }}
 
       <section>
-        <div class="row">
-          <p class="text-info">{{t 'authPage.azuread.configure.replyUrl' replyUrl=replyUrl htmlSafe=true}}</p>
-          <div class="col span-6">
-            <div class="inline-form">
-              <label class="acc-label pb-5">{{t 'authPage.azuread.configure.tenantId.label'}}{{field-required}}</label>
-              {{input type="text" value=azureADConfig.tenantId placeholder=(t 'authPage.azuread.configure.tenantId.placeholder') classNames="form-control"}}
-              <p class="help-block">{{t 'authPage.azuread.configure.tenantId.help'}}</p>
+        <form class="form" {{action "test" on="submit"}}>
+          <div class="row">
+            <p class="text-info">{{t 'authPage.azuread.configure.replyUrl' replyUrl=replyUrl htmlSafe=true}}</p>
+            <div class="col span-6">
+              <div class="inline-form">
+                <label class="acc-label pb-5" for="tenant-id">{{t 'authPage.azuread.configure.tenantId.label'}}{{field-required}}</label>
+                {{input id="tenant-id"  classNames="form-control" type="text" value=azureADConfig.tenantId placeholder=(t 'authPage.azuread.configure.tenantId.placeholder')}}
+                <p class="help-block">{{t 'authPage.azuread.configure.tenantId.help'}}</p>
+              </div>
             </div>
           </div>
-        </div>
-        <div class="row">
-          <div class="col span-6">
-            <div class="inline-form">
-              <label class="acc-label pb-5">{{t 'authPage.azuread.configure.applicationId.label'}}{{field-required}}</label>
-              {{input type="text" value=azureADConfig.applicationId placeholder=(t 'authPage.azuread.configure.applicationId.placeholder') classNames="form-control"}}
+          <div class="row">
+            <div class="col span-6">
+              <div class="inline-form">
+                <label class="acc-label pb-5" for="application-id">{{t 'authPage.azuread.configure.applicationId.label'}}{{field-required}}</label>
+                {{input id="application-id" type="text" value=azureADConfig.applicationId placeholder=(t 'authPage.azuread.configure.applicationId.placeholder') classNames="form-control"}}
+              </div>
+            </div>
+            <div class="col span-6">
+              <div class="inline-form">
+                <label class="acc-label pb-5" for="application-secret">{{t 'authPage.azuread.configure.applicationSecret.label'}}{{field-required}}</label>
+                {{input id="application-secret" type="password" value=azureADConfig.applicationSecret classNames="form-control"}}
+              </div>
             </div>
           </div>
-          <div class="col span-6">
-            <div class="inline-form">
-              <label class="acc-label pb-5">{{t 'authPage.azuread.configure.applicationSecret.label'}}{{field-required}}</label>
-              {{input type="password" value=azureADConfig.applicationSecret classNames="form-control"}}
+          <div class="row">
+            <div class="col span-6">
+              <div class="inline-form">
+                <label class="acc-label pb-5" for="endpoint">{{t 'authPage.azuread.configure.azureADEndpoint.label'}}{{field-required}}</label>
+                {{input id="endpoint" type="url" value=azureADConfig.endpoint classNames="form-control"}}
+              </div>
+            </div>
+            <div class="col span-6">
+              <div class="inline-form">
+                <label class="acc-label pb-5" for="graph-endpoint">{{t 'authPage.azuread.configure.azureADGraphEndpoint.label'}}{{field-required}}</label>
+                {{input id="graph-endpoint" type="url" value=azureADConfig.graphEndpoint classNames="form-control"}}
+              </div>
             </div>
           </div>
-        </div>
-        <div class="row">
-          <div class="col span-6">
-            <div class="inline-form">
-              <label class="acc-label pb-5">{{t 'authPage.azuread.configure.azureADEndpoint.label'}}{{field-required}}</label>
-              {{input type="url" value=azureADConfig.endpoint classNames="form-control"}}
+          <div class="row">
+            <div class="col span-6">
+              <div class="inline-form">
+                <label class="acc-label pb-5" for="token-endpoint" >{{t 'authPage.azuread.configure.azureADTokenEndpoint.label'}}{{field-required}}</label>
+                {{input id="token-endpoint" type="url" value=azureADConfig.tokenEndpoint classNames="form-control"}}
+              </div>
+            </div>
+            <div class="col span-6">
+              <div class="inline-form">
+                <label class="acc-label pb-5" for="auth-endpoint">{{t 'authPage.azuread.configure.azureADAuthEndpoint.label'}}{{field-required}}</label>
+                {{input id="auth-endpoint" type="url" value=azureADConfig.authEndpoint classNames="form-control"}}
+              </div>
             </div>
           </div>
-          <div class="col span-6">
+          <div class="row mt-10">
             <div class="inline-form">
-              <label class="acc-label pb-5">{{t 'authPage.azuread.configure.azureADGraphEndpoint.label'}}{{field-required}}</label>
-              {{input type="url" value=azureADConfig.graphEndpoint classNames="form-control"}}
+              <button class="btn bg-primary" style="display: block;margin: 0 auto;" {{action "test"}}>
+                {{#if testing}}
+                  <i class="icon icon-spinner icon-spin"></i> {{t 'authPage.azuread.test.post'}}
+                {{else}}
+                  <i class="icon icon-azuread"></i> {{t 'authPage.azuread.test.pre'}}
+                {{/if}}
+              </button>
             </div>
           </div>
-        </div>
-        <div class="row">
-          <div class="col span-6">
-            <div class="inline-form">
-              <label class="acc-label pb-5">{{t 'authPage.azuread.configure.azureADTokenEndpoint.label'}}{{field-required}}</label>
-              {{input type="url" value=azureADConfig.tokenEndpoint classNames="form-control"}}
-            </div>
-          </div>
-          <div class="col span-6">
-            <div class="inline-form">
-              <label class="acc-label pb-5">{{t 'authPage.azuread.configure.azureADAuthEndpoint.label'}}{{field-required}}</label>
-              {{input type="url" value=azureADConfig.authEndpoint classNames="form-control"}}
-            </div>
-          </div>
-        </div>
-        <div class="row mt-10">
-          <div class="inline-form">
-            <button class="btn bg-primary" style="display: block;margin: 0 auto;" {{action "test"}}>
-              {{#if testing}}
-                <i class="icon icon-spinner icon-spin"></i> {{t 'authPage.azuread.test.post'}}
-              {{else}}
-                <i class="icon icon-azuread"></i> {{t 'authPage.azuread.test.pre'}}
-              {{/if}}
-            </button>
-          </div>
-        </div>
+        </form>
       </section>
 
     {{/accordion-list-item}}
