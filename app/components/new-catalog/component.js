@@ -1,4 +1,5 @@
 import { get, set, computed, setProperties, observer} from '@ember/object';
+import { resolve } from 'rsvp';
 import { scheduleOnce } from '@ember/runloop';
 import { alias, notEmpty } from '@ember/object/computed';
 import { inject as service } from '@ember/service';
@@ -356,6 +357,17 @@ export default Component.extend(NewOrEdit, {
   }),
 
   requiredNamespace: alias('selectedTemplateModel.requiredNamespace'),
+
+  doSave() {
+    const requiredNamespace = get(this, 'requiredNamespace');
+    if ( requiredNamespace === 'kube-system' ) {
+      return resolve(get(this, 'primaryResource'));
+    } else if ( requiredNamespace ) {
+      set(this, 'primaryResource.name', requiredNamespace);
+    }
+
+    return this._super(...arguments);
+  },
 
   willSave() {
     set(this, 'errors', null);
