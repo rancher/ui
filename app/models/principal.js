@@ -35,24 +35,26 @@ var Principal = Resource.extend({
 
   logicalType: computed('parsedExternalType', function() {
     switch ( get(this, 'parsedExternalType') ) {
-      case C.PROJECT.TYPE_RANCHER:
+      case C.PROJECT.TYPE_ACTIVE_DIRECTORY_USER:
       case C.PROJECT.TYPE_AZURE_USER:
+      case C.PROJECT.TYPE_FREEIPA_USER:
       case C.PROJECT.TYPE_GITHUB_USER:
       case C.PROJECT.TYPE_LDAP_USER:
       case C.PROJECT.TYPE_OPENLDAP_USER:
+      case C.PROJECT.TYPE_RANCHER:
       case C.PROJECT.TYPE_SHIBBOLETH_USER:
-      case C.PROJECT.TYPE_ACTIVE_DIRECTORY_USER:
         return C.PROJECT.PERSON;
 
       case C.PROJECT.TYPE_GITHUB_TEAM:
         return C.PROJECT.TEAM;
 
-      case C.PROJECT.TYPE_GITHUB_ORG:
+      case C.PROJECT.TYPE_ACTIVE_DIRECTORY_GROUP:
       case C.PROJECT.TYPE_AZURE_GROUP:
+      case C.PROJECT.TYPE_FREEIPA_GROUP:
+      case C.PROJECT.TYPE_GITHUB_ORG:
       case C.PROJECT.TYPE_LDAP_GROUP:
       case C.PROJECT.TYPE_OPENLDAP_GROUP:
       case C.PROJECT.TYPE_SHIBBOLETH_GROUP:
-      case C.PROJECT.TYPE_ACTIVE_DIRECTORY_GROUP:
         return C.PROJECT.ORG;
     }
   }),
@@ -71,20 +73,22 @@ var Principal = Resource.extend({
     let type = get(this, 'parsedExternalType');
 
     switch ( type ) {
-      case C.PROJECT.TYPE_GITHUB_USER:
+      case C.PROJECT.TYPE_ACTIVE_DIRECTORY_USER:
       case C.PROJECT.TYPE_AZURE_USER:
+      case C.PROJECT.TYPE_FREEIPA_USER:
+      case C.PROJECT.TYPE_GITHUB_USER:
       case C.PROJECT.TYPE_LDAP_USER:
       case C.PROJECT.TYPE_OPENLDAP_USER:
       case C.PROJECT.TYPE_SHIBBOLETH_USER:
-      case C.PROJECT.TYPE_ACTIVE_DIRECTORY_USER:
         key = 'model.identity.displayType.user';
         break;
 
+      case C.PROJECT.TYPE_ACTIVE_DIRECTORY_GROUP:
       case C.PROJECT.TYPE_AZURE_GROUP:
+      case C.PROJECT.TYPE_FREEIPA_GROUP:
       case C.PROJECT.TYPE_LDAP_GROUP:
       case C.PROJECT.TYPE_OPENLDAP_GROUP:
       case C.PROJECT.TYPE_SHIBBOLETH_GROUP:
-      case C.PROJECT.TYPE_ACTIVE_DIRECTORY_GROUP:
         key = 'model.identity.displayType.group';
         break;
 
