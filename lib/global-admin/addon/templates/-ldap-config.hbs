@@ -52,13 +52,13 @@
             <div><b>{{t 'ldap.accessEnabled.general.server'}} </b> <span class="text-muted">{{adConfig.servers.firstObject}}:{{adConfig.port}}</span></div>
             <div><b>{{t 'ldap.accessEnabled.general.tls'}} </b> <span class="text-muted">{{if adConfig.tls "Yes" "No"}}</span></div>
             <div><b>{{t 'ldap.accessEnabled.general.serviceAccount'}} </b> <span class="text-muted">{{adConfig.serviceAccountUsername}}</span></div>
-            {{#unless isOpenLdap}}
+            {{#if (eq adConfig.type "activeDirectoryConfig")}}
               <div><b>{{t 'ldap.accessEnabled.general.defaultDomain'}} </b> <span class="text-muted">{{adConfig.defaultLoginDomain}}</span></div>
-            {{/unless}}
+            {{/if}}
           </div>
           <div class="col span-4">
             <h3>{{t 'ldap.accessEnabled.users.header'}}</h3>
-            <div><b>{{t 'ldap.accessEnabled.general.searchBase'}} </b> <span class="text-muted">{{adConfig.userSearchBase}}</span></div>
+            <div class="force-wrap"><b>{{t 'ldap.accessEnabled.general.searchBase'}} </b> <span class="text-muted">{{adConfig.userSearchBase}}</span></div>
             <div><b>{{t 'ldap.accessEnabled.users.objectClass'}} </b> <span class="text-muted">{{adConfig.userObjectClass}}</span></div>
             <div><b>{{t 'ldap.accessEnabled.users.login'}} </b> <span class="text-muted">{{adConfig.userLoginAttribute}}</span></div>
             <div><b>{{t 'ldap.accessEnabled.users.name'}} </b> <span class="text-muted">{{adConfig.userNameAttribute}}</span></div>
@@ -68,7 +68,7 @@
           </div>
           <div class="col span-4">
             <h3>{{t 'ldap.accessEnabled.group.header'}}</h3>
-            <div><b>{{t 'ldap.accessEnabled.general.searchBase'}} </b> <span class="text-muted">{{adConfig.groupSearchBase}}</span></div>
+            <div class="force-wrap"><b>{{t 'ldap.accessEnabled.general.searchBase'}} </b> <span class="text-muted">{{adConfig.groupSearchBase}}</span></div>
             <div><b>{{t 'ldap.accessEnabled.group.objectClass'}} </b> <span class="text-muted">{{adConfig.groupObjectClass}}</span></div>
             <div><b>{{t 'ldap.accessEnabled.group.name'}} </b> <span class="text-muted">{{adConfig.groupNameAttribute}}</span></div>
             <div><b>{{t 'ldap.accessEnabled.group.search'}} </b> <span class="text-muted">{{adConfig.groupSearchAttribute}}</span></div>
@@ -128,28 +128,39 @@
         <hr class="mt-30 mb-30"/>
         <p class="text-info mb-0">{{t 'ldap.accessConfig.subtext2' appName=settings.appName}}</p>
         <div class="row">
-          {{#unless isOpenLdap}}
-            <div class="col span-4">
+          {{#if (eq adConfig.type "activeDirectoryConfig")}}
+            <div class="col span-6">
               <div class="inline-form">
-                <label class="acc-label pb-5">{{t 'ldap.accessConfig.defaultDomain.labelText'}}</label>
-                {{input value=adConfig.defaultLoginDomain classNames="form-control" placeholder=(t 'ldap.accessConfig.defaultDomain.placeholder')}}
-                <p class="help-block">{{t 'ldap.accessConfig.defaultDomain.helpText'}}</p>
+                <label class="acc-label pb-5">{{t 'model.openldapconfig.serviceAccountUsername.label'}}{{field-required}}</label>
+                {{input value=adConfig.serviceAccountUsername classNames="form-control"}}
               </div>
             </div>
-          {{/unless}}
-          <div class="col {{if isOpenLdap "span-6" "span-4"}}">
-            <div class="inline-form">
-              <label class="acc-label pb-5">{{t 'model.openldapconfig.serviceAccountUsername.label'}}{{field-required}}</label>
-              {{input value=adConfig.serviceAccountUsername classNames="form-control"}}
+          {{else}}
+            <div class="col span-6">
+              <div class="inline-form">
+                <label class="acc-label pb-5">{{t 'ldap.accessConfig.serviceAccountDistinguishedName.labelText'}}{{field-required}}</label>
+                {{input value=adConfig.serviceAccountDistinguishedName classNames="form-control"}}
+              </div>
             </div>
-          </div>
-          <div class="col {{if isOpenLdap "span-6" "span-4"}}">
+          {{/if}}
+          <div class="col span-6">
             <div class="inline-form">
               <label class="acc-label pb-5">{{t 'model.openldapconfig.serviceAccountPassword.label'}}{{field-required}}</label>
               {{input type="password" value=adConfig.serviceAccountPassword classNames="form-control"}}
             </div>
           </div>
         </div>
+        {{#if (eq adConfig.type "activeDirectoryConfig")}}
+          <div class="row">
+            <div class="col span-6">
+              <div class="inline-form">
+                <label class="acc-label pb-5">{{t 'ldap.accessConfig.defaultDomain.labelText'}}</label>
+                {{input value=adConfig.defaultLoginDomain classNames="form-control" placeholder=(t 'ldap.accessConfig.defaultDomain.placeholder')}}
+                <p class="help-block">{{t 'ldap.accessConfig.defaultDomain.helpText'}}</p>
+              </div>
+            </div>
+          </div>
+        {{/if}}
 
         <div class="row">
           <div class="col span-6">
@@ -194,7 +205,7 @@
             </div>
             <div class="pb-20">
               <label class="acc-label pb-5">{{t 'ldap.customizeSchema.users.userMemberAttribute.labelText'}}</label>
-              {{input value=openLDAPConfig.userMemberAttribute classNames="form-control"}}
+              {{input value=adConfig.userMemberAttribute classNames="form-control"}}
             </div>
             <div class="pb-20">
               <label class="acc-label pb-5">{{t 'ldap.customizeSchema.users.search.labelText'}}</label>
@@ -274,6 +285,7 @@
                 cancelDisabled=true
                 createLabel='ldap.testAuth.authenticate.pre'
                 savingLabel='ldap.testAuth.authenticate.post'
+                btnLabel=providerSaveLabel
                 saving=testing
             }}
           </div>
