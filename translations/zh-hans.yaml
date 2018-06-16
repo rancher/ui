@@ -5,6 +5,7 @@ generic:
   actions: 操作
   activate: 激活
   add: 添加
+  advanced: 高级
   all: 全部
   any: 任何
   as: 以
@@ -261,12 +262,12 @@ rolesPage:
         placeholder: "例如：开发者"
       context:
         labelText: 上下文
-        detail: What scopes this role is appropriate to be shown in.
+        detail: 此角色的适用范围适合在此展示
       locked:
-        labelText: Locked
-        detail: This does not affect any bindings to the role that already exist.
-        enabled: "Yes: New bindings are not allowed to use this role"
-        disabled: "No"
+        labelText: 已锁定
+        detail: 对已经绑定的用户没有影响
+        enabled: "是: 新用户不允许绑定此角色"
+        disabled: "否"
       allow:
         create: 创建
         delete: 删除
@@ -301,6 +302,35 @@ apiPage:
       never: 永不过期
     noData: 没有定义API密钥
 authPage:
+  freeipa:
+    providerName: FreeIPA
+    header:
+      enabled:
+        label: "{providerName}已启用"
+        required: |
+          {appName}已经被设置为允许访问{groups, plural,
+            =0{no groups}
+            =1{#group}
+            other{#groups}
+          }and{users, plural,
+            =0{no users}
+            =1{# user}
+            other{#users}
+          }访问.
+        restricted: |
+          {appName}被配置为允许{groups, plural,
+            =0{no groups}
+            =1{# group}
+            other{# groups}
+          }and{users, plural,
+            =0{no users}
+            =1{# user}
+            other{# users}
+          }以环境成员身份访问.
+        unrestricted: "{appName}被配置为允许所有{providerName}用户访问."
+      disabled:
+        label: "{providerName}未配置"
+        warning: "{appName}可以配置为限制{providerName}用户和组的访问，目前没有设置，所以任何能达此页面(或API)的人都可以完全控制系统"
   shibboleth:
     enabled:
       header: "{providerName}已启用"
@@ -329,7 +359,7 @@ authPage:
         header:
           text: 认证
       disableAccess:
-        header: "Danger Zone&trade;"
+        header: '危险区域&trade;'
         warning: '<b class="text-danger">警告:</b>禁用访问控制将导致任何能够访问此页面或API的用户拥有对{appName}的完全控制权限'
         confirmDisable: "确认? 再次点击将关闭访问控制"
         disable: 关闭访问控制
@@ -358,7 +388,7 @@ authPage:
     providerName:
       shibboleth: Shibboleth
   root:
-    header: Access Control
+    header: 访问控制
   github:
     standard: GitHub
     enterprise: GitHub企业版
@@ -384,7 +414,7 @@ authPage:
           =0{无用户}
           =1{#个用户}
           other{#个用户}
-          }以环境成员身份访问。
+          }以环境成员身份访问
       disabled:
         label: GitHub未设置
         warning: "{appName}可以配置为限制对一组GitHub用户和组织成员的访问"
@@ -436,20 +466,63 @@ authPage:
       buttonText:
         pre: GitHub验证
         post: 等待GitHub返回
+      authError: 'Github未获取访问权限'
+      popupError: '请关闭当前窗口，点击认证按钮重新认证'
+
   azuread:
     header:
-      enabled: 'Azure AD验证已<b>启用</b>'
-      disabled: 'Azure AD域验证未配置'
-    subtext:
-      enabled: '{appName}已经被设置为允许Azure AD账户访问'
-      disabled: '{appName}能够被设置为仅允许{appName}数据库中定义的用户访问。 当前系统未进行设置， 因此任何访问此页面(或API)的用户都具有系统的完全控制权限'
+      enabled:
+        label: "Azure AD已启用"
+        required: |
+          {appName}已被设置为允许{groups, plural,
+            =0{no groups}
+            =1{# group}
+            other{# groups}
+          }and{users, plural,
+            =0{no users}
+            =1{# user}
+            other{# users}
+          }访问.
+        restricted: |
+          {appName}已被设置为允许以{groups, plural,
+            =0{no groups}
+            =1{# group}
+            other{# groups}
+          }and{users, plural,
+            =0{no users}
+            =1{# user}
+            other{# users}
+          }环境成员身份访问
+        unrestricted: "{appName}已被设置为允许任何Azure AD用户访问."
+      disabled:
+        label: "Azure AD未配置"
+        warning: "{appName}可以配置为限制一组Azure AD用户和组的访问"
     enabled:
       header: '危险区域&trade;'
       warning: '<b class="text-danger">警告:</b>禁用访问控制将导致任何能够访问此页面或API的用户拥有对{appName}的完全控制权限'
       reallyDisable: '确认? 再次点击将关闭访问控制'
       promptDisable: 关闭访问控制
+      general:
+        header: 常规
     configure:
-      header: '1. 设置Azure AD账户'
+      header: '配置Azure AD账户'
+      replyUrl: "在开始设置之前，Azure AD需要预先设置Rancher Server的应答URL(Rancher Server地址). 请确保<code>{replyUrl}</code>已经在Azure Portal中设置好"
+      help: 输入Tenant ID，Client ID和Admin用户详细信息以连接到Azure AD进行身份验证
+      applicationId:
+        label: Application ID
+        placeholder: UUID字符串
+      applicationSecret:
+        label: Application Secret
+      serverURL:
+        label: Rancher Server Url
+      azureADEndpoint:
+        label: Endpoint
+      azureADGraphEndpoint:
+        label: Graph Endpoint
+      azureADTokenEndpoint:
+        label: Token Endpoint
+      azureADAuthEndpoint:
+        label: Auth Endpoint
       tenantId:
         label: 租户ID
         placeholder: UUID字符串
@@ -476,10 +549,12 @@ authPage:
         label: 登录密码
       pre: 通过Azure验证
       post: 等待Azure返回
+      authError: 'Azure访问未认证授权'
+      popupError: '请关闭窗口，然后再次点击认证按钮进行认证'
   localAuth:
     header:
-      enabled: '本地验证<b>已启用</b>'
-      disabled: '<p>本地验证未设置</p>'
+      enabled: '本地验证已启用'
+      disabled: '本地验证未设置'
     subtext:
       enabled:
         text: '{appName}已设置本地账户访问'
@@ -860,18 +935,18 @@ time:
   now: 现在
   mins: |
     {mins, plural,
-    =1{# 分钟}
-    other{# 分钟}
+    =1{#分钟}
+    other{#分钟}
     }
   minsAgo: |
     {mins, plural,
-    =1{# 分钟前}
-    other{# 分钟前}
+    =1{#分钟前}
+    other{#分钟前}
     }
   secsAgo: |
     {secs, plural,
-    =1{# 秒前}
-    other{# 秒前}
+    =1{#秒前}
+    other{#秒前}
     }
 haPage:
   header: 高可用性(HA)
@@ -1042,6 +1117,9 @@ loginPage:
     ad: Active Directory
     azureAd: Azure AD
     local: 本地用户
+    openldap: OpenLDAP
+    freeipa: FreeIPA
+
 machinePage:
   header: 主机驱动
   inactive: 未激活
@@ -1374,7 +1452,12 @@ notifierPage:
 ldap:
   providerName:
     openldap: OpenLDAP
-    ad: 活动目录
+    ad: Active Directory
+    freeipa: FreeIPA
+    saveLabels:
+      openldap: 使用OpenLDAP进行身份验证
+      ad: 使用Active Directory进行身份验证
+      freeipa: 使用FreeIPA进行身份验证
   header:
     enabled:
       label: "{providerName}已启用"
@@ -1449,6 +1532,8 @@ ldap:
       helpText: "当用户未指定登录域时使用该域"
       labelText: 默认登录域
       placeholder: "例如：mycompany"
+    serviceAccountDistinguishedName:
+      labelText: 服务帐户专有名称
   customizeSchema:
     header: "2. 自定义架构"
     helpText: "如果你的活动目录架构(Schema)不是标准格式，可以在这里进行自定义设置"
@@ -1646,11 +1731,17 @@ catalogSettings:
       rancher: 由社区成员创建并维护的模板，未经过Rancher Labs认证。
       pl: 由社区成员创建并维护的模板
   more:
-    header: 更多
-    helpText: '此处可以添加自定义商店,每个商店必须有唯一的名称和一个支持<code>git clone</code>操作的URL。更多信息请参考<a href="https://git-scm.com/docs/git-clone#_git_urls_a_id_urls_a" target="_blank" rel="nofollow noopener noreferrer">文档</a>）'
+    header: 自定义
+    helpText:
+      header: "您可以自定义其他应用商店地址，每个自定义应用商店需要有以下内容:"
+      help-name: 唯一的名称
+      help-repo: '仓库URL地址:'
+      help-branch: "<i>可选</i> : 如果使用基于Git的应用商店，则还需要设置分支名称"
+      help-git: "基于Git的商店URL地址, <i>例如: https://github.com/rancher/charts.git</i>"
+      help-chart: 'Helm Charts server URL, <i>例如: https://kubernetes-charts.storage.googleapis.com/ (详细信息可查看<a href="https://docs.helm.sh/developing_charts/#hosting-chart-repositories" target="_blank" rel="nofollow noopener noreferrer">Chart托管仓库</a>)</i>'
     addActionLabel: 添加应用商店
-    noMatch: 没有符合当前搜索条件的目录
-    noData: 没有定义自定义应用商店。
+    noMatch: 没有与当前搜索匹配的应用商店
+    noData: 没有自定义应用商店
     addHeader: 添加应用商店
     editHeader: 编辑应用商店
     name:
@@ -1692,18 +1783,18 @@ clusterWelcome:
     <p>为容器提供安全的Overlay网络，使容器相互之间可以安全的进行跨主机通信。</p>
 clusterNew:
   advanced:
-    label: Advanced Options
-    helpText: Tabs are not able to be used in the yaml file for parsing.
+    label: 高级选项
+    helpText: 不要使用Tabs，Tabs字符在yaml中不能解析
   name:
     label: 集群名称
     placeholder: 例如：Sandbox
   description:
     placeholder: 例如：用于开发和测试工作负载的集群
   driverLabels:
-    cloud: In a hosted Kubernetes provider
-    import: Import existing cluster
-    infra: From nodes in an infrastructure provider
-    custom: From my own existing nodes
+    cloud: Kubernetes托管服务商
+    import: 导入现有集群
+    infra: 来自云服务上提供的主机
+    custom: 来自自己现有的主机
   members:
     label: 成员角色
     detail: 控制哪些用户可以访问集群, 以及他们拥有的对其进行更改的权限。
@@ -1891,7 +1982,7 @@ clusterNew:
       template: 模板
     detected: |
       {count, plural,
-      =1{# 台新主机注册成功}
+      =1{#台新主机注册成功}
       other{# 台新主机注册成功}
       }
     done: 完成
@@ -1907,6 +1998,9 @@ clusterNew:
       canal: Canal
       options:
         flannel:
+          iface:
+            label: 接口
+        canal:
           iface:
             label: 接口
         calico:
@@ -1959,6 +2053,9 @@ clusterNew:
       label: Kubelet
       domain: 集群域
       dns: 集群DNS服务器
+    warning:
+      aws:
+        iam: '使用Amazon Cloud Provider时，应在节点模板中配置IAM角色名称'
     errors:
       etcd: 请选择1个，3个或5个主机用于etcd。
       controlPlane: 请至少选择一个用于management的主机。
@@ -3898,18 +3995,24 @@ labelsSection:
     }
   key: 键
   value: 值
-  noData: 无标签
+  noData: 没有标签
+
 loginShibboleth:
-  buttonText: 用Shibboleth账号登录
+  buttonText: 用Shibboleth登录
+
 loginGithub:
-  buttonText: 用GitHub帐号登录
+  buttonText: 用GitHub登录
+
+loginAzure:
+  buttonText: 用Azure AD登录
+
 loginUserPass:
   local: 使用本地用户
   provider: "{kind}"
   userLabel: 用户名
   caasLabel: 邮箱
   remember: 记住登录
-  userPlaceholder: 例如:jsmith
+  userPlaceholder: '例如: jsmith'
   genericLoginLabel: 登录
   loginLabel: 登录{provider}
   loggingInLabel: 登录中...
@@ -3932,12 +4035,12 @@ newCertificate:
     view: '证书: {name}'
   key:
     label: 私钥
-    required: 私钥是必需的
+    required: 必须填写私钥
     invalidFormat: 私钥无效
     placeholder: "粘贴或导入私钥，以-----BEGIN RSA PRIVATE KEY-----开头"
   cert:
     label: 证书
-    required: 证书是必需的
+    required: 必须填写证书
     invalidFormat: 证书无效
     placeholder: "粘贴或导入证书，以-----BEGIN CERTIFICATE-----开头"
     protip: 请包括全部所需的链证书
@@ -3950,11 +4053,12 @@ newCertificate:
   errors:
     encrypted: 私钥不能被密码保护
     key:
-      required: 私钥是必需的。
+      required: 必须填写私钥
       invalidFormat: 私钥无效，请确保它是一个RSA密钥
     cert:
-      required: 证书是必需的
+      required: 必须填写证书
       invalidFormat: 证书无效
+
 modalAboutComponent:
   component: 组件
   version: 版本
@@ -4011,9 +4115,9 @@ modalAddPayment:
         label: 国家
         placeholder: China
   currencies:
-    yuan: "人民币 (¥)"
-    euro: "欧元 (€)"
-    dollar: "美元 ($)"
+    yuan: "人民币(¥)"
+    euro: "欧元(€)"
+    dollar: "美元($)"
 modalContainerStop:
   header: "确认要停止"
   helpText: "在超时时间后容器将被强制停止"
@@ -4094,11 +4198,21 @@ modalImport:
   title: 导入YAML
   mode:
     label: 导入模式
-    cluster: "集群：直接将任何资源导入到此集群中"
+    cluster: "群集：直接将任何资源导入到此群集中"
     project: "项目：将资源导入此项目"
-    namespace: "命名空间：将资源导入特定的命名空间"
-  defaultNamespace:
-    label: 资源未指定时使用的默认命名空间
+    namespace: "命名空间：将所有资源导入特定的命名空间"
+  detail:
+    cluster1: 如果一个资源指定了命名空间，那么会自动创建命名空间，但是不会自动加入到项目中
+    cluster2: 如果一个资源没有指定一个命名空间，它将被导入到default中
+    cluster3: '该模式还支持没有命名空间的资源，例如: RoleTemplates'
+
+    project1: 不指定命名空间的资源将被导入到选定的默认命名空间中
+    project2: 如果一个资源指定了一个不存在的命名空间，此命名空间将被创建并添加到这个项目中
+
+    namespace1: 所有资源将被导入到选定的命名空间中
+    namespace2: 如果资源指定了不同的命名空间，则导入将失败
+
+
 modalProcessError:
   header: 异常信息
   cause: "原因:"
@@ -4261,6 +4375,11 @@ newContainer:
     detail: '“{service}”有多个容器，希望升级哪个容器？'
     primary: 主容器
     sidekick: Sidecars
+  containerType:
+    title: Sidecar Type
+    standard: Standard Container
+    init: Init Container
+
   errors:
     noSidekick: 选择要添加sidecar的工作负载
     duplicateName: '工作负载{service}中已经存在名为{name}的sidecar'
@@ -4735,6 +4854,7 @@ nodeDriver:
       sshPasswordLengthNotValid: SSH密码的长度应为8至30之间
       sshPasswordInvalidCharacter: SSH密码包含非法字符
       sshPasswordFormatError: "SSH密码必须至少包括大写字符，小写字符，数字和特殊字符中的三种"
+      nameNotValidForApp: 根据{appName}主机名规则该名称无效。
   zstack:
     access:
       title: 1. 帐户访问
@@ -5246,6 +5366,7 @@ action:
   convertToService: 转换为服务
   deactivate: 停用
   downloadYaml: 下载YAML
+  drain: Drain
   edit: 编辑
   editService: 编辑服务
   editYaml: 查看/编辑YAML
@@ -5280,6 +5401,7 @@ action:
   viewInstance: 查看实例
   test: 测试
   mute: 静默
+  uncordon: Uncordon
   unmute: 取消静默
 validation:
   required: '"{key}"必须设置'
@@ -5405,6 +5527,7 @@ storageClass:
     title: StorageOS
   vsphere-volume:
     title: VMWare vSphere Volume
+
 volumeSource:
   aws-ebs:
     title: Amazon EBS Disk
@@ -5415,7 +5538,7 @@ volumeSource:
   cephfs:
     title: Ceph Filesystem
   config-map:
-    title: Config-Maps Volume
+    title: Config Map Volume
   cinder:
     title: Openstack Cinder Volume
   secret:
@@ -5438,7 +5561,7 @@ volumeSource:
     title: 本地路径
     path:
       label: 主机路径
-      placeholder: 例如：/data
+      placeholder: '例如: /data'
     kind:
       label: 主机路径必须被设置
       Any: "任意：不检查目标路径"
@@ -5472,7 +5595,7 @@ volumeSource:
   customLogPath:
     mountPath:
       label: 日志路径
-      placeholder: 例如：/var/www
+      placeholder: '例如: /var/www'
       helpText: 容器中的日志路径
     logFormat:
       label: 日志格式
