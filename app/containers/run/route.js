@@ -208,7 +208,7 @@ export default Route.extend({
       readOnly: false,
       runAsNonRoot: false,
       namespaceId: namespaceId ? namespaceId : this.getNamespaceId(params),
-      pullPolicy: 'Always',
+      imagePullPolicy: 'Always',
     });
   },
 
