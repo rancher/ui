@@ -115,6 +115,57 @@
         {{/if}}
       </div>
       <div class="col span-6">
+        <label class="acc-label">{{t 'clusterNew.azureaks.machineType.label'}}</label>
+        {{#if editing}}
+          <div>
+            {{config.agentVmSize}}
+          </div>
+        {{else}}
+          {{new-select
+              classNames="form-control"
+              optionValuePath="value"
+              optionLabelPath="value"
+              content=machineSizes
+              value=config.agentVmSize
+              prompt="clusterNew.azureaks.machineType.prompt"
+              localizedPrompt=true
+          }}
+        {{/if}}
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col span-6">
+        <label class="acc-label">{{t 'clusterNew.azureaks.count.label'}}</label>
+        {{input-number min=1 value=config.count}}
+      </div>
+      <div class="col span-6">
+        <label class="acc-label">{{t 'clusterNew.azureaks.diskSizeGb.label'}}</label>
+        {{#if editing}}
+          <div>
+            {{config.agentVmSize}}
+          </div>
+        {{else}}
+          <div class="input-group">
+            {{input-number min=0 value=config.osDiskSizeGb}}
+            <span class="input-group-addon bg-default">{{t 'generic.gigabyte'}}</span>
+          </div>
+        {{/if}}
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col span-6">
+        <label class="acc-label">{{t 'clusterNew.azureaks.admin.label'}}</label>
+        {{#if editing}}
+          <div>
+            {{config.adminUsername}}
+          </div>
+        {{else}}
+          {{input type="text" value=config.adminUsername classNames="form-control" placeholder=(t 'clusterNew.azureaks.admin.placeholder')}}
+        {{/if}}
+      </div>
+      <div class="col span-6">
         <label class="acc-label">
           {{t 'clusterNew.azureaks.resourceGroup.label'}}{{field-required}}
           {{#tooltip-element
@@ -140,53 +191,28 @@
 
     <div class="row">
       <div class="col span-6">
-        <label class="acc-label">{{t 'clusterNew.azureaks.count.label'}}</label>
-        {{input-number min=1 value=config.count}}
+        {{t "clusterNew.azureaks.networking.label"}}
+        <div class="radio">
+          <label class="acc-label">
+            {{radio-button selection=netMode value="default"}} {{t "clusterNew.azureaks.networking.default"}}
+          </label>
+          <label class="acc-label">
+            {{radio-button selection=netMode value="advanced"}} {{t "clusterNew.azureaks.networking.advanced"}}
+          </label>
+        </div>
       </div>
-      <div class="col span-6">
-        <label class="acc-label">{{t 'clusterNew.azureaks.machineType.label'}}</label>
-        {{#if editing}}
-          <div>
-            {{config.agentVmSize}}
+      {{#if (eq netMode "advanced")}}
+        <div class="row">
+          <div class="col span-6 mt-0">
+            <label class="acc-label">{{t 'clusterNew.azureaks.networking.vnet.label'}}</label>
+            {{input type="text" value=config.virtualNetwork classNames="form-control"}}
           </div>
-        {{else}}
-          {{new-select
-              classNames="form-control"
-              optionValuePath="value"
-              optionLabelPath="value"
-              content=machineSizes
-              value=config.agentVmSize
-              prompt="clusterNew.azureaks.machineType.prompt"
-              localizedPrompt=true
-          }}
-        {{/if}}
-      </div>
-    </div>
-
-    <div class="row">
-      <div class="col span-6">
-        <label class="acc-label">{{t 'clusterNew.azureaks.admin.label'}}</label>
-        {{#if editing}}
-          <div>
-            {{config.adminUsername}}
+          <div class="col span-6 mt-0">
+            <label class="acc-label">{{t 'clusterNew.azureaks.networking.subnet.label'}}</label>
+            {{input type="text" value=config.subnet classNames="form-control"}}
           </div>
-        {{else}}
-          {{input type="text" value=config.adminUsername classNames="form-control" placeholder=(t 'clusterNew.azureaks.admin.placeholder')}}
-        {{/if}}
-      </div>
-      <div class="col span-6">
-        <label class="acc-label">{{t 'clusterNew.azureaks.diskSizeGb.label'}}</label>
-        {{#if editing}}
-          <div>
-            {{config.agentVmSize}}
-          </div>
-        {{else}}
-          <div class="input-group">
-            {{input-number min=0 value=config.osDiskSizeGb}}
-            <span class="input-group-addon bg-default">{{t 'generic.gigabyte'}}</span>
-          </div>
-        {{/if}}
-      </div>
+        </div>
+      {{/if}}
     </div>
 
     <div class="row">
