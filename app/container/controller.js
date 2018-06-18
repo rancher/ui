@@ -23,4 +23,10 @@ export default Controller.extend({
     });
     return envs;
   }),
+
+  podStateDidChange: observer('model.state', function () {
+    if ( get(this, 'model.state') === 'removed') {
+      this.transitionToRoute('authenticated.project.index');
+    }
+  }),
 });

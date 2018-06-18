@@ -3,6 +3,10 @@ import Route from '@ember/routing/route';
 
 export default Route.extend({
   model: function (params) {
-    return get(this, 'store').find('pod', params.container_id);
+    const pod = get(this, 'store').find('pod', params.container_id);
+    if ( !pod ) {
+      this.replaceWith('authenticated.project.index');
+    }
+    return pod;
   },
 });

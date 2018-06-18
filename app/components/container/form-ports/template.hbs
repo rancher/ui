@@ -65,7 +65,7 @@
                 {{else if port.sourcePort}}
                   {{port.sourcePort}}
                 {{else}}
-                  {{t 'generic.random'}}
+                  {{t (if (eq port.kind "ClusterIP") 'formPorts.sourcePort.clusterIpDefault' 'generic.random')}}
                 {{/if}}
               {{else if (eq port.kind "HostPort")}}
                 <div class="row">
