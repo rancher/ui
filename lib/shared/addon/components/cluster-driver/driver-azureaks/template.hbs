@@ -115,7 +115,19 @@
         {{/if}}
       </div>
       <div class="col span-6">
-        <label class="acc-label">{{t 'clusterNew.azureaks.resourceGroup.label'}}{{field-required}}</label>
+        <label class="acc-label">
+          {{t 'clusterNew.azureaks.resourceGroup.label'}}{{field-required}}
+          {{#tooltip-element
+               type="tooltip-basic"
+               model=(t "clusterNew.azureaks.resourceGroup.helpText")
+               tooltipTemplate="tooltip-static"
+               aria-describedby="tooltip-base"
+               tooltipFor="tooltipResourceGroup"
+               placement="top"
+          }}
+            <i class="icon icon-info"></i>
+          {{/tooltip-element}}
+        </label>
         {{#if editing}}
           <div>
             {{config.resourceGroup}}
