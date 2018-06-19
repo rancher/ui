@@ -130,25 +130,40 @@
          expand=(action expandFn)
     }}
       <div class="row">
-        <div class="col span-6">
-          <label class="acc-label">{{t 'clusterNew.azureaks.machineType.label'}}</label>
-          {{#if editing}}
-            <div>
-              {{config.agentVmSize}}
-            </div>
-          {{else}}
-            {{new-select
-                classNames="form-control"
-                optionValuePath="value"
-                optionLabelPath="value"
-                content=machineSizes
-                value=config.agentVmSize
-                prompt="clusterNew.azureaks.machineType.prompt"
-                localizedPrompt=true
-            }}
-          {{/if}}
+        <div class="row">
+          <div class="col span-6">
+            <label class="acc-label">{{t 'clusterNew.azureaks.admin.label'}}</label>
+            {{#if editing}}
+              <div>
+                {{config.adminUsername}}
+              </div>
+            {{else}}
+              {{input type="text" value=config.adminUsername classNames="form-control" placeholder=(t 'clusterNew.azureaks.admin.placeholder')}}
+            {{/if}}
+          </div>
+          <div class="col span-6">
+            <label class="acc-label">
+              {{t 'clusterNew.azureaks.resourceGroup.label'}}{{field-required}}
+              {{#tooltip-element
+                   type="tooltip-basic"
+                   model=(t "clusterNew.azureaks.resourceGroup.helpText")
+                   tooltipTemplate="tooltip-static"
+                   aria-describedby="tooltip-base"
+                   tooltipFor="tooltipResourceGroup"
+                   placement="top"
+              }}
+                <i class="icon icon-info"></i>
+              {{/tooltip-element}}
+            </label>
+            {{#if editing}}
+              <div>
+                {{config.resourceGroup}}
+              </div>
+            {{else}}
+              {{input type="text" value=config.resourceGroup classNames="form-control" placeholder=(t 'clusterNew.azureaks.resourceGroup.placeholder')}}
+            {{/if}}
+          </div>
         </div>
-      </div>
 
       <div class="row">
         <div class="col span-6">
@@ -170,41 +185,25 @@
         </div>
       </div>
 
-      <div class="row">
-        <div class="col span-6">
-          <label class="acc-label">{{t 'clusterNew.azureaks.admin.label'}}</label>
-          {{#if editing}}
-            <div>
-              {{config.adminUsername}}
-            </div>
-          {{else}}
-            {{input type="text" value=config.adminUsername classNames="form-control" placeholder=(t 'clusterNew.azureaks.admin.placeholder')}}
-          {{/if}}
-        </div>
-        <div class="col span-6">
-          <label class="acc-label">
-            {{t 'clusterNew.azureaks.resourceGroup.label'}}{{field-required}}
-            {{#tooltip-element
-                 type="tooltip-basic"
-                 model=(t "clusterNew.azureaks.resourceGroup.helpText")
-                 tooltipTemplate="tooltip-static"
-                 aria-describedby="tooltip-base"
-                 tooltipFor="tooltipResourceGroup"
-                 placement="top"
-            }}
-              <i class="icon icon-info"></i>
-            {{/tooltip-element}}
-          </label>
-          {{#if editing}}
-            <div>
-              {{config.resourceGroup}}
-            </div>
-          {{else}}
-            {{input type="text" value=config.resourceGroup classNames="form-control" placeholder=(t 'clusterNew.azureaks.resourceGroup.placeholder')}}
-          {{/if}}
-        </div>
+      <div class="col span-6">
+        <label class="acc-label">{{t 'clusterNew.azureaks.machineType.label'}}</label>
+        {{#if editing}}
+          <div>
+            {{config.agentVmSize}}
+          </div>
+        {{else}}
+          {{new-select
+              classNames="form-control"
+              optionValuePath="value"
+              optionLabelPath="value"
+              content=machineSizes
+              value=config.agentVmSize
+              prompt="clusterNew.azureaks.machineType.prompt"
+              localizedPrompt=true
+          }}
+        {{/if}}
       </div>
-
+      </div>
       <div class="row">
         <div class="col span-6">
           {{t "clusterNew.azureaks.networking.label"}}
