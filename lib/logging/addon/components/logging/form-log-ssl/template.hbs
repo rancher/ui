@@ -1,0 +1,99 @@
+<div class="mt-20 clearfix">
+  <h2 class="pt-30">
+    {{t 'loggingPage.ssl.sslHeader'}}
+  </h2>
+  <hr/>
+  <div class="row">
+    <div class="col span-6 mt-0">
+      <div class="clearfix">
+        <label class="acc-label pt-5">{{t 'loggingPage.ssl.clientKey.label'}}</label>
+      </div>
+      {{input-text-file
+          classNames="box"
+          value=config.clientKey
+          canChangeName=false
+          accept="text/plain,.pem,.pkey,.key"
+          minHeight=60
+          placeholder="newCertificate.key.placeholder"
+          shouldChangeName=false
+      }}
+    </div>
+    <div class="col span-6 mt-0">
+      <div class="clearfix">
+        <label class="acc-label pt-5">{{t 'loggingPage.ssl.clientCert.label'}}</label>
+      </div>
+      {{input-text-file
+          classNames="box"
+          value=config.clientCert
+          multiple=true
+          canChangeName=false
+          accept="application/x-x509-ca-cert,text/plain,.pem,.crt"
+          minHeight=60
+          placeholder="newCertificate.cert.placeholder"
+          shouldChangeName=false
+      }}
+    </div>
+  </div>
+  {{#if (or (eq targetType 'splunk') (eq targetType 'elasticsearch'))}}
+    <div class="row">
+      <div class="col span-6">
+        <label class="acc-label">{{t 'loggingPage.ssl.clientKeyPass.label'}}</label>
+        {{input
+            type="password"
+            value=config.clientKeyPass
+            className="form-control"
+            placeholder=(t 'loggingPage.ssl.clientKeyPass.password.placeholder')
+          }}
+      </div>
+      <div class="col span-6">
+        <label class="acc-label">{{t 'loggingPage.ssl.verify.label'}}</label>
+        <div class="radio">
+          <label>
+            {{radio-button selection=config.sslVerify value=false}}
+            {{t 'loggingPage.ssl.verify.disabled'}}
+          </label>
+        </div>
+        <div class="radio">
+          <label>
+            {{radio-button selection=config.sslVerify value=true}}
+            {{t 'loggingPage.ssl.verify.enabled'}}
+          </label>
+        </div>
+        {{#if sslVerify}}
+          <div class="clearfix">
+            <label class="acc-label pt-5">{{t 'loggingPage.ssl.certificate.label'}}</label>
+          </div>
+          {{input-text-file
+              classNames="box"
+              value=config.certificate
+              multiple=true
+              canChangeName=false
+              accept="application/x-x509-ca-cert,text/plain,.pem,.crt"
+              minHeight=60
+              placeholder="newCertificate.cert.placeholder"
+              shouldChangeName=false
+          }}
+        {{/if}}
+      </div>
+    </div>
+  {{/if}}
+  {{#if (eq targetType 'kafka')}}
+    <div class="row">
+      <div class="col span-6 mt-0">
+        <div class="clearfix">
+          <label class="acc-label pt-5">{{t 'loggingPage.ssl.certificate.label'}}</label>
+        </div>
+        {{input-text-file
+            classNames="box"
+            value=config.certificate
+            multiple=true
+            canChangeName=false
+            accept="application/x-x509-ca-cert,text/plain,.pem,.crt"
+            minHeight=60
+            placeholder="newCertificate.cert.placeholder"
+            shouldChangeName=false
+        }}
+      </div>
+    </div>
+  {{/if}}
+</div>

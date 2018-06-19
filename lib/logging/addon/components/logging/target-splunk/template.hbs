@@ -18,7 +18,7 @@
   </div>
 
   <div class="row">
-    <div class="col span-6 mt-0 pt-0">
+    <div class="col span-12 mt-0 pt-0">
       <label class="acc-label" for="">{{t 'loggingPage.splunk.token'}}{{field-required}}</label>
       {{input
           type="text"
@@ -30,6 +30,8 @@
         {{t 'loggingPage.splunk.tokenHelpText' htmlSafe=true}}
       </p>
     </div>
+  </div>
+  <div class="row">
     <div class="col span-6 mt-0 pt-0">
       <label class="acc-label" for="">{{t 'loggingPage.splunk.source'}}</label>
       {{input
@@ -42,7 +44,27 @@
         {{t 'loggingPage.splunk.sourceHelpText' htmlSafe=true}}
       </p>
     </div>
+    <div class="col span-6 mt-0 pt-0">
+      <label class="acc-label" for="">{{t 'loggingPage.splunk.index'}}</label>
+      {{input
+          type="text"
+          value=config.index
+          classNames="form-control"
+          placeholder=(t 'loggingPage.splunk.indexPlaceholder')
+      }}
+      <p class="text-info text-small">
+        {{t 'loggingPage.splunk.indexHelpText' htmlSafe=true}}
+      </p>
+    </div>
   </div>
 </section>
 
+{{#if showSSLConfig}}
+  {{logging/form-log-ssl config=config targetType=targetType}}
+{{/if}}
+
 {{logging/form-log-format logPreview=logPreview model=model}}
+
+{{#advanced-section advanced=showAdvanced}}
+  {{logging/form-log-docker model=model parentModel=parentModel}}
+{{/advanced-section}}

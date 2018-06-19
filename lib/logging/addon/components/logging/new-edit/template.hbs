@@ -105,25 +105,32 @@
        targetType=targetType
        model=model.elasticsearch
        pageScope=pageScope
+       parentModel=model
   }}
 {{else if (eq targetType 'embedded')}}
   {{#if isClusterLevel}}
     {{logging/target-embedded
         model=model.embedded
         targetType=targetType
+        parentModel=model
     }}
   {{/if}}
 {{else if (eq targetType 'splunk')}}
   {{logging/target-splunk
       model=model.splunk
+      parentModel=model
+      targetType=targetType
   }}
 {{else if (eq targetType 'kafka')}}
   {{logging/target-kafka
       model=model.kafka
+      parentModel=model
+      targetType=targetType
   }}
 {{else if (eq targetType 'syslog')}}
   {{logging/target-syslog
       model=model.syslog
+      parentModel=model
   }}
 {{/if}}
 
