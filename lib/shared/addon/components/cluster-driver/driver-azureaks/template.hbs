@@ -1,236 +1,257 @@
 {{#accordion-list showExpandAll=false as |al expandFn|}}
-  {{#accordion-list-item
-        title=(t 'clusterNew.customize.title')
-        detail=(t 'clusterNew.customize.detail')
-        expandAll=al.expandAll
-        expand=(action expandFn)
-  }}
-    <div class="row">
-      <div class="col span-6">
-        <label class="acc-label">{{t 'clusterNew.azureaks.kubernetesVersion.label'}}</label>
-        {{new-select
-            classNames="form-control"
-            content=versions
-            optionValuePath="value"
-            optionLabelPath="value"
-            value=config.kubernetesVersion
-            prompt="clusterNew.azureaks.kubernetesVersion.prompt"
-            localizedPrompt=true
-        }}
-      </div>
-      <div class="col span-6">
-        <label class="acc-label">{{t 'clusterNew.azureaks.dns.label'}}</label>
-        {{input type="text" value=config.masterDnsPrefix classNames="form-control" placeholder=(t 'clusterNew.azureaks.dns.placeholder')}}
-      </div>
-    </div>
-  {{/accordion-list-item}}
-  {{#accordion-list-item
-    title=(t 'clusterNew.azureaks.access.title')
-    detail=(t 'clusterNew.azureaks.access.detail')
-    showExpand=false
-    expandOnInit=true
-    expandAll=al.expandAll
-    expand=(action expandFn)
-  }}
-    <div class="row">
-      <div class="col span-6 mb-0">
-        <label class="acc-label">{{t 'clusterNew.azureaks.subscriptionId.label'}}{{field-required}}</label>
-        {{#if editing}}
-          <div>
-            {{config.subscriptionId}}
-          </div>
-        {{else}}
-          {{input type="text" value=config.subscriptionId classNames="form-control" placeholder=(t 'clusterNew.azureaks.subscriptionId.placeholder')}}
-        {{/if}}
-      </div>
-      <div class="col span-6 mb-0">
-        <label class="acc-label">{{t 'clusterNew.azureaks.tenant.label'}}{{field-required}}</label>
-        {{#if editing}}
-          <div>
-            {{config.tenantId}}
-          </div>
-        {{else}}
-          {{input type="text" value=config.tenantId classNames="form-control" placeholder=(t 'clusterNew.azureaks.tenant.placeholder')}}
-        {{/if}}
-      </div>
-    </div>
 
-    <div class="row">
-      <div class="col span-6 mb-0">
-        <label class="acc-label">{{t 'clusterNew.azureaks.clientId.label'}}{{field-required}}</label>
-        {{#if editing}}
-          <div>
-            {{config.clientId}}
-          </div>
-        {{else}}
-          {{input type="text" value=config.clientId classNames="form-control" placeholder=(t 'clusterNew.azureaks.clientId.placeholder')}}
-        {{/if}}
-      </div>
-
-      <div class="col span-6 mb-0">
-        <label class="acc-label">{{t 'clusterNew.azureaks.clientSecret.label'}}{{field-required}}</label>
-        {{#if editing}}
-          <div>
-            {{t 'generic.na'}}
-          </div>
-        {{else}}
-          {{input type="password" value=config.clientSecret classNames="form-control" placeholder=(t 'clusterNew.azureaks.clientSecret.placeholder')}}
-        {{/if}}
-      </div>
-    </div>
-    {{#unless editing}}
+  {{#if (eq step 1) }}
+    {{#accordion-list-item
+         title=(t 'clusterNew.azureaks.access.title')
+         detail=(t 'clusterNew.azureaks.access.detail')
+         showExpand=false
+         expandOnInit=true
+         expandAll=al.expandAll
+         expand=(action expandFn)
+    }}
       <div class="row">
-        <div class="col span-12 m-0">
-          {{banner-message color="bg-info" icon="icon-help" class="mb-0" message=(t 'clusterNew.azureaks.access.help' htmlSafe=true)}}
+        <div class="col span-6 mb-0">
+          <label class="acc-label">{{t 'clusterNew.azureaks.subscriptionId.label'}}{{field-required}}</label>
+          {{#if editing}}
+            <div>
+              {{config.subscriptionId}}
+            </div>
+          {{else}}
+            {{input type="text" value=config.subscriptionId classNames="form-control" placeholder=(t 'clusterNew.azureaks.subscriptionId.placeholder')}}
+          {{/if}}
+        </div>
+        <div class="col span-6 mb-0">
+          <label class="acc-label">{{t 'clusterNew.azureaks.tenant.label'}}{{field-required}}</label>
+          {{#if editing}}
+            <div>
+              {{config.tenantId}}
+            </div>
+          {{else}}
+            {{input type="text" value=config.tenantId classNames="form-control" placeholder=(t 'clusterNew.azureaks.tenant.placeholder')}}
+          {{/if}}
         </div>
       </div>
-    {{/unless}}
-  {{/accordion-list-item}}
 
-  {{#accordion-list-item
-    title=(t 'clusterNew.nodes.title')
-    detail=(t 'clusterNew.nodes.detail')
-    showExpand=false
-    expandOnInit=true
-    expandAll=al.expandAll
-    expand=(action expandFn)
-  }}
-    <div class="row">
-      <div class="col span-6">
-        <label class="acc-label">{{t 'clusterNew.azureaks.location.label'}}</label>
-        {{#if editing}}
-          <div>
-            {{config.location}}
-          </div>
-        {{else}}
-          {{new-select
-              classNames="form-control"
-              optionValuePath="name"
-              optionLabelPath="displayName"
-              prompt="clusterNew.azureaks.location.prompt"
-              content=zones
-              value=config.location
-              localizedPrompt=true
-          }}
-        {{/if}}
+      <div class="row">
+        <div class="col span-6 mb-0">
+          <label class="acc-label">{{t 'clusterNew.azureaks.clientId.label'}}{{field-required}}</label>
+          {{#if editing}}
+            <div>
+              {{config.clientId}}
+            </div>
+          {{else}}
+            {{input type="text" value=config.clientId classNames="form-control" placeholder=(t 'clusterNew.azureaks.clientId.placeholder')}}
+          {{/if}}
+        </div>
+
+        <div class="col span-6 mb-0">
+          <label class="acc-label">{{t 'clusterNew.azureaks.clientSecret.label'}}{{field-required}}</label>
+          {{#if editing}}
+            <div>
+              {{t 'generic.na'}}
+            </div>
+          {{else}}
+            {{input type="password" value=config.clientSecret classNames="form-control" placeholder=(t 'clusterNew.azureaks.clientSecret.placeholder')}}
+          {{/if}}
+        </div>
       </div>
-      <div class="col span-6">
-        <label class="acc-label">{{t 'clusterNew.azureaks.machineType.label'}}</label>
-        {{#if editing}}
-          <div>
-            {{config.agentVmSize}}
+      <div class="row">
+        <div class="col span-6">
+          <label class="acc-label">{{t 'clusterNew.azureaks.location.label'}}{{field-required}}</label>
+          {{#if editing}}
+            <div>
+              {{config.location}}
+            </div>
+          {{else}}
+            {{new-select
+                classNames="form-control"
+                optionValuePath="name"
+                optionLabelPath="displayName"
+                prompt="clusterNew.azureaks.location.prompt"
+                content=zones
+                value=config.location
+                localizedPrompt=true
+            }}
+          {{/if}}
+        </div>
+      </div>
+      {{#unless editing}}
+        <div class="row">
+          <div class="col span-12 m-0">
+            {{banner-message color="bg-info" icon="icon-help" class="mb-0" message=(t 'clusterNew.azureaks.access.help' htmlSafe=true)}}
           </div>
-        {{else}}
+        </div>
+      {{/unless}}
+    {{/accordion-list-item}}
+    {{save-cancel
+        editing=(eq mode 'edit')
+        save="authenticate"
+        saveDisabled=saveDisabled
+        createLabel="clusterNew.azureaks.authenticate.next"
+        cancel=close
+    }}
+  {{/if}}
+
+
+  {{#if (gte step 2) }}
+
+    {{#accordion-list-item
+         title=(t 'clusterNew.customize.title')
+         detail=(t 'clusterNew.customize.detail')
+         expandAll=al.expandAll
+         expand=(action expandFn)
+    }}
+      <div class="row">
+        <div class="col span-6">
+          <label class="acc-label">{{t 'clusterNew.azureaks.kubernetesVersion.label'}}</label>
           {{new-select
               classNames="form-control"
+              content=versions
               optionValuePath="value"
               optionLabelPath="value"
-              content=machineSizes
-              value=config.agentVmSize
-              prompt="clusterNew.azureaks.machineType.prompt"
+              value=config.kubernetesVersion
+              prompt="clusterNew.azureaks.kubernetesVersion.prompt"
               localizedPrompt=true
           }}
-        {{/if}}
-      </div>
-    </div>
-
-    <div class="row">
-      <div class="col span-6">
-        <label class="acc-label">{{t 'clusterNew.azureaks.count.label'}}</label>
-        {{input-number min=1 value=config.count}}
-      </div>
-      <div class="col span-6">
-        <label class="acc-label">{{t 'clusterNew.azureaks.diskSizeGb.label'}}</label>
-        {{#if editing}}
-          <div>
-            {{config.agentVmSize}}
-          </div>
-        {{else}}
-          <div class="input-group">
-            {{input-number min=0 value=config.osDiskSizeGb}}
-            <span class="input-group-addon bg-default">{{t 'generic.gigabyte'}}</span>
-          </div>
-        {{/if}}
-      </div>
-    </div>
-
-    <div class="row">
-      <div class="col span-6">
-        <label class="acc-label">{{t 'clusterNew.azureaks.admin.label'}}</label>
-        {{#if editing}}
-          <div>
-            {{config.adminUsername}}
-          </div>
-        {{else}}
-          {{input type="text" value=config.adminUsername classNames="form-control" placeholder=(t 'clusterNew.azureaks.admin.placeholder')}}
-        {{/if}}
-      </div>
-      <div class="col span-6">
-        <label class="acc-label">
-          {{t 'clusterNew.azureaks.resourceGroup.label'}}{{field-required}}
-          {{#tooltip-element
-               type="tooltip-basic"
-               model=(t "clusterNew.azureaks.resourceGroup.helpText")
-               tooltipTemplate="tooltip-static"
-               aria-describedby="tooltip-base"
-               tooltipFor="tooltipResourceGroup"
-               placement="top"
-          }}
-            <i class="icon icon-info"></i>
-          {{/tooltip-element}}
-        </label>
-        {{#if editing}}
-          <div>
-            {{config.resourceGroup}}
-          </div>
-        {{else}}
-          {{input type="text" value=config.resourceGroup classNames="form-control" placeholder=(t 'clusterNew.azureaks.resourceGroup.placeholder')}}
-        {{/if}}
-      </div>
-    </div>
-
-    <div class="row">
-      <div class="col span-6">
-        {{t "clusterNew.azureaks.networking.label"}}
-        <div class="radio">
-          <label class="acc-label">
-            {{radio-button selection=netMode value="default"}} {{t "clusterNew.azureaks.networking.default"}}
-          </label>
-          <label class="acc-label">
-            {{radio-button selection=netMode value="advanced"}} {{t "clusterNew.azureaks.networking.advanced"}}
-          </label>
+        </div>
+        <div class="col span-6">
+          <label class="acc-label">{{t 'clusterNew.azureaks.dns.label'}}</label>
+          {{input type="text" value=config.masterDnsPrefix classNames="form-control" placeholder=(t 'clusterNew.azureaks.dns.placeholder')}}
         </div>
       </div>
-      {{#if (eq netMode "advanced")}}
-        <div class="row">
-          <div class="col span-6 mt-0">
-            <label class="acc-label">{{t 'clusterNew.azureaks.networking.vnet.label'}}</label>
-            {{input type="text" value=config.virtualNetwork classNames="form-control"}}
-          </div>
-          <div class="col span-6 mt-0">
-            <label class="acc-label">{{t 'clusterNew.azureaks.networking.subnet.label'}}</label>
-            {{input type="text" value=config.subnet classNames="form-control"}}
+    {{/accordion-list-item}}
+
+    {{#accordion-list-item
+         title=(t 'clusterNew.nodes.title')
+         detail=(t 'clusterNew.nodes.detail')
+         showExpand=false
+         expandOnInit=true
+         expandAll=al.expandAll
+         expand=(action expandFn)
+    }}
+      <div class="row">
+        <div class="col span-6">
+          <label class="acc-label">{{t 'clusterNew.azureaks.machineType.label'}}</label>
+          {{#if editing}}
+            <div>
+              {{config.agentVmSize}}
+            </div>
+          {{else}}
+            {{new-select
+                classNames="form-control"
+                optionValuePath="value"
+                optionLabelPath="value"
+                content=machineSizes
+                value=config.agentVmSize
+                prompt="clusterNew.azureaks.machineType.prompt"
+                localizedPrompt=true
+            }}
+          {{/if}}
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col span-6">
+          <label class="acc-label">{{t 'clusterNew.azureaks.count.label'}}</label>
+          {{input-number min=1 value=config.count}}
+        </div>
+        <div class="col span-6">
+          <label class="acc-label">{{t 'clusterNew.azureaks.diskSizeGb.label'}}</label>
+          {{#if editing}}
+            <div>
+              {{config.agentVmSize}}
+            </div>
+          {{else}}
+            <div class="input-group">
+              {{input-number min=0 value=config.osDiskSizeGb}}
+              <span class="input-group-addon bg-default">{{t 'generic.gigabyte'}}</span>
+            </div>
+          {{/if}}
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col span-6">
+          <label class="acc-label">{{t 'clusterNew.azureaks.admin.label'}}</label>
+          {{#if editing}}
+            <div>
+              {{config.adminUsername}}
+            </div>
+          {{else}}
+            {{input type="text" value=config.adminUsername classNames="form-control" placeholder=(t 'clusterNew.azureaks.admin.placeholder')}}
+          {{/if}}
+        </div>
+        <div class="col span-6">
+          <label class="acc-label">
+            {{t 'clusterNew.azureaks.resourceGroup.label'}}{{field-required}}
+            {{#tooltip-element
+                 type="tooltip-basic"
+                 model=(t "clusterNew.azureaks.resourceGroup.helpText")
+                 tooltipTemplate="tooltip-static"
+                 aria-describedby="tooltip-base"
+                 tooltipFor="tooltipResourceGroup"
+                 placement="top"
+            }}
+              <i class="icon icon-info"></i>
+            {{/tooltip-element}}
+          </label>
+          {{#if editing}}
+            <div>
+              {{config.resourceGroup}}
+            </div>
+          {{else}}
+            {{input type="text" value=config.resourceGroup classNames="form-control" placeholder=(t 'clusterNew.azureaks.resourceGroup.placeholder')}}
+          {{/if}}
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col span-6">
+          {{t "clusterNew.azureaks.networking.label"}}
+          <div class="radio">
+            <label class="acc-label">
+              {{radio-button selection=netMode value="default"}} {{t "clusterNew.azureaks.networking.default"}}
+            </label>
+            <label class="acc-label">
+              {{radio-button selection=netMode value="advanced"}} {{t "clusterNew.azureaks.networking.advanced"}}
+            </label>
           </div>
         </div>
-      {{/if}}
-    </div>
-
-    <div class="row">
-      <div class="col span-12">
-        <label class="acc-label">{{t 'clusterNew.azureaks.ssh.label'}}{{field-required}}</label>
-        {{#if editing}}
-          <div>
-            {{config.sshPublicKeyContents}}
+        {{#if (eq netMode "advanced")}}
+          <div class="row">
+            <div class="col span-6 mt-0">
+              <label class="acc-label">{{t 'clusterNew.azureaks.networking.vnet.label'}}</label>
+              {{input type="text" value=config.virtualNetwork classNames="form-control"}}
+            </div>
+            <div class="col span-6 mt-0">
+              <label class="acc-label">{{t 'clusterNew.azureaks.networking.subnet.label'}}</label>
+              {{input type="text" value=config.subnet classNames="form-control"}}
+            </div>
           </div>
-        {{else}}
-          {{textarea value=config.sshPublicKeyContents classNames="form-control no-resize" rows="3"}}
         {{/if}}
       </div>
-    </div>
-  {{/accordion-list-item}}
+
+      <div class="row">
+        <div class="col span-12">
+          <label class="acc-label">{{t 'clusterNew.azureaks.ssh.label'}}{{field-required}}</label>
+          {{#if editing}}
+            <div>
+              {{config.sshPublicKeyContents}}
+            </div>
+          {{else}}
+            {{textarea value=config.sshPublicKeyContents classNames="form-control no-resize" rows="3"}}
+          {{/if}}
+        </div>
+      </div>
+    {{/accordion-list-item}}
+
+    {{save-cancel editing=(eq mode 'edit')  save="driverSave" cancel=close}}
+  {{/if}}
+
+
+
 {{/accordion-list}}
 
 {{top-errors errors=errors}}
 {{top-errors errors=otherErrors}}
 {{top-errors errors=clusterErrors}}
-{{save-cancel editing=(eq mode 'edit')  save="driverSave" cancel=close}}
