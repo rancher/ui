@@ -175,7 +175,12 @@ export default Route.extend({
     }
 
     if (!ns) {
-      ns = clusterStore.getById('namespace', get(this, `prefs.${C.PREFS.LAST_NAMESPACE}`));
+      const project = window.l('route:application').modelFor('authenticated.project').get('project');
+      const projectId = project.get('id');
+      const lastNamespace = clusterStore.getById('namespace', get(this, `prefs.${C.PREFS.LAST_NAMESPACE}`));
+      if ( lastNamespace && get(lastNamespace, 'projectId') === projectId ) {
+        ns = lastNamespace;
+      }
     }
 
     let namespaceId = null;
