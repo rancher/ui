@@ -55,14 +55,13 @@ var DockerCredential = Resource.extend({
     return get(this, 'asArray').map(x => get(x, 'username')).sort().uniq();
   }),
 
-  displayAddress: computed('registryCount', 'firstRegistry.address', function() {
-    const intl = get(this, 'intl');
+  displayAddress: computed('intl.locale', 'registryCount', 'firstRegistry.address', function() {
     const address = get(this, 'firstRegistry.address');
 
     if ( get(this, 'registryCount') > 1 ) {
-      return intl.t('cruRegistry.multiple');
+      return 'cruRegistry.multiple';
     } else if ( PRESETS[address] ) {
-      return intl.t('cruRegistry.address.' + PRESETS[address]);
+      return 'cruRegistry.address.' + PRESETS[address];
     } else {
       return address;
     }
