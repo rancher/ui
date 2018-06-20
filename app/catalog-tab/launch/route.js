@@ -89,6 +89,7 @@ export default Route.extend({
       return EmberObject.create({
         allTemplates: this.modelFor(get(this, 'parentRoute')).get('catalog'),
         catalogApp: neuApp,
+        namespaces: results.namespaces,
         namespace: results.namespace,
         tpl: results.tpl,
         tplKind: kind,
