@@ -32,6 +32,7 @@ export default Component.extend(NewOrEdit, {
   namespaceResource:        null,
   versionsArray:            null,
   versionsLinks:            null,
+  namespaces:               null,
   actuallySave:             true,
   showHeader:               true,
   showPreview:              true,
@@ -360,7 +361,7 @@ export default Component.extend(NewOrEdit, {
 
   doSave() {
     const requiredNamespace = get(this, 'requiredNamespace');
-    if ( requiredNamespace === 'kube-system' ) {
+    if ( requiredNamespace && (get(this, 'namespaces') || []).findBy('id', requiredNamespace) ) {
       return resolve(get(this, 'primaryResource'));
     } else if ( requiredNamespace ) {
       set(this, 'primaryResource.name', requiredNamespace);
