@@ -1,4 +1,21 @@
 {{#if (and (eq step 2) (eq originalCluster.state "pending"))}}
+
+  <div class="mt-20">
+    {{t 'clusterNew.import.command.instructionsAdminRole'
+      appName=settings.appName
+      htmlSafe=true
+    }}
+  </div>
+
+  <div class="copy-pre mt-20 mb-20">
+    {{#if loading}}
+      <div class="text-center"><i class="icon icon-spinner icon-spin"></i> {{t 'generic.loading'}}</div>
+    {{else}}
+      {{copy-to-clipboard clipboardText=clusterAdmin tagName="div" classNames="copy-to-pre"}}
+      <pre style="font-size: 14px;">{{clusterAdmin}}</pre>
+    {{/if}}
+  </div>
+
   <div class="mt-20">
     {{t 'clusterNew.import.command.instructions'
       appName=settings.appName
