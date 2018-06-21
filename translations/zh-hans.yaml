@@ -1,21 +1,25 @@
----
 languageName: "简体中文"
 languageContribute: "帮助翻译Rancher"
+
+##############################
+# Really generic things used in multiple places (use sparingly)
+##############################
 generic:
+
   actions: 操作
   activate: 激活
   add: 添加
   advanced: 高级
   all: 全部
   any: 任何
-  as: 以
   application: 应用程序
+  as: 以
   cancel: 取消
   closeModal: 关闭
   cluster: 集群
   collapseAll: 折叠全部
-  command: 命令
   comingSoon: 即将推出
+  command: 命令
   confirm: 确认
   containers: 容器
   created: 创建时间
@@ -40,8 +44,8 @@ generic:
   environment: 环境
   expandAll: 全部展开
   from: 来自
-  gigabyte: 'GB'
   generic: '常规'
+  gigabyte: 'GB'
   hardware: 硬件
   healthy: 健康
   help: 帮助
@@ -54,36 +58,36 @@ generic:
   limit: 限制
   limits: 限制
   loading: "加载中..."
-  mibibyte: 'MiB'
-  missing: "*%缺少% *"
-  milliseconds: '毫秒'
   member: 成员
+  mibibyte: 'MiB'
+  milliseconds: '毫秒'
+  missing: "*%缺少% *"
   moreActions: 更多操作
   na: 'n/a'
   name: 名称
   namespace: 命名空间
   namespaces: 命名空间
   never: 从不
-  no: "取消"
-  node: 主机
+  no: "否"
   noRating: 无评价
+  node: 主机
   none: 无
   owner: 所有者
   paste: 粘贴
   pod: pod
   port: 端口
   ports: 端口
-  project: 项目
   prefix: 前缀
+  project: 项目
+  random: 随机
   remove: 移除
   role: 角色
-  random: 随机
   save: 保存
   saved: 已保存
   saving: 保存中
   search: 搜索
-  searching: '正在搜索...'
   searchOrCustomInput: 搜索或输入您的自定义值
+  searching: '正在搜索...'
   seconds: 秒
   select: 选择
   service: 服务
@@ -97,13 +101,15 @@ generic:
   total: 合计
   type: 类型
   unknown: 未知
-  user: 用户
+  unknownUser: 无法获取用户信息
   upload: 上传
-  uuid: UUID
   url: URL
+  user: 用户
+  uuid: UUID
   value: 值
   version: 版本
-  yes: "确定"
+  yes: "是"
+
 realmNames:
   all: 全部
   usWest: 美国西部
@@ -111,6 +117,10 @@ realmNames:
   asia: 亚洲
   euWest: 欧洲西部
   euEast: 欧洲东部
+
+##############################
+# Routes
+##############################
 accountsPage:
   detail:
     header: 用户信息
@@ -171,12 +181,13 @@ accountsPage:
         placeholder: "例如：这是John Smith的账号"
   modal:
     password: 修改密码
+
 appDetailPage:
   header: "App: {appName}"
   endpoints:
-    title: 终端
-    detail: '此应用的公开终端'
-    endpoint: 终端
+    title: 端点
+    detail: '此应用的公共端点'
+    endpoint: Endpoint
     protocol: 协议
     noData: 此应用未创建公开终端
     noMatch: 没有满足当前搜索的公共终端
@@ -203,6 +214,7 @@ appDetailPage:
     title: 密文
     detail: 此应用相关的密文(Secrets)
     nodata: 此应用未使用密文
+
 podSecurityPoliciesPage:
   index:
     header: Pod安全策略
@@ -226,17 +238,18 @@ podSecurityPoliciesPage:
       name:
         labelText: 名称
         placeholder: "例如：策略"
+
 rolesPage:
   title: 角色
   index:
     localLink: 添加角色
     table:
-      name: 名称
-      created: 创建时间
       builtin: 内置
+      created: 创建时间
+      enabled: 已启用
+      name: 名称
       noData: 目前还没有角色
       noMatch: 没有角色与当前搜索匹配
-      userId: 用户
       subjectKind: 类型
       template: 模板
   resources:
@@ -287,6 +300,7 @@ rolesPage:
       policy:
         policy: 策略
         addAction: 添加策略
+
 apiPage:
   header: API & Keys
   actionButton: 添加Key
@@ -301,6 +315,7 @@ apiPage:
       label: 过期时间
       never: 永不过期
     noData: 没有定义API密钥
+
 authPage:
   freeipa:
     providerName: FreeIPA
@@ -395,6 +410,8 @@ authPage:
     header:
       enabled:
         label: "{github}已启用"
+        # required: "{appName} is configured to allow access to authorized users and organizations."
+        # restricted: "{appName} is configured to allow access to project members, authorized users and organizations."
         required: |
           {appName}已被设置为允许{orgs, plural,
           =0{无组织}
@@ -415,6 +432,7 @@ authPage:
           =1{#个用户}
           other{#个用户}
           }以环境成员身份访问
+       # unrestricted: "{appName} is configured to allow access to any {github} user."
       disabled:
         label: GitHub未设置
         warning: "{appName}可以配置为限制对一组GitHub用户和组织成员的访问"
@@ -468,7 +486,6 @@ authPage:
         post: 等待GitHub返回
       authError: 'Github未获取访问权限'
       popupError: '请关闭当前窗口，点击认证按钮重新认证'
-
   azuread:
     header:
       enabled:
@@ -499,9 +516,9 @@ authPage:
         warning: "{appName}可以配置为限制一组Azure AD用户和组的访问"
     enabled:
       header: '危险区域&trade;'
-      warning: '<b class="text-danger">警告:</b>禁用访问控制将导致任何能够访问此页面或API的用户拥有对{appName}的完全控制权限'
       reallyDisable: '确认? 再次点击将关闭访问控制'
       promptDisable: 关闭访问控制
+      warning: '<b class="text-danger">警告:</b>禁用访问控制将导致任何能够访问此页面或API的用户拥有对{appName}的完全控制权限' 
       general:
         header: 常规
     configure:
@@ -619,6 +636,7 @@ catalogPage:
       launch: 查看详情
       notCompatible: 不兼容
       alreadyDeployed: 已部署
+
 certificatesPage:
   cn: 域名
   expiresDate: 过期时间
@@ -657,6 +675,7 @@ certificatesPage:
         placeholder: 例如：mydomain.com
       description:
         placeholder: 例如：mydomain.com的EV证书
+
 membersPage:
   title: 成员
   add:
@@ -693,8 +712,10 @@ namespacesPage:
       label: 工作负载
     created:
       label: 创建时间
+
 clusterPage:
   edit: 编辑集群
+
 projectsListNamespacePage:
   header: 命名空间
   notIn: 不属于任何项目
@@ -710,7 +731,7 @@ projectsPage:
   groups:
     none: 命名空间列表
     namespaces: 项目分组/命名空间分组
-  
+
   ns:
     label: 命名空间名称
     placeholder: 例如:lab
@@ -746,6 +767,7 @@ projectsPage:
       nameInExists: 名称已经存在，请使用新的项目名称
       memberNameReq: 成员名称是必须的
       memberRoleReq: 成员角色是必须的
+
 clustersPage:
   header: 集群
   newCluster: 添加集群
@@ -767,6 +789,7 @@ clustersPage:
     label: Pods
   storage:
     label: 磁盘
+
 ingressPage:
   header: 'Ingress: {name}'
   gkeIngressWarning: 'Kubernetes Engine可能需要几分钟才能分配外部IP地址并准备负载均衡器。与此同时，您可能会收到HTTP 404和HTTP 500等错误，直到负载平衡器准备好为流量提供服务'
@@ -775,6 +798,7 @@ ingressPage:
       label: 目标
     noMatch: 没有ingresses匹配当前搜索
     noData: 没有定义ingress规则
+
 containerPage:
   header: '容器: {name}'
   envTab:
@@ -804,6 +828,7 @@ podPage:
   podIp: Pod IP
   containerImage: '{container}的镜像'
   image: 镜像
+
 containersPage:
   table:
     sparkPrefixCpu: "CPU: "
@@ -817,6 +842,7 @@ containersPage:
     containerLink: 创建一个容器
     orchestrator: 安装另一个编排引擎
     kubernetesLink: 安装 Kubernetes
+
 clusterDashboard:
   title: 仪表盘
   cpu: CPU
@@ -834,6 +860,7 @@ clusterDashboard:
   alert:
     node: "警告：主机{node}未激活"
     component: "警告：组件{component}不健康"
+
 dnsPage:
   noMatch: 没有匹配当前搜索的记录
   noData: 没有可以显示的DNS记录
@@ -848,6 +875,7 @@ dnsPage:
   table:
     target: 目标
     clusterIpDetail: '集群IP：{ip}'
+
 editDns:
   title:
     new: 添加DNS记录
@@ -890,6 +918,7 @@ editDns:
     selectorRequired: '必须填写一个或多个"目标选择器"'
     mixedAlias: 别名不能以CNAME和其他记录的组合为目标
     multipleCname: 别名不能指向多个CNAME记录
+
 cruPersistentVolumeClaim:
   title:
     define: 定义卷声明
@@ -913,6 +942,7 @@ cruPersistentVolumeClaim:
   storageClass:
     label: 存储类
     prompt: 使用默认的类
+
 cruVolume:
   sourcePrompt: 需要先选择一个上面的卷插件...
   title:
@@ -926,11 +956,13 @@ cruVolume:
     title: 源配置
     detail: 配置选定卷源的选项
     prompt: 选择一个卷源...
+
 failWhalePage:
   header: 错误
   reloadButton: |
     <a href="#" onclick="window.location.href = window.location.href; return false;">重新加载</a>以重试或
   logoutButton: 注销
+
 time:
   now: 现在
   mins: |
@@ -948,6 +980,7 @@ time:
     =1{#秒前}
     other{#秒前}
     }
+
 haPage:
   header: 高可用性(HA)
   setup:
@@ -959,10 +992,11 @@ haPage:
     port: 端口
     heartbeat: 上次在线
     clustered: 集群
+
 nodesPage:
   header: 主机
   editCluster: 编辑集群
-  nodePoolGroup: "Pool:{name}"
+  nodePoolGroup: "Pool: {name}"
   table:
     clusterName: 集群
     role: 角色
@@ -977,6 +1011,7 @@ nodesPage:
     instanceStateWithIcon: 状态
     noData: 此集群没有定义任何主机
     noMatch: 没有符合当前搜索的主机
+
 hostsPage:
   cloudHostsPage:
     addPage:
@@ -1016,6 +1051,7 @@ hostsPage:
           etcd: 用于etcd
           control: 用于管理
           worker: 作为worker节点使用
+
   hostPage:
     header:
       title: '主机: {name}'
@@ -1073,6 +1109,7 @@ hostsPage:
           mounts: 挂载
         body:
           noData: 主机未使用任何数据卷
+
 k8sImport:
   header: 导入现有的Kubernetes
   name:
@@ -1102,8 +1139,10 @@ k8sPage:
         将设置保存到 <code>~/.kube/config</code>:
       downloadText: |
         然后<a href="{downloadUrl}" target="_blank">下载</a><code>kubectl</code>(如有需要)并运行
+
 loginPage:
   greeting: "您好！<br>欢迎使用{appName}"
+  insecure: "{appName} only works over a <code>https://</code> connection.  You must either:<br><br>Use the TLS support built-in to the server, or <br><br> Provide your own TLS termination in front of the container."
   githubMessage: "{appName}使用GitHub管理账号和团队。点击以下按钮以登录，我们将仅使用基本的GitHub账号信息"
   shibbolethMessage: "{appName}使用Shibboleth管理账号。点击以下按钮以登录到设置的Shibboleth IDP."
   shibbolethError:
@@ -1127,9 +1166,11 @@ machinePage:
   add: 添加主机驱动
   builtin: 内置
   url: 位置
+
 notFoundPage:
   header: "当前页面不存在！"
   linkTo: 回到首页
+
 registriesPage:
   index:
     header: 镜像库
@@ -1155,6 +1196,7 @@ registriesPage:
       password:
         labelText: 密码
         placeholder: 例如：password
+
 secretsPage:
   index:
     header: 密文
@@ -1163,6 +1205,7 @@ secretsPage:
     noMatch: 没有符合搜索条件的密文
   table:
     keys: 键
+
 configMapsPage:
   index:
     header: 配置映射
@@ -1171,8 +1214,9 @@ configMapsPage:
     noMatch: 没有配置映射与当前搜索匹配
   table:
     keys: 键
+
 servicePage:
-  header: '工作负载： {name}'
+  header: '工作负载：{name}'
   globalScale: '每个主机{scale}'
   endpoints: '终端:'
   multistat:
@@ -1190,7 +1234,7 @@ servicePage:
     daemonSet: 守护程序集
     replicationController: 复制控制器
     job: 任务
-    cronJob: Cron任务
+    cronJob: 定时任务
     pod: 独立容器
   external:
     externalIp: |
@@ -1254,6 +1298,7 @@ servicePage:
     tabHeader: Sidecars
     header: 工作负载与Sidecar
     helpBlock: 选择主容器或其中一个sidecar容器
+
 signupPage:
   header: '注册{appName}'
   form:
@@ -1266,6 +1311,7 @@ signupPage:
     confirm:
       subtext: 已经发送邮件到您的邮箱，请点击邮件中的验证链接以确认您的邮件地址。
       resend: 重新发送邮件
+
 stackPage:
   header:
     singleBanner: 查看单个应用
@@ -1317,6 +1363,7 @@ stackPage:
       writable: 可写
       noData: 这个应用没有挂载任何卷
       noMatch: 没有匹配当前搜索的卷
+
 newStack:
   header: 导入YAML
   name:
@@ -1333,6 +1380,7 @@ newStack:
   answers:
     label: 应答(变量替换)
     addActionLabel: 添加应答
+
 nodeTemplatesPage:
   header: 主机模板
   actionButton: 添加模板
@@ -1347,6 +1395,7 @@ nodeTemplatesPage:
     noData: 没有定义主机模板
     usedByNone: 没有集群
     unknown: 未知
+
 storageClassPage:
   header: 存储类
   addActionLabel: 添加类
@@ -1356,6 +1405,7 @@ storageClassPage:
     label: 提供者
   default:
     label: 默认
+
 persistentVolumePage:
   header: 持久卷
   addActionLabel: 添加卷
@@ -1363,6 +1413,7 @@ persistentVolumePage:
   noMatch: 没有符合当前搜索的持久化卷
   source:
     label: 存储源
+
 userPreferencesPage:
   header: 设置
   theme:
@@ -1381,6 +1432,7 @@ userPreferencesPage:
       label: 邮件地址
     password:
       text: 修改密码
+
 verifyPage:
   header: "您已经成功验证了邮件地址!"
   subtext: 在完成您的账号设置前，我们还需要一些信息。
@@ -1388,6 +1440,7 @@ verifyPage:
     header: 账号创建完成
     subtext: 点击以下链接登录
     linkText: 登录
+
 verifyResetPasswordPage:
   header: 重置密码
   button: 更新密码
@@ -1395,13 +1448,16 @@ verifyResetPasswordPage:
     header: 密码已重置!
     subtext: 点击以下链接返回登录页面
     linkText: 登录
+
+
 waitingPage:
   hosts:
     setup:
       kubernetes: 设置Kubernetes
+
 notifierPage:
   notifiers: 通知
-  testedBtnLabel: Ok
+  testedBtnLabel: OK
   testingBtnLabel: 测试
   deleteErrorMessage: '通知程序{displayName}正在由{alertNames}使用'
   notifierTypes:
@@ -1416,6 +1472,7 @@ notifierPage:
     defaultRecipientPlaceholder: '例如：example.com'
     helpText: |
       以下是<a href="https://get.slack.help/hc/en-us/articles/115005265063-Incoming-WebHooks-for-Slack" target="_blank" rel="nofollow noopener noreferrer">创建传入WebHooks</a>的方法。
+
   smtp:
     server: Smtp服务器
     host: 主机
@@ -1434,6 +1491,7 @@ notifierPage:
     serviceKeyPlaceholder: 您的PagerDuty服务密钥
     helpText: |
       以下是<a href="https://support.pagerduty.com/docs/webhooks">为PagerDuty创建传入WebHooks</a>的方法。
+
   webhook:
     url: URL
     urlPlaceholder: 您的webhook URL
@@ -1449,6 +1507,10 @@ notifierPage:
       created: 创建时间
       noData: 没有定义通知
       noMatch: 不匹配
+
+##############################
+# Partials
+##############################
 ldap:
   providerName:
     openldap: OpenLDAP
@@ -1485,6 +1547,7 @@ ldap:
     disabled:
       label: "{providerName}未设置"
       warning: "{appName}可以设置为仅允许一组{providerName}用户和组访问。当前系统未设置，任何能够访问此页面或API的用户拥有对{appName}的完全控制权限"
+
   accessEnabled:
     header: 验证
     subtext: "如需修改服务器配置，请在下方关闭访问控制后重新设置"
@@ -1585,11 +1648,16 @@ ldap:
     authenticate:
       pre: 验证
       post: "测试中..."
+
 servicePartial:
   noContainers:
     label: 没有容器
     inactive:
       start: 启动
+
+##############################
+# Components
+##############################
 accordionRow:
   status:
     none: 无
@@ -1603,9 +1671,11 @@ accordionRow:
     specific: 具体
     any: 任何
     rule: "{count, plural,=1{#个规则}other{#个规则}}"
+
 advancedSection:
   showText: 显示高级选项
   hideText: 隐藏高级选项
+
 annotationsSection:
   title: 注释
   detail: Key/value元数据。
@@ -1613,6 +1683,7 @@ annotationsSection:
   value: 值
   noData: 没有注释
   noMatch: 没有符合当前搜索的注释
+
 billingInfo:
   header: 账单信息
   addNew: 添加支付方式
@@ -1625,6 +1696,7 @@ billingInfo:
       exp: "有效期: {exp}"
       name: "持卡人姓名: {name}"
       actions: 操作
+
 caasLogin:
   resetHeader: 重置密码
   new: 创建账号
@@ -1635,11 +1707,14 @@ caasLogin:
   login: 登录页面
   form:
     email: 邮箱
+
 cloudProvider:
-  name: 云提供商名称
   title: Cloud Provider
   amazon: Amazon
   azure: Azure
+  name: 云提供商名称
+  custom:
+    helpText: 请编辑YAML以添加到云提供商中
   helpText: |
     详细了解<a href="https://kubernetes.io/docs/concepts/cluster-administration/cloud-providers/" target="_blank" rel="nofollow noopener noreferrer">云提供商</a>.
   warning:
@@ -1656,7 +1731,7 @@ cloudProvider:
     cloudProviderBackoffRetries:
       description: "Backoff retry limit"
     cloudProviderRateLimit:
-      description: "Enable rate limiting"
+      description: "启用速率限制"
     cloudProviderRateLimitBucket:
       description: "Rate limit Bucket Size"
     cloudProviderRateLimitQPS:
@@ -1664,9 +1739,9 @@ cloudProvider:
     maximumLoadBalancerRuleCount:
       description: "Maximum allowed LoadBalancer Rule Count is the limit enforced by Azure Load balancer"
     useInstanceMetadata:
-      description: "Use instance metadata service where possible"
+      description: "尽可能使用实例元数据服务"
     useManagedIdentityExtension:
-      description: "Use managed service identity for the virtual machine to access Azure ARM APIs"
+      description: "为虚拟机使用托管服务标识来访问Azure ARM API"
     aadClientCertPassword:
       description: "The password of the client certificate for an AAD application with RBAC access to talk to Azure RM APIs"
     aadClientCertPath:
@@ -1714,7 +1789,7 @@ catalogSettings:
       label: Helm Stable
       detail: 由Kubernetes社区维护的模板仓库。
     incubator:
-      label: Helm Incubator
+      label:  Helm Incubator
       detail: 未经测试验证的应用模板仓库。
   certified:
     header:
@@ -1757,6 +1832,7 @@ catalogSettings:
     branch:
       label: 分支
       placeholder: '例如：master'
+
 clusterRow:
   noMatch: 没有匹配当前搜索的环境。
   noData: 集群中还没有任何环境。
@@ -1822,6 +1898,8 @@ clusterNew:
   azureaks:
     label: Azure容器服务
     shortLabel: Azure AKS
+    authenticate:
+      next: "下一步: 认证 & 配置主机"
     access:
       title: 账户访问
       detail: 配置用于与Azure通讯的凭据
@@ -1879,6 +1957,16 @@ clusterNew:
     resourceGroup:
       label: 资源组
       placeholder: 'docker-machine'
+      helpText: "Use an existing resource group or enter a new resource group name and one will be created for you. Note: Using a resource group containing an existing AKS cluster will create a new resource group. Azure AKS only allows one AKS cluster per resource group."
+    networking:
+      label: Networking
+      default: Default
+      advanced: Advanced
+      vnet:
+        label: Virtual Network
+        help: The Virtual Network must exist within the Resource Group you are using for this cluster
+      subnet:
+        label: Subnet
     sshUser:
       label: SSH 用户
       placeholder: usr1
@@ -2068,8 +2156,10 @@ clusterNew:
     label: 已导入
     shortLabel: 已导入
     command:
-      instructions: "在现有的Kubernetes 1.8.x集群上运行下面的kubectl命令，将其导入到 {appName}中："
-      instructionsInsecure: "如果由于{appName}安装正在使用不受信任/自签名的SSL证书运行而出现\"由未知颁发机构签名的证书\"错误, 请运行下面的命令, 以绕过证书检查:"
+      instructionsAdminRole: "If your existing Kubernetes cluster already has a <b>cluster-admin</b> role defined, you must have this <b>cluster-admin</b> privilege to import the cluster into Rancher. In order to apply the privilege, you need to run the command below before running the command to import the cluster:"
+      instructions: "Run the kubectl command below on an existing Kubernetes cluster running a supported Kubernetes version to import it into {appName}:"
+      instructionsInsecure: "If you get an error about 'certificate signed by unknown authority' because your {appName} installation is running with an untrusted/self-signed SSL certificate, run the command below instead to bypass the certificate check:"
+
 conditionSections:
   title: 状态
   detail: '{resourceType}当前的状态 '
@@ -2081,6 +2171,7 @@ conditionSections:
     message: 消息
   noData: 没有条件
   noMatch: 没有条件与当前搜索匹配
+
 confirmDelete:
   title: '是否确认要删除'
   environmentNote: '注意: 此环境内的所有资源都将被永久性的删除，包括通过{appName}创建的主机'
@@ -2089,6 +2180,7 @@ confirmDelete:
   confirmAction: 删除
   cancelAction: 取消
   largeDeleteText: '{key}及{othersCount}其他'
+
 containerLogs:
   title: "日志: "
   onlyCombined: "<b>注意:</b>此容器运行时带有TTY(-t)参数，仅有合并的标准输出和标准错误日志可见"
@@ -2105,6 +2197,7 @@ containerLogs:
     connected: 已连接
     disconnected: 已断开
     closed: 已关闭
+
 containerShell:
   protip: "高级技巧: 点击运行命令行时按住{key}键在新窗口中打开"
   status:
@@ -2114,9 +2207,11 @@ containerShell:
     connected: 已连接
     disconnected: 已断开
     closed: 已关闭
+
 copyToClipboard:
   tooltip: 复制到剪贴板
   copied: 已复制
+
 cruRegistry:
   title:
     new: 添加镜像库
@@ -2137,6 +2232,7 @@ cruRegistry:
   password:
     label: 密码
     saved: 已保存
+
 cruPersistentVolume:
   name:
     placeholder: 例如：myvolume
@@ -2769,6 +2865,7 @@ cruStorageClass:
     volumetype:
       label: 卷类型
       placeholder: "例如：replicate:3"
+
 dangerZone:
   header: 高级设置
   subtext: "通常情况下用户不需要修改以下设置。请谨慎操作，不正确的值可能导致{appName}运行不正常。<br/>修改默认设置后将以<b>粗体</b>显示配置名"
@@ -2784,6 +2881,7 @@ dangerZone:
     'system-default-registry': '用于RKE部署基础服务时系统镜像的拉取，拉取其他服务镜像不生效'
     'ui-index': 'UI的HTML索引位置'
     'ui-pl': '公司名称专用标签'
+
 editAccount:
   title: 编辑账号
   form:
@@ -2807,6 +2905,7 @@ editAccount:
       label: 确认密码
     identity:
       label: 标识
+
 editApiKey:
   title:
     justCreated: API Key已创建
@@ -2827,6 +2926,7 @@ editApiKey:
   saveWarning1: 请保存上面的信息！这些信息仅显示一次。
   saveWarning2: 如果忘记了Secret Key，您需要重新创建新的API Key
   noteOptional: 说明是可选项, 以帮助您记住此密钥将用于何种用途。
+
 editCertificate:
   title: 编辑证书
   name:
@@ -2834,6 +2934,7 @@ editCertificate:
   description:
     placeholder: 例如:mydomain.com的EV证书
   noteKeyWriteOnly: "注意:Private Key部分为只写(write only)因而显示为空白。更新证书时您需要重新上传Private Key，即便Private Key未发生变化"
+
 editCluster:
   title:
     new: 添加集群
@@ -2853,6 +2954,7 @@ editCluster:
     cancel: 取消添加系统应用
   modal:
     onCluster: "注意: 您正在尝试删除您当前环境所在的集群。请在删除该集群之前，先选择一个其他集群的环境"
+
 editContainer:
   title:
     vm: 编辑虚拟机
@@ -2861,6 +2963,7 @@ editContainer:
     placeholder: 例如：myapp
   description:
     placeholder: 例如：我的应用
+
 editHost:
   title: 编辑主机
   hostname:
@@ -2885,8 +2988,10 @@ editHost:
     label: 容器标签需求
     help: 如果设置，容器必须具备设置的一个或者多个标签才能够被调度到该主机。如果仅设置Key而Value留空，具备相应Key的容器可以被调度到该主机而忽略Value的值。<code>io.rancher.container.system</code>标签是运行系统容器所必须的。
     addActionLabel: 添加标签需求
+
 editService:
   title: 编辑服务
+
 editStack:
   title: 编辑命名空间
   name:
@@ -2903,6 +3008,7 @@ editStack:
     label: 标签
     placeholder: '例如: frontend, production'
     help: 逗号分隔的标签列表，负载列表可以根据相应的标签进行过滤。
+
 editUser:
   title: 编辑用户
   form:
@@ -2921,10 +3027,12 @@ editUser:
       mustChangePassword:
         new: 要求用户在首次登录时更改密码
         edit: 要求用户在下次登录时更改密码
+
 envCatalog:
   header: 管理应用商店
   subtext: '可以在这里定义自定义的应用商店源，该应用商店仅对当前环境的用户可见。全局应用商店对所有环境可见，仅能由管理员在管理设置中修改。应用商店需要一个唯一的名称并且支持<code>git clone</code>的URL地址(参考 <a href="https://git-scm.com/docs/git-clone#_git_urls_a_id_urls_a" target="_blank" rel="nofollow noopener noreferrer">文档</a>以获取更多信息)'
   addActionLabel: 添加应用商店
+
 moveNamespace:
   title: |
     移动{count, plural,
@@ -2932,9 +3040,11 @@ moveNamespace:
     other{# 命名空间:}}
   to: "转到目标项目："
   actionLabel: 移动
+
 stackHeader:
   title: '命名空间：{name}'
   outputs: 输出
+
 stacksPage:
   table:
     standalone: 独立容器
@@ -2942,8 +3052,10 @@ stacksPage:
     scale: 伸缩
     instanceState: 容器状态
     instanceStateWithIcon: 状态
+
 formatIp:
   noIp: 无
+
 formBalancerConfig:
   title: 自定义配置文件
   detail: 提供您的自定义配置文件，这个配置将会被应用到{appName}自动生产的配置上方。
@@ -2951,6 +3063,7 @@ formBalancerConfig:
     请参考<a href="https://cbonte.github.io/haproxy-dconv/1.6/configuration.html" target="_blank" rel="nofollow noopener noreferrer">haproxy文档</a>了解更多关于该配置文件的参数。当重写<code>backend</code>或包括目标容器IP的某行时，请使用<code>$IP</code>来代替IP地址，{appName}将会自动转换成相应的配置。
   config:
     prompt: 自定义haproxy.cfg内容
+
 formIngress:
   hostMode:
     automatic: 自动生成一个 <code>.{domain}</code> 的主机名
@@ -2988,6 +3101,7 @@ formIngressBackends:
     label: 路径
     placeholder: 例如：/foo
   target: 目标服务
+
 formBalancerListeners:
   label: 监听器与目标规则
   detail: 配置负载均衡，使其将请求转发到目标地址。
@@ -3014,6 +3128,7 @@ formBalancerListeners:
     label: 监听端口
     placeholder: 例如：80
   help: "主机及路径规则将根据显示的顺序自上而下进行匹配，后端默认将随机命名。要自定义生成的后端，提供一个名称并在你自定义的haproxy.cfg文件中引用该名称"
+
 formBalancerRules:
   label: 目标规则
   detail: 根据主机、 端口、 路径或IP地址映射请求到不同的目标。
@@ -3058,6 +3173,7 @@ formBalancerRules:
   selector:
     label: 选择器
     placeholder: '例如: foo=bar'
+
 formCommand:
   title: 命令
   detail: 配置容器启动时将运行的可执行文件。
@@ -3098,6 +3214,8 @@ formCommand:
   fsgid:
     label: 文件系统组
     placeholder: '例如: 501'
+
+
 formContainerLinks:
   title: 链接
   detail: 定义此容器和其他容器的关联关系
@@ -3109,8 +3227,10 @@ formContainerLinks:
     placeholder: 例如：database
   noData: 没有容器链接
   noMatch: 没有匹配当前搜索的链接
+
 formCount:
   label: 数量
+
 formDisks:
   addDiskLabel: 添加磁盘
   addRootDiskLabel: 添加根磁盘
@@ -3129,6 +3249,7 @@ formDisks:
     placeholder: '例如: 1000'
   driver:
     label: 驱动
+
 formEngineOpts:
   title: 引擎选项
   detail: 自定义Docker守护进程的配置
@@ -3165,6 +3286,7 @@ formEngineOpts:
     addActionLabel: 添加镜像库镜像
     valueLabel: 镜像URL
     valuePlaceholder: 例如：https://my-mirror.example.com:5000
+
 formEnvVar:
   title: 环境变量
   detail: 在创建时添加的环境变量。
@@ -3178,6 +3300,7 @@ formEnvVar:
   labels:
     key: 键
     value: 值
+
 formGlobalRoles:
   title: 全局权限
   description: 控制用户管理整个{appName}安装的访问权限。
@@ -3249,6 +3372,7 @@ formMembers:
       memberNameReq: 成员名称是必须的
       memberRoleReq: 成员角色是必须的
       ownerReq: 必须至少有一个具有所有者角色的成员。
+
 formScopedRoles:
   title: '{type}权限'
   description: '控制用户对{type}的访问权限'
@@ -3271,6 +3395,7 @@ formScopedRoles:
       read-only:
         label: 只读
         detail: 允许看到一切，但不会改变任何东西。
+
 formHealthCheck:
   title: 健康检查
   detail: 周期性的向容器发出请求, 以查看它是否存在并正确响应。
@@ -3316,6 +3441,7 @@ formHealthCheck:
   failureThreshold:
     label: 不健康阈值
     unit: 失败
+
 formKeyToPath:
   addAction: 添加项目
   header: 项目
@@ -3330,6 +3456,7 @@ formKeyToPath:
   mode:
     label: 模式
     placeholder: "例如: 400"
+
 formKeyValue:
   addAction: 添加键值对
   key:
@@ -3344,6 +3471,7 @@ formImage:
   label: Docker镜像
   container:
     placeholder: "例如: ubuntu:xenial"
+
 formNameDescription:
   name:
     label: 名称
@@ -3352,6 +3480,7 @@ formNameDescription:
     label: 描述
     placeholder: 描述
     expand: 添加描述
+
 formNetwork:
   title: 网络
   detail: 设置容器的网络和DNS选项
@@ -3406,6 +3535,7 @@ formNetwork:
     ip:
       label: IP地址
       placeholder: 例如：192.168.0.1
+
 formPorts:
   header: 端口映射
   addAction: 添加规则
@@ -3444,6 +3574,7 @@ formPorts:
     mixedIpPort: "Port{ip}:{port}/{proto}有超过一条映射规则"
     mixedPort: "Port{port}/{proto}有超过一条映射规则"
   showAdvanced: 显示端口命名选项
+
 formScale:
   label: 工作负载类型
   showAdvanced: 更多选项
@@ -3463,6 +3594,7 @@ formScale:
     sidekickInactive: "Sidecar：将容器添加到现有工作负载"
     sidekickPrefix: "Sidecar：添加容器到"
     sidekickSuffix: ""
+
 formScheduling:
   title: 主机调度
   detail: 配置Pod可以部署到的主机。
@@ -3535,6 +3667,7 @@ formScheduling:
       placeholder: '例如：foo，bar，baz'
     custom:
       placeholder: '例如：foo>42 && bar != baz'
+
 formSources:
   title: 来自其他源的环境变量
   detail: 来自其他源的环境变量允许您将密码、密钥或其他信息注入需要它们的容器中。
@@ -3549,6 +3682,7 @@ formSources:
     label: 键
   prefix:
     label: 前缀或别名
+
 formSecurity:
   title: 安全及主机设置
   detail: 授予或限制容器影响所运行主机的能力
@@ -3634,6 +3768,7 @@ formSecurity:
     label: 隔离
     default: 默认(容器)
     hyperv: HyperV(虚拟机)
+
 formSslTermination:
   title: SSL/TLS 证书
   detail: 配置即将应用于加密端口请求的证书。
@@ -3658,6 +3793,7 @@ formSslTermination:
   notNeeded: 没有配置了有效的目标规则的SSL/TLS的监听端口。
   removeCertLabel: 删除此证书
   addCertLabel: 添加证书
+
 formNamespace:
   label:
     reuse: 命名空间
@@ -3674,6 +3810,7 @@ formNamespace:
   errors:
     noneChosen: 您必须选择一个命名空间。
     validation: "命名空间：{error}"
+
 formUserData:
   placeholder: "例如: 容器的配置信息"
   isVmPlaceholder: "例如: 虚拟机的配置信息"
@@ -3693,11 +3830,13 @@ formUserLabels:
     label: 值
     placeholder: 例如：bar
   protip: "高级技巧: 粘贴一行或多行的key=value键值对能够批量输入"
+
 formAccessModes:
   label: 访问模式
   accessRWO: 单主机读写
   accessROX: 多主机只读
   accessRWX: 多主机读写
+
 formAnnotations:
   addActionLabel: 没有注释
   title: 注释
@@ -3705,6 +3844,7 @@ formAnnotations:
   errors:
     invalidJSON: 注释的JSON格式无效。
     topLevelValueInvalid: 注释JSON顶级值必须是一个对象。
+
 formUpgrade:
   title: 缩放/升级策略
   detail: 配置升级过程中替换Pod的策略。
@@ -3733,12 +3873,15 @@ formUpgrade:
     progressDeadlineSeconds:
       label: 进度截止时间
       detail: 将部署标记为停滞状态之前需要等待多久时间才能看到进度
+
+
 formValueArray:
   addActionLabel: 添加值
   valueLabel: 值
   valuePlaceholder: 值
   noData: 没有数据
   protip: "高级技巧: 在任意输入栏中粘贴一行或多行的value能够批量输入"
+
 formVolumeRow:
   prompt: 选择一个持久化卷声明...
   name:
@@ -3799,6 +3942,7 @@ formVolumes:
     source: 源
     mountPoint: 挂载点
     opts: 权限/选项
+
 formCapabilityPodSecurityPolicy:
   title: 内核安全策略
   detail: 配置一组功能策略
@@ -3806,16 +3950,19 @@ formCapabilityPodSecurityPolicy:
     allow: 启用的功能
     add: 默认添加的能力
     drop: 必须禁用的内核能力
+
 formVolumePodSecurityPolicy:
   title: 卷策略
   detail: 控制卷类型的使用
   volumes: 数据卷
+
 formAllowedHostPathsPodSecurityPolicy:
   title: 允许主机路径策略
   detail: 允许的主机路径的白名单
   path:
     addLabel: 添加路径前缀
     placeholder: 例如：/foo
+
 formFsGroupPodSecurityPolicy:
   title: FS组策略
   detail: 分配拥有pod卷的FSGroup
@@ -3830,6 +3977,7 @@ formFsGroupPodSecurityPolicy:
     min:
       label: 最小值
       placeholder: '例如: 1'
+
 formHostPortsPodSecurityPolicy:
   title: 主机端口策略
   detail: 使用主机端口
@@ -3841,6 +3989,7 @@ formHostPortsPodSecurityPolicy:
     min:
       label: 最小值
       placeholder: '例如: 6000'
+
 formRunAsUserPodSecurityPolicy:
   title: 用户运行策略
   detail: User ID
@@ -3856,6 +4005,7 @@ formRunAsUserPodSecurityPolicy:
     min:
       label: 最小值
       placeholder: '例如: 1'
+
 formSeLinuxodSecurityPolicy:
   title: SELinux策略
   detail: 容器的SELinux上下文
@@ -3871,6 +4021,7 @@ formSeLinuxodSecurityPolicy:
   user:
     label: 用户
     placeholder: 例如：master
+
 formSupplementalGroupsPodSecurityPolicy:
   title: 补充组策略
   detail: 配置允许的补充组
@@ -3885,6 +4036,7 @@ formSupplementalGroupsPodSecurityPolicy:
     min:
       label: 最小值
       placeholder: '例如: 1'
+
 formBasicPodSecurityPolicy:
   title: 基本策略
   detail: 配置基本的pod安全策略
@@ -3916,6 +4068,7 @@ formBasicPodSecurityPolicy:
     label: 只读根文件系统
     enable: "是：需要采用一个只读根文件系统"
     disable: "否"
+
 hostSettings:
   header: 主机注册URL
   subtext: 主机连接{appName}API的Base URL是？
@@ -3935,6 +4088,7 @@ hostSettings:
   badTld:
     alert: |
       '<code>.local</code>顶级域名根据RFC6762被保留为用于多播DNS。不推荐使用.local域名作为注册URL，该设置可能导致DNS解析问题。请选择其他的主机名或者IP地址'
+
 hostPod:
   supportState:
     unsupported: 不支持的Docker版本
@@ -3943,8 +4097,10 @@ hostPod:
     namespace: '命名空间:'
     stack: '应用:'
     standalone: 独立容器
+
 identityBlock:
   loading: 加载中...
+
 infoMultiStats:
   connecting: 连接中...
   utilizationStats: 使用率统计数据仅在活动/运行时可见
@@ -3963,11 +4119,14 @@ infoMultiStats:
     labelText: 存储
     read: 读
     write: 写
+
 inputAnswers:
+  yaml: 编辑YAML
   config: 配置选项
   unknownType: "未识别问题类型:"
   noConfig: 该模板没有配置选项
   protip: "粘贴和读取操作要求其各自答案为yml/yaml格式"
+
 inputIdentity:
   placeholder:
     github: 添加GitHub用户或组织名称
@@ -3975,15 +4134,20 @@ inputIdentity:
   dropdownLabel:
     teams: 你的团队和组织
     groups: 你的组
+
 inputPassword:
   buttonText: 生成
+
 inputTextFile:
   tooltip: 从文件读取
+
 uploadFile:
   label: 从文件读取
+
 podsSection:
   title: Pods
   detail: 此工作负载中的Pods
+
 labelsSection:
   kind: 类型
   title: 标签
@@ -4018,6 +4182,7 @@ loginUserPass:
   loginLabel: 登录{provider}
   loggingInLabel: 登录中...
   passwordLabel: 密码
+
 machineTemplatesPage:
   title: 添加主机
   new:
@@ -4029,6 +4194,7 @@ machineTemplatesPage:
     labels:
       region: 实例所在地区
       zone: 区域
+
 newCertificate:
   title:
     new: 添加证书
@@ -4068,6 +4234,7 @@ modalAboutComponent:
   ui: 用户界面
   helm: Helm
   machine: 主机
+
 modalAddPayment:
   header: 添加新的付款方式
   save: 保存
@@ -4095,7 +4262,7 @@ modalAddPayment:
       placeholder: '••/••'
     cvc:
       label: CVC号码
-      placeholder: '• • •'
+      placeholder: '•••'
     address:
       addressLine1:
         label: 地址栏1
@@ -4119,12 +4286,15 @@ modalAddPayment:
     yuan: "人民币(¥)"
     euro: "欧元(€)"
     dollar: "美元($)"
+
+
 modalContainerStop:
   header: "确认要停止"
   helpText: "在超时时间后容器将被强制停止"
   protip: "高级技巧: 在点击停止按钮时按住{key}键以跳过此确认提示"
   label: 超时
   button: 停止
+
 modalConfirmDeactivate:
   header: 是否确认要
   protip: "高级技巧:在点击{isServiceButton}时按住{key}键以跳过确认操作"
@@ -4139,10 +4309,12 @@ modalConfirmDeactivate:
     default:
       message: 停用
       button: 停用
+
 modalConfirmRemovePayment:
   header: '确认移除付款信息'
   title: '是否确认要删除'
   card: '以{card}结尾的信用卡'
+
 modalEditDriver:
   header:
     create: 添加主机驱动
@@ -4161,6 +4333,8 @@ modalEditDriver:
     label: 域名白名单
     addActionLabel: 添加域名
     noData: 没有域名
+
+
 modalEditSetting:
   title: 编辑高级设置
   name:
@@ -4186,15 +4360,18 @@ modalEditPassword:
   mode:
     generate: '使用新的随机生成的密码：'
     manual: '设置一个特定的密码来使用：'
+
 modalFeedback:
   header: 欢迎使用{appName}!
   subtitle: "在开始使用前, 请让我们了解关于您的信息..."
   send: 开始使用
+
 modalHostEvacuate:
   header: "确认进行疏散操作"
   helpText: "此操作将停用该主机并删除主机上所有运行的非基础设施容器"
   protip: "进阶提示: 在点击时按住{key}键以跳过确认操作"
   button: 疏散
+
 modalImport:
   title: 导入YAML
   mode:
@@ -4220,6 +4397,7 @@ modalProcessError:
   none: N/A
   stackTrace: "堆栈跟踪:"
   close: 关闭
+
 modalRollbackService:
   title: '回滚 "{instanceName}"'
   titleWithSidekicks: '回滚"{instanceName}"&{count, plural,=1{#sidecar}other{#sidecars}}'
@@ -4231,6 +4409,7 @@ modalRollbackService:
     prompt: 选择版本..
   difference:
     label: 区别
+
 modalRollbackApp:
   title: '回滚 "{appName}"'
   action: 回滚
@@ -4241,8 +4420,10 @@ modalRollbackApp:
     prompt: 选择版本...
   difference:
     label: 差异
+
 modalShell:
   title: "命令行："
+
 modalShortcuts:
   world: 世界
   time: 时间
@@ -4255,11 +4436,12 @@ modalShortcuts:
   other: 其他的东西
   shift: Shift-{key}
   delete: 删除所选择的(在表视图中)
-  kubectl: Kubectl shell
+  kubectl: Kubectl Shell
   viewGroup: 切换分组视图
   nextTab: 下一页
   search: 聚焦搜索字段
   shortcuts: 你在这里
+
 modalYaml:
   title:
     new: 导入{type}YAML
@@ -4271,12 +4453,15 @@ modalWechat:
 modalWelcome:
   header: 欢迎使用{appName}!
   closeModal: 确认
+
 namespaceGroup:
   label: "命名空间：{name}"
   none: Pod
   project: 不在项目中
+
 nodeGroup:
   label: "主机：{name}"
+
 newIngress:
   header:
     add: 添加Ingress
@@ -4298,6 +4483,7 @@ newBalancer:
     noTargetPort: "每个规则需要设置目标端口"
     needsCertificate: "设置SSL/TLS规则时需要证书"
     stackName: "请输入新应用的名称"
+
 newCatalog:
   answers:
     label: 回答
@@ -4341,6 +4527,7 @@ newCatalog:
   version:
     prompt: 选择版本...
     default: 当前默认(当前版本{version})
+
 newContainer:
   add:
     container: 部署Pod
@@ -4385,11 +4572,13 @@ newContainer:
   errors:
     noSidekick: 选择要添加sidecar的工作负载
     duplicateName: '工作负载{service}中已经存在名为{name}的sidecar'
+
 newPassword:
   placeholder: 新密码
   password: 新密码
   confirmPassword: 确认密码
   passwordNoMatch: 密码不匹配
+
 newSecret:
   title:
     new: 添加密文
@@ -4402,13 +4591,14 @@ newSecret:
   values:
     label: 密文
   addActionLabel: 添加密文
+
 nodeDriver:
   addTemplate: 添加主机模板
   editTemplate: "编辑主机模板：{name}"
   editWarning: 编辑主机模板只会影响由主机池创建的新主机，现有主机将不会自动更新或替换。<br>如果从池中删除主机，将使用模板中的新设置创建新主机
   displayName:
-    aliyunecs: Aliyun ecs
-    amazonec2: Amazon ec2
+    aliyunecs: Aliyun ECS
+    amazonec2: Amazon EC2
     azure: Azure
     digitalocean: DigitalOcean
     exoscale: Exoscale
@@ -4421,6 +4611,9 @@ nodeDriver:
     zstack: ZStack
   driverOptions: "{driver}选项"
   templateOptions: "{appName}模板"
+  amazoneks:
+    access:
+      loading: Loading Instance info from Amazon...
   amazonec2:
     access:
       title: 1. 帐户访问
@@ -4481,6 +4674,7 @@ nodeDriver:
       placeholder: 例如：ubuntu
     iam:
       label: IAM配置文件
+      placeholder: my-k8s-profile
     privateIp:
       label: 私有IP
     onlyPrivate:
@@ -4506,6 +4700,7 @@ nodeDriver:
       placeholder: 你的DigitalOceanAPI访问令牌
       help: |
         从<a href="https://cloud.digitalocean.com/settings/api/tokens" target="_blank" rel="nofollow noreferrer noopener">Applications&API</a>页面获取DigitalOcean的个人访问token
+
     image:
       label: 镜像
     sshUser:
@@ -4638,7 +4833,7 @@ nodeDriver:
     instanceOptionsSection: 实例选项
     cpuCount:
       label: CPUs
-      unit: '{cores, plural,=1{Core}other{Cores}}'
+      unit: '{cores,plural,=1{Core}other{Cores}}'
     memorySize:
       label: 内存
       unit: MB
@@ -4716,7 +4911,7 @@ nodeDriver:
       placeholder: 发布配置文件
     environment:
       label: 环境
-      placeholder: 'Azure Public Cloud'
+      placeholder: 'AzurePublicCloud'
     resourceGroup:
       label: 资源组
       placeholder: 'docker-machine'
@@ -4899,6 +5094,7 @@ nodeDriver:
       label: 镜像名称
     dataDiskOffering:
       label: 数据磁盘
+
 newConfigMap:
   title:
     new: 添加ConfigMap
@@ -4911,21 +5107,25 @@ newConfigMap:
   values:
     label: 配置映射
   addActionLabel: 添加配置映射
+
 projectGroup:
   label: "项目：{name}"
   none: 命名空间
   project: 不在项目中
   noNS: 这个项目没有包含该namespace
+
 optionallyNamespaced:
   scope:
     label: 作用域
     project: 可用于此项目中的所有命名空间
     namespace: 可用于单个命名空间
+
 orchestrationWelcome:
   simple:
     title: 简单
   enhanced:
     title: 通过Kubernetes加强
+
 pageFooter:
   notARelease: (非正式发布)
   help: '帮助&文档'
@@ -4935,10 +5135,11 @@ pageFooter:
   slack: Slack
   download:
     link: 下载CLI
-    mac: MacOS
+    mac: macOS
     windows: Windows
     linux: Linux
   showSystem: 显示系统容器
+
 pagination:
   catalog: |
     {pages, plural,
@@ -5087,9 +5288,11 @@ pagination:
     =0{无工作负载}
     =1{{count}{count, plural,=1{个工作负载}other{个工作负载}}}
     other{{count}个工作负载中的{from}-{to}}}
+
 projectRow:
   none: 无描述
   orchestration: 编排
+
 publicEndpoints:
   endpoint: 终端
   bindIpAddress: 绑定IP
@@ -5098,13 +5301,16 @@ publicEndpoints:
   privatePort: 容器端口
   noData: 无映射端口
   noMatch: 没有匹配当前搜索的端口
+
 physicalStats:
   title: 物理属性
   detail: 物理计算机属性
+
 registryRow:
   address: 地址
   username: 用户名
   created: 创建时间
+
 reservationParameters:
   label: 资源限制
   memory:
@@ -5115,6 +5321,7 @@ reservationParameters:
     labelText: 处理器
     placeholder: '默认: 整个主机'
     unit: 'mCPU'
+
 saveCancel:
   saving: 保存中...
   saved: 已保存!
@@ -5122,6 +5329,7 @@ saveCancel:
   next: 下一步
   create: 创建
   cancel: 取消
+
 schema:
   inputBoolean:
     y: "是"
@@ -5145,6 +5353,7 @@ schema:
     prompt: 使用默认的类
   inputSecret:
     prompt: 选择密文...
+
 schedulingRuleRow:
   theHost: 主机
   must: 必须
@@ -5157,12 +5366,14 @@ schedulingRuleRow:
   containerLabel: 容器标签
   serviceName: 服务名称
   containerName: 容器名称
+
 serverUrl:
   header:
     label: Rancher Server URL
     detail: "{appName}安装使用的地址，集群中的所有节点都需要能够访问此地址"
   button:
     save: 保存URL
+
 siteAccess:
   header: 站点访问
   helpText: "配置允许哪些人登录和使用{appName}"
@@ -5174,6 +5385,7 @@ siteAccess:
   users: 用户
   groups: 组
   organizations: 组织
+
 systemInfoSection:
   title: 系统信息
   detail: 系统和kubernetes信息
@@ -5188,8 +5400,10 @@ systemInfoSection:
   operatingSystem: 操作系统映像
   osType: 系统类型
   noMatch: 没有系统信息与当前搜索匹配
+
 tableCountSelect:
   header: 每页显示行数
+
 telemetryOpt:
   header: 信息统计
   subtext: |
@@ -5197,12 +5411,15 @@ telemetryOpt:
   learnMore:
     label: 了解更多
   label: 允许收集匿名统计信息
+
 tooltipLink:
   list: 列表
   composeYaml: 编排文件
+
 tooltipWarning:
   notConfigured: 未设置访问控制
   dismiss: 取消
+
 upgradeBtn:
   version:
     current: '当前版本'
@@ -5216,14 +5433,17 @@ upgradeBtn:
     notfound: '未识别模板版本'
     error: '检查更新出错'
     required: '需要升级'
+
 jsonEditor:
   placeholder: "请以JSON格式输入"
+
 viewEditDescription:
   form:
     name:
       placeholder: 例如：lab
     description:
       placeholder: 例如：开发实验环境
+
 volumesPage:
   title: Volume Claims
   addActionLabel: 添加Volume Claim
@@ -5235,6 +5455,8 @@ volumesPage:
     label: 持久卷
   storageClass:
     label: 存储类
+
+
 vmConsole:
   header: "控制台:"
   protip: "高级技巧:启动命令行时按下{key}键可在新窗口中打开"
@@ -5242,27 +5464,43 @@ vmConsole:
   footerActions:
     buttonSend: 发送Ctrl-Alt-Delete
     buttonCancel: 关闭
+
 volumeRow:
   mounts:
     readOnly: "(只读)"
+
 waitOrchestration:
   count: '({sub}/{count})'
+
 waitKubernetes:
   addHost: '添加至少一台主机'
   activateHost: '等待主机激活'
   createStack: '创建Kubernetes系统应用栈'
   startServices: '启动服务'
   waitApi: '等待 Kubernetes API'
+
 searchableSelect:
   noMatch: 没有匹配
   noOptions: 没有可用的选项
+
+##############################
+# Mixins
+##############################
 containerChoices:
   hostGroup: "主机:{name}"
   hostGroupWithState: "主机:{name}{state}"
   unknownHost: "主机:???"
   containerOption: "{name}"
+
+##############################
+# Services
+##############################
 allWorkloads:
   namespace: "命名空间：{name}"
+
+##############################
+# Navigation
+##############################
 nav:
   srToggleDropdown: 切换下拉菜单
   environment:
@@ -5360,12 +5598,18 @@ nav:
   project:
     none: 项目/命名空间
     namespaces: 命名空间
+
+
+##############################
+# Resource Actions
+##############################
 action:
   activate: 激活
   addContainer: 部署Pod
   addSidekick: 添加Sidecar
   clone: 克隆
   console: 打开控制台
+  cordon: 暂停
   convertToService: 转换为服务
   deactivate: 停用
   downloadYaml: 下载YAML
@@ -5405,8 +5649,12 @@ action:
   viewInstance: 查看实例
   test: 测试
   mute: 静默
-  uncordon: Uncordon
   unmute: 取消静默
+  uncordon: 激活
+
+##############################
+# Resource Actions
+##############################
 validation:
   required: '"{key}"必须设置'
   arrayLength:
@@ -5448,6 +5696,10 @@ validation:
       tooLongPrefix: '“{key}”的前缀不能超过{max}个字符'
       emptyLabel: '“{key}”不能有空格键'
       tooLongKey: '“{key}”的长度不能超过{max}个字符'
+
+##############################
+# Model Properties
+##############################
 model:
   account:
     kind:
@@ -5495,6 +5747,7 @@ model:
     displayKind:
       generic: 服务
       loadBalancer: 4层负载均衡
+
 growl:
   webSocket:
     connecting:
@@ -5502,6 +5755,7 @@ growl:
       warning: 无法建立到服务器的WebSocket连接。如果您的服务器位于代理或SSL终端设备后面，则浏览器无法连接到WebSocket。如果您在代理后面运行服务器，请确保代理支持WebSockets。在解决问题之前，流量统计、日志、shell/控制台和资源状态的自动更新可能无法正常工作。
       safariCertWarning: 另一个可能的原因是Safari不允许使用无法识别的证书进行WebSocket连接，即使您继续绕过警告也是如此。服务器必须拥有由Safari自动信任的认可机构签署的证书。
       disconnectedWarning: "断开与服务器的连接，尝试重新连接..."
+
 storageClass:
   aws-ebs:
     title: Amazon EBS Disk
@@ -5606,40 +5860,49 @@ volumeSource:
       useCustomRegex: 使用一个自定义Fluentd regex
       useExistingLogFormat: 使用现有的日志格式
       helpText: 你可以在</a>这里<a href="http://fluentular.herokuapp.com/" target="_blank">测试你的正则表达式
+
 yamlPage:
-  errors: yaml中存在错误。
+  errors: yaml中存在错误
 
 rkeConfigComment:
+  ingress: |
+    ""
+    "  # Currently only nginx ingress provider is supported."
+    "  # To disable ingress controller, set `provider: none`"
+    "  # To enable ingress on specific nodes, use the node_selector, eg:"
+    "     provider: nginx"
+    "     node_selector:"
+    "       app: ingress"
   network: |
     ""
     "  # If you are using calico on AWS"
     ""
     "     network:"
     "       plugin: calico"
-    "       calicoNetworkProvider:"
-    "         cloudProvider: aws"
+    "       calico_network_provider:"
+    "         cloud_provider: aws"
     ""
     "  # To specify flannel interface"
     ""
     "     network:"
     "       plugin: flannel"
-    "       flannelNetworkProvider:"
+    "       flannel_network_provider:"
     "         iface: eth1"
     ""
     "  # To specify flannel interface for canal plugin"
     ""
     "     network:"
     "       plugin: canal"
-    "       canalNetworkProvider:"
+    "       canal_network_provider:"
     "         iface: eth1"
   services: |
     ""
     "     services:"
-    "       kubeApi:"
-    "         serviceClusterIpRange: 10.43.0.0/16"
-    "       kubeController:"
-    "         clusterCidr: 10.42.0.0/16"
-    "         serviceClusterIpRange: 10.43.0.0/16"
+    "       kube_api:"
+    "         service_cluster_ip_range: 10.43.0.0/16"
+    "       kube_controller:"
+    "         cluster_cidr: 10.42.0.0/16"
+    "         service_cluster_ip_range: 10.43.0.0/16"
     "       kubelet:"
-    "         clusterDomain: cluster.local"
-    "         clusterDnsServer: 10.43.0.10"
+    "         cluster_domain: cluster.local"
+    "         cluster_dns_server: 10.43.0.10"
