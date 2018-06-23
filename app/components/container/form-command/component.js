@@ -16,6 +16,7 @@ export default Component.extend({
   editing:            true,
   service:            null,
   isSidekick:         null,
+  scaleMode:          null,
 
   // ----------------------------------
   terminal:          null,
@@ -32,10 +33,34 @@ export default Component.extend({
 
   }),
 
+  scaleModeDidChange: observer('scaleMode', function() {
+
+    const scaleMode = get(this, 'scaleMode');
+
+    if ( scaleMode === 'job' || scaleMode === 'cronJob' ) {
+
+      set(this, 'service.restartPolicy', 'Never');
+
+    } else {
+
+      set(this, 'service.restartPolicy', 'Always');
+
+    }
+
+  }),
+
   init() {
 
     this._super(...arguments);
     this.initTerminal();
+    const scaleMode = get(this, 'scaleMode');
+    const restartPolicy = get(this, 'service.restartPolicy');
+
+    if ( (scaleMode === 'job' || scaleMode === 'cronJob') && restartPolicy === 'Always' ) {
+
+      set(this, 'service.restartPolicy', 'Never');
+
+    }
 
   },
 
@@ -82,5 +107,4 @@ export default Component.extend({
     this.terminalDidChange();
 
   },
-
 });

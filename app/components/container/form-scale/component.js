@@ -29,6 +29,7 @@ const DEFAULT_CONFIG = {
     failedJobsHistoryLimit:     HISTORY_LIMIT,
     schedule:                   '0 * * * *',
     successfulJobsHistoryLimit: HISTORY_LIMIT,
+    jobConfig: {},
   },
   job: { type: 'jobConfig', },
 };
