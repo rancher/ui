@@ -309,6 +309,7 @@ export function activeIcon(workload)
   switch ( workload.get('lcType') ) {
     case 'pod':                 out = 'icon icon-container'; break;
     case 'cronjob':             out = 'icon icon-backup';    break;
+    case 'job':                 out = 'icon icon-file';      break;
     case 'daemonset':           out = 'icon icon-globe';     break;
     case 'statefulset':         out = 'icon icon-database';  break;
   }

@@ -484,7 +484,7 @@ authPage:
       buttonText:
         pre: GitHub验证
         post: 等待GitHub返回
-      authError: 'Github未获取访问权限'
+      authError: '未获取Github访问权限'
       popupError: '请关闭当前窗口，点击认证按钮重新认证'
   azuread:
     header:
@@ -544,18 +544,6 @@ authPage:
         label: 租户ID
         placeholder: UUID字符串
         help: 由Azure AD portal获取
-      clientId:
-        label: 客户端ID
-        placeholder: UUID字符串
-      domain:
-        label: 域名
-        placeholder: '例如: youcompany.onmicrosoft.com'
-      adminAccountUsername:
-        label: 管理员账号用户名
-        placeholder: '例如: rancher-admin'
-        help: 可以读取其他用户信息的账号
-      adminAccountPassword:
-        label: 管理员账号密码
     test:
       header: '2. 测试并启用验证'
       help: '测试验证以确认配置是否正确:'
@@ -1714,9 +1702,9 @@ cloudProvider:
   azure: Azure
   name: 云提供商名称
   custom:
-    helpText: 请编辑YAML以添加到云提供商中
+    helpText: '请通过编辑YAML来添加其他<a href="http://rancher.com/docs/rke/v0.1.x/en/config-options/cloud-providers/" target="_blank" rel="nofollow noopener noreferrer">云提供商</a>'
   helpText: |
-    详细了解<a href="https://kubernetes.io/docs/concepts/cluster-administration/cloud-providers/" target="_blank" rel="nofollow noopener noreferrer">云提供商</a>.
+    详细了解<a href="https://kubernetes.io/docs/concepts/cluster-administration/cloud-providers/" target="_blank" rel="nofollow noopener noreferrer">云提供商</a>
   warning:
     使用云提供程序而不传递云提供程序配置可能会导致您的集群无法正确配置，推荐您在创建集群之前添加云提供程序配置，文档中可以找到支持的云提供商所需的先决条件
   azureCloudConfig:
@@ -1823,8 +1811,7 @@ catalogSettings:
       label: 名称
       placeholder: 例如：mycatalog
     url:
-      label: URL
-      placeholder: '例如：https://github.com/mycompany/mycatalog.git'
+      label: 商店URL地址
     kind:
       label: 类型
       native: 原生
@@ -1842,21 +1829,6 @@ clusterRow:
   addHost: 添加主机...
   importCluster: 使用已有的Kubernetes
   loginDefault: 登陆
-clusterWelcome:
-  welcome: 欢迎
-  noHost: 集群中还没有任何主机，您想要添加主机还是使用已有的Kubernetes呢?
-  addHost: 添加主机
-  select: 选择
-  importCluster: 使用已有的Kubernetes
-  importClusterDescription: |
-    <p>将容器部署到已有的Kubernetes安装中，并使用该环境的主机和网络。</p>
-    <p>基础设施资源将在{appName}外部进行管理。</p>
-    <p>支持本地部署，或托管的服务，如:</p>
-  embeddedDescription: |
-    <p>{appName}将自动部署并且管理Kubernetes。</p>
-    <p>可以在{appName}界面上，部署主流云厂商提供的云主机，或者用已有的安装有Docker的任何主机。</p>
-    <p>支持虚拟机和物理机，支持本地主机也支持云主机。</p>
-    <p>为容器提供安全的Overlay网络，使容器相互之间可以安全的进行跨主机通信。</p>
 clusterNew:
   advanced:
     helpText: 不要使用Tabs，Tabs字符在yaml中不能解析
@@ -1957,16 +1929,16 @@ clusterNew:
     resourceGroup:
       label: 资源组
       placeholder: 'docker-machine'
-      helpText: "Use an existing resource group or enter a new resource group name and one will be created for you. Note: Using a resource group containing an existing AKS cluster will create a new resource group. Azure AKS only allows one AKS cluster per resource group."
+      helpText: "使用一个已有的资源组或者输入一个新的资源组名称。注意：如果使用的资源组内已经存有AKS集群的话，将会创建一个新的资源组。Azure AKS只允许一个资源组有一个AKS集群。"
     networking:
-      label: Networking
-      default: Default
-      advanced: Advanced
+      label: 网络
+      default: 默认
+      advanced: 高级
       vnet:
-        label: Virtual Network
-        help: The Virtual Network must exist within the Resource Group you are using for this cluster
+        label: 虚拟网络
+        help: 虚拟网络必须在该集群所使用的资源组下。
       subnet:
-        label: Subnet
+        label: 子网
     sshUser:
       label: SSH 用户
       placeholder: usr1
@@ -2014,7 +1986,7 @@ clusterNew:
       placeholder: 服务帐号私钥JSON文件
       configured: 为{project}项目配置
       helpText: |
-        创建一个拥有JSON私钥的<a href="https://console.cloud.google.com/projectselector/iam-admin/serviceaccounts" target="_blank" rel="nofollow noopener noreferrer">Service Account</a>，并在此处提供JSON。有关创建服务帐户的更多信息，请参阅<a href="https://cloud.google.com/compute/docs/access/create-enable-service-accounts-for-instances" target="_blank" rel="nofollow noopener noreferrer">Google Cloud文档</a> 。需要三个IAM角色：<code>computer/viewer</code>，<code>project/viewer</code>，<code>kubernetes-engine/admin</code>和<code>service-account/user</code>，更多关于角色的信息可在<a href="https://cloud.google.com/kubernetes-engine/docs/how-to/iam-integration" target="_blank" rel="nofollow noopener noreferrer">此处</a>找到。<a href="https://cloud.google.com/kubernetes-engine/docs/how-to/iam-integration" target="_blank" rel="nofollow noopener noreferrer">
+        创建一个拥有JSON私钥的<a href="https://console.cloud.google.com/projectselector/iam-admin/serviceaccounts" target="_blank" rel="nofollow noopener noreferrer">Service Account</a>，并在此处提供JSON。有关创建服务帐户的更多信息，请参阅<a href="https://cloud.google.com/compute/docs/access/create-enable-service-accounts-for-instances" target="_blank" rel="nofollow noopener noreferrer">Google Cloud文档</a> 。需要四个IAM角色：<code>computer/viewer</code>，<code>project/viewer</code>，<code>kubernetes-engine/admin</code>和<code>service-account/user</code>，更多关于角色的信息可在<a href="https://cloud.google.com/kubernetes-engine/docs/how-to/iam-integration" target="_blank" rel="nofollow noopener noreferrer">此处</a>找到。<a href="https://cloud.google.com/kubernetes-engine/docs/how-to/iam-integration" target="_blank" rel="nofollow noopener noreferrer">
     zone:
       label: 区域
       prompt: 选择一个区域...
@@ -2156,10 +2128,9 @@ clusterNew:
     label: 已导入
     shortLabel: 已导入
     command:
-      instructionsAdminRole: "If your existing Kubernetes cluster already has a <b>cluster-admin</b> role defined, you must have this <b>cluster-admin</b> privilege to import the cluster into Rancher. In order to apply the privilege, you need to run the command below before running the command to import the cluster:"
-      instructions: "Run the kubectl command below on an existing Kubernetes cluster running a supported Kubernetes version to import it into {appName}:"
-      instructionsInsecure: "If you get an error about 'certificate signed by unknown authority' because your {appName} installation is running with an untrusted/self-signed SSL certificate, run the command below instead to bypass the certificate check:"
-
+      instructionsAdminRole: "如果你的Kubernetes集群已经定义了<b>cluster-admin</b>角色，你必须使用该<b>cluster-admin</b>角色的权限来导入集群到{appName}中。在导入集群之前，你可以通过运行如下命令获取该角色的权限。"
+      instructions: "在现有所支持的Kubernetes版本的集群上运行下面的kubectl命令，将其导入到 {appName}中："
+      instructionsInsecure: "如果由于{appName}安装正在使用不受信任/自签名的SSL证书运行而出现\"由未知颁发机构签名的证书\"错误, 请运行下面的命令, 以绕过证书检查:"
 conditionSections:
   title: 状态
   detail: '{resourceType}当前的状态 '
@@ -3199,7 +3170,7 @@ formCommand:
     none: 无
   autoRestart:
     label: 自动重启
-    no: 永不过期
+    no: 从不
     onFailure: '失败时<span class="text-muted">(非0退出代码)</span>总是'
     onFailureCondPrefix: 失败时，最多
     onFailureCondSuffix: |
@@ -4613,12 +4584,12 @@ nodeDriver:
   templateOptions: "{appName}模板"
   amazoneks:
     access:
-      loading: Loading Instance info from Amazon...
+      loading: 正在从Amazon获取实例信息
   amazonec2:
     access:
       title: 1. 帐户访问
       detail: 选择将用于启动EC2实例的区域和API密钥
-      next: "下一步：验证和选择一个网络"
+      next: "下一步：认证 & 设置节点"
       loading: 从EC2加载可用区和VPC信息...
       help: "在此粘贴你的AWS密钥对，我们将用秘钥创建新的实例"
     zone:
@@ -5613,7 +5584,7 @@ action:
   convertToService: 转换为服务
   deactivate: 停用
   downloadYaml: 下载YAML
-  drain: Drain
+  drain: 驱散容器
   edit: 编辑
   editService: 编辑服务
   editYaml: 查看/编辑YAML
@@ -5867,29 +5838,29 @@ yamlPage:
 rkeConfigComment:
   ingress: |
     ""
-    "  # Currently only nginx ingress provider is supported."
-    "  # To disable ingress controller, set `provider: none`"
-    "  # To enable ingress on specific nodes, use the node_selector, eg:"
+    "  # 当前仅支持nginx的ingress"
+    "  # 设置`provider: none`从而禁用ingress控制器"
+    "  # 通过node_selector可以指定在某些节点上运行ingress控制器，例如："
     "     provider: nginx"
     "     node_selector:"
     "       app: ingress"
   network: |
     ""
-    "  # If you are using calico on AWS"
+    "  # 如果你在AWS上使用calico"
     ""
     "     network:"
     "       plugin: calico"
     "       calico_network_provider:"
     "         cloud_provider: aws"
     ""
-    "  # To specify flannel interface"
+    "  # 指定flannel的网络接口"
     ""
     "     network:"
     "       plugin: flannel"
     "       flannel_network_provider:"
     "         iface: eth1"
     ""
-    "  # To specify flannel interface for canal plugin"
+    "  # 指定canal网络插件的flannel网络接口"
     ""
     "     network:"
     "       plugin: canal"
