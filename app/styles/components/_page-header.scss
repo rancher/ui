@@ -12,9 +12,17 @@ $nav-spacing: 4px;
   NAV {
     font-size: .9em;
     width: 100%;
-    border-collapse: collapse;
-    border-spacing: 0px;
-    display: table;
+    // border-collapse: collapse;
+    // border-spacing: 0px;
+    // display: table;
+    box-sizing: border-box;
+    display: -ms-flexbox;
+    display: -webkit-box;
+    display: flex;
+    flex: 0 1 auto;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
 
     .dropdown-menu {
       background: $dropdown-bg;
@@ -29,10 +37,14 @@ $nav-spacing: 4px;
     > ul {
       background-color: $header;
       border-radius: 3px 0 0 3px;
-      display: table-cell;
+      // display: table-cell;
       padding: 0;
-      width: 100%;
+      // width: 100%;
       vertical-align: middle;
+
+      &.nav-main {
+        flex-grow: 1;
+      }
 
       > li {
         list-style-type: none;
@@ -84,7 +96,7 @@ $nav-spacing: 4px;
 
 
   .nav-user {
-    display:table-cell;
+    // display:table-cell;
     background: $user-btn;
     border-radius: 0 3px 3px 0;
     margin: 0;
