@@ -10,9 +10,14 @@
           classNames="form-control"
           placeholder=(t 'loggingPage.endpointPlaceholder')
           id="elasticsearch-endpoint"
+          focus-out="alertMessage"
       }}
     </div>
-    <p class="text-info text-small">{{t 'loggingPage.elasticsearch.endpointHelpText'}}</p>
+    {{#if endpointError}}
+      <p class="text-error text-small">{{t 'loggingPage.elasticsearch.endpointErrorText'}}</p>
+    {{else}}
+      <p class="text-info text-small">{{t 'loggingPage.elasticsearch.endpointHelpText'}}</p>
+    {{/if}}
   </section>
   <h4>{{t 'loggingPage.elasticsearch.xpack.header'}} <span class="text-muted">{{t 'loggingPage.elasticsearch.xpack.headerOptional'}}</span></h4>
   <section>
