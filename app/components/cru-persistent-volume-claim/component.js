@@ -39,7 +39,7 @@ export default Component.extend(ViewNewEdit, ChildHook, {
     }
 
     if ( !get(this,'selectNamespace') ) {
-      set(this, 'primaryResource.namespaceId', get(this,'namespace.id'));
+      set(this, 'primaryResource.namespaceId', get(this,'namespace.id') || get(this,'namespace.name'));
     }
 
     if ( get(this,'isNew') ) {
