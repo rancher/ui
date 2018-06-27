@@ -91,7 +91,7 @@ export default Component.extend({
       let ansiup = new AnsiUp.default;
       set(this, 'status', 'connected');
       var isFollow = ($body.scrollTop() + $body.outerHeight() + 10) >= body.scrollHeight;
-      const data = decodeURIComponent(AWS.util.base64.decode(message.data));
+      const data = AWS.util.base64.decode(message.data).toString();
 
       data.trim().split(/\n/).filter(line => line).forEach((line) => {
         var match = line.match(/^\[?([^ \]]+)\]?\s?/);
