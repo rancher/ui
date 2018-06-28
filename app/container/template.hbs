@@ -9,7 +9,6 @@
     {{action-menu model=model showPrimary=false classNames="ml-10 inline-block" size="sm"}}
   </div>
 </section>
-
 {{#if model.description}}
   {{banner-message color='bg-secondary mb-0 mt-10' message=(linkify model.description)}}
 {{/if}}
@@ -21,11 +20,32 @@
 <section>
   <div class="row banner bg-info basics">
     {{#if (eq model.containers.length 1)}}
-      <label class="acc-label vertical-middle p-0">
-        {{t 'podPage.image'}}:
+      <div class="vertical-middle">
+        <label class="acc-label vertical-middle p-0"> {{t 'podPage.image'}}:</label>
         {{selectedContainer.image}} {{copy-to-clipboard clipboardText=container.image size="small"}}
-      </label>
+      </div>
+      
     {{/if}}
+    <div class="vertical-middle">
+      <label class="acc-label vertical-middle p-0">{{t 'servicePage.multistat.namesapce'}}</label>
+      {{#if model.namespaceId}}
+        {{#copy-inline clipboardText=model.namespaceId}}
+          {{model.namespaceId}}
+        {{/copy-inline}}
+      {{else}}
+        {{t 'generic.none'}}
+      {{/if}}
+    </div>
+    <div class="vertical-middle">
+      <label class="acc-label vertical-middle p-0">{{t 'dnsPage.type.workload'}}:</label>
+      {{#if model.workloadId}}
+          {{#link-to "workload" model.workloadId}}{{model.workloadId}}{{/link-to}}
+      {{else}}
+        {{t 'generic.none'}}
+      {{/if}}
+    </div>
+  </div>
+  <div class="row banner bg-info basics">
     <div class="vertical-middle">
       <label class="acc-label vertical-middle p-0">{{t 'podPage.podIp'}}:</label>
       {{#if model.displayIp}}
