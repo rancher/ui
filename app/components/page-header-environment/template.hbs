@@ -48,6 +48,14 @@
        class="cluster-menu"
   }}
 
+    <li class="header {{if (eq pageScope "global") 'active selected' 'inactive'}}">
+      <a href="{{href-to "global-admin"}}">
+        <i class="icon icon-globe icon-fw"></i>
+        {{t 'nav.admin.tab'}}
+      </a>
+    </li>
+    <li role="presentation" class="divider"></li>
+
     {{#each byCluster as |entry idx|}}
 
       {{#if (gt idx 0)}}
@@ -96,15 +104,6 @@
       </li>
 
     {{/if}}
-
-    <li role="presentation" class="divider"></li>
-
-    <li class="header {{if (eq pageScope "global") 'active selected' 'inactive'}}">
-      <a href="{{href-to "global-admin"}}">
-        <i class="icon icon-globe icon-fw"></i>
-        {{t 'nav.admin.tab'}}
-      </a>
-    </li>
 
   {{/dd.content}}
 
