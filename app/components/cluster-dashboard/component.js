@@ -13,6 +13,9 @@ export default Component.extend({
   nodes: null,
   componentStatuses: alias('scope.currentCluster.componentStatuses'),
   components: null,
+  showDashboard: computed('scope.currentCluster.isReady', 'nodes.[]', function () {
+    return get(this, 'nodes').length && get(this, 'scope.currentCluster.isReady')
+  }),
 
   init() {
     this._super(...arguments);
