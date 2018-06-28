@@ -23,6 +23,11 @@
           <button class="btn btn-link btn-sm bg-defualt" {{action "enableLibrary"}} disabled={{togglingLibrary}}>{{#if togglingLibrary}}<i class="icon icon-spinner icon-spin"></i> {{/if}}{{t 'generic.enable'}}</button>
         </div>
       {{/if}}
+      {{#if customLibrary}}
+        {{#banner-message color='bg-warning'}}
+          {{t 'catalogSettings.errors.nameInExists' key='library' }}
+        {{/banner-message}}
+      {{/if}}
     </div>
     <p class="text-info">
       {{t 'catalogSettings.library.detail' appName=settings.appName}}
@@ -43,6 +48,11 @@
           <button class="btn btn-link btn-sm bg-defualt" {{action "enableHelmStable"}} disabled={{togglingHelmStable}}>{{#if togglingHelmStable}}<i class="icon icon-spinner icon-spin"></i> {{/if}}{{t 'generic.enable'}}</button>
         </div>
       {{/if}}
+      {{#if customHelmStable}}
+        {{#banner-message color='bg-warning'}}
+          {{t 'catalogSettings.errors.nameInExists' key='helm' }}
+        {{/banner-message}}
+      {{/if}}
     </div>
     <p class="text-info">
       {{t 'catalogSettings.helm.stable.detail'}}
@@ -62,6 +72,11 @@
           <button class="btn btn-link btn-sm bg-primary">{{t 'generic.disabled'}}</button>
           <button class="btn btn-link btn-sm bg-defualt" {{action "enableHelmIncubator"}} disabled={{togglingHelmIncubator}}>{{#if togglingHelmIncubator}}<i class="icon icon-spinner icon-spin"></i> {{/if}}{{t 'generic.enable'}}</button>
         </div>
+      {{/if}}
+      {{#if customHelmIncubator}}
+        {{#banner-message color='bg-warning'}}
+          {{t 'catalogSettings.errors.nameInExists' key='helm-incubator' }}
+        {{/banner-message}}
       {{/if}}
     </div>
     <p class="text-info">
