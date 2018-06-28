@@ -94,6 +94,8 @@ export default Route.extend({
       access.clearToken().finally(() => {
         get(this, 'tab-session').clear();
         set(this, `session.${C.SESSION.CONTAINER_ROUTE}`, undefined);
+        set(this, `session.${C.SESSION.CLUSTER_ROUTE}`, undefined);
+        set(this, `session.${C.SESSION.PROJECT_ROUTE}`, undefined);
 
         if ( transition && !session.get(C.SESSION.BACK_TO) ) {
           session.set(C.SESSION.BACK_TO, window.location.href);

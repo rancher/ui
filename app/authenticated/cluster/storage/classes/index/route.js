@@ -1,6 +1,8 @@
-import { get } from '@ember/object'
+import { get, set } from '@ember/object'
 import { hash } from 'rsvp';
 import Route from '@ember/routing/route';
+import { on } from '@ember/object/evented';
+import C from 'ui/utils/constants';
 
 export default Route.extend({
   model() {
@@ -14,4 +16,8 @@ export default Route.extend({
       storageClasses: get(this, 'clusterStore').findAll('storageClass'),
     });
   },
+
+  setDefaultRoute: on('activate', function() {
+    set(this, `session.${C.SESSION.CLUSTER_ROUTE}`,'authenticated.cluster.storage.classes');
+  }),
 });
