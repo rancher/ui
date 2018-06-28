@@ -158,7 +158,7 @@ var Node = Resource.extend(StateCounts, ResourceUsage, {
 
   isUnschedulable: computed('taints.@each.{effect,key}', function(){
     const taints = get(this, 'taints') || [];
-    return taints.some(taint => taint.effect === 'NoExecute' && (
+    return taints.some(taint => (taint.effect === 'NoExecute' || taint.effect === 'NoSchedule') && (
       taint.key === 'node-role.kubernetes.io/etcd' || taint.key === 'node-role.kubernetes.io/controlplane'
     ));
   }),
