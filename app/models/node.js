@@ -163,7 +163,7 @@ var Node = Resource.extend(StateCounts, ResourceUsage, {
     const taints = get(this, 'taints') || [];
     return taints.some((taint) => {
       return UNSCHEDULABLE_KEYS.includes(taint.key) && UNSCHEDULABLE_EFFECTS.includes(taint.effect);
-    }));
+    });
   }),
 
   osBlurb: computed('info.os.operatingSystem', function() {
