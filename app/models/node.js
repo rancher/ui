@@ -8,6 +8,9 @@ import { inject as service } from "@ember/service";
 import { reference } from 'ember-api-store/utils/denormalize';
 import ResourceUsage from 'shared/mixins/resource-usage';
 
+const UNSCHEDULABLE_KEYS = ['node-role.kubernetes.io/etcd','node-role.kubernetes.io/controlplane'];
+const UNSCHEDULABLE_EFFECTS = ['NoExecute','NoSchedule'];
+
 var Node = Resource.extend(StateCounts, ResourceUsage, {
   type: 'node',
 
@@ -158,9 +161,9 @@ var Node = Resource.extend(StateCounts, ResourceUsage, {
 
   isUnschedulable: computed('taints.@each.{effect,key}', function(){
     const taints = get(this, 'taints') || [];
-    return taints.some(taint => (taint.effect === 'NoExecute' || taint.effect === 'NoSchedule') && (
-      taint.key === 'node-role.kubernetes.io/etcd' || taint.key === 'node-role.kubernetes.io/controlplane'
-    ));
+    return taints.some((taint) => {
+      return UNSCHEDULABLE_KEYS.includes(taint.key) && UNSCHEDULABLE_EFFECTS.includes(taint.effect);
+    }));
   }),
 
   osBlurb: computed('info.os.operatingSystem', function() {
@@ -172,138 +175,6 @@ var Node = Resource.extend(StateCounts, ResourceUsage, {
 
     return out;
   }),
-
-/*
-  osBlurb: function() {
-    var out = get(this,'info.osInfo.operatingSystem')||'';
-
-    out = out.replace(/\s+\(.*?\)/,''); // Remove details in parens
-    out = out.replace(/;.*$/,''); // Or after semicolons
-    out = out.replace('Red Hat Enterprise Linux Server','RHEL'); // That's kinda long
-
-    var hasKvm = (get(this,'labels')||{})[C.LABEL.KVM] === 'true';
-    if ( hasKvm && out )
-    {
-      out += ' (with KVM)';
-    }
-
-    return out;
-  }.property('info.osInfo.operatingSystem','labels'),
-
-  osDetail: alias('info.osInfo.operatingSystem'),
-
-  dockerEngineVersion: function() {
-    if ( get(this,'info.osInfo') )
-    {
-*/
-//      return (get(this,'info.osInfo.dockerVersion')||'').replace(/^Docker version\s*/i,'').replace(/,.*/,'');
-/*    }
-  }.property('info.osInfo.dockerVersion'),
-
-  supportState: function() {
-    let my = get(this,'dockerEngineVersion')||'';
-    my = my.replace(/-(cs|ce|ee)[0-9.-]*$/,'');
-
-    let supported = get(this,`settings.${C.SETTING.SUPPORTED_DOCKER}`);
-    let newest = get(this,`settings.${C.SETTING.NEWEST_DOCKER}`);
-
-    if ( !my || !supported || !newest) {
-      return 'unknown';
-    } else if ( satisfies(my, supported) ) {
-      return 'supported';
-    } else if ( compare(my, newest) > 0 ) {
-      return 'untested';
-    } else {
-      return 'unsupported';
-    }
-  }.property('dockerEngineVersion',`settings.${C.SETTING.SUPPORTED_DOCKER}`,`settings.${C.SETTING.NEWEST_DOCKER}`),
-
-  dockerDetail: alias('info.osInfo.operatingSystem'),
-
-  kernelBlurb: function() {
-    if ( get(this,'info.osInfo') )
-    {
-      return (get(this,'info.osInfo.kernelVersion')||'');
-    }
-  }.property('info.osInfo.kernelVersion'),
-
-  cpuBlurb: function() {
-    if ( get(this,'info.cpuInfo.count') )
-    {
-      var ghz = Math.round(get(this,'info.cpuInfo.mhz')/10)/100;
-
-      if ( get(this,'info.cpuInfo.count') > 1 )
-      {
-        return get(this,'info.cpuInfo.count')+'x' + ghz + ' GHz';
-      }
-      else
-      {
-        return ghz + ' GHz';
-      }
-    }
-  }.property('info.cpuInfo.{count,mhz}'),
-
-  cpuTooltip: alias('info.cpuInfo.modelName'),
-
-  memoryBlurb: function() {
-    if ( get(this,'info.memoryInfo') )
-    {
-      return formatMib(get(this,'info.memoryInfo.memTotal'));
-    }
-  }.property('info.memoryInfo.memTotal'),
-
-  memoryLimitBlurb: computed('memory', function() {
-    if ( get(this,'memory') )
-    {
-      return formatSi(get(this,'memory'), 1024, 'iB', 'B');
-    }
-  }),
-
-  localStorageBlurb: computed('localStorageMb', function() {
-    if (get(this,'localStorageMb')) {
-      return formatSi(get(this,'localStorageMb'), 1024, 'iB', 'B', 2); // start at 1024^2==MB
-    }
-  }),
-
-  diskBlurb: function() {
-    var totalMb = 0;
-
-    // New hotness
-    if ( get(this,'info.diskInfo.fileSystems') )
-    {
-      var fses = get(this,'info.diskInfo.fileSystems')||[];
-      Object.keys(fses).forEach((fs) => {
-        totalMb += fses[fs].capacity;
-      });
-
-      return formatMib(totalMb);
-    }
-    else if ( get(this,'info.diskInfo.mountPoints') )
-    {
-      // Old & busted
-      var mounts = get(this,'info.diskInfo.mountPoints')||[];
-      Object.keys(mounts).forEach((mountPoint) => {
-        totalMb += mounts[mountPoint].total;
-      });
-
-      return formatMib(totalMb);
-    }
-  }.property('info.diskInfo.mountPoints.@each.total','info.diskInfo.fileSystems.@each.capacity'),
-
-  diskDetail: function() {
-    // New hotness
-    if ( get(this,'info.diskInfo.fileSystems') )
-    {
-      var out = [];
-      var fses = get(this,'info.diskInfo.fileSystems')||[];
-      Object.keys(fses).forEach((fs) => {
-        out.pushObject(EmberObject.create({label: fs, value: formatMib(fses[fs].capacity)}));
-      });
-
-      return out;
-    }
-  }.property('info.diskInfo.fileSystems.@each.capacity'),
-*/
 
   // If you use this you must ensure that services and containers are already in the store
   //  or they will not be pulled in correctly.
