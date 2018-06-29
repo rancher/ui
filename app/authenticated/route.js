@@ -82,18 +82,7 @@ export default Route.extend(Preload, {
           this.preload('globalRole', 'globalStore', {url: 'globalRole'}),
           this.preload('authConfig', 'globalStore', {url: 'authConfigs'}),
           this.preload('globalRoleBinding', 'globalStore', {url: 'globalRoleBinding'}),
-          this.preload('user', 'globalStore', {url: 'user'}).then((users) => {
-            users.forEach((u) => {
-              globalStore._typeify({
-                id: u.principalIds[0],
-                type: 'principal',
-                principalType: 'user',
-                provider: 'local',
-                name: get(u,'displayName'),
-                loginName: get(u,'username'),
-              });
-            });
-          }),
+          this.preload('user', 'globalStore', {url: 'user'}),
 
           globalStore.findAll('principal').then((principals) => {
             const me = principals.filter(p => p.me === true);
