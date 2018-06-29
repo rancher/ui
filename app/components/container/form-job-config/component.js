@@ -20,7 +20,12 @@ export default Component.extend({
 
   jobConfig: computed('scaleMode', function() {
     const scaleMode = get(this, 'scaleMode');
-    const config = scaleMode === 'job' ? get(this, 'workload.jobConfig') : get(this, 'workload.cronJobConfig.jobConfig');
+    let config;
+    if ( scaleMode === 'job' ) {
+      config = get(this, 'workload.jobConfig');
+    } else {
+      config = get(this, 'workload.cronJobConfig.jobConfig');
+    }
     return config;
   }),
 });
