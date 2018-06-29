@@ -533,9 +533,9 @@ authPage:
       serverURL:
         label: Rancher Server Url
       azureADEndpoint:
-        label: Endpoint
+        label: Endpoint(国内固定地址：https://login.chinacloudapi.cn)
       azureADGraphEndpoint:
-        label: Graph Endpoint
+        label: Graph Endpoint(国内固定地址：https://graph.chinacloudapi.cn)
       azureADTokenEndpoint:
         label: Token Endpoint
       azureADAuthEndpoint:
@@ -858,7 +858,7 @@ dnsPage:
     alias: 别名
     workload: 工作负载
     selector: 选择器
-    clusterIp: 集群ip
+    clusterIp: Cluster IP
     unknown: 未知
   table:
     target: 目标
@@ -945,6 +945,9 @@ cruVolume:
     detail: 配置选定卷源的选项
     prompt: 选择一个卷源...
 
+# If you change translations here also change the translation in app/utils/constants.js under the FALLBACK_TRANSLATIONS key
+# those are present in case we have an error in the app and can not load the translations file
+# the error page will at least make a little sense
 failWhalePage:
   header: 错误
   reloadButton: |
@@ -1155,6 +1158,9 @@ machinePage:
   builtin: 内置
   url: 位置
 
+# If you change translations here also change the translation in app/utils/constants.js under the FALLBACK_TRANSLATIONS key
+# those are present in case we have an error in the app and can not load the translations file
+# the error page will at least make a little sense
 notFoundPage:
   header: "当前页面不存在！"
   linkTo: 回到首页
@@ -1842,9 +1848,9 @@ clusterNew:
     placeholder: 例如：用于开发和测试工作负载的集群
   driverLabels:
     cloud: Kubernetes托管服务商
-    import: 导入现有集群
+    import: 导入现有的Kubernetes集群
     infra: 来自云服务上提供的主机
-    custom: 来自自己现有的主机
+    custom: 添加主机自建Kubernetes集群
   members:
     label: 成员角色
     detail: 控制哪些用户可以访问集群, 以及他们拥有的对其进行更改的权限。
@@ -2143,6 +2149,7 @@ conditionSections:
     message: 消息
   noData: 没有条件
   noMatch: 没有条件与当前搜索匹配
+
 resourceEventList:
   title: 事件
   detail: '{resourceType}当前的事件'
@@ -3449,6 +3456,7 @@ formKeyValue:
     label: 值
     placeholder: 值
   protip: '高级技巧: 在键(Key)输入栏中粘贴一行或多行的key=value键值对能够批量输入'
+
 formImage:
   label: Docker镜像
   container:
@@ -4365,10 +4373,10 @@ modalImport:
     cluster1: 如果一个资源指定了命名空间，那么会自动创建命名空间，但是不会自动加入到项目中
     cluster2: 如果一个资源没有指定一个命名空间，它将被导入到default中
     cluster3: '该模式还支持没有命名空间的资源，例如: RoleTemplates'
-
+    
     project1: 不指定命名空间的资源将被导入到选定的默认命名空间中
     project2: 如果一个资源指定了一个不存在的命名空间，此命名空间将被创建并添加到这个项目中
-
+    
     namespace1: 所有资源将被导入到选定的命名空间中
     namespace2: 如果资源指定了不同的命名空间，则导入将失败
 
@@ -4419,6 +4427,7 @@ modalShortcuts:
   shift: Shift-{key}
   delete: 删除所选择的(在表视图中)
   kubectl: Kubectl Shell
+  
   viewGroup: 切换分组视图
   nextTab: 下一页
   search: 聚焦搜索字段
@@ -4848,17 +4857,17 @@ nodeDriver:
       help: "创建VM磁盘的数据存储"
     cloudinit:
       label: Cloud Init
-      placeholder: "e.g. http://my_host/cloud-config.yml"
-      help: "Cloud-init file or url to set in the guestinfo"
+      placeholder: "例如：http://my_host/cloud-config.yml"
+      help: "Cloud-init文件或url在guestinfo中设置"
     folder:
       label: Folder
-      placeholder: "e.g. /folder"
+      placeholder: "例如：/folder"
       help: "Folder for the VM. This folder must already exist in the datacenter"
     cfgparam:
       key:
-        placeholder: "e.g. guestinfo.hostname"
+        placeholder: "例如：guestinfo.hostname"
       value:
-        placeholder: "e.g. myrancherhost"
+        placeholder: "例如：myrancherhost"
       label: Configuration Parameters used for guestinfo
       addActionLabel: Add Parameter
   azure:
