@@ -13,19 +13,7 @@ export default Controller.extend({
   queryParams:       ['sortBy'],
   sortBy:            'name',
 
-  actions: {
-//    toggleExpand() {
-//      this.get('projectController').send('toggleExpand', ...arguments);
-//    },
-  },
-
   headers: [
-//    {
-//      name: 'expand',
-//      sort: false,
-//      searchField: null,
-//      width: 30
-//    },
     {
       name: 'state',
       sort: ['sortState','displayName'],
