@@ -36,14 +36,11 @@ export default Component.extend({
   scaleModeDidChange: observer('scaleMode', function() {
 
     const scaleMode = get(this, 'scaleMode');
+    const restartPolicy = get(this, 'service.restartPolicy');
 
-    if ( scaleMode === 'job' || scaleMode === 'cronJob' ) {
+    if ( (scaleMode === 'job' || scaleMode === 'cronJob') && restartPolicy === 'Always' ) {
 
       set(this, 'service.restartPolicy', 'Never');
-
-    } else {
-
-      set(this, 'service.restartPolicy', 'Always');
 
     }
 
@@ -53,14 +50,7 @@ export default Component.extend({
 
     this._super(...arguments);
     this.initTerminal();
-    const scaleMode = get(this, 'scaleMode');
-    const restartPolicy = get(this, 'service.restartPolicy');
-
-    if ( (scaleMode === 'job' || scaleMode === 'cronJob') && restartPolicy === 'Always' ) {
-
-      set(this, 'service.restartPolicy', 'Never');
-
-    }
+    this.scaleModeDidChange();
 
   },
 
@@ -106,5 +96,5 @@ export default Component.extend({
     set(this, 'terminal', out);
     this.terminalDidChange();
 
-  },
+  }
 });
