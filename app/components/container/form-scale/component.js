@@ -6,33 +6,47 @@ import Component from '@ember/component';
 import layout from './template';
 
 const HISTORY_LIMIT = 10;
-const DEFAULT_CONFIG = {
-  deployment: {
-    type:                 'deploymentConfig',
-    revisionHistoryLimit: HISTORY_LIMIT,
-  },
-  daemonSet: {
-    type:                 'daemonSetConfig',
-    revisionHistoryLimit: HISTORY_LIMIT,
-  },
-  replicaSet:            { type: 'replicaSetConfig', },
-  replicationController: { type: 'replicationControllerConfig', },
-  statefulSet:           {
-    type:                 'statefulSetConfig',
-    podManagementPolicy:  'OrderedReady',
-    revisionHistoryLimit: HISTORY_LIMIT,
-    volumeClaimTemplates: [],
-  },
-  cronJob: {
-    type:                       'cronJobConfig',
-    concurrencyPolicy:          'Allow',
-    failedJobsHistoryLimit:     HISTORY_LIMIT,
-    schedule:                   '0 * * * *',
-    successfulJobsHistoryLimit: HISTORY_LIMIT,
-    jobConfig: {},
-  },
-  job: { type: 'jobConfig', },
-};
+
+function getDefaultConfig(config) {
+
+  switch ( config ) {
+
+  case 'deployment':
+    return {
+      type:                 'deploymentConfig',
+      revisionHistoryLimit: HISTORY_LIMIT,
+    };
+  case 'daemonSet':
+    return {
+      type:                 'daemonSetConfig',
+      revisionHistoryLimit: HISTORY_LIMIT,
+    };
+  case 'replicaSet':
+    return { type: 'replicaSetConfig' };
+  case 'replicationController':
+    return { type: 'replicationControllerConfig' };
+  case 'statefulSet':
+    return {
+      type:                 'statefulSetConfig',
+      podManagementPolicy:  'OrderedReady',
+      revisionHistoryLimit: HISTORY_LIMIT,
+      volumeClaimTemplates: [],
+    };
+  case 'cronJob':
+    return {
+      type:                       'cronJobConfig',
+      concurrencyPolicy:          'Allow',
+      failedJobsHistoryLimit:     HISTORY_LIMIT,
+      schedule:                   '0 * * * *',
+      successfulJobsHistoryLimit: HISTORY_LIMIT,
+      jobConfig:                  {},
+    };
+  case 'job':
+    return { type: 'jobConfig' };
+
+  }
+
+}
 
 export default Component.extend({
   layout,
@@ -100,7 +114,7 @@ export default Component.extend({
 
     if ( !get(workload, config) ) {
 
-      set(workload, config, get(this, 'store').createRecord(DEFAULT_CONFIG[scaleMode]));
+      set(workload, config, get(this, 'store').createRecord(getDefaultConfig(scaleMode)));
 
     }
 
