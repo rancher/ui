@@ -19,7 +19,7 @@ export default Component.extend({
     },
     {
       name:           'value',
-      sort:           ['value','key'],
+      sort:           ['value', 'key'],
       searchField:    'value',
       translationKey: 'formEnvVar.labels.value',
     },

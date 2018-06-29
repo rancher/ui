@@ -5,50 +5,52 @@ import Controller, { inject as controller } from '@ember/controller';
 export default Controller.extend({
   projectController: controller('authenticated.project'),
 
-  sortBy: 'name',
-  queryParams: ['sortBy'],
-  group: alias('projectController.group'),
-  groupTableBy: alias('projectController.groupTableBy'),
-
-  resource: ['configmap'],
+  queryParams:  ['sortBy'],
+  sortBy:       'name',
+  resource:    ['configmap'],
 
   headers: [
     {
-      name: 'state',
-      sort: ['sortState','name','id'],
-      type: 'string',
-      searchField: 'displayState',
+      name:           'state',
+      sort:           ['sortState', 'name', 'id'],
+      type:           'string',
+      searchField:    'displayState',
       translationKey: 'generic.state',
-      width: 125,
+      width:          125,
     },
     {
-      name: 'name',
-      sort: ['name','id'],
+      name:           'name',
+      sort:           ['name', 'id'],
       translationKey: 'generic.name',
     },
     {
-      name: 'namespace',
+      name:           'namespace',
       translationKey: 'generic.namespace',
-      searchField: 'namespace.displayName',
-      sort: ['namespace.displayName','name','id'],
+      searchField:    'namespace.displayName',
+      sort:           ['namespace.displayName', 'name', 'id'],
     },
     {
-      name: 'keys',
+      name:           'keys',
       translationKey: 'configMapsPage.table.keys',
-      searchField: 'keys',
-      sort: ['firstKey','name','id'],
+      searchField:    'keys',
+      sort:           ['firstKey', 'name', 'id'],
     },
     {
-      name: 'created',
+      name:           'created',
       translationKey: 'generic.created',
-      sort: ['created:desc','name','id'],
-      searchField: false,
-      type: 'string',
-      width: 150,
+      sort:           ['created:desc', 'name', 'id'],
+      searchField:    false,
+      type:           'string',
+      width:          150,
     },
   ],
 
+  group:        alias('projectController.group'),
+  groupTableBy: alias('projectController.groupTableBy'),
+
   rows: function() {
-    return get(this, 'model.configMaps').filterBy('type','configMap');
+
+    return get(this, 'model.configMaps').filterBy('type', 'configMap');
+
   }.property('model.configMaps.[].type'),
 });

@@ -5,26 +5,30 @@ import { inject as service } from '@ember/service'
 import { computed } from '@ember/object';
 
 export default Component.extend({
-  layout,
   scope:          service(),
   session:           service(),
 
+  layout,
   model:             null,
   tagName:           '',
   subMatches:        null,
   expanded:          null,
 
-  showLabelRow:      or('model.displayUserLabelStrings.length'),
   showInstanceCount: true,
   showImage:         true,
 
-  canExpand: computed('model.isReal', function() {
+  showLabelRow:      or('model.displayUserLabelStrings.length'),
+  canExpand:    computed('model.isReal', function() {
+
     return !!this.get('model.isReal');
+
   }),
 
   actions: {
     toggle() {
+
       this.sendAction('toggle');
+
     },
   },
 });

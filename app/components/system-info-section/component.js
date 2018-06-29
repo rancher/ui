@@ -1,4 +1,6 @@
-import { get, set, observer } from '@ember/object';
+import {
+  get, set, observer
+} from '@ember/object';
 import Component from '@ember/component';
 import layout from './template';
 
@@ -7,34 +9,41 @@ export default Component.extend({
 
   node: null,
 
-  sortBy: 'key',
+  sortBy:     'key',
   descending: false,
   labelArray: null,
 
   headers: [
     {
-      name: 'key',
-      sort: ['key'],
+      name:           'key',
+      sort:           ['key'],
       translationKey: 'systemInfoSection.key',
     },
     {
-      name: 'value',
-      sort: ['value', 'key'],
+      name:           'value',
+      sort:           ['value', 'key'],
       translationKey: 'systemInfoSection.value',
     },
   ],
 
-  annotationsObserver: observer('node', function () {
+  annotationsObserver: observer('node', function() {
+
     const labelArray = this.getSystemInfoArray();
+
     set(this, 'labelArray', labelArray);
+
   }),
 
   didReceiveAttrs() {
+
     const labelArray = this.getSystemInfoArray();
+
     set(this, 'labelArray', labelArray);
+
   },
 
   getSystemInfoArray() {
+
     const array = [];
     const node = get(this, 'node');
     const info = get(node, 'info');
@@ -44,44 +53,53 @@ export default Component.extend({
     const osType = (get(node, 'labels') || {})['beta.kubernetes.io/os'];
 
     if ( kubernetes ) {
+
       array.push({
-        key: 'systemInfoSection.kubeProxyVersion',
+        key:   'systemInfoSection.kubeProxyVersion',
         value: get(kubernetes, 'kubeProxyVersion'),
       });
       array.push({
-        key: 'systemInfoSection.kubeletVersion',
+        key:   'systemInfoSection.kubeletVersion',
         value: get(kubernetes, 'kubeletVersion'),
       });
+
     }
 
     if ( os ) {
+
       array.push({
-        key: 'systemInfoSection.dockerVersion',
+        key:   'systemInfoSection.dockerVersion',
         value: get(os, 'dockerVersion'),
       });
       array.push({
-        key: 'systemInfoSection.kernelVersion',
+        key:   'systemInfoSection.kernelVersion',
         value: get(os, 'kernelVersion'),
       });
       array.push({
-        key: 'systemInfoSection.operatingSystem',
+        key:   'systemInfoSection.operatingSystem',
         value: get(os, 'operatingSystem'),
       });
+
     }
 
     if ( arch ) {
+
       array.push({
-        key: 'systemInfoSection.arch',
+        key:   'systemInfoSection.arch',
         value: arch,
       });
+
     }
     if ( osType ) {
+
       array.push({
-        key: 'systemInfoSection.osType',
+        key:   'systemInfoSection.osType',
         value: osType,
       });
+
     }
 
     return array;
+
   }
 });

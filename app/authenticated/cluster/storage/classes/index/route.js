@@ -5,19 +5,23 @@ import { on } from '@ember/object/evented';
 import C from 'ui/utils/constants';
 
 export default Route.extend({
+  setDefaultRoute: on('activate', function() {
+
+    set(this, `session.${ C.SESSION.CLUSTER_ROUTE }`, 'authenticated.cluster.storage.classes');
+
+  }),
   model() {
+
     let cluster = this.modelFor('authenticated.cluster');
 
-    if ( !get(cluster,'isReady') ) {
+    if ( !get(cluster, 'isReady') ) {
+
       this.transitionTo('authenticated.cluster.index');
+
     }
 
-    return hash({
-      storageClasses: get(this, 'clusterStore').findAll('storageClass'),
-    });
+    return hash({ storageClasses: get(this, 'clusterStore').findAll('storageClass'), });
+
   },
 
-  setDefaultRoute: on('activate', function() {
-    set(this, `session.${C.SESSION.CLUSTER_ROUTE}`,'authenticated.cluster.storage.classes');
-  }),
 });

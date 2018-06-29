@@ -5,6 +5,6 @@ export default Component.extend({
   layout,
   model: null,
 
-  tagName: 'TR',
+  tagName:    'TR',
   classNames: 'main-row',
 });

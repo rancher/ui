@@ -3,56 +3,59 @@ import { get } from '@ember/object';
 import { inject as service } from '@ember/service';
 import Controller, { inject as controller } from '@ember/controller';
 
-//const NONE = 'none';
+// const NONE = 'none';
 
 export default Controller.extend({
-  prefs: service(),
-  scope: service(),
   projectController: controller('authenticated.project'),
 
-  sortBy: 'name',
-  queryParams: ['sortBy'],
-  group: alias('projectController.group'),
-  groupTableBy: alias('projectController.groupTableBy'),
-
-  headers: [
+  prefs:       service(),
+  scope:       service(),
+  queryParams:  ['sortBy'],
+  sortBy:       'name',
+  headers:     [
     {
-      name: 'state',
-      sort: ['sortState','name','id'],
-      type: 'string',
-      searchField: 'displayState',
+      name:           'state',
+      sort:           ['sortState', 'name', 'id'],
+      type:           'string',
+      searchField:    'displayState',
       translationKey: 'generic.state',
-      width: 125,
+      width:          125,
     },
     {
-      name: 'name',
-      sort: ['name','id'],
+      name:           'name',
+      sort:           ['name', 'id'],
       translationKey: 'generic.name',
     },
     {
-      name: 'namespace',
+      name:           'namespace',
       translationKey: 'generic.namespace',
-      searchField: 'namespace.displayName',
-      sort: ['namespace.displayName','name','id'],
+      searchField:    'namespace.displayName',
+      sort:           ['namespace.displayName', 'name', 'id'],
     },
     {
-      name: 'registry',
+      name:           'registry',
       translationKey: 'cruRegistry.address.label',
-      searchField: ['displayAddress','searchAddresses'],
-      sort: ['displayAddress','name','id'],
+      searchField:    ['displayAddress', 'searchAddresses'],
+      sort:           ['displayAddress', 'name', 'id'],
     },
     {
-      name: 'username',
+      name:           'username',
       translationKey: 'cruRegistry.username.label',
-      searchField: ['firstUsername','searchUsernames'],
-      sort: ['firstUsername','name','id'],
+      searchField:    ['firstUsername', 'searchUsernames'],
+      sort:           ['firstUsername', 'name', 'id'],
     },
   ],
 
+  group:        alias('projectController.group'),
+  groupTableBy: alias('projectController.groupTableBy'),
+
   rows: function() {
+
     const proj = get(this, 'model.projectDockerCredentials').slice();
     const ns = get(this, 'model.namespacedDockerCredentials').slice();
     const out = proj.concat(ns);
+
     return out;
-  }.property('model.projectDockerCredentials.[]','model.namespacedDockerCredentials.[]'),
+
+  }.property('model.projectDockerCredentials.[]', 'model.namespacedDockerCredentials.[]'),
 });

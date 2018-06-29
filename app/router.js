@@ -2,28 +2,33 @@ import { inject as service } from '@ember/service';
 import EmberRouter from '@ember/routing/router';
 import config from './config/environment';
 
-//const Router = Ember.Router.extend({
+// const Router = Ember.Router.extend({
 const Router = EmberRouter.extend({
   modalService: service('modal'),
-  location: config.locationType,
+  location:     config.locationType,
   willTransition(){
+
     if (this.get('modalService.modalVisible')) {
+
       this.get('modalService').toggleModal();
+
     }
+
   },
 });
 
 Router.map(function() {
-  this.mount('login', {path: '/login'});
+
+  this.mount('login', { path: '/login' });
 
   this.route('ie');
   this.route('index');
-  this.route('failWhale', {path: '/fail'});
-  this.route('not-found', {path: '*path'});
+  this.route('failWhale', { path: '/fail' });
+  this.route('not-found', { path: '*path' });
 
-  this.route('signup', {path: '/signup'});
-  this.route('verify', {path: '/verify/:verify_token'});
-  this.route('verify-reset-password', {path: '/verify-reset-password/:verify_token'});
+  this.route('signup', { path: '/signup' });
+  this.route('verify', { path: '/verify/:verify_token' });
+  this.route('verify-reset-password', { path: '/verify-reset-password/:verify_token' });
 
   // this.route('login', function() {
   //   this.route('index', {path: '/'});
@@ -33,177 +38,265 @@ Router.map(function() {
 
   this.route('verify-auth');
   this.route('verify-auth-azure');
-  this.route('update-password', {path: '/update-password'});
-  this.route('update-critical-settings', {path: '/update-setting'});
+  this.route('update-password', { path: '/update-password' });
+  this.route('update-critical-settings', { path: '/update-setting' });
 
-  this.route('authenticated', {path: '/'}, function() {
+  this.route('authenticated', { path: '/' }, function() {
+
     // Global
-    this.mount('global-admin', { path: '/g', resetNamespace: true});
-    this.route('dummy-dev', {path: '/dev'});
+    this.mount('global-admin', {
+      path:           '/g',
+      resetNamespace: true
+    });
+    this.route('dummy-dev', { path: '/dev' });
 
     this.route('apikeys');
     this.route('node-templates');
     this.route('prefs');
 
     // Per-Cluster
-    this.route('cluster', {path: '/c/:cluster_id'}, function() {
-      this.route('index', {path: '/'});
+    this.route('cluster', { path: '/c/:cluster_id' }, function() {
+
+      this.route('index', { path: '/' });
       this.route('edit');
 
       this.mount('pipeline');
 
       this.route('nodes', function() {
-        this.route('index', {path: '/'});
-        this.route('node', {path: '/:node_id', resetNamespace: true});
+
+        this.route('index', { path: '/' });
+        this.route('node', {
+          path:           '/:node_id',
+          resetNamespace: true
+        });
+
       });
 
-      this.route('projects', {path: '/projects-namespaces'}, function() {
-        this.route('index', {path: '/'});
-        this.route('edit', {path: '/project/:project_id'});
-        this.route('new', {path: '/project/add'});
-        this.route('edit-ns', {path: '/ns/:namespace_id'});
-        this.route('new-ns', {path: '/ns/add'});
+      this.route('projects', { path: '/projects-namespaces' }, function() {
+
+        this.route('index', { path: '/' });
+        this.route('edit', { path: '/project/:project_id' });
+        this.route('new', { path: '/project/add' });
+        this.route('edit-ns', { path: '/ns/:namespace_id' });
+        this.route('new-ns', { path: '/ns/add' });
+
       });
 
       this.route('security', function() {
-        this.route('index', {path: '/'});
+
+        this.route('index', { path: '/' });
         this.route('members', function() {
-          this.route('index', {path: '/'});
-          this.route('edit', {path: '/edit/:role_id'});
-          this.route('new', {path: '/add'});
+
+          this.route('index', { path: '/' });
+          this.route('edit', { path: '/edit/:role_id' });
+          this.route('new', { path: '/add' });
+
         });
+
       });
 
-      this.mount('logging', {path: '/logging'});
-      this.mount('alert', {path: '/alerts'});
-      this.route('notifier', {path: '/notifiers'}, function() {
-        this.route('index', {path: '/'});
-        this.route('new', {path: '/add'});
-        this.route('edit', {path: '/:notifier_id'});
+      this.mount('logging', { path: '/logging' });
+      this.mount('alert', { path: '/alerts' });
+      this.route('notifier', { path: '/notifiers' }, function() {
+
+        this.route('index', { path: '/' });
+        this.route('new', { path: '/add' });
+        this.route('edit', { path: '/:notifier_id' });
+
       });
 
       this.route('storage', function() {
+
         this.route('classes', function() {
-          this.route('index', {path: '/'});
-          this.route('new', {path: '/add'});
-          this.route('detail', {path: '/:storage_class_id'}, function() {
+
+          this.route('index', { path: '/' });
+          this.route('new', { path: '/add' });
+          this.route('detail', { path: '/:storage_class_id' }, function() {
+
             this.route('edit');
+
           });
+
         });
 
         this.route('persistent-volumes', function() {
-          this.route('index', {path: '/'});
-          this.route('new', {path: '/add'});
-          this.route('detail', {path: '/:persistent_volume_id'}, function() {
+
+          this.route('index', { path: '/' });
+          this.route('new', { path: '/add' });
+          this.route('detail', { path: '/:persistent_volume_id' }, function() {
+
             this.route('edit');
+
           });
+
         });
+
       });
+
     });
 
     // Per-Project
-    this.route('project', {path: '/p/:project_id'}, function() {
-      this.route('index', {path: '/'});
+    this.route('project', { path: '/p/:project_id' }, function() {
 
-      this.route('ns', {path: '/ns'}, function() {
-        this.route('index', {path: '/'});
+      this.route('index', { path: '/' });
+
+      this.route('ns', { path: '/ns' }, function() {
+
+        this.route('index', { path: '/' });
+
       });
 
       // alert/logging
-      this.mount('logging', {path: '/logging'});
-      this.mount('alert', {path: '/alerts'});
+      this.mount('logging', { path: '/logging' });
+      this.mount('alert', { path: '/alerts' });
 
       this.mount('pipeline');
 
       // Workload
-      this.route('containers', {path: '/workloads', resetNamespace: true}, function() {
-        this.route('run', {path: '/run'});
-        this.route('index', {path: '/'});
+      this.route('containers', {
+        path:           '/workloads',
+        resetNamespace: true
+      }, function() {
 
-        this.route('container', {path: '/:container_id', resetNamespace: true});
+        this.route('run', { path: '/run' });
+        this.route('index', { path: '/' });
+
+        this.route('container', {
+          path:           '/:container_id',
+          resetNamespace: true
+        });
+
       });
 
-      this.route('ingresses', {resetNamespace: true}, function() {
-        this.route('run', {path: '/run'});
-        this.route('index', {path: '/'});
+      this.route('ingresses', { resetNamespace: true }, function() {
 
-        this.route('ingress', {path: '/:ingress_id', resetNamespace: true});
+        this.route('run', { path: '/run' });
+        this.route('index', { path: '/' });
+
+        this.route('ingress', {
+          path:           '/:ingress_id',
+          resetNamespace: true
+        });
+
       });
 
       this.route('dns', function() {
-        this.route('new', {path: '/add'});
-        this.route('index', {path: '/'});
-        this.route('detail', {path: '/:record_id'}, function() {
+
+        this.route('new', { path: '/add' });
+        this.route('index', { path: '/' });
+        this.route('detail', { path: '/:record_id' }, function() {
+
           this.route('edit');
+
         });
+
       });
 
-      this.route('volumes', {path: '/volumes', resetNamespace: true}, function() {
-        this.route('index', {path: '/'});
-        this.route('new', {path: '/add'});
-        this.route('detail', {path: '/:volume_id'});
+      this.route('volumes', {
+        path:           '/volumes',
+        resetNamespace: true
+      }, function() {
+
+        this.route('index', { path: '/' });
+        this.route('new', { path: '/add' });
+        this.route('detail', { path: '/:volume_id' });
+
       });
 
-      this.route('workload', {path: '/workload/:workload_id', resetNamespace: true});
+      this.route('workload', {
+        path:           '/workload/:workload_id',
+        resetNamespace: true
+      });
 
 
       // Catalog
-      this.route('apps-tab', {path: '/apps', resetNamespace: true}, function() {
-        this.route('index', {path: '/'});
-        this.route('detail', {path: '/:app_id'});
+      this.route('apps-tab', {
+        path:           '/apps',
+        resetNamespace: true
+      }, function() {
 
-        this.route('catalog-tab', {path: '/catalog', resetNamespace: true}, function() {
-          this.route('index', {path: '/'});
-          this.route('launch', {path: '/:template'});
+        this.route('index', { path: '/' });
+        this.route('detail', { path: '/:app_id' });
+
+        this.route('catalog-tab', {
+          path:           '/catalog',
+          resetNamespace: true
+        }, function() {
+
+          this.route('index', { path: '/' });
+          this.route('launch', { path: '/:template' });
+
         });
 
       });
 
       // Resources
       this.route('security', function() {
-        this.route('index', {path: '/'});
+
+        this.route('index', { path: '/' });
         this.route('members', function() {
-          this.route('index', {path: '/'});
-          this.route('edit', {path: '/edit/:role_id'});
-          this.route('new', {path: '/add'});
+
+          this.route('index', { path: '/' });
+          this.route('edit', { path: '/edit/:role_id' });
+          this.route('new', { path: '/add' });
+
         });
+
       });
 
       this.route('certificates', function() {
-        this.route('new', {path: '/add'});
-        this.route('index', {path: '/'});
-        this.route('detail', {path: '/:certificate_id'}, function() {
+
+        this.route('new', { path: '/add' });
+        this.route('index', { path: '/' });
+        this.route('detail', { path: '/:certificate_id' }, function() {
+
           this.route('edit');
+
         });
+
       });
 
       this.route('registries', function() {
-        this.route('new', {path: '/add'});
-        this.route('index', {path: '/'});
-        this.route('detail', {path: '/:registry_id'}, function() {
+
+        this.route('new', { path: '/add' });
+        this.route('index', { path: '/' });
+        this.route('detail', { path: '/:registry_id' }, function() {
+
           this.route('edit');
+
         });
+
       });
 
       this.route('secrets', function() {
-        this.route('new', {path: '/add'});
-        this.route('index', {path: '/'});
-        this.route('detail', {path: '/:secret_id'}, function() {
+
+        this.route('new', { path: '/add' });
+        this.route('index', { path: '/' });
+        this.route('detail', { path: '/:secret_id' }, function() {
+
           this.route('edit');
+
         });
+
       });
 
       this.route('config-maps', function() {
-        this.route('new', {path: '/add'});
-        this.route('index', {path: '/'});
-        this.route('detail', {path: '/:config_map_id'}, function() {
+
+        this.route('new', { path: '/add' });
+        this.route('index', { path: '/' });
+        this.route('detail', { path: '/:config_map_id' }, function() {
+
           this.route('edit');
+
         });
+
       });
 
-      this.route('hooks', {path: '/api/hooks'}, function() {
-        this.route('new-receiver', {path: '/add-receiver'});
-        this.route('edit-receiver', {path: '/receiver/:receiver_id'});
+      this.route('hooks', { path: '/api/hooks' }, function() {
+
+        this.route('new-receiver', { path: '/add-receiver' });
+        this.route('edit-receiver', { path: '/receiver/:receiver_id' });
+
       });
 
       this.route('help');
@@ -215,6 +308,7 @@ Router.map(function() {
     });
 
     // End: Authenticated
+
   });
 
 
@@ -224,6 +318,7 @@ Router.map(function() {
   //   cb.apply(this);
   // }
   // clearRoutes();
+
 });
 
 

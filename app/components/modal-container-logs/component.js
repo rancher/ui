@@ -5,7 +5,7 @@ import layout from './template';
 
 export default Component.extend(ModalBase, {
   layout,
-  classNames: ['large-modal', 'fullscreen-modal', 'alert'],
+  classNames:    ['large-modal', 'fullscreen-modal', 'alert'],
   originalModel: alias('modalService.modalOpts'),
 
 });

@@ -4,20 +4,28 @@ import { get, computed } from '@ember/object';
 import Controller, { inject as controller } from '@ember/controller';
 
 export default Controller.extend({
-  modalService: service('modal'),
-  scope: service(),
-  k8s: service(),
-
   projectController: controller('authenticated.project'),
-  tags: alias('projectController.tags'),
+  modalService:      service('modal'),
+  scope:             service(),
+  k8s:               service(),
 
+  tags:              alias('projectController.tags'),
+
+  currentClusterNodes: computed('model.nodes.@each.{capacity,allocatable,state}', function() {
+
+    const clusterId = get(this, 'scope.currentCluster.id');
+
+    return get(this, 'model.nodes').filter((n) => n.clusterId === clusterId);
+
+  }),
   actions: {
     dashboard() {
-  //    window.open(this.get('k8s.kubernetesDashboard'),'_blank');
+      //    window.open(this.get('k8s.kubernetesDashboard'),'_blank');
     },
 
     kubectl() {
-/* @TODO-2.0
+
+      /* @TODO-2.0
    if (e.metaKey) {
         let proj = this.get('scope.currentProject.id');
         later(() => {
@@ -25,19 +33,16 @@ export default Controller.extend({
         });
       } else {
 */
-        this.get('modalService').toggleModal('modal-kubectl', {});
- //     }
+      this.get('modalService').toggleModal('modal-kubectl', {});
+      //     }
+
     },
 
     kubeconfig() {
-      this.get('modalService').toggleModal('modal-kubeconfig', {
-        escToClose: true,
-      });
+
+      this.get('modalService').toggleModal('modal-kubeconfig', { escToClose: true, });
+
     },
   },
 
-  currentClusterNodes: computed('model.nodes.@each.{capacity,allocatable,state}', function () {
-    const clusterId = get(this, 'scope.currentCluster.id');
-    return get(this, 'model.nodes').filter(n => n.clusterId === clusterId);
-  }),
 });

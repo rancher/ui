@@ -10,36 +10,47 @@ export default Component.extend(ViewNewEdit, OptionallyNamespaced, {
 
   titleKey: 'newSecret.title',
 
-  scope: 'project',
+  scope:     'project',
   namespace: null,
+
+  projectType:    'secret',
+  namespacedType: 'namespacedSecret',
 
   actions: {
     updateData(map) {
+
       set(this, 'primaryResource.data', map);
+
     },
   },
 
-  projectType: 'secret',
-  namespacedType: 'namespacedSecret',
-
   validate() {
+
     const errors = [];
+
     if ( get(this, 'scope') !== 'project' ) {
-      errors.pushObjects(get(this,'namespaceErrors')||[]);
+
+      errors.pushObjects(get(this, 'namespaceErrors') || []);
+
     }
-    set(this,'errors', errors);
+    set(this, 'errors', errors);
+
     return errors.length === 0;
+
   },
 
   doSave() {
+
     let self = this;
     let sup = self._super;
-    return this.namespacePromise().then(() => {
-      return sup.apply(self,arguments);
-    });
+
+    return this.namespacePromise().then(() => sup.apply(self, arguments));
+
   },
 
   doneSaving() {
+
     this.sendAction('cancel');
+
   },
 });

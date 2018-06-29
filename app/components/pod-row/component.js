@@ -6,10 +6,10 @@ import C from 'ui/utils/constants';
 import layout from './template';
 
 export default Component.extend({
-  layout,
   scope:             service(),
   session:           service(),
 
+  layout,
   model:             null,
   showStats:         false,
   bulkActions:       true,
@@ -23,19 +23,25 @@ export default Component.extend({
   tagName:           '',
   expanded:          null,
 
-  actions: {
-    toggle() {
-      this.sendAction('toggle');
-    },
-  },
+  containers: alias('model.containers'),
+  canExpand:  computed('expandPlaceholder', 'model.containers', function() {
 
-  canExpand: computed('expandPlaceholder', 'model.containers', function() {
-    return get(this,'expandPlaceholder') && get(this,'model.containers.length') > 1;
+    return get(this, 'expandPlaceholder') && get(this, 'model.containers.length') > 1;
+
   }),
 
   statsAvailable: computed('model.{state,healthState}', function() {
+
     return C.ACTIVEISH_STATES.indexOf(this.get('model.state')) >= 0 && this.get('model.healthState') !== 'started-once';
+
   }),
 
-  containers: alias('model.containers'),
+  actions: {
+    toggle() {
+
+      this.sendAction('toggle');
+
+    },
+  },
+
 });

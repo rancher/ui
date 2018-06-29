@@ -3,43 +3,45 @@ import layout from './template';
 
 export default Component.extend({
   layout,
-  model: null,
-  mode: 'small',
-  smallWidth: 60,
-  smallHeight: 25,
+  model:         null,
+  mode:          'small',
+  smallWidth:    60,
+  smallHeight:   25,
   largeTargetId: null,
-  linkName: 'containerStats',
+  linkName:      'containerStats',
 
-  tagName: '',
+  tagName:   '',
   cpuFields: [{
-    key: 'cpuUser',
+    key:         'cpuUser',
     displayName: 'infoMultiStats.cpuSection.user'
   }, {
-    key: 'cpuSystem',
+    key:         'cpuSystem',
     displayName: 'infoMultiStats.cpuSection.system'
   }],
   memoryFields: [{
-    key: 'memory',
+    key:         'memory',
     displayName: 'infoMultiStats.memorySection.used'
   }],
   networkFields: [{
-    key: 'networkTx',
+    key:         'networkTx',
     displayName: 'infoMultiStats.networkSection.transmit'
   }, {
-    key: 'networkRx',
+    key:         'networkRx',
     displayName: 'infoMultiStats.networkSection.receive'
   }],
   storageFields: [{
-    key: 'storageWrite',
+    key:         'storageWrite',
     displayName: 'infoMultiStats.storageSection.write'
   }, {
-    key: 'storageRead',
+    key:         'storageRead',
     displayName: 'infoMultiStats.storageSection.read'
   }],
 
   actions: {
     toggle() {
+
       this.set('mode', (this.get('mode') === 'small' ? 'large' : 'small'));
+
     },
   },
 });

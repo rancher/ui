@@ -5,65 +5,89 @@ import layout from './template';
 export default Component.extend({
   layout,
 
-  title: null,
-  rules: null,
+  title:     null,
+  rules:     null,
   ruleArray: null,
 
+  inputChanged: observer('ruleArray.@each.{key,value,operator,custom}', function() {
+
+    this.set('rules', this.get('ruleArray')
+      .filter((r) => this.isRuleValid(r))
+      .map((r) => this.convertRule(r)));
+
+  }),
+
   init() {
+
     this._super(...arguments);
     this.initRuleArray();
+
   },
 
   actions: {
     addRule(custom) {
-      const newRule = custom ? { custom: '' } : { key: '', operator: '=', value: '' };
+
+      const newRule = custom ? { custom: '' } : {
+        key:      '',
+        operator: '=',
+        value:    ''
+      };
+
       this.get('ruleArray').pushObject(newRule);
+
     },
 
     removeRule(rule) {
+
       this.get('ruleArray').removeObject(rule);
+
     },
   },
 
   initRuleArray() {
+
     const rules = this.get('rules') || [];
-    const ruleArray = rules.map(rule => {
-      return {
-        custom: rule,
-      };
-    });
+    const ruleArray = rules.map((rule) => ({ custom: rule, }));
+
     this.set('ruleArray', ruleArray);
+
   },
 
-  inputChanged: observer('ruleArray.@each.{key,value,operator,custom}', function () {
-    this.set('rules', this.get('ruleArray')
-      .filter(r => this.isRuleValid(r))
-      .map(r => this.convertRule(r)));
-  }),
-
   isRuleValid(rule) {
+
     if (rule.operator === 'Exists' || rule.operator === 'DoesNotExist') {
+
       return rule.key;
+
     } else {
+
       return rule.custom || (rule.value && rule.key && rule.operator);
+
     }
+
   },
 
   convertRule(rule) {
+
     if (rule.custom) {
+
       return rule.custom;
+
     }
     switch (rule.operator) {
-      case 'Exists':
-        return rule.key;
-      case 'DoesNotExist':
-        return `!${rule.key}`;
-      case 'In':
-        return `${rule.key} in (${rule.value})`;
-      case 'NotIn':
-        return `${rule.key} not in (${rule.value})`;
-      default:
-        return `${rule.key} ${rule.operator} ${rule.value}`;
+
+    case 'Exists':
+      return rule.key;
+    case 'DoesNotExist':
+      return `!${ rule.key }`;
+    case 'In':
+      return `${ rule.key } in (${ rule.value })`;
+    case 'NotIn':
+      return `${ rule.key } not in (${ rule.value })`;
+    default:
+      return `${ rule.key } ${ rule.operator } ${ rule.value }`;
+
     }
+
   },
 })

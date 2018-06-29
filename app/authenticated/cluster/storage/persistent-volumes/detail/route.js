@@ -5,7 +5,9 @@ import { inject as service } from '@ember/service';
 export default Route.extend({
   clusterStore: service(),
 
-  model: function(params) {
+  model(params) {
+
     return get(this, 'clusterStore').find('persistentVolume', params.persistent_volume_id);
+
   },
 });

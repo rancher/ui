@@ -6,17 +6,16 @@ import layout from './template';
 
 export default Component.extend(ManageLabels, {
   layout,
-  model           : null,
+  model: null,
 
-  labelSource     : alias('model.labels'),
-  sortBy          : 'kind',
-  showKind        : true,
-  descending      : true,
+  sortBy:      'kind',
+  showKind:    true,
+  descending:  true,
 
   headers:     [
     {
       name:           'kind',
-      sort:           ['type','key'],
+      sort:           ['type', 'key'],
       translationKey: 'labelsSection.kind',
       width:          '90',
     },
@@ -28,16 +27,21 @@ export default Component.extend(ManageLabels, {
     },
     {
       name:           'value',
-      sort:           ['value','key'],
+      sort:           ['value', 'key'],
       translationKey: 'labelsSection.value',
     },
   ],
 
-  labelsObserver: observer('model.labels', function () {
+  labelSource:    alias('model.labels'),
+  labelsObserver: observer('model.labels', function() {
+
     this.initLabels(this.get('labelSource'));
+
   }),
 
   didReceiveAttrs() {
+
     this.initLabels(this.get('labelSource'));
+
   },
 });

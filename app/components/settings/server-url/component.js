@@ -8,9 +8,9 @@ import { next } from '@ember/runloop';
 const SCHEME = 'https://';
 
 export default Component.extend({
-  layout,
   router:           service(),
 
+  layout,
   serverUrl:        null,
   serverUrlSetting: null,
   setServerUrl:     false,
@@ -21,31 +21,49 @@ export default Component.extend({
 
 
   init() {
+
     this._super(...arguments);
     if (isEmpty(get(this, 'serverUrl'))) {
+
       set(this, 'serverUrl', window.location.host);
+
     }
-  },
-  actions: {
-    saveServerUrl() {
-      let setting = get(this, 'serverUrlSetting');
-      set(setting, 'value', `${SCHEME}${get(this, 'serverUrl')}`);
-      setting.save().then(() => {
-        get(this, 'router').replaceWith('authenticated');
-      });
-    },
+
   },
   didInsertElement() {
+
     next(() => {
+
       if ( this.isDestroyed || this.isDestroying ) {
+
         return;
+
       }
 
       const elem = this.$('INPUT')[0]
+
       if ( elem ) {
+
         elem.focus();
+
       }
+
     });
+
   },
 
+  actions: {
+    saveServerUrl() {
+
+      let setting = get(this, 'serverUrlSetting');
+
+      set(setting, 'value', `${ SCHEME }${ get(this, 'serverUrl') }`);
+      setting.save().then(() => {
+
+        get(this, 'router').replaceWith('authenticated');
+
+      });
+
+    },
+  },
 });

@@ -5,9 +5,11 @@ import { set, get } from '@ember/object';
 
 export default Component.extend(VolumeSource, {
   layout,
-  field: 'flexVolume',
+  field:     'flexVolume',
   fieldType: 'flexVolumeSource',
   didInsertElement() {
-    get(this, 'config.secretRef')||set(this, 'config.secretRef',{});
+
+    get(this, 'config.secretRef') || set(this, 'config.secretRef', {});
+
   }
 });

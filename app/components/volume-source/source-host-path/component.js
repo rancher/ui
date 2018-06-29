@@ -5,27 +5,34 @@ import VolumeSource from 'shared/mixins/volume-source';
 
 export default Component.extend(VolumeSource, {
   layout,
-  field: 'hostPath',
+  field:     'hostPath',
   fieldType: 'hostPathVolumeSource',
 
-  kindChoices: computed(function() {
+  kindChoices: computed(() => {
+
     const out = [
-      {label: 'volumeSource.host-path.kind.Any', value: ""},
+      {
+        label: 'volumeSource.host-path.kind.Any',
+        value: ''
+      },
     ];
 
     ['DirectoryOrCreate',
-    'FileOrCreate',
-    'Directory',
-    'File',
-    'Socket',
-    'CharDevice',
-    'BlockDevice'].forEach((value) => {
+      'FileOrCreate',
+      'Directory',
+      'File',
+      'Socket',
+      'CharDevice',
+      'BlockDevice'].forEach((value) => {
+
       out.push({
-        label: `volumeSource.host-path.kind.${value}`,
-        value: value
+        label: `volumeSource.host-path.kind.${ value }`,
+        value
       });
+
     });
 
     return out;
+
   }),
 });

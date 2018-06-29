@@ -3,48 +3,43 @@ const EmberApp = require('ember-cli/lib/broccoli/ember-app');
 const env      = EmberApp.env();
 
 module.exports = function(defaults) {
+
   // Pull in a few useful environment settings for index.html to use
   var appConfig = require('./config/environment')(env).APP;
   var inline    = {};
 
-  ['version', 'appName', 'baseAssets'].forEach(function(key) {
+  ['version', 'appName', 'baseAssets'].forEach((key) => {
+
     var val = appConfig[key];
 
     if (val) {
-      inline[key] = {
-        content: val
-      };
+
+      inline[key] = { content: val };
+
     }
+
   });
 
   var app = new EmberApp(defaults, {
-    "ember-cli-babel": {
-      includePolyfill: true,
-    },
+    'ember-cli-babel': { includePolyfill: true, },
     storeConfigInMeta: false,
-    inlineContent: inline,
-    codemirror: {
-      modes: ['yaml', 'dockerfile', 'shell', 'markdown'],
-      themes: ['monokai'],
+    inlineContent:     inline,
+    codemirror:        {
+      modes:      ['yaml', 'dockerfile', 'shell', 'markdown'],
+      themes:     ['monokai'],
       addonFiles: ['lint/lint.css', 'lint/lint.js', 'hint/show-hint.js', 'hint/show-hint.css', 'hint/anyword-hint.js', 'lint/yaml-lint.js']
     },
     outputPaths: {
       app: {
         css: {
           'app-light': '/assets/ui-light.css',
-          'app-dark': '/assets/ui-dark.css'
+          'app-dark':  '/assets/ui-dark.css'
         }
       }
     },
-    nodeAssets: {
-      'xterm': {
-        import: ['dist/xterm.css']
-      }
-    },
+    nodeAssets: { 'xterm': { import: ['dist/xterm.css'] } },
 
-    SRI: {
-      enabled: false,
-    },
+    SRI: { enabled: false, },
 
     fingerprint: {
       exclude: [
@@ -63,7 +58,7 @@ module.exports = function(defaults) {
     },
 
     sourcemaps: {
-      enabled: true,
+      enabled:    true,
       extensions: ['js']
     },
   });
@@ -97,16 +92,17 @@ module.exports = function(defaults) {
   app.import('vendor/aws-sdk-ec2.js');
   app.import('vendor/ember-shortcuts.js');
   app.import('vendor/file-saver/fileSaver.mini.js');
-  app.import('vendor/icons/fonts/rancher-icons.svg',   { destDir: 'assets/fonts/'});
-  app.import('vendor/icons/fonts/rancher-icons.ttf',   { destDir: 'assets/fonts/'});
-  app.import('vendor/icons/fonts/rancher-icons.woff',  { destDir: 'assets/fonts/'});
+  app.import('vendor/icons/fonts/rancher-icons.svg',   { destDir: 'assets/fonts/' });
+  app.import('vendor/icons/fonts/rancher-icons.ttf',   { destDir: 'assets/fonts/' });
+  app.import('vendor/icons/fonts/rancher-icons.woff',  { destDir: 'assets/fonts/' });
   app.import('vendor/icons/style.css');
   app.import('vendor/json-sanitizer/json-sanitizer.js');
-  app.import('vendor/prompt/prompt-v1-latin-300.woff', { destDir: 'assets/fonts/'});
-  app.import('vendor/prompt/prompt-v1-latin-300.woff2',{ destDir: 'assets/fonts/'});
-  app.import('vendor/prompt/prompt-v1-latin-600.woff', { destDir: 'assets/fonts/'});
-  app.import('vendor/prompt/prompt-v1-latin-600.woff2',{ destDir: 'assets/fonts/'});
+  app.import('vendor/prompt/prompt-v1-latin-300.woff', { destDir: 'assets/fonts/' });
+  app.import('vendor/prompt/prompt-v1-latin-300.woff2', { destDir: 'assets/fonts/' });
+  app.import('vendor/prompt/prompt-v1-latin-600.woff', { destDir: 'assets/fonts/' });
+  app.import('vendor/prompt/prompt-v1-latin-600.woff2', { destDir: 'assets/fonts/' });
   app.import('vendor/aliyun-sdk.js');
 
   return app.toTree();
+
 };

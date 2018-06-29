@@ -9,31 +9,44 @@ export default Controller.extend({
   canSend:        false,
 
   actions: {
-    createAcct: function() {
+    createAcct() {
+
       var body   = this.get('model');
+
       body.token = this.get('token');
 
       this.set('loading', true);
 
       fetch('/create-user', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(body)
+        method:  'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body:    JSON.stringify(body)
       }).then(() => {
-        let code = `${body.email}:${body.pw}`;
-        this.get('access').login(code).then(() => {
-          this.transitionToRoute('authenticated')
-          this.set('loading', false);
-        }).catch(err => {
+
+        let code = `${ body.email }:${ body.pw }`;
+
+        this.get('access').login(code)
+          .then(() => {
+
+            this.transitionToRoute('authenticated')
+            this.set('loading', false);
+
+          })
+          .catch((err) => {
+
+            this.set('saving', false);
+            this.set('errors', [err.body.detail]);
+
+          });
+
+      })
+        .catch((err) => {
+
           this.set('saving', false);
           this.set('errors', [err.body.detail]);
+
         });
-      }).catch((err) => {
-        this.set('saving', false);
-        this.set('errors', [err.body.detail]);
-      });
+
     },
   }
 });

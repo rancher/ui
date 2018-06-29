@@ -9,52 +9,74 @@ import layout from './template';
 let DEFAULT_TIME = 400;
 
 export default Component.extend(ModalBase, {
+  prefs:      service(),
+  settings:   service(),
+  access:     service(),
+
   layout,
-  prefs     : service(),
-  classNames: ['generic', 'medium-modal','p-0'],
-  settings: service(),
-  access: service(),
+  classNames: ['generic', 'medium-modal', 'p-0'],
+  time:       DEFAULT_TIME,
+  timer:      null,
 
   isAdmin: alias('access.admin'),
 
   containerCount: function() {
+
     let count = this.get('pods.length');
+
     if ( count > 9 ) {
+
       return count;
+
     } else {
-      return '0' + count;
+
+      return `0${  count }`;
+
     }
+
   }.property('pods.length'),
 
-  time: DEFAULT_TIME,
-  timer: null,
+  currentTheme: computed(`prefs.${ C.PREFS.THEME }`, function() {
 
-  currentTheme: computed(`prefs.${C.PREFS.THEME}`, function() {
-    return this.get(`prefs.${C.PREFS.THEME}`);
+    return this.get(`prefs.${ C.PREFS.THEME }`);
+
   }),
 
 
   init() {
+
     this._super(...arguments);
     this.set('pods', this.get('store').all('pod'));
 
     this.set('timer', setInterval(() => {
+
       this.updateTime();
+
     }, 1000));
-  },
 
-  updateTime() {
-    let time = this.get('time');
-    if ( time > 0 ) {
-      time--;
-    } else {
-      time = DEFAULT_TIME;
-    }
-
-    this.set('time', time);
   },
 
   willDestroyElement() {
+
     clearInterval(this.get('timer'));
+
   },
+  updateTime() {
+
+    let time = this.get('time');
+
+    if ( time > 0 ) {
+
+      time--;
+
+    } else {
+
+      time = DEFAULT_TIME;
+
+    }
+
+    this.set('time', time);
+
+  },
+
 });

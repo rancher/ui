@@ -7,30 +7,39 @@ const IN = 'in';
 const OUT = 'out';
 
 export default Component.extend({
-  layout,
   settings: service(),
 
+  layout,
   initialValue: null,
-  optIn: null,
-
-  actions: {
-    save: function(btnCb) {
-      this.get('settings').set(C.SETTING.TELEMETRY, (this.get('optIn') ? IN : OUT));
-      this.get('settings').one('settingsPromisesResolved', () => {
-        btnCb(true);
-        this.sendAction('saved');
-      });
-    },
-  },
+  optIn:        null,
 
   init() {
+
     this._super(...arguments);
 
     let val = false;
+
     if ( this.get('initialValue') === IN ) {
+
       val = true;
+
     }
 
     this.set('optIn', val);
+
   },
+  actions: {
+    save(btnCb) {
+
+      this.get('settings').set(C.SETTING.TELEMETRY, (this.get('optIn') ? IN : OUT));
+      this.get('settings').one('settingsPromisesResolved', () => {
+
+        btnCb(true);
+        this.sendAction('saved');
+
+      });
+
+    },
+  },
+
 });

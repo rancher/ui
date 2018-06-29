@@ -5,28 +5,34 @@ import Resource from 'ember-api-store/models/resource';
 import { reference } from 'ember-api-store/utils/denormalize';
 
 export default Resource.extend({
-  intl:        service(),
-  isReadWrite: equal('permission','rw'),
-  isReadOnly:  equal('permission','ro'),
+  isReadWrite: equal('permission', 'rw'),
+  isReadOnly:  equal('permission', 'ro'),
 
   instance:    reference('instanceId'),
   volume:      reference('volumeId'),
 
   displayVolumeName: computed('volumeName', function() {
+
     let name = this.get('volumeName');
+
     if ( name.match(/^[0-9a-f]{64}$/) ) {
-      return (name.substr(0,12)+'&hellip;').htmlSafe();
+
+      return (`${ name.substr(0, 12) }&hellip;`).htmlSafe();
+
     }
 
     return name;
+
   }),
 
   displayPermission: computed('permission', function() {
+
     let permission = this.get('permission');
     let out        = null;
     let intl       = this.get('intl');
 
     switch (permission) {
+
     case 'ro':
       out = intl.findTranslationByKey('formVolumeRow.opts.ro');
       break;
@@ -36,7 +42,11 @@ export default Resource.extend({
     default:
       out = permission;
       break;
+
     }
+
     return out;
+
   }),
+  intl:        service(),
 });

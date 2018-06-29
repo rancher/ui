@@ -5,40 +5,53 @@ import { get, set } from '@ember/object';
 import { alias } from '@ember/object/computed';
 
 const NodePool = Resource.extend({
-  type: 'nodePool',
   nodeTemplate: reference('nodeTemplateId'),
 
   displayProvider: alias('nodeTemplate.displayProvider'),
 
+  type:          'nodePool',
   quantityTimer: null,
   incrementQuantity(by) {
-    let quantity = get(this,'quantity');
+
+    let quantity = get(this, 'quantity');
+
     quantity += by;
     quantity = Math.max(0, quantity);
 
     set(this, 'quantity', quantity);
 
     if ( get(this, 'quantityTimer') ) {
+
       cancel(get(this, 'quantityTimer'));
+
     }
 
     var timer = later(this, function() {
+
       this.save().catch((err) => {
-        get(this, 'growl').fromError('Error updating node pool scale',err);
+
+        get(this, 'growl').fromError('Error updating node pool scale', err);
+
       });
+
     }, 500);
 
     set(this, 'quantityTimer', timer);
+
   },
 });
 
 NodePool.reopenClass({
   mangleOut(data) {
+
     if ( data && data.hostnamePrefix ) {
+
       data.hostnamePrefix = data.hostnamePrefix.toLowerCase();
+
     }
 
     return data;
+
   }
 });
 

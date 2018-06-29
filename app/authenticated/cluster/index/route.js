@@ -6,20 +6,27 @@ import C from 'ui/utils/constants';
 
 export default Route.extend({
   globalStore: service(),
-  scope: service(),
-
-  model: function () {
-    return this.get('globalStore').findAll('node').then((nodes) => {
-      const cluster = this.modelFor('authenticated.cluster');
-
-      return {
-        cluster,
-        nodes,
-      };
-    });
-  },
+  scope:       service(),
 
   setDefaultRoute: on('activate', function() {
-    set(this, `session.${C.SESSION.CLUSTER_ROUTE}`,'authenticated.cluster.index');
+
+    set(this, `session.${ C.SESSION.CLUSTER_ROUTE }`, 'authenticated.cluster.index');
+
   }),
+  model() {
+
+    return this.get('globalStore').findAll('node')
+      .then((nodes) => {
+
+        const cluster = this.modelFor('authenticated.cluster');
+
+        return {
+          cluster,
+          nodes,
+        };
+
+      });
+
+  },
+
 });

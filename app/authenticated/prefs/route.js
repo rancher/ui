@@ -16,15 +16,18 @@ export default Route.extend({
   //   });
   // },
 
-  model(/*params, transition*/) {
-    return get(this, 'globalStore').find('user', null, {forceReload: true, filter: {me: true}}).then((user) => {
-      return EmberObject.create({
+  model(/* params, transition*/) {
+
+    return get(this, 'globalStore').find('user', null, {
+      forceReload: true,
+      filter:      { me: true }
+    })
+      .then((user) => EmberObject.create({
         account: get(user, 'firstObject'), // dont like this
         // stripeCards: null,
-      });
-    });
+      }));
 
-    //only need to populate the passwords for the account right now
+    // only need to populate the passwords for the account right now
     // return this.get('globalStore').find('password').then((/* pwds */) => {
 
     //   return this.get('globalStore').find('account', this.get('accountId')).then((resp) => {
@@ -51,5 +54,6 @@ export default Route.extend({
     //     }
     //   });
     // });
+
   },
 });

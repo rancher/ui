@@ -3,7 +3,7 @@ import layout from './template';
 
 export default Component.extend({
   layout,
-  model: null,
-  tagName: 'TR',
+  model:      null,
+  tagName:    'TR',
   classNames: ['main-row'],
 });
