@@ -60,7 +60,7 @@
         <p class="help-block mt-0">{{t (get (get azureDescriptions key) "description")}}</p>
       </div>
       <div class="col span-6">
-        {{input class="form-control input-sm value" spellcheck="false" type="text" value=(mut (get configAnswers key)) placeholder=(t 'generic.value')}}
+        {{input class="form-control input-sm value" spellcheck="false" type=(or (get (get azureDescriptions key) "type") "text") value=(mut (get configAnswers key)) placeholder=(t 'generic.value')}}
       </div>
     </div>
   {{/each-in}}
