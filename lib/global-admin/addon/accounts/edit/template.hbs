@@ -20,30 +20,32 @@
   </div>
 </div>
 
-<div class="row">
-  <div class="col span-12">
-    <label class="pb-5 acc-label">{{t 'editUser.form.password.new'}}{{field-required}}</label>
-    {{input type="password" value=password classNames="form-control start"}}
+{{#if isLocalUser}}
+  <div class="row">
+    <div class="col span-12">
+      <label class="pb-5 acc-label">{{t 'editUser.form.password.new'}}{{field-required}}</label>
+      {{input type="password" value=password classNames="form-control start"}}
+    </div>
   </div>
-</div>
 
-<div class="row">
-  <div class="col span-12">
-    <label class="pb-5 acc-label">{{t 'editUser.form.password.confirm'}}{{field-required}}</label>
-    {{input type="password" value=confirm classNames="form-control"}}
+  <div class="row">
+    <div class="col span-12">
+      <label class="pb-5 acc-label">{{t 'editUser.form.password.confirm'}}{{field-required}}</label>
+      {{input type="password" value=confirm classNames="form-control"}}
+    </div>
+    {{#unless passwordsMatch}}
+      <p class="text-error text-small mt-0 mb-0">
+        {{t 'editUser.form.password.error'}}
+      </p>
+    {{/unless}}
+    <div class="col span-12">
+      <label>
+        {{input type="checkbox" checked=primaryResource.mustChangePassword}}
+        {{t 'editUser.form.password.mustChangePassword.edit'}}
+      </label>
+    </div>
   </div>
-  {{#unless passwordsMatch}}
-    <p class="text-error text-small mt-0 mb-0">
-      {{t 'editUser.form.password.error'}}
-    </p>
-  {{/unless}}
-  <div class="col span-12">
-    <label>
-      {{input type="checkbox" checked=primaryResource.mustChangePassword}}
-      {{t 'editUser.form.password.mustChangePassword.edit'}}
-    </label>
-  </div>
-</div>
+{{/if}}
 
 {{form-global-roles
     user=primaryResource
