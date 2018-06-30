@@ -12,7 +12,11 @@
   </td>
 {{/each}}
 <td>
-  {{searchable-select allowCustom=true content=rules value=resource readOnly=readOnly}}
+  {{#if (and readOnly rule.nonResourceURLs)}}
+    <span class="text-muted">Non-Resource URL: {{join-array rule.nonResourceURLs}}</span>
+  {{else}}
+    {{searchable-select allowCustom=true content=rules value=resource readOnly=readOnly}}
+  {{/if}}
 </td>
 <td>&nbsp;</td>
 {{#unless readOnly}}
