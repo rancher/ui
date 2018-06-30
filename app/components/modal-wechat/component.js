@@ -4,7 +4,7 @@ import ModalBase from 'shared/mixins/modal-base';
 import layout from './template';
 
 export default Component.extend(ModalBase, {
+  settings:   service(),
   layout,
-  classNames: ['modal-container','about','span-6','offset-3', 'alert'],
-  settings: service(),
+  classNames: ['modal-container', 'about', 'span-6', 'offset-3', 'alert'],
 });

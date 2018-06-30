@@ -10,14 +10,16 @@ export default Route.extend({
   // need to get all roles, we should have two roles and custom like the global perms
   // cluster owner, cluster-member, custom
   model() {
+
     const gs  = get(this, 'globalStore');
     const cid = this.paramsFor('authenticated.cluster');
 
     return hash({
-      cluster: gs.find('cluster', cid.cluster_id, {forceReload: true}),
+      cluster: gs.find('cluster', cid.cluster_id, { forceReload: true }),
       roles:   get(this, 'roleTemplateService').get('allFilteredRoleTemplates'),
       users:   gs.findAll('user'),
     });
+
   },
 
   setupController(controller, model) {
@@ -26,9 +28,7 @@ export default Route.extend({
 
     let dfu = get(model, 'users.firstObject');
 
-    controller.setProperties({
-      defaultUser: dfu,
-    });
+    controller.setProperties({ defaultUser: dfu, });
 
   },
 });

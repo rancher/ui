@@ -1,19 +1,25 @@
 import Route from '@ember/routing/route';
 
 export default Route.extend({
-  activate: function() {
-    $('BODY').addClass('container-farm'); // eslint-disable-line
-  },
-
   model() {
+
     return {
-      type: 'account',
-      kind: 'user',
-      name: '',
+      type:  'account',
+      kind:  'user',
+      name:  '',
       email: '',
     };
+
   },
-  deactivate: function() {
+  activate() {
+
+    $('BODY').addClass('container-farm'); // eslint-disable-line
+
+  },
+
+  deactivate() {
+
     $('BODY').removeClass('container-farm'); // eslint-disable-line
+
   }
 });

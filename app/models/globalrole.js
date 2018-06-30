@@ -8,54 +8,77 @@ const ADMIN = 'admin';
 const SPECIAL = [BASE, ADMIN, USER];
 
 export default Resource.extend({
-  intl: service(),
+  isHidden: computed('id', function() {
 
-  isHidden: computed('id', function () {
     return SPECIAL.includes(get(this, 'id'));
+
   }),
 
-  isBase: computed('id', function () {
+  isBase: computed('id', function() {
+
     return get(this, 'id') === BASE;
+
   }),
 
-  isUser: computed('id', function () {
+  isUser: computed('id', function() {
+
     return get(this, 'id') === USER;
+
   }),
 
-  isAdmin: computed('id', function () {
+  isAdmin: computed('id', function() {
+
     return get(this, 'id') === ADMIN;
+
   }),
 
-  isCustom: computed('isAdmin','isUser','isBase', function() {
+  isCustom: computed('isAdmin', 'isUser', 'isBase', function() {
+
     return !get(this, 'isAdmin') && !get(this, 'isBase') && !get(this, 'isUser');
+
   }),
 
-  displayName: computed('id', 'name', 'intl.locale',function() {
+  displayName: computed('id', 'name', 'intl.locale', function() {
+
     const intl = get(this, 'intl');
     const id = get(this, 'id');
-    const key = `formGlobalRoles.role.${id}.label`;
+    const key = `formGlobalRoles.role.${ id }.label`;
+
     if ( intl.exists(key) ){
+
       return intl.t(key);
+
     }
 
     const name = get(this, 'name');
+
     if ( name ) {
+
       return name;
+
     }
 
-    return `(${id})`;
+    return `(${ id })`;
+
   }),
 
-  detail: computed('name', 'intl.locale',function() {
+  detail: computed('name', 'intl.locale', function() {
+
     const intl = get(this, 'intl');
     const id = get(this, 'id');
-    const key = `formGlobalRoles.role.${id}.detail`;
+    const key = `formGlobalRoles.role.${ id }.detail`;
+
     if ( intl.exists(key) ){
+
       return intl.t(key);
+
     }
 
     return '';
+
   }),
+
+  intl: service(),
 
   canRemove: false,
 });

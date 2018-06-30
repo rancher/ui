@@ -6,16 +6,26 @@ export default Resource.extend({
   reservedKeys: [],
 
   validationErrors() {
+
     let errors = [];
+
     if (!this.get('credential')) {
+
       errors.push('"Service Account" is required');
+
     } else if (!this.get('projectId')){
+
       errors.push('"Google Project ID" is required');
+
     }
     if (errors.length > 0) {
+
       return errors;
+
     }
     errors = this._super(...arguments);
+
     return errors;
+
   },
 });

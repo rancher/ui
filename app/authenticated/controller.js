@@ -17,22 +17,31 @@ export default Controller.extend({
   pageScope:   alias('scope.currentPageScope'),
 
   bootstrap: on('init', function() {
+
     schedule('afterRender', this, () => {
+
       this.get('application').setProperties({
-        error: null,
+        error:             null,
         error_description: null,
-        state: null,
+        state:             null,
       });
 
-      let bg = this.get(`prefs.${C.PREFS.BODY_BACKGROUND}`);
+      let bg = this.get(`prefs.${ C.PREFS.BODY_BACKGROUND }`);
+
       if ( bg ) {
+
         $('BODY').css('background', bg); // eslint-disable-line
+
       }
+
     });
+
   }),
 
   hasHosts: computed('model.hosts.length', function() {
+
     return (this.get('model.hosts.length') > 0);
+
   }),
 
 });

@@ -5,17 +5,21 @@ import { get } from '@ember/object';
 import { inject as service } from '@ember/service';
 
 export default Controller.extend({
-  isCaas:      equal('app.mode',C.MODE.CAAS),
-  newPassword: null,
-  modal: service(),
+  modal:       service(),
 
-  actions: {
+  newPassword: null,
+  isCaas:      equal('app.mode', C.MODE.CAAS),
+  actions:     {
     done() {
+
       window.history.back();
-      //this.send('goToPrevious');
+      // this.send('goToPrevious');
+
     },
     editPassword() {
-      get(this, 'modal').toggleModal('modal-edit-password', {user: get(this, 'model.account')});
+
+      get(this, 'modal').toggleModal('modal-edit-password', { user: get(this, 'model.account') });
+
     },
   },
 });

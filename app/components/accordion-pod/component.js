@@ -4,18 +4,18 @@ import layout from './template';
 
 export default Component.extend(ManageLabels, {
   layout,
-  model           : null,
-  initExpandAll   : true,
-  sortBy          : 'displayState',
-  showKind        : true,
-  descending      : true,
+  model:         null,
+  initExpandAll: true,
+  sortBy:        'displayState',
+  showKind:      true,
+  descending:    true,
   initExpand:       true,
-  headers:     [
+  headers:       [
     {
       name:           'displayState',
       sort:           ['displayState'],
       translationKey: 'generic.state',
-      width: 120
+      width:          120
     },
     {
       name:           'name',
@@ -31,12 +31,15 @@ export default Component.extend(ManageLabels, {
       name:           'displayIp',
       sort:           ['displayIp'],
       translationKey: 'generic.ipAddress',
-      width: 180
+      width:          180
     },
   ],
 
   expandAllObserve: function() {
+
     let expandAll = this.get('expandAll');
-    this.set('initExpandAll',expandAll);
+
+    this.set('initExpandAll', expandAll);
+
   }.observes('expandAll')
 });

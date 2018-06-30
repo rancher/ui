@@ -22,24 +22,38 @@ const CURRENCIES = [
 ];
 
 export default Component.extend(ModalBase, {
+  intl:             service(),
+  session:          service(),
   layout,
-  intl: service(),
-  session: service(),
-  account: alias('modalOpts'),
-  classNames: ['generic', 'medium-modal', 'add-new-payment'],
-  creditCard: null,
-  errors: null,
+  classNames:       ['generic', 'medium-modal', 'add-new-payment'],
+  creditCard:       null,
+  errors:           null,
   selectedCurrency: 'utility-usd',
-  currencies: CURRENCIES,
-  saveDisabled: true,
+  currencies:       CURRENCIES,
+  saveDisabled:     true,
+  account:          alias('modalOpts'),
+  canValidate:      observer('creditCard.name', 'creditCard.number', 'creditCard.expiry', 'creditCard.cvc', function() {
+
+    var cc = this.get('creditCard');
+    var out = true;
+
+    if (cc.name && cc.number && cc.cvc && cc.expiry) {
+
+      out = false;
+
+    }
+    this.set('saveDisabled', out);
+
+  }),
   // customer: null,
   init() {
+
     this._super(...arguments);
     this.set('creditCard', {
-      name: null,
+      name:   null,
       number: null,
       expiry: null,
-      cvc: null,
+      cvc:    null,
       // default: true,
     });
     // this.set('customer', {
@@ -51,9 +65,11 @@ export default Component.extend(ModalBase, {
     //   address_zip: null,
     //   address_country: null,
     // });
+
   },
   actions: {
     validate() {
+
       this.set('saving', true);
       // stripe card validate
       var card = this.get('creditCard');
@@ -64,13 +80,19 @@ export default Component.extend(ModalBase, {
       this.set('errors', errors);
 
       if (!Stripe.card.validateCardNumber(card.number)) {
+
         errors.push(intl.t('modalAddPayment.errors.cc'));
+
       }
       if (!Stripe.card.validateExpiry(card.expiry)) {
+
         errors.push(intl.t('modalAddPayment.errors.exp'));
+
       }
       if (!Stripe.card.validateCVC(card.cvc)) {
+
         errors.push(intl.t('modalAddPayment.errors.cvc'));
+
       }
 
       // if ( (customer.address_line1||'').trim().length === 0 )
@@ -93,75 +115,94 @@ export default Component.extend(ModalBase, {
       // }
 
       if (errors.length) {
+
         this.set('errors', errors);
         this.set('saving', false);
+
       } else {
+
         this.send('getToken');
+
       }
+
     },
     getToken() {
+
       var card = this.get('creditCard');
       // var customer = this.get('customer');
       var cardOut = {};
 
       // card.js returns the expiry in a single string, stripe expects the expiry in two (month and year)
       Object.keys(card).forEach((key) => {
+
         if (key !== 'expiry') {
+
           cardOut[key] = card[key];
+
         } else {
+
           let date = card[key].split('/');
+
           cardOut['exp_month'] = date[0].trim();
           cardOut['exp_year'] = date[1].trim();
+
         }
+
       });
 
       // this.$().extend(cardOut, customer);
       Stripe.card.createToken(cardOut, (status, response) => {
+
         if (status === 200) {
+
           // you get access to your newly created token here
           cardOut.token = response.id;
           this.createCustomer(cardOut);
           // post to our server
+
         } else {
+
           this.set('errors', ['There was an issue saving your card. Please ensure the information is correct and try again.']);
+
         }
+
       });
+
     }
   },
 
   createCustomer(card) {
+
     var bodyOut = {
-      card: card,
-      subscription: {id: this.get('selectedCurrency')},
-      account: {id: this.get('account.id')}
+      card,
+      subscription: { id: this.get('selectedCurrency') },
+      account:      { id: this.get('account.id') }
     };
 
     if (this.get('account.description')) {
+
       bodyOut.account.stripeId = JSON.parse(this.get('account.description')).stripeAccountId;
+
     }
 
     fetch('/payment', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(bodyOut),
+      method:  'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body:    JSON.stringify(bodyOut),
     }).then(() => {
+
       window.location.reload();
       // this.set('saving', false);
       // this.send('cancel');
-    }).catch(() => {
-      this.set('errMsg', this.get('intl').t('caasLogin.error'));
-      this.set('saving', false);
-    });
+
+    })
+      .catch(() => {
+
+        this.set('errMsg', this.get('intl').t('caasLogin.error'));
+        this.set('saving', false);
+
+      });
+
   },
 
-  canValidate: observer('creditCard.name', 'creditCard.number', 'creditCard.expiry', 'creditCard.cvc', function() {
-    var cc = this.get('creditCard');
-    var out = true;
-    if (cc.name && cc.number && cc.cvc && cc.expiry) {
-      out = false;
-    }
-    this.set('saveDisabled', out);
-  }),
 });

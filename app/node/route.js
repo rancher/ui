@@ -5,12 +5,13 @@ import Route from '@ember/routing/route';
 export default Route.extend({
   globalStore: service(),
 
-  model: function (params) {
-    return get(this, 'globalStore').find('node', params.node_id).then((node) => {
-      return {
+  model(params) {
+
+    return get(this, 'globalStore').find('node', params.node_id)
+      .then((node) => ({
         node,
         nodes: [node],
-      };
-    });
+      }));
+
   },
 });

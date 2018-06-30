@@ -6,13 +6,20 @@ import { hash } from 'rsvp';
 export default Route.extend({
   globalStore: service(),
 
-  model: function (params) {
+  model(params) {
+
     const store = get(this, 'globalStore');
 
     return hash({
-      role: store.find('clusterroletemplatebinding', params.role_id),
-      roles: store.find('roletemplate', null, {filter: {hidden: false, context: 'cluster'}}),
+      role:     store.find('clusterroletemplatebinding', params.role_id),
+      roles:    store.find('roletemplate', null, {
+        filter: {
+          hidden:  false,
+          context: 'cluster'
+        }
+      }),
       policies: store.find('podsecuritypolicytemplate'),
     });
+
   },
 });

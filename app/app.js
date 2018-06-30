@@ -2,16 +2,16 @@ import Application from '@ember/application';
 import Resolver from './resolver';
 import loadInitializers from 'ember-load-initializers';
 import config from './config/environment';
-import jsyaml from "npm:js-yaml";
+import jsyaml from 'npm:js-yaml';
 
 // init jsyaml for codemirror, can't directly import npm module from addon `shared`
-window.jsyaml||(window.jsyaml = jsyaml);
+window.jsyaml || (window.jsyaml = jsyaml);
 
 const App = Application.extend({
-  modulePrefix: config.modulePrefix,
+  modulePrefix:    config.modulePrefix,
   podModulePrefix: config.podModulePrefix,
   Resolver,
-  engines: {
+  engines:         {
     login: {
       dependencies: {
         services: [
@@ -26,9 +26,9 @@ const App = Application.extend({
           'router',
         ],
         externalRoutes: {
-          index: 'index',
-          authenticated: 'authenticated',
-          'update-password': 'update-password',
+          index:                      'index',
+          authenticated:              'authenticated',
+          'update-password':          'update-password',
           'update-critical-settings': 'update-critical-settings'
         }
       }
@@ -57,17 +57,17 @@ const App = Application.extend({
           'user-theme',
         ],
         externalRoutes: {
-          index:                   'index',
-          failWhale:               'failWhale',
-          authenticated:           'authenticated',
-          'authenticated.cluster': 'authenticated.cluster',
-          'authenticated.cluster.projects': 'authenticated.cluster.projects',
-          'authenticated.project': 'authenticated.project',
-          'authenticated.prefs':   'authenticated.prefs',
-          'authenticated.cluster.nodes': 'authenticated.cluster.nodes',
-          'authenticated.cluster.nodes.node': 'authenticated.cluster.nodes.node',
+          index:                                          'index',
+          failWhale:                                      'failWhale',
+          authenticated:                                  'authenticated',
+          'authenticated.cluster':                        'authenticated.cluster',
+          'authenticated.cluster.projects':               'authenticated.cluster.projects',
+          'authenticated.project':                        'authenticated.project',
+          'authenticated.prefs':                          'authenticated.prefs',
+          'authenticated.cluster.nodes':                  'authenticated.cluster.nodes',
+          'authenticated.cluster.nodes.node':             'authenticated.cluster.nodes.node',
           'authenticated.cluster.security.members.index': 'authenticated.cluster.security.members.index',
-          'logout':                'logout'
+          'logout':                                       'logout'
         }
       }
     },
@@ -86,8 +86,7 @@ const App = Application.extend({
           'store',
           'tooltip',
         ],
-        externalRoutes: {
-        }
+        externalRoutes: {}
       }
     },
     alert: {
@@ -106,7 +105,7 @@ const App = Application.extend({
           'tooltip',
         ],
         externalRoutes: {
-          notifier: 'authenticated.cluster.notifier',
+          notifier:                            'authenticated.cluster.notifier',
           'authenticated.project.alert.edit':           'authenticated.project.alert.edit',
           'authenticated.cluster.alert.edit':           'authenticated.cluster.alert.edit',
           'authenticated.project.alert.index':           'authenticated.project.alert.index',
@@ -133,20 +132,20 @@ const App = Application.extend({
           'tooltip',
         ],
         externalRoutes: {
-          index:                   'index',
-          failWhale:               'failWhale',
-          authenticated:           'authenticated',
-          'authenticated.cluster': 'authenticated.cluster',
-          'authenticated.cluster.index': 'authenticated.cluster.index',
-          'authenticated.cluster.projects': 'authenticated.cluster.projects',
-          'authenticated.project': 'authenticated.project',
-          'authenticated.prefs':   'authenticated.prefs',
-          'logout':                'logout',
-          'volumes.index': 'volumes.index',
-          'authenticated.project.dns.index': 'authenticated.project.dns.index',
-          'ingresses.index': 'ingresses.index',
-          'containers.index': 'containers.index',
-          'authenticated.project.pipeline.pipeline': 'authenticated.project.pipeline.pipeline',
+          index:                                      'index',
+          failWhale:                                  'failWhale',
+          authenticated:                              'authenticated',
+          'authenticated.cluster':                    'authenticated.cluster',
+          'authenticated.cluster.index':              'authenticated.cluster.index',
+          'authenticated.cluster.projects':           'authenticated.cluster.projects',
+          'authenticated.project':                    'authenticated.project',
+          'authenticated.prefs':                      'authenticated.prefs',
+          'logout':                                   'logout',
+          'volumes.index':                            'volumes.index',
+          'authenticated.project.dns.index':          'authenticated.project.dns.index',
+          'ingresses.index':                          'ingresses.index',
+          'containers.index':                         'containers.index',
+          'authenticated.project.pipeline.pipeline':  'authenticated.project.pipeline.pipeline',
           'authenticated.project.pipeline.pipelines': 'authenticated.project.pipeline.pipelines'
         }
       }

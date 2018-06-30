@@ -4,75 +4,103 @@ import { reference } from 'ember-api-store/utils/denormalize';
 import { inject as service } from '@ember/service';
 
 export default Resource.extend({
-  type: 'ingress',
-
-  clusterStore: service(),
-  router: service(),
   namespace: reference('namespaceId', 'namespace', 'clusterStore'),
 
-  actions: {
-    edit: function () {
-      get(this,'router').transitionTo('ingresses.run', {queryParams: {
-        ingressId: get(this, 'id'),
-        upgrade: true,
-      }});
-    },
-  },
-
   targets: computed('rules.@each.paths', function() {
+
     const out = [];
     const store = get(this, 'store');
 
     let tlsHosts = [];
-    (get(this, 'tls')||[]).forEach((entry) => {
-      tlsHosts.addObjects(entry.hosts||[]);
+
+    (get(this, 'tls') || []).forEach((entry) => {
+
+      tlsHosts.addObjects(entry.hosts || []);
+
     });
     tlsHosts = tlsHosts.uniq();
 
 
     let def = get(this, 'defaultBackend');
+
     if ( def ) {
+
       addRow(null, null, def);
+
     }
 
-    (get(this,'rules')||[]).forEach((rule) => {
-      let entries = get(rule, 'paths')||{};
+    (get(this, 'rules') || []).forEach((rule) => {
+
+      let entries = get(rule, 'paths') || {};
+
       Object.keys(entries).forEach((path) => {
+
         addRow(rule.host, path, entries[path])
+
       });
+
     });
 
     function addRow(host, path, entry) {
+
       let reference;
 
       if ( entry.serviceId ) {
+
         reference = store.getById('service', entry.serviceId);
         out.push({
-          host: host,
-          tls: tlsHosts.includes(host),
-          path: path,
+          host,
+          tls:       tlsHosts.includes(host),
+          path,
           reference: entry.serviceId,
-          service: reference,
+          service:   reference,
         });
+
       } else if ( entry.workloadIds ) {
-        (entry.workloadIds||[]).forEach((id) => {
+
+        (entry.workloadIds || []).forEach((id) => {
+
           reference = store.getById('workload', id);
           out.push({
-            host: host,
-            tls: tlsHosts.includes(host),
-            path: path,
+            host,
+            tls:       tlsHosts.includes(host),
+            path,
             reference: id,
-            workload: reference,
+            workload:  reference,
           });
+
         });
+
       }
+
     }
 
     return out;
+
   }),
 
   displayKind: computed('intl.locale', function() {
+
     const intl = get(this, 'intl');
+
     return intl.t('model.ingress.displayKind');
+
   }),
+  type: 'ingress',
+
+  clusterStore: service(),
+  router:       service(),
+  actions:      {
+    edit() {
+
+      get(this, 'router').transitionTo('ingresses.run', {
+        queryParams: {
+          ingressId: get(this, 'id'),
+          upgrade:   true,
+        }
+      });
+
+    },
+  },
+
 });

@@ -4,12 +4,11 @@ import Controller, { inject as controller } from '@ember/controller';
 import { get, computed } from '@ember/object';
 
 export default Controller.extend({
-  access:            service(),
   application:       controller(),
+  access:            service(),
   cookies:           service(),
   scope:             service(),
   growl:             service(),
-  project:           alias('scope.currentProject'),
   endpointService:   service('endpoint'),
   modalService:      service('modal'),
   bulkActionHandler: service(),
@@ -20,49 +19,55 @@ export default Controller.extend({
   headers: [
     {
       name:           'state',
-      sort:           ['sortState','name','id'],
+      sort:           ['sortState', 'name', 'id'],
       translationKey: 'apiPage.table.state',
       width:          80,
     },
     {
       name:           'name',
-      sort:           ['name','id'],
+      sort:           ['name', 'id'],
       translationKey: 'apiPage.table.name',
     },
     {
       name:           'description',
-      sort:           ['description','name','id'],
+      sort:           ['description', 'name', 'id'],
       translationKey: 'apiPage.table.description',
     },
     {
       name:           'created',
-      sort:           ['created','name','id'],
+      sort:           ['created', 'name', 'id'],
       translationKey: 'apiPage.table.created',
       width:          150,
     },
     {
       name:           'expires',
-      sort:           ['expiresAt','name','id'],
+      sort:           ['expiresAt', 'name', 'id'],
       translationKey: 'apiPage.table.expires.label',
       width:          175,
     },
   ],
 
+  project:           alias('scope.currentProject'),
+  rows:    computed('model.tokens.[]', function() {
+
+    return get(this, 'model.tokens').filter((token) => {
+
+      const labels = get(token, 'labels');
+      const expired = get(token, 'expired');
+
+      return !expired || !labels || !labels['ui-session'];
+
+    });
+
+  }),
   actions: {
     newApikey() {
-      const cred = this.get('globalStore').createRecord({
-        type: 'token',
-      });
+
+      const cred = this.get('globalStore').createRecord({ type: 'token', });
 
       this.get('modalService').toggleModal('modal-edit-apikey', cred);
+
     },
   },
 
-  rows: computed('model.tokens.[]', function() {
-    return get(this,'model.tokens').filter((token) => {
-      const labels = get(token, 'labels');
-      const expired = get(token, 'expired');
-      return !expired || !labels || !labels['ui-session'];
-    });
-  }),
 });

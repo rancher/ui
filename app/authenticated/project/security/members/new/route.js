@@ -8,14 +8,16 @@ export default Route.extend({
   roleTemplateService: service('roleTemplate'),
 
   model() {
+
     const gs  = get(this, 'globalStore');
     const pid = this.paramsFor('authenticated.project');
 
     return hash({
-      project: gs.find('project', pid.project_id, {forceReload: true}),
+      project: gs.find('project', pid.project_id, { forceReload: true }),
       roles:   get(this, 'roleTemplateService').get('allFilteredRoleTemplates'),
       users:   gs.findAll('user'),
     });
+
   },
 
   setupController(controller, model) {
@@ -24,9 +26,7 @@ export default Route.extend({
 
     let dfu = get(model, 'users.firstObject');
 
-    controller.setProperties({
-      defaultUser: dfu,
-    });
+    controller.setProperties({ defaultUser: dfu, });
 
   },
 });

@@ -11,6 +11,7 @@ export default Route.extend(VerifyAuth, {
   model(params/* , transition */) {
 
     if (window.opener) {
+
       const stateMsg         = 'Authorization state did not match, please try again.';
 
       if (get(params, 'code') && window.opener.window.onAzureTest) {
@@ -35,30 +36,31 @@ export default Route.extend(VerifyAuth, {
         description:  C.SESSION.DESCRIPTION,
         responseType: 'cookie',
         ttl:          C.SESSION.TTL,
-      }).then(() => {
-
-        return this.transitionTo('authenticated');
-      });
+      }).then(() => this.transitionTo('authenticated'));
 
     }
 
-    function reply(err,code) {
+    function reply(err, code) {
 
       const opener = window.opener.window;
 
       if (opener.onAzureTest) {
 
-        opener.onAzureTest(err,code);
+        opener.onAzureTest(err, code);
 
-        setTimeout(function() {
+        setTimeout(() => {
+
           window.close();
-        },250);
+
+        }, 250);
 
       } else {
 
         window.close();
 
       }
+
     }
+
   }
 });

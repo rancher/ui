@@ -3,10 +3,10 @@ import layout from './template';
 import { inject as service } from '@ember/service'
 
 export default Component.extend({
-  layout,
-  scope: service(),
+  scope:   service(),
   session:  service(),
 
-  model: null,
+  layout,
+  model:   null,
   tagName: '',
 });

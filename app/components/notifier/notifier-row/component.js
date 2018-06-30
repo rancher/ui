@@ -4,16 +4,19 @@ import { get } from '@ember/object';
 import layout from './template'
 
 export default Component.extend({
+  intl: service(),
   layout,
 
-  intl: service(),
-  model: null,
-  tagName: 'TR',
-  classNames: 'main-row',
+  model:       null,
+  tagName:     'TR',
+  classNames:  'main-row',
   bulkActions: true,
 
   showNotifierValue: function() {
+
     const t = get(this, 'model.notifierType');
+
     return t === 'slack' || t === 'email';
+
   }.property('model.notifierType'),
 });

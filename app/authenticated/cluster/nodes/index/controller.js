@@ -8,8 +8,8 @@ export default Controller.extend({
   prefs:             service(),
   scope:             service(),
 
-  sortBy:            'name',
   queryParams:       ['sortBy'],
+  sortBy:            'name',
   searchText:        '',
   headers:           hostHeaders,
 
@@ -18,29 +18,41 @@ export default Controller.extend({
     'requireAnyLabelStrings',
   ],
 
-  actions: {
-    scaleDownPool(id) {
-      get(this,'model.cluster').send('scaleDownPool',id);
-    },
-
-    scaleUpPool(id) {
-      get(this,'model.cluster').send('scaleUpPool',id);
-    },
-
-    editCluster() {
-      get(this,'model.cluster').send('edit');
-    },
-  },
-
   groupByKey: computed('model.cluster.nodePools.length', function() {
+
     if ( get(this, 'model.cluster.nodePools.length') ) {
+
       return 'nodePoolId';
+
     }
 
     return null;
+
   }),
 
   rows: computed('model.nodes.@each.clusterId', function() {
-    return get(this,'model.nodes').filterBy('clusterId', get(this,'model.cluster.id'));
+
+    return get(this, 'model.nodes').filterBy('clusterId', get(this, 'model.cluster.id'));
+
   }),
+  actions: {
+    scaleDownPool(id) {
+
+      get(this, 'model.cluster').send('scaleDownPool', id);
+
+    },
+
+    scaleUpPool(id) {
+
+      get(this, 'model.cluster').send('scaleUpPool', id);
+
+    },
+
+    editCluster() {
+
+      get(this, 'model.cluster').send('edit');
+
+    },
+  },
+
 });

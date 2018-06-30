@@ -8,28 +8,32 @@ export default Component.extend(ManageLabels, {
   layout,
   model: null,
 
-  annotationSource: alias('model.annotations'),
-  sortBy: 'key',
-  descending: false,
+  sortBy:           'key',
+  descending:       false,
 
   headers: [
     {
-      name: 'key',
-      sort: ['key'],
+      name:           'key',
+      sort:           ['key'],
       translationKey: 'annotationsSection.key',
     },
     {
-      name: 'value',
-      sort: ['value', 'key'],
+      name:           'value',
+      sort:           ['value', 'key'],
       translationKey: 'annotationsSection.value',
     },
   ],
 
-  annotationsObserver: observer('model.annotations', function () {
+  annotationSource:    alias('model.annotations'),
+  annotationsObserver: observer('model.annotations', function() {
+
     this.initLabels(this.get('annotationSource'));
+
   }),
 
   didReceiveAttrs() {
+
     this.initLabels(this.get('annotationSource'));
+
   },
 });

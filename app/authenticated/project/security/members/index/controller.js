@@ -7,29 +7,31 @@ import { get } from '@ember/object';
 const headers = [
   {
     translationKey: 'membersPage.index.table.userId',
-    name: 'user.displayName',
-    sort: ['user.dispalyName', 'name', 'id'],
+    name:           'user.displayName',
+    sort:           ['user.dispalyName', 'name', 'id'],
   },
   {
     translationKey: 'membersPage.index.table.template',
-    name: 'roleTemplateId',
-    sort: ['roleTemplateId'],
+    name:           'roleTemplateId',
+    sort:           ['roleTemplateId'],
   },
   {
     translationKey: 'generic.created',
-    name: 'created',
-    sort: ['created'],
-    classNames: 'text-right pr-20',
-    width: 200,
+    name:           'created',
+    sort:           ['created'],
+    classNames:     'text-right pr-20',
+    width:          200,
   },
 ]
 
 export default Controller.extend(FilterState, {
-  sortBy: 'name',
-  headers: headers,
-  scope: service(),
-  searchText: '',
+  scope:             service(),
+  sortBy:            'name',
+  headers,
+  searchText:        '',
   filterableContent: computed('model.projectRoleTemplateBindings.[]', function() {
+
     return get(this, 'model.projectRoleTemplateBindings');
+
   }),
 });

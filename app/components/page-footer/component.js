@@ -6,55 +6,64 @@ import C from 'ui/utils/constants';
 import layout from './template';
 
 export default Component.extend({
-  layout,
   intl:         service(),
-
-  tagName:      'footer',
-  className:    'clearfix',
 
   settings:     service(),
   prefs:        service(),
+  modalService: service('modal'),
+
+  layout,
+  tagName:      'footer',
+  className:    'clearfix',
+
+  projectId: alias(`cookies.${ C.COOKIE.PROJECT }`),
+
+  showWechat: computed('intl.locale', function() {
+
+    let locale = this.get('intl.locale');
+
+    if (locale) {
+
+      return locale[0] === 'zh-hans';
+
+    }
+
+    return false;
+
+  }),
+
+  init() {
+
+    this._super(...arguments);
+    let settings = this.get('settings');
+
+    let cli = {};
+
+    Object.keys(C.SETTING.CLI_URL).forEach((key) => {
+
+      cli[key.toLowerCase()] = settings.get(C.SETTING.CLI_URL[key]);
+
+    });
+
+    this.setProperties({ cli });
+
+  },
+
+  actions: {
+    showAbout() {
+
+      this.get('modalService').toggleModal('modal-about', { closeWithOutsideClick: true });
+
+    },
+    showWechat() {
+
+      this.get('modalService').toggleModal('modal-wechat', { closeWithOutsideClick: true });
+
+    },
+  },
   githubBase:   C.EXT_REFERENCES.GITHUB,
   forumBase:    C.EXT_REFERENCES.FORUM,
   cnforumBase:  C.EXT_REFERENCES.CN_FORUM,
   slackBase:    C.EXT_REFERENCES.SLACK,
 
-  projectId   : alias(`cookies.${C.COOKIE.PROJECT}`),
-
-  modalService: service('modal'),
-
-  init() {
-    this._super(...arguments);
-    let settings = this.get('settings');
-
-    let cli = {};
-    Object.keys(C.SETTING.CLI_URL).forEach((key) => {
-      cli[key.toLowerCase()] = settings.get(C.SETTING.CLI_URL[key]);
-    });
-
-    this.setProperties({
-      cli
-    });
-  },
-
-  showWechat : computed('intl.locale', function() {
-    let locale = this.get('intl.locale');
-    if (locale) {
-      return locale[0] === 'zh-hans';
-    }
-    return false;
-  }),
-
-  actions: {
-    showAbout() {
-      this.get('modalService').toggleModal('modal-about', {
-        closeWithOutsideClick: true
-      });
-    },
-    showWechat() {
-      this.get('modalService').toggleModal('modal-wechat', {
-        closeWithOutsideClick: true
-      });
-    },
-  }
 });

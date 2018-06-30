@@ -1,6 +1,5 @@
 import Workload from 'ui/models/workload';
 
-const ReplicationController = Workload.extend({
-});
+const ReplicationController = Workload.extend({});
 
 export default ReplicationController;

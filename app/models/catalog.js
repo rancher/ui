@@ -5,15 +5,19 @@ import { get } from '@ember/object';
 import { ucFirst } from 'shared/utils/util';
 
 export default Resource.extend({
+  displayKind: computed('kind', function() {
+
+    return ucFirst(get(this, 'kind'));
+
+  }),
   modalService: service('modal'),
 
   actions: {
     edit() {
+
       this.get('modalService').toggleModal('modal-edit-catalog', this);
+
     }
   },
 
-  displayKind: computed('kind', function() {
-    return ucFirst(get(this, 'kind'));
-  }),
 });
