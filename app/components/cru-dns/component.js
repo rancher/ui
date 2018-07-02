@@ -1,4 +1,5 @@
 import { inject as service } from '@ember/service';
+import { alias } from '@ember/object/computed';
 import {
   get, set, setProperties, computed, observer
 } from '@ember/object';
@@ -19,6 +20,7 @@ export default Component.extend(ViewNewEdit, ChildHook, {
 
   recordType:      null,
   namespaceErrors: null,
+  namespace:       alias('model.namespace'),
 
   /*
   targetServicesAsMaps: null,
