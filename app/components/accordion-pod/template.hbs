@@ -29,6 +29,12 @@
         <td data-title="{{dt.displayImage}}">
           {{inst.displayImage}}
         </td>
+        <td data-title="{{dt.node}}">
+          <a href="{{href-to 'node' inst.node.clusterId inst.node.id}}">{{inst.node.displayName}}</a>
+          {{#if (or inst.node.externalIpAddress inst.node.ipAddress)}}
+            {{node-ip model=inst.node}}
+          {{/if}}
+        </td>
         <td data-title="{{dt.displayIp}}">
           {{inst.displayIp}}
         </td>

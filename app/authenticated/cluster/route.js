@@ -55,11 +55,11 @@ export default Route.extend(Preload, {
 
   },
 
-  redirect() {
+  redirect(router, transition) {
 
     let route = this.get(`session.${ C.SESSION.CLUSTER_ROUTE }`);
 
-    if ( VALID_ROUTES.includes(route) ) {
+    if ( transition.targetName === 'authenticated.cluster.index' && VALID_ROUTES.includes(route) ) {
 
       this.replaceWith(route);
 

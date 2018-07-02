@@ -28,6 +28,11 @@ export default Component.extend(ManageLabels, {
       translationKey: 'generic.image',
     },
     {
+      name:           'node',
+      sort:           ['displayName'],
+      translationKey: 'generic.node',
+    },
+    {
       name:           'displayIp',
       sort:           ['displayIp'],
       translationKey: 'generic.ipAddress',
