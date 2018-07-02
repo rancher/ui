@@ -1,0 +1,66 @@
+{{#accordion-list-item
+  title=(t 'formJobConfig.title')
+  detail=(t 'formJobConfig.detail')
+  status=status
+  statusClass=statusClass
+  expandAll=expandAll
+  expandOnInit=expandOnInit
+  expand=(action expandFn)
+  everExpanded=true
+}}
+  <div class="row">
+    <div class="col span-6">
+      <div class="box">
+        <label class="acc-label">{{t 'formJobConfig.completions.label'}}</label>
+        {{#input-or-display editable=editing value=jobConfig.completions}}
+          <div class="input-group">
+            {{input-number min=0 classNames="form-control" value=jobConfig.completions}}
+            <span class="input-group-addon bg-default">{{t 'formJobConfig.times' count=jobConfig.completions}}</span>
+          </div>
+          <p class="help-block">{{t 'formJobConfig.completions.detail'}}</p>
+        {{/input-or-display}}
+      </div>
+    </div>
+
+    <div class="col span-6">
+      <div class="box">
+        <label class="acc-label">{{t 'formJobConfig.parallelism.label'}}</label>
+        {{#input-or-display editable=editing value=jobConfig.parallelism}}
+          <div class="input-group">
+            {{input-number min=0 classNames="form-control" value=jobConfig.parallelism}}
+            <span class="input-group-addon bg-default">{{t 'formJobConfig.times' count=jobConfig.parallelism}}</span>
+          </div>
+          <p class="help-block">{{t 'formJobConfig.parallelism.detail'}}</p>
+        {{/input-or-display}}
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col span-6">
+      <div class="box">
+        <label class="acc-label">{{t 'formJobConfig.backoffLimit.label'}}</label>
+        {{#input-or-display editable=editing value=jobConfig.backoffLimit}}
+          <div class="input-group">
+            {{input-number min=0 classNames="form-control" value=jobConfig.backoffLimit}}
+            <span class="input-group-addon bg-default">{{t 'formJobConfig.times' count=jobConfig.backoffLimit}}</span>
+          </div>
+          <p class="help-block">{{t 'formJobConfig.backoffLimit.detail'}}</p>
+        {{/input-or-display}}
+      </div>
+    </div>
+
+    <div class="col span-6">
+      <div class="box">
+        <label class="acc-label">{{t 'formJobConfig.activeDeadlineSeconds.label'}}</label>
+        {{#input-or-display editable=editing value=jobConfig.activeDeadlineSeconds}}
+          <div class="input-group">
+            {{input-number min=0 classNames="form-control" value=jobConfig.activeDeadlineSeconds}}
+            <span class="input-group-addon bg-default">{{t 'formJobConfig.seconds' count=jobConfig.activeDeadlineSeconds}}</span>
+          </div>
+          <p class="help-block">{{t 'formJobConfig.activeDeadlineSeconds.detail'}}</p>
+        {{/input-or-display}}
+      </div>
+    </div>
+  </div>
+{{/accordion-list-item}}

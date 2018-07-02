@@ -89,6 +89,16 @@
       name=service.name
     }}
 
+    {{#if (or (eq service.type 'job') (eq service.type 'cronJob'))}}
+      {{container/form-job-config
+        workload=service
+        scaleMode=service.type
+        editing=false
+        expandAll=al.expandAll
+        expandFn=expandFn
+      }}
+    {{/if}}
+
     {{#if service.canHaveEnvironment}}
       {{#accordion-list-item
         title=(t 'formEnvVar.title')

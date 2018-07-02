@@ -74,6 +74,15 @@
 
 <hr class="mt-30 mb-30" />
 {{#accordion-list as | al expandFn | }}
+  {{#if (or (eq scaleMode 'job') (eq scaleMode 'cronJob'))}}
+    {{container/form-job-config
+      workload=service
+      scaleMode=scaleMode
+      editing=true
+      expandAll=al.expandAll
+      expandFn=expandFn
+    }}
+  {{/if}}
 
   {{#accordion-list-item
     title=(t 'newContainer.environment.label')
@@ -196,6 +205,7 @@
     {{container/form-command
         classNames="accordion-wrapper"
         instance=launchConfig
+        scaleMode=scaleMode
         errors=commandErrors
         service=service
         isSidekick=isSidekick
