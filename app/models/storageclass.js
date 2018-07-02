@@ -12,7 +12,7 @@ registerProvisioner('aws-ebs',        'kubernetes.io/aws-ebs',         true);
 registerProvisioner('gce-pd',         'kubernetes.io/gce-pd',          true);
 registerProvisioner('glusterfs',      'kubernetes.io/glusterfs',       true);
 registerProvisioner('cinder',         'kubernetes.io/cinder',          true);
-registerProvisioner('vsphere-volume', 'kubernetes.io/vpshere-volume',  true);
+registerProvisioner('vsphere-volume', 'kubernetes.io/vsphere-volume',  true);
 registerProvisioner('rbd',            'kubernetes.io/rbd',             true);
 registerProvisioner('quobyte',        'kubernetes.io/quobyte',         true);
 registerProvisioner('azure-disk',     'kubernetes.io/azure-disk',      true);
