@@ -251,9 +251,24 @@
               <label class="acc-label pb-5">{{t 'ldap.customizeSchema.groups.groupDN.labelText'}}</label>
               {{input value=authConfig.groupDNAttribute classNames="form-control" placeholder=(t 'ldap.customizeSchema.groups.groupDN.placeholder')}}
             </div>
-            <div class="pb-20 pt-35">
-              <label class="acc-label pb-5">{{input classNames="form-control" type="checkbox" checked=authConfig.nestedGroupMembershipEnabled}} {{t 'ldap.customizeSchema.groups.nestedGroup.labelText'}}</label>
-            </div>
+            {{#if (not-eq authConfig.id "freeipa")}}
+              <div class="pb-20">
+                <label class="acc-label pb-5">{{t 'ldap.customizeSchema.groups.nestedGroup.title'}}</label>
+                <div class="radio">
+                  <label class="acc-label pb-5">
+                    {{radio-button selection=authConfig.nestedGroupMembershipEnabled value=false}}
+                    {{t 'ldap.customizeSchema.groups.nestedGroup.disabled.labelText'}}
+                  </label>
+                </div>
+                <div class="radio">
+                  <label class="acc-label pb-5">
+                    {{radio-button selection=authConfig.nestedGroupMembershipEnabled value=true}}
+                    {{t 'ldap.customizeSchema.groups.nestedGroup.enabled.labelText'}}
+                    <p class="help-block">{{t 'ldap.customizeSchema.groups.nestedGroup.enabled.helpText'}}</p>
+                  </label>
+                </div>
+              </div>
+            {{/if}}
           </div>
         </div>
       </section>
