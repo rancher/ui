@@ -1,6 +1,6 @@
 <section>
   {{#if isEnabled}}
-    <p>{{t (concat 'authPage.azuread.header.enabled.' azureADConfig.accessMode)
+    <p>{{t (concat 'authPage.azuread.header.enabled.' authConfig.accessMode)
            appName=settings.appName
            groups=numGroups
            users=numUsers
@@ -50,22 +50,22 @@
           <div class="col span-12">
             <h3>{{t 'authPage.azuread.enabled.general.header'}}</h3>
             <div>
-              <b>{{t 'authPage.azuread.configure.tenantId.label'}}: </b> <span class="text-muted">{{azureADConfig.tenantId}}</span>
+              <b>{{t 'authPage.azuread.configure.tenantId.label'}}: </b> <span class="text-muted">{{authConfig.tenantId}}</span>
             </div>
             <div>
-              <b>{{t 'authPage.azuread.configure.applicationId.label'}}: </b> <span class="text-muted">{{azureADConfig.applicationId}}</span>
+              <b>{{t 'authPage.azuread.configure.applicationId.label'}}: </b> <span class="text-muted">{{authConfig.applicationId}}</span>
             </div>
             <div>
-              <b>{{t 'authPage.azuread.configure.azureADEndpoint.label'}}: </b> <span class="text-muted">{{azureADConfig.endpoint}}</span>
+              <b>{{t 'authPage.azuread.configure.azureADEndpoint.label'}}: </b> <span class="text-muted">{{authConfig.endpoint}}</span>
             </div>
             <div>
-              <b>{{t 'authPage.azuread.configure.azureADGraphEndpoint.label'}}: </b> <span class="text-muted">{{azureADConfig.graphEndpoint}}</span>
+              <b>{{t 'authPage.azuread.configure.azureADGraphEndpoint.label'}}: </b> <span class="text-muted">{{authConfig.graphEndpoint}}</span>
             </div>
             <div>
-              <b>{{t 'authPage.azuread.configure.azureADTokenEndpoint.label'}}: </b> <span class="text-muted">{{azureADConfig.tokenEndpoint}}</span>
+              <b>{{t 'authPage.azuread.configure.azureADTokenEndpoint.label'}}: </b> <span class="text-muted">{{authConfig.tokenEndpoint}}</span>
             </div>
             <div>
-              <b>{{t 'authPage.azuread.configure.azureADAuthEndpoint.label'}}: </b> <span class="text-muted">{{azureADConfig.authEndpoint}}</span>
+              <b>{{t 'authPage.azuread.configure.azureADAuthEndpoint.label'}}: </b> <span class="text-muted">{{authConfig.authEndpoint}}</span>
             </div>
           </div>
         </div>
@@ -95,7 +95,7 @@
             <div class="col span-6">
               <div class="inline-form">
                 <label class="acc-label pb-5" for="tenant-id">{{t 'authPage.azuread.configure.tenantId.label'}}{{field-required}}</label>
-                {{input id="tenant-id"  classNames="form-control" type="text" value=azureADConfig.tenantId placeholder=(t 'authPage.azuread.configure.tenantId.placeholder')}}
+                {{input id="tenant-id"  classNames="form-control" type="text" value=authConfig.tenantId placeholder=(t 'authPage.azuread.configure.tenantId.placeholder')}}
                 <p class="help-block">{{t 'authPage.azuread.configure.tenantId.help'}}</p>
               </div>
             </div>
@@ -104,13 +104,13 @@
             <div class="col span-6">
               <div class="inline-form">
                 <label class="acc-label pb-5" for="application-id">{{t 'authPage.azuread.configure.applicationId.label'}}{{field-required}}</label>
-                {{input id="application-id" type="text" value=azureADConfig.applicationId placeholder=(t 'authPage.azuread.configure.applicationId.placeholder') classNames="form-control"}}
+                {{input id="application-id" type="text" value=authConfig.applicationId placeholder=(t 'authPage.azuread.configure.applicationId.placeholder') classNames="form-control"}}
               </div>
             </div>
             <div class="col span-6">
               <div class="inline-form">
                 <label class="acc-label pb-5" for="application-secret">{{t 'authPage.azuread.configure.applicationSecret.label'}}{{field-required}}</label>
-                {{input id="application-secret" type="password" value=azureADConfig.applicationSecret classNames="form-control"}}
+                {{input id="application-secret" type="password" value=authConfig.applicationSecret classNames="form-control"}}
               </div>
             </div>
           </div>
@@ -118,13 +118,13 @@
             <div class="col span-6">
               <div class="inline-form">
                 <label class="acc-label pb-5" for="endpoint">{{t 'authPage.azuread.configure.azureADEndpoint.label'}}{{field-required}}</label>
-                {{input id="endpoint" type="url" value=azureADConfig.endpoint classNames="form-control"}}
+                {{input id="endpoint" type="url" value=authConfig.endpoint classNames="form-control"}}
               </div>
             </div>
             <div class="col span-6">
               <div class="inline-form">
                 <label class="acc-label pb-5" for="graph-endpoint">{{t 'authPage.azuread.configure.azureADGraphEndpoint.label'}}{{field-required}}</label>
-                {{input id="graph-endpoint" type="url" value=azureADConfig.graphEndpoint classNames="form-control"}}
+                {{input id="graph-endpoint" type="url" value=authConfig.graphEndpoint classNames="form-control"}}
               </div>
             </div>
           </div>
@@ -132,13 +132,13 @@
             <div class="col span-6">
               <div class="inline-form">
                 <label class="acc-label pb-5" for="token-endpoint" >{{t 'authPage.azuread.configure.azureADTokenEndpoint.label'}}{{field-required}}</label>
-                {{input id="token-endpoint" type="url" value=azureADConfig.tokenEndpoint classNames="form-control"}}
+                {{input id="token-endpoint" type="url" value=authConfig.tokenEndpoint classNames="form-control"}}
               </div>
             </div>
             <div class="col span-6">
               <div class="inline-form">
                 <label class="acc-label pb-5" for="auth-endpoint">{{t 'authPage.azuread.configure.azureADAuthEndpoint.label'}}{{field-required}}</label>
-                {{input id="auth-endpoint" type="url" value=azureADConfig.authEndpoint classNames="form-control"}}
+                {{input id="auth-endpoint" type="url" value=authConfig.authEndpoint classNames="form-control"}}
               </div>
             </div>
           </div>
@@ -173,7 +173,7 @@
     }}
 
       {{site-access
-          model=azureADConfig
+          model=authConfig
           principals=model.principals
           collection='siteAccess.organizations'
       }}
