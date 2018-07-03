@@ -24,8 +24,8 @@ generic:
   containers: 容器
   created: 创建时间
   createdDate: "创建于{date}"
-  customize: 定制
   custom: 自定义
+  customize: 定制
   default: 默认
   description: 描述
   details: 详情
@@ -533,9 +533,9 @@ authPage:
       serverURL:
         label: Rancher Server Url
       azureADEndpoint:
-        label: Endpoint(国内固定地址：https://login.chinacloudapi.cn)
+        label: Endpoint(Azure China地址：https://login.chinacloudapi.cn)
       azureADGraphEndpoint:
-        label: Graph Endpoint(国内固定地址：https://graph.chinacloudapi.cn)
+        label: Graph Endpoint(Azure China地址：https://graph.chinacloudapi.cn)
       azureADTokenEndpoint:
         label: Token Endpoint
       azureADAuthEndpoint:
@@ -1944,6 +1944,9 @@ clusterNew:
       vnet:
         label: 虚拟网络
         help: 虚拟网络必须在该集群所使用的资源组下。
+      ventresourcegroup:
+        label: 虚拟网络资源组(<em>可选</em>)
+        help:  如果您的虚拟网络不是与集群位于同一资源组中，则为可选资源组。
       subnet:
         label: 子网
     sshUser:
@@ -3112,7 +3115,7 @@ formBalancerListeners:
     label: 协议
   sourceIp:
     label: 主机IP
-    placeholder: "例如：1.2.3.4; Default: All"
+    placeholder: "例如: 1.2.3.4; Default: All"
   sourcePort:
     label: 监听端口
     placeholder: 例如：80
@@ -3178,7 +3181,7 @@ formCommand:
     label: 工作目录
     placeholder: 例如：/myapp
   uid:
-    label: 用户ID：
+    label: 用户UID：
     placeholder: '例如: 501'
   console:
     label: 控制台
@@ -3480,7 +3483,7 @@ formNetwork:
     enable: "是"
   dnsPolicy:
     label: DNS策略
-    clusterFirstWithHostNet: "首先与主机网络集群"
+    clusterFirstWithHostNet: "主机网络优先"
     clusterFirst: "集群优先"
   container:
     label: 容器
@@ -3514,7 +3517,7 @@ formNetwork:
     placeholder: '例如: prod.example.com'
     addActionLabel: 添加搜索域
   subdomain:
-    label: 子域
+    label: 子域名
     placeholder: '例如: foo'
   hostAlias:
     addActionLabel: 添加主机别名
@@ -3832,8 +3835,33 @@ formAnnotations:
   title: 注释
   detail: 配置容器的注释(键/值元数据)。
   errors:
-    invalidJSON: 注释的JSON格式无效。
-    topLevelValueInvalid: 注释JSON顶级值必须是一个对象。
+    invalidJSON: JSON注释格式无效。
+    topLevelValueInvalid: JSON注释顶级值必须是对象。
+formJobConfig:
+  title: Job配置
+  detail: 配置Job需要的参数。
+  times: |
+    {count, plural,
+      =1{Time}
+      other{Times}
+    }
+  seconds: |
+    {count, plural,
+      =1{Second}
+      other{Seconds}
+    }
+  completions:
+    label: 完成
+    detail: 成功运行Job的Pod的数量。
+  parallelism:
+    label: Parallelism
+    detail: Job在给定时间内应运行的最大pod数。
+  backoffLimit:
+    label: Back Off Limit
+    detail: 标记此作业失败之前的重试次数。
+  activeDeadlineSeconds:
+    label: Active Deadline Seconds
+    detail: 在系统尝试终止Job之前,job可能处于活动状态的持续时间。
 
 formUpgrade:
   title: 缩放/升级策略
@@ -4366,9 +4394,9 @@ modalImport:
   title: 导入YAML
   mode:
     label: 导入模式
-    cluster: "群集：直接将任何资源导入到此群集中"
+    cluster: "集群：直接将资源导入到此集群中"
     project: "项目：将资源导入此项目"
-    namespace: "命名空间：将所有资源导入特定的命名空间"
+    namespace: "命名空间：将资源导入特定的命名空间"
   detail:
     cluster1: 如果一个资源指定了命名空间，那么会自动创建命名空间，但是不会自动加入到项目中
     cluster2: 如果一个资源没有指定一个命名空间，它将被导入到default中
@@ -5125,7 +5153,7 @@ pageFooter:
   cnforums: 中文社区
   slack: Slack
   download:
-    link: 下载CLI
+    link: 下载Rancher CLI
     mac: macOS
     windows: Windows
     linux: Linux
@@ -5368,10 +5396,12 @@ serverUrl:
 siteAccess:
   header: 站点访问
   helpText: "配置允许哪些人登录和使用{appName}"
-  unrestricted: "允许任何有效的{individuals}"
+  unrestricted: "允许所有有效的{individuals}"
   restricted: "允许集群成员，项目成员以及授权的{individuals}和{collection}"
   required: "仅允许授权的{individuals}和{collection}"
   listHeader: "授权的{individuals}和{collection}"
+  dupe: "已授权用户访问"
+  minimum: '您必须至少添加一条授权条目'
   noIdentity: 无
   users: 用户
   groups: 组
