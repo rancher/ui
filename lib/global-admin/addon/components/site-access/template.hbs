@@ -22,7 +22,7 @@
           {{#each model.allowedPrincipalIds as |id|}}
             <li>
               {{#identity-block principalId=id}}
-                <button class="btn bg-primary btn-sm pull-right gh-action mt-5" {{action "removeAuthorized" id}} disabled={{not (array-includes access.principal.principalIds id)}}><i class="icon icon-minus"/></button>
+                <button class="btn bg-primary btn-sm pull-right gh-action mt-5" {{action "removeAuthorized" id}} disabled={{lte model.allowedPrincipalIds.length 1}}><i class="icon icon-minus"/></button>
               {{/identity-block}}
             </li>
           {{else}}
