@@ -1,22 +1,12 @@
 <section>
-  {{#if isEnabled }}
-    <h3>{{t 'authPage.github.header.enabled.label' github=(t providerName)}}</h3>
-    <hr/>
-  {{else}}
+  {{#unless isEnabled}}
     <div class="banner bg-warning">
       <div class="banner-icon"><span class="icon icon-alert"></span></div>
       <div class="banner-message">
         <p>{{t 'authPage.github.header.disabled.label'}}</p>
-       </div>
+      </div>
     </div>
-  {{/if}}
-  <div>
-    {{#if isEnabled}}
-      <p>{{t (concat 'authPage.github.header.enabled.' githubConfig.accessMode) appName=settings.appName github=(t providerName) users=numUsers orgs=numOrgs}}</p>
-    {{else}}
-      <p>{{t 'authPage.github.header.disabled.warning' appName=settings.appName}}</p>
-    {{/if}}
-  </div>
+  {{/unless}}
   {{top-errors errors=errors}}
 </section>
 

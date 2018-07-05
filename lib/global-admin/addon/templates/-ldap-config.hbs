@@ -1,23 +1,12 @@
 <section>
-  {{#if isEnabled}}
-    <h3>{{t 'ldap.header.enabled.label' providerName=(t providerName)}}</h3>
-    <hr/>
-  {{else}}
+  {{#unless isEnabled}}
     <div class="banner bg-warning">
       <div class="banner-icon"><span class="icon icon-alert"></span></div>
       <div class="banner-message">
         <p>{{t 'ldap.header.disabled.label' providerName=(t providerName)}}</p>
       </div>
     </div>
-  {{/if}}
-
-  <div>
-    {{#if isEnabled}}
-      {{t (concat 'ldap.header.enabled.' authConfig.accessMode) appName=settings.appName providerName=(t providerName) users=numUsers groups=numGroups}}
-    {{else}}
-      {{t 'ldap.header.disabled.warning' appName=settings.appName providerName=(t providerName)}}
-    {{/if}}
-  </div>
+  {{/unless}}
 </section>
 
 {{#accordion-list showExpandAll=false  as |al expandFn|}}
@@ -132,9 +121,12 @@
           </div>
         {{/if}}
         <div class="row">
-          <div class="col span-6 offset-6 mb-0">
-            <label class="acc-label pb-5">{{t 'ldap.accessConfig.connectionTimeout.labelText'}}</label>
-            {{input-integer value=authConfig.connectionTimeout min=1 max=65535 classNames="form-control"}}
+          <div class="col span-6 mb-0">
+            <label class="acc-label pb-5">{{t 'ldap.accessConfig.connectionTimeout.labelText'}}{{field-required}}</label>
+            <div class="input-group">
+              {{input-integer value=authConfig.connectionTimeout min=1 classNames="form-control"}}
+              <span class="input-group-addon bg-default"><label>{{t 'generic.milliseconds'}}</label></span>
+            </div>
           </div>
         </div>
         <hr class="mt-30 mb-30"/>
