@@ -60,6 +60,7 @@
             {{#if (eq authConfig.type "activeDirectoryConfig")}}
               <div><b>{{t 'ldap.accessEnabled.general.defaultDomain'}} </b> <span class="text-muted">{{authConfig.defaultLoginDomain}}</span></div>
             {{/if}}
+            <div><b>{{t 'ldap.accessConfig.connectionTimeout.labelText'}}</b> <span class="text-muted">{{authConfig.connectionTimeout}}</span></div>
           </div>
           <div class="col span-4">
             <h3>{{t 'ldap.accessEnabled.users.header'}}</h3>
@@ -130,14 +131,12 @@
             </div>
           </div>
         {{/if}}
-        {{#if (not-eq authConfig.id "freeipa")}}
-          <div class="row">
-            <div class="col span-6 offset-6 mb-0">
-              <label class="acc-label pb-5">{{t 'ldap.accessConfig.connectionTimeout.labelText'}}</label>
-              {{input-integer value=authConfig.connectionTimeout min=1 max=65535 classNames="form-control"}}
-            </div>
+        <div class="row">
+          <div class="col span-6 offset-6 mb-0">
+            <label class="acc-label pb-5">{{t 'ldap.accessConfig.connectionTimeout.labelText'}}</label>
+            {{input-integer value=authConfig.connectionTimeout min=1 max=65535 classNames="form-control"}}
           </div>
-        {{/if}}
+        </div>
         <hr class="mt-30 mb-30"/>
         <p class="text-info mb-0">{{t 'ldap.accessConfig.subtext2' appName=settings.appName}}</p>
         <div class="row">
