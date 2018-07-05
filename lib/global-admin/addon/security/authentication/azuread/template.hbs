@@ -1,12 +1,5 @@
 <section>
-  {{#if isEnabled}}
-    <p>{{t (concat 'authPage.azuread.header.enabled.' authConfig.accessMode)
-           appName=settings.appName
-           groups=numGroups
-           users=numUsers
-           htmlSafe=true
-       }}</p>
-  {{else}}
+  {{#unless isEnabled}}
     <div class="banner bg-warning">
       <div class="banner-icon">
         <span class="icon icon-alert"></span>
@@ -15,8 +8,7 @@
         <p>{{t 'authPage.azuread.header.disabled.label' htmlSafe=true}}</p>
       </div>
     </div>
-    <p>{{t 'authPage.azuread.header.disabled.warning' appName=settings.appName}}</p>
-  {{/if}}
+  {{/unless}}
 </section>
 
 

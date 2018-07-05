@@ -1,14 +1,16 @@
 <section>
-  {{#if isEnabled }}
-    <h3>{{t 'authPage.github.header.enabled.label' github=(t providerName)}}</h3>
-    <hr/>
-  {{else}}
+  {{#unless isEnabled}}
     <div class="banner bg-warning">
       <div class="banner-icon"><span class="icon icon-alert"></span></div>
       <div class="banner-message">
         <p>{{t 'authPage.github.header.disabled.label'}}</p>
-       </div>
+      </div>
     </div>
+  {{/unless}}
+  {{#if isEnabled }}
+    <h3>{{t 'authPage.github.header.enabled.label' github=(t providerName)}}</h3>
+    <hr/>
+  {{else}}
   {{/if}}
   <div>
     {{#if isEnabled}}

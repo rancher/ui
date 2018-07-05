@@ -1,23 +1,12 @@
 <section>
-  {{#if isEnabled}}
-    <h3>{{t 'ldap.header.enabled.label' providerName=(t providerName)}}</h3>
-    <hr/>
-  {{else}}
+  {{#unless isEnabled}}
     <div class="banner bg-warning">
       <div class="banner-icon"><span class="icon icon-alert"></span></div>
       <div class="banner-message">
         <p>{{t 'ldap.header.disabled.label' providerName=(t providerName)}}</p>
       </div>
     </div>
-  {{/if}}
-
-  <div>
-    {{#if isEnabled}}
-      {{t (concat 'ldap.header.enabled.' authConfig.accessMode) appName=settings.appName providerName=(t providerName) users=numUsers groups=numGroups}}
-    {{else}}
-      {{t 'ldap.header.disabled.warning' appName=settings.appName providerName=(t providerName)}}
-    {{/if}}
-  </div>
+  {{/unless}}
 </section>
 
 {{#accordion-list showExpandAll=false  as |al expandFn|}}
