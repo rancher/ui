@@ -151,7 +151,6 @@ module.exports = {
     "switch-colon-spacing": "error",
 
     // ECMAScript 6
-    "arrow-body-style": [ "error", "as-needed" ],
     "arrow-parens": "error",
     "arrow-spacing": [ "error", { "before": true, "after": true } ],
     "no-trailing-spaces": "error",
@@ -159,7 +158,6 @@ module.exports = {
     "prefer-arrow-callback": "error",
     "prefer-template": "error",
     "rest-spread-spacing": "error",
-    // "sort-imports": "error",
     "template-curly-spacing": [ "error", "always" ],
     "yield-star-spacing": [ "error", "both" ],
   }
