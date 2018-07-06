@@ -65,9 +65,8 @@ export default Route.extend(VerifyAuth, {
           ttl:          C.SESSION.TTL,
         }).then(() => {
 
-          let detect = get(this, 'access.detect');
-
-          return detect().then( () => this.transitionTo('authenticated'));
+          return get(this, 'access').detect()
+            .then(() => this.transitionTo('authenticated'));
 
         });
 
