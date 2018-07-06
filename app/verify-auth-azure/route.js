@@ -36,7 +36,12 @@ export default Route.extend(VerifyAuth, {
         description:  C.SESSION.DESCRIPTION,
         responseType: 'cookie',
         ttl:          C.SESSION.TTL,
-      }).then(() => this.transitionTo('authenticated'));
+      }).then(() => {
+
+        return get(this, 'access').detect()
+          .then(() => this.transitionTo('authenticated'));
+
+      });
 
     }
 
