@@ -317,59 +317,8 @@ apiPage:
     noData: There are no API keys defined
 
 authPage:
-  freeipa:
-    providerName: FreeIPA
-    header:
-      enabled:
-        label: "{providerName} is enabled"
-        required: |
-          {appName} is configured to allow access to {groups, plural,
-            =0 {no groups}
-            =1 {# group}
-            other {# groups}
-          } and {users, plural,
-            =0 {no users}
-            =1 {# user}
-            other {# users}
-          }.
-        restricted: |
-          {appName} is configured to allow access to environment members, {groups, plural,
-            =0 {no groups}
-            =1 {# group}
-            other {# groups}
-          } and {users, plural,
-            =0 {no users}
-            =1 {# user}
-            other {# users}
-          }.
-        unrestricted: "{appName} is configured to allow access to any {providerName} user."
-      disabled:
-        label: "{providerName} is not configured"
-        warning: "{appName} can be configured to restrict access to a set of {providerName} users and groups.  This is not currently set up, so anybody that reach this page (or the API) has full control over the system."
   shibboleth:
     enabled:
-      header: "{providerName} is enabled"
-      required: |
-        {appName} is configured to allow access to {orgs, plural,
-          =0 {no organizations}
-          =1 {# organization}
-          other {# organizations}
-        } and {users, plural,
-          =0 {no users}
-          =1 {# user}
-          other {# users}
-        }.
-      restricted: |
-        {appName} is configured to allow access to environment members, {orgs, plural,
-          =0 {no organizations}
-          =1 {# organization}
-          other {# organizations}
-        } and {users, plural,
-          =0 {no users}
-          =1 {# user}
-          other {# users}
-        }.
-      unrestricted: "{appName} is configured to allow access to any {providerName} user."
       authenticated:
         header:
           text: Authentication
@@ -385,7 +334,6 @@ authPage:
     disabled:
       header: '1. Configure Shibboleth Account'
       label: "{providerName} is not configured"
-      warning: "{appName} can be configured to restrict access to a set of {providerName} users and groups.  This is not currently set up, so anybody that reach this page (or the API) has full control over the system."
       name:
         labelText: Display Name Field
       username:
@@ -408,34 +356,8 @@ authPage:
     standard: GitHub
     enterprise: GitHub Enterprise
     header:
-      enabled:
-        label: "{github} is enabled"
-        # required: "{appName} is configured to allow access to authorized users and organizations."
-        # restricted: "{appName} is configured to allow access to project members, authorized users and organizations."
-        required: |
-          {appName} is configured to allow access to {orgs, plural,
-            =0 {no organizations}
-            =1 {# organization}
-            other {# organizations}
-          } and {users, plural,
-            =0 {no users}
-            =1 {# user}
-            other {# users}
-          }.
-        restricted: |
-          {appName} is configured to allow access to project members, {orgs, plural,
-            =0 {no organizations}
-            =1 {# organization}
-            other {# organizations}
-          } and {users, plural,
-            =0 {no users}
-            =1 {# user}
-            other {# users}
-          }.
-       # unrestricted: "{appName} is configured to allow access to any {github} user."
       disabled:
         label: GitHub is not configured
-        warning: "{appName} can be configured to restrict access to a set of GitHub users and organization members."
     authenticated:
       header:
         text: Authentication
@@ -488,32 +410,8 @@ authPage:
       popupError: 'Please disable your pop-up blocker and click "Authenticate" again.'
   azuread:
     header:
-      enabled:
-        label: "Azure AD is enabled"
-        required: |
-          {appName} is configured to allow access to {groups, plural,
-            =0 {no groups}
-            =1 {# group}
-            other {# groups}
-          } and {users, plural,
-            =0 {no users}
-            =1 {# user}
-            other {# users}
-          }.
-        restricted: |
-          {appName} is configured to allow access to environment members, {groups, plural,
-            =0 {no groups}
-            =1 {# group}
-            other {# groups}
-          } and {users, plural,
-            =0 {no users}
-            =1 {# user}
-            other {# users}
-          }.
-        unrestricted: "{appName} is configured to allow access to any Azure AD user."
       disabled:
         label: "Azure AD is not configured"
-        warning: "{appName} can be configured to restrict access to a set of Azure AD users and groups"
     enabled:
       header: 'Danger Zone&trade;'
       reallyDisable: 'Are you sure?  Click again to really disable access control'
@@ -1516,32 +1414,8 @@ ldap:
       ad: Authenticate with Active Directory
       freeipa: Authenticate with FreeIPA
   header:
-    enabled:
-      label: "{providerName} is enabled"
-      required: |
-        {appName} is configured to allow access to {groups, plural,
-          =0 {no groups}
-          =1 {# group}
-          other {# groups}
-        } and {users, plural,
-          =0 {no users}
-          =1 {# user}
-          other {# users}
-        }.
-      restricted: |
-        {appName} is configured to allow access to environment members, {groups, plural,
-          =0 {no groups}
-          =1 {# group}
-          other {# groups}
-        } and {users, plural,
-          =0 {no users}
-          =1 {# user}
-          other {# users}
-        }.
-      unrestricted: "{appName} is configured to allow access to any {providerName} user."
     disabled:
       label: "{providerName} is not configured"
-      warning: "{appName} can be configured to restrict access to a set of {providerName} users and groups.  This is not currently set up, so anybody that reach this page (or the API) has full control over the system."
 
   accessEnabled:
     header: Authentication
