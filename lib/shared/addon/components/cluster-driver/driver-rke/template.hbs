@@ -1,10 +1,11 @@
 {{#if (or isEdit (eq step 1))}}
   {{#accordion-list showExpandAll=false as |al expandFn|}}
     {{#accordion-list-item
-      title=(t 'clusterNew.rke.customize.label')
-      detail=(t 'clusterNew.rke.customize.detail')
-      expandAll=al.expandAll
-      expand=(action expandFn)
+         title=(t 'clusterNew.rke.customize.label')
+         detail=(t 'clusterNew.rke.customize.detail')
+         expandOnInit=(eq mode "edit" true false)
+         expandAll=al.expandAll
+         expand=(action expandFn)
     }}
       <div class="row">
         <div class="btn-group  pull-right">
@@ -26,10 +27,10 @@
         </div>
         <div class="mt-25">
           {{input-yaml
-            showUpload=false
-            showDownload=false
-            canChangeName=false
-            value=value
+              showUpload=false
+              showDownload=false
+              canChangeName=false
+              value=value
           }}
         </div>
         {{copy-to-clipboard tooltipText="" buttonText="copyToClipboard.tooltip" clipboardText=value class="with-clip"}}
@@ -38,18 +39,18 @@
           <div class="col span-4">
             <label class="acc-label">{{t 'clusterNew.rke.version.label'}}</label>
             {{new-select
-              content=versionChoices
-              optionLabelPath='value'
-              value=config.kubernetesVersion
+                content=versionChoices
+                optionLabelPath='value'
+                value=config.kubernetesVersion
             }}
           </div>
           <div class="col span-4">
             <label class="acc-label">{{t 'clusterNew.rke.network.label'}}</label>
             {{new-select
-              classNames="form-control"
-              content=networkChoices
-              localizedLabel=true
-              value=config.network.plugin
+                classNames="form-control"
+                content=networkChoices
+                localizedLabel=true
+                value=config.network.plugin
             }}
           </div>
           <div class="col span-4">
@@ -92,13 +93,13 @@
             {{#if config.services.kubeApi.podSecurityPolicy}}
               <label class="acc-label">{{t 'clusterNew.psp.label'}}{{field-required}}</label>
               {{new-select
-                content=model.psps
-                optionLabelPath='displayName'
-                optionValuePath='id'
-                prompt='clusterNew.psp.prompt'
-                localizedPrompt=true
-                value=cluster.defaultPodSecurityPolicyTemplateId
-                disabled=(not config.services.kubeApi.podSecurityPolicy)
+                  content=model.psps
+                  optionLabelPath='displayName'
+                  optionValuePath='id'
+                  prompt='clusterNew.psp.prompt'
+                  localizedPrompt=true
+                  value=cluster.defaultPodSecurityPolicyTemplateId
+                  disabled=(not config.services.kubeApi.podSecurityPolicy)
               }}
             {{else}}
               <label class="acc-label">{{t 'clusterNew.psp.label'}}</label>
@@ -120,12 +121,12 @@
 
   {{#unless isCustom}}
     {{cru-node-pools
-      mode=mode
-      cluster=cluster
-      driver=nodeWhich
-      nodeTemplates=model.nodeTemplates
-      registerHook=(action "registerHook")
-      setNodePoolErrors=(action "setNodePoolErrors")
+        mode=mode
+        cluster=cluster
+        driver=nodeWhich
+        nodeTemplates=model.nodeTemplates
+        registerHook=(action "registerHook")
+        setNodePoolErrors=(action "setNodePoolErrors")
     }}
   {{/unless}}
 {{/if}}
@@ -133,10 +134,10 @@
 {{#if (and isCustom (eq step 2)) }}
   <div class="mt-20">
     {{banner-message color="bg-info" message=(t 'clusterNew.rke.command.instructions'
-      appName=settings.appName
-      docsBase=settings.docsBase
-      htmlSafe=true
-    )}}
+        appName=settings.appName
+        docsBase=settings.docsBase
+        htmlSafe=true
+        )}}
   </div>
 
   <div class="copy-pre mt-20 mb-20">
@@ -150,11 +151,11 @@
 
   {{#accordion-list showExpandAll=false as |al expandFn|}}
     {{#accordion-list-item
-      title=(t 'clusterNew.rke.role.title')
-      detail=(t 'clusterNew.rke.role.detail')
-      expandOnInit=true
-      expandAll=al.expandAll
-      expand=(action expandFn)
+         title=(t 'clusterNew.rke.role.title')
+         detail=(t 'clusterNew.rke.role.detail')
+         expandOnInit=true
+         expandAll=al.expandAll
+         expand=(action expandFn)
     }}
       <div class="row">
         <div class="col span-4 text-center mt-0 mb-0">
@@ -170,11 +171,11 @@
     {{/accordion-list-item}}
 
     {{#accordion-list-item
-      title=(t 'clusterNew.rke.address.title')
-      detail=(t 'clusterNew.rke.address.detail')
-      expandOnInit=true
-      expandAll=al.expandAll
-      expand=(action expandFn)
+         title=(t 'clusterNew.rke.address.title')
+         detail=(t 'clusterNew.rke.address.detail')
+         expandOnInit=true
+         expandAll=al.expandAll
+         expand=(action expandFn)
     }}
       <div class="row">
         <div class="col span-6">
@@ -205,10 +206,10 @@
     {{/accordion-list-item}}
 
     {{form-user-labels
-      setLabels=(action 'setLabels')
-      expandAll=al.expandAll
-      expand=(action expandFn)
-      detailKey="formUserLabels.nodeDetail"
+        setLabels=(action 'setLabels')
+        expandAll=al.expandAll
+        expand=(action expandFn)
+        detailKey="formUserLabels.nodeDetail"
     }}
   {{/accordion-list}}
 
