@@ -33,7 +33,6 @@ export default Resource.extend({
 
     clone() {
 
-      debugger;
       const clone = this.cloneForNew();
 
       this.get('modalService').toggleModal('modal-edit-catalog', clone);
