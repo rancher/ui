@@ -369,13 +369,13 @@ authPage:
         =1{#个用户}
         other{#个用户}
         }以环境成员身份访问.
-      unrestricted: "{appName}已被设置为允许任何{providerName}用户访问"
+      unrestricted: "{appName}已被设置为允许任何{providerName}用户访问。"
       authenticated:
         header:
           text: 认证
       disableAccess:
         header: '危险区域&trade;'
-        warning: '<b class="text-danger">警告:</b>禁用访问控制将导致任何能够访问此页面或API的用户拥有对{appName}的完全控制权限'
+        warning: '<b class="text-danger">警告:</b>禁用访问控制将导致任何能够访问此页面或API的用户拥有对{appName}的完全控制权限。'
         confirmDisable: "确认? 再次点击将关闭访问控制"
         disable: 关闭访问控制
       groupsField: '组︰'
@@ -385,7 +385,7 @@ authPage:
     disabled:
       header: '1. 配置Shibboleth账号'
       label: "{providerName}未配置"
-      warning: "{appName}可以设置为允许一组{providerName}用户和组织成员访问。 由于当前未完成此设置，所以任何可以访问此页面(或API)的用户都对系统有完全控制权限"
+      warning: "{appName}可以设置为允许一组{providerName}用户和组织成员访问。 由于当前未完成此设置，所以任何可以访问此页面(或API)的用户都对系统有完全控制权限。"
       name:
         labelText: 显示名称字段
       username:
@@ -445,14 +445,14 @@ authPage:
           helpText: "要修改设置的GitHub应用，请在下方禁用访问控制后重新设置"
       disableAccess:
         header: "危险区域&trade;"
-        warning: '<b class="text-danger">警告:</b>禁用访问控制将导致任何能够访问此页面或API的用户拥有对{appName}的完全控制权限'
+        warning: '<b class="text-danger">警告:</b>禁用访问控制将导致任何能够访问此页面或API的用户拥有对{appName}的完全控制权限。'
         confirmDisable: "确认? 再次点击将关闭访问控制"
         disable: 禁用Github访问
     notAuthenticated:
       header: "1. 设置GitHub应用"
       ul:
         li1:
-          text: '标准GitHub，<a href="https://github.com/settings/developers" target="_blank">点击此处</a>并在弹出的新窗口中进行应用设置'
+          text: '标准GitHub，<a href="https://github.com/settings/developers" target="_blank">点击此处</a>并在弹出的新窗口中进行应用设置。'
           ul:
             li1: "企业版GitHub，请登录你的账号，点击Settings，然后点击Applications进行设置"
         li2:
@@ -552,7 +552,7 @@ authPage:
         placeholder: '例如：jsmith'
       password:
         label: 登录密码
-      pre: 通过Azure验证
+      pre: Azure验证
       post: 等待Azure返回
       authError: 'Azure访问未认证授权'
       popupError: '请关闭窗口，然后再次点击认证按钮进行认证'
@@ -1468,17 +1468,17 @@ notifierPage:
       以下是<a href="https://get.slack.help/hc/en-us/articles/115005265063-Incoming-WebHooks-for-Slack" target="_blank" rel="nofollow noopener noreferrer">创建传入WebHooks</a>的方法。
 
   smtp:
-    server: Smtp服务器
-    host: 主机
+    server: Smtp服务器配置
+    host: Smtp服务器地址
     hostPlaceholder: 例如：192.168.1.121
     port: 端口
     portPlaceholder: '例如: 465'
-    sender: 发送人
+    sender: 默认发件箱
     userName: 用户名
     userNamePlaceholder: 例如：John
     password: 密码
     passwordPlaceholder: 你的密码
-    defaultRecipient: 默认收件人(地址)
+    defaultRecipient: 默认收件箱
     defaultRecipientPlaceholder: 例如：you@example.com
   pagerduty:
     serviceKey: 服务密钥
@@ -1511,9 +1511,9 @@ ldap:
     ad: Active Directory
     freeipa: FreeIPA
     saveLabels:
-      openldap: 使用OpenLDAP进行身份验证
-      ad: 使用Active Directory进行身份验证
-      freeipa: 使用FreeIPA进行身份验证
+      openldap: OpenLDAP验证
+      ad: Active Directory验证
+      freeipa: FreeIPA验证
   header:
     enabled:
       label: "{providerName}已启用"
@@ -1591,6 +1591,8 @@ ldap:
       placeholder: "例如：mycompany"
     serviceAccountDistinguishedName:
       labelText: 服务帐户专有名称
+    connectionTimeout:
+      labelText: 服务连接超时
   customizeSchema:
     header: "2. 自定义架构"
     helpText: "如果你的活动目录架构(Schema)不是标准格式，可以在这里进行自定义设置"
@@ -1632,6 +1634,13 @@ ldap:
       groupDN:
         labelText: 组DN属性
         placeholder: 专有名称
+      nestedGroup:
+        title: Nested Group Membership
+        enabled:
+          labelText: Search direct and nested group memberships
+          helpText: Nested search may be slower in large directories
+        disabled:
+          labelText: Search only direct group memberships
   testAuth:
     header: "3. 测试并启用验证"
     helpText: "通过你的{providerName}账号进行验证测试以确认配置是否正确:"
@@ -1791,7 +1800,7 @@ catalogSettings:
       pl: 认证的库
     detail:
       rancher: Rancher核心功能所依赖的模板，例如Kubernetes/Mesos/Swarm编排支持，由Rancher官方维护并提供支持。
-      pl: 由官方维护的核心功能所需要的模板，例如Kubernetes/Mesos/Swarm等
+      pl: 由官方维护的核心功能所需要的模板，例如Kubernetes/Mesos/Swarm等。
   community:
     header:
       rancher: 社区贡献
@@ -1805,9 +1814,9 @@ catalogSettings:
       header: "您可以自定义其他应用商店地址，每个自定义应用商店需要有以下内容:"
       help-name: 唯一的名称
       help-repo: '仓库URL地址:'
-      help-branch: "<i>可选</i> : 如果使用基于Git的应用商店，则还需要设置分支名称"
-      help-git: "基于Git的商店URL地址, <i>例如: https://github.com/rancher/charts.git</i>"
-      help-chart: 'Helm Charts server URL, <i>例如: https://kubernetes-charts.storage.googleapis.com/ (详细信息可查看<a href="https://docs.helm.sh/developing_charts/#hosting-chart-repositories" target="_blank" rel="nofollow noopener noreferrer">Chart托管仓库</a>)</i>'
+      help-branch: "<i>可选</i> : 如果使用基于Git的应用商店，则还需要设置分支名称。"
+      help-git: "基于Git的商店URL地址, 例如: https://github.com/rancher/charts.git。"
+      help-chart: 'Helm Charts server URL,例如: https://kubernetes-charts.storage.googleapis.com/(详细信息可查看<a href="https://docs.helm.sh/developing_charts/#hosting-chart-repositories" target="_blank" rel="nofollow noopener noreferrer">Chart托管仓库</a>)。'
     addActionLabel: 添加应用商店
     noMatch: 没有与当前搜索匹配的应用商店
     noData: 没有自定义应用商店
@@ -1826,7 +1835,7 @@ catalogSettings:
       label: 分支
       placeholder: '例如：master'
   errors:
-    nameInExists: '在启用{key}之前，请移除名称为{key}的应用商店'
+    nameInExists: '在启用{key}之前，请移除名称为{key}的应用商店。'
 clusterRow:
   noMatch: 没有匹配当前搜索的环境。
   noData: 集群中还没有任何环境。
@@ -2863,7 +2872,7 @@ dangerZone:
   subtext: "通常情况下用户不需要修改以下设置。请谨慎操作，不正确的值可能导致{appName}运行不正常。<br/>修改默认设置后将以<b>粗体</b>显示配置名"
   showLabel: 我已确认修改高级设置可能导致{appName}出问题
   description:
-    'cacerts': "验证服务器ssl证书所需的CA证书"
+    'cacerts': "验证ssl证书所需的CA证书。此CA证书仅适用于自签名SSL证书,若SSL证书是权威CA机构所颁发，则要求删除此CA证书"
     'engine-install-url': '默认的Docker引擎安装URL(用于大多数Machine Drivers)'
     'engine-iso-url': '默认OS安装URL(用于Machine vSphere Drivers)'
     'engine-newest-version': '当前Rancher Server支持的Docker最新版本，不支持的版本或比此Docker版本新的将被标记为未测试'
