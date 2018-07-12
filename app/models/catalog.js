@@ -40,17 +40,4 @@ export default Resource.extend({
     }
   },
 
-  cloneForNew() {
-
-    var copy = this.clone();
-
-    delete copy.id;
-    delete copy.name;
-    delete copy.actionLinks;
-    delete copy.links;
-    delete copy.uuid;
-
-    return copy;
-
-  },
 });

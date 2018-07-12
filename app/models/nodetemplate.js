@@ -84,20 +84,6 @@ export default Resource.extend({
     }
   },
 
-  cloneForNew() {
-
-    const copy = this.clone();
-
-    delete copy.id;
-    delete copy.name;
-    delete copy.actionLinks;
-    delete copy.links;
-    delete copy.uuid;
-
-    return copy;
-
-  },
-
   _displayVar(keyOrFn) {
 
     const intl = get(this, 'intl');
