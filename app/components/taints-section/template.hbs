@@ -1,0 +1,38 @@
+{{#accordion-list-item
+     title=(t 'taintsSection.title')
+     detail=(t 'taintsSection.detail' resourceType=resourceType)
+     expandAll=expandAll
+     expand=(action expandFn)
+     componentName='sortable-table'
+     as | parent |
+}}
+  {{#component parent.intent
+       classNames="grid fixed mb-0 sortable-table"
+       bulkActions=false
+       rowActions=false
+       paging=false
+       search=true
+       sortBy=sortBy
+       stickyHeader=false
+       descending=descending
+       headers=headers
+       body=taints
+       as |sortable kind row|
+  }}
+    {{#if (eq kind "row")}}
+      <tr>
+        <td data-title="{{t 'annotationsSection.key'}}" >{{row.key}}</td>
+        <td data-title="{{t 'annotationsSection.value'}}" >{{row.value}}</td>
+        <td data-title="{{t 'annotationsSection.effect'}}" >{{row.effect}}</td>
+      </tr>
+    {{else if (eq kind "norows")}}
+      <tr>
+        <td colspan="{{sortable.fullColspan}}" class="text-center text-muted pt-20 pb-20">{{t 'taintsSection.noData'}}</td>
+      </tr>
+    {{else if (eq kind "nomatch")}}
+      <tr>
+        <td colspan="{{sortable.fullColspan}}" class="text-center text-muted pt-20 pb-20">{{t 'taintsSection.noMatch'}}</td>
+      </tr>
+    {{/if}}
+  {{/component}}
+{{/accordion-list-item}}
