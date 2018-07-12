@@ -67,7 +67,7 @@ module.exports = {
     "new-cap": "off",
     "no-caller": "error",
     "no-cond-assign": [ "error", "except-parens" ],
-    "no-console": "warn",
+    "no-console": "off",
     "no-debugger": "warn",
     "no-empty": "off",
     "no-eq-null": "error",
