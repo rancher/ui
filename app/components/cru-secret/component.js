@@ -6,15 +6,24 @@ import layout from './template';
 
 export default Component.extend(ViewNewEdit, OptionallyNamespaced, {
   layout,
-  model: null,
-
-  titleKey: 'newSecret.title',
-
-  scope:     'project',
-  namespace: null,
-
-  projectType:    'secret',
+  model:          null,
+  namespace:      null,
   namespacedType: 'namespacedSecret',
+  projectType:    'secret',
+  scope:          'project',
+  titleKey:       'newSecret.title',
+
+  init() {
+
+    this._super(...arguments);
+
+    if (get(this, 'model.type') === 'namespacedSecret') {
+
+      set(this, 'scope', 'namespace');
+
+    }
+
+  },
 
   actions: {
     updateData(map) {
@@ -42,7 +51,7 @@ export default Component.extend(ViewNewEdit, OptionallyNamespaced, {
   doSave() {
 
     let self = this;
-    let sup = self._super;
+    let sup  = self._super;
 
     return this.namespacePromise().then(() => sup.apply(self, arguments));
 
@@ -53,4 +62,5 @@ export default Component.extend(ViewNewEdit, OptionallyNamespaced, {
     this.sendAction('cancel');
 
   },
+
 });

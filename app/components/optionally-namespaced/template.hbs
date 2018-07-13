@@ -1,7 +1,7 @@
 <div class="row">
   <div class="col span-6" style="{{if isNew 'min-height: 106px;'}}">
     <label class="acc-label">{{t 'optionallyNamespaced.scope.label'}}</label>
-    {{#if isNew}}
+    {{#if (xor isNew (not isClone))}}
       <div class="radio">
         <label>{{radio-button selection=scope value="project"}}&nbsp;{{t 'optionallyNamespaced.scope.project'}}</label>
       </div>
@@ -19,7 +19,7 @@
     {{/if}}
   </div>
 
-  {{#if (and isNew (eq scope "namespace"))}}
+  {{#if (xor (and isNew (eq scope "namespace")) (not isClone))}}
     <div class="col span-6 box">
       {{form-namespace
         namespace=namespace
