@@ -175,20 +175,22 @@ const App = Resource.extend(StateCounts, EndpointPorts, {
 
   },
 
-  canEdit: false,
+  canEdit:  false,
 
   actions: {
     upgrade() {
 
-      let templateId = get(this, 'externalIdInfo.templateId');
-
-      let catalogId = get(this, 'externalIdInfo.catalog');
+      const templateId    = get(this, 'externalIdInfo.templateId');
+      const catalogId     = get(this, 'externalIdInfo.catalog');
+      const vKeys         = Object.keys(get(this, 'catalogTemplate.versionLinks'));
+      const latestVersion =  vKeys[vKeys.length - 1];
 
       get(this, 'router').transitionTo('catalog-tab.launch', templateId, {
         queryParams: {
+          appId:       get(this, 'id'),
           catalog:     catalogId,
           namespaceId: get(this, 'targetNamespace'),
-          appId:       get(this, 'id')
+          upgrade:     latestVersion,
         }
       });
 
