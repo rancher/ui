@@ -95,6 +95,10 @@
            expanded=expanded
            expand=(action expandFn)
       }}
+        {{#if model.cluster.internal}}
+          {{banner-message icon='icon-alert' color='bg-error mt-0 mb-10' message=(t 'clusterPage.internal' appName=settings.appName htmlSafe=true)}}
+        {{/if}}
+
         {{form-members
             creator=model.me
             editing=notView
