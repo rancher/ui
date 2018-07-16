@@ -1,10 +1,11 @@
 {{#if (or isEdit (eq step 1))}}
   {{#accordion-list showExpandAll=false as |al expandFn|}}
     {{#accordion-list-item
-      title=(t 'clusterNew.rke.customize.label')
-      detail=(t 'clusterNew.rke.customize.detail')
-      expandAll=al.expandAll
-      expand=(action expandFn)
+         title=(t 'clusterNew.rke.customize.label')
+         detail=(t 'clusterNew.rke.customize.detail')
+         expandOnInit=(eq mode "edit" true false)
+         expandAll=al.expandAll
+         expand=(action expandFn)
     }}
       <div class="row">
         <div class="btn-group  pull-right">
@@ -26,10 +27,10 @@
         </div>
         <div class="mt-25">
           {{input-yaml
-            showUpload=false
-            showDownload=false
-            canChangeName=false
-            value=value
+              showUpload=false
+              showDownload=false
+              canChangeName=false
+              value=value
           }}
         </div>
         {{copy-to-clipboard tooltipText="" buttonText="copyToClipboard.tooltip" clipboardText=value class="with-clip"}}
@@ -38,18 +39,19 @@
           <div class="col span-4">
             <label class="acc-label">{{t 'clusterNew.rke.version.label'}}</label>
             {{new-select
-              content=versionChoices
-              optionLabelPath='value'
-              value=config.kubernetesVersion
+                content=versionChoices
+                optionLabelPath='value'
+                value=config.kubernetesVersion
             }}
           </div>
           <div class="col span-4">
             <label class="acc-label">{{t 'clusterNew.rke.network.label'}}</label>
             {{new-select
-              classNames="form-control"
-              content=networkChoices
-              localizedLabel=true
-              value=config.network.plugin
+                classNames="form-control"
+                content=networkChoices
+                localizedLabel=true
+                value=config.network.plugin
+                disabled=isEdit
             }}
           </div>
           <div class="col span-4">
@@ -92,13 +94,13 @@
             {{#if config.services.kubeApi.podSecurityPolicy}}
               <label class="acc-label">{{t 'clusterNew.psp.label'}}{{field-required}}</label>
               {{new-select
-                content=model.psps
-                optionLabelPath='displayName'
-                optionValuePath='id'
-                prompt='clusterNew.psp.prompt'
-                localizedPrompt=true
-                value=cluster.defaultPodSecurityPolicyTemplateId
-                disabled=(not config.services.kubeApi.podSecurityPolicy)
+                  content=model.psps
+                  optionLabelPath='displayName'
+                  optionValuePath='id'
+                  prompt='clusterNew.psp.prompt'
+                  localizedPrompt=true
+                  value=cluster.defaultPodSecurityPolicyTemplateId
+                  disabled=(not config.services.kubeApi.podSecurityPolicy)
               }}
             {{else}}
               <label class="acc-label">{{t 'clusterNew.psp.label'}}</label>
@@ -120,96 +122,164 @@
 
   {{#unless isCustom}}
     {{cru-node-pools
-      mode=mode
-      cluster=cluster
-      driver=nodeWhich
-      nodeTemplates=model.nodeTemplates
-      registerHook=(action "registerHook")
-      setNodePoolErrors=(action "setNodePoolErrors")
+        mode=mode
+        cluster=cluster
+        driver=nodeWhich
+        nodeTemplates=model.nodeTemplates
+        registerHook=(action "registerHook")
+        setNodePoolErrors=(action "setNodePoolErrors")
     }}
   {{/unless}}
 {{/if}}
 
 {{#if (and isCustom (eq step 2)) }}
-  <div class="mt-20">
-    {{banner-message color="bg-info" message=(t 'clusterNew.rke.command.instructions'
-      appName=settings.appName
-      docsBase=settings.docsBase
-      htmlSafe=true
-    )}}
-  </div>
-
-  <div class="copy-pre mt-20 mb-20">
-    {{#if loading}}
-      <div class="text-center"><i class="icon icon-spinner icon-spin"></i> {{t 'generic.loading'}}</div>
-    {{else if command}}
-      {{copy-to-clipboard clipboardText=command tagName="div" classNames="copy-to-pre"}}
-      <pre id="registration-command" style="font-size: 14px;">{{command}}</pre>
-    {{/if}}
-  </div>
 
   {{#accordion-list showExpandAll=false as |al expandFn|}}
     {{#accordion-list-item
-      title=(t 'clusterNew.rke.role.title')
-      detail=(t 'clusterNew.rke.role.detail')
-      expandOnInit=true
-      expandAll=al.expandAll
-      expand=(action expandFn)
+         title=(t 'clusterNew.rke.role.pageheader')
+         detail=(t 'clusterNew.rke.info.text')
+         expandOnInit=true
+         expandAll=al.expandAll
+         expand=(action expandFn)
     }}
-      <div class="row">
-        <div class="col span-4 text-center mt-0 mb-0">
-          <label class="p-10 pl-30 pr-30">{{input type="checkbox" checked=etcd}} {{t 'clusterNew.rke.role.header.etcd'}}</label>
-        </div>
-        <div class="col span-4 text-center mt-0 mb-0">
-          <label class="p-10 pl-30 pr-30">{{input type="checkbox" checked=controlplane}} {{t 'clusterNew.rke.role.header.controlplane'}}</label>
-        </div>
-        <div class="col span-4 text-center mt-0 mb-0">
-          <label class="p-10 pl-30 pr-30">{{input type="checkbox" checked=worker}} {{t 'clusterNew.rke.role.header.worker'}}</label>
-        </div>
-      </div>
+      <section>
+        <p>
+          <ol class="alphalist ml-40 list-unstyled">
+            <li>
+              <ul class="list-unstyled">
+                <div class="pb-10">
+                  <h3 class="mb-0">{{t 'clusterNew.rke.role.sectionheader'}}</h3>
+                  <p class="help-block">{{t 'clusterNew.rke.role.detail'}}</p>
+                </div>
+                <li>
+                  {{t 'clusterNew.rke.role.title'}}
+                </li>
+                <li>
+                  <div class="row">
+                    <div class="col span-4 text-center mt-0 mb-0">
+                      <label class="p-10 pl-30 pr-30">{{input type="checkbox" checked=etcd}} {{t 'clusterNew.rke.role.header.etcd'}}</label>
+                    </div>
+                    <div class="col span-4 text-center mt-0 mb-0">
+                      <label class="p-10 pl-30 pr-30">{{input type="checkbox" checked=controlplane}} {{t 'clusterNew.rke.role.header.controlplane'}}</label>
+                    </div>
+                    <div class="col span-4 text-center mt-0 mb-0">
+                      <label class="p-10 pl-30 pr-30">{{input type="checkbox" checked=worker}} {{t 'clusterNew.rke.role.header.worker'}}</label>
+                    </div>
+                  </div>
+                  {{#advanced-section advanced=advanced}}
+                    <div class="row mt-20">
+                      {{t 'clusterNew.rke.address.title'}}
+                      <p class="help-block">{{t 'clusterNew.rke.address.detail'}}</p>
+                      <ul class="list-unstyled">
+                        <li>
+                          <div class="row">
+                            <div class="col span-6">
+                              <label class="acc-label">{{t 'clusterNew.rke.address.public.label'}}</label>
+                              {{input type="text" value=address placeholder=(t 'clusterNew.rke.address.public.placeholder')}}
+                              {{#unless isAddressValid}}
+                                <div class="banner bg-warning">
+                                  <div class="banner-icon"><span class="icon icon-alert"></span></div>
+                                  <div class="banner-message">
+                                    <p>{{t 'clusterNew.rke.address.warning'}}</p>
+                                  </div>
+                                </div>
+                              {{/unless}}
+                            </div>
+                            <div class="col span-6">
+                              <label class="acc-label">{{t 'clusterNew.rke.address.private.label'}}</label>
+                              {{input type="text" value=internalAddress placeholder=(t 'clusterNew.rke.address.private.placeholder')}}
+                              {{#unless isInternalAddressValid}}
+                                <div class="banner bg-warning">
+                                  <div class="banner-icon"><span class="icon icon-alert"></span></div>
+                                  <div class="banner-message">
+                                    <p>{{t 'clusterNew.rke.address.warning'}}</p>
+                                  </div>
+                                </div>
+                              {{/unless}}
+                            </div>
+                          </div>
+                        </li>
+                      </ul>
+                    </div>
+                    <div class="row mt-20">
+                      {{t 'clusterNew.rke.labels.title'}}
+                      <p class="help-block">{{t 'clusterNew.rke.labels.detail'}}</p>
+                      <ul class="list-unstyled">
+                        <li>
+                          {{#form-user-labels
+                               setLabels=(action 'setLabels')
+                               expandAll=al.expandAll
+                               expand=(action expandFn)
+                               detailKey="formUserLabels.nodeDetail"
+                               as | userLabelArray removeLabel addUserLabel |
+                          }}
+                            {{#if userLabelArray.length}}
+                              <table class="table fixed no-lines mt-20">
+                                <tr class="hidden-xs hidden-sm">
+                                  <th>{{t 'formUserLabels.key.label'}}{{field-required}}</th>
+                                  <th width="30">&nbsp;</th>
+                                  <th>{{t 'formUserLabels.value.label'}}</th>
+                                  <th width="40">&nbsp;</th>
+                                </tr>
+                                {{#each userLabelArray as |label|}}
+                                  <tr>
+                                    <td data-title="key">
+                                      {{input-paste pasted="pastedLabels" class="form-control input-sm key" type="text" value=label.key placeholder="formUserLabels.key.placeholder" disabled=(eq label.readonly true)}}
+                                    </td>
+
+                                    <td class="text-center">
+                                      <p class="input-sm">{{t 'formUserLabels.separator'}}</p>
+                                    </td>
+
+                                    <td data-title="label">
+                                      {{input class="form-control input-sm" type="text" value=label.value placeholder=(t 'formUserLabels.value.placeholder') disabled=(eq label.readonly true)}}
+                                    </td>
+
+                                    <td class="text-right">
+                                      <button class="btn bg-primary btn-sm" {{action removeLabel label}} disabled={{eq label.readonly true}}><i class="icon icon-minus"/><span class="sr-only">{{t 'generic.remove'}}</span></button>
+                                    </td>
+                                  </tr>
+                                {{/each}}
+                              </table>
+                              <div class="protip pt-10">
+                                {{t 'formUserLabels.protip'}}
+                              </div>
+                            {{/if}}
+
+                            <button class="btn bg-link icon-btn" {{action addUserLabel}}>
+                              <span class="darken"><i class="icon icon-plus text-small"/></span>
+                              <span>{{t 'formUserLabels.addAction'}}</span>
+                            </button>
+                          {{/form-user-labels}}
+                        </li>
+                      </ul>
+                    </div>
+                  {{/advanced-section}}
+                </li>
+              </ul>
+            </li>
+            <li>
+              {{t 'clusterNew.rke.command.instructions'}}
+              {{!-- <p class="help-block">{{t 'clusterNew.rke.labels.detail'}}</p> --}}
+              <ul class="list-unstyled">
+                <li>
+                  <div class="copy-pre mt-20 mb-20">
+                    {{#if loading}}
+                      <div class="text-center"><i class="icon icon-spinner icon-spin"></i> {{t 'generic.loading'}}</div>
+                    {{else if command}}
+                      {{copy-to-clipboard clipboardText=command tagName="div" classNames="copy-to-pre"}}
+                      <pre id="registration-command" style="font-size: 14px;">{{command}}</pre>
+                    {{/if}}
+                  </div>
+                </li>
+              </ul>
+            </li>
+          </ol>
+        </p>
+
+      </section>
     {{/accordion-list-item}}
 
-    {{#accordion-list-item
-      title=(t 'clusterNew.rke.address.title')
-      detail=(t 'clusterNew.rke.address.detail')
-      expandOnInit=true
-      expandAll=al.expandAll
-      expand=(action expandFn)
-    }}
-      <div class="row">
-        <div class="col span-6">
-          <label class="acc-label">{{t 'clusterNew.rke.address.public.label'}}</label>
-          {{input type="text" value=address placeholder=(t 'clusterNew.rke.address.public.placeholder')}}
-          {{#unless isAddressValid}}
-            <div class="banner bg-warning">
-              <div class="banner-icon"><span class="icon icon-alert"></span></div>
-              <div class="banner-message">
-                <p>{{t 'clusterNew.rke.address.warning'}}</p>
-              </div>
-            </div>
-          {{/unless}}
-        </div>
-        <div class="col span-6">
-          <label class="acc-label">{{t 'clusterNew.rke.address.private.label'}}</label>
-          {{input type="text" value=internalAddress placeholder=(t 'clusterNew.rke.address.private.placeholder')}}
-          {{#unless isInternalAddressValid}}
-            <div class="banner bg-warning">
-              <div class="banner-icon"><span class="icon icon-alert"></span></div>
-              <div class="banner-message">
-                <p>{{t 'clusterNew.rke.address.warning'}}</p>
-              </div>
-            </div>
-          {{/unless}}
-        </div>
-      </div>
-    {{/accordion-list-item}}
-
-    {{form-user-labels
-      setLabels=(action 'setLabels')
-      expandAll=al.expandAll
-      expand=(action expandFn)
-      detailKey="formUserLabels.nodeDetail"
-    }}
   {{/accordion-list}}
 
   {{#if newNodeCount}}
@@ -220,6 +290,8 @@
       </div>
     </div>
   {{/if}}
+
+
 {{/if}}
 
 {{top-errors errors=errors}}

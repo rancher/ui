@@ -30,9 +30,9 @@
         </div>
         <hr/>
         {{#if isEnterprise }}
-          <div><b>{{t 'authPage.github.authenticated.header.enterpriseHostName'}} </b> <span class="text-muted">{{githubConfig.hostname}}</span></div>
+          <div><b>{{t 'authPage.github.authenticated.header.enterpriseHostName'}} </b> <span class="text-muted">{{authConfig.hostname}}</span></div>
         {{/if}}
-        <div><b>{{t 'authPage.github.authenticated.header.clientId.text'}} </b> <span class="text-muted">{{githubConfig.clientId}}</span></div>
+        <div><b>{{t 'authPage.github.authenticated.header.clientId.text'}} </b> <span class="text-muted">{{authConfig.clientId}}</span></div>
       </section>
     {{/accordion-list-item}}
 
@@ -47,7 +47,7 @@
          title=(t 'siteAccess.header')
     }}
       {{site-access
-          model=githubConfig
+          model=authConfig
           principals=model.principals
           collection='siteAccess.organizations'
       }}
@@ -104,7 +104,7 @@
             <div class="col span-6">
               <div class="inline-form">
                 <label class="acc-label pb-5">{{t 'authPage.github.notAuthenticated.form.clientId.labelText'}}{{field-required}}</label>
-                {{input type="text" name="username" value=githubConfig.clientId classNames="form-control"}}
+                {{input type="text" name="username" value=authConfig.clientId classNames="form-control"}}
                 <p class="help-block">{{t 'authPage.github.notAuthenticated.form.subtext'}}</p>
 
               </div>
@@ -112,7 +112,7 @@
             <div class="col span-6">
               <div class="inline-form">
                 <label class="acc-label pb-5">{{t 'authPage.github.notAuthenticated.form.clientSecret.labelText'}}{{field-required}}</label>
-                {{input type="password" name="password" value=githubConfig.clientSecret classNames="form-control"}}
+                {{input type="password" name="password" value=authConfig.clientSecret classNames="form-control"}}
               </div>
               <div class="checkbox pt-10">
                 <label class="acc-label pb-5">{{input type="checkbox" checked=isEnterprise}} {{t 'authPage.github.notAuthenticated.form.ghEnterprise.labelText'}} (disabled)</label>
@@ -124,7 +124,7 @@
               {{/liquid-if}}
               {{#liquid-if isEnterprise}}
                 <label class="acc-label pb-5">{{t 'authPage.github.notAuthenticated.form.enterpriseHost.labelText'}}{{field-required}}</label>
-                {{input type="text" value=githubConfig.hostname classNames="form-control" placeholder=(t 'authPage.github.notAuthenticated.form.enterpriseHost.placeholder')}}
+                {{input type="text" value=authConfig.hostname classNames="form-control" placeholder=(t 'authPage.github.notAuthenticated.form.enterpriseHost.placeholder')}}
               {{/liquid-if}}
             </div>
           </div>

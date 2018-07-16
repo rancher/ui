@@ -317,59 +317,8 @@ apiPage:
     noData: There are no API keys defined
 
 authPage:
-  freeipa:
-    providerName: FreeIPA
-    header:
-      enabled:
-        label: "{providerName} is enabled"
-        required: |
-          {appName} is configured to allow access to {groups, plural,
-            =0 {no groups}
-            =1 {# group}
-            other {# groups}
-          } and {users, plural,
-            =0 {no users}
-            =1 {# user}
-            other {# users}
-          }.
-        restricted: |
-          {appName} is configured to allow access to environment members, {groups, plural,
-            =0 {no groups}
-            =1 {# group}
-            other {# groups}
-          } and {users, plural,
-            =0 {no users}
-            =1 {# user}
-            other {# users}
-          }.
-        unrestricted: "{appName} is configured to allow access to any {providerName} user."
-      disabled:
-        label: "{providerName} is not configured"
-        warning: "{appName} can be configured to restrict access to a set of {providerName} users and groups.  This is not currently set up, so anybody that reach this page (or the API) has full control over the system."
   shibboleth:
     enabled:
-      header: "{providerName} is enabled"
-      required: |
-        {appName} is configured to allow access to {orgs, plural,
-          =0 {no organizations}
-          =1 {# organization}
-          other {# organizations}
-        } and {users, plural,
-          =0 {no users}
-          =1 {# user}
-          other {# users}
-        }.
-      restricted: |
-        {appName} is configured to allow access to environment members, {orgs, plural,
-          =0 {no organizations}
-          =1 {# organization}
-          other {# organizations}
-        } and {users, plural,
-          =0 {no users}
-          =1 {# user}
-          other {# users}
-        }.
-      unrestricted: "{appName} is configured to allow access to any {providerName} user."
       authenticated:
         header:
           text: Authentication
@@ -385,7 +334,6 @@ authPage:
     disabled:
       header: '1. Configure Shibboleth Account'
       label: "{providerName} is not configured"
-      warning: "{appName} can be configured to restrict access to a set of {providerName} users and groups.  This is not currently set up, so anybody that reach this page (or the API) has full control over the system."
       name:
         labelText: Display Name Field
       username:
@@ -408,34 +356,8 @@ authPage:
     standard: GitHub
     enterprise: GitHub Enterprise
     header:
-      enabled:
-        label: "{github} is enabled"
-        # required: "{appName} is configured to allow access to authorized users and organizations."
-        # restricted: "{appName} is configured to allow access to project members, authorized users and organizations."
-        required: |
-          {appName} is configured to allow access to {orgs, plural,
-            =0 {no organizations}
-            =1 {# organization}
-            other {# organizations}
-          } and {users, plural,
-            =0 {no users}
-            =1 {# user}
-            other {# users}
-          }.
-        restricted: |
-          {appName} is configured to allow access to project members, {orgs, plural,
-            =0 {no organizations}
-            =1 {# organization}
-            other {# organizations}
-          } and {users, plural,
-            =0 {no users}
-            =1 {# user}
-            other {# users}
-          }.
-       # unrestricted: "{appName} is configured to allow access to any {github} user."
       disabled:
         label: GitHub is not configured
-        warning: "{appName} can be configured to restrict access to a set of GitHub users and organization members."
     authenticated:
       header:
         text: Authentication
@@ -488,32 +410,8 @@ authPage:
       popupError: 'Please disable your pop-up blocker and click "Authenticate" again.'
   azuread:
     header:
-      enabled:
-        label: "Azure AD is enabled"
-        required: |
-          {appName} is configured to allow access to {groups, plural,
-            =0 {no groups}
-            =1 {# group}
-            other {# groups}
-          } and {users, plural,
-            =0 {no users}
-            =1 {# user}
-            other {# users}
-          }.
-        restricted: |
-          {appName} is configured to allow access to environment members, {groups, plural,
-            =0 {no groups}
-            =1 {# group}
-            other {# groups}
-          } and {users, plural,
-            =0 {no users}
-            =1 {# user}
-            other {# users}
-          }.
-        unrestricted: "{appName} is configured to allow access to any Azure AD user."
       disabled:
         label: "Azure AD is not configured"
-        warning: "{appName} can be configured to restrict access to a set of Azure AD users and groups"
     enabled:
       header: 'Danger Zone&trade;'
       reallyDisable: 'Are you sure?  Click again to really disable access control'
@@ -1516,62 +1414,38 @@ ldap:
       ad: Authenticate with Active Directory
       freeipa: Authenticate with FreeIPA
   header:
-    enabled:
-      label: "{providerName} is enabled"
-      required: |
-        {appName} is configured to allow access to {groups, plural,
-          =0 {no groups}
-          =1 {# group}
-          other {# groups}
-        } and {users, plural,
-          =0 {no users}
-          =1 {# user}
-          other {# users}
-        }.
-      restricted: |
-        {appName} is configured to allow access to environment members, {groups, plural,
-          =0 {no groups}
-          =1 {# group}
-          other {# groups}
-        } and {users, plural,
-          =0 {no users}
-          =1 {# user}
-          other {# users}
-        }.
-      unrestricted: "{appName} is configured to allow access to any {providerName} user."
     disabled:
       label: "{providerName} is not configured"
-      warning: "{appName} can be configured to restrict access to a set of {providerName} users and groups.  This is not currently set up, so anybody that reach this page (or the API) has full control over the system."
-
   accessEnabled:
     header: Authentication
     subtext: "To change the server configuration, disable access control below and then set it up again."
+    serviceAccountDistinguishedName:
+      labelText: "Service Account Distinguished Name:"
+    connectionTimeout:
+      labelText: "Server Connection Timeout:"
     general:
       header: General
       server: "Server:"
       tls: "TLS:"
-      serviceAccount: "Service Account:"
+      serviceAccount: "Service Account Username:"
       searchBase: "Search Base:"
       defaultDomain: "Default Domain:"
     users:
       header: Users
       objectClass: "Object Class:"
-      login: "Login Field:"
-      name: "Name Field:"
-      search: "Search Field:"
-      enabled: "Status Field:"
+      login: "Login Attribute:"
+      name: "Username Attribute:"
+      search: "Search Attribute:"
+      enabled: "Status Attribute:"
       disabledBitMask: "Disabled BitMask:"
     group:
       header: Group
       objectClass: "Object Class:"
-      name: "Name Field:"
-      search: "Search Field:"
+      name: "Name Attribute:"
+      search: "Search Attribute:"
     disable:
-      header: "Danger Zone&trade;"
-      warning: '<b class="text-danger">Caution:</b> Disabling access control will give complete control over {appName} to anyone that can reach this page or the API.'
       confirmDisable:
         pre: Disable access control
-        post: "Are you sure?  Click again to really disable access control"
   accessConfig:
     header: "1. Configure an {providerName} server"
     subtext1: "Enter the address, port, and protocol to connect to your {providerName} server.  <code>389</code> is the standard port for insecure, <code>636</code> for TLS."
@@ -2049,7 +1923,7 @@ clusterNew:
         placeholder: Time for an election to timeout
     address:
       title: Node Address
-      detail: Configure the public address and internal address for machines
+      detail: Optionally configure the public address and internal address for machines
       warning: This doesn't look like an address
       public:
         label: Public Address
@@ -2062,6 +1936,9 @@ clusterNew:
     customize:
       label: Cluster Options
       detail: "Customize Kubernetes options for the cluster"
+    labels:
+      title: Node Labels
+      detail: Optional lables to be applied to the node
     nodes:
       title: Node Pools
       detail: Configure the machines that will make up the cluster
@@ -2077,6 +1954,8 @@ clusterNew:
         other {# new nodes have registered}
       }
     done: Done
+    info:
+      text: Editing node options will update the command you will run on your existing machines
     command:
       instructions: 'Run this command on one or more existing machines already running a supported version of Docker.'
     auth:
@@ -2121,6 +2000,8 @@ clusterNew:
     podSecurityPolicy:
       label: Pod Security Policy Support
     role:
+      pageheader: Customize Node Run Command
+      sectionheader: Node Options
       title: Node Role
       detail: Choose what roles the node will have in the cluster
       header:
