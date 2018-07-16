@@ -176,6 +176,7 @@ const App = Resource.extend(StateCounts, EndpointPorts, {
   },
 
   canEdit:  false,
+  canClone: true,
 
   actions: {
     upgrade() {
@@ -200,7 +201,23 @@ const App = Resource.extend(StateCounts, EndpointPorts, {
 
       get(this, 'modalService').toggleModal('modal-rollback-app', { originalModel: this });
 
+    },
+
+    clone() {
+
+      const templateId    = get(this, 'externalIdInfo.templateId');
+      const catalogId     = get(this, 'externalIdInfo.catalog');
+
+      get(this, 'router').transitionTo('catalog-tab.launch', templateId, {
+        queryParams: {
+          appId:       get(this, 'id'),
+          catalog:     catalogId,
+          namespaceId: get(this, 'targetNamespace'),
+          clone:       true
+        }
+      });
     }
+
   },
 
 })
