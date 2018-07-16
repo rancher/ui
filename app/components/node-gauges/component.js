@@ -46,7 +46,7 @@ export default Component.extend({
 
     return this.getGauge('cpu',
       (u, t) => formatSi(u, 1000, '', '', 0, exponentNeeded(t), 1).replace(/\s.*$/, ''),
-      (t) => formatSi(t, 1000, '', '', 0, exponentNeeded(t), 1)
+      (t) => formatSi(t, 1000, '', '', 0, exponentNeeded(t), 1), 'reserved',
     );
 
   },
@@ -55,7 +55,7 @@ export default Component.extend({
 
     return this.getGauge('memory',
       (u, t) => formatSi(u, 1024, '', '', 0, exponentNeeded(t), 1).replace(/\s.*$/, ''),
-      (t) => formatSi(t, 1024, 'iB', 'B', 0, exponentNeeded(t), 1)
+      (t) => formatSi(t, 1024, 'iB', 'B', 0, exponentNeeded(t), 1), 'reserved',
     );
 
   },
@@ -64,19 +64,19 @@ export default Component.extend({
 
     return this.getGauge('pods',
       (u, t) => formatSi(u, 1000, '', '', 0, exponentNeeded(t), 1).replace(/\s.*$/, ''),
-      (t) => formatSi(t, 1000, '', '', 0, exponentNeeded(t), 1)
+      (t) => formatSi(t, 1000, '', '', 0, exponentNeeded(t), 1), 'used',
     );
 
   },
 
-  getGauge(field, usedFormatCb, totalFormatCb) {
+  getGauge(field, usedFormatCb, totalFormatCb, keyword) {
 
     const nodes = this.getNodes(field);
 
     return {
       value:    this.getValue(nodes),
       title:    this.get('intl').t(`clusterDashboard.${ field }`),
-      subtitle: this.getSubtitle(nodes, totalFormatCb, usedFormatCb),
+      subtitle: this.getSubtitle(nodes, totalFormatCb, usedFormatCb, keyword),
       ticks:    this.getTicks(nodes),
     };
 
@@ -172,7 +172,7 @@ export default Component.extend({
 
   },
 
-  getSubtitle(nodes, totalCb, usedCb) {
+  getSubtitle(nodes, totalCb, usedCb, keyword) {
 
     let used = 0;
     let total = 0;
@@ -184,7 +184,7 @@ export default Component.extend({
 
     });
 
-    return this.get('intl').t('clusterDashboard.subtitle', {
+    return this.get('intl').t(`clusterDashboard.subtitle.${ keyword }`, {
       used:  usedCb ? usedCb(used, total) : used,
       total: totalCb ? totalCb(total) : total,
     });
