@@ -216,6 +216,7 @@ const App = Resource.extend(StateCounts, EndpointPorts, {
           clone:       true
         }
       });
+
     }
 
   },
