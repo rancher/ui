@@ -103,7 +103,7 @@ module.exports = {
     } ],
     "keyword-spacing": "error",
     "lines-between-class-members": "error",
-    "newline-per-chained-call": "error",
+    "newline-per-chained-call": ["error", { "ignoreChainWithDepth": 4 }],
     "no-whitespace-before-property": "error",
     "object-curly-newline": [ "error", {
       "ObjectExpression": { "multiline": true, "minProperties": 3 },
@@ -113,7 +113,6 @@ module.exports = {
     } ],
     "object-curly-spacing": [ "error", "always" ],
     "object-property-newline": "error",
-    "padded-blocks": "error",
     "padding-line-between-statements": [
       "error",
       {
