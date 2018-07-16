@@ -1,20 +1,20 @@
 import { hash } from 'rsvp';
-import { set } from '@ember/object';
+import { get, set } from '@ember/object';
 import Route from '@ember/routing/route';
 
 export default Route.extend({
   model(params/* , transition*/) {
 
-    const store = this.get('store');
+    const store = get(this, 'store');
 
     const deps = {
       dnsRecords: store.findAll('dnsRecord'),
       workloads:  store.findAll('workload'),
     };
 
-    if ( params.dnsRecordId ) {
+    if ( get(params, 'id') ) {
 
-      deps['existing'] = store.find('dnsRecordId', params.dnsRecordId);
+      deps['existing'] = store.find('dnsRecord', params.id);
 
     }
 

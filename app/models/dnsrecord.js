@@ -208,6 +208,12 @@ export default Resource.extend({
       get(this, 'router').transitionTo('authenticated.project.dns.detail.edit', this.get('id'));
 
     },
+
+    clone() {
+
+      get(this, 'router').transitionTo('authenticated.project.dns.new', this.get('projectId'), { queryParams: { id: this.get('id') } });
+
+    },
   },
 
   clearTypesExcept(type) {
