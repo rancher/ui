@@ -150,6 +150,7 @@ const Template = Resource.extend({
     return out;
 
   }.property('certifiedType', 'catalogId', 'labels'),
+
   scope:    service(),
   settings: service(),
   intl:     service(),
