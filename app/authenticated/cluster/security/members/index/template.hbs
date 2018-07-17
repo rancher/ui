@@ -1,12 +1,14 @@
-<section class="header has-tabs clearfix p-0">
-  <ul class="tab-nav">
-    <li>{{#link-to "authenticated.cluster.security.members.index"}}{{t 'nav.admin.security.members'}}{{/link-to}}</li>
-  </ul>
+<section class="header clearfix">
+  <h1 class="pull-left">{{t 'nav.admin.security.members'}}</h1>
   <div class="right-buttons">
     {{#link-to "authenticated.cluster.security.members.new" scope.currentCluster.id classNames="btn btn-sm bg-primary right-divider-btn" disabled=(rbac-prevents resource="clusterroletemplatebinding" scope="global" permission="create")}} {{t 'membersPage.index.localLink' 'Cluster'}}{{/link-to}}
     <span id="header-search"/>
   </div>
 </section>
+
+{{#if model.internal}}
+  {{banner-message icon='icon-alert' color='bg-error mb-0 mt-10' message=(t 'clusterPage.internal' appName=settings.appName htmlSafe=true)}}
+{{/if}}
 
 <section class="instances">
   {{#sortable-table

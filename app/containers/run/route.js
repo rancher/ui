@@ -18,8 +18,8 @@ export default Route.extend({
     var store = get(this, 'store');
 
     const gs = get(this, 'globalStore');
-    const project = window.l('route:application').modelFor('authenticated.project')
-      .get('project');
+    const appRoute = window.l('route:application');
+    const project = appRoute.modelFor('authenticated.project').get('project');
     const projectId = project.get('id');
     const clusterId = project.get('clusterId');
 
@@ -77,6 +77,7 @@ export default Route.extend({
     }
 
   },
+
   modelForNew(params) {
 
     let scaleMode = get(this, `prefs.${ C.PREFS.LAST_SCALE_MODE }`) || 'deployment';
@@ -218,6 +219,17 @@ export default Route.extend({
 
       // Clone workload with one container
       let neu = get(this, 'store').createRecord(clone.serializeForNew());
+
+      delete neu.deploymentStatus;
+      container = neu.containers[0];
+
+      // Cleanup port mappings so they get new services
+      (neu.containers || []).forEach((container) => {
+        (container.ports || []).forEach((port) => {
+          delete port.name;
+          delete port.dnsName;
+        });
+      });
 
       return EmberObject.create({
         scaleMode: clone.type,

@@ -25,6 +25,7 @@ const headers = [
 ]
 
 export default Controller.extend(FilterState, {
+  settings:          service(),
   scope:             service(),
   sortBy:            'name',
   headers,
