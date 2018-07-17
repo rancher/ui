@@ -95,17 +95,23 @@ var DockerCredential = Resource.extend({
     }
 
   }),
-  intl:   service(),
-  router: service(),
+  intl:     service(),
+  router:   service(),
 
-  state: 'active',
+  state:    'active',
+  canClone: true,
 
   actions: {
-    edit() {
+    clone() {
 
-      get(this, 'router').transitionTo('authenticated.project.registries.detail.edit', get(this, 'id'));
+      get(this, 'router').transitionTo('authenticated.project.registries.new', {
+        queryParams: {
+          id:   get(this, 'id'),
+          type: get(this, 'type')
+        }
+      });
 
-    },
+    }
   },
 
 });

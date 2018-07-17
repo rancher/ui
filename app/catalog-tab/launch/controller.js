@@ -1,7 +1,7 @@
 import Controller from '@ember/controller';
 
 export default Controller.extend({
-  queryParams: ['appId', 'stackId', 'upgrade', 'catalog', 'namespaceId'],
+  queryParams: ['appId', 'stackId', 'upgrade', 'catalog', 'namespaceId', 'clone'],
   stackId:     null,
   upgrade:     null,
   showName:    true,

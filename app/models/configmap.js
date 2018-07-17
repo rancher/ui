@@ -17,7 +17,8 @@ export default Resource.extend({
   router:       service(),
   clusterStore: service(),
 
-  state: 'active',
+  state:        'active',
+  canClone:     true,
 
   actions: {
     edit() {
@@ -25,6 +26,13 @@ export default Resource.extend({
       get(this, 'router').transitionTo('authenticated.project.config-maps.detail.edit', get(this, 'id'));
 
     },
+
+    clone() {
+
+      get(this, 'router').transitionTo('authenticated.project.config-maps.new', get(this, 'projectId'), { queryParams: { id: get(this, 'id') } });
+
+    }
+
   },
 
 });

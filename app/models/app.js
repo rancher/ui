@@ -175,20 +175,23 @@ const App = Resource.extend(StateCounts, EndpointPorts, {
 
   },
 
-  canEdit: false,
+  canEdit:  false,
+  canClone: true,
 
   actions: {
     upgrade() {
 
-      let templateId = get(this, 'externalIdInfo.templateId');
-
-      let catalogId = get(this, 'externalIdInfo.catalog');
+      const templateId    = get(this, 'externalIdInfo.templateId');
+      const catalogId     = get(this, 'externalIdInfo.catalog');
+      const vKeys         = Object.keys(get(this, 'catalogTemplate.versionLinks'));
+      const latestVersion =  vKeys[vKeys.length - 1];
 
       get(this, 'router').transitionTo('catalog-tab.launch', templateId, {
         queryParams: {
+          appId:       get(this, 'id'),
           catalog:     catalogId,
           namespaceId: get(this, 'targetNamespace'),
-          appId:       get(this, 'id')
+          upgrade:     latestVersion,
         }
       });
 
@@ -198,7 +201,24 @@ const App = Resource.extend(StateCounts, EndpointPorts, {
 
       get(this, 'modalService').toggleModal('modal-rollback-app', { originalModel: this });
 
+    },
+
+    clone() {
+
+      const templateId    = get(this, 'externalIdInfo.templateId');
+      const catalogId     = get(this, 'externalIdInfo.catalog');
+
+      get(this, 'router').transitionTo('catalog-tab.launch', templateId, {
+        queryParams: {
+          appId:       get(this, 'id'),
+          catalog:     catalogId,
+          namespaceId: get(this, 'targetNamespace'),
+          clone:       true
+        }
+      });
+
     }
+
   },
 
 })

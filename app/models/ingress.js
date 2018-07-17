@@ -90,6 +90,9 @@ export default Resource.extend({
 
   clusterStore: service(),
   router:       service(),
+
+  canClone: true,
+
   actions:      {
     edit() {
 
@@ -97,6 +100,17 @@ export default Resource.extend({
         queryParams: {
           ingressId: get(this, 'id'),
           upgrade:   true,
+        }
+      });
+
+    },
+
+    clone() {
+
+      get(this, 'router').transitionTo('ingresses.run', {
+        queryParams: {
+          ingressId: get(this, 'id'),
+          upgrade:   false,
         }
       });
 

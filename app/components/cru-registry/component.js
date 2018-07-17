@@ -62,7 +62,14 @@ export default Component.extend(ViewNewEdit, OptionallyNamespaced, {
   init() {
 
     this._super(...arguments);
+
     set(this, 'asArray', JSON.parse(JSON.stringify(get(this, 'model.asArray') || [])));
+
+    if (get(this, 'model.type') === 'namespacedDockerCredential') {
+
+      set(this, 'scope', 'namespace');
+
+    }
 
   },
 

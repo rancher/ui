@@ -2,17 +2,16 @@ import { alias } from '@ember/object/computed';
 import { get } from '@ember/object';
 import { inject as service } from '@ember/service';
 import Controller, { inject as controller } from '@ember/controller';
-
-// const NONE = 'none';
+import { computed } from '@ember/object';
 
 export default Controller.extend({
   projectController: controller('authenticated.project'),
+  prefs:             service(),
+  scope:             service(),
 
-  prefs:       service(),
-  scope:       service(),
-  queryParams:  ['sortBy'],
-  sortBy:       'name',
-  headers:     [
+  queryParams:       ['sortBy'],
+  sortBy:            'name',
+  headers:           [
     {
       name:           'state',
       sort:           ['sortState', 'name', 'id'],
@@ -46,10 +45,10 @@ export default Controller.extend({
     },
   ],
 
-  group:        alias('projectController.group'),
-  groupTableBy: alias('projectController.groupTableBy'),
+  group:             alias('projectController.group'),
+  groupTableBy:      alias('projectController.groupTableBy'),
 
-  rows: function() {
+  rows: computed('model.projectDockerCredentials.[]', 'model.namespacedDockerCredentials.[]', function() {
 
     const proj = get(this, 'model.projectDockerCredentials').slice();
     const ns = get(this, 'model.namespacedDockerCredentials').slice();
@@ -57,5 +56,5 @@ export default Controller.extend({
 
     return out;
 
-  }.property('model.projectDockerCredentials.[]', 'model.namespacedDockerCredentials.[]'),
+  }),
 });

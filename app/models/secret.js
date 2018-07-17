@@ -11,9 +11,10 @@ export default Resource.extend({
 
   }),
 
-  router: service(),
+  router:   service(),
 
-  state: 'active',
+  state:    'active',
+  canClone: true,
 
   actions: {
     edit() {
@@ -21,6 +22,17 @@ export default Resource.extend({
       get(this, 'router').transitionTo('authenticated.project.secrets.detail.edit', get(this, 'id'));
 
     },
+
+    clone() {
+
+      get(this, 'router').transitionTo('authenticated.project.secrets.new', {
+        queryParams: {
+          id:   get(this, 'id'),
+          type: get(this, 'type')
+        }
+      });
+
+    }
   },
 
 });
