@@ -8,11 +8,13 @@ import Util from 'ui/utils/util';
 import { alternateLabel } from 'ui/utils/platform';
 import layout from './template';
 import AnsiUp from 'npm:ansi_up';
+import C from 'ui/utils/constants';
 
 const LINES = 500;
 
 export default Component.extend({
   scope: service(),
+  prefs: service(),
 
   layout,
   instance:       null,
@@ -22,6 +24,7 @@ export default Component.extend({
   status:        'connecting',
   containerName: null,
   socket:        null,
+  wrapLines:     null,
 
   containerDidChange: observer('containerName', function() {
 
@@ -31,12 +34,18 @@ export default Component.extend({
 
   }),
 
+  wrapLinesDidChange: observer('wrapLines', function() {
+    set(this, `prefs.${ C.PREFS.WRAP_LINES }`, get(this, 'wrapLines') ? 'on' : 'off');
+  }),
+
   init() {
 
     this._super(...arguments);
 
     const containerName = get(this, 'instance.containers.firstObject.name');
+    const wrapLines = get(this, `prefs.${ C.PREFS.WRAP_LINES }`) !== 'off';
 
+    set(this, 'wrapLines', wrapLines);
     set(this, 'containerName', containerName);
 
   },
@@ -215,5 +224,6 @@ export default Component.extend({
 
     return new Date(date) !== 'Invalid Date' && !isNaN(new Date(date))
 
-  }
+  },
+
 });

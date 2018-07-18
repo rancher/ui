@@ -22,9 +22,15 @@
       {{t 'containerLogs.protip' key=alternateLabel}}
   </div>
 {{/if}}
-<pre class="log-body">
+<pre class="log-body {{if wrapLines 'wrap-lines'}}">
 </pre>
 {{yield}}
+<div class="checkbox">
+  <label>
+    {{input type="checkbox" checked=wrapLines}}
+    {{t 'containerLogs.wrapLines'}}
+  </label>
+</div>
 <div class="footer-actions">
   <button {{action "scrollToTop"}} class="btn bg-default">{{t 'containerLogs.scrollTop'}}</button>
   <button {{action "scrollToBottom"}} class="btn bg-default scroll-bottom">{{t 'containerLogs.scrollBottom'}}</button>
