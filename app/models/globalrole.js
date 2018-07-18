@@ -79,7 +79,9 @@ export default Resource.extend({
 
   }),
 
-  intl: service(),
+
+  intl:          service(),
+  router:        service(),
 
   canRemove:     false,
   // globalRoles can not be removed or changed as of now and do not have a state
@@ -87,4 +89,16 @@ export default Resource.extend({
   // I think its safe to hack around this - wjw
   _displayState: 'active',
   stateColor:    'text-success',
+
+  actions: {
+    edit() {
+
+      this.get('router').transitionTo('global-admin.security.roles.edit', this.get('id'), {
+        queryParams: {
+          type: 'global'
+        }
+      });
+
+    },
+  }
 });
