@@ -15,7 +15,7 @@ export default Component.extend({
 
   gauges: null,
 
-  updateDashboard: observer('nodes.@each.{allocatable,requested}', function() {
+  updateDashboard: observer('nodes.@each.{allocatable,requested}', 'intl.locale', function() {
 
     this.setDashboard();
 
