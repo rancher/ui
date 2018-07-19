@@ -4,6 +4,10 @@ $font-size: 12px;
 $line-height: 1.4;
 $lines-to-show: 4;
 
+$badge-rancher: $border;
+$badge-rancher-logo: $link-color;
+$badge-partner: $warning;
+
 .catalog-box {
   position: relative;
   height: $container-height;
@@ -11,8 +15,11 @@ $lines-to-show: 4;
   margin: 15px 0 15px 15px;
   float: left;
   text-align: center;
-  transition: ease all .25s;
-  // border: $border solid 3px;
+  transition: ease-in-out all .25s;
+  // border: $border solid 1px;
+  // box-shadow: 0 5px 15px rgba(0,0,0,0.15);
+  // -webkit-transition: all 0.6s cubic-bezier(0.05, 0.2, 0.1, 1);
+  // transition: all 0.6s cubic-bezier(0.165, 0.42, 0.22, 1);
 
   .footer {
     position: absolute;
@@ -30,9 +37,20 @@ $lines-to-show: 4;
     margin: 0 40px 20px 40px;
   }
 
-  &:hover {
-    border: solid $link-color 1px;
-  }
+  // &::after {
+  //   opacity: 0;
+  //   box-shadow: 0 5px 15px rgba(75,65,55,0.3);
+  //   -webkit-transition: all 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
+  //   transition: all 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
+  // }
+
+  // &:hover {
+  //   border: solid $link-color 1px;
+
+  //   &::after {
+  //     opacity: 1;
+  //   }
+  // }
 
   .itemwrap {
     max-height: 129px;
@@ -73,7 +91,6 @@ $lines-to-show: 4;
 
 
     .catalog-icon {
-      background-color: $table-bg-accent;
       opacity: 0.5;
       filter: grayscale(100%);
       -webkit-filter: grayscale(100%);
@@ -85,7 +102,6 @@ $lines-to-show: 4;
 
   .catalog-icon {
     @include catalog-img;
-    border: solid 1px $accent-border;
   }
 
   .description {
@@ -102,87 +118,77 @@ $lines-to-show: 4;
     box-sizing:border-box;
   }
 
-  .badge-rancher {
-    position: absolute;
-    z-index: 1;
-    background: $warning;
-    color: black;
-    padding: 1px 10px;
-    right: -13px;
-    top: 5px;
-    font-size: .75em;
-    color: white;
+  &.badge-rancher {
+    border: $badge-rancher solid 1px;
 
-    &:before {
-      content: "";
-      border-style: solid;
-      border-color: $warning;
-      border-left-color: transparent;
-      position: absolute;
-      top: 0;
-      left: -16px;
-      border-width: 11.5px;
-      z-index: 2;
-    }
-
-    &:after {
-      content: "";
-      border-color: darken($warning, 20%) transparent transparent darken($warning, 20%);
-      border-style: solid;
-      border-width: 5px;
-      right: 2px;
-      bottom: -10px;
-      display: block;
-      position: absolute;
-    }
-  }
-
-  .badge-rancher-logo {
-    @extend .badge-rancher;
-
-    STRONG {
-      padding-left: 30px;
+    .certified {
       position: relative;
+      transform: translateY(-10px);
 
-      &:after {
-        content: $icon-rancher-cow;
-        font-family: 'rancher-icons';
-        font-size: 24px;
-        font-weight: normal;
+      span {
+        background-color: $badge-rancher;
         position: absolute;
-        top: -8px;
-        left: 0;
+        transform: translate(-50%, -50%);
+        padding: 5px 10px;
+        display: inline-block;
+        border-radius: 2px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        font-weight: bold;
+        font-size: .8em;
+        white-space: nowrap;
       }
     }
   }
 
-  .badge-partner {
-    @extend .badge-rancher;
-    color: black;
-    background-color: $success;
+  &.badge-rancher-logo {
+    border-color: $badge-rancher-logo;
+    border-width: 2px;
 
-    &:before {
-      border-color: $success;
-      border-left-color: transparent;
+    @extend .badge-rancher;
+
+    hr {
+      border-color: $badge-rancher-logo;
+      opacity: .15;
     }
 
-    &:after {
-      border-color: darken($success, 20%) transparent transparent darken($success, 20%);
+    .certified {
+      span {
+        background-color: $badge-rancher-logo;
+        color: white;
+
+        &:before {
+          content: $icon-rancher-cow;
+          font-family: 'rancher-icons';
+          font-size: 1.25rem;
+          padding-right: 4px;
+          line-height: 0;
+        }
+      }
     }
   }
 
-  .badge-thirdparty {
+  &.badge-partner {
+    border-color: $badge-partner;
+    border-width: 2px;
+
     @extend .badge-rancher;
-    background-color: $primary;
 
-    &:before {
-      border-color: $primary;
-      border-left-color: transparent;
+    hr {
+      border-color: $badge-partner;
+      opacity: .15;
     }
 
-    &:after {
-      border-color: darken($primary, 20%) transparent transparent darken($primary, 20%);
+    .certified {
+      span {
+        background-color: $badge-partner;
+        color: $text-color;
+      }
     }
+  }
+
+  &.badge-thirdparty {
+    @extend .badge-rancher;
   }
 
   &.dotted {

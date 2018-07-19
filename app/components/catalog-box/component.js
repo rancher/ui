@@ -7,8 +7,8 @@ export default Component.extend({
   layout,
   tagName:           'div',
 
-  classNames:        ['catalog-box', 'box', 'p-0'],
-  classNameBindings: ['active::inactive'],
+  classNames:        ['catalog-box', 'p-0'],
+  classNameBindings: ['active::inactive', 'model.certifiedClass'],
 
   model:             null,
   showIcon:          true,
