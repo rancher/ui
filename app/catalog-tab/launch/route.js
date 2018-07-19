@@ -50,7 +50,7 @@ export default Route.extend({
       if ( !results.namespace ) {
 
 
-        let { newNamespaceName, newNS } = this.newNamespace(dupe);
+        let { newNamespaceName, newNS } = this.newNamespace(dupe, neuNSN);
 
         if ( dupe ) {
 
@@ -59,9 +59,6 @@ export default Route.extend({
         }
 
         results.namespace = newNS;
-
-        neuApp = results.app.cloneForNew();
-
       }
 
       let kind = 'helm';
@@ -81,7 +78,7 @@ export default Route.extend({
 
         if (get(params, 'clone')) {
 
-          let { newNamespaceName, newNS } = this.newNamespace(dupe);
+          let { newNamespaceName, newNS } = this.newNamespace(dupe, neuNSN);
 
           if ( dupe ) {
 
@@ -92,6 +89,7 @@ export default Route.extend({
           results.namespace = newNS;
 
           neuApp = results.app.cloneForNew();
+          set(neuApp, 'name', results.namespace.name);
 
         } else {
 
@@ -159,11 +157,13 @@ export default Route.extend({
     },
   },
 
-  newNamespace(duplicateName) {
+  newNamespace(duplicateName, newNamespaceName) {
 
-    const newNamespaceName = `${ get(duplicateName, 'displayName') }-${ Math.random()
-      .toString(36)
-      .substring(7) }`; // generate a random 5 char string for the dupename
+    if ( duplicateName ) {
+
+      newNamespaceName = `${ get(duplicateName, 'displayName') }-${ Math.random().toString(36).substring(7) }`; // generate a random 5 char string for the dupename
+
+    }
 
     const newNS = get(this, 'clusterStore').createRecord({
       type:      'namespace',
