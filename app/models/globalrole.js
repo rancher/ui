@@ -93,11 +93,7 @@ export default Resource.extend({
   actions: {
     edit() {
 
-      this.get('router').transitionTo('global-admin.security.roles.edit', this.get('id'), {
-        queryParams: {
-          type: 'global'
-        }
-      });
+      this.get('router').transitionTo('global-admin.security.roles.edit', this.get('id'), { queryParams: { type: 'global' } });
 
     },
   }
