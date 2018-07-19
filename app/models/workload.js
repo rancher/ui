@@ -159,7 +159,7 @@ var Workload = Resource.extend(DisplayImage, StateCounts, EndpointPorts, {
     }
 
     let scale = get(this, 'scale');
-    let min = get(this, 'scaleMin') || 1;
+    let min = get(this, 'scaleMin') || 0;
 
     scale -= get(this, 'scaleIncrement') || 1;
 
