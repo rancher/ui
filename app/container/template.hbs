@@ -130,7 +130,7 @@
   </ul>
 </section>
 
-{{#each model.containers as |container|}}
+{{#each containers as |container|}}
   <section class="{{if (eq container.name selectedContainer.name) '' 'hide'}}">
     {{#if container.showTransitioningMessage}}
       <div class="{{container.stateColor}}"><p>{{uc-first container.transitioningMessage}}</p></div>
@@ -144,7 +144,8 @@
         </h1>
       </div>
       <div class="right-buttons">
-        {{badge-state model=model}}
+        {{badge-state model=container}}
+        {{action-menu model=container showPrimary=false classNames="ml-10 inline-block" size="sm"}}
       </div>
     </section>
 
