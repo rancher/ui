@@ -2,9 +2,7 @@ import EmberObject from '@ember/object';
 import { hash } from 'rsvp';
 import { inject as service } from '@ember/service';
 import Route from '@ember/routing/route';
-import {
-  get, set, setProperties
-} from '@ember/object';
+import { get, set, setProperties } from '@ember/object';
 import { randomStr } from 'shared/utils/util';
 
 export default Route.extend({
@@ -127,8 +125,9 @@ export default Route.extend({
   },
 
   newNamespace(duplicateName, newNamespaceName) {
+    const suffix = randomStr(5, 'novowels');
+
     if ( duplicateName ) {
-      const suffix = randomStr(5, 'loweralpha');
       newNamespaceName = `${ get(duplicateName, 'displayName') }-${ suffix }`;
     }
 
