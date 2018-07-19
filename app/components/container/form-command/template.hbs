@@ -64,19 +64,23 @@
         <label class="acc-label">{{t 'formCommand.autoRestart.label'}}</label>
         <div class="row {{unless editing 'inline-form'}}">
           {{#if editing}}
-            <div class="radio">
-              <label>{{radio-button selection=service.restartPolicy value="Never"}} {{t 'formCommand.autoRestart.no'}}</label>
-            </div>
+            {{#if isJob}}
+              <div class="radio">
+                <label>{{radio-button selection=service.restartPolicy value="Never"}} {{t 'formCommand.autoRestart.no'}}</label>
+              </div>
+            {{/if}}
 
-            {{#unless (or (eq scaleMode 'job') (eq scaleMode 'cronJob'))}}
+            {{#unless isJob}}
               <div class="radio">
                 <label>{{radio-button selection=service.restartPolicy value="Always"}} {{t 'formCommand.autoRestart.always'}}</label>
               </div>
             {{/unless}}
 
-            <div class="radio">
-              <label>{{radio-button selection=service.restartPolicy value="OnFailure"}} {{t 'formCommand.autoRestart.onFailure' htmlSafe=true}}</label>
-            </div>
+            {{#if isJob}}
+              <div class="radio">
+                <label>{{radio-button selection=service.restartPolicy value="OnFailure"}} {{t 'formCommand.autoRestart.onFailure' htmlSafe=true}}</label>
+              </div>
+            {{/if}}
           {{else if (eq service.restartPolicy "OnFailure")}}
             <div>
               {{t 'formCommand.autoRestart.onFailure' htmlSafe=true}}
