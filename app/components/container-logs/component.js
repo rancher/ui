@@ -35,7 +35,7 @@ export default Component.extend({
   }),
 
   wrapLinesDidChange: observer('wrapLines', function() {
-    set(this, `prefs.${ C.PREFS.WRAP_LINES }`, get(this, 'wrapLines') ? 'on' : 'off');
+    set(this, `prefs.${ C.PREFS.WRAP_LINES }`, get(this, 'wrapLines'));
   }),
 
   init() {
@@ -43,7 +43,7 @@ export default Component.extend({
     this._super(...arguments);
 
     const containerName = get(this, 'instance.containers.firstObject.name');
-    const wrapLines = get(this, `prefs.${ C.PREFS.WRAP_LINES }`) !== 'off';
+    const wrapLines = !!get(this, `prefs.${ C.PREFS.WRAP_LINES }`);
 
     set(this, 'wrapLines', wrapLines);
     set(this, 'containerName', containerName);
