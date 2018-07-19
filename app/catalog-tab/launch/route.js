@@ -5,6 +5,7 @@ import Route from '@ember/routing/route';
 import {
   get, set, setProperties
 } from '@ember/object';
+import { randomStr } from 'shared/utils/util';
 
 export default Route.extend({
   modalService: service('modal'),
@@ -15,7 +16,6 @@ export default Route.extend({
   parentRoute:  'catalog-tab',
 
   model(params/* , transition*/) {
-
     var store = get(this, 'store');
     var clusterStore = get(this, 'clusterStore');
 
@@ -25,37 +25,26 @@ export default Route.extend({
     };
 
     if ( params.upgrade ) {
-
       dependencies.upgrade = get(this, 'catalog').fetchTemplate(`${ params.template }-${ params.upgrade }`, true);
-
     }
 
     if (params.appId) {
-
       dependencies.app = store.find('app', params.appId);
-
     }
 
     if ( params.namespaceId ) {
-
       dependencies.namespace = clusterStore.find('namespace', params.namespaceId);
-
     }
 
     return hash(dependencies, 'Load dependencies').then((results) => {
-
       let neuNSN = results.tpl.get('displayName');
       let dupe   = results.namespaces.findBy('id', neuNSN);
 
       if ( !results.namespace ) {
-
-
         let { newNamespaceName, newNS } = this.newNamespace(dupe, neuNSN);
 
         if ( dupe ) {
-
           neuNSN = newNamespaceName;
-
         }
 
         results.namespace = newNS;
@@ -75,46 +64,32 @@ export default Route.extend({
         }));
 
       if (results.app) {
-
         if (get(params, 'clone')) {
-
           let { newNamespaceName, newNS } = this.newNamespace(dupe, neuNSN);
 
           if ( dupe ) {
-
             neuNSN = newNamespaceName;
-
           }
 
           results.namespace = newNS;
 
           neuApp = results.app.cloneForNew();
           set(neuApp, 'name', results.namespace.name);
-
         } else {
-
           neuApp = results.app;
-
         }
-
       } else {
-
         neuApp = store.createRecord({
           type: 'app',
           name: results.namespace.name,
         });
-
       }
 
       if ( neuApp.id ) {
-
         verArr.filter((ver) => ver.version === get(neuApp, 'externalIdInfo.version'))
           .forEach((ver) => {
-
             set(ver, 'version', `${ ver.version } (current)`);
-
           })
-
       }
 
       return EmberObject.create({
@@ -134,9 +109,7 @@ export default Route.extend({
   },
 
   resetController(controller, isExiting/* , transition*/) {
-
     if (isExiting) {
-
       setProperties(controller, {
         appId:       null,
         catalog:     null,
@@ -144,25 +117,19 @@ export default Route.extend({
         template:    null,
         upgrade:     null,
       });
-
     }
-
   },
 
   actions: {
     cancel() {
-
       get(this, 'modalService').toggleModal();
-
     },
   },
 
   newNamespace(duplicateName, newNamespaceName) {
-
     if ( duplicateName ) {
-
-      newNamespaceName = `${ get(duplicateName, 'displayName') }-${ Math.random().toString(36).substring(7) }`; // generate a random 5 char string for the dupename
-
+      const suffix = randomStr(5, 'loweralpha');
+      newNamespaceName = `${ get(duplicateName, 'displayName') }-${ suffix }`;0
     }
 
     const newNS = get(this, 'clusterStore').createRecord({
@@ -175,7 +142,5 @@ export default Route.extend({
       newNamespaceName,
       newNS
     };
-
   },
-
 });
