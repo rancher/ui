@@ -129,7 +129,7 @@ export default Route.extend({
   newNamespace(duplicateName, newNamespaceName) {
     if ( duplicateName ) {
       const suffix = randomStr(5, 'loweralpha');
-      newNamespaceName = `${ get(duplicateName, 'displayName') }-${ suffix }`;0
+      newNamespaceName = `${ get(duplicateName, 'displayName') }-${ suffix }`;
     }
 
     const newNS = get(this, 'clusterStore').createRecord({
