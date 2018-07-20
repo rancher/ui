@@ -1,9 +1,7 @@
 import Component from '@ember/component';
 import layout from './template';
 import { equal, or } from '@ember/object/computed'
-import {
-  VIEW, NEW, EDIT
-} from 'shared/mixins/view-new-edit';
+import { VIEW, NEW, EDIT } from 'shared/mixins/view-new-edit';
 
 export default Component.extend({
   layout,

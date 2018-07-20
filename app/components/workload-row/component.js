@@ -18,17 +18,13 @@ export default Component.extend({
   showImage:         true,
 
   showLabelRow:      or('model.displayUserLabelStrings.length'),
-  canExpand:    computed('model.isReal', function() {
-
-    return !!this.get('model.isReal');
-
-  }),
-
-  actions: {
+  actions:      {
     toggle() {
-
       this.sendAction('toggle');
-
     },
   },
+  canExpand:    computed('model.isReal', function() {
+    return !!this.get('model.isReal');
+  }),
+
 });

@@ -14,25 +14,17 @@ export default Component.extend(ModalBase, {
   user:       alias('modalOpts.user'),
   actions:    {
     complete(success) {
-
       if (success) {
-
         // get(this, 'router').replaceWith('authenticated');
         get(this, 'modalService').toggleModal();
-
       }
-
     },
     cancel() {
-
       get(this, 'modalService').toggleModal();
-
     },
 
     goBack() {
-
       get(this, 'modalService').toggleModal();
-
     },
 
   },

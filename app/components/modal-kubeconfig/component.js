@@ -22,37 +22,25 @@ export default Component.extend(ModalBase, {
   downloadUrl: 'http://kubernetes.io/docs/user-guide/prereqs/',
 
   didReceiveAttrs() {
-
     get(this, 'scope.currentCluster').doAction('generateKubeconfig')
       .then((obj) => {
-
         set(this, 'kubeconfig', get(obj, 'config'));
         set(this, 'step', 2);
-
       })
       .catch((err) => {
-
         this.get('growl').fromError('Error creating kubeconfig file', err);
         this.get('modalService').toggleModal();
-
       });
-
   },
 
   didInsertElement() {
-
     this._super();
     next(this, () => {
-
       var btn = $('.close-kubeconfig')[0]; // eslint-disable-line
 
       if ( btn ) {
-
         btn.focus();
-
       }
-
     });
-
   },
 });

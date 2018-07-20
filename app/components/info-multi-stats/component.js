@@ -39,9 +39,7 @@ export default Component.extend({
 
   actions: {
     toggle() {
-
       this.set('mode', (this.get('mode') === 'small' ? 'large' : 'small'));
-
     },
   },
 });

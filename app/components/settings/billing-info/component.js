@@ -10,17 +10,13 @@ export default Component.extend({
   account:      null,
   actions:      {
     addNew() {
-
       this.get('modalService').toggleModal('modal-add-payment', this.get('account'));
-
     },
     remove(card) {
-
       this.get('modalService').toggleModal('modal-confirm-remove-payment', {
         card,
         account: this.get('account')
       });
-
     }
   }
 });

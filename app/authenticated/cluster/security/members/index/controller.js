@@ -31,8 +31,6 @@ export default Controller.extend(FilterState, {
   headers,
   searchText:        '',
   filterableContent: computed('model.clusterRoleTemplateBindings.[]', function() {
-
     return get(this, 'model.clusterRoleTemplateBindings');
-
   }),
 });

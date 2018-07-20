@@ -14,31 +14,23 @@ export default Component.extend({
   optIn:        null,
 
   init() {
-
     this._super(...arguments);
 
     let val = false;
 
     if ( this.get('initialValue') === IN ) {
-
       val = true;
-
     }
 
     this.set('optIn', val);
-
   },
   actions: {
     save(btnCb) {
-
       this.get('settings').set(C.SETTING.TELEMETRY, (this.get('optIn') ? IN : OUT));
       this.get('settings').one('settingsPromisesResolved', () => {
-
         btnCb(true);
         this.sendAction('saved');
-
       });
-
     },
   },
 

@@ -9,7 +9,6 @@ export default Route.extend({
   roleTemplateService: service('roleTemplate'),
 
   model(params) {
-
     const store = get(this, 'globalStore');
 
     return hash({
@@ -21,6 +20,5 @@ export default Route.extend({
       roles:                       get(this, 'roleTemplateService').get('allFilteredRoleTemplates'),
       users:                       store.find('user', null, { forceReload: true }),
     });
-
   },
 });

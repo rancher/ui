@@ -1,7 +1,6 @@
 import StoreTweaks from 'ui/mixins/store-tweaks';
 
 export function initialize(instance) {
-
   var application = instance.lookup('application:main');
   var store = instance.lookup('service:globalStore');
   var cookies = instance.lookup('service:cookies');
@@ -12,11 +11,8 @@ export function initialize(instance) {
   let timeout = cookies.get('timeout');
 
   if ( timeout ) {
-
     store.defaultTimeout = timeout;
-
   }
-
 }
 
 export default {

@@ -18,49 +18,37 @@ export default Component.extend({
 
   projectId: alias(`cookies.${ C.COOKIE.PROJECT }`),
 
-  showWechat: computed('intl.locale', function() {
-
-    let locale = this.get('intl.locale');
-
-    if (locale) {
-
-      return locale[0] === 'zh-hans';
-
-    }
-
-    return false;
-
-  }),
-
   init() {
-
     this._super(...arguments);
     let settings = this.get('settings');
 
     let cli = {};
 
     Object.keys(C.SETTING.CLI_URL).forEach((key) => {
-
       cli[key.toLowerCase()] = settings.get(C.SETTING.CLI_URL[key]);
-
     });
 
     this.setProperties({ cli });
-
   },
 
   actions: {
     showAbout() {
-
       this.get('modalService').toggleModal('modal-about', { closeWithOutsideClick: true });
-
     },
     showWechat() {
-
       this.get('modalService').toggleModal('modal-wechat', { closeWithOutsideClick: true });
-
     },
   },
+  showWechat: computed('intl.locale', function() {
+    let locale = this.get('intl.locale');
+
+    if (locale) {
+      return locale[0] === 'zh-hans';
+    }
+
+    return false;
+  }),
+
   githubBase:   C.EXT_REFERENCES.GITHUB,
   forumBase:    C.EXT_REFERENCES.FORUM,
   cnforumBase:  C.EXT_REFERENCES.CN_FORUM,

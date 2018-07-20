@@ -15,33 +15,23 @@ export default Component.extend({
   placeholder: null,
 
   init() {
-
     this._super(...arguments);
     if (get(this, 'value')) {
-
       set(this, 'showEdit', true);
-
     }
-
   },
 
   actions: {
     showEdit() {
-
       set(this, 'showEdit', true);
 
       next(() => {
-
         if (this.isDestroyed || this.isDestroying) {
-
           return;
-
         }
 
         this.$('INPUT').last()[0].focus();
-
       });
-
     }
   }
 });

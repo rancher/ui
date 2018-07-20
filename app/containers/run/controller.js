@@ -19,31 +19,22 @@ export default Controller.extend({
 
   actions: {
     transitionOut() {
-
       this.transitionToRoute('containers.index', get(this, 'scope.currentProject.id'));
-
     },
 
     done() {
-
       this.send('transitionOut');
-
     },
 
     cancel() {
-
       this.send('transitionOut');
-
     },
 
     promptRemove(idx) {
-
       let slc = get(this, 'dataMap.workload.secondaryLaunchConfigs').objectAt(idx);
       let resources = [{
         cb:          () => {
-
           this.removeSidekick(idx)
-
         },
         displayName: get(slc, 'name'),
       }];
@@ -52,12 +43,10 @@ export default Controller.extend({
         resources,
         showProtip: false
       });
-
     },
   },
 
   removeSidekick(idx) {
-
     let workload = get(this, 'dataMap.workload').clone();
 
     set(workload, 'completeLaunchConfigs', true);
@@ -72,17 +61,12 @@ export default Controller.extend({
     set(workload, 'containers', containers)
     set(this, 'deleting', true);
     workload.save().then(() => {
-
       this.send('done');
       set(this, 'deleting', false);
-
     })
       .catch((err) => {
-
         get(this, 'growl').fromError(err);
         set(this, 'deleting', false);
-
       });
-
   },
 });

@@ -7,7 +7,6 @@ export default Route.extend({
   globalStore: service(),
 
   model(params) {
-
     const store = get(this, 'globalStore');
 
     return hash({
@@ -20,6 +19,5 @@ export default Route.extend({
       }),
       policies: store.find('podsecuritypolicytemplate'),
     });
-
   },
 });

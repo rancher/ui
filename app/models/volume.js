@@ -1,6 +1,4 @@
-import {
-  get, set, computed
-} from '@ember/object';
+import { get, set, computed } from '@ember/object';
 import { inject as service } from '@ember/service';
 import Resource from 'ember-api-store/models/resource';
 
@@ -38,19 +36,14 @@ registerSource('storageos',      'storageos',              true,     true,     t
 registerSource('vsphere-volume', 'vsphereVolume',          true,     true,     true);
 
 export function registerSource(name, field, component, ephemeral = true, persistent = true, driver = '') {
-
   if ( component === true ) {
-
     component = name;
-
   }
 
   const existing = SOURCES.findBy('name', name);
 
   if ( existing ) {
-
     SOURCES.removeObject(existing);
-
   }
 
   SOURCES.push({
@@ -61,128 +54,87 @@ export function registerSource(name, field, component, ephemeral = true, persist
     ephemeral:  !!ephemeral,
     persistent: !!persistent,
   });
-
 }
 
 export function getSources(which = 'all') {
-
   if (which === 'ephemeral') {
-
     return JSON.parse(JSON.stringify(SOURCES.filter((s) => s.ephemeral)));
-
   } else if ( which === 'persistent' ) {
-
     return JSON.parse(JSON.stringify(SOURCES.filter((s) => s.persistent)));
-
   } else {
-
     return JSON.parse(JSON.stringify(SOURCES));
-
   }
-
 }
 
 var Volume = Resource.extend({
-  config: computed('configName', function() {
-
-    const key = get(this, 'configName');
-
-    if ( key ) {
-
-      return get(this, key);
-
-    }
-
-  }),
-  sourceName: computed('configName', function(){
-
-    const key = get(this, 'configName');
-
-    if ( !key ) {
-
-      return
-
-    }
-    let entry;
-    let driver = get(this, key).driver;
-
-    entry = SOURCES.findBy('value', key);
-    if (key === 'flexVolume' && driver){
-
-      let specialSource = SOURCES.findBy('driver', driver);
-
-      if (specialSource){
-
-        entry = specialSource;
-
-      }
-
-    }
-    if (entry){
-
-      return entry.name;
-
-    }
-
-  }),
-  displaySource: computed('sourceName', 'intl.locale', function() {
-
-    const intl = get(this, 'intl');
-    const sourceName = get(this, 'sourceName');
-
-    if ( sourceName ) {
-
-      return intl.t(`volumeSource.${ sourceName }.title`);
-
-    }
-
-  }),
-
   intl:         service(),
   reservedKeys: ['configName'],
 
   type: 'volume',
 
   init() {
-
     this._super(...arguments);
 
     const keys = SOURCES.map((x) => x.value);
 
     set(this, 'configName', computed.call(this, ...keys, function() {
-
       for ( let key, i = 0 ; i < keys.length ; i++ ) {
-
         key = keys[i];
         if ( get(this, key) ) {
-
           return key;
-
         }
-
       }
 
       return null;
-
     }));
-
   },
 
-  clearSourcesExcept(keep) {
+  config: computed('configName', function() {
+    const key = get(this, 'configName');
 
+    if ( key ) {
+      return get(this, key);
+    }
+  }),
+  sourceName: computed('configName', function(){
+    const key = get(this, 'configName');
+
+    if ( !key ) {
+      return
+    }
+    let entry;
+    let driver = get(this, key).driver;
+
+    entry = SOURCES.findBy('value', key);
+    if (key === 'flexVolume' && driver){
+      let specialSource = SOURCES.findBy('driver', driver);
+
+      if (specialSource){
+        entry = specialSource;
+      }
+    }
+    if (entry){
+      return entry.name;
+    }
+  }),
+  displaySource: computed('sourceName', 'intl.locale', function() {
+    const intl = get(this, 'intl');
+    const sourceName = get(this, 'sourceName');
+
+    if ( sourceName ) {
+      return intl.t(`volumeSource.${ sourceName }.title`);
+    }
+  }),
+
+  clearSourcesExcept(keep) {
     const keys = SOURCES.map((x) => x.value);
 
     for ( let key, i = 0 ; i < keys.length ; i++ ) {
-
       key = keys[i];
       if ( key !== keep && get(this, key) ) {
-
         set(this, key, null);
-
       }
-
     }
-
   },
 });
 

@@ -8,22 +8,16 @@ export default Route.extend({
   catalog: service(),
   store:   service(),
 
-  setDefaultRoute: on('activate', function() {
-
-    set(this, `session.${ C.SESSION.PROJECT_ROUTE }`, 'apps-tab');
-
-  }),
   model() {
-
     return this.get('store').findAll('app')
       .then((apps) => ({ apps, }));
-
   },
 
   afterModel(model/* , transition */) {
-
     return get(this, 'catalog').fetchAppTemplates(get(model, 'apps'));
-
   },
 
+  setDefaultRoute: on('activate', function() {
+    set(this, `session.${ C.SESSION.PROJECT_ROUTE }`, 'apps-tab');
+  }),
 });

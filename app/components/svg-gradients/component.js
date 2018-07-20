@@ -12,7 +12,6 @@ export default Component.extend({
   layout,
   tagName: '',
   didInsertElement() {
-
     var svg = d3.select('body').append('svg:svg')
       .attr('id', 'svg-gradients')
       .attr('height', '0')
@@ -23,9 +22,7 @@ export default Component.extend({
     var defs = svg.append('svg:defs');
 
     Object.keys(GRADIENT_COLORS).forEach((name) => {
-
       GRADIENT_COLORS[name].forEach((val, idx) => {
-
         var gradient = defs.append('svg:linearGradient')
           .attr('id', `${ name }-${ idx }-gradient`)
           .attr('x1', '0%')
@@ -46,10 +43,7 @@ export default Component.extend({
           .attr('offset', '100%')
           .attr('stop-color', val)
           .attr('stop-opacity', '0.1');
-
       });
-
     });
-
   },
 });

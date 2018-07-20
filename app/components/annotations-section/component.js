@@ -25,15 +25,11 @@ export default Component.extend(ManageLabels, {
   ],
 
   annotationSource:    alias('model.annotations'),
-  annotationsObserver: observer('model.annotations', function() {
-
+  didReceiveAttrs() {
     this.initLabels(this.get('annotationSource'));
-
+  },
+  annotationsObserver: observer('model.annotations', function() {
+    this.initLabels(this.get('annotationSource'));
   }),
 
-  didReceiveAttrs() {
-
-    this.initLabels(this.get('annotationSource'));
-
-  },
 });

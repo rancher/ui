@@ -8,25 +8,19 @@ export default Component.extend({
   tagName:         'TR',
   rule:            null,
   editing:         true,
-  isJustLabel: computed('rule.operator', function() {
-
-    return ['Exists', 'DoesNotExist'].includes(this.get('rule.operator'));
-
-  }),
-
-  isMultiple: computed('rule.operator', function() {
-
-    return ['In', 'NotIn'].includes(this.get('rule.operator'));
-
-  }),
   actions: {
     removeRule() {
-
       this.sendAction('remove', this.get('rule'));
-
     },
   },
 
+  isJustLabel: computed('rule.operator', function() {
+    return ['Exists', 'DoesNotExist'].includes(this.get('rule.operator'));
+  }),
+
+  isMultiple: computed('rule.operator', function() {
+    return ['In', 'NotIn'].includes(this.get('rule.operator'));
+  }),
   operatorChoices: C.SCHED_NODE_SELECTOR_OPERATOR,
 
 })

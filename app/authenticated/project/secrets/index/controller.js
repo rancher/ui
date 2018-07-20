@@ -6,10 +6,10 @@ import Controller, { inject as controller } from '@ember/controller';
 // const NONE = 'none';
 
 export default Controller.extend({
+  prefs:             service(),
+  scope:             service(),
   projectController: controller('authenticated.project'),
 
-  prefs:       service(),
-  scope:       service(),
   queryParams:  ['sortBy'],
   sortBy:       'name',
   resource:    ['namespacedsecret', 'secret'],
@@ -54,12 +54,10 @@ export default Controller.extend({
   groupTableBy: alias('projectController.groupTableBy'),
 
   rows: function() {
-
     const proj = get(this, 'model.projectSecrets').filterBy('type', 'secret');
     const ns = get(this, 'model.namespacedSecrets').filterBy('type', 'namespacedSecret');
     const out = proj.concat(ns);
 
     return out;
-
   }.property('model.projectSecrets.[].type', 'model.namespacedSecrets.[].type'),
 });

@@ -4,7 +4,6 @@ import Route from '@ember/routing/route';
 
 export default Route.extend({
   model(params) {
-
     const store = get(this, 'store');
     const clusterStore = get(this, 'clusterStore');
 
@@ -13,6 +12,5 @@ export default Route.extend({
       storageClasses:    clusterStore.findAll('storageClass'),
       pvc:               store.find('persistentVolumeClaim', params.volume_id),
     });
-
   },
 });

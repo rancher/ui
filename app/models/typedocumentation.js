@@ -5,12 +5,10 @@ var TypeDocumentation = Resource.extend();
 
 TypeDocumentation.reopenClass({
   mangleIn(data) {
-
     // Pass IDs through the type normalizer so they will match the case in other places like store.find('schema',normalizeType('thing'))
     data.id = normalizeType(data.id);
 
     return data;
-
   },
 });
 

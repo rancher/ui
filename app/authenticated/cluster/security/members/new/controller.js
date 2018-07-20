@@ -19,17 +19,13 @@ export default Controller.extend(NewOrEdit, {
   primaryResource: null,
   kinds:           ROLE_KINDS,
   defaultUser:     null,
-  filteredUsers:   computed('model.users.@each.{id,state}', function() {
-
-    return get(this, 'model.users').filter((u) => !u.hasOwnProperty('me') || get(u, 'me') === false)
-      .sortBy('username');
-
-  }),
-  actions: {
+  actions:         {
     doneSaving() {
-
       this.transitionToRoute('authenticated.cluster.security.members.index', get(this, 'model.cluster.id'))
-
     },
   },
+  filteredUsers:   computed('model.users.@each.{id,state}', function() {
+    return get(this, 'model.users').filter((u) => !u.hasOwnProperty('me') || get(u, 'me') === false)
+      .sortBy('username');
+  }),
 });

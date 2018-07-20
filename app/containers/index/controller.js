@@ -40,12 +40,12 @@ export const headers = [
 ];
 
 export default Controller.extend({
-  projectController: controller('authenticated.project'),
   scope:             service(),
   prefs:             service(),
 
-  queryParams: ['sortBy'],
-  sortBy:      'name',
+  projectController: controller('authenticated.project'),
+  queryParams:       ['sortBy'],
+  sortBy:            'name',
 
   headers,
   extraSearchFields:    ['id:prefix', 'displayIp:ip'],
@@ -56,13 +56,17 @@ export default Controller.extend({
   expandedInstances: alias('projectController.expandedInstances'),
   preSorts:          alias('projectController.preSorts'),
 
-  rows: function() {
+  actions: {
+    toggleExpand() {
+      this.get('projectController').send('toggleExpand', ...arguments);
+    },
+  },
 
+  rows: function() {
     const groupBy = this.get('group');
     let out = [];
 
     switch (groupBy) {
-
     case 'none':
     case 'node':
       out = this.get('model.pods');
@@ -71,34 +75,18 @@ export default Controller.extend({
       out = this.get('model.pods').filter((obj) => !obj.get('workloadId'));
       out.pushObjects(this.get('model.workloads').slice());
       break
-
     }
 
     return out;
-
   }.property('group', 'model.workloads.@each.{namespaceId,isBalancer}', 'model.pods.@each.{workloadId,namespaceId}'),
 
   groupByRef: function() {
-
     const group = this.get('group');
 
     if (group === 'node') {
-
       return 'nodeId';
-
     } else {
-
       return group
-
     }
-
   }.property('group'),
-  actions: {
-    toggleExpand() {
-
-      this.get('projectController').send('toggleExpand', ...arguments);
-
-    },
-  },
-
 });

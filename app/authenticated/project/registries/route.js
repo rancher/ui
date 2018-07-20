@@ -5,20 +5,16 @@ import { on } from '@ember/object/evented';
 import C from 'ui/utils/constants';
 
 export default Route.extend({
-  setDefaultRoute: on('activate', function() {
-
-    set(this, `session.${ C.SESSION.PROJECT_ROUTE }`, 'authenticated.project.registries');
-
-  }),
   model() {
-
     const store = get(this, 'store');
 
     return hash({
       projectDockerCredentials:    store.findAll('dockerCredential'),
       namespacedDockerCredentials: store.findAll('namespacedDockerCredential'),
     });
-
   },
 
+  setDefaultRoute: on('activate', function() {
+    set(this, `session.${ C.SESSION.PROJECT_ROUTE }`, 'authenticated.project.registries');
+  }),
 });

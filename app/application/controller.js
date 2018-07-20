@@ -20,27 +20,21 @@ export default Controller.extend({
   isPopup:           null,
   redirectTo:        null,
 
-  init() {
+  tooltip:           oneWay('tooltipService.tooltipOpts.type'),
+  tooltipTemplate:   oneWay('tooltipService.tooltipOpts.template'),
 
+  init() {
     this._super(...arguments);
 
     if ( this.get('app.environment') === 'development' ) {
-
       run.backburner.DEBUG = true;
-
     }
-
   },
-
-  tooltip:           oneWay('tooltipService.tooltipOpts.type'),
-  tooltipTemplate:   oneWay('tooltipService.tooltipOpts.template'),
 
   // currentRouteName is set by Ember.Router
   // but getting the application controller to get it is inconvenient sometimes
   currentRouteNameChanged: observer('currentRouteName', function() {
-
     this.set('app.currentRouteName', this.get('currentRouteName'));
-
   }),
 
 });

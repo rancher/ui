@@ -7,15 +7,11 @@ export default Controller.extend({
 
   actions: {
     done() {
-
       this.send('goToPrevious', 'ingresses.index');
-
     },
 
     cancel() {
-
       this.send('goToPrevious', 'ingresses.index');
-
     },
   },
 });

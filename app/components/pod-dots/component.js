@@ -19,65 +19,62 @@ export default Component.extend({
 
   tagName: '',
 
-  page:    1,
-  perPage: 120, // Ignore the setting because these are tiny dots.
+  page:             1,
+  perPage:          120,
+  pageCountChanged: observer('indexFrom', 'filtered.length', function() {
+    // Go to the last page if we end up past the last page
+    let from = this.get('indexFrom');
+    let last = this.get('filtered.length');
+    var perPage = this.get('perPage');
+
+    if ( this.get('page') > 1 && from > last) {
+      let page = Math.ceil(last / perPage);
+
+      this.set('page', page);
+    }
+  }),
+  // Ignore the setting because these are tiny dots.
 
   filtered: computed('pods.[]', 'pod', 'searchText', function() {
-
     let out = [];
     const pod = this.get('pod');
     const pods = this.get('pods');
 
     if ( pods ) {
-
       out.pushObjects(pods.slice());
-
     }
 
     if ( pod ) {
-
       out.pushObject(pod);
-
     }
 
     let searchFields = this.get('searchFields');
     let searchText = (this.get('searchText') || '').trim().toLowerCase();
 
     if ( searchText.length ) {
-
       let searchTokens = searchText.split(/\s*[, ]\s*/);
 
       for ( let i = out.length - 1 ; i >= 0 ; i-- ) {
-
         let row = out[i].containers[0];
 
         for ( let j = 0 ; j < searchTokens.length ; j++ ) {
-
           let expect = true;
           let token = searchTokens[j];
 
           if ( token.substr(0, 1) === '!' ) {
-
             expect = false;
             token = token.substr(1);
-
           }
 
           if ( token && matches(searchFields, token, row) !== expect ) {
-
             out.removeAt(i);
             break;
-
           }
-
         }
-
       }
-
     }
 
     return out;
-
   }),
 
   pagedContent: pagedArray('filtered', {
@@ -86,34 +83,14 @@ export default Component.extend({
   }),
 
   indexFrom: computed('page', 'perPage', function() {
-
     var current =  this.get('page');
     var perPage =  this.get('perPage');
 
     return Math.max(0, 1 + perPage * (current - 1));
-
   }),
 
   indexTo: computed('indexFrom', 'perPage', 'filtered.length', function() {
-
     return Math.min(this.get('filtered.length'), this.get('indexFrom') + this.get('perPage') - 1);
-
   }),
 
-  pageCountChanged: observer('indexFrom', 'filtered.length', function() {
-
-    // Go to the last page if we end up past the last page
-    let from = this.get('indexFrom');
-    let last = this.get('filtered.length');
-    var perPage = this.get('perPage');
-
-    if ( this.get('page') > 1 && from > last) {
-
-      let page = Math.ceil(last / perPage);
-
-      this.set('page', page);
-
-    }
-
-  }),
 });

@@ -23,19 +23,14 @@ registerProvisioner('storageos',      'kubernetes.io/storageos',       true);
 registerProvisioner('longhorn',      'rancher.io/longhorn',       true);
 
 export function registerProvisioner(name, provisioner, component) {
-
   if ( component === true ) {
-
     component = name;
-
   }
 
   const existing = PROVISIONERS.findBy('name', name);
 
   if ( existing ) {
-
     PROVISIONERS.removeObject(existing);
-
   }
 
   PROVISIONERS.push({
@@ -43,27 +38,27 @@ export function registerProvisioner(name, provisioner, component) {
     value:     provisioner,
     component,
   });
-
 }
 
 export function getProvisioners() {
-
   return JSON.parse(JSON.stringify(PROVISIONERS));
-
 }
 
 export default Resource.extend({
-  isDefault: computed('annotations', function() {
+  clusterStore: service(),
+  router:       service(),
 
+  type:      'storageClass',
+  state: 'active',
+
+  isDefault: computed('annotations', function() {
     const annotations = get(this, 'annotations') || {};
 
     return annotations[DEFAULT_ANNOTATION] === 'true' ||
       annotations[BETA_ANNOTATION] === 'true';
-
   }),
 
   availableActions: computed('isDefault', function() {
-
     const isDefault = get(this, 'isDefault');
 
     let out = [
@@ -82,88 +77,59 @@ export default Resource.extend({
     ];
 
     return out;
-
   }),
 
   displayProvisioner: computed('provisioner', 'intl.locale', function() {
-
     const intl = get(this, 'intl');
     const provisioner = get(this, 'provisioner');
     const entry = PROVISIONERS.findBy('value', provisioner)
 
     if ( provisioner && entry ) {
-
       const key = `storageClass.${ entry.name }.title`;
 
       if ( intl.exists(key) ) {
-
         return intl.t(key);
-
       }
-
     }
 
     return provisioner;
-
   }),
-  clusterStore: service(),
-  router:       service(),
-
-  type:  'storageClass',
-  state: 'active',
-
   actions: {
     makeDefault() {
-
       const cur = get(this, 'clusterStore').all('storageClass')
         .filterBy('isDefault', true);
       const promises = [];
 
       cur.forEach((sc) => {
-
         promises.push(sc.setDefault(false));
-
       });
 
       all(promises).then(() => {
-
         this.setDefault(true);
-
       });
-
     },
 
     resetDefault() {
-
       this.setDefault(false)
-
     },
 
     edit() {
-
       get(this, 'router').transitionTo('authenticated.cluster.storage.classes.detail.edit', get(this, 'id'));
-
     },
   },
 
   setDefault(on) {
-
     const annotations = get(this, 'annotations') || {};
 
     if ( on ) {
-
       annotations[DEFAULT_ANNOTATION] = 'true';
       annotations[BETA_ANNOTATION] = 'true';
-
     } else {
-
       annotations[DEFAULT_ANNOTATION] = 'false';
       annotations[BETA_ANNOTATION] = 'false';
-
     }
 
     this.save();
-
   },
 
 });

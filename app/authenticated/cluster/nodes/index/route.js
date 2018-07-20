@@ -8,13 +8,7 @@ export default Route.extend({
   globalStore: service(),
   scope:       service(),
 
-  setDefaultRoute: on('activate', function() {
-
-    set(this, `session.${ C.SESSION.CLUSTER_ROUTE }`, 'authenticated.cluster.nodes');
-
-  }),
   model() {
-
     const cluster = this.modelFor('authenticated.cluster');
 
     return this.get('globalStore').findAll('node')
@@ -22,7 +16,9 @@ export default Route.extend({
         cluster,
         nodes,
       }));
-
   },
 
+  setDefaultRoute: on('activate', function() {
+    set(this, `session.${ C.SESSION.CLUSTER_ROUTE }`, 'authenticated.cluster.nodes');
+  }),
 });

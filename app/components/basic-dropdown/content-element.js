@@ -4,26 +4,18 @@ import { next } from '@ember/runloop';
 
 const CE =  ContentElement.extend({
   click() {
-
     this.closeDD();
 
     return true;
-
   },
   closeDD() {
-
     let dd = get(this, 'parentView.dropdown');
 
     if (get(dd, 'actions')) {
-
       next(() => {
-
         dd.actions.close();
-
       });
-
     }
-
   },
 });
 

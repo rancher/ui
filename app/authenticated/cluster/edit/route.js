@@ -9,7 +9,6 @@ export default Route.extend({
   roleTemplateService: service('roleTemplate'),
 
   model() {
-
     const globalStore = this.get('globalStore');
     const cluster     = this.modelFor('authenticated.cluster');
 
@@ -24,24 +23,17 @@ export default Route.extend({
       clusterRoleTemplateBinding: globalStore.findAll('clusterRoleTemplateBinding'),
       me:                         get(this, 'access.principal'),
     });
-
   },
 
   setupController(controller/* , model*/) {
-
     this._super(...arguments);
     set(controller, 'step', 1);
-
   },
 
   resetController(controller, isExisting /* , transition*/ ) {
-
     if (isExisting) {
-
       controller.set('errors', null);
       controller.set('provider', null);
-
     }
-
   }
 });

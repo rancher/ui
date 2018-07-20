@@ -10,18 +10,27 @@ import { gt } from '@ember/object/computed';
 import DisplayImage from 'shared/mixins/display-image';
 
 var Pod = Resource.extend(DisplayImage, {
+  router:       service(),
+  modalService:  service('modal'),
+  globalStore:  service(),
+  clusterStore:  service(),
+  scope:        service(),
+
+  canHaveLabels: true,
+  escToClose:    true,
+
+  canEdit:      false,
+  canClone: false,
+
   namespace:    reference('namespaceId', 'namespace', 'clusterStore'),
   node:          reference('nodeId', 'node', 'globalStore'),
   workload:      reference('workloadId'),
   hasSidekicks:  gt('containers.length', 1),
   canEditYaml:  computed('links.update', 'actions.edit', function() {
-
     return !!get(this, 'links.update') && !!get(this, 'actions.edit');
-
   }),
 
   availableActions: computed('combinedState', function() {
-
     let isRunning = get(this, 'combinedState') === 'running';
 
     var choices = [
@@ -42,21 +51,15 @@ var Pod = Resource.extend(DisplayImage, {
     ];
 
     return choices;
-
   }),
 
   memoryReservationBlurb: computed('memoryReservation', function() {
-
     if ( get(this, 'memoryReservation') ) {
-
       return formatSi(get(this, 'memoryReservation'), 1024, 'iB', 'B');
-
     }
-
   }),
 
   combinedState: computed('node.state', 'workload.state', 'state', 'healthState', 'healthCheck', function() {
-
     var node = get(this, 'node.state');
     var resource = get(this, 'state');
     // var workload = get(this,'workload.state');
@@ -64,203 +67,134 @@ var Pod = Resource.extend(DisplayImage, {
     var hasCheck = !!get(this, 'healthCheck');
 
     if ( !hasCheck && C.DISCONNECTED_STATES.includes(node) ) {
-
       return 'unknown';
-
     } else if ( C.ACTIVEISH_STATES.includes(resource) && health ) {
-
       return health;
-
     } else {
-
       return resource;
-
     }
-
   }),
 
   isOn: function() {
-
     return ['running', 'migrating', 'restarting'].indexOf(get(this, 'state')) >= 0;
-
   }.property('state'),
 
   displayState: computed('_displayState', 'exitCode', function() {
-
     let out = get(this, '_displayState');
     let code = get(this, 'exitCode');
 
     if ( get(this, 'state') === 'stopped' && get(this, 'exitCode') > 0) {
-
       out += ` (${  code  })`;
-
     }
 
     return out;
-
   }),
 
   displayEnvironmentVars: computed('environment', function() {
-
     var envs = [];
     var environment = get(this, 'environment') || {};
 
     Object.keys(environment).forEach((key) => {
-
       envs.pushObject({
         key,
         value: environment[key]
       })
-
     });
 
     return envs;
-
   }),
 
   displayIp: function() {
-
     return get(this, 'status.podIp') || null;
-
   }.property('status.podIp'),
 
 
   nodeIp: function() {
-
     return get(this, 'status.nodeIp') || null;
-
   }.property('status.nodeIp'),
 
   sortIp: function() {
-
     var ip = get(this, 'primaryAssociatedIpAddress') || get(this, 'primaryIpAddress');
 
     if ( !ip ) {
-
       return '';
-
     }
     var match = ip.match(/^(\d+)\.(\d+)\.(\d+)\.(\d+)$/);
 
     if ( match ) {
-
       return match.slice(1).map((octet) => strPad(octet, 3, '0', false))
         .join('.');
-
     }
-
   }.property('primaryIpAddress', 'primaryAssociatedIpAddress'),
 
   isGlobalScale: function() {
-
     return `${ (get(this, 'labels') || {})[C.LABEL.SCHED_GLOBAL]  }` === 'true';
-
   }.property('labels'),
-
-  router:       service(),
-  modalService:  service('modal'),
-  globalStore:  service(),
-  clusterStore:  service(),
-  scope:        service(),
-
-  canHaveLabels: true,
-  escToClose:    true,
-
-  canEdit:  false,
-  canClone: false,
 
   actions: {
     clone() {
-
       get(this, 'router').transitionTo('containers.run', { queryParams: { podId: get(this, 'id'), } });
-
     },
 
     shell() {
-
       get(this, 'modalService').toggleModal('modal-shell', { model: this, });
-
     },
 
     popoutShell() {
-
       const projectId = get(this, 'scope.currentProject.id');
       const podId = get(this, 'id');
       const route = get(this, 'router').urlFor('authenticated.project.console', projectId);
 
       later(() => {
-
         window.open(`//${ window.location.host }${ route }?podId=${ podId }&isPopup=true`, '_blank', 'toolbars=0,width=900,height=700,left=200,top=200');
-
       });
-
     },
 
     logs() {
-
       get(this, 'modalService').toggleModal('modal-container-logs', this);
-
     },
 
     popoutLogs() {
-
       const projectId = get(this, 'scope.currentProject.id');
       const podId = get(this, 'id');
       const route = get(this, 'router').urlFor('authenticated.project.container-log', projectId);
 
       later(() => {
-
         window.open(`//${ window.location.host }${ route }?podId=${ podId }&isPopup=true`, '_blank', 'toolbars=0,width=900,height=700,left=200,top=200');
-
       });
-
     },
   },
 
   hasLabel(key, desiredValue) {
-
     const labels = get(this, 'labels') || {};
     const value = get(labels, key);
 
     if ( value === undefined ) {
-
       return false;
-
     }
 
     if ( desiredValue === undefined ) {
-
       return true;
-
     }
 
     return ( value === desiredValue );
-
   }
 });
 
 export function stoppedIcon(inst) {
-
   if ( inst.get('restartPolicy.name') === 'no' && inst.get('exitCode') === 0 ) {
-
     return 'icon icon-dot-circlefill';
-
   }
 
   return 'icon icon-circle';
-
 }
 
 export function stoppedColor(inst) {
-
   if ( inst.get('restartPolicy.name') === 'no' && inst.get('exitCode') === 0 ) {
-
     return 'text-success';
-
   }
 
   return 'text-error';
-
 }
 
 Pod.reopenClass({

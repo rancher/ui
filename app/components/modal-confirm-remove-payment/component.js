@@ -11,7 +11,6 @@ export default Component.extend(ModalBase, {
   account:    alias('modalService.modalOpts.account'),
   actions:    {
     confirm() {
-
       this.set('loading', true);
       fetch('/payment', {
         method:  'DELETE',
@@ -21,20 +20,15 @@ export default Component.extend(ModalBase, {
           cardId:     this.get('card.id')
         }),
       }).then(() => {
-
         this.set('loading', false);
 
         window.location.reload(); // need to update this to send the action all the way back up and fetch the subs
         // this.send('cancel');
-
       })
         .catch(() => {
-
           this.set('errMsg', this.get('intl').t('caasLogin.error'));
           this.set('loading', false);
-
         });
-
     },
   }
 });

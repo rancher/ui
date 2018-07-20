@@ -4,7 +4,6 @@ import Route from '@ember/routing/route';
 
 export default Route.extend({
   model(params) {
-
     const store = get(this, 'store');
 
     return hash({
@@ -12,6 +11,5 @@ export default Route.extend({
       certificates:           store.findAll('certificate'),
       namespacedCertificates: store.findAll('namespacedcertificate'),
     });
-
   },
 });

@@ -50,73 +50,34 @@ export default Component.extend(ModalBase, NewOrEdit, {
   model:       alias('modalService.modalOpts.model'),
   mode:        reads('modalService.modalOpts.mode'),
 
-  addBtnLabel: function() {
-
-    const mode = get(this, 'mode');
-
-    if (mode === 'edit') {
-
-      return 'generic.save';
-
-    } else if (mode === 'clone') {
-
-      return 'notifierPage.clone';
-
-    } else if (mode === 'add') {
-
-      return 'generic.add';
-
-    }
-
-  }.property('mode'),
-
-  currentTypeChanged: function() {
-
-    set(this, 'errors', null);
-
-  }.observes('currentType'),
-
   init(...args) {
-
     this._super(...args);
     const mode = get(this, 'mode');
 
     if (mode === 'edit' || mode === 'clone') {
-
       const t = get(this, 'currentType');
 
       this.set('types', TYPES.filterBy('type', t));
-
     } else if (mode === 'add') {
-
       set(this, 'modelMap', {});
       this.setModel(get(this, 'currentType'));
       this.set('types', TYPES);
-
     }
-
   },
 
   actions: {
     switchType(type) {
-
       this.set('currentType', type);
       this.setModel(type);
-
     },
     test() {
-
       if (get(this, 'testing') || get(this, 'tested')) {
-
         return resolve();
-
       }
       const ok = this.validate();
 
       if (!ok) {
-
         return resolve();
-
       }
       const data = get(this, 'model').serialize();
       const gs = get(this, 'globalStore');
@@ -129,7 +90,6 @@ export default Component.extend(ModalBase, NewOrEdit, {
         method: 'POST',
         data,
       }).then(() => {
-
         this.setProperties({
           testOk:  true,
           tested:  true,
@@ -137,14 +97,10 @@ export default Component.extend(ModalBase, NewOrEdit, {
           errors:  null,
         });
         setTimeout(() => {
-
           this.setProperties({ tested: false, });
-
         }, 3000);
-
       })
         .catch((xhr) => {
-
           this.setProperties({
             testOk:  false,
             tested:  true,
@@ -152,32 +108,39 @@ export default Component.extend(ModalBase, NewOrEdit, {
             errors:  [xhr.body.message || xhr.body.code],
           });
           setTimeout(() => {
-
             this.setProperties({ tested: false, });
-
           }, 3000);
-
         });
-
     },
   },
-  setModel(type) {
+  addBtnLabel: function() {
+    const mode = get(this, 'mode');
 
+    if (mode === 'edit') {
+      return 'generic.save';
+    } else if (mode === 'clone') {
+      return 'notifierPage.clone';
+    } else if (mode === 'add') {
+      return 'generic.add';
+    }
+  }.property('mode'),
+
+  currentTypeChanged: function() {
+    set(this, 'errors', null);
+  }.observes('currentType'),
+
+  setModel(type) {
     const cachedModel = get(this, `modelMap.${ type }`);
     const clusterId = get(this, 'cluster.id');
     const gs = get(this, 'globalStore');
 
     if (cachedModel) {
-
       set(this, 'model', cachedModel);
 
       return;
-
     }
     if (type === 'email') {
-
       type = 'smtp';
-
     }
     const configType = `${ type }Config`;
     const opt = {
@@ -191,13 +154,10 @@ export default Component.extend(ModalBase, NewOrEdit, {
 
     set(this, 'model', model);
     set(this, `modelMap.${ type }`, model);
-
   },
 
   doneSaving() {
-
     get(this, 'modalService').toggleModal();
-
   },
 
 });

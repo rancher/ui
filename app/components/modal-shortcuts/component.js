@@ -20,63 +20,43 @@ export default Component.extend(ModalBase, {
 
   isAdmin: alias('access.admin'),
 
-  containerCount: function() {
-
-    let count = this.get('pods.length');
-
-    if ( count > 9 ) {
-
-      return count;
-
-    } else {
-
-      return `0${  count }`;
-
-    }
-
-  }.property('pods.length'),
-
-  currentTheme: computed(`prefs.${ C.PREFS.THEME }`, function() {
-
-    return this.get(`prefs.${ C.PREFS.THEME }`);
-
-  }),
-
-
   init() {
-
     this._super(...arguments);
     this.set('pods', this.get('store').all('pod'));
 
     this.set('timer', setInterval(() => {
-
       this.updateTime();
-
     }, 1000));
-
   },
 
   willDestroyElement() {
-
     clearInterval(this.get('timer'));
-
   },
-  updateTime() {
+  containerCount: function() {
+    let count = this.get('pods.length');
 
+    if ( count > 9 ) {
+      return count;
+    } else {
+      return `0${  count }`;
+    }
+  }.property('pods.length'),
+
+  currentTheme: computed(`prefs.${ C.PREFS.THEME }`, function() {
+    return this.get(`prefs.${ C.PREFS.THEME }`);
+  }),
+
+
+  updateTime() {
     let time = this.get('time');
 
     if ( time > 0 ) {
-
       time--;
-
     } else {
-
       time = DEFAULT_TIME;
-
     }
 
     this.set('time', time);
-
   },
 
 });

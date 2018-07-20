@@ -20,18 +20,14 @@ export default Component.extend({
   tagName: '',
 
   didReceiveAttrs() {
-
     const nodes = get(this, 'nodes');
     const nodeId = get(this, 'nodeId');
 
     if (nodes && nodeId) {
-
       const clusterId = get(this, 'scope.currentCluster.id');
       const targetNode = nodes.find((n) => n.id === nodeId && n.clusterId === clusterId);
 
       set(this, 'model', targetNode);
-
     }
-
   },
 });

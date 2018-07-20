@@ -7,15 +7,11 @@ import C from 'ui/utils/constants';
 export default Route.extend({
   globalStore: service(),
 
-  setDefaultRoute: on('activate', function() {
-
-    set(this, `session.${ C.SESSION.CLUSTER_ROUTE }`, 'authenticated.cluster.security.members.index');
-
-  }),
   model() {
-
     return this.modelFor('authenticated.cluster');
-
   },
 
+  setDefaultRoute: on('activate', function() {
+    set(this, `session.${ C.SESSION.CLUSTER_ROUTE }`, 'authenticated.cluster.security.members.index');
+  }),
 });

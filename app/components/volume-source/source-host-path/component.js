@@ -9,7 +9,6 @@ export default Component.extend(VolumeSource, {
   fieldType: 'hostPathVolumeSource',
 
   kindChoices: computed(() => {
-
     const out = [
       {
         label: 'volumeSource.host-path.kind.Any',
@@ -24,15 +23,12 @@ export default Component.extend(VolumeSource, {
       'Socket',
       'CharDevice',
       'BlockDevice'].forEach((value) => {
-
       out.push({
         label: `volumeSource.host-path.kind.${ value }`,
         value
       });
-
     });
 
     return out;
-
   }),
 });

@@ -22,19 +22,15 @@ export default Component.extend({
 
   perPage:       alias('prefs.tablePerPage'),
   init() {
-
     this._super(...arguments);
     this.set('selectedCount', `${ this.get('perPage') }`);
-
   },
 
   actions: {
     save(cb) {
-
       this.set(`prefs.${ C.PREFS.TABLE_COUNT }`, parseInt(this.get('selectedCount'), 10));
       cb(true);
       this.sendAction('done');
-
     }
   }
 });

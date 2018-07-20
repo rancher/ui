@@ -4,9 +4,9 @@ import { inject as service } from '@ember/service';
 import Controller, { inject as controller } from '@ember/controller';
 
 export default Controller.extend({
-  projectController: controller('authenticated.project'),
   scope:             service(),
 
+  projectController: controller('authenticated.project'),
   queryParams:       ['sortBy'],
   sortBy:            'name',
 
@@ -44,19 +44,15 @@ export default Controller.extend({
   groupTableBy:      alias('projectController.groupTableBy'),
 
   balancerServices: computed('model.services.@each.kind', function() {
-
     return get(this, 'model.services').filterBy('kind', 'LoadBalancer');
-
   }),
 
   rows: computed('model.ingresses.[]', 'balancerServices.[]', function() {
-
     const out = (get(this, 'balancerServices') || []).slice();
 
     out.addObjects(get(this, 'model.ingresses') || []);
 
     return out;
-
   }),
 
 });

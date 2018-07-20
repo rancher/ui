@@ -38,104 +38,74 @@ export default Component.extend({
   project: alias('scope.currentProject'),
 
   init() {
-
     this._super(...arguments);
     this.sendAction('registerHook', this.saveVolumes.bind(this), {
       name: 'saveVolumes',
       key:  '_volumeHooks'
     });
-
   },
 
   didReceiveAttrs() {
-
     if (!get(this, 'expandFn')) {
-
       set(this, 'expandFn', (item) => {
-
         item.toggleProperty('expanded');
-
       });
-
     }
 
     const out = [];
     let entry;
 
     (get(this, 'workload.volumes') || []).forEach((volume) => {
-
       if (volume.persistentVolumeClaim) {
-
         entry = {
           mode: EXISTING_PVC,
           volume,
         };
-
       } else if (volume.hostPath) {
-
         entry = {
           mode: BIND_MOUNT,
           volume,
         };
-
       } else if ( volume.flexVolume && volume.flexVolume.driver === LOG_AGGREGATOR ) {
-
         entry = {
           mode: CUSTOM_LOG_PATH,
           volume,
         };
-
       } else if (volume.secret) {
-
         entry = {
           mode: SECRET,
           volume,
         };
-
       } else if (volume.configMap) {
-
         entry = {
           mode: CONFIG_MAP,
           volume,
         };
-
       } else {
-
         entry = {
           mode: EXISTING_VOLUME,
           volume,
         };
-
       }
 
       entry.mounts = [];
       out.push(entry);
-
     });
 
     (get(this, 'launchConfig.volumeMounts') || []).forEach((mount) => {
-
       entry = out.findBy('volume.name', mount.name);
 
       if (entry) {
-
         entry.mounts.push(mount);
-
       }
-
     });
 
     // filter out custom log path volume when logging is disabled
     if (!get(this, 'loggingEnabled')) {
-
       set(this, 'volumesArray', out.filter((row) => row.mode !== CUSTOM_LOG_PATH));
-
     } else {
-
       set(this, 'volumesArray', out);
-
     }
-
   },
 
   // Create (ephermal) Volume -> volume entry on pod
@@ -147,13 +117,10 @@ export default Component.extend({
 
   actions: {
     remove(obj) {
-
       get(this, 'volumesArray').removeObject(obj);
-
     },
 
     addVolume() {
-
       const store = get(this, 'store');
 
       get(this, 'volumesArray').pushObject({
@@ -166,11 +133,9 @@ export default Component.extend({
           get(this, 'store').createRecord({ type: 'volumeMount', })
         ],
       });
-
     },
 
     addNewPvc() {
-
       const store = get(this, 'store');
 
       get(this, 'volumesArray').pushObject({
@@ -188,11 +153,9 @@ export default Component.extend({
           store.createRecord({ type: 'volumeMount', })
         ],
       });
-
     },
 
     addPvc() {
-
       const store = get(this, 'store');
 
       get(this, 'volumesArray').pushObject({
@@ -209,11 +172,9 @@ export default Component.extend({
           store.createRecord({ type: 'volumeMount', }),
         ],
       });
-
     },
 
     addBindMount() {
-
       const store = get(this, 'store');
 
       get(this, 'volumesArray').pushObject({
@@ -231,11 +192,9 @@ export default Component.extend({
           store.createRecord({ type: 'volumeMount', })
         ],
       });
-
     },
 
     addTmpfs() {
-
       const store = get(this, 'store');
 
       get(this, 'volumesArray').pushObject({
@@ -252,11 +211,9 @@ export default Component.extend({
           store.createRecord({ type: 'volumeMount', })
         ],
       });
-
     },
 
     addConfigMap() {
-
       const store = get(this, 'store');
 
       get(this, 'volumesArray').pushObject({
@@ -275,11 +232,9 @@ export default Component.extend({
           store.createRecord({ type: 'volumeMount', })
         ],
       });
-
     },
 
     addSecret() {
-
       const store = get(this, 'store');
 
       get(this, 'volumesArray').pushObject({
@@ -298,11 +253,9 @@ export default Component.extend({
           store.createRecord({ type: 'volumeMount', })
         ],
       });
-
     },
 
     addCustomLogPath() {
-
       const store = get(this, 'store');
 
       const name = this.nextName();
@@ -330,12 +283,10 @@ export default Component.extend({
           store.createRecord({ type: 'volumeMount', }),
         ],
       });
-
     },
   },
 
   nextName() {
-
     const volumes = get(this, 'workload.volumes') || [];
     let num = get(this, 'nextNum');
     let name;
@@ -343,36 +294,29 @@ export default Component.extend({
     let ok = false;
 
     while (!ok) {
-
       name = `vol${  num }`;
       ok = !volumes.findBy('name', name);
       num++;
-
     }
 
     set(this, 'nextNum', num);
 
     return name;
-
   },
 
   saveVolumes() {
-
     const ary = get(this, 'volumesArray') || [];
     const promises = [];
     let pvc;
 
     ary.filterBy('pvc').forEach((row) => {
-
       pvc = get(row, 'pvc');
       set(pvc, 'namespaceId', get(this, 'namespace.id'));
       promises.push(get(row, 'pvc').save());
-
     });
 
     ary.filterBy('mode', CUSTOM_LOG_PATH).filterBy('volume.flexVolume.driver', LOG_AGGREGATOR)
       .forEach((row) => {
-
         const options = get(row, 'volume.flexVolume.options');
         const lc = get(this, 'launchConfig');
         const workload = get(this, 'workload');
@@ -380,39 +324,29 @@ export default Component.extend({
         set(options, 'containerName', get(lc, 'name'));
         set(options, 'namespace', get(workload, 'namespace.id'));
         set(options, 'workloadName', get(workload, 'name'));
-
       });
 
     return all(promises).then(() => {
-
       const volumes = [];
       const mounts = [];
 
       ary.forEach((row) => {
-
         volumes.pushObject(row.volume);
 
         row.mounts.forEach((mount) => {
-
           set(mount, 'name', get(row, 'volume.name'));
           mounts.pushObject(mount);
-
         });
 
         if (row.pvc) {
-
           const id = get(row, 'pvc.id');
 
           set(row, 'volume.persistentVolumeClaim.persistentVolumeClaimId', id);
-
         }
-
       });
 
       get(this, 'workload').set('volumes', volumes);
       get(this, 'launchConfig').set('volumeMounts', mounts);
-
     });
-
   },
 });

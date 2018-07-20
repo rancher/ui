@@ -36,12 +36,10 @@ export default Controller.extend({
   groupTableBy: alias('projectController.groupTableBy'),
 
   rows: function() {
-
     const proj = get(this, 'model.projectCerts').slice();
     const ns = get(this, 'model.namespacedCerts').slice();
     const out = proj.concat(ns);
 
     return out;
-
   }.property('model.projectCerts.[]', 'model.namespacedCerts.[]'),
 });

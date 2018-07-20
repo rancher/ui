@@ -37,40 +37,13 @@ export default Component.extend(ContainerChoices, {
   statusClass: null,
   linksArray:  alias('instance.instanceLinks'),
 
-  status: function() {
-
-    let k = STATUS.NONE;
-    let count = (this.get('linksArray') || []).filterBy('name').get('length') || 0;
-
-    if ( count ) {
-
-      if ( this.get('errors.length') ) {
-
-        k = STATUS.INCOMPLETE;
-
-      } else {
-
-        k = STATUS.COUNTCONFIGURED;
-
-      }
-
-    }
-
-    this.set('statusClass', classForStatus(k));
-
-    return this.get('intl').t(`${ STATUS_INTL_KEY }.${ k }`, { count });
-
-  }.property('linksArray.@each.name'),
   actions: {
     addLink() {
-
       let links = this.get('linksArray');
 
       if ( !links ) {
-
         links = [];
         this.set('linksArray', links);
-
       }
 
       links.pushObject(this.get('store').createRecord({
@@ -78,50 +51,53 @@ export default Component.extend(ContainerChoices, {
         name:  '',
         alias: '',
       }));
-
     },
 
     removeLink(obj) {
-
       this.get('linksArray').removeObject(obj);
-
     },
 
     followLink(str) {
-
       let stack, stackName, containerName;
 
       if ( str.includes('/')) {
-
         [stackName, containerName] = name.split('/');
         let stacks = this.get('store').all('stack');
 
         stack = stacks.findBy('name', stackName);
-
       } else {
-
         stack = this.get('stack');
         containerName = str;
-
       }
 
       if ( stack ) {
-
         let container = stack.get('instances').findBy('name', containerName);
 
         if ( container ) {
-
           this.get('router').transitionTo('container', container.get('id'));
 
           return;
-
         }
-
       }
 
       this.get('growl').fromError(`Unable to find container for "${ name }"`);
-
     },
   },
 
+  status: function() {
+    let k = STATUS.NONE;
+    let count = (this.get('linksArray') || []).filterBy('name').get('length') || 0;
+
+    if ( count ) {
+      if ( this.get('errors.length') ) {
+        k = STATUS.INCOMPLETE;
+      } else {
+        k = STATUS.COUNTCONFIGURED;
+      }
+    }
+
+    this.set('statusClass', classForStatus(k));
+
+    return this.get('intl').t(`${ STATUS_INTL_KEY }.${ k }`, { count });
+  }.property('linksArray.@each.name'),
 });

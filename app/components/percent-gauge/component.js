@@ -2,9 +2,7 @@ import Component from '@ember/component';
 import ThrottledResize from 'shared/mixins/throttled-resize';
 import initGraph from 'ui/utils/percent-gauge';
 import layout from './template';
-import {
-  get, set, observer
-} from '@ember/object'
+import { get, set, observer } from '@ember/object'
 import { next } from '@ember/runloop';
 
 export default Component.extend(ThrottledResize, {
@@ -18,31 +16,7 @@ export default Component.extend(ThrottledResize, {
   svg:        null,
   ready:      false,
 
-  updateTitle: observer('title', function() {
-
-    get(this, 'svg').updateTitle(get(this, 'title'));
-
-  }),
-
-  updateSubTitle: observer('subtitle', function() {
-
-    get(this, 'svg').updateSubTitle(get(this, 'subtitle'));
-
-  }),
-
-  updateValue: observer('value', function() {
-
-    get(this, 'svg').updateValue(get(this, 'value'));
-
-  }),
-
-  updateTicks: observer('ticks.@each.{label,value}', function() {
-
-    get(this, 'svg').updateTicks(get(this, 'ticks'));
-
-  }),
   didInsertElement() {
-
     this._super(...arguments);
     this.set('svg', initGraph({
       el:       this.$()[0],
@@ -53,27 +27,33 @@ export default Component.extend(ThrottledResize, {
     }));
 
     next(this, () => {
-
       if ( this.isDestroyed || this.isDestroying ) {
-
         return
-
       }
 
       set(this, 'ready', true);
-
     });
-
   },
 
+  updateTitle: observer('title', function() {
+    get(this, 'svg').updateTitle(get(this, 'title'));
+  }),
+
+  updateSubTitle: observer('subtitle', function() {
+    get(this, 'svg').updateSubTitle(get(this, 'subtitle'));
+  }),
+
+  updateValue: observer('value', function() {
+    get(this, 'svg').updateValue(get(this, 'value'));
+  }),
+
+  updateTicks: observer('ticks.@each.{label,value}', function() {
+    get(this, 'svg').updateTicks(get(this, 'ticks'));
+  }),
   onResize() {
-
     if ( get(this, 'svg') && get(this, 'ready') ) {
-
       get(this, 'svg').fit();
-
     }
-
   },
 
 });

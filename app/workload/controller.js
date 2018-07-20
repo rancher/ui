@@ -9,20 +9,16 @@ export default Controller.extend({
   service:            alias('model.workload'),
 
   displayEnvironmentVars: computed('service.launchConfig.environment', function() {
-
     var envs = [];
     var environment = get(this, 'service.launchConfig.environment') || {};
 
     Object.keys(environment).forEach((key) => {
-
       envs.pushObject({
         key,
         value: environment[key]
       })
-
     });
 
     return envs;
-
   }),
 });

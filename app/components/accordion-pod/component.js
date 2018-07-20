@@ -41,10 +41,8 @@ export default Component.extend(ManageLabels, {
   ],
 
   expandAllObserve: function() {
-
     let expandAll = this.get('expandAll');
 
     this.set('initExpandAll', expandAll);
-
   }.observes('expandAll')
 });

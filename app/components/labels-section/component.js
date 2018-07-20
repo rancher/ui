@@ -33,15 +33,11 @@ export default Component.extend(ManageLabels, {
   ],
 
   labelSource:    alias('model.labels'),
-  labelsObserver: observer('model.labels', function() {
-
+  didReceiveAttrs() {
     this.initLabels(this.get('labelSource'));
-
+  },
+  labelsObserver: observer('model.labels', function() {
+    this.initLabels(this.get('labelSource'));
   }),
 
-  didReceiveAttrs() {
-
-    this.initLabels(this.get('labelSource'));
-
-  },
 });

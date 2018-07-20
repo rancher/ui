@@ -11,20 +11,15 @@ export default Component.extend({
 
   conditions: null,
 
-  updateConditions: observer('conditionsSource.@each.{status,reason,message}', function() {
-
-    this.setConditions();
-
-  }),
   init() {
-
     this._super(...arguments);
     this.setConditions();
-
   },
 
+  updateConditions: observer('conditionsSource.@each.{status,reason,message}', function() {
+    this.setConditions();
+  }),
   setConditions() {
-
     const conditions = get(this, 'conditionsSource');
 
     this.set('conditions', [{
@@ -44,7 +39,6 @@ export default Component.extend({
       healthy: (conditions.find((c) => c.type === 'Ready') || {}).status === 'True',
     }
     ]);
-
   },
 
 });

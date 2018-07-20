@@ -1,6 +1,4 @@
-import {
-  getProjectId, getClusterId, bulkAdd
-} from 'ui/utils/navigation-tree';
+import { getProjectId, getClusterId, bulkAdd } from 'ui/utils/navigation-tree';
 
 const rootNav = [
   // Project
@@ -295,11 +293,9 @@ const rootNav = [
         icon:           'icon icon-users',
         route:          'global-admin.security.authentication',
         condition() {
-
           const authConfigs = this.get('globalStore').all('authConfig');
 
           return authConfigs.get('length') > 0;
-
         }
       },
     ],
@@ -314,9 +310,7 @@ const rootNav = [
 ]
 
 export function initialize(/* appInstance*/) {
-
   bulkAdd(rootNav);
-
 }
 
 export default {

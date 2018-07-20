@@ -7,13 +7,7 @@ import C from 'ui/utils/constants';
 export default Route.extend({
   globalStore: service(),
 
-  setDefaultRoute: on('activate', function() {
-
-    set(this, `session.${ C.SESSION.PROJECT_ROUTE }`, 'authenticated.project.security.members.index');
-
-  }),
   model() {
-
     const pid = this.paramsFor('authenticated.project');
     const pm = this.modelFor('authenticated.project');
 
@@ -21,7 +15,9 @@ export default Route.extend({
 
     // TODO 2.0 bug here with projectId on a PRTB where API mungs it up be removing the cluster id on the projectid
     return get(pm, 'project');
-
   },
 
+  setDefaultRoute: on('activate', function() {
+    set(this, `session.${ C.SESSION.PROJECT_ROUTE }`, 'authenticated.project.security.members.index');
+  }),
 });

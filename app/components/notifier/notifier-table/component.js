@@ -42,11 +42,9 @@ export default Component.extend({
 
   clusterId:         reads('scope.currentCluster.id'),
   filteredNotifiers: function() {
-
     const data = this.get('model') || [];
     const clusterId = get(this, 'clusterId')
 
     return data.filterBy('clusterId', clusterId);
-
   }.property('model.@each.{clusterId}', 'clusterId'),
 });

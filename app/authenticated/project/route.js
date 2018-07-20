@@ -20,7 +20,6 @@ export default Route.extend(Preload, {
 
   shortcuts: { 'g': 'toggleGrouping', },
   model(params, transition) {
-
     const isPopup = this.controllerFor('application').get('isPopup');
 
     return get(this, 'globalStore').find('project', params.project_id)
@@ -29,15 +28,11 @@ export default Route.extend(Preload, {
           this.loadSchemas('clusterStore'),
           this.loadSchemas('store'),
         ]).then(() => {
-
           const out = EmberObject.create({ project });
 
           if ( isPopup ) {
-
             return out;
-
           } else {
-
             return PromiseAll([
               this.preload('namespace', 'clusterStore'),
               this.preload('storageClass', 'clusterStore'),
@@ -51,56 +46,41 @@ export default Route.extend(Preload, {
               this.preload('namespacedSecret'),
               this.preload('persistentVolumeClaim'),
             ]).then(() => out)
-
           }
-
         })))
       .catch((err) => this.loadingError(err, transition));
-
   },
 
   redirect() {
-
     let route = this.get(`session.${ C.SESSION.PROJECT_ROUTE }`);
 
     if ( VALID_ROUTES.includes(route) ) {
-
       this.replaceWith(route);
-
     }
-
   },
 
   setupController(controller, model) {
-
     this._super(...arguments);
     get(this, 'scope').finishSwitchToProject(get(model, 'project'));
-
   },
 
   actions: {
     toggleGrouping() {
-
       let choices = ['none', 'node', 'workload', 'namespace'];
       let cur = this.get('controller.group');
       let neu = choices[((choices.indexOf(cur) + 1) % choices.length)];
 
       next(() => {
-
         this.set('controller.group', neu);
-
       });
-
     },
 
     importYaml() {
-
       get(this, 'modalService').toggleModal('modal-import', {
         escToClose: true,
         mode:       'project',
         projectId:  get(this, 'scope.currentProject.id')
       });
-
     },
   },
 
