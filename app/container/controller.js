@@ -1,3 +1,4 @@
+import { inject as service } from '@ember/service';
 import Controller from '@ember/controller';
 import {
   get, set, observer, computed
@@ -5,6 +6,8 @@ import {
 import { once } from '@ember/runloop';
 
 export default Controller.extend({
+  router: service(),
+
   selectedContainer: null,
 
   displayEnvironmentVars: computed('selectedContainer', function() {
@@ -33,7 +36,7 @@ export default Controller.extend({
 
   podStateDidChange: observer('model.state', function() {
 
-    if ( get(this, 'model.state') === 'removed') {
+    if ( get(this, 'model.state') === 'removed' && get(this, 'router.currentRouteName') === 'container' ) {
 
       this.transitionToRoute('authenticated.project.index');
 
