@@ -55,7 +55,11 @@
         </div>
         <div class="col span-6">
           <label class="acc-label">{{t 'clusterNew.googlegke.clusterIpv4Cidr.label'}}</label>
-          {{input value=config.clusterIpv4Cidr placeholder=(t 'clusterNew.googlegke.clusterIpv4Cidr.placeholder') disabled=editing}}
+          {{input
+              value=config.clusterIpv4Cidr
+              placeholder=(t 'clusterNew.googlegke.clusterIpv4Cidr.placeholder')
+              disabled=editing
+          }}
         </div>
       </div>
       <div class="row">
@@ -63,11 +67,131 @@
           <label class="acc-label">{{t 'clusterNew.googlegke.alphaFeatures.label'}}</label>
           <div class="form-control-static">
             <label class="mr-20 hand">
-              {{radio-button selection=config.enableAlphaFeature value=true disabled=editing}} {{t 'generic.enabled'}}
+              {{radio-button
+                  selection=config.enableAlphaFeature
+                  value=true
+                  disabled=editing
+              }} {{t 'generic.enabled'}}
             </label>
             <label class="hand">
-              {{radio-button selection=config.enableAlphaFeature value=false disabled=editing}} {{t 'generic.disabled'}}
+              {{radio-button
+                  selection=config.enableAlphaFeature
+                  value=false
+                  disabled=editing
+              }} {{t 'generic.disabled'}}
             </label>
+          </div>
+        </div>
+        <div class="col span-6">
+          <label class="acc-label">{{t 'clusterNew.googlegke.legacyAuth.label'}}</label>
+          <div class="form-control-static">
+            <label class="mr-20 hand">
+              {{radio-button
+                  selection=config.enableLegacyAbac
+                  value=true
+                  disabled=editing
+              }} {{t 'generic.enabled'}}
+            </label>
+            <label class="hand">
+              {{radio-button
+                  selection=config.enableLegacyAbac
+                  value=false
+                  disabled=editing
+              }} {{t 'generic.disabled'}}
+            </label>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col span-6">
+          <label class="acc-label">{{t 'clusterNew.googlegke.stackDriverLogging.label'}}</label>
+          <div class="form-control-static">
+            <label class="hand">
+              {{radio-button
+                  selection=config.noStackdriverLogging
+                  value=false
+                  disabled=editing
+              }} {{t 'generic.enabled'}}
+            </label>
+            <label class="mr-20 hand">
+              {{radio-button
+                  selection=config.noStackdriverLogging
+                  value=true
+                  disabled=editing
+              }} {{t 'generic.disabled'}}
+            </label>
+          </div>
+        </div>
+        <div class="col span-6">
+          <label class="acc-label">{{t 'clusterNew.googlegke.stackdriverMonitor.label'}}</label>
+          <div class="form-control-static">
+            <label class="hand">
+              {{radio-button
+                  selection=config.noStackdriverMonitoring
+                  value=false
+                  disabled=editing
+              }} {{t 'generic.enabled'}}
+            </label>
+            <label class="mr-20 hand">
+              {{radio-button
+                  selection=config.noStackdriverMonitoring
+                  value=true
+                  disabled=editing
+              }} {{t 'generic.disabled'}}
+            </label>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col span-6">
+          <label class="acc-label">{{t 'clusterNew.googlegke.dashboard.label'}}</label>
+          <div class="form-control-static">
+            <label class="mr-20 hand">
+              {{radio-button
+                  selection=config.enableKubernetesDashboard
+                  value=true
+                  disabled=editing
+              }} {{t 'generic.enabled'}}
+            </label>
+            <label class="hand">
+              {{radio-button
+                  selection=config.enableKubernetesDashboard
+                  value=false
+                  disabled=editing
+              }} {{t 'generic.disabled'}}
+            </label>
+          </div>
+        </div>
+        <div class="col span-6">
+          <label class="acc-label">{{t 'clusterNew.googlegke.httpLB.label'}}</label>
+          <div class="form-control-static">
+            <label class="hand">
+              {{radio-button
+                  selection=config.disableHttpLoadBalancing
+                  value=false
+                  disabled=editing
+              }} {{t 'generic.enabled'}}
+            </label>
+            <label class="mr-20 hand">
+              {{radio-button
+                  selection=config.disableHttpLoadBalancing
+                  value=true
+                  disabled=editing
+              }} {{t 'generic.disabled'}}
+            </label>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col span-6">
+          <label class="acc-label">{{t 'clusterNew.googlegke.maintenanceWindow.label'}}</label>
+          <div class="form-control-static">
+            {{new-select
+                classNames="form-control"
+                content=maintenanceWindowTimes
+                value=config.maintenanceWindow
+            }}
+
           </div>
         </div>
       </div>
