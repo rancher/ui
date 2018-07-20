@@ -703,6 +703,7 @@ namespacesPage:
 
 clusterPage:
   edit: 编辑集群
+  internal: '<b>警告:</b>{appName}集群用作数据存储，只应授予管理员拥有写入权限.<br>对此群集具有写入权限的用户，可以使用它授予自己安装并管理的其他群集的访问权限。'
 
 projectsListNamespacePage:
   header: 命名空间
@@ -1547,6 +1548,10 @@ ldap:
   accessEnabled:
     header: 验证
     subtext: "如需修改服务器配置，请在下方关闭访问控制后重新设置"
+    serviceAccountDistinguishedName:
+      labelText: "服务帐户专有名称:"
+    connectionTimeout:
+      labelText: "服务连接超时:"
     general:
       header: 常规
       server: "服务器:"
@@ -1793,7 +1798,7 @@ cloudProvider:
 
 catalogSettings:
   header: 应用商店
-  notAvailable: "不可用：这是名为<code>{name}</code>的自定义商店"
+  notAvailable: "不可用: 这是名为<code>{name}</code>的自定义商店"
   helpText: 目前只支持Helm目录
   library:
     label: 官方认证
@@ -1835,7 +1840,7 @@ catalogSettings:
     editHeader: 编辑应用商店
     name:
       label: 名称
-      placeholder: 例如：mycatalog
+      placeholder: '例如: mycatalog'
     url:
       label: 商店URL地址
     kind:
@@ -1844,7 +1849,7 @@ catalogSettings:
       helm: Helm
     branch:
       label: 分支
-      placeholder: '例如：master'
+      placeholder: '例如: master'
   errors:
     nameInExists: '在启用{key}之前，请移除名称为{key}的应用商店。'
 clusterRow:
@@ -1863,9 +1868,9 @@ clusterNew:
     yaml: 编辑YAML
   name:
     label: 集群名称
-    placeholder: 例如：Sandbox
+    placeholder: '例如: Sandbox'
   description:
-    placeholder: 例如：用于开发和测试工作负载的集群
+    placeholder: '例如: 用于开发和测试工作负载的集群'
   driverLabels:
     cloud: Kubernetes托管服务商
     import: 导入现有的Kubernetes集群
@@ -1956,7 +1961,7 @@ clusterNew:
     resourceGroup:
       label: 资源组
       placeholder: 'docker-machine'
-      helpText: "使用一个已有的资源组或者输入一个新的资源组名称。注意：如果使用的资源组内已经存有AKS集群的话，将会创建一个新的资源组。Azure AKS只允许一个资源组有一个AKS集群。"
+      helpText: "使用一个已有的资源组或者输入一个新的资源组名称。注意: 如果使用的资源组内已经存有AKS集群的话，将会创建一个新的资源组。Azure AKS只允许一个资源组有一个AKS集群。"
     networking:
       label: 网络
       default: 默认
@@ -1988,7 +1993,7 @@ clusterNew:
       placeholder: 可用集名称
     openPort:
       label: 开放端口
-      placeholder: '逗号分隔, 例如：80,443'
+      placeholder: '逗号分隔, 例如: 80,443'
     privateIpAddress:
       label: 私有IP
       placeholder: 127.0.0.1
@@ -2009,7 +2014,7 @@ clusterNew:
   googlegke:
     label: Google Kubernetes引擎
     shortLabel: Google GKE
-    checkServiceAccount: "下一步：配置主机"
+    checkServiceAccount: "下一步: 配置主机"
     checkingServiceAccount: 认证
     credential:
       label: 服务账号
@@ -2022,7 +2027,7 @@ clusterNew:
       prompt: 选择一个区域...
     project:
       label: 项目
-      placeholder: 例如：my-project
+      placeholder: '例如: my-project'
     machineType:
       label: 虚拟机类型
       prompt: 选择类型...
@@ -2036,7 +2041,7 @@ clusterNew:
       prompt: 选择版本...
     clusterIpv4Cidr:
       label: 容器地址范围
-      placeholder: 例如：10.42.0.0/16
+      placeholder: '例如: 10.42.0.0/16'
     alphaFeatures:
       label: Alpha功能
   rke:
@@ -2053,15 +2058,18 @@ clusterNew:
       warning: 这似乎不是一个IP地址
       public:
         label: 公网地址
-        placeholder: 例如：1.2.3.4
+        placeholder: '例如: 1.2.3.4'
       private:
         label: 内网地址
-        placeholder: 例如：1.2.3.4
+        placeholder: '例如: 1.2.3.4'
     label: '{appName}Kubernetes引擎'
     shortLabel: 自定义
     customize:
-      label: 集群选项
-      detail: "为集群自定义Kubernetes选项"
+      label: 群集选项
+      detail: "自定义Kubernetes群集选项"
+    labels:
+      title: 主机Labels
+      detail: 应用于节点的可选标签
     nodes:
       title: 主机池
       detail: 配置组成集群的主机
@@ -2074,9 +2082,11 @@ clusterNew:
     detected: |
       {count, plural,
       =1{#台新主机注册成功}
-      other{# 台新主机注册成功}
+      other{#台新主机注册成功}
       }
     done: 完成
+    info:
+      text: 编辑主机选项将更新主机注册命令
     command:
       instructions: '在一台或多台已安装支持Docker版本的主机上运行以下命令'
     auth:
@@ -2106,10 +2116,10 @@ clusterNew:
     registry:
       label: 从以下仓库拉取Kubernetes镜像
       default: 默认的镜像仓库(DockerHub)
-      custom: "自定义镜像仓库："
+      custom: "自定义镜像仓库"
       url:
         label: URL
-        placeholder: 例如：quay.io
+        placeholder: '例如: quay.io'
       user:
         label: 用户名
       password:
@@ -2122,13 +2132,15 @@ clusterNew:
       label: Pod安全策略支持
     role:
       title: 主机角色
-      detail: '选择主机角色,端口放行请参考: https://rancher.com/docs/rancher/v2.x/en/installation/ha-server-install-external-lb/'
+      detail: '选择主机角色,端口放行请参考: https://rancher.com/docs/rancher/v2.x/en/installation/references/'
+      sectionheader: 主机选项
+      pageheader: 自定义主机运行命令
       header:
         etcd: etcd
         controlplane: Control
         worker: Worker
       requirements:
-        label: "所需的主机数："
+        label: "所需的主机数: "
         etcd: 1,3或5
         controlplane: 1或更多
         worker: 1或更多
