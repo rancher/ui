@@ -11,11 +11,11 @@ export default Controller.extend({
 
   tags:              alias('projectController.tags'),
 
-  currentClusterNodes: computed('model.nodes.@each.{capacity,allocatable,state}', function() {
+  currentClusterNodes: computed('model.nodes.@each.{capacity,allocatable,state,isUnschedulable}', function() {
 
     const clusterId = get(this, 'scope.currentCluster.id');
 
-    return get(this, 'model.nodes').filter((n) => n.clusterId === clusterId);
+    return get(this, 'model.nodes').filter((n) => n.clusterId === clusterId && !n.isUnschedulable);
 
   }),
   actions: {
