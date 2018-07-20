@@ -8,7 +8,6 @@ export default Component.extend(VolumeSource, {
   field:     'flexVolume',
   fieldType: 'flexVolumeSource',
   init() {
-
     this._super();
     get(this, 'config.driver') || set(this, 'config.driver', 'rancher.io/longhorn');
     get(this, 'config.options') || set(this, 'config.options', {
@@ -18,6 +17,5 @@ export default Component.extend(VolumeSource, {
       fromBackup:          ''
     });
     get(this, 'config.secretRef') || set(this, 'config.secretRef', {});
-
   }
 });

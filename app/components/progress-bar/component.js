@@ -12,8 +12,11 @@ export default Component.extend({
   max:    100,
   zIndex: null,
 
+  didInsertElement() {
+    this.percentDidChange();
+    this.zIndexDidChange();
+  },
   percent: function() {
-
     var min   = this.get('min');
     var max   = this.get('max');
     var value = Math.max(min, Math.min(max, this.get('value')));
@@ -23,39 +26,24 @@ export default Component.extend({
     per = Math.round(per * 100) / 100; // Round to 2 decimal places
 
     return per;
-
   }.property('min', 'max', 'value'),
 
   colorClass: function() {
-
     var color = this.get('color');
 
     if ( !color ) {
-
       return;
-
     }
 
     return `progress-bar-${  color.replace(/^progress-bar-/, '') }`;
-
   }.property('color'),
 
   percentDidChange: function() {
-
     this.$('.progress-bar').css('width', `${ this.get('percent')  }%`);
-
   }.observes('percent'),
 
   zIndexDidChange: function() {
-
     this.$().css('zIndex', this.get('zIndex') || 'inherit');
-
   }.observes('zIndex'),
 
-  didInsertElement() {
-
-    this.percentDidChange();
-    this.zIndexDidChange();
-
-  },
 });

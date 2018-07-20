@@ -3,9 +3,9 @@ import { inject as service } from '@ember/service';
 import Controller, { inject as controller } from '@ember/controller';
 
 export default Controller.extend({
-  projectController: controller('authenticated.project'),
   scope:             service(),
 
+  projectController: controller('authenticated.project'),
   queryParams:       ['sortBy'],
   sortBy:            'name',
 

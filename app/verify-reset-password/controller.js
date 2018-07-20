@@ -8,7 +8,6 @@ export default Controller.extend({
   canSend:      false,
   actions:      {
     resetPassword() {
-
       var body = this.get('model');
 
       body.token = this.get('token');
@@ -19,18 +18,13 @@ export default Controller.extend({
         headers: { 'Content-Type': 'application/json' },
         body:    JSON.stringify(body)
       }).then(() => {
-
         this.set('loading', false);
         window.location.href = '/';
-
       })
         .catch((err) => {
-
           this.set('loading', false);
           this.set('errors', [err.body.detail]);
-
         });
-
     }
   },
 });

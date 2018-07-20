@@ -9,25 +9,19 @@ export default Route.extend({
   globalStore: service(),
 
   model() {
-
     let globalStore = get(this, 'globalStore');
 
     return globalStore.find('setting', C.SETTING.SERVER_URL).then((serverUrl) => ({
       serverUrl:        get(serverUrl, 'value') || window.location.host,
       serverUrlSetting: serverUrl,
     }));
-
   },
   activate() {
-
     $('BODY').addClass('container-farm'); // eslint-disable-line
-
   },
 
   deactivate() {
-
     $('BODY').removeClass('container-farm'); // eslint-disable-line
-
   },
 
 });

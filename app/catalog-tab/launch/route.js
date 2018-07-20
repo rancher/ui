@@ -101,9 +101,7 @@ export default Route.extend({
         versionLinks:    links,
         versionsArray:   verArr,
       });
-
     });
-
   },
 
   resetController(controller, isExiting/* , transition*/) {

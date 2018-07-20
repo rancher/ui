@@ -44,28 +44,18 @@ export default Component.extend({
   extraSearchFields: ['displayIp', 'primaryHost.displayName'],
 
   headers: function() {
-
     if ( this.get('showStats') ) {
-
       return headersWithStats;
-
     } else if ( this.get('showNode') ) {
-
       return headersWithNode;
-
     } else {
-
       return headersWithoutHost;
-
     }
-
   }.property(),
 
   filtered: function() {
-
     let out = this.get('body') || [];
 
     return out;
-
   }.property('body.@each.isSystem'),
 });

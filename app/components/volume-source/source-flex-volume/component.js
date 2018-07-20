@@ -8,8 +8,6 @@ export default Component.extend(VolumeSource, {
   field:     'flexVolume',
   fieldType: 'flexVolumeSource',
   didInsertElement() {
-
     get(this, 'config.secretRef') || set(this, 'config.secretRef', {});
-
   }
 });

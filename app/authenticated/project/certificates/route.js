@@ -5,20 +5,16 @@ import { on } from '@ember/object/evented';
 import C from 'ui/utils/constants';
 
 export default Route.extend({
-  setDefaultRoute: on('activate', function() {
-
-    set(this, `session.${ C.SESSION.PROJECT_ROUTE }`, 'authenticated.project.certificates');
-
-  }),
   model() {
-
     const store = get(this, 'store');
 
     return hash({
       projectCerts:    store.findAll('certificate'),
       namespacedCerts: store.findAll('namespacedCertificate'),
     });
-
   },
 
+  setDefaultRoute: on('activate', function() {
+    set(this, `session.${ C.SESSION.PROJECT_ROUTE }`, 'authenticated.project.certificates');
+  }),
 });

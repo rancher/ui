@@ -49,8 +49,6 @@ export default Controller.extend({
   groupTableBy: alias('projectController.groupTableBy'),
 
   rows: function() {
-
     return get(this, 'model.configMaps').filterBy('type', 'configMap');
-
   }.property('model.configMaps.[].type'),
 });

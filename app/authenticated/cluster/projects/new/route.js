@@ -11,7 +11,6 @@ export default Route.extend({
 
 
   model() {
-
     const store = get(this, 'globalStore');
     const cluster = this.modelFor('authenticated.cluster');
 
@@ -29,6 +28,5 @@ export default Route.extend({
       roles:    get(this, 'roleTemplateService').get('allFilteredRoleTemplates'),
       users:    store.find('user', null, { forceReload: true }),
     });
-
   },
 });

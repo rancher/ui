@@ -6,35 +6,23 @@ export default Route.extend({
   settings:   service(),
 
   model() {
-
     return this.controllerFor('application').get('error');
-
   },
 
   afterModel(model) {
-
     if ( model ) {
-
       this.get('storeReset').reset();
-
     } else {
-
       this.transitionTo('authenticated');
-
     }
-
   },
   actions: {
     activate() {
-
       $('BODY').addClass('farm'); // eslint-disable-line
-
     },
 
     deactivate() {
-
       $('BODY').removeClass('farm'); // eslint-disable-line
-
     },
   },
 

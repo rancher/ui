@@ -16,47 +16,35 @@ export default Component.extend({
   classNames: ['accordion-wrapper'],
 
   init() {
-
     this._super(...arguments);
     this.initHostAliases();
-
   },
 
   actions: {
     hostAliasesChanged(hostAliases) {
-
       const out = [];
 
       hostAliases.filter((alias) => alias.value && alias.key).forEach((alias) => {
-
         out.push({
           hostnames: [alias.value],
           ip:        alias.key,
         });
-
       });
       set(this, 'service.hostAliases', out);
-
     },
   },
 
   initHostAliases() {
-
     const aliases = get(this, 'service.hostAliases');
 
     set(this, 'initHostAliasesArray', []);
     (aliases || []).forEach((alias) => {
-
       (alias.hostnames || []).forEach((hostname) => {
-
         get(this, 'initHostAliasesArray').push({
           key:   alias.ip,
           value: hostname,
         });
-
       })
-
     });
-
   },
 });

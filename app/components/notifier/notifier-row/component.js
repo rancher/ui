@@ -13,10 +13,8 @@ export default Component.extend({
   bulkActions: true,
 
   showNotifierValue: function() {
-
     const t = get(this, 'model.notifierType');
 
     return t === 'slack' || t === 'email';
-
   }.property('model.notifierType'),
 });

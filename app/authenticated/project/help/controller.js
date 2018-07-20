@@ -14,9 +14,7 @@ export default Controller.extend({
   docsLink:      alias('settings.docsBase'),
 
   latestAnnouncement: computed('model.announcements', function() {
-
     if (this.get('model.announcements.topics')) {
-
       let sorted = this.get('model.announcements.topics').sortBy('id');
       var announcement = sorted[sorted.length - 1];
 
@@ -25,26 +23,18 @@ export default Controller.extend({
         link:    `${ this.get('forumsLink') }/t/${ announcement.slug }`,
         created: announcement.created_at
       };
-
     }
-
   }),
 
   modelObserver: function() {
-
     if (this.get('model.resolved')) {
-
       // @@TODO@@ - need to add some error handling
       this.set('modelResolved', true);
-
     }
 
     if (this.get('model.error') ) {
-
       this.set('modelError', true);
-
     }
-
   }.observes('model'),
 
   forumsLink:  C.EXT_REFERENCES.FORUM,

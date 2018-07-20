@@ -9,17 +9,13 @@ export default Route.extend({
 
   clusterStore: service(),
 
-  setDefaultRoute: on('activate', function() {
-
-    set(this, `session.${ C.SESSION.PROJECT_ROUTE }`, 'authenticated.project.ns');
-
-  }),
   model() {
-
     var store = this.get('clusterStore');
 
     return hash({ namespaces: store.findAll('namespace'), });
-
   },
 
+  setDefaultRoute: on('activate', function() {
+    set(this, `session.${ C.SESSION.PROJECT_ROUTE }`, 'authenticated.project.ns');
+  }),
 });

@@ -8,13 +8,7 @@ export default Route.extend({
   clusterStore: service(),
   scope:        service(),
 
-  queryParams: {
-    addTo: { refreshModel: true },
-    from:  { refreshModel: false }
-  },
-
   model(params) {
-
     const clusterStore = get(this, 'clusterStore');
 
     const namespace = clusterStore.createRecord({
@@ -24,9 +18,7 @@ export default Route.extend({
     });
 
     if (params.addTo) {
-
       set(namespace, 'projectId', get(params, 'addTo'));
-
     }
 
     return hash({
@@ -34,16 +26,16 @@ export default Route.extend({
       namespaces:  get(this, 'clusterStore').findAll('namespace'),
       allProjects: get(this, 'globalStore').findAll('project'),
     });
-
   },
 
   resetController(controller, isExiting/* , transition*/) {
-
     if (isExiting) {
-
       controller.set('errors', null);
-
     }
+  },
+  queryParams: {
+    addTo: { refreshModel: true },
+    from:  { refreshModel: false }
+  },
 
-  }
 });

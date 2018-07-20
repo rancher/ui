@@ -17,7 +17,6 @@ export default Route.extend({
   // },
 
   model(/* params, transition*/) {
-
     return get(this, 'globalStore').find('user', null, {
       forceReload: true,
       filter:      { me: true }
@@ -54,6 +53,5 @@ export default Route.extend({
     //     }
     //   });
     // });
-
   },
 });

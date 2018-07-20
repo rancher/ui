@@ -29,106 +29,78 @@ export default Component.extend(ManageLabels, {
   model: null,
 
   statusClass:       null,
-  observeLabelCount: function() {
+  init() {
+    this._super(...arguments);
 
+    this.initLabels(this.get('initialLabels'), 'user', null, this.get('readonlyLabels'));
+    this.labelsChanged();
+    this.initCounts();
+  },
+  didReceiveAttrs() {
+    if (!this.get('expandFn')) {
+      this.set('expandFn', (item) => {
+        item.toggleProperty('expanded');
+      });
+    }
+  },
+
+  actions: {
+    addUserLabel() {
+      this._super();
+      next(() => {
+        if ( this.isDestroyed || this.isDestroying ) {
+          return;
+        }
+
+        this.$('.js-label.key').last()[0].focus();
+      });
+    },
+    annotationsChange(annotations){
+      set(this, 'annotationsCount', Object.keys(annotations).length)
+      set(this, 'model.annotations', annotations);
+    }
+  },
+
+  observeLabelCount: function() {
     let count = this.get('userLabelArray').filterBy('key')
       .get('length') || 0;
 
     this.set('labelsCount', count || 0);
-
   }.observes('userLabelArray.@each.key'),
 
   status: function() {
-
     let k = STATUS.NONE;
     let annotationsCount = this.get('annotationsCount');
     let labelsCount = this.get('labelsCount');
     let count = labelsCount + annotationsCount
 
     if ( count ) {
-
       k = STATUS.COUNTCONFIGURED;
-
     }
 
     this.set('statusClass', classForStatus(k));
 
     return this.get('intl').t(`${ STATUS_INTL_KEY }.${ k }`, { count });
-
   }.property('labelsCount', 'annotationsCount'),
-  init() {
-
-    this._super(...arguments);
-
-    this.initLabels(this.get('initialLabels'), 'user', null, this.get('readonlyLabels'));
-    this.labelsChanged();
-    this.initCounts();
-
-  },
-  didReceiveAttrs() {
-
-    if (!this.get('expandFn')) {
-
-      this.set('expandFn', (item) => {
-
-        item.toggleProperty('expanded');
-
-      });
-
-    }
-
-  },
-
-  actions: {
-    addUserLabel() {
-
-      this._super();
-      next(() => {
-
-        if ( this.isDestroyed || this.isDestroying ) {
-
-          return;
-
-        }
-
-        this.$('.js-label.key').last()[0].focus();
-
-      });
-
-    },
-    annotationsChange(annotations){
-
-      set(this, 'annotationsCount', Object.keys(annotations).length)
-      set(this, 'model.annotations', annotations);
-
-    }
-  },
-
   initCounts(){
-
     let labels = this.get('model.labels');
     let annotations = this.get('model.annotations');
 
     this.set('labelsCount', labels && Object.keys(labels).length || 0);
     this.set('annotationsCount', annotations && Object.keys(annotations).length || 0);
-
   },
   updateLabels(labels) {
-
     this.sendAction('setLabels', labels);
     this.validate();
-
   },
 
   validate() {
-
     let errors = [];
 
     //    (this.get('labelArray')||[]).forEach((obj) => {
     //    });
 
     set(this, 'errors', errors);
-
   },
 
 });

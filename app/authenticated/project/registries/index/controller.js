@@ -5,10 +5,10 @@ import Controller, { inject as controller } from '@ember/controller';
 import { computed } from '@ember/object';
 
 export default Controller.extend({
-  projectController: controller('authenticated.project'),
   prefs:             service(),
   scope:             service(),
 
+  projectController: controller('authenticated.project'),
   queryParams:       ['sortBy'],
   sortBy:            'name',
   headers:           [
@@ -49,12 +49,10 @@ export default Controller.extend({
   groupTableBy:      alias('projectController.groupTableBy'),
 
   rows: computed('model.projectDockerCredentials.[]', 'model.namespacedDockerCredentials.[]', function() {
-
     const proj = get(this, 'model.projectDockerCredentials').slice();
     const ns = get(this, 'model.namespacedDockerCredentials').slice();
     const out = proj.concat(ns);
 
     return out;
-
   }),
 });

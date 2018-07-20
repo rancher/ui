@@ -15,12 +15,10 @@ export default Component.extend({
   tagName:      '',
 
   nameSpan: computed('fullColspan', 'afterName', 'showState', 'afterState', 'showActions', function() {
-
     let span = this.get('fullColspan') -
         (this.get('showActions') ? 2 : 0);
 
     return Math.max(span, 1);
-
   }),
 
 

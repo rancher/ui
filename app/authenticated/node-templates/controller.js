@@ -40,9 +40,7 @@ export default Controller.extend({
 
   actions: {
     newTemplate() {
-
       get(this, 'modalService').toggleModal('modal-edit-node-template');
-
     },
   },
 });

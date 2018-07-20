@@ -12,43 +12,33 @@ export default Route.extend({
   scope:        service(),
 
   shortcuts:       { 'g': 'toggleGrouping', },
-  setDefaultRoute: on('activate', function() {
-
-    set(this, `session.${ C.SESSION.CLUSTER_ROUTE }`, 'authenticated.cluster.projects');
-
-  }),
-
   model() {
-
     let cluster = this.modelFor('authenticated.cluster');
 
     if ( !get(cluster, 'isReady') ) {
-
       this.transitionTo('authenticated.cluster.index');
-
     }
 
     return hash({
       projects:   get(this, 'globalStore').findAll('project'),
       namespaces: get(this, 'clusterStore').findAll('namespace')
     });
-
   },
 
   actions: {
     toggleGrouping() {
-
       let choices = ['none', 'project'];
       let cur = this.get('controller.group');
       let neu = choices[((choices.indexOf(cur) + 1) % choices.length)];
 
       next(() => {
-
         this.set('controller.group', neu);
-
       });
-
     },
   },
+
+  setDefaultRoute: on('activate', function() {
+    set(this, `session.${ C.SESSION.CLUSTER_ROUTE }`, 'authenticated.cluster.projects');
+  }),
 
 });

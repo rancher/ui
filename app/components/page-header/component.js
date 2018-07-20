@@ -1,6 +1,4 @@
-import {
-  get, set, setProperties
-} from '@ember/object';
+import { get, set, setProperties } from '@ember/object';
 import { computed, observer } from '@ember/object';
 import { alias, equal } from '@ember/object/computed';
 import Component from '@ember/component';
@@ -11,17 +9,11 @@ import { get as getTree } from 'shared/utils/navigation-tree';
 import { run } from '@ember/runloop';
 
 function fnOrValue(val, ctx) {
-
   if ( typeof val === 'function' ) {
-
     return val.call(ctx);
-
   } else {
-
     return val;
-
   }
-
 }
 
 
@@ -54,37 +46,7 @@ export default Component.extend({
   isOss:            equal('app.mode', C.MODE.OSS),
   accessEnabled:    alias('access.enabled'),
 
-  // beyond things listed in "Inputs"
-  hasProject: computed('project', function() {
-
-    return !!get(this, 'project');
-
-  }),
-
-  // Hackery: You're an owner if you can write to the 'system' field of a stack
-  isOwner: computed('stackSchema.resourceFields.system.update', function() {
-
-    return !!get(this, 'stackSchema.resourceFields.system.update');
-
-  }),
-  shouldUpdateNavTree: observer(
-    'pageScope',
-    'clusterId',
-    'cluster.isReady',
-    'projectId',
-    'stacks.@each.group',
-    `prefs.${ C.PREFS.ACCESS_WARNING }`,
-    'access.enabled',
-    'intl.locale',
-    function() {
-
-      run.scheduleOnce('afterRender', this, 'updateNavTree');
-
-    }
-  ),
-
   init() {
-
     this._super(...arguments);
     get(this, 'intl.locale');
 
@@ -97,7 +59,6 @@ export default Component.extend({
     this.updateNavTree();
 
     run.scheduleOnce('render', () => {
-
       // responsive nav 63-87
       var responsiveNav = document.getElementById('js-responsive-nav');
 
@@ -107,78 +68,74 @@ export default Component.extend({
       responsiveNav.insertBefore(toggleBtn, responsiveNav.firstChild);
 
       function hasClass(e, t){
-
         return (new RegExp(` ${ t } `)).test(` ${ e.className } `)
-
       }
 
       function toggleClass(e, t){
-
         var n = ` ${  e.className.replace(/[\t\r\n]/g, ' ')  } `;
 
         if (hasClass(e, t)){
-
           while (n.indexOf(` ${ t } `) >= 0){
-
             n = n.replace(` ${ t } `, ' ')
-
           }e.className = n.replace(/^\s+|\s+$/g, '')
-
         } else {
-
           e.className += ` ${  t }`
-
         }
-
       }
 
       toggleBtn.onclick = function() {
-
         toggleClass(this.parentNode, 'nav-open');
-
       }
 
       var root = document.documentElement;
 
       root.className = `${ root.className  } js`;
-
     });
-
   },
 
   willRender() {
-
     if ($('BODY').hasClass('touch') && $('header > nav').hasClass('nav-open')) {// eslint-disable-line
       run.later(() => {
-
         $('header > nav').removeClass('nav-open');// eslint-disable-line
-
       });
-
     }
-
   },
 
-  updateNavTree() {
+  shouldUpdateNavTree: observer(
+    'pageScope',
+    'clusterId',
+    'cluster.isReady',
+    'projectId',
+    'stacks.@each.group',
+    `prefs.${ C.PREFS.ACCESS_WARNING }`,
+    'access.enabled',
+    'intl.locale',
+    function() {
+      run.scheduleOnce('afterRender', this, 'updateNavTree');
+    }
+  ),
 
+  // beyond things listed in "Inputs"
+  hasProject: computed('project', function() {
+    return !!get(this, 'project');
+  }),
+
+  // Hackery: You're an owner if you can write to the 'system' field of a stack
+  isOwner: computed('stackSchema.resourceFields.system.update', function() {
+    return !!get(this, 'stackSchema.resourceFields.system.update');
+  }),
+  updateNavTree() {
     let currentScope = get(this, 'pageScope');
 
     let out = getTree().filter((item) => {
-
       if ( typeof get(item, 'condition') === 'function' ) {
-
         if ( !item.condition.call(this) ) {
-
           return false;
-
         }
-
       }
 
       if ( get(item, 'scope') && get(item, 'scope') !== currentScope ) {
-
         return false;
-
       }
 
       setProperties(item, {
@@ -190,11 +147,8 @@ export default Component.extend({
       });
 
       set(item, 'submenu', ( get(item, 'submenu') || [] ).filter((subitem) => {
-
         if ( typeof get(subitem, 'condition') === 'function' && !subitem.condition.call(this) ) {
-
           return false;
-
         }
 
         setProperties(subitem, {
@@ -205,15 +159,12 @@ export default Component.extend({
         });
 
         return true;
-
       }));
 
       return true;
-
     });
 
     set(this, 'navTree', out);
-
   },
 
   // Utilities you can use in the condition() function to decide if an item is shown or hidden,

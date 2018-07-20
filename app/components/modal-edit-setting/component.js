@@ -18,55 +18,37 @@ export default Component.extend(ModalBase, {
   model:      alias('modalService.modalOpts'),
 
   init() {
-
     this._super(...arguments);
     this.set('value', this.get('model.obj.value') || '');
-
   },
 
   didInsertElement() {
-
     next(() => {
-
       if ( this.isDestroyed || this.isDestroying ) {
-
         return;
-
       }
 
       const elem = this.$('.form-control')[0]
 
       if ( elem ) {
-
         setTimeout(() => {
-
           elem.focus();
-
         }, 250);
-
       }
-
     });
-
   },
 
   actions: {
     save(btnCb) {
-
       this.get('settings').set(normalizeName(this.get('model.key')), this.get('value'));
       this.get('settings').one('settingsPromisesResolved', () => {
-
         btnCb(true);
         this.send('done');
-
       });
-
     },
 
     done() {
-
       this.send('cancel');
-
     }
   },
 });

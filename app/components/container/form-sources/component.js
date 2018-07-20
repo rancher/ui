@@ -39,41 +39,29 @@ export default Component.extend({
   ],
 
   init() {
-
     this._super(...arguments);
 
     if (!get(this, 'sources') ) {
-
       set(this, 'sources', [])
-
     }
 
     get(this, 'sources').forEach((source) => {
-
       if ( source.sourceKey === undefined ) {
-
         set(source, 'sourceKey', null);
-
       }
-
     });
-
   },
   actions: {
     addSource() {
-
       let source = {
         source:    'secret',
         sourceKey: null
       };
 
       get(this, 'sources').addObject(source);
-
     },
     removeSource(source) {
-
       get(this, 'sources').removeObject(source);
-
     },
   },
 

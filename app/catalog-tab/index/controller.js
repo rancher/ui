@@ -12,37 +12,27 @@ export default Controller.extend({
   catalogId:         alias('catalogController.catalogId'),
   actions:           {
     filterAction(catalogId){
-
       this.transitionToRoute(this.get('parentRoute'), { queryParams: { catalogId } });
-
     },
     categoryAction(category, catalogId){
-
       this.transitionToRoute(this.get('launchRoute'), {
         queryParams: {
           category,
           catalogId
         }
       });
-
     },
     launch(id, onlyAlternate) {
-
       if ( onlyAlternate && !isAlternate(event) ) {
-
         return false;
-
       }
 
       this.transitionToRoute(this.get('launchRoute'), id);
-
     },
     refresh() {
-
       let catalogTab = getOwner(this).lookup('route:catalog-tab');
 
       catalogTab.send('refresh');
-
     },
 
   }

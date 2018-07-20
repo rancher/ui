@@ -15,17 +15,13 @@ export default Component.extend(ModalBase, {
 
   url: alias('scope.currentCluster.links.shell'),
   init() {
-
     this._super(...arguments);
     this.shortcuts.disable();
-
   },
 
   willDestroy() {
-
     this._super(...arguments);
     this.shortcuts.enable();
-
   },
 
 });

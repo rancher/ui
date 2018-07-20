@@ -11,15 +11,11 @@ export default Controller.extend({
   isCaas:      equal('app.mode', C.MODE.CAAS),
   actions:     {
     done() {
-
       window.history.back();
       // this.send('goToPrevious');
-
     },
     editPassword() {
-
       get(this, 'modal').toggleModal('modal-edit-password', { user: get(this, 'model.account') });
-
     },
   },
 });

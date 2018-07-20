@@ -4,7 +4,6 @@ import TextField from '@ember/component/text-field';
 import SafeStyle from 'ui/mixins/safe-style';
 
 export function initialize(/* application */) {
-
   // Allow style to be bound on inputs
   TextField.reopen(SafeStyle);
   TextArea.reopen(SafeStyle);
@@ -17,7 +16,6 @@ export function initialize(/* application */) {
     autocomplete:      'off',
     autocapitalize:    'none',
   });
-
 }
 
 export default {

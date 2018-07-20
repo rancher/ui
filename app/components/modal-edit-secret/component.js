@@ -12,15 +12,11 @@ export default Component.extend(ModalBase, {
 
   originalModel: alias('modalService.modalOpts'),
   init() {
-
     this._super(...arguments);
     this.set('model', this.get('originalModel').clone());
-
   },
 
   doneSaving() {
-
     this.send('cancel');
-
   },
 });

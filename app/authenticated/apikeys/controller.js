@@ -4,7 +4,6 @@ import Controller, { inject as controller } from '@ember/controller';
 import { get, computed } from '@ember/object';
 
 export default Controller.extend({
-  application:       controller(),
   access:            service(),
   cookies:           service(),
   scope:             service(),
@@ -13,7 +12,8 @@ export default Controller.extend({
   modalService:      service('modal'),
   bulkActionHandler: service(),
 
-  expire: 'never',
+  application:       controller(),
+  expire:      'never',
 
   sortBy:            'name',
   headers: [
@@ -48,26 +48,20 @@ export default Controller.extend({
   ],
 
   project:           alias('scope.currentProject'),
+  actions: {
+    newApikey() {
+      const cred = this.get('globalStore').createRecord({ type: 'token', });
+
+      this.get('modalService').toggleModal('modal-edit-apikey', cred);
+    },
+  },
+
   rows:    computed('model.tokens.[]', function() {
-
     return get(this, 'model.tokens').filter((token) => {
-
       const labels = get(token, 'labels');
       const expired = get(token, 'expired');
 
       return !expired || !labels || !labels['ui-session'];
-
     });
-
   }),
-  actions: {
-    newApikey() {
-
-      const cred = this.get('globalStore').createRecord({ type: 'token', });
-
-      this.get('modalService').toggleModal('modal-edit-apikey', cred);
-
-    },
-  },
-
 });

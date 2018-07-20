@@ -7,143 +7,100 @@ import { inject as service } from '@ember/service';
 import EndpointPorts from 'ui/mixins/endpoint-ports';
 
 const App = Resource.extend(StateCounts, EndpointPorts, {
+  catalog:      service(),
+  router:       service(),
+  clusterStore: service(),
+
+  canEdit:   false,
+  canClone: true,
+
   namespace:    reference('targetNamespace', 'namespace', 'clusterStore'),
+  init() {
+    this._super(...arguments);
+    this.defineStateCounts('pods', 'podStates', 'podCountSort');
+  },
+
   pods:      computed('namespace.pods.@each.workloadId', 'workloads.@each.workloadLabels', function() {
-
     return (get(this, 'namespace.pods') || []).filter((item) => {
-
       if ( item['labels'] ) {
-
         const inApp = item['labels']['io.cattle.field/appId'] === get(this, 'name');
 
         if ( inApp ) {
-
           return true;
-
         }
-
       }
 
       const workload = get(item, 'workload');
 
       if ( workload ) {
-
         const found = get(this, 'workloads').filterBy('id', get(workload, 'id'));
 
         return found.length > 0;
-
       }
-
     });
-
   }),
   services: computed('namespace.services.@each.labels', function() {
-
     return (get(this, 'namespace.services') || []).filter((item) => {
-
       if ( item['labels'] ) {
-
         return item['labels']['io.cattle.field/appId'] === get(this, 'name');
-
       }
-
     });
-
   }),
   workloads: computed('namespace.workloads.@each.workloadLabels', function() {
-
     return (get(this, 'namespace.workloads') || []).filter((item) => {
-
       if ( item['workloadLabels'] ) {
-
         return item['workloadLabels']['io.cattle.field/appId'] === get(this, 'name');
-
       }
-
     });
-
   }),
   secrets: computed('namespace.secrets', function() {
-
     return (get(this, 'namespace.secrets') || []).filter((item) => {
-
       if ( item['labels'] ) {
-
         return item['labels']['io.cattle.field/appId'] === get(this, 'name');
-
       }
-
     });
-
   }),
   ingress: computed('namespace.ingress', function() {
-
     return (get(this, 'namespace.ingress') || []).filter((item) => {
-
       if ( item['labels'] ) {
-
         return item['labels']['io.cattle.field/appId'] === get(this, 'name');
-
       }
-
     });
-
   }),
   volumes: computed('namespace.volumes', function() {
-
     return (get(this, 'namespace.volumes') || []).filter((item) => {
-
       if ( item['labels'] ) {
-
         return item['labels']['io.cattle.field/appId'] === get(this, 'name');
-
       }
-
     });
-
   }),
 
   publicEndpoints: computed('workloads.@each.publicEndpoints', 'services.@each.proxyEndpoints', function() {
-
     let out = [];
 
     get(this, 'workloads').forEach((workload) => {
-
       (get(workload, 'publicEndpoints') || []).forEach((endpoint) => {
-
         out.push(endpoint);
-
       });
-
     });
     get(this, 'services').forEach((service) => {
-
       (get(service, 'proxyEndpoints') || []).forEach((endpoint) => {
-
         out.push(endpoint);
-
       });
-
     });
 
     return out;
-
   }),
 
   externalIdInfo: computed('externalId', function() {
-
     return parseHelmExternalId(get(this, 'externalId'));
-
   }),
 
   catalogTemplate: computed('externalIdInfo.templateId', function() {
-
     return this.get('catalog').getTemplateFromCache(this.get('externalIdInfo.templateId'));
-
   }),
 
   availableActions: computed('actionLinks.{rollback,upgrade}', function() {
-
     let a = get(this, 'actionLinks');
 
     var choices = [
@@ -162,25 +119,9 @@ const App = Resource.extend(StateCounts, EndpointPorts, {
     ];
 
     return choices;
-
   }),
-  catalog:      service(),
-  router:       service(),
-  clusterStore: service(),
-
-  init() {
-
-    this._super(...arguments);
-    this.defineStateCounts('pods', 'podStates', 'podCountSort');
-
-  },
-
-  canEdit:  false,
-  canClone: true,
-
   actions: {
     upgrade() {
-
       const templateId    = get(this, 'externalIdInfo.templateId');
       const catalogId     = get(this, 'externalIdInfo.catalog');
       const vKeys         = Object.keys(get(this, 'catalogTemplate.versionLinks'));
@@ -194,17 +135,13 @@ const App = Resource.extend(StateCounts, EndpointPorts, {
           upgrade:     latestVersion,
         }
       });
-
     },
 
     rollback() {
-
       get(this, 'modalService').toggleModal('modal-rollback-app', { originalModel: this });
-
     },
 
     clone() {
-
       const templateId    = get(this, 'externalIdInfo.templateId');
       const catalogId     = get(this, 'externalIdInfo.catalog');
 
@@ -216,7 +153,6 @@ const App = Resource.extend(StateCounts, EndpointPorts, {
           clone:       true
         }
       });
-
     }
 
   },

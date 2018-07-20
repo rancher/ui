@@ -24,24 +24,18 @@ export default Component.extend({
   expanded:          null,
 
   containers: alias('model.containers'),
+  actions:    {
+    toggle() {
+      this.sendAction('toggle');
+    },
+  },
+
   canExpand:  computed('expandPlaceholder', 'model.containers', function() {
-
     return get(this, 'expandPlaceholder') && get(this, 'model.containers.length') > 1;
-
   }),
 
   statsAvailable: computed('model.{state,healthState}', function() {
-
     return C.ACTIVEISH_STATES.indexOf(this.get('model.state')) >= 0 && this.get('model.healthState') !== 'started-once';
-
   }),
-
-  actions: {
-    toggle() {
-
-      this.sendAction('toggle');
-
-    },
-  },
 
 });

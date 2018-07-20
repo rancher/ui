@@ -10,25 +10,19 @@ export default Component.extend({
 
 
   layout,
-  theme: computed(`prefs.${ C.PREFS.THEME }`, function() {
-
-    return this.get(`prefs.${ C.PREFS.THEME }`);
-
-  }),
-
   actions: {
     changeTheme(theme) {
-
       var userTheme = this.get('userTheme');
       var currentTheme  = userTheme.getTheme();
 
       if (theme !== currentTheme) {
-
         userTheme.setTheme(theme);
-
       }
-
     }
   },
+
+  theme: computed(`prefs.${ C.PREFS.THEME }`, function() {
+    return this.get(`prefs.${ C.PREFS.THEME }`);
+  }),
 
 });

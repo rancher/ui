@@ -3,21 +3,16 @@ const EmberApp = require('ember-cli/lib/broccoli/ember-app');
 const env      = EmberApp.env();
 
 module.exports = function(defaults) {
-
   // Pull in a few useful environment settings for index.html to use
   var appConfig = require('./config/environment')(env).APP;
   var inline    = {};
 
   ['version', 'appName', 'baseAssets'].forEach((key) => {
-
     var val = appConfig[key];
 
     if (val) {
-
       inline[key] = { content: val };
-
     }
-
   });
 
   var app = new EmberApp(defaults, {
@@ -104,5 +99,4 @@ module.exports = function(defaults) {
   app.import('vendor/aliyun-sdk.js');
 
   return app.toTree();
-
 };

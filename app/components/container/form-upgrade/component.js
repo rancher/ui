@@ -11,32 +11,22 @@ export default Component.extend({
 
   classNames: ['accordion-wrapper'],
 
-  workloadConfig: computed('scaleMode', function() {
+  didReceiveAttrs() {
+    if (!this.get('expandFn')) {
+      this.set('expandFn', (item) => {
+        item.toggleProperty('expanded');
+      });
+    }
+  },
 
+  workloadConfig: computed('scaleMode', function() {
     const scaleMode = get(this, 'scaleMode');
     const config = get(this, `workload.${ scaleMode }Config`);
 
     return config;
-
   }),
 
   componentName: computed('scaleMode', function() {
-
     return `container/form-upgrade-${  get(this, 'scaleMode').dasherize() }`;
-
   }),
-  didReceiveAttrs() {
-
-    if (!this.get('expandFn')) {
-
-      this.set('expandFn', (item) => {
-
-        item.toggleProperty('expanded');
-
-      });
-
-    }
-
-  },
-
 });

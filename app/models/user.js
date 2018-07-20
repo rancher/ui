@@ -1,7 +1,7 @@
 import { inject as service } from '@ember/service';
 import { get, set, computed } from '@ember/object';
-import { resolve } from 'rsvp';
 import { hasMany } from 'ember-api-store/utils/denormalize';
+import { next } from '@ember/runloop'
 import Resource from 'ember-api-store/models/resource';
 
 export default Resource.extend({
@@ -83,14 +83,14 @@ export default Resource.extend({
 
   actions: {
     deactivate() {
-      Ember.run.next(() => {
+      next(() => {
         set(this, 'enabled', false);
         this.save();
       });
     },
 
     activate() {
-      Ember.run.next(() => {
+      next(() => {
         set(this, 'enabled', true);
         this.save();
       });

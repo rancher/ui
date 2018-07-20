@@ -10,7 +10,6 @@ export default Controller.extend({
 
   actions: {
     createAcct() {
-
       var body   = this.get('model');
 
       body.token = this.get('token');
@@ -22,31 +21,22 @@ export default Controller.extend({
         headers: { 'Content-Type': 'application/json' },
         body:    JSON.stringify(body)
       }).then(() => {
-
         let code = `${ body.email }:${ body.pw }`;
 
         this.get('access').login(code)
           .then(() => {
-
             this.transitionToRoute('authenticated')
             this.set('loading', false);
-
           })
           .catch((err) => {
-
             this.set('saving', false);
             this.set('errors', [err.body.detail]);
-
           });
-
       })
         .catch((err) => {
-
           this.set('saving', false);
           this.set('errors', [err.body.detail]);
-
         });
-
     },
   }
 });

@@ -1,7 +1,5 @@
 import { resolve } from 'rsvp';
-import {
-  get, set, computed
-} from '@ember/object';
+import { get, set, computed } from '@ember/object';
 import { alias } from '@ember/object/computed';
 import { inject as service } from '@ember/service';
 import Component from '@ember/component';
@@ -23,53 +21,38 @@ export default Component.extend(NewOrEdit, {
 
   primaryResource: alias('ingress'),
 
-  headerLabel: computed('intl.locale', 'existing', function() {
-
-    let k;
-
-    if (get(this, 'existing')) {
-
-      k = 'newIngress.header.edit';
-
-    } else {
-
-      k = 'newIngress.header.add';
-
-    }
-
-    return get(this, 'intl').t(k);
-
-  }),
-
   actions: {
     done() {
-
       this.sendAction('done');
-
     },
     cancel() {
-
       this.sendAction('cancel');
-
     },
 
     setLabels(labels) {
-
       let out = {};
 
       labels.forEach((row) => {
-
         out[row.key] = row.value;
-
       });
 
       set(this, 'ingress.labels', out);
-
     },
   },
 
-  willSave() {
+  headerLabel: computed('intl.locale', 'existing', function() {
+    let k;
 
+    if (get(this, 'existing')) {
+      k = 'newIngress.header.edit';
+    } else {
+      k = 'newIngress.header.add';
+    }
+
+    return get(this, 'intl').t(k);
+  }),
+
+  willSave() {
     let pr = get(this, 'primaryResource');
 
     // Namespace is required, but doesn't exist yet... so lie to the validator
@@ -81,46 +64,34 @@ export default Component.extend(NewOrEdit, {
     set(pr, 'namespaceId', nsId);
 
     return ok;
-
   },
 
   doSave() {
-
     let pr = get(this, 'primaryResource');
 
     let namespacePromise = resolve();
 
     if (!get(this, 'existing')) {
-
       // Set the namespace ID
       if (get(this, 'namespace.id')) {
-
         set(pr, 'namespaceId', get(this, 'namespace.id'));
-
       } else if (get(this, 'namespace')) {
-
         namespacePromise = get(this, 'namespace').save()
           .then((newNamespace) => {
-
             set(pr, 'namespaceId', get(newNamespace, 'id'));
 
             return newNamespace.waitForState('active');
-
           });
-
       }
-
     }
 
     let self = this;
     let sup = self._super;
 
     return namespacePromise.then(() => sup.apply(self, arguments));
-
   },
 
   validate() {
-
     let intl = get(this, 'intl');
 
     let pr = get(this, 'primaryResource');
@@ -129,50 +100,35 @@ export default Component.extend(NewOrEdit, {
     errors.pushObjects(get(this, 'namespaceErrors') || []);
 
     if (!get(this, 'ingress.rules.length') && !get(this, 'ingress.defaultBackend')) {
-
       errors.push(intl.t('newIngress.error.noRules'));
-
     }
     if (get(this, 'ingress.rules.length')) {
-
       const invalid = get(this, 'ingress.rules').some((rule) => {
-
         const paths = [];
 
         Object.keys(rule.paths).forEach((key) => {
-
           paths.push(rule.paths[key]);
-
         });
 
         return paths.some((path) => !path.targetPort)
-
       });
 
       if (invalid) {
-
         errors.push(intl.t('validation.required', { key: intl.t('generic.port') }));
-
       }
-
     }
 
     if (errors.length) {
-
       set(this, 'errors', errors.uniq());
 
       return false;
-
     }
 
     return true;
-
   },
 
   doneSaving() {
-
     this._super(...arguments);
     this.send('done');
-
   },
 });
