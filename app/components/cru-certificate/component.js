@@ -1,7 +1,5 @@
 import Component from '@ember/component';
-import {
-  get, set, computed
-} from '@ember/object';
+import { get, set, computed } from '@ember/object';
 import { inject as service } from '@ember/service';
 import ViewNewEdit from 'shared/mixins/view-new-edit';
 import OptionallyNamespaced from 'shared/mixins/optionally-namespaced';
@@ -12,6 +10,7 @@ const BEGIN_CERTIFICATE = [
 ];
 
 const BEGIN_KEY = [
+  '-----BEGIN PRIVATE KEY-----',
   '-----BEGIN EC PRIVATE KEY-----',
   '-----BEGIN RSA PRIVATE KEY-----',
 ]
@@ -29,15 +28,13 @@ export default Component.extend(ViewNewEdit, OptionallyNamespaced, {
   namespacedType: 'namespacedCertificate',
 
   isEncrypted: computed('model.key', function() {
-
     var key = get(this, 'model.key') || '';
 
-    return key.match(/^Proc-Type: 4,ENCRYPTED$/m) || key.match(/^-----BEGIN ENCRYPTED PRIVATE KEY-----$/m);
+    return key.match(/^Proc-Type: 4,ENCRYPTED$/m) || key.match(/^-----BEGIN ENCRYPTED.* KEY-----$/m);
 
   }),
 
   validate() {
-
     this._super();
 
     var errors = get(this, 'errors') || [];
@@ -51,9 +48,7 @@ export default Component.extend(ViewNewEdit, OptionallyNamespaced, {
     var intl = get(this, 'intl');
 
     if (get(this, 'isEncrypted')) {
-
       errors.push(intl.t('newCertificate.errors.encrypted'));
-
     }
 
     const key = get(this, 'model.key');
