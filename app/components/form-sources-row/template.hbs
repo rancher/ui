@@ -1,20 +1,22 @@
-<td data-title="{{t 'formSources.kind.label'}}">
-  {{#if editing}}
-    {{new-select
-      classNames="form-control"
-      optionValuePath="id"
-      content=sources
-      value=source.source
-    }}
-  {{else}}
-    {{#if source.source}}
-      {{source.source}}
+{{#unless secretOnly}}
+  <td data-title="{{t 'formSources.kind.label'}}">
+    {{#if editing}}
+      {{new-select
+        classNames="form-control"
+        optionValuePath="id"
+        content=sources
+        value=source.source
+      }}
     {{else}}
-      <span class="text-muted">{{t 'generic.na'}}</span>
+      {{#if source.source}}
+        {{source.source}}
+      {{else}}
+        <span class="text-muted">{{t 'generic.na'}}</span>
+      {{/if}}
     {{/if}}
-  {{/if}}
-</td>
-<td>&nbsp;</td>
+  </td>
+  <td>&nbsp;</td>
+{{/unless }}
 <td data-title="{{t 'formSources.kind.label'}}">
   {{#if (and editing (eq source.source 'secret'))}}
     {{schema/input-secret
@@ -51,7 +53,9 @@
 </td>
 <td>
   <div class="text-center">
-    {{#if (eq source.sourceKey null)}}
+    {{#if specificKeyOnly}}
+      {{t 'generic.as'}}
+    {{else if (eq source.sourceKey null)}}
       {{t 'generic.prefix'}}
     {{else}}
       {{t 'generic.as'}}

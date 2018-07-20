@@ -10,7 +10,7 @@ const VALID_ROUTES = ['apps-tab', 'authenticated.project.security.members.index'
   'authenticated.project.ns', 'authenticated.project.certificates',
   'authenticated.project.secrets', 'authenticated.project.config-maps',
   'authenticated.project.registries', 'authenticated.project.alert',
-  'authenticated.project.logging'];
+  'authenticated.project.logging', 'authenticated.project.pipeline.settings'];
 
 export default Route.extend(Preload, {
   access:       service(),

@@ -1,0 +1,124 @@
+<section class="header clearfix">
+  <h1>{{t 'repositories.header'}}</h1>
+</section>
+
+<section>
+  {{#if accountsInfo}}
+    {{#sortable-table
+      tableClassNames="bordered mt-30"
+      bulkActions=false
+      rowActions=false
+      leftActions=true
+      paging=false
+      search=true
+      sortBy=sortBy
+      suffix=true
+      headers=headers
+      body=filteredRepositories
+      as |sortable kind row dt|
+    }}
+      {{#if (eq kind "row")}}
+        {{repository-row row=row}}
+      {{else if (eq kind "nomatch")}}
+        <tr>
+          <td colspan="{{sortable.fullColspan}}" class="text-center text-muted pt-20 pb-20">{{t 'repositories.table.noMatch'}}</td>
+        </tr>
+      {{else if (eq kind "norows")}}
+        <tr>
+          <td colspan="{{sortable.fullColspan}}" class="text-center text-muted pt-20 pb-20">{{t 'repositories.table.noData'}}</td>
+        </tr>
+      {{else if (eq kind "norows")}}
+        <tr>
+          <td colspan="{{sortable.fullColspan}}" class="text-center text-muted pt-20 pb-20">{{t 'repositories.table.noData'}}</td>
+        </tr>
+      {{else if (eq kind "left-actions")}}
+        {{#if refreshing}}
+          <a class="btn btn-sm bg-default btn-disabled" href="#" onclick="return false;">
+            {{t 'newPipelineStep.stepType.scm.refresh'}}
+            <i class="icon icon-spinner icon-spin"></i>
+          </a>
+        {{else}}
+          <a class="btn btn-sm bg-primary" href="#" onclick={{action 'refresh'}}>
+            {{t 'newPipelineStep.stepType.scm.refresh'}}
+            <i class="icon icon-refresh"></i>
+          </a>
+        {{/if}}
+
+        {{#if loggingout}}
+          <a class="btn btn-sm bg-default btn-disabled" href="#" onclick="return false;">
+            {{t 'generic.logout' user=principal.name}}
+            <i class="icon icon-spinner icon-spin"></i>
+          </a>
+        {{else}}
+          <a class="btn btn-sm bg-primary" href="#" onclick={{action 'logout'}}>
+            {{t 'generic.logout' user=principal.name}}
+            <i class="icon icon-logout"></i>
+          </a>
+        {{/if}}
+      {{/if}}
+    {{/sortable-table}}
+  {{else}}
+    <div class="row">
+      <div class="banner bg-info">
+        <div class="banner-icon"><i class="icon icon-info"></i></div>
+        <div class="banner-message pt-10 pb-10">
+          {{t 'repositories.message'}}
+        </div>
+      </div>
+    </div>
+    {{#sortable-table
+      tableClassNames="bordered mt-30"
+      groupByKey="isExample"
+      groupByRef="isExample"
+      bulkActions=false
+      rowActions=false
+      sortBy=sortBy
+      paging=false
+      search=true
+      suffix=true
+      headers=headers
+      body=filteredRepositories
+      as |sortable kind row dt|
+    }}
+      {{#if (eq kind "row")}}
+        {{repository-row row=row}}
+      {{else if (eq kind "group")}}
+        <tr class="group-row">
+          <td colspan="{{sortable.fullColspan}}" class="pl-10">
+            {{t 'newPipelineStep.stepType.scm.demoGroup'}}
+          </td>
+        </tr>
+      {{else if (eq kind "nomatch")}}
+        <tr>
+          <td colspan="{{sortable.fullColspan}}" class="text-center text-muted pt-20 pb-20">{{t 'repositories.table.noMatch'}}</td>
+        </tr>
+      {{else if (eq kind "norows")}}
+        <tr>
+          <td colspan="{{sortable.fullColspan}}" class="text-center text-muted pt-20 pb-20">{{t 'repositories.table.noData'}}</td>
+        </tr>
+      {{else if (eq kind "suffix")}}
+        <tbody>
+          <tr>
+          <td colspan="{{sortable.fullColspan}}" class="text-center text-muted pt-20 pb-20">
+            <div style="width:100%;padding:8px 18px;" {{action "authorize"}} disabled={{authorizing}}>
+              <div class="btn bg-transparent btn-authorize">
+                {{#if authorizing}}
+                  <i class="icon icon-spinner icon-spin"></i> {{t 'generic.authorize'}}
+                {{else}}
+                  <i class="icon icon-user"></i> {{t 'generic.authorize'}}
+                {{/if}}
+              </div>
+            </div>
+          </td>      
+          </tr>
+        </tbody>
+      {{/if}}
+    {{/sortable-table}}
+  {{/if}}
+</section>
+
+{{top-errors errors=errors}}
+
+<div style="text-align: center" class="mt-20 text-center">
+  <button {{action "cancel"}} class="btn bg-primary">{{t "generic.done"}}</button>
+</div>

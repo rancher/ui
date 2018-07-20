@@ -8,8 +8,7 @@ import C from 'ui/utils/constants';
 const VALID_ROUTES = ['authenticated.cluster.nodes', 'authenticated.cluster.storage.classes',
   'authenticated.cluster.storage.persistent-volumes', 'authenticated.cluster.notifier',
   'authenticated.cluster.alert', 'authenticated.cluster.logging',
-  'authenticated.cluster.security.members.index', 'authenticated.cluster.projects',
-  'authenticated.cluster.pipeline'];
+  'authenticated.cluster.security.members.index', 'authenticated.cluster.projects'];
 
 export default Route.extend(Preload, {
   scope:        service(),

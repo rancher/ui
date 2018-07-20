@@ -1,0 +1,33 @@
+<div class="mb-20">
+  <label class="acc-label">
+    {{t (if isInclude 'pipelineSelector.title.include' 'pipelineSelector.title.exclude') type=type}}
+  </label>
+</div>
+
+{{#if ruleArray.length}}
+  <table class="table fixed no-lines mb-20">
+    <thead>
+      <tr>
+        {{#if branchOnly}}
+          <th class="acc-label" width="60">{{t 'pipelineSelector.table.type'}}</th>
+        {{else}}
+          <th class="acc-label" >{{t 'pipelineSelector.table.type'}}</th>
+        {{/if}}
+        <th width="40">&nbsp;</th>
+        <th class="acc-label">{{t 'pipelineSelector.table.value'}}</th>
+        <th width="10">&nbsp;</th>
+        <th width="40"></th>
+      </tr>
+    </thead>
+    <tbody>
+      {{#each ruleArray as |rule|}}
+        {{pipeline-selector-row branchOnly=branchOnly remove="removeRule" rule=rule}}
+      {{/each}}
+    </tbody>
+  </table>
+{{/if}}
+
+<button class="btn bg-link icon-btn" {{action "addRule"}}>
+  <span class="darken"><i class="icon icon-plus text-small"/></span>
+  <span>{{t 'pipelineSelector.addRule'}}</span>
+</button>

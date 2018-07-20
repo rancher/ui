@@ -1,0 +1,57 @@
+<section class="header clearfix">
+  <div class="pull-left">
+    <h1 class="vertical-middle">
+      {{t 'pipelineDetailPage.header' name=pipeline.displayName}}
+    </h1>
+  </div>
+  <div class="right-buttons">
+    {{badge-state model=pipeline}}
+    {{action-menu model=pipeline showPrimary=false classNames="ml-10 pull-right" size="sm"}}
+  </div>
+</section>
+
+{{#if pipeline.description}}
+  {{banner-message color='bg-secondary mb-0 mt-10' message=(linkify pipeline.description)}}
+{{/if}}
+
+{{#if pipeline.showTransitioningMessage}}
+  <div class="{{pipeline.stateColor}}"><p>{{uc-first pipeline.transitioningMessage}}</p></div>
+{{/if}}
+
+<section>
+  <div class="row banner bg-info basics mb-0">
+    <div class="vertical-middle">
+      <label class="acc-label vertical-middle p-0">{{t 'pipelineDetailPage.repositry'}}</label>
+      <a href="{{pipeline.repositoryUrl}}" target="_blank" rel="nofollow noreferrer">{{pipeline.repositoryUrl}}</a>
+    </div>
+    <div class="vertical-middle">
+      <label class="acc-label vertical-middle p-0">{{t 'pipelineDetailPage.lastRun'}}</label>
+      {{#if pipeline.lastExecutionId}}
+        {{~#tooltip-element inlineBlock=true type="tooltip-basic" tooltipTemplate="tooltip-static" model=(date-str pipeline.lastStarted) tagName="span" tooltipFor="tooltip-basic"}}
+          {{date-from-now pipeline.lastStarted}}
+        {{~/tooltip-element}}
+      {{else}}
+        {{t 'generic.na'}}
+      {{/if}}
+    </div>
+    <div class="vertical-middle">
+      <label class="acc-label vertical-middle p-0">{{t 'generic.created'}}</label>
+      {{date-calendar pipeline.created}}
+    </div>
+  </div>
+</section>
+
+<section>
+  {{#accordion-list expandAll=true as |al expandFn|}}
+    {{#accordion-list-item
+      title=(t 'pipelineDetailPage.activity.title')
+      detail=(t 'pipelineDetailPage.activity.detail')
+      expandAll=al.expandAll
+      expand=(action expandFn)
+      componentName='sortable-table'
+      as | parent |
+    }}
+      {{pipeline-activities executions=executions}}
+    {{/accordion-list-item}}
+  {{/accordion-list}}
+</section>

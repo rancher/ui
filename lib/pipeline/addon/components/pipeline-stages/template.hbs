@@ -1,100 +1,47 @@
 <section class="pipeline-stages">
-  <div class="stages-line"></div>
-  {{#if editable}}
-    {{#sortable-objects
-    useSwap=true
-    sortableObjectList=pipeline.stages
-    enableSort=true
-    sortingScope="sortingGroup"
-    class="chrome-shim"
-    }}
-      {{#each pipeline.stages as |item index|}}
-        {{#draggable-object
-        id=(concat 'stage_' index)
-        isDraggable=(if (eq index 0) false true)
-        dragHandle='.js-dragHandle'
-        class="stage-wrap"
-        content=item
-        overrideClass='sortObject'
-        isSortable=(if (eq index 0) false true)
-        sortingScope="sortingGroup"
-        dragStartAction="dragStart"
-        dragEndHook=(action "dragEnd")
-        }}
-            {{#if (eq index 0)}}
-              <div class="stage-name clip">
-                {{index-add index}}. {{item.name}}
-              </div>
-            {{else}}
-              <div class="stage-name clip" style="curosor: pointer;" {{action 'editStage' index}}>
-                <a href="javascript:void(0);">{{index-add index}}. {{item.name}}</a>
-              </div>
-            {{/if}}
-
-            {{pipeline-steps
-              review=(if editable false true)
-              pipeline=pipeline
-              clusterPipeline=clusterPipeline
-              accounts=accounts
-              stageIndex=(index-add index)
-              stageInfo=item.name
-              model=item.steps
-              routeState=model
-              stageId=item.name
-              stepsDraggble=true
-              editable=editable
-              stagesDraggable=(if (eq index 0) false stagesDraggable)
-              stepMode=(if (eq index 0) 'scm' '')
-              saved=saved
-              editMode=editMode
-            }}
-        {{/draggable-object}}
-      {{/each}}
-      <div class="stage-wrap">
-        <div class="stage-name text-link" {{action 'addStage'}}>
-          <a href="javascript:void(0);">{{t 'newPipelineStage.header.create'}}</a>
-        </div>
-        <div class="pipeline-steps">
-          {{!-- <div class="steps-line"></div> --}}
-          <div class="steps-head-dot"></div>
-          {{!-- <div class="steps-wrap">
-            <div class="step-content big" {{action 'addStage'}}>
-              {{t 'pipelinesPage.addStage'}}
-            </div>
-          </div> --}}
-        </div>
-      </div>
-    {{/sortable-objects}}
-
-  {{else}}
-    {{#each pipeline.stages as |item index|}}
+  {{#each selectedConfig.stages as |item index|}}
     <div class="stage-wrap">
-      <div class="stage-name clip" {{action 'editStage' index}}>
-        {{index-add index}}. {{item.name}}
-      </div>
+      <div class="stage-container">
+        {{#if (eq index 0)}}
+          <div class="stage-name clip">
+            {{index-add index}}. {{item.name}}
+          </div>
+          <div class="arrow-down"></div>
+          <div class="arrow-next">
+            <div class="line inline-block"></div>
+            <div class="arrow-right inline-block"></div>
+          </div>
+        {{else}}
+          <div class="stage-name clip">
+            <i class="icon icon-edit pull-right" style="cursor: pointer; line-height: 2" {{action 'editStage' index}}></i>
+            <span>{{index-add index}}. {{item.name}}</span>
+          </div>
+          <div class="arrow-down"></div>
+          <div class="arrow-next">
+            <div class="line inline-block"></div>
+            <div class="arrow-right inline-block"></div>
+          </div>
+        {{/if}}
+
         {{pipeline-steps
-          review=review
           pipeline=pipeline
-          clusterPipeline=clusterPipeline
-          accounts=accounts
-          stageIndex=(index-add index)
-          stageInfo=item.name
-          model=item.steps
-          routeState=model
-          stageId=item.name
-          stepsDraggble=true
-          editable=editable
-          stagesDraggable=stagesDraggable
-          stepMode=(if (eq index 0) 'scm' '')
-          saved=saved
-          editMode=editMode
+          stages=selectedConfig.stages
+          currentStageIndex=index
+          projectDockerCredentials=projectDockerCredentials
+          steps=item.steps
         }}
+      </div>
     </div>
-    {{/each}}
-  {{/if}}
+  {{/each}}
+  <div class="stage-wrap">
+    <div class="new-stage-button stage-name" {{action 'addStage'}}>
+      <i class="icon icon-plus"/>
+      {{t 'newPipelineStage.header.create'}}
+    </div>
+  </div>
 </section>
 
 {{pipeline-input-var-hint
   hintAry=envvars
   loading=false
-}} 
+}}

@@ -1,0 +1,32 @@
+<div class="pipeline-child-limit">
+{{#if model.sourceCodeConfig}}
+ {{~#tooltip-element inlineBlock=true type="tooltip-basic" tooltipTemplate="tooltip-static" baseClass="border" model=pipeline.url tagName="span" tooltipFor="tooltip-basic"}}
+    <p class="mt-0 mb-0 clip" style="width: 100%;">{{pipeline.url}}</p>
+  {{~/tooltip-element}}
+{{/if}}
+
+{{#if model.applyYamlConfig}}
+ {{~#tooltip-element inlineBlock=true type="tooltip-basic" tooltipTemplate="tooltip-static" baseClass="border" model=model.applyYamlConfig.path tagName="span" tooltipFor="tooltip-basic"}}
+    <i class="icon icon-edit pull-right"></i>
+    <p class="mt-0 mb-0 clip">{{t 'newPipelineStep.stepType.applyYaml.label'}}: </p>
+    <p class="mt-0 mb-0 clip" style="width: 100%;">{{model.applyYamlConfig.path}}</p>
+  {{~/tooltip-element}}
+{{/if}}
+
+{{#if model.runScriptConfig}}
+  {{~#tooltip-element inlineBlock=true type="tooltip-basic" tooltipTemplate="tooltip-static" baseClass="border" model=model.runScriptConfig.image tagName="span" tooltipFor="tooltip-basic"}}
+    <i class="icon icon-edit pull-right"></i>
+    <p class="mt-0 mb-0 clip">{{t 'newPipelineStep.stepType.task.label'}}: </p>
+    <p class="mt-0 mb-0 clip">{{model.runScriptConfig.image}}</p>
+    <p class="text-small mt-0 mb-0 clip text-italic">{{model.runScriptConfig.shell}}</p>
+  {{~/tooltip-element}}
+{{/if}}
+
+{{#if model.publishImageConfig}}
+  {{~#tooltip-element inlineBlock=true type="tooltip-basic" tooltipTemplate="tooltip-static" baseClass="border" model=model.publishImageConfig.tag tagName="span" tooltipFor="tooltip-basic"}}
+    <i class="icon icon-edit pull-right"></i>
+    <p class="mt-0 mb-0 clip">{{t 'newPipelineStep.stepType.build.label'}}: </p>
+    <p class="mt-0 mb-0 clip">{{model.publishImageConfig.tag}}</p>
+  {{~/tooltip-element}}
+{{/if}}
+</div>
