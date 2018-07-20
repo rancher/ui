@@ -10,14 +10,17 @@
     </thead>
     <tbody>
       {{#if isNew}}
-        {{project-member-row
-            roles=filteredRoles
-            users=users
-            owner=creator
-            type=type
-            noUpdate=true
-            remove=(action "removeMember")
-        }}
+        {{#each defaultRoles as |defRole|}}
+          <tr class="main-row">
+            <td class="pr-10">
+              {{creator.displayName}}
+            </td>
+            <td class="pr-10">
+              {{defRole.name}}
+            </td>
+            <td>&nbsp;</td>
+          </tr>
+        {{/each}}
       {{/if}}
       {{#each memberArray as |member|}}
         {{#unless member.pendingDelete}}

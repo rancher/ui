@@ -8,6 +8,7 @@ const ADMIN = 'admin';
 const SPECIAL = [BASE, ADMIN, USER];
 
 export default Resource.extend({
+
   isHidden: computed('id', function() {
 
     return SPECIAL.includes(get(this, 'id'));
@@ -78,7 +79,22 @@ export default Resource.extend({
 
   }),
 
-  intl: service(),
 
-  canRemove: false,
+  intl:          service(),
+  router:        service(),
+
+  canRemove:     false,
+  // globalRoles can not be removed or changed as of now and do not have a state
+  // because of this the state shows as "Unknown" with bright yellow background
+  // I think its safe to hack around this - wjw
+  _displayState: 'active',
+  stateColor:    'text-success',
+
+  actions: {
+    edit() {
+
+      this.get('router').transitionTo('global-admin.security.roles.edit', this.get('id'), { queryParams: { type: 'global' } });
+
+    },
+  }
 });
