@@ -1,3 +1,32 @@
+const propertyOrder = [
+  'service',
+  'controller',
+  'query-params',
+  'attribute',
+  'relationship',
+  'property',
+  'single-line-function',
+
+  'init',
+  'beforeModel',
+  'model',
+  'afterModel',
+  'redirect',
+  'setupController',
+  'resetController',
+  ['lifecycle-hook','activate','deactivate','didDestroyElement',
+    'didInsertElement','didReceiveAttrs','didRender','didUpdate',
+    'didUpdateAttrs','renderTemplate','serialize','setupController',
+    'willClearRender','willDestroyElement','willInsertElement','willRender','willUpdate'
+  ],
+
+  'actions',
+
+  ['observer','property'],
+
+  'multi-line-function'
+];
+
 module.exports = {
   root: true,
   parserOptions: {
@@ -53,10 +82,10 @@ module.exports = {
     "ember/no-on-calls-in-components": "off",
     "ember/no-side-effects": "off",
     "ember/no-old-shims": "error",
-    "ember/order-in-components": "error",
-    "ember/order-in-controllers": "error",
-    "ember/order-in-models": "error",
-    "ember/order-in-routes": "error",
+    "ember/order-in-components": ["error", { order: propertyOrder }],
+    "ember/order-in-controllers": ["error", { order: propertyOrder }],
+    "ember/order-in-models": ["error", { order: propertyOrder }],
+    "ember/order-in-routes": ["error", { order: propertyOrder }],
     "ember/use-brace-expansion": "off",
     "ember/use-ember-get-and-set": "off",
     "ember/new-module-imports": "error",
@@ -108,7 +137,7 @@ module.exports = {
     "object-curly-newline": [ "error", {
       "ObjectExpression": { "multiline": true, "minProperties": 3 },
       "ObjectPattern": { "multiline": true, "minProperties": 3 },
-      "ImportDeclaration": { "multiline": true, "minProperties": 3 },
+      "ImportDeclaration": { "multiline": true, "minProperties": 5 },
       "ExportDeclaration": { "multiline": true, "minProperties": 3 }
     } ],
     "object-curly-spacing": [ "error", "always" ],
