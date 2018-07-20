@@ -28,6 +28,16 @@ export default Controller.extend({
 
   }),
 
+  containers: computed('model.containers.[]', function() {
+    return (get(this, 'model.containers') || []).map((container) => {
+      set(container, 'type', 'container');
+      set(container, 'pod', Object.assign({}, get(this, 'model')));
+      set(container, 'pod.containers', [{ name: get(container, 'name') }]);
+
+      return get(this, 'store').createRecord(container);
+    });
+  }),
+
   containerDidChange: observer('model.containers.[]', function() {
 
     once(() => set(this, 'selectedContainer', get(this, 'model.containers.firstObject')));
