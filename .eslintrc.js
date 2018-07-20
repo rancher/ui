@@ -112,6 +112,7 @@ module.exports = {
 
     //stylistic
     "array-bracket-spacing": "error",
+    "padded-blocks": [ "error", "never" ],
     "block-spacing": [ "error", "always" ],
     "brace-style": [ "error", "1tbs" ],
     "comma-spacing": "error",
