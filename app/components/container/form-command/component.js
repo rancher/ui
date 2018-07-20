@@ -1,5 +1,5 @@
 import {
-  get, set, observer
+  get, set, observer, computed
 } from '@ember/object';
 import { inject as service } from '@ember/service';
 import Component from '@ember/component';
@@ -22,6 +22,11 @@ export default Component.extend({
   terminal:          null,
   statusClass:       null,
   status:            null,
+
+  isJob: computed('scaleMode', function() {
+    return get(this, 'scaleMode') === 'job' || get(this, 'scaleMode') === 'cronJob';
+  }),
+
   terminalDidChange: observer('terminal.type', function() {
 
     var val = get(this, 'terminal.type');
@@ -35,12 +40,17 @@ export default Component.extend({
 
   scaleModeDidChange: observer('scaleMode', function() {
 
-    const scaleMode = get(this, 'scaleMode');
     const restartPolicy = get(this, 'service.restartPolicy');
 
-    if ( (scaleMode === 'job' || scaleMode === 'cronJob') && restartPolicy === 'Always' ) {
+    if ( get(this, 'isJob') ) {
 
-      set(this, 'service.restartPolicy', 'Never');
+      if ( restartPolicy === 'Always' ) {
+        set(this, 'service.restartPolicy', 'Never');
+      }
+
+    } else {
+
+      set(this, 'service.restartPolicy', 'Always');
 
     }
 
