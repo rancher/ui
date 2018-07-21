@@ -62,7 +62,7 @@ var Workload = Resource.extend(DisplayImage, StateCounts, EndpointPorts, {
   }),
 
   availableActions: function() {
-    let a = get(this, 'actionLinks');
+    let a = get(this, 'actionLinks') || {};
 
     let isReal = get(this, 'isReal');
     let podForShell = get(this, 'podForShell');
