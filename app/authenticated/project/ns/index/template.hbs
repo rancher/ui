@@ -31,6 +31,9 @@
         </td>
         <td>
           {{obj.name}}
+          {{#if obj.description}}
+            <p class="text-small text-muted m-0">{{linkify obj.description}}</p>
+          {{/if}}
         </td>
         <td>
           {{date-calendar obj.created}}
@@ -44,6 +47,9 @@
         <tr class="group-row">
           <td colspan="{{sortable.fullColspan}}" class="pl-10">
             {{t 'projectsListNamespacePage.current'}}
+            {{#if obj.ref.description}}
+              <p class="text-small text-muted m-0">{{linkify obj.ref.description}}</p>
+            {{/if}}
           </td>
         </tr>
       {{else}}
