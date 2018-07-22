@@ -45,6 +45,15 @@ export default Component.extend(ViewNewEdit, {
     updateOptions(ary) {
       set(this, 'primaryResource.mountOptions', ary);
     },
+
+    updateNodeAffinities(nodeSelector) {
+      if ( nodeSelector.nodeSelectorTerms.length > 0 ) {
+        set(this, 'primaryResource.nodeAffinity', { required: nodeSelector });
+      } else {
+        set(this, 'primaryResource.nodeAffinity', null);
+      }
+    },
+
   },
 
   sourceChoices: computed('intl.locale', function() {

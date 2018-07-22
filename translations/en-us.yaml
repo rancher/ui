@@ -2176,6 +2176,8 @@ cruPersistentVolume:
     title: Plugin Configuration
     detail: Configure options for the selected volume plugin
     prompt: Choose a volume plugin...
+  nodeAffinity:
+    label: Node Affinity
   customize:
     title: Customize
     detail: Customize Advanced options
@@ -2986,6 +2988,24 @@ formBalancerConfig:
     See <a href="https://cbonte.github.io/haproxy-dconv/1.6/configuration.html" target="_blank" rel="nofollow noopener noreferrer">haproxy documentation</a> for more info about specific options that can go into the the config file.  When overriding the <code>backend</code> or similar lines which include the IP address of the target container, use <code>$IP</code> where the address goes and {appName} will generate the appropriate line(s).
   config:
     prompt: Custom haproxy.cfg content
+
+formNodeAffinity:
+  addRuleLabel: Add Node Selector
+  noRules: No node Selectors
+  removeRuleLabel: Remove this Node Selector
+
+formNodeRequirement:
+  label: Rules
+  addRuleLabel: Add Rule
+  noRules: No Rules
+  key:
+    label: Key
+    placeholder: e.g. hostname
+  operator:
+    label: Operator
+  values:
+    label: Values
+    placeholder: Comma-separated, e.g. node1,node2
 
 formIngress:
   hostMode:
