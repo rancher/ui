@@ -5,6 +5,9 @@
     {{else}}
       {{t noGroup}}
     {{/if}}
+    {{#if model.description}}
+      <p class="text-small text-muted m-0">{{linkify model.description}}</p>
+    {{/if}}
   </td>
   <td class="text-right">
     {{#link-to "authenticated.cluster.projects.new-ns" (query-params addTo=(or model.id null)) class="btn bg-primary btn-sm mr-10" disabled=(rbac-prevents resource="namespace" scope="cluster" permission="create")}}

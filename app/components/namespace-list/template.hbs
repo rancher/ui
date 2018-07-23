@@ -19,10 +19,16 @@
       </td>
       <td>
         {{obj.name}}
+        {{#if obj.description}}
+          <p class="text-small text-muted m-0">{{linkify obj.description}}</p>
+        {{/if}}
       </td>
       <td>
         {{#if obj.project}}
           <a href="{{href-to "authenticated.project" obj.project.id}}">{{obj.project.displayName}}</a>
+          {{#if obj.project.description}}
+            <p class="text-small text-muted m-0">{{linkify obj.project.description}}</p>
+          {{/if}}
         {{else}}
           <b>None</b>
         {{/if}}
