@@ -1,0 +1,70 @@
+<div class="clearfix">
+  <label class="acc-label">{{t 'formNodeRequirement.label'}}</label>
+  {{#if editing}}
+    <button class="btn bg-link icon-btn" {{action "addRule"}}>
+      <span class="darken"><i class="icon icon-plus text-small"></i></span>
+      <span>{{t 'formNodeRequirement.addRuleLabel'}}</span>
+    </button>
+  {{/if}}
+</div>
+
+{{#if ruleArray.length}}
+  <table class="fixed striped mt-20">
+    <thead>
+      <tr>
+        <th class="divided">{{t 'formNodeRequirement.key.label'}}</th>
+        <th width="200" class="divided">{{t 'formNodeRequirement.operator.label'}}</th>
+        <th class="divided">{{t 'formNodeRequirement.values.label'}}</th>
+        {{#if editing}}
+          <th width="40">&nbsp;</th>
+        {{/if}}
+      </tr>
+    </thead>
+
+    <tbody>
+      {{#each ruleArray as |rule|}}
+        <tr>
+          <td class="divided p-5" data-title="{{t 'formNodeRequirement.key.label'}}">
+            {{#input-or-display editable=editing value=rule.key classesForDisplay="clip"}}
+              {{input type="text" class="input-sm" value=rule.key placeholder=(t 'formNodeRequirement.key.placeholder')}}
+            {{/input-or-display}}
+          </td>
+
+          <td class="divided p-5" data-title="{{t 'formNodeRequirement.operator.label'}}">
+            {{#if editing}}
+              {{new-select
+                class="form-control input-sm"
+                content=operatorChoices
+                localizedHtmlLabel=true
+                value=rule.operator
+                style="display: inline-block; width: auto;"
+              }}
+            {{else}}
+              {{rule.operator}}
+            {{/if}}
+          </td>
+
+          <td class="p-5" data-title="{{t 'formNodeRequirement.values.label'}}">
+            {{#if (or (eq rule.operator 'Exists') (eq rule.operator 'DoesNotExist'))}}
+              {{t 'generic.na'}}
+            {{else}}
+              {{#input-or-display editable=editing value=rule.values classesForDisplay="clip"}}
+                {{input type="text" class="input-sm" value=rule.values placeholder=(t 'formNodeRequirement.values.placeholder')}}
+              {{/input-or-display}}
+            {{/if}}
+          </td>
+
+          {{#if editing}}
+            <td class="text-right">
+              <button class="btn bg-primary btn-sm" {{action "removeRule" rule}}><i class="icon icon-minus"/><span class="sr-only">{{t 'generic.remove'}}</span></button>
+            </td>
+          {{/if}}
+        </tr>
+      {{/each}}
+    </tbody>
+  </table>
+{{else if editing}}
+  <div class="row text-center mt-20 mb-20 pt-10">
+    <span class="text-muted">{{t 'formNodeRequirement.noRules'}}</span>
+  </div>
+{{/if}}

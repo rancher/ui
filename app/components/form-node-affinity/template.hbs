@@ -1,0 +1,17 @@
+{{#each rules as |rule|}}
+  {{form-node-selector 
+    removeRule=(action 'removeRule')
+    rule=rule
+    editing=editing}}
+{{else if (not editing)}}
+  <div class="p-20">{{t 'formNodeAffinity.noRules'}}</div>
+{{/each}}
+
+{{#if editing}}
+  <div class="row">
+    <button class="btn bg-link icon-btn inline-block pull-left" {{action "addRule"}}>
+      <span class="darken"><i class="icon icon-plus text-small"></i></span>
+      <span>{{t 'formNodeAffinity.addRuleLabel'}}</span>
+    </button>
+  </div>
+{{/if}}
