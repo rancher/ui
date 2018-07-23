@@ -10,7 +10,9 @@ export default Route.extend(VerifyAuth, {
 
   model(params/* , transition */) {
     if (window.opener && !get(params, 'login')) {
-      let openerController = window.opener.lc('security.authentication.github');
+
+      let configName = get(params, 'config') || 'github';
+      let openerController = window.opener.lc(`security.authentication.${ configName }`);
       let openerStore      = get(openerController, 'globalStore');
       let qp               = get(params, 'config') || get(params, 'authProvider');
       let type             = `${ qp }Config`;
@@ -30,7 +32,7 @@ export default Route.extend(VerifyAuth, {
         if (window.opener) {
           console.log('pinged')
 
-          if (window.opener.window.pingTest) {
+          if (window.opener.window.onPingTest) {
 
             reply(null, 'success!');
 
