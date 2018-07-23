@@ -43,6 +43,16 @@ module.exports = function(app, options) {
     'Version': '/version',
   }
 
+  app.use('/', function(req, res, next) {
+    if ( (req.headers['user-agent']||'').toLowerCase().includes('mozilla') ) {
+      next();
+    } else {
+      proxyLog('Root', req);
+      req.headers['X-Forwarded-Proto'] = req.protocol;
+      proxy.web(req, res);
+    }
+  }),
+
   console.log('Proxying APIs to', target);
   Object.keys(map).forEach(function(label) {
     let base = map[label];

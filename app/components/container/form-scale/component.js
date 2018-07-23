@@ -47,7 +47,7 @@ export default Component.extend({
   initialScale:     null,
   isUpgrade:        null,
   isGlobal:         null,
-  min:              1,
+  min:              0,
   max:              1000,
   scaleMode:        null,
   editing:          true,
@@ -58,7 +58,14 @@ export default Component.extend({
 
   init() {
     this._super(...arguments);
-    set(this, 'userInput', `${ get(this, 'initialScale') || 1 }`);
+
+    let initial = get(this, 'initialScale');
+
+    if ( initial === null ) {
+      initial = 1;
+    }
+
+    set(this, 'userInput', `${ initial }`);
     this.scaleModeChanged();
     if ( get(this, 'scaleMode') !== 'deployment' && !get(this, 'isUpgrade') ) {
       set(this, 'advancedShown', true);
