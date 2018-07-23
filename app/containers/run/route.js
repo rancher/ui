@@ -240,7 +240,7 @@ export default Route.extend({
       readOnly:                 false,
       runAsNonRoot:             false,
       namespaceId:              namespaceId ? namespaceId : this.getNamespaceId(params),
-      imagePullPolicy:          'Always',
+      imagePullPolicy:          get(this, `prefs.${ C.PREFS.LAST_IMAGE_PULL_POLICY }`) || 'Always',
     });
   },
 

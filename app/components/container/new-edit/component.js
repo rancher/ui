@@ -378,6 +378,7 @@ export default Component.extend(NewOrEdit, ChildHook, {
         scaleMode = 'deployment';
       }
       set(this, `prefs.${ C.PREFS.LAST_SCALE_MODE }`, scaleMode);
+      set(this, `prefs.${ C.PREFS.LAST_IMAGE_PULL_POLICY }`, get(this, 'launchConfig.imagePullPolicy'));
       set(this, `prefs.${ C.PREFS.LAST_NAMESPACE }`, get(this, 'namespace.id'));
     }
     this.sendAction('done');
