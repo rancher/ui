@@ -25,6 +25,22 @@ export default Route.extend(VerifyAuth, {
           .catch((err) => {
             this.send('gotError', err);
           });
+
+      } else if (get(params, 'config') === 'ping') {
+        if (window.opener) {
+          console.log('pinged')
+
+          if (window.opener.window.pingTest) {
+
+            reply(null, 'success!');
+
+          } else {
+
+            reply({err: "failure"});
+
+          }
+
+        }
       }
 
       if (get(params, 'code')) {
