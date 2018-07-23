@@ -56,6 +56,21 @@
           users=model.users
       }}
     {{/accordion-list-item}}
+
+    {{#accordion-list-item
+         title=(t 'projectsPage.resourceQuota.title')
+         detail=(t 'projectsPage.resourceQuota.detail')
+         expandAll=al.expandAll
+         expand=(action expandFn)
+         expandOnInit=false
+    }}
+      {{form-resource-quota
+          editing=(or editing isNew)
+          expanded=expanded
+          limit=primaryResource.resourceQuota.limit
+          changed=(action "updateQuota")
+      }}
+    {{/accordion-list-item}}
   </div>
 {{/accordion-list}}
 </div>

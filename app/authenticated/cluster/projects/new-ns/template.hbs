@@ -25,5 +25,18 @@
   }}
 {{/unless}}
 
+{{#if model.namespace.project.resourceQuota}}
+  <label class="pt-20 pb-5 acc-label">{{t 'editStack.quota.label'}}</label>
+  {{new-select
+      classNames="form-control"
+      optionValuePath="id"
+      optionLabelPath="displayName"
+      content=allQuotaTemplates
+      value=model.namespace.resourceQuotaTemplateId
+      prompt="editStack.quota.prompt"
+      localizedPrompt=true
+  }}
+{{/if}}
+
 {{top-errors errors=errors}}
 {{save-cancel editing=false save="save" cancel="cancel"}}

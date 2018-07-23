@@ -1,0 +1,46 @@
+<section class="header clearfix">
+  <h1 class="pull-left">{{t 'quotaTemplatesPage.header'}}</h1>
+  <div class="vertical-middle"></div>
+
+  <div class="right-buttons">
+    {{#link-to "authenticated.cluster.quotas.new" class="btn bg-primary btn-sm" disabled=(rbac-prevents resource="resourcequotatemplate" scope="global" permission="create")}}
+      {{t 'quotaTemplatesPage.addQuotaTemplate'}}
+    {{/link-to}}
+  </div>
+</section>
+
+{{#sortable-table
+     tableClassNames="bordered"
+     headers=headers
+     bulkActions=true
+     body=rows
+     sortBy=sortBy
+     as |sortable kind obj dt|
+}}
+  {{#if (eq kind "row")}}
+    <tr class="main-row">
+      <td class="row-check" valign="middle" style="padding-top: 2px;">
+        {{check-box nodeId=obj.id}}
+      </td>
+      <td data-title="{{dt.name}}">
+        <a href="{{href-to "authenticated.cluster.quotas.detail" obj.id}}">{{obj.displayName}}</a>
+        {{#if obj.description}}
+          <p class="text-small text-muted m-0">{{linkify obj.description}}</p>
+        {{/if}}
+      </td>
+      <td data-title="{{dt.default}}">
+        {{#if obj.isDefault}}<i class="icon icon-star-fill ml-20"/>{{/if}}
+      </td>
+      <td data-title="{{dt.created}}">
+        {{date-calendar obj.created}}
+      </td>
+      <td data-title="{{t 'generic.actions'}}:" class="actions">
+        {{action-menu model=obj}}
+      </td>
+    </tr>
+  {{else if (eq kind "nomatch")}}
+    <tr><td colspan="{{sortable.fullColspan}}" class="text-center text-muted lacsso pt-20 pb-20">{{t 'quotaTemplatesPage.noMatch'}}</td></tr>
+  {{else if (eq kind "norows")}}
+    <tr><td colspan="{{sortable.fullColspan}}" class="text-center text-muted lacsso pt-20 pb-20">{{t 'quotaTemplatesPage.noData'}}</td></tr>
+  {{/if}}
+{{/sortable-table}}

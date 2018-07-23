@@ -14,9 +14,10 @@ export default Component.extend(ModalBase, NewOrEdit, {
   editing:       true,
   model:         null,
 
-  allNamespaces: null,
-  allProjects:   null,
-  tags:          null,
+  allNamespaces:     null,
+  allProjects:       null,
+  allQuotaTemplates: null,
+  tags:              null,
 
   originalModel:  alias('modalService.modalOpts'),
   init() {
@@ -31,6 +32,8 @@ export default Component.extend(ModalBase, NewOrEdit, {
     set(this, 'allNamespaces', get(this, 'clusterStore').all('namespace'));
     set(this, 'allProjects', get(this, 'globalStore').all('project')
       .filterBy('clusterId', get(this, 'scope.currentCluster.id')));
+    set(this, 'allQuotaTemplates', get(this, 'globalStore').all('resourceQuotaTemplate')
+      .filterBy('clusterId', get(this, 'scope.currentCluster.id')));
   },
 
   actions: {
@@ -44,6 +47,12 @@ export default Component.extend(ModalBase, NewOrEdit, {
 
   tagsDidChanged: observer('tags', function() {
     set(this, 'primaryResource.tags', get(this, 'tags').split(',') || []);
+  }),
+
+  projectDidChange: observer('primaryResource.projectId', function() {
+    if ( !get(this, 'primaryResource.project.resourceQuota') ) {
+      set(this, 'primaryResource.resourceQuotaTemplateId', null);
+    }
   }),
 
   doneSaving() {

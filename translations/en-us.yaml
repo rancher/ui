@@ -668,6 +668,27 @@ projectsListNamespacePage:
   notIn: Not in a project
   current: In this project
 
+quotaTemplatesPage:
+  header: Quota Templates
+  addQuotaTemplate: Add Quota Template
+  editQuotaTemplate: Edit Quota Template
+  quotaTemplate: 'Quota Template: {name}'
+  title: Resource Quotas
+  detail: Configure how much of the resources a namespace can consume.
+  noMatch: No resource quota templates match the current search.
+  noData: This cluster doesn't have any resource quota templates defined.
+  name: 
+    label: Name
+    placeholder: e.g. large
+  table:
+    name:
+      label: Name
+    default:
+      label: Default
+    created:
+      label: Created
+
+
 projectsPage:
   header: Projects/Namespaces
   headerNS: Namespaces
@@ -689,6 +710,9 @@ projectsPage:
     label: Created
   psp:
     label: Pod Security Policy
+  resourceQuota:
+    title: Resource Quotas
+    detail: Configure how much of the resources the project as a whole can consume
   members:
     title: Members
     detail: Configure who has access to the resources in this project and what permissions they have
@@ -2973,6 +2997,9 @@ editStack:
   project:
     label: Project
     prompt: Select a Project...
+  quota:
+    label: Quota Template
+    prompt: Use the default quota template......
   description:
     label: Description
     placeholder: e.g. MyApp namespace
@@ -3276,6 +3303,31 @@ formEngineOpts:
     addActionLabel: Add Registry Mirror
     valueLabel: Mirror URL
     valuePlaceholder: e.g. https://my-mirror.example.com:5000
+
+formResourceQuota:
+  addQuotaLabel: Add Quota
+  table:
+    type:
+      label: Resource Type
+    value:
+      label: Limit
+      placeholder: e.g. 8
+      memoryPlaceholder: e.g. 2Gi
+    noData: There are no resource quotas defined
+  resources:
+    configMaps: Config Maps
+    limitsCpu: CPU Limit
+    limitsMemory: Memory Limit
+    persistentVolumeClaims: Persistent Volume Claims
+    pods: Pods
+    replicationControllers: Replication Controllers
+    requestsCpu: CPU Reservation
+    requestsMemory: Memory Reservation
+    requestsStorage: Storage Reservation
+    secrets: Secrets
+    services: Services
+    servicesLoadBalancers: Services Load Balancers
+    servicesNodePorts: Services Node Ports
 
 formEnvVar:
   title: Environment Variables
@@ -5532,6 +5584,7 @@ nav:
     members: Members
     nodes: Nodes
     namespaces: Namespaces
+    quotas: Quotas
     storage:
       tab: Storage
       classes: Storage Classes

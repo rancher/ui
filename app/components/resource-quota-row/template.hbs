@@ -1,0 +1,18 @@
+<td class="pr-10">
+  <div style="height: 35px;">
+    {{searchable-select content=resourceChoices value=quota.key localizedLabel=true readOnly=(not editing)}}
+  </div>
+</td>
+<td class="pr-10">
+  {{#input-or-display editable=editing value=quota.value classesForDisplay="clip"}}
+    {{input type="text" value=quota.value placeholder=(t (if (or (eq quota.key 'limitsMemory') (eq quota.key 'requestsMemory')) 'formResourceQuota.table.value.memoryPlaceholder' 'formResourceQuota.table.value.placeholder'))}}
+  {{/input-or-display}}
+</td>
+<td>&nbsp;</td>
+<div class="input-group-btn">
+  {{#if editing}}
+    <button class="btn bg-primary btn-sm" {{action remove quota}}>
+      <i class="icon icon-minus" />
+    </button>
+  {{/if}}
+</div>
