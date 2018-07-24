@@ -1,6 +1,6 @@
 import { get, set, setProperties } from '@ember/object';
 import { computed, observer } from '@ember/object';
-import { alias, equal } from '@ember/object/computed';
+import { alias } from '@ember/object/computed';
 import Component from '@ember/component';
 import { inject as service } from '@ember/service'
 import layout from './template';
@@ -42,8 +42,6 @@ export default Component.extend({
   cluster:          alias('scope.currentCluster'),
   projectId:        alias('scope.currentProject.id'),
   project:          alias('scope.currentProject'),
-  isCaas:           equal('app.mode', C.MODE.CAAS),
-  isOss:            equal('app.mode', C.MODE.OSS),
   accessEnabled:    alias('access.enabled'),
 
   init() {
