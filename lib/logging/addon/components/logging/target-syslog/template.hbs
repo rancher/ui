@@ -41,6 +41,19 @@
       }}
       <p class="text-info text-small">{{t 'loggingPage.syslog.programHelpText'}}</p>
     </div>
+
+    <div class="col span-6 mt-0 pt-0">
+      <label class="acc-label" for="">{{t 'loggingPage.splunk.token'}}</label>
+      {{input
+          type="text"
+          value=config.token
+          classNames="form-control"
+          placeholder=(t 'loggingPage.splunk.tokenPlaceholder')
+      }}
+      <p class="text-info text-small">
+        {{t 'loggingPage.syslog.tokenHelpText' htmlSafe=true}}
+      </p>
+    </div>
   </div>
 
   <div>
@@ -54,6 +67,10 @@
     {{t 'loggingPage.syslog.severityHelpText' htmlSafe=true}}
   </div>
 </section>
+
+{{#if showSSLConfig}}
+  {{logging/form-log-ssl config=config targetType=targetType}}
+{{/if}}
 
 {{logging/form-log-format logPreview=logPreview model=model}}
 {{!--

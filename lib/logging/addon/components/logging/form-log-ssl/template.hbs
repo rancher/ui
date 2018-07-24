@@ -34,17 +34,20 @@
       }}
     </div>
   </div>
-  {{#if (or (eq targetType 'splunk') (eq targetType 'elasticsearch'))}}
+
+  {{#if (or (eq targetType 'splunk') (eq targetType 'elasticsearch') (eq targetType 'syslog'))}}
     <div class="row">
-      <div class="col span-6">
-        <label class="acc-label">{{t 'loggingPage.ssl.clientKeyPass.label'}}</label>
-        {{input
-            type="password"
-            value=config.clientKeyPass
-            className="form-control"
-            placeholder=(t 'loggingPage.ssl.clientKeyPass.password.placeholder')
-          }}
-      </div>
+      {{#if (or (eq targetType 'splunk') (eq targetType 'elasticsearch'))}}
+        <div class="col span-6">
+          <label class="acc-label">{{t 'loggingPage.ssl.clientKeyPass.label'}}</label>
+          {{input
+              type="password"
+              value=config.clientKeyPass
+              className="form-control"
+              placeholder=(t 'loggingPage.ssl.clientKeyPass.password.placeholder')
+            }}
+        </div>
+      {{/if}}
       <div class="col span-6">
         <label class="acc-label">{{t 'loggingPage.ssl.verify.label'}}</label>
         <div class="radio">
