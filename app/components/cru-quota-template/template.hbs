@@ -10,6 +10,10 @@
   </div>
 </section>
 
+{{#if (and model.description (not (or editing isNew)))}}
+  {{banner-message color='bg-secondary mb-0 mt-10' message=(linkify model.description)}}
+{{/if}}
+
 {{#if (or editing isNew)}}
   <section class="horizontal-form container-fluid">
     {{form-name-description

@@ -19,6 +19,12 @@ export const headers = [
     translationKey: 'namespacesPage.table.name.label',
   },
   {
+    name:           'resourceQuotaTemplate.displayName',
+    sort:           ['resourceQuotaTemplate.displayName'],
+    searchField:    ['resourceQuotaTemplate.displayName'],
+    translationKey: 'projectsPage.quota.label',
+  },
+  {
     name:           'created',
     sort:           ['created', 'id'],
     searchField:    'created',
