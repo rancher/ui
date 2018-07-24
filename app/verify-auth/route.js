@@ -10,7 +10,8 @@ export default Route.extend(VerifyAuth, {
 
   model(params/* , transition */) {
     if (window.opener && !get(params, 'login')) {
-      let openerController = window.opener.lc('security.authentication.github');
+      let occName          = get(params, 'config') ? `security.authentication.${ get(params, 'config') }` : `security.authentication.github`;
+      let openerController = window.opener.lc(occName);
       let openerStore      = get(openerController, 'globalStore');
       let qp               = get(params, 'config') || get(params, 'authProvider');
       let type             = `${ qp }Config`;
@@ -25,6 +26,12 @@ export default Route.extend(VerifyAuth, {
           .catch((err) => {
             this.send('gotError', err);
           });
+      } else if (get(params, 'config') === 'ping') {
+        if (window.opener.window.onAuthTest) {
+          reply(null, config);
+        } else {
+          reply({ err: 'failure' });
+        }
       }
 
       if (get(params, 'code')) {
@@ -55,7 +62,7 @@ export default Route.extend(VerifyAuth, {
 
     function reply(err, code) {
       try {
-        window.opener.window.onGithubTest(err, code);
+        window.opener.window.onAuthTest(err, code);
         setTimeout(() => {
           window.close();
         }, 250);

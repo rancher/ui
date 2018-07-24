@@ -41,6 +41,7 @@ var Principal = Resource.extend({
     case C.PROJECT.TYPE_GITHUB_USER:
     case C.PROJECT.TYPE_LDAP_USER:
     case C.PROJECT.TYPE_OPENLDAP_USER:
+    case C.PROJECT.TYPE_PING_USER:
     case C.PROJECT.TYPE_RANCHER:
     case C.PROJECT.TYPE_SHIBBOLETH_USER:
       return C.PROJECT.PERSON;
@@ -54,6 +55,7 @@ var Principal = Resource.extend({
     case C.PROJECT.TYPE_GITHUB_ORG:
     case C.PROJECT.TYPE_LDAP_GROUP:
     case C.PROJECT.TYPE_OPENLDAP_GROUP:
+    case C.PROJECT.TYPE_PING_GROUP:
     case C.PROJECT.TYPE_SHIBBOLETH_GROUP:
       return C.PROJECT.ORG;
     }
@@ -79,6 +81,7 @@ var Principal = Resource.extend({
     case C.PROJECT.TYPE_GITHUB_USER:
     case C.PROJECT.TYPE_LDAP_USER:
     case C.PROJECT.TYPE_OPENLDAP_USER:
+    case C.PROJECT.TYPE_PING_USER:
     case C.PROJECT.TYPE_SHIBBOLETH_USER:
       key = 'model.identity.displayType.user';
       break;
@@ -88,6 +91,7 @@ var Principal = Resource.extend({
     case C.PROJECT.TYPE_FREEIPA_GROUP:
     case C.PROJECT.TYPE_LDAP_GROUP:
     case C.PROJECT.TYPE_OPENLDAP_GROUP:
+    case C.PROJECT.TYPE_PING_GROUP:
     case C.PROJECT.TYPE_SHIBBOLETH_GROUP:
       key = 'model.identity.displayType.group';
       break;
