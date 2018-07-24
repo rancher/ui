@@ -45,7 +45,52 @@
         <div class="row">
           <div class="col span-6">
             <label class="acc-label pb-5">{{t 'authPage.saml.disabled.rancherApiHost.labelText'}}{{field-required}}</label>
-            {{input type="url" value=authConfig.rancherApiHost classNames="form-control"}}
+            <div class="input-group">
+              <span class="input-group-addon bg-default">
+                <label>https://</label>
+              </span>
+
+              {{input-url
+                  classNames="form-control"
+                  id="server-url"
+                  isInvalid=(action (mut urlInvalid))
+                  urlWarning=(action (mut urlWarning))
+                  urlError=(action (mut urlError))
+                  value=authConfig.rancherApiHost
+              }}
+            </div>
+            <div>
+              {{#if urlInvalid}}
+                {{#each urlError as |error|}}
+                  <div class="banner bg-{{error.type}} mt-30">
+                    <div class="banner-icon"><i class="icon icon-info"></i></div>
+                    <div class="banner-message">
+                      <p>
+                        {{t error.msg
+                            activeValue=authConfig.rancherApiHost
+                            htmlSafe=true
+                        }}
+                      </p>
+                    </div>
+                  </div>
+                {{/each}}
+              {{/if}}
+            </div>
+            <div>
+              {{#each urlWarning as |warning|}}
+                <div class="banner bg-{{warning.type}} mt-30">
+                  <div class="banner-icon"><i class="icon icon-info"></i></div>
+                  <div class="banner-message">
+                    <p>
+                      {{t warning.msg
+                          activeValue=authConfig.rancherApiHost
+                          htmlSafe=true
+                      }}
+                    </p>
+                  </div>
+                </div>
+              {{/each}}
+            </div>
           </div>
         </div>
         <div class="row pt-20">
