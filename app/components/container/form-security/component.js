@@ -3,6 +3,7 @@ import { next } from '@ember/runloop';
 import Component from '@ember/component';
 import { alias } from '@ember/object/computed';
 import { parseSi } from 'shared/utils/parse-unit';
+import { convertToMillis } from 'shared/utils/util';
 import layout from './template';
 
 const GPU_KEY = 'nvidia.com/gpu';
@@ -189,10 +190,10 @@ export default Component.extend({
     var cpu = get(this, 'instance.resources.limits.cpu');
     var cpuReservation = get(this, 'instance.resources.requests.cpu');
 
-    set(this, 'cpuReservationMillis', this.convertToMillis(cpuReservation));
+    set(this, 'cpuReservationMillis', convertToMillis(cpuReservation));
 
     if (cpu) {
-      set(this, 'cpuMillis', this.convertToMillis(cpu));
+      set(this, 'cpuMillis', convertToMillis(cpu));
       set(this, 'cpuMode', 'set');
     } else {
       set(this, 'cpuMillis', 1000);
@@ -223,16 +224,5 @@ export default Component.extend({
 
     set(this, 'gpuReservation', gpu);
     this.updateGpu();
-  },
-
-  convertToMillis(strValue) {
-    if (!strValue) {
-      return '';
-    }
-    if (strValue.endsWith('m')) {
-      return parseInt(strValue.substr(0, strValue.length - 1), 10);
-    } else {
-      return parseInt(strValue, 10) * 1000;
-    }
   },
 });

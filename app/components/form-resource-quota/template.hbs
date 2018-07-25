@@ -1,0 +1,32 @@
+{{#if quotaArray.length}}
+  <table class="table fixed">
+    <thead>
+      <tr>
+        <th>{{t 'formResourceQuota.table.type.label'}}</th>
+        <th>{{t 'formResourceQuota.table.value.label'}}</th>
+        <th width="10">&nbsp;</th>
+        <th width="40"></th>
+      </tr>
+    </thead>
+    <tbody>
+      {{#each quotaArray as |quota|}}
+        {{resource-quota-row
+            quota=quota
+            editing=editing
+            remove=(action "removeQuota")
+        }}
+      {{/each}}
+    </tbody>
+  </table>
+{{else if (not editing)}}
+  {{t 'formResourceQuota.table.noData'}}
+{{/if}}
+
+{{#if editing}}
+  <div class="row mt-10">
+    <button class="btn bg-link icon-btn inline-block" {{action "addQuota"}}>
+      <span class="darken"><i class="icon icon-plus text-small"></i></span>
+      <span>{{t 'formResourceQuota.addQuotaLabel'}}</span>
+    </button>
+  </div>
+{{/if}}

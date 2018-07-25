@@ -44,14 +44,15 @@ var Namespace = Resource.extend(StateCounts, {
   globalStore:  service(),
   clusterStore: service(),
 
-  pods:         hasMany('id', 'pod', 'namespaceId', 'projectStore', null, 'clusterStore'),
-  workloads:    hasMany('id', 'workload', 'namespaceId', 'projectStore', null, 'clusterStore'),
-  services:     hasMany('id', 'service', 'namespaceId', 'projectStore', null, 'clusterStore'),
-  secrets:      hasMany('id', 'namespacedSecret', 'namespaceId', 'projectStore', null, 'clusterStore'),
-  ingress:      hasMany('id', 'ingress', 'namespaceId', 'projectStore', null, 'clusterStore'),
-  volumes:      hasMany('id', 'persistentVolumeClaim', 'namespaceId', 'projectStore', null, 'clusterStore'),
-  type:         'namespace',
-  project:   reference('projectId', 'project', 'globalStore'),
+  pods:                  hasMany('id', 'pod', 'namespaceId', 'projectStore', null, 'clusterStore'),
+  workloads:             hasMany('id', 'workload', 'namespaceId', 'projectStore', null, 'clusterStore'),
+  services:              hasMany('id', 'service', 'namespaceId', 'projectStore', null, 'clusterStore'),
+  secrets:               hasMany('id', 'namespacedSecret', 'namespaceId', 'projectStore', null, 'clusterStore'),
+  ingress:               hasMany('id', 'ingress', 'namespaceId', 'projectStore', null, 'clusterStore'),
+  volumes:               hasMany('id', 'persistentVolumeClaim', 'namespaceId', 'projectStore', null, 'clusterStore'),
+  type:                  'namespace',
+  project:               reference('projectId', 'project', 'globalStore'),
+  resourceQuotaTemplate: reference('resourceQuotaTemplateId', 'resourceQuotaTemplate', 'globalStore'),
 
   init() {
     this._super(...arguments);

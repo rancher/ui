@@ -1,5 +1,6 @@
 import Component from '@ember/component';
 import layout from './template';
+import { inject as service } from '@ember/service';
 
 const headers = [
   {
@@ -16,6 +17,12 @@ const headers = [
     translationKey: 'projectsPage.ns.label',
   },
   {
+    name:           'resourceQuotaTemplate.displayName',
+    sort:           ['resourceQuotaTemplate.displayName'],
+    searchField:    ['resourceQuotaTemplate.displayName'],
+    translationKey: 'projectsPage.quota.label',
+  },
+  {
     name:           'created',
     sort:           ['createdTs'],
     translationKey: 'projectsPage.created.label',
@@ -24,6 +31,8 @@ const headers = [
 ];
 
 export default Component.extend({
+  scope: service(),
+
   layout,
   headers,
   tagName:    '',

@@ -1,0 +1,41 @@
+<td class="pr-10">
+  <div style="height: 35px;">
+    {{searchable-select content=resourceChoices value=quota.key localizedLabel=true readOnly=(not editing)}}
+  </div>
+</td>
+<td class="pr-10">
+  {{#if (or (eq quota.key 'limitsCpu') (eq quota.key 'requestsCpu'))}}
+    {{#input-or-display editable=editing value=quota.value classesForDisplay="clip"}}
+      <div class="input-group">
+        {{input-integer min="0" step="100" value=quota.value classNames="form-control" placeholder=(t 'formSecurity.milliCpuReservation.placeholder')}}
+        <div class="input-group-addon bg-default">{{t 'formSecurity.milliCpuReservation.unit'}}</div>
+      </div>
+    {{/input-or-display}}
+  {{else if (or (eq quota.key 'limitsMemory') (eq quota.key 'requestsMemory'))}}
+    {{#input-or-display editable=editing value=quota.value classesForDisplay="clip"}}
+      <div class="input-group">
+        {{input-integer min="4" step="1" value=quota.value classNames="form-control" placeholder=(t 'formSecurity.memoryReservation.placeholder')}}
+        <div class="input-group-addon bg-default">{{t 'generic.mibibyte'}}</div>
+      </div>
+    {{/input-or-display}}
+  {{else if (eq quota.key 'requestsStorage')}}
+    {{#input-or-display editable=editing value=quota.value classesForDisplay="clip"}}
+      <div class="input-group">
+        {{input-integer min="0" step="1" value=quota.value classNames="form-control" placeholder=(t 'formResourceQuota.table.value.placeholder')}}
+        <div class="input-group-addon bg-default">{{t 'generic.gigabyte'}}</div>
+      </div>
+    {{/input-or-display}}
+  {{else}}
+    {{#input-or-display editable=editing value=quota.value classesForDisplay="clip"}}
+      {{input type="text" value=quota.value placeholder=(t 'formResourceQuota.table.value.placeholder')}}
+    {{/input-or-display}}
+  {{/if}}
+</td>
+<td>&nbsp;</td>
+<div class="input-group-btn">
+  {{#if editing}}
+    <button class="btn bg-primary btn-sm" {{action remove quota}}>
+      <i class="icon icon-minus" />
+    </button>
+  {{/if}}
+</div>

@@ -1,0 +1,54 @@
+<section class="header clearfix">
+  <div class="pull-left">
+    {{#if editing}}
+      <h1>{{t 'quotaTemplatesPage.editQuotaTemplate'}}</h1>
+    {{else if isNew}}
+      <h1>{{t 'quotaTemplatesPage.addQuotaTemplate'}}</h1>
+    {{else}}
+      <h1>{{t 'quotaTemplatesPage.quotaTemplate' name=model.name}}</h1>
+    {{/if}}
+  </div>
+</section>
+
+{{#if (and model.description (not (or editing isNew)))}}
+  {{banner-message color='bg-secondary mb-0 mt-10' message=(linkify model.description)}}
+{{/if}}
+
+{{#if (or editing isNew)}}
+  <section class="horizontal-form container-fluid">
+    {{form-name-description
+        model=model
+        nameLabel="quotaTemplatesPage.name.label"
+        nameRequired=true
+        nameDisabled=editing
+        namePlaceholder="quotaTemplatesPage.name.placeholder"
+    }}
+  </section>
+{{/if}}
+
+<div class="row">
+  {{#accordion-list showExpandAll=false as | al expandFn | }}
+    <div class="col span-12">
+      {{#accordion-list-item
+          title=(t 'quotaTemplatesPage.title')
+          detail=(t 'quotaTemplatesPage.detail')
+          expandAll=al.expandAll
+          expand=(action expandFn)
+          expandOnInit=true
+      }}
+        {{form-resource-quota
+            editing=(or editing isNew)
+            expanded=expanded
+            addOnInit=true
+            limit=model.limit
+            changed=(action "updateQuota")
+        }}
+      {{/accordion-list-item}}
+    </div>
+  {{/accordion-list}}
+</div>
+
+{{#if (or editing isNew)}}
+  {{top-errors errors=errors}}
+  {{save-cancel editing=editing save="save" cancel="cancel"}}
+{{/if}}
