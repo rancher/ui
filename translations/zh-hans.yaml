@@ -252,6 +252,10 @@ rolesPage:
       noMatch: 没有角色与当前搜索匹配
       subjectKind: 类型
       template: 模板
+      global: New User Default
+      cluster: Cluster Creator Default
+      project: Project Creator Default
+      showDefaults: Show Only Defaults
   resources:
     title: 授权资源
     detail: 对Kubernetes资源的具体操作进行授权
@@ -300,6 +304,15 @@ rolesPage:
       policy:
         policy: 策略
         addAction: 添加策略
+      default:
+        global: New User Default
+        cluster: Cluster Creator Default
+        project: Project Creator Default
+        enabled:
+          global: "Yes: Default role for new users"
+          cluster: "Yes: Default role for new cluster creation"
+          project: "Yes: Default role for new project creation"
+        disabled: "No"
 
 apiPage:
   header: API & Keys
@@ -317,59 +330,55 @@ apiPage:
     noData: 没有定义API密钥
 
 authPage:
-  freeipa:
-    providerName: FreeIPA
+  saml:
+    accessEnabled:
+      header: 认证
+      disable: 禁用访问控制
     header:
-      enabled:
-        label: "{providerName}已启用"
-        required: |
-          {appName}已经被设置为允许访问{groups, plural,
-            =0{no groups}
-            =1{#group}
-            other{#groups}
-          }and{users, plural,
-            =0{no users}
-            =1{# user}
-            other{#users}
-          }访问.
-        restricted: |
-          {appName}被配置为允许{groups, plural,
-            =0{no groups}
-            =1{# group}
-            other{# groups}
-          }and{users, plural,
-            =0{no users}
-            =1{# user}
-            other{# users}
-          }以环境成员身份访问.
-        unrestricted: "{appName}被配置为允许所有{providerName}用户访问."
       disabled:
         label: "{providerName}未配置"
-        warning: "{appName}可以配置为限制{providerName}用户和组的访问，目前没有设置，所以任何能达此页面(或API)的人都可以完全控制系统"
+    enabled:
+      authenticated:
+        header:
+          text: 认证
+      groupsField: '组:'
+      displayName: '显示名称'
+      userName: '用户名:'
+      userId: '用户ID:'
+    disabled:
+      header: '1. 配置{providerName}账户'
+      headerDetail: '填写{providerName}账户信息'
+      label: "{providerName}未配置"
+      name:
+        labelText: 显示名称
+        display: "显示名称:"
+      username:
+        labelText: 用户名
+        display: "用户名:"
+      uid:
+        labelText: UID
+        display: "UID:"
+      rancherApiHost:
+        labelText: Rancher Api Host
+        display: "Rancher Api Host:"
+      groups:
+        labelText: 组
+        display: "组:"
+      testAuth:
+        header: '2. 测试并启用认证'
+        subtext: '测试以确认配置是否正确'
+    providerName:
+      ping: Ping
+    authError: '账号未经授权'
+    popupError: '请关闭弹出验证窗口，然后再次单击“验证”。'
+  ping:
+    buttonText:
+      pre: '启用Ping认证'
+      post: '等待Ping返回'
+
+
   shibboleth:
     enabled:
-      header: "{providerName}已启用"
-      required: |
-        {appName}已被设置为允许{orgs, plural,
-        =0{无组织}
-        =1{#个组织}
-        other{#个组织}
-        }和{users, plural,
-        =0{无用户}
-        =1{#个用户}
-        other{#个用户}
-        }访问.
-      restricted: |
-        {appName}已被设置为允许{orgs, plural,
-        =0{无组织}
-        =1{#个组织}
-        other{#个组织}
-        }和{users, plural,
-        =0{无用户}
-        =1{#个用户}
-        other{#个用户}
-        }以环境成员身份访问.
-      unrestricted: "{appName}已被设置为允许任何{providerName}用户访问。"
       authenticated:
         header:
           text: 认证
@@ -383,9 +392,8 @@ authPage:
       userName: '用户名：'
       userId: '用户ID：'
     disabled:
-      header: '1. 配置Shibboleth账号'
+      header: '1. 配置Shibboleth账户'
       label: "{providerName}未配置"
-      warning: "{appName}可以设置为允许一组{providerName}用户和组织成员访问。 由于当前未完成此设置，所以任何可以访问此页面(或API)的用户都对系统有完全控制权限。"
       name:
         labelText: 显示名称字段
       username:
@@ -408,34 +416,8 @@ authPage:
     standard: GitHub
     enterprise: GitHub企业版
     header:
-      enabled:
-        label: "{github}已启用"
-        # required: "{appName} is configured to allow access to authorized users and organizations."
-        # restricted: "{appName} is configured to allow access to project members, authorized users and organizations."
-        required: |
-          {appName}已被设置为允许{orgs, plural,
-          =0{无组织}
-          =1{#个组织}
-          other{#个组织}
-          }和{users, plural,
-          =0{无用户}
-          =1{#个用户}
-          other{#个用户}
-          }访问.
-        restricted: |
-          {appName}已被设置为允许{orgs, plural,
-          =0{无组织}
-          =1{#个组织}
-          other{#个组织}
-          }和{users, plural,
-          =0{无用户}
-          =1{#个用户}
-          other{#个用户}
-          }以环境成员身份访问
-       # unrestricted: "{appName} is configured to allow access to any {github} user."
       disabled:
-        label: GitHub未设置
-        warning: "{appName}可以配置为限制对一组GitHub用户和组织成员的访问"
+        label: GitHub未配置
     authenticated:
       header:
         text: 认证信息
@@ -488,37 +470,12 @@ authPage:
       popupError: '请关闭当前窗口，点击认证按钮重新认证'
   azuread:
     header:
-      enabled:
-        label: "Azure AD已启用"
-        required: |
-          {appName}已被设置为允许{groups, plural,
-            =0{no groups}
-            =1{# group}
-            other{# groups}
-          }and{users, plural,
-            =0{no users}
-            =1{# user}
-            other{# users}
-          }访问.
-        restricted: |
-          {appName}已被设置为允许以{groups, plural,
-            =0{no groups}
-            =1{# group}
-            other{# groups}
-          }and{users, plural,
-            =0{no users}
-            =1{# user}
-            other{# users}
-          }环境成员身份访问
-        unrestricted: "{appName}已被设置为允许任何Azure AD用户访问."
       disabled:
         label: "Azure AD未配置"
-        warning: "{appName}可以配置为限制一组Azure AD用户和组的访问"
     enabled:
       header: '危险区域&trade;'
       reallyDisable: '确认? 再次点击将关闭访问控制'
       promptDisable: 关闭访问控制
-      warning: '<b class="text-danger">警告:</b>禁用访问控制将导致任何能够访问此页面或API的用户拥有对{appName}的完全控制权限'
       general:
         header: 常规
     configure:
@@ -682,6 +639,7 @@ membersPage:
       userId: 用户
       subjectKind: 类型
       template: 角色
+
 namespacesPage:
   header: 命名空间
   addNamespace: 添加命名空间
@@ -1518,33 +1476,8 @@ ldap:
       ad: Active Directory验证
       freeipa: FreeIPA验证
   header:
-    enabled:
-      label: "{providerName}已启用"
-      required: |
-        {appName}已被设置为允许{groups, plural,
-        =0{无组}
-        =1{#个组}
-        other{#个组}
-        }和{users, plural,
-        =0{无用户}
-        =1{#个用户}
-        other{#个用户}
-        }访问.
-      restricted: |
-        {appName}已被设置为允许{groups, plural,
-        =0{无组}
-        =1{#个组}
-        other{#个组}
-        }和{users, plural,
-        =0{无用户}
-        =1{#个用户}
-        other{#个用户}
-        }以环境成员身份访问.
-      unrestricted: "{appName}已设置为允许任何{providerName}用户访问"
     disabled:
       label: "{providerName}未设置"
-      warning: "{appName}可以设置为仅允许一组{providerName}用户和组访问。当前系统未设置，任何能够访问此页面或API的用户拥有对{appName}的完全控制权限"
-
   accessEnabled:
     header: 验证
     subtext: "如需修改服务器配置，请在下方关闭访问控制后重新设置"
@@ -1573,11 +1506,8 @@ ldap:
       name: "名称字段:"
       search: "搜索字段:"
     disable:
-      header: "危险区域&trade;"
-      warning: '<b class="text-danger">警告:</b>禁用访问控制将导致任何能够访问此页面或API的用户拥有对{appName}的完全控制权限'
       confirmDisable:
         pre: 关闭访问控制
-        post: "确认? 再次点击将关闭访问控制"
   accessConfig:
     header: "1. 配置{providerName}服务器"
     subtext1: "请输入地址、端口及协议以连接你的{providerName}服务器。<code>389</code>是标准端口(未加密), <code>636</code>是加密连接(TLS)端口"
@@ -1861,6 +1791,7 @@ clusterRow:
   addHost: 添加主机...
   importCluster: 使用已有的Kubernetes
   loginDefault: 登陆
+
 clusterNew:
   advanced:
     helpText: 不要使用Tabs，Tabs字符在yaml中不能解析
@@ -1968,7 +1899,6 @@ clusterNew:
       advanced: 高级
       vnet:
         label: 虚拟网络
-        help: 虚拟网络必须在该集群所使用的资源组下。
       ventresourcegroup:
         label: 虚拟网络资源组(<em>可选</em>)
         help:  如果您的虚拟网络不是与集群位于同一资源组中，则为可选资源组。
@@ -2044,6 +1974,18 @@ clusterNew:
       placeholder: '例如: 10.42.0.0/16'
     alphaFeatures:
       label: Alpha功能
+    legacyAuth:
+      label: Legacy Authorization
+    stackDriverLogging:
+      label: Stackdriver Logging
+    stackdriverMonitor:
+      label: Stackdriver Monitoring
+    dashboard:
+      label: Kubernetes仪表盘
+    httpLB:
+      label: Http负载均衡
+    maintenanceWindow:
+      label: Maintenance Window
   rke:
     etcd:
       heartbeat:
@@ -2129,7 +2071,7 @@ clusterNew:
       enabled: 允许不受支持的版本
       disabled: 需要支持的版本
     podSecurityPolicy:
-      label: Pod安全策略支持
+      label: Pod安全策略支持(需先在全局下创建Pod策略)
     role:
       title: 主机角色
       detail: '选择主机角色,端口放行请参考: https://rancher.com/docs/rancher/v2.x/en/installation/references/'
@@ -2170,9 +2112,9 @@ clusterNew:
     label: 已导入
     shortLabel: 已导入
     command:
-      instructionsAdminRole: "如果你的Kubernetes集群已经定义了<b>cluster-admin</b>角色，你必须使用该<b>cluster-admin</b>角色的权限来导入集群到{appName}中。在导入集群之前，你可以通过运行如下命令获取该角色的权限。"
-      instructions: "在现有所支持的Kubernetes版本的集群上运行下面的kubectl命令，将其导入到 {appName}中："
-      instructionsInsecure: "如果由于{appName}安装正在使用不受信任/自签名的SSL证书运行而出现\"由未知颁发机构签名的证书\"错误, 请运行下面的命令, 以绕过证书检查:"
+      instructionsAdminRole: "如果你的Kubernetes集群已经定义了<b>cluster-admin</b>角色，你必须使用该<b>cluster-admin</b>角色权限来导入集群到{appName}中。在导入集群之前，你可以通过运行以下命令获取该角色的权限。"
+      instructions: "在现有受支持的Kubernetes集群所有节点中，运行下面的kubectl命令将其导入到{appName}中:"
+      instructionsInsecure: "如果因为{appName}正在使用不受信任/自签名的SSL证书运行而出现\"由未知颁发机构签名的证书\"错误, 请运行下面的命令以绕过证书检查:"
 conditionSections:
   title: 状态
   detail: '{resourceType}当前的状态 '
@@ -3103,7 +3045,7 @@ formNodeRequirement:
   key:
     label: 键
     placeholder: 例如：hostname
-  operator: 
+  operator:
     label: 操作符
   values:
     label: 值
@@ -4242,6 +4184,9 @@ loginGithub:
 loginAzure:
   buttonText: 用Azure AD登录
 
+loginPing:
+  buttonText: 用Ping Federate登录
+
 loginUserPass:
   local: 使用本地用户
   provider: "{kind}"
@@ -4454,10 +4399,10 @@ modalImport:
     cluster1: 如果一个资源指定了命名空间，那么会自动创建命名空间，但是不会自动加入到项目中
     cluster2: 如果一个资源没有指定一个命名空间，它将被导入到default中
     cluster3: '该模式还支持没有命名空间的资源，例如: RoleTemplates'
-    
+
     project1: 不指定命名空间的资源将被导入到选定的默认命名空间中
     project2: 如果一个资源指定了一个不存在的命名空间，此命名空间将被创建并添加到这个项目中
-    
+
     namespace1: 所有资源将被导入到选定的命名空间中
     namespace2: 如果资源指定了不同的命名空间，则导入将失败
 
@@ -4508,7 +4453,7 @@ modalShortcuts:
   shift: Shift-{key}
   delete: 删除所选择的(在表视图中)
   kubectl: Kubectl Shell
-  
+
   viewGroup: 切换分组视图
   nextTab: 下一页
   search: 聚焦搜索字段
@@ -4772,7 +4717,6 @@ nodeDriver:
       placeholder: 你的DigitalOceanAPI访问令牌
       help: |
         从<a href="https://cloud.digitalocean.com/settings/api/tokens" target="_blank" rel="nofollow noreferrer noopener">Applications&API</a>页面获取DigitalOcean的个人访问token
-
     image:
       label: 镜像
     sshUser:
@@ -4877,8 +4821,6 @@ nodeDriver:
       title: 2. 区域和偏好
       detail: 选择要创建的RackSpace实例的区域和偏好
       label: 区域
-    instanceSection: 实例
-    instanceOptionsSection: 实例选项
     flavor:
       label: 偏好
   vmwarevsphere:
