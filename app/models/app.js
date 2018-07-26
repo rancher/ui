@@ -60,6 +60,13 @@ const App = Resource.extend(StateCounts, EndpointPorts, {
       }
     });
   }),
+  configMaps: computed('namespace.configMaps', function() {
+    return (get(this, 'namespace.configMaps') || []).filter((item) => {
+      if ( item['labels'] ) {
+        return item['labels']['io.cattle.field/appId'] === get(this, 'name');
+      }
+    });
+  }),
   ingress: computed('namespace.ingress', function() {
     return (get(this, 'namespace.ingress') || []).filter((item) => {
       if ( item['labels'] ) {
