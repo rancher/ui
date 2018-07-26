@@ -85,11 +85,13 @@ export default Route.extend({
     }
 
     const clone = _workload.clone();
+    const cloneType = clone.type;
 
     if ( !params.upgrade && params.addSidekick !== 'true' ) {
       delete clone['workloadAnnotations'];
       delete clone['workloadLabels'];
       delete clone['publicEndpoints'];
+      set(clone, 'type', 'workload');
       if ( clone.labels ) {
         delete clone.labels['workload.user.cattle.io/workloadselector'];
       }
@@ -155,7 +157,7 @@ export default Route.extend({
     if (params.upgrade) {
       // Upgrade workload
       let out = EmberObject.create({
-        scaleMode: (containerName ? 'sidekick' : clone.type),
+        scaleMode: (containerName ? 'sidekick' : cloneType),
         workload:  clone,
         container,
         isUpgrade: true
@@ -178,7 +180,7 @@ export default Route.extend({
       });
 
       return EmberObject.create({
-        scaleMode: clone.type,
+        scaleMode: cloneType,
         workload:  neu,
         container,
         isUpgrade: false
