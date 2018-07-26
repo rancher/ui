@@ -1,10 +1,10 @@
 {{#accordion-list showExpandAll=false as | al expandFn |}}
   {{#accordion-list-item
-    title=(t 'clusterNew.amazoneks.access.title')
-    detail=(t 'clusterNew.amazoneks.access.detail')
-    expandAll=expandAll
-    expand=(action expandFn)
-    expandOnInit=true
+       title=(t 'clusterNew.amazoneks.access.title')
+       detail=(t 'clusterNew.amazoneks.access.detail')
+       expandAll=expandAll
+       expand=(action expandFn)
+       expandOnInit=true
   }}
     <div class="row">
       <div class="col span-4">
@@ -49,36 +49,201 @@
   {{/accordion-list-item}}
 
   {{#if (eq step 1)}}
-    {{top-errors errors=errors}}
-    {{top-errors errors=otherErrors}}
-    {{top-errors errors=clusterErrors}}
     {{save-cancel
-      save="awsLogin"
-      cancel=close
-      createLabel="nodeDriver.amazonec2.access.next"
-      savingLabel="nodeDriver.amazoneks.access.loading"
+        save="awsLogin"
+        cancel=close
+        createLabel="nodeDriver.amazonec2.access.next"
+        savingLabel="nodeDriver.amazoneks.access.loading"
     }}
   {{/if}}
 
-  {{#if (eq step 2)}}
+  {{#if (gte step 2)}}
     {{#accordion-list-item
-      title=(t 'clusterNew.nodes.title')
-      detail=(t 'clusterNew.nodes.detail')
-      showExpand=false
-      expandOnInit=true
-      expandAll=al.expandAll
-      expand=(action expandFn)
+         title=(t 'nodeDriver.amazoneks.role.title')
+         detail=(t 'nodeDriver.amazoneks.role.detail')
+         showExpand=false
+         expandOnInit=true
+         expandAll=al.expandAll
+         expand=(action expandFn)
+    }}
+      <div class="row">
+        <div class="col span-6">
+          <label class="acc-label">{{t 'nodeDriver.amazoneks.role.label'}}</label>
+          {{#if (eq step 2)}}
+            {{#if (eq serviceRoleMode 'default')}}
+              <div class="radio">
+                <div class="radio pt-10">
+                  <label>
+                    {{radio-button selection=serviceRoleMode value="default"}}
+                    {{t 'nodeDriver.amazoneks.role.radio.default'}}
+                  </label>
+                  <label>
+                    {{radio-button selection=serviceRoleMode value="custom"}}
+                    {{t 'nodeDriver.amazoneks.role.radio.custom'}}
+                  </label>
+                </div>
+              </div>
+            {{else}}
+              {{new-select
+                  classNames="form-control"
+                  value=selectedServiceRole
+                  content=serviceRoles
+                  optionValuePath="RoleId"
+                  optionLabelPath="RoleName"
+              }}
+            {{/if}}
+          {{else}}
+            <div>
+              {{#if config.serviceRole}}
+                {{readableServiceRole}}
+                {{!--
+                  {{config.serviceRole}} --}}
+              {{else}}
+                {{t 'nodeDriver.amazoneks.role.noneSelected'}}
+              {{/if}}
+            </div>
+          {{/if}}
+        </div>
+      </div>
+    {{/accordion-list-item}}
+
+    {{#if (eq step 2)}}
+      {{save-cancel
+          editing=(eq mode 'edit')
+          save="loadVPS"
+          cancel=close
+          createLabel="nodeDriver.amazoneks.role.next"
+          savingLabel="nodeDriver.amazoneks.access.loading"
+      }}
+    {{/if}}
+  {{/if}}
+
+  {{#if (gte step 3)}}
+    {{#accordion-list-item
+         title=(t 'nodeDriver.amazoneks.vpc.title')
+         detail=(t 'nodeDriver.amazoneks.vpc.detail')
+         showExpand=false
+         expandOnInit=true
+         expandAll=al.expandAll
+         expand=(action expandFn)
+    }}
+      <div class="row">
+        <div class="col span-6">
+          <label class="acc-label">{{t 'nodeDriver.amazonec2.subnet'}}</label>
+          {{#if (eq step 3)}}
+            {{#if (eq vpcSubnetMode 'default')}}
+              <div class="radio">
+                <div class="radio pt-10">
+                  <label>
+                    {{radio-button selection=vpcSubnetMode value="default"}}
+                    {{t 'nodeDriver.amazoneks.vpc.radio.default'}}
+                  </label>
+                  <label>
+                    {{radio-button selection=vpcSubnetMode value="custom"}}
+                    {{t 'nodeDriver.amazoneks.vpc.radio.custom'}}
+                  </label>
+                </div>
+              </div>
+            {{else}}
+              {{new-select
+                  classNames="form-control"
+                  value=selectedGroupedDetails
+                  content=subnets
+                  optionValuePath="subnetId"
+                  optionLabelPath="subnetName"
+                  optionalGroupPath="group"
+              }}
+            {{/if}}
+          {{else}}
+            {{#if (eq vpcSubnetMode "default")}}
+              <div>
+                {{t 'nodeDriver.amazoneks.vpc.noneSelected'}}
+              </div>
+            {{else}}
+              {{#if config.virtualNetwork}}
+                <div>
+                  {{config.virtualNetwork}}:
+                </div>
+              {{/if}}
+              {{#if config.subnets}}
+                {{#each config.subnets as |subnet index|}}
+                  <span class="ml-10 inline-block">{{subnet}}</span>
+                {{/each}}
+              {{/if}}
+            {{/if}}
+          {{/if}}
+        </div>
+      </div>
+
+    {{/accordion-list-item}}
+
+    {{#if (eq step 3)}}
+      {{save-cancel
+          saveDisabled=canSaveVPC
+          save="setVPCSubnet"
+          cancel="cancel"
+          createLabel="nodeDriver.amazoneks.vpc.next"
+          savingLabel="nodeDriver.amazonec2.access.loading"
+      }}
+    {{/if}}
+  {{/if}}
+
+  {{#if (and (gte step 4) (eq vpcSubnetMode "custom") )}}
+    {{#accordion-list-item
+         title=(t 'nodeDriver.amazoneks.securityGroup.title')
+         detail=(t 'nodeDriver.amazoneks.securityGroup.detail')
+         showExpand=false
+         expandOnInit=true
+         expandAll=al.expandAll
+         expand=(action expandFn)
+    }}
+      <div class="row">
+        {{#if (eq step 4)}}
+          <select class="form-control existing-security-groups" multiple="true" onchange={{action 'multiSecurityGroupSelect' ''}}>
+            {{#each allSecurityGroups as |choice|}}
+              <option value={{choice.GroupId}} selected={{array-includes config.securityGroups choice.GroupId}}>{{choice.GroupName}} ({{choice.GroupId}})</option>
+            {{/each}}
+          </select>
+        {{else}}
+          {{#if config.securityGroups}}
+            {{#each config.securityGroups as |sg|}}
+              <div>{{sg}}</div>
+            {{/each}}
+          {{/if}}
+        {{/if}}
+      </div>
+    {{/accordion-list-item}}
+
+    {{#if (eq step 4)}}
+      {{save-cancel
+          saveDisabled=canSaveSG
+          save=(action (mut step) 5)
+          cancel="cancel"
+          createLabel="nodeDriver.amazonec2.securityGroup.next"
+          savingLabel="nodeDriver.amazonec2.securityGroup.loading"
+      }}
+    {{/if}}
+  {{/if}}
+
+  {{#if (eq step 5)}}
+    {{#accordion-list-item
+         title=(t 'clusterNew.nodes.title')
+         detail=(t 'clusterNew.nodes.detail')
+         showExpand=false
+         expandOnInit=true
+         expandAll=al.expandAll
+         expand=(action expandFn)
     }}
       <div class="row">
         <div class="col span-4">
           <label class="acc-label">{{t 'nodeDriver.amazonec2.instanceType.label'}}</label>
           {{new-select
-            classNames="form-control"
-            value=config.instanceType
-            content=instanceTypes
-            optionValuePath="name"
-            optionLabelPath="name"
-            optionGroupPath="group"
+              classNames="form-control"
+              value=config.instanceType
+              content=instanceTypes
+              optionValuePath="name"
+              optionLabelPath="name"
+              optionGroupPath="group"
           }}
         </div>
 
@@ -94,9 +259,14 @@
       </div>
     {{/accordion-list-item}}
 
-    {{top-errors errors=errors}}
-    {{top-errors errors=otherErrors}}
-    {{top-errors errors=clusterErrors}}
-    {{save-cancel editing=(eq mode 'edit')  save="driverSave" cancel=close}}
+    {{save-cancel
+        editing=(eq mode 'edit')
+        save="driverSave"
+        cancel=close
+    }}
   {{/if}}
+
+  {{top-errors errors=errors}}
+  {{top-errors errors=otherErrors}}
+  {{top-errors errors=clusterErrors}}
 {{/accordion-list}}
