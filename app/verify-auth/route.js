@@ -26,7 +26,7 @@ export default Route.extend(VerifyAuth, {
           .catch((err) => {
             this.send('gotError', err);
           });
-      } else if (get(params, 'config') === 'ping') {
+      } else if (get(params, 'config') === 'ping' || get(params, 'config') === 'adfs') {
         if (window.opener.window.onAuthTest) {
           reply(null, config);
         } else {
