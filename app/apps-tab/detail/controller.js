@@ -2,6 +2,7 @@ import Controller from '@ember/controller';
 import { inject as service } from '@ember/service';
 import { computed } from '@ember/object';
 import { searchFields as containerSearchFields } from 'ui/components/pod-dots/component';
+import { headers as configMapsHeaders } from 'ui/authenticated/project/config-maps/index/controller';
 
 const podsHeaders = [
   {
@@ -175,8 +176,10 @@ export default Controller.extend({
   servicesHeaders,
   volumesHeaders,
   secretsHeaders,
+  configMapsHeaders,
   ingressSearchText:    '',
   secretsSearchText:    '',
+  configMapsSearchText: '',
   podsHeaders,
   podsSearchText:       '',
   servicesSearchText:   '',

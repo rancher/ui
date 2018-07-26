@@ -286,5 +286,30 @@
       {{/sortable-table}}
     {{/accordion-list-item}}
 
+    {{#accordion-list-item
+         title=(t 'appDetailPage.configMaps.title')
+         detail=(t 'appDetailPage.configMaps.detail')
+         expandAll=al.expandAll
+         expand=(action expandFn)
+         expandOnInit=true
+    }}
+      {{#sortable-table
+           classNames="grid sortable-table"
+           body=model.app.configMaps
+           sortBy=sortBy
+           bulkActions=true
+           searchText=configMapsSearchText
+           headers=configMapsHeaders as |sortable kind row dt|
+      }}
+        {{#if (eq kind "row")}}
+          {{config-map-row model=row dt=dt}}
+        {{else if (eq kind "nomatch")}}
+          <tr><td colspan="{{sortable.fullColspan}}" class="text-center text-muted pt-20 pb-20">{{t 'configMapsPage.index.noMatch'}}</td></tr>
+        {{else if (eq kind "norows")}}
+          <tr><td colspan="{{sortable.fullColspan}}" class="text-center text-muted lacsso pt-20 pb-20">{{t 'appDetailPage.configMaps.nodata'}}</td></tr>
+        {{/if}}
+      {{/sortable-table}}
+    {{/accordion-list-item}}
+
   {{/accordion-list}}
 </section>

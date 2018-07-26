@@ -45,6 +45,7 @@ var Namespace = Resource.extend(StateCounts, {
   clusterStore: service(),
 
   pods:                  hasMany('id', 'pod', 'namespaceId', 'projectStore', null, 'clusterStore'),
+  configMaps:            hasMany('id', 'configMap', 'namespaceId', 'projectStore', null, 'clusterStore'),
   workloads:             hasMany('id', 'workload', 'namespaceId', 'projectStore', null, 'clusterStore'),
   services:              hasMany('id', 'service', 'namespaceId', 'projectStore', null, 'clusterStore'),
   secrets:               hasMany('id', 'namespacedSecret', 'namespaceId', 'projectStore', null, 'clusterStore'),
