@@ -23,7 +23,7 @@ export default Component.extend({
   }),
 
   inactiveNodes: computed('nodes.@each.state', function() {
-    return this.get('nodes').filter( (n) => get(n, 'state') !== 'active');
+    return this.get('nodes').filter( (n) => get(n, 'state') !== 'active' && get(n, 'state') !== 'cordoned' );
   }),
 
   unhealthyComponents: computed('componentStatuses.@each.conditions', function() {
@@ -68,7 +68,7 @@ export default Component.extend({
   getNodeComponent() {
     return {
       name:    this.get('intl').t('clusterDashboard.node'),
-      healthy: this.get('nodes').filterBy('state', 'active').length === this.get('nodes').length,
+      healthy: this.get('inactiveNodes.length') === 0,
     };
   },
 
