@@ -1,5 +1,5 @@
 import Component from '@ember/component';
-import { get, computed } from '@ember/object';
+import { set, get, computed, observer } from '@ember/object';
 import { alias } from '@ember/object/computed';
 import { inject as service } from '@ember/service';
 import layout from './template';
@@ -13,27 +13,28 @@ export default Component.extend({
   nodes:             null,
   components:        null,
   componentStatuses: alias('scope.currentCluster.componentStatuses'),
+
   init() {
     this._super(...arguments);
     this.setComponents();
   },
+
+  updateComponentsStatus: observer('componentStatuses.@each.conditions', 'nodes.@each.{state}', function() {
+    this.setComponents();
+  }),
 
   showDashboard:     computed('scope.currentCluster.isReady', 'nodes.[]', function() {
     return get(this, 'nodes').length && get(this, 'scope.currentCluster.isReady')
   }),
 
   inactiveNodes: computed('nodes.@each.state', function() {
-    return this.get('nodes').filter( (n) => get(n, 'state') !== 'active');
+    return get(this, 'nodes').filter( (n) => get(n, 'state') !== 'active' && get(n, 'state') !== 'cordoned' );
   }),
 
   unhealthyComponents: computed('componentStatuses.@each.conditions', function() {
-    return (this.get('componentStatuses') || [])
+    return (get(this, 'componentStatuses') || [])
       .filter((s) => !s.conditions.any((c) => c.status === 'True'));
   }),
-
-  updateComponentsStatus: function() {
-    this.setComponents();
-  }.observes('componentStatuses.@each.conditions', 'nodes.@each.{state}'),
 
   setComponents() {
     const etcd = this.getEtcdComponent();
@@ -41,39 +42,39 @@ export default Component.extend({
     const scheduler = this.getSchedulerComponent();
     const node = this.getNodeComponent();
 
-    this.set('components', [etcd, controller, scheduler, node]);
+    set(this, 'components', [etcd, controller, scheduler, node]);
   },
 
   getEtcdComponent() {
     return {
-      name:    this.get('intl').t('clusterDashboard.etcd'),
+      name:    get(this, 'intl').t('clusterDashboard.etcd'),
       healthy: this.isHealthy('etcd'),
     };
   },
 
   getControllerComponent() {
     return {
-      name:    this.get('intl').t('clusterDashboard.controllerManager'),
+      name:    get(this, 'intl').t('clusterDashboard.controllerManager'),
       healthy: this.isHealthy('controller-manager'),
     };
   },
 
   getSchedulerComponent() {
     return {
-      name:    this.get('intl').t('clusterDashboard.scheduler'),
+      name:    get(this, 'intl').t('clusterDashboard.scheduler'),
       healthy: this.isHealthy('scheduler'),
     };
   },
 
   getNodeComponent() {
     return {
-      name:    this.get('intl').t('clusterDashboard.node'),
-      healthy: this.get('nodes').filterBy('state', 'active').length === this.get('nodes').length,
+      name:    get(this, 'intl').t('clusterDashboard.node'),
+      healthy: get(this, 'inactiveNodes.length') === 0,
     };
   },
 
   isHealthy(field) {
-    return (this.get('componentStatuses') || [])
+    return (get(this, 'componentStatuses') || [])
       .filter((s) => s.name.startsWith(field))
       .any((s) => s.conditions.any((c) => c.status === 'True'));
   },
