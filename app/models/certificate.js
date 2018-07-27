@@ -37,8 +37,7 @@ export default Resource.extend({
       return [];
     }
 
-    return sans.split(',')
-      .removeObject(cn)
+    return sans.removeObject(cn)
       .filter((san) => (`${ san }`).indexOf('@') === -1);
   }),
 
