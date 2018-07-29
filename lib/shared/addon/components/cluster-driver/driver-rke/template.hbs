@@ -55,20 +55,17 @@
             }}
           </div>
           <div class="col span-4">
-            <label class="acc-label">{{t 'clusterNew.rke.podSecurityPolicy.label'}}</label>
+            <label class="acc-label">{{t 'clusterNew.rke.networkPolicy.label'}}</label>
             <div class="radio">
-              <label>
-                {{radio-button selection=cluster.rancherKubernetesEngineConfig.services.kubeApi.podSecurityPolicy value=false disabled=(not model.psps.length)}}
-                {{t 'generic.disabled'}}
+              <label class={{unless (eq cluster.rancherKubernetesEngineConfig.network.plugin "canal")  'text-muted'}}>
+                {{radio-button selection=cluster.enableNetworkPolicy value=true disabled=(not-eq cluster.rancherKubernetesEngineConfig.network.plugin "canal")}}
+                {{t 'generic.enabled'}}
               </label>
             </div>
             <div class="radio">
-              <label class={{unless model.psps.length 'text-muted'}}>
-                {{radio-button selection=cluster.rancherKubernetesEngineConfig.services.kubeApi.podSecurityPolicy value=true disabled=(not model.psps.length)}}
-                {{t 'generic.enabled'}}
-                {{#unless model.psps.length}}
-                  &mdash; {{t 'clusterNew.psp.none'}}
-                {{/unless}}
+              <label>
+                {{radio-button selection=cluster.enableNetworkPolicy value=false disabled=(not-eq cluster.rancherKubernetesEngineConfig.network.plugin "canal")}}
+                {{t 'generic.disabled'}}
               </label>
             </div>
           </div>
@@ -77,7 +74,7 @@
           <div class="col span-4">
             <label class="acc-label">{{t 'clusterNew.rke.ingress.label'}}</label>
             <div class="radio">
-              <label class={{unless model.psps.length 'text-muted'}}>
+              <label>
                 {{radio-button selection=cluster.rancherKubernetesEngineConfig.ingress.provider value="nginx"}}
                 {{t 'generic.enabled'}}
               </label>
@@ -92,7 +89,7 @@
           <div class="col span-4">
             <label class="acc-label">{{t 'clusterNew.rke.monitoring.label'}}</label>
             <div class="radio">
-              <label class={{unless model.psps.length 'text-muted'}}>
+              <label>
                 {{radio-button selection=cluster.rancherKubernetesEngineConfig.monitoring.provider value="metrics-server"}}
                 {{t 'generic.enabled'}}
               </label>
@@ -101,6 +98,24 @@
               <label>
                 {{radio-button selection=cluster.rancherKubernetesEngineConfig.monitoring.provider value="none"}}
                 {{t 'generic.disabled'}}
+              </label>
+            </div>
+          </div>
+          <div class="col span-4">
+            <label class="acc-label">{{t 'clusterNew.rke.podSecurityPolicy.label'}}</label>
+            <div class="radio">
+              <label>
+                {{radio-button selection=cluster.rancherKubernetesEngineConfig.services.kubeApi.podSecurityPolicy value=false disabled=(not model.psps.length)}}
+                {{t 'generic.disabled'}}
+              </label>
+            </div>
+            <div class="radio">
+              <label class={{unless model.psps.length 'text-muted'}}>
+                {{radio-button selection=cluster.rancherKubernetesEngineConfig.services.kubeApi.podSecurityPolicy value=true disabled=(not model.psps.length)}}
+                {{t 'generic.enabled'}}
+                {{#unless model.psps.length}}
+                  &mdash; {{t 'clusterNew.psp.none'}}
+                {{/unless}}
               </label>
             </div>
           </div>
