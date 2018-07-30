@@ -150,10 +150,7 @@ export default Route.extend(Preload, {
       return;
     }
 
-    let FALSE = false;
-
-    // @TODO-2.0
-    if ( FALSE && get(this, 'settings.isRancher') ) {
+    if ( get(this, 'settings.isRancher') ) {
       let form = get(this, `settings.${ C.SETTING.FEEDBACK_FORM }`);
 
       // Show the telemetry opt-in

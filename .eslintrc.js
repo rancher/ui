@@ -21,9 +21,7 @@ const propertyOrder = [
   ],
 
   'actions',
-
-  ['observer','property'],
-
+  'observer',
   'multi-line-function'
 ];
 
