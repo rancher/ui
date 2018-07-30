@@ -1,7 +1,18 @@
 <div class="login">
   <div class="header">
-    <h1>{{t (concat 'modalEditPassword.' (if firstLogin 'firstLogin' 'edit') '.title') appName=settings.appName}}</h1>
-    <p class="help-text">{{t (concat 'modalEditPassword.' (if firstLogin 'firstLogin' 'edit') '.help') appName=settings.appName htmlSafe=true}}</p>
+    {{#if firstLogin}}
+
+      <h1>{{t 'modalEditPassword.firstLogin.title' appName=settings.appName}}</h1>
+      <p class="help-text">{{t 'modalEditPassword.firstLogin.help' appName=settings.appName htmlSafe=true}}</p>
+
+      <label class="text-small">{{input type="checkbox" checked=model.optIn}} {{t 'telemetryOpt.label'}}</label> <a href="{{settings.docsBase}}/faq/telemetry" class="text-small" target="_blank" rel="noopener nofollow">{{t 'telemetryOpt.learnMore.label'}}</a>
+
+    {{else}}
+
+      <h1>{{t 'modalEditPassword.edit.title' appName=settings.appName}}</h1>
+      <p class="help-text">{{t 'modalEditPassword.edit.help' appName=settings.appName htmlSafe=true}}</p>
+
+    {{/if}}
   </div>
   {{input-edit-password
       complete=(action (action complete))

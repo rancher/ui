@@ -41,8 +41,9 @@ export default Resource.extend({
         key,
         descriptionKey: `dangerZone.description.${ get(this, 'id') }`,
         kind:           details.kind,
-        obj,
+        options:        details.options,
         canDelete:      obj && !obj.get('isDefault'),
+        obj,
       });
     },
 

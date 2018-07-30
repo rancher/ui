@@ -1,4 +1,5 @@
 import { inject as service } from '@ember/service';
+import { get, set } from '@ember/object';
 import Component from '@ember/component';
 import C from 'ui/utils/constants';
 import ModalBase from 'shared/mixins/modal-base';
@@ -12,25 +13,26 @@ export default Component.extend(ModalBase, {
 
   init() {
     this._super(...arguments);
-    let cur = this.get('settings').get(C.SETTING.TELEMETRY);
-    let optIn;
-    let version = this.get('settings.rancherVersion');
 
-    if ( !version ) {
-      // For master, default to opt out
-      optIn = (cur === 'in');
-    } else {
+    const cur = get(this, `settings.${ C.SETTING.TELEMETRY }`);
+    const version = get(this, 'settings.rancherVersion');
+    let optIn;
+
+    if ( version && version !== 'master' ) {
       // For releases, default to opt in
       optIn = (cur !== 'out');
+    } else {
+      // For master, default to opt out
+      optIn = (cur === 'in');
     }
 
-    this.set('optIn', optIn);
+    set(this, 'optIn', optIn);
   },
 
   actions: {
     cancel() {
-      this.get('settings').set(C.SETTING.TELEMETRY, (this.get('optIn') ? 'in' : 'out'));
-      this.get('modalService').toggleModal();
+      get(this, 'settings').set(C.SETTING.TELEMETRY, (get(this, 'optIn') ? 'in' : 'out'));
+      get(this, 'modalService').toggleModal();
     },
   },
 });

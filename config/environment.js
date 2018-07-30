@@ -104,9 +104,7 @@ module.exports = function(environment) {
       projectSubscribeEndpoint: '/v3/projects/%PROJECTID%/subscribe',
       magicEndpoint: '/r',
 
-      // @TODO-2.0
       telemetryEndpoint: '/v1-telemetry',
-      webhookEndpoint: '/v1-webhooks',
       kubernetesBase: '/k8s',
       kubectlEndpoint: '/r/projects/%PROJECTID%/kubectld:8091/v1-kubectl',
       kubernetesDashboard: '/k8s/clusters/%CLUSTERID%/api/v1/namespaces/kube-system/services/kubernetes-dashboard/proxy/',
