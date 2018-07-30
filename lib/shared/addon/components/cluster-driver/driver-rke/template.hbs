@@ -41,7 +41,7 @@
             {{new-select
                 content=versionChoices
                 optionLabelPath='value'
-                value=config.kubernetesVersion
+                value=cluster.rancherKubernetesEngineConfig.kubernetesVersion
             }}
           </div>
           <div class="col span-4">
@@ -50,21 +50,68 @@
                 classNames="form-control"
                 content=networkChoices
                 localizedLabel=true
-                value=config.network.plugin
+                value=cluster.rancherKubernetesEngineConfig.network.plugin
                 disabled=isEdit
             }}
+          </div>
+          <div class="col span-4">
+            <label class="acc-label">{{t 'clusterNew.rke.networkPolicy.label'}}</label>
+            <div class="radio">
+              <label class={{unless (eq cluster.rancherKubernetesEngineConfig.network.plugin "canal")  'text-muted'}}>
+                {{radio-button selection=cluster.enableNetworkPolicy value=true disabled=(not-eq cluster.rancherKubernetesEngineConfig.network.plugin "canal")}}
+                {{t 'generic.enabled'}}
+              </label>
+            </div>
+            <div class="radio">
+              <label>
+                {{radio-button selection=cluster.enableNetworkPolicy value=false disabled=(not-eq cluster.rancherKubernetesEngineConfig.network.plugin "canal")}}
+                {{t 'generic.disabled'}}
+              </label>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col span-4">
+            <label class="acc-label">{{t 'clusterNew.rke.ingress.label'}}</label>
+            <div class="radio">
+              <label>
+                {{radio-button selection=cluster.rancherKubernetesEngineConfig.ingress.provider value="nginx"}}
+                {{t 'generic.enabled'}}
+              </label>
+            </div>
+            <div class="radio">
+              <label>
+                {{radio-button selection=cluster.rancherKubernetesEngineConfig.ingress.provider value="none"}}
+                {{t 'generic.disabled'}}
+              </label>
+            </div>
+          </div>
+          <div class="col span-4">
+            <label class="acc-label">{{t 'clusterNew.rke.monitoring.label'}}</label>
+            <div class="radio">
+              <label>
+                {{radio-button selection=cluster.rancherKubernetesEngineConfig.monitoring.provider value="metrics-server"}}
+                {{t 'generic.enabled'}}
+              </label>
+            </div>
+            <div class="radio">
+              <label>
+                {{radio-button selection=cluster.rancherKubernetesEngineConfig.monitoring.provider value="none"}}
+                {{t 'generic.disabled'}}
+              </label>
+            </div>
           </div>
           <div class="col span-4">
             <label class="acc-label">{{t 'clusterNew.rke.podSecurityPolicy.label'}}</label>
             <div class="radio">
               <label>
-                {{radio-button selection=config.services.kubeApi.podSecurityPolicy value=false disabled=(not model.psps.length)}}
+                {{radio-button selection=cluster.rancherKubernetesEngineConfig.services.kubeApi.podSecurityPolicy value=false disabled=(not model.psps.length)}}
                 {{t 'generic.disabled'}}
               </label>
             </div>
             <div class="radio">
               <label class={{unless model.psps.length 'text-muted'}}>
-                {{radio-button selection=config.services.kubeApi.podSecurityPolicy value=true disabled=(not model.psps.length)}}
+                {{radio-button selection=cluster.rancherKubernetesEngineConfig.services.kubeApi.podSecurityPolicy value=true disabled=(not model.psps.length)}}
                 {{t 'generic.enabled'}}
                 {{#unless model.psps.length}}
                   &mdash; {{t 'clusterNew.psp.none'}}
@@ -78,13 +125,13 @@
             <label class="acc-label">{{t 'clusterNew.rke.ignoreDockerVersion.label'}}</label>
             <div class="radio">
               <label>
-                {{radio-button selection=config.ignoreDockerVersion value=false}}
+                {{radio-button selection=cluster.rancherKubernetesEngineConfig.ignoreDockerVersion value=false}}
                 {{t 'clusterNew.rke.ignoreDockerVersion.disabled'}}
               </label>
             </div>
             <div class="radio">
               <label>
-                {{radio-button selection=config.ignoreDockerVersion value=true}}
+                {{radio-button selection=cluster.rancherKubernetesEngineConfig.ignoreDockerVersion value=true}}
                 {{t 'clusterNew.rke.ignoreDockerVersion.enabled'}}
               </label>
             </div>
@@ -101,7 +148,7 @@
           </div>
 
           <div class="col span-4">
-            {{#if config.services.kubeApi.podSecurityPolicy}}
+            {{#if cluster.rancherKubernetesEngineConfig.services.kubeApi.podSecurityPolicy}}
               <label class="acc-label">{{t 'clusterNew.psp.label'}}{{field-required}}</label>
               {{new-select
                   content=model.psps
@@ -110,7 +157,7 @@
                   prompt='clusterNew.psp.prompt'
                   localizedPrompt=true
                   value=cluster.defaultPodSecurityPolicyTemplateId
-                  disabled=(not config.services.kubeApi.podSecurityPolicy)
+                  disabled=(not cluster.rancherKubernetesEngineConfig.services.kubeApi.podSecurityPolicy)
               }}
             {{else}}
               <label class="acc-label">{{t 'clusterNew.psp.label'}}</label>
