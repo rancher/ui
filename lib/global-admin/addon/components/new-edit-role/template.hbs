@@ -27,28 +27,30 @@
 {{/if}}
 
 <div class="row">
-  <div class="col span-6">
-    <label class="acc-label">{{t 'rolesPage.new.form.locked.labelText' }}</label>
-    {{#if readOnly}}
-      <div>
-        {{#if primaryResource.locked}}
-          {{t 'rolesPage.new.form.locked.enabled'}}
-        {{else}}
-          {{t 'rolesPage.new.form.locked.disabled'}}
-        {{/if}}
-      </div>
-    {{else}}
-      <div class="radio">
-        <label>{{radio-button selection=primaryResource.locked value=true}} {{t 'rolesPage.new.form.locked.enabled'}}</label>
-      </div>
-      <div class="radio">
-        <label>{{radio-button selection=primaryResource.locked value=false}} {{t 'rolesPage.new.form.locked.disabled'}}</label>
-      </div>
-    {{/if}}
-    {{#if editing}}
-      <p class="help-block">{{t 'rolesPage.new.form.locked.detail'}}</p>
-    {{/if}}
-  </div>
+  {{#unless (eq roleType 'global')}}
+    <div class="col span-6">
+      <label class="acc-label">{{t 'rolesPage.new.form.locked.labelText' }}</label>
+      {{#if readOnly}}
+        <div>
+          {{#if primaryResource.locked}}
+            {{t 'rolesPage.new.form.locked.enabled'}}
+          {{else}}
+            {{t 'rolesPage.new.form.locked.disabled'}}
+          {{/if}}
+        </div>
+      {{else}}
+        <div class="radio">
+          <label>{{radio-button selection=primaryResource.locked value=true}} {{t 'rolesPage.new.form.locked.enabled'}}</label>
+        </div>
+        <div class="radio">
+          <label>{{radio-button selection=primaryResource.locked value=false}} {{t 'rolesPage.new.form.locked.disabled'}}</label>
+        </div>
+      {{/if}}
+      {{#if editing}}
+        <p class="help-block">{{t 'rolesPage.new.form.locked.detail'}}</p>
+      {{/if}}
+    </div>
+  {{/unless}}
 
   <div class="col span-6">
     <label class="acc-label">{{t (concat 'rolesPage.new.form.default.' roleType) }}</label>
