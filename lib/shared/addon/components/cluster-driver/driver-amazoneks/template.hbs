@@ -50,9 +50,10 @@
 
   {{#if (eq step 1)}}
     {{save-cancel
+        editing=(eq mode 'edit')
         save="awsLogin"
         cancel=close
-        createLabel="nodeDriver.amazonec2.access.next"
+        createLabel="nodeDriver.amazoneks.access.next"
         savingLabel="nodeDriver.amazoneks.access.loading"
     }}
   {{/if}}
@@ -72,7 +73,7 @@
           {{#if (eq step 2)}}
             {{#if (eq serviceRoleMode 'default')}}
               <div class="radio">
-                <div class="radio pt-10">
+                <div class="radio">
                   <label>
                     {{radio-button selection=serviceRoleMode value="default"}}
                     {{t 'nodeDriver.amazoneks.role.radio.default'}}
@@ -96,8 +97,6 @@
             <div>
               {{#if config.serviceRole}}
                 {{readableServiceRole}}
-                {{!--
-                  {{config.serviceRole}} --}}
               {{else}}
                 {{t 'nodeDriver.amazoneks.role.noneSelected'}}
               {{/if}}
@@ -129,11 +128,11 @@
     }}
       <div class="row">
         <div class="col span-6">
-          <label class="acc-label">{{t 'nodeDriver.amazonec2.subnet'}}</label>
+          <label class="acc-label">{{t 'nodeDriver.amazoneks.vpc.title'}}</label>
           {{#if (eq step 3)}}
             {{#if (eq vpcSubnetMode 'default')}}
               <div class="radio">
-                <div class="radio pt-10">
+                <div class="radio">
                   <label>
                     {{radio-button selection=vpcSubnetMode value="default"}}
                     {{t 'nodeDriver.amazoneks.vpc.radio.default'}}
@@ -147,11 +146,10 @@
             {{else}}
               {{new-select
                   classNames="form-control"
-                  value=selectedGroupedDetails
-                  content=subnets
-                  optionValuePath="subnetId"
-                  optionLabelPath="subnetName"
-                  optionalGroupPath="group"
+                  value=config.virtualNetwork
+                  content=filteredVpcs
+                  optionValuePath="id"
+                  optionLabelPath="label"
               }}
             {{/if}}
           {{else}}
@@ -160,35 +158,71 @@
                 {{t 'nodeDriver.amazoneks.vpc.noneSelected'}}
               </div>
             {{else}}
-              {{#if config.virtualNetwork}}
-                <div>
-                  {{config.virtualNetwork}}:
-                </div>
-              {{/if}}
-              {{#if config.subnets}}
-                {{#each config.subnets as |subnet index|}}
-                  <span class="ml-10 inline-block">{{subnet}}</span>
-                {{/each}}
-              {{/if}}
+              <div>
+                {{config.virtualNetwork}}
+              </div>
             {{/if}}
           {{/if}}
         </div>
+
+        {{#if (eq step 4)}}
+          <div class="col span-6">
+            <label class="acc-label">{{t 'nodeDriver.amazoneks.subnet.title'}}</label>
+            <select class="form-control existing-subnet-groups" multiple="true" onchange={{action 'multiSubnetGroupSelect' ''}}>
+              {{#each filteredSubnets as |choice|}}
+                <option value={{choice.subnetId}} selected={{array-includes config.subnets choice.subnetId}}>{{choice.subnetName}} ({{choice.subnetId}})</option>
+              {{/each}}
+            </select>
+          </div>
+        {{else}}
+          {{#if (and (eq vpcSubnetMode "custom") (gte step 4)) }}
+            <div class="col span-6">
+              <label class="acc-label">{{t 'nodeDriver.amazoneks.subnet.title'}}</label>
+              {{#each config.subnets as |sub|}}
+                <div>{{sub}}</div>
+              {{/each}}
+            </div>
+          {{/if}}
+        {{/if}}
       </div>
 
     {{/accordion-list-item}}
 
     {{#if (eq step 3)}}
+      {{#if (eq vpcSubnetMode "default")}}
+        {{save-cancel
+            editing=(eq mode 'edit')
+            saveDisabled=canSaveVPC
+            save="setVPCS"
+            cancel="cancel"
+            createLabel="nodeDriver.amazoneks.vpc.nextRancherDefault"
+            savingLabel="nodeDriver.amazoneks.vpc.loadingRancherDefault"
+        }}
+      {{else}}
+        {{save-cancel
+            editing=(eq mode 'edit')
+            saveDisabled=canSaveVPC
+            save="setVPCS"
+            cancel="cancel"
+            createLabel="nodeDriver.amazoneks.vpc.next"
+            savingLabel="nodeDriver.amazoneks.vpc.loading"
+        }}
+      {{/if}}
+    {{/if}}
+
+    {{#if (eq step 4)}}
       {{save-cancel
-          saveDisabled=canSaveVPC
-          save="setVPCSubnet"
+          editing=(eq mode 'edit')
+          saveDisabled=(lte config.subnets.length 0)
+          save="setSubnets"
           cancel="cancel"
-          createLabel="nodeDriver.amazoneks.vpc.next"
-          savingLabel="nodeDriver.amazonec2.access.loading"
+          createLabel="nodeDriver.amazoneks.subnet.next"
+          savingLabel="nodeDriver.amazoneks.subnet.loading"
       }}
     {{/if}}
   {{/if}}
 
-  {{#if (and (gte step 4) (eq vpcSubnetMode "custom") )}}
+  {{#if (and (gte step 5) (eq vpcSubnetMode "custom") )}}
     {{#accordion-list-item
          title=(t 'nodeDriver.amazoneks.securityGroup.title')
          detail=(t 'nodeDriver.amazoneks.securityGroup.detail')
@@ -198,9 +232,9 @@
          expand=(action expandFn)
     }}
       <div class="row">
-        {{#if (eq step 4)}}
+        {{#if (eq step 5)}}
           <select class="form-control existing-security-groups" multiple="true" onchange={{action 'multiSecurityGroupSelect' ''}}>
-            {{#each allSecurityGroups as |choice|}}
+            {{#each filteredSecurityGroups as |choice|}}
               <option value={{choice.GroupId}} selected={{array-includes config.securityGroups choice.GroupId}}>{{choice.GroupName}} ({{choice.GroupId}})</option>
             {{/each}}
           </select>
@@ -214,10 +248,11 @@
       </div>
     {{/accordion-list-item}}
 
-    {{#if (eq step 4)}}
+    {{#if (eq step 5)}}
       {{save-cancel
+          editing=(eq mode 'edit')
           saveDisabled=canSaveSG
-          save=(action (mut step) 5)
+          save=(action (mut step) 6)
           cancel="cancel"
           createLabel="nodeDriver.amazonec2.securityGroup.next"
           savingLabel="nodeDriver.amazonec2.securityGroup.loading"
@@ -225,7 +260,7 @@
     {{/if}}
   {{/if}}
 
-  {{#if (eq step 5)}}
+  {{#if (eq step 6)}}
     {{#accordion-list-item
          title=(t 'clusterNew.nodes.title')
          detail=(t 'clusterNew.nodes.detail')
