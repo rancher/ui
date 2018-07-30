@@ -1,110 +1,157 @@
-<form>
-  <div class="over-hr mb-20 mt-20">
-    <span>{{t 'nodeDriver.exoscale.accountSection'}}</span>
-  </div>
+<section class="horizontal-form">
+  <form>
+    <div class="container-fluid">
+      <div class="over-hr r-mb20">
+        <span>{{t 'nodeDriver.exoscale.accountSection'}}</span>
+      </div>
 
-  <div class="row {{if (eq step 1) 'inline-form'}}">
-    <div class="col span-2 col-inline">
-      <label>{{t 'nodeDriver.exoscale.apiKey.label'}}</label>
+      <div class="row {{if isStep1 'form-group'}}">
+        <div class="col-md-2 form-label">
+          <label class="form-control-static">{{t 'nodeDriver.exoscale.apiKey.label'}}</label>
+        </div>
+        <div class="col-md-10">
+          {{#if isStep1}}
+            {{input type="text" name="username" classNames="form-control" placeholder=(t 'nodeDriver.exoscale.apiKey.placeholder') value=config.apiKey}}
+          {{else}}
+            <div class="form-control-static">{{config.apiKey}}</div>
+          {{/if}}
+        </div>
+      </div>
+      <div class="row {{if isStep1 'form-group'}}">
+        <div class="col-md-2 form-label">
+          <label class="form-control-static">{{t 'nodeDriver.exoscale.secretKey.label'}}</label>
+        </div>
+        <div class="col-md-10">
+          {{#if isStep1}}
+            {{input type="password" name="password" classNames="form-control" placeholder=(t 'nodeDriver.exoscale.secretKey.placeholder') value=config.apiSecretKey}}
+          {{else}}
+            <div class="form-control-static text-muted text-italic">{{t 'nodeDriver.exoscale.secretKey.provided'}}</div>
+          {{/if}}
+          {{#if isStep1}}
+            <p class="help-block">{{t 'nodeDriver.exoscale.accountHelp'}}</p>
+          {{/if}}
+        </div>
+      </div>
     </div>
-    <div class="col span-10">
-      {{#if (eq step 1)}}
-        {{input type="text" name="username" classNames="form-control" placeholder=(t 'nodeDriver.exoscale.apiKey.placeholder') value=config.exoscaleApiKey}}
-      {{else}}
-        <div>{{config.exoscaleApiKey}}</div>
-      {{/if}}
-    </div>
-  </div>
-  <div class="row {{if (eq step 1) 'inline-form'}}">
-    <div class="col span-2 col-inline">
-      <label>{{t 'nodeDriver.exoscale.secretKey.label'}}</label>
-    </div>
-    <div class="col span-10">
-      {{#if (eq step 1)}}
-        {{input type="password" name="password" classNames="form-control" placeholder=(t 'nodeDriver.exoscale.secretKey.placeholder') value=config.exoscaleApiSecretKey}}
-      {{else}}
-        <div class="text-muted text-italic">{{t 'nodeDriver.exoscale.secretKey.provided'}}</div>
-      {{/if}}
-      {{#if (eq step 1)}}
-        <p class="text-info">{{t 'nodeDriver.exoscale.accountHelp'}}</p>
-      {{/if}}
-    </div>
-  </div>
+    {{#if isStep1}}
+      {{top-errors errors=errors}}
 
-  {{#if (eq step 1)}}
+      <div class="footer-actions">
+        <button {{action "exoscaleLogin"}} name="submit" class="btn btn-primary">{{t 'nodeDriver.exoscale.loginAction'}}</button>
+        <button {{action "cancel"}} class="btn btn-link">{{t 'generic.cancel'}}</button>
+      </div>
+    {{/if}}
+  </form>
+</section>
+
+<section class="horizontal-form r-pt0 {{unless isStep2 'hide'}}">
+  <div class="text-center">
+    <i class="icon icon-spinner icon-spin"></i> {{t 'nodeDriver.exoscale.loadingZone'}}
+  </div>
+</section>
+
+<section class="horizontal-form r-pt0 {{unless isGteStep3 'hide'}}">
+  <div class="container-fluid">
+    <div class="over-hr r-mt20 r-mb20">
+      <span>{{t 'nodeDriver.exoscale.zoneSection'}}</span>
+    </div>
+
+    <div class="row {{if isStep3 'form-group'}}">
+      <div class="col-md-2 form-label">
+        <label class="form-control-static">{{t 'nodeDriver.exoscale.zone.label'}}</label>
+      </div>
+      <div class="col-md-10">
+        {{#if isStep3}}
+         {{#each allZones as |choice|}}
+          <div class="radio r-pt10"><label>
+            {{radio-button selection=selectedZone value=choice.id}}
+            {{ choice.name }}
+          </label></div>
+        {{/each}}
+        {{else}}
+          <div class="form-control-static">
+            {{config.availabilityZone}}
+          </div>
+        {{/if}}
+      </div>
+    </div>
+  </div>
+  {{#if isStep3}}
     {{top-errors errors=errors}}
 
     <div class="footer-actions">
-      <button {{action "exoscaleLogin"}} name="submit" class="btn bg-primary">{{t 'nodeDriver.exoscale.loginAction'}}</button>
-      <button {{action "cancel"}} class="btn bg-transparent">{{t 'generic.cancel'}}</button>
+      <button {{action "selectZone"}} class="btn btn-primary">{{t 'nodeDriver.exoscale.selectZoneAction'}}</button>
+      <button {{action "cancel"}} class="btn btn-link">Cancel</button>
     </div>
   {{/if}}
-</form>
+</section>
 
-<section class="horizontal-form pt-0 {{unless (eq step 2) 'hide'}}">
+
+<section class="horizontal-form r-pt0 {{unless isStep4 'hide'}}">
   <div class="text-center">
     <i class="icon icon-spinner icon-spin"></i> {{t 'nodeDriver.exoscale.loadingSecurity'}}
   </div>
 </section>
 
-<section class="horizontal-form pt-0 {{unless (gte step 3) 'hide'}}">
-  <div class="over-hr mt-20 mb-20">
-    <span>{{t 'nodeDriver.exoscale.securityGroupSection'}}</span>
-  </div>
-
-  <div class="row {{if (eq step 3) 'inline-form'}}">
-    <div class="col span-2 col-inline">
-      <label>{{t 'nodeDriver.exoscale.securityGroup.label'}}</label>
+<section class="horizontal-form r-pt0 {{unless isGteStep5 'hide'}}">
+  <div class="container-fluid">
+    <div class="over-hr r-mt20 r-mb20">
+      <span>{{t 'nodeDriver.exoscale.securityGroupSection'}}</span>
     </div>
-    <div class="col span-10">
-      {{#if (eq step 3)}}
-        <div class="radio"><label>
-          {{radio-button selection=whichSecurityGroup value="default"}}
-          {{#if defaultSecurityGroup}}
-            {{t 'nodeDriver.exoscale.securityGroup.defaultExisting' groupName=defaultSecurityGroupName htmlSafe=true}}
-          {{else}}
-            {{t 'nodeDriver.exoscale.securityGroup.defaultCreate' groupName=defaultSecurityGroupName htmlSafe=true}}
+
+    <div class="row {{if isStep5 'form-group'}}">
+      <div class="col-md-2 form-label">
+        <label class="form-control-static">{{t 'nodeDriver.exoscale.securityGroup.label'}}</label>
+      </div>
+      <div class="col-md-10">
+        {{#if isStep5}}
+          <div class="radio r-pt10"><label>
+            {{radio-button selection=whichSecurityGroup value="default"}}
+            {{#if defaultSecurityGroup}}
+              {{format-html-message 'nodeDriver.exoscale.securityGroup.defaultExisting' groupName=defaultSecurityGroup}}
+            {{else}}
+              {{format-html-message 'nodeDriver.exoscale.securityGroup.defaultCreate' groupName=defaultSecurityGroup}}
+            {{/if}}
+          </label></div>
+
+          {{#if (and settings.isRancher (not isCustomSecurityGroup))}}
+            <p class="help-block r-ml20"><a href="{{settings.docsBase}}/hosts/exoscale/#required-ports-for-rancher-to-work" target="_blank">{{t 'nodeDriver.exoscale.portHelp.link'}}</a> {{t 'nodeDriver.exoscale.portHelp.text'}}</p>
           {{/if}}
-        </label></div>
 
-        {{#if (and settings.isRancher (not isCustomSecurityGroup))}}
-          <p class="text-info ml-20"><a href="{{settings.docsBase}}/hosts/exoscale/#required-ports-for-rancher-to-work" target="_blank">{{t 'nodeDriver.exoscale.portHelp.link'}}</a> {{t 'nodeDriver.exoscale.portHelp.text'}}</p>
+          <div class="radio"><label>{{radio-button selection=whichSecurityGroup value="custom"}} {{t 'nodeDriver.exoscale.securityGroup.custom'}}</label></div>
+          {{#if isCustomSecurityGroup}}
+            <select class="form-control" onchange={{action (mut securityGroup) value="target.value"}}>
+              {{#each allSecurityGroups as |choice|}}
+                <option value={{choice.name}} selected={{eq securityGroup choice.name}}>{{choice.name}}</option>
+              {{/each}}
+            </select>
+
+            <p style="r-m0 r-mt10">{{t 'nodeDriver.exoscale.needs.label' appName=settings.appName}}</p>
+            <ul>
+              <li>{{format-html-message 'nodeDriver.exoscale.needs.item1' appName=settings.appName}}</li>
+              <li>{{format-html-message 'nodeDriver.exoscale.needs.item2' appName=settings.appName}}</li>
+              <li>{{format-html-message 'nodeDriver.exoscale.needs.item3' appName=settings.appName}}</li>
+            </ul>
+          {{/if}}
+        {{else}}
+          <div class="form-control-static">
+            {{config.securityGroup}}
+          </div>
         {{/if}}
-
-        <div class="radio"><label>{{radio-button selection=whichSecurityGroup value="custom"}} {{t 'nodeDriver.exoscale.securityGroup.custom'}}</label></div>
-        {{#if isCustomSecurityGroup}}
-          <select class="form-control" onchange={{action (mut selectedSecurityGroup) value="target.value"}}>
-            {{#each allSecurityGroups as |choice|}}
-              <option value={{choice.name}} selected={{eq selectedSecurityGroup choice.name}}>{{choice.name}}</option>
-            {{/each}}
-          </select>
-
-          <p style="m-0 mt-10">{{t 'nodeDriver.exoscale.needs.label' appName=settings.appName}}</p>
-          <ul>
-            <li>{{t 'nodeDriver.exoscale.needs.item1' appName=settings.appName htmlSafe=true}}</li>
-            <li>{{t 'nodeDriver.exoscale.needs.item2' appName=settings.appName htmlSafe=true}}</li>
-            <li>{{t 'nodeDriver.exoscale.needs.item3' appName=settings.appName htmlSafe=true}}</li>
-          </ul>
-        {{/if}}
-      {{else}}
-        <div>
-          {{config.securityGroup}}
-        </div>
-      {{/if}}
+      </div>
     </div>
   </div>
-
-  {{#if (eq step 3)}}
+  {{#if isStep5}}
     {{top-errors errors=errors}}
 
     <div class="footer-actions">
-      <button {{action "selectSecurityGroup"}} class="btn bg-primary">{{t 'nodeDriver.exoscale.selectSecurityGroupAction'}}</button>
-      <button {{action "cancel"}} class="btn bg-transparent">Cancel</button>
+      <button {{action "selectSecurityGroup"}} class="btn btn-primary">{{t 'nodeDriver.exoscale.selectSecurityGroupAction'}}</button>
+      <button {{action "cancel"}} class="btn btn-link">Cancel</button>
     </div>
   {{/if}}
 </section>
 
-<section class="horizontal-form {{unless (eq step 4) 'hide'}}" style="padding-top: 0">
+<section class="horizontal-form {{unless isStep6 'hide'}}" style="padding-top: 0">
   <div class="text-center">
     <i class="icon icon-spinner icon-spin"></i>
     {{#if defaultSecurityGroup}}
@@ -115,45 +162,59 @@
   </div>
 </section>
 
-<section class="horizontal-form pt-0 {{unless (eq step 5) 'hide'}}">
+<section class="horizontal-form r-pt0 {{unless isStep7 'hide'}}">
   <div class="text-center">
     <i class="icon icon-spinner icon-spin"></i> {{t 'nodeDriver.exoscale.loadingInstance'}}
   </div>
 </section>
 
-<section class="horizontal-form pt-0 {{unless (gte step 6) 'hide'}}">
-  <div class="over-hr mb-20"><span>{{driverOptionsTitle}}</span></div>
+<section class="horizontal-form r-pt0 {{unless isGteStep8 'hide'}}">
+  <div class="container-fluid">
+    <div class="over-hr r-mt20 r-mb20">
+      <span>{{t 'nodeDriver.exoscale.instanceSection'}}</span>
+    </div>
 
-  <div class="row inline-form">
-    <div class="col span-2 col-inline">
-      <label>{{t 'nodeDriver.exoscale.instanceProfile.label'}}</label>
-    </div>
-    <div class="col span-4">
-      <select class="form-control" onchange={{action (mut config.instanceProfile) value="target.value"}}>
-        {{#each allInstanceProfiles as |choice|}}
-          <option value={{choice.name}} selected={{eq config.instanceProfile choice.name}}>{{choice.displaytext}}</option>
-        {{/each}}
-      </select>
-    </div>
-    <div class="col span-2 col-inline">
-      <label>{{t 'nodeDriver.exoscale.diskSize.label'}}</label>
-    </div>
-    <div class="col span-4">
-      <select class="form-control" onchange={{action (mut config.diskSize) value="target.value"}}>
-        {{#each allDiskSizes as |choice|}}
-          <option value={{choice}} selected={{eq config.diskSize choice}}>{{choice}}</option>
-        {{/each}}
-      </select>
-    </div>
-  </div>
+    {{!-- {{partial "host/add-common"}} --}}
 
-  <div class="row inline-form">
-    <div class="col span-2 col-inline">
-      <label>{{t 'nodeDriver.exoscale.sshUser.label'}}</label>
+    <div class="row form-group">
+      <div class="col-md-2 form-label">
+        <label class="form-control-static">{{t 'nodeDriver.exoscale.instanceProfile.label'}}</label>
+      </div>
+      <div class="col-md-4">
+        <select class="form-control" onchange={{action (mut config.instanceProfile) value="target.value"}}>
+          {{#each allInstanceProfiles as |choice|}}
+            <option value={{choice.name}} selected={{eq config.instanceProfile choice.name}}>{{choice.displaytext}}</option>
+          {{/each}}
+        </select>
+      </div>
+      <div class="col-md-2 form-label">
+        <label class="form-control-static">{{t 'nodeDriver.exoscale.diskSize.label'}}</label>
+      </div>
+      <div class="col-md-4">
+        {{input type="number" classNames="form-control" min=10 max=1600 step=10 value=config.diskSize}}
+      </div>
     </div>
-    <div class="col span-4">
-      {{input type="text" classNames="form-control" placeholder=(t 'nodeDriver.exoscale.sshUser.placeholder') value=config.sshUser}}
+
+    <div class="row form-group">
+      <div class="col-md-2 form-label">
+        <label class="form-control-static">{{t 'nodeDriver.exoscale.template.label'}}</label>
+      </div>
+      <div class="col-md-4">
+        <select class="form-control" onchange={{action (mut config.image) value="target.value"}}>
+          {{#each allTemplates as |choice|}}
+            <option value={{choice}} selected={{eq config.image choice}}>{{choice}}</option>
+          {{/each}}
+        </select>
+      </div>
+      <div class="col-md-2 form-label">
+        <label class="form-control-static">{{t 'nodeDriver.exoscale.sshUser.label'}}</label>
+      </div>
+      <div class="col-md-4">
+        {{input type="text" classNames="form-control" placeholder=(t 'nodeDriver.exoscale.sshUser.placeholder') value=config.sshUser}}
+      </div>
     </div>
+
+    {{!-- {{partial "host/add-options"}} --}}
   </div>
 
   <div class="over-hr"><span>{{templateOptionsTitle}}</span></div>
@@ -178,5 +239,5 @@
   {{/accordion-list}}
 
   {{top-errors errors=errors}}
-  {{save-cancel save="save" cancel="cancel" editing=editing}}
+  {{save-cancel save="save" cancel="cancel"}}
 </section>
