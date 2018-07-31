@@ -210,6 +210,10 @@ appDetailPage:
     title: 卷
     detail: 此应用创建的持久化卷声明(Pvc)
     nodata: 此应用未创建持久化卷声明
+  configMaps:
+    title: 配置映射
+    detail: 与此应用关联的配置映射
+    nodata: 此应用程序没有配置映射
   secrets:
     title: 密文
     detail: 此应用相关的密文(Secrets)
@@ -369,12 +373,17 @@ authPage:
         subtext: '测试以确认配置是否正确'
     providerName:
       ping: Ping
+      adfs: AD FS
     authError: '账号未经授权'
     popupError: '请关闭弹出验证窗口，然后再次单击“验证”。'
   ping:
     buttonText:
-      pre: '启用Ping认证'
-      post: '等待Ping返回'
+      pre: '通过Ping认证 '
+      post: '等待返回'
+  adfs:
+    buttonText:
+      pre: '通过AD FS认证'
+      post: '等待返回'
 
 
   shibboleth:
@@ -795,7 +804,7 @@ containerPage:
       noMatch: 没有符合当前搜索的数据卷
       noContainers: 无其他容器
 podPage:
-  header: "Pod:  {name}"
+  header: "Pod: {name}"
   nodeIp: 主机IP
   podIp: Pod IP
   containerImage: "{container}的镜像"
@@ -1116,11 +1125,11 @@ k8sPage:
       helpText: |
         '将设置保存到<code>~/.kube/config</code>'
       downloadText: |
-        然后<a href="{downloadUrl}" target="_blank">下载</a><code>kubectl</code>(如有需要)并运行
+        然后<a href="{downloadUrl}" target="_blank">下载</a><code>kubectl</code>(如有需要)并运行。
 
 loginPage:
   greeting: "您好！<br>欢迎使用{appName}"
-  insecure: "{appName}仅支持<code>https://</code>连接，你必须:<br><br>使用服务器内置的TLS支持,或者<br><br>在容器前面提供自己的TLS终端"
+  insecure: "{appName}仅支持<code>https://</code>连接，你必须:<br><br>使用服务器内置的TLS支持,或者<br><br>在容器前面提供自己的TLS终端。"
   githubMessage: "{appName}使用GitHub管理账号和团队。点击以下按钮以登录，我们将仅使用基本的GitHub账号信息"
   shibbolethMessage: "{appName}使用Shibboleth管理账号。点击以下按钮以登录到设置的Shibboleth IDP."
   shibbolethError:
@@ -1170,7 +1179,7 @@ registriesPage:
       custom:
         labelText: 地址
         placeholder: '例如: registry.example.com'
-        help: 仅添加主机名或IP地址, 不要包含协议头(https://)
+        help: "仅添加主机名或IP地址, 不要包含协议头(https://)。"
       username:
         labelText: 用户名
         placeholder: '例如: username'
@@ -1245,7 +1254,7 @@ servicePage:
       description:
         placeholder: '例如: 我的应用'
   newBalancer:
-    upgradeImage: "负载均衡器镜像版本将由<code>{from}</code>升级到<code>{to}</code>"
+    upgradeImage: "负载均衡器镜像版本将由<code>{from}</code>升级到<code>{to}</code>。"
     form:
       name:
         placeholder: '例如: website'
@@ -1290,7 +1299,7 @@ signupPage:
   emailSuccess:
     header: '欢迎使用{appName}'
     confirm:
-      subtext: 已经发送邮件到您的邮箱，请点击邮件中的验证链接以确认您的邮件地址
+      subtext: 已经发送邮件到您的邮箱，请点击邮件中的验证链接以确认您的邮件地址.
       resend: 重新发送邮件
 
 stackPage:
@@ -1357,7 +1366,7 @@ newStack:
     uploadActionLabel: 从磁盘读取
     namePlaceholder: 文件名
     valuePlaceholder: 文件内容
-    protipLabel: 支持{appName}<code>compose.yml</code>，<code>docker-compose.yml</code>和Kubernetes清单文件
+    protipLabel: "支持{appName}<code>compose.yml</code>，<code>docker-compose.yml</code>和Kubernetes清单文件."
   answers:
     label: 应答(变量替换)
     addActionLabel: 添加应答
@@ -1452,7 +1461,7 @@ notifierPage:
     defaultRecipient: 默认接收人(频道)
     defaultRecipientPlaceholder: '例如: example.com'
     helpText: |
-      以下是<a href="https://get.slack.help/hc/en-us/articles/115005265063-Incoming-WebHooks-for-Slack" target="_blank" rel="nofollow noopener noreferrer">创建传入WebHooks</a>的方法。
+     '以下是<a href="https://get.slack.help/hc/en-us/articles/115005265063-Incoming-WebHooks-for-Slack" target="_blank" rel="nofollow noopener noreferrer">创建传入WebHooks</a>的方法。'
 
   smtp:
     server: Smtp服务器配置
@@ -1471,7 +1480,7 @@ notifierPage:
     serviceKey: 服务密钥
     serviceKeyPlaceholder: 您的PagerDuty服务密钥
     helpText: |
-      以下是<a href="https://support.pagerduty.com/docs/webhooks">为PagerDuty创建传入WebHooks</a>的方法。
+      '以下是<a href="https://support.pagerduty.com/docs/webhooks">为PagerDuty创建传入WebHooks</a>的方法。'
 
   webhook:
     url: URL
@@ -1629,9 +1638,9 @@ accordionRow:
     none: 无
     incomplete: 未完成
     error: 错误
-    notConfigured: 未设置
-    configured: 已设置
-    countConfigured: "{count}已设置"
+    notConfigured: 未配置
+    configured: 已配置
+    countConfigured: "{count}已配置"
     standard: 默认
     custom: 自定义
     specific: 具体
@@ -1776,7 +1785,7 @@ catalogSettings:
       header: "您可以自定义其他应用商店地址，每个自定义应用商店需要有以下内容:"
       help-name: 唯一的名称
       help-repo: '仓库URL地址:'
-      help-branch: "可选: 如果使用基于Git的应用商店，则还需要设置分支名称。"
+      help-branch: '可选: 如果使用基于Git的应用商店，则还需要设置分支名称。'
       help-git: "基于Git的商店URL地址, 例如: https://github.com/rancher/charts.git。"
       help-chart: 'Helm Charts server URL,例如: https://kubernetes-charts.storage.googleapis.com/(详细信息可查看<a href="https://docs.helm.sh/developing_charts/#hosting-chart-repositories" target="_blank" rel="nofollow noopener noreferrer">Chart托管仓库</a>)。'
     addActionLabel: 添加应用商店
@@ -2066,9 +2075,11 @@ clusterNew:
           cloudProvider:
             label: 云提供商
     ingress:
-      label: Ingress提供者
-      none: 无
-      nginx: Nginx
+      label: Nginx Ingress
+    monitoring:
+      label: 度量服务监控
+    networkPolicy:
+      label: 项目网络隔离
     version:
       label: Kubernetes版本
     registry:
@@ -2121,6 +2132,8 @@ clusterNew:
       etcd: 请选择1个，3个或5个主机用于etcd。
       controlPlane: 请至少选择一个用于management的主机。
       worker: 请至少选择一个用于worker的主机。
+    dockerRootDir:
+      placeholder: "{dir}是默认目录"
   custom:
     label: 自定义
     shortLabel: 自定义
@@ -2157,16 +2170,16 @@ resourceEventList:
 
 confirmDelete:
   title: '是否确认要删除'
-  environmentNote: '注意: 此环境内的所有资源都将被永久性的删除，包括通过{appName}创建的主机'
-  clusterNote: '注意: 在云平台中创建的关联资源(如卷，负载均衡器和网络)不会自动删除'
-  protip: '高级技巧:在点击删除时按住{key}键以跳过确认操作'
+  environmentNote: '注意: 此环境内的所有资源都将被永久性的删除，包括通过{appName}创建的主机。'
+  clusterNote: '注意: 在云平台中创建的关联资源(如卷，负载均衡器和网络)不会自动删除。'
+  protip: '高级技巧:在点击删除时按住{key}键以跳过确认操作。'
   confirmAction: 删除
   cancelAction: 取消
   largeDeleteText: '{key}及{othersCount}其他'
 
 containerLogs:
   title: "日志: "
-  onlyCombined: "<b>注意:</b>此容器运行时带有TTY(-t)参数，仅有合并的标准输出和标准错误日志可见"
+  onlyCombined: "<b>注意:</b>此容器运行时带有TTY(-t)参数，仅有合并的标准输出和标准错误日志可见。"
   combined: 合并日志
   stdout: 标准输出
   stderr: 标准错误
@@ -2209,7 +2222,7 @@ cruRegistry:
     placeholder: '例如: registry.example.com'
   multiple: 多个
   auth:
-    label: 认证 token
+    label: 认证token
     saved: 已保存
   username:
     label: 用户名
@@ -2254,7 +2267,7 @@ cruPersistentVolume:
       label: 只读
     partition:
       label: 分区
-      placeholder: "例如: 1; 0为整个设备"
+      placeholder: "例如: 1, 0表示整块硬盘。"
     volumeID:
       label: 卷ID
       placeholder: "例如: volume1"
@@ -2415,7 +2428,7 @@ cruPersistentVolume:
       placeholder: "例如: ext4"
     partition:
       label: 分区
-      placeholder: "例如: 1; 0为整个设备"
+      placeholder: "例如: 1，0表示整块硬盘"
     pdName:
       label: 持久化磁盘名称
       placeholder: "例如: abc"
@@ -2604,7 +2617,7 @@ cruStorageClass:
   aws-ebs:
     type:
       label: 卷类型
-      gp2: 'GP2 - General Purpose SSD'
+      gp2: 'GP2 - 通用SSD'
       io1: 'IO1 - Provisioned IOPS SSD'
       st1: 'ST1 - Throughput-Optimized HDD'
       sc1: 'SC1 - Cold-Storage HDD'
@@ -2615,7 +2628,7 @@ cruStorageClass:
       placeholder: "us-east-1d，us-east-1c"
     iopsPerGB:
       label: 预置IOPS
-      unit: 每秒每GB
+      unit: 'GB/s'
     encrypted:
       label: 加密
     kmsKeyId:
@@ -2867,6 +2880,7 @@ dangerZone:
     'system-default-registry': '用于RKE部署基础服务时系统镜像的拉取，拉取其他服务镜像不生效'
     'ui-index': 'UI的HTML索引位置'
     'ui-pl': '公司名称专用标签'
+    'telemetry-opt': 'Telemetry reporting opt-in'
 
 editAccount:
   title: 编辑账号
@@ -3158,7 +3172,7 @@ formBalancerRules:
     label: 协议
   sourceIp:
     label: 主机IP
-    placeholder: "例如: 1.2.3.4; 默认:  所有"
+    placeholder: "例如: 1.2.3.4. 默认: 所有"
   sourcePort:
     label: 监听端口
     placeholder: '例如: 80'
@@ -3431,10 +3445,10 @@ formScopedRoles:
 formHealthCheck:
   title: 健康检查
   detail: 周期性的向容器发出请求, 以查看它是否存在并正确响应。
-  readiness: 就绪状态检查
-  liveness: 存活状态检查
-  separateLivenessCheck: 定义单独的存活性检查
-  combinedLivenessCheck: 使用相同的存活状态(liveness)和就绪状态(readiness)检查
+  readiness: 就绪状态检查(readiness)
+  liveness: 存活状态检查(liveness)
+  separateLivenessCheck: '单独配置存活状态(liveness)检查(说明: 默认设置下，readiness和liveness使用相同的配置参数。但有时候容器初始化正常后，容器中的应用程序还需要很长的初始化时间。类似场景下，需要把就绪检查时间设置长一些。)'
+  combinedLivenessCheck: 使用相同的就绪状态(readiness)与存活状态(liveness)配置
   checkType:
     none: 无
     tcp: 检查TCP连接是否正常
@@ -3446,23 +3460,23 @@ formHealthCheck:
     placeholder: '例如: cat /tmp/health'
   path:
     label: 请求路径
-    placeholder: 例如健康检查
+    placeholder: '例如: 健康检查'
   httpHeaders:
     label: 其他的HTTP头
     addActionLabel: 添加头
     keyLabel: Http头字段
-    keyPlaceholder: 例如:用户代理
-    valuePlaceholder: 例如健康检查
+    keyPlaceholder: '例如: 用户代理'
+    valuePlaceholder: '例如: 健康检查'
   host:
     label: 主机头信息
     placeholder: '例如: example.com'
   port:
-    label: 目标容器端口
+    label: 容器端口
     placeholder: '例如: 80'
   initialDelaySeconds:
-    label: 启动后检测
+    label: 开始检测时间
   reinitializingTimeout:
-    label: 重新初始化超时
+    label: 重新检查时间
   periodSeconds:
     label: 检查间隔
   timeoutSeconds:
@@ -3551,7 +3565,7 @@ formNetwork:
   resolvingServers:
     label: 解析服务器
     addActionLabel: 添加服务器
-    placeholder: '例如: 8.8.4.4'
+    placeholder: '例如: 114.114.114.114'
   searchDomains:
     label: 搜索域
     placeholder: '例如: prod.example.com'
@@ -3577,14 +3591,14 @@ formPorts:
     NodePort: NodePort(在每个主机上)
     HostPort: HostPort(运行pod的主机)
     ClusterIP: 集群IP(仅限集群内部)
-    LoadBalancer: 4层负载均衡器
+    LoadBalancer: L4层负载均衡器
   sourcePort:
     label: 监听端口
-    placeholder: "例如: 80"
-    ipPlaceholder: "例如: 80或19.82.2.24:80"
-    clusterIpDefault: "与容器端口相同"
+    placeholder: '例如: 80'
+    ipPlaceholder: '例如: 80或19.82.2.24:80'
+    clusterIpDefault: '与容器端口相同'
   nodePort:
-    placeholder: "端口范围30000-32768，例如: 30000"
+    placeholder: '端口范围30000-32768，例如: 30000'
   containerPort:
     label: 容器端口
     placeholder: "例如: 8080"
@@ -3592,10 +3606,10 @@ formPorts:
     label: 协议
   name:
     label: 名称
-    placeholder: "例如: backend"
+    placeholder: '例如: backend'
   dnsName:
     label: DNS名称
-    placeholder: "例如: example"
+    placeholder: '例如: example'
   noPorts: 当前容器没有端口映射
   error:
     privateRequired: 每条映射规则必须设置容器端口
@@ -3612,7 +3626,7 @@ formScale:
   label: 工作负载类型
   showAdvanced: 更多选项
   scaleMode:
-    deploymentPrefix: "可扩展的部署"
+    deploymentPrefix: "可扩展部署"
     replicationControllerPrefix: "复制控制器"
     replicaSetPrefix: "副本集"
     statefulSetPrefix: "有状态集"
@@ -3679,9 +3693,9 @@ formScheduling:
     label: 调度
     placeholder: '例如: myScheduler'
   nodeSelector:
-    requireAll: "必须: "
-    requireAny: "最好: "
-    preferred: "首选: "
+    requireAll: "必须 "
+    requireAny: "最好"
+    preferred: "首选"
     operator:
       lt: '<'
       le: |
@@ -3721,12 +3735,12 @@ formSecurity:
   detail: 授予或限制容器影响所运行主机的能力
   pullImage:
     label: 拉取镜像
-    always: 总是
-    ifNotPresent: 仅当主机无镜像时
+    always: 总是拉取
+    ifNotPresent: 当主机无此镜像时拉取
   privileged:
-    label: 特权
+    label: 特权模式
     disable: "否"
-    enable: "是: 容器有完全主机访问权限"
+    enable: "是: 容器具有所有主机访问权限"
   allowPrivilegeEscalation:
     label: 提升特权
     disable: "否"
@@ -3765,7 +3779,7 @@ formSecurity:
     set: 自定义(1-100)
   cpuPinning:
     label: CPU 绑定
-    placeholder: "例如: 0,1,3; 默认: All"
+    placeholder: "例如: 0,1,3  默认: All"
   shares:
     label: CPU份额
     placeholder: '例如: 1024'
@@ -3938,7 +3952,7 @@ formValueArray:
   valueLabel: 值
   valuePlaceholder: 值
   noData: 没有数据
-  protip: "高级技巧: 在任意输入栏中粘贴一行或多行的value能够批量输入"
+  protip: '高级技巧: 在任意输入栏中粘贴一行或多行的value能够批量输入'
 
 formVolumeRow:
   prompt: 选择一个持久化卷声明...
@@ -3976,7 +3990,7 @@ formVolumes:
   volumesFrom: 卷来自
   volumeDriver:
     label: 卷驱动
-    placeholder: '例如: rancher-nfs; 默认: local'
+    placeholder: '例如: rancher-nfs, 默认: local'
     suggestion: '使用的存储驱动:'
   noLaunchConfigs: 此服务下没有可共享卷的启动配置.
   noHostContainers: 该主机没有可以提供共享卷的容器.
@@ -4100,11 +4114,11 @@ formBasicPodSecurityPolicy:
   detail: 配置基本的pod安全策略
   allowPrivilegeEscalation:
     label: 允许提升特权
-    enable: "是: 运行允许从其父级升级特权的容器"
+    enable: '是: 运行允许从其父级升级特权的容器'
     disable: "否"
   defaultAllowPrivilegeEscalation:
     label: 默认允许提升特权
-    enable: "是: 控制进程可以获得父进程获得更多特权"
+    enable: '是: 控制进程可以获得父进程获得更多特权'
     disable: "否"
   hostIPC:
     label: 主机IPC
@@ -4229,8 +4243,8 @@ loginGithub:
 loginAzure:
   buttonText: 用Azure AD登录
 
-loginPing:
-  buttonText: 用Ping Federate登录
+loginSaml:
+  buttonText: "用{provider}登录"
 
 loginUserPass:
   local: 使用本地用户
@@ -4341,7 +4355,7 @@ modalAddPayment:
         placeholder: '99999'
       country:
         label: 国家
-        placeholder: China
+        placeholder: 中国
   currencies:
     yuan: "人民币(¥)"
     euro: "欧元(€)"
@@ -4349,7 +4363,7 @@ modalAddPayment:
 
 
 modalContainerStop:
-  header: "确认要停止"
+  header: "确认要停止吗？"
   helpText: "在超时时间后容器将被强制停止"
   protip: "高级技巧: 在点击停止按钮时按住{key}键以跳过此确认提示"
   label: 超时
@@ -4407,7 +4421,7 @@ modalEditSetting:
 
 modalEditPassword:
   firstLogin:
-    title: 欢迎使用{appName}
+    title: "欢迎使用{appName}"
     help: '第一步: 请为默认<code>admin</code>用户设置强密码'
     actionButton: 继续
   edit:
@@ -4423,7 +4437,7 @@ modalEditPassword:
     manual: '设置一个特定的密码来使用: '
 
 modalFeedback:
-  header: 欢迎使用{appName}!
+  header: "欢迎使用{appName}!"
   subtitle: "在开始使用前, 请让我们了解关于您的信息..."
   send: 开始使用
 
@@ -4513,7 +4527,7 @@ modalWechat:
   title: '扫码关注Rancher中国微信技术群'
   wechat: 微信
 modalWelcome:
-  header: 欢迎使用{appName}!
+  header: "欢迎使用{appName}!"
   closeModal: 确认
 
 namespaceGroup:
@@ -4596,13 +4610,13 @@ newContainer:
     service: 部署工作负载
     globalService: 添加全局工作负载
     sidekick: '部署Sidecar'
-    sidekickName: '部署"{name}"的Sidecar'
+    sidekickName: '部署{name}的Sidecar'
   upgrade:
     container: 升级容器
     service: 升级服务
     globalService: 升级全局服务
     sidekick: 升级Sidecar
-    sidekickName: '升级"{name}"的Sidecar'
+    sidekickName: '升级{name}的Sidecar'
   selectUpgrade: 选择一个或者多个服务进行升级
   saveUpgrade: 升级
   saveNew: 启动
@@ -4627,9 +4641,9 @@ newContainer:
     primary: 主容器
     sidekick: Sidecars
   containerType:
-    title: Sidecar Type
-    standard: Standard Container
-    init: Init Container
+    title: Sidecar类型
+    standard: 标准容器
+    init: Init容器
 
   errors:
     noSidekick: 选择要添加sidecar的工作负载
@@ -4675,7 +4689,41 @@ nodeDriver:
   templateOptions: "{appName}模板"
   amazoneks:
     access:
-      loading: 正在从Amazon获取实例信息
+      next: "下一步: 选择服务角色"
+      loading: 从亚马逊加载服务角色...
+    role:
+      title: 服务角色
+      detail: 选择将用于启动EKS实例的服务角色
+      label: 服务角色
+      noneSelected: "Rancher创建角色"
+      help: "您可以不选择服务角色，而Rancher会为您自动创建一个。"
+      radio:
+        default: "标准：Rancher生成的服务角色"
+        custom: "自定义：从现有服务角色中选择"
+      next: "下一步: 选择 VPC & Subnet"
+    vpc:
+      title: VPC & Subnet
+      detail: 选择将用于EKS实例的VPC
+      next: "下一步: Subnet"
+      loading: "加载Subnets..."
+      nextRancherDefault: "下一步: 选择实例选项"
+      loadingRancherDefault: "加载实例选项..."
+      noneSelected: "Rancher创建VPC和Subnet"
+      radio:
+        default: "标准：通过Rancher创建VPC和子网"
+        custom: "自定义：从现有VPC和子网中选择"
+    subnet:
+      title: Subnet
+      next: "下一步: 选择安全组"
+      loading: "加载安全组..."
+    securityGroup:
+      title: 安全组
+      detail: 选择将应用于EKS实例的安全组
+      choose:  选择一个或多个现有安全组
+      defaultExisting: "标准：使用现有的{groupName}组"
+      defaultCreate: "标准：自动创建新的安全组"
+      next: "下一步: 设置实例选项"
+      loading: 加载设置实例选项...
   amazonec2:
     access:
       title: 1. 帐户访问
@@ -4719,8 +4767,8 @@ nodeDriver:
       text: 将要开放端口的详细信息
     needs:
       label: "为了使{appName} 正常使用，你的安全组需要配置允许以下流量通过:"
-      item1: 从{appName} 服务器到主机的<code>TCP</code>端口<code>22</code><span class="text-muted">(SSH连接用于安装docker)
-      item2: 主机之间需要开放<code>UDP</code>端口<code>500</code>和<code>4500</code><span class="text-muted">(ipsec网络)</span></li>
+      item1: '从{appName} 服务器到主机的<code>TCP</code>端口<code>22</code><span class="text-muted">(SSH连接用于安装docker)'
+      item2: '主机之间需要开放<code>UDP</code>端口<code>500</code>和<code>4500</code><span class="text-muted">(ipsec网络)</span></li>'
       item3: 这些规则<b>不会</b>自动添加
     instanceType:
       label: 实例类型
@@ -4761,7 +4809,7 @@ nodeDriver:
       label: 访问令牌
       placeholder: 你的DigitalOceanAPI访问令牌
       help: |
-        从<a href="https://cloud.digitalocean.com/settings/api/tokens" target="_blank" rel="nofollow noreferrer noopener">Applications&API</a>页面获取DigitalOcean的个人访问token
+        '从<a href="https://cloud.digitalocean.com/settings/api/tokens" target="_blank" rel="nofollow noreferrer noopener">Applications&API</a>页面获取DigitalOcean的个人访问token'
     image:
       label: 镜像
     sshUser:
@@ -4794,14 +4842,14 @@ nodeDriver:
       placeholder: 你的Exoscale secret密钥
       provided: 已提供
     accountHelp: 在此粘贴你的Exoscale密钥对，我们将用秘钥创建新的实例
-    loginAction: "下一步: 验证及选择安全组"
+    loginAction: '下一步: 验证及选择安全组'
     loadingSecurity: 从Exoscale加载安全组...
     securityGroupSection: 安全组
     securityGroup:
       label: 安全组
-      defaultExisting: "标准: 使用现有的<code>{groupName}</code>安全组"
-      defaultCreate: "标准: 自动创建<code>{groupName}</code>安全组"
-      custom: "自定义: 选择现有安全组"
+      defaultExisting: '标准: 使用现有的<code>{groupName}</code>安全组'
+      defaultCreate: '标准: 自动创建<code>{groupName}</code>安全组'
+      custom: '自定义: 选择现有安全组'
       updating: 更新安全组...
       creating: 创建安全组...
     portHelp:
@@ -4809,7 +4857,7 @@ nodeDriver:
       text: 关于将要开放的端口信息
     needs:
       label: "{appName}正常工作需要安全组允许以下通讯: "
-      item1: 从{appName}服务器到主机的<code>TCP</code>端口<code>22</code><span class="text-muted">(SSH连接用于安装docker)
+      item1: '从{appName}服务器到主机的<code>TCP</code>端口<code>22</code><span class="text-muted">(SSH连接用于安装docker)'
       item2: 与其他所有主机之间的 <code>UDP</code>端口<code>500</code>和<code>4500</code><span class="text-muted">(用于IPsec网络)</span>
       item3: 这些规则<b>不会</b>自动添加
     selectSecurityGroupAction: "下一步: 设置实例选项"
