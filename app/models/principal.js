@@ -36,6 +36,7 @@ var Principal = Resource.extend({
   logicalType: computed('parsedExternalType', function() {
     switch ( get(this, 'parsedExternalType') ) {
     case C.PROJECT.TYPE_ACTIVE_DIRECTORY_USER:
+    case C.PROJECT.TYPE_ADFS_USER:
     case C.PROJECT.TYPE_AZURE_USER:
     case C.PROJECT.TYPE_FREEIPA_USER:
     case C.PROJECT.TYPE_GITHUB_USER:
@@ -50,6 +51,7 @@ var Principal = Resource.extend({
       return C.PROJECT.TEAM;
 
     case C.PROJECT.TYPE_ACTIVE_DIRECTORY_GROUP:
+    case C.PROJECT.TYPE_ADFS_GROUP:
     case C.PROJECT.TYPE_AZURE_GROUP:
     case C.PROJECT.TYPE_FREEIPA_GROUP:
     case C.PROJECT.TYPE_GITHUB_ORG:
@@ -76,6 +78,7 @@ var Principal = Resource.extend({
 
     switch ( type ) {
     case C.PROJECT.TYPE_ACTIVE_DIRECTORY_USER:
+    case C.PROJECT.TYPE_ADFS_USER:
     case C.PROJECT.TYPE_AZURE_USER:
     case C.PROJECT.TYPE_FREEIPA_USER:
     case C.PROJECT.TYPE_GITHUB_USER:
@@ -87,6 +90,7 @@ var Principal = Resource.extend({
       break;
 
     case C.PROJECT.TYPE_ACTIVE_DIRECTORY_GROUP:
+    case C.PROJECT.TYPE_ADFS_GROUP:
     case C.PROJECT.TYPE_AZURE_GROUP:
     case C.PROJECT.TYPE_FREEIPA_GROUP:
     case C.PROJECT.TYPE_LDAP_GROUP:
