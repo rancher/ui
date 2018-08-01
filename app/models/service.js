@@ -36,6 +36,7 @@ export default Resource.extend({
           displayEndpoint: '/index.html',
           protocol:        location.protocol.substr(0, location.protocol.length - 1),
           isTcpish:        true,
+          isReady:         true,
         });
       });
     }
