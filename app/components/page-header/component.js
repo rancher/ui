@@ -54,7 +54,9 @@ export default Component.extend({
       stackSchema: get(this, 'store').getById('schema', 'stack'),
     });
 
-    this.updateNavTree();
+    // this.updateNavTree();
+    // run.scheduleOnce('actions', this, 'updateNavTree');
+    run.once(this, 'updateNavTree');
 
     run.scheduleOnce('render', () => {
       // responsive nav 63-87
@@ -109,7 +111,7 @@ export default Component.extend({
     'access.enabled',
     'intl.locale',
     function() {
-      run.scheduleOnce('afterRender', this, 'updateNavTree');
+      run.once(this, 'updateNavTree');
     }
   ),
 
@@ -140,7 +142,11 @@ export default Component.extend({
         localizedLabel: fnOrValue(get(item, 'localizedLabel'), this),
         label:          fnOrValue(get(item, 'label'), this),
         route:          fnOrValue(get(item, 'route'), this),
-        ctx:            (get(item, 'ctx') || []).map( (prop) =>  fnOrValue(prop, this)),
+        ctx:            (get(item, 'ctx') || []).map( (prop) =>  {
+          debugger;
+
+          return fnOrValue(prop, this)
+        }),
         submenu:        fnOrValue(get(item, 'submenu'), this),
       });
 
@@ -153,7 +159,11 @@ export default Component.extend({
           localizedLabel: fnOrValue(get(subitem, 'localizedLabel'), this),
           label:          fnOrValue(get(subitem, 'label'), this),
           route:          fnOrValue(get(subitem, 'route'), this),
-          ctx:            ( get(subitem, 'ctx') || [] ).map( (prop) => fnOrValue(prop, this)),
+          ctx:            ( get(subitem, 'ctx') || [] ).map( (prop) => {
+            debugger;
+
+            return fnOrValue(prop, this)
+          }),
         });
 
         return true;
@@ -162,6 +172,7 @@ export default Component.extend({
       return true;
     });
 
+    debugger;
     set(this, 'navTree', out);
   },
 
