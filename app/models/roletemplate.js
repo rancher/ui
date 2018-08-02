@@ -6,7 +6,9 @@ import C from 'ui/utils/constants';
 export default Resource.extend({
   router: service(),
 
-  type:   'roleTemplate',
+  type:     'roleTemplate',
+  canClone: true,
+
   state: computed('locked', function() {
     return get(this, 'locked') ? 'locked' : 'active';
   }),
@@ -30,8 +32,12 @@ export default Resource.extend({
   }),
   actions: {
     edit() {
-      this.get('router').transitionTo('global-admin.security.roles.edit', this.get('id'));
+      get(this, 'router').transitionTo('global-admin.security.roles.edit', get(this, 'id'));
     },
+
+    clone() {
+      get(this, 'router').transitionTo('global-admin.security.roles.new', { queryParams: { id: get(this, 'id'),  } });
+    }
   },
 
 });
