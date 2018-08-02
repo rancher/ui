@@ -109,7 +109,7 @@ export default Component.extend({
     'access.enabled',
     'intl.locale',
     function() {
-      run.once(this, 'updateNavTree');
+      run.scheduleOnce('afterRender', this, 'updateNavTree');
     }
   ),
 
