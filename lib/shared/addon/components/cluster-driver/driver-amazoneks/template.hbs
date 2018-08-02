@@ -71,20 +71,19 @@
         <div class="col span-6">
           <label class="acc-label">{{t 'nodeDriver.amazoneks.role.label'}}</label>
           {{#if (eq step 2)}}
-            {{#if (eq serviceRoleMode 'default')}}
+            <div class="radio">
               <div class="radio">
-                <div class="radio">
-                  <label>
-                    {{radio-button selection=serviceRoleMode value="default"}}
-                    {{t 'nodeDriver.amazoneks.role.radio.default'}}
-                  </label>
-                  <label>
-                    {{radio-button selection=serviceRoleMode value="custom"}}
-                    {{t 'nodeDriver.amazoneks.role.radio.custom'}}
-                  </label>
-                </div>
+                <label>
+                  {{radio-button selection=serviceRoleMode value="default"}}
+                  {{t 'nodeDriver.amazoneks.role.radio.default'}}
+                </label>
+                <label>
+                  {{radio-button selection=serviceRoleMode value="custom"}}
+                  {{t 'nodeDriver.amazoneks.role.radio.custom'}}
+                </label>
               </div>
-            {{else}}
+            </div>
+            {{#unless (eq serviceRoleMode 'default')}}
               {{new-select
                   classNames="form-control"
                   value=selectedServiceRole
@@ -92,7 +91,7 @@
                   optionValuePath="RoleId"
                   optionLabelPath="RoleName"
               }}
-            {{/if}}
+            {{/unless}}
           {{else}}
             <div>
               {{#if config.serviceRole}}
@@ -129,21 +128,20 @@
       <div class="row">
         <div class="col span-6">
           <label class="acc-label">{{t 'nodeDriver.amazoneks.vpc.title'}}</label>
-          {{#if (eq step 3)}}
-            {{#if (eq vpcSubnetMode 'default')}}
+          {{#if (or (eq step 3) (eq step 4))}}
+            <div class="radio">
               <div class="radio">
-                <div class="radio">
-                  <label>
-                    {{radio-button selection=vpcSubnetMode value="default"}}
-                    {{t 'nodeDriver.amazoneks.vpc.radio.default'}}
-                  </label>
-                  <label>
-                    {{radio-button selection=vpcSubnetMode value="custom"}}
-                    {{t 'nodeDriver.amazoneks.vpc.radio.custom'}}
-                  </label>
-                </div>
+                <label>
+                  {{radio-button selection=vpcSubnetMode value="default"}}
+                  {{t 'nodeDriver.amazoneks.vpc.radio.default'}}
+                </label>
+                <label>
+                  {{radio-button selection=vpcSubnetMode value="custom"}}
+                  {{t 'nodeDriver.amazoneks.vpc.radio.custom'}}
+                </label>
               </div>
-            {{else}}
+            </div>
+            {{#unless (eq vpcSubnetMode 'default')}}
               {{new-select
                   classNames="form-control"
                   value=config.virtualNetwork
@@ -151,7 +149,7 @@
                   optionValuePath="id"
                   optionLabelPath="label"
               }}
-            {{/if}}
+            {{/unless}}
           {{else}}
             {{#if (eq vpcSubnetMode "default")}}
               <div>
@@ -165,7 +163,7 @@
           {{/if}}
         </div>
 
-        {{#if (eq step 4)}}
+        {{#if (and (eq step 4) (eq vpcSubnetMode 'custom'))}}
           <div class="col span-6">
             <label class="acc-label">{{t 'nodeDriver.amazoneks.subnet.title'}}</label>
             <select class="form-control existing-subnet-groups" multiple="true" onchange={{action 'multiSubnetGroupSelect' ''}}>
