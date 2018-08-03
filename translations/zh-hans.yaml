@@ -489,8 +489,8 @@ authPage:
         header: 常规
     configure:
       header: '配置Azure AD账户'
-      replyUrl: "在开始设置之前，Azure AD需要预先设置{appName} Server的应答URL({appName} Server地址). 请确保<code>{replyUrl}</code>已经在Azure Portal中设置好"
-      help: 输入Tenant ID，Client ID和Admin用户详细信息以连接到Azure AD进行身份验证
+      replyUrl: "在配置之前，需首先在Azure AD设置{appName}的应答URL地址，并确保设置的URL为<code>{replyUrl}</code>。注意: 如使用Azure中国，需设置为<code>{replyUrl}</code>verify-auth-azure"
+      help: '输入Tenant ID，Client ID和Admin用户详细信息以连接到Azure AD进行身份验证'
       applicationId:
         label: Application ID
         placeholder: UUID字符串
@@ -531,16 +531,16 @@ authPage:
         text: '{appName}已设置本地账户访问'
         alwaysOn: '本地身份验证将始终启用，您可以在本地认证基础之上添加另一种认证方案'
         linkText: 管理账号
-      disabled: '{appName}能够被设置为仅允许{appName}本地数据库中定义的用户访问。当前系统未进行设置，因此任何可以访问此页面(或API)的用户都具有系统的完全控制权限'
+      disabled: '{appName}能够被设置为仅允许{appName}本地数据库中定义的用户访问。当前系统未进行设置，因此任何可以访问此页面(或API)的用户都具有系统的完全控制权限。'
     accessEnabled:
       header: '危险区域&trade;'
-      warning: '<b class="text-danger">警告:</b>禁用访问控制将导致所有能够访问此页面或API的用户拥有对{appName}的完全控制权限'
+      warning: '<b class="text-danger">警告:</b>禁用访问控制将导致所有能够访问此页面或API的用户拥有对{appName}的完全控制权限。'
       buttonText:
-        disable: '确认? 再次点击将关闭访问控制'
+        disable: '确认? 再次点击将关闭访问控制。'
         prompt: 关闭访问控制
     accessDisabled:
       header: '1. 设置管理员用户'
-      helpText: '该账户将成为管理员并拥有对{appName}的完全控制权限'
+      helpText: '该账户将成为管理员并拥有对{appName}的完全控制权限。'
       form:
         login:
           labelText: 登录用户名
@@ -722,10 +722,10 @@ projectsPage:
     label: Pod安全策略
   resourceQuota:
     title: 资源配额
-    detail: 配置整个项目可以使用多少资源
+    detail: 配置整个项目可以使用多少资源。
   members:
     title: 成员
-    detail: 配置可以访问该项目中资源的用户以及用户权限
+    detail: 配置可以访问该项目中资源的用户以及用户权限。
     user: 用户
     group: 组
     serviceaccount: 服务账号
@@ -745,7 +745,7 @@ projectsPage:
       label: 角色
     errors:
       nameReq: 名称(必填)
-      nameInExists: 名称已经存在，请使用新的项目名称
+      nameInExists: 名称已经存在，请使用新的项目名称。
       memberNameReq: 成员名称是必须的
       memberRoleReq: 成员角色是必须的
 
@@ -773,7 +773,7 @@ clustersPage:
 
 ingressPage:
   header: 'Ingress: {name}'
-  gkeIngressWarning: 'Kubernetes Engine可能需要几分钟才能分配外部IP地址并准备负载均衡器。与此同时，您可能会收到HTTP 404和HTTP 500等错误，直到负载平衡器准备好为流量提供服务'
+  gkeIngressWarning: 'Kubernetes Engine可能需要几分钟才能分配外部IP地址并准备负载均衡器。与此同时，您可能会收到HTTP 404和HTTP 500等错误，直到负载平衡器准备好为流量提供服务。'
   table:
     targets:
       label: 目标
@@ -784,14 +784,14 @@ containerPage:
   header: '容器: {name}'
   envTab:
     header: 环境变量
-    detail: '在创建容器时配置到容器内的环境变量'
+    detail: '在创建容器时配置到容器内的环境变量。'
   portsTab:
     header: 端口
-    detail: '容器监听端口到主机公用IP地址端口的映射关系'
+    detail: '容器监听端口到主机公用IP地址端口的映射关系。'
     hostPrimaryIp: "({ip})"
   linksTab:
     header: 链接
-    detail: '这些属性显示了其他容器和当前容器之间的链接'
+    detail: '这些属性显示了其他容器和当前容器之间的链接。'
     noData: 当前容器没有链接
   volumesTab:
     header: 数据卷
@@ -838,7 +838,7 @@ clusterDashboard:
   controllerManager: Controller Manager
   value: 值
   notActive: 此集群当前为<b>{state}</b>
-  notReady: 此集群当前为<b>{state}</b>，在API准备就绪之前，直接与其交互的功能将不可用
+  notReady: 此集群当前为<b>{state}</b>，在API准备就绪之前，直接与其交互的功能将不可用。
   noNodes: 没有主机
   alert:
     node: "警告: 主机{node}未激活"
@@ -867,7 +867,7 @@ editDns:
   name:
     placeholder: '例如: myapp'
   description:
-    placeholder: '例如: Current version of MyApp'
+    placeholder: '例如: 当前MyApp版本'
   selector:
     label: 容器选择器
     keyLabel: 标签
@@ -899,7 +899,7 @@ editDns:
   errors:
     targetRequired: '必须填写一个或多个"目标"'
     selectorRequired: '必须填写一个或多个"目标选择器"'
-    mixedAlias: 别名不能以CNAME和其他记录的组合为目标
+    mixedAlias: 别名不能以CNAME和其他记录的组合为目标。
     multipleCname: 别名不能指向多个CNAME记录
 
 cruPersistentVolumeClaim:
@@ -1130,8 +1130,8 @@ k8sPage:
 loginPage:
   greeting: "您好！<br>欢迎使用{appName}"
   insecure: "{appName}仅支持<code>https://</code>连接，你必须:<br><br>使用服务器内置的TLS支持,或者<br><br>在容器前面提供自己的TLS终端。"
-  githubMessage: "{appName}使用GitHub管理账号和团队。点击以下按钮以登录，我们将仅使用基本的GitHub账号信息"
-  shibbolethMessage: "{appName}使用Shibboleth管理账号。点击以下按钮以登录到设置的Shibboleth IDP."
+  githubMessage: "{appName}使用GitHub管理账号和团队。点击以下按钮以登录，我们将仅使用基本的GitHub账号信息。"
+  shibbolethMessage: "{appName}使用Shibboleth管理账号。点击以下按钮以登录到设置的Shibboleth IDP。"
   shibbolethError:
     401: "未授权"
     500: "内部服务器错误"
@@ -1149,7 +1149,7 @@ loginPage:
 machinePage:
   header: 主机驱动
   inactive: 未激活
-  subtext: "另外<code>Docker-machine</code>驱动可在此加载并在添加主机界面使用"
+  subtext: "另外<code>Docker-machine</code>驱动可在此加载并在添加主机界面使用。"
   add: 添加主机驱动
   builtin: 内置
   url: 位置
@@ -1299,7 +1299,7 @@ signupPage:
   emailSuccess:
     header: '欢迎使用{appName}'
     confirm:
-      subtext: 已经发送邮件到您的邮箱，请点击邮件中的验证链接以确认您的邮件地址.
+      subtext: 已经发送邮件到您的邮箱，请点击邮件中的验证链接以确认您的邮件地址。
       resend: 重新发送邮件
 
 stackPage:
@@ -1366,7 +1366,7 @@ newStack:
     uploadActionLabel: 从磁盘读取
     namePlaceholder: 文件名
     valuePlaceholder: 文件内容
-    protipLabel: "支持{appName}<code>compose.yml</code>，<code>docker-compose.yml</code>和Kubernetes清单文件."
+    protipLabel: "支持{appName}<code>compose.yml</code>，<code>docker-compose.yml</code>和Kubernetes清单文件。"
   answers:
     label: 应答(变量替换)
     addActionLabel: 添加应答
@@ -1545,15 +1545,15 @@ ldap:
         pre: 关闭访问控制
   accessConfig:
     header: "1. 配置{providerName}服务器"
-    subtext1: "请输入地址、端口及协议以连接你的{providerName}服务器。<code>389</code>是标准端口(未加密), <code>636</code>是加密连接(TLS)端口"
-    subtext2: "{appName}需要一个对所有登录域有只读权限的服务账号"
+    subtext1: "请输入地址、端口及协议以连接你的{providerName}服务器。<code>389</code>是标准端口(未加密), <code>636</code>是加密连接(TLS)端口。"
+    subtext2: "{appName}需要一个对所有登录域有只读权限的服务账号。"
     port:
       labelText: 端口
       checkbox: TLS
     groupSearchBase:
       labelText: '组搜索起点:'
       placeholder: "例如: ou=Groups,dc=mycompany,dc=com"
-      helpText: "设置后，会在此搜索起点下搜索组而不会在用户搜索起点下搜索组."
+      helpText: "设置后，会在此搜索起点下搜索组而不会在用户搜索起点下搜索组。"
     userSearchBase:
       labelText: 用户搜索起点
       placeholder: "例如: ou=Users,dc=mycompany,dc=com"
@@ -1567,11 +1567,11 @@ ldap:
       labelText: 服务连接超时
   customizeSchema:
     header: "2. 自定义架构"
-    helpText: "如果你的活动目录架构(Schema)不是标准格式，可以在这里进行自定义设置"
+    helpText: "如果你的活动目录架构(Schema)不是标准格式，可以在这里进行自定义设置。"
     cert:
       labelText: CA证书
       helpText: 如果需要，请输入CA证书
-      placeholder: "粘贴或导入证书，以-----BEGIN CERTIFICATE-----开头"
+      placeholder: "粘贴或导入证书，以-----BEGIN CERTIFICATE-----开头。"
     users:
       header: 用户
       objectClass:
@@ -1692,7 +1692,7 @@ cloudProvider:
   helpText: |
     详细了解<a href="https://kubernetes.io/docs/concepts/cluster-administration/cloud-providers/" target="_blank" rel="nofollow noopener noreferrer">云提供商</a>
   warning:
-    使用云提供程序而不传递云提供程序配置可能会导致您的集群无法正确配置，推荐您在创建集群之前添加云提供程序配置，文档中可以找到支持的云提供商所需的先决条件
+    使用云提供程序而不传递云提供程序配置可能会导致您的集群无法正确配置，推荐您在创建集群之前添加云提供程序配置，文档中可以找到支持的云提供商所需的先决条件。
   azureCloudConfig:
     cloudProviderBackoff:
       description: "Enable exponential backoff to manage resource request retries"
@@ -1786,7 +1786,7 @@ catalogSettings:
       help-name: 唯一的名称
       help-repo: '仓库URL地址:'
       help-branch: "可选: 如果使用基于Git的应用商店，则还需要设置分支名称。"
-      help-git: "基于Git的商店URL地址, 例如: <i class='text-lowercase'>https://github.com/{appName}/charts.git</i>"
+      help-git: "基于Git的商店URL地址, 例如: https://github.com/{appName}/charts.git。"
       help-chart: 'Helm Charts server URL,例如: https://kubernetes-charts.storage.googleapis.com/(详细信息可查看<a href="https://docs.helm.sh/developing_charts/#hosting-chart-repositories" target="_blank" rel="nofollow noopener noreferrer">Chart托管仓库</a>)。'
     addActionLabel: 添加应用商店
     noMatch: 没有与当前搜索匹配的应用商店
@@ -1863,7 +1863,7 @@ clusterNew:
     access:
       title: 账户访问
       detail: 配置用于与Azure通讯的凭据
-      help: '参考<a href="https://docs.microsoft.com/en-us/azure/aks/kubernetes-service-principal" target="_blank">链接文档</a>创建客户端ID和秘钥'
+      help: '参考<a href="https://docs.microsoft.com/en-us/azure/aks/kubernetes-service-principal" target="_blank">链接文档</a>创建客户端ID和秘钥。'
     placement:
       label: 位置
     count:
@@ -2077,7 +2077,7 @@ clusterNew:
     ingress:
       label: Nginx Ingress
     monitoring:
-      label: 度量服务监控
+      label: Metrics服务监控
     networkPolicy:
       label: 项目网络隔离
     version:
@@ -2186,8 +2186,8 @@ containerLogs:
   protip: "高级技巧: 点击查看日志时按住{key}键在新窗口中打开"
   scrollTop: 回到顶部
   scrollBottom: 回到底部
-  wrapLines: 自动换行
   clear: 清除屏幕
+  wrapLines: 自动换行
   status:
     initializing: 初始化...
     connecting: 连接中...
@@ -2870,17 +2870,17 @@ dangerZone:
   subtext: "通常情况下用户不需要修改以下设置。请谨慎操作，不正确的值可能导致{appName}运行不正常。<br/>修改默认设置后将以<b>粗体</b>显示配置名"
   showLabel: 我已确认修改高级设置可能导致{appName}出问题
   description:
-    'cacerts': "验证ssl证书所需的CA证书。此CA证书仅适用于自签名SSL证书,若SSL证书是权威CA机构所颁发，则要求删除此CA证书"
-    'engine-install-url': '默认的Docker引擎安装URL(用于大多数Machine Drivers)'
-    'engine-iso-url': '默认OS安装URL(用于Machine vSphere Drivers)'
-    'engine-newest-version': '当前Rancher Server支持的Docker最新版本，不支持的版本或比此Docker版本新的将被标记为未测试'
-    'engine-supported-range': '当前Rancher Server支持的Docker版本范围，不满足此范围的Docker版本将在UI中标记为不受支持'
-    'ingress-ip-domain': '用于自动生成Ingress主机名的通配DNS域。<入口名>.<命名空间名>.<入口控制器的IP地址>将被添加到域名中'
-    'server-url': '默认的{appName} Server访问地址，必须是HTTPS。集群中的所有主机都必须能够访问此地址'
-    'system-default-registry': '用于RKE部署基础服务时系统镜像的拉取，拉取其他服务镜像不生效'
-    'ui-index': 'UI的HTML索引位置'
-    'ui-pl': '公司名称专用标签'
-    'telemetry-opt': 'Telemetry reporting opt-in'
+    'cacerts': '验证ssl证书所需的CA证书，此CA证书仅适用于自签名SSL证书。若SSL证书是权威CA机构所颁发，则要求删除此CA证书。'
+    'engine-install-url': '默认的Docker引擎安装URL(用于大多数Machine Drivers)。'
+    'engine-iso-url': '默认OS安装URL(用于Machine vSphere Drivers)。'
+    'engine-newest-version': '当前Rancher Server支持的Docker最新版本，不支持的版本或比此Docker版本新的将被标记为未测试。'
+    'engine-supported-range': '当前Rancher Server支持的Docker版本范围，不满足此范围的Docker版本将在UI中标记为不受支持。'
+    'ingress-ip-domain': '用于自动生成Ingress主机名的通配DNS域。<入口名>.<命名空间名>.<入口控制器的IP地址>将被添加到域名中。'
+    'server-url': '默认的{appName} Server访问地址，必须是HTTPS。集群中的所有主机都必须能够访问此地址。'
+    'system-default-registry': '用于RKE部署基础服务时系统镜像的拉取，拉取其他服务镜像不生效。'
+    'ui-index': 'UI的HTML索引位置。'
+    'ui-pl': '公司名称专用标签。'
+    'telemetry-opt': 'Telemetry reporting opt-in。'
 
 editAccount:
   title: 编辑账号
@@ -2891,7 +2891,7 @@ editAccount:
     kind:
       label: 账号类型
       user: 普通用户
-      admin: "管理员: 完全访问管理所有集群中的所有内容"
+      admin: '管理员: 完全访问管理所有集群中的所有内容'
     description:
       label: 描述
       placeholder: '例如: John Smith的账号'
@@ -3210,7 +3210,7 @@ formCommand:
     label: 工作目录
     placeholder: '例如: /myapp'
   uid:
-    label: '用户UID: '
+    label: '用户UID'
     placeholder: '例如: 501'
   console:
     label: 控制台
@@ -3657,11 +3657,11 @@ formScheduling:
   runSpecific: 在指定主机上运行此pod
   noRules: 没有规则.
   noToleration: 不容忍节点污点
-  autoRun: "在匹配调度规则的每个主机上自动运行: "
+  autoRun: "在匹配调度规则的每个主机上自动运行"
   autoPick:
-    vm: "为每一个虚拟机自动选择符合调度规则的主机:"
-    container: "为每一个pod自动选择符合调度规则的主机:"
-    host: "自动选择符合调度规则的主机:"
+    vm: "为每一个虚拟机自动选择符合调度规则的主机"
+    container: "为每一个pod自动选择符合调度规则的主机"
+    host: "自动选择符合调度规则的主机"
   addRule: 添加规则
   addCustom: 添加自定义规则
   condition: 条件
