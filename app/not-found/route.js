@@ -11,7 +11,7 @@ export default Route.extend({
   },
 
   redirect() {
-    let url = this.router.location.formatURL('/not-found');
+    let url = this._router.location.formatURL('/not-found');
 
     if (window.location.pathname !== url) {
       this.transitionTo('not-found');

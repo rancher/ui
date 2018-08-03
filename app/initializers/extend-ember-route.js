@@ -13,7 +13,7 @@ export function initialize(/* application */) {
     rememberPrevious() {
       // var appRoute = getOwner(this).lookup('route:application');
       const appRoute = window.l('route:application'); // The global one, not the per-engine application
-      var infos = this.router._routerMicrolib.currentHandlerInfos;
+      var infos = this._router._routerMicrolib.currentHandlerInfos;
 
       if ( infos && infos.length ) {
         var params = [];
@@ -58,7 +58,7 @@ export function initialize(/* application */) {
     },
 
     goToParent() {
-      var infos = this.router._routerMicrolib.currentHandlerInfos;
+      var infos = this._router._routerMicrolib.currentHandlerInfos;
 
       var args = [];
       var info;
