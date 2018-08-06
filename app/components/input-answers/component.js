@@ -18,12 +18,13 @@ export default Component.extend({
 
   originQuestions: alias('selectedTemplate.questions'),
   questions:       alias('selectedTemplate.allQuestions'),
+  customAnswers:   alias('selectedTemplate.customAnswers'),
 
   didInsertElement() {
-    this.set('_boundChange', (event) => {
+    set(this, '_boundChange', (event) => {
       this.change(event);
     });
-    this.$('INPUT[type=file]').on('change', this.get('_boundChange'));
+    this.$('INPUT[type=file]').on('change', get(this, '_boundChange'));
   },
 
   actions: {
@@ -31,20 +32,27 @@ export default Component.extend({
       this.$('INPUT[type=file]')[0].click();
     },
     showPaste() {
-      this.set('pasteOrUpload', true);
+      set(this, 'pasteOrUpload', true);
     },
     cancel() {
-      this.set('pasteOrUpload', false);
+      set(this, 'pasteOrUpload', false);
     }
   },
 
   pastedAnswers: computed('pasteOrUpload', {
     get( /* key */ ) {
-      var questions = this.get('questions');
-      var out = {};
+      const questions = get(this, 'questions');
+      const answers = get(this, 'customAnswers') || {};
+      const out = {};
 
       questions.forEach((q) => {
         out[q.variable] = q.answer || q.default || '';
+      });
+
+      Object.keys(answers).forEach((key) => {
+        if ( typeof out[key] === 'undefined' ) {
+          out[key] = answers[key];
+        }
       });
 
       return YAML.stringify(out);
@@ -52,13 +60,21 @@ export default Component.extend({
 
     set(key, value) {
       let qa = YAML.parse(value);
-      let questions = this.get('questions');
+      let questions = get(this, 'questions');
+      const answers = {};
 
       if (qa) {
         Object.keys(qa).forEach((q) => {
-          set(questions.findBy('variable', q), 'answer', qa[q]);
+          const question = questions.findBy('variable', q);
+
+          if ( question ) {
+            set(question, 'answer', qa[q]);
+          } else {
+            answers[q] = qa[q];
+          }
         });
       }
+      set(this, 'customAnswers', answers);
 
       return value;
     }
@@ -68,7 +84,7 @@ export default Component.extend({
     if ( isSafari ) {
       return '';
     } else {
-      return this.get('accept');
+      return get(this, 'accept');
     }
   }),
 
@@ -158,7 +174,7 @@ export default Component.extend({
       reader.onload = (event2) => {
         var out = event2.target.result;
 
-        this.set('pastedAnswers', out);
+        set(this, 'pastedAnswers', out);
         input.value = '';
       };
       reader.readAsText(file);
