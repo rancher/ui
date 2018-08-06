@@ -1,5 +1,5 @@
 import Resource from 'ember-api-store/models/resource';
-import branchConditionsEnums from 'pipeline/utils/branchConditionsEnums';
+import branchConditionsEnums from 'shared/utils/branchConditionsEnums';
 import { inject as service } from '@ember/service';
 import { download } from 'shared/utils/util';
 import { get } from '@ember/object';
