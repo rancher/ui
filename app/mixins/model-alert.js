@@ -1,5 +1,5 @@
 import Mixin from '@ember/object/mixin';
-import { get } from '@ember/object';
+import { get, computed } from '@ember/object';
 import { inject as service } from '@ember/service';
 import { reads } from '@ember/object/computed';
 
@@ -12,9 +12,9 @@ export default Mixin.create({
 
   canClone: false,
 
-  relevantState: function() {
+  relevantState: computed('combinedState', 'alertState', function() {
     return this.get('combinedState') || this.get('alertState') || 'unknown';
-  }.property('combinedState', 'alertState'),
+  }),
 
   init() {
     const stateMap = {
@@ -36,20 +36,20 @@ export default Mixin.create({
     this._super(...arguments);
   },
 
-  displayTargetType: function() {
+  displayTargetType: computed('targetType', function() {
     const t = get(this, 'targetType');
     const intl = get(this, 'intl');
 
     return intl.t(`alertPage.targetTypes.${ t }`);
-  }.property('targetType'),
+  }),
 
-  resourceKind: function() {
+  resourceKind: computed('targetEvent.resourceKind', function() {
     const rk = get(this, 'targetEvent.resourceKind');
 
     return get(this, 'intl').t(`alertPage.resourceKinds.${ rk }`);
-  }.property('targetEvent.resourceKind'),
+  }),
 
-  firstRecipient: function() {
+  firstRecipient: computed('recipients.length', function() {
     const recipient = (get(this, 'recipients') || []).get('firstObject');
 
     if (recipient && get(recipient, 'notifierId')) {
@@ -69,9 +69,9 @@ export default Mixin.create({
     }
 
     return null;
-  }.property('recipients.length'),
+  }),
 
-  displayRecipient: function() {
+  displayRecipient: computed('firstRecipient', 'model.recipients.length', function() {
     const len = get(this, 'recipients.length');
     const firstRecipient = get(this, 'firstRecipient');
     const intl = get(this, 'intl');
@@ -86,9 +86,9 @@ export default Mixin.create({
     }
 
     return out;
-  }.property('firstRecipient', 'model.recipients.length'),
+  }),
 
-  nodeName: function() {
+  nodeName: computed('targetNode.nodeId', function() {
     const id = get(this, 'targetNode.nodeId');
 
     if (!id) {
@@ -101,7 +101,7 @@ export default Mixin.create({
     }
 
     return node.get('displayName');
-  }.property('targetNode.nodeId'),
+  }),
 
   actions: {
     edit() {
@@ -128,7 +128,7 @@ export default Mixin.create({
     },
   },
 
-  availableActions: function() {
+  availableActions: computed('actionLinks.{mute,unmute,activate,deactivate}', function() {
     // let al = this.get('actionlinks');
     const state = this.get('alertState');
 
@@ -162,5 +162,5 @@ export default Mixin.create({
         bulkable: true,
       },
     ];
-  }.property('actionLinks.{mute,unmute,activate,deactivate}'),
+  }),
 });
