@@ -378,11 +378,11 @@ authPage:
     popupError: '请关闭弹出验证窗口，然后再次单击“验证”。'
   ping:
     buttonText:
-      pre: '通过Ping认证 '
+      pre: '启用Ping认证 '
       post: '等待返回'
   adfs:
     buttonText:
-      pre: '通过AD FS认证'
+      pre: '启用AD FS认证'
       post: '等待返回'
 
 
@@ -412,7 +412,7 @@ authPage:
       groups:
         labelText: 组织字段
       testAuth:
-        header: '2. 测试并启用验证'
+        header: '2. 测试并启用认证'
         subtext: '测试以确认你的配置是否正确:'
         buttonText:
           pre: 使用IDP验证
@@ -470,10 +470,10 @@ authPage:
           labelText: 企业版主机
           placeholder: '例如: github.example.com'
     testAuth:
-      header: '3. 测试并启用验证'
+      header: '3. 测试并启用认证'
       subtext: '测试以确认您的配置是否正确'
       buttonText:
-        pre: GitHub验证
+        pre: 启用GitHub认证
         post: 等待GitHub返回
       authError: '未获取Github访问权限'
       popupError: '请关闭当前窗口，点击认证按钮重新认证'
@@ -511,14 +511,14 @@ authPage:
         placeholder: UUID字符串
         help: 由Azure AD portal获取
     test:
-      header: '2. 测试并启用验证'
+      header: '2. 测试并启用认证'
       help: '测试验证以确认配置是否正确:'
       username:
         label: 登录用户名
         placeholder: '例如: jsmith'
       password:
         label: 登录密码
-      pre: Azure验证
+      pre: 启用Azure认证
       post: 等待Azure返回
       authError: 'Azure访问未认证授权'
       popupError: '请关闭窗口，然后再次点击认证按钮进行认证'
@@ -1507,9 +1507,9 @@ ldap:
     ad: Active Directory
     freeipa: FreeIPA
     saveLabels:
-      openldap: OpenLDAP验证
-      ad: Active Directory验证
-      freeipa: FreeIPA验证
+      openldap: 启用OpenLDAP认证
+      ad: 启用Active Directory认证
+      freeipa: 启用FreeIPA认证
   header:
     disabled:
       label: "{providerName}未设置"
@@ -1614,12 +1614,12 @@ ldap:
         disabled:
           labelText: Search only direct group memberships
   testAuth:
-    header: "3. 测试并启用验证"
+    header: "3. 测试并启用认证"
     helpText: "通过你的{providerName}账号进行验证测试以确认配置是否正确:"
     userName:
-      labelText: 你的用户名
+      labelText: 用户名
     password:
-      labelText: 你的密码
+      labelText: 密码
     authenticate:
       pre: 验证
       post: "测试中..."
@@ -4842,7 +4842,7 @@ nodeDriver:
       placeholder: 你的Exoscale secret密钥
       provided: 已提供
     accountHelp: 在此粘贴你的Exoscale密钥对，我们将用秘钥创建新的实例
-    loginAction: '下一步: 验证及选择安全组'
+    loginAction: '下一步: 验证并选择安全组'
     loadingSecurity: 从Exoscale加载安全组...
     securityGroupSection: 安全组
     securityGroup:
@@ -4852,6 +4852,11 @@ nodeDriver:
       custom: '自定义: 选择现有安全组'
       updating: 更新安全组...
       creating: 创建安全组...
+    loadingZone: 从Exoscale加载区域信息...
+    zoneSection: 区域
+    selectZoneAction: “下一步：选择一个安全组”
+    zone:
+      label: 区域
     portHelp:
       link: 了解更多
       text: 关于将要开放的端口信息
@@ -4863,14 +4868,15 @@ nodeDriver:
     selectSecurityGroupAction: "下一步: 设置实例选项"
     loadingInstance: 读取可用实例配置...
     instanceSection: 实例
-    instanceOptionsSection: 实例选项
     instanceProfile:
       label: 实例配置文件
     diskSize:
       label: 根磁盘大小
     sshUser:
       label: SSH 用户
-      placeholder: 'usr1'
+      placeholder: '默认情况下由docker-machine选择'
+    template:
+      label: 模板
   packet:
     accountSection: 账户访问
     projectId:
