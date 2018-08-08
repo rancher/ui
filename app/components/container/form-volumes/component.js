@@ -245,7 +245,7 @@ export default Component.extend({
           secret: store.createRecord({
             type:        'secretVolumeSource',
             defaultMode: 256,
-            secretId:    null,
+            secretName:  null,
             optional:    false,
           }),
         }),

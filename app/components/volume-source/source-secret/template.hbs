@@ -26,20 +26,20 @@
   </div>
   <div class="row mb-20">
     <div class="col span-6">
-      <label class="acc-label">{{t 'cruPersistentVolume.secret.secretId.label'}}</label>
+      <label class="acc-label">{{t 'cruPersistentVolume.secret.secretName.label'}}</label>
       {{#if editing}}
         {{schema/input-secret
           namespace=namespace
-          value=config.secretId
-          valueKey='id'
+          value=config.secretName
+          valueKey='name'
         }}
       {{else}}
         <div>
-          {{config.secretId}}
+          {{config.secretName}}
         </div>
       {{/if}}
     </div>
-    {{#if config.secretId}}
+    {{#if config.secretName}}
       <div class="col span-6">
         <label class="acc-label">{{t 'cruPersistentVolume.secret.items.label'}}</label>
         {{#if editing}}
@@ -68,12 +68,12 @@
     {{/if}}
   </div>
 
-  {{#if (and config.secretId specific)}}
+  {{#if (and config.secretName specific)}}
     <div class="row">
       <div class="col span-12">
         {{form-key-to-path
           initialItems=config.items
-          secretId=config.secretId
+          secretName=config.secretName
           editing=editing
           changed=(action (mut config.items))
         }}
