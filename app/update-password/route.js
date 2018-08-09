@@ -25,7 +25,7 @@ export default Route.extend({
       const version = get(this, `settings.${ C.SETTING.VERSION_RANCHER }`);
       let optIn;
 
-      if ( version && version !== 'master' ) {
+      if ( version && !['dev','master'].includes(version) ) {
         // For releases, default to opt in
         optIn = (cur !== 'out');
       } else {
