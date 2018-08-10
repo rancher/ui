@@ -282,7 +282,7 @@ export default Route.extend(Preload, {
       this._gotoRoute('authenticated.prefs', 'global');
     },
     gotoT() {
-      this._gotoRoute('authenticated.node-templates', 'global');
+      this._gotoRoute('nodes.node-templates', 'global');
     },
 
     // Cluster or Project
