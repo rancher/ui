@@ -3,8 +3,6 @@ Rancher UI
 
 Perhaps you like managing Cattle.
 
-[![Build Status](https://drone.rancher.io/api/badges/rancher/ui/status.svg)](https://drone.rancher.io/rancher/ui)
-
 ## Usage
 
 Prerequisites:
@@ -69,9 +67,10 @@ Rancher UI supports localization via translations files. You can swap translatio
 If you want to customize the UI, re-packaging all of Rancher to distribute the UI is possible but not terribly convenient. Instead you can change Cattle to load the UI source from a remote web server:
 
 - Build with `./scripts/build-static -l -c 'your-server.com'`
-- Upload `./dist/static/latest` so that it's available at http://your-server.com/latest (you can rename the "latest" part with the `-v` flag)
-- If your Rancher is behind a SSL proxy, your-server must also respond to SSL requests
-- Change the value of http[s]://your-rancher:8080/v1/settings/api.ui.index to `//yourserver.com/latest`
+- Upload `./dist/static/latest2` so that it's available at https://your-server.com/latest2
+  - It must be available over HTTPS.
+  - You can rename the "latest2" part with the `-v` flag
+- Change the value of http[s]://your-rancher:8080/v3/settings/ui-index to the same `https://yourserver.com/latest2` URL
 
 ### Running Tests
 
@@ -98,7 +97,7 @@ Or just [click here](//github.com/rancher/rancher/issues/new?title=%5BUI%5D%20) 
 
 License
 =======
-Copyright (c) 2014-2016 [Rancher Labs, Inc.](http://rancher.com)
+Copyright (c) 2014-2018 [Rancher Labs, Inc.](http://rancher.com)
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
