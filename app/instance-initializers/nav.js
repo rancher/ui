@@ -245,9 +245,9 @@ const rootNav = [
   },
   {
     scope:          'global',
-    id:             'global-node-drivers',
+    id:             'nodes-node-drivers',
     localizedLabel: 'nav.admin.nodeDrivers',
-    route:          'global-admin.node-drivers',
+    route:          'nodes.node-drivers',
     resource:       ['nodedriver'],
     resourceScope:  'global',
   },

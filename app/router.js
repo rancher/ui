@@ -37,6 +37,10 @@ Router.map(function() {
   this.route('update-critical-settings', { path: '/update-setting' });
 
   this.route('authenticated', { path: '/' }, function() {
+    this.mount('nodes', {
+      path:           '/n',
+      resetNamespace: true
+    });
     // Global
     this.mount('global-admin', {
       path:           '/g',
@@ -45,7 +49,7 @@ Router.map(function() {
     this.route('dummy-dev', { path: '/dev' });
 
     this.route('apikeys');
-    this.route('node-templates');
+    // this.route('node-templates');
     this.route('prefs');
 
     // Per-Cluster
