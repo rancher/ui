@@ -10,7 +10,7 @@ export default Component.extend({
   layout,
   // Inputs
   initialItems:  null,
-  secretId:      null,
+  secretName:      null,
   configMapName: null,
   mode:          SECRET,
 
@@ -87,7 +87,7 @@ export default Component.extend({
     },
   },
 
-  secretDidChange: observer('secretId', function() {
+  secretDidChange: observer('secretName', function() {
     if ( get(this, 'mode') === SECRET ) {
       this.updateSecretKeys();
       set(this, 'ary', []);
@@ -108,10 +108,10 @@ export default Component.extend({
   // Secret
   updateSecretKeys() {
     const allSecrets = get(this, 'allSecrets');
-    const secretId = get(this, 'secretId');
+    const secretName = get(this, 'secretName');
 
-    if (secretId) {
-      const secret = allSecrets.findBy('id', secretId);
+    if (secretName) {
+      const secret = allSecrets.findBy('name', secretName);
 
       set(this, 'keys', Object.keys(secret.data).map((k) => ({
         label: k,
