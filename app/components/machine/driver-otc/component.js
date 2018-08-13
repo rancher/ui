@@ -337,7 +337,11 @@ export default Ember.Component.extend(Driver, {
       version: 'v1',
       queryParams: `vpc_id=${this.get('model.otcConfig.vpcId')}`
     }).then((resp) => {
-      return this.set('subnets', resp.subnets.filterBy('availability_zone', this.get('model.otcConfig.availableZone')));
+      let subnets = resp.subnets.filterBy('availability_zone', this.get('model.otcConfig.availableZone'));
+      if ( subnets.length === 0 ) {
+        subnets = resp.subnets;
+      }
+      return this.set('subnets', subnets.sortBy('name'));
     });
   },
 
