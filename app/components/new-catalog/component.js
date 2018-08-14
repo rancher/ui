@@ -212,10 +212,16 @@ export default Component.extend(NewOrEdit, {
       });
     });
 
+    const customAnswers = get(this, 'selectedTemplateModel.customAnswers') || {};
+
+    Object.keys(customAnswers).forEach((key) => {
+      out[key] = stringifyAnswer(customAnswers[key]);
+    });
+
     return out;
   }),
 
-  answersArray: computed('selectedTemplateModel.questions', 'catalogApp.answers', function() {
+  answersArray: computed('selectedTemplateModel.questions', 'selectedTemplateModel.customAnswers', 'catalogApp.answers', function() {
     let model = get(this, 'selectedTemplateModel');
 
     if (get(model, 'questions')) {
@@ -228,6 +234,15 @@ export default Component.extend(NewOrEdit, {
         if ( subquestions ) {
           questions.pushObjects(subquestions);
         }
+      });
+
+      const customAnswers = get(this, 'selectedTemplateModel.customAnswers') || {};
+
+      Object.keys(customAnswers).forEach((key) => {
+        questions.push({
+          variable: key,
+          answer:   customAnswers[key],
+        });
       });
 
       return questions;
@@ -244,6 +259,12 @@ export default Component.extend(NewOrEdit, {
 
       (get(this, 'answersArray') || []).forEach((a) => {
         neu[a.variable] = isEmpty(a.answer) ? a.default : a.answer;
+      });
+
+      const customAnswers = get(model, 'customAnswers') || {};
+
+      Object.keys(customAnswers).forEach((key) => {
+        neu[key] = customAnswers[key];
       });
 
       return YAML.stringify(neu);
@@ -319,6 +340,7 @@ export default Component.extend(NewOrEdit, {
         .then((response) => {
           if (response.questions) {
             const questions = [];
+            const customAnswers = {};
 
             response.questions.forEach((q) => {
               questions.push(q);
@@ -348,6 +370,16 @@ export default Component.extend(NewOrEdit, {
                 item.answer = item.default || null;
               }
             });
+
+            Object.keys(current).forEach((key) => {
+              const q = questions.findBy('variable', key);
+
+              if ( !q ) {
+                customAnswers[key] = current[key];
+              }
+            });
+
+            response.customAnswers = customAnswers;
           }
 
           return response;
