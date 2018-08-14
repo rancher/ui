@@ -83,6 +83,7 @@ module.exports = function(defaults) {
   app.import('node_modules/prismjs/prism.js');
   app.import('node_modules/prismjs/components/prism-bash.js');
   app.import('node_modules/prismjs/components/prism-yaml.js');
+  app.import('node_modules/ember-source/dist/ember-template-compiler.js')
 
   // app.import('vendor/aws-sdk-ec2.js');
   app.import('vendor/aws-sdk-ec2-iam-2.279.1.min.js');
