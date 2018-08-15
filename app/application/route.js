@@ -1,4 +1,4 @@
-import { cancel, next, scheduleOnce } from '@ember/runloop';
+import { cancel, next, scheduleOnce, schedule } from '@ember/runloop';
 import { inject as service } from '@ember/service';
 import Route from '@ember/routing/route';
 import C from 'ui/utils/constants';
@@ -73,9 +73,15 @@ export default Route.extend({
         set(this, 'loadingShown', true);
         // console.log('Loading Show', id);
 
-        $('#loading-underlay').stop().show().fadeIn({duration: 100, queue: false, easing: 'linear', complete: function() { // eslint-disable-line
-          $('#loading-overlay').stop().show().fadeIn({duration: 200, queue: false, easing: 'linear'}); // eslint-disable-line
-        }
+        schedule('afterRender', () => {
+          $('#loading-underlay').stop().show().fadeIn({
+            duration: 100,
+            queue:    false,
+            easing:   'linear',
+            complete: function() { // eslint-disable-line
+              $('#loading-overlay').stop().show().fadeIn({duration: 200, queue: false, easing: 'linear'}); // eslint-disable-line
+            }
+          });
         });
       }
 
@@ -84,10 +90,18 @@ export default Route.extend({
 
         function hide() {
           // console.log('Loading hide', id);
-          self.set('loadingShown', false);
-          $('#loading-overlay').stop().fadeOut({duration: 200, queue: false, easing: 'linear', complete: function() { // eslint-disable-line
-            $('#loading-underlay').stop().fadeOut({duration: 100, queue: false, easing: 'linear'}); // eslint-disable-line
-          }
+
+          set(self, 'loadingShown', false);
+
+          schedule('afterRender', () => {
+            $('#loading-overlay').stop().fadeOut({
+              duration: 200,
+              queue:    false,
+              easing:   'linear',
+              complete: function() { // eslint-disable-line
+                $('#loading-underlay').stop().fadeOut({duration: 100, queue: false, easing: 'linear'}); // eslint-disable-line
+              }
+            });
           });
         }
 
