@@ -54,7 +54,7 @@ export default Component.extend({
       stackSchema: get(this, 'store').getById('schema', 'stack'),
     });
 
-    this.updateNavTree();
+    run.once(this, 'updateNavTree');
 
     run.scheduleOnce('render', () => {
       // responsive nav 63-87
@@ -122,10 +122,11 @@ export default Component.extend({
   isOwner: computed('stackSchema.resourceFields.system.update', function() {
     return !!get(this, 'stackSchema.resourceFields.system.update');
   }),
-  updateNavTree() {
-    let currentScope = get(this, 'pageScope');
 
-    let out = getTree().filter((item) => {
+  updateNavTree() {
+    const currentScope = get(this, 'pageScope');
+
+    const out = getTree().filter((item) => {
       if ( typeof get(item, 'condition') === 'function' ) {
         if ( !item.condition.call(this) ) {
           return false;
@@ -136,11 +137,14 @@ export default Component.extend({
         return false;
       }
 
+      const itemRoute = fnOrValue(get(item, 'route'), this);
+      const itemContext = (get(item, 'ctx') || []).map( (prop) =>  fnOrValue(prop, this));
+
       setProperties(item, {
         localizedLabel: fnOrValue(get(item, 'localizedLabel'), this),
         label:          fnOrValue(get(item, 'label'), this),
-        route:          fnOrValue(get(item, 'route'), this),
-        ctx:            (get(item, 'ctx') || []).map( (prop) =>  fnOrValue(prop, this)),
+        route:          itemRoute,
+        ctx:            itemContext,
         submenu:        fnOrValue(get(item, 'submenu'), this),
       });
 
@@ -149,11 +153,14 @@ export default Component.extend({
           return false;
         }
 
+        const subItemRoute = fnOrValue(get(subitem, 'route'), this);
+        const subItemContext = ( get(subitem, 'ctx') || [] ).map( (prop) => fnOrValue(prop, this));
+
         setProperties(subitem, {
           localizedLabel: fnOrValue(get(subitem, 'localizedLabel'), this),
           label:          fnOrValue(get(subitem, 'label'), this),
-          route:          fnOrValue(get(subitem, 'route'), this),
-          ctx:            ( get(subitem, 'ctx') || [] ).map( (prop) => fnOrValue(prop, this)),
+          route:          subItemRoute,
+          ctx:            subItemContext,
         });
 
         return true;

@@ -1,5 +1,5 @@
 import Mixin from '@ember/object/mixin';
-import { get } from '@ember/object';
+import { get, computed } from '@ember/object';
 import { htmlSafe } from '@ember/string';
 
 export default Mixin.create({
@@ -12,7 +12,7 @@ export default Mixin.create({
     return notifiers.filterBy('id', id).get('firstObject');
   },
 
-  recipientsTip: function() {
+  recipientsTip: computed('notifiers.@each.{id,displayName}', 'model.recipients.@each.{length,notifierType,recipient,notifierId}', function() {
     const recipients = get(this, 'model.recipients') || [];
     const out = recipients.map((recipient) => {
       const notifierId = get(recipient, 'notifierId');
@@ -28,5 +28,5 @@ export default Mixin.create({
     }).filter((str) => !!str).join('');
 
     return htmlSafe(out);
-  }.property('notifiers.@each.{id,displayName}', 'model.recipients.@each.{length,notifierType,recipient,notifierId}'),
+  }),
 });

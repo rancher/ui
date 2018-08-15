@@ -8,22 +8,22 @@
       {{#if item.submenu.length}}
         {{! Has a submenu }}
         {{#hover-dropdown
-          tagName="li"
-          class="nav-item"
-          as |dd|
+             tagName="li"
+             class="nav-item"
+             as |dd|
         }}
           {{#dd.trigger}}
             {{#if (or (not item.resource) (rbac-allows resource=item.resource scope=item.resourceScope))}}
               {{#if item.route}}
                 {{#link-to-as-attrs
-                  item.route
-                  models=item.ctx
-                  qp=item.qp
-                  currentWhen=item.currentWhen
-                  activeParent="LI"
-                  role="button"
-                  aria-haspopup="true"
-                  aria-expanded="false"
+                     ourRoute=item.route
+                     ctx=item.ctx
+                     qp=item.qp
+                     currentWhen=item.currentWhen
+                     activeParent="LI"
+                     role="button"
+                     aria-haspopup="true"
+                     aria-expanded="false"
                 }}
                   {{maybe-t item.localizedLabel item.label}}
                   <span class="icon icon-chevron-down"/>
@@ -38,17 +38,17 @@
           {{/dd.trigger}}
 
           {{#dd.content
-            tagName="ul"
+               tagName="ul"
           }}
             {{#each item.submenu as |subitem|}}
               {{#if subitem.route}}
                 {{#if (or (not subitem.resource) (rbac-allows resource=subitem.resource scope=subitem.resourceScope))}}
                   <li>
                     {{#link-to-as-attrs
-                      subitem.route
-                      models=subitem.ctx
-                      qp=subitem.qp
-                      activeParent="LI"
+                         ourRoute=subitem.route
+                         ctx=subitem.ctx
+                         qp=subitem.qp
+                         activeParent="LI"
                     }}
                       <i class="{{subitem.icon}}"/> {{maybe-t subitem.localizedLabel subitem.label}}
                     {{/link-to-as-attrs}}
@@ -72,12 +72,12 @@
           {{! No submenu }}
           <li class="nav-item">
             {{#link-to-as-attrs
-              item.route
-              models=item.ctx
-              qp=item.qp
-              activeParent="LI"
-              currentWhen=item.currentWhen
-              class="nav-link"
+                 ourRoute=item.route
+                 ctx=item.ctx
+                 qp=item.qp
+                 activeParent="LI"
+                 currentWhen=item.currentWhen
+                 class="nav-link"
             }}
               {{maybe-t item.localizedLabel item.label}}
             {{/link-to-as-attrs}}
@@ -96,48 +96,48 @@
   </ul>
 
   {{#hover-dropdown
-    tagName="ul"
-    class="nav-user"
-    horizontalPosition="right"
-    delay=250
-    as |dd|
+       tagName="ul"
+       class="nav-user"
+       horizontalPosition="right"
+       delay=250
+       as |dd|
   }}
     {{!-- <ul class="nav-user"> --}}
-      {{#dd.trigger
-        class="btn"
-        ariaLabel=(t 'nav.user.label' username=session.user)
-      }}
-        {{#if accessEnabled}}
-          {{identity-avatar link=false identity=access.principal}}
-        {{else}}
-          <div class="gh-avatar">
-            <div class="gh-placeholder">
-              <i class="icon icon-user"></i>
-            </div>
+    {{#dd.trigger
+         class="btn"
+         ariaLabel=(t 'nav.user.label' username=session.user)
+    }}
+      {{#if accessEnabled}}
+        {{identity-avatar link=false identity=access.principal}}
+      {{else}}
+        <div class="gh-avatar">
+          <div class="gh-placeholder">
+            <i class="icon icon-user"></i>
           </div>
-        {{/if}}
-        <span class="sr-only">{{t 'nav.srToggleDropdown'}}</span>
-        <i class="icon icon-chevron-down text-muted"></i>
-      {{/dd.trigger}}
+        </div>
+      {{/if}}
+      <span class="sr-only">{{t 'nav.srToggleDropdown'}}</span>
+      <i class="icon icon-chevron-down text-muted"></i>
+    {{/dd.trigger}}
 
-      {{#dd.content
-           class="text-right"
-           tagName="ul"
-      }}
-        {{#if accessEnabled}}
-          <li role="presentation" class="user-auth">
-            {{identity-block principal=access.principal}}
-          </li>
-        {{/if}}
+    {{#dd.content
+         class="text-right"
+         tagName="ul"
+    }}
+      {{#if accessEnabled}}
+        <li role="presentation" class="user-auth">
+          {{identity-block principal=access.principal}}
+        </li>
+      {{/if}}
 
-        <li role="separator" class="divider"></li>
-        <li>{{#link-to "authenticated.apikeys"}}{{t 'nav.api.link'}} <i class="icon icon-key icon-fw"/>{{/link-to}}</li>
-        <li>{{#link-to "authenticated.node-templates"}}{{t 'nav.nodeTemplates.link'}} <i class="icon icon-host icon-fw"/>{{/link-to}}</li>
-        <li role="separator" class="divider"></li>
-        <li>{{#link-to "authenticated.prefs"}}{{t 'nav.userPreferences.link'}} <i class="icon icon-gear icon-fw"/>{{/link-to}}</li>
-        <li role="separator" class="divider"></li>
-        <li>{{#link-to "logout" class="user-logout"}}{{t 'nav.user.logout'}} <i class="icon icon-logout icon-fw"/>{{/link-to}}</li>
-      {{/dd.content}}
-      {{!-- </ul> --}}
+      <li role="separator" class="divider"></li>
+      <li>{{#link-to "authenticated.apikeys"}}{{t 'nav.api.link'}} <i class="icon icon-key icon-fw"/>{{/link-to}}</li>
+      <li>{{#link-to "authenticated.node-templates"}}{{t 'nav.nodeTemplates.link'}} <i class="icon icon-host icon-fw"/>{{/link-to}}</li>
+      <li role="separator" class="divider"></li>
+      <li>{{#link-to "authenticated.prefs"}}{{t 'nav.userPreferences.link'}} <i class="icon icon-gear icon-fw"/>{{/link-to}}</li>
+      <li role="separator" class="divider"></li>
+      <li>{{#link-to "logout" class="user-logout"}}{{t 'nav.user.logout'}} <i class="icon icon-logout icon-fw"/>{{/link-to}}</li>
+    {{/dd.content}}
+    {{!-- </ul> --}}
   {{/hover-dropdown}}
 </nav>
