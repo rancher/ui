@@ -74,7 +74,7 @@ export default Route.extend({
         // console.log('Loading Show', id);
 
         schedule('afterRender', () => {
-          $('#loading-underlay').stop().show().fadeIn({
+          $('#loading-underlay').stop().show().fadeIn({// eslint-disable-line
             duration: 100,
             queue:    false,
             easing:   'linear',
@@ -94,7 +94,7 @@ export default Route.extend({
           set(self, 'loadingShown', false);
 
           schedule('afterRender', () => {
-            $('#loading-overlay').stop().fadeOut({
+            $('#loading-overlay').stop().fadeOut({// eslint-disable-line
               duration: 200,
               queue:    false,
               easing:   'linear',
