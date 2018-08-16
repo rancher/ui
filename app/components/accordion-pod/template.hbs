@@ -8,7 +8,7 @@
 }}
   {{#sortable-table
     tableClassNames="double-rows"
-    bulkActions=false
+    bulkActions=true
     body=pods
     descending=descending
     sortBy=sortBy
@@ -21,6 +21,9 @@
     }}
     {{#if (eq kind "row")}}
       <tr class="main-row">
+        <td valign="middle" class="row-check" style="padding-top: 2px;">
+          {{check-box nodeId=inst.id}}
+        </td>
         <td data-title="{{dt.displayState}}" class="state">
           {{badge-state model=inst}}
         </td>
