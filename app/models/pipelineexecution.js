@@ -2,6 +2,7 @@ import { inject as service } from '@ember/service';
 import Resource from 'ember-api-store/models/resource';
 import { get, computed } from '@ember/object';
 import { alias } from '@ember/object/computed';
+import C from 'shared/utils/pipeline-constants';
 import { reference } from 'ember-api-store/utils/denormalize';
 
 let PipelineExecution = Resource.extend({
@@ -70,7 +71,7 @@ let PipelineExecution = Resource.extend({
   }),
 
   showTransitioning: computed('showTransitioningMessage', 'executionState', function() {
-    return get(this, 'showTransitioningMessage') && get(this, 'executionState') !== 'Aborted' && get(this, 'executionState') !== 'Failed';
+    return get(this, 'showTransitioningMessage') && get(this, 'executionState') !== C.STATES.ABORTED && get(this, 'executionState') !== C.STATES.FAILED;
   }),
 
   commitUrl: computed('commit', function() {
