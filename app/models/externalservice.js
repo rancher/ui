@@ -18,7 +18,7 @@ var ExternalService = Service.extend({
     }
     else
     {
-      var ips = this.get('externalIpAddresses');
+      var ips = this.get('externalIpAddresses') || [];
       var num = ips.get('length');
       for ( var i = 0 ; i < 3 && i < num ; i++ )
       {
@@ -31,7 +31,9 @@ var ExternalService = Service.extend({
       }
     }
 
-    return ('<span class="text-muted">To: </span>' + out).htmlSafe();
+    if ( out ) {
+      return ('<span class="text-muted">To: </span>' + out).htmlSafe();
+    }
   }.property('hostname','externalIpAddresses.[]'),
 });
 
