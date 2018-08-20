@@ -303,12 +303,24 @@ export default Ember.Mixin.create({
         return;
       }
 
-      out.push(Ember.Object.create({
-        key: key,
-        value: obj[key]||'',
-        type: type,
-        readonly: readonlyKeys && readonlyKeys.indexOf(key) >= 0
-      }));
+      if ( type === AFFINITY && obj[key] && obj[key].indexOf(',') > -1 )
+      {
+        obj[key].split(',').forEach((s) => {
+          out.push(Ember.Object.create({
+            key: key,
+            value: s || '',
+            type: type,
+            readonly: readonlyKeys && readonlyKeys.indexOf(key) >= 0
+          }));
+        });
+      } else {
+        out.push(Ember.Object.create({
+          key: key,
+          value: obj[key]||'',
+          type: type,
+          readonly: readonlyKeys && readonlyKeys.indexOf(key) >= 0
+        }));
+      }
     });
 
     this.set('labelArray', out);
