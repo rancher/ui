@@ -23,12 +23,12 @@ export const headers = [
     searchField:    'project.displayName',
     translationKey: 'namespacesPage.table.project.label',
   },
-  {
-    name:           'resourceQuotaTemplate',
-    sort:           ['resourceQuotaTemplate.sortName'],
-    searchField:    ['resourceQuotaTemplate.displayName'],
-    translationKey: 'projectsPage.quota.label',
-  },
+  // {
+  //   name:           'resourceQuotaTemplate',
+  //   sort:           ['resourceQuotaTemplate.sortName'],
+  //   searchField:    ['resourceQuotaTemplate.displayName'],
+  //   translationKey: 'projectsPage.quota.label',
+  // },
   {
     name:           'created',
     sort:           ['created', 'id'],
