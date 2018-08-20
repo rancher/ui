@@ -124,6 +124,22 @@ export default Ember.Component.extend(HoverDropdown, {
     this.set('navTree', out);
   },
 
+  serviceAppChanged: function() {
+    let services = this.get('services') || [];
+    let newServices = services.find((ele) => {
+      let serviceApp = ele.get('serviceApp');
+      if( serviceApp ){
+        let exist = getTree().findBy('id', ele.id);
+        return !exist;
+      }
+      return false;
+    });
+
+    if ( newServices ) {
+      Ember.run.once(this, 'updateNavTree');
+    }
+  }.observes('services.@each.serviceApp'),
+
   shouldUpdateNavTree: function() {
     Ember.run.once(this, 'updateNavTree');
   }.observes(
@@ -131,7 +147,6 @@ export default Ember.Component.extend(HoverDropdown, {
     'projects.orchestrationState',
     'project.virtualMachine',
     'stacks.@each.group',
-    'services.@each.serviceApp',
     'catalog.catalogs.@each.{id,name}',
     `settings.${C.SETTING.CATALOG_URL}`,
     `prefs.${C.PREFS.ACCESS_WARNING}`,
