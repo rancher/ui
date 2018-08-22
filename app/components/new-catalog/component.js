@@ -65,7 +65,7 @@ export default Component.extend(NewOrEdit, {
 
   isGKE:                    alias('scope.currentCluster.isGKE'),
 
-  primaryResource:          alias('namespaceResource'),
+  primaryResource:          alias('catalogApp'),
   editing:                  notEmpty('catalogApp.id'),
   requiredNamespace: alias('selectedTemplateModel.requiredNamespace'),
 
@@ -405,7 +405,9 @@ export default Component.extend(NewOrEdit, {
   }),
 
   validate() {
-    var errors = [];
+    this._super();
+
+    const errors = get(this, 'errors') || [];
 
     errors.pushObjects(get(this, 'namespaceErrors') || []);
     errors.pushObjects(get(this, 'selectedTemplateModel').validationErrors() || []);
@@ -423,9 +425,9 @@ export default Component.extend(NewOrEdit, {
     const requiredNamespace = get(this, 'requiredNamespace');
 
     if ( requiredNamespace && (get(this, 'namespaces') || []).findBy('id', requiredNamespace) ) {
-      return resolve(get(this, 'primaryResource'));
+      return resolve(get(this, 'namespaceResource'));
     } else if ( requiredNamespace ) {
-      set(this, 'primaryResource.name', requiredNamespace);
+      set(this, 'namespaceResource.name', requiredNamespace);
     }
 
     return this._super(...arguments);
