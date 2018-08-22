@@ -145,6 +145,16 @@
       </div>
     </div>
   {{/accordion-list-item}}
+  {{#if isView}}
+    {{resource-event-list
+      resourceType=(t 'generic.persistentVolumeClaim')
+      expandAll=al.expandAll
+      expandFn=expandFn
+      namespaceId=model.namespaceId
+      name=model.name
+      kind="PersistentVolumeClaim"
+    }}
+  {{/if}}
 {{/accordion-list}}
 
 {{#unless isView}}
