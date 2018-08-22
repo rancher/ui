@@ -10,36 +10,37 @@
     <a class="{{if twoLine 'two-line'}} text-white">
       {{#if (eq pageScope "project")}}
         <div class="clip">
+          <span>{{project.cluster.displayName}}</span>
           <i class="icon icon-cluster icon-fw"></i>
-          {{project.cluster.displayName}}
         </div>
         <div class="pl-15 clip text-muted">
+          <span>{{project.displayName}}</span>
           <i class="{{project.icon}} project-icon icon-fw"></i>
-          {{project.displayName}}
         </div>
       {{else if (eq pageScope "cluster")}}
         <div class="clip">
+          <span>{{cluster.displayName}}</span>
           <i class="icon icon-cluster icon-fw"></i>
-          {{cluster.displayName}}
         </div>
       {{else if (eq pageScope "clusters")}}
         <div class="clip">
-          {{t 'nav.environment.manage'}}
+          <span>{{t 'nav.environment.manage'}}</span>
         </div>
       {{else if (eq pageScope "global")}}
         <div class="clip">
+          <span>{{t 'nav.admin.tab'}}</span>
           <i class="icon icon-globe icon-fw"></i>
-          {{t 'nav.admin.tab'}}
         </div>
       {{else}}
         <div class="clip">
+          <span>{{pageScope}}</span>
           <i class="icon icon-question icon-fw"></i>
-          {{pageScope}}
         </div>
       {{/if}}
 
-      <i class="icon icon-chevron-down chevron"></i>
       <span class="sr-only">{{t 'nav.srToggleDropdown'}}</span>
+      <i class="icon icon-chevron-down chevron"></i>
+
     </a>
 
   {{/dd.trigger}}
@@ -50,8 +51,8 @@
 
     <li class="header {{if (eq pageScope "global") 'active selected' 'inactive'}}">
       <a href="{{href-to "global-admin"}}">
-        <i class="icon icon-globe icon-fw"></i>
-        {{t 'nav.admin.tab'}}
+       <span>{{t 'nav.admin.tab'}}</span>
+       <i class="icon icon-globe icon-fw"></i>
       </a>
     </li>
     <li role="presentation" class="divider"></li>
@@ -64,8 +65,8 @@
 
       <li class="header {{if entry.active (if (eq pageScope 'cluster') 'active selected') 'inactive'}}">
         {{#link-to 'authenticated.cluster' entry.cluster.id}}
+          <span>{{t 'generic.cluster'}}: {{entry.cluster.displayName}}</span>
           <i class="icon icon-cluster icon-fw"></i>
-          {{t 'generic.cluster'}}: {{entry.cluster.displayName}}
         {{/link-to}}
       </li>
 
@@ -75,9 +76,8 @@
 
           <li class="{{if (and (eq pageScope "project") p.active) 'active selected' (unless entry.active 'inactive')}} subitem text-muted">
             {{#link-to 'authenticated.project' p.id class="clip project-link"}}
+              <span>{{p.displayName}}</span>
               <i class="icon {{p.icon}} icon-fw"></i>
-
-              {{p.displayName}}
             {{/link-to}}
           </li>
 

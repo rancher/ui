@@ -33,23 +33,29 @@
             {{/if}}
           </div>
         {{/if}}
-        {{#if rightActions}}
-          <div class="pull-right pl-20">
-            {{yield this 'right-actions'}}
-          </div>
-        {{/if}}
-        {{#if search}}
-          {{#ember-wormhole to=searchToWormhole renderInPlace=(not searchToWormhole)}}
-            <div class="{{unless searchToWormhole 'pull-right'}} search-group input-group">
-              {{input value=searchText aria-title=(t 'generic.search') type="search" class="input-sm pull-right" placeholder=(t 'generic.search')}}
-              {{#if searchText}}
-                <span class="input-group-btn">
-                  <button class="btn bg-transparent text-info pl-10 pr-10" {{action 'clearSearch'}}><i class="icon icon-close"/></button>
-                </span>
-              {{/if}}
+
+        <div class="pull-right">
+          {{#if search}}
+            <div class="vertical-middle">
+              {{#ember-wormhole to=searchToWormhole renderInPlace=(not searchToWormhole)}}
+                <div class="{{unless searchToWormhole 'pull-right'}} search-group input-group">
+                  {{input value=searchText aria-title=(t 'generic.search') type="search" class="input-sm pull-right" placeholder=(t 'generic.search')}}
+                  {{#if searchText}}
+                    <span class="input-group-btn">
+                      <button class="btn bg-transparent text-info pl-10 pr-10" {{action 'clearSearch'}}><i class="icon icon-close"/></button>
+                    </span>
+                  {{/if}}
+                </div>
+              {{/ember-wormhole}}
             </div>
-          {{/ember-wormhole}}
-        {{/if}}
+          {{/if}}
+
+          {{#if rightActions}}
+            <div class="vertical-middle pl-20">
+              {{yield this 'right-actions'}}
+            </div>
+          {{/if}}
+        </div>
       </div>
     {{/if}}
 
