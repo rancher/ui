@@ -1,0 +1,62 @@
+<h2>
+  {{t 'modalDrainNode.title' nodeName=model.displayName}}
+</h2>
+
+<section class="p-20">
+  <label class="acc-label">{{t 'modalDrainNode.drain'}}</label>
+  <div class="row">
+    <div class="col span-12">
+      <div class="checkbox" style="position: absolute">
+        <label>
+          {{input type="checkbox" classNames="form-control" checked=options.force}}
+          {{t 'modalDrainNode.force.helpText'}}
+        </label>
+      </div>
+    </div>
+  </div>
+
+  <div class="row mt-5">
+    <div class="col span-12">
+      <div class="checkbox" style="position: absolute">
+        <label>
+          {{input type="checkbox" classNames="form-control" checked=options.ignoreDaemonSets}}
+          {{t 'modalDrainNode.ignoreDaemonSets.helpText'}}
+        </label>
+      </div>
+    </div>
+  </div>
+
+  <div class="row mt-5">
+    <div class="col span-12">
+      <div class="checkbox" style="position: absolute">
+        <label>
+          {{input type="checkbox" classNames="form-control" checked=options.deleteLocalData}}
+          {{t 'modalDrainNode.deleteLocalData.helpText'}}
+        </label>
+      </div>
+    </div>
+  </div>
+
+  <div class="row mt-20">
+    <div class="col span-6">
+      <label class="acc-label">{{t 'modalDrainNode.gracePeriod.label'}}</label>
+      <div class="input-group">
+        {{input-integer value=options.gracePeriod classNames="form-control" placeholder=(t 'modalDrainNode.gracePeriod.placeholder')}}
+        <span class="input-group-addon bg-default">{{t 'generic.seconds'}}</span>
+      </div>
+      <p class="help-block">{{t 'modalDrainNode.gracePeriod.helpText'}}</p>
+    </div>
+
+    <div class="col span-6">
+      <label class="acc-label">{{t 'modalDrainNode.timeout.label'}}</label>
+      <div class="input-group">
+        {{input-integer min=1 max=10800 value=options.timeout classNames="form-control" placeholder=(t 'modalDrainNode.timeout.placeholder')}}
+        <span class="input-group-addon bg-default">{{t 'generic.seconds'}}</span>
+      </div>
+      <p class="help-block">{{t 'modalDrainNode.timeout.helpText'}}</p>
+    </div>
+  </div>
+</section>
+
+
+{{save-cancel editing=true editLabel="modalDrainNode.action" save="save" cancel="cancel"}}

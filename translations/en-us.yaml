@@ -4487,6 +4487,25 @@ modalProcessError:
   stackTrace: "Stack Trace:"
   close: Close
 
+modalDrainNode:
+  title: 'Drain "{nodeName}"'
+  action: Drain
+  drain: 'Drain this node:'
+  force:
+    helpText: Even if there are pods not managed by a ReplicationController, ReplicaSet, Job, DaemonSet or StatefulSet.
+  ignoreDaemonSets:
+    helpText: Even if there are DaemonSet-managed pods.
+  deleteLocalData:
+    helpText: Even if there are pods using emptyDir (local data that will be deleted when the node is drained).
+  gracePeriod: 
+    helpText: Period of time in seconds given to each pod to terminate gracefully. If negative, the default value specified in the pod will be used.
+    placeholder: e.g. 60
+    label: Grace Period
+  timeout:
+    helpText: The length of time to wait before giving up, zero means infinite
+    placeholder: e.g. 60
+    label: Timeout
+
 modalRollbackService:
   title: 'Rollback "{instanceName}"'
   titleWithSidekicks: 'Rollback "{instanceName}" & {count, plural, =1 {# sidecar} other {# sidecar}}'
@@ -5767,6 +5786,7 @@ action:
   start: Start
   startAll: Start All
   stop: Stop
+  stopDrain: Stop Drain
   stopAll: Stop All
   upgrade: Upgrade
   upgradeOrEdit: Upgrade/Edit

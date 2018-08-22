@@ -56,7 +56,14 @@ var Node = Resource.extend(StateCounts, ResourceUsage, {
         icon:     'icon icon-snapshot',
         action:   'drain',
         enabled:  !!a.drain,
-        bulkable: true
+        bulkable: false
+      },
+      {
+        label:    'action.stopDrain',
+        icon:     'icon icon-stop',
+        action:   'stopDrain',
+        enabled:  !!a.stopDrain,
+        bulkable: true,
       },
       { divider: true },
       {
@@ -191,15 +198,11 @@ var Node = Resource.extend(StateCounts, ResourceUsage, {
     },
 
     drain() {
-      return this.doAction('drain');
+      get(this, 'modalService').toggleModal('modal-drain-node', { originalModel: this });
     },
 
-    promptEvacuate() {
-      get(this, 'modalService').toggleModal('modal-host-evacuate', { model: [this] });
-    },
-
-    evacuate() {
-      return this.doAction('evacuate');
+    stopDrain() {
+      return this.doAction('stopDrain');
     },
 
     newContainer() {
