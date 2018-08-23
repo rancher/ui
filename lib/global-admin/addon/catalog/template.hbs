@@ -138,6 +138,9 @@
         {{action-menu model=row}}
       </td>
     </tr>
+    {{#if row.showTransitioningMessage}}
+      {{error-sub-row fullColspan=sortable.fullColspan model=row}}
+    {{/if}}
   {{else if (eq kind "nomatch")}}
     <tr><td colspan="{{sortable.fullColspan}}" class="text-center text-muted pt-20 pb-20">{{t 'catalogSettings.more.noMatch'}}</td></tr>
   {{else if (eq kind "norows")}}
