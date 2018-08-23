@@ -6,7 +6,6 @@ import VolumeSource from 'shared/mixins/volume-source';
 export default Component.extend(VolumeSource, {
   layout,
   field:     'hostPath',
-  fieldType: 'hostPathVolumeSource',
 
   kindChoices: computed(() => {
     const out = [

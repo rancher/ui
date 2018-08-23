@@ -52,4 +52,13 @@
         {{input type="text" value=config.secretRef.name classNames="form-control" placeholder=(t 'cruPersistentVolume.flexVolume.secretRef.placeholder')}}
       {{/input-or-display}}
     </div>
+
+    {{#if (eq volume.type "persistentVolume")}}
+      <div class="col span-6">
+        <label class="acc-label">{{t 'cruPersistentVolume.cephfs.secretRef.namespace.label'}}</label>
+        {{#input-or-display editable=editing value=config.secretRef.namespace}}
+          {{input type="text" value=config.secretRef.namespace classNames="form-control" placeholder=(t 'cruPersistentVolume.cephfs.secretRef.namespace.placeholder')}}
+        {{/input-or-display}}
+      </div>
+    {{/if}}
   </div>

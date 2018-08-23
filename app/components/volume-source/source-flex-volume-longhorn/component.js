@@ -5,8 +5,8 @@ import VolumeSource from 'shared/mixins/volume-source';
 
 export default Component.extend(VolumeSource, {
   layout,
-  field:     'flexVolume',
-  fieldType: 'flexVolumeSource',
+  field:       'flexVolume',
+
   init() {
     this._super();
     get(this, 'config.driver') || set(this, 'config.driver', 'rancher.io/longhorn');
@@ -16,6 +16,5 @@ export default Component.extend(VolumeSource, {
       staleReplicaTimeout: '20',
       fromBackup:          ''
     });
-    get(this, 'config.secretRef') || set(this, 'config.secretRef', {});
   }
 });

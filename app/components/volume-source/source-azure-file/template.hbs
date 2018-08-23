@@ -25,12 +25,14 @@
 </div>
 
 <div class="row">
-  <div class="col span-6">
-    <label class="acc-label">{{t 'cruPersistentVolume.azureFile.secretNamespace.label'}}</label>
-    {{#input-or-display editable=editing value=config.secretNamespace}}
-      {{input type="text" value=config.secretNamespace classNames="form-control" placeholder=(t 'cruPersistentVolume.azureFile.secretNamespace.placeholder')}}
-    {{/input-or-display}}
-  </div>
+  {{#if (eq volume.type "persistentVolume")}}
+    <div class="col span-6">
+      <label class="acc-label">{{t 'cruPersistentVolume.azureFile.secretNamespace.label'}}</label>
+      {{#input-or-display editable=editing value=config.secretNamespace}}
+        {{input type="text" value=config.secretNamespace classNames="form-control" placeholder=(t 'cruPersistentVolume.azureFile.secretNamespace.placeholder')}}
+      {{/input-or-display}}
+    </div>
+  {{/if}}
 
   <div class="col span-6">
     <label class="acc-label">{{t 'cruPersistentVolume.azureFile.shareName.label'}}</label>
