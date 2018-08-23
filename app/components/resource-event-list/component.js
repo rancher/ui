@@ -3,6 +3,8 @@ import { inject as service } from '@ember/service';
 import layout from './template';
 import { set, get, observer } from '@ember/object';
 
+const NON_NAMESPACED_RESOURCES = ['PersistentVolume'];
+
 export default Component.extend({
   globalStore: service(),
   scope:       service(),
@@ -65,8 +67,18 @@ export default Component.extend({
   }),
 
   fetchEvents() {
+    const query = `fieldSelector=involvedObject.name=${ get(this, 'name') },involvedObject.kind=${ get(this, 'kind').capitalize() }`;
+
+    let url = `/k8s/clusters/${ get(this, 'scope.currentCluster.id') }/api/v1/`;
+
+    if ( NON_NAMESPACED_RESOURCES.indexOf(get(this, 'kind')) === -1 ) {
+      url += `namespaces/${ get(this, 'namespaceId') }/`;
+    }
+
+    url += `events?${ query }`;
+
     get(this, 'globalStore').rawRequest({
-      url:    `/k8s/clusters/${ get(this, 'scope.currentCluster.id') }/api/v1/namespaces/${ get(this, 'namespaceId') }/events?fieldSelector=involvedObject.name=${ get(this, 'name') }`,
+      url,
       method: 'GET',
     })
       .then((xhr) => {
