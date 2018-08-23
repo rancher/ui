@@ -106,34 +106,9 @@
               </div>
             </div>
           </div>
-          <div class="row">
-            <div class="col span-6">
-              <div class="inline-form">
-                <label class="acc-label pb-5" for="endpoint">{{t 'authPage.azuread.configure.azureADEndpoint.label'}}{{field-required}}</label>
-                {{input id="endpoint" type="url" value=authConfig.endpoint classNames="form-control"}}
-              </div>
-            </div>
-            <div class="col span-6">
-              <div class="inline-form">
-                <label class="acc-label pb-5" for="graph-endpoint">{{t 'authPage.azuread.configure.azureADGraphEndpoint.label'}}{{field-required}}</label>
-                {{input id="graph-endpoint" type="url" value=authConfig.graphEndpoint classNames="form-control"}}
-              </div>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col span-6">
-              <div class="inline-form">
-                <label class="acc-label pb-5" for="token-endpoint" >{{t 'authPage.azuread.configure.azureADTokenEndpoint.label'}}{{field-required}}</label>
-                {{input id="token-endpoint" type="url" value=authConfig.tokenEndpoint classNames="form-control"}}
-              </div>
-            </div>
-            <div class="col span-6">
-              <div class="inline-form">
-                <label class="acc-label pb-5" for="auth-endpoint">{{t 'authPage.azuread.configure.azureADAuthEndpoint.label'}}{{field-required}}</label>
-                {{input id="auth-endpoint" type="url" value=authConfig.authEndpoint classNames="form-control"}}
-              </div>
-            </div>
-          </div>
+          {{#if authConfig}}
+            {{azuread-endpoints isEnabled=isEnabled authConfig=authConfig}}
+          {{/if}}
           <div class="row mt-10">
             <div class="inline-form">
               <button class="btn bg-primary" style="display: block;margin: 0 auto;" {{action "test"}}>
