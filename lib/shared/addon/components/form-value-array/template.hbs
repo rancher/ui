@@ -1,30 +1,34 @@
+
 <label class="acc-label block">{{t valueLabel}}</label>
 {{#if ary.length}}
-  <table class="table fixed no-lines mb-10">
-    {{#each ary as |row|}}
-      <tr>
-        <td class="pb-10" data-title="{{t valueLabel}}">
-          {{#if hasBlock}}
-            {{yield this row}}
-          {{else if editing}}
-            {{input-paste pasted="pastedValues" class="form-control input-sm value" type="text" value=row.value placeholder=valuePlaceholder}}
-          {{else}}
-            {{row.value}}
-          {{/if}}
-        </td>
-        {{#if editing}}
-          <td width="30" class="pb-10 text-right">
-            <button class="btn bg-primary btn-sm" {{action "remove" row}}><i class="icon icon-minus"/><span class="sr-only">{{t 'generic.remove'}}</span></button>
-          </td>
-        {{/if}}
-      </tr>
-    {{/each}}
-  </table>
+
+
+{{#each ary as |row|}}
+  <div class="input-group mb-10">
+    <span data-title="{{t valueLabel}}">
+      {{#if hasBlock}}
+        {{yield this row}}
+      {{else if editing}}
+        {{input-paste pasted="pastedValues" class="form-control input-sm value" type="text" value=row.value placeholder=valuePlaceholder}}
+      {{else}}
+        {{row.value}}
+      {{/if}}
+    </span>
+    {{#if editing}}
+      <span class="input-group-btn">
+        <button class="btn bg-primary btn-sm" {{action "remove" row}}><i class="icon icon-minus"/><span class="sr-only">{{t 'generic.remove'}}</span></button>
+      </span>
+    {{/if}}
+    </div>
+{{/each}}
+
+
 {{else if (not editing)}}
-    <tr><td class="text-center text-muted">{{t noDataLabel}}</td></tr>
+    <p class="text-center text-muted">{{t noDataLabel}}</p>
 {{/if}}
 {{#if editing}}
-  <button class="btn bg-link icon-btn" {{action "add"}}><span class="darken"><i class="icon icon-plus text-small"/></span> <span>{{t addActionLabel}}</span></button>
+
+<button class="btn bg-link icon-btn mt-10" {{action "add"}}><span class="darken"><i class="icon icon-plus text-small"/></span> <span>{{t addActionLabel}}</span></button>
 
   {{#if ary.length}}
     {{#if showProTip}}
