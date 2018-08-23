@@ -61,7 +61,7 @@
             <td data-title="{{t 'formPorts.sourcePort.label'}}">
               {{#if (or (eq port.kind "ClusterIP") (eq port.kind "NodePort"))}}
                 {{#if editing}}
-                  {{input-random-port min="1" max="65535" value=port.sourcePort placeholder="formPorts.nodePort.placeholder" standardKey=(if (eq port.kind "ClusterIP") "formPorts.sourcePort.clusterIpDefault" "generic.random")}}
+                  {{input-random-port min=nodePortFrom max=nodePortTo value=port.sourcePort placeholder=nodePortPlaceholder standardKey=(if (eq port.kind "ClusterIP") "formPorts.sourcePort.clusterIpDefault" "generic.random")}}
                 {{else if port.sourcePort}}
                   {{port.sourcePort}}
                 {{else}}

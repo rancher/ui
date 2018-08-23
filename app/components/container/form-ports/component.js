@@ -18,19 +18,24 @@ const protocolOptions = [
 ];
 
 export default Component.extend({
-  intl: service(),
+  intl:  service(),
+  scope: service(),
 
   layout,
   initialPorts: null,
   editing:      false,
   kindChoices:  null,
 
-  ports:           null,
+  ports:               null,
+  nodePortFrom:        null,
+  nodePortTo:          null,
+  nodePortPlaceholder: null,
   protocolOptions,
 
   init() {
     this._super(...arguments);
     this.initPorts();
+    this.nodePortRangeDidChange();
     this.initKindChoices();
   },
 
@@ -113,6 +118,38 @@ export default Component.extend({
     this.set('errors', errors.uniq());
     this.sendAction('changed', ports.slice());
   }),
+
+  nodePortRangeDidChange: observer('intl.locale', 'scope.currentCluster.rancherKubernetesEngineConfig.services.kubeApi.serviceNodePortRange', function() {
+    const intl = get(this, 'intl');
+    const nodePortRange = get(this, 'scope.currentCluster.rancherKubernetesEngineConfig.services.kubeApi.serviceNodePortRange')
+
+    if ( nodePortRange  ) {
+      const ports = nodePortRange.split('-');
+
+      if ( ports.length === 2 ) {
+        const from = parseInt(ports[0], 10);
+        const to = parseInt(ports[1], 10);
+
+        setProperties(this, {
+          nodePortFrom:        from,
+          nodePortTo:          to,
+          nodePortPlaceholder: intl.t('formPorts.nodePort.customPortRangePlaceholder', {
+            range: nodePortRange,
+            port:  from
+          })
+        });
+
+        return;
+      }
+    }
+
+    setProperties(this, {
+      nodePortFrom:        1,
+      nodePortTo:          65535,
+      nodePortPlaceholder: intl.t('formPorts.nodePort.placeholder')
+    });
+  }),
+
   initPorts() {
     let ports = get(this, 'initialPorts') || [];
 
