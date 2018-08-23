@@ -9,8 +9,9 @@ const NAMESPACE = 'namespace';
 const NODE = 'node'
 
 export default Controller.extend({
-  prefs: service(),
-  scope: service(),
+  prefs:    service(),
+  scope:    service(),
+  settings: service(),
 
   queryParams: ['group'],
 

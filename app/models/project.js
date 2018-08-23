@@ -6,6 +6,8 @@ import C from 'ui/utils/constants';
 import { reference } from 'ember-api-store/utils/denormalize';
 import { alias } from '@ember/object/computed';
 
+const SYSTEM_PROJECT_LABEL = 'authz.management.cattle.io/system-project';
+
 export default Resource.extend({
   access:                      service(),
   prefs:                       service(),
@@ -37,6 +39,12 @@ export default Resource.extend({
 
   isDefault: computed(`prefs.${ C.PREFS.PROJECT_DEFAULT }`, 'id', function() {
     return get(this, `prefs.${ C.PREFS.PROJECT_DEFAULT }`) === get(this, 'id');
+  }),
+
+  isSystemProject: computed('labels', function() {
+    const labels = get(this, 'labels') || {};
+
+    return labels[SYSTEM_PROJECT_LABEL] === 'true';
   }),
 
   active: computed('scope.currentProject.id', 'id', function() {
