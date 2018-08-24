@@ -1,7 +1,7 @@
 import Controller from '@ember/controller'
 import NewOrEdit from 'ui/mixins/new-or-edit';
 import { alias } from '@ember/object/computed';
-import { computed, get, set, observer } from '@ember/object';
+import { computed, get/* , set, observer */ } from '@ember/object';
 import { inject as service } from '@ember/service';
 import C from 'ui/utils/constants';
 
