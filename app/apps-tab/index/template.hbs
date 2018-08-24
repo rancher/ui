@@ -7,8 +7,14 @@
 </section>
 
 <section class="pl-0 pr-0">
-  {{#each filteredApps as |ns|}}
-    {{namespace-app model=ns}}
+  {{#each filteredApps as |group|}}
+    <div class="row flex">
+      {{#each group as |ns|}}
+        <div class="col span-6 mt-0">
+          {{namespace-app model=ns}}
+        </div>
+      {{/each}}
+    </div>
   {{else}}
     {{empty-table disabled=(rbac-prevents resource="app" scope="project" permission="create") resource="container" newRoute="catalog-tab" newTranslationKey="nav.apps.launch"}}
   {{/each}}

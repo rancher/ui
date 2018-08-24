@@ -21,12 +21,26 @@ export default Controller.extend({
   filteredApps: computed('model.apps.@each.{type,isFromCatalog,tags,state}', 'tags', function() {
     var needTags = get(this, 'tags');
 
-    var out = get(this, 'model.apps').filter((ns) => !C.REMOVEDISH_STATES.includes(get(ns, 'state')));
+    var apps = get(this, 'model.apps').filter((ns) => !C.REMOVEDISH_STATES.includes(get(ns, 'state')));
 
     if ( needTags && needTags.length ) {
-      out = out.filter((obj) => obj.hasTags(needTags));
+      apps = apps.filter((obj) => obj.hasTags(needTags));
     }
 
-    return out.sortBy('displayName');
+    apps = apps.sortBy('displayName');
+
+    const group = [];
+    let dataIndex = 0;
+
+    apps.forEach((app, index) => {
+      if ( index % 2 === 0 ) {
+        group.push([app]);
+        dataIndex++;
+      } else {
+        group[dataIndex - 1].push(app);
+      }
+    });
+
+    return group;
   }),
 });
