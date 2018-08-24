@@ -43,69 +43,7 @@ export default Component.extend({
       name: 'saveVolumes',
       key:  '_volumeHooks'
     });
-  },
-
-  didReceiveAttrs() {
-    if (!get(this, 'expandFn')) {
-      set(this, 'expandFn', (item) => {
-        item.toggleProperty('expanded');
-      });
-    }
-
-    const out = [];
-    let entry;
-
-    (get(this, 'workload.volumes') || []).forEach((volume) => {
-      if (volume.persistentVolumeClaim) {
-        entry = {
-          mode: EXISTING_PVC,
-          volume,
-        };
-      } else if (volume.hostPath) {
-        entry = {
-          mode: BIND_MOUNT,
-          volume,
-        };
-      } else if ( volume.flexVolume && volume.flexVolume.driver === LOG_AGGREGATOR ) {
-        entry = {
-          mode: CUSTOM_LOG_PATH,
-          volume,
-        };
-      } else if (volume.secret) {
-        entry = {
-          mode: SECRET,
-          volume,
-        };
-      } else if (volume.configMap) {
-        entry = {
-          mode: CONFIG_MAP,
-          volume,
-        };
-      } else {
-        entry = {
-          mode: EXISTING_VOLUME,
-          volume,
-        };
-      }
-
-      entry.mounts = [];
-      out.push(entry);
-    });
-
-    (get(this, 'launchConfig.volumeMounts') || []).forEach((mount) => {
-      entry = out.findBy('volume.name', mount.name);
-
-      if (entry) {
-        entry.mounts.push(mount);
-      }
-    });
-
-    // filter out custom log path volume when logging is disabled
-    if (!get(this, 'loggingEnabled')) {
-      set(this, 'volumesArray', out.filter((row) => row.mode !== CUSTOM_LOG_PATH));
-    } else {
-      set(this, 'volumesArray', out);
-    }
+    this.initVolumes()
   },
 
   // Create (ephermal) Volume -> volume entry on pod
@@ -284,6 +222,69 @@ export default Component.extend({
         ],
       });
     },
+  },
+
+  initVolumes() {
+    if (!get(this, 'expandFn')) {
+      set(this, 'expandFn', (item) => {
+        item.toggleProperty('expanded');
+      });
+    }
+
+    const out = [];
+    let entry;
+
+    (get(this, 'workload.volumes') || []).forEach((volume) => {
+      if (volume.persistentVolumeClaim) {
+        entry = {
+          mode: EXISTING_PVC,
+          volume,
+        };
+      } else if (volume.hostPath) {
+        entry = {
+          mode: BIND_MOUNT,
+          volume,
+        };
+      } else if ( volume.flexVolume && volume.flexVolume.driver === LOG_AGGREGATOR ) {
+        entry = {
+          mode: CUSTOM_LOG_PATH,
+          volume,
+        };
+      } else if (volume.secret) {
+        entry = {
+          mode: SECRET,
+          volume,
+        };
+      } else if (volume.configMap) {
+        entry = {
+          mode: CONFIG_MAP,
+          volume,
+        };
+      } else {
+        entry = {
+          mode: EXISTING_VOLUME,
+          volume,
+        };
+      }
+
+      entry.mounts = [];
+      out.push(entry);
+    });
+
+    (get(this, 'launchConfig.volumeMounts') || []).forEach((mount) => {
+      entry = out.findBy('volume.name', mount.name);
+
+      if (entry) {
+        entry.mounts.push(mount);
+      }
+    });
+
+    // filter out custom log path volume when logging is disabled
+    if (!get(this, 'loggingEnabled')) {
+      set(this, 'volumesArray', out.filter((row) => row.mode !== CUSTOM_LOG_PATH));
+    } else {
+      set(this, 'volumesArray', out);
+    }
   },
 
   nextName() {
