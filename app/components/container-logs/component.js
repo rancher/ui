@@ -9,6 +9,21 @@ import AnsiUp from 'npm:ansi_up';
 import C from 'ui/utils/constants';
 
 const LINES = 500;
+const throttle = function(fn, context, delay, data, mustApplyTime)  {
+  clearTimeout(fn.timer)
+  fn._cur = new Date().getTime()
+  if (!fn._start) {
+    fn._start = fn._cur
+  }
+  if (fn._cur - fn._start > mustApplyTime) {
+    fn.call(context, data )
+    fn._start = fn._cur
+  } else {
+    fn.timer = setTimeout(() => {
+      fn.call(context, data)
+    }, delay)
+  }
+}
 
 export default Component.extend({
   scope: service(),
@@ -100,6 +115,43 @@ export default Component.extend({
   },
 
   connect(url) {
+    var logs = []
+    var appendLogs = () => {
+      if (logs.length === 0) {
+        return
+      }
+      let ansiup = new AnsiUp.default;
+      var contents = logs.map((log) => {
+        return log.trim().split(/\n/)
+          .filter((line) => line)
+          .map((line) => {
+            var match = line.match(/^\[?([^ \]]+)\]?\s?/);
+            var dateStr = '';
+            var msg = '';
+
+            if (match && this.isDate(new Date(match[1]))) {
+              var date = new Date(match[1]);
+
+              msg = line.substr(match[0].length);
+              dateStr = `<span class="log-date">${  Util.escapeHtml(date.toLocaleDateString())  } ${  Util.escapeHtml(date.toLocaleTimeString())  } </span>`;
+            } else {
+              msg = line;
+            }
+
+            // @@TODO@@ - 10-13-17 - needed to remove the escaping here because it was being double escaped but double verify that its acutally being escaped
+            return `<div class="log-msg log-combined">${
+              dateStr
+            }${ ansiup.ansi_to_html(msg)
+            }</div>`;
+          })
+          .join('')
+      });
+      var body = this.$('.log-body')[0];
+
+      body.insertAdjacentHTML('beforeend', contents.join(''));
+      logs = [];
+    };
+
     var socket = new WebSocket(url, 'base64.binary.k8s.io');
 
     set(this, 'socket', socket);
@@ -114,37 +166,12 @@ export default Component.extend({
     };
 
     socket.onmessage = (message) => {
-      let ansiup = new AnsiUp.default;
-
       set(this, 'status', 'connected');
       var isFollow = ($body.scrollTop() + $body.outerHeight() + 10) >= body.scrollHeight;
       const data = AWS.util.base64.decode(message.data).toString();
 
-      data.trim().split(/\n/)
-        .filter((line) => line)
-        .forEach((line) => {
-          var match = line.match(/^\[?([^ \]]+)\]?\s?/);
-          var dateStr = '';
-          var msg = '';
-
-          if (match && this.isDate(new Date(match[1]))) {
-            var date = new Date(match[1]);
-
-            msg = line.substr(match[0].length);
-            dateStr = `<span class="log-date">${  Util.escapeHtml(date.toLocaleDateString())  } ${  Util.escapeHtml(date.toLocaleTimeString())  } </span>`;
-          } else {
-            msg = line;
-          }
-
-          // @@TODO@@ - 10-13-17 - needed to remove the escaping here because it was being double escaped but double verify that its acutally being escaped
-          body.insertAdjacentHTML('beforeend',
-            `<div class="log-msg log-combined">${
-              dateStr
-            }${ ansiup.ansi_to_html(msg)
-            }</div>`
-          );
-        });
-
+      logs.push(data)
+      throttle(appendLogs, this, 1000, data, 1000)
       if (isFollow) {
         next(() => {
           this.send('scrollToBottom');
