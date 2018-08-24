@@ -1,11 +1,11 @@
 <select name="" class="form-control mb-10" onChange={{action (mut value) value="target.value"}}>
   <option value="">{{t 'schema.inputEnum.option'}}</option>
-  {{#each field.options as |option|}}
-    <option value={{option}} selected={{eq option value}}>
-      {{#if (eq option 'LoadBalancer')}}
+  {{#each field.options as |choice|}}
+    <option value={{choice}} selected={{eq choice value}}>
+      {{#if (eq choice 'LoadBalancer')}}
         {{t 'model.service.displayKind.loadBalancer'}}
       {{else}}
-        {{option}}
+        {{choice}}
       {{/if}}
     </option>
   {{/each}}
