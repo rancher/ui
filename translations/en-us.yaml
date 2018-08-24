@@ -498,7 +498,7 @@ authPage:
         header: General
     configure:
       header: 'Configure Azure AD Account'
-      replyUrl: "Azure AD requires a pre-approved Reply URL for your {appName} server before beginning this setup. Please ensure that <code>{replyUrl}</code> is set in the Reply URL section of your Azure Portal."
+      replyUrl: "Azure AD requires a whitelisted URL for your {appName} server before beginning this setup. Please ensure that the following URL is set in the Reply URL section of your Azure Portal. Please note that is may take up to 5 minutes for the whitelisted URL to propagate."
       help: Enter the Tenant ID, Client ID, and Admin user details to connect to your Azure AD auth account.
       applicationId:
         label: Application ID
@@ -852,7 +852,7 @@ clusterDashboard:
   scheduler: Scheduler
   controllerManager: Controller Manager
   value: Value
-  systemProject: This is the system project which has all Kubernetes and {appName} system namespaces. Any change might cause the harmful effects to the cluster.
+  systemProject: This is the system project which has all Kubernetes and {appName} system namespaces. Changes made to resources in the system project may harm the cluster.
   notActive: This cluster is currently <b>{state}</b>.
   notReady: This cluster is currently <b>{state}</b>; areas that interact directly with it will not be available until the API is ready.
   noNodes: There are no nodes.
@@ -4513,7 +4513,7 @@ modalDrainNode:
     helpText: Even if there are DaemonSet-managed pods.
   deleteLocalData:
     helpText: Even if there are pods using emptyDir (local data that will be deleted when the node is drained).
-  gracePeriod: 
+  gracePeriod:
     helpText: Period of time in seconds given to each pod to terminate gracefully. If negative, the default value specified in the pod will be used.
     placeholder: e.g. 60
     label: Grace Period
