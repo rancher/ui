@@ -54,7 +54,7 @@ var Namespace = Resource.extend(StateCounts, {
   volumes:               hasMany('id', 'persistentVolumeClaim', 'namespaceId', 'projectStore', null, 'clusterStore'),
   type:                  'namespace',
   project:               reference('projectId', 'project', 'globalStore'),
-  resourceQuotaTemplate: reference('resourceQuotaTemplateId', 'resourceQuotaTemplate', 'globalStore'),
+  // resourceQuotaTemplate: reference('resourceQuotaTemplateId', 'resourceQuotaTemplate', 'globalStore'),
 
   init() {
     this._super(...arguments);
