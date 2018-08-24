@@ -34,24 +34,32 @@
 {{/if}}
 
 <div class="row">
-  <div class="col span-12 m-0 p-0 codemirror-container" style="overflow: auto;">
-    {{ivy-codemirror
-      placeholder=placeholder
-      value=value
-      valueUpdated=(if valueUpdated valueUpdated (action (mut value)) )
-      options=(hash
-        autofocus=true
-        theme="monokai"
-        lineNumbers=true
-        mode="yaml"
-        readOnly=(if (or (eq modalOpts.type 'review') readOnly) true false)
-        gutters=gutters
-        lint=true
-        lineWrapping=true
-        viewportMargin=viewportMargin
-      )
-    }}
-  </div>
+  {{#if loading}}
+    <section class="row">
+      <div class="text-center">
+        <i class="icon icon-spinner icon-spin" style="font-size:36px;"></i>
+      </div>
+    </section>
+  {{else}}
+    <div class="col span-12 m-0 p-0 codemirror-container" style="overflow: auto;">
+      {{ivy-codemirror
+        placeholder=placeholder
+        value=value
+        valueUpdated=(if valueUpdated valueUpdated (action (mut value)) )
+        options=(hash
+          autofocus=true
+          theme="monokai"
+          lineNumbers=true
+          mode="yaml"
+          readOnly=(if (or (eq modalOpts.type 'review') readOnly) true false)
+          gutters=gutters
+          lint=true
+          lineWrapping=true
+          viewportMargin=viewportMargin
+        )
+      }}
+    </div>
+  {{/if}}
 </div>
 {{yield 'description'}}
 <input type="file" accept="{{actualAccept}}" multiple={{multiple}} class="hide">
