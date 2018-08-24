@@ -23,6 +23,8 @@ export default Component.extend({
   containerName: null,
   socket:        null,
   wrapLines:     null,
+  isFollow:      true,
+  followTimer:   null,
 
   init() {
     this._super(...arguments);
@@ -32,11 +34,31 @@ export default Component.extend({
 
     set(this, 'wrapLines', wrapLines);
     set(this, 'containerName', containerName);
+
+    const followTimer = setInterval(() => {
+      if ( get(this, 'isFollow') ) {
+        this.send('scrollToBottom');
+      }
+    }, 1000);
+
+    set(this, 'followTimer', followTimer);
   },
 
   didInsertElement() {
     this._super();
     next(this, () => {
+      const body = this.$('.log-body');
+      let lastScrollTop = 0;
+
+      body.scroll(() => {
+        const scrollTop = body[0].scrollTop;
+
+        if ( lastScrollTop >  scrollTop ) {
+          set(this, 'isFollow', false);
+        }
+        lastScrollTop = scrollTop;
+      });
+
       this.exec();
       var btn = $('.scroll-bottom')[0]; // eslint-disable-line
 
@@ -47,6 +69,7 @@ export default Component.extend({
   },
 
   willDestroyElement() {
+    clearInterval(get(this, 'followTimer'));
     this.disconnect();
     this._super();
   },
@@ -66,6 +89,11 @@ export default Component.extend({
 
     scrollToTop() {
       this.$('.log-body').animate({ scrollTop: '0px' });
+    },
+
+    followLog() {
+      set(this, 'isFollow', true);
+      this.send('scrollToBottom');
     },
 
     scrollToBottom() {
@@ -117,8 +145,8 @@ export default Component.extend({
       let ansiup = new AnsiUp.default;
 
       set(this, 'status', 'connected');
-      var isFollow = ($body.scrollTop() + $body.outerHeight() + 10) >= body.scrollHeight;
       const data = AWS.util.base64.decode(message.data).toString();
+      let html = '';
 
       data.trim().split(/\n/)
         .filter((line) => line)
@@ -137,19 +165,13 @@ export default Component.extend({
           }
 
           // @@TODO@@ - 10-13-17 - needed to remove the escaping here because it was being double escaped but double verify that its acutally being escaped
-          body.insertAdjacentHTML('beforeend',
-            `<div class="log-msg log-combined">${
-              dateStr
-            }${ ansiup.ansi_to_html(msg)
-            }</div>`
-          );
+          html += `<div class="log-msg log-combined">${
+            dateStr
+          }${ ansiup.ansi_to_html(msg)
+          }</div>`
         });
 
-      if (isFollow) {
-        next(() => {
-          this.send('scrollToBottom');
-        });
-      }
+      body.insertAdjacentHTML('beforeend', html);
     };
 
     socket.onclose = () => {
