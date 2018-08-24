@@ -26,19 +26,19 @@ export default Controller.extend(NewOrEdit, {
     },
   },
 
-  projectDidChange: observer('model.namespace.projectId', function() {
-    if ( !get(this, 'model.namespace.project.resourceQuota') ) {
-      set(this, 'model.namespace.resourceQuotaTemplateId', null);
-    }
-  }),
+  // projectDidChange: observer('model.namespace.projectId', function() {
+  //   if ( !get(this, 'model.namespace.project.resourceQuota') ) {
+  //     set(this, 'model.namespace.resourceQuotaTemplateId', null);
+  //   }
+  // }),
 
   allProjects:     computed('model.allProjects', 'scope.currentCluster.id', function() {
     return get(this, 'model.allProjects').filterBy('clusterId', get(this, 'scope.currentCluster.id'))
   }),
 
-  allQuotaTemplates: computed('model.allQuotaTemplates', 'scope.currentCluster.id', function() {
-    return get(this, 'model.allQuotaTemplates').filterBy('clusterId', get(this, 'scope.currentCluster.id'))
-  }),
+  // allQuotaTemplates: computed('model.allQuotaTemplates', 'scope.currentCluster.id', function() {
+  //   return get(this, 'model.allQuotaTemplates').filterBy('clusterId', get(this, 'scope.currentCluster.id'))
+  // }),
 
   nameExists: computed('primaryResource.name', 'model.namespaces.@each.name', function() {
     const name = get(this, 'primaryResource.name');
