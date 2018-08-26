@@ -72,14 +72,6 @@ Router.map(function() {
         this.route('new-ns', { path: '/ns/add' });
       });
 
-      // this.route('quotas', { path: '/quota-templates' }, function() {
-      //   this.route('index', { path: '/' });
-      //   this.route('new', { path: '/quota-template/add' });
-      //   this.route('detail', { path: '/quota-template/:quota_template_id' }, function() {
-      //     this.route('edit');
-      //   });
-      // });
-
       this.route('security', function() {
         this.route('index', { path: '/' });
         this.route('members', function() {

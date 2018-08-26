@@ -116,7 +116,6 @@ export default Route.extend(Preload, {
             this.preload('authConfig', 'globalStore', { url: 'authConfigs' }),
             this.preload('globalRoleBinding', 'globalStore', { url: 'globalRoleBinding' }),
             this.preload('user', 'globalStore', { url: 'user' }),
-            // this.preload('resourceQuotaTemplate', 'globalStore', { url: 'resourceQuotaTemplates' }),
 
             globalStore.findAll('principal').then((principals) => {
               const me = principals.filter((p) => p.me === true);

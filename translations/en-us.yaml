@@ -692,27 +692,6 @@ projectsListNamespacePage:
   notIn: Not in a project
   current: In this project
 
-quotaTemplatesPage:
-  header: Quota Templates
-  addQuotaTemplate: Add Quota Template
-  editQuotaTemplate: Edit Quota Template
-  quotaTemplate: 'Quota Template: {name}'
-  title: Resource Quotas
-  detail: Configure how much of the resources a namespace can consume.
-  noMatch: No resource quota templates match the current search.
-  noData: This cluster doesn't have any resource quota templates defined.
-  name:
-    label: Name
-    placeholder: e.g. large
-  table:
-    name:
-      label: Name
-    default:
-      label: Default
-    created:
-      label: Created
-
-
 projectsPage:
   header: Projects/Namespaces
   headerNS: Namespaces
@@ -735,8 +714,11 @@ projectsPage:
     label: Created
   psp:
     label: Pod Security Policy
+  nsDefaultQuota:
+    title: Namespace Default Resource Quota
+    detail: Configure how much of the resources the namespace can consume by default
   resourceQuota:
-    title: Resource Quotas
+    title: Project Resource Quotas
     detail: Configure how much of the resources the project as a whole can consume
   members:
     title: Members
@@ -3029,12 +3011,12 @@ editStack:
   project:
     label: Project
     prompt: Select a Project...
-  quota:
-    label: Quota Template
-    prompt: Use the default quota template......
   description:
     label: Description
     placeholder: e.g. MyApp namespace
+  resourceQuota:
+    title: Resource Quotas
+    detail: Configure how much of the resources the namespace as a whole can consume
   group:
     label: Tags
     placeholder: e.g. frontend, production
@@ -5679,7 +5661,6 @@ nav:
     members: Members
     nodes: Nodes
     namespaces: Namespaces
-    quotas: Quotas
     storage:
       tab: Storage
       classes: Storage Classes

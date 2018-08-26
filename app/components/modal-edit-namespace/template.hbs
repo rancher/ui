@@ -16,20 +16,25 @@
     prompt="editStack.project.prompt"
     localizedPrompt=true
   }}
-  {{!--
-    {{#if primaryResource.project.resourceQuota}}
-    <label class="pt-20 pb-5">{{t 'editStack.quota.label'}}</label>
-    {{new-select
-    classNames="form-control"
-    optionValuePath="id"
-    optionLabelPath="displayName"
-    content=allQuotaTemplates
-    value=primaryResource.resourceQuotaTemplateId
-    prompt="editStack.quota.prompt"
-    localizedPrompt=true
-    }}
-    {{/if}}
-    --}}
+
+  <div class="row mt-20">
+    {{#accordion-list showExpandAll=false as | al expandFn | }}
+      {{#accordion-list-item
+            title=(t 'editStack.resourceQuota.title')
+            detail=(t 'editStack.resourceQuota.detail')
+            expandAll=al.expandAll
+            expand=(action expandFn)
+            expandOnInit=false
+      }}
+        {{form-resource-quota
+            editing=(or editing isNew)
+            expanded=expanded
+            limit=primaryResource.resourceQuota.limit
+            changed=(action "updateNsQuota")
+        }}
+      {{/accordion-list-item}}
+    {{/accordion-list}}
+  </div>
 </section>
 
 {{top-errors errors=errors}}

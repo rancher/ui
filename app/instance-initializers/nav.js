@@ -186,15 +186,6 @@ const rootNav = [
     resourceScope:  'global',
     ctx:            [getClusterId],
   },
-  // {
-  //   scope:          'cluster',
-  //   id:             'cluster-quota-templates',
-  //   localizedLabel: 'nav.cluster.quotas',
-  //   route:          'authenticated.cluster.quotas.index',
-  //   resource:       ['resourcequotatemplate'],
-  //   resourceScope:  'global',
-  //   ctx:            [getClusterId],
-  // },
   {
     scope:          'cluster',
     id:             'cluster-tools',

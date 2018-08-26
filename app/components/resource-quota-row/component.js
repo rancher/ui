@@ -20,7 +20,7 @@ export default Component.extend({
 
   initResourceChoices() {
     const choices = [];
-    const schema = get(this, 'globalStore').getById('schema', 'projectresourcelimit');
+    const schema = get(this, 'globalStore').getById('schema', 'resourcequotalimit');
 
     if ( schema ) {
       Object.keys(get(schema, 'resourceFields')).forEach((key) => {

@@ -16,7 +16,6 @@ export default Component.extend(ModalBase, NewOrEdit, {
 
   allNamespaces:     null,
   allProjects:       null,
-  allQuotaTemplates: null,
   tags:              null,
 
   originalModel:  alias('modalService.modalOpts'),
@@ -32,8 +31,6 @@ export default Component.extend(ModalBase, NewOrEdit, {
     set(this, 'allNamespaces', get(this, 'clusterStore').all('namespace'));
     set(this, 'allProjects', get(this, 'globalStore').all('project')
       .filterBy('clusterId', get(this, 'scope.currentCluster.id')));
-    set(this, 'allQuotaTemplates', get(this, 'globalStore').all('resourceQuotaTemplate')
-      .filterBy('clusterId', get(this, 'scope.currentCluster.id')));
   },
 
   actions: {
@@ -43,16 +40,18 @@ export default Component.extend(ModalBase, NewOrEdit, {
       tags.addObject(tag);
       set(this, 'tags', tags.join(','));
     },
+
+    updateNsQuota(quota) {
+      if ( quota ) {
+        set(this, 'primaryResource.resourceQuota', { limit: quota });
+      } else {
+        set(this, 'primaryResource.resourceQuota', null);
+      }
+    },
   },
 
   tagsDidChanged: observer('tags', function() {
     set(this, 'primaryResource.tags', get(this, 'tags').split(',') || []);
-  }),
-
-  projectDidChange: observer('primaryResource.projectId', function() {
-    if ( !get(this, 'primaryResource.project.resourceQuota') ) {
-      set(this, 'primaryResource.resourceQuotaTemplateId', null);
-    }
   }),
 
   doneSaving() {
