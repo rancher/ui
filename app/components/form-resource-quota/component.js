@@ -28,7 +28,7 @@ export default Component.extend({
   actions: {
     addQuota() {
       get(this, 'quotaArray').pushObject({
-        key:   'pods',
+        key:   '',
         value: '',
       });
     },
