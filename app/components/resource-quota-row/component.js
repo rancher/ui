@@ -3,6 +3,8 @@ import { inject as service } from '@ember/service';
 import Component from '@ember/component';
 import layout from './template';
 
+const IGNORED = ['requestsStorage', 'persistentVolumeClaims'];
+
 export default Component.extend({
   globalStore: service(),
 
@@ -23,7 +25,7 @@ export default Component.extend({
     const schema = get(this, 'globalStore').getById('schema', 'resourcequotalimit');
 
     if ( schema ) {
-      Object.keys(get(schema, 'resourceFields')).forEach((key) => {
+      Object.keys(get(schema, 'resourceFields')).filter((key) => IGNORED.indexOf(key) === -1).forEach((key) => {
         choices.push({
           label: `formResourceQuota.resources.${ key }`,
           value: key,
