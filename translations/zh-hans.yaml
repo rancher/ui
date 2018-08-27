@@ -58,9 +58,10 @@ generic:
   limit: 限制
   limits: 限制
   loading: "加载中..."
+  loggingOut: "注销..."
   member: 成员
-  minutes: 分钟
   mibibyte: 'MiB'
+  minutes: 分钟
   milliseconds: '毫秒'
   missing: "*%缺少% *"
   moreActions: 更多操作
@@ -80,6 +81,8 @@ generic:
   ports: 端口
   prefix: 前缀
   project: 项目
+  persistentVolumeClaim: 持久卷claim
+  persistentVolume: 持久卷
   random: 随机
   remove: 移除
   role: 角色
@@ -375,11 +378,16 @@ authPage:
     providerName:
       ping: Ping
       adfs: AD FS
+      keycloak: Keycloak
     authError: '账号未经授权'
     popupError: '请关闭弹出验证窗口，然后再次单击“验证”。'
   ping:
     buttonText:
       pre: '启用Ping认证 '
+      post: '等待返回'
+  keycloak:
+    buttonText:
+      pre: '使用Keycloak进行身份验证'
       post: '等待返回'
   adfs:
     buttonText:
@@ -507,6 +515,12 @@ authPage:
         label: Token Endpoint
       azureADAuthEndpoint:
         label: Auth Endpoint
+      endpoints:
+        label: Endpoints
+      regions:
+        standard: Standard
+        china: China
+        custom: 自定义
       tenantId:
         label: 租户ID
         placeholder: UUID字符串
@@ -530,7 +544,7 @@ authPage:
     subtext:
       enabled:
         text: '{appName}已设置本地账户访问'
-        alwaysOn: '本地身份验证将始终启用，您可以在本地认证基础之上添加另一种认证方案'
+        alwaysOn: '本地身份验证将始终启用，您可以在本地认证基础之上添加一种或多种认证方案'
         linkText: 管理账号
       disabled: '{appName}能够被设置为仅允许{appName}本地数据库中定义的用户访问。当前系统未进行设置，因此任何可以访问此页面(或API)的用户都具有系统的完全控制权限。'
     accessEnabled:
@@ -627,9 +641,9 @@ certificatesPage:
     header: 添加证书
     form:
       name:
-        placeholder: '例如: mydomain.com'
+        placeholder: '例如: Mydomain.com'
       description:
-        placeholder: '例如: mydomain.com的EV证书'
+        placeholder: '例如: Mydomain.com的EV证书'
 
 membersPage:
   title: 成员
@@ -838,11 +852,12 @@ clusterDashboard:
   scheduler: Scheduler
   controllerManager: Controller Manager
   value: 值
+  systemProject: "这是具有所有Kubernetes和{appName}系统命名空间的系统项目，修改系统项目中的资源可能会导致系统无法正常运行。"
   notActive: 此集群当前为<b>{state}</b>
   notReady: 此集群当前为<b>{state}</b>，在API准备就绪之前，直接与其交互的功能将不可用。
   noNodes: 没有主机
   alert:
-    node: "警告: 主机{node}未激活"
+    node: "警告: 节点{node}未激活"
     component: "警告: 组件{component}不健康"
 
 dnsPage:
@@ -866,7 +881,7 @@ editDns:
     edit: 编辑DNS记录
     view: "记录: {name}"
   name:
-    placeholder: '例如: myapp'
+    placeholder: '例如: Myapp'
   description:
     placeholder: '例如: 当前MyApp版本'
   selector:
@@ -915,7 +930,7 @@ cruPersistentVolumeClaim:
     label: 容量
     unit: GiB
   name:
-    placeholder: '例如: myvol'
+    placeholder: '例如: Myvol'
   source:
     label: 源
     pv: 使用已有的持久化卷
@@ -934,7 +949,7 @@ cruVolume:
   define:
     addActionLabel: 定义
   name:
-    placeholder: '例如: myvol'
+    placeholder: '例如: Myvol'
   source:
     label: 源
     title: 源配置
@@ -1101,7 +1116,7 @@ k8sImport:
   header: 导入现有的Kubernetes
   name:
     label: 集群名称
-    placeholder: '例如: my-imported-cluster'
+    placeholder: '例如: My-imported-cluster'
   kubeConfig:
     label: 要导入的Kubeconfig 文件
     placeholder: 导入或粘贴集群的Kubeconfig文件以供使用。
@@ -1251,7 +1266,7 @@ servicePage:
   new:
     form:
       name:
-        placeholder: '例如: myapp'
+        placeholder: '例如: Myapp'
       description:
         placeholder: '例如: 我的应用'
   newBalancer:
@@ -1260,13 +1275,13 @@ servicePage:
       name:
         placeholder: '例如: website'
       description:
-        placeholder: '例如: mycompany.com的负载均衡'
+        placeholder: '例如: Mycompany.com的负载均衡'
   newIngress:
     form:
       name:
         placeholder: '例如: website'
       description:
-        placeholder: '例如: mycompany.com的Ingress'
+        placeholder: '例如: Mycompany.com的Ingress'
   portsTab:
     title: 端口
     detail: '从主机IP映射到容器监听的端口'
@@ -1358,7 +1373,7 @@ stackPage:
 newStack:
   header: 导入YAML
   name:
-    placeholder: '例如: myapp'
+    placeholder: '例如: Myapp'
   description:
     placeholder: '例如: MyApp Stack'
   files:
@@ -1457,12 +1472,12 @@ notifierPage:
     pagerduty: PagerDuty
     webhook: Webhook
   slack:
-    url: URL
+    url: 访问URL
     urlPlaceholder: '例如: https://hooks.slack.com/services/T00000000/B00000000/XXXXXXXXXXXXXXXXXXXXXXXX'
-    defaultRecipient: 默认接收人(频道)
+    defaultRecipient: 默认接收人
     defaultRecipientPlaceholder: '例如: example.com'
     helpText: |
-     '以下是<a href="https://get.slack.help/hc/en-us/articles/115005265063-Incoming-WebHooks-for-Slack" target="_blank" rel="nofollow noopener noreferrer">创建传入WebHooks</a>的方法。'
+      以下是<a href="https://get.slack.help/hc/en-us/articles/115005265063-Incoming-WebHooks-for-Slack" target="_blank" rel="nofollow noopener noreferrer">创建传入WebHooks</a>的方法。
 
   smtp:
     server: Smtp服务器配置
@@ -1474,18 +1489,18 @@ notifierPage:
     userName: 用户名
     userNamePlaceholder: '例如: John'
     password: 密码
-    passwordPlaceholder: 你的密码
+    passwordPlaceholder: 账号的密码
     defaultRecipient: 默认收件箱
     defaultRecipientPlaceholder: '例如: you@example.com'
   pagerduty:
     serviceKey: 服务密钥
-    serviceKeyPlaceholder: 您的PagerDuty服务密钥
+    serviceKeyPlaceholder: PagerDuty服务密钥
     helpText: |
-      '以下是<a href="https://support.pagerduty.com/docs/webhooks">为PagerDuty创建传入WebHooks</a>的方法。'
+      以下是<a href="https://support.pagerduty.com/docs/webhooks">为PagerDuty创建传入WebHooks</a>的方法。
 
   webhook:
     url: URL
-    urlPlaceholder: 您的webhook URL
+    urlPlaceholder: webhook URL
   testAction:
     testing: 测试
     testOk: 设置已验证
@@ -1553,15 +1568,15 @@ ldap:
       checkbox: TLS
     groupSearchBase:
       labelText: '组搜索起点:'
-      placeholder: "例如: ou=Groups,dc=mycompany,dc=com"
+      placeholder: "例如: ou=Groups,dc=Mycompany,dc=com"
       helpText: "设置后，会在此搜索起点下搜索组而不会在用户搜索起点下搜索组。"
     userSearchBase:
       labelText: 用户搜索起点
-      placeholder: "例如: ou=Users,dc=mycompany,dc=com"
+      placeholder: "例如: ou=Users,dc=Mycompany,dc=com"
     defaultDomain:
       helpText: "当用户未指定登录域时使用该域"
       labelText: 默认登录域
-      placeholder: "例如: mycompany"
+      placeholder: "例如: Mycompany"
     serviceAccountDistinguishedName:
       labelText: 服务帐户专有名称
     connectionTimeout:
@@ -1783,11 +1798,11 @@ catalogSettings:
   more:
     header: 自定义
     helpText:
-      header: "您可以自定义其他应用商店地址，每个自定义应用商店需要有以下内容:"
+      header: "您可以自定义应用商店，每个自定义商店需满足以下要求:"
       help-name: 唯一的名称
-      help-repo: '仓库URL地址:'
-      help-branch: "可选: 如果使用基于Git的应用商店，则还需要设置分支名称。"
-      help-git: "基于Git的商店URL地址, 例如: https://github.com/{appName}/charts.git。"
+      help-repo: '仓库地址:'
+      help-branch: "可选: 如果使用基于Git的应用商店，可能需要设置分支名称，不指定默认拉取master分支。"
+      help-git: "基于Git的商店地址, 例如: https://github.com/{appName}/charts.git。"
       help-chart: 'Helm Charts server URL,例如: https://kubernetes-charts.storage.googleapis.com/(详细信息可查看<a href="https://docs.helm.sh/developing_charts/#hosting-chart-repositories" target="_blank" rel="nofollow noopener noreferrer">Chart托管仓库</a>)。'
     addActionLabel: 添加应用商店
     noMatch: 没有与当前搜索匹配的应用商店
@@ -1796,7 +1811,7 @@ catalogSettings:
     editHeader: 编辑应用商店
     name:
       label: 名称
-      placeholder: '例如: mycatalog'
+      placeholder: '例如: Mycatalog'
     url:
       label: 商店URL地址
     kind:
@@ -1983,7 +1998,7 @@ clusterNew:
       prompt: 选择一个区域...
     project:
       label: 项目
-      placeholder: '例如: my-project'
+      placeholder: '例如: My-project'
     machineType:
       label: 虚拟机类型
       prompt: 选择类型...
@@ -2022,6 +2037,10 @@ clusterNew:
       election:
         label: etcd选举超时时间
         placeholder: 选举超时时间
+    nodeName:
+      title: 节点名称
+      detail: (可选)自定义显示节点的名称，不显示实际的主机名。
+      placeholder: '例如: My-worker-node'
     address:
       title: 主机地址
       detail: 为主机配置公共地址和内部地址
@@ -2178,6 +2197,7 @@ confirmDelete:
   title: '是否确认要删除'
   environmentNote: '注意: 此环境内的所有资源都将被永久性的删除，包括通过{appName}创建的主机。'
   clusterNote: '注意: 在云平台中创建的关联资源(如卷，负载均衡器和网络)不会自动删除。'
+  clusterRoleTemplateBindingNote: "注意: 此用户的权限直接添加到项目中将不会被删除."
   protip: '高级技巧:在点击删除时按住{key}键以跳过确认操作。'
   confirmAction: 删除
   cancelAction: 取消
@@ -2238,7 +2258,7 @@ cruRegistry:
 
 cruPersistentVolume:
   name:
-    placeholder: '例如: myvolume'
+    placeholder: '例如: Myvolume'
   description:
     placeholder: '例如: 生产数据库的卷'
   title:
@@ -2879,11 +2899,11 @@ dangerZone:
     'cacerts': '验证ssl证书所需的CA证书，此CA证书仅适用于自签名SSL证书。若SSL证书是权威CA机构所颁发，则要求删除此CA证书。'
     'engine-install-url': '默认的Docker引擎安装URL(用于大多数Machine Drivers)。'
     'engine-iso-url': '默认OS安装URL(用于Machine vSphere Drivers)。'
-    'engine-newest-version': '当前Rancher Server支持的Docker最新版本，不支持的版本或比此Docker版本新的将被标记为未测试。'
+    'engine-newest-version': '当前Rancher Server支持的最新Docker版本，不支持的版本或比此Docker版本新的将被标记为未测试。'
     'engine-supported-range': '当前Rancher Server支持的Docker版本范围，不满足此范围的Docker版本将在UI中标记为不受支持。'
-    'ingress-ip-domain': '用于自动生成Ingress主机名的通配DNS域。<入口名>.<命名空间名>.<入口控制器的IP地址>将被添加到域名中。'
+    'ingress-ip-domain': '用于自动生成Ingress主机名的通配域名。<入口名>.<命名空间名>.<入口控制器的IP地址>将被添加到域名中。'
     'server-url': '默认的{appName} Server访问地址，必须是HTTPS。集群中的所有主机都必须能够访问此地址。'
-    'system-default-registry': '用于RKE部署基础服务时系统镜像的拉取，拉取其他服务镜像不生效。'
+    'system-default-registry': '用于RKE部署系统服务时镜像的拉取，其他服务拉取镜像不生效。'
     'ui-index': 'UI的HTML索引位置。'
     'ui-pl': '公司名称专用标签。'
     'telemetry-opt': 'Telemetry reporting opt-in。'
@@ -2936,9 +2956,9 @@ editApiKey:
 editCertificate:
   title: 编辑证书
   name:
-    placeholder: '例如: mydomain.com'
+    placeholder: '例如: Mydomain.com'
   description:
-    placeholder: '例如: mydomain.com的EV证书'
+    placeholder: '例如: Mydomain.com的EV证书'
   noteKeyWriteOnly: "注意:Private Key部分为只写(write only)因而显示为空白。更新证书时您需要重新上传Private Key，即便Private Key未发生变化"
 
 editCluster:
@@ -2966,7 +2986,7 @@ editContainer:
     vm: 编辑虚拟机
     container: 编辑容器
   name:
-    placeholder: '例如: myapp'
+    placeholder: '例如: Myapp'
   description:
     placeholder: '例如: 我的应用'
 
@@ -3003,7 +3023,7 @@ editStack:
   name:
     label: 名称
     error: 命名空间名称已被使用，请选择一个新的命名空间名称。
-    placeholder: '例如: myapp'
+    placeholder: '例如: Myapp'
   project:
     label: 项目
     prompt: '选择一个项目:'
@@ -3698,7 +3718,7 @@ formScheduling:
     placeholder: '例如: 高'
   scheduler:
     label: 调度
-    placeholder: '例如: myScheduler'
+    placeholder: '例如: MyScheduler'
   nodeSelector:
     requireAll: "必须 "
     requireAny: "最好"
@@ -3860,7 +3880,7 @@ formNamespace:
   reuse:
     prompt: 选择一个命名空间...
   create:
-    placeholder: '例如: myapp'
+    placeholder: '例如: Myapp'
   errors:
     noneChosen: 您必须选择一个命名空间。
     validation: "命名空间: {error}"
@@ -4482,6 +4502,25 @@ modalProcessError:
   stackTrace: "堆栈跟踪:"
   close: 关闭
 
+modalDrainNode:
+  title: 'Drain "{nodeName}"'
+  action: Drain
+  drain: 'Drain this node:'
+  force:
+    helpText: '即使存在不由ReplicationController、ReplicaSet、Job、DaemonSet或StatefulSet管理的pod。'
+  ignoreDaemonSets:
+    helpText: 即使有DaemonSet管理的pod。
+  deleteLocalData:
+    helpText: 即使有使用emptyDir的pod(当节点耗尽时将删除的本地数据)。
+  gracePeriod:
+    helpText: 给予每个pod优雅终止的时间段(以秒为单位)。如果为负数，将使用pod指定的默认值。
+    placeholder: '例如: 60'
+    label: 宽限期
+  timeout:
+    helpText: '在放弃之前等待的时间，0表示一直等待。'
+    placeholder: '例如: 60'
+    label: 超时
+
 modalRollbackService:
   title: '回滚 "{instanceName}"'
   titleWithSidekicks: '回滚"{instanceName}"&{count, plural,=1{#sidecar}other{#sidecars}}'
@@ -4630,7 +4669,7 @@ newContainer:
   saveUpgrade: 升级
   saveNew: 启动
   name:
-    placeholder: '例如: myapp'
+    placeholder: '例如: Myapp'
   description:
     placeholder: '例如: 我的应用'
   environment:
@@ -4793,7 +4832,7 @@ nodeDriver:
       placeholder: '例如: ubuntu'
     iam:
       label: IAM配置文件
-      placeholder: my-k8s-profile
+      placeholder: My-k8s-profile
     privateIp:
       label: 私有IP
     onlyPrivate:
@@ -4863,7 +4902,7 @@ nodeDriver:
       creating: 创建安全组...
     loadingZone: 从Exoscale加载区域信息...
     zoneSection: 区域
-    selectZoneAction: “下一步：选择一个安全组”
+    selectZoneAction: “下一步：选择安全组”
     zone:
       label: 区域
     portHelp:
@@ -4897,7 +4936,7 @@ nodeDriver:
     apiKeyHelp: '由Packet的<a href="https://app.packet.net/portal#/api-keys" target="_blank">API Keys</a>页面获取'
     instanceSection: 实例
     instanceOptionsSection: 实例选项
-    loginAction: "下一步: 认证并且选择一个实例"
+    loginAction: "下一步: 认证并且选择实例"
     authentication: 验证
     location: 所在地区
     planDetails:
@@ -4997,7 +5036,7 @@ nodeDriver:
       key:
         placeholder: "例如: guestinfo.hostname"
       value:
-        placeholder: "例如: myrancherhost"
+        placeholder: "例如: Myrancherhost"
       label: Configuration Parameters used for guestinfo
       addActionLabel: Add Parameter
   azure:
@@ -5128,7 +5167,7 @@ nodeDriver:
       placeholder: 区域
     zone:
       label: 可用区
-      prompt: 选择一个可用区...
+      prompt: 选择可用区...
     networkSection:
       label: 网络
       detail: 配置通过该模版创建的实例的网络选项
@@ -5177,7 +5216,7 @@ nodeDriver:
     access:
       title: 1. 帐户访问
       detail: 选择将用于启动ZStack实例的endpoint，帐户名称和帐户密码
-      next: "下一步: 验证&选择一个网络"
+      next: "下一步: 验证&选择网络"
       loading: 从ZStack加载区域、集群、网络信息...
     endpoint:
       label: 终端
@@ -5458,9 +5497,9 @@ schema:
   inputCertificate:
     prompt: 选择证书...
   inputContainer:
-    prompt: 选择一个容器...
+    prompt: 选择容器...
   inputConfigMap:
-    prompt: 选择一个ConfigMap
+    prompt: 选择ConfigMap
   inputEnum:
     option: 选择选项...
   inputHost:
@@ -5763,10 +5802,11 @@ action:
   revert: 恢复默认值
   rollback: 回滚
   setDefault: 设置为缺省
+  setting: 设置
   start: 启动
   startAll: 全部开始
-  setting: 设置
   stop: 停止
+  stopDrain: 停止Drain
   stopAll: 全部停止
   upgrade: 升级
   upgradeOrEdit: 升级/编辑
@@ -5864,7 +5904,7 @@ model:
       label: 服务账号密码
     domain:
       label: '用户搜索起点:'
-      placeholder: "例如: ou=Users,dc=mycompany,dc=com"
+      placeholder: "例如: ou=Users,dc=Mycompany,dc=com"
       help: "仅有该搜索起点下的用户能够访问"
   projectMember:
     role:
