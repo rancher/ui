@@ -10,7 +10,7 @@ export default Component.extend(ModalBase, {
   settings:   service(),
   growl:      service(),
   layout,
-  classNames: ['span-8', 'offset-2'],
+  classNames: ['modal-edit-setting', 'span-8', 'offset-2'],
 
   value:      null,
   removing:   false,
@@ -19,7 +19,12 @@ export default Component.extend(ModalBase, {
 
   init() {
     this._super(...arguments);
-    this.set('value', this.get('model.obj.value') || '');
+
+    if (this.get('model.kind') === 'json') {
+      this.set('value', JSON.stringify(JSON.parse(this.get('model.obj.value')), undefined, 2));
+    } else {
+      this.set('value', this.get('model.obj.value') || '');
+    }
   },
 
   didInsertElement() {
