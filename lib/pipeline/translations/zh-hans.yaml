@@ -7,7 +7,7 @@ languageContribute: "帮助翻译Rancher"
 # Really generic things used in multiple places (use sparingly)
 ##############################
 generic:
-  authorize: 认证 & 同步你自己的代码库
+  authorize: 认证 & 同步代码库
   branch: 分支
   commit: 提交
   repository: 代码库
@@ -15,7 +15,7 @@ generic:
   image: 镜像
   imageName: 镜像名称
   loginIn: 登入
-  logout: 退出用户 {user}
+  logout: 退出用户{user}
   pipeline: 流水线
   is: 是
   push: 提交到代码库
@@ -37,7 +37,7 @@ pipelinesPage:
 pipelinesSetting:
   globalConfigChangeLabel: 使用OAuth应用程序去认证
   customConfigChangeLabel: 使用另一个OAuthe应用程序
-  userGlobalConfig: GitHub身份验证已启用，您可以使用它来直接启用Pipline
+  userGlobalConfig: GitHub身份验证已启用，您可以使用它来直接启用Pipline。
   gitAuthentication: Git验证
   authenticateWithGit: 用Git进行身份验证
   authenticatedUsers: 已授权的用户
@@ -74,8 +74,8 @@ newPipelineStage:
     placeholder: "例如: compile"
   addStep: 添加步骤
   trigger:
-    webhook: Push
-    webhookPR: Pull Request
+    webhook: 推送
+    webhookPR: 拉取请求
     webhookTag: Tag
 
 newPipelineStep:
@@ -86,7 +86,7 @@ newPipelineStep:
     label: 步骤类型
     image: 基础镜像
     env: 环境变量
-    enableBranch: 设置流水线。
+    enableBranch: 设置流水线
     applyYaml:
       label: 部署YAML
       yaml: YAML路径
@@ -98,7 +98,7 @@ newPipelineStep:
         path:
           required: 请输入YAML路径。
     scm:
-      noYaml: 代码库中没有<code>.rancher-pipeline.yml</code>文件。
+      noYaml: 代码库中没有发现<code>.rancher-pipeline.yml</code>文件。
       demoGroup: 示例代码库
       selectRepository: 代码库
       add: 选择代码库
@@ -108,10 +108,10 @@ newPipelineStep:
       noWebhook: 没有设置代码库Webhook的权限
     build:
       imageName:
-        placeholder: "例如：example/app:v1"
+        placeholder: '例如: example/app:v1'
       errors:
         tag:
-          required: 请输入镜像名称。
+          required: 请输入镜像名称
         dockerfilePath:
           required: 请输入Dockerfile的路径。
         registry:
@@ -162,25 +162,25 @@ authPage:
       preVariable: 授权
       post: 保存中
   form:
-    headerVariable: '2. 配置流水线使用你的{SCM}验证'
+    headerVariable: '2. 完成配置，并使用你的{SCM}账号进行验证'
     isEnterprise:
       labelText: 使用https连接
     enterprise:
-      labelText: 使用私有{type}企业版部署
+      labelText: '使用私有{type}企业版部署'
     enterpriseHost:
       labelText: 地址
-      placeholder: '例如 example.com'
+      placeholder: '例如: example.com'
   gitlab:
     auth: '标准GitLab，<a href="https://gitlab.com/profile/applications" target="_blank">点击此处</a>在弹出的新窗口中进行应用设置。'
-    enterpriseAuth: "企业版GitLab，请登录你的账号，点击Settings，然后点击Applications进行设置"
+    enterpriseAuth: "企业版GitLab，请登录你的账号，点击Settings，然后点击Applications进行设置。"
     ul:
       li2:
         text: '填写表单内容:'
         ul:
-          li1: '<b>名称：</b> <span class="text-muted">应用名称，例如：My Pipeline</span>'
+          li1: '<b>名称：</b><span class="text-muted">应用名称，例如: My Pipeline。</span>'
           li2: 回调URL：
       li3:
-        text: '点击"Save application"'
+        text: '点击Save application'
     form:
       subtextVariable: '将新创建应用的应用ID和秘钥复制粘贴到对应的输入框中'
       clientId:
@@ -190,17 +190,17 @@ authPage:
 
   github:
     auth: '标准GitHub，<a href="https://github.com/settings/developers" target="_blank">点击此处</a>在弹出的新窗口中进行应用设置。'
-    enterpriseAuth: "企业版GitHub，请登录你的账号，点击Settings，然后点击Applications进行设置"
+    enterpriseAuth: "企业版GitHub，请登录你的账号，点击Settings，然后点击Applications进行设置。"
     ul:
       li2:
         text: '点击"Register new application"并填写表单内容:'
         ul:
-          li1: '<b>应用名称：</b> <span class="text-muted">应用名称，例如：My Pipeline</span>'
-          li2: 主页URL：
-          li3: '<b>应用描述：</b> <span class="text-muted">应用描述，可选</span>'
-          li4: 授权回调URL：
+          li1: '<b>应用名称: </b> <span class="text-muted">应用名称，例如: My Pipeline。</span>'
+          li2: '主页URL:'
+          li3: '<b>应用描述: </b> <span class="text-muted">应用描述，可选。</span>'
+          li4: '授权回调URL:'
       li3:
-        text: '点击"Register Application"'
+        text: '点击Register Application'
     form:
       subtextVariable: '将新创建应用的Client ID和Secret复制粘贴到对应的输入框中'
       clientId:
@@ -227,13 +227,13 @@ pipelineDetailPage:
       triggered: 触发时间
 
 runPipeline:
-  title: '运行 "{name}"'
-  noBranch: 该代码库没有任何<code>.rancher-pipeline.yml</code>文件。你可以点击<b>编辑配置</b>来通过向导的方式配置流水线，也可以点击<b>查看/编辑YAML</b>直接修改配置。
+  title: '运行{name}'
+  noBranch: '该代码库没有发现<code>.rancher-pipeline.yml</code>文件。你可以点击<b>编辑配置</b>来通过向导的方式配置流水线，也可以点击<b>查看/编辑YAML</b>直接修改配置。'
   branch: 
     label: '分支'
 
 pipelineSetting:
-  title: '流水线设置 "{name}"'
+  title: '流水线设置"{name}"'
 
 buildDetailPage:
   header: '流水线运行: #{name}'
@@ -242,18 +242,20 @@ buildDetailPage:
   log:
     title: 详细日志
     detail: 当前流水线运行的详细日志。
+    waiting: Waiting...
+    loading: Loading...
 
 
 enablePipeline:
   header: 启用代码库认证
-  configNow: 马上设置
+  configNow: 立即设置
   helpText:
-    代码库认证尚未开启。你需要先开启代码库认证。
+    代码库认证尚未开启,你需要先开启代码库认证。
   noPermission:
-    代码库认证尚未开启。你需要联系项目管理员设置认证。
+    代码库认证尚未开启,你需要联系项目管理员设置认证。
 
 editYamlPipeline:
-  title: '查看/编辑 YAML "{name}"'
+  title: '查看/编辑YAML{name}'
   branch: 
     label: '分支'
 
@@ -263,20 +265,20 @@ editPipelineConfig:
   download: 仅下载流水线配置。
   timeout:
     label: 超时时间
-    helpText: 如果Build在该时间内没有执行完成，则终止本次Build。
+    helpText: 如果构建在该时间内没有执行完成，则终止本次构建。
 pipelineSelector:
   header: 触发规则
   table:
     type: 类型
     value: 值
   title: 
-    include: '运行该{type}当:'
-    exclude: '不运行该{type}当:'
+    include: '当满足条件时运行该{type}'
+    exclude: '当满足条件时不运行该{type}'
   addRule: 添加规则
   branch: 分支
   event: 事件
-  pr: Pull Request
-  push: Push
+  pr: 拉取请求
+  push: 推送
   tag: Tag
 
 fromSecret:
@@ -288,6 +290,6 @@ fromSecret:
   prefix:
     label: 别名
   keyLabel: 变量
-  keyPlaceholder: 例如： FOO
+  keyPlaceholder: '例如: Foo'
   valueLabel: 值
-  valuePlaceholder: 例如： bar
+  valuePlaceholder: '例如: bar'
