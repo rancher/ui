@@ -1,7 +1,7 @@
 import Component from '@ember/component';
 import ViewNewEdit from 'shared/mixins/view-new-edit';
 import { inject as service } from '@ember/service';
-import { get, set, computed } from '@ember/object';
+import EmberObject, { get, set, computed } from '@ember/object';
 import layout from './template';
 import { getSources } from 'ui/models/volume';
 
@@ -13,8 +13,13 @@ export default Component.extend(ViewNewEdit, {
   sourceName: null,
 
   titleKey:    'cruVolume.title',
+
   didReceiveAttrs() {
-    set(this, 'sourceName', get(this, 'primaryResource.sourceName'));
+    const selectedSource = (get(this, 'sourceChoices') || []).find((source) => !!get(this, `primaryResource.${ get(source, 'value') }`));
+
+    if ( selectedSource ) {
+      set(this, 'sourceName', get(selectedSource, 'name'));
+    }
   },
 
   actions: {
@@ -29,13 +34,13 @@ export default Component.extend(ViewNewEdit, {
     },
   },
 
-  headerToken: function() {
+  headerToken: computed('scope', function() {
     let k = 'cruPersistentVolumeClaim.define.';
 
     k += get(this, 'mode');
 
     return k;
-  }.property('scope'),
+  }),
 
   sourceChoices: computed('intl.locale', function() {
     const intl = get(this, 'intl');
@@ -76,6 +81,7 @@ export default Component.extend(ViewNewEdit, {
       }
     }
   }),
+
   willSave() {
     const vol = get(this, 'primaryResource');
     const entry = getSources('ephemeral').findBy('name', get(this, 'sourceName'));
@@ -90,12 +96,14 @@ export default Component.extend(ViewNewEdit, {
       return false;
     }
 
-    vol.clearSourcesExcept(entry.value);
-
     let ok = this._super(...arguments);
 
     if ( ok ) {
-      this.sendAction('doSave', { volume: vol, });
+      const out = EmberObject.create({ name: get(vol, 'name')  });
+
+      set(out, entry.value, get(vol, entry.value));
+
+      this.sendAction('doSave', { volume: out, });
       this.doneSaving();
     }
 

@@ -1,35 +1,16 @@
 <div class="row mb-20">
   <div class="col span-6">
-    <label class="acc-label">{{t 'cruPersistentVolume.rbd.fsType.label'}}</label>
-    {{#input-or-display editable=editing value=config.fsType}}
-      {{input type="text" value=config.fsType classNames="form-control" placeholder=(t 'cruPersistentVolume.rbd.fsType.placeholder')}}
+    <label class="acc-label">{{t 'cruPersistentVolume.rbd.user.label'}}</label>
+    {{#input-or-display editable=editing value=config.user}}
+      {{input type="text" value=config.user classNames="form-control" placeholder=(t 'cruPersistentVolume.rbd.user.placeholder')}}
     {{/input-or-display}}
   </div>
 
-  <div class="col span-6">
-    <label class="acc-label">{{t 'cruPersistentVolume.rbd.image.label'}}</label>
-    {{#input-or-display editable=editing value=config.image}}
-      {{input type="text" value=config.image classNames="form-control" placeholder=(t 'cruPersistentVolume.rbd.image.placeholder')}}
-    {{/input-or-display}}
-  </div>
-</div>
-
-<div class="row mb-20">
   <div class="col span-6">
     <label class="acc-label">{{t 'cruPersistentVolume.rbd.keyring.label'}}</label>
     {{#input-or-display editable=editing value=config.keyring}}
       {{input type="text" value=config.keyring classNames="form-control" placeholder=(t 'cruPersistentVolume.rbd.keyring.placeholder')}}
     {{/input-or-display}}
-  </div>
-
-  <div class="col span-6">
-    {{form-value-array
-      initialValues=config.monitors
-      editing=editing
-      valueLabel="cruPersistentVolume.rbd.monitors.label"
-      addActionLabel="cruPersistentVolume.rbd.monitors.addActionLabel"
-      changed=(action (mut config.monitors))
-    }}
   </div>
 </div>
 
@@ -40,7 +21,39 @@
       {{input type="text" value=config.pool classNames="form-control" placeholder=(t 'cruPersistentVolume.rbd.pool.placeholder')}}
     {{/input-or-display}}
   </div>
+  <div class="col span-6">
+    <label class="acc-label">{{t 'cruPersistentVolume.rbd.image.label'}}</label>
+    {{#input-or-display editable=editing value=config.image}}
+      {{input type="text" value=config.image classNames="form-control" placeholder=(t 'cruPersistentVolume.rbd.image.placeholder')}}
+    {{/input-or-display}}
+  </div>
+</div>
 
+<div class="row mb-20">
+  <div class="col span-6">
+    <label class="acc-label">{{t 'cruPersistentVolume.rbd.secretRef.label'}}</label>
+    {{#input-or-display editable=editing value=config.secretRef.name}}
+      {{input type="text" value=config.secretRef.name classNames="form-control" placeholder=(t 'cruPersistentVolume.rbd.secretRef.placeholder')}}
+    {{/input-or-display}}
+  </div>
+
+  {{#if (eq volume.type "persistentVolume")}}
+    <div class="col span-6">
+      <label class="acc-label">{{t 'cruPersistentVolume.cephfs.secretRef.namespace.label'}}</label>
+      {{#input-or-display editable=editing value=config.secretRef.namespace}}
+        {{input type="text" value=config.secretRef.namespace classNames="form-control" placeholder=(t 'cruPersistentVolume.cephfs.secretRef.namespace.placeholder')}}
+      {{/input-or-display}}
+    </div>
+  {{/if}}
+</div>
+
+<div class="row mb-20">
+  <div class="col span-6">
+    <label class="acc-label">{{t 'cruPersistentVolume.rbd.fsType.label'}}</label>
+    {{#input-or-display editable=editing value=config.fsType}}
+      {{input type="text" value=config.fsType classNames="form-control" placeholder=(t 'cruPersistentVolume.rbd.fsType.placeholder')}}
+    {{/input-or-display}}
+  </div>
   <div class="col span-6">
     <label class="acc-label">{{t 'cruPersistentVolume.rbd.readOnly.label'}}</label>
     {{#if editing}}
@@ -62,15 +75,12 @@
 
 <div class="row">
   <div class="col span-6">
-    <label class="acc-label">{{t 'cruPersistentVolume.rbd.secretRef.label'}}</label>
-    {{#input-or-display editable=editing value=config.secretRef.name}}
-      {{input type="text" value=config.secretRef.name classNames="form-control" placeholder=(t 'cruPersistentVolume.rbd.secretRef.placeholder')}}
-    {{/input-or-display}}
-  </div>
-  <div class="col span-6">
-    <label class="acc-label">{{t 'cruPersistentVolume.rbd.user.label'}}</label>
-    {{#input-or-display editable=editing value=config.user}}
-      {{input type="text" value=config.user classNames="form-control" placeholder=(t 'cruPersistentVolume.rbd.user.placeholder')}}
-    {{/input-or-display}}
+    {{form-value-array
+      initialValues=config.monitors
+      editing=editing
+      valueLabel="cruPersistentVolume.rbd.monitors.label"
+      addActionLabel="cruPersistentVolume.rbd.monitors.addActionLabel"
+      changed=(action (mut config.monitors))
+    }}
   </div>
 </div>

@@ -35,7 +35,7 @@ export default Component.extend({
   actions: {
     defineNewVolume() {
       get(this, 'modalService').toggleModal('modal-new-volume', {
-        model:    get(this, 'model.volume'),
+        model:    get(this, 'model.volume').clone(),
         callback: (volume) => {
           set(this, 'model.volume', volume);
         },
