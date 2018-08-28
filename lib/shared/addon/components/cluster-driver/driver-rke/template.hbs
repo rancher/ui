@@ -35,6 +35,25 @@
         </div>
         {{copy-to-clipboard tooltipText="" buttonText="copyToClipboard.tooltip" clipboardText=value class="with-clip"}}
       {{else}}
+      {{#if (and (eq nodeWhich 'custom') (eq mode 'new'))}}
+        <div class="row">
+          <div class="col span-4">
+            <label class="acc-label">{{t 'clusterNew.rke.windowsSupport.label'}}</label>
+            <div class="radio">
+              <label>
+                {{radio-button selection=windowsSupport value=false }}
+                {{t 'generic.disabled'}}
+              </label>
+            </div>
+            <div class="radio">
+              <label>
+                {{radio-button selection=windowsSupport value=true }}
+                {{t 'generic.enabled'}}
+              </label>
+            </div>
+          </div>
+        </div>
+      {{/if}}
         <div class="row">
           <div class="col span-4">
             <label class="acc-label">{{t 'clusterNew.rke.version.label'}}</label>
@@ -48,7 +67,7 @@
             <label class="acc-label">{{t 'clusterNew.rke.network.label'}}</label>
             {{new-select
                 classNames="form-control"
-                content=networkChoices
+                content=networkContent
                 localizedLabel=true
                 value=cluster.rancherKubernetesEngineConfig.network.plugin
                 disabled=isEdit
@@ -201,8 +220,35 @@
 {{/if}}
 
 {{#if (and isCustom (eq step 2)) }}
-
   {{#accordion-list showExpandAll=false as |al expandFn|}}
+    {{#if windowsSupport}}
+      {{#accordion-list-item
+        title=(t 'clusterNew.rke.system.title')
+        detail=(t 'clusterNew.rke.system.detail')
+        expandOnInit=true
+        expandAll=al.expandAll
+        expand=(action expandFn)
+      }}
+        <div class="row">
+          <div class="col span-6 text-center mt-0 mb-0">
+            <div class="radio">
+              <label>
+                {{radio-button selection=isLinux value=true}}
+                {{t 'clusterNew.rke.system.linux'}}
+              </label>
+            </div>
+          </div>
+          <div class="col span-6 text-center mt-0 mb-0">
+            <div class="radio">
+              <label>
+                {{radio-button selection=isLinux value=false}}
+                {{t 'clusterNew.rke.system.windows'}}
+              </label>
+            </div>
+          </div>
+        </div>
+      {{/accordion-list-item}}
+    {{/if}}
     {{#accordion-list-item
          title=(t 'clusterNew.rke.role.pageheader')
          detail=(t 'clusterNew.rke.info.text')
@@ -225,13 +271,13 @@
                 <li>
                   <div class="row">
                     <div class="col span-4 text-center mt-0 mb-0">
-                      <label class="p-10 pl-30 pr-30">{{input type="checkbox" checked=etcd}} {{t 'clusterNew.rke.role.header.etcd'}}</label>
+                      <label class="p-10 pl-30 pr-30 {{unless isLinux 'text-muted'}}">{{input type="checkbox" checked=etcd disabled=(not isLinux) }} {{t 'clusterNew.rke.role.header.etcd'}}</label>
                     </div>
                     <div class="col span-4 text-center mt-0 mb-0">
-                      <label class="p-10 pl-30 pr-30">{{input type="checkbox" checked=controlplane}} {{t 'clusterNew.rke.role.header.controlplane'}}</label>
+                      <label class="p-10 pl-30 pr-30 {{unless isLinux 'text-muted'}}">{{input type="checkbox" checked=controlplane disabled=(not isLinux) }} {{t 'clusterNew.rke.role.header.controlplane'}}</label>
                     </div>
                     <div class="col span-4 text-center mt-0 mb-0">
-                      <label class="p-10 pl-30 pr-30">{{input type="checkbox" checked=worker}} {{t 'clusterNew.rke.role.header.worker'}}</label>
+                      <label class="p-10 pl-30 pr-30">{{input type="checkbox" checked=worker disabled=(not isLinux) }} {{t 'clusterNew.rke.role.header.worker'}}</label>
                     </div>
                   </div>
                   {{#advanced-section advanced=advanced}}
@@ -269,6 +315,7 @@
                         </li>
                       </ul>
                     </div>
+                    {{#if isLinux}}
                     <div class="row mt-20">
                       {{t 'clusterNew.rke.nodeName.title'}}
                       <p class="help-block">{{t 'clusterNew.rke.nodeName.detail'}}</p>
@@ -338,12 +385,13 @@
                         </li>
                       </ul>
                     </div>
+                  {{/if}}
                   {{/advanced-section}}
                 </li>
               </ul>
             </li>
             <li>
-              {{t 'clusterNew.rke.command.instructions'}}
+              {{t (if isLinux 'clusterNew.rke.command.instructions' 'clusterNew.rke.command.winInstructions') htmlSafe=true}}
               {{!-- <p class="help-block">{{t 'clusterNew.rke.labels.detail'}}</p> --}}
               <ul class="list-unstyled">
                 <li>
@@ -364,6 +412,14 @@
       </section>
     {{/accordion-list-item}}
 
+    {{#if isLinux}}
+      {{form-user-labels
+        setLabels=(action 'setLabels')
+        expandAll=al.expandAll
+        expand=(action expandFn)
+        detailKey="formUserLabels.nodeDetail"
+      }}
+    {{/if}}
   {{/accordion-list}}
 
   {{#if newNodeCount}}

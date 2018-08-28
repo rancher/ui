@@ -2078,6 +2078,7 @@ clusterNew:
       text: Editing node options will update the command you will run on your existing machines
     command:
       instructions: 'Run this command on one or more existing machines already running a supported version of Docker.'
+      winInstructions: 'Run this command in <code>CMD</code> on one or more existing machines already running a supported version of Docker and windows server version more than <code class="code-version">1803</code>.'
     auth:
       label: Auth Provider
       x509: x509
@@ -2099,6 +2100,8 @@ clusterNew:
         calico:
           cloudProvider:
             label: Cloud Provider
+      type:
+        info: Only support "host-gw" backend
     ingress:
       label: Nginx Ingress
     monitoring:
@@ -2159,6 +2162,14 @@ clusterNew:
       worker: Please select at least one node to use as a worker.
     dockerRootDir:
       placeholder: Default directory is {dir}.
+    system:
+      title: Node Operating System
+      detail: The OS of the node which will be added into the cluster
+      linux: Linux
+      windows: Windows
+    windowsSupport:
+      label: Windows Support (Experimental)
+      disabled: Not support {plugin} network provider.
   custom:
     label: Custom
     shortLabel: Custom
