@@ -5,4 +5,6 @@ import VolumeSource from 'shared/mixins/volume-source';
 export default Component.extend(VolumeSource, {
   layout,
   field:     'emptyDir',
+
+  initValue: { medium: '' }
 });

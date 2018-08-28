@@ -7,6 +7,15 @@
   </div>
 
   <div class="col span-6">
+    <label class="acc-label">{{t 'cruPersistentVolume.nfs.server.label'}}</label>
+    {{#input-or-display editable=editing value=config.server}}
+      {{input type="text" value=config.server classNames="form-control" placeholder=(t 'cruPersistentVolume.nfs.server.placeholder')}}
+    {{/input-or-display}}
+  </div>
+</div>
+
+<div class="row">
+  <div class="col span-6">
     <label class="acc-label">{{t 'cruPersistentVolume.nfs.readOnly.label'}}</label>
     {{#if editing}}
       <div class="text-muted">
@@ -22,14 +31,5 @@
         {{config.readOnly}}
       </div>
     {{/if}}
-  </div>
-</div>
-
-<div class="row">
-  <div class="col span-6">
-    <label class="acc-label">{{t 'cruPersistentVolume.nfs.server.label'}}</label>
-    {{#input-or-display editable=editing value=config.server}}
-      {{input type="text" value=config.server classNames="form-control" placeholder=(t 'cruPersistentVolume.nfs.server.placeholder')}}
-    {{/input-or-display}}
   </div>
 </div>

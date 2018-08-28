@@ -85,6 +85,7 @@ export default Component.extend(ViewNewEdit, {
       return `volume-source/source-${ name }`;
     }
   }),
+
   willSave() {
     const vol = get(this, 'primaryResource');
 
