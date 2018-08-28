@@ -6,22 +6,38 @@ import { normalizeName } from 'shared/settings/service';
 import ModalBase from 'shared/mixins/modal-base';
 import layout from './template';
 
+const cmOpts = {
+  autofocus:       true,
+  gutters:          ['CodeMirror-lint-markers'],
+  lineNumbers:     true,
+  lineWrapping:    true,
+  lint:            true,
+  mode:            {
+    name:          'javascript',
+    json:          true,
+  },
+  theme:           'monokai',
+  viewportMargin:   Infinity,
+};
+
 export default Component.extend(ModalBase, {
-  settings:   service(),
-  growl:      service(),
+  settings:          service(),
+  growl:             service(),
   layout,
-  classNames: ['modal-edit-setting', 'span-8', 'offset-2'],
+  classNames:        ['modal-edit-setting', 'span-8', 'offset-2'],
 
-  value:      null,
-  removing:   false,
+  codeMirrorOptions: cmOpts,
+  value:             null,
+  formattedValue:    null,
+  removing:          false,
 
-  model:      alias('modalService.modalOpts'),
+  model:             alias('modalService.modalOpts'),
 
   init() {
     this._super(...arguments);
 
     if (this.get('model.kind') === 'json') {
-      this.set('value', JSON.stringify(JSON.parse(this.get('model.obj.value')), undefined, 2));
+      this.set('formattedValue', JSON.stringify(JSON.parse(this.get('model.obj.value')), undefined, 2));
     } else {
       this.set('value', this.get('model.obj.value') || '');
     }
@@ -54,6 +70,11 @@ export default Component.extend(ModalBase, {
 
     done() {
       this.send('cancel');
+      window.location.href = window.location.href;
+    },
+
+    updateJson(json) {
+      this.set('value', json);
     }
   },
 });
