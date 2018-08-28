@@ -26,15 +26,25 @@
             </div>
           {{else}}
             <div class="">
-              <pre class="bg-setting m-0">
+              {{#if (eq row.kind "json" )}}
+                <div class="container-json-setting">
+                  {{code-block
+                      class="setting-json"
+                      code=row.parsedJSON
+                      language="json"
+                  }}
+                </div>
+              {{else}}
+                <pre class="bg-setting m-0">
                 {{~#if row.obj.value~}}
                   {{~row.obj.value~}}
                 {{~else~}}
                   <span class="text-muted">&lt;none&gt;</span>
                 {{~/if~}}
-              </pre>
+                </pre>
+              {{/if}}
               <div class="row mt-5">
-                {{#if (eq row.kind 'multiline')}}
+                {{#if (or (eq row.kind 'multiline') (eq row.kind 'json'))}}
                   <div class="btn bg-info btn-sm" {{action "showNode" row}}>Hide {{row.key}}</div>
                 {{/if}}
               </div>
