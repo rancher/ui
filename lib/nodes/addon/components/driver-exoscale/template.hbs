@@ -5,35 +5,35 @@
         <span>{{t 'nodeDriver.exoscale.accountSection'}}</span>
       </div>
 
-      <div class="row {{if isStep1 'form-group'}}">
+      <div class="row {{if (eq step 1) 'form-group'}}">
         <div class="col-md-2 form-label">
           <label class="form-control-static">{{t 'nodeDriver.exoscale.apiKey.label'}}</label>
         </div>
         <div class="col-md-10">
-          {{#if isStep1}}
+          {{#if (eq step 1)}}
             {{input type="text" name="username" classNames="form-control" placeholder=(t 'nodeDriver.exoscale.apiKey.placeholder') value=config.apiKey}}
           {{else}}
             <div class="form-control-static">{{config.apiKey}}</div>
           {{/if}}
         </div>
       </div>
-      <div class="row {{if isStep1 'form-group'}}">
+      <div class="row {{if (eq step 1) 'form-group'}}">
         <div class="col-md-2 form-label">
           <label class="form-control-static">{{t 'nodeDriver.exoscale.secretKey.label'}}</label>
         </div>
         <div class="col-md-10">
-          {{#if isStep1}}
+          {{#if (eq step 1)}}
             {{input type="password" name="password" classNames="form-control" placeholder=(t 'nodeDriver.exoscale.secretKey.placeholder') value=config.apiSecretKey}}
           {{else}}
             <div class="form-control-static text-muted text-italic">{{t 'nodeDriver.exoscale.secretKey.provided'}}</div>
           {{/if}}
-          {{#if isStep1}}
+          {{#if (eq step 1)}}
             <p class="help-block">{{t 'nodeDriver.exoscale.accountHelp'}}</p>
           {{/if}}
         </div>
       </div>
     </div>
-    {{#if isStep1}}
+    {{#if (eq step 1)}}
       {{top-errors errors=errors}}
 
       <div class="footer-actions">
@@ -44,24 +44,24 @@
   </form>
 </section>
 
-<section class="horizontal-form r-pt0 {{unless isStep2 'hide'}}">
+<section class="horizontal-form r-pt0 {{if (not-eq step 2) 'hide'}}">
   <div class="text-center">
     <i class="icon icon-spinner icon-spin"></i> {{t 'nodeDriver.exoscale.loadingZone'}}
   </div>
 </section>
 
-<section class="horizontal-form r-pt0 {{unless isGteStep3 'hide'}}">
+<section class="horizontal-form r-pt0 {{unless (gte step 3) 'hide'}}">
   <div class="container-fluid">
     <div class="over-hr r-mt20 r-mb20">
       <span>{{t 'nodeDriver.exoscale.zoneSection'}}</span>
     </div>
 
-    <div class="row {{if isStep3 'form-group'}}">
+    <div class="row {{if (eq step 3) 'form-group'}}">
       <div class="col-md-2 form-label">
         <label class="form-control-static">{{t 'nodeDriver.exoscale.zone.label'}}</label>
       </div>
       <div class="col-md-10">
-        {{#if isStep3}}
+        {{#if (eq step 3)}}
          {{#each allZones as |choice|}}
           <div class="radio r-pt10"><label>
             {{radio-button selection=selectedZone value=choice.id}}
@@ -76,7 +76,7 @@
       </div>
     </div>
   </div>
-  {{#if isStep3}}
+  {{#if (eq step 3)}}
     {{top-errors errors=errors}}
 
     <div class="footer-actions">
@@ -87,24 +87,24 @@
 </section>
 
 
-<section class="horizontal-form r-pt0 {{unless isStep4 'hide'}}">
+<section class="horizontal-form r-pt0 {{unless (eq step 4) 'hide'}}">
   <div class="text-center">
     <i class="icon icon-spinner icon-spin"></i> {{t 'nodeDriver.exoscale.loadingSecurity'}}
   </div>
 </section>
 
-<section class="horizontal-form r-pt0 {{unless isGteStep5 'hide'}}">
+<section class="horizontal-form r-pt0 {{unless (gte step 5) 'hide'}}">
   <div class="container-fluid">
     <div class="over-hr r-mt20 r-mb20">
       <span>{{t 'nodeDriver.exoscale.securityGroupSection'}}</span>
     </div>
 
-    <div class="row {{if isStep5 'form-group'}}">
+    <div class="row {{if (eq step 5) 'form-group'}}">
       <div class="col-md-2 form-label">
         <label class="form-control-static">{{t 'nodeDriver.exoscale.securityGroup.label'}}</label>
       </div>
       <div class="col-md-10">
-        {{#if isStep5}}
+        {{#if (eq step 5)}}
           <div class="radio r-pt10"><label>
             {{radio-button selection=whichSecurityGroup value="default"}}
             {{#if defaultSecurityGroup}}
@@ -141,7 +141,7 @@
       </div>
     </div>
   </div>
-  {{#if isStep5}}
+  {{#if (eq step 5)}}
     {{top-errors errors=errors}}
 
     <div class="footer-actions">
@@ -151,7 +151,7 @@
   {{/if}}
 </section>
 
-<section class="horizontal-form {{unless isStep6 'hide'}}" style="padding-top: 0">
+<section class="horizontal-form {{unless (eq step 6) 'hide'}}" style="padding-top: 0">
   <div class="text-center">
     <i class="icon icon-spinner icon-spin"></i>
     {{#if defaultSecurityGroup}}
@@ -162,13 +162,13 @@
   </div>
 </section>
 
-<section class="horizontal-form r-pt0 {{unless isStep7 'hide'}}">
+<section class="horizontal-form r-pt0 {{unless (eq step 7) 'hide'}}">
   <div class="text-center">
     <i class="icon icon-spinner icon-spin"></i> {{t 'nodeDriver.exoscale.loadingInstance'}}
   </div>
 </section>
 
-<section class="horizontal-form r-pt0 {{unless isGteStep8 'hide'}}">
+<section class="horizontal-form r-pt0 {{unless (gte step 8) 'hide'}}">
   <div class="container-fluid">
     <div class="over-hr r-mt20 r-mb20">
       <span>{{t 'nodeDriver.exoscale.instanceSection'}}</span>
