@@ -55,6 +55,14 @@ export default Component.extend(NewOrEdit, ChildHook, {
         set(this, 'primaryResource.resourceQuota', null);
       }
     },
+
+    updateNsDefaultQuota(quota) {
+      if ( quota ) {
+        set(this, 'primaryResource.namespaceDefaultResourceQuota', { limit: quota });
+      } else {
+        set(this, 'primaryResource.namespaceDefaultResourceQuota', null);
+      }
+    },
   },
 
   pspDidChange: observer('podSecurityPolicyTemplateId', function() {

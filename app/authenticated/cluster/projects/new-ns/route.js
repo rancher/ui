@@ -25,7 +25,6 @@ export default Route.extend({
       namespace,
       namespaces:        get(this, 'clusterStore').findAll('namespace'),
       allProjects:       get(this, 'globalStore').findAll('project'),
-      // allQuotaTemplates: get(this, 'globalStore').findAll('resourceQuotaTemplate'),
     });
   },
 

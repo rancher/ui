@@ -16,12 +16,6 @@ const headers = [
     searchField:    ['displayName', 'name'],
     translationKey: 'projectsPage.ns.label',
   },
-  // {
-  //   name:           'resourceQuotaTemplate.displayName',
-  //   sort:           ['resourceQuotaTemplate.displayName'],
-  //   searchField:    ['resourceQuotaTemplate.displayName'],
-  //   translationKey: 'projectsPage.quota.label',
-  // },
   {
     name:           'created',
     sort:           ['createdTs'],
