@@ -34,6 +34,17 @@ module.exports = function(defaults) {
     },
     nodeAssets: { 'xterm': { import: ['dist/xterm.css'] } },
 
+    assetLoader: {
+      generateURI(filePath) {
+        // we need to slice the trailing slash off baseAssets because filePath has a leading slash
+        const url = appConfig.baseAssets.slice(0, -1);
+
+        // console.log('file path: ', `${ url }${ filePath }`);
+        return `${ url }${ filePath }`;
+      }
+    },
+
+
     SRI: { enabled: false, },
 
     fingerprint: {
