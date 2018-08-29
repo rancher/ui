@@ -97,7 +97,7 @@
     <div class="row">
       {{#unless (or customizeNamespace (not selectedTemplateModel))}}
         <div class="col span-12">
-          {{t 'newCatalog.customizeNamespace' namespaceId=(if requiredNamespace requiredNamespace namespaceResource.name) htmlSafe=true}}
+          {{t 'newCatalog.customizeNamespace' namespaceId=(if requiredNamespace requiredNamespace primaryResource.name) htmlSafe=true}}
           {{#unless (or editing requiredNamespace)}}
             <button class="btn btn-sm bg-transparent pl-0" {{action 'toogleNamespace'}}>
               {{t 'generic.customize'}}
@@ -110,7 +110,7 @@
           <hr class="mt-20 mb-20"/>
 
           {{form-namespace
-              namespace=namespaceResource
+              namespace=primaryResource
               errors=namespaceErrors
           }}
         {{/if}}
