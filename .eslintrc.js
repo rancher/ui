@@ -27,9 +27,11 @@ const propertyOrder = [
 
 module.exports = {
   root: true,
+  parser: 'babel-eslint',
   parserOptions: {
     ecmaVersion: 2017,
-    sourceType: "module"
+    sourceType: "module",
+    allowImportExportEverywhere: true
   },
   extends: [
     "eslint:recommended",
@@ -37,30 +39,15 @@ module.exports = {
   ],
   globals: {
     "$": true,
-    "-Promise": true,
     "ALY": true,
     "AWS": true,
-    "AnsiUp": true,
-    "Identicon": true,
-    "Prism": true,
-    "ShellQuote": true,
     "Stripe": true,
-    "Terminal": true,
     "Ui": true,
     "WebSocket": true,
-    "YAML": true,
-    "_": true,
-    "async": true,
-    "commonmark": true,
-    "d3": true,
     "document": true,
     "jQuery": true,
-    "jsondiffpatch": true,
-    "md5": true,
-    "moment": true,
     "navigator": true,
     "window": true,
-    "ipaddr": true,
   },
   env: {
     browser: true,

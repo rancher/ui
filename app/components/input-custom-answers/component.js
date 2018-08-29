@@ -3,9 +3,11 @@ import { computed, get, set } from '@ember/object';
 import { isSafari } from 'ui/utils/platform';
 import { next } from '@ember/runloop';
 import { inject as service } from '@ember/service';
-import json2yaml from 'npm:json2yaml';
-import dotObject from 'npm:dot-object';
+import json2yaml from 'json2yaml';
 import layout from './template';
+import YAML from 'yamljs';
+
+var dotObject = null;
 
 function convertKey(key) {
   let out = '';
@@ -31,6 +33,17 @@ export default Component.extend({
   showInput:     true,
   accept:        '.yml, .yaml',
   app:           null,
+
+  init() {
+    this._super(...arguments);
+
+
+    if (!dotObject) {
+      import('dot-object').then( (module) => {
+        dotObject = module.default;
+      });
+    }
+  },
 
   actions: {
     upload() {

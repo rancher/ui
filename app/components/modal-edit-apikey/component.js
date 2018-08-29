@@ -7,6 +7,7 @@ import layout from './template';
 import {
   get, set, computed, observer, setProperties
 } from '@ember/object';
+import moment from 'moment';
 
 export default Component.extend(ModalBase, NewOrEdit, {
   endpointService: service('endpoint'),

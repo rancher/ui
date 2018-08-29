@@ -1,5 +1,5 @@
 import Resource from 'ember-api-store/models/resource';
-import modelMixin from 'logging/mixins/logging-model';
+import modelMixin from 'ui/mixins/logging-model';
 
 const ProjectLogging =  Resource.extend(modelMixin, { type: 'projectlogging', });
 

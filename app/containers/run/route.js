@@ -11,6 +11,18 @@ export default Route.extend({
   clusterStore: service(),
   globalStore:  service(),
 
+  beforeModel() {
+    if (window.Prettycron) {
+      return;
+    } else {
+      return import('prettycron').then( (module) => {
+        window.Prettycron = module;
+
+        return module;
+      });
+    }
+  },
+
   model(params/* , transition*/) {
     var store = get(this, 'store');
 

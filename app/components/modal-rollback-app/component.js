@@ -2,6 +2,8 @@ import { get, set, computed } from '@ember/object';
 import Component from '@ember/component';
 import ModalBase from 'shared/mixins/modal-base';
 import layout from './template';
+import jsondiffpatch from 'jsondiffpatch';
+import moment from 'moment';
 
 const HIDDEN_FIELDS = ['digest'];
 

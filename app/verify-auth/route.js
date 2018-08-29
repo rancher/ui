@@ -12,18 +12,17 @@ export default Route.extend(VerifyAuth, {
 
   model(params/* , transition */) {
     if (window.opener && !get(params, 'login')) {
-      let occName          = get(params, 'config') ? `security.authentication.${ get(params, 'config') }` : `security.authentication.github`;
-      let openerController = window.opener.lc(occName);
-      let openerStore      = get(openerController, 'globalStore');
-      let qp               = get(params, 'config') || get(params, 'authProvider');
-      let type             = `${ qp }Config`;
-      let config           = openerStore.getById(type, qp);
-      let gh               = get(this, 'github');
-      let stateMsg         = 'Authorization state did not match, please try again.';
+      let openersGithub = window.opener.ls('github');
+      let openerStore   = window.opener.ls('globalStore');
+      let qp            = get(params, 'config') || get(params, 'authProvider');
+      let type          = `${ qp }Config`;
+      let config        = openerStore.getById(type, qp);
+      let gh            = get(this, 'github');
+      let stateMsg      = 'Authorization state did not match, please try again.';
 
       if (get(params, 'config') === 'github') {
         return gh.testConfig(config).then((resp) => {
-          gh.authorize(resp, openerController.get('github.state'));
+          gh.authorize(resp, openersGithub.get('state'));
         })
           .catch((err) => {
             this.send('gotError', err);
@@ -37,8 +36,7 @@ export default Route.extend(VerifyAuth, {
       }
 
       if (get(params, 'code')) {
-        // TODO see if session.githubState works here
-        if (openerController.get('github').stateMatches(get(params, 'state'))) {
+        if (openersGithub.stateMatches(get(params, 'state'))) {
           reply(params.error_description, params.code);
         } else {
           reply(stateMsg);

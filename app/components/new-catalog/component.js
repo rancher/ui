@@ -11,7 +11,7 @@ import C from 'ui/utils/constants';
 import Util from 'ui/utils/util';
 import { compare as compareVersion } from 'ui/utils/parse-version';
 import { task } from 'ember-concurrency';
-import YAML from 'npm:yamljs';
+import YAML from 'yamljs';
 import layout from './template';
 import { stringifyAnswer } from 'shared/utils/evaluate';
 import { isEmpty } from '@ember/utils';

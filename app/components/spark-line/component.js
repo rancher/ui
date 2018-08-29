@@ -4,6 +4,12 @@ import Component from '@ember/component';
 import { GRADIENT_COLORS } from 'shared/components/svg-gradients/component';
 import { formatPercent, formatMib, formatKbps }
   from 'ui/utils/util';
+import {
+  select,
+  scale,
+  min as d3Min,
+  max as d3Max,
+} from 'd3';
 import layout from './template';
 
 const FORMATTERS = {
@@ -20,31 +26,31 @@ export default Component.extend({
   classNames:        ['spark-line'],
   attributeBindings: ['cssSize:style'],
 
-  data:   null,
-  width:  null,
-  height: 20,
-  margin: 2,
+  data:            null,
+  width:           null,
+  height:          20,
+  margin:          2,
 
-  min: 0,
+  min:             0,
 
   minMax:          null,  // lower bound on how small automatic max can be
   max:             null,  // set an explicit max
   maxDoubleInital: false, // if true, set max to double the initial non-zero data point
   scaleDown:       false, // if true, max is allowed to go back down.  If false it can only go up.
 
-  gradient:      null,
-  colorIdx:      0,
-  interpolation: 'basis', // 'step-after',
-  formatter:     'value',
+  gradient:        null,
+  colorIdx:        0,
+  interpolation:   'basis', // 'step-after',
+  formatter:       'value',
 
-  svg:         null,
-  line:        null,
-  dot:         null,
-  text:        null,
-  textBg:      null,
-  x:           null,
-  y:           null,
-  observedMax: null, // The largest max seen so far
+  svg:             null,
+  line:            null,
+  dot:             null,
+  text:            null,
+  textBg:          null,
+  x:               null,
+  y:               null,
+  observedMax:     null, // The largest max seen so far
 
   hasData: function() {
     if (this.get('data.length') > 0 && !this.get('svg')) {
@@ -93,8 +99,8 @@ export default Component.extend({
       x.domain([0, data.get('length') - 1]);
       x.range([0, width - margin]);
 
-      var min = this.get('min') === null ? d3.min(data) : this.get('min');
-      var max = this.adjustMax(d3.max(data));
+      var min = this.get('min') === null ? d3Min(data) : this.get('min');
+      var max = this.adjustMax(d3Max(data));
 
       y.domain([min, max]);
       y.range([height - margin, margin]);
@@ -125,14 +131,14 @@ export default Component.extend({
   }.observes('data', 'data.[]'),
   create() {
     let margin = this.get('margin');
-    var svg = d3.select(this.$()[0])
+    var svg = select(this.$()[0])
       .attr('transform', `translate(${  margin  },${  margin  })`);
 
     this.set('svg', svg);
-    this.set('x', d3.scale.linear());
-    this.set('y', d3.scale.linear());
+    this.set('x', scale.linear());
+    this.set('y', scale.linear());
 
-    var line = d3.svg.line()
+    var line = svg.line()
       .defined((d) => (typeof d === 'number'))
       .x((d, i) => this.get('x')(i))
       .y((d) => this.get('y')(d));

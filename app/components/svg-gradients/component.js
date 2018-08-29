@@ -1,4 +1,5 @@
 import Component from '@ember/component';
+import { select } from 'd3';
 import layout from './template';
 
 export const GRADIENT_COLORS = {
@@ -12,7 +13,7 @@ export default Component.extend({
   layout,
   tagName: '',
   didInsertElement() {
-    var svg = d3.select('body').append('svg:svg')
+    var svg = select('body').append('svg:svg')
       .attr('id', 'svg-gradients')
       .attr('height', '0')
       .attr('height', '0')

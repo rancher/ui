@@ -4,6 +4,9 @@ import Component from '@ember/component';
 import ModalBase from 'shared/mixins/modal-base';
 import layout from './template';
 import C from 'shared/utils/constants';
+import moment from 'moment';
+
+import jsondiffpatch from 'jsondiffpatch';
 
 const HIDDEN_FIELDS = ['created', 'creatorId', 'name', 'ownerReferences', 'removed', 'scale', 'state', 'uuid', 'workloadLabels', 'workloadAnnotations'];
 

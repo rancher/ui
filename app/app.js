@@ -2,10 +2,6 @@ import Application from '@ember/application';
 import Resolver from './resolver';
 import loadInitializers from 'ember-load-initializers';
 import config from './config/environment';
-import jsyaml from 'npm:js-yaml';
-
-// init jsyaml for codemirror, can't directly import npm module from addon `shared`
-window.jsyaml || (window.jsyaml = jsyaml);
 
 const App = Application.extend({
   modulePrefix:    config.modulePrefix,

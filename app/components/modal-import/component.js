@@ -2,7 +2,7 @@ import Component from '@ember/component';
 import { get, set, observer } from '@ember/object';
 import { inject as service } from '@ember/service';
 import CodeMirror from 'codemirror';
-import jsyaml from 'npm:js-yaml';
+import jsyaml from 'js-yaml';
 import ModalBase from 'shared/mixins/modal-base';
 import layout from './template';
 import ChildHook from 'shared/mixins/child-hook';

@@ -6,6 +6,7 @@ import { isSafari } from 'ui/utils/platform';
 import { evaluate } from 'shared/utils/evaluate';
 import { inject as service } from '@ember/service';
 import layout from './template';
+import YAML from 'yamljs';
 
 const HIDDEN = 'Hidden';
 

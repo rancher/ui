@@ -1,10 +1,39 @@
+const propertyOrder = [
+  'service',
+  'controller',
+  'query-params',
+  'attribute',
+  'relationship',
+  'property',
+  'single-line-function',
+
+  'init',
+  'beforeModel',
+  'model',
+  'afterModel',
+  'redirect',
+  'setupController',
+  'resetController',
+  ['lifecycle-hook','activate','deactivate','didDestroyElement',
+    'didInsertElement','didReceiveAttrs','didRender','didUpdate',
+    'didUpdateAttrs','renderTemplate','serialize','setupController',
+    'willClearRender','willDestroyElement','willInsertElement','willRender','willUpdate'
+  ],
+
+  'actions',
+  'observer',
+  'multi-line-function'
+];
+
 module.exports = {
   env: {
     embertest: true
   },
+  parser: 'babel-eslint',
   parserOptions: {
     ecmaVersion: 2017,
-    sourceType: "module"
+    sourceType: "module",
+    allowImportExportEverywhere: true
   },
   extends: [
     "eslint:recommended",
@@ -12,27 +41,13 @@ module.exports = {
   ],
   globals: {
     "$": true,
-    "-Promise": true,
     "ALY": true,
     "AWS": true,
-    "AnsiUp": true,
-    "Identicon": true,
-    "Prism": true,
-    "ShellQuote": true,
     "Stripe": true,
-    "Terminal": true,
     "Ui": true,
     "WebSocket": true,
-    "YAML": true,
-    "_": true,
-    "async": true,
-    "commonmark": true,
-    "d3": true,
     "document": true,
     "jQuery": true,
-    "jsondiffpatch": true,
-    "md5": true,
-    "moment": true,
     "navigator": true,
     "window": true,
   },
@@ -50,12 +65,14 @@ module.exports = {
     "ember/no-observers": "off",
     "ember/no-on-calls-in-components": "off",
     "ember/no-side-effects": "off",
-    "ember/order-in-components": "off",
-    "ember/order-in-controllers": "off",
-    "ember/order-in-models": "off",
-    "ember/order-in-routes": "off",
+    "ember/no-old-shims": "error",
+    "ember/order-in-components": ["error", { order: propertyOrder }],
+    "ember/order-in-controllers": ["error", { order: propertyOrder }],
+    "ember/order-in-models": ["error", { order: propertyOrder }],
+    "ember/order-in-routes": ["error", { order: propertyOrder }],
     "ember/use-brace-expansion": "off",
     "ember/use-ember-get-and-set": "off",
+    "ember/new-module-imports": "error",
     "eqeqeq": "error",
     "generator-star-spacing": "off",
     "guard-for-in": "off",
@@ -63,7 +80,7 @@ module.exports = {
     "new-cap": "off",
     "no-caller": "error",
     "no-cond-assign": [ "error", "except-parens" ],
-    "no-console": "warn",
+    "no-console": "off",
     "no-debugger": "warn",
     "no-empty": "off",
     "no-eq-null": "error",
@@ -79,6 +96,7 @@ module.exports = {
 
     //stylistic
     "array-bracket-spacing": "error",
+    "padded-blocks": [ "error", "never" ],
     "block-spacing": [ "error", "always" ],
     "brace-style": [ "error", "1tbs" ],
     "comma-spacing": "error",
@@ -99,22 +117,40 @@ module.exports = {
     } ],
     "keyword-spacing": "error",
     "lines-between-class-members": "error",
-    "newline-per-chained-call": "error",
+    "newline-per-chained-call": ["error", { "ignoreChainWithDepth": 4 }],
     "no-whitespace-before-property": "error",
     "object-curly-newline": [ "error", {
       "ObjectExpression": { "multiline": true, "minProperties": 3 },
       "ObjectPattern": { "multiline": true, "minProperties": 3 },
-      "ImportDeclaration": { "multiline": true, "minProperties": 3 },
+      "ImportDeclaration": { "multiline": true, "minProperties": 5 },
       "ExportDeclaration": { "multiline": true, "minProperties": 3 }
     } ],
     "object-curly-spacing": [ "error", "always" ],
     "object-property-newline": "error",
-    "padded-blocks": "error",
+    "padding-line-between-statements": [
+      "error",
+      {
+        "blankLine": "always",
+        "prev": "*",
+        "next": "return",
+      },
+      // This configuration would require blank lines after every sequence of variable declarations
+      {
+        blankLine: "always",
+        prev: ["const", "let", "var"],
+        next: "*"
+      },
+      {
+        blankLine: "any",
+        prev: ["const", "let", "var"],
+        next: ["const", "let", "var"]
+      }
+    ],
     quotes: [
       "error",
       "single",
       {
-        "avoidEscape": true,
+       "avoidEscape": true,
         "allowTemplateLiterals": true
       },
     ],
@@ -128,7 +164,6 @@ module.exports = {
     "switch-colon-spacing": "error",
 
     // ECMAScript 6
-    "arrow-body-style": [ "error", "as-needed" ],
     "arrow-parens": "error",
     "arrow-spacing": [ "error", { "before": true, "after": true } ],
     "no-trailing-spaces": "error",
@@ -136,7 +171,6 @@ module.exports = {
     "prefer-arrow-callback": "error",
     "prefer-template": "error",
     "rest-spread-spacing": "error",
-    // "sort-imports": "error",
     "template-curly-spacing": [ "error", "always" ],
     "yield-star-spacing": [ "error", "both" ],
   }
