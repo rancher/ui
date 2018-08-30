@@ -109,7 +109,7 @@ export default Resource.extend({
   }),
 
   availableActions: computed('actionLinks.{activate,deactivate}', function() {
-    let a = get(this, 'actionLinks');
+    let a = get(this, 'actionLinks') || {};
 
     return [
       {
