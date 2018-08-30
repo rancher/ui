@@ -63,7 +63,7 @@ generic:
   mibibyte: 'MiB'
   minutes: 分钟
   milliseconds: '毫秒'
-  missing: "*%缺少% *"
+  missing: "*%缺少%*"
   moreActions: 更多操作
   na: 'n/a'
   name: 名称
@@ -212,8 +212,8 @@ appDetailPage:
     nodata: 此应用未创建服务
   volumes:
     title: 卷
-    detail: 此应用创建的持久化卷声明(Pvc)
-    nodata: 此应用未创建持久化卷声明
+    detail: 此应用创建的持久卷声明(Pvc)
+    nodata: 此应用未创建持久卷声明
   configMaps:
     title: 配置映射
     detail: 与此应用关联的配置映射
@@ -269,7 +269,7 @@ rolesPage:
     detail: 对Kubernetes资源的具体操作进行授权
   inherit:
     title: 继承角色
-    detail: 继承其他角色的所以权限
+    detail: 继承其他角色的所有权限
   addRole: 添加角色
   editRole: 编辑角色
   saveEdit: 编辑
@@ -705,7 +705,7 @@ projectsPage:
   quota:
     label: 资源配额
   ns:
-    label: 命名空间名称
+    label: 命名空间
     placeholder: '例如: lab'
   name:
     label: 项目名称
@@ -714,6 +714,9 @@ projectsPage:
     label: 创建时间
   psp:
     label: Pod安全策略
+  nsDefaultQuota:
+    title: 命名空间默认资源配额
+    detail: 配置默认情况下命名空间可以使用的资源量
   resourceQuota:
     title: 资源配额
     detail: 配置整个项目可以使用多少资源。
@@ -755,7 +758,7 @@ clustersPage:
   version:
     label: kubernetes版本
   nodes:
-    label: 主机
+    label: 主机数
   cpu:
     label: 处理器
   memory:
@@ -825,7 +828,7 @@ clusterDashboard:
   pods: Pods
   subtitle:
     reserved: "已保留{total}中的{used}"
-    used: "已使用{total}个Pod中的{used}个Pod"
+    used: "已创建{used}个Pod,最多{total}个"
   node: Nodes
   etcd: Etcd
   scheduler: Scheduler
@@ -912,11 +915,11 @@ cruPersistentVolumeClaim:
     placeholder: '例如: Myvol'
   source:
     label: 源
-    pv: 使用已有的持久化卷
-    storageClass: 使用存储类来配置新的持久化卷
+    pv: 使用已有的持久卷
+    storageClass: 使用存储类来配置新的持久卷
   pv:
-    label: 持久化卷
-    prompt: 选择一个持久化卷...
+    label: 持久卷
+    prompt: 选择一个持久卷...
   storageClass:
     label: 存储类
     prompt: 使用默认的类
@@ -1203,15 +1206,15 @@ configMapsPage:
 servicePage:
   header: '工作负载: {name}'
   globalScale: '每个主机{scale}'
-  endpoints: '终端:'
+  endpoints: '访问端口:'
   multistat:
-    type: '工作负载类型:'
+    type: '类型:'
     fqdn: 'FQDN:'
-    scale: '数量:'
-    image: '镜像:'
+    scale: 'Pod副本数:'
+    image: '镜像名: '
     namespace: '命名空间:'
     created: '创建时间:'
-    daemonSetScale: '每主机1个'
+    daemonSetScale: '每主机1个实例'
   serviceType:
     deployment: Deployment
     replicaSet: 副本集
@@ -1273,9 +1276,9 @@ servicePage:
     selectorservice: 选择器
     loadbalancerservice: 负载均衡
     dnsservice: 服务别名
-    externalservice-ip: 外部 IP
+    externalservice-ip: 外部IP
     externalservice-host: 外部名称
-    kubernetesservice: K8s 服务
+    kubernetesservice: K8s服务
     composeservice: Compose服务
     networkdriverservice: 网络服务
     storagedriverservice: 存储服务
@@ -1394,8 +1397,8 @@ storageClassPage:
 persistentVolumePage:
   header: 持久卷
   addActionLabel: 添加卷
-  noData: 没有定义持久化卷
-  noMatch: 没有符合当前搜索的持久化卷
+  noData: 没有定义持久卷
+  noMatch: 没有符合当前搜索的持久卷
   source:
     label: 存储源
 
@@ -1752,7 +1755,7 @@ catalogSettings:
   helpText: 目前只支持Helm目录
   library:
     label: 官方认证
-    detail: 由{appName}官方维护的模板仓库。
+    detail: 由{appName}维护的官方模板仓库。
   helm:
     stable:
       label: Helm Stable
@@ -1814,7 +1817,7 @@ clusterRow:
 
 clusterNew:
   advanced:
-    helpText: 不要使用Tabs，Tabs字符在yaml中不能解析
+    helpText: 不要使用Tabs，Tabs字符在yaml中不能解析。
     cancel: 表单输入
     yaml: 编辑YAML
   name:
@@ -2018,12 +2021,12 @@ clusterNew:
         placeholder: 选举超时时间
     nodeName:
       title: 节点名称
-      detail: (可选)自定义显示节点的名称，不显示实际的主机名。
+      detail: (可选)自定义节点显示的名称，不显示实际的主机名
       placeholder: '例如: My-worker-node'
     address:
       title: 主机地址
-      detail: 为主机配置公共地址和内部地址
-      warning: 这似乎不是一个IP地址
+      detail: 为主机配置公网地址和内网地址
+      warning: 这似乎不是一个有效的IP地址
       public:
         label: 公网地址
         placeholder: '例如: 1.2.3.4'
@@ -2057,11 +2060,12 @@ clusterNew:
       text: 编辑主机选项将更新主机注册命令
     command:
       instructions: '在一台或多台已安装支持Docker版本的主机上运行以下命令'
+      winInstructions: '在一台或者多台运行了受支持的Docker版本的主机上运行<code>CMD</code>命令，并且windows server版本大于<code class="code-version">1803</code>.'
     auth:
       label: 认证提供者
       x509: x509
     serviceNodePortRange:
-      label: Node Port范围
+      label: NodePort端口范围
       placeholder: '例如: 30000-32767'
     network:
       label: 网络组件
@@ -2078,10 +2082,12 @@ clusterNew:
         calico:
           cloudProvider:
             label: 云提供商
+      type:
+        info: '仅支持host-gw后端'
     ingress:
       label: Nginx Ingress
     monitoring:
-      label: Metrics服务监控
+      label: 服务监控指标
     networkPolicy:
       label: 项目网络隔离
     version:
@@ -2102,7 +2108,7 @@ clusterNew:
       enabled: 允许不受支持的版本
       disabled: 需要支持的版本
     podSecurityPolicy:
-      label: Pod安全策略支持(需先在全局下创建Pod策略)
+      label: Pod安全策略(需先在全局下创建Pod策略)
     role:
       pageheader: 自定义主机运行命令
       sectionheader: 主机选项
@@ -2138,6 +2144,14 @@ clusterNew:
       worker: 请至少选择一个用于worker的主机。
     dockerRootDir:
       placeholder: "{dir}是默认目录"
+    system:
+      title: 主机操作系统
+      detail: 将添加到集群的主机的操作系统
+      linux: Linux
+      windows: Windows
+    windowsSupport:
+      label: Windows Support(Experimental)
+      disabled: 不支持{plugin}网络提供商。
   custom:
     label: 自定义
     shortLabel: 自定义
@@ -2151,7 +2165,7 @@ clusterNew:
 
 conditionSections:
   title: 状态
-  detail: '{resourceType}当前的状态 '
+  detail: '{resourceType}当前的运行状态 '
   table:
     type: 类型
     status: 状态
@@ -2177,6 +2191,8 @@ confirmDelete:
   environmentNote: '注意: 此环境内的所有资源都将被永久性的删除，包括通过{appName}创建的主机。'
   clusterNote: '注意: 在云平台中创建的关联资源(如卷，负载均衡器和网络)不会自动删除。'
   clusterRoleTemplateBindingNote: "注意: 此用户的权限直接添加到项目中将不会被删除."
+  systemProjectNamespaceNote: '您正在删除系统项目下的命名空间。如果删除，可能会对群集造成有害影响。'
+  systemProjectNote: '您正在删除系统项目。如果删除，可能会对群集造成有害影响。'
   protip: '高级技巧:在点击删除时按住{key}键以跳过确认操作。'
   confirmAction: 删除
   cancelAction: 取消
@@ -2279,7 +2295,9 @@ cruPersistentVolume:
   azureDisk:
     cachingMode:
       label: 缓存模式
-      placeholder: "例如: None"
+      none: None
+      readOnly: Read Only
+      readWrite: Read Write
     diskName:
       label: 磁盘名称
       placeholder: "例如: kubernetes-pvc"
@@ -2291,7 +2309,9 @@ cruPersistentVolume:
       placeholder: "例如: ext4"
     kind:
       label: 类型
-      placeholder: "例如: PersistentVolumeClaim"
+      dedicated: 专用
+      managed: 托管
+      shared: 共享
     readOnly:
       label: 只读
   secret:
@@ -2876,6 +2896,7 @@ dangerZone:
   showLabel: 我已确认修改高级设置可能导致{appName}出问题
   description:
     'cacerts': '验证ssl证书所需的CA证书，此CA证书仅适用于自签名SSL证书。若SSL证书是权威CA机构所颁发，则要求删除此CA证书。'
+    'cluster-defaults': '在创建新群集时覆盖RKE默认值。'
     'engine-install-url': '默认的Docker引擎安装URL(用于大多数Machine Drivers)。'
     'engine-iso-url': '默认OS安装URL(用于Machine vSphere Drivers)。'
     'engine-newest-version': '当前Rancher Server支持的最新Docker版本，不支持的版本或比此Docker版本新的将被标记为未测试。'
@@ -3009,6 +3030,9 @@ editStack:
   description:
     label: 描述
     placeholder: '例如: MyApp命名空间'
+  resourceQuota:
+    title: 资源配额
+    detail: 配置命名空间整体可以使用的资源量
   group:
     label: 标签
     placeholder: '例如: frontend, production'
@@ -3042,7 +3066,7 @@ moveNamespace:
   title: |
     移动{count, plural,
     =1{命名空间: {name}}
-    other{# 命名空间:}}
+    other{#命名空间:}}
   to: "转到目标项目: "
   actionLabel: 移动
 
@@ -3054,7 +3078,7 @@ stacksPage:
   table:
     standalone: 独立容器
     endpoints: 终端
-    scale: 伸缩
+    scale: Pod伸缩
     instanceState: 容器状态
     instanceStateWithIcon: 状态
 
@@ -3089,10 +3113,10 @@ formNodeRequirement:
 
 formIngress:
   hostMode:
-    automatic: 自动生成一个<code>.{domain}</code>的主机名
+    automatic: 自动生成<code>.{domain}</code>后缀的域名
     existing: 继续使用当前主机名<code>{domain}</code>
-    manual: 指定主机名
-    default: 作为默认后端
+    manual: 自定义域名
+    default: 默认后端
   defaultBackend:
     label: 将此规则设置为默认后端
     mark: 默认后端
@@ -3101,7 +3125,7 @@ formIngress:
   removeRuleLabel: 移除此规则
   noRules: 没有规则
   host:
-    label: 请求主机
+    label: 访问域名
     placeholder: "例如: example.com"
   backendType:
     label: 后端类型
@@ -3121,9 +3145,9 @@ formIngressBackends:
     label: 服务端口
     placeholder: '例如: 80'
   path:
-    label: 路径
+    label: 访问路径
     placeholder: '例如: /foo'
-  target: 目标服务
+  target: '后端服务/工作负载'
 
 formBalancerListeners:
   label: 监听器与目标规则
@@ -3453,10 +3477,10 @@ formHealthCheck:
   combinedLivenessCheck: 使用相同的就绪状态(readiness)与存活状态(liveness)配置
   checkType:
     none: 无
-    tcp: 检查TCP连接是否正常
-    http: HTTP请求返回成功状态(2xx或3xx)
-    https: HTTPS请求返回成功状态(2xx或3xx)
-    command: 在容器内运行的命令退出状态为0
+    tcp: TCP端口检查
+    http: HTTP请求状态检查(2xx或3xx)
+    https: HTTPS请求状态检查(2xx或3xx)
+    command: 容器进程退出状态码检查(0)
   command:
     label: 命令
     placeholder: '例如: cat /tmp/health'
@@ -3589,11 +3613,11 @@ formPorts:
   header: 端口映射
   addAction: 添加规则
   kind:
-    label: 运行模式
-    NodePort: NodePort(在每个主机上)
-    HostPort: HostPort(运行pod的主机)
-    ClusterIP: 集群IP(仅限集群内部)
-    LoadBalancer: L4层负载均衡器
+    label: 网络模式
+    NodePort: NodePort(所有主机端口均可访问)
+    HostPort: HostPort(仅Pod所在主机端口可访问)
+    ClusterIP: 集群IP(集群内部访问)
+    LoadBalancer: L4层负载均衡器(对接公有云负载均衡服务)
   sourcePort:
     label: 监听端口
     placeholder: '例如: 80'
@@ -3615,31 +3639,31 @@ formPorts:
     placeholder: '例如: example'
   noPorts: 当前容器没有端口映射
   error:
-    privateRequired: 每条映射规则必须设置容器端口
+    privateRequired: 每条映射规则必须设置容器端口。
     publicRequired: 如果指定了主机IP，则需要源端口。
     hostPort:
       sourcePortRequired: 对于运行pod的主机，必须始终源端口。
     loadBalancer:
-      sourcePortRequired: 每条规则必须设置源端口.
-    mixedIpPort: "Port{ip}:{port}/{proto}有超过一条映射规则"
-    mixedPort: "Port{port}/{proto}有超过一条映射规则"
+      sourcePortRequired: 每条规则必须设置源端口。
+    mixedIpPort: "Port{ip}:{port}/{proto}有超过一条映射规则。"
+    mixedPort: "Port{port}/{proto}有超过一条映射规则。"
   showAdvanced: 显示端口命名选项
 
 formScale:
-  label: 工作负载类型
+  label: 类型
   showAdvanced: 更多选项
   scaleMode:
-    deploymentPrefix: "可扩展部署"
+    deploymentPrefix: "部署"
     replicationControllerPrefix: "复制控制器"
     replicaSetPrefix: "副本集"
-    statefulSetPrefix: "有状态集"
+    statefulSetPrefix: "有状态(StatefulSet)的"
     scaleSuffix: |
       {scale, plural,
       =1{个Pod}
       other{个Pods}
       }
-    daemonSet: "在每个主机上运行一个pod"
-    cronJob: "按照cron定时计划运行"
+    daemonSet: "每个主机运行1个Pod"
+    cronJob: "Cron定时运行"
     job: Job
     sidekickInactive: "Sidecar: 将容器添加到现有工作负载"
     sidekickPrefix: "Sidecar: 添加容器到"
@@ -3690,7 +3714,7 @@ formScheduling:
     label: 优先级
     placeholder: '例如: 3'
   priorityClassName:
-    label: Priority Class名称
+    label: 优先级等级名称
     placeholder: '例如: 高'
   scheduler:
     label: 调度
@@ -3781,7 +3805,7 @@ formSecurity:
     none: 最小
     set: 自定义(1-100)
   cpuPinning:
-    label: CPU 绑定
+    label: CPU绑定
     placeholder: "例如: 0,1,3  默认: All"
   shares:
     label: CPU份额
@@ -3820,12 +3844,12 @@ formSecurity:
     hyperv: HyperV(虚拟机)
 
 formSslTermination:
-  title: SSL/TLS 证书
-  detail: 配置即将应用于加密端口请求的证书。
+  title: SSL/TLS证书
+  detail: '配置用于端口加密的SSL/TSL证书。'
   defaultCertificate:
-    prompt: 选择一个证书...
+    prompt: '选择一个证书...'
   alternateCertificate:
-    prompt: 选择一个证书...
+    prompt: '选择一个证书...'
   certificate: 证书
   alternateCerts: 备选证书
   addAlternate: 添加备选证书
@@ -3852,7 +3876,7 @@ formNamespace:
   toggle:
     simple: 自定义
     reuse: 使用现有的名称空间
-    create: 添加新的命名空间
+    create: 创建新的命名空间
   reuse:
     prompt: 选择一个命名空间...
   create:
@@ -3869,7 +3893,7 @@ formLabelsAnnotations:
   detail: 可用于标识/注释容器并用于调度决策的键值对
 formUserLabels:
   title: 标签
-  detail: 标签是可用于注释容器并进行调度决策的键值对
+  detail: 标签是可用于注释容器并进行调度决策的键值对。
   nodeDetail: 键/值对形式的标签将应用于主机上，用于容器的调度决策。
   addAction: 添加标签
   key:
@@ -3879,7 +3903,7 @@ formUserLabels:
   value:
     label: 值
     placeholder: '例如: bar'
-  protip: "高级技巧: 粘贴一行或多行的key=value键值对能够批量输入"
+  protip: "高级技巧: 粘贴一行或多行的key=value键值对能够批量输入。"
 
 formAccessModes:
   label: 访问模式
@@ -3888,7 +3912,7 @@ formAccessModes:
   accessRWX: 多主机读写
 
 formAnnotations:
-  addActionLabel: 没有注释
+  addActionLabel: 添加注释
   title: 注释
   detail: 配置容器的注释(键/值元数据)。
   errors:
@@ -3926,22 +3950,22 @@ formUpgrade:
   strategy:
     label: 升级策略
     orderedReady: 严格按顺序更新并等待准备就绪
-    parallel: 启动全部新的Pod和停止全部旧的Pod并行执行
-    onDelete: 仅当手动删除旧的Pod时才启动升级的Pod
-    recreate: 杀死所有pod，然后重新开始
+    parallel: 启动所有新Pod和停止所有旧Pod并行执行
+    onDelete: 仅当手动删除旧Pod时才启动升级新Pod
+    recreate: 删除所有pod，然后重新开始
     rollingUpdate: 滚动更新
-    startFirst: '滚动: 启动新的pod，然后停止旧的pod'
-    stopFirst: '滚动: 停止旧的pod，然后开始新的pod'
+    startFirst: '滚动: 先启动新Pod，再停止旧Pod'
+    stopFirst: '滚动: 先停止旧Pod，再启动新Pod'
     custom: 自定义
     batchSize:
       label: 批量大小
       detail: Pod将批量启动或停止
     maxSurge:
       label: 最大浪涌
-      detail: 在任何给定时间内允许超出所需规模的最大pod数量。
+      detail: 在任何给定时间内允许超出所需规模的最大Pod数量。
     maxUnavailable:
       label: 最大不可用
-      detail: 在任意给定时间最大不可用的pod数量
+      detail: 在任意给定时间最大不可用的Pod数量
     minReadySeconds:
       label: 最短准备时间
       detail: 在Pod被视为可用之前，Pod中的容器需至少运行多长时间
@@ -3955,10 +3979,10 @@ formValueArray:
   valueLabel: 值
   valuePlaceholder: 值
   noData: 没有数据
-  protip: '高级技巧: 在任意输入栏中粘贴一行或多行的value能够批量输入'
+  protip: '高级技巧: 在任意输入栏中粘贴一行或多行的value能够批量输入。'
 
 formVolumeRow:
-  prompt: 选择一个持久化卷声明...
+  prompt: 选择一个持久卷声明...
   name:
     label: 卷名
     placeholder: '例如: vol1'
@@ -3967,7 +3991,7 @@ formVolumeRow:
     newVolume: 临时卷
     existingVolume: 已有的卷
     newPvc: 添加卷声明
-    existingPvc: 持久化卷声明
+    existingPvc: 持久卷声明
     bindMount: 挂载
     tmpfs: Tmpfs
     secret: 密文
@@ -3975,17 +3999,17 @@ formVolumeRow:
   remove: 删除卷
   subPath: 卷中的子路径
   readOnly: 只读
-  noVolume: 卷不会被挂载到当前容器中，它可能被pod中的其他容器使用。
+  noVolume: 卷不会被挂载到当前容器中，它可能被Pod中的其他容器使用。
   addMount: 添加挂载
   mounts:
     mountPoint: 挂载点
     subPath: 卷中的子路径
     readOnly: 只读
-    helper: 卷不会被挂载到当前容器中，它可能被pod中的其他容器使用。
+    helper: 卷不会被挂载到当前容器中，它可能被Pod中的其他容器使用。
   customLogPath:
-    helpText: 我们将部署一个flexvolume驱动程序来创建卷并将日志挂载到主机，GKE集群现在支持该功能。
+    helpText: 我们将部署一个Flexvolume驱动程序来创建卷并将日志挂载到主机，GKE集群现在支持该功能。
 formVolumes:
-  title: 卷
+  title: 数据卷
   detail: 持久化及共享数据并与独立容器的生命周期分离
   value:
     prompt: 选择一个容器...
@@ -4005,12 +4029,12 @@ formVolumes:
     label: 添加卷...
     newVolume: 添加一个临时卷
     existingVolume: 现有的临时卷
-    newPvc: 添加新的持久化卷(声明)
-    existingPvc: 使用现有的持久化卷(声明)
-    bindMount: 从主机中挂载目录
+    newPvc: 添加新的持久卷(声明)
+    existingPvc: 使用现有的持久卷(声明)
+    bindMount: 映射主机目录
     tmpfs: 添加一个内存中的tmpfs
-    secret: 使用密文
-    configMap: 使用配置映射
+    secret: 密文卷
+    configMap: 配置映射卷
     customLogPath: 从目录读取日志文件
   table:
     kind: 类型
@@ -4197,13 +4221,14 @@ infoMultiStats:
 
 inputAnswers:
   yaml: 编辑YAML
-  editAsForm: 表单输入应答
   config: 配置选项
-  yamlConfig: 粘贴或者上传 yml/yaml 格式的应答
+  editAsForm: 编辑表单
+  yamlConfig: 粘贴或者上传yml/yaml格式的应答参数
   yamlProtip: 你可以在下面的预览部分，找到该应用的默认应答值
   unknownType: "未识别问题类型:"
   noConfig: 该模板没有配置选项
-  protip: "粘贴和读取操作要求应答为 yml/yaml 格式"
+  protip: "粘贴和读取操作要求应答为yml/yaml格式"
+
 inputIdentity:
   placeholder:
     github: 添加GitHub用户或组织名称
@@ -4287,9 +4312,9 @@ newCertificate:
   cert:
     label: 证书
     required: 必须填写证书
-    invalidFormat: 证书无效
+    invalidFormat: 无效的证书
     placeholder: "粘贴或导入证书，以-----BEGIN CERTIFICATE-----开头"
-    protip: 请包括全部所需的链证书
+    protip: 包括全部所需的证书链
   certChain:
     label: 证书链
     placeholder: "粘贴或导入证书，以-----BEGIN CERTIFICATE-----开头"
@@ -5253,8 +5278,8 @@ projectGroup:
 optionallyNamespaced:
   scope:
     label: 作用域
-    project: 可用于此项目中的所有命名空间
-    namespace: 可用于单个命名空间
+    project: 此项目所有命名空间
+    namespace: 单个命名空间
 
 orchestrationWelcome:
   simple:
@@ -5526,7 +5551,7 @@ siteAccess:
 
 systemInfoSection:
   title: 系统信息
-  detail: 系统和kubernetes信息
+  detail: 操作系统和kubernetes信息
   key: 键
   value: 值
   noData: 没有数据
@@ -5586,7 +5611,7 @@ volumesPage:
   title: Volume Claims
   addActionLabel: 添加Volume Claim
   noData: 没有定义持久卷声明
-  noMatch: 没有符合当前搜索的持久化卷
+  noMatch: 没有符合当前搜索的持久卷
   claimName:
     label: Claim的名称
   volume:
@@ -5814,7 +5839,7 @@ validation:
     between: '"{key}"应当介于{min}和{max}之间'
     min: '"{key}"应当至少为{val}'
     max: '"{key}"应当至多为{val}'
-  chars: '"{key}"包含{count, plural,=1{an invalid character}other{# invalid characters}}:{chars}'
+  chars: '"{key}"包含{count, plural,=1{无效字符}other{# invalid characters}}:{chars}'
   dns:
     doubleHyphen: 不能包含两个连续的连字符
     hostname:
@@ -6003,20 +6028,24 @@ volumeSource:
       label: 日志格式
       useCustomRegex: 使用一个自定义Fluentd regex
       useExistingLogFormat: 使用现有的日志格式
-      helpText: 你可以在</a>这里<a href="http://fluentular.herokuapp.com/" target="_blank">测试你的正则表达式
+      helpText: 你可以在</a>这里<a href="http://fluentular.herokuapp.com/" target="_blank">测试你的正则表达式。
 
 yamlPage:
   errors: yaml文件中存在错误
 
 rkeConfigComment:
   ingress: |
-    ""
+    "" 
     "  # 当前仅支持nginx的ingress"
     "  # 设置`provider: none`从而禁用ingress控制器"
     "  # 通过node_selector可以指定在某些节点上运行ingress控制器，例如: "
     "     provider: nginx"
     "     node_selector:"
     "       app: ingress"
+    "     # 开启ingress后端重写功能"
+    "     extra_args:"
+    "       rewrite-target: /"
+    ""
   network: |
     ""
     "  # 如果你在AWS上使用calico"
@@ -6041,6 +6070,7 @@ rkeConfigComment:
     "         iface: eth1"
   services: |
     ""
+    " # 自定义服务参数"
     "     services:"
     "       kube_api:"
     "         service_cluster_ip_range: 10.43.0.0/16"
@@ -6050,3 +6080,12 @@ rkeConfigComment:
     "       kubelet:"
     "         cluster_domain: cluster.local"
     "         cluster_dns_server: 10.43.0.10"
+    "         # 扩展变量 "
+    "         extra_args:"
+    "           # 修改节点最大Pod数量"
+    "           max-pods: '250' "
+    "       etcd:"
+    "         # 修改空间配额为$((4*1024*1024*1024))，默认2G,最大8G"
+    "         extra_args:"
+    "           quota-backend-bytes: '4294967296'"
+    
