@@ -1,3 +1,4 @@
+import C from 'ui/utils/constants';
 import Component from '@ember/component';
 import { set, get, computed, observer } from '@ember/object';
 import { alias } from '@ember/object/computed';
@@ -28,7 +29,7 @@ export default Component.extend({
   }),
 
   inactiveNodes: computed('nodes.@each.state', function() {
-    return get(this, 'nodes').filter( (n) => get(n, 'state') !== 'active' && get(n, 'state') !== 'cordoned' );
+    return get(this, 'nodes').filter( (n) => C.ACTIVEISH_STATES.indexOf(get(n, 'state')) === -1 );
   }),
 
   unhealthyComponents: computed('componentStatuses.@each.conditions', function() {
