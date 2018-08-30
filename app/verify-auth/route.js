@@ -5,6 +5,8 @@ import { inject as service } from '@ember/service';
 import C from 'shared/utils/constants';
 import VerifyAuth from 'ui/mixins/verify-auth';
 
+const samlProviders = ['ping', 'adfs', 'keycloak'];
+
 export default Route.extend(VerifyAuth, {
   github: service(),
 
@@ -26,7 +28,7 @@ export default Route.extend(VerifyAuth, {
           .catch((err) => {
             this.send('gotError', err);
           });
-      } else if (get(params, 'config') === 'ping' || get(params, 'config') === 'adfs') {
+      } else if (samlProviders.includes(get(params, 'config'))) {
         if (window.opener.window.onAuthTest) {
           reply(null, config);
         } else {
