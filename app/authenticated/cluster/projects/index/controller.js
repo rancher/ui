@@ -13,12 +13,12 @@ export default Controller.extend({
     },
   },
 
-  rows: computed('model.namespaces.@each.displayName', 'scope.currentCluster.id', function() {
+  rows: computed('model.namespaces.@each.displayName', 'model.projects.@each.clusterId', 'scope.currentCluster.id', function() {
     return get(this, 'model.namespaces')
       .filterBy('displayName');
   }),
 
-  projects: computed('model.projects.@each.clusterId', 'scope.currentCluster.id', function() {
+  projects: computed('model.namespaces.@each.displayName', 'model.projects.@each.clusterId', 'scope.currentCluster.id', function() {
     return get(this, 'model.projects').filterBy('clusterId', get(this, 'scope.currentCluster.id'));
   }),
 
