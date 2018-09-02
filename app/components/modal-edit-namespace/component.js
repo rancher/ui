@@ -54,6 +54,21 @@ export default Component.extend(ModalBase, NewOrEdit, {
     set(this, 'primaryResource.tags', get(this, 'tags').split(',') || []);
   }),
 
+  validate() {
+    this._super();
+
+    const errors = get(this, 'errors') || [];
+    const quotaErrors = get(this, 'primaryResource').validateResourceQuota(get(this, 'originalModel.resourceQuota.limit'));
+
+    if ( quotaErrors.length > 0 ) {
+      errors.pushObjects(quotaErrors);
+    }
+
+    set(this, 'errors', errors);
+
+    return get(this, 'errors.length') === 0;
+  },
+
   doneSaving() {
     this.send('cancel');
   }

@@ -17,24 +17,27 @@
     localizedPrompt=true
   }}
 
-  <div class="row mt-20">
-    {{#accordion-list showExpandAll=false as | al expandFn | }}
-      {{#accordion-list-item
-            title=(t 'editStack.resourceQuota.title')
-            detail=(t 'editStack.resourceQuota.detail')
-            expandAll=al.expandAll
-            expand=(action expandFn)
-            expandOnInit=false
-      }}
-        {{form-resource-quota
-            editing=(or editing isNew)
-            expanded=expanded
-            limit=primaryResource.resourceQuota.limit
-            changed=(action "updateNsQuota")
+  {{#if primaryResource.project.resourceQuota}}
+    <div class="row mt-20">
+      {{#accordion-list showExpandAll=false as | al expandFn | }}
+        {{#accordion-list-item
+              title=(t 'editStack.resourceQuota.title')
+              detail=(t 'editStack.resourceQuota.detail')
+              expandAll=al.expandAll
+              expand=(action expandFn)
+              expandOnInit=true
         }}
-      {{/accordion-list-item}}
-    {{/accordion-list}}
-  </div>
+          {{namespace-resource-quota
+              editing=(or editing isNew)
+              expanded=expanded
+              limit=primaryResource.resourceQuota.limit
+              nsDefaultQuota=primaryResource.project.namespaceDefaultResourceQuota.limit
+              changed=(action "updateNsQuota")
+          }}
+        {{/accordion-list-item}}
+      {{/accordion-list}}
+    </div>
+  {{/if}}
 </section>
 
 {{top-errors errors=errors}}

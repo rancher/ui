@@ -1,4 +1,5 @@
 import {  get, set, observer } from '@ember/object';
+import { next } from '@ember/runloop';
 import Component from '@ember/component';
 import { convertToMillis } from 'shared/utils/util';
 import { parseSi } from 'shared/utils/parse-unit';
@@ -7,9 +8,11 @@ import layout from './template';
 export default Component.extend({
   layout,
 
-  limit:     null,
+  limit:          null,
+  projectQuota:   null,
+  nsDefaultQuota: null,
+
   editing:   null,
-  addOnInit: false,
 
   quotaArray: null,
 
@@ -17,33 +20,23 @@ export default Component.extend({
     this._super(...arguments);
 
     this.initQuotaArray();
-  },
-
-  didInsertElement() {
-    if ( get(this, 'editing') && get(this, 'quotaArray.length') === 0 && get(this, 'addOnInit') ) {
-      this.send('addQuota');
-    }
-  },
-
-  actions: {
-    addQuota() {
-      get(this, 'quotaArray').pushObject({
-        key:   '',
-        value: '',
-      });
-    },
-
-    removeQuota(quota){
-      get(this, 'quotaArray').removeObject(quota);
-    }
+    next(() => {
+      this.quotaDidChange();
+    })
   },
 
   quotaDidChange: observer('quotaArray.@each.{key,value}', function() {
     const out = {};
 
     (get(this, 'quotaArray') || []).forEach((quota) => {
-      if ( quota.key && quota.value ) {
+      if ( quota.key ) {
         let value = quota.value;
+
+        if ( !value ) {
+          out[quota.key] = '';
+
+          return;
+        }
 
         if ( quota.key === 'limitsCpu' || quota.key === 'requestsCpu' ) {
           value = `${ value }m`;
@@ -52,6 +45,7 @@ export default Component.extend({
         } else if ( quota.key === 'requestsStorage' ) {
           value = `${ value }Gi`;
         }
+
         out[quota.key] = value;
       }
     });
@@ -60,12 +54,24 @@ export default Component.extend({
   }),
 
   initQuotaArray() {
-    const limit = get(this, 'limit') || {};
+    let limit = get(this, 'limit');
+    const nsDefaultQuota = get(this, 'nsDefaultQuota');
     const array = [];
 
-    Object.keys(limit).forEach((key) => {
-      if ( key !== 'type' && typeof limit[key] ===  'string' ) {
-        let value = limit[key];
+    Object.keys(nsDefaultQuota).forEach((key) => {
+      if ( key !== 'type' && typeof nsDefaultQuota[key] ===  'string') {
+        let value;
+
+        if ( limit && !limit[key] ) {
+          array.push({
+            key,
+            value: '',
+          });
+
+          return;
+        }
+
+        value = limit && limit[key] ? limit[key] : nsDefaultQuota[key];
 
         if ( key === 'limitsCpu' || key === 'requestsCpu' ) {
           value = convertToMillis(value);

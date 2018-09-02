@@ -715,12 +715,9 @@ projectsPage:
     label: Created
   psp:
     label: Pod Security Policy
-  nsDefaultQuota:
-    title: Namespace Default Resource Quota
-    detail: Configure how much of the resources the namespace can consume by default
   resourceQuota:
-    title: Project Resource Quotas
-    detail: Configure how much of the resources the project as a whole can consume
+    title: Resource Quotas
+    detail: Configure how much of the resources the project can consume
   members:
     title: Members
     detail: Configure who has access to the resources in this project and what permissions they have
@@ -3341,10 +3338,26 @@ formResourceQuota:
     type:
       label: Resource Type
     value:
-      label: Limit
-      placeholder: e.g. 8
+      label: Limit 
+      placeholder: e.g. 10
+      milliCpuPlaceholder: e.g. 500
+      memoryPlaceholder: e.g. 1Gi
+    projectLimit:
+      label: Project Limit
+      placeholder: e.g. 50
+      milliCpuPlaceholder: e.g. 2000
       memoryPlaceholder: e.g. 2Gi
+    namespaceLimit:
+      label: Namespace Default Limit
+      placeholder: e.g. 10
+      milliCpuPlaceholder: e.g. 500
+      memoryPlaceholder: e.g. 1Gi
     noData: There are no resource quotas defined
+  errors:
+    projectLimitRequired: Project Limit for {resource} is required.
+    nsDefaultLimitRequired: Namepsace Default Limit for {resource} is required.
+    limitRequired: '{resource} is required.'
+    invalidLimit: '{used} of {total} {resource} quota has been used. The value should be less than or equal {left}.'
   resources:
     configMaps: Config Maps
     limitsCpu: CPU Limit

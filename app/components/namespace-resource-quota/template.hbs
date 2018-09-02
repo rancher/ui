@@ -1,0 +1,20 @@
+{{#if quotaArray.length}}
+  <table class="table fixed">
+    <thead>
+      <tr>
+        <th>{{t 'formResourceQuota.table.type.label'}}</th>
+        <th>{{t 'formResourceQuota.table.value.label'}}</th>
+      </tr>
+    </thead>
+    <tbody>
+      {{#each quotaArray as |quota|}}
+        {{namespace-quota-row 
+            quota=quota
+            editing=editing
+        }}
+      {{/each}}
+    </tbody>
+  </table>
+{{else if (not editing)}}
+  {{t 'formResourceQuota.table.noData'}}
+{{/if}}

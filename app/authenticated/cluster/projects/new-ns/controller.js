@@ -6,8 +6,7 @@ import { inject as service } from '@ember/service';
 import C from 'ui/utils/constants';
 
 export default Controller.extend(NewOrEdit, {
-
-  scope:           service(),
+  scope: service(),
 
   queryParams:     ['addTo', 'from'],
   addTo:           null,
@@ -49,6 +48,21 @@ export default Controller.extend(NewOrEdit, {
 
     return false;
   }),
+
+  validate() {
+    this._super();
+
+    const errors = get(this, 'errors') || [];
+    const quotaErrors = get(this, 'primaryResource').validateResourceQuota();
+
+    if ( quotaErrors.length > 0 ) {
+      errors.pushObjects(quotaErrors);
+    }
+
+    set(this, 'errors', errors);
+
+    return get(this, 'errors.length') === 0;
+  },
 
   doneSaving() {
     this.send('cancel');
