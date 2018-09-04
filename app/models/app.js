@@ -115,7 +115,7 @@ const App = Resource.extend(StateCounts, EndpointPorts, {
   }),
 
   availableActions: computed('actionLinks.{rollback,upgrade}', function() {
-    let a = get(this, 'actionLinks');
+    let a = get(this, 'actionLinks') || {};
 
     var choices = [
       {
