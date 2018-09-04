@@ -12,7 +12,7 @@ let PipelineExecution = Resource.extend({
 
   relevantState:    alias('executionState'),
   availableActions: computed('actionLinks.{rerun,stop}', function() {
-    const a = get(this, 'actionLinks');
+    const a = get(this, 'actionLinks') || {};
 
     return [
       {

@@ -34,7 +34,7 @@ var Node = Resource.extend(StateCounts, ResourceUsage, {
 
   availableActions: computed('links.{nodeConfig}', 'actionLinks.{cordon,uncordon,drain}', function() {
     let l = get(this, 'links');
-    const a = get(this, 'actionLinks');
+    const a = get(this, 'actionLinks') || {};
 
     let out = [
       {
