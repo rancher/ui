@@ -20,9 +20,7 @@ Link any related issues, pull-requests, or commit hashes that are relavent to th
 _Put an `x` in the boxes that apply. You can also fill these out after creating the PR. If you're unsure about any of them, don't hesitate to ask. We're here to help! This is simply a reminder of what we are going to look for before merging your code._
 
 - [ ] Lint and unit tests pass locally with my changes
-
 _Tip: `yarn lint` or `npm run lint`_
-
 - [ ] Any dependent issues or pr's have been linked
 - [ ] If updating dependencies, `yarn.lock` file has been updated and committed
 
