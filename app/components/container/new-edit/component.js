@@ -321,6 +321,9 @@ export default Component.extend(NewOrEdit, ChildHook, {
       pr.containers.pushObjects(slc);
     } else {
       service.clearConfigsExcept(`${ get(this, 'scaleMode')  }Config`);
+      if ( get(this, 'scaleMode') === 'statefulSet' &&  !get(service, 'statefulSetConfig.serviceName') ) {
+        set(service, 'statefulSetConfig.serviceName', name);
+      }
       pr = service;
       nameResource = pr;
       set(pr, 'scale', get(this, 'scale'));
