@@ -2,19 +2,26 @@
   <h1>{{t 'modalEditSetting.title'}}</h1>
 </section>
 <section class="horizontal-form container-fluid">
-  <div class="row inline-form">
+  <div class="row">
     <label>{{t 'modalEditSetting.name.label'}}</label>
     <div class="text-mono">{{model.key}}</div>
     <p class="text-info">{{t model.descriptionKey appName=settings.appName}}</p>
   </div>
 
-  <div class="row inline-form">
+  <div class="row">
     <label>{{t 'modalEditSetting.value.label'}}</label>
     <div>
       {{#if (eq model.kind 'multiline')}}
-        {{textarea class="form-control" value=value rows=10}}
+        {{textarea
+            class="form-control"
+            value=value
+            rows=10
+        }}
       {{else if (eq model.kind 'int')}}
-        {{input-integer value=value class="form-control"}}
+        {{input-integer
+            value=value
+            class="form-control"
+        }}
       {{else if (eq model.kind 'json')}}
         {{ivy-codemirror
             value=formattedValue
@@ -37,8 +44,17 @@
             <option value="{{choice}}" selected={{eq choice value}}>{{choice}}</option>
           {{/each}}
         </select>
+      {{else if (eq model.kind 'url')}}
+        {{settings/server-url
+            serverUrlSetting=value
+            serverUrl=model.obj.value
+        }}
       {{else}}
-        {{input type="text" value=value class="form-control"}}
+        {{input
+            type="text"
+            value=value
+            class="form-control"
+        }}
       {{/if}}
     </div>
   </div>

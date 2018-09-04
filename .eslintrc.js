@@ -60,6 +60,7 @@ module.exports = {
     "moment": true,
     "navigator": true,
     "window": true,
+    "ipaddr": true,
   },
   env: {
     browser: true,
