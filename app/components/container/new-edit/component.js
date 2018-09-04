@@ -283,7 +283,7 @@ export default Component.extend(NewOrEdit, ChildHook, {
         return false;
       }
 
-      pr = service.clone();
+      pr = service;
       nameResource = lc;
 
       let slc = get(pr, 'secondaryLaunchConfigs');
