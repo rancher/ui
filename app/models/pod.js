@@ -151,7 +151,7 @@ var Pod = Resource.extend(DisplayImage, {
     },
 
     logs() {
-      get(this, 'modalService').toggleModal('modal-container-logs', this);
+      get(this, 'modalService').toggleModal('modal-container-logs', { model: this,  });
     },
 
     popoutLogs() {
@@ -204,6 +204,17 @@ Pod.reopenClass({
       color: stoppedColor
     },
   },
+
+  mangleIn(data) {
+    if ( data && data.containers ) {
+      data.containers.forEach((container) => {
+        container.type = 'container';
+        container.podId = data.id;
+      })
+    }
+
+    return data;
+  }
 });
 
 export default Pod;

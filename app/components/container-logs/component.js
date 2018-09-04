@@ -29,7 +29,7 @@ export default Component.extend({
   init() {
     this._super(...arguments);
 
-    const containerName = get(this, 'instance.containers.firstObject.name');
+    const containerName = get(this, 'containerName') || get(this, 'instance.containers.firstObject.name');
     const wrapLines = !!get(this, `prefs.${ C.PREFS.WRAP_LINES }`);
 
     set(this, 'wrapLines', wrapLines);
