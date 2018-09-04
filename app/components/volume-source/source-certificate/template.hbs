@@ -1,0 +1,43 @@
+  <div class="row">
+    <div class="col span-6">
+      <label class="acc-label">{{t 'cruPersistentVolume.secret.defaultMode.label'}}</label>
+      {{#input-or-display editable=editing value=defaultMode}}
+        {{input-integer type="text" value=defaultMode classNames="form-control" placeholder=(t 'cruPersistentVolume.secret.defaultMode.placeholder')}}
+      {{/input-or-display}}
+    </div>
+
+    <div class="col span-6">
+      <label class="acc-label">{{t 'cruPersistentVolume.secret.optional.label'}}</label>
+      {{#if editing}}
+        <div class="text-muted">
+          <label>
+            {{radio-button selection=config.optional value=true}} {{t 'generic.yes'}}
+          </label>
+          <label>
+            {{radio-button selection=config.optional value=false}} {{t 'generic.no'}}
+          </label>
+        </div>
+      {{else}}
+        <div>
+          {{config.optional}}
+        </div>
+      {{/if}}
+    </div>
+  </div>
+  <div class="row mb-20">
+    <div class="col span-6">
+      <label class="acc-label">{{t 'cruPersistentVolume.secret.certificateName.label'}}</label>
+      {{#if editing}}
+        {{schema/input-secret
+          namespace=namespace
+          value=config.secretName
+          type='certificate'
+          valueKey='name'
+        }}
+      {{else}}
+        <div>
+          {{config.secretName}}
+        </div>
+      {{/if}}
+    </div>
+  </div>

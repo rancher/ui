@@ -1,3 +1,4 @@
+import C from 'ui/utils/constants';
 import { all } from 'rsvp';
 import { inject as service } from '@ember/service';
 import { get, set } from '@ember/object';
@@ -6,14 +7,10 @@ import Component from '@ember/component';
 import layout from './template';
 
 export const NEW_VOLUME = 'newVolume';
-export const EXISTING_VOLUME = 'existingVolume';
 export const NEW_PVC = 'newPvc';
+
+export const EXISTING_VOLUME = 'existingVolume';
 export const EXISTING_PVC = 'existingPvc';
-export const BIND_MOUNT = 'bindMount';
-export const TMPFS = 'tmpfs';
-export const SECRET = 'secret';
-export const CONFIG_MAP = 'configmap';
-export const CUSTOM_LOG_PATH = 'customLogPath';
 
 export const LOG_AGGREGATOR = 'cattle.io/log-aggregator'
 
@@ -116,7 +113,7 @@ export default Component.extend({
       const store = get(this, 'store');
 
       get(this, 'volumesArray').pushObject({
-        mode:   BIND_MOUNT,
+        mode:   C.VOLUME_TYPES.BIND_MOUNT,
         volume: store.createRecord({
           type:     'volume',
           name:     this.nextName(),
@@ -136,7 +133,7 @@ export default Component.extend({
       const store = get(this, 'store');
 
       get(this, 'volumesArray').pushObject({
-        mode:   TMPFS,
+        mode:   C.VOLUME_TYPES.TMPFS,
         volume: store.createRecord({
           type:     'volume',
           name:     this.nextName(),
@@ -155,7 +152,7 @@ export default Component.extend({
       const store = get(this, 'store');
 
       get(this, 'volumesArray').pushObject({
-        mode:   CONFIG_MAP,
+        mode:   C.VOLUME_TYPES.CONFIG_MAP,
         volume: store.createRecord({
           type:      'volume',
           name:      this.nextName(),
@@ -176,7 +173,28 @@ export default Component.extend({
       const store = get(this, 'store');
 
       get(this, 'volumesArray').pushObject({
-        mode:   SECRET,
+        mode:   C.VOLUME_TYPES.SECRET,
+        volume: store.createRecord({
+          type:   'volume',
+          name:   this.nextName(),
+          secret: store.createRecord({
+            type:        'secretVolumeSource',
+            defaultMode: 256,
+            secretName:  null,
+            optional:    false,
+          }),
+        }),
+        mounts: [
+          store.createRecord({ type: 'volumeMount', })
+        ],
+      });
+    },
+
+    addCertificate() {
+      const store = get(this, 'store');
+
+      get(this, 'volumesArray').pushObject({
+        mode:   C.VOLUME_TYPES.CERTIFICATE,
         volume: store.createRecord({
           type:   'volume',
           name:   this.nextName(),
@@ -199,7 +217,7 @@ export default Component.extend({
       const name = this.nextName();
 
       get(this, 'volumesArray').pushObject({
-        mode:   CUSTOM_LOG_PATH,
+        mode:   C.VOLUME_TYPES.CUSTOM_LOG_PATH,
         volume: store.createRecord({
           type:       'volume',
           name,
@@ -242,22 +260,22 @@ export default Component.extend({
         };
       } else if (volume.hostPath) {
         entry = {
-          mode: BIND_MOUNT,
+          mode: C.VOLUME_TYPES.BIND_MOUNT,
           volume,
         };
       } else if ( volume.flexVolume && volume.flexVolume.driver === LOG_AGGREGATOR ) {
         entry = {
-          mode: CUSTOM_LOG_PATH,
+          mode: C.VOLUME_TYPES.CUSTOM_LOG_PATH,
           volume,
         };
       } else if (volume.secret) {
         entry = {
-          mode: SECRET,
+          mode: this.getSecretType(get(volume, 'secret.secretName')),
           volume,
         };
       } else if (volume.configMap) {
         entry = {
-          mode: CONFIG_MAP,
+          mode: C.VOLUME_TYPES.CONFIG_MAP,
           volume,
         };
       } else {
@@ -281,10 +299,28 @@ export default Component.extend({
 
     // filter out custom log path volume when logging is disabled
     if (!get(this, 'loggingEnabled')) {
-      set(this, 'volumesArray', out.filter((row) => row.mode !== CUSTOM_LOG_PATH));
+      set(this, 'volumesArray', out.filter((row) => row.mode !== C.VOLUME_TYPES.CUSTOM_LOG_PATH));
     } else {
       set(this, 'volumesArray', out);
     }
+  },
+
+  getSecretType(secretName) {
+    const store = get(this, 'store');
+    let found = store.all('secret').findBy('name', secretName);
+
+    if ( found ) {
+      if ( get(found, 'type') === C.VOLUME_TYPES.CERTIFICATE ) {
+        return C.VOLUME_TYPES.CERTIFICATE;
+      }
+    } else {
+      found = store.all('namespacedSecret').findBy('type', secretName);
+      if ( get(found, 'type') === 'namespacedCertificate' ) {
+        return C.VOLUME_TYPES.CERTIFICATE;
+      }
+    }
+
+    return C.VOLUME_TYPES.SECRET;
   },
 
   nextName() {
@@ -316,7 +352,7 @@ export default Component.extend({
       promises.push(get(row, 'pvc').save());
     });
 
-    ary.filterBy('mode', CUSTOM_LOG_PATH).filterBy('volume.flexVolume.driver', LOG_AGGREGATOR)
+    ary.filterBy('mode', C.VOLUME_TYPES.CUSTOM_LOG_PATH).filterBy('volume.flexVolume.driver', LOG_AGGREGATOR)
       .forEach((row) => {
         const options = get(row, 'volume.flexVolume.options');
         const lc = get(this, 'launchConfig');
