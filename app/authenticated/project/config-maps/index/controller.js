@@ -29,6 +29,7 @@ export const headers = [
     sort:           ['firstKey', 'name', 'id'],
   },
   {
+    classNames:     'text-right pr-20',
     name:           'created',
     translationKey: 'generic.created',
     sort:           ['created:desc', 'name', 'id'],

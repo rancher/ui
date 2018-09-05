@@ -34,15 +34,16 @@ export default Controller.extend({
       translationKey: 'apiPage.table.description',
     },
     {
-      name:           'created',
-      sort:           ['created', 'name', 'id'],
-      translationKey: 'apiPage.table.created',
-      width:          150,
-    },
-    {
       name:           'expires',
       sort:           ['expiresAt', 'name', 'id'],
       translationKey: 'apiPage.table.expires.label',
+      width:          175,
+    },
+    {
+      classNames:     'text-right pr-20',
+      name:           'created',
+      sort:           ['created', 'name', 'id'],
+      translationKey: 'apiPage.table.created',
       width:          175,
     },
   ],

@@ -19,6 +19,7 @@ export const headers = [
     translationKey: 'namespacesPage.table.name.label',
   },
   {
+    classNames:     'text-right pr-20',
     name:           'created',
     sort:           ['created', 'id'],
     searchField:    'created',

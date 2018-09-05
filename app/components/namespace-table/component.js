@@ -17,6 +17,7 @@ const headers = [
     translationKey: 'projectsPage.ns.label',
   },
   {
+    classNames:     'text-right pr-20',
     name:           'created',
     sort:           ['createdTs'],
     translationKey: 'projectsPage.created.label',
