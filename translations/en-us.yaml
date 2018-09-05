@@ -1911,7 +1911,7 @@ clusterNew:
     environment:
       label: Environment
     resourceGroup:
-      label: Resource Group
+      label: Cluster Resource Group
       placeholder: 'docker-machine'
       helpText: "Use an existing resource group or enter a new resource group name and one will be created for you. Note: Using a resource group containing an existing AKS cluster will create a new resource group. Azure AKS only allows one AKS cluster per resource group."
     networking:
@@ -1920,11 +1920,23 @@ clusterNew:
       advanced: Advanced
       vnet:
         label: Virtual Network
-      ventresourcegroup:
-        label: Virtual Network Resource Group (<em>Optional</em>)
+        prompt: Select a virtual network
+      vnetresourcegroup:
+        label: Virtual Network Resource Group
+        prompt: Please select a Virtual Network
         help:  The Resource Group if your Virtual Network does not exist in the same Resource Group as your cluster.
       subnet:
         label: Subnet
+      serviceCidr:
+        label: Kubernetes service address range
+        help: This range should not be used by any network element on or connected to this virtual network. Service address CIDR must be smaller than /12
+        prompt: "172.17.0.1/12"
+      dnsServiceIp:
+        label: Kubernetes DNS service IP address
+        help: IP address within the Kubernetes service address range that will be used by cluster service discovery (kube-dns).
+      dockerBridgeCidr:
+        label: Docker bridge address
+        help: IP address (in CIDR notation) used as the Docker bridge IP address on nodes. Default of 172.17.0.1/16.
     sshUser:
       label: SSH User
       placeholder: usr1
@@ -3340,7 +3352,7 @@ formResourceQuota:
     type:
       label: Resource Type
     value:
-      label: Limit 
+      label: Limit
       placeholder: e.g. 10
       milliCpuPlaceholder: e.g. 500
       memoryPlaceholder: e.g. 1Gi
