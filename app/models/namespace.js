@@ -11,13 +11,19 @@ import StateCounts from 'ui/mixins/state-counts';
 export function convertResourceQuota(key, value) {
   let out;
 
-  if ( key === 'limitsCpu' || key === 'requestsCpu' ) {
+  switch (key) {
+  case 'limitsCpu':
+  case 'requestsCpu':
     out = convertToMillis(value);
-  } else if ( key === 'limitsMemory' || key === 'requestsMemory' ) {
+    break;
+  case 'limitsMemory':
+  case 'requestsMemory':
     out = parseSi(value, 1024) / 1048576;
-  } else if ( key === 'requestsStorage' ) {
+    break;
+  case 'requestsStorage':
     out = parseSi(value) / (1024 ** 3);
-  } else {
+    break;
+  default:
     out = parseInt(value, 10);
   }
 

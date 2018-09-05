@@ -61,15 +61,18 @@ export default Component.extend({
       return '';
     }
 
-    if ( key === 'limitsCpu' || key === 'requestsCpu' ) {
-      value = `${ value }m`;
-    } else if ( key === 'limitsMemory' || key === 'requestsMemory' ) {
-      value = `${ value }Mi`;
-    } else if ( key === 'requestsStorage' ) {
-      value = `${ value }Gi`;
+    switch (key) {
+    case 'limitsCpu':
+    case 'requestsCpu':
+      return `${ value }m`;
+    case 'limitsMemory':
+    case 'requestsMemory':
+      return `${ value }Mi`;
+    case 'requestsStorage':
+      return `${ value }Gi`;
+    default:
+      return value;
     }
-
-    return value;
   },
 
   convertToLimit(key, value) {
@@ -77,15 +80,18 @@ export default Component.extend({
       return '';
     }
 
-    if ( key === 'limitsCpu' || key === 'requestsCpu' ) {
-      value = convertToMillis(value);
-    } else if ( key === 'limitsMemory' || key === 'requestsMemory' ) {
-      value = parseSi(value, 1024) / 1048576;
-    } else if ( key === 'requestsStorage' ) {
-      value = parseSi(value) / (1024 ** 3);
+    switch (key) {
+    case 'limitsCpu':
+    case 'requestsCpu':
+      return convertToMillis(value);
+    case 'limitsMemory':
+    case 'requestsMemory':
+      return parseSi(value, 1024) / 1048576;
+    case 'requestsStorage':
+      return parseSi(value) / (1024 ** 3);
+    default:
+      return value;
     }
-
-    return value;
   },
 
   initQuotaArray() {
