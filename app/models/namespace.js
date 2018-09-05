@@ -2,9 +2,33 @@ import { computed, get } from '@ember/object';
 import { inject as service } from '@ember/service';
 import Resource from 'ember-api-store/models/resource';
 import { parseExternalId } from 'ui/utils/parse-externalid';
+import { convertToMillis } from 'shared/utils/util';
+import { parseSi } from 'shared/utils/parse-unit';
 import C from 'ui/utils/constants';
 import { hasMany, reference } from 'ember-api-store/utils/denormalize';
 import StateCounts from 'ui/mixins/state-counts';
+
+export function convertResourceQuota(key, value) {
+  let out;
+
+  switch (key) {
+  case 'limitsCpu':
+  case 'requestsCpu':
+    out = convertToMillis(value);
+    break;
+  case 'limitsMemory':
+  case 'requestsMemory':
+    out = parseSi(value, 1024) / 1048576;
+    break;
+  case 'requestsStorage':
+    out = parseSi(value) / (1024 ** 3);
+    break;
+  default:
+    out = parseInt(value, 10);
+  }
+
+  return out;
+}
 
 export function activeIcon(ns) {
   if ( ns.get('system') ) {
@@ -36,6 +60,7 @@ export function normalizeTags(ary) {
 
 var Namespace = Resource.extend(StateCounts, {
   k8s:          service(),
+  intl:         service(),
   modalService: service('modal'),
   catalog:      service(),
   scope:        service(),
@@ -136,6 +161,44 @@ var Namespace = Resource.extend(StateCounts, {
   normalizedTags: computed('tags.[]', function() {
     return normalizeTags(this.get('tags'));
   }),
+
+  validateResourceQuota(originLimit) {
+    const intl = get(this, 'intl');
+    let errors = [];
+
+    const resourceQuota = get(this, 'resourceQuota.limit') || {};
+    const total = get(this, 'project.resourceQuota.limit') || {};
+    const used = get(this, 'project.resourceQuota.usedLimit') || {};
+
+    if ( total ) {
+      Object.keys(resourceQuota).forEach((key) => {
+        if ( !resourceQuota[key] ) {
+          errors.push(intl.t('formResourceQuota.errors.limitRequired', { resource: intl.t(`formResourceQuota.resources.${ key }`) }));
+        }
+
+        if ( resourceQuota[key] ) {
+          const t = convertResourceQuota(key, total[key]);
+          const u = convertResourceQuota(key, used[key] || 0);
+          const v = convertResourceQuota(key, resourceQuota[key]);
+          const originValue = originLimit && originLimit[key] ? originLimit[key] : 0;
+          const o = convertResourceQuota(key, originValue);
+
+          const left = t - u + o;
+
+          if ( v > left ) {
+            errors.push(intl.t('formResourceQuota.errors.invalidLimit', {
+              resource: intl.t(`formResourceQuota.resources.${ key }`),
+              left,
+              total:    t,
+              used:     u - o,
+            }));
+          }
+        }
+      });
+    }
+
+    return errors;
+  },
 
   actions: {
     edit() {

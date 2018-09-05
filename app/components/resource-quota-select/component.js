@@ -1,18 +1,11 @@
+import C from 'ui/utils/constants';
 import {  get, set, observer } from '@ember/object';
-import { inject as service } from '@ember/service';
 import Component from '@ember/component';
 import { next } from '@ember/runloop';
 import layout from './template';
 
-const IGNORED = ['requestsStorage', 'persistentVolumeClaims'];
-
 export default Component.extend({
-  globalStore: service(),
-
   layout,
-
-  tagName:    'TR',
-  classNames: 'main-row',
 
   resourceChoices:    null,
   allResourceChoices: null,
@@ -27,21 +20,18 @@ export default Component.extend({
   }),
 
   doesExist(choice) {
-    return get(choice, 'value') === get(this, 'quota.key') || !get(this, 'currentQuota').findBy('key', get(choice, 'value'));
+    return get(choice, 'value') === get(this, 'quota.key') || !(get(this, 'currentQuota') || []).findBy('key', get(choice, 'value'));
   },
 
   initResourceChoices() {
     const choices = [];
-    const schema = get(this, 'globalStore').getById('schema', 'resourcequotalimit');
 
-    if ( schema ) {
-      Object.keys(get(schema, 'resourceFields')).filter((key) => IGNORED.indexOf(key) === -1).forEach((key) => {
-        choices.push({
-          label: `formResourceQuota.resources.${ key }`,
-          value: key,
-        });
+    C.RESOURCE_QUOTAS.forEach((key) => {
+      choices.push({
+        label: `formResourceQuota.resources.${ key }`,
+        value: key,
       });
-    }
+    });
 
     set(this, 'allResourceChoices', choices);
 

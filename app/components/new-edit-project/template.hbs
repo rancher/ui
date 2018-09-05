@@ -64,26 +64,12 @@
          expand=(action expandFn)
          expandOnInit=false
     }}
-      {{form-resource-quota
+      {{project-resource-quota
           editing=(or editing isNew)
           expanded=expanded
           limit=primaryResource.resourceQuota.limit
+          nsDefaultLimit=primaryResource.namespaceDefaultResourceQuota.limit
           changed=(action "updateQuota")
-      }}
-    {{/accordion-list-item}}
-
-    {{#accordion-list-item
-         title=(t 'projectsPage.nsDefaultQuota.title')
-         detail=(t 'projectsPage.nsDefaultQuota.detail')
-         expandAll=al.expandAll
-         expand=(action expandFn)
-         expandOnInit=false
-    }}
-      {{form-resource-quota
-          editing=(or editing isNew)
-          expanded=expanded
-          limit=primaryResource.namespaceDefaultResourceQuota.limit
-          changed=(action "updateNsDefaultQuota")
       }}
     {{/accordion-list-item}}
   </div>

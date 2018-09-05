@@ -2,7 +2,9 @@ import { alias } from '@ember/object/computed';
 import { inject as service } from '@ember/service';
 import Component from '@ember/component';
 import layout from './template';
-import { get, set, computed, observer } from '@ember/object';
+import {
+  get, set, computed, observer, setProperties
+} from '@ember/object';
 import NewOrEdit from 'ui/mixins/new-or-edit';
 import ChildHook from 'shared/mixins/child-hook';
 import { isEmpty } from '@ember/utils';
@@ -49,18 +51,15 @@ export default Component.extend(NewOrEdit, ChildHook, {
     },
 
     updateQuota(quota) {
-      if ( quota ) {
-        set(this, 'primaryResource.resourceQuota', { limit: quota });
-      } else {
-        set(this, 'primaryResource.resourceQuota', null);
-      }
-    },
+      const primaryResource = get(this, 'primaryResource');
 
-    updateNsDefaultQuota(quota) {
       if ( quota ) {
-        set(this, 'primaryResource.namespaceDefaultResourceQuota', { limit: quota });
+        setProperties(primaryResource, quota);
       } else {
-        set(this, 'primaryResource.namespaceDefaultResourceQuota', null);
+        setProperties(primaryResource, {
+          resourceQuota:                 null,
+          namespaceDefaultResourceQuota: null,
+        });
       }
     },
   },
@@ -87,6 +86,33 @@ export default Component.extend(NewOrEdit, ChildHook, {
     get(this, 'router').transitionTo('authenticated.cluster.projects.index');
   },
 
+  validate() {
+    this._super();
+
+    const errors = get(this, 'errors') || [];
+
+    const intl = get(this, 'intl');
+
+    const resourceQuota = get(this, 'primaryResource.resourceQuota.limit') || {};
+    const nsResourceQuota = get(this, 'primaryResource.namespaceDefaultResourceQuota.limit') || {};
+
+    Object.keys(nsResourceQuota).forEach((key) => {
+      if ( nsResourceQuota[key] && !resourceQuota[key] ) {
+        errors.push(intl.t('formResourceQuota.errors.projectLimitRequired', { resource: intl.t(`formResourceQuota.resources.${ key }`) }));
+      }
+    })
+
+    Object.keys(resourceQuota).forEach((key) => {
+      if ( resourceQuota[key] && !nsResourceQuota[key] ) {
+        errors.push(intl.t('formResourceQuota.errors.nsDefaultLimitRequired', { resource: intl.t(`formResourceQuota.resources.${ key }`) }));
+      }
+    })
+
+    set(this, 'errors', errors);
+
+    return get(this, 'errors.length') === 0;
+  },
+
   didSave() {
     const pr = get(this, 'primaryResource');
     const podSecurityPolicyTemplateId = get(this, 'podSecurityPolicyTemplateId') ? get(this, 'podSecurityPolicyTemplateId') : null;
@@ -100,4 +126,10 @@ export default Component.extend(NewOrEdit, ChildHook, {
     this.goBack();
   },
 
+  doSave(opt) {
+    opt = opt || {};
+    opt.qp = { '_replace': 'true' };
+
+    return this._super(opt);
+  },
 });
