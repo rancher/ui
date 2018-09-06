@@ -1,7 +1,8 @@
-import { defineProperty, get, computed } from '@ember/object';
+import { defineProperty, get, set, computed } from '@ember/object';
 import { inject as service } from '@ember/service';
 import Route from '@ember/routing/route';
 import C from 'ui/utils/constants';
+import { hash } from 'rsvp';
 
 export default Route.extend({
   scope: service(),
@@ -14,15 +15,19 @@ export default Route.extend({
       return get(this, 'k8s').getInstanceToConnect();
     }
 
-    return store.find('pod', params.podId);
+    return hash({
+      pod:     store.find('pod', params.podId),
+      windows: params.windows
+    });
   },
 
   setupController(controller, model) {
-    this._super(controller, model);
+    this._super(controller, model.pod);
 
+    set(controller, 'windows', model.windows === 'true');
     if (controller.get('kubernetes')) {
-      defineProperty(controller, 'command', computed('model.labels', function() {
-        var labels = get(this, 'model.labels') || {};
+      defineProperty(controller, 'command', computed('model.pod.labels', function() {
+        var labels = get(this, 'model.pod.labels') || {};
 
         if ( `${ labels[C.LABEL.K8S_TOKEN] }` === 'true' ) {
           return [
