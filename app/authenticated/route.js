@@ -334,6 +334,7 @@ export default Route.extend(Preload, {
     return get(this, 'access').testAuth()
       .catch(() => {
         this.transitionTo('login');
+        set(this, `session.${ C.SESSION.BACK_TO }`, window.location.href);
         this.send('logout', null);
       });
   },
