@@ -25,6 +25,7 @@ const headers = [
     searchField:    ['notifierType', 'notifierLabel', 'notifierValue'],
   },
   {
+    classNames:     'text-right pr-20',
     translationKey: 'notifierPage.index.table.created',
     name:           'created',
     searchField:    'displayCreated',

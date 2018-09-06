@@ -32,6 +32,7 @@ export default Controller.extend({
       translationKey: 'ingressPage.table.targets.label',
     },
     {
+      classNames:     'text-right pr-20',
       name:           'created',
       sort:           ['created', 'id'],
       searchField:    'created',

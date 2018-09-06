@@ -41,6 +41,7 @@ export default Controller.extend({
       sort:           ['firstKey', 'name', 'id'],
     },
     {
+      classNames:     'text-right pr-20',
       name:           'created',
       translationKey: 'generic.created',
       sort:           ['created:desc', 'name', 'id'],
