@@ -16,8 +16,9 @@ export default Route.extend({
     }
 
     return hash({
-      pod:     store.find('pod', params.podId),
-      windows: params.windows
+      pod:           store.find('pod', params.podId),
+      windows:       params.windows,
+      containerName: params.containerName,
     });
   },
 
@@ -25,6 +26,8 @@ export default Route.extend({
     this._super(controller, model.pod);
 
     set(controller, 'windows', model.windows === 'true');
+    set(controller, 'containerName', model.containerName);
+
     if (controller.get('kubernetes')) {
       defineProperty(controller, 'command', computed('model.pod.labels', function() {
         var labels = get(this, 'model.pod.labels') || {};
