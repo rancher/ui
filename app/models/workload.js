@@ -275,8 +275,15 @@ var Workload = Resource.extend(DisplayImage, StateCounts, EndpointPorts, {
       const podId = get(this, 'podForShell.id');
       const route = get(this, 'router').urlFor('authenticated.project.console', projectId);
 
+      const system = get(this, 'podForShell.node.info.os.operatingSystem') || ''
+      let windows = false;
+
+      if (system.startsWith('Windows')) {
+        windows = true;
+      }
+
       later(() => {
-        window.open(`//${ window.location.host }${ route }?podId=${ podId }&isPopup=true`, '_blank', 'toolbars=0,width=900,height=700,left=200,top=200');
+        window.open(`//${ window.location.host }${ route }?podId=${ podId }&windows=${ windows }&isPopup=true`, '_blank', 'toolbars=0,width=900,height=700,left=200,top=200');
       });
     },
   },

@@ -18,6 +18,7 @@ export default Component.extend({
   instance:       null,
   alternateLabel,
   showProtip:     true,
+  classNames:    'container-log',
 
   status:        'connecting',
   containerName: null,
