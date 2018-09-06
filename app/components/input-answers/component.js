@@ -4,28 +4,23 @@ import { get, set, computed, observer } from '@ember/object';
 import { on } from '@ember/object/evented';
 import { isSafari } from 'ui/utils/platform';
 import { evaluate } from 'shared/utils/evaluate';
+import { inject as service } from '@ember/service';
 import layout from './template';
 
 const HIDDEN = 'Hidden';
 
 export default Component.extend({
+  growl: service(),
+
   layout,
   pasteOrUpload:   false,
   accept:          '.yml, .yaml',
   showHeader:      true,
   answerSections:  null,
-  _boundChange:    null,
 
   originQuestions: alias('selectedTemplate.questions'),
   questions:       alias('selectedTemplate.allQuestions'),
   customAnswers:   alias('selectedTemplate.customAnswers'),
-
-  didInsertElement() {
-    set(this, '_boundChange', (event) => {
-      this.change(event);
-    });
-    this.$('INPUT[type=file]').on('change', get(this, '_boundChange'));
-  },
 
   actions: {
     upload() {
@@ -174,7 +169,12 @@ export default Component.extend({
       set(this, 'answerSections', out);
     }
   })),
+
   change(event) {
+    if ( get(this, 'pasteOrUpload') ) {
+      return;
+    }
+
     var input = event.target;
 
     if ( input.files && input.files[0] ) {
@@ -188,6 +188,11 @@ export default Component.extend({
         set(this, 'pastedAnswers', out);
         input.value = '';
       };
+
+      reader.onerror = (err) => {
+        get(this, 'growl').fromError(get(err, 'srcElement.error.message'));
+      };
+
       reader.readAsText(file);
     }
   },
