@@ -1929,14 +1929,14 @@ clusterNew:
         label: Subnet
       serviceCidr:
         label: Kubernetes service address range
-        help: This range should not be used by any network element on or connected to this virtual network. Service address CIDR must be smaller than /12
+        help: "A CIDR notation IP range from which to assign service cluster IPs. It must not overlap with any Subnet IP ranges. For example: 10.0.0.0/16."
         prompt: "10.43.0.0/16"
       dnsServiceIp:
         label: Kubernetes DNS service IP address
-        help: IP address within the Kubernetes service address range that will be used by cluster service discovery (kube-dns).
+        help: "An IP address assigned to the Kubernetes DNS service. It must be within the Kubernetes service address range. For example: 10.0.0.10."
       dockerBridgeCidr:
         label: Docker bridge address
-        help: IP address (in CIDR notation) used as the Docker bridge IP address on nodes. Default of 172.17.0.1/16.
+        help: 'An IP address and netmask assigned to Docker Bridge. It must not be in any Subnet IP ranges, or the Kubernetes service address range. For example: 172.17.0.1/16.'
     sshUser:
       label: SSH User
       placeholder: usr1
@@ -1974,6 +1974,15 @@ clusterNew:
       placeholder: Your Client Secret
     region:
       label: Region
+    errors:
+      included:
+        serviceCidr: 'Kubernetes service address range must be valid CIDR format.'
+        dnsServiceIp: 'Kubernetes DNS service IP address must be valid a ip address.'
+        dockerBridgeCidr: 'Docker bridge address must be valid CIDR format.'
+        parsedServiceCidr: 'Kubernetes service address range must fall within the selected Virtual Network range.'
+        parsedDnsServiceIp: 'Kubernetes DNS service IP address must fall within the entered Kubernetes service address range.'
+        parsedDockerBridgeCidr: 'Docker bridge address can not overlap with the selected Virtual Network or the Kubernetes service address range'
+
   googlegke:
     label: Google Kubernetes Engine
     shortLabel: Google GKE
