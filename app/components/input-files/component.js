@@ -1,9 +1,12 @@
-import { observer } from '@ember/object';
+import { inject as service } from '@ember/service';
+import { get, observer } from '@ember/object';
 import Component from '@ember/component';
 import { isSafari } from 'ui/utils/platform';
 import layout from './template';
 
 export default Component.extend({
+  growl: service(),
+
   layout,
   initialFiles:      null,
   accept:            'text/*',
@@ -14,7 +17,6 @@ export default Component.extend({
 
   ary:              null,
 
-  _boundChange:   null,
   init() {
     this._super(...arguments);
 
@@ -29,17 +31,6 @@ export default Component.extend({
     });
 
     this.set('ary', ary);
-  },
-
-  didInsertElement() {
-    this.set('_boundChange', (event) => {
-      this.change(event);
-    });
-    this.$('INPUT[type=file].input-files').on('change', this.get('_boundChange'));
-  },
-
-  willDestroyElement() {
-    this.$('INPUT[type=file].input-files').off('change', this.get('_boundChange'));
   },
 
   actions: {
@@ -102,6 +93,10 @@ export default Component.extend({
             value:    event2.target.result,
             uploaded: true,
           });
+        };
+
+        reader.onerror = (err) => {
+          get(this, 'growl').fromError(get(err, 'srcElement.error.message'));
         };
 
         names[i] = handles[i].name;

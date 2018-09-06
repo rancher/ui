@@ -23,20 +23,14 @@ function convertKey(key) {
 }
 
 export default Component.extend({
-  intl:          service(),
+  intl:  service(),
+  growl: service(),
+
   layout,
   pasteOrUpload: false,
   showInput:     true,
   accept:        '.yml, .yaml',
   app:           null,
-  _boundChange:  null,
-
-  didInsertElement() {
-    set(this, '_boundChange', (event) => {
-      this.change(event);
-    });
-    this.$('INPUT[type=file]').on('change', get(this, ('_boundChange')));
-  },
 
   actions: {
     upload() {
@@ -125,12 +119,20 @@ export default Component.extend({
   }),
 
   change(event) {
+    if ( get(this, 'pasteOrUpload') ) {
+      return;
+    }
+
     const input = event.target;
 
     if ( input.files && input.files[0] ) {
       let file = input.files[0];
 
       const reader = new FileReader();
+
+      reader.onerror = (err) => {
+        get(this, 'growl').fromError(get(err, 'srcElement.error.message'));
+      };
 
       reader.onload = (event2) => {
         const out = event2.target.result;
