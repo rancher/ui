@@ -251,7 +251,7 @@
           </div>
         </div>
         <div class="row">
-          <div class="col span-6">
+          <div class="col span-12">
             {{t "clusterNew.azureaks.networking.label"}}
             <div class="radio">
               <label class="acc-label">
@@ -268,45 +268,18 @@
                 <label class="acc-label" for="azureaks-advanced-virtual-network">{{t 'clusterNew.azureaks.networking.vnet.label'}}</label>
                 {{new-select
                     classNames="form-control"
-                    content=vNets
+                    content=filteredVirtualNetworks
                     id="azureaks-advanced-virtual-network"
                     localizedPrompt=false
                     optionLabelPath="name"
-                    optionValuePath="name"
+                    optionValuePath="value"
+                    optionGroupPath="group"
                     prompt=(t "clusterNew.azureaks.networking.vnet.prompt")
-                    value=config.virtualNetwork
+                    value=networkChoice
                 }}
-              </div>
-              <div class="col span-6 mt-0">
-                <label class="acc-label" for="azureaks-advanced-virtual-network-resource-group">{{t 'clusterNew.azureaks.networking.vnetresourcegroup.label' htmlSafe=true}}</label>
-                <div class="p-10">
-                  {{#if config.virtualNetworkResourceGroup}}
-                    {{config.virtualNetworkResourceGroup}}
-                  {{else}}
-                    {{t 'clusterNew.azureaks.networking.vnetresourcegroup.prompt'}}
-                  {{/if}}
-                </div>
               </div>
             </div>
             <div class="row">
-              <div class="col span-6 mt-0">
-                <label class="acc-label" for="azureaks-advanced-vnet-resource-group">{{t 'clusterNew.azureaks.networking.subnet.label'}}</label>
-                {{#if config.virtualNetwork}}
-                  {{new-select
-                      classNames="form-control"
-                      content=vnetSubnets
-                      id="azureaks-advanced-vnet-resource-group"
-                      localizedPrompt=false
-                      optionLabelPath="name"
-                      optionValuePath="value"
-                      value=config.subnet
-                  }}
-                {{else}}
-                  <select class="form-control" disabled>
-                    <option value="" selected=true>{{t 'clusterNew.azureaks.networking.vnetresourcegroup.prompt'}}</option>
-                  </select>
-                {{/if}}
-              </div>
               <div class="col span-6 mt-0">
                 <label class="acc-label" for="azureaks-service-cidr-id">{{t 'clusterNew.azureaks.networking.serviceCidr.label'}}</label>
                 {{#input-or-display
@@ -325,8 +298,6 @@
                   {{t 'clusterNew.azureaks.networking.serviceCidr.help'}}
                 </p>
               </div>
-            </div>
-            <div class="row">
               <div class="col span-6 mt-0">
                 <label class="acc-label" for="azureaks-dns-service-ip">{{t 'clusterNew.azureaks.networking.dnsServiceIp.label'}}</label>
                 {{#input-or-display
@@ -344,6 +315,8 @@
                   {{t 'clusterNew.azureaks.networking.dnsServiceIp.help'}}
                 </p>
               </div>
+            </div>
+            <div class="row">
               <div class="col span-6 mt-0">
                 <label class="acc-label" for="azureaks-docker-service-ip">{{t 'clusterNew.azureaks.networking.dockerBridgeCidr.label'}}</label>
                 {{#input-or-display
