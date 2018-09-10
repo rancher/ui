@@ -1,0 +1,42 @@
+{{#sortable-table
+  tableClassNames="bordered"
+  paging=true
+  pagingLabel="pagination.volume"
+  headers=headers
+  bulkActions=true
+  descending=descending
+  body=rows
+  sortBy=sortBy
+  as |sortable kind obj dt|
+}}
+  {{#if (eq kind "row")}}
+    <tr class="main-row">
+      <td class="row-check" valign="middle" style="padding-top: 2px;">
+        {{check-box nodeId=obj.id}}
+      </td>
+      <td data-title="{{dt.state}}">
+        {{badge-state model=obj}}
+      </td>
+      <td data-title="{{dt.name}}">
+        <a href="{{href-to "authenticated.cluster.storage.persistent-volumes.detail" obj.id}}">{{obj.displayName}}</a>
+      </td>
+      <td data-title="{{dt.displayPvc}}">
+        {{#if obj.displayPvc}}
+          {{obj.displayPvc}}
+        {{else}}
+          <div class="text-muted">{{t 'generic.na'}}</div>
+        {{/if}}
+      </td>
+      <td data-title="{{dt.source}}">
+        {{obj.displaySource}}
+      </td>
+      <td data-title="{{dt.actions}}" class="actions">
+        {{action-menu model=obj}}
+      </td>
+    </tr>
+  {{else if (eq kind "nomatch")}}
+    <tr><td colspan="{{sortable.fullColspan}}" class="text-center text-muted lacsso pt-20 pb-20">{{t 'persistentVolumePage.noMatch'}}</td></tr>
+  {{else if (eq kind "norows")}}
+    <tr><td colspan="{{sortable.fullColspan}}" class="text-center text-muted lacsso pt-20 pb-20">{{t 'persistentVolumePage.noData'}}</td></tr>
+  {{/if}}
+{{/sortable-table}}

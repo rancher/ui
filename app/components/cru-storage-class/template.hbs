@@ -23,19 +23,44 @@
   }}
 {{/if}}
 
-<div class="row">
-  <div class="col span-12">
-    <label class="acc-label">{{t 'cruStorageClass.provisioner.label'}}</label>
-    {{searchable-select
-      allowCustom=true
-      content=provisionerChoices
-      value=primaryResource.provisioner
-      readOnly=isView
-    }}
+{{#if isView}}
+  <section>
+    <div class="row banner bg-info basics">
+      <div class="vertical-middle">
+        <label class="acc-label vertical-middle p-0">{{t 'cruStorageClass.provisioner.label'}}</label>
+        {{primaryResource.provisioner}}
+      </div>
+      <div class="vertical-middle">
+        <label class="acc-label vertical-middle p-0">{{t 'generic.created'}}</label>
+        {{date-calendar primaryResource.created}}
+      </div>
+    </div>
+  </section>
+{{else}}
+  <div class="row">
+    <div class="col span-12">
+      <label class="acc-label">{{t 'cruStorageClass.provisioner.label'}}</label>
+      {{searchable-select
+        allowCustom=true
+        content=provisionerChoices
+        value=primaryResource.provisioner
+      }}
+    </div>
   </div>
-</div>
+{{/if}}
 
 {{#accordion-list showExpandAll=false as | al expandFn |}}
+  {{#if isView}}
+    {{#accordion-list-item
+      title=(t 'cruStorageClass.pv.title')
+      detail=(t 'cruStorageClass.pv.detail')
+      expandAll=expandAll
+      expand=(action expandFn)
+      expandOnInit=true
+    }}
+      {{persistent-volume-table rows=persistentVolumes}}
+    {{/accordion-list-item}}
+  {{/if}}
   {{#accordion-list-item
     title=(t 'cruStorageClass.parameters.title')
     detail=(t 'cruStorageClass.parameters.detail')
@@ -119,6 +144,20 @@
       </div>
     </div>
   {{/accordion-list-item}}
+
+  {{#if isView}}
+    {{labels-section
+      model=primaryResource
+      showKind=false
+      expandAll=al.expandAll
+      expandFn=expandFn
+    }}
+    {{annotations-section
+      model=primaryResource
+      expandAll=al.expandAll
+      expandFn=expandFn
+    }}
+  {{/if}}
 {{/accordion-list}}
 
 {{#unless isView}}

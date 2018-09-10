@@ -1,7 +1,8 @@
-import Controller from '@ember/controller';
-import { alias } from '@ember/object/computed';
+import Component from '@ember/component';
+import layout from './template';
+import { inject as service } from '@ember/service';
 
-export const headers = [
+const headers = [
   {
     name:           'state',
     sort:           ['sortState', 'displayName'],
@@ -16,6 +17,12 @@ export const headers = [
     translationKey: 'generic.name',
   },
   {
+    name:           'displayPvc',
+    sort:           ['displayPvc', 'sortName', 'id'],
+    searchField:    'displayPvc',
+    translationKey: 'cruPersistentVolume.pvc',
+  },
+  {
     name:           'source',
     sort:           ['displaySource', 'name', 'id'],
     searchField:    ['displaySource', 'configName'],
@@ -23,9 +30,15 @@ export const headers = [
   },
 ];
 
-export default Controller.extend({
-  queryParams: ['sortBy'],
-  sortBy:      'name',
+export default Component.extend({
+  scope: service(),
+
+  layout,
   headers,
-  rows:        alias('model.persistentVolumes'),
+  tagName:    '',
+  sortBy:     'name',
+  searchText: '',
+  subRows:    true,
+  suffix:     true,
+  paging:     true,
 });
