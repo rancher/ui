@@ -14,6 +14,12 @@ export default Volume.extend({
     return !!get(this, 'links.remove') && get(this, 'state') !== 'bound';
   }),
 
+  displayPvc: computed('claimRef.namespace', 'claimRef.name', function() {
+    if ( get(this, 'claimRef.name') ) {
+      return `${ get(this, 'claimRef.namespace') }/${ get(this, 'claimRef.name') }`;
+    }
+  }),
+
   actions: {
     edit() {
       get(this, 'router').transitionTo('authenticated.cluster.storage.persistent-volumes.detail.edit', get(this, 'id'));

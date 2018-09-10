@@ -16,6 +16,12 @@ export const headers = [
     translationKey: 'generic.name',
   },
   {
+    name:           'displayPvc',
+    sort:           ['displayPvc', 'sortName', 'id'],
+    searchField:    'displayPvc',
+    translationKey: 'cruPersistentVolume.pvc',
+  },
+  {
     name:           'source',
     sort:           ['displaySource', 'name', 'id'],
     searchField:    ['displaySource', 'configName'],
