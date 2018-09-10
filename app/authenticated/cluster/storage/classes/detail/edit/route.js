@@ -1,13 +1,13 @@
 import Route from '@ember/routing/route';
-import {  set } from '@ember/object';
+import {  get, set } from '@ember/object';
 
 export default Route.extend({
   model() {
     const original = this.modelFor('authenticated.cluster.storage.classes.detail');
 
-    set(this, 'originalModel', original);
+    set(this, 'originalModel', get(original, 'storageclass'));
 
-    return original.clone();
+    return get(original, 'storageclass').clone();
   },
 
   setupController(controller/* , model*/) {
