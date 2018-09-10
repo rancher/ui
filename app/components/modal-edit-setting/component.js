@@ -5,6 +5,7 @@ import Component from '@ember/component';
 import { normalizeName } from 'shared/settings/service';
 import ModalBase from 'shared/mixins/modal-base';
 import layout from './template';
+import { get, set } from '@ember/object';
 
 const cmOpts = {
   autofocus:       true,
@@ -36,10 +37,10 @@ export default Component.extend(ModalBase, {
   init() {
     this._super(...arguments);
 
-    if (this.get('model.kind') === 'json') {
-      this.set('formattedValue', JSON.stringify(JSON.parse(this.get('model.obj.value')), undefined, 2));
+    if (get(this, 'model.kind') === 'json') {
+      set(this, 'formattedValue', JSON.stringify(JSON.parse(get(this, 'model.obj.value')), undefined, 2));
     } else {
-      this.set('value', this.get('model.obj.value') || '');
+      set(this, 'value', get(this, 'model.obj.value') || '');
     }
   },
 
@@ -61,8 +62,8 @@ export default Component.extend(ModalBase, {
 
   actions: {
     save(btnCb) {
-      this.get('settings').set(normalizeName(this.get('model.key')), this.get('value'));
-      this.get('settings').one('settingsPromisesResolved', () => {
+      get(this, 'settings').set(normalizeName(get(this, 'model.key')), get(this, 'value'));
+      get(this, 'settings').one('settingsPromisesResolved', () => {
         btnCb(true);
         this.send('done');
       });
@@ -74,7 +75,7 @@ export default Component.extend(ModalBase, {
     },
 
     updateJson(json) {
-      this.set('value', json);
+      set(this, 'value', json);
     }
   },
 });

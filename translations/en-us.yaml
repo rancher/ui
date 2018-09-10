@@ -1911,7 +1911,7 @@ clusterNew:
     environment:
       label: Environment
     resourceGroup:
-      label: Resource Group
+      label: Cluster Resource Group
       placeholder: 'docker-machine'
       helpText: "Use an existing resource group or enter a new resource group name and one will be created for you. Note: Using a resource group containing an existing AKS cluster will create a new resource group. Azure AKS only allows one AKS cluster per resource group."
     networking:
@@ -1919,12 +1919,24 @@ clusterNew:
       default: Default
       advanced: Advanced
       vnet:
-        label: Virtual Network
-      ventresourcegroup:
-        label: Virtual Network Resource Group (<em>Optional</em>)
+        label: Virtual Network - Subnet (Subnet CIDR)
+        prompt: Select a Virtual Network/Subnet
+      vnetresourcegroup:
+        label: Virtual Network Resource Group
+        prompt: Please select a Virtual Network
         help:  The Resource Group if your Virtual Network does not exist in the same Resource Group as your cluster.
       subnet:
         label: Subnet
+      serviceCidr:
+        label: Kubernetes service address range
+        help: "A CIDR notation IP range from which to assign service cluster IPs. It must not overlap with any Subnet IP ranges. For example: 10.0.0.0/16."
+        prompt: "10.43.0.0/16"
+      dnsServiceIp:
+        label: Kubernetes DNS service IP address
+        help: "An IP address assigned to the Kubernetes DNS service. It must be within the Kubernetes service address range. For example: 10.0.0.10."
+      dockerBridgeCidr:
+        label: Docker bridge address
+        help: 'An IP address and netmask assigned to Docker Bridge. It must not be in any Subnet IP ranges, or the Kubernetes service address range. For example: 172.17.0.1/16.'
     sshUser:
       label: SSH User
       placeholder: usr1
@@ -1962,6 +1974,15 @@ clusterNew:
       placeholder: Your Client Secret
     region:
       label: Region
+    errors:
+      included:
+        serviceCidr: 'Kubernetes service address range must be valid CIDR format.'
+        dnsServiceIp: 'Kubernetes DNS service IP address must be valid a ip address.'
+        dockerBridgeCidr: 'Docker bridge address must be valid CIDR format.'
+        parsedServiceCidr: 'Kubernetes service address range must fall within the selected Virtual Network range.'
+        parsedDnsServiceIp: 'Kubernetes DNS service IP address must fall within the entered Kubernetes service address range.'
+        parsedDockerBridgeCidr: 'Docker bridge address can not overlap with the selected Virtual Network or the Kubernetes service address range'
+
   googlegke:
     label: Google Kubernetes Engine
     shortLabel: Google GKE
@@ -3340,7 +3361,7 @@ formResourceQuota:
     type:
       label: Resource Type
     value:
-      label: Limit 
+      label: Limit
       placeholder: e.g. 10
       milliCpuPlaceholder: e.g. 500
       memoryPlaceholder: e.g. 1Gi
