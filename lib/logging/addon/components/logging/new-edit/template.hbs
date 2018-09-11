@@ -29,75 +29,15 @@
     pageScope=pageScope
 }}
 
-{{#if (eq targetType 'embedded')}}
-  <div class="banner bg-warning">
-    <div class="banner-icon p-20"><i class="icon icon-alert"></i></div>
-    <div class="banner-message p-10">
-      <ul>
-        <li style="list-style: circle;"> {{t 'loggingPage.embedded.helpText.persistantStorage'}} </li>
-        <li style="list-style: circle;"> {{t 'loggingPage.embedded.helpText.requirements'}} </li>
-      </ul>
+{{#if (and originalModel.showTransitioningMessage (eq originalModel.targetType targetType))}}
+  <div class="banner {{originalModel.stateBackground}}">
+    <div class="banner-icon p-20"><i class="icon {{originalModel.stateIcon}}"></i></div>
+    <div class="banner-message p-20">
+      <table>
+        {{error-sub-row fullColspan=fullColspan model=originalModel}}
+      </table>
     </div>
   </div>
-
-  {{#if (and originalModel.showTransitioningMessage (eq originalModel.targetType 'embedded'))}}
-    <div class="banner {{originalModel.stateBackground}}">
-      <div class="banner-icon p-20"><i class="icon {{originalModel.stateIcon}}"></i></div>
-      <div class="banner-message p-20">
-        <table>
-          {{error-sub-row fullColspan=fullColspan model=originalModel}}
-        </table>
-      </div>
-    </div>
-  {{/if}}
-
-  {{#if originalModel.embeddedConfig.elasticsearchEndpoint}}
-      <div class="banner bg-success">
-        <div class="banner-icon p-20"><i class="icon icon-check text-success"></i></div>
-        <div class="banner-message p-10">
-          {{t 'loggingPage.embedded.elasticsearchEndpoint'}}
-          <a target="_blank" rel="nofollow noreferrer noopener" href="{{originalModel.embeddedConfig.elasticsearchEndpoint}}">
-            {{originalModel.embeddedConfig.elasticsearchEndpoint}}
-          </a>
-          {{copy-to-clipboard
-              size='small'
-              clipboardText=originalModel.embeddedConfig.elasticsearchEndpoint
-              htmlSafe=true
-          }}
-        </div>
-      </div>
-    {{/if}}
-
-    {{#if originalModel.embeddedConfig.kibanaEndpoint}}
-      <div class="banner bg-success">
-        <div class="banner-icon p-20"><i class="icon icon-check text-success"></i></div>
-        <div class="banner-message p-10">
-          {{t 'loggingPage.embedded.kibanaEndpoint'}}
-          <a target="_blank" rel="nofollow noreferrer noopener" href="{{originalModel.embeddedConfig.kibanaEndpoint}}">
-            {{originalModel.embeddedConfig.kibanaEndpoint}}
-          </a>
-          {{copy-to-clipboard
-              size='small'
-              clipboardText=originalModel.embeddedConfig.kibanaEndpoint
-              htmlSafe=true
-          }}
-        </div>
-      </div>
-    {{/if}}
-
-{{/if}}
-
-{{#if (not-eq targetType 'embedded')}}
-  {{#if (and originalModel.showTransitioningMessage (eq originalModel.targetType targetType))}}
-    <div class="banner {{originalModel.stateBackground}}">
-      <div class="banner-icon p-20"><i class="icon {{originalModel.stateIcon}}"></i></div>
-      <div class="banner-message p-20">
-        <table>
-          {{error-sub-row fullColspan=fullColspan model=originalModel}}
-        </table>
-      </div>
-    </div>
-  {{/if}}
 {{/if}}
 
 {{#if (eq targetType 'elasticsearch')}}
@@ -107,14 +47,6 @@
        pageScope=pageScope
        parentModel=model
   }}
-{{else if (eq targetType 'embedded')}}
-  {{#if isClusterLevel}}
-    {{logging/target-embedded
-        model=model.embedded
-        targetType=targetType
-        parentModel=model
-    }}
-  {{/if}}
 {{else if (eq targetType 'splunk')}}
   {{logging/target-splunk
       model=model.splunk
@@ -132,6 +64,13 @@
       model=model.syslog
       parentModel=model
       targetType=targetType
+  }}
+{{else if (eq targetType 'fluentForwarder')}}
+  {{logging/target-flentd
+      model=model.fluentForwarder
+      parentModel=model
+      targetType=targetType
+      endpointValidate=endpointValidate
   }}
 {{/if}}
 

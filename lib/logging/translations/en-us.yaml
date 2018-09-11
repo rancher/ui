@@ -34,40 +34,6 @@ loggingPage:
     addActionLabel: Add Broker
     host: Host
     port: Port
-  embedded:
-    elasticsearchEndpoint: 'Elascticsearch Endpoint:'
-    kibanaEndpoint: 'Kibana Endpoint:'
-    header: Embedded Elasticsearch Configuration
-    failed: Failed
-    pending: Deploying
-    helpText:
-      persistantStorage: Embedded Elasticsearch is experimental, no persistent storage will be provided.
-      requirements: The embedded deployment includes Elasticsearch and Kibana. Elasticsearch requests at least 1 CPU and 500M MEM available on the node it is deployed.
-    cpuRequests:
-      label: CPU Requests (Core)
-      placeholder: e.g. 1
-      helpText: At least 1 CPU (Core) is required
-    cpuLimits:
-      label: CPU Limits (Core)
-      placeholder: e.g. 4
-      helpText: At least 1 CPU (Core) is required
-    memRequests:
-      label: Memory Requests (M)
-      placeholder: e.g. 512
-      helpText: At least 512M RAM is required
-    memLimits:
-      label: Memory Limits (M)
-      placeholder: e.g. 2000
-      helpText: At least 512M RAM is required
-    resouceRequestsAndLimits: CPU and Memory
-
-    indexPatterns:
-      header: Index Patterns
-      helpText: Index patterns are used to generate Elacticsearch index
-      prefix: Prefix
-      prefixPlaceholder: e.g. logstash
-      dateFormat: 'Date Format:'
-    generatedIndex: 'The generated index will be: <code class="text-italic">{esIndex}</code>, by default the index patters is $\{clusterName\}-$\{dateFormat\}'
   logPreview:
     header: Log Format Preview
   additional:
@@ -144,10 +110,43 @@ loggingPage:
       info: Info
       debug: Debug
     tokenHelpText: Will add token to structured data in every syslog message. For cloud syslog like <a href="https://help.sumologic.com/Send-Data/Sources/02Sources-for-Hosted-Collectors/Cloud-Syslog-Source" target="_blank">Sumologic</a>, <a href="https://www.loggly.com/docs/customer-token-authentication-token" target="_blank">Loggly</a> etc, you could generate token on their configure page.
+  fluentd:
+    header: Fluentd Configuration
+    compress:
+      label: Enable Gzip Compression
+      helpText: Enable this to reduce the transferred payload size.
+    endpoint:
+      label: Endpoint
+      placeholder: 'e.g. 192.168.1.10:24224'
+    password:
+      label: Password
+      placeholder: The password for authentication.
+    sharedKey:
+      label: Shared Key
+      placeholder: The Shared key for authentication.
+    standby:
+      label: Use as Standby Only
+    username:
+      label: Username
+      placeholder: The username for authentication.
+    weight:
+      label: Weight
+      placeholder: The load balancing weight of this endpoint.
+    addServer: Add Fluentd Server
+    endpointHostError: Endpoint can not start with 'http' or 'https', please use host name.
+    endpointPortError: Endpoint required end with port.
+    removeFluentServers: Remove this Fluentd Server
+    enableTls:
+      label: Use TLS
+    certificate:
+      label: CA Certificate PEM
+    hostname:
+      label: Hostname
+      placeholder: The hostname of the server.
   ssl:
     sslHeader: SSL Configuration
     certificate:
-      label: Trusted Server Certificate
+      label: CA Certificate PEM
     clientKey:
       label: Client Private Key
     clientCert:

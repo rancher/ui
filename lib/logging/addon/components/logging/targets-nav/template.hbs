@@ -7,11 +7,6 @@
         disabled=target.disabled
         href=false
       }}
-        {{#if (eq target.type 'embedded')}}
-          <div class="badge-thirdparty">
-            <strong>{{t 'loggingPage.targetNav.experimental'}}</strong>
-          </div>
-        {{/if}}
         {{#if target.label}}
           <p style="position:absolute;bottom:-10px;">{{t target.label}}</p>
         {{/if}}
@@ -22,7 +17,7 @@
 
 <section>
   <div class="text-center text-muted">
-    {{#if (eq targetType 'none')}}
+    {{#if (eq targetTypeName 'none')}}
       {{#if (not hasCurrentTarget)}}
         {{t 'loggingPage.targetNav.tips.caseA' pageScope=pageScope}}
       {{else}}
@@ -30,13 +25,13 @@
       {{/if}}
     {{else if hasCurrentTarget}}
         {{t 'loggingPage.targetNav.tips.caseC' currentTarget=currentTarget htmlSafe=true}}
-      {{#unless (eq currentTarget targetType)}}
-        {{t 'loggingPage.targetNav.tips.caseD' targetType=targetType htmlSafe=true}}
+      {{#unless (eq currentTarget targetTypeName)}}
+        {{t 'loggingPage.targetNav.tips.caseD' targetType=targetTypeName htmlSafe=true}}
       {{else}}
-        {{t 'loggingPage.targetNav.tips.caseE' targetType=targetType htmlSafe=true}}
+        {{t 'loggingPage.targetNav.tips.caseE' targetType=targetTypeName htmlSafe=true}}
       {{/unless}}
     {{else}}
-      {{t 'loggingPage.targetNav.tips.caseF' targetType=targetType htmlSafe=true}}
+      {{t 'loggingPage.targetNav.tips.caseF' targetType=targetTypeName htmlSafe=true}}
     {{/if}}
   </div>
   <hr/>
