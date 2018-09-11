@@ -84,9 +84,9 @@ export default Controller.extend({
     const group = this.get('group');
 
     if (group === 'node') {
-      return 'nodeId';
-    } else {
-      return group
+      return 'node';
+    } else if (group === 'namespace') {
+      return 'namespace'
     }
   }.property('group'),
 });
