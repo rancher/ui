@@ -97,28 +97,6 @@ apiPage:
 authPage:
   shibboleth:
     enabled:
-      header: "{providerName} engedélyezve van"
-      required: |
-        {appName} úgy van beállítva, hogy {orgs, plural,
-        =0 {ne férjen hozzá szervezethez}
-        =1 {hozzáférjen # szervezethez}
-        other {hozzáférjen # szervezethez}
-        } és {users, plural,
-        =0 {ne férjen hozzá felhasználóhoz}
-        =1 {hozzáférjen # felhasználóhoz}
-        other {hozzáférjen # felhasználóhoz}
-        }.
-      restricted: |
-        {appName} úgy van beállítva, hogy hozzáférjen a környezeti változókhoz, {orgs, plural,
-        =0 {ne férjen hozzá a szervezetekhez}
-        =1 {# szervezethez}
-        other {# szervezethez}
-        } és {users, plural,
-        =0 {ne férjen hozzá a felhasználókhoz}
-        =1 {hozzáférjen # felhasználóhoz}
-        other {hozzáférjen # felhasználóhoz}
-        }.
-      unrestricted: "{appName} úgy van beállítva, hogy bármely {providerName} felhasználó hozzáférjen."
       authenticated:
         header:
           text: Hitelesítés
@@ -134,7 +112,6 @@ authPage:
     disabled:
       header: '1. Shibboleth fiók beállítása'
       label: "{providerName} nincs beállítva"
-      warning: "A(z) {appName} beállítható úgy, hogy korlátozza a(z) {providerName} felhasználók és csoportok hozzáférését. Ez jelenleg nincs beállítva, így bárki, aki elérné ezt az oldalt (vagy az API-t), teljes mértékben irányíthatja a rendszert."
       name:
         labelText: Megjelenítendő név mező
       username:
@@ -152,23 +129,11 @@ authPage:
     providerName:
       shibboleth: Shibboleth
   root:
-    header: Access Control
+    header: Hozzáférés-vezérlés
   github:
     standard: GitHub
     enterprise: Vállalati GitHub
     header:
-      enabled:
-        label: "{github} engedélyezve van"
-        required: |
-          A(z) {appName} úgy van beállítva, hogy {orgs, plural,
-          =0 {egyetlen szervezetnek se}
-          =1 {# szervezetnek}
-          other {# szervezetnek}
-          } és {users, plural,
-          =0 {egyetlen felhasználónak se}
-          =1 {# felhasználónak}
-          other {# felhasználónak}
-          } biztosítson hozzáférést.
       disabled:
         label: Nincs beállítva a GitHub
     authenticated:
@@ -219,14 +184,8 @@ authPage:
         pre: Hitelesítés GitHub használatával
         post: Várakozás a GitHub viszontválaszára
   azuread:
-    header:
-      enabled: 'Azure AD hitelesítés <b>engedélyezve</b>'
-    subtext:
-      enabled: '{appName} úgy van beállítva, hogy hozzáférjen fiókokhoz az Azure AD-ben'
-      disabled: 'A(z) {appName} beállítható úgy, hogy korlátozza az {appName} adatbázisban meghatározott fiókcsoporthoz való hozzáférést. Ez jelenleg nincs beállítva, így bárki, aki elérné ezt az oldalt (vagy az API-t), teljes mértékben irányíthatja a rendszert.'
     enabled:
       header: 'Veszélyes Terület&trade;'
-      warning: '<b class="text-danger">Figyelmeztetés:</b> A hozzáférés-vezérlés letiltása teljes körű hozzáférést biztosít a(z) {appName} szolgáltatásban bárkinek, aki elérheti ezt az oldalt vagy az API-t.'
       reallyDisable: 'Biztos vagy benne?  Kattints újra, hogy valóban letiltsd a hozzáférés-szabályozást'
       promptDisable: Hozzáférés-szabályozás letiltása
     configure:
@@ -235,18 +194,6 @@ authPage:
         label: Bérlő ID
         placeholder: Egy hosszú UUID-karakterlánc
         help: Az Azure AD portálból
-      clientId:
-        label: Kliens ID
-        placeholder: Egy hosszú UUID-karakterlánc
-      domain:
-        label: Tartomány
-        placeholder: pl. cegneved.onmicrosoft.com
-      adminAccountUsername:
-        label: Adminisztrátor felhasználói név
-        placeholder: pl. rancher-admin
-        help: A felhasználó olvasni tudja más felhasználók adatait
-      adminAccountPassword:
-        label: Admin fiók jelszó
     test:
       header: '2. Hitelesítés tesztelése és engedélyezése'
       help: 'Ellenőrizd a fiókod hitelesítésnek vizsgálatával, hogy az alkalmazásod megfelelően van beállítva:'
@@ -289,8 +236,6 @@ authPage:
       buttonText:
         pre: Helyi hitelesítés engedélyezése
         post: 'Engedélyezés...'
-  0:
-    header: Hozzáférés-vezérlés
 catalogPage:
   index:
     header: Katalógus
@@ -542,9 +487,6 @@ ldap:
   providerName:
     openldap: OpenLDAP
     ad: Active Directory
-  header:
-    enabled:
-      label: "{providerName} engedélyezve van"
   accessEnabled:
     header: Hitelesítés
     general:
@@ -567,10 +509,8 @@ ldap:
       name: "Név mező:"
       search: "Keresési mező:"
     disable:
-      header: "Veszélyes Terület&trade;"
       confirmDisable:
         pre: Hozzáférés-szabályozás letiltása
-        post: "Biztos vagy benne?  Kattints újra, hogy valóban letiltsd a hozzáférés-szabályozást"
   accessConfig:
     header: "1. {providerName} szerver konfigurálása"
     port:
@@ -620,12 +560,6 @@ billingInfo:
   table:
     title:
       actions: Műveletek
-caasLogin:
-  resetHeader: Jelszó visszaállítása
-  new: Fiók létrehozása
-  reset: Jelszó visszaállítása
-  form:
-    email: E-mail
 catalogSettings:
   certified:
     header:
@@ -1144,8 +1078,6 @@ schema:
     prompt: Válassz egy tanúsítványt...
   inputEnum:
     option: Válassz egy műveletet...
-  inputSecret:
-    prompt: Válassz egy titkos kódot...
 schedulingRuleRow:
   theHost: A hoszt
   must: kell

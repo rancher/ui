@@ -77,28 +77,6 @@ apiPage:
 authPage:
   shibboleth:
     enabled:
-      header: "{providerName} er aktivert"
-      required: |
-        {appName} er konfigurert til å tillate tilgang til {organisasjoner, plural,
-        =0 {ingen organisasjoner}
-        =1 {# organisasjon}
-        other {# organisasjoner}
-        } og {brukere, plural,
-        =0 {ingen brukere}
-        =1 {# bruker}
-        other {# brukere}
-        }.
-      restricted: |
-        {appName} er konfigurert til å tillate tilgang til miljø medlemmer for {organisasjoner, plural,
-        =0 {ingen organisasjoner}
-        =1 {# organisasjon}
-        other {# organisasjoner}
-        } og {brukere, plural,
-        =0 {ingen brukere}
-        =1 {# bruker}
-        other {# brukere}
-        }.
-      unrestricted: "{appName} er konfigurert til å tillate tilgang fra alle {providerName} brukere."
       authenticated:
         header:
           text: Autentisering
@@ -114,29 +92,16 @@ authPage:
     disabled:
       header: '1. Konfigurer Shibboleth konto'
       label: "{providerName} er ikke konfigurert"
-      warning: "{appName} kan konfigureres til å begrense tilgang til en rekke {providerName} brukere og grupper.  Dette er ikke er konfigurert, så de som når denne siden (eller kan nå APIet) har full kontroll over systemet."
       uid:
         labelText: UID-felt
     providerName:
       shibboleth: Shibboleth
   root:
-    header: Access Control
+    header: Tilgangskontroll
   github:
     standard: GitHub
     enterprise: GitHub Enterprise
     header:
-      enabled:
-        label: "{github} er aktivert"
-        required: |
-          {appName} er konfigurert til å tillate tilgang til {organisasjoner, plural,
-          =0 {ingen organisasjoner}
-          =1 {# organisasjon}
-          other {# organisasjoner}
-          } og {brukere, plural,
-          =0 {ingen brukere}
-          =1 {# bruker}
-          other {# brukere}
-          }.
       disabled:
         label: GitHub er ikke konfigurert
     authenticated:
@@ -173,17 +138,6 @@ authPage:
       tenantId:
         label: Leietaker-ID
         placeholder: En lang UUID-streng
-      clientId:
-        label: Klient-ID
-        placeholder: En lang UUID-streng
-      domain:
-        label: Domene
-        placeholder: f.eks dittfirma.hosmicrosoft.no
-      adminAccountUsername:
-        label: Administrator brukernavn
-        placeholder: f.eks rancher-administrator
-      adminAccountPassword:
-        label: Administrator passord
     test:
       username:
         placeholder: 'f.eks onormann'
@@ -210,8 +164,6 @@ authPage:
       buttonText:
         pre: Aktiver lokal autentisering
         post: 'Aktiverer...'
-  0:
-    header: Tilgangskontroll
 catalogPage:
   index:
     certified:
@@ -364,18 +316,6 @@ waitingPage:
     setup:
       kubernetes: Definer Kubernetes
 ldap:
-  header:
-    enabled:
-      restricted: |
-        {appName} er konfigurert til å tillate tilgang til miljø medlemmer for {grupper, plural,
-        =0 {ingen grupperr}
-        =1 {# gruppe}
-        other {# grupper}
-        } og {brukere, plural,
-        =0 {ingen brukere}
-        =1 {# bruker}
-        other {# brukere}
-        }.
   accessConfig:
     groupSearchBase:
       placeholder: "f.eks ou=Gruppe,dc=mittfirma,dc=no"
@@ -402,8 +342,6 @@ catalogSettings:
     name:
       label: Navn
       placeholder: f.eks minkatalog
-    url:
-      placeholder: 'f.eks https://github.com/mittfirma/minkatalog.git'
     branch:
       label: Gren
       placeholder: 'f.eks hovedgren'

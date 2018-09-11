@@ -7,14 +7,20 @@ generic:
   add: Toevoegen
   all: Alles
   any: Maakt niet uit
+  application: toepassing
+  as: als
   cancel: Annuleren
   closeModal: Sluiten
+  cluster: Cluster
   collapseAll: Alles inklappen
+  comingSoon: Binnenkort
   command: Opdracht
   confirm: Bevestigen
   containers: Containers
   created: Aangemaakt
   createdDate: "Aangemaakt op {date}"
+  custom: Aangepast
+  customize: Aanpassen
   default: Standaard
   description: Omschrijving
   details: Details
@@ -24,50 +30,77 @@ generic:
   dockerId: Docker ID
   domainName: Domeinnaam
   done: Gereed
+  download: Download
   edit: Bewerken
   enable: Inschakelen
   enabled: Ingeschakeld
   entrypoint: Toegangspunt
   environment: Omgeving
   expandAll: Alles uitklappen
+  from: van
+  generic: 'Algemeen'
+  gigabyte: 'GB'
   hardware: Hardware
   healthy: Gezond
   help: Help
   id: ID
   image: Image
+  import: Importeren
   internal: Intern
   ipAddress: IP-Adres
+  key: Sleutel
   limit: Limiet
   limits: Limieten
   loading: "Bezig met laden..."
+  member: Gebruiker
   mibibyte: 'MiB'
+  milliseconds: 'Milliseconden'
   missing: "*%MISSING%*"
   moreActions: Meer acties
   na: 'n.v.t.'
   name: Naam
+  namespace: Namespace
+  namespaces: Namespaces
+  never: Nooit
   no: "Nee"
   noRating: Geen beoordeling
+  node: Node
   none: Geen
+  owner: Eigenaar
+  paste: Plakken
+  pod: pod
+  port: Poort
   ports: Poorten
+  prefix: voorvoegsel
+  project: Project
+  random: Willekeurig
   remove: Verwijderen
   role: Rol
   save: Opslaan
   saved: Opgeslagen
   saving: Opslaan
   search: Zoeken
+  searchOrCustomInput: Zoek of voer uw aangepaste waarde in.
+  searching: 'Zoeken...'
   seconds: seconden
   select: Selecteer
   service: Service
+  services: Diensten
+  size: Grootte
   state: Status
+  tags: Labels
   test: Test
   testing: Testen
   to: Aan
   total: Totaal
   type: Type
   unknown: Onbekend
-  user: Gebruiker
   upload: Upload
+  url: URL
+  user: Gebruiker
   uuid: UUID
+  value: Waarde
+  version: Versie
   yes: "Ja"
 realmNames:
   all: Alle
@@ -78,11 +111,33 @@ realmNames:
   euEast: EU Oost
 accountsPage:
   detail:
+    header: Gebruikersdetails
     table:
       headers:
+        permission: Permissie
+        role: Rol
+        clusterName: Cluster
         projectName: Project
         active: Actief
+        created: Toestaan
+      global:
+        title: Algemene machtigingen
+        description: Toegang tot het beheren van dingen die invloed hebben op de gehele installatie
+        admin: Deze gebruiker is een beheerder en heeft alle machtigingen.
+        noRoles: Deze gebruiker heeft geen globale rollen
+      cluster:
+        title: Cluster rollen
+        description: Rollen die zijn toegekend aan deze gebruiker voor afzonderlijke clusters
+        noRoles: Deze gebruiker heeft geen globale rollen
+      project:
+        title: Project rollen
+        description: Rollen die zijn toegekend aan deze gebruiker voor individuele project
+        noRoles: Deze gebruiker heeft geen project rollen
+      roles:
+        title: Rollen
   index:
+    header: Gebruikers
+    localLink: Gebruiker toevoegen
     table:
       id: ID
       kind: Soort
@@ -102,6 +157,7 @@ accountsPage:
       password:
         labelText: Wachtwoord
       name:
+        labelText: Weergavenaam
         placeholder: "bijv. Jan Jansen"
       type:
         labelText: Accounttype
@@ -114,6 +170,42 @@ podSecurityPoliciesPage:
   index:
     table:
       name: Naam
+  new:
+    errors:
+      nameReq: Naam is verplicht.
+rolesPage:
+  index:
+    table:
+      subjectKind: Soort
+      template: Sjabloon
+  editRole: Rol bewerken
+  saveEdit: Bewerken
+  saveNew: Maak aan
+  new:
+    errors:
+      nameReq: Naam is verplicht.
+      memberReq: Lid is verplicht.
+      nameInExists: Naam is al bestaat. Gebruik een nieuwe rolnaam.
+      ruleResourceReq: Resource is vereist voor een regel.
+      roleTemplate: Rol sjabloon is vereist.
+    form:
+      name:
+        labelText: Naam
+        placeholder: "bijvoorbeeld ontwikkelaars"
+      context:
+        labelText: Context
+      allow:
+        create: Maak aan
+        delete: Verwijder
+        deletecollection: 'Collectie verwijderen'
+        get: Haal op
+        list: Lijst
+        patch: Patch
+        update: Update
+        watch: Bekijk
+        labelText: Toestaan
+        resource: Document
+        addAction: Bestand toevoegen
 apiPage:
   currentEndpoint: 'Eindpunt:'
   table:
@@ -123,7 +215,6 @@ apiPage:
 authPage:
   shibboleth:
     enabled:
-      header: "{providerName} is ingeschakeld"
       authenticated:
         header:
           text: Authenticatie
@@ -143,13 +234,11 @@ authPage:
     providerName:
       shibboleth: Shibboleth
   root:
-    header: Access Control
+    header: Toegangsbeheer
   github:
     standard: GitHub
     enterprise: GitHub Enterprise
     header:
-      enabled:
-        label: "{github} is ingeschakeld"
       disabled:
         label: GitHub is niet geconfigureerd
     authenticated:
@@ -166,19 +255,10 @@ authPage:
         enterpriseHost:
           placeholder: 'bijv. github.example.com'
   azuread:
-    header:
-      enabled: 'Azure AD authenticatie is <b>ingeschakeld</b>'
     enabled:
       header: 'Gevarenzone&trade;'
-      warning: '<b class="text-danger">Opgelet:</b>Toegangsbeheer uitschakelen geeft volledige toegang tot {appName} aan iedereen die deze pagina kan bereiken of de API.'
       reallyDisable: 'Weet U het zeker? Klik nogmaals om toegangsbeheer echt uit te schakelen'
       promptDisable: Toegangsbeheer uitschakelen
-    configure:
-      domain:
-        label: Domein
-        placeholder: bijv. youcompany.onmicrosoft.com
-      adminAccountUsername:
-        placeholder: bijv. rancher-admin
     test:
       username:
         placeholder: 'bijv. jjansen'
@@ -202,8 +282,6 @@ authPage:
           labelText: Wachtwoord bevestigen
     accessControl:
       header: '2. Toegangsbeheer inschakelen'
-  0:
-    header: Toegangsbeheer
 certificatesPage:
   index:
     header: Certificaten
@@ -269,29 +347,14 @@ verifyResetPasswordPage:
   button: Wachtwoord bijwerken
 ldap:
   header:
-    enabled:
-      label: "{providerName} is ingeschakeld"
-      restricted: |
-        {appName} is geconfigureerd voor toegang van omgevingsleden, {groups, plural,
-        =0 {no groups}
-        =1 {# group}
-        other {# groups}
-        } and {users, plural,
-        =0 {no users}
-        =1 {# user}
-        other {# users}
-        }.
     disabled:
       label: "{providerName} is niet geconfigureerd"
   accessEnabled:
     general:
       defaultDomain: "Standaard Domein:"
     disable:
-      header: "Gevarenzone&trade;"
-      warning: '<b class="text-danger">Opgelet:</b>Toegangsbeheer uitschakelen geeft volledige toegang tot {appName} aan iedereen die deze pagina kan bereiken of de API.'
       confirmDisable:
         pre: Toegangsbeheer uitschakelen
-        post: "Weet U het zeker? Klik nogmaals om toegangsbeheer echt uit te schakelen"
   accessConfig:
     defaultDomain:
       labelText: Standaard Inlog Domein
@@ -309,8 +372,6 @@ catalogSettings:
   more:
     name:
       placeholder: bijv. mijncatalogus
-    url:
-      placeholder: 'bijv. https://github.com/mijnbedrijf/mijncatalogus.git'
     branch:
       placeholder: 'bijv. master'
 containerLogs:

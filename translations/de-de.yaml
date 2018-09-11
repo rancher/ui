@@ -7,16 +7,20 @@ generic:
   add: Hinzufügen
   all: Alle
   any: Irgendein
+  application: Anwendung
   as: als
   cancel: Abbrechen
   closeModal: Schließen
   cluster: Cluster
   collapseAll: Alles schliessen
+  comingSoon: In Kürze verfügbar
   command: Befehl
   confirm: Bestätigen
   containers: Container
   created: Erstellt
   createdDate: "Erstellt {date}"
+  custom: Benutzerdefiniert
+  customize: Anpassen
   default: Standard
   description: Beschreibung
   details: Details
@@ -26,25 +30,31 @@ generic:
   dockerId: Docker ID
   domainName: Domainname
   done: Erledigt
+  download: Download
   edit: Bearbeiten
   enable: Aktivieren
   enabled: Aktiviert
   entrypoint: Einstiegspunkt
   environment: Umgebung
   expandAll: Alles öffnen
+  from: von
+  generic: 'Allgemein'
   gigabyte: 'GB'
   hardware: Hardware
   healthy: Bereit
   help: Hilfe
   id: Id
   image: Image
+  import: Importieren
   internal: Intern
   ipAddress: IP Addresse
   key: Schlüssel
   limit: Grenze
   limits: Limitierungen
   loading: "Laden..."
+  member: Mitglied
   mibibyte: 'MiB'
+  milliseconds: 'Millisekunden'
   missing: "*%FEHLT%*"
   moreActions: Weitere Aktionen
   na: 'Keine Angabe'
@@ -54,9 +64,16 @@ generic:
   never: Nie
   no: "Nein"
   noRating: Keine Bewertung
+  node: Knoten
   none: Kein
+  owner: Besitzer
   paste: Einfügen
+  pod: pod
+  port: Port
   ports: Ports
+  prefix: Präfix
+  project: Projekt
+  random: Zufällig
   remove: Entfernen
   role: Rolle
   save: Speichern
@@ -64,10 +81,12 @@ generic:
   saving: Speichern
   search: Suche
   searchOrCustomInput: Suchen oder einen eigenen Wert eintragen.
+  searching: 'Suche...'
   seconds: Sekunden
   select: Markieren
   service: Service
   services: Dienste
+  size: Größe
   state: Status
   tags: Tags
   test: Test
@@ -76,10 +95,12 @@ generic:
   total: Gesamt
   type: Typ
   unknown: Unbekannt
-  user: Benutzer
   upload: Hochladen
+  url: URL
+  user: Benutzer
   uuid: UUID
   value: Wert
+  version: Version
   yes: "Ja"
 realmNames:
   all: Alle
@@ -103,6 +124,7 @@ accountsPage:
         title: Globale Berechtigungen
         description: Zugriff auf Einstellungen, die die gesamte Installation betreffen
         admin: Dieser Benutzer ist Administrator und hat alle Rechte.
+        noRoles: Dieser Benutzer hat keine globalen Rollen
       cluster:
         title: Cluster-Rollen
         description: Diesem Benutzer zugewiesene Rollen für einzelne Cluster
@@ -119,8 +141,10 @@ accountsPage:
     table:
       id: Id
       kind: Typ
+      username: Lokaler Benutzer
       identity: Identität
       noData: Noch keine Accounts vorhanden
+      noMatch: Keine Benutzer gefunden, die den Suchkriterien entsprechen
       noName: Kein
   new:
     header: Benutzer hinzufügen
@@ -128,6 +152,7 @@ accountsPage:
       usernameReq: Benutzername ist erforderlich.
       usernameInExists: Der Benutzername wird bereits verwendet. Bitte wählen Sie einen anderen Benutzernamen.
       pwReq: Ein Passwort ist erforderlich.
+      role: Neue Benutzer müssen eine Rolle haben. Wählen Sie eine Rolle aus der Liste.
     form:
       username:
         labelText: Benutzername
@@ -144,6 +169,34 @@ accountsPage:
         placeholder: "z.B. Das Konto von Max Muster"
   modal:
     password: Passwort ändern
+appDetailPage:
+  header: "Anwendung: {appName}"
+  endpoints:
+    title: Endpunkte
+    detail: 'Öffentlicher Endpunkte dieser Anwendung'
+    endpoint: Endpunkt
+    protocol: Protokoll
+    noData: Für diese Anwendung wurden keine öffentlichen Endpunkte erstellt.
+    noMatch: Keine öffentlichen Endpunkte für die aktuelle Suche gefunden.
+  notes:
+    title: Notizen
+    detail: 'Anweisungen zur Verwendung dieser Anwendung'
+  workloads:
+    title: Arbeitslasten
+    detail: Workloads, die für diese Anwendung erstellt wurden.
+    nodata: Für diese Anwendung wurden keine öffentlichen Endpunkte erstellt.
+  ingress:
+    title: Ingress-Regeln
+    detail: Ingress-Regeln, die für diese Anwendung erstellt wurden.
+    nodata: Für diese Anwendung wurden keine Ingress-Regeln erstellt.
+  services:
+    title: Dienste
+    detail: Dienste, die mit dieser Anwendung erstellt wurden
+  volumes:
+    title: Volumes
+  secrets:
+    title: Geheimnisse
+    nodata: Diese Anwendung hat keine Geheimnisse
 podSecurityPoliciesPage:
   index:
     header: Pod-Sicherheitsrichtlinien
@@ -151,6 +204,7 @@ podSecurityPoliciesPage:
     table:
       name: Name
       created: Erstellungszeit
+      noData: Es sind keine Sicherheitsrichtlinien für Pods definiert
       noMatch: Keine Pod-Sicherheitsrichtlinien für die Suchanfrage gefunden
   addPodSecurityPolicy: Neue Richtlinie
   editPodSecurityPolicy: Richtlinie bearbeiten
@@ -171,29 +225,33 @@ rolesPage:
   index:
     localLink: Rolle hinzufügen
     table:
-      name: Name
-      created: Erstellungszeit
       builtin: Built-In
+      created: Erstellungszeit
+      name: Name
       noData: Noch keine Rollen vorhanden
       noMatch: Keine Rollen zur aktuellen Suche gefunden
       subjectKind: Typ
       template: Template
-  addRole: Rolle hinzufügen
   editRole: Rolle bearbeiten
   saveEdit: Bearbeiten
   saveNew: Erstellen
   new:
     errors:
       nameReq: Name ist erforderlich.
+      memberReq: Mitglied ist erforderlich.
       nameInExists: Der Name ist bereits vorhanden. Bitte verwenden Sie einen neuen Namen für die Rolle.
       ruleResourceReq: Ressource ist für eine Regel erforderlich.
     form:
       name:
         labelText: Name
         placeholder: "z. B. Entwickler"
+      context:
+        labelText: Kontext
       allow:
         create: Erstellen
         delete: Löschen
+        deletecollection: 'Sammlung löschen'
+        list: Auflisten
         update: Aktualisieren
         watch: Beobachten
         labelText: Erlauben
@@ -207,20 +265,19 @@ rolesPage:
         policy: Richtlinie
         addAction: Richtlinie hinzufügen
 apiPage:
+  header: API-Schlüssel
+  actionButton: Schlüssel hinzufügen
   currentEndpoint: 'Endpunkt:'
   table:
     state: Status
     description: Beschreibung
     created: Erstellt
+    expires:
+      label: Gültig bis
+      never: Niemals
 authPage:
   shibboleth:
     enabled:
-      header: "{providerName} ist aktiviert"
-      required: |
-        {appName} ist so eingestellt, dass {orgs, plural, =0 {keine Organisationen} =1 {# Organisation} other {# Organisationen} } und {users, plural, =0 {keine Spieler} =1 {# Spieler} other {# Spieler} } zugreifen dürfen.
-      restricted: |
-        {appName} ist so eingestellt, dass die Spieler in der Umgebung {orgs, plural, =0 {keiner Organisation} =1 {# Organisation} other {# Organisationen} } und {users, plural, =0 {keine Spieler} =1 {# Spieler} other {# Spieler} } Zugriff haben.
-      unrestricted: "{appName} ist so eingestellt, dass jeder {providerName} Spieler Zugriff hat."
       authenticated:
         header:
           text: Authentifizierung
@@ -236,7 +293,6 @@ authPage:
     disabled:
       header: '1. Bearbeite Shibboleth Account'
       label: "{providerName} ist nicht eingestellt"
-      warning: "{appName} kann so eingestellt werden, dass es den Zugriff eines {providerName} Nutzers und einer Gruppe verbietet. Momentan wurde keine Einstellung getroffen, also hat jeder, der diese Seite (oder API) erreicht, volle Kontrolle über das System."
       name:
         labelText: Zeige Namensfeld
       username:
@@ -254,23 +310,11 @@ authPage:
     providerName:
       shibboleth: Shibboleth
   root:
-    header: Access Control
+    header: Zugriffskontrolle
   github:
     standard: GitHub
     enterprise: GitHub Enterprise
     header:
-      enabled:
-        label: "{github} ist aktiviert"
-        required: |
-          {appName} ist konfiguriert für den Zugriff auf {orgs, plural,
-          =0 {keine Organisationen}
-          =1 {# Organisationen}
-          other {# Organisationen}
-          } und {users, plural,
-          =0 {keine Benutzer}
-          =1 {# Benutzer}
-          other {# Benutzer}
-          }.
       disabled:
         label: GitHub ist nicht konfiguriert
     authenticated:
@@ -321,15 +365,8 @@ authPage:
         pre: Mit GitHub authentifizieren
         post: Warte auf Feedback von GitHub
   azuread:
-    header:
-      enabled: 'Azure AD Authentifizierung ist <b>aktiviert</b>'
-      disabled: 'Azure AD Authentifizierung ist nicht aktiviert'
-    subtext:
-      enabled: '{appName} ist für den Zugriff durch Accounts in Azure AD konfiguriert'
-      disabled: '{appName} kann konfiguriert werden um den Zugriff auf einen Satz von Accounts in der {appName} Datenbank zu beschränken. Das ist aktuell nicht konfiguriert und jeder Benutzer mit Zugriff auf diese Seite (oder die API) hat volle Kontrolle über das System.'
     enabled:
       header: 'Gefahrenzone&trade;'
-      warning: '<b class="text-danger">Achtung:</b> Das Deaktiveren der Zugriffskontrolle gibt jedem mit Zugriff auf diese Seite oder die API alle Rechte für {appName}.'
       reallyDisable: 'Sind Sie sicher?  Nochmal klicken um die Zugriffskontrolle zu deaktivieren'
       promptDisable: Zugriffskontrolle deaktivieren
     configure:
@@ -338,18 +375,6 @@ authPage:
         label: Kunden ID
         placeholder: Eine lange UUID Zeichenfolge
         help: Aus dem Azure AD Portal
-      clientId:
-        label: Client-ID
-        placeholder: Eine lange UUID Zeichenfolge
-      domain:
-        label: Domain
-        placeholder: z.B. youcompany.onmicrosoft.com
-      adminAccountUsername:
-        label: Admin Zugang Username
-        placeholder: z.B. rancher-admin
-        help: Ein Benutzer der informationen über andere Benutzer auslesen kann
-      adminAccountPassword:
-        label: Admin Zugang Passwort
     test:
       header: '2. Authentifizierung testen und aktivieren'
       help: 'Überprüfen Sie ob die Anwendung korrekt konfiguriert wurde, indem Sie die Authentifizierung darüber testen:'
@@ -395,8 +420,6 @@ authPage:
       buttonText:
         pre: Lokale Authentifizierung aktivieren
         post: 'Aktiviere...'
-  0:
-    header: Zugriffskontrolle
 balancerPage:
   noMatch: Keine Balancer gefunden, die den Suchkriterien entsprechen
   noData: Es gibt keine Balancer zum Anzeigen.
@@ -465,11 +488,14 @@ membersPage:
       created: Erstellungszeit
       noData: Keine Mitglieder vorhanden
       noMatch: Keine Benutzer gefunden, die den Suchkriterien entsprechen
+      userId: Benutzer
       subjectKind: Typ
+      template: Rolle
 namespacesPage:
   header: Namespaces
   addNamespace: Namespace Hinzufügen
   noMatch: Keine Namespaces gefunden, die den Suchkriterien entsprechen.
+  noData: Dieser Cluster hat noch keine Namespaces
   table:
     name:
       label: Namespace
@@ -479,18 +505,47 @@ namespacesPage:
       label: Projekt
     pods:
       label: Pods
+    workloads:
+      label: Workloads
     created:
       label: Erstellt
 clusterPage:
   edit: Cluster bearbeiten
+projectsListNamespacePage:
+  header: Namespaces
 projectsPage:
+  header: Projects/Namespaces
+  headerNS: Namespaces
   addProject: Projekt hinzufügen
   editProject: Projekt bearbeiten
+  noMatch: Keine Projekte entsprechen der aktuellen Suche.
+  noData: Dieser Cluster hat noch keine Projekte
+  name:
+    label: Projektname
+  created:
+    label: Erstellt
+  members:
+    user: Benutzer
+    group: Gruppe
+    labelText: Mitglieder
+    errors:
+      nameReq: Name ist erforderlich.
+      nameInExists: Name ist bereits vorhanden. Bitte verwenden Sie einen neuen Projektnamen.
+      memberNameReq: Name ist für ein Mitglied erforderlich
+      memberRoleReq: Für ein Mitglied ist eine Rolle erforderlich
 clustersPage:
   header: Cluster
   newCluster: Cluster hinzufügen
+  newClusterName: "Hinzufügen Cluster: {name}"
+  editClusterName: "Bearbeite Cluster: {name}"
   cluster:
     label: Clustername
+  provider:
+    label: Anbieter
+  version:
+    label: Version
+  nodes:
+    label: Knoten
   cpu:
     label: CPU
   memory:
@@ -502,7 +557,10 @@ clustersPage:
 ingressPage:
   header: 'Eingang: {name}'
   table:
+    targets:
+      label: Ziele
     noMatch: Keine Eingänge stimmen mit der aktuellen Suche überein.
+    noData: Es wurden keine Ingress Regeln definiert
 containerPage:
   header: 'Container: {name}'
   portsTab:
@@ -523,6 +581,12 @@ containerPage:
       noData: Dieser Container hat keine Volumes
       noMatch: Keine Volumes zur aktuellen Suche gefunden
       noContainers: Keine anderen Container
+podPage:
+  header: 'Pod: {name}'
+  nodeIp: Knoten IP
+  podIp: Knoten IP
+  containerImage: 'Image von {container}'
+  image: Image
 containersPage:
   table:
     sparkPrefixCpu: "Prozessor: "
@@ -540,10 +604,12 @@ clusterDashboard:
   cpu: CPU
   memory: Arbeitsspeicher
   pods: Pods
-  subtitle:
-    reserved: "{used} von {total} verwendet"
-    used: "{used} von {total} verwendet"
   node: Knoten
+  etcd: etcd
+  scheduler: Zeitplan
+  value: Wert
+  notActive: Dieser Cluster ist derzeit <b>{state}</b>.
+  notReady: Dieser Cluster ist derzeit <b>{state}</b>; Bereiche, die direkt damit interagieren, sind erst verfügbar, wenn die API bereit ist.
   noNodes: Es gibt keine Knoten.
   alert:
     node: "Warnung: Der Knoten {node} ist nicht aktiv."
@@ -552,15 +618,41 @@ dnsPage:
   noMatch: Keine Datensätze stimmen mit der aktuellen Suche überein
   noData: Es gibt keine DNS-Datensätze zum Anzeigen
   type:
+    arecord: Externe IP
+    cname: Hostname
     alias: Alias
+    workload: Arbeitslast
+    selector: Selektor
+    clusterIp: Cluster-IP
     unknown: Unbekannt
   table:
     target: Ziel
+    clusterIpDetail: 'Cluster-IP: {ip}'
 editDns:
+  title:
+    new: DNS-Eintrag hinzufügen
+    edit: DNS-Eintrag bearbeiten
   name:
     placeholder: z.B. meineapp
   description:
     placeholder: z.B. Aktuelle Version von meineapp
+  recordType:
+    workload: Eine oder mehrere Arbeitslasten
+    selector: Die Menge der Container, die einem Selektor entsprechen
+  target:
+    arecord: IP-Zieladressen
+    cname: Ziel Hostname
+    alias: Ziel DNS-Einträge
+  add:
+    arecord: Ziel IP hinzufügen
+  placeholder:
+    arecord: z. B. 19.82.2.24
+    cname: z.B. example.com
+  prompt:
+    alias: Wählen Sie einen DNS-Eintrag ...
+  errors:
+    targetRequired: 'Eine oder mehrere "Ziel-IP-Adressen" sind erforderlich'
+    multipleCname: Ein Alias ​​kann nicht auf mehr als einen CNAME-Datensatz ausgerichtet sein
 failWhalePage:
   header: Fehler
   reloadButton: |
@@ -636,6 +728,10 @@ hostsPage:
       title: 'Knoten: {name}'
     hostname: Hostname
     ipAddress: IP Adresse
+    version: Version
+    dockerVersion: Ihre Version
+    kernelVersion: Kernel-Version
+    operatingSystem: Betriebssystem
     conditions:
       diskSpace: Speicherplatz
       diskPressure: Speicherdruck
@@ -682,6 +778,12 @@ hostsPage:
           mounts: Einhängepunkte
         body:
           noData: Dieser Host hat noch keine Volumes.
+k8sImport:
+  header: Importieren Sie existierende Kubernetes
+  name:
+    label: Clustername
+    placeholder: z.B. mein-importiert-cluster
+  actionLabel: Importieren
 k8sPage:
   header: Kubernetes
   dashboard:
@@ -694,7 +796,9 @@ k8sPage:
     button: Starte kubectl
   configFile:
     title: Konfigurationsdatei
+    detail: Erstellen Sie eine Kubernetes-Konfigurationsdatei, um <code>kubectl</code> auf Ihrem Desktop zu verwenden.
     button: Kubeconfig-Datei
+    generating: Generiere...
     usage:
       helpText: |
         Dies in <code>~/.kube/config</code> einfügen:
@@ -719,6 +823,7 @@ notFoundPage:
   linkTo: Zur Startseite
 registriesPage:
   index:
+    header: Anmeldedaten
     linkTo: Registry hinzufügen
     table:
       header:
@@ -726,6 +831,8 @@ registriesPage:
         address: Addresse
         username: Benutzername
         created: Erstellt
+      body:
+        noData: "Sie haben noch keine Anmeldeinformationen für die Registry"
   new:
     header: Registry hinzufügen
     form:
@@ -746,12 +853,20 @@ secretsPage:
     noMatch: Keine Secrets gefunden, die den Suchkriterien entsprechen
   table:
     keys: Schlüssel
+configMapsPage:
+  table:
+    keys: Schlüssel
 servicePage:
   globalScale: '{scale} pro Host'
   multistat:
     fqdn: 'FQDN:'
     scale: 'Skalieren:'
     image: 'Image:'
+    daemonSetScale: '1 pro Knoten'
+  serviceType:
+    deployment: Deployment
+    job: Auftrag
+    cronJob: Cron-Job
   external:
     externalIp: |
       {count, plural,
@@ -808,6 +923,8 @@ servicePage:
     composeservice: Compose Service
     networkdriverservice: Netzwerk Service
     storagedriverservice: Speicher Service
+  sidekick:
+    tabHeader: Seitenwagen
 signupPage:
   header: 'Anmeldung für {appName}'
   form:
@@ -872,11 +989,22 @@ stackPage:
       noData: Dieser Stack hat keine Volumes
       noMatch: Keine Volumes zur aktuellen Suche gefunden
 newStack:
+  name:
+    placeholder: z.B. meineapp
+  description:
+    placeholder: z.B. MyApp Stack
   files:
     label: Dateien
     addActionLabel: Datei hinzufügen
     uploadActionLabel: Von der Festplatte lesen
     namePlaceholder: Dateiname
+    valuePlaceholder: Dateiinhalt
+  answers:
+    label: Antworten (variable Ersetzungen)
+    addActionLabel: Antwort hinzufügen
+nodeTemplatesPage:
+  table:
+    state: Status
 userPreferencesPage:
   header: Einstellungen
   theme:
@@ -911,37 +1039,42 @@ waitingPage:
   hosts:
     setup:
       kubernetes: Kubernetes konfigurieren
+notifierPage:
+  notifierTypes:
+    slack: Slack
+    webhook: Webhook
+  slack:
+    url: URL
+    urlPlaceholder: z.B. https://hooks.slack.com/services/T00000000/B00000000/XXXXXXXXXXXXXXXXXXXXXXXX
+    defaultRecipientPlaceholder: 'z.B. #Beispiel'
+  smtp:
+    server: SMTP-Server
+    sender: Absender
+    userName: Benutzername
+    userNamePlaceholder: z.B. John
+    password: Passwort
+    passwordPlaceholder: Ihr Passwort
+    defaultRecipientPlaceholder: z.B. admin@example.com
+  webhook:
+    url: URL
+    urlPlaceholder: Ihre Webhook-URL
+  testAction:
+    testing: TESTEN
+    testOk: Einstellungen validiert.
+    testFailed: Etwas stimmt nicht. Überprüfen Sie Ihre Eingaben.
+    test: TEST
+  index:
+    addActionLabel: Benachrichtigung hinzufügen
+    table:
+      created: Erstellt
+      noMatch: Keine Übereinstimmung
 ldap:
   providerName:
     openldap: OpenLDAP
     ad: Active Directory
   header:
-    enabled:
-      label: "{providerName} ist aktiviert"
-      required: |
-        {appName} ist konfiguriert um den Zugriff für {groups, plural,
-        =0 {keine Gruppen}
-        =1 {# Gruppe}
-        other {# Gruppen}
-        } and {users, plural,
-        =0 {keine Benutzer users}
-        =1 {# Benutzer}
-        other {# Benutzer}
-        }.
-      restricted: |
-        {appName} is configured to allow access to environment members, {groups, plural,
-        =0 {keine Gruppen}
-        =1 {# Gruppe}
-        other {# Gruppen}
-        } and {users, plural,
-        =0 {keine Benutzer users}
-        =1 {# Benutzer}
-        other {# Benutzer}
-        }.
-      unrestricted: "{appName} ist für den Zugriff durch alle {providerName} Benutzer konfiguriert."
     disabled:
       label: "{providerName} ist nicht konfiguriert"
-      warning: "{appName} kann konfiguriert werden um den Zugriff auf einen Satz von {providerName} Benutzern und Gruppen einzuschränken.  Das ist aktuell nicht konfiguriert und This is not currently set up, so anybody that reach this page (or the API) has full control over the system."
   accessEnabled:
     header: Authentifizierung
     subtext: "Um Konfiguration zu verändern, deaktivieren Sie zunächst die Zugriffskontrolle und aktivieren Sie diese erneut."
@@ -966,11 +1099,8 @@ ldap:
       name: "Name Feld:"
       search: "Suche Feld:"
     disable:
-      header: "Gefahrenzone&trade;"
-      warning: '<b class="text-danger">Achtung:</b> Das Deaktiveren der Zugriffskontrolle gibt jedem mit Zugriff auf diese Seite oder die API alle Rechte für {appName}.'
       confirmDisable:
         pre: Zugriffskontrolle deaktivieren
-        post: "Sind Sie sicher?  Nochmal klicken um die Zugriffskontrolle zu deaktivieren"
   accessConfig:
     header: "1. Einen {providerName} Server konfigurieren"
     subtext1: "Geben Sie Adresse, Port und Protokoll für die Verbindung zum {providerName} Server ein. <code>389</code> ist der Stadardport für eine unsichere, <code>636</code> für eine via TLS gesicherte Verbindung."
@@ -1035,12 +1165,6 @@ billingInfo:
   table:
     title:
       actions: Aktionen
-caasLogin:
-  resetHeader: Passwort zurücksetzen
-  new: Account erstellen
-  reset: Passwort zurücksetzen
-  form:
-    email: E-Mail
 catalogSettings:
   certified:
     header:
@@ -1061,17 +1185,12 @@ catalogSettings:
       placeholder: z. B. meinkatalog
     url:
       label: URL
-      placeholder: 'z. B. https://github.com/meinefirma/meinkatalog.git'
     kind:
       helm: Helm
     branch:
       placeholder: 'z. B. master'
 clusterRow:
   loginDefault: Anmelden
-clusterWelcome:
-  welcome: Willkommen
-  noHost: In diesem Cluster sind noch keine Hosts vorhanden. Möchten Sie Hosts hinzufügen oder eine vorhandene Kubernetes-Installation verwenden?
-  addHost: Knoten hinzufügen
 confirmDelete:
   title: 'Sind SIe sicher, dass Sie Löschen wollen?'
   protip: 'ProTip: Beim Klicken auf Entfernen die {key} Taste gedrückt halten um diese Bestätigung zu überspringen.'

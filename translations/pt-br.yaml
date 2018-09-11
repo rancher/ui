@@ -7,16 +7,20 @@ generic:
   add: Adicionar
   all: Todos
   any: Qualquer
+  application: aplicação
   as: como
   cancel: Cancelar
   closeModal: Fechar
   cluster: Cluster
   collapseAll: Recolher tudo
+  comingSoon: Em breve
   command: Comando
   confirm: Confirmar
   containers: Contêineres
   created: Criado
   createdDate: "Criado em {date}"
+  custom: Personalizado
+  customize: Personalizar
   default: Padrão
   description: Descrição
   details: Detalhes
@@ -26,25 +30,31 @@ generic:
   dockerId: ID do Docker
   domainName: Nome do Domínio
   done: Concluído
+  download: Baixar
   edit: Editar
   enable: Habilitar
   enabled: Ativado
   entrypoint: Ponto de entrada
   environment: Ambiente
   expandAll: Expandir tudo
+  from: de
+  generic: 'Genérico'
   gigabyte: 'GB'
   hardware: Hardware
   healthy: Sem erros
   help: Ajuda
   id: Identificador
   image: Imagem
+  import: Importar
   internal: Interno
   ipAddress: Endereço de IP
   key: Chave
   limit: Limite
   limits: Limites
   loading: "Carregando..."
+  member: Membro
   mibibyte: 'MiB'
+  milliseconds: 'Milissegundos'
   missing: "*%FALTANDO%*"
   moreActions: Mais Ações
   na: 'N/D'
@@ -54,9 +64,16 @@ generic:
   never: Nunca
   no: "Não"
   noRating: Sem avaliação
+  node: Nó
   none: Nenhum
+  owner: Proprietário
   paste: Colar
+  pod: pods
+  port: Porta
   ports: Portas
+  prefix: prefixo
+  project: Projeto
+  random: Aleatório
   remove: Remover
   role: Função
   save: Salvar
@@ -64,10 +81,12 @@ generic:
   saving: Salvando
   search: Busca
   searchOrCustomInput: Procure ou insira seu valor personalizado.
+  searching: 'Procurando...'
   seconds: segundos
   select: Selecionar
   service: Serviço
   services: Serviços
+  size: Tamanho
   state: Estado
   tags: Rótulos
   test: Teste
@@ -76,10 +95,12 @@ generic:
   total: Total
   type: Tipo
   unknown: Desconhecido
-  user: Usuário
   upload: Enviar
+  url: URL
+  user: Usuário
   uuid: UUID
   value: Valor
+  version: Versão
   yes: "Sim"
 realmNames:
   all: Todos
@@ -103,6 +124,7 @@ accountsPage:
         title: Permissões globais
         description: Acesso para gerenciar as coisas que afetam toda a instalação
         admin: Este usuário é um administrador e possui todas as permissões.
+        noRoles: Este usuário não possui funções globais
       cluster:
         title: Funções de Cluster
         description: Funções concedidas a este usuário para clusters individuais
@@ -119,8 +141,10 @@ accountsPage:
     table:
       id: Identificador
       kind: Tipo
+      username: Nome de usuário local
       identity: Identidade
       noData: Ainda não há usuários
+      noMatch: Nenhum usuário corresponde à pesquisa atual
       noName: Nenhum
   new:
     header: Adicionar Usuário
@@ -128,6 +152,7 @@ accountsPage:
       usernameReq: Nome de usuário é necessário.
       usernameInExists: O nome de usuário já está em uso. Escolha um novo nome de usuário.
       pwReq: É necessária uma senha.
+      role: Novos usuários são obrigados a ter um papel. Selecione uma função na lista.
     form:
       username:
         labelText: Usuario
@@ -144,6 +169,38 @@ accountsPage:
         placeholder: "p.ex. Esta conta é para João da Silva"
   modal:
     password: Alterar Senha
+appDetailPage:
+  header: "Aplicação: {appName}"
+  endpoints:
+    title: Pontos de extremidade
+    detail: 'Pontos de extremidade públicos deste aplicativo'
+    endpoint: Pontos de extremidade
+    protocol: Protocolo
+    noData: Nenhum endpoint público foi criado para este aplicativo.
+    noMatch: Nenhum endpoint público corresponde à pesquisa atual.
+  notes:
+    title: Observações
+    detail: 'Instruções sobre como usar este aplicativo'
+  workloads:
+    title: Cargas de trabalho
+    detail: Cargas de trabalho criadas para este aplicativo.
+    nodata: Nenhuma carga de trabalho foi criada para este aplicativo.
+  ingress:
+    title: Regras de entrada
+    detail: Regras de ingresso criadas para este aplicativo.
+    nodata: Nenhuma regra de ingresso foi criada para este aplicativo.
+  services:
+    title: Serviços
+    detail: Serviços criados com este aplicativo
+    nodata: Nenhum serviço foi criado para este aplicativo.
+  volumes:
+    title: Volumes
+    detail: Reivindicação de volume persistente criada com esta aplicação
+    nodata: Nenhum volume declarado para essa aplicação.
+  secrets:
+    title: Segredos
+    detail: Segredos associados a este aplicativo
+    nodata: Esta aplicação não tem segredos
 podSecurityPoliciesPage:
   index:
     header: Políticas de Segurança Pod
@@ -151,6 +208,7 @@ podSecurityPoliciesPage:
     table:
       name: Nome
       created: Horário de Criação
+      noData: Ainda não há políticas de segurança definidas para este pod
       noMatch: Nenhuma política de segurança do pod coincide com a pesquisa atual
   addPodSecurityPolicy: Adicionar política
   editPodSecurityPolicy: Editar Política
@@ -171,27 +229,36 @@ rolesPage:
   index:
     localLink: Adicionar Função
     table:
-      name: Nome
-      created: Horário de Criação
       builtin: Interno
+      created: Horário de Criação
+      name: Nome
       noData: Ainda não existem funções
+      noMatch: Nenhuma regra corresponde a pesquisa atual
       subjectKind: Tipo
-  addRole: Adicionar Função
+      template: Modelo
   editRole: Editar Função
   saveEdit: Editar
   saveNew: Criar
   new:
     errors:
       nameReq: Nome é obrigatório.
+      memberReq: Membro é obrigatório.
       nameInExists: O nome já existe. Por favor, use um novo nome de função.
       ruleResourceReq: Recurso é necessário para uma regra.
+      roleTemplate: Modelo de papéis é obrigatório.
     form:
       name:
         labelText: Nome
         placeholder: "exemplo: Desenvolvedores"
+      context:
+        labelText: Contexto
       allow:
         create: Criar
         delete: Excluir
+        deletecollection: 'Excluir coleção'
+        get: Obter
+        list: Lista
+        patch: Patch
         update: Atualizar
         watch: Assistir
         labelText: Permitir
@@ -205,39 +272,62 @@ rolesPage:
         policy: Política do site
         addAction: Adicionar política
 apiPage:
+  header: API & chaves
+  actionButton: Adicionar chave
+  currentEndpoint: 'Endpoint:'
   table:
     state: Estado
+    name: Chave de Acesso
     description: Descrição
     created: Criado
+    expires:
+      label: Expira
+      never: Nunca
+    noData: Não há chaves de API definidas
 authPage:
   shibboleth:
     enabled:
-      header: "{providerName} está habilitado"
       authenticated:
         header:
           text: Autenticação
+      disableAccess:
+        header: "Zona perigosa&trade;"
+        warning: '<b class="text-danger">Cuidado:</b> Desativar o controle de acesso dará controle total sobre {appName} a qualquer pessoa que possa acessar esta página ou a API.'
+        confirmDisable: "Você tem certeza? Clique novamente para realmente desabilitar o controle de acesso"
+        disable: Desativar o controle de acesso
+      groupsField: 'Grupos:'
+      displayName: 'Exibir Nome:'
+      userName: 'Usuario:'
+      userId: 'ID do usuário:'
     disabled:
+      header: '1. Configurar conta do Shibboleth'
+      label: "{providerName} não está configurado"
+      name:
+        labelText: Exibir Nome do Campo
       username:
         labelText: Nome de usuário
       uid:
         labelText: Campo UID
+      groups:
+        labelText: Grupos de Campo
       testAuth:
+        header: '2. Teste e habilite autenticação'
         subtext: 'Verifique se sua aplicação está configurada corretamente testando sua autenticação:'
         buttonText:
           pre: Autenticar com IDP
+          post: Esperando ouvir de volta do IDP
   root:
     header: Access Control
   github:
     standard: GitHub
     enterprise: GitHub Enterprise
     header:
-      enabled:
-        label: "{github} está habilitado"
       disabled:
         label: Github não está configurado
     authenticated:
       header:
         text: Autenticação
+        enterpriseHostName: "Dominio da empresa:"
         clientId:
           text: "ID do cliente:"
           helpText: "Para alterar a aplicação GitHub configurado, desativar o controle de acesso abaixo e, em seguida, configurá-lo novamente."
@@ -245,6 +335,7 @@ authPage:
         header: "Zona Perigosa&trade;"
         warning: '<b class="text-danger">Cuidado:</b> A desativação de controle de acesso dará o controle completo sobre {appName} a qualquer um que pode chegar a esta página ou a API.'
         confirmDisable: "Você tem certeza?  Clique novamente para realmente desativar o controle de acesso"
+        disable: Desabilitar acesso ao GitHub
     notAuthenticated:
       header: "1. Configurar um aplicativo GitHub"
       ul:
@@ -258,6 +349,7 @@ authPage:
             li1: '<b>Application name:</b> <span class="text-muted">Qualquer coisa que você goste, p.ex. my {appName}</span>'
             li2: URL da Página inicial
             li3: '<b>Application description:</b> <span class="text-muted">Qualquer coisa que você gosta, opcional</span>'
+            li4: URL de retorno de chamada de autorização
         li3:
           text: 'Clique em "Register Application" '
       form:
@@ -282,23 +374,18 @@ authPage:
         post: Esperando para ouvir de volta do GitHub
   azuread:
     enabled:
+      header: 'Zona Perigosa&trade;'
       reallyDisable: 'Você tem certeza?  Clique novamente para realmente desativar o controle de acesso'
       promptDisable: Desativar controle de acesso
     configure:
       header: '1. Configure a Conta Azure AD'
       tenantId:
         label: ID do inquilino
-      clientId:
-        label: ID do cliente
-      domain:
-        label: Domínio
-      adminAccountUsername:
-        placeholder: eg rancher-admin
-        help: Um usuário que pode ler informações sobre outros usuários
-      adminAccountPassword:
-        label: Senha da conta admin
+        placeholder: Uma longa string UUID
+        help: Do portal do Azure AD
     test:
       header: '2. Teste e habilite a autenticação'
+      help: 'Verificar se tudo está configurado corretamente por um teste de autenticação com a sua conta:'
       username:
         label: Nome de Usuário de Login
         placeholder: 'e.g. jsmith'
@@ -309,9 +396,11 @@ authPage:
   localAuth:
     header:
       enabled: 'Autenticação local está ativado'
+      disabled: 'A Autenticação Local não está configurada'
     subtext:
       enabled:
         text: '{appName} é configurado para permitir o acesso a contas, na sua base de dados local.'
+        alwaysOn: 'A Autenticação Local estará sempre habilitada mas você terá de usar outro meio de autenticação para usar em outro local.'
         linkText: Gerenciar Contas
       disabled: '{appName} pode ser configurado para restringir o acesso a um conjunto de contas definido na {appName} banco de dados.  sso não é atualmente a configurado, assim qualquer um que chegar a esta página (ou a API) tem controlo total sobre o sistema.'
     accessEnabled:
@@ -340,9 +429,8 @@ authPage:
       buttonText:
         pre: Ativar Autenticação local
         post: 'Ativando...'
-  0:
-    header: Access Control
 balancerPage:
+  noMatch: Nenhum balanciador corresponde à pesquisa atual
   noData: Nenhuma alteração a mostrar.
   table:
     target: Target
@@ -350,13 +438,46 @@ catalogPage:
   index:
     header: 'Catálogo:'
     refreshBtn: Atualizar
+    allCatalogs: Todos os Catálogos
+    allCategories: Todas as Categorias
     manage: Gerenciar
     search:
       label: Busca
+    filters:
+      label: Filtro de Catálogo
+    certified:
+      rancher:
+        rancher: Laboratório Rancher
+        partner: Oficial
+      pl:
+        rancher: Núcleo
+        partner: Oficial
     noData:
       singular: Não há templates compatíveis.
       plural: Não há templates compatíveis neste catálogo.
+    action:
+      launch: Ver Detalhes
+      notCompatible: Não compatível
+      alreadyDeployed: Já implantado
 certificatesPage:
+  cn: Nome do domínio
+  expiresDate: Expira
+  fingerprint: Impressão digital
+  valid: Início Validade
+  expires: Expira
+  algorithm: Algoritmo
+  issuer: Emissor
+  serialNumber: Número Série
+  domainNames:
+    labelText: Nomes de domínio
+    single: '<a href="https://{cn}" target="_blank" rel="nofollow nefererrer noopener">{cn} <i class="icon icon-sm icon-external-link"/></a>'
+    withSan: |
+      <a href="https://{cn}" target="_blank" rel="nofollow nefererrer noopener">{cn} <i class="icon icon-sm icon-external-link"/></a> +
+      {sans, plural,
+      =1 {1 other}
+      other {# others}
+      }
+    wildcardSingle: '{cn}'
   detail:
     header: 'Certificado:'
   index:
@@ -500,11 +621,8 @@ ldap:
       name: "Campo Nome:"
       search: "Campo Pesquisar:"
     disable:
-      header: "Zona Perigosa&trade;"
-      warning: '<b class="text-danger">Caution:</b> A desativação de controle de acesso dará o controle completo sobre {appName} a qualquer um que pode chegar a esta página ou a API.'
       confirmDisable:
         pre: Desativar controle de acesso
-        post: "Você tem certeza?  Clique novamente para realmente desativar o controle de acesso"
   accessConfig:
     header: "1. configurar um servidor {providerName}"
     subtext1: "Digite o endereço, porta e protocolo para conectar ao seu servidor {providerName}.  <code>389</code> ié a porta padrão para inseguro, <code>636</code> para TLS."
