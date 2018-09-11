@@ -3,6 +3,7 @@ import { observer, get, set, setProperties } from '@ember/object';
 import { inject as service } from '@ember/service';
 import Component from '@ember/component';
 import layout from './template';
+import { scheduleOnce } from '@ember/runloop';
 
 const NONE = 'none';
 const TCP = 'tcp';
@@ -93,6 +94,10 @@ export default Component.extend({
     set(this, 'healthCheck', check);
     set(this, 'checkType', type);
     this.validate();
+
+    scheduleOnce('afterRender', () => {
+      this.checkChanged()
+    });
   },
 
   checkChanged: observer('path', 'host', 'headers', 'checkType', 'command', function() {
