@@ -7,18 +7,19 @@ generic:
   add: Добавить
   all: Все
   any: Любой
-  as: как
   application: приложение
+  as: как
   cancel: Отмена
   closeModal: Закрыть
   cluster: Кластер
   collapseAll: Свернуть все
-  command: Команда
   comingSoon: Скоро
+  command: Команда
   confirm: Подтвердить
   containers: Контейнеры
   created: Созданный
   createdDate: "Создано {date}"
+  custom: Пользовательский
   customize: Настроить
   default: По умолчанию
   description: Описание
@@ -37,8 +38,8 @@ generic:
   environment: Окружение
   expandAll: Развернуть все
   from: из
-  gigabyte: 'ГБ'
   generic: 'Общий'
+  gigabyte: 'ГБ'
   hardware: Оборудование
   healthy: В порядке
   help: Помощь
@@ -51,10 +52,10 @@ generic:
   limit: Лимит
   limits: Ограничения
   loading: "Думаю..."
-  mibibyte: 'МиБ'
-  missing: "*%ПАНИКА%*"
-  milliseconds: 'Миллисекунды'
   member: Участник
+  mibibyte: 'МиБ'
+  milliseconds: 'Миллисекунды'
+  missing: "*%ПАНИКА%*"
   moreActions: Больше действий
   na: 'н/д'
   name: Имя
@@ -62,25 +63,25 @@ generic:
   namespaces: Окружения
   never: Никогда
   no: "Нет"
-  node: Узел
   noRating: Нет рейтинга
+  node: Узел
   none: Нету
   owner: Владелец
   paste: Вставить
   pod: pod
   port: Порт
   ports: Порты
-  project: Проект
   prefix: префикс
+  project: Проект
+  random: Случайный
   remove: Убрать
   role: Роль
-  random: Случайный
   save: Сохранить
   saved: Сохранено
   saving: Сохранение
   search: Искать
-  searching: 'Поиск...'
   searchOrCustomInput: Найдите или введите ваше значение.
+  searching: 'Поиск...'
   seconds: секунд
   select: Выбрать
   service: Сервис
@@ -94,10 +95,10 @@ generic:
   total: Всего
   type: Тип
   unknown: Неизвестный
-  user: Пользователь
   upload: Загрузить
-  uuid: UUID
   url: URL-ссылка
+  user: Пользователь
+  uuid: UUID
   value: Значение
   version: Версия
   yes: "Да"
@@ -175,11 +176,29 @@ appDetailPage:
     detail: 'Общедоступные конечные точки этого приложения'
     endpoint: Точки входа
     protocol: Протокол
+    noData: Для этого приложения не были созданы публичные конечные точки.
+    noMatch: Не найдены публичные конечные точки, соответствующие текущему поиску.
+  notes:
+    title: Примечания
+    detail: 'Инструкции о том, как использовать это приложение'
+  workloads:
+    title: Нагрузки
+    detail: Службы, созданные для этого приложения.
+    nodata: Нагрузки для этого приложения не были созданы.
+  ingress:
+    title: Правила Входа
+    detail: Созданные правила входа для этого приложения.
+    nodata: Нет правил входа для этого приложения.
   services:
     title: Сервисы
     detail: Службы, созданные с помощью этого приложения
+    nodata: Никаких сервисов не было создано для этого приложения.
   volumes:
     title: Тома
+  secrets:
+    title: Секреты
+    detail: Секреты, связанные с этим приложением
+    nodata: У этого приложения нет секретов
 podSecurityPoliciesPage:
   index:
     header: Политики безопасности Устручков
@@ -187,6 +206,7 @@ podSecurityPoliciesPage:
     table:
       name: Имя
       created: Время создания
+      noData: Не определены политики безопасности капсулы
       noMatch: Политики безопасности стручка не соответствуют текущему поиску
   addPodSecurityPolicy: Добавить политику
   editPodSecurityPolicy: Изменить политику
@@ -207,21 +227,20 @@ rolesPage:
   index:
     localLink: Добавить роль
     table:
-      name: Имя
-      created: Время создания
       builtin: Встроенный
+      created: Время создания
+      name: Имя
       noData: У вас пока нет ролей
       noMatch: Нет ролей, соответствующих текущему поиску
-      userId: Пользователь
       subjectKind: Тип
       template: Шаблон
-  addRole: Добавить роль
   editRole: Редактировать роль
   saveEdit: Редактировать
   saveNew: Создать
   new:
     errors:
       nameReq: Имя является обязательным для заполнения.
+      memberReq: Необходимо указать участника.
       nameInExists: Имя уже существует. Пожалуйста, используйте новое имя роли.
       ruleResourceReq: Ресурс необходим для правила.
       roleTemplate: Требуется шаблон ролей.
@@ -267,28 +286,6 @@ apiPage:
 authPage:
   shibboleth:
     enabled:
-      header: "{providerName} включен"
-      required: |
-        Система {appName} сконфигурировано с доступом {orgs, plural,
-        =0 {без организаций}
-        =1 {для # организации}
-        other {для # организаций}
-        } и {users, plural,
-        =0 {без пользователей}
-        =1 {# пользователя}
-        other {# пользователей}
-        }.
-      restricted: |
-        {appName} настроена предоставлять доступ членам окружения, {orgs, plural,
-        =0 {no organizations}
-        =1 {# organization}
-        other {# organizations}
-        } and {users, plural,
-        =0 {no users}
-        =1 {# user}
-        other {# users}
-        }.
-      unrestricted: "{appName} настроен для разрешения доступа к любому {providerName} пользователю."
       authenticated:
         header:
           text: Аунтификация
@@ -304,7 +301,6 @@ authPage:
     disabled:
       header: '1. Настройте учетную запись Shibboleth'
       label: "{providerName} не настроен"
-      warning: "Система {appName} может быть настроена на предоставление доступа набору пользователей и/или групп директории {providerName}. Прямо сейчас это не настроено, так что все, кто могут зайти на эту страницу (или достучаться до API) имеют полный контроль над системой. Не порядок."
       name:
         labelText: Отображаемое имя поля
       username:
@@ -322,36 +318,13 @@ authPage:
     providerName:
       shibboleth: Shibboleth
   root:
-    header: Access Control
+    header: Контроль доступа
   github:
     standard: ГитХаб
     enterprise: Энтерпрайз ГитХаб
     header:
-      enabled:
-        label: "Аунтификация через ГитХаб включена"
-        required: |
-          Система {appName} настроена {orgs, plural,
-          =0 {не предоставлять доступ никаким организациям}
-          =1 {предоставлять доступ одной организации}
-          other {предоставлять доступ # организациям}
-          } и {users, plural,
-          =0 {ни одному пользователю}
-          =1 {одному пользователю}
-          other {# пользователям}
-          }.
-        restricted: |
-          {appName} сконфигурирован для предоставления доступа участникам проекта, {orgs, plural,
-          =0 {no organizations}
-          =1 {# organization}
-          other {# organizations}
-          } and {users, plural,
-          =0 {no users}
-          =1 {# user}
-          other {# users}
-          }.
       disabled:
         label: Аунтификация черех ГитХаб не настроена
-        warning: "{appName} может быть настроен, чтобы ограничить доступ к группе пользователей github и членов организации."
     authenticated:
       header:
         text: Аунтификация
@@ -401,15 +374,8 @@ authPage:
         pre: Аунтефицироваться с ГитХабом
         post: Ожидаем ответа от ГиХаба
   azuread:
-    header:
-      enabled: 'Аунтификация через Azure AD <b>включена</b>'
-      disabled: 'Аунтификация через Azure AD не настроена'
-    subtext:
-      enabled: 'Система {appName} настроена предоставлять доступ учёткам из Azure AD'
-      disabled: 'Система {appName} может быть настроена предоставлять доступ  набору учёток, определенному в Azure AD. Прямо сейчас это не настроено, так что все, кто могут зайти на эту страницу (или достучаться до API) имеют полный контроль над системой. Не порядок!'
     enabled:
       header: 'Зона Риска&trade;'
-      warning: '<b class="text-danger">Внимание:</b> Отключение контроля доступа предоставит полный доступ к Системе {appName} любому, кто может зайти на эту страницу или достучаться до API. Мы предупреждали!'
       reallyDisable: 'Вы хорошо подумали? Если да - нажмите еше раз.'
       promptDisable: Отключай уже!
     configure:
@@ -418,18 +384,6 @@ authPage:
         label: ID Организации (Tenant ID)
         placeholder: Длинная строка UUID
         help: Скопируйте с портала Azure AD
-      clientId:
-        label: ID Клиента (Client ID)
-        placeholder: Длинная строка с УИДом (UUID)
-      domain:
-        label: Домен
-        placeholder: Напр. youcompany.onmicrosoft.com
-      adminAccountUsername:
-        label: Имя пользователя с правами администратора
-        placeholder: Напр. rancher-admin
-        help: Пользователь, который может считывать информацию о других пользователях
-      adminAccountPassword:
-        label: Пароль
     test:
       header: '2. Протестируйте и включите аунтификацию'
       help: 'Проверьте, что все настроено правильно, протестировав аунтификацию с вашей учёткой:'
@@ -476,8 +430,6 @@ authPage:
       buttonText:
         pre: Включить встроенную аунтификацию
         post: 'Включаю...'
-  0:
-    header: Контроль доступа
 balancerPage:
   noMatch: Не найдены балансировщики, соответствующие текущему поиску
   noData: Нет балансировщиков для отображения.
@@ -586,6 +538,8 @@ namespacesPage:
       label: Создан
 clusterPage:
   edit: Редактирование кластера
+projectsListNamespacePage:
+  header: Пространство имен
 projectsPage:
   header: Проекты/Пространства Имен
   headerNS: Пространство имен
@@ -594,7 +548,7 @@ projectsPage:
   noMatch: Нет проектов, соответствующих текущему поиску.
   noData: Этот кластер не имеет еще каких-либо проектов
   ns:
-    label: Имя пространства имен
+    label: Окружение
     placeholder: например лаборатории
   name:
     label: Имя проекта
@@ -602,7 +556,7 @@ projectsPage:
   created:
     label: Создан
   psp:
-    label: Политика Безопасности Под
+    label: Политика Безопасности Пода
   members:
     user: Пользователь
     group: Группа
@@ -625,11 +579,20 @@ projectsPage:
       nameReq: Требуется указать имя.
       nameInExists: Имя уже существует. Пожалуйста, используйте новое название проекта.
       memberNameReq: Имя обязательное для участника
+      memberRoleReq: Роль обязательно для заполнения
 clustersPage:
   header: Кластер
   newCluster: Добавить Кластер
+  newClusterName: "Добавить кластер: {name}"
+  editClusterName: "Редактировать кластер: {name}"
   cluster:
     label: Имя Кластера
+  provider:
+    label: Поставщик
+  version:
+    label: Версия
+  nodes:
+    label: Узлы
   cpu:
     label: ЦП
   memory:
@@ -641,7 +604,10 @@ clustersPage:
 ingressPage:
   header: 'Ingress: {name}'
   table:
+    targets:
+      label: Цели
     noMatch: Нет ingress, соответствующих текущему поиску.
+    noData: Нет определенных правил ingress
 containerPage:
   header: 'Контейнер: {name}'
   portsTab:
@@ -662,6 +628,12 @@ containerPage:
       noData: У этого конейнера нет томов
       noMatch: Тома не найдены
       noContainers: Нет других контейнеров
+podPage:
+  header: 'Капсула: {name}'
+  nodeIp: IP-адрес узла
+  podIp: IP-адрес Pod'a
+  containerImage: 'Образ {container}'
+  image: Образ
 containersPage:
   table:
     sparkPrefixCpu: "Проц: "
@@ -679,13 +651,13 @@ clusterDashboard:
   cpu: ЦП
   memory: Память
   pods: Стручки
-  subtitle:
-    reserved: "Использовано {used} из {total}"
-    used: "Использовано {used} из {total}"
   node: Узлы
+  etcd: etcd
   scheduler: Планировщик
   controllerManager: Управляющий Контроллер
   value: Значение
+  notActive: В настоящее время этот кластер <b>{state}</b>.
+  notReady: В настоящее время этот кластер <b>{state}</b>; области, которые взаимодействуют непосредственно с ним, будут недоступны до тех пор, пока API не будет готов.
   noNodes: Нет узлов.
   alert:
     node: "Предупреждение: Узел {node} не активен."
@@ -694,18 +666,35 @@ dnsPage:
   noMatch: Нет записей, соответствующих текущему поиску
   noData: Нет записей DNS для показа
   type:
+    arecord: Внешний IP
+    cname: Имя хоста
     alias: Псевдоним
+    workload: Нагрузка
     selector: Выборщик
+    clusterIp: Кластер IP
     unknown: Неизвестно
   table:
     target: Цель
+    clusterIpDetail: 'Кластер IP: {ip}'
 editDns:
+  title:
+    new: Добавить запись
+    edit: Редактировать Запись
+    view: "Запись: {name}"
   name:
     placeholder: напр. myapp
   description:
     placeholder: Например, "Текущая версия MyApp"
   selector:
     label: Выборщик контейнеров
+    keyLabel: Метка
+    addActionLabel: Добавить селектор
+  recordType:
+    arecord: Один или несколько внешних IP-адресов
+    cname: Внешнее доменное имя
+    alias: Псевдоним другого значения записи DNS
+    workload: Одна или более нагрузок
+    selector: Набор капсул, соответствующих селектору
   target:
     arecord: Целевые IP адреса
     cname: Целевое имя хоста
@@ -720,9 +709,13 @@ editDns:
   prompt:
     alias: Выберите запись DNS...
 cruPersistentVolumeClaim:
+  capacity:
+    unit: ГиБ
   source:
     label: Источник
 cruVolume:
+  define:
+    addActionLabel: Определить
   source:
     label: Источник
 failWhalePage:
@@ -745,6 +738,8 @@ haPage:
     clustered: Кластеризованный
 nodesPage:
   header: Узлы
+  editCluster: Изменить кластер
+  nodePoolGroup: "Пул: {name}"
   table:
     clusterName: Кластер
     role: Роли
@@ -756,6 +751,7 @@ nodesPage:
     docker: Docker
     instanceState: Состояние контейнеров
     instanceStateWithIcon: Состояния
+    noData: У этого кластера нет определенных узлов
     noMatch: Нет узлов, соответствующих текущему поиску
 hostsPage:
   cloudHostsPage:
@@ -802,6 +798,11 @@ hostsPage:
     hostname: Имя Хоста
     ipAddress: IP адрес
     version: Версия
+    kubeletVersion: Версия Kubelet
+    kubeProxyVersion: Версия Kube Proxy
+    dockerVersion: Версия Docker
+    kernelVersion: Версия ядра
+    operatingSystem: Операционная система
     conditions:
       diskSpace: Дисковое пространство
       diskPressure: Давление диска
@@ -849,8 +850,11 @@ hostsPage:
         body:
           noData: На этом хосте пока нет разделов.
 k8sImport:
+  header: Использовать существующие Kubernetes
   name:
     label: Имя Кластера
+    placeholder: например, my-imported-cluster
+  actionLabel: Импорт
 k8sPage:
   header: Kubernetes
   dashboard:
@@ -879,6 +883,8 @@ loginPage:
     401: "Не авторизован"
     500: "Внутренняя ошибка сервера"
     generic: "При попытке войти в систему произошла ошибка ({errorCode}). Повторите попытку."
+  error:
+    authFailedCreds: "Ошибка входа в систему: проверьте учетные данные, или ваша учетная запись может не иметь права на вход в систему."
 machinePage:
   header: Драйверы узлов
   inactive: Выключен
@@ -921,13 +927,15 @@ secretsPage:
     noMatch: Секретов по данному запросу не найдено
   table:
     keys: Ключи
+configMapsPage:
+  table:
+    keys: Ключи
 servicePage:
   globalScale: '{scale} на хост'
   multistat:
     fqdn: 'Полное доменное имя:'
     scale: 'Масштаб:'
     image: 'Образ:'
-    namespace: 'Пространство имен:'
     created: 'Создан:'
     daemonSetScale: '1 на узел'
   serviceType:
@@ -1053,7 +1061,10 @@ nodeTemplatesPage:
   table:
     state: Статус
     name: Название
+    provider: Провайдер
+    location: Местоположение
     size: Размер
+    unknown: Неизвестно
 storageClassPage:
   addActionLabel: Добавить класс
   default:
@@ -1117,32 +1128,8 @@ ldap:
     openldap: OpenLDAP
     ad: Active Directory
   header:
-    enabled:
-      label: "Аунтификация через {providerName} включена"
-      required: |
-        Система {appName} настроена {groups, plural,
-        =0 {не предоставлять доступ никаким группам}
-        =1 {предоставлять доступ одной группе}
-        other {предоставлять доступ # группам}
-        } и {users, plural,
-        =0 {ни одному пользователю}
-        =1 {одному пользователю}
-        other {# пользователям}
-        }.
-      restricted: |
-        Система {appName} настроена предоставлять доступ членам окружения, {groups, plural,
-        =0 {ни одной группе}
-        =1 {одной группе}
-        other {# группам}
-        } и {users, plural,
-        =0 {ни одному пользователю}
-        =1 {одному пользователю}
-        other {# пользователям}
-        }.
-      unrestricted: "Система {appName} настроена предоставлять доступ любому пользователю директории {providerName}."
     disabled:
       label: "Аунтификация через {providerName} не настроена"
-      warning: "Система {appName} может быть настроена на предоставление доступа набору пользователей и/или групп директории {providerName}. Прямо сейчас это не настроено, так что все, кто могут зайти на эту страницу (или достучаться до API) имеют полный контроль над системой. Не порядок!"
   accessEnabled:
     header: Аунтификация
     subtext: "Чтобы изменить настройки сервера - отключите контроль доступа чуть ниже и настройте всё по-новой."
@@ -1167,11 +1154,8 @@ ldap:
       name: "Поле названия (Name Field):"
       search: "Поле поиска (Search Field):"
     disable:
-      header: "Зона Риска&trade;"
-      warning: '<b class="text-danger">Внимание:</b> Отключение контроля доступа предоставит полный доступ к Системе {appName} любому, кто может зайти на эту страницу или достучаться до API. Мы предупреждали!'
       confirmDisable:
         pre: Отключить контроль доступа
-        post: "Вы хорошо подумали? Если да - нажмите еще раз, чтобы окончательно отключить контроль доступа."
   accessConfig:
     header: "1. Укажите настройки сервера {providerName}"
     subtext1: "Расскажите о своем сервере {providerName}. Стандартный порт для незащищенного соединения - <code>389</code> , а для TLS шифрования -  <code>636</code> ."
@@ -1258,16 +1242,9 @@ billingInfo:
       exp: "Exp Дата: {exp}"
       name: "Имя на карте: {name}"
       actions: Действия
-caasLogin:
-  resetHeader: Сбросить пароль
-  new: Создать аккаунт
-  reset: Сбросить пароль
-  resetSuccess: Успех! Проверьте свою электронную почту на наличие ссылки для изменения пароля.
-  error: Ошибка в получении вашей электронной почты. Убедитесь, что ваша электронная почта верна и повторите попытку.
-  invalidEmail: Ваш адрес электронной почты не является действительным. Введите действительный адрес электронной почты и повторите попытку.
-  login: Страница входа
-  form:
-    email: Email
+cloudProvider:
+  helpText: |
+    Подробнее о <a href="https://kubernetes.io/docs/concepts/cluster-administration/cloud-providers/" target="_blank" rel="nofollow noopener noreferrer">облачном поставщике</a>.
 catalogSettings:
   header: Каталоги
   notAvailable: "Недоступно: существует специальный каталог под названием <code>{name}</code>"
@@ -1287,7 +1264,6 @@ catalogSettings:
       pl: Шаблоны, созданные и поддерживаемые участниками сообщества.
   more:
     header: Пользовательский
-    helpText: 'Вы можете определить собственные дополнительные каталоги. Каждому нужно уникальное имя и URL-адрес, который <code>git clone</code> может обрабатывать (см. <a href="https://git-scm.com/docs/git-clone#_git_urls_a_id_urls_a" target="_blank" rel="nofollow noopener noreferrer">документы</a> для получения дополнительной информации).'
     addActionLabel: Добавить каталог
     noMatch: Не найдены каталоги, соответствующие текущему поиску.
     noData: Определенных пользовательских каталогов не задано.
@@ -1298,7 +1274,6 @@ catalogSettings:
       placeholder: напр. mycatalog
     url:
       label: Ссылка (URL)
-      placeholder: 'напр. https://github.com/mycompany/mycatalog.git'
     kind:
       label: Тип
       native: Родной
@@ -1315,19 +1290,17 @@ clusterRow:
   addHost: Добавить Узел
   importCluster: Использовать существующие Kubernetes
   loginDefault: Войти
-clusterWelcome:
-  welcome: Добро пожаловать
-  noHost: В этом кластере пока нет хостов. Вы хотите добавить хосты или использовать существующую установку Kubernetes?
-  addHost: Добавить Узел
-  select: Выбрать
-  importCluster: Использовать существующие Kubernetes
-  embeddedDescription: |
-    <p>{appName} автоматически развертывает и управляет Kubernetes.</p>
-    <p>Развертывание хостов с популярными провайдерами внутри {appName} или использование любых существующих хостов с установленным Docker.</p>
-    <p>Поддерживает любую комбинацию виртуальных машин или bare-metal, работающих на месте или в облачной среде.</p>
-    <p>Обеспечивает безопасную оверлейную сеть для контейнеров для связи друг с другом через хосты.</p>
 clusterNew:
+  name:
+    label: Имя Кластера
+    placeholder: например, Sandbox
+  nodes:
+    title: Узлы
   azureaks:
+    security:
+      label: Безопасность
+    image:
+      label: Образ
     privateIpAddress:
       placeholder: 127.0.0.1
     staticPublicIp:
@@ -1342,12 +1315,29 @@ clusterNew:
   googlegke:
     project:
       label: Проект
+      placeholder: например my-project
   rke:
     address:
+      title: Адрес Узла
       public:
+        label: Публичный адрес
         placeholder: например 1.2.3.4
       private:
+        label: Внутренний адрес
         placeholder: например 1.2.3.4
+    shortLabel: Пользовательский
+    detected: |
+      {count, plural,
+      =0 {# новыx узлов зарегистрировано}
+      =1 {# новый узел зарегистрирован}
+      =2 {# новыx узла зарегистрировано}
+      =3 {# новыx узла зарегистрировано}
+      =4 {# новыx узла зарегистрировано}
+      other {# новыx узлов зарегистрировано}
+      }
+    done: Готово
+    command:
+      instructions: 'Выполните эту команду на одной или нескольких существующих машинах, работающих с поддерживаемой версией Docker.'
     registry:
       url:
         label: URL-ссылка
@@ -1356,7 +1346,12 @@ clusterNew:
         label: Имя пользователя
       password:
         label: Пароль
+    ignoreDockerVersion:
+      label: Версия докера на узлах
+      enabled: Разрешить неподдерживаемые версии
+      disabled: Только поддерживаемые версии Docker
     role:
+      title: Роль Узла
       header:
         controlplane: Управление
         worker: Работник
@@ -1386,6 +1381,7 @@ confirmDelete:
   cancelAction: Отмена
   largeDeleteText: '{key} и {othersCount} другие'
 containerLogs:
+  title: "Логи: "
   onlyCombined: "<b>Примечание:</b> Доступны только комбинированные журналы stdout/stderr для этого контейнера, поскольку он был запущен с флагом TTY (-t)."
   combined: Комбинированный
   stderr: Ошибки
@@ -1653,6 +1649,8 @@ editUser:
       placeholder: напр. John Smith
     username:
       label: Имя пользователя
+    otherRoles:
+      label: Удалить роли
     password:
       new: Новый Пароль
       error: Пароли должны совпадать
@@ -1931,6 +1929,8 @@ formMembers:
     addServiceAccount: Добавить служебную учетную запись
     multipleRoles: Несколько ролей
     customRoles: Пользовательские роли
+    name:
+      label: Название
     role:
       label: Роль
 formScopedRoles:
@@ -2060,7 +2060,16 @@ formNetwork:
 formPorts:
   header: Сопоставление Портов
   addAction: Добавить порт
+  kind:
+    label: Как
+    NodePort: NodePort (на каждом узле)
+    ClusterIP: Кластер IP (только для внутреннего использования)
+  sourcePort:
+    label: Прослушиваемый порт
+    placeholder: "напр. 80"
+    ipPlaceholder: "напр. 80 или 19.82.2.24:80"
   containerPort:
+    label: Публикуемый порт контейнера
     placeholder: "напр. 8080"
   protocol:
     label: Протокол
@@ -2070,7 +2079,16 @@ formPorts:
     mixedIpPort: "Порт {ip}:{port}/{proto} имеет несколько сопоставлений."
     mixedPort: "Порт {port}/{proto} имеет несколько сопоставлений."
 formScale:
+  label: Тип Нагрузки
+  showAdvanced: Дополнительные параметры
   scaleMode:
+    scaleSuffix: |
+      {scale, plural,
+      =1 {pod}
+      other {pods}
+      }
+    daemonSet: "Запустите один Pod на каждом узле"
+    cronJob: "Запуск по расписанию cron"
     job: Задание
 formScheduling:
   title: Планирование узла
@@ -2281,6 +2299,7 @@ formVolumeRow:
     existingVolume: Существующий том
     tmpfs: Tmpfs
 formVolumes:
+  title: Тома
   value:
     prompt: Выберите контейнер...
   volumes: Диски
@@ -2436,6 +2455,8 @@ inputPassword:
   buttonText: Сгенерировать
 inputTextFile:
   tooltip: Чтение из файла
+podsSection:
+  title: Капсулы
 labelsSection:
   kind: Тип
   title: Метки
@@ -2453,12 +2474,17 @@ labelsSection:
   noData: Без меток
 loginUserPass:
   userLabel: Имя пользователя
-  caasLabel: Email
   userPlaceholder: Напр. jsmith
   genericLoginLabel: Войти
   loggingInLabel: Выполняется вход...
   passwordLabel: Пароль
+machineTemplatesPage:
+  title: Добавить Узел
 newCertificate:
+  title:
+    new: Добавить Сертификат
+    edit: 'Редактировать Сертификат: {name}'
+    view: 'Сертификат: {name}'
   cert:
     label: Сертификат
   metaXML:
@@ -2532,6 +2558,7 @@ modalEditSetting:
     prompt: Выберите значение...
 modalEditPassword:
   firstLogin:
+    title: Добро пожаловать в {appName}
     actionButton: Продолжить
   edit:
     title: Сменить пароль
@@ -2553,6 +2580,9 @@ modalShortcuts:
   cluster: Кластер
   project: Проект
   shift: Shift-{key}
+modalYaml:
+  title:
+    new: Импорт {type} YAML
 modalWelcome:
   header: Добро пожаловать в {appName}!
   closeModal: Понятно
@@ -2621,6 +2651,9 @@ nodeDriver:
   amazonec2:
     region:
       label: Регион
+projectGroup:
+  label: "Проект: {name}"
+  noNS: Проект не имеет окружения
 pageFooter:
   notARelease: (Это не релиз)
   help: 'Помощь и документация'
@@ -2638,6 +2671,10 @@ pagination:
     =0 {Нет элементов}
     =1 {{count} {count, plural, =1 {элемент} =2 {элемента} =3 {элемента} =4 {элемента} other {элементов}}}
     other {{from} - {to} из {count} элементов}}
+  project: |
+    {pages, plural,
+    =0 {Нет Проектов} =1 {{count} {count, plural, =1 {Проект} other {Проекты}}}
+    other {{from} - {to} из {count} Проектов}}
 projectRow:
   none: Нет описания
   orchestration: Оркестрирование
@@ -2656,6 +2693,7 @@ saveCancel:
   saving: Сохранение...
   saved: Сохранено!
   edit: Сохранить
+  next: Далее
   create: Создать
   cancel: Отмена
 schema:
@@ -2664,8 +2702,6 @@ schema:
     n: "Неверно"
   inputService:
     custom: Собственный
-  inputSecret:
-    prompt: Выберите секрет...
 schedulingRuleRow:
   theHost: Хост
   must: должен
@@ -2756,11 +2792,32 @@ nav:
     your: Мои Окружения
     selected: Выбранные Окружения
     edit: 'Редактировать «{name}»'
+  cluster:
+    members: Участники
+    nodes: Узлы
+    storage:
+      tab: Хранилище
+    projects: Проекты/Окружение
   containers:
+    tab: Нагрузки
+    ingresses: Балансировка Нагрузки
+    containers: Нагрузки
+    dns: Служба Обнаружения
     volumes: Тома
+    deploy: Развернут
     addContainer: Добавить контейнер
     addDns: Добавить запись
     addVolume: Добавить раздел
+    importCompose: Импорт YAML
+  group:
+    none: Плоский список
+    node: Группировка по Узлу
+    workload: Группировка по Нагрузке
+    namespace: Группировка по Окружению
+    namespaceWorkload: Группировка по Окружению/Нагрузке
+  hosts:
+    tab: Узлы
+    addHost: Добавить узлы
   catalog:
     all: Все
     library: Библиотека
@@ -2772,7 +2829,14 @@ nav:
     registries: Реестры Контейнеров
     secrets: Секреты
   admin:
+    tab: Общее
+    accounts: Пользователи
+    clusters: Кластеры
+    machines: Узлы
+    catalogs: Каталоги
     security:
+      tab: Безопасность
+      roles: Роли
       podSecurityPolicies: Политики безопасности Устручков
       authentication: Аунтификация
     settings:
@@ -2785,14 +2849,26 @@ nav:
     logout: Выйти
   userPreferences:
     link: "Настройки"
+  settings:
+    tab: Настройки
+  tools:
+    tab: Инструменты
+    alerts: Уведомления
+    notifiers: Нотификаторы
+    logging: Логирование
+  project:
+    none: Сгруппированные Проекты/Окружения
+    namespaces: Окружения
 action:
   activate: Активировать
   clone: Клонировать
   console: Открыть консоль
   convertToService: Преобразовать в сервис
   deactivate: Деактивировать
+  downloadYaml: Скачать YAML
   edit: Редактировать
   editService: Редактировать сервис
+  editYaml: Просмотр/Редактирование YAML
   evacuate: Эвакуировать
   execute: Подключиться к Консоли
   exportConfig: Экспортировать конфиг

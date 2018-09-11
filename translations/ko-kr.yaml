@@ -1,5 +1,5 @@
 ---
-languageName: "한국어"
+languageName: "영어"
 languageContribute: "Rancher 번역을 도와주세요"
 generic:
   actions: 동작
@@ -12,12 +12,13 @@ generic:
   closeModal: 닫기
   cluster: 클러스터
   collapseAll: 모두 접기
-  command: 명령어
   comingSoon: 출시 예정
+  command: 명령어
   confirm: 확인
   containers: 컨테이너
   created: 생성됨
   createdDate: "생성일 {date}"
+  custom: 커스텀
   customize: 커스터마이즈
   default: 기본값
   description: 설명
@@ -47,9 +48,9 @@ generic:
   limit: 제한
   limits: 제한
   loading: "로딩중..."
+  member: 멤버
   mibibyte: 'MiB'
   missing: "*%MISSING% *"
-  member: 멤버
   moreActions: 더 많은 작업
   na: '해당 없음'
   name: 이름
@@ -57,10 +58,15 @@ generic:
   namespaces: 네임 스페이스
   no: "아니요"
   noRating: No Rating
+  node: 노드
   none: 없음
+  owner: 소유자
   paste: 붙여넣기
   pod: pod
+  port: 포트
   ports: 포트
+  prefix: 접두사
+  project: 프로젝트
   remove: 제거
   role: 역할
   save: 저장
@@ -80,10 +86,12 @@ generic:
   total: 총합계
   type: 타입
   unknown: 알수 없음
-  user: 사용자
   upload: 업로드
+  url: URL
+  user: 사용자
   uuid: UUID
   value: 값
+  version: 버전
   yes: "예"
 realmNames:
   all: 전체
@@ -145,6 +153,11 @@ accountsPage:
         placeholder: "예: 이 계정은 Johon Smith 입니다."
   modal:
     password: 비밀번호 변경하기
+appDetailPage:
+  endpoints:
+    title: 엔드포인트
+    endpoint: 엔드포인트
+    protocol: 프로토콜
 podSecurityPoliciesPage:
   index:
     header: Pod 보안 정책
@@ -163,20 +176,25 @@ podSecurityPoliciesPage:
     form:
       name:
         labelText: 이름
+        placeholder: "예: 정책"
 rolesPage:
   title: 역할
   index:
     localLink: 역할 추가
     table:
-      name: 이름
       created: 생성 시간
-  addRole: 역할 추가
+      name: 이름
   saveEdit: 편집
   saveNew: 생성
   new:
+    errors:
+      nameInExists: 이름이 이미 있습니다. 새 역할 이름을 사용하십시오.
+      roleTemplate: 역할(Role) 템플릿이 필요합니다.
     form:
       name:
         labelText: 이름
+      context:
+        labelText: 컨텍스트
       allow:
         create: 생성
         delete: 삭제
@@ -187,16 +205,18 @@ rolesPage:
         role: 역할
       policy:
         policy: 정책
+        addAction: 정책 추가
 apiPage:
+  actionButton: 키 추가
   currentEndpoint: '엔드포인트'
   table:
     state: 상태
     description: 설명
     created: 생성됨
+    noData: 정의된 API 키가 없습니다
 authPage:
   shibboleth:
     enabled:
-      header: "{providerName} 활성화"
       authenticated:
         header:
           text: 인증
@@ -218,18 +238,17 @@ authPage:
       testAuth:
         header: 'Test & 인증 활성화'
   root:
-    header: Access Control
+    header: 액세스 제어
   github:
     standard: GitHub
     enterprise: GitHub Enterprise
-    header:
-      enabled:
-        label: "{github} 활성화"
     authenticated:
       header:
         text: 인증
         clientId:
           text: "클라이언트 ID:"
+      disableAccess:
+        disable: Github 액세스 비활성화
     notAuthenticated:
       ul:
         li2:
@@ -239,17 +258,31 @@ authPage:
         clientId:
           labelText: 클라이언트 ID
   azuread:
-    configure:
-      domain:
-        label: 도메인
     test:
+      username:
+        placeholder: '예: jsmith'
       password:
         label: 로그인 비밀 번호
       pre: Azure를 위한 인증
-  0:
-    header: 액세스 제어
+  localAuth:
+    accessDisabled:
+      form:
+        login:
+          placeholder: '예: jsmith'
+        name:
+          placeholder: '예: 존 스미스'
+        password:
+          labelText: 암호
+        confirmPassword:
+          labelText: 암호 확인
 catalogPage:
   index:
+    header: 카탈로그
+    refreshBtn: 새로고침
+    allCatalogs: 모든 카탈로그
+    allCategories: 모든 카테고리
+    search:
+      label: 검색
     filters:
       label: 카탈로그 필터
     certified:
@@ -263,6 +296,10 @@ catalogPage:
       launch: 세부정보 보기
       alreadyDeployed: 이미 배포됨
 certificatesPage:
+  cn: 도메인 이름
+  expiresDate: 만료
+  algorithm: 알고리즘
+  serialNumber: 일련 번호
   detail:
     header: '인증서: {name}'
   index:
@@ -277,11 +314,22 @@ membersPage:
   index:
     table:
       name: 이름
+      userId: 사용자
+      template: 역할
+namespacesPage:
+  table:
+    name:
+      label: 네임스페이스
+    project:
+      label: 프로젝트
 clusterPage:
   edit: 클러스터 편집
 projectsPage:
   addProject: 프로젝트 추가
   editProject: 프로젝트 편집
+  members:
+    name:
+      label: 이름
 clustersPage:
   cpu:
     label: CPU
@@ -307,6 +355,9 @@ containersPage:
   welcome:
     containerLink: 컨테이너 추가
     kubernetesLink: Kubernetes 설치
+clusterDashboard:
+  cpu: CPU
+  memory: 메모리
 failWhalePage:
   header: 에러
   reloadButton: |
@@ -323,6 +374,9 @@ haPage:
 nodesPage:
   table:
     role: 역할
+    cpu: CPU
+    disk: 디스크
+    version: 버전
     docker: 도커
 hostsPage:
   cloudHostsPage:
@@ -336,6 +390,11 @@ hostsPage:
       roles:
         label: 역할
   hostPage:
+    ipAddress: IP 주소
+    version: 버전
+    dockerVersion: 도커 버전
+    kernelVersion: 커널 버전
+    operatingSystem: 운영 체제
     limits:
       cpu: 'CPU 제한:'
       memory: '메모리 제한:'
@@ -380,6 +439,10 @@ registriesPage:
       password:
         labelText: 비밀번호
 servicePage:
+  serviceType:
+    job: 작업
+  containersTab:
+    title: '컨테이너'
   certsTab:
     title: 인증서
     default: 기본 인증서
@@ -407,8 +470,12 @@ signupPage:
     confirm:
       resend: 이메일 다시 보내기
 stackPage:
+  containers:
+    header: 컨테이너
   loadBalancers:
     header: Load Balancers
+newStack:
+  header: YAML 가져 오기
 userPreferencesPage:
   header: 환경 설정
   theme:
@@ -435,6 +502,10 @@ verifyResetPasswordPage:
     header: 비밀번호 재설정 됨
     subtext: 로그인 페이지로 이동 하려면 아래 링크를 클릭 합니다.
     linkText: 로그인
+notifierPage:
+  testedBtnLabel: 확인
+  notifierTypes:
+    email: 이메일
 servicePartial:
   noContainers:
     inactive:

@@ -11,17 +11,20 @@ generic:
   cancel: لغو
   closeModal: بستن
   collapseAll: بستن همه
+  comingSoon: به زودی
   command: دستور
   confirm: تایید
   containers: کانتینرها
   created: ساخته شد
   createdDate: "ایجاد شد {date}"
+  customize: شخصی سازی
   default: پیش فرض
   description: توضیح
   details: جزییات
   disable: غیر فعال کردن
   disabled: غیر فعال
   displayName: نام نمایشی
+  dockerId: شناسه Docker
   domainName: نام دامنه
   done: انجام شد
   edit: ویرایش
@@ -55,20 +58,24 @@ generic:
   saved: ذخیره شد
   saving: در حال ذخیره سازی
   search: جستجو
+  searching: 'در حال جستجو...'
   seconds: ثانیه
   select: انتخاب
   service: سرویس
+  services: سرویس ها
   state: وضعیت
+  tags: برچسب‌ها
   test: تست
   testing: در حال تست
   to: به
   total: مجموع
   type: نوع
   unknown: ناشناس
-  user: کاربر
   upload: بارگذاری
+  user: کاربر
   uuid: شناسه منحصر به فرد عمومی
   value: مقدار
+  version: نسخه
   yes: "بله"
 realmNames:
   all: همه
@@ -79,8 +86,11 @@ accountsPage:
     table:
       headers:
         permission: سطح دسترسی
+        role: نقش
         projectName: پروژه
         active: فعال
+      roles:
+        title: نقش ها
   index:
     localLink: افزودن کاربر
     table:
@@ -104,6 +114,31 @@ accountsPage:
       description:
         labelText: توضیح
         placeholder: "مثال. این حساب متعلق به آقای حسینی است"
+  modal:
+    password: تغییر رمز عبور
+appDetailPage:
+  endpoints:
+    protocol: پروتکل
+  notes:
+    title: یادداشت ها
+    detail: 'دستورالعمل نحوه استفاده از این برنامه'
+  services:
+    title: سرویس ها
+    nodata: هیچ سرویس برای این برنامه ایجاد نشده است.
+podSecurityPoliciesPage:
+  index:
+    table:
+      name: نام
+  addPodSecurityPolicy: اضافه کردن خط مشی
+  editPodSecurityPolicy: ویرایش خط مشی
+  detail:
+    header: خطی مشی
+  saveEdit: ویرایش
+  saveNew: ایجاد
+rolesPage:
+  index:
+    table:
+      noData: هنوز نقشی ایجاد نشده است
 apiPage:
   table:
     state: وضعیت
@@ -112,8 +147,6 @@ apiPage:
 authPage:
   shibboleth:
     enabled:
-      header: "{providerName} فعال است"
-      unrestricted: "{appName} تنظیم شده تا به هر کاربر {providerName} دسترسی دهد."
       authenticated:
         header:
           text: اهراز هویت
@@ -129,7 +162,6 @@ authPage:
     disabled:
       header: '1. تنظیم حساب Shibboleth'
       label: "{providerName} تنظیم نشده است"
-      warning: "{appName} می تواند تنظیم شود تا دسترسی به کاربران و گروه های {providerName} را محدود کند. این انکان فعلا تنظیم نشده, بنابراین هر شخصی با دسترسی به این صفحه (یا API) به سیستم کنترل کامل دارد."
       name:
         labelText: نمایش فیلد نام
       username:
@@ -147,13 +179,11 @@ authPage:
     providerName:
       shibboleth: سیستم تشخیص هویت
   root:
-    header: Access Control
+    header: کنترل دسترسی
   github:
     standard: سرویس گیت هاب
     enterprise: نسخه تجاری گیت هاب
     header:
-      enabled:
-        label: "{github} فعال است"
       disabled:
         label: GitHub تنظیم نشده است
     authenticated:
@@ -196,27 +226,11 @@ authPage:
         pre: اهراز هویت with GitHub
         post: در انتظار پاسخ از GitHub
   azuread:
-    header:
-      enabled: 'اهراز هویت Azure AD <b>فعال است</b>'
-    subtext:
-      disabled: '{appName} می تواند تنظیم شود تا دسترسی به برخی حساب ها که در دیتابیس تعریف شده اند را محدود کند. این کار هنوز انجام نشده، بنابراین هر شخصی با دسترسی به این صفحه،  به سیستم کنترل کامل دارد.'
     enabled:
-      warning: '<b class="text-danger">هشدار:</b> غیر فعال سازی کنترل دسترسی دسترسی کامل به {appName} را به هر شخصی که به این صفحه دسترسی پیدا کند می دهد'
       reallyDisable: 'آیا مطمئن هستید؟  برای غیر فعال سازی کنترل دسترسی دوباره کلیک کنید'
       promptDisable: غیر فعال سازی کنترل دسترسی
     configure:
       header: '1. تنظیم Azure AD Account'
-      clientId:
-        label: شناسه کلاینت
-      domain:
-        label: دامنه
-        placeholder: مثال. youcompany.onmicrosoft.com
-      adminAccountUsername:
-        label: نام کاربری مدیر
-        placeholder: مثال. rancher-admin
-        help: کاربری که می تواند اطلاعات کاربران دیگر را بخواند
-      adminAccountPassword:
-        label: رمز عبور مدیر
     test:
       header: '2. تست و فعال سازی اعراز هویت'
       username:
@@ -257,8 +271,6 @@ authPage:
       buttonText:
         pre: فعال سازی اهراز هویت لوکال
         post: 'در حال فعال سازی...'
-  0:
-    header: کنترل دسترسی
 catalogPage:
   index:
     certified:
@@ -375,29 +387,6 @@ waitingPage:
       kubernetes: در حال تنظیم Kubernetes
 ldap:
   header:
-    enabled:
-      label: "{providerName} فعال است"
-      required: |
-        {appName} تنظیم شده تا دسترسی را بدهد به {groups, plural,
-        =0 {no groups}
-        =1 {# group}
-        other {# groups}
-        } and {users, plural,
-        =0 {no users}
-        =1 {# user}
-        other {# users}
-        }.
-      restricted: |
-        {appName} تنظیم شده تا دسترسی را به اعضای محیط بدهد, {groups, plural,
-        =0 {no groups}
-        =1 {# group}
-        other {# groups}
-        } and {users, plural,
-        =0 {no users}
-        =1 {# user}
-        other {# users}
-        }.
-      unrestricted: "{appName} تنظیم شده تا دسترسی را به هر کاربر {providerName} بدهد."
     disabled:
       label: "{providerName} تنظیم نشده"
   accessEnabled:
@@ -418,10 +407,8 @@ ldap:
       name: "فیلد نام:"
       search: "فیلد جستجو:"
     disable:
-      warning: '<b class="text-danger">هشدار:</b> غیر فعال سازی کنترل دسترسی دسترسی کامل به {appName} را به هر شخصی که به این صفحه دسترسی پیدا کند می دهد'
       confirmDisable:
         pre: غیر فعال سازی کنترل دسترسی
-        post: "آیا مطمئن هستید؟  برای غیر فعال سازی کنترل دسترسی دوباره کلیک کنید"
   accessConfig:
     header: "1. تنظیم یک سرور {providerName}"
     port:
@@ -455,8 +442,6 @@ catalogSettings:
     name:
       label: نام
       placeholder: مثال. mycatalog
-    url:
-      placeholder: 'مثال. https://github.com/mycompany/mycatalog.git'
     branch:
       label: شاخه
       placeholder: 'مثال. master'
