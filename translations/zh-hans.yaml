@@ -804,7 +804,7 @@ podPage:
   podIp: Pod IP
   containerImage: "{container}的镜像"
   image: 镜像
-
+  displayImage: '{image} + 其他{sidecar, plural, =1 {1个image} other {#个images}}'
 containersPage:
   table:
     sparkPrefixCpu: "CPU:"
@@ -867,12 +867,12 @@ editDns:
   selector:
     label: 容器选择器
     keyLabel: 标签
-    addActionLabel: 添加选择器
+    addActionLabel: 添加标签选择器
   recordType:
     label: "解析到"
     arecord: 外部IP地址
-    cname: 外部主机名
-    alias: 其他DNS记录的别名
+    cname: '外部主机名/域名'
+    alias: 服务别名
     workload: 工作负载
     selector: Pod 
   target:
@@ -883,18 +883,18 @@ editDns:
     selector: 目标Pod选择器
   add:
     arecord: 添加目标IP
-    alias: 添加的目标的记录
+    alias: 添加目标服务
     workload: 添加目标工作负载
     selector: 添加目标选择器
   placeholder:
     arecord: '例如: 19.82.2.24'
     cname: '例如: example.com'
   prompt:
-    alias: 选择一个DNS记录...
+    alias: 选择目标服务...
     workload: 选择工作负载...
   errors:
-    targetRequired: '必须填写一个或多个"目标"'
-    selectorRequired: '必须填写一个或多个"目标选择器"'
+    targetRequired: '必须配置一个或多个"目标服务/工作负载/主机名/域名"'
+    selectorRequired: '必须配置一个或多个"目标标签选择器"'
     mixedAlias: 别名不能以CNAME和其他记录的组合为目标。
     multipleCname: 别名不能指向多个CNAME记录
 
@@ -1767,7 +1767,7 @@ catalogSettings:
       pl: 认证的库
     detail:
       rancher: Rancher核心功能所依赖的模板，例如Kubernetes/Mesos/Swarm编排支持，由Rancher官方维护并提供支持。
-      pl: 由官方维护的核心功能所需要的模板，例如Kubernetes/Mesos/Swarm等。
+      pl: '由官方维护的核心功能所需要的模板，例如: Kubernetes/Mesos/Swarm等。'
   community:
     header:
       rancher: 社区贡献
@@ -1783,7 +1783,7 @@ catalogSettings:
       help-repo: '仓库地址:'
       help-branch: "可选: 如果使用基于Git的应用商店，可能需要设置分支名称，不指定默认拉取master分支。"
       help-git: "基于Git的商店地址，例如: https://github.com/{appName}/charts.git。"
-      help-chart: 'Helm Charts server URL,例如: https://kubernetes-charts.storage.googleapis.com/(详细信息可查看<a href="https://docs.helm.sh/developing_charts/#hosting-chart-repositories" target="_blank" rel="nofollow noopener noreferrer">Chart托管仓库</a>)。'
+      help-chart: 'Helm Charts server URL，例如: https://kubernetes-charts.storage.googleapis.com/，详细信息可查看<a href="https://docs.helm.sh/developing_charts/#hosting-chart-repositories" target="_blank" rel="nofollow noopener noreferrer">Chart托管仓库</a>。'
     addActionLabel: 添加应用商店
     noMatch: 没有与当前搜索匹配的应用商店
     noData: 没有自定义应用商店
@@ -1919,14 +1919,26 @@ clusterNew:
       default: 默认
       advanced: 高级
       vnet:
-        label: 虚拟网络
-      ventresourcegroup:
-        label: 虚拟网络资源组(<em>可选</em>)
-        help:  如果您的虚拟网络不是与集群位于同一资源组中，则为可选资源组。
+        label: 虚拟网络-子网(子网CIDR)
+        prompt: '选择虚拟网络/子网'
+      vnetresourcegroup:
+        label: 虚拟网络资源组
+        prompt: 请选择虚拟网络
+        help:  The Resource Group if your Virtual Network does not exist in the same Resource Group as your cluster.
       subnet:
         label: 子网
+      serviceCidr:
+        label: Kubernetes Service IP范围
+        help: "CIDR表示用于分配给service cluster的IP范围，它不得与任何子网IP范围相同。例如: 10.0.0.0/16."
+        prompt: "10.43.0.0/16"
+      dnsServiceIp:
+        label: Kubernetes DNS服务IP地址
+        help: "分配给Kubernetes DNS服务的IP地址，它必须在Kubernetes服务地址范围内。例如: 10.0.0.10."
+      dockerBridgeCidr:
+        label: Docker bridge地址
+        help: '分配给Docker Bridge的IP地址和网络掩码，它不能位于任何子网IP范围或Kubernetes服务地址范围内。例如: 172.17.0.1/16.'
     sshUser:
-      label: SSH 用户
+      label: SSH用户
       placeholder: usr1
     storageType:
       label: 存储类型
@@ -1962,6 +1974,15 @@ clusterNew:
       placeholder: 您的客户端秘钥
     region:
       label: 区域
+    errors:
+      included:
+        serviceCidr: 'Kubernetes服务地址范围必须是有效的CIDR格式。'
+        dnsServiceIp: 'Kubernetes DNS服务IP地址必须是有效的IP地址。'
+        dockerBridgeCidr: 'Docker bridge地址必须是有效的CIDR格式。'
+        parsedServiceCidr: 'Kubernetes服务地址范围必须在选定的虚拟网络范围内。'
+        parsedDnsServiceIp: 'Kubernetes DNS服务IP地址必须在Kubernetes服务地址范围内。'
+        parsedDockerBridgeCidr: 'Docker bridge地址不能与选定的虚拟网络或Kubernetes服务地址相同'
+
   googlegke:
     label: Google Kubernetes引擎
     shortLabel: Google GKE
@@ -2217,9 +2238,9 @@ containerLogs:
 containerShell:
   protip: "高级技巧: 点击运行命令行时按住{key}键在新窗口中打开"
   status:
-    initializing: 初始化...
+    initializing: '初始化...'
     error: "错误:{error}"
-    connecting: 连接中...
+    connecting: '连接中...'
     connected: 已连接
     disconnected: 已断开
     closed: 已关闭
@@ -2256,11 +2277,13 @@ cruPersistentVolume:
     placeholder: '例如: 生产数据库的卷'
   title:
     new: 添加持久卷
-    edit: '编辑持久卷:  {name}'
-    view: '持久卷:  {name}'
+    edit: '编辑持久卷: {name}'
+    view: '持久卷: {name}'
   storageClass:
     label: 分配给存储类
     prompt: 无
+  pvc: 持久卷Claim
+  reclaimPolicy: 回收策略
   capacity:
     label: 容量
     unit: GiB
@@ -2268,7 +2291,7 @@ cruPersistentVolume:
     label: 卷插件
     title: 插件配置
     detail: 配置选定卷插件的选项
-    prompt: 选择一个卷插件...
+    prompt: '选择一个卷插件...'
   nodeAffinity:
     label: 节点亲和性
   customize:
@@ -2621,6 +2644,9 @@ cruStorageClass:
     view: '存储类: {name}'
   allowVolumeExpansion:
     label: 允许用户扩展卷
+  pv:
+    title: 持久卷
+    detail: 当前存储类提供的持久卷。
   mountOptions:
     label: 挂载选项
     addActionLabel: 添加
@@ -2708,7 +2734,7 @@ cruStorageClass:
       placeholder: "例如: Standard_LRS"
     location:
       label: 位置
-      placeholder: "例如 eastus"
+      placeholder: "例如: eastus"
     storageAccount:
       label: 存储帐户
       placeholder: "例如: azure_storage_account_name"
@@ -2892,7 +2918,7 @@ cruStorageClass:
 
 dangerZone:
   header: 高级设置
-  subtext: "通常情况下用户不需要修改以下设置。请谨慎操作，不正确的值可能导致{appName}不能正常运行。修改默认设置后将以<b>粗体</b>显示配置名。"
+  subtext: "通常情况下用户不需要修改以下设置。请谨慎操作，不正确的值可能导致{appName}无法正常运行。修改默认设置后将以<b>粗体</b>显示配置名。"
   showLabel: 我已确认修改高级设置可能导致{appName}出问题。
   description:
     'cacerts': '验证ssl证书所需的CA证书，此CA证书仅适用于自签名SSL证书。若SSL证书是权威CA机构所颁发，则要求删除此CA证书。'
@@ -2948,9 +2974,9 @@ editApiKey:
     month: 从现在开始，有效期1个月
     year: 从现在开始，有效期1年
   description:
-    placeholder: "可选: 例如，此密钥由应用服务器使用，用于容器部署"
+    placeholder: "可选: 例如: 此密钥由应用服务器使用，用于容器部署。"
   saveWarning1: 请保存上面的信息！这些信息仅显示一次。
-  saveWarning2: 如果忘记了Secret Key，您需要重新创建新的API Key
+  saveWarning2: 如果忘记了Secret Key，您需要重新创建新的API Key。
   noteOptional: 说明是可选项，以帮助您记住此密钥将用于何种用途。
 
 editCertificate:
@@ -3065,8 +3091,8 @@ envCatalog:
 moveNamespace:
   title: |
     移动{count, plural,
-    =1{命名空间: {name}}
-    other{#命名空间:}}
+    =1{个命名空间: {name}}
+    other{#个命名空间:}}
   to: "转到目标项目: "
   actionLabel: 移动
 
@@ -3113,7 +3139,7 @@ formNodeRequirement:
 
 formIngress:
   hostMode:
-    automatic: 自动生成<code>.{domain}</code>后缀的域名
+    automatic: 自动生成<code>.{domain}</code>后缀域名
     existing: 继续使用当前主机名<code>{domain}</code>
     manual: 自定义域名
     default: 默认后端
@@ -3198,7 +3224,7 @@ formBalancerRules:
     label: 协议
   sourceIp:
     label: 主机IP
-    placeholder: "例如: 1.2.3.4. 默认: 所有"
+    placeholder: "例如: 1.2.3.4， 默认: 所有"
   sourcePort:
     label: 监听端口
     placeholder: '例如: 80'
@@ -3341,7 +3367,7 @@ formResourceQuota:
       label: 资源类型
     value:
       label: 限制 
-      placeholder: '例如：10'
+      placeholder: '例如: 10'
       milliCpuPlaceholder: '例如: 500'
       memoryPlaceholder: '例如: 1Gi'
     projectLimit:
@@ -3351,7 +3377,7 @@ formResourceQuota:
       memoryPlaceholder: '例如: 2048'
     namespaceLimit:
       label: 命名空间默认限制
-      placeholder: '例如：10'
+      placeholder: '例如: 10'
       milliCpuPlaceholder: '例如: 500'
       memoryPlaceholder: '例如: 1024'
     noData: 没有定义资源配额
@@ -3457,8 +3483,8 @@ formMembers:
     errors:
       nameReq: 名称(必填)
       nameInExists: 名称已经存在，请使用新的项目名称。
-      memberNameReq: 成员名称是必须的
-      memberRoleReq: 成员角色是必须的
+      memberNameReq: 必须设置成员名称
+      memberRoleReq: 必须设置成员角色
       ownerReq: 必须至少有一个具有所有者角色的成员。
 
 formScopedRoles:
@@ -3496,21 +3522,21 @@ formHealthCheck:
     tcp: TCP端口检查
     http: HTTP请求状态检查(2xx或3xx)
     https: HTTPS请求状态检查(2xx或3xx)
-    command: 容器进程退出状态码检查(0)
+    command: 容器中进程退出状态码检查(0)
   command:
     label: 命令
     placeholder: '例如: cat /tmp/health'
   path:
     label: 请求路径
-    placeholder: '例如: 健康检查'
+    placeholder: '例如: /health'
   httpHeaders:
-    label: 其他的HTTP头
-    addActionLabel: 添加头
+    label: 其他的HTTP Headers
+    addActionLabel: 添加Headers
     keyLabel: Http头字段
     keyPlaceholder: '例如: 用户代理'
     valuePlaceholder: '例如: 健康检查'
   host:
-    label: 主机头信息
+    label: 主机 Headers
     placeholder: '例如: example.com'
   port:
     label: 容器端口
@@ -3554,7 +3580,7 @@ formKeyValue:
   value:
     label: 值
     placeholder: 值
-  protip: '高级技巧: 在键(Key)输入栏中粘贴一行或多行的key=value键值对能够批量输入'
+  protip: '高级技巧: 在键(Key)输入栏中粘贴一行或多行的key=value键值对能够批量输入。'
 
 formImage:
   label: Docker镜像
@@ -3774,7 +3800,7 @@ formSources:
     label: 前缀或别名
 
 formSecurity:
-  title: 安全及主机设置
+  title: '安全/主机设置'
   detail: 授予或限制容器影响所运行主机的能力
   pullImage:
     label: 拉取镜像
@@ -3828,8 +3854,8 @@ formSecurity:
     placeholder: '例如: 1024'
   capabilities:
 
-    add: 增加内核能力
-    drop: 移除内核能力
+    add: 增加内核功能
+    drop: 移除内核功能
     helpBlock:
       text: 内核能力能够对容器所拥有的超级用户权限进行更细粒度的控制，
       link: 更多信息
@@ -4282,6 +4308,7 @@ labelsSection:
   key: 键
   value: 值
   noData: 没有标签
+  noMatch: 没有标签与当前搜索匹配
 
 loginShibboleth:
   buttonText: 用Shibboleth登录
@@ -4769,6 +4796,7 @@ nodeDriver:
         default: "标准: Rancher生成的服务角色"
         custom: "自定义: 从现有服务角色中选择"
       next: "下一步: 选择 VPC & Subnet"
+      loading: "从Amazon加载VPCs..."
     vpc:
       title: VPC & Subnet
       detail: 选择将用于EKS实例的VPC
@@ -5195,7 +5223,7 @@ nodeDriver:
       loading: 正在获取阿里云存储类型...
     routeCIDR:
       label: 路由CIDR
-      placeholder: 例如 192.168.1.0/24
+      placeholder: '例如: 192.168.1.0/24'
     vpcId:
       label: 专有网络
       prompt: 选择专有网络...
@@ -5633,7 +5661,7 @@ volumesPage:
   noData: 没有定义持久卷声明
   noMatch: 没有符合当前搜索的持久卷
   claimName:
-    label: Claim的名称
+    label: Claim名称
   volume:
     label: 持久卷
   storageClass:
