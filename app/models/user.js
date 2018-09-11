@@ -8,6 +8,7 @@ export default Resource.extend({
   router:      service(),
   globalStore: service(),
   access:      service(),
+  growl:       service(),
 
   globalRoleBindings:  hasMany('id', 'globalRoleBinding', 'userId'),
   clusterRoleBindings: hasMany('id', 'clusterRoleTemplateBinding', 'userId'),
@@ -85,14 +86,20 @@ export default Resource.extend({
     deactivate() {
       next(() => {
         set(this, 'enabled', false);
-        this.save();
+        this.save().catch((err) => {
+          set(this, 'enabled', true);
+          get(this, 'growl').fromError('Error deactivating user', err)
+        });
       });
     },
 
     activate() {
       next(() => {
         set(this, 'enabled', true);
-        this.save();
+        this.save().catch((err) => {
+          set(this, 'enabled', false);
+          get(this, 'growl').fromError('Error activating user', err)
+        });
       });
     },
 
