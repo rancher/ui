@@ -85,13 +85,15 @@ var Namespace = Resource.extend(StateCounts, {
     // @TODO-2.0 this.defineStateCounts('services', 'serviceStates', 'serviceCountSort');
   },
 
-  availableActions: computed('projectId', () => {
+  availableActions: computed('projectId', function() {
+    let aa = get(this, 'actionLinks') || {};
+
     let out = [
       {
         label:    'action.move',
         icon:     'icon icon-fork',
         action:   'move',
-        enabled:  true,
+        enabled:  !!aa.move,
         bulkable: true
       },
       { divider: true },
