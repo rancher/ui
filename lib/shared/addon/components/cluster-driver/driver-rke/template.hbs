@@ -41,14 +41,14 @@
             <label class="acc-label">{{t 'clusterNew.rke.windowsSupport.label'}}</label>
             <div class="radio">
               <label>
-                {{radio-button selection=windowsSupport value=false }}
-                {{t 'generic.disabled'}}
+                {{radio-button selection=windowsSupport value=true }}
+                {{t 'generic.enabled'}}
               </label>
             </div>
             <div class="radio">
               <label>
-                {{radio-button selection=windowsSupport value=true }}
-                {{t 'generic.enabled'}}
+                {{radio-button selection=windowsSupport value=false }}
+                {{t 'generic.disabled'}}
               </label>
             </div>
           </div>
@@ -82,7 +82,7 @@
               </label>
             </div>
             <div class="radio">
-              <label>
+              <label class={{unless (eq cluster.rancherKubernetesEngineConfig.network.plugin "canal")  'text-muted'}}>
                 {{radio-button selection=cluster.enableNetworkPolicy value=false disabled=(not-eq cluster.rancherKubernetesEngineConfig.network.plugin "canal")}}
                 {{t 'generic.disabled'}}
               </label>
@@ -123,18 +123,18 @@
           <div class="col span-4">
             <label class="acc-label">{{t 'clusterNew.rke.podSecurityPolicy.label'}}</label>
             <div class="radio">
-              <label>
-                {{radio-button selection=kubeApiPodSecurityPolicy value=false disabled=(not model.psps.length)}}
-                {{t 'generic.disabled'}}
-              </label>
-            </div>
-            <div class="radio">
               <label class={{unless model.psps.length 'text-muted'}}>
                 {{radio-button selection=kubeApiPodSecurityPolicy value=true disabled=(not model.psps.length)}}
                 {{t 'generic.enabled'}}
                 {{#unless model.psps.length}}
                   &mdash; {{t 'clusterNew.psp.none'}}
                 {{/unless}}
+              </label>
+            </div>
+            <div class="radio">
+              <label>
+                {{radio-button selection=kubeApiPodSecurityPolicy value=false disabled=(not model.psps.length)}}
+                {{t 'generic.disabled'}}
               </label>
             </div>
           </div>
