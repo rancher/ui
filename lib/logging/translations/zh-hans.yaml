@@ -38,40 +38,6 @@ loggingPage:
     addActionLabel: 添加代理
     host: 主机
     port: 端口
-  embedded:
-    elasticsearchEndpoint: 'Elascticsearch Endpoint:'
-    kibanaEndpoint: 'Kibana Endpoint:'
-    header: 内置Elasticsearch配置
-    failed: 失败
-    pending: 部署
-    helpText:
-      persistantStorage: 内置Elasticsearch是实验性的，不会提供持久性存储。
-      requirements: 内置Elasticsearch包括Elasticsearch和Kibana，Elasticsearch在部署的节点上至少需要1个CPU和500M内存。
-    cpuRequests:
-      label: CPU需求(内核)
-      placeholder: '例如: 1'
-      helpText: 至少需要1个内核
-    cpuLimits:
-      label: CPU限制(内核)
-      placeholder: '例如: 1'
-      helpText: 至少需要1个内核
-    memRequests:
-      label: 内存需求(M)
-      placeholder: '例如: 512M'
-      helpText: 至少需要512M内存
-    memLimits:
-      label: 内存限制(M)
-      placeholder: '例如: 2000'
-      helpText: 至少需要512M内存
-    resouceRequestsAndLimits: CPU和Memory
-
-    indexPatterns:
-      header: 索引模式
-      helpText: 索引模式用于生成Elacticsearch索引
-      prefix: 前缀
-      prefixPlaceholder: '例如: logstash'
-      dateFormat: '日期格式:'
-    generatedIndex: '生成的索引格式为: <code class="text-italic">{esIndex}</code>，默认情况下索引模式为: $\{clusterName\}-$\{dateFormat\}'
   logPreview:
     header: 日志格式预览
   additional:
@@ -84,12 +50,12 @@ loggingPage:
       label: 刷新时间间隔
       placeholder: '例如: 1'
       sec: 秒
-      helpText: 日志刷新频率.
+      helpText: 日志刷新频率
 
   elasticsearch:
     header: Elasticsearch配置
     endpointHelpText: 输入云端Elacticsearch地址，或者私有部署的Elacticsearch地址。
-    endpointProtocolError: Endpoint应该以"http://"或者"https://"开头。
+    endpointProtocolError: 访问地址应该以"http://"或者"https://"开头。
     endpointHostError: 请输入主机名或域名。
     xpack:
       header: X-Pack安全
@@ -134,24 +100,57 @@ loggingPage:
     endpointPlaceholder: '例如: 192.168.1.10:514'
     header: Syslog配置
     endpointHelpText: 在这里输入日志服务器的接入地址，选择TCP将显示SSL证书配置。
-    program: 程序名称
+    program: 程序名
     programPlaceholder: '例如: MyProgram'
     programHelpText: 日志中的程序名称。
-    severityHelpText: '<p class="text-info text-small">日志的严重性列表可以在这里找到，<a href="https://tools.ietf.org/html/rfc5424#section-6.2.1" target="_blank">了解详情</a>。</p>'
+    severityHelpText: '<p class="text-info text-small">日志的严重性列表可以在这里找到<a href="https://tools.ietf.org/html/rfc5424#section-6.2.1" target="_blank">，了解详情</a>。</p>'
     severities:
       emergency: Emergency
-      alert: alert
+      alert: Alert
       critical: Ctitical
-      error: error
-      warning: warning
-      notice: notice
+      error: Error
+      warning: Warning
+      notice: Notice
       info: Info
       debug: Debug
-    tokenHelpText: '将令牌添加到每个系统日志消息的结构化数据中。对于像<a href="https://help.sumologic.com/Send-Data/Sources/02Sources-for-Hosted-Collectors/Cloud-Syslog-Source" target="_blank">Sumologic</a>，<a href="https://www.loggly.com/docs/customer-token-authentication-token" target="_blank">Loggly</a>等这样的云日志系统，您可以在其配置页面上生成令牌。'
+    tokenHelpText: '将Token令牌添加到每个系统日志消息的结构化数据中。对于像<a href="https://help.sumologic.com/Send-Data/Sources/02Sources-for-Hosted-Collectors/Cloud-Syslog-Source" target="_blank">Sumologic</a>, <a href="https://www.loggly.com/docs/customer-token-authentication-token" target="_blank">Loggly</a>等云日志系统，您可以在其配置页面上生成Token令牌。'
+  fluentd:
+    header: Fluentd配置
+    compress:
+      label: 启用Gzip压缩
+      helpText: 启用Gzip压缩可减少传输数据大小。
+    endpoint:
+      label: 访问地址
+      placeholder: '例如: 192.168.1.10:24224'
+    password:
+      label: 密码
+      placeholder: 用于身份验证的用户名密码
+    sharedKey:
+      label: 共享密钥
+      placeholder: 用于身份验证的共享密钥
+    standby:
+      label: Use as Standby Only
+    username:
+      label: 用户名
+      placeholder: 用于身份验证的用户名
+    weight:
+      label: 权重
+      placeholder: 此访问地址的负载平衡权重。
+    addServer: 添加Fluentd服务
+    endpointHostError: 访问地址不能以http或https开头。
+    endpointPortError: 访问地址需要添加端口。
+    removeFluentServers: 删除此Fluentd服务
+    enableTls:
+      label: Use TLS
+    certificate:
+      label: PEM格式的CA证书 
+    hostname:
+      label: 主机名
+      placeholder: 服务器主机名
   ssl:
     sslHeader: SSL配置
     certificate:
-      label: 可信服务器证书
+      label: PEM格式的CA证书 
     clientKey:
       label: 客户端私钥
     clientCert:
@@ -162,8 +161,8 @@ loggingPage:
         placeholder: 客户端私钥密码
     verify:
       label: SSL校验
-      enabled: 'Enabled - 输入可信服务器证书'
-      disabled: Disabled
+      enabled: '启用'
+      disabled: 禁用
   dockerRootDir:
     header: Docker配置
     label: Docker Root Directory

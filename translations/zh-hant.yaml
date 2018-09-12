@@ -1,4 +1,4 @@
-languageName: "正體中文"
+languageName: "簡體中文"
 languageContribute: "幫助翻譯Rancher"
 
 ##############################
@@ -804,7 +804,7 @@ podPage:
   podIp: Pod IP
   containerImage: "{container}的鏡像"
   image: 鏡像
-
+  displayImage: '{image} + {sidecar, plural, =1 {1 image} other {# images}}'
 containersPage:
   table:
     sparkPrefixCpu: "CPU:"
@@ -1767,7 +1767,7 @@ catalogSettings:
       pl: 認證的庫
     detail:
       rancher: Rancher核心功能所依賴的模板，例如Kubernetes/Mesos/Swarm編排支持，由Rancher官方維護並提供支持。
-      pl: 由官方維護的核心功能所需要的模板，例如Kubernetes/Mesos/Swarm等。
+      pl: '由官方維護的核心功能所需要的模板，例如: Kubernetes/Mesos/Swarm等。'
   community:
     header:
       rancher: 社區貢獻
@@ -1783,7 +1783,7 @@ catalogSettings:
       help-repo: '倉庫地址:'
       help-branch: "可選: 如果使用基於Git的應用商店，可能需要設置分支名稱，不指定默認拉取master分支。"
       help-git: "基於Git的商店地址，例如: https://github.com/{appName}/charts.git。"
-      help-chart: 'Helm Charts server URL,例如: https://kubernetes-charts.storage.googleapis.com/(詳細信息可查看<a href="https://docs.helm.sh/developing_charts/#hosting-chart-repositories" target="_blank" rel="nofollow noopener noreferrer">Chart托管倉庫</a>)。'
+      help-chart: 'Helm Charts server URL，例如: https://kubernetes-charts.storage.googleapis.com/，詳細信息可查看<a href="https://docs.helm.sh/developing_charts/#hosting-chart-repositories" target="_blank" rel="nofollow noopener noreferrer">Chart托管倉庫</a>。'
     addActionLabel: 添加應用商店
     noMatch: 沒有與當前搜索匹配的應用商店
     noData: 沒有自定義應用商店
@@ -1919,14 +1919,26 @@ clusterNew:
       default: 默認
       advanced: 高級
       vnet:
-        label: 虛擬網絡
-      ventresourcegroup:
-        label: 虛擬網絡資源組(<em>可選</em>)
-        help:  如果您的虛擬網絡不是與集群位於同壹資源組中，則為可選資源組。
+        label: 虛擬網絡-子網(子網CIDR)
+        prompt: '選擇虛擬網絡/子網'
+      vnetresourcegroup:
+        label: 虛擬網絡資源組
+        prompt: 請選擇虛擬網絡
+        help:  The Resource Group if your Virtual Network does not exist in the same Resource Group as your cluster.
       subnet:
         label: 子網
+      serviceCidr:
+        label: Kubernetes Service IP範圍
+        help: "CIDR表示用於分配給service cluster的IP範圍，它不得與任何子網IP範圍相同。例如: 10.0.0.0/16."
+        prompt: "10.43.0.0/16"
+      dnsServiceIp:
+        label: Kubernetes DNS服務IP地址
+        help: "分配給Kubernetes DNS服務的IP地址，它必須在Kubernetes服務地址範圍內。例如: 10.0.0.10."
+      dockerBridgeCidr:
+        label: Docker bridge地址
+        help: '分配給Docker Bridge的IP地址和網絡掩碼，它不能位於任何子網IP範圍或Kubernetes服務地址範圍內。例如: 172.17.0.1/16.'
     sshUser:
-      label: SSH 用戶
+      label: SSH用戶
       placeholder: usr1
     storageType:
       label: 存儲類型
@@ -1962,6 +1974,15 @@ clusterNew:
       placeholder: 您的客戶端秘鑰
     region:
       label: 區域
+    errors:
+      included:
+        serviceCidr: 'Kubernetes服務地址範圍必須是有效的CIDR格式。'
+        dnsServiceIp: 'Kubernetes DNS服務IP地址必須是有效的IP地址。'
+        dockerBridgeCidr: 'Docker bridge地址必須是有效的CIDR格式。'
+        parsedServiceCidr: 'Kubernetes服務地址範圍必須在選定的虛擬網絡範圍內。'
+        parsedDnsServiceIp: 'Kubernetes DNS服務IP地址必須在Kubernetes服務地址範圍內。'
+        parsedDockerBridgeCidr: 'Docker bridge地址不能與選定的虛擬網絡或Kubernetes服務地址相同'
+
   googlegke:
     label: Google Kubernetes引擎
     shortLabel: Google GKE
@@ -2217,9 +2238,9 @@ containerLogs:
 containerShell:
   protip: "高級技巧: 點擊運行命令行時按住{key}鍵在新窗口中打開"
   status:
-    initializing: 初始化...
+    initializing: '初始化...'
     error: "錯誤:{error}"
-    connecting: 連接中...
+    connecting: '連接中...'
     connected: 已連接
     disconnected: 已斷開
     closed: 已關閉
@@ -2256,11 +2277,13 @@ cruPersistentVolume:
     placeholder: '例如: 生產數據庫的卷'
   title:
     new: 添加持久卷
-    edit: '編輯持久卷:  {name}'
-    view: '持久卷:  {name}'
+    edit: '編輯持久卷: {name}'
+    view: '持久卷: {name}'
   storageClass:
     label: 分配給存儲類
     prompt: 無
+  pvc: 持久卷Claim
+  reclaimPolicy: 回收策略
   capacity:
     label: 容量
     unit: GiB
@@ -2268,7 +2291,7 @@ cruPersistentVolume:
     label: 卷插件
     title: 插件配置
     detail: 配置選定卷插件的選項
-    prompt: 選擇壹個卷插件...
+    prompt: '選擇壹個卷插件...'
   nodeAffinity:
     label: 節點親和性
   customize:
@@ -2621,6 +2644,9 @@ cruStorageClass:
     view: '存儲類: {name}'
   allowVolumeExpansion:
     label: 允許用戶擴展卷
+  pv:
+    title: 持久卷
+    detail: 當前存儲類提供的持久卷。
   mountOptions:
     label: 掛載選項
     addActionLabel: 添加
@@ -2708,7 +2734,7 @@ cruStorageClass:
       placeholder: "例如: Standard_LRS"
     location:
       label: 位置
-      placeholder: "例如 eastus"
+      placeholder: "例如: eastus"
     storageAccount:
       label: 存儲帳戶
       placeholder: "例如: azure_storage_account_name"
@@ -2892,7 +2918,7 @@ cruStorageClass:
 
 dangerZone:
   header: 高級設置
-  subtext: "通常情況下用戶不需要修改以下設置。請謹慎操作，不正確的值可能導致{appName}不能正常運行。修改默認設置後將以<b>粗體</b>顯示配置名。"
+  subtext: "通常情況下用戶不需要修改以下設置。請謹慎操作，不正確的值可能導致{appName}無法正常運行。修改默認設置後將以<b>粗體</b>顯示配置名。"
   showLabel: 我已確認修改高級設置可能導致{appName}出問題。
   description:
     'cacerts': '驗證ssl證書所需的CA證書，此CA證書僅適用於自簽名SSL證書。若SSL證書是權威CA機構所頒發，則要求刪除此CA證書。'
@@ -2948,9 +2974,9 @@ editApiKey:
     month: 從現在開始，有效期1個月
     year: 從現在開始，有效期1年
   description:
-    placeholder: "可選: 例如，此密鑰由應用服務器使用，用於容器部署"
+    placeholder: "可選: 例如: 此密鑰由應用服務器使用，用於容器部署。"
   saveWarning1: 請保存上面的信息！這些信息僅顯示壹次。
-  saveWarning2: 如果忘記了Secret Key，您需要重新創建新的API Key
+  saveWarning2: 如果忘記了Secret Key，您需要重新創建新的API Key。
   noteOptional: 說明是可選項，以幫助您記住此密鑰將用於何種用途。
 
 editCertificate:
@@ -3198,7 +3224,7 @@ formBalancerRules:
     label: 協議
   sourceIp:
     label: 主機IP
-    placeholder: "例如: 1.2.3.4. 默認: 所有"
+    placeholder: "例如: 1.2.3.4， 默認: 所有"
   sourcePort:
     label: 監聽端口
     placeholder: '例如: 80'
@@ -3341,7 +3367,7 @@ formResourceQuota:
       label: 資源類型
     value:
       label: 限制 
-      placeholder: '例如：10'
+      placeholder: '例如: 10'
       milliCpuPlaceholder: '例如: 500'
       memoryPlaceholder: '例如: 1Gi'
     projectLimit:
@@ -3351,7 +3377,7 @@ formResourceQuota:
       memoryPlaceholder: '例如: 2048'
     namespaceLimit:
       label: 命名空間默認限制
-      placeholder: '例如：10'
+      placeholder: '例如: 10'
       milliCpuPlaceholder: '例如: 500'
       memoryPlaceholder: '例如: 1024'
     noData: 沒有定義資源配額
@@ -3457,8 +3483,8 @@ formMembers:
     errors:
       nameReq: 名稱(必填)
       nameInExists: 名稱已經存在，請使用新的項目名稱。
-      memberNameReq: 成員名稱是必須的
-      memberRoleReq: 成員角色是必須的
+      memberNameReq: 必須設置成員名稱
+      memberRoleReq: 必須設置成員角色
       ownerReq: 必須至少有壹個具有所有者角色的成員。
 
 formScopedRoles:
@@ -3554,7 +3580,7 @@ formKeyValue:
   value:
     label: 值
     placeholder: 值
-  protip: '高級技巧: 在鍵(Key)輸入欄中粘貼壹行或多行的key=value鍵值對能夠批量輸入'
+  protip: '高級技巧: 在鍵(Key)輸入欄中粘貼壹行或多行的key=value鍵值對能夠批量輸入。'
 
 formImage:
   label: Docker鏡像
@@ -3828,8 +3854,8 @@ formSecurity:
     placeholder: '例如: 1024'
   capabilities:
 
-    add: 增加內核能力
-    drop: 移除內核能力
+    add: 增加內核功能
+    drop: 移除內核功能
     helpBlock:
       text: 內核能力能夠對容器所擁有的超級用戶權限進行更細粒度的控制，
       link: 更多信息
@@ -4282,6 +4308,7 @@ labelsSection:
   key: 鍵
   value: 值
   noData: 沒有標簽
+  noMatch: 沒有標簽與當前搜索匹配
 
 loginShibboleth:
   buttonText: 用Shibboleth登錄
@@ -4769,6 +4796,7 @@ nodeDriver:
         default: "標準: Rancher生成的服務角色"
         custom: "自定義: 從現有服務角色中選擇"
       next: "下壹步: 選擇 VPC & Subnet"
+      loading: "從Amazon加載VPCs..."
     vpc:
       title: VPC & Subnet
       detail: 選擇將用於EKS實例的VPC
@@ -5195,7 +5223,7 @@ nodeDriver:
       loading: 正在獲取阿裏雲存儲類型...
     routeCIDR:
       label: 路由CIDR
-      placeholder: 例如 192.168.1.0/24
+      placeholder: '例如: 192.168.1.0/24'
     vpcId:
       label: 專有網絡
       prompt: 選擇專有網絡...
@@ -5633,7 +5661,7 @@ volumesPage:
   noData: 沒有定義持久卷聲明
   noMatch: 沒有符合當前搜索的持久卷
   claimName:
-    label: Claim的名稱
+    label: Claim名稱
   volume:
     label: 持久卷
   storageClass:
