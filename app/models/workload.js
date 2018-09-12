@@ -9,6 +9,7 @@ import StateCounts from 'ui/mixins/state-counts';
 import EndpointPorts from 'ui/mixins/endpoint-ports';
 import { inject as service } from '@ember/service';
 import DisplayImage from 'shared/mixins/display-image';
+import C from 'shared/utils/constants';
 
 var Workload = Resource.extend(DisplayImage, StateCounts, EndpointPorts, {
   intl:          service(),
@@ -176,6 +177,12 @@ var Workload = Resource.extend(DisplayImage, StateCounts, EndpointPorts, {
 
   secondaryLaunchConfigs: computed('containers.[]', function() {
     return (get(this, 'containers') || []).slice(1);
+  }),
+
+  isCreatedByRancher: computed('workloadAnnotations', function() {
+    const workloadAnnotations = get(this, 'workloadAnnotations') || {};
+
+    return !!workloadAnnotations[C.LABEL.CREATOR_ID];
   }),
 
   actions: {

@@ -18,12 +18,14 @@ const protocolOptions = [
 ];
 
 export default Component.extend({
-  intl:  service(),
-  scope: service(),
+  intl:     service(),
+  scope:    service(),
+  settings: service(),
 
   layout,
   initialPorts: null,
   editing:      false,
+  showWarning:  false,
   kindChoices:  null,
 
   ports:               null,

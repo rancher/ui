@@ -66,6 +66,7 @@
 <div class="row">
   {{container/form-ports
     initialPorts=launchConfig.ports
+    showWarning=(and isUpgrade (not service.isCreatedByRancher))
     changed=(action (mut launchConfig.ports))
     errors=portErrors
     editing=true
