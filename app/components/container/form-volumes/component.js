@@ -265,8 +265,9 @@ export default Component.extend({
         };
       } else if ( volume.flexVolume && volume.flexVolume.driver === LOG_AGGREGATOR ) {
         entry = {
-          mode: C.VOLUME_TYPES.CUSTOM_LOG_PATH,
+          mode:   C.VOLUME_TYPES.CUSTOM_LOG_PATH,
           volume,
+          hidden: get(volume, 'flexVolume.options.containerName') !== get(this, 'launchConfig.name')
         };
       } else if (volume.secret) {
         entry = {
@@ -358,9 +359,11 @@ export default Component.extend({
         const lc = get(this, 'launchConfig');
         const workload = get(this, 'workload');
 
-        set(options, 'containerName', get(lc, 'name'));
-        set(options, 'namespace', get(workload, 'namespace.id'));
-        set(options, 'workloadName', get(workload, 'name'));
+        if ( !get(row, 'hidden') ) {
+          set(options, 'containerName', get(lc, 'name'));
+          set(options, 'namespace', get(workload, 'namespace.id'));
+          set(options, 'workloadName', get(workload, 'name'));
+        }
       });
 
     return all(promises).then(() => {

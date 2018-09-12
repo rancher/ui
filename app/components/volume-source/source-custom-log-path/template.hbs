@@ -1,15 +1,19 @@
 <div class="row">
   <div class="col span-6">
     <label class="acc-label">{{t 'volumeSource.customLogPath.mountPath.label'}}</label>
-    {{input
-        type="text"
-        value=mount.mountPath
-        placeholder=(t 'volumeSource.customLogPath.mountPath.placeholder')
-    }}
-    <p class="text-info text-small">{{t 'volumeSource.customLogPath.mountPath.helpText'}}</p>
+    {{#if editing}}
+      {{input
+          type="text"
+          value=mount.mountPath
+          placeholder=(t 'volumeSource.customLogPath.mountPath.placeholder')
+      }}
+      <p class="text-info text-small">{{t 'volumeSource.customLogPath.mountPath.helpText'}}</p>
+    {{else}}
+      {{mount.mountPath}}
+    {{/if}}
   </div>
   <div class="col span-6">
-    <div>
+    {{#if editing}}
       <label class="acc-label pull-left">{{t 'volumeSource.customLogPath.logFormat.label'}}</label>
       <a role="button" class="btn bg-transparent p-0 text-small pull-right" {{action "useCustomRegex"}}>
         {{#if useCustomRegex}}
@@ -18,18 +22,23 @@
           {{t 'volumeSource.customLogPath.logFormat.useCustomRegex'}}
         {{/if}}
       </a>
-    </div>
+    {{/if}}
     {{#if useCustomRegex}}
-      {{input
-          type="text"
-          value=config.options.format
-      }}
-      <p class="text-info text-small">{{t 'volumeSource.customLogPath.logFormat.helpText' htmlSafe=true}}</p>
+      {{#if editing}}
+        {{input
+            type="text"
+            value=config.options.format
+        }}
+        <p class="text-info text-small">{{t 'volumeSource.customLogPath.logFormat.helpText' htmlSafe=true}}</p>
+      {{else}}
+        {{config.options.format}}
+      {{/if}}
     {{else}}
       {{new-select
           classNames="form-control"
           content=formats
           value=config.options.format
+          disabled=(not editing)
       }}
     {{/if}}
   </div>

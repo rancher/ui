@@ -10,13 +10,15 @@
 }}
   {{#if volumesArray.length}}
     {{#each volumesArray as |row|}}
-      {{container/form-volume-row
-        model=row
-        namespace=namespace
-        editing=editing
-        remove=(action "remove" row)
-        loggingEnabled=loggingEnabled
-      }}
+      {{#unless row.hidden}}
+        {{container/form-volume-row
+          model=row
+          namespace=namespace
+          editing=editing
+          remove=(action "remove" row)
+          loggingEnabled=loggingEnabled
+        }}
+      {{/unless}}
     {{/each}}
   {{/if}}
 
