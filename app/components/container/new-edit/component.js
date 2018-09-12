@@ -53,6 +53,7 @@ export default Component.extend(NewOrEdit, ChildHook, {
   // ----------------------------------
   userLabels: null,
 
+  advanced:   false,
   header:        '',
   isSidekick:    equal('scaleMode', 'sidekick'),
   init() {
@@ -204,6 +205,16 @@ export default Component.extend(NewOrEdit, ChildHook, {
   validate() {
     let pr = get(this, 'primaryResource');
     let errors = pr.validationErrors() || [];
+    const lc = get(this, 'launchConfig');
+
+    const quotaErrors = lc.validateQuota() || [];
+
+    errors.pushObjects(quotaErrors);
+
+    if ( get(quotaErrors, 'length') > 0 ) {
+      set(this, 'advanced', true);
+      set(this, 'securitySectionExpanded', true);
+    }
 
     (get(this, 'service.secondaryLaunchConfigs') || []).forEach((slc) => {
       slc.validationErrors().forEach((err) => {

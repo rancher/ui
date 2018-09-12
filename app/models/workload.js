@@ -345,6 +345,12 @@ Workload.reopenClass({
       })
     }
 
+    if ( data && data.containers ) {
+      data.containers.forEach((container) => {
+        container.type = 'container';
+      })
+    }
+
     return data;
   }
 });

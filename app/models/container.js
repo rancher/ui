@@ -7,6 +7,7 @@ import { later } from '@ember/runloop';
 
 var Container = Resource.extend(DisplayImage, {
   modalService: service('modal'),
+  intl:         service(),
   scope:        service(),
   router:       service(),
 
@@ -37,6 +38,37 @@ var Container = Resource.extend(DisplayImage, {
 
     return choices;
   }),
+
+  validateQuota() {
+    const projectLimit =  get(this, 'scope.currentProject.resourceQuota.limit');
+
+    if ( !projectLimit ) {
+      return [];
+    }
+
+    const intl = get(this, 'intl');
+    const errors = [];
+
+    const limitsCpu = get(projectLimit, 'limitsCpu');
+    const limitsMemory = get(projectLimit, 'limitsMemory');
+    const requestsCpu = get(projectLimit, 'requestsCpu');
+    const requestsMemory = get(projectLimit, 'requestsMemory');
+
+    if ( limitsCpu && !get(this, `resources.limits.cpu`)) {
+      errors.push(intl.t('validation.required', { key: intl.t('formResourceQuota.resources.limitsCpu') }));
+    }
+    if ( limitsMemory && !get(this, `resources.limits.memory`)) {
+      errors.push(intl.t('validation.required', { key: intl.t('formResourceQuota.resources.limitsMemory') }));
+    }
+    if ( requestsCpu && !get(this, `resources.requests.cpu`)) {
+      errors.push(intl.t('validation.required', { key: intl.t('formResourceQuota.resources.requestsCpu') }));
+    }
+    if ( requestsMemory && !get(this, `resources.requests.memory`)) {
+      errors.push(intl.t('validation.required', { key: intl.t('formResourceQuota.resources.requestsMemory') }));
+    }
+
+    return errors;
+  },
 
   actions:      {
     shell() {
