@@ -97,12 +97,11 @@
     </div>
 
     {{#if showIamWarning}}
-      <div class="banner bg-warning">
-        <div class="banner-icon"><span class="icon icon-alert"></span></div>
-        <div class="banner-message">
-          <p>{{t 'clusterNew.rke.warning.aws.iam'}}</p>
-        </div>
-      </div>
+      {{banner-message icon='icon-alert' color='bg-warning mb-10' message=(t 'clusterNew.rke.warning.aws.iam')}}
+    {{/if}}
+
+    {{#if (and (eq mode 'edit') (not etcdOk))}}
+      {{banner-message icon='icon-alert' color='bg-warning mb-10' message=(if (lt etcdCount 1) (t 'clusterNew.rke.warning.etcd.noEtcd') (t 'clusterNew.rke.warning.etcd.even' count=etcdCount))}}
     {{/if}}
   {{/accordion-list-item}}
 {{/accordion-list}}
