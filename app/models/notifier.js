@@ -47,7 +47,7 @@ export default Resource.extend({
       return get(sc, 'defaultRecipient');
     }
     if (pc) {
-      return '***';
+      return get(pc, 'serviceKey');
     }
     if (ec) {
       return get(ec, 'defaultRecipient');
