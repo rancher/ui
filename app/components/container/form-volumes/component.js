@@ -1,7 +1,7 @@
 import C from 'ui/utils/constants';
 import { all } from 'rsvp';
 import { inject as service } from '@ember/service';
-import { get, set } from '@ember/object';
+import { get, set, setProperties } from '@ember/object';
 import { alias } from '@ember/object/computed';
 import Component from '@ember/component';
 import layout from './template';
@@ -250,47 +250,36 @@ export default Component.extend({
     }
 
     const out = [];
-    let entry;
 
     (get(this, 'workload.volumes') || []).forEach((volume) => {
+      let mode;
+      let hidden = false;
+
       if (volume.persistentVolumeClaim) {
-        entry = {
-          mode: EXISTING_PVC,
-          volume,
-        };
-      } else if (volume.hostPath) {
-        entry = {
-          mode: C.VOLUME_TYPES.BIND_MOUNT,
-          volume,
-        };
+        mode = EXISTING_PVC;
+      } else if ( volume.hostPath ) {
+        mode = C.VOLUME_TYPES.BIND_MOUNT;
       } else if ( volume.flexVolume && volume.flexVolume.driver === LOG_AGGREGATOR ) {
-        entry = {
-          mode: C.VOLUME_TYPES.CUSTOM_LOG_PATH,
-          volume,
-        };
-      } else if (volume.secret) {
-        entry = {
-          mode: this.getSecretType(get(volume, 'secret.secretName')),
-          volume,
-        };
-      } else if (volume.configMap) {
-        entry = {
-          mode: C.VOLUME_TYPES.CONFIG_MAP,
-          volume,
-        };
+        mode =  C.VOLUME_TYPES.CUSTOM_LOG_PATH;
+        hidden = get(volume, 'flexVolume.options.containerName') !== get(this, 'launchConfig.name');
+      } else if ( volume.secret ) {
+        mode = this.getSecretType(get(volume, 'secret.secretName'));
+      } else if ( volume.configMap ) {
+        mode = C.VOLUME_TYPES.CONFIG_MAP;
       } else {
-        entry = {
-          mode: EXISTING_VOLUME,
-          volume,
-        };
+        mode = EXISTING_VOLUME;
       }
 
-      entry.mounts = [];
-      out.push(entry);
+      out.push({
+        mode,
+        hidden,
+        volume,
+        mounts: []
+      });
     });
 
     (get(this, 'launchConfig.volumeMounts') || []).forEach((mount) => {
-      entry = out.findBy('volume.name', mount.name);
+      const entry = out.findBy('volume.name', mount.name);
 
       if (entry) {
         entry.mounts.push(mount);
@@ -358,9 +347,13 @@ export default Component.extend({
         const lc = get(this, 'launchConfig');
         const workload = get(this, 'workload');
 
-        set(options, 'containerName', get(lc, 'name'));
-        set(options, 'namespace', get(workload, 'namespace.id'));
-        set(options, 'workloadName', get(workload, 'name'));
+        if ( !get(row, 'hidden') ) {
+          setProperties(options, {
+            containerName: get(lc, 'name'),
+            namespace:     get(workload, 'namespace.id'),
+            workload:      get(workload, 'name')
+          })
+        }
       });
 
     return all(promises).then(() => {
