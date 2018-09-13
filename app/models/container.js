@@ -49,10 +49,9 @@ var Container = Resource.extend(DisplayImage, {
     const intl = get(this, 'intl');
     const errors = [];
 
-    const limitsCpu = get(projectLimit, 'limitsCpu');
-    const limitsMemory = get(projectLimit, 'limitsMemory');
-    const requestsCpu = get(projectLimit, 'requestsCpu');
-    const requestsMemory = get(projectLimit, 'requestsMemory');
+    const {
+      limitsCpu, limitsMemory, requestsCpu, requestsMemory
+    } = projectLimit;
 
     if ( limitsCpu && !get(this, `resources.limits.cpu`)) {
       errors.push(intl.t('validation.required', { key: intl.t('formResourceQuota.resources.limitsCpu') }));
