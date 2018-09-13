@@ -16,7 +16,7 @@ export default Component.extend(ModalBase, {
   didReceiveAttrs() {
     const options = {
       force:            false,
-      ignoreDaemonSets: false,
+      ignoreDaemonSets: true,
       deleteLocalData:  false,
       gracePeriod:      -1,
       timeout:          60,
