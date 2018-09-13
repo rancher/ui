@@ -1,11 +1,16 @@
 <section class="header clearfix">
   <h1>{{t 'nav.admin.security.authentication'}}</h1>
+  {{#if showWarning}}
+    {{#banner-message color='bg-warning'}}
+      {{t 'nav.admin.security.authWarning'}}
+    {{/banner-message}}
+  {{/if}}
 </section>
 
 <section class="mb-20">
   <div class="row nav nav-boxes checked-active">
-    {{#each drivers as |driver|}}
-      {{#if driver.available}}
+    {{#each filteredDrivers as |driver|}}
+      {{#if driver.available }}
         {{#link-to driver.route alt=driver.label classNames=(concat "col span-2 nav-box-item driver auth-driver " driver.css) href=false}}
           <p class="sr-only">{{driver.label}}</p>
         {{/link-to}}
