@@ -94,13 +94,19 @@
             <label class="acc-label">{{t 'clusterNew.rke.ingress.label'}}</label>
             <div class="radio">
               <label>
-                {{radio-button selection=nginxIngressProvider value="nginx"}}
+                {{!--
+                    {{radio-button selection=nginxIngressProvider value="nginx"}}
+                    --}}
+                {{radio-button selection=cluster.rancherKubernetesEngineConfig.ingress.provider value="nginx"}}
                 {{t 'generic.enabled'}}
               </label>
             </div>
             <div class="radio">
               <label>
-                {{radio-button selection=nginxIngressProvider value=null}}
+                {{!--
+                    {{radio-button selection=nginxIngressProvider value=null}}
+                    --}}
+                {{radio-button selection=cluster.rancherKubernetesEngineConfig.ingress.provider value="none"}}
                 {{t 'generic.disabled'}}
               </label>
             </div>
@@ -109,13 +115,19 @@
             <label class="acc-label">{{t 'clusterNew.rke.monitoring.label'}}</label>
             <div class="radio">
               <label>
-                {{radio-button selection=monitoringProvider value="metrics-server"}}
+                {{!--
+                    {{radio-button selection=monitoringProvider value="metrics-server"}}
+                    --}}
+                {{radio-button selection=cluster.rancherKubernetesEngineConfig.monitoring.provider value="metrics-server"}}
                 {{t 'generic.enabled'}}
               </label>
             </div>
             <div class="radio">
               <label>
-                {{radio-button selection=monitoringProvider value=null}}
+                {{!--
+                    {{radio-button selection=monitoringProvider value=null}}
+                    --}}
+                {{radio-button selection=cluster.rancherKubernetesEngineConfig.monitoring.provider value="none"}}
                 {{t 'generic.disabled'}}
               </label>
             </div>
@@ -124,7 +136,10 @@
             <label class="acc-label">{{t 'clusterNew.rke.podSecurityPolicy.label'}}</label>
             <div class="radio">
               <label class={{unless model.psps.length 'text-muted'}}>
-                {{radio-button selection=kubeApiPodSecurityPolicy value=true disabled=(not model.psps.length)}}
+                {{!--
+                    {{radio-button selection=kubeApiPodSecurityPolicy value=true disabled=(not model.psps.length)}}
+                    --}}
+                {{radio-button selection=cluster.rancherKubernetesEngineConfig.services.kubeApi.podSecurityPolicy value=true disabled=(not model.psps.length)}}
                 {{t 'generic.enabled'}}
                 {{#unless model.psps.length}}
                   &mdash; {{t 'clusterNew.psp.none'}}
@@ -133,7 +148,10 @@
             </div>
             <div class="radio">
               <label>
-                {{radio-button selection=kubeApiPodSecurityPolicy value=false disabled=(not model.psps.length)}}
+                {{!--
+                    {{radio-button selection=kubeApiPodSecurityPolicy value=false disabled=(not model.psps.length)}}
+                    --}}
+                {{radio-button selection=cluster.rancherKubernetesEngineConfig.services.kubeApi.podSecurityPolicy value=false disabled=(not model.psps.length)}}
                 {{t 'generic.disabled'}}
               </label>
             </div>
