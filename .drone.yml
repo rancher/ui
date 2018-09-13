@@ -1,28 +1,32 @@
 ---
 pipeline:
-  build:
+  test:
     privileged: true
     image: rancher/dind:v0.3.0
     commands:
       - ENABLE_DOCKER=true ./scripts/ci
+    when:
+      event: [pull_request]
 
-  latest:
+  build:
     privileged: true
     image: rancher/dind:v0.3.0
     commands:
-      - ENABLE_DOCKER=true UPLOAD_LATEST=true ./scripts/ci
+      - ENABLE_DOCKER=true BUILD_LATEST=true ./scripts/ci
     when:
       branch: "master"
       event:
         exclude: [pull_request]
 
-  # Needs envvar SLACK_TOKEN
-  #  slack_blame:
-  #    image: plugins/slack-blame
-  #    channel: ui
-  #    success_template: |
-  #      {{repo.owner}}/{{repo.name}} branch: {{build.branch}} commit: {{build.commit}} by {{build.author}} <{{build.email}}> - {{commit.message}} - {{build.link}}
-  #    failure_template: |
-  #      {{repo.owner}}/{{repo.name}} branch: {{build.branch}} commit: {{build.commit}} by {{build.author}} <{{build.email}}> - {{commit.message}} - {{build.link}}
-  #    when:
-  #      status: [ success, failure ]
+  upload:
+    image: plugins/gcs
+    source: dist/static/latest2
+    target: releases.rancher.com/zzztest
+    acl:
+     - allUsers:READER
+    cache_control: no-cache,must-revalidate
+    secrets:
+     - source: google_auth_key
+       target: GOOGLE_CREDENTIALS
+    when:
+     branch: master
