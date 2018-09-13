@@ -1,5 +1,8 @@
 <div class="clearfix {{unless editing 'box'}}">
   <label class="{{if editing 'acc-label'}}">{{t 'formPorts.header'}}</label>
+  {{#if showWarning}}
+    {{banner-message icon='icon-alert' color='bg-warning mb-10' message=(t 'formPorts.warning' appName=settings.appName)}}
+  {{/if}}
   {{#if ports.length}}
     <table class="table fixed no-lines small mb-10">
       <thead>
