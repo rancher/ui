@@ -19,7 +19,7 @@ export default Mixin.create({
       const notifier = this.getNotifierById(notifierId);
 
       if (notifier) {
-        const name = notifier.get('displayName');
+        const name = notifier.get('displayNameAndType');
 
         return `<div class="p-5 pt-0">${ name }</div>`;
       }

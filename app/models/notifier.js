@@ -1,6 +1,6 @@
 import Resource from 'ember-api-store/models/resource';
 import { inject as service } from '@ember/service';
-import {  get } from '@ember/object';
+import {  get, computed } from '@ember/object';
 import { hash } from 'rsvp';
 
 export default Resource.extend({
@@ -14,6 +14,36 @@ export default Resource.extend({
   init(...args) {
     this._super(...args);
   },
+
+  displayNameAndType: computed('displayName', 'notifierType', function() {
+    const upperCaseType = (get(this, 'notifierType') || '').replace(/^\S/, (s) => {
+      return s.toUpperCase();
+    })
+
+    return `${ get(this, 'displayName') } (${ upperCaseType })`
+  }),
+
+  notifierTableLabel: computed('slackConfig', 'pagerdutyConfig', 'emailConfig', 'webhookConfig', function() {
+    const sc = this.get('slackConfig');
+    const pc = this.get('pagerdutyConfig');
+    const ec = this.get('smtpConfig');
+    const wc = this.get('webhookConfig');
+
+    if (sc) {
+      return 'Default Channel';
+    }
+    if (pc) {
+      return 'Service Key';
+    }
+    if (ec) {
+      return 'Default Recipient Address';
+    }
+    if (wc) {
+      return 'URL';
+    }
+
+    return 'Notifier';
+  }),
 
   notifierType: function() {
     const sc = this.get('slackConfig');
@@ -47,7 +77,7 @@ export default Resource.extend({
       return get(sc, 'defaultRecipient');
     }
     if (pc) {
-      return '***';
+      return get(pc, 'serviceKey');
     }
     if (ec) {
       return get(ec, 'defaultRecipient');

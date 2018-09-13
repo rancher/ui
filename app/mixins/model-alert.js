@@ -65,7 +65,7 @@ export default Mixin.create({
         return null;
       }
 
-      return notifier.get('displayName');
+      return `${ notifier.get('displayNameAndType') }`;
     }
 
     return null;

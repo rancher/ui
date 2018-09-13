@@ -37,6 +37,7 @@ const TYPES = [
 export default Component.extend(ModalBase, NewOrEdit, {
   scope:       service('scope'),
   globalStore: service(),
+  intl:        service(),
   layout,
   classNames:  ['generic', 'large-modal'],
   modelMap:    null,
@@ -160,4 +161,27 @@ export default Component.extend(ModalBase, NewOrEdit, {
     get(this, 'modalService').toggleModal();
   },
 
+  validate() {
+    this._super();
+    const errors = get(this, 'errors') || [];
+    const intl = get(this, 'intl')
+    const preError = '"Default Recipient" is required'
+
+    if (errors.includes(preError)) {
+      const notifierType = get(this, 'model.notifierType')
+      let afterError = ''
+
+      if (notifierType === 'slack') {
+        afterError = 'Default Channel'
+      }
+      if (notifierType === 'email') {
+        afterError = 'Default Recipient Address'
+      }
+      errors.splice(errors.findIndex((e) => e === preError), 1, intl.t('validation.required', { key: afterError }))
+    }
+
+    set(this, 'errors', errors);
+
+    return get(this, 'errors.length') === 0;
+  },
 });
