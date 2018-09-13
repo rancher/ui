@@ -20,7 +20,13 @@ export default Controller.extend({
 
   podStateDidChange: observer('model.state', function() {
     if ( get(this, 'model.state') === 'removed' && get(this, 'router.currentRouteName') === 'container' ) {
-      this.transitionToRoute('authenticated.project.index');
+      const workloadId = get(this, 'model.workloadId');
+
+      if ( workloadId ) {
+        this.transitionToRoute('workload', workloadId);
+      } else {
+        this.transitionToRoute('authenticated.project.index');
+      }
     }
   }),
   displayEnvironmentVars: computed('selectedContainer', function() {
