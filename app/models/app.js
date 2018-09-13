@@ -14,7 +14,9 @@ const App = Resource.extend(StateCounts, EndpointPorts, {
   canEdit:   false,
   canClone: true,
 
-  namespace:    reference('targetNamespace', 'namespace', 'clusterStore'),
+  namespace:       reference('targetNamespace', 'namespace', 'clusterStore'),
+  catalogTemplate: reference('externalIdInfo.templateId', 'template'),
+
   init() {
     this._super(...arguments);
     this.defineStateCounts('pods', 'podStates', 'podCountSort');
@@ -108,10 +110,6 @@ const App = Resource.extend(StateCounts, EndpointPorts, {
 
   externalIdInfo: computed('externalId', function() {
     return parseHelmExternalId(get(this, 'externalId'));
-  }),
-
-  catalogTemplate: computed('externalIdInfo.templateId', function() {
-    return this.get('catalog').getTemplateFromCache(this.get('externalIdInfo.templateId'));
   }),
 
   availableActions: computed('actionLinks.{rollback,upgrade}', function() {
