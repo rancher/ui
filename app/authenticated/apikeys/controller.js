@@ -11,11 +11,9 @@ export default Controller.extend({
   endpointService:   service('endpoint'),
   modalService:      service('modal'),
   bulkActionHandler: service(),
-
-  application:       controller(),
-  expire:      'never',
-
+  expire:            'never',
   sortBy:            'name',
+
   headers: [
     {
       name:           'state',
@@ -48,7 +46,9 @@ export default Controller.extend({
     },
   ],
 
-  project:           alias('scope.currentProject'),
+  project:     alias('scope.currentProject'),
+  application: controller(),
+
   actions: {
     newApikey() {
       const cred = this.get('globalStore').createRecord({ type: 'token', });
@@ -59,10 +59,11 @@ export default Controller.extend({
 
   rows:    computed('model.tokens.[]', function() {
     return get(this, 'model.tokens').filter((token) => {
-      const labels = get(token, 'labels');
+      const labels  = get(token, 'labels');
       const expired = get(token, 'expired');
+      const current = get(token, 'current');
 
-      return !expired || !labels || !labels['ui-session'];
+      return  ( !expired || !labels || !labels['ui-session'] ) && !current;
     });
   }),
 });
