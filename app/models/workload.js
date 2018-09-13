@@ -339,10 +339,16 @@ Workload.reopenClass({
   },
 
   mangleIn(data) {
-    if ( data && data.publicEndpoints ) {
-      data.publicEndpoints.forEach((endpoint) => {
+    if ( data ) {
+      const publicEndpoints = get(data, 'publicEndpoints') || [];
+      const containers = get(data, 'containers') || [];
+
+      publicEndpoints.forEach((endpoint) => {
         endpoint.type = 'publicEndpoint';
-      })
+      });
+      containers.forEach((container) => {
+        container.type = 'container';
+      });
     }
 
     return data;

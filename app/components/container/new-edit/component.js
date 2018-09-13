@@ -1,5 +1,5 @@
 import Errors from 'ui/utils/errors';
-import { get, set } from '@ember/object';
+import { get, set, setProperties } from '@ember/object';
 import { equal } from '@ember/object/computed';
 import { next } from '@ember/runloop';
 import { inject as service } from '@ember/service';
@@ -53,6 +53,7 @@ export default Component.extend(NewOrEdit, ChildHook, {
   // ----------------------------------
   userLabels: null,
 
+  advanced:   false,
   header:        '',
   isSidekick:    equal('scaleMode', 'sidekick'),
   init() {
@@ -204,6 +205,18 @@ export default Component.extend(NewOrEdit, ChildHook, {
   validate() {
     let pr = get(this, 'primaryResource');
     let errors = pr.validationErrors() || [];
+    const lc = get(this, 'launchConfig');
+
+    const quotaErrors = lc.validateQuota();
+
+    errors.pushObjects(quotaErrors);
+
+    if ( get(quotaErrors, 'length') > 0 ) {
+      setProperties(this, {
+        advanced:                true,
+        securitySectionExpanded: true
+      });
+    }
 
     (get(this, 'service.secondaryLaunchConfigs') || []).forEach((slc) => {
       slc.validationErrors().forEach((err) => {
