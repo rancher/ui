@@ -351,7 +351,7 @@ export default Component.extend({
           setProperties(options, {
             containerName: get(lc, 'name'),
             namespace:     get(workload, 'namespace.id'),
-            workload:      get(workload, 'name')
+            workloadName:  get(workload, 'name')
           })
         }
       });
