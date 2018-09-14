@@ -38,8 +38,10 @@
     </div>
     <div class="vertical-middle">
       <label class="acc-label vertical-middle p-0">{{t 'dnsPage.type.workload'}}:</label>
-      {{#if model.workloadId}}
-          {{#link-to "workload" model.workloadId}}{{model.workloadId}}{{/link-to}}
+      {{#if model.workload}}
+        {{#link-to "workload" model.workloadId}}{{model.workloadId}}{{/link-to}}
+      {{else if model.workloadId}}
+        {{model.workloadId}}
       {{else}}
         {{t 'generic.none'}}
       {{/if}}
@@ -58,10 +60,10 @@
     </div>
     <div class="vertical-middle">
       <label class="acc-label vertical-middle p-0">{{t 'podPage.nodeIp'}}:</label>
-      {{#if model.nodeIp}}
-        {{#copy-inline clipboardText=model.nodeIp}}
-          {{model.nodeIp}}
-        {{/copy-inline}}
+      {{#if model.node}}
+        <div class="inline-block">
+          {{node-ip model=model.node textMuted=false}}
+        </div>
       {{else}}
         {{t 'generic.unknown'}}
       {{/if}}
@@ -75,18 +77,20 @@
 
 <section>
   {{#accordion-list as |al expandFn|}}
-    {{container/form-scheduling
-      initialHostId=model.workload.nodeId
-      scheduling=model.workload.scheduling
-      editing=false
-      expandAll=al.expandAll
-      expandFn=expandFn
-      classNames="accordion"
-    }}
+    {{#if model.workload}}
+      {{container/form-scheduling
+        initialHostId=model.workload.nodeId
+        scheduling=model.workload.scheduling
+        editing=false
+        expandAll=al.expandAll
+        expandFn=expandFn
+        classNames="accordion"
+      }}
+    {{/if}}
 
     {{container/form-networking
       classNames="accordion-wrapper"
-      service=model.workload
+      service=model
       editing=false
       expandAll=al.expandAll
       expandFn=expandFn
@@ -165,8 +169,8 @@
 
       {{container/form-volumes
         launchConfig=container
-        workload=model.workload
-        namespace=model.workload.namespace
+        workload=model
+        namespace=model.namespace
         loggingEnabled=true
         editing=false
         expandAll=al.expandAll
@@ -186,7 +190,7 @@
 
       {{container/form-command
         instance=container
-        service=model.workload
+        service=model
         editing=false
         expandAll=al.expandAll
         expandFn=expandFn
@@ -219,7 +223,7 @@
             <div class="col span-6">
               {{form-healthcheck
                 initialCheck=container.livenessProbe
-                editing=true
+                editing=false
               }}
             </div>
           {{/if}}
@@ -228,7 +232,7 @@
 
       {{container/form-security
         instance=container
-        service=model.workload
+        service=model
         editing=false
         expandAll=al.expandAll
         expandFn=expandFn
