@@ -268,7 +268,7 @@
          expand=(action expandFn)
     }}
       <div class="row">
-        <div class="col span-4">
+        <div class="col span-6">
           <label class="acc-label">{{t 'nodeDriver.amazonec2.instanceType.label'}}</label>
           {{new-select
               classNames="form-control"
@@ -279,14 +279,23 @@
               optionGroupPath="group"
           }}
         </div>
+        <div class="col span-6">
+          <label class="acc-label">{{t 'nodeDriver.amazoneks.ami.label'}}</label>
+          {{input type="text" value=config.ami}}
+          <p class="help-block">
+            {{t 'nodeDriver.amazoneks.ami.help'}}
+          </p>
+        </div>
 
-        <div class="col span-4">
-          <label class="acc-label">Minimum ASG Size</label>
+      </div>
+      <div class="row">
+        <div class="col span-6">
+          <label class="acc-label">{{t 'nodeDriver.amazoneks.min.label'}}</label>
           {{input-number value=config.minimumNodes min=1}}
         </div>
 
-        <div class="col span-4">
-          <label class="acc-label">Maximum ASG Size</label>
+        <div class="col span-6">
+          <label class="acc-label">{{t 'nodeDriver.amazoneks.max.label'}}</label>
           {{input-number value=config.maximumNodes min=1}}
         </div>
       </div>
