@@ -11,6 +11,8 @@ export default Controller.extend({
   endpointService:   service('endpoint'),
   modalService:      service('modal'),
   bulkActionHandler: service(),
+  application:       controller(),
+
   expire:            'never',
   sortBy:            'name',
 
@@ -47,8 +49,6 @@ export default Controller.extend({
   ],
 
   project:     alias('scope.currentProject'),
-  application: controller(),
-
   actions: {
     newApikey() {
       const cred = this.get('globalStore').createRecord({ type: 'token', });
