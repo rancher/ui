@@ -74,6 +74,17 @@
   </div>
 {{/unless}}
 
+
+{{#if (eq driverInfo.name "amazoneks")}}
+  {{#banner-message color='bg-warning'}}
+    <p>{{t 'clusterNew.amazoneks.ingressWarning'}}</p>
+  {{/banner-message}}
+{{else if (eq driverInfo.name "azureaks")}}
+  {{#banner-message color='bg-warning'}}
+    <p>{{t 'clusterNew.azureaks.ingressWarning'}}</p>
+  {{/banner-message}}
+{{/if}}
+
 {{#if (eq step 1)}}
   <form onsubmit={{action "clickNext"}}>
     <div class="row">
