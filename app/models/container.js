@@ -54,16 +54,16 @@ var Container = Resource.extend(DisplayImage, {
     } = projectLimit;
 
     if ( limitsCpu && !get(this, `resources.limits.cpu`)) {
-      errors.push(intl.t('validation.required', { key: intl.t('formResourceQuota.resources.limitsCpu') }));
+      errors.push(intl.t('newContainer.errors.quotaRequired', { key: intl.t('formResourceQuota.resources.limitsCpu') }));
     }
     if ( limitsMemory && !get(this, `resources.limits.memory`)) {
-      errors.push(intl.t('validation.required', { key: intl.t('formResourceQuota.resources.limitsMemory') }));
+      errors.push(intl.t('newContainer.errors.quotaRequired', { key: intl.t('formResourceQuota.resources.limitsMemory') }));
     }
     if ( requestsCpu && !get(this, `resources.requests.cpu`)) {
-      errors.push(intl.t('validation.required', { key: intl.t('formResourceQuota.resources.requestsCpu') }));
+      errors.push(intl.t('newContainer.errors.quotaRequired', { key: intl.t('formResourceQuota.resources.requestsCpu') }));
     }
     if ( requestsMemory && !get(this, `resources.requests.memory`)) {
-      errors.push(intl.t('validation.required', { key: intl.t('formResourceQuota.resources.requestsMemory') }));
+      errors.push(intl.t('newContainer.errors.quotaRequired', { key: intl.t('formResourceQuota.resources.requestsMemory') }));
     }
 
     return errors;
