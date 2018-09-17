@@ -1,4 +1,4 @@
-import { defineProperty, computed, get } from '@ember/object';
+import { defineProperty, computed, get, observer } from '@ember/object';
 import Component from '@ember/component';
 import layout from './template';
 
@@ -28,19 +28,19 @@ export default Component.extend({
 
   init() {
     this._super(...arguments);
-    let colorKey = this.get('colorKey');
-    let labelKey = this.get('labelKey');
-    let valueKey = this.get('valueKey');
+    let colorKey = get(this, 'colorKey');
+    let labelKey = get(this, 'labelKey');
+    let valueKey = get(this, 'valueKey');
 
     let valueDep = `values.@each.{${ colorKey },${ labelKey },${ valueKey }}`;
 
     defineProperty(this, 'pieces', computed('min', 'max', valueDep, () => {
-      let min = this.get('min');
-      let max = this.get('max');
+      let min = get(this, 'min');
+      let max = get(this, 'max');
 
       var out = [];
 
-      (this.get('values') || []).forEach((obj) => {
+      (get(this, 'values') || []).forEach((obj) => {
         out.push({
           color: get(obj, colorKey),
           label: get(obj, labelKey),
@@ -56,7 +56,7 @@ export default Component.extend({
       }
 
       let sum = 0;
-      let minPercent = this.get('minPercent');
+      let minPercent = get(this, 'minPercent');
 
       out.forEach((obj) => {
         let per = Math.max(minPercent, toPercent(obj.value, min, max));
@@ -79,12 +79,12 @@ export default Component.extend({
 
     valueDep = `tooltipValues.@each.{${ labelKey },${ valueKey }}`;
     defineProperty(this, 'tooltipContent', computed(valueDep, () => {
-      let labelKey = this.get('labelKey');
-      let valueKey = this.get('valueKey');
+      let labelKey = get(this, 'labelKey');
+      let valueKey = get(this, 'valueKey');
 
       var out = [];
 
-      (this.get('tooltipValues') || []).forEach((obj) => {
+      (get(this, 'tooltipValues') || []).forEach((obj) => {
         out.push(`${ get(obj, labelKey) }: ${  get(obj, valueKey) }`);
       });
 
@@ -95,8 +95,9 @@ export default Component.extend({
   didInsertElement() {
     this.zIndexDidChange();
   },
-  zIndexDidChange: function() {
-    this.$().css('zIndex', this.get('zIndex') || 'inherit');
-  }.observes('zIndex'),
+
+  zIndexDidChange: observer('zIndex', function() {
+    this.$().css('zIndex', get(this, 'zIndex') || 'inherit');
+  }),
 
 });
