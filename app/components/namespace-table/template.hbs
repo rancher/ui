@@ -15,14 +15,13 @@
 }}
   {{#if (eq kind "row")}}
     <tr class="main-row">
-        <td valign="middle" class="row-check" style="padding-top: 2px;">
-          {{#if projectsWithoutNamespace.length}}
+      <td valign="middle" class="row-check" style="padding-top: 2px;">
+        {{#if (and projectsWithoutNamespace.length (not model.length))}}
             &nbsp;
           {{else}}
             {{check-box nodeId=ns.id}}
           {{/if}}
-
-        </td>
+      </td>
       <td>
         {{badge-state model=ns}}
       </td>
