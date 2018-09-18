@@ -1,5 +1,5 @@
 import { hash } from 'rsvp';
-import { get } from '@ember/object';
+import { set, get } from '@ember/object';
 import Route from '@ember/routing/route';
 import { inject as service } from '@ember/service';
 
@@ -19,6 +19,10 @@ export default Route.extend({
       psps:                        store.find('podSecurityPolicyTemplate'),
       roles:                       get(this, 'roleTemplateService').get('allFilteredRoleTemplates'),
       users:                       store.find('user', null, { forceReload: true }),
+    }).then((hash) => {
+      set(hash, 'project', get(hash, 'project').clone());
+
+      return hash;
     });
   },
 });
