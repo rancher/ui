@@ -66,11 +66,20 @@ export default Component.extend({
         const newUse      = get(quota, 'currentProjectUse.lastObject');
         const totalLimits = get(quota, 'totalLimits.firstObject');
         const myNewUse    = usedValue + value;
+        const remaining   = ( get(quota, 'max') - ( myNewUse ) ) > 0 ? ( get(quota, 'max') - ( myNewUse ) ) : 0;
         const translation = get(this, 'intl').t('formResourceQuota.table.resources.tooltip', {
           usedValue,
+          remaining,
           newUse:    myNewUse,
-          remaining: ( get(quota, 'max') - ( myNewUse ) ),
         });
+
+        if (remaining === 0) {
+          set(newUse, 'color', 'bg-error');
+        } else {
+          if (get(newUse, 'color') === 'bg-error') {
+            set(newUse, 'color', 'bg-warning');
+          }
+        }
 
         set(newUse, 'value', value);
         set(totalLimits, 'value', translation);
@@ -88,10 +97,11 @@ export default Component.extend({
 
     Object.keys(nsDefaultQuota).forEach((key) => {
       if ( key !== 'type' && typeof nsDefaultQuota[key] ===  'string') {
-        let value, currentProjectUse, totalLimits;
-        let usedValue         = '';
-        let max = '';
-        let newUse             = null;
+        let value, currentProjectUse, totalLimits, remaining;
+        let usedValue = '';
+        let max       = '';
+        let newUse    = null;
+        let useColorKey = 'bg-warning';
 
         if ( limit && !limit[key] ) {
           array.push({
@@ -133,6 +143,12 @@ export default Component.extend({
 
         newUse = usedValue + value;
 
+        remaining = ( max - newUse ) > 0 ? ( max - newUse ) : 0;
+
+        if (remaining === 0) {
+          useColorKey = 'bg-error';
+        }
+
         currentProjectUse = [
           {
             // current use
@@ -142,7 +158,7 @@ export default Component.extend({
           },
           {
             // only need the new value here because progress-multi-bar adds this to the previous
-            color: 'bg-warning',
+            color: useColorKey,
             label: key,
             value,
           }
@@ -153,7 +169,7 @@ export default Component.extend({
           value: intl.t('formResourceQuota.table.resources.tooltip', {
             usedValue,
             newUse,
-            remaining: ( max - newUse ),
+            remaining,
           })
         }];
 

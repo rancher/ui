@@ -37,6 +37,27 @@ export default Controller.extend(NewOrEdit, {
     return get(this, 'model.allProjects').filterBy('clusterId', get(this, 'scope.currentCluster.id'))
   }),
 
+  projectLimit: computed('primaryResource.resourceQuota.{limit}', 'primaryResource.projectId', function() {
+    const projectId = get(this, 'primaryResource.projectId');
+    const project   = get(this, 'allProjects').findBy('id', projectId);
+
+    return get(project, 'resourceQuota.limit');
+  }),
+
+  projectUsedLimit: computed('primaryResource.resourceQuota.{limit}', 'primaryResource.projectId', function() {
+    const projectId = get(this, 'primaryResource.projectId');
+    const project   = get(this, 'allProjects').findBy('id', projectId);
+
+    return get(project, 'resourceQuota.usedLimit');
+  }),
+
+  nsDefaultQuota: computed('primaryResource.resourceQuota.{limit}', 'primaryResource.projectId', function() {
+    const projectId = get(this, 'primaryResource.projectId');
+    const project   = get(this, 'allProjects').findBy('id', projectId);
+
+    return get(project, 'namespaceDefaultResourceQuota.limit');
+  }),
+
   nameExists: computed('primaryResource.name', 'model.namespaces.@each.name', function() {
     const name = get(this, 'primaryResource.name');
 
