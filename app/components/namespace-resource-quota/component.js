@@ -124,6 +124,9 @@ export default Component.extend({
           max       = parseSi(get(currentProjectLimit, key)) / (1024 ** 3);
           break;
         default:
+          value     = parseInt(value, 10);
+          usedValue = parseInt(( get(used, key) || 0 ), 10);
+          max       = parseInt(get(currentProjectLimit, key), 10);
           break;
         }
 
