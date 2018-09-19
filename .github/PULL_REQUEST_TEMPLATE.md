@@ -15,6 +15,8 @@ _Put an `x` in the boxes that apply_
 
 Link any related issues, pull-requests, or commit hashes that are relavent to this pull-request.
 
+If you are opening a PR without a corresponding issue create an issue before you do. This will help QA massively. PR's opened without linked issues will not be merged until an issue is created and linked here. 
+
 ## Checklist
 
 _Put an `x` in the boxes that apply. You can also fill these out after creating the PR. If you're unsure about any of them, don't hesitate to ask. We're here to help! This is simply a reminder of what we are going to look for before merging your code._
