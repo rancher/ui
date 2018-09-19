@@ -1,4 +1,9 @@
 <label class="acc-label mt-5">{{t 'cloudProvider.title'}}</label>
+{{#if (and (eq driver 'custom') (eq selectedCloudProvider 'none'))}}
+  <div class="col span-12">
+    {{banner-message color="bg-info mt-0 mb-0" icon="icon-info" message=(t 'cloudProvider.custom.notInList' htmlSafe=true)}}
+  </div>
+{{/if}}
 <div class="row">
   <div class="col span-6">
     <div class="radio">
@@ -40,11 +45,6 @@
       </div>
     </div>
   {{/unless}}
-  {{#if (and (eq driver 'custom') (eq selectedCloudProvider 'none'))}}
-    <div class="col span-6">
-     {{banner-message color="bg-info" icon="icon-info" message=(t 'cloudProvider.custom.notInList' htmlSafe=true)}}
-    </div>
-  {{/if}}
 </div>
 
 <div class="col span-12">
