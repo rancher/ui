@@ -2,6 +2,7 @@ import Resource from 'ember-api-store/models/resource';
 import { inject as service } from '@ember/service';
 import {  get, computed } from '@ember/object';
 import { hash } from 'rsvp';
+import C from 'ui/utils/constants';
 
 export default Resource.extend({
   growl:        service(),
@@ -24,25 +25,25 @@ export default Resource.extend({
   }),
 
   notifierTableLabel: computed('slackConfig', 'pagerdutyConfig', 'emailConfig', 'webhookConfig', function() {
-    const sc = this.get('slackConfig');
-    const pc = this.get('pagerdutyConfig');
-    const ec = this.get('smtpConfig');
-    const wc = this.get('webhookConfig');
+    const sc = get(this, 'slackConfig');
+    const pc = get(this, 'pagerdutyConfig');
+    const ec = get(this, 'smtpConfig');
+    const wc = get(this, 'webhookConfig');
 
     if (sc) {
-      return 'Default Channel';
+      return C.NOTIFIER_TABLE_LABEL.SLACK;
     }
     if (pc) {
-      return 'Service Key';
+      return C.NOTIFIER_TABLE_LABEL.PAGERDUTY;
     }
     if (ec) {
-      return 'Default Recipient Address';
+      return C.NOTIFIER_TABLE_LABEL.SMTP;
     }
     if (wc) {
-      return 'URL';
+      return C.NOTIFIER_TABLE_LABEL.WEBHOOK;
     }
 
-    return 'Notifier';
+    return C.NOTIFIER_TABLE_LABEL.DEFAULT;
   }),
 
   notifierType: function() {

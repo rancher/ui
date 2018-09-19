@@ -6,6 +6,7 @@ import layout from './template';
 import { get, set } from '@ember/object'
 import { inject as service } from '@ember/service';
 import NewOrEdit from 'ui/mixins/new-or-edit';
+import C from 'ui/utils/constants';
 
 const TYPES = [
   {
@@ -162,7 +163,7 @@ export default Component.extend(ModalBase, NewOrEdit, {
   },
 
   validate() {
-    this._super();
+    this._super(...arguments);
     const errors = get(this, 'errors') || [];
     const intl = get(this, 'intl')
     const preError = '"Default Recipient" is required'
@@ -172,12 +173,13 @@ export default Component.extend(ModalBase, NewOrEdit, {
       let afterError = ''
 
       if (notifierType === 'slack') {
-        afterError = 'Default Channel'
+        afterError = C.NOTIFIER_TABLE_LABEL.SLACK
+        errors.splice(errors.findIndex((e) => e === preError), 1, intl.t('validation.required', { key: afterError }))
       }
       if (notifierType === 'email') {
-        afterError = 'Default Recipient Address'
+        afterError = C.NOTIFIER_TABLE_LABEL.SMTP
+        errors.splice(errors.findIndex((e) => e === preError), 1, intl.t('validation.required', { key: afterError }))
       }
-      errors.splice(errors.findIndex((e) => e === preError), 1, intl.t('validation.required', { key: afterError }))
     }
 
     set(this, 'errors', errors);
