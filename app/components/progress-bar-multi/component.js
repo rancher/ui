@@ -99,7 +99,6 @@ export default Component.extend({
 
 
       return get(this, 'tooltipArrayOrString') === 'string' ?  out.join('\n') : out;
-
     }));
   },
 
