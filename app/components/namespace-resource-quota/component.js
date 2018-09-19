@@ -50,8 +50,6 @@ export default Component.extend({
         }
 
         if (value > max || (( currentUse + value ) > max)) {
-          console.log('over max!')
-
           value = set(quota, 'value', max - currentUse);
         }
 
