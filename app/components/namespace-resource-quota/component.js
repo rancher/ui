@@ -6,6 +6,11 @@ import { parseSi } from 'shared/utils/parse-unit';
 import layout from './template';
 import { inject as service } from '@ember/service';
 
+const defaultRadix      = 10;
+const defaultIncrement  = 1024;
+const defaultDivisor    = 1048576;
+const defaultMultiplier = 3;
+
 export default Component.extend({
   intl: service(),
 
@@ -34,7 +39,9 @@ export default Component.extend({
 
     (get(this, 'quotaArray') || []).forEach((quota) => {
       if ( quota.key ) {
-        let value = quota.value;
+        let value      = parseInt(get(quota, 'value'), defaultRadix);
+        let max        = get(quota, 'max');
+        let currentUse = get(quota, 'currentProjectUse.firstObject.value');
 
         if ( !value ) {
           out[quota.key] = '';
@@ -42,15 +49,13 @@ export default Component.extend({
           return;
         }
 
-        if ( quota.key === 'limitsCpu' || quota.key === 'requestsCpu' ) {
-          value = `${ value }m`;
-        } else if ( quota.key === 'limitsMemory' || quota.key === 'requestsMemory' ) {
-          value = `${ value }Mi`;
-        } else if ( quota.key === 'requestsStorage' ) {
-          value = `${ value }Gi`;
+        if (value > max || (( currentUse + value ) > max)) {
+          console.log('over max!')
+
+          value = set(quota, 'value', max - currentUse);
         }
 
-        out[quota.key] = value;
+        out[quota.key] = this.quotaWithUnits(quota, value);
       }
     });
 
@@ -58,20 +63,45 @@ export default Component.extend({
     this.updateLimits();
   }),
 
+  quotaWithUnits(quota, value, readable = false) {
+    let cpuNotation     = readable ? 'milli CPUs' : 'm';
+    let memNotation     = readable ? 'MiB' : 'Mi';
+    let storageNotation = readable ? 'GB' : 'Gi';
+
+    if ( quota.key === 'limitsCpu' || quota.key === 'requestsCpu' ) {
+      return `${ value }${ cpuNotation }`;
+    } else if ( quota.key === 'limitsMemory' || quota.key === 'requestsMemory' ) {
+      return `${ value }${ memNotation }`;
+    } else if ( quota.key === 'requestsStorage' ) {
+      return `${ value }${ storageNotation }`;
+    } else {
+      return value;
+    }
+  },
+
   updateLimits() {
     ( get(this, 'quotaArray') || [] ).forEach((quota) => {
       if ( quota.key ) {
-        const value       = parseInt(get(quota, 'value'), 10) || 0;
+        const intl        = get(this, 'intl');
+        const value       = parseInt(get(quota, 'value'), defaultRadix) || 0;
         const usedValue   = get(quota, 'currentProjectUse.firstObject.value');
         const newUse      = get(quota, 'currentProjectUse.lastObject');
-        const totalLimits = get(quota, 'totalLimits.firstObject');
         const myNewUse    = usedValue + value;
         const remaining   = ( get(quota, 'max') - ( myNewUse ) ) > 0 ? ( get(quota, 'max') - ( myNewUse ) ) : 0;
-        const translation = get(this, 'intl').t('formResourceQuota.table.resources.tooltip', {
-          usedValue,
-          remaining,
-          newUse:    myNewUse,
-        });
+        const newTotals   = [
+          {
+            label: intl.t('formResourceQuota.table.resources.reserved'),
+            value: this.quotaWithUnits(quota, usedValue, true),
+          },
+          {
+            label: intl.t('formResourceQuota.table.resources.namespace'),
+            value: this.quotaWithUnits(quota, value, true),
+          },
+          {
+            label: intl.t('formResourceQuota.table.resources.available'),
+            value: this.quotaWithUnits(quota, remaining, true),
+          }
+        ];
 
         if (remaining === 0) {
           set(newUse, 'color', 'bg-error');
@@ -82,18 +112,20 @@ export default Component.extend({
         }
 
         set(newUse, 'value', value);
-        set(totalLimits, 'value', translation);
+        set(quota, 'totalLimits', newTotals);
       }
     });
   },
 
   initQuotaArray() {
-    const limit               = get(this, 'limit');
-    const nsDefaultQuota      = get(this, 'nsDefaultQuota');
-    const array               = [];
+    const {
+      limit,
+      nsDefaultQuota,
+      intl
+    }                         = this;
     const used                = get(this, 'usedLimit');
     const currentProjectLimit = get(this, 'projectLimit')
-    const intl = get(this, 'intl');
+    const array               = [];
 
     Object.keys(nsDefaultQuota).forEach((key) => {
       if ( key !== 'type' && typeof nsDefaultQuota[key] ===  'string') {
@@ -124,19 +156,19 @@ export default Component.extend({
           break;
         case 'limitsMemory':
         case 'requestsMemory':
-          value     = parseSi(value, 1024) / 1048576;
-          usedValue = parseSi(get(used, key), 1024) / 1048576;
-          max       = parseSi(get(currentProjectLimit, key), 1024) / 1048576;
+          value     = parseSi(value, defaultIncrement) / defaultDivisor;
+          usedValue = parseSi(get(used, key), defaultIncrement) / defaultDivisor;
+          max       = parseSi(get(currentProjectLimit, key), defaultIncrement) / defaultDivisor;
           break;
         case 'requestsStorage':
-          value     = parseSi(value) / (1024 ** 3);
-          usedValue = parseSi(get(used, key)) / (1024 ** 3);
-          max       = parseSi(get(currentProjectLimit, key)) / (1024 ** 3);
+          value     = parseSi(value) / (defaultIncrement ** defaultMultiplier);
+          usedValue = parseSi(get(used, key)) / (defaultIncrement ** defaultMultiplier);
+          max       = parseSi(get(currentProjectLimit, key)) / (defaultIncrement ** defaultMultiplier);
           break;
         default:
-          value     = parseInt(value, 10);
-          usedValue = parseInt(( get(used, key) || 0 ), 10);
-          max       = parseInt(get(currentProjectLimit, key), 10);
+          value     = parseInt(value, defaultRadix);
+          usedValue = parseInt(( get(used, key) || 0 ), defaultRadix);
+          max       = parseInt(get(currentProjectLimit, key), defaultRadix);
           break;
         }
 
@@ -152,7 +184,7 @@ export default Component.extend({
         currentProjectUse = [
           {
             // current use
-            color: 'bg-error',
+            color: 'bg-info',
             label: key,
             value: usedValue,
           },
@@ -164,14 +196,20 @@ export default Component.extend({
           }
         ];
 
-        totalLimits = [{
-          label: get(this, 'intl').t(`formResourceQuota.resources.${ key }`),
-          value: intl.t('formResourceQuota.table.resources.tooltip', {
-            usedValue,
-            newUse,
-            remaining,
-          })
-        }];
+        totalLimits = [
+          {
+            label: intl.t('formResourceQuota.table.resources.reserved'),
+            value: this.quotaWithUnits(nsDefaultQuota[key], usedValue, true),
+          },
+          {
+            label: intl.t('formResourceQuota.table.resources.namespace'),
+            value: this.quotaWithUnits(nsDefaultQuota[key], value, true),
+          },
+          {
+            label: intl.t('formResourceQuota.table.resources.available'),
+            value: this.quotaWithUnits(nsDefaultQuota[key], remaining, true),
+          }
+        ];
 
         array.push({
           currentProjectUse,
