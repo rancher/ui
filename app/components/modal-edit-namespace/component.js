@@ -4,7 +4,9 @@ import NewOrEdit from 'shared/mixins/new-or-edit';
 import ModalBase from 'shared/mixins/modal-base';
 import layout from './template';
 import { inject as service } from '@ember/service';
-import { set, get, observer } from '@ember/object';
+import {
+  computed, set, get, observer, setProperties
+} from '@ember/object';
 
 export default Component.extend(ModalBase, NewOrEdit, {
   scope: service(),
@@ -22,15 +24,18 @@ export default Component.extend(ModalBase, NewOrEdit, {
   init() {
     this._super(...arguments);
 
-    var orig = get(this, 'originalModel');
-    var clone = orig.clone();
+    const orig  = get(this, 'originalModel');
+    const clone = orig.clone();
 
     delete clone.services;
-    set(this, 'model', clone);
-    set(this, 'tags', (get(this, 'primaryResource.tags') || []).join(','));
-    set(this, 'allNamespaces', get(this, 'clusterStore').all('namespace'));
-    set(this, 'allProjects', get(this, 'globalStore').all('project')
-      .filterBy('clusterId', get(this, 'scope.currentCluster.id')));
+
+    setProperties(this, {
+      model:         clone,
+      tags:          (get(this, 'primaryResource.tags') || []).join(','),
+      allNamespaces: get(this, 'clusterStore').all('namespace'),
+      allProjects:   get(this, 'globalStore').all('project')
+        .filterBy('clusterId', get(this, 'scope.currentCluster.id')),
+    })
   },
 
   actions: {
@@ -38,6 +43,7 @@ export default Component.extend(ModalBase, NewOrEdit, {
       const tags = get(this, 'primaryResource.tags') || [];
 
       tags.addObject(tag);
+
       set(this, 'tags', tags.join(','));
     },
 
@@ -54,10 +60,31 @@ export default Component.extend(ModalBase, NewOrEdit, {
     set(this, 'primaryResource.tags', get(this, 'tags').split(',') || []);
   }),
 
+  projectLimit: computed('primaryResource.resourceQuota.{limit}', 'primaryResource.projectId', function() {
+    const projectId = get(this, 'primaryResource.projectId');
+    const project   = get(this, 'allProjects').findBy('id', projectId);
+
+    return get(project, 'resourceQuota.limit');
+  }),
+
+  projectUsedLimit: computed('primaryResource.resourceQuota.{limit}', 'primaryResource.projectId', function() {
+    const projectId = get(this, 'primaryResource.projectId');
+    const project   = get(this, 'allProjects').findBy('id', projectId);
+
+    return get(project, 'resourceQuota.usedLimit');
+  }),
+
+  nsDefaultQuota: computed('primaryResource.resourceQuota.{limit}', 'primaryResource.projectId', function() {
+    const projectId = get(this, 'primaryResource.projectId');
+    const project   = get(this, 'allProjects').findBy('id', projectId);
+
+    return get(project, 'namespaceDefaultResourceQuota.limit');
+  }),
+
   validate() {
     this._super();
 
-    const errors = get(this, 'errors') || [];
+    const errors      = get(this, 'errors') || [];
     const quotaErrors = get(this, 'primaryResource').validateResourceQuota(get(this, 'originalModel.resourceQuota.limit'));
 
     if ( quotaErrors.length > 0 ) {
