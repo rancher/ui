@@ -100,6 +100,10 @@ export default Component.extend({
           {
             label: intl.t('formResourceQuota.table.resources.available'),
             value: this.quotaWithUnits(quota, remaining, true),
+          },
+          {
+            label: intl.t('formResourceQuota.table.resources.max'),
+            value: this.quotaWithUnits(quota, get(quota, 'max'), true),
           }
         ];
 
@@ -208,6 +212,10 @@ export default Component.extend({
           {
             label: intl.t('formResourceQuota.table.resources.available'),
             value: this.quotaWithUnits(nsDefaultQuota[key], remaining, true),
+          },
+          {
+            label: intl.t('formResourceQuota.table.resources.max'),
+            value: this.quotaWithUnits(nsDefaultQuota[key], max, true),
           }
         ];
 
