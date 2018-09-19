@@ -26,8 +26,8 @@ var Pod = Resource.extend(DisplayImage, {
   node:          reference('nodeId', 'node', 'globalStore'),
   workload:      reference('workloadId'),
   hasSidekicks:  gt('containers.length', 1),
-  canEditYaml:  computed('links.update', 'actions.edit', function() {
-    return !!get(this, 'links.update') && !!get(this, 'actions.edit');
+  canEditYaml:  computed('links.update', 'links.yaml', function() {
+    return !!get(this, 'links.update') && !!get(this, 'links.yaml');
   }),
 
   availableActions: computed('combinedState', function() {
