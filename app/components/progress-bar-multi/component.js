@@ -13,18 +13,20 @@ function toPercent(value, min, max) {
 
 export default Component.extend({
   layout,
-  tagName:    'div',
-  classNames: ['progress-bar-multi'],
+  tagName:              'div',
+  classNames:           ['progress-bar-multi'],
 
-  values:        null,
-  colorKey:      'color',
-  labelKey:      'label',
-  valueKey:      'value',
-  tooltipValues: null,
-  min:           0,
-  max:           null,
-  minPercent:    10,
-  zIndex:        null,
+  values:               null,
+  colorKey:             'color',
+  labelKey:             'label',
+  valueKey:             'value',
+  tooltipValues:        null,
+  min:                  0,
+  max:                  null,
+  minPercent:           10,
+  zIndex:               null,
+  tooltipTemplate:      'tooltip-static',
+  tooltipArrayOrString: 'string',
 
   init() {
     this._super(...arguments);
@@ -85,10 +87,18 @@ export default Component.extend({
       var out = [];
 
       (get(this, 'tooltipValues') || []).forEach((obj) => {
-        out.push(`${ get(obj, labelKey) }: ${  get(obj, valueKey) }`);
+        if (get(this, 'tooltipArrayOrString') === 'string') {
+          out.push(`${ get(obj, labelKey) }: ${  get(obj, valueKey) }`);
+        } else {
+          out.push({
+            label: get(obj, labelKey),
+            value: get(obj, valueKey),
+          });
+        }
       });
 
-      return out.join('\n');
+
+      return get(this, 'tooltipArrayOrString') === 'string' ?  out.join('\n') : out;
     }));
   },
 
