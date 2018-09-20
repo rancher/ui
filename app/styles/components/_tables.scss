@@ -3,99 +3,6 @@
 // apply only to the current table, not one nested inside another table.
 //
 
-//table variables
-$table-bg              : lighten($light-grey,5)!default;
-$table-header          : $body-bg!default;
-$table-nested-header   : lighten($mid-grey, 32)!default;
-$table-bg-accent       : darken($light-grey, .5)!default;
-$table-bg-hover        : lighten($info, 15)!default;
-$table-bg-active       : $table-bg-hover!default;
-$table-bg-selected     : lighten($info, 32)!default;
-$table-border-color    : lighten($mid-grey, 30)!default;
-$table-body-separation : 25px;
-$group-row-height      : 50px;
-
-//table mixins
-@mixin bordered {
-  border-bottom: $table-border-color solid 2px;
-  border-collapse: collapse;
-
-  > TBODY {
-    background: transparent;
-
-    > TR {
-      background-color: $body-bg;
-      border-top: $table-border-color solid 2px;
-
-      &:first-child {
-        border-top: none;
-      }
-
-      &.main-row,
-      &.sub-row {
-        background-color: $body-bg;
-        border-bottom: 0;
-      }
-
-      > TD {
-        border: none;
-        a {
-          line-height: initial;
-          vertical-align: middle;
-        }
-      }
-
-      &.row-selected {
-        background-color: $table-bg-selected;
-      }
-
-      &.no-bottom {
-        border-bottom: none;
-      }
-
-      &.sub-row {
-        border-top: none;
-        border-bottom: none;
-
-        table {
-          padding-bottom: $table-body-separation;
-          border-bottom: none;
-        }
-      }
-
-      &.separator-row {
-        border: none;
-      }
-    }
-  }
-}
-
-@mixin solid {
-  > TBODY {
-    background: $table-bg;
-    > TR {
-      background-color: darken($table-bg, 5%);
-    }
-  }
-}
-
-@mixin striped {
-  > TBODY > TR {
-    > TD {
-      border: none;
-    }
-    &:nth-child(odd) {
-      background-color: $table-bg;
-    }
-    &:nth-child(even) {
-      background-color: $table-bg-accent;
-    }
-    &.row-selected {
-      background-color: $table-bg-selected;
-    }
-  }
-}
-
 TABLE {
   position: relative;
 
@@ -423,12 +330,13 @@ TABLE {
 
 
   &.tooltip-table {
+    @include contrasted($tooltip-bg);
     > TBODY {
       background: transparent;
       > TR {
         background-color: transparent;
         &:last-of-type {
-          border-top: #41484d solid 2px;
+          border-top: contrast-color($tooltip-bg, $contrasted-dark-default, $contrasted-light-default) solid 1px;
 
         }
         td {
@@ -438,6 +346,10 @@ TABLE {
           padding-left: 10px;
           &:first-of-type {
             text-align:left;
+          }
+          &:last-of-type {
+            text-align:right;
+            padding-right: 10px;
           }
         }
       }

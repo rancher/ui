@@ -180,3 +180,93 @@
     vertical-align: middle;
   }
 }
+
+
+@mixin tooltip-triangle {
+  content    : '';
+  background : transparent;
+  width      : 0;
+  height     : 0;
+  position   : absolute;
+}
+
+//table mixins
+@mixin bordered {
+  border-bottom: $table-border-color solid 2px;
+  border-collapse: collapse;
+
+  > TBODY {
+    background: transparent;
+
+    > TR {
+      background-color: $body-bg;
+      border-top: $table-border-color solid 2px;
+
+      &:first-child {
+        border-top: none;
+      }
+
+      &.main-row,
+      &.sub-row {
+        background-color: $body-bg;
+        border-bottom: 0;
+      }
+
+      > TD {
+        border: none;
+        a {
+          line-height: initial;
+          vertical-align: middle;
+        }
+      }
+
+      &.row-selected {
+        background-color: $table-bg-selected;
+      }
+
+      &.no-bottom {
+        border-bottom: none;
+      }
+
+      &.sub-row {
+        border-top: none;
+        border-bottom: none;
+
+        table {
+          padding-bottom: $table-body-separation;
+          border-bottom: none;
+        }
+      }
+
+      &.separator-row {
+        border: none;
+      }
+    }
+  }
+}
+
+@mixin solid {
+  > TBODY {
+    background: $table-bg;
+    > TR {
+      background-color: darken($table-bg, 5%);
+    }
+  }
+}
+
+@mixin striped {
+  > TBODY > TR {
+    > TD {
+      border: none;
+    }
+    &:nth-child(odd) {
+      background-color: $table-bg;
+    }
+    &:nth-child(even) {
+      background-color: $table-bg-accent;
+    }
+    &.row-selected {
+      background-color: $table-bg-selected;
+    }
+  }
+}
