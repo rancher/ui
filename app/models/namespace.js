@@ -169,7 +169,7 @@ var Namespace = Resource.extend(StateCounts, {
     let errors = [];
 
     const resourceQuota = get(this, 'resourceQuota.limit') || {};
-    const total = get(this, 'project.resourceQuota.limit') || {};
+    const total = get(this, 'project.resourceQuota.limit');
     const used = get(this, 'project.resourceQuota.usedLimit') || {};
 
     if ( total ) {

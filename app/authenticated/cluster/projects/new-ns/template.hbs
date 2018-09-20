@@ -25,7 +25,7 @@
   }}
 {{/unless}}
 
-{{#if primaryResource.project.resourceQuota}}
+{{#if (and primaryResource.project.resourceQuota (not switchingProject))}}
   <div class="row mt-20">
     {{#accordion-list showExpandAll=false as | al expandFn | }}
       {{#accordion-list-item
