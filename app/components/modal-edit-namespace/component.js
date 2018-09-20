@@ -7,6 +7,7 @@ import { inject as service } from '@ember/service';
 import {
   computed, set, get, observer, setProperties
 } from '@ember/object';
+import { next } from '@ember/runloop';
 
 export default Component.extend(ModalBase, NewOrEdit, {
   scope: service(),
@@ -55,6 +56,16 @@ export default Component.extend(ModalBase, NewOrEdit, {
       }
     },
   },
+
+  projectDidChange: observer('primaryResource.project.id', function() {
+    set(this, 'switchingProject', true);
+    next(() => {
+      set(this, 'switchingProject', false);
+    });
+    if ( !get(this, 'primaryResource.project.resourceQuota') ) {
+      set(this, 'primaryResource.resourceQuota', null);
+    }
+  }),
 
   tagsDidChanged: observer('tags', function() {
     set(this, 'primaryResource.tags', get(this, 'tags').split(',') || []);

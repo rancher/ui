@@ -1,8 +1,9 @@
 import Controller from '@ember/controller'
 import NewOrEdit from 'ui/mixins/new-or-edit';
 import { alias } from '@ember/object/computed';
-import { computed, get, set } from '@ember/object';
+import { computed, get, set, observer } from '@ember/object';
 import { inject as service } from '@ember/service';
+import { next } from '@ember/runloop';
 import C from 'ui/utils/constants';
 
 export default Controller.extend(NewOrEdit, {
@@ -32,6 +33,17 @@ export default Controller.extend(NewOrEdit, {
       }
     },
   },
+
+  projectDidChange: observer('primaryResource.project.id', function() {
+    set(this, 'switchingProject', true);
+    next(() => {
+      set(this, 'switchingProject', false);
+    });
+    if ( !get(this, 'primaryResource.project.resourceQuota') ) {
+      set(this, 'primaryResource.resourceQuota', null);
+    }
+  }),
+
 
   allProjects:     computed('model.allProjects', 'scope.currentCluster.id', function() {
     return get(this, 'model.allProjects').filterBy('clusterId', get(this, 'scope.currentCluster.id'))
