@@ -226,7 +226,7 @@ appDetailPage:
 podSecurityPoliciesPage:
   index:
     header: Pod安全策略
-    description: 将策略应用于由具有此角色的用户创建的POD
+    description: 将策略应用于由具有此角色的用户创建的POD。
     table:
       name: 名称
       created: 创建时间
@@ -241,7 +241,7 @@ podSecurityPoliciesPage:
   new:
     errors:
       nameReq: 名称(必填)
-      nameInExists: 名称已存在， 请使用新的pod安全策略名称
+      nameInExists: 名称已存在， 请使用新的pod安全策略名称。
     form:
       name:
         labelText: 名称
@@ -266,7 +266,7 @@ rolesPage:
       showDefaults: 仅显示默认角色
   resources:
     title: 授权资源
-    detail: 对Kubernetes资源的具体操作进行授权
+    detail: 对Kubernetes资源的具体操作进行授权。
   inherit:
     title: 继承角色
     detail: 继承其他角色的所有权限
@@ -278,7 +278,7 @@ rolesPage:
     errors:
       nameReq: 名称(必填)
       memberReq: 成员是必需的
-      nameInExists: 名称是已经存在， 请使用一个新的角色名称
+      nameInExists: 名称是已经存在， 请使用一个新的角色名称。
       ruleResourceReq: 资源是规则所必需的
       roleTemplate: 角色模板是必需的
     form:
@@ -291,7 +291,7 @@ rolesPage:
       locked:
         labelText: 已锁定
         detail: 对已经绑定的用户没有影响
-        enabled: '是: 不允许用户再绑定此角色，已绑定的用户不受影响'
+        enabled: '是: 不允许用户再绑定此角色，已绑定的用户不受影响。'
         disabled: "否"
       allow:
         create: 创建
@@ -617,7 +617,7 @@ certificatesPage:
   serialNumber: 序列号
   domainNames:
     labelText: 域名
-    single: '<a href="https://{cn}" target="_blank" rel="nofollow nefererrer noopener">{cn} <i class="icon icon-sm icon-external-link"/></a>'
+    single: '<a href="https://{cn}" target="_blank" rel="nofollow noreferrer noopener">{cn} <i class="icon icon-sm icon-external-link"/></a>'
     withSan: |
       <a href="https://{cn}" target="_blank" rel="nofollow nefererrer noopener">{cn} <i class="icon icon-sm icon-external-link"></i></a> +
       {sans, plural,
@@ -772,7 +772,7 @@ ingressPage:
   table:
     targets:
       label: 目标
-    noMatch: 没有ingresses匹配当前搜索
+    noMatch: 没有ingresses匹配当前搜索。
     noData: 没有定义ingress规则
 
 containerPage:
@@ -790,7 +790,7 @@ containerPage:
     noData: 当前容器没有链接
   volumesTab:
     header: 数据卷
-    detail: '这些属性显示了附加到您的容器的数据卷'
+    detail: '这些属性显示了附加到您的容器的数据卷。'
     table:
       path: 挂载点
       shared: 共享
@@ -807,7 +807,7 @@ podPage:
   displayImage: '{image} + 其他{sidecar, plural, =1 {1个image} other {#个images}}'
 containersPage:
   table:
-    sparkPrefixCpu: "CPU:"
+    sparkPrefixCpu: "CPU: "
     sparkPrefixMemory: "内存:"
     sparkPrefixNetwork: "网络:"
     sparkPrefixStorage: "存储:"
@@ -834,7 +834,7 @@ clusterDashboard:
   value: 值
   systemProject: "这是具有所有Kubernetes和{appName}系统命名空间的系统项目，修改系统项目中的资源可能会导致系统无法正常运行。"
   notActive: 此集群当前为<b>{state}</b>
-  notReady: 此集群当前为<b>{state}</b>，在API准备就绪之前，直接与其交互的功能将不可用。
+  notReady: 此集群当前为<b>{state}</b>，在API准备就绪之前，直接与API交互的功能将不可用。
   noNodes: 没有主机
   alert:
     node: "警告: 节点{node}未激活"
@@ -1454,8 +1454,10 @@ notifierPage:
   slack:
     url: 访问URL
     urlPlaceholder: '例如: https://hooks.slack.com/services/T00000000/B00000000/XXXXXXXXXXXXXXXXXXXXXXXX'
-    defaultRecipient: 默认接收人
-    defaultRecipientPlaceholder: '例如: example.com'
+    defaultRecipient:
+      label: 默认频道
+      helpText: 可选。默认情况下，通知被发送到默认频道。在配置告警时，可以覆盖该频道。
+    defaultRecipientPlaceholder: '例如: #example'
     helpText: |
       以下是<a href="https://get.slack.help/hc/en-us/articles/115005265063-Incoming-WebHooks-for-Slack" target="_blank" rel="nofollow noopener noreferrer">创建传入WebHooks</a>的方法。
 
@@ -1470,11 +1472,15 @@ notifierPage:
     userNamePlaceholder: '例如: John'
     password: 密码
     passwordPlaceholder: 账号的密码
-    defaultRecipient: 默认收件箱
+    defaultRecipient:
+      label: 默认收件人地址
+      helpText: 在配置告警时，可以覆盖收件人。
     defaultRecipientPlaceholder: '例如: you@example.com'
   pagerduty:
-    serviceKey: 服务密钥
-    serviceKeyPlaceholder: PagerDuty服务密钥
+    serviceKey:
+      label: 默认服务密匙
+      helpText: 在配置告警时，可以覆盖服务密匙。
+    serviceKeyPlaceholder: 你的PagerDuty服务密匙。
     helpText: |
       以下是<a href="https://support.pagerduty.com/docs/webhooks">为PagerDuty创建传入WebHooks</a>的方法。
 
@@ -1493,7 +1499,6 @@ notifierPage:
       created: 创建时间
       noData: 没有定义通知
       noMatch: 不匹配
-
 ##############################
 # Partials
 ##############################
@@ -1529,6 +1534,7 @@ ldap:
       login: "登录字段:"
       name: "名称字段:"
       search: "搜索字段:"
+      searchFilter: "搜索过滤器:"
       enabled: "启用字段:"
       disabledBitMask: "禁用位掩码:"
     group:
@@ -1536,6 +1542,7 @@ ldap:
       objectClass: "对象分类:"
       name: "名称字段:"
       search: "搜索字段:"
+      searchFilter: "搜索过滤器:"
     disable:
       confirmDisable:
         pre: 关闭访问控制
@@ -1578,6 +1585,8 @@ ldap:
         labelText: 用户名属性
       search:
         labelText: 搜索属性
+      searchFilter:
+        labelText: 搜索过滤器
       searchBase:
         labelText: '用户搜索起点:'
       enabledAttribute:
@@ -1594,6 +1603,8 @@ ldap:
         labelText: 名称属性
       search:
         labelText: 搜索属性
+      searchFilter:
+        labelText: 搜索过滤器
       groupMemberUser:
         labelText: 组成员用户属性
         placeholder: uid
@@ -1603,12 +1614,12 @@ ldap:
         labelText: 组DN属性
         placeholder: 专有名称
       nestedGroup:
-        title: Nested Group Membership
+        title: 嵌套的组成员
         enabled:
-          labelText: Search direct and nested group memberships
-          helpText: Nested search may be slower in large directories
+          labelText: 搜索直接和嵌套的组成员关系
+          helpText: 嵌套搜索在大目录中可能会比较慢
         disabled:
-          labelText: Search only direct group memberships
+          labelText: 只搜索直接的组成员关系
   testAuth:
     header: "3. 测试并启用认证"
     helpText: "通过您的{providerName}账号进行验证测试以确认配置是否正确:"
@@ -1683,6 +1694,7 @@ cloudProvider:
   azure: Azure
   name: 云提供商名称
   custom:
+    notInList: '如果您的云提供商没有列出，请使用<b>Custom</b>选项。'
     helpText: '请通过编辑YAML来添加其他<a href="http://rancher.com/docs/rke/v0.1.x/en/config-options/cloud-providers/" target="_blank" rel="nofollow noopener noreferrer">云提供商</a>'
 
   helpText: |
@@ -1707,7 +1719,7 @@ cloudProvider:
     cloudProviderRateLimitQPS:
       description: "Rate limit QPS (Read)"
     maximumLoadBalancerRuleCount:
-      description: "Maximum allowed LoadBalancer Rule Count is the limit enforced by Azure Load balancer"
+      description: "允许最大的负载均衡器规则计数是Azure负载均衡器执行的限制"
     useInstanceMetadata:
       description: "尽可能使用实例元数据服务"
     useManagedIdentityExtension:
@@ -1725,9 +1737,9 @@ cloudProvider:
     location:
       description: "部署集群的资源组位置"
     primaryAvailabilitySetName:
-      description: "The name of the availability set that should be used as the load balancer backend"
+      description: "应用作负载均衡器后端的可用性集的名称"
     primaryScaleSetName:
-      description: "The name of the scale set that should be used as the load balancer backend"
+      description: "应该用作负载均衡器后端的缩放集的名称"
     resourceGroup:
       description: "部署集群的资源组名称"
     routeTableName:
@@ -1848,12 +1860,14 @@ clusterNew:
   amazoneks:
     label: AWS的基于Kubernetes的弹性容器服务
     shortLabel: 亚马逊EKS
+    ingressWarning: "注意:目前Amazon EKS不会在启动新的集群时创建传入控制器。如果需要此功能，则必须在集群创建后手动创建一个传入控制器。"
     access:
       title: 账户访问
       detail: 选择将用于启动Amazon EKS的区域和API密钥
   azureaks:
     label: Azure容器服务
     shortLabel: Azure AKS
+    ingressWarning: "注意:目前Azure AKS在启动新集群时不会创建一个传入控制器。如果需要此功能，则必须在集群创建后手动创建一个传入控制器。"
     authenticate:
       next: "下一步: 认证 & 配置主机"
     access:
@@ -2155,6 +2169,9 @@ clusterNew:
       domain: 集群域
       dns: 集群DNS服务器
     warning:
+      etcd:
+        even: 设置{count}个etcd节点是对硬件的浪费，因为它不会增加仲裁，除非它是奇数。
+        noEtcd: The number of etcd nodes should not be less than 1.
       aws:
         iam: '使用Amazon Cloud Provider时，应在节点模板中配置IAM角色名称'
     errors:
@@ -2317,8 +2334,8 @@ cruPersistentVolume:
     cachingMode:
       label: 缓存模式
       none: None
-      readOnly: Read Only
-      readWrite: Read Write
+      readOnly: 只读
+      readWrite: 读写
     diskName:
       label: 磁盘名称
       placeholder: "例如: kubernetes-pvc"
@@ -3093,7 +3110,7 @@ moveNamespace:
     移动{count, plural,
     =1{个命名空间: {name}}
     other{#个命名空间:}}
-  to: "转到目标项目: "
+  to: "到目标项目: "
   actionLabel: 移动
 
 stackHeader:
@@ -3370,6 +3387,12 @@ formResourceQuota:
       placeholder: '例如: 10'
       milliCpuPlaceholder: '例如: 500'
       memoryPlaceholder: '例如: 1Gi'
+    resources:
+      label: 项目资源可用性
+      reserved: 其他命名空间
+      namespace: 当前命名空间
+      available: 可用
+      max: 总共
     projectLimit:
       label: 项目限制
       placeholder: '例如: 50'
@@ -3654,6 +3677,7 @@ formNetwork:
 formPorts:
   header: 端口映射
   addAction: 添加规则
+  warning: "这个工作负载不是由{appName}或{appName} API创建的,{appName}不会自动为端口映射创建相关服务。"
   kind:
     label: 网络模式
     NodePort: NodePort(所有主机端口均可访问)
@@ -3853,7 +3877,6 @@ formSecurity:
     label: CPU份额
     placeholder: '例如: 1024'
   capabilities:
-
     add: 增加内核功能
     drop: 移除内核功能
     helpBlock:
@@ -4079,8 +4102,8 @@ formVolumes:
     tmpfs: 添加一个内存中的tmpfs
     secret: 密文卷
     configMap: 配置映射卷
-    customLogPath: 从目录读取日志文件
     certificate: 证书卷
+    customLogPath: 从目录读取日志文件
   table:
     kind: 类型
     source: 源
@@ -4428,7 +4451,7 @@ modalAddPayment:
         placeholder: Shanghai
       zip:
         label: 邮编
-        placeholder: '99999'
+        placeholder: '518000'
       country:
         label: 国家
         placeholder: 中国
@@ -4557,6 +4580,7 @@ modalDrainNode:
     helpText: '即使存在不由ReplicationController、ReplicaSet、Job、DaemonSet或StatefulSet管理的pod。'
   ignoreDaemonSets:
     helpText: 即使有DaemonSet管理的pod。
+    warning: "默认情况下，Ingress DaemonSet部署在每个节点上。Drain might never succeed if you don't select ignore DaemonSet option."
   deleteLocalData:
     helpText: 即使有使用emptyDir的pod(当节点耗尽时将删除的本地数据)。
   gracePeriod:
@@ -4743,6 +4767,7 @@ newContainer:
   errors:
     noSidekick: 选择要添加sidecar的工作负载
     duplicateName: '工作负载{service}中已经存在名为{name}的sidecar.'
+    quotaRequired: '"{key}"必需设置，因为在项目上执行资源配额。'
 
 newPassword:
   placeholder: 新密码
@@ -4820,6 +4845,13 @@ nodeDriver:
       defaultCreate: "标准: 自动创建新的安全组"
       next: "下一步: 设置实例选项"
       loading: 加载设置实例选项...
+    ami:
+      label: 自定义AMI
+      help: "您可以覆盖Rancher基于您的区域选择的默认AMI"
+    max:
+      label: 最大平均比重
+    min:
+      label: 最小平均比重
   amazonec2:
     access:
       title: 1. 帐户访问
@@ -4896,10 +4928,10 @@ nodeDriver:
       title: Droplet选项
       detail: 配置将由此模板创建的Droplets的选项
     sizeLabel: |
-      {highMem, select, true{High Memory:}other{}}{memoryGb}GB RAM,{disk}GB Disk,{vcpus, plural,
-      =1{#vCPU}
-      other{#vCPUs}
-      } ({slug})
+      {highMem, select, true {High Memory: } other {}}{memoryGb} GB RAM, {disk} GB Disk, {vcpus, plural,
+        =1 {# vCPU}
+        other {# vCPUs}
+      }
     authAccountButton: '下一步: 配置Droplet'
     accessToken:
       label: 访问令牌
@@ -5041,7 +5073,7 @@ nodeDriver:
     instanceOptionsSection: 实例选项
     cpuCount:
       label: CPUs
-      unit: '{cores,plural,=1{Core}other{Cores}}'
+      unit: '{cores, plural, =1 {Core} other {Cores}}'
     memorySize:
       label: 内存
       unit: MB
@@ -5085,8 +5117,8 @@ nodeDriver:
         placeholder: "例如: guestinfo.hostname"
       value:
         placeholder: "例如: Myrancherhost"
-      label: Configuration Parameters used for guestinfo
-      addActionLabel: Add Parameter
+      label: 用于guestinfo的配置参数
+      addActionLabel: 添加参数
   azure:
     placement:
       title: 位置
@@ -5350,152 +5382,152 @@ pageFooter:
 
 pagination:
   catalog: |
-    {pages, plural,
-    =0{无应用目录}
-    =1{{count}{count, plural,=1{个应用目录}other{个应用目录}}}
-    other{{count}个应用目录中的{from}-{to}}}
+    选中{pages, plural,
+    =0{无应用商店}
+    =1{{count}{count, plural,=1{个应用商店}other{个应用商店}}}
+    other {{from} - {to} of {count} Catalogs}}
   certificate: |
-    {pages, plural,
+    选中{pages, plural,
     =0{无证书}
     =1{{count}{count, plural,=1{个证书}other{个证书}}}
-    other{{count}个证书中的{from}-{to}}}
+    other {{from} - {to} of {count} Certificates}}
   container: |
-    {pages, plural,
-    =0{无集群}
-    =1{{count}{count, plural,=1{个集群}other{个集群}}}
-    other{{count}个集群中的{from}-{to}}}
+    选中{pages, plural,
+    =0 {No Containers}
+    =1 {{count} {count, plural, =1 {Container} other {Containers}}}
+    other {{from} - {to} of {count} Containers}}
   cluster: |
-    {pages, plural,
+    选中{pages, plural,
     =0{无集群}
     =1{{count}{count, plural,=1{个集群}other{个集群}}}
-    other{{count}个集群中的{from}-{to}}}
+    other {{from} - {to} of {count} Clusters}}
   dnsRecord: |
-    {pages, plural,
+    选中{pages, plural,
     =0{无DNS记录}
     =1{{count}{count, plural,=1{个DNS记录}other{个DNS记录}}}
-    other{{count}个DNS记录中的{from}-{to}}}
+    other {{from} - {to} of {count} DNS Records}}
   driver: |
-    {pages, plural,
+    选中{pages, plural,
     =0{无驱动}
     =1{{count}{count, plural,=1{个驱动}other{个驱动}}}
-    other{{count}个驱动中的{from}-{to}}}
+    other {{from} - {to} of {count} Drivers}}
   driverOptions: |
-    {pages, plural,
+    选中{pages, plural,
     =0{无驱动选项}
     =1{{count}{count, plural,=1{个驱动选项}other{个驱动选项}}}
-    other{{count}个驱动选项中的{from}-{to}}}
+    other {{from} - {to} of {count} Driver Options}}
   entry: |
-    {pages, plural,
+    选中{pages, plural,
     =0{无条目}
     =1{{count}{count, plural,=1{个条目}other{个条目}}}
-    other{{count}个条目中的{from}-{to}}}
+    other {{from} - {to} of {count} Entries}}
   event: |
-    {pages, plural,
+    选中{pages, plural,
     =0{无事件}
     =1{{count}{count, plural,=1{个事件}other{个事件}}}
     other{{count}个事件中的{from}-{to}}}
   generic: |
-    {pages, plural,
-    =0{无实例}
-    =1{{count}{count, plural,=1{个实例}other{个实例}}}
-    other{{count}个实例中的{from}-{to}}}
+    选中{pages, plural,
+    =0 {无条目}
+    =1{{count}{count, plural, =1{个条目}other{个条目}}}
+    other{{from} - {to} of {count}个条目}}
   image: |
-    {pages, plural,
+    选中{pages, plural,
     =0{无镜像}
     =1{{count}{count, plural,=1{个镜像}other{个镜像}}}
-    other{{count}个镜像中的{from}-{to}}}
+    other {{from} - {to} of {count} Images}}
   link: |
-    {pages, plural,
+    选中{pages, plural,
     =0{无链接}
     =1{{count}{count, plural,=1{个链接}other{个链接}}}
-    other{{count}个链接中的{from}-{to}}}
+    other {{from} - {to} of {count} Links}}
   loadBalancer: |
-    {pages, plural,
+    选中{pages, plural,
     =0{无负载均衡}
     =1{{count}{count, plural,=1{个负载均衡}other{个负载均衡}}}
-    other{{count}个负载均衡中的{from}-{to}}}
+    other {{from} - {to} of {count} Load Balancers}}
   ingress: |
-    {pages, plural,
+    选中{pages, plural,
     =0{无Ingresses}
     =1{{count}{count, plural,=1{个Ingresses}other{个Ingresses}}}
-    other{{count}个Ingresses中的{from}-{to}}}
+    other {{from} - {to} of {count} Ingresses}}
   member: |
-    {pages, plural,
+    选中{pages, plural,
     =0{无成员}
     =1{{count}{count, plural,=1{个成员}other{个成员}}}
-    other{{count}个成员中的{from}-{to}}}
+    other {{from} - {to} of {count} Members}}
   mount: |
-    {pages, plural,
+    选中{pages, plural,
     =0{无挂载}
     =1{{count}{count, plural,=1{个挂载}other{个挂载}}}
-    other{{count}个挂载中的{from}-{to}}}
+    other {{from} - {to} of {count} Mounts}}
   namespace: |
-    {pages, plural,
+    选中{pages, plural,
     =0{无命名空间}
     =1{{count}{count, plural,=1{个命名空间}other{个命名空间}}}
-    other{{count}个命名空间中的{from}-{to}}}
+    other {{from} - {to} of {count} Namespaces}}
   node: |
-    {pages, plural,
+    选中{pages, plural,
     =0{无主机}
     =1{{count}{count, plural,=1{台主机}other{台主机}}}
-    other{{count}台主机中的{from}-{to}}}
+    other {{from} - {to} of {count} Nodes}}
   nodePool: |
-    {pages, plural,
+    选中{pages, plural,
     =0{无主机池}
     =1{{count}{count, plural,=1{个主机池}other{个主机池}}}
-    other{{count}个主机池中的{from}-{to}}}
+    other {{from} - {to} of {count} Node Pools}}
   nodeTemplate: |
-    {pages, plural,
+    选中{pages, plural,
     =0{无主机模板}
     =1{{count}{count, plural,=1{个主机模板}other{个主机模板}}}
-    other{{count}个主机模板中的{from}-{to}}}
+    other {{from} - {to} of {count} Node NodeTemplates}}
   pod: |
-    {pages, plural,
-    =0{无Pod}
-    =1{{count}{count, plural,=1{个Pod}other{个Pods}}}
-    other{{count}个Pods中的{from}-{to}}}
-  podHighlightSubset: "<b>{subset}of{count}</b>Pods"
-  podNoSubset: "0of{count}Pods"
+    选中{pages, plural,
+    =0 {没有Pods}
+    =1{{count}{count, plural, =1{个Pod}other{个Pods}}}
+    other{{from}-{to}of{count}Pods}}
+  podHighlightSubset: "<b>{subset} of {count}</b> Pods"
+  podNoSubset: "0 of {count} Pods"
   podLabel: |
     {count, plural,
-    =1{Pod}
-    other{Pods}
+      =1{个Pod}
+      other{个Pods}
     }
   port: |
-    {pages, plural,
+    选中{pages, plural,
     =0{无端口}
     =1{{count}{count, plural,=1{个端口}other{个端口}}}
     other{{count}个端口中的{from}-{to}}}
   project: |
-    {pages, plural,
+    选中{pages, plural,
     =0{无项目}
     =1{{count}{count, plural,=1{个项目}other{个项目}}}
-    other{{count}个项目中的{from}-{to}}}
+    other {{from} - {to} of {count} Projects}}
   rule: |
-    {pages, plural,
+    选中{pages, plural,
     =0{无规则}
     =1{{count}{count, plural,=1{个规则}other{个规则}}}
-    other{{count}个规则中的{from}-{to}}}
+    other {{from} - {to} of {count} Rules}}
   service: |
-    {pages, plural,
+    选中{pages, plural,
     =0{无服务}
     =1{{count}{count, plural,=1{个服务}other{个服务}}}
-    other{{count}个服务中的{from}-{to}}}
+    other {{from} - {to} of {count} Services}}
   storageClass: |
-    {pages, plural,
+    选中{pages, plural,
     =0{无存储类}
     =1{{count}{count, plural,=1{个存储类}other{个存储类}}}
-    other{{count}个存储类中的{from}-{to}}}
+    other {{from} - {to} of {count} Storage Classes}}
   volume: |
-    {pages, plural,
+    选中{pages, plural,
     =0{没有卷}
     =1{{count}{count, plural,=1{个卷}other{个卷}}}
-    other{{count}个卷中的{from}-{to}}}
+    other {{from} - {to} of {count} Volumes}}
   workload: |
-    {pages, plural,
+    选中{pages, plural,
     =0{无工作负载}
     =1{{count}{count, plural,=1{个工作负载}other{个工作负载}}}
-    other{{count}个工作负载中的{from}-{to}}}
+    other {{from} - {to} of {count} Workloads}}
 
 projectRow:
   none: 无描述
@@ -5784,6 +5816,7 @@ nav:
       members: 成员
       podSecurityPolicies: Pod安全策略
       authentication: 认证
+      authWarning: "注意:除本地身份验证之外，在任何时候只能启用单个身份验证提供者。如果在2.1之前启用了多个身份验证提供者，则仍然可以编辑或禁用这些提供者，但不能启用其他提供者。您也不能重新启用以前禁用的提供者。禁用时要小心，禁用后配置无法恢复。"
     settings:
       tab: 系统设置
       auth: 访问控制
@@ -5873,32 +5906,33 @@ action:
 validation:
   required: '"{key}"必须设置'
   arrayLength:
-    exactly: '"{key}"应当包含{count, plural,=1{# item}other{# items}}'
-    between: '"{key}"应当介于{min}和{max}之间{max, plural,=1{item}other{items}}'
-    min: '"{key}"应当至少为{count}{count, plural,=1{item}other{items}}'
-    max: '"{key}"应当至多为{count}{count, plural,=1{item}other{items}}'
+    exactly: '"{key}"应当包含{count, plural,=1{#个条目}other{#个条目}}'
+    between: '"{key}"应当介于{min}和{max}之间{max, plural,=1{个条目}other{个条目}}'
+    min: '"{key}"应当至少为{count}{count, plural,=1{个条目}other{个条目}}'
+    max: '"{key}"应当至多为{count}{count, plural,=1{个条目}other{个条目}}'
   stringLength:
-    exactly: '"{key}"应当为{count, plural,=1{# character}other{# characters}}'
-    between: '"{key}"应当介于{min}和{max}之间{max, plural,=1{character}other{characters}}'
-    min: '"{key}"应当至少为{count}{count, plural,=1{character}other{characters}}'
-    max: '"{key}"应当至多为{count}{count, plural,=1{character}other{characters}}'
+    exactly: '"{key}"应当为{count, plural,=1{#字符}other{#字符}}'
+    between: '"{key}"应当介于{min}和{max}之间{max, plural,=1{字符}other{字符}}'
+    min: '"{key}"应当至少为{count}{count, plural,=1{字符}other{字符}}'
+    max: '"{key}"应当至多为{count}{count, plural,=1{字符}other{字符}}'
   number:
     exactly: '"{key}"应当为{val}'
     between: '"{key}"应当介于{min}和{max}之间'
     min: '"{key}"应当至少为{val}'
     max: '"{key}"应当至多为{val}'
-  chars: '"{key}"包含{count, plural,=1{无效字符}other{# invalid characters}}:{chars}'
+  chars: '"{key}"包含{count, plural,=1{无效字符}other{#无效字符}}:{chars}'
   dns:
     doubleHyphen: 不能包含两个连续的连字符
     hostname:
       startDot: '“{key}”不能以点开头'
+      endDot: '"{key}"不能以点结尾'
       empty: '“{key}”至少需一个字符'
       tooLong: '“{key}”不能超过{max}个字符'
+      startNumber: '"{key}"不能以数字开头'
       startHyphen: '“{key}”必须以字母或数字开头'
       endHyphen: '“{key}”必须以字母或数字结尾'
       emptyLabel: '“{key}”不能有两个连续的点'
       tooLongLabel: '“{key}”不能超过{max}个字符'
-      startNumber: '"{key}"不能以数字开头'
     label:
       startHyphen: '“{key}”必须以字母或数字开头'
       endHyphen: '“{key}”必须以字母或数字结尾'
@@ -6090,7 +6124,6 @@ rkeConfigComment:
     "     provider: nginx"
     "     node_selector:"
     "       app: ingress"
-    ""
   network: |
     ""
     "  # 如果您在AWS上使用calico"
