@@ -105,13 +105,13 @@ export default Component.extend({
           }
         ];
 
-        if (remaining === 0) {
-          set(newUse, 'color', 'bg-error');
-        } else {
-          if (get(newUse, 'color') === 'bg-error') {
-            set(newUse, 'color', 'bg-warning');
-          }
-        }
+        // if (remaining === 0) {
+        //   set(newUse, 'color', 'bg-error');
+        // } else {
+        //   if (get(newUse, 'color') === 'bg-error') {
+        //     set(newUse, 'color', 'bg-warning');
+        //   }
+        // }
 
         set(newUse, 'value', value);
         set(quota, 'totalLimits', newTotals);
@@ -135,7 +135,7 @@ export default Component.extend({
         let usedValue = '';
         let max       = '';
         let newUse    = null;
-        let useColorKey = 'bg-warning';
+        let projectUse = get(used, key) || '0';
 
         if ( limit && !limit[key] ) {
           array.push({
@@ -153,23 +153,23 @@ export default Component.extend({
         case 'limitsCpu':
         case 'requestsCpu':
           value     = convertToMillis(value);
-          usedValue = convertToMillis(get(used, key));
+          usedValue = convertToMillis(projectUse);
           max       = convertToMillis(get(currentProjectLimit, key));
           break;
         case 'limitsMemory':
         case 'requestsMemory':
           value     = parseSi(value, defaultIncrement) / defaultDivisor;
-          usedValue = parseSi(get(used, key), defaultIncrement) / defaultDivisor;
+          usedValue = parseSi(projectUse, defaultIncrement) / defaultDivisor;
           max       = parseSi(get(currentProjectLimit, key), defaultIncrement) / defaultDivisor;
           break;
         case 'requestsStorage':
           value     = parseSi(value) / (defaultIncrement ** defaultMultiplier);
-          usedValue = parseSi(get(used, key)) / (defaultIncrement ** defaultMultiplier);
+          usedValue = parseSi(projectUse) / (defaultIncrement ** defaultMultiplier);
           max       = parseSi(get(currentProjectLimit, key)) / (defaultIncrement ** defaultMultiplier);
           break;
         default:
           value     = parseInt(value, defaultRadix);
-          usedValue = parseInt(( get(used, key) || 0 ), defaultRadix);
+          usedValue = parseInt(projectUse, defaultRadix);
           max       = parseInt(get(currentProjectLimit, key), defaultRadix);
           break;
         }
@@ -179,20 +179,16 @@ export default Component.extend({
 
         remaining = ( max - newUse ) > 0 ? ( max - newUse ) : 0;
 
-        if (remaining === 0) {
-          useColorKey = 'bg-error';
-        }
-
         currentProjectUse = [
           {
             // current use
-            color: 'bg-info',
+            color: 'bg-primary',
             label: key,
             value: usedValue,
           },
           {
             // only need the new value here because progress-multi-bar adds this to the previous
-            color: useColorKey,
+            color: 'bg-info',
             label: key,
             value,
           }
