@@ -144,6 +144,64 @@
     </div>
   {{/accordion-list-item}}
 
+  {{#accordion-list-item
+    title=(t 'nodeDriver.vmwarevsphere.vappOptions.title')
+    detail=(t 'nodeDriver.vmwarevsphere.vappOptions.detail')
+    expandAll=expandAll
+    expand=(action expandFn)
+    expandOnInit=true
+  }}
+    <p class="help-block">{{t 'nodeDriver.vmwarevsphere.vappHelp'}}</p>
+    <div class="row">
+      <div class="col span-12">
+        <div class="radio">
+          <label>{{radio-button selection=vappMode value="disabled"}} {{t 'nodeDriver.vmwarevsphere.vappMode.disabled'}}</label>
+        </div>
+        <div class="radio">
+          <label>{{radio-button selection=vappMode value="auto"}} {{t 'nodeDriver.vmwarevsphere.vappMode.auto'}}</label>
+        </div>
+        <div class="radio">
+          <label>{{radio-button selection=vappMode value="manual"}} {{t 'nodeDriver.vmwarevsphere.vappMode.manual'}}</label>
+        </div>
+      </div>
+    </div>
+    {{#if (eq vappMode "manual")}}
+      <div>
+        <div class="row">
+          <div class="col span-4">
+            <label class="acc-label">{{t 'nodeDriver.vmwarevsphere.vappTransport.label'}}</label>
+            {{input type="text" value=config.vappTransport classNames="form-control" placeholder=(t 'nodeDriver.vmwarevsphere.vappTransport.placeholder')}}
+            <p class="help-block">{{t 'nodeDriver.vmwarevsphere.vappTransport.help'}}</p>
+          </div>
+          <div class="col span-4">
+            <label class="acc-label">{{t 'nodeDriver.vmwarevsphere.vappIpprotocol.label'}}</label>
+            {{input type="text" value=config.vappIpprotocol classNames="form-control" placeholder=(t 'nodeDriver.vmwarevsphere.vappIpprotocol.placeholder')}}
+            <p class="help-block">{{t 'nodeDriver.vmwarevsphere.vappIpprotocol.help'}}</p>
+          </div>
+          <div class="col span-4">
+            <label class="acc-label">{{t 'nodeDriver.vmwarevsphere.vappIpallocationpolicy.label'}}</label>
+            {{input type="text" value=config.vappIpallocationpolicy classNames="form-control" placeholder=(t 'nodeDriver.vmwarevsphere.vappIpallocationpolicy.placeholder')}}
+            <p class="help-block">{{t 'nodeDriver.vmwarevsphere.vappIpallocationpolicy.help'}}</p>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col span-12">
+            {{form-key-value
+                allowEmptyValue=false
+                initialArray=initVappArray
+                changedArray=(action "vappPropertyChanged")
+                header=(t 'nodeDriver.vmwarevsphere.vappProperty.label')
+                valuePlaceholder="nodeDriver.vmwarevsphere.vappProperty.value.placeholder"
+                keyPlaceholder="nodeDriver.vmwarevsphere.vappProperty.key.placeholder"
+                addActionLabel="nodeDriver.vmwarevsphere.vappProperty.addActionLabel"
+            }}
+          </div>
+        </div>
+      </div>
+    {{/if}}
+  {{/accordion-list-item}}
+
   <div class="over-hr"><span>{{templateOptionsTitle}}</span></div>
 
   {{form-name-description
