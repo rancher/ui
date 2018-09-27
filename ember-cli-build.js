@@ -86,6 +86,13 @@ module.exports = function(defaults) {
   app.import('node_modules/prismjs/components/prism-json.js');
   app.import('node_modules/ember-source/dist/ember-template-compiler.js');
   app.import('node_modules/ipaddr.js/lib/ipaddr.js');
+  app.import('node_modules/xterm/dist/xterm.js');
+  app.import('node_modules/xterm/dist/addons/fit/fit.js', {
+    using: [{
+      transformation: 'amd',
+      as:             'xterm-fit'
+    }]
+  });
 
   // app.import('vendor/aws-sdk-ec2.js');
   app.import('vendor/aws-sdk-ec2-iam-2.279.1.min.js');
