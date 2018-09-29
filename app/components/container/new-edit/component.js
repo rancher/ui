@@ -355,6 +355,15 @@ export default Component.extend(NewOrEdit, ChildHook, {
       description: get(this, 'description'),
     });
 
+    if (get(pr, 'launchConfig.capAdd.length') === 0) {
+      delete pr.launchConfig.capAdd;
+    }
+
+    if (get(pr, 'launchConfig.capDrop.length') === 0) {
+      delete pr.launchConfig.capDrop;
+    }
+
+
     set(this, 'primaryResource', pr);
     set(this, 'originalPrimaryResource', pr);
 
@@ -378,10 +387,9 @@ export default Component.extend(NewOrEdit, ChildHook, {
         .catch((err) => {
           set(this, 'errors', [Errors.stringify(err)]);
         });
-    })
-      .catch((err) => {
-        set(this, 'errors', [Errors.stringify(err)]);
-      });
+    }).catch((err) => {
+      set(this, 'errors', [Errors.stringify(err)]);
+    });
   },
 
   doneSaving() {
