@@ -301,14 +301,6 @@ var Workload = Resource.extend(DisplayImage, StateCounts, EndpointPorts, {
       cancel(get(this, 'scaleTimer'));
     }
 
-    if (get(this, 'launchConfig.capAdd.length') === 0) {
-      delete this.launchConfig.capAdd;
-    }
-
-    if (get(this, 'launchConfig.capDrop.length') === 0) {
-      delete this.launchConfig.capDrop;
-    }
-
     var timer = later(this, function() {
       this.save().catch((err) => {
         get(this, 'growl').fromError('Error updating scale', err);
