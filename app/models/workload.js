@@ -22,7 +22,6 @@ var Workload = Resource.extend(DisplayImage, StateCounts, EndpointPorts, {
   pods:         hasMany('id', 'pod', 'workloadId'),
 
   scaleTimer:       null,
-  canHaveSidekicks: true,
 
   // @TODO-2.0 cleanup all these...
   isReal:              true,
@@ -72,10 +71,16 @@ var Workload = Resource.extend(DisplayImage, StateCounts, EndpointPorts, {
 
     let choices = [
       {
+        label:    'action.redeploy',
+        icon:     'icon icon-refresh',
+        action:   'redeploy',
+        enabled:  isReal,
+        bulkable: true,
+      },
+      {
         label:   'action.addSidekick',
         icon:    'icon icon-plus-circle',
         action:  'addSidekick',
-        enabled: get(this, 'canHaveSidekicks')
       },
       {
         label:   'action.rollback',
@@ -111,7 +116,7 @@ var Workload = Resource.extend(DisplayImage, StateCounts, EndpointPorts, {
 
     return choices;
   }.property('actionLinks.{activate,deactivate,pause,restart,rollback,garbagecollect}', 'links.{update,remove}',
-    'canHaveSidekicks', 'podForShell', 'isPaused'
+    'podForShell', 'isPaused'
   ),
 
   displayType: function() {
@@ -264,6 +269,11 @@ var Workload = Resource.extend(DisplayImage, StateCounts, EndpointPorts, {
       get(this, 'router').transitionTo('containers.run', { queryParams: { workloadId: get(this, 'id'), } });
     },
 
+    redeploy() {
+      this.updateTimestamp();
+      this.save();
+    },
+
     addSidekick() {
       get(this, 'router').transitionTo('containers.run', {
         queryParams: {
@@ -290,11 +300,23 @@ var Workload = Resource.extend(DisplayImage, StateCounts, EndpointPorts, {
       }
 
       later(() => {
-        window.open(`//${ window.location.host }${ route }?podId=${ podId }&windows=${ windows }&isPopup=true`, '_blank', 'toolbars=0,width=900,height=700,left=200,top=200');
+        const opt = 'toolbars=0,width=900,height=700,left=200,top=200';
+
+        window.open(`//${ window.location.host }${ route }?podId=${ podId }&windows=${ windows }&isPopup=true`, '_blank', opt);
       });
     },
   },
 
+  updateTimestamp() {
+    let obj = get(this, 'annotations');
+
+    if ( !obj ) {
+      obj = {};
+      set(this, 'annotations', obj);
+    }
+
+    obj[C.LABEL.TIMESTAMP] = (new Date()).toISOString().replace(/\.\d+Z$/, 'Z');
+  },
 
   saveScale() {
     if ( get(this, 'scaleTimer') ) {
