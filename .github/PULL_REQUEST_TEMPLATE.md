@@ -1,4 +1,4 @@
-<!-- HTML Comments can be left in place or removed, dealers choice. They are simply present to guide you on your pull-request journey. --> 
+<!-- HTML Comments can be left in place or removed, dealers choice. They are present simply to guide you on your pull-request journey. --> 
 ## Proposed changes
 
 <!-- 
