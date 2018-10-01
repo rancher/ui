@@ -371,6 +371,8 @@ export default Component.extend(NewOrEdit, ChildHook, {
     const self = this;
     const sup = this._super;
 
+    pr.updateTimestamp();
+
     return this.applyHooks('_beforeSaveHooks').then(() => {
       set(pr, 'namespaceId', get(this, 'namespace.id'));
 
