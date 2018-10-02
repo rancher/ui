@@ -35,31 +35,30 @@
         </div>
         {{copy-to-clipboard tooltipText="" buttonText="copyToClipboard.tooltip" clipboardText=value class="with-clip"}}
       {{else}}
-      {{#if (and (eq nodeWhich 'custom') (eq mode 'new'))}}
-        <div class="row">
-          <div class="col span-4">
-            <label class="acc-label">{{t 'clusterNew.rke.windowsSupport.label'}}</label>
-            <div class="radio">
-              <label>
-                {{radio-button selection=windowsSupport value=true }}
-                {{t 'generic.enabled'}}
-              </label>
-            </div>
-            <div class="radio">
-              <label>
-                {{radio-button selection=windowsSupport value=false }}
-                {{t 'generic.disabled'}}
-              </label>
+        {{#if (and (eq nodeWhich 'custom') (eq mode 'new'))}}
+          <div class="row">
+            <div class="col span-4">
+              <label class="acc-label">{{t 'clusterNew.rke.windowsSupport.label'}}</label>
+              <div class="radio">
+                <label>
+                  {{radio-button selection=windowsSupport value=true }}
+                  {{t 'generic.enabled'}}
+                </label>
+              </div>
+              <div class="radio">
+                <label>
+                  {{radio-button selection=windowsSupport value=false }}
+                  {{t 'generic.disabled'}}
+                </label>
+              </div>
             </div>
           </div>
-        </div>
-      {{/if}}
+        {{/if}}
         <div class="row">
           <div class="col span-4">
             <label class="acc-label">{{t 'clusterNew.rke.version.label'}}</label>
             {{new-select
                 content=versionChoices
-                optionLabelPath='value'
                 value=cluster.rancherKubernetesEngineConfig.kubernetesVersion
             }}
           </div>
@@ -95,8 +94,8 @@
             <div class="radio">
               <label>
                 {{!--
-                    {{radio-button selection=nginxIngressProvider value="nginx"}}
-                    --}}
+                  {{radio-button selection=nginxIngressProvider value="nginx"}}
+                  --}}
                 {{radio-button selection=cluster.rancherKubernetesEngineConfig.ingress.provider value="nginx"}}
                 {{t 'generic.enabled'}}
               </label>
@@ -104,8 +103,8 @@
             <div class="radio">
               <label>
                 {{!--
-                    {{radio-button selection=nginxIngressProvider value=null}}
-                    --}}
+                  {{radio-button selection=nginxIngressProvider value=null}}
+                  --}}
                 {{radio-button selection=cluster.rancherKubernetesEngineConfig.ingress.provider value="none"}}
                 {{t 'generic.disabled'}}
               </label>
@@ -116,8 +115,8 @@
             <div class="radio">
               <label>
                 {{!--
-                    {{radio-button selection=monitoringProvider value="metrics-server"}}
-                    --}}
+                  {{radio-button selection=monitoringProvider value="metrics-server"}}
+                  --}}
                 {{radio-button selection=cluster.rancherKubernetesEngineConfig.monitoring.provider value="metrics-server"}}
                 {{t 'generic.enabled'}}
               </label>
@@ -125,8 +124,8 @@
             <div class="radio">
               <label>
                 {{!--
-                    {{radio-button selection=monitoringProvider value=null}}
-                    --}}
+                  {{radio-button selection=monitoringProvider value=null}}
+                  --}}
                 {{radio-button selection=cluster.rancherKubernetesEngineConfig.monitoring.provider value="none"}}
                 {{t 'generic.disabled'}}
               </label>
@@ -137,8 +136,8 @@
             <div class="radio">
               <label class={{unless model.psps.length 'text-muted'}}>
                 {{!--
-                    {{radio-button selection=kubeApiPodSecurityPolicy value=true disabled=(not model.psps.length)}}
-                    --}}
+                  {{radio-button selection=kubeApiPodSecurityPolicy value=true disabled=(not model.psps.length)}}
+                  --}}
                 {{radio-button selection=cluster.rancherKubernetesEngineConfig.services.kubeApi.podSecurityPolicy value=true disabled=(not model.psps.length)}}
                 {{t 'generic.enabled'}}
                 {{#unless model.psps.length}}
@@ -149,8 +148,8 @@
             <div class="radio">
               <label>
                 {{!--
-                    {{radio-button selection=kubeApiPodSecurityPolicy value=false disabled=(not model.psps.length)}}
-                    --}}
+                  {{radio-button selection=kubeApiPodSecurityPolicy value=false disabled=(not model.psps.length)}}
+                  --}}
                 {{radio-button selection=cluster.rancherKubernetesEngineConfig.services.kubeApi.podSecurityPolicy value=false disabled=(not model.psps.length)}}
                 {{t 'generic.disabled'}}
               </label>
@@ -241,11 +240,11 @@
   {{#accordion-list showExpandAll=false as |al expandFn|}}
     {{#if windowsSupport}}
       {{#accordion-list-item
-        title=(t 'clusterNew.rke.system.title')
-        detail=(t 'clusterNew.rke.system.detail')
-        expandOnInit=true
-        expandAll=al.expandAll
-        expand=(action expandFn)
+           title=(t 'clusterNew.rke.system.title')
+           detail=(t 'clusterNew.rke.system.detail')
+           expandOnInit=true
+           expandAll=al.expandAll
+           expand=(action expandFn)
       }}
         <div class="row">
           <div class="col span-6 text-center mt-0 mb-0">
@@ -356,11 +355,11 @@
                         <ul class="list-unstyled">
                           <li>
                             {{#form-user-labels
-                                setLabels=(action 'setLabels')
-                                expandAll=al.expandAll
-                                expand=(action expandFn)
-                                detailKey="formUserLabels.nodeDetail"
-                                as | userLabelArray removeLabel addUserLabel |
+                                 setLabels=(action 'setLabels')
+                                 expandAll=al.expandAll
+                                 expand=(action expandFn)
+                                 detailKey="formUserLabels.nodeDetail"
+                                 as | userLabelArray removeLabel addUserLabel |
                             }}
                               {{#if userLabelArray.length}}
                                 <table class="table fixed no-lines mt-20">
