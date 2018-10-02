@@ -324,7 +324,7 @@ var Workload = Resource.extend(DisplayImage, StateCounts, EndpointPorts, {
     }
 
     var timer = later(this, function() {
-      this.save().catch((err) => {
+      this.save({ data: { scale: get(this, 'scale') } }).catch((err) => {
         get(this, 'growl').fromError('Error updating scale', err);
       });
     }, 500);
