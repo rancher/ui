@@ -24,7 +24,6 @@ var Workload = Resource.extend(DisplayImage, StateCounts, EndpointPorts, {
   scaleTimer:       null,
 
   // @TODO-2.0 cleanup all these...
-  isReal:              true,
   hasPorts:            true,
   canUpgrade:          true,
   canHaveLabels:       true,
@@ -57,24 +56,26 @@ var Workload = Resource.extend(DisplayImage, StateCounts, EndpointPorts, {
     return (get(this, 'type') || '').toLowerCase();
   }),
 
-  canEdit: computed('links.update', 'isReal', function() {
-    return !!get(this, 'links.update') && get(this, 'isReal');
+  canEdit: computed('links.update', 'lcType', function() {
+    const lcType = get(this, 'lcType');
+
+    return !!get(this, 'links.update') && ( lcType !== 'job' );
   }),
 
   availableActions: function() {
-    let a = get(this, 'actionLinks') || {};
+    const a = get(this, 'actionLinks') || {};
 
-    let isReal = get(this, 'isReal');
-    let podForShell = get(this, 'podForShell');
+    const podForShell = get(this, 'podForShell');
 
-    let isPaused = get(this, 'isPaused');
+    const isPaused = get(this, 'isPaused');
+    const canEdit = get(this, 'canEdit');
 
     let choices = [
       {
         label:    'action.redeploy',
         icon:     'icon icon-refresh',
         action:   'redeploy',
-        enabled:  isReal,
+        enabled:  canEdit,
         bulkable: true,
       },
       {
@@ -86,7 +87,7 @@ var Workload = Resource.extend(DisplayImage, StateCounts, EndpointPorts, {
         label:   'action.rollback',
         icon:    'icon icon-history',
         action:  'rollback',
-        enabled: !!a.rollback && isReal
+        enabled: !!a.rollback,
       },
       { divider: true },
       {
@@ -116,7 +117,7 @@ var Workload = Resource.extend(DisplayImage, StateCounts, EndpointPorts, {
 
     return choices;
   }.property('actionLinks.{activate,deactivate,pause,restart,rollback,garbagecollect}', 'links.{update,remove}',
-    'podForShell', 'isPaused'
+    'podForShell', 'isPaused', 'canEdit'
   ),
 
   displayType: function() {
@@ -163,7 +164,7 @@ var Workload = Resource.extend(DisplayImage, StateCounts, EndpointPorts, {
   canScale: computed('lcType', function() {
     let lcType = get(this, 'lcType');
 
-    return  lcType !== 'cronjob' && lcType !== 'daemonset';
+    return lcType !== 'cronjob' && lcType !== 'daemonset' && lcType !== 'job';
   }),
 
   activeIcon: function() {

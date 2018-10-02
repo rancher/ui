@@ -119,29 +119,27 @@
       {{/accordion-list-item}}
     {{/if}}
 
-    {{#if service.isReal}}
-      {{#accordion-list-item
-        title=(t 'containerPage.portsTab.header')
-        detail=(t 'containerPage.portsTab.detail')
-        expandAll=al.expandAll
-        expand=(action expandFn)
-      }}
-        {{container/form-ports
-          initialPorts=service.launchConfig.ports
-          editing=false
-        }}
-      {{/accordion-list-item}}
-
-      {{container/form-scheduling
-        initialHostId=model.workload.nodeId
-        service=service
-        scheduling=service.scheduling
+    {{#accordion-list-item
+      title=(t 'containerPage.portsTab.header')
+      detail=(t 'containerPage.portsTab.detail')
+      expandAll=al.expandAll
+      expand=(action expandFn)
+    }}
+      {{container/form-ports
+        initialPorts=service.launchConfig.ports
         editing=false
-        expandAll=al.expandAll
-        expandFn=expandFn
-        classNames="accordion"
       }}
-    {{/if}}
+    {{/accordion-list-item}}
+
+    {{container/form-scheduling
+      initialHostId=model.workload.nodeId
+      service=service
+      scheduling=service.scheduling
+      editing=false
+      expandAll=al.expandAll
+      expandFn=expandFn
+      classNames="accordion"
+    }}
 
     {{#if service.canHaveHealthCheck}}
       {{#accordion-list-item
@@ -197,17 +195,15 @@
       expandFn=expandFn
     }}
 
-    {{#if service.isReal}}
-      {{container/form-command
-        tagName=''
-        instance=launchConfig
-        service=model.workload
-        initialLabels=launchConfig.labels
-        editing=false
-        expandAll=al.expandAll
-        expandFn=expandFn
-      }}
-    {{/if}}
+    {{container/form-command
+      tagName=''
+      instance=launchConfig
+      service=model.workload
+      initialLabels=launchConfig.labels
+      editing=false
+      expandAll=al.expandAll
+      expandFn=expandFn
+    }}
 
     {{container/form-networking
       classNames="accordion-wrapper"
