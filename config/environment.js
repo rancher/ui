@@ -62,11 +62,11 @@ module.exports = function(environment) {
 
 
     minifyCSS: {
-        enabled: false
+      enabled: false
     },
 
     minifyJS: {
-        enabled: false
+      enabled: false
     },
 
     contentSecurityPolicy: {

@@ -78,9 +78,9 @@ export default Route.extend({
             duration: 100,
             queue:    false,
             easing:   'linear',
-            complete: function() { // eslint-disable-line
+            complete: schedule('afterRender', function() { // eslint-disable-line
               $('#loading-overlay').stop().show().fadeIn({duration: 200, queue: false, easing: 'linear'}); // eslint-disable-line
-            }
+            })
           });
         });
       }
@@ -98,9 +98,9 @@ export default Route.extend({
               duration: 200,
               queue:    false,
               easing:   'linear',
-              complete: function() { // eslint-disable-line
+              complete: schedule('afterRender', function() { // eslint-disable-line
                 $('#loading-underlay').stop().fadeOut({duration: 100, queue: false, easing: 'linear'}); // eslint-disable-line
-              }
+              })
             });
           });
         }
@@ -111,10 +111,7 @@ export default Route.extend({
             set(this, 'hideTimer', next(hide));
           } else {
             // console.log('Loading finished', id, get(this, 'loadingId'));
-            // needed to set this to run after render as there was wierdness wiht new register page
-            scheduleOnce('afterRender', () => {
-              hide();
-            });
+            hide();
           }
         }
       });
