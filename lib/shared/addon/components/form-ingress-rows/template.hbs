@@ -19,23 +19,43 @@
     </div>
 
     <div class="row">
-      <div class="col span-6 mt-0 mb-0">
-        {{#unless rule.new}}
+      <div class="col mt-0 mb-0 {{if (eq mode 'manual') 'span-6' 'span-12'}}" >
+        {{#if editing}}
+          {{#unless rule.new}}
+            <div class="radio">
+              <label>{{radio-button selection=mode value="existing"}} {{t 'formIngress.hostMode.existing' domain=(if existingHost existingHost 'n/a') htmlSafe=true}}</label>
+            </div>
+          {{/unless}}
+          {{#if settings.ingress-ip-domain}}
+            <div class="radio">
+              <label>{{radio-button selection=mode value="automatic"}} {{t 'formIngress.hostMode.automatic' domain=settings.ingress-ip-domain htmlSafe=true}}</label>
+            </div>
+          {{/if}}
           <div class="radio">
-            <label>{{radio-button selection=mode value="existing"}} {{t 'formIngress.hostMode.existing' domain=(if existingHost existingHost 'n/a') htmlSafe=true}}</label>
+            <label>{{radio-button selection=mode value="manual"}} {{t 'formIngress.hostMode.manual'}}</label>
           </div>
-        {{/unless}}
-        {{#if settings.ingress-ip-domain}}
           <div class="radio">
-            <label>{{radio-button selection=mode value="automatic"}} {{t 'formIngress.hostMode.automatic' domain=settings.ingress-ip-domain htmlSafe=true}}</label>
+            <label class="{{if defaultDisabled 'text-muted'}}">{{radio-button selection=mode value="default" disabled=defaultDisabled}} {{t 'formIngress.hostMode.default'}}</label>
           </div>
+        {{else}}
+          {{#if (eq mode "existing")}}
+            <div>
+              <label>{{t 'formIngress.hostMode.existing' domain=(if existingHost existingHost 'n/a') htmlSafe=true}}</label>
+            </div>
+          {{else if (eq mode "automatic")}}
+            <div>
+              <label>{{t 'formIngress.hostMode.automatic' domain=settings.ingress-ip-domain htmlSafe=true}}</label>
+            </div>
+          {{else if (eq mode "manual")}}
+            <div>
+              <label>{{t 'formIngress.hostMode.manual'}}</label>
+            </div>
+          {{else}}
+            <div>
+              <label>{{t 'formIngress.hostMode.default'}}</label>
+            </div>
+          {{/if}}
         {{/if}}
-        <div class="radio">
-          <label>{{radio-button selection=mode value="manual"}} {{t 'formIngress.hostMode.manual'}}</label>
-        </div>
-        <div class="radio">
-          <label class="{{if defaultDisabled 'text-muted'}}">{{radio-button selection=mode value="default" disabled=defaultDisabled}} {{t 'formIngress.hostMode.default'}}</label>
-        </div>
       </div>
 
       {{#if (eq mode "manual")}}
@@ -50,5 +70,10 @@
 
     <hr class="mt-20 mb-20" />
 
-    {{form-ingress-backends ingress=ingress isDefault=isDefault rule=rule editing=editing}}
+    {{form-ingress-backends
+        ingress=ingress
+        isDefault=isDefault
+        rule=rule
+        editing=editing
+    }}
   </div>

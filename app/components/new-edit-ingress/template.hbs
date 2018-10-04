@@ -5,50 +5,50 @@
 <div class="row">
   <div class="col span-11-of-23 mt-0 mb-0">
     {{form-name-description
-      model=ingress
-      nameDisabled=existing
-      namePlaceholder="servicePage.newIngress.form.name.placeholder"
-      descriptionPlaceholder="servicePage.newIngress.form.description.placeholder"
+        model=ingress
+        nameDisabled=existing
+        namePlaceholder="servicePage.newIngress.form.name.placeholder"
+        descriptionPlaceholder="servicePage.newIngress.form.description.placeholder"
     }}
   </div>
 
   <div class="col span-11-of-23 mt-0 mb-0 offset-1-of-23">
     {{form-namespace
-      editing=(and editing (not existing))
-      namespace=namespace
-      errors=namespaceErrors
+        editing=(and editing (not existing))
+        namespace=namespace
+        errors=namespaceErrors
     }}
   </div>
 </div>
 
 <section class="mt-40 horizontal-form container-fluid">
   {{form-ingress-rule
-    ingress=ingress
-    editing=true
+      ingress=ingress
+      editing=true
   }}
   <hr class="mt-30 mb-30" />
 </section>
 
 {{#accordion-list as | al expandFn | }}
   {{form-ssl-termination
-    editing=true
-    ingress=ingress
-    namespace=namespace
-    namespacedCertificates=namespacedCertificates
-    certificates=certificates
-    expandAll=al.expandAll
-    expandFn=expandFn
+      certificates=certificates
+      editing=true
+      expandAll=al.expandAll
+      expandFn=expandFn
+      ingress=ingress
+      namespace=namespace
+      namespacedCertificates=namespacedCertificates
   }}
 
   {{form-labels-annotations
-    classNames="accordion-wrapper"
-    labelErrors=labelErrors
-    initialLabels=ingress.labels
-    setLabels=(action 'setLabels')
-    expandAll=al.expandAll
-    expandFn=expandFn
-    model=ingress
-    annotationErrors=annotationErrors
+      annotationErrors=annotationErrors
+      classNames="accordion-wrapper"
+      expandAll=al.expandAll
+      expandFn=expandFn
+      initialLabels=ingress.labels
+      labelErrors=labelErrors
+      model=ingress
+      setLabels=(action 'setLabels')
   }}
 {{/accordion-list}}
 
