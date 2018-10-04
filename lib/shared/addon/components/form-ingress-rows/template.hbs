@@ -38,23 +38,18 @@
             <label class="{{if defaultDisabled 'text-muted'}}">{{radio-button selection=mode value="default" disabled=defaultDisabled}} {{t 'formIngress.hostMode.default'}}</label>
           </div>
         {{else}}
-          {{#if (eq mode "existing")}}
-            <div>
-              <label>{{t 'formIngress.hostMode.existing' domain=(if existingHost existingHost 'n/a') htmlSafe=true}}</label>
+          <div>
+            <label>{{t 'generic.hostname'}}</label>
+            <div class="mt-5">
+              {{#if (eq mode "default")}}
+                {{t 'formIngress.defaultBackend.mark'}}
+              {{else}}
+                <code>
+                  {{rule.host}}
+                </code>
+              {{/if}}
             </div>
-          {{else if (eq mode "automatic")}}
-            <div>
-              <label>{{t 'formIngress.hostMode.automatic' domain=settings.ingress-ip-domain htmlSafe=true}}</label>
-            </div>
-          {{else if (eq mode "manual")}}
-            <div>
-              <label>{{t 'formIngress.hostMode.manual'}}</label>
-            </div>
-          {{else}}
-            <div>
-              <label>{{t 'formIngress.hostMode.default'}}</label>
-            </div>
-          {{/if}}
+          </div>
         {{/if}}
       </div>
 

@@ -1,10 +1,14 @@
-<select class="{{selectClass}}" onchange={{action (mut selected) value="target.value"}} disabled={{readOnly}}>
-  <option selected={{eq selected null}}>{{t 'schema.inputService.prompt'}}</option>
-  {{#each-in grouped as |group list|}}
-    <optgroup label={{group}}>
-      {{#each list as |svc|}}
-        <option selected={{eq selected svc.id}} value={{svc.id}}>{{svc.name}}</option>
-      {{/each}}
-    </optgroup>
-  {{/each-in}}
-</select>
+{{#if editing}}
+  <select class="{{selectClass}}" onchange={{action (mut selected) value="target.value"}} disabled={{readOnly}}>
+    <option selected={{eq selected null}}>{{t 'schema.inputService.prompt'}}</option>
+    {{#each-in grouped as |group list|}}
+      <optgroup label={{group}}>
+        {{#each list as |svc|}}
+          <option selected={{eq selected svc.id}} value={{svc.id}}>{{svc.name}}</option>
+        {{/each}}
+      </optgroup>
+    {{/each-in}}
+  </select>
+{{else}}
+  {{#link-to "workload" selected}}{{readableWorkload}}{{/link-to}}
+{{/if}}
