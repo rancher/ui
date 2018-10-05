@@ -178,6 +178,15 @@ const rootNav = [
   },
   {
     scope:          'cluster',
+    id:             'cluster-catalogs',
+    localizedLabel: 'nav.admin.catalogs',
+    route:          'authenticated.cluster.cluster-catalogs',
+    ctx:            [getClusterId],
+    resource:       ['catalog', 'cluster-catalog'],
+    resourceScope:  'global',
+  },
+  {
+    scope:          'cluster',
     id:             'cluster-security-roles',
     localizedLabel: 'nav.cluster.members',
     icon:           'icon icon-users',

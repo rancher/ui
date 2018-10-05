@@ -1,21 +1,44 @@
 import { htmlSafe } from '@ember/string';
-import { computed } from '@ember/object';
+import { computed, get } from '@ember/object';
 import { inject as service } from '@ember/service';
 import Resource from 'ember-api-store/models/resource';
 import C from 'ui/utils/constants';
+import { reference } from 'ember-api-store/utils/denormalize';
 
 const Template = Resource.extend({
   scope:    service(),
   settings: service(),
   intl:     service(),
 
-  headers: function() {
-    return { [C.HEADER.PROJECT_ID]: this.get('projects.current.id') };
-  }.property('project.current.id'),
+  catalogRef:     reference('catalogId'),
+  clusterCatalog: reference('clusterCatalogId', 'clusterCatalog', 'store'),
+  projectCatalog: reference('projectCatalogId'),
+
+  displayCatalogId: computed('catalogRef', 'clusterCatalog', 'projectCatalog', function() {
+    const {
+      catalogRef, clusterCatalog, projectCatalog
+    } = this;
+
+    let out = '';
+
+    if (catalogRef && catalogRef.name) {
+      out = catalogRef.name;
+    } else if (clusterCatalog && clusterCatalog.name) {
+      out = clusterCatalog.name;
+    } else if (projectCatalog && projectCatalog.name) {
+      out = projectCatalog.name;
+    }
+
+    return out;
+  }),
+
+  headers: computed('project.current.id', function() {
+    return { [C.HEADER.PROJECT_ID]: get(this, 'projects.current.id') };
+  }),
 
   cleanProjectUrl: computed('links.project', function() {
-    let projectUrl = this.get('links.project');
-    let pattern = new RegExp('^([a-z]+://|//)', 'i');
+    let projectUrl = get(this, 'links.project');
+    let pattern    = new RegExp('^([a-z]+://|//)', 'i');
 
     if (projectUrl) {
       if (!pattern.test(projectUrl)) {
@@ -26,11 +49,11 @@ const Template = Resource.extend({
     return htmlSafe(projectUrl);
   }),
 
-  categoryArray: function() {
-    let out = this.get('categories');
+  categoryArray: computed('category', 'categories.[]', function() {
+    let out = get(this, 'categories');
 
     if ( !out || !out.length ) {
-      let single = this.get('category');
+      let single = get(this, 'category');
 
       if ( single ) {
         out = [single];
@@ -40,42 +63,42 @@ const Template = Resource.extend({
     }
 
     return out;
-  }.property('category', 'categories.[]'),
+  }),
 
-  categoryLowerArray: function() {
-    return this.get('categoryArray').map((x) => (x || '').underscore().toLowerCase());
-  }.property('categoryArray.[]'),
+  categoryLowerArray: computed('categoryArray.[]', function() {
+    return get(this, 'categoryArray').map((x) => (x || '').underscore().toLowerCase());
+  }),
 
-  certifiedType: function() {
+  certifiedType: computed('catalogId', function() {
     let str = null;
-    let labels = this.get('labels');
+    let labels = get(this, 'labels');
 
     if ( labels && labels[C.LABEL.CERTIFIED] ) {
       str = labels[C.LABEL.CERTIFIED];
     }
 
-    if ( str === C.LABEL.CERTIFIED_RANCHER && this.get('catalogId') === C.CATALOG.LIBRARY_KEY ) {
+    if ( str === C.LABEL.CERTIFIED_RANCHER && get(this, 'catalogId') === C.CATALOG.LIBRARY_KEY ) {
       return 'rancher';
     } else if ( str === C.LABEL.CERTIFIED_PARTNER ) {
       return 'partner';
     } else {
       return 'thirdparty';
     }
-  }.property('catalogId'),
+  }),
 
-  certifiedClass: function() {
-    let type = this.get('certifiedType');
+  certifiedClass: computed('certifiedType', function() {
+    let type = get(this, 'certifiedType');
 
-    if ( type === 'rancher' && this.get('settings.isRancher') ) {
+    if ( type === 'rancher' && get(this, 'settings.isRancher') ) {
       return 'badge-rancher-logo';
     } else {
       return `badge-${  type }`;
     }
-  }.property('certifiedType'),
+  }),
 
-  certified: function() {
+  certified: computed('certifiedType', 'catalogId', 'labels', function() {
     let out = null;
-    let labels = this.get('labels');
+    let labels = get(this, 'labels');
 
     if ( labels && labels[C.LABEL.CERTIFIED] ) {
       out = labels[C.LABEL.CERTIFIED];
@@ -84,12 +107,12 @@ const Template = Resource.extend({
     let looksLikeCertified = false;
 
     if ( out ) {
-      let display = this.get('intl').t('catalogPage.index.certified.rancher.rancher');
+      let display = get(this, 'intl').t('catalogPage.index.certified.rancher.rancher');
 
       looksLikeCertified = normalize(out) === normalize(display);
     }
 
-    if ( this.get('catalogId') !== C.CATALOG.LIBRARY_KEY && (out === C.LABEL.CERTIFIED_RANCHER || looksLikeCertified) ) {
+    if ( get(this, 'catalogId') !== C.CATALOG.LIBRARY_KEY && (out === C.LABEL.CERTIFIED_RANCHER || looksLikeCertified) ) {
       // Rancher-certified things can only be in the library catalog.
       out = null;
     }
@@ -98,16 +121,16 @@ const Template = Resource.extend({
     if ( [C.LABEL.CERTIFIED_RANCHER, C.LABEL.CERTIFIED_PARTNER].includes(out) ) {
       let pl = 'pl';
 
-      if ( this.get('settings.isRancher') ) {
+      if ( get(this, 'settings.isRancher') ) {
         pl = 'rancher';
       }
 
-      return this.get('intl').t(`catalogPage.index.certified.${ pl }.${ out }`);
+      return get(this, 'intl').t(`catalogPage.index.certified.${ pl }.${ out }`);
     }
 
     // For custom strings, use what they said.
     return out;
-  }.property('certifiedType', 'catalogId', 'labels'),
+  }),
 
 });
 

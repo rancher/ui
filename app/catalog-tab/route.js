@@ -1,7 +1,6 @@
-import { hash } from 'rsvp';
 import { inject as service } from '@ember/service';
 import Route from '@ember/routing/route';
-import C from 'ui/utils/constants';
+import { get } from '@ember/object';
 
 export default Route.extend({
   access:  service(),
@@ -11,22 +10,23 @@ export default Route.extend({
   beforeModel() {
     this._super(...arguments);
 
-    return hash({ catalogs: this.get('catalog').fetchCatalogs({ headers: { [C.HEADER.PROJECT_ID]: this.get('scope.currentProject.id') }, }), }).then((hash) => {
-      this.set('catalogs', hash.catalogs);
+    return get(this, 'catalog').fetchUnScopedCatalogs().then((hash) => {
+      this.set('catalogs', hash);
     });
   },
 
   model(params) {
     const project = this.modelFor('authenticated.project').get('project');
 
-    return this.get('catalog').fetchTemplates(params)
+    return get(this, 'catalog').fetchTemplates(params)
       .then((res) => {
         res.catalog.forEach((tpl) => {
           let exists = project.get('apps').findBy('externalIdInfo.templateId', tpl.get('id'));
 
           tpl.set('exists', !!exists);
         });
-        res.catalogs = this.get('catalogs');
+
+        res.catalogs = get(this, 'catalogs');
 
         return res;
       });
@@ -34,10 +34,15 @@ export default Route.extend({
 
   resetController(controller, isExiting/* , transition*/) {
     if (isExiting) {
-      controller.set('category', '');
-      controller.set('catalogId', '');
+      controller.setProperties({
+        category:         '',
+        catalogId:        '',
+        projectCatalogId: '',
+        clusterCatalogId: '',
+      })
     }
   },
+
   deactivate() {
     // Clear the cache when leaving the route so that it will be reloaded when you come back.
     this.set('cache', null);
@@ -51,10 +56,11 @@ export default Route.extend({
     },
   },
 
-
   queryParams: {
-    category:  { refreshModel: true },
-    catalogId: { refreshModel: true },
+    category:         { refreshModel: true },
+    catalogId:        { refreshModel: true },
+    clusterCatalogId: { refreshModel: true },
+    projectCatalogId: { refreshModel: true },
   },
 
 });

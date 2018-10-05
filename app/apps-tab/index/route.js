@@ -8,6 +8,13 @@ export default Route.extend({
   catalog: service(),
   store:   service(),
 
+  beforeModel() {
+    this._super(...arguments);
+
+    return get(this, 'catalog').fetchUnScopedCatalogs();
+  },
+
+
   model() {
     return this.get('store').findAll('app')
       .then((apps) => ({ apps, }));
