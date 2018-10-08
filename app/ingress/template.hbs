@@ -18,16 +18,33 @@
 
 <section class="mt-40 horizontal-form container-fluid">
   {{form-ingress-rule
-    ingress=model.ingress
-    editing=false
+      ingress=model.ingress
+      editing=false
   }}
-  <hr class="mt-30 mb-30" />
 </section>
 
-{{form-ssl-termination
-  editing=false
-  ingress=model.ingress
-  namespace=model.ingress.namespace
-  namespacedCertificates=model.namespacedCertificates
-  certificates=model.certificates
-}}
+<hr class="mt-30 mb-30" />
+
+<section class="horizontal-form container-fluid">
+  {{#accordion-list as | al expandFn | }}
+    {{form-ssl-termination
+        editing=false
+        expandAll=al.expandAll
+        expandFn=expandFn
+        ingress=model.ingress
+        namespace=model.ingress.namespace
+        namespacedCertificates=model.namespacedCertificates
+        certificates=model.certificates
+    }}
+
+
+    {{form-labels-annotations
+        classNames="accordion-wrapper"
+        editing=false
+        expandAll=al.expandAll
+        expandFn=expandFn
+        initialLabels=model.ingress.labels
+        model=model.ingress
+    }}
+  {{/accordion-list}}
+</section>

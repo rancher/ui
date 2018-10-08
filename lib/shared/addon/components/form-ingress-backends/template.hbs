@@ -1,6 +1,6 @@
 <div class="clearfix">
-  <label class="acc-label">{{t 'formIngressBackends.label'}}</label>
   {{#if editing}}
+    <label class="acc-label">{{t 'formIngressBackends.label'}}</label>
     <button class="btn bg-link icon-btn" {{action "addPath" "service"}}>
       <span class="darken"><i class="icon icon-plus text-small"></i></span>
       <span>{{t 'formIngressBackends.addServiceLabel'}}</span>
@@ -43,9 +43,23 @@
 
           <td class="divided p-5" data-title="{{t (concat 'formIngressBackends.' path.backendType '.label')}}">
             {{#if (eq path.backendType 'service')}}
-              {{schema/input-dns-record selectClass="input-sm" selectedNamespace=ingress.namespace selected=path.serviceId obj=path.service disabled=(not editing) culsterIpNotNull=false}}
+              {{schema/input-dns-record
+                  culsterIpNotNull=false
+                  disabled=(not editing)
+                  editing=editing
+                  obj=path.service
+                  selectClass="input-sm"
+                  selected=path.serviceId
+                  selectedNamespace=ingress.namespace
+              }}
             {{else if (eq path.backendType 'workload')}}
-              {{schema/input-workload selectClass="input-sm" selectedNamespace=ingress.namespace selected=path.serviceId readOnly=(not editing)}}
+              {{schema/input-workload
+                  editing=editing
+                  readOnly=(not editing)
+                  selectClass="input-sm"
+                  selected=path.serviceId
+                  selectedNamespace=ingress.namespace
+              }}
             {{/if}}
           </td>
 
