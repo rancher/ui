@@ -49,6 +49,7 @@ generic:
   hardware: 硬件
   healthy: 健康
   help: 帮助
+  hostname: 主机名
   id: 用户ID
   image: 镜像
   import: 导入
@@ -226,11 +227,11 @@ appDetailPage:
 podSecurityPoliciesPage:
   index:
     header: Pod安全策略
-    description: 将策略应用于由具有此角色的用户创建的POD。
+    description: 将策略应用于由具有此角色的用户创建的Pod。
     table:
       name: 名称
       created: 创建时间
-      noData: 未定义pod安全策略
+      noData: 未定义Pod安全策略
       noMatch: 没有与当前搜索匹配的Pod安全策略
   addPodSecurityPolicy: 添加策略
   editPodSecurityPolicy: 编辑策略
@@ -241,7 +242,7 @@ podSecurityPoliciesPage:
   new:
     errors:
       nameReq: 名称(必填)
-      nameInExists: 名称已存在， 请使用新的pod安全策略名称。
+      nameInExists: 名称已存在， 请使用新的Pod安全策略名称。
     form:
       name:
         labelText: 名称
@@ -1554,9 +1555,9 @@ ldap:
       labelText: 端口
       checkbox: TLS
     groupSearchBase:
-      labelText: '组搜索起点:'
+      labelText: '用户组搜索起点:'
       placeholder: "例如: ou=Groups,dc=Mycompany,dc=com"
-      helpText: "设置后，会在此搜索起点下搜索组而不会在用户搜索起点下搜索组。"
+      helpText: "设置后，会在此搜索起点下搜索用户组，而不会在用户搜索起点下搜索用户组。"
     userSearchBase:
       labelText: 用户搜索起点
       placeholder: "例如: ou=Users,dc=Mycompany,dc=com"
@@ -3708,7 +3709,7 @@ formPorts:
     privateRequired: 每条映射规则必须设置容器端口。
     publicRequired: 如果指定了主机IP，则需要源端口。
     hostPort:
-      sourcePortRequired: 对于运行pod的主机，必须始终源端口。
+      sourcePortRequired: 对于运行Pod的主机，必须始终源端口。
     loadBalancer:
       sourcePortRequired: 每条规则必须设置源端口。
     mixedIpPort: "Port{ip}:{port}/{proto}有超过一条映射规则。"
@@ -3746,14 +3747,14 @@ formScheduling:
     }
   canRequestHost:
     vm: 在指定主机上运行<b>所有</b>虚拟机
-    containers: 指定主机运行<b>所有pods</b>
-  runSpecific: 在指定主机上运行此pod
+    containers: 指定主机运行<b>所有Pods</b>
+  runSpecific: 在指定主机上运行此Pod
   noRules: 没有规则.
   noToleration: 不容忍节点污点
   autoRun: "在匹配调度规则的每个主机上自动运行"
   autoPick:
     vm: "为每一个虚拟机自动选择符合调度规则的主机"
-    container: "为每一个pod自动选择符合调度规则的主机"
+    container: "为每一个Pod自动选择符合调度规则的主机"
     host: "自动选择符合调度规则的主机"
   addRule: 添加规则
   addCustom: 添加自定义规则
@@ -4002,7 +4003,7 @@ formJobConfig:
     detail: 成功运行Job的Pod的数量。
   parallelism:
     label: Parallelism
-    detail: Job在给定时间内应运行的最大pod数。
+    detail: Job在给定时间内应运行的最大Pod数。
   backoffLimit:
     label: Back Off Limit
     detail: 标记此作业失败之前的重试次数。
@@ -4018,7 +4019,7 @@ formUpgrade:
     orderedReady: 严格按顺序更新并等待准备就绪
     parallel: 启动所有新Pod和停止所有旧Pod并行执行
     onDelete: 仅当手动删除旧Pod时才启动升级新Pod
-    recreate: 删除所有pod，然后重新开始
+    recreate: 删除所有Pod，然后重新开始
     rollingUpdate: 滚动更新
     startFirst: '滚动: 先启动新Pod，再停止旧Pod'
     stopFirst: '滚动: 先停止旧Pod，再启动新Pod'
@@ -4132,7 +4133,7 @@ formAllowedHostPathsPodSecurityPolicy:
 
 formFsGroupPodSecurityPolicy:
   title: FS组策略
-  detail: 分配拥有pod卷的FSGroup
+  detail: 分配拥有Pod卷的FSGroup
   rule:
     mustRunAs: MustRunAs-至少需要指定一个范围，使用第一个范围的最小值作为默认值，对照第一个范围中的第一个ID进行验证。
     runAsAny: RunAsAny - 没有默认值，允许指定任何fsGroup ID。
@@ -4162,7 +4163,7 @@ formRunAsUserPodSecurityPolicy:
   detail: User ID
   rule:
     mustRunAs: MustRunAs - 需要配置一个范围，使用范围的第一个值作为默认值。根据配置的范围进行验证。
-    mustRunAsNonRoot: MustRunAsNonRoot - 要求使用非零runAsUser启动pod，或者在镜像中定义USER指令，不提供默认值。
+    mustRunAsNonRoot: MustRunAsNonRoot - 要求使用非零runAsUser启动Pod，或者在镜像中定义USER指令，不提供默认值。
     runAsAny: RunAsAny - 无默认值，允许任何runAsUser来指定。
   range:
     addLabel: 添加一个范围
@@ -4206,7 +4207,7 @@ formSupplementalGroupsPodSecurityPolicy:
 
 formBasicPodSecurityPolicy:
   title: 基本策略
-  detail: 配置基本的pod安全策略
+  detail: 配置基本的Pod安全策略
   allowPrivilegeEscalation:
     label: 允许提升特权
     enable: '是: 运行允许从其父级升级特权的容器'
@@ -4343,7 +4344,12 @@ loginAzure:
   buttonText: 用Azure AD登录
 
 loginSaml:
-  buttonText: "用{provider}登录"
+  ping:
+    buttonText: "使用Ping登录"
+  adfs:
+    buttonText: "使用AD FS登录"
+  keycloak:
+    buttonText: "使用Keycloak登录"
 
 loginUserPass:
   local: 使用本地用户
@@ -4577,14 +4583,14 @@ modalDrainNode:
   action: Drain
   drain: 'Drain this node:'
   force:
-    helpText: '即使存在不由ReplicationController、ReplicaSet、Job、DaemonSet或StatefulSet管理的pod。'
+    helpText: '即使存在不由ReplicationController、ReplicaSet、Job、DaemonSet或StatefulSet管理的Pod。'
   ignoreDaemonSets:
-    helpText: 即使有DaemonSet管理的pod。
+    helpText: 即使有DaemonSet管理的Pod。
     warning: "默认情况下，Ingress DaemonSet部署在每个节点上。Drain might never succeed if you don't select ignore DaemonSet option."
   deleteLocalData:
-    helpText: 即使有使用emptyDir的pod(当节点耗尽时将删除的本地数据)。
+    helpText: 即使有使用emptyDir的Pod(当节点耗尽时将删除的本地数据)。
   gracePeriod:
-    helpText: 给予每个pod优雅终止的时间段(以秒为单位)。如果为负数，将使用pod指定的默认值。
+    helpText: 给予每个Pod优雅终止的时间段(以秒为单位)。如果为负数，将使用Pod指定的默认值。
     placeholder: '例如: 60'
     label: 宽限期
   timeout:
@@ -5875,6 +5881,7 @@ action:
   move: 移动
   pause: 暂停编排
   pauseAll: 全部暂停
+  redeploy: 重新部署
   remove: 删除
   replay: 重播
   restart: 重启
@@ -5987,7 +5994,7 @@ model:
     domain:
       label: '用户搜索起点:'
       placeholder: "例如: ou=Users,dc=Mycompany,dc=com"
-      help: "仅有该搜索起点下的用户能够访问"
+      help: "仅该搜索起点下的用户能够访问"
   projectMember:
     role:
       member: 成员
