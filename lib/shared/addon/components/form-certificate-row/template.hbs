@@ -1,0 +1,34 @@
+{{#if editing}}
+  <div class="row">
+    <div class="pull-right">
+      <button class="btn bg-transparent text-small vertical-middle" {{action (action removeCert cert)}}>
+        {{t 'formSslTermination.removeCertLabel'}}
+      </button>
+    </div>
+  </div>
+{{/if}}
+<div class="row">
+  <div class="col span-6 mt-0 mb-0">
+    <div class="radio">
+      <label>
+        {{radio-button selection=mode value="default"}} {{t 'formSslTermination.default.label'}}
+      </label>
+    </div>
+    <div class="radio">
+      <label>
+        {{radio-button selection=mode value="custom"}} {{t 'formSslTermination.custom.label'}}
+      </label>
+    </div>
+  </div>
+  <div class="col span-6 mt-0 mb-0">
+    <label class="acc-label">{{t 'formSslTermination.certificate'}}{{#if (or editing (eq mode "custom") )}}{{field-required}}{{/if}}</label>
+    {{new-select
+        classNames="form-control"
+        content=allCertificates
+        optionLabelPath="displayDetailedName"
+        optionValuePath="id"
+        disabled=(or (not editing) (eq mode "default"))
+        value=cert.certificateId
+    }}
+  </div>
+</div>
