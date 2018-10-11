@@ -3,6 +3,7 @@ import { inject as service } from '@ember/service';
 import Resource from 'ember-api-store/models/resource';
 import C from 'ui/utils/constants';
 import { get, computed } from '@ember/object'
+import Identicon from 'identicon.js';
 
 var Principal = Resource.extend({
   intl: service(),

@@ -3,6 +3,7 @@ import { get, set, computed } from '@ember/object';
 import { hasMany } from 'ember-api-store/utils/denormalize';
 import { next } from '@ember/runloop'
 import Resource from 'ember-api-store/models/resource';
+import Identicon from 'identicon.js';
 
 export default Resource.extend({
   router:      service(),

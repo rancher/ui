@@ -1,14 +1,15 @@
 import { next } from '@ember/runloop';
-import { set, get, observer } from '@ember/object';
+import { set, setProperties, get, observer } from '@ember/object';
 import { inject as service } from '@ember/service';
 import Component from '@ember/component';
 import Util from 'ui/utils/util';
 import { alternateLabel } from 'ui/utils/platform';
 import layout from './template';
-import AnsiUp from 'npm:ansi_up';
 import C from 'ui/utils/constants';
 
 const LINES = 500;
+
+var AnsiUp = null;
 
 export default Component.extend({
   scope: service(),
@@ -30,19 +31,15 @@ export default Component.extend({
   init() {
     this._super(...arguments);
 
-    const containerName = get(this, 'containerName') || get(this, 'instance.containers.firstObject.name');
-    const wrapLines = !!get(this, `prefs.${ C.PREFS.WRAP_LINES }`);
+    if (AnsiUp) {
+      this._bootstrap();
+    } else {
+      import('ansi_up').then( (module) => {
+        AnsiUp = module.default;
 
-    set(this, 'wrapLines', wrapLines);
-    set(this, 'containerName', containerName);
-
-    const followTimer = setInterval(() => {
-      if ( get(this, 'isFollow') ) {
-        this.send('scrollToBottom');
-      }
-    }, 1000);
-
-    set(this, 'followTimer', followTimer);
+        this._bootstrap();
+      });
+    }
   },
 
   didInsertElement() {
@@ -114,6 +111,25 @@ export default Component.extend({
     set(this, `prefs.${ C.PREFS.WRAP_LINES }`, get(this, 'wrapLines'));
   }),
 
+  _bootstrap() {
+    setProperties(this, {
+      wrapLines:     !!get(this, `prefs.${ C.PREFS.WRAP_LINES }`),
+      containerName: get(this, 'containerName') || get(this, 'instance.containers.firstObject.name'),
+    })
+
+    this._initTimer();
+  },
+
+  _initTimer() {
+    const followTimer = setInterval(() => {
+      if ( get(this, 'isFollow') ) {
+        this.send('scrollToBottom');
+      }
+    }, 1000);
+
+    set(this, 'followTimer', followTimer);
+  },
+
   exec() {
     var instance = get(this, 'instance');
     const clusterId = get(this, 'scope.currentCluster.id');
@@ -143,7 +159,7 @@ export default Component.extend({
     };
 
     socket.onmessage = (message) => {
-      let ansiup = new AnsiUp.default;
+      let ansiup = new AnsiUp;
 
       set(this, 'status', 'connected');
       const data = AWS.util.base64.decode(message.data).toString();

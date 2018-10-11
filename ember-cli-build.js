@@ -1,6 +1,7 @@
 /* eslint-env node */
 const EmberApp = require('ember-cli/lib/broccoli/ember-app');
 const env      = EmberApp.env();
+const webpack  = require('webpack');
 
 module.exports = function(defaults) {
   // Pull in a few useful environment settings for index.html to use
@@ -16,6 +17,9 @@ module.exports = function(defaults) {
   });
 
   var app = new EmberApp(defaults, {
+    babel: {
+      plugins: [ require('ember-auto-import/babel-plugin') ]
+    },
     'ember-cli-babel': { includePolyfill: true, },
     storeConfigInMeta: false,
     inlineContent:     inline,
@@ -32,7 +36,34 @@ module.exports = function(defaults) {
         }
       }
     },
-    nodeAssets: { 'xterm': { import: ['dist/xterm.css'] } },
+    autoImport: {
+      alias: {
+        'xterm-fit': 'node_modules/xterm/dist/addons/fit/fit.js'
+      },
+      webpack: {
+        externals: { jquery: 'jQuery' },
+        node: {
+          fs: 'empty'
+        },
+        plugins: [
+          new webpack.EnvironmentPlugin({
+            LATER_COV: false
+          }),
+          new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
+        ],
+      }
+    },
+
+    assetLoader: {
+      generateURI(filePath) {
+        // we need to slice the trailing slash off baseAssets because filePath has a leading slash
+        const url = appConfig.baseAssets.slice(0, -1);
+
+        // console.log('file path: ', `${ url }${ filePath }`);
+        return `${ url }${ filePath }`;
+      }
+    },
+
 
     SRI: { enabled: false, },
 
@@ -70,44 +101,24 @@ module.exports = function(defaults) {
   // modules that you would like to import into your application
   // please specify an object with the list of modules as keys
   // along with the exports of each module as its value.
-  app.import('node_modules/async/dist/async.js');
-  app.import('node_modules/d3/d3.js');
-  app.import('node_modules/identicon.js/pnglib.js');
-  app.import('node_modules/identicon.js/identicon.js');
   app.import('node_modules/jgrowl/jquery.jgrowl.css');
-  app.import('node_modules/jgrowl/jquery.jgrowl.js');
-  app.import('node_modules/jsondiffpatch/public/build/jsondiffpatch.js');
-  app.import('node_modules/jsondiffpatch/public/build/jsondiffpatch-formatters.js');
-  app.import('node_modules/jszip/dist/jszip.js')
-  app.import('node_modules/moment/moment.js');
-  app.import('node_modules/prismjs/prism.js');
-  app.import('node_modules/prismjs/components/prism-bash.js');
-  app.import('node_modules/prismjs/components/prism-yaml.js');
-  app.import('node_modules/prismjs/components/prism-json.js');
-  app.import('node_modules/ember-source/dist/ember-template-compiler.js');
-  app.import('node_modules/ipaddr.js/lib/ipaddr.js');
-  app.import('node_modules/xterm/dist/xterm.js');
-  app.import('node_modules/xterm/dist/addons/fit/fit.js', {
-    using: [{
-      transformation: 'amd',
-      as:             'xterm-fit'
-    }]
-  });
+  app.import('node_modules/jsondiffpatch/dist/formatters-styles/html.css');
+  app.import('node_modules/xterm/dist/xterm.css');
+  app.import('vendor/icons/style.css');
 
-  // app.import('vendor/aws-sdk-ec2.js');
+  app.import('node_modules/ember-source/dist/ember-template-compiler.js');
   app.import('vendor/aws-sdk-ec2-iam-2.279.1.min.js');
   app.import('vendor/ember-shortcuts.js');
-  app.import('vendor/file-saver/fileSaver.mini.js');
+  app.import('vendor/aliyun-sdk.js');
+
   app.import('vendor/icons/fonts/rancher-icons.svg',   { destDir: 'assets/fonts/' });
   app.import('vendor/icons/fonts/rancher-icons.ttf',   { destDir: 'assets/fonts/' });
   app.import('vendor/icons/fonts/rancher-icons.woff',  { destDir: 'assets/fonts/' });
-  app.import('vendor/icons/style.css');
   app.import('vendor/json-sanitizer/json-sanitizer.js');
   app.import('vendor/prompt/prompt-v1-latin-300.woff', { destDir: 'assets/fonts/' });
   app.import('vendor/prompt/prompt-v1-latin-300.woff2', { destDir: 'assets/fonts/' });
   app.import('vendor/prompt/prompt-v1-latin-600.woff', { destDir: 'assets/fonts/' });
   app.import('vendor/prompt/prompt-v1-latin-600.woff2', { destDir: 'assets/fonts/' });
-  app.import('vendor/aliyun-sdk.js');
 
   return app.toTree();
 };

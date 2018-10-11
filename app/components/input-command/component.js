@@ -1,7 +1,8 @@
 import { isArray } from '@ember/array';
 import TextField from '@ember/component/text-field';
-import ShellQuote from 'npm:shell-quote'
 import layout from './template';
+
+const ShellQuote = window.ShellQuote;
 
 export const OPS = ['||', '&&', ';;', '|&', '&', ';', '(', ')', '|', '<', '>'];
 export function reop(xs) {

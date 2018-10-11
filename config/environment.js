@@ -62,11 +62,11 @@ module.exports = function(environment) {
 
 
     minifyCSS: {
-        enabled: false
+      enabled: false
     },
 
     minifyJS: {
-        enabled: false
+      enabled: false
     },
 
     contentSecurityPolicy: {
@@ -79,7 +79,8 @@ module.exports = function(environment) {
       'frame-src':  "'self' releases.rancher.com",
 
       // Allow connect to anywhere, for console and event stream socket
-      'connect-src': '*'
+      'connect-src': '*',
+      'unsafe-eval': "'self' releases.rancher.com"
     },
 
     APP: {

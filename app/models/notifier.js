@@ -3,6 +3,7 @@ import { inject as service } from '@ember/service';
 import {  get, computed } from '@ember/object';
 import { hash } from 'rsvp';
 import C from 'ui/utils/constants';
+import moment from 'moment';
 
 export default Resource.extend({
   growl:        service(),
