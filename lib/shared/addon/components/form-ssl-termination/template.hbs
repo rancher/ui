@@ -1,46 +1,35 @@
 {{#accordion-list-item
-  title=(t 'formSslTermination.title')
-  detail=(t 'formSslTermination.detail' appName=settings.appName)
-  status=status
-  statusClass=statusClass
-  expandAll=expandAll
-  expand=(action expandFn)
+     title=(t 'formSslTermination.title')
+     detail=(t 'formSslTermination.detail' appName=settings.appName)
+     status=status
+     statusClass=statusClass
+     expandAll=expandAll
+     expand=(action expandFn)
 }}
-  {{#if allCertificates.length}}
-    {{#each certs as |cert|}}
-      <div class="box mb-10 pt-5">
-        {{#if editing}}
-          <div class="row">
-            <div class="pull-right">
-              <button class="btn bg-transparent text-small vertical-middle" {{action "removeCert" cert}}>
-                {{t 'formSslTermination.removeCertLabel'}}
-              </button>
-            </div>
-          </div>
-        {{/if}}
-        <div class="row">
-          <div class="col span-11-of-23 mt-0 mb-0">
-            <label class="acc-label">{{t 'formSslTermination.certificate'}}{{#if editing}}{{field-required}}{{/if}}</label>
-              {{new-select
-                classNames="form-control"
-                prompt=(t 'formSslTermination.defaultCertificate.prompt')
-                content=allCertificates
-                optionLabelPath="displayDetailedName"
-                optionValuePath="id"
-                disabled=(not editing)
-                value=cert.certificateId
-              }}
-          </div>
-        </div>
-        <hr class="mt-20 mb-20" />
-        {{form-ssl-rows editing=editing hosts=cert.hosts}}
-      </div>
-    {{else}}
-      <span class="text-muted">{{t 'formSslTermination.noCertificatesConfiged'}}</span>
-    {{/each}}
+  {{#each certs as |cert index|}}
+    <div class="mb-10 pt-5">
+      {{form-certificate-row
+          cert=cert
+          allCertificates=allCertificates
+          editing=editing
+          removeCert=(action "removeCert")
+      }}
+      <hr class="mt-20 mb-20" />
+      {{form-ssl-rows
+          editing=editing
+          hosts=cert.hosts
+      }}
+      <hr />
+    </div>
   {{else}}
-    <span class="text-muted">{{t 'formSslTermination.noCertificates'}}</span>
-  {{/if}}
+    <div class="text-center">
+      <div class="text-muted mb-20">{{t 'formSslTermination.noCertificatesConfiged'}}</div>
+      <button class="btn bg-link icon-btn inline-block " {{action "addCert"}}>
+        <span class="darken"><i class="icon icon-plus text-small"></i></span>
+        <span>{{t 'formSslTermination.addCertLabel'}}</span>
+      </button>
+    </div>
+  {{/each}}
   {{#if (and editing allCertificates.length)}}
     <div class="row">
       <button class="btn bg-link icon-btn inline-block pull-right" {{action "addCert"}}>
