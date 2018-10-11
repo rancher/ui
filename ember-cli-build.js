@@ -37,9 +37,6 @@ module.exports = function(defaults) {
       }
     },
     autoImport: {
-      alias: {
-        'xterm-fit': 'node_modules/xterm/dist/addons/fit/fit.js'
-      },
       webpack: {
         externals: { jquery: 'jQuery' },
         node: {
