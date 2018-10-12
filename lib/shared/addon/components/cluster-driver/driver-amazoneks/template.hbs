@@ -127,19 +127,46 @@
     }}
       <div class="row">
         <div class="col span-6">
+          <label class="acc-label">{{t 'nodeDriver.amazoneks.associateWorkerNodePublicIp.title'}}</label>
+          {{#if (or (eq step 3) (eq step 4))}}
+            <div class="radio">
+              <label>
+                {{radio-button selection=config.associateWorkerNodePublicIp value=true}}
+                {{t 'nodeDriver.amazoneks.associateWorkerNodePublicIp.radio.default'}}
+              </label>
+            </div>
+            <div class="radio">
+              <label>
+                {{radio-button selection=config.associateWorkerNodePublicIp value=false}}
+                {{t 'nodeDriver.amazoneks.associateWorkerNodePublicIp.radio.off'}}
+              </label>
+            </div>
+          {{else}}
+            {{#if (eq config.associateWorkerNodePublicIp true)}}
+              <div>
+                {{t 'nodeDriver.amazoneks.associateWorkerNodePublicIp.radio.default'}}
+              </div>
+            {{else}}
+              <div>
+                {{t 'nodeDriver.amazoneks.associateWorkerNodePublicIp.radio.off'}}
+              </div>
+            {{/if}}
+          {{/if}}
+        </div>
+        <div class="col span-6">
           <label class="acc-label">{{t 'nodeDriver.amazoneks.vpc.title'}}</label>
           {{#if (or (eq step 3) (eq step 4))}}
             <div class="radio">
-              <div class="radio">
-                <label>
-                  {{radio-button selection=vpcSubnetMode value="default"}}
-                  {{t 'nodeDriver.amazoneks.vpc.radio.default'}}
-                </label>
-                <label>
-                  {{radio-button selection=vpcSubnetMode value="custom"}}
-                  {{t 'nodeDriver.amazoneks.vpc.radio.custom'}}
-                </label>
-              </div>
+              <label>
+                {{radio-button selection=vpcSubnetMode value="default" disabled=(eq config.associateWorkerNodePublicIp false)}}
+                {{t 'nodeDriver.amazoneks.vpc.radio.default'}}
+              </label>
+            </div>
+            <div class="radio">
+              <label>
+                {{radio-button selection=vpcSubnetMode value="custom" disabled=(eq config.associateWorkerNodePublicIp false)}}
+                {{t 'nodeDriver.amazoneks.vpc.radio.custom'}}
+              </label>
             </div>
             {{#unless (eq vpcSubnetMode 'default')}}
               {{new-select
