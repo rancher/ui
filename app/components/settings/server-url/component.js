@@ -11,6 +11,10 @@ export default Component.extend({
   router:           service(),
 
   layout,
+
+  cancel:            null,
+  popupMode:        false,
+  initServerUrl:    null,
   serverUrl:        null,
   serverUrlSetting: null,
   setServerUrl:     false,
@@ -22,8 +26,12 @@ export default Component.extend({
 
   init() {
     this._super(...arguments);
-    if (isEmpty(get(this, 'serverUrl'))) {
+    const initServerUrl = get(this, 'initServerUrl');
+
+    if ( isEmpty(initServerUrl) ) {
       set(this, 'serverUrl', window.location.host);
+    } else {
+      set(this, 'serverUrl', initServerUrl);
     }
   },
   didInsertElement() {
@@ -46,8 +54,16 @@ export default Component.extend({
 
       set(setting, 'value', `${ SCHEME }${ get(this, 'serverUrl') }`);
       setting.save().then(() => {
-        get(this, 'router').replaceWith('authenticated');
+        if ( !get(this, 'popupMode') ) {
+          get(this, 'router').replaceWith('authenticated');
+        } else {
+          this.send('cancel');
+        }
       });
     },
+
+    cancel() {
+      this.sendAction('cancel');
+    }
   },
 });

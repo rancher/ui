@@ -46,8 +46,11 @@
         </select>
       {{else if (eq model.kind 'url')}}
         {{settings/server-url
-            serverUrlSetting=value
-            serverUrl=model.obj.value
+            serverUrlSetting=model.obj
+            initServerUrl=model.obj.value
+            popupMode=true
+            showHeader=false
+            cancel=(action 'cancel')
         }}
       {{else}}
         {{input
@@ -60,4 +63,6 @@
   </div>
 </section>
 
-{{save-cancel editing=true saveDisabled=removing save="save" cancel="cancel"}}
+{{#unless (eq model.kind 'url')}}
+  {{save-cancel editing=true saveDisabled=removing save="save" cancel="cancel"}}
+{{/unless}}

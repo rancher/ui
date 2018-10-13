@@ -5,7 +5,9 @@
   </div>
 {{/if}}
 <form class="horizontal-form container-fluid text-left" {{action 'saveServerUrl' on="submit"}}>
-  <label for="server-url" class="acc-label">{{t 'generic.url'}}</label>
+  {{#unless popupMode}}
+    <label for="server-url" class="acc-label">{{t 'generic.url'}}</label>
+  {{/unless}}
   <div class="input-group">
     <span class="input-group-addon bg-default">
       <label>{{scheme}}</label>
@@ -56,9 +58,10 @@
       errors=errors
   }}
   {{save-cancel
-      cancelDisabled=true
+      cancelDisabled=(not popupMode)
       editLabel="serverUrl.button.save"
       editing=true
+      cancel="cancel"
       save="saveServerUrl"
       saveDisabled=(or urlInvalid (not serverUrl null))
   }}
