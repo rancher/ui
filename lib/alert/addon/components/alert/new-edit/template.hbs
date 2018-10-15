@@ -4,9 +4,9 @@
 <div class="row">
   <div class="col span-12 pt-0 mt-0">
     {{form-name-description
-      name=newAlert.name
+      name=alertGroup.name
       nameDisabled=false
-      description=newAlert.description
+      description=alertGroup.description
       bothColClass="col span-6 mt-0"
       colClass="col span-12 mt-0"
     }}
@@ -14,26 +14,18 @@
 </div>
 
 <div class="">
-  {{# if (eq pageScope 'cluster')}}
-    {{alert/form-cluster-rules
-        pageScope=pageScope
-        isCreate=isCreate
-        model=newAlert
-    }}
-  {{else if (eq pageScope 'project')}}
-    {{alert/form-project-rules
-        pageScope=pageScope
-        isCreate=isCreate
-        model=newAlert
-    }}
-  {{else}}
-    <div> Oops, it's impossible! </div>
-  {{/if}}
+  {{alert/form-alert-rules
+      pageScope=pageScope
+      isCreate=isCreate
+      alertRules=alertRules
+      metrics=metrics
+      monitoringEnabled=monitoringEnabled
+  }}
   <hr/>
   {{alert/form-recipients
       pageScope=pageScope
       isCreate=isCreate
-      model=newAlert
+      model=alertGroup
   }}
 </div>
 
@@ -49,18 +41,27 @@
   <div class="box">
     <div class="row">
       <div class="col span-4">
-        <label class="acc-label">{{t 'alertPage.newOrEdit.initialWait'}}</label>
-        {{alert/time-duration value=newAlert.initialWaitSeconds}}
+        <label class="acc-label">{{t 'alertPage.newOrEdit.groupWaitSeconds.label'}}</label>
+        {{alert/time-duration value=alertGroup.groupWaitSeconds}}
         <p class="text-info text-small">
-          {{t 'alertPage.newOrEdit.initialWaitHelpText'}}
+          {{t 'alertPage.newOrEdit.groupWaitSeconds.helpText'}}
         </p>
       </div>
 
       <div class="col span-4 offset-2">
-        <label class="acc-label">{{t 'alertPage.newOrEdit.interval'}}</label>
-        {{alert/time-duration value=newAlert.repeatIntervalSeconds}}
+        <label class="acc-label">{{t 'alertPage.newOrEdit.groupIntervalSeconds.label'}}</label>
+        {{alert/time-duration value=alertGroup.groupIntervalSeconds}}
         <p class="text-info text-small">
-          {{t 'alertPage.newOrEdit.repeatIntervalHelpText'}}
+          {{t 'alertPage.newOrEdit.groupIntervalSeconds.helpText'}}
+        </p>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col span-4">
+        <label class="acc-label">{{t 'alertPage.newOrEdit.repeatIntervalSeconds.label'}}</label>
+        {{alert/time-duration value=alertGroup.repeatIntervalSeconds}}
+        <p class="text-info text-small">
+          {{t 'alertPage.newOrEdit.repeatIntervalSeconds.helpText'}}
         </p>
       </div>
     </div>

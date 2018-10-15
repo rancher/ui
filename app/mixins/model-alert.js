@@ -16,6 +16,10 @@ export default Mixin.create({
     return this.get('combinedState') || this.get('alertState') || 'unknown';
   }),
 
+  isAlertRule: computed('type', function() {
+    return (get(this, 'type') || '').endsWith('Rule');
+  }),
+
   init() {
     const stateMap = {
       'muted':                    {
@@ -43,8 +47,8 @@ export default Mixin.create({
     return intl.t(`alertPage.targetTypes.${ t }`);
   }),
 
-  resourceKind: computed('targetEvent.resourceKind', function() {
-    const rk = get(this, 'targetEvent.resourceKind');
+  resourceKind: computed('eventRule.resourceKind', function() {
+    const rk = get(this, 'eventRule.resourceKind');
 
     return get(this, 'intl').t(`alertPage.resourceKinds.${ rk }`);
   }),
@@ -128,39 +132,44 @@ export default Mixin.create({
     },
   },
 
-  availableActions: computed('actionLinks.{mute,unmute,activate,deactivate}', function() {
-    // let al = this.get('actionlinks');
+  availableActions: computed('actionLinks.{mute,unmute,activate,deactivate}', 'isAlertRule', function() {
     const state = this.get('alertState');
+    const isAlertRule = get(this, 'isAlertRule');
+    let out = [];
 
-    return [
-      {
-        label:    'action.mute',
-        action:   'mute',
-        enabled:  state === 'alerting',
-        icon:     'icon icon-mute',
-        bulkable: true,
-      },
-      {
-        label:    'action.unmute',
-        action:   'unmute',
-        icon:     'icon icon-unmute',
-        enabled:  state === 'muted',
-        bulkable: true,
-      },
-      {
-        label:    'action.deactivate',
-        action:   'deactivate',
-        icon:     'icon icon-pause',
-        enabled:  state === 'active',
-        bulkable: true,
-      },
-      {
-        label:    'action.activate',
-        icon:     'icon icon-play',
-        action:   'activate',
-        enabled:  state === 'inactive',
-        bulkable: true,
-      },
-    ];
+    if ( isAlertRule ) {
+      out = [
+        {
+          label:    'action.mute',
+          action:   'mute',
+          enabled:  state === 'alerting',
+          icon:     'icon icon-mute',
+          bulkable: true,
+        },
+        {
+          label:    'action.unmute',
+          action:   'unmute',
+          icon:     'icon icon-unmute',
+          enabled:  state === 'muted',
+          bulkable: true,
+        },
+        {
+          label:    'action.deactivate',
+          action:   'deactivate',
+          icon:     'icon icon-pause',
+          enabled:  state === 'active',
+          bulkable: true,
+        },
+        {
+          label:    'action.activate',
+          icon:     'icon icon-play',
+          action:   'activate',
+          enabled:  state === 'inactive',
+          bulkable: true,
+        },
+      ];
+    }
+
+    return out;
   }),
 });

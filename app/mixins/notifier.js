@@ -12,8 +12,8 @@ export default Mixin.create({
     return notifiers.filterBy('id', id).get('firstObject');
   },
 
-  recipientsTip: computed('notifiers.@each.{id,displayName}', 'model.recipients.@each.{length,notifierType,recipient,notifierId}', function() {
-    const recipients = get(this, 'model.recipients') || [];
+  recipientsTip: computed('notifiers.@each.{id,displayName}', 'alertGroup.recipients.@each.{length,notifierType,recipient,notifierId}', function() {
+    const recipients = get(this, 'alertGroup.recipients') || [];
     const out = recipients.map((recipient) => {
       const notifierId = get(recipient, 'notifierId');
       const notifier = this.getNotifierById(notifierId);

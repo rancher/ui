@@ -9,14 +9,24 @@
   searchText=searchText
   descending=descending
   headers=headers
+  groupByKey="groupId"
+  groupByRef="group"
   body=filteredAlerts
   as |sortable kind row dt|
 }}
   {{#if (eq kind "row")}}
     {{#if (eq pageScope 'cluster')}}
-      {{cluster-alert-row notifiers=filteredNotifiers model=row}}
+      {{cluster-alert-row notifiers=filteredNotifiers model=row
+                          dt=dt
+                          canExpand=false
+                          groups=groups
+      }}
     {{else if (eq pageScope 'project')}}
-      {{project-alert-row notifiers=filteredNotifiers model=row}}
+      {{project-alert-row notifiers=filteredNotifiers model=row
+                          dt=dt
+                          canExpand=false
+                          groups=groups
+      }}
     {{else}}
       <div>Oops, it's impossible</div>
     {{/if}}
@@ -28,5 +38,7 @@
     <tr>
       <td colspan="{{sortable.fullColspan}}" class="text-center text-muted pt-20 pb-20">{{t 'alertPage.index.table.noData'}}</td>
     </tr>
+  {{else if (eq kind "group")}}
+    {{alert/alert-group model=row fullColspan=sortable.fullColspan groups=groups noGroup="alertPage.index.table.noGroup"}}
   {{/if}}
 {{/sortable-table}}
