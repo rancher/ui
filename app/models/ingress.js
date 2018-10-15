@@ -4,14 +4,15 @@ import { reference } from 'ember-api-store/utils/denormalize';
 import { inject as service } from '@ember/service';
 
 export default Resource.extend({
-  clusterStore: service(),
-  router:       service(),
+  clusterStore:  service(),
+  router:        service(),
 
-  type: 'ingress',
+  type:          'ingress',
 
-  canClone: true,
+  canClone:      true,
+  canHaveLabels: true,
 
-  namespace: reference('namespaceId', 'namespace', 'clusterStore'),
+  namespace:     reference('namespaceId', 'namespace', 'clusterStore'),
 
   targets: computed('rules.@each.paths', function() {
     const out = [];
