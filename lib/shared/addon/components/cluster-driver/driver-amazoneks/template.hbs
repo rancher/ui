@@ -7,8 +7,8 @@
        expandOnInit=true
   }}
     <div class="row">
-      <div class="col span-4">
-        <label class="acc-label">{{t 'nodeDriver.amazonec2.region.label'}}</label>
+      <div class="col span-3">
+        <label class="acc-label">{{t 'nodeDriver.amazoneks.region.label'}}</label>
         {{#if (eq step 1)}}
           <select class="form-control" onchange={{action (mut config.region) value="target.value"}}>
             {{#each regionChoices as |choice|}}
@@ -20,28 +20,37 @@
         {{/if}}
       </div>
 
-      <div class="col span-4">
-        <label class="acc-label">{{t 'nodeDriver.amazonec2.accessKey.label'}}</label>
+      <div class="col span-3">
+        <label class="acc-label">{{t 'nodeDriver.amazoneks.accessKey.label'}}</label>
         {{#if (eq step 1)}}
-          {{input type="text" name="username" classNames="form-control" placeholder=(t 'nodeDriver.amazonec2.accessKey.placeholder') value=config.accessKey}}
+          {{input type="text" name="username" classNames="form-control" placeholder=(t 'nodeDriver.amazoneks.accessKey.placeholder') value=config.accessKey}}
         {{else}}
           <div>{{config.accessKey}}</div>
         {{/if}}
       </div>
 
-      <div class="col span-4">
-        <label class="acc-label">{{t 'nodeDriver.amazonec2.secretKey.label'}}</label>
+      <div class="col span-3">
+        <label class="acc-label">{{t 'nodeDriver.amazoneks.secretKey.label'}}</label>
         {{#if (eq step 1)}}
-          {{input type="password" name="password" classNames="form-control" placeholder=(t 'nodeDriver.amazonec2.secretKey.placeholder') value=config.secretKey}}
+          {{input type="password" name="password" classNames="form-control" placeholder=(t 'nodeDriver.amazoneks.secretKey.placeholder') value=config.secretKey}}
         {{else}}
-          <div class="text-muted text-italic">{{t 'nodeDriver.amazonec2.secretKey.provided'}}</div>
+          <div class="text-muted text-italic">{{t 'nodeDriver.amazoneks.secretKey.provided'}}</div>
+        {{/if}}
+      </div>
+
+      <div class="col span-3">
+        <label class="acc-label">{{t 'nodeDriver.amazoneks.sessionToken.label' htmlSafe=true}}</label>
+        {{#if (eq step 1)}}
+          {{input type="password" name="session-token" classNames="form-control" placeholder=(t 'nodeDriver.amazoneks.sessionToken.placeholder') value=config.sessionToken}}
+        {{else}}
+          <div class="text-muted text-italic">{{t 'nodeDriver.amazoneks.sessionToken.provided'}}</div>
         {{/if}}
       </div>
     </div>
 
     {{#if (eq step 1)}}
       <div class="row">
-        <div class="span-8 offset-4">
+        <div class="span-9 offset-3">
           <p class="text-info text-small m-0">{{t 'nodeDriver.amazonec2.access.help'}}</p>
         </div>
       </div>
