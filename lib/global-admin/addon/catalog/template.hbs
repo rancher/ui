@@ -94,65 +94,6 @@
   </div>
 </div>
 
-<section class="header clearfix">
-  <h1>{{t 'catalogSettings.more.header'}}</h1>
-  <div>
-    <p>{{t 'catalogSettings.more.helpText.header' htmlSafe=true}}</p>
-    <ul class="">
-      <li>{{t 'catalogSettings.more.helpText.help-name' htmlSafe=true}}</li>
-      <li>
-        <span>{{t 'catalogSettings.more.helpText.help-repo' htmlSafe=true}}</span>
-        <ul>
-          <li>{{t 'catalogSettings.more.helpText.help-git' appName=settings.appName htmlSafe=true}}</li>
-          <li>{{t 'catalogSettings.more.helpText.help-chart' htmlSafe=true}}</li>
-        </ul>
-      </li>
-      <li>{{t 'catalogSettings.more.helpText.help-branch' htmlSafe=true}}</li>
-    </ul>
-  </div>
-</section>
-
-{{#sortable-table
-  tableClassNames="bordered"
-  paging=true
-  pagingLabel="pagination.catalog"
-  descending=descending
-  headers=headers
-  body=custom
-  sortBy=sortBy
-  rightActions=true
-  as |sortable kind row dt|
+{{custom-catalog
+    catalogs=custom
 }}
-  {{#if (eq kind "row")}}
-    <tr class="main-row">
-      <td class="row-check" valign="middle" style="padding-top: 2px;">
-        {{check-box nodeId=row.id}}
-      </td>
-      <td data-title="{{dt.state}}" class="state">
-        {{badge-state model=row}}
-      </td>
-      <td data-title="{{dt.name}}">
-        {{row.name}}
-      </td>
-      <td data-title="{{dt.kind}}">
-        {{row.displayKind}}
-      </td>
-      <td data-title="{{dt.url}}">
-        <a href="{{row.url}}" target="_blank" rel="nofollow noopener">{{row.url}}</a>
-      </td>
-      <td data-title="{{dt.branch}}">
-        {{row.branch}}
-      </td>
-      <td data-title="{{dt.actions}}" class="actions">
-        {{action-menu model=row}}
-      </td>
-    </tr>
-    {{#if row.showTransitioningMessage}}
-      {{error-sub-row fullColspan=sortable.fullColspan model=row}}
-    {{/if}}
-  {{else if (eq kind "nomatch")}}
-    <tr><td colspan="{{sortable.fullColspan}}" class="text-center text-muted pt-20 pb-20">{{t 'catalogSettings.more.noMatch'}}</td></tr>
-  {{else if (eq kind "norows")}}
-    <tr><td colspan="{{sortable.fullColspan}}" class="text-center text-muted pt-20 pb-20">{{t 'catalogSettings.more.noData'}}</td></tr>
-  {{/if}}
-{{/sortable-table}}

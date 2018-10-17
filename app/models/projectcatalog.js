@@ -3,9 +3,12 @@ import { inject as service } from '@ember/service';
 import { computed, get } from '@ember/object';
 import { ucFirst } from 'shared/utils/util';
 import C from 'ui/utils/constants';
+import { reference } from 'ember-api-store/utils/denormalize';
 
 export default Resource.extend({
   modalService: service('modal'),
+  project:      reference('projectId'),
+
 
   displayKind: computed('kind', function() {
     return ucFirst(get(this, 'kind'));
@@ -23,7 +26,7 @@ export default Resource.extend({
     edit() {
       get(this, 'modalService').toggleModal('modal-edit-catalog', {
         model: this,
-        scope: ''
+        scope: 'project'
       });
     },
 
@@ -32,7 +35,7 @@ export default Resource.extend({
 
       get(this, 'modalService').toggleModal('modal-edit-catalog', {
         model: clone,
-        scope: ''
+        scope: 'project'
       });
     }
   },

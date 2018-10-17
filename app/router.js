@@ -55,6 +55,7 @@ Router.map(function() {
     this.route('cluster', { path: '/c/:cluster_id' }, function() {
       this.route('index', { path: '/' });
       this.route('edit');
+      this.route('cluster-catalogs', { path: '/catalogs' })
 
       this.route('nodes', function() {
         this.route('index', { path: '/' });
@@ -169,6 +170,8 @@ Router.map(function() {
       });
 
 
+      this.route('project-catalogs', { path: '/catalogs' });
+
       // Catalog
       this.route('apps-tab', {
         path:           '/apps',
@@ -176,6 +179,7 @@ Router.map(function() {
       }, function() {
         this.route('index', { path: '/' });
         this.route('detail', { path: '/:app_id' });
+
 
         this.route('catalog-tab', {
           path:           '/catalog',
