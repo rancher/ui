@@ -180,7 +180,8 @@ const App = Application.extend({
           'ingresses.index':                          'ingresses.index',
           'containers.index':                         'containers.index',
           'authenticated.project.pipeline.pipeline':  'authenticated.project.pipeline.pipeline',
-          'authenticated.project.pipeline.pipelines': 'authenticated.project.pipeline.pipelines'
+          'authenticated.project.pipeline.pipelines': 'authenticated.project.pipeline.pipelines',
+          'notifier':                                 'authenticated.cluster.notifier',
         }
       }
     },
