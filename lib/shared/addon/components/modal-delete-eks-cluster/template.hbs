@@ -1,0 +1,55 @@
+<div class="container-header-text">
+  <h3>{{t 'deleteEksCluster.title' clusterName=primaryResource.displayName}}</h3>
+  <div class="row">
+    {{banner-message color='bg-secondary' message=(t 'deleteEksCluster.help')}}
+  </div>
+</div>
+
+<section class="horizontal-form container-fluid">
+  <div class="row">
+    <div class="col span-6">
+      <label class="acc-label">{{t 'deleteEksCluster.accessKey.label'}}</label>
+      {{input
+          type="text"
+          name="username"
+          classNames="form-control"
+          placeholder=(t 'deleteEksCluster.accessKey.placeholder')
+          value=primaryResource.amazonElasticContainerServiceConfig.accessKey
+      }}
+    </div>
+
+    <div class="col span-6">
+      <label class="acc-label">{{t 'deleteEksCluster.secretKey.label'}}</label>
+      {{input
+          type="password"
+          name="password"
+          classNames="form-control"
+          placeholder=(t 'deleteEksCluster.secretKey.placeholder')
+          value=primaryResource.amazonElasticContainerServiceConfig.secretKey
+      }}
+    </div>
+  </div>
+  <div class="row">
+    <div class="col span-12">
+      <label class="acc-label">{{t 'deleteEksCluster.sessionToken.deleteLabel'}}</label>
+      {{input
+          type="password"
+          name="session-token"
+          classNames="form-control"
+          placeholder=(t 'deleteEksCluster.sessionToken.placeholder')
+          value=primaryResource.amazonElasticContainerServiceConfig.sessionToken
+      }}
+    </div>
+  </div>
+</section>
+
+{{top-errors errors=errors}}
+
+<div class="footer-actions">
+  {{save-cancel
+      cancel="cancel"
+      createLabel="deleteEksCluster.updateKeys"
+      save="confirmKeys"
+      savingLabel="deleteEksCluster.updatingKeys"
+  }}
+</div>

@@ -1,11 +1,12 @@
 import { get, set, computed } from '@ember/object';
-
 import { inject as service } from '@ember/service';
 import Resource from 'ember-api-store/models/resource';
 import { hasMany } from 'ember-api-store/utils/denormalize';
 import ResourceUsage from 'shared/mixins/resource-usage';
 import { equal, alias } from '@ember/object/computed';
 import { resolve } from 'rsvp';
+import C from 'ui/utils/constants';
+import { later } from '@ember/runloop';
 
 export default Resource.extend(ResourceUsage, {
   globalStore:                 service(),
@@ -21,6 +22,17 @@ export default Resource.extend(ResourceUsage, {
   machines:                    alias('nodes'),
   roleTemplateBindings:        alias('clusterRoleTemplateBindings'),
   isGKE:                       equal('driver', 'googleKubernetesEngine'),
+
+  canBulkRemove: computed('action.remove', function() { // eslint-disable-line
+    const sessionTokenLabel = `${ (get(this, 'annotations') || {})[C.LABEL.EKS_SESSION_TOKEN]  }`;
+    let noSessionToken      = false;
+
+    if (sessionTokenLabel === 'undefined' || sessionTokenLabel === 'false') {
+      noSessionToken = true;
+    }
+
+    return noSessionToken;
+  }),
 
   configName: computed(function() {
     const keys = this.allKeys().filter((x) => x.endsWith('Config'));
@@ -115,7 +127,32 @@ export default Resource.extend(ResourceUsage, {
     return out;
   }),
 
+  keysUpdated() {
+    later(() => {
+      get(this, 'modalService').toggleModal('confirm-delete', {
+        escToClose: true,
+        resources:  [this]
+      });
+    }, 10);
+  },
+
   actions: {
+    promptDelete() {
+      const hasSessionToken = get(this, 'canBulkRemove') ? false : true; // canBulkRemove returns true of the session token is set false
+
+      if (hasSessionToken) {
+        get(this, 'modalService').toggleModal('modal-delete-eks-cluster', {
+          model:       this,
+          keysUpdated: this.keysUpdated.bind(this)
+        });
+      } else {
+        get(this, 'modalService').toggleModal('confirm-delete', {
+          escToClose: true,
+          resources:  [this]
+        });
+      }
+    },
+
     edit() {
       this.get('router').transitionTo('authenticated.cluster.edit', this.get('id'));
     },
