@@ -1,0 +1,71 @@
+{{#sortable-table
+     body=privateRegistries
+     bulkActions=false
+     classNames="grid sortable-table"
+     descending=false
+     headers=headers
+     pagingLabel="pagination.nodePool"
+     rowActions=false
+     search=false
+     as |sortable kind reg dt|
+}}
+  {{#if (eq kind "row")}}
+    <tr class="main-row">
+      <td data-title="{{dt.user}}" class="text-center pr-5 pt-5">
+        {{#input-or-display
+             editable=editing
+             value=reg.user
+        }}
+          {{input
+              class="input-sm"
+              type="text"
+              value=reg.user
+          }}
+        {{/input-or-display}}
+      </td>
+      <td data-title="{{dt.password}}" class="text-center pr-5 pt-5">
+        {{#input-or-display
+             editable=editing
+             obfuscate=true
+             value=reg.password
+        }}
+          {{input
+              class="conceal input-sm"
+              type="password"
+              value=reg.password
+          }}
+        {{/input-or-display}}
+      </td>
+      <td data-title="{{dt.url}}" class="text-center pr-5 pt-5">
+        {{#input-or-display
+             editable=editing
+             value=reg.url
+        }}
+          {{input-url
+              classNames="form-control input-sm"
+              isInvalid=(action (mut urlInvalid))
+              urlWarning=(action (mut urlWarning))
+              urlError=(action (mut urlError))
+              value=reg.url
+          }}
+        {{/input-or-display}}
+      </td>
+      <td data-title="{{dt.default}}" class="text-center">
+        <label>
+          {{input
+              type="checkbox"
+              checked=reg.isDefault
+              disabled=(and (not reg.isDefault) hasDefault)
+          }}
+        </label>
+      </td>
+      <td data-title="{{dt.remove}}" class="text-center">
+        <button class="btn bg-primary btn-sm" {{action "removeRegistry" reg}}><i class="icon icon-minus"/></button>
+      </td>
+    </tr>
+  {{else if (eq kind "norows")}}
+    <tr><td colspan="{{sortable.fullColspan}}" class="text-center text-muted pt-40 pb-40">{{t 'cruPrivateRegistry.noData'}}</td></tr>
+  {{/if}}
+{{/sortable-table}}
+
+<button class="btn bg-primary mt-20" {{action "addRegistry"}}><i class="icon icon-plus"/><span class="ml-10">{{t 'cruPrivateRegistry.add.label'}}</span></button>
