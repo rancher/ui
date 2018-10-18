@@ -14,6 +14,7 @@ generic:
   any: 任何
   application: 应用程序
   as: 以
+  back: 返回
   cancel: 取消
   closeModal: 关闭
   cluster: 集群
@@ -90,6 +91,7 @@ generic:
   save: 保存
   saved: 已保存
   saving: 保存中
+  scope: 范围
   search: 搜索
   searchOrCustomInput: 搜索或输入您的自定义值
   searching: '正在搜索...'
@@ -606,6 +608,8 @@ catalogPage:
       launch: 查看详情
       notCompatible: 不兼容
       alreadyDeployed: 已部署
+clusterCatalogPage:
+  header: 应用商店
 
 certificatesPage:
   cn: 域名
@@ -1764,6 +1768,9 @@ catalogSettings:
   header: 应用商店
   notAvailable: "不可用: 这是名为<code>{name}</code>的自定义商店"
   helpText: 目前只支持Helm目录
+  currentCluster: 当前集群
+  currentProject: 当前项目
+  globalCatalog: 全局
   library:
     label: 官方认证
     detail: 由{appName}维护的官方模板仓库。
@@ -2034,9 +2041,9 @@ clusterNew:
     legacyAuth:
       label: Legacy Authorization
     stackDriverLogging:
-      label: Stackdriver Logging
+      label: Stackdriver日志
     stackdriverMonitor:
-      label: Stackdriver Monitoring
+      label: Stackdriver监控
     dashboard:
       label: Kubernetes仪表盘
     httpLB:
@@ -3915,6 +3922,10 @@ formSslTermination:
   detail: '配置用于端口加密的SSL/TSL证书。'
   defaultCertificate:
     prompt: '选择一个证书...'
+  default:
+    label: 使用默认的ingress controller证书
+  custom:
+    label: 选择一个证书
   alternateCertificate:
     prompt: '选择一个证书...'
   certificate: 证书
@@ -4843,6 +4854,11 @@ nodeDriver:
       title: Subnet
       next: "下一步: 选择安全组"
       loading: "加载安全组..."
+    associateWorkerNodePublicIp:
+      title: Worker节点的公网IP
+      radio:
+        default: 是
+        off: '否: 仅私有ip'
     securityGroup:
       title: 安全组
       detail: 选择将应用于EKS实例的安全组
