@@ -9,8 +9,6 @@ export default Route.extend({
   store:   service(),
 
   beforeModel() {
-    this._super(...arguments);
-
     return get(this, 'catalog').fetchUnScopedCatalogs();
   },
 
