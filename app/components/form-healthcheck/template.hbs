@@ -111,15 +111,19 @@
   </div>
 
   <div class="row">
-    <div class="col box span-6">
-      <label class="acc-label">{{t 'formHealthCheck.successThreshold.label'}}</label>
-      {{#input-or-display editable=(and editing (not successMustBeOne)) value=healthCheck.successThreshold}}
-        <div class="input-group">
-          {{input-integer min=1 step=1 classNames="form-control" value=healthCheck.successThreshold}}
-          <span class="input-group-addon bg-default">{{t 'formHealthCheck.successThreshold.unit'}}</span>
-        </div>
-      {{/input-or-display}}
-    </div>
+    {{#unless isLiveness}}
+      <div class="col box span-6">
+        <label class="acc-label">
+          {{t 'formHealthCheck.successThreshold.label'}}
+        </label>
+        {{#input-or-display editable=(and editing (not successMustBeOne)) value=healthCheck.successThreshold}}
+          <div class="input-group">
+            {{input-integer min=1 step=1 classNames="form-control" value=healthCheck.successThreshold}}
+            <span class="input-group-addon bg-default">{{t 'formHealthCheck.successThreshold.unit'}}</span>
+          </div>
+        {{/input-or-display}}
+      </div>
+    {{/unless}}
     <div class="col box span-6">
       <label class="acc-label">{{t 'formHealthCheck.failureThreshold.label'}}</label>
       {{#input-or-display editable=editing value=healthCheck.failureThreshold}}

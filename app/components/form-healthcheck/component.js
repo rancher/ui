@@ -12,9 +12,9 @@ const HTTPS = 'https';
 const COMMAND = 'command';
 
 export default Component.extend({
-  scope:    service(),
-  intl:     service(),
-  settings: service(),
+  scope:            service(),
+  intl:             service(),
+  settings:         service(),
 
   layout,
   // Inputs
@@ -22,21 +22,22 @@ export default Component.extend({
   errors:           null,
   dnsNote:          false,
   successMustBeOne: false,
+  isLiveness:       false,
 
-  editing: true,
+  editing:          true,
 
-  checkType: null,
-  command:   null,
-  path:      null,
-  host:      null,
-  headers:   null,
+  checkType:        null,
+  command:          null,
+  path:             null,
+  host:             null,
+  headers:          null,
 
-  isNone:    equal('checkType', NONE),
-  isTcp:     equal('checkType', TCP),
-  isHttp:    equal('checkType', HTTP),
-  isHttps:   equal('checkType', HTTPS),
-  isHttpish: or('isHttp', 'isHttps'),
-  isCommand: equal('checkType', COMMAND),
+  isNone:           equal('checkType', NONE),
+  isTcp:            equal('checkType', TCP),
+  isHttp:           equal('checkType', HTTP),
+  isHttps:          equal('checkType', HTTPS),
+  isHttpish:        or('isHttp', 'isHttps'),
+  isCommand:        equal('checkType', COMMAND),
 
   init() {
     this._super(...arguments);
