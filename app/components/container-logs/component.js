@@ -6,6 +6,7 @@ import Util from 'ui/utils/util';
 import { alternateLabel } from 'ui/utils/platform';
 import layout from './template';
 import C from 'ui/utils/constants';
+import { downloadFile } from 'shared/utils/download-files';
 
 const LINES = 500;
 
@@ -73,6 +74,22 @@ export default Component.extend({
   },
 
   actions: {
+    download() {
+      const ignore = function(el, sel){
+        return el.clone().find( sel || '>*' ).remove().end();
+      };
+
+      const log    = this.$('.log-body').children('.log-msg');
+
+      let stripped = '';
+
+      log.each((i, e) => {
+        stripped += `${ ignore(this.$(e), 'span').text() } \n`;
+      });
+
+      downloadFile('container.log', stripped);
+    },
+
     cancel() {
       this.disconnect();
       this.sendAction('dismiss');
