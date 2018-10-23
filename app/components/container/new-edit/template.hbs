@@ -160,20 +160,21 @@
     <div class="row">
       <div class="col {{if separateLivenessCheck 'span-6' 'span-12'}}">
         {{form-healthcheck
-          initialCheck=launchConfig.readinessProbe
-          changed=(action (mut launchConfig.readinessProbe))
-          errors=readyCheckErrors
-          editing=true
+            initialCheck=launchConfig.readinessProbe
+            changed=(action (mut launchConfig.readinessProbe))
+            errors=readyCheckErrors
+            editing=true
         }}
       </div>
       {{#if separateLivenessCheck}}
         <div class="col span-6">
           {{form-healthcheck
-            initialCheck=launchConfig.livenessProbe
-            changed=(action (mut launchConfig.livenessProbe))
-            errors=liveCheckErrors
-            editing=true
-            successMustBeOne=true
+              initialCheck=launchConfig.livenessProbe
+              changed=(action (mut launchConfig.livenessProbe))
+              errors=liveCheckErrors
+              editing=true
+              successMustBeOne=true
+              isLiveness=true
           }}
         </div>
       {{/if}}

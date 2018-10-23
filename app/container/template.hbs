@@ -24,7 +24,7 @@
         <label class="acc-label vertical-middle p-0"> {{t 'podPage.image'}}:</label>
         {{selectedContainer.image}} {{copy-to-clipboard clipboardText=container.image size="small"}}
       </div>
-      
+
     {{/if}}
     <div class="vertical-middle">
       <label class="acc-label vertical-middle p-0">{{t 'servicePage.multistat.namespace'}}</label>
@@ -215,15 +215,16 @@
         <div class="row">
           <div class="col {{if container.livenessProbe 'span-6' 'span-12'}}">
             {{form-healthcheck
-              initialCheck=container.readinessProbe
-              editing=false
+                initialCheck=container.readinessProbe
+                editing=false
             }}
           </div>
           {{#if container.livenessProbe}}
             <div class="col span-6">
               {{form-healthcheck
-                initialCheck=container.livenessProbe
-                editing=false
+                  initialCheck=container.livenessProbe
+                  editing=false
+                  isLiveness=true
               }}
             </div>
           {{/if}}
