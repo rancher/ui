@@ -4,14 +4,15 @@ import { headersCluster as hostHeaders } from 'ui/components/node-row/component'
 import { get, computed } from '@ember/object';
 
 export default Controller.extend({
-  growl:             service(),
-  prefs:             service(),
-  scope:             service(),
+  growl:        service(),
+  prefs:        service(),
+  scope:        service(),
+  capabilities: service(),
 
-  queryParams:       ['sortBy'],
-  sortBy:            'name',
-  searchText:        '',
-  headers:           hostHeaders,
+  queryParams:  ['sortBy'],
+  sortBy:       'name',
+  searchText:   '',
+  headers:      hostHeaders,
 
   extraSearchFields: [
     'displayUserLabelStrings',

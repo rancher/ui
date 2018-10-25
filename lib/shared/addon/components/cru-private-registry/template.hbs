@@ -11,6 +11,20 @@
 }}
   {{#if (eq kind "row")}}
     <tr class="main-row">
+      <td data-title="{{dt.url}}" class="text-center pr-5 pt-5">
+        {{#input-or-display
+             editable=editing
+             value=reg.url
+        }}
+          {{input-url
+              classNames="form-control input-sm"
+              isInvalid=(action (mut urlInvalid))
+              urlWarning=(action (mut urlWarning))
+              urlError=(action (mut urlError))
+              value=reg.url
+          }}
+        {{/input-or-display}}
+      </td>
       <td data-title="{{dt.user}}" class="text-center pr-5 pt-5">
         {{#input-or-display
              editable=editing
@@ -33,20 +47,6 @@
               class="conceal input-sm"
               type="password"
               value=reg.password
-          }}
-        {{/input-or-display}}
-      </td>
-      <td data-title="{{dt.url}}" class="text-center pr-5 pt-5">
-        {{#input-or-display
-             editable=editing
-             value=reg.url
-        }}
-          {{input-url
-              classNames="form-control input-sm"
-              isInvalid=(action (mut urlInvalid))
-              urlWarning=(action (mut urlWarning))
-              urlError=(action (mut urlError))
-              value=reg.url
           }}
         {{/input-or-display}}
       </td>
