@@ -4628,24 +4628,26 @@ modalProcessError:
   close: Close
 
 modalDrainNode:
-  title: 'Drain "{nodeName}"'
+  titleOne: 'Drain "{name}"'
+  titleMultiple: 'Drain {count} Nodes'
   action: Drain
-  drain: 'Drain this node:'
-  force:
-    helpText: Even if there are pods not managed by a ReplicationController, ReplicaSet, Job, DaemonSet or StatefulSet.
-  ignoreDaemonSets:
-    helpText: Even if there are DaemonSet-managed pods.
-    warning: Ingress DaemonSet is on each node by default. Drain might never succeed if you don't select ignore DaemonSet option.
-  deleteLocalData:
-    helpText: Even if there are pods using emptyDir (local data that will be deleted when the node is drained).
+  mode: Mode
+  safe:
+    label: Safe
+    helpText: If a node has standalone pods or ephemeral data it will be cordoned but not drained.
+  aggressive:
+    label: Aggressive
+    helpText: <b>Permanently delete</b>:<ul class="m-0"><li>Standalone Pods and their data</li><li>Pods with "Empty Dir" volumes and their data.</li></ul>
   gracePeriod:
-    helpText: Period of time in seconds given to each pod to terminate gracefully. If negative, the default value specified in the pod will be used.
-    placeholder: e.g. 60
-    label: Grace Period
+    title: Grace period for pods to terminate themselves
+    default: Honor the default from each pod
+    placeholder: e.g. 30
+    custom: "Ignore the defaults and give each pod:"
   timeout:
-    helpText: The length of time to wait before giving up, zero means infinite
+    title: "Drain timeout"
+    default: Keep trying forever
     placeholder: e.g. 60
-    label: Timeout
+    custom: "Give up after:"
 
 modalRollbackService:
   title: 'Rollback "{instanceName}"'

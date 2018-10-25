@@ -1,9 +1,10 @@
 import { inject as service } from '@ember/service';
-import { get, set } from '@ember/object';
+import { get } from '@ember/object';
 import { alias } from '@ember/object/computed';
 import Component from '@ember/component';
 import ModalBase from 'shared/mixins/modal-base';
 import layout from './template';
+import { eachLimit } from 'async';
 
 export default Component.extend(ModalBase, {
   growl: service(),
@@ -11,29 +12,37 @@ export default Component.extend(ModalBase, {
   layout,
   classNames: ['large-modal'],
 
-  model: alias('modalService.modalOpts.originalModel'),
+  aggressive:         false,
+  usePodGracePeriod:  true,
+  gracePeriod:        30,
+  unlimitedTimeout:   false,
+  timeout:            60,
 
-  didReceiveAttrs() {
-    const options = {
-      force:            false,
-      ignoreDaemonSets: true,
-      deleteLocalData:  false,
-      gracePeriod:      -1,
-      timeout:          60,
-    };
-
-    set(this, 'options', options);
-  },
+  resources: alias('modalService.modalOpts.resources'),
 
   actions: {
-    save(cb) {
-      get(this, 'model').doAction('drain', get(this, 'options'))
-        .then(() => {
-          this.send('cancel');
-        })
-        .finally(() => {
-          cb();
-        });
+    drain() {
+      const aggressive = get(this, 'aggressive');
+
+      const opts = {
+        deleteLocalData:  aggressive,
+        force:            aggressive,
+        ignoreDaemonSets: true,
+        gracePeriod:      get(this, 'usePodGracePeriod') ? -1 : get(this, 'gracePeriod'),
+        timeout:          get(this, 'unlimitedTimeout')  ?  0 : get(this, 'timeout'),
+      };
+
+      const resources = get(this, 'resources').slice();
+
+      eachLimit(resources, 5, (resource, cb) => {
+        if ( !resource ) {
+          return cb();
+        }
+
+        resource.doAction('drain', opts).finally(cb);
+      });
+
+      this.send('cancel');
     },
   },
 });
