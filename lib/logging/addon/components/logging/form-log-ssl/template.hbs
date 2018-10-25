@@ -46,6 +46,14 @@
               className="form-control"
               placeholder=(t 'loggingPage.ssl.clientKeyPass.password.placeholder')
             }}
+          {{#if (eq targetType 'elasticsearch')}}
+            <label class="acc-label pt-5">{{t 'loggingPage.ssl.sslVersion.label'}}</label>
+            {{new-select
+            classNames="form-control"
+            content=sslVersionContent
+            value=config.sslVersion
+            }}
+          {{/if}}
         </div>
       {{/if}}
       <div class="col span-6">
