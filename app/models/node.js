@@ -56,7 +56,7 @@ var Node = Resource.extend(StateCounts, ResourceUsage, {
         icon:     'icon icon-snapshot',
         action:   'drain',
         enabled:  !!a.drain,
-        bulkable: false
+        bulkable: true
       },
       {
         label:    'action.stopDrain',
@@ -198,7 +198,10 @@ var Node = Resource.extend(StateCounts, ResourceUsage, {
     },
 
     drain() {
-      get(this, 'modalService').toggleModal('modal-drain-node', { originalModel: this });
+      get(this, 'modalService').toggleModal('modal-drain-node', {
+        escToClose: true,
+        resources:  this
+      });
     },
 
     stopDrain() {
