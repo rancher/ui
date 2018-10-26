@@ -2,12 +2,13 @@
   {{#each types as |item|}}
     <a
       {{action "switchType" item.type}}
-      class="col span-2 nav-box-item driver {{if (eq item.type 'smtp') 'email' item.type}} {{if (eq item.type currentType) 'active' ''}}"
+      class="col span-2 nav-box-item driver {{if (eq item.type 'smtp') 'email'}} {{if (eq item.type currentType) 'active' ''}}"
       disabled={{item.disabled}}
       alt={{item.type}}
     >
+      <div class="{{item.type}}"></div>
       {{#if item.label}}
-        <p style="position:absolute;bottom:-8px;">{{t item.label}}</p>
+        <p>{{t item.label}}</p>
       {{/if}}
     </a>
   {{/each}}

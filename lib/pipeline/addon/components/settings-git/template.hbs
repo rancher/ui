@@ -2,8 +2,14 @@
   {{#unless provider.enabled}}
     <section>
       <div class="row nav nav-boxes checked-active">
-          <a href="#" alt='github' class="col span-2 nav-box-item driver auth-driver github-for-pipeline {{if (eq selectedOauthType 'github') 'active' ''}}" {{action "changeOauthType" "github"}}></a>
-          <a href="#" alt='gitlab' class="col span-2 nav-box-item driver auth-driver gitlab {{if (eq selectedOauthType 'gitlab') 'active' ''}}" {{action "changeOauthType" "gitlab"}}></a>
+          <a href="#" alt='github' class="col span-2 nav-box-item driver {{if (eq selectedOauthType 'github') 'active' ''}}" {{action "changeOauthType" "github"}}>
+            <div class="auth-driver github-for-pipeline"></div>
+            <p>GitHub</p>
+          </a>
+          <a href="#" alt='gitlab' class="col span-2 nav-box-item driver {{if (eq selectedOauthType 'gitlab') 'active' ''}}" {{action "changeOauthType" "gitlab"}}>
+            <div class="auth-driver gitlab"></div>
+            <p>GitLab</p>
+          </a>
       </div>
     </section>
   {{/unless}}
@@ -33,7 +39,7 @@
       <hr/>
       {{#if provider.hostname}}
         <div>
-          <b>{{t 'authPage.authenticated.header.enterpriseHostName'}} </b> 
+          <b>{{t 'authPage.authenticated.header.enterpriseHostName'}} </b>
           <a href="{{if provider.tls 'https' 'http'}}://{{provider.hostname}}" target="_blank" rel="nofollow noreferrer">{{provider.hostname}}</a>
         </div>
       {{/if}}
@@ -161,7 +167,7 @@
                 <label class="acc-label pb-5">{{t (concat 'authPage.' selectedOauthType '.form.clientSecret.labelText')}}{{field-required}}</label>
                 {{input type="password" name="password" value=oauthModel.clientSecret classNames="form-control"}}
                 <div class="checkbox pt-10">
-                  <label class="acc-label pb-5">{{input type="checkbox" checked=isEnterprise}} 
+                  <label class="acc-label pb-5">{{input type="checkbox" checked=isEnterprise}}
                     {{t 'authPage.form.enterprise.labelText' type=selectedOauthType}}
                   </label>
                 </div>
