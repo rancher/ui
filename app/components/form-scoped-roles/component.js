@@ -68,10 +68,9 @@ export default Component.extend(NewOrEdit, {
       this.sendAction('cancel');
     },
     save(cb) {
-      this.set('errors', null);
+      set(this, 'errors', null);
       let mode = get(this, 'mode');
       let add = [];
-      let remove = [];
       let pr = get(this, 'primaryResource');
       const userRoles = get(this, 'userRoles');
       let principal = get(this, 'principal');
@@ -99,20 +98,15 @@ export default Component.extend(NewOrEdit, {
 
           return neu;
         });
-        remove = get(this, 'customToRemove').map((y) => y.existing);
         break;
       default:
-        var addMatch = userRoles.find((ur) => get(ur, 'active') && !get(ur, 'existing'));
-        var removeMatch = userRoles.find((ur) => !get(ur, 'active') && get(ur, 'existing'));
+        var addMatch = userRoles.find((ur) => get(ur, 'active'));
 
         if (addMatch) {
           set(pr, 'roleTemplateId', get(addMatch, 'role.id'));
           add = [pr];
         }
 
-        if (removeMatch) {
-          remove = [get(removeMatch, 'existing')];
-        }
         break;
       }
 
@@ -125,12 +119,7 @@ export default Component.extend(NewOrEdit, {
         return;
       }
 
-      return PromiseAll(add.map((x) => x.save())).then(() => PromiseAll(remove.map((x) => x.delete())).then(() => this.doneSaving())
-        .catch((err) => {
-          set(this, 'errors', [Errors.stringify(err)]);
-
-          return cb(false);
-        }))
+      return PromiseAll(add.map((x) => x.save())).then(() => this.doneSaving())
         .catch((err) => {
           set(this, 'errors', [Errors.stringify(err)]);
 
@@ -197,25 +186,20 @@ export default Component.extend(NewOrEdit, {
 
   userRoles: computed('model.roles.[]', function() {
     let roles = get(this, 'model.roles');
-    let current = get(this, 'defaultUser').get(`${ get(this, 'type') }RoleBindings`);
     let userDef = roles.filter((role) => !get(role, 'builtin')
         && !get(role, 'external')
         && !get(role, 'hidden'));
 
     return userDef.map((role) => {
-      const binding = current.findBy('roleTemplateId', get(role, 'id')) || null;
-
       return {
         role,
-        active:   !!binding,
-        existing: binding,
+        active: false,
       }
     });
   }),
 
   custom: computed('model.roles.[]', function() {
     // built in
-    let current = get(this, 'defaultUser').get(`${ get(this, 'type') }RoleBindings`);
     let roles  = get(this, 'model.roles').filterBy('hidden', false);
     let excludes = get(this, 'baseRoles');
     let context = `${ get(this, 'type') }`;
@@ -223,12 +207,9 @@ export default Component.extend(NewOrEdit, {
     return roles.filter((role) => !excludes.includes(role.id)
         && get(role, 'builtin')
         && get(role, 'context') === context).map((role) => {
-      const binding = current.findBy('roleTemplateId', get(role, 'id')) || null;
-
       return {
         role,
-        active:   !!binding,
-        existing: binding,
+        active: false,
       }
     });
   }),
@@ -276,14 +257,9 @@ export default Component.extend(NewOrEdit, {
     },
   }),
 
-  customToAdd: computed('custom.@each.{active,existing}', function() {
-    return get(this, 'custom').filter( (role) => get(role, 'active') && !get(role, 'existing'));
+  customToAdd: computed('custom.@each.active', function() {
+    return get(this, 'custom').filter( (role) => get(role, 'active') );
   }),
-
-  customToRemove: computed('custom.@each.{active,existing}', function() {
-    return get(this, 'custom').filter( (role) => get(role, 'active') === false && get(role, 'existing'))
-  }),
-
 
   make(role) {
     return get(this, 'globalStore').createRecord(role);
@@ -292,23 +268,33 @@ export default Component.extend(NewOrEdit, {
   validate() {
     var errors = this.get('errors', errors) || [];
 
-    if (get(this, 'mode') === 'custom') {
-      if (get(this, 'customToAdd.length') < 1) {
-        errors.push(this.get('intl').findTranslationByKey('rolesPage.new.errors.roleTemplate'));
-      }
-    } else {
-      if (!get(this, 'primaryResource.roleTemplateId')) {
-        errors.push(this.get('intl').findTranslationByKey('rolesPage.new.errors.roleTemplate'));
-      }
-    }
-
     let principal = get(this, 'principal');
 
-    if (!principal) {
+    if ( !principal ) {
       errors.push(this.get('intl').findTranslationByKey('rolesPage.new.errors.memberReq'));
+      set(this, 'errors', errors);
+
+      return false;
     }
 
-    this.set('errors', errors);
+    const user = get(this, 'model.users').find((user) => (get(user, 'principalIds') || []).indexOf(get(principal, 'id')) > -1 );
+    const current = user.get(`${ get(this, 'type') }RoleBindings`);
+
+
+    if (get(this, 'mode') === 'custom') {
+      if (get(this, 'customToAdd.length') < 1) {
+        errors.push(this.get('intl').t('rolesPage.new.errors.noSelectedRoles'));
+      }
+      (get(this, 'customToAdd') || []).forEach((add) => {
+        if ( current.findBy('roleTemplateId', get(add, 'role.id')) ) {
+          errors.push(this.get('intl').t('rolesPage.new.errors.roleAlreadyExists', { key: get(add, 'role.displayName') }));
+        }
+      });
+    } else if ( current.findBy('roleTemplateId', get(this, 'primaryResource.roleTemplateId')) ) {
+      errors.push(this.get('intl').t('rolesPage.new.errors.roleAlreadyExists', { key: get(this, 'primaryResource.roleTemplate.displayName') }));
+    }
+
+    set(this, 'errors', errors);
 
     return this.get('errors.length') === 0;
   },
