@@ -14,17 +14,9 @@ export default Route.extend({
     const cid = this.paramsFor('authenticated.cluster');
 
     return hash({
-      cluster: gs.find('cluster', cid.cluster_id, { forceReload: true }),
-      roles:   get(this, 'roleTemplateService').get('allFilteredRoleTemplates'),
-      users:   gs.findAll('user'),
+      cluster:      gs.find('cluster', cid.cluster_id, { forceReload: true }),
+      roles:        get(this, 'roleTemplateService').get('allFilteredRoleTemplates'),
+      roleBindings: gs.findAll('clusterRoleTemplateBinding'),
     });
-  },
-
-  setupController(controller, model) {
-    this._super(controller, model);
-
-    let dfu = get(model, 'users.firstObject');
-
-    controller.setProperties({ defaultUser: dfu, });
   },
 });
