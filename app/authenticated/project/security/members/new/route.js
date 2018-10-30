@@ -12,17 +12,9 @@ export default Route.extend({
     const pid = this.paramsFor('authenticated.project');
 
     return hash({
-      project: gs.find('project', pid.project_id, { forceReload: true }),
-      roles:   get(this, 'roleTemplateService').get('allFilteredRoleTemplates'),
-      users:   gs.findAll('user'),
+      project:      gs.find('project', pid.project_id, { forceReload: true }),
+      roles:        get(this, 'roleTemplateService').get('allFilteredRoleTemplates'),
+      roleBindings: gs.findAll('projectRoleTemplateBinding'),
     });
-  },
-
-  setupController(controller, model) {
-    this._super(controller, model);
-
-    let dfu = get(model, 'users.firstObject');
-
-    controller.setProperties({ defaultUser: dfu, });
-  },
+  }
 });

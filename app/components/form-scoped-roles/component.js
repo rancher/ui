@@ -27,14 +27,12 @@ export default Component.extend(NewOrEdit, {
   init() {
     this._super(...arguments);
 
-    let dfu = get(this, 'defaultUser');
     let model = { type: `${ get(this, 'type') }RoleTemplateBinding`, };
 
     set(model, `${ get(this, 'type') }Id`, get(this, `model.${ get(this, 'type') }.id`))
 
     setProperties(this, {
       primaryResource: this.make(model),
-      defaultUser:     dfu,
       stdUser:         `${ get(this, 'type') }-member`,
       admin:           `${ get(this, 'type') }-owner`,
       cTyped:          get(this, 'type').capitalize(),
@@ -214,26 +212,17 @@ export default Component.extend(NewOrEdit, {
     });
   }),
 
-  mode: computed('editing', 'defaultUser',  {
+  mode: computed('editing',  {
     get() {
-      let editing = get(this, 'editing');
-      let dfu = get(this, 'defaultUser');
-      let current = dfu.get(`${ get(this, 'type') }RoleBindings`);
       let mode = null;
 
-      if (editing && current.length === 1) {
-        mode = get(current, 'firstObject.roleTemplateId');
-      } else if (editing && current.length > 1){
-        mode = CUSTOM;
-      } else {
-        const id = `${ get(this, 'type') }-member`;
-        const role = get(this, 'model.roles').findBy('id', id);
+      const id = `${ get(this, 'type') }-member`;
+      const role = get(this, 'model.roles').findBy('id', id);
 
-        if ( role && get(role, 'locked') !== true ) {
-          mode = `${ get(this, 'type') }-member`;
-        } else {
-          mode = CUSTOM;
-        }
+      if ( role && get(role, 'locked') !== true ) {
+        mode = `${ get(this, 'type') }-member`;
+      } else {
+        mode = CUSTOM;
       }
 
       return mode;
@@ -277,9 +266,7 @@ export default Component.extend(NewOrEdit, {
       return false;
     }
 
-    const user = get(this, 'model.users').find((user) => (get(user, 'principalIds') || []).indexOf(get(principal, 'id')) > -1 );
-    const current = user.get(`${ get(this, 'type') }RoleBindings`);
-
+    const current = (get(this, 'model.roleBindings') || []).filterBy('userPrincipalId', get(principal, 'id'));
 
     if (get(this, 'mode') === 'custom') {
       if (get(this, 'customToAdd.length') < 1) {

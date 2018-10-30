@@ -1,7 +1,6 @@
 import Controller from '@ember/controller';
 import NewOrEdit from 'ui/mixins/new-or-edit';
 import { get } from '@ember/object';
-import { computed } from '@ember/object';
 
 const ROLE_KINDS = [
   { id: 'User', },
@@ -22,8 +21,4 @@ export default Controller.extend(NewOrEdit, {
       this.transitionToRoute('authenticated.project.security.members.index', get(this, 'model.project.id'))
     },
   },
-  filteredUsers:   computed('model.users.@each.{id,state}', function() {
-    return get(this, 'model.users').filter((u) => !u.hasOwnProperty('me') || get(u, 'me') === false)
-      .sortBy('username');
-  }),
 });
