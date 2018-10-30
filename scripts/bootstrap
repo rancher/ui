@@ -9,23 +9,6 @@ else
   cd `dirname $CWD`
 fi
 
-curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
-echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
-
-curl -sSL https://dl.google.com/linux/linux_signing_key.pub | apt-key add -
-echo "deb [arch=amd64] https://dl.google.com/linux/chrome/deb/ stable main" > /etc/apt/sources.list.d/google-chrome.list
-
-curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -
-
-# Node install runs apt-get update for you
-
-# Chrome needs this..
-apt-get install -y --force-yes --no-install-recommends hicolor-icon-theme
-
-apt-get install -y nodejs phantomjs yarn g++ ca-certificates google-chrome-stable --no-install-recommends
-update-alternatives --install /usr/bin/node node /usr/bin/nodejs 10
-yarn config set cache-folder /var/cache/npm
-
 yarn --pure-lockfile install
 git submodule init
 git submodule update
