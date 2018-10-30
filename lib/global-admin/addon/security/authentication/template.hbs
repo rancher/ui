@@ -11,7 +11,10 @@
   <div class="row nav nav-boxes checked-active">
     {{#each filteredDrivers as |driver|}}
       {{#if driver.available }}
-        {{#link-to driver.route alt=driver.label classNames=(concat "col span-2 nav-box-item driver") href=false}}
+        {{#link-to driver.route alt=driver.label classNames="col span-2 nav-box-item driver" href=false}}
+          {{#if driver.providerType }}
+            <span class="badge bg-info driver-badge">{{driver.providerType}}</span>
+          {{/if}}
           <div class="auth-driver {{driver.css}}"></div>
           <p>{{driver.label}}</p>
         {{/link-to}}
