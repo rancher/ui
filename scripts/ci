@@ -15,10 +15,6 @@ else
   cd `dirname $CWD`
 fi
 
-if [[ "${ENABLE_DOCKER}" == "true" ]]; then
-  wrapdocker
-fi
-
 echo "Cleaning Up.."
 rm -rf node_modules build dist tmp
 
@@ -28,7 +24,7 @@ echo "Bootstrapping.."
 echo "Linting.."
 ./node_modules/.bin/eslint --max-warnings 0 .
 
-if [[ "${BUILD_LATEST}" == "true" ]] && [[ "${ENABLE_DOCKER}" == "true" ]]; then
+if [[ "${BUILD_LATEST}" == "true" ]]; then
   echo "Building..."
   ./scripts/build-static -l -v latest2
   # (build-static contains a call to test & build)

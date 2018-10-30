@@ -7,7 +7,7 @@ Perhaps you like managing Cattle.
 
 Prerequisites:
 * [Git](http://git-scm.com/)
-* [Node.js](http://nodejs.org/) 0.12.x (with NPM)
+* [Node.js](http://nodejs.org/) 8.x+ (with NPM)
 * [Yarn](https://yarnpkg.com/en/docs/install) (Note Path Setup)
 
 If you're on a Mac and use Homebrew, you can follow these steps:
@@ -34,12 +34,7 @@ Run development server pointed at another instance of the Rancher API
   RANCHER="http://rancher:8080/" yarn start
 ```
 
-and/or pointed at another instance of the Catalog API
-```bash
-  CATALOG="http://catalog:8088/" yarn start
-```
-
-RANCHER and CATALOG can also be `hostname[:port]` or `ip[:port]`.
+RANCHER can also be `hostname[:port]` or `ip[:port]`.
 
 ### Compiling for distribution
 
