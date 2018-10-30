@@ -18,21 +18,22 @@ const protocolOptions = [
 ];
 
 export default Component.extend({
-  intl:     service(),
-  scope:    service(),
-  settings: service(),
+  intl:                service(),
+  scope:               service(),
+  settings:            service(),
+  capabilities:        service(),
 
   layout,
-  initialPorts: null,
-  editing:      false,
-  showWarning:  false,
-  kindChoices:  null,
+  protocolOptions,
+  initialPorts:        null,
+  editing:             false,
+  showWarning:         false,
+  kindChoices:         null,
 
   ports:               null,
   nodePortFrom:        null,
   nodePortTo:          null,
   nodePortPlaceholder: null,
-  protocolOptions,
 
   init() {
     this._super(...arguments);
@@ -122,15 +123,26 @@ export default Component.extend({
   }),
 
   nodePortRangeDidChange: observer('intl.locale', 'scope.currentCluster.rancherKubernetesEngineConfig.services.kubeApi.serviceNodePortRange', function() {
-    const intl = get(this, 'intl');
+    const intl          = get(this, 'intl');
     const nodePortRange = get(this, 'scope.currentCluster.rancherKubernetesEngineConfig.services.kubeApi.serviceNodePortRange')
+    const ccPorts       = get(this, 'capabilities.allowedNodePortRanges');
 
     if ( nodePortRange  ) {
       const ports = nodePortRange.split('-');
 
       if ( ports.length === 2 ) {
-        const from = parseInt(ports[0], 10);
-        const to = parseInt(ports[1], 10);
+        let from = parseInt(ports[0], 10);
+        let to   = parseInt(ports[1], 10);
+
+        if (ccPorts.length > 0) {
+          if (from < ccPorts[0]) {
+            from = ccPorts[0];
+          }
+
+          if (to > ccPorts[1]) {
+            to = ccPorts[1];
+          }
+        }
 
         setProperties(this, {
           nodePortFrom:        from,

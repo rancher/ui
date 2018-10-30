@@ -38,10 +38,12 @@
         </td>
         <td colspan="2" data-title="{{dt.actions}}" class="text-right">
           <p class="m-0">{{t 'pagination.node' pages=1 count=node.ref.quantity}}</p>
-          <p class="m-0">
-            <button class="btn btn-xs bg-primary" {{action "scaleDownPool" node.ref.id}} disabled={{lte node.ref.quantity 1}}><i class="icon icon-minus icon-fw"/></button>
-            <button style="margin-left: -5px;" class="btn btn-xs bg-primary" {{action "scaleUpPool" node.ref.id}}><i class="icon icon-plus icon-fw"/></button>
-          </p>
+          {{#if capabilities.nodePoolsCanScale}}
+            <p class="m-0">
+              <button class="btn btn-xs bg-primary" {{action "scaleDownPool" node.ref.id}} disabled={{lte node.ref.quantity 1}}><i class="icon icon-minus icon-fw"/></button>
+              <button style="margin-left: -5px;" class="btn btn-xs bg-primary" {{action "scaleUpPool" node.ref.id}}><i class="icon icon-plus icon-fw"/></button>
+            </p>
+          {{/if}}
         </td>
         <td data-title="{{dt.actions}}" class="actions">
           {{action-menu model=node.ref}}
