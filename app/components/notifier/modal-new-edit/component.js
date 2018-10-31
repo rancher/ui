@@ -23,7 +23,7 @@ const TYPES = [
   },
   {
     type:     'pagerduty',
-    label: 'notifierPage.notifierTypes.pagerduty',
+    label:    'notifierPage.notifierTypes.pagerduty',
     css:      'pagerduty',
     disabled: false,
   },
