@@ -6,6 +6,7 @@ const ALLOWED = {
   'api.auth.jwt.token.expiry': {description: 'Authorization token/UI session lifetime (milliseconds)', kind: 'int'},
   'api.auth.realm': {description: 'HTTP Basic Auth realm for requests without Authorization header'},
   'api.auth.restrict.concurrent.sessions': {description: 'Limit active session tokens to one per account.  This mainly prevents users from logging in to the UI from multiple computers simultaneously.  Note: Existing sessions may continue to be valid until they expire when this is initially enabled.', kind: 'boolean'},
+  'api.auth.shibboleth.redirect.whitelist': {description: 'Allow Shibboleth(saml) auth provider to redirect requests to/from specified domains (if specified; comma-separated)'},
   'api.interceptor.config': {description: 'JSON configuration for API Interceptor', kind: 'multiline'},
   'api.proxy.allow': {description: 'Allow use of /v1/proxy to talk to whitelisted domains, for custom Add Host UIs', kind: 'boolean'},
   'api.proxy.whitelist': {description: 'Whitelist of domains to that can be proxied through /v1/proxy to, for custom Add Host UIs'},
