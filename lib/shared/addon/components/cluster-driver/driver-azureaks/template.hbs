@@ -125,15 +125,13 @@
         <div class="row">
           <div class="col span-6">
             <label class="acc-label" for="azureaks-kube-version">{{t 'clusterNew.azureaks.kubernetesVersion.label'}}</label>
-            {{new-select
-                id="azureaks-kube-version"
-                classNames="form-control"
-                content=versions
-                optionValuePath="value"
-                optionLabelPath="value"
+
+            {{form-versions
+                cluster=cluster
+                editing=(eq mode 'edit')
+                initialVersion=config.kubernetesVersion
                 value=config.kubernetesVersion
-                prompt="clusterNew.azureaks.kubernetesVersion.prompt"
-                localizedPrompt=true
+                versions=versions
             }}
           </div>
           <div class="col span-6">

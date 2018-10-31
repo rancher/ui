@@ -43,14 +43,12 @@
       <div class="row">
         <div class="col span-6">
           <label class="acc-label">{{t 'clusterNew.googlegke.masterVersion.label'}}</label>
-          {{new-select
-              classNames="form-control"
-              content=versionChoices
-              optionValuePath="value"
-              optionLabelPath="value"
+          {{form-versions
+              cluster=cluster
+              editing=(eq mode 'edit')
+              initialVersion=config.masterVersion
               value=config.masterVersion
-              prompt="clusterNew.googlegke.masterVersion.prompt"
-              localizedPrompt=true
+              versions=versionChoices
           }}
         </div>
         <div class="col span-6">
