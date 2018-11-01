@@ -284,6 +284,8 @@ rolesPage:
       nameInExists: 名称是已经存在， 请使用一个新的角色名称。
       ruleResourceReq: 资源是规则所必需的
       roleTemplate: 角色模板是必需的
+      noSelectedRoles: 请为该用户至少选择一个角色。
+      roleAlreadyExists: 用户已经具有"{key}"角色。
     form:
       name:
         labelText: 姓名
@@ -500,14 +502,14 @@ authPage:
       general:
         header: 常规
     configure:
-      header: '配置Azure AD账户'
-      replyUrl: "在配置之前，需首先在Azure AD设置{appName}的应答URL地址，并确保设置的URL为<code>{replyUrl}</code>。注意: 如使用Azure中国，需设置为<code>{replyUrl}</code>verify-auth-azure"
-      help: '输入Tenant ID，Client ID和Admin用户详细信息以连接到Azure AD进行身份验证'
+      header: '配置Azure AD帐户'
+      replyUrl: "在开始设置之前，需要在Azure AD为{appName}设置一个白名单URL。请确保您的Azure门户的Reply URL部分设置了以下Reply URL。 请注意，白名单URL设置后可能需要5分钟生效时间。"
+      help: '输入租户ID、Client ID和管理用户详细信息，以连接到Azure AD 验证帐户信息。'
       applicationId:
-        label: Application ID
+        label: 应用 ID
         placeholder: UUID字符串
       applicationSecret:
-        label: Application Secret
+        label: 应用 Secret
       serverURL:
         label: Rancher Server Url
       azureADEndpoint:
@@ -519,7 +521,7 @@ authPage:
       azureADAuthEndpoint:
         label: Auth Endpoint
       endpoints:
-        label: Endpoints
+        label: Azure AD访问地址
       regions:
         standard: Standard
         china: China
@@ -932,6 +934,7 @@ cruPrivateRegistry:
     label: 私有镜像仓库
     detail: 向这个集群添加私有镜像仓库
   noData: 这个集群没有配置私有镜像仓库
+  defaultError: 您必须指定一个默认的私有镜像仓库。
   add:
     label: 添加私有镜像仓库
   registry:
@@ -2117,7 +2120,7 @@ clusterNew:
     info:
       text: 编辑主机选项将更新主机注册命令
     command:
-      instructions: '在一台或多台已安装支持Docker版本的主机上运行以下命令'
+      instructions: '复制以下命令在主机的SSH终端运行。'
       winInstructions: '在一台或者多台运行了受支持的Docker版本的主机上运行<code>CMD</code>命令，并且windows server版本大于<code class="code-version">1803</code>.'
     auth:
       label: 认证提供者
@@ -2172,10 +2175,10 @@ clusterNew:
     role:
       pageheader: 自定义主机运行命令
       sectionheader: 主机选项
-      title: 主机角色
+      title: '角色选择(一台主机可以对应多个角色,每个集群至少需要一个Etcd角色、一个Control角色、一个Worker角色)'
       detail: '选择主机角色,端口放行请参考: https://rancher.com/docs/rancher/v2.x/en/installation/references/'
       header:
-        etcd: etcd
+        etcd: Etcd
         controlplane: Control
         worker: Worker
       requirements:
@@ -2213,8 +2216,11 @@ clusterNew:
       linux: Linux
       windows: Windows
     windowsSupport:
-      label: Windows Support(Experimental)
-      disabled: 不支持{plugin}网络提供商。
+      label: Windows Support (Experimental)
+      disabled: 不支持{plugin}网络驱动。
+    advanced:
+      label: 高级集群选项
+      detail: 自定义高级选项
   custom:
     label: 自定义
     shortLabel: 自定义
@@ -3208,6 +3214,7 @@ formIngress:
     existing: 继续使用当前主机名<code>{domain}</code>
     manual: 自定义域名
     default: 默认后端
+    defaultDisabled: Ingress控制器不支持默认后端
   defaultBackend:
     label: 将此规则设置为默认后端
     mark: 默认后端
@@ -3223,6 +3230,7 @@ formIngress:
   mode:
     workload: 工作负载
     service: DNS记录
+
 formIngressBackends:
   label: 目标后端
   noRules: 没有后端
