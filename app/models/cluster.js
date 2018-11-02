@@ -6,7 +6,6 @@ import ResourceUsage from 'shared/mixins/resource-usage';
 import { equal, alias } from '@ember/object/computed';
 import { resolve } from 'rsvp';
 import C from 'ui/utils/constants';
-import { later } from '@ember/runloop';
 
 export default Resource.extend(ResourceUsage, {
   globalStore:                 service(),
@@ -131,24 +130,13 @@ export default Resource.extend(ResourceUsage, {
     return out;
   }),
 
-  keysUpdated() {
-    later(() => {
-      get(this, 'modalService').toggleModal('confirm-delete', {
-        escToClose: true,
-        resources:  [this]
-      });
-    }, 10);
-  },
-
   actions: {
     promptDelete() {
       const hasSessionToken = get(this, 'canBulkRemove') ? false : true; // canBulkRemove returns true of the session token is set false
 
       if (hasSessionToken) {
-        get(this, 'modalService').toggleModal('modal-delete-eks-cluster', {
-          model:       this,
-          keysUpdated: this.keysUpdated.bind(this)
-        });
+        set(this, `${ get(this, 'configName') }.accessKey`, null);
+        get(this, 'modalService').toggleModal('modal-delete-eks-cluster', { model: this, });
       } else {
         get(this, 'modalService').toggleModal('confirm-delete', {
           escToClose: true,
