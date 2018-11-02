@@ -95,7 +95,7 @@ module.exports = function(defaults) {
   });
 
   // app.import('vendor/aws-sdk-ec2.js');
-  app.import('vendor/aws-sdk-ec2-iam-2.279.1.min.js');
+  app.import('vendor/aws-sdk-eks-ec2-iam-2.348.0.min.js');
   app.import('vendor/ember-shortcuts.js');
   app.import('vendor/file-saver/fileSaver.mini.js');
   app.import('vendor/icons/fonts/rancher-icons.svg',   { destDir: 'assets/fonts/' });

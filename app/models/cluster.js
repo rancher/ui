@@ -23,6 +23,10 @@ export default Resource.extend(ResourceUsage, {
   roleTemplateBindings:        alias('clusterRoleTemplateBindings'),
   isGKE:                       equal('driver', 'googleKubernetesEngine'),
 
+  getAltActionDelete: computed('action.remove', function() { // eslint-disable-line
+    return get(this, 'canBulkRemove') ? 'delete' : null;
+  }),
+
   canBulkRemove: computed('action.remove', function() { // eslint-disable-line
     const sessionTokenLabel = `${ (get(this, 'annotations') || {})[C.LABEL.EKS_SESSION_TOKEN]  }`;
     let noSessionToken      = false;
