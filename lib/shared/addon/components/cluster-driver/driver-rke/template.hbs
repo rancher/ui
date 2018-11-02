@@ -280,8 +280,48 @@
             </div>
 
           </div>
+          <div class="row">
+            <div class="col span-4">
+              <label class="acc-label">{{t 'clusterNew.rke.etcd.snapshot.label'}}</label>
+              <div class="radio">
+                <label>
+                  {{radio-button selection=cluster.rancherKubernetesEngineConfig.services.etcd.snapshot value=false}}
+                  {{t 'generic.disabled'}}
+                </label>
+              </div>
+              <div class="radio">
+                <label>
+                  {{radio-button selection=cluster.rancherKubernetesEngineConfig.services.etcd.snapshot value=true}}
+                  {{t 'generic.enabled'}}
+                </label>
+              </div>
+            </div>
+            <div class="col span-2">
+              <label class="acc-label">{{t 'clusterNew.rke.etcd.creation.label'}}</label>
+              <div class="input-group">
+                {{input
+                    type="text"
+                    classNames="form-control"
+                    disabled=(not cluster.rancherKubernetesEngineConfig.services.etcd.snapshot)
+                    placeholder=(t 'clusterNew.rke.etcd.creation.placeholder')
+                    value=cluster.rancherKubernetesEngineConfig.services.etcd.creation
+                }}
+              </div>
+            </div>
+            <div class="col span-2 offset-2">
+              <label class="acc-label">{{t 'clusterNew.rke.etcd.retention.label'}}</label>
+              <div class="input-group">
+                {{input
+                    type="text"
+                    classNames="form-control"
+                    disabled=(not cluster.rancherKubernetesEngineConfig.services.etcd.snapshot)
+                    placeholder=(t 'clusterNew.rke.etcd.retention.placeholder')
+                    value=cluster.rancherKubernetesEngineConfig.services.etcd.retention
+                }}
+              </div>
+            </div>
+          </div>
         {{/accordion-list-item}}
-
       {{/advanced-section}}
     {{/if}}
   {{/accordion-list}}
