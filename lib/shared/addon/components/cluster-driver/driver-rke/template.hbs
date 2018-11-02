@@ -71,8 +71,20 @@
                 value=cluster.rancherKubernetesEngineConfig.kubernetesVersion
             }}
           </div>
-          {{#if (and (eq nodeWhich 'custom') (eq mode 'new'))}}
-            <div class="col span-6">
+        </div>
+        <div class="row">
+          <div class="col {{if (and isCustom (eq mode 'new')) "span-4" "span-6"}}">
+            <label class="acc-label">{{t 'clusterNew.rke.network.label'}}</label>
+            {{new-select
+                classNames="form-control"
+                content=networkContent
+                localizedLabel=true
+                value=cluster.rancherKubernetesEngineConfig.network.plugin
+                disabled=isEdit
+            }}
+          </div>
+          {{#if (and isCustom (eq mode 'new'))}}
+            <div class="col span-4">
               <label class="acc-label">{{t 'clusterNew.rke.windowsSupport.label'}}</label>
               <div class="radio">
                 <label class={{if (not-eq config.network.plugin 'flannel') 'text-muted'}}>
@@ -88,38 +100,7 @@
               </div>
             </div>
           {{/if}}
-        </div>
-        <div class="row">
-          <div class="col span-12">
-            {{cru-cloud-provider
-                cluster=model.cluster
-                driver=nodeWhich
-            }}
-          </div>
-        </div>
-      {{/accordion-list-item}}
-
-      {{#accordion-list-item
-           title=(t 'clusterNew.rke.network.title')
-           detail=(t 'clusterNew.rke.network.detail')
-           expandOnInit=(eq mode "edit" true false)
-           expandAll=al.expandAll
-           expand=(action expandFn)
-      }}
-        <div class="row">
-          <div class="col span-4">
-            <label class="acc-label">{{t 'clusterNew.rke.network.label'}}</label>
-            {{new-select
-                classNames="form-control"
-                content=networkContent
-                localizedLabel=true
-                value=cluster.rancherKubernetesEngineConfig.network.plugin
-                disabled=isEdit
-            }}
-          </div>
-        </div>
-        <div class="row">
-          <div class="col span-4">
+          <div class="col {{if (and isCustom (eq mode 'new')) "span-4" "span-6"}}">
             <label class="acc-label">{{t 'clusterNew.rke.networkPolicy.label'}}</label>
             <div class="radio">
               <label class={{unless (eq cluster.rancherKubernetesEngineConfig.network.plugin "canal")  'text-muted'}}>
@@ -134,6 +115,39 @@
               </label>
             </div>
           </div>
+        </div>
+        <div class="row">
+          <div class="col span-12">
+            {{cru-cloud-provider
+                cluster=model.cluster
+                driver=nodeWhich
+            }}
+          </div>
+        </div>
+      {{/accordion-list-item}}
+
+      {{#advanced-section advanced=advanced}}
+        {{#accordion-list-item
+             title=(t 'cruPrivateRegistry.title.label')
+             detail=(t 'cruPrivateRegistry.title.detail')
+             expandOnInit=(eq mode "edit" true false)
+             expandAll=al.expandAll
+             expand=(action expandFn)
+        }}
+          {{cru-private-registry
+              cluster=cluster
+          }}
+        {{/accordion-list-item}}
+
+
+        {{#accordion-list-item
+             title=(t 'clusterNew.rke.advanced.label')
+             detail=(t 'clusterNew.rke.advanced.detail')
+             expandOnInit=(eq mode "edit" true false)
+             expandAll=al.expandAll
+             expand=(action expandFn)
+        }}
+        <div class="row">
           <div class="col span-4">
             <label class="acc-label">{{t 'clusterNew.rke.ingress.label'}}</label>
             <div class="radio">
@@ -164,52 +178,29 @@
                 placeholder=(t 'clusterNew.rke.serviceNodePortRange.placeholder')
             }}
           </div>
-        </div>
-      {{/accordion-list-item}}
-
-      {{#advanced-section advanced=advanced}}
-        {{#accordion-list-item
-             title=(t 'cruPrivateRegistry.title.label')
-             detail=(t 'cruPrivateRegistry.title.detail')
-             expandOnInit=(eq mode "edit" true false)
-             expandAll=al.expandAll
-             expand=(action expandFn)
-        }}
-          {{cru-private-registry
-              cluster=cluster
-          }}
-        {{/accordion-list-item}}
-
-
-        {{#accordion-list-item
-             title=(t 'clusterNew.rke.advanced.label')
-             detail=(t 'clusterNew.rke.advanced.detail')
-             expandOnInit=(eq mode "edit" true false)
-             expandAll=al.expandAll
-             expand=(action expandFn)
-        }}
-          <div class="row">
-            <div class="col span-4">
-              <label class="acc-label">{{t 'clusterNew.rke.monitoring.label'}}</label>
-              <div class="radio">
-                <label>
-                  {{!--
-                  {{radio-button selection=monitoringProvider value="metrics-server"}}
-                  --}}
-                  {{radio-button selection=cluster.rancherKubernetesEngineConfig.monitoring.provider value="metrics-server"}}
-                  {{t 'generic.enabled'}}
-                </label>
-              </div>
-              <div class="radio">
-                <label>
-                  {{!--
-                  {{radio-button selection=monitoringProvider value=null}}
-                  --}}
-                  {{radio-button selection=cluster.rancherKubernetesEngineConfig.monitoring.provider value="none"}}
-                  {{t 'generic.disabled'}}
-                </label>
-              </div>
+          <div class="col span-4">
+            <label class="acc-label">{{t 'clusterNew.rke.monitoring.label'}}</label>
+            <div class="radio">
+              <label>
+                {{!--
+                      {{radio-button selection=monitoringProvider value="metrics-server"}}
+                      --}}
+                {{radio-button selection=cluster.rancherKubernetesEngineConfig.monitoring.provider value="metrics-server"}}
+                {{t 'generic.enabled'}}
+              </label>
             </div>
+            <div class="radio">
+              <label>
+                {{!--
+                      {{radio-button selection=monitoringProvider value=null}}
+                      --}}
+                {{radio-button selection=cluster.rancherKubernetesEngineConfig.monitoring.provider value="none"}}
+                {{t 'generic.disabled'}}
+              </label>
+            </div>
+          </div>
+        </div>
+          <div class="row">
             <div class="col span-4">
               <label class="acc-label">{{t 'clusterNew.rke.podSecurityPolicy.label'}}</label>
               <div class="radio">
