@@ -182,46 +182,50 @@
                 placeholder=(t 'clusterNew.rke.dockerRootDir.placeholder' dir=defaultDockerRootDir)
             }}
           </div>
-
-          <div class="col span-4">
-            {{#if cluster.rancherKubernetesEngineConfig.services.kubeApi.podSecurityPolicy}}
-              <label class="acc-label">{{t 'clusterNew.psp.label'}}{{field-required}}</label>
-              {{new-select
-                  content=model.psps
-                  optionLabelPath='displayName'
-                  optionValuePath='id'
-                  prompt='clusterNew.psp.prompt'
-                  localizedPrompt=true
-                  value=cluster.defaultPodSecurityPolicyTemplateId
-                  disabled=(not cluster.rancherKubernetesEngineConfig.services.kubeApi.podSecurityPolicy)
-              }}
-            {{else}}
-              <label class="acc-label">{{t 'clusterNew.psp.label'}}</label>
-              <div class="form-control-static">{{t 'generic.none'}}</div>
-            {{/if}}
+          <div class="row">
+            <div class="col span-4">
+              <label class="acc-label">{{t 'clusterNew.rke.etcd.snapshot.label'}}</label>
+              <div class="radio">
+                <label>
+                  {{radio-button selection=cluster.rancherKubernetesEngineConfig.services.etcd.snapshot value=false}}
+                  {{t 'generic.disabled'}}
+                </label>
+              </div>
+              <div class="radio">
+                <label>
+                  {{radio-button selection=cluster.rancherKubernetesEngineConfig.services.etcd.snapshot value=true}}
+                  {{t 'generic.enabled'}}
+                </label>
+              </div>
+            </div>
+            <div class="col span-2">
+              <label class="acc-label">{{t 'clusterNew.rke.etcd.creation.label'}}</label>
+              <div class="input-group">
+                {{input
+                    type="text"
+                    classNames="form-control"
+                    disabled=(not cluster.rancherKubernetesEngineConfig.services.etcd.snapshot)
+                    placeholder=(t 'clusterNew.rke.etcd.creation.placeholder')
+                    value=cluster.rancherKubernetesEngineConfig.services.etcd.creation
+                }}
+              </div>
+            </div>
+            <div class="col span-2 offset-2">
+              <label class="acc-label">{{t 'clusterNew.rke.etcd.retention.label'}}</label>
+              <div class="input-group">
+                {{input
+                    type="text"
+                    classNames="form-control"
+                    disabled=(not cluster.rancherKubernetesEngineConfig.services.etcd.snapshot)
+                    placeholder=(t 'clusterNew.rke.etcd.retention.placeholder')
+                    value=cluster.rancherKubernetesEngineConfig.services.etcd.retention
+                }}
+              </div>
+            </div>
           </div>
-        </div>
-        <div class="row">
-          <div class="col span-4">
-            <label class="acc-label">{{t 'clusterNew.rke.serviceNodePortRange.label'}}</label>
-            {{input
-                type="text"
-                value=cluster.rancherKubernetesEngineConfig.services.kubeApi.serviceNodePortRange
-                className="form-control"
-                placeholder=(t 'clusterNew.rke.serviceNodePortRange.placeholder')
-            }}
-          </div>
-        </div>
-        <div class="row">
-          <div class="col span-12">
-            {{cru-cloud-provider
-                cluster=model.cluster
-                driver=nodeWhich
-            }}
-          </div>
-        </div>
-      {{/if}}
-    {{/accordion-list-item}}
+        {{/accordion-list-item}}
+      {{/advanced-section}}
+    {{/if}}
   {{/accordion-list}}
 
   {{#unless isCustom}}
