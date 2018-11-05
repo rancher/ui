@@ -50,6 +50,7 @@ generic:
   healthy: Healthy
   help: Help
   hostname: Hostname
+  hours: hours
   id: ID
   image: Image
   import: Import
@@ -2079,6 +2080,16 @@ clusterNew:
       election:
         label: etcd Election Timeout
         placeholder: Time for an election to timeout
+      snapshot:
+        label: Recurring etcd Snapshots
+      retention:
+        label: Snapshot Retention Period
+        placeholder: "1d"
+      creation:
+        label: Snapshot Creation Period
+        placeholder: "3h"
+      error: "Snapshot {type} Period Error: You must designate a time value and SI time unit.  You entered {entry}"
+      baseError: "Snapshot {type} Period Error: You must designate a valid SI time unit. You entered {entry}"
     nodeName:
       title: Node Name
       detail: Optionally configure the node name as identification instead of the actual hostname
