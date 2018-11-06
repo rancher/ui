@@ -64,6 +64,11 @@
   &.amazoneks { @include amazoneks; }
   &.azureaks { @include azureaks; }
   &.googlegke { @include googlegke; }
+
+}
+
+.error-loading-driver {
+  border: 2px solid red !important;
 }
 
 .api-field LABEL {
@@ -120,6 +125,27 @@
     max-width: 190px;
     margin-right: 14px;
     position: relative;
+
+    &.error-loading-driver {
+      filter: none;
+      -webkit-filter: none;
+      -moz-filter: none;
+      -ms-filter: none;
+      -o-filter: none;
+
+      .icon-alert {
+        position: absolute;
+        font-size: 4em;
+        left: calc(50% - 30px);
+        top: 15px;
+      }
+    }
+
+    .driver-name {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
 
     > div {
       height: 100px;

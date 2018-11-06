@@ -1,16 +1,22 @@
 {{top-errors errors=errors}}
 
-<h2 class="alert-header">{{t (if editing 'modalEditDriver.header.edit' 'modalEditDriver.header.create')}}</h2>
+<h2 class="alert-header">{{t (if editing 'modalEditDriver.header.edit' 'modalEditDriver.header.create') type=driverType}}</h2>
 <hr/>
 <div class="inline-form">
   <label class="acc-label">{{t 'modalEditDriver.url.label'}}{{field-required}}</label>
-  {{input class="form-control" value=originalModel.url }}
+  {{input
+      class="form-control"
+      value=originalModel.url
+  }}
   <span class="text-info">{{t 'modalEditDriver.url.help'}}</span>
 </div>
 
 <div class="inline-form pt-20">
   <label class="acc-label">{{t 'modalEditDriver.uiUrl.label'}}</label>
-  {{input class="form-control" value=originalModel.uiUrl }}
+  {{input
+      class="form-control"
+      value=originalModel.uiUrl
+  }}
   <span class="text-info">
     {{t 'modalEditDriver.uiUrl.help'}}
     {{#if settings.isRancher}}
