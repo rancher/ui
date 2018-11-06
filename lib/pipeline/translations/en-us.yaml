@@ -18,6 +18,7 @@ generic:
   pipeline: Pipeline
   is: is
   push: Push to Repository
+  noBranch: There is no branch in this repository.
 ##############################
 # Resource Actions
 ##############################
@@ -154,6 +155,8 @@ authPage:
       enterpriseHostName: "Host:"
       clientId:
         text: "Client ID:"
+      key:
+        text: "Key:"
   testAuth:
     header: '3. Test and enable authentication'
     subtext: 'Check that your application is configured correctly by testing authentication with it:'
@@ -170,7 +173,7 @@ authPage:
       labelText: Enterprise Host
       placeholder: 'e.g. example.com'
   gitlab:
-    auth: 'For standard GitLab, <a href="https://gitlab.com/profile/applications" target="_blank">click here</a> to go applications settings in a new window.'
+    auth: 'For standard GitLab, <a href="https://gitlab.com/profile/applications" target="_blank">click here</a> to go to applications settings in a new window.'
     enterpriseAuth: "For GitLab Enterprise, login to your account.  Click on Settings, then Applications."
     ul:
       li2:
@@ -187,7 +190,7 @@ authPage:
       clientSecret:
         labelText: Secret
   github:
-    auth: 'For standard GitHub, <a href="https://github.com/settings/developers" target="_blank">click here</a> to go applications settings in a new window.'
+    auth: 'For standard GitHub, <a href="https://github.com/settings/developers" target="_blank">click here</a> to go to applications settings in a new window.'
     enterpriseAuth: "For Github Enterprise, login to your account.  Click on Settings, then Developer settings."
     ul:
       li2:
@@ -205,7 +208,58 @@ authPage:
         labelText: Client ID
       clientSecret:
         labelText: Client Secret
-
+  bitbucketcloud:
+    target: 
+      header: '1. Choose the Bitbucket type you want to use'
+      bitbucketserver: 'Use private Bitbucket Server steup'
+      bitbucketcloud: 'Use public Bitbucket Cloud'
+    setup: '2. Setup a Bitbucket Cloud application'
+    auth: 'For Bitbucket Cloud, <a href="https://bitbucket.org/account" target="_blank">click here</a> to go to user settings in a new window.'
+    ul:
+      li2:
+        text: 'Click "OAuth", then click "Add consumer" and fill out the form:'
+        ul:
+          li1: '<b>Name:</b> <span class="text-muted">Anything you like, e.g. My Pipeline</span>'
+          li2: Callback URL
+          li3: '<b>Select Permissions</b> <b>Account Read</b>, <b>Pull Requests Write</b>, <b>Projects Read</b> and <b>Webhooks Read And Write</b>'
+      li3:
+        text: 'Click "Save" '
+    form:
+      headerVariable: '3. Configure pipeline to use your Bitbucket Cloud for authentication'
+      subtextVariable: 'Copy and paste the Key and Secret from your newly-created consumer.'
+      clientId:
+        labelText: Key
+      clientSecret:
+        labelText: Secret
+  bitbucketserver:
+    warning: Bitbucket server webhooks need to do SSL verification, please ensure that {appName} server’s certificate is trusted by the bitbucket server. More info can be found <a href="https://rancher.com/docs/rancher/v2.x/en/tools/pipelines/configurations/#1-configuring-version-control-providers" target="_blank" rel="nofollow noopener noreferrer">here</a>.
+    copy: Click the icon to copy it
+    target: 
+      header: '1. Choose the Bitbucket type you want to use'
+      bitbucketserver: 'Use private Bitbucket Server steup'
+      bitbucketcloud: 'Use public Bitbucket Cloud'
+    setup: '2. Setup a Bitbucket Server application'
+    auth: 'For Bitbucket Server, login to your account. Click on Administration, then Application Links.'
+    ul:
+      li2:
+        text: 'Create a new application link:'
+        ul:
+          li1: '<b>Link:</b>'
+          li2: '<b>Application Name:</b> <span class="text-muted">Anything you like, e.g. My Pipeline</span>'
+          li3: '<b>Select Create incoming link</b>'
+          li4: '<b>Click "Continue"</b>'
+          li5: 'Consumer Key:'
+          li6: '<b>Consumer Name:</b> <span class="text-muted">Anything you like, e.g. pipeline</span>'
+          li7: 'Public Key:'
+          li8: '<b>Click "Continue"</b>'
+    form:
+      headerVariable: '3. Configure pipeline to use your Bitbucket Server for authentication'
+      hostname:
+        labelText: Bitbucket Server Host
+        placeholder: e.g. example.com
+        required: Bitbucket Server Host is required.
+      tls:
+        labelText: Use a https connection
 pipelineDetailPage:
   header: 'Pipeline: {name}'
   repositry: Repositry

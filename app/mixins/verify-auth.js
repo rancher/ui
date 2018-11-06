@@ -17,6 +17,8 @@ export default Mixin.create({
     state:             { refreshModel: false },
     authProvider:      { refreshModel: false },
     error_description: { refreshModel: false },
+    oauth_token:       { refreshModel: false },
+    oauth_verifier:    { refreshModel: false },
     login:             { refreshModel: false },
   },
 
