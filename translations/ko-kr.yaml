@@ -86,6 +86,7 @@ generic:
   total: 총합계
   type: 타입
   unknown: 알수 없음
+  unknownUser: 사용자 정보를 가져올 수 없습니다.
   upload: 업로드
   url: URL
   user: 사용자
@@ -115,12 +116,15 @@ accountsPage:
         title: 전역 권한
         description: 전체 설치에 영향을 미치는 항목 관리에 대한 액세스
         admin: 이 사용자는 관리자이며 모든 권한을 가집니다.
+        noRoles: 이 사용자에게는 글로벌 역할이 없습니다.
       cluster:
         title: 클러스터 역할
         description: 개별 클러스터에 대해 해당 사용자에게 부여된 역할
         noRoles: 이 사용자에게는 클러스터 역할이 없습니다.
       project:
         title: 프로젝트 역할
+        description: 개별 프로젝트에 대해 이 사용자에게 부여된 역할
+        noRoles: 이 사용자에게는 프로젝트 역할이 없습니다.
       roles:
         title: 역할
   index:
@@ -129,14 +133,18 @@ accountsPage:
     table:
       id: ID
       kind: 종류
+      username: 로컬 사용자 이름
       identity: 신원
       noData: 아직 사용자가 없습니다.
+      noMatch: 현재 검색어와 일치하는 사용자가 없습니다.
       noName: 없음
   new:
     header: 사용자 추가
     errors:
       usernameReq: 사용자 이름은 반드시 입력해야 합니다.
+      usernameInExists: 사용자 이름이 이미 사용 중입니다. 새로운 사용자 이름을 사용하십시오.
       pwReq: 비밀번호는 필수항목입니다.
+      role: 새로운 사용자는 역할을 가져야합니다. 목록에서 역할을 선택하십시오.
     form:
       username:
         labelText: 사용자 이름
@@ -154,10 +162,16 @@ accountsPage:
   modal:
     password: 비밀번호 변경하기
 appDetailPage:
+  header: "앱 : {appName}"
   endpoints:
     title: 엔드포인트
+    detail: '이 애플리케이션의 공용 엔드포인트'
     endpoint: 엔드포인트
     protocol: 프로토콜
+    noData: 이 애플리케이션에 대해 작성된 공용 엔드포인트가 없습니다.
+    noMatch: 현재 검색어와 일치하는 공용 엔드포인트가 없습니다.
+  notes:
+    detail: '애플리케이션 사용 방법에 대한 설명서'
 podSecurityPoliciesPage:
   index:
     header: Pod 보안 정책
