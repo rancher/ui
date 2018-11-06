@@ -70,6 +70,13 @@ export default Route.extend(VerifyAuth, {
           reply(stateMsg);
         }
       }
+
+      if ( get(params, 'oauth_token') && get(params, 'oauth_verifier') ) {
+        reply(null, {
+          oauthToken:    get(params, 'oauth_token'),
+          oauthVerifier: get(params, 'oauth_verifier'),
+        });
+      }
     }
 
     if ( code && get(params, 'login') ) {

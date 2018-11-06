@@ -19,6 +19,7 @@ generic:
   pipeline: 项目
   is: 是
   push: 提交到代码库
+  noBranch: 该代码库中没有任何分支。
 ##############################
 # Resource Actions
 ##############################
@@ -206,7 +207,54 @@ authPage:
         labelText: 客户端ID
       clientSecret:
         labelText: 客户端秘钥
-
+  bitbucketcloud:
+    target: 
+      header: '1. 选择你要使用的Bitbucket类型'
+      bitbucketserver: '使用私有Bitbucket Server'
+      bitbucketcloud: '使用Bitbucket Cloud'
+    setup: '2. 配置Bitbucket Cloud应用'
+    auth: '使用Bitbucket Cloud时，<a href="https://bitbucket.org/account" target="_blank">点击此处</a>，在弹出的新窗口中进行应用设置。'
+    ul:
+      li2:
+        text: '点击"OAuth"，然后点击"Add consumer"，并填写表单内容：'
+        ul:
+          li1: '<b>Name:</b> <span class="text-muted">任意名称，例如 My Pipeline</span>'
+          li2: Callback URL
+          li3: '<b>选择权限</b> <b>Account Read</b>, <b>Pull Requests Write</b>, <b>Projects Read</b> and <b>Webhooks Read And Write</b>'
+      li3:
+        text: '点击 "Save" '
+    form:
+      headerVariable: '3. 完成配置，并使用您的Bitbucket Cloud账号进行验证'
+      subtextVariable: '复制并粘贴新创建的consumer的Key和Secret'
+  bitbucketserver:
+    warning: Bitbucket Server Webhook需要SSL验证，请确保{appName}服务器的证书在Bitbucket Server中是可信的。点击<a href="https://rancher.com/docs/rancher/v2.x/en/tools/pipelines/configurations/#1-configuring-version-control-providers" target="_blank" rel="nofollow noopener noreferrer">这里</a>获取更多信息。
+    copy: 点击复制
+    target: 
+      header: '1. 选择你要使用的Bitbucket类型'
+      bitbucketserver: '使用私有Bitbucket Server'
+      bitbucketcloud: '使用Bitbucket Cloud'
+    setup: '2. 配置Bitbucket Server应用'
+    auth: '使用Bitbucket Server时，登陆你的账户。点击Administration，然后点击Application Links。'
+    ul:
+      li2:
+        text: '创建一个新的应用链接:'
+        ul:
+          li1: '<b>Link:</b>'
+          li2: '<b>Application Name:</b> <span class="text-muted">任意名称，例如 My Pipeline</span>'
+          li3: '<b>勾选Create incoming link</b>'
+          li4: '<b>点击 "Continue"</b>'
+          li5: 'Consumer Key:'
+          li6: '<b>Consumer Name:</b> <span class="text-muted">任意名称, 例如 pipeline</span>'
+          li7: 'Public Key:'
+          li8: '<b>点击 "Continue"</b>'
+    form:
+      headerVariable: '3. 完成配置，并使用您的Bitbucket Server账号进行验证'
+      hostname:
+        labelText: Bitbucket Server主机
+        placeholder: 例如 example.com
+        required: 请输入Bitbucket Server主机。
+      tls:
+        labelText: 使用https连接
 pipelineDetailPage:
   header: '构建项目: {name}'
   repositry: '代码库:'

@@ -23,6 +23,30 @@ let Pipeline = Resource.extend({
     return get(this, 'lastRunState') || 'untriggered';
   }),
 
+  displayRepositoryUrl: computed('repositoryUrl', function() {
+    let url = get(this, 'repositoryUrl');
+
+    if ( url.endsWith('.git') ) {
+      url = url.substr(0, url.length - 4);
+    }
+
+    return url;
+  }),
+
+  projectName: computed('displayName', function() {
+    const displayName = get(this, 'displayName')  ;
+    let tokens = displayName.split('/') ;
+
+    return tokens[0].startsWith('~') ? tokens[0].substr(1, tokens[0].length) : tokens[0];
+  }),
+
+  repoName: computed('displayName', function() {
+    const displayName = get(this, 'displayName')  ;
+    let tokens = displayName.split('/') ;
+
+    return tokens[1];
+  }),
+
   displayName: computed('repositoryUrl', function() {
     let tokens = get(this, 'repositoryUrl').split('/') ;
 

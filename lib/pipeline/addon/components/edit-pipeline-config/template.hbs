@@ -80,6 +80,10 @@
       {{/if}}
     {{/if}}
   </div>
+{{else if (and (not pipeline.loading) (not pipeline.branches.length))}}
+  {{#banner-message color='bg-warning'}}
+    <p>{{t 'generic.noBranch'}}</p>
+  {{/banner-message}}
 {{/if}}
 
 <hr class="mt-30 mb-30" />
@@ -87,5 +91,5 @@
 {{top-errors errors=errors}}
 
 <div class="text-center pipeline-wrap-header-button">
-  {{#save-cancel class="pipeline-save-cancel" saveDisabled=pipeline.loading createLabel="generic.done" save="save" cancel="cancel"}}{{/save-cancel}}
+  {{#save-cancel class="pipeline-save-cancel" saveDisabled=(or pipeline.loading (not pipeline.branches.length)) createLabel="generic.done" save="save" cancel="cancel"}}{{/save-cancel}}
 </div>

@@ -2,14 +2,18 @@
   {{#unless provider.enabled}}
     <section>
       <div class="row nav nav-boxes checked-active">
-          <a href="#" alt='github' class="col span-2 nav-box-item driver {{if (eq selectedOauthType 'github') 'active' ''}}" {{action "changeOauthType" "github"}}>
-            <div class="auth-driver github-for-pipeline"></div>
-            <p>GitHub</p>
-          </a>
-          <a href="#" alt='gitlab' class="col span-2 nav-box-item driver {{if (eq selectedOauthType 'gitlab') 'active' ''}}" {{action "changeOauthType" "gitlab"}}>
-            <div class="auth-driver gitlab"></div>
-            <p>GitLab</p>
-          </a>
+        <a href="#" alt='github' class="col span-2 nav-box-item driver {{if (eq selectedOauthType 'github') 'active' ''}}" {{action "changeOauthType" "github"}}>
+          <div class="auth-driver github-for-pipeline"></div>
+          <p>GitHub</p>
+        </a>
+        <a href="#" alt='gitlab' class="col span-2 nav-box-item driver {{if (eq selectedOauthType 'gitlab') 'active' ''}}" {{action "changeOauthType" "gitlab"}}>
+          <div class="auth-driver gitlab"></div>
+          <p>GitLab</p>
+        </a>
+        <a href="#" alt='bitbucke' class="col span-2 nav-box-item driver {{if isBitbucket 'active' ''}}" {{action "changeOauthType" "bitbucketcloud"}}>
+          <div class="auth-driver bitbucket"></div>
+          <p>Bitbucket</p> 
+        </a>
       </div>
     </section>
   {{/unless}}
@@ -17,6 +21,25 @@
   {{#if provider.enabled}}
     <section class="header clearfix">
       <h1 class="pull-left">{{t 'authPage.header'}}</h1>
+    </section>
+
+    <section>
+      <div class="row nav nav-boxes checked-active">
+        <a href="#" alt={{selectedOauthType}} class="col span-2 nav-box-item driver active">
+          {{#if (eq selectedOauthType 'github')}}
+            <div class="auth-driver github-for-pipeline"></div>
+            <p>GitHub</p>
+          {{/if}}
+          {{#if (eq selectedOauthType 'gitlab')}}
+            <div class="auth-driver gitlab"></div>
+            <p>GitLab</p>
+          {{/if}}
+          {{#if isBitbucket}}
+            <div class="auth-driver bitbucket"></div>
+            <p>Bitbucket</p>
+          {{/if}}
+        </a>
+      </div>
     </section>
 
     <section class="box mt-30">
@@ -43,161 +66,47 @@
           <a href="{{if provider.tls 'https' 'http'}}://{{provider.hostname}}" target="_blank" rel="nofollow noreferrer">{{provider.hostname}}</a>
         </div>
       {{/if}}
-      <div><b>{{t 'authPage.authenticated.header.clientId.text'}} </b> <span class="text-muted">{{provider.clientId}}</span></div>
 
-      <div class="row mt-30 text-center">
-        {{#if confirmDisable}}
-          {{#if disabling}}
-            <button class="btn bg-disabled" disabled="disabled">
-              <i class="icon icon-spinner icon-spin"></i> {{t 'generic.saving'}}
-            </button>
-          {{else}}
+      {{#if (eq provider.name 'bitbucketcloud')}}
+        <div>
+          <b>{{t 'authPage.authenticated.header.enterpriseHostName'}} </b> 
+          <a href="https://bitbucket.org" target="_blank" rel="nofollow noreferrer">bitbucket.org</a>
+        </div>
+      {{/if}}
+
+      {{#if provider.clientId}}
+        <div>
+          <b>{{t (if isBitbucket 'authPage.authenticated.header.key.text' 'authPage.authenticated.header.clientId.text')}} </b>
+          <span class="text-muted">{{provider.clientId}}</span>
+        </div>
+      {{/if}}
+    </section>
+
+    <div class="row mt-30 text-center">
+      {{#if confirmDisable}}
+        {{#if disabling}}
+          <button class="btn bg-disabled" disabled="disabled">
+            <i class="icon icon-spinner icon-spin"></i> {{t 'generic.saving'}}
+          </button>
+        {{else}}
           <button class="btn bg-primary" {{action "disable"}}>
             <i class="icon icon-alert"></i> {{t 'pipelinesSetting.sureToDisableOAuth'}}
           </button>
-          {{/if}}
-        {{else}}
-          <button class="btn bg-primary" {{action "promptDisable"}}>
-            <i class="icon icon-umbrella"></i> {{t 'pipelinesSetting.disableOAuth'}}
-          </button>
         {{/if}}
-      </div>
-    </section>
+      {{else}}
+        <button class="btn bg-primary" {{action "promptDisable"}}>
+          <i class="icon icon-umbrella"></i> {{t 'pipelinesSetting.disableOAuth'}}
+        </button>
+      {{/if}}
+    </div>
   {{/if}}
 
   {{#unless provider.enabled}}
-    {{#if (and githubAuthConfig.enabled useGloableConfig)}}
-      <section>
-        {{banner-message icon="icon-info" color='bg-info mb-0 mt-10' message=(t 'pipelinesSetting.userGlobalConfig')}}
-      </section>
-      <section class="box mt-30">
-        <h3>{{t 'authPage.authenticated.header.text'}} <div class="pull-right"><a href="javascript:void();" {{action 'changeOauthSource' false}}>{{t 'pipelinesSetting.customConfigChangeLabel'}}</a></div></h3>
-        <hr/>
-        {{#if githubAuthConfig.hostname}}
-          <div><b>{{t 'authPage.authenticated.header.enterpriseHostName'}} </b> <span class="text-muted">{{githubAuthConfig.hostname}}</span></div>
-        {{/if}}
-        <div><b>{{t 'authPage.authenticated.header.clientId.text'}} </b> <span class="text-muted">{{githubAuthConfig.clientId}}</span></div>
-        <p class="text-info">{{t 'pipelinesSetting.userGlobalConfig'}}
-        </p>
-
-        {{top-errors errors=errors}}
-        <div class="row text-center">
-          <button disabled={{createDisabled}} class="btn bg-primary" {{action "githubAuthConfigAuthenticate"}}>
-            {{#if testing}}
-              <i class="icon icon-spinner icon-spin"></i> {{t 'authPage.testAuth.buttonText.post'}}
-            {{else}}
-              <i class="icon icon-{{selectedOauthType}}"></i> {{t 'authPage.testAuth.buttonText.preVariable'}}
-            {{/if}}
-          </button>
-        </div>
-      </section>
-    {{else}}
-      <section class="box mt-30">
-        <h3>{{t 'authPage.setup' type=selectedOauthType }}</h3>
-        <hr/>
-        <p>
-          <ol class="alphalist ml-40">
-            <li>
-              {{#if (eq selectedOauthType 'github')}}
-                {{t 'authPage.github.auth' htmlSafe=true}}
-                <ul>
-                  <li>{{t 'authPage.github.enterpriseAuth'}}</li>
-                </ul>
-              {{else if (eq selectedOauthType 'gitlab')}}
-                {{t 'authPage.gitlab.auth' htmlSafe=true}}
-                <ul>
-                  <li>{{t 'authPage.gitlab.enterpriseAuth'}}</li>
-                </ul>
-              {{/if}}
-            </li>
-            {{#if (eq selectedOauthType 'github')}}
-              <li>
-                {{t 'authPage.github.ul.li2.text'}}
-                <ul>
-                  <li>
-                    {{t 'authPage.github.ul.li2.ul.li1' htmlSafe=true}}
-                  </li>
-                  <li>
-                    <b>{{t 'authPage.github.ul.li2.ul.li2'}}</b> <span>{{homePageURL}}{{copy-to-clipboard size='small' clipboardText=homePageURL htmlSafe=true}}</span>
-                  </li>
-                  <li>
-                    {{t 'authPage.github.ul.li2.ul.li3' htmlSafe=true}}
-                  </li>
-                  <li>
-                    <b>{{t 'authPage.github.ul.li2.ul.li4'}}</b>
-                    <span id="auth-callback-url">{{destinationUrl}} {{copy-to-clipboard size='small' clipboardText=destinationUrl}}</span></li>
-                </ul>
-              </li>
-              <li>
-                {{t 'authPage.github.ul.li3.text'}}
-              </li>
-            {{else if (eq selectedOauthType 'gitlab')}}
-              <li>
-                {{t 'authPage.gitlab.ul.li2.text'}}
-                <ul>
-                  <li>
-                    {{t 'authPage.gitlab.ul.li2.ul.li1' htmlSafe=true}}
-                  </li>
-                  <li>
-                    <b>{{t 'authPage.gitlab.ul.li2.ul.li2'}}</b>
-                    <span id="auth-callback-url">{{concat destinationUrl '/verify-auth'}} {{copy-to-clipboard size='small' clipboardText=(concat destinationUrl '/verify-auth')}}</span></li>
-                </ul>
-              </li>
-              <li>
-                {{t 'authPage.gitlab.ul.li3.text'}}
-              </li>
-            {{/if}}
-          </ol>
-        </p>
-      </section>
-
-      <form autcomplete="on">
-        <section class="box mt-30">
-          <h3>{{t 'authPage.form.headerVariable' SCM=selectedOauthType }}</h3>
-          <div class="row">
-            <div class="col span-6">
-              <div class="inline-form">
-                <label class="acc-label pb-5">{{t (concat 'authPage.' selectedOauthType '.form.clientId.labelText')}}{{field-required}}</label>
-                {{input type="text" name="username" value=oauthModel.clientId classNames="form-control"}}
-                <p class="help-block">{{t (concat 'authPage.' selectedOauthType '.form.subtextVariable')}}</p>
-              </div>
-            </div>
-            <div class="col span-6">
-              <div class="inline-form">
-                <label class="acc-label pb-5">{{t (concat 'authPage.' selectedOauthType '.form.clientSecret.labelText')}}{{field-required}}</label>
-                {{input type="password" name="password" value=oauthModel.clientSecret classNames="form-control"}}
-                <div class="checkbox pt-10">
-                  <label class="acc-label pb-5">{{input type="checkbox" checked=isEnterprise}}
-                    {{t 'authPage.form.enterprise.labelText' type=selectedOauthType}}
-                  </label>
-                </div>
-                {{#liquid-if isEnterprise}}
-                  <div class="checkbox pt-10">
-                    <label class="acc-label pb-5">{{input type="checkbox" checked=secure}} {{t 'authPage.form.isEnterprise.labelText'}}</label>
-                  </div>
-                {{/liquid-if}}
-                {{#liquid-if isEnterprise}}
-                  <label class="acc-label pb-5">{{t 'authPage.form.enterpriseHost.labelText'}}{{field-required}}</label>
-                  {{input type="text" value=oauthModel.hostName classNames="form-control" placeholder=(t 'authPage.form.enterpriseHost.placeholder')}}
-                {{/liquid-if}}
-              </div>
-            </div>
-          </div>
-
-          {{top-errors errors=errors}}
-
-          <div class="row text-center">
-            <button disabled={{createDisabled}} class="btn bg-primary" {{action "authenticate"}}>
-              {{#if testing}}
-                <i class="icon icon-spinner icon-spin"></i> {{t 'authPage.testAuth.buttonText.post'}}
-              {{else}}
-                <i class="icon icon-{{selectedOauthType}}"></i> {{t 'authPage.testAuth.buttonText.preVariable'}}
-              {{/if}}
-            </button>
-          </div>
-        </section>
-      </form>
-    {{/if}}
+    {{component providerComponent
+        switch=(action 'changeOauthType')
+        provider=provider
+        oauthModel=oauthModel
+        githubAuthConfig=githubAuthConfig}}
   {{/unless}}
 {{else}}
   No Permission

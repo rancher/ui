@@ -74,24 +74,56 @@ let PipelineExecution = Resource.extend({
     return get(this, 'showTransitioningMessage') && get(this, 'executionState') !== C.STATES.ABORTED && get(this, 'executionState') !== C.STATES.FAILED;
   }),
 
-  commitUrl: computed('commit', function() {
+  displayRepositoryUrl: computed('repositoryUrl', function() {
     let url = get(this, 'repositoryUrl');
 
     if ( url.endsWith('.git') ) {
       url = url.substr(0, url.length - 4);
     }
 
-    return `${ url }/commit/${ get(this, 'commit') }`;
+    return url;
+  }),
+
+  commitUrl: computed('commit', function() {
+    let url = get(this, 'displayRepositoryUrl');
+
+    switch (get(this, 'pipeline.sourceCodeCredential.sourceCodeType')) {
+    case 'bitbucketserver':
+    {
+      const name = get(this, 'pipeline.displayName');
+
+      if ( name.startsWith('~') ) {
+        return `${ this.bitbucketRootUrl('users') }/commits/${ get(this, 'commit') }`;
+      } else {
+        return `${ this.bitbucketRootUrl('projects') }/commits/${ get(this, 'commit') }`;
+      }
+    }
+    case 'bitbucketcloud':
+      return `${ url }/commits/${ get(this, 'commit') }`;
+    default:
+      return `${ url }/commit/${ get(this, 'commit') }`;
+    }
   }),
 
   branchUrl: computed('branch', function() {
-    let url = get(this, 'repositoryUrl');
+    let url = get(this, 'displayRepositoryUrl');
 
-    if ( url.endsWith('.git') ) {
-      url = url.substr(0, url.length - 4);
+    switch (get(this, 'pipeline.sourceCodeCredential.sourceCodeType')) {
+    case 'bitbucketserver':
+    {
+      const name = get(this, 'pipeline.displayName');
+
+      if ( name.startsWith('~') ) {
+        return `${ this.bitbucketRootUrl('users') }/browse?at=refs%2Fheads%2F${ get(this, 'branch') }`;
+      } else {
+        return `${ this.bitbucketRootUrl('projects') }/browse?at=refs%2Fheads%2F${ get(this, 'branch') }`;
+      }
     }
-
-    return `${ url }/tree/${ get(this, 'branch') }`;
+    case 'bitbucketcloud':
+      return `${ url }/src/${ get(this, 'branch') }`;
+    default:
+      return `${ url }/tree/${ get(this, 'branch') }`;
+    }
   }),
 
   duration: computed('started', 'ended', function(){
@@ -104,6 +136,14 @@ let PipelineExecution = Resource.extend({
       return duration < 0 ? null : duration;
     }
   }),
+
+  bitbucketRootUrl(repoType) {
+    let url = get(this, 'displayRepositoryUrl');
+
+    url = url.substr(0, get(url, 'length') - get(this, 'pipeline.displayName.length') - 5);
+
+    return `${ url }/${ repoType }/${ get(this, 'pipeline.projectName') }/repos/${ get(this, 'pipeline.repoName') }`;
+  },
 
   actions: {
     rerun() {
