@@ -5,6 +5,7 @@ generic:
   actions: Actions
   activate: Activé
   add: Ajouter
+  advanced: Avancé
   all: Tous
   any: N’importe quel
   application: application
@@ -52,8 +53,10 @@ generic:
   limit: Limite
   limits: Limites
   loading: "Chargement..."
+  loggingOut: "Déconnexion..."
   member: Membre
   mibibyte: 'MiB'
+  minutes: minutes
   milliseconds: 'Millisecondes'
   missing: "*%ABSENT%*"
   moreActions: Plus
@@ -73,6 +76,8 @@ generic:
   ports: Ports
   prefix: préfixe
   project: Projet
+  persistentVolumeClaim: sollicitation du volume persistant
+  persistentVolume: volume persistant
   random: Aléatoire
   remove: Retirer
   role: Rôle
@@ -95,6 +100,7 @@ generic:
   total: Total
   type: Catégorie
   unknown: Inconnu
+  unknownUser: Impossible de récupérer les informations de l'utilisateur
   upload: Téléverser
   url: URL
   user: Utilisateur
@@ -197,6 +203,10 @@ appDetailPage:
     title: Volumes
     detail: Réclamations de volume persistant créées avec cette application
     nodata: Aucune réclamation de volume persistant n'a été faite pour cette application.
+  configMaps:
+    title: Cartes de configuration
+    detail: Cartes de configuration associées à cette application
+    nodata: Cette application n'a aucune carte de configuration
   secrets:
     title: Secrets
     detail: Secrets associés avec cette application
@@ -231,11 +241,23 @@ rolesPage:
     table:
       builtin: Intégré
       created: Date de création
+      enabled: Activé
       name: Nom
       noData: Il n'y a aucun rôle pour l'instant
       noMatch: Aucun rôle ne correspond à la recherche en cours
       subjectKind: Type
       template: Modèle
+      global: Nouvel utilisateur par défaut
+      cluster: Créateur de cluster par défaut
+      project: Créateur de projet par défaut
+      showDefaults: Afficher uniquement les valeurs par défaut
+  resources:
+    title: Octroi de ressources
+    detail: Accorder l'accès à des opérations spécifiques sur les ressources Kubernetes
+  inherit:
+    title: Hériter d'un rôle
+    detail: Inclure toutes les permissions d'un autre rôle
+  addRole: "Ajouter le rôle {context}"
   editRole: Modifier le rôle
   saveEdit: Éditer
   saveNew: Créer
@@ -252,6 +274,9 @@ rolesPage:
         placeholder: "par exemple les développeurs"
       context:
         labelText: Contexte
+      locked:
+        labelText: Verrouillé
+        disabled: "Non"
       allow:
         create: Créer
         delete: Supprimer
@@ -271,6 +296,11 @@ rolesPage:
       policy:
         policy: Règle
         addAction: Ajouter une politique
+      default:
+        global: Nouvel utilisateur par défaut
+        cluster: Créateur de cluster par défaut
+        project: Créateur de projet par défaut
+        disabled: "Non"
 apiPage:
   header: API et clés
   actionButton: Ajouter une clé
@@ -286,6 +316,30 @@ apiPage:
       never: Jamais
     noData: Aucune clé d'API n'est définie
 authPage:
+  saml:
+    accessEnabled:
+      header: Authentification
+      disable: Désactiver le contrôle d’accès
+    header:
+      disabled:
+        label: "{providerName} n’est pas configuré"
+    enabled:
+      authenticated:
+        header:
+          text: Authentification
+      groupsField: 'Groupes :'
+      displayName: 'Nom Public :'
+      userName: 'Nom d''utilisateur :'
+      userId: 'Identifiant d''utilisateur :'
+    disabled:
+      header: 'Configurer le compte de {providerName}'
+      headerDetail: 'Entrez les renseignements du compte {providerName}'
+      label: "{providerName} n’est pas configuré"
+      name:
+        labelText: Champ Nom Public
+        display: "Champ Nom Public :"
+      username:
+        display: "Champ nom d’utilisateur :"
   shibboleth:
     enabled:
       authenticated:
@@ -1295,6 +1349,7 @@ editAccount:
   title: Modifier le Compte
   form:
     name:
+      label: Nom d'affichage
       placeholder: p. ex. John Smith
     kind:
       label: Type de Compte
@@ -1363,6 +1418,10 @@ editStack:
   group:
     label: Étiquettes
     placeholder: par exemple, frontend, production
+editUser:
+  form:
+    name:
+      label: Nom d'affichage
 envCatalog:
   header: Catalogue
   addActionLabel: Ajouter un catalogue

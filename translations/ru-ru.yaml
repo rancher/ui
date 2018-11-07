@@ -54,6 +54,7 @@ generic:
   loading: "Думаю..."
   member: Участник
   mibibyte: 'МиБ'
+  minutes: мин.
   milliseconds: 'Миллисекунды'
   missing: "*%ПАНИКА%*"
   moreActions: Больше действий
@@ -95,6 +96,7 @@ generic:
   total: Всего
   type: Тип
   unknown: Неизвестный
+  unknownUser: Не удалось получить информацию о пользователе
   upload: Загрузить
   url: URL-ссылка
   user: Пользователь
@@ -195,6 +197,8 @@ appDetailPage:
     nodata: Никаких сервисов не было создано для этого приложения.
   volumes:
     title: Тома
+  configMaps:
+    nodata: Это приложение не имеет конфигурационных карт
   secrets:
     title: Секреты
     detail: Секреты, связанные с этим приложением
@@ -229,11 +233,13 @@ rolesPage:
     table:
       builtin: Встроенный
       created: Время создания
+      enabled: Включено
       name: Имя
       noData: У вас пока нет ролей
       noMatch: Нет ролей, соответствующих текущему поиску
       subjectKind: Тип
       template: Шаблон
+      showDefaults: Показывать только значения по умолчанию
   editRole: Редактировать роль
   saveEdit: Редактировать
   saveNew: Создать
@@ -250,6 +256,9 @@ rolesPage:
         placeholder: "например, Developers"
       context:
         labelText: Контекст
+      locked:
+        labelText: Заблокировано
+        disabled: "Нет"
       allow:
         create: Создать
         delete: Удаление
@@ -269,6 +278,8 @@ rolesPage:
       policy:
         policy: Правила
         addAction: Добавить Правило
+      default:
+        disabled: "Нет"
 apiPage:
   header: API и Ключи
   actionButton: Добавить ключ
@@ -284,6 +295,16 @@ apiPage:
       never: Никогда
     noData: Определенных ключей API нет
 authPage:
+  saml:
+    enabled:
+      authenticated:
+        header:
+          text: Аутентификация
+      groupsField: 'Группы:'
+      userName: 'Имя пользователя:'
+    disabled:
+      uid:
+        labelText: Поле UID
   shibboleth:
     enabled:
       authenticated:
@@ -1536,6 +1557,7 @@ cruStorageClass:
       label: ID пользователя
 dangerZone:
   header: Расширенные настройки
+  showLabel: Я понимаю, что могу что-то поломать, изменяя расширенные настройки.
 editAccount:
   title: Изменить профиль
   form:
@@ -2665,6 +2687,7 @@ pageFooter:
     mac: macOS
     windows: Windows
     linux: Linux
+  showSystem: Показывать системные
 pagination:
   generic: |
     {pages, plural,

@@ -5,6 +5,7 @@ generic:
   actions: Дії
   activate: Активувати
   add: Додати
+  advanced: Розширені
   all: Всі
   any: Будь-який
   application: додаток
@@ -52,8 +53,10 @@ generic:
   limit: Ліміт
   limits: Обмеження
   loading: "Завантажується..."
+  loggingOut: "Вихід..."
   member: Учасник
   mibibyte: 'MiB'
+  minutes: хвилин
   milliseconds: 'Мілісекунди'
   missing: "*%MISSING% *"
   moreActions: Додаткові дії
@@ -95,6 +98,7 @@ generic:
   total: Всього
   type: Тип
   unknown: Невідомо
+  unknownUser: Не вдалося отримати інформацію про користувача
   upload: Завантажити
   url: URL-адреса
   user: Користувач
@@ -124,6 +128,7 @@ accountsPage:
         title: Глобальний доступ
         description: Доступ до керування речами, які впливають на всю установку
         admin: Цей користувач є адміністратором і має всі дозволи.
+        noRoles: У цього користувача немає глобальних ролей
       cluster:
         title: Ролі Кластера
         description: Ролі, надані цьому користувачеві для окремих кластерів
@@ -143,6 +148,7 @@ accountsPage:
       username: Локальне Ім'я Користувача
       identity: Ідентичність
       noData: Ще немає користувачів
+      noMatch: Немає користувачів, які відповідають поточним пошуку
       noName: Немає
   new:
     header: Додати Користувача
@@ -150,6 +156,7 @@ accountsPage:
       usernameReq: Потрібне ім'я користувача.
       usernameInExists: Ім'я вже використовується. Будь ласка виберіть інше ім'я користувача.
       pwReq: Потрібен пароль.
+      role: Нові користувачі повинні мати роль. Виберіть роль зі списку.
     form:
       username:
         labelText: Ім'я кристувача
@@ -170,6 +177,7 @@ appDetailPage:
   header: "Додаток: {appName}"
   endpoints:
     title: Кінцеві точки
+    detail: 'Загальнодоступні кінцеві точки цього додатка'
     endpoint: Кінцева точка
     protocol: Протокол
   notes:
@@ -182,6 +190,8 @@ appDetailPage:
     title: Сервіси
   volumes:
     title: Томи
+  configMaps:
+    title: Config Maps
   secrets:
     title: Секрети
 podSecurityPoliciesPage:
@@ -212,6 +222,7 @@ rolesPage:
     table:
       builtin: Вбудований
       created: Час Створення
+      enabled: Увімкнено
       name: Ім'я
       noData: Ролей ще немає
       noMatch: Немає ролей, відповідних поточному пошуку
@@ -231,6 +242,9 @@ rolesPage:
         placeholder: "наприклад, розробники"
       context:
         labelText: Контекст
+      locked:
+        labelText: Заблоковано
+        disabled: "Ні"
       allow:
         create: Створити
         delete: Видалити
@@ -248,6 +262,8 @@ rolesPage:
       policy:
         policy: Політика
         addAction: Додати політику
+      default:
+        disabled: "Ні"
 apiPage:
   header: API і ключі
   actionButton: Додати ключ
@@ -261,6 +277,51 @@ apiPage:
       label: Закінчується
       never: Ніколи
 authPage:
+  saml:
+    accessEnabled:
+      header: Автентифікація
+      disable: Вимкнути контроль доступу
+    header:
+      disabled:
+        label: "{providerName} не налаштований"
+    enabled:
+      authenticated:
+        header:
+          text: Автентифікація
+      groupsField: 'Групи:'
+      displayName: 'Відображуване ім''я:'
+      userName: 'Ім''я користувача:'
+      userId: 'ID користувача:'
+    disabled:
+      label: "{providerName} не налаштований"
+      username:
+        labelText: Поле ім'я користувача
+        display: "Поле ім'я користувача:"
+      uid:
+        labelText: Поле UID
+        display: "Поле UID:"
+      groups:
+        labelText: Групи полів
+        display: "Групи полів:"
+      testAuth:
+        header: '2. Протестуйте і включіть авторизацію'
+        subtext: 'Перевірте правильність налаштування програми, шляхом авторизації з них:'
+    providerName:
+      ping: Ping
+      adfs: AD FS
+      keycloak: Keycloak
+  ping:
+    buttonText:
+      pre: 'Авторизуватись з Ping'
+      post: Чекаємо відповіді від IDP
+  keycloak:
+    buttonText:
+      pre: 'Авторизуватись з Keycloak'
+      post: Чекаємо відповіді від IDP
+  adfs:
+    buttonText:
+      pre: 'Авторизуватись з AD FS'
+      post: Чекаємо відповіді від IDP
   shibboleth:
     enabled:
       authenticated:
@@ -355,8 +416,20 @@ authPage:
       header: 'Зона Ризику&trade;'
       reallyDisable: 'Ви впевнені? Натисніть ще раз, щоб дійсно відключити контроль доступу'
       promptDisable: Вимкнути контроль доступу
+      general:
+        header: Загальні
     configure:
       header: '1. Налаштуйте Azure AD аккаунт'
+      applicationId:
+        label: ID додатку
+      azureADEndpoint:
+        label: Кінцева точка
+      endpoints:
+        label: Кінцеві точки
+      regions:
+        standard: Стандартний
+        china: Китай
+        custom: Власний
       tenantId:
         label: ID Організації
         placeholder: Довгий рядок з UUID
@@ -498,6 +571,7 @@ clusterPage:
 projectsListNamespacePage:
   header: Простори імен
 projectsPage:
+  header: Проекти і Простори імен
   headerNS: Простори імен
   addProject: Додати проект
   editProject: Редагування проекту
@@ -555,6 +629,8 @@ ingressPage:
       label: Цілі
 containerPage:
   header: 'Контейнер: {name}'
+  envTab:
+    header: Змінні середовища
   portsTab:
     header: Порти
     hostPrimaryIp: '({ip})'
@@ -590,14 +666,18 @@ containersPage:
     containerLink: Додати контейнер
     kubernetesLink: Встановити Kubernetes
 clusterDashboard:
+  title: Панель управління
   cpu: ЦП
   memory: Пам'ять
   pods: Pod'и
+  subtitle:
+    used: "{used} з {total} використовується"
   node: Вузли
   etcd: etcd
   scheduler: Планувальник
   controllerManager: Диспетчер контролерів
   value: Значення
+  systemProject: Це проект, який має системні простори імен Kubernetes і {appName}. Зміни, внесені до ресурсів у системному проекта, можуть пошкодити кластер.
   noNodes: Немає вузлів.
   alert:
     node: "Попередження: вузол {node} не активний."
@@ -808,6 +888,11 @@ loginPage:
     401: "Помилка Авторизації"
     500: "Внутрішня помилка сервера"
     generic: "Під час спроби входу в систему сталася помилка ({errorCode}). Будь ласка, спробуйте ще раз."
+  readableProviders:
+    ad: Active Directory
+    azureAd: Azure AD
+    openldap: OpenLDAP
+    freeipa: FreeIPA
 machinePage:
   header: Драйвери вузлів
   inactive: Неактивний
@@ -819,7 +904,7 @@ notFoundPage:
   linkTo: Повернутися на головну сторінку
 registriesPage:
   index:
-    header: Облікові Дані в Реєстрі
+    header: Облікові дані реєстру
     linkTo: Додати реєстр
     table:
       header:
@@ -856,9 +941,14 @@ servicePage:
     fqdn: 'FQDN (Повне доменне ім''я):'
     scale: 'Кількість:'
     image: 'Образ:'
+    namespace: 'Простір імен:'
     created: 'Створений:'
   serviceType:
     deployment: Розгортання
+    replicaSet: Replica Set
+    statefulSet: Stateful Set
+    job: Job
+    cronJob: Cron Job
   external:
     externalIp: |
       {count, plural, one {}
@@ -985,6 +1075,7 @@ newStack:
   answers:
     addActionLabel: Додати відповідь
 nodeTemplatesPage:
+  header: Шаблони вузла
   actionButton: Додати шаблон
   table:
     name: Ім'я
@@ -1400,6 +1491,13 @@ conditionSections:
     lastUpdate: Останнє оновлення
     reason: Причина
     message: Повідомлення
+resourceEventList:
+  title: Події
+  table:
+    type: Тип
+    reason: Причина
+    message: Повідомлення
+  noData: Немає подій
 confirmDelete:
   title: 'Ви впевнені, що бажаєте видалити'
   protip: 'Порада: Утримуйте клавішу {key} при натисканні Delete, щоб обійти це підтвердження.'
@@ -1415,6 +1513,7 @@ containerLogs:
   scrollTop: Прокрутити на початок
   scrollBottom: Прокрутити вниз
   clear: Очистити екран
+  wrapLines: Переносити рядки
   status:
     initializing: Ініціалізація...
     connecting: З’єднання...
@@ -1689,6 +1788,7 @@ cruPersistentVolume:
       label: Секрет
     volumeName:
       label: Ім'я Тома
+      placeholder: "напр. vol"
   vsphereVolume:
     fsType:
       label: Тип файлової системи
@@ -1701,6 +1801,10 @@ cruPersistentVolume:
       label: Шлях Тома
       placeholder: "напр. /"
 cruStorageClass:
+  name:
+    placeholder: напр. сховище
+  description:
+    placeholder: напр. AWS EBS Storage
   mountOptions:
     addActionLabel: Додати параметр
   parameters:
@@ -1711,6 +1815,8 @@ cruStorageClass:
   provisioner:
     label: Провайдер
   aws-ebs:
+    type:
+      label: Тип Тома
     encrypted:
       label: Шифрування
   gce-pd:
@@ -1918,6 +2024,7 @@ editStack:
   group:
     label: Теги
     placeholder: напр. frontend, production
+    help: Список розділених комами тегів для нового стека. Списки workload можуть бути відфільтровані по окремим тегам.
 editUser:
   title: Редагувати користувача
   form:
@@ -2157,6 +2264,8 @@ formGlobalRoles:
       detail: Дозволяє користувачеві додавати, редагувати та видаляти каталоги
     manage-clusters:
       label: Керування всіма кластерами
+    manage-node-drivers:
+      label: Налаштувати драйвери вузлів
     manage-roles:
       label: Керувати ролями
     manage-users:
@@ -2262,8 +2371,6 @@ formNetwork:
     placeholder: Необов'язково; напр. 10.42.2.24
   retainIp:
     label: Зберегти IP
-  dns:
-    label: Сервісна діагностика
   hostname:
     label: Ім'я хосту
     placeholder: напр. web
@@ -2305,6 +2412,8 @@ formPorts:
     label: Протокол
   dnsName:
     placeholder: "напр. example"
+formScale:
+  showAdvanced: Більше опцій
 formScheduling:
   status: |
     {count, plural, one {}
@@ -2589,7 +2698,7 @@ infoMultiStats:
     labelText: Пам'ять
     used: Використовується
   storageSection:
-    labelText: Диск
+    labelText: Сховище
     read: Прочитано
     write: Записано
 inputAnswers:
@@ -2819,6 +2928,7 @@ newCatalog:
   support: "Підтримка:"
   templateVersion: Версія шаблону
   titleAdd: "Додати {name} додаток"
+  titleConfigure: "Налаштувати {name} Додаток"
   txt: answers.txt
   upgrade: "Оновити:"
   url: "Проект URL:"
@@ -2892,6 +3002,8 @@ nodeDriver:
     username:
       label: Ім'я кристувача
   azure:
+    storageType:
+      label: Тип сховища
     privateIpAddress:
       label: Приватний IP
       placeholder: 127.0.0.1
@@ -2927,6 +3039,8 @@ nodeDriver:
     aliyunSLB:
       label: Aliyun SLB ID
       placeholder: Aliyun SLB ID
+    storageSection:
+      label: Сховище
     routeCIDR:
       placeholder: напр. 192.168.1.0/24
     securityGroup:
@@ -3094,6 +3208,9 @@ viewEditDescription:
       placeholder: напр. lab
     description:
       placeholder: наприклад, "Оточення для експериментів розробників"
+volumesPage:
+  storageClass:
+    label: Клас сховища
 vmConsole:
   header: "Консоль:"
   protip: "Порада: для того щоб запустити у новому вікні shell, утримуйте клавішу {key}."
@@ -3133,6 +3250,9 @@ nav:
     members: Учасники
     nodes: Вузли
     namespaces: Простори імен
+    storage:
+      tab: Сховище
+    projects: Проекти і Простори імен
   containers:
     tab: Workloads
     systemTab: Система
@@ -3148,7 +3268,9 @@ nav:
     addVolume: Додати том
     importCompose: Імпорт YAML
   group:
+    none: Cписок
     workload: Групувати за Workload
+    namespace: Групувати за Просторами імен
     namespaceWorkload: Групувати за Просторами імен/Workload
   hosts:
     tab: Вузли
@@ -3201,6 +3323,7 @@ nav:
     alerts: Попередження
     notifiers: Сповіщення
     logging: Логування
+    pipeline: Конвеєр
 action:
   activate: Активувати
   addContainer: Розгортати Pod

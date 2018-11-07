@@ -5,6 +5,7 @@ generic:
   actions: アクション
   activate: アクティベート
   add: 追加
+  advanced: 詳細
   all: 全て
   any: Any
   application: アプリケーション
@@ -72,6 +73,7 @@ generic:
   ports: ポート
   prefix: 接頭辞
   project: プロジェクト
+  persistentVolume: 永続ボリューム
   random: ランダム
   remove: 削除
   role: ロール
@@ -196,6 +198,8 @@ appDetailPage:
     title: ボリューム
     detail: このアプリケーションに作られた永続ボリューム要求です
     nodata: このアプリケーションにボリューム要求は作成されていません
+  configMaps:
+    title: コンフィグマップ
   secrets:
     title: シークレット
     detail: このアプリケーションに割り当てられているシークレットです
@@ -230,6 +234,7 @@ rolesPage:
     table:
       builtin: ビルトイン
       created: 作成時刻
+      enabled: 有効
       name: 名前
       noData: まだロールはありません
       noMatch: 検索条件に一致するロールがありません
@@ -251,6 +256,8 @@ rolesPage:
         placeholder: "例: Developers"
       context:
         labelText: コンテキスト
+      locked:
+        disabled: "いいえ"
       allow:
         create: 作成
         delete: 削除
@@ -270,6 +277,8 @@ rolesPage:
       policy:
         policy: ポリシー
         addAction: ポリシーを追加
+      default:
+        disabled: "いいえ"
 apiPage:
   header: API & キー
   actionButton: キーを追加
@@ -285,6 +294,45 @@ apiPage:
       never: 失効しない
     noData: まだ API キーは定義されていません
 authPage:
+  saml:
+    accessEnabled:
+      header: 認証
+      disable: アクセスコントロールを無効化
+    header:
+      disabled:
+        label: "{providerName} が設定されていません"
+    enabled:
+      authenticated:
+        header:
+          text: 認証
+      groupsField: 'グループ:'
+      displayName: '表示名:'
+      userName: 'ユーザー名:'
+      userId: 'ユーザー ID:'
+    disabled:
+      name:
+        labelText: 表示名フィールド
+        display: "表示名フィールド:"
+      username:
+        labelText: ユーザー名フィールド
+        display: "ユーザー名フィールド:"
+      uid:
+        labelText: UID フィールド
+        display: "UID フィールド:"
+      groups:
+        labelText: グループ フィールド
+        display: "グループ フィールド:"
+    providerName:
+      ping: Ping
+      adfs: AD FS
+      keycloak: Keycloak
+  keycloak:
+    buttonText:
+      post: IDP からの返答を待っています
+  adfs:
+    buttonText:
+      pre: 'AD FSによる認証'
+      post: IDP からの返答を待っています
   shibboleth:
     enabled:
       authenticated:
@@ -375,12 +423,29 @@ authPage:
         pre: GitHubアカウントで認証
         post: GitHub からの返答を待っています
   azuread:
+    header:
+      disabled:
+        label: "Azure ADは設定されていません"
     enabled:
       header: 'Danger Zone&trade;'
       reallyDisable: '本当によろしいですか? アクセスコントロールを無効化する場合は再度クリックしてください'
       promptDisable: アクセスコントロールを無効化
+      general:
+        header: 一般
     configure:
       header: '1. Azure AD アカウントを設定する'
+      applicationId:
+        label: アプリケーション ID
+      serverURL:
+        label: Rancher サーバー URL
+      azureADEndpoint:
+        label: エンドポイント
+      endpoints:
+        label: エンドポイント
+      regions:
+        standard: スタンダード
+        china: 中国
+        custom: カスタム
       tenantId:
         label: テナント ID
         placeholder: A long UUID string
@@ -537,6 +602,7 @@ clusterPage:
   edit: クラスターを編集
 projectsListNamespacePage:
   header: 名前空間
+  notIn: プロジェクト内にありません
 projectsPage:
   header: プロジェクト/名前空間
   headerNS: 名前空間
@@ -544,6 +610,11 @@ projectsPage:
   editProject: プロジェクトを編集
   noMatch: 検索条件に一致するプロジェクトはありません
   noData: このクラスターではまだプロジェウトは定義されていません
+  groups:
+    none: 名前空間のリスト
+    namespaces: グループ化されたプロジェクト/名前空間
+  quota:
+    label: リソース制限
   ns:
     label: 名前空間名
     placeholder: '例: lab'
@@ -555,6 +626,7 @@ projectsPage:
   psp:
     label: ポッドセキュリティポリシー
   members:
+    title: メンバー
     user: ユーザー
     group: グループ
     serviceaccount: サービスアカウント
@@ -607,6 +679,8 @@ ingressPage:
     noData: まだイングレスルールは定義されていません
 containerPage:
   header: 'コンテナ: {name}'
+  envTab:
+    header: 環境変数
   portsTab:
     header: ポート
     detail: 'コンテナのリッスンしているポートとホストのパブリック IP アドレス上のポートのマッピングを設定します'
@@ -645,6 +719,7 @@ containersPage:
     orchestrator: 他のオーケストレーターをインストール
     kubernetesLink: Kubernetes をインストール
 clusterDashboard:
+  title: ダッシュボード
   cpu: CPU
   memory: メモリ
   pods: ポッド
@@ -687,6 +762,7 @@ editDns:
     keyLabel: ラベル
     addActionLabel: セレクターを追加
   recordType:
+    label: "解決方法"
     arecord: 1つ以上の外部 IP アドレス
     cname: 外部ホスト名
     alias: 別 DNS レコード値のエイリアス
@@ -932,10 +1008,16 @@ loginPage:
   shibbolethError:
     401: "認証に失敗しました"
     500: "サーバ内部エラー"
-    generic: "ログイン中にエラー ({errorCode}) が発生しました。もう一度やり直してください。"
+    generic: "ログイン中にエラー {{errorCode}} が発生しました。もう一度やり直してください。"
   error:
     authFailedCreds: "ログインに失敗しました: 認証情報が間違っているか、アカウントにログインする権限が与えられていない可能性があります。"
     authFailed: "ログインに失敗しました: アカウントにログインする権限が与えられていない可能性があります。"
+  readableProviders:
+    ad: Active Directory
+    azureAd: Azure AD
+    local: ローカルユーザー
+    openldap: OpenLDAP
+    freeipa: FreeIPA
 machinePage:
   header: ノードドライバー
   inactive: 休止
@@ -990,11 +1072,13 @@ configMapsPage:
 servicePage:
   header: 'ワークロード: {name}'
   globalScale: 'ホスト毎に {scale}'
+  endpoints: 'エンドポイント:'
   multistat:
     type: 'ワークロードタイプ:'
     fqdn: 'FQDN:'
     scale: 'スケール:'
     image: 'イメージ:'
+    namespace: '名前空間:'
     created: '作成日:'
     daemonSetScale: 'ノード毎に 1 つ'
   serviceType:
@@ -1267,6 +1351,11 @@ ldap:
   providerName:
     openldap: OpenLDAP
     ad: Active Directory
+    freeipa: FreeIPA
+    saveLabels:
+      openldap: OpenLDAPによる認証
+      ad: Active Directoryによる認証
+      freeipa: FreeIPAによる認証
   header:
     disabled:
       label: "{providerName} は設定されていません"
@@ -1393,6 +1482,10 @@ annotationsSection:
   value: 値
   noData: アノテーションはありません。
   noMatch: 検索条件に一致するアノテーションがありません
+taintsSection:
+  key: キー
+  value: 値
+  effect: 効果
 billingInfo:
   header: 請求情報
   addNew: 支払い方法を追加
@@ -1406,6 +1499,9 @@ billingInfo:
       name: "カード記載名: {name}"
       actions: アクション
 cloudProvider:
+  title: クラウドプロバイダー
+  amazon: Amazon
+  azure: Azure
   name: クラウドプロバイダ名
   helpText: |
     詳細は <a href="https://kubernetes.io/docs/concepts/cluster-administration/cloud-providers/" target="_blank" rel="nofollow noopener noreferrer">クラウドプロバイダーについて</a> を参照してください
@@ -1467,11 +1563,15 @@ clusterRow:
   importCluster: 既存の Kubernetes を利用
   loginDefault: ログイン
 clusterNew:
+  advanced:
+    yaml: YAML として編集
   name:
     label: クラスター名
     placeholder: '例: sandbox'
   description:
     placeholder: '例: 開発やテスト用のクラスター'
+  driverLabels:
+    import: 既存のクラスターをインポート
   members:
     label: メンバーの役割
     detail: クラスターに誰がアクセスでき、どのような権限を保持するかを制御します
@@ -1519,6 +1619,8 @@ clusterNew:
       prompt: サイズを選択してください...
     diskSizeGb:
       label: OSディスクサイズ
+    dns:
+      placeholder: "例: example"
     ssh:
       label: SSH 公開鍵
     security:
@@ -1552,6 +1654,14 @@ clusterNew:
     resourceGroup:
       label: リソースグループ
       placeholder: 'docker-machine'
+    networking:
+      label: ネットワー キング
+      default: デフォルト
+      advanced: 詳細
+      subnet:
+        label: サブネット
+      serviceCidr:
+        prompt: "10.43.0.0/16"
     sshUser:
       label: SSH ユーザー
       placeholder: usr1
@@ -1622,6 +1732,10 @@ clusterNew:
       placeholder: '例: 10.42.0.0/16'
     alphaFeatures:
       label: アルファ機能
+    dashboard:
+      label: Kubernetes ダッシュ ボード
+    httpLB:
+      label: Http ロードバランサー
   rke:
     etcd:
       heartbeat:
@@ -1630,6 +1744,9 @@ clusterNew:
       election:
         label: etcd 選出タイムアウト
         placeholder: 選出タイムアウトまでの時間
+    nodeName:
+      title: ノード名
+      placeholder: '例: my-worker-node'
     address:
       title: ノードアドレス
       detail: ノードのパブリック IP とプライベート IP を設定します
@@ -1645,6 +1762,8 @@ clusterNew:
     customize:
       label: クラスターオプション
       detail: "クラスター用 Kubernetes オプションをカスタマイズします"
+    labels:
+      title: ノードラベル
     nodes:
       title: ノードプール
       detail: クラスターに所属するマシンの設定します
@@ -1665,6 +1784,9 @@ clusterNew:
     auth:
       label: 認証プロバイダー
       x509: x509
+    serviceNodePortRange:
+      label: ポート範囲を追加
+      placeholder: '例: 30000-32767'
     network:
       label: ネットワークプロバイダー
       flannel: Flannel
@@ -1672,6 +1794,9 @@ clusterNew:
       canal: Canal
       options:
         flannel:
+          iface:
+            label: インターフェース
+        canal:
           iface:
             label: インターフェース
         calico:
@@ -1699,6 +1824,7 @@ clusterNew:
     podSecurityPolicy:
       label: ポッドセキュリティポリシー サポート
     role:
+      sectionheader: ノードオプション
       title: ノードロール
       detail: ノードがクラスター内でどのロールとして動作するか選択してください
       header:
@@ -1726,6 +1852,12 @@ clusterNew:
       etcd: etcd を使うには 1, 3 または 5 台のノードを選択してください
       controlPlane: Control を使うには少なくとも1台のノードを選択してください
       worker: Worker を使うには少なくとも1台のノードを選択してください
+    system:
+      title: ノードオペレーティングシステム
+      linux: Linux
+      windows: Windows
+    windowsSupport:
+      label: Windowsのサポート (実験的)
   custom:
     label: カスタム
     shortLabel: カスタム
@@ -1746,6 +1878,14 @@ conditionSections:
     message: メッセージ
   noData: コンディションはありません
   noMatch: 検索条件に一致するコンディションはありません
+resourceEventList:
+  table:
+    type: タイプ
+    lastUpdate: 最終更新
+    reason: 理由
+    message: メッセージ
+  noData: イベントはありません
+  noMatch: 検索条件に一致するイベントはありません
 confirmDelete:
   title: '本当に削除してもよろしいですか?'
   environmentNote: 'ノート: このプロジェクト内にある {appName} により作られた名前空間を含むの全てのリソースは完全に削除されます'
@@ -1813,6 +1953,8 @@ cruPersistentVolume:
   storageClass:
     label: ストレージクラスに割当
     prompt: None
+  pvc: 永続ボリューム要求
+  reclaimPolicy: 要求ポリシー
   capacity:
     label: 容量
     unit: GiB
@@ -1843,6 +1985,9 @@ cruPersistentVolume:
   azureDisk:
     cachingMode:
       label: キャッシュモード
+      none: なし
+      readOnly: 読み取り専用
+      readWrite: 読み書き
     diskName:
       label: ディスク名
       placeholder: "例: kubernetes-pvc"
@@ -1854,6 +1999,9 @@ cruPersistentVolume:
       placeholder: "例: ext4"
     kind:
       label: 種類
+      dedicated: 専用
+      managed: マネージド
+      shared: 共有
     readOnly:
       label: 読み取り専用
   secret:
@@ -1862,6 +2010,10 @@ cruPersistentVolume:
       placeholder: "例: 256"
     optional:
       label: オプション
+    secretName:
+      label: シークレット
+    certificateName:
+      label: 証明書
     items:
       label: 項目
   configMap:
@@ -1872,6 +2024,8 @@ cruPersistentVolume:
       label: オプション
     name:
       label: コンフィグマップ名
+    items:
+      label: アイテム
   emptyDir:
     medium:
       label: Medium
@@ -2159,6 +2313,8 @@ cruStorageClass:
     view: 'ストレージクラス: {name}'
   allowVolumeExpansion:
     label: ユーザーがボリュームを拡張することを許容
+  pv:
+    title: 永続ボリューム
   mountOptions:
     label: マウントオプション
     addActionLabel: オプションを追加
@@ -2377,6 +2533,8 @@ cruStorageClass:
     adminSecretNamespace:
       label: 管理シークレット名前空間
       placeholder: "例: kube-system"
+    adminSecretName:
+      placeholder: "例: secret"
     pool:
       label: プール
       placeholder: "例: kube"
@@ -2600,6 +2758,20 @@ formBalancerConfig:
     ファイルに指定可能なオプションの詳細は <a href="https://cbonte.github.io/haproxy-dconv/1.6/configuration.html" target="_blank" rel="nofollow noopener noreferrer">haproxy ドキュメント</a> を参照してください。ターゲットコンテナの IP アドレスを含む <code>backend</code> や関連する行を上書きする際は <code>$IP</code> と指定することで {appName} が適切な行を生成します。
   config:
     prompt: カスタムされた haproxy.cfg の内容
+formNodeAffinity:
+  addRuleLabel: ノードセレクターを追加
+  noRules: ノードセレクタはありません
+  removeRuleLabel: ノードセレクタを削除
+formNodeRequirement:
+  label: ルール
+  addRuleLabel: ルールを追加
+  noRules: ルールはありません
+  key:
+    label: キー
+  operator:
+    label: オペレーター
+  values:
+    label: 値
 formIngress:
   defaultBackend:
     label: このルールをデフォルトのバックエンドとして設定する
@@ -2809,6 +2981,39 @@ formEngineOpts:
     addActionLabel: レジストリミラーを追加
     valueLabel: ミラー URL
     valuePlaceholder: '例: https://my-mirror.example.com:5000'
+formResourceQuota:
+  table:
+    type:
+      label: リソースタイプ
+    value:
+      label: 制限
+      placeholder: '例: 10'
+      milliCpuPlaceholder: '例: 500'
+      memoryPlaceholder: '例: 1Gi'
+    projectLimit:
+      placeholder: '例: 50'
+      milliCpuPlaceholder: '例: 2000'
+      memoryPlaceholder: '例: 2048'
+    namespaceLimit:
+      placeholder: '例: 10'
+      milliCpuPlaceholder: '例: 500'
+      memoryPlaceholder: '例: 1024'
+  errors:
+    limitRequired: '{resource} が必要です.'
+  resources:
+    configMaps: コンフィグマップ
+    limitsCpu: CPU 制限
+    limitsMemory: メモリ制限
+    persistentVolumeClaims: 永続ボリューム要求
+    pods: ポッド
+    replicationControllers: レプリケーションコントローラー
+    requestsCpu: CPU 予約
+    requestsMemory: メモリ予約
+    requestsStorage: ストレージ予約
+    secrets: シークレット
+    services: サービス
+    servicesLoadBalancers: サービスロードバランサ
+    servicesNodePorts: サービスノードポート
 formEnvVar:
   title: 環境変数
   detail: 作成時に追加された環境変数
@@ -3386,6 +3591,7 @@ formVolumeRow:
     tmpfs: Tmpfs
     secret: シークレット
     configmap: コンフィグマップ
+    certificate: 証明書
   remove: ボリュームを削除
   subPath: ボリューム内サブパス
   readOnly: 読み取り専用
@@ -3393,6 +3599,7 @@ formVolumeRow:
   addMount: マウントを追加
   mounts:
     mountPoint: マウントポイント
+    subPath: ボリューム内サブパス
     readOnly: 読み取り専用
   customLogPath:
     helpText: Flexvolume ドライバーを配備してボリュームを作成し、そのログをホストにマウントします。この機能は現在 GKE クラスターでサポートされています。
@@ -3422,6 +3629,7 @@ formVolumes:
     bindMount: ノードからディレクトリをバインド
     tmpfs: インメモリtmpfsを追加
     secret: シークレットを使用
+    certificate: ユーザー証明書
     customLogPath: ディレクトリからログファイルを読み込み
   table:
     kind: 種類
@@ -3593,6 +3801,7 @@ infoMultiStats:
     read: 読み込み
     write: 書き込み
 inputAnswers:
+  yaml: YAML として編集
   config: 設定オプション
   unknownType: "有効でないパラメータータイプ:"
   noConfig: このテンプレートには設定オプションがありません
@@ -3630,6 +3839,10 @@ loginShibboleth:
   buttonText: シボレスでログイン
 loginGithub:
   buttonText: GitHub でログイン
+loginAzure:
+  buttonText: Azure ADでログイン
+loginSaml:
+  buttonText: "{provider} でログイン"
 loginUserPass:
   local: ローカルユーザーを使用
   provider: "{kind}"
@@ -3829,6 +4042,13 @@ modalProcessError:
   none: N/A
   stackTrace: "スタックトレース:"
   close: 閉じる
+modalDrainNode:
+  gracePeriod:
+    placeholder: '例: 60'
+    label: 猶予期間
+  timeout:
+    placeholder: '例: 60'
+    label: タイムアウト
 modalRollbackService:
   title: '"{instanceName}" をロールバック'
   titleWithSidekicks: '"{instanceName}" と {count, plural, =1 {# サイドカー} other {# サイドカー}} をロールバック'
@@ -3861,10 +4081,14 @@ modalShortcuts:
   project: プロジェクト
   other: その他の項目
   kubectl: Kubectl シェル
+  viewGroup: ビューのグループ化の切り替え
+  search: 検索フィールドにフォーカスする
+  shortcuts: 現在地
 modalYaml:
   title:
     new: '{type} YAML をインポート'
     edit: 'YAML を編集: {name}'
+    view: 'YAML を表示: {name}'
 modalWelcome:
   header: '{appName} へようこそ!'
   closeModal: 完了!
@@ -3917,6 +4141,7 @@ newCatalog:
   noConfig: このテンプレートには設定オプションがありません
   official: 公式に認証済み
   preview: プレビュー
+  templateFiles: テンプレートファイル
   seeMore: より詳細な情報...
   saveConfigure: 設定
   saveNew: 起動
@@ -4012,6 +4237,25 @@ nodeDriver:
     zstack: ZStack
   driverOptions: "{driver} オプション"
   templateOptions: "{appName} テンプレート"
+  amazoneks:
+    role:
+      loading: "AmazonからVPCをロード中..."
+    vpc:
+      title: VPC/サブネット
+      next: "次へ：サブネットの選択"
+      loading: "Amazonからサブネットをロード中..."
+      loadingRancherDefault: "インスタンスオプションを読み込んでいます..."
+    subnet:
+      title: サブネット
+      next: "次へ：セキュリティグループの選択"
+      loading: "Amazonからセキュリティグループをロード中..."
+    securityGroup:
+      title: セキュリティグループ
+      detail: EKSインスタンスに適用するセキュリティグループを選択してください
+      choose: 既存のグループを選択
+      defaultExisting: "通常: 既存の <code>{groupName}</code> グループを利用"
+      next: "次へ: インスタンスオプションの設定"
+      loading: インスタンスオプションを読み込んでいます...
   amazonec2:
     access:
       title: 1. アカウントアクセス
@@ -4072,6 +4316,7 @@ nodeDriver:
       placeholder: '例: ubuntu'
     iam:
       label: IAM プロファイル
+      placeholder: my-k8s-profile
     privateIp:
       label: プライベート IP
     onlyPrivate:
@@ -4140,6 +4385,10 @@ nodeDriver:
       custom: "カスタム: 既存のグループを選択"
       updating: セキュリティグループを更新中...
       creating: セキュリティグループを作成中...
+    zoneSection: ゾーン
+    selectZoneAction: "次へ: セキュリティグループの選択"
+    zone:
+      label: ゾーン
     portHelp:
       link: 詳細を見る
       text: 公開されるポート番号について
@@ -4157,6 +4406,8 @@ nodeDriver:
       label: ルートディスクサイズ
     sshUser:
       label: SSH ユーザー
+    template:
+      label: テンプレート
   packet:
     accountSection: アカウントアクセス
     projectId:
@@ -4185,6 +4436,8 @@ nodeDriver:
     region:
       label: リージョン
   rackspace:
+    account:
+      title: 1. アカウントアクセス
     username:
       label: ユーザー名
       placeholder: あなたの RackSpace ユーザー名
@@ -4251,6 +4504,14 @@ nodeDriver:
       label: データストア
       placeholder: "例: datastore_cluster_name/datastore_name"
       help: "VM ディスクを配置するデータストアです"
+    cloudinit:
+      placeholder: "例: http://my_host/cloud-config.yml"
+    folder:
+      label: フォルダ
+    cfgparam:
+      key:
+        placeholder: "例: guestinfo.hostname"
+      addActionLabel: パラメーターを追加
   azure:
     placement:
       title: 配置
@@ -4325,15 +4586,21 @@ nodeDriver:
     region:
       label: リージョン
   aliyunecs:
+    accountSection:
+      label: 1. アカウントアクセス
+      detail: Aliyun ECS インスタンスを起動するのに API キーが利用されます
     accessKey:
       label: アクセスキー*
       placeholder: あなたの Aliyu アカウントアクセスキー
     accessKeySecret:
       label: アクセスキーシークレット*
       placeholder: あなたのキーのシークレット
+      provided: 取得済み
     apiEndpoint:
       label: API エンドポイント
       placeholder: プライベート Aliyun API サーバーのエンドポイント
+    instanceOptionsSection:
+      label: インスタンス
     instanceDescription:
       label: インスタンス詳細
       placeholder: インスタンス詳細
@@ -4349,8 +4616,11 @@ nodeDriver:
     aliyunSLB:
       label: Aliyun SLB ID
       placeholder: Aliyun SLB ID
+    storageSection:
+      label: ストレージ
     ioOptimized:
       label: インスタンス ストレージ I/O 最適化
+      none: なし
     systemDiskCategory:
       label: システムディスクカテゴリ
     dataDiskCategory:
@@ -4363,6 +4633,9 @@ nodeDriver:
       placeholder: リージョン
     zone:
       label: アベイラブルゾーン
+    networkSection:
+      label: ネットワーク
+      loading: Aliyun ECSからストレージタイプをロード中...
     routeCIDR:
       label: ルート CIDR
       placeholder: '例: 192.168.1.0/24'
@@ -4375,12 +4648,24 @@ nodeDriver:
       placeholder: プライベートネットワーク内のプライベート IP
     privateAddressOnly:
       label: プライベートアドレスのみ
+    securitySection:
+      label: セキュリティ
     securityGroup:
       label: セキュリティグループ
       placeholder: セキュリティグループ
     sshPassword:
       label: SSH パスワード
       placeholder: インスタンスの SSH パスワードを設定してください。空の場合自動的に設定されます。
+    tags:
+      addActionLabel: インスタンスタグを追加
+      valueLabel: タグ
+      placeholder: '例: dev'
+    errors:
+      vpcIdRequired: VPC は必須です。
+      accessKeyRequired: アクセスキーは必須です
+      accessSecretRequired: シークレットキーは必須です
+      sshPasswordLengthNotValid: SSHパスワードの長さは8〜30でなければなりません。
+      sshPasswordInvalidCharacter: SSHパスワードに無効な文字が含まれています。
   zstack:
     access:
       title: 1. アカウントアクセス
@@ -4666,6 +4951,9 @@ schema:
     prompt: サービスを選択してください...
   inputStorageClass:
     prompt: デフォルトクラスを使う...
+  inputSecret:
+    secret: シークレットを選択してください...
+    certificate: 証明書を選択してください...
 schedulingRuleRow:
   theHost: ホスト
   must: must
@@ -4878,6 +5166,7 @@ nav:
     alerts: アラート
     notifiers: 通知
     logging: ログ
+    pipeline: パイプライン
   project:
     none: グループ化されたプロジェクト/名前空間
     namespaces: 名前空間
@@ -4893,6 +5182,8 @@ action:
   edit: 編集
   editService: サービスを編集
   editYaml: YAML の参照/編集
+  viewYaml: YAMLを見る
+  editConfig: 設定を編集
   evacuate: 退避
   execute: シェルを実行
   exportConfig: 設定をエクスポート
@@ -4912,6 +5203,7 @@ action:
   revert: デフォルトに戻す
   rollback: ロールバック
   setDefault: ログイン環境として設定する
+  setting: 設定
   start: 開始
   startAll: すべて開始
   stop: 停止
@@ -4949,11 +5241,13 @@ validation:
       startDot: '"{key}" をドットで始めることはできません。'
       empty: '"{key}"は少なくとも1文字でなければなりません'
       tooLong: '"{key}" は {max} 文字を超えることはできません'
+      startNumber: '"{key}" を数字で始めることはできません。'
       startHyphen: '"{key}" は文字または数字で始まる必要があります'
       endHyphen: '"{key}" は文字または数字で終わる必要があります'
       emptyLabel: '"{key}" は2つの連続したドットを持つことはできません'
       tooLongLabel: '"{key}" は {max} 文字を超えるセクションを持つことはできません'
     label:
+      startNumber: '"{key}" を数字で始めることはできません。'
       startHyphen: '"{key}" は文字または数字で始まる必要があります'
       endHyphen: '"{key}" は文字または数字で終わる必要があります'
       emptyLabel: '"{key}" は空にできません'
@@ -4975,6 +5269,8 @@ model:
       user: ユーザー
       admin: 管理者
       project: 環境
+  cluster:
+    name: クラスター名
   identity:
     displayType:
       user: ユーザー

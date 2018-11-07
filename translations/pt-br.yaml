@@ -5,6 +5,7 @@ generic:
   actions: Ações
   activate: Ativar
   add: Adicionar
+  advanced: Avançado
   all: Todos
   any: Qualquer
   application: aplicação
@@ -52,8 +53,10 @@ generic:
   limit: Limite
   limits: Limites
   loading: "Carregando..."
+  loggingOut: "Fazendo logout..."
   member: Membro
   mibibyte: 'MiB'
+  minutes: minutos
   milliseconds: 'Milissegundos'
   missing: "*%FALTANDO%*"
   moreActions: Mais Ações
@@ -73,6 +76,8 @@ generic:
   ports: Portas
   prefix: prefixo
   project: Projeto
+  persistentVolumeClaim: volume persistente
+  persistentVolume: volume persistente
   random: Aleatório
   remove: Remover
   role: Função
@@ -95,6 +100,7 @@ generic:
   total: Total
   type: Tipo
   unknown: Desconhecido
+  unknownUser: Não é possível buscar informações do usuário
   upload: Enviar
   url: URL
   user: Usuário
@@ -197,6 +203,10 @@ appDetailPage:
     title: Volumes
     detail: Reivindicação de volume persistente criada com esta aplicação
     nodata: Nenhum volume declarado para essa aplicação.
+  configMaps:
+    title: Mapas de configuração
+    detail: Mapas de configuração associados a este aplicativo
+    nodata: Este aplicativo não possui mapas de configuração
   secrets:
     title: Segredos
     detail: Segredos associados a este aplicativo
@@ -231,11 +241,23 @@ rolesPage:
     table:
       builtin: Interno
       created: Horário de Criação
+      enabled: Ativado
       name: Nome
       noData: Ainda não existem funções
       noMatch: Nenhuma regra corresponde a pesquisa atual
       subjectKind: Tipo
       template: Modelo
+      global: Novo usuário padrão
+      cluster: Padrão do Criador de Cluster
+      project: Padrão do Criador do Projeto
+      showDefaults: Mostrar apenas padrões
+  resources:
+    title: Conceder recursos
+    detail: Conceder acesso a operações específicas nos recursos Kubernetes
+  inherit:
+    title: Herdar de uma função
+    detail: Incluir todas as permissões de um outra função
+  addRole: "Adicionar função {context}"
   editRole: Editar Função
   saveEdit: Editar
   saveNew: Criar
@@ -252,6 +274,12 @@ rolesPage:
         placeholder: "exemplo: Desenvolvedores"
       context:
         labelText: Contexto
+        detail: Quais escopos esse papel é apropriado para ser mostrado em.
+      locked:
+        labelText: Bloqueado
+        detail: Isso não afeta nenhuma ligação à função que já existe.
+        enabled: "Sim: novas ligações não podem usar essa função"
+        disabled: "Não"
       allow:
         create: Criar
         delete: Excluir
@@ -271,10 +299,20 @@ rolesPage:
       policy:
         policy: Política do site
         addAction: Adicionar política
+      default:
+        global: Novo Usuário Padrão
+        cluster: Padrão do Criador de Cluster
+        project: Padrão do Criador do Projeto
+        enabled:
+          global: "Sim: Papel padrão para novos usuários"
+          cluster: "Sim: Papel padrão para a criação de novos clusters"
+          project: "Sim: Papel padrão para a criação de novos clusters"
+        disabled: "Não"
 apiPage:
   header: API & chaves
   actionButton: Adicionar chave
   currentEndpoint: 'Endpoint:'
+  detail: As Chaves de API estão vinculadas ao seu usuário específico ({name}) e podem criar, excluir e manipular todos os Clusters e Projetos aos quais você tem acesso.
   table:
     state: Estado
     name: Chave de Acesso
@@ -285,6 +323,61 @@ apiPage:
       never: Nunca
     noData: Não há chaves de API definidas
 authPage:
+  saml:
+    accessEnabled:
+      header: Autenticação
+      disable: Desabilitar controle de acessos
+    header:
+      disabled:
+        label: "{providerName} não está configurado"
+    enabled:
+      authenticated:
+        header:
+          text: Autenticação
+      groupsField: 'Grupos:'
+      displayName: 'Nome de exibição:'
+      userName: 'Usuario:'
+      userId: 'ID do usuário:'
+    disabled:
+      header: '1. Configurar conta {providerName}'
+      headerDetail: 'Digite os detalhes da conta {providerName}'
+      label: "{providerName} não está configurado"
+      name:
+        labelText: Exibir Nome do Campo
+        display: "Exibir Nome do Campo:"
+      username:
+        labelText: Campo Nome de usuário
+        display: "Campo Nome de usuário:"
+      uid:
+        labelText: Campo UID
+        display: "Campo UID:"
+      rancherApiHost:
+        labelText: "{appName} hospedeiro da API"
+        display: "{appName} hospedeiro da API:"
+      groups:
+        labelText: Grupos de Campo
+        display: "Grupos de Campo:"
+      testAuth:
+        header: '2. Teste e habilite autenticação'
+        subtext: 'Verifique se o seu aplicativo está configurado corretamente testando a autenticação com isso:'
+    providerName:
+      ping: Latência
+      adfs: Active Directory
+      keycloak: Keycloak
+    authError: 'O acesso não foi autorizado'
+    popupError: 'Por favor, desabilite seu bloqueador de pop-up e clique em "Autenticar" novamente.'
+  ping:
+    buttonText:
+      pre: 'Autenticar com IDP'
+      post: Esperando resposta do IDP
+  keycloak:
+    buttonText:
+      pre: 'Autenticar com o Keycloak'
+      post: Esperando resposta do IDP
+  adfs:
+    buttonText:
+      pre: 'Autenticar com Active Directory'
+      post: Esperando resposta do IDP
   shibboleth:
     enabled:
       authenticated:
@@ -493,18 +586,103 @@ certificatesPage:
 membersPage:
   index:
     table:
+      name: Nome
       noData: Não há usuários ainda
+      userId: Usuário
+      template: Função
+namespacesPage:
+  table:
+    name:
+      label: Namespace
+    description:
+      label: Descrição
+    project:
+      label: Projeto
+    pods:
+      label: Pods
+    workloads:
+      label: Cargas de trabalho
+    created:
+      label: Criado
+clusterPage:
+  edit: Editar Cluster
+projectsListNamespacePage:
+  current: Neste projeto
+projectsPage:
+  header: Projetos/Namespaces
+  addProject: Adicionar Projeto
+  editProject: Editar Projeto
+  noMatch: Nenhum projeto coincide com a pesquisa atual.
+  noData: Este cluster ainda não possui projetos
+  groups:
+    none: Lista De Namespaces
+  name:
+    label: Nome do projeto
+    placeholder: ex. lab
+  created:
+    label: Criado
+  psp:
+    label: Políticas de Segurança Pod
+  resourceQuota:
+    title: Cotas de Recursos
+  members:
+    title: Membros
+    user: Usuário
+    group: Grupo
+    serviceaccount: Conta de Serviço
+    labelText: Membros
+    addMember: Adicionar Membro
+    addUser: Adicionar Usuário
+    noAddUser: Você é o único usuário registrado ativo.
+    addGroup: Criar Grupo
+    addServiceAccount: Adicionar conta de serviço
+    multipleRoles: Múltiplos Papéis
+    customRoles: Papéis Personalizados
+    kind:
+      label: Tipo
+    name:
+      label: Nome
+    role:
+      label: Função
+    errors:
+      nameReq: Nome é obrigatório.
+      nameInExists: O nome já existe. Por favor, use um novo nome de projeto.
+      memberNameReq: O nome é obrigatório para um membro
+      memberRoleReq: O papel é obrigatório para um membro
 clustersPage:
   header: Cluster
   newCluster: Adicionar Cluster
+  newClusterName: "Adicionar Cluster: {name}"
+  editClusterName: "Editar Cluster: {name}"
   cluster:
     label: Nome do Cluster
+  provider:
+    label: Provedor
+  version:
+    label: Versão
+  nodes:
+    label: Nós
   cpu:
     label: CPU
   memory:
     label: RAM
   pod:
     label: Pods
+  storage:
+    label: Disco
+ingressPage:
+  header: 'Ingress: {name}'
+containerPage:
+  portsTab:
+    header: Portas
+  volumesTab:
+    header: Volumes
+    table:
+      path: Ponto de Montagem
+      shared: Compartilhado Com
+      writable: Gravável
+      noData: Este contêiner não tem volumes montados
+      noMatch: Nenhum volume corresponde a pesquisa atual
 containersPage:
   table:
     sparkPrefixMemory: "Memória: "
@@ -1039,9 +1217,16 @@ nav:
     tab: Infra-estrutura
     certificates: Certificados
     registries: Registros
+  admin:
+    settings:
+      tab: Configurações
+      auth: Controle de Acesso
+      advanced: Avançado
   user:
     label: "Menu do Usuário: {username}"
     logout: Sair
+  userPreferences:
+    link: "Preferências"
 action:
   activate: Ativar
   clone: Clonar
@@ -1060,3 +1245,25 @@ action:
   viewConfig: Exibir Configuração
   viewGraph: Exibir Gráfico
   viewInApi: Exibir na API
+model:
+  identity:
+    displayType:
+      localUser: Usuário local
+  machine:
+    role:
+      worker: Worker
+      etcd: etcd
+  projectMember:
+    role:
+      member: Membro
+      owner: Dono
+      readonly: Somente leitura
+storageClass:
+  azure-disk:
+    title: Disco do Azure
+volumeSource:
+  nfs:
+    title: Compartilhamento NFS
+  customLogPath:
+    logFormat:
+      label: Formato do Log
