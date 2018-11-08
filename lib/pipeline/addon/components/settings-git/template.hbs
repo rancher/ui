@@ -2,17 +2,17 @@
   {{#unless provider.enabled}}
     <section>
       <div class="row nav nav-boxes checked-active">
-        <a href="#" alt='github' class="col span-2 nav-box-item driver {{if (eq selectedOauthType 'github') 'active' ''}}" {{action "changeOauthType" "github"}}>
+        <a href="#" alt='github' class="col span-2 nav-box-item driver {{if isGithub 'active' ''}}" {{action "changeOauthType" "github"}}>
           <div class="auth-driver github-for-pipeline"></div>
-          <p>GitHub</p>
+          <p>{{t 'generic.github'}}</p>
         </a>
-        <a href="#" alt='gitlab' class="col span-2 nav-box-item driver {{if (eq selectedOauthType 'gitlab') 'active' ''}}" {{action "changeOauthType" "gitlab"}}>
+        <a href="#" alt='gitlab' class="col span-2 nav-box-item driver {{if isGitlab 'active' ''}}" {{action "changeOauthType" "gitlab"}}>
           <div class="auth-driver gitlab"></div>
-          <p>GitLab</p>
+          <p>{{t 'generic.gitlab'}}</p>
         </a>
-        <a href="#" alt='bitbucke' class="col span-2 nav-box-item driver {{if isBitbucket 'active' ''}}" {{action "changeOauthType" "bitbucketcloud"}}>
+        <a href="#" alt='bitbucket' class="col span-2 nav-box-item driver {{if isBitbucket 'active' ''}}" {{action "changeOauthType" "bitbucketcloud"}}>
           <div class="auth-driver bitbucket"></div>
-          <p>Bitbucket</p> 
+          <p>{{t 'generic.bitbucket'}}</p>
         </a>
       </div>
     </section>
@@ -26,17 +26,17 @@
     <section>
       <div class="row nav nav-boxes checked-active">
         <a href="#" alt={{selectedOauthType}} class="col span-2 nav-box-item driver active">
-          {{#if (eq selectedOauthType 'github')}}
+          {{#if isGithub}}
             <div class="auth-driver github-for-pipeline"></div>
-            <p>GitHub</p>
+            <p>{{t 'generic.github'}}</p>
           {{/if}}
-          {{#if (eq selectedOauthType 'gitlab')}}
+          {{#if isGitlab}}
             <div class="auth-driver gitlab"></div>
-            <p>GitLab</p>
+            <p>{{t 'generic.gitlab'}}</p>
           {{/if}}
           {{#if isBitbucket}}
             <div class="auth-driver bitbucket"></div>
-            <p>Bitbucket</p>
+            <p>{{t 'generic.bitbucket'}}</p>
           {{/if}}
         </a>
       </div>
@@ -67,7 +67,7 @@
         </div>
       {{/if}}
 
-      {{#if (eq provider.name 'bitbucketcloud')}}
+      {{#if isBitbucketCloud}}
         <div>
           <b>{{t 'authPage.authenticated.header.enterpriseHostName'}} </b> 
           <a href="https://bitbucket.org" target="_blank" rel="nofollow noreferrer">bitbucket.org</a>
