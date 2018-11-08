@@ -86,18 +86,16 @@ let PipelineExecution = Resource.extend({
 
   commitUrl: computed('commit', function() {
     let url = get(this, 'displayRepositoryUrl');
+    const sourceCodeType = get(this, 'pipeline.sourceCodeCredential.sourceCodeType');
+    const name = get(this, 'pipeline.displayName');
 
-    switch (get(this, 'pipeline.sourceCodeCredential.sourceCodeType')) {
+    switch ( sourceCodeType ) {
     case 'bitbucketserver':
-    {
-      const name = get(this, 'pipeline.displayName');
-
       if ( name.startsWith('~') ) {
         return `${ this.bitbucketRootUrl('users') }/commits/${ get(this, 'commit') }`;
       } else {
         return `${ this.bitbucketRootUrl('projects') }/commits/${ get(this, 'commit') }`;
       }
-    }
     case 'bitbucketcloud':
       return `${ url }/commits/${ get(this, 'commit') }`;
     default:
@@ -107,18 +105,16 @@ let PipelineExecution = Resource.extend({
 
   branchUrl: computed('branch', function() {
     let url = get(this, 'displayRepositoryUrl');
+    const sourceCodeType = get(this, 'pipeline.sourceCodeCredential.sourceCodeType');
+    const name = get(this, 'pipeline.displayName');
 
-    switch (get(this, 'pipeline.sourceCodeCredential.sourceCodeType')) {
+    switch ( sourceCodeType ) {
     case 'bitbucketserver':
-    {
-      const name = get(this, 'pipeline.displayName');
-
       if ( name.startsWith('~') ) {
         return `${ this.bitbucketRootUrl('users') }/browse?at=refs%2Fheads%2F${ get(this, 'branch') }`;
       } else {
         return `${ this.bitbucketRootUrl('projects') }/browse?at=refs%2Fheads%2F${ get(this, 'branch') }`;
       }
-    }
     case 'bitbucketcloud':
       return `${ url }/src/${ get(this, 'branch') }`;
     default:
