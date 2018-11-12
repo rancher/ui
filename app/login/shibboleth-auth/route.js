@@ -17,15 +17,21 @@ export default Ember.Route.extend({
     } else if (params.errCode) {
       let errMessage = '';
       switch (params.errCode) {
-        case '401':
-          errMessage = this.get('intl').findTranslationByKey('loginPage.shibbolethError.401');
-          break;
-        case '500':
-          errMessage = this.get('intl').findTranslationByKey('loginPage.shibbolethError.500');
-          break;
-        default:
-          errMessage = this.get('intl').findTranslationByKey('loginPage.shibbolethError.generic', {error: params.errCode});
-          break;
+      case '401':
+        errMessage = this.get('intl').t('loginPage.shibbolethError.401');
+        break;
+      case '403':
+        errMessage = this.get('intl').t('loginPage.shibbolethError.403');
+        break;
+      case '422':
+        errMessage = this.get('intl').t('loginPage.shibbolethError.422');
+        break;
+      case '500':
+        errMessage = this.get('intl').t('loginPage.shibbolethError.500');
+        break;
+      default:
+        errMessage = this.get('intl').t('loginPage.shibbolethError.generic', { errorCode: params.errCode });
+        break;
       }
 
       transition.abort();
