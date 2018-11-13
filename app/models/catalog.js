@@ -19,6 +19,15 @@ export default Resource.extend({
     return !builtIn.includes(name);
   }),
 
+  availableActions: computed(() => {
+    return [{
+      enabled: true,
+      label:   'catalogPage.index.refreshBtn',
+      icon:    'icon icon-refresh',
+      action:  'refresh'
+    }];
+  }),
+
   actions: {
     edit() {
       get(this, 'modalService').toggleModal('modal-edit-catalog', {
@@ -35,6 +44,10 @@ export default Resource.extend({
         scope: ''
       });
     }
+  },
+
+  refresh() {
+    this.doAction('refresh')
   },
 
 });

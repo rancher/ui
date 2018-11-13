@@ -16,7 +16,31 @@
       <label class="acc-label pb-5">{{t 'catalogSettings.more.url.label'}}</label>
       {{input type="text" value=primaryResource.url classNames="form-control"}}
     </div>
+    <div class="checkbox pt-10">
+      <label class="acc-label pb-5">{{input type="checkbox" checked=isPrivate}} {{t 'catalogSettings.more.private.label'}}</label>
+    </div>
   </div>
+
+  {{#if isPrivate}}
+    <div class="row">
+      <div class="col span-6">
+        <label class="acc-label pb-5">{{t 'catalogSettings.more.username.label'}}{{field-required}}</label>
+        {{input type="text"
+                value=username
+                classNames="form-control"
+                placeholder=(t 'catalogSettings.more.username.placeholder')
+        }}
+      </div>
+      <div class="col span-6">
+        <label class="acc-label pb-5">{{t 'catalogSettings.more.password.label'}}{{field-required}}</label>
+        {{input type="password"
+                value=password
+                classNames="form-control"
+                placeholder=(t 'catalogSettings.more.password.placeholder')
+        }}
+      </div>
+    </div>
+  {{/if}}
 
   <div class="row">
     <div class="col span-6">
