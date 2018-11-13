@@ -19,6 +19,12 @@ export default Resource.extend({
     return !isEmpty(get(this, 'default')) && !get(this, 'isDefault');
   }),
 
+  canEdit: computed('links.update', 'id', function() {
+    const id = get(this, 'id');
+
+    return !!get(this, 'links.update') && id !== 'cacerts';
+  }),
+
   availableActions: computed('actionLinks.{update,remove}', function() {
     return [
       {
