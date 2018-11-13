@@ -98,6 +98,7 @@ export default Component.extend(NewOrEdit, {
     let errors = pr.validationErrors() || [];
 
     errors.pushObjects(get(this, 'namespaceErrors') || []);
+    errors.pushObjects(get(this, 'certErrors') || []);
 
     if (!get(this, 'ingress.rules.length') && !get(this, 'ingress.defaultBackend')) {
       errors.push(intl.t('newIngress.error.noRules'));
