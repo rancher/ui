@@ -31,7 +31,10 @@
           <a href="{{href-to "container" inst.id}}">{{inst.displayName}}</a>
         </td>
         <td data-title="{{dt.displayImage}}">
-          {{inst.displayImage}}
+          <small>{{inst.displayImage}}</small>
+          <p data-title="{{t 'generic.details'}}" class="text-small text-muted m-0 clip">
+            {{t 'generic.createdDate' date=(date-from-now inst.created) htmlSafe=true}}
+          </p>
         </td>
         <td data-title="{{dt.node}}">
           {{#if (and inst.node.id inst.node.clusterId)}}
