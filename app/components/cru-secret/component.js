@@ -38,6 +38,8 @@ export default Component.extend(ViewNewEdit, OptionallyNamespaced, {
 
     set(pr, 'namespaceId', nsId);
 
+    delete pr.kind
+
     return ok;
   },
 
