@@ -32,7 +32,7 @@ export default Resource.extend({
     edit() {
       get(this, 'modalService').toggleModal('modal-edit-catalog', {
         model: this,
-        scope: ''
+        scope: 'global'
       });
     },
 
@@ -41,7 +41,7 @@ export default Resource.extend({
 
       get(this, 'modalService').toggleModal('modal-edit-catalog', {
         model: clone,
-        scope: ''
+        scope: 'global'
       });
     }
   },
