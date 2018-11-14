@@ -36,6 +36,7 @@ function getDefaultConfig(config) {
       schedule:                   '0 * * * *',
       successfulJobsHistoryLimit: HISTORY_LIMIT,
       jobConfig:                  {},
+      suspend:                    false,
     };
   case 'job':
     return { type: 'jobConfig' };

@@ -63,4 +63,23 @@
       </div>
     </div>
   </div>
+  {{#if (eq scaleMode 'cronJob')}}
+    <div class="row">
+      <div class="col span-6 box">
+        <label class="acc-label">{{t 'formJobConfig.suspend.label'}}</label>
+        <div class="radio">
+          <label>
+            {{radio-button selection=workload.cronJobConfig.suspend value=false}}
+            {{t 'generic.no'}}
+          </label>
+        </div>
+        <div class="radio">
+          <label>
+            {{radio-button selection=workload.cronJobConfig.suspend value=true}}
+            {{t 'generic.yes'}}
+          </label>
+        </div>
+      </div>
+    </div>
+  {{/if}}
 {{/accordion-list-item}}
