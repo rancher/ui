@@ -242,6 +242,10 @@ export default Component.extend(NewOrEdit, ChildHook, {
     if (get(errors, 'length')) {
       set(this, 'errors', errors);
 
+      if ( get(this, 'isSidekick') && !get(this, 'isUpgrade') ) {
+        get(pr, 'secondaryLaunchConfigs').pop();
+      }
+
       return false;
     }
 
