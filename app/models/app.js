@@ -10,12 +10,13 @@ const App = Resource.extend(StateCounts, EndpointPorts, {
   catalog:      service(),
   router:       service(),
   clusterStore: service(),
+  globalStore:  service(),
 
   canEdit:   false,
   canClone: true,
 
   namespace:       reference('targetNamespace', 'namespace', 'clusterStore'),
-  catalogTemplate: reference('externalIdInfo.templateId', 'template'),
+  catalogTemplate: reference('externalIdInfo.templateId', 'template', 'globalStore'),
 
   init() {
     this._super(...arguments);
