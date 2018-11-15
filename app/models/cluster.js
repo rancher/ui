@@ -26,15 +26,21 @@ export default Resource.extend(ResourceUsage, {
     return get(this, 'canBulkRemove') ? 'delete' : null;
   }),
 
-  canBulkRemove: computed('action.remove', function() { // eslint-disable-line
+  hasSessionToken: computed('annotations', function() {
     const sessionTokenLabel = `${ (get(this, 'annotations') || {})[C.LABEL.EKS_SESSION_TOKEN]  }`;
-    let noSessionToken      = false;
+    let hasSessionToken      = false;
 
     if (sessionTokenLabel === 'undefined' || sessionTokenLabel === 'false') {
-      noSessionToken = true;
+      hasSessionToken = false;
+    } else {
+      hasSessionToken = true;
     }
 
-    return noSessionToken;
+    return hasSessionToken;
+  }),
+
+  canBulkRemove: computed('action.remove', function() { // eslint-disable-line
+    return get(this, 'hasSessionToken') ? false : true;
   }),
 
   configName: computed(function() {
