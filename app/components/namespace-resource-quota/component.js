@@ -175,6 +175,8 @@ export default Component.extend({
         }
 
 
+        usedValue = usedValue - value
+
         newUse = usedValue + value;
 
         remaining = ( max - newUse ) > 0 ? ( max - newUse ) : 0;
