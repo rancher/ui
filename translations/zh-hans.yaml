@@ -1842,6 +1842,16 @@ catalogSettings:
     branch:
       label: 分支
       placeholder: '例如: master'
+    private:
+      label: 使用私有应用商店
+    username:
+      label: 用户名
+      required: '用户名必须填写'
+      placeholder: "比如: admin"
+    password:
+      label: 密码
+      required: '密码必须填写'
+      placeholder:  password
   errors:
     nameInExists: '在启用{key}之前，请移除名称为{key}的应用商店。'
 clusterRow:
@@ -2086,6 +2096,7 @@ clusterNew:
       retention:
         label: 快照保留时间
         placeholder: "1d"
+        help: "可使用的单位: s, m, h, d, w, m, y"
       creation:
         label: 快照创建时间间隔
         placeholder: "3h"
@@ -2921,13 +2932,13 @@ cruStorageClass:
       placeholder: "例如: DEFAULT"
   rbd:
     monitors:
-      label: 监控
+      label: "Ceph-Monitor地址"
       placeholder: "例如: 10.16.153.105:6789"
     adminId:
-      label: 管理员ID
+      label: "管理员账号(ID)"
       placeholder: "例如: kube"
     adminSecretNamespace:
-      label: 管理密文命名空间
+      label: 管理密文所在命名空间
       placeholder: "例如: kube-system"
     adminSecret:
       label: 管理密文
@@ -4088,8 +4099,10 @@ formJobConfig:
     label: Back Off Limit
     detail: 标记此作业失败之前的重试次数。
   activeDeadlineSeconds:
-    label: Active Deadline Seconds
+    label: 停止延迟时间
     detail: 在系统尝试终止Job之前,job可能处于活动状态的持续时间。
+  suspend:
+    label: 暂停
 
 formUpgrade:
   title: 缩放/升级策略
