@@ -33,7 +33,7 @@
         <td data-title="{{dt.displayImage}}">
           <small>{{inst.displayImage}}</small>
           <p data-title="{{t 'generic.details'}}" class="text-small text-muted m-0 clip">
-            {{t 'generic.createdDate' date=(date-from-now inst.created) htmlSafe=true}}
+            {{t 'generic.createdDate' date=(date-from-now inst.created) htmlSafe=true}} / {{t 'generic.restarts'}} {{inst.restarts}}
           </p>
         </td>
         <td data-title="{{dt.node}}">
@@ -51,6 +51,21 @@
           {{action-menu model=inst}}
         </td>
       </tr>
+      {{#if inst.dislayContainerMessage}}
+        <tr class="sub-row no-top auto-height">
+          <td colspan="1"></td>
+          <td class="pb-5" colspan="5">
+            {{#each inst.containers as |container|}}
+              {{#if container.showTransitioningMessage}}
+                <div>
+                  <small class="text-small {{container.stateColor}}">{{uc-first container.transitioningMessage}}</small>
+                </div>
+              {{/if}}
+            {{/each}}
+          </td>
+          <td colspan="1"></td>
+        </tr>
+      {{/if}}
     {{else if (eq kind "nomatch")}}
       <tr><td colspan="{{sortable.fullColspan}}" class="text-center text-muted lacsso pt-20 pb-20">{{t 'pipelinesPage.table.noMatch'}}</td></tr>
     {{else if (eq kind "norows")}}
