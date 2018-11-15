@@ -21,7 +21,8 @@ export default Component.extend({
   projectQuota:   null,
   nsDefaultQuota: null,
 
-  editing:   null,
+  editing: null,
+  isNew:   null,
 
   quotaArray: null,
 
@@ -43,7 +44,7 @@ export default Component.extend({
         let max        = get(quota, 'max');
         let currentUse = get(quota, 'currentProjectUse.firstObject.value');
 
-        if ( !value ) {
+        if ( value === undefined || value === null ) {
           out[quota.key] = '';
 
           return;
@@ -174,6 +175,9 @@ export default Component.extend({
           break;
         }
 
+        if ( !get(this, 'isNew') ) {
+          usedValue = usedValue - value
+        }
 
         newUse = usedValue + value;
 
