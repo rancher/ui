@@ -108,6 +108,19 @@ var Pod = Resource.extend(DisplayImage, {
     return get(this, 'status.podIp') || null;
   }.property('status.podIp'),
 
+  dislayContainerMessage: computed('containers.@each.showTransitioningMessage', function() {
+    return !!get(this, 'containers').findBy('showTransitioningMessage', true);
+  }),
+
+  restarts: computed('status.containerStatuses.@each.restartCount', function() {
+    let out = 0;
+
+    (get(this, 'status.containerStatuses') || []).forEach((state) => {
+      out += get(state, 'restartCount');
+    });
+
+    return out;
+  }),
 
   nodeIp: function() {
     return get(this, 'status.nodeIp') || null;
