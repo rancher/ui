@@ -137,8 +137,8 @@ $nav-spacing: 4px;
 
     .ember-basic-dropdown-trigger {
       max-width: 300px;
-      @extend .clip;
-      @extend .hand;
+      @include clip;
+      @include hand;
 
       > a {
         padding-right: 30px;
@@ -158,17 +158,8 @@ $nav-spacing: 4px;
       right: 10px;
       top: 21px;
     }
-
-    .cluster-menu {
-      max-height: calc(100vh - 100px);
-      max-width: 50vh;
-      overflow: auto;
-
-      LI.inactive A:not(:hover) {
-        color: $text-muted;
-      }
-    }
   }
+
   .ember-basic-dropdown-trigger {
     &.active {
       > a {
@@ -246,6 +237,125 @@ $nav-spacing: 4px;
       &.nested {
         left: 25px;
       }
+    }
+  }
+}
+
+.project-menu {
+  overflow: hidden;
+
+  $labels: 22px;
+  $item: 50px;
+
+  .clusters UL, .projects UL {
+    overflow-y: auto;
+  }
+
+  display: grid;
+  grid-template-rows: $item auto;
+
+  LABEL {
+    @include clip;
+    height: $labels;
+    color: $text-muted;
+    font-size: .8em;
+    padding: 0 10px;
+    display: block;
+    border-bottom: 1px solid $accent-border;
+    margin-bottom: 2px;
+  }
+
+  .clusters {
+    grid-column-start: 1;
+    grid-row-start: 2;
+
+    border-right: 1px solid black;
+    background-color: $accent-bg;
+  }
+
+  .projects {
+    grid-column-start: 2;
+    grid-row-start: 2;
+  }
+
+  .global, .search {
+    border-bottom: 1px solid $accent-border;
+    background-color: $accent-one;
+  }
+
+  .global {
+    grid-column-start: 1;
+    grid-row-start: 1;
+    line-height: 40px;
+  }
+
+  .search {
+    grid-column-start: 2;
+    grid-row-start: 1;
+    padding: 5px 10px;
+  }
+
+  .search-match {
+    font-weight: bold;
+    background-color: yellow;
+  }
+
+  .item {
+    height: $item;
+    padding: 5px 10px;
+    @include hand;
+
+    &.project:hover {
+      background-color: $secondary;
+      A, .state {
+        color: white;
+      }
+      A {
+        text-decoration: underline;
+      }
+    }
+
+    .top {
+    }
+
+    &:not(:first-child) {
+      border-top: 1px solid $accent-border;
+    }
+  }
+
+  .state {
+    color: $text-muted;
+    font-size: .8em;
+    padding: 0;
+    margin: 0;
+  }
+
+  LI {
+    &.active {
+      background-color: $primary;
+      A, .state {
+        color: white;
+      }
+    }
+
+    &.not-ready {
+      cursor: not-allowed;
+
+      A, .state {
+        cursor: not-allowed !important;
+        color: $text-muted;
+        text-decoration: none;
+      }
+    }
+  }
+
+  .global LI:hover, LI.hover {
+    background-color: $secondary;
+    A, .state {
+      color: white;
+    }
+    A {
+      text-decoration: underline;
     }
   }
 }

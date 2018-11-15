@@ -54,6 +54,11 @@ export default Resource.extend({
   canSetDefault: computed('combinedState', 'isDefault', function() {
     return get(this, 'combinedState') === 'active' && !get(this, 'isDefault');
   }),
+
+  isReady: computed('relevantState', 'cluster.isReady', function() {
+    return get(this, 'relevantState') === 'active' && get(this, 'cluster.isReady');
+  }),
+
   actions: {
     edit() {
       get(this, 'router').transitionTo('authenticated.cluster.projects.edit', get(this, 'id'));

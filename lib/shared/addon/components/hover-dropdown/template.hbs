@@ -9,17 +9,17 @@
      onOpen=onOpen
      onClose=onClose
      onFocus=onFocus
-     calculateInPlacePosition=calculateInPlacePosition as |dd|}}
+     as |dd|}}
   {{yield (assign
       dd
       (hash
         trigger=(component dd.trigger
         onMouseDown=(action "prevent")
-        onMouseEnter=(action "open")
-        onMouseLeave=(action "close"))
+        onMouseEnter=(action "open" false)
+        onMouseLeave=(action "close" false))
         content=(component dd.content
-          onMouseEnter=(action "open")
-          onMouseLeave=(action "close")
+          onMouseEnter=(action "open" true)
+          onMouseLeave=(action "close" true)
         )
       )
     )
