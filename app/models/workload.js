@@ -11,6 +11,8 @@ import { inject as service } from '@ember/service';
 import DisplayImage from 'shared/mixins/display-image';
 import C from 'shared/utils/constants';
 
+const WORKLOAD_CONFIG_FIELDS = ['cronJobConfig', 'daemonSetConfig', 'deploymentConfig', 'jobConfig', 'replicaSetConfig', 'replicationControllerConfig', 'statefulSetConfig']
+
 var Workload = Resource.extend(DisplayImage, StateCounts, EndpointPorts, {
   intl:          service(),
   growl:         service(),
@@ -334,7 +336,7 @@ var Workload = Resource.extend(DisplayImage, StateCounts, EndpointPorts, {
   },
 
   clearConfigsExcept(keep) {
-    const keys = this.allKeys().filter((x) => x.endsWith('Config'));
+    const keys = this.allKeys().filter((x) => WORKLOAD_CONFIG_FIELDS.indexOf(x) > -1);
 
     for ( let key, i = 0 ; i < keys.length ; i++ ) {
       key = keys[i];

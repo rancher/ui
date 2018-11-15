@@ -58,4 +58,43 @@
         addActionLabel="formNetwork.hostAlias.addActionLabel"
     }}
   </div>
+
+  <div class="row mt-20">
+    <div class="col box span-6">
+      {{form-value-array
+        initialValues=service.dnsConfig.nameservers
+        editing=editing
+        valueLabel="formNetwork.dnsConfig.nameservers.label"
+        valuePlaceholder="formNetwork.dnsConfig.nameservers.placeholder"
+        addActionLabel="formNetwork.dnsConfig.nameservers.addActionLabel"
+        changed=(action "updateNameservers")
+      }}
+    </div>
+
+    <div class="col box span-6">
+      {{form-value-array
+        initialValues=service.dnsConfig.searches
+        editing=editing
+        valueLabel="formNetwork.dnsConfig.searches.label"
+        valuePlaceholder="formNetwork.dnsConfig.searches.placeholder"
+        addActionLabel="formNetwork.dnsConfig.searches.addActionLabel"
+        changed=(action "updateSearches")
+      }}
+    </div>
+  </div>
+
+  <div class="row box mt-20">
+    {{form-key-value
+        editing=editing
+        allowEmptyValue=false
+        initialArray=initOptionsArray
+        changedArray=(action "optionsChanged")
+        header=(t 'formNetwork.dnsConfig.options.label')
+        valueLabel="formNetwork.dnsConfig.options.value.label"
+        keyLabel="formNetwork.dnsConfig.options.name.label"
+        valuePlaceholder="formNetwork.dnsConfig.options.value.placeholder"
+        keyPlaceholder="formNetwork.dnsConfig.options.name.placeholder"
+        addActionLabel="formNetwork.dnsConfig.options.addActionLabel"
+    }}
+  </div>
 {{/accordion-list-item}}

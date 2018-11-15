@@ -12,12 +12,14 @@ export default Component.extend({
   editing:  null,
 
   initHostAliasesArray: [],
+  initOptionsArray:     [],
 
   classNames: ['accordion-wrapper'],
 
   init() {
     this._super(...arguments);
     this.initHostAliases();
+    this.initOptions();
   },
 
   actions: {
@@ -32,6 +34,45 @@ export default Component.extend({
       });
       set(this, 'service.hostAliases', out);
     },
+
+    optionsChanged(options) {
+      const out = [];
+
+      options.filter((option) => get(option, 'key') && get(option, 'value')).forEach((option) => {
+        out.push({
+          name:  get(option, 'key'),
+          value: get(option, 'value'),
+        });
+      });
+
+      const dnsConfig = get(this, 'service.dnsConfig');
+
+      if ( !dnsConfig ) {
+        set(this, 'service.dnsConfig', { options: out });
+      } else {
+        set(this, 'service.dnsConfig.options', out);
+      }
+    },
+
+    updateNameservers(nameservers) {
+      const dnsConfig = get(this, 'service.dnsConfig');
+
+      if ( !dnsConfig ) {
+        set(this, 'service.dnsConfig', { nameservers });
+      } else {
+        set(this, 'service.dnsConfig.nameservers', nameservers);
+      }
+    },
+
+    updateSearches(searches) {
+      const dnsConfig = get(this, 'service.dnsConfig');
+
+      if ( !dnsConfig ) {
+        set(this, 'service.dnsConfig', { searches });
+      } else {
+        set(this, 'service.dnsConfig.searches', searches);
+      }
+    }
   },
 
   initHostAliases() {
@@ -45,6 +86,18 @@ export default Component.extend({
           value: hostname,
         });
       })
+    });
+  },
+
+  initOptions() {
+    const options = get(this, 'service.dnsConfig.options');
+
+    set(this, 'initOptionsArray', []);
+    (options || []).forEach((option) => {
+      get(this, 'initOptionsArray').push({
+        key:   get(option, 'name'),
+        value: get(option, 'value'),
+      });
     });
   },
 });
