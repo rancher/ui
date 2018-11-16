@@ -1,0 +1,162 @@
+{{#hover-dropdown
+     horizontalPosition="left"
+     verticalPosition="below"
+     renderInPlace=true
+     onOpen=(action "onOpen")
+     onClose=(action "onClose")
+     as |dd|
+}}
+
+  {{#dd.trigger
+       ariaLabel=(t 'nav.projectDropdown.label')
+  }}
+
+    <a class="{{if twoLine 'two-line'}} text-white">
+      {{#if (eq pageScope "project")}}
+        <div class="clip">
+          <i class="icon icon-cluster icon-fw"></i>
+          <span>{{project.cluster.displayName}}</span>
+        </div>
+        <div class="pl-15 clip text-muted">
+          <i class="{{project.icon}} project-icon icon-fw"></i>
+          <span>{{project.displayName}}</span>
+        </div>
+      {{else if (eq pageScope "cluster")}}
+        <div class="clip">
+          <i class="icon icon-cluster icon-fw"></i>
+          <span>{{cluster.displayName}}</span>
+        </div>
+      {{else if (eq pageScope "global")}}
+        <div class="clip">
+          <i class="icon icon-globe icon-fw"></i>
+          <span>{{t 'nav.admin.tab'}}</span>
+        </div>
+      {{else}}
+        <div class="clip">
+          <i class="icon icon-question icon-fw"></i>
+          <span>{{pageScope}}</span>
+        </div>
+      {{/if}}
+
+      <span class="sr-only">{{t 'nav.srToggleDropdown'}}</span>
+      <i class="icon icon-chevron-down chevron"></i>
+
+    </a>
+
+  {{/dd.trigger}}
+
+  {{#dd.content
+       class="project-menu"
+       style=menuStyle
+  }}
+    <div class="global">
+      <ul class="list-unstyled">
+        <li class="item clip {{if (eq pageScope 'global') 'active selected' 'inactive'}}">
+          <a href="{{href-to "global-admin"}}" class="{{if (eq pageScope "global") 'active selected' 'inactive'}}">
+            <i class="icon icon-globe icon-fw"></i>
+            {{t 'nav.admin.tab'}}
+          </a>
+        </li>
+      </ul>
+    </div>
+
+    <div class="search">
+      {{input type="text" placeholder=(t 'nav.projectDropdown.search') value=searchInput}}
+    </div>
+
+    <div class="clusters">
+      <label>{{t 'nav.projectDropdown.clusters'}}</label>
+
+      <ul class="list-unstyled" style="{{columnStyle}}">
+        {{#if searchInput}}
+          {{#if clusterSearchResults.length}}
+            {{#each clusterSearchResults as |entry|}}
+              <li data-cluster-id={{entry.cluster.id}} class="item clip cluster">
+                {{#link-to
+                  'authenticated.cluster'
+                  entry.cluster.id
+                  class="top"
+                }}
+                  <i class="icon icon-cluster icon-fw"></i>
+                  {{entry.searchMatch}}
+                {{/link-to}}
+                <p class="state">{{entry.cluster.displayState}}</p>
+              </li>
+            {{/each}}
+          {{else}}
+            <span class="text-muted">{{t 'nav.projectDropdown.clustersNoData' searchInput=searchInput}}</span>
+          {{/if}}
+        {{else}}
+          {{#each byCluster as |entry|}}
+            <li data-cluster-id={{entry.cluster.id}} class="item clip cluster {{if entry.active 'active' 'inactive'}} {{if (eq hoverEntry entry) 'hover'}}">
+              {{#link-to
+                'authenticated.cluster'
+                entry.cluster.id
+                class="top"
+              }}
+                <i class="icon icon-cluster icon-fw"></i>
+                {{entry.cluster.displayName}}
+              {{/link-to}}
+              <p class="state">{{entry.cluster.displayState}}</p>
+            </li>
+          {{/each}}
+        {{/if}}
+      </ul>
+    </div>
+
+    <div class="projects">
+      {{#if (or searchInput (not clusterEntry)) }}
+        <label>{{t 'nav.projectDropdown.projects'}}</label>
+      {{else}}
+        <label>{{t 'nav.projectDropdown.projectsIn' cluster=clusterEntry.cluster.displayName}}</label>
+      {{/if}}
+
+      <ul class="list-unstyled" style="{{columnStyle}}">
+        {{#if searchInput}}
+          {{#if projectSearchResults.length}}
+            {{#each projectSearchResults as |entry|}}
+              <li class="item clip project {{unless entry.project.isReady 'not-ready'}}">
+                {{#link-to
+                  'authenticated.project'
+                  entry.project.id
+                  class="top"
+                }}
+                  <i class="icon icon-folder icon-fw"></i>
+                  {{entry.searchMatch}}
+                {{/link-to}}
+                <p class="state">
+                  {{t 'nav.projectDropdown.projectInCluster' cluster=entry.cluster.displayName}}
+                  {{~#unless entry.project.isReady~}}
+                    , {{t 'nav.projectDropdown.projectNotReady'}}
+                  {{/unless}}
+                </p>
+              </li>
+            {{/each}}
+          {{else}}
+            <span class="text-muted">{{t 'nav.projectDropdown.projectsNoData' searchInput=searchInput}}</span>
+          {{/if}}
+        {{else if clusterEntry}}
+          {{#each clusterEntry.projects as |project|}}
+            <li data-project-id={{project.id}} class="item clip project {{unless project.isReady 'not-ready'}} {{if project.active 'active' 'inactive'}}">
+              {{#link-to
+                'authenticated.project'
+                project.id
+                class="top"
+              }}
+                <i class="icon {{if project.active 'icon-folder-open' 'icon-folder'}} icon-fw"></i>
+                {{project.displayName}}
+              {{/link-to}}
+              <p class="state">
+                {{#if project.isReady}}
+                  {{project.displayState}}
+                {{else}}
+                  {{t 'nav.projectDropdown.projectNotReady'}}
+                {{/if}}
+              </p>
+            </li>
+          {{/each}}
+        {{/if}}
+      </ul>
+    </div>
+  {{/dd.content}}
+{{/hover-dropdown}}
