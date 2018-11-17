@@ -68,19 +68,18 @@
 
           <td class="p-5" data-title="{{t 'formIngressBackends.targetPort.label'}}">
             {{#input-or-display editable=editing value=path.targetPort classesForDisplay="clip"}}
-              {{#if (and path.service (eq path.backendType 'service'))}}
-                {{new-select
-                  classNames="form-control input-sm"
-                  optionValuePath="port"
-                  optionLabelPath="port"
-                  content=path.service.availablePorts
-                  value=path.targetPort
-                }}
-              {{else if (eq path.backendType 'service')}}
-                {{new-select
-                  classNames="form-control input-sm"
-                  content=[]
-                }}
+              {{#if (eq path.backendType 'service')}}
+                {{#if path.service}}
+                  {{new-select
+                    classNames="form-control input-sm"
+                    optionValuePath="port"
+                    optionLabelPath="port"
+                    content=path.service.availablePorts
+                    value=path.targetPort
+                  }}
+                {{else}}
+                  {{t 'generic.na'}}
+                {{/if}}
               {{else}}
                 {{input-integer class="input-sm" min="1" max="65535" value=path.targetPort placeholder=(t 'formIngressBackends.targetPort.placeholder')}}
               {{/if}}
