@@ -63,12 +63,10 @@ export default Resource.extend({
     const list = [];
     const ports = get(this, 'ports');
 
-    if (get(this, 'recordType') === WORKLOAD) {
-      ports.forEach((p) => {
-        list.push(p.targetPort.toString());
-        list.push(p.port.toString());
-      })
-    }
+    ports.forEach((p) => {
+      list.push(p.targetPort.toString());
+      list.push(p.port.toString());
+    });
 
     return list.uniq().map((p) => ({ port: p }));
   }),

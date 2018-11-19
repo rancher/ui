@@ -1,3 +1,6 @@
+{{#if hasServiceTargets}}
+  {{banner-message color="bg-info" icon="icon-info" message=(t 'formIngressBackends.warning' htmlSafe=true)}}
+{{/if}}
 <div class="clearfix">
   {{#if editing}}
     <label class="acc-label">{{t 'formIngressBackends.label'}}</label>
@@ -65,14 +68,18 @@
 
           <td class="p-5" data-title="{{t 'formIngressBackends.targetPort.label'}}">
             {{#input-or-display editable=editing value=path.targetPort classesForDisplay="clip"}}
-              {{#if (and (eq path.backendType 'service') (eq path.service.recordType 'workload'))}}
-                {{new-select
-                  classNames="form-control input-sm"
-                  optionValuePath="port"
-                  optionLabelPath="port"
-                  content=path.service.availablePorts
-                  value=path.targetPort
-                }}
+              {{#if (eq path.backendType 'service')}}
+                {{#if path.service}}
+                  {{new-select
+                    classNames="form-control input-sm"
+                    optionValuePath="port"
+                    optionLabelPath="port"
+                    content=path.service.availablePorts
+                    value=path.targetPort
+                  }}
+                {{else}}
+                  {{t 'generic.na'}}
+                {{/if}}
               {{else}}
                 {{input-integer class="input-sm" min="1" max="65535" value=path.targetPort placeholder=(t 'formIngressBackends.targetPort.placeholder')}}
               {{/if}}
