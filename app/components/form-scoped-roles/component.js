@@ -216,11 +216,20 @@ export default Component.extend(NewOrEdit, {
     get() {
       let mode = null;
 
-      const id = `${ get(this, 'type') }-member`;
-      const role = get(this, 'model.roles').findBy('id', id);
+      const memberId = `${ get(this, 'type') }-member`;
+      const memberRole = get(this, 'model.roles').findBy('id', memberId);
+      const ownerId = `${ get(this, 'type') }-owner`;
+      const onwerRole = get(this, 'model.roles').findBy('id', ownerId);
 
-      if ( role && get(role, 'locked') !== true ) {
-        mode = `${ get(this, 'type') }-member`;
+      if ( memberRole ) {
+        mode = memberId;
+      } else if ( get(this, 'userRoles.length') ) {
+        const userRole = get(this, 'userRoles.firstObject');
+
+        set(userRole, 'active', true);
+        mode = userRole;
+      } else if ( onwerRole ) {
+        mode = ownerId;
       } else {
         mode = CUSTOM;
       }
