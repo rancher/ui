@@ -79,6 +79,7 @@ const rootNav = [
         route:          'authenticated.project.pipeline.settings',
         resource:       ['sourcecodeproviderconfig'],
         resourceScope:  'project',
+        ctx:            [getProjectId],
       },
       {
         id:             'infra-registries',
