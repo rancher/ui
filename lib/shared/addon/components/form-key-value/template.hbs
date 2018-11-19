@@ -1,6 +1,14 @@
 <div class="clearfix">
   {{#if header}}
-    <label class="acc-label">{{header}}</label>
+    <div class="pull-left">
+      <label class="acc-label">{{header}}</label>
+    </div>
+  {{/if}}
+
+  {{#if (and allowUpload editing)}}
+    <div class="pull-right">
+      <button class="btn btn-sm bg-primary" {{action 'upload'}}>{{t 'uploadFile.label'}} <span class="icon icon-upload"></span></button>
+    </div>
   {{/if}}
 </div>
 
@@ -75,3 +83,4 @@
     </button>
   </div>
 {{/if}}
+<input type="file" class="hide">
