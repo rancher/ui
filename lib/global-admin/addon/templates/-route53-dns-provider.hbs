@@ -1,0 +1,64 @@
+<section>
+  {{form-name-description
+    model=config
+  }}
+</section>
+<section>
+  <div class="row">
+    <div class="col span-6 mb-0">
+      <label
+        class="acc-label"
+        for="route53-root-domain"
+      >
+        {{t "globalDnsPage.providersPage.config.root.label"}}{{field-required}}
+      </label>
+      {{input
+        classNames="form-control"
+        id="route53-root-domain"
+        placeholder=(t "globalDnsPage.providersPage.config.root.placeholder")
+        type="text"
+        value=config.route53ProviderConfig.rootDomain
+      }}
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col span-6 mb-0">
+      <label
+        class="acc-label"
+        for="route53-access-key"
+      >
+        {{t "globalDnsPage.providersPage.config.accessKey.label"}}{{field-required}}
+      </label>
+      {{input
+        classNames="form-control"
+        id="route53-access-key"
+        placeholder=(t "globalDnsPage.providersPage.config.accessKey.placeholder")
+        type="text"
+        value=config.route53ProviderConfig.accessKey
+      }}
+    </div>
+
+    <div class="col span-6 mb-0">
+      <label
+        class="acc-label"
+        for="route53-secret-key"
+      >
+        {{t "globalDnsPage.providersPage.config.secretKey.label"}}{{field-required}}
+      </label>
+      {{input
+        classNames="form-control"
+        id="route53-secret-key"
+        placeholder=(t "globalDnsPage.providersPage.config.secretKey.placeholder")
+        type="password"
+        value=config.route53ProviderConfig.secretKey
+      }}
+    </div>
+  </div>
+  {{save-cancel
+    cancel="cancel"
+    classNames="text-center mt-20"
+    save="save"
+    saveDisabled=saveDisabled
+  }}
+</section>

@@ -1083,6 +1083,61 @@ cruVolume:
     detail: Configure options for the selected volume source
     prompt: Choose a volume source...
 
+globalDnsPage:
+  header: Global DNS Entries
+  newDns: Add DNS Entry
+  noDnsMatch: No DNS entries match the current search.
+  noDnsData: There are no global DNS entries yet.
+  newProvider: Add DNS Provider
+  noDnsProviderMatch: No DNS providers match the current search.
+  noDnsProviderData: There are no global DNS providers yet.
+  entriesPage:
+    add: Add Global DNS Entry
+    table:
+      name: Name
+      fqdn: FQDN
+      target: Target
+      provider: Provider ID
+    config:
+      title: Configure DNS Entry
+      detail: Provide your configuration details to add a new global DNS entry
+      configType: Resolves To
+      multi: Multi Cluster App
+      project: Projects
+      fqdn:
+        label: FQDN
+        placeholder: dev.example.com
+      multiCluster:
+        label: Multi Cluster App Target
+        placeholder: no multi cluster app selected
+        add:
+          label: Add Target
+      provider:
+        label: Provider
+        placeholder: Choose a provider
+      projects:
+        label: Target Projects
+  providersPage:
+    title: Global DNS Providers
+    add: Add Global DNS Provider
+    table:
+      name: Name
+      provider: Provider Name
+      rootDomain: Root Domain
+    config:
+      root:
+        label: Root Domain
+        placeholder: Your root domain
+      accessKey:
+        label: Access Key
+        placeholder: Your access key
+      secretKey:
+        label: Secret Key
+        placeholder: Your secret key
+
+multiClusterAppsPage:
+  header: Multi Cluster Apps
+
 # If you change translations here also change the translation in app/utils/constants.js under the FALLBACK_TRANSLATIONS key
 # those are present in case we have an error in the app and can not load the translations file
 # the error page will at least make a little sense
@@ -5363,6 +5418,91 @@ newCatalog:
     prompt: Choose a version...
     default: The default at the time (currently {version})
 
+newMultiClusterApp:
+  answers:
+    label: Answers
+    addAction: Add Answer
+  catalog: "Catalog:"
+  category: "Category:"
+  config: Configuration Options
+  helm:
+    label: Configuration Options
+    protip: Helm templates accept a comma separated list of strings
+  kind: "Catalog Kind:"
+  license: "License:"
+  maintainedBy: Maintained by community members
+  maintainer: "Maintainer:"
+  newNamespace: New Namespace
+  customizeNamespace: "This application will be deployed into the <code>{namespaceId}</code> namespace"
+  newAppDetail: Choose application version and namespace for the application
+  appInfo: Detailed Descriptions
+  appInfoDetail: Application information and user guide
+  noConfig: This template has no configuration options
+  official: Officially Certified
+  preview: Preview
+  templateFiles: Template Files
+  seeMore: More information...
+  saveConfigure: Configure
+  saveNew: Launch
+  saveUpgrade: Upgrade
+  selectVersionAdd: Select a version of the template to deploy
+  selectVersionConfigure: Select a version of the template to configure
+  selectVersionUpgrade: Select a version of the template to upgrade to
+  startService: Start services after creating
+  support: "Support:"
+  targets:
+    label: Target Projects
+    add: Add Target
+    prompt: Choose a target project
+    target: Target
+  templateVersion: Template Version
+  titleAdd: "Add {name} App"
+  titleConfigure: "Configure {name} App"
+  titleUpgrade: "Upgrade {name} App"
+  txt: answers.txt
+  unknownType: "Unrecognized question type:"
+  upgrade: "Upgrade:"
+  url: "Project URL:"
+  version:
+    prompt: Choose a version...
+    default: The default at the time (currently {version})
+  overrides:
+    label: Answer Overrides
+    detail: Override individual answers on a per cluster/project basis
+    dropdown:
+      allProjects: "All projects in cluster {clusterName}"
+      clusterGroup: "Cluster: {clusterName}"
+    add:
+      label: Add Override
+    table:
+      scope: Scope
+      question: Question
+      answer: Answer
+      noData: There are no overrides
+      noMatch: No overrides match the current search
+    scopeOverride:
+      placeholder: Select a scope
+    questionOverride:
+      placeholder: Select a question
+    answerOverride:
+      placeholder: Question required
+  members:
+    title: Members
+    detail: Select members who can view this application
+    table:
+      name: Name
+      type: Member Type
+      accessType: Access Type
+      noData: There are no members yet
+      noMatch: No members match the current search
+      prompt: Select a Value...
+  upgradeApp:
+    title: Upgrade Strategy
+    disabled: Upgrade all apps simultaneously
+    enabled: Rolling update (batched)
+    batch: Batch size
+    interval: Interval
+
 newContainer:
   add:
     container: Deploy Pod
@@ -6498,6 +6638,10 @@ nav:
     machines: Nodes
     nodeDrivers: Custom Drivers
     catalogs: Catalogs
+    globalDns: Global DNS
+    globalDnsEntries: Entries
+    globalDnsProviders: Providers
+    multiClusterApps: Multi-Cluster Apps
     security:
       tab: Security
       roles: Roles

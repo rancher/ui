@@ -1,0 +1,39 @@
+<div class="stack-info">
+  <div class="catalog-icon">
+    <img src="{{app.baseAssets}}assets/images/generic-catalog.svg" data-src={{model.catalogTemplate.links.icon}}/>
+  </div>
+  <div class="stack-info-row box">
+    <div class="stack-info-top row">
+      <div class="col">
+        {{model.displayName}}
+      </div>
+      <div class="col text-right pull-right">
+        {{#upgrade-btn
+             model=model
+             launchRoute="global-admin.multi-cluster-apps.catalog.launch"
+             classNames="btn-xs "
+             as |btn|
+        }}
+          {{#if btn.model.externalIdInfo.version}}
+            {{t (concat 'upgradeBtn.status.' btn.upgradeStatus)}}
+            <span class="text-small">({{btn.latestVersion}})</span>
+          {{else}}
+            {{t (concat 'upgradeBtn.status.' btn.upgradeStatus)}}
+          {{/if}}
+        {{/upgrade-btn}}
+        {{badge-state model=model classNames="btn-xs"}}
+        {{action-menu model=model classNames="inline-block"}}
+      </div>
+    </div>
+
+    <hr>
+    <div class="stack-info-bottom pt-0">
+      <label for="" class="acc-label">{{t 'newMultiClusterApp.targets.label'}}</label>
+      <div class="col span-12 text-small">
+        {{#each model.targets as |target|}}
+          {{#link-to-external "apps-tab.detail" target.projectId target.appLink}}{{target.clusterName}}:{{target.projectName}}{{/link-to-external}}
+        {{/each}}
+      </div>
+    </div>
+  </div>
+</div>

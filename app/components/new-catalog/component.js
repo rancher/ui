@@ -1,6 +1,4 @@
-import {
-  get, set, computed, setProperties, observer
-} from '@ember/object';
+import { get, set, computed, setProperties } from '@ember/object';
 import { resolve } from 'rsvp';
 import { scheduleOnce } from '@ember/runloop';
 import { alias, notEmpty } from '@ember/object/computed';
@@ -9,15 +7,13 @@ import Component from '@ember/component';
 import NewOrEdit from 'shared/mixins/new-or-edit';
 import C from 'ui/utils/constants';
 import Util from 'ui/utils/util';
-import { compare as compareVersion } from 'ui/utils/parse-version';
 import { task } from 'ember-concurrency';
 import YAML from 'yamljs';
 import layout from './template';
-import { stringifyAnswer } from 'shared/utils/evaluate';
 import { isEmpty } from '@ember/utils';
-import { next } from '@ember/runloop';
+import CatalogApp from 'shared/mixins/catalog-app';
 
-export default Component.extend(NewOrEdit, {
+export default Component.extend(NewOrEdit, CatalogApp, {
   catalog:                  service(),
   intl:                     service(),
   scope:                    service(),
@@ -129,98 +125,6 @@ export default Component.extend(NewOrEdit, {
     },
   },
 
-  previewTabDidChange: observer('previewTab', function() {
-    let files = (get(this, 'selectedTemplateModel.filesAsArray') || []);
-    const previewTab = get(this, 'previewTab');
-    const found = files.findBy('name', previewTab);
-
-    if ( !found ) {
-      return;
-    }
-    set(this, 'decoding', true);
-    next(() => {
-      if ( !found.decoded ) {
-        setProperties(found, {
-          body:    atob(found.body),
-          decoded: true
-        });
-      }
-      setProperties(this, {
-        selectedFileContetnt: found.body,
-        decoding:             false
-      });
-    });
-  }),
-
-  templateChanged: observer('selectedTemplateUrl', 'templateResource.defaultVersion', function() {
-    get(this, 'getTemplate').perform();
-  }),
-
-  filenames: computed('selectedTemplateModel', 'selectedTemplateModel.filesAsArray.[]', function(){
-    let files = get(this, 'selectedTemplateModel.filesAsArray').map( (file) => ({
-      label: file.name,
-      value: file.name
-    }));
-
-    files.addObject({
-      label: 'answers.yaml',
-      value: 'answers'
-    });
-
-    return files.sortBy('label');
-  }),
-
-  sortedVersions: computed('versionsArray', 'templateResource.defaultVersion', function() {
-    let out = get(this, 'versionsArray').sort((a, b) => {
-      if ( a.sortVersion && b.sortVersion ) {
-        return compareVersion(a.sortVersion, b.sortVersion);
-      } else {
-        return compareVersion(a.version, b.version);
-      }
-    });
-
-    let def = get(this, 'templateResource.defaultVersion');
-
-    if ( get(this, 'showDefaultVersionOption') && get(this, 'defaultUrl') ) {
-      out.unshift({
-        version: get(this, 'intl').t('newCatalog.version.default', { version: def }),
-        link:    'default'
-      });
-    }
-
-    return out;
-  }),
-
-  defaultUrl: computed('templateResource.defaultVersion', 'versionLinks', function() {
-    var defaultVersion = get(this, 'templateResource.defaultVersion');
-    var versionLinks = get(this, 'versionLinks');
-
-    if ( defaultVersion && versionLinks && versionLinks[defaultVersion] ) {
-      return versionLinks[defaultVersion];
-    }
-
-    return null;
-  }),
-
-  answers: computed('selectedTemplateModel.questions.@each.{variable,answer}', function() {
-    var out = {};
-
-    (get(this, 'selectedTemplateModel.questions') || []).forEach((item) => {
-      out[item.variable] = stringifyAnswer(item.answer);
-      (get(item, 'subquestions') || []).forEach((sub) => {
-        out[sub.variable] = stringifyAnswer(sub.answer);
-      });
-    });
-
-    const customAnswers = get(this, 'selectedTemplateModel.customAnswers') || {};
-
-    Object.keys(customAnswers).forEach((key) => {
-      out[key] = stringifyAnswer(customAnswers[key]);
-    });
-
-    return out;
-  }),
-
   answersArray: computed('selectedTemplateModel.questions', 'selectedTemplateModel.customAnswers', 'catalogApp.answers', function() {
     let model = get(this, 'selectedTemplateModel');
 
@@ -272,42 +176,6 @@ export default Component.extend(NewOrEdit, {
       return JSON.stringify(get(this, 'answersArray'));
     }
   }),
-
-  newExternalId: computed('selectedTemplateModel.id', function() {
-    return C.EXTERNAL_ID.KIND_CATALOG + C.EXTERNAL_ID.KIND_SEPARATOR + get(this, 'selectedTemplateModel.id');
-  }),
-
-  updateReadme() {
-    let model = get(this, 'selectedTemplateModel');
-
-    set(this, 'readmeContent', null);
-    set(this, 'appReadmeContent', null);
-    set(this, 'noAppReadme', false);
-
-    if ( model && model.hasLink('readme') ) {
-      model.followLink('readme').then((response) => {
-        if (this.isDestroyed || this.isDestroying) {
-          return;
-        }
-        set(this, 'readmeContent', response);
-      });
-    }
-
-    if ( model && model.hasLink('app-readme') ) {
-      set(this, 'noAppReadme', false);
-      model.followLink('app-readme').then((response) => {
-        if (this.isDestroyed || this.isDestroying) {
-          return;
-        }
-        set(this, 'appReadmeContent', response);
-        if ( !response ) {
-          set(this, 'noAppReadme', true);
-        }
-      });
-    } else {
-      set(this, 'noAppReadme', true);
-    }
-  },
 
   getTemplate: task(function * () {
     var url = get(this, 'selectedTemplateUrl');

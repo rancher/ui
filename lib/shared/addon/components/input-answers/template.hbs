@@ -36,18 +36,12 @@
         {{#each section.data as |group|}}
           <div class="row">
             {{#each group as |question|}}
-              <div class="col span-6">
-                <label class="acc-label">{{or question.label question.variable}}{{#if question.required}}{{field-required}}{{/if}}</label>
-
-                {{#if question.supported}}
-                  {{component question.inputComponent field=question value=question.answer namespaceId=namespaceId question=question}}
-                {{else}}
-                  {{input type="text" value=question.answer class="form-control"}}
-                  <p>{{t 'inputAnswers.unknownType'}} {{question.type}}</p>
-                {{/if}}
-
-                <p class="help-block">{{question.description}}</p>
-              </div>
+              {{input-answer-row
+                  classNames="col span-6"
+                  question=question
+                  answer=question.answer
+                  namespaceId=namespaceId
+              }}
             {{/each}}
           </div>
         {{/each}}

@@ -96,7 +96,11 @@ const App = Application.extend({
           'authenticated.cluster':                        'authenticated.cluster',
           'authenticated.cluster.projects':               'authenticated.cluster.projects',
           'authenticated.project':                        'authenticated.project',
-          'authenticated.prefs':                          'authenticated.prefs',
+          'authenticated.project.apps-tab':               'authenticated.project.apps-tab',
+          'authenticated.project.apps-tab.detail':        'authenticated.project.apps-tab.detail',
+          'apps-tab':                                     'apps-tab',
+          'apps-tab.detail':                              'apps-tab.detail',
+          'authenticated.prefs':                          'nauthenticated.prefs',
           'authenticated.cluster.nodes':                  'authenticated.cluster.nodes',
           'authenticated.cluster.security.members.index': 'authenticated.cluster.security.members.index',
           'logout':                                       'logout'

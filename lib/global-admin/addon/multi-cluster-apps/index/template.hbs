@@ -1,0 +1,40 @@
+<section class="header clearfix">
+  <div class="pull-left"><h1>{{t "multiClusterAppsPage.header"}}</h1></div>
+
+  <div class="right-buttons">
+    {{#link-to
+       "catalog"
+       classNames="btn btn-sm bg-primary mr-10"
+    }}
+      <i class="icon icon-gear icon-fw"/>{{t "nav.apps.manage"}}
+    {{/link-to}}
+
+    {{#link-to
+       "multi-cluster-apps.catalog.index"
+       classNames="btn btn-sm bg-primary mr-10"
+    }}
+      {{t "nav.apps.launch"}}
+    {{/link-to}}
+  </div>
+</section>
+
+<section class="pl-0 pr-0">
+  {{#each filteredApps as |group|}}
+    <div class="row flex">
+      {{#each group as |app|}}
+        <div class="col span-6 mt-0">
+          {{multi-cluster-app
+            model=app
+          }}
+        </div>
+      {{/each}}
+    </div>
+  {{else}}
+    {{empty-table
+      resource="container"
+      newRoute="global-admin.multi-cluster-apps.catalog.index"
+      newTranslationKey="nav.apps.launch"
+      ctx=""
+    }}
+  {{/each}}
+</section>
