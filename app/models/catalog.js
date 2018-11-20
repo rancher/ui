@@ -43,11 +43,10 @@ export default Resource.extend({
         model: clone,
         scope: 'global'
       });
-    }
-  },
+    },
 
-  refresh() {
-    this.doAction('refresh')
+    refresh() {
+      this.doAction('refresh')
+    },
   },
-
 });
