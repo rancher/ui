@@ -489,10 +489,19 @@ function ensureVisible(li) {
   const $ul = $li.closest('UL');
   const ul = $ul[0];
 
+  if ( !ul ) {
+    return;
+  }
+
   const ulTop = $ul.scrollTop();
   const ulBottom = ulTop + $ul.outerHeight();
+  const offset = $li.offset();
 
-  const liTop = $li.offset().top;
+  if (!offset) {
+    return;
+  }
+
+  const liTop = offset.top;
   const liBottom = liTop + $li.outerHeight();
 
   // console.log(`${ulTop} to ${ulBottom}, ${liTop} to ${liBottom}`);

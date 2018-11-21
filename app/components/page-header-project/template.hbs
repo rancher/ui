@@ -69,23 +69,21 @@
 
       <ul class="list-unstyled" style="{{columnStyle}}">
         {{#if searchInput}}
-          {{#if clusterSearchResults.length}}
-            {{#each clusterSearchResults as |entry|}}
-              <li data-cluster-id={{entry.cluster.id}} class="item clip cluster">
-                {{#link-to
-                  'authenticated.cluster'
-                  entry.cluster.id
-                  class="top"
-                }}
-                  <i class="icon icon-cluster icon-fw"></i>
-                  {{entry.searchMatch}}
-                {{/link-to}}
-                <p class="state">{{entry.cluster.displayState}}</p>
-              </li>
-            {{/each}}
+          {{#each clusterSearchResults as |entry|}}
+            <li data-cluster-id={{entry.cluster.id}} class="item clip cluster">
+              {{#link-to
+                'authenticated.cluster'
+                entry.cluster.id
+                class="top"
+              }}
+                <i class="icon icon-cluster icon-fw"></i>
+                {{entry.searchMatch}}
+              {{/link-to}}
+              <p class="state">{{entry.cluster.displayState}}</p>
+            </li>
           {{else}}
-            <span class="text-muted">{{t 'nav.projectDropdown.clustersNoData' searchInput=searchInput}}</span>
-          {{/if}}
+            <li class="text-muted p-10">{{t 'nav.projectDropdown.clustersNoMatch' searchInput=searchInput}}</li>
+          {{/each}}
         {{else}}
           {{#each byCluster as |entry|}}
             <li data-cluster-id={{entry.cluster.id}} class="item clip cluster {{if entry.active 'active' 'inactive'}} {{if (eq hoverEntry entry) 'hover'}}">
@@ -99,6 +97,8 @@
               {{/link-to}}
               <p class="state">{{entry.cluster.displayState}}</p>
             </li>
+          {{else}}
+            <li class="text-muted p-10">{{t 'nav.projectDropdown.clustersNoData'}}</li>
           {{/each}}
         {{/if}}
       </ul>
@@ -113,28 +113,26 @@
 
       <ul class="list-unstyled" style="{{columnStyle}}">
         {{#if searchInput}}
-          {{#if projectSearchResults.length}}
-            {{#each projectSearchResults as |entry|}}
-              <li class="item clip project {{unless entry.project.isReady 'not-ready'}}">
-                {{#link-to
-                  'authenticated.project'
-                  entry.project.id
-                  class="top"
-                }}
-                  <i class="icon icon-folder icon-fw"></i>
-                  {{entry.searchMatch}}
-                {{/link-to}}
-                <p class="state">
-                  {{t 'nav.projectDropdown.projectInCluster' cluster=entry.cluster.displayName}}
-                  {{~#unless entry.project.isReady~}}
-                    , {{t 'nav.projectDropdown.projectNotReady'}}
-                  {{/unless}}
-                </p>
-              </li>
-            {{/each}}
+          {{#each projectSearchResults as |entry|}}
+            <li class="item clip project {{unless entry.project.isReady 'not-ready'}}">
+              {{#link-to
+                'authenticated.project'
+                entry.project.id
+                class="top"
+              }}
+                <i class="icon icon-folder icon-fw"></i>
+                {{entry.searchMatch}}
+              {{/link-to}}
+              <p class="state">
+                {{t 'nav.projectDropdown.projectInCluster' cluster=entry.cluster.displayName}}
+                {{~#unless entry.project.isReady~}}
+                  , {{t 'nav.projectDropdown.projectNotReady'}}
+                {{/unless}}
+              </p>
+            </li>
           {{else}}
-            <span class="text-muted">{{t 'nav.projectDropdown.projectsNoData' searchInput=searchInput}}</span>
-          {{/if}}
+            <li class="text-muted p-10">{{t 'nav.projectDropdown.projectsNoMatch' searchInput=searchInput}}</li>
+          {{/each}}
         {{else if clusterEntry}}
           {{#each clusterEntry.projects as |project|}}
             <li data-project-id={{project.id}} class="item clip project {{unless project.isReady 'not-ready'}} {{if project.active 'active' 'inactive'}}">
@@ -154,7 +152,11 @@
                 {{/if}}
               </p>
             </li>
+          {{else}}
+            <li class="text-muted p-10">{{t 'nav.projectDropdown.projectNoData'}}</li>
           {{/each}}
+        {{else}}
+          <li class="text-muted p-10">{{t 'nav.projectDropdown.projectsNoData'}}</li>
         {{/if}}
       </ul>
     </div>
