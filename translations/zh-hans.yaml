@@ -88,6 +88,7 @@ generic:
   persistentVolume: 持久卷
   random: 随机
   remove: 移除
+  restarts: 重新启动
   role: 角色
   save: 保存
   saved: 已保存
@@ -199,6 +200,10 @@ appDetailPage:
     protocol: 协议
     noData: 此应用未创建公开终端
     noMatch: 没有满足当前搜索的公共终端
+  answers:
+    title: 应答
+    detail: 自定义应用应答
+    variable: 变量
   notes:
     title: 注释
     detail: '关于如何使用此应用的说明'
@@ -1671,8 +1676,8 @@ accordionRow:
     none: 无
     incomplete: 未完成
     error: 错误
-    notConfigured: 未配置
     configured: 已配置
+    notConfigured: 未配置
     countConfigured: "{count}已配置"
     standard: 默认
     custom: 自定义
@@ -2251,7 +2256,7 @@ clusterNew:
     label: 已导入
     shortLabel: 已导入
     command:
-      instructionsAdminRole: "<b>注意:</b><br/>如果想要导入Google Kubernetes Engine(GKE)集群(或一些不提供绑定集群管理角色的kubectl配置文件的群集),需要通过以下命令来绑定集群管理角色。<br/><br/>如果导入Google Kubernetes Engine群集，将<b>[USER_ACCOUNT]</b>替换为Google帐户（可使用<b>gcloud config get-value account</b>检索帐户）。<br/>如果未导入Google Kubernetes Engine群集，请将<b>[USER_ACCOUNT]</b>替换为kubectl配置文件中配置的执行用户。"
+      instructionsAdminRole: "<b>注意:</b><br/>如果想要导入Google Kubernetes Engine(GKE)集群(或一些不提供绑定集群管理角色的kubectl配置文件的集群),需要通过以下命令来绑定集群管理角色。<br/><br/>如果导入Google Kubernetes Engine集群，将<b>[USER_ACCOUNT]</b>替换为Google帐户（可使用<b>gcloud config get-value account</b>检索帐户）。<br/>如果未导入Google Kubernetes Engine集群，请将<b>[USER_ACCOUNT]</b>替换为kubectl配置文件中配置的执行用户。"
       instructions: "在现有受支持的Kubernetes集群中，运行下面的kubectl命令将其导入到{appName}中:"
       instructionsInsecure: "如果因为{appName}使用不受信任/自签名的SSL证书而出现<b> \"由未知颁发机构签名的证书\"</b> 错误，请运行下面的命令以绕过证书检查:"
 
@@ -2283,8 +2288,8 @@ confirmDelete:
   environmentNote: '注意: 此环境内的所有资源都将被永久性的删除，包括通过{appName}创建的主机。'
   clusterNote: '注意: 在云平台中创建的关联资源(如卷，负载均衡器和网络)不会自动删除。'
   clusterRoleTemplateBindingNote: "注意: 此用户的权限直接添加到项目中将不会被删除."
-  systemProjectNamespaceNote: '您正在删除系统项目下的命名空间。如果删除，可能会对群集造成有害影响。'
-  systemProjectNote: '您正在删除系统项目。如果删除，可能会对群集造成有害影响。'
+  systemProjectNamespaceNote: '您正在删除系统项目下的命名空间。如果删除，可能会对集群造成有害影响。'
+  systemProjectNote: '您正在删除系统项目。如果删除，可能会对集群造成有害影响。'
   protip: '高级技巧:在点击删除时按住{key}键以跳过确认操作。'
   confirmAction: 删除
   cancelAction: 取消
@@ -2996,7 +3001,7 @@ dangerZone:
   showLabel: 我已确认修改高级设置可能导致{appName}出问题。
   description:
     'cacerts': '验证ssl证书所需的CA证书，此CA证书仅适用于自签名SSL证书。若SSL证书是权威CA机构所颁发，则要求删除此CA证书。'
-    'cluster-defaults': '在创建新群集时覆盖RKE默认值。'
+    'cluster-defaults': '在创建新集群时覆盖RKE默认值。'
     'engine-install-url': '默认的Docker引擎安装URL(用于大多数Machine Drivers)。'
     'engine-iso-url': '默认OS安装URL(用于Machine vSphere Drivers)。'
     'engine-newest-version': '当前Rancher Server支持的最新Docker版本，不支持的版本或比此Docker版本新的将被标记为未测试。'
@@ -3716,6 +3721,24 @@ formNetwork:
     label: DNS策略
     clusterFirstWithHostNet: "主机网络优先"
     clusterFirst: "集群优先"
+  dnsConfig:
+    nameservers:
+      label: DNS服务器IP地址
+      addActionLabel: 添加DNS服务器
+      placeholder: "例如: 192.168.2.1"
+    options:
+      label: DNS解析选项
+      addActionLabel: 添加选项
+      name:
+        label: 名称
+        placeholder: "例如: ndots"
+      value:
+        label: 值
+        placeholder: "例如: 5"
+    searches:
+      label: DNS搜索域
+      placeholder: "例如: example.com"
+      addActionLabel: 添加搜索域
   container:
     label: 容器
   requestedIp:
@@ -5866,13 +5889,16 @@ allWorkloads:
 ##############################
 nav:
   srToggleDropdown: 切换下拉菜单
-  environment:
-    cluster: 集群
-    label: 环境
-    all: 所有环境
-    your: 环境
-    selected: 当前环境
-    edit: '编辑 "{name}"'
+  projectDropdown:
+    label: 范围
+    clusters: 集群
+    projects: 项目
+    projectsIn: 在集群{cluster}中的项目
+    clustersNoData: '没有与"{searchInput}"匹配的集群'
+    projectsNoData: '没有与"{searchInput}"匹配的项目'
+    projectNotReady: '集群未就绪'
+    projectInCluster: '在集群{cluster}中'
+    search: "搜索..."
   cluster:
     dashboard: 集群
     members: 成员
