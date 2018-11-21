@@ -36,10 +36,11 @@
     {{#if (eq step 1)}}
       {{top-errors errors=errors}}
 
-      <div class="footer-actions">
-        <button {{action "exoscaleLogin"}} name="submit" class="btn btn-primary">{{t 'nodeDriver.exoscale.loginAction'}}</button>
-        <button {{action "cancel"}} class="btn btn-link">{{t 'generic.cancel'}}</button>
-      </div>
+      {{save-cancel 
+        save="exoscaleLogin" 
+        cancel="cancel"
+        createLabel="nodeDriver.exoscale.loginAction"
+      }}
     {{/if}}
   </form>
 </section>
@@ -79,10 +80,12 @@
   {{#if (eq step 3)}}
     {{top-errors errors=errors}}
 
-    <div class="footer-actions">
-      <button {{action "selectZone"}} class="btn btn-primary">{{t 'nodeDriver.exoscale.selectZoneAction'}}</button>
-      <button {{action "cancel"}} class="btn btn-link">Cancel</button>
-    </div>
+    {{save-cancel 
+        save="selectZone" 
+        cancel="cancel"
+        createLabel="nodeDriver.exoscale.selectZoneAction"
+    }}
+
   {{/if}}
 </section>
 
@@ -144,10 +147,11 @@
   {{#if (eq step 5)}}
     {{top-errors errors=errors}}
 
-    <div class="footer-actions">
-      <button {{action "selectSecurityGroup"}} class="btn btn-primary">{{t 'nodeDriver.exoscale.selectSecurityGroupAction'}}</button>
-      <button {{action "cancel"}} class="btn btn-link">Cancel</button>
-    </div>
+    {{save-cancel 
+        save="selectSecurityGroup" 
+        cancel="cancel"
+        createLabel="nodeDriver.exoscale.selectSecurityGroupAction"
+    }}
   {{/if}}
 </section>
 
