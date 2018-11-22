@@ -30,7 +30,11 @@
     {{t 'generic.owner'}}
   {{else}}
     {{#if noUpdate}}
-      {{roleTemplateId}}
+      {{#if roleTemplate}}
+        {{roleTemplate.displayName}}
+      {{else}}
+        {{t 'generic.custom'}}
+      {{/if}}
     {{else}}
       {{searchable-select change="onSelect" content=choices value=roleTemplateId readOnly=noUpdate}}
     {{/if}}
