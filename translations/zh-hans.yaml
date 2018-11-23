@@ -24,7 +24,7 @@ generic:
   confirm: 确认
   containers: 容器
   created: 创建时间
-  createdDate: "创建于{date}"
+  createdDate: "创建时间: {date}"
   custom: 自定义
   customize: 定制
   default: 默认
@@ -56,7 +56,7 @@ generic:
   image: 镜像
   import: 导入
   internal: 内部
-  ipAddress: IP地址
+  ipAddress: Pod IP
   key: 键
   limit: 限制
   limits: 限制
@@ -88,7 +88,7 @@ generic:
   persistentVolume: 持久卷
   random: 随机
   remove: 移除
-  restarts: 重新启动
+  restarts: 重启次数
   role: 角色
   save: 保存
   saved: 已保存
@@ -681,7 +681,7 @@ namespacesPage:
   header: 命名空间
   addNamespace: 添加命名空间
   noMatch: 没有符合搜索的命名空间
-  noData: 此集群未创建任何命名空间(namespaces)
+  noData: 此集群未创建任何命名空间
   table:
     name:
       label: 命名空间
@@ -1072,7 +1072,7 @@ hostsPage:
     ipAddress: IP地址
     version: 版本
     kubeletVersion: Kubelet版本
-    kubeProxyVersion: Kube Proxy版本
+    kubeProxyVersion: Kube-Proxy版本
     dockerVersion: Docker版本
     kernelVersion: 内核版本
     operatingSystem: 操作系统
@@ -1094,7 +1094,7 @@ hostsPage:
         labelText: '供应商:'
         noHost: 自定义
       kernel: '内核'
-      docker: 'Docker:'
+      docker: 'Docker: '
       os: '操作系统'
       milliCpu:
         labelText: mCPU
@@ -1242,8 +1242,8 @@ servicePage:
     scale: 'Pod副本数:'
     image: '镜像名: '
     namespace: '命名空间:'
-    created: '创建时间:'
-    daemonSetScale: '每主机1个实例'
+    created: '创建时间: '
+    daemonSetScale: '每主机1个Pod'
   serviceType:
     deployment: Deployment
     replicaSet: 副本集
@@ -1256,8 +1256,8 @@ servicePage:
   external:
     externalIp: |
       {count, plural,
-      =1{个外部IP:}
-      other{个外部IP:}
+      =1{个外部IP }
+      other{个外部IP }
       }
     externalHostname: '外部主机名:'
   selector:
@@ -1340,7 +1340,7 @@ stackPage:
     detail: 应用中所包含的独立容器和服务。
     status: |
       {count, plural,
-      =0{没有容器}
+      =0{无容器}
       =1{#个容器}
       other{#个容器}
       }
@@ -1349,25 +1349,25 @@ stackPage:
     detail: '属于该应用的负载均衡容器'
     status: |
       {count, plural,
-      =0{没有负载均衡}
-      =1{#个负载均衡}
-      other{#个负载均衡}
+      =0{无负载均衡}
+      =1{#条负载均衡}
+      other{#条负载均衡}
       }
   dnsServices:
     header: DNS记录
     detail: '属于该应用的DNS记录'
     status: |
       {count, plural,
-      =0{没有记录}
-      =1{#个记录}
-      other{#个记录}
+      =0{无记录}
+      =1{#条记录}
+      other{#条记录}
       }
   scalingGroups:
     header: 扩容组
     detail: '属于该扩容组的容器'
     status: |
       {count, plural,
-      =0{没有容器}
+      =0{无容器}
       =1{#个容器}
       other{#个容器}
       }
@@ -1678,12 +1678,12 @@ accordionRow:
     error: 错误
     configured: 已配置
     notConfigured: 未配置
-    countConfigured: "{count}已配置"
+    countConfigured: "{count}条规则已配置"
     standard: 默认
     custom: 自定义
     specific: 具体
     any: 任何
-    rule: "{count, plural,=1{#个规则}other{#个规则}}"
+    rule: "{count, plural,=1{#条规则}other{#条规则}}"
 
 advancedSection:
   showText: 显示高级选项
@@ -1799,7 +1799,7 @@ catalogSettings:
   globalCatalog: 全局
   library:
     label: 官方认证
-    detail: 由{appName}维护的官方模板仓库。
+    detail: 由{appName}官方维护的模板仓库。
   helm:
     stable:
       label: Helm Stable
@@ -2229,7 +2229,7 @@ clusterNew:
     warning:
       etcd:
         even: 设置{count}个etcd节点是对硬件的浪费，因为它不会增加仲裁，除非它是奇数。
-        noEtcd: The number of etcd nodes should not be less than 1.
+        noEtcd: etcd节点的数量不应小于1。
       aws:
         iam: '使用Amazon Cloud Provider时，应在节点模板中配置IAM角色名称'
     errors:
@@ -2262,7 +2262,7 @@ clusterNew:
 
 conditionSections:
   title: 状态
-  detail: '{resourceType}当前的运行状态 '
+  detail: '当前{resourceType}运行状态 '
   table:
     type: 类型
     status: 状态
@@ -2274,13 +2274,13 @@ conditionSections:
 
 resourceEventList:
   title: 事件
-  detail: '{resourceType}当前的事件'
+  detail: '当前{resourceType}的事件'
   table:
     type: 类型
     lastUpdate: 最后更新
     reason: 事件原因
-    message: 消息
-  noData: 没有事件
+    message: 事件信息
+  noData: 当前没有事件
   noMatch: 没有事件与当前搜索匹配
 
 confirmDelete:
@@ -3196,8 +3196,8 @@ envCatalog:
 moveNamespace:
   title: |
     移动{count, plural,
-    =1{个命名空间: {name}}
-    other{#个命名空间:}}
+    =1 {命名空间: {name}}
+    other{#个命名空间: }}
   to: "到目标项目: "
   actionLabel: 移动
 
@@ -3209,7 +3209,7 @@ stacksPage:
   table:
     standalone: 独立容器
     endpoints: 终端
-    scale: Pod伸缩
+    scale: Pod副本数
     instanceState: 容器状态
     instanceStateWithIcon: 状态
 
@@ -3288,9 +3288,9 @@ formBalancerListeners:
   detail: 配置负载均衡，使其将请求转发到目标地址。
   status: |
     {count, plural,
-    =0{没有规则}
-    =1{#个规则}
-    other{#个规则}
+    =0{无规则}
+    =1{#条规则}
+    other{#条规则}
     }
   noRules: 没有端口
   addPortLabel: 添加一个监听端口
@@ -3315,9 +3315,9 @@ formBalancerRules:
   detail: 根据主机、 端口、 路径或IP地址映射请求到不同的目标。
   status: |
     {count, plural,
-    =0{没有规则}
-    =1{#个规则}
-    other{#个规则}
+    =0{无规则}
+    =1{#条规则}
+    other{#条规则}
     }
   noRules: 无规则
   addServiceLabel: 添加服务
@@ -3521,7 +3521,7 @@ formEnvVar:
   noData: 没有环境变量
   status: |
     {count, plural,
-    =0{未配置}
+    =0{无变量}
     =1{#个变量}
     other{#个变量}
     }
@@ -3714,7 +3714,7 @@ formNetwork:
   title: 网络
   detail: 设置容器的网络和DNS选项
   netMode:
-    label: 使用主机的网络命名空间
+    label: 使用主机网络
     disable: "否"
     enable: "是"
   dnsPolicy:
@@ -3812,7 +3812,7 @@ formPorts:
   dnsName:
     label: DNS名称
     placeholder: '例如: example'
-  noPorts: 当前容器没有端口映射
+  noPorts: 当前Pod没有映射端口
   error:
     privateRequired: 每条映射规则必须设置容器端口。
     publicRequired: 如果指定了主机IP，则需要源端口。
@@ -3849,16 +3849,16 @@ formScheduling:
   detail: 配置Pod对应的主机调度规则。
   status: |
     {count, plural,
-    =0{没有规则}
-    =1{#个规则}
-    other{#个规则}
+    =0{无规则}
+    =1{#条规则}
+    other{#条规则}
     }
   canRequestHost:
     vm: 在指定主机上运行<b>所有</b>虚拟机
     containers: 指定主机运行<b>所有Pods</b>
   runSpecific: 在指定主机上运行此Pod
-  noRules: 没有规则.
-  noToleration: 不容忍节点污点
+  noRules: 没有配置规则
+  noToleration: 未配置节点污点
   autoRun: "在匹配调度规则的每个主机上自动运行"
   autoPick:
     vm: "为每一个虚拟机自动选择符合调度规则的主机"
@@ -3886,10 +3886,10 @@ formScheduling:
   hostMax: 最大主机数
   perHost: 每个主机
   priority:
-    label: 优先级
+    label: 优先级等级
     placeholder: '例如: 3'
   priorityClassName:
-    label: 优先级等级名称
+    label: 优先级显示名称
     placeholder: '例如: 高'
   scheduler:
     label: 调度
@@ -3936,7 +3936,7 @@ formSecurity:
   title: '安全/主机设置'
   detail: 授予或限制容器影响所运行主机的能力
   pullImage:
-    label: 拉取镜像
+    label: 镜像拉取策略
     always: 总是拉取
     ifNotPresent: 不存在则拉取
   privileged:
@@ -4719,7 +4719,7 @@ modalDrainNode:
 
 modalRollbackService:
   title: '回滚"{instanceName}"'
-  titleWithSidekicks: '回滚"{instanceName}"&{count, plural,=1{#sidecar}other{#sidecars}}'
+  titleWithSidekicks: '回滚"{instanceName}"&{count, plural,=1{#个sidecar}other{#个sidecars}}'
   action: 回滚
   current:
     label: 当前版本
@@ -5495,7 +5495,7 @@ projectGroup:
   label: "项目: {name}"
   none: 命名空间
   project: 不在项目中
-  noNS: 这个项目没有namespace
+  noNS: 此项目下没有命名空间
 
 optionallyNamespaced:
   scope:
@@ -5547,8 +5547,8 @@ pagination:
   dnsRecord: |
     {pages, plural,
     =0{无DNS记录}
-    =1{选中{count}{count, plural,=1{个DNS记录}other{个DNS记录}}}
-    other {当前显示{count}个DNS Records中的{from}到{to}个}}
+    =1{选中{count}{count, plural,=1{条DNS记录}other{条DNS记录}}}
+    other {当前显示{count}条DNS Records中的{from}到{to}条}}
   driver: |
     {pages, plural,
     =0{无驱动}
@@ -5587,8 +5587,8 @@ pagination:
   loadBalancer: |
     {pages, plural,
     =0{无负载均衡}
-    =1{选中{count}{count, plural,=1{个负载均衡}other{个负载均衡}}}
-    other {当前显示{count}个负载均衡中的{from}到{to}个}}
+    =1{选中{count}{count, plural,=1{条负载均衡}other{条负载均衡}}}
+    other {当前显示{count}条负载均衡中的{from}到{to}条 }}
   ingress: |
     {pages, plural,
     =0{无Ingresses}
@@ -5608,7 +5608,7 @@ pagination:
     {pages, plural,
     =0{无命名空间}
     =1{选中{count}{count, plural,=1{个命名空间}other{个命名空间}}}
-    other {当前显示{count}命名空间中的{from}到{to}个 }}
+    other {当前显示{count}个命名空间中的{from}到{to}个 }}
   node: |
     {pages, plural,
     =0{无主机}
@@ -5627,7 +5627,7 @@ pagination:
   pod: |
     {pages, plural,
     =0 {没有Pods}
-    =1{选中{count}{count, plural, =1{个Pod}other{个Pods}}}
+    =1{{count}{count, plural, =1{个Pod}other{个Pods}}}
     other{当前显示{count}个Pods中的{from}到{to}个}}
   podHighlightSubset: "<b>{subset} of {count}</b> Pods"
   podNoSubset: "0 of {count} Pods"
@@ -5649,8 +5649,8 @@ pagination:
   rule: |
     {pages, plural,
     =0{无规则}
-    =1{选中{count}{count, plural,=1{个规则}other{个规则}}}
-    other {当前显示{count}个规则中的{from}到{to}个 }}
+    =1{选中{count}{count, plural,=1{条规则}other{条规则}}}
+    other {当前显示{count}条规则中的{from}到{to}条 }}
   service: |
     {pages, plural,
     =0{无服务}
@@ -5893,11 +5893,14 @@ nav:
     label: 范围
     clusters: 集群
     projects: 项目
-    projectsIn: 在集群{cluster}中的项目
-    clustersNoData: '没有与"{searchInput}"匹配的集群'
-    projectsNoData: '没有与"{searchInput}"匹配的项目'
-    projectNotReady: '集群未就绪'
-    projectInCluster: '在集群{cluster}中'
+    projectsIn: 集群{cluster}中的项目。
+    clustersNoData: 没有集群。
+    projectsNoData: 选择一个集群来查看项目。
+    projectNoData: 这个集群没有项目。
+    clustersNoMatch: '没有与"{searchInput}"匹配的集群。'
+    projectsNoMatch: '没有与"{searchInput}"匹配的项目。'
+    projectNotReady: '集群未就绪。'
+    projectInCluster: '在集群{cluster}中的项目。'
     search: "搜索..."
   cluster:
     dashboard: 集群
@@ -6059,16 +6062,16 @@ validation:
     min: '"{key}"应当至少为{count}{count, plural,=1{个条目}other{个条目}}'
     max: '"{key}"应当至多为{count}{count, plural,=1{个条目}other{个条目}}'
   stringLength:
-    exactly: '"{key}"应当为{count, plural,=1{#字符}other{#字符}}'
-    between: '"{key}"应当介于{min}和{max}之间{max, plural,=1{字符}other{字符}}'
-    min: '"{key}"应当至少为{count}{count, plural,=1{字符}other{字符}}'
-    max: '"{key}"应当至多为{count}{count, plural,=1{字符}other{字符}}'
+    exactly: '"{key}"应当为{count, plural,=1{#个字符}other{#个字符}}'
+    between: '"{key}"应当介于{min}和{max}之间{max, plural,=1{个字符}other{个字符}}'
+    min: '"{key}"应当至少为{count}{count, plural,=1{个字符}other{个字符}}'
+    max: '"{key}"应当至多为{count}{count, plural,=1{个字符}other{个字符}}'
   number:
     exactly: '"{key}"应当为{val}'
     between: '"{key}"应当介于{min}和{max}之间'
     min: '"{key}"应当至少为{val}'
     max: '"{key}"应当至多为{val}'
-  chars: '"{key}"包含{count, plural,=1{无效字符}other{#无效字符}}:{chars}'
+  chars: '"{key}"包含{count, plural,=1{个无效字符}other{#个无效字符}}:{chars}'
   dns:
     doubleHyphen: 不能包含两个连续的连字符
     hostname:

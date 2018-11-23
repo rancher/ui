@@ -1,4 +1,4 @@
-languageName: "正體中文"
+languageName: "繁體中文"
 languageContribute: "幫助翻譯Rancher"
 
 ##############################
@@ -18,15 +18,15 @@ generic:
   cancel: 取消
   closeModal: 關閉
   cluster: 集群
-  collapseAll: 折疊全部
+  collapseAll: 摺疊全部
   comingSoon: 即將推出
   command: 命令
   confirm: 確認
   containers: 容器
   created: 創建時間
-  createdDate: "創建於{date}"
+  createdDate: "創建時間: {date}"
   custom: 自定義
-  customize: 定制
+  customize: 定製
   default: 默認
   description: 描述
   details: 詳情
@@ -51,11 +51,12 @@ generic:
   healthy: 健康
   help: 幫助
   hostname: 主機名
+  hours: 小時
   id: 用戶ID
   image: 鏡像
   import: 導入
   internal: 內部
-  ipAddress: IP地址
+  ipAddress: Pod IP
   key: 鍵
   limit: 限制
   limits: 限制
@@ -87,13 +88,14 @@ generic:
   persistentVolume: 持久卷
   random: 隨機
   remove: 移除
+  restarts: 重啟次數
   role: 角色
   save: 保存
   saved: 已保存
   saving: 保存中
   scope: 範圍
   search: 搜索
-  searchOrCustomInput: 搜索或輸入您的自定義值
+  searchOrCustomInput: 搜索或輸入自定義值
   searching: '正在搜索...'
   seconds: 秒
   select: 選擇
@@ -101,7 +103,7 @@ generic:
   services: 服務
   size: 大小
   state: 狀態
-  tags: 標簽
+  tags: 標籤
   test: 測試
   testing: 測試
   to: 至
@@ -169,9 +171,9 @@ accountsPage:
     header: 添加用戶
     errors:
       usernameReq: 必須填寫用戶名
-      usernameInExists: 用戶名已存在，請選擇壹個新的用戶名
+      usernameInExists: 用戶名已存在，請選擇一個新的用戶名
       pwReq: 密碼必須設置
-      role: 新用戶需要具備角色。從列表中選擇壹個角色
+      role: 新用戶需要具備角色。從列表中選擇一個角色
     form:
       username:
         labelText: 用戶名
@@ -198,8 +200,12 @@ appDetailPage:
     protocol: 協議
     noData: 此應用未創建公開終端
     noMatch: 沒有滿足當前搜索的公共終端
+  answers:
+    title: 應答
+    detail: 自定義應用應答
+    variable: 變量
   notes:
-    title: 註釋
+    title: 注釋
     detail: '關於如何使用此應用的說明'
   workloads:
     title: 工作負載
@@ -281,9 +287,11 @@ rolesPage:
     errors:
       nameReq: 名稱(必填)
       memberReq: 成員是必需的
-      nameInExists: 名稱是已經存在， 請使用壹個新的角色名稱。
+      nameInExists: 名稱是已經存在， 請使用一個新的角色名稱。
       ruleResourceReq: 資源是規則所必需的
       roleTemplate: 角色模板是必需的
+      noSelectedRoles: 請為該用戶至少選擇一個角色。
+      roleAlreadyExists: 用戶已經具有"{key}"角色。
     form:
       name:
         labelText: 姓名
@@ -425,7 +433,7 @@ authPage:
         labelText: 組織字段
       testAuth:
         header: '2. 測試並啟用認證'
-        subtext: '測試以確認您的配置是否正確:'
+        subtext: '測試以確認配置是否正確:'
         buttonText:
           pre: 使用IDP驗證
           post: 等待IDP響應
@@ -457,7 +465,7 @@ authPage:
         li1:
           text: '標準GitHub。<a href="https://github.com/settings/developers" target="_blank">點擊此處</a>並在彈出的新窗口中進行應用設置。'
           ul:
-            li1: "企業版GitHub。請登錄您的賬號，點擊Settings，然後點擊Applications進行設置"
+            li1: "企業版GitHub。請登錄賬號，點擊Settings，然後點擊Applications進行設置"
         li2:
           text: '點擊 "Register new application" 並填寫表單內容:'
           ul:
@@ -468,8 +476,8 @@ authPage:
         li3:
           text: '點擊 "Register Application" '
       form:
-        header: '2. 配置{appName}以使用您的GitHub進行身份驗證'
-        subtext: '將新創建的GitHub應用Client ID和Secret復制粘貼到下方的對應輸入框中'
+        header: '2. 配置{appName}以使用GitHub進行身份驗證'
+        subtext: '將新創建的GitHub應用Client ID和Secret複製粘貼到下方的對應輸入框中'
         clientId:
           labelText: 客戶端ID
         clientSecret:
@@ -483,7 +491,7 @@ authPage:
           placeholder: '例如: github.example.com'
     testAuth:
       header: '3. 測試並啟用認證'
-      subtext: '測試以確認您的配置是否正確'
+      subtext: '測試以確認配置是否正確'
       buttonText:
         pre: 啟用GitHub認證
         post: 等待GitHub返回
@@ -500,14 +508,14 @@ authPage:
       general:
         header: 常規
     configure:
-      header: '配置Azure AD賬戶'
-      replyUrl: "在配置之前，需首先在Azure AD設置{appName}的應答URL地址，並確保設置的URL為<code>{replyUrl}</code>。註意: 如使用Azure中國，需設置為<code>{replyUrl}</code>verify-auth-azure"
-      help: '輸入Tenant ID，Client ID和Admin用戶詳細信息以連接到Azure AD進行身份驗證'
+      header: '配置Azure AD帳戶'
+      replyUrl: "在開始設置之前，需要在Azure AD為{appName}設置一個白名單URL。請確保Azure門戶的Reply URL部分設置了以下Reply URL。 請注意，白名單URL設置後可能需要5分鐘生效時間。"
+      help: '輸入租戶ID、Client ID和管理用戶詳細信息，以連接到Azure AD 驗證帳戶信息。'
       applicationId:
-        label: Application ID
+        label: 應用 ID
         placeholder: UUID字符串
       applicationSecret:
-        label: Application Secret
+        label: 應用 Secret
       serverURL:
         label: Rancher Server Url
       azureADEndpoint:
@@ -519,7 +527,7 @@ authPage:
       azureADAuthEndpoint:
         label: Auth Endpoint
       endpoints:
-        label: Endpoints
+        label: Azure AD訪問地址
       regions:
         standard: Standard
         china: China
@@ -547,7 +555,7 @@ authPage:
     subtext:
       enabled:
         text: '{appName}已設置本地賬戶訪問'
-        alwaysOn: '本地身份驗證將始終啟用，您可以在本地認證基礎之上添加壹種或多種認證方案'
+        alwaysOn: '本地身份驗證將始終啟用，您可以在本地認證基礎之上添加其他認證方案'
         linkText: 管理賬號
       disabled: '{appName}能夠被設置為僅允許{appName}本地數據庫中定義的用戶訪問。當前系統未進行設置，因此任何可以訪問此頁面(或API)的用戶都具有系統的完全控制權限。'
     accessEnabled:
@@ -673,7 +681,7 @@ namespacesPage:
   header: 命名空間
   addNamespace: 添加命名空間
   noMatch: 沒有符合搜索的命名空間
-  noData: 此集群未創建任何命名空間(namespaces)
+  noData: 此集群未創建任何命名空間
   table:
     name:
       label: 命名空間
@@ -690,7 +698,7 @@ namespacesPage:
 
 clusterPage:
   edit: 編輯集群
-  removeMemberNote: '註意: 刪除成員不會刪除其項目權限'
+  removeMemberNote: '注意: 刪除成員不會刪除其項目權限'
   internal: '<b>警告:</b>{appName}集群用作數據存儲，只應授予管理員擁有寫入權限.<br>對此集群具有寫入權限的用戶，可以使用它授予自己安裝並管理的其他集群的訪問權限。'
 
 projectsListNamespacePage:
@@ -732,7 +740,7 @@ projectsPage:
     labelText: 成員
     addMember: 添加成員
     addUser: 添加用戶
-    noAddUser: 您是唯壹的活動註冊用戶
+    noAddUser: 您是唯一的活動註冊用戶
     addGroup: 添加組
     addServiceAccount: 添加服務帳戶
     multipleRoles: 多個角色
@@ -787,7 +795,7 @@ containerPage:
     detail: '在創建容器時配置到容器內的環境變量。'
   portsTab:
     header: 端口
-    detail: '容器監聽端口到主機公用IP地址端口的映射關系。'
+    detail: '容器監聽端口到主機公用IP地址端口的映射關係。'
     hostPrimaryIp: "({ip})"
   linksTab:
     header: 鏈接
@@ -795,7 +803,7 @@ containerPage:
     noData: 當前容器沒有鏈接
   volumesTab:
     header: 數據卷
-    detail: '這些屬性顯示了附加到您的容器的數據卷。'
+    detail: '這些屬性顯示了附加到容器的數據卷。'
     table:
       path: 掛載點
       shared: 共享
@@ -805,7 +813,7 @@ containerPage:
       noContainers: 無其他容器
 podPage:
   header: "Pod: {name}"
-  nodeIp: 主機IP
+  nodeIp: 主機
   podIp: Pod IP
   containerImage: "{container}的鏡像"
   image: 鏡像
@@ -820,12 +828,12 @@ containersPage:
     noMatch: 沒有符合當前搜索的容器
   welcome:
     container: 立即開始
-    containerLink: 創建壹個容器
-    orchestrator: 安裝另壹個編排引擎
+    containerLink: 創建一個容器
+    orchestrator: 安裝另一個編排引擎
     kubernetesLink: 安裝 Kubernetes
 
 clusterDashboard:
-  title: 儀表盤
+  title: 儀錶盤
   cpu: CPU
   memory: Memory
   pods: Pods
@@ -871,15 +879,15 @@ editDns:
     placeholder: '例如: 當前MyApp版本'
   selector:
     label: 容器選擇器
-    keyLabel: 標簽
-    addActionLabel: 添加標簽選擇器
+    keyLabel: 標籤
+    addActionLabel: 添加標籤選擇器
   recordType:
     label: "解析到"
     arecord: 外部IP地址
     cname: '外部主機名/域名'
     alias: 服務別名
     workload: 工作負載
-    selector: Pod 
+    selector: Pod
   target:
     arecord: 目標IP地址
     cname: 目標主機名
@@ -898,8 +906,8 @@ editDns:
     alias: 選擇目標服務...
     workload: 選擇工作負載...
   errors:
-    targetRequired: '必須配置壹個或多個"目標服務/工作負載/主機名/域名"'
-    selectorRequired: '必須配置壹個或多個"目標標簽選擇器"'
+    targetRequired: '必須配置一個或多個"目標服務/工作負載/主機名/域名"'
+    selectorRequired: '必須配置一個或多個"目標標籤選擇器"'
     mixedAlias: 別名不能以CNAME和其他記錄的組合為目標。
     multipleCname: 別名不能指向多個CNAME記錄
 
@@ -922,13 +930,31 @@ cruPersistentVolumeClaim:
     storageClass: 使用存儲類來配置新的持久卷
   pv:
     label: 持久卷
-    prompt: 選擇壹個持久卷...
+    prompt: 選擇一個持久卷...
   storageClass:
     label: 存儲類
-    prompt: 使用默認的類
+    prompt: 使用默認類
+
+cruPrivateRegistry:
+  title:
+    label: 私有鏡像倉庫
+    detail: 向這個集群添加私有鏡像倉庫
+  noData: 這個集群沒有配置私有鏡像倉庫
+  defaultError: 您必須指定一個默認的私有鏡像倉庫。
+  add:
+    label: 添加私有鏡像倉庫
+  registry:
+    user:
+      label: 用戶名
+    password:
+      label: 密碼
+    url:
+      label: 倉庫地址
+    default:
+      label: 默認倉庫
 
 cruVolume:
-  sourcePrompt: 需要先在上面選擇壹個存儲源...
+  sourcePrompt: 需要先在上面選擇一個存儲源...
   title:
     new: 定義臨時卷
   define:
@@ -939,7 +965,7 @@ cruVolume:
     label: 存儲源
     title: 源配置
     detail: 配置選定存儲源的選項
-    prompt: 選擇壹個存儲源...
+    prompt: 選擇一個存儲源...
 
 # If you change translations here also change the translation in app/utils/constants.js under the FALLBACK_TRANSLATIONS key
 # those are present in case we have an error in the app and can not load the translations file
@@ -971,7 +997,7 @@ time:
 haPage:
   header: 高可用性(HA)
   setup:
-    prefix: "可以在不同主機上部署多個服務器容器，以便{appName}壹直保持運行，即使其中壹個主機失敗。"
+    prefix: "可以在不同主機上部署多個服務器容器，以便{appName}一直保持運行，即使其中一個主機失敗。"
     link: 請參閱文檔
     suffix: ' 有關安裝和使用信息'
   table:
@@ -1046,7 +1072,7 @@ hostsPage:
     ipAddress: IP地址
     version: 版本
     kubeletVersion: Kubelet版本
-    kubeProxyVersion: Kube Proxy版本
+    kubeProxyVersion: Kube-Proxy版本
     dockerVersion: Docker版本
     kernelVersion: 內核版本
     operatingSystem: 操作系統
@@ -1068,7 +1094,7 @@ hostsPage:
         labelText: '供應商:'
         noHost: 自定義
       kernel: '內核'
-      docker: 'Docker:'
+      docker: 'Docker: '
       os: '操作系統'
       milliCpu:
         labelText: mCPU
@@ -1077,7 +1103,7 @@ hostsPage:
       detail: 在此主機上運行的容器列表
     portsTab:
       header: 端口
-      detail: '這些屬性顯示哪些端口已被映射到哪裏'
+      detail: '這些屬性顯示哪些端口已被映射到哪裡'
       table:
         header:
           ip: IP地址
@@ -1088,7 +1114,7 @@ hostsPage:
           noData: 主機當前未映射任何端口
     storageTab:
       header: 卷
-      detail: '這些屬性顯示您的主機卷細節'
+      detail: '這些屬性顯示主機卷細節'
       table:
         header:
           state: 狀態
@@ -1111,15 +1137,15 @@ k8sPage:
   header: Kubernets
   dashboard:
     title: 控制面板
-    detail: 訪問本地Kubernetes儀表盤。
-    button: 打開儀表盤
+    detail: 訪問本地Kubernetes儀錶盤。
+    button: 打開儀錶盤
   shell:
     title: 命令行
     detail: 在瀏覽器中執行Kubernetes的<code>kubectl</code>命令行。
     button: 執行kubectl命令行
   configFile:
     title: 配置文件
-    detail: 生成壹個在您的本機可以使用的<code>kubectl</code>配置文件。
+    detail: 生成一個在本機可以使用的<code>kubectl</code>配置文件。
     button: Kubeconfig文件
     generating: 生成中...
     usage:
@@ -1138,8 +1164,8 @@ loginPage:
     500: "內部服務器錯誤"
     generic: "嘗試登錄時發生錯誤({errorCode})，請重試"
   error:
-    authFailedCreds: "登錄失敗: 檢查憑據，或者您的帳戶可能無權登錄"
-    authFailed: "登錄失敗: 您的帳戶可能無權登錄"
+    authFailedCreds: "登錄失敗: 檢查憑據，或者帳戶可能無權登錄"
+    authFailed: "登錄失敗: 帳戶可能無權登錄"
   readableProviders:
     ad: Active Directory
     azureAd: Azure AD
@@ -1216,22 +1242,22 @@ servicePage:
     scale: 'Pod副本數:'
     image: '鏡像名: '
     namespace: '命名空間:'
-    created: '創建時間:'
-    daemonSetScale: '每主機1個實例'
+    created: '創建時間: '
+    daemonSetScale: '每主機1個Pod'
   serviceType:
     deployment: Deployment
     replicaSet: 副本集
     statefulSet: 有狀態集
     daemonSet: 守護程序集
-    replicationController: 復制控制器
+    replicationController: 複製控制器
     job: 任務
     cronJob: 定時任務
     pod: 獨立容器
   external:
     externalIp: |
       {count, plural,
-      =1{個外部IP:}
-      other{個外部IP:}
+      =1{個外部IP }
+      other{個外部IP }
       }
     externalHostname: '外部主機名:'
   selector:
@@ -1288,7 +1314,7 @@ servicePage:
   sidekick:
     tabHeader: Sidecars
     header: 工作負載與Sidecar
-    helpBlock: 選擇主容器或其中壹個sidecar容器
+    helpBlock: 選擇主容器或其中一個sidecar容器
 
 signupPage:
   header: '註冊{appName}'
@@ -1300,7 +1326,7 @@ signupPage:
   emailSuccess:
     header: '歡迎使用{appName}'
     confirm:
-      subtext: 已經發送郵件到您的郵箱，請點擊郵件中的驗證鏈接以確認您的郵件地址。
+      subtext: 已經發送郵件到郵箱，請點擊郵件中的驗證鏈接以確認郵件地址。
       resend: 重新發送郵件
 
 stackPage:
@@ -1308,13 +1334,13 @@ stackPage:
     singleBanner: 查看單個應用
     backLink: 返回全部應用
   basics:
-    tagsCopy: 復制用逗號分隔的標簽
+    tagsCopy: 複製用逗號分隔的標籤
   containers:
     header: 容器
     detail: 應用中所包含的獨立容器和服務。
     status: |
       {count, plural,
-      =0{沒有容器}
+      =0{無容器}
       =1{#個容器}
       other{#個容器}
       }
@@ -1323,25 +1349,25 @@ stackPage:
     detail: '屬於該應用的負載均衡容器'
     status: |
       {count, plural,
-      =0{沒有負載均衡}
-      =1{#個負載均衡}
-      other{#個負載均衡}
+      =0{無負載均衡}
+      =1{#條負載均衡}
+      other{#條負載均衡}
       }
   dnsServices:
     header: DNS記錄
     detail: '屬於該應用的DNS記錄'
     status: |
       {count, plural,
-      =0{沒有記錄}
-      =1{#個記錄}
-      other{#個記錄}
+      =0{無記錄}
+      =1{#條記錄}
+      other{#條記錄}
       }
   scalingGroups:
     header: 擴容組
     detail: '屬於該擴容組的容器'
     status: |
       {count, plural,
-      =0{沒有容器}
+      =0{無容器}
       =1{#個容器}
       other{#個容器}
       }
@@ -1426,7 +1452,7 @@ userPreferencesPage:
 
 verifyPage:
   header: "您已經成功驗證了郵件地址!"
-  subtext: 在完成您的賬號設置前，我們還需要壹些信息。
+  subtext: 在完成賬號設置前，我們還需要一些信息。
   account:
     header: 賬號創建完成
     subtext: 點擊以下鏈接登錄
@@ -1485,7 +1511,7 @@ notifierPage:
     serviceKey:
       label: 默認服務密匙
       helpText: 在配置告警時，可以覆蓋服務密匙。
-    serviceKeyPlaceholder: 妳的PagerDuty服務密匙。
+    serviceKeyPlaceholder: 你的PagerDuty服務密匙。
     helpText: |
       以下是<a href="https://support.pagerduty.com/docs/webhooks">為PagerDuty創建傳入WebHooks</a>的方法。
 
@@ -1553,8 +1579,8 @@ ldap:
         pre: 關閉訪問控制
   accessConfig:
     header: "1. 配置{providerName}服務器"
-    subtext1: "請輸入地址、端口及協議以連接您的{providerName}服務器。<code>389</code>是標準端口(未加密)，<code>636</code>是加密連接(TLS)端口。"
-    subtext2: "{appName}需要壹個對所有登錄域有只讀權限的服務賬號。"
+    subtext1: "請輸入地址、端口及協議以連接{providerName}服務器。<code>389</code>是標準端口(未加密)，<code>636</code>是加密連接(TLS)端口。"
+    subtext2: "{appName}需要一個對所有登錄域有隻讀權限的服務賬號。"
     port:
       labelText: 端口
       checkbox: TLS
@@ -1575,7 +1601,7 @@ ldap:
       labelText: 服務連接超時
   customizeSchema:
     header: "2. 自定義架構"
-    helpText: "如果您的活動目錄架構(Schema)不是標準格式，可以在這裏進行自定義設置。"
+    helpText: "如果活動目錄架構(Schema)不是標準格式，可以在這裡進行自定義設置。"
     cert:
       labelText: CA證書
       helpText: 如果需要，請輸入CA證書
@@ -1621,13 +1647,13 @@ ldap:
       nestedGroup:
         title: 嵌套的組成員
         enabled:
-          labelText: 搜索直接和嵌套的組成員關系
+          labelText: 搜索直接和嵌套的組成員關係
           helpText: 嵌套搜索在大目錄中可能會比較慢
         disabled:
-          labelText: 只搜索直接的組成員關系
+          labelText: 只搜索直接的組成員關係
   testAuth:
     header: "3. 測試並啟用認證"
-    helpText: "通過您的{providerName}賬號進行驗證測試以確認配置是否正確:"
+    helpText: "通過{providerName}賬號進行驗證測試以確認配置是否正確:"
     userName:
       labelText: 用戶名
     password:
@@ -1650,26 +1676,26 @@ accordionRow:
     none: 無
     incomplete: 未完成
     error: 錯誤
-    notConfigured: 未配置
     configured: 已配置
-    countConfigured: "{count}已配置"
+    notConfigured: 未配置
+    countConfigured: "{count}條規則已配置"
     standard: 默認
     custom: 自定義
     specific: 具體
     any: 任何
-    rule: "{count, plural,=1{#個規則}other{#個規則}}"
+    rule: "{count, plural,=1{#條規則}other{#條規則}}"
 
 advancedSection:
   showText: 顯示高級選項
   hideText: 隱藏高級選項
 
 annotationsSection:
-  title: 註釋
+  title: 注釋
   detail: Key/value元數據
   key: 鍵
   value: 值
-  noData: 沒有註釋
-  noMatch: 沒有符合當前搜索的註釋
+  noData: 沒有注釋
+  noMatch: 沒有符合當前搜索的注釋
 
 taintsSection:
   title: Taints
@@ -1699,13 +1725,13 @@ cloudProvider:
   azure: Azure
   name: 雲提供商名稱
   custom:
-    notInList: '如果您的雲提供商沒有列出，請使用<b>Custom</b>選項。'
+    notInList: '如果雲提供商沒有列出，請使用<b>Custom</b>選項。'
     helpText: '請通過編輯YAML來添加其他<a href="http://rancher.com/docs/rke/v0.1.x/en/config-options/cloud-providers/" target="_blank" rel="nofollow noopener noreferrer">雲提供商</a>'
 
   helpText: |
     詳細了解<a href="https://kubernetes.io/docs/concepts/cluster-administration/cloud-providers/" target="_blank" rel="nofollow noopener noreferrer">雲提供商</a>
   warning:
-    使用雲提供程序而不傳遞雲提供程序配置可能會導致您的集群無法正確配置，推薦您在創建集群之前添加雲提供程序配置，文檔中可以找到支持的雲提供商所需的先決條件。
+    使用雲提供程序而不傳遞雲提供程序配置可能會導致集群無法正確配置，推薦您在創建集群之前添加雲提供程序配置，文檔中可以找到支持的雲提供商所需的先決條件。
   azureCloudConfig:
     cloudProviderBackoff:
       description: "Enable exponential backoff to manage resource request retries"
@@ -1726,9 +1752,9 @@ cloudProvider:
     maximumLoadBalancerRuleCount:
       description: "允許最大的負載均衡器規則計數是Azure負載均衡器執行的限制"
     useInstanceMetadata:
-      description: "盡可能使用實例元數據服務"
+      description: "儘可能使用實例元數據服務"
     useManagedIdentityExtension:
-      description: "為虛擬機使用托管服務標識來訪問Azure ARM API"
+      description: "為虛擬機使用託管服務標識來訪問Azure ARM API"
     aadClientCertPassword:
       description: "具有RBAC訪問權限的AAD應用程序的客戶端證書密碼，用來與Azure RM API通信"
     aadClientCertPath:
@@ -1773,7 +1799,7 @@ catalogSettings:
   globalCatalog: 全局
   library:
     label: 官方認證
-    detail: 由{appName}維護的官方模板倉庫。
+    detail: 由{appName}官方維護的模板倉庫。
   helm:
     stable:
       label: Helm Stable
@@ -1799,11 +1825,11 @@ catalogSettings:
     header: 自定義
     helpText:
       header: "您可以自定義應用商店，每個自定義商店需滿足以下要求:"
-      help-name: 唯壹的名稱
+      help-name: 唯一的名稱
       help-repo: '倉庫地址:'
       help-branch: "可選: 如果使用基於Git的應用商店，可能需要設置分支名稱，不指定默認拉取master分支。"
       help-git: "基於Git的商店地址，例如: https://github.com/{appName}/charts.git。"
-      help-chart: 'Helm Charts server URL，例如: https://kubernetes-charts.storage.googleapis.com/，詳細信息可查看<a href="https://docs.helm.sh/developing_charts/#hosting-chart-repositories" target="_blank" rel="nofollow noopener noreferrer">Chart托管倉庫</a>。'
+      help-chart: 'Helm Charts server URL，例如: https://kubernetes-charts.storage.googleapis.com/，詳細信息可查看<a href="https://docs.helm.sh/developing_charts/#hosting-chart-repositories" target="_blank" rel="nofollow noopener noreferrer">Chart託管倉庫</a>。'
     addActionLabel: 添加應用商店
     noMatch: 沒有與當前搜索匹配的應用商店
     noData: 沒有自定義應用商店
@@ -1821,6 +1847,16 @@ catalogSettings:
     branch:
       label: 分支
       placeholder: '例如: master'
+    private:
+      label: 使用私有應用商店
+    username:
+      label: 用戶名
+      required: '用戶名必須填寫'
+      placeholder: "比如: admin"
+    password:
+      label: 密碼
+      required: '密碼必須填寫'
+      placeholder:  password
   errors:
     nameInExists: '在啟用{key}之前，請移除名稱為{key}的應用商店。'
 clusterRow:
@@ -1844,7 +1880,7 @@ clusterNew:
   description:
     placeholder: '例如: 用於開發和測試工作負載的集群'
   driverLabels:
-    cloud: Kubernetes托管服務商
+    cloud: Kubernetes託管服務商
     import: 導入現有的Kubernetes集群
     infra: 來自雲服務商提供的主機
     custom: 添加主機自建Kubernetes集群
@@ -1862,22 +1898,22 @@ clusterNew:
     detail: 自定義將要創建的集群
   psp:
     label: 默認的Pod安全策略
-    prompt: 選擇壹個Pod安全策略...
+    prompt: 選擇一個Pod安全策略...
     none: 沒有定義策略
-    required: 啟用時需要設置壹個默認Pod安全策略
+    required: 啟用時需要設置一個默認Pod安全策略
   amazoneks:
     label: AWS的基於Kubernetes的彈性容器服務
     shortLabel: 亞馬遜EKS
-    ingressWarning: "註意:目前Amazon EKS不會在啟動新的集群時創建傳入控制器。如果需要此功能，則必須在集群創建後手動創建壹個傳入控制器。"
+    ingressWarning: "注意:目前Amazon EKS不會在啟動新的集群時創建傳入控制器。如果需要此功能，則必須在集群創建後手動創建一個傳入控制器。"
     access:
       title: 賬戶訪問
       detail: 選擇將用於啟動Amazon EKS的區域和API密鑰
   azureaks:
     label: Azure容器服務
     shortLabel: Azure AKS
-    ingressWarning: "註意:目前Azure AKS在啟動新集群時不會創建壹個傳入控制器。如果需要此功能，則必須在集群創建後手動創建壹個傳入控制器。"
+    ingressWarning: "注意:目前Azure AKS在啟動新集群時不會創建一個傳入控制器。如果需要此功能，則必須在集群創建後手動創建一個傳入控制器。"
     authenticate:
-      next: "下壹步: 認證 & 配置主機"
+      next: "下一步: 認證 & 配置主機"
     access:
       title: 賬戶訪問
       detail: 配置用於與Azure通訊的憑據
@@ -1888,7 +1924,7 @@ clusterNew:
       label: 主機數量
     location:
       label: 位置
-      prompt: 選擇壹個位置...
+      prompt: 選擇一個位置...
     accountAccessSection:
       label: 賬戶訪問
     subscriptionId:
@@ -1896,7 +1932,7 @@ clusterNew:
       placeholder: Azure訂閱ID
     machineType:
       label: VM規格
-      prompt: 選擇壹個規格...
+      prompt: 選擇一個規格...
     diskSizeGb:
       label: OS磁盤大小
     dns:
@@ -1918,7 +1954,7 @@ clusterNew:
       placeholder: user-1
     tenant:
       label: 租戶ID
-      placeholder: 您的Azure租戶ID
+      placeholder: Azure租戶ID
     image:
       label: 鏡像
       placeholder: '推薦: UbuntuServer:16.04.0-LTS:latest'
@@ -1935,7 +1971,7 @@ clusterNew:
     resourceGroup:
       label: 資源組
       placeholder: 'docker-machine'
-      helpText: "使用壹個已有的資源組或者輸入壹個新的資源組名稱。註意: 如果使用的資源組內已經存有AKS集群的話，將會創建壹個新的資源組,Azure AKS只允許壹個資源組有壹個AKS集群。"
+      helpText: "使用一個已有的資源組或者輸入一個新的資源組名稱。注意: 如果使用的資源組內已經存有AKS集群的話，將會創建一個新的資源組,Azure AKS只允許一個資源組有一個AKS集群。"
     networking:
       label: 網絡
       default: 默認
@@ -1990,10 +2026,10 @@ clusterNew:
       label: 無公網IP
     clientId:
       label: 客戶端ID
-      placeholder: 您的客戶端ID
+      placeholder: 客戶端ID
     clientSecret:
       label: 客戶端秘鑰
-      placeholder: 您的客戶端秘鑰
+      placeholder: 客戶端秘鑰
     region:
       label: 區域
     errors:
@@ -2008,17 +2044,17 @@ clusterNew:
   googlegke:
     label: Google Kubernetes引擎
     shortLabel: Google GKE
-    checkServiceAccount: "下壹步: 配置主機"
+    checkServiceAccount: "下一步: 配置主機"
     checkingServiceAccount: 認證
     credential:
       label: 服務賬號
       placeholder: 服務帳號私鑰JSON文件
       configured: 為{project}項目配置
       helpText: |
-        "創建壹個擁有JSON私鑰的<a href="https://console.cloud.google.com/projectselector/iam-admin/serviceaccounts" target="_blank" rel="nofollow noopener noreferrer">Service Account</a>，並在此處提供JSON。有關創建服務帳戶的更多信息，請參閱<a href="https://cloud.google.com/compute/docs/access/create-enable-service-accounts-for-instances" target="_blank" rel="nofollow noopener noreferrer">Google Cloud文檔</a> 。需要四個IAM角色: Compute Viewer (<code>roles/compute.viewer</code>)，(Project) Viewer (<code>roles/viewer</code>)，Kubernetes Engine Admin (<code>roles/container.admin</code>)和Service Account User (<code>roles/iam.serviceAccountUser</code>)，更多關於角色的信息可在<a href="https://cloud.google.com/kubernetes-engine/docs/how-to/iam-integration" target="_blank" rel="nofollow noopener noreferrer">此處</a>找到。<a href="https://cloud.google.com/kubernetes-engine/docs/how-to/iam-integration" target="_blank" rel="nofollow noopener noreferrer">"
+        "創建一個擁有JSON私鑰的<a href="https://console.cloud.google.com/projectselector/iam-admin/serviceaccounts" target="_blank" rel="nofollow noopener noreferrer">Service Account</a>，並在此處提供JSON。有關創建服務帳戶的更多信息，請參閱<a href="https://cloud.google.com/compute/docs/access/create-enable-service-accounts-for-instances" target="_blank" rel="nofollow noopener noreferrer">Google Cloud文檔</a> 。需要四個IAM角色: Compute Viewer (<code>roles/compute.viewer</code>)，(Project) Viewer (<code>roles/viewer</code>)，Kubernetes Engine Admin (<code>roles/container.admin</code>)和Service Account User (<code>roles/iam.serviceAccountUser</code>)，更多關於角色的信息可在<a href="https://cloud.google.com/kubernetes-engine/docs/how-to/iam-integration" target="_blank" rel="nofollow noopener noreferrer">此處</a>找到。<a href="https://cloud.google.com/kubernetes-engine/docs/how-to/iam-integration" target="_blank" rel="nofollow noopener noreferrer">"
     zone:
       label: 區域
-      prompt: 選擇壹個區域...
+      prompt: 選擇一個區域...
     project:
       label: 項目
       placeholder: '例如: My-project'
@@ -2045,7 +2081,7 @@ clusterNew:
     stackdriverMonitor:
       label: Stackdriver監控
     dashboard:
-      label: Kubernetes儀表盤
+      label: Kubernetes儀錶盤
     httpLB:
       label: Http負載均衡
     maintenanceWindow:
@@ -2060,6 +2096,17 @@ clusterNew:
       election:
         label: etcd選舉超時時間
         placeholder: 選舉超時時間
+      snapshot:
+        label: Recurring etcd Snapshots
+      retention:
+        label: 快照保留時間
+        placeholder: "1d"
+        help: "可使用的單位: s, m, h, d, w, m, y"
+      creation:
+        label: 快照創建時間間隔
+        placeholder: "3h"
+      error: "快照{type}周期錯誤: 必須指定一個時間值和時間單位(s、m、h)，當前輸入{entry}"
+      baseError: "快照{type}周期錯誤: 必須指定一個有效的時間單位(s、m、h)，當前輸入{entry}"
     nodeName:
       title: 節點名稱
       detail: (可選)自定義節點顯示的名稱，不顯示實際的主機名
@@ -2067,7 +2114,7 @@ clusterNew:
     address:
       title: 主機地址
       detail: 為主機配置公網地址和內網地址
-      warning: 這似乎不是壹個有效的IP地址
+      warning: 這似乎不是一個有效的IP地址
       public:
         label: 公網地址
         placeholder: '例如: 1.2.3.4'
@@ -2080,8 +2127,8 @@ clusterNew:
       label: 集群選項
       detail: "自定義Kubernetes集群選項"
     labels:
-      title: 主機標簽
-      detail: 應用於節點的可選標簽
+      title: 主機標籤
+      detail: 應用於節點的可選標籤
     nodes:
       title: 主機池
       detail: 配置組成集群的主機
@@ -2093,15 +2140,15 @@ clusterNew:
       template: 模板
     detected: |
       {count, plural,
-      =1{#臺新主機註冊成功}
-      other{#臺新主機註冊成功}
+      =1{#台新主機註冊成功}
+      other{#台新主機註冊成功}
       }
     done: 完成
     info:
       text: 編輯主機選項將更新主機註冊命令
     command:
-      instructions: '在壹臺或多臺已安裝支持Docker版本的主機上運行以下命令'
-      winInstructions: '在壹臺或者多臺運行了受支持的Docker版本的主機上運行<code>CMD</code>命令，並且windows server版本大於<code class="code-version">1803</code>.'
+      instructions: '複製以下命令在主機的SSH終端運行。'
+      winInstructions: '在一台或者多台運行了受支持的Docker版本的主機上運行<code>CMD</code>命令，並且windows server版本大於<code class="code-version">1803</code>.'
     auth:
       label: 認證提供者
       x509: x509
@@ -2109,8 +2156,11 @@ clusterNew:
       label: NodePort端口範圍
       placeholder: '例如: 30000-32767'
     network:
+      title: 網絡驅動
+      detail: 為集群配置網絡驅動
       label: 網絡組件
       flannel: Flannel
+      flannelCustom: Flannel (Windows Support Available)
       calico: Calico
       canal: Canal
       options:
@@ -2153,10 +2203,10 @@ clusterNew:
     role:
       pageheader: 自定義主機運行命令
       sectionheader: 主機選項
-      title: 主機角色
+      title: '角色選擇(一台主機可以對應多個角色,每個集群至少需要一個Etcd角色、一個Control角色、一個Worker角色)'
       detail: '選擇主機角色,端口放行請參考: https://rancher.com/docs/rancher/v2.x/en/installation/references/'
       header:
-        etcd: etcd
+        etcd: Etcd
         controlplane: Control
         worker: Worker
       requirements:
@@ -2179,13 +2229,13 @@ clusterNew:
     warning:
       etcd:
         even: 設置{count}個etcd節點是對硬件的浪費，因為它不會增加仲裁，除非它是奇數。
-        noEtcd: The number of etcd nodes should not be less than 1.
+        noEtcd: etcd節點的數量不應小於1。
       aws:
         iam: '使用Amazon Cloud Provider時，應在節點模板中配置IAM角色名稱'
     errors:
       etcd: 請選擇1個，3個或5個主機用於etcd。
-      controlPlane: 請至少選擇壹個用於management的主機。
-      worker: 請至少選擇壹個用於worker的主機。
+      controlPlane: 請至少選擇一個用於management的主機。
+      worker: 請至少選擇一個用於worker的主機。
     dockerRootDir:
       placeholder: "{dir}是默認目錄"
     system:
@@ -2194,8 +2244,11 @@ clusterNew:
       linux: Linux
       windows: Windows
     windowsSupport:
-      label: Windows Support(Experimental)
-      disabled: 不支持{plugin}網絡提供商。
+      label: Windows Support (Experimental)
+      disabled: 不支持{plugin}網絡驅動。
+    advanced:
+      label: 高級集群選項
+      detail: 自定義高級選項
   custom:
     label: 自定義
     shortLabel: 自定義
@@ -2203,13 +2256,13 @@ clusterNew:
     label: 已導入
     shortLabel: 已導入
     command:
-      instructionsAdminRole: "如果您的Kubernetes集群已經定義了<b>cluster-admin</b>角色，您必須使用該<b>cluster-admin</b>角色權限來導入集群到{appName}中。在導入集群之前，您可以通過運行以下命令獲取該角色的權限。"
-      instructions: "在現有受支持的Kubernetes集群所有節點中，運行下面的kubectl命令將其導入到{appName}中:"
-      instructionsInsecure: "如果因為{appName}正在使用不受信任/自簽名的SSL證書運行而出現\"由未知頒發機構簽名的證書\"錯誤，請運行下面的命令以繞過證書檢查:"
+      instructionsAdminRole: "<b>注意:</b><br/>如果想要導入Google Kubernetes Engine(GKE)集群(或一些不提供綁定集群管理角色的kubectl配置文件的集群),需要通過以下命令來綁定集群管理角色。<br/><br/>如果導入Google Kubernetes Engine集群，將<b>[USER_ACCOUNT]</b>替換為Google帳戶（可使用<b>gcloud config get-value account</b>檢索帳戶）。<br/>如果未導入Google Kubernetes Engine集群，請將<b>[USER_ACCOUNT]</b>替換為kubectl配置文件中配置的執行用戶。"
+      instructions: "在現有受支持的Kubernetes集群中，運行下面的kubectl命令將其導入到{appName}中:"
+      instructionsInsecure: "如果因為{appName}使用不受信任/自簽名的SSL證書而出現<b> \"由未知頒發機構簽名的證書\"</b> 錯誤，請運行下面的命令以繞過證書檢查:"
 
 conditionSections:
   title: 狀態
-  detail: '{resourceType}當前的運行狀態 '
+  detail: '當前{resourceType}運行狀態 '
   table:
     type: 類型
     status: 狀態
@@ -2221,31 +2274,32 @@ conditionSections:
 
 resourceEventList:
   title: 事件
-  detail: '{resourceType}當前的事件'
+  detail: '當前{resourceType}的事件'
   table:
     type: 類型
     lastUpdate: 最後更新
     reason: 事件原因
-    message: 消息
-  noData: 沒有事件
+    message: 事件信息
+  noData: 當前沒有事件
   noMatch: 沒有事件與當前搜索匹配
 
 confirmDelete:
   title: '是否確認要刪除'
-  environmentNote: '註意: 此環境內的所有資源都將被永久性的刪除，包括通過{appName}創建的主機。'
-  clusterNote: '註意: 在雲平臺中創建的關聯資源(如卷，負載均衡器和網絡)不會自動刪除。'
-  clusterRoleTemplateBindingNote: "註意: 此用戶的權限直接添加到項目中將不會被刪除."
-  systemProjectNamespaceNote: '您正在刪除系統項目下的命名空間。如果刪除，可能會對群集造成有害影響。'
-  systemProjectNote: '您正在刪除系統項目。如果刪除，可能會對群集造成有害影響。'
+  environmentNote: '注意: 此環境內的所有資源都將被永久性的刪除，包括通過{appName}創建的主機。'
+  clusterNote: '注意: 在雲平台中創建的關聯資源(如卷，負載均衡器和網絡)不會自動刪除。'
+  clusterRoleTemplateBindingNote: "注意: 此用戶的權限直接添加到項目中將不會被刪除."
+  systemProjectNamespaceNote: '您正在刪除系統項目下的命名空間。如果刪除，可能會對集群造成有害影響。'
+  systemProjectNote: '您正在刪除系統項目。如果刪除，可能會對集群造成有害影響。'
   protip: '高級技巧:在點擊刪除時按住{key}鍵以跳過確認操作。'
   confirmAction: 刪除
   cancelAction: 取消
   largeDeleteText: '{key}及{othersCount}其他'
 
 containerLogs:
+  download: 下載日誌
   title: "日誌: "
-  onlyCombined: "<b>註意:</b>此容器運行時帶有TTY(-t)參數，僅有合並的標準輸出和標準錯誤日誌可見。"
-  combined: 合並日誌
+  onlyCombined: "<b>注意:</b>此容器運行時帶有TTY(-t)參數，僅有合并的標準輸出和標準錯誤日誌可見。"
+  combined: 合并日誌
   stdout: 標準輸出
   stderr: 標準錯誤
   protip: "高級技巧: 點擊查看日誌時按住{key}鍵在新窗口中打開"
@@ -2271,8 +2325,8 @@ containerShell:
     closed: 已關閉
 
 copyToClipboard:
-  tooltip: 復制到剪貼板
-  copied: 已復制
+  tooltip: 複製到剪貼板
+  copied: 已複製
 
 cruRegistry:
   title:
@@ -2316,7 +2370,7 @@ cruPersistentVolume:
     label: 卷插件
     title: 插件配置
     detail: 配置選定卷插件的選項
-    prompt: '選擇壹個卷插件...'
+    prompt: '選擇一個卷插件...'
   nodeAffinity:
     label: 節點親和性
   customize:
@@ -2356,7 +2410,7 @@ cruPersistentVolume:
     kind:
       label: 類型
       dedicated: 專用
-      managed: 托管
+      managed: 託管
       shared: 共享
     readOnly:
       label: 只讀
@@ -2753,7 +2807,7 @@ cruStorageClass:
       placeholder: "例如: 20"
   azure-disk:
     new: 新建Azure磁盤
-    unmanaged: Azure非托管磁盤
+    unmanaged: Azure非託管磁盤
     skuName:
       label: Sku名稱
       placeholder: "例如: Standard_LRS"
@@ -2770,7 +2824,7 @@ cruStorageClass:
       label: 類型
       shared: 共享
       dedicated: 專用
-      managed: 托管
+      managed: 託管
       placeholder: "例如: 共享"
   azure-file:
     skuName:
@@ -2883,13 +2937,13 @@ cruStorageClass:
       placeholder: "例如: DEFAULT"
   rbd:
     monitors:
-      label: 監控
+      label: "Ceph-Monitor地址"
       placeholder: "例如: 10.16.153.105:6789"
     adminId:
-      label: 管理員ID
+      label: "管理員賬號(ID)"
       placeholder: "例如: kube"
     adminSecretNamespace:
-      label: 管理密文命名空間
+      label: 管理密文所在命名空間
       placeholder: "例如: kube-system"
     adminSecret:
       label: 管理密文
@@ -2947,7 +3001,7 @@ dangerZone:
   showLabel: 我已確認修改高級設置可能導致{appName}出問題。
   description:
     'cacerts': '驗證ssl證書所需的CA證書，此CA證書僅適用於自簽名SSL證書。若SSL證書是權威CA機構所頒發，則要求刪除此CA證書。'
-    'cluster-defaults': '在創建新群集時覆蓋RKE默認值。'
+    'cluster-defaults': '在創建新集群時覆蓋RKE默認值。'
     'engine-install-url': '默認的Docker引擎安裝URL(用於大多數Machine Drivers)。'
     'engine-iso-url': '默認OS安裝URL(用於Machine vSphere Drivers)。'
     'engine-newest-version': '當前Rancher Server支持的最新Docker版本，不支持的版本或比此Docker版本新的將被標記為未測試。'
@@ -2956,8 +3010,34 @@ dangerZone:
     'server-url': '默認的{appName} Server訪問地址，必須是HTTPS。集群中的所有主機都必須能夠訪問此地址。'
     'system-default-registry': '用於RKE部署系統服務時鏡像的拉取，其他服務拉取鏡像不生效。'
     'ui-index': 'UI的HTML索引位置。'
-    'ui-pl': '公司名稱專用標簽。'
-    'telemetry-opt': 'Telemetry reporting opt-in。'
+    'ui-pl': '公司名稱專用標籤。'
+    'telemetry-opt': '遙感報告設置。'
+
+deleteEksCluster:
+  title: "確定刪除集群{clusterName}嗎?"
+  help: 此集群是通過臨時令牌創建的，請提供一個新的令牌來刪除它。
+  updateKeys: Update Keys
+  updatingKeys: Updating Keys
+  deleteCluster: 刪除集群
+  deletingCluster: 集群刪除中...
+  accessKey:
+    label: Access Key
+    placeholder: Your AWS access key
+  secretKey:
+    label: Secret Key
+    placeholder: Your AWS secret key
+    provided: Provided
+  sessionToken:
+    label: "Session Token  <em class='text-muted'>Optional</em>"
+    deleteLabel: Session Token
+    placeholder: Your AWS session token
+    provided: Provided
+  error:
+    accessKey: Access key必須填寫。
+    secretKey: Secret key必須填寫。
+    sessionToken: Session token必須填寫。
+
+
 
 editAccount:
   title: 編輯賬號
@@ -3000,7 +3080,7 @@ editApiKey:
     year: 從現在開始，有效期1年
   description:
     placeholder: "可選: 例如: 此密鑰由應用服務器使用，用於容器部署。"
-  saveWarning1: 請保存上面的信息！這些信息僅顯示壹次。
+  saveWarning1: 請保存上面的信息！這些信息僅顯示一次。
   saveWarning2: 如果忘記了Secret Key，您需要重新創建新的API Key。
   noteOptional: 說明是可選項，以幫助您記住此密鑰將用於何種用途。
 
@@ -3010,7 +3090,7 @@ editCertificate:
     placeholder: '例如: Mydomain.com'
   description:
     placeholder: '例如: Mydomain.com的EV證書'
-  noteKeyWriteOnly: "註意:Private Key部分為只寫(write only)因而顯示為空白。更新證書時您需要重新上傳Private Key，即便Private Key未發生變化"
+  noteKeyWriteOnly: "注意:Private Key部分為只寫(write only)因而顯示為空白。更新證書時您需要重新上傳Private Key，即便Private Key未發生變化"
 
 editCluster:
   title:
@@ -3030,7 +3110,7 @@ editCluster:
     add: 添加應用
     cancel: 取消添加系統應用
   modal:
-    onCluster: "註意: 您正在嘗試刪除您當前環境所在的集群。請在刪除該集群之前，先選擇壹個其他集群的環境"
+    onCluster: "注意: 您正在嘗試刪除您當前環境所在的集群。請在刪除該集群之前，先選擇一個其他集群的環境"
 
 editContainer:
   title:
@@ -3054,17 +3134,17 @@ editHost:
     label: 描述
     placeholder: '例如: 我的開發主機'
   labels:
-    label: 標簽
+    label: 標籤
   ips:
     label: 調度IP
     valueLabel: IP地址
     valuePlaceholder: '例如: 1.2.3.4'
     addActionLabel: 添加IP
-    help: 如果設置，調度器將從中選擇壹個IP地址並將發布的端口綁定到該地址。
+    help: 如果設置，調度器將從中選擇一個IP地址並將發布的端口綁定到該地址。
   requireAny:
-    label: 容器標簽需求
-    help: 如果設置，容器必須具備設置的壹個或者多個標簽才能夠被調度到該主機。如果僅設置Key而Value留空，具備相應Key的容器可以被調度到該主機而忽略Value的值。<code>io.rancher.container.system</code>標簽是運行系統容器所必須的。
-    addActionLabel: 添加標簽需求
+    label: 容器標籤需求
+    help: 如果設置，容器必須具備設置的一個或者多個標籤才能夠被調度到該主機。如果僅設置Key而Value留空，具備相應Key的容器可以被調度到該主機而忽略Value的值。<code>io.rancher.container.system</code>標籤是運行系統容器所必須的。
+    addActionLabel: 添加標籤需求
 
 editService:
   title: 編輯服務
@@ -3073,11 +3153,11 @@ editStack:
   title: 編輯命名空間
   name:
     label: 名稱
-    error: 命名空間名稱已被使用，請選擇壹個新的命名空間名稱。
+    error: 命名空間名稱已被使用，請選擇一個新的命名空間名稱。
     placeholder: '例如: Myapp'
   project:
     label: 項目
-    prompt: '選擇壹個項目:'
+    prompt: '選擇一個項目:'
   description:
     label: 描述
     placeholder: '例如: MyApp命名空間'
@@ -3085,9 +3165,9 @@ editStack:
     title: 資源配額
     detail: 配置命名空間整體可以使用的資源量
   group:
-    label: 標簽
+    label: 標籤
     placeholder: '例如: frontend，production'
-    help: 逗號分隔的標簽列表，負載列表可以根據相應的標簽進行過濾。
+    help: 逗號分隔的標籤列表，負載列表可以根據相應的標籤進行過濾。
 
 editUser:
   title: 編輯用戶
@@ -3110,14 +3190,14 @@ editUser:
 
 envCatalog:
   header: 管理應用商店
-  subtext: '可以在這裏定義自定義的應用商店源，該應用商店僅對當前環境的用戶可見。全局應用商店對所有環境可見，僅能由管理員在管理設置中修改。應用商店需要壹個唯壹的名稱並且支持<code>git clone</code>的URL地址(參考 <a href="https://git-scm.com/docs/git-clone#_git_urls_a_id_urls_a" target="_blank" rel="nofollow noopener noreferrer">文檔</a>以獲取更多信息)'
+  subtext: '可以在這裡定義自定義的應用商店源，該應用商店僅對當前環境的用戶可見。全局應用商店對所有環境可見，僅能由管理員在管理設置中修改。應用商店需要一個唯一的名稱並且支持<code>git clone</code>的URL地址(參考 <a href="https://git-scm.com/docs/git-clone#_git_urls_a_id_urls_a" target="_blank" rel="nofollow noopener noreferrer">文檔</a>以獲取更多信息)'
   addActionLabel: 添加應用商店
 
 moveNamespace:
   title: |
     移動{count, plural,
-    =1{個命名空間: {name}}
-    other{#個命名空間:}}
+    =1 {命名空間: {name}}
+    other{#個命名空間: }}
   to: "到目標項目: "
   actionLabel: 移動
 
@@ -3129,7 +3209,7 @@ stacksPage:
   table:
     standalone: 獨立容器
     endpoints: 終端
-    scale: Pod伸縮
+    scale: Pod副本數
     instanceState: 容器狀態
     instanceStateWithIcon: 狀態
 
@@ -3138,7 +3218,7 @@ formatIp:
 
 formBalancerConfig:
   title: 自定義配置文件
-  detail: 提供您的自定義配置文件，這個配置將會被應用到{appName}自動生產的配置上方。
+  detail: 提供自定義配置文件，這個配置將會被應用到{appName}自動生產的配置上方。
   custom: |
     請參考<a href="https://cbonte.github.io/haproxy-dconv/1.6/configuration.html" target="_blank" rel="nofollow noopener noreferrer">haproxy文檔</a>了解更多關於該配置文件的參數。當重寫<code>backend</code>或包括目標容器IP的某行時，請使用<code>$IP</code>來代替IP地址，{appName}將會自動轉換成相應的配置。
   config:
@@ -3168,6 +3248,7 @@ formIngress:
     existing: 繼續使用當前主機名<code>{domain}</code>
     manual: 自定義域名
     default: 默認後端
+    defaultDisabled: Ingress控制器不支持默認後端
   defaultBackend:
     label: 將此規則設置為默認後端
     mark: 默認後端
@@ -3183,9 +3264,11 @@ formIngress:
   mode:
     workload: 工作負載
     service: DNS記錄
+
 formIngressBackends:
   label: 目標後端
   noRules: 沒有後端
+  warning: 如果目標後端是一個服務，您只可以使用該服務所暴露的端口。您可以在服務發現頁找到該服務，然後通過編輯YAML的方式添加所需要的端口。
   addServiceLabel: 服務
   addWorkloadLabel: 工作負載
   service:
@@ -3196,7 +3279,7 @@ formIngressBackends:
     label: 容器端口
     placeholder: '例如: 80'
   path:
-    label: '訪問路徑（如需使用後端重寫功能,請查看下方標簽/註釋）'
+    label: '訪問路徑（如需使用後端重寫功能,請查看下方標籤/注釋）'
     placeholder: '例如: /foo'
   target: '服務/工作負載'
 
@@ -3205,12 +3288,12 @@ formBalancerListeners:
   detail: 配置負載均衡，使其將請求轉發到目標地址。
   status: |
     {count, plural,
-    =0{沒有規則}
-    =1{#個規則}
-    other{#個規則}
+    =0{無規則}
+    =1{#條規則}
+    other{#條規則}
     }
   noRules: 沒有端口
-  addPortLabel: 添加壹個監聽端口
+  addPortLabel: 添加一個監聽端口
   removePortLabel: 刪除這個監聽端口
   showBackendLabel: "自定義backend名稱"
   access:
@@ -3225,16 +3308,16 @@ formBalancerListeners:
   sourcePort:
     label: 監聽端口
     placeholder: '例如: 80'
-  help: "主機及路徑規則將根據顯示的順序自上而下進行匹配，後端默認將隨機命名。要自定義生成的後端，提供壹個名稱並在您自定義的haproxy.cfg文件中引用該名稱"
+  help: "主機及路徑規則將根據顯示的順序自上而下進行匹配，後端默認將隨機命名。要自定義生成的後端，提供一個名稱並在您自定義的haproxy.cfg文件中引用該名稱"
 
 formBalancerRules:
   label: 目標規則
   detail: 根據主機、 端口、 路徑或IP地址映射請求到不同的目標。
   status: |
     {count, plural,
-    =0{沒有規則}
-    =1{#個規則}
-    other{#個規則}
+    =0{無規則}
+    =1{#條規則}
+    other{#條規則}
     }
   noRules: 無規則
   addServiceLabel: 添加服務
@@ -3282,7 +3365,7 @@ formCommand:
     label: 入口(Entrypoint)
     placeholder: '例如: /bin/sh'
   environment:
-    label: 環境標簽
+    label: 環境標籤
   workingDir:
     label: 工作目錄
     placeholder: '例如: /myapp'
@@ -3290,7 +3373,7 @@ formCommand:
     label: '用戶UID'
     placeholder: '例如: 501'
   console:
-    label: 控制臺
+    label: 控制台
     both: '交互&amp;TTY終端<span class="text-muted">(-i -t)</span>'
     interactive: '交互<span class="text-muted">(-i)</span>'
     terminal: 'TTY終端<span class="text-muted">(-t)</span>'
@@ -3316,7 +3399,7 @@ formCommand:
 
 formContainerLinks:
   title: 鏈接
-  detail: 定義此容器和其他容器的關聯關系
+  detail: 定義此容器和其他容器的關聯關係
   addActionLabel: 添加鏈接
   name:
     label: 目標容器
@@ -3365,9 +3448,9 @@ formEngineOpts:
     keyPlaceholder: '例如: log-driver'
     valuePlaceholder: '例如: syslog'
   engineLabels:
-    label: 引擎標簽
-    addActionLabel: 添加引擎標簽
-    keyLabel: 標簽
+    label: 引擎標籤
+    addActionLabel: 添加引擎標籤
+    keyLabel: 標籤
   engineEnv:
     label: 引擎環境
     addActionLabel: 添加環境變量
@@ -3391,7 +3474,7 @@ formResourceQuota:
     type:
       label: 資源類型
     value:
-      label: 限制 
+      label: 限制
       placeholder: '例如: 10'
       milliCpuPlaceholder: '例如: 500'
       memoryPlaceholder: '例如: 1Gi'
@@ -3438,7 +3521,7 @@ formEnvVar:
   noData: 沒有環境變量
   status: |
     {count, plural,
-    =0{未配置}
+    =0{無變量}
     =1{#個變量}
     other{#個變量}
     }
@@ -3500,7 +3583,7 @@ formMembers:
     labelText: 成員
     addMember: 添加成員
     addUser: 添加用戶
-    noAddUser: 您是唯壹的活動註冊用戶。
+    noAddUser: 您是唯一的活動註冊用戶。
     addGroup: 添加組
     addServiceAccount: 添加服務帳戶
     multipleRoles: 多個角色
@@ -3516,7 +3599,7 @@ formMembers:
       nameInExists: 名稱已經存在，請使用新的項目名稱。
       memberNameReq: 必須設置成員名稱
       memberRoleReq: 必須設置成員角色
-      ownerReq: 必須至少有壹個具有所有者角色的成員。
+      ownerReq: 必須至少有一個具有所有者角色的成員。
 
 formScopedRoles:
   title: '{type}權限'
@@ -3539,7 +3622,7 @@ formScopedRoles:
     role:
       read-only:
         label: 只讀
-        detail: 允許看到壹切，但不會改變任何東西。
+        detail: 允許看到一切，但不會改變任何東西。
 
 formHealthCheck:
   title: 健康檢查
@@ -3611,7 +3694,7 @@ formKeyValue:
   value:
     label: 值
     placeholder: 值
-  protip: '高級技巧: 在鍵(Key)輸入欄中粘貼壹行或多行的key=value鍵值對能夠批量輸入。'
+  protip: '高級技巧: 在鍵(Key)輸入欄中粘貼一行或多行的key=value鍵值對能夠批量輸入。'
 
 formImage:
   label: Docker鏡像
@@ -3631,19 +3714,37 @@ formNetwork:
   title: 網絡
   detail: 設置容器的網絡和DNS選項
   netMode:
-    label: 使用主機的網絡命名空間
+    label: 使用主機網絡
     disable: "否"
     enable: "是"
   dnsPolicy:
     label: DNS策略
     clusterFirstWithHostNet: "主機網絡優先"
     clusterFirst: "集群優先"
+  dnsConfig:
+    nameservers:
+      label: DNS服務器IP地址
+      addActionLabel: 添加DNS服務器
+      placeholder: "例如: 192.168.2.1"
+    options:
+      label: DNS解析選項
+      addActionLabel: 添加選項
+      name:
+        label: 名稱
+        placeholder: "例如: ndots"
+      value:
+        label: 值
+        placeholder: "例如: 5"
+    searches:
+      label: DNS搜索域
+      placeholder: "例如: example.com"
+      addActionLabel: 添加搜索域
   container:
     label: 容器
   requestedIp:
     label: 請求IP
     placeholder: '例如: 10.42.2.24'
-    help: 從10.42.0.0/16段中請求壹個指定的IP地址，如果此IP地址已經被使用則會分配壹個隨機IP。
+    help: 從10.42.0.0/16段中請求一個指定的IP地址，如果此IP地址已經被使用則會分配一個隨機IP。
   retainIp:
     label: 保持IP
     reuse: 當升級或替換不健康的容器實例時保持IP地址不變。
@@ -3711,7 +3812,7 @@ formPorts:
   dnsName:
     label: DNS名稱
     placeholder: '例如: example'
-  noPorts: 當前容器沒有端口映射
+  noPorts: 當前Pod沒有映射端口
   error:
     privateRequired: 每條映射規則必須設置容器端口。
     publicRequired: 如果指定了主機IP，則需要源端口。
@@ -3719,8 +3820,8 @@ formPorts:
       sourcePortRequired: 對於運行Pod的主機，必須始終源端口。
     loadBalancer:
       sourcePortRequired: 每條規則必須設置源端口。
-    mixedIpPort: "Port{ip}:{port}/{proto}有超過壹條映射規則。"
-    mixedPort: "Port{port}/{proto}有超過壹條映射規則。"
+    mixedIpPort: "Port{ip}:{port}/{proto}有超過一條映射規則。"
+    mixedPort: "Port{port}/{proto}有超過一條映射規則。"
   showAdvanced: 顯示端口命名選項
 
 formScale:
@@ -3728,7 +3829,7 @@ formScale:
   showAdvanced: 更多選項
   scaleMode:
     deploymentPrefix: "部署"
-    replicationControllerPrefix: "復制控制器"
+    replicationControllerPrefix: "複製控制器"
     replicaSetPrefix: "副本集"
     statefulSetPrefix: "有狀態(StatefulSet)部署"
     scaleSuffix: |
@@ -3736,7 +3837,7 @@ formScale:
       =1{個Pod}
       other{個Pods}
       }
-    daemonSet: "每臺主機部署1個Pod(DaemonSet)"
+    daemonSet: "每台主機部署1個Pod(DaemonSet)"
     cronJob: "Cron定時運行"
     job: Job
     sidekickInactive: "Sidecar: 將容器添加到現有工作負載"
@@ -3748,27 +3849,27 @@ formScheduling:
   detail: 配置Pod對應的主機調度規則。
   status: |
     {count, plural,
-    =0{沒有規則}
-    =1{#個規則}
-    other{#個規則}
+    =0{無規則}
+    =1{#條規則}
+    other{#條規則}
     }
   canRequestHost:
     vm: 在指定主機上運行<b>所有</b>虛擬機
     containers: 指定主機運行<b>所有Pods</b>
   runSpecific: 在指定主機上運行此Pod
-  noRules: 沒有規則.
-  noToleration: 不容忍節點汙點
+  noRules: 沒有配置規則
+  noToleration: 未配置節點污點
   autoRun: "在匹配調度規則的每個主機上自動運行"
   autoPick:
-    vm: "為每壹個虛擬機自動選擇符合調度規則的主機"
-    container: "為每壹個Pod自動選擇符合調度規則的主機"
+    vm: "為每一個虛擬機自動選擇符合調度規則的主機"
+    container: "為每一個Pod自動選擇符合調度規則的主機"
     host: "自動選擇符合調度規則的主機"
   addRule: 添加規則
   addCustom: 添加自定義規則
   condition: 條件
   field: 字段
-  key: 標簽鍵
-  value: 標簽值
+  key: 標籤鍵
+  value: 標籤值
   operator: 操作符
   effect: 效果
   time: 時間
@@ -3785,10 +3886,10 @@ formScheduling:
   hostMax: 最大主機數
   perHost: 每個主機
   priority:
-    label: 優先級
+    label: 優先級等級
     placeholder: '例如: 3'
   priorityClassName:
-    label: 優先級等級名稱
+    label: 優先級顯示名稱
     placeholder: '例如: 高'
   scheduler:
     label: 調度
@@ -3818,7 +3919,7 @@ formScheduling:
 
 formSources:
   title: 來自其他源的環境變量
-  detail: 來自其他源的環境變量允許您將密碼、密鑰或其他信息註入需要它們的容器中。
+  detail: 來自其他源的環境變量允許您將密碼、密鑰或其他信息注入需要它們的容器中。
   noData: 沒有來自其他源的環境變量
   noMatch: 沒有匹配當前搜索的來自其他源的環境變量
   addLabel: 添加源
@@ -3835,7 +3936,7 @@ formSecurity:
   title: '安全/主機設置'
   detail: 授予或限制容器影響所運行主機的能力
   pullImage:
-    label: 拉取鏡像
+    label: 鏡像拉取策略
     always: 總是拉取
     ifNotPresent: 不存在則拉取
   privileged:
@@ -3855,7 +3956,7 @@ formSecurity:
   readOnlyRootFilesystem:
     label: 只讀根文件系統
     disable: "否"
-    enable: "是: 容器有壹個只讀的根文件系統"
+    enable: "是: 容器有一個只讀的根文件系統"
   hostPID:
     label: 使用主機的PID命名空間
   memoryLimit:
@@ -3921,18 +4022,21 @@ formSslTermination:
   title: SSL/TLS證書
   detail: '配置用於端口加密的SSL/TSL證書。'
   defaultCertificate:
-    prompt: '選擇壹個證書...'
+    prompt: '選擇一個證書...'
   default:
     label: 使用默認的ingress controller證書
+    noHosts: 請提供至少一個主機給默認證書
   custom:
-    label: 選擇壹個證書
+    label: 選擇一個證書
+    required: 請選擇一個證書
   alternateCertificate:
-    prompt: '選擇壹個證書...'
+    prompt: '選擇一個證書...'
   certificate: 證書
   alternateCerts: 備選證書
   addAlternate: 添加備選證書
   noCertificates: 沒有可用的證書。
   noCertificatesConfiged: 沒有證書
+  wildcardCert: 請提供至少一個主機，因為證書{name}是一個通配符證書。
   noAlternateCertificates: 沒有其他可用的證書。
   hosts: 主機
   noHosts: 沒有主機
@@ -3941,7 +4045,7 @@ formSslTermination:
     placeholder: '例如: example.com'
   addHostLabel: 添加主機
   helpBlock: |
-    "註意: 壹些舊的SSL/TLS客戶的不支持<a href="https://en.wikipedia.org/wiki/Server_Name_Indication" target="_blank">Server Name Indication(SNI)</a> 功能，對於這些客戶端將只提供主證書。對於支持SNI功能的現代客戶端將根據匹配結果從備選證書列表中選擇壹個合適的證書"
+    "注意: 一些舊的SSL/TLS客戶的不支持<a href="https://en.wikipedia.org/wiki/Server_Name_Indication" target="_blank">Server Name Indication(SNI)</a> 功能，對於這些客戶端將只提供主證書。對於支持SNI功能的現代客戶端將根據匹配結果從備選證書列表中選擇一個合適的證書"
   notNeeded: 沒有配置了有效的目標規則的SSL/TLS的監聽端口。
   removeCertLabel: 刪除此證書
   addCertLabel: 添加證書
@@ -3956,24 +4060,24 @@ formNamespace:
     reuse: 使用現有的名稱空間
     create: 創建新的命名空間
   reuse:
-    prompt: 選擇壹個命名空間...
+    prompt: 選擇一個命名空間...
   create:
     placeholder: '例如: Myapp'
   errors:
-    noneChosen: 您必須選擇壹個命名空間。
+    noneChosen: 您必須選擇一個命名空間。
     validation: "命名空間: {error}"
 
 formUserData:
   placeholder: "例如: 容器的配置信息"
   isVmPlaceholder: "例如: 虛擬機的配置信息"
 formLabelsAnnotations:
-  title: '標簽/註釋'
-  detail: "用於調度決策的鍵值對。後端重寫請配置註釋: 鍵: nginx.ingress.kubernetes.io/rewrite-target，值: /。"
+  title: '標籤/注釋'
+  detail: "用於調度決策的鍵值對。後端重寫請配置注釋: 鍵: nginx.ingress.kubernetes.io/rewrite-target，值: /。"
 formUserLabels:
-  title: 標簽
-  detail: 標簽是可用於註釋容器並進行調度決策的鍵值對。
-  nodeDetail: 鍵/值對形式的標簽將應用於主機上，用於容器的調度決策。
-  addAction: 添加標簽
+  title: 標籤
+  detail: 標籤是可用於注釋容器並進行調度決策的鍵值對。
+  nodeDetail: 鍵/值對形式的標籤將應用於主機上，用於容器的調度決策。
+  addAction: 添加標籤
   key:
     label: 鍵
     placeholder: '例如: foo'
@@ -3981,7 +4085,7 @@ formUserLabels:
   value:
     label: 值
     placeholder: '例如: bar'
-  protip: "高級技巧: 粘貼壹行或多行的key=value鍵值對能夠批量輸入。"
+  protip: "高級技巧: 粘貼一行或多行的key=value鍵值對能夠批量輸入。"
 
 formAccessModes:
   label: 訪問模式
@@ -3991,11 +4095,11 @@ formAccessModes:
 
 formAnnotations:
   addActionLabel: 添加註釋
-  title: 註釋
-  detail: 配置容器的註釋(鍵/值元數據)。
+  title: 注釋
+  detail: 配置容器的注釋(鍵/值元數據)。
   errors:
-    invalidJSON: JSON註釋格式無效。
-    topLevelValueInvalid: JSON註釋頂級值必須是對象。
+    invalidJSON: JSON注釋格式無效。
+    topLevelValueInvalid: JSON注釋頂級值必須是對象。
 formJobConfig:
   title: Job配置
   detail: 配置Job需要的參數。
@@ -4019,8 +4123,10 @@ formJobConfig:
     label: Back Off Limit
     detail: 標記此作業失敗之前的重試次數。
   activeDeadlineSeconds:
-    label: Active Deadline Seconds
+    label: 停止延遲時間
     detail: 在系統嘗試終止Job之前,job可能處於活動狀態的持續時間。
+  suspend:
+    label: 暫停
 
 formUpgrade:
   title: 縮放/升級策略
@@ -4039,7 +4145,7 @@ formUpgrade:
       label: 批量大小
       detail: Pod將批量啟動或停止
     maxSurge:
-      label: 最大浪湧
+      label: 最大浪涌
       detail: 在任何給定時間內允許超出所需規模的最大Pod數量。
     maxUnavailable:
       label: 最大不可用
@@ -4057,10 +4163,10 @@ formValueArray:
   valueLabel: 值
   valuePlaceholder: 值
   noData: 沒有數據
-  protip: '高級技巧: 在任意輸入欄中粘貼壹行或多行的value能夠批量輸入。'
+  protip: '高級技巧: 在任意輸入欄中粘貼一行或多行的value能夠批量輸入。'
 
 formVolumeRow:
-  prompt: 選擇壹個持久卷聲明...
+  prompt: 選擇一個持久卷聲明...
   name:
     label: 卷名
     placeholder: '例如: vol1'
@@ -4086,14 +4192,14 @@ formVolumeRow:
     readOnly: 只讀
     helper: 卷不會被掛載到當前容器中，它可能被Pod中的其他容器使用。
   customLogPath:
-    helpText: 我們將部署壹個Flexvolume驅動程序來創建卷並將日誌掛載到主機，GKE集群現在支持該功能。
+    helpText: 我們將部署一個Flexvolume驅動程序來創建卷並將日誌掛載到主機，GKE集群現在支持該功能。
 formVolumes:
   title: 數據卷
   detail: 持久化及共享數據並與獨立容器的生命周期分離。
   value:
-    prompt: 選擇壹個容器...
+    prompt: 選擇一個容器...
   volumes: 卷
-  volumesFrom: 卷來自
+  volumesFrom: 捲來自
   volumeDriver:
     label: 卷驅動
     placeholder: '例如: rancher-nfs，默認: local'
@@ -4106,12 +4212,12 @@ formVolumes:
     absoluteMountPoint: 卷掛載點必須使用絕對路徑。
   add:
     label: 添加卷...
-    newVolume: 添加壹個臨時卷
+    newVolume: 添加一個臨時卷
     existingVolume: 現有的臨時卷
     newPvc: 添加新的持久卷(聲明)
     existingPvc: 使用現有的持久卷(聲明)
     bindMount: 映射主機目錄
-    tmpfs: 添加壹個內存中的tmpfs
+    tmpfs: 添加一個內存中的tmpfs
     secret: 密文卷
     configMap: 配置映射卷
     certificate: 證書卷
@@ -4124,7 +4230,7 @@ formVolumes:
 
 formCapabilityPodSecurityPolicy:
   title: 內核安全策略
-  detail: 配置壹組功能策略
+  detail: 配置一組功能策略
   capabilities:
     allow: 啟用的功能
     add: 默認添加的能力
@@ -4146,10 +4252,10 @@ formFsGroupPodSecurityPolicy:
   title: FS組策略
   detail: 分配擁有Pod卷的FSGroup
   rule:
-    mustRunAs: MustRunAs-至少需要指定壹個範圍，使用第壹個範圍的最小值作為默認值，對照第壹個範圍中的第壹個ID進行驗證。
+    mustRunAs: MustRunAs-至少需要指定一個範圍，使用第一個範圍的最小值作為默認值，對照第一個範圍中的第一個ID進行驗證。
     runAsAny: RunAsAny - 沒有默認值，允許指定任何fsGroup ID。
   range:
-    addLabel: 添加壹個範圍
+    addLabel: 添加一個範圍
     max:
       label: 最大值
       placeholder: '例如: 6'
@@ -4173,11 +4279,11 @@ formRunAsUserPodSecurityPolicy:
   title: 用戶運行策略
   detail: User ID
   rule:
-    mustRunAs: MustRunAs - 需要配置壹個範圍，使用範圍的第壹個值作為默認值。根據配置的範圍進行驗證。
+    mustRunAs: MustRunAs - 需要配置一個範圍，使用範圍的第一個值作為默認值。根據配置的範圍進行驗證。
     mustRunAsNonRoot: MustRunAsNonRoot - 要求使用非零runAsUser啟動Pod，或者在鏡像中定義USER指令，不提供默認值。
     runAsAny: RunAsAny - 無默認值，允許任何runAsUser來指定。
   range:
-    addLabel: 添加壹個範圍
+    addLabel: 添加一個範圍
     max:
       label: 最大值
       placeholder: '例如: 6'
@@ -4205,10 +4311,10 @@ formSupplementalGroupsPodSecurityPolicy:
   title: 補充組策略
   detail: 配置允許的補充組
   rule:
-    mustRunAs: MustRunAs - 需要至少指定壹個範圍，使用第壹個範圍的最小值作為默認值，針對所有範圍進行驗證。
+    mustRunAs: MustRunAs - 需要至少指定一個範圍，使用第一個範圍的最小值作為默認值，針對所有範圍進行驗證。
     runAsAny: RunAsAny - 無默認值。允許指定任何補充組。
   range:
-    addLabel: 添加壹個範圍
+    addLabel: 添加一個範圍
     max:
       label: 最大值
       placeholder: '例如: 6'
@@ -4245,7 +4351,7 @@ formBasicPodSecurityPolicy:
     disable: "否"
   readOnlyRootFilesystem:
     label: 只讀根文件系統
-    enable: "是: 需要采用壹個只讀根文件系統"
+    enable: "是: 需要採用一個只讀根文件系統"
     disable: "否"
 
 hostSettings:
@@ -4314,8 +4420,8 @@ inputIdentity:
     github: 添加GitHub用戶或組織名稱
     generic: 添加用戶名或組名
   dropdownLabel:
-    teams: 您的團隊和組織
-    groups: 您的組
+    teams: 團隊和組織
+    groups: 組
 
 inputPassword:
   buttonText: 生成
@@ -4332,18 +4438,18 @@ podsSection:
 
 labelsSection:
   kind: 類型
-  title: 標簽
-  detail: 鍵/值可以被用在主機調度規則裏和壹些其他的高級設置中
+  title: 標籤
+  detail: 鍵/值可以被用在主機調度規則里和一些其他的高級設置中
   status: |
     {count, plural,
-    =0{無標簽}
-    =1{#個標簽}
-    other{#個標簽}
+    =0{無標籤}
+    =1{#個標籤}
+    other{#個標籤}
     }
   key: 鍵
   value: 值
-  noData: 沒有標簽
-  noMatch: 沒有標簽與當前搜索匹配
+  noData: 沒有標籤
+  noMatch: 沒有標籤與當前搜索匹配
 
 loginShibboleth:
   buttonText: 用Shibboleth登錄
@@ -4376,9 +4482,9 @@ loginUserPass:
 machineTemplatesPage:
   title: 添加主機
   new:
-    helpText: 啟動壹個新的主機或通過SSH導入壹個已經在運行的Docker
+    helpText: 啟動一個新的主機或通過SSH導入一個已經在運行的Docker
     btn: 設置
-  custom: 自定義添加壹臺現有的正在運行Docker的主機
+  custom: 自定義添加一台現有的正在運行Docker的主機
   templateBox:
     button: 選擇
     labels:
@@ -4411,7 +4517,7 @@ newCertificate:
     encrypted: 私鑰不能被密碼保護
     key:
       required: 必須填寫私鑰
-      invalidFormat: 私鑰無效，請確保它是壹個RSA密鑰
+      invalidFormat: 私鑰無效，請確保它是一個RSA密鑰
     cert:
       required: 必須填寫證書
       invalidFormat: 證書無效
@@ -4491,7 +4597,7 @@ modalConfirmDeactivate:
   cancel: 取消
   buttons:
     project:
-      message: 停用您的環境
+      message: 停用環境
       button: 停用
     environment:
       message: 停止服務
@@ -4531,18 +4637,18 @@ modalEditSetting:
     label: 名稱
   value:
     label: 值
-    prompt: 選擇壹個值...
+    prompt: 選擇一個值...
   reset:
     label: 重置為默認值
 
 modalEditPassword:
   firstLogin:
     title: "歡迎使用{appName}"
-    help: '第壹步: 請為默認<code>admin</code>用戶設置強密碼'
+    help: '第一步: 請為默認<code>admin</code>用戶設置強密碼'
     actionButton: 繼續
   edit:
     title: 修改密碼
-    help: 請輸入壹個新密碼。
+    help: 請輸入一個新密碼。
   current: 當前密碼
   new: 新密碼
   confirm: 確認密碼
@@ -4550,7 +4656,7 @@ modalEditPassword:
   actionButton: 修改
   mode:
     generate: '使用新的隨機生成的密碼: '
-    manual: '設置壹個特定的密碼來使用: '
+    manual: '設置一個特定的密碼來使用: '
 
 modalFeedback:
   header: "歡迎使用{appName}!"
@@ -4571,12 +4677,12 @@ modalImport:
     project: "項目: 將資源導入此項目"
     namespace: "命名空間: 將資源導入特定的命名空間"
   detail:
-    cluster1: 如果壹個資源指定了命名空間，那麽會自動創建命名空間，但是不會自動加入到項目中
-    cluster2: 如果壹個資源沒有指定壹個命名空間，它將被導入到default中
+    cluster1: 如果一個資源指定了命名空間，那麼會自動創建命名空間，但是不會自動加入到項目中
+    cluster2: 如果一個資源沒有指定一個命名空間，它將被導入到default中
     cluster3: '該模式還支持沒有命名空間的資源，例如: RoleTemplates'
 
     project1: 不指定命名空間的資源將被導入到選定的默認命名空間中
-    project2: 如果壹個資源指定了壹個不存在的命名空間，此命名空間將被創建並添加到這個項目中
+    project2: 如果一個資源指定了一個不存在的命名空間，此命名空間將被創建並添加到這個項目中
 
     namespace1: 所有資源將被導入到選定的命名空間中
     namespace2: 如果資源指定了不同的命名空間，則導入將失敗
@@ -4590,28 +4696,30 @@ modalProcessError:
   close: 關閉
 
 modalDrainNode:
-  title: 'Drain "{nodeName}"'
-  action: Drain
-  drain: 'Drain this node:'
-  force:
-    helpText: '即使存在不由ReplicationController、ReplicaSet、Job、DaemonSet或StatefulSet管理的Pod。'
-  ignoreDaemonSets:
-    helpText: 即使有DaemonSet管理的Pod。
-    warning: "默認情況下，Ingress DaemonSet部署在每個節點上。Drain might never succeed if you don't select ignore DaemonSet option."
-  deleteLocalData:
-    helpText: 即使有使用emptyDir的Pod(當節點耗盡時將刪除的本地數據)。
+  titleOne: '驅散節點: "{name}"'
+  titleMultiple: '驅散{count}個節點'
+  action: 驅散
+  mode: 模式
+  safe:
+    label: 安全
+    helpText: 如果一個節點具有獨立的Pod或臨時的數據，它將被隔離但不會被驅散。
+  aggressive:
+    label: Aggressive
+    helpText: <b>永久刪除</b>:<ul class="m-0"><li>獨立Pods和它們的數據</li><li>Pods和"Empty Dir"卷以及它們的數據。</li></ul>
   gracePeriod:
-    helpText: 給予每個Pod優雅終止的時間段(以秒為單位)。如果為負數，將使用Pod指定的默認值。
-    placeholder: '例如: 60'
-    label: 寬限期
+    title: 'Pod終止延時時間:'
+    default: 使用默認設置時間
+    placeholder: '例如: 30'
+    custom: "忽略默認值自定義延時時間:"
   timeout:
-    helpText: '在放棄之前等待的時間，0表示壹直等待。'
+    title: "驅散超時時間:"
+    default: 一直不斷重試
     placeholder: '例如: 60'
-    label: 超時
+    custom: "自定義超時時間:"
 
 modalRollbackService:
-  title: '回滾 "{instanceName}"'
-  titleWithSidekicks: '回滾"{instanceName}"&{count, plural,=1{#sidecar}other{#sidecars}}'
+  title: '回滾"{instanceName}"'
+  titleWithSidekicks: '回滾"{instanceName}"&{count, plural,=1{#個sidecar}other{#個sidecars}}'
   action: 回滾
   current:
     label: 當前版本
@@ -4650,9 +4758,9 @@ modalShortcuts:
   kubectl: Kubectl Shell
 
   viewGroup: 切換分組視圖
-  nextTab: 下壹頁
+  nextTab: 下一頁
   search: 聚焦搜索字段
-  shortcuts: 您在這裏
+  shortcuts: 您在這裡
 
 modalYaml:
   title:
@@ -4660,7 +4768,7 @@ modalYaml:
     edit: '編輯YAML: {name}'
     view: '查看YAML: {name}'
 modalWechat:
-  title: '掃碼關註Rancher中國微信技術群'
+  title: '掃碼關注Rancher中國微信技術群'
   wechat: 微信
 modalWelcome:
   header: "歡迎使用{appName}!"
@@ -4679,18 +4787,18 @@ newIngress:
     add: 添加Ingress
     edit: 編輯Ingress
   error:
-    noRules: "您必須有壹個或多個規則"
+    noRules: "您必須有一個或多個規則"
 newBalancer:
   header:
     add: 添加負載均衡
     edit: 編輯負載均衡
     upgrade: 升級負載均衡
   error:
-    noRules: "必須有壹個或多個目標規則和監聽端口"
+    noRules: "必須有一個或多個目標規則和監聽端口"
     noSourcePort: "每條規則必須設置源端口"
     invalidSourcePort: "不正確的源端口: '{num}'"
     invalidTargetPort: "不正確的目標端口: '{num}'"
-    mixedPort: "端口{num}有多條沖突的訪問/協議規則"
+    mixedPort: "端口{num}有多條衝突的訪問/協議規則"
     noTarget: "每條規則必須設置目標端口"
     noTargetPort: "每個規則需要設置目標端口"
     needsCertificate: "設置SSL/TLS規則時需要證書"
@@ -4723,9 +4831,9 @@ newCatalog:
   saveConfigure: 設置
   saveNew: 啟動
   saveUpgrade: 升級
-  selectVersionAdd: 選擇壹個模板版本部署
-  selectVersionConfigure: 選擇壹個模板版本設置
-  selectVersionUpgrade: 選擇壹個模板版本升級
+  selectVersionAdd: 選擇一個模板版本部署
+  selectVersionConfigure: 選擇一個模板版本設置
+  selectVersionUpgrade: 選擇一個模板版本升級
   startService: 創建後啟動服務
   support: "支持:"
   templateVersion: 模板版本
@@ -4753,7 +4861,7 @@ newContainer:
     globalService: 升級全局服務
     sidekick: 升級Sidecar
     sidekickName: '升級{name}的Sidecar'
-  selectUpgrade: 選擇壹個或者多個服務進行升級。
+  selectUpgrade: 選擇一個或者多個服務進行升級。
   saveUpgrade: 升級
   saveNew: 啟動
   name:
@@ -4763,7 +4871,7 @@ newContainer:
   environment:
     label: 環境變量
     from: 引用其他資源
-    detail: 設置容器可見的環境變量，包括從其他資源(如密文等)註入的值。
+    detail: 設置容器可見的環境變量，包括從其他資源(如密文等)注入的值。
     addAction: 添加變量
     addFrom: 添加附加資源
     keyLabel: 變量
@@ -4826,25 +4934,25 @@ nodeDriver:
   templateOptions: "{appName}模板"
   amazoneks:
     access:
-      next: "下壹步: 選擇服務角色"
+      next: "下一步: 選擇服務角色"
       loading: 從亞馬遜加載服務角色...
     role:
       title: 服務角色
       detail: 選擇將用於啟動EKS實例的服務角色
       label: 服務角色
       noneSelected: "Rancher創建角色"
-      help: "您可以不選擇服務角色，而Rancher會為您自動創建壹個。"
+      help: "您可以不選擇服務角色，而Rancher會為您自動創建一個。"
       radio:
         default: "標準: Rancher生成的服務角色"
         custom: "自定義: 從現有服務角色中選擇"
-      next: "下壹步: 選擇 VPC & Subnet"
+      next: "下一步: 選擇 VPC & Subnet"
       loading: "從Amazon加載VPCs..."
     vpc:
       title: VPC & Subnet
       detail: 選擇將用於EKS實例的VPC
-      next: "下壹步: Subnet"
+      next: "下一步: Subnet"
       loading: "加載Subnets..."
-      nextRancherDefault: "下壹步: 選擇實例選項"
+      nextRancherDefault: "下一步: 選擇實例選項"
       loadingRancherDefault: "加載實例選項..."
       noneSelected: "Rancher創建VPC和Subnet"
       radio:
@@ -4852,7 +4960,7 @@ nodeDriver:
         custom: "自定義: 從現有VPC和子網中選擇"
     subnet:
       title: Subnet
-      next: "下壹步: 選擇安全組"
+      next: "下一步: 選擇安全組"
       loading: "加載安全組..."
     associateWorkerNodePublicIp:
       title: Worker節點的公網IP
@@ -4862,36 +4970,49 @@ nodeDriver:
     securityGroup:
       title: 安全組
       detail: 選擇將應用於EKS實例的安全組
-      choose:  選擇壹個或多個現有安全組
+      choose:  選擇一個或多個現有安全組
       defaultExisting: "標準: 使用現有的{groupName}組"
       defaultCreate: "標準: 自動創建新的安全組"
-      next: "下壹步: 設置實例選項"
+      next: "下一步: 設置實例選項"
       loading: 加載設置實例選項...
     ami:
       label: 自定義AMI
-      help: "您可以覆蓋Rancher基於您的區域選擇的默認AMI"
+      help: "您可以覆蓋Rancher基於區域選擇的默認AMI"
     max:
       label: 最大平均比重
     min:
       label: 最小平均比重
+    accessKey:
+      label: Access Key
+      placeholder: Your AWS access key
+    secretKey:
+      label: Secret Key
+      placeholder: Your AWS secret key
+      provided: Provided
+    sessionToken:
+      label: "Session Token<em class='text-muted'>可選</em>"
+      placeholder: Your AWS session token
+      provided: Provided
+    region:
+      label: Region
   amazonec2:
     access:
       title: 1. 帳戶訪問
       detail: 選擇將用於啟動EC2實例的區域和API密鑰
-      next: "下壹步: 認證 & 設置節點"
+      next: "下一步: 認證 & 設置節點"
       loading: 從EC2加載可用區和VPC信息...
-      help: "在此粘貼您的AWS密鑰對，我們將用秘鑰創建新的實例"
+      help: "在此粘貼AWS密鑰對，我們將用秘鑰創建新的實例"
     zone:
       title: 2. 區域和網絡
       detail: 為實例選擇可用區和VPC/子網
-      next: "下壹步: 選擇安全組"
+      next: "下一步: 選擇安全組"
       loading: 從EC2加載安全組信息...
     accessKey:
       label: 訪問密鑰
-      placeholder: 您的AWS access key
+      placeholder: AWS access key
     secretKey:
       label: 加密秘鑰
-      placeholder: 您的AWS secret key
+      placeholder: AWS secret key
       provided: 已提供
     region:
       label: 區域
@@ -4900,14 +5021,14 @@ nodeDriver:
     securityGroup:
       title: 3. 安全組
       detail: 選擇安全組將應用到實例
-      choose: 選擇壹個或多個現有的組
+      choose: 選擇一個或多個現有的組
       defaultExisting: "標準: 使用現有的<code>{groupName}</code>安全組"
       defaultCreate: "標準: 自動創建<code>{groupName}</code>安全組"
-      next: "下壹步: 設置實例選項"
+      next: "下一步: 設置實例選項"
       loading: 正在加載實例選項...
     tags:
-      addActionLabel: 添加AWS標簽
-      valueLabel: 標簽
+      addActionLabel: 添加AWS標籤
+      valueLabel: 標籤
       placeholder: '例如: dev'
     instance:
       title: 4. 實例
@@ -4916,7 +5037,7 @@ nodeDriver:
       link: 了解更多
       text: 將要開放端口的詳細信息
     needs:
-      label: "為了使{appName} 正常使用，您的安全組需要配置允許以下流量通過:"
+      label: "為了使{appName}正常使用，安全組需要配置允許以下流量通過:"
       item1: '從{appName} 服務器到主機的<code>TCP</code>端口<code>22</code><span class="text-muted">(SSH連接用於安裝docker)'
       item2: '主機之間需要開放<code>UDP</code>端口<code>500</code>和<code>4500</code><span class="text-muted">(ipsec網絡)</span></li>'
       item3: 這些規則<b>不會</b>自動添加
@@ -4934,7 +5055,7 @@ nodeDriver:
       placeholder: '例如: ubuntu'
     iam:
       label: IAM配置文件
-      placeholder: My-k8s-profile
+      placeholder: my-k8s-profile
     privateIp:
       label: 私有IP
     onlyPrivate:
@@ -4954,10 +5075,10 @@ nodeDriver:
         =1 {# vCPU}
         other {# vCPUs}
       }
-    authAccountButton: '下壹步: 配置Droplet'
+    authAccountButton: '下一步: 配置Droplet'
     accessToken:
       label: 訪問令牌
-      placeholder: 您的DigitalOceanAPI訪問令牌
+      placeholder: DigitalOceanAPI訪問令牌
       help: |
         '從<a href="https://cloud.digitalocean.com/settings/api/tokens" target="_blank" rel="nofollow noreferrer noopener">Applications&API</a>頁面獲取DigitalOcean的個人訪問token'
     image:
@@ -4979,20 +5100,20 @@ nodeDriver:
     monitoring:
       label: 啟用監控
     tags:
-      addActionLabel: 添加Droplet標簽
-      valueLabel: 標簽
+      addActionLabel: 添加Droplet標籤
+      valueLabel: 標籤
       placeholder: '例如: dev'
   exoscale:
     accountSection: 賬戶訪問
     apiKey:
       label: API Key
-      placeholder: 您的Exoscale API密鑰
+      placeholder: Exoscale API密鑰
     secretKey:
       label: 加密秘鑰
-      placeholder: 您的Exoscale secret密鑰
+      placeholder: Exoscale secret密鑰
       provided: 已提供
-    accountHelp: 在此粘貼您的Exoscale密鑰對，我們將用秘鑰創建新的實例
-    loginAction: '下壹步: 驗證並選擇安全組'
+    accountHelp: 在此粘貼Exoscale密鑰對，我們將用秘鑰創建新的實例
+    loginAction: '下一步: 驗證並選擇安全組'
     loadingSecurity: 從Exoscale加載安全組...
     securityGroupSection: 安全組
     securityGroup:
@@ -5004,7 +5125,7 @@ nodeDriver:
       creating: 創建安全組...
     loadingZone: 從Exoscale加載區域信息...
     zoneSection: 區域
-    selectZoneAction: '下壹步: 選擇安全組'
+    selectZoneAction: '下一步: 選擇安全組'
     zone:
       label: 區域
     portHelp:
@@ -5015,7 +5136,7 @@ nodeDriver:
       item1: '從{appName}服務器到主機的<code>TCP</code>端口<code>22</code><span class="text-muted">(SSH連接用於安裝docker)'
       item2: 與其他所有主機之間的 <code>UDP</code>端口<code>500</code>和<code>4500</code><span class="text-muted">(用於IPsec網絡)</span>
       item3: 這些規則<b>不會</b>自動添加
-    selectSecurityGroupAction: "下壹步: 設置實例選項"
+    selectSecurityGroupAction: "下一步: 設置實例選項"
     loadingInstance: 讀取可用實例配置...
     instanceSection: 實例
     instanceProfile:
@@ -5031,14 +5152,14 @@ nodeDriver:
     accountSection: 賬戶訪問
     projectId:
       label: 項目
-      placeholder: 您的Packet項目ID
+      placeholder: Packet項目ID
     apiKey:
       label: API Key
-      placeholder: 您的Packet API Key
+      placeholder: Packet API Key
     apiKeyHelp: '由Packet的<a href="https://app.packet.net/portal#/api-keys" target="_blank">API Keys</a>頁面獲取'
     instanceSection: 實例
     instanceOptionsSection: 實例選項
-    loginAction: "下壹步: 認證並且選擇實例"
+    loginAction: "下一步: 認證並且選擇實例"
     authentication: 驗證
     location: 所在地區
     planDetails:
@@ -5060,10 +5181,10 @@ nodeDriver:
       detail: 用來創建RackSpace實例的用戶名和API Key
     username:
       label: 用戶名
-      placeholder: 您的RackSpace用戶名
+      placeholder: RackSpace用戶名
     apiKey:
       label: API Key
-      placeholder: 您的RackSpace APK Key
+      placeholder: RackSpace APK Key
     accountHelp: 從RackSpace控制面板的帳戶設置頁面獲取
     region:
       title: 2. 區域和偏好
@@ -5074,8 +5195,8 @@ nodeDriver:
   vmwarevsphere:
     access:
       title: 1. 帳戶訪問
-      detail: 配置在哪裏查找vCenter或ESXi服務器
-      help: "註意: 免費的ESXi license不支持API訪問，只支持具有有效或評估許可證的服務器"
+      detail: 配置在哪裡查找vCenter或ESXi服務器
+      help: "注意: 免費的ESXi license不支持API訪問，只支持具有有效或評估許可證的服務器"
     instance:
       title: 2. 實例選項
       detail: 選擇虛擬機的大小和操作系統
@@ -5156,10 +5277,10 @@ nodeDriver:
       detail: 自定義將要創建的Azure實例
     subscriptionId:
       label: 訂閱ID
-      placeholder: 您的Azure訂閱ID
+      placeholder: Azure訂閱ID
     subscriptionCert:
       label: 訂閱證書
-      placeholder: 您的Azure訂閱證書
+      placeholder: Azure訂閱證書
     image:
       label: 鏡像
       placeholder: '推薦:UbuntuServer:16.04.0-LTS:latest'
@@ -5208,31 +5329,31 @@ nodeDriver:
       label: 無公網IP
     clientId:
       label: 客戶端ID
-      placeholder: 您的客戶端ID
+      placeholder: 客戶端ID
     clientSecret:
       label: 客戶端秘鑰
-      placeholder: 您的客戶端秘鑰
+      placeholder: 客戶端秘鑰
     region:
       label: 區域
   aliyunecs:
     accountSection:
       label: 1. 訪問令牌
-      detail: 配置用於創建阿裏雲主機的訪問令牌
-      next: "下壹步: 認證&配置網絡"
-      loading: 正在獲取阿裏雲區域信息...
+      detail: 配置用於創建阿里雲主機的訪問令牌
+      next: "下一步: 認證&配置網絡"
+      loading: 正在獲取阿里雲區域信息...
     accessKey:
       label: 訪問秘鑰
-      placeholder: 您的阿裏雲訪問秘鑰
+      placeholder: 阿里雲訪問秘鑰
     accessKeySecret:
       label: 訪問秘鑰令牌
-      placeholder: 您的阿裏雲訪問秘鑰所對應的令牌
+      placeholder: 阿里雲訪問秘鑰所對應的令牌
       provided: 已提供
     apiEndpoint:
-      label: API地址
-      placeholder: 私有阿裏雲的API服務器地址
+      label: "(可選)阿里雲私有部署API地址"
+      placeholder: 阿里雲私有部署API地址
     instanceOptionsSection:
       label: 實例
-      detail: 設置即將創建的阿裏雲實例
+      detail: 設置即將創建的阿里雲實例
     instanceDescription:
       label: 實例描述
       placeholder: 該實例的描述
@@ -5246,12 +5367,12 @@ nodeDriver:
       label: 最大網絡帶寬
       placeholder: 1到100
     aliyunSLB:
-      label: 阿裏雲SLB ID
-      placeholder: 阿裏雲SLB ID
+      label: 阿里雲SLB ID
+      placeholder: 阿里雲SLB ID
     storageSection:
       label: 存儲
       detail: 配置通過該模版創建的實例的存儲選項
-      next: "下壹步: 配置阿裏雲實例選項"
+      next: "下一步: 配置阿里雲實例選項"
       loading: 正在獲取主機類型和系統鏡像...
     ioOptimized:
       label: 存儲IO優化
@@ -5273,8 +5394,8 @@ nodeDriver:
     networkSection:
       label: 網絡
       detail: 配置通過該模版創建的實例的網絡選項
-      next: "下壹步: 配置存儲選項"
-      loading: 正在獲取阿裏雲存儲類型...
+      next: "下一步: 配置存儲選項"
+      loading: 正在獲取阿里雲存儲類型...
     routeCIDR:
       label: 路由CIDR
       placeholder: '例如: 192.168.1.0/24'
@@ -5302,8 +5423,8 @@ nodeDriver:
       placeholder: 創建實例後SSH遠程登錄密碼(非必填)
       provided: 已提供
     tags:
-      addActionLabel: 添加實例標簽
-      valueLabel: 標簽
+      addActionLabel: 添加實例標籤
+      valueLabel: 標籤
       placeholder: '例如: dev'
     errors:
       vpcIdRequired: 請選擇專有網絡
@@ -5318,22 +5439,22 @@ nodeDriver:
     access:
       title: 1. 帳戶訪問
       detail: 選擇將用於啟動ZStack實例的endpoint，帳戶名稱和帳戶密碼
-      next: "下壹步: 驗證&選擇網絡"
+      next: "下一步: 驗證&選擇網絡"
       loading: 從ZStack加載區域、集群、網絡信息...
     endpoint:
       label: 終端
       placeholder: '例如: https://192.168.1.42:8443/'
     accountName:
       label: 帳戶名稱
-      placeholder: 您的帳戶
+      placeholder: 帳戶
     accountPassword:
       label: 帳戶密碼
-      placeholder: 您的帳戶密碼
+      placeholder: 帳戶密碼
       provided: 已提供
     zone:
       title: 2. 區域、集群和網絡
       detail: 選擇實例的區域，集群和網絡
-      next: "下壹步: 設置實例選項"
+      next: "下一步: 設置實例選項"
       loading: 從ZStack加載實例選項...
       label: 區域
     cluster:
@@ -5374,7 +5495,7 @@ projectGroup:
   label: "項目: {name}"
   none: 命名空間
   project: 不在項目中
-  noNS: 這個項目沒有namespace
+  noNS: 此項目下沒有命名空間
 
 optionallyNamespaced:
   scope:
@@ -5426,8 +5547,8 @@ pagination:
   dnsRecord: |
     {pages, plural,
     =0{無DNS記錄}
-    =1{選中{count}{count, plural,=1{個DNS記錄}other{個DNS記錄}}}
-    other {當前顯示{count}個DNS Records中的{from}到{to}個}}
+    =1{選中{count}{count, plural,=1{條DNS記錄}other{條DNS記錄}}}
+    other {當前顯示{count}條DNS Records中的{from}到{to}條}}
   driver: |
     {pages, plural,
     =0{無驅動}
@@ -5466,8 +5587,8 @@ pagination:
   loadBalancer: |
     {pages, plural,
     =0{無負載均衡}
-    =1{選中{count}{count, plural,=1{個負載均衡}other{個負載均衡}}}
-    other {當前顯示{count}個負載均衡中的{from}到{to}個}}
+    =1{選中{count}{count, plural,=1{條負載均衡}other{條負載均衡}}}
+    other {當前顯示{count}條負載均衡中的{from}到{to}條 }}
   ingress: |
     {pages, plural,
     =0{無Ingresses}
@@ -5487,11 +5608,11 @@ pagination:
     {pages, plural,
     =0{無命名空間}
     =1{選中{count}{count, plural,=1{個命名空間}other{個命名空間}}}
-    other {當前顯示{count}命名空間中的{from}到{to}個 }}
+    other {當前顯示{count}個命名空間中的{from}到{to}個 }}
   node: |
     {pages, plural,
     =0{無主機}
-    =1{選中{count}{count, plural,=1{臺主機}other{臺主機}}}
+    =1{選中{count}{count, plural,=1{台主機}other{台主機}}}
     other {當前顯示{count}個Nodes中的{from}到{to}個}}
   nodePool: |
     {pages, plural,
@@ -5506,7 +5627,7 @@ pagination:
   pod: |
     {pages, plural,
     =0 {沒有Pods}
-    =1{選中{count}{count, plural, =1{個Pod}other{個Pods}}}
+    =1{{count}{count, plural, =1{個Pod}other{個Pods}}}
     other{當前顯示{count}個Pods中的{from}到{to}個}}
   podHighlightSubset: "<b>{subset} of {count}</b> Pods"
   podNoSubset: "0 of {count} Pods"
@@ -5528,8 +5649,8 @@ pagination:
   rule: |
     {pages, plural,
     =0{無規則}
-    =1{選中{count}{count, plural,=1{個規則}other{個規則}}}
-    other {當前顯示{count}個規則中的{from}到{to}個 }}
+    =1{選中{count}{count, plural,=1{條規則}other{條規則}}}
+    other {當前顯示{count}條規則中的{from}到{to}條 }}
   service: |
     {pages, plural,
     =0{無服務}
@@ -5588,7 +5709,7 @@ saveCancel:
   saving: 保存中...
   saved: 已保存!
   edit: 保存
-  next: 下壹步
+  next: 下一步
   create: 創建
   cancel: 取消
 
@@ -5625,8 +5746,8 @@ schedulingRuleRow:
   mustNot: 必須沒有
   haveA: 具有
   of: 其
-  hostLabel: 主機標簽
-  containerLabel: 容器標簽
+  hostLabel: 主機標籤
+  containerLabel: 容器標籤
   serviceName: 服務名稱
   containerName: 容器名稱
 
@@ -5645,7 +5766,7 @@ siteAccess:
   required: "僅允許授權的{individuals}和{collection}"
   listHeader: "授權的{individuals}和{collection}"
   dupe: "已授權用戶訪問"
-  minimum: '您必須至少添加壹條授權條目'
+  minimum: '您必須至少添加一條授權條目'
   noIdentity: 無
   users: 用戶
   groups: 組
@@ -5672,7 +5793,7 @@ tableCountSelect:
 telemetryOpt:
   header: 信息統計
   subtext: |
-    Rancher Labs希望能夠收集您環境的匿名配置信息以幫助改進{appName}產品。<br/>您的信息不會被提供給任何第三方，收集的信息不包含特定的資源名稱或地址
+    Rancher Labs希望能夠收集您環境的匿名配置信息以幫助改進{appName}產品。<br/>信息不會被提供給任何第三方，收集的信息不包含特定的資源名稱或地址
   learnMore:
     label: 了解更多
   label: 允許收集匿名統計信息
@@ -5723,7 +5844,7 @@ volumesPage:
 
 
 vmConsole:
-  header: "控制臺:"
+  header: "控制台:"
   protip: "高級技巧:啟動命令行時按下{key}鍵可在新窗口中打開"
   canvas: 暫不提供Canvas支持
   footerActions:
@@ -5738,7 +5859,7 @@ waitOrchestration:
   count: '({sub}/{count})'
 
 waitKubernetes:
-  addHost: '添加至少壹臺主機'
+  addHost: '添加至少一台主機'
   activateHost: '等待主機激活'
   createStack: '創建Kubernetes系統應用棧'
   startServices: '啟動服務'
@@ -5768,13 +5889,19 @@ allWorkloads:
 ##############################
 nav:
   srToggleDropdown: 切換下拉菜單
-  environment:
-    cluster: 集群
-    label: 環境
-    all: 所有環境
-    your: 您的環境
-    selected: 當前環境
-    edit: '編輯 "{name}"'
+  projectDropdown:
+    label: 範圍
+    clusters: 集群
+    projects: 項目
+    projectsIn: 集群{cluster}中的項目。
+    clustersNoData: 沒有集群。
+    projectsNoData: 選擇一個集群來查看項目。
+    projectNoData: 這個集群沒有項目。
+    clustersNoMatch: '沒有與"{searchInput}"匹配的集群。'
+    projectsNoMatch: '沒有與"{searchInput}"匹配的項目。'
+    projectNotReady: '集群未就緒。'
+    projectInCluster: '在集群{cluster}中的項目。'
+    search: "搜索..."
   cluster:
     dashboard: 集群
     members: 成員
@@ -5817,6 +5944,7 @@ nav:
     tab: 應用商店
     apps: 應用商店
     launch: 啟動
+    manage: 管理
   infra:
     tab: 資源
     storagePage: 存儲
@@ -5838,7 +5966,7 @@ nav:
       members: 成員
       podSecurityPolicies: Pod安全策略
       authentication: 認證
-      authWarning: "註意:除本地身份驗證之外，在任何時候只能啟用單個身份驗證提供者。如果在2.1之前啟用了多個身份驗證提供者，則仍然可以編輯或禁用這些提供者，但不能啟用其他提供者。您也不能重新啟用以前禁用的提供者。禁用時要小心，禁用後配置無法恢復。"
+      authWarning: "注意:除本地身份驗證之外，在任何時候只能啟用單個身份驗證提供者。如果在2.1之前啟用了多個身份驗證提供者，則仍然可以編輯或禁用這些提供者，但不能啟用其他提供者。您也不能重新啟用以前禁用的提供者。禁用時要小心，禁用後配置無法恢復。"
     settings:
       tab: 系統設置
       auth: 訪問控制
@@ -5875,12 +6003,12 @@ action:
   addContainer: 部署Pod
   addSidekick: 添加Sidecar
   clone: 克隆
-  console: 打開控制臺
+  console: 打開控制台
   cordon: 暫停
   convertToService: 轉換為服務
   deactivate: 停用
   downloadYaml: 下載YAML
-  drain: 驅散容器
+  drain: 驅散
   edit: 編輯
   editService: 編輯服務
   editYaml: 查看/編輯YAML
@@ -5934,22 +6062,22 @@ validation:
     min: '"{key}"應當至少為{count}{count, plural,=1{個條目}other{個條目}}'
     max: '"{key}"應當至多為{count}{count, plural,=1{個條目}other{個條目}}'
   stringLength:
-    exactly: '"{key}"應當為{count, plural,=1{#字符}other{#字符}}'
-    between: '"{key}"應當介於{min}和{max}之間{max, plural,=1{字符}other{字符}}'
-    min: '"{key}"應當至少為{count}{count, plural,=1{字符}other{字符}}'
-    max: '"{key}"應當至多為{count}{count, plural,=1{字符}other{字符}}'
+    exactly: '"{key}"應當為{count, plural,=1{#個字符}other{#個字符}}'
+    between: '"{key}"應當介於{min}和{max}之間{max, plural,=1{個字符}other{個字符}}'
+    min: '"{key}"應當至少為{count}{count, plural,=1{個字符}other{個字符}}'
+    max: '"{key}"應當至多為{count}{count, plural,=1{個字符}other{個字符}}'
   number:
     exactly: '"{key}"應當為{val}'
     between: '"{key}"應當介於{min}和{max}之間'
     min: '"{key}"應當至少為{val}'
     max: '"{key}"應當至多為{val}'
-  chars: '"{key}"包含{count, plural,=1{無效字符}other{#無效字符}}:{chars}'
+  chars: '"{key}"包含{count, plural,=1{個無效字符}other{#個無效字符}}:{chars}'
   dns:
     doubleHyphen: 不能包含兩個連續的連字符
     hostname:
       startDot: '“{key}”不能以點開頭'
       endDot: '"{key}"不能以點結尾'
-      empty: '“{key}”至少需壹個字符'
+      empty: '“{key}”至少需一個字符'
       tooLong: '“{key}”不能超過{max}個字符'
       startNumber: '"{key}"不能以數字開頭'
       startHyphen: '“{key}”必須以字母或數字開頭'
@@ -6026,8 +6154,8 @@ growl:
   webSocket:
     connecting:
       title: 連接至服務器時發生錯誤！
-      warning: 無法建立到服務器的WebSocket連接。如果您的服務器位於代理或SSL終端設備後面，則瀏覽器無法連接到WebSocket。如果您在代理後面運行服務器，請確保代理支持WebSockets。在解決問題之前，流量統計、日誌、shell/控制臺和資源狀態的自動更新可能無法正常工作。
-      safariCertWarning: 另壹個可能的原因是Safari不允許使用無法識別的證書進行WebSocket連接，即使您繼續繞過警告也是如此。服務器必須擁有由Safari自動信任的認可機構簽署的證書。
+      warning: 無法建立到服務器的WebSocket連接。如果服務器位於代理或SSL終端設備後面，則瀏覽器無法連接到WebSocket。如果您在代理後面運行服務器，請確保代理支持WebSockets。在解決問題之前，流量統計、日誌、shell/控制台和資源狀態的自動更新可能無法正常工作。
+      safariCertWarning: 另一個可能的原因是Safari不允許使用無法識別的證書進行WebSocket連接，即使您繼續繞過警告也是如此。服務器必須擁有由Safari自動信任的認可機構簽署的證書。
       disconnectedWarning: "斷開與服務器的連接，嘗試重新連接..."
 
 storageClass:
@@ -6131,9 +6259,9 @@ volumeSource:
       helpText: 容器中的日誌路徑
     logFormat:
       label: 日誌格式
-      useCustomRegex: 使用壹個自定義Fluentd regex
+      useCustomRegex: 使用一個自定義Fluentd regex
       useExistingLogFormat: 使用現有的日誌格式
-      helpText: 您可以在</a>這裏<a href="http://fluentular.herokuapp.com/" target="_blank">測試您的正則表達式。
+      helpText: 您可以在</a>這裡<a href="http://fluentular.herokuapp.com/" target="_blank">測試正則表達式。
 
 yamlPage:
   errors: yaml文件中存在錯誤
@@ -6189,4 +6317,3 @@ rkeConfigComment:
     "         # 修改空間配額為$((4*1024*1024*1024))，默認2G,最大8G"
     "         extra_args:"
     "           quota-backend-bytes: '4294967296'"
-    
