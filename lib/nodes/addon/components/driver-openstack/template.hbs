@@ -1,0 +1,249 @@
+{{#accordion-list showExpandAll=false as | al expandFn |}}
+  <div class="over-hr"><span>{{driverOptionsTitle}}</span></div>
+
+  {{#accordion-list-item
+    title=(t 'nodeDriver.openstack.access.title')
+    detail=(t 'nodeDriver.openstack.access.detail')
+    expandAll=expandAll
+    expand=(action expandFn)
+    expandOnInit=true
+  }}
+    <div class="row">
+      <div class="col span-6">
+        <label class="acc-label">{{t 'nodeDriver.openstack.authUrl.label'}}{{field-required}}</label>
+        {{input type="text" class="form-control" value=config.authUrl placeholder=(t 'nodeDriver.openstack.authUrl.placeholder')}}
+        <p class="help-block">{{t 'nodeDriver.openstack.authUrl.help'}}</p>
+      </div>
+      <div class="col span-6">
+        <label class="acc-label">{{t 'nodeDriver.openstack.domainName.label'}}</label>
+        {{input type="text" value=config.domainName classNames="form-control" placeholder=(t 'nodeDriver.openstack.domainName.placeholder')}}
+        <p class="help-block">{{t 'nodeDriver.openstack.domainName.help'}}</p>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col span-6">
+        <label class="acc-label">{{t 'nodeDriver.openstack.username.label'}}{{field-required}}</label>
+        {{input type="text" value=config.username classNames="form-control" placeholder=(t 'nodeDriver.openstack.username.placeholder')}}
+      </div>
+      <div class="col span-6">
+        <label class="acc-label">{{t 'nodeDriver.openstack.password.label'}}{{field-required}}</label>
+        {{input type="password" value=config.password classNames="form-control" placeholder=(t 'nodeDriver.openstack.password.placeholder')}}
+      </div>
+    </div>
+
+    {{#advanced-section}}
+      <div class="row">
+        <div class="col span-6">
+          <label class="acc-label">{{t 'nodeDriver.openstack.insecure.label'}}</label>
+          <div>
+            {{input type="checkbox" checked=config.insecure}}
+          </div>
+          <p class="help-block">{{t 'nodeDriver.openstack.insecure.help'}}</p>
+        </div>
+        <div class="col span-6">
+          <label class="acc-label">{{t 'nodeDriver.openstack.cacert.label'}}</label>
+          {{input type="text" value=config.cacert classNames="form-control" placeholder=(t 'nodeDriver.openstack.cacert.placeholder')}}
+          <p class="help-block">{{t 'nodeDriver.openstack.cacert.help' appName=settings.appName}}</p>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col span-6">
+          <label class="acc-label">{{t 'nodeDriver.openstack.domainId.label'}}</label>
+          {{input type="text" value=config.domainId classNames="form-control" placeholder=(t 'nodeDriver.openstack.domainId.placeholder')}}
+          <p class="help-block">{{t 'nodeDriver.openstack.domainId.help'}}</p>
+        </div>
+        <div class="col span-6">
+          <label class="acc-label">{{t 'nodeDriver.openstack.endpointType.label'}}</label>
+          {{searchable-select
+            class="form-control"
+            content=endpointTypeChoices
+            value=config.endpointType
+            localizedLabel=true
+          }}
+          <p class="help-block">{{t 'nodeDriver.openstack.endpointType.help'}}</p>
+        </div>       
+      </div>
+    {{/advanced-section}}
+
+  {{/accordion-list-item}}
+
+  {{#accordion-list-item
+    title=(t 'nodeDriver.openstack.region.title')
+    detail=(t 'nodeDriver.openstack.region.detail')
+    expandAll=expandAll
+    expand=(action expandFn)
+    expandOnInit=true
+  }}
+    <div class="row">
+      <div class="col span-6">
+        <label class="acc-label">{{t 'nodeDriver.openstack.region.label'}}</label>
+        {{input type="text" class="form-control" value=config.region placeholder=(t 'nodeDriver.openstack.region.placeholder')}}
+      </div>
+      <div class="col span-6">
+        <label class="acc-label">{{t 'nodeDriver.openstack.availabilityZone.label'}}</label>
+        {{input type="text" value=config.availabilityZone classNames="form-control" placeholder=(t 'nodeDriver.openstack.availabilityZone.placeholder')}}
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col span-6">
+        <label class="acc-label">{{t 'nodeDriver.openstack.tenantName.label'}}</label>
+        {{input type="text" value=config.tenantName classNames="form-control" placeholder=(t 'nodeDriver.openstack.tenantName.placeholder')}}
+      </div>
+      <div class="col span-6">
+        <label class="acc-label">{{t 'nodeDriver.openstack.networkName.label'}}</label>
+        {{input type="text" class="form-control" value=config.netName placeholder=(t 'nodeDriver.openstack.networkName.placeholder')}}
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col span-6">
+        <label class="acc-label">{{t 'nodeDriver.openstack.floatingipPool.label'}}</label>
+        {{input type="text" class="form-control" value=config.floatingipPool placeholder=(t 'nodeDriver.openstack.floatingipPool.placeholder')}}
+        <p class="help-block">{{t 'nodeDriver.openstack.floatingipPool.help'}}</p>
+      </div>
+    </div>
+
+    <div class="row">
+      {{form-value-array
+        initialValues=secGroups
+        valueLabel="nodeDriver.openstack.secGroups.label"
+        valuePlaceholder="nodeDriver.openstack.secGroups.placeholder"
+        addActionLabel="nodeDriver.openstack.secGroups.addActionLabel"
+        changed=(action "updateSecGroups")
+      }}
+    </div>
+
+    {{#advanced-section}}
+      <div class="row">
+        <div class="col span-6">
+          <label class="acc-label">{{t 'nodeDriver.openstack.tenantId.label'}}</label>
+          {{input type="text" value=config.tenantId classNames="form-control" placeholder=(t 'nodeDriver.openstack.tenantId.placeholder')}}
+        </div>
+        <div class="col span-6">
+          <label class="acc-label">{{t 'nodeDriver.openstack.networkId.label'}}</label>
+          {{input type="text" value=config.netId classNames="form-control" placeholder=(t 'nodeDriver.openstack.networkId.placeholder')}}
+        </div>
+      </div>
+      
+      <div class="row">
+        <div class="col span-6">
+          <label class="acc-label">{{t 'nodeDriver.openstack.ipVersion.label'}}</label>
+          {{searchable-select
+            class="form-control"
+            content=ipVersionChoices
+            value=config.ipVersion
+            localizedLabel=true
+          }}
+        </div>
+        <div class="col span-6">
+          <label class="acc-label">{{t 'nodeDriver.openstack.novaNetwork.label'}}</label>
+          <div>
+            {{input type="checkbox" checked=config.novaNetwork}}
+          </div>
+          <p class="help-block">{{t 'nodeDriver.openstack.novaNetwork.help'}}</p>
+        </div>
+      </div>
+    {{/advanced-section}}
+  {{/accordion-list-item}}
+
+  {{#accordion-list-item
+    title=(t 'nodeDriver.openstack.instance.title')
+    detail=(t 'nodeDriver.openstack.instance.detail')
+    expandAll=expandAll
+    expand=(action expandFn)
+    expandOnInit=true
+  }}
+    <div class="row">
+      <div class="col span-6">
+        <label class="acc-label">{{t 'nodeDriver.openstack.flavorName.label'}}{{field-required}}</label>
+        {{input type="text" value=config.flavorName classNames="form-control" placeholder=(t 'nodeDriver.openstack.flavorName.placeholder')}}
+      </div>
+      <div class="col span-6">
+        <label class="acc-label">{{t 'nodeDriver.openstack.imageName.label'}}{{field-required}}</label>
+        {{input type="text" class="form-control" value=config.imageName placeholder=(t 'nodeDriver.openstack.imageName.placeholder')}}
+      </div>
+    </div>
+    <div class="row">
+      <div class="col span-6">
+        <label class="acc-label">{{t 'nodeDriver.openstack.sshUser.label'}}</label>
+        {{input type="text" class="form-control" value=config.sshUser placeholder=(t 'nodeDriver.openstack.sshUser.placeholder')}}
+      </div>
+    </div>
+    {{#advanced-section}}
+      <div class="row">
+        <div class="col span-6">
+          <label class="acc-label">{{t 'nodeDriver.openstack.flavorId.label'}}</label>
+          {{input type="text" value=config.flavorId classNames="form-control" placeholder=(t 'nodeDriver.openstack.flavorId.placeholder')}}
+        </div>
+        <div class="col span-6">
+          <label class="acc-label">{{t 'nodeDriver.openstack.imageId.label'}}</label>
+          {{input type="text" value=config.imageId classNames="form-control" placeholder=(t 'nodeDriver.openstack.imageId.placeholder')}}
+        </div>
+      </div>
+      <div class="row">
+        <div class="col span-6">
+          <label class="acc-label">{{t 'nodeDriver.openstack.keypairName.label'}}</label>
+          {{input type="text" class="form-control" value=config.keypairName placeholder=(t 'nodeDriver.openstack.keypairName.placeholder')}}
+        </div>
+        <div class="col span-6">
+          <label class="acc-label">{{t 'nodeDriver.openstack.privateKeyFile.label'}}</label>
+          {{input type="text" class="form-control" value=config.privateKeyFile placeholder=(t 'nodeDriver.openstack.privateKeyFile.placeholder')}}
+          <p class="help-block">{{t 'nodeDriver.openstack.privateKeyFile.help' appName=settings.appName}}</p>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col span-6">
+          <label class="acc-label">{{t 'nodeDriver.openstack.activeTimeout.label'}}</label>
+          <div class="input-group">
+            {{input-integer min=0 value=config.activeTimeout classNames="form-control"}}
+            <div class="input-group-addon bg-default">{{t 'generic.seconds'}}</div>
+          </div>
+          <p class="help-block">{{t 'nodeDriver.openstack.activeTimeout.help'}}</p>
+        </div>
+        <div class="col span-6">
+          <label class="acc-label">{{t 'nodeDriver.openstack.userDataFile.label'}}</label>
+          {{input type="text" class="form-control" value=config.userDataFile placeholder=(t 'nodeDriver.openstack.userDataFile.placeholder')}}
+          <p class="help-block">{{t 'nodeDriver.openstack.userDataFile.help' appName=settings.appName}}</p>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col span-6">
+          <label class="acc-label">{{t 'nodeDriver.openstack.sshPort.label'}}</label>
+          {{input-integer min=1 max=65535 class="form-control" value=config.sshPort placeholder=(t 'nodeDriver.openstack.sshPort.placeholder')}}
+        </div>
+      </div>
+      <div class="row">
+        <div class="col span-6">
+          <label class="acc-label">{{t 'nodeDriver.openstack.configDrive.label'}}</label>
+          <div>
+            {{input type="checkbox" checked=config.configDrive}}
+          </div>
+        </div>
+      </div>
+    {{/advanced-section}}
+  {{/accordion-list-item}}
+
+  <div class="over-hr"><span>{{templateOptionsTitle}}</span></div>
+
+  {{form-name-description
+    model=model
+    nameRequired=true
+  }}
+
+  {{form-user-labels
+    initialLabels=labelResource.labels
+    setLabels=(action 'setLabels')
+    expandAll=expandAll
+    expand=(action expandFn)
+  }}
+
+  {{form-engine-opts
+    machine=model
+    showEngineUrl=showEngineUrl
+  }}
+
+  {{top-errors errors=errors}}
+  {{save-cancel save="save" cancel="cancel" editing=editing}}
+{{/accordion-list}}
