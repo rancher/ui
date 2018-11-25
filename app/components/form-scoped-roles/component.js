@@ -200,7 +200,8 @@ export default Component.extend(NewOrEdit, {
     let current = get(this, 'defaultUser').get(`${ get(this, 'type') }RoleBindings`);
     let userDef = roles.filter((role) => !get(role, 'builtin')
         && !get(role, 'external')
-        && !get(role, 'hidden'));
+        && !get(role, 'hidden')
+        && (get(role, 'context') === get(this, 'type') || !get(role, 'context')));
 
     return userDef.map((role) => {
       const binding = current.findBy('roleTemplateId', get(role, 'id')) || null;
