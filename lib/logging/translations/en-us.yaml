@@ -68,7 +68,11 @@ loggingPage:
       prefix: Prefix
       prefixPlaceholder: e.g. logstash
       dateFormat: 'Date Format:'
-    generatedIndex: 'The generated index will be: <code class="text-italic">{esIndex}</code>, by default the index patters is {indexFormat}'
+      errors:
+        startsWith: Prefix cannot start with -, _, +
+        required: Prefix is required
+        invalidCharacters: "Prefix cannot include '{char}'"
+    generatedIndex: 'The generated index will be: <code class="text-italic text-lowercase">{esIndex}</code>, by default the index patters is {indexFormat}'
   splunk:
     header: Splunk HTTP Event Collector Configuration
     helpText: 'You can find instructions on how to configre Splunk HEC(HTTP Event Collector) <a href="http://docs.splunk.com/Documentation/Splunk/7.0.0/Data/UsetheHTTPEventCollector" target="_blank">here</a>.'
