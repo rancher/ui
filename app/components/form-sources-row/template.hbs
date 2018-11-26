@@ -32,6 +32,10 @@
         valueKey='name'
         selectedConfigMap=selectedConfigMap
     }}
+  {{else if (and editing (eq source.source 'field'))}}
+    {{input type="text" value=source.sourceName classNames="form-control" placeholder=(t 'formSources.field.placeholder')}}
+  {{else if (and editing (eq source.source 'resource'))}}
+    {{input type="text" value=source.sourceName classNames="form-control" placeholder=(t 'formSources.container.placeholder')}}
   {{else}}
     {{#if source}}
       {{source.sourceName}}
@@ -42,18 +46,24 @@
 </td>
 <td>&nbsp;</td>
 <td data-title="{{t 'formSources.prefixOrKey.label'}}">
-  {{searchable-select
-      classNames="form-control"
-      optionValuePath="id"
-      optionLabelPath="label"
-      content=prefixOrKeys
-      value=source.sourceKey
-      readOnly=(or (not source.sourceName) (not editing))
-  }}
+  {{#if (or (eq source.source 'secret') (eq source.source 'configMap'))}}
+    {{searchable-select
+        classNames="form-control"
+        optionValuePath="id"
+        optionLabelPath="label"
+        content=prefixOrKeys
+        value=source.sourceKey
+        readOnly=(or (not source.sourceName) (not editing))
+    }}
+  {{else if (eq source.source 'resource')}}
+    {{input type="text" value=source.sourceKey classNames="form-control" placeholder=(t 'formSources.resource.placeholder')}}
+  {{else}}
+    <span class="text-muted">{{t 'generic.na'}}</span>
+  {{/if}}
 </td>
 <td>
   <div class="text-center">
-    {{#if specificKeyOnly}}
+    {{#if (or specificKeyOnly (eq source.source 'field') (eq source.source 'resource'))}}
       {{t 'generic.as'}}
     {{else if (eq source.sourceKey null)}}
       {{t 'generic.prefix'}}
@@ -65,7 +75,7 @@
 
 <td data-title="{{t 'formSources.prefix.label'}}">
   {{#input-or-display editable=editing value=prefixOrTarget classesForDisplay="text-muted form-control-static"}}
-    {{input type="text" value=prefixOrTarget classNames="form-control" disabled=(not source.sourceName)}}
+    {{input type="text" value=prefixOrTarget classNames="form-control" disabled=(and (not source.sourceName) (not-eq source.source 'resource') (not-eq source.source 'field'))}}
   {{/input-or-display}}
 </td>
 <td>

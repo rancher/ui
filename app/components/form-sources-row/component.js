@@ -6,22 +6,18 @@ const SOURCES = [
   {
     id:       'configMap',
     label:    'Config Map',
-    disabled: false
   },
   {
     id:       'field',
     label:    'Field',
-    disabled: true
   },
   {
     id:       'resource',
     label:    'Resource',
-    disabled: true
   },
   {
     id:       'secret',
     label:    'Secret',
-    disabled: false
   }
 ];
 
@@ -38,14 +34,14 @@ export default Component.extend({
 
   prefixOrTarget: computed('source.sourceKey', {
     get() {
-      if (get(this, 'source.sourceKey') === null || get(this, 'source.sourceKey') === undefined) {
+      if ( get(this, 'source.source') !== 'field' && (get(this, 'source.sourceKey') === null || get(this, 'source.sourceKey') === undefined) ) {
         return get(this, 'source.prefix');
       } else {
         return get(this, 'source.targetKey');
       }
     },
     set(key, value) {
-      if (get(this, 'source.sourceKey') === null || get(this, 'source.sourceKey') === undefined) {
+      if ( get(this, 'source.source') !== 'field' && (get(this, 'source.sourceKey') === null || get(this, 'source.sourceKey') === undefined) ) {
         return set(this, 'source.prefix', value);
       } else {
         return set(this, 'source.targetKey', value);
