@@ -113,15 +113,16 @@
           {{#if authConfig}}
             {{azuread-endpoints isEnabled=isEnabled authConfig=authConfig}}
           {{/if}}
-          <div class="row mt-10">
-            <div class="inline-form">
-              <button class="btn bg-primary" style="display: block;margin: 0 auto;" {{action "test"}}>
+          <div class="row mt-10 text-center">
+            <div class="btn-group">
+              <button class="btn bg-primary" {{action "test"}}>
                 {{#if testing}}
                   <i class="icon icon-spinner icon-spin"></i> {{t 'authPage.azuread.test.post'}}
                 {{else}}
                   <i class="icon icon-azuread"></i> {{t 'authPage.azuread.test.pre'}}
                 {{/if}}
               </button>
+              <button {{action "cancel"}} class="btn bg-transparent">{{t 'saveCancel.cancel'}}</button>
             </div>
           </div>
         </form>
