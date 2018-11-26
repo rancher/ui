@@ -19,7 +19,6 @@ export default Component.extend(ViewNewEdit, ChildHook, {
   model: null,
 
   recordType:      null,
-  namespaceErrors: null,
   namespace:       alias('model.namespace'),
 
   init() {
@@ -75,6 +74,10 @@ export default Component.extend(ViewNewEdit, ChildHook, {
     set(this, 'model.namespaceId', get(this, 'namespace.id') || '__placeholder__');
     const self = this;
     const sup = this._super;
+
+    if ( get(this, 'namespaceErrors.length') ) {
+      return false;
+    }
 
     return this.applyHooks('_beforeSaveHooks').then(() => {
       set(this, 'model.namespaceId', get(this, 'namespace.id'));

@@ -133,6 +133,10 @@ export default Component.extend(ViewNewEdit, ChildHook, {
     const sup = this._super;
 
     if ( get(this, 'selectNamespace') ) {
+      if ( get(this, 'namespaceErrors.length') ) {
+        return false;
+      }
+
       return this.applyHooks('_beforeSaveHooks').then(() => {
         set(pr, 'namespaceId', get(this, 'namespace.id'));
 
