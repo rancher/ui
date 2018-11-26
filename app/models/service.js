@@ -29,7 +29,12 @@ export default Resource.extend({
 
     if ( labels && labels['kubernetes.io/cluster-service'] === 'true' ) {
       (get(this, 'ports') || []).forEach((port) => {
-        const linkEndpoint = `${ location.origin }/k8s/clusters/${ get(this, 'scope.currentCluster.id') }/api/v1/namespaces/${ get(this, 'namespaceId') }/services/${ get(this, 'name') }:${ get(port, 'port') }/proxy/`;
+        let linkEndpoint = `${ location.origin }/k8s/clusters/${ get(this, 'scope.currentCluster.id') }/api/v1/namespaces/${ get(this, 'namespaceId') }/services/`;
+
+        if ( get(port, 'name') === 'http' || get(port, 'name') === 'https' ) {
+          linkEndpoint = `${ get(port, 'name') }:`;
+        }
+        linkEndpoint += `${ get(this, 'name') }:${ get(port, 'port') }/proxy/`;
 
         parts.push({
           linkEndpoint,
