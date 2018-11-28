@@ -6,7 +6,7 @@ import { get, set, computed } from '@ember/object';
 import ThrottledResize from 'shared/mixins/throttled-resize';
 import textWidth from 'shared/utils/text-width';
 import { next } from '@ember/runloop';
-import { escapeRegex } from 'shared/utils/util';
+import { escapeRegex, escapeHtml } from 'shared/utils/util';
 import $ from 'jquery';
 
 const ITEM_HEIGHT = 50;
@@ -214,12 +214,12 @@ export default Component.extend(ThrottledResize, {
     get(this, 'byCluster').forEach((entry) => {
       const cluster = get(entry, 'cluster');
       const name = get(cluster, 'displayName');
-      const match = highlightMatches(needle, name);
+      const { found, match } = highlightMatches(needle, name);
 
-      if ( name !== match ) {
+      if ( found ) {
         out.push({
           cluster,
-          searchMatch: match.htmlSafe()
+          searchMatch: match,
         })
       }
     });
@@ -233,13 +233,13 @@ export default Component.extend(ThrottledResize, {
 
     get(this, 'projectChoices').forEach((project) => {
       const name = get(project, 'displayName');
-      const match = highlightMatches(needle, name);
+      const { found, match } = highlightMatches(needle, name);
 
-      if ( name !== match ) {
+      if ( found ) {
         out.push({
           project,
           cluster:     get(project, 'cluster'),
-          searchMatch: match.htmlSafe()
+          searchMatch: match
         })
       }
     });
@@ -468,12 +468,53 @@ export default Component.extend(ThrottledResize, {
   },
 });
 
+
 function highlightMatches(needle, haystack) {
+  // This is more complicated than it sounds because:
+  // - Needle matches case-insensitive, but the return string should preseve the original haystack case
+  // - The haystack has to be HTML escaped
+  // - But the HTML entities like &lt; shouldn't appear as search results for "lt"
+  // - And we're adding HTML to highlight the matches which needs to not be escaped
+  //
+  const placeholder = '~';
+  let match;
+  let found = false;
+  const parts = [];
+
   needle = (needle || '').trim();
   haystack = (haystack || '').trim();
-  const re = new RegExp(`(${ escapeRegex(needle) })`, 'ig');
 
-  return haystack.replace(re, '<span class="search-match">$1</span>');
+  // 1. If there's any occurrences of the placeholder in the string already, drop them.
+  haystack = haystack.replace(placeholder, '', 'g');
+
+  const re = new RegExp(escapeRegex(needle), 'i');
+
+  // 2. Find and save all matches for the needle and replace with placeholder
+  /* eslint-disable-next-line no-cond-assign */
+  while ( match = haystack.match(re) ) {
+    found = true;
+    parts.push(match[0]);
+    haystack = haystack.replace(re, placeholder);
+  }
+
+  if ( !found ) {
+    return { found };
+  }
+
+  // 3. Escape the resulting string of unmatched chars and placeholders
+  haystack = escapeHtml(haystack);
+  while ( parts.length ) {
+    let token = parts.shift();
+
+    // 4. Replace placeholders with (unescaped) highlight span and (escaped) matched chars
+    haystack = haystack.replace(placeholder, `<span class="search-match">${ escapeHtml(token) }</span>`);
+  }
+
+  // 5. Return as a safe string
+  return {
+    found,
+    match: haystack.htmlSafe()
+  }
 }
 
 function slope(a, b) {
