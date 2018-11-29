@@ -54,7 +54,6 @@ $nav-spacing: 4px;
           > .ember-basic-dropdown-trigger > a,
           > a {
             color: $info;
-            border-bottom: solid $nav-spacing mix($user-btn, black, 50%);
             text-decoration: none;
             margin: 0;
           }
@@ -69,10 +68,9 @@ $nav-spacing: 4px;
           border-top: solid $nav-spacing transparent;
 
           &:hover {
-            background-color: mix($user-btn, black, 80%);
+            background-color: darken($header, 5%);
             color: white;
             text-decoration: none;
-            border-bottom: solid $nav-spacing mix($user-btn, black, 50%);
           }
 
           .icon-chevron-down {
@@ -97,7 +95,6 @@ $nav-spacing: 4px;
 
   .nav-user {
     // display:table-cell;
-    background: $user-btn;
     border-radius: 0 3px 3px 0;
     margin: 0;
 
@@ -125,7 +122,8 @@ $nav-spacing: 4px;
     float: left;
     background-color: $user-btn;
 
-    &::after {
+    a {
+      &::after {
       content: '';
       border-left: 8px solid $user-btn;
       border-top: 5px solid transparent;
@@ -134,6 +132,18 @@ $nav-spacing: 4px;
       top: 22px;
       right: -8px;
     }
+
+      &:hover {
+        background-color: mix($user-btn, black, 80%);
+        color: white;
+        text-decoration: none;
+
+        &::after {
+          border-left-color: mix($user-btn, black, 80%);
+        }
+      }
+    }
+
 
     .ember-basic-dropdown-trigger {
       max-width: 300px;
@@ -164,7 +174,6 @@ $nav-spacing: 4px;
     &.active {
       > a {
         color: $info;
-        border-bottom: solid $nav-spacing mix($user-btn, black, 50%);
         text-decoration: none;
         margin: 0;
       }
@@ -176,13 +185,6 @@ $nav-spacing: 4px;
       padding: 11px;
       border-bottom: solid $nav-spacing transparent;
       border-top: solid $nav-spacing transparent;
-
-      &:hover {
-        background-color: mix($user-btn, black, 80%);
-        color: white;
-        text-decoration: none;
-        border-bottom: solid $nav-spacing mix($user-btn, black, 50%);
-      }
 
       .icon-chevron-down {
         font-size: .75em;
