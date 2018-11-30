@@ -1880,9 +1880,11 @@ clusterNew:
     placeholder: e.g. Cluster for dev and test workloads
   driverLabels:
     cloud: In a hosted Kubernetes provider
+    custom: From my own existing nodes
+    external: User Provided
     import: Import existing cluster
     infra: From nodes in an infrastructure provider
-    custom: From my own existing nodes
+  externalError: 'Component could not be loaded. Check URL.'
   members:
     label: Member Roles
     detail: Control who has access to the cluster and what permission they have to change it.
@@ -4617,8 +4619,8 @@ modalConfirmRemovePayment:
 
 modalEditDriver:
   header:
-    create: Add Node Driver
-    edit: Edit Node Driver
+    create: "Add {type} Driver"
+    edit: "Edit {type} Driver"
   url:
     label: Download URL
     help: The URL to download the machine driver binary for 64-bit Linux.
@@ -4915,11 +4917,27 @@ newSecret:
     label: Secrets Values
   addActionLabel: Add Secret Value
 
+customDrivers:
+  nodes: Node Drivers
+  clusters: Cluster Drivers
+
+clusterDrivers:
+  title: Cluster Drivers
+  add: Add Cluster Driver
+  builtIn: Built-In
+  table:
+    noData: This cluster does not have any nodes defined
+    noMatch: No nodes match the current search
+
+
 nodeDriver:
   addTemplate: Add Node Template
   editTemplate: "Edit Node Template: {name}"
   editWarning: Editing a node template will only affect new nodes created by a node pool; existing nodes will not be updated or replaced automatically.<br>If you delete nodes from a pool, new ones will be created using the new settings in the template.
   displayName:
+    googlegke: Google GKE
+    amazoneks: Amazon EKS
+    azureaks: Azure AKS
     aliyunecs: Aliyun ECS
     amazonec2: Amazon EC2
     azure: Azure
@@ -5960,7 +5978,7 @@ nav:
     accounts: Users
     clusters: Clusters
     machines: Nodes
-    nodeDrivers: Node Drivers
+    nodeDrivers: Custom Drivers
     catalogs: Catalogs
     security:
       tab: Security
