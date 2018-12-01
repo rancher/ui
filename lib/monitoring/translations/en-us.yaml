@@ -1,0 +1,138 @@
+generic:
+  cpu: CPU
+  memory: Memory
+  hours: Hours
+  noData: No Data
+
+metrics:
+  cluster-cpu-usage: CPU Utilization
+  cluster-cpu-load: Load Average
+  cluster-memory-usage: Memory Utilization
+  cluster-fs-usage-percent: Disk Utilization
+  cluster-disk-io: Disk I/O
+  cluster-network-io: Network I/O
+  cluster-network-packet: Network Packets
+  etcd-db-bytes-sum: DB Size
+  etcd-grpc-client: GRPC Client Traffic
+  etcd-peer-traffic: Peer Traffic
+  etcd-raft-proposals: Raft Proposals
+  etcd-rpc-rate: RPC Rate
+  etcd-stream: Active Streams
+  etcd-sync-duration: Disk Sync Duration
+  apiserver-request-count: API Server Request Rate
+  apiserver-request-latency: API Server Request Latency
+  scheduler-e-2-e-scheduling-latency-seconds-quantile: Scheduler E2E Scheduling Latency
+  scheduler-pod-unscheduler: Scheduling Failed Pods
+  scheduler-total-preemption-attempts: Scheduler Preemption Attempts
+  controllermanager-queue-depth: Controller Manager Queue Depth
+  ingresscontroller-nginx-connection: Ingress Controller Connections
+  ingresscontroller-request-process-time: Ingress Controller Request Process Time
+  node-cpu-load: Load Average
+  node-cpu-usage: CPU Utilization
+  node-memory-usage: Memory Utilization
+  node-fs-usage-percent: Disk Utilization
+  node-disk-io: Disk I/O
+  node-network-io: Network I/O
+  node-network-packet: Network Packets
+  etcd-leader-change: Leader Change
+  etcd-disk-operate: Disk operations
+  fluentd-buffer-queue-length: Fluentd Buffer Queue Rate
+  fluentd-output-errors: Fluentd Output Errors Rate
+  fluentd-output-record-number: Fluentd Output Rate
+  fluentd-input-record-number: Fluentd Input Rate
+
+ingressResponse:
+  host: Host
+  path: Path
+  responseTime: Response Time
+  noData: No Data
+  noMatch: No records match the current search
+  detail: Top 10 ingress upstream response time
+  title: Ingress Upstream Response Time
+
+etcd:
+  hasLeader:
+    label: Etcd has a leader
+  leaderChange:
+    label: Number of leader changes
+  failedProposals:
+    label: Number of failed proposals
+
+clusterDashboard:
+  title: Dashboard
+  sections:
+    cluster: Cluster Metrics
+    etcd: Etcd Metrics
+    k8s: Kubernetes Components Metrics
+    rancher: '{appName} Components Metrics'
+    node: Node Metrics
+  noRancherComponents: 'There are no other {appName} components in this cluster.'
+  cpu: CPU
+  memory: Memory
+  pods: Pods
+  value: Value
+  more: More
+  subtitle:
+    reserved: "{used} of {total} Reserved"
+    used: "{used} of {total} Used"
+  enalbeMonitoring: Enable Monitoring to see live metrics
+  monitoringNotReady: Monitoring API is not ready
+  node: Nodes
+  etcd: Etcd
+  scheduler: Scheduler
+  controllerManager: Controller Manager
+  alert:
+    node: "Alert: Node {node} is not active."
+    component: "Alert: Component {component} is unhealthy."
+    
+monitoringPage:
+  toUpdate: 
+    cluster: Monitoring is enabled. Please go to System Project Catalog Apps and find <code>cluster-monitoring</code> app to update the configuration.
+    project: Monitoring is enabled. Please go to Catalog Apps and find <code>project-monitoring</code> app to update the configuration.
+  prometheus: Monitoring is not enabled yet, click the Save button below to enable it.
+  config:
+    types:
+      none: None
+      prometheus: Prometheus
+    header: Prometheus Configuration
+    prometheus:
+      enablePersistence: 
+        label: Enable Persistent Storage for Prometheus
+      size:
+        label: Prometheus Persistent Volume Size
+        placeholder: e.g. 50Gi
+      storageClass:
+        label: Default StorageClass for Prometheus
+    grafana:
+      enablePersistence: 
+        label: Enable Persistent Storage for Grafana
+      size:
+        label: Grafana Persistent Volume Size
+        placeholder: e.g. 10Gi
+      storageClass:
+        label: Default StorageClass for Grafana
+    retention: 
+      label: Data Retention
+    storageClass:
+      label: Storage Class
+    nodeexporter:
+      label: Node Exporter Host Port
+  nodeSelector:
+    addSelectorLabel: Add Selector
+    helpText: Select the nodes where monitoring relalted workloads will be scheduled to
+  cluster:
+    title: Cluster Monitoring
+    info: 'We will use Prometheus to collect metrics from Nodes, Kubernetes components and Pods in this cluster.'
+    disabled: Monitoring is disabled in the current cluster.
+    toDisable: Monitoring is enabled. Click the Save button below will disable monitoring in current cluster.
+    ready: Monitoring is ready. System monitoring tool has been deployed to 
+    notReady: Monitoring API is not ready. You can find system monitoring tool in 
+    justDeployed: Deploying system monitoring tool to
+  project:
+    title: Project Monitoring
+    info: 'We will use Prometheus to collect metrics from workloads in this project.'
+    disabled: Monitoring is disabled in the current project.
+    toDisable: Monitoring is enabled. Click the Save button below will disable monitoring in current project.
+    ready: Monitoring is ready.
+    notReady: Monitoring API is not ready.
+    justDeployed: Deploying project monitoring tool to this project.

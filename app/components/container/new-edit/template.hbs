@@ -248,6 +248,18 @@
         expandFn=expandFn
         expanded=securitySectionExpanded
     }}
+
+    {{#unless isSidekick}}
+      {{#if scope.currentCluster.enableClusterMonitoring}}
+        {{container/form-custom-metrics
+          classNames="accordion-wrapper"
+          workload=service
+          editing=true
+          expandAll=al.expandAll
+          expandFn=expandFn
+        }}
+      {{/if}}
+    {{/unless}}
   {{/advanced-section}}
 {{/accordion-list}}
 

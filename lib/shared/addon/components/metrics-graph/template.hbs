@@ -1,0 +1,28 @@
+{{#each rows as |row|}}
+  <div class="row">
+    {{#each row as |item|}}
+      <div class="col span-4">
+        <h2 class="text-left pl-20">{{t (concat 'metrics.' item.graph.title)}}</h2>
+        {{graph-area
+          series=item.series
+          loading=loading
+          formatter=item.graph.unit
+        }}
+      </div>
+    {{/each}}
+  </div>
+{{else}}
+  {{#if noGraphs}}
+    <div class="row mt-20">
+      <div class="text-center text-muted">
+        {{t noDataLabel appName=settings.appName}}
+      </div>
+    </div>
+  {{else}}
+    <div class="row mt-20">
+      <div class="text-center">
+        <i class="icon icon-spinner icon-spin icon-3x"></i>
+      </div>
+    </div>
+  {{/if}}
+{{/each}}

@@ -61,7 +61,6 @@ const App = Application.extend({
           'authenticated.project':                        'authenticated.project',
           'authenticated.prefs':                          'authenticated.prefs',
           'authenticated.cluster.nodes':                  'authenticated.cluster.nodes',
-          'authenticated.cluster.nodes.node':             'authenticated.cluster.nodes.node',
           'authenticated.cluster.security.members.index': 'authenticated.cluster.security.members.index',
           'logout':                                       'logout'
         }
@@ -99,7 +98,6 @@ const App = Application.extend({
           'authenticated.project':                        'authenticated.project',
           'authenticated.prefs':                          'authenticated.prefs',
           'authenticated.cluster.nodes':                  'authenticated.cluster.nodes',
-          'authenticated.cluster.nodes.node':             'authenticated.cluster.nodes.node',
           'authenticated.cluster.security.members.index': 'authenticated.cluster.security.members.index',
           'logout':                                       'logout'
         }
@@ -183,6 +181,24 @@ const App = Application.extend({
           'authenticated.project.pipeline.pipelines': 'authenticated.project.pipeline.pipelines',
           'notifier':                                 'authenticated.cluster.notifier',
         }
+      }
+    },
+    monitoring: {
+      dependencies: {
+        services: [
+          'app',
+          'intl',
+          'grafana',
+          'scope',
+          'session',
+          'modal',
+          'globalStore',
+          'router',
+          'k8s',
+          'clusterStore',
+          'tooltip',
+        ],
+        externalRoutes: {}
       }
     },
   }

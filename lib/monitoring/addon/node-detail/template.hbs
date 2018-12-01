@@ -1,0 +1,17 @@
+<section class="header clearfix">
+  <div class="pull-left">
+    <h1 class="vertical-middle">
+      {{t 'hostsPage.hostPage.header.title' name=model.node.displayName}}
+    </h1>
+  </div>
+  <div class="right-buttons">
+    {{badge-state model=model.node}}
+    {{action-menu model=model.node showPrimary=false classNames="ml-10 inline-block" size="sm"}}
+  </div>
+</section>
+
+{{#if model.node.description}}
+  {{banner-message color='bg-secondary mb-0 mt-10' message=(linkify model.node.description)}}
+{{/if}}
+
+{{node-dashboard model=model}}

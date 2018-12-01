@@ -1,0 +1,128 @@
+generic:
+  cpu: CPU
+  memory: 内存
+  hours: 小时
+  noData: 没有数据
+
+metrics:
+  cluster-cpu-usage: CPU使用率
+  cluster-cpu-load: CPU负载
+  cluster-memory-usage: 内存使用率
+  cluster-fs-usage-percent: 磁盘使用率
+  cluster-disk-io: 磁盘I/O
+  cluster-network-io: 网络I/O
+  cluster-network-packet: 网络数据包
+  etcd-db-bytes-sum: 数据库大小
+  etcd-grpc-client: GRPC客户端流量
+  etcd-peer-traffic: 传输流量
+  etcd-raft-proposals: Raft提议
+  etcd-rpc-rate: RPC速率
+  etcd-stream: 活动流
+  etcd-sync-duration: 磁盘同步周期
+  apiserver-request-count: API Server请求速率
+  apiserver-request-latency: API Server请求延迟
+  scheduler-e-2-e-scheduling-latency-seconds-quantile: 调度器e2e调度延迟
+  scheduler-pod-unscheduler: 调度失败的Pod
+  scheduler-total-preemption-attempts: 调度器尝试调度次数
+  controllermanager-queue-depth: 控制器队列深度
+  ingresscontroller-nginx-connection: Ingress控制器连接数
+  ingresscontroller-request-process-time: Ingress控制器请求处理时长
+  node-cpu-load: CPU负载
+  node-cpu-usage: CPU使用率
+  node-memory-usage: 内存使用率
+  node-fs-usage-percent: 磁盘使用率
+  node-disk-io: 磁盘I/O
+  node-network-io: 网络I/O
+  node-network-packet: 网络数据包
+  etcd-leader-change: Leader变更
+  etcd-disk-operate: 磁盘操作
+  fluentd-buffer-queue-length: Fluentd缓存区队列长度
+  fluentd-output-errors: Fluentd输出错误速率
+  fluentd-output-record-number: Fluentd输出速率
+  fluentd-input-record-number: Fluentd输入速率
+
+ingressResponse:
+  host: 主机
+  path: 路径
+  responseTime: 响应时间
+  noData: 没有数据
+  noMatch: 没有记录匹配当前搜索
+  detail: Upstream响应时长（排序前十位）
+  title: Ingress Upstream响应时长
+
+etcd:
+  hasLeader:
+    label: Etcd是否有Leader
+  leaderChange:
+    label: Leader变更次数
+  failedProposals:
+    label: 失败提议次数
+
+clusterDashboard:
+  title: 仪表盘
+  sections:
+    cluster: 集群监控
+    etcd: Etcd监控
+    k8s: Kubernetes组件监控
+    rancher: '{appName}组件监控'
+    node: 节点监控
+  noRancherComponents: '当前集群没有部署其他的{appName}组件。'
+  value: 值
+  more: 更多
+  subtitle:
+    reserved: "已保留{total}中的{used}"
+    used: "已使用{total}中的{used}"
+  enalbeMonitoring: 启用监控并查看实时监控指标
+  monitoringNotReady: 监控API未就绪
+  alert:
+    node: "警告: 节点{node}未激活"
+    component: "警告: 组件{component}不健康"
+    
+monitoringPage:
+  toUpdate: 
+    cluster: 监控已启用。请在系统项目的应用商店中找到<code>cluster-monitoring</code>应用，从而监控的配置。
+    project: 监控已启用。请在该项目的应用商店中找到<code>project-monitoring</code>应用，从而监控的配置。
+  prometheus: 监控尚未启用，点击下面的保存按钮去启用监控。
+  config:
+    header: Prometheus配置
+    prometheus:
+      enablePersistence: 
+        label: 为Prometheus启用持久化存储
+      size:
+        label: Prometheus持久化存储大小
+        placeholder: 例如：50Gi
+      storageClass:
+        label: Prometheus默认存储类
+    grafana:
+      enablePersistence: 
+        label: 为Grafana启用持久化存储
+      size:
+        label: Grafana持久化存储大小
+        placeholder: 例如：10Gi
+      storageClass:
+        label: Grafana默认存储类
+    retention: 
+      label: 数据保存时间
+    storageClass:
+      label: 存储类
+    nodeexporter:
+      label: Node Exporter主机端口
+  nodeSelector:
+    addSelectorLabel: 添加选择器
+    helpText: 选择部署监控相关的工作负载所运行的节点。
+  cluster:
+    title: 集群监控
+    info: '使用Prometheus收集当前集群中节点，Kubernetes组件和Pod的监控指标。'
+    disabled: 当前集群监控尚未启用。
+    toDisable: 监控已启用。点击下面的保存按钮来禁用当前集群的监控。
+    ready: 监控已就绪。系统监控组件部署在 
+    notReady: 监控API未就绪。系统监控组件部署在 
+    justDeployed: 正在部署系统监控组件
+  project:
+    title: 项目监控
+    info: '使用Prometheus收集当前项目中的监控指标。'
+    disabled: 当前项目监控尚未启用。
+    toDisable: 监控已启用。点击下面的保存按钮来禁用当前项目的监控。
+    ready: 监控已就绪。
+    notReady: 监控API未就绪。
+    justDeployed: 正在部署项目监控组件。

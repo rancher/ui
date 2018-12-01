@@ -5,7 +5,7 @@ import layout from './template';
 export default Component.extend(ManageLabels, {
   layout,
   model:         null,
-  initExpandAll: true,
+  expandOnInit:  true,
   sortBy:        'displayState',
   showKind:      true,
   descending:    true,
@@ -21,6 +21,7 @@ export default Component.extend(ManageLabels, {
       name:           'name',
       sort:           ['name'],
       translationKey: 'generic.name',
+      width:          400
     },
     {
       name:           'displayImage',
@@ -31,18 +32,7 @@ export default Component.extend(ManageLabels, {
       name:           'node',
       sort:           ['displayName'],
       translationKey: 'generic.node',
-    },
-    {
-      name:           'displayIp',
-      sort:           ['displayIp'],
-      translationKey: 'generic.ipAddress',
       width:          180
     },
   ],
-
-  expandAllObserve: function() {
-    let expandAll = this.get('expandAll');
-
-    this.set('initExpandAll', expandAll);
-  }.observes('expandAll')
 });

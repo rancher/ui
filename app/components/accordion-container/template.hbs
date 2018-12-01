@@ -1,0 +1,62 @@
+{{#accordion-list-item
+  title=(t 'containersSection.title')
+  detail=(t 'containersSection.detail')
+  expandAll=expandAll
+  expand=(action expandFn)
+  expandOnInit=expandOnInit
+  componentName='sortable-table'
+  as | parent |
+}}
+  {{#sortable-table
+    tableClassNames="double-rows"
+    body=containers
+    bulkActions=false
+    descending=descending
+    sortBy=sortBy
+    stickyHeader=stickyHeader
+    fullRows=true
+    search=search
+    headers=headers as |sortable kind inst dt|
+    }}
+    {{#if (eq kind "row")}}
+      <tr class="main-row">
+        <td data-title="{{dt.displayState}}" class="state">
+          {{badge-state model=inst}}
+        </td>
+        <td data-title="{{dt.name}}">
+          <a href="{{href-to "container" inst.podId inst.name}}">{{inst.displayName}}</a>
+          {{#if inst.initContainer}}
+            <div>
+              <small class="text-muted">{{t 'containersSection.initContainer'}}</small>
+            </div>
+          {{/if}}
+        </td>
+        <td data-title="{{dt.image}}">
+          {{inst.image}}
+        </td>
+        <td data-title="{{dt.restarts}}">
+          {{inst.restarts}}
+        </td>
+        <td data-title="{{dt.actions}}" class="actions">
+          {{action-menu model=inst}}
+        </td>
+      </tr>
+      {{#if inst.showTransitioningMessage}}
+        <tr class="sub-row no-top auto-height">
+          <td class="pb-5" colspan="4">
+            <div>
+              <small class="text-small {{inst.stateColor}}">{{uc-first inst.transitioningMessage}}</small>
+            </div>
+          </td>
+          <td colspan="1"></td>
+        </tr>
+      {{/if}}
+    {{else if (eq kind "nomatch")}}
+      <tr><td colspan="{{sortable.fullColspan}}" class="text-center text-muted lacsso pt-20 pb-20">{{t 'containersSection.noMatch'}}</td></tr>
+    {{else if (eq kind "norows")}}
+      <tr>
+        <td colspan="{{sortable.fullColspan}}" class="text-center text-muted pt-20 pb-20">{{t 'containersSection.noData'}}</td>
+      </tr>
+    {{/if}}
+  {{/sortable-table}}
+{{/accordion-list-item}}

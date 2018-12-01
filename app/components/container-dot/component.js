@@ -31,7 +31,7 @@ export default Component.extend({
   },
 
   details(/* event*/) {
-    var route = 'container';
+    var route = 'pod';
 
     if ( this.get('model.isVm') ) {
       route = 'virtualmachine';

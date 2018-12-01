@@ -1,0 +1,131 @@
+{{#if enabled}}
+  {{#banner-message color=(if (or isReady justDeployed) 'bg-success' 'bg-error') icon=(if (or isReady justDeployed) 'icon-check' 'icon-alert')}}
+    {{#if (eq level 'cluster')}}
+      <p>
+        {{t (concat 'monitoringPage.cluster.' status) htmlSafe=true}} <a href="{{href-to 'apps-tab' cluster.systemProject.id}}">{{cluster.systemProject.displayName}}</a> {{t 'generic.project'}}.
+      </p>
+    {{else}}
+      <p>
+        {{t (concat 'monitoringPage.project.' status) htmlSafe=true}}
+      </p>
+    {{/if}}
+  {{/banner-message}}
+{{else}}
+  {{banner-message color='bg-info' icon='icon-info' message=(t (concat 'monitoringPage.' level '.info') htmlSafe=true)}}
+{{/if}}
+
+<div class="row nav nav-boxes checked-current mv-30 logging-targets">
+  <a href="#" alt='none' class='col span-2 nav-box-item driver {{if (eq selected 'none') 'active' ''}}' {{action "changeSelected" "none"}}>
+    <div class="none"></div>
+    <p>{{t 'monitoringPage.config.types.none'}}</p>
+  </a>
+  <a href="#" alt='prometheus' class='col span-2 nav-box-item driver {{if enabled 'current' ''}} {{if (eq selected 'prometheus') 'active' ''}}' {{action "changeSelected" "prometheus"}}>
+    <div class="prometheus"></div>
+    <p>{{t 'monitoringPage.config.types.prometheus'}}</p>
+  </a>
+</div>
+
+<section>
+  <div class="text-center text-muted">
+    {{#if (eq selected 'none')}}
+      {{#if enabled}}
+        {{t (concat 'monitoringPage.' level '.toDisable')}}
+      {{else}}
+        {{t (concat 'monitoringPage.' level '.disabled')}}
+      {{/if}}
+    {{else if (eq selected 'prometheus')}}
+      {{#if enabled}}
+        {{t (concat 'monitoringPage.toUpdate.' level) htmlSafe=true}}
+      {{else}}
+        {{t 'monitoringPage.prometheus'}}
+      {{/if}}
+    {{/if}}
+  </div>
+  <hr/>
+</section>
+
+{{#if (and (eq selected 'prometheus') (not enabled))}}
+  <h2 class="mt-30"> {{t 'monitoringPage.config.header'}} </h2>
+  <hr/>
+
+  <div class="box mb-10">
+    <div class="row">
+      <div class="col span-6">
+        <label class="acc-label">{{t 'monitoringPage.config.retention.label'}}</label>
+        <div class="input-group">
+          {{input-integer min=0 value=retention}}
+          <span class="input-group-addon bg-default">{{t 'generic.hours'}}</span>
+        </div>
+      </div>
+      {{#if (eq level 'cluster')}}
+        <div class="col span-6">
+          <label class="acc-label">{{t 'monitoringPage.config.nodeexporter.label'}}</label>
+          {{input-integer min=1 min=65535 value=port}}
+        </div>
+      {{else}}
+        <div class="col span-6">
+          <label class="acc-label">{{t 'monitoringPage.config.grafana.enablePersistence.label'}}</label>
+          {{schema/input-boolean value=enableGrafanaPersistence}}
+        </div>
+      {{/if}}
+    </div>
+
+    {{#if (eq level 'cluster')}}
+      <div class="row">
+        <div class="col span-6">
+          <label class="acc-label">{{t 'monitoringPage.config.prometheus.enablePersistence.label'}}</label>
+          {{schema/input-boolean value=enablePrometheusPersistence}}
+        </div>
+        <div class="col span-6">
+          <label class="acc-label">{{t 'monitoringPage.config.grafana.enablePersistence.label'}}</label>
+          {{schema/input-boolean value=enableGrafanaPersistence}}
+        </div>
+      </div>
+    {{/if}}
+    {{#if enablePrometheusPersistence}}
+      <div class="row">
+        <div class="col span-6">
+          <label class="acc-label">{{t 'monitoringPage.config.prometheus.size.label'}}</label>
+          {{schema/input-string value=prometheusPersistenceSize placeholder=(t 'monitoringPage.config.prometheus.size.placeholder')}}
+        </div>
+        <div class="col span-6">
+          <label class="acc-label">{{t 'monitoringPage.config.prometheus.storageClass.label'}}</label>
+          {{schema/input-storageclass value=prometheusStorageClass}}
+        </div>
+      </div>
+    {{/if}}
+
+    {{#if enableGrafanaPersistence}}
+      <div class="row">
+        <div class="col span-6">
+          <label class="acc-label">{{t 'monitoringPage.config.grafana.size.label'}}</label>
+          {{schema/input-string value=grafanaPersistenceSize placeholder=(t 'monitoringPage.config.grafana.size.placeholder')}}
+        </div>
+        <div class="col span-6">
+          <label class="acc-label">{{t 'monitoringPage.config.grafana.storageClass.label'}}</label>
+          {{schema/input-storageclass value=grafanaStorageClass}}
+        </div>
+      </div>
+    {{/if}}
+
+    <div class="row">
+      <div class="col span-12">
+        <label class="acc-label">{{t 'monitoringPage.nodeSelector.helpText'}}</label>
+        {{form-key-value
+            changedArray=(action (mut nodeSelectors))
+            allowEmptyValue=true
+            addActionLabel="monitoringPage.nodeSelector.addSelectorLabel"
+        }}
+      </div>
+    </div>
+  </div>
+{{/if}}
+
+<div class="text-center">
+  {{save-cancel
+      saveDisabled=saveDisabled
+      cancelDisabled=true
+      editing=true
+      save="save"
+  }}
+</div>
