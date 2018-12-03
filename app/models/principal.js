@@ -82,6 +82,7 @@ var Principal = Resource.extend({
     switch ( type ) {
     case C.PROJECT.TYPE_ACTIVE_DIRECTORY_USER:
     case C.PROJECT.TYPE_ADFS_USER:
+    case C.PROJECT.TYPE_OKTA_USER:
     case C.PROJECT.TYPE_AZURE_USER:
     case C.PROJECT.TYPE_FREEIPA_USER:
     case C.PROJECT.TYPE_GITHUB_USER:
@@ -95,6 +96,7 @@ var Principal = Resource.extend({
 
     case C.PROJECT.TYPE_ACTIVE_DIRECTORY_GROUP:
     case C.PROJECT.TYPE_ADFS_GROUP:
+    case C.PROJECT.TYPE_OKTA_GROUP:
     case C.PROJECT.TYPE_AZURE_GROUP:
     case C.PROJECT.TYPE_FREEIPA_GROUP:
     case C.PROJECT.TYPE_KEYCLOAK_GROUP:
