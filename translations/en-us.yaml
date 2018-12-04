@@ -790,6 +790,8 @@ ingressPage:
 
 containerPage:
   header: 'Container: {name}'
+  initContainer:
+    label: initContainer
   envTab:
     header: Environment Variables
     detail: 'Environment Variables that were added at creation.'
@@ -811,6 +813,7 @@ containerPage:
       noData: This container has no volumes mounted
       noMatch: No volumes match the current search
       noContainers: No other containers
+  pod: Pod
 podPage:
   header: 'Pod: {name}'
   nodeIp: Node
@@ -833,25 +836,48 @@ containersPage:
     kubernetesLink: Install Kubernetes
 
 clusterDashboard:
-  title: Dashboard
-  cpu: CPU
-  memory: Memory
-  pods: Pods
-  subtitle:
-    reserved: "{used} of {total} reserved"
-    used: "{used} of {total} used"
-  node: Nodes
-  etcd: etcd
-  scheduler: Scheduler
-  controllerManager: Controller Manager
-  value: Value
   systemProject: This is the system project which has all Kubernetes and {appName} system namespaces. Changes made to resources in the system project may harm the cluster.
   notActive: This cluster is currently <b>{state}</b>.
   notReady: This cluster is currently <b>{state}</b>; areas that interact directly with it will not be available until the API is ready.
-  noNodes: There are no nodes.
-  alert:
-    node: "Alert: Node {node} is not active."
-    component: "Alert: Component {component} is unhealthy."
+metricsAction:
+  description: Expand to see live metrics
+  sections:
+    workload: Workload Metrics
+    pod: Pod Metrics
+    container: Container Metrics
+  grafana: 
+    label: Grafana
+  summary:
+    label: Summary
+  detail:
+    label: Detail
+  from:
+    label: From
+  to:
+    label: To
+  periods:
+    custom: Custom
+    5m: Last 5 minutes
+    1h: Last 1 hour
+    6h: Last 6 hours
+    24h: Last 24 hours
+    7d: Last 7 days
+    30d: Last 30 days
+
+metrics:
+  workload-cpu-usage: CPU Utilization
+  workload-disk-io: Disk I/O
+  workload-memory-usage-bytes-sum: Memory Utilization
+  workload-network-io: Network I/O
+  workload-network-packet: Network Packets
+  pod-cpu-usage: CPU Utilization
+  pod-disk-io: Disk I/O
+  pod-memory-usage-bytes-sum: Memory Utilization
+  pod-network-io: Network I/O
+  pod-network-packet: Network Packets
+  container-cpu-usage: CPU Utilization
+  container-disk-io: Disk I/O
+  container-memory-usage-bytes-sum: Memory Utilization
 
 dnsPage:
   noMatch: No records match the current search
@@ -1075,7 +1101,7 @@ hostsPage:
     kubeProxyVersion: Kube Proxy Version
     dockerVersion: Docker Version
     kernelVersion: Kernel Version
-    operatingSystem: Operating System
+    operatingSystem: OS
     conditions:
       diskSpace: Disk Space
       diskPressure: Disk Pressure
@@ -1235,14 +1261,14 @@ configMapsPage:
 servicePage:
   header: 'Workload: {name}'
   globalScale: '{scale} per host'
-  endpoints: 'Endpoints:'
+  endpoints: 'Endpoints'
   multistat:
-    type: 'Workload Type:'
-    fqdn: 'FQDN:'
-    scale: 'Scale:'
-    image: 'Image:'
-    namespace: 'Namespace:'
-    created: 'Created:'
+    type: 'Workload Type'
+    fqdn: 'FQDN'
+    scale: 'Scale'
+    image: 'Image'
+    namespace: 'Namespace'
+    created: 'Created'
     daemonSetScale: '1 per node'
   serviceType:
     deployment: Deployment
@@ -3783,6 +3809,20 @@ formNetwork:
       label: IP Address
       placeholder: e.g. 192.168.0.1
 
+formCustomMetrics:
+  title: Custom Metrics
+  detail: Expose the endpoints for Prometheus to collect custom metrics
+  port: 
+    label: Container Port
+    placeholder: e.g. 8080
+  path: 
+    label: Path
+    placeholder: e.g. /metrics
+  protocol: 
+    label: Protocol
+  noPorts: No Endpoints
+  addActionLabel: Add Metrics Endpoint
+
 formPorts:
   header: Port Mapping
   addAction: Add Port
@@ -4392,24 +4432,6 @@ hostPod:
 identityBlock:
   loading: Loading...
 
-infoMultiStats:
-  connecting: Connecting...
-  utilizationStats: Utilization stats are only available while active/running.
-  cpuSection:
-    labelText: CPU
-    system: System
-    user: User
-  networkSection:
-    labelText: Network
-    transmit: Transmit
-    receive: Receive
-  memorySection:
-    labelText: Memory
-    used: Used
-  storageSection:
-    labelText: Storage
-    read: Read
-    write: Write
 
 inputAnswers:
   yaml: Edit as YAML
@@ -4441,6 +4463,13 @@ uploadFile:
 podsSection:
   title: Pods
   detail: Pods in this workload
+
+containersSection:
+  title: Containers
+  detail: Containers in this pod
+  noData: No Containers
+  noMatch: No Containers match the current search
+  initContainer: Init Container
 
 labelsSection:
   kind: Kind
@@ -5862,7 +5891,7 @@ volumesPage:
   storageClass:
     label: Storage Class
 
-
+    
 vmConsole:
   header: "Console:"
   protip: "ProTip: Hold the {key} key when opening shell access to launch a new window."
@@ -6009,6 +6038,7 @@ nav:
     alerts: Alerts
     notifiers: Notifiers
     logging: Logging
+    monitoring: Monitoring
     pipeline: Pipeline
   project:
     none: Grouped Projects/Namespaces
@@ -6065,6 +6095,7 @@ action:
   viewConfig: View Config
   viewGraph: View Graph
   viewInApi: View in API
+  viewInGrafana: Go to Grafana
   viewInstance: View Instance
   test: Test
   mute: Mute

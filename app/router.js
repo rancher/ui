@@ -59,11 +59,9 @@ Router.map(function() {
 
       this.route('nodes', function() {
         this.route('index', { path: '/' });
-        this.route('node', {
-          path:           '/:node_id',
-          resetNamespace: true
-        });
       });
+
+      this.mount('monitoring');
 
       this.route('projects', { path: '/projects-namespaces' }, function() {
         this.route('index', { path: '/' });
@@ -122,6 +120,7 @@ Router.map(function() {
       this.mount('alert', { path: '/alerts' });
 
       this.mount('pipeline');
+      this.mount('monitoring');
 
       // Workload
       this.route('containers', {
@@ -131,10 +130,15 @@ Router.map(function() {
         this.route('run', { path: '/run' });
         this.route('index', { path: '/' });
 
-        this.route('container', {
-          path:           '/:container_id',
+        this.route('pod', {
+          path:           '/:pod_id',
           resetNamespace: true
         });
+
+        this.route('container', {
+          path:           '/:pod_id/container/:container_name',
+          resetNamespace: true
+        })
       });
 
       this.route('ingresses', { resetNamespace: true }, function() {

@@ -790,6 +790,8 @@ ingressPage:
 
 containerPage:
   header: '容器: {name}'
+  initContainer:
+    label: 初始化容器
   envTab:
     header: 环境变量
     detail: '在创建容器时配置到容器内的环境变量。'
@@ -833,25 +835,46 @@ containersPage:
     kubernetesLink: 安装 Kubernetes
 
 clusterDashboard:
-  title: 仪表盘
-  cpu: CPU
-  memory: Memory
-  pods: Pods
-  subtitle:
-    reserved: "已保留{total}中的{used}"
-    used: "已创建{used}个Pod,最多{total}个"
-  node: Nodes
-  etcd: Etcd
-  scheduler: Scheduler
-  controllerManager: Controller Manager
-  value: 值
   systemProject: "这是具有所有Kubernetes和{appName}系统命名空间的系统项目，修改系统项目中的资源可能会导致系统无法正常运行。"
   notActive: 此集群当前为<b>{state}</b>
   notReady: 此集群当前为<b>{state}</b>，在API准备就绪之前，直接与API交互的功能将不可用。
-  noNodes: 没有主机
-  alert:
-    node: "警告: 节点{node}未激活"
-    component: "警告: 组件{component}不健康"
+
+metricsAction:
+  description: 查看实时监控指标
+  sections:
+    workload: 工作负载监控
+    pod: Pod监控
+    container: Container监控
+  summary:
+    label: 概览模式
+  detail:
+    label: 详情模式
+  from:
+    label: 起始时间
+  to:
+    label: 结束时间
+  periods:
+    custom: 自定义时间段
+    5m: 过去5分钟
+    1h: 过去1小时
+    6h: 过去6小时
+    24h: 过去24小时
+    7d: 过去7天
+    30d: 过去30天
+  metrics:
+    workload-cpu-usage: CPU
+    workload-disk-io: 磁盘I/O
+    workload-memory-usage-bytes-sum: 内存
+    workload-network-io: 网络I/O
+    workload-network-packet: 网络数据包
+    pod-cpu-usage: CPU
+    pod-disk-io: 磁盘I/O
+    pod-memory-usage-bytes-sum: 内存
+    pod-network-io: 网络I/O
+    pod-network-packet: 网络数据包
+    container-cpu-usage: CPU
+    container-disk-io: 磁盘I/O
+    container-memory-usage-bytes-sum: 内存
 
 dnsPage:
   noMatch: 没有匹配当前搜索的记录
@@ -1235,14 +1258,14 @@ configMapsPage:
 servicePage:
   header: '工作负载: {name}'
   globalScale: '每个主机{scale}'
-  endpoints: '访问端口:'
+  endpoints: '访问端口'
   multistat:
-    type: '类型:'
-    fqdn: 'FQDN:'
-    scale: 'Pod副本数:'
-    image: '镜像名: '
-    namespace: '命名空间:'
-    created: '创建时间: '
+    type: '类型'
+    fqdn: 'FQDN'
+    scale: 'Pod副本数'
+    image: '镜像名'
+    namespace: '命名空间'
+    created: '创建时间'
     daemonSetScale: '每主机1个Pod'
   serviceType:
     deployment: Deployment
@@ -3783,6 +3806,20 @@ formNetwork:
       label: IP地址
       placeholder: '例如: 192.168.0.1'
 
+formCustomMetrics:
+  title: 自定义指标
+  detail: 配置自定义指标端口，监控系统将通过这些端口采集自定义指标。
+  port: 
+    label: 容器端口
+    placeholder: 例如：8080
+  path: 
+    label: Path
+    placeholder: 例如：/metrics
+  protocol: 
+    label: 协议
+  noPorts: 没有自定义指标
+  addActionLabel: 添加自定义指标
+
 formPorts:
   header: 端口映射
   addAction: 添加规则
@@ -4386,25 +4423,6 @@ hostPod:
 identityBlock:
   loading: 加载中...
 
-infoMultiStats:
-  connecting: 连接中...
-  utilizationStats: 使用率统计数据仅在活动/运行时可见
-  cpuSection:
-    labelText: 处理器
-    system: 系统
-    user: 用户
-  networkSection:
-    labelText: 网络
-    transmit: 发送
-    receive: 接收
-  memorySection:
-    labelText: 内存
-    used: 已使用
-  storageSection:
-    labelText: 存储
-    read: 读
-    write: 写
-
 inputAnswers:
   yaml: 编辑YAML
   config: 配置选项
@@ -4435,6 +4453,13 @@ uploadFile:
 podsSection:
   title: Pods
   detail: 此工作负载中的Pods
+
+containersSection:
+  title: 容器
+  detail: 当前Pod中包含的容器
+  noData: 没有容器
+  noMatch: 没有容器匹配当前搜索
+  initContainer: 初始化容器
 
 labelsSection:
   kind: 类型
@@ -5989,6 +6014,7 @@ nav:
     alerts: 告警
     notifiers: 通知
     logging: 日志
+    monitoring: 监控
     pipeline: 流水线
   project:
     none: 项目/命名空间
@@ -6045,6 +6071,7 @@ action:
   viewConfig: 查看配置
   viewGraph: 查看图形
   viewInApi: API查看
+  viewInGrafana: 查看Grafana
   viewInstance: 查看实例
   test: 测试
   mute: 静默

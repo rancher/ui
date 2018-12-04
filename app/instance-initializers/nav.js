@@ -1,4 +1,5 @@
 import { getProjectId, getClusterId, bulkAdd } from 'ui/utils/navigation-tree';
+import { get } from '@ember/object';
 
 const rootNav = [
   // Project
@@ -34,17 +35,8 @@ const rootNav = [
     id:             'infra',
     localizedLabel: 'nav.infra.tab',
     ctx:            [getProjectId],
-    route:          'authenticated.project.alert',
+    route:          'authenticated.project.certificates',
     submenu:        [
-      {
-        id:             'tools-alerts',
-        localizedLabel: 'nav.tools.alerts',
-        icon:           'icon icon-alert',
-        route:          'authenticated.project.alert',
-        resource:       [],
-        ctx:            [getProjectId],
-        resourceScope:  'global',
-      },
       {
         id:             'infra-certificates',
         localizedLabel: 'nav.infra.certificates',
@@ -62,24 +54,6 @@ const rootNav = [
         ctx:            [getProjectId],
         resource:       ['configmap'],
         resourceScope:  'project',
-      },
-      {
-        id:             'tools-logging',
-        localizedLabel: 'nav.tools.logging',
-        icon:           'icon icon-files',
-        route:          'authenticated.project.logging',
-        resourceScope:  'global',
-        resource:       [],
-        ctx:            [getProjectId],
-      },
-      {
-        id:             'tools-pipeline',
-        localizedLabel: 'nav.tools.pipeline',
-        icon:           'icon icon-garbage',
-        route:          'authenticated.project.pipeline.settings',
-        resource:       ['sourcecodeproviderconfig'],
-        resourceScope:  'project',
-        ctx:            [getProjectId],
       },
       {
         id:             'infra-registries',
@@ -120,12 +94,58 @@ const rootNav = [
     resourceScope:  'global',
     ctx:            [getProjectId],
   },
+  {
+    scope:          'project',
+    id:             'project-tools',
+    localizedLabel: 'nav.tools.tab',
+    ctx:            [getProjectId],
+    resource:       [],
+    resourceScope:  'global',
+    route:          'authenticated.project.alert',
+    submenu:        [
+      {
+        id:             'tools-alerts',
+        localizedLabel: 'nav.tools.alerts',
+        route:          'authenticated.project.alert',
+        resource:       [],
+        ctx:            [getProjectId],
+        resourceScope:  'global',
+      },
+      {
+        id:             'tools-logging',
+        localizedLabel: 'nav.tools.logging',
+        route:          'authenticated.project.logging',
+        resourceScope:  'global',
+        resource:       [],
+        ctx:            [getProjectId],
+      },
+      {
+        id:             'tools-monitoring',
+        localizedLabel: 'nav.tools.monitoring',
+        route:          'authenticated.project.monitoring.project-setting',
+        resourceScope:  'global',
+        resource:       [],
+        ctx:            [getProjectId],
+        condition() {
+          return !get(this, 'project.isSystemProject') && get(this, 'cluster.enableClusterMonitoring')
+        }
+      },
+      {
+        id:             'tools-pipeline',
+        localizedLabel: 'nav.tools.pipeline',
+        route:          'authenticated.project.pipeline.settings',
+        resource:       ['sourcecodeproviderconfig'],
+        resourceScope:  'project',
+        ctx:            [getProjectId],
+      },
+    ]
+  },
   // Cluster
   {
     scope:          'cluster',
     id:             'cluster-k8s',
     localizedLabel: 'nav.cluster.dashboard',
-    route:          'authenticated.cluster.index',
+    route:          'authenticated.cluster.monitoring',
     ctx:            [getClusterId],
     resource:       ['node'],
     resourceScope:  'global',
@@ -217,18 +237,23 @@ const rootNav = [
       {
         id:             'cluster-tools-notifiers',
         localizedLabel: 'nav.tools.notifiers',
-        // icon: 'icon icon-key',
         route:          'authenticated.cluster.notifier',
         resourceScope:  'global',
         resource:       [],
         ctx:            [getClusterId],
       },
-      { divider: true },
       {
         id:             'cluster-tools-logging',
         localizedLabel: 'nav.tools.logging',
-        // icon: 'icon icon-key',
         route:          'authenticated.cluster.logging',
+        resourceScope:  'global',
+        resource:       [],
+        ctx:            [getClusterId],
+      },
+      {
+        id:             'cluster-tools-monitoring',
+        localizedLabel: 'nav.tools.monitoring',
+        route:          'authenticated.cluster.monitoring.cluster-setting',
         resourceScope:  'global',
         resource:       [],
         ctx:            [getClusterId],

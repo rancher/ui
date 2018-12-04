@@ -76,7 +76,7 @@ export default Component.extend({
         obj.css = (`width: ${  obj.percent }%`).htmlSafe();
       });
 
-      return out;
+      return out.filter((obj) => obj.percent);
     }));
 
     valueDep = `tooltipValues.@each.{${ labelKey },${ valueKey }}`;

@@ -1,7 +1,7 @@
 <section class="header clearfix">
   <div class="pull-left">
     <h1 class="vertical-middle">
-      {{t 'podPage.header' name=model.displayName}}
+      {{t 'containerPage.header' name=model.displayName}}
     </h1>
   </div>
   <div class="right-buttons">
@@ -9,6 +9,7 @@
     {{action-menu model=model showPrimary=false classNames="ml-10 inline-block" size="sm"}}
   </div>
 </section>
+
 {{#if model.description}}
   {{banner-message color='bg-secondary mb-0 mt-10' message=(linkify model.description)}}
 {{/if}}
@@ -17,230 +18,144 @@
   <div class="{{model.stateColor}}"><p>{{uc-first model.transitioningMessage}}</p></div>
 {{/if}}
 
-<section>
-  <div class="row banner bg-info basics">
-    {{#if (eq model.containers.length 1)}}
-      <div class="vertical-middle">
-        <label class="acc-label vertical-middle p-0"> {{t 'podPage.image'}}:</label>
-        {{selectedContainer.image}} {{copy-to-clipboard clipboardText=container.image size="small"}}
-      </div>
-
+<div class="row banner bg-info basics">
+  <div class="vertical-middle">
+    <label class="acc-label vertical-middle p-0">{{t 'servicePage.multistat.namespace'}}:</label>
+    {{#if model.pod.namespaceId}}
+      {{#copy-inline clipboardText=model.pod.namespaceId}}
+        {{model.pod.namespaceId}}
+      {{/copy-inline}}
+    {{else}}
+      {{t 'generic.none'}}
     {{/if}}
-    <div class="vertical-middle">
-      <label class="acc-label vertical-middle p-0">{{t 'servicePage.multistat.namespace'}}</label>
-      {{#if model.namespaceId}}
-        {{#copy-inline clipboardText=model.namespaceId}}
-          {{model.namespaceId}}
-        {{/copy-inline}}
-      {{else}}
-        {{t 'generic.none'}}
-      {{/if}}
-    </div>
-    <div class="vertical-middle">
-      <label class="acc-label vertical-middle p-0">{{t 'dnsPage.type.workload'}}:</label>
-      {{#if model.workload}}
-        {{#link-to "workload" model.workloadId}}{{model.workloadId}}{{/link-to}}
-      {{else if model.workloadId}}
-        {{model.workloadId}}
-      {{else}}
-        {{t 'generic.none'}}
-      {{/if}}
-    </div>
   </div>
-  <div class="row banner bg-info basics">
-    <div class="vertical-middle">
-      <label class="acc-label vertical-middle p-0">{{t 'podPage.podIp'}}:</label>
-      {{#if model.displayIp}}
-        {{#copy-inline clipboardText=model.displayIp}}
-          {{model.displayIp}}
-        {{/copy-inline}}
-      {{else}}
-        {{t 'generic.none'}}
-      {{/if}}
-    </div>
-    <div class="vertical-middle">
-      <label class="acc-label vertical-middle p-0">{{t 'podPage.nodeIp'}}:</label>
-      {{#if (and model.node.id model.node.clusterId)}}
-        <div class="inline">
-          <a href="{{href-to 'node' model.node.clusterId model.node.id}}">{{model.node.displayName}}</a>
-          {{#if (or model.node.externalIpAddress model.node.ipAddress)}}
-            {{node-ip model=model.node}}
-          {{/if}}
-        </div>
-      {{else}}
-        {{t 'generic.unknown'}}
-      {{/if}}
-    </div>
-    <div class="vertical-middle">
-      <label class="acc-label vertical-middle p-0">{{t 'generic.created'}}:</label>
-      {{date-calendar model.created}} <small class="text-muted">({{t 'generic.restarts'}} {{model.restarts}})</small>
-    </div>
+  <div class="vertical-middle">
+    <label class="acc-label vertical-middle p-0">{{t 'podPage.image'}}:</label>
+    {{model.image}} {{copy-to-clipboard clipboardText=model.image size="small"}}
   </div>
-</section>
-
-<section>
-  {{#accordion-list as |al expandFn|}}
-    {{#if model.workload}}
-      {{container/form-scheduling
-        initialHostId=model.workload.nodeId
-        scheduling=model.workload.scheduling
-        editing=false
-        expandAll=al.expandAll
-        expandFn=expandFn
-        classNames="accordion"
-      }}
+  <div class="vertical-middle">
+    <label class="acc-label vertical-middle p-0">{{t 'containerPage.pod'}}:</label>            {{#if model.pod}}
+    {{#link-to "pod" model.podId}}{{model.podId}}{{/link-to}}
+    {{else if model.podId}}
+      {{model.podId}}
+    {{else}}
+      {{t 'generic.none'}}
     {{/if}}
+  </div>
+</div>
 
-    {{container/form-networking
-      classNames="accordion-wrapper"
-      service=model
-      editing=false
-      expandAll=al.expandAll
-      expandFn=expandFn
-    }}
-
-    {{form-labels-annotations
-      classNames="accordion-wrapper"
-      model=model
-      editing=false
-      expandAll=al.expandAll
-      expandFn=expandFn
-    }}
-
-    {{resource-condition-list
-      resourceType=(t 'generic.pod')
-      conditions=model.status.conditions
-      expandAll=al.expandAll
-      expandFn=expandFn
-    }}
-
-    {{resource-event-list
-      resourceType=(t 'generic.pod')
-      expandAll=al.expandAll
-      expandFn=expandFn
-      namespaceId=model.namespaceId
-      name=model.name
-      kind="Pod"
-    }}
-  {{/accordion-list}}
-</section>
-
-<section class="header has-tabs clearfix pb-0">
-  <ul class="tab-nav">
-    {{#each model.containers as |container|}}
-      <li>
-        <a class="{{if (eq container.name selectedContainer.name) 'active'}} hand" {{action 'select' container}}>
-          <i class="{{container.stateIcon}} {{container.stateColor}} dot"></i>
-          {{container.name}}
-        </a>
-      </li>
-    {{/each}}
-  </ul>
-</section>
-
-{{#each model.containers as |container|}}
-  <section class="{{if (eq container.name selectedContainer.name) '' 'hide'}}">
-    {{#if container.showTransitioningMessage}}
-      <div class="{{container.stateColor}}"><p>{{uc-first container.transitioningMessage}}</p></div>
+<div class="row banner bg-info basics">
+  <div class="vertical-middle">
+    <label class="acc-label vertical-middle p-0">{{t 'containerPage.initContainer.label'}}:</label>
+    {{#if model.initContainer}}
+      {{t 'generic.yes'}}
+    {{else}}
+      {{t 'generic.no'}}
     {{/if}}
+  </div>
+  <div class="vertical-middle">
+    <label class="acc-label vertical-middle p-0">{{t 'generic.restarts'}}:</label>
+    {{model.restarts}}
+  </div>
+  <div class="vertical-middle">
+    <label class="acc-label vertical-middle p-0">{{t 'generic.created'}}:</label>
+    {{date-calendar model.pod.created}}
+  </div>
+</div>
 
-    <section class="header clearfix" style="border-bottom: 0;">
-      <div class="pull-left">
-        <h1 class="vertical-middle">
-          {{t 'podPage.image'}}:
-          {{container.image}} {{copy-to-clipboard clipboardText=container.image size="small"}}
-        </h1>
+{{#accordion-list as |al expandFn|}}
+  {{#if scope.currentCluster.isMonitoringReady}}
+    {{#metrics-summary 
+      expandAll=al.expandAll
+      expandFn=expandFn
+      grafanaUrl=model.grafanaUrl
+      title=(t "metricsAction.sections.container")
+    }}
+      {{container-metrics podId=model.pod.id resourceId=model.name}}
+    {{/metrics-summary}}
+  {{/if}}
+  
+  {{#accordion-list-item
+    title=(t 'containerPage.portsTab.header')
+    detail=(t 'containerPage.portsTab.detail')
+    expandAll=al.expandAll
+    expand=(action expandFn)
+  }}
+    {{container/form-ports
+      initialPorts=model.ports
+      editing=false
+    }}
+  {{/accordion-list-item}}
+
+  {{container/form-volumes
+    launchConfig=model
+    workload=model.pod
+    namespace=model.pod.namespace
+    loggingEnabled=true
+    editing=false
+    expandAll=al.expandAll
+    expandFn=expandFn
+  }}
+
+  {{#accordion-list-item
+    title=(t 'containerPage.envTab.header')
+    detail=(t 'containerPage.envTab.detail')
+    expandAll=al.expandAll
+    expand=(action expandFn)
+  }}
+    {{form-env-var
+      model=displayEnvironmentVars
+    }}
+  {{/accordion-list-item}}
+
+  {{container/form-command
+    instance=model
+    service=model.pod
+    editing=false
+    expandAll=al.expandAll
+    expandFn=expandFn
+  }}
+
+  {{#accordion-list-item
+    title=(t 'formHealthCheck.title')
+    detail=(t 'formHealthCheck.detail')
+    expandAll=al.expandAll
+    expand=(action expandFn)
+  }}
+    <div class="row">
+      <div class="col span-6 mt-0 mb-0">
+        <label class="acc-label">{{t 'formHealthCheck.readiness'}}</label>
       </div>
-      <div class="right-buttons">
-        {{badge-state model=container}}
-        {{action-menu model=container showPrimary=false classNames="ml-10 inline-block" size="sm"}}
+      <div class="col span-6 mt-0 mb-0">
+        {{#if model.livenessProbe}}
+          <label class="acc-label">{{t 'formHealthCheck.liveness'}}</label>
+        {{/if}}
       </div>
-    </section>
-
-    {{#accordion-list as |al expandFn|}}
-      {{#accordion-list-item
-        title=(t 'containerPage.portsTab.header')
-        detail=(t 'containerPage.portsTab.detail')
-        expandAll=al.expandAll
-        expand=(action expandFn)
-      }}
-        {{container/form-ports
-          initialPorts=container.ports
-          editing=false
+    </div>
+    <div class="row">
+      <div class="col {{if model.livenessProbe 'span-6' 'span-12'}}">
+        {{form-healthcheck
+            initialCheck=model.readinessProbe
+            editing=false
         }}
-      {{/accordion-list-item}}
-
-      {{container/form-volumes
-        launchConfig=container
-        workload=model
-        namespace=model.namespace
-        loggingEnabled=true
-        editing=false
-        expandAll=al.expandAll
-        expandFn=expandFn
-      }}
-
-      {{#accordion-list-item
-        title=(t 'containerPage.envTab.header')
-        detail=(t 'containerPage.envTab.detail')
-        expandAll=al.expandAll
-        expand=(action expandFn)
-      }}
-        {{form-env-var
-          model=displayEnvironmentVars
-        }}
-      {{/accordion-list-item}}
-
-      {{container/form-command
-        instance=container
-        service=model
-        editing=false
-        expandAll=al.expandAll
-        expandFn=expandFn
-      }}
-
-      {{#accordion-list-item
-        title=(t 'formHealthCheck.title')
-        detail=(t 'formHealthCheck.detail')
-        expandAll=al.expandAll
-        expand=(action expandFn)
-      }}
-        <div class="row">
-          <div class="col span-6 mt-0 mb-0">
-            <label class="acc-label">{{t 'formHealthCheck.readiness'}}</label>
-          </div>
-          <div class="col span-6 mt-0 mb-0">
-            {{#if container.livenessProbe}}
-              <label class="acc-label">{{t 'formHealthCheck.liveness'}}</label>
-            {{/if}}
-          </div>
+      </div>
+      {{#if model.livenessProbe}}
+        <div class="col span-6">
+          {{form-healthcheck
+              initialCheck=model.livenessProbe
+              editing=false
+              isLiveness=true
+          }}
         </div>
-        <div class="row">
-          <div class="col {{if container.livenessProbe 'span-6' 'span-12'}}">
-            {{form-healthcheck
-                initialCheck=container.readinessProbe
-                editing=false
-            }}
-          </div>
-          {{#if container.livenessProbe}}
-            <div class="col span-6">
-              {{form-healthcheck
-                  initialCheck=container.livenessProbe
-                  editing=false
-                  isLiveness=true
-              }}
-            </div>
-          {{/if}}
-        </div>
-      {{/accordion-list-item}}
+      {{/if}}
+    </div>
+  {{/accordion-list-item}}
 
-      {{container/form-security
-        instance=container
-        service=model
-        editing=false
-        expandAll=al.expandAll
-        expandFn=expandFn
-      }}
-    {{/accordion-list}}
-  </section>
-{{/each}}
+  {{container/form-security
+    instance=model
+    service=model.pod
+    editing=false
+    expandAll=al.expandAll
+    expandFn=expandFn
+  }}
+{{/accordion-list}}

@@ -1,0 +1,39 @@
+{{#accordion-list-item
+     title=(t 'ingressResponse.title')
+     detail=(t 'ingressResponse.detail')
+     expandAll=expandAll
+     expand=(action expandFn)
+     expandOnInit=true
+     componentName='sortable-table'
+     as | parent |
+}}
+  {{#component parent.intent
+       classNames="grid fixed mb-0 sortable-table"
+       bulkActions=false
+       rowActions=false
+       paging=false
+       search=true
+       sortBy=sortBy
+       stickyHeader=false
+       descending=descending
+       headers=headers
+       body=data
+       as |sortable kind inst|
+  }}
+    {{#if (eq kind "row")}}
+      <tr>
+        <td data-title="{{t 'ingressResponse.host'}}:" class="force-wrap">{{inst.host}}</td>
+        <td data-title="{{t 'ingressResponse.path'}}:" class="force-wrap">{{inst.path}}</td>
+        <td data-title="{{t 'ingressResponse.responseTime'}}:" class="force-wrap">{{inst.time}}</td>
+      </tr>
+    {{else if (eq kind "norows")}}
+      <tr>
+        <td colspan="{{sortable.fullColspan}}" class="text-center text-muted pt-20 pb-20">{{t 'ingressResponse.noData'}}</td>
+      </tr>
+    {{else if (eq kind "nomatch")}}
+      <tr>
+        <td colspan="{{sortable.fullColspan}}" class="text-center text-muted pt-20 pb-20">{{t 'ingressResponse.noMatch'}}</td>
+      </tr>
+    {{/if}}
+  {{/component}}
+{{/accordion-list-item}}

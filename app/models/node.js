@@ -1,5 +1,5 @@
 import { computed, get } from '@ember/object';
-import { or } from '@ember/object/computed';
+import { or, alias } from '@ember/object/computed';
 import Resource from 'ember-api-store/models/resource';
 import { download } from 'shared/utils/util';
 import C from 'ui/utils/constants';
@@ -7,11 +7,12 @@ import StateCounts from 'ui/mixins/state-counts';
 import { inject as service } from '@ember/service';
 import { reference } from 'ember-api-store/utils/denormalize';
 import ResourceUsage from 'shared/mixins/resource-usage';
+import Grafana from 'shared/mixins/grafana';
 
 const UNSCHEDULABLE_KEYS = ['node-role.kubernetes.io/etcd', 'node-role.kubernetes.io/controlplane'];
 const UNSCHEDULABLE_EFFECTS = ['NoExecute', 'NoSchedule'];
 
-var Node = Resource.extend(StateCounts, ResourceUsage, {
+var Node = Resource.extend(Grafana, StateCounts, ResourceUsage, {
   modalService: service('modal'),
   settings:     service(),
   prefs:        service(),
@@ -21,6 +22,9 @@ var Node = Resource.extend(StateCounts, ResourceUsage, {
   intl:         service(),
 
   type: 'node',
+
+  grafanaDashboardName: 'Nodes',
+  grafanaResourceId:    alias('ipAddress'),
 
   cluster:  reference('clusterId', 'cluster'),
   nodePool: reference('nodePoolId'),

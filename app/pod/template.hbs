@@ -1,0 +1,137 @@
+<section class="header clearfix">
+  <div class="pull-left">
+    <h1 class="vertical-middle">
+      {{t 'podPage.header' name=model.displayName}}
+    </h1>
+  </div>
+  <div class="right-buttons">
+    {{badge-state model=model}}
+    {{action-menu model=model showPrimary=false classNames="ml-10 inline-block" size="sm"}}
+  </div>
+</section>
+{{#if model.description}}
+  {{banner-message color='bg-secondary mb-0 mt-10' message=(linkify model.description)}}
+{{/if}}
+
+{{#if model.showTransitioningMessage}}
+  <div class="{{model.stateColor}}"><p>{{uc-first model.transitioningMessage}}</p></div>
+{{/if}}
+
+<div class="row banner bg-info basics">
+  <div class="vertical-middle">
+    <label class="acc-label vertical-middle p-0">{{t 'servicePage.multistat.namespace'}}:</label>
+    {{#if model.namespaceId}}
+      {{#copy-inline clipboardText=model.namespaceId}}
+        {{model.namespaceId}}
+      {{/copy-inline}}
+    {{else}}
+      {{t 'generic.none'}}
+    {{/if}}  
+  </div>
+  <div class="vertical-middle">
+    <label class="acc-label vertical-middle p-0">{{t 'podPage.image'}}:</label>
+    {{model.displayImage}}
+  </div>
+  <div class="vertical-middle">
+    <label class="acc-label vertical-middle p-0">{{t 'dnsPage.type.workload'}}:</label>
+    {{#if model.workload}}
+      {{#link-to "workload" model.workloadId}}{{model.workloadId}}{{/link-to}}
+    {{else if model.workloadId}}
+      {{model.workloadId}}
+    {{else}}
+      {{t 'generic.none'}}
+    {{/if}}
+  </div>
+</div>
+
+<div class="row banner bg-info basics">
+  <div class="vertical-middle">
+    <label class="acc-label vertical-middle p-0">{{t 'podPage.podIp'}}:</label>
+    {{#if model.displayIp}}
+      {{#copy-inline clipboardText=model.displayIp}}
+        {{model.displayIp}}
+      {{/copy-inline}}
+    {{else}}
+      {{t 'generic.none'}}
+    {{/if}}
+  </div>
+  <div class="vertical-middle">
+    <label class="acc-label vertical-middle p-0">{{t 'podPage.nodeIp'}}:</label>
+    {{#if (and model.node.id model.node.clusterId)}}
+      <div class="inline">
+        <a href="{{href-to 'authenticated.cluster.monitoring.node-detail' model.node.clusterId model.node.id}}">{{model.node.displayName}}</a>
+        {{#if (or model.node.externalIpAddress model.node.ipAddress)}}
+          {{node-ip model=model.node}}
+        {{/if}}
+      </div>
+    {{else}}
+      {{t 'generic.unknown'}}
+    {{/if}}
+  </div>
+  <div class="vertical-middle">
+    <label class="acc-label vertical-middle p-0">{{t 'generic.created'}}:</label>
+    {{date-calendar model.created}} 
+    <div class="text-muted text-small">{{t 'generic.restarts'}} {{model.restarts}}</div>
+  </div>
+</div>
+
+{{#accordion-list as |al expandFn|}}
+  {{accordion-container
+    containers=model.containers
+    expandAll=al.expandAll
+    expandFn=expandFn
+  }}
+
+  {{#if scope.currentCluster.isMonitoringReady}}
+    {{#metrics-summary
+      expandAll=al.expandAll
+      expandFn=expandFn
+      grafanaUrl=model.grafanaUrl
+      title=(t "metricsAction.sections.pod")}}
+      {{pod-metrics resourceId=model.id}}
+    {{/metrics-summary}}
+  {{/if}}
+  
+  {{resource-event-list
+    resourceType=(t 'generic.pod')
+    expandAll=al.expandAll
+    expandFn=expandFn
+    namespaceId=model.namespaceId
+    name=model.name
+    kind="Pod"
+  }}
+
+  {{resource-condition-list
+    resourceType=(t 'generic.pod')
+    conditions=model.status.conditions
+    expandAll=al.expandAll
+    expandFn=expandFn
+  }}
+  
+  {{#if model.workload}}
+    {{container/form-scheduling
+      initialHostId=model.workload.nodeId
+      scheduling=model.workload.scheduling
+      editing=false
+      expandAll=al.expandAll
+      expandFn=expandFn
+      classNames="accordion"
+    }}
+  {{/if}}
+
+  {{container/form-networking
+    classNames="accordion-wrapper"
+    service=model
+    editing=false
+    expandAll=al.expandAll
+    expandFn=expandFn
+  }}
+
+  {{form-labels-annotations
+    classNames="accordion-wrapper"
+    model=model
+    editing=false
+    expandAll=al.expandAll
+    expandFn=expandFn
+  }}
+{{/accordion-list}}

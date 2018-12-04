@@ -1,5 +1,6 @@
 import { get } from '@ember/object';
 import Route from '@ember/routing/route';
+import { hash } from 'rsvp';
 
 export default Route.extend({
   beforeModel() {
@@ -14,12 +15,16 @@ export default Route.extend({
     }
   },
   model(params) {
-    const pod = get(this, 'store').find('pod', params.container_id);
+    const pod = get(this, 'store').find('pod', params.pod_id);
 
-    if ( !pod ) {
-      this.replaceWith('authenticated.project.index');
-    }
+    return hash({ pod }).then((hash) => {
+      const container = get(hash, 'pod.containers').findBy('name', params.container_name);
 
-    return pod;
+      if ( !container ) {
+        this.replaceWith('authenticated.project.index');
+      }
+
+      return container;
+    });
   },
 });

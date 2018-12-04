@@ -1,0 +1,27 @@
+<section class="header clearfix">
+  <h1 class="pull-left">{{t 'clusterDashboard.title'}}: {{cluster.displayName}}</h1>
+
+  <div class="right-buttons">
+    <button class="btn bg-primary btn-sm icon-btn ml-10" disabled={{not cluster.isReady}} onClick={{action "kubectl" allowedKeys="meta"}}>
+      <span class="darken"><i class="icon icon-terminal"></i></span>
+      <span>{{t 'k8sPage.shell.button'}}</span>
+    </button>
+
+    <button class="btn bg-primary btn-sm icon-btn ml-10" disabled={{not cluster.isReady}} {{action "kubeconfig"}}>
+      <span class="darken"><i class="icon icon-file"></i></span>
+      <span>{{t 'k8sPage.configFile.button'}}</span>
+    </button>
+
+    {{action-menu size="sm" classNames="pull-right" model=cluster}}
+  </div>
+</section>
+
+{{#if cluster.description}}
+  <div class="row mb-30">
+    {{banner-message color='bg-secondary mb-0 mt-10' message=(linkify cluster.description)}}
+  </div>
+{{/if}}
+
+<section>
+  {{cluster-dashboard cluster=cluster nodes=currentClusterNodes}}
+</section>

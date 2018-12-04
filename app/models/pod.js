@@ -1,5 +1,6 @@
 import C from 'ui/utils/constants';
 import Resource from 'ember-api-store/models/resource';
+import { alias } from '@ember/object/computed';
 import { reference } from 'ember-api-store/utils/denormalize';
 import { get, computed } from '@ember/object';
 import { inject as service } from '@ember/service';
@@ -7,9 +8,10 @@ import { strPad } from 'ui/utils/util';
 import { formatSi } from 'shared/utils/parse-unit';
 import { later } from '@ember/runloop';
 import { gt } from '@ember/object/computed';
+import Grafana from 'shared/mixins/grafana';
 import DisplayImage from 'shared/mixins/display-image';
 
-var Pod = Resource.extend(DisplayImage, {
+var Pod = Resource.extend(Grafana, DisplayImage, {
   router:       service(),
   modalService:  service('modal'),
   globalStore:  service(),
@@ -21,6 +23,9 @@ var Pod = Resource.extend(DisplayImage, {
 
   canEdit:      false,
   canClone: false,
+
+  grafanaDashboardName: 'Pods',
+  grafanaResourceId:    alias('name'),
 
   namespace:    reference('namespaceId', 'namespace', 'clusterStore'),
   node:          reference('nodeId', 'node', 'globalStore'),

@@ -1,0 +1,42 @@
+{{#accordion-list as |al expandFn|}}
+  {{#metrics-summary
+    expandAll=al.expandAll
+    expandFn=expandFn
+    grafanaUrl=scope.currentCluster.grafanaUrl
+    title=(t "clusterDashboard.sections.cluster")
+  }}
+    {{cluster-metrics}}
+  {{/metrics-summary}}
+
+  {{#if scope.currentCluster.isRKE}}
+    {{#metrics-summary 
+      expandAll=al.expandAll
+      expandFn=expandFn
+      grafanaUrl=grafana.etcdUrl
+      classNames='mt-20'
+      title=(t "clusterDashboard.sections.etcd")
+    }}
+      {{etcd-metrics}}
+    {{/metrics-summary}}
+  {{/if}}
+
+  {{#metrics-summary 
+    expandAll=al.expandAll
+    expandFn=expandFn
+    grafanaUrl=grafana.k8sUrl
+    classNames='mt-20'
+    title=(t "clusterDashboard.sections.k8s")
+  }}
+    {{k8s-metrics}}
+  {{/metrics-summary}}
+
+  {{#metrics-summary 
+    expandAll=al.expandAll
+    expandFn=expandFn
+    grafanaUrl=grafana.rancherUrl
+    classNames='mt-20 mb-20'
+    title=(t "clusterDashboard.sections.rancher" appName=settings.appName)
+  }}
+    {{rancher-metrics noDataLabel='clusterDashboard.noRancherComponents'}}
+  {{/metrics-summary}}
+{{/accordion-list}}

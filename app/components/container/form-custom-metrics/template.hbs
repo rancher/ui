@@ -1,0 +1,77 @@
+{{#accordion-list-item
+     title=(t 'formCustomMetrics.title')
+     detail=(t 'formCustomMetrics.detail')
+     expandAll=expandAll
+     expand=(action expandFn)
+}}
+<div class="clearfix {{unless editing 'box'}}">
+  {{#if metrics.length}}
+    <table class="table fixed no-lines small mb-10">
+      <thead>
+        <tr class="hidden-sm">
+          <th class="{{unless editing 'acc-label'}}">{{t 'formCustomMetrics.port.label'}}{{#if editing}}{{field-required}}{{/if}}</th>
+          <th width="10"></th>
+          <th class="{{unless editing 'acc-label'}}">{{t 'formCustomMetrics.path.label'}}</th>
+          <th width="10"></th>
+          <th class="{{unless editing 'acc-label'}}" width="80">{{t 'formCustomMetrics.protocol.label'}}</th>
+          <th width="40">&nbsp;</th>
+        </tr>
+      </thead>
+      <tbody>
+        {{#each metrics as |metric|}}
+          <tr>
+            <td data-title="{{t 'formCustomMetrics.port.label'}}">
+              {{#if editing}}
+                {{input-integer class="form-control input-sm public" min="1" max="65535" value=metric.port placeholder=(t 'formCustomMetrics.port.placeholder')}}
+              {{else}}
+                {{metric.port}}
+              {{/if}}
+            </td>
+            <td>&nbsp;</td>
+
+            <td data-title="{{t 'formCustomMetrics.path.label'}}">
+              {{#input-or-display editable=editing value=metric.path}}
+                {{input class="form-control input-sm" type="text" value=metric.path placeholder=(t 'formCustomMetrics.path.placeholder')}}
+              {{/input-or-display}}
+            </td>
+            <td>&nbsp;</td>
+            <td data-title="{{t 'formCustomMetrics.protocol.label'}}">
+              {{#if editing}}
+                {{new-select
+                    class="form-control input-sm"
+                    content=protocolOptions
+                    value=metric.schema
+                }}
+              {{else}}
+                {{metric.schema}}
+              {{/if}}
+            </td>
+
+            <td>
+              {{#if editing}}
+                <button class="btn bg-primary btn-sm" {{action "remove" metric}}>
+                  <i class="icon icon-minus"/><span class="sr-only">{{t 'generic.remove'}}</span>
+                </button>
+              {{/if}}
+            </td>
+          </tr>
+        {{/each}}
+      </tbody>
+    </table>
+  {{else}}
+    {{#unless editing}}
+      <span class="text-center text-muted">{{t 'formCustomMetrics.noPorts'}}</span>
+    {{/unless}}
+  {{/if}}
+</div>
+
+<div>
+  {{#if editing}}
+    <button class="btn bg-link icon-btn p-0" {{action "add"}}>
+      <span class="darken"><i class="icon icon-plus text-small"/></span>
+      <span>{{t 'formCustomMetrics.addActionLabel'}}</span>
+    </button>
+  {{/if}}
+</div>
+
+{{/accordion-list-item}}

@@ -15,6 +15,7 @@ export default Component.extend(NewOrEdit, ChildHook, {
   clusterStore: service(),
   intl:         service(),
   prefs:        service(),
+  scope:        service(),
   settings:     service(),
 
   layout,

@@ -1,5 +1,6 @@
 import { later, cancel } from '@ember/runloop';
 import { computed, get, set } from '@ember/object';
+import Grafana from 'shared/mixins/grafana';
 import { alias, gt, not } from '@ember/object/computed';
 import Resource from 'ember-api-store/models/resource';
 import { sortableNumericSuffix } from 'shared/utils/util';
@@ -13,7 +14,7 @@ import C from 'shared/utils/constants';
 
 const WORKLOAD_CONFIG_FIELDS = ['cronJobConfig', 'daemonSetConfig', 'deploymentConfig', 'jobConfig', 'replicaSetConfig', 'replicationControllerConfig', 'statefulSetConfig']
 
-var Workload = Resource.extend(DisplayImage, StateCounts, EndpointPorts, {
+var Workload = Resource.extend(Grafana, DisplayImage, StateCounts, EndpointPorts, {
   intl:          service(),
   growl:         service(),
   modalService:  service('modal'),
@@ -37,8 +38,9 @@ var Workload = Resource.extend(DisplayImage, StateCounts, EndpointPorts, {
   canHaveEnvironment:  true,
   canHaveHealthCheck:  true,
   isBalancer:          false,
+  canBalanceTo:         true,
 
-  canBalanceTo: true,
+  grafanaResourceId:    alias('name'),
 
   namespace:    reference('namespaceId', 'namespace', 'clusterStore'),
   canClone:  not('hasSidekicks'),
