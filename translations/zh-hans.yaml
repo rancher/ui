@@ -5,7 +5,6 @@ languageContribute: "帮助翻译Rancher"
 # Really generic things used in multiple places (use sparingly)
 ##############################
 generic:
-
   actions: 操作
   activate: 激活
   add: 添加
@@ -63,6 +62,7 @@ generic:
   loading: "加载中..."
   loggingOut: "注销..."
   member: 成员
+  mbps: Mbps
   mibibyte: 'MiB'
   minutes: 分钟
   milliseconds: '毫秒'
@@ -616,7 +616,8 @@ catalogPage:
     action:
       launch: 查看详情
       notCompatible: 不兼容
-      alreadyDeployed: 已部署
+      alreadyDeployed: 已经部署
+
 clusterCatalogPage:
   header: 应用商店
 
@@ -814,6 +815,7 @@ containerPage:
       noData: 该容器未使用数据卷
       noMatch: 没有符合当前搜索的数据卷
       noContainers: 无其他容器
+  pod: Pod
 podPage:
   header: "Pod: {name}"
   nodeIp: 主机
@@ -839,13 +841,14 @@ clusterDashboard:
   systemProject: "这是具有所有Kubernetes和{appName}系统命名空间的系统项目，修改系统项目中的资源可能会导致系统无法正常运行。"
   notActive: 此集群当前为<b>{state}</b>
   notReady: 此集群当前为<b>{state}</b>，在API准备就绪之前，直接与API交互的功能将不可用。
-
 metricsAction:
   description: 查看实时监控指标
   sections:
     workload: 工作负载监控
     pod: Pod监控
     container: Container监控
+  grafana: 
+    label: Grafana
   summary:
     label: 概览模式
   detail:
@@ -862,20 +865,21 @@ metricsAction:
     24h: 过去24小时
     7d: 过去7天
     30d: 过去30天
-  metrics:
-    workload-cpu-usage: CPU
-    workload-disk-io: 磁盘I/O
-    workload-memory-usage-bytes-sum: 内存
-    workload-network-io: 网络I/O
-    workload-network-packet: 网络数据包
-    pod-cpu-usage: CPU
-    pod-disk-io: 磁盘I/O
-    pod-memory-usage-bytes-sum: 内存
-    pod-network-io: 网络I/O
-    pod-network-packet: 网络数据包
-    container-cpu-usage: CPU
-    container-disk-io: 磁盘I/O
-    container-memory-usage-bytes-sum: 内存
+
+metrics:
+  workload-cpu-usage: 工作负载CPU使用率
+  workload-disk-io: 磁盘I/O
+  workload-memory-usage-bytes-sum: 工作负载内存使用率
+  workload-network-io: 网络I/O
+  workload-network-packet: 网络数据包
+  pod-cpu-usage: Pod CPU使用率
+  pod-disk-io: 磁盘I/O
+  pod-memory-usage-bytes-sum: Pod内存使用率
+  pod-network-io: 网络I/O
+  pod-network-packet: 网络数据包
+  container-cpu-usage: 容器CPU使用率
+  container-disk-io: 磁盘I/O
+  container-memory-usage-bytes-sum: 容器内存使用率
 
 dnsPage:
   noMatch: 没有匹配当前搜索的记录
@@ -1019,7 +1023,7 @@ time:
     }
 
 haPage:
-  header: 高可用性(HA)
+  header: 高可用(HA)
   setup:
     prefix: "可以在不同主机上部署多个服务器容器，以便{appName}一直保持运行，即使其中一个主机失败。"
     link: 请参阅文档
@@ -1118,7 +1122,7 @@ hostsPage:
         labelText: '供应商:'
         noHost: 自定义
       kernel: '内核'
-      docker: 'Docker: '
+      docker: 'Docker:'
       os: '操作系统'
       milliCpu:
         labelText: mCPU
@@ -1905,9 +1909,11 @@ clusterNew:
     placeholder: '例如: 用于开发和测试工作负载的集群'
   driverLabels:
     cloud: Kubernetes托管服务商
+    custom: 添加主机自建Kubernetes集群
+    external: User Provided
     import: 导入现有的Kubernetes集群
     infra: 来自云服务商提供的主机
-    custom: 添加主机自建Kubernetes集群
+  externalError: '无法加载组件，请检查URL地址。'
   members:
     label: 成员角色
     detail: 控制哪些用户可以访问集群，以及他们拥有的对其进行更改的权限。
@@ -1927,12 +1933,14 @@ clusterNew:
     required: 启用时需要设置一个默认Pod安全策略
   amazoneks:
     label: AWS的基于Kubernetes的弹性容器服务
+    shortLabel: Amazon EKS
     ingressWarning: "注意:目前Amazon EKS不会在启动新的集群时创建传入控制器。如果需要此功能，则必须在集群创建后手动创建一个传入控制器。"
     access:
       title: 账户访问
       detail: 选择将用于启动Amazon EKS的区域和API密钥
   tencenttke:
     label: 腾讯云Kubernetes服务
+    shortLabel: Tencent TKE
     access:
       next: "下一步: 配置集群"
       loading: "从腾讯云获取VPC信息"
@@ -2008,7 +2016,7 @@ clusterNew:
       label: Kubernetes版本
     cidr:
       label: 容器网络CIDR
-      placeholder: 例如：172.16.0.0/16
+      placeholder: "例如: 172.16.0.0/16"
       required: 请输入容器网络的CIDR
     zone:
       label: 可用区
@@ -2089,7 +2097,7 @@ clusterNew:
         prompt: '选择虚拟网络/子网'
       vnetresourcegroup:
         label: 虚拟网络资源组
-        prompt: 请选择虚拟网络
+        prompt: 选择虚拟网络
         help:  The Resource Group if your Virtual Network does not exist in the same Resource Group as your cluster.
       subnet:
         label: 子网
@@ -2149,6 +2157,70 @@ clusterNew:
         parsedDnsServiceIp: 'Kubernetes DNS服务IP地址必须在Kubernetes服务地址范围内。'
         parsedDockerBridgeCidr: 'Docker bridge地址不能与选定的虚拟网络或Kubernetes服务地址相同'
 
+  aliyunkcs:
+    label: 阿里云Kubernetes容器服务
+    shortLabel: Alibaba ACK
+    access:
+      next: "下一步: 配置集群"
+      loading: "从阿里云获取可用区信息"
+      title: 账户认证
+      detail: 选择阿里云Kubernetes服务所使用的区域
+    cluster:
+      title: 集群配置
+      detail: 选择阿里云Kubernetes服务中使用的可用区和Kubernetes版本
+      next: "下一步: 设置Master节点"
+      loading: "从阿里云加载可用区域"
+    master:
+      title: Master节点
+      detail: 配置阿里云Kubernetes服务中的Master节点
+      next: "下一步: 设置Worker节点"
+      loading: "从阿里云获取密钥列表"
+    worker:
+      title: Worker节点
+      detail: 配置阿里云Kubernetes服务中的Worker节点
+    disk:
+      efficiency: 高效云盘
+      ssd: SSD云盘
+    rootSize:
+      label: 系统盘大小
+      placeholder: 例如：120
+    rootType:
+      label: 系统盘类型
+    storageType:
+      label: 数据盘类型
+    storageSize:
+      label: 数据盘大小
+      placeholder: 例如：120
+    masterNum:
+      label: Master节点数量
+      help: 将要创建的阿里云Kubernetes服务中所含有的Master节点数量
+    numOfNodes:
+      label: Worker节点数量
+      placeholder: 例如：3
+      required: Worker节点计数是必须的
+      help: 将要创建的阿里云Kubernetes服务中所含有的Worker节点数量
+    keyPair:
+      label: 登录密钥对
+      required: 请选择登录密钥对
+    regionId:
+      label: 区域
+    accessKeyId:
+      label: 访问密钥ID
+      placeholder: 你的阿里云访问密钥ID
+      required: 请输入访问密钥ID
+    accessKeySecret:
+      label: 访问密钥
+      placeholder: 你的阿里云访问密钥
+      provided: 已提供
+      required: 请输入访问密钥
+    version:
+      label: Kubernetes版本
+    zoneId:
+      label: 可用区
+      required: 请选择可用区
+    instanceType:
+      label: 实例类型
+      required: 请选择实例类型
   googlegke:
     label: Google Kubernetes引擎
     shortLabel: Google GKE
@@ -2193,78 +2265,18 @@ clusterNew:
     httpLB:
       label: Http负载均衡
     maintenanceWindow:
-      label: 维护窗口
+      label: Maintenance Window
     enableHorizontalPodAutoscaling:
-      label: Pod自动横向伸缩
-  aliyunkcs:
-    label: 阿里云Kubernetes容器服务
-    access:
-      next: "下一步: 配置集群"
-      loading: "从阿里云获取可用区信息"
-      title: 账户认证
-      detail: 选择阿里云Kubernetes服务所使用的区域
-    cluster:
-      title: 集群配置
-      detail: 选择阿里云Kubernetes服务中使用的可用区和Kubernetes版本
-      next: "下一步: 设置Master节点"
-      loading: "Loading Availability Zones from Aliyun"
-    master:
-      title: Master节点
-      detail: 配置阿里云Kubernetes服务中的Master节点
-      next: "下一步: 设置Worker节点"
-      loading: "从阿里云获取密钥列表"
-    worker:
-      title: Worker节点
-      detail: 配置阿里云Kubernetes服务中的Worker节点
-    disk:
-      efficiency: 高效云盘
-      ssd: SSD云盘
-    rootSize:
-      label: 系统盘大小
-      placeholder: 例如：120
-    rootType:
-      label: 系统盘类型
-    storageType:
-      label: 数据盘类型
-    storageSize:
-      label: 数据盘大小
-      placeholder: 例如：120
-    masterNum:
-      label: Master节点数量
-      help: 将要创建的阿里云Kubernetes服务中所含有的Master节点数量
-    numOfNodes:
-      label: Worker节点数量
-      placeholder: 例如：3
-      help: 将要创建的阿里云Kubernetes服务中所含有的Worker节点数量
-    keyPair:
-      label: 登录密钥对
-      required: 请选择登录密钥对
-    regionId:
-      label: 区域
-    accessKeyId:
-      label: 访问密钥ID
-      placeholder: 你的阿里云访问密钥ID
-      required: 请输入访问密钥ID
-    accessKeySecret:
-      label: 访问密钥
-      placeholder: 你的阿里云访问密钥
-      provided: 已提供
-      required: 请输入访问密钥
-    version:
-      label: Kubernetes版本
-    zoneId:
-      label: 可用区
-      required: 请选择可用区
-    instanceType:
-      label: 实例类型
-      required: 请选择实例类型
+      label: Pod自动横向扩展
   huaweicce:
-    access:
-      title: 账户访问
-      detail: 配置用于与CCE通讯的凭据
+    label: 华为云容器引擎
+    shortLabel: Huawei CCE
     name:
       label: 集群名称
-      required: 集群名称必须填写
+      required: 必须填写集群名
+    access:
+      title: 帐户访问
+      detail: 选择用于启动华为云容器引擎的区域和API KEY。
     accessKey:
       label: 访问密钥ID
       placeholder: CCE访问密钥ID
@@ -2289,29 +2301,32 @@ clusterNew:
     configuringNode: 配置中...
     clusterOption:
       title: 集群选项
-      detail: 为集群自定义Kubernetes选项
+      detail: 自定义用于启动华为云容器引擎的集群。
     clusterType:
       label: 集群类型
+    clusterFlavor:
+      label: Cluster Flavor
     masterVersion:
-      label: 版本
+      label: 主版本
     vpcId:
-      label: 虚拟私有云
+      label: VPC 名称
     subnetId:
-      label: 所在子网
-      none: 无可用子网
+      label: 子网名称
+      none: 此VPC中没有子网
     highwaySubnet:
-      label: 高速网卡
-      none: 无可用高速网卡
+      label: 高速子网
+      placeholder: 高速子网
+      none: 没有高速子网可用
     nodeOption:
-      title: 节点选项
-      detail: 为节点自定义选项
+      title: 节点
+      detail: 自定义用于启动华为云容器引擎的节点。
     dataVolumeType:
-      label: 数据盘类型
+      label: 数据卷类型
     dataVolumeSize:
-      label: 数据盘大小
+      label: 数据卷大小
     description:
       label: 描述
-      placeholder: e.g. 华为CCE集群
+      placeholder: "例如: 华为CCE集群"
     eipBandwidthSize:
       label: 带宽
     eipChargeMode:
@@ -2326,7 +2341,7 @@ clusterNew:
       yearly: 包年/包月
     containerNetworkCidr:
       label: 容器网段
-      placeholder: e.g. 172.16.0.0/16
+      placeholder: "例如: 172.16.0.0/16"
     containerNetworkMode:
       label: 网络模型
       none: 无配置
@@ -2337,7 +2352,7 @@ clusterNew:
     nodeCount:
       label: 节点个数
     nodeFlavor:
-      label: 	节点规格
+      label: 节点规格
     ssh:
       label: 密钥对
     eip:
@@ -2350,19 +2365,18 @@ clusterNew:
       label: 弹性IP
       none: 无可用弹性IP
     eipType:
-      label: Eip Type
+      label: Eip 类型
     clusterLabels:
       label: 集群标签
       none: 无标签
     nodeLabels:
-      label: 节点标签
-    shortLabel: Huawei CCE
+      label: 主机标签
     clusterEipId:
-      label: Cluster Eip
+      label: 集群 Eip
     externalServerEnabled:
       label: 外部服务器
-      enabled: Enabled
-      disabled: Disabled
+      enabled: 启用
+      disabled: 禁用
     highAvailability:
       label: 高可用
     managementScale:
@@ -2372,9 +2386,9 @@ clusterNew:
     authenticatingProxyCa:
       label: 	CA根证书
     validityPeriod:
-      label: Validity Period
+      label: 有效期
     bmsIsAutoRenew:
-      label: Auto Renew
+      label: 自动更新
     loginMode:
       label: 登录方式
       password: 密码
@@ -2384,6 +2398,10 @@ clusterNew:
       placeholder: 请输入密码
     userName:
       label: 用户名
+    authentiactionMode:
+      label: 认证模式
+      rbac: RBAC
+      authenticating_proxy: 认证代理
     eipShareType:
       label: 共享Eip类型
   rke:
@@ -2395,16 +2413,15 @@ clusterNew:
         label: etcd选举超时时间
         placeholder: 选举超时时间
       snapshot:
-        label: Recurring etcd Snapshots
+        label: 自动etcd快照
       retention:
         label: 快照保留时间
-        placeholder: "1d"
-        help: "可使用的单位: s, m, h, d, w, m, y"
+        placeholder: "12h"
+        help: "可使用的单位: h, m, s"
       creation:
         label: 快照创建时间间隔
-        placeholder: "3h"
-      error: "快照{type}周期错误: 必须指定一个时间值和时间单位(s、m、h)，当前输入{entry}"
-      baseError: "快照{type}周期错误: 必须指定一个有效的时间单位(s、m、h)，当前输入{entry}"
+        placeholder: "6h"
+      error: "快照{type}周期错误: 必须指定一个有效的时间单位(s、m、h)，当前输入{entry}"
     nodeName:
       title: 节点名称
       detail: (可选)自定义节点显示的名称，不显示实际的主机名
@@ -2460,7 +2477,7 @@ clusterNew:
       flannel: Flannel
       flannelCustom: Flannel (Windows Support Available)
       calico: Calico
-      canal: Canal
+      canal: Canal (Network Isolation Available)
       options:
         flannel:
           iface:
@@ -4243,6 +4260,12 @@ formSources:
     label: 键
   prefix:
     label: 前缀或别名
+  field:
+    placeholder: "例如: spec.nodeName"
+  resource:
+    placeholder: "例如: requests.cpu"
+  container:
+    placeholder: "例如: my-container"
 
 formSecurity:
   title: '安全/主机设置'
@@ -4697,6 +4720,7 @@ hostPod:
 
 identityBlock:
   loading: 加载中...
+
 
 inputAnswers:
   yaml: 编辑YAML
@@ -5210,14 +5234,33 @@ newSecret:
   description:
     placeholder: '例如: S3密钥对'
   values:
-    label: 密文
-  addActionLabel: 添加密文
+    label: 密文值
+  addActionLabel: 添加密文值
+
+customDrivers:
+  nodes: 节点驱动
+  clusters: 集群驱动
+
+clusterDrivers:
+  title: 集群驱动
+  add: 添加集群驱动
+  builtIn: 内置
+  table:
+    noData: 这个集群没有定义任何节点
+    noMatch: 没有节点匹配当前搜索
+
 
 nodeDriver:
   addTemplate: 添加主机模板
   editTemplate: "编辑主机模板: {name}"
   editWarning: 编辑主机模板只会影响由主机池创建的新主机，现有主机将不会自动更新或替换。<br>如果从池中删除主机，将使用模板中的新设置创建新主机
   displayName:
+    googlegke: Google GKE
+    amazoneks: Amazon EKS
+    azureaks: Azure AKS
+    aliyunkcs: Alibaba ACK
+    huaweicce: Huawei CCE
+    tencenttke: Tencent TKE
     aliyunecs: Aliyun ECS
     amazonec2: Amazon EC2
     azure: Azure
@@ -5250,8 +5293,8 @@ nodeDriver:
     vpc:
       title: VPC & Subnet
       detail: 选择将用于EKS实例的VPC
-      next: "下一步: Subnet"
-      loading: "加载Subnets..."
+      next: "下一步: 子网"
+      loading: "加载子网..."
       nextRancherDefault: "下一步: 选择实例选项"
       loadingRancherDefault: "加载实例选项..."
       noneSelected: "Rancher创建VPC和Subnet"
@@ -5259,7 +5302,7 @@ nodeDriver:
         default: "标准: 通过Rancher创建VPC和子网"
         custom: "自定义: 从现有VPC和子网中选择"
     subnet:
-      title: Subnet
+      title: 子网
       next: "下一步: 选择安全组"
       loading: "加载安全组..."
     associateWorkerNodePublicIp:
@@ -6142,7 +6185,7 @@ volumesPage:
   storageClass:
     label: 存储类
 
-
+    
 vmConsole:
   header: "控制台:"
   protip: "高级技巧:启动命令行时按下{key}键可在新窗口中打开"
