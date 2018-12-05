@@ -15,7 +15,6 @@ export default Route.extend({
     return hash({
       originalCluster:            cluster,
       cluster:                    cluster.clone(),
-      kontainerDrivers:           globalStore.findAll('kontainerDriver'),
       nodeTemplates:              globalStore.findAll('nodeTemplate'),
       nodeDrivers:                globalStore.findAll('nodeDriver'),
       psps:                       globalStore.findAll('podSecurityPolicyTemplate'),
