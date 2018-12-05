@@ -4973,6 +4973,38 @@ require=(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof requ
           }
         }
       },
+      "describeKeyPairs": {
+        "name": "DescribeKeyPairs",
+        "http": {
+          "method": "POST",
+          "uri": "/"
+        },
+        "input": {
+          "type": "structure",
+          "members": {
+            "Action": {
+              "required": true,
+              "default": "DescribeKeyPairs"
+            },
+            "OwnerId": {
+              "type": "integer"
+            },
+            "ResourceOwnerAccount": {
+              "type": "string"
+            },
+            "ResourceOwnerId": {
+              "type": "integer"
+            },
+            "RegionId": {
+              "required": true,
+              "type": "string"
+            },
+            "OwnerAccount": {
+              "type": "string"
+            }
+          }
+        }
+      },
       "detachDisk": {
         "name": "DetachDisk",
         "http": {

@@ -1,0 +1,40 @@
+{{#if userLabelArray.length}}
+  <table class="table fixed no-lines mt-20">
+    <tr class="hidden-xs hidden-sm">
+      <th>{{t 'formUserLabels.key.label'}}{{field-required}}</th>
+      <th width="30">&nbsp;</th>
+      <th>{{t 'formUserLabels.value.label'}}</th>
+      <th width="40">&nbsp;</th>
+    </tr>
+    {{#each userLabelArray as |label|}}
+      <tr>
+        <td data-title="key">
+          {{input-paste pasted="pastedLabels" class="form-control input-sm key" type="text" value=label.key placeholder="formUserLabels.key.placeholder" disabled=readOnly}}
+        </td>
+        <td class="text-center">
+          <p class="input-sm">{{t 'formUserLabels.separator'}}</p>
+        </td>
+        <td data-title="label">
+          {{input class="form-control input-sm" type="text" value=label.value placeholder=(t 'formUserLabels.value.placeholder') disabled=readOnly}}
+        </td>
+        {{#unless readOnly}}
+          <td class="text-right">
+            <button class="btn bg-primary btn-sm" {{action "removeLabel" label}} disabled={{eq label.readonly true}}><i
+                class="icon icon-minus" /><span class="sr-only">{{t 'generic.remove'}}</span></button>
+          </td>
+        {{/unless}}
+      </tr>
+    {{/each}}
+  </table>
+  {{#unless readOnly}}
+    <div class="protip pt-10">
+      {{t 'formUserLabels.protip'}}
+    </div>
+  {{/unless}}
+{{/if}}
+{{#unless readOnly}}
+  <button class="btn bg-link icon-btn" {{action "addUserLabel"}}>
+    <span class="darken"><i class="icon icon-plus text-small" /></span>
+    <span>{{t 'formUserLabels.addAction'}}</span>
+  </button>
+{{/unless}}

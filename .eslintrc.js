@@ -41,6 +41,7 @@ module.exports = {
     "$": true,
     "ALY": true,
     "AWS": true,
+    "HW": true,
     "Stripe": true,
     "Ui": true,
     "WebSocket": true,

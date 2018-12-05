@@ -91,6 +91,12 @@ export default Resource.extend(Grafana, ResourceUsage, {
       return 'azureaks';
     case 'googleKubernetesEngineConfig':
       return 'googlegke';
+    case 'tencentEngineConfig':
+      return 'tencenttke';
+    case 'aliyunEngineConfig':
+      return 'aliyunkcs';
+    case 'huaweiEngineConfig':
+      return 'huaweicce';
     case 'rancherKubernetesEngineConfig':
       if ( pools.length > 0 ) {
         if ( firstTemplate ) {
@@ -118,6 +124,12 @@ export default Resource.extend(Grafana, ResourceUsage, {
       return intl.t('clusterNew.azureaks.shortLabel');
     case 'googleKubernetesEngineConfig':
       return intl.t('clusterNew.googlegke.shortLabel');
+    case 'tencentEngineConfig':
+      return intl.t('clusterNew.tencenttke.shortLabel');
+    case 'aliyunEngineConfig':
+      return intl.t('clusterNew.aliyunkcs.shortLabel');
+    case 'huaweiEngineConfig':
+      return intl.t('clusterNew.huaweicce.shortLabel');
     case 'rancherKubernetesEngineConfig':
       if ( !!pools ) {
         if ( firstPool ) {
