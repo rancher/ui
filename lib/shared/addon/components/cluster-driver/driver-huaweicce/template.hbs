@@ -278,16 +278,14 @@
           {{else}}
             <div class="radio">
               <label>
-                {{radio-button selection=config.externalServerEnabled value=false}}
-                {{t 'generic.disabled'}}
+                {{radio-button selection=config.externalServerEnabled value=true}}
+                {{t 'generic.enabled'}}
               </label>
             </div>
             <div class="radio">
-              <label class={{unless (gt eipIdContent.length 0) 'text-muted'}}>
-                {{radio-button selection=config.externalServerEnabled value=true disabled=(not (gt eipIdContent.length 0))}}
-                {{t 'generic.enabled'}}
-                {{#unless (gt eipIdContent.length 0)}} &mdash; {{t 'clusterNew.huaweicce.eipIds.none'}}
-                {{/unless}}
+              <label>
+                {{radio-button selection=config.externalServerEnabled value=false}}
+                {{t 'generic.disabled'}}
               </label>
             </div>
           {{/if}}
@@ -298,9 +296,11 @@
             {{#if editing}}
               <div>{{clusterEipName}}</div>
             {{else}}
-              {{new-select classNames="form-control"
-              value=config.clusterEipId
-              content=eipIdContent
+              {{new-select
+                  classNames="form-control"
+                  prompt=(t 'clusterNew.huaweicce.clusterEipId.prompt')
+                  value=config.clusterEipId
+                  content=eipIdContent
             }}
             {{/if}}
           </div>
