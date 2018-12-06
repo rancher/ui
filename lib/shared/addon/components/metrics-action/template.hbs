@@ -9,16 +9,16 @@
       }}
     </div>
     {{#if (eq selected 'custom')}}
-      <div class="text-left inline-block" style="width: 120px;"> 
-        {{ember-flatpickr 
-          disabled=state.loading 
-          enableSeconds=true 
-          enableTime=true 
-          dateFormat="m/d h:m"
-          date=from 
-          maxDate=to 
-          onChange=(action "fromDidChange") 
-          onClose=(action "onTimePickerClose") 
+      <div class="text-left inline-block" style="width: 120px;">
+        {{ember-flatpickr
+          disabled=state.loading
+          enableSeconds=true
+          enableTime=true
+          dateFormat="m/d h-i"
+          date=from
+          maxDate=to
+          onChange=(action "fromDidChange")
+          onClose=(action "onTimePickerClose")
           placeholder=(t 'metricsAction.from.label')
         }}
       </div>
@@ -26,13 +26,13 @@
         {{ember-flatpickr
           disabled=state.loading
           enableSeconds=true
-          dateFormat="m/d h:m"
+          dateFormat="m/d h-i"
           enableTime=true
           minDate=from
           maxDate=now
           date=to
           onChange=(action "toDidChange")
-          onClose=(action "onTimePickerClose") 
+          onClose=(action "onTimePickerClose")
           placeholder=(t 'metricsAction.to.label')
         }}
       </div>
