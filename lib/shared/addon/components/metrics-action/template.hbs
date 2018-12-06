@@ -2,39 +2,39 @@
   <div class="pull-right pl-20 pt-0 mr-10">
     <div class="text-left inline-block">
       {{new-select
-        classNames="period"
-        content=periods
-        value=selected
-        localizedLabel=true
-        disabled=state.loading
+          classNames="period"
+          content=periods
+          value=selected
+          localizedLabel=true
+          disabled=state.loading
       }}
     </div>
     {{#if (eq selected 'custom')}}
       <div class="text-left inline-block" style="width: 120px;">
         {{ember-flatpickr
-          disabled=state.loading
-          enableSeconds=true
-          enableTime=true
-          dateFormat="m/d h-i"
-          date=from
-          maxDate=to
-          onChange=(action "fromDidChange")
-          onClose=(action "onTimePickerClose")
-          placeholder=(t 'metricsAction.from.label')
+            disabled=state.loading
+            enableSeconds=true
+            enableTime=true
+            dateFormat="m/d h-i"
+            date=from
+            maxDate=to
+            onChange=(action "fromDidChange")
+            onClose=(action "onTimePickerClose")
+            placeholder=(t 'metricsAction.from.label')
         }}
       </div>
       <div class="text-left inline-block" style="width: 120px;">
         {{ember-flatpickr
-          disabled=state.loading
-          enableSeconds=true
-          dateFormat="m/d h-i"
-          enableTime=true
-          minDate=from
-          maxDate=now
-          date=to
-          onChange=(action "toDidChange")
-          onClose=(action "onTimePickerClose")
-          placeholder=(t 'metricsAction.to.label')
+            disabled=state.loading
+            enableSeconds=true
+            dateFormat="m/d h-i"
+            enableTime=true
+            minDate=from
+            maxDate=now
+            date=to
+            onChange=(action "toDidChange")
+            onClose=(action "onTimePickerClose")
+            placeholder=(t 'metricsAction.to.label')
         }}
       </div>
     {{/if}}
