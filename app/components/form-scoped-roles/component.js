@@ -12,6 +12,7 @@ const CUSTOM = 'custom';
 export default Component.extend(NewOrEdit, {
   globalStore: service(),
   intl:        service(),
+  scope:       service(),
 
   layout,
   user:            null,
@@ -276,7 +277,17 @@ export default Component.extend(NewOrEdit, {
       return false;
     }
 
-    const current = (get(this, 'model.roleBindings') || []).filterBy('userPrincipalId', get(principal, 'id'));
+    const current = (get(this, 'model.roleBindings') || []).filter((role) => {
+      let id;
+
+      if ( get(this, 'type') === 'project' ) {
+        id = get(this, 'scope.currentProject.id');
+      } else {
+        id = get(this, 'scope.currentCluster.id');
+      }
+
+      return id === get(role, `${ get(this, 'type') }Id`) && get(role, 'userPrincipalId') === get(principal, 'id');
+    });
 
     if (get(this, 'mode') === 'custom') {
       if (get(this, 'customToAdd.length') < 1) {
