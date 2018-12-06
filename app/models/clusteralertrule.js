@@ -38,38 +38,39 @@ const clusterAlertRule = Resource.extend(Alert, {
   displayCondition: computed('targetType', 'nodeRule.{condition,cpuThreshold,memThreshold}', 'metricRule.{expression,comparison,thresholdValue}', function() {
     const t = get(this, 'targetType');
     const intl = get(this, 'intl');
+    let out = intl.t('alertPage.na');
+    const c = get(this, 'nodeRule.condition')
+    const cpuThreshold = get(this, 'nodeRule.cpuThreshold');
+    const memThreshold = get(this, 'nodeRule.memThreshold');
+    const metricRule = get(this, 'metricRule')
 
-    if (t === 'systemService') {
-      return intl.t('alertPage.index.table.displayCondition.unhealthy');
-    }
-    if (t === 'event') {
-      return intl.t('alertPage.index.table.displayCondition.happens');
-    }
-    if (t === 'node' || t === 'nodeSelector') {
-      const c = get(this, 'nodeRule.condition');
-
-      if (c === 'notready') {
-        return intl.t('alertPage.index.table.displayCondition.notReady');
+    switch (t) {
+    case 'systemService':
+      out = intl.t('alertPage.index.table.displayCondition.unhealthy');
+      break;
+    case 'event':
+      out = intl.t('alertPage.index.table.displayCondition.happens');
+      break;
+    case 'node':
+    case 'nodeSelector':
+      switch (c) {
+      case 'notready':
+        out = intl.t('alertPage.index.table.displayCondition.notReady');
+        break;
+      case 'cpu':
+        out = intl.t('alertPage.index.table.displayCondition.cpuUsage', { percent: cpuThreshold });
+        break;
+      case 'mem':
+        out = intl.t('alertPage.index.table.displayCondition.memUsage', { percent: memThreshold });
+        break;
       }
-      if (c === 'cpu') {
-        const n = get(this, 'nodeRule.cpuThreshold');
-
-        return intl.t('alertPage.index.table.displayCondition.cpuUsage', { percent: n });
-      }
-      if (c === 'mem') {
-        const n = get(this, 'nodeRule.memThreshold');
-
-        return intl.t('alertPage.index.table.displayCondition.memUsage', { percent: n });
-      }
+      break;
+    case 'metric':
+      out = `${ intl.t(`alertPage.comparison.${ metricRule.comparison }`) } ${ metricRule.thresholdValue }`
+      break;
     }
 
-    if (t === 'metric') {
-      const metricRule = get(this, 'metricRule')
-
-      return `${ intl.t(`alertPage.comparison.${ metricRule.comparison }`) } ${ metricRule.thresholdValue }`
-    }
-
-    return intl.t('alertPage.na');
+    return out
   }),
 
   threshold: computed('targetType', 'nodeRule.{memThreshold,cpuThreshold,condition}', function() {

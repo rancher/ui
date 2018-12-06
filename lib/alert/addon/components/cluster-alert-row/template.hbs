@@ -52,7 +52,14 @@
 
   <td data-title="{{dt.condition}}" class="clip">
     {{#if (eq model.targetType 'metric')}}
-      {{#tooltip-element type="tooltip-basic" model=model.metricRule.expression tooltipTemplate='tooltip-static' aria-describedby="tooltip-base" tooltipFor="tooltipLink" placement="top"}}
+      {{#tooltip-element
+          type="tooltip-basic"
+          model=model.metricRule.expression
+          tooltipTemplate='tooltip-static'
+          aria-describedby="tooltip-base"
+          tooltipFor="tooltipLink"
+          placement="top"
+      }}
         {{model.displayCondition}}
       {{/tooltip-element}}
     {{else}}
@@ -86,21 +93,3 @@
     {{action-menu model=model}}
   </td>
 </tr>
-
-
-{{#if canExpand}}
-  <tr class="sub-row {{unless expanded 'hide'}}">
-    <td colspan="2">{{! checkbox and expand}}</td>
-    <td colspan="5">
-      {{#if expanded}}
-        {{expandText}}
-      {{/if}}
-    </td>
-  </tr>
-
-  {{#if expanded}}
-    <tr class="separator-row">
-      <td colspan="{{fullColspan}}"></td>
-    </tr>
-  {{/if}}
-{{/if}}

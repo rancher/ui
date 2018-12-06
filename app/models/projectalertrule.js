@@ -43,38 +43,41 @@ const projectAlertRule = Resource.extend(Alert, {
     const t = get(this, 'targetType');
     const intl = get(this, 'intl');
 
-    if (t === 'pod') {
-      const c = get(this, 'podRule.condition');
+    let out = intl.t('alertPage.na');
 
-      if (c === 'restarts') {
-        const times = get(this, 'podRule.restartTimes');
-        const interval = get(this, 'podRule.restartIntervalSeconds');
+    const times = get(this, 'podRule.restartTimes');
+    const interval = get(this, 'podRule.restartIntervalSeconds');
+    const c = get(this, 'podRule.condition');
+    const percent = get(this, 'workloadRule.availablePercentage');
+    const metricRule = get(this, 'metricRule')
 
-        return intl.t('alertPage.index.table.displayCondition.restarted', {
+    switch (t) {
+    case 'pod':
+      switch (c) {
+      case 'restarts':
+        out = intl.t('alertPage.index.table.displayCondition.restarted', {
           times,
           interval: interval / 60
         });
+        break;
+      case 'notscheduled':
+        out = intl.t('alertPage.index.table.displayCondition.notScheduled');
+        break;
+      case 'notrunning':
+        out = intl.t('alertPage.index.table.displayCondition.notRunning');
+        break;
       }
-      if (c === 'notscheduled') {
-        return intl.t('alertPage.index.table.displayCondition.notScheduled');
-      }
-      if (c === 'notrunning') {
-        return intl.t('alertPage.index.table.displayCondition.notRunning');
-      }
-
-      return intl.t('alertPage.na');
-    }
-    if (t === 'workload' || t === 'workloadSelector') {
-      const percent = get(this, 'workloadRule.availablePercentage');
-
-      return intl.t('alertPage.index.table.displayCondition.available', { percent });
+      break;
+    case 'workload':
+    case 'workloadSelector':
+      out = intl.t('alertPage.index.table.displayCondition.available', { percent });
+      break;
+    case 'metric':
+      out = `${ intl.t(`alertPage.comparison.${ metricRule.comparison }`) } ${ metricRule.thresholdValue }`
+      break;
     }
 
-    if (t === 'metric') {
-      const metricRule = get(this, 'metricRule')
-
-      return `${ intl.t(`alertPage.comparison.${ metricRule.comparison }`) } ${ metricRule.thresholdValue }`
-    }
+    return out
   }),
 
   targetType: computed('podRule.podId', 'workloadRule.{workloadId,selector}', 'metricRule.expression', function() {

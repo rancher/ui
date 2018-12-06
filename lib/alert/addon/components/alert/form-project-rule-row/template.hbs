@@ -28,7 +28,13 @@
   <section class="row">
     <div class="col span-1">
       <div class="text-right pt-10">
-        <label>{{t 'alertPage.newOrEdit.whenA'}}</label>
+        <label>
+          {{#if (eq model._targetType 'metric')}}
+            {{t 'alertPage.newOrEdit.whenAn'}}
+          {{else}}
+            {{t 'alertPage.newOrEdit.whenA'}}
+          {{/if}}
+        </label>
       </div>
     </div>
 
@@ -136,11 +142,12 @@
           }}
         </div>
         <div class="col span-2 mt-0">
-          {{input-number class="form-control"
-                          value=model.metricRule.thresholdValue
-                          readOnly=(not-eq model._targetType 'metric')
-                          placeholder="e.g. 10"
-                          min=0
+          {{input-number
+              class="form-control"
+              value=model.metricRule.thresholdValue
+              readOnly=(not-eq model._targetType 'metric')
+              placeholder="e.g. 10"
+              min=0
           }}
         </div>
         <div class="col span-1 text-right">
@@ -176,7 +183,7 @@
         <label class="mr-10">
           {{radio-button selection=model.podRule.condition value="notscheduled"}} {{t 'alertPage.newOrEdit.notScheduled'}}
         </label>
-        <label class="">
+        <label>
           {{radio-button selection=model.podRule.condition value="restarts"}} {{t 'alertPage.newOrEdit.restarted'}}
         </label>
         <div style="display:inline-block;width:80px;">
@@ -219,7 +226,7 @@
           </div>
         </div>
       {{else}}
-        <div>More targetTypes... </div>
+        <div>{{t 'alertPage.newOrEdit.moreTarget'}}</div>
       {{/if}}
       </div>
     {{/if}}

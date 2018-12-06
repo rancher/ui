@@ -26,7 +26,13 @@
   <section class="row">
     <div class="col span-1 text-right">
       <div class="pt-10">
-        <label>{{t 'alertPage.newOrEdit.whenA'}}</label>
+        <label>
+          {{#if (eq model._targetType 'metric')}}
+            {{t 'alertPage.newOrEdit.whenAn'}}
+          {{else}}
+            {{t 'alertPage.newOrEdit.whenA'}}
+          {{/if}}
+        </label>
       </div>
     </div>
 
@@ -157,7 +163,7 @@
           }}
         </div>
         <div class="col span-1 text-right">
-          <div style={{verbStyles}}>For</div>
+          <div style={{verbStyles}}>{{t 'alertPage.newOrEdit.for'}}</div>
         </div>
         <div class="col span-4 mt-0">
           {{searchable-select
@@ -214,7 +220,6 @@
               value=model.nodeRule.memThreshold
           }}
         </div>%
-      {{else}}
       {{/if}}
       </div>
     {{/if}}
