@@ -10,7 +10,7 @@ alertPage:
   save: 保存
   cluster: 集群
   project: 项目
-  alerts: 告警
+  alertGroups: 告警组
   newOrEdit:
     showAdvanced: 显示高级选项
     initialWait: 等待时间
@@ -18,6 +18,7 @@ alertPage:
     initialWaitHelpText: 在触发告警到发送通知需要等待多长时间
     repeatIntervalHelpText: 当告警处于活动状态时，重复发送通知的时间间隔
     whenA: 当
+    whenAn: 当
     happens: 发生
     sendA: 发送
     to: 到
@@ -52,6 +53,26 @@ alertPage:
     nodeSelectorRequired: 需要主机选择器
     recipient:
       helpText: 默认情况下使用通知程序中设置的值,您可以用另一个值覆盖它。
+    expression:
+      label: 表达式
+      noData: 图表无数据
+      error: 获取图表数据失败
+      placeholder: 输入表达式
+    removeAlert: 删除告警规则
+    alertRule: 告警规则
+    groupWaitSeconds:
+      label: 告警组等待时长
+      helpText: 告警触发后发送的等待时长
+    groupIntervalSeconds:
+      label: 告警组间隔时长
+      helpText: 添加一个触发报警的规则进组后,发送告警的间隔
+    repeatIntervalSeconds:
+      label: 重复间隔
+      helpText: 告警发送后再次发送的间隔
+    monitoringDisabled: 表达式类型不可用,点击
+    enableMonitoring: 启用监控
+    for: 持续
+    moreTarget: 更多的规则类型
   resourceKinds:
     # backend use capitalized name
     Pod: Pod
@@ -59,6 +80,8 @@ alertPage:
     Deployment: 部署
     DaemonSet: DaemonSet
     StatefulSet: 状态集
+    metric: 表达式
+    undefined: 无
   targetTypes:
     pod: Pod
     node: 主机
@@ -71,10 +94,12 @@ alertPage:
     nodeSelector: 主机选择
     workloadSelector: 工作负载选择
   index:
-    addAlert: 添加告警
+    addAlertGroup: 添加告警组
+    addAlert: 添加告警规则
     table:
       noMatch: 没有告警与当前搜索匹配。
       noData: 没有定义告警规则
+      noGroup: 未分配告警组
       condition: 条件
       target: 目标
       recipients: 接收者
@@ -89,7 +114,16 @@ alertPage:
         notReady: 未就绪
         cpuUsage: 'CPU使用超过{percent}%'
         memUsage: '内存使用超过{percent}%'
-
+        expression: 表达式
   new:
-    addHeader: 添加告警
-    editHeader: 编辑告警
+    addHeader: 添加告警组
+    editHeader: 编辑告警组
+    addRuleHeader: 添加告警规则
+    editRuleHeader: 编辑告警规则
+  comparison:
+    equal: 等于
+    not-equal: 不等于
+    greater-than: 大于
+    less-than: 小于
+    greater-or-equal: 大于或等于
+    less-or-equal: 小于或等于

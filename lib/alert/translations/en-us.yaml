@@ -6,7 +6,7 @@ alertPage:
   save: Save
   cluster: Cluster
   project: Project
-  alerts: Alerts
+  alertGroups: Alert Groups
   newOrEdit:
     showAdvanced: Show Advanced Options
     initialWait: Initial Wait
@@ -14,6 +14,7 @@ alertPage:
     initialWaitHelpText: How long to wait before sending a notification when an alert is triggered.
     repeatIntervalHelpText: Repeat interval of sending a notification when an alert is active.
     whenA: When A
+    whenAn: When An
     happens: Happens
     sendA: Send a
     to: To
@@ -48,6 +49,26 @@ alertPage:
     nodeSelectorRequired: Node Selector required
     recipient:
       helpText: The value set in the Notifier is used by default. You can override this with another value.
+    expression:
+      label: Expression
+      noData: No metic graph data.
+      error: Failed to fetch metic graph data.
+      placeholder: Input Expression
+    removeAlert: Remove this Alert
+    alertRule: Alert Rule
+    groupWaitSeconds:
+      label: Group Wait Time
+      helpText: How long to wait to buffer alerts of the same group before sending initially.
+    groupIntervalSeconds:
+      label: Group Interval Time
+      helpText: How long to wait before sending an alert that has been added to a group which contains already fired alerts.
+    repeatIntervalSeconds:
+      label: Repeat Interval Time
+      helpText: How long to wait before re-sending a given alert that has already been sent.
+    monitoringDisabled: Expression is disabled, Go and
+    enableMonitoring: enable monitoring
+    for: For
+    moreTarget: More targetTypes...
   resourceKinds:
     # backend use capitalized name
     Pod: Pod
@@ -66,11 +87,15 @@ alertPage:
     systemService: System Service
     nodeSelector: Node Selector
     workloadSelector: Workload Selector
+    metric: Metric
+    undefined: None
   index:
-    addAlert: Add Alert
+    addAlertGroup: Add Alert Group
+    addAlert: Add Alert Rule
     table:
       noMatch: No alerts match the current search.
       noData: There are no alerts defined
+      noGroup: No alert group
       condition: Condition
       target: Target
       recipients: Notifiers
@@ -85,7 +110,17 @@ alertPage:
         notReady: Not Ready
         cpuUsage: 'CPU usage over {percent}%'
         memUsage: 'MEM usage over {percent}%'
+        expression: Expression
 
   new:
-    addHeader: Add Alert
-    editHeader: Edit Alert
+    addHeader: Add Alert Group
+    editHeader: Edit Alert Group
+    addRuleHeader: Add Alert Rule
+    editRuleHeader: Edit Alert Rule
+  comparison:
+    equal: Equal
+    not-equal: Not equal
+    greater-than: Greater than
+    less-than: Less than
+    greater-or-equal: Greater or equal
+    less-or-equal: Less or equal

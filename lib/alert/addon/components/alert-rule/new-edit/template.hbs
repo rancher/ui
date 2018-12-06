@@ -1,0 +1,50 @@
+<section class="header clearfix">
+  <div class="pull-left"><h1>{{if isCreate (t 'alertPage.new.addRuleHeader') (t 'alertPage.new.editRuleHeader')}}</h1></div>
+</section>
+
+{{#unless monitoringEnabled}}
+  {{#banner-message color='bg-info mb-10 mt-10'}}
+  {{#if (eq pageScope 'cluster')}}
+    <p>{{t 'alertPage.newOrEdit.monitoringDisabled'}} {{#link-to-external 'authenticated.cluster.monitoring.cluster-setting'}} {{t 'alertPage.newOrEdit.enableMonitoring'}} {{/link-to-external}}.</p>
+  {{else}}
+    <p>{{t 'alertPage.newOrEdit.monitoringDisabled'}} {{#link-to-external 'authenticated.project.monitoring.project-setting'}} {{t 'alertPage.newOrEdit.enableMonitoring'}} {{/link-to-external}}.</p>
+  {{/if}}
+  {{/banner-message}}
+{{/unless}}
+
+<div>
+  {{#if (eq pageScope 'cluster')}}
+    <div class="mb-10 pt-5">
+      {{alert/form-cluster-rule-row
+          pageScope=pageScope
+          isCreate=isCreate
+          model=alertRule
+          monitoringEnabled=monitoringEnabled
+          metrics=metrics
+          editRule=editRule
+      }}
+    </div>
+  {{else if (eq pageScope 'project')}}
+    {{alert/form-project-rule-row
+        pageScope=pageScope
+        isCreate=isCreate
+        model=alertRule
+        alertRules=alertRules
+        metrics=metrics
+        editRule=editRule
+        monitoringEnabled=monitoringEnabled
+    }}
+  {{/if}}
+</div>
+
+<div class="mt-20">
+  {{top-errors errors=errors}}
+</div>
+
+<div class="mv-20">
+  {{save-cancel
+      createLabel=(if isCreate 'alertPage.create' 'alertPage.save')
+      save="save"
+      cancel="cancel"
+  }}
+</div>

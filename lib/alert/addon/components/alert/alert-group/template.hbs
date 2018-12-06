@@ -1,0 +1,27 @@
+<tr class="group-row">
+  <td colspan={{sub fullColspan 2}} class="pl-10">
+    {{#if (and group group.id)}}
+      {{group.name}}
+    {{else}}
+      {{t noGroup}}
+    {{/if}}
+    <p class="text-small text-muted m-0">{{linkify group.description}}</p>
+  </td>
+  <td class="text-right">
+    {{#link-to "new-rule" group.id  class="btn bg-primary btn-sm mr-10"}}
+      {{t 'alertPage.index.addAlert'}}
+    {{/link-to}}
+  </td>
+  <td data-title="{{dt.actions}}" class="actions">
+    {{#if group}}
+      {{action-menu model=group classNames="inline-block mr-5"}}
+    {{/if}}
+  </td>
+</tr>
+{{#if group.showTransitioningMessage}}
+  <tr class="group-row group-row-error">
+    <td colspan="{{fullColspan}}" class="text-small {{group.stateColor}}">
+      {{uc-first group.transitioningMessage}}
+    </td>
+  </tr>
+{{/if}}

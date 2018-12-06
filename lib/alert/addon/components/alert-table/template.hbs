@@ -1,24 +1,36 @@
 {{#sortable-table
-  tableClassNames="bordered"
-  classNames="grid sortable-table"
-  bulkActions=bulkActions
-  paging=paging
-  fullRows=fullRows
-  search=search
-  sortBy=sortBy
-  searchText=searchText
-  descending=descending
-  headers=headers
-  body=filteredAlerts
-  as |sortable kind row dt|
+    tableClassNames="bordered"
+    classNames="grid sortable-table"
+    bulkActions=bulkActions
+    paging=paging
+    fullRows=fullRows
+    search=search
+    sortBy=sortBy
+    searchText=searchText
+    descending=descending
+    headers=headers
+    groupByKey="groupId"
+    groupByRef="group"
+    body=filteredAlerts
+    as |sortable kind row dt|
 }}
   {{#if (eq kind "row")}}
     {{#if (eq pageScope 'cluster')}}
-      {{cluster-alert-row notifiers=filteredNotifiers model=row}}
+      {{cluster-alert-row
+          notifiers=filteredNotifiers
+          model=row
+          dt=dt
+          canExpand=false
+          groups=groups
+      }}
     {{else if (eq pageScope 'project')}}
-      {{project-alert-row notifiers=filteredNotifiers model=row}}
-    {{else}}
-      <div>Oops, it's impossible</div>
+      {{project-alert-row
+          notifiers=filteredNotifiers
+          model=row
+          dt=dt
+          canExpand=false
+          groups=groups
+      }}
     {{/if}}
   {{else if (eq kind "nomatch")}}
     <tr>
@@ -28,5 +40,12 @@
     <tr>
       <td colspan="{{sortable.fullColspan}}" class="text-center text-muted pt-20 pb-20">{{t 'alertPage.index.table.noData'}}</td>
     </tr>
+  {{else if (eq kind "group")}}
+    {{alert/alert-group
+        model=row
+        fullColspan=sortable.fullColspan
+        groups=groups
+        noGroup="alertPage.index.table.noGroup"
+    }}
   {{/if}}
 {{/sortable-table}}
