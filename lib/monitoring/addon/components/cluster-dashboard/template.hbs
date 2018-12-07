@@ -20,10 +20,27 @@
   {{nodes-reservation nodes=nodes}}
 
   <div class="row mt-0">
-    {{k8s-component-status label='clusterDashboard.etcd' healthy=etcdHealthy url=grafana.etcdUrl}}
-    {{k8s-component-status label='clusterDashboard.controllerManager' healthy=controllerHealthy url=grafana.controllerUrl}}
-    {{k8s-component-status label='clusterDashboard.scheduler' healthy=schedulerHealthy url=grafana.schedulerUrl}}
-    {{k8s-component-status label='clusterDashboard.node' healthy=nodesHealthy url=grafana.nodesUrl}}
+    {{k8s-component-status
+        label='clusterDashboard.etcd'
+        showUrl=scope.currentCluster.isRKE
+        healthy=etcdHealthy
+        url=grafana.etcdUrl
+    }}
+    {{k8s-component-status
+        label='clusterDashboard.controllerManager'
+        healthy=controllerHealthy
+        url=grafana.controllerUrl
+    }}
+    {{k8s-component-status
+        label='clusterDashboard.scheduler'
+        healthy=schedulerHealthy
+        url=grafana.schedulerUrl
+    }}
+    {{k8s-component-status
+        label='clusterDashboard.node'
+        healthy=nodesHealthy
+        url=grafana.nodesUrl
+    }}
   </div>
 
   <div class="row">
