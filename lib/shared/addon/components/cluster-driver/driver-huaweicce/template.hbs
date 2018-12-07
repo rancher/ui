@@ -9,14 +9,15 @@
       <div class="row">
         <div class="col span-6 mb-0">
           <label class="acc-label">
-            {{t 'clusterNew.huaweicce.zone.label'}}
+            {{t 'clusterNew.huaweicce.region.label'}}
           </label>
-          {{searchable-select class="form-control"
-          content=zones
-          value=config.zone
-          allowCustom=true
-        }}
-          <p class="text-info text-small m-0">{{t 'clusterNew.huaweicce.zone.helpText' htmlSafe=true}}</p>
+          {{searchable-select
+              class="form-control"
+              content=zones
+              value=config.region
+              allowCustom=true
+          }}
+          <p class="text-info text-small m-0">{{t 'clusterNew.huaweicce.region.helpText' htmlSafe=true}}</p>
         </div>
         <div class="col span-6 mb-0">
           <label class="acc-label">{{t 'clusterNew.huaweicce.projectId.label'}}{{field-required}}</label>
@@ -60,7 +61,7 @@
       <div class="row">
         <div class="col span-6 mb-0">
           <label class="acc-label">
-            {{t 'clusterNew.huaweicce.zone.label'}}
+            {{t 'clusterNew.huaweicce.region.label'}}
           </label>
           <div>{{config.zone}}</div>
         </div>
@@ -271,9 +272,9 @@
           <label class="acc-label">{{t 'clusterNew.huaweicce.externalServerEnabled.label'}}</label>
           {{#if editing}}
             {{#if config.externalServerEnabled}}
-              <div>{{t 'clusterNew.huaweicce.externalServerEnabled.enabled'}}</div>
+              <div>{{t 'generic.enabled'}}</div>
             {{else}}
-              <div>{{t 'clusterNew.huaweicce.externalServerEnabled.disabled'}}</div>
+              <div>{{t 'generic.disabled'}}</div>
             {{/if}}
           {{else}}
             <div class="radio">
@@ -574,13 +575,19 @@
               <label class="acc-label">{{t 'clusterNew.huaweicce.authentiactionMode.label'}}</label>
               <div class="radio">
                 <label>
-                  {{radio-button selection=config.authentiactionMode value="rbac"}}
+                  {{radio-button
+                      selection=config.authentiactionMode
+                      value="rbac"
+                  }}
                   {{t 'clusterNew.huaweicce.authentiactionMode.rbac'}}
                 </label>
               </div>
               <div class="radio">
                 <label>
-                  {{radio-button selection=config.authentiactionMode value="authenticating_proxy"}}
+                  {{radio-button
+                      selection=config.authentiactionMode
+                      value="authenticating_proxy"
+                  }}
                   {{t 'clusterNew.huaweicce.authentiactionMode.authenticating_proxy'}}
                 </label>
               </div>
@@ -588,26 +595,28 @@
                 <div class="clearfix">
                   <label class="acc-label pt-5">{{t 'clusterNew.huaweicce.authenticatingProxyCa.label'}}{{field-required}}</label>
                 </div>
-                {{input-text-file classNames="box"
-                  value=authenticatingProxyCa
-                  multiple=true
-                  canChangeName=false
-                  accept="application/x-x509-ca-cert,text/plain,.pem,.crt"
-                  minHeight=60
-                  placeholder="newCertificate.cert.placeholder"
-                  shouldChangeName=false
-              }}
+                {{input-text-file
+                    classNames="box"
+                    value=authenticatingProxyCa
+                    multiple=true
+                    canChangeName=false
+                    accept="application/x-x509-ca-cert,text/plain,.pem,.crt"
+                    minHeight=60
+                    placeholder="newCertificate.cert.placeholder"
+                    shouldChangeName=false
+                }}
               {{/if}}
             </div>
           </div>
           <div class="row">
             <div class="col span-12 mb-0">
               <label class="acc-label">{{t 'clusterNew.huaweicce.nodeLabels.label'}}</label>
-              {{huawei-user-labels setLabels=(action 'setNodeLabels')
-              expandAll=al.expandAll
-              expand=(action expandFn)
-              detailKey="formUserLabels.nodeDetail"
-            }}
+              {{huawei-user-labels
+                  setLabels=(action 'setNodeLabels')
+                  expandAll=al.expandAll
+                  expand=(action expandFn)
+                  detailKey="formUserLabels.nodeDetail"
+              }}
             </div>
           </div>
         {{/unless}}
@@ -619,19 +628,25 @@
 {{top-errors errors=otherErrors}}
 {{top-errors errors=clusterErrors}}
 {{#if (eq step 1)}}
-  {{save-cancel createLabel="clusterNew.huaweicce.checkAccount"
+  {{save-cancel
+      createLabel="clusterNew.huaweicce.checkAccount"
       savingLabel="clusterNew.huaweicce.checkingAccount"
       save=(action "checkAccount")
       cancel=close
   }}
 {{/if}}
 {{#if (eq step 2)}}
-  {{save-cancel createLabel="clusterNew.huaweicce.configureNode"
+  {{save-cancel
+      createLabel="clusterNew.huaweicce.configureNode"
       savingLabel="clusterNew.huaweicce.configuringNode"
       save=(action "configreNode")
       cancel=close
   }}
 {{/if}}
 {{#if (eq step 3)}}
-  {{save-cancel editing=(eq mode 'edit')  save="driverSave" cancel=close}}
+  {{save-cancel
+      editing=(eq mode 'edit')
+      save="driverSave"
+      cancel=close
+  }}
 {{/if}}
