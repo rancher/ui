@@ -145,7 +145,7 @@ const rootNav = [
     scope:          'cluster',
     id:             'cluster-k8s',
     localizedLabel: 'nav.cluster.dashboard',
-    route:          'authenticated.cluster.monitoring',
+    route:          'authenticated.cluster.monitoring.index',
     ctx:            [getClusterId],
     resource:       ['node'],
     resourceScope:  'global',
