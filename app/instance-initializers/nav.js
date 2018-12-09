@@ -127,7 +127,7 @@ const rootNav = [
         resource:       [],
         ctx:            [getProjectId],
         condition() {
-          return !get(this, 'project.isSystemProject') && get(this, 'cluster.enableClusterMonitoring')
+          return get(this, 'cluster.enableClusterMonitoring')
         }
       },
       {
