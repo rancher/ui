@@ -7,6 +7,7 @@ import Component from '@ember/component';
 import { next } from '@ember/runloop';
 import ViewNewEdit from 'shared/mixins/view-new-edit';
 import layout from './template';
+import Errors from 'ui/utils/errors';
 import {
   ARECORD, CNAME, ALIAS, WORKLOAD, SELECTOR
 } from 'ui/models/dnsrecord';
@@ -74,8 +75,12 @@ export default Component.extend(ViewNewEdit, ChildHook, {
     set(this, 'model.namespaceId', get(this, 'namespace.id') || '__placeholder__');
     const self = this;
     const sup = this._super;
+    const errors = [];
 
-    if ( get(this, 'namespaceErrors.length') ) {
+    errors.pushObjects(get(this, 'namespaceErrors') || []);
+    set(this, 'errors', errors);
+
+    if ( get(errors, 'length') !== 0 ) {
       return false;
     }
 
@@ -83,6 +88,8 @@ export default Component.extend(ViewNewEdit, ChildHook, {
       set(this, 'model.namespaceId', get(this, 'namespace.id'));
 
       return sup.apply(self, ...arguments);
+    }).catch((err) => {
+      set(this, 'errors', [Errors.stringify(err)]);
     });
   },
 
@@ -136,8 +143,6 @@ export default Component.extend(ViewNewEdit, ChildHook, {
       }
       break;
     }
-
-    errors.pushObjects(get(this, 'namespaceErrors') || []);
 
     set(this, 'errors', errors);
 
