@@ -60,15 +60,18 @@ export default Component.extend({
       }
 
       if ( type === HTTP || type === HTTPS ) {
-        const originalHeaders = get(check, 'httpHeaders') || {};
+        const originalHeaders = get(check, 'httpHeaders') || [];
         let host = null;
         const headers = {};
 
-        Object.keys(originalHeaders).forEach((key) => {
-          if ( key.toLowerCase() === 'host' ) {
-            host = originalHeaders[key];
+        originalHeaders.forEach((h) => {
+          const name = (get(h, 'name') || '');
+          const value = (get(h, 'value') || '');
+
+          if ( name.toLowerCase() === 'host' ) {
+            host = value;
           } else {
-            headers[key] = originalHeaders[key];
+            set(headers, name, value);
           }
         });
 
@@ -114,16 +117,26 @@ export default Component.extend({
 
     if ( get(this, 'isHttpish') ) {
       const host = get(this, 'host');
-      const hostHeader = {};
+      const httpHeaders = [];
 
       if ( host ) {
-        hostHeader['Host'] = host;
+        httpHeaders.push({
+          name:  'Host',
+          value: host
+        })
       }
 
-      const headers = Object.assign({}, hostHeader, get(this, 'headers'));
+      const headers = get(this, 'headers');
+
+      Object.keys(headers).forEach((header) => {
+        httpHeaders.push({
+          name:  header,
+          value: get(headers, header)
+        })
+      })
 
       setProperties(check, {
-        httpHeaders: headers,
+        httpHeaders,
         path:        get(this, 'path') || '/',
         scheme:      get(this, 'isHttps') ? 'HTTPS' : 'HTTP'
       });
