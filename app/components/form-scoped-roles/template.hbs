@@ -44,7 +44,13 @@
     <div class="radio">
       <label>
         {{radio-button selection=mode value=role}} {{role.role.displayName}}
-        <p class="help-block">{{t 'formScopedRoles.mode.userDef.detail'}}</p>
+        <p class="help-block">
+          {{#if role.role.description}}
+            {{role.role.description}}
+          {{else}}
+            {{t 'formScopedRoles.mode.userDef.detail'}}
+          {{/if}}
+        </p>
       </label>
     </div>
   {{/each}}
