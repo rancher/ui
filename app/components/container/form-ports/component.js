@@ -180,10 +180,25 @@ export default Component.extend({
   },
 
   initKindChoices() {
-    set(this, 'kindChoices', KINDS.map((k) => ({
-      translationKey: `formPorts.kind.${ k }`,
-      value:          k
-    })));
+    const loadBalancerCapabilites = get(this, 'capabilities.loadBalancerCapabilites');
+
+    set(this, 'kindChoices', KINDS.map((k) => {
+      let out = {
+        translationKey: null,
+        value:          k,
+      };
+
+      if (!loadBalancerCapabilites.l4LoadBalancerEnabled && k === 'LoadBalancer') {
+        setProperties(out, {
+          translationKey: `formPorts.kind.LoadBalancerDisbaled`,
+          disabled:       true
+        })
+      } else {
+        set(out, 'translationKey', `formPorts.kind.${ k }`);
+      }
+
+      return out;
+    }));
   },
 
 });
