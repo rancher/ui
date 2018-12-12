@@ -3,7 +3,7 @@
     <div class="banner bg-warning">
       <div class="banner-icon"><span class="icon icon-alert"></span></div>
       <div class="banner-message">
-        <p>{{t 'authPage.github.header.disabled.label'}}</p>
+        <p>{{t "authPage.github.header.disabled.label"}}</p>
       </div>
     </div>
   {{/unless}}
@@ -18,38 +18,38 @@
          expandOnInit=true
          expanded=true
          showExpand=false
-         title=(t 'authPage.github.authenticated.header.text')
+         title=(t "authPage.github.authenticated.header.text")
     }}
       <section class="">
         <div class="clearfix">
           <div class="pull-right">
             <button class="btn btn-sm right-divider-btn bg-error" {{action "disable"}}>
-              {{t 'authPage.github.authenticated.disableAccess.disable'}}
+              {{t "authPage.github.authenticated.disableAccess.disable"}}
             </button>
           </div>
         </div>
         <hr/>
         {{#if isEnterprise }}
-          <div><b>{{t 'authPage.github.authenticated.header.enterpriseHostName'}} </b> <span class="text-muted">{{authConfig.hostname}}</span></div>
+          <div><b>{{t "authPage.github.authenticated.header.enterpriseHostName"}} </b> <span class="text-muted">{{authConfig.hostname}}</span></div>
         {{/if}}
-        <div><b>{{t 'authPage.github.authenticated.header.clientId.text'}} </b> <span class="text-muted">{{authConfig.clientId}}</span></div>
+        <div><b>{{t "authPage.github.authenticated.header.clientId.text"}} </b> <span class="text-muted">{{authConfig.clientId}}</span></div>
       </section>
     {{/accordion-list-item}}
 
     {{#accordion-list-item
          classNames="mt-30"
-         detail=(t 'siteAccess.helpText' appName=settings.appName htmlSafe=true)
+         detail=(t "siteAccess.helpText" appName=settings.appName htmlSafe=true)
          expand=(action expandFn)
          expandAll=al.expandAll
          expandOnInit=true
          expanded=true
          showExpand=false
-         title=(t 'siteAccess.header')
+         title=(t "siteAccess.header")
     }}
       {{site-access
           model=authConfig
           principals=model.principals
-          collection='siteAccess.organizations'
+          collection="siteAccess.organizations"
       }}
     {{/accordion-list-item}}
   {{/if}}
@@ -62,29 +62,29 @@
          expandOnInit=true
          expanded=true
          showExpand=false
-         title=(t 'authPage.github.notAuthenticated.header')
+         title=(t "authPage.github.notAuthenticated.header")
     }}
       <section class="">
         <p>
           <ol class="alphalist ml-40">
             <li>
-              {{t 'authPage.github.notAuthenticated.ul.li1.text' htmlSafe=true}}
+              {{t "authPage.github.notAuthenticated.ul.li1.text" htmlSafe=true}}
               <ul>
-                <li>{{t 'authPage.github.notAuthenticated.ul.li1.ul.li1'}}</li>
+                <li>{{t "authPage.github.notAuthenticated.ul.li1.ul.li1"}}</li>
               </ul>
             </li>
             <li>
-              {{t 'authPage.github.notAuthenticated.ul.li2.text'}}
+              {{t "authPage.github.notAuthenticated.ul.li2.text"}}
               <ul>
-                <li>{{t 'authPage.github.notAuthenticated.ul.li2.ul.li1' appName=settings.appName htmlSafe=true}}</li>
+                <li>{{t "authPage.github.notAuthenticated.ul.li2.ul.li1" appName=settings.appName htmlSafe=true}}</li>
                 <li>
-                  <b>{{t 'authPage.github.notAuthenticated.ul.li2.ul.li2'}}</b> <span>{{destinationUrl}}{{copy-to-clipboard size='small' clipboardText=destinationUrl htmlSafe=true}}</span>
+                  <b>{{t "authPage.github.notAuthenticated.ul.li2.ul.li2"}}</b> <span>{{destinationUrl}}{{copy-to-clipboard size="small" clipboardText=destinationUrl htmlSafe=true}}</span>
                 </li>
-                <li>{{t 'authPage.github.notAuthenticated.ul.li2.ul.li3' htmlSafe=true}}</li>
-                <li><b>{{t 'authPage.github.notAuthenticated.ul.li2.ul.li4'}}</b> <span id="auth-callback-url">{{destinationUrl}} {{copy-to-clipboard size='small' clipboardText=destinationUrl}}</span></li>
+                <li>{{t "authPage.github.notAuthenticated.ul.li2.ul.li3" htmlSafe=true}}</li>
+                <li><b>{{t "authPage.github.notAuthenticated.ul.li2.ul.li4"}}</b> <span id="auth-callback-url">{{destinationUrl}} {{copy-to-clipboard size="small" clipboardText=destinationUrl}}</span></li>
               </ul>
             </li>
-            <li>{{t 'authPage.github.notAuthenticated.ul.li3.text'}}</li>
+            <li>{{t "authPage.github.notAuthenticated.ul.li3.text"}}</li>
           </ol>
         </p>
       </section>
@@ -96,35 +96,35 @@
          expandOnInit=true
          expanded=true
          showExpand=false
-         title=(t 'authPage.github.notAuthenticated.form.header' appName=settings.appName)
+         title=(t "authPage.github.notAuthenticated.form.header" appName=settings.appName)
     }}
       <form autcomplete="on">
         <section class="">
           <div class="row">
             <div class="col span-6">
               <div class="inline-form">
-                <label class="acc-label pb-5">{{t 'authPage.github.notAuthenticated.form.clientId.labelText'}}{{field-required}}</label>
+                <label class="acc-label pb-5">{{t "authPage.github.notAuthenticated.form.clientId.labelText"}}{{field-required}}</label>
                 {{input type="text" name="username" value=authConfig.clientId classNames="form-control"}}
-                <p class="help-block">{{t 'authPage.github.notAuthenticated.form.subtext'}}</p>
+                <p class="help-block">{{t "authPage.github.notAuthenticated.form.subtext"}}</p>
 
               </div>
             </div>
             <div class="col span-6">
               <div class="inline-form">
-                <label class="acc-label pb-5">{{t 'authPage.github.notAuthenticated.form.clientSecret.labelText'}}{{field-required}}</label>
+                <label class="acc-label pb-5">{{t "authPage.github.notAuthenticated.form.clientSecret.labelText"}}{{field-required}}</label>
                 {{input type="password" name="password" value=authConfig.clientSecret classNames="form-control"}}
               </div>
               <div class="checkbox pt-10">
-                <label class="acc-label pb-5">{{input type="checkbox" checked=isEnterprise}} {{t 'authPage.github.notAuthenticated.form.ghEnterprise.labelText'}} (disabled)</label>
+                <label class="acc-label pb-5">{{input type="checkbox" checked=isEnterprise}} {{t "authPage.github.notAuthenticated.form.ghEnterprise.labelText"}} (disabled)</label>
               </div>
               {{#liquid-if isEnterprise}}
                 <div class="checkbox pt-10">
-                  <label class="acc-label pb-5">{{input type="checkbox" checked=secure}} {{t 'authPage.github.notAuthenticated.form.isGHEnterprise.labelText'}} (<code>https://</code>).</label>
+                  <label class="acc-label pb-5">{{input type="checkbox" checked=secure}} {{t "authPage.github.notAuthenticated.form.isGHEnterprise.labelText"}} (<code>https://</code>).</label>
                 </div>
               {{/liquid-if}}
               {{#liquid-if isEnterprise}}
-                <label class="acc-label pb-5">{{t 'authPage.github.notAuthenticated.form.enterpriseHost.labelText'}}{{field-required}}</label>
-                {{input type="text" value=authConfig.hostname classNames="form-control" placeholder=(t 'authPage.github.notAuthenticated.form.enterpriseHost.placeholder')}}
+                <label class="acc-label pb-5">{{t "authPage.github.notAuthenticated.form.enterpriseHost.labelText"}}{{field-required}}</label>
+                {{input type="text" value=authConfig.hostname classNames="form-control" placeholder=(t "authPage.github.notAuthenticated.form.enterpriseHost.placeholder")}}
               {{/liquid-if}}
             </div>
           </div>
@@ -133,14 +133,14 @@
             <div class="btn-group">
               <button class="btn bg-primary" {{action "save"}}>
                 {{#if saving}}
-                  <i class="icon icon-spinner icon-spin"></i> {{t 'authPage.github.testAuth.buttonText.post'}}
+                  <i class="icon icon-spinner icon-spin"></i> {{t "authPage.github.testAuth.buttonText.post"}}
                 {{else if doneSaving}}
-                  {{t 'generic.saved'}}
+                  {{t "generic.saved"}}
                 {{else}}
-                  <i class="icon icon-github"></i> {{t 'authPage.github.testAuth.buttonText.pre'}}
+                  <i class="icon icon-github"></i> {{t "authPage.github.testAuth.buttonText.pre"}}
                 {{/if}}
               </button>
-              <button {{action "cancel"}} class="btn bg-transparent">{{t 'saveCancel.cancel'}}</button>
+              <button {{action "cancel"}} class="btn bg-transparent">{{t "saveCancel.cancel"}}</button>
             </div>
           </div>
         </section>

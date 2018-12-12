@@ -1,6 +1,6 @@
 {{#each filtered as |stage stageIndex| }}
   {{#build-stage
-    title=(pipeline-stages-info stageInfo stageIndex false 'name')
+    title=(pipeline-stages-info stageInfo stageIndex false "name")
     status=stage.state
     date=(date-str stage.started)
     duration=(date-duration stage.ended stage.started)
@@ -11,11 +11,11 @@
     logKeyChanged=logKeyChanged
     expandAll=true
     expand=(action expandFn)
-    componentName='pipeline-history-table'
+    componentName="pipeline-history-table"
     as | parent |
       }}
       {{#each stage.steps as |step stepIndex|}}
-        {{#build-step 
+        {{#build-step
           activity=activity
           step=step
           stageInfo=stageInfo

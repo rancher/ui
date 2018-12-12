@@ -1,13 +1,13 @@
 {{#accordion-list showExpandAll=false as | al expandFn |}}
-  {{#accordion-list-item title=(t 'clusterNew.aliyunkcs.access.title')
-       detail=(t 'clusterNew.aliyunkcs.access.detail')
+  {{#accordion-list-item title=(t "clusterNew.aliyunkcs.access.title")
+       detail=(t "clusterNew.aliyunkcs.access.detail")
        expandAll=expandAll
        expand=(action expandFn)
        expandOnInit=true
   }}
     <div class="row">
       <div class="col span-4">
-        <label class="acc-label">{{t 'clusterNew.aliyunkcs.regionId.label'}}</label>
+        <label class="acc-label">{{t "clusterNew.aliyunkcs.regionId.label"}}</label>
         {{#if (eq step 1)}}
           {{searchable-select class="form-control"
             content=regionChoices
@@ -18,12 +18,12 @@
         {{/if}}
       </div>
       <div class="col span-4">
-        <label class="acc-label">{{t 'clusterNew.aliyunkcs.accessKeyId.label'}}{{field-required}}</label>
+        <label class="acc-label">{{t "clusterNew.aliyunkcs.accessKeyId.label"}}{{field-required}}</label>
         {{#if (eq step 1)}}
           {{input type="text"
           name="username"
           classNames="form-control"
-          placeholder=(t 'clusterNew.aliyunkcs.accessKeyId.placeholder')
+          placeholder=(t "clusterNew.aliyunkcs.accessKeyId.placeholder")
           value=config.accessKeyId
           }}
         {{else}}
@@ -31,17 +31,17 @@
         {{/if}}
       </div>
       <div class="col span-4">
-        <label class="acc-label">{{t 'clusterNew.aliyunkcs.accessKeySecret.label'}}{{field-required}}</label>
+        <label class="acc-label">{{t "clusterNew.aliyunkcs.accessKeySecret.label"}}{{field-required}}</label>
         {{#if (eq step 1)}}
-          {{input type="password" name="password" classNames="form-control" placeholder=(t 'clusterNew.aliyunkcs.accessKeySecret.placeholder') value=config.accessKeySecret}}
+          {{input type="password" name="password" classNames="form-control" placeholder=(t "clusterNew.aliyunkcs.accessKeySecret.placeholder") value=config.accessKeySecret}}
         {{else}}
-          <div class="text-muted text-italic">{{t 'clusterNew.aliyunkcs.accessKeySecret.provided'}}</div>
+          <div class="text-muted text-italic">{{t "clusterNew.aliyunkcs.accessKeySecret.provided"}}</div>
         {{/if}}
       </div>
     </div>
   {{/accordion-list-item}}
   {{#if (eq step 1)}}
-    {{save-cancel editing=(eq mode 'edit')
+    {{save-cancel editing=(eq mode "edit")
         save="aliyunLogin"
         cancel=close
         createLabel="clusterNew.aliyunkcs.access.next"
@@ -49,8 +49,8 @@
     }}
   {{/if}}
   {{#if (gte step 2)}}
-    {{#accordion-list-item title=(t 'clusterNew.aliyunkcs.cluster.title')
-         detail=(t 'clusterNew.aliyunkcs.cluster.detail')
+    {{#accordion-list-item title=(t "clusterNew.aliyunkcs.cluster.title")
+         detail=(t "clusterNew.aliyunkcs.cluster.detail")
          showExpand=false
          expandOnInit=true
          expandAll=al.expandAll
@@ -58,7 +58,7 @@
     }}
       <div class="row">
         <div class="col span-6">
-          <label class="acc-label">{{t 'clusterNew.aliyunkcs.version.label'}}</label>
+          <label class="acc-label">{{t "clusterNew.aliyunkcs.version.label"}}</label>
           {{#if (eq step 2)}}
             {{searchable-select class="form-control"
               content=versionChoices
@@ -69,7 +69,7 @@
           {{/if}}
         </div>
         <div class="col span-6">
-          <label class="acc-label">{{t 'clusterNew.aliyunkcs.zoneId.label'}}{{field-required}}</label>
+          <label class="acc-label">{{t "clusterNew.aliyunkcs.zoneId.label"}}{{field-required}}</label>
           {{#if (eq step 2)}}
             {{searchable-select class="form-control"
               content=zoneChoices
@@ -82,7 +82,7 @@
       </div>
     {{/accordion-list-item}}
     {{#if (eq step 2)}}
-      {{save-cancel editing=(eq mode 'edit')
+      {{save-cancel editing=(eq mode "edit")
           save="configMaster"
           cancel=close
           createLabel="clusterNew.aliyunkcs.cluster.next"
@@ -91,8 +91,8 @@
     {{/if}}
   {{/if}}
   {{#if (gte step 3)}}
-    {{#accordion-list-item title=(t 'clusterNew.aliyunkcs.master.title')
-         detail=(t 'clusterNew.aliyunkcs.master.detail')
+    {{#accordion-list-item title=(t "clusterNew.aliyunkcs.master.title")
+         detail=(t "clusterNew.aliyunkcs.master.detail")
          showExpand=false
          expandOnInit=true
          expandAll=al.expandAll
@@ -100,7 +100,7 @@
     }}
       <div class="row">
         <div class="col span-6">
-          <label class="acc-label">{{t 'clusterNew.aliyunkcs.instanceType.label'}}{{field-required}}</label>
+          <label class="acc-label">{{t "clusterNew.aliyunkcs.instanceType.label"}}{{field-required}}</label>
           {{#if (eq step 3)}}
             {{searchable-select class="form-control"
               content=instanceChoices
@@ -111,13 +111,13 @@
           {{/if}}
         </div>
         <div class="col span-6">
-          <label class="acc-label">{{t 'clusterNew.aliyunkcs.masterNum.label'}}</label>
+          <label class="acc-label">{{t "clusterNew.aliyunkcs.masterNum.label"}}</label>
           <div>3</div>
         </div>
       </div>
       <div class="row">
         <div class="col span-6">
-          <label class="acc-label">{{t 'clusterNew.aliyunkcs.rootType.label'}}</label>
+          <label class="acc-label">{{t "clusterNew.aliyunkcs.rootType.label"}}</label>
           {{#if (eq step 3)}}
             {{searchable-select class="form-control"
               content=diskChoices
@@ -129,20 +129,20 @@
           {{/if}}
         </div>
         <div class="col span-6">
-          <label class="acc-label">{{t 'clusterNew.aliyunkcs.rootSize.label'}}</label>
+          <label class="acc-label">{{t "clusterNew.aliyunkcs.rootSize.label"}}</label>
           {{#if (eq step 3)}}
             <div class="input-group">
-              {{input-integer min=40 max=500 value=config.masterSystemDiskSize classNames="form-control" placeholder=(t 'clusterNew.aliyunkcs.rootSize.placeholder')}}
-              <span class="input-group-addon bg-default">{{t 'generic.gigabyte'}}</span>
+              {{input-integer min=40 max=500 value=config.masterSystemDiskSize classNames="form-control" placeholder=(t "clusterNew.aliyunkcs.rootSize.placeholder")}}
+              <span class="input-group-addon bg-default">{{t "generic.gigabyte"}}</span>
             </div>
           {{else}}
-            <div>{{config.masterSystemDiskSize}} {{t 'generic.gigabyte'}}</div>
+            <div>{{config.masterSystemDiskSize}} {{t "generic.gigabyte"}}</div>
           {{/if}}
         </div>
       </div>
     {{/accordion-list-item}}
     {{#if (eq step 3)}}
-      {{save-cancel editing=(eq mode 'edit')
+      {{save-cancel editing=(eq mode "edit")
           save="configWorker"
           cancel=close
           createLabel="clusterNew.aliyunkcs.master.next"
@@ -151,8 +151,8 @@
     {{/if}}
   {{/if}}
   {{#if (gte step 4)}}
-    {{#accordion-list-item title=(t 'clusterNew.aliyunkcs.worker.title')
-         detail=(t 'clusterNew.aliyunkcs.worker.detail')
+    {{#accordion-list-item title=(t "clusterNew.aliyunkcs.worker.title")
+         detail=(t "clusterNew.aliyunkcs.worker.detail")
          showExpand=false
          expandOnInit=true
          expandAll=al.expandAll
@@ -160,7 +160,7 @@
     }}
       <div class="row">
         <div class="col span-6">
-          <label class="acc-label">{{t 'clusterNew.aliyunkcs.instanceType.label'}}{{field-required}}</label>
+          <label class="acc-label">{{t "clusterNew.aliyunkcs.instanceType.label"}}{{field-required}}</label>
           {{#if (eq step 4)}}
             {{searchable-select class="form-control"
               content=instanceChoices
@@ -171,11 +171,11 @@
           {{/if}}
         </div>
         <div class="col span-6">
-          <label class="acc-label">{{t 'clusterNew.aliyunkcs.numOfNodes.label'}}</label>
+          <label class="acc-label">{{t "clusterNew.aliyunkcs.numOfNodes.label"}}</label>
           {{#if (eq step 4)}}
-            {{input-integer min=0 max=300 value=config.numOfNodes classNames="form-control" placeholder=(t 'clusterNew.aliyunkcs.numOfNodes.placeholder')}}
+            {{input-integer min=0 max=300 value=config.numOfNodes classNames="form-control" placeholder=(t "clusterNew.aliyunkcs.numOfNodes.placeholder")}}
             <p class="help-block">
-              {{t 'clusterNew.aliyunkcs.numOfNodes.help'}}
+              {{t "clusterNew.aliyunkcs.numOfNodes.help"}}
             </p>
           {{else}}
             <div>{{config.numOfNodes}}</div>
@@ -184,7 +184,7 @@
       </div>
       <div class="row">
         <div class="col span-6">
-          <label class="acc-label">{{t 'clusterNew.aliyunkcs.rootType.label'}}</label>
+          <label class="acc-label">{{t "clusterNew.aliyunkcs.rootType.label"}}</label>
           {{searchable-select class="form-control"
             content=diskChoices
             localizedLabel=true
@@ -192,16 +192,16 @@
           }}
         </div>
         <div class="col span-6">
-          <label class="acc-label">{{t 'clusterNew.aliyunkcs.rootSize.label'}}</label>
+          <label class="acc-label">{{t "clusterNew.aliyunkcs.rootSize.label"}}</label>
           <div class="input-group">
-            {{input-integer min=40 max=500 value=config.workerSystemDiskSize classNames="form-control" placeholder=(t 'clusterNew.aliyunkcs.rootSize.placeholder')}}
-            <span class="input-group-addon bg-default">{{t 'generic.gigabyte'}}</span>
+            {{input-integer min=40 max=500 value=config.workerSystemDiskSize classNames="form-control" placeholder=(t "clusterNew.aliyunkcs.rootSize.placeholder")}}
+            <span class="input-group-addon bg-default">{{t "generic.gigabyte"}}</span>
           </div>
         </div>
       </div>
       <div class="row">
         <div class="col span-6">
-          <label class="acc-label">{{t 'clusterNew.aliyunkcs.storageType.label'}}</label>
+          <label class="acc-label">{{t "clusterNew.aliyunkcs.storageType.label"}}</label>
           {{searchable-select class="form-control"
             content=diskChoices
             localizedLabel=true
@@ -209,16 +209,16 @@
           }}
         </div>
         <div class="col span-6">
-          <label class="acc-label">{{t 'clusterNew.aliyunkcs.storageSize.label'}}</label>
+          <label class="acc-label">{{t "clusterNew.aliyunkcs.storageSize.label"}}</label>
           <div class="input-group">
-            {{input-integer min=40 max=32768 value=config.workerDataDiskSize classNames="form-control" placeholder=(t 'clusterNew.aliyunkcs.rootSize.placeholder')}}
-            <span class="input-group-addon bg-default">{{t 'generic.gigabyte'}}</span>
+            {{input-integer min=40 max=32768 value=config.workerDataDiskSize classNames="form-control" placeholder=(t "clusterNew.aliyunkcs.rootSize.placeholder")}}
+            <span class="input-group-addon bg-default">{{t "generic.gigabyte"}}</span>
           </div>
         </div>
       </div>
       <div class="row">
         <div class="col span-6">
-          <label class="acc-label">{{t 'clusterNew.aliyunkcs.keyPair.label'}}{{field-required}}</label>
+          <label class="acc-label">{{t "clusterNew.aliyunkcs.keyPair.label"}}{{field-required}}</label>
           {{searchable-select class="form-control"
             content=keyChoices
             value=config.keyPair
@@ -227,7 +227,7 @@
       </div>
     {{/accordion-list-item}}
     {{#if (eq step 4)}}
-      {{save-cancel editing=(eq mode 'edit')
+      {{save-cancel editing=(eq mode "edit")
           save="save"
           cancel=close
       }}

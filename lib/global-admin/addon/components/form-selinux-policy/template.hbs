@@ -1,6 +1,6 @@
 {{#accordion-list-item
-     title=(t 'formSeLinuxodSecurityPolicy.title')
-     detail=(t 'formSeLinuxodSecurityPolicy.detail')
+     title=(t "formSeLinuxodSecurityPolicy.title")
+     detail=(t "formSeLinuxodSecurityPolicy.detail")
      status=status
      statusClass=statusClass
      expandAll=expandAll
@@ -8,15 +8,15 @@
 }}
   <div class="row">
     {{#if (and readOnly (eq model.seLinux.rule "MustRunAs"))}}
-      {{t 'formSeLinuxodSecurityPolicy.rule.mustRunAs'}}
+      {{t "formSeLinuxodSecurityPolicy.rule.mustRunAs"}}
     {{else if (and readOnly (eq model.seLinux.rule "RunAsAny"))}}
-      {{t 'formSeLinuxodSecurityPolicy.rule.runAsAny'}}
+      {{t "formSeLinuxodSecurityPolicy.rule.runAsAny"}}
     {{else}}
       <div class="radio input">
-        <label>{{radio-button selection=model.seLinux.rule value="MustRunAs"}} {{t 'formSeLinuxodSecurityPolicy.rule.mustRunAs'}}</label>
+        <label>{{radio-button selection=model.seLinux.rule value="MustRunAs"}} {{t "formSeLinuxodSecurityPolicy.rule.mustRunAs"}}</label>
       </div>
       <div class="radio input">
-        <label>{{radio-button selection=model.seLinux.rule value="RunAsAny"}} {{t 'formSeLinuxodSecurityPolicy.rule.runAsAny'}}</label>
+        <label>{{radio-button selection=model.seLinux.rule value="RunAsAny"}} {{t "formSeLinuxodSecurityPolicy.rule.runAsAny"}}</label>
       </div>
     {{/if}}
   </div>
@@ -24,16 +24,16 @@
   {{#if (eq model.seLinux.rule "MustRunAs")}}
     <div class="row">
       <div class="col span-4">
-        <label class="acc-label">{{t 'formSeLinuxodSecurityPolicy.level.label'}}</label>
-        {{input type="text" value=model.seLinux.seLinuxOptions.level disabled=readOnly classNames="form-control input-sm" placeholder=(t 'formSeLinuxodSecurityPolicy.level.placeholder')}}
+        <label class="acc-label">{{t "formSeLinuxodSecurityPolicy.level.label"}}</label>
+        {{input type="text" value=model.seLinux.seLinuxOptions.level disabled=readOnly classNames="form-control input-sm" placeholder=(t "formSeLinuxodSecurityPolicy.level.placeholder")}}
       </div>
       <div class="col span-4">
-        <label class="acc-label">{{t 'formSeLinuxodSecurityPolicy.role.label'}}</label>
-        {{input type="text" value=model.seLinux.seLinuxOptions.role disabled=readOnly classNames="form-control input-sm" placeholder=(t 'formSeLinuxodSecurityPolicy.role.placeholder')}}
+        <label class="acc-label">{{t "formSeLinuxodSecurityPolicy.role.label"}}</label>
+        {{input type="text" value=model.seLinux.seLinuxOptions.role disabled=readOnly classNames="form-control input-sm" placeholder=(t "formSeLinuxodSecurityPolicy.role.placeholder")}}
       </div>
       <div class="col span-4">
-        <label class="acc-label">{{t 'formSeLinuxodSecurityPolicy.user.label'}}</label>
-        {{input type="text" value=model.seLinux.seLinuxOptions.user disabled=readOnly classNames="form-control input-sm" placeholder=(t 'formSeLinuxodSecurityPolicy.user.placeholder')}}
+        <label class="acc-label">{{t "formSeLinuxodSecurityPolicy.user.label"}}</label>
+        {{input type="text" value=model.seLinux.seLinuxOptions.user disabled=readOnly classNames="form-control input-sm" placeholder=(t "formSeLinuxodSecurityPolicy.user.placeholder")}}
       </div>
     </div>
   {{/if}}

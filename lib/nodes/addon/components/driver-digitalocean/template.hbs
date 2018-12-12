@@ -2,9 +2,9 @@
   {{#if (eq step 1)}}
     <div class="box mt-20">
       <div class="row">
-        <label class="acc-label">{{t 'nodeDriver.digitalocean.accessToken.label'}}</label>
-        {{input type="password" value=config.accessToken classNames="form-control" placeholder=(t 'nodeDriver.digitalocean.accessToken.placeholder')}}
-        <p class="text-info">{{t 'nodeDriver.digitalocean.accessToken.help' htmlSafe=true}}</p>
+        <label class="acc-label">{{t "nodeDriver.digitalocean.accessToken.label"}}</label>
+        {{input type="password" value=config.accessToken classNames="form-control" placeholder=(t "nodeDriver.digitalocean.accessToken.placeholder")}}
+        <p class="text-info">{{t "nodeDriver.digitalocean.accessToken.help" htmlSafe=true}}</p>
       </div>
     </div>
     {{top-errors errors=errors}}
@@ -19,15 +19,15 @@
       <div class="over-hr mb-20"><span>{{driverOptionsTitle}}</span></div>
 
       {{#accordion-list-item
-        title=(t 'nodeDriver.digitalocean.droplet.title')
-        detail=(t 'nodeDriver.digitalocean.droplet.detail')
+        title=(t "nodeDriver.digitalocean.droplet.title")
+        detail=(t "nodeDriver.digitalocean.droplet.detail")
         expandAll=expandAll
         expand=(action expandFn)
         expandOnInit=true
       }}
         <div class="row">
           <div class="col span-6">
-            <label class="acc-label">{{t 'nodeDriver.digitalocean.region.label'}}</label>
+            <label class="acc-label">{{t "nodeDriver.digitalocean.region.label"}}</label>
             <select class="form-control" onchange={{action (mut config.region) value="target.value"}}>
               {{#each regionChoices as |choice|}}
                 <option value={{choice.slug}} selected={{eq config.region choice.slug}}>{{choice.name}}</option>
@@ -35,17 +35,17 @@
             </select>
           </div>
           <div class="col span-6">
-            <label class="acc-label">{{t 'nodeDriver.digitalocean.size.label'}}</label>
+            <label class="acc-label">{{t "nodeDriver.digitalocean.size.label"}}</label>
             <select class="form-control" onchange={{action (mut config.size) value="target.value"}}>
               {{#each filteredSizeChoices as |choice|}}
-                <option value={{choice.slug}} selected={{eq config.size choice.slug}}>{{t 'nodeDriver.digitalocean.sizeLabel' memoryGb=choice.memoryGb highMem=choice.highMem slug=choice.slug disk=choice.disk vcpus=choice.vcpus}}</option>
+                <option value={{choice.slug}} selected={{eq config.size choice.slug}}>{{t "nodeDriver.digitalocean.sizeLabel" memoryGb=choice.memoryGb highMem=choice.highMem slug=choice.slug disk=choice.disk vcpus=choice.vcpus}}</option>
               {{/each}}
             </select>
           </div>
         </div>
         <div class="row">
           <div class="col span-6">
-            <label class="acc-label">{{t 'nodeDriver.digitalocean.image.label'}}</label>
+            <label class="acc-label">{{t "nodeDriver.digitalocean.image.label"}}</label>
             <select class="form-control" onchange={{action (mut config.image) value="target.value"}}>
               {{#each imageChoices as |choice|}}
                 <option value={{choice.slug}} disabled={{choice.disabled}} selected={{eq config.image choice.slug}}>{{choice.distribution}} {{choice.name}}</option>
@@ -53,33 +53,33 @@
             </select>
           </div>
           <div class="col span-6">
-            <label class="acc-label">{{t 'nodeDriver.digitalocean.sshUser.label'}}</label>
-            {{input type="text" value=config.sshUser classNames="form-control" placeholder=(t 'nodeDriver.digitalocean.sshUser.placeholder')}}
+            <label class="acc-label">{{t "nodeDriver.digitalocean.sshUser.label"}}</label>
+            {{input type="text" value=config.sshUser classNames="form-control" placeholder=(t "nodeDriver.digitalocean.sshUser.placeholder")}}
           </div>
         </div>
         <div class="row">
           <div class="col span-3 text-center">
             <label class="acc-label">
               {{input type="checkbox" checked=config.backups}}
-              {{t 'nodeDriver.digitalocean.backups.label'}}
+              {{t "nodeDriver.digitalocean.backups.label"}}
             </label>
           </div>
           <div class="col span-3 text-center">
             <label class="acc-label">
               {{input type="checkbox" checked=config.privateNetworking}}
-              {{t 'nodeDriver.digitalocean.privateNetworking.label'}}
+              {{t "nodeDriver.digitalocean.privateNetworking.label"}}
             </label>
           </div>
           <div class="col span-3 text-center">
             <label class="acc-label">
               {{input type="checkbox" checked=config.ipv6}}
-              {{t 'nodeDriver.digitalocean.ipv6.label'}}
+              {{t "nodeDriver.digitalocean.ipv6.label"}}
             </label>
           </div>
           <div class="col span-3 text-center">
             <label class="acc-label">
               {{input type="checkbox" checked=config.monitoring}}
-              {{t 'nodeDriver.digitalocean.monitoring.label'}}
+              {{t "nodeDriver.digitalocean.monitoring.label"}}
             </label>
           </div>
         </div>
@@ -87,9 +87,9 @@
           <div class="col span-6">
             {{form-value-array
               initialValues=tags
-              addActionLabel='nodeDriver.digitalocean.tags.addActionLabel'
-              valueLabel='nodeDriver.digitalocean.tags.valueLabel'
-              valuePlaceholder='nodeDriver.digitalocean.tags.placeholder'
+              addActionLabel="nodeDriver.digitalocean.tags.addActionLabel"
+              valueLabel="nodeDriver.digitalocean.tags.valueLabel"
+              valuePlaceholder="nodeDriver.digitalocean.tags.placeholder"
               changed=(action (mut tags))
             }}
           </div>
@@ -105,7 +105,7 @@
 
       {{form-user-labels
         initialLabels=labelResource.labels
-        setLabels=(action 'setLabels')
+        setLabels=(action "setLabels")
         expandAll=expandAll
         expand=(action expandFn)
       }}

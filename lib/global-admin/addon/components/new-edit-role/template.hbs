@@ -1,11 +1,11 @@
 <section class="header clearfix">
   <div class="pull-left">
     {{#if readOnlyBuiltInOrGlobal}}
-      <h1>{{t 'rolesPage.title'}}: {{model.role.name}}</h1>
+      <h1>{{t "rolesPage.title"}}: {{model.role.name}}</h1>
     {{else if editing}}
-      <h1>{{t 'rolesPage.editRole'}}</h1>
+      <h1>{{t "rolesPage.editRole"}}</h1>
     {{else}}
-      <h1>{{t 'rolesPage.addRole' context=readableRole}}</h1>
+      <h1>{{t "rolesPage.addRole" context=readableRole}}</h1>
     {{/if}}
   </div>
 </section>
@@ -22,56 +22,56 @@
 
 {{#if (and model.role.description readOnlyBuiltInOrGlobal)}}
   <div class="row mb-30">
-    {{banner-message color='bg-secondary mb-0 mt-10' message=(linkify model.role.description)}}
+    {{banner-message color="bg-secondary mb-0 mt-10" message=(linkify model.role.description)}}
   </div>
 {{/if}}
 
 <div class="row">
-  {{#unless (eq roleType 'global')}}
+  {{#unless (eq roleType "global")}}
     <div class="col span-6">
-      <label class="acc-label">{{t 'rolesPage.new.form.locked.labelText' }}</label>
+      <label class="acc-label">{{t "rolesPage.new.form.locked.labelText" }}</label>
       {{#if readOnly}}
         <div>
           {{#if primaryResource.locked}}
-            {{t 'rolesPage.new.form.locked.enabled'}}
+            {{t "rolesPage.new.form.locked.enabled"}}
           {{else}}
-            {{t 'rolesPage.new.form.locked.disabled'}}
+            {{t "rolesPage.new.form.locked.disabled"}}
           {{/if}}
         </div>
       {{else}}
         <div class="radio">
-          <label>{{radio-button selection=primaryResource.locked value=true}} {{t 'rolesPage.new.form.locked.enabled'}}</label>
+          <label>{{radio-button selection=primaryResource.locked value=true}} {{t "rolesPage.new.form.locked.enabled"}}</label>
         </div>
         <div class="radio">
-          <label>{{radio-button selection=primaryResource.locked value=false}} {{t 'rolesPage.new.form.locked.disabled'}}</label>
+          <label>{{radio-button selection=primaryResource.locked value=false}} {{t "rolesPage.new.form.locked.disabled"}}</label>
         </div>
       {{/if}}
       {{#if editing}}
-        <p class="help-block">{{t 'rolesPage.new.form.locked.detail'}}</p>
+        <p class="help-block">{{t "rolesPage.new.form.locked.detail"}}</p>
       {{/if}}
     </div>
   {{/unless}}
 
   <div class="col span-6">
-    <label class="acc-label">{{t (concat 'rolesPage.new.form.default.' roleType) }}</label>
+    <label class="acc-label">{{t (concat "rolesPage.new.form.default." roleType) }}</label>
     {{#if readOnly}}
       <div>
         {{#if isDefault}}
-          {{t (concat 'rolesPage.new.form.default.enabled.' roleType )}}
+          {{t (concat "rolesPage.new.form.default.enabled." roleType )}}
         {{else}}
-          {{t 'rolesPage.new.form.default.disabled'}}
+          {{t "rolesPage.new.form.default.disabled"}}
         {{/if}}
       </div>
     {{else}}
       <div class="radio">
-        <label>{{radio-button selection=isDefault value=true}} {{t (concat 'rolesPage.new.form.default.enabled.' roleType )}}</label>
+        <label>{{radio-button selection=isDefault value=true}} {{t (concat "rolesPage.new.form.default.enabled." roleType )}}</label>
       </div>
       <div class="radio">
-        <label>{{radio-button selection=isDefault value=false}} {{t 'rolesPage.new.form.default.disabled'}}</label>
+        <label>{{radio-button selection=isDefault value=false}} {{t "rolesPage.new.form.default.disabled"}}</label>
       </div>
     {{/if}}
         {{#if editing}}
-      <p class="help-block">{{t 'rolesPage.new.form.locked.detail'}}</p>
+      <p class="help-block">{{t "rolesPage.new.form.locked.detail"}}</p>
     {{/if}}
   </div>
 </div>
@@ -80,12 +80,12 @@
 
 {{#accordion-list showExpandAll=false as |al expandFn|}}
   {{#accordion-list-item
-       detail=(t 'rolesPage.resources.detail')
+       detail=(t "rolesPage.resources.detail")
        expand=(action expandFn)
        expandAll=al.expandAll
        expandOnInit=true
        showStatus=false
-       title=(t 'rolesPage.resources.title')
+       title=(t "rolesPage.resources.title")
   }}
     {{#if ruleArray.length}}
       <table class="table fixed no-lines">
@@ -94,7 +94,7 @@
             {{#each ruleVerbs as |verb|}}
               <th width="80" class="text-center">{{t verb}}</th>
             {{/each}}
-            <th>{{t 'rolesPage.new.form.allow.resource'}}</th>
+            <th>{{t "rolesPage.new.form.allow.resource"}}</th>
             <th width="10">&nbsp;</th>
             <th width="40"></th>
           </tr>
@@ -106,22 +106,22 @@
         </tbody>
       </table>
     {{else if readOnlyBuiltInOrGlobal}}
-      <span class="text-muted">{{t 'generic.none'}}</span>
+      <span class="text-muted">{{t "generic.none"}}</span>
     {{/if}}
 
     {{#unless readOnlyBuiltInOrGlobal}}
       <div>
         <button class="btn bg-primary icon-btn p-0" {{action "addRule"}}>
           <span class="darken"><i class="icon icon-plus text-small"/></span>
-          <span>{{t 'rolesPage.new.form.allow.addAction'}}</span>
+          <span>{{t "rolesPage.new.form.allow.addAction"}}</span>
         </button>
       </div>
     {{/unless}}
   {{/accordion-list-item}}
 
   {{#accordion-list-item
-       title=(t 'rolesPage.inherit.title')
-       detail=(t 'rolesPage.inherit.detail')
+       title=(t "rolesPage.inherit.title")
+       detail=(t "rolesPage.inherit.detail")
        expandAll=al.expandAll
        expand=(action expandFn)
        expandOnInit=true
@@ -131,7 +131,7 @@
       <table class="table fixed no-lines">
         <thead>
           <tr>
-            <th>{{t 'rolesPage.new.form.otherRole.role'}}</th>
+            <th>{{t "rolesPage.new.form.otherRole.role"}}</th>
             <th width="10">&nbsp;</th>
             <th width="40"></th>
           </tr>
@@ -143,14 +143,14 @@
         </tbody>
       </table>
     {{else if readOnlyBuiltInOrGlobal}}
-      <span class="text-muted">{{t 'generic.none'}}</span>
+      <span class="text-muted">{{t "generic.none"}}</span>
     {{/if}}
 
     {{#unless readOnlyBuiltInOrGlobal}}
       <div>
         <button class="btn bg-primary icon-btn p-0" {{action "addOtherRole"}}>
           <span class="darken"><i class="icon icon-plus text-small"/></span>
-          <span>{{t 'rolesPage.new.form.otherRole.addAction'}}</span>
+          <span>{{t "rolesPage.new.form.otherRole.addAction"}}</span>
         </button>
       </div>
     {{/unless}}

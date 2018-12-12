@@ -1,16 +1,16 @@
 {{#if hasServiceTargets}}
-  {{banner-message color="bg-info" icon="icon-info" message=(t 'formIngressBackends.warning' htmlSafe=true)}}
+  {{banner-message color="bg-info" icon="icon-info" message=(t "formIngressBackends.warning" htmlSafe=true)}}
 {{/if}}
 <div class="clearfix">
   {{#if editing}}
-    <label class="acc-label">{{t 'formIngressBackends.label'}}</label>
+    <label class="acc-label">{{t "formIngressBackends.label"}}</label>
     <button class="btn bg-link icon-btn" {{action "addPath" "service"}}>
       <span class="darken"><i class="icon icon-plus text-small"></i></span>
-      <span>{{t 'formIngressBackends.addServiceLabel'}}</span>
+      <span>{{t "formIngressBackends.addServiceLabel"}}</span>
     </button>
     <button class="btn bg-link icon-btn ml-20" {{action "addPath" "workload"}}>
       <span class="darken"><i class="icon icon-plus text-small"></i></span>
-      <span>{{t 'formIngressBackends.addWorkloadLabel'}}</span>
+      <span>{{t "formIngressBackends.addWorkloadLabel"}}</span>
     </button>
   {{/if}}
 </div>
@@ -20,12 +20,12 @@
     <thead>
       <tr>
         {{#unless isDefault}}
-          <th>{{t 'formIngressBackends.path.label'}}</th>
+          <th>{{t "formIngressBackends.path.label"}}</th>
         {{/unless}}
 
-        <th class="divided">{{t 'formIngressBackends.target'}}</th>
+        <th class="divided">{{t "formIngressBackends.target"}}</th>
 
-        <th width="100" class="divided">{{t 'formIngressBackends.targetPort.label'}}{{#if editing}}{{field-required}}{{/if}}</th>
+        <th width="100" class="divided">{{t "formIngressBackends.targetPort.label"}}{{#if editing}}{{field-required}}{{/if}}</th>
 
         {{#if editing}}
           <th width="40">&nbsp;</th>
@@ -37,15 +37,15 @@
       {{#each pathArray as |path|}}
         <tr>
           {{#unless isDefault}}
-            <td class="p-5" data-title="{{t 'formIngressBackends.path.label'}}">
+            <td class="p-5" data-title="{{t "formIngressBackends.path.label"}}">
               {{#input-or-display editable=editing value=path.path classesForDisplay="clip"}}
-                {{input type="text" class="input-sm" value=path.path placeholder=(t 'formIngressBackends.path.placeholder')}}
+                {{input type="text" class="input-sm" value=path.path placeholder=(t "formIngressBackends.path.placeholder")}}
               {{/input-or-display}}
             </td>
           {{/unless}}
 
-          <td class="divided p-5" data-title="{{t (concat 'formIngressBackends.' path.backendType '.label')}}">
-            {{#if (eq path.backendType 'service')}}
+          <td class="divided p-5" data-title="{{t (concat "formIngressBackends." path.backendType ".label")}}">
+            {{#if (eq path.backendType "service")}}
               {{schema/input-dns-record
                   culsterIpNotNull=false
                   disabled=(not editing)
@@ -55,7 +55,7 @@
                   selected=path.serviceId
                   selectedNamespace=ingress.namespace
               }}
-            {{else if (eq path.backendType 'workload')}}
+            {{else if (eq path.backendType "workload")}}
               {{schema/input-workload
                   editing=editing
                   readOnly=(not editing)
@@ -66,9 +66,9 @@
             {{/if}}
           </td>
 
-          <td class="p-5" data-title="{{t 'formIngressBackends.targetPort.label'}}">
+          <td class="p-5" data-title="{{t "formIngressBackends.targetPort.label"}}">
             {{#input-or-display editable=editing value=path.targetPort classesForDisplay="clip"}}
-              {{#if (eq path.backendType 'service')}}
+              {{#if (eq path.backendType "service")}}
                 {{#if path.service}}
                   {{new-select
                     classNames="form-control input-sm"
@@ -78,17 +78,17 @@
                     value=path.targetPort
                   }}
                 {{else}}
-                  {{t 'generic.na'}}
+                  {{t "generic.na"}}
                 {{/if}}
               {{else}}
-                {{input-integer class="input-sm" min="1" max="65535" value=path.targetPort placeholder=(t 'formIngressBackends.targetPort.placeholder')}}
+                {{input-integer class="input-sm" min="1" max="65535" value=path.targetPort placeholder=(t "formIngressBackends.targetPort.placeholder")}}
               {{/if}}
             {{/input-or-display}}
           </td>
 
           {{#if editing}}
             <td class="text-right">
-              <button class="btn bg-primary btn-sm" {{action "removePath" path}}><i class="icon icon-minus"/><span class="sr-only">{{t 'generic.remove'}}</span></button>
+              <button class="btn bg-primary btn-sm" {{action "removePath" path}}><i class="icon icon-minus"/><span class="sr-only">{{t "generic.remove"}}</span></button>
             </td>
           {{/if}}
         </tr>
@@ -97,6 +97,6 @@
   </table>
 {{else}}
   <div class="row text-center mt-20 mb-20 pt-10">
-    <span class="text-muted">{{t 'formIngressBackends.noRules'}}</span>
+    <span class="text-muted">{{t "formIngressBackends.noRules"}}</span>
   </div>
 {{/if}}

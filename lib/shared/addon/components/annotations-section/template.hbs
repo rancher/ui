@@ -1,10 +1,10 @@
 {{#accordion-list-item
-     title=(t 'annotationsSection.title')
-     detail=(t 'annotationsSection.detail')
-     statusClass=(if labelArray.length 'bg-success' 'text-muted')
+     title=(t "annotationsSection.title")
+     detail=(t "annotationsSection.detail")
+     statusClass=(if labelArray.length "bg-success" "text-muted")
      expandAll=expandAll
      expand=(action expandFn)
-     componentName='sortable-table'
+     componentName="sortable-table"
      as | parent |
 }}
   {{#component parent.intent
@@ -22,16 +22,16 @@
   }}
     {{#if (eq kind "row")}}
       <tr>
-        <td data-title="{{t 'annotationsSection.key'}}:" class="force-wrap">{{label.key}}</td>
-        <td data-title="{{t 'annotationsSection.value'}}:" class="force-wrap">{{pretty-json value=label.value}}</td>
+        <td data-title="{{t "annotationsSection.key"}}:" class="force-wrap">{{label.key}}</td>
+        <td data-title="{{t "annotationsSection.value"}}:" class="force-wrap">{{pretty-json value=label.value}}</td>
       </tr>
     {{else if (eq kind "norows")}}
       <tr>
-        <td colspan="{{sortable.fullColspan}}" class="text-center text-muted pt-20 pb-20">{{t 'annotationsSection.noData'}}</td>
+        <td colspan="{{sortable.fullColspan}}" class="text-center text-muted pt-20 pb-20">{{t "annotationsSection.noData"}}</td>
       </tr>
     {{else if (eq kind "nomatch")}}
       <tr>
-        <td colspan="{{sortable.fullColspan}}" class="text-center text-muted pt-20 pb-20">{{t 'annotationsSection.noMatch'}}</td>
+        <td colspan="{{sortable.fullColspan}}" class="text-center text-muted pt-20 pb-20">{{t "annotationsSection.noMatch"}}</td>
       </tr>
     {{/if}}
   {{/component}}

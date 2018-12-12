@@ -2,7 +2,7 @@
   <div class="row">
     <div class="pull-right">
       <button class="btn bg-transparent text-small vertical-middle" {{action (action removeCert cert)}}>
-        {{t 'formSslTermination.removeCertLabel'}}
+        {{t "formSslTermination.removeCertLabel"}}
       </button>
     </div>
   </div>
@@ -11,19 +11,19 @@
   <div class="col span-6 mt-0 mb-0">
     <div class="radio">
       <label>
-        {{radio-button selection=mode value="default"}} {{t 'formSslTermination.default.label'}}
+        {{radio-button selection=mode value="default"}} {{t "formSslTermination.default.label"}}
       </label>
     </div>
     <div class="radio">
       <label>
-        {{radio-button selection=mode disabled=(not allCertificates.length) value="custom"}} 
-        <span class={{if allCertificates.length '' 'text-muted'}}>{{t 'formSslTermination.custom.label'}}</span>
+        {{radio-button selection=mode disabled=(not allCertificates.length) value="custom"}}
+        <span class={{if allCertificates.length "" "text-muted"}}>{{t "formSslTermination.custom.label"}}</span>
       </label>
     </div>
   </div>
   {{#if allCertificates.length}}
     <div class="col span-6 mt-0 mb-0">
-      <label class="acc-label">{{t 'formSslTermination.certificate'}}{{#if (or editing (eq mode "custom") )}}{{field-required}}{{/if}}</label>
+      <label class="acc-label">{{t "formSslTermination.certificate"}}{{#if (or editing (eq mode "custom") )}}{{field-required}}{{/if}}</label>
       {{new-select
           classNames="form-control"
           content=allCertificates

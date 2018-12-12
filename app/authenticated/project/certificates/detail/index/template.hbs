@@ -1,6 +1,6 @@
 <section class="header clearfix">
   <div class="right-buttons">{{action-menu model=model size="sm"}}</div>
-  <h1>{{t 'certificatesPage.detail.header' name=model.displayName}}</h1>
+  <h1>{{t "certificatesPage.detail.header" name=model.displayName}}</h1>
 </section>
 
 <section>
@@ -10,13 +10,13 @@
         <div class="no-padding-margin full-height">
           <div>
             <div>
-              <label class="text-muted">{{t 'certificatesPage.valid'}}:</label>
+              <label class="text-muted">{{t "certificatesPage.valid"}}:</label>
               <div>{{date-calendar model.issuedAt}} ({{date-from-now model.issuedDate}})</div>
             </div>
 
             <hr class="mt-15 mb-15"/>
             <div>
-              <label class="text-muted">{{t 'certificatesPage.expires'}}:</label>
+              <label class="text-muted">{{t "certificatesPage.expires"}}:</label>
               <span class="{{if model.expiresSoon "text-bold text-danger"}}">
                 <div>{{date-calendar model.expiresAt}}
                 ({{date-from-now model.expiresDate}})</div>
@@ -25,25 +25,25 @@
 
             <hr class="mt-15 mb-15"/>
             <div class="force-wrap">
-              <label class="text-muted">{{t 'certificatesPage.algorithm'}}:</label>
+              <label class="text-muted">{{t "certificatesPage.algorithm"}}:</label>
               <div>{{model.algorithm}}{{#if model.keySize}} - {{model.keySize}} bits{{/if}}</div>
             </div>
 
             <hr class="mt-15 mb-15"/>
             <div class="force-wrap">
-              <label class="text-muted">{{t 'certificatesPage.issuer'}}:</label>
+              <label class="text-muted">{{t "certificatesPage.issuer"}}:</label>
               <div>{{model.displayIssuer}}</div>
             </div>
 
             <hr class="mt-15 mb-15"/>
             <div class="force-wrap">
-              <label class="text-muted">{{t 'certificatesPage.serialNumber'}}:</label>
+              <label class="text-muted">{{t "certificatesPage.serialNumber"}}:</label>
               <div>{{model.serialNumber}}</div>
             </div>
 
             <hr class="mt-15 mb-15"/>
             <div>
-              <label class="text-muted">{{t 'certificatesPage.fingerprint'}}:</label>
+              <label class="text-muted">{{t "certificatesPage.fingerprint"}}:</label>
               <div>{{model.certFingerprint}}</div>
             </div>
           </div>
@@ -53,14 +53,14 @@
         {{#if model.description}}
           <section>
             <div class="description">
-              <label class="text-muted">{{t 'generic.description'}}</label>
+              <label class="text-muted">{{t "generic.description"}}</label>
               <p class="mt-0">{{model.description}}</p>
             </div>
           </section>
         {{/if}}
         <div class="no-padding-margin full-height">
           <div>
-            <label class="section">{{t 'certificatesPage.domainNames.labelText'}}</label>
+            <label class="section">{{t "certificatesPage.domainNames.labelText"}}</label>
             <div>
               <ul class="list-unstyled">
                 {{#if (or model.cn model.displaySans.length)}}
@@ -71,7 +71,7 @@
                     <li>{{link-ssl-domain san}}</li>
                   {{/each}}
                 {{else}}
-                  <span class="text-muted">{{t 'generic.none'}}</span>
+                  <span class="text-muted">{{t "generic.none"}}</span>
                 {{/if}}
               </ul>
             </div>

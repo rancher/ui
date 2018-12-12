@@ -1,9 +1,9 @@
 {{#if showHeader}}
   <section class="header clearfix">
     {{#if editing}}
-      <h1>{{t 'newCatalog.upgrade'}} <span style="font-weight: normal">{{catalogApp.displayName}}</span></h1>
+      <h1>{{t "newCatalog.upgrade"}} <span style="font-weight: normal">{{catalogApp.displayName}}</span></h1>
     {{else}}
-      <h1>{{#link-to parentRoute}}{{t 'newCatalog.catalog'}} {{templateResource.displayName}}{{/link-to}}</h1>
+      <h1>{{#link-to parentRoute}}{{t "newCatalog.catalog"}} {{templateResource.displayName}}{{/link-to}}</h1>
     {{/if}}
   </section>
 {{/if}}
@@ -28,8 +28,8 @@
         </h1>
         <p>{{templateResource.description}}</p>
         <div class="row">
-          <button class="btn btn-sm bg-transparent pl-0" {{action 'toogleDetailedDescriptions'}}>
-            {{t 'newCatalog.seeMore'}}
+          <button class="btn btn-sm bg-transparent pl-0" {{action "toogleDetailedDescriptions"}}>
+            {{t "newCatalog.seeMore"}}
           </button>
         </div>
       {{/if}}
@@ -39,8 +39,8 @@
 
 {{#accordion-list as |al expandFn|}}
   {{#accordion-list-item
-      title=(t 'newCatalog.appInfo')
-      detail=(t 'newCatalog.appInfoDetail')
+      title=(t "newCatalog.appInfo")
+      detail=(t "newCatalog.appInfoDetail")
       expandAll=al.expandAll
       expand=(action expandFn)
       expanded=detailExpanded
@@ -61,8 +61,8 @@
 
 
   {{#accordion-list-item
-    title=(t (if selectedTemplateModel.questions 'inputAnswers.config' 'newCatalog.helm.label'))
-    detail=(t (if selectedTemplateModel.questions 'inputAnswers.protip' 'newCatalog.helm.protip'))
+    title=(t (if selectedTemplateModel.questions "inputAnswers.config" "newCatalog.helm.label"))
+    detail=(t (if selectedTemplateModel.questions "inputAnswers.protip" "newCatalog.helm.protip"))
     expandAll=al.expandAll
     expandOnInit=true
     expand=(action expandFn)
@@ -80,7 +80,7 @@
         }}
       </div>
       <div class="col span-6" style="padding-top: 6px;"> {{!-- matches styles of form-name-description --}}
-        <label for="" class="acc-label">{{t 'newCatalog.templateVersion'}}</label>
+        <label for="" class="acc-label">{{t "newCatalog.templateVersion"}}</label>
         {{new-select
             classNames="form-control"
             content=sortedVersions
@@ -97,10 +97,10 @@
     <div class="row">
       {{#unless (or customizeNamespace (not selectedTemplateModel))}}
         <div class="col span-12">
-          {{t 'newCatalog.customizeNamespace' namespaceId=(if requiredNamespace requiredNamespace primaryResource.name) htmlSafe=true}}
+          {{t "newCatalog.customizeNamespace" namespaceId=(if requiredNamespace requiredNamespace primaryResource.name) htmlSafe=true}}
           {{#unless (or editing requiredNamespace)}}
-            <button class="btn btn-sm bg-transparent pl-0" {{action 'toogleNamespace'}}>
-              {{t 'generic.customize'}}
+            <button class="btn btn-sm bg-transparent pl-0" {{action "toogleNamespace"}}>
+              {{t "generic.customize"}}
             </button>
           {{/unless}}
         </div>
@@ -149,13 +149,13 @@
 {{#if (and selectedTemplateModel (not getTemplate.isRunning))}}
   {{#if showPreview}}
     <section>
-      <div class="over-hr hand no-select"><span {{action "togglePreview"}}>{{t 'newCatalog.preview'}} <i class="icon {{if previewOpen 'icon-chevron-up' 'icon-chevron-down'}}"></i></span></div>
+      <div class="over-hr hand no-select"><span {{action "togglePreview"}}>{{t "newCatalog.preview"}} <i class="icon {{if previewOpen "icon-chevron-up" "icon-chevron-down"}}"></i></span></div>
 
       {{#if previewOpen}}
         <div class="tabs">
           <div class="tab-header row">
             <div class="col span-4">
-              <label class="acc-label">{{t 'newCatalog.templateFiles'}}</label>
+              <label class="acc-label">{{t "newCatalog.templateFiles"}}</label>
               {{searchable-select
                   content=filenames
                   value=previewTab
@@ -172,7 +172,7 @@
                 </div>
               </section>
             {{else}}
-              {{#if (eq  previewTab 'answers')}}
+              {{#if (eq  previewTab "answers")}}
                 {{code-block code=answersString language="yaml"}}
               {{else}}
                 {{code-block code=selectedFileContetnt language="yaml"}}
@@ -188,7 +188,7 @@
     <div class="banner bg-warning">
       <div class="banner-icon"><span class="icon icon-alert"></span></div>
       <div class="banner-message">
-        <p>{{t 'ingressPage.gkeIngressWarning'}}</p>
+        <p>{{t "ingressPage.gkeIngressWarning"}}</p>
       </div>
     </div>
   {{/if}}
@@ -208,6 +208,6 @@
   </div>
 {{else}}
   <div class="footer-actions">
-    <button {{action "cancel"}} class="btn bg-transparent">{{t 'saveCancel.cancel'}}</button>
+    <button {{action "cancel"}} class="btn bg-transparent">{{t "saveCancel.cancel"}}</button>
   </div>
 {{/if}}

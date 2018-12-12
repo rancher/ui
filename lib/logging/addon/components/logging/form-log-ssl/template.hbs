@@ -1,12 +1,12 @@
 <div class="mt-20 clearfix">
   <h2 class="pt-30">
-    {{t 'loggingPage.ssl.sslHeader'}}
+    {{t "loggingPage.ssl.sslHeader"}}
   </h2>
   <hr/>
   <div class="row">
     <div class="col span-6 mt-0">
       <div class="clearfix">
-        <label class="acc-label pt-5">{{t 'loggingPage.ssl.clientKey.label'}}</label>
+        <label class="acc-label pt-5">{{t "loggingPage.ssl.clientKey.label"}}</label>
       </div>
       {{input-text-file
           classNames="box"
@@ -20,7 +20,7 @@
     </div>
     <div class="col span-6 mt-0">
       <div class="clearfix">
-        <label class="acc-label pt-5">{{t 'loggingPage.ssl.clientCert.label'}}</label>
+        <label class="acc-label pt-5">{{t "loggingPage.ssl.clientCert.label"}}</label>
       </div>
       {{input-text-file
           classNames="box"
@@ -35,19 +35,19 @@
     </div>
   </div>
 
-  {{#if (or (eq targetType 'splunk') (eq targetType 'elasticsearch') (eq targetType 'syslog'))}}
+  {{#if (or (eq targetType "splunk") (eq targetType "elasticsearch") (eq targetType "syslog"))}}
     <div class="row">
-      {{#if (or (eq targetType 'splunk') (eq targetType 'elasticsearch'))}}
+      {{#if (or (eq targetType "splunk") (eq targetType "elasticsearch"))}}
         <div class="col span-6">
-          <label class="acc-label">{{t 'loggingPage.ssl.clientKeyPass.label'}}</label>
+          <label class="acc-label">{{t "loggingPage.ssl.clientKeyPass.label"}}</label>
           {{input
               type="password"
               value=config.clientKeyPass
               className="form-control"
-              placeholder=(t 'loggingPage.ssl.clientKeyPass.password.placeholder')
+              placeholder=(t "loggingPage.ssl.clientKeyPass.password.placeholder")
             }}
-          {{#if (eq targetType 'elasticsearch')}}
-            <label class="acc-label pt-5">{{t 'loggingPage.ssl.sslVersion.label'}}</label>
+          {{#if (eq targetType "elasticsearch")}}
+            <label class="acc-label pt-5">{{t "loggingPage.ssl.sslVersion.label"}}</label>
             {{new-select
             classNames="form-control"
             content=sslVersionContent
@@ -57,22 +57,22 @@
         </div>
       {{/if}}
       <div class="col span-6">
-        <label class="acc-label">{{t 'loggingPage.ssl.verify.label'}}</label>
+        <label class="acc-label">{{t "loggingPage.ssl.verify.label"}}</label>
         <div class="radio">
           <label>
             {{radio-button selection=config.sslVerify value=false}}
-            {{t 'loggingPage.ssl.verify.disabled'}}
+            {{t "loggingPage.ssl.verify.disabled"}}
           </label>
         </div>
         <div class="radio">
           <label>
             {{radio-button selection=config.sslVerify value=true}}
-            {{t 'loggingPage.ssl.verify.enabled'}}
+            {{t "loggingPage.ssl.verify.enabled"}}
           </label>
         </div>
         {{#if sslVerify}}
           <div class="clearfix">
-            <label class="acc-label pt-5">{{t 'loggingPage.ssl.certificate.label'}}</label>
+            <label class="acc-label pt-5">{{t "loggingPage.ssl.certificate.label"}}</label>
           </div>
           {{input-text-file
               classNames="box"
@@ -88,11 +88,11 @@
       </div>
     </div>
   {{/if}}
-  {{#if (eq targetType 'kafka')}}
+  {{#if (eq targetType "kafka")}}
     <div class="row">
       <div class="col span-6 mt-0">
         <div class="clearfix">
-          <label class="acc-label pt-5">{{t 'loggingPage.ssl.certificate.label'}}</label>
+          <label class="acc-label pt-5">{{t "loggingPage.ssl.certificate.label"}}</label>
         </div>
         {{input-text-file
             classNames="box"

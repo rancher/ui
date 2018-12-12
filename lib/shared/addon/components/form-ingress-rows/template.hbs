@@ -4,11 +4,11 @@
       <div class="pull-right">
         {{#if (lte rules.length 1 )}}
           <button class="btn btn-disabled-transparent text-small vertical-middle" disabled="true">
-            {{t 'formIngress.removeRuleLabel'}}
+            {{t "formIngress.removeRuleLabel"}}
           </button>
         {{else}}
           <button class="btn bg-transparent text-small vertical-middle" {{action "removeRule" rule}}>
-            {{t 'formIngress.removeRuleLabel'}}
+            {{t "formIngress.removeRuleLabel"}}
           </button>
         {{/if}}
       </div>
@@ -19,7 +19,7 @@
     {{#if (and defaultProvider (gt capabilities.length 1) )}}
       <div class="row">
         <div class="col span-3">
-          <label>{{t 'formIngress.defaultBackend.mark'}}:</label>
+          <label>{{t "formIngress.defaultBackend.mark"}}:</label>
           {{new-select
               classNames="form-control"
               content=ingressControllersCapabilities
@@ -35,33 +35,33 @@
   </div>
 
   <div class="row">
-    <div class="col mt-0 mb-0 {{if (eq mode 'manual') 'span-6' 'span-12'}}" >
+    <div class="col mt-0 mb-0 {{if (eq mode "manual") "span-6" "span-12"}}" >
       {{#if editing}}
         {{#unless rule.new}}
           <div class="radio">
-            <label>{{radio-button selection=mode value="existing"}} {{t 'formIngress.hostMode.existing' domain=(if existingHost existingHost 'n/a') htmlSafe=true}}</label>
+            <label>{{radio-button selection=mode value="existing"}} {{t "formIngress.hostMode.existing" domain=(if existingHost existingHost "n/a") htmlSafe=true}}</label>
           </div>
         {{/unless}}
         {{#if settings.ingress-ip-domain}}
           <div class="radio">
-            <label>{{radio-button selection=mode value="automatic"}} {{t 'formIngress.hostMode.automatic' domain=settings.ingress-ip-domain htmlSafe=true}}</label>
+            <label>{{radio-button selection=mode value="automatic"}} {{t "formIngress.hostMode.automatic" domain=settings.ingress-ip-domain htmlSafe=true}}</label>
           </div>
         {{/if}}
         <div class="radio">
-          <label>{{radio-button selection=mode value="manual"}} {{t 'formIngress.hostMode.manual'}}</label>
+          <label>{{radio-button selection=mode value="manual"}} {{t "formIngress.hostMode.manual"}}</label>
         </div>
         <div class="radio">
-          <label class="{{if defaultDisabled 'text-muted'}}">{{radio-button selection=mode value="default" disabled=defaultDisabled}} {{t 'formIngress.hostMode.default'}}</label>
+          <label class="{{if defaultDisabled "text-muted"}}">{{radio-button selection=mode value="default" disabled=defaultDisabled}} {{t "formIngress.hostMode.default"}}</label>
           {{#if defaultDisabled}}
-            <p class="help-block pl-20">{{t 'formIngress.hostMode.defaultDisabled'}}</p>
+            <p class="help-block pl-20">{{t "formIngress.hostMode.defaultDisabled"}}</p>
           {{/if}}
         </div>
       {{else}}
         <div>
-          <label>{{t 'generic.hostname'}}</label>
+          <label>{{t "generic.hostname"}}</label>
           <div class="mt-5">
             {{#if (eq mode "default")}}
-              {{t 'formIngress.defaultBackend.mark'}}
+              {{t "formIngress.defaultBackend.mark"}}
             {{else}}
               <code>
                 {{rule.host}}
@@ -74,9 +74,9 @@
 
     {{#if (eq mode "manual")}}
       <div class="col span-6 mt-0 mb-0">
-        <label class="acc-label">{{t 'formIngress.host.label'}}</label>
+        <label class="acc-label">{{t "formIngress.host.label"}}</label>
         {{#input-or-display editable=editing value=rule.host classesForDisplay="clip"}}
-          {{input type="text" class="form-control input-sm" value=rule.host placeholder=(t 'formIngress.host.placeholder')}}
+          {{input type="text" class="form-control input-sm" value=rule.host placeholder=(t "formIngress.host.placeholder")}}
         {{/input-or-display}}
       </div>
     {{/if}}

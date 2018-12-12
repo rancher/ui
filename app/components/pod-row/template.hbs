@@ -6,7 +6,7 @@
   {{/if}}
   {{#if canExpand}}
     <td valign="middle">
-      <i role="button" {{action "toggle"}} class="icon icon-play eased text-small text-muted {{if expanded 'icon-rotate-90'}}"><span class="visually-hidden">Open accordion</span></i>
+      <i role="button" {{action "toggle"}} class="icon icon-play eased text-small text-muted {{if expanded "icon-rotate-90"}}"><span class="visually-hidden">Open accordion</span></i>
     </td>
   {{else if expandPlaceholder}}
     <td valign="middle">
@@ -26,28 +26,28 @@
     {{/if}}
   </td>
   <td data-title="{{dt.image}}" class="clip top-half">
-      {{#tooltip-element
-          type="tooltip-basic"
-          tooltipTemplate='tooltip-multi-lines'
-          model=model.displayImages
-          inlineBlock=true
-      }}
-        <span class="text-small">{{model.displayImage}}</span>
-     {{/tooltip-element}}
-     <p data-title="{{t 'generic.details'}}" class="text-small text-muted m-0 clip">
+    {{#tooltip-element
+         type="tooltip-basic"
+         tooltipTemplate="tooltip-multi-lines"
+         model=model.displayImages
+         inlineBlock=true
+    }}
+      <span class="text-small">{{model.displayImage}}</span>
+    {{/tooltip-element}}
+    <p data-title="{{t "generic.details"}}" class="text-small text-muted m-0 clip">
       {{#if model.displayIp}}
         {{#copy-inline clipboardText=model.displayIp}}{{format-ip model.displayIp}}{{/copy-inline}} /
       {{/if}}
       {{#if (and showNode model.node)}}
         <a class="text-vertical-top" href="{{href-to "authenticated.cluster.monitoring.node-detail" scope.currentCluster.id model.node.id}}">{{model.node.displayName}}</a> /
       {{/if}}
-      {{t 'generic.createdDate' date=(date-from-now model.created) htmlSafe=true}} /
-      {{t 'generic.restarts'}} {{model.restarts}}
+      {{t "generic.createdDate" date=(date-from-now model.created) htmlSafe=true}} /
+      {{t "generic.restarts"}} {{model.restarts}}
     </p>
   </td>
   {{#if scalePlaceholder}}
     <td class="text-muted text-center">
-      <small>{{t 'namespaceGroup.none'}}</small>
+      <small>{{t "namespaceGroup.none"}}</small>
     </td>
   {{/if}}
   {{#if showActions}}
@@ -58,7 +58,7 @@
 </tr>
 
 {{#if canExpand}}
-  <tr class="sub-row {{unless expanded 'hide'}}">
+  <tr class="sub-row {{unless expanded "hide"}}">
     <td colspan="2">{{! checkbox and expand}}</td>
     <td colspan="{{sub fullColspan 4}}">
       {{#if expanded}}

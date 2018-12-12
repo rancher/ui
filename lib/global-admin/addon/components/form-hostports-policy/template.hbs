@@ -1,6 +1,6 @@
 {{#accordion-list-item
-     title=(t 'formHostPortsPodSecurityPolicy.title')
-     detail=(t 'formHostPortsPodSecurityPolicy.detail')
+     title=(t "formHostPortsPodSecurityPolicy.title")
+     detail=(t "formHostPortsPodSecurityPolicy.detail")
      status=status
      statusClass=statusClass
      expandAll=expandAll
@@ -10,39 +10,39 @@
     {{#if model.hostPorts.length}}
       <table class="table fixed no-lines no-top-padding mt-10">
         <tr class="hidden-sm hidden-xs">
-          <th>{{t 'formHostPortsPodSecurityPolicy.port.min.label'}}{{#unless readOnly}}{{field-required}}{{/unless}}</th>
+          <th>{{t "formHostPortsPodSecurityPolicy.port.min.label"}}{{#unless readOnly}}{{field-required}}{{/unless}}</th>
           <th width="30">&nbsp;</th>
-          <th>{{t 'formHostPortsPodSecurityPolicy.port.max.label'}}{{#unless readOnly}}{{field-required}}{{/unless}}</th>
+          <th>{{t "formHostPortsPodSecurityPolicy.port.max.label"}}{{#unless readOnly}}{{field-required}}{{/unless}}</th>
           <th width="40">&nbsp;</th>
         </tr>
         {{#each model.hostPorts as |port|}}
           <tr class="sm-noborder">
-            <td data-title="{{t 'formHostPortsPodSecurityPolicy.port.min.label'}}">
-              {{input class="form-control input-sm" type="number" disabled=readOnly value=port.min placeholder=(t 'formHostPortsPodSecurityPolicy.port.min.placeholder')}}
+            <td data-title="{{t "formHostPortsPodSecurityPolicy.port.min.label"}}">
+              {{input class="form-control input-sm" type="number" disabled=readOnly value=port.min placeholder=(t "formHostPortsPodSecurityPolicy.port.min.placeholder")}}
             </td>
             <td class="text-center">
               <p><i class="icon icon-chevron-right"></i></p>
             </td>
-            <td data-title="{{t 'formHostPortsPodSecurityPolicy.port.max.label'}}">
-              {{input class="form-control input-sm" type="number" disabled=readOnly value=port.max placeholder=(t 'formHostPortsPodSecurityPolicy.port.max.placeholder')}}
+            <td data-title="{{t "formHostPortsPodSecurityPolicy.port.max.label"}}">
+              {{input class="form-control input-sm" type="number" disabled=readOnly value=port.max placeholder=(t "formHostPortsPodSecurityPolicy.port.max.placeholder")}}
             </td>
             <td class="text-right">
               {{#unless readOnly}}
-               <button class="btn bg-primary btn-sm" {{action "remove" port}}><i class="icon icon-minus"/><span class="sr-only">{{t 'generic.remove'}}</span></button>
+               <button class="btn bg-primary btn-sm" {{action "remove" port}}><i class="icon icon-minus"/><span class="sr-only">{{t "generic.remove"}}</span></button>
               {{/unless}}
             </td>
           </tr>
         {{/each}}
       </table>
     {{else if readOnly}}
-       <div>{{t 'generic.none'}}</div>
+       <div>{{t "generic.none"}}</div>
     {{/if}}
 
     {{#unless readOnly}}
       <div>
         <button class="btn bg-link icon-btn" {{action "add"}}>
           <span class="darken"><i class="icon icon-plus text-small"/></span>
-          <span>{{t 'formHostPortsPodSecurityPolicy.port.addLabel'}}</span>
+          <span>{{t "formHostPortsPodSecurityPolicy.port.addLabel"}}</span>
         </button>
       </div>
     {{/unless}}

@@ -1,56 +1,56 @@
 <section class="header">
-  <h1>{{t 'modalEditSetting.title'}}</h1>
+  <h1>{{t "modalEditSetting.title"}}</h1>
 </section>
 <section class="horizontal-form container-fluid">
   <div class="row">
-    <label>{{t 'modalEditSetting.name.label'}}</label>
+    <label>{{t "modalEditSetting.name.label"}}</label>
     <div class="text-mono">{{model.key}}</div>
     <p class="text-info">{{t model.descriptionKey appName=settings.appName}}</p>
   </div>
 
   <div class="row">
-    <label>{{t 'modalEditSetting.value.label'}}</label>
+    <label>{{t "modalEditSetting.value.label"}}</label>
     <div>
-      {{#if (eq model.kind 'multiline')}}
+      {{#if (eq model.kind "multiline")}}
         {{textarea
             class="form-control"
             value=value
             rows=10
         }}
-      {{else if (eq model.kind 'int')}}
+      {{else if (eq model.kind "int")}}
         {{input-integer
             value=value
             class="form-control"
         }}
-      {{else if (eq model.kind 'json')}}
+      {{else if (eq model.kind "json")}}
         {{ivy-codemirror
             value=formattedValue
-            valueUpdated=(action 'updateJson')
+            valueUpdated=(action "updateJson")
             options=codeMirrorOptions
         }}
-      {{else if (eq model.kind 'boolean')}}
+      {{else if (eq model.kind "boolean")}}
         <div class="radio">
           <label>{{radio-button selection=value value="true"}} True</label>
         </div>
         <div class="radio">
           <label>{{radio-button selection=value value="false"}} False</label>
         </div>
-      {{else if (eq model.kind 'enum')}}
+      {{else if (eq model.kind "enum")}}
         <select class="form-control" onchange={{action (mut value) value="target.value"}}>
           {{#unless (array-includes model.options value)}}
-            <option value="" selected=true>{{t 'modalEditSetting.value.prompt'}}</option>
+            <option value="" selected=true>{{t "modalEditSetting.value.prompt"}}</option>
           {{/unless}}
           {{#each model.options as |choice|}}
             <option value="{{choice}}" selected={{eq choice value}}>{{choice}}</option>
           {{/each}}
         </select>
-      {{else if (eq model.kind 'url')}}
+      {{else if (eq model.kind "url")}}
         {{settings/server-url
             serverUrlSetting=model.obj
             initServerUrl=model.obj.value
             popupMode=true
             showHeader=false
-            cancel=(action 'cancel')
+            cancel=(action "cancel")
         }}
       {{else}}
         {{input
@@ -63,6 +63,6 @@
   </div>
 </section>
 
-{{#unless (eq model.kind 'url')}}
+{{#unless (eq model.kind "url")}}
   {{save-cancel editing=true saveDisabled=removing save="save" cancel="cancel"}}
 {{/unless}}

@@ -15,9 +15,9 @@ const propertyOrder = [
   'setupController',
   'resetController',
   ['lifecycle-hook','activate','deactivate','didDestroyElement',
-    'didInsertElement','didReceiveAttrs','didRender','didUpdate',
-    'didUpdateAttrs','renderTemplate','serialize','setupController',
-    'willClearRender','willDestroyElement','willInsertElement','willRender','willUpdate'
+   'didInsertElement','didReceiveAttrs','didRender','didUpdate',
+   'didUpdateAttrs','renderTemplate','serialize','setupController',
+   'willClearRender','willDestroyElement','willInsertElement','willRender','willUpdate'
   ],
 
   'actions',
@@ -52,7 +52,8 @@ module.exports = {
   },
   env: {
     browser: true,
-    es6: true
+    es6: true,
+    node: true
   },
   rules: {
     // Overrides
@@ -96,7 +97,15 @@ module.exports = {
     "no-useless-escape": "off",
     "strict": "off",
     "wrap-iife": "off",
-
+    files: [
+      '.eslintrc.js',
+      '.template-lintrc.js',
+      'ember-cli-build.js',
+      'testem.js',
+      'blueprints/*/index.js',
+      'config/**/*.js',
+      'lib/*/index.js'
+    ],
     //stylistic
     "array-bracket-spacing": "error",
     "padded-blocks": [ "error", "never" ],
@@ -153,7 +162,7 @@ module.exports = {
       "error",
       "single",
       {
-       "avoidEscape": true,
+        "avoidEscape": true,
         "allowTemplateLiterals": true
       },
     ],

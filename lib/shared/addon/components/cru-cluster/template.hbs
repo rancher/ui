@@ -1,11 +1,11 @@
 <section class="header">
   <h1>
     {{#if isEdit}}
-      {{t 'clustersPage.editClusterName' name=originalCluster.displayName}}
+      {{t "clustersPage.editClusterName" name=originalCluster.displayName}}
     {{else if (eq step 1)}}
-      {{t 'clustersPage.newCluster'}}
+      {{t "clustersPage.newCluster"}}
     {{else}}
-      {{t 'clustersPage.newClusterName' name=cluster.displayName}}
+      {{t "clustersPage.newClusterName" name=cluster.displayName}}
     {{/if}}
   </h1>
 </section>
@@ -15,7 +15,7 @@
   <div class="row nav nav-boxes checked-active inline-form">
     <div class="col span-8 col-inline mb-0">
       <div>
-        <label class="acc-label">{{t 'clusterNew.driverLabels.cloud'}}</label>
+        <label class="acc-label">{{t "clusterNew.driverLabels.cloud"}}</label>
       </div>
       {{#each (get providerGroups "cloudGroup") as |choice|}}
         {{#unless choice.scriptError}}
@@ -28,7 +28,7 @@
           {{/link-to}}
         {{else}}
           <div class={{concat "disabled error-loading-driver mb-20 mt-10 col span-3 col-inline nav-box-item driver generic" choice.name}}>
-              {{#tooltip-element type="tooltip-basic" model=choice.scriptError tooltipTemplate='tooltip-static' aria-describedby="tooltip-base" tooltipFor="tooltipDriverError"}}
+              {{#tooltip-element type="tooltip-basic" model=choice.scriptError tooltipTemplate="tooltip-static" aria-describedby="tooltip-base" tooltipFor="tooltipDriverError"}}
                 <span class="icon icon-alert"></span>
               {{/tooltip-element}}
             <div class="machine-driver {{choice.name}}"></div>
@@ -43,7 +43,7 @@
 
     <div class="col span-2 col-inline mb-0">
       <div>
-        <label class="acc-label">{{t 'clusterNew.driverLabels.import'}}</label>
+        <label class="acc-label">{{t "clusterNew.driverLabels.import"}}</label>
       </div>
       {{#each (get providerGroups "importGroup") as |choice|}}
         {{#link-to (query-params provider=choice.name) class=(concat "mb-20 mt-10 col span-12 col-inline nav-box-item driver generic" choice.name)}}
@@ -61,7 +61,7 @@
   <div class="row nav nav-boxes checked-active inline-form">
     <div class="col span-8 col-inline mt-0">
       <div>
-        <label class="acc-label">{{t 'clusterNew.driverLabels.infra'}}</label>
+        <label class="acc-label">{{t "clusterNew.driverLabels.infra"}}</label>
       </div>
       {{#each (get providerGroups "rkeGroup") as |choice|}}
         {{#link-to (query-params provider=choice.name) class=(concat "mb-20 mt-10 col span-3 col-inline nav-box-item driver generic" choice.name)}}
@@ -76,7 +76,7 @@
 
     <div class="col span-2 col-inline mt-0">
       <div>
-        <label class="acc-label">{{t 'clusterNew.driverLabels.custom'}}</label>
+        <label class="acc-label">{{t "clusterNew.driverLabels.custom"}}</label>
       </div>
       {{#each (get providerGroups "customGroup") as |choice|}}
         {{#link-to (query-params provider=choice.name) class=(concat "mb-20 mt-10 col span-12 col-inline nav-box-item driver generic" choice.name)}}
@@ -94,7 +94,7 @@
     <div class="row nav nav-boxes checked-active inline-form">
       <div class="col span-10 col-inline mb-0">
         <div>
-          <label class="acc-label">{{t 'clusterNew.driverLabels.external'}}</label>
+          <label class="acc-label">{{t "clusterNew.driverLabels.external"}}</label>
         </div>
         {{#each (get providerGroups "externalGroup") as |choice|}}
           {{#unless choice.scriptError}}
@@ -107,7 +107,7 @@
             {{/link-to}}
           {{else}}
             <div class={{concat "disabled error-loading-driver mb-20 mt-10 col span-3 col-inline nav-box-item driver generic" choice.name}}>
-              {{#tooltip-element type="tooltip-basic" model=choice.scriptError tooltipTemplate='tooltip-static' aria-describedby="tooltip-base" tooltipFor="tooltipDriverError"}}
+              {{#tooltip-element type="tooltip-basic" model=choice.scriptError tooltipTemplate="tooltip-static" aria-describedby="tooltip-base" tooltipFor="tooltipDriverError"}}
                 <span class="icon icon-alert"></span>
               {{/tooltip-element}}
               <div class="machine-driver {{choice.name}}"></div>
@@ -125,12 +125,12 @@
 
 
 {{#if (eq driverInfo.name "amazoneks")}}
-  {{#banner-message color='bg-warning'}}
-    <p>{{t 'clusterNew.amazoneks.ingressWarning'}}</p>
+  {{#banner-message color="bg-warning"}}
+    <p>{{t "clusterNew.amazoneks.ingressWarning"}}</p>
   {{/banner-message}}
 {{else if (eq driverInfo.name "azureaks")}}
-  {{#banner-message color='bg-warning'}}
-    <p>{{t 'clusterNew.azureaks.ingressWarning'}}</p>
+  {{#banner-message color="bg-warning"}}
+    <p>{{t "clusterNew.azureaks.ingressWarning"}}</p>
   {{/banner-message}}
 {{/if}}
 
@@ -140,27 +140,27 @@
       {{form-name-description
           model=model.cluster
           nameRequired=true
-          nameLabel='clusterNew.name.label'
-          namePlaceholder='clusterNew.name.placeholder'
-          descriptionPlaceholder='clusterNew.description.placeholder'
+          nameLabel="clusterNew.name.label"
+          namePlaceholder="clusterNew.name.placeholder"
+          descriptionPlaceholder="clusterNew.description.placeholder"
       }}
     </div>
 
     {{#accordion-list showExpandAll=false as |al expandFn|}}
       {{#accordion-list-item
-           title=(t 'clusterNew.members.label')
-           detail=(t 'clusterNew.members.detail')
+           title=(t "clusterNew.members.label")
+           detail=(t "clusterNew.members.detail")
            expandAll=al.expandAll
            everExpanded=true
            expanded=expanded
            expand=(action expandFn)
       }}
         {{#if model.cluster.internal}}
-          {{banner-message icon='icon-alert' color='bg-error mt-0 mb-10' message=(t 'clusterPage.internal' appName=settings.appName htmlSafe=true)}}
+          {{banner-message icon="icon-alert" color="bg-error mt-0 mb-10" message=(t "clusterPage.internal" appName=settings.appName htmlSafe=true)}}
         {{/if}}
 
         {{#if isEdit}}
-          {{banner-message icon='icon-info' color='bg-info mt-0 mb-10' message=(t 'clusterPage.removeMemberNote')}}
+          {{banner-message icon="icon-info" color="bg-info mt-0 mb-10" message=(t "clusterPage.removeMemberNote")}}
         {{/if}}
 
         {{form-members
@@ -188,8 +188,8 @@
     originalCluster=originalCluster
     otherErrors=memberErrors
     clusterErrors=errors
-    save=(action 'save')
-    close=(action 'close')
+    save=(action "save")
+    close=(action "close")
     registerHook=(action "registerHook")
 }}
 

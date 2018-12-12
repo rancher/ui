@@ -1,4 +1,4 @@
-<div class="row nav nav-boxes checked-current mv-30 {{if (eq currentTarget 'embedded') 'embedded'}}  logging-targets">
+<div class="row nav nav-boxes checked-current mv-30 {{if (eq currentTarget "embedded") "embedded"}}  logging-targets">
   {{#each targets as |target|}}
     {{#if target.available}}
       {{#link-to "logging" (query-params targetType=target.type)
@@ -18,21 +18,21 @@
 
 <section>
   <div class="text-center text-muted">
-    {{#if (eq targetTypeName 'none')}}
+    {{#if (eq targetTypeName "none")}}
       {{#if (not hasCurrentTarget)}}
-        {{t 'loggingPage.targetNav.tips.caseA' pageScope=pageScope}}
+        {{t "loggingPage.targetNav.tips.caseA" pageScope=pageScope}}
       {{else}}
-        {{t 'loggingPage.targetNav.tips.caseB' pageScope=pageScope currentTarget=currentTarget htmlSafe=true}}
+        {{t "loggingPage.targetNav.tips.caseB" pageScope=pageScope currentTarget=currentTarget htmlSafe=true}}
       {{/if}}
     {{else if hasCurrentTarget}}
-        {{t 'loggingPage.targetNav.tips.caseC' currentTarget=currentTarget htmlSafe=true}}
+        {{t "loggingPage.targetNav.tips.caseC" currentTarget=currentTarget htmlSafe=true}}
       {{#unless (eq currentTarget targetTypeName)}}
-        {{t 'loggingPage.targetNav.tips.caseD' targetType=targetTypeName htmlSafe=true}}
+        {{t "loggingPage.targetNav.tips.caseD" targetType=targetTypeName htmlSafe=true}}
       {{else}}
-        {{t 'loggingPage.targetNav.tips.caseE' targetType=targetTypeName htmlSafe=true}}
+        {{t "loggingPage.targetNav.tips.caseE" targetType=targetTypeName htmlSafe=true}}
       {{/unless}}
     {{else}}
-      {{t 'loggingPage.targetNav.tips.caseF' targetType=targetTypeName htmlSafe=true}}
+      {{t "loggingPage.targetNav.tips.caseF" targetType=targetTypeName htmlSafe=true}}
     {{/if}}
   </div>
   <hr/>

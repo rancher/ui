@@ -1,6 +1,6 @@
 {{#containers-header}}
-  <button {{action 'importYaml'}} class="btn btn-sm bg-default mr-10" disabled={{rbac-prevents resource="workload" scope="project" permission="create"}}>{{t 'nav.containers.importCompose'}}</button>
-  {{#link-to "containers.run" scope.currentProject.id class="btn btn-sm bg-primary" disabled=(rbac-prevents resource="workload" scope="project" permission="create")}}{{t 'nav.containers.deploy'}}{{/link-to}}
+  <button {{action "importYaml"}} class="btn btn-sm bg-default mr-10" disabled={{rbac-prevents resource="workload" scope="project" permission="create"}}>{{t "nav.containers.importCompose"}}</button>
+  {{#link-to "containers.run" scope.currentProject.id class="btn btn-sm bg-primary" disabled=(rbac-prevents resource="workload" scope="project" permission="create")}}{{t "nav.containers.deploy"}}{{/link-to}}
 {{/containers-header}}
 
 {{#if rows.length}}
@@ -30,7 +30,7 @@
             scalePlaceholder=true
             fullColspan=sortable.fullColspan
             toggle=(action "toggleExpand" inst.id)
-            showNode=(not-eq groupTableBy 'nodeId')
+            showNode=(not-eq groupTableBy "nodeId")
             expanded=(array-includes expandedInstances inst.id)
           }}
         {{else}}
@@ -44,14 +44,14 @@
             dt=dt
           }}
         {{/if}}
-      {{else if (and (eq kind "group") (eq groupTableBy 'nodeId'))}}
+      {{else if (and (eq kind "group") (eq groupTableBy "nodeId"))}}
         {{node-group nodes=model.nodes nodeId=inst.ref.id fullColspan=sortable.fullColspan}}
       {{else if (eq kind "group")}}
         {{namespace-group model=inst.ref fullColspan=sortable.fullColspan}}
       {{else if (eq kind "nomatch")}}
-        <tr><td colspan="{{sortable.fullColspan}}" class="text-center text-muted lacsso pt-20 pb-20">{{t 'containersPage.table.noMatch'}}</td></tr>
+        <tr><td colspan="{{sortable.fullColspan}}" class="text-center text-muted lacsso pt-20 pb-20">{{t "containersPage.table.noMatch"}}</td></tr>
       {{else if (eq kind "norows")}}
-        <tr><td colspan="{{sortable.fullColspan}}" class="text-center text-muted lacsso pt-20 pb-20">{{t 'containersPage.table.noData'}}</td></tr>
+        <tr><td colspan="{{sortable.fullColspan}}" class="text-center text-muted lacsso pt-20 pb-20">{{t "containersPage.table.noData"}}</td></tr>
       {{/if}}
     {{/sortable-table}}
   </section>

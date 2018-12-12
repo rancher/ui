@@ -1,26 +1,26 @@
-  {{#if (or (eq quota.key 'limitsCpu') (eq quota.key 'requestsCpu'))}}
+  {{#if (or (eq quota.key "limitsCpu") (eq quota.key "requestsCpu"))}}
     {{#input-or-display editable=editing value=(get quota key) classesForDisplay="clip"}}
       <div class="input-group">
-        {{input-integer min="0" step="100" value=(get quota key) classNames="form-control" placeholder=(t (concat 'formResourceQuota.table.' key '.milliCpuPlaceholder'))}}
-        <div class="input-group-addon bg-default">{{t 'formSecurity.milliCpuReservation.unit'}}</div>
+        {{input-integer min="0" step="100" value=(get quota key) classNames="form-control" placeholder=(t (concat "formResourceQuota.table." key ".milliCpuPlaceholder"))}}
+        <div class="input-group-addon bg-default">{{t "formSecurity.milliCpuReservation.unit"}}</div>
       </div>
     {{/input-or-display}}
-  {{else if (or (eq quota.key 'limitsMemory') (eq quota.key 'requestsMemory'))}}
+  {{else if (or (eq quota.key "limitsMemory") (eq quota.key "requestsMemory"))}}
     {{#input-or-display editable=editing value=(get quota key) classesForDisplay="clip"}}
       <div class="input-group">
-        {{input-integer min="4" step="1" value=(get quota key) classNames="form-control" placeholder=(t (concat 'formResourceQuota.table.' key '.memoryPlaceholder'))}}
-        <div class="input-group-addon bg-default">{{t 'generic.mibibyte'}}</div>
+        {{input-integer min="4" step="1" value=(get quota key) classNames="form-control" placeholder=(t (concat "formResourceQuota.table." key ".memoryPlaceholder"))}}
+        <div class="input-group-addon bg-default">{{t "generic.mibibyte"}}</div>
       </div>
     {{/input-or-display}}
-  {{else if (eq quota.key 'requestsStorage')}}
+  {{else if (eq quota.key "requestsStorage")}}
     {{#input-or-display editable=editing value=(get quota key) classesForDisplay="clip"}}
       <div class="input-group">
-        {{input-integer min="0" step="1" value=(get quota key) classNames="form-control" placeholder=(t (concat 'formResourceQuota.table.' key '.placeholder'))}}
-        <div class="input-group-addon bg-default">{{t 'generic.gigabyte'}}</div>
+        {{input-integer min="0" step="1" value=(get quota key) classNames="form-control" placeholder=(t (concat "formResourceQuota.table." key ".placeholder"))}}
+        <div class="input-group-addon bg-default">{{t "generic.gigabyte"}}</div>
       </div>
     {{/input-or-display}}
   {{else}}
     {{#input-or-display editable=editing value=(get quota key) classesForDisplay="clip"}}
-      {{input-number min=0 value=(get quota key) placeholder=(t (concat 'formResourceQuota.table.' key '.placeholder'))}}
+      {{input-number min=0 value=(get quota key) placeholder=(t (concat "formResourceQuota.table." key ".placeholder"))}}
     {{/input-or-display}}
   {{/if}}

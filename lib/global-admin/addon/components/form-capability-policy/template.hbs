@@ -1,6 +1,6 @@
 {{#accordion-list-item
-     title=(t 'formCapabilityPodSecurityPolicy.title')
-     detail=(t 'formCapabilityPodSecurityPolicy.detail')
+     title=(t "formCapabilityPodSecurityPolicy.title")
+     detail=(t "formCapabilityPodSecurityPolicy.detail")
      status=status
      statusClass=statusClass
      expandAll=expandAll
@@ -8,7 +8,7 @@
 }}
   <div class="row">
     <div class="col box span-4">
-      <label class="acc-label">{{t 'formCapabilityPodSecurityPolicy.capabilities.allow'}}</label>
+      <label class="acc-label">{{t "formCapabilityPodSecurityPolicy.capabilities.allow"}}</label>
       {{#if readOnly}}
         {{#if model.allowedCapabilities.length}}
           <div>
@@ -17,10 +17,10 @@
             {{/each}}
           </div>
         {{else}}
-          <div>{{t 'generic.none'}}</div>
+          <div>{{t "generic.none"}}</div>
         {{/if}}
       {{else}}
-        <select class="form-control select-cap-allow" multiple="true" onchange={{action 'modifyCapabilities' 'allowedCapabilities' }}>
+        <select class="form-control select-cap-allow" multiple="true" onchange={{action "modifyCapabilities" "allowedCapabilities" }}>
           {{#each capabilityChoices as |choice|}}
             <option value={{choice}} selected={{array-includes model.allowedCapabilities choice}}>{{choice}}</option>
           {{/each}}
@@ -29,7 +29,7 @@
     </div>
 
     <div class="col box span-4">
-      <label class="acc-label">{{t 'formCapabilityPodSecurityPolicy.capabilities.add'}}</label>
+      <label class="acc-label">{{t "formCapabilityPodSecurityPolicy.capabilities.add"}}</label>
       {{#if readOnly}}
         {{#if model.defaultAddCapabilities.length}}
           <div>
@@ -38,10 +38,10 @@
             {{/each}}
           </div>
         {{else}}
-          <div>{{t 'generic.none'}}</div>
+          <div>{{t "generic.none"}}</div>
         {{/if}}
       {{else}}
-        <select class="form-control select-cap-add" multiple="true" onchange={{action 'modifyCapabilities' 'defaultAddCapabilities' }}>
+        <select class="form-control select-cap-add" multiple="true" onchange={{action "modifyCapabilities" "defaultAddCapabilities" }}>
           {{#each capabilityChoices as |choice|}}
             <option value={{choice}} selected={{array-includes model.defaultAddCapabilities choice}}>{{choice}}</option>
           {{/each}}
@@ -50,7 +50,7 @@
     </div>
 
     <div class="col box span-4">
-      <label class="acc-label">{{t 'formCapabilityPodSecurityPolicy.capabilities.drop'}}</label>
+      <label class="acc-label">{{t "formCapabilityPodSecurityPolicy.capabilities.drop"}}</label>
       {{#if readOnly}}
         {{#if model.requiredDropCapabilities.length}}
           <div>
@@ -59,10 +59,10 @@
             {{/each}}
           </div>
         {{else}}
-          <div>{{t 'generic.none'}}</div>
+          <div>{{t "generic.none"}}</div>
         {{/if}}
       {{else}}
-        <select class="form-control select-cap-drop" multiple="true" onchange={{action 'modifyCapabilities' 'requiredDropCapabilities'}}>
+        <select class="form-control select-cap-drop" multiple="true" onchange={{action "modifyCapabilities" "requiredDropCapabilities"}}>
           {{#each capabilityChoices as |choice|}}
             <option value={{choice}} selected={{array-includes model.requiredDropCapabilities choice}}>{{choice}}</option>
           {{/each}}

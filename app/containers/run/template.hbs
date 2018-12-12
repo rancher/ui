@@ -1,28 +1,28 @@
 {{#if dataMap.selectLaunchConfig}}
   <section class="header">
-    <h1>{{t 'newContainer.sidekick.header' service=dataMap.workload.displayName}}</h1>
+    <h1>{{t "newContainer.sidekick.header" service=dataMap.workload.displayName}}</h1>
   </section>
-  <h2>{{t 'newContainer.sidekick.title' service=dataMap.workload.displayName}}</h2>
-  <p class="help-block">{{t 'newContainer.sidekick.detail' service=dataMap.workload.displayName}}</p>
+  <h2>{{t "newContainer.sidekick.title" service=dataMap.workload.displayName}}</h2>
+  <p class="help-block">{{t "newContainer.sidekick.detail" service=dataMap.workload.displayName}}</p>
 
   <div class="clearfix">
     {{#catalog-box
-      classNames='bg-secondary'
+      classNames="bg-secondary"
       model=dataMap.workload.launchConfig
       showIcon=false
       showDescription=false
       as |section|
     }}
 
-        {{#if (eq section 'header')}}
+        {{#if (eq section "header")}}
           <div class="darken p-20 m-0">
             <i class="icon icon-service icon-4x"/>
           </div>
-        {{else if (eq section 'body')}}
+        {{else if (eq section "body")}}
           <h3 class="text-muted">{{dataMap.workload.launchConfig.name}}</h3>
-          <p class="help-block">{{t 'newContainer.sidekick.primary'}}</p>
-        {{else if (eq section 'footer')}}
-          {{#link-to (query-params launchConfigIndex=-1) class="btn bg-info" disabled=deleting}}{{t 'action.upgrade'}}{{/link-to}}
+          <p class="help-block">{{t "newContainer.sidekick.primary"}}</p>
+        {{else if (eq section "footer")}}
+          {{#link-to (query-params launchConfigIndex=-1) class="btn bg-info" disabled=deleting}}{{t "action.upgrade"}}{{/link-to}}
         {{/if}}
     {{/catalog-box}}
 
@@ -33,24 +33,24 @@
         showDescription=false
         as |section|
       }}
-        {{#if (eq section 'header')}}
+        {{#if (eq section "header")}}
           <div class="darken p-20 m-0">
             <i class="icon icon-container icon-4x"/>
           </div>
-        {{else if (eq section 'body')}}
+        {{else if (eq section "body")}}
           <h3>{{slc.name}}</h3>
-          <p class="help-block">{{t 'newContainer.sidekick.sidekick'}}</p>
-        {{else if (eq section 'footer')}}
+          <p class="help-block">{{t "newContainer.sidekick.sidekick"}}</p>
+        {{else if (eq section "footer")}}
           <button class="btn bg-error" {{action "promptRemove" index}} disabled={{deleting}}>
-            {{t 'action.remove'}}
+            {{t "action.remove"}}
           </button>
-          {{#link-to (query-params launchConfigIndex=index) class="btn bg-primary" disabled=deleting}}{{t 'action.upgrade'}}{{/link-to}}
+          {{#link-to (query-params launchConfigIndex=index) class="btn bg-primary" disabled=deleting}}{{t "action.upgrade"}}{{/link-to}}
         {{/if}}
       {{/catalog-box}}
     {{/each}}
   </div>
   <div class="text-center">
-    <button class="btn bg-transparent" {{action 'cancel'}}>{{t 'generic.cancel'}}</button>
+    <button class="btn bg-transparent" {{action "cancel"}}>{{t "generic.cancel"}}</button>
   </div>
 {{else}}
   {{container/new-edit
@@ -60,8 +60,8 @@
       service=dataMap.workload
       launchConfig=dataMap.container
       launchConfigIndex=launchConfigIndex
-      done=(action 'done')
-      cancel=(action 'cancel')
+      done=(action "done")
+      cancel=(action "cancel")
       editing=false
       primaryResource=dataMap.workload
       primaryService=dataMap.workload

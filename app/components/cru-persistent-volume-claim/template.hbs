@@ -12,7 +12,7 @@
 <div class="row">
   {{#if isView}}
     {{#if model.description}}
-      {{banner-message color='bg-secondary mb-0 mt-10' message=(linkify model.description)}}
+      {{banner-message color="bg-secondary mb-0 mt-10" message=(linkify model.description)}}
     {{/if}}
   {{else}}
     <div class="col span-6">
@@ -45,13 +45,13 @@
   {{#if primaryResource.storageClass}}
     <div class="row">
       <div class="col span-6">
-        <label class="acc-label">{{t 'cruPersistentVolumeClaim.source.label'}}</label>
+        <label class="acc-label">{{t "cruPersistentVolumeClaim.source.label"}}</label>
         <div>
-          {{t 'cruPersistentVolumeClaim.source.storageClass'}}
+          {{t "cruPersistentVolumeClaim.source.storageClass"}}
         </div>
       </div>
       <div class="col span-6">
-        <label class="acc-label">{{t 'cruPersistentVolumeClaim.storageClass.label'}}</label>
+        <label class="acc-label">{{t "cruPersistentVolumeClaim.storageClass.label"}}</label>
         <div>
           <a href="{{href-to "authenticated.cluster.storage.classes.detail.index" scope.currentCluster.id primaryResource.storageClass.id}}">
             {{primaryResource.storageClass.displayName}}
@@ -62,13 +62,13 @@
   {{else if primaryResource.persistentVolume}}
     <div class="row">
       <div class="col span-6">
-        <label class="acc-label">{{t 'cruPersistentVolumeClaim.pv.label'}}</label>
+        <label class="acc-label">{{t "cruPersistentVolumeClaim.pv.label"}}</label>
         <div>
-          {{t 'cruPersistentVolumeClaim.source.pv'}}
+          {{t "cruPersistentVolumeClaim.source.pv"}}
         </div>
       </div>
       <div class="col span-6">
-        <label class="acc-label">{{t 'cruPersistentVolumeClaim.storageClass.label'}}</label>
+        <label class="acc-label">{{t "cruPersistentVolumeClaim.storageClass.label"}}</label>
         <div>
           <a href="{{href-to "authenticated.cluster.storage.persistent-volumes.detail.index" scope.currentCluster.id primaryResource.persistentVolume.id}}">
             {{primaryResource.persistentVolume.displayName}}
@@ -80,23 +80,23 @@
 {{else}}
   <div class="row">
     <div class="col span-6">
-      <label class="acc-label">{{t 'cruPersistentVolumeClaim.source.label'}}</label>
+      <label class="acc-label">{{t "cruPersistentVolumeClaim.source.label"}}</label>
       <div class="radio">
-        <label class="{{unless canUseStorageClass 'text-muted'}}">
+        <label class="{{unless canUseStorageClass "text-muted"}}">
           {{radio-button selection=useStorageClass value=true disabled=(not canUseStorageClass)}}
-          {{t 'cruPersistentVolumeClaim.source.storageClass'}}
+          {{t "cruPersistentVolumeClaim.source.storageClass"}}
         </label>
       </div>
       <div class="radio">
         <label>
           {{radio-button selection=useStorageClass value=false}}
-          {{t 'cruPersistentVolumeClaim.source.pv'}}
+          {{t "cruPersistentVolumeClaim.source.pv"}}
         </label>
       </div>
     </div>
     <div class="col span-6">
       {{#if useStorageClass}}
-        <label class="acc-label">{{t 'cruPersistentVolumeClaim.storageClass.label'}}</label>
+        <label class="acc-label">{{t "cruPersistentVolumeClaim.storageClass.label"}}</label>
         {{new-select
           content=storageClasses
           prompt="cruPersistentVolumeClaim.storageClass.prompt"
@@ -107,13 +107,13 @@
           value=primaryResource.storageClassId
         }}
 
-        <label class="acc-label mt-20">{{t 'cruPersistentVolumeClaim.capacity.label'}}{{field-required editing=editing}}</label>
+        <label class="acc-label mt-20">{{t "cruPersistentVolumeClaim.capacity.label"}}{{field-required editing=editing}}</label>
         <div class="input-group">
           {{input-number classNames="form-control" value=capacity}}
-          <span class="input-group-addon bg-default">{{t 'cruPersistentVolumeClaim.capacity.unit'}}</span>
+          <span class="input-group-addon bg-default">{{t "cruPersistentVolumeClaim.capacity.unit"}}</span>
         </div>
       {{else}}
-        <label class="acc-label">{{t 'cruPersistentVolumeClaim.pv.label'}}</label>
+        <label class="acc-label">{{t "cruPersistentVolumeClaim.pv.label"}}</label>
         {{new-select
           content=persistentVolumeChoices
           prompt="cruPersistentVolumeClaim.pv.prompt"
@@ -130,8 +130,8 @@
 
 {{#accordion-list showExpandAll=false as | al expandFn |}}
   {{#accordion-list-item
-    title=(t 'cruPersistentVolume.customize.title')
-    detail=(t 'cruPersistentVolume.customize.detail')
+    title=(t "cruPersistentVolume.customize.title")
+    detail=(t "cruPersistentVolume.customize.detail")
     expandAll=expandAll
     expand=(action expandFn)
     everExpanded=true
@@ -147,7 +147,7 @@
   {{/accordion-list-item}}
   {{#if isView}}
     {{resource-event-list
-      resourceType=(t 'generic.persistentVolumeClaim')
+      resourceType=(t "generic.persistentVolumeClaim")
       expandAll=al.expandAll
       expandFn=expandFn
       namespaceId=model.namespaceId
@@ -159,5 +159,5 @@
 
 {{#unless isView}}
   {{top-errors errors=errors}}
-  {{save-cancel createLabel=(if actuallySave 'saveCancel.create' 'cruPersistentVolumeClaim.define.addActionLabel') save="save" cancel="viewEditCancel"}}
+  {{save-cancel createLabel=(if actuallySave "saveCancel.create" "cruPersistentVolumeClaim.define.addActionLabel") save="save" cancel="viewEditCancel"}}
 {{/unless}}

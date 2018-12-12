@@ -1,9 +1,9 @@
 <section class="header clearfix">
   <div class="pull-left">
     {{#if editing}}
-        <h1>{{t 'projectsPage.editProject'}}</h1>
+        <h1>{{t "projectsPage.editProject"}}</h1>
     {{else}}
-        <h1>{{t 'projectsPage.addProject'}}</h1>
+        <h1>{{t "projectsPage.addProject"}}</h1>
     {{/if}}
   </div>
 </section>
@@ -17,12 +17,12 @@
   }}
 
   {{#if model.project.cluster.isRKE}}
-    <label class="acc-label">{{t 'projectsPage.psp.label'}}</label>
+    <label class="acc-label">{{t "projectsPage.psp.label"}}</label>
     {{new-select
       content=model.psps
-      optionLabelPath='displayName'
-      optionValuePath='id'
-      prompt='generic.none'
+      optionLabelPath="displayName"
+      optionValuePath="id"
+      prompt="generic.none"
       localizedPrompt=true
       value=podSecurityPolicyTemplateId
     }}
@@ -33,10 +33,10 @@
 {{#accordion-list showExpandAll=false as | al expandFn | }}
   <div class="col span-12">
     {{#accordion-list-item
-         title=(t 'projectsPage.members.title')
-         detail=(t 'projectsPage.members.detail')
-         status=(t 'pagination.member' pages=1 count=memberArray.length)
-         statusClass=(if memberArray.length 'text-success' 'text-error')
+         title=(t "projectsPage.members.title")
+         detail=(t "projectsPage.members.detail")
+         status=(t "pagination.member" pages=1 count=memberArray.length)
+         statusClass=(if memberArray.length "text-success" "text-error")
          expandAll=al.expandAll
          expand=(action expandFn)
          expandOnInit=true
@@ -55,10 +55,10 @@
           users=model.users
       }}
     {{/accordion-list-item}}
-    
+
     {{#accordion-list-item
-         title=(t 'projectsPage.resourceQuota.title')
-         detail=(t 'projectsPage.resourceQuota.detail')
+         title=(t "projectsPage.resourceQuota.title")
+         detail=(t "projectsPage.resourceQuota.detail")
          expandAll=al.expandAll
          expand=(action expandFn)
          expandOnInit=false

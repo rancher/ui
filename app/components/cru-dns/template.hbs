@@ -2,7 +2,7 @@
   {{#if isView}}
     <div class="right-buttons">{{action-menu model=model size="sm"}}</div>
   {{/if}}
-  <h1>{{t (concat 'editDns.title.' mode) name=model.displayName}}</h1>
+  <h1>{{t (concat "editDns.title." mode) name=model.displayName}}</h1>
 </section>
 
 <section class="horizontal-form container-fluid">
@@ -30,27 +30,27 @@
   <div class="row">
     <div class="col span-6">
       <div>
-        <label class="acc-label">{{t 'editDns.recordType.label'}}</label>
+        <label class="acc-label">{{t "editDns.recordType.label"}}</label>
       </div>
       <div class="mb-20">
         {{#if editing}}
           <div class="radio">
-            <label>{{radio-button selection=recordType value="arecord"}}&nbsp;{{t 'editDns.recordType.arecord'}}</label>
+            <label>{{radio-button selection=recordType value="arecord"}}&nbsp;{{t "editDns.recordType.arecord"}}</label>
           </div>
           <div class="radio">
-            <label>{{radio-button selection=recordType value="cname"}}&nbsp;{{t 'editDns.recordType.cname'}}</label>
+            <label>{{radio-button selection=recordType value="cname"}}&nbsp;{{t "editDns.recordType.cname"}}</label>
           </div>
           <div class="radio">
-            <label>{{radio-button selection=recordType value="alias"}}&nbsp;{{t 'editDns.recordType.alias'}}</label>
+            <label>{{radio-button selection=recordType value="alias"}}&nbsp;{{t "editDns.recordType.alias"}}</label>
           </div>
           <div class="radio">
-            <label>{{radio-button selection=recordType value="workload"}}&nbsp;{{t 'editDns.recordType.workload'}}</label>
+            <label>{{radio-button selection=recordType value="workload"}}&nbsp;{{t "editDns.recordType.workload"}}</label>
           </div>
           <div class="radio">
-            <label>{{radio-button selection=recordType value="selector"}}&nbsp;{{t 'editDns.recordType.selector'}}</label>
+            <label>{{radio-button selection=recordType value="selector"}}&nbsp;{{t "editDns.recordType.selector"}}</label>
           </div>
         {{else}}
-          {{t (concat 'editDns.recordType.' recordType)}}
+          {{t (concat "editDns.recordType." recordType)}}
         {{/if}}
       </div>
     </div>
@@ -58,20 +58,20 @@
       {{#if (eq recordType "arecord")}}
         {{form-value-array
           initialValues=model.ipAddresses
-          addActionLabel='editDns.add.arecord'
-          valueLabel='editDns.target.arecord'
-          valuePlaceholder='editDns.placeholder.arecord'
+          addActionLabel="editDns.add.arecord"
+          valueLabel="editDns.target.arecord"
+          valuePlaceholder="editDns.placeholder.arecord"
           changed=(action (mut model.ipAddresses))
           editing=editing
         }}
       {{else if (eq recordType "cname")}}
-        <label class="acc-label">{{t 'editDns.target.cname'}}{{field-required}}</label>
-        {{input value=model.hostname placeholder=(t 'editDns.placeholder.cname')}}
+        <label class="acc-label">{{t "editDns.target.cname"}}{{field-required}}</label>
+        {{input value=model.hostname placeholder=(t "editDns.placeholder.cname")}}
       {{else if (eq recordType "alias")}}
         {{#form-value-array
           initialValues=model.targetDnsRecordIds
           editing=(not isView)
-          addActionLabel='editDns.add.alias'
+          addActionLabel="editDns.add.alias"
           changed=(action "setAlias")
           as |c row|
         }}
@@ -92,7 +92,7 @@
         {{#form-value-array
           editing=(not isView)
           initialValues=model.targetWorkloadIds
-          addActionLabel='editDns.add.workload'
+          addActionLabel="editDns.add.workload"
           changed=(action "setWorkload")
           as |c row|
         }}

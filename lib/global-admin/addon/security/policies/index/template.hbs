@@ -1,9 +1,9 @@
 <section class="header clearfix">
   <div class="right-buttons">
-    {{#link-to "security.policies.new" classNames="btn btn-sm bg-primary right-divider-btn" disabled=(rbac-prevents resource="podsecuritypolicytemplate" scope="global" permission="create")}} {{t 'podSecurityPoliciesPage.addPodSecurityPolicy'}} {{/link-to}}
+    {{#link-to "security.policies.new" classNames="btn btn-sm bg-primary right-divider-btn" disabled=(rbac-prevents resource="podsecuritypolicytemplate" scope="global" permission="create")}} {{t "podSecurityPoliciesPage.addPodSecurityPolicy"}} {{/link-to}}
   </div>
 
-  <h1>{{t 'podSecurityPoliciesPage.index.header'}}</h1>
+  <h1>{{t "podSecurityPoliciesPage.index.header"}}</h1>
 </section>
 
 <section class="instances pt-5 pb-5">
@@ -21,22 +21,22 @@
         <td valign="middle" class="row-check" style="padding-top: 2px;">
           {{check-box nodeId=row.id}}
         </td>
-        <td data-title="{{t 'podSecurityPoliciesPage.index.table.name'}}:" class="clip">
+        <td data-title="{{t "podSecurityPoliciesPage.index.table.name"}}:" class="clip">
           {{#link-to "security.policies.detail" row.id}}
             {{row.name}}
           {{/link-to}}
         </td>
-        <td data-title="{{t 'generic.created'}}:" class="text-right pr-20">
+        <td data-title="{{t "generic.created"}}:" class="text-right pr-20">
           {{date-calendar row.created}}
         </td>
-        <td data-title="{{t 'generic.actions'}}:" class="actions">
+        <td data-title="{{t "generic.actions"}}:" class="actions">
           {{action-menu model=row}}
         </td>
       </tr>
     {{else if (eq kind "nomatch")}}
-      <td colspan="4" class="text-center text-muted lacsso pt-20 pb-20">{{t 'podSecurityPoliciesPage.index.table.noMatch'}}</td>
+      <td colspan="4" class="text-center text-muted lacsso pt-20 pb-20">{{t "podSecurityPoliciesPage.index.table.noMatch"}}</td>
     {{else if (eq kind "norows")}}
-      <td colspan="4" class="text-center text-muted lacsso pt-20 pb-20">{{t 'podSecurityPoliciesPage.index.table.noData'}}</td>
+      <td colspan="4" class="text-center text-muted lacsso pt-20 pb-20">{{t "podSecurityPoliciesPage.index.table.noData"}}</td>
     {{/if}}
   {{/sortable-table}}
 </section>

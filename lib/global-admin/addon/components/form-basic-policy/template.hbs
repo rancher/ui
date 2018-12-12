@@ -1,30 +1,30 @@
 {{#accordion-list-item
-     title=(t 'formBasicPodSecurityPolicy.title')
-     detail=(t 'formBasicPodSecurityPolicy.detail')
+     title=(t "formBasicPodSecurityPolicy.title")
+     detail=(t "formBasicPodSecurityPolicy.detail")
      status=status
      statusClass=statusClass
      expandAll=expandAll
      expand=(action expandFn)
 }}
   {{#each basicPolicies as |row index|}}
-    <div class="{{if (eq index 0) 'row box' 'row box mt-20'}}">
+    <div class="{{if (eq index 0) "row box" "row box mt-20"}}">
       {{#each row as |policy|}}
         <div class="col span-4">
-          <label class="acc-label">{{t (concat 'formBasicPodSecurityPolicy.' policy '.label')}}</label>
+          <label class="acc-label">{{t (concat "formBasicPodSecurityPolicy." policy ".label")}}</label>
           {{#if (and readOnly (get model policy))}}
             <div>
-              <label>{{t (concat 'formBasicPodSecurityPolicy.' policy '.enable')}}</label>
+              <label>{{t (concat "formBasicPodSecurityPolicy." policy ".enable")}}</label>
             </div>
           {{else if readOnly}}
             <div>
-              <label>{{t (concat 'formBasicPodSecurityPolicy.' policy '.disable')}}</label>
+              <label>{{t (concat "formBasicPodSecurityPolicy." policy ".disable")}}</label>
             </div>
           {{else}}
             <div class="radio">
-              <label>{{radio-button selection=(get model policy) value=true}} {{t (concat 'formBasicPodSecurityPolicy.' policy '.enable')}}</label>
+              <label>{{radio-button selection=(get model policy) value=true}} {{t (concat "formBasicPodSecurityPolicy." policy ".enable")}}</label>
             </div>
             <div class="radio">
-              <label>{{radio-button selection=(get model policy) value=false}} {{t (concat 'formBasicPodSecurityPolicy.' policy '.disable')}}</label>
+              <label>{{radio-button selection=(get model policy) value=false}} {{t (concat "formBasicPodSecurityPolicy." policy ".disable")}}</label>
             </div>
           {{/if}}
         </div>

@@ -1,6 +1,6 @@
 {{#accordion-list-item
-     title=(t 'formFsGroupPodSecurityPolicy.title')
-     detail=(t 'formFsGroupPodSecurityPolicy.detail')
+     title=(t "formFsGroupPodSecurityPolicy.title")
+     detail=(t "formFsGroupPodSecurityPolicy.detail")
      status=status
      statusClass=statusClass
      expandAll=expandAll
@@ -8,15 +8,15 @@
 }}
   <div class="row">
     {{#if (and readOnly (eq model.fsGroup.rule "RunAsAny"))}}
-      {{t 'formFsGroupPodSecurityPolicy.rule.runAsAny'}}
+      {{t "formFsGroupPodSecurityPolicy.rule.runAsAny"}}
     {{else if readOnly}}
-      {{t 'formFsGroupPodSecurityPolicy.rule.mustRunAs'}}
+      {{t "formFsGroupPodSecurityPolicy.rule.mustRunAs"}}
     {{else}}
       <div class="radio input">
-        <label>{{radio-button selection=model.fsGroup.rule value="MustRunAs"}} {{t 'formFsGroupPodSecurityPolicy.rule.mustRunAs'}}</label>
+        <label>{{radio-button selection=model.fsGroup.rule value="MustRunAs"}} {{t "formFsGroupPodSecurityPolicy.rule.mustRunAs"}}</label>
       </div>
       <div class="radio input">
-        <label>{{radio-button selection=model.fsGroup.rule value="RunAsAny"}} {{t 'formFsGroupPodSecurityPolicy.rule.runAsAny'}}</label>
+        <label>{{radio-button selection=model.fsGroup.rule value="RunAsAny"}} {{t "formFsGroupPodSecurityPolicy.rule.runAsAny"}}</label>
       </div>
     {{/if}}
   </div>
@@ -26,25 +26,25 @@
       {{#if (eq model.fsGroup.rule "MustRunAs")}}
         <table class="table fixed no-lines no-top-padding mt-10">
           <tr class="hidden-sm hidden-xs">
-            <th>{{t 'formFsGroupPodSecurityPolicy.range.min.label'}}{{#unless readOnly}}{{field-required}}{{/unless}}</th>
+            <th>{{t "formFsGroupPodSecurityPolicy.range.min.label"}}{{#unless readOnly}}{{field-required}}{{/unless}}</th>
             <th width="30">&nbsp;</th>
-            <th>{{t 'formFsGroupPodSecurityPolicy.range.max.label'}}{{#unless readOnly}}{{field-required}}{{/unless}}</th>
+            <th>{{t "formFsGroupPodSecurityPolicy.range.max.label"}}{{#unless readOnly}}{{field-required}}{{/unless}}</th>
             <th width="40">&nbsp;</th>
           </tr>
           {{#each model.fsGroup.ranges as |range|}}
             <tr class="sm-noborder">
-              <td data-title="{{t 'formFsGroupPodSecurityPolicy.range.min.label'}}">
-                {{input class="form-control input-sm" type="number" disabled=readOnly value=range.min placeholder=(t 'formFsGroupPodSecurityPolicy.range.min.placeholder')}}
+              <td data-title="{{t "formFsGroupPodSecurityPolicy.range.min.label"}}">
+                {{input class="form-control input-sm" type="number" disabled=readOnly value=range.min placeholder=(t "formFsGroupPodSecurityPolicy.range.min.placeholder")}}
               </td>
               <td class="text-center">
                 <p><i class="icon icon-chevron-right"></i></p>
               </td>
-              <td data-title="{{t 'formFsGroupPodSecurityPolicy.range.max.label'}}">
-                {{input class="form-control input-sm" type="number" disabled=readOnly value=range.max placeholder=(t 'formFsGroupPodSecurityPolicy.range.max.placeholder')}}
+              <td data-title="{{t "formFsGroupPodSecurityPolicy.range.max.label"}}">
+                {{input class="form-control input-sm" type="number" disabled=readOnly value=range.max placeholder=(t "formFsGroupPodSecurityPolicy.range.max.placeholder")}}
               </td>
               <td class="text-right">
                 {{#unless readOnly}}
-                  <button class="btn bg-primary btn-sm" {{action "remove" range}}><i class="icon icon-minus"/><span class="sr-only">{{t 'generic.remove'}}</span></button>
+                  <button class="btn bg-primary btn-sm" {{action "remove" range}}><i class="icon icon-minus"/><span class="sr-only">{{t "generic.remove"}}</span></button>
                 {{/unless}}
               </td>
             </tr>
@@ -55,7 +55,7 @@
         <div>
           <button class="btn bg-link icon-btn" {{action "add"}}>
             <span class="darken"><i class="icon icon-plus text-small"/></span>
-            <span>{{t 'formFsGroupPodSecurityPolicy.range.addLabel'}}</span>
+            <span>{{t "formFsGroupPodSecurityPolicy.range.addLabel"}}</span>
           </button>
         </div>
       {{/unless}}

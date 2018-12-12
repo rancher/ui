@@ -1,7 +1,7 @@
 {{#if (eq step 1)}}
   {{#input-text-file
        classNames="box"
-       label='clusterNew.googlegke.credential.label'
+       label="clusterNew.googlegke.credential.label"
        value=config.credential
        accept="text/*, .json"
        minHeight=60
@@ -12,10 +12,10 @@
        concealValue=true
        as |section|
   }}
-    {{#if (eq section 'description')}}
+    {{#if (eq section "description")}}
       <div class="row help">
         <div class="col span-12 help-block wrap mb-0">
-          {{t 'clusterNew.googlegke.credential.helpText' htmlSafe=true}}
+          {{t "clusterNew.googlegke.credential.helpText" htmlSafe=true}}
         </div>
       </div>
     {{/if}}
@@ -34,8 +34,8 @@
 {{else}}
   {{#accordion-list showExpandAll=false as |al expandFn|}}
     {{#accordion-list-item
-         title=(t 'clusterNew.customize.title')
-         detail=(t 'clusterNew.customize.detail')
+         title=(t "clusterNew.customize.title")
+         detail=(t "clusterNew.customize.detail")
          everExpanded=true
          expandOnInit=true
          expandAll=al.expandAll
@@ -43,166 +43,167 @@
     }}
       <div class="row">
         <div class="col span-6">
-          <label class="acc-label">{{t 'clusterNew.googlegke.masterVersion.label'}}</label>
+          <label class="acc-label">{{t "clusterNew.googlegke.masterVersion.label"}}</label>
           {{form-versions
+              classNames="form-control"
               cluster=cluster
-              editing=(eq mode 'edit')
+              editing=(eq mode "edit")
               initialVersion=config.masterVersion
               value=config.masterVersion
               versions=versionChoices
           }}
         </div>
         <div class="col span-6">
-          <label class="acc-label">{{t 'clusterNew.googlegke.clusterIpv4Cidr.label'}}</label>
+          <label class="acc-label">{{t "clusterNew.googlegke.clusterIpv4Cidr.label"}}</label>
           {{input
               value=config.clusterIpv4Cidr
-              placeholder=(t 'clusterNew.googlegke.clusterIpv4Cidr.placeholder')
+              placeholder=(t "clusterNew.googlegke.clusterIpv4Cidr.placeholder")
               disabled=editing
           }}
         </div>
       </div>
       <div class="row">
         <div class="col span-6">
-          <label class="acc-label">{{t 'clusterNew.googlegke.alphaFeatures.label'}}</label>
+          <label class="acc-label">{{t "clusterNew.googlegke.alphaFeatures.label"}}</label>
           <div class="form-control-static">
             <label class="mr-20 hand">
               {{radio-button
                   selection=config.enableAlphaFeature
                   value=true
                   disabled=editing
-              }} {{t 'generic.enabled'}}
+              }} {{t "generic.enabled"}}
             </label>
             <label class="hand">
               {{radio-button
                   selection=config.enableAlphaFeature
                   value=false
                   disabled=editing
-              }} {{t 'generic.disabled'}}
+              }} {{t "generic.disabled"}}
             </label>
           </div>
         </div>
         <div class="col span-6">
-          <label class="acc-label">{{t 'clusterNew.googlegke.legacyAuth.label'}}</label>
+          <label class="acc-label">{{t "clusterNew.googlegke.legacyAuth.label"}}</label>
           <div class="form-control-static">
             <label class="mr-20 hand">
               {{radio-button
                   selection=config.enableLegacyAbac
                   value=true
                   disabled=editing
-              }} {{t 'generic.enabled'}}
+              }} {{t "generic.enabled"}}
             </label>
             <label class="hand">
               {{radio-button
                   selection=config.enableLegacyAbac
                   value=false
                   disabled=editing
-              }} {{t 'generic.disabled'}}
+              }} {{t "generic.disabled"}}
             </label>
           </div>
         </div>
       </div>
       <div class="row">
         <div class="col span-6">
-          <label class="acc-label">{{t 'clusterNew.googlegke.stackDriverLogging.label'}}</label>
+          <label class="acc-label">{{t "clusterNew.googlegke.stackDriverLogging.label"}}</label>
           <div class="form-control-static">
             <label class="hand">
               {{radio-button
                   selection=config.enableStackdriverLogging
                   value=true
                   disabled=editing
-              }} {{t 'generic.enabled'}}
+              }} {{t "generic.enabled"}}
             </label>
             <label class="mr-20 hand">
               {{radio-button
                   selection=config.enableStackdriverLogging
                   value=false
                   disabled=editing
-              }} {{t 'generic.disabled'}}
+              }} {{t "generic.disabled"}}
             </label>
           </div>
         </div>
         <div class="col span-6">
-          <label class="acc-label">{{t 'clusterNew.googlegke.stackdriverMonitor.label'}}</label>
+          <label class="acc-label">{{t "clusterNew.googlegke.stackdriverMonitor.label"}}</label>
           <div class="form-control-static">
             <label class="hand">
               {{radio-button
                   selection=config.enableStackdriverMonitoring
                   value=true
                   disabled=editing
-              }} {{t 'generic.enabled'}}
+              }} {{t "generic.enabled"}}
             </label>
             <label class="mr-20 hand">
               {{radio-button
                   selection=config.enableStackdriverMonitoring
                   value=false
                   disabled=editing
-              }} {{t 'generic.disabled'}}
+              }} {{t "generic.disabled"}}
             </label>
           </div>
         </div>
       </div>
       <div class="row">
         <div class="col span-6">
-          <label class="acc-label">{{t 'clusterNew.googlegke.dashboard.label'}}</label>
+          <label class="acc-label">{{t "clusterNew.googlegke.dashboard.label"}}</label>
           <div class="form-control-static">
             <label class="mr-20 hand">
               {{radio-button
                   selection=config.enableKubernetesDashboard
                   value=true
                   disabled=editing
-              }} {{t 'generic.enabled'}}
+              }} {{t "generic.enabled"}}
             </label>
             <label class="hand">
               {{radio-button
                   selection=config.enableKubernetesDashboard
                   value=false
                   disabled=editing
-              }} {{t 'generic.disabled'}}
+              }} {{t "generic.disabled"}}
             </label>
           </div>
         </div>
         <div class="col span-6">
-          <label class="acc-label">{{t 'clusterNew.googlegke.httpLB.label'}}</label>
+          <label class="acc-label">{{t "clusterNew.googlegke.httpLB.label"}}</label>
           <div class="form-control-static">
             <label class="hand">
               {{radio-button
                   selection=config.enableHttpLoadBalancing
                   value=true
                   disabled=editing
-              }} {{t 'generic.enabled'}}
+              }} {{t "generic.enabled"}}
             </label>
             <label class="mr-20 hand">
               {{radio-button
                   selection=config.enableHttpLoadBalancing
                   value=false
                   disabled=editing
-              }} {{t 'generic.disabled'}}
+              }} {{t "generic.disabled"}}
             </label>
           </div>
         </div>
       </div>
       <div class="row">
         <div class="col span-6">
-          <label class="acc-label">{{t 'clusterNew.googlegke.enableHorizontalPodAutoscaling.label'}}</label>
+          <label class="acc-label">{{t "clusterNew.googlegke.enableHorizontalPodAutoscaling.label"}}</label>
           <div class="form-control-static">
             <label class="hand">
               {{radio-button
                   selection=config.enableHorizontalPodAutoscaling
                   value=true
                   disabled=editing
-              }} {{t 'generic.enabled'}}
+              }} {{t "generic.enabled"}}
             </label>
             <label class="mr-20 hand">
               {{radio-button
                   selection=config.enableHorizontalPodAutoscaling
                   value=false
                   disabled=editing
-              }} {{t 'generic.disabled'}}
+              }} {{t "generic.disabled"}}
             </label>
           </div>
         </div>
         <div class="col span-6">
-          <label class="acc-label">{{t 'clusterNew.googlegke.maintenanceWindow.label'}}</label>
+          <label class="acc-label">{{t "clusterNew.googlegke.maintenanceWindow.label"}}</label>
           <div class="form-control-static">
             {{new-select
                 classNames="form-control"
@@ -216,8 +217,8 @@
     {{/accordion-list-item}}
 
     {{#accordion-list-item
-         title=(t 'clusterNew.nodes.title')
-         detail=(t 'clusterNew.nodes.detail')
+         title=(t "clusterNew.nodes.title")
+         detail=(t "clusterNew.nodes.detail")
          showExpand=false
          expandOnInit=true
          expandAll=al.expandAll
@@ -225,7 +226,7 @@
     }}
       <div class="row">
         <div class="col span-6">
-          <label class="acc-label">{{t 'clusterNew.googlegke.zone.label'}}</label>
+          <label class="acc-label">{{t "clusterNew.googlegke.zone.label"}}</label>
           {{#if editing}}
             {{config.zone}}
           {{else}}
@@ -241,7 +242,7 @@
           {{/if}}
         </div>
         <div class="col span-6">
-          <label class="acc-label">{{t 'clusterNew.googlegke.machineType.label'}}</label>
+          <label class="acc-label">{{t "clusterNew.googlegke.machineType.label"}}</label>
           {{#if editing}}
             <div>
               {{editedMachineChoice.displayName}}
@@ -262,17 +263,17 @@
 
       <div class="row">
         <div class="col span-6">
-          <label class="acc-label">{{t 'clusterNew.googlegke.nodeCount.label'}}</label>
+          <label class="acc-label">{{t "clusterNew.googlegke.nodeCount.label"}}</label>
           {{input-number min=1 value=config.nodeCount}}
         </div>
         <div class="col span-6">
-          <label class="acc-label">{{t 'clusterNew.googlegke.diskSizeGb.label'}}</label>
+          <label class="acc-label">{{t "clusterNew.googlegke.diskSizeGb.label"}}</label>
           <div class="input-group">
             {{#if editing}}
-              {{config.diskSizeGb}}{{t 'generic.gigabyte'}}
+              {{config.diskSizeGb}}{{t "generic.gigabyte"}}
             {{else}}
               {{input-number min=1 value=config.diskSizeGb}}
-              <span class="input-group-addon bg-default">{{t 'generic.gigabyte'}}</span>
+              <span class="input-group-addon bg-default">{{t "generic.gigabyte"}}</span>
             {{/if}}
           </div>
         </div>
@@ -283,5 +284,5 @@
   {{top-errors errors=errors}}
   {{top-errors errors=otherErrors}}
   {{top-errors errors=clusterErrors}}
-  {{save-cancel editing=(eq mode 'edit')  save="driverSave" cancel=close}}
+  {{save-cancel editing=(eq mode "edit")  save="driverSave" cancel=close}}
 {{/if}}

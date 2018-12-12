@@ -1,10 +1,10 @@
 {{#accordion-list-item
-  title=(t 'podsSection.title')
-  detail=(t 'podsSection.detail')
+  title=(t "podsSection.title")
+  detail=(t "podsSection.detail")
   expandAll=expandAll
   expand=(action expandFn)
   expandOnInit=expandOnInit
-  componentName='sortable-table'
+  componentName="sortable-table"
   as | parent |
 }}
   {{#sortable-table
@@ -34,22 +34,22 @@
         <td data-title="{{dt.displayImage}}">
           {{#tooltip-element
               type="tooltip-basic"
-              tooltipTemplate='tooltip-multi-lines'
+              tooltipTemplate="tooltip-multi-lines"
               model=inst.displayImages
               inlineBlock=true
           }}
             <span class="text-small">{{inst.displayImage}}</span>
           {{/tooltip-element}}
-          <p data-title="{{t 'generic.details'}}" class="text-small text-muted m-0 clip">
+          <p data-title="{{t "generic.details"}}" class="text-small text-muted m-0 clip">
             {{#if inst.displayIp}}
               {{inst.displayIp}} /
             {{/if}}
-            {{t 'generic.createdDate' date=(date-from-now inst.created) htmlSafe=true}} / {{t 'generic.restarts'}} {{inst.restarts}}
+            {{t "generic.createdDate" date=(date-from-now inst.created) htmlSafe=true}} / {{t "generic.restarts"}} {{inst.restarts}}
           </p>
         </td>
         <td data-title="{{dt.node}}">
           {{#if (and inst.node.id inst.node.clusterId)}}
-            <a href="{{href-to 'authenticated.cluster.monitoring.node-detail' inst.node.clusterId inst.node.id}}">{{inst.node.displayName}}</a>
+            <a href="{{href-to "authenticated.cluster.monitoring.node-detail" inst.node.clusterId inst.node.id}}">{{inst.node.displayName}}</a>
             {{#if (or inst.node.externalIpAddress inst.node.ipAddress)}}
               {{node-ip model=inst.node}}
             {{/if}}
@@ -75,10 +75,10 @@
         </tr>
       {{/if}}
     {{else if (eq kind "nomatch")}}
-      <tr><td colspan="{{sortable.fullColspan}}" class="text-center text-muted lacsso pt-20 pb-20">{{t 'pipelinesPage.table.noMatch'}}</td></tr>
+      <tr><td colspan="{{sortable.fullColspan}}" class="text-center text-muted lacsso pt-20 pb-20">{{t "pipelinesPage.table.noMatch"}}</td></tr>
     {{else if (eq kind "norows")}}
       <tr>
-        <td colspan="{{sortable.fullColspan}}" class="text-center text-muted pt-20 pb-20">{{t 'labelsSection.noData'}}</td>
+        <td colspan="{{sortable.fullColspan}}" class="text-center text-muted pt-20 pb-20">{{t "labelsSection.noData"}}</td>
       </tr>
     {{/if}}
   {{/sortable-table}}

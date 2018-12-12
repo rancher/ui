@@ -1,23 +1,23 @@
 <div class="row">
-  <label>{{t 'alertPage.newOrEdit.alertRule'}}</label>
+  <label>{{t "alertPage.newOrEdit.alertRule"}}</label>
 </div>
 <hr/>
 
 {{#unless monitoringEnabled}}
-  {{#banner-message color='bg-info mb-10 mt-10'}}
-    {{#if (eq pageScope 'cluster')}}
-      <p>{{t 'alertPage.newOrEdit.monitoringDisabled'}} {{#link-to-external 'authenticated.cluster.monitoring.cluster-setting'}} {{t 'alertPage.newOrEdit.enableMonitoring'}} {{/link-to-external}}.</p>
+  {{#banner-message color="bg-info mb-10 mt-10"}}
+    {{#if (eq pageScope "cluster")}}
+      <p>{{t "alertPage.newOrEdit.monitoringDisabled"}} {{#link-to-external "authenticated.cluster.monitoring.cluster-setting"}} {{t "alertPage.newOrEdit.enableMonitoring"}} {{/link-to-external}}.</p>
     {{else}}
-      <p>{{t 'alertPage.newOrEdit.monitoringDisabled'}} {{#link-to-external 'authenticated.project.monitoring.project-setting'}} {{t 'alertPage.newOrEdit.enableMonitoring'}} {{/link-to-external}}.</p>
+      <p>{{t "alertPage.newOrEdit.monitoringDisabled"}} {{#link-to-external "authenticated.project.monitoring.project-setting"}} {{t "alertPage.newOrEdit.enableMonitoring"}} {{/link-to-external}}.</p>
     {{/if}}
   {{/banner-message}}
 {{/unless}}
 
 <div class="mb-10 pt-5">
   {{#each alertRules key="id" as |alertRule|}}
-    {{#if (eq pageScope 'cluster')}}
+    {{#if (eq pageScope "cluster")}}
       {{alert/form-cluster-rule-row
-          removeRule=(action 'removeRule')
+          removeRule=(action "removeRule")
           alertRules=alertRules
           editing=editing
           pageScope=pageScope
@@ -28,7 +28,7 @@
       }}
     {{else}}
       {{alert/form-project-rule-row
-          removeRule=(action 'removeRule')
+          removeRule=(action "removeRule")
           condition=alertRule
           alertRules=alertRules
           editing=editing
@@ -40,13 +40,13 @@
       }}
     {{/if}}
   {{else}}
-    <div class="p-20">{{t 'formIngress.noRules'}}</div>
+    <div class="p-20">{{t "formIngress.noRules"}}</div>
   {{/each}}
 </div>
 
 <div class="row">
   <button class="btn bg-link icon-btn inline-block pull-right" {{action "addRule"}}>
     <span class="darken"><i class="icon icon-plus text-small"></i></span>
-    <span>{{t 'alertPage.index.addAlert'}}</span>
+    <span>{{t "alertPage.index.addAlert"}}</span>
   </button>
 </div>

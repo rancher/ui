@@ -1,6 +1,6 @@
 {{#accordion-list-item
-     title=(t 'formVolumePodSecurityPolicy.title')
-     detail=(t 'formVolumePodSecurityPolicy.detail')
+     title=(t "formVolumePodSecurityPolicy.title")
+     detail=(t "formVolumePodSecurityPolicy.detail")
      status=status
      statusClass=statusClass
      expandAll=expandAll
@@ -8,7 +8,7 @@
 }}
   <div class="row">
     <div class="col box span-12">
-      <label class="acc-label">{{t 'formVolumePodSecurityPolicy.volumes'}}</label>
+      <label class="acc-label">{{t "formVolumePodSecurityPolicy.volumes"}}</label>
       {{#if readOnly}}
         {{#if model.volumes.length}}
           <div>
@@ -17,10 +17,10 @@
             {{/each}}
           </div>
         {{else}}
-          <div>{{t 'generic.none'}}</div>
+          <div>{{t "generic.none"}}</div>
         {{/if}}
       {{else}}
-        <select class="form-control" multiple="true" onchange={{action 'modifyVolumes' 'volumes'}}>
+        <select class="form-control" multiple="true" onchange={{action "modifyVolumes" "volumes"}}>
           {{#each volumeChoices as |choice|}}
             <option value={{choice}} selected={{array-includes model.volumes choice}}>{{choice}}</option>
           {{/each}}

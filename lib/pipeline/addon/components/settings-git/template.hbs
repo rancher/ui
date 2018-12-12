@@ -2,17 +2,17 @@
   {{#unless provider.enabled}}
     <section>
       <div class="row nav nav-boxes checked-active">
-        <a href="#" alt='github' class="col span-2 nav-box-item driver {{if isGithub 'active' ''}}" {{action "changeOauthType" "github"}}>
+        <a href="#" alt="github" class="col span-2 nav-box-item driver {{if isGithub "active" ""}}" {{action "changeOauthType" "github"}}>
           <div class="auth-driver github-for-pipeline"></div>
-          <p>{{t 'generic.github'}}</p>
+          <p>{{t "generic.github"}}</p>
         </a>
-        <a href="#" alt='gitlab' class="col span-2 nav-box-item driver {{if isGitlab 'active' ''}}" {{action "changeOauthType" "gitlab"}}>
+        <a href="#" alt="gitlab" class="col span-2 nav-box-item driver {{if isGitlab "active" ""}}" {{action "changeOauthType" "gitlab"}}>
           <div class="auth-driver gitlab"></div>
-          <p>{{t 'generic.gitlab'}}</p>
+          <p>{{t "generic.gitlab"}}</p>
         </a>
-        <a href="#" alt='bitbucket' class="col span-2 nav-box-item driver {{if isBitbucket 'active' ''}}" {{action "changeOauthType" "bitbucketcloud"}}>
+        <a href="#" alt="bitbucket" class="col span-2 nav-box-item driver {{if isBitbucket "active" ""}}" {{action "changeOauthType" "bitbucketcloud"}}>
           <div class="auth-driver bitbucket"></div>
-          <p>{{t 'generic.bitbucket'}}</p>
+          <p>{{t "generic.bitbucket"}}</p>
         </a>
       </div>
     </section>
@@ -20,7 +20,7 @@
 
   {{#if provider.enabled}}
     <section class="header clearfix">
-      <h1 class="pull-left">{{t 'authPage.header'}}</h1>
+      <h1 class="pull-left">{{t "authPage.header"}}</h1>
     </section>
 
     <section>
@@ -28,25 +28,25 @@
         <a href="#" alt={{selectedOauthType}} class="col span-2 nav-box-item driver active">
           {{#if isGithub}}
             <div class="auth-driver github-for-pipeline"></div>
-            <p>{{t 'generic.github'}}</p>
+            <p>{{t "generic.github"}}</p>
           {{/if}}
           {{#if isGitlab}}
             <div class="auth-driver gitlab"></div>
-            <p>{{t 'generic.gitlab'}}</p>
+            <p>{{t "generic.gitlab"}}</p>
           {{/if}}
           {{#if isBitbucket}}
             <div class="auth-driver bitbucket"></div>
-            <p>{{t 'generic.bitbucket'}}</p>
+            <p>{{t "generic.bitbucket"}}</p>
           {{/if}}
         </a>
       </div>
     </section>
 
     <section class="box mt-30">
-      <h3>{{t 'authPage.setting.executor.label'}}</h3>
+      <h3>{{t "authPage.setting.executor.label"}}</h3>
       <hr/>
       <div class="vertical-middle">
-        <label class="acc-label vertical-middle p-0">{{t 'authPage.setting.executor.scale'}}</label>
+        <label class="acc-label vertical-middle p-0">{{t "authPage.setting.executor.scale"}}</label>
         <span class="pr-5">
           {{scale.value}}
         </span>
@@ -58,25 +58,25 @@
     </section>
 
     <section class="box mt-30">
-      <h3>{{t 'authPage.authenticated.header.text'}}</h3>
+      <h3>{{t "authPage.authenticated.header.text"}}</h3>
       <hr/>
       {{#if provider.hostname}}
         <div>
-          <b>{{t 'authPage.authenticated.header.enterpriseHostName'}} </b>
-          <a href="{{if provider.tls 'https' 'http'}}://{{provider.hostname}}" target="_blank" rel="nofollow noreferrer">{{provider.hostname}}</a>
+          <b>{{t "authPage.authenticated.header.enterpriseHostName"}} </b>
+          <a href="{{if provider.tls "https" "http"}}://{{provider.hostname}}" target="_blank" rel="nofollow noreferrer">{{provider.hostname}}</a>
         </div>
       {{/if}}
 
       {{#if isBitbucketCloud}}
         <div>
-          <b>{{t 'authPage.authenticated.header.enterpriseHostName'}} </b> 
+          <b>{{t "authPage.authenticated.header.enterpriseHostName"}} </b>
           <a href="https://bitbucket.org" target="_blank" rel="nofollow noreferrer">bitbucket.org</a>
         </div>
       {{/if}}
 
       {{#if provider.clientId}}
         <div>
-          <b>{{t (if isBitbucket 'authPage.authenticated.header.key.text' 'authPage.authenticated.header.clientId.text')}} </b>
+          <b>{{t (if isBitbucket "authPage.authenticated.header.key.text" "authPage.authenticated.header.clientId.text")}} </b>
           <span class="text-muted">{{provider.clientId}}</span>
         </div>
       {{/if}}
@@ -86,16 +86,16 @@
       {{#if confirmDisable}}
         {{#if disabling}}
           <button class="btn bg-disabled" disabled="disabled">
-            <i class="icon icon-spinner icon-spin"></i> {{t 'generic.saving'}}
+            <i class="icon icon-spinner icon-spin"></i> {{t "generic.saving"}}
           </button>
         {{else}}
           <button class="btn bg-primary" {{action "disable"}}>
-            <i class="icon icon-alert"></i> {{t 'pipelinesSetting.sureToDisableOAuth'}}
+            <i class="icon icon-alert"></i> {{t "pipelinesSetting.sureToDisableOAuth"}}
           </button>
         {{/if}}
       {{else}}
         <button class="btn bg-primary" {{action "promptDisable"}}>
-          <i class="icon icon-umbrella"></i> {{t 'pipelinesSetting.disableOAuth'}}
+          <i class="icon icon-umbrella"></i> {{t "pipelinesSetting.disableOAuth"}}
         </button>
       {{/if}}
     </div>
@@ -103,7 +103,7 @@
 
   {{#unless provider.enabled}}
     {{component providerComponent
-        switch=(action 'changeOauthType')
+        switch=(action "changeOauthType")
         provider=provider
         oauthModel=oauthModel
         githubAuthConfig=githubAuthConfig}}

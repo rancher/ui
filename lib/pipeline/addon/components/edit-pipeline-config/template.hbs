@@ -1,5 +1,5 @@
 <section class="header clearfix">
-  <h1>{{t 'editPipelineConfig.header'}}</h1>
+  <h1>{{t "editPipelineConfig.header"}}</h1>
 </section>
 
 {{steps/step-scm
@@ -22,7 +22,7 @@
     {{else if pipeline.url}}
       <div class="row mb-20">
         <div class="col span-3">
-          <label class="acc-label pb-5">{{t 'generic.branch'}}</label>
+          <label class="acc-label pb-5">{{t "generic.branch"}}</label>
           {{#searchable-select
             optionLabelPath="branch"
             optionValuePath="branch"
@@ -35,7 +35,7 @@
         </div>
       </div>
       <div class="row mb-10">
-        <label class="acc-label pb-5">{{t 'newPipeline.steps.label'}}</label>
+        <label class="acc-label pb-5">{{t "newPipeline.steps.label"}}</label>
         <section class="pipeline-container">
           {{#if selectedConfig.stages.length}}
             {{pipeline-stages
@@ -52,12 +52,12 @@
             <div class="banner bg-warning">
               <div class="banner-icon"><span class="icon icon-info"></span></div>
               <div class="banner-message">
-                <p>{{t 'newPipelineStep.stepType.scm.noYaml' htmlSafe=true}}</p>
+                <p>{{t "newPipelineStep.stepType.scm.noYaml" htmlSafe=true}}</p>
               </div>
             </div>
-            <button class="btn bg-transparent" {{action 'enableBranch'}}>
+            <button class="btn bg-transparent" {{action "enableBranch"}}>
               <i class="icon icon-edit"/>
-              {{t 'newPipelineStep.stepType.enableBranch'}}
+              {{t "newPipelineStep.stepType.enableBranch"}}
             </button>
           {{/if}}
         </section>
@@ -71,14 +71,14 @@
         {{#advanced-section}}
           {{pipeline-condition type="pipeline" branchOnly=true config=when}}
 
-          <div class="acc-label pb-5 pt-10">{{t 'editPipelineConfig.timeout.label'}}</div>
+          <div class="acc-label pb-5 pt-10">{{t "editPipelineConfig.timeout.label"}}</div>
           <div class="row">
             <div class="box col span-6">
               <div class="input-group">
                 {{input-integer classNames="form-control" value=selectedConfig.timeout}}
-                <span class="input-group-addon bg-default">{{t 'generic.minutes'}}</span>
+                <span class="input-group-addon bg-default">{{t "generic.minutes"}}</span>
               </div>
-              <p class="help-block">{{t 'editPipelineConfig.timeout.helpText'}}</p>
+              <p class="help-block">{{t "editPipelineConfig.timeout.helpText"}}</p>
             </div>
           </div>
         {{/advanced-section}}
@@ -86,8 +86,8 @@
     {{/if}}
   </div>
 {{else if (and (not pipeline.loading) (not pipeline.branches.length))}}
-  {{#banner-message color='bg-warning'}}
-    <p>{{t 'generic.noBranch'}}</p>
+  {{#banner-message color="bg-warning"}}
+    <p>{{t "generic.noBranch"}}</p>
   {{/banner-message}}
 {{/if}}
 

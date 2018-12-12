@@ -1,18 +1,18 @@
 <section class="header clearfix">
   <div class="pull-left">
     {{#if editing}}
-      <h1>{{t 'podSecurityPoliciesPage.editPodSecurityPolicy'}}</h1>
+      <h1>{{t "podSecurityPoliciesPage.editPodSecurityPolicy"}}</h1>
     {{else if readOnly}}
-      <h1>{{t 'podSecurityPoliciesPage.detail.header'}}: {{model.name}}</h1>
+      <h1>{{t "podSecurityPoliciesPage.detail.header"}}: {{model.name}}</h1>
     {{else}}
-      <h1>{{t 'podSecurityPoliciesPage.addPodSecurityPolicy'}}</h1>
+      <h1>{{t "podSecurityPoliciesPage.addPodSecurityPolicy"}}</h1>
     {{/if}}
   </div>
 </section>
 
 {{#if (and readOnly model.description)}}
   <div class="row mb-30">
-    {{banner-message color='bg-secondary mb-0 mt-10' message=(linkify model.description)}}
+    {{banner-message color="bg-secondary mb-0 mt-10" message=(linkify model.description)}}
   </div>
 {{/if}}
 
@@ -113,7 +113,7 @@
       {{form-labels-annotations
         labelErrors=labelErrors
         initialLabels=model.labels
-        setLabels=(action 'setLabels')
+        setLabels=(action "setLabels")
         expandAll=al.expandAll
         expandFn=expandFn
         model=model

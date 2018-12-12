@@ -1,14 +1,14 @@
-{{#outside-click onOutsideClick=(action 'hide')}}
-  {{input disabled=readOnly class=(concat 'form-control input-search search ' class) placeholder=placeholder type="text" autocomplete="off" value=filter key-up="search"}}
+{{#outside-click onOutsideClick=(action "hide")}}
+  {{input disabled=readOnly class=(concat "form-control input-search search " class) placeholder=placeholder type="text" autocomplete="off" value=filter key-up="search"}}
 
   {{#if showOptions}}
     <section class="searchable-options" style={{optionsMaxHeightCss}}>
       {{#if prompt}}
         <div
           class="searchable-option searchable-prompt"
-          onmouseenter={{action 'mouseEnter'}}
-          onmouseleave={{action 'mouseLeave'}}
-          {{action 'selectPrompt'}}
+          onmouseenter={{action "mouseEnter"}}
+          onmouseleave={{action "mouseLeave"}}
+          {{action "selectPrompt"}}
         >
           {{#unless value}}
             <i class="icon icon-check"></i>
@@ -22,24 +22,24 @@
       {{/if}}
 
       {{#if prefix}}
-        {{yield this 'prefix'}}
+        {{yield this "prefix"}}
       {{/if}}
 
       {{#if loading}}
         <div class="text-muted no-match">
-          <i class="icon icon-spinner icon-spin"/> {{t 'generic.loading'}}
+          <i class="icon icon-spinner icon-spin"/> {{t "generic.loading"}}
         </div>
       {{else if showMessage}}
         <div class="text-muted no-match">
-          {{t 'searchableSelect.noOptions'}}
+          {{t "searchableSelect.noOptions"}}
         </div>
       {{else}}
         {{#each unGroupedContent as |item idx|}}
           <div
             class="searchable-option"
-            {{action 'selectUnGroupedItem' idx}}
-            onmouseenter={{action 'mouseEnter'}}
-            onmouseleave={{action 'mouseLeave'}}
+            {{action "selectUnGroupedItem" idx}}
+            onmouseenter={{action "mouseEnter"}}
+            onmouseleave={{action "mouseLeave"}}
           >
             {{#if (eq value (get item optionValuePath))}}
               <i class="icon icon-check"></i>
@@ -67,9 +67,9 @@
             {{#each group.options as |item idx|}}
               <div
                 class="searchable-option"
-                {{action 'selectGroupedItem' group.options idx}}
-                onmouseenter={{action 'mouseEnter'}}
-                onmouseleave={{action 'mouseLeave'}}
+                {{action "selectGroupedItem" group.options idx}}
+                onmouseenter={{action "mouseEnter"}}
+                onmouseleave={{action "mouseLeave"}}
               >
                 {{#if (eq value (get item optionValuePath))}}
                   <i class="icon icon-check"></i>
@@ -92,7 +92,7 @@
       {{/if}}
 
       {{#if suffix}}
-        {{yield this 'suffix'}}
+        {{yield this "suffix"}}
       {{/if}}
     </section>
   {{/if}}

@@ -1,49 +1,49 @@
 <div class="row">
   <div class="col span-4">
-    <label class="acc-label">{{t 'cruStorageClass.aws-ebs.type.label'}}</label>
+    <label class="acc-label">{{t "cruStorageClass.aws-ebs.type.label"}}</label>
     {{#if editing}}
       {{#each volumeTypes as |name|}}
         <div class="radio">
           <label>
             {{radio-button selection=volumeType value=name}}
-            {{t (concat 'cruStorageClass.aws-ebs.type.' name)}}
+            {{t (concat "cruStorageClass.aws-ebs.type." name)}}
           </label>
         </div>
       {{/each}}
     {{else}}
       <div>
-        {{t (concat 'cruStorageClass.aws-ebs.type.' volumeType)}}
+        {{t (concat "cruStorageClass.aws-ebs.type." volumeType)}}
       </div>
     {{/if}}
 
     {{#if supportsIops}}
-      <label class="acc-label mt-20">{{t 'cruStorageClass.aws-ebs.iopsPerGB.label'}}</label>
+      <label class="acc-label mt-20">{{t "cruStorageClass.aws-ebs.iopsPerGB.label"}}</label>
       {{#if editing}}
         <div class="input-group">
           {{input-integer classNames="form-control" value=iopsPerGB}}
-          <span class="input-group-addon bg-default">{{t 'cruStorageClass.aws-ebs.iopsPerGB.unit'}}</span>
+          <span class="input-group-addon bg-default">{{t "cruStorageClass.aws-ebs.iopsPerGB.unit"}}</span>
         </div>
       {{else}}
         <div>
-          {{iopsPerGB}} {{t 'cruStorageClass.aws-ebs.iopsPerGB.unit'}}
+          {{iopsPerGB}} {{t "cruStorageClass.aws-ebs.iopsPerGB.unit"}}
         </div>
       {{/if}}
     {{/if}}
 
   </div>
   <div class="col span-4">
-    <label class="acc-label">{{t 'cruStorageClass.aws-ebs.zone.label'}}</label>
+    <label class="acc-label">{{t "cruStorageClass.aws-ebs.zone.label"}}</label>
     {{#if editing}}
       <div class="radio">
         <label>
           {{radio-button selection=zoneAutomatic value=true}}
-          {{t 'cruStorageClass.aws-ebs.zone.automatic'}}
+          {{t "cruStorageClass.aws-ebs.zone.automatic"}}
         </label>
       </div>
       <div class="radio">
         <label>
           {{radio-button selection=zoneAutomatic value=false}}
-          {{t 'cruStorageClass.aws-ebs.zone.manual'}}
+          {{t "cruStorageClass.aws-ebs.zone.manual"}}
         </label>
       </div>
       {{#unless zoneAutomatic}}
@@ -52,7 +52,7 @@
     {{else}}
       <div>
         {{#if zoneAutomatic}}
-          {{t 'cruStorageClass.aws-ebs.zone.automatic'}}
+          {{t "cruStorageClass.aws-ebs.zone.automatic"}}
         {{else}}
           {{zones}}
         {{/if}}
@@ -60,39 +60,39 @@
     {{/if}}
   </div>
   <div class="col span-4">
-    <label class="acc-label">{{t 'cruStorageClass.aws-ebs.encrypted.label'}}</label>
+    <label class="acc-label">{{t "cruStorageClass.aws-ebs.encrypted.label"}}</label>
     {{#if editing}}
       <div class="radio">
         <label>
           {{radio-button selection=encrypted value=true}}
-          {{t 'generic.enabled'}}
+          {{t "generic.enabled"}}
         </label>
       </div>
       <div class="radio">
         <label>
           {{radio-button selection=encrypted value=false}}
-          {{t 'generic.disabled'}}
+          {{t "generic.disabled"}}
         </label>
       </div>
     {{else}}
       <div>
-        {{t (if encrypted 'generic.enabled' 'generic.disabled')}}
+        {{t (if encrypted "generic.enabled" "generic.disabled")}}
       </div>
     {{/if}}
 
     {{#if encrypted}}
-      <label class="acc-label mt-20">{{t 'cruStorageClass.aws-ebs.kmsKeyId.label'}}</label>
+      <label class="acc-label mt-20">{{t "cruStorageClass.aws-ebs.kmsKeyId.label"}}</label>
       {{#if editing}}
         <div class="radio">
           <label>
             {{radio-button selection=kmsAutomatic value=true}}
-            {{t 'cruStorageClass.aws-ebs.kmsKeyId.automatic'}}
+            {{t "cruStorageClass.aws-ebs.kmsKeyId.automatic"}}
           </label>
         </div>
         <div class="radio">
           <label>
             {{radio-button selection=kmsAutomatic value=false}}
-            {{t 'cruStorageClass.aws-ebs.kmsKeyId.manual'}}
+            {{t "cruStorageClass.aws-ebs.kmsKeyId.manual"}}
           </label>
         </div>
 
@@ -101,7 +101,7 @@
         {{/unless}}
       {{else if kmsAutomatic}}
         <div>
-          {{t 'cruStorageClass.aws-ebs.kmsKeyId.automatic'}}
+          {{t "cruStorageClass.aws-ebs.kmsKeyId.automatic"}}
         </div>
       {{else}}
         <div>

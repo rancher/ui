@@ -1,54 +1,54 @@
 <div class="row">
   <div class="col span-6">
     <div class="radio mb-10">
-      <label>{{radio-button disabled=(not editing) selection=_strategy value="startFirst"}} {{t 'formUpgrade.strategy.startFirst'}}</label>
+      <label>{{radio-button disabled=(not editing) selection=_strategy value="startFirst"}} {{t "formUpgrade.strategy.startFirst"}}</label>
     </div>
     <div class="radio mb-10">
-      <label>{{radio-button disabled=(not editing) selection=_strategy value="stopFirst"}} {{t 'formUpgrade.strategy.stopFirst'}}</label>
+      <label>{{radio-button disabled=(not editing) selection=_strategy value="stopFirst"}} {{t "formUpgrade.strategy.stopFirst"}}</label>
     </div>
     <div class="radio mb-10">
-      <label>{{radio-button disabled=(not editing) selection=_strategy value="recreate"}} {{t 'formUpgrade.strategy.recreate'}}</label>
+      <label>{{radio-button disabled=(not editing) selection=_strategy value="recreate"}} {{t "formUpgrade.strategy.recreate"}}</label>
     </div>
     <div class="radio">
-      <label>{{radio-button disabled=(not editing) selection=_strategy value="custom"}} {{t 'formUpgrade.strategy.custom'}}</label>
+      <label>{{radio-button disabled=(not editing) selection=_strategy value="custom"}} {{t "formUpgrade.strategy.custom"}}</label>
     </div>
   </div>
 
-  {{#if (or (eq _strategy 'startFirst') (eq _strategy 'stopFirst'))}}
+  {{#if (or (eq _strategy "startFirst") (eq _strategy "stopFirst"))}}
     <div class="col span-6">
       <div class="box">
-        <label class="acc-label">{{t 'formUpgrade.strategy.batchSize.label'}}</label>
+        <label class="acc-label">{{t "formUpgrade.strategy.batchSize.label"}}</label>
         {{#input-or-display editable=editing value=batchSize}}
           <div class="input-group">
             {{input-integer min=1 step=1 classNames="form-control" value=batchSize}}
-            <span class="input-group-addon bg-default">{{t 'pagination.podLabel' count=batchSize}}</span>
+            <span class="input-group-addon bg-default">{{t "pagination.podLabel" count=batchSize}}</span>
           </div>
-          <p class="help-block">{{t 'formUpgrade.strategy.batchSize.detail'}}</p>
+          <p class="help-block">{{t "formUpgrade.strategy.batchSize.detail"}}</p>
         {{/input-or-display}}
       </div>
     </div>
-  {{else if (eq _strategy 'custom')}}
+  {{else if (eq _strategy "custom")}}
     <div class="col span-3">
       <div class="box">
-        <label class="acc-label">{{t 'formUpgrade.strategy.maxSurge.label'}}</label>
+        <label class="acc-label">{{t "formUpgrade.strategy.maxSurge.label"}}</label>
         {{#input-or-display editable=editing value=workloadConfig.maxSurge}}
           <div class="input-group">
             {{input classNames="form-control" value=workloadConfig.maxSurge}}
-            <span class="input-group-addon bg-default">{{t 'pagination.podLabel' count=workloadConfig.maxSurge}}</span>
+            <span class="input-group-addon bg-default">{{t "pagination.podLabel" count=workloadConfig.maxSurge}}</span>
           </div>
-          <p class="help-block">{{t 'formUpgrade.strategy.maxSurge.detail'}}</p>
+          <p class="help-block">{{t "formUpgrade.strategy.maxSurge.detail"}}</p>
         {{/input-or-display}}
       </div>
     </div>
     <div class="col span-3">
       <div class="box">
-        <label class="acc-label">{{t 'formUpgrade.strategy.maxUnavailable.label'}}</label>
+        <label class="acc-label">{{t "formUpgrade.strategy.maxUnavailable.label"}}</label>
         {{#input-or-display editable=editing value=workloadConfig.maxUnavailable}}
           <div class="input-group">
             {{input classNames="form-control" value=workloadConfig.maxUnavailable}}
-            <span class="input-group-addon bg-default">{{t 'pagination.podLabel' count=workloadConfig.maxUnavailable}}</span>
+            <span class="input-group-addon bg-default">{{t "pagination.podLabel" count=workloadConfig.maxUnavailable}}</span>
           </div>
-          <p class="help-block">{{t 'formUpgrade.strategy.maxUnavailable.detail'}}</p>
+          <p class="help-block">{{t "formUpgrade.strategy.maxUnavailable.detail"}}</p>
         {{/input-or-display}}
       </div>
     </div>
@@ -60,25 +60,25 @@
 <div class="row">
   <div class="col span-6">
     <div class="box">
-      <label class="acc-label">{{t 'formUpgrade.strategy.minReadySeconds.label'}}</label>
+      <label class="acc-label">{{t "formUpgrade.strategy.minReadySeconds.label"}}</label>
       {{#input-or-display editable=editing value=workloadConfig.minReadySeconds}}
         <div class="input-group">
           {{input classNames="form-control" value=workloadConfig.minReadySeconds}}
-          <span class="input-group-addon bg-default">{{t 'generic.seconds'}}</span>
+          <span class="input-group-addon bg-default">{{t "generic.seconds"}}</span>
         </div>
-        <p class="help-block">{{t 'formUpgrade.strategy.minReadySeconds.detail'}}</p>
+        <p class="help-block">{{t "formUpgrade.strategy.minReadySeconds.detail"}}</p>
       {{/input-or-display}}
     </div>
   </div>
   <div class="col span-6">
     <div class="box">
-      <label class="acc-label">{{t 'formUpgrade.strategy.progressDeadlineSeconds.label'}}</label>
+      <label class="acc-label">{{t "formUpgrade.strategy.progressDeadlineSeconds.label"}}</label>
       {{#input-or-display editable=editing value=workloadConfig.progressDeadlineSeconds}}
         <div class="input-group">
           {{input-integer classNames="form-control" value=workloadConfig.progressDeadlineSeconds}}
-          <span class="input-group-addon bg-default">{{t 'generic.seconds'}}</span>
+          <span class="input-group-addon bg-default">{{t "generic.seconds"}}</span>
         </div>
-        <p class="help-block">{{t 'formUpgrade.strategy.progressDeadlineSeconds.detail'}}</p>
+        <p class="help-block">{{t "formUpgrade.strategy.progressDeadlineSeconds.detail"}}</p>
       {{/input-or-display}}
     </div>
   </div>

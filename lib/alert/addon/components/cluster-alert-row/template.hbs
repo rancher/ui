@@ -12,7 +12,7 @@
     {{#tooltip-element
         type="tooltip-basic"
         model=model.name
-        tooltipTemplate='tooltip-static'
+        tooltipTemplate="tooltip-static"
         aria-describedby="tooltip-base"
         tooltipFor="tooltipLink"
         placement="top"
@@ -22,48 +22,48 @@
   </td>
   <td data-title="{{dt.target}}" class="clip">
     <div> {{model.displayTargetType}} </div>
-    {{#if (eq model.targetType 'nodeSelector')}}
+    {{#if (eq model.targetType "nodeSelector")}}
       {{#if (eq selectorList.length 1)}}
           <span
             class="badge badge-xs bg-info"
             style="color:#ecf0f1!important;border-radius:2px;"
           >
-            {{get selectorList 'firstObject'}}
+            {{get selectorList "firstObject"}}
           </span>
       {{else if (gt selectorList.length 1)}}
         {{#tooltip-element
             type="tooltip-basic"
             model=selectorListTip
-            tooltipTemplate='tooltip-static'
+            tooltipTemplate="tooltip-static"
             aria-describedby="tooltip-base"
             tooltipFor="tooltipLink"
         }}
-          <div class="text-link"> {{selectorList.length}} {{t 'alertPage.items'}} </div>
+          <div class="text-link"> {{selectorList.length}} {{t "alertPage.items"}} </div>
         {{/tooltip-element}}
       {{else}}
-        {{t 'alertPage.na'}}
+        {{t "alertPage.na"}}
       {{/if}}
-    {{else if (eq model.targetType 'node')}}
+    {{else if (eq model.targetType "node")}}
       <div class="text-muted text-small">
         {{model.nodeName}}
       </div>
-    {{else if (eq model.targetType 'systemService')}}
+    {{else if (eq model.targetType "systemService")}}
       <div class="text-muted text-small">
         {{model.targetSystemService.condition}}
       </div>
-    {{else if (eq model.targetType 'event')}}
+    {{else if (eq model.targetType "event")}}
       <div class="text-muted text-small">
-        <span class="text-capicalize">{{model.resourceKind}}</span> {{t 'alertPage.targetTypes.event'}}
+        <span class="text-capicalize">{{model.resourceKind}}</span> {{t "alertPage.targetTypes.event"}}
       </div>
     {{/if}}
   </td>
 
   <td data-title="{{dt.condition}}" class="clip">
-    {{#if (eq model.targetType 'metric')}}
+    {{#if (eq model.targetType "metric")}}
       {{#tooltip-element
           type="tooltip-basic"
           model=model.metricRule.expression
-          tooltipTemplate='tooltip-static'
+          tooltipTemplate="tooltip-static"
           aria-describedby="tooltip-base"
           tooltipFor="tooltipLink"
           placement="top"
@@ -85,7 +85,7 @@
           {{#tooltip-element
                type="tooltip-basic"
                model=recipientsTip
-               tooltipTemplate='tooltip-static'
+               tooltipTemplate="tooltip-static"
                aria-describedby="tooltip-base"
                tooltipFor="tooltipLink"
           }}
@@ -93,11 +93,11 @@
           {{/tooltip-element}}
         {{/if}}
       {{else}}
-        {{t 'alertPage.na'}}
+        {{t "alertPage.na"}}
       {{/if}}
    </td>
 
-  <td data-title="{{t 'generic.actions'}}" class="actions">
+  <td data-title="{{t "generic.actions"}}" class="actions">
     {{action-menu model=model}}
   </td>
 </tr>

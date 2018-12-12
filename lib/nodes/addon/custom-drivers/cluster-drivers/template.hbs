@@ -1,10 +1,10 @@
 <section class="header clearfix">
   <div class="right-buttons">
-    {{!-- <button disabled={{rbac-prevents resource="kontainerDriver" scope="global" permission="create"}} class="btn btn-sm bg-primary right-divider-btn" {{action 'addNewDriver'}}>{{t 'machinePage.add'}}</button> --}}
-    <button class="btn btn-sm bg-primary right-divider-btn" {{action 'addNewDriver'}}>{{t 'clusterDrivers.add'}}</button>
+    {{!-- <button disabled={{rbac-prevents resource="kontainerDriver" scope="global" permission="create"}} class="btn btn-sm bg-primary right-divider-btn" {{action "addNewDriver"}}>{{t "machinePage.add"}}</button> --}}
+    <button class="btn btn-sm bg-primary right-divider-btn" {{action "addNewDriver"}}>{{t "clusterDrivers.add"}}</button>
   </div>
 
-  <h1>{{t 'clusterDrivers.title'}}</h1>
+  <h1>{{t "clusterDrivers.title"}}</h1>
 </section>
 
 {{#sortable-table
@@ -30,7 +30,7 @@
         {{driver.displayName}}
         <div class="clip text-small">
           {{#if driver.builtin}}
-            <span class="text-muted">{{t 'clusterDrivers.builtIn'}}</span>
+            <span class="text-muted">{{t "clusterDrivers.builtIn"}}</span>
           {{else}}
             {{driver.url}}
           {{/if}}
@@ -46,8 +46,8 @@
       {{error-sub-row fullColspan=sortable.fullColspan model=driver}}
     {{/if}}
   {{else if (eq kind "nomatch")}}
-    <tr><td colspan="{{sortable.fullColspan}}" class="text-center text-muted pt-20 pb-20">{{t 'clusterDrivers.table.noMatch'}}</td></tr>
+    <tr><td colspan="{{sortable.fullColspan}}" class="text-center text-muted pt-20 pb-20">{{t "clusterDrivers.table.noMatch"}}</td></tr>
   {{else if (eq kind "norows")}}
-    <tr><td colspan="{{sortable.fullColspan}}" class="text-center text-muted pt-20 pb-20">{{t 'clusterDrivers.table.noData'}}</td></tr>
+    <tr><td colspan="{{sortable.fullColspan}}" class="text-center text-muted pt-20 pb-20">{{t "clusterDrivers.table.noData"}}</td></tr>
   {{/if}}
 {{/sortable-table}}

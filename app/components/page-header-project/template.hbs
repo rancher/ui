@@ -8,10 +8,10 @@
 }}
 
   {{#dd.trigger
-       ariaLabel=(t 'nav.projectDropdown.label')
+       ariaLabel=(t "nav.projectDropdown.label")
   }}
 
-    <a class="{{if twoLine 'two-line'}} text-white">
+    <a class="{{if twoLine "two-line"}} text-white">
       {{#if (eq pageScope "project")}}
         <div class="clip">
           <i class="icon icon-cluster icon-fw"></i>
@@ -29,7 +29,7 @@
       {{else if (eq pageScope "global")}}
         <div class="clip">
           <i class="icon icon-globe icon-fw"></i>
-          <span>{{t 'nav.admin.tab'}}</span>
+          <span>{{t "nav.admin.tab"}}</span>
         </div>
       {{else}}
         <div class="clip">
@@ -38,7 +38,7 @@
         </div>
       {{/if}}
 
-      <span class="sr-only">{{t 'nav.srToggleDropdown'}}</span>
+      <span class="sr-only">{{t "nav.srToggleDropdown"}}</span>
       <i class="icon icon-chevron-down chevron"></i>
 
     </a>
@@ -51,27 +51,27 @@
   }}
     <div class="global">
       <ul class="list-unstyled">
-        <li class="item clip {{if (eq pageScope 'global') 'active selected' 'inactive'}}">
-          <a href="{{href-to "global-admin"}}" class="{{if (eq pageScope "global") 'active selected' 'inactive'}}">
+        <li class="item clip {{if (eq pageScope "global") "active selected" "inactive"}}">
+          <a href="{{href-to "global-admin"}}" class="{{if (eq pageScope "global") "active selected" "inactive"}}">
             <i class="icon icon-globe icon-fw"></i>
-            {{t 'nav.admin.tab'}}
+            {{t "nav.admin.tab"}}
           </a>
         </li>
       </ul>
     </div>
     <div class="search">
-      {{input type="text" placeholder=(t 'nav.projectDropdown.search') value=searchInput}}
+      {{input type="text" placeholder=(t "nav.projectDropdown.search") value=searchInput}}
     </div>
 
     <div class="clusters">
-      <label>{{t 'nav.projectDropdown.clusters'}}</label>
+      <label>{{t "nav.projectDropdown.clusters"}}</label>
 
       <ul class="list-unstyled" style="{{columnStyle}}">
         {{#if searchInput}}
           {{#each clusterSearchResults as |entry|}}
             <li data-cluster-id={{entry.cluster.id}} class="item clip cluster">
               {{#link-to
-                'authenticated.cluster'
+                "authenticated.cluster"
                 entry.cluster.id
                 class="top"
               }}
@@ -81,13 +81,13 @@
               <p class="state">{{entry.cluster.displayState}}</p>
             </li>
           {{else}}
-            <li class="text-muted p-10">{{t 'nav.projectDropdown.clustersNoMatch' searchInput=searchInput}}</li>
+            <li class="text-muted p-10">{{t "nav.projectDropdown.clustersNoMatch" searchInput=searchInput}}</li>
           {{/each}}
         {{else}}
           {{#each byCluster as |entry|}}
-            <li data-cluster-id={{entry.cluster.id}} class="item clip cluster {{if entry.active 'active' 'inactive'}} {{if (eq hoverEntry entry) 'hover'}}">
+            <li data-cluster-id={{entry.cluster.id}} class="item clip cluster {{if entry.active "active" "inactive"}} {{if (eq hoverEntry entry) "hover"}}">
               {{#link-to
-                'authenticated.cluster'
+                "authenticated.cluster"
                 entry.cluster.id
                 class="top"
               }}
@@ -97,7 +97,7 @@
               <p class="state">{{entry.cluster.displayState}}</p>
             </li>
           {{else}}
-            <li class="text-muted p-10">{{t 'nav.projectDropdown.clustersNoData'}}</li>
+            <li class="text-muted p-10">{{t "nav.projectDropdown.clustersNoData"}}</li>
           {{/each}}
         {{/if}}
       </ul>
@@ -105,17 +105,17 @@
 
     <div class="projects">
       {{#if (or searchInput (not clusterEntry)) }}
-        <label>{{t 'nav.projectDropdown.projects'}}</label>
+        <label>{{t "nav.projectDropdown.projects"}}</label>
       {{else}}
-        <label>{{t 'nav.projectDropdown.projectsIn' cluster=clusterEntry.cluster.displayName}}</label>
+        <label>{{t "nav.projectDropdown.projectsIn" cluster=clusterEntry.cluster.displayName}}</label>
       {{/if}}
 
       <ul class="list-unstyled" style="{{columnStyle}}">
         {{#if searchInput}}
           {{#each projectSearchResults as |entry|}}
-            <li class="item clip project {{unless entry.project.isReady 'not-ready'}}">
+            <li class="item clip project {{unless entry.project.isReady "not-ready"}}">
               {{#link-to
-                'authenticated.project'
+                "authenticated.project"
                 entry.project.id
                 class="top"
               }}
@@ -123,39 +123,39 @@
                 {{entry.searchMatch}}
               {{/link-to}}
               <p class="state">
-                {{t 'nav.projectDropdown.projectInCluster' cluster=entry.cluster.displayName}}
+                {{t "nav.projectDropdown.projectInCluster" cluster=entry.cluster.displayName}}
                 {{~#unless entry.project.isReady~}}
-                  , {{t 'nav.projectDropdown.projectNotReady'}}
+                  , {{t "nav.projectDropdown.projectNotReady"}}
                 {{/unless}}
               </p>
             </li>
           {{else}}
-            <li class="text-muted p-10">{{t 'nav.projectDropdown.projectsNoMatch' searchInput=searchInput}}</li>
+            <li class="text-muted p-10">{{t "nav.projectDropdown.projectsNoMatch" searchInput=searchInput}}</li>
           {{/each}}
         {{else if clusterEntry}}
           {{#each clusterEntry.projects as |project|}}
-            <li data-project-id={{project.id}} class="item clip project {{unless project.isReady 'not-ready'}} {{if project.active 'active' 'inactive'}}">
+            <li data-project-id={{project.id}} class="item clip project {{unless project.isReady "not-ready"}} {{if project.active "active" "inactive"}}">
               {{#link-to
-                'authenticated.project'
+                "authenticated.project"
                 project.id
                 class="top"
               }}
-                <i class="icon {{if project.active 'icon-folder-open' 'icon-folder'}} icon-fw"></i>
+                <i class="icon {{if project.active "icon-folder-open" "icon-folder"}} icon-fw"></i>
                 {{project.displayName}}
               {{/link-to}}
               <p class="state">
                 {{#if project.isReady}}
                   {{project.displayState}}
                 {{else}}
-                  {{t 'nav.projectDropdown.projectNotReady'}}
+                  {{t "nav.projectDropdown.projectNotReady"}}
                 {{/if}}
               </p>
             </li>
           {{else}}
-            <li class="text-muted p-10">{{t 'nav.projectDropdown.projectNoData'}}</li>
+            <li class="text-muted p-10">{{t "nav.projectDropdown.projectNoData"}}</li>
           {{/each}}
         {{else}}
-          <li class="text-muted p-10">{{t 'nav.projectDropdown.projectsNoData'}}</li>
+          <li class="text-muted p-10">{{t "nav.projectDropdown.projectsNoData"}}</li>
         {{/if}}
       </ul>
     </div>
