@@ -32,10 +32,17 @@
           <a href="{{href-to "pod" inst.id}}">{{inst.displayName}}</a>
         </td>
         <td data-title="{{dt.displayImage}}">
-          <small>{{inst.displayImage}}</small>
+          {{#tooltip-element
+              type="tooltip-basic"
+              tooltipTemplate='tooltip-multi-lines'
+              model=inst.displayImages
+              inlineBlock=true
+          }}
+            <span class="text-small">{{inst.displayImage}}</span>
+          {{/tooltip-element}}
           <p data-title="{{t 'generic.details'}}" class="text-small text-muted m-0 clip">
             {{#if inst.displayIp}}
-              {{inst.displayIp}} / 
+              {{inst.displayIp}} /
             {{/if}}
             {{t 'generic.createdDate' date=(date-from-now inst.created) htmlSafe=true}} / {{t 'generic.restarts'}} {{inst.restarts}}
           </p>

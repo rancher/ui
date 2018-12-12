@@ -26,7 +26,14 @@
     {{/if}}
   </td>
   <td data-title="{{dt.image}}" class="clip top-half">
-     <small>{{model.displayImage}}</small>
+      {{#tooltip-element
+          type="tooltip-basic"
+          tooltipTemplate='tooltip-multi-lines'
+          model=model.displayImages
+          inlineBlock=true
+      }}
+        <span class="text-small">{{model.displayImage}}</span>
+     {{/tooltip-element}}
      <p data-title="{{t 'generic.details'}}" class="text-small text-muted m-0 clip">
       {{#if model.displayIp}}
         {{#copy-inline clipboardText=model.displayIp}}{{format-ip model.displayIp}}{{/copy-inline}} /
