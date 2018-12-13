@@ -87,7 +87,7 @@ export default Component.extend({
   },
   generateChanged: observer('generate', function() {
     if ( get(this, 'generate') ) {
-      set(this, 'password', randomStr(16, 'password'));
+      set(this, 'password', randomStr(16, 16, 'password'));
     } else {
       set(this, 'password', '');
       set(this, 'confirm', '');
