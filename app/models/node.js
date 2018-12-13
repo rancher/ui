@@ -204,7 +204,7 @@ var Node = Resource.extend(Grafana, StateCounts, ResourceUsage, {
     drain() {
       get(this, 'modalService').toggleModal('modal-drain-node', {
         escToClose: true,
-        resources:  this
+        resources:  [this],
       });
     },
 
