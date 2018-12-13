@@ -12,15 +12,27 @@ export default Route.extend({
   globalStore:  service(),
 
   beforeModel() {
-    if (window.Prettycron) {
-      return;
-    } else {
-      return import('prettycron').then( (module) => {
-        window.Prettycron = module;
+    const promises = {};
 
-        return module;
-      });
+    if (!window.Prettycron) {
+      set(promises, 'Prettycron', import('prettycron'));
     }
+
+    if (!window.ShellQuote) {
+      set(promises, 'ShellQuote', import('shell-quote'));
+    }
+
+    return hash(promises).then((resolved) => {
+      if (resolved.Prettycron) {
+        window.Prettycron = resolved.Prettycron;
+      }
+
+      if (resolved.ShellQuote) {
+        window.ShellQuote = resolved.ShellQuote;
+      }
+
+      return resolved;
+    });
   },
 
   model(params/* , transition*/) {
