@@ -124,7 +124,7 @@ export default Route.extend({
   },
 
   newNamespace(duplicateName, newNamespaceName) {
-    const suffix = randomStr(5, 'novowels');
+    const suffix = randomStr(5, 5, 'novowels');
 
     if ( duplicateName ) {
       newNamespaceName = `${ get(duplicateName, 'displayName') }-${ suffix }`;
