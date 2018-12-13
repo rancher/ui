@@ -4,6 +4,8 @@ import { inject as service } from '@ember/service';
 import Route from '@ember/routing/route';
 import { get, set, setProperties } from '@ember/object';
 import { randomStr } from 'shared/utils/util';
+import { on } from '@ember/object/evented';
+import C from 'ui/utils/constants';
 
 export default Route.extend({
   modalService: service('modal'),
@@ -122,6 +124,10 @@ export default Route.extend({
       get(this, 'modalService').toggleModal();
     },
   },
+
+  setDefaultRoute: on('activate', function() {
+    set(this, `session.${ C.SESSION.PROJECT_ROUTE }`, 'catalog-tab.launch');
+  }),
 
   newNamespace(duplicateName, newNamespaceName) {
     const suffix = randomStr(5, 5, 'novowels');
