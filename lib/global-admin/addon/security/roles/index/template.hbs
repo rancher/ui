@@ -1,18 +1,25 @@
 <section class="header has-tabs clearfix p-0">
   <ul class="tab-nav">
     <li>
-      <a href="#" {{action "changeView" "global"}} class="{{if (eq context "global") "active" ""}}">Global</a>
+      <a href="#" {{action (action (mut context) ) "global"}} class="{{if (eq context "global") "active" ""}}">Global</a>
     </li>
     <li>
-      <a href="#" {{action "changeView" "cluster"}} class="{{if (eq context "cluster") "active" ""}}">Cluster</a>
+      <a href="#" {{action (action (mut context) ) "cluster"}} class="{{if (eq context "cluster") "active" ""}}">Cluster</a>
     </li>
     <li>
-      <a href="#" {{action "changeView" "project"}} class="{{if (eq context "project") "active" ""}}">Project</a>
+      <a href="#" {{action (action (mut context) ) "project"}} class="{{if (eq context "project") "active" ""}}">Project</a>
     </li>
   </ul>
   {{#unless (eq context "global")}}
     <div class="right-buttons">
-      {{#link-to "security.roles.new" (query-params context=context) classNames="btn btn-sm bg-primary right-divider-btn" disabled=(rbac-prevents resource="roletemplate" scope="global" permission="create")}} {{t 'rolesPage.addRole' context=readableMode}}{{/link-to}}
+      {{#link-to
+        "security.roles.new"
+        (query-params context=context)
+        classNames="btn btn-sm bg-primary right-divider-btn"
+        disabled=(rbac-prevents resource="roletemplate" scope="global" permission="create")
+      }}
+        {{t "rolesPage.addRole" context=readableMode}}
+      {{/link-to}}
       <span id="header-search"/>
     </div>
   {{/unless}}
@@ -26,7 +33,7 @@
        headers=headers
        searchText=searchText
        showHeader=true
-       body=filtered
+       body=filteredContent
        rightActions=true
        as |sortable kind row dt|
   }}
@@ -38,13 +45,13 @@
         <td valign="middle">
           {{badge-state model=row}}
         </td>
-        <td data-title="{{t 'rolesPage.index.table.name'}}:" class="clip">
+        <td data-title="{{t "rolesPage.index.table.name"}}:" class="clip">
           {{#link-to "security.roles.detail" row.id (query-params type=context)}}
             {{row.name}}
           {{/link-to}}
         </td>
-        {{#unless (eq context 'global')}}
-          <td data-title="{{t 'rolesPage.index.table.builtin'}}:" >
+        {{#unless (eq context "global")}}
+          <td data-title="{{t "rolesPage.index.table.builtin"}}:" >
             {{#if row.builtin}}
               <i class="icon icon-check"/>
             {{else}}
@@ -52,29 +59,29 @@
             {{/if}}
           </td>
         {{/unless}}
-        <td data-title="{{t 'rolesPage.index.table.builtin'}}:" >
+        <td data-title="{{t "rolesPage.index.table.builtin"}}:" >
           {{#if (or row.clusterCreatorDefault row.projectCreatorDefault row.newUserDefault)}}
             <i class="icon icon-check"/>
           {{else}}
             <span class="text-muted">&ndash;</span>
           {{/if}}
         </td>
-        <td data-title="{{t 'generic.created'}}:" class="text-right pr-20">
+        <td data-title="{{t "generic.created"}}:" class="text-right pr-20">
           {{date-calendar row.created}}
         </td>
-        <td data-title="{{t 'generic.actions'}}:" class="actions">
+        <td data-title="{{t "generic.actions"}}:" class="actions">
           {{action-menu model=row}}
         </td>
       </tr>
     {{else if (eq kind "nomatch")}}
-      <td colspan="5" class="text-center text-muted lacsso pt-20 pb-20">{{t 'rolesPage.index.table.noMatch'}}</td>
+      <td colspan="5" class="text-center text-muted lacsso pt-20 pb-20">{{t "rolesPage.index.table.noMatch"}}</td>
     {{else if (eq kind "norows")}}
-      <td colspan="5" class="text-center text-muted lacsso pt-20 pb-20">{{t 'rolesPage.index.table.noData'}}</td>
+      <td colspan="5" class="text-center text-muted lacsso pt-20 pb-20">{{t "rolesPage.index.table.noData"}}</td>
     {{else if (eq kind "right-actions")}}
       <div class="checkbox">
         <label>
           {{input type="checkbox" checked=showOnlyDefaults}}
-          {{t 'rolesPage.index.table.showDefaults'}}
+          {{t "rolesPage.index.table.showDefaults"}}
         </label>
       </div>
     {{/if}}
