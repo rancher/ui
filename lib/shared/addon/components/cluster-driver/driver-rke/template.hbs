@@ -66,9 +66,12 @@
         <div class="row">
           <div class="col span-6">
             <label class="acc-label">{{t 'clusterNew.rke.version.label'}}</label>
-            {{new-select
-                content=versionChoices
-                value=cluster.rancherKubernetesEngineConfig.kubernetesVersion
+            {{form-versions
+                cluster=cluster
+                editing=(eq mode 'edit')
+                initialVersion=initialVersion
+                value=config.kubernetesVersion
+                versions=versionChoices
             }}
           </div>
         </div>
