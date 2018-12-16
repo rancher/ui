@@ -8,8 +8,16 @@
     {{badge-state model=model}}
   </td>
   <td data-title="{{dt.name}}" class="clip">
-    {{model.name}}
-    <div class="text-small text-muted clip">{{model.description}}</div>
+    {{#tooltip-element
+        type="tooltip-basic"
+        model=model.name
+        tooltipTemplate='tooltip-static'
+        aria-describedby="tooltip-base"
+        tooltipFor="tooltipLink"
+        placement="top"
+    }}
+      {{model.name}}
+    {{/tooltip-element}}
   </td>
   <td data-title="{{dt.target}}" class="clip">
     <div> {{model.displayTargetType}} </div>
