@@ -20,6 +20,7 @@ export default Component.extend(ModalBase, NewOrEdit, {
   allNamespaces:     null,
   allProjects:       null,
   tags:              null,
+  beforeSaveModel:   null,
 
   originalModel:  alias('modalService.modalOpts'),
   init() {
@@ -105,6 +106,20 @@ export default Component.extend(ModalBase, NewOrEdit, {
     set(this, 'errors', errors);
 
     return get(this, 'errors.length') === 0;
+  },
+
+  willSave() {
+    set(this, 'beforeSaveModel', get(this, 'originalModel').clone());
+
+    return this._super(...arguments);
+  },
+
+  didSave(pr) {
+    const { projectId } = pr;
+
+    if ( projectId !== get(this, 'beforeSaveModel.projectId') ) {
+      return pr.doAction('move', { projectId }).then((pr) => pr);
+    }
   },
 
   doneSaving() {
