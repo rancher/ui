@@ -56,14 +56,8 @@ module.exports = function(defaults) {
         // we need to slice the trailing slash off baseAssets because filePath has a leading slash
         const url   = appConfig.baseAssets.slice(0, -1);
 
-        let pathOut = `${ url }${ filePath }`;
-
-        if (appConfig.environment === 'production') {
-          pathOut = `${ pathOut }?${ appConfig.version }`
-        }
-
         // console.log('file path: ', pathOut);
-        return pathOut;
+        return `${ url }${ filePath }?${ appConfig.version }`;
       }
     },
 
