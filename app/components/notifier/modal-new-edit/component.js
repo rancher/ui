@@ -33,18 +33,42 @@ const TYPES = [
     css:      'webhook',
     disabled: false,
   },
+  {
+    type:     'wechat',
+    label:    'notifierPage.notifierTypes.wechat',
+    css:      'wechat',
+    disabled: false,
+  },
 ];
 
+const RECIPIENT_TYPES = [
+  {
+    label: 'notifierPage.wechat.recipientType.party',
+    value: 'party'
+  },
+  {
+    label: 'notifierPage.wechat.recipientType.tag',
+    value: 'tag'
+  },
+  {
+    label: 'notifierPage.wechat.recipientType.user',
+    value: 'user'
+  }
+]
+
 export default Component.extend(ModalBase, NewOrEdit, {
-  scope:       service('scope'),
-  globalStore: service(),
-  intl:        service(),
+  scope:          service('scope'),
+  globalStore:    service(),
+  intl:           service(),
+
   layout,
-  classNames:  ['generic', 'large-modal'],
-  modelMap:    null,
-  errors:      null,
-  testing:     false,
-  testOk:      true,
+  classNames:     ['generic', 'large-modal'],
+
+  modelMap:       null,
+  errors:         null,
+  testing:        false,
+  testOk:         true,
+  recipientTypes: RECIPIENT_TYPES,
 
   cluster: alias('scope.currentCluster'),
 
@@ -168,8 +192,9 @@ export default Component.extend(ModalBase, NewOrEdit, {
     const intl = get(this, 'intl')
     const preError = '"Default Recipient" is required'
 
+    const notifierType = get(this, 'model.notifierType')
+
     if (errors.includes(preError)) {
-      const notifierType = get(this, 'model.notifierType')
       let afterError = ''
 
       if (notifierType === 'slack') {
@@ -179,6 +204,21 @@ export default Component.extend(ModalBase, NewOrEdit, {
       if (notifierType === 'email') {
         afterError = C.NOTIFIER_TABLE_LABEL.SMTP
         errors.splice(errors.findIndex((e) => e === preError), 1, intl.t('validation.required', { key: afterError }))
+      }
+    }
+
+    if ( notifierType === 'wechat' ) {
+      if ( !get(this, 'model.wechatConfig.secret') ) {
+        errors.pushObject(intl.t('validation.required', { key: intl.t('notifierPage.wechat.secret.label') }));
+      }
+      if ( !get(this, 'model.wechatConfig.agent') ) {
+        errors.pushObject(intl.t('validation.required', { key: intl.t('notifierPage.wechat.agent.label') }));
+      }
+      if ( !get(this, 'model.wechatConfig.corp') ) {
+        errors.pushObject(intl.t('validation.required', { key: intl.t('notifierPage.wechat.corp.label') }));
+      }
+      if ( !get(this, 'model.wechatConfig.recipientType') ) {
+        errors.pushObject(intl.t('validation.required', { key: intl.t('notifierPage.wechat.recipientType.label') }));
       }
     }
 

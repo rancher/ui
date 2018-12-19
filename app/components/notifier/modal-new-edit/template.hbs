@@ -149,6 +149,69 @@
     </div>
     <p class="help-block text-info text-small">{{t 'notifierPage.pagerduty.serviceKey.helpText'}}</p>
   </div>
+{{else if (eq currentType 'wechat')}}
+  <div class="row">
+    <div class="col span-12 mt-0 mb-0">
+      {{form-name-description
+          name=model.name
+          nameDisabled=false
+          nameRequired=true
+          description=model.description
+          bothColClass="col span-6 mt-0"
+          colClass="col span-12 mt-0"
+      }}
+    </div>
+  </div>
+  <div class="row">
+    <div class="col span-6">
+      <div class="acc-label text-capitalize">{{t 'notifierPage.wechat.corp.label'}}{{field-required}}</div>
+      {{input
+          classNames="form-control"
+          value=model.wechatConfig.corp
+          placeholder=(t 'notifierPage.wechat.corpPlaceholder')
+      }}
+      <p class="help-block">{{t 'notifierPage.wechat.corp.helpText' htmlSafe=true}}</p>
+    </div>
+    <div class="col span-6">
+      <div class="acc-label text-capitalize">{{t 'notifierPage.wechat.agent.label'}}{{field-required}}</div>
+      {{input
+          classNames="form-control"
+          value=model.wechatConfig.agent
+          placeholder=(t 'notifierPage.wechat.agentPlaceholder')
+      }}
+      <p class="help-block">{{t 'notifierPage.wechat.agent.helpText' htmlSafe=true}}</p>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col span-6">
+      <div class="acc-label text-capitalize">{{t 'notifierPage.wechat.secret.label'}}{{field-required}}</div>
+      {{input
+          classNames="form-control"
+          value=model.wechatConfig.secret
+          placeholder=(t 'notifierPage.wechat.secretPlaceholder')
+      }}
+      <p class="help-block">{{t 'notifierPage.wechat.secret.helpText' htmlSafe=true}}</p>
+    </div>
+    <div class="col span-6">
+      <div class="acc-label text-capitalize">{{t 'notifierPage.wechat.recipientType.label'}}{{field-required}}</div>
+      {{new-select
+          localizedLabel=true
+          classNames="form-control"
+          content=recipientTypes
+          value=model.wechatConfig.recipientType
+      }}
+    </div>
+  </div>
+  <div class="row">
+    <div class="col span-12">
+      <div class="acc-label text-capitalize">{{t 'notifierPage.wechat.defaultRecipient.label'}}{{field-required}}</div>
+      {{input
+          classNames="form-control"
+          value=model.wechatConfig.defaultRecipient
+          placeholder=(t 'notifierPage.wechat.defaultRecipientPlaceholder')
+      }}
+    </div>
+  </div>
 {{else if (eq currentType 'webhook')}}
   <div class="row">
     <div class="col span-12 mt-0 mb-0">
