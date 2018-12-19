@@ -54,10 +54,10 @@ module.exports = function(defaults) {
     assetLoader: {
       generateURI(filePath) {
         // we need to slice the trailing slash off baseAssets because filePath has a leading slash
-        const url = appConfig.baseAssets.slice(0, -1);
+        const url   = appConfig.baseAssets.slice(0, -1);
 
-        // console.log('file path: ', `${ url }${ filePath }`);
-        return `${ url }${ filePath }`;
+        // console.log('file path: ', pathOut);
+        return `${ url }${ filePath }?${ appConfig.version }`;
       }
     },
 
