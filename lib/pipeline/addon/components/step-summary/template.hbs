@@ -22,6 +22,24 @@
   {{~/tooltip-element}}
 {{/if}}
 
+{{#if model.publishCatalogConfig}}
+  {{~#tooltip-element inlineBlock=true type="tooltip-basic" tooltipTemplate="tooltip-static" baseClass="border" model=model.publishCatalogConfig.gitUrl tagName="span" tooltipFor="tooltip-basic"}}
+    <i class="icon icon-edit pull-right"></i>
+    <p class="mt-0 mb-0 clip">{{t 'newPipelineStep.stepType.publishCatalog.label'}}: </p>
+    <p class="mt-0 mb-0 clip">{{model.publishCatalogConfig.catalog}}</p>
+    <p class="text-small mt-0 mb-0 clip text-italic">{{model.publishCatalogConfig.gitUrl}}</p>
+  {{~/tooltip-element}}
+{{/if}}
+
+{{#if model.applyAppConfig}}
+  {{~#tooltip-element inlineBlock=true type="tooltip-basic" tooltipTemplate="tooltip-static" baseClass="border" model=model.applyAppConfig.catalog tagName="span" tooltipFor="tooltip-basic"}}
+    <i class="icon icon-edit pull-right"></i>
+    <p class="mt-0 mb-0 clip">{{t 'newPipelineStep.stepType.applyApp.label'}}: </p>
+    <p class="mt-0 mb-0 clip">{{model.applyAppConfig.catalog}}</p>
+    <p class="text-small mt-0 mb-0 clip text-italic">{{model.applyAppConfig.targetNamespace}}</p>
+  {{~/tooltip-element}}
+{{/if}}
+
 {{#if model.publishImageConfig}}
   {{~#tooltip-element inlineBlock=true type="tooltip-basic" tooltipTemplate="tooltip-static" baseClass="border" model=model.publishImageConfig.tag tagName="span" tooltipFor="tooltip-basic"}}
     <i class="icon icon-edit pull-right"></i>

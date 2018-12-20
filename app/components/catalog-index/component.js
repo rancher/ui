@@ -119,7 +119,7 @@ export default Component.extend({
   }),
 
   filters: computed('catalogs', function() {
-    return get(this, 'catalogs').map((obj) => ({
+    return get(this, 'catalogs').filter((obj) => get(obj, 'id') !== 'system-library').map((obj) => ({
       catalogId: get(obj, 'id'),
       label:     get(obj, 'name'),
       scope:     get(obj, 'type'),
