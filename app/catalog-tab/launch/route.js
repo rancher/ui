@@ -119,6 +119,10 @@ export default Route.extend({
     }
   },
 
+  deactivate() {
+    set(this, `session.${ C.SESSION.PROJECT_ROUTE }`, undefined);
+  },
+
   actions: {
     cancel() {
       get(this, 'modalService').toggleModal();
@@ -147,4 +151,5 @@ export default Route.extend({
       newNS
     };
   },
+
 });
