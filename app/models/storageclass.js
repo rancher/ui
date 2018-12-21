@@ -1,5 +1,5 @@
 import Resource from 'ember-api-store/models/resource';
-import { get, computed } from '@ember/object';
+import { get, set, computed } from '@ember/object';
 import { inject as service } from '@ember/service';
 import { all } from 'rsvp';
 
@@ -119,7 +119,12 @@ export default Resource.extend({
   },
 
   setDefault(on) {
-    const annotations = get(this, 'annotations') || {};
+    let annotations = get(this, 'annotations');
+
+    if ( !annotations ) {
+      annotations = {};
+      set(this, 'annotations', annotations);
+    }
 
     if ( on ) {
       annotations[DEFAULT_ANNOTATION] = 'true';
