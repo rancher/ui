@@ -14,6 +14,14 @@ const Template = Resource.extend({
   clusterCatalog: reference('clusterCatalogId', 'clusterCatalog', 'store'),
   projectCatalog: reference('projectCatalogId'),
 
+  isGlobalCatalog:  computed('clusterCatalog', 'projectCatalog', function() {
+    if (!this.clusterCatalog && !this.projectCatalog) {
+      return true;
+    } else {
+      return false;
+    }
+  }),
+
   displayCatalogId: computed('catalogRef', 'clusterCatalog', 'projectCatalog', function() {
     const {
       catalogRef, clusterCatalog, projectCatalog
