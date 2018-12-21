@@ -13,11 +13,11 @@
   <ul class="tab-nav">
     {{#if pasteOrUpload}}
       <li>
-        <button class="btn bg-transparent" {{action 'cancel'}}>{{t 'clusterNew.advanced.cancel'}}</button>
+        <button class="btn bg-transparent" {{action "cancel"}}>{{t "clusterNew.advanced.cancel"}}</button>
       </li>
     {{else}}
       <li>
-        <button class="btn bg-transparent" {{action 'showPaste'}}>{{t 'clusterNew.advanced.yaml'}} <span class="icon icon-copy"></span></button>
+        <button class="btn bg-transparent" {{action "showPaste"}}>{{t "clusterNew.advanced.yaml"}} <span class="icon icon-copy"></span></button>
       </li>
     {{/if}}
   </ul>
@@ -33,15 +33,15 @@
         <div class="accordion-header">
           <div class="expand"></div>
           <div class="title">
-            <span class="m-0">{{t 'clusterNew.rke.customize.label' }}</span>
-            <p class="help-block">{{t 'clusterNew.rke.customize.detail' }}</p>
+            <span class="m-0">{{t "clusterNew.rke.customize.label" }}</span>
+            <p class="help-block">{{t "clusterNew.rke.customize.detail" }}</p>
           </div>
         </div>
         <div class="accordion-content">
           <div class="banner bg-info">
             <div class="banner-icon p-10"><i class="icon icon-info"></i></div>
             <div class="banner-message">
-              {{t 'clusterNew.advanced.helpText'}}
+              {{t "clusterNew.advanced.helpText"}}
             </div>
           </div>
           <div class="mt-25">
@@ -52,23 +52,28 @@
                 value=value
             }}
           </div>
-          {{copy-to-clipboard tooltipText="" buttonText="copyToClipboard.tooltip" clipboardText=value class="with-clip"}}
+          {{copy-to-clipboard
+              tooltipText=""
+              buttonText="copyToClipboard.tooltip"
+              clipboardText=value
+              class="with-clip"
+          }}
         </div>
       </div>
     {{else}}
       {{#accordion-list-item
-           title=(t 'clusterNew.rke.customize.label')
-           detail=(t 'clusterNew.rke.customize.detail')
+           title=(t "clusterNew.rke.customize.label")
+           detail=(t "clusterNew.rke.customize.detail")
            expandOnInit=true
            expandAll=al.expandAll
            expand=(action expandFn)
       }}
         <div class="row">
           <div class="col span-6">
-            <label class="acc-label">{{t 'clusterNew.rke.version.label'}}</label>
+            <label class="acc-label">{{t "clusterNew.rke.version.label"}}</label>
             {{form-versions
                 cluster=cluster
-                editing=(eq mode 'edit')
+                editing=(eq mode "edit")
                 initialVersion=initialVersion
                 value=config.kubernetesVersion
                 versions=versionChoices
@@ -76,8 +81,8 @@
           </div>
         </div>
         <div class="row">
-          <div class="col {{if (and isCustom (eq mode 'new')) "span-4" "span-6"}}">
-            <label class="acc-label">{{t 'clusterNew.rke.network.label'}}</label>
+          <div class="col {{if (and isCustom (eq mode "new")) "span-4" "span-6"}}">
+            <label class="acc-label">{{t "clusterNew.rke.network.label"}}</label>
             {{new-select
                 classNames="form-control"
                 content=networkContent
@@ -86,35 +91,51 @@
                 disabled=isEdit
             }}
           </div>
-          {{#if (and isCustom (eq mode 'new'))}}
+          {{#if (and isCustom (eq mode "new"))}}
             <div class="col span-4">
-              <label class="acc-label">{{t 'clusterNew.rke.windowsSupport.label'}}</label>
+              <label class="acc-label">{{t "clusterNew.rke.windowsSupport.label"}}</label>
               <div class="radio">
-                <label class={{if (not-eq config.network.plugin 'flannel') 'text-muted'}}>
-                  {{radio-button selection=windowsSupport value=true disabled=(not-eq cluster.rancherKubernetesEngineConfig.network.plugin 'flannel')}}
-                  {{t 'generic.enabled'}}
+                <label class={{if (not-eq config.network.plugin "flannel") "text-muted"}}>
+                  {{radio-button
+                      selection=windowsSupport
+                      value=true
+                      disabled=(not-eq cluster.rancherKubernetesEngineConfig.network.plugin "flannel")
+                  }}
+                  {{t "generic.enabled"}}
                 </label>
               </div>
               <div class="radio">
-                <label class={{if (not-eq config.network.plugin 'flannel') 'text-muted'}}>
-                  {{radio-button selection=windowsSupport value=false disabled=(not-eq cluster.rancherKubernetesEngineConfig.network.plugin 'flannel')}}
-                  {{t 'generic.disabled'}}
+                <label class={{if (not-eq config.network.plugin "flannel") "text-muted"}}>
+                  {{radio-button
+                      selection=windowsSupport
+                      value=false
+                      disabled=(not-eq cluster.rancherKubernetesEngineConfig.network.plugin "flannel")
+                  }}
+                  {{t "generic.disabled"}}
                 </label>
               </div>
             </div>
           {{/if}}
-          <div class="col {{if (and isCustom (eq mode 'new')) "span-4" "span-6"}}">
-            <label class="acc-label">{{t 'clusterNew.rke.networkPolicy.label'}}</label>
+          <div class="col {{if (and isCustom (eq mode "new")) "span-4" "span-6"}}">
+            <label class="acc-label">{{t "clusterNew.rke.networkPolicy.label"}}</label>
             <div class="radio">
-              <label class={{unless (eq cluster.rancherKubernetesEngineConfig.network.plugin "canal")  'text-muted'}}>
-                {{radio-button selection=cluster.enableNetworkPolicy value=true disabled=(not-eq cluster.rancherKubernetesEngineConfig.network.plugin "canal")}}
-                {{t 'generic.enabled'}}
+              <label class={{unless (eq cluster.rancherKubernetesEngineConfig.network.plugin "canal")  "text-muted"}}>
+                {{radio-button
+                    selection=cluster.enableNetworkPolicy
+                    value=true
+                    disabled=(not-eq cluster.rancherKubernetesEngineConfig.network.plugin "canal")
+                }}
+                {{t "generic.enabled"}}
               </label>
             </div>
             <div class="radio">
-              <label class={{unless (eq cluster.rancherKubernetesEngineConfig.network.plugin "canal")  'text-muted'}}>
-                {{radio-button selection=cluster.enableNetworkPolicy value=false disabled=(not-eq cluster.rancherKubernetesEngineConfig.network.plugin "canal")}}
-                {{t 'generic.disabled'}}
+              <label class={{unless (eq cluster.rancherKubernetesEngineConfig.network.plugin "canal")  "text-muted"}}>
+                {{radio-button
+                    selection=cluster.enableNetworkPolicy
+                    value=false
+                    disabled=(not-eq cluster.rancherKubernetesEngineConfig.network.plugin "canal")
+                }}
+                {{t "generic.disabled"}}
               </label>
             </div>
           </div>
@@ -131,8 +152,8 @@
 
       {{#advanced-section advanced=advanced}}
         {{#accordion-list-item
-             title=(t 'cruPrivateRegistry.title.label')
-             detail=(t 'cruPrivateRegistry.title.detail')
+             title=(t "cruPrivateRegistry.title.label")
+             detail=(t "cruPrivateRegistry.title.detail")
              expandOnInit=(eq mode "edit" true false)
              expandAll=al.expandAll
              expand=(action expandFn)
@@ -144,22 +165,25 @@
 
 
         {{#accordion-list-item
-             title=(t 'clusterNew.rke.advanced.label')
-             detail=(t 'clusterNew.rke.advanced.detail')
+             title=(t "clusterNew.rke.advanced.label")
+             detail=(t "clusterNew.rke.advanced.detail")
              expandOnInit=(eq mode "edit" true false)
              expandAll=al.expandAll
              expand=(action expandFn)
         }}
         <div class="row">
           <div class="col span-4">
-            <label class="acc-label">{{t 'clusterNew.rke.ingress.label'}}</label>
+            <label class="acc-label">{{t "clusterNew.rke.ingress.label"}}</label>
             <div class="radio">
               <label>
                 {{!--
                     {{radio-button selection=nginxIngressProvider value="nginx"}}
                     --}}
-                {{radio-button selection=cluster.rancherKubernetesEngineConfig.ingress.provider value="nginx"}}
-                {{t 'generic.enabled'}}
+                {{radio-button
+                    selection=cluster.rancherKubernetesEngineConfig.ingress.provider
+                    value="nginx"
+                }}
+                {{t "generic.enabled"}}
               </label>
             </div>
             <div class="radio">
@@ -167,29 +191,35 @@
                 {{!--
                     {{radio-button selection=nginxIngressProvider value=null}}
                     --}}
-                {{radio-button selection=cluster.rancherKubernetesEngineConfig.ingress.provider value="none"}}
-                {{t 'generic.disabled'}}
+                {{radio-button
+                    selection=cluster.rancherKubernetesEngineConfig.ingress.provider
+                    value="none"
+                }}
+                {{t "generic.disabled"}}
               </label>
             </div>
           </div>
           <div class="col span-4">
-            <label class="acc-label">{{t 'clusterNew.rke.serviceNodePortRange.label'}}</label>
+            <label class="acc-label">{{t "clusterNew.rke.serviceNodePortRange.label"}}</label>
             {{input
                 type="text"
                 value=cluster.rancherKubernetesEngineConfig.services.kubeApi.serviceNodePortRange
                 className="form-control"
-                placeholder=(t 'clusterNew.rke.serviceNodePortRange.placeholder')
+                placeholder=(t "clusterNew.rke.serviceNodePortRange.placeholder")
             }}
           </div>
           <div class="col span-4">
-            <label class="acc-label">{{t 'clusterNew.rke.monitoring.label'}}</label>
+            <label class="acc-label">{{t "clusterNew.rke.monitoring.label"}}</label>
             <div class="radio">
               <label>
                 {{!--
                       {{radio-button selection=monitoringProvider value="metrics-server"}}
                       --}}
-                {{radio-button selection=cluster.rancherKubernetesEngineConfig.monitoring.provider value="metrics-server"}}
-                {{t 'generic.enabled'}}
+                {{radio-button
+                    selection=cluster.rancherKubernetesEngineConfig.monitoring.provider
+                    value="metrics-server"
+                }}
+                {{t "generic.enabled"}}
               </label>
             </div>
             <div class="radio">
@@ -197,24 +227,31 @@
                 {{!--
                       {{radio-button selection=monitoringProvider value=null}}
                       --}}
-                {{radio-button selection=cluster.rancherKubernetesEngineConfig.monitoring.provider value="none"}}
-                {{t 'generic.disabled'}}
+                {{radio-button
+                    selection=cluster.rancherKubernetesEngineConfig.monitoring.provider
+                    value="none"
+                }}
+                {{t "generic.disabled"}}
               </label>
             </div>
           </div>
         </div>
           <div class="row">
             <div class="col span-4">
-              <label class="acc-label">{{t 'clusterNew.rke.podSecurityPolicy.label'}}</label>
+              <label class="acc-label">{{t "clusterNew.rke.podSecurityPolicy.label"}}</label>
               <div class="radio">
-                <label class={{unless model.psps.length 'text-muted'}}>
+                <label class={{unless model.psps.length "text-muted"}}>
                   {{!--
                   {{radio-button selection=kubeApiPodSecurityPolicy value=true disabled=(not model.psps.length)}}
                   --}}
-                  {{radio-button selection=cluster.rancherKubernetesEngineConfig.services.kubeApi.podSecurityPolicy value=true disabled=(not model.psps.length)}}
-                  {{t 'generic.enabled'}}
+                  {{radio-button
+                      selection=cluster.rancherKubernetesEngineConfig.services.kubeApi.podSecurityPolicy
+                      value=true
+                      disabled=(not model.psps.length)
+                  }}
+                  {{t "generic.enabled"}}
                   {{#unless model.psps.length}}
-                    &mdash; {{t 'clusterNew.psp.none'}}
+                    &mdash; {{t "clusterNew.psp.none"}}
                   {{/unless}}
                 </label>
               </div>
@@ -223,97 +260,113 @@
                   {{!--
                   {{radio-button selection=kubeApiPodSecurityPolicy value=false disabled=(not model.psps.length)}}
                   --}}
-                  {{radio-button selection=cluster.rancherKubernetesEngineConfig.services.kubeApi.podSecurityPolicy value=false disabled=(not model.psps.length)}}
-                  {{t 'generic.disabled'}}
+                  {{radio-button
+                      selection=cluster.rancherKubernetesEngineConfig.services.kubeApi.podSecurityPolicy
+                      value=false
+                      disabled=(not model.psps.length)
+                  }}
+                  {{t "generic.disabled"}}
                 </label>
               </div>
             </div>
             <div class="col span-4">
               {{#if cluster.rancherKubernetesEngineConfig.services.kubeApi.podSecurityPolicy}}
-                <label class="acc-label">{{t 'clusterNew.psp.label'}}{{field-required}}</label>
+                <label class="acc-label">{{t "clusterNew.psp.label"}}{{field-required}}</label>
                 {{new-select
                     content=model.psps
-                    optionLabelPath='displayName'
-                    optionValuePath='id'
-                    prompt='clusterNew.psp.prompt'
+                    optionLabelPath="displayName"
+                    optionValuePath="id"
+                    prompt="clusterNew.psp.prompt"
                     localizedPrompt=true
                     value=cluster.defaultPodSecurityPolicyTemplateId
                     disabled=(not cluster.rancherKubernetesEngineConfig.services.kubeApi.podSecurityPolicy)
                 }}
               {{else}}
-                <label class="acc-label">{{t 'clusterNew.psp.label'}}</label>
-                <div class="form-control-static">{{t 'generic.none'}}</div>
+                <label class="acc-label">{{t "clusterNew.psp.label"}}</label>
+                <div class="form-control-static">{{t "generic.none"}}</div>
               {{/if}}
             </div>
           </div>
           <div class="row">
             <div class="col span-4">
-              <label class="acc-label">{{t 'clusterNew.rke.ignoreDockerVersion.label'}}</label>
+              <label class="acc-label">{{t "clusterNew.rke.ignoreDockerVersion.label"}}</label>
               <div class="radio">
                 <label>
-                  {{radio-button selection=cluster.rancherKubernetesEngineConfig.ignoreDockerVersion value=false}}
-                  {{t 'clusterNew.rke.ignoreDockerVersion.disabled'}}
+                  {{radio-button
+                      selection=cluster.rancherKubernetesEngineConfig.ignoreDockerVersion
+                      value=false
+                  }}
+                  {{t "clusterNew.rke.ignoreDockerVersion.disabled"}}
                 </label>
               </div>
               <div class="radio">
                 <label>
-                  {{radio-button selection=cluster.rancherKubernetesEngineConfig.ignoreDockerVersion value=true}}
-                  {{t 'clusterNew.rke.ignoreDockerVersion.enabled'}}
+                  {{radio-button
+                      selection=cluster.rancherKubernetesEngineConfig.ignoreDockerVersion
+                      value=true
+                  }}
+                  {{t "clusterNew.rke.ignoreDockerVersion.enabled"}}
                 </label>
               </div>
             </div>
 
             <div class="col span-4">
-              <label class="acc-label">{{t 'loggingPage.dockerRootDir.label'}}</label>
+              <label class="acc-label">{{t "loggingPage.dockerRootDir.label"}}</label>
               {{input
                   type="text"
                   value=model.cluster.dockerRootDir
                   className="form-control"
-                  placeholder=(t 'clusterNew.rke.dockerRootDir.placeholder' dir=defaultDockerRootDir)
+                  placeholder=(t "clusterNew.rke.dockerRootDir.placeholder" dir=defaultDockerRootDir)
               }}
             </div>
 
           </div>
           <div class="row">
             <div class="col span-3">
-              <label class="acc-label">{{t 'clusterNew.rke.etcd.snapshot.label'}}</label>
+              <label class="acc-label">{{t "clusterNew.rke.etcd.snapshot.label"}}</label>
               <div class="radio">
                 <label>
-                  {{radio-button selection=cluster.rancherKubernetesEngineConfig.services.etcd.snapshot value=false}}
-                  {{t 'generic.disabled'}}
+                  {{radio-button
+                      selection=cluster.rancherKubernetesEngineConfig.services.etcd.snapshot
+                      value=false
+                  }}
+                  {{t "generic.disabled"}}
                 </label>
               </div>
               <div class="radio">
                 <label>
-                  {{radio-button selection=cluster.rancherKubernetesEngineConfig.services.etcd.snapshot value=true}}
-                  {{t 'generic.enabled'}}
+                  {{radio-button
+                      selection=cluster.rancherKubernetesEngineConfig.services.etcd.snapshot
+                      value=true
+                  }}
+                  {{t "generic.enabled"}}
                 </label>
               </div>
             </div>
             <div class="col span-3 offset-1">
-              <label class="acc-label">{{t 'clusterNew.rke.etcd.creation.label'}}</label>
+              <label class="acc-label">{{t "clusterNew.rke.etcd.creation.label"}}</label>
               <div class="input-group">
                 {{input
                     type="text"
                     classNames="form-control"
                     disabled=(not cluster.rancherKubernetesEngineConfig.services.etcd.snapshot)
-                    placeholder=(t 'clusterNew.rke.etcd.creation.placeholder')
+                    placeholder=(t "clusterNew.rke.etcd.creation.placeholder")
                     value=cluster.rancherKubernetesEngineConfig.services.etcd.creation
                 }}
-                <p class="help-block">{{t 'clusterNew.rke.etcd.retention.help'}}</p>
+                <p class="help-block">{{t "clusterNew.rke.etcd.retention.help"}}</p>
               </div>
             </div>
             <div class="col span-3 offset-1">
-              <label class="acc-label">{{t 'clusterNew.rke.etcd.retention.label'}}</label>
+              <label class="acc-label">{{t "clusterNew.rke.etcd.retention.label"}}</label>
               <div class="input-group">
                 {{input
                     type="text"
                     classNames="form-control"
                     disabled=(not cluster.rancherKubernetesEngineConfig.services.etcd.snapshot)
-                    placeholder=(t 'clusterNew.rke.etcd.retention.placeholder')
+                    placeholder=(t "clusterNew.rke.etcd.retention.placeholder")
                     value=cluster.rancherKubernetesEngineConfig.services.etcd.retention
                 }}
-                <p class="help-block">{{t 'clusterNew.rke.etcd.retention.help'}}</p>
+                <p class="help-block">{{t "clusterNew.rke.etcd.retention.help"}}</p>
               </div>
             </div>
           </div>
@@ -327,8 +380,8 @@
   {{#accordion-list showExpandAll=false as |al expandFn|}}
     {{#if windowsSupport}}
       {{#accordion-list-item
-           title=(t 'clusterNew.rke.system.title')
-           detail=(t 'clusterNew.rke.system.detail')
+           title=(t "clusterNew.rke.system.title")
+           detail=(t "clusterNew.rke.system.detail")
            expandOnInit=true
            expandAll=al.expandAll
            expand=(action expandFn)
@@ -338,7 +391,7 @@
             <div class="radio">
               <label>
                 {{radio-button selection=isLinux value=true}}
-                {{t 'clusterNew.rke.system.linux'}}
+                {{t "clusterNew.rke.system.linux"}}
               </label>
             </div>
           </div>
@@ -346,7 +399,7 @@
             <div class="radio">
               <label>
                 {{radio-button selection=isLinux value=false}}
-                {{t 'clusterNew.rke.system.windows'}}
+                {{t "clusterNew.rke.system.windows"}}
               </label>
             </div>
           </div>
@@ -354,8 +407,8 @@
       {{/accordion-list-item}}
     {{/if}}
     {{#accordion-list-item
-         title=(t 'clusterNew.rke.role.pageheader')
-         detail=(t 'clusterNew.rke.info.text')
+         title=(t "clusterNew.rke.role.pageheader")
+         detail=(t "clusterNew.rke.info.text")
          expandOnInit=true
          expandAll=al.expandAll
          expand=(action expandFn)
@@ -366,51 +419,77 @@
             <li>
               <ul class="list-unstyled">
                 <div class="pb-10">
-                  <h3 class="mb-0">{{t 'clusterNew.rke.role.sectionheader'}}</h3>
-                  <p class="help-block">{{t 'clusterNew.rke.role.detail'}}</p>
+                  <h3 class="mb-0">{{t "clusterNew.rke.role.sectionheader"}}</h3>
+                  <p class="help-block">{{t "clusterNew.rke.role.detail"}}</p>
                 </div>
                 <li>
-                  {{t 'clusterNew.rke.role.title'}}
+                  {{t "clusterNew.rke.role.title"}}
                 </li>
                 <li>
                   <div class="row">
                     <div class="col span-4 text-center mt-0 mb-0">
-                      <label class="p-10 pl-30 pr-30 {{unless isLinux 'text-muted'}}">{{input type="checkbox" checked=etcd disabled=(not isLinux) }} {{t 'clusterNew.rke.role.header.etcd'}}</label>
+                      <label class="p-10 pl-30 pr-30 {{unless isLinux "text-muted"}}">
+                        {{input
+                            type="checkbox"
+                            checked=etcd
+                            disabled=(not isLinux)
+                        }} {{t "clusterNew.rke.role.header.etcd"}}
+                      </label>
                     </div>
                     <div class="col span-4 text-center mt-0 mb-0">
-                      <label class="p-10 pl-30 pr-30 {{unless isLinux 'text-muted'}}">{{input type="checkbox" checked=controlplane disabled=(not isLinux) }} {{t 'clusterNew.rke.role.header.controlplane'}}</label>
+                      <label class="p-10 pl-30 pr-30 {{unless isLinux "text-muted"}}">
+                        {{input
+                            type="checkbox"
+                            checked=controlplane
+                            disabled=(not isLinux)
+                        }} {{t "clusterNew.rke.role.header.controlplane"}}
+                      </label>
                     </div>
                     <div class="col span-4 text-center mt-0 mb-0">
-                      <label class="p-10 pl-30 pr-30">{{input type="checkbox" checked=worker disabled=(not isLinux) }} {{t 'clusterNew.rke.role.header.worker'}}</label>
+                      <label class="p-10 pl-30 pr-30">
+                        {{input
+                            type="checkbox"
+                            checked=worker
+                            disabled=(not isLinux)
+                        }} {{t "clusterNew.rke.role.header.worker"}}
+                      </label>
                     </div>
                   </div>
                   {{#advanced-section advanced=advanced}}
                     <div class="row mt-20">
-                      {{t 'clusterNew.rke.address.title'}}
-                      <p class="help-block">{{t 'clusterNew.rke.address.detail'}}</p>
+                      {{t "clusterNew.rke.address.title"}}
+                      <p class="help-block">{{t "clusterNew.rke.address.detail"}}</p>
                       <ul class="list-unstyled">
                         <li>
                           <div class="row">
                             <div class="col span-6">
-                              <label class="acc-label">{{t 'clusterNew.rke.address.public.label'}}</label>
-                              {{input type="text" value=address placeholder=(t 'clusterNew.rke.address.public.placeholder')}}
+                              <label class="acc-label">{{t "clusterNew.rke.address.public.label"}}</label>
+                              {{input
+                                  type="text"
+                                  value=address
+                                  placeholder=(t "clusterNew.rke.address.public.placeholder")
+                              }}
                               {{#unless isAddressValid}}
                                 <div class="banner bg-warning">
                                   <div class="banner-icon"><span class="icon icon-alert"></span></div>
                                   <div class="banner-message">
-                                    <p>{{t 'clusterNew.rke.address.warning'}}</p>
+                                    <p>{{t "clusterNew.rke.address.warning"}}</p>
                                   </div>
                                 </div>
                               {{/unless}}
                             </div>
                             <div class="col span-6">
-                              <label class="acc-label">{{t 'clusterNew.rke.address.private.label'}}</label>
-                              {{input type="text" value=internalAddress placeholder=(t 'clusterNew.rke.address.private.placeholder')}}
+                              <label class="acc-label">{{t "clusterNew.rke.address.private.label"}}</label>
+                              {{input
+                                  type="text"
+                                  value=internalAddress
+                                  placeholder=(t "clusterNew.rke.address.private.placeholder")
+                              }}
                               {{#unless isInternalAddressValid}}
                                 <div class="banner bg-warning">
                                   <div class="banner-icon"><span class="icon icon-alert"></span></div>
                                   <div class="banner-message">
-                                    <p>{{t 'clusterNew.rke.address.warning'}}</p>
+                                    <p>{{t "clusterNew.rke.address.warning"}}</p>
                                   </div>
                                 </div>
                               {{/unless}}
@@ -421,13 +500,17 @@
                     </div>
                     {{#if isLinux}}
                       <div class="row mt-20">
-                        {{t 'clusterNew.rke.nodeName.title'}}
-                        <p class="help-block">{{t 'clusterNew.rke.nodeName.detail'}}</p>
+                        {{t "clusterNew.rke.nodeName.title"}}
+                        <p class="help-block">{{t "clusterNew.rke.nodeName.detail"}}</p>
                         <ul class="list-unstyled">
                           <li>
                             <div class="row">
                               <div class="col span-6">
-                                {{input type="text" value=nodeName placeholder=(t 'clusterNew.rke.nodeName.placeholder')}}
+                                {{input
+                                    type="text"
+                                    value=nodeName
+                                    placeholder=(t "clusterNew.rke.nodeName.placeholder")
+                                }}
                                 {{#unless isNodeNameValid}}
                                   {{top-errors errors=nodeNameErrors}}
                                 {{/unless}}
@@ -437,12 +520,12 @@
                         </ul>
                       </div>
                       <div class="row mt-20">
-                        {{t 'clusterNew.rke.labels.title'}}
-                        <p class="help-block">{{t 'clusterNew.rke.labels.detail'}}</p>
+                        {{t "clusterNew.rke.labels.title"}}
+                        <p class="help-block">{{t "clusterNew.rke.labels.detail"}}</p>
                         <ul class="list-unstyled">
                           <li>
                             {{#form-user-labels
-                                 setLabels=(action 'setLabels')
+                                 setLabels=(action "setLabels")
                                  expandAll=al.expandAll
                                  expand=(action expandFn)
                                  detailKey="formUserLabels.nodeDetail"
@@ -451,39 +534,52 @@
                               {{#if userLabelArray.length}}
                                 <table class="table fixed no-lines mt-20">
                                   <tr class="hidden-xs hidden-sm">
-                                    <th>{{t 'formUserLabels.key.label'}}{{field-required}}</th>
+                                    <th>{{t "formUserLabels.key.label"}}{{field-required}}</th>
                                     <th width="30">&nbsp;</th>
-                                    <th>{{t 'formUserLabels.value.label'}}</th>
+                                    <th>{{t "formUserLabels.value.label"}}</th>
                                     <th width="40">&nbsp;</th>
                                   </tr>
                                   {{#each userLabelArray as |label|}}
                                     <tr>
                                       <td data-title="key">
-                                        {{input-paste pasted="pastedLabels" class="form-control input-sm key" type="text" value=label.key placeholder="formUserLabels.key.placeholder" disabled=(eq label.readonly true)}}
+                                        {{input-paste
+                                            pasted="pastedLabels"
+                                            class="form-control input-sm key"
+                                            type="text"
+                                            value=label.key
+                                            placeholder="formUserLabels.key.placeholder"
+                                            disabled=(eq label.readonly true)
+                                        }}
                                       </td>
 
                                       <td class="text-center">
-                                        <p class="input-sm">{{t 'formUserLabels.separator'}}</p>
+                                        <p class="input-sm">{{t "formUserLabels.separator"}}</p>
                                       </td>
 
                                       <td data-title="label">
-                                        {{input class="form-control input-sm" type="text" value=label.value placeholder=(t 'formUserLabels.value.placeholder') disabled=(eq label.readonly true)}}
+                                        {{input
+                                            class="form-control input-sm"
+                                            type="text"
+                                            value=label.value
+                                            placeholder=(t "formUserLabels.value.placeholder")
+                                            disabled=(eq label.readonly true)
+                                        }}
                                       </td>
 
                                       <td class="text-right">
-                                        <button class="btn bg-primary btn-sm" {{action removeLabel label}} disabled={{eq label.readonly true}}><i class="icon icon-minus"/><span class="sr-only">{{t 'generic.remove'}}</span></button>
+                                        <button class="btn bg-primary btn-sm" {{action removeLabel label}} disabled={{eq label.readonly true}}><i class="icon icon-minus"/><span class="sr-only">{{t "generic.remove"}}</span></button>
                                       </td>
                                     </tr>
                                   {{/each}}
                                 </table>
                                 <div class="protip pt-10">
-                                  {{t 'formUserLabels.protip'}}
+                                  {{t "formUserLabels.protip"}}
                                 </div>
                               {{/if}}
 
                               <button class="btn bg-link icon-btn" {{action addUserLabel}}>
                                 <span class="darken"><i class="icon icon-plus text-small"/></span>
-                                <span>{{t 'formUserLabels.addAction'}}</span>
+                                <span>{{t "formUserLabels.addAction"}}</span>
                               </button>
                             {{/form-user-labels}}
                           </li>
@@ -495,15 +591,19 @@
               </ul>
             </li>
             <li>
-              {{t (if isLinux 'clusterNew.rke.command.instructions' 'clusterNew.rke.command.winInstructions') htmlSafe=true}}
-              {{!-- <p class="help-block">{{t 'clusterNew.rke.labels.detail'}}</p> --}}
+              {{t (if isLinux "clusterNew.rke.command.instructions" "clusterNew.rke.command.winInstructions") htmlSafe=true}}
+              {{!-- <p class="help-block">{{t "clusterNew.rke.labels.detail"}}</p> --}}
               <ul class="list-unstyled">
                 <li>
                   <div class="copy-pre mt-20 mb-20">
                     {{#if loading}}
-                      <div class="text-center"><i class="icon icon-spinner icon-spin"></i> {{t 'generic.loading'}}</div>
+                      <div class="text-center"><i class="icon icon-spinner icon-spin"></i> {{t "generic.loading"}}</div>
                     {{else if command}}
-                      {{copy-to-clipboard clipboardText=command tagName="div" classNames="copy-to-pre"}}
+                      {{copy-to-clipboard
+                          clipboardText=command
+                          tagName="div"
+                          classNames="copy-to-pre"
+                      }}
                       <pre id="registration-command" style="font-size: 14px;">{{command}}</pre>
                     {{/if}}
                   </div>
@@ -522,7 +622,7 @@
     <div class="banner bg-success">
       <div class="banner-icon"><span class="icon icon-success"></span></div>
       <div class="banner-message">
-        <p>{{t 'clusterNew.rke.detected' count=newNodeCount}}</p>
+        <p>{{t "clusterNew.rke.detected" count=newNodeCount}}</p>
       </div>
     </div>
   {{/if}}
@@ -535,10 +635,15 @@
 {{top-errors errors=otherErrors}}
 {{top-errors errors=clusterOptErrors}}
 {{#if (or isEdit (eq step 1))}}
-  {{save-cancel createLabel=(if isCustom 'saveCancel.next' 'saveCancel.create') editing=isEdit save="driverSave" cancel="close"}}
+  {{save-cancel
+      createLabel=(if isCustom "saveCancel.next" "saveCancel.create")
+      editing=isEdit
+      save="driverSave"
+      cancel="close"
+  }}
 {{else}}
   <div class="footer-actions">
-    <button {{action "close"}} class="btn bg-primary">{{t 'clusterNew.rke.done'}}</button>
+    <button {{action "close"}} class="btn bg-primary">{{t "clusterNew.rke.done"}}</button>
   </div>
 {{/if}}
 <input type="file" accept="{{actualAccept}}" class="hide">
