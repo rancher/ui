@@ -46,6 +46,7 @@
        model=model.elasticsearch
        pageScope=pageScope
        parentModel=model
+       endpointErrorText=esErrors
   }}
 {{else if (eq targetType 'splunk')}}
   {{logging/target-splunk
@@ -76,4 +77,22 @@
 
 {{top-errors errors=errors}}
 
-{{save-cancel saveDisabled=saveDisabled disabled=true cancelDisabled=true editing=true save="save"}}
+{{#if (not-eq targetType 'none')}}
+  {{logging/form-test
+      test=(action 'test')
+      testing=testing
+      tested=tested
+      testOk=testOk
+      model=model
+  }}
+{{/if}}
+
+<div class="footer-actions">
+  {{save-cancel
+      saveDisabled=saveDisabled
+      disabled=true
+      cancelDisabled=true
+      editing=true
+      save="save"
+  }}
+</div>

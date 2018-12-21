@@ -73,6 +73,8 @@ loggingPage:
         required: Prefix is required
         invalidCharacters: "Prefix cannot include '{char}'"
     generatedIndex: 'The generated index will be: <code class="text-italic text-lowercase">{esIndex}</code>, by default the index patters is {indexFormat}'
+    endpoint:
+      required: '"Endpoint" is required'
   splunk:
     header: Splunk HTTP Event Collector Configuration
     helpText: 'You can find instructions on how to configre Splunk HEC(HTTP Event Collector) <a href="http://docs.splunk.com/Documentation/Splunk/7.0.0/Data/UsetheHTTPEventCollector" target="_blank">here</a>.'
@@ -80,6 +82,7 @@ loggingPage:
     tokenPlaceholder: Your Token
     tokenHelpText: 'Tokens are entities that let logging agents and HTTP clients connect to the HEC input. <a href="http://docs.splunk.com/Documentation/Splunk/7.0.0/Data/UsetheHTTPEventCollector#Configure_HTTP_Event_Collector_on_Splunk_Enterprise" target="_blank">Detail</a>'
     tokenRequired: Token is Required
+    endpointRequired: Endpoint is Required
     source: Source
     sourcePlaceholder: e.g. fluentd
     sourceHelpText: 'A default field that identifies the source of an event, that is, where the event originated. <a href="https://docs.splunk.com/Splexicon:Source" target="_blank">Detail</a>'
@@ -95,9 +98,13 @@ loggingPage:
     zookeeperHelpText: Zookeeper is for building coordination, configuration management, leader detection, detecting node update in kafka cluster.
     brokkerHelpText: A Kafka cluster consists of one or more Brokers, config the host and port for each Broker.
     addEndpoint: Add Endpoint
-    topic: Topic
+    topic:
+      label: Topic
+      required: '"Topic" is required'
     topicPlaceholder: e.g. message
     topicHelpText: Logs will be send to this topic
+    endpoint:
+      required: '"Endpoint" is required'
   syslog:
     endpointPlaceholder: 'e.g. 192.168.1.10:514'
     header: Syslog Configuration
@@ -116,6 +123,8 @@ loggingPage:
       info: Info
       debug: Debug
     tokenHelpText: Will add token to structured data in every syslog message. For cloud syslog like <a href="https://help.sumologic.com/Send-Data/Sources/02Sources-for-Hosted-Collectors/Cloud-Syslog-Source" target="_blank">Sumologic</a>, <a href="https://www.loggly.com/docs/customer-token-authentication-token" target="_blank">Loggly</a> etc, you could generate token on their configure page.
+    endpoint:
+      required: '"Endpoint" is required'
   fluentd:
     header: Fluentd Configuration
     compress:
@@ -124,6 +133,8 @@ loggingPage:
     endpoint:
       label: Endpoint
       placeholder: 'e.g. 192.168.1.10:24224'
+      invalid: '"Endpoint" required end with port.'
+      required: '"Endpoint" is required'
     password:
       label: Password
       placeholder: The password for authentication.
@@ -132,6 +143,7 @@ loggingPage:
       placeholder: The Shared key for authentication.
     standby:
       label: Use as Standby Only
+      none: Required at least one Non-Standby endpoint.
     username:
       label: Username
       placeholder: The username for authentication.
@@ -171,3 +183,8 @@ loggingPage:
     header: Docker Configuration
     label: Docker Root Directory
     placeholder: Enter docker root Directory, default value is {dir}
+  testAction:
+    testing: TESTING
+    testOk: Settings validated.
+    testFailed: Something's not quite right. Check your inputs.
+    test: TEST
