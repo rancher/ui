@@ -43,6 +43,7 @@ export default Mixin.create({
       set(this, `${ t }.outputFlushInterval`, get(this, 'outputFlushInterval'));
       set(this, `${ t }.outputTags`, get(this, 'outputTags'));
       set(this, `${ t }.dockerRootDir`, get(this, 'dockerRootDir'));
+      set(this, `${ t }.excludeSystemComponent`, get(this, 'excludeSystemComponent'));
     }
 
     return this;
