@@ -68,9 +68,11 @@
   </div>
 </section>
 
-{{#if showSSLConfig}}
-  {{logging/form-log-ssl config=config targetType=targetType}}
-{{/if}}
+{{logging/form-log-ssl
+    config=config
+    targetType=targetType
+    disabled=(not enableSSLConfig)
+}}
 
 {{logging/form-log-format logPreview=logPreview model=model}}
 {{!--

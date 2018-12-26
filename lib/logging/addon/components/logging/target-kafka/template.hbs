@@ -69,11 +69,18 @@
   </div>
 </div>
 
-{{#if showSSLConfig}}
-  {{logging/form-log-ssl config=config targetType=targetType}}
+{{#if (eq brokerType 'broker')}}
+  {{logging/form-log-ssl
+      config=config
+      targetType=targetType
+      disabled=(not enableSSLConfig)
+  }}
 {{/if}}
 
-{{logging/form-log-format logPreview=logPreview model=model}}
+{{logging/form-log-format
+    logPreview=logPreview
+    model=model
+}}
 {{!--
   {{#advanced-section advanced=showAdvanced}}
   {{logging/form-log-docker model=model parentModel=parentModel}}

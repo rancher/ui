@@ -1,5 +1,5 @@
 <div class="mt-20 clearfix">
-  <h2 class="pt-30">
+  <h2 class={{concat 'pt-30 ' (if disabled 'text-muted')}}>
     {{t 'loggingPage.ssl.sslHeader'}}
   </h2>
   <hr/>
@@ -16,6 +16,7 @@
           minHeight=60
           placeholder="newCertificate.key.placeholder"
           shouldChangeName=false
+          disabled=disabled
       }}
     </div>
     <div class="col span-6 mt-0">
@@ -31,6 +32,7 @@
           minHeight=60
           placeholder="newCertificate.cert.placeholder"
           shouldChangeName=false
+          disabled=disabled
       }}
     </div>
   </div>
@@ -45,13 +47,15 @@
               value=config.clientKeyPass
               className="form-control"
               placeholder=(t 'loggingPage.ssl.clientKeyPass.password.placeholder')
-            }}
+              disabled=disabled
+          }}
           {{#if (eq targetType 'elasticsearch')}}
             <label class="acc-label pt-5">{{t 'loggingPage.ssl.sslVersion.label'}}</label>
-            {{new-select
-            classNames="form-control"
-            content=sslVersionContent
-            value=config.sslVersion
+            {{searchable-select
+                classNames="form-control"
+                content=sslVersionContent
+                value=config.sslVersion
+                readOnly=disabled
             }}
           {{/if}}
         </div>
@@ -59,14 +63,22 @@
       <div class="col span-6">
         <label class="acc-label">{{t 'loggingPage.ssl.verify.label'}}</label>
         <div class="radio">
-          <label>
-            {{radio-button selection=config.sslVerify value=false}}
+          <label class={{if disabled 'text-muted'}}>
+            {{radio-button
+                selection=config.sslVerify
+                value=false
+                disabled=disabled
+            }}
             {{t 'loggingPage.ssl.verify.disabled'}}
           </label>
         </div>
         <div class="radio">
-          <label>
-            {{radio-button selection=config.sslVerify value=true}}
+          <label class={{if disabled 'text-muted'}}>
+            {{radio-button
+                selection=config.sslVerify
+                value=true
+                disabled=disabled
+            }}
             {{t 'loggingPage.ssl.verify.enabled'}}
           </label>
         </div>
@@ -83,6 +95,7 @@
               minHeight=60
               placeholder="newCertificate.cert.placeholder"
               shouldChangeName=false
+              disabled=disabled
           }}
         {{/if}}
       </div>
@@ -103,6 +116,7 @@
             minHeight=60
             placeholder="newCertificate.cert.placeholder"
             shouldChangeName=false
+            disabled=disabled
         }}
       </div>
     </div>
