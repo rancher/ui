@@ -20,6 +20,7 @@ generic:
   is: 是
   push: 提交到代码库
   noBranch: 该代码库中没有任何分支。
+  required: '{key}为必填项。'
 ##############################
 # Resource Actions
 ##############################
@@ -88,6 +89,66 @@ newPipelineStep:
     image: 基础镜像
     env: 环境变量
     enableBranch: 设置流水线
+    publishCatalog:
+      label: 发布应用
+      secret:
+        label: 密文
+        missingKey: 所选的密文没有{key}字段.
+      auth:
+        http: '密文中的<code>USERNAME</code>和<code>PASSWORD</code>将被作为用户名和密码。'
+        ssh: '密文中的<code>DEPLOY_KEY</code>将被作为Deploy Key'
+      stepName: 发布应用
+      targets:
+        label: 协议
+        http: 通过HTTP协议发布到Git
+        ssh: 通过SSH协议发布到Git
+      path:
+        label: Chart目录
+        placeholder: 例如：./charts/wordpress/latest
+        helpText: '代码库中<code style="padding: 2px 5px;">Chart.yaml</code>所在的目录'
+      catalog:
+        label: 应用名称
+        placeholder: 例如：wordpress
+        helpText: 所发布应用的名称。
+      version:
+        label: 应用版本
+        placeholder: 例如：latest
+        helpText: 所发布应用的版本。
+      gitUrl:
+        label: Git地址
+        placeholder:
+          ssh: 例如：git@github.com:myrepo/charts.git
+          http: 例如：https://github.com/myrepo/charts.git
+        helpText: 把应用发布到这个Git地址。
+        error: Git地址必须以http或https开头。
+      gitBranch:
+        label: Git分支
+        placeholder: 例如：dev
+        helpText: 把应用发布到这个Git分支。
+      gitAuthor:
+        label: 作者
+        placeholder: 例如：user
+        helpText: 提交信息中所包含的作者信息。
+      gitEmail:
+        label: 作者邮箱
+        placeholder: user@example.com
+        helpText: 提交信息中所包含的作者邮箱信息。
+
+    applyApp:
+      label: 部署应用
+      stepName: 部署应用
+      catalog:
+        label: 应用商店
+      version:
+        label: 版本
+        helpText: 你可以选择一个已有版本或者输入一个新的版本。
+      name:
+        label: 应用名称
+        helpText: 你可以选择一个已有应用或者输入一个新的应用。
+      targetNamespace:
+        label: 命名空间
+        helpText: 部署应用的命名空间。
+
     applyYaml:
       label: 部署YAML
       yaml: YAML路径
@@ -208,7 +269,7 @@ authPage:
       clientSecret:
         labelText: 客户端秘钥
   bitbucketcloud:
-    target: 
+    target:
       header: '1. 选择你要使用的Bitbucket类型'
       bitbucketserver: '使用私有Bitbucket Server'
       bitbucketcloud: '使用Bitbucket Cloud'
@@ -229,7 +290,7 @@ authPage:
   bitbucketserver:
     warning: Bitbucket Server Webhook需要SSL验证，请确保{appName}服务器的证书在Bitbucket Server中是可信的。点击<a href="https://rancher.com/docs/rancher/v2.x/en/tools/pipelines/configurations/#1-configuring-version-control-providers" target="_blank" rel="nofollow noopener noreferrer">这里</a>获取更多信息。
     copy: 点击复制
-    target: 
+    target:
       header: '1. 选择你要使用的Bitbucket类型'
       bitbucketserver: '使用私有Bitbucket Server'
       bitbucketcloud: '使用Bitbucket Cloud'
