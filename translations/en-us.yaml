@@ -970,6 +970,33 @@ cruPersistentVolumeClaim:
     label: Storage Class
     prompt: Use the default class
 
+cruVolumeClaimTemplate:
+  title:
+    define: Define Volume Claim Template
+    new: Add Volume Claim Template
+    edit: "Edit Volume Claim Template: {name}"
+    view: "Volume Claim Template: {name}"
+  define:
+    addActionLabel: Define
+  capacity:
+    label: Capacity
+    unit: GiB
+  name:
+    placeholder: e.g. myvol
+  source:
+    label: Source
+    pv: Use an existing persistent volume to define a template
+    storageClass: Use a Storage Class to define a template
+  pv:
+    label: Persistent Volume
+    prompt: Select a persistent volume...
+  storageClass:
+    label: Storage Class
+    prompt: Use the default class
+  customize:
+    title: Customize
+    detail: Customize Advanced options
+
 cruPrivateRegistry:
   title:
     label: Private Registries
@@ -4542,17 +4569,22 @@ formVolumeRow:
   name:
     label: Volume Name
     placeholder: e.g. vol1
+  volumeClaimTemplateName:
+    label: Volume Claim Template Name
+    placeholder: e.g. vol1
   mode:
     label: Volume Type
     newVolume: Ephemeral Volume
     existingVolume: Existing Volume
     newPvc: New Volume Claim
     existingPvc: Persistent Volume Claim
+    existingVct: Volume Claim Template
     bindMount: Bind-Mount
     tmpfs: Tmpfs
     secret: Secret
     configmap: Config Map
     certificate: Certificate
+    newVolumeClaimTemplate: New Volume Claim Template
   remove: Remove Volume
   subPath: Sub Path in Volume
   readOnly: Read-Only
@@ -4565,6 +4597,7 @@ formVolumeRow:
     helper: The volume will not be mounted in the current container.  It may be used by other containers in the pod.
   customLogPath:
     helpText: We will deploy a flexvolume driver to create a volume and mount the log to the host. This feature is supported on GKE cluster now.
+
 formVolumes:
   title: Volumes
   detail: Persist and share data separate from the lifecycle of an individual container.
@@ -4594,6 +4627,7 @@ formVolumes:
     configMap: Use a config map
     certificate: Use a certificate
     customLogPath: Read log files from a directory
+    vct: Add a Volume Claim Template
   table:
     kind: Kind
     source: Source

@@ -2,37 +2,40 @@ import C from 'ui/utils/constants';
 import { all } from 'rsvp';
 import { inject as service } from '@ember/service';
 import { get, set, setProperties } from '@ember/object';
-import { alias } from '@ember/object/computed';
+import { alias, notEmpty } from '@ember/object/computed';
 import Component from '@ember/component';
 import layout from './template';
 
 export const NEW_VOLUME = 'newVolume';
 export const NEW_PVC = 'newPvc';
+export const NEW_VCT = 'newVolumeClaimTemplate';
 
 export const EXISTING_VOLUME = 'existingVolume';
 export const EXISTING_PVC = 'existingPvc';
+export const EXISTING_VCT = 'existingVct';
 
 export const LOG_AGGREGATOR = 'cattle.io/log-aggregator'
 
 export default Component.extend({
-  intl:         service(),
-  scope:        service(),
-  modalService: service('modal'),
+  intl:          service(),
+  scope:         service(),
+  modalService:  service('modal'),
   layout,
-  classNames:   ['accordion-wrapper'],
+  classNames:    ['accordion-wrapper'],
 
   // Inputs
-  workload:     null,
-  launchConfig: null,
-  namespace:    null,
-  errors:       null,
-  editing:      true,
+  workload:      null,
+  launchConfig:  null,
+  namespace:     null,
+  errors:        null,
+  editing:       true,
 
-  volumesArray: null,
+  volumesArray:  null,
 
-  nextNum: 1,
-  cluster: alias('scope.currentCluster'),
-  project: alias('scope.currentProject'),
+  nextNum:       1,
+  cluster:       alias('scope.currentCluster'),
+  project:       alias('scope.currentProject'),
+  isStatefulSet: notEmpty('workload.statefulSetConfig'),
 
   init() {
     this._super(...arguments);
@@ -42,6 +45,8 @@ export default Component.extend({
     });
     this.initVolumes()
   },
+
+
 
   // Create (ephermal) Volume -> volume entry on pod
   // Create PVC for existing (persistent) volume // cru-pvc
@@ -240,6 +245,23 @@ export default Component.extend({
         ],
       });
     },
+
+    addVolumeClaimTemplate() {
+      const { store, volumesArray } = this;
+
+      const vct = store.createRecord({
+        type: 'persistentVolumeClaim',
+        name: this.nextName(),
+      });
+
+      volumesArray.pushObject({
+        mode:   NEW_VCT,
+        vct,
+        mounts: [
+          store.createRecord({ type: 'volumeMount', }),
+        ],
+      });
+    }
   },
 
   initVolumes() {
@@ -249,9 +271,18 @@ export default Component.extend({
       });
     }
 
-    const out = [];
+    const out                = [];
+    const { workload }       = this;
+    let volumes              = workload.volumes || [];
+    let volumeClaimTemplates = workload.statefulSetConfig ? workload.statefulSetConfig.volumeClaimTemplates : [];
 
-    (get(this, 'workload.volumes') || []).forEach((volume) => {
+    volumeClaimTemplates.forEach((vct) => {
+      set(vct, 'isVolumeClaimTemplate', true);
+    });
+
+    let allVolumes           = [].concat(volumes.slice(), volumeClaimTemplates.slice());
+
+    allVolumes.forEach((volume) => {
       let mode;
       let hidden = false;
 
@@ -266,6 +297,8 @@ export default Component.extend({
         mode = this.getSecretType(get(volume, 'secret.secretName'));
       } else if ( volume.configMap ) {
         mode = C.VOLUME_TYPES.CONFIG_MAP;
+      } else if ( volume.isVolumeClaimTemplate ) {
+        mode = EXISTING_VCT;
       } else {
         mode = EXISTING_VOLUME;
       }
@@ -331,9 +364,12 @@ export default Component.extend({
   },
 
   saveVolumes() {
-    const ary = get(this, 'volumesArray') || [];
-    const promises = [];
-    let pvc;
+    const { workload, launchConfig } = this;
+    const ary                        = get(this, 'volumesArray') || [];
+    const promises                   = [];
+    const volumeClaimTemplates = [];
+
+    let pvc, vct;
 
     ary.filterBy('pvc').forEach((row) => {
       pvc = get(row, 'pvc');
@@ -341,10 +377,17 @@ export default Component.extend({
       promises.push(get(row, 'pvc').save());
     });
 
+    ary.filterBy('vct').forEach((row) => {
+      vct = get(row, 'vct');
+      set(vct, 'namespaceId', get(this, 'namespace.id'));
+      promises.push(get(row, 'vct').save());
+      volumeClaimTemplates.push(vct);
+    });
+
     ary.filterBy('mode', C.VOLUME_TYPES.CUSTOM_LOG_PATH).filterBy('volume.flexVolume.driver', LOG_AGGREGATOR)
       .forEach((row) => {
-        const options = get(row, 'volume.flexVolume.options');
-        const lc = get(this, 'launchConfig');
+        const options  = get(row, 'volume.flexVolume.options');
+        const lc       = get(this, 'launchConfig');
         const workload = get(this, 'workload');
 
         if ( !get(row, 'hidden') ) {
@@ -357,14 +400,22 @@ export default Component.extend({
       });
 
     return all(promises).then(() => {
-      const volumes = [];
-      const mounts = [];
+      const volumes              = [];
+      const mounts               = [];
 
       ary.forEach((row) => {
-        volumes.pushObject(row.volume);
+        if (row.volume && !row.volume.isVolumeClaimTemplate) {
+          volumes.pushObject(row.volume);
+        } else if (row.volume && row.volume.isVolumeClaimTemplate) {
+          volumeClaimTemplates.pushObject(row.volume);
+        }
 
         row.mounts.forEach((mount) => {
-          set(mount, 'name', get(row, 'volume.name'));
+          if (get(row, 'vct')) {
+            set(mount, 'name', get(row, 'vct.name'));
+          } else {
+            set(mount, 'name', get(row, 'volume.name'));
+          }
           mounts.pushObject(mount);
         });
 
@@ -375,8 +426,9 @@ export default Component.extend({
         }
       });
 
-      get(this, 'workload').set('volumes', volumes);
-      get(this, 'launchConfig').set('volumeMounts', mounts);
+      workload.set('volumes', volumes);
+      workload.set('statefulSetConfig.volumeClaimTemplates', volumeClaimTemplates);
+      launchConfig.set('volumeMounts', mounts);
     });
   },
 });
