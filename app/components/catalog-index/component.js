@@ -127,9 +127,23 @@ export default Component.extend({
   }),
 
   arrangedContent: computed('model.catalog', 'search', function() {
-    let search  = get(this, 'search').toUpperCase();
-    let result  = [];
-    let catalog = get(this, 'model.catalog');
+    let search           = get(this, 'search').toUpperCase();
+    let result           = [];
+    let catalog          = get(this, 'model.catalog');
+    let currentProjectId = get(this, 'scope.currentProject.id');
+    let currentClusrerId = get(this, 'scope.currentCluster.id');
+
+    catalog = catalog.filter( (item) => {
+      let { projectCatalogId, clusterCatalogId, } = item;
+
+      if (projectCatalogId && projectCatalogId.split(':').firstObject === currentProjectId.split(':')[1]) {
+        return item;
+      } else if (clusterCatalogId && clusterCatalogId.split(':').firstObject === currentClusrerId) {
+        return item;
+      } else if (item.isGlobalCatalog) {
+        return item;
+      }
+    });
 
     if (!search) {
       return catalog;
