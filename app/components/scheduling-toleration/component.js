@@ -43,7 +43,7 @@ export default Component.extend({
   },
 
   isTolerationValid(toleration) {
-    if (toleration.operator === 'Equals') {
+    if (toleration.operator === 'Equal') {
       return toleration.key && toleration.value;
     } else if (toleration.operator === 'Exists') {
       return toleration.key;
