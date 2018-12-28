@@ -113,10 +113,12 @@ export default Component.extend({
     if (secretName) {
       const secret = allSecrets.findBy('name', secretName);
 
-      set(this, 'keys', Object.keys(secret.data).map((k) => ({
-        label: k,
-        value: k,
-      })));
+      if (secret) {
+        set(this, 'keys', Object.keys(secret.data).map((k) => ({
+          label: k,
+          value: k,
+        })));
+      }
     } else {
       set(this, 'keys', []);
     }
@@ -130,10 +132,12 @@ export default Component.extend({
     if (configMapName) {
       const configMap = allConfigMaps.findBy('name', configMapName);
 
-      set(this, 'keys', Object.keys(configMap.data).map((k) => ({
-        label: k,
-        value: k,
-      })));
+      if (configMap) {
+        set(this, 'keys', Object.keys(configMap.data).map((k) => ({
+          label: k,
+          value: k,
+        })));
+      }
     } else {
       set(this, 'keys', []);
     }
