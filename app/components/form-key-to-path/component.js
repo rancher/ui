@@ -110,6 +110,8 @@ export default Component.extend({
     const allSecrets = get(this, 'allSecrets');
     const secretName = get(this, 'secretName');
 
+    set(this, 'keys', []);
+
     if (secretName) {
       const secret = allSecrets.findBy('name', secretName);
 
@@ -119,8 +121,6 @@ export default Component.extend({
           value: k,
         })));
       }
-    } else {
-      set(this, 'keys', []);
     }
   },
 
@@ -128,6 +128,8 @@ export default Component.extend({
   updateConfigMapKeys() {
     const allConfigMaps = get(this, 'allConfigMaps');
     const configMapName = get(this, 'configMapName');
+
+    set(this, 'keys', []);
 
     if (configMapName) {
       const configMap = allConfigMaps.findBy('name', configMapName);
@@ -138,8 +140,6 @@ export default Component.extend({
           value: k,
         })));
       }
-    } else {
-      set(this, 'keys', []);
     }
   },
 
