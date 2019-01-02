@@ -41,7 +41,8 @@ export default Route.extend({
           type:            'service',
           namespaceId,
           ipAddresses:     [''],
-          sessionAffinity: 'None'
+          sessionAffinity: 'None',
+          kind:            'ClusterIP',
         });
       }
 

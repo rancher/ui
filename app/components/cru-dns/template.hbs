@@ -32,7 +32,7 @@
       <div>
         <label class="acc-label">{{t 'editDns.recordType.label'}}</label>
       </div>
-      <div class="mb-20">
+      <div>
         {{#if editing}}
           <div class="radio">
             <label>{{radio-button selection=recordType value="arecord"}}&nbsp;{{t 'editDns.recordType.arecord'}}</label>
@@ -123,6 +123,18 @@
 </section>
 
 {{#advanced-section advanced=advanced}}
+  <div class="row">
+    <div class="col span-6">
+      <label class="pb-5 acc-label">{{t 'editDns.kind.label'}}</label>
+      {{new-select
+          classNames="form-control"
+          content=kindChoices
+          value=model.kind
+          localizedLabel=true
+      }}
+    </div>
+  </div>
+
   {{#accordion-list showExpandAll=false as | al expandFn |}}
     {{form-labels-annotations
         classNames="accordion-wrapper"

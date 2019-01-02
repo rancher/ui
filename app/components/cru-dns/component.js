@@ -13,14 +13,34 @@ import {
 } from 'ui/models/service';
 import ChildHook from 'shared/mixins/child-hook';
 
+const KIND_CHOICES = [
+  {
+    label: 'editDns.kind.clusterIP',
+    value: 'ClusterIP'
+  },
+  {
+    label: 'editDns.kind.loadBalancer',
+    value: 'LoadBalancer'
+  },
+  {
+    label: 'editDns.kind.nodePort',
+    value: 'NodePort'
+  },
+  {
+    label: 'editDns.kind.externalName',
+    value: 'ExternalName'
+  },
+]
+
 export default Component.extend(ViewNewEdit, ChildHook, {
   intl: service(),
 
   layout,
   model: null,
 
-  recordType:      null,
+  recordType:     null,
   timeoutSeconds: null,
+  kindChoices:    KIND_CHOICES,
 
   namespace:       alias('model.namespace'),
   init() {
@@ -108,6 +128,10 @@ export default Component.extend(ViewNewEdit, ChildHook, {
       return false;
     }
 
+    if ( get(this, 'model.kind') === 'LoadBalancer' && get(this, 'isNew') ) {
+      set(this, 'model.clusterIp', '');
+    }
+
     return this.applyHooks('_beforeSaveHooks').then(() => {
       set(this, 'model.namespaceId', get(this, 'namespace.id'));
 
@@ -118,7 +142,6 @@ export default Component.extend(ViewNewEdit, ChildHook, {
   },
 
   validate() {
-    this._super(...arguments);
     const errors = get(this, 'errors') || [];
     const intl = get(this, 'intl');
 
