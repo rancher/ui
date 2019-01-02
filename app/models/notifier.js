@@ -1,21 +1,17 @@
 import Resource from 'ember-api-store/models/resource';
 import { inject as service } from '@ember/service';
-import {  get, computed } from '@ember/object';
+import {  setProperties, get, computed } from '@ember/object';
 import { hash } from 'rsvp';
 import C from 'ui/utils/constants';
 import moment from 'moment';
 
 export default Resource.extend({
   growl:        service(),
-  intl:  service(),
-
+  intl:         service(),
   globalStore:  service(),
   modalService: service('modal'),
 
   type:         'notifier',
-  init(...args) {
-    this._super(...args);
-  },
 
   displayNameAndType: computed('displayName', 'notifierType', function() {
     const upperCaseType = (get(this, 'notifierType') || '').replace(/^\S/, (s) => {
@@ -25,100 +21,117 @@ export default Resource.extend({
     return `${ get(this, 'displayName') } (${ upperCaseType })`
   }),
 
-  notifierTableLabel: computed('slackConfig', 'pagerdutyConfig', 'emailConfig', 'webhookConfig', function() {
+  notifierTableLabel: computed('slackConfig', 'pagerdutyConfig', 'emailConfig', 'webhookConfig', 'wechatConfig', function(){
     const sc = get(this, 'slackConfig');
     const pc = get(this, 'pagerdutyConfig');
     const ec = get(this, 'smtpConfig');
     const wc = get(this, 'webhookConfig');
+    const wcc = get(this, 'wechatConfig');
 
-    if (sc) {
+    if ( sc ) {
       return C.NOTIFIER_TABLE_LABEL.SLACK;
     }
-    if (pc) {
+    if ( pc ) {
       return C.NOTIFIER_TABLE_LABEL.PAGERDUTY;
     }
-    if (ec) {
+    if ( ec ) {
       return C.NOTIFIER_TABLE_LABEL.SMTP;
     }
-    if (wc) {
+    if ( wc ) {
       return C.NOTIFIER_TABLE_LABEL.WEBHOOK;
+    }
+    if ( wcc ) {
+      return C.NOTIFIER_TABLE_LABEL.WECHAT;
     }
 
     return C.NOTIFIER_TABLE_LABEL.DEFAULT;
   }),
 
-  notifierType: function() {
-    const sc = this.get('slackConfig');
-    const pc = this.get('pagerdutyConfig');
-    const ec = this.get('smtpConfig');
-    const wc = this.get('webhookConfig');
+  notifierType: computed('slackConfig', 'pagerdutyConfig', 'emailConfig', 'webhookConfig', 'wechatConfig', function(){
+    const sc = get(this, 'slackConfig');
+    const pc = get(this, 'pagerdutyConfig');
+    const ec = get(this, 'smtpConfig');
+    const wc = get(this, 'webhookConfig');
+    const wcc = get(this, 'wechatConfig');
 
-    if (sc) {
+    if ( sc ) {
       return 'slack';
     }
-    if (pc) {
+    if ( pc ) {
       return 'pagerduty';
     }
-    if (ec) {
+    if ( ec ) {
       return 'email';
     }
-    if (wc) {
+    if ( wc ) {
       return 'webhook';
+    }
+    if ( wcc ) {
+      return 'wechat';
     }
 
     return null;
-  }.property('slackConfig', 'pagerdutyConfig', 'emailConfig', 'webhookConfig'),
+  }),
 
-  notifierValue: function() {
-    const sc = this.get('slackConfig');
-    const pc = this.get('pagerdutyConfig');
-    const ec = this.get('smtpConfig');
-    const wc = this.get('webhookConfig');
+  notifierValue: computed('slackConfig', 'pagerdutyConfig', 'emailConfig', 'webhookConfig', 'wechatConfig', function(){
+    const sc = get(this, 'slackConfig');
+    const pc = get(this, 'pagerdutyConfig');
+    const ec = get(this, 'smtpConfig');
+    const wc = get(this, 'webhookConfig');
+    const wcc = get(this, 'wechatConfig');
 
-    if (sc) {
+    if ( sc ) {
       return get(sc, 'defaultRecipient');
     }
-    if (pc) {
+    if ( pc ) {
       return get(pc, 'serviceKey');
     }
-    if (ec) {
+    if ( ec ) {
       return get(ec, 'defaultRecipient');
     }
-    if (wc) {
+    if ( wc ) {
       return get(wc, 'url');
+    }
+    if ( wcc ) {
+      return get(wcc, 'defaultRecipient');
     }
 
     return '';
-  }.property('slackConfig', 'pagerdutyConfig', 'emailConfig', 'webhookConfig'),
+  }),
 
-  displayCreated: function() {
+  displayCreated: computed('created', function(){
     const d = get(this, 'created');
 
     return moment(d).fromNow();
-  }.property('created'),
+  }),
 
-  notifierLabel: function() {
-    const sc = this.get('slackConfig');
-    const pc = this.get('pagerdutyConfig');
-    const ec = this.get('smtpConfig');
-    const wc = this.get('webhookConfig');
+  notifierLabel: computed('slackConfig', 'pagerdutyConfig', 'emailConfig', 'webhookConfig', 'wechartConfig', function(){
+    const sc = get(this, 'slackConfig');
+    const pc = get(this, 'pagerdutyConfig');
+    const ec = get(this, 'smtpConfig');
+    const wc = get(this, 'webhookConfig');
+    const wcc = get(this, 'wechatConfig');
 
-    if (sc) {
+    if ( sc ) {
       return 'Channel';
     }
-    if (pc) {
+    if ( pc ) {
       return 'Service Key';
     }
-    if (ec) {
+    if ( ec ) {
       return 'Address';
     }
-    if (wc) {
+    if ( wc ) {
       return 'URL';
+    }
+    if ( wcc ) {
+      return 'Recipient';
     }
 
     return 'Notifier';
-  }.property('slackConfig', 'pagerdutyConfig', 'emailConfig', 'webhookConfig'),
-  findAlerts() {
+  }),
+
+  findAlerts(){
     const globalStore = get(this, 'globalStore');
     const clusterId = get(this, 'clusterId');
     const clusterAlertGroups = globalStore.findAll('clusterAlertGroup', { filter: { clusterId } });
@@ -137,7 +150,7 @@ export default Resource.extend({
       ].filter((alert) => {
         const recipients = get(alert, 'recipients');
 
-        if (!recipients || recipients.length === 0) {
+        if ( !recipients || recipients.length === 0 ) {
           return false;
         }
 
@@ -152,7 +165,7 @@ export default Resource.extend({
     const sup = self._super;
 
     return this.findAlerts().then((alerts) => {
-      if (alerts.length) {
+      if ( alerts.length ) {
         const alertNames = alerts.map((alert) => get(alert, 'displayName')).join(',');
 
         get(this, 'growl')
@@ -168,7 +181,7 @@ export default Resource.extend({
   },
   actions: {
     edit() {
-      this.get('modalService').toggleModal('notifier/modal-new-edit', {
+      get(this, 'modalService').toggleModal('notifier/modal-new-edit', {
         closeWithOutsideClick: false,
         currentType:           get(this, 'notifierType'),
         model:                 this,
@@ -179,9 +192,11 @@ export default Resource.extend({
     clone() {
       const nue = this.clone();
 
-      nue.set('id', null);
-      nue.set('name', null);
-      this.get('modalService').toggleModal('notifier/modal-new-edit', {
+      setProperties(nue, {
+        id:   null,
+        name: null
+      });
+      get(this, 'modalService').toggleModal('notifier/modal-new-edit', {
         closeWithOutsideClick: false,
         currentType:           get(this, 'notifierType'),
         model:                 nue,
