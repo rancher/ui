@@ -20,14 +20,18 @@ export default Component.extend(ViewNewEdit, ChildHook, {
   model: null,
 
   recordType:      null,
-  namespace:       alias('model.namespace'),
+  timeoutSeconds: null,
 
+  namespace:       alias('model.namespace'),
   init() {
     this._super(...arguments);
 
     let type = get(this, 'model.recordType') || ARECORD;
 
     setProperties(this, { recordType: type, });
+    if ( get(this, 'model.sessionAffinityConfig.clientIP.timeoutSeconds') ) {
+      set(this, 'timeoutSeconds',  get(this, 'model.sessionAffinityConfig.clientIP.timeoutSeconds'));
+    }
   },
 
   actions: {
@@ -42,7 +46,27 @@ export default Component.extend(ViewNewEdit, ChildHook, {
     setSelector(map) {
       set(this, 'model.selector', map);
     },
+
+    setLabels(labels) {
+      let out = {};
+
+      labels.forEach((row) => {
+        out[row.key] = row.value;
+      });
+
+      set(this, 'model.labels', out);
+    },
   },
+
+  timeoutSecondsDidChange: observer('timeoutSeconds', function() {
+    const timeoutSeconds = get(this, 'timeoutSeconds');
+
+    if ( !get(this, 'model.sessionAffinityConfig.clientIP.timeoutSeconds') ) {
+      set(this, 'model.sessionAffinityConfig', { clientIP: { timeoutSeconds } })
+    } else {
+      set(this, 'model.sessionAffinityConfig.clientIP.timeoutSeconds', timeoutSeconds)
+    }
+  }),
 
   namespaceDidChange: observer('namespace.id', function() {
     if (get(this, 'recordType') === 'workload') {

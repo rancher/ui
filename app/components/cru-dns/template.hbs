@@ -122,6 +122,50 @@
   </div>
 </section>
 
+{{#advanced-section advanced=advanced}}
+  {{#accordion-list showExpandAll=false as | al expandFn |}}
+    {{form-labels-annotations
+        classNames="accordion-wrapper"
+        expandAll=al.expandAll
+        expandFn=expandFn
+        initialLabels=model.labels
+        model=model
+        setLabels=(action 'setLabels')
+    }}
+    {{#accordion-list-item
+      title=(t 'editDns.sessionAffinity.title')
+      detail=(t 'editDns.sessionAffinity.detail')
+      expandAll=al.expandAll
+      expand=(action expandFn)
+    }}
+      <div class="row box">
+        <div class="col span-6">
+          <label class="acc-label">{{t 'editDns.sessionAffinity.label'}}</label>
+          {{#input-or-display editable=editing value=model.sessionAffinity}}
+            <div class="radio">
+              <label>{{radio-button selection=model.sessionAffinity value="None"}} {{t 'generic.no'}}</label>
+            </div>
+            <div class="radio">
+              <label>{{radio-button selection=model.sessionAffinity value="ClientIP"}} {{t 'generic.yes'}}</label>
+            </div>
+          {{/input-or-display}}
+        </div>
+        {{#if (eq model.sessionAffinity "ClientIP")}}
+          <div class="col span-6">
+            <label class="acc-label">{{t 'editDns.sessionAffinityConfig.label'}}</label>
+            {{#input-or-display editable=editing value=timeoutSeconds classesForDisplay="text-muted form-control-static"}}
+              <div class="input-group">
+                {{input-integer min="1" max="86400" step="60" value=timeoutSeconds classNames="form-control" placeholder=(t 'editDns.sessionAffinityConfig.placeholder')}}
+                <div class="input-group-addon bg-default">{{t 'generic.seconds'}}</div>
+              </div>
+            {{/input-or-display}}
+          </div>
+        {{/if}}
+      </div>
+    {{/accordion-list-item}}
+  {{/accordion-list}}
+{{/advanced-section}}
+
 {{#if editing}}
   {{top-errors errors=errors}}
   {{save-cancel editing=isEdit save="save" cancel="cancel"}}

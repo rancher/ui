@@ -38,9 +38,10 @@ export default Route.extend({
         delete hash.existing;
       } else {
         record = store.createRecord({
-          type:        'service',
+          type:            'service',
           namespaceId,
-          ipAddresses: [''],
+          ipAddresses:     [''],
+          sessionAffinity: 'None'
         });
       }
 
