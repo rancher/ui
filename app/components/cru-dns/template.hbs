@@ -123,9 +123,12 @@
 </section>
 
 {{#advanced-section advanced=advanced}}
-  <div class="row">
+
+  <hr class="mt-30 mb-30" />
+
+  <div class="row mb-20">
     <div class="col span-6">
-      <label class="pb-5 acc-label">{{t 'editDns.kind.label'}}</label>
+      <label class="acc-label pb-5">{{t 'editDns.kind.label'}}</label>
       {{new-select
           classNames="form-control"
           content=kindChoices
@@ -133,7 +136,77 @@
           localizedLabel=true
       }}
     </div>
+    <div class="col span-6">
+      {{form-value-array
+        initialValues=model.externalIPs
+        addActionLabel='editDns.externalIPs.addActionLabel'
+        valueLabel='editDns.externalIPs.value'
+        valuePlaceholder='editDns.externalIPs.placeholder'
+        changed=(action (mut model.externalIPs))
+        editing=editing
+      }}
+    </div>
   </div>
+  <div class="row mb-20">
+    {{#if (or (eq model.kind 'LoadBalancer') (eq model.kind 'NodePort')) }}
+      <div class="col span-6">
+        <label class="acc-label">{{t 'editDns.externalTrafficPolicy.label'}}</label>
+        {{#input-or-display editable=editing value=model.externalTrafficPolicy}}
+          <div class="radio">
+            <label>{{radio-button selection=model.externalTrafficPolicy value="Local"}} {{t 'editDns.externalTrafficPolicy.local'}}</label>
+          </div>
+          <div class="radio">
+            <label>{{radio-button selection=model.externalTrafficPolicy value="Cluster"}} {{t 'editDns.externalTrafficPolicy.cluster'}}</label>
+          </div>
+        {{/input-or-display}}
+      </div>
+    {{/if}}
+    <div class="col span-6">
+      <label class="acc-label">{{t 'editDns.publishNotReadyAddresses.label'}}</label>
+      {{#input-or-display editable=editing value=model.publishNotReadyAddresses}}
+        <div class="radio">
+          <label>{{radio-button selection=model.publishNotReadyAddresses value=false}} {{t 'generic.no'}}</label>
+        </div>
+        <div class="radio">
+          <label>{{radio-button selection=model.publishNotReadyAddresses value=true}} {{t 'generic.yes'}}</label>
+        </div>
+      {{/input-or-display}}
+    </div>
+  </div>
+  {{#if (eq model.kind 'LoadBalancer')}}
+    <div class="row mb-20">
+      <div class="col span-6">
+        <label class="acc-label pb-5">{{t 'editDns.loadBalancerIP.label'}}</label>
+        {{#input-or-display editable=editing value=model.loadBalancerIP}}
+          {{input class="form-control input-sm"
+              type="text"
+              value=model.loadBalancerIP
+              placeholder=(t 'editDns.loadBalancerIP.placeholder')
+          }}
+        {{/input-or-display}}
+      </div>
+      <div class="col span-6">
+        {{form-value-array
+          initialValues=model.loadBalancerSourceRanges
+          addActionLabel='editDns.loadBalancerSourceRanges.addActionLabel'
+          valueLabel='editDns.loadBalancerSourceRanges.value'
+          valuePlaceholder='editDns.loadBalancerSourceRanges.placeholder'
+          changed=(action (mut model.loadBalancerSourceRanges))
+          editing=editing
+        }}
+      </div>
+    </div>
+    {{#if (eq model.externalTrafficPolicy 'Local')}}
+      <div class="row mb-20">
+        <div class="col span-6">
+          <label class="acc-label pb-5">{{t 'editDns.healthCheckNodePort.label'}}</label>
+          {{input-integer min="0" max="65535" step="1" value=model.healthCheckNodePort classNames="form-control" placeholder=(t 'editDns.healthCheckNodePort.placeholder')}}
+        </div>
+      </div>
+    {{/if}}
+  {{/if}}
+
+  <hr class="mt-30 mb-30" />
 
   {{#accordion-list showExpandAll=false as | al expandFn |}}
     {{form-labels-annotations

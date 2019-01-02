@@ -13,6 +13,9 @@ import {
 } from 'ui/models/service';
 import ChildHook from 'shared/mixins/child-hook';
 
+const LOAD_BALANCER = 'LoadBalancer';
+const NODE_PORT = 'NodePort';
+const EXTERNAL_NAME = 'ExternalName';
 const KIND_CHOICES = [
   {
     label: 'editDns.kind.clusterIP',
@@ -20,15 +23,15 @@ const KIND_CHOICES = [
   },
   {
     label: 'editDns.kind.loadBalancer',
-    value: 'LoadBalancer'
+    value: LOAD_BALANCER
   },
   {
     label: 'editDns.kind.nodePort',
-    value: 'NodePort'
+    value: NODE_PORT
   },
   {
     label: 'editDns.kind.externalName',
-    value: 'ExternalName'
+    value: EXTERNAL_NAME
   },
 ]
 
@@ -88,6 +91,19 @@ export default Component.extend(ViewNewEdit, ChildHook, {
     }
   }),
 
+  kindDidChange: observer('model.kind', function() {
+    const kind = get(this, 'model.kind');
+
+    switch (kind) {
+    case LOAD_BALANCER:
+    case NODE_PORT:
+      set(this, 'model.externalTrafficPolicy', 'Cluster');
+      break;
+    default:
+      set(this, 'model.externalTrafficPolicy', null);
+    }
+  }),
+
   namespaceDidChange: observer('namespace.id', function() {
     if (get(this, 'recordType') === 'workload') {
       if ( get(this, 'model.targetWorkloads').some((target) => target.namespaceId !== get(this, 'namespace.id')) ) {
@@ -128,8 +144,16 @@ export default Component.extend(ViewNewEdit, ChildHook, {
       return false;
     }
 
-    if ( get(this, 'model.kind') === 'LoadBalancer' && get(this, 'isNew') ) {
-      set(this, 'model.clusterIp', '');
+    if ( get(this, 'isNew') ) {
+      switch (get(this, 'model.kind')) {
+      case LOAD_BALANCER:
+      case NODE_PORT:
+      case EXTERNAL_NAME:
+        set(this, 'model.clusterIp', '');
+        break;
+      default:
+        set(this, 'model.clusterIp', 'None');
+      }
     }
 
     return this.applyHooks('_beforeSaveHooks').then(() => {
