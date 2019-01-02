@@ -274,11 +274,13 @@ export default Component.extend({
     const out                = [];
     const { workload }       = this;
     let volumes              = workload.volumes || [];
-    let volumeClaimTemplates = workload.statefulSetConfig ? workload.statefulSetConfig.volumeClaimTemplates : [];
+    let volumeClaimTemplates = workload.statefulSetConfig && workload.statefulSetConfig.volumeClaimTemplates ? workload.statefulSetConfig.volumeClaimTemplates : [];
 
-    volumeClaimTemplates.forEach((vct) => {
-      set(vct, 'isVolumeClaimTemplate', true);
-    });
+    if (volumeClaimTemplates.length > 0) {
+      volumeClaimTemplates.forEach((vct) => {
+        set(vct, 'isVolumeClaimTemplate', true);
+      });
+    }
 
     let allVolumes           = [].concat(volumes.slice(), volumeClaimTemplates.slice());
 

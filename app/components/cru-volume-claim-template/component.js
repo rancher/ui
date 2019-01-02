@@ -1,5 +1,5 @@
 import { inject as service } from '@ember/service';
-import { alias, gt } from '@ember/object/computed';
+import { gt } from '@ember/object/computed';
 import { get, set, computed } from '@ember/object';
 import { parseSi } from 'shared/utils/parse-unit';
 import Component from '@ember/component';
@@ -70,7 +70,7 @@ export default Component.extend(ViewNewEdit, ChildHook, {
       const disabled = state !== 'available';
 
       if ( disabled ) {
-        lauel += ` (${  state  })`;
+        label += ` (${  state  })`;
       }
 
       return {
