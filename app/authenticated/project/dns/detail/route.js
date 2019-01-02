@@ -7,9 +7,9 @@ export default Route.extend({
     const store = get(this, 'store');
 
     return hash({
-      dnsRecords: store.findAll('dnsRecord'),
+      dnsRecords: store.findAll('service'),
       workloads:  store.findAll('workload'),
-      record:     store.find('dnsRecord', params.record_id),
+      record:     store.find('service', params.record_id),
     });
   },
 });

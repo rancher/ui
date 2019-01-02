@@ -10,7 +10,7 @@ import layout from './template';
 import Errors from 'ui/utils/errors';
 import {
   ARECORD, CNAME, ALIAS, WORKLOAD, SELECTOR
-} from 'ui/models/dnsrecord';
+} from 'ui/models/service';
 import ChildHook from 'shared/mixins/child-hook';
 
 export default Component.extend(ViewNewEdit, ChildHook, {

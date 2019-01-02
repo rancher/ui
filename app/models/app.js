@@ -49,8 +49,8 @@ const App = Resource.extend(StateCounts, EndpointPorts, {
       }
     });
   }),
-  dnsRecords: computed('namespace.dnsRecords.@each.labels', function() {
-    return (get(this, 'namespace.dnsRecords') || []).filter((item) => {
+  dnsRecords: computed('namespace.services.@each.labels', function() {
+    return (get(this, 'namespace.services') || []).filter((item) => {
       if ( item['labels'] ) {
         return item['labels']['io.cattle.field/appId'] === get(this, 'name');
       }

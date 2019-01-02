@@ -40,7 +40,6 @@ export default Route.extend(Preload, {
               this.preload('persistentVolume', 'clusterStore'),
               this.preload('pod'),
               this.preload('workload'),
-              this.preload('dnsRecord'),
               this.preload('secret'),
               this.preload('service'),
               this.preload('configmap'),

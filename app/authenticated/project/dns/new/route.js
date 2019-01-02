@@ -7,12 +7,12 @@ export default Route.extend({
     const store = get(this, 'store');
 
     const deps = {
-      dnsRecords: store.findAll('dnsRecord'),
+      dnsRecords: store.findAll('service'),
       workloads:  store.findAll('workload'),
     };
 
     if ( get(params, 'id') ) {
-      deps['existing'] = store.find('dnsRecord', params.id);
+      deps['existing'] = store.find('service', params.id);
     }
 
     return hash(deps, 'Load dependencies').then((hash) => {
@@ -38,7 +38,7 @@ export default Route.extend({
         delete hash.existing;
       } else {
         record = store.createRecord({
-          type:        'dnsRecord',
+          type:        'service',
           namespaceId,
           ipAddresses: [''],
         });

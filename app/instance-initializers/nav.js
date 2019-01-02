@@ -9,7 +9,7 @@ const rootNav = [
     localizedLabel:  'nav.containers.tab',
     route:           'authenticated.project.index',
     ctx:             [getProjectId],
-    resource:        ['workload', 'ingress', 'dnsrecord'],
+    resource:        ['workload', 'ingress', 'service'],
     resourceScope:   'project',
     moreCurrentWhen: [
       'containers', 'workload',
