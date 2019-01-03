@@ -112,6 +112,10 @@ $nav-spacing: 4px;
       padding: 10px 20px 10px 10px;
       background: $accent-bg;
     }
+
+    > div:hover {
+      background: darken($header, 5%);
+    }
   }
 
   .nav-item {
@@ -245,6 +249,8 @@ $nav-spacing: 4px;
 
 .project-menu {
   overflow: hidden;
+  border: 0;
+  box-shadow: $darken-helper 0 0 7px;
 
   $labels: 22px;
   $item: 50px;
@@ -270,8 +276,7 @@ $nav-spacing: 4px;
   .clusters {
     grid-column-start: 1;
     grid-row-start: 2;
-
-    border-right: 1px solid black;
+    border-right: 1px solid $table-border-color;
     background-color: $accent-bg;
   }
 
@@ -280,7 +285,7 @@ $nav-spacing: 4px;
     grid-row-start: 2;
   }
 
-  .global, .search {
+  .global {
     border-bottom: 1px solid $accent-border;
     background-color: $accent-one;
   }
@@ -295,11 +300,12 @@ $nav-spacing: 4px;
     grid-column-start: 2;
     grid-row-start: 1;
     padding: 5px 10px;
+    background-color: $primary;
   }
 
   .search-match {
     font-weight: bold;
-    background-color: yellow;
+    background-color: lighten($warning, 25);
   }
 
   .item {
@@ -307,13 +313,18 @@ $nav-spacing: 4px;
     padding: 5px 10px;
     @include hand;
 
+    &.project {
+      A {
+        display: block;
+        padding: 5px 10px;
+      }
+    }
+
+
     &.project:hover {
       background-color: $secondary;
       A, .state {
         color: white;
-      }
-      A {
-        text-decoration: underline;
       }
     }
 
@@ -351,13 +362,17 @@ $nav-spacing: 4px;
     }
   }
 
+  .global {
+    A {
+      display: block;
+      padding: 5px 10px;
+      background-color: $secondary;
+    }
+  }
   .global LI:hover, LI.hover {
-    background-color: $secondary;
+
     A, .state {
       color: white;
-    }
-    A {
-      text-decoration: underline;
     }
   }
 }
