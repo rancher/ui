@@ -152,7 +152,7 @@ export default Component.extend(ViewNewEdit, ChildHook, {
         set(this, 'model.clusterIp', '');
         break;
       default:
-        set(this, 'model.clusterIp', 'None');
+        set(this, 'model.clusterIp', null);
       }
     }
 
