@@ -23,6 +23,7 @@ export default Resource.extend(Grafana, ResourceUsage, {
   machines:                    alias('nodes'),
   roleTemplateBindings:        alias('clusterRoleTemplateBindings'),
   isGKE:                       equal('driver', 'googleKubernetesEngine'),
+
   getAltActionDelete: computed('action.remove', function() { // eslint-disable-line
     return get(this, 'canBulkRemove') ? 'delete' : null;
   }),
@@ -170,6 +171,19 @@ export default Resource.extend(Grafana, ResourceUsage, {
     return out;
   }),
 
+  availableActions: computed('actionLinks.{rotateCertificates}', function() {
+    const a = get(this, 'actionLinks') || {};
+
+    return [
+      {
+        label:     'action.rotate',
+        icon:      'icon icon-history',
+        action:    'rotateCertificates',
+        enabled:   !!a.rotateCertificates,
+      },
+    ];
+  }),
+
   actions: {
     promptDelete() {
       const hasSessionToken = get(this, 'canBulkRemove') ? false : true; // canBulkRemove returns true of the session token is set false
@@ -204,6 +218,11 @@ export default Resource.extend(Grafana, ResourceUsage, {
         pool.incrementQuantity(1);
       }
     },
+
+    rotateCertificates() {
+      return this.doAction('rotateCertificates');
+    },
+
   },
 
   clearProvidersExcept(keep) {
