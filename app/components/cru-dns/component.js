@@ -36,14 +36,15 @@ const KIND_CHOICES = [
 ]
 
 export default Component.extend(ViewNewEdit, ChildHook, {
-  intl: service(),
+  intl:         service(),
+  capabilities: service(),
 
   layout,
   model: null,
 
   recordType:     null,
   timeoutSeconds: null,
-  kindChoices:    KIND_CHOICES,
+  kindChoices:    null,
 
   namespace:       alias('model.namespace'),
   init() {
@@ -55,6 +56,8 @@ export default Component.extend(ViewNewEdit, ChildHook, {
     if ( get(this, 'model.sessionAffinityConfig.clientIP.timeoutSeconds') ) {
       set(this, 'timeoutSeconds',  get(this, 'model.sessionAffinityConfig.clientIP.timeoutSeconds'));
     }
+
+    this.initKindChoices();
   },
 
   actions: {
@@ -129,6 +132,26 @@ export default Component.extend(ViewNewEdit, ChildHook, {
 
     return (get(this, 'workloads') || []).filter((w) => get(w, 'namespaceId') === namespaceId);
   }),
+
+  initKindChoices() {
+    const loadBalancerCapabilites = get(this, 'capabilities.loadBalancerCapabilites');
+
+    set(this, 'kindChoices', KIND_CHOICES.map((k) => {
+      let disabled = false;
+
+      if ( !loadBalancerCapabilites.l4LoadBalancerEnabled && get(k, 'value') === 'LoadBalancer' ) {
+        disabled = true
+      }
+
+      let out = {
+        label: get(k, 'label'),
+        value: get(k, 'value'),
+        disabled
+      };
+
+      return out;
+    }));
+  },
 
   willSave() {
     get(this, 'model').clearTypesExcept(get(this, 'recordType'));
