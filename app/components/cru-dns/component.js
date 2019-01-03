@@ -200,7 +200,7 @@ export default Component.extend(ViewNewEdit, ChildHook, {
 
     switch ( get(this, 'recordType') ) {
     case ARECORD:
-      if ( get(this, 'model.ipAddresses.length') < 1 ) {
+      if ( !(get(this, 'model.ipAddresses') || []).any((ip) => ip) ) {
         errors.pushObject(intl.t('editDns.errors.targetRequired'));
       }
       break;
