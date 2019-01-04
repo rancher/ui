@@ -1,6 +1,6 @@
 import { inject as service } from '@ember/service';
 import Route from '@ember/routing/route';
-import { get } from '@ember/object';
+import { get, set } from '@ember/object';
 
 export default Route.extend({
   access:  service(),
@@ -17,6 +17,8 @@ export default Route.extend({
 
   model(params) {
     const project = this.modelFor('authenticated.project').get('project');
+
+    set(params, 'project', project);
 
     return get(this, 'catalog').fetchTemplates(params)
       .then((res) => {
