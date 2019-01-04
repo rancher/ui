@@ -220,7 +220,9 @@ export default Resource.extend(Grafana, ResourceUsage, {
     },
 
     rotateCertificates() {
-      return this.doAction('rotateCertificates');
+      const model = this;
+
+      get(this, 'modalService').toggleModal('modal-rotate-certificates', { model });
     },
 
   },
