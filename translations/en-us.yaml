@@ -912,8 +912,8 @@ editDns:
     placeholder: e.g. myapp
   sessionAffinity:
     title: Session Affinity
-    detail: Used to maintain session affinity
-    label: Enable client IP based session affinity
+    detail: Map connections to a consistent target based on their source IP
+    label: Enable session affinity
   externalIPs:
     addActionLabel: Add External IP
     placeholder: e.g. 80.11.12.10
@@ -933,16 +933,19 @@ editDns:
     local: Local
     cluster: Cluster
   publishNotReadyAddresses:
-    label: Publish Not Ready Addresses
+    label: Published IP Addresses
+    readyOnly: Only ready endpoints
+    all: All endpoints
   sessionAffinityConfig:
     label: Session Sticky Time
     placeholder: e.g. 10800
   kind:
-    label: Kind
-    clusterIP: ClusterIP
-    loadBalancer: LoadBalancer
-    nodePort: NodePort
+    label: As a
+    clusterIP: Cluster IP (Internal Only)
+    loadBalancer: Layer-4 Load Balancer
+    nodePort: NodePort(On every node)
     externalName: ExternalName
+    headless: Headless Service
   description:
     placeholder: e.g. Current version of MyApp
   selector:

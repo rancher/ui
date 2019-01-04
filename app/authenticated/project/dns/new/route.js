@@ -43,6 +43,7 @@ export default Route.extend({
           ipAddresses:     [''],
           sessionAffinity: 'None',
           kind:            'ClusterIP',
+          clusterIp:       'None',
         });
       }
 

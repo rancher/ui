@@ -19,7 +19,6 @@ const FIELD_MAP = {
   [ALIAS]:     'targetDnsRecordIds',
   [WORKLOAD]:  'targetWorkloadIds',
   [SELECTOR]:  'selector',
-  [CLUSTERIP]: 'clusterIp',
 };
 
 export default Resource.extend({

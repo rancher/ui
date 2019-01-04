@@ -16,10 +16,16 @@ import ChildHook from 'shared/mixins/child-hook';
 const LOAD_BALANCER = 'LoadBalancer';
 const NODE_PORT = 'NodePort';
 const EXTERNAL_NAME = 'ExternalName';
+const CLUSTER_IP = 'ClusterIP';
+const HEADLESS = 'Headless';
 const KIND_CHOICES = [
   {
+    label: 'editDns.kind.headless',
+    value: HEADLESS
+  },
+  {
     label: 'editDns.kind.clusterIP',
-    value: 'ClusterIP'
+    value: CLUSTER_IP
   },
   {
     label: 'editDns.kind.loadBalancer',
@@ -28,10 +34,6 @@ const KIND_CHOICES = [
   {
     label: 'editDns.kind.nodePort',
     value: NODE_PORT
-  },
-  {
-    label: 'editDns.kind.externalName',
-    value: EXTERNAL_NAME
   },
 ]
 
@@ -94,30 +96,59 @@ export default Component.extend(ViewNewEdit, ChildHook, {
     }
   }),
 
-  kindDidChange: observer('model.kind', function() {
-    const kind = get(this, 'model.kind');
+  kindDidChange: observer('kind', function() {
+    let kind = get(this, 'kind');
 
-    switch (kind) {
-    case LOAD_BALANCER:
-    case NODE_PORT:
+    if ( kind === HEADLESS ) {
+      kind = CLUSTER_IP;
+      set(this, 'model.clusterIp', 'None');
+    } else {
+      set(this, 'model.clusterIp', '');
+    }
+
+    if ( kind === LOAD_BALANCER || kind === NODE_PORT ) {
       set(this, 'model.externalTrafficPolicy', 'Cluster');
-      break;
-    default:
+    } else {
       set(this, 'model.externalTrafficPolicy', null);
     }
+
+    set(this, 'model.kind', kind);
   }),
 
   namespaceDidChange: observer('namespace.id', function() {
     if (get(this, 'recordType') === 'workload') {
       if ( get(this, 'model.targetWorkloads').some((target) => target.namespaceId !== get(this, 'namespace.id')) ) {
-        set(this, 'model.targetWorkloadIds', null);
-        set(this, 'recordType', null);
-
+        setProperties(this, {
+          'model.targetWorkloadIds': null,
+          recordType:                null
+        })
         next(() => {
           set(this, 'recordType', 'workload');
         });
       }
     }
+  }),
+
+  recordTypeDidChange: observer('recordType', function() {
+    const recordType = get(this, 'recordType');
+
+    if ( recordType === CNAME ) {
+      set(this, 'kind', EXTERNAL_NAME);
+    } else {
+      set(this, 'kind', HEADLESS);
+    }
+  }),
+
+  showSessionAffinity: computed('isHeadless', 'showMoreOptions', function() {
+    return get(this, 'showMoreOptions') && get(this, 'kind') !== HEADLESS;
+  }),
+
+  showMoreOptions: computed('recordType', 'kind', function() {
+    return CNAME !==  get(this, 'recordType');
+  }),
+
+  isHeadless: computed('kind', function() {
+    return get(this, 'kind') === HEADLESS;
   }),
 
   /*
@@ -135,6 +166,12 @@ export default Component.extend(ViewNewEdit, ChildHook, {
 
   initKindChoices() {
     const loadBalancerCapabilites = get(this, 'capabilities.loadBalancerCapabilites');
+
+    if ( get(this, 'model.kind') === CLUSTER_IP && get(this, 'model.clusterIp') === null ) {
+      set(this, 'kind', HEADLESS);
+    } else if ( get(this, 'model.kind') ) {
+      set(this, 'kind', get(this, 'model.kind'));
+    }
 
     set(this, 'kindChoices', KIND_CHOICES.map((k) => {
       let disabled = false;
@@ -165,18 +202,6 @@ export default Component.extend(ViewNewEdit, ChildHook, {
 
     if ( get(errors, 'length') !== 0 ) {
       return false;
-    }
-
-    if ( get(this, 'isNew') ) {
-      switch (get(this, 'model.kind')) {
-      case LOAD_BALANCER:
-      case NODE_PORT:
-      case EXTERNAL_NAME:
-        set(this, 'model.clusterIp', '');
-        break;
-      default:
-        set(this, 'model.clusterIp', null);
-      }
     }
 
     return this.applyHooks('_beforeSaveHooks').then(() => {
