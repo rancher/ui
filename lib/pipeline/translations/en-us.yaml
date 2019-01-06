@@ -100,54 +100,57 @@ newPipelineStep:
         http: '<code>USERNAME</code> and <code>PASSWORD</code> in the secret will be used as username and password.'
         ssh: '<code>DEPLOY_KEY</code> in the secret will be used as deploy key.'
       stepName: Publish Catalog App
-      targets: 
+      targets:
         label: Protocal
         http: Push to Git with HTTP(S)
         ssh: Push to Git with SSH
-      path: 
+      path:
         label: Chart Folder
         placeholder: e.g. ./charts/wordpress/latest
         helpText: 'The folder path where <code style="padding: 2px 5px;">Chart.yaml</code> is in the repository.'
-      catalog: 
+      catalog:
         label: Catalog App Name
         placeholder: e.g. wordpress
         helpText: The name of the app want to publish.
-      version: 
+      version:
         label: Catalog App Version
         placeholder: e.g. latest
         helpText: The version of the app you want to publish.
-      gitUrl: 
+      gitUrl:
         label: Git URL
-        placeholder: 
+        placeholder:
           ssh: e.g. git@github.com:myrepo/charts.git
           http: e.g. https://github.com/myrepo/charts.git
         helpText: The Git URL where the app will be published to.
         error: The Git URL should start with http or https.
-      gitBranch: 
+      gitBranch:
         label: Git Branch
         placeholder: e.g. dev
         helpText: The Git branch which the app will be published to.
-      gitAuthor: 
+      gitAuthor:
         label: Author Name
         placeholder: e.g. user
         helpText: The author name used in the commit message.
-      gitEmail: 
+      gitEmail:
         label: Author Email
         placeholder: user@example.com
         helpText: The author email used in the commit message.
 
-        
+
     applyApp:
       label: Deploy App
       stepName: Deploy Catalog App
-      catalog: 
+      catalog:
         label: Catalog
-      version: 
-        label: App Version
+      template:
+        label: Template Name
+        helpText: You can select an existing template or input a new template name.
+      version:
+        label: Template Version
         helpText: You can select an existing version or input a new version.
-      name: 
+      name:
         label: App Name
-        helpText: You can select an existing app or input a new name.
+        placeholder: e.g. myapp
       targetNamespace:
         label: Namespace
         helpText: The target namespace where you want to deploy this app.
@@ -274,7 +277,7 @@ authPage:
       clientSecret:
         labelText: Client Secret
   bitbucketcloud:
-    target: 
+    target:
       header: '1. Choose the Bitbucket type you want to use'
       bitbucketserver: 'Use private Bitbucket Server steup'
       bitbucketcloud: 'Use public Bitbucket Cloud'
@@ -299,7 +302,7 @@ authPage:
   bitbucketserver:
     warning: Bitbucket server webhooks need to do SSL verification, please ensure that {appName} server’s certificate is trusted by the bitbucket server. More info can be found <a href="https://rancher.com/docs/rancher/v2.x/en/tools/pipelines/configurations/#1-configuring-version-control-providers" target="_blank" rel="nofollow noopener noreferrer">here</a>.
     copy: Click the icon to copy it
-    target: 
+    target:
       header: '1. Choose the Bitbucket type you want to use'
       bitbucketserver: 'Use private Bitbucket Server steup'
       bitbucketcloud: 'Use public Bitbucket Cloud'
