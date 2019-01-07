@@ -12,22 +12,22 @@
         class="form-control"
         content=catalogs
         allowCustom=true
-        value=config.applyAppConfig.catalog
+        value=selectedCatalog
         optionValuePath="id"
         optionLabelPath="name"
       }}
     </div>
     <div class="col span-6">
-      <label class='acc-label pb-5'>{{t 'newPipelineStep.stepType.applyApp.name.label'}}{{field-required}}</label>
+      <label class='acc-label pb-5'>{{t 'newPipelineStep.stepType.applyApp.template.label'}}{{field-required}}</label>
       {{searchable-select
         class="form-control"
         content=apps
         allowCustom=true
-        value=config.applyAppConfig.name
+        value=config.applyAppConfig.catalog
         optionValuePath="id"
         optionLabelPath="name"
       }}
-      <p class="text-info text-small m-0">{{t 'newPipelineStep.stepType.applyApp.name.helpText'}}</p>
+      <p class="text-info text-small m-0">{{t 'newPipelineStep.stepType.applyApp.template.helpText'}}</p>
     </div>
   </div>
   <div class='row'>
@@ -51,6 +51,12 @@
         <p class="text-info text-small m-0">{{t 'newPipelineStep.stepType.applyApp.targetNamespace.helpText'}}</p>
     </div>
   </div>
+  <div class='row'>
+    <div class="col span-6">
+      <label class='acc-label pb-5'>{{t 'newPipelineStep.stepType.applyApp.name.label'}}{{field-required}}</label>
+      {{input class="form-control" value=config.applyAppConfig.name placeholder=(t 'newPipelineStep.stepType.applyApp.name.placeholder')}}
+    </div>
+  </div>
   <div>
     {{form-key-value
       initialMap=config.applyAppConfig.answers
@@ -59,7 +65,7 @@
       addActionLabel="newCatalog.answers.addAction"
     }}
   </div>
-  {{#advanced-section}}  
+  {{#advanced-section}}
     {{pipeline-condition type="step" config=config.when}}
   {{/advanced-section}}
   {{top-errors errors=errors}}
