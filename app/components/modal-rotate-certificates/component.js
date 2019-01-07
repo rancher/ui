@@ -23,9 +23,7 @@ export default Component.extend(ModalBase, {
   },
 
   didReceiveAttrs() {
-    let { services } = this.modalOpts.model.rancherKubernetesEngineConfig;
-
-    set(this, 'services', Object.keys((services || {})).sort());
+    set(this, 'services', this.modalOpts.serviceDefaults);
   },
 
   actions: {
@@ -46,6 +44,7 @@ export default Component.extend(ModalBase, {
           }
         })
     },
+
     mutServices(select) {
       set(this, 'selectedServices', select);
     }

@@ -10,6 +10,7 @@ import C from 'ui/utils/constants';
 
 export default Resource.extend(Grafana, ResourceUsage, {
   globalStore: service(),
+  store:       service(),
   growl:       service(),
   scope:       service(),
   router:      service(),
@@ -222,7 +223,10 @@ export default Resource.extend(Grafana, ResourceUsage, {
     rotateCertificates() {
       const model = this;
 
-      get(this, 'modalService').toggleModal('modal-rotate-certificates', { model });
+      get(this, 'modalService').toggleModal('modal-rotate-certificates', {
+        model,
+        serviceDefaults: get(this, 'globalStore').getById('schema', 'rotatecertificateinput').optionsFor('services'),
+      });
     },
 
   },
