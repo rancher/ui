@@ -4,6 +4,7 @@ import { computed, get, set } from '@ember/object';
 import { equal } from '@ember/object/computed';
 import { arrayOfReferences } from 'ember-api-store/utils/denormalize';
 import { inject as service } from '@ember/service';
+import EndpointPorts from 'ui/mixins/endpoint-ports';
 
 export const ARECORD = 'arecord';
 export const CNAME = 'cname';
@@ -21,7 +22,7 @@ const FIELD_MAP = {
   [SELECTOR]:  'selector',
 };
 
-export default Resource.extend({
+var Service = Resource.extend(EndpointPorts, {
   clusterStore:     service(),
   router:           service(),
   intl:             service(),
@@ -211,3 +212,19 @@ export default Resource.extend({
     });
   },
 });
+
+Service.reopenClass({
+  mangleIn(data) {
+    if ( data ) {
+      const publicEndpoints = get(data, 'publicEndpoints') || [];
+
+      publicEndpoints.forEach((endpoint) => {
+        endpoint.type = 'publicEndpoint';
+      });
+    }
+
+    return data;
+  }
+});
+
+export default Service;
