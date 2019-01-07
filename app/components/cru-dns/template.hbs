@@ -134,6 +134,7 @@
             content=kindChoices
             value=kind
             localizedLabel=true
+            disabled=(not editing)
         }}
       </div>
       {{#unless isHeadless}}
@@ -212,7 +213,7 @@
   {{/if}}
 
   <hr class="mt-30 mb-30" />
-    {{form-service-ports model=model editing=true}}
+    {{form-service-ports model=model editing=editing}}
   <hr class="mt-30 mb-30" />
 
   {{#accordion-list showExpandAll=false as | al expandFn |}}
@@ -222,6 +223,7 @@
         expandFn=expandFn
         initialLabels=model.labels
         model=model
+        editing=editing
         setLabels=(action 'setLabels')
     }}
     {{#if showSessionAffinity}}
