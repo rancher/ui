@@ -12,9 +12,6 @@ $nav-spacing: 4px;
   NAV {
     font-size: .9em;
     width: 100%;
-    // border-collapse: collapse;
-    // border-spacing: 0px;
-    // display: table;
     box-sizing: border-box;
     display: -ms-flexbox;
     display: -webkit-box;
@@ -37,9 +34,7 @@ $nav-spacing: 4px;
     > ul {
       background-color: $header;
       border-radius: 3px 0 0 3px;
-      // display: table-cell;
       padding: 0;
-      // width: 100%;
       vertical-align: middle;
 
       &.nav-main {
@@ -82,7 +77,6 @@ $nav-spacing: 4px;
   }
 
   .nav-logo {
-    // display:table-cell;
     height: 48px;
     background-size: auto 32px;
     background-position: left center;
@@ -94,7 +88,6 @@ $nav-spacing: 4px;
 
 
   .nav-user {
-    // display:table-cell;
     border-radius: 0 3px 3px 0;
     margin: 0;
 
@@ -138,7 +131,6 @@ $nav-spacing: 4px;
     }
 
       &:hover {
-        background-color: mix($user-btn, black, 80%);
         color: white;
         text-decoration: none;
 
@@ -288,12 +280,26 @@ $nav-spacing: 4px;
   .global {
     border-bottom: 1px solid $accent-border;
     background-color: $accent-one;
+
+    > ul.list-unstyled {
+      &:first-child {
+        border-right: 1px solid $table-border-color;
+
+      }
+
+      > LI:hover {
+        background-color: $secondary;
+        A, .state {
+          color: white;
+        }
+      }
+
+    }
   }
 
   .global {
     grid-column-start: 1;
     grid-row-start: 1;
-    line-height: 40px;
   }
 
   .search {
@@ -313,22 +319,13 @@ $nav-spacing: 4px;
     padding: 5px 10px;
     @include hand;
 
-    &.project {
-      A {
-        display: block;
-        padding: 5px 10px;
-      }
-    }
 
-
-    &.project:hover {
+    &.project:hover,
+    &.cluster:hover {
       background-color: $secondary;
       A, .state {
         color: white;
       }
-    }
-
-    .top {
     }
 
     &:not(:first-child) {
@@ -365,14 +362,7 @@ $nav-spacing: 4px;
   .global {
     A {
       display: block;
-      padding: 5px 10px;
-      background-color: $secondary;
-    }
-  }
-  .global LI:hover, LI.hover {
-
-    A, .state {
-      color: white;
+      padding: 10px;
     }
   }
 }
