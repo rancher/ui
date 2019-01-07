@@ -1,0 +1,178 @@
+<section class="header clearfix">
+  {{#if isView}}
+    <div class="right-buttons pull-right">
+      {{badge-state model=model}}
+      {{action-menu
+        model=model
+        showPrimary=false
+        classNames="ml-10 inline-block"
+        size="sm"
+      }}
+    </div>
+  {{/if}}
+
+  <h1>{{title}}</h1>
+</section>
+
+<div class="row">
+  {{#if isView}}
+    {{#if model.description}}
+      {{banner-message
+        color="bg-secondary mb-0 mt-10"
+        message=(linkify model.description)
+      }}
+    {{/if}}
+  {{else}}
+    <div class="col span-6">
+      {{form-name-description
+        model=primaryResource
+        nameRequired=false
+        nameDisabled=isEdit
+        namePlaceholder="cruVolumeClaimTemplate.name.placeholder"
+        descriptionPlaceholder="cruVolumeClaimTemplate.description.placeholder"
+        editing=editing
+        bothColClass="col span-12 mt-0"
+        colClass="col span-12 mt-0"
+      }}
+    </div>
+  {{/if}}
+
+  {{#if selectNamespace}}
+    <div class="col span-6">
+      {{form-namespace
+        namespace=namespace
+        errors=namespaceErrors
+        editing=editing
+        registerHook=(action "registerHook")
+      }}
+    </div>
+  {{/if}}
+</div>
+
+{{#if isView}}
+  {{#if primaryResource.storageClass}}
+    <div class="row">
+      <div class="col span-6">
+        <label class="acc-label">{{t "cruVolumeClaimTemplate.source.label"}}</label>
+        <div>
+          {{t "cruVolumeClaimTemplate.source.storageClass"}}
+        </div>
+      </div>
+      <div class="col span-6">
+        <label class="acc-label">{{t "cruVolumeClaimTemplate.storageClass.label"}}</label>
+        <div>
+          <a href="{{href-to "authenticated.cluster.storage.classes.detail.index" scope.currentCluster.id primaryResource.storageClass.id}}">
+            {{primaryResource.storageClass.displayName}}
+          </a>
+        </div>
+      </div>
+    </div>
+  {{else if primaryResource.persistentVolume}}
+    <div class="row">
+      <div class="col span-6">
+        <label class="acc-label">{{t "cruVolumeClaimTemplate.pv.label"}}</label>
+        <div>
+          {{t "cruVolumeClaimTemplate.source.pv"}}
+        </div>
+      </div>
+      <div class="col span-6">
+        <label class="acc-label">{{t "cruVolumeClaimTemplate.storageClass.label"}}</label>
+        <div>
+          <a href="{{href-to "authenticated.cluster.storage.persistent-volumes.detail.index" scope.currentCluster.id primaryResource.persistentVolume.id}}">
+            {{primaryResource.persistentVolume.displayName}}
+          </a>
+        </div>
+      </div>
+    </div>
+  {{/if}}
+{{else}}
+  <div class="row">
+    <div class="col span-6">
+      <label class="acc-label">{{t "cruVolumeClaimTemplate.source.label"}}</label>
+      <div class="radio">
+        <label class="{{unless canUseStorageClass "text-muted"}}">
+          {{radio-button selection=useStorageClass value=true disabled=(not canUseStorageClass)}}
+          {{t "cruVolumeClaimTemplate.source.storageClass"}}
+        </label>
+      </div>
+      <div class="radio">
+        <label>
+          {{radio-button selection=useStorageClass value=false}}
+          {{t "cruVolumeClaimTemplate.source.pv"}}
+        </label>
+      </div>
+    </div>
+    <div class="col span-6">
+      {{#if useStorageClass}}
+        <label class="acc-label">{{t "cruVolumeClaimTemplate.storageClass.label"}}</label>
+        {{new-select
+          content=storageClasses
+          prompt="cruVolumeClaimTemplate.storageClass.prompt"
+          localizedPrompt=true
+          optionLabelPath="displayName"
+          optionValuePath="id"
+          required=true
+          value=primaryResource.storageClassId
+        }}
+
+        <label class="acc-label mt-20">{{t "cruVolumeClaimTemplate.capacity.label"}}{{field-required editing=editing}}</label>
+        <div class="input-group">
+          {{input-number
+            classNames="form-control"
+            value=capacity
+          }}
+          <span class="input-group-addon bg-default">{{t "cruVolumeClaimTemplate.capacity.unit"}}</span>
+        </div>
+      {{else}}
+        <label class="acc-label">{{t "cruVolumeClaimTemplate.pv.label"}}</label>
+        {{new-select
+          content=persistentVolumeChoices
+          prompt="cruVolumeClaimTemplate.pv.prompt"
+          localizedPrompt=true
+          required=true
+          value=primaryResource.volumeId
+        }}
+      {{/if}}
+    </div>
+  </div>
+{{/if}}
+
+<hr/>
+
+{{#accordion-list showExpandAll=false as | al expandFn |}}
+  {{#accordion-list-item
+    title=(t "cruVolumeClaimTemplate.customize.title")
+    detail=(t "cruVolumeClaimTemplate.customize.detail")
+    expandAll=expandAll
+    expand=(action expandFn)
+    everExpanded=true
+  }}
+    <div class="row">
+      <div class="col span-6">
+        {{form-access-modes
+          model=primaryResource
+          mode=mode
+        }}
+      </div>
+    </div>
+  {{/accordion-list-item}}
+  {{#if isView}}
+    {{resource-event-list
+      resourceType=(t "generic.persistentVolumeClaim")
+      expandAll=al.expandAll
+      expandFn=expandFn
+      namespaceId=model.namespaceId
+      name=model.name
+      kind="PersistentVolumeClaim"
+    }}
+  {{/if}}
+{{/accordion-list}}
+
+{{#unless isView}}
+  {{top-errors errors=errors}}
+  {{save-cancel
+    createLabel=(if actuallySave "saveCancel.create" "cruVolumeClaimTemplate.define.addActionLabel")
+    save="save"
+    cancel="viewEditCancel"
+  }}
+{{/unless}}

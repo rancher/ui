@@ -3,16 +3,17 @@ import Component from '@ember/component';
 import layout from './template';
 import { next } from '@ember/runloop'
 import { get, set, computed } from '@ember/object';
-import { NEW_VOLUME, NEW_PVC } from '../form-volumes/component';
+import { NEW_VOLUME, NEW_PVC, NEW_VCT } from '../form-volumes/component';
 
 export default Component.extend({
   modalService: service('modal'),
 
   layout,
-  tagName: '',
-  editing: true,
+  tagName:  '',
+  editing:  true,
+  pvcs:     null,
+  workload: null,
 
-  pvcs:       null,
   init() {
     this._super(...arguments);
     set(this, 'pvcs', get(this, 'store').all('persistentVolumeClaim'));
@@ -25,7 +26,11 @@ export default Component.extend({
       next(() => {
         this.send('defineNewVolume');
       });
-    }  else if ( mode  ===  NEW_PVC ) {
+    }  else if ( mode === NEW_VCT ) {
+      next(() => {
+        this.send('defineNewVct');
+      });
+    } else if ( mode  ===  NEW_PVC ) {
       next(() => {
         this.send('defineNewPvc');
       });
@@ -50,6 +55,22 @@ export default Component.extend({
           set(this, 'model.pvc', pvc);
           if ( !get(this, 'model.volume.name') ) {
             set(this, 'model.volume.name', get(pvc, 'name'));
+          }
+        },
+      });
+    },
+
+    defineNewVct() {
+      const { modalService } = this;
+
+      modalService.toggleModal('modal-new-vct', {
+        model:     get(this, 'model.vct'),
+        namespace: get(this, 'namespace'),
+        callback:  (vct) => {
+          set(this, 'model.vct', vct);
+
+          if ( !get(this, 'model.name') ) {
+            set(this, 'model.name', get(vct, 'name'));
           }
         },
       });

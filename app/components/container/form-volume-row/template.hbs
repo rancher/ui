@@ -2,7 +2,7 @@
   {{#if (eq model.mode "customLogPath")}}
     <div class="row">
       <div class="col span-10">
-        {{t 'formVolumeRow.customLogPath.helpText'}}
+        {{t "formVolumeRow.customLogPath.helpText"}}
       </div>
       {{#if editing}}
         <div class="col span-2 text-right mt-0">
@@ -15,26 +15,45 @@
     </div>
   {{else}}
     <div class="row">
+      {{#if (eq model.mode "newVolumeClaimTemplate")}}
+        {{banner-message
+          icon="icon-alert"
+          color="bg-warning mb-10 mt-10"
+          message=(t "formVolumeRow.volumeClaimTemplateName.vctWarning" htmlSafe=true)
+        }}
+      {{/if}}
       <div class="col span-6">
-        <label class="acc-label">{{t 'formVolumeRow.name.label'}}</label>
-        {{#input-or-display editable=editing value=model.volume.name}}
-          {{input type="text" value=model.volume.name placeholder=(t 'formVolumeRow.name.placeholder')}}
-        {{/input-or-display}}
+        {{#if (eq model.mode "newVolumeClaimTemplate")}}
+          <label class="acc-label">{{t "formVolumeRow.volumeClaimTemplateName.label"}}</label>
+          {{#input-or-display editable=editing value=model.name}}
+            {{input type="text" value=model.name placeholder=(t "formVolumeRow.volumeClaimTemplateName.placeholder")}}
+          {{/input-or-display}}
+        {{else}}
+          <label class="acc-label">{{t "formVolumeRow.name.label"}}</label>
+          {{#input-or-display editable=editing value=model.volume.name}}
+            {{input type="text" value=model.volume.name placeholder=(t "formVolumeRow.name.placeholder")}}
+          {{/input-or-display}}
+        {{/if}}
       </div>
       <div class="col span-4">
-        <label class="acc-label">{{t 'formVolumeRow.mode.label'}}</label>
+        <label class="acc-label">{{t "formVolumeRow.mode.label"}}</label>
         <div class="form-control-static">
-          {{t (concat 'formVolumeRow.mode.' model.mode)}}
+          {{t (concat "formVolumeRow.mode." model.mode)}}
           {{#if editing}}
             {{#if (eq model.mode "newPvc")}}
-              <button class="btn bg-transparent" {{action 'defineNewPvc'}}>
+              <button class="btn bg-transparent" {{action "defineNewPvc"}}>
                 <i class="icon icon-edit"/>
-                {{t 'generic.edit'}}
+                {{t "generic.edit"}}
+              </button>
+            {{else if (eq model.mode "newVolumeClaimTemplate")}}
+              <button class="btn bg-transparent" {{action "defineNewVct"}}>
+                <i class="icon icon-edit"/>
+                {{t "generic.edit"}}
               </button>
             {{else if (or (eq model.mode "existingVolume") (eq model.mode "newVolume"))}}
-              <button class="btn bg-transparent" {{action 'defineNewVolume'}}>
+              <button class="btn bg-transparent" {{action "defineNewVolume"}}>
                 <i class="icon icon-edit"/>
-                {{t 'generic.edit'}}
+                {{t "generic.edit"}}
               </button>
             {{/if}}
           {{/if}}
@@ -59,7 +78,7 @@
           {{new-select
             value=model.volume.persistentVolumeClaim.persistentVolumeClaimId
             content=pvcChoices
-            prompt=(t 'formVolumeRow.prompt')
+            prompt=(t "formVolumeRow.prompt")
             localizedLabel=false
           }}
         {{else}}
@@ -148,7 +167,7 @@
                     {{#if editing}}
                       <button class="btn bg-primary btn-sm" {{action "removeMount" mnt}}>
                         <i class="icon icon-minus"/>
-                        <span class="sr-only">{{t 'generic.remove'}}</span>
+                        <span class="sr-only">{{t "generic.remove"}}</span>
                       </button>
                     {{/if}}
                   </td>

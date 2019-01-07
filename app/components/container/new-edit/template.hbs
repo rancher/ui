@@ -17,12 +17,12 @@
   </div>
   <div class="col span-11-of-23 mt-0 mb-0 offset-1-of-23">
     {{#if isSidekick}}
-      <label class="acc-label">{{t 'newContainer.containerType.title'}}</label>
+      <label class="acc-label">{{t "newContainer.containerType.title"}}</label>
       <div class="radio">
-        <label>{{radio-button selection=launchConfig.initContainer value=false}} {{t 'newContainer.containerType.standard'}}</label>
+        <label>{{radio-button selection=launchConfig.initContainer value=false}} {{t "newContainer.containerType.standard"}}</label>
       </div>
       <div class="radio">
-        <label>{{radio-button selection=launchConfig.initContainer value=true}} {{t 'newContainer.containerType.init'}}</label>
+        <label>{{radio-button selection=launchConfig.initContainer value=true}} {{t "newContainer.containerType.init"}}</label>
       </div>
     {{else}}
       {{container/form-scale
@@ -46,7 +46,7 @@
     {{container/form-image
       initialValue=launchConfig.image
       errors=imageErrors
-      changed=(action 'setImage')
+      changed=(action "setImage")
     }}
   </div>
 
@@ -75,7 +75,7 @@
 
 <hr class="mt-30 mb-30" />
 {{#accordion-list as | al expandFn | }}
-  {{#if (or (eq scaleMode 'job') (eq scaleMode 'cronJob'))}}
+  {{#if (or (eq scaleMode "job") (eq scaleMode "cronJob"))}}
     {{container/form-job-config
       workload=service
       scaleMode=scaleMode
@@ -86,8 +86,8 @@
   {{/if}}
 
   {{#accordion-list-item
-    title=(t 'newContainer.environment.label')
-    detail=(t 'newContainer.environment.detail' appName=settings.appName)
+    title=(t "newContainer.environment.label")
+    detail=(t "newContainer.environment.detail" appName=settings.appName)
     status=status
     statusClass=statusClass
     expandAll=al.expandAll
@@ -98,7 +98,7 @@
       changed=(action (mut launchConfig.environment))
       allowEmptyValue=true
       editing=true
-      header=(t 'newContainer.environment.label')
+      header=(t "newContainer.environment.label")
       addActionLabel="newContainer.environment.addAction"
       keyLabel="newContainer.environment.keyLabel"
       keyPlaceholder="newContainer.environment.keyPlaceholder"
@@ -125,16 +125,16 @@
       errors=schedulingErrors
       editing=true
       expandAll=null
-      setLabels=(action 'setLabels' 'scheduling')
-      setRequestedHost=(action 'setRequestedHostId')
+      setLabels=(action "setLabels" "scheduling")
+      setRequestedHost=(action "setRequestedHostId")
       expandAll=al.expandAll
       expandFn=expandFn
     }}
   {{/unless}}
 
   {{#accordion-list-item
-    title=(t 'formHealthCheck.title')
-    detail=(t 'formHealthCheck.detail' appName=settings.appName)
+    title=(t "formHealthCheck.title")
+    detail=(t "formHealthCheck.detail" appName=settings.appName)
     status=status
     statusClass=statusClass
     expandAll=al.expandAll
@@ -142,23 +142,23 @@
   }}
     <div class="row">
       <div class="col span-6 mt-0 mb-0">
-        <label class="acc-label">{{t 'formHealthCheck.readiness'}}</label>
+        <label class="acc-label">{{t "formHealthCheck.readiness"}}</label>
       </div>
       <div class="col span-6 mt-0 mb-0">
         {{#if separateLivenessCheck}}
-          <label class="acc-label">{{t 'formHealthCheck.liveness'}}</label>
+          <label class="acc-label">{{t "formHealthCheck.liveness"}}</label>
           <div class="pull-right text-small">
-            <button class="btn bg-transparent p-0" {{action "toggleSeparateLivenessCheck"}}>{{t 'formHealthCheck.combinedLivenessCheck'}}</button>
+            <button class="btn bg-transparent p-0" {{action "toggleSeparateLivenessCheck"}}>{{t "formHealthCheck.combinedLivenessCheck"}}</button>
           </div>
         {{else}}
           <div class="pull-right text-small">
-            <button class="btn bg-transparent p-0" {{action "toggleSeparateLivenessCheck"}}>{{t 'formHealthCheck.separateLivenessCheck'}}</button>
+            <button class="btn bg-transparent p-0" {{action "toggleSeparateLivenessCheck"}}>{{t "formHealthCheck.separateLivenessCheck"}}</button>
           </div>
         {{/if}}
       </div>
     </div>
     <div class="row">
-      <div class="col {{if separateLivenessCheck 'span-6' 'span-12'}}">
+      <div class="col {{if separateLivenessCheck "span-6" "span-12"}}">
         {{form-healthcheck
             initialCheck=launchConfig.readinessProbe
             changed=(action (mut launchConfig.readinessProbe))
@@ -230,7 +230,7 @@
         classNames="accordion-wrapper"
         labelErrors=labelErrors
         initialLabels=service.labels
-        setLabels=(action 'setLabels' 'user')
+        setLabels=(action "setLabels" "user")
         expandAll=al.expandAll
         expandFn=expandFn
         model=service
@@ -264,4 +264,8 @@
 {{/accordion-list}}
 
 {{top-errors errors=errors}}
-{{save-cancel createLabel=(if isUpgrade 'newContainer.saveUpgrade' 'newContainer.saveNew') save="save" cancel="cancel"}}
+{{save-cancel
+  createLabel=(if isUpgrade "newContainer.saveUpgrade" "newContainer.saveNew")
+  save="save"
+  cancel="cancel"
+}}
