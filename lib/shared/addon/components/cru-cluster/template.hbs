@@ -19,7 +19,7 @@
       </div>
       {{#each (get providerGroups "cloudGroup") as |choice|}}
         {{#unless choice.scriptError}}
-          {{#link-to (query-params provider=choice.name) class=(concat "mb-20 mt-10 col span-3 col-inline nav-box-item driver generic" choice.name)}}
+          {{#link-to (query-params provider=choice.name) class=(concat "mb-20 mt-10 col span-3 col-inline nav-box-item driver " choice.name)}}
             <div class="machine-driver {{choice.name}}"></div>
             <p class="driver-name">{{driver-name choice.name}}</p>
             {{#if choice.genericIcon}}
@@ -27,7 +27,7 @@
             {{/if}}
           {{/link-to}}
         {{else}}
-          <div class={{concat "disabled error-loading-driver mb-20 mt-10 col span-3 col-inline nav-box-item driver generic" choice.name}}>
+          <div class={{concat "disabled error-loading-driver mb-20 mt-10 col span-3 col-inline nav-box-item driver " choice.name}}>
               {{#tooltip-element type="tooltip-basic" model=choice.scriptError tooltipTemplate='tooltip-static' aria-describedby="tooltip-base" tooltipFor="tooltipDriverError"}}
                 <span class="icon icon-alert"></span>
               {{/tooltip-element}}
@@ -46,7 +46,7 @@
         <label class="acc-label">{{t 'clusterNew.driverLabels.import'}}</label>
       </div>
       {{#each (get providerGroups "importGroup") as |choice|}}
-        {{#link-to (query-params provider=choice.name) class=(concat "mb-20 mt-10 col span-12 col-inline nav-box-item driver generic" choice.name)}}
+        {{#link-to (query-params provider=choice.name) class=(concat "mb-20 mt-10 col span-12 col-inline nav-box-item driver " choice.name)}}
           <div class="machine-driver {{choice.name}}"></div>
           <p class="driver-name">{{driver-name choice.name}}</p>
           {{#if choice.genericIcon}}
@@ -64,12 +64,9 @@
         <label class="acc-label">{{t 'clusterNew.driverLabels.infra'}}</label>
       </div>
       {{#each (get providerGroups "rkeGroup") as |choice|}}
-        {{#link-to (query-params provider=choice.name) class=(concat "mb-20 mt-10 col span-3 col-inline nav-box-item driver generic" choice.name)}}
-          <div class="machine-driver {{choice.name}}"></div>
+        {{#link-to (query-params provider=choice.name) class=(concat "mb-20 mt-10 col span-3 col-inline nav-box-item driver " choice.name)}}
+          <div class="machine-driver {{if choice.genericIcon 'generic'}} {{choice.name}}"></div>
           <p class="driver-name">{{driver-name choice.name}}</p>
-          {{#if choice.genericIcon}}
-            <p class="text-link text-bold">{{driver-name choice.name}}</p>
-          {{/if}}
         {{/link-to}}
       {{/each}}
     </div>
@@ -79,7 +76,7 @@
         <label class="acc-label">{{t 'clusterNew.driverLabels.custom'}}</label>
       </div>
       {{#each (get providerGroups "customGroup") as |choice|}}
-        {{#link-to (query-params provider=choice.name) class=(concat "mb-20 mt-10 col span-12 col-inline nav-box-item driver generic" choice.name)}}
+        {{#link-to (query-params provider=choice.name) class=(concat "mb-20 mt-10 col span-12 col-inline nav-box-item driver " choice.name)}}
           <div class="machine-driver {{choice.name}}"></div>
           <p class="driver-name">{{driver-name choice.name}}</p>
           {{#if choice.genericIcon}}
@@ -98,7 +95,7 @@
         </div>
         {{#each (get providerGroups "externalGroup") as |choice|}}
           {{#unless choice.scriptError}}
-            {{#link-to (query-params provider=choice.name) class=(concat "mb-20 mt-10 col span-3 col-inline nav-box-item driver generic" choice.name)}}
+            {{#link-to (query-params provider=choice.name) class=(concat "mb-20 mt-10 col span-3 col-inline nav-box-item driver " choice.name)}}
               <div class="machine-driver {{choice.name}}"></div>
               <p class="driver-name">{{driver-name choice.name}}</p>
               {{#if choice.genericIcon}}
@@ -106,7 +103,7 @@
               {{/if}}
             {{/link-to}}
           {{else}}
-            <div class={{concat "disabled error-loading-driver mb-20 mt-10 col span-3 col-inline nav-box-item driver generic" choice.name}}>
+            <div class={{concat "disabled error-loading-driver mb-20 mt-10 col span-3 col-inline nav-box-item driver " choice.name}}>
               {{#tooltip-element type="tooltip-basic" model=choice.scriptError tooltipTemplate='tooltip-static' aria-describedby="tooltip-base" tooltipFor="tooltipDriverError"}}
                 <span class="icon icon-alert"></span>
               {{/tooltip-element}}
