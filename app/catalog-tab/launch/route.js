@@ -4,7 +4,6 @@ import { inject as service } from '@ember/service';
 import Route from '@ember/routing/route';
 import { get, set, setProperties } from '@ember/object';
 import { randomStr } from 'shared/utils/util';
-import { on } from '@ember/object/evented';
 import C from 'ui/utils/constants';
 
 export default Route.extend({
@@ -30,6 +29,9 @@ export default Route.extend({
 
     if (params.appId) {
       dependencies.app = store.find('app', params.appId);
+    }
+    if (params.appName) {
+      dependencies.app = store.find('app', null, { filter: { name: params.appName } }).then((apps) => get(apps, 'firstObject'));
     }
 
     if ( params.namespaceId ) {
@@ -110,6 +112,7 @@ export default Route.extend({
     if (isExiting) {
       setProperties(controller, {
         appId:       null,
+        appName:     null,
         catalog:     null,
         namespaceId: null,
         template:    null,
@@ -128,10 +131,6 @@ export default Route.extend({
       get(this, 'modalService').toggleModal();
     },
   },
-
-  setDefaultRoute: on('activate', function() {
-    set(this, `session.${ C.SESSION.PROJECT_ROUTE }`, 'catalog-tab.launch');
-  }),
 
   newNamespace(duplicateName, newNamespaceName) {
     const suffix = randomStr(5, 5, 'novowels');

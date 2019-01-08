@@ -6,7 +6,7 @@ import { all as PromiseAll } from 'rsvp';
 import Preload from 'ui/mixins/preload';
 import C from 'ui/utils/constants';
 
-const VALID_ROUTES = ['apps-tab', 'catalog-tab.index', 'catalog-tab.launch', 'authenticated.project.security.members.index',
+const VALID_ROUTES = ['apps-tab', 'catalog-tab.index', 'authenticated.project.security.members.index',
   'authenticated.project.ns', 'authenticated.project.certificates',
   'authenticated.project.secrets', 'authenticated.project.config-maps',
   'authenticated.project.registries', 'authenticated.project.alert',
@@ -52,10 +52,10 @@ export default Route.extend(Preload, {
       .catch((err) => this.loadingError(err, transition));
   },
 
-  redirect() {
+  redirect(model, transition) {
     let route = this.get(`session.${ C.SESSION.PROJECT_ROUTE }`);
 
-    if ( VALID_ROUTES.includes(route) ) {
+    if ( get(transition, 'targetName') === 'authenticated.project.index' && VALID_ROUTES.includes(route) ) {
       this.replaceWith(route);
     }
   },
