@@ -428,9 +428,13 @@ export default Component.extend({
         }
       });
 
-      workload.set('volumes', volumes);
-      workload.set('statefulSetConfig.volumeClaimTemplates', volumeClaimTemplates);
-      launchConfig.set('volumeMounts', mounts);
+      set(workload, 'volumes', volumes);
+      const statefulSetConfig = get(workload, 'statefulSetConfig');
+
+      if ( statefulSetConfig ) {
+        set(statefulSetConfig, 'volumeClaimTemplates', volumeClaimTemplates);
+      }
+      set(launchConfig, 'volumeMounts', mounts);
     });
   },
 });
