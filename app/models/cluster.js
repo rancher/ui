@@ -10,7 +10,6 @@ import C from 'ui/utils/constants';
 
 export default Resource.extend(Grafana, ResourceUsage, {
   globalStore: service(),
-  store:       service(),
   growl:       service(),
   scope:       service(),
   router:      service(),
