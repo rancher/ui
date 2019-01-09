@@ -43,7 +43,7 @@
   th,
   td,
   tr {
-    display: block;
+    display: grid;
   }
   table {
     thead {
@@ -106,52 +106,15 @@
         }
         &.main-row {
           margin-bottom: 20px;
+          grid-template: auto 1fr / auto 1fr;
 
-          td:nth-child(-n + 2) {
-            width: 50%;
-            float: right;
-          }
-          td:nth-child(3) {
-            clear: both;
-            background: red;
-          }
-          td:nth-child(4) {
-            background: tomato;
-          }
-          td:nth-child(5) {
-            background: turquoise;
-            > * {
-              display: inline-block;
-              vertical-align: middle;
-              font-size: 100%;
-            }
-          }
-          td:nth-child(6) {
-            background: yellow;
-            width:49.45%;
-            display: inline-block;
-            vertical-align: middle;
-            text-align: left;
-            > * {
-              display: inline-block;
-            }
-          }
-          td:nth-child(7) {
-            width: 49.45%;
-            display: inline-block;
-            background: lavender;
-            vertical-align: middle;
-            text-align: right;
-          }
-          > td {
+          td {
             padding: 10px !important;
             display: block;
             text-align: left;
-            &:nth-child(odd) {
-              background: $table-bg-accent;
-            }
-            &:nth-child(even) {
-              background: lighten($table-bg-accent, 4);
+            border: solid thin $border;
+            > * {
+              display: inline-block;
             }
           }
         }
@@ -336,7 +299,7 @@
   /*TOGGLE BUTTON*/
   .nav-toggle {
     display: inline-block;
-    background: $link-color;
+    background: darken($header, 5%);
     min-width: 51px;
     box-sizing: border-box;
     line-height: 51px;
