@@ -207,21 +207,6 @@ export default Component.extend(ModalBase, NewOrEdit, {
       }
     }
 
-    if ( notifierType === 'wechat' ) {
-      if ( !get(this, 'model.wechatConfig.secret') ) {
-        errors.pushObject(intl.t('validation.required', { key: intl.t('notifierPage.wechat.secret.label') }));
-      }
-      if ( !get(this, 'model.wechatConfig.agent') ) {
-        errors.pushObject(intl.t('validation.required', { key: intl.t('notifierPage.wechat.agent.label') }));
-      }
-      if ( !get(this, 'model.wechatConfig.corp') ) {
-        errors.pushObject(intl.t('validation.required', { key: intl.t('notifierPage.wechat.corp.label') }));
-      }
-      if ( !get(this, 'model.wechatConfig.recipientType') ) {
-        errors.pushObject(intl.t('validation.required', { key: intl.t('notifierPage.wechat.recipientType.label') }));
-      }
-    }
-
     set(this, 'errors', errors);
 
     return get(this, 'errors.length') === 0;
