@@ -69,7 +69,7 @@
 
       {{#if isBitbucketCloud}}
         <div>
-          <b>{{t 'authPage.authenticated.header.enterpriseHostName'}} </b> 
+          <b>{{t 'authPage.authenticated.header.enterpriseHostName'}} </b>
           <a href="https://bitbucket.org" target="_blank" rel="nofollow noreferrer">bitbucket.org</a>
         </div>
       {{/if}}
@@ -78,6 +78,21 @@
         <div>
           <b>{{t (if isBitbucket 'authPage.authenticated.header.key.text' 'authPage.authenticated.header.clientId.text')}} </b>
           <span class="text-muted">{{provider.clientId}}</span>
+        </div>
+      {{/if}}
+    </section>
+
+    <section class="box mt-30">
+      <h3>{{t 'authPage.setting.cacerts.label'}}</h3>
+      <hr/>
+      {{#if showCert}}
+        {{schema/input-multiline value=cacerts.value placeholder=(t 'newCertificate.cert.placeholder')}}
+        <div class="row ml-10 mt-10">
+          {{save-cancel createLabel='authPage.setting.cacerts.saveActionLabel' save="saveCert" cancel="hideCert"}}
+        </div>
+      {{else}}
+        <div class="row ml-10 mt-10">
+          <div class="btn bg-primary btn-sm" {{action "showCert"}}>{{t 'authPage.setting.cacerts.show'}}</div>
         </div>
       {{/if}}
     </section>
