@@ -1,11 +1,12 @@
 import Route from '@ember/routing/route';
+import { inject as service } from '@ember/service';
 
 export function initialize(/* application */) {
   Route.reopen({
+    router: service(),
 
     // Remember the current route (into the application route's previousRoute/Params properties)
     beforeModel() {
-      this._super(...arguments);
       this.rememberPrevious();
     },
 
@@ -14,6 +15,7 @@ export function initialize(/* application */) {
       // var appRoute = getOwner(this).lookup('route:application');
       const appRoute = window.l('route:application'); // The global one, not the per-engine application
       var infos = this._router._routerMicrolib.currentHandlerInfos;
+      var infos2 = this.router.currentRoute;
 
       if ( infos && infos.length ) {
         var params = [];

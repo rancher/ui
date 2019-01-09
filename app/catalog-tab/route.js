@@ -8,8 +8,6 @@ export default Route.extend({
   scope:   service(),
 
   beforeModel() {
-    this._super(...arguments);
-
     return get(this, 'catalog').fetchUnScopedCatalogs().then((hash) => {
       this.set('catalogs', hash);
     });

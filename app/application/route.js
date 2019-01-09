@@ -23,7 +23,6 @@ export default Route.extend({
   shortcuts: { 'shift+l': 'langToggle', },
 
   beforeModel() {
-    this._super(...arguments);
     this.updateWindowTitle();
 
     let agent = window.navigator.userAgent.toLowerCase();
