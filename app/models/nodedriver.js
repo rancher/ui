@@ -5,7 +5,7 @@ import C from 'ui/utils/constants';
 import { parseExternalId } from 'ui/utils/parse-externalid';
 
 export const BUILT_IN_UI = ['amazonec2', 'digitalocean', 'azure', 'exoscale', 'packet', 'rackspace', 'vmwarevsphere', 'aliyunecs'];
-export const BUILT_IN_ICON_ONLY = ['openstack'];
+export const BUILT_IN_ICON_ONLY = ['openstack', 'otc'];
 
 function displayUrl(url) {
   url = url || '';

@@ -18,12 +18,9 @@
       {{#each availableDriversGroups as |choices|}}
         <div class="row nav nav-boxes checked-active">
           {{#each choices as |choice|}}
-            <a {{action "switchDriver" choice.name}} alt={{choice.name}} class="mb-20 col span-2 nav-box-item driver generic {{if (eq choice.name driver) 'active'}}" href="#">
-              <div class="machine-driver {{choice.name}}"></div>
+            <a {{action "switchDriver" choice.name}} alt={{choice.name}} class="mb-20 col span-2 nav-box-item driver {{if (eq choice.name driver) 'active'}}" href="#">
+              <div class="machine-driver {{if (or choice.hasUi choice.hasBuiltinIconOnly) '' 'generic'}} {{choice.name}}"></div>
               <p>{{driver-name choice.name}}</p>
-              {{#unless (or choice.hasUi choice.hasBuiltinIconOnly)}}
-                <p class="text-link text-bold">{{driver-name choice.name}}</p>
-              {{/unless}}
             </a>
           {{/each}}
         </div>
