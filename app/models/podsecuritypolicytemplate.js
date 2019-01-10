@@ -1,5 +1,5 @@
 import { inject as service } from '@ember/service';
-import Resource from 'ember-api-store/models/resource';
+import Resource from '@rancher/ember-api-store/models/resource';
 
 export default Resource.extend({
   router: service(),

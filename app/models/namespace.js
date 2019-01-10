@@ -1,11 +1,11 @@
 import { computed, get } from '@ember/object';
 import { inject as service } from '@ember/service';
-import Resource from 'ember-api-store/models/resource';
+import Resource from '@rancher/ember-api-store/models/resource';
 import { parseExternalId } from 'ui/utils/parse-externalid';
 import { convertToMillis } from 'shared/utils/util';
 import { parseSi } from 'shared/utils/parse-unit';
 import C from 'ui/utils/constants';
-import { hasMany, reference } from 'ember-api-store/utils/denormalize';
+import { hasMany, reference } from '@rancher/ember-api-store/utils/denormalize';
 import StateCounts from 'ui/mixins/state-counts';
 
 export function convertResourceQuota(key, value) {
