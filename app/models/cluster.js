@@ -19,6 +19,7 @@ export default Resource.extend(Grafana, ResourceUsage, {
   nodes:                       hasMany('id', 'node', 'clusterId'),
   nodePools:                   hasMany('id', 'nodePool', 'clusterId'),
   clusterRoleTemplateBindings: hasMany('id', 'clusterRoleTemplateBinding', 'clusterId'),
+  etcdbackups:                 hasMany('id', 'etcdbackup', 'clusterId'),
   grafanaDashboardName:        'Cluster',
   machines:                    alias('nodes'),
   roleTemplateBindings:        alias('clusterRoleTemplateBindings'),
@@ -181,10 +182,30 @@ export default Resource.extend(Grafana, ResourceUsage, {
         action:    'rotateCertificates',
         enabled:   !!a.rotateCertificates,
       },
+      {
+        label:     'action.backupEtcd',
+        icon:      'icon icon-history',
+        action:    'backupEtcd',
+        enabled:   !!a.backupEtcd,
+      },
+      {
+        label:     'action.restoreFromEtcdBackup',
+        icon:      'icon icon-history',
+        action:    'restoreFromEtcdBackup',
+        enabled:   !!a.restoreFromEtcdBackup,
+      },
     ];
   }),
 
   actions: {
+    backupEtcd() {
+      this.doAction('backupEtcd');
+    },
+
+    restoreFromEtcdBackup() {
+      get(this, 'modalService').toggleModal('modal-restore-backup', { cluster: this, });
+    },
+
     promptDelete() {
       const hasSessionToken = get(this, 'canBulkRemove') ? false : true; // canBulkRemove returns true of the session token is set false
 

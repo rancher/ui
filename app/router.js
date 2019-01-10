@@ -57,6 +57,10 @@ Router.map(function() {
       this.route('edit');
       this.route('cluster-catalogs', { path: '/catalogs' })
 
+      this.route('backups', function() {
+        this.route('index', { path: '/' });
+      });
+
       this.route('nodes', function() {
         this.route('index', { path: '/' });
       });

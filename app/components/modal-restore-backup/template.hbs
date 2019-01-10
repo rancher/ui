@@ -1,0 +1,46 @@
+<div class="container-header-text">
+  <h3>{{t "modalRestoreBackup.title"}}</h3>
+  <hr/>
+</div>
+
+<section class="p-20 pt-0">
+  <div class="row">
+    <div class="col span-6">
+      <label
+        class="acc-label"
+        for="available-backups"
+      >
+        {{t "modalRestoreBackup.backups"}}{{field-required}}
+      </label>
+      <select
+        id="available-backups"
+        class="form-control"
+        onchange={{action (mut backupId) value="target.value"}}
+      >
+        {{#unless (eq backupId value)}}
+          <option
+            value=""
+            selected=true
+          >
+            {{t "modalRestoreBackup.select.all"}}
+          </option>
+        {{/unless}}
+        {{#each availableBackups as |backup|}}
+          <option
+            value={{backup.id}}
+            selected={{eq backup.id value}}
+          >
+            {{backup.label}}
+          </option>
+        {{/each}}
+      </select>
+    </div>
+  </div>
+</section>
+
+{{save-cancel
+  editing=true
+  save="restore"
+  saveDisabled=(not backupId)
+  cancel="cancel"
+}}

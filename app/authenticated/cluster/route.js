@@ -41,6 +41,10 @@ export default Route.extend(Preload, {
       .catch((err) => this.loadingError(err, transition));
   },
 
+  afterModel(model) {
+    return get(this, 'scope').finishSwitchToCluster(model);
+  },
+
   redirect(router, transition) {
     let route = this.get(`session.${ C.SESSION.CLUSTER_ROUTE }`);
 
@@ -48,11 +52,6 @@ export default Route.extend(Preload, {
       this.replaceWith(route);
     }
   },
-  setupController(controller, model) {
-    this._super(...arguments);
-    get(this, 'scope').finishSwitchToCluster(model);
-  },
-
   actions: {
     becameReady() {
       get(this, 'clusterStore').reset();

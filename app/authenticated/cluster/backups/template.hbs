@@ -1,0 +1,47 @@
+<section class="header clearfix">
+  <h1>{{t "backupsPage.header"}}</h1>
+</section>
+
+<section>
+  {{#sortable-table
+     tableClassNames="bordered mt-30"
+     bulkActions=false
+     descending=descending
+     paging=false
+     search=false
+     sortBy=sortBy
+     headers=headers
+     body=rows
+     as |sortable kind backup dt|
+  }}
+    {{#if (eq kind "row")}}
+      <tr class="main-row">
+        <td data-title="{{dt.target}}">
+          {{#if backup.backupConfig.s3BackupConfig }}
+            {{t "backupsPage.table.target.s3"}}
+          {{else}}
+            {{t "backupsPage.table.target.local"}}
+          {{/if}}
+        </td>
+        <td class="force-wrap" data-title="{{dt.name}}">
+          {{backup.displayName}}
+        </td>
+        <td data-title="{{dt.created}}" class="text-right pr-20">
+          {{date-from-now backup.created}}
+        </td>
+        <td data-title="{{dt.actions}}" class="actions">
+          {{action-menu model=backup}}
+        </td>
+      </tr>
+    {{else if (eq kind "norows")}}
+      <tr>
+        <td
+          colspan="{{sortable.fullColspan}}"
+          class="text-center text-muted pt-20 pb-20"
+        >
+          {{t "backupsPage.table.noData"}}
+        </td>
+      </tr>
+    {{/if}}
+  {{/sortable-table}}
+</section>

@@ -42,7 +42,7 @@ export default Component.extend(ModalBase, {
           if (cb) {
             cb(false);
           }
-        })
+        });
     },
 
     mutServices(select) {
