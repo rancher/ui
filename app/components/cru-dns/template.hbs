@@ -32,7 +32,7 @@
       <div>
         <label class="acc-label">{{t 'editDns.recordType.label'}}</label>
       </div>
-      <div class="mb-20">
+      <div>
         {{#if editing}}
           <div class="radio">
             <label>{{radio-button selection=recordType value="arecord"}}&nbsp;{{t 'editDns.recordType.arecord'}}</label>
@@ -121,6 +121,146 @@
     </div>
   </div>
 </section>
+
+{{#advanced-section advanced=advanced}}
+  {{#if showMoreOptions}}
+    <hr class="mt-30 mb-30" />
+
+    <div class="row mb-20">
+      <div class="col span-6">
+        <label class="acc-label pb-5">{{t 'editDns.kind.label'}}</label>
+        {{new-select
+            classNames="form-control"
+            content=kindChoices
+            value=kind
+            localizedLabel=true
+            disabled=(not editing)
+        }}
+      </div>
+      {{#unless isHeadless}}
+        <div class="col span-6">
+          {{form-value-array
+            initialValues=model.externalIPs
+            addActionLabel='editDns.externalIPs.addActionLabel'
+            valueLabel='editDns.externalIPs.value'
+            valuePlaceholder='editDns.externalIPs.placeholder'
+            changed=(action (mut model.externalIPs))
+            editing=editing
+          }}
+        </div>
+      {{/unless}}
+    </div>
+    {{#unless isHeadless}}
+      <div class="row mb-20">
+        {{#if (or (eq model.kind 'LoadBalancer') (eq model.kind 'NodePort')) }}
+          <div class="col span-6">
+            <label class="acc-label">{{t 'editDns.externalTrafficPolicy.label'}}</label>
+            {{#input-or-display editable=editing value=model.externalTrafficPolicy}}
+              <div class="radio">
+                <label>{{radio-button selection=model.externalTrafficPolicy value="Local"}} {{t 'editDns.externalTrafficPolicy.local'}}</label>
+              </div>
+              <div class="radio">
+                <label>{{radio-button selection=model.externalTrafficPolicy value="Cluster"}} {{t 'editDns.externalTrafficPolicy.cluster'}}</label>
+              </div>
+            {{/input-or-display}}
+          </div>
+        {{/if}}
+        <div class="col span-6">
+          <label class="acc-label">{{t 'editDns.publishNotReadyAddresses.label'}}</label>
+          {{#input-or-display editable=editing value=model.publishNotReadyAddresses}}
+            <div class="radio">
+              <label>{{radio-button selection=model.publishNotReadyAddresses value=false}} {{t 'editDns.publishNotReadyAddresses.readyOnly'}}</label>
+            </div>
+            <div class="radio">
+              <label>{{radio-button selection=model.publishNotReadyAddresses value=true}} {{t 'editDns.publishNotReadyAddresses.all'}}</label>
+            </div>
+          {{/input-or-display}}
+        </div>
+      </div>
+    {{/unless}}
+    {{#if (eq model.kind 'LoadBalancer')}}
+      <div class="row mb-20">
+        <div class="col span-6">
+          <label class="acc-label pb-5">{{t 'editDns.loadBalancerIP.label'}}</label>
+          {{#input-or-display editable=editing value=model.loadBalancerIP}}
+            {{input class="form-control input-sm"
+                type="text"
+                value=model.loadBalancerIP
+                placeholder=(t 'editDns.loadBalancerIP.placeholder')
+            }}
+          {{/input-or-display}}
+        </div>
+        <div class="col span-6">
+          {{form-value-array
+            initialValues=model.loadBalancerSourceRanges
+            addActionLabel='editDns.loadBalancerSourceRanges.addActionLabel'
+            valueLabel='editDns.loadBalancerSourceRanges.value'
+            valuePlaceholder='editDns.loadBalancerSourceRanges.placeholder'
+            changed=(action (mut model.loadBalancerSourceRanges))
+            editing=editing
+          }}
+        </div>
+      </div>
+      {{#if (eq model.externalTrafficPolicy 'Local')}}
+        <div class="row mb-20">
+          <div class="col span-6">
+            <label class="acc-label pb-5">{{t 'editDns.healthCheckNodePort.label'}}</label>
+            {{input-integer min="0" max="65535" step="1" value=model.healthCheckNodePort classNames="form-control" placeholder=(t 'editDns.healthCheckNodePort.placeholder')}}
+          </div>
+        </div>
+      {{/if}}
+    {{/if}}
+  {{/if}}
+
+  <hr class="mt-30 mb-30" />
+    {{form-service-ports model=model editing=editing}}
+  <hr class="mt-30 mb-30" />
+
+  {{#accordion-list showExpandAll=false as | al expandFn |}}
+    {{form-labels-annotations
+        classNames="accordion-wrapper"
+        expandAll=al.expandAll
+        expandFn=expandFn
+        initialLabels=model.labels
+        model=model
+        editing=editing
+        setLabels=(action 'setLabels')
+    }}
+    {{#if showSessionAffinity}}
+      {{#accordion-list-item
+        title=(t 'editDns.sessionAffinity.title')
+        detail=(t 'editDns.sessionAffinity.detail')
+        expandAll=al.expandAll
+        expand=(action expandFn)
+      }}
+        <div class="row box">
+          <div class="col span-6">
+            <label class="acc-label">{{t 'editDns.sessionAffinity.label'}}</label>
+            {{#input-or-display editable=editing value=model.sessionAffinity}}
+              <div class="radio">
+                <label>{{radio-button selection=model.sessionAffinity value="None"}} {{t 'generic.no'}}</label>
+              </div>
+              <div class="radio">
+                <label>{{radio-button selection=model.sessionAffinity value="ClientIP"}} {{t 'generic.yes'}}</label>
+              </div>
+            {{/input-or-display}}
+          </div>
+          {{#if (eq model.sessionAffinity "ClientIP")}}
+            <div class="col span-6">
+              <label class="acc-label">{{t 'editDns.sessionAffinityConfig.label'}}</label>
+              {{#input-or-display editable=editing value=timeoutSeconds classesForDisplay="text-muted form-control-static"}}
+                <div class="input-group">
+                  {{input-integer min="1" max="86400" step="60" value=timeoutSeconds classNames="form-control" placeholder=(t 'editDns.sessionAffinityConfig.placeholder')}}
+                  <div class="input-group-addon bg-default">{{t 'generic.seconds'}}</div>
+                </div>
+              {{/input-or-display}}
+            </div>
+          {{/if}}
+        </div>
+      {{/accordion-list-item}}
+    {{/if}}
+  {{/accordion-list}}
+{{/advanced-section}}
 
 {{#if editing}}
   {{top-errors errors=errors}}

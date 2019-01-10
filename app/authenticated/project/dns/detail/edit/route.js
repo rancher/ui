@@ -8,7 +8,7 @@ export default Route.extend({
     const original = this.modelFor('authenticated.project.dns.detail').record;
 
     return hash({
-      dnsRecords: store.findAll('dnsRecord'),
+      dnsRecords: store.findAll('service'),
       workloads:  store.findAll('workload'),
       record:     original.clone(),
     });

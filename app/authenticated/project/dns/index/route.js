@@ -8,7 +8,7 @@ export default Route.extend({
   model() {
     var store = this.get('store');
 
-    return hash({ records: store.findAll('dnsRecord'), });
+    return hash({ records: store.findAll('service'), });
   },
 
   setDefaultRoute: on('activate', function() {

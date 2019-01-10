@@ -915,6 +915,42 @@ editDns:
     view: "Record: {name}"
   name:
     placeholder: e.g. myapp
+  sessionAffinity:
+    title: Session Affinity
+    detail: Map connections to a consistent target based on their source IP
+    label: Enable session affinity
+  externalIPs:
+    addActionLabel: Add External IP
+    placeholder: e.g. 80.11.12.10
+    value: External IPs
+  loadBalancerIP:
+    label: Load Balancer IP
+    placeholder: e.g. 78.11.24.19
+  loadBalancerSourceRanges:
+    addActionLabel: Add Source Range
+    placeholder: e.g. 143.231.0.0/16
+    value: Load Balancer Source Ranges
+  healthCheckNodePort:
+    label: Health Check Node Port
+    placeholder: e.g. 8080
+  externalTrafficPolicy:
+    label: External Traffic Policy
+    local: Local
+    cluster: Cluster
+  publishNotReadyAddresses:
+    label: Published IP Addresses
+    readyOnly: Only ready endpoints
+    all: All endpoints
+  sessionAffinityConfig:
+    label: Session Sticky Time
+    placeholder: e.g. 10800
+  kind:
+    label: As a
+    clusterIP: Cluster IP (Internal Only)
+    loadBalancer: Layer-4 Load Balancer
+    nodePort: NodePort(On every node)
+    externalName: ExternalName
+    headless: Headless Service
   description:
     placeholder: e.g. Current version of MyApp
   selector:
@@ -4176,6 +4212,25 @@ formCustomMetrics:
   noPorts: No Endpoints
   addActionLabel: Add Metrics Endpoint
 
+formServicePorts:
+  header: Port Mapping
+  addAction: Add Port
+  noPorts: This service has no port maps.
+  name:
+    label: Port Name
+    placeholder: "e.g. myport"
+  port:
+    label: Publish the service port
+    placeholder: "e.g. 8088"
+  protocol:
+    label: Protocol
+  targetPort:
+    label: Target Port
+    placeholder: "e.g. 80"
+    default: "Same as service port"
+  nodePort:
+    label: Node Port
+    placeholder: "e.g. 30000"
 formPorts:
   header: Port Mapping
   addAction: Add Port

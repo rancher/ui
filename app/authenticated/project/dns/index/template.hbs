@@ -1,6 +1,6 @@
 {{#containers-header showGroup=false}}
-  <button {{action 'importYaml'}} class="btn btn-sm bg-default mr-10" disabled={{rbac-prevents resource="dnsrecord" scope="project" permission="create"}}>{{t 'nav.containers.importCompose'}}</button>
-  {{#link-to "authenticated.project.dns.new" scope.currentProject.id class="btn btn-sm bg-primary" disabled=(rbac-prevents resource="dnsrecord" scope="project" permission="create")}}{{t 'nav.containers.addDns'}}{{/link-to}}
+  <button {{action 'importYaml'}} class="btn btn-sm bg-default mr-10" disabled={{rbac-prevents resource="service" scope="project" permission="create"}}>{{t 'nav.containers.importCompose'}}</button>
+  {{#link-to "authenticated.project.dns.new" scope.currentProject.id class="btn btn-sm bg-primary" disabled=(rbac-prevents resource="service" scope="project" permission="create")}}{{t 'nav.containers.addDns'}}{{/link-to}}
 {{/containers-header}}
 
 {{#if rows.length}}
@@ -38,5 +38,5 @@
     {{/sortable-table}}
   </section>
 {{else}}
-  {{empty-table disabled=(rbac-prevents resource="dnsrecord" scope="project" permission="create") resource="container" newRoute="authenticated.project.dns.new" newTranslationKey="nav.containers.addDns"}}
+  {{empty-table disabled=(rbac-prevents resource="service" scope="project" permission="create") resource="container" newRoute="authenticated.project.dns.new" newTranslationKey="nav.containers.addDns"}}
 {{/if}}
