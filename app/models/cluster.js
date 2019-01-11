@@ -1,7 +1,7 @@
 import { get, set, computed } from '@ember/object';
 import { inject as service } from '@ember/service';
-import Resource from 'ember-api-store/models/resource';
-import { hasMany } from 'ember-api-store/utils/denormalize';
+import Resource from '@rancher/ember-api-store/models/resource';
+import { hasMany } from '@rancher/ember-api-store/utils/denormalize';
 import ResourceUsage from 'shared/mixins/resource-usage';
 import Grafana from 'shared/mixins/grafana';
 import { equal, alias } from '@ember/object/computed';

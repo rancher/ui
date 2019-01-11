@@ -1,9 +1,8 @@
 import { get, set, computed } from '@ember/object';
 import { inject as service } from '@ember/service';
-import { hasMany } from 'ember-api-store/utils/denormalize';
-import Resource from 'ember-api-store/models/resource';
+import { hasMany, reference } from '@rancher/ember-api-store/utils/denormalize';
+import Resource from '@rancher/ember-api-store/models/resource';
 import C from 'ui/utils/constants';
-import { reference } from 'ember-api-store/utils/denormalize';
 import { alias } from '@ember/object/computed';
 
 const SYSTEM_PROJECT_LABEL = 'authz.management.cattle.io/system-project';

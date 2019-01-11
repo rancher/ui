@@ -1,4 +1,4 @@
-import Resource from 'ember-api-store/models/resource';
+import Resource from '@rancher/ember-api-store/models/resource';
 import { computed, get } from '@ember/object';
 
 var KontainerDriver = Resource.extend({
