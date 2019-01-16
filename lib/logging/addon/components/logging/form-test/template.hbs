@@ -2,25 +2,25 @@
   <span>
     {{#if testing}}
       <button
-        class="btn bg-info btn-disabled text-white"
-        {{action "test"}}
+        class="btn bg-info btn-disabled"
+        {{action test}}
       >
-        <i class="icon icon-spinner icon-spin"></i>{{t 'loggingPage.testAction.testing'}}
+        <i class="icon icon-spinner icon-spin"></i><span class="text-white">{{t 'loggingPage.testAction.testing'}}</span>
       </button>
     {{else}}
       {{#if tested}}
         <button
-          {{action "test"}}
-          class="btn  btn-disabled {{if testOk 'bg-success' 'bg-error'}} text-white"
+          {{action test}}
+          class="btn  btn-disabled {{if testOk 'bg-success' 'bg-error'}}"
         >
-          {{if testOk (t 'loggingPage.testAction.testOk') (t 'loggingPage.testAction.testFailed')}}
+          <span class="text-white">{{if testOk (t 'loggingPage.testAction.testOk') (t 'loggingPage.testAction.testFailed')}}</span>
         </button>
       {{else}}
         <button
-          {{action "test"}}
-          class="btn bg-info text-white"
+          {{action test}}
+          class="btn bg-info"
         >
-          {{t 'loggingPage.testAction.test'}}
+          <span class="text-white">{{t 'loggingPage.testAction.test'}}</span>
         </button>
       {{/if}}
     {{/if}}

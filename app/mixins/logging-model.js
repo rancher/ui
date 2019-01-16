@@ -65,10 +65,10 @@ export default Mixin.create({
 
   targetType: computed('elasticsearchConfig', 'splunkConfig', 'kafkaConfig', 'syslogConfig', 'fluentForwarderConfig', 'customTargetConfig', function() {
     const {
-      customTarget, elasticsearchConfig, splunkConfig, syslogConfig, kafkaConfig, fluentForwarderConfig
+      customTargetConfig, elasticsearchConfig, splunkConfig, syslogConfig, kafkaConfig, fluentForwarderConfig
     } = this
 
-    if (customTarget) {
+    if (customTargetConfig) {
       return 'customTarget'
     }
     if (elasticsearchConfig) {
