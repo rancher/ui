@@ -167,6 +167,7 @@ export default Component.extend({
       set(this, 'memoryMode', 'unlimited');
     }
     this.updateMemory();
+    this.memoryReservationChanged();
   },
 
   updateMemory() {
@@ -200,6 +201,7 @@ export default Component.extend({
       set(this, 'cpuMode', 'unlimited');
     }
     this.updateCpu();
+    this.cpuReservationChanged();
   },
 
   updateCpu() {
