@@ -195,6 +195,12 @@ var Workload = Resource.extend(Grafana, DisplayImage, StateCounts, EndpointPorts
     return !!workloadAnnotations[C.LABEL.CREATOR_ID];
   }),
 
+  currentScale: computed('pods.@each.state', 'scale', function() {
+    const { pods = [] } = this
+
+    return pods.filter((p) => p.state === 'running').length
+  }),
+
   actions: {
     activate() {
       return this.doAction('activate');
