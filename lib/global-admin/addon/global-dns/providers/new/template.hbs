@@ -1,0 +1,24 @@
+<section class="header">
+  <h1>
+    {{t "globalDnsPage.providersPage.add"}}
+  </h1>
+</section>
+
+<section class="pt-10">
+  {{#each availableProviders as |provider|}}
+    <div class="row nav nav-boxes checked-active">
+      <a
+        {{action "switchProvider" provider.name}}
+        alt={{provider.name}}
+        class="mb-20 col span-2 nav-box-item driver generic {{if (eq provider.name activeProvider) "active"}}"
+        href="#"
+      >
+        <div class="machine-driver {{provider.name}}"></div>
+        <p>{{provider.name}}</p>
+      </a>
+    </div>
+  {{/each}}
+</section>
+
+
+{{partial (concat activeProvider "-dns-provider") }}

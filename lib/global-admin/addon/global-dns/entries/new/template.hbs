@@ -1,0 +1,125 @@
+<section class="header">
+  <h1>{{t "globalDnsPage.entriesPage.add"}}</h1>
+</section>
+<section>
+  <div class="row">
+    <div class="col span-6 mb-0">
+      <label
+        class="acc-label"
+        for="route53-root-domain"
+      >
+        {{t "globalDnsPage.entriesPage.config.fqdn.label"}}{{field-required}}
+      </label>
+      {{input
+        classNames="form-control"
+        id="route53-root-domain"
+        placeholder=(t "globalDnsPage.entriesPage.config.fqdn.placeholder")
+        type="text"
+        value=primaryResource.fqdn
+      }}
+    </div>
+    <div class="col span-6 mb-0">
+      <label
+        class="acc-label"
+        for="route53-secret-key"
+      >
+        {{t "globalDnsPage.entriesPage.config.provider.label"}}
+        {{field-required}}
+      </label>
+      {{new-select
+        classNames="form-control"
+        content=providers
+        id="route53-secret-key"
+        localizedPrompt=true
+        optionLabelPath="displayName"
+        optionValuePath="id"
+        prompt="globalDnsPage.entriesPage.config.provider.placeholder"
+        value=primaryResource.providerId
+      }}
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col span-6">
+      <label class="acc-label">{{t "globalDnsPage.entriesPage.config.configType"}}</label>
+      <div class="mb-20">
+        {{#if editing}}
+          <div class="radio">
+            <label>
+              {{radio-button
+                selection=recordType
+                value="multi"
+              }}&nbsp;
+              {{t "globalDnsPage.entriesPage.config.multi"}}
+            </label>
+          </div>
+          <div class="radio">
+            <label>
+              {{radio-button
+                selection=recordType
+                value="project"
+              }}&nbsp;
+              {{t "globalDnsPage.entriesPage.config.project"}}
+            </label>
+          </div>
+        {{else}}
+          {{t (concat "editDns.recordType." recordType)}}
+        {{/if}}
+      </div>
+    </div>
+    <div class="col span-6 mb-0">
+      {{#if (eq recordType "multi")}}
+        <label
+          class="acc-label"
+          for="route53-access-key"
+        >
+          {{t "globalDnsPage.entriesPage.config.multiCluster.label"}}
+        </label>
+        {{new-select
+          classNames="form-control"
+          content=model.multiClusterApps
+          id="route53-access-key"
+          localizedPrompt=true
+          optionLabelPath="displayName"
+          optionValuePath="id"
+          prompt="globalDnsPage.entriesPage.config.multiCluster.placeholder"
+          value=primaryResource.multiClusterAppId
+          disabled=(gte primaryResource.projectIds.length 1)
+        }}
+      {{else}}
+        <label
+          class="acc-label"
+          for="select-project-ids"
+        >
+          {{t "globalDnsPage.entriesPage.config.projects.label"}}
+        </label>
+        <select
+          id="select-project-ids"
+          class="form-control select-cap-add"
+          multiple="true"
+          onchange={{action "modifyProjectIds"}}
+          disabled={{if primaryResource.multiClusterAppId true false}}
+        >
+          {{#each groupedClustersProjects as |cluster|}}
+            <optgroup label="{{cluster.group}}">
+              {{#each cluster.options as |project|}}
+                <option
+                  value={{project.id}}
+                  selected={{array-includes primaryResource.projectIds project.id}}
+                >
+                  {{project.displayName}}
+                </option>
+              {{/each}}
+            </optgroup>
+          {{/each}}
+        </select>
+      {{/if}}
+    </div>
+  </div>
+  {{save-cancel
+    cancel="cancel"
+    classNames="text-center mt-20"
+    save="save"
+    saveDisabled=saveDisabled
+  }}
+</section>

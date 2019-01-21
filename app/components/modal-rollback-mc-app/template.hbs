@@ -1,0 +1,50 @@
+<h2>
+  {{t "modalRollbackApp.title" appName=model.displayName}}
+</h2>
+
+{{#if loading}}
+  <i class="icon icon-spinner icon-spin"/> {{t "generic.loading"}}
+{{else}}
+  <div class="row">
+    <div class="col span-4">
+      <label class="acc-label">{{t "modalRollbackApp.current.label"}}</label>
+      <div class="form-control-static">
+        {{currentMultiClusterAppRevision.name}}
+      </div>
+    </div>
+
+    {{#if loading}}
+      <i class="icon icon-spinner icon-spin"/> {{t "generic.loading"}}
+    {{else}}
+      <div class="col span-8">
+        <label class="acc-label">{{t "modalRollbackApp.revision.label"}}</label>
+        {{new-select
+          content=choices
+          value=revisionId
+          prompt="modalRollbackApp.revision.prompt"
+          localizedPrompt=true
+          optionLabelPath="label"
+          optionValuePath="value"
+        }}
+      </div>
+    {{/if}}
+  </div>
+
+  {{#if (and answersDiff answersDiff.string)}}
+    <div class="row mt-10">
+      <div class="col span-12">
+        <label class="acc-label">{{t "modalRollbackApp.difference.label"}}</label>
+        <div>
+          {{answersDiff}}
+        </div>
+      </div>
+    </div>
+  {{/if}}
+
+  {{save-cancel
+    cancel="cancel"
+    editLabel="modalRollbackApp.action"
+    editing=true
+    save="save"
+  }}
+{{/if}}

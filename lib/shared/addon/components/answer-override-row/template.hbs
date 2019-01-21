@@ -1,0 +1,72 @@
+<tr class="main-row">
+  <td data-title="{{dt.scope}}" class="p-20 pl-0" >
+    {{new-select
+      classNames="form-control"
+      content=allProjectsAndClusters
+      localizedPrompt=true
+      optionLabelPath="name"
+      optionValuePath="value"
+      prompt="newMultiClusterApp.overrides.scopeOverride.placeholder"
+      value=answer.scope
+    }}
+  </td>
+  <td data-title="{{dt.question}}:" class="p-20 pl-0" >
+    {{new-select
+      classNames="form-control"
+      content=allQuestions
+      localizedPrompt=true
+      optionLabelPath="label"
+      optionValuePath="variable"
+      prompt="newMultiClusterApp.overrides.questionOverride.placeholder"
+      value=answer.question
+    }}
+  </td>
+  <td data-title="{{dt.answer}}:" class="p-20 pl-0" >
+    {{#each
+       selectedTemplateModel.questions as |question index|
+    }}
+      {{#if (eq question.variable answer.question)}}
+        {{input-answer-row
+          classNames=""
+          question=question
+          answer=answer.answer
+        }}
+      {{else}}
+        {{#if (eq index 0)}}
+          {{t "newMultiClusterApp.overrides.answerOverride.placeholder"}}
+        {{/if}}
+      {{/if}}
+    {{/each}}
+  </td>
+  <td data-title="{{t "generic.actions"}}:" class="actions">
+    <button
+      class="btn bg-primary btn-sm"
+      {{action "removeOverride" answer}}
+    >
+      <i class="icon icon-minus"></i>
+    </button>
+  </td>
+</tr>
+
+{{#each subquestionAnswers as |subAnswer|}}
+  <tr class="sub-row">
+    <td data-title="{{dt.scope}}" class="p-10" >
+      {{#if answer.scope}}
+        {{answer.scope}}
+      {{else}}
+        Select parent question scope
+      {{/if}}
+    </td>
+    <td data-title="{{dt.question}}:" class="p-10" >
+      {{subAnswer.question.label}}
+    </td>
+    <td data-title="{{dt.answer}}:" class="p-10" >
+      {{input-answer-row
+        question=subAnswer.question
+        answer=subAnswer.answer
+      }}
+    </td>
+    <td data-title="{{t "generic.actions"}}:" class="actions">
+    </td>
+  </tr>
+{{/each}}

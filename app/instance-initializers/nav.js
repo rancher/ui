@@ -299,6 +299,38 @@ const rootNav = [
   },
   {
     scope:          'global',
+    id:             'global-dns',
+    localizedLabel: 'nav.admin.globalDns',
+    route:          'global-admin.global-dns.entries',
+    submenu:        [
+      {
+        id:             'global-dns-entries',
+        localizedLabel: 'nav.admin.globalDnsEntries',
+        route:          'global-admin.global-dns.entries',
+        icon:           'icon icon-network',
+        resource:       ['globaldns'],
+        resourceScope:  'global',
+      },
+      {
+        id:             'global-dns-providers',
+        localizedLabel: 'nav.admin.globalDnsProviders',
+        route:          'global-admin.global-dns.providers',
+        icon:           'icon icon-globe',
+        resource:       ['globaldnsprovider'],
+        resourceScope:  'global',
+      },
+    ],
+  },
+  {
+    scope:          'global',
+    id:             'multi-cluster-apps',
+    localizedLabel: 'nav.admin.multiClusterApps',
+    route:          'global-admin.multi-cluster-apps',
+    resource:       ['multiclusterapp'],
+    resourceScope:  'global',
+  },
+  {
+    scope:          'global',
     id:             'global-accounts',
     localizedLabel: 'nav.admin.accounts',
     route:          'global-admin.accounts',

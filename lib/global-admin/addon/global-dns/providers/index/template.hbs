@@ -1,0 +1,82 @@
+<section class="header clearfix">
+  <h1 class="pull-left">
+    {{t "globalDnsPage.providersPage.title"}}
+  </h1>&nbsp;
+  <div class="vertical-middle"></div>
+
+  <div class="right-buttons">
+    {{#link-to
+       "global-dns.providers.new"
+       class="btn btn-sm bg-primary"
+       disabled=(rbac-prevents resource="globaldnsprovider" scope="global" permission="create")
+    }}
+      {{t "globalDnsPage.newProvider"}}
+    {{/link-to}}
+  </div>
+</section>
+
+
+{{#if rows.length}}
+  {{#sortable-table
+     classNames="grid sortable-table"
+     body=rows
+     searchText=searchText
+     descending=descending
+     sortBy=sortBy
+     bulkActions=true
+     pagingLabel="pagination.cluster"
+     headers=headers as |sortable kind provider dt|
+  }}
+    {{#if (eq kind "row")}}
+      <tr class="main-row">
+        <td
+          valign="middle"
+          class="row-check"
+          style="padding-top: 2px;"
+        >
+          {{check-box nodeId=provider.id}}
+        </td>
+        <td data-title="{{dt.state}}" class="state">
+          {{badge-state model=provider}}
+        </td>
+        <td data-title="{{dt.name}}">
+          {{provider.name}}
+        </td>
+        <td data-title="{{dt.rootDomain}}">
+          {{provider.rootDomain}}
+        </td>
+        <td data-title="{{dt.created}}">
+          {{date-calendar provider.created}}
+        </td>
+        <td data-title="{{dt.actions}}" class="actions">
+          {{action-menu model=provider}}
+        </td>
+      </tr>
+    {{else if (eq kind "nomatch")}}
+      <tr>
+        <td
+          colspan="{{sortable.fullColspan}}"
+          class="text-center text-muted lacsso pt-20 pb-20"
+        >
+          {{t "globalDnsPage.noDnsProviderMatch"}}
+        </td>
+      </tr>
+    {{else if (eq kind "norows")}}
+      <tr>
+        <td
+          colspan="{{sortable.fullColspan}}"
+          class="text-center text-muted lacsso pt-20 pb-20"
+        >
+          {{t "clusterRow.noDnsProviderData"}}
+        </td>
+      </tr>
+    {{/if}}
+  {{/sortable-table}}
+{{else}}
+  {{empty-table
+    resource="container"
+    newRoute="global-admin.global-dns.providers.new"
+    newTranslationKey="globalDnsPage.newProvider"
+    ctx=""
+  }}
+{{/if}}

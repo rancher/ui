@@ -1,0 +1,488 @@
+{{#if showHeader}}
+  <section class="header clearfix">
+    {{#if editing}}
+      <h1>
+        {{t "newMultiClusterApp.upgrade"}}
+        <span class="text-normal">
+          {{primaryResource.displayName}}
+        </span>
+      </h1>
+    {{else}}
+      <h1>
+        {{#link-to parentRoute}}
+          {{t "newMultiClusterApp.catalog"}}
+          {{templateResource.displayName}}
+        {{/link-to}}
+      </h1>
+    {{/if}}
+  </section>
+{{/if}}
+
+<section>
+  <div class="row">
+    <div class="col span-4 text-center">
+      {{#if templateResource.links.icon}}
+        <img
+          src={{templateResource.links.icon}}
+          alt={{templateResource.name}}
+          class="mr-20 app-icon"
+        >
+      {{/if}}
+    </div>
+    <div class="col span-8">
+      {{#if appReadmeContent}}
+        {{marked-down markdown=appReadmeContent}}
+      {{else if (not noAppReadme)}}
+        <div class="text-center">
+          <i class="icon icon-spinner icon-spin icon-3x"></i>
+        </div>
+      {{else if noAppReadme}}
+        <h1 class="mb-10 text-capitalize">
+          {{templateResource.name}}
+        </h1>
+        <p>{{templateResource.description}}</p>
+        <div class="row">
+          <button
+            class="btn btn-sm bg-transparent pl-0"
+            {{action "toogleDetailedDescriptions"}}
+          >
+            {{t "newMultiClusterApp.seeMore"}}
+          </button>
+        </div>
+      {{/if}}
+    </div>
+  </div>
+</section>
+
+{{#accordion-list as |al expandFn|}}
+  {{#accordion-list-item
+     title=(t "newMultiClusterApp.appInfo")
+     detail=(t "newMultiClusterApp.appInfoDetail")
+     expandAll=al.expandAll
+     expand=(action expandFn)
+     expanded=detailExpanded
+  }}
+    <div class="row">
+      {{#if readmeContent}}
+        <div
+          class="col span-12 readme-content"
+        >
+          {{marked-down markdown=readmeContent}}
+        </div>
+      {{else}}
+        <h2 class="mb-10">
+          {{t (if editing titleUpgrade titleAdd) name=templateResource.name}}
+        </h2>
+        <p>{{templateResource.description}}</p>
+      {{/if}}
+    </div>
+  {{/accordion-list-item}}
+
+
+
+  {{#accordion-list-item
+     title=(t (if selectedTemplateModel.questions "inputAnswers.config" "newMultiClusterApp.helm.label"))
+     detail=(t (if selectedTemplateModel.questions "inputAnswers.protip" "newMultiClusterApp.helm.protip"))
+     expandAll=al.expandAll
+     expandOnInit=true
+     expand=(action expandFn)
+  }}
+
+    <div class="row">
+      <div class="col span-6">
+        {{form-name-description
+          model=primaryResource
+          nameRequired=true
+          descriptionShow=false
+          nameDisabled=editing
+          bothColClass="col span-12"
+          colClass="col span-12"
+        }}
+      </div>
+      <div class="col span-6 pt-5">
+        <label class="acc-label">{{t "newMultiClusterApp.templateVersion"}}</label>
+        {{new-select
+          classNames="form-control"
+          content=sortedVersions
+          disabled=getTemplate.isRunning
+          localizedPrompt=true
+          optionLabelPath="version"
+          optionValuePath="link"
+          prompt="newMultiClusterApp.version.prompt"
+          value=selectedTemplateUrl
+        }}
+      </div>
+    </div>
+
+    <hr class="mt-20 mb-20"/>
+
+    <div class="row">
+      <div class="col span-12">
+        <div>
+          <label
+            for="add-project-target"
+            class="acc-label"
+          >
+            {{t "newMultiClusterApp.targets.label"}}
+          </label>
+          {{field-required}}
+        </div>
+        <button
+          id="add-project-target"
+          class="block btn bg-primary btn-sm mt-10 mb-20"
+          {{action "addTarget"}}
+        >
+          <i class="icon icon-plus"></i>
+          {{t "newMultiClusterApp.targets.add"}}
+        </button>
+        {{#if primaryResource.targets}}
+          <table class="table fixed no-lines small mb-10">
+            <thead>
+              <tr class="hidden-sm">
+                <th class={{unless editing "acc-label"}}>
+                  {{t "newMultiClusterApp.targets.target"}}
+                </th>
+                <th width="50">&nbsp;</th>
+              </tr>
+            </thead>
+            <tbody>
+              {{#each primaryResource.targets as |target| }}
+                <tr>
+                  <td class="p-5">
+                    {{new-select
+                      classNames="form-control"
+                      content=allProjectsGroupedByCluster
+                      localizedPrompt=true
+                      optionLabelPath="name"
+                      optionValuePath="value"
+                      optionGroupPath="cluster"
+                      prompt="newMultiClusterApp.targets.prompt"
+                      value=target.projectId
+                    }}
+                  </td>
+                  <td class="p-5 pl-10">
+                    <button
+                      class="btn bg-primary btn-sm"
+                      {{action "removeTarget" target}}
+                    >
+                      <i class="icon icon-minus"></i>
+                    </button>
+                  </td>
+                </tr>
+              {{/each}}
+            </tbody>
+          </table>
+        {{/if}}
+      </div>
+    </div>
+    <hr class="mt-20 mb-20"/>
+
+    <div class="row">
+      <div class="col span-6">
+        <label class="acc-label">{{t "newMultiClusterApp.upgradeApp.title"}}</label>
+        <div>
+          <label class="radio">
+            {{radio-button
+              selection=upgradeStrategy
+              value=true
+            }}
+            {{t "newMultiClusterApp.upgradeApp.enabled"}}
+          </label>
+        </div>
+        <div>
+          <label class="radio mt-0">
+            {{radio-button
+              selection=upgradeStrategy
+              value=false
+            }}
+            {{t "newMultiClusterApp.upgradeApp.disabled"}}
+          </label>
+        </div>
+      </div>
+    </div>
+    {{#if upgradeStrategy}}
+      <div class="row">
+
+        <div class="col span-3">
+          <label class="acc-label">{{t "newMultiClusterApp.upgradeApp.batch"}}</label>
+          {{input-integer
+            min="1"
+            value=multiClusterApp.upgradeStrategy.rollingUpdate.batchSize
+            classNames="form-control"
+            placeholder="1"
+          }}
+        </div>
+        <div class="col span-3">
+          <label class="acc-label">{{t "newMultiClusterApp.upgradeApp.interval"}}</label>
+          <div class="input-group">
+            {{input-integer
+              min="1"
+              value=multiClusterApp.upgradeStrategy.rollingUpdate.interval
+              classNames="form-control"
+              placeholder="1"
+            }}
+            <span class="input-group-addon bg-default">{{t 'generic.seconds'}}</span>
+          </div>
+        </div>
+      </div>
+    {{/if}}
+
+    <hr class="mt-20 mb-20"/>
+
+    {{#if getTemplate.isRunning}}
+      <section class="row">
+        <div class="text-center">
+          <i class="icon icon-spinner icon-spin icon-3x"></i>
+        </div>
+      </section>
+    {{else}}
+      <div class="row">
+        {{#if selectedTemplateModel}}
+          <div class="col span-12">
+            {{#if selectedTemplateModel.questions}}
+              {{input-answers
+                selectedTemplate=selectedTemplateModel
+                showHeader=false
+              }}
+            {{else}}
+              {{input-custom-answers app=primaryResource}}
+            {{/if}}
+          </div>
+        {{/if}}
+      </div>
+    {{/if}}
+  {{/accordion-list-item}}
+
+  {{#accordion-list-item
+     title=(t "newMultiClusterApp.members.title")
+     detail=(t "newMultiClusterApp.members.detail")
+     expandAll=al.expandAll
+     expandOnInit=false
+     expand=(action expandFn)
+     expanded=detailExpanded
+  }}
+    <div class="row">
+      <div class="col span-6">
+        <label class="acc-label">{{t "generic.member"}}</label>
+        {{input-identity
+          allowTeams=true
+          action="addAuthorizedPrincipal"
+          onError="gotError"
+        }}
+      </div>
+      <div class="col span-12">
+        {{#sortable-table
+           classNames="grid sortable-table"
+           sortBy=sortBy
+           headers=membersHeaders
+           stickyHeader=false
+           bulkActions=false
+           search=false
+           pagingLabel="pagination.member"
+           descending=descending
+           body=multiClusterApp.members
+           actionsWidth="75"
+           as |sortable kind member dt|
+        }}
+          {{#if (eq kind "row")}}
+            <tr class="main-row">
+              <td data-title="{{dt.memberName}}:" >
+                {{member.displayName}}
+              </td>
+              <td data-title="{{dt.type}}:" >
+                {{member.displayType}}
+              </td>
+              <td data-title="{{dt.accessType}}:" >
+                <select
+                  class="form-control"
+                  onchange={{action (mut member.accessType) value="target.value"}}
+                >
+                  {{#unless (eq member.accessType value)}}
+                    <option value="" selected=true>
+                      {{t "newMultiClusterApp.members.table.prompt"}}
+                    </option>
+                  {{/unless}}
+                  {{#each optionsForAccessType as |choice|}}
+                    <option value="{{choice}}" selected={{eq choice value}}>
+                      {{choice}}
+                    </option>
+                  {{/each}}
+                </select>
+              </td>
+              <td data-title="{{t "generic.actions"}}:" class="actions">
+                <div class="p-5">
+                  <button
+                    class="btn bg-primary btn-sm"
+                    {{action "removeMember" member}}
+                  >
+                    <i class="icon icon-minus"/>
+                  </button>
+                </div>
+              </td>
+            </tr>
+          {{else if (eq kind "nomatch")}}
+            <td
+              colspan="5"
+              class="text-center text-muted lacsso pt-20 pb-20"
+            >
+              {{t "newMultiClusterApp.members.table.noMatch"}}
+            </td>
+          {{else if (eq kind "norows")}}
+            <td
+              colspan="5"
+              class="text-center text-muted lacsso pt-20 pb-20"
+            >
+              {{t "newMultiClusterApp.members.table.noData"}}
+            </td>
+          {{/if}}
+        {{/sortable-table}}
+      </div>
+    </div>
+  {{/accordion-list-item}}
+
+  {{#accordion-list-item
+     title=(t "newMultiClusterApp.overrides.label")
+     detail=(t "newMultiClusterApp.overrides.detail")
+     expandAll=al.expandAll
+     expand=(action expandFn)
+     expandOnInit=true
+  }}
+    <div class="right-buttons">
+      <button
+        class="btn bg-primary btn-sm"
+        {{action "addAnswerOverride"}}
+      >
+        <i class="icon icon-plus"></i>
+        {{t "newMultiClusterApp.overrides.add.label"}}
+      </button>
+    </div>
+    {{#sortable-table
+       classNames="grid sortable-table"
+       sortBy=sortBy
+       headers=overridesHeaders
+       searchText=searchText
+       pagingLabel="pagination.member"
+       descending=descending
+       body=answerOverrides
+       bulkActions=false
+       as |sortable kind answer dt|
+    }}
+      {{#if (eq kind "row")}}
+        {{#unless answer.isSubQuestion}}
+          {{answer-override-row
+            addSubrowQuestions=(action "addDependentSubQuestions")
+            answer=answer
+            primaryResource=primaryResource
+            removeAnswerOverride=(action "removeAnswerOverride")
+            removeSubrowQuestions=(action "removeDependentSubQuestions")
+            selectedTemplateModel=selectedTemplateModel
+          }}
+        {{/unless}}
+      {{else if (eq kind "nomatch")}}
+        <td
+          colspan="5"
+          class="no-match"
+        >
+          {{t "newMultiClusterApp.overrides.table.noMatch"}}
+        </td>
+      {{else if (eq kind "norows")}}
+        <td
+          colspan="5"
+          class="no-data"
+        >
+          {{t "newMultiClusterApp.overrides.table.noData"}}
+        </td>
+      {{/if}}
+
+    {{/sortable-table}}
+
+  {{/accordion-list-item}}
+
+{{/accordion-list}}
+
+{{#if (and selectedTemplateModel (not getTemplate.isRunning))}}
+  {{#if showPreview}}
+    <section>
+      <div class="over-hr hand no-select">
+        <span {{action "togglePreview"}}>
+          {{t "newMultiClusterApp.preview"}} <i class="icon {{if previewOpen "icon-chevron-up" "icon-chevron-down"}}"></i>
+        </span>
+      </div>
+
+      {{#if previewOpen}}
+        <div class="tabs">
+          <div class="tab-header row">
+            <div class="col span-4">
+              <label class="acc-label">{{t "newMultiClusterApp.templateFiles"}}</label>
+              {{searchable-select
+                content=filenames
+                value=previewTab
+                readOnly=readOnly
+              }}
+            </div>
+          </div>
+
+          <div class="row">
+            {{#if decoding}}
+              <section class="row">
+                <div class="text-center">
+                  <i class="icon icon-spinner icon-spin icon-3x"></i>
+                </div>
+              </section>
+            {{else}}
+              {{#if (eq  previewTab "answers")}}
+                {{code-block
+                  code=answersString
+                  language="yaml"
+                }}
+              {{else}}
+                {{code-block
+                  code=selectedFileContetnt
+                  language="yaml"
+                }}
+              {{/if}}
+            {{/if}}
+          </div>
+        </div>
+      {{/if}}
+    </section>
+  {{/if}}
+
+  {{#if isGKE}}
+    <div class="banner bg-warning">
+      <div class="banner-icon">
+        <span class="icon icon-alert"></span>
+      </div>
+      <div class="banner-message">
+        <p>{{t "ingressPage.gkeIngressWarning"}}</p>
+      </div>
+    </div>
+  {{/if}}
+
+  {{#if errors.length}}
+    <section>
+      <div class="row">
+        <div class="col span-12">
+          {{top-errors errors=errors}}
+        </div>
+      </div>
+    </section>
+  {{/if}}
+
+  <div class="footer-actions">
+    {{save-cancel
+      createLabel=(if editing saveUpgrade saveNew)
+      save="save"
+      cancel="cancel"
+    }}
+  </div>
+{{else}}
+  <div class="footer-actions">
+    <button
+      {{action "cancel"}}
+      class="btn bg-transparent"
+    >
+      {{t "saveCancel.cancel"}}
+    </button>
+  </div>
+{{/if}}

@@ -1,0 +1,24 @@
+<label class="acc-label">
+  {{or question.label question.variable}}
+  {{#if question.required}}
+    {{field-required}}
+  {{/if}}
+</label>
+
+{{#if question.supported}}
+  {{component
+    question.inputComponent
+    field=question
+    value=answer
+    namespaceId=namespaceId
+  }}
+{{else}}
+  {{input
+    type="text"
+    value=question.answer
+    class="form-control"
+  }}
+  <p>{{t 'inputAnswers.unknownType'}} {{question.type}}</p>
+{{/if}}
+
+<p class="help-block">{{question.description}}</p>
