@@ -1,4 +1,4 @@
-import { get, set, computed } from '@ember/object'
+import { get, set, computed, setProperties } from '@ember/object'
 import EmberObject from '@ember/object';
 import Mixin from '@ember/object/mixin';
 
@@ -22,6 +22,7 @@ export default Mixin.create({
       'splunk',
       'syslog',
       'fluentForwarder',
+      'customTarget',
     ];
 
     loggingTagets.forEach((key) => {
@@ -29,6 +30,17 @@ export default Mixin.create({
 
       if (key === 'fluentForwarder') {
         config = store.createRecord({ type: `fluentForwarderConfig`, });
+      } else if (key === 'customTarget') {
+        config = store.createRecord({ type: `customTargetConfig`, });
+        setProperties(config, {
+          clientKey:   '',
+          clientCert:  '',
+          certificate: '',
+          content:     `<match *>
+  @type elasticsearch
+
+</match>`,
+        })
       } else {
         config = store.createRecord({ type: `${ key }Config`, });
       }
@@ -39,16 +51,46 @@ export default Mixin.create({
 
     this.setProperties(map);
     if (t && t !== 'none') {
-      set(this, `${ t }.config`, get(this, `${ t }Config`));
-      set(this, `${ t }.outputFlushInterval`, get(this, 'outputFlushInterval'));
-      set(this, `${ t }.outputTags`, get(this, 'outputTags'));
-      set(this, `${ t }.dockerRootDir`, get(this, 'dockerRootDir'));
+      setProperties(this, {
+        [`${ t }.config`]:                 get(this, `${ t }Config`),
+        [`${ t }.outputFlushInterval`]:    get(this, `outputFlushInterval`),
+        [`${ t }.outputTags`]:             get(this, `outputTags`),
+        [`${ t }.dockerRootDir`]:          get(this, 'dockerRootDir'),
+        [`${ t }.excludeSystemComponent`]: get(this, 'excludeSystemComponent'),
+      })
     }
 
     return this;
   },
 
-  targetType: computed('elasticsearchConfig', 'splunkConfig', 'kafkaConfig', 'syslogConfig', 'fluentForwarderConfig', function() {
+  targetType: computed('elasticsearchConfig', 'splunkConfig', 'kafkaConfig', 'syslogConfig', 'fluentForwarderConfig', 'customTargetConfig', function() {
+    const {
+      customTargetConfig, elasticsearchConfig, splunkConfig, syslogConfig, kafkaConfig, fluentForwarderConfig
+    } = this
+
+    if (customTargetConfig) {
+      return 'customTarget'
+    }
+    if (elasticsearchConfig) {
+      return 'elasticsearch';
+    }
+    if (splunkConfig) {
+      return 'splunk';
+    }
+    if (syslogConfig) {
+      return 'syslog';
+    }
+    if (kafkaConfig) {
+      return 'kafka';
+    }
+    if (fluentForwarderConfig) {
+      return 'fluentForwarder'
+    }
+
+    return DEFAULT_TARGET_TYPE;
+  }),
+
+  sslTargetType: computed('elasticsearchConfig', 'splunkConfig', 'kafkaConfig', 'syslogConfig', 'fluentForwarderConfig', function() {
     const es = get(this, 'elasticsearchConfig');
     const splunk = get(this, 'splunkConfig');
     const kafka = get(this, 'kafkaConfig');

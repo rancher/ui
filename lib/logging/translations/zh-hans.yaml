@@ -73,6 +73,8 @@ loggingPage:
       prefixPlaceholder: '例如: logstash'
       dateFormat: '日期格式:'
     generatedIndex: '生成的索引格式为: <code class="text-italic">{esIndex}</code>，默认情况下索引模式为: {indexFormat}。'
+    endpoint:
+      required: 访问地址必须填写
   splunk:
     header: Splunk HTTP事件收集配置
     helpText: '您可以找到如何配置Splunk HEC(HTTP事件收集器)的说明，<a href="http://docs.splunk.com/Documentation/Splunk/7.0.0/Data/UsetheHTTPEventCollector" target="_blank">点击这里</a>。'
@@ -80,6 +82,7 @@ loggingPage:
     tokenPlaceholder: Your Token
     tokenHelpText: 'Token是允许日志收集程序和HTTP客户端连接到HEC的验证信息，<a href="http://docs.splunk.com/Documentation/Splunk/7.0.0/Data/UsetheHTTPEventCollector#Configure_HTTP_Event_Collector_on_Splunk_Enterprise" target="_blank">了解详情</a>。'
     tokenRequired: Token必须填写
+    endpointRequired: 访问地址必须填写
     source: 日志源
     sourcePlaceholder: '例如: fluentd'
     sourceHelpText: '标识事件来源的默认字段，即事件发生的位置，<a href="https://docs.splunk.com/Splexicon:Source" target="_blank">了解详情</a>。'
@@ -95,9 +98,13 @@ loggingPage:
     zookeeperHelpText: Zookeeper用于构建协调、配置管理、master检测、检测kafka集群中的节点更新。
     brokkerHelpText: Kafka集群由一个或多个Broker组成，为每个Broker配置主机和端口。
     addEndpoint: 访问地址
-    topic: 主题
+    topic:
+      label: 主题
+      required: 主题必须填写
     topicPlaceholder: '例如: message'
     topicHelpText: 日志将发送到这个主题。
+    endpoint:
+      required: 访问地址必须填写
   syslog:
     endpointPlaceholder: '例如: 192.168.1.10:514'
     header: Syslog配置
@@ -116,6 +123,8 @@ loggingPage:
       info: Info
       debug: Debug
     tokenHelpText: '将Token令牌添加到每个系统日志消息的结构化数据中。对于像<a href="https://help.sumologic.com/Send-Data/Sources/02Sources-for-Hosted-Collectors/Cloud-Syslog-Source" target="_blank">Sumologic</a>, <a href="https://www.loggly.com/docs/customer-token-authentication-token" target="_blank">Loggly</a>等云日志系统，您可以在其配置页面上生成Token令牌。'
+    endpoint:
+      required: 访问地址必须填写
   fluentd:
     header: Fluentd配置
     compress:
@@ -124,6 +133,8 @@ loggingPage:
     endpoint:
       label: 访问地址
       placeholder: '例如: 192.168.1.10:24224'
+      invalid: 访问地址需要填写端口
+      required: 访问地址必须填写
     password:
       label: 密码
       placeholder: 用于身份验证的用户名密码
@@ -131,7 +142,8 @@ loggingPage:
       label: 共享密钥
       placeholder: 用于身份验证的共享密钥
     standby:
-      label: Use as Standby Only
+      label: 只用于做待机
+      none: 需要一个非待机访问地址.
     username:
       label: 用户名
       placeholder: 用于身份验证的用户名
@@ -151,6 +163,7 @@ loggingPage:
       placeholder: 服务器主机名
   ssl:
     sslHeader: SSL配置
+    headerHelp: 输入HTTPS地址或选择TCP开启SSL配置
     certificate:
       label: PEM格式的CA证书
     clientKey:
@@ -171,3 +184,8 @@ loggingPage:
     header: Docker配置
     label: Docker Root Directory
     placeholder: "输入docker root Directory，默认值为{dir}"
+  testAction:
+    testing: 测试
+    testOk: 设置已验证
+    testFailed: 出了点问题，请检查输入的信息。
+    test: 测试

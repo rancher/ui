@@ -22,58 +22,111 @@
   </div>
 </div>
 
-{{logging/targets-nav
-    originalModel=originalModel
-    targetType=targetType
-    isClusterLevel=isClusterLevel
-    pageScope=pageScope
-}}
+<section class="header has-tabs clearfix p-0">
+  <ul class="tab-nav">
+    {{#if pasteOrUpload}}
+      <li>
+        <button class="btn bg-transparent" {{action "cancel"}}>{{t "loggingPage.advanced.cancel"}}</button>
+      </li>
+    {{else}}
+      <li>
+        <button class="btn bg-transparent" {{action "showPaste"}}>{{t "loggingPage.advanced.file"}} <span class="icon icon-copy"></span></button>
+      </li>
+    {{/if}}
+  </ul>
+</section>
 
-{{#if (and originalModel.showTransitioningMessage (eq originalModel.targetType targetType))}}
-  <div class="banner {{originalModel.stateBackground}}">
-    <div class="banner-icon p-20"><i class="icon {{originalModel.stateIcon}}"></i></div>
-    <div class="banner-message p-20">
-      <table>
-        {{error-sub-row fullColspan=fullColspan model=originalModel}}
-      </table>
-    </div>
+{{#if pasteOrUpload}}
+  <div class="mt-25">
+    {{logging/input-logging-config
+        showDownload=false
+        canChangeName=false
+        autoResize=true
+        value=customContent
+        model=model.customTarget
+        parentModel=model
+        targetType=targetType
+        pageScope=pageScope
+    }}
   </div>
-{{/if}}
+  {{copy-to-clipboard
+      tooltipText=""
+      buttonText="copyToClipboard.tooltip"
+      clipboardText=value
+      class="with-clip"
+  }}
+{{else}}
+  {{logging/targets-nav
+      originalModel=originalModel
+      targetType=targetType
+      isClusterLevel=isClusterLevel
+      pageScope=pageScope
+  }}
 
-{{#if (eq targetType 'elasticsearch')}}
-  {{logging/target-elasticsearch
-       targetType=targetType
-       model=model.elasticsearch
-       pageScope=pageScope
-       parentModel=model
-  }}
-{{else if (eq targetType 'splunk')}}
-  {{logging/target-splunk
-      model=model.splunk
-      parentModel=model
-      targetType=targetType
-  }}
-{{else if (eq targetType 'kafka')}}
-  {{logging/target-kafka
-      model=model.kafka
-      parentModel=model
-      targetType=targetType
-  }}
-{{else if (eq targetType 'syslog')}}
-  {{logging/target-syslog
-      model=model.syslog
-      parentModel=model
-      targetType=targetType
-  }}
-{{else if (eq targetType 'fluentForwarder')}}
-  {{logging/target-flentd
-      model=model.fluentForwarder
-      parentModel=model
-      targetType=targetType
-      endpointValidate=endpointValidate
-  }}
+  {{#if (and originalModel.showTransitioningMessage (eq originalModel.targetType targetType))}}
+    <div class="banner {{originalModel.stateBackground}}">
+      <div class="banner-icon p-20"><i class="icon {{originalModel.stateIcon}}"></i></div>
+      <div class="banner-message p-20">
+        <table>
+          {{error-sub-row fullColspan=fullColspan model=originalModel}}
+        </table>
+      </div>
+    </div>
+  {{/if}}
+
+  {{#if (eq targetType 'elasticsearch')}}
+    {{logging/target-elasticsearch
+         targetType=targetType
+         model=model.elasticsearch
+         pageScope=pageScope
+         parentModel=model
+         endpointErrorText=esErrors
+    }}
+  {{else if (eq targetType 'splunk')}}
+    {{logging/target-splunk
+        model=model.splunk
+        parentModel=model
+        targetType=targetType
+    }}
+  {{else if (eq targetType 'kafka')}}
+    {{logging/target-kafka
+        model=model.kafka
+        parentModel=model
+        targetType=targetType
+    }}
+  {{else if (eq targetType 'syslog')}}
+    {{logging/target-syslog
+        model=model.syslog
+        parentModel=model
+        targetType=targetType
+    }}
+  {{else if (eq targetType 'fluentForwarder')}}
+    {{logging/target-flentd
+        model=model.fluentForwarder
+        parentModel=model
+        targetType=targetType
+        endpointValidate=endpointValidate
+    }}
+  {{/if}}
 {{/if}}
 
 {{top-errors errors=errors}}
 
-{{save-cancel saveDisabled=saveDisabled disabled=true cancelDisabled=true editing=true save="save"}}
+{{#if (not-eq targetType 'none')}}
+  {{logging/form-test
+      test=(action 'test')
+      testing=testing
+      tested=tested
+      testOk=testOk
+      model=model
+  }}
+{{/if}}
+
+<div class="footer-actions">
+  {{save-cancel
+      saveDisabled=saveDisabled
+      cancelDisabled=true
+      editing=true
+      save="save"
+  }}
+</div>

@@ -9,6 +9,7 @@ const formats = [
   'nginx',
   'rfc3164',
   'rfc5424',
+  'none',
 ].map((value) => ({
   value,
   label: value,

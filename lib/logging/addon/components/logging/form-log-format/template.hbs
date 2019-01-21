@@ -12,22 +12,28 @@
           changed=(action (mut model.outputTags))
       }}
     </div>
-    {{!-- <h4>{{t 'loggingPage.additional.flushInterval.header'}}</h4> --}}
-    <div class="row">
-      <div class="col">
-        <label class="acc-label">{{t 'loggingPage.additional.flushInterval.label'}}</label>
-        <div class="input-group">
-          {{input-integer
-              min=1
-              value=model.outputFlushInterval
-              class="form-control"
-              placeholder=(t 'loggingPage.additional.flushInterval.placeholder')
-              aria-describedby="basic-addon2"
-          }}
-          <span class="input-group-addon bg-default" id="basic-addon2">{{t 'loggingPage.additional.flushInterval.sec'}}</span>
+    {{#if (not-eq targetType 'customTarget')}}
+      <div class="row mb-30">
+        <div class="col">
+          <label class="acc-label">{{t 'loggingPage.additional.flushInterval.label'}}</label>
+          <div class="input-group">
+            {{input-integer
+                min=1
+                value=model.outputFlushInterval
+                class="form-control"
+                placeholder=(t 'loggingPage.additional.flushInterval.placeholder')
+                aria-describedby="basic-addon2"
+            }}
+            <span class="input-group-addon bg-default" id="basic-addon2">{{t 'loggingPage.additional.flushInterval.sec'}}</span>
+          </div>
+          <p class="text-info text-small mb-0">{{t 'loggingPage.additional.flushInterval.helpText'}}</p>
         </div>
-        <p class="text-info text-small mb-0">{{t 'loggingPage.additional.flushInterval.helpText'}}</p>
       </div>
+    {{/if}}
+
+    <div class="row">
+      {{input type="checkbox" classNames="form-control" checked=model.excludeSystemComponent}}
+      {{t 'loggingPage.additional.excludeSystemComponent.label'}}
     </div>
   </section>
 </div>

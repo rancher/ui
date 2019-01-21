@@ -1,0 +1,32 @@
+<div class="row">
+  <div class="col span-12 m-0 p-0 codemirror-container" style="overflow: auto;">
+    {{ivy-codemirror
+      placeholder=placeholder
+      value=value
+      valueUpdated=(action 'updateValue')
+      options=(hash
+        autofocus=true
+        theme="monokai"
+        tabSize=2
+        lineNumbers=true
+        mode="yaml"
+        readOnly=(if (or (eq modalOpts.type 'review') readOnly) true false)
+        gutters=gutters
+        lint=false
+        lineWrapping=true
+        viewportMargin=viewportMargin
+        smartIndent=false
+      )
+    }}
+  </div>
+</div>
+{{yield 'description'}}
+<input type="file" accept="{{actualAccept}}" multiple={{multiple}} class="hide">
+
+{{logging/form-log-ssl
+    config=config
+    targetType=targetType
+    customType=customType
+}}
+
+{{logging/form-log-format logPreview=logPreview model=model targetType=targetType}}
