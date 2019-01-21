@@ -9,91 +9,93 @@
     {{#if isInsecure}}
       {{banner-message color='bg-error text-left' icon='icon-certificate' message=(t 'loginPage.insecure' appName=settings.appName htmlSafe=true) }}
     {{else}}
-      {{#if isGithub}}
-        {{login-github action="started"}}
-      {{/if}}
-
-      {{#if isShibboleth}}
-        <p>{{t 'loginPage.shibbolethMessage' appName=settings.appName}}</p>
-        <br/>
-        {{login-shibboleth
-            action="started"
-            waiting=shibbolethWaiting
-        }}
-      {{/if}}
-
-      {{#if isActiveDirectory}}
-        {{login-user-pass
-            action="authenticate"
-            classNames="row"
-            provider="activedirectory"
-            shown=true
-            waiting=adWaiting
-        }}
-      {{/if}}
-
-      {{#if isOpenLdap}}
-        {{login-user-pass
-            action="authenticate"
-            classNames="row"
-            provider="openldap"
-            shown=true
-            waiting=adWaiting
-        }}
-      {{/if}}
-
-      {{#if isFreeIpa}}
-        {{login-user-pass
-            action="authenticate"
-            classNames="row"
-            provider="freeipa"
-            shown=true
-            waiting=adWaiting
-        }}
-      {{/if}}
-
-      {{#if isAzureAd}}
-        {{login-azure action="started"}}
-      {{/if}}
-
-      {{#if isPing}}
-        {{login-saml
-            action="started"
-            provider="ping"
-        }}
-      {{/if}}
-
-      {{#if isAdfs}}
-        {{login-saml
-            action="started"
-            provider="adfs"
-        }}
-      {{/if}}
-
-      {{#if isOkta}}
-        {{login-saml
-            action="started"
-            provider="okta"
-        }}
-      {{/if}}
-
-      {{#if isKeycloak}}
-        {{login-saml
-            action="started"
-            provider="keycloak"
-        }}
-      {{/if}}
-
-      {{#if isLocal}}
+      {{#if (or showLocal onlyLocal)}}
         {{login-user-pass
             action="authenticate"
             classNames="row"
             onlyLocal=onlyLocal
             provider="local"
-            shown=onlyLocal
             waiting=localWaiting
         }}
+      {{else}}
+        {{#if isGithub}}
+          {{login-github action="started"}}
+        {{/if}}
+
+        {{#if isShibboleth}}
+          <p>{{t 'loginPage.shibbolethMessage' appName=settings.appName}}</p>
+          <br/>
+          {{login-shibboleth
+              action="started"
+              waiting=shibbolethWaiting
+          }}
+        {{/if}}
+
+        {{#if isActiveDirectory}}
+          {{login-user-pass
+              action="authenticate"
+              classNames="row"
+              provider="activedirectory"
+              waiting=adWaiting
+          }}
+        {{/if}}
+
+        {{#if isOpenLdap}}
+          {{login-user-pass
+              action="authenticate"
+              classNames="row"
+              provider="openldap"
+              waiting=adWaiting
+          }}
+        {{/if}}
+
+        {{#if isFreeIpa}}
+          {{login-user-pass
+              action="authenticate"
+              classNames="row"
+              provider="freeipa"
+              waiting=adWaiting
+          }}
+        {{/if}}
+
+        {{#if isAzureAd}}
+          {{login-azure action="started"}}
+        {{/if}}
+
+        {{#if isPing}}
+          {{login-saml
+              action="started"
+              provider="ping"
+          }}
+        {{/if}}
+
+        {{#if isAdfs}}
+          {{login-saml
+              action="started"
+              provider="adfs"
+          }}
+        {{/if}}
+
+        {{#if isOkta}}
+          {{login-saml
+              action="started"
+              provider="okta"
+          }}
+        {{/if}}
+
+        {{#if isKeycloak}}
+          {{login-saml
+              action="started"
+              provider="keycloak"
+          }}
+        {{/if}}
       {{/if}}
+
+      {{#unless onlyLocal}}
+        <a class="link-text text-small mt-10 hand" {{action 'toggleAuth'}}>
+          {{t (if showLocal 'loginUserPass.externalProvider' 'loginUserPass.local') externalName=externalProvider}}
+        </a>
+      {{/unless}}
 
       {{#if infoMsg}}
         <div class="banner p-10 {{if errorMsg 'bg-error' 'bg-warning'}}" role="alert">
