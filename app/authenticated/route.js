@@ -135,9 +135,8 @@ export default Route.extend(Preload, {
       .catch((err) => this.loadingError(err, transition));
   },
 
-  setupController(/* controller, model*/) {
-    this._super(...arguments);
-    get(this, 'scope').finishSwitchToGlobal();
+  afterModel() {
+    return get(this, 'scope').finishSwitchToGlobal();
   },
 
   activate() {

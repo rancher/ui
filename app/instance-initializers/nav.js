@@ -235,6 +235,17 @@ const rootNav = [
         ctx:            [getClusterId],
       },
       {
+        id:             'cluster-tools-backups',
+        localizedLabel: 'nav.tools.backups',
+        route:          'authenticated.cluster.backups',
+        resourceScope:  'global',
+        resource:       ['etcdbackup'],
+        ctx:            [getClusterId],
+        condition() {
+          return get(this, 'cluster.rancherKubernetesEngineConfig')
+        }
+      },
+      {
         id:             'cluster-tools-notifiers',
         localizedLabel: 'nav.tools.notifiers',
         route:          'authenticated.cluster.notifier',
