@@ -1,4 +1,4 @@
-import { get, set, observer } from '@ember/object';
+import { get, set } from '@ember/object';
 import { inject as service } from '@ember/service';
 import Route from '@ember/routing/route';
 import { alias } from '@ember/object/computed';
@@ -13,12 +13,11 @@ export default Route.extend({
   },
 
   setupController(controller, model) {
-
     let { currentCluster } = this;
 
-    let clusterId = currentCluster.id;
+    let clusterId = get(currentCluster, 'id');
 
-    controller.set('currentClusterId', clusterId);
+    set(controller, 'currentClusterId', clusterId);
 
     this._super(controller, model);
   }
