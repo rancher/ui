@@ -1,39 +1,30 @@
-<div class="mt-20 clearfix">
-
-  {{#unless showAdvanced}}
-    <div class="text-right text-small">
-      <a role="button" class="btn bg-transparent p-0" {{action 'showAdvanced'}}>{{t 'alertPage.newOrEdit.showAdvanced'}}</a>
-    </div>
-  {{/unless}}
-
-  {{#if showAdvanced}}
-    <div class="box">
-      <div class="row">
-        <div class="col span-4">
-          <label class="acc-label">{{t 'alertPage.newOrEdit.groupWaitSeconds.label'}}</label>
-          {{alert/time-duration value=model.groupWaitSeconds}}
-          <p class="text-info text-small">
-            {{t 'alertPage.newOrEdit.groupWaitSeconds.helpText'}}
-          </p>
-        </div>
-
-        <div class="col span-4 offset-2">
-          <label class="acc-label">{{t 'alertPage.newOrEdit.groupIntervalSeconds.label'}}</label>
-          {{alert/time-duration value=model.groupIntervalSeconds}}
-          <p class="text-info text-small">
-            {{t 'alertPage.newOrEdit.groupIntervalSeconds.helpText'}}
-          </p>
-        </div>
+{{#advanced-section advanced=advanced}}
+  <div class="box">
+    <div class="row">
+      <div class="col span-4">
+        <label class="acc-label">{{t 'alertPage.newOrEdit.groupWaitSeconds.label'}}</label>
+        {{alert/time-duration value=model.groupWaitSeconds}}
+        <p class="text-info text-small">
+          {{t 'alertPage.newOrEdit.groupWaitSeconds.helpText'}}
+        </p>
       </div>
-      <div class="row">
-        <div class="col span-4">
-          <label class="acc-label">{{t 'alertPage.newOrEdit.repeatIntervalSeconds.label'}}</label>
-          {{alert/time-duration value=model.repeatIntervalSeconds}}
-          <p class="text-info text-small">
-            {{t 'alertPage.newOrEdit.repeatIntervalSeconds.helpText'}}
-          </p>
-        </div>
+
+      <div class="col span-4 offset-2">
+        <label class="acc-label">{{t 'alertPage.newOrEdit.groupIntervalSeconds.label'}}</label>
+        {{alert/time-duration value=model.groupIntervalSeconds}}
+        <p class="text-info text-small">
+          {{t 'alertPage.newOrEdit.groupIntervalSeconds.helpText'}}
+        </p>
       </div>
     </div>
-  {{/if}}
-</div>
+    <div class="row">
+      <div class="col span-4">
+        <label class="acc-label">{{t 'alertPage.newOrEdit.repeatIntervalSeconds.label'}}</label>
+        {{alert/time-duration value=model.repeatIntervalSeconds}}
+        <p class="text-info text-small">
+          {{t 'alertPage.newOrEdit.repeatIntervalSeconds.helpText'}}
+        </p>
+      </div>
+    </div>
+  </div>
+{{/advanced-section}}
