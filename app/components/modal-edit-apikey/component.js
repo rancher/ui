@@ -14,17 +14,23 @@ export default Component.extend(ModalBase, NewOrEdit, {
   scope:           service(),
 
   layout,
-  classNames:    ['large-modal', 'alert'],
-  model:         null,
-  clone:         null,
-  justCreated:   false,
-  expire:        'never',
+  classNames:      ['large-modal', 'alert'],
+  model:           null,
+  clone:           null,
+  justCreated:     false,
+  expire:          'never',
 
   originalModel:   alias('modalService.modalOpts'),
+  displayEndpoint: alias('endpointService.api.display.current'),
+  linkEndpoint:    alias('endpointService.api.auth.current'),
+
   didReceiveAttrs() {
-    set(this, 'clone', get(this, 'originalModel').clone());
-    set(this, 'model', get(this, 'originalModel').clone());
-    set(this, 'justCreated', false);
+    setProperties(this, {
+      clone:       get(this, 'originalModel').clone(),
+      model:       get(this, 'originalModel').clone(),
+      justCreated: false,
+    });
+
     this.expireChanged();
   },
 
@@ -35,7 +41,7 @@ export default Component.extend(ModalBase, NewOrEdit, {
   },
 
   expireChanged: observer('expire', function() {
-    const now = moment();
+    const now  = moment();
     let expire = now.clone();
 
     if ( get(this, 'expire') ) {
@@ -45,21 +51,13 @@ export default Component.extend(ModalBase, NewOrEdit, {
     set(this, 'model.ttl', expire.diff(now));
   }),
 
-  displayEndpoint: function() {
-    return get(this, 'endpointService.api.display.current');
-  }.property(),
-
-  linkEndpoint: function() {
-    return get(this, 'endpointService.api.auth.current');
-  }.property(),
-
-  editing: function() {
+  editing: computed('clone.id', function() {
     return !!get(this, 'clone.id');
-  }.property('clone.id'),
+  }),
 
   displayPassword: computed('clone.token', 'clone.name', function() {
     const prefix = get(this, 'clone.name');
-    const token = get(this, 'clone.token');
+    const token  = get(this, 'clone.token');
 
     if ( !token || !prefix ) {
       return null;
@@ -73,6 +71,18 @@ export default Component.extend(ModalBase, NewOrEdit, {
 
     return null;
   }),
+
+  allClusters: computed('scope.allClusters.@each.{id}', function() {
+    const allClusters = get(this, 'scope.allClusters');
+
+    return allClusters.map((c) => {
+      return {
+        label: `${ get(c, 'displayName') } ( ${ get(c, 'id') } )`,
+        value: get(c, 'id'),
+      }
+    }).sortBy('displayName');
+  }),
+
 
   doneSaving(neu) {
     if ( get(this, 'editing') ) {

@@ -349,6 +349,7 @@ apiPage:
     state: State
     name: Access Key
     description: Description
+    scope: Scope
     created: Created
     expires:
       label: Expires
@@ -1891,6 +1892,12 @@ annotationsSection:
   noData: No Annotations
   noMatch: No annotations match the current search
 
+authorizedEndpoint:
+  enabled:
+    label: Authorized Cluster Endpoint
+  fqdn:
+    label: FQDN
+
 taintsSection:
   title: Taints
   detail: Taints mark pods so that they are only scheduled to a node is marked as being able to "tolerate" it
@@ -2758,6 +2765,10 @@ clusterNew:
     advanced:
       label: Advanced Cluster Options
       detail: Customize advanced options
+    authorizedEndpoint:
+      title: Authorized Cluster Endpoint
+      detail: "Enabling the authorized cluster endpoint allows direct communication with the cluster, bypassing the Rancher API proxy. Authorized endpoint's can be retrieved by generating a kubeconfig for the cluster."
+      label: Authorized Cluster Endpoint
   custom:
     label: Custom
     shortLabel: Custom
@@ -3581,6 +3592,9 @@ editApiKey:
   secretKey: Secret Key (password)
   basicAuth: "Access Key and Secret Key can be sent as the username and password for HTTP Basic auth to authorize requests.  You can also combine them to use as a Bearer token:"
   token: Bearer Token
+  scope: Scope
+  scopeSelect:
+    prompt: no scope
   ttl:
     label: Automatically Expire
     never: Never

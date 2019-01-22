@@ -34,6 +34,11 @@ export default Controller.extend({
       translationKey: 'apiPage.table.description',
     },
     {
+      name:           'scope',
+      sort:           ['scope', 'name', 'id'],
+      translationKey: 'apiPage.table.scope',
+    },
+    {
       name:           'expires',
       sort:           ['expiresAt', 'name', 'id'],
       translationKey: 'apiPage.table.expires.label',
