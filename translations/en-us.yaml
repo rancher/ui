@@ -5882,6 +5882,9 @@ nodeDriver:
     scheduling:
       title: 3. Scheduling
       detail: Choose what hypervisor the virtual machine will be scheduled to
+    vappOptions:
+      title: 4. vApp Options
+      detail: Choose OVF environment properties
     vcenter:
       label: vCenter or ESXi Server
       placeholder: vCenter or ESXi hostname/IP
@@ -5941,6 +5944,30 @@ nodeDriver:
         placeholder: "e.g. myrancherhost"
       label: Configuration Parameters used for guestinfo
       addActionLabel: Add Parameter
+    vappHelp: "Note: standalone ESXI does not support vApp options and network protocol profiles"
+    vappMode:
+      disabled: "Do not use vApp"
+      auto: "Use vApp to configure networks with network protocol profiles"
+      manual: "Provide a custom vApp config"
+    vappTransport:
+      label: OVF environment transport
+      placeholder: "e.g. com.vmware.guestInfo"
+      help: "com.vmware.guestInfo or iso"
+    vappIpprotocol:
+      label: vApp IP protocol
+      placeholder: "e.g. IPv4"
+      help: "IPv4 or IPv6"
+    vappIpallocationpolicy:
+      label: vApp IP allocation policy
+      placeholder: "e.g. fixedAllocated"
+      help: "dhcp, fixed, transient or fixedAllocated"
+    vappProperty:
+      key:
+        placeholder: "e.g. guestinfo.interface.0.ip.0.address"
+      value:
+        placeholder: "e.g. ip:VM Network, expression or string"
+      label: vApp properties
+      addActionLabel: Add Property
   azure:
     placement:
       title: Placement
