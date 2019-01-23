@@ -34,29 +34,42 @@
 </div>
 
 <div class="row banner bg-info basics">
-  <div class="vertical-middle">
-    <label class="acc-label vertical-middle p-0">{{t 'servicePage.endpoints'}}:</label>
-    {{#if service.displayEndpoints}}
-      <label class="clip text-small vertical-middle">
-        {{service.displayEndpoints}}
-      </label>
-    {{else}}
-      {{t 'generic.na'}}
-    {{/if}}
-  </div>
-  <div class="vertical-middle">
-    <label class="acc-label vertical-middle p-0">{{t 'servicePage.multistat.scale'}}:</label>
-    <span class="pr-5">
-      {{service.displayScale}}
-    </span>
-    <div class="btn-group btn-group-xs p-0">
-      <button class="btn btn-xs bg-primary" {{action "scaleDown" target=service}} disabled={{not service.canScaleDown}}><i class="icon icon-minus icon-fw"/></button>
-      <button style="margin-left: -1px;" class="btn btn-xs bg-primary" {{action "scaleUp" target=service}} disabled={{not service.canScaleUp}}><i class="icon icon-plus icon-fw"/></button>
+  <div class="vertical-middle center">
+    <div>
+      <label class="acc-label vertical-middle p-0">{{t 'servicePage.endpoints'}}:</label>
+      {{#if service.displayEndpoints}}
+        <label class="clip text-small vertical-middle">
+          {{service.displayEndpoints}}
+        </label>
+      {{else}}
+        {{t 'generic.na'}}
+      {{/if}}
     </div>
   </div>
-  <div class="vertical-middle">
-    <label class="acc-label vertical-middle p-0">{{t 'servicePage.multistat.created'}}:</label>
-    {{date-calendar service.created}}
+  <div class="vertical-middle center">
+    <span class="text-left">
+      <div class="hr">
+        <label class="acc-label vertical-middle p-0">{{t 'servicePage.multistat.scale'}}:</label>
+        <span class="pr-5">
+          {{service.displayScale}}
+        </span>
+      </div>
+      <div>
+        <span class="help-block">{{t 'servicePage.multistat.currentScale' count=service.currentScale}}</span>
+      </div>
+    </span>
+    <span>
+      <div class="btn-group btn-group-xs p-0 ml-10">
+        <button class="btn btn-xs bg-primary" {{action "scaleDown" target=service}} disabled={{not service.canScaleDown}}><i class="icon icon-minus icon-fw"/></button>
+        <button style="margin-left: -1px;" class="btn btn-xs bg-primary" {{action "scaleUp" target=service}} disabled={{not service.canScaleUp}}><i class="icon icon-plus icon-fw"/></button>
+      </div>
+    </span>
+  </div>
+  <div class="vertical-middle center">
+    <div class="">
+      <label class="acc-label vertical-middle p-0">{{t 'servicePage.multistat.created'}}:</label>
+      {{date-calendar service.created}}
+    </div>
   </div>
 </div>
 
