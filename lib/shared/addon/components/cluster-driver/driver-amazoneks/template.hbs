@@ -87,14 +87,24 @@
 
   {{#if (gte step 2)}}
     {{#accordion-list-item
-         title=(t "nodeDriver.amazoneks.role.title")
-         detail=(t "nodeDriver.amazoneks.role.detail")
+         title=(t "nodeDriver.amazoneks.clusterOption.title")
+         detail=(t "nodeDriver.amazoneks.clusterOption.detail")
          showExpand=false
          expandOnInit=true
          expandAll=al.expandAll
          expand=(action expandFn)
     }}
       <div class="row">
+        <div class="col span-6">
+          <label class="acc-label">{{t "nodeDriver.amazoneks.kubernetesVersion.label"}}</label>
+          {{form-versions
+              cluster=cluster
+              editing=(eq mode "edit")
+              value=config.kubernetesVersion
+              versions=kubernetesVersionContent
+              initialVersion=initialVersion
+          }}
+        </div>
         <div class="col span-6">
           <label class="acc-label">{{t "nodeDriver.amazoneks.role.label"}}</label>
           {{#if (eq step 2)}}
