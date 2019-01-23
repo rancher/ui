@@ -1,32 +1,54 @@
 <section class="horizontal-form container-fluid">
   {{#if justCreated}}
-    <h2>{{t 'editApiKey.title.justCreated'}}</h2>
+    <h2>{{t "editApiKey.title.justCreated"}}</h2>
     <hr/>
 
     <div>
-      <label class="acc-label block">{{t 'apiPage.currentEndpoint'}}</label>
-      <code class="p-10"><a href="{{linkEndpoint}}" target="_blank" rel="nofollow noreferrer">{{displayEndpoint}}</a></code>
-      {{copy-to-clipboard color="bg-transparent" clipboardText=linkEndpoint}}
+      <label class="acc-label block">
+        {{t "apiPage.currentEndpoint"}}
+      </label>
+      <code class="p-10">
+        <a href="{{linkEndpoint}}" target="_blank" rel="nofollow noreferrer">{{displayEndpoint}}</a>
+      </code>
+      {{copy-to-clipboard
+        color="bg-transparent"
+        clipboardText=linkEndpoint
+      }}
     </div>
 
     <div>
-      <label class="acc-label block mt-20">{{t 'editApiKey.accessKey'}}:</label>
+      <label class="acc-label block mt-20">
+        {{t "editApiKey.accessKey"}}:
+      </label>
       <code class="p-10">{{clone.name}}</code>
-      {{copy-to-clipboard color="bg-transparent" clipboardText=clone.name}}
+      {{copy-to-clipboard
+        color="bg-transparent"
+        clipboardText=clone.name
+      }}
     </div>
 
     <div>
-      <label class="acc-label block mt-20">{{t 'editApiKey.secretKey'}}:</label>
+      <label class="acc-label block mt-20">
+        {{t "editApiKey.secretKey"}}:
+      </label>
       <code class="p-10">{{displayPassword}}</code>
-      {{copy-to-clipboard color="bg-transparent" clipboardText=displayPassword}}
+      {{copy-to-clipboard
+        color="bg-transparent"
+        clipboardText=displayPassword
+      }}
     </div>
 
-    <p>{{t 'editApiKey.basicAuth'}}</p>
+    <p>{{t "editApiKey.basicAuth"}}</p>
 
     <div>
-      <label class="acc-label block">{{t 'editApiKey.token'}}:</label>
+      <label class="acc-label block">
+        {{t "editApiKey.token"}}:
+      </label>
       <code class="p-10">{{clone.token}}</code>
-      {{copy-to-clipboard color="bg-transparent" clipboardText=clone.token}}
+      {{copy-to-clipboard
+        color="bg-transparent"
+        clipboardText=clone.token
+      }}
     </div>
 
     <div class="banner bg-warning">
@@ -34,44 +56,112 @@
         <i class="icon icon-info"></i>
       </div>
       <div class="banner-message">
-        <p>{{t 'editApiKey.saveWarning1'}}<br/>{{t 'editApiKey.saveWarning2'}}</p>
+        <p>{{t "editApiKey.saveWarning1"}}<br/>{{t "editApiKey.saveWarning2"}}</p>
       </div>
     </div>
 
     <div class="footer-actions">
-      <button {{action "cancel"}} class="bg-primary">{{t 'generic.closeModal'}}</button>
+      <button
+        {{action "cancel"}}
+        class="bg-primary"
+      >
+        {{t "generic.closeModal"}}
+      </button>
     </div>
   {{else}}
-    <h2>{{t (if editing 'editApiKey.title.editing' 'editApiKey.title.new')}}</h2>
+    <h2>{{t (if editing "editApiKey.title.editing" "editApiKey.title.new")}}</h2>
     <hr/>
 
-    <div>
-      <label class="acc-label">{{t 'generic.description'}}</label>
-      {{textarea-autogrow
-        id="api-description"
-        value=model.description
-        classNames="form-control no-resize description"
-        rows="1"
-        placeholder='editApiKey.description.placeholder'
+    <div class="row">
+      <div class="col span-12">
+        <label class="acc-label">{{t "generic.description"}}</label>
+        {{textarea-autogrow
+          id="api-description"
+          value=model.description
+          classNames="form-control no-resize description"
+          rows="1"
+          placeholder="editApiKey.description.placeholder"
+        }}
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col span-6">
+        <label class="acc-label">
+          {{t "editApiKey.ttl.label"}}
+        </label>
+        <div class="radio">
+          <label>
+            {{radio-button
+              selection=expire
+              value="never"
+            }}&nbsp;
+            {{t "editApiKey.ttl.never"}}
+          </label>
+        </div>
+        <div class="radio">
+          <label>
+            {{radio-button
+              selection=expire
+              value="day"
+            }}&nbsp;
+            {{t "editApiKey.ttl.day"}}
+          </label>
+        </div>
+        <div class="radio">
+          <label>
+            {{radio-button
+              selection=expire
+              value="month"
+            }}&nbsp;
+            {{t "editApiKey.ttl.month"}}
+          </label>
+        </div>
+        <div class="radio">
+          <label>
+            {{radio-button
+              selection=expire
+              value="year"
+            }}&nbsp;
+            {{t "editApiKey.ttl.year"}}
+          </label>
+        </div>
+      </div>
+      <div class="col span-6">
+        <label class="acc-label">
+          {{t "editApiKey.scope"}}
+        </label>
+        <select
+          class="form-control"
+          onchange={{action (mut model.clusterId) value="target.value"}}
+        >
+          {{#unless (not-eq model.clusterId value)}}
+            <option
+              value=""
+              selected=true
+            >
+              {{t "editApiKey.scopeSelect.prompt"}}
+            </option>
+          {{/unless}}
+          {{#each allClusters as |choice|}}
+            <option
+              value="{{choice.value}}"
+              selected={{eq choice.value value}}
+            >
+              {{choice.label}}
+            </option>
+          {{/each}}
+        </select>
+      </div>
+    </div>
+
+
+    <div class="footer-actions">
+      {{save-cancel
+        editing=editing
+        save="save"
+        cancel="cancel"
       }}
     </div>
-
-    <div class="mt-20">
-      <label class="acc-label">{{t 'editApiKey.ttl.label'}}</label>
-      <div class="radio">
-          <label>{{radio-button selection=expire value="never"}} {{t 'editApiKey.ttl.never'}}</label>
-      </div>
-      <div class="radio">
-        <label>{{radio-button selection=expire value="day"}} {{t 'editApiKey.ttl.day'}}</label>
-      </div>
-      <div class="radio">
-        <label>{{radio-button selection=expire value="month"}} {{t 'editApiKey.ttl.month'}}</label>
-      </div>
-      <div class="radio">
-        <label>{{radio-button selection=expire value="year"}} {{t 'editApiKey.ttl.year'}}</label>
-      </div>
-    </div>
-
-    {{save-cancel editing=editing save="save" cancel="cancel"}}
   {{/if}}
 </section>

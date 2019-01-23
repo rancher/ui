@@ -1,0 +1,56 @@
+<div class="row">
+  <div class="col span-6">
+    <label class="acc-label">{{t "authorizedEndpoint.enabled.label"}}</label>
+    <div class="radio">
+      <label>
+        {{radio-button
+          selection=enableLocalClusterAuthEndpoint
+          value=true
+        }}
+        {{t "generic.enabled"}}
+      </label>
+    </div>
+    <div class="radio">
+      <label>
+        {{radio-button
+          selection=enableLocalClusterAuthEndpoint
+          value=false
+        }}
+        {{t "generic.disabled"}}
+      </label>
+    </div>
+  </div>
+</div>
+
+{{#if cluster.localClusterAuthEndpoint.enabled}}
+  <div class="row">
+    <div class="col span-4">
+      <label class="acc-label" for="cluster-auth-endpoint-fqdn">
+        {{t "authorizedEndpoint.fqdn.label"}}
+      </label>
+      {{input
+        classNames="form-control"
+        id="cluster-auth-endpoint-fqdn"
+        placeholder=(t "globalDnsPage.entriesPage.config.fqdn.placeholder")
+        type="text"
+        value=cluster.localClusterAuthEndpoint.fqdn
+      }}
+    </div>
+    <div class="col span-8">
+      <label class="acc-label" for="cluster-auth-endpoint-cacert">
+        {{t 'newCertificate.cert.label'}}
+      </label>
+      {{input-text-file
+        accept="application/x-x509-ca-cert,text/plain,.pem,.crt"
+        canChangeName=false
+        classNames="box"
+        id="cluster-auth-endpoint-cacert"
+        minHeight=60
+        multiple=true
+        placeholder="newCertificate.cert.placeholder"
+        shouldChangeName=false
+        value=cluster.localClusterAuthEndpoint.caCerts
+      }}
+    </div>
+  </div>
+{{/if}}
