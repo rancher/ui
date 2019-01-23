@@ -97,11 +97,12 @@
       <div class="row">
         <div class="col span-6">
           <label class="acc-label">{{t "nodeDriver.amazoneks.kubernetesVersion.label"}}</label>
-          {{searchable-select
-              class="form-control"
-              content=kubernetesVersionContent
+          {{form-versions
+              cluster=cluster
+              editing=(eq mode "edit")
               value=config.kubernetesVersion
-              placeholder=(t 'nodeDriver.amazoneks.kubernetesVersion.placeholder')
+              versions=kubernetesVersionContent
+              initialVersion=initialVersion
           }}
         </div>
         <div class="col span-6">
