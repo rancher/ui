@@ -25,6 +25,7 @@ var Service = Resource.extend(EndpointPorts, {
   clusterStore:     service(),
   router:           service(),
   intl:             service(),
+  scope:            service(),
   namespace:        reference('namespaceId', 'namespace', 'clusterStore'),
   targetDnsRecords: arrayOfReferences('targetDnsRecordIds', 'service'),
   targetWorkloads:  arrayOfReferences('targetWorkloadIds', 'workload'),
