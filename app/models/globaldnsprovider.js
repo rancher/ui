@@ -1,11 +1,12 @@
 import Resource from '@rancher/ember-api-store/models/resource';
-import { get, computed, set } from '@ember/object';
+import { get, computed, setProperties } from '@ember/object';
 import { inject as service } from '@ember/service';
 import { alias } from '@ember/object/computed';
 
 export default Resource.extend({
-  router: service(),
-  config: null,
+  router:   service(),
+  config:   null,
+  provider: null,
 
   // I think its safe to hack around this - wjw
   _displayState: 'active',
@@ -16,7 +17,17 @@ export default Resource.extend({
     this._super(...arguments);
 
     if (get(this, 'route53ProviderConfig')) {
-      set(this, 'config', alias('route53ProviderConfig'));
+      setProperties(this, {
+        config:   alias('route53ProviderConfig'),
+        provider: 'route53'
+      });
+    }
+
+    if (get(this, 'cloudflareProviderConfig')) {
+      setProperties(this, {
+        config:   alias('cloudflareProviderConfig'),
+        provider: 'cloudflare'
+      });
     }
   },
 
