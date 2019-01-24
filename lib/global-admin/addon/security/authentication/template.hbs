@@ -1,11 +1,33 @@
 <section class="header clearfix">
-  <h1>{{t 'nav.admin.security.authentication'}}</h1>
-  {{#if showWarning}}
-    {{#banner-message color='bg-warning'}}
-      {{t 'nav.admin.security.authWarning'}}
-    {{/banner-message}}
-  {{/if}}
+  <div class="pull-left">
+    <h1 class="vertical-middle">
+      {{t "nav.admin.security.authentication"}}
+    </h1>
+  </div>
+  <div class="right-buttons">
+    {{#if refreshing}}
+      <button
+        class="btn bg-primary mt-10 btn-disabled"
+        disabled
+      >
+        <i class="icon icon-spinner icon-spin"></i> {{t 'generic.loading'}}
+      </button>
+    {{else}}
+      <button
+        {{action "refreshAllTokens"}}
+        class="btn bg-primary mt-10"
+      >
+        <i class="icon icon-refresh"></i>
+        {{t "generic.refreshAllTokens"}}
+      </button>
+    {{/if}}
+  </div>
 </section>
+{{#if showWarning}}
+  {{#banner-message color="bg-warning"}}
+    {{t "nav.admin.security.authWarning"}}
+  {{/banner-message}}
+{{/if}}
 
 <section class="mb-20">
   <div class="row nav nav-boxes checked-active">
