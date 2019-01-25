@@ -33,10 +33,10 @@ export default Resource.extend({
     }
 
     (get(this, 'rules') || []).forEach((rule) => {
-      let entries = get(rule, 'paths') || {};
+      let entries = get(rule, 'paths') || [];
 
-      Object.keys(entries).forEach((path) => {
-        addRow(rule.host, path, entries[path])
+      entries.forEach((entry) => {
+        addRow(rule.host, get(entry, 'path'), entry);
       });
     });
 
