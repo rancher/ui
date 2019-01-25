@@ -7,12 +7,14 @@ import Grafana from 'shared/mixins/grafana';
 import { equal, alias } from '@ember/object/computed';
 import { resolve } from 'rsvp';
 import C from 'ui/utils/constants';
+import { isEmpty } from '@ember/utils';
 
 export default Resource.extend(Grafana, ResourceUsage, {
   globalStore: service(),
   growl:       service(),
   scope:       service(),
   router:      service(),
+  intl:        service(),
 
   namespaces:                  hasMany('id', 'namespace', 'clusterId'),
   projects:                    hasMany('id', 'project', 'clusterId'),
@@ -199,7 +201,28 @@ export default Resource.extend(Grafana, ResourceUsage, {
 
   actions: {
     backupEtcd() {
-      this.doAction('backupEtcd');
+      const getBackupType = () => {
+        let services = get(this, 'rancherKubernetesEngineConfig.services.etcd');
+
+        if (get(services, 'backupConfig')) {
+          if (isEmpty(services.s3BackupConfig)) {
+            return 'local';
+          } else if (!isEmpty(services.s3BackupConfig)) {
+            return 's3';
+          }
+        }
+      }
+
+      const backupType     = getBackupType();
+      const successTitle   = this.intl.t('action.backupEtcdMessage.success.title');
+      const successMessage = this.intl.t('action.backupEtcdMessage.success.message', {
+        clusterId: this.displayName || this.id,
+        backupType
+      });
+
+      this.doAction('backupEtcd')
+        .then(() => this.growl.success(successTitle, successMessage))
+        .catch((err) => this.growl.fromError(err));
     },
 
     restoreFromEtcdBackup() {
