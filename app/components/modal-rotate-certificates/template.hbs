@@ -1,46 +1,69 @@
 <div class="container-header-text">
-  <h3>{{t "modalRotateCertificates.title"}}</h3>
+  <h3>
+    {{t "modalRotateCertificates.title"}}
+  </h3>
   <hr/>
 </div>
 
 <section class="p-20 pt-0">
   <div class="row">
     <div class="col span-11-of-23">
-      <label class="acc-label">{{t "modalRotateCertificates.caCerts"}}</label>
-      <div>
-        <label class="radio">
-          {{input
-            type="checkbox"
-            checked=rotateCaCerts
+      <div class="radio">
+        <label>
+          {{radio-button
+            selection=mode
+            value="caAndService"
           }}
           {{t "modalRotateCertificates.caCerts"}}
+        </label>
+      </div>
+      <div class="radio">
+        <label>
+          {{radio-button
+            selection=mode
+            value="service"
+          }}
+          {{t "modalRotateCertificates.services"}}
+        </label>
+      </div>
+      <div class="radio">
+        <label>
+          {{radio-button
+            selection=mode
+            value="single"
+          }}
+          {{t "modalRotateCertificates.single"}}
         </label>
       </div>
     </div>
 
     <div class="col span-11-of-23 offset-1-of-23">
-      <label class="acc-label">{{t "modalRotateCertificates.services"}}</label>
-      <select
-        class="form-control"
-        onchange={{action "mutServices" value="target.value"}}
-      >
-        {{#unless (array-includes selectedServices value)}}
-          <option
-            value=""
-            selected=true
-          >
-            {{t "modalRotateCertificates.select.all"}}
-          </option>
-        {{/unless}}
-        {{#each services as |choice|}}
-          <option
-            value="{{choice}}"
-            selected={{eq choice value}}
-          >
-            {{choice}}
-          </option>
-        {{/each}}
-      </select>
+      {{#if (eq mode "single")}}
+        <label class="acc-label">
+          {{t "modalRotateCertificates.dropdownLabel"}}
+        </label>
+        <select
+          class="form-control"
+          onchange={{action "mutServices" value="target.value"}}
+        >
+          {{#unless (array-includes selectedServices value)}}
+            <option
+              value=""
+              selected=true
+            >
+              {{t "modalRotateCertificates.select.all"}}
+            </option>
+          {{/unless}}
+          {{#each services as |choice|}}
+            <option
+              value="{{choice}}"
+              selected={{eq choice value}}
+            >
+              {{choice}}
+            </option>
+          {{/each}}
+        </select>
+      {{/if}}
     </div>
   </div>
 </section>

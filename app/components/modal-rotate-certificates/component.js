@@ -12,6 +12,7 @@ export default Component.extend(ModalBase, {
   rotateCaCerts:    false,
   services:         null,
   selectedServices: null,
+  mode:             'single',
 
   init() {
     this._super(...arguments);
@@ -29,10 +30,7 @@ export default Component.extend(ModalBase, {
   actions: {
     rotateCaCerts(cb){
       const resource = this.modalOpts.model;
-      const params   = {
-        caCertificates: get(this, 'rotateCaCerts'),
-        services:       get(this, 'selectedServices')
-      }
+      const params   = this.getRotateCertsParams();
 
       resource.doAction('rotateCertificates', params).then(() => {
         this.send('cancel');
@@ -47,6 +45,28 @@ export default Component.extend(ModalBase, {
 
     mutServices(select) {
       set(this, 'selectedServices', select);
+    }
+  },
+
+  getRotateCertsParams() {
+    switch (this.mode) {
+    case 'caAndService':
+      return {
+        services:       '',
+        caCertificates: true,
+      };
+    case 'single':
+      return {
+        services:       get(this, 'selectedServices'),
+        caCertificates: false,
+      };
+    case 'service':
+      return {
+        services:       null,
+        caCertificates: false,
+      };
+    default:
+      return;
     }
   },
 });
