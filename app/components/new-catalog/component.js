@@ -34,6 +34,7 @@ export default Component.extend(NewOrEdit, CatalogApp, {
   showPreview:              true,
   customizeNamespace:       false,
   decoding:                 false,
+  forceUpgrade:             false,
   titleAdd:                 'newCatalog.titleAdd',
   titleUpgrade:             'newCatalog.titleUpgrade',
   selectVersionAdd:         'newCatalog.selectVersionAdd',
@@ -337,8 +338,9 @@ export default Component.extend(NewOrEdit, CatalogApp, {
 
     if (get(app, 'id')) {
       return app.doAction('upgrade', {
-        externalId: get(this, 'selectedTemplateModel.externalId'),
-        answers:    get(app, 'answers'),
+        externalId:   get(this, 'selectedTemplateModel.externalId'),
+        answers:      get(app, 'answers'),
+        forceUpgrade: get(this, 'forceUpgrade'),
       }).then((resp) => resp)
         .catch((err) => err);
     } else {
