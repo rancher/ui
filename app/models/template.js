@@ -24,17 +24,23 @@ const Template = Resource.extend({
 
   displayCatalogId: computed('catalogRef', 'clusterCatalog', 'projectCatalog', function() {
     const {
-      catalogRef, clusterCatalog, projectCatalog
+      catalogRef, clusterCatalog, projectCatalog, clusterCatalogId, catalogId, projectCatalogId
     } = this;
 
     let out = '';
 
-    if (catalogRef && catalogRef.name) {
+    if ( catalogRef && catalogRef.name ) {
       out = catalogRef.name;
-    } else if (clusterCatalog && clusterCatalog.name) {
+    } else if ( clusterCatalog && clusterCatalog.name ) {
       out = clusterCatalog.name;
-    } else if (projectCatalog && projectCatalog.name) {
+    } else if ( projectCatalog && projectCatalog.name ) {
       out = projectCatalog.name;
+    } else if ( catalogId ) {
+      out = catalogId;
+    } else if ( clusterCatalogId ) {
+      out = clusterCatalogId.substr(clusterCatalogId.indexOf(':') + 1)
+    } else if ( projectCatalogId ) {
+      out = projectCatalogId;
     }
 
     return out;
