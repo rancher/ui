@@ -22,9 +22,10 @@ export default Component.extend(ModalBase, {
 
   classNames: ['large-modal'],
 
-  loading:    true,
-  revisions:  null,
-  revisionId: null,
+  loading:      true,
+  forceUpgrade: false,
+  revisions:    null,
+  revisionId:   null,
 
   didReceiveAttrs() {
     let model = get(this, 'modalService.modalOpts.originalModel').clone();
@@ -48,9 +49,12 @@ export default Component.extend(ModalBase, {
 
   actions: {
     save(cb) {
-      const revisionId = get(this, 'revisionId');
+      const { forceUpgrade, revisionId } = this;
 
-      get(this, 'model').doAction('rollback', { revisionId, })
+      get(this, 'model').doAction('rollback', {
+        revisionId,
+        forceUpgrade,
+      })
         .then(() => {
           this.send('cancel');
         })
