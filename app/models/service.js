@@ -66,9 +66,10 @@ var Service = Resource.extend(EndpointPorts, {
     ports.forEach((p) => {
       list.push(p.targetPort.toString());
       list.push(p.port.toString());
+      list.push(get(p, 'name'));
     });
 
-    return list.uniq().map((p) => ({ port: p }));
+    return list.uniq().map((p) => ({ port: p })).sortBy('port');
   }),
 
   recordType: computed(
