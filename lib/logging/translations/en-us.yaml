@@ -77,7 +77,8 @@ loggingPage:
         startsWith: Prefix cannot start with -, _, +
         required: Prefix is required
         invalidCharacters: "Prefix cannot include '{char}'"
-    generatedIndex: 'The generated index will be: <code class="text-italic text-lowercase">{esIndex}</code>, by default the index patterns is {indexFormat}'
+
+    generatedIndex: 'The generated index will be: <code class="text-italic text-lowercase">{esIndex}</code>, by default the index pattern is {indexFormat}'
     endpoint:
       required: '"Endpoint" is required'
   splunk:
@@ -93,21 +94,21 @@ loggingPage:
     sourceHelpText: 'A default field that identifies the source of an event, that is, where the event originated. <a href="https://docs.splunk.com/Splexicon:Source" target="_blank">Detail</a>'
     index: Index
     indexPlaceholder: e.g. main
-    indexHelpText: 'The index you specify here must within the list of this token’s allowed indexes. <a href="https://docs.splunk.com/Splexicon:Index" target="_blank">Detail</a>'
+    indexHelpText: 'The index you specify here must be within the list of this token’s allowed indexes. <a href="https://docs.splunk.com/Splexicon:Index" target="_blank">Detail</a>'
   kafka:
     header: Kafka Configuration
     endpointType: Endpoint Type
     zookeeper: Zookeeper
     broker: Broker
     brokerTypeHelpText: Use either Zookeeper or Broker list as the Kafka connection entrypoint.
-    zookeeperHelpText: Zookeeper is for building coordination, configuration management, leader detection, detecting node update in kafka cluster.
-    brokerHelpText: A Kafka cluster consists of one or more Brokers, config the host and port for each Broker.
+    zookeeperHelpText: Zookeeper is for building coordination, configuration management, leader detection, and detecting node updates in a kafka cluster.
+    brokkerHelpText: A Kafka cluster consists of one or more Brokers, config the host and port for each Broker.
     addEndpoint: Add Endpoint
     topic:
       label: Topic
       required: '"Topic" is required'
     topicPlaceholder: e.g. message
-    topicHelpText: Logs will be send to this topic
+    topicHelpText: Logs will be sent to this topic
     endpoint:
       required: '"Endpoint" is required'
   syslog:
@@ -117,7 +118,7 @@ loggingPage:
     program: Program
     programPlaceholder: e.g. MyProgram
     programHelpText: The program name of the log.
-    severityHelpText: '<p class="text-info text-small">The severity of logs, list of severities definition could be found here <a href="https://tools.ietf.org/html/rfc5424#section-6.2.1" target="_blank">here.</a></p>'
+    severityHelpText: '<p class="text-info text-small">The severity of logs. The definition of each can be found <a href="https://tools.ietf.org/html/rfc5424#section-6.2.1" target="_blank">here.</a></p>'
     severities:
       emergency: Emergency
       alert: Alert
@@ -127,7 +128,7 @@ loggingPage:
       notice: Notice
       info: Info
       debug: Debug
-    tokenHelpText: Will add token to structured data in every syslog message. For cloud syslog like <a href="https://help.sumologic.com/Send-Data/Sources/02Sources-for-Hosted-Collectors/Cloud-Syslog-Source" target="_blank">Sumologic</a>, <a href="https://www.loggly.com/docs/customer-token-authentication-token" target="_blank">Loggly</a> etc, you could generate token on their configure page.
+    tokenHelpText: Will add a token to the structured data in every syslog message. For cloud syslog such as <a href="https://help.sumologic.com/Send-Data/Sources/02Sources-for-Hosted-Collectors/Cloud-Syslog-Source" target="_blank">Sumologic</a>, <a href="https://www.loggly.com/docs/customer-token-authentication-token" target="_blank">Loggly</a>, etc, you could generate a token on their respective configuration pages.
     endpoint:
       required: '"Endpoint" is required'
   fluentd:
@@ -171,7 +172,7 @@ loggingPage:
       error: "@type is not supported, you can chose the following type: ['elasticsearch', 'splunk_hec', 'remote_syslog', 'kafka_buffered', 'forward']"
   ssl:
     sslHeader: SSL Configuration
-    headerHelp: Input https endpoint or select TCP to enabled it.
+    headerHelp: Input https endpoint or select TCP to enable it.
     certificate:
       label: CA Certificate PEM
     clientKey:
