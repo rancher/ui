@@ -61,11 +61,6 @@
 
           <div class="col span-6 mb-0">
             <label class="acc-label" for="azureaks-client-secret">{{t 'clusterNew.azureaks.clientSecret.label'}}{{field-required}}</label>
-            {{#if editing}}
-              <div>
-                {{t 'generic.na'}}
-              </div>
-            {{else}}
               {{input
                   classNames="form-control"
                   id="azureaks-client-secret"
@@ -73,7 +68,6 @@
                   type="password"
                   value=config.clientSecret
               }}
-            {{/if}}
           </div>
         </div>
         <div class="row">
@@ -136,15 +130,74 @@
           </div>
           <div class="col span-6">
             <label class="acc-label" for="azureaks-master-dns-prefix">{{t 'clusterNew.azureaks.dns.label'}}</label>
-            {{input
-                classNames="form-control"
-                id="azureaks-master-dns-prefix"
-                placeholder=(t 'clusterNew.azureaks.dns.placeholder')
-                type="text"
-                value=config.masterDnsPrefix
+            {{#input-or-display
+                 editable=isNew
+                 value=config.masterDnsPrefix
+            }}
+              {{input
+                  classNames="form-control"
+                  id="azureaks-master-dns-prefix"
+                  placeholder=(t 'clusterNew.azureaks.dns.placeholder')
+                  type="text"
+                  value=config.masterDnsPrefix
+              }}
+            {{/input-or-display}}
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col span-6">
+            <label class="acc-label">{{t 'clusterNew.azureaks.enableHttpApplicationRouting.label'}}</label>
+            <div class="form-control-static">
+              <label class="mr-20">
+                {{radio-button
+                    selection=config.enableHttpApplicationRouting
+                    value=true
+                }}
+                {{t 'generic.enabled'}}
+              </label>
+              <label class="hand">
+                {{radio-button
+                    selection=config.enableHttpApplicationRouting
+                    value=false
+                }}
+                {{t 'generic.disabled'}}
+              </label>
+            </div>
+          </div>
+          <div class="col span-6">
+            <label class="acc-label">{{t 'clusterNew.azureaks.enableMonitoring.label'}}</label>
+            <div class="form-control-static">
+              <label class="mr-20">
+                {{radio-button
+                    selection=config.enableMonitoring
+                    value=true
+                }}
+                {{t 'generic.enabled'}}
+              </label>
+              <label class="hand">
+                {{radio-button
+                    selection=config.enableMonitoring
+                    value=false
+                }}
+                {{t 'generic.disabled'}}
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col span-12 mb-0">
+            <label class="acc-label">{{t 'clusterNew.azureaks.tags.label'}}</label>
+            {{form-key-value
+              initialMap=tags
+              changed=(action 'setTags')
+              addActionLabel="clusterNew.azureaks.tags.addActionLabel"
+              editing=editing
             }}
           </div>
         </div>
+
       {{/accordion-list-item}}
 
       {{#accordion-list-item
@@ -160,7 +213,7 @@
             <div class="col span-6">
               <label class="acc-label" for="azureaks-admin-username-prefix">{{t 'clusterNew.azureaks.admin.label'}}</label>
               {{#input-or-display
-                   editable=isEditable
+                   editable=isNew
                    value=config.adminUsername
               }}
                 {{input
@@ -187,7 +240,7 @@
                 {{/tooltip-element}}
               </label>
               {{#input-or-display
-                   editable=isEditable
+                   editable=isNew
                    value=config.resourceGroup
               }}
                 {{input
@@ -213,14 +266,14 @@
             <div class="col span-6">
               <label class="acc-label" for="azureaks-os-disk-size">{{t 'clusterNew.azureaks.diskSizeGb.label'}}</label>
               {{#input-or-display
-                   editable=isEditable
-                   value=config.osDiskSizeGb
+                   editable=isNew
+                   value=config.agentOsdiskSize
               }}
                 <div class="input-group">
                   {{input-number
                       id="azureaks-os-disk-size"
                       min=0
-                      value=config.osDiskSizeGb
+                      value=config.agentOsdiskSize
                   }}
                   <span class="input-group-addon bg-default">{{t 'generic.gigabyte'}}</span>
                 </div>
@@ -231,7 +284,7 @@
           <div class="col span-6">
             <label class="acc-label" for="azureaks-vm-disk-size">{{t 'clusterNew.azureaks.machineType.label'}}</label>
             {{#input-or-display
-                 editable=isEditable
+                 editable=isNew
                  value=config.agentVmSize
             }}
               {{new-select
@@ -251,11 +304,21 @@
           <div class="col span-12">
             {{t "clusterNew.azureaks.networking.label"}}
             <div class="radio">
-              <label class="acc-label">
-                {{radio-button selection=netMode value="default"}} {{t "clusterNew.azureaks.networking.default"}}
+              <label class={{concat (if editing 'text-muted') ' acc-label mr-20'}}>
+                {{radio-button
+                    selection=netMode
+                    value="default"
+                    disabled=editing
+                }}
+                {{t "clusterNew.azureaks.networking.default"}}
               </label>
-              <label class="acc-label">
-                {{radio-button selection=netMode value="advanced"}} {{t "clusterNew.azureaks.networking.advanced"}}
+              <label class={{concat (if editing 'text-muted') ' acc-label'}}>
+                {{radio-button
+                    selection=netMode
+                    value="advanced"
+                    disabled=editing
+                }}
+                {{t "clusterNew.azureaks.networking.advanced"}}
               </label>
             </div>
           </div>
@@ -263,24 +326,29 @@
             <div class="row">
               <div class="col span-6 mt-0">
                 <label class="acc-label" for="azureaks-advanced-virtual-network">{{t 'clusterNew.azureaks.networking.vnet.label'}}</label>
-                {{new-select
-                    classNames="form-control"
-                    content=filteredVirtualNetworks
-                    id="azureaks-advanced-virtual-network"
-                    localizedPrompt=false
-                    optionLabelPath="name"
-                    optionValuePath="value"
-                    optionGroupPath="group"
-                    prompt=(t "clusterNew.azureaks.networking.vnet.prompt")
-                    value=networkChoice
+                {{#input-or-display
+                     editable=isNew
+                     value=networkChoice
                 }}
+                  {{new-select
+                      classNames="form-control"
+                      content=filteredVirtualNetworks
+                      id="azureaks-advanced-virtual-network"
+                      localizedPrompt=false
+                      optionLabelPath="name"
+                      optionValuePath="value"
+                      optionGroupPath="group"
+                      prompt=(t "clusterNew.azureaks.networking.vnet.prompt")
+                      value=networkChoice
+                  }}
+                {{/input-or-display}}
               </div>
             </div>
             <div class="row">
               <div class="col span-6 mt-0">
                 <label class="acc-label" for="azureaks-service-cidr-id">{{t 'clusterNew.azureaks.networking.serviceCidr.label'}}</label>
                 {{#input-or-display
-                     editable=isEditable
+                     editable=isNew
                      value=config.serviceCidr
                 }}
                   {{input
@@ -298,7 +366,7 @@
               <div class="col span-6 mt-0">
                 <label class="acc-label" for="azureaks-dns-service-ip">{{t 'clusterNew.azureaks.networking.dnsServiceIp.label'}}</label>
                 {{#input-or-display
-                     editable=isEditable
+                     editable=isNew
                      value=config.dnsServiceIp
                 }}
                   {{input
@@ -317,7 +385,7 @@
               <div class="col span-6 mt-0">
                 <label class="acc-label" for="azureaks-docker-service-ip">{{t 'clusterNew.azureaks.networking.dockerBridgeCidr.label'}}</label>
                 {{#input-or-display
-                     editable=isEditable
+                     editable=isNew
                      value=config.dockerBridgeCidr
                 }}
                   {{input
@@ -330,6 +398,19 @@
                 <p class="help-block">
                   {{t 'clusterNew.azureaks.networking.dockerBridgeCidr.help'}}
                 </p>
+              </div>
+              <div class="col span-6 mt-0">
+                <label class="acc-label">{{t 'clusterNew.azureaks.networkPolicy.label'}}</label>
+                {{#input-or-display
+                     editable=isNew
+                     value=config.networkPolicy
+                }}
+                  {{searchable-select
+                      class="form-control"
+                      content=networkPolicyContent
+                      value=config.networkPolicy
+                  }}
+                {{/input-or-display}}
               </div>
             </div>
           {{/if}}
