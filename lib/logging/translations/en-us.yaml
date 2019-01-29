@@ -171,8 +171,8 @@ loggingPage:
     type:
       error: "@type is not supported, you can chose the following type: ['elasticsearch', 'splunk_hec', 'remote_syslog', 'kafka_buffered', 'forward']"
   ssl:
-    sslHeader: SSL Configuration
-    headerHelp: Input https endpoint or select TCP to enable it.
+    sslHeader: "{authType} Configuration"
+    headerHelp: Input https endpoint or select TCP to enabled it.
     certificate:
       label: CA Certificate PEM
     clientKey:
@@ -189,10 +189,26 @@ loggingPage:
       disabled: Disabled
     sslVersion:
       label: SSL Version
+    saslType:
+      label: Type
+      plain: Plain
+      scram: Scram
+    saslUsername:
+      label: Username
+      placeholder: e.g. John
+    saslPassword:
+      label: Password
+      placeholder: Your Password
+    saslScramMechanism:
+      label: Scram Mechanism
+      sha256: sha256
+      sha512: sha512
+
   dockerRootDir:
     header: Docker Configuration
     label: Docker Root Directory
-    placeholder: Enter docker root Directory, default value is {dir}
+    placeholder: "Enter docker root Directory, default value is {dir}"
+
   testAction:
     testing: TESTING
     testOk: Settings validated.
