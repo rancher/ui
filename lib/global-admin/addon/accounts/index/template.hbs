@@ -1,8 +1,36 @@
 <section class="header clearfix">
-  <div class="pull-left"><h1>{{t 'accountsPage.index.header'}}</h1></div>
+  <div class="pull-left">
+    <h1>
+      {{t "accountsPage.index.header"}}
+    </h1>
+  </div>
 
   <div class="right-buttons">
-    {{#link-to "accounts.new" classNames="btn btn-sm bg-primary right-divider-btn" disabled=(rbac-prevents resource="user" scope="global" permission="create")}}{{t 'accountsPage.index.localLink'}}{{/link-to}}
+    {{#link-to
+       "accounts.new"
+       classNames="btn btn-sm bg-primary right-divider-btn"
+       disabled=(rbac-prevents resource="user" scope="global" permission="create")
+    }}
+      {{t "accountsPage.index.localLink"}}
+    {{/link-to}}
+
+    {{#if refreshing}}
+      <button
+        class="btn bg-primary btn-sm btn-disabled"
+        disabled
+      >
+        <i class="icon icon-spinner icon-spin"></i>
+        {{t "generic.loading"}}
+      </button>
+    {{else}}
+      <button
+        {{action "refreshAllTokens"}}
+        class="btn bg-primary btn-sm"
+      >
+        <i class="icon icon-refresh"></i>
+        {{t "siteAccess.refreshGroups"}}
+      </button>
+    {{/if}}
   </div>
 </section>
 
@@ -18,9 +46,23 @@
     {{#if (eq kind "row")}}
       {{account-row model=row}}
     {{else if (eq kind "nomatch")}}
-      <tr><td colspan="{{sortable.fullColspan}}" class="text-center text-muted lacsso pt-20 pb-20">{{t 'accountsPage.index.table.noMatch'}}</td></tr>
+      <tr>
+        <td
+          colspan="{{sortable.fullColspan}}"
+          class="text-center text-muted lacsso pt-20 pb-20"
+        >
+          {{t "accountsPage.index.table.noMatch"}}
+        </td>
+      </tr>
     {{else if (eq kind "norows")}}
-      <tr><td colspan="{{sortable.fullColspan}}" class="text-center text-muted pt-20 pb-20">{{t 'accountsPage.index.table.noData'}}</td></tr>
+      <tr>
+        <td
+          colspan="{{sortable.fullColspan}}"
+          class="text-center text-muted pt-20 pb-20"
+        >
+          {{t "accountsPage.index.table.noData"}}
+        </td>
+      </tr>
     {{/if}}
   {{/sortable-table}}
 </section>
