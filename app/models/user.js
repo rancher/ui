@@ -141,7 +141,6 @@ export default Resource.extend({
         .catch((err) => {
           this.growl.fromError('Error refreshing user user auth tokens', err)
         });
-
     },
   },
 
