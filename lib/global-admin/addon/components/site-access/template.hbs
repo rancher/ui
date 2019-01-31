@@ -2,32 +2,82 @@
   <div class="row">
     <div class="col span-7">
       <div class="radio">
-        <label>{{radio-button selection=model.accessMode value="unrestricted"}} {{t 'siteAccess.unrestricted' individuals=(t individuals) collection=(t collection)}}</label>
+        <label>
+          {{radio-button
+            selection=model.accessMode
+            value="unrestricted"
+          }}
+          {{t
+            "siteAccess.unrestricted"
+            individuals=(t individuals)
+            collection=(t collection)
+          }}
+        </label>
       </div>
       <div class="radio">
-        <label>{{radio-button selection=model.accessMode value="restricted"}} {{t 'siteAccess.restricted' individuals=(t individuals) collection=(t collection)}}</label>
+        <label>
+          {{radio-button
+            selection=model.accessMode
+            value="restricted"
+          }}
+          {{t
+            "siteAccess.restricted"
+            individuals=(t individuals)
+            collection=(t collection)
+          }}
+        </label>
       </div>
       <div class="radio">
-        <label>{{radio-button selection=model.accessMode value="required"}} {{t 'siteAccess.required' individuals=(t individuals) collection=(t collection)}}</label>
+        <label>
+          {{radio-button
+            selection=model.accessMode
+            value="required"
+          }}
+          {{t
+            "siteAccess.required"
+            individuals=(t individuals)
+            collection=(t collection)
+          }}
+        </label>
       </div>
     </div>
     <div class="col span-5">
       {{#if showList}}
-        {{input-identity allowTeams=true action="addAuthorized" onError="gotError" selectExactOnBlur=false includeLocal=false}}
+        {{input-identity
+          allowTeams=true
+          action="addAuthorized"
+          onError="gotError"
+          selectExactOnBlur=false
+          includeLocal=false
+        }}
 
         <hr/>
-        <h5>{{t 'siteAccess.listHeader' individuals=(t individuals) collection=(t collection)}}</h5>
+
+        <h5>
+          {{t
+            "siteAccess.listHeader"
+            individuals=(t individuals)
+            collection=(t collection)
+          }}
+        </h5>
 
         <ul class="list-unstyled gh-block-list mt-10">
           {{#each model.allowedPrincipalIds as |id|}}
             <li>
               {{#identity-block principalId=id}}
-                <button class="btn bg-primary btn-sm pull-right gh-action mt-5" {{action "removeAuthorized" id}} disabled={{lte model.allowedPrincipalIds.length 1}}><i class="icon icon-minus"/></button>
+                <button
+                  class="btn bg-primary btn-sm pull-right gh-action mt-5"
+                  {{action "removeAuthorized" id}}
+                  disabled={{lte model.allowedPrincipalIds.length 1}}>
+                  <i class="icon icon-minus"></i>
+                </button>
               {{/identity-block}}
             </li>
           {{else}}
             <li>
-              <span class="text-muted">{{t 'siteAccess.noIdentity'}}</span>
+              <span class="text-muted">
+                {{t "siteAccess.noIdentity"}}
+              </span>
             </li>
           {{/each}}
         </ul>
@@ -40,6 +90,12 @@
   {{top-errors errors=errors}}
 
   <div class="row">
-    {{save-cancel saved=saved savedDisabled=saved editing=true save="save" cancel="cancel"}}
+    {{save-cancel
+      saved=saved
+      savedDisabled=saved
+      editing=true
+      save="save"
+      cancel="cancel"
+    }}
   </div>
 </section>

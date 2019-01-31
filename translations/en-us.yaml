@@ -89,7 +89,6 @@ generic:
   random: Random
   remove: Remove
   restarts: Restarts
-  refreshAllTokens: Refresh All Auth Tokens
   role: Role
   save: Save
   saved: Saved
@@ -3529,20 +3528,20 @@ dangerZone:
   subtext: "Typical users will not need to change these.  Proceed with caution, incorrect values can break your {appName} installation.<br/>Settings which have been customized from default settings  are shown in <b>bold</b>."
   showLabel: I understand that I can break things by changing advanced settings.
   description:
-    'cacerts': "CA Certificates needed to verify the server's certificate"
+    'cacerts': "CA Certificates needed to verify the server's certificate."
     'cluster-defaults': 'Override RKE Defaults when creating new clusters.'
-    'engine-install-url': 'Default Docker engine installation URL (for most node drivers)'
-    'engine-iso-url': 'Default OS installation URL (for vSphere driver)'
-    'engine-newest-version': 'The newest supported version of Docker at the time of this release.  A Docker version that does not satisfy supported docker range but is newer than this will be marked as untested'
-    'engine-supported-range': 'Semver range for supported Docker engine versions.  Versions which do not satisfy this range will be marked unsupported in the UI'
+    'engine-install-url': 'Default Docker engine installation URL (for most node drivers).'
+    'engine-iso-url': 'Default OS installation URL (for vSphere driver).'
+    'engine-newest-version': 'The newest supported version of Docker at the time of this release.  A Docker version that does not satisfy supported docker range but is newer than this will be marked as untested.'
+    'engine-supported-range': 'Semver range for supported Docker engine versions.  Versions which do not satisfy this range will be marked unsupported in the UI.'
     'ingress-ip-domain': 'Wildcard DNS domain to use for automatically generated Ingress hostnames. <ingress-name>.<namespace-name>.<ip address of ingress controller> will be added to the domain.'
     'server-url': 'Default {appName} install url. Must be HTTPS. All nodes in your cluster must be able to reach this.'
-    'system-default-registry': 'Private registry to be used for all system Docker images'
+    'system-default-registry': 'Private registry to be used for all system Docker images.'
     'ui-index': 'HTML index location for the UI.'
-    'ui-pl': 'Private-Label company name'
-    'telemetry-opt': 'Telemetry reporting opt-in'
-    'auth-user-info-max-age-seconds': ''
-    'auth-user-info-resync-cron': ''
+    'ui-pl': 'Private-Label company name.'
+    'telemetry-opt': 'Telemetry reporting opt-in.'
+    'auth-user-info-max-age-seconds': 'The maximum age of a users auth tokens before an auth provider group membership sync will be performed.'
+    'auth-user-info-resync-cron': 'Default cron schedule for resyncing auth provider group memberships.'
 
 deleteEksCluster:
   title: "Delete {clusterName}?"
@@ -6509,6 +6508,9 @@ siteAccess:
   users: Users
   groups: Groups
   organizations: Organizations
+  refreshGroups: Refresh Group Memberships
+  refreshHelp: This will trigger a refresh of all Groups and update their user lists.
+  helpLabel: Whats this?
 
 systemInfoSection:
   title: System Information
@@ -6751,36 +6753,44 @@ action:
     success:
       title: Backup successful
       message: "{ clusterId } has been backed up to { backupType } provider"
-  restoreFromEtcdBackup: Restore From Backup
   clone: Clone
   console: Open Console
-  cordon: Cordon
   convertToService: Convert to Service
+  cordon: Cordon
   deactivate: Deactivate
   downloadYaml: Download YAML
   drain: Drain
   edit: Edit
+  editConfig: Edit Config
   editService: Edit Service
   editYaml: View/Edit YAML
-  viewYaml: View YAML
-  editConfig: Edit Config
   evacuate: Evacuate
   execute: Execute Shell
   exportConfig: Export Config
   garbageCollect: Cleanup
   logs: View Logs
   makeDefault: Set as default
-  resetDefault: Reset default
-  nodeConfig: Download Keys
   move: Move
+  mute: Mute
+  nodeConfig: Download Keys
   pause: Pause Orchestration
   pauseAll: Pause All
   redeploy: Redeploy
+  refreshAuthProviderAccess:
+    label: Refresh Group Memberships
+    success:
+      title: Refresh Successful
+      message: A group memebership refresh has been triggered
+    allSuccess:
+      title: Refresh Successful
+      message: A group memebership refresh has been triggered for all users.
   remove: Delete
   replay: Replay
+  resetDefault: Reset default
   restart: Restart
-  retry: Retry
+  restoreFromEtcdBackup: Restore From Backup
   resume: Resume Orchestration
+  retry: Retry
   revert: Revert to Default
   rollback: Rollback
   rotate: Rotate Certificates
@@ -6789,8 +6799,11 @@ action:
   start: Start
   startAll: Start All
   stop: Stop
-  stopDrain: Stop Drain
   stopAll: Stop All
+  stopDrain: Stop Drain
+  test: Test
+  uncordon: Uncordon
+  unmute: Unmute
   upgrade: Upgrade
   upgradeOrEdit: Upgrade/Edit
   viewConfig: View Config
@@ -6798,10 +6811,7 @@ action:
   viewInApi: View in API
   viewInGrafana: Go to Grafana
   viewInstance: View Instance
-  test: Test
-  mute: Mute
-  unmute: Unmute
-  uncordon: Uncordon
+  viewYaml: View YAML
 
 ##############################
 # Resource Actions

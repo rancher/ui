@@ -62,10 +62,19 @@ export default Resource.extend({
     return get(this, 'access.principal.id') === get(this, 'id');
   }),
 
-  availableActions: computed('enabled', function() {
-    const on = get(this, 'enabled') !== false;
+  availableActions: computed('enabled', 'access.providers.[]', function() {
+    const on         = get(this, 'enabled') !== false;
+    const { access } = this;
+
 
     return [
+      {
+        label:    'action.refreshAuthProviderAccess.label',
+        icon:     'icon icon-refresh',
+        action:   'refreshAuthProviderAccess',
+        bulkable: false,
+        enabled:  isRefreshAuthProviderAccessAvailable(),
+      },
       {
         label:    'action.activate',
         icon:     'icon icon-play',
@@ -81,6 +90,16 @@ export default Resource.extend({
         enabled:  on,
       },
     ];
+
+    function isRefreshAuthProviderAccessAvailable() {
+      if (on &&
+          get(access, 'providers') &&
+          get(access, 'providers.length') > 1) {
+        return true;
+      } else {
+        return false;
+      }
+    }
   }),
 
   actions: {
@@ -110,7 +129,19 @@ export default Resource.extend({
 
     setPassword(password) {
       this.doAction('setpassword', { newPassword: password });
-    }
+    },
+
+    refreshAuthProviderAccess() {
+      this.doAction('refreshauthprovideraccess').then(() => {
+        const successTitle   = this.intl.t('action.refreshAuthProviderAccess.success.title');
+        const successMessage = this.intl.t('action.refreshAuthProviderAccess.success.message');
+
+        this.growl.success(successTitle, successMessage)
+      })
+        .catch((err) => {
+          this.growl.fromError('Error refreshing user user auth tokens', err)
+        });
+    },
   },
 
 });
