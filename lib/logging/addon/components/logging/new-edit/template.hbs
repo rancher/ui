@@ -22,19 +22,21 @@
   </div>
 </div>
 
-<section class="header has-tabs clearfix p-0">
-  <ul class="tab-nav">
-    {{#if pasteOrUpload}}
-      <li>
-        <button class="btn bg-transparent" {{action "cancel"}}>{{t "loggingPage.advanced.cancel"}}</button>
-      </li>
-    {{else}}
-      <li>
-        <button class="btn bg-transparent" {{action "showPaste"}}>{{t "loggingPage.advanced.file"}} <span class="icon icon-copy"></span></button>
-      </li>
-    {{/if}}
-  </ul>
-</section>
+{{#if (not-eq targetType 'none')}}
+  <section class="header has-tabs clearfix p-0">
+    <ul class="tab-nav">
+      {{#if pasteOrUpload}}
+        <li>
+          <button class="btn bg-transparent" {{action "cancel"}}>{{t "loggingPage.advanced.cancel"}}</button>
+        </li>
+      {{else}}
+        <li>
+          <button class="btn bg-transparent" {{action "showPaste"}}>{{t "loggingPage.advanced.file"}} <span class="icon icon-copy"></span></button>
+        </li>
+      {{/if}}
+    </ul>
+  </section>
+{{/if}}
 
 {{#if pasteOrUpload}}
   <div class="mt-25">
