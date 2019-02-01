@@ -1,0 +1,78 @@
+<div class="mt-20 clearfix">
+  <h2 class="pt-30 inline-block">
+    {{t 'loggingPage.ssl.sslHeader' authType='SASL'}}
+  </h2>
+  <hr/>
+  <div class="row">
+    <div class="col span-6">
+      <label class="acc-label" for=""> {{t 'loggingPage.ssl.saslUsername.label'}} </label>
+      {{input
+          type="text"
+          utocomplete="off"
+          value=config.saslUsername
+          classNames="form-control"
+          placeholder=(t 'loggingPage.ssl.saslUsername.placeholder')
+      }}
+    </div>
+    <div class="col span-6">
+      <label class="acc-label"> {{t 'loggingPage.ssl.saslPassword.label'}} </label>
+      {{input
+          utocomplete="off"
+          type="password"
+          value=config.saslPassword
+          classNames="form-control"
+          placeholder=(t 'loggingPage.ssl.saslPassword.placeholder')
+      }}
+    </div>
+  </div>
+  <div class="row">
+    <div class="col span-6 mt-0">
+      <label class="acc-label pt-5">{{t 'loggingPage.ssl.saslType.label'}}</label>
+      <div class="radio" class={{if (or disabled) 'text-muted'}}>
+        <label class={{if disabled 'text-muted'}}>
+          {{radio-button
+              selection=config.saslType
+              value="plain"
+              disabled=disabled
+          }}
+          {{t 'loggingPage.ssl.saslType.plain'}}
+        </label>
+      </div>
+      <div class="radio">
+        <label class={{if disabled 'text-muted'}}>
+          {{radio-button
+              selection=config.saslType
+              value="scram"
+              disabled=disabled
+          }}
+          {{t 'loggingPage.ssl.saslType.scram'}}
+        </label>
+      </div>
+    </div>
+    {{#if (eq config.saslType 'scram')}}
+      <div class="col span-6 mt-0">
+        <label class="acc-label pt-5">{{t 'loggingPage.ssl.saslScramMechanism.label'}}</label>
+        <div class="radio">
+          <label class={{if disabled 'text-muted'}}>
+            {{radio-button
+                selection=config.saslScramMechanism
+                value="sha256"
+                disabled=disabled
+            }}
+            {{t 'loggingPage.ssl.saslScramMechanism.sha256'}}
+          </label>
+        </div>
+        <div class="radio">
+          <label class={{if disabled 'text-muted'}}>
+            {{radio-button
+                selection=config.saslScramMechanism
+                value="sha512"
+                disabled=disabled
+            }}
+            {{t 'loggingPage.ssl.saslScramMechanism.sha512'}}
+          </label>
+        </div>
+      </div>
+    {{/if}}
+  </div>
+</div>
