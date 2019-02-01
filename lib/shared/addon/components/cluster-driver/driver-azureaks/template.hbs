@@ -3,8 +3,8 @@
 
     {{#if (eq step 1) }}
       {{#accordion-list-item
-           title=(t 'clusterNew.azureaks.access.title')
-           detail=(t 'clusterNew.azureaks.access.detail')
+           title=(t "clusterNew.azureaks.access.title")
+           detail=(t "clusterNew.azureaks.access.detail")
            showExpand=false
            expandOnInit=true
            expandAll=al.expandAll
@@ -12,7 +12,7 @@
       }}
         <div class="row">
           <div class="col span-6 mb-0">
-            <label class="acc-label" for="azureaks-subscription-id" >{{t 'clusterNew.azureaks.subscriptionId.label'}}{{field-required}}</label>
+            <label class="acc-label" for="azureaks-subscription-id" >{{t "clusterNew.azureaks.subscriptionId.label"}}{{field-required}}</label>
             {{#input-or-display
                  editable=isEditable
                  value=config.subscriptionId
@@ -20,14 +20,14 @@
               {{input
                   classNames="form-control"
                   id="azureaks-subscription-id"
-                  placeholder=(t 'clusterNew.azureaks.subscriptionId.placeholder')
+                  placeholder=(t "clusterNew.azureaks.subscriptionId.placeholder")
                   type="text"
                   value=config.subscriptionId
               }}
             {{/input-or-display}}
           </div>
           <div class="col span-6 mb-0">
-            <label class="acc-label" for="azureaks-tenant-id">{{t 'clusterNew.azureaks.tenant.label'}}{{field-required}}</label>
+            <label class="acc-label" for="azureaks-tenant-id">{{t "clusterNew.azureaks.tenant.label"}}{{field-required}}</label>
             {{#input-or-display
                  editable=isEditable
                  value=config.tenantId
@@ -35,7 +35,7 @@
               {{input type="text"
                   classNames="form-control"
                   id="azureaks-tenant-id"
-                  placeholder=(t 'clusterNew.azureaks.tenant.placeholder')
+                  placeholder=(t "clusterNew.azureaks.tenant.placeholder")
                   value=config.tenantId
               }}
             {{/input-or-display}}
@@ -44,7 +44,7 @@
 
         <div class="row">
           <div class="col span-6 mb-0">
-            <label class="acc-label" for="azureaks-client-id">{{t 'clusterNew.azureaks.clientId.label'}}{{field-required}}</label>
+            <label class="acc-label" for="azureaks-client-id">{{t "clusterNew.azureaks.clientId.label"}}{{field-required}}</label>
             {{#input-or-display
                  editable=isEditable
                  value=config.clientId
@@ -52,7 +52,7 @@
               {{input
                   classNames="form-control"
                   id="azureaks-client-id"
-                  placeholder=(t 'clusterNew.azureaks.clientId.placeholder')
+                  placeholder=(t "clusterNew.azureaks.clientId.placeholder")
                   type="text"
                   value=config.clientId
               }}
@@ -60,11 +60,11 @@
           </div>
 
           <div class="col span-6 mb-0">
-            <label class="acc-label" for="azureaks-client-secret">{{t 'clusterNew.azureaks.clientSecret.label'}}{{field-required}}</label>
+            <label class="acc-label" for="azureaks-client-secret">{{t "clusterNew.azureaks.clientSecret.label"}}{{field-required}}</label>
               {{input
                   classNames="form-control"
                   id="azureaks-client-secret"
-                  placeholder=(t 'clusterNew.azureaks.clientSecret.placeholder')
+                  placeholder=(t "clusterNew.azureaks.clientSecret.placeholder")
                   type="password"
                   value=config.clientSecret
               }}
@@ -72,7 +72,7 @@
         </div>
         <div class="row">
           <div class="col span-6">
-            <label class="acc-label" for="azureaks-location">{{t 'clusterNew.azureaks.location.label'}}{{field-required}}</label>
+            <label class="acc-label" for="azureaks-location">{{t "clusterNew.azureaks.location.label"}}{{field-required}}</label>
             {{#input-or-display
                  editable=isEditable
                  value=config.location
@@ -93,7 +93,7 @@
         {{#unless editing}}
           <div class="row">
             <div class="col span-12 m-0">
-              {{banner-message color="bg-info" icon="icon-help" class="mb-0" message=(t 'clusterNew.azureaks.access.help' htmlSafe=true)}}
+              {{banner-message color="bg-info" icon="icon-help" class="mb-0" message=(t "clusterNew.azureaks.access.help" htmlSafe=true)}}
             </div>
           </div>
         {{/unless}}
@@ -110,26 +110,26 @@
     {{#if (gte step 2) }}
 
       {{#accordion-list-item
-           title=(t 'clusterNew.customize.title')
-           detail=(t 'clusterNew.customize.detail')
+           title=(t "clusterNew.customize.title")
+           detail=(t "clusterNew.customize.detail")
            expandAll=al.expandAll
            expandOnInit=true
            expand=(action expandFn)
       }}
         <div class="row">
           <div class="col span-6">
-            <label class="acc-label" for="azureaks-kube-version">{{t 'clusterNew.azureaks.kubernetesVersion.label'}}</label>
+            <label class="acc-label" for="azureaks-kube-version">{{t "clusterNew.azureaks.kubernetesVersion.label"}}</label>
 
             {{form-versions
                 cluster=cluster
-                editing=(eq mode 'edit')
+                editing=(eq mode "edit")
                 initialVersion=config.kubernetesVersion
                 value=config.kubernetesVersion
                 versions=versions
             }}
           </div>
           <div class="col span-6">
-            <label class="acc-label" for="azureaks-master-dns-prefix">{{t 'clusterNew.azureaks.dns.label'}}</label>
+            <label class="acc-label" for="azureaks-master-dns-prefix">{{t "clusterNew.azureaks.dns.label"}}</label>
             {{#input-or-display
                  editable=isNew
                  value=config.masterDnsPrefix
@@ -137,7 +137,7 @@
               {{input
                   classNames="form-control"
                   id="azureaks-master-dns-prefix"
-                  placeholder=(t 'clusterNew.azureaks.dns.placeholder')
+                  placeholder=(t "clusterNew.azureaks.dns.placeholder")
                   type="text"
                   value=config.masterDnsPrefix
               }}
@@ -147,40 +147,40 @@
 
         <div class="row">
           <div class="col span-6">
-            <label class="acc-label">{{t 'clusterNew.azureaks.enableHttpApplicationRouting.label'}}</label>
+            <label class="acc-label">{{t "clusterNew.azureaks.enableHttpApplicationRouting.label"}}</label>
             <div class="form-control-static">
-              <label class="mr-20">
+              <label class="hand mr-20">
                 {{radio-button
                     selection=config.enableHttpApplicationRouting
                     value=true
                 }}
-                {{t 'generic.enabled'}}
+                {{t "generic.enabled"}}
               </label>
               <label class="hand">
                 {{radio-button
                     selection=config.enableHttpApplicationRouting
                     value=false
                 }}
-                {{t 'generic.disabled'}}
+                {{t "generic.disabled"}}
               </label>
             </div>
           </div>
           <div class="col span-6">
-            <label class="acc-label">{{t 'clusterNew.azureaks.enableMonitoring.label'}}</label>
+            <label class="acc-label">{{t "clusterNew.azureaks.enableMonitoring.label"}}</label>
             <div class="form-control-static">
-              <label class="mr-20">
+              <label class="hand mr-20">
                 {{radio-button
                     selection=config.enableMonitoring
                     value=true
                 }}
-                {{t 'generic.enabled'}}
+                {{t "generic.enabled"}}
               </label>
               <label class="hand">
                 {{radio-button
                     selection=config.enableMonitoring
                     value=false
                 }}
-                {{t 'generic.disabled'}}
+                {{t "generic.disabled"}}
               </label>
             </div>
           </div>
@@ -188,12 +188,11 @@
 
         <div class="row">
           <div class="col span-12 mb-0">
-            <label class="acc-label">{{t 'clusterNew.azureaks.tags.label'}}</label>
+            <label class="acc-label">{{t "clusterNew.azureaks.tags.label"}}</label>
             {{form-key-value
               initialMap=tags
               changed=(action 'setTags')
               addActionLabel="clusterNew.azureaks.tags.addActionLabel"
-              editing=editing
             }}
           </div>
         </div>
@@ -201,8 +200,8 @@
       {{/accordion-list-item}}
 
       {{#accordion-list-item
-           title=(t 'clusterNew.nodes.title')
-           detail=(t 'clusterNew.nodes.detail')
+           title=(t "clusterNew.nodes.title")
+           detail=(t "clusterNew.nodes.detail")
            showExpand=false
            expandOnInit=true
            expandAll=al.expandAll
@@ -211,7 +210,7 @@
         <div class="row">
           <div class="row">
             <div class="col span-6">
-              <label class="acc-label" for="azureaks-admin-username-prefix">{{t 'clusterNew.azureaks.admin.label'}}</label>
+              <label class="acc-label" for="azureaks-admin-username-prefix">{{t "clusterNew.azureaks.admin.label"}}</label>
               {{#input-or-display
                    editable=isNew
                    value=config.adminUsername
@@ -219,7 +218,7 @@
                 {{input
                     classNames="form-control"
                     id="azureaks-admin-username-prefix"
-                    placeholder=(t 'clusterNew.azureaks.admin.placeholder')
+                    placeholder=(t "clusterNew.azureaks.admin.placeholder")
                     type="text"
                     value=config.adminUsername
                 }}
@@ -227,7 +226,7 @@
             </div>
             <div class="col span-6">
               <label class="acc-label" for="azureaks-resource-group">
-                {{t 'clusterNew.azureaks.resourceGroup.label'}}{{field-required}}
+                {{t "clusterNew.azureaks.resourceGroup.label"}}{{field-required}}
                 {{#tooltip-element
                      type="tooltip-basic"
                      model=(t "clusterNew.azureaks.resourceGroup.helpText")
@@ -246,7 +245,7 @@
                 {{input
                     classNames="form-control"
                     id="azureaks-resource-group"
-                    placeholder=(t 'clusterNew.azureaks.resourceGroup.placeholder')
+                    placeholder=(t "clusterNew.azureaks.resourceGroup.placeholder")
                     type="text"
                     value=config.resourceGroup
                 }}
@@ -256,15 +255,16 @@
 
           <div class="row">
             <div class="col span-6">
-              <label class="acc-label" for="azureaks-config-count">{{t 'clusterNew.azureaks.count.label'}}</label>
+              <label class="acc-label" for="azureaks-config-count">{{t "clusterNew.azureaks.count.label"}}</label>
               {{input-number
                   id="azureaks-config-count"
                   min=1
                   value=config.count
+                  placeholder=(t "clusterNew.azureaks.count.placeholder")
               }}
             </div>
             <div class="col span-6">
-              <label class="acc-label" for="azureaks-os-disk-size">{{t 'clusterNew.azureaks.diskSizeGb.label'}}</label>
+              <label class="acc-label" for="azureaks-os-disk-size">{{t "clusterNew.azureaks.diskSizeGb.label"}}</label>
               {{#input-or-display
                    editable=isNew
                    value=config.agentOsdiskSize
@@ -274,15 +274,16 @@
                       id="azureaks-os-disk-size"
                       min=0
                       value=config.agentOsdiskSize
+                      placeholder=(t "clusterNew.azureaks.diskSizeGb.placeholder")
                   }}
-                  <span class="input-group-addon bg-default">{{t 'generic.gigabyte'}}</span>
+                  <span class="input-group-addon bg-default">{{t "generic.gigabyte"}}</span>
                 </div>
               {{/input-or-display}}
             </div>
           </div>
 
           <div class="col span-6">
-            <label class="acc-label" for="azureaks-vm-disk-size">{{t 'clusterNew.azureaks.machineType.label'}}</label>
+            <label class="acc-label" for="azureaks-vm-disk-size">{{t "clusterNew.azureaks.machineType.label"}}</label>
             {{#input-or-display
                  editable=isNew
                  value=config.agentVmSize
@@ -304,7 +305,7 @@
           <div class="col span-12">
             {{t "clusterNew.azureaks.networking.label"}}
             <div class="radio">
-              <label class={{concat (if editing 'text-muted') ' acc-label mr-20'}}>
+              <label class={{concat (if editing "text-muted") " acc-label mr-20"}}>
                 {{radio-button
                     selection=netMode
                     value="default"
@@ -312,7 +313,7 @@
                 }}
                 {{t "clusterNew.azureaks.networking.default"}}
               </label>
-              <label class={{concat (if editing 'text-muted') ' acc-label'}}>
+              <label class={{concat (if editing "text-muted") " acc-label"}}>
                 {{radio-button
                     selection=netMode
                     value="advanced"
@@ -325,7 +326,7 @@
           {{#if (eq netMode "advanced")}}
             <div class="row">
               <div class="col span-6 mt-0">
-                <label class="acc-label" for="azureaks-advanced-virtual-network">{{t 'clusterNew.azureaks.networking.vnet.label'}}</label>
+                <label class="acc-label" for="azureaks-advanced-virtual-network">{{t "clusterNew.azureaks.networking.vnet.label"}}</label>
                 {{#input-or-display
                      editable=isNew
                      value=networkChoice
@@ -346,7 +347,7 @@
             </div>
             <div class="row">
               <div class="col span-6 mt-0">
-                <label class="acc-label" for="azureaks-service-cidr-id">{{t 'clusterNew.azureaks.networking.serviceCidr.label'}}</label>
+                <label class="acc-label" for="azureaks-service-cidr-id">{{t "clusterNew.azureaks.networking.serviceCidr.label"}}</label>
                 {{#input-or-display
                      editable=isNew
                      value=config.serviceCidr
@@ -354,17 +355,17 @@
                   {{input
                       classNames="form-control"
                       id="azureaks-service-cidr-id"
-                      placeholder=(t 'clusterNew.azureaks.networking.serviceCidr.prompt')
+                      placeholder=(t "clusterNew.azureaks.networking.serviceCidr.prompt")
                       type="text"
                       value=config.serviceCidr
                   }}
                 {{/input-or-display}}
                 <p class="help-block">
-                  {{t 'clusterNew.azureaks.networking.serviceCidr.help'}}
+                  {{t "clusterNew.azureaks.networking.serviceCidr.help"}}
                 </p>
               </div>
               <div class="col span-6 mt-0">
-                <label class="acc-label" for="azureaks-dns-service-ip">{{t 'clusterNew.azureaks.networking.dnsServiceIp.label'}}</label>
+                <label class="acc-label" for="azureaks-dns-service-ip">{{t "clusterNew.azureaks.networking.dnsServiceIp.label"}}</label>
                 {{#input-or-display
                      editable=isNew
                      value=config.dnsServiceIp
@@ -374,16 +375,17 @@
                       id="azureaks-dns-service-ip"
                       type="text"
                       value=config.dnsServiceIp
+                      placeholder=(t "clusterNew.azureaks.networking.dnsServiceIp.placeholder")
                   }}
                 {{/input-or-display}}
                 <p class="help-block">
-                  {{t 'clusterNew.azureaks.networking.dnsServiceIp.help'}}
+                  {{t "clusterNew.azureaks.networking.dnsServiceIp.help"}}
                 </p>
               </div>
             </div>
             <div class="row">
               <div class="col span-6 mt-0">
-                <label class="acc-label" for="azureaks-docker-service-ip">{{t 'clusterNew.azureaks.networking.dockerBridgeCidr.label'}}</label>
+                <label class="acc-label" for="azureaks-docker-service-ip">{{t "clusterNew.azureaks.networking.dockerBridgeCidr.label"}}</label>
                 {{#input-or-display
                      editable=isNew
                      value=config.dockerBridgeCidr
@@ -393,14 +395,15 @@
                       id="azureaks-docker-service-ip"
                       type="text"
                       value=config.dockerBridgeCidr
+                      placeholder=(t "clusterNew.azureaks.networking.dockerBridgeCidr.placeholder")
                   }}
                 {{/input-or-display}}
                 <p class="help-block">
-                  {{t 'clusterNew.azureaks.networking.dockerBridgeCidr.help'}}
+                  {{t "clusterNew.azureaks.networking.dockerBridgeCidr.help"}}
                 </p>
               </div>
               <div class="col span-6 mt-0">
-                <label class="acc-label">{{t 'clusterNew.azureaks.networkPolicy.label'}}</label>
+                <label class="acc-label">{{t "clusterNew.azureaks.networkPolicy.label"}}</label>
                 {{#input-or-display
                      editable=isNew
                      value=config.networkPolicy
@@ -409,6 +412,7 @@
                       class="form-control"
                       content=networkPolicyContent
                       value=config.networkPolicy
+                      placeholder=(t "clusterNew.azureaks.networkPolicy.placeholder")
                   }}
                 {{/input-or-display}}
               </div>
@@ -418,16 +422,21 @@
 
         <div class="row">
           <div class="col span-12">
-            <label class="acc-label" for="azureaks-advanced-ssh-pub-key">{{t 'clusterNew.azureaks.ssh.label'}}{{field-required}}</label>
+            <label class="acc-label" for="azureaks-advanced-ssh-pub-key">{{t "clusterNew.azureaks.ssh.label"}}{{field-required}}</label>
             {{#input-or-display
                  editable=isEditable
                  value=config.sshPublicKeyContents
             }}
-              {{textarea
+              {{input-text-file
                   id="azureaks-advanced-ssh-pub-key"
+                  classNames="box"
                   value=config.sshPublicKeyContents
-                  classNames="form-control no-resize"
-                  rows="3"
+                  multiple=true
+                  canChangeName=false
+                  accept="application/x-x509-ca-cert,text/plain,.pem,.crt,.pub"
+                  minHeight=60
+                  placeholder="newCertificate.cert.placeholder"
+                  shouldChangeName=false
               }}
             {{/input-or-display}}
           </div>

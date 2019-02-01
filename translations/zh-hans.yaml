@@ -2057,6 +2057,7 @@ clusterNew:
       label: 位置
     count:
       label: 主机数量
+      placeholder: "例如: 1"
     location:
       label: 位置
       prompt: 选择一个位置...
@@ -2070,6 +2071,7 @@ clusterNew:
       prompt: 选择一个规格...
     diskSizeGb:
       label: OS磁盘大小
+      placeholder: "例如: 100"
     dns:
       label: DNS前缀
       placeholder: "例如: example"
@@ -2127,9 +2129,11 @@ clusterNew:
       dnsServiceIp:
         label: Kubernetes DNS服务IP地址
         help: "分配给Kubernetes DNS服务的IP地址，它必须在Kubernetes服务地址范围内。例如: 10.0.0.10."
+        placeholder: "例如: 10.0.0.10"
       dockerBridgeCidr:
         label: Docker bridge地址
         help: '分配给Docker Bridge的IP地址和网络掩码，它不能位于任何子网IP范围或Kubernetes服务地址范围内。例如: 172.17.0.1/16.'
+        placeholder: "例如: 172.17.0.1/16"
     sshUser:
       label: SSH用户
       placeholder: usr1
@@ -2167,39 +2171,16 @@ clusterNew:
       placeholder: 客户端秘钥
     region:
       label: 区域
-    aadClientAppId:
-      label: Client ID
-      placeholder: Your Client ID of Azure Active Directory.
-    aadTenantId:
-      label: Tenant ID
-      placeholder: Your Tenant ID of Azure Active Directory.
-    aadServerAppId:
-      label: Server ID
-      placeholder: Your Server ID of Azure Active Directory.
-    aadServerAppSecret:
-      label: Server Secret
-      placeholder: Your Server Secret of Azure Active Directory.
     enableHttpApplicationRouting:
       label: HTTP应用程序路由
     enableMonitoring:
       label: 监控
-    logAnalyticsWorkspaceResourceGroup:
-      label: 地区
-      placeholder: Log Analytics Workspace Region.
-    logAnalyticsWorkspace:
-      label: Log Analytics Workspace
-      placeholder: Log Analytics Workspace.
-    agentOsdiskSize:
-      label: 系统盘大小
     networkPolicy:
       label: 网络策略
+      placeholder: 选择网络策略
     tags:
       label: 标签
       addActionLabel: 添加标签
-    header:
-      azureAD: Azure Active Directory
-      network: 网络
-      monitoring: 监控
     errors:
       included:
         serviceCidr: 'Kubernetes服务地址范围必须是有效的CIDR格式。'
@@ -4875,6 +4856,11 @@ newCertificate:
   metaXML:
     label: 元数据XML
     placeholder: "粘贴IDP Metadata XML"
+  publicKey:
+    label: SSH公钥
+    required: 必须填写公钥
+    invalidFormat: 公钥无效
+    placeholder: "粘贴或导入证书，以'ssh-rsa', 'ssh-dss', 'ssh-ed25519', 'ecdsa-sha2-nistp256', 'ecdsa-sha2-nistp384', or 'ecdsa-sha2-nistp521'开头"
   errors:
     encrypted: 私钥不能被密码保护
     key:

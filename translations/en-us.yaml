@@ -2135,6 +2135,7 @@ clusterNew:
       label: Placement
     count:
       label: Node Count
+      placeholder: e.g. 1
     location:
       label: Location
       prompt: Choose a location...
@@ -2148,6 +2149,7 @@ clusterNew:
       prompt: Choose a size...
     diskSizeGb:
       label: OS Disk Size
+      placeholder: e.g. 100
     dns:
       label: DNS Prefix
       placeholder: "e.g. example"
@@ -2205,9 +2207,11 @@ clusterNew:
       dnsServiceIp:
         label: Kubernetes DNS service IP address
         help: "An IP address assigned to the Kubernetes DNS service. It must be within the Kubernetes service address range. For example: 10.0.0.10."
+        placeholder: e.g. 10.0.0.10
       dockerBridgeCidr:
         label: Docker bridge address
         help: 'An IP address and netmask assigned to Docker Bridge. It must not be in any Subnet IP ranges, or the Kubernetes service address range. For example: 172.17.0.1/16.'
+        placeholder: e.g. 172.17.0.1/16
     sshUser:
       label: SSH User
       placeholder: usr1
@@ -2245,39 +2249,16 @@ clusterNew:
       placeholder: Your Client Secret
     region:
       label: Region
-    aadClientAppId:
-      label: Client ID
-      placeholder: Your Client ID of Azure Active Directory.
-    aadTenantId:
-      label: Tenant ID
-      placeholder: Your Tenant ID of Azure Active Directory.
-    aadServerAppId:
-      label: Server ID
-      placeholder: Your Server ID of Azure Active Directory.
-    aadServerAppSecret:
-      label: Server Secret
-      placeholder: Your Server Secret of Azure Active Directory.
     enableHttpApplicationRouting:
       label: HTTP Application Routing
     enableMonitoring:
       label: Monitoring
-    logAnalyticsWorkspaceResourceGroup:
-      label: Region
-      placeholder: Log Analytics Workspace Region.
-    logAnalyticsWorkspace:
-      label: Log Analytics Workspace
-      placeholder: Log Analytics Workspace.
-    agentOsdiskSize:
-      label: OS Disk Size
     networkPolicy:
       label: Network Policy
+      placeholder: Select a Network Policy
     tags:
       label: Tags
       addActionLabel: Add Tag
-    header:
-      azureAD: Azure Active Directory
-      network: Network
-      monitoring: Monitoring
     errors:
       included:
         serviceCidr: 'Kubernetes service address range must be valid CIDR format.'
@@ -5004,6 +4985,11 @@ newCertificate:
   metaXML:
     label: Metadata XML
     placeholder: "Paste in the IDP Metadata XML"
+  publicKey:
+    label: SSH Public Key
+    required: Public Key is required.
+    invalidFormat: Public Key is invalid.
+    placeholder: "Paste in the public key, typically starting with 'ssh-rsa', 'ssh-dss', 'ssh-ed25519', 'ecdsa-sha2-nistp256', 'ecdsa-sha2-nistp384', or 'ecdsa-sha2-nistp521'"
   errors:
     encrypted: The private key cannot be password-protected.
     key:
