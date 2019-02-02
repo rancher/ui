@@ -1929,6 +1929,7 @@ clusterNew:
   name:
     label: 集群名称
     placeholder: '例如: Sandbox'
+    required: 集群名称必须填写
   description:
     placeholder: '例如: 用于开发和测试工作负载的集群'
   driverLabels:
@@ -2224,6 +2225,70 @@ clusterNew:
       label: 维护窗口
     enableHorizontalPodAutoscaling:
       label: Pod自动横向伸缩
+    enableNodepoolAutoscaling:
+      label: 节点迟自动横向伸缩
+    minNodeCount:
+      label: 最小节点数
+      required: 最小节点数必须填写
+    maxNodeCount:
+      label: 最大节点数
+      minError: 最大节点数应大于最小节点数
+      required: 最大节点数必须填写
+    masterAuthUsername:
+      label: 主节点认证用户名
+      placeholder: 主节点认证用户名
+      required: 主节点认证用户名必须填写
+    masterAuthPassword:
+      label: 主节点认证密码
+      placeholder: 主节点认证密码
+      required: 主节点认证密码必须填写
+    issueClientCertificate:
+      label: 主节点认证
+    enableMasterAuthorizedNetwork:
+      label: 主节点认证网络
+    enablePrivateEndpoint:
+      label: 私有访问地址
+    enablePrivateNodes:
+      label: 私有节点
+    masterIpv4CidrBlock:
+      label: 主节点 Ipv4 CIDR Block
+      placeholder: e.g. 10.42.0.0
+    useIpAliases:
+      label: 使用别名IP
+    ipPolicySubnetworkName:
+      label: Subnetwork Name
+      placeholder: Your Subnetwork Name
+    ipPolicyCreateSubnetwork:
+      label: 自动创建辅助范围
+    ipPolicyClusterSecondaryRangeName:
+      label: Cluster Secondary Range Name
+      placeholder: Your Cluster Secondary Range Name
+    ipPolicyServicesSecondaryRangeName:
+      label: Services Secondary Range Name
+      placeholder: Your Services Secondary Range Name
+    ipPolicyClusterIpv4CidrBlock:
+      label: Pod地址范围
+      placeholder: e.g. 10.0.0.0/18
+    ipPolicyNodeIpv4CidrBlock:
+      label: Node Ipv4 CIDR Block
+      placeholder: Your Node Ipv4 CIDR Block
+    masterAuthorizedNetworkCidrBlocks:
+      label: Master Authorized Network CIDR Blocks
+      placeholder: Your Master Authorized Network CIDR Blocks
+      addActionLabel: Add CIDR Block
+    ipPolicyServicesIpv4CidrBlock:
+      label: 服务地址范围
+      placeholder: e.g. 10.94.0.0/18
+    network:
+      label: 网络
+    subNetwork:
+      label: 子网
+    header:
+      iPAllocationPolicy: IP Allocation策略
+      privateCluster: 私有集群
+      masteAuth: 主节点认证
+      nodePoolAutoscaling: 主机池自动扩所容
+      masterAuthorizedNetwork: 主节点认证网络
   aliyunkcs:
     label: 阿里云Kubernetes容器服务
     access:
