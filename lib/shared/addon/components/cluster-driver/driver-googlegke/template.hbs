@@ -428,13 +428,13 @@
           {{#if config.enableMasterAuthorizedNetwork}}
             <div class="col span-6">
               {{form-value-array
-                initialValues=config.masterAuthorizedNetworkCidrBlocks
-                editing=(or (eq mode 'edit') (eq mode 'new'))
-                valueLabel="clusterNew.googlegke.masterAuthorizedNetworkCidrBlocks.label"
-                valuePlaceholder="clusterNew.googlegke.masterAuthorizedNetworkCidrBlocks.placeholder"
-                addActionLabel="clusterNew.googlegke.masterAuthorizedNetworkCidrBlocks.addActionLabel"
-                changed=(action "updateNameservers")
-                cannotAdd=(gt config.masterAuthorizedNetworkCidrBlocks.length 10)
+                  initialValues=config.masterAuthorizedNetworkCidrBlocks
+                  editing=(or (eq mode 'edit') (eq mode 'new'))
+                  valueLabel="clusterNew.googlegke.masterAuthorizedNetworkCidrBlocks.label"
+                  valuePlaceholder="clusterNew.googlegke.masterAuthorizedNetworkCidrBlocks.placeholder"
+                  addActionLabel="clusterNew.googlegke.masterAuthorizedNetworkCidrBlocks.addActionLabel"
+                  changed=(action "updateNameservers")
+                  cannotAdd=(gt config.masterAuthorizedNetworkCidrBlocks.length 10)
               }}
             </div>
           {{/if}}
@@ -443,19 +443,12 @@
 
       <div class="row mt-20">
         <div class="col span-12 mb-0">
-          <label class="acc-label">{{t 'clusterNew.huaweicce.clusterLabels.label'}}</label>
-          {{#if editing}}
-            {{#if (gt config.resourceLabels.length 0)}}
-              {{huawei-user-labels
-                  readOnly=true
-                  initialLabels=config.resourceLabels
-            }}
-            {{else}}
-              <div>{{t 'clusterNew.huaweicce.clusterLabels.none'}}</div>
-            {{/if}}
-          {{else}}
-            {{huawei-user-labels setLabels=(action 'setLabels')}}
-          {{/if}}
+          <label class="acc-label">{{t "clusterNew.googlegke.clusterLabels.label"}}</label>
+          {{form-key-value
+              initialMap=resourceLabels
+              changed=(action 'setLabels')
+              addActionLabel="clusterNew.googlegke.nodeLabels.addAction"
+          }}
         </div>
       </div>
     {{/accordion-list-item}}
@@ -639,21 +632,20 @@
         {{/if}}
       </div>
 
+      {{form-gke-taints
+          taints=taints
+          editable=(eq mode 'new')
+      }}
+
       <div class="row mt-20">
         <div class="col span-12 mb-0">
-          <label class="acc-label">{{t 'clusterNew.huaweicce.nodeLabels.label'}}</label>
-          {{#if editing}}
-            {{#if (gt config.labels.length 0)}}
-              {{huawei-user-labels
-                  readOnly=true
-                  initialLabels=config.labels
-            }}
-            {{else}}
-              <div>{{t 'clusterNew.huaweicce.nodeLabels.none'}}</div>
-            {{/if}}
-          {{else}}
-            {{huawei-user-labels setLabels=(action 'setNodeLabels')}}
-          {{/if}}
+          <label class="acc-label">{{t 'clusterNew.googlegke.nodeLabels.label'}}</label>
+          {{form-key-value
+              initialMap=labels
+              changed=(action 'setNodeLabels')
+              addActionLabel="clusterNew.googlegke.nodeLabels.addAction"
+              editing=(eq mode 'new')
+          }}
         </div>
       </div>
     {{/accordion-list-item}}
