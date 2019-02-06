@@ -1,8 +1,8 @@
 import C from 'ui/utils/constants';
 import { all } from 'rsvp';
 import { inject as service } from '@ember/service';
-import { get, set, setProperties } from '@ember/object';
-import { alias, notEmpty } from '@ember/object/computed';
+import { computed, get, set, setProperties } from '@ember/object';
+import { alias } from '@ember/object/computed';
 import Component from '@ember/component';
 import layout from './template';
 
@@ -29,13 +29,13 @@ export default Component.extend({
   namespace:     null,
   errors:        null,
   editing:       true,
+  scaleMode:     null,
 
   volumesArray:  null,
 
   nextNum:       1,
   cluster:       alias('scope.currentCluster'),
   project:       alias('scope.currentProject'),
-  isStatefulSet: notEmpty('workload.statefulSetConfig'),
 
   init() {
     this._super(...arguments);
@@ -264,6 +264,13 @@ export default Component.extend({
     }
   },
 
+  isStatefulSet: computed('launchConfig', 'scaleMode', function() {
+    const { scaleMode } = this;
+
+    return scaleMode === 'statefulSet';
+  }),
+
+
   initVolumes() {
     if (!get(this, 'expandFn')) {
       set(this, 'expandFn', (item) => {
@@ -369,7 +376,8 @@ export default Component.extend({
     const { workload, launchConfig } = this;
     const ary                        = get(this, 'volumesArray') || [];
     const promises                   = [];
-    const volumeClaimTemplates = [];
+    const statefulSetConfig          = get(workload, 'statefulSetConfig') || {};
+    const volumeClaimTemplates       = get(statefulSetConfig, 'volumeClaimTemplates') || [];
 
     let pvc, vct;
 
@@ -379,12 +387,14 @@ export default Component.extend({
       promises.push(get(row, 'pvc').save());
     });
 
-    ary.filterBy('vct').forEach((row) => {
-      vct = get(row, 'vct');
-      set(vct, 'namespaceId', get(this, 'namespace.id'));
-      promises.push(get(row, 'vct').save());
-      volumeClaimTemplates.push(vct);
-    });
+    if (get(this, 'isStatefulSet')) {
+      ary.filterBy('vct').forEach((row) => {
+        vct = get(row, 'vct');
+        volumeClaimTemplates.push(vct)
+      });
+
+      set(this, 'workload.statefulSetConfig.volumeClaimTemplates', volumeClaimTemplates);
+    }
 
     ary.filterBy('mode', C.VOLUME_TYPES.CUSTOM_LOG_PATH).filterBy('volume.flexVolume.driver', LOG_AGGREGATOR)
       .forEach((row) => {
@@ -408,8 +418,6 @@ export default Component.extend({
       ary.forEach((row) => {
         if (row.volume && !row.volume.isVolumeClaimTemplate) {
           volumes.pushObject(row.volume);
-        } else if (row.volume && row.volume.isVolumeClaimTemplate) {
-          volumeClaimTemplates.pushObject(row.volume);
         }
 
         row.mounts.forEach((mount) => {
@@ -429,12 +437,9 @@ export default Component.extend({
       });
 
       set(workload, 'volumes', volumes);
-      const statefulSetConfig = get(workload, 'statefulSetConfig');
 
-      if ( statefulSetConfig ) {
-        set(statefulSetConfig, 'volumeClaimTemplates', volumeClaimTemplates);
-      }
       set(launchConfig, 'volumeMounts', mounts);
     });
   },
+
 });
