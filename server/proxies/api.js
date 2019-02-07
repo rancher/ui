@@ -10,8 +10,8 @@ module.exports = function(app, options) {
 
   var proxy = HttpProxy.createProxyServer({
     ws: true,
-    xfwd: false,
-    target: target,
+    xfwd: true,
+    target: config.apiServer,
     secure: false,
   });
 
@@ -19,11 +19,30 @@ module.exports = function(app, options) {
 
   // WebSocket for Rancher
   httpServer.on('upgrade', function proxyWsRequest(req, socket, head) {
-    proxyLog('WS', req);
-    if ( socket.ssl ) {
-      req.headers['X-Forwarded-Proto'] = 'https';
+    if ( req.url.startsWith('/_lr/') ) {
+      return;
     }
-    proxy.ws(req, socket, head);
+
+    proxyLog('WS', req);
+
+    if ( socket.ssl ) {
+      req.headers['x-forwarded-proto'] = 'https';
+    }
+
+
+
+    let targetHost = config.apiServer.replace(/^https?:\/\//, '');
+
+    req.headers['x-forwarded-host'] = req.headers['host'];
+    req.headers['host'] = targetHost;
+    req.headers['origin'] = config.apiServer;
+    req.socket.servername = targetHost;
+
+    try {
+      proxy.ws(req, socket, head);
+    } catch (err) {
+      proxyLog(err);
+    }
   });
 
   let map = {
@@ -62,6 +81,10 @@ module.exports = function(app, options) {
       req.url = path.join(base, req.url);
       req.headers['X-Forwarded-Proto'] = req.protocol;
 
+      // don't include the original host header
+      req.headers['X-Forwarded-Host'] = req.headers['host'];
+      delete req.headers['host'];
+
       proxyLog(label, req);
       proxy.web(req, res);
     });
@@ -90,5 +113,5 @@ function onProxyError(err, req, res) {
 }
 
 function proxyLog(label, req) {
-  console.log('['+ label+ ']', req.method, req.url);
+  console.log(`[${ label }][${ req._source }]`, req.method, req.url);
 }
