@@ -8,29 +8,18 @@
     expand=(action expandFn)
     expandOnInit=true
   }}
-    <div class="row">
-      <div class="col span-6">
-        <label class="acc-label">{{t 'nodeDriver.vmwarevsphere.vcenter.label'}}{{field-required}}</label>
-        {{input type="text" class="form-control" value=config.vcenter placeholder=(t 'nodeDriver.vmwarevsphere.vcenter.placeholder')}}
-      </div>
-      <div class="col span-6">
-        <label class="acc-label">{{t 'nodeDriver.vmwarevsphere.vcenterPort.label'}}{{field-required}}</label>
-        {{input-integer min=1 max=65535 class="form-control" value=config.vcenterPort}}
-      </div>
-    </div>
 
-    <div class="row">
-      <div class="col span-6">
-        <label class="acc-label">{{t 'nodeDriver.vmwarevsphere.username.label'}}{{field-required}}</label>
-        {{input type="text" value=config.username classNames="form-control"}}
-      </div>
+    {{form-auth-cloud-credential
+      driverName=driverName
+      errors=errros
+      primaryResource=model
+      cloudCredentials=cloudCredentials
+      finishAndSelectCloudCredential=(action "finishAndSelectCloudCredential")
+      progressStep=(action "finishAndSelectCloudCredential")
+      cancel=(action "cancel")
+      hideSave=true
+    }}
 
-      <div class="col span-6">
-        <label class="acc-label">{{t 'nodeDriver.vmwarevsphere.password.label'}}{{field-required}}</label>
-        {{input type="password" value=config.password classNames="form-control"}}
-      </div>
-    </div>
-    <p class="help-block">{{t 'nodeDriver.vmwarevsphere.access.help'}}</p>
   {{/accordion-list-item}}
 
   {{#accordion-list-item
@@ -66,7 +55,7 @@
           <div class="input-group-addon bg-default">{{t 'nodeDriver.vmwarevsphere.diskSize.unit'}}</div>
         </div>
       </div>
-      
+
       <div class="col span-6">
         <label class="acc-label">{{t 'nodeDriver.vmwarevsphere.cloudinit.label'}}</label>
         {{input type="text" value=config.cloudinit classNames="form-control" placeholder=(t 'nodeDriver.vmwarevsphere.cloudinit.placeholder')}}

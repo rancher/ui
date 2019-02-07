@@ -1,0 +1,191 @@
+<section class="horizontal-form container-fluid">
+  {{#unless disableHeader}}
+    <h2>
+      {{t "modalAddCloudKey.header"}}
+    </h2>
+  {{/unless}}
+  <hr/>
+
+  {{form-name-description
+    model=primaryResource
+    namePlaceholder="newSecret.name.placeholder"
+    descriptionPlaceholder="newSecret.description.placeholder"
+  }}
+
+  <div class="row">
+    <div class="col span-6">
+      <label class="acc-label">
+        {{t "modalAddCloudKey.type"}}
+      </label>
+
+      <select
+        class="form-control"
+        onchange={{action "selectConfig" value="target.value"}}
+      >
+        {{#if (not-eq cloudKeyType value)}}
+          <option value="" selected=true >
+            {{t "modalAddCloudKey.typeSelect.prompt"}}
+          </option>
+        {{/if}}
+        {{#each configChoices as |choice|}}
+          <option
+            value="{{choice.name}}"
+            selected={{eq choice.name cloudKeyType}}
+          >
+            {{choice.displayName}}
+          </option>
+        {{/each}}
+      </select>
+
+    </div>
+
+    {{#if (eq cloudKeyType "amazon")}}
+      <div class="row">
+        <div class="col span-6">
+          <label class="acc-label" for="amazonec2-accessKey">
+            {{t "modalAddCloudKey.amazonec2.accessKey.label"}}{{field-required}}
+          </label>
+          {{input
+            type="text"
+            name="username"
+            classNames="form-control"
+            placeholder=(t "modalAddCloudKey.amazonec2.accessKey.placeholder")
+            value=config.accessKey
+            id="amazonec2-accessKey"
+          }}
+        </div>
+
+        <div class="col span-6">
+          <label class="acc-label" for="amazonec2-secretKey">
+            {{t "modalAddCloudKey.amazonec2.secretKey.label"}}{{field-required}}
+          </label>
+          {{input
+            type="password"
+            name="password"
+            classNames="form-control"
+            placeholder=(t "modalAddCloudKey.amazonec2.secretKey.placeholder")
+            value=config.secretKey
+            id="amazonec2-secretKey"
+          }}
+        </div>
+      </div>
+    {{else if (eq cloudKeyType "azure")}}
+      <div class="row">
+        <div class="col span-6">
+          <label class="acc-label">
+            {{t "nodeDriver.azure.subscriptionId.label"}}{{field-required}}
+          </label>
+          {{input
+            type="text"
+            value=config.subscriptionId
+            classNames="form-control"
+            placeholder=(t "nodeDriver.azure.subscriptionId.placeholder")
+          }}
+        </div>
+      </div>
+      <div class="row">
+        <div class="col span-6">
+          <label class="acc-label" for="azure-clientId">
+            {{t "modalAddCloudKey.azure.clientId.label"}}{{field-required}}
+          </label>
+          {{input
+            type="text"
+            value=config.clientId
+            classNames="form-control"
+            id="azure-clientId"
+            placeholder=(t "modalAddCloudKey.azure.clientId.placeholder")
+          }}
+        </div>
+        <div class="col span-6">
+          <label class="acc-label" for="azure-clientSecret">
+            {{t "modalAddCloudKey.azure.clientSecret.label"}}{{field-required}}
+          </label>
+          {{input
+            type="password"
+            value=config.clientSecret
+            classNames="form-control"
+            id="azure-clientSecret"
+            placeholder=(t "modalAddCloudKey.azure.clientSecret.placeholder")
+          }}
+        </div>
+      </div>
+    {{else if (eq cloudKeyType "digitalOcean")}}
+      <div class="row">
+        <div class="col span-6">
+          <label class="acc-label" for="digitalocean-accessToken">
+            {{t "modalAddCloudKey.digitalocean.accessToken.label"}}
+          </label>
+          {{input
+            type="password"
+            value=config.accessToken
+            classNames="form-control"
+            placeholder=(t "modalAddCloudKey.digitalocean.accessToken.placeholder")
+            id="digitalocean-accessToken"
+          }}
+          <p class="text-info">
+            {{t "modalAddCloudKey.digitalocean.accessToken.help" htmlSafe=true}}
+          </p>
+        </div>
+      </div>
+    {{else if (eq cloudKeyType "vmware")}}
+      <div class="row">
+        <div class="col span-6">
+          <label class="acc-label">
+            {{t "nodeDriver.vmwarevsphere.vcenter.label"}}{{field-required}}
+          </label>
+          {{input
+            type="text"
+            class="form-control"
+            value=config.vcenter
+            placeholder=(t "nodeDriver.vmwarevsphere.vcenter.placeholder")
+          }}
+        </div>
+        <div class="col span-6">
+          <label class="acc-label">
+            {{t "nodeDriver.vmwarevsphere.vcenterPort.label"}}{{field-required}}
+          </label>
+          {{input-integer
+            min=1
+            max=65535
+            class="form-control"
+            value=config.vcenterPort
+          }}
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col span-6">
+          <label class="acc-label">
+            {{t "nodeDriver.vmwarevsphere.username.label"}}{{field-required}}
+          </label>
+          {{input
+            type="text"
+            value=config.username
+            classNames="form-control"
+          }}
+        </div>
+
+        <div class="col span-6">
+          <label class="acc-label">
+            {{t "nodeDriver.vmwarevsphere.password.label"}}{{field-required}}
+          </label>
+          {{input
+            type="password"
+            value=config.password
+            classNames="form-control"
+          }}
+        </div>
+      </div>
+      <p class="help-block">{{t "nodeDriver.vmwarevsphere.access.help"}}</p>
+    {{/if}}
+  </div>
+
+
+  <div class="footer-actions">
+    {{save-cancel
+      saveDisabled=saveDisabled
+      save="save"
+      cancel=cancelAdd
+    }}
+  </div>
+</section>

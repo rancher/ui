@@ -353,7 +353,7 @@ const rootNav = [
       {
         id:             'global-security-roles',
         localizedLabel: 'nav.admin.security.roles',
-        icon:           'icon icon-key',
+        icon:           'icon icon-users',
         route:          'global-admin.security.roles',
         resource:       ['roletemplate'],
         resourceScope:  'global',
@@ -364,6 +364,14 @@ const rootNav = [
         icon:           'icon icon-files',
         route:          'global-admin.security.policies',
         resource:       ['podsecuritypolicytemplate'],
+        resourceScope:  'global',
+      },
+      {
+        id:             'global-security-cloud-keys',
+        localizedLabel: 'nav.admin.security.cloudKeys',
+        icon:           'icon icon-secrets',
+        route:          'global-admin.security.cloud-keys',
+        resource:       ['cloudcredential'],
         resourceScope:  'global',
       },
       {
