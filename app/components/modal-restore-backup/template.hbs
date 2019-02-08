@@ -12,28 +12,33 @@
       >
         {{t "modalRestoreBackup.backups"}}{{field-required}}
       </label>
-      <select
-        id="available-backups"
-        class="form-control"
-        onchange={{action (mut backupId) value="target.value"}}
-      >
-        {{#unless (eq backupId value)}}
-          <option
-            value=""
-            selected=true
-          >
-            {{t "modalRestoreBackup.select.all"}}
-          </option>
-        {{/unless}}
-        {{#each availableBackups as |backup|}}
-          <option
-            value={{backup.id}}
-            selected={{eq backup.id value}}
-          >
-            {{backup.label}}
-          </option>
-        {{/each}}
-      </select>
+      {{#if loadingBackups}}
+        <i class="icon icon-spinner icon-spin"></i>
+        {{t "modalRestoreBackup.fetching"}}
+      {{else}}
+        <select
+          id="available-backups"
+          class="form-control"
+          onchange={{action (mut backupId) value="target.value"}}
+        >
+          {{#unless (eq backupId value)}}
+            <option
+              value=""
+              selected=true
+            >
+              {{t "modalRestoreBackup.select.all"}}
+            </option>
+          {{/unless}}
+          {{#each availableBackups as |backup|}}
+            <option
+              value={{backup.id}}
+              selected={{eq backup.id value}}
+            >
+              {{backup.label}}
+            </option>
+          {{/each}}
+        </select>
+      {{/if}}
     </div>
   </div>
 </section>

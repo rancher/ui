@@ -4,16 +4,7 @@ import { inject as service } from '@ember/service';
 import ViewNewEdit from 'shared/mixins/view-new-edit';
 import OptionallyNamespaced from 'shared/mixins/optionally-namespaced';
 import layout from './template';
-
-const BEGIN_CERTIFICATE = [
-  '-----BEGIN CERTIFICATE-----'
-];
-
-const BEGIN_KEY = [
-  '-----BEGIN PRIVATE KEY-----',
-  '-----BEGIN EC PRIVATE KEY-----',
-  '-----BEGIN RSA PRIVATE KEY-----',
-]
+import { validateCertWeakly, validateKeyWeakly } from 'shared/utils/util';
 
 export default Component.extend(ViewNewEdit, OptionallyNamespaced, {
   intl: service(),
@@ -51,15 +42,7 @@ export default Component.extend(ViewNewEdit, OptionallyNamespaced, {
     const key = get(this, 'model.key');
 
     if ( key ) {
-      let ok = false;
-
-      BEGIN_KEY.forEach((prefix) => {
-        if ( key.trim().startsWith(prefix) ) {
-          ok = true;
-        }
-      });
-
-      if ( !ok ) {
+      if ( !validateKeyWeakly(key) ) {
         errors.push(intl.t('newCertificate.errors.key.invalidFormat'));
       }
     } else {
@@ -69,15 +52,7 @@ export default Component.extend(ViewNewEdit, OptionallyNamespaced, {
     const certs = get(this, 'model.certs');
 
     if ( certs ) {
-      let ok = false;
-
-      BEGIN_CERTIFICATE.forEach((prefix) => {
-        if ( certs.trim().startsWith(prefix) ) {
-          ok = true;
-        }
-      });
-
-      if ( !ok ) {
+      if ( !validateCertWeakly(certs) ) {
         errors.push(intl.t('newCertificate.errors.cert.invalidFormat'));
       }
     } else {
