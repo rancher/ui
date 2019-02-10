@@ -60,9 +60,12 @@
         <div class="col span-6">
           <label class="acc-label">{{t 'clusterNew.aliyunkcs.version.label'}}</label>
           {{#if (eq step 2)}}
-            {{searchable-select class="form-control"
-              content=versionChoices
-              value=version
+            {{form-versions
+                cluster=cluster
+                editing=(eq mode "edit")
+                value=config.kubernetesVersion
+                versions=versionChoices
+                initialVersion=config.version
             }}
           {{else}}
             <div>{{version}}</div>
