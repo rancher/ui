@@ -32,6 +32,10 @@ export default Controller.extend(NewOrEdit, {
         set(this, 'primaryResource.resourceQuota', null);
       }
     },
+
+    updateContainerDefault(limit) {
+      set(this, 'primaryResource.containerDefaultResourceLimit', limit);
+    }
   },
 
   projectDidChange: observer('primaryResource.project.id', function() {

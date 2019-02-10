@@ -1,6 +1,6 @@
 <section class="header clearfix">
   <div class="pull-left">
-    <h2>{{t 'namespacesPage.addNamespace'}}</h2>
+    <h2>{{t "namespacesPage.addNamespace"}}</h2>
   </div>
 </section>
 
@@ -9,11 +9,11 @@
 }}
 {{#if nameExists}}
   <p class="text-error text-small mt-0 mb-0">
-    {{t 'editStack.name.error'}}
+    {{t "editStack.name.error"}}
   </p>
 {{/if}}
 {{#unless from}}
-  <label class="pt-20 pb-5 acc-label">{{t 'editStack.project.label'}}</label>
+  <label class="pt-20 pb-5 acc-label">{{t "editStack.project.label"}}</label>
   {{new-select
       classNames="form-control"
       optionValuePath="id"
@@ -25,12 +25,12 @@
   }}
 {{/unless}}
 
-{{#if (and primaryResource.project.resourceQuota (not switchingProject))}}
-  <div class="row mt-20">
-    {{#accordion-list showExpandAll=false as | al expandFn | }}
+<div class="row mt-20">
+  {{#accordion-list showExpandAll=false as | al expandFn | }}
+    {{#if (and primaryResource.project.resourceQuota (not switchingProject))}}
       {{#accordion-list-item
-            title=(t 'editStack.resourceQuota.title')
-            detail=(t 'editStack.resourceQuota.detail')
+            title=(t "editStack.resourceQuota.title")
+            detail=(t "editStack.resourceQuota.detail")
             expandAll=al.expandAll
             expand=(action expandFn)
             expandOnInit=true
@@ -46,9 +46,24 @@
             changed=(action "updateNsQuota")
         }}
       {{/accordion-list-item}}
-    {{/accordion-list}}
-  </div>
-{{/if}}
+    {{/if}}
+
+    {{#accordion-list-item
+        title=(t "projectsPage.containerDefaultLimit.title")
+        detail=(t "projectsPage.containerDefaultLimit.detail")
+        expandAll=al.expandAll
+        expand=(action expandFn)
+        expandOnInit=false
+    }}
+      {{container-default-limit
+          editing=(or editing isNew)
+          expanded=expanded
+          limit=primaryResource.project.containerDefaultResourceLimit
+          changed=(action "updateContainerDefault")
+      }}
+    {{/accordion-list-item}}
+  {{/accordion-list}}
+</div>
 
 {{top-errors errors=errors}}
 {{save-cancel editing=false save="save" cancel="cancel"}}

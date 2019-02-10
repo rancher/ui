@@ -205,7 +205,7 @@ export default Component.extend(NewOrEdit, ChildHook, {
     let errors = pr.validationErrors() || [];
     const lc = get(this, 'launchConfig');
 
-    const quotaErrors = lc.validateQuota();
+    const quotaErrors = lc.validateQuota(get(this, 'namespace'));
 
     errors.pushObjects(quotaErrors);
 
