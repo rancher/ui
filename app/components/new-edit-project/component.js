@@ -62,6 +62,12 @@ export default Component.extend(NewOrEdit, ChildHook, {
         });
       }
     },
+
+    updateContainerDefault(limit) {
+      const primaryResource = get(this, 'primaryResource');
+
+      set(primaryResource, 'containerDefaultResourceLimit', limit);
+    },
   },
 
   pspDidChange: observer('podSecurityPolicyTemplateId', function() {

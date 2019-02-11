@@ -59,7 +59,7 @@ var Container = Resource.extend(Grafana, DisplayImage, {
     }
   }),
 
-  validateQuota() {
+  validateQuota(namespace) {
     const projectLimit =  get(this, 'scope.currentProject.resourceQuota.limit');
 
     if ( !projectLimit ) {
@@ -73,16 +73,16 @@ var Container = Resource.extend(Grafana, DisplayImage, {
       limitsCpu, limitsMemory, requestsCpu, requestsMemory
     } = projectLimit;
 
-    if ( limitsCpu && !get(this, `resources.limits.cpu`)) {
+    if ( limitsCpu && !get(this, 'resources.limits.cpu') && !get(namespace, 'containerDefaultResourceLimit.limitsCpu') ) {
       errors.push(intl.t('newContainer.errors.quotaRequired', { key: intl.t('formResourceQuota.resources.limitsCpu') }));
     }
-    if ( limitsMemory && !get(this, `resources.limits.memory`)) {
+    if ( limitsMemory && !get(this, 'resources.limits.memory') && !get(namespace, 'containerDefaultResourceLimit.limitsMemory') ) {
       errors.push(intl.t('newContainer.errors.quotaRequired', { key: intl.t('formResourceQuota.resources.limitsMemory') }));
     }
-    if ( requestsCpu && !get(this, `resources.requests.cpu`)) {
+    if ( requestsCpu && !get(this, 'resources.requests.cpu') && !get(namespace, 'containerDefaultResourceLimit.requestsCpu') ) {
       errors.push(intl.t('newContainer.errors.quotaRequired', { key: intl.t('formResourceQuota.resources.requestsCpu') }));
     }
-    if ( requestsMemory && !get(this, `resources.requests.memory`)) {
+    if ( requestsMemory && !get(this, 'resources.requests.memory') && !get(namespace, 'containerDefaultResourceLimit.requestsMemory') ) {
       errors.push(intl.t('newContainer.errors.quotaRequired', { key: intl.t('formResourceQuota.resources.requestsMemory') }));
     }
 
