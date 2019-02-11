@@ -1,11 +1,64 @@
 <div class="mt-20 clearfix">
   <h2 class={{concat "pt-30 inline-block " (if disabled "text-muted")}}>
-    {{t "loggingPage.ssl.sslHeader" authType="SSL"}}
+    {{t "loggingPage.ssl.sslHeader" authType=(if (eq targetType "syslog") "Encryption" "SSL") }}
   </h2>
   {{#if (not-eq targetType "kafka")}}
     <span class="text-info text-small">{{t "loggingPage.ssl.headerHelp"}}</span>
   {{/if}}
   <hr/>
+
+  {{#if (eq targetType 'syslog')}}
+    <div class="row">
+      <div class={{concat "col span-6 pt-0 " (if isUdp "text-muted")}}>
+        {{input
+            type="checkbox"
+            classNames="form-control"
+            checked=config.enableTls
+            disabled=isUdp
+        }}
+        {{t 'loggingPage.fluentd.enableTls.label'}}
+      </div>
+      <div class="col span-6">
+        <label class="acc-label">{{t 'loggingPage.ssl.verify.label'}}</label>
+        <div class="radio">
+          <label class={{if (or disabled isUdp) 'text-muted'}}>
+            {{radio-button
+                selection=config.sslVerify
+                value=false
+                disabled=(or disabled isUdp)
+            }}
+            {{t 'loggingPage.ssl.verify.disabled'}}
+          </label>
+        </div>
+        <div class="radio">
+          <label class={{if (or disabled isUdp) 'text-muted'}}>
+            {{radio-button
+                selection=config.sslVerify
+                value=true
+                disabled=(or disabled isUdp)
+            }}
+            {{t 'loggingPage.ssl.verify.enabled'}}
+          </label>
+        </div>
+        {{#if sslVerify}}
+          <div class="clearfix">
+            <label class="acc-label pt-5">{{t 'loggingPage.ssl.certificate.label'}}</label>
+          </div>
+          {{input-text-file
+              classNames="box"
+              value=config.certificate
+              multiple=true
+              canChangeName=false
+              accept="application/x-x509-ca-cert,text/plain,.pem,.crt,.cert"
+              minHeight=60
+              placeholder="newCertificate.cert.placeholder"
+              shouldChangeName=false
+              disabled=(or disabled isUdp)
+          }}
+        {{/if}}
+      </div>
+    </div>
+  {{/if}}
 
   {{#if (not-eq customType 'fluentd')}}
     <div class="row">
@@ -63,7 +116,7 @@
     </div>
   {{/if}}
 
-  {{#if (or (eq targetType 'splunk') (eq targetType 'elasticsearch') (eq targetType 'syslog'))}}
+  {{#if (or (eq targetType 'splunk') (eq targetType 'elasticsearch'))}}
     <div class="row">
       {{#if (or (eq targetType 'splunk') (eq targetType 'elasticsearch'))}}
         <div class="col span-6">
@@ -158,4 +211,6 @@
       </div>
     </div>
   {{/if}}
+
+
 </div>
