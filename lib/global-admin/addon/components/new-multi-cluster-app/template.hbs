@@ -116,65 +116,15 @@
 
     <hr class="mt-20 mb-20"/>
 
-    <div class="row">
-      <div class="col span-12">
-        <div>
-          <label
-            for="add-project-target"
-            class="acc-label"
-          >
-            {{t "newMultiClusterApp.targets.label"}}
-          </label>
-          {{field-required}}
-        </div>
-        <button
-          id="add-project-target"
-          class="block btn bg-primary btn-sm mt-10 mb-20"
-          {{action "addTarget"}}
-        >
-          <i class="icon icon-plus"></i>
-          {{t "newMultiClusterApp.targets.add"}}
-        </button>
-        {{#if primaryResource.targets}}
-          <table class="table fixed no-lines small mb-10">
-            <thead>
-              <tr class="hidden-sm">
-                <th class={{unless editing "acc-label"}}>
-                  {{t "newMultiClusterApp.targets.target"}}
-                </th>
-                <th width="50">&nbsp;</th>
-              </tr>
-            </thead>
-            <tbody>
-              {{#each primaryResource.targets as |target| }}
-                <tr>
-                  <td class="p-5">
-                    {{new-select
-                      classNames="form-control"
-                      content=allProjectsGroupedByCluster
-                      localizedPrompt=true
-                      optionLabelPath="name"
-                      optionValuePath="value"
-                      optionGroupPath="cluster"
-                      prompt="newMultiClusterApp.targets.prompt"
-                      value=target.projectId
-                    }}
-                  </td>
-                  <td class="p-5 pl-10">
-                    <button
-                      class="btn bg-primary btn-sm"
-                      {{action "removeTarget" target}}
-                    >
-                      <i class="icon icon-minus"></i>
-                    </button>
-                  </td>
-                </tr>
-              {{/each}}
-            </tbody>
-          </table>
-        {{/if}}
-      </div>
-    </div>
+    {{form-multi-cluster-targets
+      addTarget=(action "addTarget")
+      removeTarget=(action "removeTarget")
+      multiClusterApp=multiClusterApp
+      isClone=isClone
+      isEditing=editing
+      projects=projects
+      readOnly=readOnly
+    }}
     <hr class="mt-20 mb-20"/>
 
     <div class="row">
@@ -342,6 +292,91 @@
       </div>
     </div>
   {{/accordion-list-item}}
+
+  {{#accordion-list-item
+     title=(t "newMultiClusterApp.roles.title")
+     detail=(t "newMultiClusterApp.roles.detail")
+     expandAll=al.expandAll
+     expandOnInit=false
+     expand=(action expandFn)
+  }}
+    <div class="row">
+      <div class="col span-6">
+        <label class="acc-label">{{t "newMultiClusterApp.roles.title"}}</label>
+        {{searchable-select
+          prompt="newMultiClusterApp.roles.table.prompt"
+          localizedPrompt=true
+          optionLabelPath="displayName"
+          optionValuePath="id"
+          content=roleChoices
+          change="addRole"
+          readOnly=readOnly
+        }}
+      </div>
+      <div class="col span-12">
+        {{#sortable-table
+           classNames="grid sortable-table"
+           sortBy=sortBy
+           headers=rolesHeaders
+           stickyHeader=false
+           bulkActions=false
+           search=false
+           pagingLabel="pagination.roles"
+           descending=descending
+           body=appRoles
+           actionsWidth="75"
+           as |sortable kind role dt|
+        }}
+          {{#if (eq kind "row")}}
+            <tr class="main-row">
+              <td data-title="{{dt.roleName}}:" >
+                {{role.displayName}}
+              </td>
+              <td data-title="{{dt.builtin}}:" >
+                {{#if role.builtin}}
+                  <i class="icon icon-check"/>
+                {{else}}
+                  <span class="text-muted">&ndash;</span>
+                {{/if}}
+              </td>
+              <td data-title="{{dt.external}}:" >
+                {{#if role.external}}
+                  <i class="icon icon-check"/>
+                {{else}}
+                  <span class="text-muted">&ndash;</span>
+                {{/if}}
+              </td>
+              <td data-title="{{t "generic.actions"}}:" class="actions">
+                <div class="p-5">
+                  <button
+                    class="btn bg-primary btn-sm"
+                    {{action "removeRole" role}}
+                  >
+                    <i class="icon icon-minus"/>
+                  </button>
+                </div>
+              </td>
+            </tr>
+          {{else if (eq kind "nomatch")}}
+            <td
+              colspan="5"
+              class="text-center text-muted lacsso pt-20 pb-20"
+            >
+              {{t "newMultiClusterApp.roles.table.noMatch"}}
+            </td>
+          {{else if (eq kind "norows")}}
+            <td
+              colspan="5"
+              class="text-center text-muted lacsso pt-20 pb-20"
+            >
+              {{t "newMultiClusterApp.roles.table.noData"}}
+            </td>
+          {{/if}}
+        {{/sortable-table}}
+      </div>
+    </div>
+  {{/accordion-list-item}}
+
 
   {{#accordion-list-item
      title=(t "newMultiClusterApp.overrides.label")
