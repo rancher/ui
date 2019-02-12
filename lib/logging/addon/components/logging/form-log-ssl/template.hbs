@@ -1,85 +1,62 @@
 <div class="mt-20 clearfix">
-  <h2 class={{concat 'pt-30 inline-block ' (if disabled 'text-muted')}}>
-    {{t 'loggingPage.ssl.sslHeader' authType=(if (eq targetType 'kafka') 'SASL' 'SSL')}}
+  <h2 class={{concat "pt-30 inline-block " (if disabled "text-muted")}}>
+    {{t "loggingPage.ssl.sslHeader" authType=(if (eq targetType "syslog") "Encryption" "SSL") }}
   </h2>
-  {{#if (not-eq targetType 'kafka')}}
-    <span class="text-info text-small">{{t 'loggingPage.ssl.headerHelp'}}</span>
+  {{#if (not-eq targetType "kafka")}}
+    <span class="text-info text-small">{{t "loggingPage.ssl.headerHelp"}}</span>
   {{/if}}
   <hr/>
-  {{#if (eq targetType 'kafka')}}
+
+  {{#if (eq targetType 'syslog')}}
     <div class="row">
-      <div class="col span-6">
-        <label class="acc-label" for=""> {{t 'loggingPage.ssl.saslUsername.label'}} </label>
+      <div class={{concat "col span-6 pt-0 " (if isUdp "text-muted")}}>
         {{input
-            type="text"
-            utocomplete="off"
-            value=config.saslUsername
+            type="checkbox"
             classNames="form-control"
-            placeholder=(t 'loggingPage.ssl.saslUsername.placeholder')
-            disabled=disabled
+            checked=config.enableTls
+            disabled=isUdp
         }}
+        {{t 'loggingPage.fluentd.enableTls.label'}}
       </div>
       <div class="col span-6">
-        <label class="acc-label"> {{t 'loggingPage.ssl.saslPassword.label'}} </label>
-        {{input
-            utocomplete="off"
-            type="password"
-            value=config.saslPassword
-            classNames="form-control"
-            placeholder=(t 'loggingPage.ssl.saslPassword.placeholder')
-            disabled=disabled
-        }}
-      </div>
-    </div>
-    <div class="row">
-      <div class="col span-6 mt-0">
-        <label class="acc-label pt-5">{{t 'loggingPage.ssl.saslType.label'}}</label>
-        <div class="radio" class={{if disabled 'text-muted'}}>
-          <label class={{if disabled 'text-muted'}}>
+        <label class="acc-label">{{t 'loggingPage.ssl.verify.label'}}</label>
+        <div class="radio">
+          <label class={{if (or disabled isUdp) 'text-muted'}}>
             {{radio-button
-                selection=config.saslType
-                value="plain"
-                disabled=disabled
+                selection=config.sslVerify
+                value=false
+                disabled=(or disabled isUdp)
             }}
-            {{t 'loggingPage.ssl.saslType.plain'}}
+            {{t 'loggingPage.ssl.verify.disabled'}}
           </label>
         </div>
         <div class="radio">
-          <label class={{if disabled 'text-muted'}}>
+          <label class={{if (or disabled isUdp) 'text-muted'}}>
             {{radio-button
-                selection=config.saslType
-                value="scram"
-                disabled=disabled
+                selection=config.sslVerify
+                value=true
+                disabled=(or disabled isUdp)
             }}
-            {{t 'loggingPage.ssl.saslType.scram'}}
+            {{t 'loggingPage.ssl.verify.enabled'}}
           </label>
         </div>
+        {{#if sslVerify}}
+          <div class="clearfix">
+            <label class="acc-label pt-5">{{t 'loggingPage.ssl.certificate.label'}}</label>
+          </div>
+          {{input-text-file
+              classNames="box"
+              value=config.certificate
+              multiple=true
+              canChangeName=false
+              accept="application/x-x509-ca-cert,text/plain,.pem,.crt,.cert"
+              minHeight=60
+              placeholder="newCertificate.cert.placeholder"
+              shouldChangeName=false
+              disabled=(or disabled isUdp)
+          }}
+        {{/if}}
       </div>
-      {{#if (eq config.saslType 'scram')}}
-        <div class="col span-6 mt-0">
-          <label class="acc-label pt-5">{{t 'loggingPage.ssl.saslScramMechanism.label'}}</label>
-          <div class="radio">
-            <label class={{if disabled 'text-muted'}}>
-              {{radio-button
-                  selection=config.saslScramMechanism
-                  value="sha256"
-                  disabled=disabled
-              }}
-              {{t 'loggingPage.ssl.saslScramMechanism.sha256'}}
-            </label>
-          </div>
-          <div class="radio">
-            <label class={{if disabled 'text-muted'}}>
-              {{radio-button
-                  selection=config.saslScramMechanism
-                  value="sha512"
-                  disabled=disabled
-              }}
-              {{t 'loggingPage.ssl.saslScramMechanism.sha512'}}
-            </label>
-          </div>
-        </div>
-      {{/if}}
     </div>
   {{/if}}
 
@@ -99,6 +76,16 @@
             shouldChangeName=false
             disabled=disabled
         }}
+        {{#if clientKeyPath}}
+          <p class="help-block">
+            {{clientKeyPath}}
+            {{copy-to-clipboard
+                clipboardText=clientKeyPath
+                size=small
+                buttonClass="p-0"
+            }}
+          </p>
+        {{/if}}
       </div>
       <div class="col span-6 mt-0">
         <div class="clearfix">
@@ -109,17 +96,27 @@
             value=config.clientCert
             multiple=true
             canChangeName=false
-            accept="application/x-x509-ca-cert,text/plain,.pem,.crt"
+            accept="application/x-x509-ca-cert,text/plain,.pem,.crt,.cert"
             minHeight=60
             placeholder="newCertificate.cert.placeholder"
             shouldChangeName=false
             disabled=disabled
         }}
+        {{#if clientCertPath}}
+          <p class="help-block">
+            {{clientCertPath}}
+            {{copy-to-clipboard
+                clipboardText=clientCertPath
+                size=small
+                buttonClass="p-0"
+            }}
+          </p>
+        {{/if}}
       </div>
     </div>
   {{/if}}
 
-  {{#if (or (eq targetType 'splunk') (eq targetType 'elasticsearch') (eq targetType 'syslog'))}}
+  {{#if (or (eq targetType 'splunk') (eq targetType 'elasticsearch'))}}
     <div class="row">
       {{#if (or (eq targetType 'splunk') (eq targetType 'elasticsearch'))}}
         <div class="col span-6">
@@ -173,7 +170,7 @@
               value=config.certificate
               multiple=true
               canChangeName=false
-              accept="application/x-x509-ca-cert,text/plain,.pem,.crt"
+              accept="application/x-x509-ca-cert,text/plain,.pem,.crt,.cert"
               minHeight=60
               placeholder="newCertificate.cert.placeholder"
               shouldChangeName=false
@@ -195,13 +192,25 @@
             value=config.certificate
             multiple=true
             canChangeName=false
-            accept="application/x-x509-ca-cert,text/plain,.pem,.crt"
+            accept="application/x-x509-ca-cert,text/plain,.pem,.crt,.cert"
             minHeight=60
             placeholder="newCertificate.cert.placeholder"
             shouldChangeName=false
             disabled=disabled
         }}
+        {{#if certificatePath}}
+          <p class="help-block">
+            {{certificatePath}}
+            {{copy-to-clipboard
+                clipboardText=certificatePath
+                size=small
+                buttonClass="p-0"
+            }}
+          </p>
+        {{/if}}
       </div>
     </div>
   {{/if}}
+
+
 </div>
