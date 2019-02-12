@@ -40,7 +40,7 @@ export default Route.extend(VerifyAuth, {
       return;
     }
 
-    if ( window.opener && !get(params, 'login') ) {
+    if ( window.opener && !get(params, 'login') && !get(params, 'errorCode') ) {
       let openersGithub = window.opener.ls('github');
       let openerStore   = window.opener.ls('globalStore');
       let qp            = get(params, 'config') || get(params, 'authProvider');
@@ -93,6 +93,10 @@ export default Route.extend(VerifyAuth, {
             .then(() => this.transitionTo('authenticated'));
         });
       }
+    }
+
+    if (get(params, 'errorCode')) {
+      reply(get(params, 'errorMsg'), get(params, 'errorCode'));
     }
 
     function reply(err, code) {

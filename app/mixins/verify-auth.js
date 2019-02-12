@@ -20,6 +20,8 @@ export default Mixin.create({
     oauth_token:       { refreshModel: false },
     oauth_verifier:    { refreshModel: false },
     login:             { refreshModel: false },
+    errorCode:         { refreshModel: false },
+    errorMsg:          { refreshModel: false },
   },
 
 });
