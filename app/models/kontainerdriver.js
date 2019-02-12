@@ -1,7 +1,9 @@
 import Resource from '@rancher/ember-api-store/models/resource';
 import { computed, get } from '@ember/object';
+import { inject as service } from '@ember/service';
 
 var KontainerDriver = Resource.extend({
+  intl:         service(),
   type:                'kontainerDriver',
 
   availableActions: computed('actionLinks.{activate,deactivate}', function() {
@@ -23,6 +25,20 @@ var KontainerDriver = Resource.extend({
         bulkable: true
       },
     ];
+  }),
+
+  displayName: computed('name', 'intl.locale', function() {
+    const intl = get(this, 'intl');
+    const name = get(this, 'name');
+    const key = `kontainerDriver.displayName.${ name }`;
+
+    if ( name && intl.exists(key) ) {
+      return intl.t(key);
+    } else if ( name ) {
+      return name.capitalize();
+    } else {
+      return `(${  get(this, 'id')  })`;
+    }
   }),
 
   canEdit: computed('links.update', 'builtin', function() {
