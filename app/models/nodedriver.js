@@ -54,7 +54,7 @@ export default Resource.extend({
     if ( name && intl.exists(key) ) {
       return intl.t(key);
     } else if ( name ) {
-      return name;
+      return name.capitalize();
     } else {
       return `(${  get(this, 'id')  })`;
     }
