@@ -1,0 +1,66 @@
+<section>
+  {{form-name-description
+    model=config
+    nameDisabled=editing
+  }}
+</section>
+<section>
+  <div class="row">
+    <div class="col span-6 mb-0">
+      <label
+        class="acc-label"
+        for="alidns-root-domain"
+      >
+        {{t "globalDnsPage.providersPage.config.root.label"}}{{field-required}}
+      </label>
+      {{input
+        classNames="form-control"
+        id="alidns-root-domain"
+        placeholder=(t "globalDnsPage.providersPage.config.root.placeholder")
+        type="text"
+        value=config.alidnsProviderConfig.rootDomain
+      }}
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col span-6 mb-0">
+      <label
+        class="acc-label"
+        for="alidns-api-email"
+      >
+        {{t "globalDnsPage.providersPage.config.accessKey.label"}}{{field-required}}
+      </label>
+      {{input
+        classNames="form-control"
+        id="alidns-api-email"
+        placeholder=(t "globalDnsPage.providersPage.config.accessKey.placeholder")
+        type="text"
+        value=config.alidnsProviderConfig.accessKey
+      }}
+    </div>
+
+    <div class="col span-6 mb-0">
+      <label
+        class="acc-label"
+        for="alidns-api-key"
+      >
+        {{t "globalDnsPage.providersPage.config.secretKey.label"}}{{field-required}}
+      </label>
+      {{input
+        classNames="form-control"
+        id="alidns-api-key"
+        placeholder=(t "globalDnsPage.providersPage.config.secretKey.placeholder")
+        type="password"
+        value=config.alidnsProviderConfig.secretKey
+      }}
+    </div>
+  </div>
+  {{top-errors errors=errors}}
+  {{save-cancel
+    cancel="cancel"
+    classNames="text-center mt-20"
+    save="save"
+    saveDisabled=saveDisabled
+  }}
+</section>
