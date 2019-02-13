@@ -3,11 +3,11 @@
   <table class="table fixed no-lines small mb-10">
     <thead>
       <tr class="hidden-sm">
-        <th class="{{unless editing 'acc-label'}}">{{t 'clusterNew.googlegke.taints.effect.label'}}</th>
+        <th class={{unless editing "acc-label"}}>{{t "clusterNew.googlegke.taints.effect.label"}}</th>
         <th width="10"></th>
-        <th class="{{unless editing 'acc-label'}}">{{t 'clusterNew.googlegke.taints.key.label'}}{{field-required}}</th>
+        <th class={{unless editing "acc-label"}}>{{t "clusterNew.googlegke.taints.key.label"}}{{field-required}}</th>
         <th width="10"></th>
-        <th class="{{unless editing 'acc-label'}}">{{t 'clusterNew.googlegke.taints.value.label'}}{{field-required}}</th>
+        <th class={{unless editing "acc-label"}}>{{t "clusterNew.googlegke.taints.value.label"}}{{field-required}}</th>
         <th width="40">&nbsp;</th>
       </tr>
     </thead>
@@ -57,13 +57,17 @@
 
           <td>
             <button class="btn bg-primary btn-sm" {{action "removeTaint" taint}}>
-              <i class="icon icon-minus"/><span class="sr-only">{{t 'generic.remove'}}</span>
+              <i class="icon icon-minus"/><span class="sr-only">{{t "generic.remove"}}</span>
             </button>
           </td>
         </tr>
       {{/each}}
     </tbody>
   </table>
+{{else}}
+  {{#unless editable}}
+    <div>{{t "generic.none"}}</div>
+  {{/unless}}
 {{/if}}
 
 {{#if editable}}
