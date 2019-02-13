@@ -29,6 +29,13 @@ export default Resource.extend({
         provider: 'cloudflare'
       });
     }
+
+    if (get(this, 'alidnsProviderConfig')) {
+      setProperties(this, {
+        config:   alias('alidnsProviderConfig'),
+        provider: 'alidns'
+      });
+    }
   },
 
   rootDomain: computed('config.{rootDomain}', function() {
