@@ -24,21 +24,12 @@
         {{t (concat "monitoringPage." level ".disabled")}}
       {{/if}}
     {{else if (eq selected "prometheus")}}
-      {{#if enabled}}
-        {{t (concat "monitoringPage.toUpdate." level) htmlSafe=true}}
-        {{#if (eq level "cluster")}}
-          <a href="{{href-to "catalog-tab.launch" cluster.systemProject.id "system-library-rancher-monitoring" (query-params appName="cluster-monitoring")}}">{{t "monitoringPage.update"}}</a>
-        {{else}}
-          <a href="{{href-to "catalog-tab.launch" project.id "system-library-rancher-monitoring" (query-params appName="project-monitoring")}}">{{t "monitoringPage.update"}}</a>
-        {{/if}}
-      {{else}}
-        {{t "monitoringPage.prometheus"}}
-      {{/if}}
+      {{t (if enabled "monitoringPage.toUpdate" "monitoringPage.prometheus")}}
     {{/if}}
   </p>
 {{/banner-message}}
 
-{{#if (and (eq selected "prometheus") (not enabled))}}
+{{#if (and (eq selected "prometheus") (not loading))}}
   <div class="box mb-10">
     <div class="row">
       <div class="col span-6">
@@ -53,26 +44,19 @@
           <label class="acc-label">{{t "monitoringPage.config.nodeexporter.enable"}}</label>
           {{schema/input-boolean value=enableNodeExporter}}
         </div>
-      {{else}}
-        <div class="col span-6">
-          <label class="acc-label">{{t "monitoringPage.config.grafana.enablePersistence.label"}}</label>
-          {{schema/input-boolean value=enableGrafanaPersistence}}
-        </div>
       {{/if}}
     </div>
 
-    {{#if (eq level "cluster")}}
-      <div class="row">
-        <div class="col span-6">
-          <label class="acc-label">{{t "monitoringPage.config.prometheus.enablePersistence.label"}}</label>
-          {{schema/input-boolean value=enablePrometheusPersistence}}
-        </div>
-        <div class="col span-6">
-          <label class="acc-label">{{t "monitoringPage.config.grafana.enablePersistence.label"}}</label>
-          {{schema/input-boolean value=enableGrafanaPersistence}}
-        </div>
+    <div class="row">
+      <div class="col span-6">
+        <label class="acc-label">{{t "monitoringPage.config.prometheus.enablePersistence.label"}}</label>
+        {{schema/input-boolean value=enablePrometheusPersistence}}
       </div>
-    {{/if}}
+      <div class="col span-6">
+        <label class="acc-label">{{t "monitoringPage.config.grafana.enablePersistence.label"}}</label>
+        {{schema/input-boolean value=enableGrafanaPersistence}}
+      </div>
+    </div>
     {{#if (and (eq level "cluster") enableNodeExporter)}}
       <div class="row">
         <div class="col span-6">
@@ -118,13 +102,21 @@
       </div>
     </div>
   </div>
+{{else if loading}}
+  <section class="row">
+    <div class="text-center">
+      <i class="icon icon-spinner icon-spin icon-3x"></i>
+    </div>
+  </section>
 {{/if}}
 
 <div class="text-center">
   {{save-cancel
       saveDisabled=saveDisabled
       cancelDisabled=true
-      editing=true
+      editing=(and enabled (eq selected "prometheus") )
+      editLabel="generic.edit"
+      createLabel="saveCancel.edit"
       save="save"
   }}
 </div>
