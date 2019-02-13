@@ -119,7 +119,10 @@ generic:
   version: Version
   yes: "Yes"
   isRequired: is required
-
+  readOnly: Read Only
+  readWrite: Read Write
+  writeOnly: Write Only
+  full: Full
 realmNames:
   all: All
   usWest: US West
@@ -2095,6 +2098,7 @@ clusterNew:
   name:
     label: Cluster Name
     placeholder: e.g. sandbox
+    required: '"Cluster Name" is required'
   description:
     placeholder: e.g. Cluster for dev and test workloads
   driverLabels:
@@ -2116,6 +2120,9 @@ clusterNew:
   customize:
     title: Cluster Options
     detail: Customize the cluster that will be created
+  security:
+    title: Security
+    detail: Customize the Service Account and Access Scopes
   psp:
     label: Default Pod Security Policy
     prompt: Select a Pod Security Policy...
@@ -2472,6 +2479,149 @@ clusterNew:
       label: Maintenance Window
     enableHorizontalPodAutoscaling:
       label: Horizontal Pod Autoscaling
+    enableNodepoolAutoscaling:
+      label: Node Pool Autoscaling
+    minNodeCount:
+      label: Minimum Node Count
+      required: '"Minimum Node Count" is required'
+    maxNodeCount:
+      label: Maximum Node Count
+      minError: Maximum Node Count should greater Minimum Node Count
+      required: '"Maximum Node Count" is required'
+    masterAuthUsername:
+      label: Master Endpoint Username
+      placeholder: Your Master Endpoint Username
+      required: '"Master Endpoint Username" is required'
+    masterAuthPassword:
+      label: Master Endpoint Password
+      placeholder: Your Master Endpoint Password
+      required: '"Master Endpoint Password" is required'
+    issueClientCertificate:
+      label: Master Auth
+    enableMasterAuthorizedNetwork:
+      label: Master Authorized Network
+    enablePrivateEndpoint:
+      label: Private Endpoint
+    enablePrivateNodes:
+      label: Private Nodes
+    masterIpv4CidrBlock:
+      label: Master Ipv4 CIDR Block
+      placeholder: e.g. 10.42.0.0/42
+    useIpAliases:
+      label: Use Ip Aliases
+    ipPolicySubnetworkName:
+      label: Subnetwork Name
+      placeholder: Your Subnetwork Name
+    ipPolicyCreateSubnetwork:
+      label: Create Subnetwork
+    ipPolicyClusterSecondaryRangeName:
+      label: Cluster Secondary Range Name
+      placeholder: Your Cluster Secondary Range Name
+    ipPolicyServicesSecondaryRangeName:
+      label: Services Secondary Range Name
+      placeholder: Your Services Secondary Range Name
+    ipPolicyClusterIpv4CidrBlock:
+      label: Pod address range
+      placeholder: e.g. 10.96.0.0/11
+    ipPolicyNodeIpv4CidrBlock:
+      label: Node Ipv4 CIDR Block
+      placeholder: Your Node Ipv4 CIDR Block
+    masterAuthorizedNetworkCidrBlocks:
+      label: Master Authorized Network CIDR Blocks
+      placeholder: Your Master Authorized Network CIDR Blocks
+      addActionLabel: Add CIDR Block
+    ipPolicyServicesIpv4CidrBlock:
+      label: Service address range
+      placeholder: e.g. 10.94.0.0/18
+    header:
+      iPAllocationPolicy: IP Allocation Policy
+      privateCluster: Private Cluster
+      masteAuth: Master Auth
+      nodePoolAutoscaling: Node Pool Autoscaling
+      masterAuthorizedNetwork: Master Authorized Network
+    locations:
+      label: Locations
+    imageType:
+      label: Image Type
+      UBUNTU: Ubuntu
+      COS: Container-Optimized OS
+    network:
+      label: Network
+    subNetwork:
+      label: Node Subnet
+    nodeLabels:
+      label: Node Labels
+      addAction: Add Label
+    clusterLabels:
+      label: Cluster Labels
+    localSsdCount:
+      label: Local SSD disks
+    diskType:
+      label: Root disk type
+      pd-standard: Standard persistent disk
+      pd-ssd: SSD persistent disk
+    preemptible:
+      label: Preemptible nodes (beta)
+    enableAutoUpgrade:
+      label: Auto Upgrade
+    enableAutoRepair:
+      label: Auto Repair
+    serviceAccount:
+      label: Service Account
+    oauthScopes:
+      label: Access scopes
+      default: Allow default access
+      full: Allow full access to all Cloud APIs
+      custom: Set access for each API
+    userInfo:
+      label: User Info
+    computeEngine:
+      label: Compute Engine
+    storage:
+      label: Storage
+    taskQueue:
+      label: Task queue
+    bigQuery:
+      label: BigQuery
+    cloudSQL:
+      label: Cloud SQL
+    cloudDatastore:
+      label: Cloud Datastore
+    stackdriverLoggingAPI:
+      label: Stackdriver Logging API
+    stackdriverMonitoringAPI:
+      label: Stackdriver Monitoring API
+    cloudPlatform:
+      label: Cloud Platform
+    bigtableData:
+      label: Bigtable Data
+    bigtableAdmin:
+      label: Bigtable Admin
+    cloudPub:
+      label: Cloud Pub/Sub
+    serviceControl:
+      label: Service Control
+    serviceManagement:
+      label: Service Management
+    stackdriverTrace:
+      label: Stackdriver Trace
+    cloudSourceRepositories:
+      label: Cloud Source Repositories
+    cloudDebugger:
+      label: Cloud Debugger
+    taints:
+      label: Taints
+      addAction: Add Taint
+      effect:
+        label: Effect
+      key:
+        label: Key
+        placeholder: Key
+      value:
+        label: Value
+        placeholder: Value
+      required: 'Taint "key" and "value" are required.'
+    tablesOnly: Tables Only
   huaweicce:
     label: Huawei Cloud Container Engine
     shortLabel: Huawei CCE

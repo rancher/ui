@@ -119,6 +119,10 @@ generic:
   version: 版本
   yes: "是"
   isRequired: 必须填写
+  readOnly: 只读
+  readWrite: 读写
+  writeOnly: 只写
+  full: 完整
 
 realmNames:
   all: 全部
@@ -1929,6 +1933,7 @@ clusterNew:
   name:
     label: 集群名称
     placeholder: '例如: Sandbox'
+    required: 集群名称必须填写
   description:
     placeholder: '例如: 用于开发和测试工作负载的集群'
   driverLabels:
@@ -1953,6 +1958,9 @@ clusterNew:
     prompt: 选择一个Pod安全策略...
     none: 没有定义策略
     required: 启用时需要设置一个默认Pod安全策略
+  security:
+    title: 安全
+    detail: 自定义GKE服务账号和访问权限
   amazoneks:
     label: AWS的基于Kubernetes的弹性容器服务
     ingressWarning: "注意:目前Amazon EKS不会在启动新的集群时创建传入控制器。如果需要此功能，则必须在集群创建后手动创建一个传入控制器。"
@@ -2238,6 +2246,147 @@ clusterNew:
       label: 维护窗口
     enableHorizontalPodAutoscaling:
       label: Pod自动横向伸缩
+    enableNodepoolAutoscaling:
+      label: 节点池自动横向伸缩
+    minNodeCount:
+      label: 最小节点数
+      required: 最小节点数必须填写
+    maxNodeCount:
+      label: 最大节点数
+      minError: 最大节点数应大于最小节点数
+      required: 最大节点数必须填写
+    masterAuthUsername:
+      label: 主节点认证用户名
+      placeholder: 主节点认证用户名
+      required: 主节点认证用户名必须填写
+    masterAuthPassword:
+      label: 主节点认证密码
+      placeholder: 主节点认证密码
+      required: 主节点认证密码必须填写
+    issueClientCertificate:
+      label: 主节点认证
+    enableMasterAuthorizedNetwork:
+      label: 主节点认证网络
+    enablePrivateEndpoint:
+      label: 私有访问地址
+    enablePrivateNodes:
+      label: 私有节点
+    masterIpv4CidrBlock:
+      label: 主节点 Ipv4 CIDR Block
+      placeholder: e.g. 10.42.0.0
+    useIpAliases:
+      label: 使用别名IP
+    ipPolicySubnetworkName:
+      label: Subnetwork Name
+      placeholder: Your Subnetwork Name
+    ipPolicyCreateSubnetwork:
+      label: 自动创建辅助范围
+    ipPolicyClusterSecondaryRangeName:
+      label: Cluster Secondary Range Name
+      placeholder: Your Cluster Secondary Range Name
+    ipPolicyServicesSecondaryRangeName:
+      label: Services Secondary Range Name
+      placeholder: Your Services Secondary Range Name
+    ipPolicyClusterIpv4CidrBlock:
+      label: Pod地址范围
+      placeholder: e.g. 10.0.0.0/18
+    ipPolicyNodeIpv4CidrBlock:
+      label: Node Ipv4 CIDR Block
+      placeholder: Your Node Ipv4 CIDR Block
+    masterAuthorizedNetworkCidrBlocks:
+      label: Master Authorized Network CIDR Blocks
+      placeholder: Your Master Authorized Network CIDR Blocks
+      addActionLabel: Add CIDR Block
+    ipPolicyServicesIpv4CidrBlock:
+      label: 服务地址范围
+      placeholder: e.g. 10.94.0.0/18
+    network:
+      label: 网络
+    subNetwork:
+      label: 子网
+    taints:
+      label: 节点污点
+      addAction: 添加污点
+      effect:
+        label: 效果
+      key:
+        label: 键
+        placeholder: 键
+      value:
+        label: 值
+        placeholder: 值
+      required: '必须填写污点键和值'
+    nodeLabels:
+      label: 节点标签
+      addAction: 添加标签
+    clusterLabels:
+      label: 集群标签
+    localSsdCount:
+      label: 本地 SSD 磁盘数量
+    preemptible:
+      label: 可抢占的节点（测试版）
+    enableAutoUpgrade:
+      label: 自动升级
+    enableAutoRepair:
+      label: 自动修复
+    imageType:
+      label: 映像类型
+      UBUNTU: Ubuntu
+      COS: 容器优化型操作系统
+    diskType:
+      label: 启动磁盘类型
+      pd-standard: 标准永久性磁盘
+      pd-ssd: SSD永久性磁盘
+    tablesOnly: 仅限表格
+    serviceAccount:
+      label: 服务帐号
+    oauthScopes:
+      label: 访问权限范围
+      default: 允许默认访问权限
+      full: 允许所有 Cloud API 的全面访问权限
+      custom: 针对每个 API 设置访问权限
+    userInfo:
+      label: 用户信息
+    computeEngine:
+      label: Compute Engine
+    storage:
+      label: 存储
+    taskQueue:
+      label: 任务队列
+    bigQuery:
+      label: BigQuery
+    cloudSQL:
+      label: Cloud SQL
+    cloudDatastore:
+      label: Cloud Datastore
+    stackdriverLoggingAPI:
+      label: Stackdriver Logging API
+    stackdriverMonitoringAPI:
+      label: Stackdriver Monitoring API
+    cloudPlatform:
+      label: Cloud Platform
+    bigtableData:
+      label: Bigtable 数据
+    bigtableAdmin:
+      label: Bigtable 管理员
+    cloudPub:
+      label: Cloud Pub/Sub
+    serviceControl:
+      label: 服务控制
+    serviceManagement:
+      label: 服务管理
+    stackdriverTrace:
+      label: Stackdriver Trace
+    cloudSourceRepositories:
+      label: Cloud Source Repositories
+    cloudDebugger:
+      label: Cloud Debugger
+    header:
+      iPAllocationPolicy: IP Allocation策略
+      privateCluster: 私有集群
+      masteAuth: 主节点认证
+      nodePoolAutoscaling: 主机池自动扩所容
+      masterAuthorizedNetwork: 主节点认证网络
   aliyunkcs:
     label: 阿里云Kubernetes容器服务
     access:

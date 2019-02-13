@@ -1,0 +1,80 @@
+<label class="acc-label">{{t "clusterNew.googlegke.taints.label"}}</label>
+{{#if (gt taints.length 0)}}
+  <table class="table fixed no-lines small mb-10">
+    <thead>
+      <tr class="hidden-sm">
+        <th class={{unless editing "acc-label"}}>{{t "clusterNew.googlegke.taints.effect.label"}}</th>
+        <th width="10"></th>
+        <th class={{unless editing "acc-label"}}>{{t "clusterNew.googlegke.taints.key.label"}}{{field-required}}</th>
+        <th width="10"></th>
+        <th class={{unless editing "acc-label"}}>{{t "clusterNew.googlegke.taints.value.label"}}{{field-required}}</th>
+        <th width="40">&nbsp;</th>
+      </tr>
+    </thead>
+    <tbody>
+      {{#each taints as |taint|}}
+        <tr>
+          <td>
+            {{#input-or-display
+                editable=editable
+                value=taint.effect
+            }}
+              {{searchable-select
+                  class="form-control"
+                  content=effectContent
+                  value=taint.effect
+              }}
+            {{/input-or-display}}
+          </td>
+          <td>&nbsp;</td>
+
+          <td>
+            {{#input-or-display
+                editable=editable
+                value=taint.key
+            }}
+              {{input
+                  class="form-control"
+                  value=taint.key
+                  placeholder=(t "clusterNew.googlegke.taints.key.placeholder")
+              }}
+            {{/input-or-display}}
+          </td>
+          <td>&nbsp;</td>
+
+          <td>
+            {{#input-or-display
+                editable=editable
+                value=taint.value
+            }}
+              {{input
+                  class="form-control"
+                  value=taint.value
+                  placeholder=(t "clusterNew.googlegke.taints.value.placeholder")
+              }}
+            {{/input-or-display}}
+          </td>
+
+          <td>
+            <button class="btn bg-primary btn-sm" {{action "removeTaint" taint}}>
+              <i class="icon icon-minus"/><span class="sr-only">{{t "generic.remove"}}</span>
+            </button>
+          </td>
+        </tr>
+      {{/each}}
+    </tbody>
+  </table>
+{{else}}
+  {{#unless editable}}
+    <div>{{t "generic.none"}}</div>
+  {{/unless}}
+{{/if}}
+
+{{#if editable}}
+  <div>
+    <button class="btn bg-link icon-btn p-0" {{action "addTaint"}}>
+      <span class="darken"><i class="icon icon-plus text-small"/></span>
+      <span>{{t "clusterNew.googlegke.taints.addAction"}}</span>
+    </button>
+  </div>
+{{/if}}
