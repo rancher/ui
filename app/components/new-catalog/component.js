@@ -12,6 +12,8 @@ import YAML from 'yamljs';
 import layout from './template';
 import { isEmpty } from '@ember/utils';
 import CatalogApp from 'shared/mixins/catalog-app';
+import { isNumeric } from 'shared/utils/util';
+import convertDotAnswersToYaml from 'shared/utils/convert-yaml';
 
 export default Component.extend(NewOrEdit, CatalogApp, {
   catalog:                  service(),
@@ -335,11 +337,17 @@ export default Component.extend(NewOrEdit, CatalogApp, {
 
   didSave(neu) {
     let app = get(this, 'catalogApp');
+    let yaml = get(this, 'selectedTemplateModel.valuesYaml');
+
+    if ( !yaml && this.shouldFallBackToYaml() ) {
+      yaml = convertDotAnswersToYaml(get(app, 'answers'));
+    }
 
     if (get(app, 'id')) {
       return app.doAction('upgrade', {
         externalId:   get(this, 'selectedTemplateModel.externalId'),
-        answers:      get(app, 'answers'),
+        answers:      yaml ? {} : get(app, 'answers'),
+        valuesYaml:   yaml ? yaml : null,
         forceUpgrade: get(this, 'forceUpgrade'),
       }).then((resp) => resp)
         .catch((err) => err);
@@ -350,6 +358,8 @@ export default Component.extend(NewOrEdit, CatalogApp, {
         targetNamespace: requiredNamespace ? requiredNamespace : neu.name,
         externalId:      get(this, 'selectedTemplateModel.externalId'),
         projectId:       get(neu, 'projectId'),
+        answers:         yaml ? {} : get(app, 'answers'),
+        valuesYaml:      yaml ? yaml : null,
       });
 
       return app.save().then(() => get(this, 'primaryResource'));
@@ -360,5 +370,11 @@ export default Component.extend(NewOrEdit, CatalogApp, {
     var projectId = get(this, 'scope.currentProject.id');
 
     return get(this, 'router').transitionTo('apps-tab.index', projectId);
-  }
+  },
+
+  shouldFallBackToYaml() {
+    const questions = get(this, 'selectedTemplateModel.allQuestions') || [];
+
+    return !!questions.some((question) => get(question, 'type') === 'password' && !!isNumeric(get(question, 'answer')));
+  },
 });

@@ -6,7 +6,14 @@
     >
       {{t "inputAnswers.editAsForm"}}
     </button>
-  {{else}}
+    <button
+      class="btn btn-sm bg-primary"
+      {{action "upload"}}
+    >
+      {{t "uploadFile.label"}}
+      <i class="icon icon-upload"></i>
+    </button>
+  {{else if (not isMultiClusterApp)}}
     <button
       class="btn btn-sm bg-primary"
       {{action "showPaste"}}
@@ -15,13 +22,6 @@
       <i class="icon icon-copy"></i>
     </button>
   {{/if}}
-  <button
-    class="btn btn-sm bg-primary"
-    {{action "upload"}}
-  >
-    {{t "uploadFile.label"}}
-    <i class="icon icon-upload"></i>
-  </button>
 </div>
 <div class="mt-25">
   {{#if pasteOrUpload}}
@@ -41,7 +41,7 @@
       }}
     </div>
     {{top-errors errors=yamlErrors}}
-  {{else if showInput}}
+  {{else}}
     {{form-key-value
       initialMap=intialAnswerMap
       changed="updateAnswers"
