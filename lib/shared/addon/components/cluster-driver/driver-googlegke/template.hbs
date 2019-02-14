@@ -367,11 +367,11 @@
         <hr/>
         <div class="row">
           <div class="col span-6">
-            <label class="acc-label">{{t "clusterNew.googlegke.enablePrivateEndpoint.label"}}</label>
+            <label class="acc-label">{{t "clusterNew.googlegke.enablePrivateNodes.label"}}</label>
             <div class="form-control-static">
               <label class={{concat (if (eq config.useIpAliases false) "text-muted") " hand mr-20"}}>
                 {{radio-button
-                    selection=config.enablePrivateEndpoint
+                    selection=config.enablePrivateNodes
                     value=true
                     disabled=(or editing (eq config.useIpAliases false))
                 }}
@@ -379,7 +379,7 @@
               </label>
               <label class="hand">
                 {{radio-button
-                    selection=config.enablePrivateEndpoint
+                    selection=config.enablePrivateNodes
                     value=false
                     disabled=editing
                 }}
@@ -387,8 +387,31 @@
               </label>
             </div>
           </div>
+          {{#if config.enablePrivateNodes}}
+            <div class="col span-6">
+              <label class="acc-label">{{t "clusterNew.googlegke.enablePrivateEndpoint.label"}}</label>
+              <div class="form-control-static">
+                <label class="hand mr-20">
+                  {{radio-button
+                      selection=config.enablePrivateEndpoint
+                      value=true
+                      disabled=editing
+                  }}
+                  {{t "generic.enabled"}}
+                </label>
+                <label class="hand">
+                  {{radio-button
+                      selection=config.enablePrivateEndpoint
+                      value=false
+                      disabled=editing
+                  }}
+                  {{t "generic.disabled"}}
+                </label>
+              </div>
+            </div>
+          {{/if}}
         </div>
-        {{#if config.enablePrivateEndpoint}}
+        {{#if config.enablePrivateNodes}}
           <div class="row">
             <div class="col span-6">
               <label class="acc-label">{{t "clusterNew.googlegke.masterIpv4CidrBlock.label"}}</label>
