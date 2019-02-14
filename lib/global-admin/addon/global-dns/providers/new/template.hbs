@@ -20,5 +20,45 @@
   </div>
 </section>
 
+<hr class="mt-20 mb-20" />
 
-{{partial (concat activeProvider "-dns-provider") }}
+{{#accordion-list as |al expandFn|}}
+  {{#accordion-list-item
+     title=(t "globalDnsPage.providersPage.options.title")
+     detail=(t "globalDnsPage.providersPage.options.detail")
+     expandAll=al.expandAll
+     expand=(action expandFn)
+     expandOnInit=true
+     everExpanded=true
+     showExpand=false
+  }}
+    {{partial (concat activeProvider "-dns-provider") }}
+  {{/accordion-list-item}}
+
+
+  {{#accordion-list-item
+     title=(t "globalDnsPage.providersPage.members.title")
+     detail=(t "globalDnsPage.providersPage.members.detail")
+     expandAll=al.expandAll
+     expand=(action expandFn)
+  }}
+    {{form-members-global-access
+      ownerOnly=true
+      readOnly=false
+      resource=model
+      addAuthorizedPrincipal=(action "addAuthorizedPrincipal")
+      removeMember=(action "removeMember")
+    }}
+  {{/accordion-list-item}}
+
+{{/accordion-list}}
+
+<section>
+  {{top-errors errors=errors}}
+  {{save-cancel
+    cancel="cancel"
+    classNames="text-center mt-20"
+    save="save"
+    saveDisabled=saveDisabled
+  }}
+</section>
