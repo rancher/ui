@@ -12,6 +12,8 @@ import YAML from 'yamljs';
 import layout from './template';
 import { isEmpty } from '@ember/utils';
 import CatalogApp from 'shared/mixins/catalog-app';
+import { isNumeric } from 'shared/utils/util';
+import convertDotAnswersToYaml from 'shared/utils/convert-yaml';
 
 export default Component.extend(NewOrEdit, CatalogApp, {
   catalog:                  service(),
@@ -335,7 +337,11 @@ export default Component.extend(NewOrEdit, CatalogApp, {
 
   didSave(neu) {
     let app = get(this, 'catalogApp');
-    const yaml = get(this, 'selectedTemplateModel.valuesYaml');
+    let yaml = get(this, 'selectedTemplateModel.valuesYaml');
+
+    if ( !yaml && this.shouldFallBackToYaml() ) {
+      yaml = convertDotAnswersToYaml(get(app, 'answers'));
+    }
 
     if (get(app, 'id')) {
       return app.doAction('upgrade', {
@@ -364,5 +370,11 @@ export default Component.extend(NewOrEdit, CatalogApp, {
     var projectId = get(this, 'scope.currentProject.id');
 
     return get(this, 'router').transitionTo('apps-tab.index', projectId);
-  }
+  },
+
+  shouldFallBackToYaml() {
+    const questions = get(this, 'selectedTemplateModel.allQuestions') || [];
+
+    return !!questions.some((question) => get(question, 'type') === 'password' && !!isNumeric(get(question, 'answer')));
+  },
 });
