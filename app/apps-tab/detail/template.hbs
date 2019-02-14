@@ -67,8 +67,12 @@
         {{form-key-value
           editing=false
           initialMap=model.app.answers
+          showNoneLabel=(not model.app.valuesYaml)
           keyLabel='appDetailPage.answers.variable'
         }}
+        {{#if model.app.valuesYaml}}
+          {{code-block code=model.app.valuesYaml language="yaml"}}
+        {{/if}}
     {{/accordion-list-item}}
 
     {{#accordion-list-item

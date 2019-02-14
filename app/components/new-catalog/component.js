@@ -335,11 +335,13 @@ export default Component.extend(NewOrEdit, CatalogApp, {
 
   didSave(neu) {
     let app = get(this, 'catalogApp');
+    const yaml = get(this, 'selectedTemplateModel.valuesYaml');
 
     if (get(app, 'id')) {
       return app.doAction('upgrade', {
         externalId:   get(this, 'selectedTemplateModel.externalId'),
-        answers:      get(app, 'answers'),
+        answers:      yaml ? {} : get(app, 'answers'),
+        valuesYaml:   yaml ? yaml : null,
         forceUpgrade: get(this, 'forceUpgrade'),
       }).then((resp) => resp)
         .catch((err) => err);
@@ -350,6 +352,8 @@ export default Component.extend(NewOrEdit, CatalogApp, {
         targetNamespace: requiredNamespace ? requiredNamespace : neu.name,
         externalId:      get(this, 'selectedTemplateModel.externalId'),
         projectId:       get(neu, 'projectId'),
+        answers:         yaml ? {} : get(app, 'answers'),
+        valuesYaml:      yaml ? yaml : null,
       });
 
       return app.save().then(() => get(this, 'primaryResource'));
