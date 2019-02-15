@@ -41,6 +41,18 @@
 
     {{#if (eq cloudKeyType "amazon")}}
       <div class="row">
+        <div class="col span-4">
+          <label class="acc-label">{{t "nodeDriver.amazonec2.region.label"}}</label>
+          <select class="form-control" onchange={{action (mut region) value="target.value"}}>
+            <option value="" selected={{eq region choice}}>Select a region</option>
+            {{#each regionChoices as |choice|}}
+              <option value={{choice}} selected={{eq region choice}}>{{choice}}</option>
+            {{/each}}
+          </select>
+        </div>
+      </div>
+
+      <div class="row">
         <div class="col span-6">
           <label class="acc-label" for="amazonec2-accessKey">
             {{t "modalAddCloudKey.amazonec2.accessKey.label"}}{{field-required}}
@@ -182,10 +194,12 @@
 
 
   <div class="footer-actions">
+    {{top-errors errors=errors}}
     {{save-cancel
-      saveDisabled=saveDisabled
-      save="save"
       cancel=cancelAdd
+      save="save"
+      saveDisabled=saveDisabled
+      savingLabel=savingLabel
     }}
   </div>
 </section>

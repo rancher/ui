@@ -2,33 +2,36 @@
   <div class="over-hr"><span>{{driverOptionsTitle}}</span></div>
 
   {{#accordion-list-item
-    title=(t "nodeDriver.amazonec2.access.title")
-    detail=(t "nodeDriver.amazonec2.access.detail")
-    expandAll=expandAll
-    expand=(action expandFn)
-    expandOnInit=true
+     title=(t "nodeDriver.amazonec2.access.title")
+     detail=(t "nodeDriver.amazonec2.access.detail")
+     expandAll=expandAll
+     expand=(action expandFn)
+     expandOnInit=true
   }}
-    <div class="row">
-      <div class="col span-4">
-        <label class="acc-label">{{t "nodeDriver.amazonec2.region.label"}}</label>
-        {{#if (eq step 1)}}
-          <select class="form-control" onchange={{action (mut config.region) value="target.value"}}>
-            {{#each regionChoices as |choice|}}
-              <option value={{choice}} selected={{eq config.region choice}}>{{choice}}</option>
-            {{/each}}
-          </select>
-        {{else}}
-          <div>{{config.region}}</div>
-        {{/if}}
+    {{#unless hideRegionSelection}}
+      <div class="row">
+        <div class="col span-4">
+          <label class="acc-label">{{t "nodeDriver.amazonec2.region.label"}}</label>
+          {{#if (eq step 1)}}
+            <select class="form-control" onchange={{action (mut config.region) value="target.value"}}>
+              {{#each regionChoices as |choice|}}
+                <option value={{choice}} selected={{eq config.region choice}}>{{choice}}</option>
+              {{/each}}
+            </select>
+          {{else}}
+            <div>{{config.region}}</div>
+          {{/if}}
+        </div>
       </div>
-
-    </div>
+    {{/unless}}
     {{#if (eq step 1)}}
       {{form-auth-cloud-credential
         driverName=driverName
         errors=errros
         primaryResource=primaryResource
+        region=config.region
         cloudCredentials=cloudCredentials
+        showAddCloudCredential=hideRegionSelection
         finishAndSelectCloudCredential=(action "finishAndSelectCloudCredential")
         progressStep=(action "awsLogin")
         cancel=(action "cancel")
