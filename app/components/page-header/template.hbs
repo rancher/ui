@@ -1,5 +1,7 @@
 <nav class="clearfix responsive-nav" role="navigation" id="js-responsive-nav">
-  <a class="nav-logo logo-oss btn bg-transparent"><span class="sr-only">{{settings.appName}}</span></a>
+  <a class="nav-logo logo-oss btn bg-transparent">
+    <span class="sr-only">{{settings.appName}}</span>
+  </a>
 
   <ul class="nav-main nav-list no-inline-space">
     {{page-header-project pageScope=pageScope}}
@@ -50,7 +52,9 @@
                          qp=subitem.qp
                          activeParent="LI"
                     }}
-                      <span>{{maybe-t subitem.localizedLabel subitem.label}}</span>
+                      <span>
+                        {{maybe-t subitem.localizedLabel subitem.label}}
+                      </span>
                       <i class="{{subitem.icon}}"/>
                     {{/link-to-as-attrs}}
                   </li>
@@ -60,7 +64,9 @@
               {{else}}
                 {{! Just a label }}
                 <li class="dropdown-header">
-                  <span>{{maybe-t subitem.localizedLabel subitem.label}}</span>
+                  <span>
+                    {{maybe-t subitem.localizedLabel subitem.label}}
+                  </span>
                   <i class="{{subitem.icon}}"/>
                 </li>
               {{/if}}
@@ -98,19 +104,22 @@
   </ul>
 
   {{#hover-dropdown
-       tagName="ul"
-       class="nav-user"
-       horizontalPosition="right"
-       delay=250
-       as |dd|
+     tagName="ul"
+     class="nav-user"
+     horizontalPosition="right"
+     delay=250
+     as |dd|
   }}
     {{!-- <ul class="nav-user"> --}}
     {{#dd.trigger
-         class="btn"
-         ariaLabel=(t 'nav.user.label' username=session.user)
+       class="btn"
+       ariaLabel=(t "nav.user.label" username=session.user)
     }}
       {{#if accessEnabled}}
-        {{identity-avatar link=false identity=access.principal}}
+        {{identity-avatar
+          link=false
+          identity=access.principal
+        }}
       {{else}}
         <div class="gh-avatar">
           <div class="gh-placeholder">
@@ -118,7 +127,9 @@
           </div>
         </div>
       {{/if}}
-      <span class="sr-only">{{t 'nav.srToggleDropdown'}}</span>
+      <span class="sr-only">
+        {{t "nav.srToggleDropdown"}}
+      </span>
       <i class="icon icon-chevron-down text-muted"></i>
     {{/dd.trigger}}
 
@@ -133,22 +144,31 @@
       {{/if}}
 
       <li role="separator" class="divider"></li>
-      <li>{{#link-to "authenticated.apikeys"}}
-        <span>{{t 'nav.api.link'}}</span>
+      <li>
+        {{#link-to "authenticated.apikeys"}}
+        <span>{{t "nav.api.link"}}</span>
         <i class="icon icon-key icon-fw"/>{{/link-to}}
       </li>
-      <li>{{#link-to "nodes.node-templates"}}
-        <span>{{t 'nav.nodeTemplates.link'}}</span>
+      <li>
+        {{#link-to "global-admin.security.cloud-keys"}}
+          <span>{{t "nav.admin.security.cloudKeys"}}</span>
+          <i class="icon icon-secrets icon-fw"/>{{/link-to}}
+      </li>
+      <li>
+        {{#link-to "nodes.node-templates"}}
+        <span>{{t "nav.nodeTemplates.link"}}</span>
         <i class="icon icon-host icon-fw"/>{{/link-to}}
       </li>
       <li role="separator" class="divider"></li>
-      <li>{{#link-to "authenticated.prefs"}}
-        <span>{{t 'nav.userPreferences.link'}}</span>
+      <li>
+        {{#link-to "authenticated.prefs"}}
+        <span>{{t "nav.userPreferences.link"}}</span>
         <i class="icon icon-gear icon-fw"/>{{/link-to}}
       </li>
       <li role="separator" class="divider"></li>
-      <li>{{#link-to "logout" class="user-logout"}}
-        <span>{{t 'nav.user.logout'}}</span>
+      <li>
+        {{#link-to "logout" class="user-logout"}}
+        <span>{{t "nav.user.logout"}}</span>
         <i class="icon icon-logout icon-fw"/>{{/link-to}}
       </li>
     {{/dd.content}}
