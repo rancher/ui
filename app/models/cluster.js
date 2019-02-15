@@ -26,6 +26,7 @@ export default Resource.extend(Grafana, ResourceUsage, {
   machines:                    alias('nodes'),
   roleTemplateBindings:        alias('clusterRoleTemplateBindings'),
   isGKE:                       equal('driver', 'googleKubernetesEngine'),
+  isAKS:                       equal('driver', 'azureKubernetesService'),
 
   getAltActionDelete: computed('action.remove', function() { // eslint-disable-line
     return get(this, 'canBulkRemove') ? 'delete' : null;
