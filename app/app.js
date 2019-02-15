@@ -63,6 +63,7 @@ const App = Application.extend({
           'authenticated.prefs':                          'authenticated.prefs',
           'authenticated.cluster.nodes':                  'authenticated.cluster.nodes',
           'authenticated.cluster.security.members.index': 'authenticated.cluster.security.members.index',
+          'global-admin.security.cloud-keys':             'global-admin.security.cloud-keys',
           'logout':                                       'logout'
         }
       }
@@ -105,7 +106,8 @@ const App = Application.extend({
           'authenticated.prefs':                          'nauthenticated.prefs',
           'authenticated.cluster.nodes':                  'authenticated.cluster.nodes',
           'authenticated.cluster.security.members.index': 'authenticated.cluster.security.members.index',
-          'logout':                                       'logout'
+          'nodes.node-templates':                         'nodes.node-templates',
+          'logout':                                       'logout',
         }
       }
     },

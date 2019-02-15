@@ -1,9 +1,21 @@
 <section class="header clearfix">
   <div class="right-buttons">
-    <button class="btn btn-sm bg-primary" {{action "newTemplate"}}>{{t 'nodeTemplatesPage.actionButton'}}</button>
+    {{#link-to-external
+       "global-admin.security.cloud-keys"
+       classNames="btn btn-sm bg-primary"
+    }}
+      <i class="icon icon-gear"></i>
+      {{t "nodeTemplatesPage.rightButtons.cloudKeys"}}
+    {{/link-to-external}}
+    <button
+      class="btn btn-sm bg-primary"
+      {{action "newTemplate"}}
+    >
+      {{t "nodeTemplatesPage.rightButtons.actionButton"}}
+    </button>
   </div>
 
-  <h1>{{t 'nodeTemplatesPage.header'}}</h1>
+  <h1>{{t "nodeTemplatesPage.header"}}</h1>
 </section>
 
 <section>
@@ -22,7 +34,7 @@
       {{node-template-row model=row dt=dt}}
     {{else if (eq kind "norows")}}
       <tr>
-        <td colspan="{{sortable.fullColspan}}" class="text-center text-muted pt-20 pb-20">{{t 'nodeTemplatesPage.table.noData'}}</td>
+        <td colspan="{{sortable.fullColspan}}" class="text-center text-muted pt-20 pb-20">{{t "nodeTemplatesPage.table.noData"}}</td>
       </tr>
     {{/if}}
   {{/sortable-table}}
