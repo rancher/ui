@@ -217,83 +217,13 @@
      expand=(action expandFn)
      expanded=detailExpanded
   }}
-    <div class="row">
-      <div class="col span-6">
-        <label class="acc-label">{{t "generic.member"}}</label>
-        {{input-identity
-          allowTeams=true
-          action="addAuthorizedPrincipal"
-          onError="gotError"
-        }}
-      </div>
-      <div class="col span-12">
-        {{#sortable-table
-           classNames="grid sortable-table"
-           sortBy=sortBy
-           headers=membersHeaders
-           stickyHeader=false
-           bulkActions=false
-           search=false
-           pagingLabel="pagination.member"
-           descending=descending
-           body=multiClusterApp.members
-           actionsWidth="75"
-           as |sortable kind member dt|
-        }}
-          {{#if (eq kind "row")}}
-            <tr class="main-row">
-              <td data-title="{{dt.memberName}}:" >
-                {{member.displayName}}
-              </td>
-              <td data-title="{{dt.type}}:" >
-                {{member.displayType}}
-              </td>
-              <td data-title="{{dt.accessType}}:" >
-                <select
-                  class="form-control"
-                  onchange={{action (mut member.accessType) value="target.value"}}
-                >
-                  {{#unless (eq member.accessType value)}}
-                    <option value="" selected=true>
-                      {{t "newMultiClusterApp.members.table.prompt"}}
-                    </option>
-                  {{/unless}}
-                  {{#each optionsForAccessType as |choice|}}
-                    <option value="{{choice}}" selected={{eq choice value}}>
-                      {{choice}}
-                    </option>
-                  {{/each}}
-                </select>
-              </td>
-              <td data-title="{{t "generic.actions"}}:" class="actions">
-                <div class="p-5">
-                  <button
-                    class="btn bg-primary btn-sm"
-                    {{action "removeMember" member}}
-                  >
-                    <i class="icon icon-minus"/>
-                  </button>
-                </div>
-              </td>
-            </tr>
-          {{else if (eq kind "nomatch")}}
-            <td
-              colspan="5"
-              class="text-center text-muted lacsso pt-20 pb-20"
-            >
-              {{t "newMultiClusterApp.members.table.noMatch"}}
-            </td>
-          {{else if (eq kind "norows")}}
-            <td
-              colspan="5"
-              class="text-center text-muted lacsso pt-20 pb-20"
-            >
-              {{t "newMultiClusterApp.members.table.noData"}}
-            </td>
-          {{/if}}
-        {{/sortable-table}}
-      </div>
-    </div>
+    {{form-members-global-access
+      readOnly=readOnly
+      resource=multiClusterApp
+      addAuthorizedPrincipal=(action "addAuthorizedPrincipal")
+      removeMember=(action "removeMember")
+    }}
+
   {{/accordion-list-item}}
 
   {{#accordion-list-item
