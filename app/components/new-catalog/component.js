@@ -340,7 +340,19 @@ export default Component.extend(NewOrEdit, CatalogApp, {
     let yaml = get(this, 'selectedTemplateModel.valuesYaml');
 
     if ( !yaml && this.shouldFallBackToYaml() ) {
-      yaml = convertDotAnswersToYaml(get(app, 'answers'));
+      const questions = get(this, 'selectedTemplateModel.allQuestions') || [];
+      const input = {};
+
+      questions.forEach((q) => {
+        if ( q.answer !== undefined && q.answer !== null ) {
+          input[q.variable] = q.answer;
+        } else if ( q.default !== undefined && q.default !== null ) {
+          input[q.variable] = q.default;
+        } else {
+          input[q.variable] = '';
+        }
+      });
+      yaml = convertDotAnswersToYaml(input);
     }
 
     if (get(app, 'id')) {
