@@ -18,24 +18,30 @@
         {{t "modalAddCloudKey.type"}}
       </label>
 
-      <select
-        class="form-control"
-        onchange={{action "selectConfig" value="target.value"}}
-      >
-        {{#if (not-eq cloudKeyType value)}}
-          <option value="" selected=true >
-            {{t "modalAddCloudKey.typeSelect.prompt"}}
-          </option>
-        {{/if}}
-        {{#each configChoices as |choice|}}
-          <option
-            value="{{choice.name}}"
-            selected={{eq choice.name cloudKeyType}}
-          >
-            {{choice.displayName}}
-          </option>
-        {{/each}}
-      </select>
+      {{#if singleCloudKeyChoice}}
+        <div class="pt-10 pl-10">
+          {{singleCloudKeyChoice}}
+        </div>
+      {{else}}
+        <select
+          class="form-control"
+          onchange={{action "selectConfig" value="target.value"}}
+        >
+          {{#if (not-eq cloudKeyType value)}}
+            <option value="" selected=true >
+              {{t "modalAddCloudKey.typeSelect.prompt"}}
+            </option>
+          {{/if}}
+          {{#each configChoices as |choice|}}
+            <option
+              value="{{choice.name}}"
+              selected={{eq choice.name cloudKeyType}}
+            >
+              {{choice.displayName}}
+            </option>
+          {{/each}}
+        </select>
+      {{/if}}
 
     </div>
 

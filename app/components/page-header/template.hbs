@@ -10,22 +10,22 @@
       {{#if item.submenu.length}}
         {{! Has a submenu }}
         {{#hover-dropdown
-             tagName="li"
-             class="nav-item"
-             as |dd|
+           tagName="li"
+           class="nav-item"
+           as |dd|
         }}
           {{#dd.trigger}}
             {{#if (or (not item.resource) (rbac-allows resource=item.resource scope=item.resourceScope))}}
               {{#if item.route}}
                 {{#link-to-as-attrs
-                     ourRoute=item.route
-                     ctx=item.ctx
-                     qp=item.qp
-                     currentWhen=item.currentWhen
-                     activeParent="LI"
-                     role="button"
-                     aria-haspopup="true"
-                     aria-expanded="false"
+                   ourRoute=item.route
+                   ctx=item.ctx
+                   qp=item.qp
+                   currentWhen=item.currentWhen
+                   activeParent="LI"
+                   role="button"
+                   aria-haspopup="true"
+                   aria-expanded="false"
                 }}
                   {{maybe-t item.localizedLabel item.label}}
                   <span class="icon icon-chevron-down"/>
@@ -40,17 +40,17 @@
           {{/dd.trigger}}
 
           {{#dd.content
-               tagName="ul"
+             tagName="ul"
           }}
             {{#each item.submenu as |subitem|}}
               {{#if subitem.route}}
                 {{#if (or (not subitem.resource) (rbac-allows resource=subitem.resource scope=subitem.resourceScope))}}
                   <li>
                     {{#link-to-as-attrs
-                         ourRoute=subitem.route
-                         ctx=subitem.ctx
-                         qp=subitem.qp
-                         activeParent="LI"
+                       ourRoute=subitem.route
+                       ctx=subitem.ctx
+                       qp=subitem.qp
+                       activeParent="LI"
                     }}
                       <span>
                         {{maybe-t subitem.localizedLabel subitem.label}}
@@ -80,12 +80,12 @@
           {{! No submenu }}
           <li class="nav-item">
             {{#link-to-as-attrs
-                 ourRoute=item.route
-                 ctx=item.ctx
-                 qp=item.qp
-                 activeParent="LI"
-                 currentWhen=item.currentWhen
-                 class="nav-link"
+               ourRoute=item.route
+               ctx=item.ctx
+               qp=item.qp
+               activeParent="LI"
+               currentWhen=item.currentWhen
+               class="nav-link"
             }}
               {{maybe-t item.localizedLabel item.label}}
             {{/link-to-as-attrs}}
@@ -134,8 +134,8 @@
     {{/dd.trigger}}
 
     {{#dd.content
-         class="text-right"
-         tagName="ul"
+       class="text-right"
+       tagName="ul"
     }}
       {{#if accessEnabled}}
         <li role="presentation" class="user-auth">
@@ -146,30 +146,34 @@
       <li role="separator" class="divider"></li>
       <li>
         {{#link-to "authenticated.apikeys"}}
-        <span>{{t "nav.api.link"}}</span>
-        <i class="icon icon-key icon-fw"/>{{/link-to}}
+          <span>{{t "nav.api.link"}}</span>
+          <i class="icon icon-key icon-fw"/>{{/link-to}}
       </li>
       <li>
         {{#link-to "global-admin.security.cloud-keys"}}
           <span>{{t "nav.admin.security.cloudKeys"}}</span>
-          <i class="icon icon-secrets icon-fw"/>{{/link-to}}
+          <i class="icon icon-secrets icon-fw"/>
+        {{/link-to}}
       </li>
       <li>
         {{#link-to "nodes.node-templates"}}
-        <span>{{t "nav.nodeTemplates.link"}}</span>
-        <i class="icon icon-host icon-fw"/>{{/link-to}}
+          <span>{{t "nav.nodeTemplates.link"}}</span>
+          <i class="icon icon-host icon-fw"/>
+        {{/link-to}}
       </li>
       <li role="separator" class="divider"></li>
       <li>
         {{#link-to "authenticated.prefs"}}
-        <span>{{t "nav.userPreferences.link"}}</span>
-        <i class="icon icon-gear icon-fw"/>{{/link-to}}
+          <span>{{t "nav.userPreferences.link"}}</span>
+          <i class="icon icon-gear icon-fw"/>
+        {{/link-to}}
       </li>
       <li role="separator" class="divider"></li>
       <li>
         {{#link-to "logout" class="user-logout"}}
-        <span>{{t "nav.user.logout"}}</span>
-        <i class="icon icon-logout icon-fw"/>{{/link-to}}
+          <span>{{t "nav.user.logout"}}</span>
+          <i class="icon icon-logout icon-fw"/>
+        {{/link-to}}
       </li>
     {{/dd.content}}
     {{!-- </ul> --}}
