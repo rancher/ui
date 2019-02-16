@@ -367,14 +367,6 @@ const rootNav = [
         resourceScope:  'global',
       },
       {
-        id:             'global-security-cloud-keys',
-        localizedLabel: 'nav.admin.security.cloudKeys',
-        icon:           'icon icon-secrets',
-        route:          'global-admin.security.cloud-keys',
-        resource:       ['cloudcredential'],
-        resourceScope:  'global',
-      },
-      {
         id:             'global-security-authentication',
         localizedLabel: 'nav.admin.security.authentication',
         icon:           'icon icon-users',
