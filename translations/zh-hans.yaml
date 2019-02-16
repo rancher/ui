@@ -263,6 +263,10 @@ podSecurityPoliciesPage:
 
 rolesPage:
   title: 角色
+  headers:
+    global: 全局
+    cluster: 集群
+    project: 项目
   index:
     localLink: 添加角色
     table:
@@ -349,6 +353,7 @@ apiPage:
     state: 状态
     name: 访问密钥
     description: 描述
+    scope: 范围
     created: 创建时间
     expires:
       label: 过期时间
@@ -397,6 +402,7 @@ authPage:
       ping: Ping
       adfs: AD FS
       keycloak: Keycloak
+      okta: Okta
     authError: '账号未经授权'
     popupError: '请关闭弹出验证窗口，然后再次单击“验证”。'
   ping:
@@ -410,6 +416,10 @@ authPage:
   adfs:
     buttonText:
       pre: '启用AD FS认证'
+      post: '等待返回'
+  okta:
+    buttonText:
+      pre: '启用Okta认证'
       post: '等待返回'
 
 
@@ -592,6 +602,19 @@ authPage:
         pre: 启用本地认证
         post: '启用中...'
 
+backupsPage:
+  header: etcd 快照
+  detail: 如果启用etcd快照功能，将按预定义的时间间隔周期性地获取的集群快照，可用于集群灾难恢复。
+  table:
+    state: 状态
+    target:
+      label: 目标
+      s3: S3
+      local: Local
+    name: 名称
+    created: 创建时间
+    noData: 当前没有etcd快照
+
 balancerPage:
   noMatch: 没有符合当前搜索的负载均衡
   noData: 没有任务负载均衡
@@ -622,7 +645,15 @@ catalogPage:
     action:
       launch: 查看详情
       notCompatible: 不兼容
-      alreadyDeployed: 已部署
+      alreadyDeployed: 已经部署
+
+cloudKeysPage:
+  addKey: 添加Cloud Key
+  index:
+    table:
+      noData: 当前没有Cloud Key
+      noMatch: 没有Cloud Key匹配当前搜索
+
 clusterCatalogPage:
   header: 应用商店
 
@@ -738,6 +769,9 @@ projectsPage:
   resourceQuota:
     title: 资源配额
     detail: 配置整个项目可以使用多少资源。
+  containerDefaultLimit:
+    title: 容器默认限制
+    detail: 配置默认情况下容器可以消耗多少资源
   members:
     title: 成员
     detail: 配置可以访问该项目中资源的用户以及用户权限。
@@ -820,6 +854,7 @@ containerPage:
       noData: 该容器未使用数据卷
       noMatch: 没有符合当前搜索的数据卷
       noContainers: 无其他容器
+  pod: Pod
 podPage:
   header: "Pod: {name}"
   nodeIp: 主机
@@ -853,6 +888,8 @@ metricsAction:
     workload: 工作负载监控
     pod: Pod监控
     container: Container监控
+  grafana:
+    label: Grafana
   summary:
     label: 概览模式
   detail:
@@ -869,7 +906,8 @@ metricsAction:
     24h: 24小时
     7d: 7天
     30d: 30天
-  metrics:
+
+metrics:
     workload-cpu-usage: CPU
     workload-disk-io: 磁盘I/O
     workload-memory-usage-bytes-sum: 内存
@@ -906,6 +944,42 @@ editDns:
     view: "记录: {name}"
   name:
     placeholder: '例如: Myapp'
+  sessionAffinity:
+    title: 会话保持
+    detail: 根据源IP将连接映射到一致的目标
+    label: 启用会话保持
+  externalIPs:
+    addActionLabel: 添加外部IP
+    placeholder: '例如: 80.11.12.10'
+    value: 外部IP
+  loadBalancerIP:
+    label: Load Balancer IP
+    placeholder: '例如: 78.11.24.19'
+  loadBalancerSourceRanges:
+    addActionLabel: 添加ip源范围
+    placeholder: '例如: 143.231.0.0/16'
+    value: 负载均衡器ip源范围
+  healthCheckNodePort:
+    label: 健康检查节点端口
+    placeholder: '例如: 8080'
+  externalTrafficPolicy:
+    label: External Traffic Policy
+    local: Local
+    cluster: Cluster
+  publishNotReadyAddresses:
+    label: Published IP Addresses
+    readyOnly: 仅就绪接入点
+    all: 所有接入点
+  sessionAffinityConfig:
+    label: Session Sticky Time
+    placeholder: '例如: 10800'
+  kind:
+    label: As a
+    clusterIP: Cluster IP (Internal Only)
+    loadBalancer: Layer-4 Load Balancer
+    nodePort: NodePort(On every node)
+    externalName: ExternalName
+    headless: Headless Service
   description:
     placeholder: '例如: 当前MyApp版本'
   selector:
@@ -919,6 +993,7 @@ editDns:
     alias: 服务别名
     workload: 工作负载
     selector: Pod
+    clusterIp: "Cluster IP"
   target:
     arecord: 目标IP地址
     cname: 目标主机名
@@ -949,6 +1024,30 @@ cruPersistentVolumeClaim:
     edit: '编辑卷声明: {name}'
     view: '持久卷: {name}'
   define:
+    addActionLabel: 定义
+  capacity:
+    label: Capacity
+    unit: GiB
+  name:
+    placeholder: '例如: myvol'
+  source:
+    label: 源
+    pv: 使用现有的持久卷
+    storageClass: 使用存储类来创建新的持久卷
+  pv:
+    label: 持久卷
+    prompt: 选择持久卷…
+  storageClass:
+    label: 存储 Class
+    prompt: 使用默认 class
+
+cruVolumeClaimTemplate:
+  title:
+    define: Define Volume Claim Template
+    new: Add Volume Claim Template
+    edit: "Edit Volume Claim Template: {name}"
+    view: "Volume Claim Template: {name}"
+  define:
     addActionLabel: 确定
   capacity:
     label: 容量
@@ -965,6 +1064,9 @@ cruPersistentVolumeClaim:
   storageClass:
     label: 存储类
     prompt: 使用默认类
+  customize:
+    title: 自定义
+    detail: 自定义高级设置
 
 cruPrivateRegistry:
   title:
@@ -997,6 +1099,76 @@ cruVolume:
     title: 源配置
     detail: 配置选定存储源的选项
     prompt: 选择一个存储源...
+
+globalDnsPage:
+  header: 全局DNS服务
+  newDns: 添加DNS记录
+  noDnsMatch: 没有DNS条目匹配当前搜索。
+  noDnsData: 当前没有全局DNS条目。
+  newProvider: 添加DNS提供商
+  noDnsProviderMatch: 没有DNS提供商匹配当前搜索。
+  noDnsProviderData: 当前没有全局DNS提供商。
+  noProjects: 没有要选择的项目
+  entriesPage:
+    add: 添加全局DNS条目
+    table:
+      name: 名称
+      fqdn: FQDN(域名)
+      target: 目标
+      provider: 提供商ID
+    config:
+      title: 配置DNS条目
+      detail: 提供配置细节以添加新的全局DNS条目
+      configType: 解析到
+      multi: 多集群应用
+      project: 项目
+      fqdn:
+        label: FQDN(域名)
+        placeholder: '例如: dev.example.com'
+      multiCluster:
+        label: 多集群App目标
+        placeholder: 没有选择多集群应用程序
+        add:
+          label: 添加目标
+      provider:
+        label: 提供商
+        placeholder: 选择提供商
+      projects:
+        label: 目标项目
+      ttl:
+        label: DNS TTL(DNS解析记录缓存有效期)
+  providersPage:
+    title: 全局DNS提供商
+    add: 添加全局DNS提供商
+    options:
+      title: DNS提供商设置
+      detail: 自定义DNS提供商设置
+    members:
+      title: 成员访问
+      detail: 控制谁有权访问资源
+    table:
+      name: 名称
+      provider: 提供商名称
+      rootDomain: 根域名
+    config:
+      root:
+        label: 根域名
+        placeholder: Your root domain
+      accessKey:
+        label: Access Key
+        placeholder: Your access key
+      secretKey:
+        label: Secret Key
+        placeholder: Your secret key
+      apiEmail:
+        label: API Email
+        placeholder: Your API Email
+      apiKey:
+        label: API Key
+        placeholder: Your API Key
+
+multiClusterAppsPage:
+  header: 多集群应用
 
 # If you change translations here also change the translation in app/utils/constants.js under the FALLBACK_TRANSLATIONS key
 # those are present in case we have an error in the app and can not load the translations file
@@ -1752,6 +1924,11 @@ annotationsSection:
   value: 值
   noData: 没有注释
   noMatch: 没有符合当前搜索的注释
+authorizedEndpoint:
+  enabled:
+    label: Authorized Cluster Endpoint
+  fqdn:
+    label: FQDN
 
 taintsSection:
   title: Taints
@@ -1938,9 +2115,11 @@ clusterNew:
     placeholder: '例如: 用于开发和测试工作负载的集群'
   driverLabels:
     cloud: Kubernetes托管服务商
+    custom: 添加主机自建Kubernetes集群
+    external: User Provided
     import: 导入现有的Kubernetes集群
     infra: 来自云服务商提供的主机
-    custom: 添加主机自建Kubernetes集群
+  externalError: 'Component could not be loaded. Check URL.'
   members:
     label: 成员角色
     detail: 控制哪些用户可以访问集群，以及他们拥有的对其进行更改的权限。
@@ -1969,6 +2148,7 @@ clusterNew:
       detail: 选择将用于启动Amazon EKS的区域和API密钥
   tencenttke:
     label: 腾讯云Kubernetes服务
+    shortLabel: Tencent TKE
     access:
       next: "下一步: 配置集群"
       loading: "从腾讯云获取VPC信息"
@@ -2486,6 +2666,8 @@ clusterNew:
       detail: 为集群自定义Kubernetes选项
     clusterType:
       label: 集群类型
+    clusterFlavor:
+      label: Cluster Flavor
     masterVersion:
       label: 版本
     vpcId:
@@ -2496,6 +2678,7 @@ clusterNew:
     highwaySubnet:
       label: 高速网卡
       none: 无可用高速网卡
+      placeholder: 高速子网
     nodeOption:
       title: 节点选项
       detail: 为节点自定义选项
@@ -2505,7 +2688,7 @@ clusterNew:
       label: 数据盘大小
     description:
       label: 描述
-      placeholder: e.g. 华为CCE集群
+      placeholder: '例如: 华为CCE集群'
     eipBandwidthSize:
       label: 带宽
     eipChargeMode:
@@ -2520,7 +2703,7 @@ clusterNew:
       yearly: 包年/包月
     containerNetworkCidr:
       label: 容器网段
-      placeholder: e.g. 172.16.0.0/16
+      placeholder: '例如: 172.16.0.0/16'
     containerNetworkMode:
       label: 网络模型
       none: 无配置
@@ -2579,6 +2762,10 @@ clusterNew:
       placeholder: 请输入密码
     userName:
       label: 用户名
+    authentiactionMode:
+      label: 认证模式
+      rbac: RBAC
+      authenticating_proxy: 认证代理
     eipShareType:
       label: 共享Eip类型
   rke:
@@ -2656,6 +2843,7 @@ clusterNew:
       flannelCustom: Flannel (Windows Support Available)
       calico: Calico
       canal: Canal
+      weave: Weave
       options:
         flannel:
           iface:
@@ -2742,6 +2930,10 @@ clusterNew:
     advanced:
       label: 高级集群选项
       detail: 自定义高级选项
+    authorizedEndpoint:
+      title: Authorized Cluster Endpoint
+      detail: "Enabling the authorized cluster endpoint allows direct communication with the cluster, bypassing the Rancher API proxy. Authorized endpoint's can be retrieved by generating a kubeconfig for the cluster."
+      label: Authorized Cluster Endpoint
   custom:
     label: 自定义
     shortLabel: 自定义
@@ -3349,8 +3541,8 @@ cruStorageClass:
       label: 聚合级别
       placeholder: "例如: 0"
     ephemeral:
-      label: 临时的
-      placeholder: "例如: true"
+      label: 临时卷
+      placeholder: "是否是临时卷，true或者false，默认false"
   scaleio:
     gateway:
       label: 网关
@@ -3505,6 +3697,8 @@ dangerZone:
     'ui-index': 'UI的HTML索引位置。'
     'ui-pl': '公司名称专用标签。'
     'telemetry-opt': '遥感报告设置。'
+    'auth-user-info-max-age-seconds': 'The maximum age of a users auth tokens before an auth provider group membership sync will be performed.'
+    'auth-user-info-resync-cron': '用于重新同步身份验证提供者组成员关系的默认cron调度。'
 
 deleteEksCluster:
   title: "确定删除集群{clusterName}吗?"
@@ -3565,6 +3759,9 @@ editApiKey:
   secretKey: Secret Key(密码)
   basicAuth: "Access Key和Secret Key可以作为HTTP基本身份验证的用户名和密码发送，以授权请求。您也可以将它们组合为Bearer Token:"
   token: Bearer Token
+  scope: Scope
+  scopeSelect:
+    prompt: no scope
   ttl:
     label: 自动失效时间
     never: 永不过期
@@ -3621,7 +3818,7 @@ editHost:
     help: 由主机操作系统获取
   customName:
     label: 自定义名称
-    placeholder: 例如:dev1
+    placeholder: '例如:dev1'
     help: 如果此处未设置，名称将显示为主机名
   description:
     label: 描述
@@ -3721,6 +3918,18 @@ formNodeAffinity:
   addRuleLabel: 添加节点选择规则
   noRules: 没有节点选择器
   removeRuleLabel: 删除节点选择规则
+
+formMembersGlobalAccess:
+  title: 成员
+  detail: 选择可以查看此应用程序的成员
+  table:
+    name: 名称
+    type: 成员类型
+    accessType: 访问类型
+    noData: 当前还没有成员
+    noMatch: 没有成员匹配当前搜索
+    prompt: 选择值...
+
 
 formNodeRequirement:
   label: 规则
@@ -4050,7 +4259,7 @@ formGlobalRoles:
       detail: 允许用户管理全部集群，即使这个用户不是被管理集群中的成员也可以管理。
     manage-node-drivers:
       label: 配置主机驱动
-      detail: 允许用户启用，配置和移除所有节点驱动设置。
+      detail: 允许用户启用，配置和移除所有主机驱动设置。
     manage-node-templates:
       label: 管理主机模板
       detail: 允许用户定义，编辑和删除主机模板
@@ -4212,16 +4421,16 @@ formNetwork:
     enable: "是"
   dnsPolicy:
     label: DNS策略
-    clusterFirstWithHostNet: "主机网络优先"
-    clusterFirst: "集群优先"
+    clusterFirstWithHostNet: "主机网络下集群DNS优先"
+    clusterFirst: "集群DNS优先"
   dnsConfig:
     nameservers:
-      label: DNS服务器IP地址
+      label: DNS服务器地址
       addActionLabel: 添加DNS服务器
       placeholder: "例如: 192.168.2.1"
     options:
       label: DNS解析选项
-      addActionLabel: 添加选项
+      addActionLabel: 添加
       name:
         label: 名称
         placeholder: "例如: ndots"
@@ -4290,6 +4499,25 @@ formCustomMetrics:
   noPorts: 没有自定义指标
   addActionLabel: 添加自定义指标
 
+formServicePorts:
+  header: 端口映射
+  addAction: 添加端口
+  noPorts: 此服务没有端口映射。
+  name:
+    label: 端口名称
+    placeholder: "例如: myport"
+  port:
+    label: 发布服务端口
+    placeholder: "例如: 8088"
+  protocol:
+    label: 协议
+  targetPort:
+    label: 目标端口
+    placeholder: "例如: 80"
+    default: "与服务端口相同"
+  nodePort:
+    label: 主机端口
+    placeholder: "例如: 30000"
 formPorts:
   header: 端口映射
   addAction: 添加规则
@@ -4300,6 +4528,7 @@ formPorts:
     HostPort: HostPort(仅Pod所在主机端口可访问)
     ClusterIP: 集群IP(集群内部访问)
     LoadBalancer: L4层负载均衡器(对接公有云负载均衡服务)
+    LoadBalancerDisbaled: 'Layer-4 Load Balancer (disabled)'
   sourcePort:
     label: 主机监听端口
     placeholder: '例如: 80'
@@ -4317,7 +4546,7 @@ formPorts:
     label: 名称
     placeholder: '例如: backend'
   dnsName:
-    label: DNS名称
+    label: DNS记录
     placeholder: '例如: example'
   noPorts: 当前Pod没有映射端口
   error:
@@ -4438,6 +4667,12 @@ formSources:
     label: 键
   prefix:
     label: 前缀或别名
+  field:
+    placeholder: "例如: spec.nodeName"
+  resource:
+    placeholder: "例如: requests.cpu"
+  container:
+    placeholder: '例如: my-container'
 
 formSecurity:
   title: '安全/主机设置'
@@ -4607,6 +4842,13 @@ formAnnotations:
   errors:
     invalidJSON: JSON注释格式无效。
     topLevelValueInvalid: JSON注释顶级值必须是对象。
+
+formAuthCloudCredential:
+  label: 云凭证
+  selectCreds:
+    prompt: 选择云凭证
+
+
 formJobConfig:
   title: Job配置
   detail: 配置Job需要的参数。
@@ -4624,7 +4866,7 @@ formJobConfig:
     label: 完成
     detail: 成功运行Job的Pod的数量。
   parallelism:
-    label: Parallelism
+    label: 并行数
     detail: Job在给定时间内应运行的最大Pod数。
   backoffLimit:
     label: Back Off Limit
@@ -4672,17 +4914,26 @@ formValueArray:
   noData: 没有数据
   protip: '高级技巧: 在任意输入栏中粘贴一行或多行的value能够批量输入。'
 
+formVersions:
+  experimental: "(实验)"
+  unsupported: "(不支持)"
+
 formVolumeRow:
   prompt: 选择一个持久卷声明...
   name:
     label: 卷名
     placeholder: '例如: vol1'
+  volumeClaimTemplateName:
+    label: Volume Claim Template Name
+    placeholder: '例如: vol1'
+    vctWarning: Stateful workloads launched with volume claim templates will become uneditable due to a <a href="https://github.com/kubernetes/kubernetes/issues/69041" target="_blank" rel="nofollow noreferrer noopener">upstream bug</a> in Kubernetes. Please be aware that this limitation exists before launching your new workload.
   mode:
     label: 卷类型
     newVolume: 临时卷
     existingVolume: 已有的卷
     newPvc: 卷声明
     existingPvc: 持久卷声明
+    existingVct: Volume Claim Template
     bindMount: 路径映射卷
     tmpfs: Tmpfs
     secret: 密文卷
@@ -4700,6 +4951,7 @@ formVolumeRow:
     helper: 卷不会被挂载到当前容器中，它可能被Pod中的其他容器使用。
   customLogPath:
     helpText: 我们将部署一个Flexvolume驱动程序来创建卷并将日志挂载到主机，GKE集群现在支持该功能。
+
 formVolumes:
   title: 数据卷
   detail: 持久化及共享数据并与独立容器的生命周期分离。
@@ -4729,6 +4981,7 @@ formVolumes:
     configMap: 配置映射卷
     certificate: 证书卷
     customLogPath: 从目录读取日志文件
+    vct: Add a Volume Claim Template
   table:
     kind: 类型
     source: 源
@@ -4891,7 +5144,8 @@ hostPod:
     standalone: 独立容器
 
 identityBlock:
-  loading: 加载中...
+    loading: 加载中...
+
 
 inputAnswers:
   yaml: 编辑YAML
@@ -4960,6 +5214,8 @@ loginSaml:
     buttonText: "使用Ping登录"
   adfs:
     buttonText: "使用AD FS登录"
+  okta:
+    buttonText: "使用Okta登录"
   keycloak:
     buttonText: "使用Keycloak登录"
 
@@ -5084,6 +5340,35 @@ modalAddPayment:
     euro: "欧元(€)"
     dollar: "美元($)"
 
+modalAddCloudKey:
+  header: Add Cloud Credential
+  type: Cloud Credential Type
+  typeSelect:
+    prompt: Choose a cloud credential provider type
+  amazonec2:
+    accessKey:
+      label: Access Key
+      placeholder: Your AWS access key
+    secretKey:
+      label: Secret Key
+      placeholder: Your AWS secret key
+  azure:
+    clientId:
+      label: Client ID
+      placeholder: Your Client ID
+    clientSecret:
+      label: Client Secret
+      placeholder: Your Client Secret
+  digitalocean:
+    accessToken:
+      label: Access Token
+      placeholder: Your DigitalOcean API access token
+      help: |
+        Paste in a Personal Access Token from the DigitalOcean
+        <a href="https://cloud.digitalocean.com/settings/api/tokens" target="_blank" rel="nofollow noreferrer noopener">Applications & API</a> screen
+  vmwarevsphere:
+    password:
+      label: Password
 
 modalContainerStop:
   header: "确认要停止吗？"
@@ -5218,6 +5503,28 @@ modalDrainNode:
     placeholder: '例如: 60'
     custom: "自定义超时时间:"
 
+modalRevertSettings:
+  title: "将{setting}还原为默认值?"
+  current: 当前值
+  default: 默认值
+
+modalRestoreBackup:
+  title: 从备份恢复
+  backups: 可用的备份
+  error: 需要选择备份
+  fetching: 获取新的备份
+  select:
+    all: 选择可用备份
+
+modalRotateCertificates:
+  title: 更新集群证书有效期
+  caCerts: 更新集群CA证书和所有服务证书
+  services: 仅更新所有服务证书 (不更新CA证书)
+  single: 更新单个服务
+  dropdownLabel: 服务
+  select:
+    all: 选择服务...
+
 modalRollbackService:
   title: '回滚"{instanceName}"'
   titleWithSidekicks: '回滚"{instanceName}"&{count, plural,=1{#个sidecar}other{#个sidecars}}'
@@ -5327,6 +5634,8 @@ newCatalog:
   noConfig: 该模板没有配置选项
   official: 官方认证
   preview: 预览
+  forceUpgrade: 如果升级过程中需要，删除和重新创建资源
+  forceRollback: 如果在回滚期间需要，删除和重新创建资源
   templateFiles: 模版文件
   seeMore: 更多信息...
   saveConfigure: 设置
@@ -5348,6 +5657,104 @@ newCatalog:
   version:
     prompt: 选择版本...
     default: 当前默认(当前版本{version})
+
+newMultiClusterApp:
+  answers:
+    label: 应答
+    addAction: 添加应答
+  catalog: "应用商店:"
+  category: "类型:"
+  config: 配置选项
+  helm:
+    label: 配置选项
+    protip: Helm模板接受逗号分隔的字符串列表
+  kind: "商店类型:"
+  license: "许可:"
+  maintainedBy: 由社区成员维护
+  maintainer: "维护人员:"
+  newNamespace: 新的命名空间
+  customizeNamespace: "此应用程序将部署到<code>{namespaceId}</code>命名空间中。"
+  newAppDetail: 为应用程序选择应用程序版本和名称空间
+  appInfo: 详细描述
+  appInfoDetail: 应用程序信息和用户指南
+  noConfig: 此模板没有配置选项
+  official: 官方认证
+  preview: 预览
+  templateFiles: 模板文件
+  seeMore: 更多信息...
+  saveConfigure: 配置
+  saveNew: 执行
+  saveUpgrade: 升级
+  selectVersionAdd: 选择要部署的模板的版本
+  selectVersionConfigure: 选择要配置的模板的版本
+  selectVersionUpgrade: 选择要升级到的模板版本
+  startService: 创建后启动服务
+  support: "支持:"
+  targets:
+    label: 目标项目
+    add: 添加目标
+    prompt: 添加目标项目
+    target: 目标
+    cluster: 集群
+    project: 项目
+    noData: 当前没有目标
+  templateVersion: 模板版本
+  titleAdd: "添加 {name} App"
+  titleConfigure: "配置 {name} App"
+  titleUpgrade: "升级 {name} App"
+  txt: answers.txt
+  unknownType: "无法识别的问题类型:"
+  upgrade: "升级:"
+  url: "Project URL:"
+  version:
+    prompt: 选择版本...
+    default: 当时的默认值 (当前{version})
+  overrides:
+    label: 应答覆盖
+    detail: 在每个集群/项目的基础上覆盖单个应答
+    dropdown:
+      allProjects: "集群{clusterName}中的所有项目"
+      clusterGroup: "集群: {clusterName}"
+    add:
+      label: Add Override
+    table:
+      scope: 范围
+      question: Question
+      answer: Answer
+      noData: There are no overrides
+      noMatch: No overrides match the current search
+    scopeOverride:
+      placeholder: Select a scope
+    questionOverride:
+      placeholder: Select a question
+    answerOverride:
+      placeholder: Question required
+  roles:
+    title: 角色
+    detail: 选择查看此应用程序所需的角色
+    table:
+      name: 名称
+      builtIn: 内置
+      external: 扩展
+      noData: 当前没有角色
+      noMatch: 没有角色匹配当前搜索
+      prompt: "选择角色..."
+  members:
+    title: 成员
+    detail: 选择可以查看此应用程序的成员
+    table:
+      name: 名称
+      type: 成员类型
+      accessType: 访问类型
+      noData: 目前还没有成员
+      noMatch: 没有成员匹配当前搜索
+      prompt: 选择一个值…
+  upgradeApp:
+    title: 升级策略
+    disabled: 同时升级所有应用
+    enabled: 滚动更新(batched)
+    batch: 批量大小
+    interval: 时间间隔
 
 newContainer:
   add:
@@ -5382,7 +5789,7 @@ newContainer:
   sidekick:
     header: 升级服务
     title: 选择加载配置的服务来升级
-    detail: '“{service}”有多个容器，希望升级哪个容器?'
+    detail: '{service}有多个容器，希望升级哪个容器?'
     primary: 主容器
     sidekick: Sidecars
   containerType:
@@ -5414,21 +5821,53 @@ newSecret:
     label: 密文
   addActionLabel: 添加密文
 
+customDrivers:
+  nodes: 主机驱动
+  clusters: 集群驱动
+
+clusterDrivers:
+  title: 集群驱动
+  add: 添加集群驱动
+  builtIn: 内置
+  table:
+    noData: 当前集群没有定义任何节点
+    noMatch: 没有节点匹配当前搜索
+
+kontainerDriver:
+  displayName:
+    aliyun: Aliyun
+    amazonElasticContainerService: Amazon ECS
+    azureKubernetesService: Azure AKS
+    googleKubernetesEngine: Google GKE
+    huawei: Huawei
+    import: Import
+    rancherKubernetesEngine: Rancher RKE
+    tencent: Tencent
+
+
 nodeDriver:
   addTemplate: 添加主机模板
   editTemplate: "编辑主机模板: {name}"
   editWarning: 编辑主机模板只会影响由主机池创建的新主机，现有主机将不会自动更新或替换。<br>如果从池中删除主机，将使用模板中的新设置创建新主机
   displayName:
     aliyunecs: Aliyun ECS
+    aliyunkcs: Alibaba ACK
     amazonec2: Amazon EC2
+    amazoneks: Amazon EKS
     azure: Azure
+    azureaks: Azure AKS
+    cloudca: Cloud.ca
     digitalocean: DigitalOcean
     exoscale: Exoscale
+    googlegke: Google GKE
+    huaweicce: Huawei CCE
+    linode: Linode
     openstack: OpenStack
     otc: Open Telekom Cloud
     packet: Packet
     rackspace: RackSpace
     softlayer: SoftLayer
+    tencenttke: Tencent TKE
     vmwarevsphere: vSphere
     zstack: ZStack
   driverOptions: "{driver}选项"
@@ -5437,6 +5876,7 @@ nodeDriver:
     access:
       next: "下一步: 配置集群"
       loading: 从亚马逊加载集群选项...
+      help: "在这里粘贴AWS密钥对。只使用IAM访问键，使用根用户生成的键将使集群不可访问。"
     clusterOption:
       title: 集群选项
       detail: 为集群自定义Kubernetes选项
@@ -5467,6 +5907,7 @@ nodeDriver:
       title: Subnet
       next: "下一步: 选择安全组"
       loading: "加载安全组..."
+      help: 2 subnets required
     associateWorkerNodePublicIp:
       title: Worker节点的公网IP
       radio:
@@ -5487,6 +5928,13 @@ nodeDriver:
       label: 最大平均比重
     min:
       label: 最小平均比重
+    userData:
+      label: 用户数据
+      help: 将用户数据传递给节点以执行自动配置任务
+      placeholder: 粘贴脚本
+    nodeVolumeSize:
+      label: 主机卷大小
+      placeholder: '例如: 20'
     accessKey:
       label: Access Key
       placeholder: Your AWS access key
@@ -5576,14 +6024,14 @@ nodeDriver:
       title: Droplet选项
       detail: 配置将由此模板创建的Droplets的选项
     sizeLabel: |
-      {highMem, select, true {High Memory: } other {}}{memoryGb} GB RAM, {disk} GB Disk, {vcpus, plural,
+      {highMem, select, true {High Memory: }other{}}{memoryGb} GB RAM, {disk} GB Disk, {vcpus, plural,
         =1 {# vCPU}
         other {# vCPUs}
       }
     authAccountButton: '下一步: 配置Droplet'
     accessToken:
       label: 访问令牌
-      placeholder: DigitalOceanAPI访问令牌
+      placeholder: DigitalOcean API访问令牌
       help: |
         '从<a href="https://cloud.digitalocean.com/settings/api/tokens" target="_blank" rel="nofollow noreferrer noopener">Applications&API</a>页面获取DigitalOcean的个人访问token'
     image:
@@ -5710,6 +6158,9 @@ nodeDriver:
     scheduling:
       title: 3. 调度
       detail: 选择将虚拟机调度到何种hypervisor
+    vappOptions:
+      title: 4. vApp Options
+      detail: Choose OVF environment properties
     vcenter:
       label: vCenter或ESXi服务器
       placeholder: vCenter或者ESXi主机名/IP
@@ -5761,13 +6212,37 @@ nodeDriver:
     folder:
       label: Folder
       placeholder: "例如: /folder"
-      help: "Folder for the VM. This folder must already exist in the datacenter"
+      help: "VM的文件夹。该文件夹必须已经存在于数据中心中"
     cfgparam:
       key:
         placeholder: "例如: guestinfo.hostname"
       value:
         placeholder: "例如: Myrancherhost"
       label: 用于guestinfo的配置参数
+      addActionLabel: Add Parameter
+    vappHelp: "注意:独立的ESXI不支持vApp选项和网络协议配置文件"
+    vappMode:
+      disabled: "不使用vApp"
+      auto: "使用vApp配置网络协议配置文件"
+      manual: "提供自定义vApp配置"
+    vappTransport:
+      label: OVF environment transport
+      placeholder: "例如: com.vmware.guestInfo"
+      help: "com.vmware.guestInfo或者iso"
+    vappIpprotocol:
+      label: vApp IP protocol
+      placeholder: "例如: IPv4"
+      help: "IPv4 or IPv6"
+    vappIpallocationpolicy:
+      label: vApp IP分配策略
+      placeholder: "例如: fixedAllocated"
+      help: "dhcp, fixed, transient or fixedAllocated"
+    vappProperty:
+      key:
+        placeholder: "例如: guestinfo.interface.0.ip.0.address"
+      value:
+        placeholder: "例如: ip:VM Network, expression or string"
+      label: vApp属性
       addActionLabel: 添加参数
   azure:
     placement:
@@ -6278,6 +6753,9 @@ siteAccess:
   users: 用户
   groups: 组
   organizations: 组织
+  refreshGroups: 刷新组成员
+  refreshHelp: 这将触发所有组的刷新并更新它们的用户列表。
+  helpLabel: 这是什么?
 
 systemInfoSection:
   title: 系统信息
@@ -6467,7 +6945,12 @@ nav:
     machines: 主机
     nodeDrivers: 主机驱动
     catalogs: 应用商店
+    globalDns: 全局DNS服务
+    globalDnsEntries: 解析记录
+    globalDnsProviders: 提供商
+    multiClusterApps: 多集群应用
     security:
+      cloudKeys: Cloud Keys
       tab: 安全
       roles: 角色
       members: 成员
@@ -6480,7 +6963,7 @@ nav:
       registration: 主机注册
       advanced: 高级
   user:
-    label: "用户菜单:{username}"
+    label: "用户菜单: {username}"
     logout: 注销
   userPreferences:
     link: "设定"
@@ -6510,6 +6993,11 @@ action:
   activate: 激活
   addContainer: 部署Pod
   addSidekick: 添加Sidecar
+  backupEtcd: 立即备份
+  backupEtcdMessage:
+    success:
+      title: 备份成功
+      message: "{ clusterId }已备份到{ backupType }provider"
   clone: 克隆
   console: 打开控制台
   cordon: 暂停
@@ -6534,6 +7022,14 @@ action:
   pause: 暂停编排
   pauseAll: 全部暂停
   redeploy: 重新部署
+  refreshAuthProviderAccess:
+    label: 刷新组成员
+    success:
+      title: 刷新成功
+      message: 已触发组成员刷新
+    allSuccess:
+      title: 刷新成功
+      message: 已为所有用户触发组成员刷新。
   remove: 删除
   replay: 重播
   restart: 重启
@@ -6607,6 +7103,8 @@ validation:
       tooLongPrefix: '“{key}”的前缀不能超过{max}个字符'
       emptyLabel: '“{key}”不能有空格键'
       tooLongKey: '“{key}”的长度不能超过{max}个字符'
+  targets:
+    missingProjectId: 必须选择目标项目。
 
 ##############################
 # Model Properties
@@ -6660,6 +7158,7 @@ model:
       loadBalancer: L4层负载均衡
 
 growl:
+  dismiss: 禁止所有通知
   webSocket:
     connecting:
       title: 连接至服务器时发生错误！
