@@ -54,6 +54,9 @@ loggingPage:
       helpText: 日志刷新频率
     includeSystemComponent:
       label: 包含系统日志
+  advanced:
+    file: Edit as File
+    cancel: Edit as a Form
 
   elasticsearch:
     header: Elasticsearch配置
@@ -74,6 +77,11 @@ loggingPage:
       prefix: 前缀
       prefixPlaceholder: '例如: logstash'
       dateFormat: '日期格式:'
+      errors:
+        startsWith: '前缀不能以 -, _, + 开始'
+        required: 必须添加前缀
+        invalidCharacters: "前缀不能包含'{char}'"
+
     generatedIndex: '生成的索引格式为: <code class="text-italic">{esIndex}</code>，默认情况下索引模式为: {indexFormat}。'
     endpoint:
       required: 访问地址必须填写
@@ -163,6 +171,9 @@ loggingPage:
     hostname:
       label: 主机名
       placeholder: 服务器主机名
+  customTarget:
+    type:
+      error: "@type不支持, 你可以选择以下类型: ['elasticsearch', 'splunk_hec', 'remote_syslog', 'kafka_buffered', 'forward']"
   ssl:
     sslHeader: "{authType} 配置"
     headerHelp: 输入HTTPS地址或选择TCP开启SSL配置
@@ -196,11 +207,14 @@ loggingPage:
       label: Scram Mechanism
       sha256: sha256
       sha512: sha512
+    customTarget:
+      help: You can copy the path to the file.
+      copyAll: 复制所有键和值。
 
   dockerRootDir:
     header: Docker配置
-    label: Docker Root Directory
-    placeholder: "输入docker root Directory，默认值为{dir}"
+    label: Docker根目录
+    placeholder: "输入Docker根目录，默认值为{dir}"
   testAction:
     testing: 测试
     testOk: 设置已验证
