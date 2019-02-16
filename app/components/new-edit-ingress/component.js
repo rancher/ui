@@ -21,6 +21,13 @@ export default Component.extend(NewOrEdit, {
 
   primaryResource: alias('ingress'),
 
+  init() {
+    this._super(...arguments);
+
+    if ( get(this, 'existing')) {
+      set(this, 'namespace', get(this, 'existing.namespace'));
+    }
+  },
   actions: {
     done() {
       this.sendAction('done');
