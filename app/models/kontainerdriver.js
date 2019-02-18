@@ -30,10 +30,13 @@ var KontainerDriver = Resource.extend({
   displayName: computed('name', 'intl.locale', function() {
     const intl = get(this, 'intl');
     const name = get(this, 'name');
-    const key = `kontainerDriver.displayName.${ name }`;
+    const keyByName = `kontainerDriver.displayName.${ name }`;
+    const keyById = `kontainerDriver.displayName.${ get(this, 'id') }`;
 
-    if ( name && intl.exists(key) ) {
-      return intl.t(key);
+    if ( name && intl.exists(keyByName) ) {
+      return intl.t(keyByName);
+    } if ( intl.exists(keyById) ) {
+      return intl.t(keyById);
     } else if ( name ) {
       return name.capitalize();
     } else {
