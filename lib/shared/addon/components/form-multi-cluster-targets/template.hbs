@@ -33,10 +33,26 @@
     {{#if (eq kind "row")}}
       <tr class="main-row">
         <td data-title="{{dt.clusterName}}:" class="pt-5 pb-5">
-          {{target.clusterName}}
+          {{#if target.project.id}}
+            {{target.clusterName}}
+          {{else}}
+            {{target.clusterId}}
+          {{/if}}
         </td>
         <td data-title="{{dt.projectName}}:">
-          {{target.projectName}}
+          {{#if target.project.id}}
+            {{target.projectName}}
+          {{else}}
+            {{#tooltip-element
+               type="tooltip-basic"
+               model=(t "newMultiClusterApp.access.noAccessLink")
+               tooltipTemplate="tooltip-static"
+               aria-describedby="tooltip-base"
+               tooltipFor="tooltipLink"
+            }}
+              {{target.projectId}} <i class="icon icon-alert"></i>
+            {{/tooltip-element}}
+          {{/if}}
         </td>
         <td
           data-title="{{t "generic.actions"}}:"

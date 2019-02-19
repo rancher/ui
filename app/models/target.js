@@ -13,6 +13,12 @@ export default Resource.extend({
     return get(this, 'project.cluster.displayName');
   }),
 
+  clusterId: computed('projectId', function() {
+    let { projectId } = this;
+
+    return projectId.split(':')[0];
+  }),
+
   appLink: computed('projectId', 'appId', function() {
     const { projectId } = this;
 
