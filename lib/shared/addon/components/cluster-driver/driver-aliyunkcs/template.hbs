@@ -71,12 +71,20 @@
         </div>
         <div class="col span-4">
           <label class="acc-label">{{t "clusterNew.aliyunkcs.version.label"}}</label>
-          {{#if (eq step 2)}}
+          {{#if (and (eq step 2) (eq config.clusterType "Kubernetes"))}}
             {{form-versions
                 cluster=cluster
                 editing=(eq mode "edit")
                 value=config.kubernetesVersion
                 versions=versionChoices
+                initialVersion=config.version
+            }}
+          {{else if (and (eq step 2) (eq config.clusterType "ManagedKubernetes"))}}
+            {{form-versions
+                cluster=cluster
+                editing=(eq mode "edit")
+                value=config.kubernetesVersion
+                versions=managedVersionChoices
                 initialVersion=config.version
             }}
           {{else}}
@@ -195,7 +203,7 @@
         <div class="col span-6">
           <label class="acc-label">{{t "clusterNew.aliyunkcs.numOfNodes.label"}}</label>
           {{#if (eq step 4)}}
-            {{input-integer min=0 max=300 value=config.numOfNodes classNames="form-control" placeholder=(t "clusterNew.aliyunkcs.numOfNodes.placeholder")}}
+            {{input-integer min=minNumOfNodes max=300 value=config.numOfNodes classNames="form-control" placeholder=(t "clusterNew.aliyunkcs.numOfNodes.placeholder")}}
             <p class="help-block">
               {{t "clusterNew.aliyunkcs.numOfNodes.help"}}
             </p>
