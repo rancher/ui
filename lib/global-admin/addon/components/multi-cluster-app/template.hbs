@@ -1,6 +1,9 @@
 <div class="stack-info">
   <div class="catalog-icon">
-    <img src="{{app.baseAssets}}assets/images/generic-catalog.svg" data-src={{model.catalogTemplate.links.icon}}/>
+    <img
+      src="{{app.baseAssets}}assets/images/generic-catalog.svg"
+      data-src={{model.catalogTemplate.links.icon}}
+    />
   </div>
   <div class="stack-info-row box">
     <div class="stack-info-top row">
@@ -15,23 +18,51 @@
              as |btn|
         }}
           {{#if btn.model.externalIdInfo.version}}
-            {{t (concat 'upgradeBtn.status.' btn.upgradeStatus)}}
+            {{t (concat "upgradeBtn.status." btn.upgradeStatus)}}
             <span class="text-small">({{btn.latestVersion}})</span>
           {{else}}
-            {{t (concat 'upgradeBtn.status.' btn.upgradeStatus)}}
+            {{t (concat "upgradeBtn.status." btn.upgradeStatus)}}
           {{/if}}
         {{/upgrade-btn}}
-        {{badge-state model=model classNames="btn-xs"}}
-        {{action-menu model=model classNames="inline-block"}}
+
+        {{badge-state
+          model=model
+          classNames="btn-xs"
+        }}
+
+        {{action-menu
+          model=model
+          classNames="inline-block"
+        }}
       </div>
     </div>
 
     <hr>
     <div class="stack-info-bottom pt-0">
-      <label for="" class="acc-label">{{t 'newMultiClusterApp.targets.label'}}</label>
+      <label for="" class="acc-label">
+        {{t "newMultiClusterApp.targets.label"}}
+      </label>
       <div class="col span-12 text-small">
         {{#each model.targets as |target|}}
-          {{#link-to-external "apps-tab.detail" target.projectId target.appLink}}{{target.clusterName}}:{{target.projectName}}{{/link-to-external}}
+          {{#if target.project.id}}
+            {{#link-to-external
+               "apps-tab.detail"
+               target.projectId
+               target.appLink
+            }}
+              {{target.clusterName}}:{{target.projectName}}
+            {{/link-to-external}}
+          {{else}}
+            {{#tooltip-element
+               type="tooltip-basic"
+               model=(t "newMultiClusterApp.access.noAccessLink")
+               tooltipTemplate="tooltip-static"
+               aria-describedby="tooltip-base"
+               tooltipFor="tooltipLink"
+            }}
+              {{target.projectId}} <i class="icon icon-alert"></i>
+            {{/tooltip-element}}
+          {{/if}}
         {{/each}}
       </div>
     </div>
