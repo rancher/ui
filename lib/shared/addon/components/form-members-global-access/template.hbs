@@ -36,13 +36,13 @@
                 class="form-control"
                 onchange={{action (mut member.accessType) value="target.value"}}
               >
-                {{#unless (eq member.accessType value)}}
+                {{#unless (eq member.accessType "")}}
                   <option value="" selected=true>
                     {{t "formMembersGlobalAccess.table.prompt"}}
                   </option>
                 {{/unless}}
                 {{#each optionsForAccessType as |choice|}}
-                  <option value="{{choice}}" selected={{eq choice value}}>
+                  <option value="{{choice}}" selected={{eq choice member.accessType}}>
                     {{choice}}
                   </option>
                 {{/each}}
