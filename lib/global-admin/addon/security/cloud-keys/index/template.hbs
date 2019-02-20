@@ -23,24 +23,24 @@
 </section>
 <section class="instances">
   {{#sortable-table
+     body=filteredContent
      bulkActions=true
      classNames="grid sortable-table"
-     sortBy=sortBy
      descending=descending
+     extraSearchFields=extraSearchFields
+     groupByKey="displayType"
+     groupByRef="type"
      headers=headers
+     rightActions=true
      searchText=searchText
      showHeader=true
-     body=filteredContent
-     rightActions=true
+     sortBy=sortBy
      as |sortable kind row dt|
   }}
     {{#if (eq kind "row")}}
       <tr class="main-row">
         <td valign="middle" class="row-check" style="padding-top: 2px;">
           {{check-box nodeId=row.id}}
-        </td>
-        <td data-title="{{t "generic.type"}}:" class="clip">
-          {{row.displayType}}
         </td>
         <td data-title="{{t "generic.name"}}:" class="clip">
           {{row.displayName}}
@@ -50,6 +50,12 @@
         </td>
         <td data-title="{{t "generic.actions"}}:" class="actions">
           {{action-menu model=row}}
+        </td>
+      </tr>
+    {{else if (eq kind "group")}}
+      <tr class="group-row">
+        <td colspan="{{sortable.fullColspan}}" class="pl-10">
+          {{row.group}}
         </td>
       </tr>
     {{else if (eq kind "nomatch")}}
