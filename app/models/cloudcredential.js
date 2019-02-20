@@ -1,12 +1,14 @@
 import Resource from '@rancher/ember-api-store/models/resource';
 import { computed } from '@ember/object';
 import { notEmpty } from '@ember/object/computed';
+import { inject as service } from '@ember/service';
 
 const cloudCredential = Resource.extend({
+  modal:    service(),
   type:     'cloudCredential',
 
   canClone: false,
-  canEdit:  false,
+  canEdit:  true,
 
   isAmazon: notEmpty('amazonec2credentialConfig'),
   isAzure:  notEmpty('azurecredentialConfig'),
@@ -33,6 +35,11 @@ const cloudCredential = Resource.extend({
   }),
 
 
+  actions: {
+    edit() {
+      this.modal.toggleModal('modal-add-cloud-key', { cloudCredential: this });
+    }
+  },
 });
 
 export default cloudCredential;
