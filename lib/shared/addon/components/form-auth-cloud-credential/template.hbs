@@ -10,7 +10,7 @@
         class="form-control inline-block"
         onchange={{action (mut primaryResource.cloudCredentialId) value="target.value"}}
         disabled={{if showAddCloudCredential true}}
-        style="max-width: 90%;"
+        style="max-width: 80%;"
       >
 
         {{#unless (not-eq primaryResource.cloudCredentialId primaryResource.cloudCredentialId)}}
@@ -36,8 +36,9 @@
         {{action "addCloudCredential"}}
         class="btn btn-sm bg-primary inline-block"
         style="margin-top: -5px;"
+        disabled={{if showAddCloudCredential true}}
       >
-        <i class="icon icon-plus"></i>
+        {{t "formAuthCloudCredential.add"}}
       </button>
 
     </div>
