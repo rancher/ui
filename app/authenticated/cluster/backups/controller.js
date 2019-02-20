@@ -9,9 +9,15 @@ export default Controller.extend({
 
   headers: [
     {
+      name:           'state',
+      sort:           ['sortState', 'displayName'],
+      searchField:    'displayState',
+      translationKey: 'generic.state',
+      width:          120
+    },
+    {
       name:           'target',
       translationKey: 'backupsPage.table.target.label',
-      width:          80,
     },
     {
       name:           'name',
