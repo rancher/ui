@@ -281,9 +281,9 @@ const rootNav = [
   {
     scope:          'global',
     id:             'nodes-node-drivers',
-    localizedLabel: 'nav.admin.nodeDrivers',
+    localizedLabel: 'nav.admin.drivers',
     route:          'nodes.custom-drivers',
-    resource:       ['nodedriver', 'kontainerDriver'],
+    resource:       ['nodedriver', 'kontainerdriver'],
     resourceScope:  'global',
   },
   {

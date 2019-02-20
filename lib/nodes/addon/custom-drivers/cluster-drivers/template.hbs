@@ -1,10 +1,15 @@
-<section class="header clearfix">
+<section class="header has-tabs clearfix p-0">
+  <ul class="tab-nav">
+    <li>
+      {{#link-to "custom-drivers.cluster-drivers"}}{{t 'customDrivers.clusters'}}{{/link-to}}
+    </li>
+    <li>
+      {{#link-to "custom-drivers.node-drivers"}}{{t 'customDrivers.nodes'}}{{/link-to}}
+    </li>
+  </ul>
   <div class="right-buttons">
-    {{!-- <button disabled={{rbac-prevents resource="kontainerDriver" scope="global" permission="create"}} class="btn btn-sm bg-primary right-divider-btn" {{action 'addNewDriver'}}>{{t 'machinePage.add'}}</button> --}}
-    <button class="btn btn-sm bg-primary right-divider-btn" {{action 'addNewDriver'}}>{{t 'clusterDrivers.add'}}</button>
+    <button disabled={{rbac-prevents resource="kontainerdriver" scope="global" permission="create"}} class="btn btn-sm bg-primary right-divider-btn" {{action 'addNewDriver'}}>{{t 'clusterDrivers.add'}}</button>
   </div>
-
-  <h1>{{t 'clusterDrivers.title'}}</h1>
 </section>
 
 {{#sortable-table

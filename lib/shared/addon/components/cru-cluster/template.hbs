@@ -20,11 +20,8 @@
       {{#each (get providerGroups "cloudGroup") as |choice|}}
         {{#unless choice.scriptError}}
           {{#link-to (query-params provider=choice.name) class=(concat "mb-20 mt-10 col span-3 col-inline nav-box-item driver " choice.name)}}
-            <div class="machine-driver {{choice.name}}"></div>
+            <div class="machine-driver {{if choice.genericIcon 'generic'}} {{choice.name}}"></div>
             <p class="driver-name">{{driver-name choice.name}}</p>
-            {{#if choice.genericIcon}}
-              <p class="text-link text-bold">{{driver-name choice.name}}</p>
-            {{/if}}
           {{/link-to}}
         {{else}}
           <div class={{concat "disabled error-loading-driver mb-20 mt-10 col span-3 col-inline nav-box-item driver " choice.name}}>
@@ -33,11 +30,10 @@
               {{/tooltip-element}}
             <div class="machine-driver {{choice.name}}"></div>
             <p class="driver-name">{{driver-name choice.name}}</p>
-            {{#if choice.genericIcon}}
-              <p class="text-link text-bold">{{driver-name choice.name}}</p>
-            {{/if}}
           </div>
         {{/unless}}
+      {{else}}
+        <div class="machine-driver-empty">{{t 'clusterNew.driverLabels.noCloud'}}</div>
       {{/each}}
     </div>
 
@@ -68,6 +64,8 @@
           <div class="machine-driver {{if choice.genericIcon 'generic'}} {{choice.name}}"></div>
           <p class="driver-name">{{driver-name choice.name}}</p>
         {{/link-to}}
+      {{else}}
+        <div class="machine-driver-empty">{{t 'clusterNew.driverLabels.noInfra'}}</div>
       {{/each}}
     </div>
 
@@ -86,38 +84,6 @@
       {{/each}}
     </div>
   </div>
-
-  {{#if (gte providerGroups.externalGroup.length 1)}}
-    <div class="row nav nav-boxes checked-active inline-form">
-      <div class="col span-10 col-inline mb-0">
-        <div>
-          <label class="acc-label">{{t 'clusterNew.driverLabels.external'}}</label>
-        </div>
-        {{#each (get providerGroups "externalGroup") as |choice|}}
-          {{#unless choice.scriptError}}
-            {{#link-to (query-params provider=choice.name) class=(concat "mb-20 mt-10 col span-3 col-inline nav-box-item driver " choice.name)}}
-              <div class="machine-driver {{choice.name}}"></div>
-              <p class="driver-name">{{driver-name choice.name}}</p>
-              {{#if choice.genericIcon}}
-                <p class="text-link text-bold">{{driver-name choice.name}}</p>
-              {{/if}}
-            {{/link-to}}
-          {{else}}
-            <div class={{concat "disabled error-loading-driver mb-20 mt-10 col span-3 col-inline nav-box-item driver " choice.name}}>
-              {{#tooltip-element type="tooltip-basic" model=choice.scriptError tooltipTemplate='tooltip-static' aria-describedby="tooltip-base" tooltipFor="tooltipDriverError"}}
-                <span class="icon icon-alert"></span>
-              {{/tooltip-element}}
-              <div class="machine-driver {{choice.name}}"></div>
-              <p class="driver-name">{{driver-name choice.name}}</p>
-              {{#if choice.genericIcon}}
-                <p class="text-link text-bold">{{driver-name choice.name}}</p>
-              {{/if}}
-            </div>
-          {{/unless}}
-        {{/each}}
-      </div>
-    </div>
-  {{/if}}
 {{/unless}}
 
 
