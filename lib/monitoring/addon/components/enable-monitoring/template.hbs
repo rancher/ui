@@ -15,6 +15,14 @@
   </div>
 </section>
 
+{{#if (and (eq selected "prometheus") scope.currentProject.enableProjectMonitoring (not scope.currentCluster.enableClusterMonitoring))}}
+  {{#banner-message color="bg-warning"}}
+    <p>
+      {{t "monitoringPage.clusterNotEnabled"}}
+    </p>
+  {{/banner-message}}
+{{/if}}
+
 {{#banner-message color="bg-info"}}
   <p>
     {{#if (eq selected "none")}}
@@ -24,7 +32,7 @@
         {{t (concat "monitoringPage." level ".disabled")}}
       {{/if}}
     {{else if (eq selected "prometheus")}}
-      {{t (if enabled "monitoringPage.toUpdate" "monitoringPage.prometheus")}}
+      {{t (if enabled (concat "monitoringPage.toUpdate." level) "monitoringPage.prometheus")}}
     {{/if}}
   </p>
 {{/banner-message}}

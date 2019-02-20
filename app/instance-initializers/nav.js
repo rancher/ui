@@ -126,9 +126,6 @@ const rootNav = [
         resourceScope:  'global',
         resource:       [],
         ctx:            [getProjectId],
-        condition() {
-          return get(this, 'cluster.enableClusterMonitoring')
-        }
       },
       {
         id:             'tools-pipeline',
