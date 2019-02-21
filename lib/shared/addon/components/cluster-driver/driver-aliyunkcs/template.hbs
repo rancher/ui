@@ -72,23 +72,21 @@
         <div class="col span-4">
           <label class="acc-label">{{t "clusterNew.aliyunkcs.version.label"}}</label>
           {{#if (and (eq step 2) (eq config.clusterType "Kubernetes"))}}
-            {{form-versions
-                cluster=cluster
-                editing=(eq mode "edit")
+            {{searchable-select
+                allowCustom=true
                 value=config.kubernetesVersion
-                versions=versionChoices
-                initialVersion=config.version
+                content=versionChoices
             }}
           {{else if (and (eq step 2) (eq config.clusterType "ManagedKubernetes"))}}
-            {{form-versions
-                cluster=cluster
-                editing=(eq mode "edit")
+            {{searchable-select
+                allowCustom=true
                 value=config.kubernetesVersion
-                versions=managedVersionChoices
-                initialVersion=config.version
+                content=managedVersionChoices
             }}
+          {{else if config.kubernetesVersion}}
+            <div>{{config.kubernetesVersion}}</div>
           {{else}}
-            <div>{{config.version}}</div>
+            <div>{{t "generic.default"}}</div>
           {{/if}}
         </div>
         <div class="col span-4">
