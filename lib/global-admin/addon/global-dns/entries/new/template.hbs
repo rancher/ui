@@ -39,16 +39,35 @@
             {{t "globalDnsPage.entriesPage.config.provider.label"}}
             {{field-required}}
           </label>
-          {{new-select
-            classNames="form-control"
-            content=providers
-            id="route53-secret-key"
-            localizedPrompt=true
-            optionLabelPath="displayName"
-            optionValuePath="id"
-            prompt="globalDnsPage.entriesPage.config.provider.placeholder"
-            value=primaryResource.providerId
-          }}
+          {{#if providers.length}}
+            {{new-select
+              classNames="form-control"
+              content=providers
+              id="route53-secret-key"
+              localizedPrompt=true
+              optionLabelPath="displayName"
+              optionValuePath="id"
+              prompt="globalDnsPage.entriesPage.config.provider.placeholder"
+              value=primaryResource.providerId
+            }}
+          {{else}}
+            {{#if primaryResource.providerId}}
+              <div class="p-5">
+                {{#tooltip-element
+                   type="tooltip-basic"
+                   model=(t "globalDnsPage.entriesPage.access.noAccessProvider")
+                   tooltipTemplate="tooltip-static"
+                   aria-describedby="tooltip-base"
+                   tooltipFor="tooltipLink"
+                }}
+                  {{primaryResource.providerId}}
+                  <i class="icon icon-alert"></i>
+                {{/tooltip-element}}
+              </div>
+            {{else}}
+              {{t "globalDnsPage.noProviders"}}
+            {{/if}}
+          {{/if}}
         </div>
       </div>
 
@@ -84,17 +103,36 @@
             >
               {{t "globalDnsPage.entriesPage.config.multiCluster.label"}}
             </label>
-            {{new-select
-              classNames="form-control"
-              content=model.multiClusterApps
-              id="route53-access-key"
-              localizedPrompt=true
-              optionLabelPath="displayName"
-              optionValuePath="id"
-              prompt="globalDnsPage.entriesPage.config.multiCluster.placeholder"
-              value=primaryResource.multiClusterAppId
-              disabled=(gte primaryResource.projectIds.length 1)
-            }}
+            {{#if multiClusterApps.length }}
+              {{new-select
+                classNames="form-control"
+                content=multiClusterApps
+                id="route53-access-key"
+                localizedPrompt=true
+                optionLabelPath="displayName"
+                optionValuePath="id"
+                prompt="globalDnsPage.entriesPage.config.multiCluster.placeholder"
+                value=primaryResource.multiClusterAppId
+                disabled=(gte primaryResource.projectIds.length 1)
+              }}
+            {{else}}
+              {{#if primaryResource.multiClusterAppId}}
+                <div class="p-5">
+                  {{#tooltip-element
+                     type="tooltip-basic"
+                     model=(t "globalDnsPage.entriesPage.access.noAccessMulti")
+                     tooltipTemplate="tooltip-static"
+                     aria-describedby="tooltip-base"
+                     tooltipFor="tooltipLink"
+                  }}
+                    {{primaryResource.multiClusterAppId}}
+                    <i class="icon icon-alert"></i>
+                  {{/tooltip-element}}
+                </div>
+              {{else}}
+                {{t "globalDnsPage.noApps"}}
+              {{/if}}
+            {{/if}}
           {{else}}
             <label
               class="acc-label"
@@ -111,7 +149,7 @@
                 disabled={{if primaryResource.multiClusterAppId true false}}
               >
                 {{#each groupedClustersProjects as |cluster|}}
-                  <optgroup label="{{cluster.group}}">
+                  <optgroup label="{{cluster.displayName}}">
                     {{#each cluster.options as |project|}}
                       <option
                         value={{project.id}}
@@ -124,9 +162,24 @@
                 {{/each}}
               </select>
             {{else}}
-              <div>
-                {{t "globalDnsPage.noProjects"}}
-              </div>
+              {{#if primaryResource.projectIds}}
+                {{#each primaryResource.projectIds as |projectId|}}
+                  {{#tooltip-element
+                     type="tooltip-basic"
+                     model=(t "globalDnsPage.entriesPage.access.noAccessProject")
+                     tooltipTemplate="tooltip-static"
+                     aria-describedby="tooltip-base"
+                     tooltipFor="tooltipLink"
+                  }}
+                    {{projectId}}
+                    <i class="icon icon-alert"></i>
+                  {{/tooltip-element}}
+                {{/each}}
+              {{else}}
+                <div>
+                  {{t "globalDnsPage.noProjects"}}
+                </div>
+              {{/if}}
             {{/if}}
           {{/if}}
         </div>
@@ -174,6 +227,7 @@
 <section>
   {{top-errors errors=errors}}
   {{save-cancel
+    editing=editing
     cancel="cancel"
     classNames="text-center mt-20"
     save="save"

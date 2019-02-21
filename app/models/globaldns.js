@@ -1,5 +1,5 @@
 import Resource from '@rancher/ember-api-store/models/resource';
-import { get, computed, setProperties } from '@ember/object';
+import { get, set, computed, setProperties } from '@ember/object';
 import { inject as service } from '@ember/service';
 import { reference } from '@rancher/ember-api-store/utils/denormalize';
 
@@ -40,9 +40,18 @@ export default Resource.extend({
 
     const myProjects = [];
 
-    allProjects.forEach( (project) => {
-      if (projectIds.includes(project.id)) {
-        myProjects.pushObject(project);
+    projectIds.forEach( (projectId) => {
+      let match = allProjects.findBy('id', projectId);
+
+      if (match) {
+        set(match, 'accessible', true);
+
+        myProjects.pushObject(match);
+      } else {
+        myProjects.pushObject({
+          id:         projectId,
+          accessible: false,
+        })
       }
     });
 
