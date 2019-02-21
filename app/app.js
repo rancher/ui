@@ -63,7 +63,7 @@ const App = Application.extend({
           'authenticated.prefs':                          'authenticated.prefs',
           'authenticated.cluster.nodes':                  'authenticated.cluster.nodes',
           'authenticated.cluster.security.members.index': 'authenticated.cluster.security.members.index',
-          'global-admin.security.cloud-keys':             'global-admin.security.cloud-keys',
+          'global-admin.security.cloud-credentials':      'global-admin.security.cloud-credentials',
           'logout':                                       'logout'
         }
       }
