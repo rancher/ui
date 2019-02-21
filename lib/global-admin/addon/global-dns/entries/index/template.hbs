@@ -55,19 +55,46 @@
                  "apps-tab.detail"
                  target.projectId
                  target.appLink
+                 classNames="block"
               }}
                 {{target.clusterName}}:{{target.projectName}}
               {{/link-to-external}}
+            {{else}}
+              <div>
+                {{#tooltip-element
+                   type="tooltip-basic"
+                   model=(t "globalDnsPage.entriesPage.access.noAccessMulti")
+                   tooltipTemplate="tooltip-static"
+                   aria-describedby="tooltip-base"
+                   tooltipFor="tooltipLink"
+                }}
+                  {{entry.multiClusterAppId}} <i class="icon icon-alert"></i>
+                {{/tooltip-element}}
+              </div>
             {{/each}}
           {{else}}
             {{#each entry.linkedProjects as |project|}}
-              {{#link-to-external
-                 "authenticated.project"
-                 project.id
-                 classNames="block"
-              }}
-                {{project.cluster.displayName}}:{{project.displayName}}
-              {{/link-to-external}}
+              {{#if project.accessible}}
+                {{#link-to-external
+                   "authenticated.project"
+                   project.id
+                   classNames="block"
+                }}
+                  {{project.cluster.displayName}}:{{project.displayName}}
+                {{/link-to-external}}
+              {{else}}
+                <div>
+                  {{#tooltip-element
+                     type="tooltip-basic"
+                     model=(t "globalDnsPage.entriesPage.access.noAccessProject")
+                     tooltipTemplate="tooltip-static"
+                     aria-describedby="tooltip-base"
+                     tooltipFor="tooltipLink"
+                  }}
+                    {{project.id}} <i class="icon icon-alert"></i>
+                  {{/tooltip-element}}
+                </div>
+              {{/if}}
             {{/each}}
           {{/if}}
         </td>

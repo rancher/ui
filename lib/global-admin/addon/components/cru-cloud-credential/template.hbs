@@ -28,7 +28,7 @@
           class="form-control"
           onchange={{action "selectConfig" value="target.value"}}
         >
-          {{#if (not-eq cloudKeyType value)}}
+          {{#if (not-eq cloudCredentialType value)}}
             <option value="" selected=true >
               {{t "modalAddCloudKey.typeSelect.prompt"}}
             </option>
@@ -36,7 +36,7 @@
           {{#each configChoices as |choice|}}
             <option
               value="{{choice.name}}"
-              selected={{eq choice.name cloudKeyType}}
+              selected={{eq choice.name cloudCredentialType}}
             >
               {{choice.displayName}}
             </option>
@@ -46,7 +46,7 @@
 
     </div>
 
-    {{#if (eq cloudKeyType "amazon")}}
+    {{#if (eq cloudCredentialType "amazon")}}
       <div class="row">
         <div class="col span-6">
           <label class="acc-label">{{t "nodeDriver.amazonec2.region.label"}}</label>
@@ -88,7 +88,7 @@
           }}
         </div>
       </div>
-    {{else if (eq cloudKeyType "azure")}}
+    {{else if (eq cloudCredentialType "azure")}}
       <div class="row">
         <div class="col span-6">
           <label class="acc-label">
@@ -128,7 +128,7 @@
           }}
         </div>
       </div>
-    {{else if (eq cloudKeyType "digitalOcean")}}
+    {{else if (eq cloudCredentialType "digitalOcean")}}
       <div class="row">
         <div class="col span-6">
           <label class="acc-label" for="digitalocean-accessToken">
@@ -146,7 +146,7 @@
           </p>
         </div>
       </div>
-    {{else if (eq cloudKeyType "vmware")}}
+    {{else if (eq cloudCredentialType "vmware")}}
       <div class="row">
         <div class="col span-6">
           <label class="acc-label">
