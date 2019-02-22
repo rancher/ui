@@ -1,4 +1,4 @@
-<table class="fixed grid sortable-table {{if internalBulkActions 'has-actions'}} {{if groupByKey 'bordered'}} {{if subRows 'has-sub-rows bordered'}} {{tableClassNames}}">
+<table class="fixed grid sortable-table {{if internalBulkActions "has-actions"}} {{if groupByKey "bordered"}} {{if subRows "has-sub-rows bordered"}} {{tableClassNames}}">
   <thead>
     <tr class="fixed-header-placeholder">
       {{#if internalBulkActions}}
@@ -17,7 +17,7 @@
           <div class="bulk-actions pull-left">
             {{#each availableActions as |action index|}}
               {{#if action.enabled}}
-                <a class="btn btn-sm bg-primary" href="#" onclick={{action 'executeBulkAction' action.action}} tabindex={{index}}>
+                <a class="btn btn-sm bg-primary" href="#" onclick={{action "executeBulkAction" action.action}} tabindex={{index}}>
                   {{t action.label}}
                   <i class="{{action.icon}}"></i>
                 </a>
@@ -37,7 +37,7 @@
         <div class="pull-left">
           {{#if leftActions}}
             <div class="vertical-middle pr-20">
-              {{yield this 'left-actions'}}
+              {{yield this "left-actions"}}
             </div>
           {{/if}}
         </div>
@@ -46,11 +46,11 @@
           {{#if search}}
             <div class="vertical-middle">
               {{#ember-wormhole to=searchToWormhole renderInPlace=(not searchToWormhole)}}
-                <div class="{{unless searchToWormhole 'pull-right'}} search-group input-group">
-                  {{input value=searchText aria-title=(t 'generic.search') type="search" class="input-sm pull-right" placeholder=(t 'generic.search')}}
+                <div class="{{unless searchToWormhole "pull-right"}} search-group input-group">
+                  {{input value=searchText aria-title=(t "generic.search") type="search" class="input-sm pull-right" placeholder=(t "generic.search")}}
                   {{#if searchText}}
                     <span class="input-group-btn">
-                      <button class="btn bg-transparent text-info pl-10 pr-10" {{action 'clearSearch'}}><i class="icon icon-close"/></button>
+                      <button class="btn bg-transparent text-info pl-10 pr-10" {{action "clearSearch"}}><i class="icon icon-close"/></button>
                     </span>
                   {{/if}}
                 </div>
@@ -60,7 +60,7 @@
 
           {{#if rightActions}}
             <div class="vertical-middle pl-20">
-              {{yield this 'right-actions'}}
+              {{yield this "right-actions"}}
             </div>
           {{/if}}
         </div>
@@ -89,7 +89,7 @@
   </thead>
   {{#if prefix}}
     <tbody>
-      {{yield this 'prefix'}}
+      {{yield this "prefix"}}
     </tbody>
   {{/if}}
 
@@ -97,33 +97,33 @@
     {{#if extraGroups.length}}
       {{#each extraGroups as |group|}}
         <tbody class="group">
-          {{yield this 'group' group}}
-          {{yield this 'norows'}}
+          {{yield this "group" group}}
+          {{yield this "norows"}}
         </tbody>
       {{/each}}
     {{/if}}
     {{#each groupedContent as |group|}}
       <tbody class="group">
-        {{yield this 'group' group}}
+        {{yield this "group" group}}
         {{#each group.items as |row|}}
-          {{yield this 'row' row dt (array-includes childFilterNodes row.id)}}
+          {{yield this "row" row dt (array-includes childFilterNodes row.id)}}
         {{/each}}
       </tbody>
     {{else}}
-      {{yield this (if arranged.length 'nomatch' 'norows')}}
+      {{yield this (if arranged.length "nomatch" "norows")}}
     {{/each}}
   {{else}}
     <tbody>
       {{#each pagedContent as |row|}}
-        {{yield this 'row' row dt (array-includes childFilterNodes row.id)}}
+        {{yield this "row" row dt (array-includes childFilterNodes row.id)}}
       {{else}}
-        {{yield this (if arranged.length 'nomatch' 'norows')}}
+        {{yield this (if arranged.length "nomatch" "norows")}}
       {{/each}}
     </tbody>
   {{/if}}
 
   {{#if suffix}}
-    {{yield this 'suffix'}}
+    {{yield this "suffix"}}
   {{/if}}
 </table>
 
