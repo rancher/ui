@@ -1,25 +1,41 @@
 <section class="header">
-  {{#if editing}}
-    <h1>{{t 'nodeDriver.editTemplate' name=originalModel.displayName}}</h1>
-  {{else}}
-    <h1>{{t 'nodeDriver.addTemplate'}}</h1>
-  {{/if}}
+  <h1>
+    {{#if editing}}
+      {{t "nodeDriver.editTemplate" name=originalModel.displayName}}
+    {{else if cloning}}
+      {{t "nodeDriver.cloneTemplate" name=originalModel.displayName}}
+    {{else}}
+      {{t "nodeDriver.addTemplate"}}
+    {{/if}}
+  </h1>
 </section>
 
 {{#if editing}}
-  {{banner-message color="bg-info" icon="icon-info" message=(t 'nodeDriver.editWarning' htmlSafe=true)}}
+  {{banner-message
+    color="bg-info"
+    icon="icon-info"
+    message=(t "nodeDriver.editWarning" htmlSafe=true)
+  }}
 {{/if}}
 
 {{#if loading}}
-  <div class="text-center m-40"><i class="icon icon-spinner icon-spin"/> {{t 'generic.loading'}}</div>
+  <div class="text-center m-40">
+    <i class="icon icon-spinner icon-spin"/>
+    {{t "generic.loading"}}
+  </div>
 {{else}}
   {{#if showPicker}}
     <section class="pt-10">
       {{#each availableDriversGroups as |choices|}}
         <div class="row nav nav-boxes checked-active">
           {{#each choices as |choice|}}
-            <a {{action "switchDriver" choice.name}} alt={{choice.name}} class="mb-20 col span-2 nav-box-item driver {{if (eq choice.name driver) 'active'}}" href="#">
-              <div class="machine-driver {{if (or choice.hasUi choice.hasBuiltinIconOnly) '' 'generic'}} {{choice.name}}"></div>
+            <a
+              {{action "switchDriver" choice.name}}
+              alt={{choice.name}}
+              class="mb-20 col span-2 nav-box-item driver {{if (eq choice.name driver) "active"}}"
+              href="#"
+            >
+              <div class="machine-driver {{if (or choice.hasUi choice.hasBuiltinIconOnly) "" "generic"}} {{choice.name}}"></div>
               <p>{{driver-name choice.name}}</p>
             </a>
           {{/each}}
@@ -29,7 +45,7 @@
   {{/if}}
 
   {{#if driver}}
-    {{component (if (or (not driverObj) driverObj.hasUi) (concat 'driver-' driver) 'driver-other')
+    {{component (if (or (not driverObj) driverObj.hasUi) (concat "driver-" driver) "driver-other")
       model=model
       driverName=driver
       editing=editing

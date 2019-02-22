@@ -5,8 +5,6 @@ import { ucFirst } from 'shared/utils/util';
 import { getDisplayLocation, getDisplaySize } from 'shared/mixins/node-driver';
 
 export default Resource.extend({
-
-
   intl:         service(),
   modalService: service('modal'),
 
@@ -51,17 +49,18 @@ export default Resource.extend({
         driver,
         config:       get(this, `${ driver }Config`),
         nodeTemplate: this,
+        edit:         true,
       });
     },
 
     clone() {
-      const clone  = this.cloneForNew();
-      const driver = get(this, 'driver');
+      const { driver } = this;
 
       get(this, 'modalService').toggleModal('modal-edit-node-template', {
         driver,
         config:       get(this, `${ driver }Config`),
-        nodeTemplate: clone,
+        nodeTemplate: this,
+        clone:        true,
       });
     }
   },
