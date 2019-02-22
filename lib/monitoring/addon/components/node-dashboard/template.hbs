@@ -5,7 +5,7 @@
   </div>
   <div class="vertical-middle">
     <label class="acc-label vertical-middle p-0">{{t 'hostsPage.hostPage.ipAddress'}}:</label>
-    <div class="inline-block">{{node-ip model=model.node textMuted=false}}</div>          
+    <div class="inline-block">{{node-ip model=model.node textMuted=false}}</div>
   </div>
   <div class="vertical-middle">
     <label class="acc-label vertical-middle p-0">{{t 'hostsPage.hostPage.dockerVersion'}}:</label>
@@ -43,7 +43,11 @@
   </div>
 </div>
 
-{{nodes-reservation nodes=model.nodes}}
+{{#if isMonitoringReady}}
+  {{nodes-live nodes=model.nodes}}
+{{else}}
+  {{nodes-reservation nodes=model.nodes}}
+{{/if}}
 
 {{node-conditions conditionsSource=model.node.conditions}}
 

@@ -17,7 +17,11 @@
     {{/if}}
   {{/unless}}
 
-  {{nodes-reservation nodes=nodes}}
+  {{#if isMonitoringReady}}
+    {{nodes-live nodes=nodes}}
+  {{else}}
+    {{nodes-reservation nodes=nodes}}
+  {{/if}}
 
   <div class="row mt-0">
     {{k8s-component-status
