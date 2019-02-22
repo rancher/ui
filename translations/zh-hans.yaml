@@ -5,7 +5,6 @@ languageContribute: "帮助翻译Rancher"
 # Really generic things used in multiple places (use sparingly)
 ##############################
 generic:
-
   actions: 操作
   activate: 激活
   add: 添加
@@ -63,6 +62,7 @@ generic:
   loading: "加载中..."
   loggingOut: "注销..."
   member: 成员
+  mbps: Mbps
   mibibyte: 'MiB'
   minutes: 分钟
   milliseconds: '毫秒'
@@ -123,7 +123,6 @@ generic:
   readWrite: 读写
   writeOnly: 只写
   full: 完整
-
 realmNames:
   all: 全部
   usWest: 美国西部
@@ -283,7 +282,7 @@ rolesPage:
       project: 新项目默认角色
       showDefaults: 仅显示默认角色
   errors:
-    inherited: "角色 {displayName} 被 {roleNames} 继承"
+    inherited: "角色 {displayName}被{roleNames}继承。"
   resources:
     title: 授权资源
     detail: 对Kubernetes资源的具体操作进行授权。
@@ -648,7 +647,10 @@ catalogPage:
       alreadyDeployed: 已经部署
 
 cloudCredentialsPage:
-  addKey: 添加Cloud Credential
+  header: Cloud Credentials
+  rightButtons:
+    addKey: Add Cloud Credential
+    nodeTemplates: 管理主机模板
   index:
     table:
       noData: 当前没有Cloud Credential
@@ -880,7 +882,6 @@ clusterDashboard:
   systemProject: "这是具有所有Kubernetes和{appName}系统命名空间的系统项目，修改系统项目中的资源可能会导致系统无法正常运行。"
   notActive: 此集群当前为<b>{state}</b>
   notReady: 此集群当前为<b>{state}</b>，在API准备就绪之前，直接与API交互的功能将不可用。
-
 metricsAction:
   description: 查看实时监控指标
   noData: 没有足够的数据绘制图表
@@ -976,7 +977,7 @@ editDns:
   kind:
     label: As a
     clusterIP: Cluster IP (Internal Only)
-    loadBalancer: Layer-4 Load Balancer
+    loadBalancer: L4负载均衡器
     nodePort: NodePort(On every node)
     externalName: ExternalName
     headless: Headless Service
@@ -989,8 +990,8 @@ editDns:
   recordType:
     label: "解析到"
     arecord: 外部IP地址
-    cname: '外部主机名/域名'
-    alias: 服务别名
+    cname: 外部主机名
+    alias: 服务名别名
     workload: 工作负载
     selector: Pod
     clusterIp: "Cluster IP"
@@ -1109,8 +1110,15 @@ globalDnsPage:
   noDnsProviderMatch: 没有DNS提供商匹配当前搜索。
   noDnsProviderData: 当前没有全局DNS提供商。
   noProjects: 没有要选择的项目
+  noApps: No Accessible Multi Cluster Apps
+  noProviders: No Accessible Providers
   entriesPage:
+    access:
+      noAccessMulti: 您无法访问目标应用程序
+      noAccessProvider: You do not have access to the provider
+      noAccessProject: 您无法访问目标项目
     add: 添加全局DNS条目
+    projectHelp: "To finalize Global DNS for projects you must add the following annotation label ( <code>rancher.io/globalDNS.hostname</code> ) on the ingress in the project, where <code>hostname</code> is the host name used in the routing rules."
     table:
       name: 名称
       fqdn: FQDN(域名)
@@ -1297,7 +1305,7 @@ hostsPage:
         labelText: '供应商:'
         noHost: 自定义
       kernel: '内核'
-      docker: 'Docker: '
+      docker: 'Docker:'
       os: '操作系统'
       milliCpu:
         labelText: mCPU
@@ -1604,7 +1612,9 @@ newStack:
 
 nodeTemplatesPage:
   header: 主机模板
-  actionButton: 添加模板
+  rightButtons:
+    actionButton: 添加模板
+    cloudCredentials: 管理云凭证
   detail: 主机模板用于在基础设施提供商上部署组成集群的主机。
   table:
     state: 状态
@@ -1904,8 +1914,8 @@ accordionRow:
     none: 无
     incomplete: 未完成
     error: 错误
-    configured: 已配置
     notConfigured: 未配置
+    configured: 已配置
     countConfigured: "{count}条规则已配置"
     standard: 默认
     custom: 自定义
@@ -1924,6 +1934,7 @@ annotationsSection:
   value: 值
   noData: 没有注释
   noMatch: 没有符合当前搜索的注释
+
 authorizedEndpoint:
   enabled:
     label: Authorized Cluster Endpoint
@@ -2060,7 +2071,6 @@ catalogSettings:
       header: "您可以自定义应用商店，每个自定义商店需满足以下要求:"
       help-name: 唯一的名称
       help-repo: '仓库地址:'
-      help-branch: "可选: 如果使用基于Git的应用商店，可能需要设置分支名称，不指定默认拉取master分支。"
       help-git: "基于Git的商店地址，例如: https://github.com/{appName}/charts.git。"
       help-chart: 'Helm Charts server URL，例如: https://kubernetes-charts.storage.googleapis.com/，详细信息可查看<a href="https://docs.helm.sh/developing_charts/#hosting-chart-repositories" target="_blank" rel="nofollow noopener noreferrer">Chart托管仓库</a>。'
     addActionLabel: 添加应用商店
@@ -2116,10 +2126,11 @@ clusterNew:
   driverLabels:
     cloud: Kubernetes托管服务商
     custom: 添加主机自建Kubernetes集群
-    external: User Provided
     import: 导入现有的Kubernetes集群
     infra: 来自云服务商提供的主机
-  externalError: 'Component could not be loaded. Check URL.'
+    noCloud: 没有启用集群驱动程序。
+    noInfra: 没有启用主机驱动程序。
+  externalError: '无法加载组件。检查URL。'
   members:
     label: 成员角色
     detail: 控制哪些用户可以访问集群，以及他们拥有的对其进行更改的权限。
@@ -2132,16 +2143,17 @@ clusterNew:
   customize:
     title: 集群选项
     detail: 自定义将要创建的集群
+  security:
+    title: 安全
+    detail: 自定义GKE服务账号和访问权限
   psp:
     label: 默认的Pod安全策略
     prompt: 选择一个Pod安全策略...
     none: 没有定义策略
     required: 启用时需要设置一个默认Pod安全策略
-  security:
-    title: 安全
-    detail: 自定义GKE服务账号和访问权限
   amazoneks:
     label: AWS的基于Kubernetes的弹性容器服务
+    shortLabel: Amazon EKS
     ingressWarning: "注意:目前Amazon EKS不会在启动新的集群时创建传入控制器。如果需要此功能，则必须在集群创建后手动创建一个传入控制器。"
     access:
       title: 账户访问
@@ -2379,6 +2391,74 @@ clusterNew:
         parsedDnsServiceIp: 'Kubernetes DNS服务IP地址必须在Kubernetes服务地址范围内。'
         parsedDockerBridgeCidr: 'Docker bridge地址不能与选定的虚拟网络或Kubernetes服务地址相同'
 
+  aliyunkcs:
+    label: Aliyun Kubernetes Container Service
+    shortLabel: Alibaba ACK
+    access:
+      next: "Next: Configure Cluster"
+      loading: "Loading Zones from Alibaba ACK"
+      title: Account Access
+      detail: Choose the region and API Key that will be used to launch Alibaba Kubernetes Service
+    cluster:
+      title: Cluster Configuration
+      detail: Choose the Zone and Kubernetes version that will be used to launch Alibaba Kubernetes Service
+      next: "Next: Configure Master Nodes"
+      loading: "Loading Availability Zones from Alibaba"
+    clusters:
+      k8s: Kubernetes
+      managed: Managed Kubernetes
+      label: Cluster Type
+    master:
+      title: Master Nodes
+      detail: Configure the master nodes that will be used to launch Alibaba Kubernetes Service
+      next: "Next: Configure Worker Nodes"
+      loading: "Loading Key Pairs from Alibaba"
+    worker:
+      title: Worker Nodes
+      detail: Configure the worker nodes that will be used to launch Alibaba Kubernetes Service
+    disk:
+      efficiency: Ultra Disk
+      ssd: SSD Disk
+    rootSize:
+      label: 根磁盘大小
+      placeholder: '例如：120'
+    rootType:
+      label: 根磁盘类型
+    storageType:
+      label: 数据磁盘类型
+    storageSize:
+      label: 数据磁盘大小
+      placeholder: '例如: 120'
+    masterNum:
+      label: Master Nodes Count
+      help: The count of master nodes will be launched in this Kubernetes cluster
+    numOfNodes:
+      label: Worker Nodes Count
+      placeholder: '例如: 3'
+      required: Worker Nodes Count is required
+      help: The count of worker nodes will be launched in this Kubernetes cluster
+    keyPair:
+      label: Key Pair
+      required: Key Pair is required
+    regionId:
+      label: Region
+    accessKeyId:
+      label: Access Key
+      placeholder: Your Aliyun access key
+      required: Access Key is required
+    accessKeySecret:
+      label: Secret Key
+      placeholder: Your Aliyun secret key
+      provided: Provided
+      required: Secret Key is required
+    version:
+      label: Kubernetes Version
+    zoneId:
+      label: 可用区域
+      required: 可用区域必须设置
+    instanceType:
+      label: 实例类型
+      required: 实例类型必须设置
   googlegke:
     label: Google Kubernetes引擎
     shortLabel: Google GKE
@@ -2480,44 +2560,39 @@ clusterNew:
     ipPolicyServicesIpv4CidrBlock:
       label: 服务地址范围
       placeholder: '例如: 10.94.0.0/18'
+    header:
+      iPAllocationPolicy: IP分配策略
+      privateCluster: Private Cluster
+      masteAuth: Master Auth
+      nodePoolAutoscaling: 主机池自动伸缩
+      masterAuthorizedNetwork: Master Authorized Network
+    locations:
+      label: 附加区域
+    imageType:
+      label: Image Type
+      UBUNTU: Ubuntu
+      COS: Container-Optimized OS
     network:
       label: 网络
     subNetwork:
-      label: 子网
-    taints:
-      label: 节点污点
-      addAction: 添加污点
-      effect:
-        label: 效果
-      key:
-        label: 键
-        placeholder: 键
-      value:
-        label: 值
-        placeholder: 值
-      required: '必须填写污点键和值'
+      label: 主机子网
     nodeLabels:
-      label: 节点标签
+      label: 主机标签
       addAction: 添加标签
     clusterLabels:
       label: 集群标签
     localSsdCount:
       label: 本地 SSD 磁盘数量
+    diskType:
+      label: 根磁盘类型
+      pd-standard: 标准持久磁盘
+      pd-ssd: SSD持久磁盘
     preemptible:
       label: 可抢占的节点（测试版）
     enableAutoUpgrade:
       label: 自动升级
     enableAutoRepair:
       label: 自动修复
-    imageType:
-      label: 映像类型
-      UBUNTU: Ubuntu
-      COS: 容器优化型操作系统
-    diskType:
-      label: 启动磁盘类型
-      pd-standard: 标准永久性磁盘
-      pd-ssd: SSD永久性磁盘
-    tablesOnly: 仅限表格
     serviceAccount:
       label: 服务帐号
     oauthScopes:
@@ -2544,7 +2619,7 @@ clusterNew:
     stackdriverMonitoringAPI:
       label: Stackdriver Monitoring API
     cloudPlatform:
-      label: Cloud Platform
+      label: 云平台
     bigtableData:
       label: Bigtable 数据
     bigtableAdmin:
@@ -2560,88 +2635,29 @@ clusterNew:
     cloudSourceRepositories:
       label: Cloud Source Repositories
     cloudDebugger:
-      label: Cloud Debugger
-    locations:
-      label: 其他节点位置
-    header:
-      iPAllocationPolicy: IP Allocation策略
-      privateCluster: 私有集群
-      masteAuth: 主节点认证
-      nodePoolAutoscaling: 主机池自动扩所容
-      masterAuthorizedNetwork: 主节点认证网络
-  aliyunkcs:
-    label: 阿里云Kubernetes容器服务
-    access:
-      next: "下一步: 配置集群"
-      loading: "从阿里云获取可用区信息"
-      title: 账户认证
-      detail: 选择阿里云Kubernetes服务所使用的区域
-    cluster:
-      title: 集群配置
-      detail: 选择阿里云Kubernetes服务中使用的可用区和Kubernetes版本
-      next: "下一步: 设置Master节点"
-      loading: "从阿里云获取可用区列表"
-    clusters:
-      k8s: Kubernetes
-      managed: Kubernetes托管版
-      label: 集群类型
-    master:
-      title: Master节点
-      detail: 配置阿里云Kubernetes服务中的Master节点
-      next: "下一步: 设置Worker节点"
-      loading: "从阿里云获取密钥列表"
-    worker:
-      title: Worker节点
-      detail: 配置阿里云Kubernetes服务中的Worker节点
-    disk:
-      efficiency: 高效云盘
-      ssd: SSD云盘
-    rootSize:
-      label: 系统盘大小
-      placeholder: 例如：120
-    rootType:
-      label: 系统盘类型
-    storageType:
-      label: 数据盘类型
-    storageSize:
-      label: 数据盘大小
-      placeholder: 例如：120
-    masterNum:
-      label: Master节点数量
-      help: 将要创建的阿里云Kubernetes服务中所含有的Master节点数量
-    numOfNodes:
-      label: Worker节点数量
-      placeholder: 例如：3
-      help: 将要创建的阿里云Kubernetes服务中所含有的Worker节点数量
-    keyPair:
-      label: 登录密钥对
-      required: 请选择登录密钥对
-    regionId:
-      label: 区域
-    accessKeyId:
-      label: 访问密钥ID
-      placeholder: 你的阿里云访问密钥ID
-      required: 请输入访问密钥ID
-    accessKeySecret:
-      label: 访问密钥
-      placeholder: 你的阿里云访问密钥
-      provided: 已提供
-      required: 请输入访问密钥
-    version:
-      label: Kubernetes版本
-    zoneId:
-      label: 可用区
-      required: 请选择可用区
-    instanceType:
-      label: 实例类型
-      required: 请选择实例类型
+      label: 云调试器
+    taints:
+      label: 污点
+      addAction: 添加污点
+      effect:
+        label: Effect
+      key:
+        label: 键
+        placeholder: Key
+      value:
+        label: 值
+        placeholder: Value
+      required: '污点的 "key"和"value"必须设置.'
+    tablesOnly: Tables Only
   huaweicce:
-    access:
-      title: 账户访问
-      detail: 配置用于与CCE通讯的凭据
+    label: 华为云容器引擎
+    shortLabel: Huawei CCE
     name:
       label: 集群名称
       required: 集群名称必须填写
+    access:
+      title: Account Access
+      detail: 选择用于启动华为云容器引擎的区域和API KEY。
     accessKey:
       label: 访问密钥ID
       placeholder: CCE访问密钥ID
@@ -2681,8 +2697,8 @@ clusterNew:
       none: 无可用子网
     highwaySubnet:
       label: 高速网卡
-      none: 无可用高速网卡
       placeholder: 高速子网
+      none: 没有高速子网被使用
     nodeOption:
       title: 节点选项
       detail: 为节点自定义选项
@@ -2736,8 +2752,7 @@ clusterNew:
       label: 集群标签
       none: 无标签
     nodeLabels:
-      label: 节点标签
-    shortLabel: Huawei CCE
+      label: 主机标签
     clusterEipId:
       label: Cluster Eip
       prompt: 选择Eip...
@@ -2754,9 +2769,9 @@ clusterNew:
     authenticatingProxyCa:
       label: 	CA根证书
     validityPeriod:
-      label: Validity Period
+      label: 有效期
     bmsIsAutoRenew:
-      label: Auto Renew
+      label: 自动更新
     loginMode:
       label: 登录方式
       password: 密码
@@ -2774,6 +2789,32 @@ clusterNew:
       label: 共享Eip类型
   rke:
     etcd:
+      backupConfig:
+        legacy: "This cluster was configured with a legacy ectd snapshot api. The new api replaces the creation time and retention time durations with a simpler creation time in hours and retention count. We have migrated your creation period automatically. Retention count has been configured to the default of 6 backups (current retention duration: {duration}), if you're okay with this setting no further action is required. If not, you may change the setting in the advanced settings section."
+        retention:
+          label: 快照保留数
+          placeholder: "12"
+        interval:
+          label: 快照创建间隔
+          placeholder: "6"
+        bucketName:
+          label: S3 Bucket Name
+          placeholder: "backups"
+        region:
+          label: S3 Region
+          placeholder: "us-west-2"
+        endpoint:
+          label: S3 Region Endpoint
+          placeholder: "s3.us-west-2.amazonaws.com"
+        accessKey:
+          label: Access Key
+          placeholder: Your AWS access key
+        secretKey:
+          label: Secret Key
+          placeholder: Your AWS secret key
+          provided: Provided
+      location:
+        label: etcd快照目标
       heartbeat:
         label: etcd心跳间隔时间
         placeholder: 心跳间隔时间
@@ -2781,7 +2822,7 @@ clusterNew:
         label: etcd选举超时时间
         placeholder: 选举超时时间
       snapshot:
-        label: Recurring etcd Snapshots
+        label: 重复etcd快照
       retention:
         label: 快照保留时间
         placeholder: "1d"
@@ -2790,7 +2831,6 @@ clusterNew:
         label: 快照创建时间间隔
         placeholder: "3h"
       error: "快照{type}周期错误: 必须指定一个时间值和时间单位(s、m、h)，当前输入{entry}"
-      baseError: "快照{type}周期错误: 必须指定一个有效的时间单位(s、m、h)，当前输入{entry}"
     nodeName:
       title: 节点名称
       detail: (可选)自定义节点显示的名称，不显示实际的主机名
@@ -3724,9 +3764,9 @@ deleteEksCluster:
     placeholder: Your AWS session token
     provided: Provided
   error:
-    accessKey: Access key必须填写。
-    secretKey: Secret key必须填写。
-    sessionToken: Session token必须填写。
+    accessKey: Access key必须设置。
+    secretKey: Secret key必须设置。
+    sessionToken: Session token必须设置。
 
 
 
@@ -4781,8 +4821,8 @@ formSslTermination:
   alternateCerts: 备选证书
   addAlternate: 添加备选证书
   noCertificates: 没有可用的证书。
-  noCertificatesConfiged: 没有证书
   wildcardCert: 请提供至少一个主机，因为证书{name}是一个通配符证书。
+  noCertificatesConfiged: 没有证书
   noAlternateCertificates: 没有其他可用的证书。
   hosts: 主机
   noHosts: 没有主机
@@ -4848,7 +4888,8 @@ formAnnotations:
     topLevelValueInvalid: JSON注释顶级值必须是对象。
 
 formAuthCloudCredential:
-  label: 云凭证
+  add: Add New
+  label: Cloud Credentials
   selectCreds:
     prompt: 选择云凭证
 
@@ -4943,6 +4984,7 @@ formVolumeRow:
     secret: 密文卷
     configmap: 配置映射卷
     certificate: 证书卷
+    newVolumeClaimTemplate: New Volume Claim Template
   remove: 删除卷
   subPath: 卷中的子路径
   readOnly: 只读
@@ -5184,10 +5226,10 @@ podsSection:
 
 containersSection:
   title: 容器
-  detail: 当前Pod中包含的容器
+  detail: Pod中的容器
   noData: 没有容器
   noMatch: 没有容器匹配当前搜索
-  initContainer: 初始化容器
+  initContainer: Init Container
 
 labelsSection:
   kind: 类型
@@ -5345,8 +5387,11 @@ modalAddPayment:
     dollar: "美元($)"
 
 modalAddCloudKey:
-  header: Add Cloud Credential
-  type: Cloud Credential Type
+  header: 添加云凭据
+  type: 云凭证类型
+  saving:
+    validating: Validating Keys
+  error: '{ status }: There was a problem validating your keys. Enter valid credentials and try agian.'
   typeSelect:
     prompt: Choose a cloud credential provider type
   amazonec2:
@@ -5380,6 +5425,7 @@ modalContainerStop:
   protip: "高级技巧: 在点击停止按钮时按住{key}键以跳过此确认提示"
   label: 超时
   button: 停止
+
 
 modalConfirmDeactivate:
   header: 是否确认要
@@ -5666,6 +5712,8 @@ newMultiClusterApp:
   answers:
     label: 应答
     addAction: 添加应答
+  access:
+    noAccessLink: 您无法访问目标项目
   catalog: "应用商店:"
   category: "类型:"
   config: 配置选项
@@ -5830,7 +5878,6 @@ customDrivers:
   clusters: 集群驱动
 
 clusterDrivers:
-  title: 集群驱动
   add: 添加集群驱动
   builtIn: 内置
   table:
@@ -5839,14 +5886,15 @@ clusterDrivers:
 
 kontainerDriver:
   displayName:
-    aliyunkubernetescontainerservice: 阿里云ACK
+    aliyunkubernetescontainerservice: Alibaba ACK
     amazonElasticContainerService: Amazon ECS
     azureKubernetesService: Azure AKS
     googleKubernetesEngine: Google GKE
-    huaweicontainercloudengine: 华为CCE
+    huaweicontainercloudengine: Huawei CCE
     import: Import
     rancherKubernetesEngine: Rancher RKE
-    tencentkubernetesengine: 腾讯TKE
+    tencentkubernetesengine: Tencent TKE
+
 
 nodeDriver:
   addTemplate: 添加主机模板
@@ -5907,10 +5955,10 @@ nodeDriver:
         default: "标准: 通过Rancher创建VPC和子网"
         custom: "自定义: 从现有VPC和子网中选择"
     subnet:
-      title: Subnet
-      next: "下一步: 选择安全组"
-      loading: "加载安全组..."
-      help: 2 subnets required
+      title: 子网
+      help: 2 必须选择子网
+      next: "下一步:选择安全组"
+      loading: "从Amazon加载安全组..."
     associateWorkerNodePublicIp:
       title: Worker节点的公网IP
       radio:
@@ -6152,7 +6200,7 @@ nodeDriver:
       label: 偏好
   vmwarevsphere:
     access:
-      title: 1. 帐户访问
+      title: '1. 帐户访问'
       detail: 配置在哪里查找vCenter或ESXi服务器
       help: "注意: 免费的ESXi license不支持API访问，只支持具有有效或评估许可证的服务器"
     instance:
@@ -6162,8 +6210,8 @@ nodeDriver:
       title: 3. 调度
       detail: 选择将虚拟机调度到何种hypervisor
     vappOptions:
-      title: 4. vApp Options
-      detail: Choose OVF environment properties
+      title: '4. vApp选项'
+      detail: 选择OVF环境属性
     vcenter:
       label: vCenter或ESXi服务器
       placeholder: vCenter或者ESXi主机名/IP
@@ -6946,20 +6994,19 @@ nav:
     accounts: 用户
     clusters: 集群
     machines: 主机
-    nodeDrivers: 主机驱动
+    drivers: 主机驱动
     catalogs: 应用商店
     globalDns: 全局DNS服务
     globalDnsEntries: 解析记录
     globalDnsProviders: 提供商
     multiClusterApps: 多集群应用
     security:
-      cloudCredentials: Cloud Credentials
+      cloudCredentials: 云凭证
       tab: 安全
       roles: 角色
       members: 成员
       podSecurityPolicies: Pod安全策略
       authentication: 认证
-      authWarning: "注意:除本地身份验证之外，在任何时候只能启用单个身份验证提供者。如果在2.1之前启用了多个身份验证提供者，则仍然可以编辑或禁用这些提供者，但不能启用其他提供者。您也不能重新启用以前禁用的提供者。禁用时要小心，禁用后配置无法恢复。"
     settings:
       tab: 系统设置
       auth: 访问控制
@@ -6978,12 +7025,13 @@ nav:
     tab: 系统设置
     advanced: 高级
   tools:
-    tab: 工具
     alerts: 告警
-    notifiers: 通知
+    backups: 备份
     logging: 日志
     monitoring: 监控
+    notifiers: 通知
     pipeline: 流水线
+    tab: 工具
   project:
     none: 项目/命名空间
     namespaces: 命名空间
@@ -7003,27 +7051,26 @@ action:
       message: "{ clusterId }已备份到{ backupType }provider"
   clone: 克隆
   console: 打开控制台
-  cordon: 暂停
   convertToService: 转换为服务
+  cordon: 暂停
   deactivate: 停用
   downloadYaml: 下载YAML
   drain: 驱散
-  edit: 编辑
-  editService: 编辑服务
-  editYaml: 查看/编辑YAML
-  viewYaml: 查看YAML
+  edit: 升级
   editConfig: 编辑配置
+  editService: 编辑服务
+  editYaml: '查看/编辑 YAML'
   evacuate: 疏散
   execute: 执行命令行
   exportConfig: 导出配置
   garbageCollect: 清理
   logs: 查看日志
   makeDefault: 设置为缺省
-  resetDefault: 重置默认设置
-  nodeConfig: 下载密钥
   move: 移动
+  mute: Mute
+  nodeConfig: 下载Keys
   pause: 暂停编排
-  pauseAll: 全部暂停
+  pauseAll: 暂停全部
   redeploy: 重新部署
   refreshAuthProviderAccess:
     label: 刷新组成员
@@ -7035,18 +7082,24 @@ action:
       message: 已为所有用户触发组成员刷新。
   remove: 删除
   replay: 重播
+  resetDefault: 恢复默认值
   restart: 重启
-  retry: 重试
+  restoreFromEtcdBackup: 从备份恢复
   resume: 恢复编排
+  retry: 重试
   revert: 恢复默认值
   rollback: 回滚
-  setDefault: 设置为缺省
+  rotate: 更新证书有效期
+  setDefault: 设置为默认值
   setting: 设置
   start: 启动
   startAll: 全部开始
   stop: 停止
-  stopDrain: 停止Drain
   stopAll: 全部停止
+  stopDrain: 停止Drain
+  test: 测试
+  uncordon: 激活
+  unmute: 取消静默
   upgrade: 升级
   upgradeOrEdit: 升级/编辑
   viewConfig: 查看配置
@@ -7054,10 +7107,7 @@ action:
   viewInApi: API查看
   viewInGrafana: 查看Grafana
   viewInstance: 查看实例
-  test: 测试
-  mute: 静默
-  unmute: 取消静默
-  uncordon: 激活
+  viewYaml: 查看YAML
 
 ##############################
 # Resource Actions
