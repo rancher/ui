@@ -1,8 +1,8 @@
 <section class="header">
   <h1>
-    {{#if editing}}
+    {{#if (and editing (not cloning))}}
       {{t "nodeDriver.editTemplate" name=originalModel.displayName}}
-    {{else if cloning}}
+    {{else if (and editing cloning)}}
       {{t "nodeDriver.cloneTemplate" name=originalModel.displayName}}
     {{else}}
       {{t "nodeDriver.addTemplate"}}
