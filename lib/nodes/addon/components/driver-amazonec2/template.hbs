@@ -1,5 +1,9 @@
 {{#accordion-list showExpandAll=false as | al expandFn |}}
-  <div class="over-hr"><span>{{driverOptionsTitle}}</span></div>
+  <div class="over-hr">
+    <span>
+      {{driverOptionsTitle}}
+    </span>
+  </div>
 
   {{#accordion-list-item
      title=(t "nodeDriver.amazonec2.access.title")
@@ -11,11 +15,22 @@
     {{#unless hideRegionSelection}}
       <div class="row">
         <div class="col span-4">
-          <label class="acc-label">{{t "nodeDriver.amazonec2.region.label"}}</label>
+          <label class="acc-label" for="amazonec2-region-select">
+            {{t "nodeDriver.amazonec2.region.label"}}
+          </label>
           {{#if (eq step 1)}}
-            <select class="form-control" onchange={{action (mut config.region) value="target.value"}}>
+            <select
+              id="amazonec2-region-select"
+              class="form-control"
+              onchange={{action (mut config.region) value="target.value"}}
+            >
               {{#each regionChoices as |choice|}}
-                <option value={{choice}} selected={{eq config.region choice}}>{{choice}}</option>
+                <option
+                  value={{choice}}
+                  selected={{eq config.region choice}}
+                >
+                  {{choice}}
+                </option>
               {{/each}}
             </select>
           {{else}}
@@ -26,31 +41,40 @@
     {{/unless}}
     {{#if (eq step 1)}}
       {{form-auth-cloud-credential
+        cancel=(action "cancel")
+        cloudCredentials=cloudCredentials
+        createLabel="nodeDriver.amazonec2.access.next"
         driverName=driverName
         errors=errros
-        primaryResource=primaryResource
-        region=config.region
-        cloudCredentials=cloudCredentials
-        showAddCloudCredential=hideRegionSelection
         finishAndSelectCloudCredential=(action "finishAndSelectCloudCredential")
+        primaryResource=primaryResource
         progressStep=(action "awsLogin")
-        cancel=(action "cancel")
+        region=config.region
+        showAddCloudCredential=hideRegionSelection
       }}
     {{else}}
       <div class="row">
         <div class="col span-4">
-          <label class="acc-label">{{t "nodeDriver.amazonec2.accessKey.label"}}</label>
+          <label class="acc-label">
+            {{t "nodeDriver.amazonec2.accessKey.label"}}
+          </label>
           <div>{{config.accessKey}}</div>
         </div>
 
         <div class="col span-4">
-          <label class="acc-label">{{t "nodeDriver.amazonec2.secretKey.label"}}</label>
-          <div class="text-muted text-italic">{{t "nodeDriver.amazonec2.secretKey.provided"}}</div>
+          <label class="acc-label">
+            {{t "nodeDriver.amazonec2.secretKey.label"}}
+          </label>
+          <div class="text-muted text-italic">
+            {{t "nodeDriver.amazonec2.secretKey.provided"}}
+          </div>
         </div>
       </div>
       <div class="row">
         <div class="span-8 offset-4">
-          <p class="text-info text-small m-0">{{t "nodeDriver.amazonec2.access.help"}}</p>
+          <p class="text-info text-small m-0">
+            {{t "nodeDriver.amazonec2.access.help"}}
+          </p>
         </div>
       </div>
     {{/if}}
@@ -59,30 +83,48 @@
 
   <div class="{{unless (gte step 2) "hide"}}">
     {{#accordion-list-item
-      title=(t "nodeDriver.amazonec2.zone.title")
-      detail=(t "nodeDriver.amazonec2.zone.detail")
-      expandAll=expandAll
-      expand=(action expandFn)
-      expandOnInit=true
+       title=(t "nodeDriver.amazonec2.zone.title")
+       detail=(t "nodeDriver.amazonec2.zone.detail")
+       expandAll=expandAll
+       expand=(action expandFn)
+       expandOnInit=true
     }}
       {{#if (eq step 2)}}
         <div class="row">
-          <label class="acc-label">{{t "nodeDriver.amazonec2.availabilityZone"}}</label>
-          <select class="form-control" onchange={{action (mut selectedZone) value="target.value"}}>
+          <label class="acc-label" for="amazonec2-availabilityZone">
+            {{t "nodeDriver.amazonec2.availabilityZone"}}
+          </label>
+          <select
+            class="form-control"
+            id="amazonec2-availabilityZone"
+            onchange={{action (mut selectedZone) value="target.value"}}
+          >
             {{#each zoneChoices as |choice|}}
-              <option value={{choice}} selected={{eq selectedZone choice}}>{{choice}}</option>
+              <option
+                value={{choice}}
+                selected={{eq selectedZone choice}}
+              >
+                {{choice}}
+              </option>
             {{/each}}
           </select>
         </div>
 
         <div class="row">
-          <label class="acc-label pt-20">{{t "nodeDriver.amazonec2.subnet"}}</label>
+          <label class="acc-label pt-20">
+            {{t "nodeDriver.amazonec2.subnet"}}
+          </label>
           {{#if subnetChoices.length}}
             {{#each subnetChoices as |choice|}}
               {{#if choice.isVpc}}
                 <hr class="mt-20 mb-20" />
                 <div class="radio">
-                  <label class="acc-label pb-0">{{radio-button selection=selectedSubnet value=choice.value}} {{choice.label}}
+                  <label class="acc-label pb-0">
+                    {{radio-button
+                      selection=selectedSubnet
+                      value=choice.value
+                    }}
+                    {{choice.label}}
                     {{#each choice.tags as |tag|}}
                       <span class="tag-xs bg-info mr-5">
                         <i class="icon icon-tag"></i>
@@ -91,32 +133,44 @@
                     {{/each}}
                   </label>
                 </div>
-              {{else}}
+            {{else}}
                 <div class="radio">
-                <label class="ml-20">
-                  {{radio-button selection=selectedSubnet value=choice.value}} <i class="icon icon-level-down text-muted" style="transform: scaleX(-1) rotate(90deg);"></i> {{choice.label}}
-                  {{#each choice.tags as |tag|}}
-                    <span class="tag-xs bg-info mr-5">
-                      <i class="icon icon-tag"></i>
-                      {{tag}}
-                    </span>
-                  {{/each}}
-                </label>
+                  <label class="ml-20">
+                    {{radio-button
+                      selection=selectedSubnet
+                      value=choice.value
+                    }}
+                    <i
+                      class="icon icon-level-down text-muted"
+                      style="transform: scaleX(-1) rotate(90deg);"
+                    ></i>
+                    {{choice.label}}
+                    {{#each choice.tags as |tag|}}
+                      <span class="tag-xs bg-info mr-5">
+                        <i class="icon icon-tag"></i>
+                        {{tag}}
+                      </span>
+                    {{/each}}
+                  </label>
                 </div>
               {{/if}}
             {{/each}}
           {{else}}
-            There are no subnets to choose from.
+            {{t "nodeDriver.amazonec2.noSubnet"}}
           {{/if}}
         </div>
       {{else}}
         <div class="row">
           <div class="span-6">
-            <label class="acc-label">{{t "nodeDriver.amazonec2.availabilityZone"}}</label>
+            <label class="acc-label">
+              {{t "nodeDriver.amazonec2.availabilityZone"}}
+            </label>
             {{config.region}}{{config.zone}}
           </div>
           <div class="span-6">
-            <label class="acc-label pt-20">{{t "nodeDriver.amazonec2.subnet"}}</label>
+            <label class="acc-label pt-20">
+              {{t "nodeDriver.amazonec2.subnet"}}
+            </label>
             {{#if config.subnetId}}
               {{config.subnetId}}
             {{else}}
@@ -140,36 +194,60 @@
 
   <div class="{{unless (gte step 3) "hide"}}">
     {{#accordion-list-item
-      title=(t "nodeDriver.amazonec2.securityGroup.title")
-      detail=(t "nodeDriver.amazonec2.securityGroup.detail")
-      expandAll=expandAll
-      expand=(action expandFn)
-      expandOnInit=true
+       title=(t "nodeDriver.amazonec2.securityGroup.title")
+       detail=(t "nodeDriver.amazonec2.securityGroup.detail")
+       expandAll=expandAll
+       expand=(action expandFn)
+       expandOnInit=true
     }}
       <div class="row">
         {{#if (eq step 3)}}
           <div class="radio pt-10">
             <label>
-              {{radio-button selection=whichSecurityGroup value="default"}}
-                {{t "nodeDriver.amazonec2.securityGroup.defaultCreate" groupName=defaultSecurityGroupName htmlSafe=true}}
+              {{radio-button
+                selection=whichSecurityGroup
+                value="default"
+              }}
+              {{t
+                "nodeDriver.amazonec2.securityGroup.defaultCreate"
+                groupName=defaultSecurityGroupName
+                htmlSafe=true
+              }}
             </label>
           </div>
 
           {{#if (and settings.isRancher (not isCustomSecurityGroup))}}
-            <p class="text-info ml-20"><a href="{{settings.docsBase}}/installation/references/" target="_blank">{{t "nodeDriver.amazonec2.portHelp.link"}}</a> {{t "nodeDriver.amazonec2.portHelp.text"}}</p>
+            <p class="text-info ml-20">
+              <a href="{{settings.docsBase}}/installation/references/" target="_blank">
+                {{t "nodeDriver.amazonec2.portHelp.link"}}
+              </a>
+              {{t "nodeDriver.amazonec2.portHelp.text"}}
+            </p>
           {{/if}}
 
           <div class="radio pt-10">
             <label>
-              {{radio-button selection=whichSecurityGroup value="custom"}}
+              {{radio-button
+                selection=whichSecurityGroup
+                value="custom"
+              }}
               {{t "nodeDriver.amazonec2.securityGroup.choose"}}
             </label>
           </div>
 
           {{#if isCustomSecurityGroup}}
-            <select class="form-control existing-security-groups" multiple="true" onchange={{action "multiSecurityGroupSelect" ""}}>
+            <select
+              class="form-control existing-security-groups"
+              multiple="true"
+              onchange={{action "multiSecurityGroupSelect" ""}}
+            >
               {{#each allSecurityGroups as |choice|}}
-                <option value={{choice.name}} selected={{array-includes selectedSecurityGroup choice.name}}>{{choice.name}} ({{choice.id}})</option>
+                <option
+                  value={{choice.name}}
+                  selected={{array-includes selectedSecurityGroup choice.name}}
+                >
+                  {{choice.name}} ({{choice.id}})
+                </option>
               {{/each}}
             </select>
           {{/if}}
@@ -202,17 +280,20 @@
 
   <div class="{{unless (gte step 4) "hide"}}">
     {{#accordion-list-item
-      title=(t "nodeDriver.amazonec2.instance.title")
-      detail=(t "nodeDriver.amazonec2.instance.detail")
-      expandAll=expandAll
-      expand=(action expandFn)
-      expandOnInit=true
+       title=(t "nodeDriver.amazonec2.instance.title")
+       detail=(t "nodeDriver.amazonec2.instance.detail")
+       expandAll=expandAll
+       expand=(action expandFn)
+       expandOnInit=true
     }}
       <div class="row">
         <div class="col span-6">
-          <label class="acc-label">{{t "nodeDriver.amazonec2.instanceType.label"}}</label>
+          <label class="acc-label" for="amazonec2-instancetype">
+            {{t "nodeDriver.amazonec2.instanceType.label"}}
+          </label>
           {{new-select
             classNames="form-control"
+            id="amazonec2-instancetype"
             value=config.instanceType
             content=instanceTypes
             optionValuePath="name"
@@ -222,59 +303,127 @@
         </div>
 
         <div class="col span-6">
-          <label class="acc-label">{{t "nodeDriver.amazonec2.rootSize.label"}}</label>
+          <label class="acc-label" for="amazonec2-rootsize">
+            {{t "nodeDriver.amazonec2.rootSize.label"}}
+          </label>
           <div class="input-group">
-            {{input type="text" classNames="form-control" placeholder="" value=config.rootSize}}
-            <span class="input-group-addon bg-default">{{t "nodeDriver.amazonec2.rootSize.unit"}}</span>
+            {{input
+              id="amazonec2-rootsize"
+              type="text"
+              classNames="form-control"
+              placeholder=""
+              value=config.rootSize
+            }}
+            <span class="input-group-addon bg-default">
+              {{t "nodeDriver.amazonec2.rootSize.unit"}}
+            </span>
           </div>
         </div>
       </div>
 
       <div class="row">
         <div class="col span-6">
-          <label class="acc-label">{{t "nodeDriver.amazonec2.ami.label"}}</label>
-          {{input type="text" classNames="form-control" placeholder=(t "nodeDriver.amazonec2.ami.placeholder") value=config.ami}}
+          <label class="acc-label" for="amazonec2-ami">
+            {{t "nodeDriver.amazonec2.ami.label"}}
+          </label>
+          {{input
+            id="amazonec2-ami"
+            type="text"
+            classNames="form-control"
+            placeholder=(t "nodeDriver.amazonec2.ami.placeholder")
+            value=config.ami
+          }}
           {{#if settings.isRancher}}
             <p class="help-block">
-              <a href="https://github.com/rancher/os/blob/master/README.md/#user-content-amazon" target="_blank">{{t "nodeDriver.amazonec2.ami.rancherList"}}</a>
+              <a
+                href="https://github.com/rancher/os/blob/master/README.md/#user-content-amazon"
+                target="_blank"
+                rel="noreferrer nofollow"
+              >
+                {{t "nodeDriver.amazonec2.ami.rancherList"}}
+              </a>
             </p>
           {{/if}}
         </div>
 
         <div class="col span-6">
-          <label class="acc-label">{{t "nodeDriver.amazonec2.sshUser.label"}}</label>
-          {{input type="text" classNames="form-control" placeholder=(t "nodeDriver.amazonec2.sshUser.placeholder") value=config.sshUser}}
+          <label class="acc-label" for="amazonec2-sshUser">
+            {{t "nodeDriver.amazonec2.sshUser.label"}}
+          </label>
+          {{input
+            id="amazonec2-sshUser"
+            type="text"
+            classNames="form-control"
+            placeholder=(t "nodeDriver.amazonec2.sshUser.placeholder")
+            value=config.sshUser
+          }}
         </div>
       </div>
 
       <div class="row">
         <div class="col span-6">
-          <label class="acc-label">{{t "nodeDriver.amazonec2.iam.label"}}</label>
-          {{input type="text" classNames="form-control" value=config.iamInstanceProfile placeholder=(t "nodeDriver.amazonec2.iam.placeholder")}}
+          <label class="acc-label" for="amazonec2-iam">
+            {{t "nodeDriver.amazonec2.iam.label"}}
+          </label>
+          {{input
+            id="amazonec2-iam"
+            type="text"
+            classNames="form-control"
+            value=config.iamInstanceProfile
+            placeholder=(t "nodeDriver.amazonec2.iam.placeholder")
+          }}
         </div>
 
         <div class="col span-6">
-          <label class="acc-label">{{t "nodeDriver.amazonec2.privateIp.label"}}</label>
+          <label class="acc-label">
+            {{t "nodeDriver.amazonec2.privateIp.label"}}
+          </label>
           <div class="checkbox">
-            <label class="acc-label">{{input type="checkbox" checked=config.privateAddressOnly}} {{t "nodeDriver.amazonec2.onlyPrivate.label"}}</label>
+            <label class="acc-label" for="amazonec2-privateip">
+              {{input
+                id="amazonec2-privateip"
+                type="checkbox"
+                checked=config.privateAddressOnly
+              }}&nbsp;
+              {{t "nodeDriver.amazonec2.onlyPrivate.label"}}
+            </label>
           </div>
         </div>
       </div>
 
       <div class="row">
         <div class="col span-6">
-          <label class="acc-label">{{t "nodeDriver.amazonec2.requestSpotInstance.label"}}</label>
+          <label class="acc-label">
+            {{t "nodeDriver.amazonec2.requestSpotInstance.label"}}
+          </label>
           <div class="checkbox">
-            <label class="acc-label">{{input type="checkbox" checked=config.requestSpotInstance}} {{t "nodeDriver.amazonec2.requestSpotInstance.enable"}}</label>
+            <label class="acc-label" for="amazonec2-requestspotinstance">
+              {{input
+                id="amazonec2-requestspotinstance"
+                type="checkbox"
+                checked=config.requestSpotInstance
+              }}&nbsp;
+              {{t "nodeDriver.amazonec2.requestSpotInstance.enable"}}
+            </label>
           </div>
         </div>
 
         {{#if config.requestSpotInstance}}
           <div class="col span-6">
-            <label class="acc-label">{{t "nodeDriver.amazonec2.spotPrice.label"}}</label>
+            <label class="acc-label" for="amazonec2-spotprice">
+              {{t "nodeDriver.amazonec2.spotPrice.label"}}
+            </label>
             <div class="input-group">
-              {{input type="text" classNames="form-control" placeholder="" value=config.spotPrice}}
-              <span class="input-group-addon bg-default">{{t "nodeDriver.amazonec2.spotPrice.unit"}}</span>
+              {{input
+                id="amazonec2-spotprice"
+                type="text"
+                classNames="form-control"
+                placeholder=""
+                value=config.spotPrice
+              }}
+              <span class="input-group-addon bg-default">
+                {{t "nodeDriver.amazonec2.spotPrice.unit"}}
+              </span>
             </div>
           </div>
         {{/if}}
@@ -283,15 +432,19 @@
       <div class="row">
         <div class="col span-12">
           {{form-key-value
-              addActionLabel="nodeDriver.amazonec2.tags.addActionLabel"
-              initialMap=tags
-              changed=(action (mut tags))
+            addActionLabel="nodeDriver.amazonec2.tags.addActionLabel"
+            initialMap=tags
+            changed=(action (mut tags))
           }}
         </div>
       </div>
     {{/accordion-list-item}}
 
-    <div class="over-hr"><span>{{templateOptionsTitle}}</span></div>
+    <div class="over-hr">
+      <span>
+        {{templateOptionsTitle}}
+      </span>
+    </div>
 
     {{form-name-description
       model=model
@@ -311,6 +464,11 @@
     }}
 
     {{top-errors errors=errors}}
-    {{save-cancel save="save" cancel="cancel" editing=editing}}
+
+    {{save-cancel
+      save="save"
+      cancel="cancel"
+      editing=editing
+    }}
   </div>
 {{/accordion-list}}
