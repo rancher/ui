@@ -11,15 +11,24 @@
     }}
   </td>
   <td data-title="{{dt.question}}:" class="p-20 pl-0" >
-    {{new-select
-      classNames="form-control"
-      content=allQuestions
-      localizedPrompt=true
-      optionLabelPath="label"
-      optionValuePath="variable"
-      prompt="newMultiClusterApp.overrides.questionOverride.placeholder"
-      value=answer.question
-    }}
+    {{#if (gt allQuestions.length 0)}}
+      {{new-select
+        classNames="form-control"
+        content=allQuestions
+        localizedPrompt=true
+        optionLabelPath="label"
+        optionValuePath="variable"
+        prompt="newMultiClusterApp.overrides.questionOverride.placeholder"
+        value=answer.question
+      }}
+    {{else}}
+      {{input
+        class="form-control input-sm value"
+        spellcheck="false"
+        type="text"
+        value=answer.question
+      }}
+    {{/if}}
   </td>
   <td data-title="{{dt.answer}}:" class="p-20 pl-0" >
     {{#each
