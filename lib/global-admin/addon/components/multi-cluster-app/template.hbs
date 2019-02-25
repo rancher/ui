@@ -44,25 +44,50 @@
       </label>
       <div class="col span-12 text-small">
         {{#each model.targets as |target|}}
-          {{#if target.project.id}}
-            {{#link-to-external
-               "apps-tab.detail"
-               target.projectId
-               target.appLink
-            }}
-              {{target.clusterName}}:{{target.projectName}}
-            {{/link-to-external}}
-          {{else}}
-            {{#tooltip-element
-               type="tooltip-basic"
-               model=(t "newMultiClusterApp.access.noAccessLink")
-               tooltipTemplate="tooltip-static"
-               aria-describedby="tooltip-base"
-               tooltipFor="tooltipLink"
-            }}
-              {{target.projectId}} <i class="icon icon-alert"></i>
-            {{/tooltip-element}}
-          {{/if}}
+          {{#badge-state
+             classNames="mr-5 mb-5"
+             model=target
+             capitalizeText=false
+          }}
+            {{#if target.project.id}}
+              {{#link-to-external
+                 "apps-tab.detail"
+                 target.projectId
+                 target.appLink
+              }}
+                {{target.clusterName}}:{{target.projectName}}
+                {{#tooltip-element
+                   type="tooltip-basic"
+                   model=target.state
+                   tooltipTemplate="tooltip-static"
+                   aria-describedby="tooltip-base"
+                   tooltipFor="tooltipLink"
+                }}
+                  <i class="icon icon-circle {{target.stateColor}}"></i>
+                {{/tooltip-element}}
+              {{/link-to-external}}
+            {{else}}
+              {{target.projectId}}
+              {{#tooltip-element
+                 type="tooltip-basic"
+                 model=(t "newMultiClusterApp.access.noAccessLink")
+                 tooltipTemplate="tooltip-static"
+                 aria-describedby="tooltip-base"
+                 tooltipFor="tooltipLink"
+              }}
+                <i class="icon icon-alert"></i>
+              {{/tooltip-element}}
+              {{#tooltip-element
+                 type="tooltip-basic"
+                 model=target.state
+                 tooltipTemplate="tooltip-static"
+                 aria-describedby="tooltip-base"
+                 tooltipFor="tooltipLink"
+              }}
+                <i class="icon icon-circle {{target.stateColor}}"></i>
+              {{/tooltip-element}}
+            {{/if}}
+          {{/badge-state}}
         {{/each}}
       </div>
     </div>
