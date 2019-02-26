@@ -113,7 +113,11 @@ export default Resource.extend(Grafana, ResourceUsage, {
         return 'custom';
       }
     default:
-      return 'import';
+      if (get(this, 'driver') && get(this, 'configName')) {
+        return get(this, 'driver');
+      } else {
+        return 'import';
+      }
     }
   }),
 
@@ -146,7 +150,11 @@ export default Resource.extend(Grafana, ResourceUsage, {
         return intl.t('clusterNew.custom.shortLabel');
       }
     default:
-      return intl.t('clusterNew.import.shortLabel');
+      if (get(this, 'driver') && get(this, 'configName')) {
+        return get(this, 'driver').capitalize();
+      } else {
+        return intl.t('clusterNew.import.shortLabel');
+      }
     }
   }),
 
@@ -245,7 +253,7 @@ export default Resource.extend(Grafana, ResourceUsage, {
     },
 
     edit() {
-      get(this, 'router').transitionTo('authenticated.cluster.edit', get(this, 'id'));
+      get(this, 'router').transitionTo('authenticated.cluster.edit', get(this, 'id'), { queryParams: { provider: get(this, 'driver') } });
     },
 
     scaleDownPool(id) {
