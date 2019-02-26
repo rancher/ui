@@ -38,11 +38,6 @@ export default Resource.extend({
     }
   },
 
-  rootDomain: computed('config.{rootDomain}', function() {
-    return get(this, 'config.rootDomain');
-  }),
-
-
   canEdit: computed('links.update', function() {
     return !!get(this, 'links.update');
   }),
