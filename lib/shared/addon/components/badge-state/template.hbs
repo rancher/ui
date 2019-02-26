@@ -1,5 +1,9 @@
-{{#if model.localizedState}}
-  {{t model.localizedState}}
+{{#if hasBlock}}
+  {{yield}}
 {{else}}
-  {{model.displayState}}
+  {{#if model.localizedState}}
+    {{t model.localizedState}}
+  {{else}}
+    {{model.displayState}}
+  {{/if}}
 {{/if}}
