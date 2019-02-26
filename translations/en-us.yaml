@@ -5921,6 +5921,7 @@ nodeDriver:
     tencenttke: Tencent TKE
     vmwarevsphere: vSphere
     zstack: ZStack
+    pinganyunecs: Pinganyun ECS
   driverOptions: "{driver} Options"
   templateOptions: "{appName} Template"
   amazoneks:
@@ -6511,6 +6512,107 @@ nodeDriver:
       label: Image Name
     dataDiskOffering:
       label: Data Disk
+  pinganyunecs:
+    accountSection:
+      label: 1. ccount Access
+      detail: API Keys will be used to launch Aliyun ECS Instances. 
+      next: "Next: Authenticate & Config network options"
+      loading: Loading Regions from Pinganyun ECS...
+    accessKey:
+      label: Access Key
+      placeholder: Your Pinganyun Account Access Key
+    accessKeySecret:
+      label: Access Key Secret
+      placeholder: Your Pinganyun Account Access Key Secret
+      provided: Provided
+    instanceOptionsSection:
+      label: Instance
+      detail: Customize the Pinganyun ECS Instance that will be created.
+    instanceDescription:
+      label: Instance Description
+      placeholder: Instance Description
+    instanceType:
+      label: Instance Type
+      prompt: Instance Type
+    imageType:
+      label: System image type
+      prompt: System image type
+    osType:
+      label: OS Type
+      prompt: OS Type
+    storageSection:
+      label: Storage
+      detail: Configure the storage for the instances that will be created by this template.
+      next: "Next: Config Pinganyun ECS Instance options"
+      loading: Loading Instance Types and Images from Pinganyun ECS...
+    systemImage:
+      label: System image
+      prompt: System image
+    dataDiskCategory:
+      label: Data Disk Category
+      prompt: Data Disk Category
+    dataDiskSize:
+      label: Data Disk Size
+      placeholder: Data Disk Size
+    region:
+      label: Region
+      placeholder: Region
+    zone:
+      label: vailable Zone
+      prompt: Choose a Available Zone...
+    pod:
+      label: Provider
+      prompt: Choose a Provider...
+    vpc:
+      label: VPC
+      prompt: Choose a VPC...
+    network:
+       label: Network
+       prompt: Choose a Network... 
+    networkSection:
+      label: Network
+      detail: Configure the network for the instances that will be created by this template.
+      next: "Next: Config Storage Options"
+      loading: Loading Storage Types from Pinganyun ECS...
+    securitySection:
+      label: Security Group
+      detail: Choose the security groups that will be applied to Instances
+    securityGroup:
+      label: Security Group
+      placeholder: Security Group
+      prompt: Create A New Security Group
+    nat:
+      label: NAT Gateway
+      placeholder: NAT Gateway
+      prompt: NAT Gateway
+    snatName:
+      label: SNAT Rule
+      placeholder: SNAT Rule
+      prompt: SNAT Rule
+    sshPassword:
+      label: SH Password
+      placeholder: Set Instance SSH Password (Optional)
+      provided: Provided
+    zoneAvailableIPs:
+      label: Avaliable IPs
+    tags:
+      addActionLabel: Add Instance Tag
+      valueLabel: Tags
+      placeholder: e.g. dev
+    errors:
+      regionIdRequired: Region is required.
+      zoneIdRequired: Zone is required.
+      podIdRequired: Provider is required.
+      vpcIdRequired: VPC is required.
+      networkIdRequired: Network is required.
+      natIdRequired: NAT Gateway is required.
+      accessKeyRequired: Access Secret Key is required.
+      accessSecretRequired: Access Secret Key is required.
+      sshPasswordLengthNotValid: The length of SSH password must between eight and thirty.
+      sshPasswordInvalidCharacter: SSH password contains invalid characters.
+      sshPasswordFormatError: "SSH password must contain at least three out of four kinds of following characters: uppercase letter, lowercase letters, numbers, and special characters."
+      nameNotValidForApp: Please fill in Chinese and/or English letters, space, numbers, “@”, “_”, and “-”, with the maximum character size of 50.
+      diskSizeExceedTheLimit: The size of a single disk must between 20G and 2000G
 
 newConfigMap:
   title:
