@@ -85,7 +85,7 @@ export default Resource.extend(Grafana, ResourceUsage, {
     return get(this, 'configName') === 'rancherKubernetesEngineConfig';
   }),
 
-  provider: computed('configName', 'nodePools.@each.nodeTemplateId', function() {
+  provider: computed('configName', 'nodePools.@each.nodeTemplateId', 'driver', function() {
     const pools = get(this, 'nodePools') || [];
     const firstTemplate = get(pools, 'firstObject.nodeTemplate');
 
@@ -121,7 +121,7 @@ export default Resource.extend(Grafana, ResourceUsage, {
     }
   }),
 
-  displayProvider: computed('configName', 'nodePools.@each.displayProvider', 'intl.locale', function() {
+  displayProvider: computed('configName', 'nodePools.@each.displayProvider', 'intl.locale', 'driver', function() {
     const intl = get(this, 'intl');
     const pools = get(this, 'nodePools');
     const firstPool = (pools || []).objectAt(0);
@@ -214,9 +214,9 @@ export default Resource.extend(Grafana, ResourceUsage, {
         let services = get(this, 'rancherKubernetesEngineConfig.services.etcd');
 
         if (get(services, 'backupConfig')) {
-          if (isEmpty(services.s3BackupConfig)) {
+          if (isEmpty(services.backupConfig.s3BackupConfig)) {
             return 'local';
-          } else if (!isEmpty(services.s3BackupConfig)) {
+          } else if (!isEmpty(services.backupConfig.s3BackupConfig)) {
             return 's3';
           }
         }
