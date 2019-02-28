@@ -214,9 +214,9 @@ export default Resource.extend(Grafana, ResourceUsage, {
         let services = get(this, 'rancherKubernetesEngineConfig.services.etcd');
 
         if (get(services, 'backupConfig')) {
-          if (isEmpty(services.s3BackupConfig)) {
+          if (isEmpty(services.backupConfig.s3BackupConfig)) {
             return 'local';
-          } else if (!isEmpty(services.s3BackupConfig)) {
+          } else if (!isEmpty(services.backupConfig.s3BackupConfig)) {
             return 's3';
           }
         }
