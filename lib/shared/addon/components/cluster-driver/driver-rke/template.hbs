@@ -9,6 +9,14 @@
   }}
 {{/unless}}
 
+{{#if hasLegacySnapshotSettings}}
+  <section class="mt-20 mb-20">
+    {{#banner-message color="bg-warning m-0"}}
+      <p>{{t "clusterNew.rke.etcd.backupConfig.legacy" duration=legacyRetention}}</p>
+    {{/banner-message}}
+  </section>
+{{/if}}
+
 <section class="header has-tabs clearfix p-0">
   <ul class="tab-nav">
     {{#if pasteOrUpload}}
@@ -149,12 +157,6 @@
           </div>
         </div>
       {{/accordion-list-item}}
-
-      {{#if hasLegacySnapshotSettings}}
-        {{#banner-message color="bg-warning m-0"}}
-          <p>{{t "clusterNew.rke.etcd.backupConfig.legacy" duration=legacyRetention}}</p>
-        {{/banner-message}}
-      {{/if}}
 
       {{#advanced-section advanced=advanced}}
         {{#accordion-list-item
