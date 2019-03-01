@@ -32,13 +32,13 @@ export default Resource.extend({
   displaySize: computed('config', function() {
     const driver = get(this, 'driver');
 
-    return this._displayVar(getDisplaySize(driver));
+    return this._displayVar(getDisplaySize(driver) || 'config.size');
   }).volatile(),
 
   displayLocation: computed(function() {
     const driver = get(this, 'driver');
 
-    return this._displayVar(getDisplayLocation(driver));
+    return this._displayVar(getDisplayLocation(driver) || 'config.region');
   }).volatile(),
 
   actions: {
@@ -72,7 +72,7 @@ export default Resource.extend({
       if ( typeof (keyOrFn) === 'function' ) {
         return keyOrFn.call(this);
       } else {
-        return get(this, keyOrFn);
+        return get(this, keyOrFn) || intl.t('generic.unknown');
       }
     } else {
       return intl.t('generic.unknown');
