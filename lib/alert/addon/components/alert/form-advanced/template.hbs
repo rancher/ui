@@ -1,9 +1,29 @@
 {{#advanced-section advanced=advanced}}
   <div class="box">
+    {{#if (eq level "rule")}}
+      <div class="row">
+        <label class="acc-label">{{t 'alertPage.newOrEdit.inherited.label'}}</label>
+        <div class="radio">
+          <label>
+            {{radio-button selection=model.inherited value=true}}
+            {{t 'alertPage.newOrEdit.inherited.enabled'}}
+          </label>
+        </div>
+        <div class="radio">
+          <label>
+            {{radio-button selection=model.inherited value=false}}
+            {{t 'generic.disabled'}}
+          </label>
+        </div>
+      </div>
+    {{/if}}
     <div class="row">
       <div class="col span-4">
         <label class="acc-label">{{t 'alertPage.newOrEdit.groupWaitSeconds.label'}}</label>
-        {{alert/time-duration value=model.groupWaitSeconds}}
+        {{alert/time-duration
+            value=model.groupWaitSeconds
+            disabled=(and model.inherited (eq level "rule"))
+        }}
         <p class="text-info text-small">
           {{t 'alertPage.newOrEdit.groupWaitSeconds.helpText'}}
         </p>
@@ -11,7 +31,10 @@
 
       <div class="col span-4 offset-2">
         <label class="acc-label">{{t 'alertPage.newOrEdit.groupIntervalSeconds.label'}}</label>
-        {{alert/time-duration value=model.groupIntervalSeconds}}
+        {{alert/time-duration
+            value=model.groupIntervalSeconds
+            disabled=(and model.inherited (eq level "rule"))
+        }}
         <p class="text-info text-small">
           {{t 'alertPage.newOrEdit.groupIntervalSeconds.helpText'}}
         </p>
@@ -20,7 +43,10 @@
     <div class="row">
       <div class="col span-4">
         <label class="acc-label">{{t 'alertPage.newOrEdit.repeatIntervalSeconds.label'}}</label>
-        {{alert/time-duration value=model.repeatIntervalSeconds}}
+        {{alert/time-duration
+            value=model.repeatIntervalSeconds
+            disabled=(and model.inherited (eq level "rule"))
+        }}
         <p class="text-info text-small">
           {{t 'alertPage.newOrEdit.repeatIntervalSeconds.helpText'}}
         </p>
