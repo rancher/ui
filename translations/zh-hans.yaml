@@ -161,7 +161,7 @@ accountsPage:
       roles:
         title: 角色
   index:
-    header: 用户
+    header: 用户列表
     localLink: 添加用户
     table:
       id: '用户ID'
@@ -281,8 +281,8 @@ rolesPage:
       cluster: 新集群默认角色
       project: 新项目默认角色
       showDefaults: 仅显示默认角色
-  errors:
-    inherited: "角色 {displayName}被{roleNames}继承。"
+    errors:
+      inherited: "角色{displayName}被:{roleNames}继承"
   resources:
     title: 授权资源
     detail: 对Kubernetes资源的具体操作进行授权。
@@ -747,7 +747,7 @@ projectsListNamespacePage:
   current: 当前项目
 
 projectsPage:
-  header: 项目/命名空间
+  header: 项目/命名空间列表
   headerNS: 命名空间
   addProject: 添加项目
   editProject: 编辑项目
@@ -801,7 +801,7 @@ projectsPage:
       memberRoleReq: 成员角色是必须的
 
 clustersPage:
-  header: 集群
+  header: 集群列表
   newCluster: 添加集群
   newClusterName: "添加集群: {name}"
   editClusterName: "编辑集群: {name}"
@@ -882,6 +882,7 @@ clusterDashboard:
   systemProject: "这是具有所有Kubernetes和{appName}系统命名空间的系统项目，修改系统项目中的资源可能会导致系统无法正常运行。"
   notActive: 此集群当前为<b>{state}</b>
   notReady: 此集群当前为<b>{state}</b>，在API准备就绪之前，直接与API交互的功能将不可用。
+  used: Used
 metricsAction:
   description: 查看实时监控指标
   noData: 没有足够的数据绘制图表
@@ -1102,7 +1103,7 @@ cruVolume:
     prompt: 选择一个存储源...
 
 globalDnsPage:
-  header: 全局DNS服务
+  header: 全局DNS记录列表
   newDns: 添加DNS记录
   noDnsMatch: 没有DNS条目匹配当前搜索。
   noDnsData: 当前没有全局DNS条目。
@@ -1111,14 +1112,14 @@ globalDnsPage:
   noDnsProviderData: 当前没有全局DNS提供商。
   noProjects: 没有要选择的项目
   noApps: No Accessible Multi Cluster Apps
-  noProviders: No Accessible Providers
+  noProviders: 没有选择DNS提供商
   entriesPage:
     access:
       noAccessMulti: 您无法访问目标应用程序
       noAccessProvider: You do not have access to the provider
       noAccessProject: 您无法访问目标项目
-    add: 添加全局DNS条目
-    projectHelp: "To finalize Global DNS for projects you must add the following annotation label ( <code>rancher.io/globalDNS.hostname</code> ) on the ingress in the project, where <code>hostname</code> is the host name used in the routing rules."
+    add: 添加全局DNS记录
+    projectHelp: "要完成项目的全局DNS记录设置，必须在项目的入口处添加以下注释标签(<code>rancher.io/globalDNS.hostname</code>)，其中<code>hostname</code>是路由规则中使用的主机名。"
     table:
       name: 名称
       fqdn: FQDN(域名)
@@ -1134,8 +1135,8 @@ globalDnsPage:
         label: FQDN(域名)
         placeholder: '例如: dev.example.com'
       multiCluster:
-        label: 多集群App目标
-        placeholder: 没有选择多集群应用程序
+        label: 目标应用
+        placeholder: 没有选择多集群应用
         add:
           label: 添加目标
       provider:
@@ -1146,7 +1147,7 @@ globalDnsPage:
       ttl:
         label: DNS TTL(DNS解析记录缓存有效期)
   providersPage:
-    title: 全局DNS提供商
+    title: 全局DNS提供商列表
     add: 添加全局DNS提供商
     options:
       title: DNS提供商设置
@@ -1176,7 +1177,7 @@ globalDnsPage:
         placeholder: Your API Key
 
 multiClusterAppsPage:
-  header: 多集群应用
+  header: 多集群应用列表
 
 # If you change translations here also change the translation in app/utils/constants.js under the FALLBACK_TRANSLATIONS key
 # those are present in case we have an error in the app and can not load the translations file
@@ -1218,7 +1219,7 @@ haPage:
     clustered: 集群
 
 nodesPage:
-  header: 主机
+  header: 主机列表
   editCluster: 编辑集群
   nodePoolGroup: "Pool: {name}"
   table:
@@ -1628,7 +1629,7 @@ nodeTemplatesPage:
     unknown: 未知
 
 storageClassPage:
-  header: 存储类
+  header: 存储类列表
   addActionLabel: 添加类
   noData: 没有定义存储类
   noMatch: 没有存储类别与当前搜索匹配
@@ -1638,7 +1639,7 @@ storageClassPage:
     label: 默认
 
 persistentVolumePage:
-  header: 持久卷
+  header: 持久卷列表
   addActionLabel: 添加卷
   noData: 没有定义持久卷
   noMatch: 没有符合当前搜索的持久卷
@@ -1749,9 +1750,9 @@ notifierPage:
     defaultRecipient:
       label: 默认接收者
     secretPlaceholder: 你的自建应用密钥
-    agentPlaceholder: 例如：1000003
-    corpPlaceholder: 例如：wwc0cc3d58f9b021b6
-    defaultRecipientPlaceholder: 例如：2
+    agentPlaceholder: '例如: 1000003'
+    corpPlaceholder: '例如: wwc0cc3d58f9b021b6'
+    defaultRecipientPlaceholder: '例如: 2'
 
   webhook:
     url: URL
@@ -2056,14 +2057,14 @@ catalogSettings:
       rancher: "{appName}认证库"
       pl: 认证的库
     detail:
-      rancher: Rancher核心功能所依赖的模板，例如Kubernetes/Mesos/Swarm编排支持，由Rancher官方维护并提供支持。
+      rancher: 'Rancher核心功能所依赖的模板，例如: Kubernetes/Mesos/Swarm编排支持，由Rancher官方维护并提供支持。'
       pl: '由官方维护的核心功能所需要的模板，例如: Kubernetes/Mesos/Swarm等。'
   community:
     header:
       rancher: 社区贡献
       pl: 社区贡献
     detail:
-      rancher: 由社区成员创建并维护的模板，未经过Rancher Labs认证。
+      rancher: 由社区成员创建并维护的模板，未经Rancher Labs认证。
       pl: 由社区成员创建并维护的模板
   more:
     header: 自定义
@@ -2192,20 +2193,20 @@ clusterNew:
       cloudSsd: SSD云硬盘
     rootSize:
       label: 系统盘大小
-      placeholder: 例如：25
+      placeholder: '例如: 25'
     rootType:
       label: 系统盘类型
     storageType:
       label: 数据盘类型
     storageSize:
       label: 数据盘大小
-      placeholder: 例如：10
+      placeholder: '例如: 10'
     bandwidth:
       label: 带宽
-      placeholder: 例如：10
+      placeholder: '例如: 10'
     goodsNum:
       label: 节点数量
-      placeholder: 例如：3
+      placeholder: '例如: 3'
       required: 请输入节点数量
       help: 将要创建的腾讯云Kubernetes服务中所含有的节点数量
     bandwidthType:
@@ -2236,7 +2237,7 @@ clusterNew:
       label: Kubernetes版本
     cidr:
       label: 容器网络CIDR
-      placeholder: 例如：172.16.0.0/16
+      placeholder: '例如: 172.16.0.0/16'
       required: 请输入容器网络的CIDR
     zone:
       label: 可用区
@@ -3863,7 +3864,7 @@ editHost:
     help: 由主机操作系统获取
   customName:
     label: 自定义名称
-    placeholder: '例如:dev1'
+    placeholder: '例如: dev1'
     help: 如果此处未设置，名称将显示为主机名
   description:
     label: 描述
@@ -3971,7 +3972,7 @@ formMembersGlobalAccess:
     name: 名称
     type: 成员类型
     accessType: 访问类型
-    noData: 当前还没有成员
+    noData: 当前没有成员
     noMatch: 没有成员匹配当前搜索
     prompt: 选择值...
 
@@ -4535,10 +4536,10 @@ formCustomMetrics:
   detail: 配置自定义指标端口，监控系统将通过这些端口采集自定义指标。
   port:
     label: 容器端口
-    placeholder: 例如：8080
+    placeholder: "例如: 8080"
   path:
     label: Path
-    placeholder: 例如：/metrics
+    placeholder: "例如: /metrics"
   protocol:
     label: 协议
   noPorts: 没有自定义指标
@@ -5172,7 +5173,7 @@ hostSettings:
   helpText:
     static1: "不要包含<code>/v1</code>或任何其他路径，但如果您设置了"
     static2: "在{appName}前面，请确保使用<code>https://</code>."
-    isRancher: '<a href="{docsBase}/installing-rancher/installing-server/basic-ssl-config/" target="_blank">SSL Termination</a>'
+    isRancher: '<a href="{docsBase}/installing-rancher/installing-server/basic-ssl-config/" target="_blank">SSL termination</a>'
     sslTerm: SSL终止
   notPublic:
     alert: |
@@ -5805,7 +5806,7 @@ newMultiClusterApp:
   upgradeApp:
     title: 升级策略
     disabled: 同时升级所有应用
-    enabled: 滚动更新(batched)
+    enabled: 滚动更新(批量更新)
     batch: 批量大小
     interval: 时间间隔
 
@@ -5900,6 +5901,7 @@ kontainerDriver:
 nodeDriver:
   addTemplate: 添加主机模板
   editTemplate: "编辑主机模板: {name}"
+  cloneTemplate: "从{name}克隆主机模板"
   editWarning: 编辑主机模板只会影响由主机池创建的新主机，现有主机将不会自动更新或替换。<br>如果从池中删除主机，将使用模板中的新设置创建新主机
   displayName:
     aliyunecs: Aliyun ECS
@@ -6023,6 +6025,7 @@ nodeDriver:
       label: 区域
     availabilityZone: 可用区域
     subnet: VPC/Subnet
+    noSubnet: 当前没有子网可选择
     securityGroup:
       title: 3. 安全组
       detail: 选择安全组将应用到实例
@@ -6076,7 +6079,7 @@ nodeDriver:
       title: Droplet选项
       detail: 配置将由此模板创建的Droplets的选项
     sizeLabel: |
-      {highMem, select, true {High Memory: }other{}}{memoryGb} GB RAM, {disk} GB Disk, {vcpus, plural,
+      {highMem, select, true {High Memory: } other {}}{memoryGb} GB RAM, {disk} GB Disk, {vcpus, plural,
         =1 {# vCPU}
         other {# vCPUs}
       }
@@ -6685,6 +6688,11 @@ pagination:
     =0{无规则}
     =1{选中{count}{count, plural,=1{条规则}other{条规则}}}
     other {当前显示{count}条规则中的{from}到{to}条 }}
+  role: |
+    {pages, plural,
+    =0 {没有角色}
+    =1 {选中{count} {count, plural, =1 {条角色} other {条角色}}}
+    other {当前显示{count}条角色中的{from}到{to}条}}
   service: |
     {pages, plural,
     =0{无服务}
@@ -6998,8 +7006,8 @@ nav:
     drivers: 主机驱动
     catalogs: 应用商店
     globalDns: 全局DNS服务
-    globalDnsEntries: 解析记录
-    globalDnsProviders: 提供商
+    globalDnsEntries: 全局DNS服务
+    globalDnsProviders: 全局DNS提供商
     multiClusterApps: 多集群应用
     security:
       cloudCredentials: 云凭证
@@ -7077,10 +7085,10 @@ action:
     label: 刷新组成员
     success:
       title: 刷新成功
-      message: 已触发组成员刷新
+      message: 已触发组成员更新
     allSuccess:
       title: 刷新成功
-      message: 已为所有用户触发组成员刷新。
+      message: 已为所有用户触发组成员更新。
   remove: 删除
   replay: 重播
   resetDefault: 恢复默认值
