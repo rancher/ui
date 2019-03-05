@@ -233,81 +233,10 @@
      expandOnInit=false
      expand=(action expandFn)
   }}
-    <div class="row">
-      <div class="col span-6">
-        <label class="acc-label">{{t "newMultiClusterApp.roles.title"}}</label>
-        {{searchable-select
-          prompt="newMultiClusterApp.roles.table.prompt"
-          localizedPrompt=true
-          optionLabelPath="displayName"
-          optionValuePath="id"
-          content=roleChoices
-          change="addRole"
-          readOnly=readOnly
-        }}
-      </div>
-      <div class="col span-12">
-        {{#sortable-table
-           classNames="grid sortable-table"
-           sortBy=sortBy
-           headers=rolesHeaders
-           stickyHeader=false
-           bulkActions=false
-           search=false
-           pagingLabel="pagination.role"
-           descending=descending
-           body=appRoles
-           actionsWidth="75"
-           as |sortable kind role dt|
-        }}
-          {{#if (eq kind "row")}}
-            <tr class="main-row">
-              <td data-title="{{dt.roleName}}:" >
-                {{role.displayName}}
-              </td>
-              <td data-title="{{dt.builtin}}:" >
-                {{#if role.builtin}}
-                  <i class="icon icon-check"/>
-                {{else}}
-                  <span class="text-muted">&ndash;</span>
-                {{/if}}
-              </td>
-              <td data-title="{{dt.external}}:" >
-                {{#if role.external}}
-                  <i class="icon icon-check"/>
-                {{else}}
-                  <span class="text-muted">&ndash;</span>
-                {{/if}}
-              </td>
-              <td data-title="{{t "generic.actions"}}:" class="actions">
-                <div class="p-5">
-                  <button
-                    class="btn bg-primary btn-sm"
-                    {{action "removeRole" role}}
-                  >
-                    <i class="icon icon-minus"/>
-                  </button>
-                </div>
-              </td>
-            </tr>
-          {{else if (eq kind "nomatch")}}
-            <td
-              colspan="5"
-              class="text-center text-muted lacsso pt-20 pb-20"
-            >
-              {{t "newMultiClusterApp.roles.table.noMatch"}}
-            </td>
-          {{else if (eq kind "norows")}}
-            <td
-              colspan="5"
-              class="text-center text-muted lacsso pt-20 pb-20"
-            >
-              {{t "newMultiClusterApp.roles.table.noData"}}
-            </td>
-          {{/if}}
-        {{/sortable-table}}
-      </div>
-    </div>
+    {{form-global-resource-roles
+      multiClusterApp=multiClusterApp
+      addRole=(action "addRole")
+    }}
   {{/accordion-list-item}}
 
 
