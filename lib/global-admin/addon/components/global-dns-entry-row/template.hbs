@@ -42,8 +42,8 @@
       </div>
     {{/each}}
   {{else}}
-    {{#each entry.linkedProjects as |project|}}
-      {{#if project.accessible}}
+    {{#each linkedProjects as |project|}}
+      {{#if (and project.cluster.displayName project.displayName)}}
         {{#link-to-external
            "authenticated.project"
            project.id
