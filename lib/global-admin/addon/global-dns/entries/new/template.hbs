@@ -113,7 +113,6 @@
                 optionValuePath="id"
                 prompt="globalDnsPage.entriesPage.config.multiCluster.placeholder"
                 value=primaryResource.multiClusterAppId
-                disabled=(gte primaryResource.projectIds.length 1)
               }}
             {{else}}
               {{#if primaryResource.multiClusterAppId}}
@@ -148,7 +147,6 @@
                 class="form-control select-cap-add"
                 multiple="true"
                 onchange={{action "modifyProjectIds"}}
-                disabled={{if primaryResource.multiClusterAppId true false}}
               >
                 {{#each groupedClustersProjects as |cluster|}}
                   <optgroup label="{{cluster.displayName}}">

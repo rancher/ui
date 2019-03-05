@@ -2,6 +2,7 @@ import Resource from '@rancher/ember-api-store/models/resource';
 import { get, set, computed, setProperties } from '@ember/object';
 import { inject as service } from '@ember/service';
 import { reference } from '@rancher/ember-api-store/utils/denormalize';
+import { next } from '@ember/runloop';
 
 export default Resource.extend({
   router: service(),
@@ -44,14 +45,16 @@ export default Resource.extend({
       let match = allProjects.findBy('id', projectId);
 
       if (match) {
-        set(match, 'accessible', true);
+        next(() => {
+          set(match, 'accessible', true);
+        });
 
         myProjects.pushObject(match);
       } else {
         myProjects.pushObject({
           id:         projectId,
           accessible: false,
-        })
+        });
       }
     });
 
