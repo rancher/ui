@@ -42,41 +42,16 @@
       <label for="" class="acc-label">
         {{t "newMultiClusterApp.targets.label"}}
       </label>
-      <div class="col span-12 text-small">
+      <div class="col span-12 text-small mb-20">
         {{#each model.targets as |target|}}
-          {{#badge-state
-             classNames="mr-5 mb-5"
-             model=target
-             capitalizeText=false
-          }}
-            {{#if target.project.id}}
-              {{#link-to-external
-                 "apps-tab.detail"
-                 target.projectId
-                 target.appLink
-              }}
-                {{target.clusterName}}:{{target.projectName}}
-                {{#tooltip-element
-                   type="tooltip-basic"
-                   model=target.state
-                   tooltipTemplate="tooltip-static"
-                   aria-describedby="tooltip-base"
-                   tooltipFor="tooltipLink"
-                }}
-                  <i class="icon icon-circle {{target.stateColor}}"></i>
-                {{/tooltip-element}}
-              {{/link-to-external}}
-            {{else}}
-              {{target.projectId}}
-              {{#tooltip-element
-                 type="tooltip-basic"
-                 model=(t "newMultiClusterApp.access.noAccessLink")
-                 tooltipTemplate="tooltip-static"
-                 aria-describedby="tooltip-base"
-                 tooltipFor="tooltipLink"
-              }}
-                <i class="icon icon-alert"></i>
-              {{/tooltip-element}}
+          {{#if target.project.id}}
+            {{#link-to-external
+               "apps-tab.detail"
+               target.projectId
+               target.appLink
+            }}
+              <i class="icon icon-circle {{target.stateColor}}"></i>
+              {{target.clusterName}}:{{target.projectName}}
               {{#tooltip-element
                  type="tooltip-basic"
                  model=target.state
@@ -84,10 +59,29 @@
                  aria-describedby="tooltip-base"
                  tooltipFor="tooltipLink"
               }}
-                <i class="icon icon-circle {{target.stateColor}}"></i>
               {{/tooltip-element}}
-            {{/if}}
-          {{/badge-state}}
+            {{/link-to-external}}
+          {{else}}
+            <i class="icon icon-circle {{target.stateColor}}"></i>
+            {{target.projectId}}
+            {{#tooltip-element
+               type="tooltip-basic"
+               model=(t "newMultiClusterApp.access.noAccessLink")
+               tooltipTemplate="tooltip-static"
+               aria-describedby="tooltip-base"
+               tooltipFor="tooltipLink"
+            }}
+              <i class="icon icon-alert"></i>
+            {{/tooltip-element}}
+            {{#tooltip-element
+               type="tooltip-basic"
+               model=target.state
+               tooltipTemplate="tooltip-static"
+               aria-describedby="tooltip-base"
+               tooltipFor="tooltipLink"
+            }}
+            {{/tooltip-element}}
+          {{/if}}
         {{/each}}
       </div>
     </div>
