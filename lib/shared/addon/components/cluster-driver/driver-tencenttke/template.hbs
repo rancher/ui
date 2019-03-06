@@ -8,22 +8,18 @@
     <div class="row">
       <div class="col span-4">
         <label class="acc-label">{{t 'clusterNew.tencenttke.region.label'}}</label>
-        {{#if (eq step 1)}}
+        {{#input-or-display editable=(and (eq step 1) isNew) value=config.region}}
           {{searchable-select class="form-control"
             content=regionChoices
             value=config.region
           }}
-        {{else}}
-          <div>{{config.region}}</div>
-        {{/if}}
+        {{/input-or-display}}
       </div>
       <div class="col span-4">
         <label class="acc-label">{{t 'clusterNew.tencenttke.secretId.label'}}{{field-required}}</label>
-        {{#if (eq step 1)}}
+        {{#input-or-display editable=(eq step 1) value=config.secretId}}
           {{input type="text" name="username" classNames="form-control" placeholder=(t 'clusterNew.tencenttke.secretId.placeholder') value=config.secretId}}
-        {{else}}
-          <div>{{config.secretId}}</div>
-        {{/if}}
+        {{/input-or-display}}
       </div>
       <div class="col span-4">
         <label class="acc-label">{{t 'clusterNew.tencenttke.secretKey.label'}}{{field-required}}</label>
@@ -54,46 +50,38 @@
       <div class="row">
         <div class="col span-6">
           <label class="acc-label">{{t 'clusterNew.tencenttke.version.label'}}</label>
-          {{#if (eq step 2)}}
+          {{#input-or-display editable=(and (eq step 2) isNew) value=config.clusterVersion}}
             {{searchable-select class="form-control"
               content=versionChoices
               value=config.clusterVersion
             }}
-          {{else}}
-            <div>{{config.clusterVersion}}</div>
-          {{/if}}
+          {{/input-or-display}}
         </div>
         <div class="col span-6">
-          <label class="acc-label">{{t 'clusterNew.tencenttke.goodsNum.label'}}{{field-required}}</label>
-          {{#if (eq step 2)}}
-            {{input-integer min=1 max=100 value=config.goodsNum classNames="form-control" placeholder=(t 'clusterNew.tencenttke.goodsNum.placeholder')}}
+          <label class="acc-label">{{t 'clusterNew.tencenttke.nodeCount.label'}}{{field-required}}</label>
+          {{#input-or-display editable=(eq step 2) value=config.nodeCount}}
+            {{input-integer min=1 max=100 value=config.nodeCount classNames="form-control" placeholder=(t 'clusterNew.tencenttke.nodeCount.placeholder')}}
             <p class="help-block">
-              {{t 'clusterNew.tencenttke.goodsNum.help'}}
+              {{t 'clusterNew.tencenttke.nodeCount.help'}}
             </p>
-          {{else}}
-            <div>{{config.goodsNum}}</div>
-          {{/if}}
+          {{/input-or-display}}
         </div>
       </div>
       <div class="row">
         <div class="col span-6">
           <label class="acc-label">{{t 'clusterNew.tencenttke.vpc.label'}}{{field-required}}</label>
-          {{#if (eq step 2)}}
+          {{#input-or-display editable=(and (eq step 2) isNew) value=config.vpcId}}
             {{searchable-select class="form-control"
               content=vpcChoices
               value=config.vpcId
             }}
-          {{else}}
-            <div>{{config.vpcId}}</div>
-          {{/if}}
+          {{/input-or-display}}
         </div>
         <div class="col span-6">
           <label class="acc-label">{{t 'clusterNew.tencenttke.cidr.label'}}{{field-required}}</label>
-          {{#if (eq step 2)}}
+          {{#input-or-display editable=(and (eq step 2) isNew) value=config.clusterCidr}}
             {{input type="text" value=config.clusterCidr placeholder=(t 'clusterNew.tencenttke.cidr.placeholder')}}
-          {{else}}
-            <div>{{config.clusterCidr}}</div>
-          {{/if}}
+          {{/input-or-display}}
         </div>
       </div>
     {{/accordion-list-item}}
@@ -117,7 +105,7 @@
       <div class="row">
         <div class="col span-6">
           <label class="acc-label">{{t 'clusterNew.tencenttke.zone.label'}}{{field-required}}</label>
-          {{#if (eq step 3)}}
+          {{#if (and (eq step 3) isNew)}}
             {{searchable-select class="form-control"
               content=zoneChoices
               value=config.zoneId
@@ -128,27 +116,23 @@
         </div>
         <div class="col span-6">
           <label class="acc-label">{{t 'clusterNew.tencenttke.subnet.label'}}{{field-required}}</label>
-          {{#if (eq step 3)}}
+          {{#input-or-display editable=(and (eq step 3) isNew) value=config.subnetId}}
             {{searchable-select class="form-control"
               content=subnetChoices
               value=config.subnetId
             }}
-          {{else}}
-            <div>{{config.subnetId}}</div>
-          {{/if}}
+          {{/input-or-display}}
         </div>
       </div>
       <div class="row">
         <div class="col span-6">
           <label class="acc-label">{{t 'clusterNew.tencenttke.instanceType.label'}}{{field-required}}</label>
-          {{#if (eq step 3)}}
+          {{#input-or-display editable=(and (eq step 3) isNew) value=config.instanceType}}
             {{searchable-select class="form-control"
               content=instanceChoices
               value=config.instanceType
             }}
-          {{else}}
-            <div>{{config.instanceType}}</div>
-          {{/if}}
+          {{/input-or-display}}
         </div>
       </div>
     {{/accordion-list-item}}
@@ -172,32 +156,40 @@
       <div class="row">
         <div class="col span-6">
           <label class="acc-label">{{t 'clusterNew.tencenttke.os.label'}}</label>
-          {{searchable-select class="form-control"
-            content=osChoices
-            value=config.osName
-          }}
+          {{#input-or-display editable=isNew value=config.osName}}
+            {{searchable-select class="form-control"
+              content=osChoices
+              value=config.osName
+            }}
+          {{/input-or-display}}
         </div>
         <div class="col span-6">
           <label class="acc-label">{{t 'clusterNew.tencenttke.securityGroup.label'}}{{field-required}}</label>
-          {{searchable-select class="form-control"
-            content=sgChoices
-            value=config.sgId
-          }}
+          {{#input-or-display editable=isNew value=config.sgId}}
+            {{searchable-select class="form-control"
+              content=sgChoices
+              value=config.sgId
+            }}
+          {{/input-or-display}}
         </div>
       </div>
       <div class="row">
         <div class="col span-6">
           <label class="acc-label">{{t 'clusterNew.tencenttke.rootType.label'}}</label>
-          {{searchable-select class="form-control"
-            content=rootDiskChoices
-            localizedLabel=true
-            value=config.rootType
-          }}
+          {{#input-or-display editable=isNew value=config.rootType}}
+            {{searchable-select class="form-control"
+              content=rootDiskChoices
+              localizedLabel=true
+              value=config.rootType
+            }}
+          {{/input-or-display}}
         </div>
         <div class="col span-6">
           <label class="acc-label">{{t 'clusterNew.tencenttke.rootSize.label'}}</label>
           <div class="input-group">
-            {{input-integer min=20 max=50 value=config.rootSize classNames="form-control" placeholder=(t 'clusterNew.tencenttke.rootSize.placeholder')}}
+            {{#input-or-display editable=isNew value=config.rootSize}}
+              {{input-integer min=20 max=50 value=config.rootSize classNames="form-control" placeholder=(t 'clusterNew.tencenttke.rootSize.placeholder')}}
+            {{/input-or-display}}
             <span class="input-group-addon bg-default">{{t 'generic.gigabyte'}}</span>
           </div>
         </div>
@@ -205,16 +197,20 @@
       <div class="row">
         <div class="col span-6">
           <label class="acc-label">{{t 'clusterNew.tencenttke.storageType.label'}}</label>
-          {{searchable-select class="form-control"
-            content=storageDiskChoices
-            localizedLabel=true
-            value=config.storageType
-          }}
+          {{#input-or-display editable=isNew value=config.storageType}}
+            {{searchable-select class="form-control"
+              content=storageDiskChoices
+              localizedLabel=true
+              value=config.storageType
+            }}
+          {{/input-or-display}}
         </div>
         <div class="col span-6">
           <label class="acc-label">{{t 'clusterNew.tencenttke.storageSize.label'}}</label>
           <div class="input-group">
-            {{input-integer min=0 value=config.storageSize classNames="form-control" placeholder=(t 'clusterNew.tencenttke.storageSize.placeholder')}}
+            {{#input-or-display editable=isNew value=config.storageSize}}
+              {{input-integer min=0 value=config.storageSize classNames="form-control" placeholder=(t 'clusterNew.tencenttke.storageSize.placeholder')}}
+            {{/input-or-display}}
             <span class="input-group-addon bg-default">{{t 'generic.gigabyte'}}</span>
           </div>
         </div>
@@ -222,16 +218,20 @@
       <div class="row">
         <div class="col span-6">
           <label class="acc-label">{{t 'clusterNew.tencenttke.bandwidthType.label'}}</label>
-          {{searchable-select class="form-control"
-            content=bandWidthChoices
-            localizedLabel=true
-            value=config.bandwidthType
-          }}
+          {{#input-or-display editable=isNew value=config.bandwidthType}}
+            {{searchable-select class="form-control"
+              content=bandWidthChoices
+              localizedLabel=true
+              value=config.bandwidthType
+            }}
+          {{/input-or-display}}
         </div>
         <div class="col span-6">
           <label class="acc-label">{{t 'clusterNew.tencenttke.bandwidth.label'}}</label>
           <div class="input-group">
-            {{input-integer min=0 value=config.bandwidth classNames="form-control" placeholder=(t 'clusterNew.tencenttke.bandwidth.placeholder')}}
+            {{#input-or-display editable=isNew value=config.bandwidth}}
+              {{input-integer min=0 value=config.bandwidth classNames="form-control" placeholder=(t 'clusterNew.tencenttke.bandwidth.placeholder')}}
+            {{/input-or-display}}
             <span class="input-group-addon bg-default">{{t 'generic.mbps'}}</span>
           </div>
         </div>
@@ -239,10 +239,12 @@
       <div class="row">
         <div class="col span-6">
           <label class="acc-label">{{t 'clusterNew.tencenttke.keyPair.label'}}{{field-required}}</label>
-          {{searchable-select class="form-control"
-            content=keyChoices
-            value=config.keyId
-          }}
+          {{#input-or-display editable=isNew value=config.keyId}}
+            {{searchable-select class="form-control"
+              content=keyChoices
+              value=config.keyId
+            }}
+          {{/input-or-display}}
         </div>
       </div>
     {{/accordion-list-item}}
