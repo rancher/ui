@@ -65,7 +65,7 @@ export default Resource.extend({
   availableActions: computed('enabled', 'access.providers.[]', function() {
     const on         = get(this, 'enabled') !== false;
     const { access } = this;
-
+    const a = get(this, 'actionLinks') || {};
 
     return [
       {
@@ -94,7 +94,8 @@ export default Resource.extend({
     function isRefreshAuthProviderAccessAvailable() {
       if (on &&
           get(access, 'providers') &&
-          get(access, 'providers.length') > 1) {
+          get(access, 'providers.length') > 1 &&
+          a.refreshauthprovideraccess) {
         return true;
       } else {
         return false;
