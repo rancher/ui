@@ -42,20 +42,15 @@
       <label for="" class="acc-label">
         {{t "newMultiClusterApp.targets.label"}}
       </label>
-      <div class="col span-12 text-small">
-        {{#each model.targets as |target|}}
-          {{#badge-state
-             classNames="mr-5 mb-5"
-             model=target
-             capitalizeText=false
-          }}
+      <div class="col span-12 text-small mb-20">
+        <span>
+          {{#each model.targets as |target|}}
             {{#if target.project.id}}
               {{#link-to-external
                  "apps-tab.detail"
                  target.projectId
                  target.appLink
               }}
-                {{target.clusterName}}:{{target.projectName}}
                 {{#tooltip-element
                    type="tooltip-basic"
                    model=target.state
@@ -65,8 +60,18 @@
                 }}
                   <i class="icon icon-circle {{target.stateColor}}"></i>
                 {{/tooltip-element}}
+                {{target.clusterName}}:{{target.projectName}}
               {{/link-to-external}}
             {{else}}
+              {{#tooltip-element
+                 type="tooltip-basic"
+                 model=target.state
+                 tooltipTemplate="tooltip-static"
+                 aria-describedby="tooltip-base"
+                 tooltipFor="tooltipLink"
+              }}
+                <i class="icon icon-circle {{target.stateColor}}"></i>
+              {{/tooltip-element}}
               {{target.projectId}}
               {{#tooltip-element
                  type="tooltip-basic"
@@ -77,18 +82,9 @@
               }}
                 <i class="icon icon-alert"></i>
               {{/tooltip-element}}
-              {{#tooltip-element
-                 type="tooltip-basic"
-                 model=target.state
-                 tooltipTemplate="tooltip-static"
-                 aria-describedby="tooltip-base"
-                 tooltipFor="tooltipLink"
-              }}
-                <i class="icon icon-circle {{target.stateColor}}"></i>
-              {{/tooltip-element}}
             {{/if}}
-          {{/badge-state}}
-        {{/each}}
+          {{/each}}
+        </span>
       </div>
     </div>
   </div>
