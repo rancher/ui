@@ -53,8 +53,10 @@ generic:
   limit: 制限
   limits: 制限
   loading: "読込中..."
+  loggingOut: "ログアウト中…"
   member: メンバー
   mibibyte: 'MiB'
+  minutes: 分
   milliseconds: 'ミリ秒'
   missing: "*%MISSING%*"
   moreActions: その他の操作
@@ -62,6 +64,7 @@ generic:
   name: 名前
   namespace: 名前空間
   namespaces: 名前空間
+  never: しない
   no: "いいえ"
   noRating: 評価なし
   node: ノード
@@ -96,6 +99,7 @@ generic:
   total: 合計
   type: タイプ
   unknown: 不明
+  unknownUser: ユーザー情報を取得できません
   upload: アップロード
   url: URL
   user: ユーザー
@@ -200,6 +204,8 @@ appDetailPage:
     nodata: このアプリケーションにボリューム要求は作成されていません
   configMaps:
     title: コンフィグマップ
+    detail: このアプリケーションに割りあてられているコンフィグマップです
+    nodata: このアプリケーションにコンフィグマップは作成されていません
   secrets:
     title: シークレット
     detail: このアプリケーションに割り当てられているシークレットです
@@ -240,6 +246,11 @@ rolesPage:
       noMatch: 検索条件に一致するロールがありません
       subjectKind: 種類
       template: テンプレート
+      showDefaults: デフォルトのみを表示
+  inherit:
+    title: ロールから継承
+    detail: 他のロールからの全ての権限を含む
+  addRole: "{context} ロールを追加"
   editRole: ロールの編集
   saveEdit: 編集
   saveNew: 作成
@@ -257,6 +268,7 @@ rolesPage:
       context:
         labelText: コンテキスト
       locked:
+        labelText: ロック済み
         disabled: "いいえ"
       allow:
         create: 作成
@@ -319,15 +331,26 @@ authPage:
       uid:
         labelText: UID フィールド
         display: "UID フィールド:"
+      rancherApiHost:
+        labelText: "{appName} APIホスト"
+        display: "{appName} APIホスト:"
       groups:
         labelText: グループ フィールド
         display: "グループ フィールド:"
+      testAuth:
+        header: '2. 認証をテストして有効化する'
+        subtext: '認証テストを行うことであなたのアプリケーションが正常に設定されたことを確認します:'
     providerName:
       ping: Ping
       adfs: AD FS
       keycloak: Keycloak
+  ping:
+    buttonText:
+      pre: 'Pingによる認証'
+      post: IDP からの返答を待っています
   keycloak:
     buttonText:
+      pre: 'Keycloackによる認証'
       post: IDP からの返答を待っています
   adfs:
     buttonText:
@@ -397,9 +420,9 @@ authPage:
           text: '"新規アプリケーションの登録" をクリックし、必要事項を入力してください:'
           ul:
             li1: '<b>アプリケーション名:</b> <span class="text-muted">自由記載, e.g. My {appName}</span>'
-            li2: ホームページ URL
+            li2: 'ホームページ URL'
             li3: '<b>アプリケーションの詳細情報:</b> <span class="text-muted">自由記載(オプション)</span>'
-            li4: 認証コールバック URL
+            li4: '認証コールバック URL'
         li3:
           text: '"アプリケーションを登録" をクリック'
       form:
@@ -436,10 +459,18 @@ authPage:
       header: '1. Azure AD アカウントを設定する'
       applicationId:
         label: アプリケーション ID
+      applicationSecret:
+        label: アプリケーションパスワード
       serverURL:
         label: Rancher サーバー URL
       azureADEndpoint:
         label: エンドポイント
+      azureADGraphEndpoint:
+        label: グラフエンドポイント
+      azureADTokenEndpoint:
+        label: トークンエンドポイント
+      azureADAuthEndpoint:
+        label: 認証エンドポイント
       endpoints:
         label: エンドポイント
       regions:
@@ -460,6 +491,7 @@ authPage:
         label: ログイン パスワード
       pre: Azure で認証
       post: Azure からの返答を待っています
+      popupError: 'ポップアップブロッカーを停止して、もう一度 "認証" をクリックしてください。'
   localAuth:
     header:
       enabled: 'ローカル認証が 有効 です'
@@ -600,6 +632,7 @@ namespacesPage:
       label: 作成日
 clusterPage:
   edit: クラスターを編集
+  removeMemberNote: '注意: ユーザーを削除しても、プロジェクトのパーミッションは削除されません'
 projectsListNamespacePage:
   header: 名前空間
   notIn: プロジェクト内にありません
@@ -705,6 +738,7 @@ podPage:
   podIp: ポッド IP
   containerImage: '{container} イメージ'
   image: イメージ
+  displayImage: '{image} + {sidecar, plural, other {# images}}'
 containersPage:
   table:
     sparkPrefixCpu: "CPU: "
@@ -719,21 +753,8 @@ containersPage:
     orchestrator: 他のオーケストレーターをインストール
     kubernetesLink: Kubernetes をインストール
 clusterDashboard:
-  title: ダッシュボード
-  cpu: CPU
-  memory: メモリ
-  pods: ポッド
-  node: ノード
-  etcd: etcd
-  scheduler: スケジューラー
-  controllerManager: コントローラーマネージャー
-  value: 値
   notActive: このクラスターは現在 <b>{state}</b> 状態です
   notReady: このクラスターは現在 <b>{state}</b> 状態です; API が準備されるまでこのページでの直接の操作はできません。
-  noNodes: ノードはありません
-  alert:
-    node: "注意: ノード {node} はアクティブではありません。"
-    component: "注意: コンポーネント {component} は不健全です。"
 dnsPage:
   noMatch: 検索条件に一致するレコードはありません
   noData: 表示する DNS レコードはありません
@@ -1008,7 +1029,7 @@ loginPage:
   shibbolethError:
     401: "認証に失敗しました"
     500: "サーバ内部エラー"
-    generic: "ログイン中にエラー ({errorCode}) が発生しました。もう一度やり直してください。"
+    generic: "ログイン中にエラー {{errorCode}} が発生しました。もう一度やり直してください。"
   error:
     authFailedCreds: "ログインに失敗しました: 認証情報が間違っているか、アカウントにログインする権限が与えられていない可能性があります。"
     authFailed: "ログインに失敗しました: アカウントにログインする権限が与えられていない可能性があります。"
@@ -1233,7 +1254,6 @@ newStack:
     addActionLabel: 回答を追加
 nodeTemplatesPage:
   header: ノードテンプレート
-  actionButton: テンプレートを追加
   detail: ノードテンプレートはインフラストラクチャプロバイダー上のクラスターに所属するノードを展開する際に利用されます
   table:
     state: 状態
@@ -1310,10 +1330,9 @@ notifierPage:
   slack:
     url: URL
     urlPlaceholder: '例: https://hooks.slack.com/services/T00000000/B00000000/XXXXXXXXXXXXXXXXXXXXXXXX'
-    defaultRecipient: デフォルト受信先(チャンネル)
     defaultRecipientPlaceholder: '例: #example'
     helpText: |
-      Slack 用 <a href="https://slack.com/apps/A0F7XDUAZ-incoming-webhooks">incoming WebHooks の作成</a> を参照してください
+      Slack 用 <a href="https://get.slack.help/hc/en-us/articles/115005265063-Incoming-WebHooks-for-Slack">incoming WebHooks の作成</a> を参照してください
   smtp:
     server: SMTP サーバー
     host: ホスト
@@ -1325,10 +1344,8 @@ notifierPage:
     userNamePlaceholder: '例: John'
     password: パスワード
     passwordPlaceholder: あなたのパスワード
-    defaultRecipient: デフォルト受信先(アドレス)
     defaultRecipientPlaceholder: '例: admin@example.com'
   pagerduty:
-    serviceKey: サービスキー
     serviceKeyPlaceholder: あなたの pagerduty サービスキー
     helpText: |
       Pagerduty 用 <a href="https://support.pagerduty.com/docs/webhooks">incoming WebHooks の作成</a> を参照してください
@@ -1403,6 +1420,8 @@ ldap:
       helpText: "一部を除き、ユーザーがログインする際このドメインが使用されます。"
       labelText: デフォルト ログインドメイン
       placeholder: "例: mycompany"
+    connectionTimeout:
+      labelText: サーバー接続タイムアウト
   customizeSchema:
     header: "2. スキーマのカスタマイズ"
     helpText: "スキーマが標準的な ActiveDirectory フォーマットに一致しない場合、こちらでカスタマイズすることができます。"
@@ -1505,7 +1524,7 @@ cloudProvider:
   name: クラウドプロバイダ名
   helpText: |
     詳細は <a href="https://kubernetes.io/docs/concepts/cluster-administration/cloud-providers/" target="_blank" rel="nofollow noopener noreferrer">クラウドプロバイダーについて</a> を参照してください
-  warning: クラウドプロバイダー設定を与えずにクラウドプロバイダーを使用すると、クラスターが聖女区に作成されない可能性があります。クラスターを作成する前にクラウドプロバイダー設定を追加することをお勧めします。
+  warning: クラウドプロバイダー設定を与えずにクラウドプロバイダーを使用すると、クラスターが正常に作成されない可能性があります。クラスターを作成する前にクラウドプロバイダー設定を追加することをお勧めします。
 catalogSettings:
   header: カタログ
   notAvailable: "利用不可: <code>{name}</code> というカスタムカタログがあります"
@@ -1536,6 +1555,8 @@ catalogSettings:
       pl: テンプレートはコミュニティメンバーによって作成、メンテナンスされ、
   more:
     header: カスタム
+    helpText:
+      help-repo: '<strong>リポジトリURL:</strong>'
     addActionLabel: カタログを追加
     noMatch: 検索条件に一致するカタログがありません。
     noData: まだカスタムカタログは定義されていません
@@ -1564,6 +1585,7 @@ clusterRow:
   loginDefault: ログイン
 clusterNew:
   advanced:
+    cancel: フォームで指定
     yaml: YAML として編集
   name:
     label: クラスター名
@@ -1598,6 +1620,8 @@ clusterNew:
   azureaks:
     label: Azure Container Service
     shortLabel: Azure AKS
+    authenticate:
+      next: "次へ: 認証とノードの設定"
     access:
       title: アカウントアクセス
       detail: Azure の操作に使用する認証情報を設定する
@@ -1732,10 +1756,16 @@ clusterNew:
       placeholder: '例: 10.42.0.0/16'
     alphaFeatures:
       label: アルファ機能
+    stackDriverLogging:
+      label: Stackdriver Logging
+    stackdriverMonitor:
+      label: Stackdriver Logging
     dashboard:
       label: Kubernetes ダッシュ ボード
     httpLB:
       label: Http ロードバランサー
+    enableHorizontalPodAutoscaling:
+      label: 水平ポッドオートスケーリング
   rke:
     etcd:
       heartbeat:
@@ -1764,6 +1794,7 @@ clusterNew:
       detail: "クラスター用 Kubernetes オプションをカスタマイズします"
     labels:
       title: ノードラベル
+      detail: ホストに適用するオプションラベル
     nodes:
       title: ノードプール
       detail: クラスターに所属するマシンの設定します
@@ -1802,8 +1833,12 @@ clusterNew:
         calico:
           cloudProvider:
             label: クラウドプロバイダー
+      type:
+        info: '"host-gw" バックエンドのみをサポート'
     ingress:
       label: イングレス プロバイダー
+    networkPolicy:
+      label: プロジェクトのネットワーク分離
     version:
       label: Kubernetes バージョン
     registry:
@@ -1848,16 +1883,22 @@ clusterNew:
       label: Kubelet
       domain: クラスタードメイン
       dns: クラスター DNS サーバー
+    warning:
+      aws:
+        iam: 'Amazonのクラウドプロバイダーを使用する場合は、ノードテンプレートでIAMロール名を指定する必要があります'
     errors:
       etcd: etcd を使うには 1, 3 または 5 台のノードを選択してください
       controlPlane: Control を使うには少なくとも1台のノードを選択してください
       worker: Worker を使うには少なくとも1台のノードを選択してください
+    dockerRootDir:
+      placeholder: デフォルトディレクトリは {dir} です。
     system:
       title: ノードオペレーティングシステム
       linux: Linux
       windows: Windows
     windowsSupport:
       label: Windowsのサポート (実験的)
+      disabled: ネットワークプロバイダーの {plugin} はサポートされていません
   custom:
     label: カスタム
     shortLabel: カスタム
@@ -1879,6 +1920,7 @@ conditionSections:
   noData: コンディションはありません
   noMatch: 検索条件に一致するコンディションはありません
 resourceEventList:
+  detail: '{resourceType} の現在のイベントです'
   table:
     type: タイプ
     lastUpdate: 最終更新
@@ -1889,6 +1931,7 @@ resourceEventList:
 confirmDelete:
   title: '本当に削除してもよろしいですか?'
   environmentNote: 'ノート: このプロジェクト内にある {appName} により作られた名前空間を含むの全てのリソースは完全に削除されます'
+  clusterNote: '注意: クラウドプロバイダーにより作成されたボリューム、ロードバランサー、ネットワークなどの関連リソースは自動的には削除されません。'
   protip: 'ProTip: この確認画面を飛ばす場合は削除ボタンのクリック時に {key} キーを長押ししてください。'
   confirmAction: 削除
   cancelAction: キャンセル
@@ -1903,6 +1946,7 @@ containerLogs:
   scrollTop: トップにスクロール
   scrollBottom: 下部にスクロール
   clear: スクリーンをクリア
+  wrapLines: 行を折り返し
   status:
     initializing: 初期化中...
     connecting: 接続中...
@@ -2534,6 +2578,7 @@ cruStorageClass:
       label: 管理シークレット名前空間
       placeholder: "例: kube-system"
     adminSecretName:
+      label: 管理シークレット
       placeholder: "例: secret"
     pool:
       label: プール
@@ -2586,6 +2631,8 @@ dangerZone:
   subtext: "一般的なユーザーの場合、これらを変更する必要はありません。間違った値を指定するとあなたの {appName} が壊れる可能性がありますので、慎重に進めてください。<br/>既定の値から変更された設定値は<b>太字</b>で表示されます。"
   showLabel: 私は拡張設定を変更することで問題が生じる可能性があると理解しています。
   description:
+    'cacerts': "サーバー証明書を検証するために必要な CA証明書"
+    'cluster-defaults': '新しいクラスターを作成するときにRKEのデフォルトを上書きします。'
     'engine-newest-version': 'このリリースにおける最新のサポートされる Docker バージョンです。サポートされる Docker バージョンより新しいバージョンを利用することも出来ますが未テストのマークが付きます。'
     'engine-supported-range': 'サポートされる Docker エンジンバージョンの範囲です。この範囲外のバージョンは UI 上で未サポートのマークが付きます。'
     'ui-index': 'UI 向けの HTML index ファイルの場所です'
@@ -2705,6 +2752,8 @@ editStack:
   description:
     label: 詳細情報
     placeholder: '例: MyApp 名前空間'
+  resourceQuota:
+    title: リソース制限
   group:
     label: タグ
     placeholder: '例: frontend, production'
@@ -2736,7 +2785,7 @@ moveNamespace:
     {count, plural,
     =1 {個の名前空間: {name}}
     other {# 個の名前空間}
-    }の移動:
+    }の移動: 
   to: "移動先のプロジェクト:"
   actionLabel: 移動
 stackHeader:
@@ -2772,7 +2821,11 @@ formNodeRequirement:
     label: オペレーター
   values:
     label: 値
+    placeholder: コンマ区切り 例 node1,node2
 formIngress:
+  hostMode:
+    manual: 使用するホスト名を指定する
+    default: デフォルトのバックエンドとして使用
   defaultBackend:
     label: このルールをデフォルトのバックエンドとして設定する
     mark: デフォルトのバックエンド
@@ -3269,6 +3322,9 @@ formPorts:
     placeholder: "例: 80"
     ipPlaceholder: "例: 80 または 19.82.2.24:80"
     clusterIpDefault: "コンテナポートと同様"
+  nodePort:
+    placeholder: "デフォルトのノードポートの範囲は、30000-32767です。例 30000"
+    customPortRangePlaceholder: "ノードポートの範囲は、{range} です。例 {port}"
   containerPort:
     label: コンテナポートを公開
     placeholder: "例: 8080"
@@ -3349,6 +3405,7 @@ formScheduling:
   scaleMax: 最大スケール
   scaleIncrement: 増加数
   hostMax: 最大ノード数
+  perHost: ホスト毎に
   priority:
     label: 優先度
     placeholder: '例: 3'
@@ -3543,6 +3600,9 @@ formAnnotations:
   errors:
     invalidJSON: アノテーションのJSONフォーマットが無効です。
     topLevelValueInvalid: アノテーションJSONのトップレベル値はオブジェクトでなければなりません。
+formJobConfig:
+  completions:
+    label: 完了
 formUpgrade:
   title: スケーリング/アップグレード ポリシー
   detail: アップグレードを実行した際のポッドの置換方法を設定します
@@ -3578,6 +3638,7 @@ formValueArray:
   noData: データはありません
   protip: "ProTip: 簡単に入力するには1行以上の値をペーストしてください。"
 formVolumeRow:
+  prompt: 永続ボリューム要求を選択してください...
   name:
     label: ボリューム名
     placeholder: '例: vol1'
@@ -3601,6 +3662,7 @@ formVolumeRow:
     mountPoint: マウントポイント
     subPath: ボリューム内サブパス
     readOnly: 読み取り専用
+    helper: ボリュームは現在のコンテナにマウントされません。ポッド内の他のコンテナで使用することができます。
   customLogPath:
     helpText: Flexvolume ドライバーを配備してボリュームを作成し、そのログをホストにマウントします。この機能は現在 GKE クラスターでサポートされています。
 formVolumes:
@@ -3629,6 +3691,7 @@ formVolumes:
     bindMount: ノードからディレクトリをバインド
     tmpfs: インメモリtmpfsを追加
     secret: シークレットを使用
+    configMap: コンフィグマップを使用
     certificate: ユーザー証明書
     customLogPath: ディレクトリからログファイルを読み込み
   table:
@@ -3782,27 +3845,11 @@ hostPod:
     standalone: 独立型コンテナ
 identityBlock:
   loading: 読込中...
-infoMultiStats:
-  connecting: 接続中...
-  utilizationStats: 利用率の統計はアクティブ/起動中の場合のみ利用できます。
-  cpuSection:
-    labelText: CPU
-    system: システム
-    user: ユーザー
-  networkSection:
-    labelText: ネットワーク
-    transmit: 送信
-    receive: 受信
-  memorySection:
-    labelText: メモリ
-    used: 使用済み
-  storageSection:
-    labelText: ストレージ
-    read: 読み込み
-    write: 書き込み
 inputAnswers:
   yaml: YAML として編集
   config: 設定オプション
+  editAsForm: フォームで指定
+  yamlProtip: PREVIEWセクションにデフォルト設定があります
   unknownType: "有効でないパラメータータイプ:"
   noConfig: このテンプレートには設定オプションがありません
   protip: "ペーストと読み取り処理では、列挙されたパラメーターが yml/yaml 形式である必要があります"
@@ -3835,14 +3882,13 @@ labelsSection:
   key: キー
   value: 値
   noData: ラベルはありません
+  noMatch: 検索条件に一致するラベルがありません
 loginShibboleth:
   buttonText: シボレスでログイン
 loginGithub:
   buttonText: GitHub でログイン
 loginAzure:
   buttonText: Azure ADでログイン
-loginSaml:
-  buttonText: "{provider} でログイン"
 loginUserPass:
   local: ローカルユーザーを使用
   provider: "{kind}"
@@ -3978,9 +4024,6 @@ modalConfirmRemovePayment:
   title: '本当に削除してもよろしいですか?'
   card: 'カードは {card} で失効します'
 modalEditDriver:
-  header:
-    create: ノードドライバーを追加
-    edit: ノードドライバーの編集
   url:
     label: ダウンロード URL
     help: 64-bit Linux のマシンドライバーをダウンロードする URL 。
@@ -4036,6 +4079,9 @@ modalImport:
     cluster: "クラスター: リソースをクラスターに直接インポート"
     project: "プロジェクト: リソースをプロジェクトにインポート"
     namespace: "名前空間: リソースを特定の名前空間にインポート"
+  detail:
+    cluster1: ネームスペースリソースは必要に応じて作成されますが、このプロジェクトに自動的には追加されません
+    cluster3: このモードでは、ネームスペースのないリソースもサポートします。例 RoleTemplate
 modalProcessError:
   header: 例外情報
   cause: "理由:"
@@ -4045,10 +4091,8 @@ modalProcessError:
 modalDrainNode:
   gracePeriod:
     placeholder: '例: 60'
-    label: 猶予期間
   timeout:
     placeholder: '例: 60'
-    label: タイムアウト
 modalRollbackService:
   title: '"{instanceName}" をロールバック'
   titleWithSidekicks: '"{instanceName}" と {count, plural, =1 {# サイドカー} other {# サイドカー}} をロールバック'
@@ -4238,17 +4282,36 @@ nodeDriver:
   driverOptions: "{driver} オプション"
   templateOptions: "{appName} テンプレート"
   amazoneks:
+    access:
+      next: "次へ: サービスロールの選択"
+      loading: Amazonからサービスロールをロード中...
     role:
+      label: サービスロール
+      noneSelected: "Rancherがロールを作成しました"
+      help: "サービスロールを指定しない場合、Rancher により作成されます"
+      radio:
+        default: "標準: Rancherによるサービスロールの作成"
+        custom: "カスタム: 既存のサービスロールから選択"
+      next: "次へ: VPCとサブネットの選択"
       loading: "AmazonからVPCをロード中..."
     vpc:
       title: VPC/サブネット
+      detail: EKSインスタンスを起動する際に利用するVPCを選択して下さい
       next: "次へ：サブネットの選択"
       loading: "Amazonからサブネットをロード中..."
+      nextRancherDefault: "次へ: インスタンスオプションの選択"
       loadingRancherDefault: "インスタンスオプションを読み込んでいます..."
+      noneSelected: "Rancher によりVPCとサブネットが作成されました"
+      radio:
+        default: "標準: RancherによるVPCとSubnetの作成"
+        custom: "カスタム: 既存のVPCとSubnetから選択"
     subnet:
       title: サブネット
       next: "次へ：セキュリティグループの選択"
       loading: "Amazonからセキュリティグループをロード中..."
+    associateWorkerNodePublicIp:
+      radio:
+        default: true
     securityGroup:
       title: セキュリティグループ
       detail: EKSインスタンスに適用するセキュリティグループを選択してください
@@ -4385,6 +4448,7 @@ nodeDriver:
       custom: "カスタム: 既存のグループを選択"
       updating: セキュリティグループを更新中...
       creating: セキュリティグループを作成中...
+    loadingZone: Exoscale からゾーン情報を読み込んでいます...
     zoneSection: ゾーン
     selectZoneAction: "次へ: セキュリティグループの選択"
     zone:
@@ -4438,6 +4502,7 @@ nodeDriver:
   rackspace:
     account:
       title: 1. アカウントアクセス
+      detail: ユーザー名とAPIキーを使用してRackspaceインスタンスが起動されます
     username:
       label: ユーザー名
       placeholder: あなたの RackSpace ユーザー名
@@ -4446,6 +4511,8 @@ nodeDriver:
       placeholder: あなたの RackSpace API キー
     accountHelp: RackSpace コントロールパネルのアカウント設定画面から取得してください
     region:
+      title: 2. リージョンとフレーバー
+      detail: Rackspace インスタンスを起動する際に利用するリージョンとフレーバーを選択してください.
       label: リージョン
     flavor:
       label: フレーバー
@@ -4505,12 +4572,16 @@ nodeDriver:
       placeholder: "例: datastore_cluster_name/datastore_name"
       help: "VM ディスクを配置するデータストアです"
     cloudinit:
+      label: Cloud Init
       placeholder: "例: http://my_host/cloud-config.yml"
     folder:
       label: フォルダ
+      placeholder: "例 /folder"
     cfgparam:
       key:
         placeholder: "例: guestinfo.hostname"
+      value:
+        placeholder: "例 myrancherhost"
       addActionLabel: パラメーターを追加
   azure:
     placement:
@@ -4589,6 +4660,8 @@ nodeDriver:
     accountSection:
       label: 1. アカウントアクセス
       detail: Aliyun ECS インスタンスを起動するのに API キーが利用されます
+      next: "次へ: 認証とネットワークオプション"
+      loading: Aliyun ECSからリージョンをロード中...
     accessKey:
       label: アクセスキー*
       placeholder: あなたの Aliyu アカウントアクセスキー
@@ -4601,6 +4674,7 @@ nodeDriver:
       placeholder: プライベート Aliyun API サーバーのエンドポイント
     instanceOptionsSection:
       label: インスタンス
+      detail: 作成された Aliyun インスタンスをカスタマイズします
     instanceDescription:
       label: インスタンス詳細
       placeholder: インスタンス詳細
@@ -4618,6 +4692,9 @@ nodeDriver:
       placeholder: Aliyun SLB ID
     storageSection:
       label: ストレージ
+      detail: このテンプレートにより作成されたインスタンスが接続するストレージを設定してください
+      next: "次へ: Aliyun ECSインスタンスの設定オプション"
+      loading: Aliyun ECSからインスタンスタイプとイメージをロードしています...
     ioOptimized:
       label: インスタンス ストレージ I/O 最適化
       none: なし
@@ -4633,16 +4710,21 @@ nodeDriver:
       placeholder: リージョン
     zone:
       label: アベイラブルゾーン
+      prompt: 利用可能なゾーンを選択して下さい...
     networkSection:
       label: ネットワーク
+      detail: このテンプレートにより作成されたインスタンスが接続するネットワークを設定してください
+      next: "次へ: ストレージ設定オプション"
       loading: Aliyun ECSからストレージタイプをロード中...
     routeCIDR:
       label: ルート CIDR
       placeholder: '例: 192.168.1.0/24'
     vpcId:
       label: Aliyun VPC ID
+      prompt: VPNを選択...
     vswitchId:
       label: Aliyun 仮想スイッチ ID
+      prompt: VSwitch を選択...
     privateIp:
       label: プライベート IP
       placeholder: プライベートネットワーク内のプライベート IP
@@ -4650,22 +4732,29 @@ nodeDriver:
       label: プライベートアドレスのみ
     securitySection:
       label: セキュリティ
+      detail: インスタンスに適用するセキュリティグループを選択してください
     securityGroup:
       label: セキュリティグループ
       placeholder: セキュリティグループ
+      prompt: セキュリティグループを選択...
+      defaultCreate: "<code>{groupName}</code> グループを自動的に作成"
     sshPassword:
       label: SSH パスワード
       placeholder: インスタンスの SSH パスワードを設定してください。空の場合自動的に設定されます。
+      provided: 取得済み
     tags:
       addActionLabel: インスタンスタグを追加
       valueLabel: タグ
       placeholder: '例: dev'
     errors:
       vpcIdRequired: VPC は必須です。
+      vswitchIdRequired: VSwitchが必要です
       accessKeyRequired: アクセスキーは必須です
       accessSecretRequired: シークレットキーは必須です
       sshPasswordLengthNotValid: SSHパスワードの長さは8〜30でなければなりません。
       sshPasswordInvalidCharacter: SSHパスワードに無効な文字が含まれています。
+      sshPasswordFormatError: "SSHパスワードには、次の4種類の文字のうち3つ以上の文字を含める必要があります: 大文字、小文字、数字、特殊文字"
+      nameNotValidForApp: この名前は、{appName} のホスト名規約により無効です
   zstack:
     access:
       title: 1. アカウントアクセス
@@ -4979,6 +5068,8 @@ siteAccess:
   restricted: "クラスターのメンバーと認証済み {individuals}、{collection} を許可"
   required: "認証済み {individuals} と {collection} のみに制限"
   listHeader: "認証済み {individuals} と {collection}"
+  dupe: "ユーザーアクセスは既に有効になっています"
+  minimum: '少なくとも1つの承認済みエントリーを追加する必要があります'
   noIdentity: None
   users: ユーザー
   groups: グループ
@@ -5074,13 +5165,6 @@ allWorkloads:
   namespace: "名前空間: {name}"
 nav:
   srToggleDropdown: ドロップダウンを切り替え
-  environment:
-    cluster: クラスター
-    label: 環境
-    all: 全ての環境
-    your: あなたの環境
-    selected: 選択された環境
-    edit: '"{name}" を編集'
   cluster:
     dashboard: クラスター
     members: メンバー
@@ -5136,7 +5220,6 @@ nav:
     accounts: ユーザー
     clusters: クラスター
     machines: ノード
-    nodeDrivers: ノードドライバー
     catalogs: カタログ
     security:
       tab: セキュリティ
@@ -5162,11 +5245,11 @@ nav:
     tab: 設定
     advanced: 詳細
   tools:
-    tab: ツール
     alerts: アラート
-    notifiers: 通知
     logging: ログ
+    notifiers: 通知
     pipeline: パイプライン
+    tab: ツール
   project:
     none: グループ化されたプロジェクト/名前空間
     namespaces: 名前空間
@@ -5180,26 +5263,26 @@ action:
   deactivate: 非アクティブ化
   downloadYaml: YAML をダウンロード
   edit: 編集
+  editConfig: 設定を編集
   editService: サービスを編集
   editYaml: YAML の参照/編集
-  viewYaml: YAMLを見る
-  editConfig: 設定を編集
   evacuate: 退避
   execute: シェルを実行
   exportConfig: 設定をエクスポート
   garbageCollect: クリーンアップ
   logs: ログを見る
   makeDefault: デフォルトに設定
-  resetDefault: デフォルトをリセット
-  nodeConfig: キーをダウンロード
   move: 移動
+  mute: ミュート
+  nodeConfig: キーをダウンロード
   pause: 一時停止
   pauseAll: 全て一時停止
   remove: 削除
   replay: 再実行
+  resetDefault: デフォルトをリセット
   restart: 再起動
-  retry: リトライ
   resume: 再開
+  retry: リトライ
   revert: デフォルトに戻す
   rollback: ロールバック
   setDefault: ログイン環境として設定する
@@ -5208,15 +5291,15 @@ action:
   startAll: すべて開始
   stop: 停止
   stopAll: すべて停止
+  test: テスト
+  unmute: ミュート解除
   upgrade: アップグレード
   upgradeOrEdit: アップグレード/編集
   viewConfig: 設定を見る
   viewGraph: グラフを見る
   viewInApi: API を見る
   viewInstance: インスタンスを見る
-  test: テスト
-  mute: ミュート
-  unmute: ミュート解除
+  viewYaml: YAMLを見る
 validation:
   required: '"{key}" が必要です'
   arrayLength:

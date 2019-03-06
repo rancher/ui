@@ -5,6 +5,7 @@ generic:
   actions: Azioni
   activate: Attiva
   add: Aggiungi
+  advanced: Avanzate
   all: Tutto
   any: Qualsiasi
   application: applicazioni
@@ -52,8 +53,10 @@ generic:
   limit: Limite
   limits: Limiti
   loading: "Caricamento..."
+  loggingOut: "Uscita in corso..."
   member: Membro
   mibibyte: 'MiB'
+  minutes: minuti
   milliseconds: 'Millisecondi'
   missing: "*%MISSING% *"
   moreActions: Altre azioni
@@ -73,6 +76,8 @@ generic:
   ports: Porte
   prefix: prefisso
   project: Progetto
+  persistentVolumeClaim: persistent volume claim
+  persistentVolume: volume persistente
   random: Casuale
   remove: Rimuovi
   role: Ruolo
@@ -95,6 +100,7 @@ generic:
   total: Totale
   type: Tipo
   unknown: Sconosciuto
+  unknownUser: Impossibile recuperare le informazioni dell'utente
   upload: Carica
   url: URL
   user: Utente
@@ -197,6 +203,10 @@ appDetailPage:
     title: Volumi
     detail: Dichiarazioni sul volume persistente create con questa applicazione
     nodata: Non sono state fatte dichiarazioni sul volume per questa applicazione.
+  configMaps:
+    title: Mappe di configurazione
+    detail: Mappe di configurazione associate a questa applicazione
+    nodata: Questa applicazione non ha mappe di configurazione
   secrets:
     title: Codice segreto
     detail: Segreti associati a questa applicazione
@@ -231,11 +241,23 @@ rolesPage:
     table:
       builtin: Integrato
       created: Ora di creazione
+      enabled: Abilitato
       name: Nome
       noData: Non sono ancora presenti profili
       noMatch: Nessun ruolo corrisponde alla ricerca corrente
       subjectKind: Tipo
       template: Modello
+      global: Nuovo Utente Predefinito
+      cluster: Creatore di Cluster predefinito
+      project: Creatore di progetto predefinito
+      showDefaults: Mostra solo valori predefiniti
+  resources:
+    title: Concedere Risorse
+    detail: Concedi l'accesso a operazioni specifiche sulle risorse Kubernetes
+  inherit:
+    title: Eredita da un ruolo
+    detail: Includi tutti i permessi di un altro ruolo
+  addRole: "Aggiungi un ruolo di {context}"
   editRole: Modifica ruolo
   saveEdit: Modifica
   saveNew: Crea
@@ -252,6 +274,9 @@ rolesPage:
         placeholder: "ad esempio gli sviluppatori"
       context:
         labelText: Contesto
+      locked:
+        labelText: Bloccato
+        disabled: "No"
       allow:
         create: Crea
         delete: Elimina
@@ -271,6 +296,11 @@ rolesPage:
       policy:
         policy: Policy
         addAction: Aggiungi policy
+      default:
+        global: Nuovo Utente Predefinito
+        cluster: Creatore di Cluster predefinito
+        project: Creatore di progetto predefinito
+        disabled: "No"
 apiPage:
   header: API & chiavi
   actionButton: Aggiungi Chiave
@@ -285,6 +315,12 @@ apiPage:
       never: Mai
     noData: Non sono state definite chiavi API
 authPage:
+  saml:
+    accessEnabled:
+      header: Autenticazione
+    enabled:
+      groupsField: 'Gruppi:'
+      userId: 'ID utente:'
   shibboleth:
     enabled:
       authenticated:
@@ -349,9 +385,9 @@ authPage:
           text: 'Clicca "Registra una nuova applicazione" e compila il modulo:'
           ul:
             li1: '<b>Nome applicazione:</b> <span class="text-muted"> qualcosa che ti piace, per esempio il mio {appName}</span>'
-            li2: URL della Home page
+            li2: 'URL della Home page'
             li3: '<b>Descrizione dell''applicazione:</b> <span class="text-muted"> qualsiasi cosa ti piace, opzionale</span>'
-            li4: Autorizzazione URL di callback
+            li4: 'Autorizzazione URL di callback'
         li3:
           text: 'Fare clic su "Registro applicazione" '
       form:
@@ -640,20 +676,8 @@ containersPage:
     orchestrator: Installa un altro orchestratore
     kubernetesLink: Installa Kubernetes
 clusterDashboard:
-  cpu: CPU
-  memory: Memoria
-  pods: Pod
-  node: Nodi
-  etcd: etcd
-  scheduler: Pianificatore
-  controllerManager: Gestore del controller
-  value: Valore
   notActive: Questo cluster è attualmente <b>{state}</b>.
   notReady: Questo cluster è attualmente <b>{state}</b>; le aree che interagiscono direttamente con esso non saranno disponibili fino a quando l'API non sarà pronta.
-  noNodes: Non ci sono nodi.
-  alert:
-    node: "Avviso: il nodo {node} non è attivo."
-    component: "Avviso: il componente {component} è difettoso."
 dnsPage:
   noMatch: Nessun elemento corrisponde alla ricerca corrente
   noData: Non ci sono record DNS da mostrare
@@ -1065,7 +1089,6 @@ notifierPage:
     webhook: Webhook
   slack:
     url: URL
-    defaultRecipient: Destinatario predefinito (canale)
     defaultRecipientPlaceholder: 'es. #esempio'
   smtp:
     server: Server Smtp
@@ -1078,10 +1101,8 @@ notifierPage:
     userNamePlaceholder: per esempio John
     password: Password
     passwordPlaceholder: La tua password
-    defaultRecipient: Destinatario predefinito (indirizzo)
     defaultRecipientPlaceholder: ad es. example.com
   pagerduty:
-    serviceKey: Chiave di servizio
     serviceKeyPlaceholder: Il tuo servizio PagerDuty
   webhook:
     url: URL
@@ -1239,3 +1260,8 @@ clusterNew:
       prompt: Scegli una zona...
     project:
       label: Progetto
+nodeDriver:
+  amazoneks:
+    associateWorkerNodePublicIp:
+      radio:
+        default: true

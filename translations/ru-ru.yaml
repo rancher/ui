@@ -5,6 +5,7 @@ generic:
   actions: Действия
   activate: Активировать
   add: Добавить
+  advanced: Расширенный
   all: Все
   any: Любой
   application: приложение
@@ -52,6 +53,7 @@ generic:
   limit: Лимит
   limits: Ограничения
   loading: "Думаю..."
+  loggingOut: "Выход из системы..."
   member: Участник
   mibibyte: 'МиБ'
   minutes: мин.
@@ -74,6 +76,7 @@ generic:
   ports: Порты
   prefix: префикс
   project: Проект
+  persistentVolume: постоянный объем
   random: Случайный
   remove: Убрать
   role: Роль
@@ -239,7 +242,10 @@ rolesPage:
       noMatch: Нет ролей, соответствующих текущему поиску
       subjectKind: Тип
       template: Шаблон
+      global: Новый пользователь по умолчанию
       showDefaults: Показывать только значения по умолчанию
+  resources:
+    title: Предоставить ресурсы
   editRole: Редактировать роль
   saveEdit: Редактировать
   saveNew: Создать
@@ -303,8 +309,24 @@ authPage:
       groupsField: 'Группы:'
       userName: 'Имя пользователя:'
     disabled:
+      name:
+        labelText: Отображаемое имя поля
+        display: "Отображаемое имя поля:"
+      username:
+        labelText: Поле имени пользователя
+        display: "Поле имя пользователя:"
       uid:
         labelText: Поле UID
+        display: "Поле UID:"
+      groups:
+        labelText: Поле группы
+        display: "Поле группы:"
+    providerName:
+      ping: Пинг
+    authError: 'Доступ не разрешен'
+  ping:
+    buttonText:
+      pre: 'Аутентификация с помощью Ping'
   shibboleth:
     enabled:
       authenticated:
@@ -369,11 +391,11 @@ authPage:
           text: 'Нажмите "Register new application" и заполните форму:'
           ul:
             li1: '<b>Application name:</b> <span class="text-muted">Что угодно, напр. My {appName}</span>'
-            li2: URL-адрес главной страницы
+            li2: 'URL-адрес главной страницы'
             li3: '<b>Application description:</b> <span class="text-muted">Что угодно, можете оставить пустым</span>'
-            li4: После авторизации переходить на
+            li4: 'После авторизации переходить на'
         li3:
-          text: 'Нажмите "Register Application" '
+          text: 'Нажмите "Register Application"'
       form:
         header: 'Настроить {appName} на использование выбранного метода аутентификации'
         subtext: 'Скопируйте Client ID и Secret из вернего правого угла странцы Вашего свежесозданного Приложения.'
@@ -669,20 +691,8 @@ containersPage:
     orchestrator: Установите другой оркестратор
     kubernetesLink: Установить Kubernetes
 clusterDashboard:
-  cpu: ЦП
-  memory: Память
-  pods: Стручки
-  node: Узлы
-  etcd: etcd
-  scheduler: Планировщик
-  controllerManager: Управляющий Контроллер
-  value: Значение
   notActive: В настоящее время этот кластер <b>{state}</b>.
   notReady: В настоящее время этот кластер <b>{state}</b>; области, которые взаимодействуют непосредственно с ним, будут недоступны до тех пор, пока API не будет готов.
-  noNodes: Нет узлов.
-  alert:
-    node: "Предупреждение: Узел {node} не активен."
-    component: "Предупреждение: Компонент {component} нездоровый."
 dnsPage:
   noMatch: Нет записей, соответствующих текущему поиску
   noData: Нет записей DNS для показа
@@ -955,7 +965,7 @@ servicePage:
   globalScale: '{scale} на хост'
   multistat:
     fqdn: 'Полное доменное имя:'
-    scale: 'Масштаб:'
+    scale: 'Количество:'
     image: 'Образ:'
     created: 'Создан:'
     daemonSetScale: '1 на узел'
@@ -1078,7 +1088,6 @@ newStack:
     label: Ответы (замены переменных)
     addActionLabel: Добавить ответ
 nodeTemplatesPage:
-  actionButton: Добавить Шаблон
   table:
     state: Статус
     name: Название
@@ -2449,24 +2458,6 @@ hostPod:
     stack: 'Стек:'
 identityBlock:
   loading: Загрузка...
-infoMultiStats:
-  connecting: Подключение...
-  utilizationStats: Статистика доступна только тогда, когда активный или запущенный.
-  cpuSection:
-    labelText: Проц
-    system: Системные
-    user: Пользователь
-  networkSection:
-    labelText: Сеть
-    transmit: Передача
-    receive: Получено
-  memorySection:
-    labelText: Память
-    used: Использовано
-  storageSection:
-    labelText: Диск
-    read: Прочитано
-    write: Записано
 inputIdentity:
   placeholder:
     github: Добавить пользователя или название организации GitHub
@@ -2670,6 +2661,10 @@ nodeDriver:
     aliyunecs: Aliyun ECS
     amazonec2: Amazon EC2
     azure: Azure
+  amazoneks:
+    associateWorkerNodePublicIp:
+      radio:
+        default: true
   amazonec2:
     region:
       label: Регион
@@ -2809,12 +2804,6 @@ containerChoices:
   containerOption: "{name}"
 nav:
   srToggleDropdown: Выпадающий список
-  environment:
-    label: Окружения
-    all: Весь Список
-    your: Мои Окружения
-    selected: Выбранные Окружения
-    edit: 'Редактировать «{name}»'
   cluster:
     members: Участники
     nodes: Узлы
@@ -2875,10 +2864,10 @@ nav:
   settings:
     tab: Настройки
   tools:
-    tab: Инструменты
     alerts: Уведомления
-    notifiers: Нотификаторы
     logging: Логирование
+    notifiers: Нотификаторы
+    tab: Инструменты
   project:
     none: Сгруппированные Проекты/Окружения
     namespaces: Окружения
@@ -2887,6 +2876,7 @@ action:
   clone: Клонировать
   console: Открыть консоль
   convertToService: Преобразовать в сервис
+  cordon: Приостановить
   deactivate: Деактивировать
   downloadYaml: Скачать YAML
   edit: Редактировать
