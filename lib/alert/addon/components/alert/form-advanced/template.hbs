@@ -17,40 +17,8 @@
         </div>
       </div>
     {{/if}}
-    <div class="row">
-      <div class="col span-4">
-        <label class="acc-label">{{t 'alertPage.newOrEdit.groupWaitSeconds.label'}}</label>
-        {{alert/time-duration
-            value=model.groupWaitSeconds
-            disabled=(and model.inherited (eq level "rule"))
-        }}
-        <p class="text-info text-small">
-          {{t 'alertPage.newOrEdit.groupWaitSeconds.helpText'}}
-        </p>
-      </div>
-
-      <div class="col span-4 offset-2">
-        <label class="acc-label">{{t 'alertPage.newOrEdit.groupIntervalSeconds.label'}}</label>
-        {{alert/time-duration
-            value=model.groupIntervalSeconds
-            disabled=(and model.inherited (eq level "rule"))
-        }}
-        <p class="text-info text-small">
-          {{t 'alertPage.newOrEdit.groupIntervalSeconds.helpText'}}
-        </p>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col span-4">
-        <label class="acc-label">{{t 'alertPage.newOrEdit.repeatIntervalSeconds.label'}}</label>
-        {{alert/time-duration
-            value=model.repeatIntervalSeconds
-            disabled=(and model.inherited (eq level "rule"))
-        }}
-        <p class="text-info text-small">
-          {{t 'alertPage.newOrEdit.repeatIntervalSeconds.helpText'}}
-        </p>
-      </div>
-    </div>
+    {{alert/form-time-trigger
+      model=model
+    }}
   </div>
 {{/advanced-section}}
