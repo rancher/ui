@@ -10,7 +10,7 @@ generic:
   any: Будь-який
   application: додаток
   as: як
-  cancel: Відміна
+  cancel: Скасувати
   closeModal: Закрити
   cluster: Кластер
   collapseAll: Згорнути все
@@ -77,7 +77,7 @@ generic:
   prefix: префікс
   project: Проект
   random: Випадково
-  remove: Очистити
+  remove: Видалити
   role: Роль
   save: Зберегти
   saved: Збережено
@@ -228,6 +228,8 @@ rolesPage:
       noMatch: Немає ролей, відповідних поточному пошуку
       subjectKind: Тип
       template: Шаблон
+      global: Новий користувач за замовчуванням
+  addRole: "Додати {context} Роль"
   editRole: Редагувати роль
   saveEdit: Редагувати
   saveNew: Створити
@@ -263,6 +265,7 @@ rolesPage:
         policy: Політика
         addAction: Додати політику
       default:
+        global: Новий користувач за замовчуванням
         disabled: "Ні"
 apiPage:
   header: API і ключі
@@ -294,6 +297,9 @@ authPage:
       userId: 'ID користувача:'
     disabled:
       label: "{providerName} не налаштований"
+      name:
+        labelText: Коротке ім'я поля
+        display: "Коротке ім'я поля:"
       username:
         labelText: Поле ім'я користувача
         display: "Поле ім'я користувача:"
@@ -386,11 +392,11 @@ authPage:
           text: 'Натисніть "Register new application" і заповніть форму:'
           ul:
             li1: '<b>Application name:</b> <span class="text-muted"> Що завгодно, напр. My {appName}</span>'
-            li2: URL домашньої сторінки
+            li2: 'URL домашньої сторінки'
             li3: '<b>Application description:</b> <span class="text-muted">Що завгодно, можете залишити порожнім</span>'
-            li4: Авторизація URL зворотного виклику
+            li4: 'Авторизація URL зворотного виклику'
         li3:
-          text: 'Натисніть "Register Application" '
+          text: 'Натисніть "Register Application"'
       form:
         header: '2. настроїти {appName}, щоб використовувати ваші додатки для автентифікації'
         subtext: 'Скопіюйте Client ID і Secret з верхнього правого кута сторінки Вашого новоствореного Додатку.'
@@ -422,6 +428,7 @@ authPage:
       header: '1. Налаштуйте Azure AD аккаунт'
       applicationId:
         label: ID додатку
+        placeholder: Довгий рядок з UUID
       azureADEndpoint:
         label: Кінцева точка
       endpoints:
@@ -571,10 +578,13 @@ clusterPage:
 projectsListNamespacePage:
   header: Простори імен
 projectsPage:
-  header: Проекти і Простори імен
+  header: Проекти/Простори імен
   headerNS: Простори імен
   addProject: Додати проект
   editProject: Редагування проекту
+  noMatch: Немає проектів, відповідних поточному пошуку.
+  groups:
+    none: Список Просторів Імен
   ns:
     label: Назва простору імен
     placeholder: напр. lab
@@ -584,6 +594,7 @@ projectsPage:
   created:
     label: Створено
   members:
+    title: Учасники
     user: Користувач
     group: Група
     serviceaccount: Сервіс Облікового запису
@@ -593,6 +604,7 @@ projectsPage:
     noAddUser: Ви єдиний активний зареєстрований користувач.
     addGroup: Додати групу
     addServiceAccount: Додайте обліковий запис Сервіса
+    multipleRoles: Кілька ролей
     kind:
       label: Тип
     name:
@@ -627,10 +639,12 @@ ingressPage:
   table:
     targets:
       label: Цілі
+    noMatch: Немає ingress, відповідних поточному пошуку.
 containerPage:
   header: 'Контейнер: {name}'
   envTab:
     header: Змінні середовища
+    detail: 'Змінні середовища, які були додані при створенні.'
   portsTab:
     header: Порти
     hostPrimaryIp: '({ip})'
@@ -666,22 +680,7 @@ containersPage:
     containerLink: Додати контейнер
     kubernetesLink: Встановити Kubernetes
 clusterDashboard:
-  title: Панель управління
-  cpu: ЦП
-  memory: Пам'ять
-  pods: Pod'и
-  subtitle:
-    used: "{used} з {total} використовується"
-  node: Вузли
-  etcd: etcd
-  scheduler: Планувальник
-  controllerManager: Диспетчер контролерів
-  value: Значення
   systemProject: Це проект, який має системні простори імен Kubernetes і {appName}. Зміни, внесені до ресурсів у системному проекта, можуть пошкодити кластер.
-  noNodes: Немає вузлів.
-  alert:
-    node: "Попередження: вузол {node} не активний."
-    component: "Сповіщення: компонент {component} нездоровий."
 dnsPage:
   noMatch: Немає записів, які відповідають поточним пошуку
   noData: Немає записів DNS для показу
@@ -719,6 +718,9 @@ editDns:
   placeholder:
     arecord: напр. 19.82.2.24
     cname: напр. example.com
+  prompt:
+    alias: Виберіть запис DNS...
+    workload: Виберіть Workload...
   errors:
     targetRequired: 'Необхідно одне або кілька "цілей"'
 cruPersistentVolumeClaim:
@@ -746,6 +748,30 @@ failWhalePage:
   logoutButton: вийти з системи
 time:
   now: Зараз
+  mins: |
+    {mins, plural,
+    =1 {хвилина}
+    =2 {хвилини}
+    =3 {хвилини}
+    =4 {хвилини}
+    other {хвилин}
+    }
+  minsAgo: |
+    {mins, plural,
+    =1 {хвилина тому}
+    =2 {хвилини тому}
+    =3 {хвилини тому}
+    =4 {хвилини тому}
+    other {хвилин тому}
+    }
+  secsAgo: |
+    {secs, plural,
+    =1 {секунда тому}
+    =2 {секунди тому}
+    =3 {секунди тому}
+    =4 {секунди тому}
+    other {секунд тому}
+    }
 haPage:
   header: Висока доступність
   setup:
@@ -891,6 +917,7 @@ loginPage:
   readableProviders:
     ad: Active Directory
     azureAd: Azure AD
+    local: локальний користувач
     openldap: OpenLDAP
     freeipa: FreeIPA
 machinePage:
@@ -933,10 +960,14 @@ secretsPage:
   table:
     keys: Ключі
 configMapsPage:
+  index:
+    header: Config Maps
+    linkTo: Додати Config Map
   table:
     keys: Ключі
 servicePage:
   globalScale: '{scale} на хост'
+  endpoints: 'Кінцеві точки:'
   multistat:
     fqdn: 'FQDN (Повне доменне ім''я):'
     scale: 'Кількість:'
@@ -944,9 +975,10 @@ servicePage:
     namespace: 'Простір імен:'
     created: 'Створений:'
   serviceType:
-    deployment: Розгортання
+    deployment: Deployment
     replicaSet: Replica Set
     statefulSet: Stateful Set
+    daemonSet: Daemon Set
     job: Job
     cronJob: Cron Job
   external:
@@ -1076,8 +1108,8 @@ newStack:
     addActionLabel: Додати відповідь
 nodeTemplatesPage:
   header: Шаблони вузла
-  actionButton: Додати шаблон
   table:
+    state: Статус
     name: Ім'я
     provider: Провайдер
     location: Розташування
@@ -1143,6 +1175,7 @@ notifierPage:
     urlPlaceholder: напр. https://hooks.slack.com/services/T00000000/B00000000/XXXXXXXXXXXXXXXXXXXXXXXX
     defaultRecipientPlaceholder: 'напр. #example'
   smtp:
+    server: SMTP-Сервер
     host: Хост
     hostPlaceholder: напр. 192.168.1.121
     port: Порт
@@ -1159,12 +1192,19 @@ notifierPage:
     test: ТЕСТ
   clone: Клонувати
   index:
+    addActionLabel: Додати сповіщення
     table:
       created: Створено
+      noMatch: Не співпадає
 ldap:
   providerName:
     openldap: OpenLDAP
     ad: Active Directory
+    freeipa: FreeIPA
+    saveLabels:
+      openldap: Авторизуватись з OpenLDAP
+      ad: Авторизуватись з Active Directory
+      freeipa: Авторизуватись з FreeIPA
   header:
     disabled:
       label: "{providerName} не налаштований"
@@ -1263,6 +1303,9 @@ annotationsSection:
   title: Примітки
   key: Ключ
   value: Значення
+taintsSection:
+  key: Ключ
+  value: Значення
 billingInfo:
   header: Інформація щодо сплати
   addNew: Додати спосіб оплати
@@ -1275,6 +1318,9 @@ billingInfo:
       exp: "Дата закінчення: {exp}"
       name: "Ім'я на картці: {name}"
       actions: Дії
+cloudProvider:
+  amazon: Amazon
+  azure: Azure
 catalogSettings:
   header: Каталоги
   library:
@@ -1369,6 +1415,13 @@ clusterNew:
     resourceGroup:
       label: Група ресурсів
       placeholder: 'docker-machine'
+    networking:
+      label: Мережа
+      default: За замовчанням
+      subnet:
+        label: Підмережа
+      serviceCidr:
+        prompt: "10.43.0.0/16"
     sshUser:
       label: SSH користувач
       placeholder: usr1
@@ -1424,8 +1477,15 @@ clusterNew:
       prompt: Вибрати версію...
     clusterIpv4Cidr:
       placeholder: напр. 10.42.0.0/16
+    alphaFeatures:
+      label: Функції Alpha
+    dashboard:
+      label: Панель Керування Kubernetes
   rke:
+    nodeName:
+      title: Назва вузла
     address:
+      title: Адреса вузла
       public:
         placeholder: напр. 1.2.3.4
       private:
@@ -1433,6 +1493,8 @@ clusterNew:
     shortLabel: Власний
     customize:
       label: Параметри Кластера
+    labels:
+      title: Мітки вузлів
     nodes:
       hostnamePrefix: Префікс імені
       count: Кількість
@@ -1448,6 +1510,13 @@ clusterNew:
         flannel:
           iface:
             label: Інтерфейс
+        canal:
+          iface:
+            label: Інтерфейс
+    ingress:
+      label: Nginx Ingress
+    monitoring:
+      label: Метрики моніторингу сервера
     version:
       label: Версія Kubernetes
     registry:
@@ -1462,6 +1531,7 @@ clusterNew:
     ignoreDockerVersion:
       label: Docker версія на вузлах
     role:
+      sectionheader: Параметри Вузла
       header:
         etcd: etcd
         controlplane: Управління
@@ -1477,6 +1547,11 @@ clusterNew:
       cidr: Кластер CIDR
     kubelet:
       label: Kubelet
+    system:
+      linux: Linux
+      windows: Windows
+    windowsSupport:
+      label: Підтримка Windows (експериментальна)
   custom:
     label: Власний
     shortLabel: Власний
@@ -1495,6 +1570,7 @@ resourceEventList:
   title: Події
   table:
     type: Тип
+    lastUpdate: Останнє оновлення
     reason: Причина
     message: Повідомлення
   noData: Немає подій
@@ -1502,7 +1578,7 @@ confirmDelete:
   title: 'Ви впевнені, що бажаєте видалити'
   protip: 'Порада: Утримуйте клавішу {key} при натисканні Delete, щоб обійти це підтвердження.'
   confirmAction: Видалити
-  cancelAction: Відміна
+  cancelAction: Скасувати
 containerLogs:
   title: "Логи: "
   onlyCombined: "<b>Примітка:</b> Для цього контейнера доступні комбіновані stdout/stderr журнали, тому що він був запущений з TTY (-t)."
@@ -1571,6 +1647,8 @@ cruPersistentVolume:
     volumeID:
       label: ID Тома
   azureDisk:
+    cachingMode:
+      readOnly: Тільки для читання
     diskURI:
       placeholder: "напр. https://example.com/disk"
     fsType:
@@ -1585,6 +1663,10 @@ cruPersistentVolume:
       placeholder: "напр. 256"
     optional:
       label: Необов'язково
+    secretName:
+      label: Секрет
+    certificateName:
+      label: Сертифікат
   configMap:
     defaultMode:
       placeholder: "напр. 256"
@@ -1889,6 +1971,7 @@ cruStorageClass:
     quobyteAPIServer:
       placeholder: "напр. http://138.68.74.142:7860"
     registry:
+      label: Реєстр
       placeholder: "напр. 138.68.74.142:7861"
     user:
       label: Користувач
@@ -2040,6 +2123,8 @@ editUser:
       new: Новий Пароль
       confirm: Підтвердьте пароль
       error: Паролі повинні співпадати
+      mustChangePassword:
+        new: Попросити користувача змінити пароль при першому вході в систему
 envCatalog:
   header: Каталог
   addActionLabel: Додати каталог
@@ -2062,6 +2147,11 @@ formBalancerConfig:
   title: Власний файл конфігурації
   config:
     prompt: Власний haproxy.cfg
+formNodeRequirement:
+  key:
+    label: Ключ
+  values:
+    label: Значення
 formIngress:
   label: Правила
   addRuleLabel: Додати правило
@@ -2074,6 +2164,7 @@ formIngress:
     service: Запис DNS
 formIngressBackends:
   addServiceLabel: Сервіс
+  addWorkloadLabel: Workload
   service:
     label: сервіс
   workload:
@@ -2234,6 +2325,11 @@ formEngineOpts:
   engineRegistryMirror:
     valueLabel: Адреса дзеркала
     valuePlaceholder: напр. https://my-mirror.example.com:5000
+formResourceQuota:
+  resources:
+    limitsCpu: Ліміт ЦПУ
+    pods: Pod'и
+    secrets: Секрети
 formEnvVar:
   title: Змінні середовища
   detail: Змінні середовища, які були додані при створенні.
@@ -2251,6 +2347,8 @@ formGlobalRoles:
   mode:
     admin:
       label: Адміністратор
+    user:
+      label: Стандартний користувач
     custom:
       label: Власний
   role:
@@ -2410,7 +2508,10 @@ formPorts:
     placeholder: "напр. 8080"
   protocol:
     label: Протокол
+  name:
+    label: Ім'я
   dnsName:
+    label: Ім'я DNS
     placeholder: "напр. example"
 formScale:
   showAdvanced: Більше опцій
@@ -2455,12 +2556,16 @@ formSources:
     label: Тип
   source:
     label: Джерело
+  prefixOrKey:
+    label: Ключ
 formSecurity:
   title: Безпека та конфігурація хоста
   pullImage:
     label: Отримати образ
+    always: Завжди
   privileged:
     label: Привілеї
+    disable: "Ні"
   allowPrivilegeEscalation:
     disable: "Ні"
   runAsNonRoot:
@@ -2560,7 +2665,17 @@ formUserLabels:
     placeholder: напр. bar
   protip: "Підказка: Вставити одну або кілька рядків ключ=значення в будь-яке ключове поле щоб швидко додати запис."
 formAnnotations:
+  addActionLabel: Додати примітку
   title: Примітки
+formJobConfig:
+  seconds: |
+    {count, plural,
+    =1 {Секунда}
+    =2 {Секунди}
+    =3 {Секунди}
+    =4 {Секунди}
+    other {Секунд}
+    }
 formUpgrade:
   strategy:
     custom: Власний
@@ -2683,24 +2798,6 @@ hostPod:
     standalone: Автономні Контейнери
 identityBlock:
   loading: Завантажується...
-infoMultiStats:
-  connecting: З’єднання...
-  utilizationStats: Статистика доступна тільки тоді, коли активний або запущений контейнер.
-  cpuSection:
-    labelText: Процесор
-    system: Системний
-    user: Користувач
-  networkSection:
-    labelText: Мережа
-    transmit: Відправлено
-    receive: Отримано
-  memorySection:
-    labelText: Пам'ять
-    used: Використовується
-  storageSection:
-    labelText: Сховище
-    read: Прочитано
-    write: Записано
 inputAnswers:
   config: Параметри конфігурації
 inputIdentity:
@@ -2835,9 +2932,6 @@ modalConfirmDeactivate:
 modalConfirmRemovePayment:
   title: 'Ви впевнені, що бажаєте видалити'
 modalEditDriver:
-  header:
-    create: Додати драйвер вузла
-    edit: Редагувати драйвер вузла
   url:
     label: Скачати URL
   uiUrl:
@@ -2845,6 +2939,7 @@ modalEditDriver:
   checksum:
     label: Контрольна сума
   whitelist:
+    addActionLabel: Додати домен
     noData: Немає доменів
 modalEditSetting:
   title: Змінити додаткові настройки
@@ -2901,6 +2996,7 @@ nodeGroup:
   label: "Вузол: {name}"
 newIngress:
   header:
+    add: Додати Ingress
     edit: Редагувати Ingress
 newBalancer:
   header:
@@ -2910,6 +3006,8 @@ newBalancer:
   error:
     invalidSourcePort: "Невірний Порт: '{num}'"
 newCatalog:
+  answers:
+    addAction: Додати відповідь
   catalog: "Каталог:"
   category: "Категорія:"
   config: Параметри конфігурації
@@ -2981,6 +3079,10 @@ nodeDriver:
     openstack: OpenStack
     packet: Packet
     rackspace: RackSpace
+  amazoneks:
+    associateWorkerNodePublicIp:
+      radio:
+        default: true
   amazonec2:
     tags:
       valueLabel: Теги
@@ -2992,6 +3094,12 @@ nodeDriver:
   digitalocean:
     sshUser:
       placeholder: 'напр. root'
+    backups:
+      label: Увімкнути резервне копіювання
+    ipv6:
+      label: Увімкнути IPv6
+    monitoring:
+      label: Увімкнути Моніторинг
   packet:
     location: Розташування
   rackspace:
@@ -3001,7 +3109,12 @@ nodeDriver:
   vmwarevsphere:
     username:
       label: Ім'я кристувача
+    cpuCount:
+      unit: "{cores, plural,\n=1 {Ядро}\n=2 {Ядра}\n=3 {Ядра}\n=4 {Ядра}\nother {Ядер}\n}"
   azure:
+    environment:
+      label: Середовище
+      placeholder: 'AzurePublicCloud'
     storageType:
       label: Тип сховища
     privateIpAddress:
@@ -3066,6 +3179,8 @@ nodeDriver:
     instanceOffering:
       label: Тип інстанса
 newConfigMap:
+  title:
+    new: Додати Config Map
   name:
     placeholder: напр. map
   description:
@@ -3081,7 +3196,7 @@ orchestrationWelcome:
     title: Простий
 pageFooter:
   notARelease: (Це не реліз)
-  help: 'Довідка та Документи'
+  help: 'Довідка та документація'
   issues: Зареєструвати проблему
   forums: Форум
   slack: Slack
@@ -3132,12 +3247,13 @@ saveCancel:
   saving: Збереження...
   saved: Збережено!
   edit: Зберегти
+  next: Далі
   create: Створити
-  cancel: Відміна
+  cancel: Скасувати
 schema:
   inputBoolean:
-    y: "Вірно"
-    n: "Невірно"
+    y: "Так"
+    n: "Ні"
   inputCertificate:
     prompt: Виберіть сертифікат...
   inputContainer:
@@ -3238,13 +3354,6 @@ allWorkloads:
   namespace: "Простір імен: {name}"
 nav:
   srToggleDropdown: Випадаючий список
-  environment:
-    cluster: Кластер
-    label: Середовище
-    all: Всі середовища
-    your: Мої Середовища
-    selected: Вибрані середовища
-    edit: 'Редагувати "{name}"'
   cluster:
     dashboard: Кластер
     members: Учасники
@@ -3252,7 +3361,7 @@ nav:
     namespaces: Простори імен
     storage:
       tab: Сховище
-    projects: Проекти і Простори імен
+    projects: Проекти/Простори імен
   containers:
     tab: Workloads
     systemTab: Система
@@ -3295,7 +3404,6 @@ nav:
     accounts: Користувачі
     clusters: Кластери
     machines: Вузли
-    nodeDrivers: Драйвери вузлів
     catalogs: Каталоги
     security:
       tab: Безпека
@@ -3319,11 +3427,11 @@ nav:
     tab: Налаштування
     advanced: Розширені налаштування
   tools:
-    tab: Інструменти
     alerts: Попередження
-    notifiers: Сповіщення
     logging: Логування
+    notifiers: Сповіщення
     pipeline: Конвеєр
+    tab: Інструменти
 action:
   activate: Активувати
   addContainer: Розгортати Pod

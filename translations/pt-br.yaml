@@ -409,6 +409,8 @@ authPage:
         buttonText:
           pre: Autenticar com IDP
           post: Esperando ouvir de volta do IDP
+    providerName:
+      shibboleth: Login único
   root:
     header: Access Control
   github:
@@ -440,11 +442,11 @@ authPage:
           text: 'Clique em "Register new application" e preencha o formulário:'
           ul:
             li1: '<b>Application name:</b> <span class="text-muted">Qualquer coisa que você goste, p.ex. my {appName}</span>'
-            li2: URL da Página inicial
+            li2: 'URL da Página inicial'
             li3: '<b>Application description:</b> <span class="text-muted">Qualquer coisa que você gosta, opcional</span>'
-            li4: URL de retorno de chamada de autorização
+            li4: 'URL de retorno de chamada de autorização'
         li3:
-          text: 'Clique em "Register Application" '
+          text: 'Clique em "Register Application"'
       form:
         header: '2. Configurar {appName} para usar a sua aplicação para autenticação'
         subtext: 'Copie e cole o Client ID e Secret a partir do canto superior direito do seu aplicativo recém-criado.'
@@ -465,13 +467,43 @@ authPage:
       buttonText:
         pre: Autenticar com GitHub
         post: Esperando para ouvir de volta do GitHub
+      authError: 'O acesso ao Github não foi autorizado'
+      popupError: 'Por favor, desabilite seu bloqueador de pop-up e clique em "Autenticar" novamente.'
   azuread:
+    header:
+      disabled:
+        label: "O Azure AD não está configurado"
     enabled:
       header: 'Zona Perigosa&trade;'
       reallyDisable: 'Você tem certeza?  Clique novamente para realmente desativar o controle de acesso'
       promptDisable: Desativar controle de acesso
+      general:
+        header: Geral
     configure:
       header: '1. Configure a Conta Azure AD'
+      replyUrl: "O Azure AD requer uma URL na lista de permissões para o servidor {appName} antes de iniciar essa configuração. Certifique-se de que o seguinte URL esteja definido na seção URL de resposta do Portal do Azure. Pode demorar até 5 minutos para que o URL da lista de permissões seja propagado."
+      help: Insira os detalhes do ID do locatário, do ID do cliente e do usuário administrador para se conectar à sua conta de autenticação do Azure AD.
+      applicationId:
+        label: ID da aplicação
+        placeholder: Uma longa string UUID
+      applicationSecret:
+        label: Segredo da Aplicação
+      serverURL:
+        label: URL do servidor Rancher
+      azureADEndpoint:
+        label: Ponto de extremidade
+      azureADGraphEndpoint:
+        label: Gráfico De Ponto De Extremidade
+      azureADTokenEndpoint:
+        label: Token De Ponto De Extremidade
+      azureADAuthEndpoint:
+        label: Ponto De Extremidade De Autenticação
+      endpoints:
+        label: Pontos de extremidade
+      regions:
+        standard: Padrão
+        china: China
+        custom: Personalizado
       tenantId:
         label: ID do inquilino
         placeholder: Uma longa string UUID
@@ -486,6 +518,8 @@ authPage:
         label: Sua Senha
       pre: Autenticar com Azure
       post: Esperando ouvir de volta do Azure
+      authError: 'O acesso ao Azure não foi autorizado'
+      popupError: 'Por favor, desabilite seu bloqueador de pop-up e clique em "Autenticar" novamente.'
   localAuth:
     header:
       enabled: 'Autenticação local está ativado'
@@ -571,11 +605,18 @@ certificatesPage:
       other {# others}
       }
     wildcardSingle: '{cn}'
+    wildcardWithSan: |
+      {cn} +
+      {sans, plural,
+      =1 {1 outro}
+      other {# outras}
+      }
   detail:
     header: 'Certificado:'
   index:
     header: Certificados
     linkTo: Adicionar Certificado
+    noData: Não há certificados definidos
   new:
     header: Adicionar Certificado
     form:
@@ -584,13 +625,28 @@ certificatesPage:
       description:
         placeholder: p.ex. EV cert para meudominio.com
 membersPage:
+  title: Membros
+  add:
+    title: 'Adicionar {type} Membro'
+    form:
+      member: Membro
+      role: Função
+      kind: Tipo
   index:
+    localLink: 'Adicionar Membro'
     table:
       name: Nome
+      created: Horário de Criação
       noData: Não há usuários ainda
+      noMatch: Nenhum usuário corresponde à pesquisa atual
       userId: Usuário
+      subjectKind: Tipo
       template: Função
 namespacesPage:
+  header: Espaços de nomes
+  addNamespace: Adicionar Espaço De Nomes
+  noMatch: Nenhum espaço de nomes corresponde à pesquisa atual.
+  noData: Este cluster não possui namespaces definidos
   table:
     name:
       label: Namespace
@@ -606,16 +662,27 @@ namespacesPage:
       label: Criado
 clusterPage:
   edit: Editar Cluster
+  removeMemberNote: 'Nota: A remoção do usuário não removerá suas permissões de projeto'
+  internal: '<b>Cuidado:</b> Esse é o grupo que {appName} está usando como armazenamento de dados. Somente administradores devem receber acesso de gravação a esse grupo.<br>Usuários com acesso de gravação a esse grupo podem usá-lo para conceder acesso a qualquer outro grupo gerenciado por essa instalação.'
 projectsListNamespacePage:
+  header: Espaços de nomes
+  notIn: Não está em um projeto
   current: Neste projeto
 projectsPage:
   header: Projetos/Namespaces
+  headerNS: Espaços de nomes
   addProject: Adicionar Projeto
   editProject: Editar Projeto
   noMatch: Nenhum projeto coincide com a pesquisa atual.
   noData: Este cluster ainda não possui projetos
   groups:
     none: Lista De Namespaces
+    namespaces: Projetos Agrupados/Espaços De Nomes
+  quota:
+    label: Cotas de Recursos
+  ns:
+    label: Nome do Espaço de Nomes
+    placeholder: p.ex. lab
   name:
     label: Nome do projeto
     placeholder: ex. lab
@@ -625,8 +692,10 @@ projectsPage:
     label: Políticas de Segurança Pod
   resourceQuota:
     title: Cotas de Recursos
+    detail: Configurar quanto dos recursos o projeto pode consumir
   members:
     title: Membros
+    detail: Configurar quem tem acesso aos recursos neste projeto e o que eles têm permissões
     user: Usuário
     group: Grupo
     serviceaccount: Conta de Serviço
@@ -672,37 +741,280 @@ clustersPage:
     label: Disco
 ingressPage:
   header: 'Ingress: {name}'
+  gkeIngressWarning: 'Pode levar alguns minutos para o Kubernetes Engine alocar um endereço IP externo e preparar o balanceador de carga. Enquanto isso, você pode receber erros como HTTP 404 e HTTP 500 até que o balanceador de carga esteja pronto para atender ao tráfego.'
+  table:
+    targets:
+      label: Alvo
+    noMatch: Nenhum Balanceador de Carga corresponde a pesquisa atual.
+    noData: Não há regras de Balanceadores de Carga definidas
 containerPage:
+  header: 'Recipiente: {name}'
+  envTab:
+    header: Variáveis de Ambiente
+    detail: 'Variáveis ​​de ambiente que foram adicionadas na criação.'
   portsTab:
     header: Portas
+    detail: 'Mapeamentos de portas de escuta do contêiner para hospedar portas em endereços IP públicos'
+    hostPrimaryIp: '({ip})'
+  linksTab:
+    header: Ligações
+    detail: 'Estas propriedades mostram as ligações entre recipientes neste recipiente.'
+    noData: Este recipiente não tem ligações
   volumesTab:
     header: Volumes
+    detail: 'Estas propriedades mostram os volumes anexados ao seu recipiente.'
     table:
       path: Ponto de Montagem
       shared: Compartilhado Com
       writable: Gravável
       noData: Este contêiner não tem volumes montados
       noMatch: Nenhum volume corresponde a pesquisa atual
+      noContainers: Não há outros recipientes
+podPage:
+  header: 'Nó: {name}'
+  nodeIp: IP do nó
+  podIp: Pod IP
+  containerImage: 'Imagem de {container}'
+  image: Imagem
+  displayImage: '{image} + {sidecar, plural, =1 {1 imagem} other {# imagens}}'
 containersPage:
   table:
+    sparkPrefixCpu: "CPU: "
     sparkPrefixMemory: "Memória: "
     sparkPrefixNetwork: "Rede: "
     sparkPrefixStorage: "Armazenamento: "
+    noData: Não existem recipientes para mostrar.
+    noMatch: Nenhum recipiente corresponde à pesquisa atual.
+  welcome:
+    container: Começar imediatamente
+    containerLink: Adicionar um recipiente
+    orchestrator: Instalar outro orquestrador
+    kubernetesLink: Instalar Kubernetes
+clusterDashboard:
+  systemProject: Este é o projeto do sistema que possui todos os namespaces do sistema Kubernetes e {appName}. As alterações feitas nos recursos do projeto do sistema podem prejudicar o grupo.
+  notActive: Este cluster está atualmente em <b>{state}</b>.
+  notReady: Este cluster está atualmente <b>{state}</b>; áreas que interagem diretamente com ele não estarão disponíveis até que a API esteja pronta.
+dnsPage:
+  noMatch: Nenhum registro corresponde à pesquisa atual
+  noData: Não há registros DNS para mostrar
+  type:
+    arecord: IP externo
+    cname: Nome do servidor
+    alias: Apelido
+    workload: Carga de trabalho
+    selector: Seletor
+    clusterIp: IP do Cluster
+    unknown: Desconhecido
+  table:
+    target: Alvo
+    clusterIpDetail: 'IP de Cluster: {ip}'
+editDns:
+  title:
+    new: Adicionar registo
+    edit: Editar registro
+    view: "Registro: {name}"
+  name:
+    placeholder: p.ex. meuapp
+  description:
+    placeholder: Por exemplo, versão atual do MeuApp
+  selector:
+    label: Seletor de rótulo de contêiner
+    keyLabel: Rótulo
+    addActionLabel: Adicionar Seletor
+  recordType:
+    label: "Resolve Para"
+    arecord: Um ou mais endereços IP externos
+    cname: Um nome de host externo
+    alias: Apelido do valor de outro registro de DNS
+    workload: Uma ou mais cargas de trabalho
+    selector: O conjunto de núcleos, que correspondem a um seletor
+  target:
+    arecord: Endereços IP de destino
+    cname: Nome do Servidor de destino
+    alias: Registros DNS de destino
+    workload: Cargas de trabalho de destino
+    selector: Seletores de núcleos alvos
+  add:
+    arecord: Adicionar IP de destino
+    alias: Adicionar registro de destino
+    workload: Adicionar carga de trabalho de destino
+    selector: Adicionar Seletor de Destino
+  placeholder:
+    arecord: p.ex. 19.82.2.24
+    cname: p.ex. exemplo.com
+  prompt:
+    alias: Selecione um Registro de DNS...
+    workload: Selecione uma Carga de trabalho...
+  errors:
+    targetRequired: 'Um ou mais "alvos" são obrigatórios'
+    selectorRequired: 'Um ou mais "seletores de núcleo" são obrigatórios'
+    mixedAlias: Um Apelido não pode ter como destino uma mistura de CNAME e outros registros
+    multipleCname: Um Apelido não pode atingir mais de um registro CNAME
+cruPersistentVolumeClaim:
+  title:
+    define: Definir reivindicação de volume
+    new: Adicionar reivindicação de volume
+    edit: 'Editar reivindicação de volume: {name}'
+    view: 'Reivindicação por Volume Persistente: {name}'
+  define:
+    addActionLabel: Definir
+  capacity:
+    label: Capacidade
+    unit: GiB
+  name:
+    placeholder: p.ex. meuvol
+  source:
+    label: Fonte
+    pv: Use um volume persistente existente
+    storageClass: Use uma classe de armazenamento para provisionar um novo volume persistente
+  pv:
+    label: Volume persistente
+    prompt: Selecione um volume persistente...
+  storageClass:
+    label: Classe de Armazenamento
+    prompt: Use a classe padrão
+cruVolume:
+  sourcePrompt: Escolha uma fonte de volume acima...
+  title:
+    new: Definir o volume efêmero
+  define:
+    addActionLabel: Definir
+  name:
+    placeholder: p.ex. meuvol
+  source:
+    label: Fonte
+    title: Configuração De Origem
+    detail: Configurar opções para a origem de volume selecionada
+    prompt: Escolha uma fonte de volume...
 failWhalePage:
   header: Erro
   reloadButton: |
     <a href="#" onclick="window.location.href = window.location.href; return false;">Recarregar</a> para tentar novamente ou
   logoutButton: Sair
+time:
+  now: Agora
+  mins: |
+    {mins, plural,
+    =1 {# min}
+    other {# mins}
+    }
+  minsAgo: |
+    {mins, plural,
+    =1 {# min atrás}
+    other {# mins atrás}
+    }
+  secsAgo: |
+    {secs, plural,
+    =1 {# segundo atrás}
+    other {# segundos atrás}
+    }
+haPage:
+  header: Alta Disponibilidade(HA)
+  setup:
+    prefix: "Vários recipientes de servidor podem ser implantados em diferentes servidores para que {appName} continue funcionando mesmo se um dos servidores falhar.  "
+    link: Veja a documentação
+    suffix: " para obter mais informações sobre a instalação e uso."
+  table:
+    address: Endereço anunciado
+    port: Porta
+    heartbeat: Visto pela última vez
+    clustered: Agrupado
+nodesPage:
+  header: Nós
+  editCluster: Editar Grupo
+  nodePoolGroup: "Grupo: {name}"
+  table:
+    clusterName: Grupo
+    role: Funções
+    cpu: CPU
+    memory: RAM
+    disk: Disco
+    pod: Núcleos
+    version: Versão
+    docker: Docker
+    unschedulable: Não agendável
+    instanceState: Estados do Contêiner
+    instanceStateWithIcon: Estados
+    noData: Este cluster não possui grupos
+    noMatch: Nenhum nó corresponde à pesquisa atual
 hostsPage:
+  cloudHostsPage:
+    addPage:
+      launch: Iniciar
+      header: Adicionar nó
+      name:
+        label: Nome do Nó
+        placeholder: p.ex. no1
+      transferUnit: TB
+      instance: 'Tipo:'
+      storage: 'Armazenamento:'
+      transfer: 'Transferência:'
+      zone: 'Zona:'
+      env: 'Ambiente:'
+      size: 'Tamanho:'
+      os: 'SO:'
+      driver: 'Driver:'
+      template: 'Nome Do Modelo:'
   addContainer: Adicionar Contêiner
   new:
+    header:
+      customText: Adicionar Servidor Personalizado
+      text: Adicionar nó
     manageLink: Gerenciar machine drivers disponíveis
+    custom: Adicionar Servidor Personalizado
+    name:
+      placeholder: p.ex. no1
+    addCluster:
+      label: "Opções de Grupo"
+      description: Anexe este novo nó a um grupo, delegue funções, etc.
+      cluster:
+        label: Grupo
+      roles:
+        label: Funções
+      table:
+        label:
+          etcd: Use para o etcd
+          control: Use para gerenciamento
+          worker: Use como nó do trabalhador
   hostPage:
+    header:
+      title: 'Nó: {name}'
+    hostname: Nome do servidor
+    ipAddress: Endereço de IP
+    version: Versão
+    kubeletVersion: Versão Kubelet
+    kubeProxyVersion: Versão Proxy do Kube
+    dockerVersion: Versão do Docker
+    kernelVersion: Versão do Kernel
+    operatingSystem: Sistema Operacional
+    conditions:
+      diskSpace: Espaço em disco
+      diskPressure: Pressão do disco
+      memoryPressure: Pressão de memória
+      ready: Kubelet
+    limits:
+      cpu: 'Limite de CPU:'
+      memory: 'Limite de memória:'
+      storage: 'Limite Local de Volumes:'
     infoMultiStats:
+      ip: 'IP'
+      cpu: 'CPU'
+      memory: 'Memória'
+      storage: 'Volumes'
       provider:
         labelText: 'Fornecedor:'
         noHost: Personalizado
+      kernel: 'Kernel'
+      docker: 'Docker:'
+      os: 'SO'
+      milliCpu:
+        labelText: mCPU
+    containersTab:
+      header: Contêineres
+      detail: Uma lista de contêineres em execução neste host
     portsTab:
+      header: Portas
+      detail: 'Essas propriedades mostram quais portas foram mapeadas e onde.'
       table:
         header:
           ip: Endereço de IP
@@ -712,6 +1024,8 @@ hostsPage:
         body:
           noData: Este host não tem nenhum porta.
     storageTab:
+      header: Volumes
+      detail: 'Essas propriedades mostram os detalhes do volume do seu host.'
       table:
         header:
           state: Estado
@@ -719,17 +1033,66 @@ hostsPage:
           mounts: Montagens
         body:
           noData: Este host não tem nenhum volumes.
+k8sImport:
+  header: Importar Kubernetes Existente
+  name:
+    label: Nome do Grupo
+    placeholder: p.ex. meu-grupo-importado
+  kubeConfig:
+    label: Arquivo Kubeconfig para importar
+    placeholder: Importe ou cole no arquivo Kubeconfig do cluster a ser usado.
+  actionLabel: Importar
+k8sPage:
+  header: Kubernetes
+  dashboard:
+    title: Painel de instrumentos
+    detail: Acesse o painel de instrumentos nativo do Kubernetes.
+    button: Iniciar Painel de Instrumentos
+  shell:
+    title: Terminal
+    detail: Executar comandos <code>kubectl</code> a partir de seu navegador.
+    button: Iniciar o kubectl
+  configFile:
+    title: Arquivo de configuração
+    detail: Gere um arquivo de configuração do Kubernetes para usar <code>kubectl</code> em sua área de trabalho.
+    button: Arquivo Kubeconfig
+    generating: Gerando...
+    usage:
+      helpText: |
+        Colocar isso em <code>~/.kube/config</code>:
+      downloadText: |
+        Em seguida <a href="{downloadUrl}" target="_blank">baixar</a> (se necessário) e execute <code>kubectl</code>
 loginPage:
   greeting: "Olá!<br>Bem-vindo à {appName}"
+  insecure: "{appName} funciona apenas com uma conexão de <code>https: //</code>. Você deve:<br><br>Usar o suporte TLS integrado ao servidor ou <br><br> Fornecer sua própria terminação TLS na frente do recipiente."
   githubMessage: "{appName} usar GitHub para gerenciar contas e equipes.  Clique no botão a seguir para entrar e dar-nos acesso somente leitura às suas informações básicas sobre a conta GitHub."
+  shibbolethMessage: "{appName} usa Conta Única para gerenciar contas.  Clique no botão abaixo para logar-se com a Conta Única configurada."
   shibbolethError:
-    401: "Unauthorized"
-    500: "Internal Server Error"
+    401: "Não autorizado"
+    500: "Erro interno do servidor"
+    generic: "Houve um erro ({errorCode}) ao tentar iniciar sessão. Por favor, tente novamente."
+  error:
+    authFailedCreds: "Iniciar sessão falhou: verificação de credenciais, ou a sua conta não pode ser autorizados a iniciar."
+    authFailed: "Iniciar sessão falhou: sua conta não pode ser autorizados a iniciar."
+  readableProviders:
+    ad: AD Microsoft
+    azureAd: AD do Azure
+    local: um Usuário Local
+    openldap: OpenLDAP
+    freeipa: FreeIPA
+machinePage:
+  header: Drivers de Nó
+  inactive: Inativo
+  subtext: "Drivers adicionais <code>docker-machine</code> podem ser carregados aqui e utilizado na tela Adicionar Nó."
+  add: Adicionar Driver de Nó
+  builtin: Embutido
+  url: Localização
 notFoundPage:
   header: "A página que você estava procurando não existe!"
   linkTo: Ir para Página Inicial
 registriesPage:
   index:
+    header: Credenciais do Registro
     linkTo: Adicionar Registro
     table:
       header:
@@ -737,26 +1100,79 @@ registriesPage:
         address: Endereço
         username: Nome de usuário
         created: Criado
+      body:
+        noData: "Você não tem nenhuma credencial de registro ainda"
   new:
     header: Adicionar Registro
     form:
       custom:
         labelText: Endereço
         placeholder: p.ex. registro.exemplo.com
+        help: Apenas o nome do servidor ou endereço IP, não incluir o protocolo (https://)
       username:
         labelText: Nome de usuário
         placeholder: p.ex. usuario
       password:
         labelText: Senha
         placeholder: p.ex. senha
+secretsPage:
+  index:
+    header: Segredos
+    linkTo: Adicionar Segredo
+    noData: Não há segredos definidos
+    noMatch: Nenhum Segredo corresponde à pesquisa atual
+  table:
+    keys: Chaves
+configMapsPage:
+  index:
+    header: Dicionários de configuração
+    linkTo: Adicionar Dicionário de Configuração
+    noData: Não há dicionários de configuração definidos
+    noMatch: Nenhum dicionário de configuração corresponde à pesquisa atual
+  table:
+    keys: Chaves
 servicePage:
+  header: 'Carga de trabalho: {name}'
+  globalScale: '{scale} por servidor'
+  endpoints: 'Pontos de extremidade:'
   multistat:
+    type: 'Tipo de Carga de Trabalho:'
+    fqdn: 'FQDN:'
     scale: 'Escala:'
     image: 'Imagem:'
+    namespace: 'Espaços de nomes:'
+    created: 'Criado:'
+    daemonSetScale: '1 por nó'
+  serviceType:
+    deployment: Implantação
+    replicaSet: Conjunto de réplicas
+    statefulSet: Conjunto com estado
+    daemonSet: Conjunto de Serviços
+    replicationController: Controladores de replicação
+    job: Tarefa
+    cronJob: Tarefa Cron
+    pod: Núcleo Padronizado
   external:
+    externalIp: |
+      {count, plural,
+      =1 {IP Externo:}
+      other {IPs Externos:}
+      }
     externalHostname: 'Nome do Host Externo:'
+  selector:
+    label: 'Seletor:'
+  containersTab:
+    title: 'Contêineres'
+    detail: 'Os contêineres que compõem esse serviço.'
   linksTab:
     header: Ligações
+    detail: 'Estas propriedades mostram as ligações entre recipientes neste recipiente.'
+    noData: Este serviço não tem ligações
+  certsTab:
+    title: Certificados
+    detail: 'Certificados usados ​​em requisições feitas por TLS.'
+    default: Certificado Padrão
+    additional: Certificados SNI adicionais
   new:
     form:
       name:
@@ -764,17 +1180,158 @@ servicePage:
       description:
         placeholder: p.ex. Minha aplicação
   newBalancer:
+    upgradeImage: "A imagem do software balanceador será atualizada de <code>{from}</code> <code>{to}</code>."
+    form:
+      name:
+        placeholder: p.ex. site
+      description:
+        placeholder: p.ex. Balanceador para minhaempresa.com
+  newIngress:
     form:
       name:
         placeholder: p.ex. site
       description:
         placeholder: p.ex. Balanceador para minhaempresa.com
   portsTab:
+    title: Portas
+    detail: 'Portas mapeadas de um IP do servidor para as portas de escuta de um contêiner.'
     notActive: Portas estão disponíveis apenas enquanto o serviço está ativo.
+  logTab:
+    title: Log de serviço
+    detail: 'Eventos de orquestração recentes que ocorreram para este serviço'
+  type:
+    service: Serviço
+    selectorservice: Seletor
+    loadbalancerservice: Balanceador de carga
+    dnsservice: Apelidos
+    externalservice-ip: IP externo
+    externalservice-host: Nome Externo
+    kubernetesservice: Serviço K8s
+    composeservice: Compor serviço
+    networkdriverservice: Serviço de rede
+    storagedriverservice: Serviço de Armazenamento
+  sidekick:
+    tabHeader: Sidecars
+    header: Workload & Sidecars
+    helpBlock: Selecione o container principal ou um dos sidecars
+signupPage:
+  header: 'Inscreva-se para {appName}'
+  form:
+    button: Registrar
+    labels:
+      loginUsername: Nome
+      email: E-mail
+  emailSuccess:
+    header: 'Bem vindo a {appName}'
+    confirm:
+      subtext: Confirme seu e-mail clicando no link de verificação que acabamos de enviar para sua caixa de entrada.
+      resend: Reenviar email
+stackPage:
+  header:
+    singleBanner: Visualizar uma única pilha
+    backLink: De volta a todas as pilhas
+  basics:
+    tagsCopy: Copiar etiquetas como lista separada por vírgulas
+  containers:
+    header: Contêineres
+    detail: Standalone Containers e Serviços conteinerizados na Stack
+  loadBalancers:
+    header: Balanceadores de carga
+    detail: 'Load Balancer containers que estão separados dessa pilha'
+  dnsServices:
+    header: Entradas de DNS
+    detail: 'Balanceadores de carga que estão para além dessa pilha'
+  scalingGroups:
+    header: Grupos de dimensionamento
+    detail: 'Contêineres existentes neste grupo de dimensionamento'
+  volumesTab:
+    header: Volumes
+    detail: 'Estas propriedades mostram os volumes anexados ao seu recipiente.'
+    table:
+      path: Ponto de Montagem
+      shared: Compartilhado Com
+      writable: Gravável
+      noData: Esta pilha não tem volumes montados
+      noMatch: Nenhum volume corresponde a pesquisa atual
+newStack:
+  header: Importar YAML
+  name:
+    placeholder: p.ex. meuapp
+  description:
+    placeholder: p.ex. Pilha MeuApp
+  files:
+    label: Arquivos
+    addActionLabel: Adicione um arquivo
+    uploadActionLabel: Ler a partir do Disco
+    namePlaceholder: Nome do Arquivo
+    valuePlaceholder: Conteúdo Do Arquivo
+  answers:
+    label: Respostas (substituições de variáveis)
+    addActionLabel: Adicionar Resposta
+nodeTemplatesPage:
+  header: Modelos de Nós
+  detail: Templates de nó são utilizados para implementar nós que formam um Cluster em um provedor de infraestrutura.
+  table:
+    state: Estado
+    name: Nome
+    provider: Provedor
+    location: Localização
+    size: Tamanho
+    usedBy: Usado por
+    noData: Não há modelos de nós definidos
+    usedByNone: Sem clusters
+    unknown: Desconhecido
+storageClassPage:
+  header: Classe de Armazenamento
+  addActionLabel: Adicionar Classe
+  noData: Não existem classes de armazenamento definidos
+  provisioner:
+    label: Provisionador
+  default:
+    label: Padrão
+persistentVolumePage:
+  header: Volumes Persistentes
+  addActionLabel: Adicionar Volume
+  noData: Não há volumes persistentes definidos
+userPreferencesPage:
+  theme:
+    light: Claro
+    auto: Auto
+    autoDetail: Auto fará a transição para o escuro das 18h às 6h
+    dark: Dark
+  generalInfo:
+    header: Minha Conta
+    name:
+      label: Nome
+    username:
+      label: Nome de usuário
+    email:
+      label: E-
+    password:
+      text: Alterar senha
+verifyPage:
+  header: "Você confirmou seu e-mail com sucesso!"
+  subtext: Precisamos de mais algumas informações antes de podermos finalizar sua conta.
+  account:
+    header: Conta criada
+    subtext: Clique no link abaixo para ser levado para a página de login.
+    linkText: Login
+verifyResetPasswordPage:
+  header: Recuperar senha
+  button: Atualizar Senha
+  success:
+    header: Redefinir senha!
+    subtext: Clique no link abaixo para ser levado para a página de login.
+    linkText: Login
 waitingPage:
   hosts:
     setup:
       kubernetes: Configurando Kubernetes
+notifierPage:
+  notifiers: Notificadores
+  testedBtnLabel: OK
+  testingBtnLabel: Testando
+  deleteErrorMessage: 'Notificador {displayName} está em uso por: {alertNames}'
 ldap:
   accessEnabled:
     header: Autenticação
@@ -1076,23 +1633,6 @@ hostSettings:
       Tenha a certeza de que todos os hosts que você irá criar serão capazes de alcançar <code>{activeValue}</code> ?<br/>Parece um IP privado ou rede local.
 identityBlock:
   loading: Carregando...
-infoMultiStats:
-  connecting: Conectando...
-  utilizationStats: Estatísticas de utilização estão disponíveis apenas enquanto ativo/executando.
-  cpuSection:
-    system: Sistema
-    user: Usuário
-  networkSection:
-    labelText: Rede
-    transmit: Transmite
-    receive: Recebe
-  memorySection:
-    labelText: Memória
-    used: Usado
-  storageSection:
-    labelText: Armazenamento
-    read: Leitura
-    write: Escrita
 inputIdentity:
   placeholder:
     github: Adicionar um nome de usuário ou organização do GitHub
@@ -1159,6 +1699,11 @@ newContainer:
     placeholder: p.ex. myapp
   description:
     placeholder: p.ex. Minha Aplicação
+nodeDriver:
+  amazoneks:
+    associateWorkerNodePublicIp:
+      radio:
+        default: true
 pageFooter:
   notARelease: (Não é uma Release)
   help: 'Ajuda'
@@ -1205,11 +1750,6 @@ vmConsole:
     buttonCancel: Fechar
 nav:
   srToggleDropdown: Alternar Dropdown
-  environment:
-    label: Ambiente
-    all: Todos os Ambientes
-    your: Seus Ambientes
-    selected: Ambiente Selecionado
   catalog:
     all: Todos
     library: Biblioteca

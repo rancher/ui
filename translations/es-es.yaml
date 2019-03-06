@@ -442,11 +442,11 @@ authPage:
           text: 'Haz click en "Registrar nueva aplicación" y completa el formulario:'
           ul:
             li1: '<b>Nombre de la aplicación:</b><span class="text-muted">Lo que tu desees, ej. Mi {appName}</span>'
-            li2: URL de la página de inicio
+            li2: 'URL de la página de inicio'
             li3: '<b>Descripción de la aplicación:</b> <span class="text-muted"> Cualquier cosa que desee, opcional</span>'
-            li4: URL de devolución de llamada de autorización
+            li4: 'URL de devolución de llamada de autorización'
         li3:
-          text: 'Haga clic en "Registrar aplicación" '
+          text: 'Haga clic en "Registrar aplicación"'
       form:
         header: '2. Configura {appName} para utilizar tu aplicación para autenticación'
         subtext: 'Copia y pega el ID de Cliente y Secreto de la esquina superior derecha de la aplicación que acabas de crear.'
@@ -791,25 +791,9 @@ containersPage:
     orchestrator: Instalar otro orquestador
     kubernetesLink: Instalar Kubernetes
 clusterDashboard:
-  title: Panel de Control
-  cpu: CPU
-  memory: Memoria
-  pods: Pods
-  subtitle:
-    reserved: "{used} de {total} reservado"
-    used: "{used} de {total} usado"
-  node: Nodos
-  etcd: etcd
-  scheduler: Planificador
-  controllerManager: Gestor del Controlador
-  value: Valor
   systemProject: Este es el proyecto de sistema que tiene todos Kubernetes y {appName} sistema espacios de nombres. Cambios realizados a los recursos en el proyecto de sistema pueden dañar el cluster.
   notActive: Este clúster está <b>{state}</b>.
   notReady: Este clúster está <b>{state}</b>; las áreas que interactúan directamente con él no estarán disponibles hasta que la API está lista.
-  noNodes: No hay nodos.
-  alert:
-    node: "Alerta: el nodo {node} no está activo."
-    component: "Alerta: el componente {component} no está saludable."
 dnsPage:
   noMatch: Ningún registro coincide con la búsqueda actual
   noData: No hay registros DNS que mostrar
@@ -1311,7 +1295,6 @@ newStack:
     addActionLabel: Añadir Respuesta
 nodeTemplatesPage:
   header: Plantillas de nodo
-  actionButton: Añadir plantilla
   detail: Nodo Plantillas se utilizan para implementar los nodos de un Clúster en un proveedor de infraestructura.
   table:
     state: Estado
@@ -1388,10 +1371,9 @@ notifierPage:
   slack:
     url: URL
     urlPlaceholder: por ejemplo, https://hooks.slack.com/services/T00000000/B00000000/XXXXXXXXXXXXXXXXXXXXXXXX
-    defaultRecipient: Destinatario predeterminado (Canal)
     defaultRecipientPlaceholder: 'ej. #ejemplo'
     helpText: |
-      Así es como <a href="https://slack.com/apps/A0F7XDUAZ-incoming-webhooks" target="_blank" rel="nofollow noopener noreferrer">crea WebHooks entrantes</a> para holgura.
+      Así es como <a href="https://get.slack.help/hc/en-us/articles/115005265063-Incoming-WebHooks-for-Slack" target="_blank" rel="nofollow noopener noreferrer">crea WebHooks entrantes</a> para holgura.
   smtp:
     server: Servidor Smtp
     host: Host/Servidor
@@ -1403,10 +1385,8 @@ notifierPage:
     userNamePlaceholder: ej. John
     password: Contraseña
     passwordPlaceholder: Tu contraseña
-    defaultRecipient: Destinatario predeterminado (dirección)
     defaultRecipientPlaceholder: ej. admin@example.com
   pagerduty:
-    serviceKey: Clave de servicio
     serviceKeyPlaceholder: Su servicio PagerDutyKey
     helpText: |
       Así es como <a href="https://support.pagerduty.com/docs/webhooks">creas WebHooks entrantes</a> para PagerDuty.
@@ -1694,9 +1674,8 @@ catalogSettings:
     header: Personalizado
     helpText:
       header: "Puede definir sus propias fuentes de catálogo personalizado adicionales. Cada catálogo personalizado necesita lo siguiente:"
-      help-name: Nombre único
-      help-repo: 'URL del repositorio :'
-      help-branch: "<i>Opcional</i> : si se usa un catálogo basado en GIT, también se requiere un nombre de sucursal"
+      help-name: '<strong>Nombre único</strong>'
+      help-repo: '<strong>URL del repositorio:</strong>'
       help-git: "GIT catálogo basado en la URL, por ejemplo, <em class='text-lowercase'>https://github.com/{appName}/gráficos.git</em>"
       help-chart: 'URL del servidor de Helm Charts, <em>p. Ej. Https://kubernetes-charts.storage.googleapis.com/ (ver <a href="https://docs.helm.sh/developing_charts/#hosting-chart-repositories" target="_blank" rel="nofollow noopener noreferrer">Hosting Chart Repositories</a> para obtener más información)</em>'
     addActionLabel: Añadir Catálogo
@@ -1739,9 +1718,9 @@ clusterNew:
     placeholder: por ejemplo, clúster para cargas de trabajo de desarrollo y prueba
   driverLabels:
     cloud: En un proveedor de Kubernetes alojado
+    custom: De mis propios nodos existentes
     import: Importar Cluster Existente
     infra: A partir de los nodos en un proveedor de infraestructura
-    custom: De mis propios nodos existentes
   members:
     label: Roles de los miembros
     detail: Controle quién tiene acceso al clúster y qué permiso tienen para cambiarlo.
@@ -2091,7 +2070,6 @@ clusterNew:
     label: Importar
     shortLabel: Importar
     command:
-      instructionsAdminRole: "Si su clúster Kubernetes existente ya tiene definida una función <b>cluster-admin</b> , debe tener este privilegio <b>cluster-admin</b> para importar el clúster a {appName}. Para aplicar el privilegio, debe ejecutar el siguiente comando antes de ejecutar el comando para importar el clúster:"
       instructions: "Ejecute el siguiente comando kubectl en un clúster de Kubernetes existente que ejecute una versión compatible de Kubernetes para importarlo a {appName}:"
       instructionsInsecure: "Si recibe un error sobre 'certificado firmado por una autoridad desconocida' porque su instalación {appName} está ejecutando con un certificado SSL no confiable / autofirmado, ejecute el siguiente comando para evitar la verificación del certificado:"
 conditionSections:
@@ -2317,7 +2295,7 @@ cruPersistentVolume:
       placeholder: "ej. / etc / ceph / keyring"
     monitors:
       label: Monitores
-      addActionLabel: Añadir
+      addActionLabel: Añadir 	
     pool:
       label: Banco
       placeholder: "ej. rbd"
@@ -4084,24 +4062,6 @@ hostPod:
     standalone: Contenedores Independientes
 identityBlock:
   loading: Cargando...
-infoMultiStats:
-  connecting: Conectando...
-  utilizationStats: Las estadísticas de uso solo están disponibles cuando esté Activo/Corriendo.
-  cpuSection:
-    labelText: CPU
-    system: Sistema
-    user: Usuario
-  networkSection:
-    labelText: Red
-    transmit: Transmisión
-    receive: Recepción
-  memorySection:
-    labelText: Memoria
-    used: Usado
-  storageSection:
-    labelText: Almacenamiento
-    read: Lectura
-    write: Escritura
 inputAnswers:
   yaml: Editar como YAML
   config: Opciones de Configuración
@@ -4147,8 +4107,6 @@ loginGithub:
   buttonText: Inicia sesión con GitHub
 loginAzure:
   buttonText: Inicie sesión con Azure AD
-loginSaml:
-  buttonText: "Inicia sesión con {provider}"
 loginUserPass:
   local: Utilice un Usuario Local
   provider: "{kind}"
@@ -4284,9 +4242,6 @@ modalConfirmRemovePayment:
   title: 'Estás seguro/a que deseas eliminar'
   card: 'Tarjeta terminada en {card}'
 modalEditDriver:
-  header:
-    create: Agregar controlador de nodo
-    edit: Editar controlador de nodo
   url:
     label: URL de Descarga
     help: La URL para descargar el binario de 64-bits para Linux del controlador de máquina.
@@ -4357,23 +4312,11 @@ modalProcessError:
   stackTrace: "Seguimiento de la Pila:"
   close: Cerrar
 modalDrainNode:
-  title: 'Drenar "{nodeName}"'
   action: Drenar
-  drain: 'Drene este nodo:'
-  force:
-    helpText: Incluso si hay pods no gestionados por un ReplicationController, ReplicaSet, Job, DaemonSet o StatefulSet.
-  ignoreDaemonSets:
-    helpText: Incluso si hay pods administrados por DaemonSet.
-  deleteLocalData:
-    helpText: Incluso si hay pods usando emptyDir (datos locales que se eliminarán cuando el nodo se agote).
   gracePeriod:
-    helpText: Periodo de tiempo en segundos dado a cada pod para terminar con gracia. Si es negativo, se usará el valor predeterminado especificado en el pod.
     placeholder: ej. 60
-    label: Período de gracia
   timeout:
-    helpText: El tiempo de espera antes de rendirse, cero significa infinito
     placeholder: ej. 60
-    label: Tiempo de espera
 modalRollbackService:
   title: 'Restaurar "{instanceName}"'
   titleWithSidekicks: 'Restauar "{instanceName}" & {count, plural, =1 {# sidekick} other {# sidekicks}}'
@@ -4576,8 +4519,6 @@ nodeDriver:
       next: "Siguiente: Seleccionar función de servicio"
       loading: Cargando funciones de servicio de Amazon...
     role:
-      title: Roles de servicio
-      detail: Elija la función de servicio que se utilizará para iniciar instancias de EKS
       label: Roles de servicio
       noneSelected: "Rancher creó Rol"
       help: "Puede optar por no seleccionar una Función de servicio y Rancher creará una para usted."
@@ -4601,6 +4542,9 @@ nodeDriver:
       title: Subred
       next: "Siguiente: Selecciona un Grupo de Seguridad"
       loading: "Cargando grupos de seguridad de Amazon..."
+    associateWorkerNodePublicIp:
+      radio:
+        default: true
     securityGroup:
       title: Grupos de seguridad
       detail: Elija los grupos de seguridad que se aplicarán a las instancias de EKS
@@ -5438,13 +5382,6 @@ allWorkloads:
   namespace: "Namespace: {name}"
 nav:
   srToggleDropdown: Habilitar Cascada
-  environment:
-    cluster: Clúster
-    label: Entorno
-    all: Todos los entornos
-    your: Tus entornos
-    selected: Entorno seleccionado
-    edit: 'Editar "{name}"'
   cluster:
     dashboard: Clúster
     members: Miembros
@@ -5500,7 +5437,6 @@ nav:
     accounts: Usuarios
     clusters: Clúster
     machines: Nodos
-    nodeDrivers: Controladores de nodo
     catalogs: Catálogos
     security:
       tab: Seguridad
@@ -5526,11 +5462,11 @@ nav:
     tab: Ajustes
     advanced: Avanzado
   tools:
-    tab: Herramientas
     alerts: Alertas
-    notifiers: Avisos
     logging: Registro
+    notifiers: Avisos
     pipeline: Tubería
+    tab: Herramientas
   project:
     none: Proyectos Agrupados/Namespaces
     namespaces: Namespaces
@@ -5540,32 +5476,32 @@ action:
   addSidekick: Añadir un Selector
   clone: Clonar
   console: Abrir Consola
-  cordon: Cordón
   convertToService: Convertir a servicio
+  cordon: Cordón
   deactivate: Desactivar
   downloadYaml: Descargar YAML
   drain: Drenar
   edit: Editar
+  editConfig: Editar configuración
   editService: Editar Servicio
   editYaml: Ver/Editar YAML
-  viewYaml: Ver YAML
-  editConfig: Editar configuración
   evacuate: Evacuar
   execute: Ejecutar Shell
   exportConfig: Exportar Configuración
   garbageCollect: Limpieza
   logs: Ver Registros
   makeDefault: Establecer como predeterminado
-  resetDefault: Restablecer predeterminado
-  nodeConfig: Descarga claves
   move: Mover
+  mute: Silenciar
+  nodeConfig: Descarga claves
   pause: Pausar orquestación
   pauseAll: Pausar todos
   remove: Eliminar
   replay: Repetir
+  resetDefault: Restablecer predeterminado
   restart: Reiniciar
-  retry: Reintentar
   resume: Resumen de orquestación
+  retry: Reintentar
   revert: Revertir al valor predeterminado
   rollback: Vuelta a Atrás
   setDefault: Establecer como entorno de inicio de sesión
@@ -5573,18 +5509,18 @@ action:
   start: Iniciar
   startAll: Iniciar todos
   stop: Detener
-  stopDrain: Detener el drenaje
   stopAll: Parar todos
+  stopDrain: Detener el drenaje
+  test: Prueba
+  uncordon: Uncordon
+  unmute: Dejar de silenciar
   upgrade: Actualizar
   upgradeOrEdit: Actualizar/editar
   viewConfig: Ver Configuración
   viewGraph: Ver Gráfo
   viewInApi: Ver en la API
   viewInstance: Ver Instancia
-  test: Prueba
-  mute: Silenciar
-  unmute: Dejar de silenciar
-  uncordon: Uncordon
+  viewYaml: Ver YAML
 validation:
   required: '"{key}" es requerida'
   arrayLength:
@@ -5821,9 +5757,9 @@ rkeConfigComment:
   services: |
     ""
     "servicios:"
-    "kube-api:"
+    "kube_api:"
     "service_cluster_ip_range: 10.43.0.0/16"
-    "kube-controller:"
+    "kube_controller:"
     "cluster_cidr: 10.42.0.0/16"
     "service_cluster_ip_range: 10.43.0.0/16"
     "kubelet: "
