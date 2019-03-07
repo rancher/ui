@@ -1074,7 +1074,7 @@ cruPrivateRegistry:
   title:
     label: 私有镜像仓库
     detail: 向这个集群添加私有镜像仓库
-  noData: 这个集群没有配置私有镜像仓库
+  noData: 当前集群没有配置私有镜像仓库
   defaultError: 您必须指定一个默认的私有镜像仓库。
   add:
     label: 添加私有镜像仓库
@@ -1970,7 +1970,7 @@ cloudProvider:
   azure: Azure
   name: 云提供商名称
   custom:
-    notInList: '如果云提供商没有列出，请使用<b>Custom</b>选项。'
+    notInList: '如果云提供商没有列出，请使用<b>自定义</b>选项。'
     helpText: '请通过编辑YAML来添加其他<a href="http://rancher.com/docs/rke/v0.1.x/en/config-options/cloud-providers/" target="_blank" rel="nofollow noopener noreferrer">云提供商</a>'
 
   helpText: |
@@ -2791,7 +2791,7 @@ clusterNew:
   rke:
     etcd:
       backupConfig:
-        legacy: "This cluster was configured with a legacy ectd snapshot api. The new api replaces the creation time and retention time durations with a simpler creation time in hours and retention count. We have migrated your creation period automatically. Retention count has been configured to the default of 6 backups (current retention duration: {duration}), if you're okay with this setting no further action is required. If not, you may change the setting in the advanced settings section."
+        legacy: "当前集群配置了一个废弃的ectd快照设置。新的设置将创建时间和保留持续时间替换为更简单的创建时间(以小时和保留计数为单位)。系统已自动迁移了您的创建周期，保留计数已配置为默认的6个备份(当前保留时间:{duration})，如果您不介意这个设置，那不需要进一步的操作，您也可以在高级设置中更改此设置。"
         retention:
           label: 快照保留数
           placeholder: "12"
@@ -2815,15 +2815,15 @@ clusterNew:
           placeholder: Your AWS secret key
           provided: Provided
       location:
-        label: etcd快照目标
+        label: Etcd快照存储
       heartbeat:
-        label: etcd心跳间隔时间
+        label: Etcd心跳间隔时间
         placeholder: 心跳间隔时间
       election:
-        label: etcd选举超时时间
+        label: Etcd选举超时时间
         placeholder: 选举超时时间
       snapshot:
-        label: 重复etcd快照
+        label: 重复Etcd快照
       retention:
         label: 快照保留时间
         placeholder: "1d"
@@ -2954,8 +2954,8 @@ clusterNew:
       dns: 集群DNS服务器
     warning:
       etcd:
-        even: 设置{count}个etcd节点是对硬件的浪费，因为它不会增加仲裁，除非它是奇数。
-        noEtcd: etcd节点的数量不应小于1。
+        even: 设置{count}个etcd主机是对硬件的浪费，因为它不会增加仲裁，除非它是奇数。
+        noEtcd: 至少需要一个etcd主机。
       aws:
         iam: '使用Amazon Cloud Provider时，应在节点模板中配置IAM角色名称'
     errors:
@@ -2976,9 +2976,9 @@ clusterNew:
       label: 高级集群选项
       detail: 自定义高级选项
     authorizedEndpoint:
-      title: Authorized Cluster Endpoint
-      detail: "Enabling the authorized cluster endpoint allows direct communication with the cluster, bypassing the Rancher API proxy. Authorized endpoint's can be retrieved by generating a kubeconfig for the cluster."
-      label: Authorized Cluster Endpoint
+      title: 授权集群访问地址
+      detail: "通过授权的集群访问地址与集群直接通信，绕过Rancher API代理。可以通过为集群生成kubeconfig来访问集群。"
+      label: 授权集群访问地址
   custom:
     label: 自定义
     shortLabel: 自定义
@@ -4249,7 +4249,7 @@ formResourceQuota:
     limitRequired: '{resource}需要设置。'
     invalidLimit: '{resource}配额总共{total}，已使用{used}。该已使用应小于或等于{left}。'
   resources:
-    configMaps: Config Maps
+    configMaps: 配置映射
     limitsCpu: CPU限制
     limitsMemory: 内存限制
     persistentVolumeClaims: Persistent Volume Claims
@@ -4266,7 +4266,7 @@ formResourceQuota:
 formEnvVar:
   title: 环境变量
   detail: 在创建时添加的环境变量。
-  noData: 没有环境变量
+  noData: 当前没有环境变量
   status: |
     {count, plural,
     =0{无变量}
@@ -5786,7 +5786,15 @@ newMultiClusterApp:
   roles:
     title: 角色
     detail: 选择查看此应用程序所需的角色
+    label: 可用的角色
+    radios:
+      cluster: "Cluster - 该应用程序将能够访问和管理部署在集群中的所有资源"
+      project: "Project - 该应用程序将能够访问和管理它所部署的项目中的资源"
+    help: "注意: 这可能不是完整的角色列表。该列表仅限于用户可用的角色。如果您缺少所需的角色，请询问您的系统管理员。"
+    additionalRoles: 现有的角色
+    noRoles: "您不能添加新角色，因为您没有任何可用的角色。请联系系统管理员获得角色访问权。"
     table:
+      role: 角色
       name: 名称
       builtIn: 内置
       external: 扩展
@@ -6941,7 +6949,7 @@ nav:
     projectsIn: 集群{cluster}中的项目。
     clustersNoData: 没有集群。
     projectsNoData: 选择一个集群来查看项目。
-    projectNoData: 这个集群没有项目。
+    projectNoData: 当前集群没有项目。
     clustersNoMatch: '没有与"{searchInput}"匹配的集群。'
     projectsNoMatch: '没有与"{searchInput}"匹配的项目。'
     projectNotReady: '集群未就绪。'
