@@ -67,6 +67,9 @@ clusterDashboard:
     rancher: '{appName}日志功能监控'
     node: 节点监控
   noRancherComponents: '{appName}日志功能未启用或者没有足够的数据绘制图表。'
+  cpu: CPU
+  memory: Memory
+  pods: Pods
   value: 值
   more: 更多
   subtitle:
@@ -74,12 +77,15 @@ clusterDashboard:
     used: "已使用{total}中的{used}"
   enalbeMonitoring: 启用监控并查看实时监控指标
   monitoringNotReady: 监控API未就绪
+  node: Nodes
+  etcd: Etcd
+  scheduler: Scheduler
+  controllerManager: Controller Manager
   alert:
     node: "警告: 节点{node}未激活"
     component: "警告: 组件{component}不健康"
   liveTitle: "已使用{total}中的{used}"
   reserved: 保留值
-  node: 节点
 
 monitoringPage:
   update: 更新监控配置
@@ -89,13 +95,16 @@ monitoringPage:
   clusterNotEnabled: 集群级别监控未启用。将只采集自定义指标。
   prometheus: 监控尚未启用，点击下面的保存按钮去启用监控。
   config:
-    header: Prometheus配置
+    types:
+      none: 无
+      prometheus: Prometheus
+    header: Prometheus 配置
     prometheus:
       enablePersistence:
         label: 为Prometheus启用持久化存储
       size:
         label: Prometheus持久化存储大小
-        placeholder: 例如：50Gi
+        placeholder: '例如: 50Gi'
       storageClass:
         label: Prometheus默认存储类
     grafana:
@@ -103,7 +112,7 @@ monitoringPage:
         label: 为Grafana启用持久化存储
       size:
         label: Grafana持久化存储大小
-        placeholder: 例如：10Gi
+        placeholder: '例如: 10Gi'
       storageClass:
         label: Grafana默认存储类
     retention:
