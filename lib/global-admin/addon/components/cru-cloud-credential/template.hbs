@@ -1,7 +1,11 @@
 <section class="horizontal-form container-fluid">
   {{#unless disableHeader}}
     <h2>
-      {{t "modalAddCloudKey.header"}}
+      {{#if isNew}}
+        {{t "modalAddCloudKey.header.new"}}
+      {{else if isEdit}}
+        {{t "modalAddCloudKey.header.edit"}}
+      {{/if}}
     </h2>
   {{/unless}}
   <hr/>
@@ -206,7 +210,7 @@
     {{top-errors errors=errors}}
     {{save-cancel
       cancel=cancelAdd
-      editing=originalModel
+      editing=isEdit
       save="save"
       savingLabel=savingLabel
     }}

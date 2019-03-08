@@ -37,7 +37,10 @@ const cloudCredential = Resource.extend({
 
   actions: {
     edit() {
-      this.modal.toggleModal('modal-add-cloud-credential', { cloudCredential: this });
+      this.modal.toggleModal('modal-add-cloud-credential', {
+        cloudCredential: this,
+        mode:            'edit',
+      });
     }
   },
 });
