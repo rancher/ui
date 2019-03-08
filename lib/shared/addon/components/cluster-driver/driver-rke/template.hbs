@@ -342,10 +342,32 @@
           </div>
           <div class="row">
             <div class="col span-3">
+              <label class="acc-label">
+                {{t "clusterNew.rke.etcd.enabled.label"}}
+              </label>
+              <div class="text-muted">
+                <label>
+                  {{radio-button
+                    selection=cluster.rancherKubernetesEngineConfig.services.etcd.backupConfig.enabled
+                    value=true
+                  }}
+                  {{t "generic.yes"}}
+                </label>
+                <label>
+                  {{radio-button
+                    selection=cluster.rancherKubernetesEngineConfig.services.etcd.backupConfig.enabled
+                    value=false
+                  }}
+                  {{t "generic.no"}}
+                </label>
+              </div>
+            </div>
+            <div class="col span-3 offset-1">
               <label class="acc-label">{{t "clusterNew.rke.etcd.location.label"}}</label>
               <select
                 class="form-control"
                 onchange={{action (mut backupStrategy) value="target.value" }}
+                disabled={{if (not cluster.rancherKubernetesEngineConfig.services.etcd.backupConfig.enabled) true}}
               >
                 {{#each availableStrategies as |choice|}}
                   <option
@@ -368,6 +390,7 @@
                   min=1
                   classNames="form-control"
                   placeholder=(t "clusterNew.rke.etcd.backupConfig.interval.placeholder")
+                  disabled=(if (not cluster.rancherKubernetesEngineConfig.services.etcd.backupConfig.enabled) true)
                 }}
                 <span class="input-group-addon bg-default">{{t "generic.hours"}}</span>
               </div>
@@ -380,6 +403,7 @@
                 min=1
                 classNames="form-control"
                 placeholder=(t "clusterNew.rke.etcd.backupConfig.retention.placeholder")
+                disabled=(if (not cluster.rancherKubernetesEngineConfig.services.etcd.backupConfig.enabled) true)
               }}
             </div>
           </div>
@@ -394,6 +418,7 @@
                   value=cluster.rancherKubernetesEngineConfig.services.etcd.backupConfig.s3BackupConfig.bucketName
                   classNames="form-control"
                   placeholder=(t "clusterNew.rke.etcd.backupConfig.bucketName.placeholder")
+                  disabled=(if (not cluster.rancherKubernetesEngineConfig.services.etcd.backupConfig.enabled) true)
                 }}
               </div>
 
@@ -404,6 +429,7 @@
                   value=cluster.rancherKubernetesEngineConfig.services.etcd.backupConfig.s3BackupConfig.region
                   classNames="form-control"
                   placeholder=(t "clusterNew.rke.etcd.backupConfig.region.placeholder")
+                  disabled=(if (not cluster.rancherKubernetesEngineConfig.services.etcd.backupConfig.enabled) true)
                 }}
               </div>
 
@@ -414,6 +440,7 @@
                   value=cluster.rancherKubernetesEngineConfig.services.etcd.backupConfig.s3BackupConfig.endpoint
                   classNames="form-control"
                   placeholder=(t "clusterNew.rke.etcd.backupConfig.endpoint.placeholder")
+                  disabled=(if (not cluster.rancherKubernetesEngineConfig.services.etcd.backupConfig.enabled) true)
                 }}
               </div>
             </div>
@@ -428,6 +455,7 @@
                   classNames="form-control"
                   placeholder=(t "clusterNew.rke.etcd.backupConfig.accessKey.placeholder")
                   value=cluster.rancherKubernetesEngineConfig.services.etcd.backupConfig.s3BackupConfig.accessKey
+                  disabled=(if (not cluster.rancherKubernetesEngineConfig.services.etcd.backupConfig.enabled) true)
                 }}
               </div>
 
@@ -439,6 +467,7 @@
                   classNames="form-control"
                   placeholder=(t "clusterNew.rke.etcd.backupConfig.secretKey.placeholder")
                   value=cluster.rancherKubernetesEngineConfig.services.etcd.backupConfig.s3BackupConfig.secretKey
+                  disabled=(if (not cluster.rancherKubernetesEngineConfig.services.etcd.backupConfig.enabled) true)
                 }}
               </div>
 
