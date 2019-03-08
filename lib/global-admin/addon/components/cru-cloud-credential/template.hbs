@@ -49,7 +49,9 @@
     {{#if (eq cloudCredentialType "amazon")}}
       <div class="row">
         <div class="col span-6">
-          <label class="acc-label">{{t "nodeDriver.amazonec2.region.label"}}</label>
+          <label class="acc-label">
+            {{t "nodeDriver.amazonec2.region.label"}}{{field-required}}
+          </label>
           <select class="form-control" onchange={{action (mut region) value="target.value"}}>
             <option value="" selected={{eq region choice}}>Select a region</option>
             {{#each regionChoices as |choice|}}
