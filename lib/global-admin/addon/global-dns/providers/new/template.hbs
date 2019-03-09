@@ -1,6 +1,10 @@
 <section class="header">
   <h1>
-    {{t "globalDnsPage.providersPage.add"}}
+    {{#if isNew}}
+      {{t "globalDnsPage.providersPage.header.new"}}
+    {{else if isEdit}}
+      {{t "globalDnsPage.providersPage.header.edit"}}
+    {{/if}}
   </h1>
 </section>
 
@@ -59,6 +63,7 @@
     cancel="cancel"
     classNames="text-center mt-20"
     save="save"
+    editing=isEdit
     saveDisabled=saveDisabled
   }}
 </section>
