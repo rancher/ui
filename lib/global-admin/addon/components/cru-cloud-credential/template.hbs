@@ -1,7 +1,11 @@
 <section class="horizontal-form container-fluid">
   {{#unless disableHeader}}
     <h2>
-      {{t "modalAddCloudKey.header"}}
+      {{#if isNew}}
+        {{t "modalAddCloudKey.header.new"}}
+      {{else if isEdit}}
+        {{t "modalAddCloudKey.header.edit"}}
+      {{/if}}
     </h2>
   {{/unless}}
   <hr/>
@@ -49,7 +53,9 @@
     {{#if (eq cloudCredentialType "amazon")}}
       <div class="row">
         <div class="col span-6">
-          <label class="acc-label">{{t "nodeDriver.amazonec2.region.label"}}</label>
+          <label class="acc-label">
+            {{t "nodeDriver.amazonec2.region.label"}}{{field-required}}
+          </label>
           <select class="form-control" onchange={{action (mut region) value="target.value"}}>
             <option value="" selected={{eq region choice}}>Select a region</option>
             {{#each regionChoices as |choice|}}
@@ -204,7 +210,7 @@
     {{top-errors errors=errors}}
     {{save-cancel
       cancel=cancelAdd
-      editing=originalModel
+      editing=isEdit
       save="save"
       savingLabel=savingLabel
     }}

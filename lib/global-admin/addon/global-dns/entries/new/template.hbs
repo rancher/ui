@@ -1,14 +1,18 @@
 <section class="header">
   <h1>
-    {{t "globalDnsPage.entriesPage.add"}}
+    {{#if isNew}}
+      {{t "globalDnsPage.entriesPage.header.new"}}
+    {{else if isEdit}}
+      {{t "globalDnsPage.entriesPage.header.edit"}}
+    {{/if}}
   </h1>
 </section>
 
 <form class="horizontal-form container-fluid text-left" autocomplete="off">
   {{#accordion-list as |al expandFn|}}
     {{#accordion-list-item
-       title=(t "globalDnsPage.providersPage.options.title")
-       detail=(t "globalDnsPage.providersPage.options.detail")
+       title=(t "globalDnsPage.entriesPage.options.title")
+       detail=(t "globalDnsPage.entriesPage.options.detail")
        expandAll=al.expandAll
        expand=(action expandFn)
        expandOnInit=true
