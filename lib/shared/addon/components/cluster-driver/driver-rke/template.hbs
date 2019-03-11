@@ -342,6 +342,86 @@
           </div>
           <div class="row">
             <div class="col span-3">
+              <label class="acc-label">{{t "clusterNew.rke.etcd.location.label"}}</label>
+              <select
+                class="form-control"
+                onchange={{action (mut backupStrategy) value="target.value" }}
+              >
+                {{#each availableStrategies as |choice|}}
+                  <option
+                    value={{choice}}
+                    selected={{eq backupStrategy choice}}
+                  >
+                    {{choice}}
+                  </option>
+                {{/each}}
+              </select>
+            </div>
+
+          </div>
+
+          {{#unless (eq backupStrategy "local")}}
+            <div class="row">
+              <div class="col span-3">
+                <label class="acc-label">{{t "clusterNew.rke.etcd.backupConfig.bucketName.label"}}</label>
+                {{input
+                  type="text"
+                  value=cluster.rancherKubernetesEngineConfig.services.etcd.backupConfig.s3BackupConfig.bucketName
+                  classNames="form-control"
+                  placeholder=(t "clusterNew.rke.etcd.backupConfig.bucketName.placeholder")
+                }}
+              </div>
+
+              <div class="col span-3 offset-1">
+                <label class="acc-label">{{t "clusterNew.rke.etcd.backupConfig.region.label"}}</label>
+                {{input
+                  type="text"
+                  value=cluster.rancherKubernetesEngineConfig.services.etcd.backupConfig.s3BackupConfig.region
+                  classNames="form-control"
+                  placeholder=(t "clusterNew.rke.etcd.backupConfig.region.placeholder")
+                }}
+              </div>
+
+              <div class="col span-3 offset-1">
+                <label class="acc-label">{{t "clusterNew.rke.etcd.backupConfig.endpoint.label"}}</label>
+                {{input
+                  type="text"
+                  value=cluster.rancherKubernetesEngineConfig.services.etcd.backupConfig.s3BackupConfig.endpoint
+                  classNames="form-control"
+                  placeholder=(t "clusterNew.rke.etcd.backupConfig.endpoint.placeholder")
+                }}
+              </div>
+            </div>
+
+            <div class="row">
+
+              <div class="col span-3">
+                <label class="acc-label">{{t "clusterNew.rke.etcd.backupConfig.accessKey.label"}}</label>
+                {{input
+                  type="text"
+                  name="accessKey"
+                  classNames="form-control"
+                  placeholder=(t "clusterNew.rke.etcd.backupConfig.accessKey.placeholder")
+                  value=cluster.rancherKubernetesEngineConfig.services.etcd.backupConfig.s3BackupConfig.accessKey
+                }}
+              </div>
+
+              <div class="col span-3 offset-1">
+                <label class="acc-label">{{t "clusterNew.rke.etcd.backupConfig.secretKey.label"}}</label>
+                {{input
+                  type="password"
+                  name="password"
+                  classNames="form-control"
+                  placeholder=(t "clusterNew.rke.etcd.backupConfig.secretKey.placeholder")
+                  value=cluster.rancherKubernetesEngineConfig.services.etcd.backupConfig.s3BackupConfig.secretKey
+                }}
+              </div>
+
+            </div>
+          {{/unless}}
+
+          <div class="row">
+            <div class="col span-3">
               <label class="acc-label">
                 {{t "clusterNew.rke.etcd.enabled.label"}}
               </label>
@@ -362,27 +442,8 @@
                 </label>
               </div>
             </div>
-            <div class="col span-3 offset-1">
-              <label class="acc-label">{{t "clusterNew.rke.etcd.location.label"}}</label>
-              <select
-                class="form-control"
-                onchange={{action (mut backupStrategy) value="target.value" }}
-                disabled={{if (not cluster.rancherKubernetesEngineConfig.services.etcd.backupConfig.enabled) true}}
-              >
-                {{#each availableStrategies as |choice|}}
-                  <option
-                    value={{choice}}
-                    selected={{eq backupStrategy choice}}
-                  >
-                    {{choice}}
-                  </option>
-                {{/each}}
-              </select>
-            </div>
-          </div>
 
-          <div class="row">
-            <div class="col span-3">
+            <div class="col span-3 offset-1">
               <label class="acc-label">{{t "clusterNew.rke.etcd.backupConfig.interval.label"}}</label>
               <div class="input-group">
                 {{input-integer
@@ -407,72 +468,6 @@
               }}
             </div>
           </div>
-
-          {{#unless (eq backupStrategy "local")}}
-
-            <div class="row">
-              <div class="col span-3">
-                <label class="acc-label">{{t "clusterNew.rke.etcd.backupConfig.bucketName.label"}}</label>
-                {{input
-                  type="text"
-                  value=cluster.rancherKubernetesEngineConfig.services.etcd.backupConfig.s3BackupConfig.bucketName
-                  classNames="form-control"
-                  placeholder=(t "clusterNew.rke.etcd.backupConfig.bucketName.placeholder")
-                  disabled=(if (not cluster.rancherKubernetesEngineConfig.services.etcd.backupConfig.enabled) true)
-                }}
-              </div>
-
-              <div class="col span-3 offset-1">
-                <label class="acc-label">{{t "clusterNew.rke.etcd.backupConfig.region.label"}}</label>
-                {{input
-                  type="text"
-                  value=cluster.rancherKubernetesEngineConfig.services.etcd.backupConfig.s3BackupConfig.region
-                  classNames="form-control"
-                  placeholder=(t "clusterNew.rke.etcd.backupConfig.region.placeholder")
-                  disabled=(if (not cluster.rancherKubernetesEngineConfig.services.etcd.backupConfig.enabled) true)
-                }}
-              </div>
-
-              <div class="col span-3 offset-1">
-                <label class="acc-label">{{t "clusterNew.rke.etcd.backupConfig.endpoint.label"}}</label>
-                {{input
-                  type="text"
-                  value=cluster.rancherKubernetesEngineConfig.services.etcd.backupConfig.s3BackupConfig.endpoint
-                  classNames="form-control"
-                  placeholder=(t "clusterNew.rke.etcd.backupConfig.endpoint.placeholder")
-                  disabled=(if (not cluster.rancherKubernetesEngineConfig.services.etcd.backupConfig.enabled) true)
-                }}
-              </div>
-            </div>
-
-            <div class="row">
-
-              <div class="col span-3">
-                <label class="acc-label">{{t "clusterNew.rke.etcd.backupConfig.accessKey.label"}}</label>
-                {{input
-                  type="text"
-                  name="accessKey"
-                  classNames="form-control"
-                  placeholder=(t "clusterNew.rke.etcd.backupConfig.accessKey.placeholder")
-                  value=cluster.rancherKubernetesEngineConfig.services.etcd.backupConfig.s3BackupConfig.accessKey
-                  disabled=(if (not cluster.rancherKubernetesEngineConfig.services.etcd.backupConfig.enabled) true)
-                }}
-              </div>
-
-              <div class="col span-3 offset-1">
-                <label class="acc-label">{{t "clusterNew.rke.etcd.backupConfig.secretKey.label"}}</label>
-                {{input
-                  type="password"
-                  name="password"
-                  classNames="form-control"
-                  placeholder=(t "clusterNew.rke.etcd.backupConfig.secretKey.placeholder")
-                  value=cluster.rancherKubernetesEngineConfig.services.etcd.backupConfig.s3BackupConfig.secretKey
-                  disabled=(if (not cluster.rancherKubernetesEngineConfig.services.etcd.backupConfig.enabled) true)
-                }}
-              </div>
-
-            </div>
-          {{/unless}}
         {{/accordion-list-item}}
       {{/advanced-section}}
     {{/if}}
