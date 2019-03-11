@@ -114,7 +114,11 @@
       </div>
     </div>
 
-    <hr class="mt-20 mb-20"/>
+    <div class="over-hr hand no-select">
+      <span>
+        {{t "newMultiClusterApp.targetDivider.label"}}
+      </span>
+    </div>
 
     {{form-multi-cluster-targets
       addTarget=(action "addTarget")
@@ -125,7 +129,12 @@
       projects=projects
       readOnly=readOnly
     }}
-    <hr class="mt-20 mb-20"/>
+
+    <div class="over-hr hand no-select">
+      <span>
+        {{t "newMultiClusterApp.upgradeDivider.label"}}
+      </span>
+    </div>
 
     <div class="row">
       <div class="col span-6">
@@ -177,7 +186,16 @@
       </div>
     {{/if}}
 
-    <hr class="mt-20 mb-20"/>
+    <div class="over-hr hand no-select">
+      <span>
+        {{t "newMultiClusterApp.rolesDivider.label"}}
+      </span>
+    </div>
+
+    {{form-global-resource-roles
+      multiClusterApp=multiClusterApp
+      addRole=(action "addRole")
+    }}
 
     {{#if getTemplate.isRunning}}
       <section class="row">
@@ -225,20 +243,6 @@
     }}
 
   {{/accordion-list-item}}
-
-  {{#accordion-list-item
-     title=(t "newMultiClusterApp.roles.title")
-     detail=(t "newMultiClusterApp.roles.detail")
-     expandAll=al.expandAll
-     expandOnInit=false
-     expand=(action expandFn)
-  }}
-    {{form-global-resource-roles
-      multiClusterApp=multiClusterApp
-      addRole=(action "addRole")
-    }}
-  {{/accordion-list-item}}
-
 
   {{#accordion-list-item
      title=(t "newMultiClusterApp.overrides.label")
