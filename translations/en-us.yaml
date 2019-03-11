@@ -2797,14 +2797,14 @@ clusterNew:
   rke:
     etcd:
       enabled:
-        label: Enabled
+        label: Recurring etcd Snapshot Enabled
       backupConfig:
         legacy: "This cluster was configured with a legacy ectd snapshot api. The new api replaces the creation time and retention time durations with a simpler creation time in hours and retention count. We have migrated your creation period automatically. Retention count has been configured to the default of 6 backups (current retention duration: {duration}), if you're okay with this setting no further action is required. If not, you may change the setting in the advanced settings section."
         retention:
-          label: Snapshot Retention Count
+          label: Recurring etcd Snapshot Retention Count
           placeholder: "12"
         interval:
-          label: Snapshot Creation Period
+          label: Recurring etcd Snapshot Creation Period
           placeholder: "6"
         bucketName:
           label: S3 Bucket Name
@@ -2816,10 +2816,10 @@ clusterNew:
           label: S3 Region Endpoint
           placeholder: "s3.us-west-2.amazonaws.com"
         accessKey:
-          label: Access Key
+          label: S3 Access Key
           placeholder: Your AWS access key
         secretKey:
-          label: Secret Key
+          label: S3 Secret Key
           placeholder: Your AWS secret key
           provided: Provided
       location:
@@ -2833,13 +2833,13 @@ clusterNew:
       snapshot:
         label: Recurring etcd Snapshots
       retention:
-        label: Snapshot Retention Period
+        label: Recurring etcd Snapshot Retention Period
         placeholder: "12h"
         help: "acceptable duration units: h, m, s"
       creation:
-        label: Snapshot Creation Period
+        label: Recurring etcd Snapshot Creation Period
         placeholder: "6h"
-      error: "Snapshot {type} Period Error: You must specify a valid time duration. You entered {entry}"
+      error: "etcd Snapshot {type} Period Error: You must specify a valid time duration. You entered {entry}"
     nodeName:
       title: Node Name
       detail: Optionally configure the node name as identification instead of the actual hostname
@@ -5762,6 +5762,12 @@ newMultiClusterApp:
     cluster: Cluster
     project: Project
     noData: There are no targets
+  targetDivider:
+    label: Targets
+  upgradeDivider:
+    label: Upgrades
+  rolesDivider:
+    label: Roles
   templateVersion: Template Version
   titleAdd: "Add {name} App"
   titleConfigure: "Configure {name} App"
