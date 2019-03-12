@@ -45,7 +45,20 @@
         class="acc-label"
         for="alidns-api-key"
       >
-        {{t "globalDnsPage.providersPage.config.secretKey.label"}}{{field-required}}
+        {{t "globalDnsPage.providersPage.config.secretKey.label"}}
+        {{#if (eq mode "edit")}}
+          {{#tooltip-element
+             type="tooltip-basic"
+             model=(t "globalDnsPage.providersPage.config.secretKey.info")
+             tooltipTemplate="tooltip-static"
+             aria-describedby="tooltip-base"
+             tooltipFor="tooltipSecretKey"
+          }}
+            <i class="icon icon-info"></i>
+          {{/tooltip-element}}
+        {{else}}
+          {{field-required}}
+        {{/if}}
       </label>
       {{input
         classNames="form-control"
