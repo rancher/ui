@@ -283,8 +283,6 @@ $nav-spacing: 4px;
   }
 
   .global {
-    border-bottom: 1px solid $accent-border;
-    background-color: $accent-one;
 
     > ul.list-unstyled {
       &:first-child {
@@ -302,6 +300,15 @@ $nav-spacing: 4px;
     }
   }
 
+  .global, .search {
+    background-color: darken($accent-bg,2%);
+
+    ul .item.active {
+      background: darken($accent-bg,2%);
+      color: $link-color;
+    }
+  }
+
   .global {
     grid-column-start: 1;
     grid-row-start: 1;
@@ -311,7 +318,6 @@ $nav-spacing: 4px;
     grid-column-start: 2;
     grid-row-start: 1;
     padding: 5px 10px;
-    background-color: $primary;
   }
 
   .search-match {
@@ -324,6 +330,9 @@ $nav-spacing: 4px;
     padding: 5px 10px;
     @include hand;
 
+    &.active {
+      background-color: $primary;
+    }
 
     &.project:hover,
     &.cluster:hover {
@@ -347,7 +356,7 @@ $nav-spacing: 4px;
 
   LI {
     &.active {
-      background-color: $primary;
+      // background-color: $primary;
       A, .state {
         color: white;
       }
