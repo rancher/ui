@@ -12,6 +12,8 @@ import Grafana from 'shared/mixins/grafana';
 const UNSCHEDULABLE_KEYS = ['node-role.kubernetes.io/etcd', 'node-role.kubernetes.io/controlplane'];
 const UNSCHEDULABLE_EFFECTS = ['NoExecute', 'NoSchedule'];
 
+const CONTAINERD = 'containerd://';
+
 var Node = Resource.extend(Grafana, StateCounts, ResourceUsage, {
   modalService: service('modal'),
   settings:     service(),
@@ -161,6 +163,30 @@ var Node = Resource.extend(Grafana, StateCounts, ResourceUsage, {
     out = out.replace('Red Hat Enterprise Linux Server', 'RHEL'); // That's kinda long
 
     return out;
+  }),
+
+  engineIcon: computed('info.os.dockerVersion', function() {
+    if ( (get(this, 'info.os.dockerVersion') || '').startsWith(CONTAINERD) ) {
+      return 'icon-container-d';
+    }
+
+    return 'icon-docker';
+  }),
+
+  engineBlurb: computed('info.os.dockerVersion', function() {
+    let version = get(this, 'info.os.dockerVersion') || '';
+
+    if ( version.startsWith(CONTAINERD) ) {
+      version = version.substr(CONTAINERD.length);
+    }
+
+    const idx = version.indexOf('+');
+
+    if ( idx > 0 ) {
+      version = version.substr(0, idx);
+    }
+
+    return version;
   }),
 
   //  or they will not be pulled in correctly.
