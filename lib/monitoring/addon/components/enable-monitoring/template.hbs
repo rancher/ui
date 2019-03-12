@@ -182,6 +182,22 @@
         }}
       </div>
     </div>
+
+    {{#advanced-section advanced=advanced}}
+        {{form-key-value
+          initialMap=customAnswers
+          changed=(action (mut customAnswers))
+          allowEmptyValue=true
+          addInitialEmptyRow=true
+          editing=true
+          header=(t "newCatalog.answers.label")
+          addActionLabel="newCatalog.answers.addAction"
+          keyLabel="newContainer.environment.keyLabel"
+          keyPlaceholder="newContainer.environment.keyPlaceholder"
+          valueLabel="newContainer.environment.valueLabel"
+          valuePlaceholder="newContainer.environment.valuePlaceholder"
+        }}
+    {{/advanced-section}}
   </div>
 {{else if loading}}
   <section class="row">
