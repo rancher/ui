@@ -175,9 +175,9 @@ accountsPage:
     header: 添加用户
     errors:
       usernameReq: 必须填写用户名
-      usernameInExists: 用户名已存在，请选择一个新的用户名
+      usernameInExists: 用户名已存在，请设置新的用户名
       pwReq: 密码必须设置
-      role: 新用户需要具备角色。从列表中选择一个角色
+      role: 新用户需要具备角色，从列表中选择角色。
     form:
       username:
         labelText: 用户名
@@ -1062,7 +1062,7 @@ cruVolumeClaimTemplate:
     storageClass: 使用存储类来配置新的持久卷
   pv:
     label: 持久卷
-    prompt: 选择一个持久卷...
+    prompt: 选择持久卷...
   storageClass:
     label: 存储类
     prompt: 使用默认类
@@ -1089,7 +1089,7 @@ cruPrivateRegistry:
       label: 默认仓库
 
 cruVolume:
-  sourcePrompt: 需要先在上面选择一个存储源...
+  sourcePrompt: 需要先在上面选择存储源...
   title:
     new: 定义临时卷
   define:
@@ -1100,7 +1100,7 @@ cruVolume:
     label: 存储源
     title: 源配置
     detail: 配置选定存储源的选项
-    prompt: 选择一个存储源...
+    prompt: 选择存储源...
 
 globalDnsPage:
   header: 全局DNS记录列表
@@ -1114,11 +1114,16 @@ globalDnsPage:
   noApps: No Accessible Multi Cluster Apps
   noProviders: 没有选择DNS提供商
   entriesPage:
+    header:
+      new: 添加全局DNS记录
+      edit: 编辑全局DNS记录
+    options:
+      title: 配置选项
+      detail: 自定义DNS记录选项
     access:
       noAccessMulti: 您无法访问目标应用程序
       noAccessProvider: You do not have access to the provider
       noAccessProject: 您无法访问目标项目
-    add: 添加全局DNS记录
     projectHelp: "要完成项目的全局DNS记录设置，必须在项目的入口处添加以下注释标签(<code>rancher.io/globalDNS.hostname</code>)，其中<code>hostname</code>是路由规则中使用的主机名。"
     table:
       name: 名称
@@ -1148,7 +1153,9 @@ globalDnsPage:
         label: DNS TTL(DNS解析记录缓存有效期)
   providersPage:
     title: 全局DNS提供商列表
-    add: 添加全局DNS提供商
+    header:
+      new: 添加全局DNS提供商
+      edit: 编辑全局DNS提供商
     options:
       title: DNS提供商设置
       detail: 自定义DNS提供商设置
@@ -2149,7 +2156,7 @@ clusterNew:
     detail: 自定义GKE服务账号和访问权限
   psp:
     label: 默认的Pod安全策略
-    prompt: 选择一个Pod安全策略...
+    prompt: 选择Pod安全策略...
     none: 没有定义策略
     required: 启用时需要设置一个默认Pod安全策略
   amazoneks:
@@ -2262,7 +2269,7 @@ clusterNew:
       placeholder: "例如: 1"
     location:
       label: 位置
-      prompt: 选择一个位置...
+      prompt: 选择位置...
     accountAccessSection:
       label: 账户访问
     subscriptionId:
@@ -2270,7 +2277,7 @@ clusterNew:
       placeholder: Azure订阅ID
     machineType:
       label: VM规格
-      prompt: 选择一个规格...
+      prompt: 选择规格...
     diskSizeGb:
       label: OS磁盘大小
       placeholder: "例如: 100"
@@ -2396,33 +2403,33 @@ clusterNew:
     label: Aliyun Kubernetes Container Service
     shortLabel: Alibaba ACK
     access:
-      next: "Next: Configure Cluster"
-      loading: "Loading Zones from Alibaba ACK"
-      title: Account Access
-      detail: Choose the region and API Key that will be used to launch Alibaba Kubernetes Service
+      next: "下一步: 配置集群"
+      loading: "从Alibaba ACK加载可用区域"
+      title: 帐户访问
+      detail: 选择将用于启动阿里巴巴Kubernetes服务的地区和API密钥
     cluster:
-      title: Cluster Configuration
-      detail: Choose the Zone and Kubernetes version that will be used to launch Alibaba Kubernetes Service
-      next: "Next: Configure Master Nodes"
-      loading: "Loading Availability Zones from Alibaba"
+      title: 集群配置
+      detail: 选择将用于启动阿里巴巴Kubernetes服务的区域和Kubernetes版本
+      next: "下一步: 配置Master节点"
+      loading: "从Alibaba加载可用区域"
     clusters:
       k8s: Kubernetes
-      managed: Managed Kubernetes
-      label: Cluster Type
+      managed: 管理 Kubernetes
+      label: Cluster 类型
     master:
-      title: Master Nodes
-      detail: Configure the master nodes that will be used to launch Alibaba Kubernetes Service
-      next: "Next: Configure Worker Nodes"
-      loading: "Loading Key Pairs from Alibaba"
+      title: Master 节点
+      detail: 配置用于启动阿里巴巴Kubernetes服务的主节点
+      next: "下一步: 配置Worker节点"
+      loading: "从阿里巴巴加载密钥对"
     worker:
-      title: Worker Nodes
-      detail: Configure the worker nodes that will be used to launch Alibaba Kubernetes Service
+      title: Worker 节点
+      detail: 配置用于启动阿里巴巴Kubernetes服务的工作节点
     disk:
       efficiency: Ultra Disk
       ssd: SSD Disk
     rootSize:
       label: 根磁盘大小
-      placeholder: '例如：120'
+      placeholder: '例如: 120'
     rootType:
       label: 根磁盘类型
     storageType:
@@ -2431,18 +2438,18 @@ clusterNew:
       label: 数据磁盘大小
       placeholder: '例如: 120'
     masterNum:
-      label: Master Nodes Count
-      help: The count of master nodes will be launched in this Kubernetes cluster
+      label: Master 节点数
+      help: 此Kubernetes集群将运行的Master节点数
     numOfNodes:
-      label: Worker Nodes Count
+      label: Worker 节点数
       placeholder: '例如: 3'
-      required: Worker Nodes Count is required
-      help: The count of worker nodes will be launched in this Kubernetes cluster
+      required: 必须设置Worker节点
+      help: 此Kubernetes集群将运行的Worker节点数
     keyPair:
-      label: Key Pair
-      required: Key Pair is required
+      label: 密钥对
+      required: 必须选择密钥对
     regionId:
-      label: Region
+      label: 区域
     accessKeyId:
       label: Access Key
       placeholder: Your Aliyun access key
@@ -2461,7 +2468,7 @@ clusterNew:
       label: 实例类型
       required: 实例类型必须设置
   googlegke:
-    label: Google Kubernetes引擎
+    label: Google Kubernetes 引擎
     shortLabel: Google GKE
     checkServiceAccount: "下一步: 配置主机"
     checkingServiceAccount: 认证
@@ -2473,7 +2480,7 @@ clusterNew:
         "创建一个拥有JSON私钥的<a href="https://console.cloud.google.com/projectselector/iam-admin/serviceaccounts" target="_blank" rel="nofollow noopener noreferrer">Service Account</a>，并在此处提供JSON。有关创建服务帐户的更多信息，请参阅<a href="https://cloud.google.com/compute/docs/access/create-enable-service-accounts-for-instances" target="_blank" rel="nofollow noopener noreferrer">Google Cloud文档</a> 。需要四个IAM角色: Compute Viewer (<code>roles/compute.viewer</code>)，(Project) Viewer (<code>roles/viewer</code>)，Kubernetes Engine Admin (<code>roles/container.admin</code>)和Service Account User (<code>roles/iam.serviceAccountUser</code>)，更多关于角色的信息可在<a href="https://cloud.google.com/kubernetes-engine/docs/how-to/iam-integration" target="_blank" rel="nofollow noopener noreferrer">此处</a>找到。<a href="https://cloud.google.com/kubernetes-engine/docs/how-to/iam-integration" target="_blank" rel="nofollow noopener noreferrer">"
     zone:
       label: 区域
-      prompt: 选择一个区域...
+      prompt: 选择区域...
     project:
       label: 项目
       placeholder: '例如: My-project'
@@ -2790,6 +2797,8 @@ clusterNew:
       label: 共享Eip类型
   rke:
     etcd:
+      enabled:
+        label: Etcd快照轮换
       backupConfig:
         legacy: "当前集群配置了一个废弃的ectd快照设置。新的设置将创建时间和保留持续时间替换为更简单的创建时间(以小时和保留计数为单位)。系统已自动迁移了您的创建周期，保留计数已配置为默认的6个备份(当前保留时间:{duration})，如果您不介意这个设置，那不需要进一步的操作，您也可以在高级设置中更改此设置。"
         retention:
@@ -2960,8 +2969,8 @@ clusterNew:
         iam: '使用Amazon Cloud Provider时，应在节点模板中配置IAM角色名称'
     errors:
       etcd: 请选择1个，3个或5个主机用于etcd。
-      controlPlane: 请至少选择一个用于management的主机。
-      worker: 请至少选择一个用于worker的主机。
+      controlPlane: 请至少选择一个用于management角色的主机。
+      worker: 请至少选择一个用于worker角色的主机。
     dockerRootDir:
       placeholder: "{dir}是默认目录"
     system:
@@ -3101,7 +3110,7 @@ cruPersistentVolume:
     label: 卷插件
     title: 插件配置
     detail: 配置选定卷插件的选项
-    prompt: '选择一个卷插件...'
+    prompt: '选择卷插件...'
   nodeAffinity:
     label: 节点亲和性
   customize:
@@ -3846,7 +3855,7 @@ editCluster:
     add: 添加应用
     cancel: 取消添加系统应用
   modal:
-    onCluster: "注意: 您正在尝试删除您当前环境所在的集群。请在删除该集群之前，先选择一个其他集群的环境"
+    onCluster: "注意: 您正在尝试删除当前环境所在的集群。请在删除该集群之前，先选择其他集群的环境"
 
 editContainer:
   title:
@@ -3889,11 +3898,11 @@ editStack:
   title: 编辑命名空间
   name:
     label: 名称
-    error: 命名空间名称已被使用，请选择一个新的命名空间名称。
+    error: 命名空间名称已被使用，请设置新的命名空间名称。
     placeholder: '例如: Myapp'
   project:
     label: 项目
-    prompt: '选择一个项目:'
+    prompt: '选择项目:'
   description:
     label: 描述
     placeholder: '例如: MyApp命名空间'
@@ -4810,15 +4819,15 @@ formSslTermination:
   title: SSL/TLS证书
   detail: '配置用于端口加密的SSL/TSL证书。'
   defaultCertificate:
-    prompt: '选择一个证书...'
+    prompt: '选择证书...'
   default:
     label: 使用默认的ingress controller证书
     noHosts: 请提供至少一个主机给默认证书
   custom:
-    label: 选择一个证书
-    required: 请选择一个证书
+    label: 选择证书
+    required: 请选择证书
   alternateCertificate:
-    prompt: '选择一个证书...'
+    prompt: '选择证书...'
   certificate: 证书
   alternateCerts: 备选证书
   addAlternate: 添加备选证书
@@ -4848,11 +4857,11 @@ formNamespace:
     reuse: 使用现有的名称空间
     create: 创建新的命名空间
   reuse:
-    prompt: 选择一个命名空间...
+    prompt: 选择命名空间...
   create:
     placeholder: '例如: Myapp'
   errors:
-    noneChosen: 您必须选择一个命名空间。
+    noneChosen: 您必须选择命名空间。
     validation: "命名空间: {error}"
 
 formUserData:
@@ -4966,7 +4975,7 @@ formVersions:
   unsupported: "(不支持)"
 
 formVolumeRow:
-  prompt: 选择一个持久卷声明...
+  prompt: 选择持久卷声明...
   name:
     label: 卷名
     placeholder: '例如: vol1'
@@ -5004,7 +5013,7 @@ formVolumes:
   title: 数据卷
   detail: 持久化及共享数据并与独立容器的生命周期分离。
   value:
-    prompt: 选择一个容器...
+    prompt: 选择容器...
   volumes: 卷
   volumesFrom: 卷来自
   volumeDriver:
@@ -5389,11 +5398,15 @@ modalAddPayment:
     dollar: "美元($)"
 
 modalAddCloudKey:
-  header: 添加云凭据
-  type: 云凭证类型
+  header:
+    new: Add Cloud Credential
+    edit: Edit Cloud Credential
+  type: Cloud Credential Type
   saving:
     validating: Validating Keys
-  error: '{ status }: There was a problem validating your keys. Enter valid credentials and try agian.'
+  errors:
+    validation: '{ status }: There was a problem validating your keys. Enter valid credentials and try agian.'
+    region: You must select a region in order to validate your keys
   typeSelect:
     prompt: Choose a cloud credential provider type
   amazonec2:
@@ -5475,7 +5488,7 @@ modalEditSetting:
     label: 名称
   value:
     label: 值
-    prompt: 选择一个值...
+    prompt: 选择值...
   reset:
     label: 重置为默认值
 
@@ -5693,9 +5706,9 @@ newCatalog:
   saveConfigure: 设置
   saveNew: 启动
   saveUpgrade: 升级
-  selectVersionAdd: 选择一个模板版本部署
-  selectVersionConfigure: 选择一个模板版本设置
-  selectVersionUpgrade: 选择一个模板版本升级
+  selectVersionAdd: 选择模板版本部署
+  selectVersionConfigure: 选择模板版本设置
+  selectVersionUpgrade: 选择模板版本升级
   startService: 创建后启动服务
   support: "支持:"
   templateVersion: 模板版本
@@ -5752,6 +5765,12 @@ newMultiClusterApp:
     cluster: 集群
     project: 项目
     noData: 当前没有目标
+  targetDivider:
+    label: 目标驱动
+  upgradeDivider:
+    label: 更新
+  rolesDivider:
+    label: 角色
   templateVersion: 模板版本
   titleAdd: "添加 {name} App"
   titleConfigure: "配置 {name} App"
@@ -5810,7 +5829,7 @@ newMultiClusterApp:
       accessType: 访问类型
       noData: 目前还没有成员
       noMatch: 没有成员匹配当前搜索
-      prompt: 选择一个值…
+      prompt: 选择值…
   upgradeApp:
     title: 升级策略
     disabled: 同时升级所有应用
@@ -6948,7 +6967,7 @@ nav:
     projects: 项目
     projectsIn: 集群{cluster}中的项目。
     clustersNoData: 没有集群。
-    projectsNoData: 选择一个集群来查看项目。
+    projectsNoData: 选择集群来查看项目。
     projectNoData: 当前集群没有项目。
     clustersNoMatch: '没有与"{searchInput}"匹配的集群。'
     projectsNoMatch: '没有与"{searchInput}"匹配的项目。'
