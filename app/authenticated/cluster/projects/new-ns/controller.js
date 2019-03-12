@@ -19,7 +19,7 @@ export default Controller.extend(NewOrEdit, {
       let backTo = get(this, 'session').get(C.SESSION.BACK_TO)
 
       if (backTo) {
-        window.location.href = backTo;
+        this.transitionToRoute('authenticated.project.ns.index', get(this, 'addTo'));
       } else {
         this.transitionToRoute('authenticated.cluster.projects.index');
       }
