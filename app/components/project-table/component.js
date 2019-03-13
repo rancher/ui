@@ -18,6 +18,7 @@ const headers = [
   {
     name:           'created',
     sort:           ['hasProject', 'createdTs', ' id'],
+    searchField:    false,
     translationKey: 'projectsPage.created.label',
     width:          200,
   },

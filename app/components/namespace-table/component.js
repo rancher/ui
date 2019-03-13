@@ -20,6 +20,7 @@ const headers = [
     classNames:     'text-right pr-20',
     name:           'created',
     sort:           ['createdTs'],
+    searchField:    false,
     translationKey: 'projectsPage.created.label',
     width:          250,
   },
