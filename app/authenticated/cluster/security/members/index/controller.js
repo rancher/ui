@@ -19,6 +19,7 @@ const headers = [
     translationKey: 'generic.created',
     name:           'created',
     sort:           ['created'],
+    searchField:    false,
     classNames:     'text-right pr-20',
     width:          200,
   },

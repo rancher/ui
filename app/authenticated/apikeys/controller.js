@@ -48,6 +48,7 @@ export default Controller.extend({
       classNames:     'text-right pr-20',
       name:           'created',
       sort:           ['created', 'name', 'id'],
+      searchField:    false,
       translationKey: 'apiPage.table.created',
       width:          175,
     },

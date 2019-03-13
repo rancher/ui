@@ -58,7 +58,7 @@ const ingressHeaders = [
     name:           'created',
     sort:           ['created', 'id'],
     classNames:     'text-right pr-20',
-    searchField:    'created',
+    searchField:    false,
     translationKey: 'generic.created',
   },
 ]

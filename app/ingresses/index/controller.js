@@ -35,7 +35,7 @@ export default Controller.extend({
       classNames:     'text-right pr-20',
       name:           'created',
       sort:           ['created', 'id'],
-      searchField:    'created',
+      searchField:    false,
       translationKey: 'generic.created',
       width:          200,
     },

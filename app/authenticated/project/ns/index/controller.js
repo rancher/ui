@@ -22,7 +22,7 @@ export const headers = [
     classNames:     'text-right pr-20',
     name:           'created',
     sort:           ['created', 'id'],
-    searchField:    'created',
+    searchField:    false,
     translationKey: 'namespacesPage.table.created.label',
     width:          250,
   },
