@@ -40,7 +40,6 @@ const rootNav = [
       {
         id:             'infra-certificates',
         localizedLabel: 'nav.infra.certificates',
-        icon:           'icon icon-certificate',
         route:          'authenticated.project.certificates',
         ctx:            [getProjectId],
         resource:       ['certificate'],
@@ -49,7 +48,6 @@ const rootNav = [
       {
         id:             'infra-config-maps',
         localizedLabel: 'nav.infra.configMaps',
-        icon:           'icon icon-file',
         route:          'authenticated.project.config-maps',
         ctx:            [getProjectId],
         resource:       ['configmap'],
@@ -58,7 +56,6 @@ const rootNav = [
       {
         id:             'infra-registries',
         localizedLabel: 'nav.infra.registries',
-        icon:           'icon icon-database',
         route:          'authenticated.project.registries',
         ctx:            [getProjectId],
         resource:       ['dockercredential'],
@@ -67,7 +64,6 @@ const rootNav = [
       {
         id:             'infra-secrets',
         localizedLabel: 'nav.infra.secrets',
-        icon:           'icon icon-secrets',
         route:          'authenticated.project.secrets',
         ctx:            [getProjectId],
         resource:       ['namespacedsecret', 'secret'],
@@ -88,7 +84,6 @@ const rootNav = [
     scope:          'project',
     id:             'project-security-roles',
     localizedLabel: 'nav.infra.members',
-    icon:           'icon icon-users',
     route:          'authenticated.project.security.members',
     resource:       ['projectroletemplatebinding'],
     resourceScope:  'global',
@@ -109,6 +104,14 @@ const rootNav = [
         route:          'authenticated.project.alert',
         resource:       [],
         ctx:            [getProjectId],
+        resourceScope:  'global',
+      },
+      {
+        id:             'manage-catalogs',
+        localizedLabel: 'nav.tools.catalogs',
+        route:          'authenticated.project.project-catalogs',
+        ctx:            [getProjectId],
+        resource:       ['catalog', 'project-catalog'],
         resourceScope:  'global',
       },
       {
@@ -196,18 +199,8 @@ const rootNav = [
   },
   {
     scope:          'cluster',
-    id:             'cluster-catalogs',
-    localizedLabel: 'nav.admin.catalogs',
-    route:          'authenticated.cluster.cluster-catalogs',
-    ctx:            [getClusterId],
-    resource:       ['catalog', 'cluster-catalog'],
-    resourceScope:  'global',
-  },
-  {
-    scope:          'cluster',
     id:             'cluster-security-roles',
     localizedLabel: 'nav.cluster.members',
-    icon:           'icon icon-users',
     route:          'authenticated.cluster.security.members.index',
     resource:       ['clusterroletemplatebinding'],
     resourceScope:  'global',
@@ -225,7 +218,6 @@ const rootNav = [
       {
         id:             'cluster-tools-alert',
         localizedLabel: 'nav.tools.alerts',
-        // icon: 'icon icon-key',
         route:          'authenticated.cluster.alert',
         resourceScope:  'global',
         resource:       [],
@@ -241,6 +233,15 @@ const rootNav = [
         condition() {
           return get(this, 'cluster.rancherKubernetesEngineConfig')
         }
+      },
+      {
+        scope:          'cluster',
+        id:             'cluster-catalogs',
+        localizedLabel: 'nav.admin.catalogs',
+        route:          'authenticated.cluster.cluster-catalogs',
+        ctx:            [getClusterId],
+        resource:       ['catalog', 'cluster-catalog'],
+        resourceScope:  'global',
       },
       {
         id:             'cluster-tools-notifiers',
@@ -280,18 +281,10 @@ const rootNav = [
   },
   {
     scope:          'global',
-    id:             'nodes-node-drivers',
-    localizedLabel: 'nav.admin.drivers',
-    route:          'nodes.custom-drivers',
-    resource:       ['nodedriver', 'kontainerdriver'],
-    resourceScope:  'global',
-  },
-  {
-    scope:          'global',
-    id:             'global-catalogs',
-    localizedLabel: 'nav.admin.catalogs',
-    route:          'global-admin.catalog',
-    resource:       ['catalog'],
+    id:             'multi-cluster-apps',
+    localizedLabel: 'nav.admin.multiClusterApps',
+    route:          'global-admin.multi-cluster-apps',
+    resource:       ['multiclusterapp'],
     resourceScope:  'global',
   },
   {
@@ -318,7 +311,6 @@ const rootNav = [
       {
         id:             'global-security-roles',
         localizedLabel: 'nav.admin.security.roles',
-        icon:           'icon icon-users',
         route:          'global-admin.security.roles',
         resource:       ['roletemplate'],
         resourceScope:  'global',
@@ -326,7 +318,6 @@ const rootNav = [
       {
         id:             'global-security-roles',
         localizedLabel: 'nav.admin.security.podSecurityPolicies',
-        icon:           'icon icon-files',
         route:          'global-admin.security.policies',
         resource:       ['podsecuritypolicytemplate'],
         resourceScope:  'global',
@@ -334,7 +325,6 @@ const rootNav = [
       {
         id:             'global-security-authentication',
         localizedLabel: 'nav.admin.security.authentication',
-        icon:           'icon icon-users',
         route:          'global-admin.security.authentication',
         condition() {
           const authConfigs = this.get('globalStore').all('authConfig');
@@ -350,10 +340,25 @@ const rootNav = [
     localizedLabel: 'nav.tools.tab',
     submenu:        [
       {
+        scope:          'global',
+        id:             'global-catalogs',
+        localizedLabel: 'nav.admin.catalogs',
+        route:          'global-admin.catalog',
+        resource:       ['catalog'],
+        resourceScope:  'global',
+      },
+      {
+        scope:          'global',
+        id:             'nodes-node-drivers',
+        localizedLabel: 'nav.admin.drivers',
+        route:          'nodes.custom-drivers',
+        resource:       ['nodedriver', 'kontainerdriver'],
+        resourceScope:  'global',
+      },
+      {
         id:             'global-dns-entries',
         localizedLabel: 'nav.admin.globalDnsEntries',
         route:          'global-admin.global-dns.entries',
-        icon:           'icon icon-network',
         resource:       ['globaldns'],
         resourceScope:  'global',
       },
@@ -361,17 +366,7 @@ const rootNav = [
         id:             'global-dns-providers',
         localizedLabel: 'nav.admin.globalDnsProviders',
         route:          'global-admin.global-dns.providers',
-        icon:           'icon icon-globe',
         resource:       ['globaldnsprovider'],
-        resourceScope:  'global',
-      },
-      {
-        scope:          'global',
-        id:             'multi-cluster-apps',
-        localizedLabel: 'nav.admin.multiClusterApps',
-        route:          'global-admin.multi-cluster-apps',
-        icon:           'icon icon-catalog',
-        resource:       ['multiclusterapp'],
         resourceScope:  'global',
       },
     ],
