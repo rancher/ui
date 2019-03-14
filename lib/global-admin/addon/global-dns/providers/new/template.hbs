@@ -18,7 +18,14 @@
         href="#"
       >
         <div class="machine-driver {{provider.name}}"></div>
-        <p>{{provider.name}}</p>
+        <p class="mb-0">
+          {{provider.name}}
+        </p>
+        {{#if (eq provider.name "cloudflare")}}
+          <span class="inline-block help-block">
+            {{t "generic.experimental"}}
+          </span>
+        {{/if}}
       </a>
     {{/each}}
   </div>
