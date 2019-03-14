@@ -1,6 +1,8 @@
 <section class="header clearfix">
   <div class="pull-left">
-    <h2>{{t "namespacesPage.addNamespace"}}</h2>
+    <h2>
+      {{t "namespacesPage.addNamespace"}}
+    </h2>
   </div>
 </section>
 
@@ -13,15 +15,17 @@
   </p>
 {{/if}}
 {{#unless from}}
-  <label class="pt-20 pb-5 acc-label">{{t "editStack.project.label"}}</label>
+  <label class="pt-20 pb-5 acc-label">
+    {{t "editStack.project.label"}}
+  </label>
   {{new-select
-      classNames="form-control"
-      optionValuePath="id"
-      optionLabelPath="displayName"
-      content=allProjects
-      value=model.namespace.projectId
-      prompt="editStack.project.prompt"
-      localizedPrompt=true
+    classNames="form-control"
+    optionValuePath="id"
+    optionLabelPath="displayName"
+    content=allProjects
+    value=model.namespace.projectId
+    prompt="editStack.project.prompt"
+    localizedPrompt=true
   }}
 {{/unless}}
 
@@ -29,41 +33,45 @@
   {{#accordion-list showExpandAll=false as | al expandFn | }}
     {{#if (and primaryResource.project.resourceQuota (not switchingProject))}}
       {{#accordion-list-item
-            title=(t "editStack.resourceQuota.title")
-            detail=(t "editStack.resourceQuota.detail")
-            expandAll=al.expandAll
-            expand=(action expandFn)
-            expandOnInit=true
+         title=(t "editStack.resourceQuota.title")
+         detail=(t "editStack.resourceQuota.detail")
+         expandAll=al.expandAll
+         expand=(action expandFn)
+         expandOnInit=true
       }}
         {{namespace-resource-quota
-            editing=(or editing isNew)
-            isNew=true
-            expanded=expanded
-            limit=primaryResource.resourceQuota.limit
-            projectLimit=projectLimit
-            usedLimit=projectUsedLimit
-            nsDefaultQuota=nsDefaultQuota
-            changed=(action "updateNsQuota")
+          editing=(or editing isNew)
+          isNew=true
+          expanded=expanded
+          limit=primaryResource.resourceQuota.limit
+          projectLimit=projectLimit
+          usedLimit=projectUsedLimit
+          nsDefaultQuota=nsDefaultQuota
+          changed=(action "updateNsQuota")
         }}
       {{/accordion-list-item}}
     {{/if}}
 
     {{#accordion-list-item
-        title=(t "projectsPage.containerDefaultLimit.title")
-        detail=(t "projectsPage.containerDefaultLimit.detail")
-        expandAll=al.expandAll
-        expand=(action expandFn)
-        expandOnInit=false
+       title=(t "projectsPage.containerDefaultLimit.title")
+       detail=(t "projectsPage.containerDefaultLimit.detail")
+       expandAll=al.expandAll
+       expand=(action expandFn)
+       expandOnInit=true
     }}
       {{container-default-limit
-          editing=(or editing isNew)
-          expanded=expanded
-          limit=primaryResource.project.containerDefaultResourceLimit
-          changed=(action "updateContainerDefault")
+        editing=(or editing isNew)
+        expanded=expanded
+        limit=primaryResource.project.containerDefaultResourceLimit
+        changed=(action "updateContainerDefault")
       }}
     {{/accordion-list-item}}
   {{/accordion-list}}
 </div>
 
 {{top-errors errors=errors}}
-{{save-cancel editing=false save="save" cancel="cancel"}}
+{{save-cancel
+  editing=false
+  save="save"
+  cancel="cancel"
+}}
