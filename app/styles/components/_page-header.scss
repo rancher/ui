@@ -3,7 +3,7 @@ $header                              : $secondary !default;
 $header-link                         : $light-grey !default;
 $header-link-active                  : $primary !default;
 $user-btn                            : darken($header, 10%) !default;
-$nav-spacing: 4px;
+$nav-spacing: 3.5px;
 
 .page-header {
   @include no-select;
@@ -127,12 +127,12 @@ $nav-spacing: 4px;
 
       &::after {
       content: '';
-      border-left: 8px solid $user-btn;
-      border-top: 5px solid transparent;
-      border-bottom: 5px solid transparent;
+      border-left: 6px solid $user-btn;
+      border-top: 6px solid transparent;
+      border-bottom: 6px solid transparent;
       position: absolute;
-      top: 22px;
-      right: -8px;
+      top: 20px;
+      right: -6px;
     }
 
     &.text-white:hover {
@@ -142,17 +142,7 @@ $nav-spacing: 4px;
         border-left-color: mix($user-btn, black, 80%);
       }
     }
-
-      // &:first-of-type:hover {
-      //   color: white;
-      //   text-decoration: none;
-      //   background: red;
-
-      //   &::after {
-      //     border-left-color: mix($user-btn, black, 80%);
-      //   }
-      // }
-    }
+  }
 
     .project-menu .global ul li a:hover {
       background: transparent;
@@ -169,8 +159,8 @@ $nav-spacing: 4px;
         padding-left: 10px;
 
         &.two-line {
-          padding-top: 0;
-          padding-bottom: 1px;
+          padding-top: 1px;
+          padding-bottom: 0;
         }
       }
 
@@ -286,8 +276,25 @@ $nav-spacing: 4px;
   .clusters {
     grid-column-start: 1;
     grid-row-start: 2;
-    border-right: 1px solid $table-border-color;
+    // border-right: 1px solid $table-border-color;
     background-color: $accent-bg;
+
+    ul li.item {
+      &.cluster.active {
+        // background: lime;
+        position: relative;
+
+        &:after {
+          content: '';
+          border-right: 8px solid $dropdown-bg;
+          border-top: 8px solid transparent;
+          border-bottom: 8px solid transparent;
+          position: absolute;
+          top: 17px;
+          right: 0;
+        }
+      }
+    }
   }
 
   .projects {
@@ -318,10 +325,8 @@ $nav-spacing: 4px;
     border-bottom: $table-border-color;
 
     ul .item.active {
-      // background: darken($accent-bg,2%);
       background: $primary;
       a {
-        // color: $link-color;
         color: white;
       }
     }
@@ -330,6 +335,9 @@ $nav-spacing: 4px;
   .global {
     grid-column-start: 1;
     grid-row-start: 1;
+    ul li.item {
+      padding: 5px 10px;
+    }
   }
 
   .search {
@@ -345,7 +353,7 @@ $nav-spacing: 4px;
 
   .item {
     height: $item;
-    padding: 5px 10px;
+    padding: 5px 20px;
     @include hand;
 
     &.active {
@@ -361,7 +369,7 @@ $nav-spacing: 4px;
 
     &.project:hover,
     &.cluster:hover {
-      background-color: $secondary;
+      background-color: rgba($primary,.25);
       A, .state {
         color: white;
       }
