@@ -17,7 +17,8 @@ export default Resource.extend({
       data: null,
     };
 
-    const { multiClusterAppId, projectIds } = this;
+    const multiClusterAppId = get(this, 'multiClusterAppId');
+    const projectIds        = get(this, 'projectIds');
 
     if (multiClusterAppId && !projectIds) {
       setProperties(out, {
@@ -35,9 +36,9 @@ export default Resource.extend({
   }),
 
 
-  linkedProjects: computed('projectIds', 'scope.allProjects.@each.{id}', function() {
-    const allProjects = this.scope.allProjects || [];
-    const projectIds = get(this, 'projectIds') || [];
+  linkedProjects: computed('projectIds.[]', 'scope.allProjects.@each.{id}', function() {
+    const allProjects = get(this, 'scope.allProjects') || [];
+    const projectIds  = get(this, 'projectIds') || [];
 
     const myProjects = [];
 
@@ -47,13 +48,14 @@ export default Resource.extend({
       if (match) {
         next(() => {
           set(match, 'accessible', true);
+          myProjects.pushObject(match);
         });
-
-        myProjects.pushObject(match);
       } else {
-        myProjects.pushObject({
-          id:         projectId,
-          accessible: false,
+        next(() => {
+          myProjects.pushObject({
+            id:         projectId,
+            accessible: false,
+          });
         });
       }
     });
