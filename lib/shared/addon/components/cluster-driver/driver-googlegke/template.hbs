@@ -75,28 +75,23 @@
         {{/unless}}
       </div>
 
-      {{#unless hideNewField}}
-        <div class="row">
-          <div class="col span-6">
-            <label class="acc-label">{{t "clusterNew.googlegke.masterVersion.label"}}</label>
-            {{#input-or-display
-                 editable=isNew
-                 value=config.masterVersion
-            }}
-              {{form-versions
-                  cluster=cluster
-                  disabled=editing
-                  initialVersion=config.masterVersion
-                  value=config.masterVersion
-                  versions=versionChoices
-              }}
-            {{/input-or-display}}
-          </div>
+      <div class="row">
+        <div class="col span-6">
+          <label class="acc-label">{{t "clusterNew.googlegke.masterVersion.label"}}</label>
+          {{form-versions
+              cluster=cluster
+              editing=editing
+              initialVersion=config.masterVersion
+              value=config.masterVersion
+              versions=versionChoices
+          }}
+        </div>
+        {{#unless hideNewField}}
           <div class="col span-6">
             <label class="acc-label">{{t "clusterNew.googlegke.clusterIpv4Cidr.label"}}</label>
             {{#input-or-display
-                 editable=isNew
-                 value=config.clusterIpv4Cidr
+                editable=isNew
+                value=config.clusterIpv4Cidr
             }}
               {{input
                   value=config.clusterIpv4Cidr
@@ -105,7 +100,9 @@
               }}
             {{/input-or-display}}
           </div>
-        </div>
+        {{/unless}}
+      </div>
+      {{#unless hideNewField}}
         <div class="row">
           <div class="col span-6">
             <label class="acc-label">{{t "clusterNew.googlegke.alphaFeatures.label"}}</label>
@@ -676,7 +673,7 @@
           </div>
         </div>
       {{/unless}}
-      
+
       <h4 class="mt-20 mb-10">{{t "clusterNew.googlegke.header.nodePoolAutoscaling"}}</h4>
       <hr/>
       <div class="row">
