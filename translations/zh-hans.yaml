@@ -43,6 +43,7 @@ generic:
   entrypoint: 入口
   environment: 环境
   expandAll: 全部展开
+  experimental: "(实验)"
   from: 来自
   generic: '常规'
   gigabyte: 'GB'
@@ -602,7 +603,7 @@ authPage:
         post: '启用中...'
 
 backupsPage:
-  header: etcd 快照
+  header: Etcd 快照
   detail: 如果启用etcd快照功能，将按预定义的时间间隔周期性地获取的集群快照，可用于集群灾难恢复。
   table:
     state: 状态
@@ -612,11 +613,11 @@ backupsPage:
       local: Local
     name: 名称
     created: 创建时间
-    noData: 当前没有etcd快照
+    noData: 当前没有Etcd快照
 
 balancerPage:
   noMatch: 没有符合当前搜索的负载均衡
-  noData: 没有任务负载均衡
+  noData: 没有负载均衡
   table:
     target: 目标
 
@@ -3814,9 +3815,9 @@ editApiKey:
   secretKey: Secret Key(密码)
   basicAuth: "Access Key和Secret Key可以作为HTTP基本身份验证的用户名和密码发送，以授权请求。您也可以将它们组合为Bearer Token:"
   token: Bearer Token
-  scope: Scope
+  scope: 作用集群范围
   scopeSelect:
-    prompt: no scope
+    prompt: 未指定作用范围
   ttl:
     label: 自动失效时间
     never: 永不过期
@@ -5398,6 +5399,10 @@ modalAddPayment:
     dollar: "美元($)"
 
 modalAddCloudKey:
+  name:
+    placeholder: '例如: production-credentials'
+  description:
+    placeholder: '例如: cloud credential for production'
   header:
     new: Add Cloud Credential
     edit: Edit Cloud Credential
@@ -5880,7 +5885,7 @@ newContainer:
 
   errors:
     noSidekick: 选择要添加sidecar的工作负载
-    duplicateName: '工作负载{service}中已经存在名为{name}的sidecar.'
+    duplicateName: '工作负载{service}中已经存在名为{name}的sidecar。'
     quotaRequired: '"{key}"必需设置，因为在项目上执行资源配额。'
 
 newPassword:
@@ -6028,7 +6033,7 @@ nodeDriver:
       placeholder: Your AWS session token
       provided: Provided
     region:
-      label: Region
+      label: 区域
   amazonec2:
     access:
       title: 1. 帐户访问
@@ -6139,7 +6144,7 @@ nodeDriver:
       valueLabel: 标签
       placeholder: '例如: dev'
     errors:
-      hostnamePrefix: 名称前缀不能包含 "_"
+      hostnamePrefix: 名称前缀不能包含"_"
   exoscale:
     accountSection: 账户访问
     apiKey:
@@ -7063,6 +7068,7 @@ nav:
   tools:
     alerts: 告警
     backups: 快照
+    catalogs: 应用商店
     logging: 日志
     monitoring: 监控
     notifiers: 通知
@@ -7269,7 +7275,7 @@ storageClass:
   glusterfs:
     title: Gluster Volume
   local:
-    title: 本地磁盘
+    title: Local Node Disk
   longhorn:
     title: Longhorn
   portworx-volume:
@@ -7301,9 +7307,9 @@ volumeSource:
   secret:
     title: Secret Volume
   empty-dir:
-    title: 空目录卷
+    title: Empty Dir Volume
   fc:
-    title: 光纤通道
+    title: Fibre Channel
   flex-volume:
     title: Flex Volume
   flex-volume-longhorn:
@@ -7315,9 +7321,9 @@ volumeSource:
   glusterfs:
     title: Gluster Volume
   host-path:
-    title: 本地路径
+    title: Local Node Path
     path:
-      label: 主机路径
+      label: Path on the Node
       placeholder: '例如: /data'
     kind:
       label: 主机路径类型检查
@@ -7332,7 +7338,7 @@ volumeSource:
   iscsi:
     title: iSCSI Target
   local:
-    title: 本地磁盘
+    title: Local Node Disk
   nfs:
     title: NFS Share
   photon:
