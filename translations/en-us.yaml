@@ -2801,7 +2801,7 @@ clusterNew:
       enabled:
         label: Recurring etcd Snapshot Enabled
       backupConfig:
-        legacy: "This cluster was configured with a legacy ectd snapshot api. The new api replaces the creation time and retention time durations with a simpler creation time in hours and retention count. We have migrated your creation period automatically. Retention count has been configured to the default of 6 backups (current retention duration: {duration}), if you're okay with this setting no further action is required. If not, you may change the setting in the advanced settings section."
+        legacy: "This cluster was configured with a legacy ectd snapshot api. The new api replaces the creation time and retention time durations with a simpler creation time in hours and retention count. We have migrated your creation period automatically. Retention count has been configured to the default of 6 snapshots (current retention duration: {duration}), if you're okay with this setting no further action is required. If not, you may change the setting in the advanced settings section."
         retention:
           label: Recurring etcd Snapshot Retention Count
           placeholder: "12"
@@ -2825,7 +2825,13 @@ clusterNew:
           placeholder: Your AWS secret key
           provided: Provided
       location:
-        label: etcd Snapshot Target
+        label: etcd Snapshot Backup Target
+        s3:
+          label: s3
+          help: etcd snapshots will occur locally, subsequently the snapshot will be backed up to the configured s3 target
+        local:
+          label: local
+          help: snapshots only exist locally, no external backups are performed
       heartbeat:
         label: etcd Heartbeat Interval
         placeholder: Time of a heartbeat interval
@@ -3649,7 +3655,7 @@ cruStorageClass:
       label: Stale Replica Timeout
       placeholder: "e.g. 30"
     fromBackup:
-      label: From Backup
+      label: From Snapshot
       placeholder: ""
   quobyte:
     quobyteAPIServer:
@@ -5579,12 +5585,12 @@ modalRevertSettings:
   default: Default Value
 
 modalRestoreBackup:
-  title: Restore From Backup
-  backups: Available Backups
-  error: A backup is required
-  fetching: Fetching new backups
+  title: Restore Snapshot
+  backups: Available Snapshots
+  error: A snapshot is required
+  fetching: Fetching new snapshots
   select:
-    all: Select an available backup
+    all: Select an available snapshot
 
 modalRotateCertificates:
   title: Rotate Cluster Certificates
@@ -6131,7 +6137,7 @@ nodeDriver:
       label: Region
     optionsSection: Options
     backups:
-      label: Enable Backups
+      label: Enable Snapshots
     ipv6:
       label: Enable IPv6
     privateNetworking:
@@ -7084,11 +7090,11 @@ action:
   activate: Activate
   addContainer: Deploy Pod
   addSidekick: Add a Sidecar
-  backupEtcd: Backup Now
+  backupEtcd: Snapshot Now
   backupEtcdMessage:
     success:
-      title: Backup initiated
-      message: "A { backupType } backup has been started for { clusterId }"
+      title: Snapshot initiated
+      message: "A { backupType } snapshot has been started for { clusterId }"
   clone: Clone
   console: Open Console
   convertToService: Convert to Service
@@ -7124,7 +7130,7 @@ action:
   replay: Replay
   resetDefault: Reset default
   restart: Restart
-  restoreFromEtcdBackup: Restore From Backup
+  restoreFromEtcdBackup: Restore Snapshot
   resume: Resume Orchestration
   retry: Retry
   revert: Revert to Default

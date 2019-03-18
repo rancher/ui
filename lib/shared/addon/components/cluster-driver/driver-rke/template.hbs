@@ -341,23 +341,28 @@
 
           </div>
           <div class="row">
-            <div class="col span-3">
-              <label class="acc-label">{{t "clusterNew.rke.etcd.location.label"}}</label>
-              <select
-                class="form-control"
-                onchange={{action (mut backupStrategy) value="target.value" }}
-              >
-                {{#each availableStrategies as |choice|}}
-                  <option
-                    value={{choice}}
-                    selected={{eq backupStrategy choice}}
-                  >
-                    {{choice}}
-                  </option>
-                {{/each}}
-              </select>
-            </div>
+            <div class="col span-6">
 
+              <label class="acc-label">{{t "clusterNew.rke.etcd.location.label"}}</label>
+              <div>
+                <label class="radio mt-0">
+                  {{radio-button selection=backupStrategy value="local"}}
+                  {{t "clusterNew.rke.etcd.location.local.label"}}
+                  <p class="help-block">
+                    {{t "clusterNew.rke.etcd.location.local.help"}}
+                  </p>
+                </label>
+              </div>
+              <div>
+                <label class="radio">
+                  {{radio-button selection=backupStrategy value="s3"}}
+                  {{t "clusterNew.rke.etcd.location.s3.label"}}
+                  <p class="help-block">
+                    {{t "clusterNew.rke.etcd.location.s3.help"}}
+                  </p>
+                </label>
+              </div>
+            </div>
           </div>
 
           {{#unless (eq backupStrategy "local")}}
