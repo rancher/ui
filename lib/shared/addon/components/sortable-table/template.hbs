@@ -127,6 +127,13 @@
   {{/if}}
 </table>
 
-{{#if (and paging (gt filtered.length pagedContent.length))}}
-  {{page-numbers content=pagedContent class="text-center mt-10 mb-10 no-select" indexTo=indexTo indexFrom=indexFrom totalCount=filtered.length textLabel=pagingLabel}}
+{{#if (and paging showPaging)}}
+  {{page-numbers
+    content=pagedContent
+    class="text-center mt-10 mb-10 no-select"
+    indexTo=indexTo
+    indexFrom=indexFrom
+    totalCount=filtered.length
+    textLabel=pagingLabel
+  }}
 {{/if}}
