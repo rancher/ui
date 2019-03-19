@@ -85,6 +85,14 @@
               value=config.masterVersion
               versions=versionChoices
           }}
+
+          {{#if (and editing (not-eq initialMasterVersion config.masterVersion))}}
+              {{banner-message
+                icon='icon-alert'
+                color='bg-warning mb-10'
+                message=(t "clusterNew.googlegke.masterVersion.warning")
+              }}
+          {{/if}}
         </div>
         {{#unless hideNewField}}
           <div class="col span-6">
