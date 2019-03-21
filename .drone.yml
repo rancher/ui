@@ -1,31 +1,19 @@
 ---
-pipeline:
-  build:
-    privileged: true
-    image: rancher/dind:v0.3.0
-    commands:
-      - ENABLE_DOCKER=true UPLOAD_LATEST=true ./scripts/ci
-    when:
-      branch: "master"
-      event:
-        exclude: [pull_request]
+kind: pipeline
+name: default
 
-  build:
-    privileged: true
-    image: rancher/dind:v0.3.0
-    commands:
-      - ENABLE_DOCKER=true ./scripts/ci
-    when:
-      branch:
-       exclude: ["master"]
+platform:
+  os: linux
+  arch: amd64
 
-  # Needs envvar SLACK_TOKEN
-  #  slack_blame:
-  #    image: plugins/slack-blame
-  #    channel: ui
-  #    success_template: |
-  #      {{repo.owner}}/{{repo.name}} branch: {{build.branch}} commit: {{build.commit}} by {{build.author}} <{{build.email}}> - {{commit.message}} - {{build.link}}
-  #    failure_template: |
-  #      {{repo.owner}}/{{repo.name}} branch: {{build.branch}} commit: {{build.commit}} by {{build.author}} <{{build.email}}> - {{commit.message}} - {{build.link}}
-  #    when:
-  #      status: [ success, failure ]
+steps:
+- name: build
+  pull: default
+  image: rancher/dind:v0.3.0
+  commands:
+  - ENABLE_DOCKER=true ./scripts/ci
+  privileged: true
+  when:
+    branch:
+      exclude:
+      - master
