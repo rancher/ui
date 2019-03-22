@@ -5,6 +5,9 @@ $header-link-active                  : $primary !default;
 $user-btn                            : darken($header, 10%) !default;
 $nav-spacing: 3.5px;
 
+$hover: $secondary !default;
+$active: $dropdown-link-hover-bg !default;
+
 .page-header {
   @include no-select;
   margin-bottom: 10px;
@@ -120,29 +123,18 @@ $nav-spacing: 3.5px;
     background-color: $user-btn;
 
     a {
-
       &:hover {
         text-decoration: none;
       }
 
-      &::after {
-      content: '';
-      border-left: 6px solid $user-btn;
-      border-top: 6px solid transparent;
-      border-bottom: 6px solid transparent;
-      position: absolute;
-      top: 20px;
-      right: -6px;
-    }
+      &.text-white:hover {
+        background: mix($user-btn, black, 80%);
 
-    &.text-white:hover {
-      background: mix($user-btn, black, 80%);
-
-      &::after {
-        border-left-color: mix($user-btn, black, 80%);
+        &::after {
+          border-left-color: mix($user-btn, black, 80%);
+        }
       }
     }
-  }
 
     .project-menu .global ul li a:hover {
       background: transparent;
@@ -157,6 +149,16 @@ $nav-spacing: 3.5px;
       > a {
         padding-right: 30px;
         padding-left: 10px;
+
+        &::after {
+          content: '';
+          border-left: 6px solid $user-btn;
+          border-top: 6px solid transparent;
+          border-bottom: 6px solid transparent;
+          position: absolute;
+          top: 20px;
+          right: -6px;
+        }
 
         &.two-line {
           padding-top: 1px;
@@ -279,20 +281,18 @@ $nav-spacing: 3.5px;
     // border-right: 1px solid $table-border-color;
     background-color: $accent-bg;
 
-    ul li.item {
-      &.cluster.active {
-        // background: lime;
-        position: relative;
+    ul.no-hover-entry li.item.cluster.active,
+    ul li.item.cluster.hover {
+      position: relative;
 
-        &:after {
-          content: '';
-          border-right: 8px solid $dropdown-bg;
-          border-top: 8px solid transparent;
-          border-bottom: 8px solid transparent;
-          position: absolute;
-          top: 17px;
-          right: 0;
-        }
+      &:after {
+        content: '';
+        border-right: 8px solid $dropdown-bg;
+        border-top: 8px solid transparent;
+        border-bottom: 8px solid transparent;
+        position: absolute;
+        top: 17px;
+        right: 0;
       }
     }
   }
@@ -300,23 +300,17 @@ $nav-spacing: 3.5px;
   .projects {
     grid-column-start: 2;
     grid-row-start: 2;
+
+    UL {
+      border-left: 1px solid white;
+    }
   }
 
   .global {
-
     > ul.list-unstyled {
       &:first-child {
         border-right: 1px solid $table-border-color;
-
       }
-
-      > LI:hover {
-        background-color: $secondary;
-        A, .state {
-          color: white;
-        }
-      }
-
     }
   }
 
@@ -325,7 +319,7 @@ $nav-spacing: 3.5px;
     border-bottom: $table-border-color;
 
     ul .item.active {
-      background: $primary;
+      background: $active;
       a {
         color: white;
       }
@@ -357,7 +351,7 @@ $nav-spacing: 3.5px;
     @include hand;
 
     &.active {
-      background-color: $primary;
+      background-color: $active;
       a {
         color: white;
 
@@ -367,17 +361,23 @@ $nav-spacing: 3.5px;
       }
     }
 
-    &.project:hover,
-    &.cluster:hover,
-    &.cluster.hover {
-      background-color: rgba($primary,.25);
-      A, .state {
-        color: white;
-      }
-    }
-
     &:not(:first-child) {
       border-top: 1px solid $accent-border;
+    }
+  }
+
+  .global > ul.list-unstyled > LI:hover,
+  .item.cluster.hover {
+    background-color: $hover;
+    A, .state {
+      color: white;
+    }
+  }
+
+  .item.project:hover {
+    background-color: $hover;
+    A, .state {
+      color: white;
     }
   }
 
