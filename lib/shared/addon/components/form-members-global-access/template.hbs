@@ -30,21 +30,25 @@
             {{member.displayType}}
           </td>
           <td data-title="{{dt.accessType}}:">
-            <select
-              class="form-control"
-              onchange={{action (mut member.accessType) value="target.value"}}
-            >
-              {{#unless (eq member.accessType "")}}
-                <option value="" selected=true>
-                  {{t "formMembersGlobalAccess.table.prompt"}}
-                </option>
-              {{/unless}}
-              {{#each optionsForAccessType as |choice|}}
-                <option value="{{choice}}" selected={{eq choice member.accessType}}>
-                  {{choice}}
-                </option>
-              {{/each}}
-            </select>
+            {{#if (gt optionsForAccessType.length 1)}}
+              <select
+                class="form-control"
+                onchange={{action (mut member.accessType) value="target.value"}}
+              >
+                {{#unless (eq member.accessType "")}}
+                  <option value="" selected=true>
+                    {{t "formMembersGlobalAccess.table.prompt"}}
+                  </option>
+                {{/unless}}
+                {{#each optionsForAccessType as |choice|}}
+                  <option value="{{choice}}" selected={{eq choice member.accessType}}>
+                    {{choice}}
+                  </option>
+                {{/each}}
+              </select>
+            {{else}}
+              {{member.accessType}}
+            {{/if}}
           </td>
           <td data-title="{{t "generic.actions"}}:" class="actions">
             <div class="p-5">
