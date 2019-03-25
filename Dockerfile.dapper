@@ -15,13 +15,14 @@ RUN apt-get -qq update \
   && yarn config set cache-folder /var/cache/npm \
   && rm -rf /var/lib/apt/lists/*
 
-ARG DAPPER_OUTPUT
 ENV DAPPER_RUN_ARGS --privileged -v npm-cache:/var/cache/npm
 ENV DAPPER_ENV REPO TAG DRONE_TAG IMAGE_NAME BUILD_LATEST
 ENV DAPPER_SOURCE /tmp/ui
-ENV DAPPER_OUTPUT $DAPPER_OUTPUT
+ENV DAPPER_OUTPUT ./bin ./dist
 ENV DAPPER_DOCKER_SOCKET true
 WORKDIR ${DAPPER_SOURCE}
+
+RUN mkdir dist
 
 ENTRYPOINT ["./scripts/entry.sh"]
 CMD ["ci"]
