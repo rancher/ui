@@ -62,8 +62,6 @@ export default Route.extend(Preload, {
   },
 
   beforeModel() {
-    this._super(...arguments);
-
     set(this, 'testTimer', later(() => {
       this.testAuthToken();
     }, CHECK_AUTH_TIMER));

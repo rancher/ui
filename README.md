@@ -73,6 +73,10 @@ If you want to customize the UI, re-packaging all of Rancher to distribute the U
   yarn global add ember-cli
 ```
 
+* `yarn lint:hbs`
+* `yarn lint:js`
+* `yarn lint:js -- --fix`
+
 * `ember test`
 * `ember test --server`
 

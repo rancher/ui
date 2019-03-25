@@ -1,16 +1,20 @@
 import { inject as service } from '@ember/service';
 import EmberRouter from '@ember/routing/router';
 import config from './config/environment';
+import { get } from '@ember/object';
 
-// const Router = Ember.Router.extend({
 const Router = EmberRouter.extend({
   modalService: service('modal'),
   location:     config.locationType,
-  willTransition(){
-    if (this.get('modalService.modalVisible')) {
-      this.get('modalService').toggleModal();
-    }
-  },
+  init() {
+    this._super(...arguments);
+
+    this.on('routeWillChange', ( /* transition */ ) => {
+      if (get(this, 'modalService.modalVisible')) {
+        get(this, 'modalService').toggleModal();
+      }
+    });
+  }
 });
 
 Router.map(function() {
@@ -25,10 +29,6 @@ Router.map(function() {
   this.route('verify', { path: '/verify/:verify_token' });
   this.route('verify-reset-password', { path: '/verify-reset-password/:verify_token' });
 
-  // this.route('login', function() {
-  //   this.route('index', {path: '/'});
-  //   this.route('shibboleth-auth');
-  // });
   this.route('logout');
 
   this.route('verify-auth');

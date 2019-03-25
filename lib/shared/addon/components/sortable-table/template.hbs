@@ -15,16 +15,16 @@
       <div class="fixed-header-actions row clearfix">
         {{#if internalBulkActions}}
           <div class="bulk-actions pull-left">
-            {{#each availableActions as |action index|}}
-              {{#if action.enabled}}
-                <a class="btn btn-sm bg-primary" href="#" onclick={{action "executeBulkAction" action.action}} tabindex={{index}}>
-                  {{t action.label}}
-                  <i class="{{action.icon}}"></i>
+            {{#each availableActions as |resourceAction index|}}
+              {{#if resourceAction.enabled}}
+                <a class="btn btn-sm bg-primary" href="#" onclick={{action "executeBulkAction" resourceAction.action}} tabindex={{index}}>
+                  {{t resourceAction.label}}
+                  <i class="{{resourceAction.icon}}"></i>
                 </a>
               {{else}}
                 <a class="btn btn-sm bg-default btn-disabled" href="#" onclick="return false;" tabindex={{index}}>
-                  {{t action.label}}
-                  <i class="{{action.icon}}"></i>
+                  {{t resourceAction.label}}
+                  <i class="{{resourceAction.icon}}"></i>
                 </a>
               {{/if}}
             {{/each}}
