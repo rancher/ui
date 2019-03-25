@@ -1,13 +1,15 @@
 {{#accordion-list showExpandAll=false as | al expandFn |}}
-  {{#accordion-list-item title=(t 'clusterNew.tencenttke.access.title')
-       detail=(t 'clusterNew.tencenttke.access.detail')
-       expandAll=expandAll
-       expand=(action expandFn)
-       expandOnInit=true
+  {{#accordion-list-item title=(t "clusterNew.tencenttke.access.title")
+     detail=(t "clusterNew.tencenttke.access.detail")
+     expandAll=expandAll
+     expand=(action expandFn)
+     expandOnInit=true
   }}
     <div class="row">
       <div class="col span-4">
-        <label class="acc-label">{{t 'clusterNew.tencenttke.region.label'}}</label>
+        <label class="acc-label">
+          {{t "clusterNew.tencenttke.region.label"}}
+        </label>
         {{#input-or-display editable=(and (eq step 1) isNew) value=config.region}}
           {{searchable-select class="form-control"
             content=regionChoices
@@ -16,40 +18,60 @@
         {{/input-or-display}}
       </div>
       <div class="col span-4">
-        <label class="acc-label">{{t 'clusterNew.tencenttke.secretId.label'}}{{field-required}}</label>
+        <label class="acc-label">
+          {{t "clusterNew.tencenttke.secretId.label"}}{{field-required}}
+        </label>
         {{#input-or-display editable=(eq step 1) value=config.secretId}}
-          {{input type="text" name="username" classNames="form-control" placeholder=(t 'clusterNew.tencenttke.secretId.placeholder') value=config.secretId}}
+          {{input
+            type="text"
+            name="username"
+            classNames="form-control"
+            placeholder=(t "clusterNew.tencenttke.secretId.placeholder")
+            value=config.secretId
+          }}
         {{/input-or-display}}
       </div>
       <div class="col span-4">
-        <label class="acc-label">{{t 'clusterNew.tencenttke.secretKey.label'}}{{field-required}}</label>
+        <label class="acc-label">
+          {{t "clusterNew.tencenttke.secretKey.label"}}{{field-required}}
+        </label>
         {{#if (eq step 1)}}
-          {{input type="password" name="password" classNames="form-control" placeholder=(t 'clusterNew.tencenttke.secretKey.placeholder') value=config.secretKey}}
+          {{input
+            type="password"
+            name="password"
+            classNames="form-control"
+            placeholder=(t "clusterNew.tencenttke.secretKey.placeholder")
+            value=config.secretKey
+          }}
         {{else}}
-          <div class="text-muted text-italic">{{t 'clusterNew.tencenttke.secretKey.provided'}}</div>
+          <div class="text-muted text-italic">
+            {{t "clusterNew.tencenttke.secretKey.provided"}}
+          </div>
         {{/if}}
       </div>
     </div>
   {{/accordion-list-item}}
   {{#if (eq step 1)}}
-    {{save-cancel editing=(eq mode 'edit')
-        save="tencentLogin"
-        cancel=close
-        createLabel="clusterNew.tencenttke.access.next"
-        savingLabel="clusterNew.tencenttke.access.loading"
+    {{save-cancel editing=(eq mode "edit")
+      save=(action "tencentLogin")
+      cancel=close
+      createLabel="clusterNew.tencenttke.access.next"
+      savingLabel="clusterNew.tencenttke.access.loading"
     }}
   {{/if}}
   {{#if (gte step 2)}}
-    {{#accordion-list-item title=(t 'clusterNew.tencenttke.cluster.title')
-         detail=(t 'clusterNew.tencenttke.cluster.detail')
-         showExpand=false
-         expandOnInit=true
-         expandAll=al.expandAll
-         expand=(action expandFn)
+    {{#accordion-list-item title=(t "clusterNew.tencenttke.cluster.title")
+       detail=(t "clusterNew.tencenttke.cluster.detail")
+       showExpand=false
+       expandOnInit=true
+       expandAll=al.expandAll
+       expand=(action expandFn)
     }}
       <div class="row">
         <div class="col span-6">
-          <label class="acc-label">{{t 'clusterNew.tencenttke.version.label'}}</label>
+          <label class="acc-label">
+            {{t "clusterNew.tencenttke.version.label"}}
+          </label>
           {{#input-or-display editable=(and (eq step 2) isNew) value=config.clusterVersion}}
             {{searchable-select class="form-control"
               content=versionChoices
@@ -58,18 +80,28 @@
           {{/input-or-display}}
         </div>
         <div class="col span-6">
-          <label class="acc-label">{{t 'clusterNew.tencenttke.nodeCount.label'}}{{field-required}}</label>
+          <label class="acc-label">
+            {{t "clusterNew.tencenttke.nodeCount.label"}}{{field-required}}
+          </label>
           {{#input-or-display editable=(eq step 2) value=config.nodeCount}}
-            {{input-integer min=1 max=100 value=config.nodeCount classNames="form-control" placeholder=(t 'clusterNew.tencenttke.nodeCount.placeholder')}}
+            {{input-integer
+              min=1
+              max=100
+              value=config.nodeCount
+              classNames="form-control"
+              placeholder=(t "clusterNew.tencenttke.nodeCount.placeholder")
+            }}
             <p class="help-block">
-              {{t 'clusterNew.tencenttke.nodeCount.help'}}
+              {{t "clusterNew.tencenttke.nodeCount.help"}}
             </p>
           {{/input-or-display}}
         </div>
       </div>
       <div class="row">
         <div class="col span-6">
-          <label class="acc-label">{{t 'clusterNew.tencenttke.vpc.label'}}{{field-required}}</label>
+          <label class="acc-label">
+            {{t "clusterNew.tencenttke.vpc.label"}}{{field-required}}
+          </label>
           {{#input-or-display editable=(and (eq step 2) isNew) value=config.vpcId}}
             {{searchable-select class="form-control"
               content=vpcChoices
@@ -78,33 +110,41 @@
           {{/input-or-display}}
         </div>
         <div class="col span-6">
-          <label class="acc-label">{{t 'clusterNew.tencenttke.cidr.label'}}{{field-required}}</label>
+          <label class="acc-label">
+            {{t "clusterNew.tencenttke.cidr.label"}}{{field-required}}
+          </label>
           {{#input-or-display editable=(and (eq step 2) isNew) value=config.clusterCidr}}
-            {{input type="text" value=config.clusterCidr placeholder=(t 'clusterNew.tencenttke.cidr.placeholder')}}
+            {{input
+              type="text"
+              value=config.clusterCidr
+              placeholder=(t "clusterNew.tencenttke.cidr.placeholder")
+            }}
           {{/input-or-display}}
         </div>
       </div>
     {{/accordion-list-item}}
     {{#if (eq step 2)}}
-      {{save-cancel editing=(eq mode 'edit')
-          save="loadNodeConfig"
-          cancel=close
-          createLabel="clusterNew.tencenttke.cluster.next"
-          savingLabel="clusterNew.tencenttke.cluster.loading"
+      {{save-cancel editing=(eq mode "edit")
+        save=(action "loadNodeConfig")
+        cancel=close
+        createLabel="clusterNew.tencenttke.cluster.next"
+        savingLabel="clusterNew.tencenttke.cluster.loading"
       }}
     {{/if}}
   {{/if}}
   {{#if (gte step 3)}}
-    {{#accordion-list-item title=(t 'clusterNew.tencenttke.node.title')
-         detail=(t 'clusterNew.tencenttke.node.detail')
-         showExpand=false
-         expandOnInit=true
-         expandAll=al.expandAll
-         expand=(action expandFn)
+    {{#accordion-list-item title=(t "clusterNew.tencenttke.node.title")
+       detail=(t "clusterNew.tencenttke.node.detail")
+       showExpand=false
+       expandOnInit=true
+       expandAll=al.expandAll
+       expand=(action expandFn)
     }}
       <div class="row">
         <div class="col span-6">
-          <label class="acc-label">{{t 'clusterNew.tencenttke.zone.label'}}{{field-required}}</label>
+          <label class="acc-label">
+            {{t "clusterNew.tencenttke.zone.label"}}{{field-required}}
+          </label>
           {{#if (and (eq step 3) isNew)}}
             {{searchable-select class="form-control"
               content=zoneChoices
@@ -115,7 +155,9 @@
           {{/if}}
         </div>
         <div class="col span-6">
-          <label class="acc-label">{{t 'clusterNew.tencenttke.subnet.label'}}{{field-required}}</label>
+          <label class="acc-label">
+            {{t "clusterNew.tencenttke.subnet.label"}}{{field-required}}
+          </label>
           {{#input-or-display editable=(and (eq step 3) isNew) value=config.subnetId}}
             {{searchable-select class="form-control"
               content=subnetChoices
@@ -126,7 +168,9 @@
       </div>
       <div class="row">
         <div class="col span-6">
-          <label class="acc-label">{{t 'clusterNew.tencenttke.instanceType.label'}}{{field-required}}</label>
+          <label class="acc-label">
+            {{t "clusterNew.tencenttke.instanceType.label"}}{{field-required}}
+          </label>
           {{#input-or-display editable=(and (eq step 3) isNew) value=config.instanceType}}
             {{searchable-select class="form-control"
               content=instanceChoices
@@ -137,25 +181,27 @@
       </div>
     {{/accordion-list-item}}
     {{#if (eq step 3)}}
-      {{save-cancel editing=(eq mode 'edit')
-          save="loadInstanceConfig"
-          cancel=close
-          createLabel="clusterNew.tencenttke.node.next"
-          savingLabel="clusterNew.tencenttke.node.loading"
+      {{save-cancel editing=(eq mode "edit")
+        save=(action "loadInstanceConfig")
+        cancel=close
+        createLabel="clusterNew.tencenttke.node.next"
+        savingLabel="clusterNew.tencenttke.node.loading"
       }}
     {{/if}}
   {{/if}}
   {{#if (gte step 4)}}
-    {{#accordion-list-item title=(t 'clusterNew.tencenttke.instance.title')
-         detail=(t 'clusterNew.tencenttke.instance.detail')
-         showExpand=false
-         expandOnInit=true
-         expandAll=al.expandAll
-         expand=(action expandFn)
+    {{#accordion-list-item title=(t "clusterNew.tencenttke.instance.title")
+       detail=(t "clusterNew.tencenttke.instance.detail")
+       showExpand=false
+       expandOnInit=true
+       expandAll=al.expandAll
+       expand=(action expandFn)
     }}
       <div class="row">
         <div class="col span-6">
-          <label class="acc-label">{{t 'clusterNew.tencenttke.os.label'}}</label>
+          <label class="acc-label">
+            {{t "clusterNew.tencenttke.os.label"}}
+          </label>
           {{#input-or-display editable=isNew value=config.osName}}
             {{searchable-select class="form-control"
               content=osChoices
@@ -164,7 +210,9 @@
           {{/input-or-display}}
         </div>
         <div class="col span-6">
-          <label class="acc-label">{{t 'clusterNew.tencenttke.securityGroup.label'}}{{field-required}}</label>
+          <label class="acc-label">
+            {{t "clusterNew.tencenttke.securityGroup.label"}}{{field-required}}
+          </label>
           {{#input-or-display editable=isNew value=config.sgId}}
             {{searchable-select class="form-control"
               content=sgChoices
@@ -175,7 +223,9 @@
       </div>
       <div class="row">
         <div class="col span-6">
-          <label class="acc-label">{{t 'clusterNew.tencenttke.rootType.label'}}</label>
+          <label class="acc-label">
+            {{t "clusterNew.tencenttke.rootType.label"}}
+          </label>
           {{#input-or-display editable=isNew value=config.rootType}}
             {{searchable-select class="form-control"
               content=rootDiskChoices
@@ -185,18 +235,28 @@
           {{/input-or-display}}
         </div>
         <div class="col span-6">
-          <label class="acc-label">{{t 'clusterNew.tencenttke.rootSize.label'}}</label>
+          <label class="acc-label">
+            {{t "clusterNew.tencenttke.rootSize.label"}}
+          </label>
           <div class="input-group">
             {{#input-or-display editable=isNew value=config.rootSize}}
-              {{input-integer min=20 max=50 value=config.rootSize classNames="form-control" placeholder=(t 'clusterNew.tencenttke.rootSize.placeholder')}}
+              {{input-integer
+                min=20
+                max=50
+                value=config.rootSize
+                classNames="form-control"
+                placeholder=(t "clusterNew.tencenttke.rootSize.placeholder")
+              }}
             {{/input-or-display}}
-            <span class="input-group-addon bg-default">{{t 'generic.gigabyte'}}</span>
+            <span class="input-group-addon bg-default">{{t "generic.gigabyte"}}</span>
           </div>
         </div>
       </div>
       <div class="row">
         <div class="col span-6">
-          <label class="acc-label">{{t 'clusterNew.tencenttke.storageType.label'}}</label>
+          <label class="acc-label">
+            {{t "clusterNew.tencenttke.storageType.label"}}
+          </label>
           {{#input-or-display editable=isNew value=config.storageType}}
             {{searchable-select class="form-control"
               content=storageDiskChoices
@@ -206,18 +266,27 @@
           {{/input-or-display}}
         </div>
         <div class="col span-6">
-          <label class="acc-label">{{t 'clusterNew.tencenttke.storageSize.label'}}</label>
+          <label class="acc-label">
+            {{t "clusterNew.tencenttke.storageSize.label"}}
+          </label>
           <div class="input-group">
             {{#input-or-display editable=isNew value=config.storageSize}}
-              {{input-integer min=0 value=config.storageSize classNames="form-control" placeholder=(t 'clusterNew.tencenttke.storageSize.placeholder')}}
+              {{input-integer
+                min=0
+                value=config.storageSize
+                classNames="form-control"
+                placeholder=(t "clusterNew.tencenttke.storageSize.placeholder")
+              }}
             {{/input-or-display}}
-            <span class="input-group-addon bg-default">{{t 'generic.gigabyte'}}</span>
+            <span class="input-group-addon bg-default">{{t "generic.gigabyte"}}</span>
           </div>
         </div>
       </div>
       <div class="row">
         <div class="col span-6">
-          <label class="acc-label">{{t 'clusterNew.tencenttke.bandwidthType.label'}}</label>
+          <label class="acc-label">
+            {{t "clusterNew.tencenttke.bandwidthType.label"}}
+          </label>
           {{#input-or-display editable=isNew value=config.bandwidthType}}
             {{searchable-select class="form-control"
               content=bandWidthChoices
@@ -227,18 +296,27 @@
           {{/input-or-display}}
         </div>
         <div class="col span-6">
-          <label class="acc-label">{{t 'clusterNew.tencenttke.bandwidth.label'}}</label>
+          <label class="acc-label">
+            {{t "clusterNew.tencenttke.bandwidth.label"}}
+          </label>
           <div class="input-group">
             {{#input-or-display editable=isNew value=config.bandwidth}}
-              {{input-integer min=0 value=config.bandwidth classNames="form-control" placeholder=(t 'clusterNew.tencenttke.bandwidth.placeholder')}}
+              {{input-integer
+                min=0
+                value=config.bandwidth
+                classNames="form-control"
+                placeholder=(t "clusterNew.tencenttke.bandwidth.placeholder")
+              }}
             {{/input-or-display}}
-            <span class="input-group-addon bg-default">{{t 'generic.mbps'}}</span>
+            <span class="input-group-addon bg-default">{{t "generic.mbps"}}</span>
           </div>
         </div>
       </div>
       <div class="row">
         <div class="col span-6">
-          <label class="acc-label">{{t 'clusterNew.tencenttke.keyPair.label'}}{{field-required}}</label>
+          <label class="acc-label">
+            {{t "clusterNew.tencenttke.keyPair.label"}}{{field-required}}
+          </label>
           {{#input-or-display editable=isNew value=config.keyId}}
             {{searchable-select class="form-control"
               content=keyChoices
@@ -248,9 +326,10 @@
         </div>
       </div>
     {{/accordion-list-item}}
-    {{save-cancel editing=(eq mode 'edit')
-        save="save"
-        cancel=close
+    {{save-cancel
+      editing=(eq mode "edit")
+      save=(action "save")
+      cancel=close
     }}
   {{/if}}
   {{top-errors errors=errors}}

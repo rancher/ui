@@ -1,38 +1,59 @@
 <section class="header">
-  <h1>{{t 'projectsPage.members.customRoles'}}</h1>
+  <h1>
+    {{t "projectsPage.members.customRoles"}}
+  </h1>
 </section>
 <section>
   {{#if isCurrentCustom}}
     <div class="radio">
       <label>
-        {{radio-button selection=roleTemplateId value="member"}} {{t 'formScopedRoles.mode.user.label' type=cTyped}}
-        <p class="help-block">{{t 'formScopedRoles.mode.user.detail' type=cTyped}}</p>
+        {{radio-button
+          selection=roleTemplateId
+          value="member"
+        }} {{t "formScopedRoles.mode.user.label" type=cTyped}}
+        <p class="help-block">
+          {{t "formScopedRoles.mode.user.detail" type=cTyped}}
+        </p>
       </label>
     </div>
     <div class="radio">
       <label>
-        {{radio-button selection=roleTemplateId value="owner"}} {{t 'formScopedRoles.mode.admin.label' type=cTyped}}
-        <p class="help-block">{{t 'formScopedRoles.mode.admin.detail' type=cTyped}}</p>
+        {{radio-button
+          selection=roleTemplateId
+          value="owner"
+        }} {{t "formScopedRoles.mode.admin.label" type=cTyped}}
+        <p class="help-block">
+          {{t "formScopedRoles.mode.admin.detail" type=cTyped}}
+        </p>
       </label>
     </div>
     <div class="radio">
       <label>
-        {{radio-button selection=roleTemplateId value="custom"}} {{t 'formScopedRoles.mode.custom.label' type=cTyped}}
-        <p class="help-block">{{t 'formScopedRoles.mode.custom.detail' type=cTyped}}</p>
+        {{radio-button
+          selection=roleTemplateId
+          value="custom"
+        }} {{t "formScopedRoles.mode.custom.label" type=cTyped}}
+        <p class="help-block">
+          {{t "formScopedRoles.mode.custom.detail" type=cTyped}}
+        </p>
       </label>
     </div>
   {{/if}}
   {{#accordion-list-item
-       title=(t 'formScopedRoles.title' type=cTyped)
-       detail=(t 'formScopedRoles.description' type=type)
-       expandOnInit=true
-       showExpand=false
+     title=(t "formScopedRoles.title" type=cTyped)
+     detail=(t "formScopedRoles.description" type=type)
+     expandOnInit=true
+     showExpand=false
   }}
     <div class="pl-20">
       {{#each filteredRoles as |row idx|}}
         <div class="input-group mb-10 border" onclick={{action "toggle"}}>
           <label class="input-group-addon bg-default p-10 vertical-middle">
-            {{input type="checkbox" checked=row.active disabled=readOnly}}
+            {{input
+              type="checkbox"
+              checked=row.active
+              disabled=readOnly
+            }}
           </label>
           <div class="form-control p-10 vertical-middle">
             {{row.role.displayName}}
@@ -46,5 +67,9 @@
   {{/accordion-list-item}}
 </section>
 
-{{save-cancel save="save" cancel="goBack" createLabel="generic.save"}}
 {{top-errors errors=errors}}
+{{save-cancel
+  save=(action "save")
+  cancel=(action "goBack")
+  createLabel="generic.save"
+}}

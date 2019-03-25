@@ -1,36 +1,57 @@
 <section class="header clearfix">
   <div class="pull-left">
     <h1 class="vertical-middle">
-      {{t 'appDetailPage.header' appName=model.app.displayName}}
+      {{t "appDetailPage.header" appName=model.app.displayName}}
     </h1>
   </div>
   <div class="vertical-middle"></div>
   <div class="right-buttons">
     {{badge-state model=model.app}}
-    {{action-menu model=model.app showPrimary=false classNames="ml-10 pull-right" size="sm"}}
+    {{action-menu
+      model=model.app
+      showPrimary=false
+      classNames="ml-10 pull-right"
+      size="sm"
+    }}
   </div>
 </section>
 
 {{#if model.app.description}}
-  {{banner-message color='bg-secondary mb-0 mt-10' message=(linkify model.app.description)}}
+  {{banner-message
+    color="bg-secondary mb-0 mt-10"
+    message=(linkify model.app.description)
+  }}
 {{/if}}
 
 {{#if model.app.showTransitioningMessage}}
-  <div class="{{model.app.stateColor}}"><p>{{uc-first model.app.transitioningMessage}}</p></div>
+  <div class="{{model.app.stateColor}}">
+    <p>
+      {{uc-first model.app.transitioningMessage}}
+    </p>
+  </div>
 {{/if}}
 
 <section>
   <div class="row banner bg-info basics mb-0">
     <div class="vertical-middle">
-      <label class="acc-label vertical-middle p-0">{{t 'generic.version'}}</label>
+      <label class="acc-label vertical-middle p-0">
+        {{t "generic.version"}}
+      </label>
       {{model.app.externalIdInfo.version}}
     </div>
     <div class="vertical-middle">
-      <label class="acc-label vertical-middle p-0">{{t 'generic.namespace'}}</label>
-      {{model.app.namespace.displayName}} {{copy-to-clipboard clipboardText=model.app.namespace.id size="small"}}
+      <label class="acc-label vertical-middle p-0">
+        {{t "generic.namespace"}}
+      </label>
+      {{model.app.namespace.displayName}} {{copy-to-clipboard
+                                            clipboardText=model.app.namespace.id
+                                            size="small"
+                                          }}
     </div>
     <div class="vertical-middle">
-      <label class="acc-label vertical-middle p-0">{{t 'generic.created'}}</label>
+      <label class="acc-label vertical-middle p-0">
+        {{t "generic.created"}}
+      </label>
       {{date-calendar model.app.created}}
     </div>
   </div>
@@ -40,47 +61,52 @@
   {{#accordion-list as |al expandFn|}}
     {{#if model.app.notes}}
       {{#accordion-list-item
-          title=(t 'appDetailPage.notes.title')
-          detail=(t 'appDetailPage.notes.detail')
-          expandAll=al.expandAll
-          expand=(action expandFn)
-          expandOnInit=false
+         title=(t "appDetailPage.notes.title")
+         detail=(t "appDetailPage.notes.detail")
+         expandAll=al.expandAll
+         expand=(action expandFn)
+         expandOnInit=false
       }}
-        {{marked-down markdown=model.app.notes}}
+        {{marked-down
+          markdown=model.app.notes
+        }}
       {{/accordion-list-item}}
     {{/if}}
 
     {{resource-condition-list
-        resourceType=(t 'generic.application')
-        conditions=model.app.status.conditions
-        expandAll=al.expandAll
-        expandFn=expandFn
-        expandOnInit=false
+      resourceType=(t "generic.application")
+      conditions=model.app.status.conditions
+      expandAll=al.expandAll
+      expandFn=expandFn
+      expandOnInit=false
     }}
 
     {{#accordion-list-item
-        title=(t 'appDetailPage.answers.title')
-        detail=(t 'appDetailPage.answers.detail')
-        expandAll=al.expandAll
-        expand=(action expandFn)
+       title=(t "appDetailPage.answers.title")
+       detail=(t "appDetailPage.answers.detail")
+       expandAll=al.expandAll
+       expand=(action expandFn)
     }}
-        {{form-key-value
-          editing=false
-          initialMap=model.app.answers
-          showNoneLabel=(not model.app.valuesYaml)
-          keyLabel='appDetailPage.answers.variable'
+      {{form-key-value
+        editing=false
+        initialMap=model.app.answers
+        showNoneLabel=(not model.app.valuesYaml)
+        keyLabel="appDetailPage.answers.variable"
+      }}
+      {{#if model.app.valuesYaml}}
+        {{code-block
+          code=model.app.valuesYaml
+          language="yaml"
         }}
-        {{#if model.app.valuesYaml}}
-          {{code-block code=model.app.valuesYaml language="yaml"}}
-        {{/if}}
+      {{/if}}
     {{/accordion-list-item}}
 
     {{#accordion-list-item
-        title=(t 'appDetailPage.endpoints.title')
-        detail=(t 'appDetailPage.endpoints.detail')
-        expandAll=al.expandAll
-        expand=(action expandFn)
-        expandOnInit=true
+       title=(t "appDetailPage.endpoints.title")
+       detail=(t "appDetailPage.endpoints.detail")
+       expandAll=al.expandAll
+       expand=(action expandFn)
+       expandOnInit=true
     }}
       {{form-endpoints
         model=model.app.publicEndpoints
@@ -88,77 +114,83 @@
     {{/accordion-list-item}}
 
     {{#accordion-list-item
-         title=(t 'appDetailPage.workloads.title')
-         detail=(t 'appDetailPage.workloads.detail')
-         expandAll=al.expandAll
-         expand=(action expandFn)
-         expandOnInit=true
+       title=(t "appDetailPage.workloads.title")
+       detail=(t "appDetailPage.workloads.detail")
+       expandAll=al.expandAll
+       expand=(action expandFn)
+       expandOnInit=true
     }}
       {{#sortable-table
-           tableClassNames="double-rows"
-           classNames="grid sortable-table"
-           body=workloadsAndPods
-           searchText=podsSearchText
-           descending=podsDescending
-           sortBy=sortBy
-           bulkActions=true
-           subRows=true
-           pagingLabel="pagination.workload"
-           subSearchField="pods"
-           extraSearchFields=extraSearchFields
-           extraSearchSubFields=extraSearchSubFields
-           headers=podsHeaders as |sortable kind inst dt|}}
+         tableClassNames="double-rows"
+         classNames="grid sortable-table"
+         body=workloadsAndPods
+         searchText=podsSearchText
+         descending=podsDescending
+         sortBy=sortBy
+         bulkActions=true
+         subRows=true
+         pagingLabel="pagination.workload"
+         subSearchField="pods"
+         extraSearchFields=extraSearchFields
+         extraSearchSubFields=extraSearchSubFields
+         headers=podsHeaders as |sortable kind inst dt|}}
         {{#if (eq kind "row")}}
           {{#if (eq inst.type "pod")}}
             {{pod-row
-                model=inst
-                dt=dt
-                showNode=true
-                expandPlaceholder=true
-                scalePlaceholder=true
-                fullColspan=sortable.fullColspan
-                toggle=(action "toggleExpand" inst.id)
-                expanded=(array-includes expandedInstances inst.id)
+              model=inst
+              dt=dt
+              showNode=true
+              expandPlaceholder=true
+              scalePlaceholder=true
+              fullColspan=sortable.fullColspan
+              toggle=(action "toggleExpand")
+              expanded=(array-includes expandedInstances inst.id)
             }}
           {{else}}
             {{workload-row
-                model=inst
-                toggle=(action "toggleExpand" inst.id)
-                expanded=(array-includes expandedInstances inst.id)
-                searchText=searchText
-                subMatches=sortable.subMatches
-                fullColspan=sortable.fullColspan
-                dt=dt
+              model=inst
+              toggle=(action "toggleExpand")
+              expanded=(array-includes expandedInstances inst.id)
+              searchText=searchText
+              subMatches=sortable.subMatches
+              fullColspan=sortable.fullColspan
+              dt=dt
             }}
           {{/if}}
         {{else if (eq kind "nomatch")}}
-          <tr><td colspan="{{sortable.fullColspan}}" class="text-center text-muted lacsso pt-20 pb-20">{{t 'containersPage.table.noMatch'}}</td></tr>
+          <tr>
+            <td colspan="{{sortable.fullColspan}}" class="text-center text-muted lacsso pt-20 pb-20">
+              {{t "containersPage.table.noMatch"}}
+            </td>
+          </tr>
         {{else if (eq kind "norows")}}
-          <tr><td colspan="{{sortable.fullColspan}}" class="text-center text-muted lacsso pt-20 pb-20">{{t 'appDetailPage.workloads.nodata'}}</td></tr>
+          <tr>
+            <td colspan="{{sortable.fullColspan}}" class="text-center text-muted lacsso pt-20 pb-20">
+              {{t "appDetailPage.workloads.nodata"}}
+            </td>
+          </tr>
         {{/if}}
       {{/sortable-table}}
-      {{!--
-        --}}
     {{/accordion-list-item}}
 
     {{#accordion-list-item
-         title=(t 'appDetailPage.ingress.title')
-         detail=(t 'appDetailPage.ingress.detail')
-         expandAll=al.expandAll
-         expand=(action expandFn)
-         expandOnInit=true
+       title=(t "appDetailPage.ingress.title")
+       detail=(t "appDetailPage.ingress.detail")
+       expandAll=al.expandAll
+       expand=(action expandFn)
+       expandOnInit=true
     }}
       <section class="pl-0 pr-0">
         {{#sortable-table
-             classNames="grid sortable-table"
-             body=model.app.ingress
-             searchText=ingressSearchText
-             descending=ingressDescending
-             sortBy=sortBy
-             bulkActions=true
-             pagingLabel="pagination.ingress"
-             subSearchField="instances"
-             headers=ingressHeaders as |sortable kind inst dt|
+           classNames="grid sortable-table"
+           body=model.app.ingress
+           searchText=ingressSearchText
+           descending=ingressDescending
+           sortBy=sortBy
+           bulkActions=true
+           pagingLabel="pagination.ingress"
+           subSearchField="instances"
+           headers=ingressHeaders as |sortable kind inst dt|
         }}
           {{#if (eq kind "row")}}
             <tr class="main-row">
@@ -179,63 +211,79 @@
               </td>
             </tr>
           {{else if (eq kind "nomatch")}}
-            <tr><td colspan="{{sortable.fullColspan}}" class="text-center text-muted lacsso pt-20 pb-20">{{t 'ingressPage.table.noMatch'}}</td></tr>
+            <tr>
+              <td colspan="{{sortable.fullColspan}}" class="text-center text-muted lacsso pt-20 pb-20">
+                {{t "ingressPage.table.noMatch"}}
+              </td>
+            </tr>
           {{else if (eq kind "norows")}}
-            <tr><td colspan="{{sortable.fullColspan}}" class="text-center text-muted lacsso pt-20 pb-20">{{t 'appDetailPage.ingress.nodata'}}</td></tr>
+            <tr>
+              <td colspan="{{sortable.fullColspan}}" class="text-center text-muted lacsso pt-20 pb-20">
+                {{t "appDetailPage.ingress.nodata"}}
+              </td>
+            </tr>
           {{/if}}
         {{/sortable-table}}
       </section>
     {{/accordion-list-item}}
 
     {{#accordion-list-item
-         title=(t 'appDetailPage.services.title')
-         detail=(t 'appDetailPage.services.detail')
-         expandAll=al.expandAll
-         expand=(action expandFn)
-         expandOnInit=true
+       title=(t "appDetailPage.services.title")
+       detail=(t "appDetailPage.services.detail")
+       expandAll=al.expandAll
+       expand=(action expandFn)
+       expandOnInit=true
     }}
       {{#sortable-table
-           classNames="grid sortable-table"
-           body=model.app.dnsRecords
-           searchText=servicesSearchText
-           descending=servicesDescending
-           sortBy=sortBy
-           bulkActions=true
-           pagingLabel="pagination.dnsRecord"
-           headers=servicesHeaders as |sortable kind inst dt|
+         classNames="grid sortable-table"
+         body=model.app.dnsRecords
+         searchText=servicesSearchText
+         descending=servicesDescending
+         sortBy=sortBy
+         bulkActions=true
+         pagingLabel="pagination.dnsRecord"
+         headers=servicesHeaders as |sortable kind inst dt|
       }}
         {{#if (eq kind "row")}}
           {{dns-row
-              model=inst
-              searchText=searchText
-              fullColspan=sortable.fullColspan
-              dt=dt
+            model=inst
+            searchText=searchText
+            fullColspan=sortable.fullColspan
+            dt=dt
           }}
         {{else if (eq kind "nomatch")}}
-          <tr><td colspan="{{sortable.fullColspan}}" class="text-center text-muted pt-20 pb-20">{{t 'dnsPage.noMatch'}}</td></tr>
+          <tr>
+            <td colspan="{{sortable.fullColspan}}" class="text-center text-muted pt-20 pb-20">
+              {{t "dnsPage.noMatch"}}
+            </td>
+          </tr>
         {{else if (eq kind "norows")}}
-          <tr><td colspan="{{sortable.fullColspan}}" class="text-center text-muted lacsso pt-20 pb-20">{{t 'appDetailPage.services.nodata'}}</td></tr>
+          <tr>
+            <td colspan="{{sortable.fullColspan}}" class="text-center text-muted lacsso pt-20 pb-20">
+              {{t "appDetailPage.services.nodata"}}
+            </td>
+          </tr>
         {{/if}}
       {{/sortable-table}}
     {{/accordion-list-item}}
 
     {{#accordion-list-item
-         title=(t 'appDetailPage.volumes.title')
-         detail=(t 'appDetailPage.volumes.detail')
-         expandAll=al.expandAll
-         expand=(action expandFn)
-         expandOnInit=true
+       title=(t "appDetailPage.volumes.title")
+       detail=(t "appDetailPage.volumes.detail")
+       expandAll=al.expandAll
+       expand=(action expandFn)
+       expandOnInit=true
     }}
       <section class="pl-0 pr-0">
         {{#sortable-table
-             classNames="grid sortable-table"
-             body=model.app.volumes
-             searchText=volumesSearchText
-             descending=volumesDescending
-             sortBy=sortBy
-             bulkActions=true
-             pagingLabel="pagination.volume"
-             headers=volumesHeaders as |sortable kind obj dt|
+           classNames="grid sortable-table"
+           body=model.app.volumes
+           searchText=volumesSearchText
+           descending=volumesDescending
+           sortBy=sortBy
+           bulkActions=true
+           pagingLabel="pagination.volume"
+           headers=volumesHeaders as |sortable kind obj dt|
         }}
           {{#if (eq kind "row")}}
             <tr class="main-row">
@@ -274,65 +322,88 @@
               </td>
             </tr>
           {{else if (eq kind "nomatch")}}
-            <tr><td colspan="{{sortable.fullColspan}}" class="text-center text-muted lacsso pt-20 pb-20">{{t 'volumesPage.noMatch'}}</td></tr>
+            <tr>
+              <td colspan="{{sortable.fullColspan}}" class="text-center text-muted lacsso pt-20 pb-20">
+                {{t "volumesPage.noMatch"}}
+              </td>
+            </tr>
           {{else if (eq kind "norows")}}
-            <tr><td colspan="{{sortable.fullColspan}}" class="text-center text-muted lacsso pt-20 pb-20">{{t 'appDetailPage.volumes.nodata'}}</td></tr>
+            <tr>
+              <td colspan="{{sortable.fullColspan}}" class="text-center text-muted lacsso pt-20 pb-20">
+                {{t "appDetailPage.volumes.nodata"}}
+              </td>
+            </tr>
           {{/if}}
         {{/sortable-table}}
       </section>
     {{/accordion-list-item}}
 
     {{#accordion-list-item
-         title=(t 'appDetailPage.secrets.title')
-         detail=(t 'appDetailPage.secrets.detail')
-         expandAll=al.expandAll
-         expand=(action expandFn)
-         expandOnInit=true
+       title=(t "appDetailPage.secrets.title")
+       detail=(t "appDetailPage.secrets.detail")
+       expandAll=al.expandAll
+       expand=(action expandFn)
+       expandOnInit=true
     }}
       {{#sortable-table
-           classNames="grid sortable-table"
-           body=model.app.secrets
-           descending=secretsDescending
-           sortBy=sortBy
-           bulkActions=true
-           searchText=secretsSearchText
-           headers=secretsHeaders as |sortable kind row dt|
+         classNames="grid sortable-table"
+         body=model.app.secrets
+         descending=secretsDescending
+         sortBy=sortBy
+         bulkActions=true
+         searchText=secretsSearchText
+         headers=secretsHeaders as |sortable kind row dt|
       }}
         {{#if (eq kind "row")}}
           {{secret-row model=row dt=dt}}
         {{else if (eq kind "nomatch")}}
-          <tr><td colspan="{{sortable.fullColspan}}" class="text-center text-muted pt-20 pb-20">{{t 'secretsPage.index.noMatch'}}</td></tr>
+          <tr>
+            <td colspan="{{sortable.fullColspan}}" class="text-center text-muted pt-20 pb-20">
+              {{t "secretsPage.index.noMatch"}}
+            </td>
+          </tr>
         {{else if (eq kind "norows")}}
-          <tr><td colspan="{{sortable.fullColspan}}" class="text-center text-muted lacsso pt-20 pb-20">{{t 'appDetailPage.secrets.nodata'}}</td></tr>
+          <tr>
+            <td colspan="{{sortable.fullColspan}}" class="text-center text-muted lacsso pt-20 pb-20">
+              {{t "appDetailPage.secrets.nodata"}}
+            </td>
+          </tr>
         {{/if}}
       {{/sortable-table}}
     {{/accordion-list-item}}
 
     {{#accordion-list-item
-         title=(t 'appDetailPage.configMaps.title')
-         detail=(t 'appDetailPage.configMaps.detail')
-         expandAll=al.expandAll
-         expand=(action expandFn)
-         expandOnInit=true
+       title=(t "appDetailPage.configMaps.title")
+       detail=(t "appDetailPage.configMaps.detail")
+       expandAll=al.expandAll
+       expand=(action expandFn)
+       expandOnInit=true
     }}
       {{#sortable-table
-           classNames="grid sortable-table"
-           body=model.app.configMaps
-           descending=configMapsDescending
-           sortBy=sortBy
-           bulkActions=true
-           searchText=configMapsSearchText
-           headers=configMapsHeaders as |sortable kind row dt|
+         classNames="grid sortable-table"
+         body=model.app.configMaps
+         descending=configMapsDescending
+         sortBy=sortBy
+         bulkActions=true
+         searchText=configMapsSearchText
+         headers=configMapsHeaders as |sortable kind row dt|
       }}
         {{#if (eq kind "row")}}
           {{config-map-row model=row dt=dt}}
         {{else if (eq kind "nomatch")}}
-          <tr><td colspan="{{sortable.fullColspan}}" class="text-center text-muted pt-20 pb-20">{{t 'configMapsPage.index.noMatch'}}</td></tr>
+          <tr>
+            <td colspan="{{sortable.fullColspan}}" class="text-center text-muted pt-20 pb-20">
+              {{t "configMapsPage.index.noMatch"}}
+            </td>
+          </tr>
         {{else if (eq kind "norows")}}
-          <tr><td colspan="{{sortable.fullColspan}}" class="text-center text-muted lacsso pt-20 pb-20">{{t 'appDetailPage.configMaps.nodata'}}</td></tr>
+          <tr>
+            <td colspan="{{sortable.fullColspan}}" class="text-center text-muted lacsso pt-20 pb-20">
+              {{t "appDetailPage.configMaps.nodata"}}
+            </td>
+          </tr>
         {{/if}}
       {{/sortable-table}}
     {{/accordion-list-item}}
-
   {{/accordion-list}}
 </section>

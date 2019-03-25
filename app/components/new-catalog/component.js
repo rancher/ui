@@ -116,7 +116,9 @@ export default Component.extend(NewOrEdit, CatalogApp, {
     },
 
     cancel() {
-      this.sendAction('cancel');
+      if (this.cancel) {
+        this.cancel();
+      }
     },
 
     togglePreview() {
@@ -325,12 +327,14 @@ export default Component.extend(NewOrEdit, CatalogApp, {
       //   versionId = get(this, 'selectedTemplateModel.id');
       // }
 
-      // this.sendAction('doSave', {
-      //   answers:           get(this, 'answers'),
-      //   externalId:        get(this, 'newExternalId'),
-      //   templateId:        get(this, 'templateResource.id'),
-      //   templateVersionId: versionId,
-      // });
+      // if (this.doSave) {
+      //   this.doSave({
+      //     answers:           get(this, 'answers'),
+      //     externalId:        get(this, 'newExternalId'),
+      //     templateId:        get(this, 'templateResource.id'),
+      //     templateVersionId: versionId,
+      //   });
+      // }
       return false;
     }
   },

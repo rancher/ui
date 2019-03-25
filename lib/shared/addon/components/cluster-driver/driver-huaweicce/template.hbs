@@ -1,72 +1,72 @@
 {{#accordion-list showExpandAll=false as |al expandFn|}}
   {{#if (eq step 1)}}
-    {{#accordion-list-item title=(t 'clusterNew.huaweicce.access.title')
-    detail=(t 'clusterNew.huaweicce.access.detail')
-    expandOnInit=true
-    expandAll=al.expandAll
-    expand=(action expandFn)
-  }}
+    {{#accordion-list-item title=(t "clusterNew.huaweicce.access.title")
+       detail=(t "clusterNew.huaweicce.access.detail")
+       expandOnInit=true
+       expandAll=al.expandAll
+       expand=(action expandFn)
+    }}
       <div class="row">
         <div class="col span-6 mb-0">
           <label class="acc-label">
-            {{t 'clusterNew.huaweicce.region.label'}}
+            {{t "clusterNew.huaweicce.region.label"}}
           </label>
           {{searchable-select
-              class="form-control"
-              content=zones
-              value=config.region
-              allowCustom=true
+            class="form-control"
+            content=zones
+            value=config.region
+            allowCustom=true
           }}
-          <p class="text-info text-small m-0">{{t 'clusterNew.huaweicce.region.helpText' htmlSafe=true}}</p>
+          <p class="text-info text-small m-0">{{t "clusterNew.huaweicce.region.helpText" htmlSafe=true}}</p>
         </div>
         <div class="col span-6 mb-0">
-          <label class="acc-label">{{t 'clusterNew.huaweicce.projectId.label'}}{{field-required}}</label>
+          <label class="acc-label">{{t "clusterNew.huaweicce.projectId.label"}}{{field-required}}</label>
           {{input type="text"
-                value=config.projectId
-                classNames="form-control"
-                placeholder=(t 'clusterNew.huaweicce.projectId.placeholder')}}
-          <p class="text-info text-small m-0">{{t 'clusterNew.huaweicce.projectId.help' htmlSafe=true}}</p>
+            value=config.projectId
+            classNames="form-control"
+            placeholder=(t "clusterNew.huaweicce.projectId.placeholder")}}
+          <p class="text-info text-small m-0">{{t "clusterNew.huaweicce.projectId.help" htmlSafe=true}}</p>
         </div>
       </div>
       {{#unless authConfigred}}
         <div class="row">
           <div class="col span-6 mb-0">
             <label class="acc-label">
-              {{t 'clusterNew.huaweicce.accessKey.label'}}{{field-required}}
+              {{t "clusterNew.huaweicce.accessKey.label"}}{{field-required}}
             </label>
             {{input type="text"
-                  value=config.accessKey
-                  classNames="form-control"
-                  placeholder=(t 'clusterNew.huaweicce.accessKey.placeholder')}}
-            <p class="text-info text-small m-0">{{t 'clusterNew.huaweicce.accessKey.help' htmlSafe=true}}</p>
+              value=config.accessKey
+              classNames="form-control"
+              placeholder=(t "clusterNew.huaweicce.accessKey.placeholder")}}
+            <p class="text-info text-small m-0">{{t "clusterNew.huaweicce.accessKey.help" htmlSafe=true}}</p>
           </div>
           <div class="col span-6 mb-0">
-            <label class="acc-label">{{t 'clusterNew.huaweicce.secretKey.label'}}{{field-required}}</label>
+            <label class="acc-label">{{t "clusterNew.huaweicce.secretKey.label"}}{{field-required}}</label>
             {{input type="password"
-                  value=config.secretKey
-                  classNames="form-control"
-                  placeholder=(t 'clusterNew.huaweicce.secretKey.placeholder')}}
+              value=config.secretKey
+              classNames="form-control"
+              placeholder=(t "clusterNew.huaweicce.secretKey.placeholder")}}
           </div>
         </div>
       {{/unless}}
     {{/accordion-list-item}}
   {{/if}}
   {{#if (or (eq step 2) (eq step 3))}}
-    {{#accordion-list-item title=(t 'clusterNew.huaweicce.access.title')
-    detail=(t 'clusterNew.huaweicce.access.detail')
-    expandOnInit=false
-    expandAll=al.expandAll
-    expand=(action expandFn)
-  }}
+    {{#accordion-list-item title=(t "clusterNew.huaweicce.access.title")
+       detail=(t "clusterNew.huaweicce.access.detail")
+       expandOnInit=false
+       expandAll=al.expandAll
+       expand=(action expandFn)
+    }}
       <div class="row">
         <div class="col span-6 mb-0">
           <label class="acc-label">
-            {{t 'clusterNew.huaweicce.region.label'}}
+            {{t "clusterNew.huaweicce.region.label"}}
           </label>
           <div>{{config.zone}}</div>
         </div>
         <div class="col span-6 mb-0">
-          <label class="acc-label">{{t 'clusterNew.huaweicce.projectId.label'}}</label>
+          <label class="acc-label">{{t "clusterNew.huaweicce.projectId.label"}}</label>
           <div>{{config.projectId}}</div>
         </div>
       </div>
@@ -74,27 +74,27 @@
         <div class="row">
           <div class="col span-6 mb-0">
             <label class="acc-label">
-              {{t 'clusterNew.huaweicce.accessKey.label'}}
+              {{t "clusterNew.huaweicce.accessKey.label"}}
             </label>
             <div>{{config.accessKey}}</div>
           </div>
           <div class="col span-6 mb-0">
-            <label class="acc-label">{{t 'clusterNew.huaweicce.secretKey.label'}}</label>
-            <div class="text-muted text-italic">{{t 'nodeDriver.amazoneks.sessionToken.provided'}}</div>
+            <label class="acc-label">{{t "clusterNew.huaweicce.secretKey.label"}}</label>
+            <div class="text-muted text-italic">{{t "nodeDriver.amazoneks.sessionToken.provided"}}</div>
           </div>
         </div>
       {{/unless}}
     {{/accordion-list-item}}
-    {{#accordion-list-item title=(t 'clusterNew.huaweicce.clusterOption.title')
-    detail=(t 'clusterNew.huaweicce.clusterOption.detail')
-    expandOnInit=true
-    expandAll=al.expandAll
-    expand=(action expandFn)
-  }}
+    {{#accordion-list-item title=(t "clusterNew.huaweicce.clusterOption.title")
+       detail=(t "clusterNew.huaweicce.clusterOption.detail")
+       expandOnInit=true
+       expandAll=al.expandAll
+       expand=(action expandFn)
+    }}
       <div class="row">
         <div class="col span-6 mb-0">
           <label class="acc-label">
-            {{t 'clusterNew.huaweicce.clusterType.label'}}
+            {{t "clusterNew.huaweicce.clusterType.label"}}
           </label>
           {{#if editing}}
             <div>
@@ -102,135 +102,135 @@
             </div>
           {{else}}
             {{new-select classNames="form-control"
-            value=config.clusterType
-            content=clusterType
-          }}
+              value=config.clusterType
+              content=clusterType
+            }}
           {{/if}}
         </div>
         <div class="col span-6 mb-0">
           <label class="acc-label">
-            {{t 'clusterNew.huaweicce.description.label'}}
+            {{t "clusterNew.huaweicce.description.label"}}
           </label>
           {{input type="text"
-                value=config.description
-                classNames="form-control"
-                placeholder=(t 'clusterNew.huaweicce.description.placeholder')}}
+            value=config.description
+            classNames="form-control"
+            placeholder=(t "clusterNew.huaweicce.description.placeholder")}}
         </div>
       </div>
       <div class="row">
         <div class="col span-6 mb-0">
           <label class="acc-label">
-            {{t 'clusterNew.huaweicce.masterVersion.label'}}{{field-required}}
+            {{t "clusterNew.huaweicce.masterVersion.label"}}{{field-required}}
           </label>
           {{#if editing}}
             <div>{{config.masterVersion}}</div>
           {{else}}
             {{searchable-select class="form-control"
-            content=masterVersions
-            value=config.masterVersion
-            allowCustom=true
-          }}
+              content=masterVersions
+              value=config.masterVersion
+              allowCustom=true
+            }}
           {{/if}}
         </div>
         <div class="col span-6 mb-0">
-          <label class="acc-label">{{t 'clusterNew.huaweicce.managementScale.label'}}</label>
+          <label class="acc-label">{{t "clusterNew.huaweicce.managementScale.label"}}</label>
           {{#if editing}}
             <div>{{managementScaleDisplay}}</div>
           {{else}}
             {{new-select classNames="form-control"
-            value=managementScale
-            content=managementScaleContent
-          }}
+              value=managementScale
+              content=managementScaleContent
+            }}
           {{/if}}
         </div>
       </div>
       <div class="row">
         <div class="col span-6 mb-0">
           <label class="acc-label">
-            {{t 'clusterNew.huaweicce.highAvailability.label'}}{{field-required}}
+            {{t "clusterNew.huaweicce.highAvailability.label"}}{{field-required}}
           </label>
           {{#if editing}}
-            {{#if (or (eq highAvailabilityEnabled 's2') (eq highAvailabilityEnabled 't2'))}}
-              <div>{{t 'generic.enabled'}}</div>
+            {{#if (or (eq highAvailabilityEnabled "s2") (eq highAvailabilityEnabled "t2"))}}
+              <div>{{t "generic.enabled"}}</div>
             {{else}}
-              <div>{{t 'generic.disabled'}}</div>
+              <div>{{t "generic.disabled"}}</div>
             {{/if}}
           {{else}}
             <div class="radio">
               <label>
-                {{#if (eq config.clusterType 'BareMetal')}}
+                {{#if (eq config.clusterType "BareMetal")}}
                   {{radio-button selection=highAvailabilityEnabled value="t2"}}
-                  {{t 'generic.enabled'}}
+                  {{t "generic.enabled"}}
                 {{else}}
                   {{radio-button selection=highAvailabilityEnabled value="s2"}}
-                  {{t 'generic.enabled'}}
+                  {{t "generic.enabled"}}
                 {{/if}}
               </label>
             </div>
             <div class="radio">
               <label>
-                {{#if (eq config.clusterType 'BareMetal')}}
+                {{#if (eq config.clusterType "BareMetal")}}
                   {{radio-button selection=highAvailabilityEnabled value="t1"}}
-                  {{t 'generic.disabled'}}
+                  {{t "generic.disabled"}}
                 {{else}}
                   {{radio-button selection=highAvailabilityEnabled value="s1"}}
-                  {{t 'generic.disabled'}}
+                  {{t "generic.disabled"}}
                 {{/if}}
               </label>
             </div>
           {{/if}}
         </div>
         <div class="col span-6 mb-0">
-          <label class="acc-label">{{t 'clusterNew.huaweicce.containerNetworkMode.label'}}</label>
+          <label class="acc-label">{{t "clusterNew.huaweicce.containerNetworkMode.label"}}</label>
           {{#if editing}}
             <div>{{config.containerNetworkMode}}</div>
           {{else}}
             {{new-select classNames="form-control"
-            value=config.containerNetworkMode
-            content=containerNetworkModeContent
-          }}
+              value=config.containerNetworkMode
+              content=containerNetworkModeContent
+            }}
           {{/if}}
         </div>
       </div>
       <div class="row">
         <div class="col span-6 mb-0">
           <label class="acc-label">
-            {{t 'clusterNew.huaweicce.containerNetworkCidr.label'}}{{field-required}}
+            {{t "clusterNew.huaweicce.containerNetworkCidr.label"}}{{field-required}}
           </label>
           {{#if editing}}
             <div>
               {{#if config.containerNetworkCidr}}
                 {{config.containerNetworkCidr}}
               {{else}}
-                {{t 'clusterNew.huaweicce.containerNetworkCidr.none'}}
+                {{t "clusterNew.huaweicce.containerNetworkCidr.none"}}
               {{/if}}
             </div>
           {{else}}
             {{searchable-select class="form-control"
-            content=containerNetworkCidrContent
-            value=config.containerNetworkCidr
-            allowCustom=true
-          }}
+              content=containerNetworkCidrContent
+              value=config.containerNetworkCidr
+              allowCustom=true
+            }}
           {{/if}}
         </div>
         <div class="col span-6 mb-0">
-          <label class="acc-label">{{t 'clusterNew.huaweicce.vpcId.label'}}{{field-required}}</label>
+          <label class="acc-label">{{t "clusterNew.huaweicce.vpcId.label"}}{{field-required}}</label>
           {{#if editing}}
             <div>
               {{editedVpcName}}
             </div>
           {{else}}
             {{new-select classNames="form-control"
-            content=vpcContent
-            value=config.vpcId
-          }}
+              content=vpcContent
+              value=config.vpcId
+            }}
           {{/if}}
         </div>
       </div>
       <div class="row">
         <div class="col span-6 mb-0">
           <label class="acc-label">
-            {{t 'clusterNew.huaweicce.subnetId.label'}}{{field-required}}
+            {{t "clusterNew.huaweicce.subnetId.label"}}{{field-required}}
           </label>
           {{#if editing}}
             <div>
@@ -239,17 +239,17 @@
           {{else}}
             {{#if (gt subnetContent.length 0)}}
               {{new-select classNames="form-control"
-              content=subnetContent
-              value=config.subnetId
-            }}
+                content=subnetContent
+                value=config.subnetId
+              }}
             {{else}}
-              <div style="mt-10">{{t 'clusterNew.huaweicce.subnetId.none'}}</div>
+              <div style="mt-10">{{t "clusterNew.huaweicce.subnetId.none"}}</div>
             {{/if}}
           {{/if}}
         </div>
-        {{#if (eq config.clusterType 'BareMetal')}}
+        {{#if (eq config.clusterType "BareMetal")}}
           <div class="col span-6 mb-0">
-            <label class="acc-label">{{t 'clusterNew.huaweicce.highwaySubnet.label'}}</label>
+            <label class="acc-label">{{t "clusterNew.huaweicce.highwaySubnet.label"}}</label>
             {{#if (gt networkContent.length 0)}}
               {{#if editing}}
                 <div>
@@ -257,111 +257,111 @@
                 </div>
               {{else}}
                 {{new-select classNames="form-control"
-                content=networkContent
-                value=config.highwaySubnet
-              }}
+                  content=networkContent
+                  value=config.highwaySubnet
+                }}
               {{/if}}
             {{else}}
-              <div style="margin-top: 10px;">{{t 'clusterNew.huaweicce.highwaySubnet.none'}}</div>
+              <div style="margin-top: 10px;">{{t "clusterNew.huaweicce.highwaySubnet.none"}}</div>
             {{/if}}
           </div>
         {{/if}}
       </div>
       <div class="row">
         <div class="col span-6 mb-0">
-          <label class="acc-label">{{t 'clusterNew.huaweicce.externalServerEnabled.label'}}</label>
+          <label class="acc-label">{{t "clusterNew.huaweicce.externalServerEnabled.label"}}</label>
           {{#if editing}}
             {{#if config.externalServerEnabled}}
-              <div>{{t 'generic.enabled'}}</div>
+              <div>{{t "generic.enabled"}}</div>
             {{else}}
-              <div>{{t 'generic.disabled'}}</div>
+              <div>{{t "generic.disabled"}}</div>
             {{/if}}
           {{else}}
             <div class="radio">
               <label class="text-muted">
                 {{radio-button
-                    selection=config.externalServerEnabled
-                    value=true
-                    disabled=true
+                  selection=config.externalServerEnabled
+                  value=true
+                  disabled=true
                 }}
-                {{t 'clusterNew.huaweicce.externalServerEnabled.enabled'}}
+                {{t "clusterNew.huaweicce.externalServerEnabled.enabled"}}
               </label>
             </div>
             <div class="radio">
               <label>
                 {{radio-button selection=config.externalServerEnabled value=false}}
-                {{t 'clusterNew.huaweicce.externalServerEnabled.disabled'}}
+                {{t "clusterNew.huaweicce.externalServerEnabled.disabled"}}
               </label>
             </div>
           {{/if}}
         </div>
         {{#if config.externalServerEnabled}}
           <div class="col span-6">
-            <label class="acc-label">{{t 'clusterNew.huaweicce.clusterEipId.label'}}</label>
+            <label class="acc-label">{{t "clusterNew.huaweicce.clusterEipId.label"}}</label>
             {{#if editing}}
               <div>{{clusterEipName}}</div>
             {{else}}
               {{new-select
-                  classNames="form-control"
-                  prompt=(t 'clusterNew.huaweicce.clusterEipId.prompt')
-                  value=config.clusterEipId
-                  content=eipIdContent
-            }}
+                classNames="form-control"
+                prompt=(t "clusterNew.huaweicce.clusterEipId.prompt")
+                value=config.clusterEipId
+                content=eipIdContent
+              }}
             {{/if}}
           </div>
         {{/if}}
       </div>
       <div class="row">
         <div class="col span-12 mb-0">
-          <label class="acc-label">{{t 'clusterNew.huaweicce.clusterLabels.label'}}</label>
+          <label class="acc-label">{{t "clusterNew.huaweicce.clusterLabels.label"}}</label>
           {{#if editing}}
             {{#if (gt config.labels.length 0)}}
               {{huawei-user-labels
-                  readOnly=true
-                  initialLabels=config.labels
-            }}
+                readOnly=true
+                initialLabels=config.labels
+              }}
             {{else}}
-              <div>{{t 'clusterNew.huaweicce.clusterLabels.none'}}</div>
+              <div>{{t "clusterNew.huaweicce.clusterLabels.none"}}</div>
             {{/if}}
           {{else}}
-            {{huawei-user-labels setLabels=(action 'setLabels')}}
+            {{huawei-user-labels setLabels=(action "setLabels")}}
           {{/if}}
         </div>
       </div>
     {{/accordion-list-item}}
     {{#if (eq step 3)}}
-      {{#accordion-list-item title=(t 'clusterNew.huaweicce.nodeOption.title')
-      detail=(t 'clusterNew.huaweicce.nodeOption.detail')
-      expandOnInit=true
-      showExpand=false
-      expandAll=al.expandAll
-      expand=(action expandFn)
-    }}
+      {{#accordion-list-item title=(t "clusterNew.huaweicce.nodeOption.title")
+         detail=(t "clusterNew.huaweicce.nodeOption.detail")
+         expandOnInit=true
+         showExpand=false
+         expandAll=al.expandAll
+         expand=(action expandFn)
+      }}
         <div class="row">
           <div class="col span-6 mb-0">
             <label class="acc-label">
-              {{t 'clusterNew.huaweicce.availableZone.label'}}
+              {{t "clusterNew.huaweicce.availableZone.label"}}
             </label>
             {{#if editing}}
               <div>{{config.availableZone}}</div>
             {{else}}
               {{new-select classNames="form-control"
-              content=availableZoneContent
-              value=config.availableZone
-            }}
+                content=availableZoneContent
+                value=config.availableZone
+              }}
             {{/if}}
           </div>
           <div class="col span-6 mb-0">
             <label class="acc-label">
-              {{t 'clusterNew.huaweicce.billingMode.label'}}
+              {{t "clusterNew.huaweicce.billingMode.label"}}
             </label>
             {{#if editing}}
               <div>{{billingModeName}}</div>
             {{else}}
               {{searchable-select class="form-control"
-              content=billingModeContent
-              value=config.billingMode
-            }}
+                content=billingModeContent
+                value=config.billingMode
+              }}
             {{/if}}
           </div>
         </div>
@@ -369,20 +369,20 @@
           <div class="row">
             <div class="col span-6 mb-0">
               <label class="acc-label">
-                {{t 'clusterNew.huaweicce.validityPeriod.label'}}
+                {{t "clusterNew.huaweicce.validityPeriod.label"}}
               </label>
               {{#if editing}}
                 <div>{{validityPeriodName}}</div>
               {{else}}
                 {{searchable-select classNames="form-control"
-                content=validityPeriodContent
-                value=validityPeriod
-              }}
+                  content=validityPeriodContent
+                  value=validityPeriod
+                }}
               {{/if}}
             </div>
             <div class="col span-6 mb-0">
               <label class="acc-label">
-                {{t 'clusterNew.huaweicce.bmsIsAutoRenew.label'}}
+                {{t "clusterNew.huaweicce.bmsIsAutoRenew.label"}}
               </label>
               {{#if editing}}
                 <div>{{bmsIsAutoRenewName}}</div>
@@ -390,13 +390,13 @@
                 <div class="radio">
                   <label>
                     {{radio-button selection=config.bmsIsAutoRenew value="false"}}
-                    {{t 'generic.disabled'}}
+                    {{t "generic.disabled"}}
                   </label>
                 </div>
                 <div class="radio">
                   <label>
                     {{radio-button selection=config.bmsIsAutoRenew value="true"}}
-                    {{t 'generic.enabled'}}
+                    {{t "generic.enabled"}}
                   </label>
                 </div>
               {{/if}}
@@ -406,27 +406,27 @@
         <div class="row">
           <div class="col span-6 mb-0">
             <label class="acc-label">
-              {{t 'clusterNew.huaweicce.dataVolumeType.label'}}
+              {{t "clusterNew.huaweicce.dataVolumeType.label"}}
             </label>
             {{#if editing}}
               <div>{{config.dataVolumeType}}</div>
             {{else}}
               {{new-select classNames="form-control"
-              value=config.dataVolumeType
-              content=volumeTypeContent
-            }}
+                value=config.dataVolumeType
+                content=volumeTypeContent
+              }}
             {{/if}}
           </div>
           <div class="col span-6 mb-0">
             <label class="acc-label">
-              {{t 'clusterNew.huaweicce.dataVolumeSize.label'}}
+              {{t "clusterNew.huaweicce.dataVolumeSize.label"}}
             </label>
             <div class="input-group">
               {{#if editing}}
-                <div>{{config.dataVolumeSize}}{{t 'generic.gigabyte'}}</div>
+                <div>{{config.dataVolumeSize}}{{t "generic.gigabyte"}}</div>
               {{else}}
                 {{input-number min=100 value=config.dataVolumeSize max=32768}}
-                <span class="input-group-addon bg-default">{{t 'generic.gigabyte'}}</span>
+                <span class="input-group-addon bg-default">{{t "generic.gigabyte"}}</span>
               {{/if}}
             </div>
           </div>
@@ -434,135 +434,135 @@
         <div class="row">
           <div class="col span-6 mb-0">
             <label class="acc-label">
-              {{t 'clusterNew.huaweicce.rootVolumeType.label'}}
+              {{t "clusterNew.huaweicce.rootVolumeType.label"}}
             </label>
             {{#if editing}}
               <div>{{config.rootVolumeType}}</div>
             {{else}}
               {{new-select classNames="form-control"
-              value=config.rootVolumeType
-              content=volumeTypeContent
-            }}
+                value=config.rootVolumeType
+                content=volumeTypeContent
+              }}
             {{/if}}
           </div>
           <div class="col span-6 mb-0">
             <label class="acc-label">
-              {{t 'clusterNew.huaweicce.rootVolumeSize.label'}}
+              {{t "clusterNew.huaweicce.rootVolumeSize.label"}}
             </label>
             <div class="input-group">
               {{#if editing}}
-                <div>{{config.rootVolumeSize}}{{t 'generic.gigabyte'}}</div>
+                <div>{{config.rootVolumeSize}}{{t "generic.gigabyte"}}</div>
               {{else}}
                 {{input-number min=40 value=config.rootVolumeSize max=1024}}
-                <span class="input-group-addon bg-default">{{t 'generic.gigabyte'}}</span>
+                <span class="input-group-addon bg-default">{{t "generic.gigabyte"}}</span>
               {{/if}}
             </div>
           </div>
         </div>
         <div class="row">
           <div class="col span-6 mb-0">
-            <label class="acc-label">{{t 'clusterNew.huaweicce.nodeFlavor.label'}}</label>
+            <label class="acc-label">{{t "clusterNew.huaweicce.nodeFlavor.label"}}</label>
             {{#if editing}}
               <div>{{config.nodeFlavor}}</div>
             {{else}}
               {{new-select classNames="form-control"
-              value=config.nodeFlavor
-              content=nodeFlavorContent
-            }}
+                value=config.nodeFlavor
+                content=nodeFlavorContent
+              }}
             {{/if}}
           </div>
           <div class="col span-6 mb-0">
             <label class="acc-label">
-              {{t 'clusterNew.huaweicce.nodeCount.label'}}
+              {{t "clusterNew.huaweicce.nodeCount.label"}}
             </label>
             {{input-number min=0 value=config.nodeCount max=nodeCountMax}}
           </div>
         </div>
         <div class="row">
           <div class="col span-6">
-            <label class="acc-label">{{t 'clusterNew.huaweicce.nodeOperationSystem.label'}}</label>
+            <label class="acc-label">{{t "clusterNew.huaweicce.nodeOperationSystem.label"}}</label>
             {{#if editing}}
               <div>{{config.nodeOperationSystem}}</div>
             {{else}}
               {{new-select classNames="form-control"
-              value=config.nodeOperationSystem
-              content=nodeOperationSystemContent
-            }}
+                value=config.nodeOperationSystem
+                content=nodeOperationSystemContent
+              }}
             {{/if}}
           </div>
           <div class="col span-6">
-            <label class="acc-label">{{t 'clusterNew.huaweicce.ssh.label'}}</label>
+            <label class="acc-label">{{t "clusterNew.huaweicce.ssh.label"}}</label>
             {{#if editing}}
               <div>{{editedSshName}}</div>
             {{else}}
               {{new-select classNames="form-control"
-              value=config.sshKey
-              content=sshkeyContent
-            }}
+                value=config.sshKey
+                content=sshkeyContent
+              }}
             {{/if}}
           </div>
         </div>
         {{#unless editing}}
           <div class="row">
             <div class="col span-6">
-              <label class="acc-label">{{t 'clusterNew.huaweicce.eip.label'}}</label>
+              <label class="acc-label">{{t "clusterNew.huaweicce.eip.label"}}</label>
               <div class="radio">
                 <label>
                   {{radio-button selection=eipSelection value="none"}}
-                  {{t 'clusterNew.huaweicce.eipSelection.none'}}
+                  {{t "clusterNew.huaweicce.eipSelection.none"}}
                 </label>
               </div>
               <div class="radio">
                 <label>
                   {{radio-button selection=eipSelection value="new"}}
-                  {{t 'clusterNew.huaweicce.eipSelection.new'}}
+                  {{t "clusterNew.huaweicce.eipSelection.new"}}
                 </label>
               </div>
               <div class="radio">
-                <label class={{unless (gt eipIdContent.length 0) 'text-muted'}}>
+                <label class={{unless (gt eipIdContent.length 0) "text-muted"}}>
                   {{radio-button selection=eipSelection value="exist" disabled=(not (gt eipIdContent.length 0))}}
-                  {{t 'clusterNew.huaweicce.eipSelection.exist'}}
-                  {{#unless (gt eipIdContent.length 0)}} &mdash; {{t 'clusterNew.huaweicce.eipIds.none'}}
+                  {{t "clusterNew.huaweicce.eipSelection.exist"}}
+                  {{#unless (gt eipIdContent.length 0)}} &mdash; {{t "clusterNew.huaweicce.eipIds.none"}}
                   {{/unless}}
                 </label>
               </div>
             </div>
             <div class="col span-6">
-              {{#if (eq eipSelection 'new')}}
+              {{#if (eq eipSelection "new")}}
                 <label class="acc-label">
-                  {{t 'clusterNew.huaweicce.eipCount.label'}}
+                  {{t "clusterNew.huaweicce.eipCount.label"}}
                 </label>
                 {{input-number min=1 value=config.eipCount}}
                 <label class="acc-label">
-                  {{t 'clusterNew.huaweicce.eipType.label'}}
+                  {{t "clusterNew.huaweicce.eipType.label"}}
                 </label>
                 {{new-select classNames="form-control"
-                value=config.eipType
-                content=eipTypeContent
-              }}
+                  value=config.eipType
+                  content=eipTypeContent
+                }}
                 <label class="acc-label">
-                  {{t 'clusterNew.huaweicce.eipShareType.label'}}
+                  {{t "clusterNew.huaweicce.eipShareType.label"}}
                 </label>
                 {{new-select classNames="form-control"
-                value=config.eipShareType
-                content=eipShareTypeContent
-              }}
-                <label class="acc-label">{{t 'clusterNew.huaweicce.eipChargeMode.label'}}</label>
+                  value=config.eipShareType
+                  content=eipShareTypeContent
+                }}
+                <label class="acc-label">{{t "clusterNew.huaweicce.eipChargeMode.label"}}</label>
                 {{new-select classNames="form-control"
-                value=config.eipChargeMode
-                content=eipChargeModeContent
-              }}
-                <label class="acc-label">{{t 'clusterNew.huaweicce.eipBandwidthSize.label'}}</label>
+                  value=config.eipChargeMode
+                  content=eipChargeModeContent
+                }}
+                <label class="acc-label">{{t "clusterNew.huaweicce.eipBandwidthSize.label"}}</label>
                 <div class="input-group">
                   {{input-number min=1 value=config.eipBandwidthSize max=100}}
-                  <span class="input-group-addon bg-default">{{t 'generic.mbitS'}}</span>
+                  <span class="input-group-addon bg-default">{{t "generic.mbitS"}}</span>
                 </div>
               {{/if}}
-              {{#if (eq eipSelection 'exist')}}
+              {{#if (eq eipSelection "exist")}}
                 <label class="acc-label">
-                  {{t 'clusterNew.huaweicce.eipIds.label'}}
+                  {{t "clusterNew.huaweicce.eipIds.label"}}
                 </label>
-                <select class="form-control existing-eips" multiple="true" onchange={{action 'multiEipSelect'}}>
+                <select class="form-control existing-eips" multiple="true" onchange={{action "multiEipSelect"}}>
                   {{#each eipIdContent as |choice|}}
                     <option value={{choice.value}} selected={{array-includes config.eipIds choice.value}}>{{choice.label}}</option>
                   {{/each}}
@@ -572,50 +572,50 @@
           </div>
           <div class="row">
             <div class="col span-12 mt-0">
-              <label class="acc-label">{{t 'clusterNew.huaweicce.authentiactionMode.label'}}</label>
+              <label class="acc-label">{{t "clusterNew.huaweicce.authentiactionMode.label"}}</label>
               <div class="radio">
                 <label>
                   {{radio-button
-                      selection=config.authentiactionMode
-                      value="rbac"
+                    selection=config.authentiactionMode
+                    value="rbac"
                   }}
-                  {{t 'clusterNew.huaweicce.authentiactionMode.rbac'}}
+                  {{t "clusterNew.huaweicce.authentiactionMode.rbac"}}
                 </label>
               </div>
               <div class="radio">
                 <label>
                   {{radio-button
-                      selection=config.authentiactionMode
-                      value="authenticating_proxy"
+                    selection=config.authentiactionMode
+                    value="authenticating_proxy"
                   }}
-                  {{t 'clusterNew.huaweicce.authentiactionMode.authenticating_proxy'}}
+                  {{t "clusterNew.huaweicce.authentiactionMode.authenticating_proxy"}}
                 </label>
               </div>
-              {{#if (eq config.authentiactionMode 'authenticating_proxy')}}
+              {{#if (eq config.authentiactionMode "authenticating_proxy")}}
                 <div class="clearfix">
-                  <label class="acc-label pt-5">{{t 'clusterNew.huaweicce.authenticatingProxyCa.label'}}{{field-required}}</label>
+                  <label class="acc-label pt-5">{{t "clusterNew.huaweicce.authenticatingProxyCa.label"}}{{field-required}}</label>
                 </div>
                 {{input-text-file
-                    classNames="box"
-                    value=authenticatingProxyCa
-                    multiple=true
-                    canChangeName=false
-                    accept="application/x-x509-ca-cert,text/plain,.pem,.crt"
-                    minHeight=60
-                    placeholder="newCertificate.cert.placeholder"
-                    shouldChangeName=false
+                  classNames="box"
+                  value=authenticatingProxyCa
+                  multiple=true
+                  canChangeName=false
+                  accept="application/x-x509-ca-cert,text/plain,.pem,.crt"
+                  minHeight=60
+                  placeholder="newCertificate.cert.placeholder"
+                  shouldChangeName=false
                 }}
               {{/if}}
             </div>
           </div>
           <div class="row">
             <div class="col span-12 mb-0">
-              <label class="acc-label">{{t 'clusterNew.huaweicce.nodeLabels.label'}}</label>
+              <label class="acc-label">{{t "clusterNew.huaweicce.nodeLabels.label"}}</label>
               {{huawei-user-labels
-                  setLabels=(action 'setNodeLabels')
-                  expandAll=al.expandAll
-                  expand=(action expandFn)
-                  detailKey="formUserLabels.nodeDetail"
+                setLabels=(action "setNodeLabels")
+                expandAll=al.expandAll
+                expand=(action expandFn)
+                detailKey="formUserLabels.nodeDetail"
               }}
             </div>
           </div>
@@ -629,24 +629,24 @@
 {{top-errors errors=clusterErrors}}
 {{#if (eq step 1)}}
   {{save-cancel
-      createLabel="clusterNew.huaweicce.checkAccount"
-      savingLabel="clusterNew.huaweicce.checkingAccount"
-      save=(action "checkAccount")
-      cancel=close
+    createLabel="clusterNew.huaweicce.checkAccount"
+    savingLabel="clusterNew.huaweicce.checkingAccount"
+    save=(action "checkAccount")
+    cancel=close
   }}
 {{/if}}
 {{#if (eq step 2)}}
   {{save-cancel
-      createLabel="clusterNew.huaweicce.configureNode"
-      savingLabel="clusterNew.huaweicce.configuringNode"
-      save=(action "configreNode")
-      cancel=close
+    createLabel="clusterNew.huaweicce.configureNode"
+    savingLabel="clusterNew.huaweicce.configuringNode"
+    save=(action "configreNode")
+    cancel=close
   }}
 {{/if}}
 {{#if (eq step 3)}}
   {{save-cancel
-      editing=(eq mode 'edit')
-      save="driverSave"
-      cancel=close
+    editing=(eq mode "edit")
+    save=(action "driverSave")
+    cancel=close
   }}
 {{/if}}

@@ -1,40 +1,54 @@
 <section class="box mt-30">
-  <h3>{{t 'authPage.bitbucketcloud.target.header'}}</h3>
+  <h3>{{t "authPage.bitbucketcloud.target.header"}}</h3>
   <div>
     <div class="radio">
-      <label>{{radio-button selection=target value='bitbucketcloud' checked=true}} {{t 'authPage.bitbucketcloud.target.bitbucketcloud'}}</label>
+      <label>
+        {{radio-button
+          selection=target
+          value="bitbucketcloud"
+          checked=true
+        }} {{t "authPage.bitbucketcloud.target.bitbucketcloud"}}
+      </label>
     </div>
     <div class="radio">
-      <label>{{radio-button selection=target value='bitbucketserver'}} {{t 'authPage.bitbucketcloud.target.bitbucketserver'}}</label>
+      <label>
+        {{radio-button selection=target value="bitbucketserver"}} {{t "authPage.bitbucketcloud.target.bitbucketserver"}}
+      </label>
     </div>
   </div>
 </section>
 
 <section class="box mt-30">
-  <h3>{{t 'authPage.bitbucketcloud.setup'}}</h3>
+  <h3>{{t "authPage.bitbucketcloud.setup"}}</h3>
   <hr/>
   <p>
     <ol class="alphalist ml-40">
       <li>
-        {{t 'authPage.bitbucketcloud.auth' htmlSafe=true}}
+        {{t "authPage.bitbucketcloud.auth" htmlSafe=true}}
       </li>
       <li>
-        {{t 'authPage.bitbucketcloud.ul.li2.text'}}
+        {{t "authPage.bitbucketcloud.ul.li2.text"}}
         <ul>
           <li>
-            {{t 'authPage.bitbucketcloud.ul.li2.ul.li1' htmlSafe=true}}
+            {{t "authPage.bitbucketcloud.ul.li2.ul.li1" htmlSafe=true}}
           </li>
           <li>
-            <b>{{t 'authPage.bitbucketcloud.ul.li2.ul.li2'}}</b>
-            <span id="auth-callback-url">{{concat destinationUrl '/verify-auth'}} {{copy-to-clipboard size='small' clipboardText=(concat destinationUrl '/verify-auth')}}</span>
+            <b>{{t "authPage.bitbucketcloud.ul.li2.ul.li2"}}</b>
+            <span id="auth-callback-url">
+              {{concat destinationUrl "/verify-auth"}}&nbsp;
+              {{copy-to-clipboard
+                size="small"
+                clipboardText=(concat destinationUrl "/verify-auth")
+              }}
+            </span>
           </li>
           <li>
-            {{t 'authPage.bitbucketcloud.ul.li2.ul.li3' htmlSafe=true}}
+            {{t "authPage.bitbucketcloud.ul.li2.ul.li3" htmlSafe=true}}
           </li>
         </ul>
       </li>
       <li>
-        {{t 'authPage.bitbucketcloud.ul.li3.text'}}
+        {{t "authPage.bitbucketcloud.ul.li3.text"}}
       </li>
     </ol>
   </p>
@@ -42,19 +56,33 @@
 
 <form autcomplete="on">
   <section class="box mt-30">
-    <h3>{{t 'authPage.bitbucketcloud.form.headerVariable' }}</h3>
+    <h3>{{t "authPage.bitbucketcloud.form.headerVariable" }}</h3>
     <div class="row">
       <div class="col span-6">
         <div class="inline-form">
-          <label class="acc-label pb-5">{{t 'authPage.bitbucketcloud.form.clientId.labelText'}}{{field-required}}</label>
-          {{input type="text" name="username" value=oauthModel.clientId classNames="form-control"}}
-          <p class="help-block">{{t 'authPage.bitbucketcloud.form.subtextVariable'}}</p>
+          <label class="acc-label pb-5">
+            {{t "authPage.bitbucketcloud.form.clientId.labelText"}}{{field-required}}
+          </label>
+          {{input
+            type="text"
+            name="username"
+            value=oauthModel.clientId
+            classNames="form-control"
+          }}
+          <p class="help-block">{{t "authPage.bitbucketcloud.form.subtextVariable"}}</p>
         </div>
       </div>
       <div class="col span-6">
         <div class="inline-form">
-          <label class="acc-label pb-5">{{t 'authPage.bitbucketcloud.form.clientSecret.labelText'}}{{field-required}}</label>
-          {{input type="password" name="password" value=oauthModel.clientSecret classNames="form-control"}}
+          <label class="acc-label pb-5">
+            {{t "authPage.bitbucketcloud.form.clientSecret.labelText"}}{{field-required}}
+          </label>
+          {{input
+            type="password"
+            name="password"
+            value=oauthModel.clientSecret
+            classNames="form-control"
+          }}
         </div>
       </div>
     </div>
@@ -62,7 +90,12 @@
     {{top-errors errors=errors}}
 
     <div class="row text-center">
-      {{save-cancel cancelDisabled=true savingLabel='authPage.testAuth.buttonText.post' createLabel='authPage.testAuth.buttonText.preVariable' save='authenticate'}}
+      {{save-cancel
+        cancelDisabled=true
+        savingLabel="authPage.testAuth.buttonText.post"
+        createLabel="authPage.testAuth.buttonText.preVariable"
+        save=(action "authenticate")
+      }}
     </div>
   </section>
 </form>

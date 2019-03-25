@@ -1,51 +1,51 @@
 {{#sortable-table
-    tableClassNames="bordered"
-    classNames="grid sortable-table"
-    bulkActions=bulkActions
-    paging=paging
-    fullRows=fullRows
-    search=search
-    sortBy=sortBy
-    searchText=searchText
-    descending=descending
-    headers=headers
-    groupByKey="groupId"
-    groupByRef="group"
-    body=filteredAlerts
-    as |sortable kind row dt|
+   tableClassNames="bordered"
+   classNames="grid sortable-table"
+   bulkActions=bulkActions
+   paging=paging
+   fullRows=fullRows
+   search=search
+   sortBy=sortBy
+   searchText=searchText
+   descending=descending
+   headers=headers
+   groupByKey="groupId"
+   groupByRef="group"
+   body=filteredAlerts
+   as |sortable kind row dt|
 }}
   {{#if (eq kind "row")}}
-    {{#if (eq pageScope 'cluster')}}
+    {{#if (eq pageScope "cluster")}}
       {{cluster-alert-row
-          notifiers=filteredNotifiers
-          model=row
-          dt=dt
-          canExpand=false
-          groups=groups
+        notifiers=filteredNotifiers
+        model=row
+        dt=dt
+        canExpand=false
+        groups=groups
       }}
-    {{else if (eq pageScope 'project')}}
+    {{else if (eq pageScope "project")}}
       {{project-alert-row
-          notifiers=filteredNotifiers
-          model=row
-          dt=dt
-          canExpand=false
-          groups=groups
+        notifiers=filteredNotifiers
+        model=row
+        dt=dt
+        canExpand=false
+        groups=groups
       }}
     {{/if}}
   {{else if (eq kind "nomatch")}}
     <tr>
-      <td colspan="{{sortable.fullColspan}}" class="text-center text-muted pt-20 pb-20">{{t 'alertPage.index.table.noMatch'}}</td>
+      <td colspan="{{sortable.fullColspan}}" class="text-center text-muted pt-20 pb-20">{{t "alertPage.index.table.noMatch"}}</td>
     </tr>
   {{else if (eq kind "norows")}}
     <tr>
-      <td colspan="{{sortable.fullColspan}}" class="text-center text-muted pt-20 pb-20">{{t 'alertPage.index.table.noData'}}</td>
+      <td colspan="{{sortable.fullColspan}}" class="text-center text-muted pt-20 pb-20">{{t "alertPage.index.table.noData"}}</td>
     </tr>
   {{else if (eq kind "group")}}
     {{alert/alert-group
-        model=row
-        fullColspan=sortable.fullColspan
-        groups=groups
-        noGroup="alertPage.index.table.noGroup"
+      model=row
+      fullColspan=sortable.fullColspan
+      groups=groups
+      noGroup="alertPage.index.table.noGroup"
     }}
   {{/if}}
 {{/sortable-table}}

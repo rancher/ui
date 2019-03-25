@@ -1,96 +1,173 @@
 <div class="row mt-10">
-  <label class='acc-label pb-5'>{{t 'newPipelineStep.stepType.publishCatalog.path.label'}}{{field-required}}</label>
-  {{input class="form-control" value=config.publishCatalogConfig.path placeholder=(t 'newPipelineStep.stepType.publishCatalog.path.placeholder')}}
-  <p class="text-info text-small m-0">{{t 'newPipelineStep.stepType.publishCatalog.path.helpText' htmlSafe=true}}</p>
+  <label class="acc-label pb-5">
+    {{t "newPipelineStep.stepType.publishCatalog.path.label"}}{{field-required}}
+  </label>
+  {{input
+    class="form-control"
+    value=config.publishCatalogConfig.path
+    placeholder=(t "newPipelineStep.stepType.publishCatalog.path.placeholder")
+  }}
+  <p class="text-info text-small m-0">
+    {{t "newPipelineStep.stepType.publishCatalog.path.helpText" htmlSafe=true}}
+  </p>
 </div>
 
-<div class='row'>
+<div class="row">
   <div class="col span-6">
-    <label class='acc-label pb-5'>{{t 'newPipelineStep.stepType.publishCatalog.catalogTemplate.label'}}{{field-required}}</label>
-    {{input class="form-control" value=config.publishCatalogConfig.catalogTemplate placeholder=(t 'newPipelineStep.stepType.publishCatalog.catalogTemplate.placeholder')}}
-    <p class="text-info text-small m-0">{{t 'newPipelineStep.stepType.publishCatalog.catalogTemplate.helpText' htmlSafe=true}}</p>
+    <label class="acc-label pb-5">
+      {{t "newPipelineStep.stepType.publishCatalog.catalogTemplate.label"}}{{field-required}}
+    </label>
+    {{input
+      class="form-control"
+      value=config.publishCatalogConfig.catalogTemplate
+      placeholder=(t "newPipelineStep.stepType.publishCatalog.catalogTemplate.placeholder")
+    }}
+    <p class="text-info text-small m-0">
+      {{t "newPipelineStep.stepType.publishCatalog.catalogTemplate.helpText" htmlSafe=true}}
+    </p>
   </div>
   <div class="col span-6">
-    <label class='acc-label pb-5'>{{t 'newPipelineStep.stepType.publishCatalog.version.label'}}{{field-required}}</label>
-    {{input class="form-control" value=config.publishCatalogConfig.version placeholder=(t 'newPipelineStep.stepType.publishCatalog.version.placeholder')}}
-    <p class="text-info text-small m-0">{{t 'newPipelineStep.stepType.publishCatalog.version.helpText' htmlSafe=true}}</p>
+    <label class="acc-label pb-5">
+      {{t "newPipelineStep.stepType.publishCatalog.version.label"}}{{field-required}}
+    </label>
+    {{input
+      class="form-control"
+      value=config.publishCatalogConfig.version
+      placeholder=(t "newPipelineStep.stepType.publishCatalog.version.placeholder")
+    }}
+    <p class="text-info text-small m-0">
+      {{t "newPipelineStep.stepType.publishCatalog.version.helpText" htmlSafe=true}}
+    </p>
   </div>
 </div>
 
 <div class="row">
   <div class="col span-6">
-    <label class='acc-label pb-5'>{{t 'newPipelineStep.stepType.publishCatalog.targets.label'}}{{field-required}}</label>
+    <label class="acc-label pb-5">
+      {{t "newPipelineStep.stepType.publishCatalog.targets.label"}}{{field-required}}
+    </label>
     <div class="pt-10">
-      <label class='mr-10 hand'>
-        {{radio-button selection=mode value='http'}} {{t 'newPipelineStep.stepType.publishCatalog.targets.http'}}
+      <label class="mr-10 hand">
+        {{radio-button
+          selection=mode
+          value="http"
+        }} {{t "newPipelineStep.stepType.publishCatalog.targets.http"}}
       </label>
-      <label class='hand'>
-        {{radio-button selection=mode value='ssh'}} {{t 'newPipelineStep.stepType.publishCatalog.targets.ssh'}}
+      <label class="hand">
+        {{radio-button
+          selection=mode
+          value="ssh"
+        }} {{t "newPipelineStep.stepType.publishCatalog.targets.ssh"}}
       </label>
     </div>
   </div>
   <div class="col span-6">
-    <label class='acc-label pb-5'>{{t 'newPipelineStep.stepType.publishCatalog.secret.label'}}{{field-required}}</label>
+    <label class="acc-label pb-5">
+      {{t "newPipelineStep.stepType.publishCatalog.secret.label"}}{{field-required}}
+    </label>
     {{schema/input-secret
       namespace=namespace
       value=secret
-      valueKey='name'
+      valueKey="name"
       selectedSecret=selectedSecret
     }}
     <p class="text-info text-small m-0 pt-5">
-      {{#if (eq mode 'http')}}
-        {{t 'newPipelineStep.stepType.publishCatalog.auth.http' htmlSafe=true}}
+      {{#if (eq mode "http")}}
+        {{t "newPipelineStep.stepType.publishCatalog.auth.http" htmlSafe=true}}
       {{else}}
-        {{t 'newPipelineStep.stepType.publishCatalog.auth.ssh' htmlSafe=true}}
+        {{t "newPipelineStep.stepType.publishCatalog.auth.ssh" htmlSafe=true}}
       {{/if}}
     </p>
   </div>
 </div>
 
-<div class='row'>
+<div class="row">
   <div class="col span-6">
-    <label class='acc-label pb-5'>{{t 'newPipelineStep.stepType.publishCatalog.gitUrl.label'}}{{field-required}}</label>
-    {{input class="form-control" value=config.publishCatalogConfig.gitUrl placeholder=(if (eq mode 'http')  (t 'newPipelineStep.stepType.publishCatalog.gitUrl.placeholder.http') (t 'newPipelineStep.stepType.publishCatalog.gitUrl.placeholder.ssh'))}}
-    <p class="text-info text-small m-0">{{t 'newPipelineStep.stepType.publishCatalog.gitUrl.helpText' htmlSafe=true}}</p>
+    <label class="acc-label pb-5">
+      {{t "newPipelineStep.stepType.publishCatalog.gitUrl.label"}}{{field-required}}
+    </label>
+    {{input
+      class="form-control"
+      value=config.publishCatalogConfig.gitUrl
+      placeholder=(if (eq mode "http")  (t "newPipelineStep.stepType.publishCatalog.gitUrl.placeholder.http") (t "newPipelineStep.stepType.publishCatalog.gitUrl.placeholder.ssh"))
+    }}
+    <p class="text-info text-small m-0">
+      {{t "newPipelineStep.stepType.publishCatalog.gitUrl.helpText" htmlSafe=true}}
+    </p>
   </div>
   <div class="col span-6">
-    <label class='acc-label pb-5'>{{t 'newPipelineStep.stepType.publishCatalog.gitBranch.label'}}{{field-required}}</label>
-    {{input class="form-control" value=config.publishCatalogConfig.gitBranch placeholder=(t 'newPipelineStep.stepType.publishCatalog.gitBranch.placeholder')}}
-    <p class="text-info text-small m-0">{{t 'newPipelineStep.stepType.publishCatalog.gitBranch.helpText' htmlSafe=true}}</p>
+    <label class="acc-label pb-5">
+      {{t "newPipelineStep.stepType.publishCatalog.gitBranch.label"}}{{field-required}}
+    </label>
+    {{input
+      class="form-control"
+      value=config.publishCatalogConfig.gitBranch
+      placeholder=(t "newPipelineStep.stepType.publishCatalog.gitBranch.placeholder")
+    }}
+    <p class="text-info text-small m-0">
+      {{t "newPipelineStep.stepType.publishCatalog.gitBranch.helpText" htmlSafe=true}}
+    </p>
   </div>
 </div>
 
-<div class='row'>
+<div class="row">
   <div class="col span-6">
-    <label class='acc-label pb-5'>{{t 'newPipelineStep.stepType.publishCatalog.gitAuthor.label'}}{{field-required}}</label>
-    {{input class="form-control" value=config.publishCatalogConfig.gitAuthor placeholder=(t 'newPipelineStep.stepType.publishCatalog.gitAuthor.placeholder')}}
-    <p class="text-info text-small m-0">{{t 'newPipelineStep.stepType.publishCatalog.gitAuthor.helpText' htmlSafe=true}}</p>
+    <label class="acc-label pb-5">
+      {{t "newPipelineStep.stepType.publishCatalog.gitAuthor.label"}}{{field-required}}
+    </label>
+    {{input
+      class="form-control"
+      value=config.publishCatalogConfig.gitAuthor
+      placeholder=(t "newPipelineStep.stepType.publishCatalog.gitAuthor.placeholder")
+    }}
+    <p class="text-info text-small m-0">
+      {{t "newPipelineStep.stepType.publishCatalog.gitAuthor.helpText" htmlSafe=true}}
+    </p>
   </div>
   <div class="col span-6">
-    <label class='acc-label pb-5'>{{t 'newPipelineStep.stepType.publishCatalog.gitEmail.label'}}{{field-required}}</label>
-    {{input class="form-control" value=config.publishCatalogConfig.gitEmail placeholder=(t 'newPipelineStep.stepType.publishCatalog.gitEmail.placeholder')}}
-    <p class="text-info text-small m-0">{{t 'newPipelineStep.stepType.publishCatalog.gitEmail.helpText' htmlSafe=true}}</p>
+    <label class="acc-label pb-5">
+      {{t "newPipelineStep.stepType.publishCatalog.gitEmail.label"}}{{field-required}}
+    </label>
+    {{input
+      class="form-control"
+      value=config.publishCatalogConfig.gitEmail
+      placeholder=(t "newPipelineStep.stepType.publishCatalog.gitEmail.placeholder")
+    }}
+    <p class="text-info text-small m-0">
+      {{t "newPipelineStep.stepType.publishCatalog.gitEmail.helpText" htmlSafe=true}}
+    </p>
   </div>
 </div>
 
 {{#advanced-section}}
-  <div class='row mb-20'>
-    <label class='acc-label pb-5'>{{t 'newPipelineStep.stepType.env'}}</label>
+  <div class="row mb-20">
+    <label class="acc-label pb-5">
+      {{t "newPipelineStep.stepType.env"}}
+    </label>
     {{form-key-value
       allowMultilineValue=false
       initialMap=config.env
       changed=(action (mut config.env))
       allowEmptyValue=false
-      normalHeader=(t 'newContainer.environment.label')
-      addActionLabel='newContainer.environment.addAction'
-      keyLabel='newContainer.environment.keyLabel'
-      keyPlaceholder='newContainer.environment.keyPlaceholder'
-      valueLabel='newContainer.environment.valueLabel'
-      valuePlaceholder='e.g. bar'
+      normalHeader=(t "newContainer.environment.label")
+      addActionLabel="newContainer.environment.addAction"
+      keyLabel="newContainer.environment.keyLabel"
+      keyPlaceholder="newContainer.environment.keyPlaceholder"
+      valueLabel="newContainer.environment.valueLabel"
+      valuePlaceholder="e.g. bar"
     }}
   </div>
 
-  {{pipeline-condition type="step" config=config.when}}
+  {{pipeline-condition
+    type="step"
+    config=config.when
+  }}
 {{/advanced-section}}
 {{top-errors errors=errors}}
-{{save-cancel saveDisabled=state.saveDisabled editing=editing createLabel="generic.add" save="save" cancel="cancel"}}
+{{save-cancel
+  saveDisabled=state.saveDisabled
+  editing=editing
+  createLabel="generic.add"
+  save=(action "save")
+  cancel=(action "cancel")
+}}

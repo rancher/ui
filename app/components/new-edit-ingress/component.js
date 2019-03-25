@@ -30,10 +30,14 @@ export default Component.extend(NewOrEdit, {
   },
   actions: {
     done() {
-      this.sendAction('done');
+      if (this.done) {
+        this.done();
+      }
     },
     cancel() {
-      this.sendAction('cancel');
+      if (this.cancel) {
+        this.cancel();
+      }
     },
 
     setLabels(labels) {

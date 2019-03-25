@@ -1,5 +1,5 @@
 <section class="horizontal-form container-fluid">
-  <h2>{{t 'editCertificate.title'}}</h2>
+  <h2>{{t "editCertificate.title"}}</h2>
 
   {{form-name-description
     model=primaryResource
@@ -10,12 +10,18 @@
   }}
 
   <div class="banner bg-info">
-    <div class="banner-icon"><i class="icon icon-info"></i></div>
-    <div class="banner-message pt-10 pb-10">{{t 'editCertificate.noteKeyWriteOnly'}}</div>
+    <div class="banner-icon">
+      <i class="icon icon-info"></i>
+    </div>
+    <div class="banner-message pt-10 pb-10">{{t "editCertificate.noteKeyWriteOnly"}}</div>
   </div>
 
   {{cru-certificate model=model}}
 </section>
 
 {{top-errors errors=errors}}
-{{save-cancel editing=true save="save" cancel="cancel"}}
+{{save-cancel
+  editing=true
+  save=(action "save")
+  cancel=(action "cancel")
+}}

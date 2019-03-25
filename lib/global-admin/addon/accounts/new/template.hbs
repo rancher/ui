@@ -1,36 +1,54 @@
 <section class="header clearfix">
-  <div class="pull-left"><h1>{{t 'accountsPage.new.header'}}</h1></div>
+  <div class="pull-left">
+    <h1>
+      {{t "accountsPage.new.header"}}
+    </h1>
+  </div>
 </section>
 
 <div class="row">
-    {{form-name-description
-      name=model.account.username
-      description=model.account.description
-      namePlaceholder="accountsPage.new.form.username.placeholder"
-      descriptionPlaceholder="accountsPage.new.form.description.placeholder"
-      nameLabel="accountsPage.new.form.username.labelText"
-      nameRequired=true
-    }}
+  {{form-name-description
+    name=model.account.username
+    description=model.account.description
+    namePlaceholder="accountsPage.new.form.username.placeholder"
+    descriptionPlaceholder="accountsPage.new.form.description.placeholder"
+    nameLabel="accountsPage.new.form.username.labelText"
+    nameRequired=true
+  }}
 </div>
 
 <div class="row">
   <div class="col span-12">
-    <label class="pb-5 acc-label">{{t 'accountsPage.new.form.password.labelText'}}{{field-required}}</label>
+    <label class="pb-5 acc-label">
+      {{t "accountsPage.new.form.password.labelText"}}{{field-required}}
+    </label>
     {{schema/input-password value=model.account.password}}
-    <div class="text-info">{{validateDescription}}</div>
+    <div class="text-info">
+      {{validateDescription}}
+    </div>
   </div>
   <div class="col span-12">
     <label>
-      {{input type="checkbox" checked=primaryResource.mustChangePassword}}
-      {{t 'editUser.form.password.mustChangePassword.new'}}
+      {{input
+        type="checkbox"
+        checked=primaryResource.mustChangePassword
+      }}
+      {{t "editUser.form.password.mustChangePassword.new"}}
     </label>
   </div>
 </div>
 
 <div class="row">
   <div class="col span-12">
-    <label class="pb-5 acc-label">{{t 'accountsPage.new.form.name.labelText'}}</label>
-    {{input type="text" value=model.account.name classNames="form-control" placeholder=(t 'accountsPage.new.form.name.placeholder')}}
+    <label class="pb-5 acc-label">
+      {{t "accountsPage.new.form.name.labelText"}}
+    </label>
+    {{input
+      type="text"
+      value=model.account.name
+      classNames="form-control"
+      placeholder=(t "accountsPage.new.form.name.placeholder")
+    }}
   </div>
 </div>
 
@@ -38,10 +56,13 @@
 
 <section class="horizontal-form container-fluid">
   {{form-global-roles
-      user=model.account
-      setSave=(action "setGlobalRoleSave")
+    user=model.account
+    setSave=(action "setGlobalRoleSave")
   }}
 </section>
 
 {{top-errors errors=errors}}
-{{save-cancel save="save" cancel="cancel"}}
+{{save-cancel
+  save=(action "save")
+  cancel=(action "cancel")
+}}

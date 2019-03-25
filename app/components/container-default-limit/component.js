@@ -27,24 +27,30 @@ export default Component.extend({
   },
 
   limitChanged: observer('requestsCpu', 'limitsCpu', 'requestsMemory', 'limitsMemory', function() {
-    const requestsCpu = get(this, 'requestsCpu');
-    const limitsCpu = get(this, 'limitsCpu');
+    const requestsCpu    = get(this, 'requestsCpu');
+    const limitsCpu      = get(this, 'limitsCpu');
     const requestsMemory = get(this, 'requestsMemory');
-    const limitsMemory = get(this, 'limitsMemory');
-    const out = {};
+    const limitsMemory   = get(this, 'limitsMemory');
+    const out            = {};
 
     if ( requestsCpu ) {
       set(out, 'requestsCpu', `${ requestsCpu }m`)
     }
+
     if ( limitsCpu ) {
       set(out, 'limitsCpu', `${ limitsCpu }m`)
     }
+
     if ( requestsMemory ) {
       set(out, 'requestsMemory', `${ requestsMemory }Mi`)
     }
+
     if ( limitsMemory ) {
       set(out, 'limitsMemory', `${ limitsMemory }Mi`)
     }
-    this.sendAction('changed', out);
+
+    if (this.changed) {
+      this.changed(out);
+    }
   })
 });

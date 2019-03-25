@@ -1,8 +1,12 @@
 <section class="header clearfix">
   {{#if isView}}
-    <div class="right-buttons">{{action-menu model=model size="sm"}}</div>
+    <div class="right-buttons">
+      {{action-menu model=model size="sm"}}
+    </div>
   {{/if}}
-  <h1>{{t (concat 'editDns.title.' mode) name=model.displayName}}</h1>
+  <h1>
+    {{t (concat "editDns.title." mode) name=model.displayName}}
+  </h1>
 </section>
 
 <section class="horizontal-form container-fluid">
@@ -30,27 +34,39 @@
   <div class="row">
     <div class="col span-6">
       <div>
-        <label class="acc-label">{{t 'editDns.recordType.label'}}</label>
+        <label class="acc-label">
+          {{t "editDns.recordType.label"}}
+        </label>
       </div>
       <div>
         {{#if editing}}
           <div class="radio">
-            <label>{{radio-button selection=recordType value="arecord"}}&nbsp;{{t 'editDns.recordType.arecord'}}</label>
+            <label class="acc-label">
+              {{radio-button selection=recordType value="arecord"}}&nbsp;{{t "editDns.recordType.arecord"}}
+            </label>
           </div>
           <div class="radio">
-            <label>{{radio-button selection=recordType value="cname"}}&nbsp;{{t 'editDns.recordType.cname'}}</label>
+            <label class="acc-label">
+              {{radio-button selection=recordType value="cname"}}&nbsp;{{t "editDns.recordType.cname"}}
+            </label>
           </div>
           <div class="radio">
-            <label>{{radio-button selection=recordType value="alias"}}&nbsp;{{t 'editDns.recordType.alias'}}</label>
+            <label class="acc-label">
+              {{radio-button selection=recordType value="alias"}}&nbsp;{{t "editDns.recordType.alias"}}
+            </label>
           </div>
           <div class="radio">
-            <label>{{radio-button selection=recordType value="workload"}}&nbsp;{{t 'editDns.recordType.workload'}}</label>
+            <label class="acc-label">
+              {{radio-button selection=recordType value="workload"}}&nbsp;{{t "editDns.recordType.workload"}}
+            </label>
           </div>
           <div class="radio">
-            <label>{{radio-button selection=recordType value="selector"}}&nbsp;{{t 'editDns.recordType.selector'}}</label>
+            <label class="acc-label">
+              {{radio-button selection=recordType value="selector"}}&nbsp;{{t "editDns.recordType.selector"}}
+            </label>
           </div>
         {{else}}
-          {{t (concat 'editDns.recordType.' recordType)}}
+          {{t (concat "editDns.recordType." recordType)}}
         {{/if}}
       </div>
     </div>
@@ -58,22 +74,27 @@
       {{#if (eq recordType "arecord")}}
         {{form-value-array
           initialValues=model.ipAddresses
-          addActionLabel='editDns.add.arecord'
-          valueLabel='editDns.target.arecord'
-          valuePlaceholder='editDns.placeholder.arecord'
+          addActionLabel="editDns.add.arecord"
+          valueLabel="editDns.target.arecord"
+          valuePlaceholder="editDns.placeholder.arecord"
           changed=(action (mut model.ipAddresses))
           editing=editing
         }}
       {{else if (eq recordType "cname")}}
-        <label class="acc-label">{{t 'editDns.target.cname'}}{{field-required}}</label>
-        {{input value=model.hostname placeholder=(t 'editDns.placeholder.cname')}}
+        <label class="acc-label">
+          {{t "editDns.target.cname"}}{{field-required}}
+        </label>
+        {{input
+          value=model.hostname
+          placeholder=(t "editDns.placeholder.cname")
+        }}
       {{else if (eq recordType "alias")}}
         {{#form-value-array
-          initialValues=model.targetDnsRecordIds
-          editing=(not isView)
-          addActionLabel='editDns.add.alias'
-          changed=(action "setAlias")
-          as |c row|
+           initialValues=model.targetDnsRecordIds
+           editing=(not isView)
+           addActionLabel="editDns.add.alias"
+           changed=(action "setAlias")
+           as |c row|
         }}
           {{new-select
             classNames="form-control"
@@ -90,11 +111,11 @@
         {{/form-value-array}}
       {{else if (eq recordType "workload")}}
         {{#form-value-array
-          editing=(not isView)
-          initialValues=model.targetWorkloadIds
-          addActionLabel='editDns.add.workload'
-          changed=(action "setWorkload")
-          as |c row|
+           editing=(not isView)
+           initialValues=model.targetWorkloadIds
+           addActionLabel="editDns.add.workload"
+           changed=(action "setWorkload")
+           as |c row|
         }}
           {{new-select
             classNames="form-control"
@@ -128,22 +149,24 @@
 
     <div class="row mb-20">
       <div class="col span-6">
-        <label class="acc-label pb-5">{{t 'editDns.kind.label'}}</label>
+        <label class="acc-label pb-5">
+          {{t "editDns.kind.label"}}
+        </label>
         {{new-select
-            classNames="form-control"
-            content=kindChoices
-            value=kind
-            localizedLabel=true
-            disabled=(not editing)
+          classNames="form-control"
+          content=kindChoices
+          value=kind
+          localizedLabel=true
+          disabled=(not editing)
         }}
       </div>
       {{#unless isHeadless}}
         <div class="col span-6">
           {{form-value-array
             initialValues=model.externalIPs
-            addActionLabel='editDns.externalIPs.addActionLabel'
-            valueLabel='editDns.externalIPs.value'
-            valuePlaceholder='editDns.externalIPs.placeholder'
+            addActionLabel="editDns.externalIPs.addActionLabel"
+            valueLabel="editDns.externalIPs.value"
+            valuePlaceholder="editDns.externalIPs.placeholder"
             changed=(action (mut model.externalIPs))
             editing=editing
           }}
@@ -152,60 +175,104 @@
     </div>
     {{#unless isHeadless}}
       <div class="row mb-20">
-        {{#if (or (eq model.kind 'LoadBalancer') (eq model.kind 'NodePort')) }}
+        {{#if (or (eq model.kind "LoadBalancer") (eq model.kind "NodePort")) }}
           <div class="col span-6">
-            <label class="acc-label">{{t 'editDns.externalTrafficPolicy.label'}}</label>
-            {{#input-or-display editable=editing value=model.externalTrafficPolicy}}
+            <label class="acc-label">
+              {{t "editDns.externalTrafficPolicy.label"}}
+            </label>
+            {{#input-or-display
+               editable=editing
+               value=model.externalTrafficPolicy
+            }}
               <div class="radio">
-                <label>{{radio-button selection=model.externalTrafficPolicy value="Local"}} {{t 'editDns.externalTrafficPolicy.local'}}</label>
+                <label>
+                  {{radio-button
+                    selection=model.externalTrafficPolicy
+                    value="Local"
+                  }} {{t "editDns.externalTrafficPolicy.local"}}
+                </label>
               </div>
               <div class="radio">
-                <label>{{radio-button selection=model.externalTrafficPolicy value="Cluster"}} {{t 'editDns.externalTrafficPolicy.cluster'}}</label>
+                <label>
+                  {{radio-button
+                    selection=model.externalTrafficPolicy
+                    value="Cluster"
+                  }} {{t "editDns.externalTrafficPolicy.cluster"}}
+                </label>
               </div>
             {{/input-or-display}}
           </div>
         {{/if}}
         <div class="col span-6">
-          <label class="acc-label">{{t 'editDns.publishNotReadyAddresses.label'}}</label>
-          {{#input-or-display editable=editing value=model.publishNotReadyAddresses}}
+          <label class="acc-label">
+            {{t "editDns.publishNotReadyAddresses.label"}}
+          </label>
+          {{#input-or-display
+             editable=editing
+             value=model.publishNotReadyAddresses
+          }}
             <div class="radio">
-              <label>{{radio-button selection=model.publishNotReadyAddresses value=false}} {{t 'editDns.publishNotReadyAddresses.readyOnly'}}</label>
+              <label>
+                {{radio-button
+                  selection=model.publishNotReadyAddresses
+                  value=false
+                }} {{t "editDns.publishNotReadyAddresses.readyOnly"}}
+              </label>
             </div>
             <div class="radio">
-              <label>{{radio-button selection=model.publishNotReadyAddresses value=true}} {{t 'editDns.publishNotReadyAddresses.all'}}</label>
+              <label>
+                {{radio-button
+                  selection=model.publishNotReadyAddresses
+                  value=true
+                }} {{t "editDns.publishNotReadyAddresses.all"}}
+              </label>
             </div>
           {{/input-or-display}}
         </div>
       </div>
     {{/unless}}
-    {{#if (eq model.kind 'LoadBalancer')}}
+    {{#if (eq model.kind "LoadBalancer")}}
       <div class="row mb-20">
         <div class="col span-6">
-          <label class="acc-label pb-5">{{t 'editDns.loadBalancerIP.label'}}</label>
-          {{#input-or-display editable=editing value=model.loadBalancerIP}}
+          <label class="acc-label pb-5">
+            {{t "editDns.loadBalancerIP.label"}}
+          </label>
+          {{#input-or-display
+             editable=editing
+             value=model.loadBalancerIP
+          }}
             {{input class="form-control input-sm"
-                type="text"
-                value=model.loadBalancerIP
-                placeholder=(t 'editDns.loadBalancerIP.placeholder')
+              type="text"
+              value=model.loadBalancerIP
+              placeholder=(t "editDns.loadBalancerIP.placeholder")
             }}
           {{/input-or-display}}
         </div>
         <div class="col span-6">
           {{form-value-array
             initialValues=model.loadBalancerSourceRanges
-            addActionLabel='editDns.loadBalancerSourceRanges.addActionLabel'
-            valueLabel='editDns.loadBalancerSourceRanges.value'
-            valuePlaceholder='editDns.loadBalancerSourceRanges.placeholder'
+            addActionLabel="editDns.loadBalancerSourceRanges.addActionLabel"
+            valueLabel="editDns.loadBalancerSourceRanges.value"
+            valuePlaceholder="editDns.loadBalancerSourceRanges.placeholder"
             changed=(action (mut model.loadBalancerSourceRanges))
             editing=editing
           }}
         </div>
       </div>
-      {{#if (eq model.externalTrafficPolicy 'Local')}}
+      {{#if (eq model.externalTrafficPolicy "Local")}}
         <div class="row mb-20">
           <div class="col span-6">
-            <label class="acc-label pb-5">{{t 'editDns.healthCheckNodePort.label'}}</label>
-            {{input-integer min="0" max="65535" step="1" value=model.healthCheckNodePort classNames="form-control" placeholder=(t 'editDns.healthCheckNodePort.placeholder')}}
+            <label class="acc-label pb-5">
+              {{t "editDns.healthCheckNodePort.label"}}
+            </label>
+            {{input-integer
+              min="0"
+              max="65535"
+              step="1"
+              value=model.healthCheckNodePort
+              classNames="form-control"
+              placeholder=(t "editDns.healthCheckNodePort.placeholder")
+            }}
           </div>
         </div>
       {{/if}}
@@ -213,45 +280,75 @@
   {{/if}}
 
   <hr class="mt-30 mb-30" />
-    {{form-service-ports model=model editing=editing}}
+
+  {{form-service-ports
+    model=model
+    editing=editing
+  }}
+
   <hr class="mt-30 mb-30" />
 
   {{#accordion-list showExpandAll=false as | al expandFn |}}
     {{form-labels-annotations
-        classNames="accordion-wrapper"
-        expandAll=al.expandAll
-        expandFn=expandFn
-        initialLabels=model.labels
-        model=model
-        editing=editing
-        setLabels=(action 'setLabels')
+      classNames="accordion-wrapper"
+      expandAll=al.expandAll
+      expandFn=expandFn
+      initialLabels=model.labels
+      model=model
+      editing=editing
+      setLabels=(action "setLabels")
     }}
     {{#if showSessionAffinity}}
       {{#accordion-list-item
-        title=(t 'editDns.sessionAffinity.title')
-        detail=(t 'editDns.sessionAffinity.detail')
-        expandAll=al.expandAll
-        expand=(action expandFn)
+         title=(t "editDns.sessionAffinity.title")
+         detail=(t "editDns.sessionAffinity.detail")
+         expandAll=al.expandAll
+         expand=(action expandFn)
       }}
         <div class="row box">
           <div class="col span-6">
-            <label class="acc-label">{{t 'editDns.sessionAffinity.label'}}</label>
+            <label class="acc-label">
+              {{t "editDns.sessionAffinity.label"}}
+            </label>
             {{#input-or-display editable=editing value=model.sessionAffinity}}
               <div class="radio">
-                <label>{{radio-button selection=model.sessionAffinity value="None"}} {{t 'generic.no'}}</label>
+                <label>
+                  {{radio-button
+                    selection=model.sessionAffinity
+                    value="None"
+                  }} {{t "generic.no"}}
+                </label>
               </div>
               <div class="radio">
-                <label>{{radio-button selection=model.sessionAffinity value="ClientIP"}} {{t 'generic.yes'}}</label>
+                <label>
+                  {{radio-button
+                    selection=model.sessionAffinity
+                    value="ClientIP"
+                  }} {{t "generic.yes"}}
+                </label>
               </div>
             {{/input-or-display}}
           </div>
           {{#if (eq model.sessionAffinity "ClientIP")}}
             <div class="col span-6">
-              <label class="acc-label">{{t 'editDns.sessionAffinityConfig.label'}}</label>
-              {{#input-or-display editable=editing value=timeoutSeconds classesForDisplay="text-muted form-control-static"}}
+              <label class="acc-label">
+                {{t "editDns.sessionAffinityConfig.label"}}
+              </label>
+              {{#input-or-display
+                 editable=editing
+                 value=timeoutSeconds
+                 classesForDisplay="text-muted form-control-static"
+              }}
                 <div class="input-group">
-                  {{input-integer min="1" max="86400" step="60" value=timeoutSeconds classNames="form-control" placeholder=(t 'editDns.sessionAffinityConfig.placeholder')}}
-                  <div class="input-group-addon bg-default">{{t 'generic.seconds'}}</div>
+                  {{input-integer
+                    min="1"
+                    max="86400"
+                    step="60"
+                    value=timeoutSeconds
+                    classNames="form-control"
+                    placeholder=(t "editDns.sessionAffinityConfig.placeholder")
+                  }}
+                  <div class="input-group-addon bg-default">{{t "generic.seconds"}}</div>
                 </div>
               {{/input-or-display}}
             </div>
@@ -264,5 +361,9 @@
 
 {{#if editing}}
   {{top-errors errors=errors}}
-  {{save-cancel editing=isEdit save="save" cancel="cancel"}}
+  {{save-cancel
+    editing=isEdit
+    save=(action "save")
+    cancel=(action "cancel")
+  }}
 {{/if}}

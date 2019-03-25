@@ -9,14 +9,20 @@
       {{#if hasBlock}}
         {{yield this row}}
       {{else if editing}}
-        {{input-paste pasted="pastedValues" class="form-control input-sm value" type="text" value=row.value placeholder=valuePlaceholder}}
+        {{input-paste
+          pasted=(action "pastedValues")
+          class="form-control input-sm value"
+          type="text"
+          value=row.value
+          placeholder=valuePlaceholder
+        }}
       {{else}}
         {{row.value}}
       {{/if}}
     </span>
     {{#if editing}}
       <span class="input-group-btn">
-        <button class="btn bg-primary btn-sm" {{action "remove" row}}><i class="icon icon-minus"/><span class="sr-only">{{t 'generic.remove'}}</span></button>
+        <button class="btn bg-primary btn-sm" {{action "remove" row}}><i class="icon icon-minus"/><span class="sr-only">{{t "generic.remove"}}</span></button>
       </span>
     {{/if}}
     </div>
@@ -33,7 +39,7 @@
   {{#if ary.length}}
     {{#if showProTip}}
       <div class="protip pt-10">
-        {{t 'formValueArray.protip'}}
+        {{t "formValueArray.protip"}}
       </div>
     {{/if}}
   {{/if}}

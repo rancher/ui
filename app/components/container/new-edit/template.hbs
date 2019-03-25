@@ -1,5 +1,7 @@
 <section class="header clearfix">
-  <h1>{{header}}</h1>
+  <h1>
+    {{header}}
+  </h1>
 </section>
 
 <div class="row">
@@ -17,12 +19,24 @@
   </div>
   <div class="col span-11-of-23 mt-0 mb-0 offset-1-of-23">
     {{#if isSidekick}}
-      <label class="acc-label">{{t "newContainer.containerType.title"}}</label>
+      <label class="acc-label">
+        {{t "newContainer.containerType.title"}}
+      </label>
       <div class="radio">
-        <label>{{radio-button selection=launchConfig.initContainer value=false}} {{t "newContainer.containerType.standard"}}</label>
+        <label>
+          {{radio-button
+            selection=launchConfig.initContainer
+            value=false
+          }} {{t "newContainer.containerType.standard"}}
+        </label>
       </div>
       <div class="radio">
-        <label>{{radio-button selection=launchConfig.initContainer value=true}} {{t "newContainer.containerType.init"}}</label>
+        <label>
+          {{radio-button
+            selection=launchConfig.initContainer
+            value=true
+          }} {{t "newContainer.containerType.init"}}
+        </label>
       </div>
     {{else}}
       {{container/form-scale
@@ -86,12 +100,12 @@
   {{/if}}
 
   {{#accordion-list-item
-    title=(t "newContainer.environment.label")
-    detail=(t "newContainer.environment.detail" appName=settings.appName)
-    status=status
-    statusClass=statusClass
-    expandAll=al.expandAll
-    expand=(action expandFn)
+     title=(t "newContainer.environment.label")
+     detail=(t "newContainer.environment.detail" appName=settings.appName)
+     status=status
+     statusClass=statusClass
+     expandAll=al.expandAll
+     expand=(action expandFn)
   }}
     {{form-key-value
       initialMap=launchConfig.environment
@@ -133,20 +147,24 @@
   {{/unless}}
 
   {{#accordion-list-item
-    title=(t "formHealthCheck.title")
-    detail=(t "formHealthCheck.detail" appName=settings.appName)
-    status=status
-    statusClass=statusClass
-    expandAll=al.expandAll
-    expand=(action expandFn)
+     title=(t "formHealthCheck.title")
+     detail=(t "formHealthCheck.detail" appName=settings.appName)
+     status=status
+     statusClass=statusClass
+     expandAll=al.expandAll
+     expand=(action expandFn)
   }}
     <div class="row">
       <div class="col span-6 mt-0 mb-0">
-        <label class="acc-label">{{t "formHealthCheck.readiness"}}</label>
+        <label class="acc-label">
+          {{t "formHealthCheck.readiness"}}
+        </label>
       </div>
       <div class="col span-6 mt-0 mb-0">
         {{#if separateLivenessCheck}}
-          <label class="acc-label">{{t "formHealthCheck.liveness"}}</label>
+          <label class="acc-label">
+            {{t "formHealthCheck.liveness"}}
+          </label>
           <div class="pull-right text-small">
             <button class="btn bg-transparent p-0" {{action "toggleSeparateLivenessCheck"}}>{{t "formHealthCheck.combinedLivenessCheck"}}</button>
           </div>
@@ -160,21 +178,21 @@
     <div class="row">
       <div class="col {{if separateLivenessCheck "span-6" "span-12"}}">
         {{form-healthcheck
-            initialCheck=launchConfig.readinessProbe
-            changed=(action (mut launchConfig.readinessProbe))
-            errors=readyCheckErrors
-            editing=true
+          initialCheck=launchConfig.readinessProbe
+          changed=(action (mut launchConfig.readinessProbe))
+          errors=readyCheckErrors
+          editing=true
         }}
       </div>
       {{#if separateLivenessCheck}}
         <div class="col span-6">
           {{form-healthcheck
-              initialCheck=launchConfig.livenessProbe
-              changed=(action (mut launchConfig.livenessProbe))
-              errors=liveCheckErrors
-              editing=true
-              successMustBeOne=true
-              isLiveness=true
+            initialCheck=launchConfig.livenessProbe
+            changed=(action (mut launchConfig.livenessProbe))
+            errors=liveCheckErrors
+            editing=true
+            successMustBeOne=true
+            isLiveness=true
           }}
         </div>
       {{/if}}
@@ -206,25 +224,25 @@
 
   {{#advanced-section advanced=advanced}}
     {{container/form-command
-        classNames="accordion-wrapper"
-        instance=launchConfig
-        scaleMode=scaleMode
-        errors=commandErrors
-        service=service
-        isSidekick=isSidekick
-        expandAll=al.expandAll
-        expandFn=expandFn
+      classNames="accordion-wrapper"
+      instance=launchConfig
+      scaleMode=scaleMode
+      errors=commandErrors
+      service=service
+      isSidekick=isSidekick
+      expandAll=al.expandAll
+      expandFn=expandFn
     }}
 
     {{#unless isSidekick}}
       {{container/form-networking
-          classNames="accordion-wrapper"
-          instance=launchConfig
-          errors=networkingErrors
-          service=service
-          editing=true
-          expandAll=al.expandAll
-          expandFn=expandFn
+        classNames="accordion-wrapper"
+        instance=launchConfig
+        errors=networkingErrors
+        service=service
+        editing=true
+        expandAll=al.expandAll
+        expandFn=expandFn
       }}
 
       {{form-labels-annotations
@@ -240,14 +258,14 @@
     {{/unless}}
 
     {{container/form-security
-        instance=launchConfig
-        service=service
-        errors=securityErrors
-        isSidekick=isSidekick
-        editing=true
-        expandAll=al.expandAll
-        expandFn=expandFn
-        expanded=securitySectionExpanded
+      instance=launchConfig
+      service=service
+      errors=securityErrors
+      isSidekick=isSidekick
+      editing=true
+      expandAll=al.expandAll
+      expandFn=expandFn
+      expanded=securitySectionExpanded
     }}
 
     {{#unless isSidekick}}
@@ -267,6 +285,6 @@
 {{top-errors errors=errors}}
 {{save-cancel
   createLabel=(if isUpgrade "newContainer.saveUpgrade" "newContainer.saveNew")
-  save="save"
-  cancel="cancel"
+  save=(action "save")
+  cancel=(action "cancel")
 }}

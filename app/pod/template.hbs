@@ -1,7 +1,7 @@
 <section class="header clearfix">
   <div class="pull-left">
     <h1 class="vertical-middle">
-      {{t 'podPage.header' name=model.displayName}}
+      {{t "podPage.header" name=model.displayName}}
     </h1>
   </div>
   <div class="right-buttons">
@@ -10,7 +10,7 @@
   </div>
 </section>
 {{#if model.description}}
-  {{banner-message color='bg-secondary mb-0 mt-10' message=(linkify model.description)}}
+  {{banner-message color="bg-secondary mb-0 mt-10" message=(linkify model.description)}}
 {{/if}}
 
 {{#if model.showTransitioningMessage}}
@@ -19,66 +19,66 @@
 
 <div class="row banner bg-info basics">
   <div class="vertical-middle">
-    <label class="acc-label vertical-middle p-0">{{t 'servicePage.multistat.namespace'}}:</label>
+    <label class="acc-label vertical-middle p-0">{{t "servicePage.multistat.namespace"}}:</label>
     {{#if model.namespaceId}}
       {{#copy-inline clipboardText=model.namespaceId}}
         {{model.namespaceId}}
       {{/copy-inline}}
     {{else}}
-      {{t 'generic.none'}}
+      {{t "generic.none"}}
     {{/if}}
   </div>
   <div class="vertical-middle">
-    <label class="acc-label vertical-middle p-0">{{t 'podPage.image'}}:</label>
-      {{#tooltip-element
-          type="tooltip-basic"
-          tooltipTemplate='tooltip-multi-lines'
-          model=model.displayImages
-          inlineBlock=true
-      }}
-        {{model.displayImage}}
-      {{/tooltip-element}}
+    <label class="acc-label vertical-middle p-0">{{t "podPage.image"}}:</label>
+    {{#tooltip-element
+       type="tooltip-basic"
+       tooltipTemplate="tooltip-multi-lines"
+       model=model.displayImages
+       inlineBlock=true
+    }}
+      {{model.displayImage}}
+    {{/tooltip-element}}
   </div>
   <div class="vertical-middle">
-    <label class="acc-label vertical-middle p-0">{{t 'dnsPage.type.workload'}}:</label>
+    <label class="acc-label vertical-middle p-0">{{t "dnsPage.type.workload"}}:</label>
     {{#if model.workload}}
       {{#link-to "workload" model.workloadId}}{{model.workloadId}}{{/link-to}}
     {{else if model.workloadId}}
       {{model.workloadId}}
     {{else}}
-      {{t 'generic.none'}}
+      {{t "generic.none"}}
     {{/if}}
   </div>
 </div>
 
 <div class="row banner bg-info basics">
   <div class="vertical-middle">
-    <label class="acc-label vertical-middle p-0">{{t 'podPage.podIp'}}:</label>
+    <label class="acc-label vertical-middle p-0">{{t "podPage.podIp"}}:</label>
     {{#if model.displayIp}}
       {{#copy-inline clipboardText=model.displayIp}}
         {{model.displayIp}}
       {{/copy-inline}}
     {{else}}
-      {{t 'generic.none'}}
+      {{t "generic.none"}}
     {{/if}}
   </div>
   <div class="vertical-middle">
-    <label class="acc-label vertical-middle p-0">{{t 'podPage.nodeIp'}}:</label>
+    <label class="acc-label vertical-middle p-0">{{t "podPage.nodeIp"}}:</label>
     {{#if (and model.node.id model.node.clusterId)}}
       <div class="inline">
-        <a href="{{href-to 'authenticated.cluster.monitoring.node-detail' model.node.clusterId model.node.id}}">{{model.node.displayName}}</a>
+        <a href="{{href-to "authenticated.cluster.monitoring.node-detail" model.node.clusterId model.node.id}}">{{model.node.displayName}}</a>
         {{#if (or model.node.externalIpAddress model.node.ipAddress)}}
           {{node-ip model=model.node}}
         {{/if}}
       </div>
     {{else}}
-      {{t 'generic.unknown'}}
+      {{t "generic.unknown"}}
     {{/if}}
   </div>
   <div class="vertical-middle">
-    <label class="acc-label vertical-middle p-0">{{t 'generic.created'}}:</label>
+    <label class="acc-label vertical-middle p-0">{{t "generic.created"}}:</label>
     {{date-calendar model.created}}
-    <div class="text-muted text-small">{{t 'generic.restarts'}} {{model.restarts}}</div>
+    <div class="text-muted text-small">{{t "generic.restarts"}} {{model.restarts}}</div>
   </div>
 </div>
 
@@ -91,16 +91,16 @@
 
   {{#if scope.currentCluster.isMonitoringReady}}
     {{#metrics-summary
-      expandAll=al.expandAll
-      expandFn=expandFn
-      grafanaUrl=model.grafanaUrl
-      title=(t "metricsAction.sections.pod")}}
+       expandAll=al.expandAll
+       expandFn=expandFn
+       grafanaUrl=model.grafanaUrl
+       title=(t "metricsAction.sections.pod")}}
       {{pod-metrics resourceId=model.id}}
     {{/metrics-summary}}
   {{/if}}
 
   {{resource-event-list
-    resourceType=(t 'generic.pod')
+    resourceType=(t "generic.pod")
     expandAll=al.expandAll
     expandFn=expandFn
     namespaceId=model.namespaceId
@@ -109,7 +109,7 @@
   }}
 
   {{resource-condition-list
-    resourceType=(t 'generic.pod')
+    resourceType=(t "generic.pod")
     conditions=model.status.conditions
     expandAll=al.expandAll
     expandFn=expandFn

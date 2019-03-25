@@ -90,7 +90,7 @@ export default Component.extend({
   scaleChanged: observer('asInteger', function() {
     let cur = get(this, 'asInteger');
 
-    this.sendAction('setScale', cur);
+    this.setScale(cur);
   }),
 
   scaleModeChanged: observer('scaleMode', function() {
@@ -127,4 +127,8 @@ export default Component.extend({
   canChangeScale: computed('scaleMode', function() {
     return ['deployment', 'replicaSet', 'daemonSet', 'replicationController', 'statefulSet'].includes(get(this, 'scaleMode'));
   }),
+
+  setScale() {
+    throw new Error('setScale action is required!');
+  },
 });

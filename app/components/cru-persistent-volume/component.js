@@ -121,7 +121,9 @@ export default Component.extend(ViewNewEdit, {
   },
 
   doneSaving() {
-    this.sendAction('cancel');
+    if (this.cancel) {
+      this.cancel();
+    }
   },
 
 });

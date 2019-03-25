@@ -1,4 +1,9 @@
-<h2>{{t 'moveNamespace.title' count=model.length name=model.firstObject.displayName}}</h2>
+<h2>
+  {{t "moveNamespace.title"
+    count=model.length
+    name=model.firstObject.displayName
+  }}
+</h2>
 
 {{#if (gt model.length 1)}}
   <ul class="list-unstyled">
@@ -8,16 +13,24 @@
   </ul>
 {{/if}}
 
-<h2 class="pt-20">{{t 'moveNamespace.to'}}</h2>
+<h2 class="pt-20">
+  {{t "moveNamespace.to"}}
+</h2>
 <ul class="list-unstyled pl-30">
   <label>
-    {{radio-button selection=projectId value=null}}
-    <b>{{t 'generic.none'}}</b>
+    {{radio-button
+      selection=projectId
+      value=null
+    }}
+    <b>{{t "generic.none"}}</b>
   </label>
   {{#each allProjects as |project|}}
     <li>
       <label>
-        {{radio-button selection=projectId value=project.id}}
+        {{radio-button
+          selection=projectId
+          value=project.id
+        }}
         {{project.displayName}}
       </label>
     </li>
@@ -25,4 +38,10 @@
 </ul>
 
 {{top-errors errors=errors}}
-{{save-cancel editing=true saving=saving editLabel="moveNamespace.actionLabel" save="save" cancel="cancel"}}
+{{save-cancel
+  editing=true
+  saving=saving
+  editLabel="moveNamespace.actionLabel"
+  save=(action "save")
+  cancel=(action "cancel")
+}}

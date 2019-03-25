@@ -3,7 +3,7 @@
     <div class="banner bg-warning">
       <div class="banner-icon"><span class="icon icon-alert"></span></div>
       <div class="banner-message">
-        <p>{{t 'authPage.saml.header.disabled.label' providerName=(t providerNamePath)}}</p>
+        <p>{{t "authPage.saml.header.disabled.label" providerName=(t providerNamePath)}}</p>
       </div>
     </div>
   {{/unless}}
@@ -12,51 +12,79 @@
 {{#accordion-list showExpandAll=false  as |al expandFn|}}
   {{#if (or (not isEnabled) editing)}}
     {{#accordion-list-item
-         classNames="mt-30"
-         detail=(t 'authPage.saml.disabled.headerDetail' providerName=(t providerNamePath))
-         expand=(action expandFn)
-         expandAll=al.expandAll
-         expandOnInit=true
-         expanded=true
-         showExpand=false
-         title=(t 'authPage.saml.disabled.header' providerName=(t providerNamePath))
+       classNames="mt-30"
+       detail=(t "authPage.saml.disabled.headerDetail" providerName=(t providerNamePath))
+       expand=(action expandFn)
+       expandAll=al.expandAll
+       expandOnInit=true
+       expanded=true
+       showExpand=false
+       title=(t "authPage.saml.disabled.header" providerName=(t providerNamePath))
     }}
       <section>
         <div class="row">
           <div class="col span-6">
-            <label class="acc-label pb-5">{{t 'authPage.saml.disabled.name.labelText'}}{{field-required}}</label>
-            {{input type="text" value=authConfig.displayNameField classNames="form-control"}}
+            <label class="acc-label pb-5">
+              {{t "authPage.saml.disabled.name.labelText"}}{{field-required}}
+            </label>
+            {{input
+              type="text"
+              value=authConfig.displayNameField
+              classNames="form-control"
+            }}
           </div>
           <div class="col span-6">
-            <label class="acc-label pb-5">{{t 'authPage.saml.disabled.username.labelText'}}{{field-required}}</label>
-            {{input type="text" value=authConfig.userNameField classNames="form-control"}}
+            <label class="acc-label pb-5">
+              {{t "authPage.saml.disabled.username.labelText"}}{{field-required}}
+            </label>
+            {{input
+              type="text"
+              value=authConfig.userNameField
+              classNames="form-control"
+            }}
           </div>
         </div>
         <div class="row">
           <div class="col span-6">
-            <label class="acc-label pb-5">{{t 'authPage.saml.disabled.uid.labelText'}}{{field-required}}</label>
-            {{input type="text" value=authConfig.uidField classNames="form-control"}}
+            <label class="acc-label pb-5">
+              {{t "authPage.saml.disabled.uid.labelText"}}{{field-required}}
+            </label>
+            {{input
+              type="text"
+              value=authConfig.uidField
+              classNames="form-control"
+            }}
           </div>
           <div class="col span-6">
-            <label class="acc-label pb-5">{{t 'authPage.saml.disabled.groups.labelText'}}{{field-required}}</label>
-            {{input type="text" value=authConfig.groupsField classNames="form-control"}}
+            <label class="acc-label pb-5">
+              {{t "authPage.saml.disabled.groups.labelText"}}{{field-required}}
+            </label>
+            {{input
+              type="text"
+              value=authConfig.groupsField
+              classNames="form-control"
+            }}
           </div>
         </div>
         <div class="row">
           <div class="col span-6">
-            <label class="acc-label pb-5">{{t 'authPage.saml.disabled.rancherApiHost.labelText' appName=settings.appName}}{{field-required}}</label>
+            <label class="acc-label pb-5">
+              {{t "authPage.saml.disabled.rancherApiHost.labelText" appName=settings.appName}}{{field-required}}
+            </label>
             <div class="input-group">
               <span class="input-group-addon bg-default">
-                <label>{{protocol}}</label>
+                <label>
+                  {{protocol}}
+                </label>
               </span>
 
               {{input-url
-                  classNames="form-control"
-                  id="server-url"
-                  isInvalid=(action (mut urlInvalid))
-                  urlWarning=(action (mut urlWarning))
-                  urlError=(action (mut urlError))
-                  value=apiHost
+                classNames="form-control"
+                id="server-url"
+                isInvalid=(action (mut urlInvalid))
+                urlWarning=(action (mut urlWarning))
+                urlError=(action (mut urlError))
+                value=apiHost
               }}
             </div>
             <div>
@@ -67,8 +95,8 @@
                     <div class="banner-message">
                       <p>
                         {{t error.msg
-                            activeValue=authConfig.rancherApiHost
-                            htmlSafe=true
+                          activeValue=authConfig.rancherApiHost
+                          htmlSafe=true
                         }}
                       </p>
                     </div>
@@ -83,8 +111,8 @@
                   <div class="banner-message">
                     <p>
                       {{t warning.msg
-                          activeValue=authConfig.rancherApiHost
-                          htmlSafe=true
+                        activeValue=authConfig.rancherApiHost
+                        htmlSafe=true
                       }}
                     </p>
                   </div>
@@ -96,40 +124,46 @@
         <div class="row pt-20">
           <div class="col span-4">
             <div class="inline-form">
-              <label class="acc-label pb-5">{{t 'newCertificate.key.label'}}{{field-required}}</label>
+              <label class="acc-label pb-5">
+                {{t "newCertificate.key.label"}}{{field-required}}
+              </label>
               {{input-text-file
-                  accept="text/*, .pem, .pkey, .key"
-                  canChangeName=false
-                  classNames="box"
-                  minHeight=60
-                  placeholder="newCertificate.key.placeholder"
-                  value=authConfig.spKey
+                accept="text/*, .pem, .pkey, .key"
+                canChangeName=false
+                classNames="box"
+                minHeight=60
+                placeholder="newCertificate.key.placeholder"
+                value=authConfig.spKey
               }}
             </div>
           </div>
           <div class="col span-4">
             <div class="inline-form">
-              <label class="acc-label pb-5">{{t 'newCertificate.cert.label'}}{{field-required}}</label>
+              <label class="acc-label pb-5">
+                {{t "newCertificate.cert.label"}}{{field-required}}
+              </label>
               {{input-text-file
-                  accept="text/*, .pem, .crt"
-                  canChangeName=false
-                  classNames="box"
-                  minHeight=60
-                  placeholder="newCertificate.cert.placeholder"
-                  value=authConfig.spCert
+                accept="text/*, .pem, .crt"
+                canChangeName=false
+                classNames="box"
+                minHeight=60
+                placeholder="newCertificate.cert.placeholder"
+                value=authConfig.spCert
               }}
             </div>
           </div>
           <div class="col span-4">
             <div class="inline-form">
-              <label class="acc-label pb-5">{{t 'newCertificate.metaXML.label'}}{{field-required}}</label>
+              <label class="acc-label pb-5">
+                {{t "newCertificate.metaXML.label"}}{{field-required}}
+              </label>
               {{input-text-file
-                  accept="text/xml"
-                  canChangeName=false
-                  classNames="box"
-                  minHeight=60
-                  placeholder="newCertificate.metaXML.placeholder"
-                  value=authConfig.idpMetadataContent
+                accept="text/xml"
+                canChangeName=false
+                classNames="box"
+                minHeight=60
+                placeholder="newCertificate.metaXML.placeholder"
+                value=authConfig.idpMetadataContent
               }}
             </div>
           </div>
@@ -139,25 +173,25 @@
 
 
     {{#accordion-list-item
-         detail=(t 'authPage.github.testAuth.subtext')
-         expand=(action expandFn)
-         expandAll=al.expandAll
-         expandOnInit=true
-         expanded=true
-         showExpand=false
-         title=(t 'authPage.saml.disabled.testAuth.header')
+       detail=(t "authPage.github.testAuth.subtext")
+       expand=(action expandFn)
+       expandAll=al.expandAll
+       expandOnInit=true
+       expanded=true
+       showExpand=false
+       title=(t "authPage.saml.disabled.testAuth.header")
     }}
       <section>
         {{top-errors errors=errors}}
         <div class="row">
           <div class="col span-12">
             {{save-cancel
-                editing=editing
-                save="authTest"
-                cancel="cancel"
-                createLabel=createLabel
-                savingLabel=saveLabel
-                saving=testing
+              editing=editing
+              save=(action "authTest")
+              cancel=(action "cancel")
+              createLabel=createLabel
+              savingLabel=saveLabel
+              saving=testing
             }}
           </div>
         </div>
@@ -165,22 +199,22 @@
     {{/accordion-list-item}}
   {{else}}
     {{#accordion-list-item
-         classNames="mt-30"
-         expand=(action expandFn)
-         expandAll=al.expandAll
-         expandOnInit=true
-         expanded=true
-         showExpand=false
-         title=(t 'authPage.saml.accessEnabled.header')
+       classNames="mt-30"
+       expand=(action expandFn)
+       expandAll=al.expandAll
+       expandOnInit=true
+       expanded=true
+       showExpand=false
+       title=(t "authPage.saml.accessEnabled.header")
     }}
       <section class="">
         <div class="clearfix">
           <div class="pull-right">
             <button class="btn btn-sm bg-primary" {{action "edit"}}>
-              {{t 'generic.edit'}}
+              {{t "generic.edit"}}
             </button>
             <button class="btn btn-sm right-divider-btn bg-error" {{action "disable"}}>
-              {{t 'authPage.saml.accessEnabled.disable'}}
+              {{t "authPage.saml.accessEnabled.disable"}}
             </button>
           </div>
         </div>
@@ -189,11 +223,21 @@
 
         <div class="row">
           <div class="col span-12 force-wrap">
-            <div class="mb-10"><b>{{t 'authPage.saml.disabled.name.display'}} </b> <span class="text-muted">{{authConfig.displayNameField}}</span></div>
-            <div class="mb-10"><b>{{t 'authPage.saml.disabled.username.display'}} </b> <span class="text-muted">{{authConfig.userNameField}}</span></div>
-            <div class="mb-10"><b>{{t 'authPage.saml.disabled.uid.display'}} </b> <span class="text-muted">{{authConfig.uidField}}</span></div>
-            <div class="mb-10"><b>{{t 'authPage.saml.disabled.rancherApiHost.display' appName=settings.appName}} </b> <span class="text-muted">{{authConfig.rancherApiHost}}</span></div>
-            <div class="mb-10"><b>{{t 'authPage.saml.disabled.groups.display'}} </b> <span class="text-muted">{{authConfig.groupsField}}</span></div>
+            <div class="mb-10">
+              <b>{{t "authPage.saml.disabled.name.display"}} </b> <span class="text-muted">{{authConfig.displayNameField}}</span>
+            </div>
+            <div class="mb-10">
+              <b>{{t "authPage.saml.disabled.username.display"}} </b> <span class="text-muted">{{authConfig.userNameField}}</span>
+            </div>
+            <div class="mb-10">
+              <b>{{t "authPage.saml.disabled.uid.display"}} </b> <span class="text-muted">{{authConfig.uidField}}</span>
+            </div>
+            <div class="mb-10">
+              <b>{{t "authPage.saml.disabled.rancherApiHost.display" appName=settings.appName}} </b> <span class="text-muted">{{authConfig.rancherApiHost}}</span>
+            </div>
+            <div class="mb-10">
+              <b>{{t "authPage.saml.disabled.groups.display"}} </b> <span class="text-muted">{{authConfig.groupsField}}</span>
+            </div>
           </div>
         </div>
       </section>
@@ -202,19 +246,19 @@
 
   {{#if isEnabled}}
     {{#accordion-list-item
-         classNames="mt-30"
-         detail=(t 'siteAccess.helpText' appName=settings.appName htmlSafe=true)
-         expand=(action expandFn)
-         expandAll=al.expandAll
-         expandOnInit=true
-         expanded=true
-         showExpand=false
-         title=(t 'siteAccess.header')
+       classNames="mt-30"
+       detail=(t "siteAccess.helpText" appName=settings.appName htmlSafe=true)
+       expand=(action expandFn)
+       expandAll=al.expandAll
+       expandOnInit=true
+       expanded=true
+       showExpand=false
+       title=(t "siteAccess.header")
     }}
       {{site-access
-          model=authConfig
-          principals=model.principals
-          collection='siteAccess.organizations'
+        model=authConfig
+        principals=model.principals
+        collection="siteAccess.organizations"
       }}
     {{/accordion-list-item}}
   {{/if}}

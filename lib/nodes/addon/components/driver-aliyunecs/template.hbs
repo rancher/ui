@@ -1,35 +1,68 @@
 {{#accordion-list showExpandAll=false as | al expandFn |}}
-  <div class="over-hr"><span>{{driverOptionsTitle}}</span></div>
+  <div class="over-hr">
+    <span>
+      {{driverOptionsTitle}}
+    </span>
+  </div>
 
   {{#accordion-list-item
-    title=(t 'nodeDriver.aliyunecs.accountSection.label')
-    detail=(t 'nodeDriver.aliyunecs.accountSection.detail')
-    expandAll=expandAll
-    expand=(action expandFn)
-    expandOnInit=true
+     title=(t "nodeDriver.aliyunecs.accountSection.label")
+     detail=(t "nodeDriver.aliyunecs.accountSection.detail")
+     expandAll=expandAll
+     expand=(action expandFn)
+     expandOnInit=true
   }}
     <div class="row">
       <div class="col span-6">
-        <label class="acc-label">{{t 'nodeDriver.aliyunecs.accessKey.label'}}{{field-required}}</label>
-        {{#input-or-display editable=(eq step 1) value=config.accessKeyId}}
-          {{input type="text" class="form-control" value=config.accessKeyId placeholder=(t 'nodeDriver.aliyunecs.accessKey.placeholder')}}
+        <label class="acc-label">
+          {{t "nodeDriver.aliyunecs.accessKey.label"}}{{field-required}}
+        </label>
+        {{#input-or-display
+           editable=(eq step 1)
+           value=config.accessKeyId
+        }}
+          {{input
+            type="text"
+            class="form-control"
+            value=config.accessKeyId
+            placeholder=(t "nodeDriver.aliyunecs.accessKey.placeholder")
+          }}
         {{/input-or-display}}
       </div>
       <div class="col span-6">
-        <label class="acc-label">{{t 'nodeDriver.aliyunecs.accessKeySecret.label'}}{{field-required}}</label>
+        <label class="acc-label">
+          {{t "nodeDriver.aliyunecs.accessKeySecret.label"}}{{field-required}}
+        </label>
         {{#if (eq step 1)}}
-          {{input type="password" class="form-control" value=config.accessKeySecret placeholder=(t 'nodeDriver.aliyunecs.accessKeySecret.placeholder')}}
+          {{input
+            type="password"
+            class="form-control"
+            value=config.accessKeySecret
+            placeholder=(t "nodeDriver.aliyunecs.accessKeySecret.placeholder")
+          }}
         {{else}}
-          <div class="text-muted text-italic">{{t 'nodeDriver.aliyunecs.accessKeySecret.provided'}}</div>
+          <div class="text-muted text-italic">
+            {{t "nodeDriver.aliyunecs.accessKeySecret.provided"}}
+          </div>
         {{/if}}
       </div>
     </div>
 
     <div class="row">
       <div class="col span-6">
-        <label class="acc-label">{{t 'nodeDriver.aliyunecs.apiEndpoint.label'}}</label>
-        {{#input-or-display editable=(eq step 1) value=config.apiEndpoint}}
-          {{input type="text" class="form-control" value=config.apiEndpoint placeholder=(t 'nodeDriver.aliyunecs.apiEndpoint.placeholder')}}
+        <label class="acc-label">
+          {{t "nodeDriver.aliyunecs.apiEndpoint.label"}}
+        </label>
+        {{#input-or-display
+           editable=(eq step 1)
+           value=config.apiEndpoint
+        }}
+          {{input
+            type="text"
+            class="form-control"
+            value=config.apiEndpoint
+            placeholder=(t "nodeDriver.aliyunecs.apiEndpoint.placeholder")
+          }}
         {{/input-or-display}}
       </div>
     </div>
@@ -38,49 +71,86 @@
   {{#if (eq step 1)}}
     {{top-errors errors=errors}}
     {{save-cancel
-      save="alyLogin"
-      cancel="cancel"
+      save=(action "alyLogin")
+      cancel=(action "cancel")
       createLabel="nodeDriver.aliyunecs.accountSection.next"
       savingLabel="nodeDriver.aliyunecs.accountSection.loading"
     }}
   {{/if}}
 
-  <div class="{{unless (gte step 2) 'hide'}}">
-    {{#accordion-list-item 
-      title=(t 'nodeDriver.aliyunecs.networkSection.label')
-      detail=(t 'nodeDriver.aliyunecs.networkSection.detail')
-      expandAll=expandAll
-      expand=(action expandFn)
-      expandOnInit=true
+  <div class="{{unless (gte step 2) "hide"}}">
+    {{#accordion-list-item
+       title=(t "nodeDriver.aliyunecs.networkSection.label")
+       detail=(t "nodeDriver.aliyunecs.networkSection.detail")
+       expandAll=expandAll
+       expand=(action expandFn)
+       expandOnInit=true
     }}
       <div class="row">
         <div class="col span-6">
-          <label class="acc-label">{{t 'nodeDriver.aliyunecs.region.label'}}</label>
+          <label class="acc-label">
+            {{t "nodeDriver.aliyunecs.region.label"}}
+          </label>
           {{#input-or-display editable=(eq step 2) value=config.region}}
-            {{new-select classNames="form-control" content=regions value=config.region}}
+            {{new-select
+              classNames="form-control"
+              content=regions
+              value=config.region
+            }}
           {{/input-or-display}}
         </div>
         <div class="col span-6">
-          <label class="acc-label">{{t 'nodeDriver.aliyunecs.zone.label'}}</label>
+          <label class="acc-label">
+            {{t "nodeDriver.aliyunecs.zone.label"}}
+          </label>
           {{#input-or-display editable=(eq step 2) value=config.zone}}
-            {{new-select classNames="form-control" content=zones value=config.zone optionLabelPath='raw.LocalName' prompt="nodeDriver.aliyunecs.zone.prompt" localizedPrompt=true}}
+            {{new-select
+              classNames="form-control"
+              content=zones
+              value=config.zone
+              optionLabelPath="raw.LocalName"
+              prompt="nodeDriver.aliyunecs.zone.prompt"
+              localizedPrompt=true
+            }}
           {{/input-or-display}}
         </div>
       </div>
 
       <div class="row">
         <div class="col span-6">
-          <label class="acc-label">{{t 'nodeDriver.aliyunecs.vpcId.label'}}</label>
+          <label class="acc-label">
+            {{t "nodeDriver.aliyunecs.vpcId.label"}}
+          </label>
           {{#input-or-display editable=(eq step 2) value=config.vpcId}}
-            {{new-select classNames="form-control" content=vpcs value=config.vpcId prompt="nodeDriver.aliyunecs.vpcId.prompt" localizedPrompt=true}}
+            {{new-select
+              classNames="form-control"
+              content=vpcs
+              value=config.vpcId
+              prompt="nodeDriver.aliyunecs.vpcId.prompt"
+              localizedPrompt=true
+            }}
           {{/input-or-display}}
         </div>
         <div class="col span-6">
-          <label class="acc-label">{{t 'nodeDriver.aliyunecs.securityGroup.label'}}</label>
+          <label class="acc-label">
+            {{t "nodeDriver.aliyunecs.securityGroup.label"}}
+          </label>
           {{#input-or-display editable=(eq step 2) value=config.securityGroup}}
-            {{new-select classNames="form-control" content=securityGroups value=config.securityGroup prompt="nodeDriver.aliyunecs.securityGroup.prompt" localizedPrompt=true}}
-            {{#if (or (not config.securityGroup) (eq config.securityGroup 'docker-machine'))}}
-              <p class="help-block">{{t 'nodeDriver.aliyunecs.securityGroup.defaultCreate' groupName='docker-machine' htmlSafe=true}}</p>
+            {{new-select
+              classNames="form-control"
+              content=securityGroups
+              value=config.securityGroup
+              prompt="nodeDriver.aliyunecs.securityGroup.prompt"
+              localizedPrompt=true
+            }}
+            {{#if (or (not config.securityGroup) (eq config.securityGroup "docker-machine"))}}
+              <p class="help-block">
+                {{t
+                  "nodeDriver.aliyunecs.securityGroup.defaultCreate"
+                  groupName="docker-machine"
+                  htmlSafe=true
+                }}
+              </p>
             {{/if}}
           {{/input-or-display}}
         </div>
@@ -88,17 +158,31 @@
 
       <div class="row">
         <div class="col span-6">
-          <label class="acc-label">{{t 'nodeDriver.aliyunecs.vswitchId.label'}}</label>
+          <label class="acc-label">
+            {{t "nodeDriver.aliyunecs.vswitchId.label"}}
+          </label>
           {{#input-or-display editable=(eq step 2) value=config.vswitchId}}
-            {{new-select classNames="form-control" content=filteredVSwitches value=config.vswitchId prompt="nodeDriver.aliyunecs.vswitchId.prompt" localizedPrompt=true}}
+            {{new-select
+              classNames="form-control"
+              content=filteredVSwitches
+              value=config.vswitchId
+              prompt="nodeDriver.aliyunecs.vswitchId.prompt"
+              localizedPrompt=true
+            }}
           {{/input-or-display}}
         </div>
 
         <div class="col span-6">
-          <label class="acc-label">{{t 'nodeDriver.aliyunecs.privateAddressOnly.label'}}</label>
+          <label class="acc-label">
+            {{t "nodeDriver.aliyunecs.privateAddressOnly.label"}}
+          </label>
           {{#input-or-display editable=(eq step 2) value=config.privateAddressOnly}}
             <div>
-              {{input type="checkbox" class="form-control" checked=config.privateAddressOnly}}
+              {{input
+                type="checkbox"
+                class="form-control"
+                checked=config.privateAddressOnly
+              }}
             </div>
           {{/input-or-display}}
         </div>
@@ -108,56 +192,87 @@
     {{#if (eq step 2)}}
       {{top-errors errors=errors}}
       {{save-cancel
-        save="loadStorageTypes"
-        cancel="cancel"
+        save=(action "loadStorageTypes")
+        cancel=(action "cancel")
         createLabel="nodeDriver.aliyunecs.networkSection.next"
         savingLabel="nodeDriver.aliyunecs.networkSection.loading"
       }}
     {{/if}}
   </div>
 
-  <div class="{{unless (gte step 3) 'hide'}}">
+  <div class="{{unless (gte step 3) "hide"}}">
     {{#accordion-list-item
-      title=(t 'nodeDriver.aliyunecs.storageSection.label')
-      detail=(t 'nodeDriver.aliyunecs.storageSection.detail')
-      expandAll=expandAll
-      expand=(action expandFn)
-      expandOnInit=true
+       title=(t "nodeDriver.aliyunecs.storageSection.label")
+       detail=(t "nodeDriver.aliyunecs.storageSection.detail")
+       expandAll=expandAll
+       expand=(action expandFn)
+       expandOnInit=true
     }}
       <div class="row">
         <div class="col span-6">
-          <label class="acc-label">{{t 'nodeDriver.aliyunecs.ioOptimized.label'}}</label>
+          <label class="acc-label">
+            {{t "nodeDriver.aliyunecs.ioOptimized.label"}}
+          </label>
           {{#input-or-display editable=(eq step 3) value=config.ioOptimized}}
             <div>
               <label class="mr-20 hand">
-                {{radio-button selection=config.ioOptimized value='optimized'}} {{t 'nodeDriver.aliyunecs.ioOptimized.optimized'}}
+                {{radio-button
+                  selection=config.ioOptimized
+                  value="optimized"
+                }}
+                {{t "nodeDriver.aliyunecs.ioOptimized.optimized"}}
               </label>
               <label class="hand">
-                {{radio-button selection=config.ioOptimized value='none'}} {{t 'nodeDriver.aliyunecs.ioOptimized.none'}}
+                {{radio-button
+                  selection=config.ioOptimized
+                  value="none"
+                }}
+                {{t "nodeDriver.aliyunecs.ioOptimized.none"}}
               </label>
             </div>
           {{/input-or-display}}
         </div>
         <div class="col span-6">
-          <label class="acc-label">{{t 'nodeDriver.aliyunecs.systemDiskCategory.label'}}</label>
+          <label class="acc-label">
+            {{t "nodeDriver.aliyunecs.systemDiskCategory.label"}}
+          </label>
           {{#input-or-display editable=(eq step 3) value=config.systemDiskCategory}}
-            {{new-select classNames="form-control" content=diskCategoryChoices optionLabelPath='value' value=config.systemDiskCategory}}
+            {{new-select
+              classNames="form-control"
+              content=diskCategoryChoices
+              optionLabelPath="value"
+              value=config.systemDiskCategory
+            }}
           {{/input-or-display}}
         </div>
       </div>
 
       <div class="row">
         <div class="col span-6">
-          <label class="acc-label">{{t 'nodeDriver.aliyunecs.dataDiskCategory.label'}}</label>
+          <label class="acc-label">
+            {{t "nodeDriver.aliyunecs.dataDiskCategory.label"}}
+          </label>
           {{#input-or-display editable=(eq step 3) value=config.diskCategory}}
-            {{new-select classNames="form-control" content=diskCategoryChoices optionLabelPath='value' value=config.diskCategory}}
+            {{new-select
+              classNames="form-control"
+              content=diskCategoryChoices
+              optionLabelPath="value"
+              value=config.diskCategory
+            }}
           {{/input-or-display}}
         </div>
         <div class="col span-6">
-          <label class="acc-label">{{t 'nodeDriver.aliyunecs.dataDiskSize.label'}}</label>
+          <label class="acc-label">
+            {{t "nodeDriver.aliyunecs.dataDiskSize.label"}}
+          </label>
           {{#input-or-display editable=(eq step 3) value=config.diskSize}}
             <div class="input-group">
-              {{input type="text" class="form-control" value=config.diskSize placeholder=(t 'nodeDriver.aliyunecs.dataDiskSize.placeholder')}}
+              {{input
+                type="text"
+                class="form-control"
+                value=config.diskSize
+                placeholder=(t "nodeDriver.aliyunecs.dataDiskSize.placeholder")
+              }}
               <div class="input-group-addon bg-default">GB</div>
             </div>
           {{/input-or-display}}
@@ -168,42 +283,70 @@
     {{#if (eq step 3)}}
       {{top-errors errors=errors}}
       {{save-cancel
-        save="loadInstanceTypes"
-        cancel="cancel"
+        save=(action "loadInstanceTypes")
+        cancel=(action "cancel")
         createLabel="nodeDriver.aliyunecs.storageSection.next"
         savingLabel="nodeDriver.aliyunecs.storageSection.loading"
       }}
     {{/if}}
   </div>
 
- <div class="{{unless (gte step 4) 'hide'}}">
+  <div class="{{unless (gte step 4) "hide"}}">
     {{#accordion-list-item
-      title=(t 'nodeDriver.aliyunecs.instanceOptionsSection.label')
-      detail=(t 'nodeDriver.aliyunecs.instanceOptionsSection.detail')
-      expandAll=expandAll
-      expand=(action expandFn)
-      expandOnInit=true
+       title=(t "nodeDriver.aliyunecs.instanceOptionsSection.label")
+       detail=(t "nodeDriver.aliyunecs.instanceOptionsSection.detail")
+       expandAll=expandAll
+       expand=(action expandFn)
+       expandOnInit=true
     }}
       <div class="row">
         <div class="col span-6">
-          <label class="acc-label">{{t 'nodeDriver.aliyunecs.instanceDescription.label'}}</label>
-          {{input type="text" class="form-control" value=config.description placeholder=(t 'nodeDriver.aliyunecs.instanceDescription.placeholder')}}
+          <label class="acc-label">
+            {{t "nodeDriver.aliyunecs.instanceDescription.label"}}
+          </label>
+          {{input
+            type="text"
+            class="form-control"
+            value=config.description
+            placeholder=(t "nodeDriver.aliyunecs.instanceDescription.placeholder")
+          }}
         </div>
         <div class="col span-6">
-          <label class="acc-label">{{t 'nodeDriver.aliyunecs.instanceType.label'}}</label>
-          {{new-select classNames="form-control" content=instanceTypes value=config.instanceType}}
+          <label class="acc-label">
+            {{t "nodeDriver.aliyunecs.instanceType.label"}}
+          </label>
+          {{new-select
+            classNames="form-control"
+            content=instanceTypes
+            value=config.instanceType
+          }}
         </div>
       </div>
-      
+
       <div class="row">
         <div class="col span-6">
-          <label class="acc-label">{{t 'nodeDriver.aliyunecs.systemImage.label'}}</label>
-          {{new-select classNames="form-control" content=images optionValuePath='value' value=config.imageId}}
+          <label class="acc-label">
+            {{t "nodeDriver.aliyunecs.systemImage.label"}}
+          </label>
+          {{new-select
+            classNames="form-control"
+            content=images
+            optionValuePath="value"
+            value=config.imageId
+          }}
         </div>
         <div class="col span-6">
-          <label class="acc-label">{{t 'nodeDriver.aliyunecs.internetMaxBandwidth.label'}}</label>
+          <label class="acc-label">
+            {{t "nodeDriver.aliyunecs.internetMaxBandwidth.label"}}
+          </label>
           <div class="input-group">
-            {{input-integer min=1 max=100 class="form-control" value=config.internetMaxBandwidth placeholder=(t 'nodeDriver.aliyunecs.internetMaxBandwidth.placeholder')}}
+            {{input-integer
+              min=1
+              max=100
+              class="form-control"
+              value=config.internetMaxBandwidth
+              placeholder=(t "nodeDriver.aliyunecs.internetMaxBandwidth.placeholder")
+            }}
             <div class="input-group-addon bg-default">Mbps</div>
           </div>
         </div>
@@ -211,8 +354,15 @@
 
       <div class="row">
         <div class="col span-6">
-          <label class="acc-label">{{t 'nodeDriver.aliyunecs.aliyunSLB.label'}}</label>
-          {{input type="text" class="form-control" value=config.slbId placeholder=(t 'nodeDriver.aliyunecs.aliyunSLB.placeholder')}}
+          <label class="acc-label">
+            {{t "nodeDriver.aliyunecs.aliyunSLB.label"}}
+          </label>
+          {{input
+            type="text"
+            class="form-control"
+            value=config.slbId
+            placeholder=(t "nodeDriver.aliyunecs.aliyunSLB.placeholder")
+          }}
         </div>
       </div>
 
@@ -220,16 +370,20 @@
         <div class="col span-6">
           {{form-value-array
             initialValues=config.tag
-            addActionLabel='nodeDriver.aliyunecs.tags.addActionLabel'
-            valueLabel='nodeDriver.aliyunecs.tags.valueLabel'
-            valuePlaceholder='nodeDriver.aliyunecs.tags.placeholder'
+            addActionLabel="nodeDriver.aliyunecs.tags.addActionLabel"
+            valueLabel="nodeDriver.aliyunecs.tags.valueLabel"
+            valuePlaceholder="nodeDriver.aliyunecs.tags.placeholder"
             changed=(action (mut config.tag))
           }}
         </div>
       </div>
     {{/accordion-list-item}}
 
-    <div class="over-hr"><span>{{templateOptionsTitle}}</span></div>
+    <div class="over-hr">
+      <span>
+        {{templateOptionsTitle}}
+      </span>
+    </div>
 
     {{form-name-description
       model=model
@@ -238,7 +392,7 @@
 
     {{form-user-labels
       initialLabels=labelResource.labels
-      setLabels=(action 'setLabels')
+      setLabels=(action "setLabels")
       expandAll=expandAll
       expand=(action expandFn)
     }}
@@ -249,6 +403,10 @@
     }}
 
     {{top-errors errors=errors}}
-    {{save-cancel save="save" cancel="cancel" editing=editing}}
+    {{save-cancel
+      save=(action "save")
+      cancel=(action "cancel")
+      editing=editing
+    }}
   </div>
 {{/accordion-list}}

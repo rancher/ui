@@ -1,42 +1,62 @@
 <section class="header clearfix">
-  <h1 class="pull-left">{{t (if editing 'catalogSettings.more.editHeader' 'catalogSettings.more.addHeader')}}</h1>
+  <h1 class="pull-left">
+    {{t (if editing "catalogSettings.more.editHeader" "catalogSettings.more.addHeader")}}
+  </h1>
 </section>
 
 <section>
 
   <div class="row">
     <div class="col span-12">
-      <label class="acc-label pb-5">{{t 'catalogSettings.more.name.label'}}</label>
-      {{input type="text" value=primaryResource.name classNames="form-control" disabled=editing}}
+      <label class="acc-label pb-5">
+        {{t "catalogSettings.more.name.label"}}
+      </label>
+      {{input
+        type="text"
+        value=primaryResource.name
+        classNames="form-control"
+        disabled=editing
+      }}
     </div>
   </div>
 
   <div class="row">
     <div class="col span-12">
-      <label class="acc-label pb-5">{{t 'catalogSettings.more.url.label'}}</label>
+      <label class="acc-label pb-5">
+        {{t "catalogSettings.more.url.label"}}
+      </label>
       {{input type="text" value=primaryResource.url classNames="form-control"}}
     </div>
     <div class="checkbox pt-10">
-      <label class="acc-label pb-5">{{input type="checkbox" checked=isPrivate}} {{t 'catalogSettings.more.private.label'}}</label>
+      <label class="acc-label pb-5">
+        {{input
+          type="checkbox"
+          checked=isPrivate
+        }} {{t "catalogSettings.more.private.label"}}
+      </label>
     </div>
   </div>
 
   {{#if isPrivate}}
     <div class="row">
       <div class="col span-6">
-        <label class="acc-label pb-5">{{t 'catalogSettings.more.username.label'}}{{field-required}}</label>
+        <label class="acc-label pb-5">
+          {{t "catalogSettings.more.username.label"}}{{field-required}}
+        </label>
         {{input type="text"
-                value=username
-                classNames="form-control"
-                placeholder=(t 'catalogSettings.more.username.placeholder')
+          value=username
+          classNames="form-control"
+          placeholder=(t "catalogSettings.more.username.placeholder")
         }}
       </div>
       <div class="col span-6">
-        <label class="acc-label pb-5">{{t 'catalogSettings.more.password.label'}}{{field-required}}</label>
+        <label class="acc-label pb-5">
+          {{t "catalogSettings.more.password.label"}}{{field-required}}
+        </label>
         {{input type="password"
-                value=password
-                classNames="form-control"
-                placeholder=(t 'catalogSettings.more.password.placeholder')
+          value=password
+          classNames="form-control"
+          placeholder=(t "catalogSettings.more.password.placeholder")
         }}
       </div>
     </div>
@@ -44,27 +64,35 @@
 
   <div class="row">
     <div class="col span-6">
-      <label class="acc-label pb-5">{{t 'catalogSettings.more.branch.label'}}</label>
+      <label class="acc-label pb-5">
+        {{t "catalogSettings.more.branch.label"}}
+      </label>
       {{input type="text"
-          value=primaryResource.branch
-          classNames="form-control"
-          placeholder=(t 'catalogSettings.more.branch.placeholder')
+        value=primaryResource.branch
+        classNames="form-control"
+        placeholder=(t "catalogSettings.more.branch.placeholder")
       }}
     </div>
     <div class="col span-6">
-      <label class="acc-label pb-5">{{t 'generic.scope'}}</label>
+      <label class="acc-label pb-5">
+        {{t "generic.scope"}}
+      </label>
       {{new-select
-          classNames="form-control"
-          content=allScopes
-          optionValuePath="scope"
-          optionLabelPath="scope"
-          value=selectedScope
-          disabled=editing
+        classNames="form-control"
+        content=allScopes
+        optionValuePath="scope"
+        optionLabelPath="scope"
+        value=selectedScope
+        disabled=editing
       }}
     </div>
   </div>
 
   {{top-errors errors=errors}}
-  {{save-cancel editing=editing save="save" cancel="cancel"}}
+  {{save-cancel
+    editing=editing
+    save=(action "save")
+    cancel=(action "cancel")
+  }}
 
 </section>

@@ -36,7 +36,9 @@ export default Component.extend(VolumeSource, {
 
   actions: {
     remove() {
-      this.sendAction('remove', get(this, 'model'));
+      if (this.remove) {
+        this.remove(this.model);
+      }
     },
     useCustomRegex() {
       set(this, 'useCustomRegex', !get(this, 'useCustomRegex'));

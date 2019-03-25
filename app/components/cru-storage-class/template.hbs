@@ -2,7 +2,12 @@
   {{#if isView}}
     <div class="right-buttons pull-right">
       {{badge-state model=model}}
-      {{action-menu model=model showPrimary=false classNames="ml-10 inline-block" size="sm"}}
+      {{action-menu
+        model=model
+        showPrimary=false
+        classNames="ml-10 inline-block"
+        size="sm"
+      }}
     </div>
   {{/if}}
 
@@ -11,7 +16,10 @@
 
 {{#if isView}}
   {{#if model.description}}
-    {{banner-message color='bg-secondary mb-0 mt-10' message=(linkify model.description)}}
+    {{banner-message
+      color="bg-secondary mb-0 mt-10"
+      message=(linkify model.description)
+    }}
   {{/if}}
 {{else}}
   {{form-name-description
@@ -27,11 +35,15 @@
   <section>
     <div class="row banner bg-info basics">
       <div class="vertical-middle">
-        <label class="acc-label vertical-middle p-0">{{t 'cruStorageClass.provisioner.label'}}</label>
+        <label class="acc-label vertical-middle p-0">
+          {{t "cruStorageClass.provisioner.label"}}
+        </label>
         {{primaryResource.provisioner}}
       </div>
       <div class="vertical-middle">
-        <label class="acc-label vertical-middle p-0">{{t 'generic.created'}}</label>
+        <label class="acc-label vertical-middle p-0">
+          {{t "generic.created"}}
+        </label>
         {{date-calendar primaryResource.created}}
       </div>
     </div>
@@ -39,7 +51,9 @@
 {{else}}
   <div class="row">
     <div class="col span-12">
-      <label class="acc-label">{{t 'cruStorageClass.provisioner.label'}}</label>
+      <label class="acc-label">
+        {{t "cruStorageClass.provisioner.label"}}
+      </label>
       {{searchable-select
         allowCustom=true
         content=provisionerChoices
@@ -52,21 +66,21 @@
 {{#accordion-list showExpandAll=false as | al expandFn |}}
   {{#if isView}}
     {{#accordion-list-item
-      title=(t 'cruStorageClass.pv.title')
-      detail=(t 'cruStorageClass.pv.detail')
-      expandAll=expandAll
-      expand=(action expandFn)
-      expandOnInit=true
+       title=(t "cruStorageClass.pv.title")
+       detail=(t "cruStorageClass.pv.detail")
+       expandAll=expandAll
+       expand=(action expandFn)
+       expandOnInit=true
     }}
       {{persistent-volume-table rows=persistentVolumes}}
     {{/accordion-list-item}}
   {{/if}}
   {{#accordion-list-item
-    title=(t 'cruStorageClass.parameters.title')
-    detail=(t 'cruStorageClass.parameters.detail')
-    expandAll=expandAll
-    expand=(action expandFn)
-    expandOnInit=true
+     title=(t "cruStorageClass.parameters.title")
+     detail=(t "cruStorageClass.parameters.detail")
+     expandAll=expandAll
+     expand=(action expandFn)
+     expandOnInit=true
   }}
     {{component paramsComponent
       parameters=primaryResource.parameters
@@ -76,62 +90,73 @@
   {{/accordion-list-item}}
 
   {{#accordion-list-item
-    title=(t 'cruStorageClass.customize.title')
-    detail=(t 'cruStorageClass.customize.detail')
-    expandAll=expandAll
-    expand=(action expandFn)
+     title=(t "cruStorageClass.customize.title")
+     detail=(t "cruStorageClass.customize.detail")
+     expandAll=expandAll
+     expand=(action expandFn)
   }}
     <div class="row">
       <div class="col span-6">
-        <label class="acc-label">{{t 'cruStorageClass.reclaimPolicy.label'}}</label>
+        <label class="acc-label">
+          {{t "cruStorageClass.reclaimPolicy.label"}}
+        </label>
         {{#if isView}}
           <div>
-            {{t (concat 'cruStorageClass.reclaimPolicy.' primaryResource.reclaimPolicy)}}
+            {{t (concat "cruStorageClass.reclaimPolicy." primaryResource.reclaimPolicy)}}
           </div>
         {{else}}
           <div class="radio">
             <label>
-              {{radio-button selection=primaryResource.reclaimPolicy value="Delete"}}
-              {{t 'cruStorageClass.reclaimPolicy.Delete'}}
+              {{radio-button
+                selection=primaryResource.reclaimPolicy
+                value="Delete"
+              }}
+              {{t "cruStorageClass.reclaimPolicy.Delete"}}
             </label>
           </div>
           <div class="radio">
             <label>
-              {{radio-button selection=primaryResource.reclaimPolicy value="Retain"}}
-              {{t 'cruStorageClass.reclaimPolicy.Retain'}}
+              {{radio-button
+                selection=primaryResource.reclaimPolicy
+                value="Retain"
+              }}
+              {{t "cruStorageClass.reclaimPolicy.Retain"}}
             </label>
           </div>
           {{#if wasRecycle}}
             <div class="radio">
               <label>
-                {{radio-button selection=primaryResource.reclaimPolicy value="Recycle"}}
-                {{t 'cruStorageClass.reclaimPolicy.Recycle'}}
+                {{radio-button
+                  selection=primaryResource.reclaimPolicy
+                  value="Recycle"
+                }}
+                {{t "cruStorageClass.reclaimPolicy.Recycle"}}
               </label>
             </div>
           {{/if}}
         {{/if}}
 
-{{!--
-        <label class="acc-label mt-20">{{t 'cruStorageClass.allowVolumeExpansion.label'}}</label>
-        {{#if isView}}
+        {{!--
+          <label class="acc-label mt-20">{{t "cruStorageClass.allowVolumeExpansion.label"}}</label>
+          {{#if isView}}
           <div>
-            {{t (if primaryResource.allowVolumeExpansion 'generic.yes' 'generic.no')}}
+          {{t (if primaryResource.allowVolumeExpansion "generic.yes" "generic.no")}}
           </div>
-        {{else}}
+          {{else}}
           <div class="radio">
-            <label>
-              {{radio-button selection=primaryResource.allowVolumeExpansion value=true}}
-              {{t 'generic.yes'}}
-            </label>
+          <label>
+          {{radio-button selection=primaryResource.allowVolumeExpansion value=true}}
+          {{t "generic.yes"}}
+          </label>
           </div>
           <div class="radio">
-            <label>
-              {{radio-button selection=primaryResource.allowVolumeExpansion value=false}}
-              {{t 'generic.no'}}
-            </label>
+          <label>
+          {{radio-button selection=primaryResource.allowVolumeExpansion value=false}}
+          {{t "generic.no"}}
+          </label>
           </div>
-        {{/if}}
---}}
+          {{/if}}
+          --}}
       </div>
       <div class="col span-6">
         {{form-value-array
@@ -162,5 +187,9 @@
 
 {{#unless isView}}
   {{top-errors errors=errors}}
-  {{save-cancel editing=true save="save" cancel="viewEditCancel"}}
+  {{save-cancel
+    editing=true
+    save=(action "save")
+    cancel=(action "viewEditCancel")
+  }}
 {{/unless}}

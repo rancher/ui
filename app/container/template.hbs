@@ -1,7 +1,7 @@
 <section class="header clearfix">
   <div class="pull-left">
     <h1 class="vertical-middle">
-      {{t 'containerPage.header' name=model.displayName}}
+      {{t "containerPage.header" name=model.displayName}}
     </h1>
   </div>
   <div class="right-buttons">
@@ -11,7 +11,7 @@
 </section>
 
 {{#if model.description}}
-  {{banner-message color='bg-secondary mb-0 mt-10' message=(linkify model.description)}}
+  {{banner-message color="bg-secondary mb-0 mt-10" message=(linkify model.description)}}
 {{/if}}
 
 {{#if model.showTransitioningMessage}}
@@ -20,66 +20,66 @@
 
 <div class="row banner bg-info basics">
   <div class="vertical-middle">
-    <label class="acc-label vertical-middle p-0">{{t 'servicePage.multistat.namespace'}}:</label>
+    <label class="acc-label vertical-middle p-0">{{t "servicePage.multistat.namespace"}}:</label>
     {{#if model.pod.namespaceId}}
       {{#copy-inline clipboardText=model.pod.namespaceId}}
         {{model.pod.namespaceId}}
       {{/copy-inline}}
     {{else}}
-      {{t 'generic.none'}}
+      {{t "generic.none"}}
     {{/if}}
   </div>
   <div class="vertical-middle">
-    <label class="acc-label vertical-middle p-0">{{t 'podPage.image'}}:</label>
+    <label class="acc-label vertical-middle p-0">{{t "podPage.image"}}:</label>
     {{model.image}} {{copy-to-clipboard clipboardText=model.image size="small"}}
   </div>
   <div class="vertical-middle">
-    <label class="acc-label vertical-middle p-0">{{t 'containerPage.pod'}}:</label>            {{#if model.pod}}
-    {{#link-to "pod" model.podId}}{{model.podId}}{{/link-to}}
+    <label class="acc-label vertical-middle p-0">{{t "containerPage.pod"}}:</label>            {{#if model.pod}}
+      {{#link-to "pod" model.podId}}{{model.podId}}{{/link-to}}
     {{else if model.podId}}
       {{model.podId}}
     {{else}}
-      {{t 'generic.none'}}
+      {{t "generic.none"}}
     {{/if}}
   </div>
 </div>
 
 <div class="row banner bg-info basics">
   <div class="vertical-middle">
-    <label class="acc-label vertical-middle p-0">{{t 'containerPage.initContainer.label'}}:</label>
+    <label class="acc-label vertical-middle p-0">{{t "containerPage.initContainer.label"}}:</label>
     {{#if model.initContainer}}
-      {{t 'generic.yes'}}
+      {{t "generic.yes"}}
     {{else}}
-      {{t 'generic.no'}}
+      {{t "generic.no"}}
     {{/if}}
   </div>
   <div class="vertical-middle">
-    <label class="acc-label vertical-middle p-0">{{t 'generic.restarts'}}:</label>
+    <label class="acc-label vertical-middle p-0">{{t "generic.restarts"}}:</label>
     {{model.restarts}}
   </div>
   <div class="vertical-middle">
-    <label class="acc-label vertical-middle p-0">{{t 'generic.created'}}:</label>
+    <label class="acc-label vertical-middle p-0">{{t "generic.created"}}:</label>
     {{date-calendar model.pod.created}}
   </div>
 </div>
 
 {{#accordion-list as |al expandFn|}}
   {{#if scope.currentCluster.isMonitoringReady}}
-    {{#metrics-summary 
-      expandAll=al.expandAll
-      expandFn=expandFn
-      grafanaUrl=model.grafanaUrl
-      title=(t "metricsAction.sections.container")
+    {{#metrics-summary
+       expandAll=al.expandAll
+       expandFn=expandFn
+       grafanaUrl=model.grafanaUrl
+       title=(t "metricsAction.sections.container")
     }}
       {{container-metrics podId=model.pod.id resourceId=model.name}}
     {{/metrics-summary}}
   {{/if}}
-  
+
   {{#accordion-list-item
-    title=(t 'containerPage.portsTab.header')
-    detail=(t 'containerPage.portsTab.detail')
-    expandAll=al.expandAll
-    expand=(action expandFn)
+     title=(t "containerPage.portsTab.header")
+     detail=(t "containerPage.portsTab.detail")
+     expandAll=al.expandAll
+     expand=(action expandFn)
   }}
     {{container/form-ports
       initialPorts=model.ports
@@ -98,10 +98,10 @@
   }}
 
   {{#accordion-list-item
-    title=(t 'containerPage.envTab.header')
-    detail=(t 'containerPage.envTab.detail')
-    expandAll=al.expandAll
-    expand=(action expandFn)
+     title=(t "containerPage.envTab.header")
+     detail=(t "containerPage.envTab.detail")
+     expandAll=al.expandAll
+     expand=(action expandFn)
   }}
     {{form-env-var
       model=displayEnvironmentVars
@@ -117,34 +117,34 @@
   }}
 
   {{#accordion-list-item
-    title=(t 'formHealthCheck.title')
-    detail=(t 'formHealthCheck.detail')
-    expandAll=al.expandAll
-    expand=(action expandFn)
+     title=(t "formHealthCheck.title")
+     detail=(t "formHealthCheck.detail")
+     expandAll=al.expandAll
+     expand=(action expandFn)
   }}
     <div class="row">
       <div class="col span-6 mt-0 mb-0">
-        <label class="acc-label">{{t 'formHealthCheck.readiness'}}</label>
+        <label class="acc-label">{{t "formHealthCheck.readiness"}}</label>
       </div>
       <div class="col span-6 mt-0 mb-0">
         {{#if model.livenessProbe}}
-          <label class="acc-label">{{t 'formHealthCheck.liveness'}}</label>
+          <label class="acc-label">{{t "formHealthCheck.liveness"}}</label>
         {{/if}}
       </div>
     </div>
     <div class="row">
-      <div class="col {{if model.livenessProbe 'span-6' 'span-12'}}">
+      <div class="col {{if model.livenessProbe "span-6" "span-12"}}">
         {{form-healthcheck
-            initialCheck=model.readinessProbe
-            editing=false
+          initialCheck=model.readinessProbe
+          editing=false
         }}
       </div>
       {{#if model.livenessProbe}}
         <div class="col span-6">
           {{form-healthcheck
-              initialCheck=model.livenessProbe
-              editing=false
-              isLiveness=true
+            initialCheck=model.livenessProbe
+            editing=false
+            isLiveness=true
           }}
         </div>
       {{/if}}

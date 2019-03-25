@@ -30,7 +30,9 @@ export default Component.extend({
     save(cb) {
       this.set(`prefs.${ C.PREFS.TABLE_COUNT }`, parseInt(this.get('selectedCount'), 10));
       cb(true);
-      this.sendAction('done');
+      if (this.done) {
+        this.done();
+      }
     }
   }
 });

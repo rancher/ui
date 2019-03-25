@@ -119,7 +119,9 @@ export default Component.extend({
     });
 
     this.set('errors', errors.uniq());
-    this.sendAction('changed', ports.slice());
+    if (this.changed) {
+      this.changed(ports.slice());
+    }
   }),
 
   nodePortRangeDidChange: observer('intl.locale', 'scope.currentCluster.rancherKubernetesEngineConfig.services.kubeApi.serviceNodePortRange', function() {

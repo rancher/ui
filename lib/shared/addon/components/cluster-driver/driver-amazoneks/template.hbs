@@ -1,14 +1,16 @@
 {{#accordion-list showExpandAll=false as | al expandFn |}}
   {{#accordion-list-item
-       title=(t "clusterNew.amazoneks.access.title")
-       detail=(t "clusterNew.amazoneks.access.detail")
-       expandAll=expandAll
-       expand=(action expandFn)
-       expandOnInit=true
+     title=(t "clusterNew.amazoneks.access.title")
+     detail=(t "clusterNew.amazoneks.access.detail")
+     expandAll=expandAll
+     expand=(action expandFn)
+     expandOnInit=true
   }}
     <div class="row">
       <div class="col span-3">
-        <label class="acc-label">{{t "nodeDriver.amazoneks.region.label"}}</label>
+        <label class="acc-label">
+          {{t "nodeDriver.amazoneks.region.label"}}
+        </label>
         {{#if (eq step 1)}}
           <select class="form-control" onchange={{action (mut config.region) value="target.value"}}>
             {{#each regionChoices as |choice|}}
@@ -21,14 +23,16 @@
       </div>
 
       <div class="col span-3">
-        <label class="acc-label">{{t "nodeDriver.amazoneks.accessKey.label"}}</label>
+        <label class="acc-label">
+          {{t "nodeDriver.amazoneks.accessKey.label"}}
+        </label>
         {{#if (eq step 1)}}
           {{input
-              type="text"
-              name="username"
-              classNames="form-control"
-              placeholder=(t "nodeDriver.amazoneks.accessKey.placeholder")
-              value=config.accessKey
+            type="text"
+            name="username"
+            classNames="form-control"
+            placeholder=(t "nodeDriver.amazoneks.accessKey.placeholder")
+            value=config.accessKey
           }}
         {{else}}
           <div>{{config.accessKey}}</div>
@@ -36,14 +40,16 @@
       </div>
 
       <div class="col span-3">
-        <label class="acc-label">{{t "nodeDriver.amazoneks.secretKey.label"}}</label>
+        <label class="acc-label">
+          {{t "nodeDriver.amazoneks.secretKey.label"}}
+        </label>
         {{#if (eq step 1)}}
           {{input
-              type="password"
-              name="password"
-              classNames="form-control"
-              placeholder=(t "nodeDriver.amazoneks.secretKey.placeholder")
-              value=config.secretKey
+            type="password"
+            name="password"
+            classNames="form-control"
+            placeholder=(t "nodeDriver.amazoneks.secretKey.placeholder")
+            value=config.secretKey
           }}
         {{else}}
           <div class="text-muted text-italic">{{t "nodeDriver.amazoneks.secretKey.provided"}}</div>
@@ -51,14 +57,16 @@
       </div>
 
       <div class="col span-3">
-        <label class="acc-label">{{t "nodeDriver.amazoneks.sessionToken.label" htmlSafe=true}}</label>
+        <label class="acc-label">
+          {{t "nodeDriver.amazoneks.sessionToken.label" htmlSafe=true}}
+        </label>
         {{#if (eq step 1)}}
           {{input
-              type="password"
-              name="session-token"
-              classNames="form-control"
-              placeholder=(t "nodeDriver.amazoneks.sessionToken.placeholder")
-              value=config.sessionToken
+            type="password"
+            name="session-token"
+            classNames="form-control"
+            placeholder=(t "nodeDriver.amazoneks.sessionToken.placeholder")
+            value=config.sessionToken
           }}
         {{else}}
           <div class="text-muted text-italic">{{t "nodeDriver.amazoneks.sessionToken.provided"}}</div>
@@ -77,36 +85,40 @@
 
   {{#if (eq step 1)}}
     {{save-cancel
-        editing=(eq mode "edit")
-        save="awsLogin"
-        cancel=close
-        createLabel="nodeDriver.amazoneks.access.next"
-        savingLabel="nodeDriver.amazoneks.access.loading"
+      editing=(eq mode "edit")
+      save=(action "awsLogin")
+      cancel=close
+      createLabel="nodeDriver.amazoneks.access.next"
+      savingLabel="nodeDriver.amazoneks.access.loading"
     }}
   {{/if}}
 
   {{#if (gte step 2)}}
     {{#accordion-list-item
-         title=(t "nodeDriver.amazoneks.clusterOption.title")
-         detail=(t "nodeDriver.amazoneks.clusterOption.detail")
-         showExpand=false
-         expandOnInit=true
-         expandAll=al.expandAll
-         expand=(action expandFn)
+       title=(t "nodeDriver.amazoneks.clusterOption.title")
+       detail=(t "nodeDriver.amazoneks.clusterOption.detail")
+       showExpand=false
+       expandOnInit=true
+       expandAll=al.expandAll
+       expand=(action expandFn)
     }}
       <div class="row">
         <div class="col span-6">
-          <label class="acc-label">{{t "nodeDriver.amazoneks.kubernetesVersion.label"}}</label>
+          <label class="acc-label">
+            {{t "nodeDriver.amazoneks.kubernetesVersion.label"}}
+          </label>
           {{form-versions
-              cluster=cluster
-              editing=(eq mode "edit")
-              value=config.kubernetesVersion
-              versions=kubernetesVersionContent
-              initialVersion=initialVersion
+            cluster=cluster
+            editing=(eq mode "edit")
+            value=config.kubernetesVersion
+            versions=kubernetesVersionContent
+            initialVersion=initialVersion
           }}
         </div>
         <div class="col span-6">
-          <label class="acc-label">{{t "nodeDriver.amazoneks.role.label"}}</label>
+          <label class="acc-label">
+            {{t "nodeDriver.amazoneks.role.label"}}
+          </label>
           {{#if (eq step 2)}}
             <div class="radio pt-0">
               <label>
@@ -120,11 +132,11 @@
             </div>
             {{#unless (eq serviceRoleMode "default")}}
               {{new-select
-                  classNames="form-control"
-                  value=selectedServiceRole
-                  content=serviceRoles
-                  optionValuePath="RoleName"
-                  optionLabelPath="RoleName"
+                classNames="form-control"
+                value=selectedServiceRole
+                content=serviceRoles
+                optionValuePath="RoleName"
+                optionLabelPath="RoleName"
               }}
             {{/unless}}
           {{else}}
@@ -142,33 +154,35 @@
 
     {{#if (eq step 2)}}
       {{save-cancel
-          editing=(eq mode "edit")
-          save="loadVPS"
-          cancel=close
-          createLabel="nodeDriver.amazoneks.role.next"
-          savingLabel="nodeDriver.amazoneks.role.loading"
+        editing=(eq mode "edit")
+        save=(action "loadVPS")
+        cancel=close
+        createLabel="nodeDriver.amazoneks.role.next"
+        savingLabel="nodeDriver.amazoneks.role.loading"
       }}
     {{/if}}
   {{/if}}
 
   {{#if (gte step 3)}}
     {{#accordion-list-item
-         title=(t "nodeDriver.amazoneks.vpc.title")
-         detail=(t "nodeDriver.amazoneks.vpc.detail")
-         showExpand=false
-         expandOnInit=true
-         expandAll=al.expandAll
-         expand=(action expandFn)
+       title=(t "nodeDriver.amazoneks.vpc.title")
+       detail=(t "nodeDriver.amazoneks.vpc.detail")
+       showExpand=false
+       expandOnInit=true
+       expandAll=al.expandAll
+       expand=(action expandFn)
     }}
       <div class="row">
         <div class="col span-6">
-          <label class="acc-label">{{t "nodeDriver.amazoneks.associateWorkerNodePublicIp.title"}}</label>
+          <label class="acc-label">
+            {{t "nodeDriver.amazoneks.associateWorkerNodePublicIp.title"}}
+          </label>
           {{#if (or (eq step 3) (eq step 4))}}
             <div class="radio">
               <label>
                 {{radio-button
-                    selection=config.associateWorkerNodePublicIp
-                    value=true
+                  selection=config.associateWorkerNodePublicIp
+                  value=true
                 }}
                 {{t "nodeDriver.amazoneks.associateWorkerNodePublicIp.radio.default"}}
               </label>
@@ -176,8 +190,8 @@
             <div class="radio">
               <label>
                 {{radio-button
-                    selection=config.associateWorkerNodePublicIp
-                    value=false
+                  selection=config.associateWorkerNodePublicIp
+                  value=false
                 }}
                 {{t "nodeDriver.amazoneks.associateWorkerNodePublicIp.radio.off"}}
               </label>
@@ -195,14 +209,16 @@
           {{/if}}
         </div>
         <div class="col span-6">
-          <label class="acc-label">{{t "nodeDriver.amazoneks.vpc.title"}}</label>
+          <label class="acc-label">
+            {{t "nodeDriver.amazoneks.vpc.title"}}
+          </label>
           {{#if (or (eq step 3) (eq step 4))}}
             <div class="radio">
               <label>
                 {{radio-button
-                    selection=vpcSubnetMode
-                    value="default"
-                    disabled=(eq config.associateWorkerNodePublicIp false)
+                  selection=vpcSubnetMode
+                  value="default"
+                  disabled=(eq config.associateWorkerNodePublicIp false)
                 }}
                 {{t "nodeDriver.amazoneks.vpc.radio.default"}}
               </label>
@@ -210,20 +226,20 @@
             <div class="radio">
               <label>
                 {{radio-button
-                    selection=vpcSubnetMode
-                    value="custom"
-                    disabled=(eq config.associateWorkerNodePublicIp false)
+                  selection=vpcSubnetMode
+                  value="custom"
+                  disabled=(eq config.associateWorkerNodePublicIp false)
                 }}
                 {{t "nodeDriver.amazoneks.vpc.radio.custom"}}
               </label>
             </div>
             {{#unless (eq vpcSubnetMode "default")}}
               {{new-select
-                  classNames="form-control"
-                  value=config.virtualNetwork
-                  content=filteredVpcs
-                  optionValuePath="id"
-                  optionLabelPath="label"
+                classNames="form-control"
+                value=config.virtualNetwork
+                content=filteredVpcs
+                optionValuePath="id"
+                optionLabelPath="label"
               }}
             {{/unless}}
           {{else}}
@@ -241,10 +257,14 @@
 
         {{#if (and (eq step 4) (eq vpcSubnetMode "custom"))}}
           <div class="col span-6">
-            <label class="acc-label">{{t "nodeDriver.amazoneks.subnet.title"}}</label>
+            <label class="acc-label">
+              {{t "nodeDriver.amazoneks.subnet.title"}}
+            </label>
             <select class="form-control existing-subnet-groups" multiple="true" onchange={{action "multiSubnetGroupSelect" ""}}>
               {{#each filteredSubnets as |choice|}}
-                <option value={{choice.subnetId}} selected={{array-includes config.subnets choice.subnetId}}>{{choice.subnetName}} ({{choice.subnetId}})</option>
+                <option value={{choice.subnetId}} selected={{array-includes config.subnets choice.subnetId}}>
+                  {{choice.subnetName}} ({{choice.subnetId}})
+                </option>
               {{/each}}
             </select>
             {{#if (eq config.associateWorkerNodePublicIp false)}}
@@ -254,7 +274,9 @@
         {{else}}
           {{#if (and (eq vpcSubnetMode "custom") (gte step 4)) }}
             <div class="col span-6">
-              <label class="acc-label">{{t "nodeDriver.amazoneks.subnet.title"}}</label>
+              <label class="acc-label">
+                {{t "nodeDriver.amazoneks.subnet.title"}}
+              </label>
               {{#each config.subnets as |sub|}}
                 <div>{{sub}}</div>
               {{/each}}
@@ -268,51 +290,53 @@
     {{#if (eq step 3)}}
       {{#if (eq vpcSubnetMode "default")}}
         {{save-cancel
-            editing=(eq mode "edit")
-            saveDisabled=canSaveVPC
-            save="setVPCS"
-            cancel=close
-            createLabel="nodeDriver.amazoneks.vpc.nextRancherDefault"
-            savingLabel="nodeDriver.amazoneks.vpc.loadingRancherDefault"
+          editing=(eq mode "edit")
+          saveDisabled=canSaveVPC
+          save=(action "setVPCS")
+          cancel=close
+          createLabel="nodeDriver.amazoneks.vpc.nextRancherDefault"
+          savingLabel="nodeDriver.amazoneks.vpc.loadingRancherDefault"
         }}
       {{else}}
         {{save-cancel
-            editing=(eq mode "edit")
-            saveDisabled=canSaveVPC
-            save="setVPCS"
-            cancel=close
-            createLabel="nodeDriver.amazoneks.vpc.next"
-            savingLabel="nodeDriver.amazoneks.vpc.loading"
+          editing=(eq mode "edit")
+          saveDisabled=canSaveVPC
+          save=(action "setVPCS")
+          cancel=close
+          createLabel="nodeDriver.amazoneks.vpc.next"
+          savingLabel="nodeDriver.amazoneks.vpc.loading"
         }}
       {{/if}}
     {{/if}}
 
     {{#if (eq step 4)}}
       {{save-cancel
-          editing=(eq mode "edit")
-          saveDisabled=(lte config.subnets.length 0)
-          save="setSubnets"
-          cancel=close
-          createLabel="nodeDriver.amazoneks.subnet.next"
-          savingLabel="nodeDriver.amazoneks.subnet.loading"
+        editing=(eq mode "edit")
+        saveDisabled=(lte config.subnets.length 0)
+        save=(action "setSubnets")
+        cancel=close
+        createLabel="nodeDriver.amazoneks.subnet.next"
+        savingLabel="nodeDriver.amazoneks.subnet.loading"
       }}
     {{/if}}
   {{/if}}
 
   {{#if (and (gte step 5) (eq vpcSubnetMode "custom") )}}
     {{#accordion-list-item
-         title=(t "nodeDriver.amazoneks.securityGroup.title")
-         detail=(t "nodeDriver.amazoneks.securityGroup.detail")
-         showExpand=false
-         expandOnInit=true
-         expandAll=al.expandAll
-         expand=(action expandFn)
+       title=(t "nodeDriver.amazoneks.securityGroup.title")
+       detail=(t "nodeDriver.amazoneks.securityGroup.detail")
+       showExpand=false
+       expandOnInit=true
+       expandAll=al.expandAll
+       expand=(action expandFn)
     }}
       <div class="row">
         {{#if (eq step 5)}}
           <select class="form-control existing-security-groups" multiple="true" onchange={{action "multiSecurityGroupSelect" ""}}>
             {{#each filteredSecurityGroups as |choice|}}
-              <option value={{choice.GroupId}} selected={{array-includes config.securityGroups choice.GroupId}}>{{choice.GroupName}} ({{choice.GroupId}})</option>
+              <option value={{choice.GroupId}} selected={{array-includes config.securityGroups choice.GroupId}}>
+                {{choice.GroupName}} ({{choice.GroupId}})
+              </option>
             {{/each}}
           </select>
         {{else}}
@@ -327,39 +351,43 @@
 
     {{#if (eq step 5)}}
       {{save-cancel
-          editing=(eq mode "edit")
-          saveDisabled=canSaveSG
-          save=(action (mut step) 6)
-          cancel=close
-          createLabel="nodeDriver.amazonec2.securityGroup.next"
-          savingLabel="nodeDriver.amazonec2.securityGroup.loading"
+        editing=(eq mode "edit")
+        saveDisabled=canSaveSG
+        save=(action (mut step) 6)
+        cancel=close
+        createLabel="nodeDriver.amazonec2.securityGroup.next"
+        savingLabel="nodeDriver.amazonec2.securityGroup.loading"
       }}
     {{/if}}
   {{/if}}
 
   {{#if (eq step 6)}}
     {{#accordion-list-item
-         title=(t "clusterNew.nodes.title")
-         detail=(t "clusterNew.nodes.detail")
-         showExpand=false
-         expandOnInit=true
-         expandAll=al.expandAll
-         expand=(action expandFn)
+       title=(t "clusterNew.nodes.title")
+       detail=(t "clusterNew.nodes.detail")
+       showExpand=false
+       expandOnInit=true
+       expandAll=al.expandAll
+       expand=(action expandFn)
     }}
       <div class="row">
         <div class="col span-6">
-          <label class="acc-label">{{t "nodeDriver.amazonec2.instanceType.label"}}</label>
+          <label class="acc-label">
+            {{t "nodeDriver.amazonec2.instanceType.label"}}
+          </label>
           {{new-select
-              classNames="form-control"
-              value=config.instanceType
-              content=instanceTypes
-              optionValuePath="name"
-              optionLabelPath="name"
-              optionGroupPath="group"
+            classNames="form-control"
+            value=config.instanceType
+            content=instanceTypes
+            optionValuePath="name"
+            optionLabelPath="name"
+            optionGroupPath="group"
           }}
         </div>
         <div class="col span-6">
-          <label class="acc-label">{{t "nodeDriver.amazoneks.ami.label"}}</label>
+          <label class="acc-label">
+            {{t "nodeDriver.amazoneks.ami.label"}}
+          </label>
           {{input type="text" value=config.ami}}
           <p class="help-block">
             {{t "nodeDriver.amazoneks.ami.help"}}
@@ -369,35 +397,50 @@
       </div>
       <div class="row">
         <div class="col span-6">
-          <label class="acc-label">{{t "nodeDriver.amazoneks.min.label"}}</label>
+          <label class="acc-label">
+            {{t "nodeDriver.amazoneks.min.label"}}
+          </label>
           {{input-number value=config.minimumNodes min=1}}
         </div>
 
         <div class="col span-6">
-          <label class="acc-label">{{t "nodeDriver.amazoneks.max.label"}}</label>
+          <label class="acc-label">
+            {{t "nodeDriver.amazoneks.max.label"}}
+          </label>
           {{input-number value=config.maximumNodes min=1}}
         </div>
       </div>
       <div class="row">
         <div class="col span-6">
-          <label class="acc-label">{{t 'nodeDriver.amazoneks.nodeVolumeSize.label'}}</label>
+          <label class="acc-label">
+            {{t "nodeDriver.amazoneks.nodeVolumeSize.label"}}
+          </label>
           <div class="input-group">
-            {{input-integer min=0 value=config.nodeVolumeSize classNames="form-control" placeholder=(t 'nodeDriver.amazoneks.nodeVolumeSize.placeholder')}}
-            <span class="input-group-addon bg-default">{{t 'generic.gigabyte'}}</span>
+            {{input-integer
+              min=0
+              value=config.nodeVolumeSize
+              classNames="form-control"
+              placeholder=(t "nodeDriver.amazoneks.nodeVolumeSize.placeholder")
+            }}
+            <span class="input-group-addon bg-default">
+              {{t "generic.gigabyte"}}
+            </span>
           </div>
         </div>
       </div>
       {{#advanced-section advanced=advanced}}
         <div class="row">
           <div class="col span-12">
-            <label class="acc-label pb-5">{{t 'nodeDriver.amazoneks.userData.label'}}</label>
+            <label class="acc-label pb-5">
+              {{t "nodeDriver.amazoneks.userData.label"}}
+            </label>
             {{input-text-file
-                accept="text/plain"
-                canChangeName=false
-                classNames="box"
-                minHeight=200
-                placeholder="nodeDriver.amazoneks.userData.placeholder"
-                value=config.userData
+              accept="text/plain"
+              canChangeName=false
+              classNames="box"
+              minHeight=200
+              placeholder="nodeDriver.amazoneks.userData.placeholder"
+              value=config.userData
             }}
             <p class="help-block">
               {{t "nodeDriver.amazoneks.userData.help"}}
@@ -408,9 +451,9 @@
     {{/accordion-list-item}}
 
     {{save-cancel
-        editing=(eq mode "edit")
-        save="driverSave"
-        cancel=close
+      editing=(eq mode "edit")
+      save=(action "driverSave")
+      cancel=close
     }}
   {{/if}}
 

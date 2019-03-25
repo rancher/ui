@@ -58,7 +58,9 @@ export default Component.extend({
       }
     });
 
-    this.sendAction('changed', Object.keys(out).length ? out : null);
+    if (this.changed) {
+      this.changed(Object.keys(out).length ? out : null);
+    }
     this.updateLimits();
   }),
 

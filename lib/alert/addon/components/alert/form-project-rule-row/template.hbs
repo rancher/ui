@@ -47,13 +47,13 @@
         </div>
         <div class="col span-8 mt-0">
           {{searchable-select
-              content=pods
-              class="form-control"
-              value=model.podRule.podId
-              optionValuePath="id"
-              optionLabelPath="displayName"
-              placeholder=(t "alertPage.newOrEdit.podPlaceholder")
-              readOnly=(not-eq model._targetType "pod")
+            content=pods
+            class="form-control"
+            value=model.podRule.podId
+            optionValuePath="id"
+            optionLabelPath="displayName"
+            placeholder=(t "alertPage.newOrEdit.podPlaceholder")
+            readOnly=(not-eq model._targetType "pod")
           }}
         </div>
       </div>
@@ -66,13 +66,13 @@
         </div>
         <div class="col span-8 mt-0">
           {{searchable-select
-              content=workloads
-              class="form-control"
-              value=model.workloadRule.workloadId
-              optionValuePath="id"
-              optionLabelPath="displayName"
-              placeholder=(t "alertPage.newOrEdit.resourcePlaceholder")
-              readOnly=(not-eq model._targetType "workload")
+            content=workloads
+            class="form-control"
+            value=model.workloadRule.workloadId
+            optionValuePath="id"
+            optionLabelPath="displayName"
+            placeholder=(t "alertPage.newOrEdit.resourcePlaceholder")
+            readOnly=(not-eq model._targetType "workload")
           }}
         </div>
       </div>
@@ -86,9 +86,9 @@
         <div class="col span-8 mt-0">
           {{#if (eq model._targetType "workloadSelector")}}
             {{form-key-value
-                addActionLabel="alertPage.addSelectorLabel"
-                initialMap=model.workloadRule.selector
-                changed=(action (mut model.workloadRule.selector))
+              addActionLabel="alertPage.addSelectorLabel"
+              initialMap=model.workloadRule.selector
+              changed=(action (mut model.workloadRule.selector))
             }}
           {{else}}
             <button {{action "noop"}} style="cursor:not-allowed;" class="btn bg-disabled icon-btn">
@@ -108,12 +108,12 @@
         </div>
         <div class="col span-8 mt-0">
           {{alert-select
-              content=metricsContent
-              class="form-control"
-              value=model.metricRule.expression
-              readOnly=(or (not-eq model._targetType "metric") graphLoading)
-              placeholder="Select a metric"
-              allowCustom=true
+            content=metricsContent
+            class="form-control"
+            value=model.metricRule.expression
+            readOnly=(or (not-eq model._targetType "metric") graphLoading)
+            placeholder="Select a metric"
+            allowCustom=true
           }}
           {{#if (eq graphStatus "noData")}}
             <p class="text-error text-small mt-0 mb-0">{{t "alertPage.newOrEdit.expression.noData"}}</p>
@@ -135,19 +135,19 @@
       <div class="row">
         <div class="col span-2 mt-5">
           {{searchable-select
-              content=operatorContent
-              class="form-control"
-              value=model.metricRule.comparison
-              readOnly=(not-eq model._targetType "metric")
+            content=operatorContent
+            class="form-control"
+            value=model.metricRule.comparison
+            readOnly=(not-eq model._targetType "metric")
           }}
         </div>
         <div class="col span-2 mt-5">
           {{input-number
-              class="form-control"
-              value=model.metricRule.thresholdValue
-              readOnly=(not-eq model._targetType "metric")
-              placeholder="e.g. 10"
-              min=0
+            class="form-control"
+            value=model.metricRule.thresholdValue
+            readOnly=(not-eq model._targetType "metric")
+            placeholder="e.g. 10"
+            min=0
           }}
         </div>
         <div class="col span-1 text-right">
@@ -155,10 +155,10 @@
         </div>
         <div class="col span-4 mt-5">
           {{searchable-select
-              content=durationContent
-              class="form-control"
-              value=model.metricRule.duration
-              readOnly=(not-eq model._targetType "metric")
+            content=durationContent
+            class="form-control"
+            value=model.metricRule.duration
+            readOnly=(not-eq model._targetType "metric")
           }}
         </div>
       </div>
@@ -176,58 +176,58 @@
       {{/if}}
     {{else}}
       <div class="col span-10">
-      {{#if (eq model._targetType "pod")}}
-        <label class="mr-10">
-          {{radio-button selection=model.podRule.condition value="notrunning"}} {{t "alertPage.newOrEdit.notRunning"}}
-        </label>
-        <label class="mr-10">
-          {{radio-button selection=model.podRule.condition value="notscheduled"}} {{t "alertPage.newOrEdit.notScheduled"}}
-        </label>
-        <label>
-          {{radio-button selection=model.podRule.condition value="restarts"}} {{t "alertPage.newOrEdit.restarted"}}
-        </label>
-        <div style="display:inline-block;width:80px;">
-          {{input-integer
+        {{#if (eq model._targetType "pod")}}
+          <label class="mr-10">
+            {{radio-button selection=model.podRule.condition value="notrunning"}} {{t "alertPage.newOrEdit.notRunning"}}
+          </label>
+          <label class="mr-10">
+            {{radio-button selection=model.podRule.condition value="notscheduled"}} {{t "alertPage.newOrEdit.notScheduled"}}
+          </label>
+          <label>
+            {{radio-button selection=model.podRule.condition value="restarts"}} {{t "alertPage.newOrEdit.restarted"}}
+          </label>
+          <div style="display:inline-block;width:80px;">
+            {{input-integer
               classNames="form-contorl input-sm"
               disabled=(not-eq model.podRule.condition "restarts")
               placeholder="3"
               min=1
               value=model.podRule.restartTimes
-          }}
-        </div>
-        {{t "alertPage.newOrEdit.restartedTimes"}}
-        <div style="display:inline-block;width:80px;">
-          {{input-integer
+            }}
+          </div>
+          {{t "alertPage.newOrEdit.restartedTimes"}}
+          <div style="display:inline-block;width:80px;">
+            {{input-integer
               classNames="form-contorl input-sm"
               disabled=(not-eq model.podRule.condition "restarts")
               placeholder="5"
               min=1
               value=restartIntervalSeconds
-          }}
-        </div>
-        {{t "alertPage.newOrEdit.minutes"}}
-      {{else if (or (eq model._targetType "workload") (eq model._targetType "workloadSelector"))}}
-        <div class="row">
-          <div class="col span-1 mt-0">
-            <div style={{verbStyles}}>
-              {{t "alertPage.newOrEdit.lessThan"}}
+            }}
+          </div>
+          {{t "alertPage.newOrEdit.minutes"}}
+        {{else if (or (eq model._targetType "workload") (eq model._targetType "workloadSelector"))}}
+          <div class="row">
+            <div class="col span-1 mt-0">
+              <div style={{verbStyles}}>
+                {{t "alertPage.newOrEdit.lessThan"}}
+              </div>
+            </div>
+            <div class="col span-6 mt-0">
+              <div class="input-group">
+                {{input-slider
+                  value=model.workloadRule.availablePercentage
+                  valueMin=0
+                  valueMax=100
+                  step=1
+                }}
+                <span class="input-group-addon">{{model.workloadRule.availablePercentage}}% {{t "alertPage.newOrEdit.available"}}</span>
+              </div>
             </div>
           </div>
-          <div class="col span-6 mt-0">
-            <div class="input-group">
-              {{input-slider
-                value=model.workloadRule.availablePercentage
-                valueMin=0
-                valueMax=100
-                step=1
-              }}
-              <span class="input-group-addon">{{model.workloadRule.availablePercentage}}% {{t "alertPage.newOrEdit.available"}}</span>
-            </div>
-          </div>
-        </div>
-      {{else}}
-        <div>{{t "alertPage.newOrEdit.moreTarget"}}</div>
-      {{/if}}
+        {{else}}
+          <div>{{t "alertPage.newOrEdit.moreTarget"}}</div>
+        {{/if}}
       </div>
     {{/if}}
   </section>
@@ -274,7 +274,7 @@
               <i class="icon icon-edit"/>
             </button>
           </div>
-        {{else}}
+  {{else}}
           {{alert/form-row-advanced
             model=model
             alertGroup=alertGroup
