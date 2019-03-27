@@ -207,6 +207,20 @@
   </section>
 {{/if}}
 
+{{#if (and insufficient (eq selected "prometheus")) }}
+  {{#banner-message color="bg-warning"}}
+    <p>
+      {{#if (and insufficientMemory insufficientCpu)}}
+        {{t "monitoringPage.insufficientSize.all" cpu=minCpu memory=minMemory}}
+      {{else if insufficientMemory}}
+        {{t "monitoringPage.insufficientSize.memory" memory=minMemory}}
+      {{else if insufficientCpu}}
+        {{t "monitoringPage.insufficientSize.cpu" cpu=minCpu}}
+      {{/if}}
+    </p>
+  {{/banner-message}}
+{{/if}}
+
 <div class="text-center">
   {{save-cancel
       saveDisabled=saveDisabled
