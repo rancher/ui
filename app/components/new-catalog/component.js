@@ -319,8 +319,6 @@ export default Component.extend(NewOrEdit, CatalogApp, ChildHook, {
       }
 
       return this.applyHooks('_beforeSaveHooks').catch((err) => {
-        this;
-        debugger;
         set(this, 'errors', [err.message]);
 
         return false;
@@ -381,7 +379,6 @@ export default Component.extend(NewOrEdit, CatalogApp, ChildHook, {
         valuesYaml:      yaml ? yaml : null,
       });
 
-      // debugger;
       return app.save().then(() => get(this, 'primaryResource'));
     }
   },
