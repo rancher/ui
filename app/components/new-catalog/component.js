@@ -14,8 +14,9 @@ import { isEmpty } from '@ember/utils';
 import CatalogApp from 'shared/mixins/catalog-app';
 import { isNumeric } from 'shared/utils/util';
 import convertDotAnswersToYaml from 'shared/utils/convert-yaml';
+import ChildHook from 'shared/mixins/child-hook';
 
-export default Component.extend(NewOrEdit, CatalogApp, {
+export default Component.extend(NewOrEdit, CatalogApp, ChildHook, {
   catalog:                  service(),
   intl:                     service(),
   scope:                    service(),
@@ -319,7 +320,11 @@ export default Component.extend(NewOrEdit, CatalogApp, {
         set(get(this, 'catalogApp'), 'answers', get(this, 'answers'));
       }
 
-      return true;
+      return this.applyHooks('_beforeSaveHooks').catch((err) => {
+        set(this, 'errors', [err.message]);
+
+        return false;
+      });
     } else {
       // TODO 2.0 this is part of the volumes stuff so we need to investigate if this still works
       // let versionId = null;
@@ -340,12 +345,12 @@ export default Component.extend(NewOrEdit, CatalogApp, {
   },
 
   didSave(neu) {
-    let app = get(this, 'catalogApp');
+    let app  = get(this, 'catalogApp');
     let yaml = get(this, 'selectedTemplateModel.valuesYaml');
 
     if ( !yaml && this.shouldFallBackToYaml() ) {
       const questions = get(this, 'selectedTemplateModel.allQuestions') || [];
-      const input = {};
+      const input     = {};
 
       questions.forEach((q) => {
         if ( q.answer !== undefined && q.answer !== null ) {

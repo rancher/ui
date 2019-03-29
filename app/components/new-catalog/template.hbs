@@ -111,30 +111,20 @@
         </p>
       </div>
     </div>
-    <div class="row">
-      {{#unless (or customizeNamespace (not selectedTemplateModel))}}
-        <div class="col span-12">
-          {{t
-            "newCatalog.customizeNamespace"
-            namespaceId=(if requiredNamespace requiredNamespace primaryResource.name)
-            htmlSafe=true
-          }}
-          {{#unless (or editing requiredNamespace)}}
-            <button class="btn btn-sm bg-transparent pl-0" {{action "toogleNamespace"}}>
-              {{t "generic.customize"}}
-            </button>
-          {{/unless}}
-        </div>
-      {{/unless}}
-      <div class="col span-12">
-        {{#if customizeNamespace}}
-          <hr class="mt-20 mb-20"/>
 
-          {{form-namespace
-            namespace=primaryResource
-            errors=namespaceErrors
-          }}
-        {{/if}}
+    <div class="over-hr">
+      <span>
+        {{t "generic.namespace"}}
+      </span>
+    </div>
+
+    <div class="row">
+      <div class="col span-12">
+        {{form-namespace
+          namespace=primaryResource
+          errors=namespaceErrors
+          registerHook=(action "registerHook")
+        }}
       </div>
     </div>
 
@@ -244,15 +234,7 @@
     </div>
   {{/if}}
 
-  {{#if errors.length}}
-    <section>
-      <div class="row">
-        <div class="col span-12">
-          {{top-errors errors=errors}}
-        </div>
-      </div>
-    </section>
-  {{/if}}
+  {{top-errors errors=errors}}
 
   <div class="footer-actions">
     {{save-cancel
