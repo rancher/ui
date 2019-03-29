@@ -24,19 +24,33 @@
       {{/if}}
       <div class="col span-6">
         {{#if (eq model.mode "newVolumeClaimTemplate")}}
-          <label class="acc-label">{{t "formVolumeRow.volumeClaimTemplateName.label"}}</label>
+          <label class="acc-label">
+            {{t "formVolumeRow.volumeClaimTemplateName.label"}}
+          </label>
           {{#input-or-display editable=editing value=model.name}}
-            {{input type="text" value=model.name placeholder=(t "formVolumeRow.volumeClaimTemplateName.placeholder")}}
+            {{input
+              type="text"
+              value=model.name
+              placeholder=(t "formVolumeRow.volumeClaimTemplateName.placeholder")
+            }}
           {{/input-or-display}}
         {{else}}
-          <label class="acc-label">{{t "formVolumeRow.name.label"}}</label>
+          <label class="acc-label">
+            {{t "formVolumeRow.name.label"}}
+          </label>
           {{#input-or-display editable=editing value=model.volume.name}}
-            {{input type="text" value=model.volume.name placeholder=(t "formVolumeRow.name.placeholder")}}
+            {{input
+              type="text"
+              value=model.volume.name
+              placeholder=(t "formVolumeRow.name.placeholder")
+            }}
           {{/input-or-display}}
         {{/if}}
       </div>
       <div class="col span-4">
-        <label class="acc-label">{{t "formVolumeRow.mode.label"}}</label>
+        <label class="acc-label">
+          {{t "formVolumeRow.mode.label"}}
+        </label>
         <div class="form-control-static">
           {{t (concat "formVolumeRow.mode." model.mode)}}
           {{#if editing}}
@@ -73,7 +87,9 @@
   {{#if (eq model.mode "existingPvc")}}
     <div class="row">
       <div class="col span-6">
-        <label class="acc-label">{{t "formVolumeRow.mode.existingPvc"}} {{field-required}}</label>
+        <label class="acc-label">
+          {{t "formVolumeRow.mode.existingPvc"}} {{field-required}}
+        </label>
         {{#if editing}}
           {{new-select
             value=model.volume.persistentVolumeClaim.persistentVolumeClaimId
@@ -95,11 +111,11 @@
     }}
   {{else if (eq model.mode "customLogPath")}}
     {{volume-source/source-custom-log-path
-        remove="remove"
-        model=model
-        volume=model.volume
-        mounts=model.mounts
-        editing=editing
+      remove=(action "remove")
+      model=model
+      volume=model.volume
+      mounts=model.mounts
+      editing=editing
     }}
   {{else if (eq model.mode "secret")}}
     {{volume-source/source-secret
@@ -158,7 +174,11 @@
                   <td></td>
                   <td class="text-center">
                     {{#if editing}}
-                      {{input type="checkbox" classNames="form-control" checked=mnt.readOnly}}
+                      {{input
+                        type="checkbox"
+                        classNames="form-control"
+                        checked=mnt.readOnly
+                      }}
                     {{else}}
                       {{mnt.readOnly}}
                     {{/if}}
@@ -174,7 +194,7 @@
                 </tr>
               {{/each}}
             </tbody>
-        </table>
+          </table>
         {{else}}
           {{t "formVolumeRow.mounts.helper"}}
         {{/if}}

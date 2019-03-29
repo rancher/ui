@@ -1,15 +1,25 @@
 <section class="header clearfix">
-  <h1 class="pull-left">{{t (concat "monitoringPage." level ".title")}}</h1>
+  <h1 class="pull-left">
+    {{t (concat "monitoringPage." level ".title")}}
+  </h1>
   <div class="pull-right">
     {{#if (eq selected "prometheus")}}
       <div class="btn-group no-inline-space">
-        <button class="btn btn-link btn-sm bg-default" {{action "changeSelected" "none"}}>{{t "generic.disable"}}</button>
-        <button class="btn btn-link btn-sm bg-success">{{t "generic.enabled"}}</button>
+        <button class="btn btn-link btn-sm bg-default" {{action "changeSelected" "none"}}>
+          {{t "generic.disable"}}
+        </button>
+        <button class="btn btn-link btn-sm bg-success">
+          {{t "generic.enabled"}}
+        </button>
       </div>
     {{else}}
       <div class="btn-group no-inline-space">
-        <button class="btn btn-link btn-sm bg-primary">{{t "generic.disabled"}}</button>
-        <button class="btn btn-link btn-sm bg-defualt" {{action "changeSelected" "prometheus"}}>{{t "generic.enable"}}</button>
+        <button class="btn btn-link btn-sm bg-primary">
+          {{t "generic.disabled"}}
+        </button>
+        <button class="btn btn-link btn-sm bg-defualt" {{action "changeSelected" "prometheus"}}>
+          {{t "generic.enable"}}
+        </button>
       </div>
     {{/if}}
   </div>
@@ -41,7 +51,9 @@
   <div class="box mb-10">
     <div class="row">
       <div class="col span-6">
-        <label class="acc-label">{{t "monitoringPage.config.retention.label"}}</label>
+        <label class="acc-label">
+          {{t "monitoringPage.config.retention.label"}}
+        </label>
         <div class="input-group">
           {{input-integer min=0 value=retention}}
           <span class="input-group-addon bg-default">{{t "generic.hours"}}</span>
@@ -49,7 +61,9 @@
       </div>
       {{#if (eq level "cluster")}}
         <div class="col span-6">
-          <label class="acc-label">{{t "monitoringPage.config.nodeexporter.enable"}}</label>
+          <label class="acc-label">
+            {{t "monitoringPage.config.nodeexporter.enable"}}
+          </label>
           {{schema/input-boolean value=enableNodeExporter}}
         </div>
       {{/if}}
@@ -57,11 +71,15 @@
 
     <div class="row">
       <div class="col span-6">
-        <label class="acc-label">{{t "monitoringPage.config.prometheus.enablePersistence.label"}}</label>
+        <label class="acc-label">
+          {{t "monitoringPage.config.prometheus.enablePersistence.label"}}
+        </label>
         {{schema/input-boolean value=enablePrometheusPersistence}}
       </div>
       <div class="col span-6">
-        <label class="acc-label">{{t "monitoringPage.config.grafana.enablePersistence.label"}}</label>
+        <label class="acc-label">
+          {{t "monitoringPage.config.grafana.enablePersistence.label"}}
+        </label>
         {{schema/input-boolean value=enableGrafanaPersistence}}
       </div>
     </div>
@@ -69,11 +87,18 @@
     {{#if enablePrometheusPersistence}}
       <div class="row">
         <div class="col span-6">
-          <label class="acc-label">{{t "monitoringPage.config.prometheus.size.label"}}</label>
-          {{schema/input-string value=prometheusPersistenceSize placeholder=(t "monitoringPage.config.prometheus.size.placeholder")}}
+          <label class="acc-label">
+            {{t "monitoringPage.config.prometheus.size.label"}}
+          </label>
+          {{schema/input-string
+            value=prometheusPersistenceSize
+            placeholder=(t "monitoringPage.config.prometheus.size.placeholder")
+          }}
         </div>
         <div class="col span-6">
-          <label class="acc-label">{{t "monitoringPage.config.prometheus.storageClass.label"}}</label>
+          <label class="acc-label">
+            {{t "monitoringPage.config.prometheus.storageClass.label"}}
+          </label>
           {{schema/input-storageclass value=prometheusStorageClass}}
         </div>
       </div>
@@ -82,11 +107,18 @@
     {{#if enableGrafanaPersistence}}
       <div class="row">
         <div class="col span-6">
-          <label class="acc-label">{{t "monitoringPage.config.grafana.size.label"}}</label>
-          {{schema/input-string value=grafanaPersistenceSize placeholder=(t "monitoringPage.config.grafana.size.placeholder")}}
+          <label class="acc-label">
+            {{t "monitoringPage.config.grafana.size.label"}}
+          </label>
+          {{schema/input-string
+            value=grafanaPersistenceSize
+            placeholder=(t "monitoringPage.config.grafana.size.placeholder")
+          }}
         </div>
         <div class="col span-6">
-          <label class="acc-label">{{t "monitoringPage.config.grafana.storageClass.label"}}</label>
+          <label class="acc-label">
+            {{t "monitoringPage.config.grafana.storageClass.label"}}
+          </label>
           {{schema/input-storageclass value=grafanaStorageClass}}
         </div>
       </div>
@@ -94,7 +126,9 @@
 
     <div class="row">
       <div class="col span-6">
-        <label class="acc-label">{{t "monitoringPage.config.prometheus.cpuLimit.label"}}</label>
+        <label class="acc-label">
+          {{t "monitoringPage.config.prometheus.cpuLimit.label"}}
+        </label>
         <span class="with-input">
           <div class="input-group">
             {{input-integer
@@ -110,7 +144,9 @@
           </div>
         </span>
 
-        <label class="acc-label mt-20">{{t "monitoringPage.config.prometheus.cpuRequest.label"}}</label>
+        <label class="acc-label mt-20">
+          {{t "monitoringPage.config.prometheus.cpuRequest.label"}}
+        </label>
         <span class="with-input">
           <div class="input-group">
             {{input-integer
@@ -128,7 +164,9 @@
       </div>
 
       <div class="col span-6">
-        <label class="acc-label">{{t "monitoringPage.config.prometheus.memoryLimit.label"}}</label>
+        <label class="acc-label">
+          {{t "monitoringPage.config.prometheus.memoryLimit.label"}}
+        </label>
         <div class="input-group">
           {{input-integer
             min="4"
@@ -142,7 +180,9 @@
           </div>
         </div>
 
-        <label class="acc-label mt-20">{{t "monitoringPage.config.prometheus.memoryRequest.label"}}</label>
+        <label class="acc-label mt-20">
+          {{t "monitoringPage.config.prometheus.memoryRequest.label"}}
+        </label>
         <div class="input-group">
           {{input-integer
             min="4"
@@ -161,7 +201,9 @@
     {{#if (and (eq level "cluster") enableNodeExporter)}}
       <div class="row">
         <div class="col span-6">
-          <label class="acc-label">{{t "monitoringPage.config.nodeexporter.label"}}</label>
+          <label class="acc-label">
+            {{t "monitoringPage.config.nodeexporter.label"}}
+          </label>
           {{input-integer
             min=1
             max=65535
@@ -173,30 +215,32 @@
 
     <div class="row">
       <div class="col span-12">
-        <label class="acc-label">{{t "monitoringPage.nodeSelector.helpText"}}</label>
+        <label class="acc-label">
+          {{t "monitoringPage.nodeSelector.helpText"}}
+        </label>
         {{form-key-value
-            changedArray=(action (mut nodeSelectors))
-            initialStr=nodeSelectorsStr
-            allowEmptyValue=true
-            addActionLabel="monitoringPage.nodeSelector.addSelectorLabel"
+          changedArray=(action (mut nodeSelectors))
+          initialStr=nodeSelectorsStr
+          allowEmptyValue=true
+          addActionLabel="monitoringPage.nodeSelector.addSelectorLabel"
         }}
       </div>
     </div>
 
     {{#advanced-section advanced=advanced}}
-        {{form-key-value
-          initialMap=customAnswers
-          changed=(action (mut customAnswers))
-          allowEmptyValue=true
-          addInitialEmptyRow=true
-          editing=true
-          header=(t "newCatalog.answers.label")
-          addActionLabel="newCatalog.answers.addAction"
-          keyLabel="newContainer.environment.keyLabel"
-          keyPlaceholder="newContainer.environment.keyPlaceholder"
-          valueLabel="newContainer.environment.valueLabel"
-          valuePlaceholder="newContainer.environment.valuePlaceholder"
-        }}
+      {{form-key-value
+        initialMap=customAnswers
+        changed=(action (mut customAnswers))
+        allowEmptyValue=true
+        addInitialEmptyRow=true
+        editing=true
+        header=(t "newCatalog.answers.label")
+        addActionLabel="newCatalog.answers.addAction"
+        keyLabel="newContainer.environment.keyLabel"
+        keyPlaceholder="newContainer.environment.keyPlaceholder"
+        valueLabel="newContainer.environment.valueLabel"
+        valuePlaceholder="newContainer.environment.valuePlaceholder"
+      }}
     {{/advanced-section}}
   </div>
 {{else if loading}}
@@ -223,10 +267,10 @@
 
 <div class="text-center">
   {{save-cancel
-      saveDisabled=saveDisabled
-      cancelDisabled=true
-      editing=(and enabled (eq selected "prometheus") )
-      createLabel="saveCancel.edit"
-      save="save"
+    saveDisabled=saveDisabled
+    cancelDisabled=true
+    editing=(and enabled (eq selected "prometheus") )
+    createLabel="saveCancel.edit"
+    save=(action "save")
   }}
 </div>

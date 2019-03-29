@@ -1,24 +1,42 @@
 {{#sortable-table
-  tableClassNames="double-rows"
-  body=filtered
-  sortBy=sortBy
-  bulkActions=bulkActions
-  search=search
-  searchText=searchText
-  extraSearchFields=extraSearchFields
-  extraSearchSubFields=extraSearchSubFields
-  paging=paging
-  stickyHeader=stickyHeader
-  subRow=subRow
-  subRows=subRows
-  descending=descending
-  pagingLabel=pagingLabel
-  headers=headers as |sortable kind inst dt|}}
+   tableClassNames="double-rows"
+   body=filtered
+   sortBy=sortBy
+   bulkActions=bulkActions
+   search=search
+   searchText=searchText
+   extraSearchFields=extraSearchFields
+   extraSearchSubFields=extraSearchSubFields
+   paging=paging
+   stickyHeader=stickyHeader
+   subRow=subRow
+   subRows=subRows
+   descending=descending
+   pagingLabel=pagingLabel
+   headers=headers as |sortable kind inst dt|
+}}
   {{#if (eq kind "row")}}
-    {{pod-row model=inst dt=dt bulkActions=bulkActions showNode=showNode showActions=true showPrimaryActions=false fullColspan=sortable.fullColspan subRow=subRow}}
+    {{pod-row
+      model=inst
+      dt=dt
+      bulkActions=bulkActions
+      showNode=showNode
+      showActions=true
+      showPrimaryActions=false
+      fullColspan=sortable.fullColspan
+      subRow=subRow
+    }}
   {{else if (eq kind "nomatch")}}
-    <tr><td colspan="{{sortable.fullColspan}}" class="text-center text-muted lacsso pt-20 pb-20">{{t 'containersPage.table.noMatch'}}</td></tr>
+    <tr>
+      <td colspan="{{sortable.fullColspan}}" class="text-center text-muted lacsso pt-20 pb-20">
+        {{t "containersPage.table.noMatch"}}
+      </td>
+    </tr>
   {{else if (eq kind "norows")}}
-    <tr><td colspan="{{sortable.fullColspan}}" class="text-center text-muted lacsso pt-20 pb-20">{{t 'containersPage.table.noData'}}</td></tr>
+    <tr>
+      <td colspan="{{sortable.fullColspan}}" class="text-center text-muted lacsso pt-20 pb-20">
+        {{t "containersPage.table.noData"}}
+      </td>
+    </tr>
   {{/if}}
 {{/sortable-table}}

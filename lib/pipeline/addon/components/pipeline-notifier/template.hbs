@@ -1,14 +1,14 @@
-<div class="acc-label pb-5 pt-10">{{t 'pipelineNotification.header'}}</div>
+<div class="acc-label pb-5 pt-10">{{t "pipelineNotification.header"}}</div>
 <div class="mb-20 mt-20">
   {{#if notificationEnabled}}
     <div class="btn-group no-inline-space">
-      <button class="btn btn-link btn-sm bg-default" {{action "disableNotification"}}>{{t 'generic.disable'}}</button>
-      <button class="btn btn-link btn-sm bg-success">{{t 'generic.enabled'}}</button>
+      <button class="btn btn-link btn-sm bg-default" {{action "disableNotification"}}>{{t "generic.disable"}}</button>
+      <button class="btn btn-link btn-sm bg-success">{{t "generic.enabled"}}</button>
     </div>
   {{else}}
     <div class="btn-group no-inline-space">
-      <button class="btn btn-link btn-sm bg-primary">{{t 'generic.disabled'}}</button>
-      <button class="btn btn-link btn-sm bg-defualt" {{action "enableNotification"}}>{{t 'generic.enable'}}</button>
+      <button class="btn btn-link btn-sm bg-primary">{{t "generic.disabled"}}</button>
+      <button class="btn btn-link btn-sm bg-defualt" {{action "enableNotification"}}>{{t "generic.enable"}}</button>
     </div>
   {{/if}}
 </div>
@@ -18,7 +18,7 @@
     <div class="row">
       <div class="col span-2">
         <div class="pt-10">
-          {{t 'pipelineNotification.when'}}
+          {{t "pipelineNotification.when"}}
         </div>
       </div>
       <div class="col span-9">
@@ -26,19 +26,19 @@
           <div class="checkbox inline-block">
             <label>
               {{input type="checkbox" checked=failed}}
-              {{t 'pipelineNotification.condition.failed.label'}}
+              {{t "pipelineNotification.condition.failed.label"}}
             </label>
           </div>
           <div class="checkbox inline-block ml-10">
             <label>
               {{input type="checkbox" checked=success}}
-              {{t 'pipelineNotification.condition.success.label'}}
+              {{t "pipelineNotification.condition.success.label"}}
             </label>
           </div>
           <div class="checkbox inline-block ml-10">
             <label>
               {{input type="checkbox" checked=changed}}
-              {{t 'pipelineNotification.condition.changed.label'}}
+              {{t "pipelineNotification.condition.changed.label"}}
             </label>
           </div>
         </div>
@@ -46,30 +46,30 @@
     </div>
 
     {{#unless haveNotifiers}}
-      {{#banner-message color='bg-warning mb-0 mt-10'}}
-        <p>{{t 'alertPage.newOrEdit.noNotifierHelpText'}} {{#link-to-external 'notifier' clusterId}} {{t 'alertPage.newOrEdit.createOne'}}{{/link-to-external}}.</p>
+      {{#banner-message color="bg-warning mb-0 mt-10"}}
+        <p>{{t "alertPage.newOrEdit.noNotifierHelpText"}} {{#link-to-external "notifier" clusterId}} {{t "alertPage.newOrEdit.createOne"}}{{/link-to-external}}.</p>
       {{/banner-message}}
     {{/unless}}
     <div class="row">
       <div class="col span-2">
         <div style="padding-top: 12px;">
-          {{t 'pipelineNotification.asMessage'}}
+          {{t "pipelineNotification.asMessage"}}
         </div>
       </div>
       <div class="col span-9">
         {{#each config.recipients as |recipient idx|}}
           {{form-recipient-item
-              disableRemove=disableRemove
-              remove="remove"
-              isFirst=(eq idx 0)
-              notifiers=notifiers
-              model=recipient
+            disableRemove=disableRemove
+            remove=(action "remove")
+            isFirst=(eq idx 0)
+            notifiers=notifiers
+            model=recipient
           }}
         {{/each}}
         <div class="mt-15">
           <button class="btn bg-link icon-btn p-0" {{action "add"}} disabled={{not haveNotifiers}}>
             <span class="darken"><i class="icon icon-plus text-small"/></span>
-            <span>{{t 'alertPage.newOrEdit.addRecipient'}}</span>
+            <span>{{t "alertPage.newOrEdit.addRecipient"}}</span>
           </button>
         </div>
       </div>

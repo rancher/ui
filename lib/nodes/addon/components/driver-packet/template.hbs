@@ -2,44 +2,72 @@
   {{#accordion-list showExpandAll=false as | al expandFn |}}
     {{#if (eq step 1)}}
       <div class="box mt-20">
-        <h4>{{t 'nodeDriver.packet.accountSection'}}</h4>
+        <h4>
+          {{t "nodeDriver.packet.accountSection"}}
+        </h4>
 
         <div class="row inline-form">
           <div class="col span-6">
-            <label class="acc-label">{{t 'nodeDriver.packet.projectId.label'}}{{field-required}}</label>
+            <label class="acc-label">
+              {{t "nodeDriver.packet.projectId.label"}}{{field-required}}
+            </label>
             {{#input-or-display editable=(not dataFetched) value=config.projectId}}
-              {{input type="text" name="username" value=config.projectId classNames="form-control" placeholder=(t 'nodeDriver.packet.projectId.placeholder')}}
+              {{input
+                type="text"
+                name="username"
+                value=config.projectId
+                classNames="form-control"
+                placeholder=(t "nodeDriver.packet.projectId.placeholder")
+              }}
             {{/input-or-display}}
           </div>
           <div class="col span-6">
-            <label class="acc-label">{{t 'nodeDriver.packet.apiKey.label'}}{{field-required}}</label>
+            <label class="acc-label">
+              {{t "nodeDriver.packet.apiKey.label"}}{{field-required}}
+            </label>
             {{#input-or-display editable=(not dataFetched) value=config.apiKey obfuscate=true}}
-              {{input type="password" name="password" value=config.apiKey classNames="form-control" placeholder=(t 'nodeDriver.packet.apiKey.placeholder')}}
+              {{input
+                type="password"
+                name="password"
+                value=config.apiKey
+                classNames="form-control"
+                placeholder=(t "nodeDriver.packet.apiKey.placeholder")
+              }}
             {{/input-or-display}}
-            <p class="text-info">{{t 'nodeDriver.packet.apiKeyHelp' htmlSafe=true}}</p>
+            <p class="text-info">
+              {{t "nodeDriver.packet.apiKeyHelp" htmlSafe=true}}
+            </p>
           </div>
         </div>
       </div>
 
       {{save-cancel
-        createLabel='nodeDriver.packet.loginAction'
-        savingLabel='nodeDriver.packet.authentication'
-        save='authPacket'
-        cancel='cancel'
+        createLabel="nodeDriver.packet.loginAction"
+        savingLabel="nodeDriver.packet.authentication"
+        save=(action "authPacket")
+        cancel=(action "cancel")
       }}
     {{else}}
-      <div class="over-hr mb-20"><span>{{driverOptionsTitle}}</span></div>
+      <div class="over-hr mb-20">
+        <span>
+          {{driverOptionsTitle}}
+        </span>
+      </div>
 
       <div class="box mt-20">
-        <h4>{{t 'nodeDriver.packet.location'}}</h4>
+        <h4>{{t "nodeDriver.packet.location"}}</h4>
         <div class="row inline-form mt-20">
           <div class="col span-2 col-inline">
-            <label>{{t 'nodeDriver.packet.region.label'}}</label>
+            <label class="acc-label">
+              {{t "nodeDriver.packet.region.label"}}
+            </label>
           </div>
           <div class="col span-10">
             <select class="form-control" onchange={{action (mut config.facility) value="target.value"}}>
               {{#each facilityChoices as |choice|}}
-                <option value={{choice.code}} selected={{eq config.facilityCode choice.code}}>{{choice.name}}</option>
+                <option value={{choice.code}} selected={{eq config.facilityCode choice.code}}>
+                  {{choice.name}}
+                </option>
               {{/each}}
             </select>
           </div>
@@ -47,31 +75,41 @@
       </div>
 
       <div class="box mt-20">
-        <h4>{{t 'nodeDriver.packet.instanceOptionsSection'}}</h4>
+        <h4>{{t "nodeDriver.packet.instanceOptionsSection"}}</h4>
 
         <div class="row inline-form">
           <div class="col span-6">
-            <label class="acc-label">{{t 'nodeDriver.packet.image.label'}}</label>
+            <label class="acc-label">
+              {{t "nodeDriver.packet.image.label"}}
+            </label>
             <select class="form-control" onchange={{action (mut config.os) value="target.value"}}>
               {{#each osChoices as |choice|}}
-                <option value={{choice.slug}} selected={{eq config.os choice.slug}}>{{choice.name}}</option>
+                <option value={{choice.slug}} selected={{eq config.os choice.slug}}>
+                  {{choice.name}}
+                </option>
               {{/each}}
             </select>
           </div>
 
           <div class="col span-6">
-            <label class="acc-label">{{t 'nodeDriver.packet.size.label'}}</label>
+            <label class="acc-label">
+              {{t "nodeDriver.packet.size.label"}}
+            </label>
             <select class="form-control" onchange={{action (mut config.plan) value="target.value"}}>
               {{#each planChoices as |choice|}}
-                <option value={{choice.slug}} selected={{eq config.plan choice.slug}}>{{choice.name}} (${{choice.pricing.hour}}/hr)</option>
+                <option value={{choice.slug}} selected={{eq config.plan choice.slug}}>
+                  {{choice.name}} (${{choice.pricing.hour}}/hr)
+                </option>
               {{/each}}
             </select>
           </div>
         </div>
         <div class="row mt-20">
-          <h4>{{t 'nodeDriver.packet.planDetails.label'}}</h4>
+          <h4>{{t "nodeDriver.packet.planDetails.label"}}</h4>
           <div class="col span-6">
-            <label class="acc-label">{{t 'nodeDriver.packet.planDetails.cpu'}}</label>
+            <label class="acc-label">
+              {{t "nodeDriver.packet.planDetails.cpu"}}
+            </label>
             {{#each planChoiceDetails.specs.cpus as |plan|}}
               <div>
                 {{plan.count}} {{plan.type}}
@@ -79,7 +117,9 @@
             {{/each}}
           </div>
           <div class="col span-6">
-            <label class="acc-label">{{t 'nodeDriver.packet.planDetails.memory'}}</label>
+            <label class="acc-label">
+              {{t "nodeDriver.packet.planDetails.memory"}}
+            </label>
             <div>
               {{planChoiceDetails.specs.memory.total}}
             </div>
@@ -87,7 +127,9 @@
         </div>
         <div class="row">
           <div class="col span-6">
-            <label class="acc-label">{{t 'nodeDriver.packet.planDetails.drives'}}</label>
+            <label class="acc-label">
+              {{t "nodeDriver.packet.planDetails.drives"}}
+            </label>
             {{#each planChoiceDetails.specs.drives as |plan|}}
               <div>
                 {{plan.count}} {{plan.size}} {{plan.type}}
@@ -95,7 +137,9 @@
             {{/each}}
           </div>
           <div class="col span-6">
-            <label class="acc-label">{{t 'nodeDriver.packet.planDetails.network'}}</label>
+            <label class="acc-label">
+              {{t "nodeDriver.packet.planDetails.network"}}
+            </label>
             {{#each planChoiceDetails.specs.nics as |plan|}}
               <div>
                 {{plan.count}} {{plan.type}}
@@ -105,7 +149,11 @@
         </div>
       </div>
 
-      <div class="over-hr"><span>{{templateOptionsTitle}}</span></div>
+      <div class="over-hr">
+        <span>
+          {{templateOptionsTitle}}
+        </span>
+      </div>
 
       {{form-name-description
         model=model
@@ -114,7 +162,7 @@
 
       {{form-user-labels
         initialLabels=labelResource.labels
-        setLabels=(action 'setLabels')
+        setLabels=(action "setLabels")
         expandAll=expandAll
         expand=(action expandFn)
       }}
@@ -125,7 +173,11 @@
       }}
 
       {{top-errors errors=errors}}
-      {{save-cancel save="save" cancel="cancel" editing=editing}}
+      {{save-cancel
+        save=(action "save")
+        cancel=(action "cancel")
+        editing=editing
+      }}
     {{/if}}
   {{/accordion-list}}
 </section>

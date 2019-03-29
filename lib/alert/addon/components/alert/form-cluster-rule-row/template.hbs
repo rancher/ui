@@ -46,11 +46,11 @@
         </div>
         <div class="col span-9 mt-0">
           {{searchable-select
-              content=systemServices
-              class="form-control"
-              value=model.systemServiceRule.condition
-              placeholder=(t "alertPage.newOrEdit.systemServicePlaceholder")
-              readOnly=(not-eq model._targetType "systemService")
+            content=systemServices
+            class="form-control"
+            value=model.systemServiceRule.condition
+            placeholder=(t "alertPage.newOrEdit.systemServicePlaceholder")
+            readOnly=(not-eq model._targetType "systemService")
           }}
         </div>
       </div>
@@ -66,11 +66,11 @@
         </div>
         <div class="col span-9 mt-0">
           {{searchable-select
-              content=resourceKinds
-              class="form-control"
-              value=model.eventRule.resourceKind
-              placeholder=(t "alertPage.newOrEdit.resourcePlaceholder")
-              readOnly=(not-eq isEventTarget true)
+            content=resourceKinds
+            class="form-control"
+            value=model.eventRule.resourceKind
+            placeholder=(t "alertPage.newOrEdit.resourcePlaceholder")
+            readOnly=(not-eq isEventTarget true)
           }}
         </div>
         <div class="col span-1 text-right"> {{t "alertPage.targetTypes.event"}} </div>
@@ -84,13 +84,13 @@
         </div>
         <div class="col span-9 mt-0">
           {{searchable-select
-              content=nodes
-              class="form-control"
-              value=model.nodeRule.nodeId
-              optionValuePath="id"
-              optionLabelPath="displayName"
-              placeholder=(t "alertPage.newOrEdit.nodePlaceholder")
-              readOnly=(not-eq model._targetType "node")
+            content=nodes
+            class="form-control"
+            value=model.nodeRule.nodeId
+            optionValuePath="id"
+            optionLabelPath="displayName"
+            placeholder=(t "alertPage.newOrEdit.nodePlaceholder")
+            readOnly=(not-eq model._targetType "node")
           }}
         </div>
       </div>
@@ -103,9 +103,9 @@
         <div class="col span-9 mt-0">
           {{#if (eq model._targetType "nodeSelector")}}
             {{form-key-value
-                addActionLabel="alertPage.addSelectorLabel"
-                initialMap=model.nodeRule.selector
-                changed=(action (mut model.nodeRule.selector))
+              addActionLabel="alertPage.addSelectorLabel"
+              initialMap=model.nodeRule.selector
+              changed=(action (mut model.nodeRule.selector))
             }}
           {{else}}
             <button {{action "noop"}} style="cursor:not-allowed;" class="btn bg-disabled icon-btn">
@@ -123,12 +123,12 @@
         </div>
         <div class="col span-9 mt-0">
           {{alert-select
-              content=metricsContent
-              class="form-control"
-              value=model.metricRule.expression
-              readOnly=(or (not-eq model._targetType "metric") graphLoading)
-              placeholder="Select a metric"
-              allowCustom=true
+            content=metricsContent
+            class="form-control"
+            value=model.metricRule.expression
+            readOnly=(or (not-eq model._targetType "metric") graphLoading)
+            placeholder="Select a metric"
+            allowCustom=true
           }}
           {{#if (eq graphStatus "noData")}}
             <p class="text-error text-small mt-0 mb-0">{{t "alertPage.newOrEdit.expression.noData"}}</p>
@@ -148,18 +148,18 @@
       <div class="row">
         <div class="col span-2 mt-5">
           {{searchable-select
-              content=operatorContent
-              class="form-control"
-              value=model.metricRule.comparison
-              readOnly=(not-eq model._targetType "metric")
+            content=operatorContent
+            class="form-control"
+            value=model.metricRule.comparison
+            readOnly=(not-eq model._targetType "metric")
           }}
         </div>
         <div class="col span-2 mt-5">
           {{input-number class="form-control"
-                          value=model.metricRule.thresholdValue
-                          readOnly=(not-eq model._targetType "metric")
-                          placeholder="e.g. 10"
-                          min=0
+            value=model.metricRule.thresholdValue
+            readOnly=(not-eq model._targetType "metric")
+            placeholder="e.g. 10"
+            min=0
           }}
         </div>
         <div class="col span-1 text-right">
@@ -167,10 +167,10 @@
         </div>
         <div class="col span-4 mt-5">
           {{searchable-select
-              content=durationContent
-              class="form-control"
-              value=model.metricRule.duration
-              readOnly=(not-eq model._targetType "metric")
+            content=durationContent
+            class="form-control"
+            value=model.metricRule.duration
+            readOnly=(not-eq model._targetType "metric")
           }}
         </div>
       </div>
@@ -188,39 +188,39 @@
       {{/if}}
     {{else}}
       <div class="col span-10">
-      {{#if (eq model._targetType "systemService")}}
-        <label class="acc-label">
-          {{radio-button selection="whatever" value="whatever"}} {{t "alertPage.newOrEdit.unhealthy"}}
-        </label>
-      {{else if (or (eq model._targetType "node") (eq model._targetType "nodeSelector"))}}
-        <label class="acc-label pr-20">
-          {{radio-button selection=model.nodeRule.condition value="notready"}} {{t "alertPage.newOrEdit.notReady"}}
-        </label>
-        <label class="acc-label pr-10">
-          {{radio-button selection=model.nodeRule.condition value="cpu"}} {{t "alertPage.newOrEdit.cpuUsage"}}
-        </label>
-        <div style="display:inline-block;width:60px;">
-          {{input-integer
+        {{#if (eq model._targetType "systemService")}}
+          <label class="acc-label">
+            {{radio-button selection="whatever" value="whatever"}} {{t "alertPage.newOrEdit.unhealthy"}}
+          </label>
+        {{else if (or (eq model._targetType "node") (eq model._targetType "nodeSelector"))}}
+          <label class="acc-label pr-20">
+            {{radio-button selection=model.nodeRule.condition value="notready"}} {{t "alertPage.newOrEdit.notReady"}}
+          </label>
+          <label class="acc-label pr-10">
+            {{radio-button selection=model.nodeRule.condition value="cpu"}} {{t "alertPage.newOrEdit.cpuUsage"}}
+          </label>
+          <div style="display:inline-block;width:60px;">
+            {{input-integer
               classNames="form-contorl input-sm"
               disabled=(not-eq model.nodeRule.condition "cpu")
               min=1
               value=model.nodeRule.cpuThreshold
-          }}
-        </div>%
+            }}
+          </div>%
 
-        <label class="ml-20 acc-label pr-20">
-          {{radio-button selection=model.nodeRule.condition value="mem"}} {{t "alertPage.newOrEdit.memUsage"}}
-        </label>
-        <div style="display:inline-block;width:60px;">
-          {{input-integer
+          <label class="ml-20 acc-label pr-20">
+            {{radio-button selection=model.nodeRule.condition value="mem"}} {{t "alertPage.newOrEdit.memUsage"}}
+          </label>
+          <div style="display:inline-block;width:60px;">
+            {{input-integer
               classNames="form-contorl input-sm"
               disabled=(not-eq model.nodeRule.condition "mem")
               min=1
               max=100
               value=model.nodeRule.memThreshold
-          }}
-        </div>%
-      {{/if}}
+            }}
+          </div>%
+        {{/if}}
       </div>
     {{/if}}
   </section>

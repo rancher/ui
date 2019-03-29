@@ -1,5 +1,5 @@
 {{#unless secretOnly}}
-  <td data-title="{{t 'formSources.kind.label'}}">
+  <td data-title="{{t "formSources.kind.label"}}">
     {{#if editing}}
       {{new-select
         classNames="form-control"
@@ -11,77 +11,77 @@
       {{#if source.source}}
         {{source.source}}
       {{else}}
-        <span class="text-muted">{{t 'generic.na'}}</span>
+        <span class="text-muted">{{t "generic.na"}}</span>
       {{/if}}
     {{/if}}
   </td>
   <td>&nbsp;</td>
 {{/unless }}
-<td data-title="{{t 'formSources.kind.label'}}">
-  {{#if (and editing (eq source.source 'secret'))}}
+<td data-title="{{t "formSources.kind.label"}}">
+  {{#if (and editing (eq source.source "secret"))}}
     {{schema/input-secret
-        namespace=namespace
-        value=source.sourceName
-        valueKey='name'
-        selectedSecret=selectedSecret
+      namespace=namespace
+      value=source.sourceName
+      valueKey="name"
+      selectedSecret=selectedSecret
     }}
-  {{else if (and editing (eq source.source 'configMap'))}}
+  {{else if (and editing (eq source.source "configMap"))}}
     {{schema/input-config-map
-        namespace=namespace
-        value=source.sourceName
-        valueKey='name'
-        selectedConfigMap=selectedConfigMap
+      namespace=namespace
+      value=source.sourceName
+      valueKey="name"
+      selectedConfigMap=selectedConfigMap
     }}
-  {{else if (and editing (eq source.source 'field'))}}
-    {{input type="text" value=source.sourceName classNames="form-control" placeholder=(t 'formSources.field.placeholder')}}
-  {{else if (and editing (eq source.source 'resource'))}}
-    {{input type="text" value=source.sourceName classNames="form-control" placeholder=(t 'formSources.container.placeholder')}}
+  {{else if (and editing (eq source.source "field"))}}
+    {{input type="text" value=source.sourceName classNames="form-control" placeholder=(t "formSources.field.placeholder")}}
+  {{else if (and editing (eq source.source "resource"))}}
+    {{input type="text" value=source.sourceName classNames="form-control" placeholder=(t "formSources.container.placeholder")}}
   {{else}}
     {{#if source}}
       {{source.sourceName}}
     {{else}}
-      <span class="text-muted">{{t 'generic.na'}}</span>
+      <span class="text-muted">{{t "generic.na"}}</span>
     {{/if}}
   {{/if}}
 </td>
 <td>&nbsp;</td>
-<td data-title="{{t 'formSources.prefixOrKey.label'}}">
-  {{#if (or (eq source.source 'secret') (eq source.source 'configMap'))}}
+<td data-title="{{t "formSources.prefixOrKey.label"}}">
+  {{#if (or (eq source.source "secret") (eq source.source "configMap"))}}
     {{searchable-select
-        classNames="form-control"
-        optionValuePath="id"
-        optionLabelPath="label"
-        content=prefixOrKeys
-        value=source.sourceKey
-        readOnly=(or (not source.sourceName) (not editing))
+      classNames="form-control"
+      optionValuePath="id"
+      optionLabelPath="label"
+      content=prefixOrKeys
+      value=source.sourceKey
+      readOnly=(or (not source.sourceName) (not editing))
     }}
-  {{else if (eq source.source 'resource')}}
-    {{input type="text" value=source.sourceKey classNames="form-control" placeholder=(t 'formSources.resource.placeholder')}}
+  {{else if (eq source.source "resource")}}
+    {{input type="text" value=source.sourceKey classNames="form-control" placeholder=(t "formSources.resource.placeholder")}}
   {{else}}
-    <span class="text-muted">{{t 'generic.na'}}</span>
+    <span class="text-muted">{{t "generic.na"}}</span>
   {{/if}}
 </td>
 <td>
   <div class="text-center">
-    {{#if (or specificKeyOnly (eq source.source 'field') (eq source.source 'resource'))}}
-      {{t 'generic.as'}}
+    {{#if (or specificKeyOnly (eq source.source "field") (eq source.source "resource"))}}
+      {{t "generic.as"}}
     {{else if (eq source.sourceKey null)}}
-      {{t 'generic.prefix'}}
+      {{t "generic.prefix"}}
     {{else}}
-      {{t 'generic.as'}}
+      {{t "generic.as"}}
     {{/if}}
   </div>
 </td>
 
-<td data-title="{{t 'formSources.prefix.label'}}">
+<td data-title="{{t "formSources.prefix.label"}}">
   {{#input-or-display editable=editing value=prefixOrTarget classesForDisplay="text-muted form-control-static"}}
-    {{input type="text" value=prefixOrTarget classNames="form-control" disabled=(and (not source.sourceName) (not-eq source.source 'resource') (not-eq source.source 'field'))}}
+    {{input type="text" value=prefixOrTarget classNames="form-control" disabled=(and (not source.sourceName) (not-eq source.source "resource") (not-eq source.source "field"))}}
   {{/input-or-display}}
 </td>
 <td>
   {{#if editing}}
     <button class="btn bg-primary btn-sm" {{action remove source}}>
-      <i class="icon icon-minus"/><span class="sr-only">{{t 'generic.remove'}}</span>
+      <i class="icon icon-minus"/><span class="sr-only">{{t "generic.remove"}}</span>
     </button>
   {{/if}}
 </td>

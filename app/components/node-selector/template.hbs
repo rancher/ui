@@ -1,15 +1,19 @@
-<div class="mb-20"><label class="acc-label">{{t title}}</label></div>
+<div class="mb-20">
+  <label class="acc-label">
+    {{t title}}
+  </label>
+</div>
 
 {{#if ruleArray.length}}
   <table class="table fixed no-lines mb-20">
     {{#if editing}}
       <thead>
         <tr>
-          <th class="acc-label" >{{t 'formScheduling.key'}}</th>
+          <th class="acc-label" >{{t "formScheduling.key"}}</th>
           <th width="40"></th>
-          <th class="acc-label">{{t 'formScheduling.operator'}}</th>
+          <th class="acc-label">{{t "formScheduling.operator"}}</th>
           <th width="40"></th>
-          <th class="acc-label">{{t 'formScheduling.value'}}</th>
+          <th class="acc-label">{{t "formScheduling.value"}}</th>
           <th width="10">&nbsp;</th>
           <th width="40"></th>
         </tr>
@@ -17,22 +21,27 @@
     {{/if}}
     <tbody>
       {{#each ruleArray as |rule|}}
-        {{node-selector-row remove="removeRule" editing=editing rule=rule}}
+        {{node-selector-row
+          remove=(action "removeRule")
+          editing=editing rule=rule
+        }}
       {{/each}}
     </tbody>
   </table>
 {{else}}
   {{#unless editing}}
-    <div class="text-muted">{{t 'formScheduling.noRules'}}</div>
+    <div class="text-muted">
+      {{t "formScheduling.noRules"}}
+    </div>
   {{/unless}}
 {{/if}}
 
 {{#if editing}}
   <button class="btn bg-link icon-btn" {{action "addRule"}}>
     <span class="darken"><i class="icon icon-plus text-small"/></span>
-    <span>{{t 'formScheduling.addRule'}}</span>
+    <span>{{t "formScheduling.addRule"}}</span>
   </button>
   <button class="btn bg-transparent btn-sm" {{action "addRule" true}}>
-    {{t 'formScheduling.addCustom'}}
+    {{t "formScheduling.addCustom"}}
   </button>
 {{/if}}

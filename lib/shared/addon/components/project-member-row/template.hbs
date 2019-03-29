@@ -18,22 +18,26 @@
         </div>
       {{else}}
         {{!-- we should never get here, but if we did you can start with a error in principal search by id --}}
-        {{t 'generic.unknown'}}&nbsp;{{t 'generic.user'}}
+        {{t "generic.unknown"}}&nbsp;{{t "generic.user"}}
       {{/if}}
     {{else}}
-      {{input-identity allowTeams=true action="addAuthorized" onError="gotError"}}
+      {{input-identity
+        allowTeams=true
+        action=(action "addAuthorized")
+        onError=(action "gotError")
+      }}
     {{/if}}
   {{/if}}
 </td>
 <td class="pr-10">
   {{#if owner}}
-    {{t 'generic.owner'}}
+    {{t "generic.owner"}}
   {{else}}
     {{#if noUpdate}}
       {{#if roleTemplate}}
         {{roleTemplate.displayName}}
       {{else}}
-        {{t 'generic.custom'}}
+        {{t "generic.custom"}}
       {{/if}}
     {{else}}
       {{searchable-select change="onSelect" content=choices value=roleTemplateId readOnly=noUpdate}}

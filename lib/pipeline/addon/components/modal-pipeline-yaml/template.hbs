@@ -1,40 +1,58 @@
 <h2>
-  {{t 'editYamlPipeline.title' name=model.displayName}}
+  {{t "editYamlPipeline.title" name=model.displayName}}
 </h2>
 
 {{#if loading}}
-  <i class="icon icon-spinner icon-spin"/> {{t 'generic.loading'}}
+  <i class="icon icon-spinner icon-spin"/> {{t "generic.loading"}}
 {{else if branchesChoices.length}}
   <div class="row mb-10">
     <div class="col span-12">
-      <label class="acc-label">{{t 'editYamlPipeline.branch.label'}}{{field-required}}</label>
+      <label class="acc-label">
+        {{t "editYamlPipeline.branch.label"}}{{field-required}}
+      </label>
       {{#searchable-select
-        optionLabelPath="branch"
-        optionValuePath="branch"
-        value=branch
-        customLabel=true
-        content=branchesChoices as |item|
+         optionLabelPath="branch"
+         optionValuePath="branch"
+         value=branch
+         customLabel=true
+         content=branchesChoices as |item|
       }}
-        <div class="{{item.stateColor}}">{{item.branch}}</div>
+        <div class="{{item.stateColor}}">
+          {{item.branch}}
+        </div>
       {{/searchable-select}}
     </div>
   </div>
   <div class="row mb-10">
     {{input-yaml
-        showUpload=false
-        showDownload=false
-        canChangeName=false
-        value=config
-        autoResize=true
-        loading=loading
+      showUpload=false
+      showDownload=false
+      canChangeName=false
+      value=config
+      autoResize=true
+      loading=loading
     }}
   </div>
-  {{copy-to-clipboard tooltipText="" buttonText="copyToClipboard.tooltip" clipboardText=config class="with-clip"}}
+  {{copy-to-clipboard
+    tooltipText=""
+    buttonText="copyToClipboard.tooltip"
+    clipboardText=config
+    class="with-clip"
+  }}
   {{top-errors errors=errors}}
-  {{save-cancel createLabel="generic.push" save="save" cancel="cancel"}}
+  {{save-cancel
+    createLabel="generic.push"
+    save=(action "save")
+    cancel=(action "cancel")
+  }}
 {{else}}
-  {{#banner-message color='bg-warning'}}
-    <p>{{t 'generic.noBranch'}}</p>
+  {{#banner-message color="bg-warning"}}
+    <p>{{t "generic.noBranch"}}</p>
   {{/banner-message}}
-  {{save-cancel createLabel="generic.push" save="save" saveDisabled=true cancel="cancel"}}
+  {{save-cancel
+    createLabel="generic.push"
+    save=(action "save")
+    saveDisabled=true
+    cancel=(action "cancel")
+  }}
 {{/if}}

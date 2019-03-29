@@ -108,7 +108,9 @@ export default Component.extend({
     const check = get(this, 'healthCheck');
 
     if ( get(this, 'isNone') ) {
-      this.sendAction('changed', null);
+      if (this.changed) {
+        this.changed(null);
+      }
 
       return;
     }
@@ -126,7 +128,7 @@ export default Component.extend({
         })
       }
 
-      const headers = get(this, 'headers');
+      const headers = get(this, 'headers') || {};
 
       Object.keys(headers).forEach((header) => {
         httpHeaders.push({
@@ -153,7 +155,9 @@ export default Component.extend({
       set(check, 'command', null);
     }
 
-    this.sendAction('changed', check);
+    if (this.changed) {
+      this.changed(check);
+    }
   }),
 
   validate: observer('isNone', 'isCommand', 'healthCheck.command.[]', 'healthCheck.port', function() {

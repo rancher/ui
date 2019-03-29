@@ -1,23 +1,27 @@
 <section class="header clearfix">
   <div class="pull-left">
-    {{#if editing}}
-        <h1>{{t "projectsPage.editProject"}}</h1>
-    {{else}}
-        <h1>{{t "projectsPage.addProject"}}</h1>
-    {{/if}}
+    <h1>
+      {{#if editing}}
+        {{t "projectsPage.editProject"}}
+      {{else}}
+        {{t "projectsPage.addProject"}}
+      {{/if}}
+    </h1>
   </div>
 </section>
 
 <section class="horizontal-form container-fluid">
   {{form-name-description
-      model=model.project
-      nameLabel="projectsPage.name.label"
-      nameRequired=true
-      namePlaceholder="projectsPage.name.placeholder"
+    model=model.project
+    nameLabel="projectsPage.name.label"
+    nameRequired=true
+    namePlaceholder="projectsPage.name.placeholder"
   }}
 
   {{#if model.project.cluster.isRKE}}
-    <label class="acc-label">{{t "projectsPage.psp.label"}}</label>
+    <label class="acc-label">
+      {{t "projectsPage.psp.label"}}
+    </label>
     {{new-select
       content=model.psps
       optionLabelPath="displayName"
@@ -30,9 +34,9 @@
 </section>
 
 <div class="row">
-{{#accordion-list showExpandAll=false as | al expandFn | }}
-  <div class="col span-12">
-    {{#accordion-list-item
+  {{#accordion-list showExpandAll=false as | al expandFn | }}
+    <div class="col span-12">
+      {{#accordion-list-item
          title=(t "projectsPage.members.title")
          detail=(t "projectsPage.members.detail")
          status=(t "pagination.member" pages=1 count=memberArray.length)
@@ -40,8 +44,8 @@
          expandAll=al.expandAll
          expand=(action expandFn)
          expandOnInit=true
-    }}
-      {{form-members
+      }}
+        {{form-members
           creator=creator
           editing=(not primaryResource.id)
           expanded=expanded
@@ -53,43 +57,47 @@
           roles=model.roles
           type="project"
           users=model.users
-      }}
-    {{/accordion-list-item}}
+        }}
+      {{/accordion-list-item}}
 
-    {{#accordion-list-item
+      {{#accordion-list-item
          title=(t "projectsPage.resourceQuota.title")
          detail=(t "projectsPage.resourceQuota.detail")
          expandAll=al.expandAll
          expand=(action expandFn)
          expandOnInit=false
-    }}
-      {{project-resource-quota
+      }}
+        {{project-resource-quota
           editing=(or editing isNew)
           expanded=expanded
           limit=primaryResource.resourceQuota.limit
           nsDefaultLimit=primaryResource.namespaceDefaultResourceQuota.limit
           changed=(action "updateQuota")
-      }}
-    {{/accordion-list-item}}
+        }}
+      {{/accordion-list-item}}
 
-    {{#accordion-list-item
+      {{#accordion-list-item
          title=(t "projectsPage.containerDefaultLimit.title")
          detail=(t "projectsPage.containerDefaultLimit.detail")
          expandAll=al.expandAll
          expand=(action expandFn)
          expandOnInit=false
-    }}
-      {{container-default-limit
+      }}
+        {{container-default-limit
           editing=(or editing isNew)
           expanded=expanded
           limit=primaryResource.containerDefaultResourceLimit
           changed=(action "updateContainerDefault")
-      }}
-    {{/accordion-list-item}}
-  </div>
-{{/accordion-list}}
+        }}
+      {{/accordion-list-item}}
+    </div>
+  {{/accordion-list}}
 </div>
 
 {{top-errors errors=errors}}
 {{top-errors errors=memberErrors}}
-{{save-cancel editing=editing save="save" cancel="cancel"}}
+{{save-cancel
+  editing=editing
+  save=(action "save")
+  cancel=(action "cancel")
+}}

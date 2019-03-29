@@ -1,27 +1,32 @@
 <section class="box mt-30">
-  <h3>{{t 'authPage.setup' type='GitLab' }}</h3>
+  <h3>
+    {{t "authPage.setup" type="GitLab" }}
+  </h3>
   <hr/>
   <p>
     <ol class="alphalist ml-40">
       <li>
-        {{t 'authPage.gitlab.auth' htmlSafe=true}}
+        {{t "authPage.gitlab.auth" htmlSafe=true}}
         <ul>
-          <li>{{t 'authPage.gitlab.enterpriseAuth'}}</li>
+          <li>{{t "authPage.gitlab.enterpriseAuth"}}</li>
         </ul>
       </li>
       <li>
-        {{t 'authPage.gitlab.ul.li2.text'}}
+        {{t "authPage.gitlab.ul.li2.text"}}
         <ul>
           <li>
-            {{t 'authPage.gitlab.ul.li2.ul.li1' htmlSafe=true}}
+            {{t "authPage.gitlab.ul.li2.ul.li1" htmlSafe=true}}
           </li>
           <li>
-            <b>{{t 'authPage.gitlab.ul.li2.ul.li2'}}</b>
-            <span id="auth-callback-url">{{concat destinationUrl '/verify-auth'}} {{copy-to-clipboard size='small' clipboardText=(concat destinationUrl '/verify-auth')}}</span></li>
+            <b>{{t "authPage.gitlab.ul.li2.ul.li2"}}</b>
+            <span id="auth-callback-url">
+              {{concat destinationUrl "/verify-auth"}} {{copy-to-clipboard size="small" clipboardText=(concat destinationUrl "/verify-auth")}}
+            </span>
+          </li>
         </ul>
       </li>
       <li>
-        {{t 'authPage.gitlab.ul.li3.text'}}
+        {{t "authPage.gitlab.ul.li3.text"}}
       </li>
     </ol>
   </p>
@@ -29,32 +34,56 @@
 
 <form autcomplete="on">
   <section class="box mt-30">
-    <h3>{{t 'authPage.form.headerVariable' SCM='GitLab' }}</h3>
+    <h3>{{t "authPage.form.headerVariable" SCM="GitLab" }}</h3>
     <div class="row">
       <div class="col span-6">
         <div class="inline-form">
-          <label class="acc-label pb-5">{{t 'authPage.gitlab.form.clientId.labelText'}}{{field-required}}</label>
-          {{input type="text" name="username" value=oauthModel.clientId classNames="form-control"}}
-          <p class="help-block">{{t 'authPage.gitlab.form.subtextVariable'}}</p>
+          <label class="acc-label pb-5">
+            {{t "authPage.gitlab.form.clientId.labelText"}}{{field-required}}
+          </label>
+          {{input
+            type="text"
+            name="username"
+            value=oauthModel.clientId
+            classNames="form-control"
+          }}
+          <p class="help-block">{{t "authPage.gitlab.form.subtextVariable"}}</p>
         </div>
       </div>
       <div class="col span-6">
         <div class="inline-form">
-          <label class="acc-label pb-5">{{t 'authPage.gitlab.form.clientSecret.labelText'}}{{field-required}}</label>
-          {{input type="password" name="password" value=oauthModel.clientSecret classNames="form-control"}}
+          <label class="acc-label pb-5">
+            {{t "authPage.gitlab.form.clientSecret.labelText"}}{{field-required}}
+          </label>
+          {{input
+            type="password"
+            name="password"
+            value=oauthModel.clientSecret
+            classNames="form-control"
+          }}
           <div class="checkbox pt-10">
-            <label class="acc-label pb-5">{{input type="checkbox" checked=isEnterprise}} 
-              {{t 'authPage.form.enterprise.labelText' type='gitlab'}}
+            <label class="acc-label pb-5">
+              {{input type="checkbox" checked=isEnterprise}}
+              {{t "authPage.form.enterprise.labelText" type="gitlab"}}
             </label>
           </div>
           {{#liquid-if isEnterprise}}
             <div class="checkbox pt-10">
-              <label class="acc-label pb-5">{{input type="checkbox" checked=secure}} {{t 'authPage.form.isEnterprise.labelText'}}</label>
+              <label class="acc-label pb-5">
+                {{input type="checkbox" checked=secure}} {{t "authPage.form.isEnterprise.labelText"}}
+              </label>
             </div>
           {{/liquid-if}}
           {{#liquid-if isEnterprise}}
-            <label class="acc-label pb-5">{{t 'authPage.form.enterpriseHost.labelText'}}{{field-required}}</label>
-            {{input type="text" value=oauthModel.hostName classNames="form-control" placeholder=(t 'authPage.form.enterpriseHost.placeholder')}}
+            <label class="acc-label pb-5">
+              {{t "authPage.form.enterpriseHost.labelText"}}{{field-required}}
+            </label>
+            {{input
+              type="text"
+              value=oauthModel.hostName
+              classNames="form-control"
+              placeholder=(t "authPage.form.enterpriseHost.placeholder")
+            }}
           {{/liquid-if}}
         </div>
       </div>
@@ -63,7 +92,12 @@
     {{top-errors errors=errors}}
 
     <div class="row text-center">
-      {{save-cancel cancelDisabled=true savingLabel='authPage.testAuth.buttonText.post' createLabel='authPage.testAuth.buttonText.preVariable' save='authenticate'}}
+      {{save-cancel
+        cancelDisabled=true
+        savingLabel="authPage.testAuth.buttonText.post"
+        createLabel="authPage.testAuth.buttonText.preVariable"
+        save=(action "authenticate")
+      }}
     </div>
   </section>
 </form>

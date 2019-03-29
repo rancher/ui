@@ -5,35 +5,35 @@ import Resource from '@rancher/ember-api-store/models/resource';
 const SOURCES = [];
 
 //             name/component    field                     component ephemeral persistent driver
-registerSource('aws-ebs',        'awsElasticBlockStore',   true,     true,     true);
-registerSource('azure-disk',     'azureDisk',              true,     true,     true);
-registerSource('azure-file',     'azureFile',              true,     true,     true);
-registerSource('cephfs',         'cephfs',                 true,     true,     true);
-registerSource('cinder',         'cinder',                 true,     true,     true);
-registerSource('config-map',     'configMap',              true,     false,    false);
-// registerSource('downward-api',   'downwardAPI',            true,     true,     false);
-registerSource('empty-dir',      'emptyDir',               true,     true,     false);
-registerSource('fc',             'fc',                     true,     true,     true);
-registerSource('flex-volume',    'flexVolume',             true,     true,     true);
-registerSource('flex-volume-longhorn',    'flexVolume',    true,     true,     true,    'rancher.io/longhorn');
-registerSource('flocker',        'flocker',                true,     true,     true);
-registerSource('gce-pd',         'gcePersistentDisk',      true,     true,     true);
-// registerSource('git-repo',       'gitRepo',                true,     true,     false);
-registerSource('glusterfs',      'glusterfs',              true,     true,     true);
-registerSource('host-path',      'hostPath',               true,     true,     true);
-registerSource('iscsi',          'iscsi',                  true,     true,     true);
-registerSource('local',          'local',                  true,     false,    true);
-registerSource('nfs',            'nfs',                    true,     true,     true);
-// registerSource('pvc',            'persisitentVolumeClaim', true,     true,     false);
-registerSource('photon',         'photonPersistentDisk',   true,     true,     true);
-registerSource('portworx',       'portworxVolume',         true,     true,     true);
-// registerSource('projected',      'projected',              true,     true,     false);
-registerSource('quobyte',        'quobyte',                true,     true,     true);
-registerSource('rbd',            'rbd',                    true,     true,     true);
-registerSource('scaleio',        'scaleIO',                true,     true,     true);
-registerSource('secret',         'secret',                 true,     true,     false);
-registerSource('storageos',      'storageos',              true,     true,     true);
-registerSource('vsphere-volume', 'vsphereVolume',          true,     true,     true);
+registerSource('aws-ebs',              'awsElasticBlockStore',   true, true,  true);
+registerSource('azure-disk',           'azureDisk',              true, true,  true);
+registerSource('azure-file',           'azureFile',              true, true,  true);
+registerSource('cephfs',               'cephfs',                 true, true,  true);
+registerSource('cinder',               'cinder',                 true, true,  true);
+registerSource('config-map',           'configMap',              true, false, false);
+// registerSource('downward-api',      'downwardAPI',            true, true,  false);
+registerSource('empty-dir',            'emptyDir',               true, true,  false);
+registerSource('fc',                   'fc',                     true, true,  true);
+registerSource('flex-volume',          'flexVolume',             true, true,  true);
+registerSource('flex-volume-longhorn', 'flexVolume',             true, true,  true, 'rancher.io/longhorn');
+registerSource('flocker',              'flocker',                true, true,  true);
+registerSource('gce-pd',               'gcePersistentDisk',      true, true,  true);
+// registerSource('git-repo',          'gitRepo',                true, true,  false);
+registerSource('glusterfs',            'glusterfs',              true, true,  true);
+registerSource('host-path',            'hostPath',               true, true,  true);
+registerSource('iscsi',                'iscsi',                  true, true,  true);
+registerSource('local',                'local',                  true, false, true);
+registerSource('nfs',                  'nfs',                    true, true,  true);
+// registerSource('pvc',               'persisitentVolumeClaim', true, true,  false);
+registerSource('photon',               'photonPersistentDisk',   true, true,  true);
+registerSource('portworx',             'portworxVolume',         true, true,  true);
+// registerSource('projected',         'projected',              true, true,  false);
+registerSource('quobyte',              'quobyte',                true, true,  true);
+registerSource('rbd',                  'rbd',                    true, true,  true);
+registerSource('scaleio',              'scaleIO',                true, true,  true);
+registerSource('secret',               'secret',                 true, true,  false);
+registerSource('storageos',            'storageos',              true, true,  true);
+registerSource('vsphere-volume',       'vsphereVolume',          true, true,  true);
 
 export function registerSource(name, field, component, ephemeral = true, persistent = true, driver = '') {
   if ( component === true ) {
@@ -69,25 +69,22 @@ export function getSources(which = 'all') {
 var Volume = Resource.extend({
   intl:         service(),
   reservedKeys: ['configName'],
+  sources:      SOURCES,
 
   type: 'volume',
 
-  init() {
-    this._super(...arguments);
+  configName: computed('sources.@each.{value}', function() {
+    const keys = get(this, 'sources').map((x) => x.value);
 
-    const keys = SOURCES.map((x) => x.value);
-
-    set(this, 'configName', computed.call(this, ...keys, function() {
-      for ( let key, i = 0 ; i < keys.length ; i++ ) {
-        key = keys[i];
-        if ( get(this, key) ) {
-          return key;
-        }
+    for ( let key, i = 0 ; i < keys.length ; i++ ) {
+      key = keys[i];
+      if ( get(this, key) ) {
+        return key;
       }
+    }
 
-      return null;
-    }));
-  },
+    return null;
+  }),
 
   config: computed('configName', function() {
     const key = get(this, 'configName');
@@ -96,29 +93,35 @@ var Volume = Resource.extend({
       return get(this, key);
     }
   }),
+
   sourceName: computed('configName', function(){
     const key = get(this, 'configName');
 
     if ( !key ) {
       return
     }
-    let entry;
-    let driver = get(this, key).driver;
 
-    entry = SOURCES.findBy('value', key);
+    let entry;
+    let driver    = get(this, key).driver;
+    const sources = get(this, 'sources');
+
+    entry = sources.findBy('value', key);
+
     if (key === 'flexVolume' && driver){
-      let specialSource = SOURCES.findBy('driver', driver);
+      let specialSource = sources.findBy('driver', driver);
 
       if (specialSource){
         entry = specialSource;
       }
     }
+
     if (entry){
       return entry.name;
     }
   }),
+
   displaySource: computed('sourceName', 'intl.locale', function() {
-    const intl = get(this, 'intl');
+    const intl       = get(this, 'intl');
     const sourceName = get(this, 'sourceName');
 
     if ( sourceName ) {
@@ -127,7 +130,7 @@ var Volume = Resource.extend({
   }),
 
   clearSourcesExcept(keep) {
-    const keys = SOURCES.map((x) => x.value);
+    const keys = get(this, 'sources').map((x) => x.value);
 
     for ( let key, i = 0 ; i < keys.length ; i++ ) {
       key = keys[i];

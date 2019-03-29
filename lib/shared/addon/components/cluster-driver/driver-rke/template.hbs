@@ -21,11 +21,15 @@
   <ul class="tab-nav">
     {{#if pasteOrUpload}}
       <li>
-        <button class="btn bg-transparent" {{action "cancel"}}>{{t "clusterNew.advanced.cancel"}}</button>
+        <button class="btn bg-transparent" {{action "cancel"}}>
+          {{t "clusterNew.advanced.cancel"}}
+        </button>
       </li>
     {{else}}
       <li>
-        <button class="btn bg-transparent" {{action "showPaste"}}>{{t "clusterNew.advanced.yaml"}} <span class="icon icon-copy"></span></button>
+        <button class="btn bg-transparent" {{action "showPaste"}}>
+          {{t "clusterNew.advanced.yaml"}} <span class="icon icon-copy"></span>
+        </button>
       </li>
     {{/if}}
   </ul>
@@ -78,7 +82,9 @@
       }}
         <div class="row">
           <div class="col span-6">
-            <label class="acc-label">{{t "clusterNew.rke.version.label"}}</label>
+            <label class="acc-label">
+              {{t "clusterNew.rke.version.label"}}
+            </label>
             {{form-versions
               cluster=cluster
               editing=(eq mode "edit")
@@ -90,7 +96,9 @@
         </div>
         <div class="row">
           <div class="col {{if (and isCustom (eq mode "new")) "span-4" "span-6"}}">
-            <label class="acc-label">{{t "clusterNew.rke.network.label"}}</label>
+            <label class="acc-label">
+              {{t "clusterNew.rke.network.label"}}
+            </label>
             {{new-select
               classNames="form-control"
               content=networkContent
@@ -101,7 +109,9 @@
           </div>
           {{#if (and isCustom (eq mode "new"))}}
             <div class="col span-4">
-              <label class="acc-label">{{t "clusterNew.rke.windowsSupport.label"}}</label>
+              <label class="acc-label">
+                {{t "clusterNew.rke.windowsSupport.label"}}
+              </label>
               <div class="radio">
                 <label class={{if (not-eq cluster.rancherKubernetesEngineConfig.network.plugin "flannel") "text-muted"}}>
                   {{radio-button
@@ -125,7 +135,9 @@
             </div>
           {{/if}}
           <div class="col {{if (and isCustom (eq mode "new")) "span-4" "span-6"}}">
-            <label class="acc-label">{{t "clusterNew.rke.networkPolicy.label"}}</label>
+            <label class="acc-label">
+              {{t "clusterNew.rke.networkPolicy.label"}}
+            </label>
             <div class="radio">
               <label class={{unless (eq cluster.rancherKubernetesEngineConfig.network.plugin "canal")  "text-muted"}}>
                 {{radio-button
@@ -192,7 +204,9 @@
         }}
           <div class="row">
             <div class="col span-4">
-              <label class="acc-label">{{t "clusterNew.rke.ingress.label"}}</label>
+              <label class="acc-label">
+                {{t "clusterNew.rke.ingress.label"}}
+              </label>
               <div class="radio">
                 <label>
                   {{!--
@@ -219,7 +233,9 @@
               </div>
             </div>
             <div class="col span-4">
-              <label class="acc-label">{{t "clusterNew.rke.serviceNodePortRange.label"}}</label>
+              <label class="acc-label">
+                {{t "clusterNew.rke.serviceNodePortRange.label"}}
+              </label>
               {{input
                 type="text"
                 value=cluster.rancherKubernetesEngineConfig.services.kubeApi.serviceNodePortRange
@@ -228,7 +244,9 @@
               }}
             </div>
             <div class="col span-4">
-              <label class="acc-label">{{t "clusterNew.rke.monitoring.label"}}</label>
+              <label class="acc-label">
+                {{t "clusterNew.rke.monitoring.label"}}
+              </label>
               <div class="radio">
                 <label>
                   {{!--
@@ -257,7 +275,9 @@
           </div>
           <div class="row">
             <div class="col span-4">
-              <label class="acc-label">{{t "clusterNew.rke.podSecurityPolicy.label"}}</label>
+              <label class="acc-label">
+                {{t "clusterNew.rke.podSecurityPolicy.label"}}
+              </label>
               <div class="radio">
                 <label class={{unless model.psps.length "text-muted"}}>
                   {{!--
@@ -290,7 +310,9 @@
             </div>
             <div class="col span-4">
               {{#if cluster.rancherKubernetesEngineConfig.services.kubeApi.podSecurityPolicy}}
-                <label class="acc-label">{{t "clusterNew.psp.label"}}{{field-required}}</label>
+                <label class="acc-label">
+                  {{t "clusterNew.psp.label"}}{{field-required}}
+                </label>
                 {{new-select
                   content=model.psps
                   optionLabelPath="displayName"
@@ -301,14 +323,18 @@
                   disabled=(not cluster.rancherKubernetesEngineConfig.services.kubeApi.podSecurityPolicy)
                 }}
               {{else}}
-                <label class="acc-label">{{t "clusterNew.psp.label"}}</label>
+                <label class="acc-label">
+                  {{t "clusterNew.psp.label"}}
+                </label>
                 <div class="form-control-static">{{t "generic.none"}}</div>
               {{/if}}
             </div>
           </div>
           <div class="row">
             <div class="col span-4">
-              <label class="acc-label">{{t "clusterNew.rke.ignoreDockerVersion.label"}}</label>
+              <label class="acc-label">
+                {{t "clusterNew.rke.ignoreDockerVersion.label"}}
+              </label>
               <div class="radio">
                 <label>
                   {{radio-button
@@ -330,7 +356,9 @@
             </div>
 
             <div class="col span-4">
-              <label class="acc-label">{{t "loggingPage.dockerRootDir.label"}}</label>
+              <label class="acc-label">
+                {{t "loggingPage.dockerRootDir.label"}}
+              </label>
               {{input
                 type="text"
                 value=model.cluster.dockerRootDir
@@ -343,7 +371,9 @@
           <div class="row">
             <div class="col span-6">
 
-              <label class="acc-label">{{t "clusterNew.rke.etcd.location.label"}}</label>
+              <label class="acc-label">
+                {{t "clusterNew.rke.etcd.location.label"}}
+              </label>
               <div>
                 <label class="radio mt-0">
                   {{radio-button selection=backupStrategy value="local"}}
@@ -368,7 +398,9 @@
           {{#unless (eq backupStrategy "local")}}
             <div class="row">
               <div class="col span-3">
-                <label class="acc-label">{{t "clusterNew.rke.etcd.backupConfig.bucketName.label"}}</label>
+                <label class="acc-label">
+                  {{t "clusterNew.rke.etcd.backupConfig.bucketName.label"}}
+                </label>
                 {{input
                   type="text"
                   value=cluster.rancherKubernetesEngineConfig.services.etcd.backupConfig.s3BackupConfig.bucketName
@@ -378,7 +410,9 @@
               </div>
 
               <div class="col span-3 offset-1">
-                <label class="acc-label">{{t "clusterNew.rke.etcd.backupConfig.region.label"}}</label>
+                <label class="acc-label">
+                  {{t "clusterNew.rke.etcd.backupConfig.region.label"}}
+                </label>
                 {{input
                   type="text"
                   value=cluster.rancherKubernetesEngineConfig.services.etcd.backupConfig.s3BackupConfig.region
@@ -388,7 +422,9 @@
               </div>
 
               <div class="col span-3 offset-1">
-                <label class="acc-label">{{t "clusterNew.rke.etcd.backupConfig.endpoint.label"}}</label>
+                <label class="acc-label">
+                  {{t "clusterNew.rke.etcd.backupConfig.endpoint.label"}}
+                </label>
                 {{input
                   type="text"
                   value=cluster.rancherKubernetesEngineConfig.services.etcd.backupConfig.s3BackupConfig.endpoint
@@ -401,7 +437,9 @@
             <div class="row">
 
               <div class="col span-3">
-                <label class="acc-label">{{t "clusterNew.rke.etcd.backupConfig.accessKey.label"}}</label>
+                <label class="acc-label">
+                  {{t "clusterNew.rke.etcd.backupConfig.accessKey.label"}}
+                </label>
                 {{input
                   type="text"
                   name="accessKey"
@@ -412,7 +450,9 @@
               </div>
 
               <div class="col span-3 offset-1">
-                <label class="acc-label">{{t "clusterNew.rke.etcd.backupConfig.secretKey.label"}}</label>
+                <label class="acc-label">
+                  {{t "clusterNew.rke.etcd.backupConfig.secretKey.label"}}
+                </label>
                 {{input
                   type="password"
                   name="password"
@@ -428,6 +468,7 @@
           <div class="row">
             <div class="col span-3">
               <label class="acc-label">
+
                 {{t "clusterNew.rke.etcd.enabled.label"}}
               </label>
               <div class="text-muted">
@@ -449,7 +490,9 @@
             </div>
 
             <div class="col span-3 offset-1">
-              <label class="acc-label">{{t "clusterNew.rke.etcd.backupConfig.interval.label"}}</label>
+              <label class="acc-label">
+                {{t "clusterNew.rke.etcd.backupConfig.interval.label"}}
+              </label>
               <div class="input-group">
                 {{input-integer
                   value=cluster.rancherKubernetesEngineConfig.services.etcd.backupConfig.intervalHours
@@ -463,7 +506,9 @@
             </div>
 
             <div class="col span-3 offset-1">
-              <label class="acc-label">{{t "clusterNew.rke.etcd.backupConfig.retention.label"}}</label>
+              <label class="acc-label">
+                {{t "clusterNew.rke.etcd.backupConfig.retention.label"}}
+              </label>
               {{input-integer
                 value=cluster.rancherKubernetesEngineConfig.services.etcd.backupConfig.retention
                 min=1
@@ -566,7 +611,9 @@
                         <li>
                           <div class="row">
                             <div class="col span-6">
-                              <label class="acc-label">{{t "clusterNew.rke.address.public.label"}}</label>
+                              <label class="acc-label">
+                                {{t "clusterNew.rke.address.public.label"}}
+                              </label>
                               {{input
                                 type="text"
                                 value=address
@@ -582,7 +629,9 @@
                               {{/unless}}
                             </div>
                             <div class="col span-6">
-                              <label class="acc-label">{{t "clusterNew.rke.address.private.label"}}</label>
+                              <label class="acc-label">
+                                {{t "clusterNew.rke.address.private.label"}}
+                              </label>
                               {{input
                                 type="text"
                                 value=internalAddress
@@ -646,7 +695,7 @@
                                     <tr>
                                       <td data-title="key">
                                         {{input-paste
-                                          pasted="pastedLabels"
+                                          pasted=(action "pastedLabels")
                                           class="form-control input-sm key"
                                           type="text"
                                           value=label.key
@@ -670,7 +719,9 @@
                                       </td>
 
                                       <td class="text-right">
-                                        <button class="btn bg-primary btn-sm" {{action removeLabel label}} disabled={{eq label.readonly true}}><i class="icon icon-minus"/><span class="sr-only">{{t "generic.remove"}}</span></button>
+                                        <button class="btn bg-primary btn-sm" {{action removeLabel label}} disabled={{eq label.readonly true}}>
+                                          <i class="icon icon-minus"/><span class="sr-only">{{t "generic.remove"}}</span>
+                                        </button>
                                       </td>
                                     </tr>
                                   {{/each}}
@@ -742,8 +793,8 @@
   {{save-cancel
     createLabel=(if isCustom "saveCancel.next" "saveCancel.create")
     editing=isEdit
-    save="driverSave"
-    cancel="close"
+    save=(action "driverSave")
+    cancel=(action "close")
   }}
 {{else}}
   <div class="footer-actions">

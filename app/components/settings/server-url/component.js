@@ -63,7 +63,9 @@ export default Component.extend({
     },
 
     cancel() {
-      this.sendAction('cancel');
+      if (this.cancel) {
+        this.cancel();
+      }
     }
   },
 });

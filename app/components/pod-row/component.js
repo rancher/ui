@@ -26,7 +26,9 @@ export default Component.extend({
   containers: alias('model.containers'),
   actions:    {
     toggle() {
-      this.sendAction('toggle');
+      if (this.toggle) {
+        this.toggle(this.model.id);
+      }
     },
   },
 

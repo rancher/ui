@@ -1,6 +1,6 @@
 <div class="modal-yaml">
   {{input-yaml
-    title=(if editing (t (if readOnly 'modalYaml.title.view' 'modalYaml.title.edit') name=model.resource.displayName) (t 'modalYaml.title.new' type=(uc-first model.resource.displayName)))
+    title=(if editing (t (if readOnly "modalYaml.title.view" "modalYaml.title.edit") name=model.resource.displayName) (t "modalYaml.title.new" type=(uc-first model.resource.displayName)))
     filename=filename
     canChangeName=false
     value=model.yaml
@@ -10,15 +10,26 @@
     canUpload=(not readOnly)
     showUpload=(not readOnly)
   }}
-  {{copy-to-clipboard tooltipText="" buttonText="copyToClipboard.tooltip" clipboardText=model.yaml class="with-clip"}}
+  {{copy-to-clipboard
+    tooltipText=""
+    buttonText="copyToClipboard.tooltip"
+    clipboardText=model.yaml
+    class="with-clip"
+  }}
 </div>
 
 {{top-errors errors=errors}}
 
 {{#if readOnly}}
   <div style="text-align: center" class="mt-20 text-center">
-    <button {{action "cancel"}} class="btn bg-transparent">{{t "generic.cancel"}}</button>
+    <button {{action "cancel"}} class="btn bg-transparent">
+      {{t "generic.cancel"}}
+    </button>
   </div>
 {{else}}
-  {{save-cancel save="save" cancel="cancel" editing=editing}}
+  {{save-cancel
+    save=(action "save")
+    cancel=(action "cancel")
+    editing=editing
+  }}
 {{/if}}

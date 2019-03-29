@@ -20,7 +20,9 @@
 
   {{#if provider.enabled}}
     <section class="header clearfix">
-      <h1 class="pull-left">{{t "authPage.header"}}</h1>
+      <h1 class="pull-left">
+        {{t "authPage.header"}}
+      </h1>
     </section>
 
     <section>
@@ -46,44 +48,56 @@
       <h3>{{t "authPage.setting.executor.label"}}</h3>
       <hr/>
       <div class="vertical-middle">
-        <label class="acc-label vertical-middle p-0">{{t "authPage.setting.executor.scale"}}</label>
+        <label class="acc-label vertical-middle p-0">
+          {{t "authPage.setting.executor.scale"}}
+        </label>
         <span class="pr-5">
           {{scale.value}}
         </span>
         <div class="btn-group btn-group-xs p-0">
-          <button class="btn btn-xs bg-primary" {{action "scaleDown"}}><i class="icon icon-minus icon-fw"/></button>
-          <button style="margin-left: -1px;" class="btn btn-xs bg-primary" {{action "scaleUp"}}><i class="icon icon-plus icon-fw"/></button>
+          <button class="btn btn-xs bg-primary" {{action "scaleDown"}}>
+            <i class="icon icon-minus icon-fw"/>
+          </button>
+          <button style="margin-left: -1px;" class="btn btn-xs bg-primary" {{action "scaleUp"}}>
+            <i class="icon icon-plus icon-fw"/>
+          </button>
         </div>
       </div>
     </section>
 
     <section class="box mt-30">
-      <h3>{{t "authPage.setting.limit.label"}}</h3>
+      <h3>
+        {{t "authPage.setting.limit.label"}}
+      </h3>
       <hr/>
       <div class="row">
         <div class="col span-6">
-          <label class="acc-label">{{t "formSecurity.memoryReservation.label"}}</label>
+          <label class="acc-label">
+            {{t "formSecurity.memoryReservation.label"}}
+          </label>
           <div class="input-group">
             {{input-integer
-                min="4"
-                step="1"
-                value=memoryRequest
-                classNames="form-control"
-                placeholder=(t "formSecurity.memoryReservation.placeholder")
+              min="4"
+              step="1"
+              value=memoryRequest
+              classNames="form-control"
+              placeholder=(t "formSecurity.memoryReservation.placeholder")
             }}
             <div class="input-group-addon bg-default">
               {{t "generic.mibibyte"}}
             </div>
           </div>
 
-          <label class="acc-label mt-20">{{t "formSecurity.memoryLimit.label"}}</label>
+          <label class="acc-label mt-20">
+            {{t "formSecurity.memoryLimit.label"}}
+          </label>
           <div class="input-group">
             {{input-integer
-                min="4"
-                step="1"
-                value=memoryLimit
-                classNames="form-control"
-                placeholder=(t "formSecurity.memoryReservation.placeholder")
+              min="4"
+              step="1"
+              value=memoryLimit
+              classNames="form-control"
+              placeholder=(t "formSecurity.memoryReservation.placeholder")
             }}
             <div class="input-group-addon bg-default">
               {{t "generic.mibibyte"}}
@@ -92,15 +106,17 @@
         </div>
 
         <div class="col span-6">
-          <label class="acc-label">{{t "formSecurity.milliCpuReservation.label"}}</label>
+          <label class="acc-label">
+            {{t "formSecurity.milliCpuReservation.label"}}
+          </label>
           <span class="with-input">
             <div class="input-group">
               {{input-integer
-                  min="0"
-                  step="100"
-                  value=cpuRequest
-                  classNames="form-control"
-                  placeholder=(t "formSecurity.milliCpuReservation.placeholder")
+                min="0"
+                step="100"
+                value=cpuRequest
+                classNames="form-control"
+                placeholder=(t "formSecurity.milliCpuReservation.placeholder")
               }}
               <div class="input-group-addon bg-default">
                 {{t "formSecurity.milliCpuReservation.unit"}}
@@ -108,15 +124,17 @@
             </div>
           </span>
 
-          <label class="acc-label mt-20">{{t "formSecurity.cpuLimit.label"}}</label>
+          <label class="acc-label mt-20">
+            {{t "formSecurity.cpuLimit.label"}}
+          </label>
           <span class="with-input">
             <div class="input-group">
               {{input-integer
-                  min="0"
-                  step="100"
-                  value=cpuLimit
-                  classNames="form-control"
-                  placeholder=(t "formSecurity.milliCpuReservation.placeholder")
+                min="0"
+                step="100"
+                value=cpuLimit
+                classNames="form-control"
+                placeholder=(t "formSecurity.milliCpuReservation.placeholder")
               }}
               <div class="input-group-addon bg-default">
                 {{t "formSecurity.milliCpuReservation.unit"}}
@@ -127,41 +145,45 @@
       </div>
       <div class="row ml-10 mt-10">
         {{save-cancel
-            createLabel="authPage.setting.limit.saveActionLabel"
-            save="saveLimit"
-            cancelDisabled=true
+          createLabel="authPage.setting.limit.saveActionLabel"
+          save=(action "saveLimit")
+          cancelDisabled=true
         }}
       </div>
     </section>
 
     <section class="box mt-30">
-      <h3>{{t "authPage.setting.cacerts.label"}}</h3>
+      <h3>
+        {{t "authPage.setting.cacerts.label"}}
+      </h3>
       <hr/>
       {{#if showCert}}
         {{schema/input-multiline
-            value=cacerts.value
-            placeholder=(t "newCertificate.cert.placeholder")
+          value=cacerts.value
+          placeholder=(t "newCertificate.cert.placeholder")
         }}
         <div class="row ml-10 mt-10">
           {{save-cancel
-              createLabel="authPage.setting.cacerts.saveActionLabel"
-              save="saveCert"
-              cancel="hideCert"
+            createLabel="authPage.setting.cacerts.saveActionLabel"
+            save=(action "saveCert")
+            cancel=(action "hideCert")
           }}
         </div>
       {{else}}
         <div class="row ml-10 mt-10">
           {{save-cancel
-              createLabel="authPage.setting.cacerts.show"
-              save="showCert"
-              cancelDisabled=true
+            createLabel="authPage.setting.cacerts.show"
+            save=(action "showCert")
+            cancelDisabled=true
           }}
         </div>
       {{/if}}
     </section>
 
     <section class="box mt-30">
-      <h3>{{t "authPage.authenticated.header.text"}}</h3>
+      <h3>
+        {{t "authPage.authenticated.header.text"}}
+      </h3>
       <hr/>
       {{#if provider.hostname}}
         <div>
@@ -205,10 +227,10 @@
 
   {{#unless provider.enabled}}
     {{component providerComponent
-        switch=(action "changeOauthType")
-        provider=provider
-        oauthModel=oauthModel
-        githubAuthConfig=githubAuthConfig}}
+      switch=(action "changeOauthType")
+      provider=provider
+      oauthModel=oauthModel
+      githubAuthConfig=githubAuthConfig}}
   {{/unless}}
 {{else}}
   No Permission

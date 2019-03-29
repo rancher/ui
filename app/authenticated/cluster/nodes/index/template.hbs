@@ -1,8 +1,8 @@
 <section class="header clearfix">
-  <h1 class="pull-left">{{t 'nodesPage.header'}}</h1>
+  <h1 class="pull-left">{{t "nodesPage.header"}}</h1>
   <div class="right-buttons">
     <button class="btn bg-primary btn-sm ml-10" {{action "editCluster"}}>
-      <span>{{t 'nodesPage.editCluster'}}</span>
+      <span>{{t "nodesPage.editCluster"}}</span>
     </button>
   </div>
 </section>
@@ -31,17 +31,31 @@
     {{#if node.ref}}
       <tr class="group-row">
         <td colspan={{sub sortable.fullColspan 3}} class="pl-10">
-          <p class="m-0 mt-5">{{t 'nodesPage.nodePoolGroup' name=node.ref.hostnamePrefix}}</p>
+          <p class="m-0 mt-5">
+            {{t "nodesPage.nodePoolGroup" name=node.ref.hostnamePrefix}}
+          </p>
           {{#if node.ref.nodeTemplate}}
-            <p class="text-small text-muted m-0">{{node.ref.nodeTemplate.displayProvider}} &ndash;  {{node.ref.nodeTemplate.displayLocation}}/{{node.ref.nodeTemplate.displaySize}} ({{node.ref.nodeTemplate.name}})</p>
+            <p class="text-small text-muted m-0">
+              {{node.ref.nodeTemplate.displayProvider}} &ndash;  {{node.ref.nodeTemplate.displayLocation}}/{{node.ref.nodeTemplate.displaySize}} ({{node.ref.nodeTemplate.name}})
+            </p>
           {{/if}}
         </td>
         <td colspan="2" data-title="{{dt.actions}}" class="text-right">
-          <p class="m-0">{{t 'pagination.node' pages=1 count=node.ref.quantity}}</p>
+          <p class="m-0">
+            {{t "pagination.node" pages=1 count=node.ref.quantity}}
+          </p>
           {{#if capabilities.nodePoolsCanScale}}
             <p class="m-0">
-              <button class="btn btn-xs bg-primary" {{action "scaleDownPool" node.ref.id}} disabled={{lte node.ref.quantity 1}}><i class="icon icon-minus icon-fw"/></button>
-              <button style="margin-left: -5px;" class="btn btn-xs bg-primary" {{action "scaleUpPool" node.ref.id}}><i class="icon icon-plus icon-fw"/></button>
+              <button
+                class="btn btn-xs bg-primary"
+                {{action "scaleDownPool" node.ref.id}}
+                disabled={{lte node.ref.quantity 1}}
+              >
+                <i class="icon icon-minus icon-fw"/>
+              </button>
+              <button style="margin-left: -5px;" class="btn btn-xs bg-primary" {{action "scaleUpPool" node.ref.id}}>
+                <i class="icon icon-plus icon-fw"/>
+              </button>
             </p>
           {{/if}}
         </td>
@@ -51,8 +65,16 @@
       </tr>
     {{/if}}
   {{else if (eq kind "nomatch")}}
-    <tr><td colspan="{{sortable.fullColspan}}" class="text-center text-muted lacsso pt-20 pb-20">{{t 'nodesPage.table.noMatch'}}</td></tr>
+    <tr>
+      <td colspan="{{sortable.fullColspan}}" class="text-center text-muted lacsso pt-20 pb-20">
+        {{t "nodesPage.table.noMatch"}}
+      </td>
+    </tr>
   {{else if (eq kind "norows")}}
-    <tr><td colspan="{{sortable.fullColspan}}" class="text-center text-muted lacsso pt-20 pb-20">{{t 'nodesPage.table.noData'}}</td></tr>
+    <tr>
+      <td colspan="{{sortable.fullColspan}}" class="text-center text-muted lacsso pt-20 pb-20">
+        {{t "nodesPage.table.noData"}}
+      </td>
+    </tr>
   {{/if}}
 {{/sortable-table}}

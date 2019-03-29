@@ -36,7 +36,9 @@ export default Component.extend({
       return rule.matchExpressions && rule.matchExpressions.length > 0;
     });
 
-    this.sendAction('changed', { nodeSelectorTerms: out });
+    if (this.changed) {
+      this.changed({ nodeSelectorTerms: out });
+    }
   }),
 
   initRules() {

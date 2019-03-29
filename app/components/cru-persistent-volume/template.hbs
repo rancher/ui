@@ -2,7 +2,12 @@
   {{#if isView}}
     <div class="right-buttons pull-right">
       {{badge-state model=model}}
-      {{action-menu model=model showPrimary=false classNames="ml-10 inline-block" size="sm"}}
+      {{action-menu
+        model=model
+        showPrimary=false
+        classNames="ml-10 inline-block"
+        size="sm"
+      }}
     </div>
   {{/if}}
 
@@ -11,10 +16,15 @@
 
 {{#if isView}}
   {{#if model.description}}
-    {{banner-message color='bg-secondary mb-0 mt-10' message=(linkify model.description)}}
+    {{banner-message
+      color="bg-secondary mb-0 mt-10"
+      message=(linkify model.description)
+    }}
   {{/if}}
   {{#if model.showTransitioningMessage}}
-    <div class="{{model.stateColor}}"><p>{{uc-first model.transitioningMessage}}</p></div>
+    <div class="{{model.stateColor}}">
+      <p>{{uc-first model.transitioningMessage}}</p>
+    </div>
   {{/if}}
 {{else}}
   {{form-name-description
@@ -30,36 +40,50 @@
 {{#if isView}}
   <div class="row banner bg-info basics">
     <div class="vertical-middle">
-      <label class="acc-label vertical-middle p-0">{{t 'cruPersistentVolume.source.label'}}</label>
-      {{t (concat 'volumeSource.' sourceName '.title')}}
+      <label class="acc-label vertical-middle p-0">
+        {{t "cruPersistentVolume.source.label"}}
+      </label>
+      {{t (concat "volumeSource." sourceName ".title")}}
     </div>
     <div class="vertical-middle">
-      <label class="acc-label vertical-middle p-0">{{t 'cruPersistentVolume.capacity.label'}}</label>
-      {{capacity}} {{t 'cruPersistentVolume.capacity.unit'}}
+      <label class="acc-label vertical-middle p-0">
+        {{t "cruPersistentVolume.capacity.label"}}
+      </label>
+      {{capacity}} {{t "cruPersistentVolume.capacity.unit"}}
     </div>
     <div class="vertical-middle">
-      <label class="acc-label vertical-middle p-0">{{t 'cruPersistentVolume.reclaimPolicy'}}</label>
+      <label class="acc-label vertical-middle p-0">
+        {{t "cruPersistentVolume.reclaimPolicy"}}
+      </label>
       {{model.persistentVolumeReclaimPolicy}}
     </div>
   </div>
   <div class="row banner bg-info basics">
     <div class="vertical-middle">
-      <label class="acc-label vertical-middle p-0">{{t 'cruPersistentVolume.pvc'}}</label>
+      <label class="acc-label vertical-middle p-0">
+        {{t "cruPersistentVolume.pvc"}}
+      </label>
       {{#if model.displayPvc}}
         {{model.displayPvc}}
       {{else}}
-        <span class="text-muted">{{t 'generic.na'}}</span>
+        <span class="text-muted">
+          {{t "generic.na"}}
+        </span>
       {{/if}}
     </div>
     <div class="vertical-middle">
-      <label class="acc-label vertical-middle p-0">{{t 'generic.created'}}</label>
+      <label class="acc-label vertical-middle p-0">
+        {{t "generic.created"}}
+      </label>
       {{date-calendar model.created}}
     </div>
   </div>
 {{else}}
   <div class="row">
     <div class="col span-6">
-      <label class="acc-label">{{t 'cruPersistentVolume.source.label'}}{{field-required editing=editing}}</label>
+      <label class="acc-label">
+        {{t "cruPersistentVolume.source.label"}}{{field-required editing=editing}}
+      </label>
       {{new-select
         content=sourceChoices
         prompt="cruPersistentVolume.source.prompt"
@@ -70,26 +94,31 @@
       }}
     </div>
     <div class="col span-6">
-      <label class="acc-label">{{t 'cruPersistentVolume.capacity.label'}}{{field-required editing=editing}}</label>
+      <label class="acc-label">
+        {{t "cruPersistentVolume.capacity.label"}}{{field-required editing=editing}}
+      </label>
       <div class="input-group">
-        {{input-number classNames="form-control" value=capacity}}
-        <span class="input-group-addon bg-default">{{t 'cruPersistentVolume.capacity.unit'}}</span>
+        {{input-number
+          classNames="form-control"
+          value=capacity
+        }}
+        <span class="input-group-addon bg-default">
+          {{t "cruPersistentVolume.capacity.unit"}}
+        </span>
       </div>
     </div>
   </div>
 {{/if}}
 
-
-
 <hr class="mb-20" />
 
 {{#accordion-list showExpandAll=false as | al expandFn |}}
   {{#accordion-list-item
-    title=(t 'cruPersistentVolume.source.title')
-    detail=(t 'cruPersistentVolume.source.detail')
-    expandAll=expandAll
-    expand=(action expandFn)
-    expandOnInit=true
+     title=(t "cruPersistentVolume.source.title")
+     detail=(t "cruPersistentVolume.source.detail")
+     expandAll=expandAll
+     expand=(action expandFn)
+     expandOnInit=true
   }}
     {{#if sourceComponent}}
       {{component sourceComponent
@@ -98,16 +127,18 @@
         editing=notView
       }}
     {{else}}
-      <p class="text-muted">{{t 'cruVolume.sourcePrompt'}}</p>
+      <p class="text-muted">
+        {{t "cruVolume.sourcePrompt"}}
+      </p>
     {{/if}}
   {{/accordion-list-item}}
 
   {{#accordion-list-item
-    title=(t 'cruPersistentVolume.customize.title')
-    detail=(t 'cruPersistentVolume.customize.detail')
-    expandAll=expandAll
-    expand=(action expandFn)
-    everExpanded=true
+     title=(t "cruPersistentVolume.customize.title")
+     detail=(t "cruPersistentVolume.customize.detail")
+     expandAll=expandAll
+     expand=(action expandFn)
+     everExpanded=true
   }}
     <div class="row">
       <div class="col span-6">
@@ -129,7 +160,9 @@
     </div>
     <div class="row">
       <div class="col span-6">
-        <label class="acc-label">{{t 'cruPersistentVolume.storageClass.label'}}</label>
+        <label class="acc-label">
+          {{t "cruPersistentVolume.storageClass.label"}}
+        </label>
         {{#if editing}}
           {{new-select
             content=storageClasses
@@ -146,16 +179,20 @@
                 {{primaryResource.storageClass.displayName}}
               </a>
             {{else}}
-              <span class="text-muted">{{t 'generic.none'}}</span>
+              <span class="text-muted">
+                {{t "generic.none"}}
+              </span>
             {{/if}}
           </div>
         {{/if}}
       </div>
     </div>
     <div class="row mt-20">
-      <label class="acc-label">{{t 'cruPersistentVolume.nodeAffinity.label'}}</label>
-      {{form-node-affinity 
-        model=model.nodeAffinity.required 
+      <label class="acc-label">
+        {{t "cruPersistentVolume.nodeAffinity.label"}}
+      </label>
+      {{form-node-affinity
+        model=model.nodeAffinity.required
         editing=notView
         changed=(action "updateNodeAffinities")
       }}
@@ -164,7 +201,7 @@
 
   {{#if isView}}
     {{resource-event-list
-      resourceType=(t 'generic.persistentVolume')
+      resourceType=(t "generic.persistentVolume")
       expandAll=al.expandAll
       expandFn=expandFn
       name=model.name
@@ -181,5 +218,9 @@
 
 {{#unless isView}}
   {{top-errors errors=errors}}
-  {{save-cancel editing=true save="save" cancel="viewEditCancel"}}
+  {{save-cancel
+    editing=true
+    save=(action "save")
+    cancel=(action "viewEditCancel")
+  }}
 {{/unless}}

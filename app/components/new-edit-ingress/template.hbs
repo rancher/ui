@@ -1,56 +1,58 @@
 <section class="header clearfix">
-  <h1>{{headerLabel}}</h1>
+  <h1>
+    {{headerLabel}}
+  </h1>
 </section>
 
 <div class="row">
   <div class="col span-11-of-23 mt-0 mb-0">
     {{form-name-description
-        descriptionPlaceholder="servicePage.newIngress.form.description.placeholder"
-        model=ingress
-        nameDisabled=existing
-        namePlaceholder="servicePage.newIngress.form.name.placeholder"
+      descriptionPlaceholder="servicePage.newIngress.form.description.placeholder"
+      model=ingress
+      nameDisabled=existing
+      namePlaceholder="servicePage.newIngress.form.name.placeholder"
     }}
   </div>
 
   <div class="col span-11-of-23 mt-0 mb-0 offset-1-of-23">
     {{form-namespace
-        editing=(and editing (not existing))
-        errors=namespaceErrors
-        namespace=namespace
+      editing=(and editing (not existing))
+      errors=namespaceErrors
+      namespace=namespace
     }}
   </div>
 </div>
 
 <section class="mt-40 horizontal-form container-fluid">
   {{form-ingress-rule
-      editing=true
-      ingress=ingress
-      namespace=namespace
+    editing=true
+    ingress=ingress
+    namespace=namespace
   }}
   <hr class="mt-30 mb-30" />
 </section>
 
 {{#accordion-list as | al expandFn | }}
   {{form-ssl-termination
-      certificates=certificates
-      editing=true
-      expandAll=al.expandAll
-      expandFn=expandFn
-      ingress=ingress
-      errors=certErrors
-      namespace=namespace
-      namespacedCertificates=namespacedCertificates
+    certificates=certificates
+    editing=true
+    expandAll=al.expandAll
+    expandFn=expandFn
+    ingress=ingress
+    errors=certErrors
+    namespace=namespace
+    namespacedCertificates=namespacedCertificates
   }}
 
   {{form-labels-annotations
-      annotationErrors=annotationErrors
-      classNames="accordion-wrapper"
-      expandAll=al.expandAll
-      expandFn=expandFn
-      initialLabels=ingress.labels
-      labelErrors=labelErrors
-      model=ingress
-      setLabels=(action 'setLabels')
+    annotationErrors=annotationErrors
+    classNames="accordion-wrapper"
+    expandAll=al.expandAll
+    expandFn=expandFn
+    initialLabels=ingress.labels
+    labelErrors=labelErrors
+    model=ingress
+    setLabels=(action "setLabels")
   }}
 {{/accordion-list}}
 
@@ -58,10 +60,14 @@
   <div class="banner bg-warning">
     <div class="banner-icon"><span class="icon icon-alert"></span></div>
     <div class="banner-message">
-      <p>{{t 'ingressPage.gkeIngressWarning'}}</p>
+      <p>{{t "ingressPage.gkeIngressWarning"}}</p>
     </div>
   </div>
 {{/if}}
 
 {{top-errors errors=errors}}
-{{save-cancel editing=true save="save" cancel="cancel"}}
+{{save-cancel
+  editing=true
+  save=(action "save")
+  cancel=(action "cancel")
+}}

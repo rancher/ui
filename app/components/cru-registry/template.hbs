@@ -2,7 +2,12 @@
   {{#if isView}}
     <div class="right-buttons pull-right">
       {{badge-state model=model}}
-      {{action-menu model=model showPrimary=false classNames="ml-10 inline-block" size="sm"}}
+      {{action-menu
+        model=model
+        showPrimary=false
+        classNames="ml-10 inline-block"
+        size="sm"
+      }}
     </div>
   {{/if}}
 
@@ -11,7 +16,10 @@
 
 {{#if isView}}
   {{#if model.description}}
-    {{banner-message color='bg-secondary mb-0 mt-10' message=(linkify model.description)}}
+    {{banner-message
+      color="bg-secondary mb-0 mt-10"
+      message=(linkify model.description)
+    }}
   {{/if}}
 {{else}}
   {{form-name-description
@@ -20,59 +28,110 @@
   }}
 {{/if}}
 
-{{optionally-namespaced isClone=isClone namespaceErrors=namespaceErrors scope=scope mode=mode namespace=namespace model=model}}
+{{optionally-namespaced
+  isClone=isClone
+  namespaceErrors=namespaceErrors
+  scope=scope
+  mode=mode
+  namespace=namespace
+  model=model
+}}
 
 {{#each asArray as |row|}}
   <div class="box mt-10">
     <div class="row">
       <div class="col span-6">
-        <label class="acc-label">{{t 'cruRegistry.address.label'}}</label>
+        <label class="acc-label">
+          {{t "cruRegistry.address.label"}}
+        </label>
         {{#if isView}}
           <div>
             {{#if (eq row.preset "custom")}}
               {{row.address}}
             {{else}}
-              {{t (concat 'cruRegistry.address.' row.preset)}}
+              {{t (concat "cruRegistry.address." row.preset)}}
             {{/if}}
           </div>
         {{else}}
           <div>
-            <label>{{radio-button selection=row.preset value="dockerhub"}}&nbsp;{{t 'cruRegistry.address.dockerhub'}}</label>
+            <label>
+              {{radio-button
+                selection=row.preset
+                value="dockerhub"
+              }}&nbsp;
+              {{t "cruRegistry.address.dockerhub"}}
+            </label>
           </div>
           <div>
-            <label>{{radio-button selection=row.preset value="quay"}}&nbsp;{{t 'cruRegistry.address.quay'}}</label>
+            <label>
+              {{radio-button
+                selection=row.preset
+                value="quay"
+              }}&nbsp;
+              {{t "cruRegistry.address.quay"}}
+            </label>
           </div>
           <div>
-            <label>{{radio-button selection=row.preset value="custom"}}&nbsp;{{t 'cruRegistry.address.custom'}}{{if (eq row.preset "custom") ":"}}</label>
+            <label>
+              {{radio-button
+                selection=row.preset
+                value="custom"
+              }}&nbsp;
+              {{t "cruRegistry.address.custom"}}{{if (eq row.preset "custom") ":"}}
+            </label>
           </div>
           {{#if (eq row.preset "custom")}}
-            {{input value=row.address placeholder=(t 'cruRegistry.address.placeholder')}}
+            {{input
+              value=row.address
+              placeholder=(t "cruRegistry.address.placeholder")
+            }}
           {{/if}}
         {{/if}}
       </div>
       <div class="col span-6">
         {{#if isView}}
           {{#if row.username}}
-            <label class="acc-label">{{t 'cruRegistry.username.label'}}</label>
+            <label class="acc-label">
+              {{t "cruRegistry.username.label"}}
+            </label>
             <div>{{row.username}}</div>
-            <label class="acc-label">{{t 'cruRegistry.password.label'}}</label>
-            <div>{{t 'cruRegistry.password.saved'}}</div>
+            <label class="acc-label">
+              {{t "cruRegistry.password.label"}}
+            </label>
+            <div>{{t "cruRegistry.password.saved"}}</div>
           {{else}}
-            <label class="acc-label">{{t 'cruRegistry.auth.label'}}</label>
-            <div>{{t 'cruRegistry.auth.saved'}}</div>
+            <label class="acc-label">
+              {{t "cruRegistry.auth.label"}}
+            </label>
+            <div>{{t "cruRegistry.auth.saved"}}</div>
           {{/if}}
         {{else}}
           {{#if row.auth}}
-            <label class="acc-label">{{t 'cruRegistry.auth.label'}}</label>
-            {{textarea-autogrow class="form-control input-sm conceal" spellcheck="false" required=true value=row.auth}}
+            <label class="acc-label">
+              {{t "cruRegistry.auth.label"}}
+            </label>
+            {{textarea-autogrow
+              class="form-control input-sm conceal"
+              spellcheck="false"
+              required=true
+              value=row.auth
+            }}
           {{else}}
             <div>
-              <label class="acc-label">{{t 'cruRegistry.username.label'}}</label>
+              <label class="acc-label">
+                {{t "cruRegistry.username.label"}}
+              </label>
               {{input value=row.username}}
             </div>
             <div>
-              <label class="acc-label">{{t 'cruRegistry.password.label'}}</label>
-              {{input type="password" value=row.password class="conceal"}}
+              <label class="acc-label">
+                {{t "cruRegistry.password.label"}}
+              </label>
+              {{input
+                type="password"
+                value=row.password
+                class="conceal"
+              }}
             </div>
           {{/if}}
         {{/if}}
@@ -83,5 +142,9 @@
 
 {{#unless isView}}
   {{top-errors errors=errors}}
-  {{save-cancel editing=true save="save" cancel="viewEditCancel"}}
+  {{save-cancel
+    editing=true
+    save=(action "save")
+    cancel=(action "viewEditCancel")
+  }}
 {{/unless}}

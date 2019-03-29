@@ -1,17 +1,26 @@
 <h2>
   {{#if model.secondaryLaunchConfigs.length}}
-    {{t 'modalRollbackService.titleWithSidekicks' instanceName=model.displayName count=model.secondaryLaunchConfigs.length}}
+    {{t
+      "modalRollbackService.titleWithSidekicks"
+      instanceName=model.displayName
+      count=model.secondaryLaunchConfigs.length
+    }}
   {{else}}
-    {{t 'modalRollbackService.title' instanceName=model.displayName}}
+    {{t
+      "modalRollbackService.title"
+      instanceName=model.displayName
+    }}
   {{/if}}
 </h2>
 
 {{#if loading}}
-  <i class="icon icon-spinner icon-spin"/> {{t 'generic.loading'}}
+  <i class="icon icon-spinner icon-spin"/> {{t "generic.loading"}}
 {{else}}
   <div class="row">
     <div class="col span-12">
-      <label class="acc-label">{{t 'modalRollbackService.revisionId.label'}}</label>
+      <label class="acc-label">
+        {{t "modalRollbackService.revisionId.label"}}
+      </label>
       {{new-select
         content=choices
         value=revisionId
@@ -26,7 +35,9 @@
   {{#if (and diff diff.string)}}
     <div class="row mt-10">
       <div class="col span-12">
-        <label class="acc-label">{{t 'modalRollbackService.difference.label'}}</label>
+        <label class="acc-label">
+          {{t "modalRollbackService.difference.label"}}
+        </label>
         <div>
           {{diff}}
         </div>
@@ -34,5 +45,10 @@
     </div>
   {{/if}}
 
-  {{save-cancel editing=true editLabel="modalRollbackService.action" save="save" cancel="cancel"}}
+  {{save-cancel
+    editing=true
+    editLabel="modalRollbackService.action"
+    save=(action "save")
+    cancel=(action "cancel")
+  }}
 {{/if}}

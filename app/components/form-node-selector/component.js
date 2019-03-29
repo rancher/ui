@@ -9,7 +9,11 @@ export default Component.extend({
 
   actions: {
     removeRule(rule) {
-      this.sendAction('removeRule', rule);
+      this.removeRule(rule);
     },
   },
+
+  removeRule() {
+    throw new Error('removeRule action is required!');
+  }
 });

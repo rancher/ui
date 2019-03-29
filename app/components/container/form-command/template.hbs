@@ -1,100 +1,156 @@
 {{#accordion-list-item
-     title=(t 'formCommand.title')
-     detail=(t 'formCommand.detail' appName=settings.appName)
-     status=status
-     statusClass=statusClass
-     expandAll=expandAll
-     expand=(action expandFn)
+   title=(t "formCommand.title")
+   detail=(t "formCommand.detail" appName=settings.appName)
+   status=status
+   statusClass=statusClass
+   expandAll=expandAll
+   expand=(action expandFn)
 }}
   <div class="row">
     <div class="col span-6 box">
-      <label class="acc-label">{{t 'formCommand.entryPoint.label'}}</label>
+      <label class="acc-label">
+        {{t "formCommand.entryPoint.label"}}
+      </label>
       {{#input-or-display editable=editing value=instance.entrypoint}}
-        {{input-command class="form-control" type="text" changed=(action (mut instance.entrypoint)) initialValue=instance.entrypoint placeholder=(t 'formCommand.entryPoint.placeholder')}}
+        {{input-command
+          class="form-control"
+          type="text"
+          changed=(action (mut instance.entrypoint))
+          initialValue=instance.entrypoint
+          placeholder=(t "formCommand.entryPoint.placeholder")
+        }}
       {{/input-or-display}}
     </div>
     <div class="col span-6 box">
-      <label class="acc-label">{{t 'formCommand.command.label'}}</label>
-      {{#input-or-display editable=editing value=instance.command classesForDisplay="clip"}}
-        {{input-command class="form-control" type="text" changed=(action (mut instance.command)) initialValue=instance.command placeholder=(t 'formCommand.command.placeholder')}}
+      <label class="acc-label">
+        {{t "formCommand.command.label"}}
+      </label>
+      {{#input-or-display
+         editable=editing
+         value=instance.command
+         classesForDisplay="clip"
+      }}
+        {{input-command
+          class="form-control"
+          type="text"
+          changed=(action (mut instance.command))
+          initialValue=instance.command
+          placeholder=(t "formCommand.command.placeholder")
+        }}
       {{/input-or-display}}
     </div>
   </div>
 
   <div class="row">
     <div class="col span-6 box">
-      <label class="acc-label">{{t 'formCommand.workingDir.label'}}</label>
+      <label class="acc-label">
+        {{t "formCommand.workingDir.label"}}
+      </label>
       {{#input-or-display editable=editing value=instance.workingDir}}
-        {{input type="text" value=instance.workingDir classNames="form-control" placeholder=(t 'formCommand.workingDir.placeholder')}}
+        {{input
+          type="text"
+          value=instance.workingDir
+          classNames="form-control"
+          placeholder=(t "formCommand.workingDir.placeholder")
+        }}
       {{/input-or-display}}
     </div>
     <div class="col span-6 box">
-      <label class="acc-label">{{t 'formCommand.uid.label'}}</label>
+      <label class="acc-label">
+        {{t "formCommand.uid.label"}}
+      </label>
       {{#if editing}}
-        {{input-integer min=0 value=instance.uid classNames="form-control" placeholder=(t 'formCommand.uid.placeholder')}}
+        {{input-integer
+          min=0
+          value=instance.uid
+          classNames="form-control"
+          placeholder=(t "formCommand.uid.placeholder")
+        }}
       {{else if instance.uid}}
-        <div>{{instance.uid}}</div>
+        <div>
+          {{instance.uid}}
+        </div>
       {{else}}
-        <div class="text-muted">{{t 'generic.na'}}</div>
+        <div class="text-muted">
+          {{t "generic.na"}}
+        </div>
       {{/if}}
     </div>
   </div>
 
   <div class="row">
     <div class="col span-6 box">
-      <label class="acc-label">{{t 'formCommand.console.label'}}</label>
+      <label class="acc-label">
+        {{t "formCommand.console.label"}}
+      </label>
       {{#input-or-display editable=editing value=terminal.name}}
         <div class="radio">
-          <label>{{radio-button selection=terminal.type value="both"}} {{t 'formCommand.console.both' htmlSafe=true}}</label>
+          <label>
+            {{radio-button selection=terminal.type value="both"}} {{t "formCommand.console.both" htmlSafe=true}}
+          </label>
         </div>
         <div class="radio">
-          <label>{{radio-button selection=terminal.type value="interactive"}} {{t 'formCommand.console.interactive' htmlSafe=true}}</label>
+          <label>
+            {{radio-button selection=terminal.type value="interactive"}} {{t "formCommand.console.interactive" htmlSafe=true}}
+          </label>
         </div>
         <div class="radio">
-          <label>{{radio-button selection=terminal.type value="terminal"}} {{t 'formCommand.console.terminal' htmlSafe=true}}</label>
+          <label>
+            {{radio-button selection=terminal.type value="terminal"}} {{t "formCommand.console.terminal" htmlSafe=true}}
+          </label>
         </div>
         <div class="radio">
-          <label>{{radio-button selection=terminal.type value="none"}} {{t 'formCommand.console.none' htmlSafe=true}}</label>
+          <label>
+            {{radio-button selection=terminal.type value="none"}} {{t "formCommand.console.none" htmlSafe=true}}
+          </label>
         </div>
       {{/input-or-display}}
     </div>
 
     {{#unless isSidekick}}
       <div class="col span-6 box">
-        <label class="acc-label">{{t 'formCommand.autoRestart.label'}}</label>
-        <div class="row {{unless editing 'inline-form'}}">
+        <label class="acc-label">
+          {{t "formCommand.autoRestart.label"}}
+        </label>
+        <div class="row {{unless editing "inline-form"}}">
           {{#if editing}}
             {{#if isJob}}
               <div class="radio">
-                <label>{{radio-button selection=service.restartPolicy value="Never"}} {{t 'formCommand.autoRestart.no'}}</label>
+                <label>
+                  {{radio-button selection=service.restartPolicy value="Never"}} {{t "formCommand.autoRestart.no"}}
+                </label>
               </div>
             {{/if}}
 
             {{#unless isJob}}
               <div class="radio">
-                <label>{{radio-button selection=service.restartPolicy value="Always"}} {{t 'formCommand.autoRestart.always'}}</label>
+                <label>
+                  {{radio-button selection=service.restartPolicy value="Always"}} {{t "formCommand.autoRestart.always"}}
+                </label>
               </div>
             {{/unless}}
 
             {{#if isJob}}
               <div class="radio">
-                <label>{{radio-button selection=service.restartPolicy value="OnFailure"}} {{t 'formCommand.autoRestart.onFailure' htmlSafe=true}}</label>
+                <label>
+                  {{radio-button selection=service.restartPolicy value="OnFailure"}} {{t "formCommand.autoRestart.onFailure" htmlSafe=true}}
+                </label>
               </div>
             {{/if}}
           {{else if (eq service.restartPolicy "OnFailure")}}
             <div>
-              {{t 'formCommand.autoRestart.onFailure' htmlSafe=true}}
+              {{t "formCommand.autoRestart.onFailure" htmlSafe=true}}
             </div>
           {{else if (eq service.restartPolicy "Always")}}
             <div>
-              {{t 'formCommand.autoRestart.always'}}
+              {{t "formCommand.autoRestart.always"}}
             </div>
           {{else if (eq service.restartPolicy "Never")}}
             <div>
-              {{t 'formCommand.autoRestart.no'}}
+              {{t "formCommand.autoRestart.no"}}
             </div>
           {{else}}
-            <div>{{t 'generic.none'}}</div>
+            <div>{{t "generic.none"}}</div>
           {{/if}}
         </div>
       </div>
@@ -104,20 +160,29 @@
   {{#unless isSidekick}}
     <div class="row">
       <div class="col span-6 box">
-        <label class="acc-label">{{t 'formCommand.fsgid.label'}}</label>
+        <label class="acc-label">
+          {{t "formCommand.fsgid.label"}}
+        </label>
         {{#input-or-display editable=editing value=service.fsgid}}
-          {{input-integer min=0 value=service.fsgid classNames="form-control" placeholder=(t 'formCommand.fsgid.placeholder')}}
+          {{input-integer
+            min=0
+            value=service.fsgid
+            classNames="form-control"
+            placeholder=(t "formCommand.fsgid.placeholder")
+          }}
         {{/input-or-display}}
       </div>
       <div class="col span-6 box">
-        <label class="acc-label">{{t 'formCommand.terminationGracePeriodSeconds.label'}}</label>
+        <label class="acc-label">
+          {{t "formCommand.terminationGracePeriodSeconds.label"}}
+        </label>
         {{#input-or-display editable=editing value=service.terminationGracePeriodSeconds}}
           <div class="input-group">
             {{input-integer min=0 value=service.terminationGracePeriodSeconds}}
-            <span class="input-group-addon bg-default">{{t 'generic.seconds'}}</span>
+            <span class="input-group-addon bg-default">{{t "generic.seconds"}}</span>
           </div>
         {{/input-or-display}}
-        <p class="help-block">{{t 'formCommand.terminationGracePeriodSeconds.helpText'}}</p>
+        <p class="help-block">{{t "formCommand.terminationGracePeriodSeconds.helpText"}}</p>
       </div>
     </div>
   {{/unless}}

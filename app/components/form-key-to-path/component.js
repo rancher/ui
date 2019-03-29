@@ -171,6 +171,8 @@ export default Component.extend({
       }
     });
 
-    this.sendAction('changed', arr);
+    if (this.changed) {
+      this.changed(arr);
+    }
   },
 });

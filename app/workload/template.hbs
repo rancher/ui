@@ -1,34 +1,50 @@
 <section class="header clearfix">
   <div class="pull-left">
     <h1 class="vertical-middle">
-      {{t 'servicePage.header' name=service.displayName}}
+      {{t "servicePage.header" name=service.displayName}}
     </h1>
   </div>
   <div class="right-buttons">
     {{badge-state model=service}}
-    {{action-menu model=service showPrimary=false classNames="ml-10 pull-right" size="sm"}}
+    {{action-menu
+      model=service
+      showPrimary=false
+      classNames="ml-10 pull-right"
+      size="sm"
+    }}
   </div>
 </section>
 
 {{#if service.description}}
-  {{banner-message color='bg-secondary mb-0 mt-10' message=(linkify service.description)}}
+  {{banner-message
+    color="bg-secondary mb-0 mt-10"
+    message=(linkify service.description)
+  }}
 {{/if}}
 
 {{#if service.showTransitioningMessage}}
-  <div class="{{service.stateColor}}"><p>{{uc-first service.transitioningMessage}}</p></div>
+  <div class="{{service.stateColor}}">
+    <p>{{uc-first service.transitioningMessage}}</p>
+  </div>
 {{/if}}
 
 <div class="row banner bg-info basics">
   <div class="vertical-middle">
-    <label class="acc-label vertical-middle p-0">{{t 'servicePage.multistat.namespace'}}:</label>
+    <label class="acc-label vertical-middle p-0">
+      {{t "servicePage.multistat.namespace"}}:
+    </label>
     {{service.namespace.displayName}}
   </div>
   <div class="vertical-middle">
-    <label class="acc-label vertical-middle p-0">{{t 'servicePage.multistat.image'}}:</label>
+    <label class="acc-label vertical-middle p-0">
+      {{t "servicePage.multistat.image"}}:
+    </label>
     {{launchConfig.image}} {{copy-to-clipboard clipboardText=launchConfig.image size="small"}}
   </div>
   <div class="vertical-middle">
-    <label class="acc-label vertical-middle p-0">{{t 'servicePage.multistat.type'}}:</label>
+    <label class="acc-label vertical-middle p-0">
+      {{t "servicePage.multistat.type"}}:
+    </label>
     {{service.displayType}}
   </div>
 </div>
@@ -36,38 +52,59 @@
 <div class="row banner bg-info basics">
   <div class="vertical-middle center">
     <div>
-      <label class="acc-label vertical-middle p-0">{{t 'servicePage.endpoints'}}:</label>
+      <label class="acc-label vertical-middle p-0">
+        {{t "servicePage.endpoints"}}:
+      </label>
       {{#if service.displayEndpoints}}
         <label class="clip text-small vertical-middle">
           {{service.displayEndpoints}}
         </label>
       {{else}}
-        {{t 'generic.na'}}
+        {{t "generic.na"}}
       {{/if}}
     </div>
   </div>
   <div class="vertical-middle center">
     <span class="text-left">
       <div class="hr">
-        <label class="acc-label vertical-middle p-0">{{t 'servicePage.multistat.scale'}}:</label>
+        <label class="acc-label vertical-middle p-0">
+          {{t "servicePage.multistat.scale"}}:
+        </label>
         <span class="pr-5">
           {{service.displayScale}}
         </span>
       </div>
       <div>
-        <span class="help-block">{{t 'servicePage.multistat.currentScale' count=service.currentScale}}</span>
+        <span class="help-block">
+          {{t "servicePage.multistat.currentScale" count=service.currentScale}}
+        </span>
       </div>
     </span>
     <span>
       <div class="btn-group btn-group-xs p-0 ml-10">
-        <button class="btn btn-xs bg-primary" {{action "scaleDown" target=service}} disabled={{not service.canScaleDown}}><i class="icon icon-minus icon-fw"/></button>
-        <button style="margin-left: -1px;" class="btn btn-xs bg-primary" {{action "scaleUp" target=service}} disabled={{not service.canScaleUp}}><i class="icon icon-plus icon-fw"/></button>
+        <button
+          class="btn btn-xs bg-primary"
+          {{action "scaleDown" target=service}}
+          disabled={{not service.canScaleDown}}
+        >
+          <i class="icon icon-minus icon-fw"/>
+        </button>
+        <button
+          style="margin-left: -1px;"
+          class="btn btn-xs bg-primary"
+          {{action "scaleUp" target=service}}
+          disabled={{not service.canScaleUp}}
+        >
+          <i class="icon icon-plus icon-fw"/>
+        </button>
       </div>
     </span>
   </div>
   <div class="vertical-middle center">
     <div class="">
-      <label class="acc-label vertical-middle p-0">{{t 'servicePage.multistat.created'}}:</label>
+      <label class="acc-label vertical-middle p-0">
+        {{t "servicePage.multistat.created"}}:
+      </label>
       {{date-calendar service.created}}
     </div>
   </div>
@@ -81,11 +118,11 @@
   }}
 
   {{#if scope.currentCluster.isMonitoringReady}}
-    {{#metrics-summary 
-      expandAll=al.expandAll
-      expandFn=expandFn
-      grafanaUrl=service.grafanaUrl
-      title=(t "metricsAction.sections.workload")
+    {{#metrics-summary
+       expandAll=al.expandAll
+       expandFn=expandFn
+       grafanaUrl=service.grafanaUrl
+       title=(t "metricsAction.sections.workload")
     }}
       {{workload-metrics resourceId=service.id}}
     {{/metrics-summary}}
@@ -100,7 +137,7 @@
     kind=service.type
   }}
 
-  {{#if (or (eq service.type 'job') (eq service.type 'cronJob'))}}
+  {{#if (or (eq service.type "job") (eq service.type "cronJob"))}}
     {{container/form-job-config
       workload=service
       scaleMode=service.type
@@ -112,10 +149,10 @@
 
   {{#if service.canHaveEnvironment}}
     {{#accordion-list-item
-      title=(t 'formEnvVar.title')
-      detail=(t 'formEnvVar.detail')
-      expandAll=al.expandAll
-      expand=(action expandFn)
+       title=(t "formEnvVar.title")
+       detail=(t "formEnvVar.detail")
+       expandAll=al.expandAll
+       expand=(action expandFn)
     }}
       {{form-env-var
         model=displayEnvironmentVars
@@ -130,10 +167,10 @@
   {{/if}}
 
   {{#accordion-list-item
-    title=(t 'containerPage.portsTab.header')
-    detail=(t 'containerPage.portsTab.detail')
-    expandAll=al.expandAll
-    expand=(action expandFn)
+     title=(t "containerPage.portsTab.header")
+     detail=(t "containerPage.portsTab.detail")
+     expandAll=al.expandAll
+     expand=(action expandFn)
   }}
     {{container/form-ports
       initialPorts=service.launchConfig.ports
@@ -153,34 +190,38 @@
 
   {{#if service.canHaveHealthCheck}}
     {{#accordion-list-item
-      title=(t 'formHealthCheck.title')
-      detail=(t 'formHealthCheck.detail')
-      expandAll=al.expandAll
-      expand=(action expandFn)
+       title=(t "formHealthCheck.title")
+       detail=(t "formHealthCheck.detail")
+       expandAll=al.expandAll
+       expand=(action expandFn)
     }}
       <div class="row">
         <div class="col span-6 mt-0 mb-0">
-          <label class="acc-label">{{t 'formHealthCheck.readiness'}}</label>
+          <label class="acc-label">
+            {{t "formHealthCheck.readiness"}}
+          </label>
         </div>
         <div class="col span-6 mt-0 mb-0">
           {{#if service.launchConfig.livenessProbe}}
-            <label class="acc-label">{{t 'formHealthCheck.liveness'}}</label>
+            <label class="acc-label">
+              {{t "formHealthCheck.liveness"}}
+            </label>
           {{/if}}
         </div>
       </div>
       <div class="row">
-        <div class="col {{if service.launchConfig.livenessProbe 'span-6' 'span-12'}}">
+        <div class="col {{if service.launchConfig.livenessProbe "span-6" "span-12"}}">
           {{form-healthcheck
-              initialCheck=service.launchConfig.readinessProbe
-              editing=false
+            initialCheck=service.launchConfig.readinessProbe
+            editing=false
           }}
         </div>
         {{#if service.launchConfig.livenessProbe}}
           <div class="col span-6">
             {{form-healthcheck
-                initialCheck=service.launchConfig.livenessProbe
-                editing=false
-                isLiveness=true
+              initialCheck=service.launchConfig.livenessProbe
+              editing=false
+              isLiveness=true
             }}
           </div>
         {{/if}}
@@ -207,7 +248,7 @@
   }}
 
   {{container/form-command
-    tagName=''
+    tagName=""
     instance=launchConfig
     service=model.workload
     initialLabels=launchConfig.labels

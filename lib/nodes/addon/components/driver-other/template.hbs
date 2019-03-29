@@ -1,18 +1,26 @@
 {{#accordion-list showExpandAll=false as | al expandFn |}}
-  <div class="over-hr"><span>{{driverOptionsTitle}}</span></div>
+  <div class="over-hr">
+    <span>
+      {{driverOptionsTitle}}
+    </span>
+  </div>
 
   {{#each fieldNames as |fieldName|}}
     {{api-field
-        resource=config
-        resourceType=driverName
-        field=fieldName
-        value=(get config fieldName)
-        schema=schema
-        typeDocs=typeDocumentations
+      resource=config
+      resourceType=driverName
+      field=fieldName
+      value=(get config fieldName)
+      schema=schema
+      typeDocs=typeDocumentations
     }}
   {{/each}}
 
-  <div class="over-hr"><span>{{templateOptionsTitle}}</span></div>
+  <div class="over-hr">
+    <span>
+      {{templateOptionsTitle}}
+    </span>
+  </div>
 
   {{form-name-description
     model=model
@@ -21,7 +29,7 @@
 
   {{form-user-labels
     initialLabels=labelResource.labels
-    setLabels=(action 'setLabels')
+    setLabels=(action "setLabels")
     expandAll=null
   }}
 
@@ -31,5 +39,9 @@
   }}
 
   {{top-errors errors=errors}}
-  {{save-cancel save="save" cancel="cancel" editing=editing}}
+  {{save-cancel
+    save=(action "save")
+    cancel=(action "cancel")
+    editing=editing
+  }}
 {{/accordion-list}}

@@ -3,7 +3,7 @@ import Controller from '@ember/controller';
 export default Controller.extend({
   actions: {
     back() {
-      this.send('goToPrevious', 'secrets');
+      this.send('goToPrevious', 'authenticated.project.secrets');
     },
   },
 });

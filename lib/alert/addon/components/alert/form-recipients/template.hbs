@@ -2,30 +2,30 @@
   <div class="banner bg-warning">
     <div class="banner-icon p-10"><i class="icon icon-alert"></i></div>
     <div class="banner-message">
-      {{t 'alertPage.newOrEdit.noNotifierHelpText'}} {{#link-to-external 'notifier' clusterId}} {{t 'alertPage.newOrEdit.createOne'}}{{/link-to-external}}.
+      {{t "alertPage.newOrEdit.noNotifierHelpText"}} {{#link-to-external "notifier" clusterId}} {{t "alertPage.newOrEdit.createOne"}}{{/link-to-external}}.
     </div>
   </div>
 {{/unless}}
 <section class="row">
   <div class="col span-1">
     <div class="pt-10">
-      {{t 'alertPage.newOrEdit.alert'}}
+      {{t "alertPage.newOrEdit.alert"}}
     </div>
   </div>
   <div class="col span-10">
     {{#each model.recipients as |recipient idx|}}
       {{alert/form-recipient-item
-          disableRemove=disableRemove
-          remove="remove"
-          isFirst=(eq idx 0)
-          notifiers=notifiers
-          model=recipient
+        disableRemove=disableRemove
+        remove=(action "remove")
+        isFirst=(eq idx 0)
+        notifiers=notifiers
+        model=recipient
       }}
     {{/each}}
     <div class="mt-15">
       <button class="btn bg-link icon-btn p-0" {{action "add"}}>
         <span class="darken"><i class="icon icon-plus text-small"/></span>
-        <span>{{t 'alertPage.newOrEdit.addRecipient'}}</span>
+        <span>{{t "alertPage.newOrEdit.addRecipient"}}</span>
       </button>
     </div>
   </div>

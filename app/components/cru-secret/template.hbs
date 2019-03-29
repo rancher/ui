@@ -2,16 +2,26 @@
   {{#if isView}}
     <div class="right-buttons pull-right">
       {{badge-state model=model}}
-      {{action-menu model=model showPrimary=false classNames="ml-10 inline-block" size="sm"}}
+      {{action-menu
+        model=model
+        showPrimary=false
+        classNames="ml-10 inline-block"
+        size="sm"
+      }}
     </div>
   {{/if}}
 
-  <h1>{{title}}</h1>
+  <h1>
+    {{title}}
+  </h1>
 </section>
 
 {{#if isView}}
   {{#if model.description}}
-    {{banner-message color='bg-secondary mb-0 mt-10' message=(linkify model.description)}}
+    {{banner-message
+      color="bg-secondary mb-0 mt-10"
+      message=(linkify model.description)
+    }}
   {{/if}}
 {{else}}
   {{form-name-description
@@ -23,10 +33,18 @@
   }}
 {{/if}}
 
-{{optionally-namespaced namespaceErrors=namespaceErrors scope=scope mode=mode namespace=namespace model=model}}
+{{optionally-namespaced
+  namespaceErrors=namespaceErrors
+  scope=scope
+  mode=mode
+  namespace=namespace
+  model=model
+}}
 
 <div class="box mt-10">
-  <label class="acc-label">{{t 'newSecret.values.label'}}</label>
+  <label class="acc-label">
+    {{t "newSecret.values.label"}}
+  </label>
   {{form-key-value
     allowEmptyValue=true
     initialMap=primaryResource.data
@@ -41,5 +59,9 @@
 
 {{#unless isView}}
   {{top-errors errors=errors}}
-  {{save-cancel editing=true save="save" cancel="viewEditCancel"}}
+  {{save-cancel
+    editing=true
+    save=(action "save")
+    cancel=(action "viewEditCancel" )
+  }}
 {{/unless}}

@@ -1,56 +1,87 @@
 <section class="header clearfix">
-  <div class="pull-left"><h1>{{t 'editUser.title'}}</h1></div>
+  <div class="pull-left">
+    <h1>
+      {{t "editUser.title"}}
+    </h1>
+  </div>
 </section>
 
 <div class="row">
   {{form-name-description
-      name=primaryResource.username
-      description=primaryResource.description
-      descriptionShown=true
-      nameLabel="accountsPage.new.form.username.labelText"
-      descriptionPlaceholder="accountsPage.new.form.description.placeholder"
-      nameDisabled=true
+    name=primaryResource.username
+    description=primaryResource.description
+    descriptionShown=true
+    nameLabel="accountsPage.new.form.username.labelText"
+    descriptionPlaceholder="accountsPage.new.form.description.placeholder"
+    nameDisabled=true
   }}
 </div>
 
 <div class="row">
   <div class="col span-12">
-    <label class="pb-5 acc-label">{{t 'editUser.form.name.label'}}</label>
-    {{input type="text" value=primaryResource.name classNames="form-control user-display-name" placeholder=(t 'editUser.form.name.placeholder')}}
+    <label class="pb-5 acc-label">
+      {{t "editUser.form.name.label"}}
+    </label>
+    {{input
+      type="text"
+      value=primaryResource.name
+      classNames="form-control user-display-name"
+      placeholder=(t "editUser.form.name.placeholder")
+    }}
   </div>
 </div>
 
 {{#if isLocalUser}}
   <div class="row">
     <div class="col span-12">
-      <label class="pb-5 acc-label">{{t 'editUser.form.password.new'}}</label>
-      {{input type="password" value=password classNames="form-control start"}}
+      <label class="pb-5 acc-label">
+        {{t "editUser.form.password.new"}}
+      </label>
+      {{input
+        type="password"
+        value=password
+        classNames="form-control start"
+      }}
     </div>
   </div>
 
   <div class="row">
     <div class="col span-12">
-      <label class="pb-5 acc-label">{{t 'editUser.form.password.confirm'}}</label>
-      {{input type="password" value=confirm classNames="form-control"}}
+      <label class="pb-5 acc-label">
+        {{t "editUser.form.password.confirm"}}
+      </label>
+      {{input
+        type="password"
+        value=confirm
+        classNames="form-control"
+      }}
     </div>
     {{#unless passwordsMatch}}
       <p class="text-error text-small mt-0 mb-0">
-        {{t 'editUser.form.password.error'}}
+        {{t "editUser.form.password.error"}}
       </p>
     {{/unless}}
     <div class="col span-12">
       <label>
-        {{input type="checkbox" checked=primaryResource.mustChangePassword}}
-        {{t 'editUser.form.password.mustChangePassword.edit'}}
+        {{input
+          type="checkbox"
+          checked=primaryResource.mustChangePassword
+        }}
+        {{t "editUser.form.password.mustChangePassword.edit"}}
       </label>
     </div>
   </div>
 {{/if}}
 
 {{form-global-roles
-    user=primaryResource
-    setSave=(action "setGlobalRoleSave")
+  user=primaryResource
+  setSave=(action "setGlobalRoleSave")
 }}
 
 {{top-errors errors=errors}}
-{{save-cancel saveDisabled=passwordsMismatch save="save" createLabel="generic.save" cancel="cancel"}}
+{{save-cancel
+  saveDisabled=passwordsMismatch
+  save=(action "save")
+  createLabel="generic.save"
+  cancel=(action "cancel")
+}}
