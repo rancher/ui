@@ -36,6 +36,13 @@ export default Resource.extend({
         provider: 'alidns'
       });
     }
+
+    if (get(this, 'linodeProviderConfig')) {
+      setProperties(this, {
+        config:   alias('linodeProviderConfig'),
+        provider: 'linode'
+      });
+    }
   },
 
   canEdit: computed('links.update', function() {

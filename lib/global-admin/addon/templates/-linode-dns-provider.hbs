@@ -1,0 +1,55 @@
+<section>
+  {{form-name-description
+    model=config
+    nameDisabled=isEdit
+  }}
+</section>
+<form class="horizontal-form container-fluid text-left" autocomplete="off">
+  <div class="row">
+    <div class="col span-6 mb-0">
+      <label
+        class="acc-label"
+        for="linode-root-domain"
+      >
+        {{t "globalDnsPage.providersPage.config.root.label"}}
+      </label>
+      {{input
+        classNames="form-control"
+        id="linode-root-domain"
+        placeholder=(t "globalDnsPage.providersPage.config.root.placeholder")
+        type="text"
+        value=config.rootDomain
+      }}
+    </div>
+  </div>
+
+    <div class="col span-6 mb-0">
+      <label
+        class="acc-label"
+        for="linode-api-token"
+      >
+        {{t "globalDnsPage.providersPage.config.apiToken.label"}}
+        {{#if (eq mode "edit")}}
+          {{#tooltip-element
+             type="tooltip-basic"
+             model=(t "globalDnsPage.providersPage.config.apiToken.info")
+             tooltipTemplate="tooltip-static"
+             aria-describedby="tooltip-base"
+             tooltipFor="tooltipAPIToken"
+          }}
+            <i class="icon icon-info"></i>
+          {{/tooltip-element}}
+        {{else}}
+          {{field-required}}
+        {{/if}}
+      </label>
+      {{input
+        classNames="form-control"
+        id="linode-api-token"
+        placeholder=(t "globalDnsPage.providersPage.config.apiToken.placeholder")
+        type="password"
+        value=config.linodeProviderConfig.apiToken
+      }}
+    </div>
+  </div>
+</form>
