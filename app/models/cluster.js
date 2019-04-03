@@ -62,15 +62,19 @@ export default Resource.extend(Grafana, ResourceUsage, {
     return null;
   }),
 
-  isMonitoringReady: computed('conditions.@each.status', function() {
+  isMonitoringReady: computed('monitoringStatus.@each.conditions', function() {
     if ( !get(this, 'enableClusterMonitoring') ) {
       return false;
     }
-    const conditions = get(this, 'conditions') || [];
+    const conditions = get(this, 'monitoringStatus.conditions') || [];
 
-    const ready = conditions.findBy('type', 'MonitoringEnabled');
+    if ( get(conditions, 'length') > 0 ) {
+      const ready = conditions.filterBy('status', 'True') || [] ;
 
-    return ready && get(ready, 'status') === 'True';
+      return get(ready, 'length') === get(conditions, 'length');
+    }
+
+    return false;
   }),
 
   isReady: computed('conditions.@each.status', function() {

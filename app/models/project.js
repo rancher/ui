@@ -46,15 +46,19 @@ export default Resource.extend({
     return labels[SYSTEM_PROJECT_LABEL] === 'true';
   }),
 
-  isMonitoringReady: computed('conditions.@each.status', function() {
-    if ( !get(this, 'enableClusterMonitoring') ) {
+  isMonitoringReady: computed('monitoringStatus.@each.conditions', function() {
+    if ( !get(this, 'enableProjectMonitoring') ) {
       return false;
     }
-    const conditions = get(this, 'conditions') || [];
+    const conditions = get(this, 'monitoringStatus.conditions') || [];
 
-    const ready = conditions.findBy('type', 'MonitoringEnabled');
+    if ( get(conditions, 'length') > 0 ) {
+      const ready = conditions.filterBy('status', 'True') || [] ;
 
-    return ready && get(ready, 'status') === 'True';
+      return get(ready, 'length') === get(conditions, 'length');
+    }
+
+    return false;
   }),
 
   active: computed('scope.currentProject.id', 'id', function() {
