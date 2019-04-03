@@ -1,37 +1,67 @@
+
 <div class="row">
-  <div class="col span-4 mt-0 mb-0">
-    {{used-percent-gauge
-      value=cpuReservation.percent
-      title=(t "clusterDashboard.cpu")
-      subtitle=cpuReservation.subtitle
-      ticks=cpuReservation.ticks
-      liveTitle=cpuLiveTitle
-      live=cpuLive
-      liveTicks=cpuTicks
-      maxValue=cpuTotalPercent
-    }}
-  </div>
+  {{#if (and isMonitoringReady isGotMetrics)}}
+    <div class="col span-4 mt-0 mb-0">
+      {{used-percent-gauge
+        value=cpuReservation.percent
+        title=(t "clusterDashboard.cpu")
+        subtitle=cpuReservation.subtitle
+        ticks=cpuReservation.ticks
+        liveTitle=cpuLiveTitle
+        live=cpuLive
+        liveTicks=cpuTicks
+        maxValue=cpuTotalPercent
+      }}
+    </div>
 
-  <div class="col span-4 mt-0 mb-0">
-    {{used-percent-gauge
-      value=memoryReservation.percent
-      title=(t "clusterDashboard.memory")
-      subtitle=memoryReservation.subtitle
-      ticks=memoryReservation.ticks
-      liveTitle=meomoryLiveTitle
-      live=memoryLive
-      liveTicks=memoryTicks
-      maxValue=memoryTotalPercent
-    }}
-  </div>
+    <div class="col span-4 mt-0 mb-0">
+      {{used-percent-gauge
+        value=memoryReservation.percent
+        title=(t "clusterDashboard.memory")
+        subtitle=memoryReservation.subtitle
+        ticks=memoryReservation.ticks
+        liveTitle=meomoryLiveTitle
+        live=memoryLive
+        liveTicks=memoryTicks
+        maxValue=memoryTotalPercent
+      }}
+    </div>
 
-  <div class="col span-4 mt-0 mb-0">
-    {{percent-gauge
-      value=podUsage.percent
-      title=(t "clusterDashboard.pods")
-      subtitle=podUsage.subtitle
-      ticks=podUsage.ticks
-      mode='monitoring'
-    }}
-  </div>
+    <div class="col span-4 mt-0 mb-0">
+      {{percent-gauge
+        value=podUsage.percent
+        title=(t "clusterDashboard.pods")
+        subtitle=podUsage.subtitle
+        ticks=podUsage.ticks
+        mode='monitoring'
+      }}
+    </div>
+  {{else}}
+    <div class="col span-4 mt-0 mb-0">
+      {{percent-gauge
+        value=cpuReservation.percent
+        title=(t 'clusterDashboard.cpu')
+        subtitle=cpuReservation.subtitle
+        ticks=cpuReservation.ticks
+      }}
+    </div>
+
+    <div class="col span-4 mt-0 mb-0">
+      {{percent-gauge
+        value=memoryReservation.percent
+        title=(t 'clusterDashboard.memory')
+        subtitle=memoryReservation.subtitle
+        ticks=memoryReservation.ticks
+      }}
+    </div>
+
+    <div class="col span-4 mt-0 mb-0">
+      {{percent-gauge
+        value=podUsage.percent
+        title=(t 'clusterDashboard.pods')
+        subtitle=podUsage.subtitle
+        ticks=podUsage.ticks
+      }}
+    </div>
+  {{/if}}
 </div>
