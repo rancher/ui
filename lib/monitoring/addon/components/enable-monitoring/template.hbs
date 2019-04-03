@@ -202,6 +202,44 @@
       <div class="row">
         <div class="col span-6">
           <label class="acc-label">
+            {{t "monitoringPage.config.nodeexporter.cpuLimit.label"}}
+          </label>
+          <span class="with-input">
+            <div class="input-group">
+              {{input-integer
+                min="0"
+                step="100"
+                value=nodeExporterLimitsCpu
+                classNames="form-control"
+                placeholder=(t "monitoringPage.config.nodeexporter.cpuLimit.placeholder")
+              }}
+              <div class="input-group-addon bg-default">
+                {{t "monitoringPage.config.nodeexporter.cpuLimit.unit"}}
+              </div>
+            </div>
+          </span>
+        </div>
+        <div class="col span-6">
+          <label class="acc-label">
+            {{t "monitoringPage.config.nodeexporter.memoryLimit.label"}}
+          </label>
+          <div class="input-group">
+            {{input-integer
+              min="4"
+              step="1"
+              value=nodeExporterLimitsMemory
+              classNames="form-control"
+              placeholder=(t "monitoringPage.config.nodeexporter.memoryLimit.placeholder")
+            }}
+            <div class="input-group-addon bg-default">
+              {{t "generic.mibibyte"}}
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col span-6">
+          <label class="acc-label">
             {{t "monitoringPage.config.nodeexporter.label"}}
           </label>
           {{input-integer
