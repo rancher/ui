@@ -75,6 +75,7 @@ module.exports = function(app, options) {
     'Meta': '/meta',
     'Swagger': '/swaggerapi',
     'Version': '/version',
+    'Apiui': '/api-ui',
   }
 
   app.use('/', function(req, res, next) {
