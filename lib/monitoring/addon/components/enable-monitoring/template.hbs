@@ -14,6 +14,11 @@
     {{/if}}
   </div>
 </section>
+{{#if settings.isRancher}}
+  <p>
+    {{t "monitoringPage.resourceLimitsHelp" htmlSafe=true}}
+  </p>
+{{/if}}
 
 {{#if (and (eq selected "prometheus") scope.currentProject.enableProjectMonitoring (not scope.currentCluster.enableClusterMonitoring))}}
   {{#banner-message color="bg-warning"}}
