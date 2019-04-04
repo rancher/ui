@@ -305,7 +305,10 @@ export default Component.extend(ThrottledResize, {
       return;
     }
 
-    a.click();
+    next(() => {
+      this.send('onClose');
+      a.click();
+    });
   },
 
   enterCluster(e) {
