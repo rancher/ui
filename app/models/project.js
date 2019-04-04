@@ -47,7 +47,7 @@ export default Resource.extend({
   }),
 
   isMonitoringReady: computed('conditions.@each.status', function() {
-    if ( !get(this, 'enableClusterMonitoring') ) {
+    if ( !get(this, 'enableProjectMonitoring') ) {
       return false;
     }
     const conditions = get(this, 'conditions') || [];
