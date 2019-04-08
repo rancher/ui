@@ -93,9 +93,18 @@ monitoringPage:
     cluster: Cluster level monitoring is enabled.
     project: Project level monitoring is enabled.
   insufficientSize:
-    cpu: Please make sure you have at least {cpu} milli CPUs available to enable monitoring.
-    memory: Please make sure you have at least {memory} MiB of memory available to enable monitoring.
-    all: Please make sure you have at least {cpu} milli CPUs and {memory} MiB of memory available to enable monitoring.
+    prometheus:
+      cpu: Please make sure you have at least one node has {cpu} milli CPUs available to enable Prometheus workload.
+      memory: Please make sure you have at least one node has {memory} MiB of memory available to enable Prometheus workload.
+      all: Please make sure you have at least one node has {cpu} milli CPUs and {memory} MiB of memory available to enable Prometheus workload.
+    selectors:
+      cpu: Please make sure you have at least one node matches node selectors has {cpu} milli CPUs available to enable Prometheus workload.
+      memory: Please make sure you have at least one node matches node selectors has {memory} MiB of memory available to enable Prometheus workload.
+      all: Please make sure you have at least one node matches node selectors has {cpu} milli CPUs and {memory} MiB of memory available to enable Prometheus workload.
+    total:
+      cpu: Please make sure you have at least {cpu} milli CPUs available to enable monitoring.
+      memory: Please make sure you have at least {memory} MiB of memory available to enable monitoring.
+      all: Please make sure you have at least {cpu} milli CPUs and {memory} MiB of memory available to enable monitoring.
   clusterNotEnabled: Cluster level monitoring is not enabled. Only custom metrics will be collected.
   prometheus: Monitoring is not enabled yet, click the Save button below to enable it.
   resourceLimitsHelp: 'When enabling cluster monitoring, you need to ensure your worker nodes and Prometheus pod have enough resources. Please visit <a href="https://rancher.com/docs/rancher/v2.x/en/cluster-admin/tools/monitoring/#resource-consumption" target="_blank" rel="nofollow noreferrer">the Rancher docs</a> for suggested resource limits.'

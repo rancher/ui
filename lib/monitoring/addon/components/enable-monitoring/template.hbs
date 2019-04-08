@@ -294,15 +294,27 @@
   </section>
 {{/if}}
 
-{{#if (and insufficient (eq selected "prometheus")) }}
+{{#if (and (or insufficientPrometheusMemory insufficientPrometheusCpu insufficient) (eq selected "prometheus")) }}
   {{#banner-message color="bg-warning"}}
     <p>
       {{#if (and insufficientMemory insufficientCpu)}}
-        {{t "monitoringPage.insufficientSize.all" cpu=minCpu memory=minMemory}}
+        {{t "monitoringPage.insufficientSize.total.all" cpu=minCpu memory=minMemory}}
       {{else if insufficientMemory}}
-        {{t "monitoringPage.insufficientSize.memory" memory=minMemory}}
+        {{t "monitoringPage.insufficientSize.total.memory" memory=minMemory}}
       {{else if insufficientCpu}}
-        {{t "monitoringPage.insufficientSize.cpu" cpu=minCpu}}
+        {{t "monitoringPage.insufficientSize.total.cpu" cpu=minCpu}}
+      {{else if (and insufficientPrometheusCpu insufficientPrometheusMemory nodeSelectors.length)}}
+          {{t "monitoringPage.insufficientSize.selectors.all" cpu=requestsCpu memory=requestsMemory}}
+      {{else if (and insufficientPrometheusCpu insufficientPrometheusMemory)}}
+          {{t "monitoringPage.insufficientSize.prometheus.all" cpu=requestsCpu memory=requestsMemory}}
+      {{else if (and insufficientPrometheusCpu nodeSelectors.length)}}
+          {{t "monitoringPage.insufficientSize.selectors.cpu" cpu=requestsCpu}}
+      {{else if insufficientPrometheusCpu}}
+          {{t "monitoringPage.insufficientSize.prometheus.cpu" cpu=requestsCpu}}
+      {{else if (and insufficientPrometheusMemory nodeSelectors.length)}}
+          {{t "monitoringPage.insufficientSize.selectors.memory" memory=requestsMemory}}
+      {{else if insufficientPrometheusMemory}}
+          {{t "monitoringPage.insufficientSize.prometheus.memory" memory=requestsMemory}}
       {{/if}}
     </p>
   {{/banner-message}}
