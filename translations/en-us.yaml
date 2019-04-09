@@ -1106,6 +1106,42 @@ cruVolume:
     detail: Configure options for the selected volume source
     prompt: Choose a volume source...
 
+globalRegistryPage:
+  header: Global Registry
+  enabled: Registry is enabled. Click <a href="{url}/registry" target="_blank" rel="nofollow noopener noreferrer">here</a> to go to Harbor UI.
+  disabled: Registry is not enabled yet.
+  notReady: Installing registry into the system project of the local cluster...
+  confirmDisable: "Are you sure?  Click again to really disable registry"
+  disable: Disable registry
+  enableActionLabel: Enable
+  command:
+    title: Docker Commands
+    detail: Docker commands for this repositry
+    dockerLogin: Login registry
+    dockerPull: Pull an image from this repositry
+    dockerTag: Tag an image for this repositry
+    dockerPush: Push an image to this repositry
+  setting:
+    title: Registry Configuration
+    detail: Configure the harbor registry which will be deployed into local cluster.
+    adminPassword:
+      label: Admin Password
+      placeholder: Harobr admin password
+  config:
+    persistenceEnabled:
+      label: Enable Persistent Storage for Registry
+    persistenceStorageclass:
+      label: Default StorageClass for Registry
+      size:
+        label: Registry Persistent Volume Size
+    clairEnabled:
+      label: Enable Clair
+    notaryEnabled:
+      label: Enable Notary
+    chartmuseumEnabled:
+      label: Enable Helm Chart Repository in Harbor
+
+
 globalDnsPage:
   header: Global DNS Entries
   newDns: Add DNS Entry
@@ -7091,6 +7127,7 @@ nav:
     globalDns: Global DNS
     globalDnsEntries: Global DNS Entries
     globalDnsProviders: Global DNS Providers
+    globalRegistry: Global Registry
     multiClusterApps: Apps
     security:
       cloudCredentials: Cloud Credentials
@@ -7125,6 +7162,7 @@ nav:
     notifiers: Notifiers
     pipeline: Pipeline
     tab: Tools
+    istio: Istio
   project:
     none: Grouped Projects/Namespaces
     namespaces: Namespaces

@@ -66,6 +66,7 @@ Router.map(function() {
       });
 
       this.mount('monitoring');
+      this.mount('istio');
 
       this.route('projects', { path: '/projects-namespaces' }, function() {
         this.route('index', { path: '/' });

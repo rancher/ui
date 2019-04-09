@@ -9,7 +9,7 @@ const VALID_ROUTES = ['authenticated.cluster.nodes', 'authenticated.cluster.stor
   'authenticated.cluster.storage.persistent-volumes', 'authenticated.cluster.notifier',
   'authenticated.cluster.alert', 'authenticated.cluster.logging', 'authenticated.cluster.monitoring',
   'authenticated.cluster.security.members.index', 'authenticated.cluster.projects',
-  'authenticated.cluster.quotas'];
+  'authenticated.cluster.quotas', 'authenticated.cluster.istio'];
 
 export default Route.extend(Preload, {
   scope:        service(),

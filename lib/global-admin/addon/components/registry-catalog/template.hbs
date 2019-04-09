@@ -1,0 +1,165 @@
+<section class="header clearfix">
+  <h1 class="pull-left">
+    {{t "globalRegistryPage.header"}}
+  </h1>
+  {{#if enabled}}
+    <div class="pull-right">
+      {{#if confirmDisable}}
+        <button class="btn bg-error" {{action "disable"}}>
+          <i class="icon icon-alert"></i> {{t "globalRegistryPage.confirmDisable"}}
+        </button>
+      {{else}}
+        <button class="btn bg-error" {{action "promptDisable"}}>
+          <i class="icon icon-umbrella"></i> {{t "globalRegistryPage.disable"}}
+        </button>
+      {{/if}}
+    </div>
+  {{/if}}
+</section>
+
+{{#if (and enabled ready)}}
+  {{#banner-message color="bg-info"}}
+    <p>{{t "globalRegistryPage.enabled" url=app.answers.externalURL htmlSafe=true}}</p>
+  {{/banner-message}}
+{{else if enabled}}
+  {{#banner-message color="bg-warning"}}
+    <p>{{t "globalRegistryPage.notReady"}}</p>
+  {{/banner-message}}
+{{else}}
+  {{#banner-message color="bg-warning"}}
+    <p>{{t "globalRegistryPage.disabled"}}</p>
+  {{/banner-message}}
+{{/if}}
+
+{{#if (and enabled ready)}}
+  {{#accordion-list showExpandAll=false  as |al expandFn|}}
+    {{#accordion-list-item
+        classNames="mt-30"
+        expand=(action expandFn)
+        expandAll=al.expandAll
+        expandOnInit=true
+        expanded=true
+        title=(t "globalRegistryPage.command.title")
+        detail=(t "globalRegistryPage.command.detail")
+    }}
+      <div>
+        <div class="acc-label p-0 mb-5 mt-10">
+          {{t "globalRegistryPage.command.dockerLogin"}}:
+        </div>
+        <code class="p-5">{{dockerLogin}}</code>{{copy-to-clipboard clipboardText=dockerLogin size="small"}}
+      </div>
+      <div>
+        <div class="acc-label p-0 mb-5 mt-10">
+          {{t "globalRegistryPage.command.dockerPull"}}:
+        </div>
+        <code class="p-5">{{dockerPull}}</code>{{copy-to-clipboard clipboardText=dockerPull size="small"}}
+      </div>
+      <div>
+        <div class="acc-label p-0 mb-5 mt-10">
+          {{t "globalRegistryPage.command.dockerTag"}}:
+        </div>
+        <code class="p-5">{{dockerTag}}</code>{{copy-to-clipboard clipboardText=dockerTag size="small"}}
+      </div>
+      <div>
+        <div class="acc-label p-0 mb-5 mt-10">
+          {{t "globalRegistryPage.command.dockerPush"}}:
+        </div>
+        <code class="p-5">{{dockerPush}}</code>{{copy-to-clipboard clipboardText=dockerPush size="small"}}
+      </div>
+    {{/accordion-list-item}}
+  {{/accordion-list}}
+{{/if}}
+
+<div class="box mb-10">
+  <div class="row">
+    <div class="col span-6">
+      <label class="acc-label">
+        {{t "globalRegistryPage.setting.adminPassword.label"}}{{field-required}}
+      </label>
+      {{input type="text" class="conceal" placeholder=(t "globalRegistryPage.setting.adminPassword.placeholder") value=password}}
+    </div>
+    <div class="col span-6">
+      <label class="acc-label">
+        {{t "globalRegistryPage.config.persistenceEnabled.label"}}
+      </label>
+      {{schema/input-boolean
+        value=config.persistenceEnabled
+        classNames="form-control"
+      }}
+    </div>
+  </div>
+  <div class="">
+    {{#if config.persistenceEnabled}}
+      <div class="col span-6">
+        <label class="acc-label">
+          {{t "globalRegistryPage.config.persistenceStorageclass.size.label"}}
+        </label>
+        {{schema/input-string
+          value=config.persistenceStorageclassSize
+        }}
+      </div>
+      <div class="col span-6">
+        <label class="acc-label">
+          {{t "globalRegistryPage.config.persistenceStorageclass.label"}}
+        </label>
+        {{schema/input-storageclass
+          value=config.persistenceStorageclass
+        }}
+      </div>
+    {{/if}}
+  </div>
+  <div class="row">
+    <div class="col span-6">
+      <label class="acc-label">
+        {{t "globalRegistryPage.config.clairEnabled.label"}}
+      </label>
+      {{schema/input-boolean
+        value=config.clairEnabled
+        classNames="form-control"
+      }}
+    </div>
+    <div class="col span-6">
+      <label class="acc-label">
+        {{t "globalRegistryPage.config.notaryEnabled.label"}}
+      </label>
+      {{schema/input-boolean
+        value=config.notaryEnabled
+        classNames="form-control"
+      }}
+    </div>
+  </div>
+  <div class="row">
+    <div class="col span-6">
+      <label class="acc-label">
+        {{t "globalRegistryPage.config.chartmuseumEnabled.label"}}
+      </label>
+      {{schema/input-boolean
+        value=config.chartmuseumEnabled
+        classNames="form-control"
+      }}
+    </div>
+  </div>
+  {{#advanced-section advanced=advanced}}
+    {{form-key-value
+      initialMap=customAnswers
+      changed=(action (mut customAnswers))
+      allowEmptyValue=true
+      addInitialEmptyRow=true
+      editing=true
+      header=(t "newCatalog.answers.label")
+      addActionLabel="newCatalog.answers.addAction"
+      keyLabel="newContainer.environment.keyLabel"
+      keyPlaceholder="newContainer.environment.keyPlaceholder"
+      valueLabel="newContainer.environment.valueLabel"
+      valuePlaceholder="newContainer.environment.valuePlaceholder"
+    }}
+  {{/advanced-section}}
+</div>
+
+{{save-cancel
+  editing=enabled
+  createLabel="globalRegistryPage.enableActionLabel"
+  save=(action "save")
+  saved=saved
+  cancel=cancel
+}}

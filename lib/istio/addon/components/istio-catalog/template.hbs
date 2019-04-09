@@ -1,0 +1,197 @@
+<section class="header clearfix">
+  <h1 class="pull-left">
+    {{t "clusterIstioPage.header"}}
+  </h1>
+  {{#if enabled}}
+    <div class="pull-right">
+      {{#if confirmDisable}}
+        <button class="btn bg-error" {{action "disable"}}>
+          <i class="icon icon-alert"></i> {{t "clusterIstioPage.confirmDisable"}}
+        </button>
+      {{else}}
+        <button class="btn bg-error" {{action "promptDisable"}}>
+          <i class="icon icon-umbrella"></i> {{t "clusterIstioPage.disable"}}
+        </button>
+      {{/if}}
+    </div>
+  {{/if}}
+</section>
+
+{{#if (and enabled ready)}}
+  {{#banner-message color="bg-info"}}
+    <p>{{t "clusterIstioPage.enabled"}}</p>
+  {{/banner-message}}
+{{else if enabled}}
+  {{#banner-message color="bg-warning"}}
+    <p>{{t "clusterIstioPage.notReady"}}</p>
+  {{/banner-message}}
+{{else}}
+  {{#banner-message color="bg-warning"}}
+    <p>{{t "clusterIstioPage.disabled"}}</p>
+  {{/banner-message}}
+{{/if}}
+
+{{#if (and enabled ready)}}
+  <div class="row">
+    {{istio-component-status
+      label="clusterIstioPage.links.kiali.label"
+      url=kialiUrl
+      logo="kiali"
+    }}
+    {{istio-component-status
+      label="clusterIstioPage.links.jaeger.label"
+      url=jaegerUrl
+      logo="jaeger"
+    }}
+    {{istio-component-status
+      label="clusterIstioPage.links.grafana.label"
+      url=grafanaUrl
+      logo="grafana"
+    }}
+    {{istio-component-status
+      label="clusterIstioPage.links.prometheus.label"
+      url=prometheusUrl
+      logo="prometheus-icon"
+    }}
+  </div>
+{{/if}}
+
+<div class="box mb-10">
+  <div class="row-half mb-10">
+    <div class="col span-6">
+      <label class="acc-label">
+        {{t "clusterIstioPage.config.autoInject.label"}}
+      </label>
+      {{schema/input-boolean
+        value=config.autoInject
+        classNames="form-control"
+      }}
+    </div>
+
+    <div class="col span-6">
+      <label class="acc-label">
+        {{t "clusterIstioPage.config.mtlsEnabled.label"}}
+      </label>
+      {{schema/input-boolean
+        value=config.mtlsEnabled
+        classNames="form-control"
+      }}
+    </div>
+
+    <div class="col span-6">
+      <label class="acc-label">
+        {{t "clusterIstioPage.config.tracingEnabled.label"}}
+      </label>
+      {{schema/input-boolean
+        value=config.tracingEnabled
+        classNames="form-control"
+      }}
+    </div>
+
+    <div class="col span-6">
+      <label class="acc-label">
+        {{t "clusterIstioPage.config.kialiEnabled.label"}}
+      </label>
+      {{schema/input-boolean
+        value=config.kialiEnabled
+        classNames="form-control"
+      }}
+    </div>
+
+    <div class="col span-6">
+      <label class="acc-label">
+        {{t "clusterIstioPage.config.galleyEnabled.label"}}
+      </label>
+      {{schema/input-boolean
+        value=config.galleyEnabled
+        classNames="form-control"
+      }}
+    </div>
+
+    <div class="col span-6">
+      <label class="acc-label">
+        {{t "clusterIstioPage.config.prometheusEnabled.label"}}
+      </label>
+      {{schema/input-boolean
+        value=config.prometheusEnabled
+        classNames="form-control"
+      }}
+    </div>
+
+    <div class="col span-6">
+      <label class="acc-label">
+        {{t "clusterIstioPage.config.grafanaEnabled.label"}}
+      </label>
+      {{schema/input-boolean
+        value=config.grafanaEnabled
+        classNames="form-control"
+      }}
+    </div>
+    {{#if config.grafanaEnabled}}
+      <div class="col span-6">
+        <label class="acc-label">
+          {{t "clusterIstioPage.config.grafanaPersistenceEnabled.label"}}
+        </label>
+        {{schema/input-boolean
+          value=config.grafanaPersistenceEnabled
+          classNames="form-control"
+        }}
+      </div>
+      {{#if config.grafanaPersistenceEnabled}}
+        <div class="col span-6">
+          <label class="acc-label">
+            {{t "clusterIstioPage.config.grafanaPersistenceSize.label"}}
+          </label>
+          {{schema/input-string
+            classNames="form-control"
+            value=config.grafanaPersistenceSize
+          }}
+        </div>
+        <div class="col span-6">
+          <label class="acc-label">
+            {{t "clusterIstioPage.config.grafanaPersistenceStorageClass.label"}}
+          </label>
+          {{schema/input-storageclass
+            classNames="form-control"
+            value=config.grafanaPersistenceStorageClass
+          }}
+        </div>
+      {{/if}}
+    {{/if}}
+  </div>
+  <div class="row">
+    <div class="col span-6">
+      <label class="acc-label">
+        {{t "clusterIstioPage.config.certmanagerEnabled.label"}}
+      </label>
+      {{schema/input-boolean
+        value=config.certmanagerEnabled
+        classNames="form-control"
+      }}
+    </div>
+  </div>
+
+  {{#advanced-section}}
+    {{form-key-value
+      initialMap=customAnswers
+      changed=(action (mut customAnswers))
+      allowEmptyValue=true
+      addInitialEmptyRow=true
+      editing=true
+      header=(t "newCatalog.answers.label")
+      addActionLabel="newCatalog.answers.addAction"
+      keyLabel="newContainer.environment.keyLabel"
+      keyPlaceholder="newContainer.environment.keyPlaceholder"
+      valueLabel="newContainer.environment.valueLabel"
+      valuePlaceholder="newContainer.environment.valuePlaceholder"
+    }}
+  {{/advanced-section}}
+</div>
+
+{{save-cancel
+  editing=enabled
+  createLabel="clusterIstioPage.enableActionLabel"
+  save=(action "save")
+  saved=saved
+  cancel=cancel
+}}

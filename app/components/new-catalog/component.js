@@ -426,6 +426,6 @@ export default Component.extend(NewOrEdit, CatalogApp, ChildHook, {
   shouldFallBackToYaml() {
     const questions = get(this, 'selectedTemplateModel.allQuestions') || [];
 
-    return !!questions.some((question) => get(question, 'type') === 'password' && !!isNumeric(get(question, 'answer')));
+    return !!questions.some((question) => get(question, 'type') === 'password' && !!isNumeric(get(question, 'answer')) && get(question, 'answer') !== '');
   },
 });
