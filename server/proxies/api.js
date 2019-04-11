@@ -64,19 +64,19 @@ module.exports = function(app, options) {
   });
 
   let map = {
-    'Project': config.projectEndpoint.replace(config.projectToken, ''),
-    'Cluster': config.clusterEndpoint.replace(config.clusterToken, ''),
-    'Global':  config.apiEndpoint,
-    'Public':  config.publicApiEndpoint,
-    'Magic': config.magicEndpoint,
+    'Project':   config.projectEndpoint.replace(config.projectToken, ''),
+    'Cluster':   config.clusterEndpoint.replace(config.clusterToken, ''),
+    'Global':    config.apiEndpoint,
+    'Public':    config.publicApiEndpoint,
+    'Magic':     config.magicEndpoint,
     'Telemetry': config.telemetryEndpoint,
 
-    'K8s': '/k8s',
-    'Meta': '/meta',
-    'Swagger': '/swaggerapi',
-    'Version': '/version',
-    'Apiui': '/api-ui',
-    'SamlAuth': '/v1-saml',
+    'K8s':       '/k8s',
+    'Meta':      '/meta',
+    'Swagger':   '/swaggerapi',
+    'Version':   '/version',
+    'Apiui':     '/api-ui',
+    'Samlauth':  '/v1-saml',
   }
 
   app.use('/', function(req, res, next) {
