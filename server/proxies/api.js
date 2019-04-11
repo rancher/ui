@@ -76,6 +76,7 @@ module.exports = function(app, options) {
     'Swagger': '/swaggerapi',
     'Version': '/version',
     'Apiui': '/api-ui',
+    'SamlAuth': '/v1-saml',
   }
 
   app.use('/', function(req, res, next) {
