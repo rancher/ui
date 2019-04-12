@@ -4,7 +4,7 @@ import { computed, get } from '@ember/object';
 import { reference } from '@rancher/ember-api-store/utils/denormalize';
 import Resource from '@rancher/ember-api-store/models/resource';
 
-export default Resource.extend({
+const ConfigMap = Resource.extend({
   router:       service(),
   clusterStore: service(),
 
@@ -30,3 +30,7 @@ export default Resource.extend({
   },
 
 });
+
+ConfigMap.reopenClass({ addFilters: { 'excludeTiller': 'true' } });
+
+export default ConfigMap;
