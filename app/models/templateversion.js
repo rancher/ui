@@ -4,6 +4,9 @@ import Resource from '@rancher/ember-api-store/models/resource';
 import { get, computed } from '@ember/object';
 import { evaluate } from 'shared/utils/evaluate';
 import C from 'ui/utils/constants';
+import jsyaml from 'js-yaml';
+import flatMap from 'shared/utils/flat-map';
+import { isEmpty } from '@ember/utils';
 
 export default Resource.extend({
   scope:   service(),
@@ -53,27 +56,63 @@ export default Resource.extend({
 
     return out;
   }),
+
   validationErrors() {
-    const intl = get(this, 'intl');
-    let errors = [];
-    const questions = get(this, 'allQuestions');
-    const filteredQuestions = questions.filter((q) => evaluate(q, questions));
+    const {
+      intl, allQuestions, valuesYaml
+    } = this;
 
-    if ( filteredQuestions ) {
-      filteredQuestions.forEach((item) => {
-        if ( item.required && item.type !== 'boolean' && !item.answer ) {
-          errors.push(intl.t('validation.required', { key: item.label }));
-        }
+    const filteredQuestions = allQuestions.filter((q) => evaluate(q, allQuestions));
+    let errors              = [];
+    let parsedYamlAnswers   = null;
 
-        if ( item.answer ) {
-          validateLength(item.answer, item, item.label, intl, errors);
-          validateChars(item.answer, item, item.label, intl, errors);
-        }
-      });
+    if (valuesYaml) {
+      try {
+        parsedYamlAnswers = jsyaml.safeLoad(valuesYaml);
+      } catch ( err ) {
+        return [err];
+      }
+
+      if (parsedYamlAnswers) {
+        let flatParsed = flatMap(parsedYamlAnswers);
+
+        Object.keys(flatParsed).forEach((fp) => {
+          let questionMatch = filteredQuestions.findBy('variable', fp);
+
+          if (questionMatch) {
+            let answer = flatParsed[fp] || null;
+
+            if ( questionMatch.required && questionMatch.type !== 'boolean' && isEmpty(answer) ) {
+              errors.push(intl.t('validation.required', { key: questionMatch.label }));
+            }
+
+            if (answer) {
+              validateLength(answer, questionMatch, questionMatch.label, intl, errors);
+              validateChars(answer, questionMatch, questionMatch.label, intl, errors);
+            }
+          }
+        });
+      }
+    } else {
+      if ( filteredQuestions ) {
+        filteredQuestions.forEach((item) => {
+          if ( item.required && item.type !== 'boolean' && !item.answer ) {
+            errors.push(intl.t('validation.required', { key: item.label }));
+          }
+
+          if ( item.answer ) {
+            validateLength(item.answer, item, item.label, intl, errors);
+            validateChars(item.answer, item, item.label, intl, errors);
+          }
+        });
+      }
     }
+
+
     if ( errors.length > 0 ) {
       return errors;
     }
+
     errors = this._super(...arguments);
 
     return errors;
