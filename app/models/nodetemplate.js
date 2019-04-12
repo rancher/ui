@@ -92,16 +92,24 @@ export default Resource.extend({
 
   initDisplayLocation(driver) {
     let location     = getDisplayLocation(driver);
-    let computedKeys = isArray(location.keyOrKeysToWatch) ? location.keyOrKeysToWatch : [location.keyOrKeysToWatch];
+    let computedKeys = null;
 
-    this.registerDynamicComputedProperty('displayLocation', computedKeys, location.getDisplayProperty);
+    if (location.keyOrKeysToWatch) {
+      computedKeys = isArray(location.keyOrKeysToWatch) ? location.keyOrKeysToWatch : [location.keyOrKeysToWatch];
+
+      this.registerDynamicComputedProperty('displayLocation', computedKeys, location.getDisplayProperty);
+    }
   },
 
   initDisplaySize(driver) {
     let size     = getDisplaySize(driver);
-    let computedKeys = isArray(size.keyOrKeysToWatch) ? size.keyOrKeysToWatch : [size.keyOrKeysToWatch];
+    let computedKeys = null;
 
-    this.registerDynamicComputedProperty('displaySize', computedKeys, size.getDisplayProperty);
+    if (size.keyOrKeysToWatch) {
+      computedKeys = isArray(size.keyOrKeysToWatch) ? size.keyOrKeysToWatch : [size.keyOrKeysToWatch];
+
+      this.registerDynamicComputedProperty('displaySize', computedKeys, size.getDisplayProperty);
+    }
   },
 
   registerDynamicComputedProperty(propertyName, watchedKeys, key) {
