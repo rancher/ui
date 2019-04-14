@@ -32,7 +32,7 @@ generic:
   disable: 禁用
   disabled: 禁用
   displayName: 显示名称
-  dockerId: '容器ID:'
+  dockerId: '容器 ID:'
   domainName: 域名
   done: 完成
   download: 下载
@@ -45,6 +45,7 @@ generic:
   expandAll: 全部展开
   experimental: "(实验)"
   from: 来自
+  false: 'False'
   generic: '常规'
   gigabyte: 'GB'
   hardware: 硬件
@@ -52,7 +53,7 @@ generic:
   help: 帮助
   hostname: 主机名
   hours: 小时
-  id: 用户ID
+  id: 用户 ID
   image: 镜像
   import: 导入
   internal: 内部
@@ -71,8 +72,8 @@ generic:
   moreActions: 更多操作
   na: 'n/a'
   name: 名称
-  namespace: 命名空间
   namespaces: 命名空间
+  namespace: 命名空间
   never: 从不
   no: "否"
   noRating: 无评价
@@ -109,6 +110,7 @@ generic:
   testing: 测试
   to: 至
   total: 合计
+  true: 'True'
   type: 类型
   unknown: 未知
   unknownUser: 无法获取用户信息
@@ -165,7 +167,7 @@ accountsPage:
     header: 用户列表
     localLink: 添加用户
     table:
-      id: '用户ID'
+      id: '用户 ID'
       kind: 类型
       username: 本地用户名
       identity: 标识
@@ -208,7 +210,7 @@ appDetailPage:
   answers:
     title: 应答
     detail: 自定义应用应答
-    variable: 变量
+    variable: 键
   notes:
     title: 注释
     detail: '关于如何使用此应用的说明'
@@ -375,7 +377,7 @@ authPage:
       groupsField: '组:'
       displayName: '显示名称'
       userName: '用户名:'
-      userId: '用户ID:'
+      userId: '用户 ID:'
     disabled:
       header: "1. 配置{providerName}账户"
       headerDetail: "填写{providerName}账户信息"
@@ -436,7 +438,7 @@ authPage:
       groupsField: '组︰'
       displayName: '显示名称: '
       userName: '用户名: '
-      userId: '用户ID: '
+      userId: '用户 ID: '
     disabled:
       header: '1. 配置Shibboleth账户'
       label: "{providerName}未配置"
@@ -445,7 +447,7 @@ authPage:
       username:
         labelText: 用户名字段
       uid:
-        labelText: UID字段
+        labelText: UID 字段
       groups:
         labelText: 组织字段
       testAuth:
@@ -469,7 +471,7 @@ authPage:
         text: 认证信息
         enterpriseHostName: "地址:"
         clientId:
-          text: "客户端ID:"
+          text: "客户端 ID:"
           helpText: "要修改设置的GitHub应用，请在下方禁用访问控制后重新设置"
       disableAccess:
         header: "危险区域&trade;"
@@ -486,7 +488,7 @@ authPage:
         li2:
           text: '点击 "Register new application" 并填写表单内容:'
           ul:
-            li1: '<b>应用名称: </b><span class="text-muted">应用名称， 例如: My {appName}</span>'
+            li1: '<b>应用名称: </b><span class="text-muted">应用名称，例如: My {appName}</span>'
             li2: '主页URL: '
             li3: '<b>应用描述: </b><span class="text-muted">应用描述，可选</span>'
             li4: '授权回调URL: '
@@ -496,7 +498,7 @@ authPage:
         header: '2. 配置{appName}以使用GitHub进行身份验证'
         subtext: '将新创建的GitHub应用Client ID和Secret复制粘贴到下方的对应输入框中'
         clientId:
-          labelText: 客户端ID
+          labelText: 客户端 ID
         clientSecret:
           labelText: 客户端秘钥
         ghEnterprise:
@@ -648,14 +650,14 @@ catalogPage:
       alreadyDeployed: 已经部署
 
 cloudCredentialsPage:
-  header: 云凭据
+  header: 云凭证
   rightButtons:
-    addKey: 添加云凭据
+    addKey: 添加云凭证
     nodeTemplates: 管理主机模板
   index:
     table:
-      noData: 当前没有云凭据
-      noMatch: 没有云凭据匹配当前搜索
+      noData: 当前没有云凭证
+      noMatch: 没有云凭证匹配当前搜索
 
 clusterCatalogPage:
   header: 应用商店
@@ -1029,7 +1031,7 @@ cruPersistentVolumeClaim:
   define:
     addActionLabel: 定义
   capacity:
-    label: Capacity
+    label: 容量
     unit: GiB
   name:
     placeholder: '例如: myvol'
@@ -1125,12 +1127,12 @@ globalDnsPage:
       noAccessMulti: 您无法访问目标应用程序
       noAccessProvider: 您没有权限访问此供应商
       noAccessProject: 您无法访问目标项目
-    projectHelp: "要完成项目的全局DNS记录设置，必须在应用或项目的入口处添加以下注释标签(<code>rancher.io/globalDNS.hostname</code>)，其中<code>hostname</code>是路由规则中使用的主机名，这个<code>hostname</code>也必须匹配这个全局DNS条目的FQDN。"
+    projectHelp: "要完成项目的全局DNS记录设置，必须在应用或项目的ingress规则中添加注释(<code>rancher.io/globalDNS.hostname='hostname'</code>)，其中<code>'hostname'</code>是路由规则中使用的主机名，这个<code>'hostname'</code>也必须匹配这个全局DNS条目的FQDN。"
     table:
       name: 名称
-      fqdn: FQDN(域名)
+      fqdn: FQDN (域名)
       target: 目标
-      provider: 提供商ID
+      provider: 提供商 ID
     config:
       title: 配置DNS条目
       detail: 提供配置细节以添加新的全局DNS条目
@@ -1138,7 +1140,7 @@ globalDnsPage:
       multi: 多集群应用
       project: 项目
       fqdn:
-        label: FQDN(域名)
+        label: FQDN (域名)
         placeholder: '例如: dev.example.com'
       multiCluster:
         label: 目标应用
@@ -1151,7 +1153,7 @@ globalDnsPage:
       projects:
         label: 目标项目
       ttl:
-        label: DNS TTL(DNS解析记录缓存有效期)
+        label: DNS TTL (DNS解析记录缓存有效期)
   providersPage:
     title: 全局DNS提供商列表
     header:
@@ -1292,9 +1294,9 @@ hostsPage:
     hostname: 主机名
     ipAddress: IP地址
     version: 版本
-    kubeletVersion: Kubelet版本
-    kubeProxyVersion: Kube-Proxy版本
-    dockerVersion: Docker版本
+    kubeletVersion: Kubelet 版本
+    kubeProxyVersion: Kube-Proxy 版本
+    dockerVersion: Docker 版本
     kernelVersion: 内核版本
     operatingSystem: 操作系统
     conditions:
@@ -1350,7 +1352,7 @@ k8sImport:
     label: 集群名称
     placeholder: '例如: My-imported-cluster'
   kubeConfig:
-    label: 要导入的Kubeconfig 文件
+    label: 要导入的Kubeconfig文件
     placeholder: 导入或粘贴集群的Kubeconfig文件以供使用。
   actionLabel: 导入
 
@@ -1527,7 +1529,7 @@ servicePage:
     selectorservice: 选择器
     loadbalancerservice: 负载均衡
     dnsservice: 服务别名
-    externalservice-ip: 外部IP
+    externalservice-ip: 外部 IP
     externalservice-host: 外部名称
     kubernetesservice: K8s服务
     composeservice: Compose服务
@@ -1576,7 +1578,7 @@ stackPage:
       other{#条负载均衡}
       }
   dnsServices:
-    header: DNS记录
+    header: DNS 记录
     detail: '属于该应用的DNS记录'
     status: |
       {count, plural,
@@ -1732,6 +1734,7 @@ notifierPage:
       label: 默认收件人地址
       helpText: 在配置告警时，可以覆盖收件人。
     defaultRecipientPlaceholder: '例如: you@example.com'
+    tls: 使用TLS
   pagerduty:
     serviceKey:
       label: 默认服务密匙
@@ -1750,12 +1753,12 @@ notifierPage:
       label: 自建应用密钥
       helpText: 您可以在<a href="https://work.weixin.qq.com/wework_admin/frame#apps" target="_blank" rel="nofollow noopener noreferrer">自建应用详情页</a>找到Secret。
     agent:
-      label: 自建应用代理ID
-      helpText: 您可以在<a href="https://work.weixin.qq.com/wework_admin/frame#apps" target="_blank" rel="nofollow noopener noreferrer">自建应用详情页</a>找到AgentId。
+      label: 自建应用代理 ID
+      helpText: 您可以在<a href="https://work.weixin.qq.com/wework_admin/frame#apps" target="_blank" rel="nofollow noopener noreferrer">自建应用详情页</a>找到Agent Id。
     corp:
-      label: 企业ID
+      label: 企业 ID
       helpText: |
-        点击<a href="https://work.weixin.qq.com/wework_admin/frame#profile" target="_blank" rel="nofollow noopener noreferrer">这里</a>查看企业ID。
+        点击<a href="https://work.weixin.qq.com/wework_admin/frame#profile" target="_blank" rel="nofollow noopener noreferrer">这里</a>查看企业 ID。
     defaultRecipient:
       label: 默认接收者
     secretPlaceholder: 您的自建应用密钥
@@ -2245,7 +2248,7 @@ clusterNew:
     version:
       label: Kubernetes版本
     cidr:
-      label: 容器网络CIDR
+      label: 容器网络 CIDR
       placeholder: '例如: 172.16.0.0/16'
       required: 请输入容器网络的CIDR
     zone:
@@ -2263,7 +2266,7 @@ clusterNew:
     access:
       title: 账户访问
       detail: 配置用于与Azure通讯的凭据
-      help: '参考<a href="https://docs.microsoft.com/en-us/azure/aks/kubernetes-service-principal" target="_blank">链接文档</a>创建客户端ID和秘钥。'
+      help: '参考<a href="https://docs.microsoft.com/en-us/azure/aks/kubernetes-service-principal" target="_blank">链接文档</a>创建客户端 ID和秘钥。'
     placement:
       label: 位置
     count:
@@ -2275,8 +2278,8 @@ clusterNew:
     accountAccessSection:
       label: 账户访问
     subscriptionId:
-      label: 订阅ID
-      placeholder: Azure订阅ID
+      label: 订阅 ID
+      placeholder: Azure订阅 ID
     machineType:
       label: VM规格
       prompt: 选择规格...
@@ -2302,7 +2305,7 @@ clusterNew:
       placeholder: user-1
     tenant:
       label: 租户ID
-      placeholder: Azure租户ID
+      placeholder: Azure租户 ID
     image:
       label: 镜像
       placeholder: '推荐: UbuntuServer:16.04.0-LTS:latest'
@@ -2371,12 +2374,12 @@ clusterNew:
     usePrivateIp:
       label: 使用私有IP连接
     staticPublicIp:
-      label: 公网IP
+      label: 公网 IP
     noPublicIp:
-      label: 无公网IP
+      label: 无公网 IP
     clientId:
-      label: 客户端ID
-      placeholder: 客户端ID
+      label: 客户端 ID
+      placeholder: 客户端 ID
     clientSecret:
       label: 客户端秘钥
       placeholder: 客户端秘钥
@@ -2609,8 +2612,8 @@ clusterNew:
     oauthScopes:
       label: 访问权限范围
       default: 允许默认访问权限
-      full: 允许所有 Cloud API 的全面访问权限
-      custom: 针对每个 API 设置访问权限
+      full: 允许所有Cloud API的全面访问权限
+      custom: 针对每个API设置访问权限
     userInfo:
       label: 用户信息
     computeEngine:
@@ -2755,8 +2758,8 @@ clusterNew:
       new: 创建新的
       exist: 使用已有
     eipIds:
-      label: 弹性IP
-      none: 无可用弹性IP
+      label: 弹性 IP
+      none: 无可用弹性 IP
     eipType:
       label: Eip Type
     clusterLabels:
@@ -2806,10 +2809,10 @@ clusterNew:
         legacy: "当前集群配置了废弃的ectd快照设置。新的设置将创建时间和保留持续时间替换为更简单的创建时间(以小时和保留计数为单位)。系统已自动迁移了您的创建周期，保留计数已配置为默认的6个备份(当前保留时间:{duration})，如果您不介意这个设置，那不需要进一步的操作，您也可以在高级设置中更改此设置。"
         retention:
           label: 快照副本数
-          placeholder: "6"
+          placeholder: "12"
         interval:
           label: 快照创建周期
-          placeholder: "12"
+          placeholder: "6"
         bucketName:
           label: S3 Bucket Name
           placeholder: "backups"
@@ -2988,7 +2991,7 @@ clusterNew:
       linux: Linux
       windows: Windows
     windowsSupport:
-      label: Windows Support (Experimental)
+      label: Windows Support (实验)
       disabled: 不支持{plugin}网络驱动。
     advanced:
       label: 高级集群选项
@@ -3139,7 +3142,7 @@ cruPersistentVolume:
       label: 分区
       placeholder: "例如: 1，0表示整块硬盘。"
     volumeID:
-      label: 卷ID
+      label: 卷 ID
       placeholder: "例如: volume1"
   azureDisk:
     cachingMode:
@@ -3361,7 +3364,7 @@ cruPersistentVolume:
     readOnly:
       label: 只读
     volumeID:
-      label: 卷ID
+      label: 卷 ID
       placeholder: "例如: vol"
   photonPersistentDisk:
     fsType:
@@ -3377,7 +3380,7 @@ cruPersistentVolume:
     readOnly:
       label: 只读
     volumeID:
-      label: 卷ID
+      label: 卷 ID
       placeholder: "例如: abc"
   quobyte:
     group:
@@ -3561,7 +3564,7 @@ cruStorageClass:
       label: Sku名称
       placeholder: "例如: Standard_LRS"
     location:
-      label: 位置
+      label: 区域
       placeholder: "例如: eastus"
     storageAccount:
       label: 存储帐户
@@ -3580,7 +3583,7 @@ cruStorageClass:
       label: Sku名称
       placeholder: "例如: Standard_LRS"
     location:
-      label: 位置
+      label: 区域
       placeholder: "例如: eastus"
     storageAccount:
       label: 存储帐户
@@ -3701,7 +3704,7 @@ cruStorageClass:
       label: 池
       placeholder: "例如: kube"
     userId:
-      label: 用户ID
+      label: 用户 ID
       placeholder: "例如: kube"
     userSecretName:
       label: 用户密文名称
@@ -3779,7 +3782,7 @@ deleteEksCluster:
     placeholder: Your AWS secret key
     provided: Provided
   sessionToken:
-    label: "Session Token  <em class='text-muted'>Optional</em>"
+    label: "Session Token  <em class='text-muted'>可选</em>"
     deleteLabel: Session Token
     placeholder: Your AWS session token
     provided: Provided
@@ -3890,8 +3893,8 @@ editHost:
   labels:
     label: 标签
   ips:
-    label: 调度IP
-    valueLabel: IP地址
+    label: 调度 IP
+    valueLabel: IP 地址
     valuePlaceholder: '例如: 1.2.3.4'
     addActionLabel: 添加IP
     help: 如果设置，调度器将从中选择一个IP地址并将发布的端口绑定到该地址。
@@ -5587,16 +5590,17 @@ modalRevertSettings:
   default: 默认值
 
 modalRestoreBackup:
-  title: 从备份恢复
-  backups: 可用的备份
-  error: 需要选择备份
+  title: 数据恢复
+  backups: 可用备份
+  error: 需要备份
   fetching: 获取新的备份
   select:
-    all: 选择可用备份
+    all: 选择备份
 
 modalRotateCertificates:
-  title: 更新集群证书有效期
+  title: 更新集群证书
   caCerts: 更新集群CA证书和所有服务证书
+  servicesCa: 更新所有服务证书(保持CA不变)
   services: 仅更新所有服务证书 (不更新CA证书)
   single: 更新单个服务
   dropdownLabel: 服务
@@ -5876,7 +5880,7 @@ newContainer:
     detail: 设置容器可见的环境变量，包括从其他资源(如密文等)注入的值。
     addAction: 添加变量
     addFrom: 添加附加资源
-    keyLabel: 变量
+    keyLabel: 键
     keyPlaceholder: '例如: FOO'
     valueLabel: 值
     valuePlaceholder: '例如: bar'
@@ -5943,6 +5947,9 @@ nodeDriver:
   editTemplate: "编辑主机模板: {name}"
   cloneTemplate: "从{name}克隆主机模板"
   editWarning: 编辑主机模板只会影响由主机池创建的新主机，现有主机将不会自动更新或替换。<br>如果从池中删除主机，将使用模板中的新设置创建新主机
+  externalError: "尝试加载自定义驱动{ driverName }出错，请验证自定义节点驱动配置。"
+  cloudCredentialError: 云凭证必须设置。
+  nameError: 名称必须设置。
   displayName:
     aliyunecs: Aliyun ECS
     aliyunkcs: Alibaba ACK
@@ -6037,7 +6044,7 @@ nodeDriver:
       placeholder: Your AWS secret key
       provided: Provided
     sessionToken:
-      label: "Session Token<em class='text-muted'>可选</em>"
+      label: "Session Token  <em class='text-muted'>可选</em>"
       placeholder: Your AWS session token
       provided: Provided
     region:
@@ -6202,7 +6209,7 @@ nodeDriver:
     accountSection: 账户访问
     projectId:
       label: 项目
-      placeholder: Packet项目ID
+      placeholder: Packet项目 ID
     apiKey:
       label: API Key
       placeholder: Packet API Key
@@ -6341,8 +6348,8 @@ nodeDriver:
       addActionLabel: 添加参数
   azure:
     placement:
-      title: 位置
-      detail: 选择将由此模板创建的实例的位置。
+      title: 区域
+      detail: 选择将由此模板创建的实例的区域。
     access:
       title: 账户访问
       detail: 将用于启动Azure实例的API密钥。
@@ -6353,8 +6360,8 @@ nodeDriver:
       title: 实例
       detail: 自定义将要创建的Azure实例
     subscriptionId:
-      label: 订阅ID
-      placeholder: Azure订阅ID
+      label: 订阅 ID
+      placeholder: Azure订阅 ID
     subscriptionCert:
       label: 订阅证书
       placeholder: Azure订阅证书
@@ -6405,8 +6412,8 @@ nodeDriver:
     noPublicIp:
       label: 无公网IP
     clientId:
-      label: 客户端ID
-      placeholder: 客户端ID
+      label: 客户端 ID
+      placeholder: 客户端 ID
     clientSecret:
       label: 客户端秘钥
       placeholder: 客户端秘钥
@@ -6484,7 +6491,7 @@ nodeDriver:
       prompt: 选择交换机...
     privateIp:
       label: 私有IP
-      placeholder: 专用网络中的私有IP
+      placeholder: 专用网络中的私有 IP
     privateAddressOnly:
       label: 仅私网IP
     securitySection:
@@ -6760,7 +6767,7 @@ projectRow:
 
 publicEndpoints:
   endpoint: 终端
-  bindIpAddress: 绑定IP
+  bindIpAddress: 绑定 IP
   publicPort: 映射端口
   target: 目标
   privatePort: 容器端口
@@ -7094,7 +7101,7 @@ action:
   activate: 激活
   addContainer: 部署Pod
   addSidekick: 添加Sidecar
-  backupEtcd: 立即备份
+  backupEtcd: 备份
   backupEtcdMessage:
     success:
       title: 备份成功
@@ -7134,12 +7141,12 @@ action:
   replay: 重播
   resetDefault: 恢复默认值
   restart: 重启
-  restoreFromEtcdBackup: 从备份恢复
+  restoreFromEtcdBackup: 恢复
   resume: 恢复编排
   retry: 重试
   revert: 恢复默认值
   rollback: 回滚
-  rotate: 更新证书有效期
+  rotate: 更新证书
   setDefault: 设置为默认值
   setting: 设置
   start: 启动
@@ -7426,8 +7433,8 @@ rkeConfigComment:
     "           node-startup-grace-period: '30s' "
     "           # 再持续失联一段时间，kubernetes开始迁移失联节点的Pod，默认5m0s。"
     "           pod-eviction-timeout: '1m'   "
-    "       kubelet:   "
-    "         cluster_domain: cluster.local   "
+    "       kubelet:"
+    "         cluster_domain: cluster.local"
     "         cluster_dns_server: 10.43.0.10"
     "         # 扩展变量 "
     "         extra_args:"
