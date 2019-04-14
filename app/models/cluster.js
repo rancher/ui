@@ -1,4 +1,5 @@
-import { get, set, computed } from '@ember/object';
+import { get, set, computed, observer } from '@ember/object';
+import { on } from '@ember/object/evented';
 import { inject as service } from '@ember/service';
 import Resource from '@rancher/ember-api-store/models/resource';
 import { hasMany } from '@rancher/ember-api-store/utils/denormalize';
@@ -23,10 +24,26 @@ export default Resource.extend(Grafana, ResourceUsage, {
   clusterRoleTemplateBindings: hasMany('id', 'clusterRoleTemplateBinding', 'clusterId'),
   etcdbackups:                 hasMany('id', 'etcdbackup', 'clusterId'),
   grafanaDashboardName:        'Cluster',
+  isMonitoringReady:           false,
   machines:                    alias('nodes'),
   roleTemplateBindings:        alias('clusterRoleTemplateBindings'),
   isGKE:                       equal('driver', 'googleKubernetesEngine'),
   isAKS:                       equal('driver', 'azureKubernetesService'),
+
+  conditionsDidChange:        on('init', observer('enableClusterMonitoring', 'conditions.@each.status', function() {
+    if ( !get(this, 'enableClusterMonitoring') ) {
+      return false;
+    }
+    const conditions = get(this, 'conditions') || [];
+
+    const ready = conditions.findBy('type', 'MonitoringEnabled');
+
+    const status = ready && get(ready, 'status') === 'True';
+
+    if ( status !== get(this, 'isMonitoringReady') ) {
+      set(this, 'isMonitoringReady', status);
+    }
+  })),
 
   getAltActionDelete: computed('action.remove', function() { // eslint-disable-line
     return get(this, 'canBulkRemove') ? 'delete' : null;
@@ -60,17 +77,6 @@ export default Resource.extend(Grafana, ResourceUsage, {
     }
 
     return null;
-  }),
-
-  isMonitoringReady: computed('conditions.@each.status', function() {
-    if ( !get(this, 'enableClusterMonitoring') ) {
-      return false;
-    }
-    const conditions = get(this, 'conditions') || [];
-
-    const ready = conditions.findBy('type', 'MonitoringEnabled');
-
-    return ready && get(ready, 'status') === 'True';
   }),
 
   isReady: computed('conditions.@each.status', function() {
