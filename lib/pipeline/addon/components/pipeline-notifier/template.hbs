@@ -52,18 +52,19 @@
     {{/unless}}
     <div class="row">
       <div class="col span-2">
-        <div style="padding-top: 12px;">
-          {{t 'pipelineNotification.asMessage'}}
-        </div>
+        {{#if config.recipients.length}}
+          <div style="padding-top: 12px;">
+            {{t "pipelineNotification.asMessage"}}
+          </div>
+        {{/if}}
       </div>
       <div class="col span-9">
         {{#each config.recipients as |recipient idx|}}
           {{form-recipient-item
-              disableRemove=disableRemove
-              remove="remove"
-              isFirst=(eq idx 0)
-              notifiers=notifiers
-              model=recipient
+            remove=(action "remove")
+            isFirst=(eq idx 0)
+            notifiers=notifiers
+            model=recipient
           }}
         {{/each}}
         <div class="mt-15">
