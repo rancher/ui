@@ -2,27 +2,19 @@
   <h1 class="pull-left">
     {{t (concat "monitoringPage." level ".title")}}
   </h1>
-  <div class="pull-right">
-    {{#if (eq selected "prometheus")}}
-      <div class="btn-group no-inline-space">
-        <button class="btn btn-link btn-sm bg-default" {{action "changeSelected" "none"}}>
-          {{t "generic.disable"}}
+  {{#if enabled}}
+    <div class="pull-right">
+      {{#if confirmDisable}}
+        <button class="btn bg-error" {{action "disable"}}>
+          <i class="icon icon-alert"></i> {{t "monitoringPage.confirmDisable"}}
         </button>
-        <button class="btn btn-link btn-sm bg-success">
-          {{t "generic.enabled"}}
+      {{else}}
+        <button class="btn bg-error" {{action "promptDisable"}}>
+          <i class="icon icon-umbrella"></i> {{t "monitoringPage.disable"}}
         </button>
-      </div>
-    {{else}}
-      <div class="btn-group no-inline-space">
-        <button class="btn btn-link btn-sm bg-primary">
-          {{t "generic.disabled"}}
-        </button>
-        <button class="btn btn-link btn-sm bg-defualt" {{action "changeSelected" "prometheus"}}>
-          {{t "generic.enable"}}
-        </button>
-      </div>
-    {{/if}}
-  </div>
+      {{/if}}
+    </div>
+  {{/if}}
 </section>
 {{#if settings.isRancher}}
   <p>
@@ -30,7 +22,7 @@
   </p>
 {{/if}}
 
-{{#if (and (eq selected "prometheus") scope.currentProject.enableProjectMonitoring (not scope.currentCluster.enableClusterMonitoring))}}
+{{#if (and enabled scope.currentProject.enableProjectMonitoring (not scope.currentCluster.enableClusterMonitoring))}}
   {{#banner-message color="bg-warning"}}
     <p>
       {{t "monitoringPage.clusterNotEnabled"}}
@@ -40,19 +32,21 @@
 
 {{#banner-message color="bg-info"}}
   <p>
-    {{#if (eq selected "none")}}
-      {{#if enabled}}
-        {{t (concat "monitoringPage." level ".toDisable")}}
-      {{else}}
-        {{t (concat "monitoringPage." level ".disabled")}}
-      {{/if}}
-    {{else if (eq selected "prometheus")}}
-      {{t (if enabled (concat "monitoringPage.toUpdate." level) "monitoringPage.prometheus")}}
+    {{#if enabled}}
+      {{t (concat "monitoringPage.toUpdate." level)}}
+    {{else}}
+      {{t (concat "monitoringPage." level ".disabled")}}
     {{/if}}
   </p>
 {{/banner-message}}
 
-{{#if (and (eq selected "prometheus") (not loading))}}
+{{#if loading}}
+  <section class="row">
+    <div class="text-center">
+      <i class="icon icon-spinner icon-spin icon-3x"></i>
+    </div>
+  </section>
+{{else}}
   <div class="box mb-10">
     <div class="row">
       <div class="col span-6">
@@ -286,15 +280,9 @@
       }}
     {{/advanced-section}}
   </div>
-{{else if loading}}
-  <section class="row">
-    <div class="text-center">
-      <i class="icon icon-spinner icon-spin icon-3x"></i>
-    </div>
-  </section>
 {{/if}}
 
-{{#if (and (or insufficientPrometheusMemory insufficientPrometheusCpu insufficient) (eq selected "prometheus")) }}
+{{#if (or insufficientPrometheusMemory insufficientPrometheusCpu insufficient)}}
   {{#banner-message color="bg-warning"}}
     <p>
       {{#if (and insufficientMemory insufficientCpu)}}
@@ -324,8 +312,8 @@
   {{save-cancel
     saveDisabled=saveDisabled
     cancelDisabled=true
-    editing=(and enabled (eq selected "prometheus") )
-    createLabel="saveCancel.edit"
-    save=(action "save")
+    editing=enabled
+    createLabel="monitoringPage.enableActionLabel"
+    save="enable"
   }}
 </div>
