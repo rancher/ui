@@ -122,7 +122,11 @@
           {{#if (eq step 2)}}
             <div class="radio pt-0">
               <label>
-                {{radio-button selection=serviceRoleMode value="default"}}
+                {{radio-button
+                  selection=serviceRoleMode
+                  value="default"
+                  disabled=editing
+                }}
                 {{t "nodeDriver.amazoneks.role.radio.default"}}
               </label>
               <label>
@@ -183,6 +187,7 @@
                 {{radio-button
                   selection=config.associateWorkerNodePublicIp
                   value=true
+                  disabled=editing
                 }}
                 {{t "nodeDriver.amazoneks.associateWorkerNodePublicIp.radio.default"}}
               </label>
@@ -192,6 +197,7 @@
                 {{radio-button
                   selection=config.associateWorkerNodePublicIp
                   value=false
+                  disabled=editing
                 }}
                 {{t "nodeDriver.amazoneks.associateWorkerNodePublicIp.radio.off"}}
               </label>
@@ -218,7 +224,7 @@
                 {{radio-button
                   selection=vpcSubnetMode
                   value="default"
-                  disabled=(eq config.associateWorkerNodePublicIp false)
+                  disabled=(or editing (eq config.associateWorkerNodePublicIp false))
                 }}
                 {{t "nodeDriver.amazoneks.vpc.radio.default"}}
               </label>
@@ -375,23 +381,35 @@
           <label class="acc-label">
             {{t "nodeDriver.amazonec2.instanceType.label"}}
           </label>
-          {{new-select
-            classNames="form-control"
-            value=config.instanceType
-            content=instanceTypes
-            optionValuePath="name"
-            optionLabelPath="name"
-            optionGroupPath="group"
-          }}
+          {{#if editing}}
+            <div>
+              {{config.instanceType}}
+            </div>
+          {{else}}
+            {{new-select
+              classNames="form-control"
+              value=config.instanceType
+              content=instanceTypes
+              optionValuePath="name"
+              optionLabelPath="name"
+              optionGroupPath="group"
+            }}
+          {{/if}}
         </div>
         <div class="col span-6">
           <label class="acc-label">
             {{t "nodeDriver.amazoneks.ami.label"}}
           </label>
-          {{input type="text" value=config.ami}}
-          <p class="help-block">
-            {{t "nodeDriver.amazoneks.ami.help"}}
-          </p>
+          {{#if editing}}
+            <div>
+              {{config.ami}}
+            </div>
+          {{else}}
+            {{input type="text" value=config.ami}}
+            <p class="help-block">
+              {{t "nodeDriver.amazoneks.ami.help"}}
+            </p>
+          {{/if}}
         </div>
 
       </div>
@@ -400,14 +418,26 @@
           <label class="acc-label">
             {{t "nodeDriver.amazoneks.min.label"}}
           </label>
-          {{input-number value=config.minimumNodes min=1}}
+          {{#if editing}}
+            <div>
+              {{config.minimumNodes}}
+            </div>
+          {{else}}
+            {{input-number value=config.minimumNodes min=1}}
+          {{/if}}
         </div>
 
         <div class="col span-6">
           <label class="acc-label">
             {{t "nodeDriver.amazoneks.max.label"}}
           </label>
-          {{input-number value=config.maximumNodes min=1}}
+          {{#if editing}}
+            <div>
+              {{config.maximumNodes}}
+            </div>
+          {{else}}
+            {{input-number value=config.maximumNodes min=1}}
+          {{/if}}
         </div>
       </div>
       <div class="row">
@@ -415,17 +445,23 @@
           <label class="acc-label">
             {{t "nodeDriver.amazoneks.nodeVolumeSize.label"}}
           </label>
-          <div class="input-group">
-            {{input-integer
-              min=0
-              value=config.nodeVolumeSize
-              classNames="form-control"
-              placeholder=(t "nodeDriver.amazoneks.nodeVolumeSize.placeholder")
-            }}
-            <span class="input-group-addon bg-default">
-              {{t "generic.gigabyte"}}
-            </span>
-          </div>
+          {{#if editing}}
+            <div>
+              {{config.nodeVolumeSize}}
+            </div>
+          {{else}}
+            <div class="input-group">
+              {{input-integer
+                min=0
+                value=config.nodeVolumeSize
+                classNames="form-control"
+                placeholder=(t "nodeDriver.amazoneks.nodeVolumeSize.placeholder")
+              }}
+              <span class="input-group-addon bg-default">
+                {{t "generic.gigabyte"}}
+              </span>
+            </div>
+          {{/if}}
         </div>
       </div>
       {{#advanced-section advanced=advanced}}
