@@ -45,13 +45,14 @@
         cloudCredentials=cloudCredentials
         createLabel="nodeDriver.amazonec2.access.next"
         driverName=driverName
-        errors=errros
+        parseAndCollectErrors=(action "errorHandler")
         finishAndSelectCloudCredential=(action "finishAndSelectCloudCredential")
         primaryResource=primaryResource
         progressStep=(action "awsLogin")
         region=config.region
         showAddCloudCredential=hideRegionSelection
       }}
+      {{top-errors errors=errors}}
     {{else}}
       <div class="row">
         <div class="col span-4">
@@ -78,7 +79,6 @@
         </div>
       </div>
     {{/if}}
-    {{top-errors errors=errors}}
   {{/accordion-list-item}}
 
   <div class="{{unless (gte step 2) "hide"}}">
