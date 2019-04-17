@@ -1,8 +1,9 @@
 import Resource from '@rancher/ember-api-store/models/resource';
-import { get, set, computed } from '@ember/object';
+import { get, set, computed, defineProperty } from '@ember/object';
 import { inject as service } from '@ember/service';
 import { ucFirst } from 'shared/utils/util';
 import { getDisplayLocation, getDisplaySize } from 'shared/mixins/node-driver';
+import { isArray } from '@ember/array';
 
 export default Resource.extend({
   intl:         service(),
@@ -10,6 +11,17 @@ export default Resource.extend({
 
   type:         'nodeTemplate',
   canClone:     true,
+
+  init() {
+    this._super(...arguments);
+
+    const { driver } = this;
+
+    if (driver) {
+      this.initDisplayLocation(driver);
+      this.initDisplaySize(driver);
+    }
+  },
 
   config: computed('driver', function() {
     const driver = get(this, 'driver');
@@ -28,18 +40,6 @@ export default Resource.extend({
       return ucFirst(driver);
     }
   }),
-
-  displaySize: computed('config', function() {
-    const driver = get(this, 'driver');
-
-    return this._displayVar(getDisplaySize(driver) || 'config.size');
-  }).volatile(),
-
-  displayLocation: computed(function() {
-    const driver = get(this, 'driver');
-
-    return this._displayVar(getDisplayLocation(driver) || 'config.region');
-  }).volatile(),
 
   actions: {
     edit() {
@@ -71,7 +71,7 @@ export default Resource.extend({
     if ( keyOrFn ) {
       if ( typeof (keyOrFn) === 'function' ) {
         return keyOrFn.call(this);
-      } else {
+      }  else {
         return get(this, keyOrFn) || intl.t('generic.unknown');
       }
     } else {
@@ -89,4 +89,33 @@ export default Resource.extend({
       }
     }
   },
+
+  initDisplayLocation(driver) {
+    let location     = getDisplayLocation(driver);
+    let computedKeys = null;
+
+    if (location.keyOrKeysToWatch) {
+      computedKeys = isArray(location.keyOrKeysToWatch) ? location.keyOrKeysToWatch : [location.keyOrKeysToWatch];
+
+      this.registerDynamicComputedProperty('displayLocation', computedKeys, location.getDisplayProperty);
+    }
+  },
+
+  initDisplaySize(driver) {
+    let size     = getDisplaySize(driver);
+    let computedKeys = null;
+
+    if (size.keyOrKeysToWatch) {
+      computedKeys = isArray(size.keyOrKeysToWatch) ? size.keyOrKeysToWatch : [size.keyOrKeysToWatch];
+
+      this.registerDynamicComputedProperty('displaySize', computedKeys, size.getDisplayProperty);
+    }
+  },
+
+  registerDynamicComputedProperty(propertyName, watchedKeys, key) {
+    defineProperty(this, propertyName, computed(...watchedKeys, () => {
+      return this._displayVar(key);
+    }));
+  },
+
 });
