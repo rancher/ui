@@ -9,6 +9,12 @@ import { resolve } from 'rsvp';
 import C from 'ui/utils/constants';
 import { isEmpty } from '@ember/utils';
 
+const FLANNEL = 'flannel';
+const HOST_GW = 'host-gw';
+const VXLAN = 'vxlan';
+const BACKEND_PORT = '4789';
+const BACKEND_VNI = '4096';
+
 export default Resource.extend(Grafana, ResourceUsage, {
   globalStore: service(),
   growl:       service(),
@@ -212,6 +218,26 @@ export default Resource.extend(Grafana, ResourceUsage, {
         enabled:   !!a.restoreFromEtcdBackup,
       },
     ];
+  }),
+
+  isWindows:  computed('rancherKubernetesEngineConfig', 'rancherKubernetesEngineConfig.network.plugin', 'rancherKubernetesEngineConfig.network.options.flannel_backend_type', function() {
+    const config = get(this, 'rancherKubernetesEngineConfig');
+    const plugin = get(config, 'network.plugin');
+    const flannelBackend = get(config, 'network.options.flannel_backend_type');
+    const port = get(config, 'network.options.flannel_backend_port');
+    const vni = get(config, 'network.options.flannel_backend_vni');
+
+    if ( plugin === FLANNEL ) {
+      if ( flannelBackend === HOST_GW ) {
+        return true;
+      }
+
+      if ( flannelBackend === VXLAN && port === BACKEND_PORT && vni === BACKEND_VNI ) {
+        return true;
+      }
+    }
+
+    return false;
   }),
 
   actions: {

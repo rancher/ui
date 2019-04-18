@@ -76,6 +76,22 @@
   {{/unless}}
 </div>
 
+{{#if (and scope.currentCluster.isWindows (not isUpgrade) (not isSidekick)) }}
+  <div class="row">
+    <div class="col span-11-of-23 mt-0 mb-0">
+      <div class="checkbox mt-20 hand no-select">
+        <label class="text-muted">
+          {{input
+            type="checkbox"
+            checked=windowsOnly
+          }}
+          {{t "newContainer.windows"}}
+        </label>
+      </div>
+    </div>
+  </div>
+{{/if}}
+
 <hr class="mt-30 mb-30" />
 <div class="row">
   {{container/form-ports
