@@ -86,11 +86,11 @@ export default Route.extend({
         }
 
         var verArr = Object.keys(links).filter((key) => !!links[key])
-            .map((key) => ({
-              version:     key,
-              sortVersion: key,
-              link:        links[key]
-            }));
+          .map((key) => ({
+            version:     key,
+            sortVersion: key,
+            link:        links[key]
+          }));
 
         if (results.app) {
           if (get(params, 'clone')) {
