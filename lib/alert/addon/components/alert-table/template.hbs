@@ -6,6 +6,7 @@
     fullRows=fullRows
     search=search
     sortBy=sortBy
+    suffix=true
     searchText=searchText
     descending=descending
     headers=headers
@@ -37,9 +38,11 @@
       <td colspan="{{sortable.fullColspan}}" class="text-center text-muted pt-20 pb-20">{{t 'alertPage.index.table.noMatch'}}</td>
     </tr>
   {{else if (eq kind "norows")}}
-    <tr>
-      <td colspan="{{sortable.fullColspan}}" class="text-center text-muted pt-20 pb-20">{{t 'alertPage.index.table.noData'}}</td>
-    </tr>
+    {{#unless groupsWithoutAlerts.length}}
+      <tr>
+        <td colspan="{{sortable.fullColspan}}" class="text-center text-muted pt-20 pb-20">{{t "alertPage.index.table.noData"}}</td>
+      </tr>
+    {{/unless}}
   {{else if (eq kind "group")}}
     {{alert/alert-group
         model=row
@@ -47,5 +50,19 @@
         groups=groups
         noGroup="alertPage.index.table.noGroup"
     }}
+  {{else if (eq kind "suffix")}}
+    {{#if (and groupsWithoutAlerts.length (not searchText.length))}}
+      <tbody class="fixed grid group">
+        {{#each groupsWithoutAlerts as |group|}}
+          {{alert/alert-group
+              model=group
+              noAlerts=true
+              fullColspan=sortable.fullColspan
+              groups=groups
+              hasOtherGroups=(not-eq groupsWithoutAlerts.length groups.length)
+          }}
+        {{/each}}
+      </tbody>
+    {{/if}}
   {{/if}}
 {{/sortable-table}}
