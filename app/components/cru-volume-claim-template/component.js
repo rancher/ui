@@ -102,7 +102,7 @@ export default Component.extend(ViewNewEdit, ChildHook, {
         return false;
       }
     } else {
-      set(pr, 'storageClassId', null);
+      set(pr, 'storageClassId', get(pr, 'persistentVolume.storageClassId') || null);
       set(pr, 'resources', { requests: Object.assign({}, get(pr, 'persistentVolume.capacity')), });
     }
 
