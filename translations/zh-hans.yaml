@@ -85,8 +85,8 @@ generic:
   ports: 端口
   prefix: 前缀
   project: 项目
-  persistentVolumeClaim: 持久卷claim
-  persistentVolume: 持久卷
+  persistentVolumeClaim: PVC
+  persistentVolume: 持久卷(PV)
   random: 随机
   remove: 移除
   restarts: 重启次数
@@ -244,7 +244,7 @@ podSecurityPoliciesPage:
     table:
       name: 名称
       created: 创建时间
-      noData: 未定义Pod安全策略
+      noData: 未配置Pod安全策略
       noMatch: 没有与当前搜索匹配的Pod安全策略
   addPodSecurityPolicy: 添加策略
   editPodSecurityPolicy: 编辑策略
@@ -358,7 +358,7 @@ apiPage:
     expires:
       label: 过期时间
       never: 永不过期
-    noData: 没有定义API密钥
+    noData: 没有配置API密钥
 
 authPage:
   saml:
@@ -574,7 +574,7 @@ authPage:
         text: '{appName}已设置本地账户访问'
         alwaysOn: '本地身份验证将始终启用，您可以在本地认证基础之上添加其他认证方案'
         linkText: 管理账号
-      disabled: '{appName}能够被设置为仅允许{appName}本地数据库中定义的用户访问。当前系统未进行设置，因此任何可以访问此页面(或API)的用户都具有系统的完全控制权限。'
+      disabled: '{appName}能够被设置为仅允许{appName}本地数据库中配置的用户访问。当前系统未进行设置，因此任何可以访问此页面(或API)的用户都具有系统的完全控制权限。'
     accessEnabled:
       header: '危险区域&trade;'
       warning: '<b class="text-danger">警告:</b>禁用访问控制将导致所有能够访问此页面或API的用户拥有对{appName}的完全控制权限。'
@@ -604,7 +604,7 @@ authPage:
 
 backupsPage:
   header: Etcd 快照
-  detail: 如果启用etcd快照功能，将按预定义的时间间隔周期性地获取的集群快照，可用于集群灾难恢复。
+  detail: 如果启用etcd快照功能，将按预先配置的时间间隔周期获取集群快照，可用于集群灾难恢复。
   table:
     state: 状态
     target:
@@ -688,9 +688,9 @@ certificatesPage:
   detail:
     header: '证书: {name}'
   index:
-    header: 证书
+    header: 证书列表
     linkTo: 添加证书
-    noData: 没有定义证书
+    noData: 没有配置证书
   new:
     header: 添加证书
     form:
@@ -743,7 +743,7 @@ clusterPage:
   internal: '<b>警告:</b>{appName}集群用作数据存储，只应授予管理员拥有写入权限.<br>对此集群具有写入权限的用户，可以使用它授予自己安装并管理的其他集群的访问权限。'
 
 projectsListNamespacePage:
-  header: 命名空间
+  header: 命名空间列表
   notIn: 不属于任何项目
   current: 当前项目
 
@@ -753,7 +753,7 @@ projectsPage:
   addProject: 添加项目
   editProject: 编辑项目
   noMatch: 没有与当前搜索匹配的项目
-  noData: 此集群没有定义任何项目
+  noData: 此集群没有配置任何项目
   groups:
     none: 命名空间列表
     namespaces: 项目分组/命名空间分组
@@ -830,7 +830,7 @@ ingressPage:
     targets:
       label: 目标
     noMatch: 没有ingresses匹配当前搜索。
-    noData: 没有定义ingress规则
+    noData: 没有配置ingress规则
 
 containerPage:
   header: '容器: {name}'
@@ -966,21 +966,21 @@ editDns:
     label: 健康检查节点端口
     placeholder: '例如: 8080'
   externalTrafficPolicy:
-    label: External Traffic Policy
+    label: 外部流量策略
     local: Local
     cluster: Cluster
   publishNotReadyAddresses:
-    label: Published IP Addresses
+    label: 对外发布的地址
     readyOnly: 仅就绪接入点
     all: 所有接入点
   sessionAffinityConfig:
-    label: Session Sticky Time
+    label: Session保持时间
     placeholder: '例如: 10800'
   kind:
-    label: As a
-    clusterIP: Cluster IP (Internal Only)
+    label: 作为
+    clusterIP: Cluster IP(仅集群内部通信)
     loadBalancer: L4负载均衡器
-    nodePort: NodePort(On every node)
+    nodePort: NodePort(所有主机端口均可访问)
     externalName: ExternalName
     headless: Headless Service
   description:
@@ -1022,34 +1022,34 @@ editDns:
 
 cruPersistentVolumeClaim:
   title:
-    define: 定义卷声明
-    new: 添加卷声明
-    edit: '编辑卷声明: {name}'
-    view: '持久卷: {name}'
+    define: 配置PVC
+    new: 添加PVC
+    edit: '编辑PVC: {name}'
+    view: 'PVC: {name}'
   define:
-    addActionLabel: 定义
+    addActionLabel: 配置
   capacity:
     label: 容量
     unit: GiB
   name:
     placeholder: '例如: myvol'
   source:
-    label: 源
-    pv: 使用现有的持久卷
-    storageClass: 使用存储类来创建新的持久卷
+    label: 来源
+    pv: 使用现有的持久卷(PV)
+    storageClass: 使用存储类创建新的持久卷(PV)
   pv:
-    label: 持久卷
-    prompt: 选择持久卷…
+    label: 持久卷(PV)
+    prompt: 选择持久卷(PV)…
   storageClass:
-    label: 存储 Class
-    prompt: 使用默认 class
+    label: 存储类(Storage Class)
+    prompt: 使用默认storage class
 
 cruVolumeClaimTemplate:
   title:
-    define: Define Volume Claim Template
-    new: Add Volume Claim Template
-    edit: "Edit Volume Claim Template: {name}"
-    view: "Volume Claim Template: {name}"
+    define: 配置PVC模板
+    new: 添加PVC模板
+    edit: "编辑PVC模板: {name}"
+    view: "PVC模板: {name}"
   define:
     addActionLabel: 确定
   capacity:
@@ -1058,15 +1058,15 @@ cruVolumeClaimTemplate:
   name:
     placeholder: '例如: Myvol'
   source:
-    label: 源
-    pv: 使用已有的持久卷
-    storageClass: 使用存储类来配置新的持久卷
+    label: 来源
+    pv: 使用已有的持久卷(PV)
+    storageClass: 使用存储类创建新的持久卷(PV)
   pv:
-    label: 持久卷
-    prompt: 选择持久卷...
+    label: 持久卷(PV)
+    prompt: 选择持久卷(PV)...
   storageClass:
-    label: 存储类
-    prompt: 使用默认类
+    label: 存储类(Storage Class)
+    prompt: 使用默认(Storage Class)
   customize:
     title: 自定义
     detail: 自定义高级设置
@@ -1092,7 +1092,7 @@ cruPrivateRegistry:
 cruVolume:
   sourcePrompt: 需要先在上面选择存储源...
   title:
-    new: 定义临时卷
+    new: 配置临时卷
   define:
     addActionLabel: 确定
   name:
@@ -1243,7 +1243,7 @@ nodesPage:
     unschedulable: 不可调度
     instanceState: 容器状态
     instanceStateWithIcon: 状态
-    noData: 此集群没有定义任何主机
+    noData: 此集群没有配置任何主机
     noMatch: 没有符合当前搜索的主机
 
 hostsPage:
@@ -1373,7 +1373,7 @@ k8sPage:
       helpText: |
         将设置保存到<code>~/.kube/config</code>
       downloadText: |
-        然后<a href="{downloadUrl}" target="_blank">下载</a><code>kubectl</code>(如有需要)并运行。
+        然后<a href="https://www.cnrancher.com/docs/rancher/v2.x/cn/install-prepare/download/#kubectl" target="_blank"><code>下载kubectl</code></a>(如有需要)并运行。
 
 loginPage:
   greeting: "您好！<br>欢迎使用{appName}"
@@ -1411,8 +1411,8 @@ notFoundPage:
 
 registriesPage:
   index:
-    header: 镜像库凭证
-    linkTo: 添加镜像库凭证
+    header: 镜像库凭证列表
+    linkTo: 添加凭证
     table:
       header:
         state: 状态
@@ -1437,9 +1437,9 @@ registriesPage:
 
 secretsPage:
   index:
-    header: 密文
+    header: 密文列表
     linkTo: 添加密文
-    noData: 未定义任何密文
+    noData: 未配置任何密文
     noMatch: 没有符合搜索条件的密文
   table:
     keys: 键
@@ -1448,7 +1448,7 @@ configMapsPage:
   index:
     header: 配置映射
     linkTo: 添加配置映射
-    noData: 没有定义配置映射
+    noData: 没有配置配置映射
     noMatch: 没有配置映射与当前搜索匹配
   table:
     keys: 键
@@ -1633,14 +1633,14 @@ nodeTemplatesPage:
     location: 位置
     size: 大小
     usedBy: 使用者
-    noData: 没有定义主机模板
+    noData: 没有配置主机模板
     usedByNone: 没有集群
     unknown: 未知
 
 storageClassPage:
   header: 存储类列表
   addActionLabel: 添加类
-  noData: 没有定义存储类
+  noData: 没有配置存储类
   noMatch: 没有存储类别与当前搜索匹配
   provisioner:
     label: 提供者
@@ -1649,8 +1649,8 @@ storageClassPage:
 
 persistentVolumePage:
   header: 持久卷列表
-  addActionLabel: 添加卷
-  noData: 没有定义持久卷
+  addActionLabel: 添加PV
+  noData: 没有配置持久卷
   noMatch: 没有符合当前搜索的持久卷
   source:
     label: 存储源
@@ -1776,7 +1776,7 @@ notifierPage:
     addActionLabel: 添加通知
     table:
       created: 创建时间
-      noData: 没有定义通知
+      noData: 没有配置通知
       noMatch: 不匹配
 ##############################
 # Partials
@@ -2159,7 +2159,7 @@ clusterNew:
   psp:
     label: 默认的Pod安全策略
     prompt: 选择Pod安全策略...
-    none: 没有定义策略
+    none: 没有配置策略
     required: 启用时需要设置默认Pod安全策略
   amazoneks:
     label: AWS的基于Kubernetes的弹性容器服务
@@ -3104,13 +3104,13 @@ cruPersistentVolume:
   description:
     placeholder: '例如: 生产数据库的卷'
   title:
-    new: 添加持久卷
-    edit: '编辑持久卷: {name}'
-    view: '持久卷: {name}'
+    new: 添加持久卷(PV)
+    edit: '编辑持久卷(PV): {name}'
+    view: '持久卷(PV): {name}'
   storageClass:
     label: 分配给存储类
     prompt: 无
-  pvc: 持久卷Claim
+  pvc: PVC
   reclaimPolicy: 回收策略
   capacity:
     label: 容量
@@ -3473,8 +3473,8 @@ cruStorageClass:
   allowVolumeExpansion:
     label: 允许用户扩展卷
   pv:
-    title: 持久卷
-    detail: 当前存储类提供的持久卷。
+    title: 持久卷(PV)
+    detail: 当前存储类提供的持久卷(PV)。
   mountOptions:
     label: 挂载选项
     addActionLabel: 添加
@@ -3944,7 +3944,7 @@ editUser:
 
 envCatalog:
   header: 管理应用商店
-  subtext: '可以在这里定义自定义的应用商店源，该应用商店仅对当前环境的用户可见。全局应用商店对所有环境可见，仅能由管理员在管理设置中修改。应用商店需要一个唯一的名称并且支持<code>git clone</code>的URL地址(参考 <a href="https://git-scm.com/docs/git-clone#_git_urls_a_id_urls_a" target="_blank" rel="nofollow noopener noreferrer">文档</a>以获取更多信息)'
+  subtext: '可以在这里配置自定义的应用商店源，该应用商店仅对当前环境的用户可见。全局应用商店对所有环境可见，仅能由管理员在管理设置中修改。应用商店需要一个唯一的名称并且支持<code>git clone</code>的URL地址(参考 <a href="https://git-scm.com/docs/git-clone#_git_urls_a_id_urls_a" target="_blank" rel="nofollow noopener noreferrer">文档</a>以获取更多信息)'
   addActionLabel: 添加应用商店
 
 moveNamespace:
@@ -4165,7 +4165,7 @@ formCommand:
 
 formContainerLinks:
   title: 链接
-  detail: 定义此容器和其他容器的关联关系
+  detail: 配置此容器和其他容器的关联关系
   addActionLabel: 添加链接
   name:
     label: 目标容器
@@ -4260,7 +4260,7 @@ formResourceQuota:
       placeholder: '例如: 10'
       milliCpuPlaceholder: '例如: 500'
       memoryPlaceholder: '例如: 1024'
-    noData: 没有定义资源配额
+    noData: 没有配置资源配额
   errors:
     projectLimitRequired: "项目中{resource}必须设置"
     nsDefaultLimitRequired: 命令空间中{resource}默认限制必需设置。
@@ -4326,10 +4326,10 @@ formGlobalRoles:
       detail: 允许用户启用，配置和移除所有主机驱动设置。
     manage-node-templates:
       label: 管理主机模板
-      detail: 允许用户定义，编辑和删除主机模板
+      detail: 允许用户配置，编辑和删除主机模板
     manage-roles:
       label: 管理角色
-      detail: 允许用户定义，编辑和删除角色定义
+      detail: 允许用户配置，编辑和删除角色
     manage-users:
       label: 管理用户
       detail: 允许用户为所有用户创建，删除和设置密码
@@ -4384,7 +4384,7 @@ formScopedRoles:
       label: 只读
       detail: 成员仅可以查看{type}中的资源，但不能更改资源和{type}本身。
     userDef:
-      detail: 用户定义的角色
+      detail: 用户配置的角色
     role:
       read-only:
         label: 只读
@@ -4830,8 +4830,8 @@ formSslTermination:
   defaultCertificate:
     prompt: '选择证书...'
   default:
-    label: 使用默认的ingress controller证书
-    noHosts: 请提供至少一个主机给默认证书
+    label: 使用默认ingress controller证书
+    noHosts: 请给默认证书证书至少配置一条域名
   custom:
     label: 选择证书
     required: 请选择证书
@@ -4844,12 +4844,12 @@ formSslTermination:
   wildcardCert: 请提供至少一个主机，因为证书{name}是一个通配符证书。
   noCertificatesConfiged: 没有证书
   noAlternateCertificates: 没有其他可用的证书。
-  hosts: 主机
-  noHosts: 没有主机
+  hosts: 域名
+  noHosts: 没有域名
   host:
-    label: 主机
+    label: 域名 (必填)
     placeholder: '例如: example.com'
-  addHostLabel: 添加主机
+  addHostLabel: 添加域名
   helpBlock: |
     "注意: 一些旧的SSL/TLS客户的不支持<a href="https://en.wikipedia.org/wiki/Server_Name_Indication" target="_blank">Server Name Indication(SNI)</a> 功能，对于这些客户端将只提供主证书。对于支持SNI功能的现代客户端将根据匹配结果从备选证书列表中选择一个合适的证书"
   notNeeded: 没有配置了有效的目标规则的SSL/TLS的监听端口。
@@ -4984,27 +4984,27 @@ formVersions:
   unsupported: "(不支持)"
 
 formVolumeRow:
-  prompt: 选择持久卷声明...
+  prompt: 选择PVC...
   name:
     label: 卷名
     placeholder: '例如: vol1'
   volumeClaimTemplateName:
-    label: Volume Claim Template Name
+    label: PVC模板名
     placeholder: '例如: vol1'
-    vctWarning: Stateful workloads launched with volume claim templates will become uneditable due to a <a href="https://github.com/kubernetes/kubernetes/issues/69041" target="_blank" rel="nofollow noreferrer noopener">upstream bug</a> in Kubernetes. Please be aware that this limitation exists before launching your new workload.
+    vctWarning: 由于Kubernetes中的一个<a href="https://github.com/kubernetes/kubernetes/issues/69041" target="_blank" rel="nofollow noreferrer noopener">BUG</a>，使用PVC模板启动的有状态工作负载将不可编辑。请注意，在启动新工作负载之前存在此限制。    
   mode:
     label: 卷类型
     newVolume: 临时卷
     existingVolume: 已有的卷
-    newPvc: 卷声明
-    existingPvc: 持久卷声明
-    existingVct: Volume Claim Template
-    bindMount: 路径映射卷
+    newPvc: PVC
+    existingPvc: PVC
+    existingVct: PVC模板
+    bindMount: 主机映射卷
     tmpfs: Tmpfs
-    secret: 密文卷
-    configmap: 配置映射卷
-    certificate: 证书卷
-    newVolumeClaimTemplate: New Volume Claim Template
+    secret: Secret卷
+    configmap: Configmap卷
+    certificate: Certificate卷
+    newVolumeClaimTemplate: 新的PVC模板
   remove: 删除卷
   subPath: 卷中的子路径
   readOnly: 只读
@@ -5033,21 +5033,21 @@ formVolumes:
   noHostContainers: 该主机没有可以提供共享卷的容器。
   onlySingleHost: 仅当添加容器到特定主机时适用。
   errors:
-    incomplete: 尚未完成卷定义
+    incomplete: 尚未完成卷配置
     absoluteMountPoint: 卷挂载点必须使用绝对路径。
   add:
     label: 添加卷...
     newVolume: 添加临时卷
     existingVolume: 现有的临时卷
-    newPvc: 添加新的持久卷(声明)
-    existingPvc: 使用现有的持久卷(声明)
+    newPvc: 添加新的PVC
+    existingPvc: 使用现有PVC
     bindMount: 映射主机目录
-    tmpfs: 添加内存中的tmpfs
-    secret: 密文卷
-    configMap: 配置映射卷
-    certificate: 证书卷
-    customLogPath: 从目录读取日志文件
-    vct: Add a Volume Claim Template
+    tmpfs: 添加内存tmpfs
+    secret: Secret卷
+    configMap: ConfigMap卷
+    certificate: Certificate卷
+    customLogPath: 从目录读取日志
+    vct: 添加PVC模板
   table:
     kind: 类型
     source: 源
@@ -5106,7 +5106,7 @@ formRunAsUserPodSecurityPolicy:
   detail: User ID
   rule:
     mustRunAs: MustRunAs - 需要配置范围，使用范围的第一个值作为默认值。根据配置的范围进行验证。
-    mustRunAsNonRoot: MustRunAsNonRoot - 要求使用非零runAsUser启动Pod，或者在镜像中定义USER指令，不提供默认值。
+    mustRunAsNonRoot: MustRunAsNonRoot - 要求使用非零runAsUser启动Pod，或者在镜像中配置USER指令，不提供默认值。
     runAsAny: RunAsAny - 无默认值，允许任何runAsUser来指定。
   range:
     addLabel: 添加范围
@@ -5671,8 +5671,8 @@ nodeGroup:
 
 newIngress:
   header:
-    add: 添加Ingress
-    edit: 编辑Ingress
+    add: 添加Ingress规则
+    edit: 编辑Ingress规则
   error:
     noRules: "您必须有一个或多个规则"
 newBalancer:
@@ -5924,7 +5924,7 @@ clusterDrivers:
   add: 添加集群驱动
   builtIn: 内置
   table:
-    noData: 当前集群没有定义任何节点
+    noData: 当前集群没有配置任何节点
     noMatch: 没有节点匹配当前搜索
 
 kontainerDriver:
@@ -6920,14 +6920,14 @@ viewEditDescription:
       placeholder: '例如: 开发实验环境'
 
 volumesPage:
-  title: Volume Claims
-  addActionLabel: 添加Volume Claim
-  noData: 没有定义持久卷声明
-  noMatch: 没有符合当前搜索的持久卷
+  title: PVC
+  addActionLabel: 添加PVC
+  noData: 没有配置PVC
+  noMatch: 没有符合当前搜索的持久卷(PV)
   claimName:
-    label: Claim名称
+    label: PVC名称
   volume:
-    label: 持久卷
+    label: 持久卷(PV)
   storageClass:
     label: 存储类
 
@@ -7007,14 +7007,14 @@ nav:
     ingresses: 负载均衡
     containers: 工作负载
     dns: 服务发现
-    volumes: 数据卷
+    volumes: PVC
     pipelines: 流水线
     deploy: 部署服务
     addContainer: 添加容器
     addBalancer: 添加负载均衡
-    addIngress: 添加Ingress
+    addIngress: 添加Ingress规则
     addDns: 添加DNS记录
-    addVolume: 添加卷
+    addVolume: 添加PVC
     importCompose: 导入YAML
   group:
     none: 列表视图
@@ -7335,11 +7335,11 @@ volumeSource:
   host-path:
     title: Local Node Path
     path:
-      label: Path on the Node
+      label: 主机路径
       placeholder: '例如: /data'
     kind:
       label: 主机路径类型检查
-      Any: "任意: 不检查目标路径"
+      Any: "不检查目标路径"
       DirectoryOrCreate: '目录: 不存在则创建'
       FileOrCreate: '文件: 不存在则创建'
       Directory: '现有目录'
