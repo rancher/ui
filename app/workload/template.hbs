@@ -50,6 +50,21 @@
 </div>
 
 <div class="row banner bg-info basics">
+  {{#if (eq service.type "cronJob")}}
+    <div class="vertical-middle center">
+      <div class="">
+        <label class="acc-label vertical-middle p-0">
+          {{t "servicePage.multistat.cronSchedule"}}:
+        </label>
+        {{service.cronJobConfig.schedule}}
+        {{#if service.cronJobConfig.schedule}}
+          <div class="text-muted text-small">
+            {{pretty-cron service.cronJobConfig.schedule "toString"}}
+          </div>
+        {{/if}}
+      </div>
+    </div>
+  {{/if}}
   <div class="vertical-middle center">
     <div>
       <label class="acc-label vertical-middle p-0">
@@ -64,42 +79,44 @@
       {{/if}}
     </div>
   </div>
-  <div class="vertical-middle center">
-    <span class="text-left">
-      <div class="hr">
-        <label class="acc-label vertical-middle p-0">
-          {{t "servicePage.multistat.scale"}}:
-        </label>
-        <span class="pr-5">
-          {{service.displayScale}}
-        </span>
-      </div>
-      <div>
-        <span class="help-block">
-          {{t "servicePage.multistat.currentScale" count=service.currentScale}}
-        </span>
-      </div>
-    </span>
-    <span>
-      <div class="btn-group btn-group-xs p-0 ml-10">
-        <button
-          class="btn btn-xs bg-primary"
-          {{action "scaleDown" target=service}}
-          disabled={{not service.canScaleDown}}
-        >
-          <i class="icon icon-minus icon-fw"/>
-        </button>
-        <button
-          style="margin-left: -1px;"
-          class="btn btn-xs bg-primary"
-          {{action "scaleUp" target=service}}
-          disabled={{not service.canScaleUp}}
-        >
-          <i class="icon icon-plus icon-fw"/>
-        </button>
-      </div>
-    </span>
-  </div>
+  {{#unless (or (eq service.type "job") (eq service.type "cronJob"))}}
+    <div class="vertical-middle center">
+      <span class="text-left">
+        <div class="hr">
+          <label class="acc-label vertical-middle p-0">
+            {{t "servicePage.multistat.scale"}}:
+          </label>
+          <span class="pr-5">
+            {{service.displayScale}}
+          </span>
+        </div>
+        <div>
+          <span class="help-block">
+            {{t "servicePage.multistat.currentScale" count=service.currentScale}}
+          </span>
+        </div>
+      </span>
+      <span>
+        <div class="btn-group btn-group-xs p-0 ml-10">
+          <button
+            class="btn btn-xs bg-primary"
+            {{action "scaleDown" target=service}}
+            disabled={{not service.canScaleDown}}
+          >
+            <i class="icon icon-minus icon-fw"/>
+          </button>
+          <button
+            style="margin-left: -1px;"
+            class="btn btn-xs bg-primary"
+            {{action "scaleUp" target=service}}
+            disabled={{not service.canScaleUp}}
+          >
+            <i class="icon icon-plus icon-fw"/>
+          </button>
+        </div>
+      </span>
+    </div>
+  {{/unless}}
   <div class="vertical-middle center">
     <div class="">
       <label class="acc-label vertical-middle p-0">

@@ -11,33 +11,39 @@
       <label class="acc-label">
         {{t "formCommand.entryPoint.label"}}
       </label>
-      {{#input-or-display editable=editing value=instance.entrypoint}}
+      {{#if (and (not editing) (not instance.entrypoint))}}
+        <div class="text-muted">
+          {{t "generic.na"}}
+        </div>
+      {{else}}
         {{input-command
           class="form-control"
           type="text"
+          disabled=(not editing)
           changed=(action (mut instance.entrypoint))
           initialValue=instance.entrypoint
           placeholder=(t "formCommand.entryPoint.placeholder")
         }}
-      {{/input-or-display}}
+      {{/if}}
     </div>
     <div class="col span-6 box">
       <label class="acc-label">
         {{t "formCommand.command.label"}}
       </label>
-      {{#input-or-display
-         editable=editing
-         value=instance.command
-         classesForDisplay="clip"
-      }}
+      {{#if (and (not editing) (not instance.command))}}
+        <div class="text-muted">
+          {{t "generic.na"}}
+        </div>
+      {{else}}
         {{input-command
           class="form-control"
           type="text"
+          disabled=(not editing)
           changed=(action (mut instance.command))
           initialValue=instance.command
           placeholder=(t "formCommand.command.placeholder")
         }}
-      {{/input-or-display}}
+      {{/if}}
     </div>
   </div>
 

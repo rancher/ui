@@ -39,6 +39,8 @@ export default TextField.extend({
   layout,
   type: 'text',
 
+  disabled: false,
+
   init() {
     this._super(...arguments);
 
