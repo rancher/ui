@@ -60,28 +60,24 @@ export default Route.extend({
 
       return this.catalog.fetchByUrl(catalogTemplateUrl).then((catalogTemplate) => {
         let { requiredNamespace } = catalogTemplate;
-        let neuNamespaceName      = requiredNamespace ? requiredNamespace : results.tpl.get('displayName');
-        let existingNamespace     = results.namespaces.findBy('id', neuNamespaceName);
-        let { namespace }         = results;
+        let namespaceName         = requiredNamespace ? requiredNamespace : results.tpl.get('displayName');
+        let existingNamespace     = results.namespaces.findBy('id', namespaceName);
         let kind                  = 'helm';
         let neuApp                = null;
+        let namespace             = null;
+        let newAppName            = null;
 
-        let newNamespaceName;
+        if ( requiredNamespace && existingNamespace ) {
+          // If it's required and already exists, use it.
+          namespace = existingNamespace;
+        } else {
+          // Otherwise make up a new unique name & namespace
+          let create = this.newNamespace(existingNamespace, namespaceName);
 
-        if ( !namespace ) {
-          if (requiredNamespace) {
-            if (existingNamespace) {
-              // we dont want a unique namespace in this case.
-              namespace = existingNamespace;
-            } else {
-              ( { newNamespaceName: neuNamespaceName, newNS: namespace } = this.newNamespace(existingNamespace, neuNamespaceName) );
-            }
-          } else {
-            ( { newNamespaceName, newNS: namespace } = this.newNamespace(existingNamespace, neuNamespaceName) );
+          namespace = create.newNS;
 
-            if ( existingNamespace ) {
-              neuNamespaceName = newNamespaceName;
-            }
+          if ( existingNamespace ) {
+            newAppName = create.newAppName;
           }
         }
 
@@ -103,7 +99,7 @@ export default Route.extend({
         } else {
           neuApp = store.createRecord({
             type: 'app',
-            name: neuNamespaceName,
+            name: newAppName,
           });
         }
 
@@ -115,11 +111,11 @@ export default Route.extend({
         }
 
         return EmberObject.create({
+          catalogTemplate,
+          namespace,
           allTemplates:       this.modelFor(get(this, 'parentRoute')).get('catalog'),
           catalogApp:         neuApp,
           catalogTemplateUrl: links[def],
-          catalogTemplate,
-          namespace,
           namespaces:         results.namespaces,
           tpl:                results.tpl,
           tplKind:            kind,
@@ -137,10 +133,10 @@ export default Route.extend({
         appId:       null,
         appName:     null,
         catalog:     null,
+        clone:       null,
         namespaceId: null,
         template:    null,
         upgrade:     null,
-        clone:       null,
       });
     }
   },
@@ -161,19 +157,21 @@ export default Route.extend({
     return `${ name }-${ suffix }`;
   },
 
-  newNamespace(duplicateNamespace, newNamespaceName) {
+  newNamespace(duplicateNamespace, namespaceName) {
+    let newAppName = namespaceName;
+
     if ( duplicateNamespace ) {
-      newNamespaceName = this.dedupeName(get(duplicateNamespace, 'displayName'));
+      newAppName = this.dedupeName(get(duplicateNamespace, 'displayName'));
     }
 
     const newNS = get(this, 'clusterStore').createRecord({
       type:      'namespace',
-      name:      newNamespaceName,
+      name:      newAppName,
       projectId: this.modelFor('authenticated.project').get('project.id'),
     });
 
     return {
-      newNamespaceName,
+      newAppName,
       newNS
     };
   },
