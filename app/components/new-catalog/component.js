@@ -57,6 +57,7 @@ export default Component.extend(NewOrEdit, CatalogApp, ChildHook, {
   questionsArray:           null,
   selectedTemplateUrl:      null,
   selectedTemplateModel:    null,
+  catalogTemplate:          null,
   readmeContent:            null,
   appReadmeContent:         null,
   pastedAnswers:            null,
@@ -67,7 +68,7 @@ export default Component.extend(NewOrEdit, CatalogApp, ChildHook, {
 
   primaryResource:          alias('namespaceResource'),
   editing:                  notEmpty('catalogApp.id'),
-  requiredNamespace: alias('selectedTemplateModel.requiredNamespace'),
+  requiredNamespace:        alias('selectedTemplateModel.requiredNamespace'),
 
   init() {
     this._super(...arguments);
@@ -75,11 +76,15 @@ export default Component.extend(NewOrEdit, CatalogApp, ChildHook, {
 
     scheduleOnce('afterRender', () => {
       if ( get(this, 'selectedTemplateUrl') ) {
-        this.templateChanged();
+        if (this.catalogTemplate) {
+          this.initTemplateModel(this.catalogTemplate);
+        } else {
+          this.templateChanged();
+        }
       } else {
-        var def = get(this, 'templateResource.defaultVersion');
+        var def   = get(this, 'templateResource.defaultVersion');
         var links = get(this, 'versionLinks');
-        var app = get(this, 'catalogApp');
+        var app   = get(this, 'catalogApp');
 
         if (get(app, 'id') && !get(this, 'upgrade')) {
           def = get(app, 'externalIdInfo.version');
@@ -96,11 +101,12 @@ export default Component.extend(NewOrEdit, CatalogApp, ChildHook, {
 
   didRender() {
     if (!this.get('srcSet')) {
-      this.set('srcSet', true);
+      set(this, 'srcSet', true);
 
       const $icon = this.$('img');
 
       $icon.attr('src', $icon.data('src'));
+
       this.$('img').on('error', () => {
         $icon.attr('src', `${ this.get('app.baseAssets') }assets/images/generic-catalog.svg`);
       });
@@ -213,70 +219,96 @@ export default Component.extend(NewOrEdit, CatalogApp, ChildHook, {
       var selectedTemplateModel = yield get(this, 'catalog').fetchByUrl(url)
         .then((response) => {
           if (response.questions) {
-            const questions = [];
-            const customAnswers = {};
-
-            response.questions.forEach((q) => {
-              questions.push(q);
-              const subquestions = get(q, 'subquestions');
-
-              if ( subquestions ) {
-                questions.pushObjects(subquestions);
-              }
-            });
-            questions.forEach((item) => {
-            // This will be the component that is rendered to edit this answer
-              item.inputComponent = `schema/input-${ item.type }`;
-
-              // Only types marked supported will show the component, Ember will explode if the component doesn't exist
-              item.supported = C.SUPPORTED_SCHEMA_INPUTS.indexOf(item.type) >= 0;
-
-              if (typeof current[item.variable] !== 'undefined') {
-              // If there's an existing value, use it (for upgrade)
-                item.answer = current[item.variable];
-              } else if (item.type === 'service' || item.type === 'certificate') {
-              // Loaded async and then the component picks the default
-              } else if ( item.type === 'boolean' ) {
-              // Coerce booleans
-                item.answer = (item.default === 'true' || item.default === true);
-              } else {
-              // Everything else
-                item.answer = item.default || null;
-              }
-            });
-
-            Object.keys(current).forEach((key) => {
-              const q = questions.findBy('variable', key);
-
-              if ( !q ) {
-                customAnswers[key] = current[key];
-              }
-            });
-
-            response.customAnswers = customAnswers;
+            this.parseQuestionsAndAnswers(response, current);
           }
 
           return response;
         });
 
+      if (selectedTemplateModel && selectedTemplateModel.requiredNamespace) {
+        set(this, 'primaryResource.name', selectedTemplateModel.requiredNamespace);
+      }
+
       set(this, 'selectedTemplateModel', selectedTemplateModel);
 
-      const files = Object.keys(selectedTemplateModel.get('files')) || [];
-
-      if ( files.length > 0 ) {
-        const valuesYaml = files.find((file) => file.endsWith('/values.yaml'));
-
-        set(this, 'previewTab', valuesYaml ? valuesYaml : files[0]);
-      }
+      this.initPreviewTab(selectedTemplateModel);
     } else {
-      set(this, 'selectedTemplateModel', null);
-      set(this, 'readmeContent', null);
-      set(this, 'appReadmeContent', null);
-      set(this, 'noAppReadme', false);
+      setProperties(this, {
+        selectedTemplateModel: null,
+        readmeContent:         null,
+        appReadmeContent:      null,
+        noAppReadme:           false,
+      });
     }
 
     this.updateReadme();
   }),
+
+  initTemplateModel(templateModel) {
+    let currentAnswers = get(this, 'catalogApp.answers') || {};
+
+    this.parseQuestionsAndAnswers(templateModel, currentAnswers);
+    this.initPreviewTab(templateModel);
+
+    set(this, 'selectedTemplateModel', templateModel);
+
+    this.updateReadme();
+  },
+
+  initPreviewTab(selectedTemplateModel) {
+    const files = Object.keys(selectedTemplateModel.get('files')) || [];
+
+    if ( files.length > 0 ) {
+      const valuesYaml = files.find((file) => file.endsWith('/values.yaml'));
+
+      set(this, 'previewTab', valuesYaml ? valuesYaml : files[0]);
+    }
+  },
+
+  parseQuestionsAndAnswers(template, currentAnswers) {
+    const questions     = [];
+    const customAnswers = {};
+
+    template.questions.forEach((q) => {
+      questions.push(q);
+      const subquestions = get(q, 'subquestions');
+
+      if ( subquestions ) {
+        questions.pushObjects(subquestions);
+      }
+    });
+
+    questions.forEach((item) => {
+      // This will be the component that is rendered to edit this answer
+      item.inputComponent = `schema/input-${ item.type }`;
+
+      // Only types marked supported will show the component, Ember will explode if the component doesn't exist
+      item.supported = C.SUPPORTED_SCHEMA_INPUTS.indexOf(item.type) >= 0;
+
+      if (typeof currentAnswers[item.variable] !== 'undefined') {
+        // If there's an existing value, use it (for upgrade)
+        item.answer = currentAnswers[item.variable];
+      } else if (item.type === 'service' || item.type === 'certificate') {
+        // Loaded async and then the component picks the default
+      } else if ( item.type === 'boolean' ) {
+        // Coerce booleans
+        item.answer = (item.default === 'true' || item.default === true);
+      } else {
+        // Everything else
+        item.answer = item.default || null;
+      }
+    });
+
+    Object.keys(currentAnswers).forEach((key) => {
+      const q = questions.findBy('variable', key);
+
+      if ( !q ) {
+        customAnswers[key] = currentAnswers[key];
+      }
+    });
+
+    template.customAnswers = customAnswers;
+  },
 
   validate() {
     this._super();
@@ -300,8 +332,6 @@ export default Component.extend(NewOrEdit, CatalogApp, ChildHook, {
 
     if ( requiredNamespace && (get(this, 'namespaces') || []).findBy('id', requiredNamespace) ) {
       return resolve(get(this, 'primaryResource'));
-    } else if ( requiredNamespace ) {
-      set(this, 'primaryResource.name', requiredNamespace);
     }
 
     return this._super(...arguments);
