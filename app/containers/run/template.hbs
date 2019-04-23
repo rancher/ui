@@ -22,7 +22,13 @@
           <h3 class="text-muted">{{dataMap.workload.launchConfig.name}}</h3>
           <p class="help-block">{{t "newContainer.sidekick.primary"}}</p>
         {{else if (eq section "footer")}}
-          {{#link-to (query-params launchConfigIndex=-1) class="btn bg-info" disabled=deleting}}{{t "action.upgrade"}}{{/link-to}}
+          {{#link-to
+            (query-params launchConfigIndex=-1)
+            class="btn bg-info"
+            disabled=deleting
+          }}
+            {{t "action.edit"}}
+          {{/link-to}}
         {{/if}}
     {{/catalog-box}}
 
@@ -44,7 +50,13 @@
           <button class="btn bg-error" {{action "promptRemove" index}} disabled={{deleting}}>
             {{t "action.remove"}}
           </button>
-          {{#link-to (query-params launchConfigIndex=index) class="btn bg-primary" disabled=deleting}}{{t "action.upgrade"}}{{/link-to}}
+          {{#link-to
+             (query-params launchConfigIndex=index)
+             class="btn bg-primary"
+             disabled=deleting
+          }}
+            {{t "action.edit"}}
+          {{/link-to}}
         {{/if}}
       {{/catalog-box}}
     {{/each}}

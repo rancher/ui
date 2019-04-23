@@ -1954,7 +1954,7 @@ authorizedEndpoint:
 
 taintsSection:
   title: Taints
-  detail: Taints mark pods so that they are only scheduled to a node is marked as being able to "tolerate" it
+  detail: Ensure workloads only run on appropriate nodes by adding taints to nodes and tolerations to workloads
   key: Key
   value: Value
   effect: Effect
@@ -2996,7 +2996,7 @@ clusterNew:
       detail: Customize advanced options
     authorizedEndpoint:
       title: Authorized Cluster Endpoint
-      detail: "Enabling the authorized cluster endpoint allows direct communication with the cluster, bypassing the Rancher API proxy. Authorized endpoint's can be retrieved by generating a kubeconfig for the cluster."
+      detail: "Enabling the authorized cluster endpoint allows direct communication with the cluster, bypassing the Rancher API proxy. Authorized endpoints can be retrieved by generating a kubeconfig for the cluster."
       label: Authorized Cluster Endpoint
   custom:
     label: Custom
@@ -5859,13 +5859,12 @@ newContainer:
     sidekick: 'Deploy Sidecar'
     sidekickName: 'Deploy Sidecar of "{name}"'
   upgrade:
-    container: Upgrade Container
-    service: Upgrade Service
-    globalService: Upgrade Global Service
-    sidekick: Upgrade Sidecar
-    sidekickName: 'Upgrade Sidecar of "{name}"'
-  selectUpgrade: Select one or more services to upgrade.
-  saveUpgrade: Upgrade
+    container: Edit Container
+    service: Edit Workload
+    globalService: Edit Global Service
+    sidekick: Edit Sidecar
+    sidekickName: 'Edit Sidecar of "{name}"'
+  saveUpgrade: Save
   saveNew: Launch
   name:
     placeholder: e.g. myapp
@@ -5882,9 +5881,9 @@ newContainer:
     valueLabel: Value
     valuePlaceholder: e.g. bar
   sidekick:
-    header: Upgrade service
-    title: Select service launch config to upgrade
-    detail: '"{service}" has sidecars.  Which container do you want to upgrade?'
+    header: Edit Workload
+    title: Select container to edit
+    detail: '"{service}" has sidecars.  Which container do you want to edit?'
     primary: Primary
     sidekick: Sidecar
   containerType:
