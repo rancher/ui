@@ -2,21 +2,21 @@ import { alias } from '@ember/object/computed';
 import Component from '@ember/component';
 import layout from './template';
 import { inject as service } from '@ember/service'
-import { get, set, computed } from '@ember/object';
+import { get, set, computed, setProperties } from '@ember/object';
 import ThrottledResize from 'shared/mixins/throttled-resize';
 import textWidth from 'shared/utils/text-width';
 import { next } from '@ember/runloop';
 import { escapeRegex, escapeHtml } from 'shared/utils/util';
 import $ from 'jquery';
 
-const ITEM_HEIGHT = 50;
-const BUFFER_HEIGHT = 150;
-const BUFFER_WIDTH = 150;
+const ITEM_HEIGHT      = 50;
+const BUFFER_HEIGHT    = 150;
+const BUFFER_WIDTH     = 150;
 const MIN_COLUMN_WIDTH = 200;
-const FONT = '13.5px "Prompt", "Helvetica Neue Light", "Helvetica Neue", "Helvetica", "Arial", sans-serif';
-const MOUSE_HISTORY = 5;
-const MOUSE_DELAY = 250;
-const SLOP = 50; // Extend the ends of the target triangle out by this many px
+const FONT             = '13.5px "Prompt", "Helvetica Neue Light", "Helvetica Neue", "Helvetica", "Arial", sans-serif';
+const MOUSE_HISTORY    = 5;
+const MOUSE_DELAY      = 250;
+const SLOP             = 50; // Extend the ends of the target triangle out by this many px
 
 export default Component.extend(ThrottledResize, {
   access:             service(),
@@ -54,13 +54,15 @@ export default Component.extend(ThrottledResize, {
 
   init() {
     this._super(...arguments);
-    set(this, 'mousePoints', []);
-    set(this, 'boundMouseMove', this.mouseMoved.bind(this));
-    set(this, 'boundClickMenu', this.clickMenu.bind(this));
-    set(this, 'boundClickItem', this.clickItem.bind(this));
-    set(this, 'boundEnterCluster', this.enterCluster.bind(this));
-    set(this, 'boundEnterScrollers', this.enterScrollers.bind(this));
-    set(this, 'boundLeaveScrollers', this.leaveScrollers.bind(this));
+    setProperties(this, {
+      mousePoints:         [],
+      boundMouseMove:      this.mouseMoved.bind(this),
+      boundClickMenu:      this.clickMenu.bind(this),
+      boundClickItem:      this.clickItem.bind(this),
+      boundEnterCluster:   this.enterCluster.bind(this),
+      boundEnterScrollers: this.enterScrollers.bind(this),
+      boundLeaveScrollers: this.leaveScrollers.bind(this),
+    });
   },
 
   actions: {
@@ -69,53 +71,60 @@ export default Component.extend(ThrottledResize, {
       this.onResize();
 
       next(() => {
-        const menu = this.$('.project-menu');
-        const clusters = this.$('.clusters');
+        if (!this.isTransitioning()) {
+          const menu = this.$('.project-menu');
+          const clusters = this.$('.clusters');
 
-        $(document).on('mousemove', this.boundMouseMove);
+          $(document).on('mousemove', this.boundMouseMove);
 
-        menu.on('click', this.boundClickMenu);
-        menu.on('click', 'LI', this.boundClickItem);
+          menu.on('click', this.boundClickMenu);
+          menu.on('click', 'LI', this.boundClickItem);
 
-        clusters.on('focus', 'LI', this.boundEnterCluster);
-        clusters.on('mouseenter', 'LI', this.boundEnterCluster);
+          clusters.on('focus', 'LI', this.boundEnterCluster);
+          clusters.on('mouseenter', 'LI', this.boundEnterCluster);
 
-        this.$('.clusters, .projects').on('mouseenter', this.boundEnterScrollers);
-        this.$('.clusters, .projects').on('mouseleave', this.boundLeaveScrollers);
+          this.$('.clusters, .projects').on('mouseenter', this.boundEnterScrollers);
+          this.$('.clusters, .projects').on('mouseleave', this.boundLeaveScrollers);
 
-        this.$('.search INPUT')[0].focus();
+          this.$('.search INPUT')[0].focus();
 
-        this.$('.clusters UL')[0].scrollTop = 0;
-        this.$('.projects UL')[0].scrollTop = 0;
+          this.$('.clusters UL')[0].scrollTop = 0;
+          this.$('.projects UL')[0].scrollTop = 0;
 
-        const currentClusterId = get(this, 'cluster.id');
-        const currentProjectId = get(this, 'project.id');
+          const currentClusterId = get(this, 'cluster.id');
+          const currentProjectId = get(this, 'project.id');
 
-        if ( currentClusterId ) {
-          const li = this.$(`.clusters LI[data-cluster-id="${ currentClusterId }"]`)[0];
-          const entry = get(this, 'byCluster').findBy('clusterId', currentClusterId);
-
-          ensureVisible(li);
-          set(this, 'clusterEntry', entry);
-          set(this, 'activeClusterEntry', entry);
-        }
-
-        if ( currentProjectId ) {
-          next(() => {
-            const li = this.$(`.projects LI[data-project-id="${ currentProjectId }"]`)[0];
+          if ( currentClusterId ) {
+            const li = this.$(`.clusters LI[data-cluster-id="${ currentClusterId }"]`)[0];
+            const entry = get(this, 'byCluster').findBy('clusterId', currentClusterId);
 
             ensureVisible(li);
-          });
+
+            setProperties(this, {
+              clusterEntry:       entry,
+              activeClusterEntry: entry,
+            });
+          }
+
+          if ( currentProjectId ) {
+            next(() => {
+              const li = this.$(`.projects LI[data-project-id="${ currentProjectId }"]`)[0];
+
+              ensureVisible(li);
+            });
+          }
         }
       });
     },
 
     onClose() {
-      set(this, 'open', false);
-      set(this, 'searchInput', '');
-      set(this, 'hoverEntry', null);
-      set(this, 'clusterEntry', null);
-      set(this, 'activeClusterEntry', null);
+      setProperties(this, {
+        open:               false,
+        searchInput:        '',
+        hoverEntry:         null,
+        clusterEntry:       null,
+        activeClusterEntry: null,
+      });
 
       $(document).off('mousemove', this.boundMouseMove);
       this.$('.project-menu').off('click', this.boundClickMenu);
@@ -147,7 +156,7 @@ export default Component.extend(ThrottledResize, {
 
   byCluster: computed('scope.allClusters.@each.id', 'projectChoices.@each.clusterId', 'cluster.id', function() {
     const currentClusterId = get(this, 'cluster.id');
-    const out = [];
+    const out              = [];
 
     get(this, 'scope.allClusters').forEach((cluster) => {
       getOrAddCluster(cluster);
@@ -155,7 +164,7 @@ export default Component.extend(ThrottledResize, {
 
     get(this, 'projectChoices').forEach((project) => {
       const cluster = get(project, 'cluster');
-      const width = textWidth(get(project, 'displayName'), FONT);
+      const width   = textWidth(get(project, 'displayName'), FONT);
 
       if ( !cluster ) {
         return;
@@ -175,13 +184,12 @@ export default Component.extend(ThrottledResize, {
 
     function getOrAddCluster(cluster) {
       const clusterId = get(cluster, 'id');
-      let entry = out.findBy('clusterId', clusterId);
+      let entry       = out.findBy('clusterId', clusterId);
 
       if ( !entry ) {
         entry = {
           clusterId,
           cluster,
-
           width:        textWidth(get(cluster, 'displayName'), FONT),
           projectWidth: 0,
           projects:     [],
@@ -336,15 +344,17 @@ export default Component.extend(ThrottledResize, {
     clearTimeout(this.hoverDelayTimer);
 
     set(this, 'leaveDelayTimer', setTimeout(() => {
-      set(this, 'hoverEntry', null);
-      set(this, 'clusterEntry', get(this, 'activeClusterEntry'));
+      setProperties(this, {
+        hoverEntry:   null,
+        clusterEntry: get(this, 'activeClusterEntry'),
+      });
     }, MOUSE_DELAY));
   },
 
   getHoverDelay() {
-    const entry = get(this, 'activeClusterEntry');
+    const entry  = get(this, 'activeClusterEntry');
     const points = this.mousePoints;
-    const $menu = this.$('.clusters');
+    const $menu  = this.$('.clusters');
 
     if ( !entry ) {
       // console.log('No entry');
@@ -361,11 +371,11 @@ export default Component.extend(ThrottledResize, {
 
     // Bounding box of the menu
     const offset = $menu.offset();
-    const left = offset.left;
-    const top = offset.top - SLOP;
-    const right = left + $menu.outerWidth();
+    const left   = offset.left;
+    const top    = offset.top - SLOP;
+    const right  = left + $menu.outerWidth();
     const bottom = offset.top + $menu.outerHeight() + SLOP;
-    const dp = this.delayPoint;
+    const dp     = this.delayPoint;
 
     if ( dp && dp.x === now.x && dp.y === now.y ) {
       // The mouse hasn't moved during the delay
@@ -420,8 +430,10 @@ export default Component.extend(ThrottledResize, {
       const prev = get(this, 'hoverEntry');
 
       if ( entry !== prev ) {
-        set(this, 'hoverEntry', entry);
-        set(this, 'clusterEntry', entry);
+        setProperties(this, {
+          hoverEntry:   entry,
+          clusterEntry: entry,
+        });
 
         let scrollToId;
 
@@ -448,11 +460,10 @@ export default Component.extend(ThrottledResize, {
     }
 
     const $window = $(window);
-    let want    = Math.max(get(this, 'numClusters'), get(this, 'maxProjects'));
-    let roomFor = Math.ceil( ($window.height() - BUFFER_HEIGHT) / (2 * ITEM_HEIGHT) );
-
-    const rows = Math.max(3, Math.min(want, roomFor));
-    const height = rows * ITEM_HEIGHT;
+    let want      = Math.max(get(this, 'numClusters'), get(this, 'maxProjects'));
+    let roomFor   = Math.ceil( ($window.height() - BUFFER_HEIGHT) / (2 * ITEM_HEIGHT) );
+    const rows    = Math.max(3, Math.min(want, roomFor));
+    const height  = rows * ITEM_HEIGHT;
 
     set(this, 'columnStyle', `height: ${ height }px`.htmlSafe());
 
@@ -469,6 +480,15 @@ export default Component.extend(ThrottledResize, {
 
     set(this, 'menuStyle', `grid-template-columns: ${ cw }px ${ pw }px`.htmlSafe());
   },
+
+  isTransitioning() {
+    if (this.router._routerMicrolib.activeTransition && this.router._routerMicrolib.activeTransition.isTransition) {
+      return true
+    }
+
+    return false;
+  },
+
 });
 
 
