@@ -347,7 +347,7 @@ rolesPage:
 apiPage:
   header: API & Keys
   actionButton: 添加Key
-  currentEndpoint: '访问地址:'
+  currentEndpoint: 'API访问地址:'
   detail: "API密钥与特定用户(例如: {name})绑定，可以创建、删除和操作有权访问的所有集群和项目。"
   table:
     state: 状态
@@ -805,7 +805,7 @@ clustersPage:
   header: 集群列表
   newCluster: 添加集群
   newClusterName: "添加集群: {name}"
-  editClusterName: "编辑集群: {name}"
+  editClusterName: "升级集群: {name}"
   cluster:
     label: 集群名称
   provider:
@@ -1074,7 +1074,7 @@ cruVolumeClaimTemplate:
 cruPrivateRegistry:
   title:
     label: 私有镜像仓库
-    detail: 向这个集群添加私有镜像仓库
+    detail: 给集群配置私有镜像仓库，当开始构建集群时会通过此镜像仓库拉取所需的全部镜像。
   noData: 当前集群没有配置私有镜像仓库
   defaultError: 您必须指定默认的私有镜像仓库。
   add:
@@ -1648,7 +1648,7 @@ storageClassPage:
     label: 默认
 
 persistentVolumePage:
-  header: 持久卷列表
+  header: 持久卷(PV)列表
   addActionLabel: 添加PV
   noData: 没有配置持久卷
   noMatch: 没有符合当前搜索的持久卷
@@ -2874,13 +2874,13 @@ clusterNew:
       detail: 应用于节点的可选标签
     nodes:
       title: 主机池
-      detail: 配置组成集群的主机
+      detail: 配置集群需要的主机节点
       add: 添加主机池
       addTemplate: 添加主机模板
       templatePrompt: "选择模板..."
-      hostnamePrefix: 名称前缀
+      hostnamePrefix: 主机池名称前缀
       count: 数量
-      template: 模板
+      template: 主机模板
     detected: |
       {count, plural,
       =1{#台新主机注册成功}
@@ -2954,10 +2954,10 @@ clusterNew:
         controlplane: Control
         worker: Worker
       requirements:
-        label: "所需的主机数: "
-        etcd: 1,3或5
-        controlplane: 1或更多
-        worker: 1或更多
+        label: "所需主机个数: "
+        etcd: '1,3或5'
+        controlplane: '1或更多'
+        worker: '1或更多'
     kubeApi:
       label: Kube API
       ipRange: 服务集群IP范围
@@ -3144,7 +3144,7 @@ cruPersistentVolume:
   azureDisk:
     cachingMode:
       label: 缓存模式
-      none: None
+      none: 无
       readOnly: 只读
       readWrite: 读写
     diskName:
@@ -4209,8 +4209,8 @@ formEngineOpts:
     label: 存储驱动
     placeholder: '例如: overlay'
   engineOpts:
-    label: 引擎选项
-    addActionLabel: 添加引擎选项
+    label: 引擎参数
+    addActionLabel: 添加引擎参数
     keyPlaceholder: '例如: log-driver'
     valuePlaceholder: '例如: syslog'
   engineLabels:
@@ -4218,20 +4218,20 @@ formEngineOpts:
     addActionLabel: 添加引擎标签
     keyLabel: 标签
   engineEnv:
-    label: 引擎环境
+    label: 引擎变量
     addActionLabel: 添加环境变量
     keyLabel: 变量
     keyPlaceholder: '例如: HTTP_PROXY'
     valuePlaceholder: '例如: http://your-proxy:8080'
   engineInsecureRegistry:
-    label: 非安全镜像库
-    addActionLabel: 添加非安全镜像库
+    label: 非安全镜像仓库
+    addActionLabel: 添加非安全镜像仓库
     valueLabel: 镜像库域名
     valuePlaceholder: '例如: registry.example.com'
   engineRegistryMirror:
-    label: 镜像库镜像
-    addActionLabel: 添加镜像库镜像
-    valueLabel: 镜像URL
+    label: 镜像加速
+    addActionLabel: 添加加速地址
+    valueLabel: 镜像加速地址
     valuePlaceholder: '例如: https://my-mirror.example.com:5000'
 
 formResourceQuota:
@@ -5597,9 +5597,9 @@ modalRestoreBackup:
 modalRotateCertificates:
   title: 更新集群证书
   caCerts: 更新集群CA证书和所有服务证书
-  servicesCa: 更新所有服务证书(保持CA不变)
-  services: 仅更新所有服务证书 (不更新CA证书)
-  single: 更新单个服务
+  servicesCa: 更新所有服务证书(CA证书不变)
+  services: 更新所有服务证书(CA证书不变)
+  single: 更新单个服务(CA证书不变)
   dropdownLabel: 服务
   select:
     all: 选择服务...
@@ -5639,7 +5639,7 @@ modalShortcuts:
   global: 全局
   cluster: 集群
   project: 项目
-  other: 其他的东西
+  other: 其他东西
   shift: Shift-{key}
   delete: 删除所选择的(在表视图中)
   kubectl: Kubectl Shell
@@ -6693,7 +6693,7 @@ pagination:
   node: |
     {pages, plural,
     =0{无主机}
-    =1{选中{count}{count, plural,=1{台主机}other{台主机}}}
+    =1{{count}{count, plural,=1{台主机}other{台主机}}}
     other {当前显示{count}个Nodes中的{from}到{to}个}}
   nodePool: |
     {pages, plural,
