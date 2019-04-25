@@ -7,6 +7,7 @@ import layout from './template';
 import C from 'shared/utils/constants';
 import { get as getTree } from 'shared/utils/navigation-tree';
 import { run } from '@ember/runloop';
+import $ from 'jquery';
 
 function fnOrValue(val, ctx) {
   if ( typeof val === 'function' ) {
@@ -172,5 +173,47 @@ export default Component.extend({
     set(this, 'navTree', out);
   },
 
-  // Utilities you can use in the condition() function to decide if an item is shown or hidden,
+  keyUp(e) {
+    const code            = e.keyCode;
+    let tabList           = this.$(`.nav-item a:first-of-type`);
+    let $target           = $(e.target).hasClass('ember-basic-dropdown-trigger') ? $(e.target).find('a') : e.target;
+    let currentFocusIndex = tabList.index($target);
+    let nextIndex;
+
+    switch (code) {
+    case 37: {
+      // left
+      nextIndex = currentFocusIndex - 1;
+
+      if (nextIndex >= tabList.length) {
+        tabList.eq(tabList.length).focus();
+      } else {
+        if (tabList.eq(nextIndex).parent().hasClass('ember-basic-dropdown-trigger')) {
+          tabList.eq(nextIndex).parent().focus();
+        } else {
+          tabList.eq(nextIndex).focus();
+        }
+      }
+
+      break;
+    }
+    case 39: {
+      // right
+      nextIndex = currentFocusIndex + 1;
+
+      if (nextIndex >= tabList.length) {
+        tabList.eq(0).focus();
+      } else {
+        if (tabList.eq(nextIndex).parent().hasClass('ember-basic-dropdown-trigger')) {
+          tabList.eq(nextIndex).parent().focus();
+        } else {
+          tabList.eq(nextIndex).focus();
+        }
+      }
+
+      break;
+    }
+    default:
+    }
+  },
 });

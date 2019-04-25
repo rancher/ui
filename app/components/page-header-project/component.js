@@ -8,6 +8,7 @@ import textWidth from 'shared/utils/text-width';
 import { next } from '@ember/runloop';
 import { escapeRegex, escapeHtml } from 'shared/utils/util';
 import $ from 'jquery';
+import { isEmpty } from '@ember/utils';
 
 const ITEM_HEIGHT      = 50;
 const BUFFER_HEIGHT    = 150;
@@ -19,38 +20,39 @@ const MOUSE_DELAY      = 250;
 const SLOP             = 50; // Extend the ends of the target triangle out by this many px
 
 export default Component.extend(ThrottledResize, {
-  access:             service(),
-  scope:              service(),
-  globalStore:        service(),
-  router:             service(),
+  access:              service(),
+  scope:               service(),
+  globalStore:         service(),
+  router:              service(),
 
   layout,
-  pageScope:          null,
+  pageScope:           null,
 
-  tagName:            'LI',
-  classNames:         ['dropdown', 'nav-item', 'nav-cluster'],
-  classNameBindings:  ['hide'],
+  tagName:             'LI',
+  classNames:          ['dropdown', 'nav-item', 'nav-cluster'],
+  classNameBindings:   ['hide'],
 
-  searchInput:        '',
-  open:               false,
+  searchInput:         '',
+  open:                false,
 
-  columnStyle:        '',
-  menuStyle:          '',
-  mousePoints:        null,
-  clusterEntry:       null,
-  activeClusterEntry: null,
-  hoverEntry:         null,
-  hoverDelayTimer:    null,
-  delayPoint:         null,
-  leaveDelayTimer:    null,
+  columnStyle:         '',
+  menuStyle:           '',
+  mousePoints:         null,
+  clusterEntry:        null,
+  activeClusterEntry:  null,
+  hoverEntry:          null,
+  hoverDelayTimer:     null,
+  delayPoint:          null,
+  leaveDelayTimer:     null,
 
-  boundClickMenu:     null,
-  boundClickItem:     null,
-  boundEnterCluster:  null,
+  boundClickMenu:      null,
+  boundClickItem:      null,
+  boundEnterCluster:   null,
+  dropdownApi:         null,
 
-  project:            alias('scope.pendingProject'),
-  cluster:            alias('scope.pendingCluster'),
-  numClusters:        alias('byCluster.length'),
+  project:             alias('scope.pendingProject'),
+  cluster:             alias('scope.pendingCluster'),
+  numClusters:         alias('byCluster.length'),
 
   init() {
     this._super(...arguments);
@@ -66,9 +68,13 @@ export default Component.extend(ThrottledResize, {
   },
 
   actions: {
-    onOpen() {
+    onOpen(dropdown) {
       set(this, 'open', true);
       this.onResize();
+
+      if (dropdown) {
+        set(this, 'dropdownApi', dropdown);
+      }
 
       next(() => {
         if (!this.isTransitioning()) {
@@ -119,11 +125,12 @@ export default Component.extend(ThrottledResize, {
 
     onClose() {
       setProperties(this, {
+        activeClusterEntry: null,
+        clusterEntry:       null,
+        dropdownApi:        null,
+        hoverEntry:         null,
         open:               false,
         searchInput:        '',
-        hoverEntry:         null,
-        clusterEntry:       null,
-        activeClusterEntry: null,
       });
 
       $(document).off('mousemove', this.boundMouseMove);
@@ -254,6 +261,84 @@ export default Component.extend(ThrottledResize, {
 
     return out;
   }),
+
+  keyUp(e) {
+    if (!isEmpty(this.dropdownApi)) {
+      const project      = 'project';
+      const cluster      = 'cluster';
+      const code         = e.keyCode;
+      let clusterTabList = this.$('.project-menu .clusters a:first-of-type');
+      let projectTabList = this.$('.project-menu .projects a:first-of-type')
+      let tabList        = [];
+      let $target        = $(e.target).hasClass('ember-basic-dropdown-trigger') ? $(e.target).find('a') : e.target;
+      let currentFocusIndex;
+      let currentFocus;
+      let nextIndex;
+      let activeClusterNode;
+
+      let { clusterEntry } = this;
+
+      if (clusterEntry) {
+        activeClusterNode = this.$(`.project-menu [data-cluster-id="${ clusterEntry.clusterId }"]`);
+      }
+
+      if (clusterTabList.index($target) >= 0) {
+        currentFocus      = cluster;
+        currentFocusIndex = clusterTabList.index($target);
+        tabList           = clusterTabList;
+      } else if (projectTabList.index($target) >= 0) {
+        currentFocus      = project;
+        currentFocusIndex = projectTabList.index($target)
+        tabList           = projectTabList;
+      } else {
+        // from inputFocused
+        currentFocus      = cluster;
+        currentFocusIndex = 0;
+      }
+
+      switch (code) {
+      case 37: {
+        // left
+        if (currentFocus === project) {
+          activeClusterNode.find('a:first-of-type').focus();
+        }
+        break;
+      }
+      case 38: {
+        // up
+        nextIndex = currentFocusIndex - 1;
+
+        if (nextIndex >= tabList.length) {
+          tabList.eq(tabList.length).focus();
+        } else {
+          tabList.eq(nextIndex).focus();
+        }
+        break;
+      }
+      case 39: {
+        // right
+        if (currentFocus === cluster && projectTabList.length >= 1) {
+          projectTabList.eq(0).focus();
+        }
+        break;
+      }
+      case 40: {
+        // down
+        nextIndex = currentFocusIndex + 1;
+
+        if (nextIndex >= tabList.length) {
+          tabList.eq(tabList.length).focus();
+        } else {
+          tabList.eq(nextIndex).focus();
+        }
+        break;
+      }
+      default:
+      }
+    }
+
+    return false;
+  },
 
   mouseMoved(e) {
     const list = this.mousePoints;
