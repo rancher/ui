@@ -111,6 +111,35 @@ let INSTANCE_TYPES = [
     group: 'T3 - Burstable',
     name:  't3.2xlarge'
   },
+  
+  {
+    group: 'T3a - Burstable AMD CPU',
+    name:  't3a.nano'
+  },
+  {
+    group: 'T3a - Burstable AMD CPU',
+    name:  't3a.micro'
+  },
+  {
+    group: 'T3a - Burstable AMD CPU',
+    name:  't3a.small'
+  },
+  {
+    group: 'T3a - Burstable AMD CPU',
+    name:  't3a.medium'
+  },
+  {
+    group: 'T3a - Burstable AMD CPU',
+    name:  't3a.large'
+  },
+  {
+    group: 'T3a - Burstable AMD CPU',
+    name:  't3a.xlarge'
+  },
+  {
+    group: 'T3a - Burstable AMD CPU',
+    name:  't3a.2xlarge'
+  },
 
   {
     group: 'M5 - General Purpose',
