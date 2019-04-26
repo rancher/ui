@@ -134,7 +134,7 @@ export default Resource.extend({
   findAlerts(){
     const globalStore = get(this, 'globalStore');
     const clusterId = get(this, 'clusterId');
-    const clusterAlertGroups = globalStore.findAll('clusterAlertGroup', { filter: { clusterId } });
+    const clusterAlertGroups = globalStore.find('clusterAlertGroup', null, { filter: { clusterId } });
     const projectAlertGroups = globalStore.findAll('projectAlertGroup');
 
     return hash({
