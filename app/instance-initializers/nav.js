@@ -122,14 +122,14 @@ const rootNav = [
         resource:       [],
         ctx:            [getProjectId],
       },
-      // {
-      //   id:             'tools-monitoring',
-      //   localizedLabel: 'nav.tools.monitoring',
-      //   route:          'authenticated.project.monitoring.project-setting',
-      //   resourceScope:  'global',
-      //   resource:       [],
-      //   ctx:            [getProjectId],
-      // },
+      {
+        id:             'tools-monitoring',
+        localizedLabel: 'nav.tools.monitoring',
+        route:          'authenticated.project.monitoring.project-setting',
+        resourceScope:  'global',
+        resource:       [],
+        ctx:            [getProjectId],
+      },
       {
         id:             'tools-pipeline',
         localizedLabel: 'nav.tools.pipeline',
