@@ -160,6 +160,16 @@ export default Resource.extend(Grafana, ResourceUsage, {
     return get(projects, 'firstObject');
   }),
 
+  canSaveMonitor: computed('actionLinks.{editMonitoring,enableMonitoring}', function() {
+    const action = get(this, 'enableClusterMonitoring') ?  'editMonitoring' : 'enableMonitoring';
+
+    return !!this.hasAction(action)
+  }),
+
+  canDisableMonitor: computed('actionLinks.disableMonitoring', function() {
+    return !!this.hasAction('disableMonitoring')
+  }),
+
   defaultProject: computed('projects.@each.{name,clusterOwner}', function() {
     let projects = get(this, 'projects');
 
