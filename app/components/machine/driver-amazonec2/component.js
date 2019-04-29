@@ -218,23 +218,23 @@ let INSTANCE_TYPES = [
   
   {
     group: 'M5ad - General Purpose SSD AMD Epyc',
-    name:  'm5a.large'
+    name:  'm5ad.large'
   },
   {
     group: 'M5ad - General Purpose SSD AMD Epyc',
-    name:  'm5a.xlarge'
+    name:  'm5ad.xlarge'
   },
   {
     group: 'M5ad - General Purpose SSD AMD Epyc',
-    name:  'm5a.2xlarge'
+    name:  'm5ad.2xlarge'
   },
   {
     group: 'M5ad - General Purpose SSD AMD Epyc',
-    name:  'm5a.4xlarge'
+    name:  'm5ad.4xlarge'
   },
   {
     group: 'M5ad - General Purpose SSD AMD Epyc',
-    name:  'm5a.12xlarge'
+    name:  'm5ad.12xlarge'
   },
   {
     group: 'M5ad - General Purpose SSD AMD Epyc',
@@ -420,31 +420,6 @@ let INSTANCE_TYPES = [
     group: 'R5 - High Memory Optimized',
     name:  'r5.24xlarge	'
   },
-  
-  {
-    group: 'R5a - High Memory Optimized AMD Epyc',
-    name:  'r5a.large'
-  },
-  {
-    group: 'R5a - High Memory Optimized AMD Epyc',
-    name:  'r5a.xlarge'
-  },
-  {
-    group: 'R5a - High Memory Optimized AMD Epyc',
-    name:  'r5a.2xlarge'
-  },
-  {
-    group: 'R5a - High Memory Optimized AMD Epyc',
-    name:  'r5a.4xlarge'
-  },
-  {
-    group: 'R5a - High Memory Optimized AMD Epyc',
-    name:  'r5a.12xlarge	'
-  },
-  {
-    group: 'R5a - High Memory Optimized AMD Epyc',
-    name:  'r5a.24xlarge	'
-  },
 
   {
     group: 'R5d - High Memory Optimized & Local Storage',
@@ -469,6 +444,31 @@ let INSTANCE_TYPES = [
   {
     group: 'R5d - High Memory Optimized & Local Storage',
     name:  'r5d.24xlarge'
+  },
+  
+  {
+    group: 'R5a - High Memory Optimized AMD Epyc',
+    name:  'r5a.large'
+  },
+  {
+    group: 'R5a - High Memory Optimized AMD Epyc',
+    name:  'r5a.xlarge'
+  },
+  {
+    group: 'R5a - High Memory Optimized AMD Epyc',
+    name:  'r5a.2xlarge'
+  },
+  {
+    group: 'R5a - High Memory Optimized AMD Epyc',
+    name:  'r5a.4xlarge'
+  },
+  {
+    group: 'R5a - High Memory Optimized AMD Epyc',
+    name:  'r5a.12xlarge	'
+  },
+  {
+    group: 'R5a - High Memory Optimized AMD Epyc',
+    name:  'r5a.24xlarge	'
   },
   
   {
