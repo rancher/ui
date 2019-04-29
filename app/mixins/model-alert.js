@@ -12,7 +12,11 @@ export default Mixin.create({
 
   canClone: false,
 
-  relevantState: computed('combinedState', 'alertState', function() {
+  relevantState: computed('combinedState', 'alertState', 'state', function() {
+    if ( get(this, 'state') === 'removing' ) {
+      return 'removing';
+    }
+
     return this.get('combinedState') || this.get('alertState') || 'unknown';
   }),
 
