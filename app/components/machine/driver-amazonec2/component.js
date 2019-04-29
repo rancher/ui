@@ -447,52 +447,52 @@ let INSTANCE_TYPES = [
   },
 
   {
-    group: 'R5D - High Memory Optimized & Local Storage',
+    group: 'R5d - High Memory Optimized & Local Storage',
     name:  'r5d.large'
   },
   {
-    group: 'R5D - High Memory Optimized & Local Storage',
+    group: 'R5d - High Memory Optimized & Local Storage',
     name:  'r5d.xlarge'
   },
   {
-    group: 'R5D - High Memory Optimized & Local Storage',
+    group: 'R5d - High Memory Optimized & Local Storage',
     name:  'r5d.2xlarge'
   },
   {
-    group: 'R5D - High Memory Optimized & Local Storage',
+    group: 'R5d - High Memory Optimized & Local Storage',
     name:  'r5d.4xlarge'
   },
   {
-    group: 'R5D - High Memory Optimized & Local Storage',
+    group: 'R5d - High Memory Optimized & Local Storage',
     name:  'r5d.12xlarge'
   },
   {
-    group: 'R5D - High Memory Optimized & Local Storage',
+    group: 'R5d - High Memory Optimized & Local Storage',
     name:  'r5d.24xlarge'
   },
   
   {
-    group: 'R5AD - High Memory Optimized & Local Storage AMD Epyc',
+    group: 'R5ad - High Memory Optimized & Local Storage AMD Epyc',
     name:  'r5ad.large'
   },
   {
-    group: 'R5AD - High Memory Optimized & Local Storage AMD Epyc',
+    group: 'R5ad - High Memory Optimized & Local Storage AMD Epyc',
     name:  'r5ad.xlarge'
   },
   {
-    group: 'R5AD - High Memory Optimized & Local Storage AMD Epyc',
+    group: 'R5ad - High Memory Optimized & Local Storage AMD Epyc',
     name:  'r5ad.2xlarge'
   },
   {
-    group: 'R5AD - High Memory Optimized & Local Storage AMD Epyc',
+    group: 'R5ad - High Memory Optimized & Local Storage AMD Epyc',
     name:  'r5ad.4xlarge'
   },
   {
-    group: 'R5AD - High Memory Optimized & Local Storage AMD Epyc',
+    group: 'R5ad - High Memory Optimized & Local Storage AMD Epyc',
     name:  'r5ad.12xlarge'
   },
   {
-    group: 'R5AD - High Memory Optimized & Local Storage AMD Epyc',
+    group: 'R5ad - High Memory Optimized & Local Storage AMD Epyc',
     name:  'r5ad.24xlarge'
   },
 
