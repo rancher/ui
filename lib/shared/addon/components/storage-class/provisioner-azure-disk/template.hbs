@@ -1,69 +1,33 @@
-<div class="row">
-  {{#if editing}}
-    <div class="radio">
-      <label>
-        {{radio-button selection=volumeType value='unmanaged'}}
-        {{t 'cruStorageClass.azure-disk.unmanaged'}}
-      </label>
-    </div>
-    <div class="radio">
-      <label>
-        {{radio-button selection=volumeType value='new'}}
-        {{t 'cruStorageClass.azure-disk.new'}}
-      </label>
-    </div>
-  {{else if (eq volumeType 'unmanaged')}}
-    {{t 'cruStorageClass.azure-disk.unmanaged'}}
-  {{else}}
-    {{t 'cruStorageClass.azure-disk.new'}}
-  {{/if}}
+<div class="row mb-20">
+  <div class="col span-4">
+    <label class="acc-label">
+      {{t (concat "cruStorageClass." provisioner ".storageaccounttype.label")}}
+    </label>
+    {{#input-or-display editable=editing value=storageaccounttype}}
+      {{input
+        type="text"
+        value=storageaccounttype
+        classNames="form-control"
+        placeholder=(t (concat "cruStorageClass." provisioner ".storageaccounttype.placeholder"))
+      }}
+    {{/input-or-display}}
+  </div>
+  <div class="col span-4">
+    <label class="acc-label">
+      {{t (concat "cruStorageClass." provisioner ".kind.label")}}
+    </label>
+    {{#if editing}}
+      {{new-select
+        classNames="form-control"
+        content=kindOptions
+        value=kind
+        optionLabelPath="translationKey"
+        localizedLabel=true
+      }}
+    {{else}}
+      <div class="text-muted">
+        {{kind}}
+      </div>
+    {{/if}}
+  </div>
 </div>
-
-{{#if (eq volumeType 'unmanaged')}}
-  <div class="row mb-20">
-    <div class="col span-4">
-      <label class="acc-label">{{t (concat 'cruStorageClass.' provisioner '.skuName.label')}}</label>
-      {{#input-or-display editable=editing value=skuName}}
-        {{input type="text" value=skuName classNames="form-control" placeholder=(t (concat 'cruStorageClass.' provisioner '.skuName.placeholder'))}}
-      {{/input-or-display}}
-    </div>
-    <div class="col span-4">
-      <label class="acc-label">{{t (concat 'cruStorageClass.' provisioner '.location.label')}}</label>
-      {{#input-or-display editable=editing value=location}}
-        {{input type="text" value=location classNames="form-control" placeholder=(t (concat 'cruStorageClass.' provisioner '.location.placeholder'))}}
-      {{/input-or-display}}
-    </div>
-    <div class="col span-4">
-      <label class="acc-label">{{t (concat 'cruStorageClass.' provisioner '.storageAccount.label')}}</label>
-      {{#input-or-display editable=editing value=storageAccount}}
-        {{input type="text" value=storageAccount classNames="form-control" placeholder=(t (concat 'cruStorageClass.' provisioner '.storageAccount.placeholder'))}}
-      {{/input-or-display}}
-    </div>
-  </div>
-{{else}}
-  <div class="row mb-20">
-    <div class="col span-4">
-      <label class="acc-label">{{t (concat 'cruStorageClass.' provisioner '.storageaccounttype.label')}}</label>
-      {{#input-or-display editable=editing value=storageaccounttype}}
-        {{input type="text" value=storageaccounttype classNames="form-control" placeholder=(t (concat 'cruStorageClass.' provisioner '.storageaccounttype.placeholder'))}}
-      {{/input-or-display}}
-    </div>
-    <div class="col span-4">
-      <label class="acc-label">{{t (concat 'cruStorageClass.' provisioner '.kind.label')}}</label>
-
-      {{#if editing}}
-        {{new-select
-          classNames="form-control"
-          content=kindOptions
-          value=kind
-          optionLabelPath="translationKey"
-          localizedLabel=true
-        }}
-      {{else}}
-        <div class="text-muted">
-          {{kind}}
-        </div>
-      {{/if}}
-    </div>
-  </div>
-{{/if}}
