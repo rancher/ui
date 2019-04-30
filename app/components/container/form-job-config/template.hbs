@@ -1,6 +1,6 @@
 {{#accordion-list-item
-  title=(t 'formJobConfig.title')
-  detail=(t 'formJobConfig.detail')
+  title=(t "formJobConfig.title")
+  detail=(t "formJobConfig.detail")
   status=status
   statusClass=statusClass
   expandAll=expandAll
@@ -11,26 +11,26 @@
   <div class="row">
     <div class="col span-6">
       <div class="box">
-        <label class="acc-label">{{t 'formJobConfig.completions.label'}}</label>
+        <label class="acc-label">{{t "formJobConfig.completions.label"}}</label>
         {{#input-or-display editable=editing value=jobConfig.completions}}
           <div class="input-group">
             {{input-number min=0 classNames="form-control" value=jobConfig.completions}}
-            <span class="input-group-addon bg-default">{{t 'formJobConfig.times' count=jobConfig.completions}}</span>
+            <span class="input-group-addon bg-default">{{t "formJobConfig.times" count=jobConfig.completions}}</span>
           </div>
-          <p class="help-block">{{t 'formJobConfig.completions.detail'}}</p>
+          <p class="help-block">{{t "formJobConfig.completions.detail"}}</p>
         {{/input-or-display}}
       </div>
     </div>
 
     <div class="col span-6">
       <div class="box">
-        <label class="acc-label">{{t 'formJobConfig.parallelism.label'}}</label>
+        <label class="acc-label">{{t "formJobConfig.parallelism.label"}}</label>
         {{#input-or-display editable=editing value=jobConfig.parallelism}}
           <div class="input-group">
             {{input-number min=0 classNames="form-control" value=jobConfig.parallelism}}
-            <span class="input-group-addon bg-default">{{t 'formJobConfig.times' count=jobConfig.parallelism}}</span>
+            <span class="input-group-addon bg-default">{{t "formJobConfig.times" count=jobConfig.parallelism}}</span>
           </div>
-          <p class="help-block">{{t 'formJobConfig.parallelism.detail'}}</p>
+          <p class="help-block">{{t "formJobConfig.parallelism.detail"}}</p>
         {{/input-or-display}}
       </div>
     </div>
@@ -39,44 +39,82 @@
   <div class="row">
     <div class="col span-6">
       <div class="box">
-        <label class="acc-label">{{t 'formJobConfig.backoffLimit.label'}}</label>
+        <label class="acc-label">{{t "formJobConfig.backoffLimit.label"}}</label>
         {{#input-or-display editable=editing value=jobConfig.backoffLimit}}
           <div class="input-group">
             {{input-number min=0 classNames="form-control" value=jobConfig.backoffLimit}}
-            <span class="input-group-addon bg-default">{{t 'formJobConfig.times' count=jobConfig.backoffLimit}}</span>
+            <span class="input-group-addon bg-default">{{t "formJobConfig.times" count=jobConfig.backoffLimit}}</span>
           </div>
-          <p class="help-block">{{t 'formJobConfig.backoffLimit.detail'}}</p>
+          <p class="help-block">{{t "formJobConfig.backoffLimit.detail"}}</p>
         {{/input-or-display}}
       </div>
     </div>
 
     <div class="col span-6">
       <div class="box">
-        <label class="acc-label">{{t 'formJobConfig.activeDeadlineSeconds.label'}}</label>
+        <label class="acc-label">{{t "formJobConfig.activeDeadlineSeconds.label"}}</label>
         {{#input-or-display editable=editing value=jobConfig.activeDeadlineSeconds}}
           <div class="input-group">
             {{input-number min=0 classNames="form-control" value=jobConfig.activeDeadlineSeconds}}
-            <span class="input-group-addon bg-default">{{t 'formJobConfig.seconds' count=jobConfig.activeDeadlineSeconds}}</span>
+            <span class="input-group-addon bg-default">{{t "formJobConfig.seconds" count=jobConfig.activeDeadlineSeconds}}</span>
           </div>
-          <p class="help-block">{{t 'formJobConfig.activeDeadlineSeconds.detail'}}</p>
+          <p class="help-block">{{t "formJobConfig.activeDeadlineSeconds.detail"}}</p>
         {{/input-or-display}}
       </div>
     </div>
   </div>
-  {{#if (eq scaleMode 'cronJob')}}
+  {{#if (eq scaleMode "cronJob")}}
     <div class="row">
       <div class="col span-6 box">
-        <label class="acc-label">{{t 'formJobConfig.suspend.label'}}</label>
+        <label class="acc-label">
+          {{t "formJobConfig.successfulJobsHistoryLimit.label"}}
+        </label>
+        {{#input-or-display
+          editable=editing
+          value=workload.cronJobConfig.successfulJobsHistoryLimit
+        }}
+          {{input-number
+            min=0
+            classNames="form-control"
+            value=workload.cronJobConfig.successfulJobsHistoryLimit
+          }}
+          <p class="help-block">
+            {{t "formJobConfig.successfulJobsHistoryLimit.detail"}}
+          </p>
+        {{/input-or-display}}
+      </div>
+      <div class="col span-6 box">
+        <label class="acc-label">
+          {{t "formJobConfig.failedJobsHistoryLimit.label"}}
+        </label>
+        {{#input-or-display
+          editable=editing
+          value=workload.cronJobConfig.failedJobsHistoryLimit
+        }}
+          {{input-number
+            min=0
+            classNames="form-control"
+            value=workload.cronJobConfig.failedJobsHistoryLimit
+          }}
+          <p class="help-block">
+            {{t "formJobConfig.failedJobsHistoryLimit.detail"}}
+          </p>
+        {{/input-or-display}}
+      </div>
+    </div>
+    <div class="row">
+      <div class="col span-6 box">
+        <label class="acc-label">{{t "formJobConfig.suspend.label"}}</label>
         <div class="radio">
           <label>
             {{radio-button selection=workload.cronJobConfig.suspend value=false}}
-            {{t 'generic.no'}}
+            {{t "generic.no"}}
           </label>
         </div>
         <div class="radio">
           <label>
             {{radio-button selection=workload.cronJobConfig.suspend value=true}}
-            {{t 'generic.yes'}}
+            {{t "generic.yes"}}
           </label>
         </div>
       </div>

@@ -32,9 +32,9 @@ function getDefaultConfig(config) {
     return {
       type:                       'cronJobConfig',
       concurrencyPolicy:          'Allow',
-      failedJobsHistoryLimit:     HISTORY_LIMIT,
+      failedJobsHistoryLimit:     1,
       schedule:                   '0 * * * *',
-      successfulJobsHistoryLimit: HISTORY_LIMIT,
+      successfulJobsHistoryLimit: 3,
       jobConfig:                  {},
       suspend:                    false,
     };
