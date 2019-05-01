@@ -35,7 +35,6 @@ const rootNav = [
     id:             'infra',
     localizedLabel: 'nav.infra.tab',
     ctx:            [getProjectId],
-    route:          'authenticated.project.certificates',
     submenu:        [
       {
         id:             'infra-certificates',
@@ -96,7 +95,6 @@ const rootNav = [
     ctx:            [getProjectId],
     resource:       [],
     resourceScope:  'global',
-    route:          'authenticated.project.alert',
     submenu:        [
       {
         id:             'tools-alerts',
@@ -166,7 +164,6 @@ const rootNav = [
     ctx:            [getClusterId],
     resource:       ['clusterroletemplatebinding'],
     resourceScope:  'global',
-    route:          'authenticated.cluster.storage',
     submenu:        [
       {
         scope:          'cluster',
@@ -213,7 +210,6 @@ const rootNav = [
     ctx:            [getClusterId],
     resource:       [],
     resourceScope:  'global',
-    route:          'authenticated.cluster.alert',
     submenu:        [
       {
         id:             'cluster-tools-alert',
@@ -306,12 +302,11 @@ const rootNav = [
     scope:          'global',
     id:             'global-security',
     localizedLabel: 'nav.admin.security.tab',
-    route:          'global-admin.security',
     submenu:        [
       {
         id:             'global-security-roles',
         localizedLabel: 'nav.admin.security.roles',
-        route:          'global-admin.security.roles',
+        route:          'global-admin.security.roles.index',
         resource:       ['roletemplate'],
         resourceScope:  'global',
       },
