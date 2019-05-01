@@ -106,6 +106,31 @@
               value=cluster.rancherKubernetesEngineConfig.network.plugin
               disabled=isEdit
             }}
+            {{#if windowsSupport}}
+              <label class="acc-label mt-30">
+                {{t "clusterNew.rke.network.flannelBackends.label"}}
+              </label>
+              <div class="radio">
+                <label class={{if isEdit "text-muted"}}>
+                  {{radio-button
+                    selection=config.network.options.flannel_backend_type
+                    value="host-gw"
+                    disabled=isEdit
+                  }}
+                  {{t "clusterNew.rke.network.flannelBackends.hostgw"}}
+                </label>
+              </div>
+              <div class="radio">
+                <label class={{if isEdit "text-muted"}}>
+                  {{radio-button
+                    selection=config.network.options.flannel_backend_type
+                    value="vxlan"
+                    disabled=isEdit
+                  }}
+                  {{t "clusterNew.rke.network.flannelBackends.vxlan"}}
+                </label>
+              </div>
+            {{/if}}
           </div>
           {{#if (and isCustom (eq mode "new"))}}
             <div class="col span-4">
@@ -113,25 +138,30 @@
                 {{t "clusterNew.rke.windowsSupport.label"}}
               </label>
               <div class="radio">
-                <label class={{if (not-eq cluster.rancherKubernetesEngineConfig.network.plugin "flannel") "text-muted"}}>
+                <label class={{unless windowsSupportAvailable "text-muted"}}>
                   {{radio-button
                     selection=windowsSupport
                     value=true
-                    disabled=(not-eq cluster.rancherKubernetesEngineConfig.network.plugin "flannel")
+                    disabled=(not windowsSupportAvailable)
                   }}
                   {{t "generic.enabled"}}
                 </label>
               </div>
               <div class="radio">
-                <label class={{if (not-eq cluster.rancherKubernetesEngineConfig.network.plugin "flannel") "text-muted"}}>
+                <label class={{unless windowsSupportAvailable "text-muted"}}>
                   {{radio-button
                     selection=windowsSupport
                     value=false
-                    disabled=(not-eq cluster.rancherKubernetesEngineConfig.network.plugin "flannel")
+                    disabled=(not windowsSupportAvailable)
                   }}
                   {{t "generic.disabled"}}
                 </label>
               </div>
+              {{#unless windowsSupportAvailable}}
+                <p class="help-block">
+                  {{t "clusterNew.rke.windowsSupport.help"}}
+                </p>
+              {{/unless}}
             </div>
           {{/if}}
           <div class="col {{if (and isCustom (eq mode "new")) "span-4" "span-6"}}">
@@ -652,102 +682,113 @@
                         </li>
                       </ul>
                     </div>
-                    {{#if isLinux}}
-                      <div class="row mt-20">
-                        {{t "clusterNew.rke.nodeName.title"}}
-                        <p class="help-block">{{t "clusterNew.rke.nodeName.detail"}}</p>
-                        <ul class="list-unstyled">
-                          <li>
-                            <div class="row">
-                              <div class="col span-6">
-                                {{input
-                                  type="text"
-                                  value=nodeName
-                                  placeholder=(t "clusterNew.rke.nodeName.placeholder")
-                                }}
-                                {{#unless isNodeNameValid}}
-                                  {{top-errors errors=nodeNameErrors}}
-                                {{/unless}}
-                              </div>
+                    <div class="row mt-20">
+                      {{t "clusterNew.rke.nodeName.title"}}
+                      <p class="help-block">
+                        {{t "clusterNew.rke.nodeName.detail"}}
+                      </p>
+                      <ul class="list-unstyled">
+                        <li>
+                          <div class="row">
+                            <div class="col span-6">
+                              {{input
+                                type="text"
+                                value=nodeName
+                                placeholder=(t "clusterNew.rke.nodeName.placeholder")
+                              }}
+                              {{#unless isNodeNameValid}}
+                                {{top-errors errors=nodeNameErrors}}
+                              {{/unless}}
                             </div>
-                          </li>
-                        </ul>
-                      </div>
-                      <div class="row mt-20">
-                        {{t "clusterNew.rke.labels.title"}}
-                        <p class="help-block">{{t "clusterNew.rke.labels.detail"}}</p>
-                        <ul class="list-unstyled">
-                          <li>
-                            {{#form-user-labels
-                               setLabels=(action "setLabels")
-                               expandAll=al.expandAll
-                               expand=(action expandFn)
-                               detailKey="formUserLabels.nodeDetail"
-                               as | userLabelArray removeLabel addUserLabel |
-                            }}
-                              {{#if userLabelArray.length}}
-                                <table class="table fixed no-lines mt-20">
-                                  <tr class="hidden-xs hidden-sm">
-                                    <th>{{t "formUserLabels.key.label"}}{{field-required}}</th>
-                                    <th width="30">&nbsp;</th>
-                                    <th>{{t "formUserLabels.value.label"}}</th>
-                                    <th width="40">&nbsp;</th>
+                          </div>
+                        </li>
+                      </ul>
+                    </div>
+                    <div class="row mt-20">
+                      {{t "clusterNew.rke.labels.title"}}
+                      <p class="help-block">
+                        {{t "clusterNew.rke.labels.detail"}}
+                      </p>
+                      <ul class="list-unstyled">
+                        <li>
+                          {{#form-user-labels
+                              setLabels=(action "setLabels")
+                              expandAll=al.expandAll
+                              expand=(action expandFn)
+                              detailKey="formUserLabels.nodeDetail"
+                              as | userLabelArray removeLabel addUserLabel |
+                          }}
+                            {{#if userLabelArray.length}}
+                              <table class="table fixed no-lines mt-20">
+                                <tr class="hidden-xs hidden-sm">
+                                  <th>{{t "formUserLabels.key.label"}}{{field-required}}</th>
+                                  <th width="30">&nbsp;</th>
+                                  <th>{{t "formUserLabels.value.label"}}</th>
+                                  <th width="40">&nbsp;</th>
+                                </tr>
+                                {{#each userLabelArray as |label|}}
+                                  <tr>
+                                    <td data-title="key">
+                                      {{input-paste
+                                        pasted=(action "pastedLabels")
+                                        class="form-control input-sm key"
+                                        type="text"
+                                        value=label.key
+                                        placeholder="formUserLabels.key.placeholder"
+                                        disabled=(eq label.readonly true)
+                                      }}
+                                    </td>
+
+                                    <td class="text-center">
+                                      <p class="input-sm">
+                                        {{t "formUserLabels.separator"}}
+                                      </p>
+                                    </td>
+
+                                    <td data-title="label">
+                                      {{input
+                                        class="form-control input-sm"
+                                        type="text"
+                                        value=label.value
+                                        placeholder=(t "formUserLabels.value.placeholder")
+                                        disabled=(eq label.readonly true)
+                                      }}
+                                    </td>
+
+                                    <td class="text-right">
+                                      <button class="btn bg-primary btn-sm" {{action removeLabel label}} disabled={{eq label.readonly true}}>
+                                        <i class="icon icon-minus"/>
+                                        <span class="sr-only">
+                                          {{t "generic.remove"}}
+                                        </span>
+                                      </button>
+                                    </td>
                                   </tr>
-                                  {{#each userLabelArray as |label|}}
-                                    <tr>
-                                      <td data-title="key">
-                                        {{input-paste
-                                          pasted=(action "pastedLabels")
-                                          class="form-control input-sm key"
-                                          type="text"
-                                          value=label.key
-                                          placeholder="formUserLabels.key.placeholder"
-                                          disabled=(eq label.readonly true)
-                                        }}
-                                      </td>
+                                {{/each}}
+                              </table>
+                              <div class="protip pt-10">
+                                {{t "formUserLabels.protip"}}
+                              </div>
+                            {{/if}}
 
-                                      <td class="text-center">
-                                        <p class="input-sm">{{t "formUserLabels.separator"}}</p>
-                                      </td>
-
-                                      <td data-title="label">
-                                        {{input
-                                          class="form-control input-sm"
-                                          type="text"
-                                          value=label.value
-                                          placeholder=(t "formUserLabels.value.placeholder")
-                                          disabled=(eq label.readonly true)
-                                        }}
-                                      </td>
-
-                                      <td class="text-right">
-                                        <button class="btn bg-primary btn-sm" {{action removeLabel label}} disabled={{eq label.readonly true}}>
-                                          <i class="icon icon-minus"/><span class="sr-only">{{t "generic.remove"}}</span>
-                                        </button>
-                                      </td>
-                                    </tr>
-                                  {{/each}}
-                                </table>
-                                <div class="protip pt-10">
-                                  {{t "formUserLabels.protip"}}
-                                </div>
-                              {{/if}}
-
-                              <button class="btn bg-link icon-btn" {{action addUserLabel}}>
-                                <span class="darken"><i class="icon icon-plus text-small"/></span>
-                                <span>{{t "formUserLabels.addAction"}}</span>
-                              </button>
-                            {{/form-user-labels}}
-                          </li>
-                        </ul>
-                      </div>
-                    {{/if}}
+                            <button class="btn bg-link icon-btn" {{action addUserLabel}}>
+                              <span class="darken">
+                                <i class="icon icon-plus text-small"/>
+                              </span>
+                              <span>
+                                {{t "formUserLabels.addAction"}}
+                              </span>
+                            </button>
+                          {{/form-user-labels}}
+                        </li>
+                      </ul>
+                    </div>
                   {{/advanced-section}}
                 </li>
               </ul>
             </li>
             <li>
-              {{t (if isLinux "clusterNew.rke.command.instructions" "clusterNew.rke.command.winInstructions") htmlSafe=true}}
+              {{t (if isLinux "clusterNew.rke.command.instructions" "clusterNew.rke.command.winInstructions") htmlSafe=true version="1809"}}
               {{!-- <p class="help-block">{{t "clusterNew.rke.labels.detail"}}</p> --}}
               <ul class="list-unstyled">
                 <li>

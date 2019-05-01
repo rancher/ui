@@ -11,6 +11,8 @@ import ChildHook from 'shared/mixins/child-hook';
 import { flattenLabelArrays } from 'shared/mixins/manage-labels';
 import layout from './template';
 
+const WINDOWS_NODE_SELECTOR = 'beta.kubernetes.io/os = windows';
+
 export default Component.extend(NewOrEdit, ChildHook, {
   clusterStore: service(),
   intl:         service(),
@@ -34,6 +36,7 @@ export default Component.extend(NewOrEdit, ChildHook, {
   isRequestedHost:       null,
   upgradeOptions:        null,
   separateLivenessCheck: false,
+  windowsOnly:           false,
 
   // Errors from components
   commandErrors:    null,
@@ -268,6 +271,23 @@ export default Component.extend(NewOrEdit, ChildHook, {
     let service = get(this, 'service');
 
     let readinessProbe = get(lc, 'readinessProbe');
+
+    if ( !get(this, 'isUpgrade') && get(this, 'windowsOnly') && !get(this, 'isSidekick') ) {
+      if ( !get(service, 'scheduling') ) {
+        set(service, 'scheduling', { node: { requireAll: [WINDOWS_NODE_SELECTOR] } });
+      } else if ( !get(service, 'scheduling.node') ) {
+        set(service, 'scheduling.node', { requireAll: [WINDOWS_NODE_SELECTOR] });
+      } else if ( !get(service, 'scheduling.node.requireAll') ) {
+        set(service, 'scheduling.node.requireAll', [WINDOWS_NODE_SELECTOR]);
+      } else {
+        const requireAll = get(service, 'scheduling.node.requireAll') || [];
+        const found = requireAll.find((r) => r && r.replace(/\s+/g, '') === WINDOWS_NODE_SELECTOR.replace(/\s+/g, ''));
+
+        if ( !found ) {
+          requireAll.push(WINDOWS_NODE_SELECTOR);
+        }
+      }
+    }
 
     if (!get(this, 'separateLivenessCheck')) {
       if ( readinessProbe ) {
