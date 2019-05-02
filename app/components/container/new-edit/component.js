@@ -1,5 +1,5 @@
 import Errors from 'ui/utils/errors';
-import { get, set, setProperties } from '@ember/object';
+import { get, set, setProperties, observer } from '@ember/object';
 import { equal } from '@ember/object/computed';
 import { next } from '@ember/runloop';
 import { inject as service } from '@ember/service';
@@ -12,6 +12,7 @@ import { flattenLabelArrays } from 'shared/mixins/manage-labels';
 import layout from './template';
 
 const WINDOWS_NODE_SELECTOR = 'beta.kubernetes.io/os = windows';
+const LINUX_NODE_SELECTOR = 'beta.kubernetes.io/os != windows';
 
 export default Component.extend(NewOrEdit, ChildHook, {
   clusterStore: service(),
@@ -162,6 +163,24 @@ export default Component.extend(NewOrEdit, ChildHook, {
     },
   },
 
+  linuxOnlyDidChange: observer('linuxOnly', function(){
+    const linuxOnly = get(this, 'linuxOnly');
+    const windowsOnly = get(this, 'windowsOnly');
+
+    if ( linuxOnly && windowsOnly ) {
+      set(this, 'windowsOnly', false);
+    }
+  }),
+
+  windowsOnlyDidChange: observer('windowsOnly', function(){
+    const linuxOnly = get(this, 'linuxOnly');
+    const windowsOnly = get(this, 'windowsOnly');
+
+    if ( windowsOnly && linuxOnly ) {
+      set(this, 'linuxOnly', false);
+    }
+  }),
+
   // Labels
   labelsChanged: debouncedObserver(
     'userLabels.@each.{key,value}',
@@ -272,19 +291,21 @@ export default Component.extend(NewOrEdit, ChildHook, {
 
     let readinessProbe = get(lc, 'readinessProbe');
 
-    if ( !get(this, 'isUpgrade') && get(this, 'windowsOnly') && !get(this, 'isSidekick') ) {
+    if ( !get(this, 'isUpgrade') && (get(this, 'windowsOnly') || get(this, 'linuxOnly')) && !get(this, 'isSidekick') ) {
+      const selector = get(this, 'windowsOnly') ? WINDOWS_NODE_SELECTOR : LINUX_NODE_SELECTOR;
+
       if ( !get(service, 'scheduling') ) {
-        set(service, 'scheduling', { node: { requireAll: [WINDOWS_NODE_SELECTOR] } });
+        set(service, 'scheduling', { node: { requireAll: [selector] } });
       } else if ( !get(service, 'scheduling.node') ) {
-        set(service, 'scheduling.node', { requireAll: [WINDOWS_NODE_SELECTOR] });
+        set(service, 'scheduling.node', { requireAll: [selector] });
       } else if ( !get(service, 'scheduling.node.requireAll') ) {
-        set(service, 'scheduling.node.requireAll', [WINDOWS_NODE_SELECTOR]);
+        set(service, 'scheduling.node.requireAll', [selector]);
       } else {
         const requireAll = get(service, 'scheduling.node.requireAll') || [];
-        const found = requireAll.find((r) => r && r.replace(/\s+/g, '') === WINDOWS_NODE_SELECTOR.replace(/\s+/g, ''));
+        const found = requireAll.find((r) => r && r.replace(/\s+/g, '') === selector.replace(/\s+/g, ''));
 
         if ( !found ) {
-          requireAll.push(WINDOWS_NODE_SELECTOR);
+          requireAll.push(selector);
         }
       }
     }
