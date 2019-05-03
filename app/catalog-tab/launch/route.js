@@ -67,18 +67,14 @@ export default Route.extend({
         let namespace             = null;
         let newAppName            = null;
 
-        if ( requiredNamespace && existingNamespace ) {
-          // If it's required and already exists, use it.
-          namespace = existingNamespace;
+        if (existingNamespace) {
+          // If it already exists, use it.
+          ( { namespace, newAppName } = {
+            namespace:  existingNamespace,
+            newAppName: this.dedupeName(existingNamespace.displayName)
+          } );
         } else {
-          // Otherwise make up a new unique name & namespace
-          let create = this.newNamespace(existingNamespace, namespaceName);
-
-          namespace = create.newNS;
-
-          if ( existingNamespace ) {
-            newAppName = create.newAppName;
-          }
+          ( { namespace, newAppName } = this.newNamespace(existingNamespace, namespaceName) );
         }
 
         var verArr = Object.keys(links).filter((key) => !!links[key])
@@ -164,15 +160,15 @@ export default Route.extend({
       newAppName = this.dedupeName(get(duplicateNamespace, 'displayName'));
     }
 
-    const newNS = get(this, 'clusterStore').createRecord({
+    const namespace = get(this, 'clusterStore').createRecord({
       type:      'namespace',
       name:      newAppName,
       projectId: this.modelFor('authenticated.project').get('project.id'),
     });
 
     return {
+      namespace,
       newAppName,
-      newNS
     };
   },
 
