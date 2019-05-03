@@ -8,14 +8,15 @@
 {{/unless}}
 <section class="row">
   <div class="col span-1">
-    <div class="pt-10">
-      {{t "alertPage.newOrEdit.alert"}}
-    </div>
+    {{#if model.recipients.length}}
+      <div class="pt-10">
+        {{t "alertPage.newOrEdit.alert"}}
+      </div>
+    {{/if}}
   </div>
   <div class="col span-10">
     {{#each model.recipients as |recipient idx|}}
       {{alert/form-recipient-item
-        disableRemove=disableRemove
         remove=(action "remove")
         isFirst=(eq idx 0)
         notifiers=notifiers
