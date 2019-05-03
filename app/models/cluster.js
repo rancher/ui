@@ -220,6 +220,12 @@ export default Resource.extend(Grafana, ResourceUsage, {
     ];
   }),
 
+  isVxlan: computed('rancherKubernetesEngineConfig.network.options.flannel_backend_type', function() {
+    const backend = get(this, 'rancherKubernetesEngineConfig.network.options.flannel_backend_type');
+
+    return backend === 'vxlan';
+  }),
+
   isWindows:  computed('rancherKubernetesEngineConfig', 'rancherKubernetesEngineConfig.network.plugin', 'rancherKubernetesEngineConfig.network.options.flannel_backend_type', function() {
     const config = get(this, 'rancherKubernetesEngineConfig');
     const plugin = get(config, 'network.plugin');

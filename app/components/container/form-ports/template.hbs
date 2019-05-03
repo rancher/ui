@@ -1,40 +1,78 @@
-<div class="clearfix {{unless editing 'box'}}">
-  <label class="{{if editing 'acc-label'}}">{{t 'formPorts.header'}}</label>
+<div class="clearfix {{unless editing "box"}}">
+  <label class="{{if editing "acc-label"}}">
+    {{t "formPorts.header"}}
+  </label>
   {{#if showWarning}}
-    {{banner-message icon='icon-alert' color='bg-warning mb-10' message=(t 'formPorts.warning' appName=settings.appName)}}
+    {{banner-message
+      icon="icon-alert"
+      color="bg-warning mb-10"
+      message=(t "formPorts.warning"
+      appName=settings.appName)
+    }}
   {{/if}}
+
+  {{#if scope.currentCluster.isWindows}}
+    {{banner-message
+      icon="icon-alert"
+      color="bg-warning mb-10"
+      message=(t "formPorts.hostPortWarning")
+    }}
+  {{/if}}
+
   {{#if ports.length}}
     <table class="table fixed no-lines small mb-10">
       <thead>
         <tr class="hidden-sm">
-          <th class="{{unless editing 'acc-label'}}">{{t 'formPorts.containerPort.label'}}{{#if editing}}{{field-required}}{{/if}}</th>
+          <th class="{{unless editing "acc-label"}}">
+            {{t "formPorts.containerPort.label"}}
+            {{#if editing}}
+              {{field-required}}
+            {{/if}}
+          </th>
           <th width="10"></th>
-          <th class="{{unless editing 'acc-label'}}" width="80">{{t 'formPorts.protocol.label'}}</th>
+          <th class="{{unless editing "acc-label"}}" width="80">
+            {{t "formPorts.protocol.label"}}
+          </th>
           <th width="10"></th>
-          <th width="350" class="{{unless editing 'acc-label'}}">{{t 'formPorts.kind.label'}}</th>
+          <th width="350" class="{{unless editing "acc-label"}}">
+            {{t "formPorts.kind.label"}}
+          </th>
           <th width="10"></th>
-          <th class="{{unless editing 'acc-label'}}">{{t 'formPorts.sourcePort.label'}}{{#if editing}}{{field-required}}{{/if}}</th>
-          <th width="40">&nbsp;</th>
+          <th class="{{unless editing "acc-label"}}">
+            {{t "formPorts.sourcePort.label"}}
+            {{#if editing}}
+              {{field-required}}
+            {{/if}}
+          </th>
+          <th width="40">
+            &nbsp;
+          </th>
         </tr>
       </thead>
       <tbody>
         {{#each ports as |port|}}
           <tr>
-            <td data-title="{{t 'formPorts.containerPort.label'}}">
+            <td data-title="{{t "formPorts.containerPort.label"}}">
               {{#if editing}}
-                {{input-integer class="form-control input-sm public" min="1" max="65535" value=port.containerPort placeholder=(t 'formPorts.containerPort.placeholder')}}
+                {{input-integer
+                  class="form-control input-sm public"
+                  min="1"
+                  max="65535"
+                  value=port.containerPort
+                  placeholder=(t "formPorts.containerPort.placeholder")
+                }}
               {{else}}
                 {{port.containerPort}}
               {{/if}}
             </td>
             <td>&nbsp;</td>
 
-            <td data-title="{{t 'formPorts.protocol.label'}}">
+            <td data-title="{{t "formPorts.protocol.label"}}">
               {{#if editing}}
                 {{new-select
-                    class="form-control input-sm"
-                    content=protocolOptions
-                    value=port.protocol
+                  class="form-control input-sm"
+                  content=protocolOptions
+                  value=port.protocol
                 }}
               {{else}}
                 {{port.protocol}}
@@ -42,7 +80,7 @@
             </td>
             <td>&nbsp;</td>
 
-            <td data-title="{{t 'formPorts.kind.label'}}">
+            <td data-title="{{t "formPorts.kind.label"}}">
               {{#if editing}}
                 {{new-select
                   classNames="form-control"
@@ -56,28 +94,47 @@
                 {{#if port.kind}}
                   {{port.kind}}
                 {{else}}
-                  <span class="text-muted">{{t 'generic.na'}}</span>
+                  <span class="text-muted">
+                    {{t "generic.na"}}
+                  </span>
                 {{/if}}
               {{/if}}
             </td>
             <td>&nbsp;</td>
-            <td data-title="{{t 'formPorts.sourcePort.label'}}">
+            <td data-title="{{t "formPorts.sourcePort.label"}}">
               {{#if (or (eq port.kind "ClusterIP") (eq port.kind "NodePort"))}}
                 {{#if editing}}
                   {{#if (eq port.kind "NodePort")}}
-                    {{input-random-port min=nodePortFrom max=nodePortTo value=port.sourcePort placeholder=nodePortPlaceholder standardKey="generic.random"}}
+                    {{input-random-port
+                      min=nodePortFrom
+                      max=nodePortTo
+                      value=port.sourcePort
+                      placeholder=nodePortPlaceholder
+                      standardKey="generic.random"
+                    }}
                   {{else}}
-                    {{input-random-port min="1" max="65535" value=port.sourcePort placeholder=(t 'formPorts.containerPort.placeholder') standardKey="formPorts.sourcePort.clusterIpDefault"}}
+                    {{input-random-port
+                      min="1"
+                      max="65535"
+                      value=port.sourcePort
+                      placeholder=(t "formPorts.containerPort.placeholder")
+                      standardKey="formPorts.sourcePort.clusterIpDefault"
+                    }}
                   {{/if}}
                 {{else if port.sourcePort}}
                   {{port.sourcePort}}
                 {{else}}
-                  {{t (if (eq port.kind "ClusterIP") 'formPorts.sourcePort.clusterIpDefault' 'generic.random')}}
+                  {{t (if (eq port.kind "ClusterIP") "formPorts.sourcePort.clusterIpDefault" "generic.random")}}
                 {{/if}}
               {{else if (eq port.kind "HostPort")}}
                 <div class="row">
                   {{#if editing}}
-                    {{input class="form-control input-sm" type="text" value=port._ipPort placeholder=(t 'formPorts.sourcePort.ipPlaceholder')}}
+                    {{input
+                      class="form-control input-sm"
+                      type="text"
+                      value=port._ipPort
+                      placeholder=(t "formPorts.sourcePort.ipPlaceholder")
+                    }}
                   {{else if port.hostIp}}
                     {{port.hostIp}}:{{port.sourcePort}}
                   {{else}}
@@ -86,7 +143,13 @@
                 </div>
               {{else}}
                 {{#if editing}}
-                  {{input-integer class="form-control input-sm" min="1" max="65535" value=port.sourcePort placeholder=(t 'formPorts.sourcePort.placeholder')}}
+                  {{input-integer
+                    class="form-control input-sm"
+                    min="1"
+                    max="65535"
+                    value=port.sourcePort
+                    placeholder=(t "formPorts.sourcePort.placeholder")
+                  }}
                 {{else}}
                   {{port.sourcePort}}
                 {{/if}}
@@ -96,7 +159,10 @@
             <td>
               {{#if editing}}
                 <button type="button" class="btn bg-primary btn-sm" {{action "removePort" port}}>
-                  <i class="icon icon-minus"/><span class="sr-only">{{t 'generic.remove'}}</span>
+                  <i class="icon icon-minus"/>
+                  <span class="sr-only">
+                    {{t "generic.remove"}}
+                  </span>
                 </button>
               {{/if}}
             </td>
@@ -106,7 +172,9 @@
     </table>
   {{else}}
     {{#unless editing}}
-      <span class="text-center text-muted">{{t 'formPorts.noPorts'}}</span>
+      <span class="text-center text-muted">
+        {{t "formPorts.noPorts"}}
+      </span>
     {{/unless}}
   {{/if}}
 </div>
@@ -114,8 +182,12 @@
 <div>
   {{#if editing}}
     <button class="btn bg-link icon-btn p-0" {{action "addPort"}}>
-      <span class="darken"><i class="icon icon-plus text-small"/></span>
-      <span>{{t 'formPorts.addAction'}}</span>
+      <span class="darken">
+        <i class="icon icon-plus text-small"/>
+      </span>
+      <span>
+        {{t "formPorts.addAction"}}
+      </span>
     </button>
   {{/if}}
 </div>
