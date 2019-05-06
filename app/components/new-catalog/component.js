@@ -267,7 +267,7 @@ export default Component.extend(NewOrEdit, CatalogApp, ChildHook, {
     const questions     = [];
     const customAnswers = {};
 
-    template.questions.forEach((q) => {
+    (template.questions || []).forEach((q) => {
       questions.push(q);
       const subquestions = get(q, 'subquestions');
 
