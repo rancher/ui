@@ -308,7 +308,7 @@ export default Component.extend(ThrottledResize, {
         // up
         nextIndex = currentFocusIndex - 1;
 
-        if (nextIndex >= tabList.length) {
+        if (tabList && nextIndex >= tabList.length) {
           tabList.eq(tabList.length).focus();
         } else {
           tabList.eq(nextIndex).focus();
