@@ -1,14 +1,15 @@
+/* eslint-env node */
+
+const path = require('path');
+const HttpProxy = require('http-proxy');
+
+const config = require('../../config/environment')(process.env.EMBER_ENV).APP;
+
 module.exports = function(app, options) {
-  var path = require('path');
-  var ForeverAgent = require('forever-agent');
-  var HttpProxy = require('http-proxy');
   var httpServer = options.httpServer;
 
-  var config = require('../../config/environment')().APP;
 
-  var target = config.apiServer;
-
-  var proxy = HttpProxy.createProxyServer({
+  const proxy = HttpProxy.createProxyServer({
     ws: true,
     xfwd: false,
     target: config.apiServer,
@@ -19,15 +20,10 @@ module.exports = function(app, options) {
   proxy.on('error', onProxyError);
 
   // WebSocket for Rancher
-  httpServer.on('upgrade', function proxyWsRequest(req, socket, head) {
+  httpServer.on('upgrade', (req, socket, head) => {
     if ( req.url.startsWith('/_lr/') ) {
       return;
     }
-
-    if ( socket.ssl ) {
-      req.headers['x-forwarded-proto'] = 'https';
-    }
-
 
     let targetHost = config.apiServer.replace(/^https?:\/\//, '');
     let host = req.headers['host'];
@@ -90,7 +86,7 @@ module.exports = function(app, options) {
     }
   }),
 
-  console.log('Proxying APIs to', target);
+  console.log('Proxying APIs to', config.apiServer);
   Object.keys(map).forEach(function(label) {
     let base = map[label];
     app.use(base, function(req, res, next) {
@@ -135,4 +131,8 @@ function onProxyError(err, req, res) {
 
 function proxyLog(label, req) {
   console.log(`[${ label }]`, req.method, req.url);
+}
+
+function proxyError(label, req, err) {
+  console.error(`[${ label }][${ req._source }]`, req.method, req.url, err);
 }
