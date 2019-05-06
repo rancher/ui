@@ -10,9 +10,10 @@ module.exports = function(app, options) {
 
   var proxy = HttpProxy.createProxyServer({
     ws: true,
-    xfwd: true,
+    xfwd: false,
     target: config.apiServer,
     secure: false,
+    followRedirects: true,
   });
 
   proxy.on('error', onProxyError);
