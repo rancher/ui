@@ -1,4 +1,5 @@
-import { get, set, computed } from '@ember/object';
+import { get, set, computed, observer } from '@ember/object';
+import { on } from '@ember/object/evented';
 import { inject as service } from '@ember/service';
 import { hasMany, reference } from '@rancher/ember-api-store/utils/denormalize';
 import Resource from '@rancher/ember-api-store/models/resource';
@@ -21,9 +22,10 @@ export default Resource.extend({
 
   namespaces: hasMany('id', 'namespace', 'projectId', 'clusterStore'),
 
-  type:                 'project',
-  name:                 null,
-  description: null,
+  type:              'project',
+  name:              null,
+  description:       null,
+  isMonitoringReady: false,
 
   cluster:                     reference('clusterId', 'cluster'),
   // 2.0 bug projectId is wrong in the ptrb should be <cluster-id>:<project-id> instead of just <project-id>
@@ -46,7 +48,7 @@ export default Resource.extend({
     return labels[SYSTEM_PROJECT_LABEL] === 'true';
   }),
 
-  isMonitoringReady: computed('conditions.@each.status', function() {
+  conditionsDidChange: on('init', observer('enableProjectMonitoring', 'conditions.@each.status', function() {
     if ( !get(this, 'enableProjectMonitoring') ) {
       return false;
     }
@@ -54,8 +56,12 @@ export default Resource.extend({
 
     const ready = conditions.findBy('type', 'MonitoringEnabled');
 
-    return ready && get(ready, 'status') === 'True';
-  }),
+    const status = ready && get(ready, 'status') === 'True';
+
+    if ( status !== get(this, 'isMonitoringReady') ) {
+      set(this, 'isMonitoringReady', status);
+    }
+  })),
 
   active: computed('scope.currentProject.id', 'id', function() {
     return get(this, 'scope.currentProject.id') === get(this, 'id');
