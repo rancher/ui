@@ -348,7 +348,7 @@ export default Component.extend(NewOrEdit, CatalogApp, ChildHook, {
       return false;
     }
     if ( get(this, 'actuallySave') ) {
-      if (get(this, 'selectedTemplateModel.questions')) {
+      if (!get(this, 'selectedTemplateModel.valuesYaml') && get(this, 'selectedTemplateModel.questions')) {
         set(get(this, 'catalogApp'), 'answers', get(this, 'answers'));
       }
 
@@ -398,7 +398,7 @@ export default Component.extend(NewOrEdit, CatalogApp, ChildHook, {
       return app.doAction('upgrade', {
         externalId:   get(this, 'selectedTemplateModel.externalId'),
         answers:      yaml ? {} : get(app, 'answers'),
-        valuesYaml:   yaml ? yaml : null,
+        valuesYaml:   yaml ? yaml : '',
         forceUpgrade: get(this, 'forceUpgrade'),
       }).then((resp) => resp)
         .catch((err) => err);
@@ -410,7 +410,7 @@ export default Component.extend(NewOrEdit, CatalogApp, ChildHook, {
         externalId:      get(this, 'selectedTemplateModel.externalId'),
         projectId:       get(neu, 'projectId'),
         answers:         yaml ? {} : get(app, 'answers'),
-        valuesYaml:      yaml ? yaml : null,
+        valuesYaml:      yaml ? yaml : '',
       });
 
       return app.save().then(() => get(this, 'primaryResource'));
