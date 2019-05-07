@@ -230,16 +230,38 @@
           </div>
         </div>
       </div>
+    {{/if}}
+    {{#if (eq level "cluster")}}
       <div class="row">
+        {{#if enableNodeExporter}}
+          <div class="col span-6">
+            <label class="acc-label">
+              {{t "monitoringPage.config.nodeexporter.label"}}
+            </label>
+            {{input-integer
+              min=1
+              max=65535
+              value=port
+            }}
+          </div>
+        {{/if}}
+
         <div class="col span-6">
           <label class="acc-label">
-            {{t "monitoringPage.config.nodeexporter.label"}}
+            {{t "monitoringPage.config.operator.memoryLimit.label"}}
           </label>
-          {{input-integer
-            min=1
-            max=65535
-            value=port
-          }}
+          <div class="input-group">
+            {{input-integer
+              min="4"
+              step="1"
+              value=operatorLimitsMemory
+              classNames="form-control"
+              placeholder=(t "monitoringPage.config.operator.memoryLimit.placeholder")
+            }}
+            <div class="input-group-addon bg-default">
+              {{t "generic.mibibyte"}}
+            </div>
+          </div>
         </div>
       </div>
     {{/if}}
