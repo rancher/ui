@@ -83,23 +83,6 @@
                 disabled=isEdit
             }}
           </div>
-          {{#if (and isCustom (eq mode 'new'))}}
-            <div class="col span-4">
-              <label class="acc-label">{{t 'clusterNew.rke.windowsSupport.label'}}</label>
-              <div class="radio">
-                <label class={{if (not-eq config.network.plugin 'flannel') 'text-muted'}}>
-                  {{radio-button selection=windowsSupport value=true disabled=(not-eq config.network.plugin 'flannel')}}
-                  {{t 'generic.enabled'}}
-                </label>
-              </div>
-              <div class="radio">
-                <label class={{if (not-eq config.network.plugin 'flannel') 'text-muted'}}>
-                  {{radio-button selection=windowsSupport value=false disabled=(not-eq config.network.plugin 'flannel')}}
-                  {{t 'generic.disabled'}}
-                </label>
-              </div>
-            </div>
-          {{/if}}
           <div class="col {{if (and isCustom (eq mode 'new')) "span-4" "span-6"}}">
             <label class="acc-label">{{t 'clusterNew.rke.networkPolicy.label'}}</label>
             <div class="radio">
@@ -309,34 +292,6 @@
 
 {{#if (and isCustom (eq step 2)) }}
   {{#accordion-list showExpandAll=false as |al expandFn|}}
-    {{#if windowsSupport}}
-      {{#accordion-list-item
-           title=(t 'clusterNew.rke.system.title')
-           detail=(t 'clusterNew.rke.system.detail')
-           expandOnInit=true
-           expandAll=al.expandAll
-           expand=(action expandFn)
-      }}
-        <div class="row">
-          <div class="col span-6 text-center mt-0 mb-0">
-            <div class="radio">
-              <label>
-                {{radio-button selection=isLinux value=true}}
-                {{t 'clusterNew.rke.system.linux'}}
-              </label>
-            </div>
-          </div>
-          <div class="col span-6 text-center mt-0 mb-0">
-            <div class="radio">
-              <label>
-                {{radio-button selection=isLinux value=false}}
-                {{t 'clusterNew.rke.system.windows'}}
-              </label>
-            </div>
-          </div>
-        </div>
-      {{/accordion-list-item}}
-    {{/if}}
     {{#accordion-list-item
          title=(t 'clusterNew.rke.role.pageheader')
          detail=(t 'clusterNew.rke.info.text')
