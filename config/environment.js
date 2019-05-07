@@ -169,3 +169,19 @@ module.exports = function(environment) {
 
   return ENV;
 };
+
+// host can be an ip "1.2.3.4" -> https://1.2.3.4:30443
+// or a URL+port
+function normalizeHost(host, defaultPort) {
+  if ( host.indexOf('http') === 0 ) {
+    return host;
+  }
+
+  if ( host.indexOf(':') >= 0 || defaultPort === 443 ) {
+    host = `https://${  host }`;
+  } else {
+    host = `https://${  host  }${ defaultPort ? `:${ defaultPort }` : '' }`;
+  }
+
+  return host;
+}

@@ -66,16 +66,17 @@ export default Route.extend(Preload, {
       this.testAuthToken();
     }, CHECK_AUTH_TIMER));
 
-    return this.testAuthToken().then(() => {
+    return PromiseAll([
+      this.testAuthToken(),
+      this.loadPublicSettings(),
+    ]).then(() => {
       if (get(this, 'access.mustChangePassword')) {
         this.transitionTo('update-password');
       }
 
-      return this.loadPublicSettings().then(() => {
-        if (get(this, 'settings.serverUrlIsEmpty')) {
-          get(this, 'router').transitionTo('update-critical-settings');
-        }
-      });
+      if (get(this, 'settings.serverUrlIsEmpty')) {
+        get(this, 'router').transitionTo('update-critical-settings');
+      }
     });
   },
 

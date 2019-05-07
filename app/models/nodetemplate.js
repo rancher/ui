@@ -94,10 +94,12 @@ export default Resource.extend({
     let location     = getDisplayLocation(driver);
     let computedKeys = null;
 
-    if (location.keyOrKeysToWatch) {
+    if (location && location.keyOrKeysToWatch) {
       computedKeys = isArray(location.keyOrKeysToWatch) ? location.keyOrKeysToWatch : [location.keyOrKeysToWatch];
 
       this.registerDynamicComputedProperty('displayLocation', computedKeys, location.getDisplayProperty);
+    } else {
+      set(this, 'displayLocation', 'N/A');
     }
   },
 
@@ -105,10 +107,12 @@ export default Resource.extend({
     let size     = getDisplaySize(driver);
     let computedKeys = null;
 
-    if (size.keyOrKeysToWatch) {
+    if (size && size.keyOrKeysToWatch) {
       computedKeys = isArray(size.keyOrKeysToWatch) ? size.keyOrKeysToWatch : [size.keyOrKeysToWatch];
 
       this.registerDynamicComputedProperty('displaySize', computedKeys, size.getDisplayProperty);
+    } else {
+      set(this, 'displaySize', 'N/A');
     }
   },
 
