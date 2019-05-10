@@ -1,5 +1,5 @@
 import Errors from 'ui/utils/errors';
-import { get, set, setProperties, observer } from '@ember/object';
+import { get, set, setProperties, computed } from '@ember/object';
 import { equal } from '@ember/object/computed';
 import { next } from '@ember/runloop';
 import { inject as service } from '@ember/service';
@@ -13,6 +13,8 @@ import layout from './template';
 
 const WINDOWS_NODE_SELECTOR = 'beta.kubernetes.io/os = windows';
 const LINUX_NODE_SELECTOR = 'beta.kubernetes.io/os != windows';
+const LINUX = 'linux';
+const WINDOWS = 'windows';
 
 export default Component.extend(NewOrEdit, ChildHook, {
   clusterStore: service(),
@@ -37,7 +39,7 @@ export default Component.extend(NewOrEdit, ChildHook, {
   isRequestedHost:       null,
   upgradeOptions:        null,
   separateLivenessCheck: false,
-  windowsOnly:           false,
+  targetOs:              WINDOWS,
 
   // Errors from components
   commandErrors:    null,
@@ -124,6 +126,10 @@ export default Component.extend(NewOrEdit, ChildHook, {
   },
 
   actions: {
+    setTargetOs(os) {
+      set(this, 'targetOs', os);
+    },
+
     setImage(uuid) {
       set(this, 'launchConfig.image', uuid);
     },
@@ -162,24 +168,6 @@ export default Component.extend(NewOrEdit, ChildHook, {
       ary.removeAt(idx);
     },
   },
-
-  linuxOnlyDidChange: observer('linuxOnly', function(){
-    const linuxOnly = get(this, 'linuxOnly');
-    const windowsOnly = get(this, 'windowsOnly');
-
-    if ( linuxOnly && windowsOnly ) {
-      set(this, 'windowsOnly', false);
-    }
-  }),
-
-  windowsOnlyDidChange: observer('windowsOnly', function(){
-    const linuxOnly = get(this, 'linuxOnly');
-    const windowsOnly = get(this, 'windowsOnly');
-
-    if ( windowsOnly && linuxOnly ) {
-      set(this, 'linuxOnly', false);
-    }
-  }),
 
   // Labels
   labelsChanged: debouncedObserver(
@@ -221,6 +209,10 @@ export default Component.extend(NewOrEdit, ChildHook, {
       set(this, 'header', get(this, 'intl').t(k, args));
     });
   }.observes('isUpgrade', 'isSidekick', 'isGlobal', 'service.displayName', 'intl.locale').on('init'),
+
+  showTargetOS: computed('scope.currentCluster.isWindows', 'isUpgrade', 'isSidekick', function(){
+    return get(this, 'scope.currentCluster.isWindows') && !get(this, 'isUpgrade') && !get(this, 'isSidekick');
+  }),
 
   // ----------------------------------
   // ----------------------------------
@@ -291,8 +283,8 @@ export default Component.extend(NewOrEdit, ChildHook, {
 
     let readinessProbe = get(lc, 'readinessProbe');
 
-    if ( !get(this, 'isUpgrade') && (get(this, 'windowsOnly') || get(this, 'linuxOnly')) && !get(this, 'isSidekick') ) {
-      const selector = get(this, 'windowsOnly') ? WINDOWS_NODE_SELECTOR : LINUX_NODE_SELECTOR;
+    if ( get(this, 'showTargetOS') && ( get(this, 'targetOs') === LINUX || get(this, 'targetOs') === WINDOWS )  ) {
+      const selector = get(this, 'targetOs') === WINDOWS ? WINDOWS_NODE_SELECTOR : LINUX_NODE_SELECTOR;
 
       if ( !get(service, 'scheduling') ) {
         set(service, 'scheduling', { node: { requireAll: [selector] } });

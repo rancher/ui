@@ -189,6 +189,12 @@ var Node = Resource.extend(Grafana, StateCounts, ResourceUsage, {
     return version;
   }),
 
+  osInfo: computed('labels', function() {
+    const labels = get(this, 'labels') || {};
+
+    return labels['beta.kubernetes.io/os'];
+  }),
+
   //  or they will not be pulled in correctly.
   displayEndpoints: function() {
     var store = get(this, 'clusterStore');
