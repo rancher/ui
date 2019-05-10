@@ -234,6 +234,11 @@ export default Resource.extend(Grafana, ResourceUsage, {
 
   isWindows:  computed('rancherKubernetesEngineConfig', 'rancherKubernetesEngineConfig.network.plugin', 'rancherKubernetesEngineConfig.network.options.flannel_backend_type', function() {
     const config = get(this, 'rancherKubernetesEngineConfig');
+
+    if ( !config ) {
+      return false;
+    }
+
     const plugin = get(config, 'network.plugin');
     const flannelBackend = get(config, 'network.options.flannel_backend_type');
     const port = get(config, 'network.options.flannel_backend_port');

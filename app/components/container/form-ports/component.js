@@ -29,6 +29,7 @@ export default Component.extend({
   editing:             false,
   showWarning:         false,
   kindChoices:         null,
+  showHostPortWarning: false,
 
   ports:               null,
   nodePortFrom:        null,
