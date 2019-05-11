@@ -1128,10 +1128,17 @@ globalRegistryPage:
       label: Admin Password
       placeholder: Harobr admin password
   config:
+    header:
+      storage: Storage
+      persistence: Persistent
+      postgresql: Postgresql
+      redis: Redis
+      registryPersistence: Registry
+      chartmuseumPersistence: Chartmuseum
     persistenceEnabled:
       label: Enable Persistent Storage for Registry
     persistenceStorageclass:
-      label: Default StorageClass for Registry
+      label: Storage Class
       size:
         label: Registry Persistent Volume Size
     clairEnabled:
@@ -1140,7 +1147,130 @@ globalRegistryPage:
       label: Enable Notary
     chartmuseumEnabled:
       label: Enable Helm Chart Repository in Harbor
-
+    secretKey:
+      label: Encryption Key For Harbor
+      placeholder: Encryption Key For Harbor
+      description: The key used for encryption. Must be a string of 16 chars
+      error: '"Encryption Key For Harbor" must be a string of 16 chars.'
+    storageType:
+      label: Storage backend for registry
+      prompt: Select a Storage Backend...
+    databaseType:
+      label: Config Database Type
+    redisType:
+      label: Config Redis Type
+    isSameStorageClass:
+      label: Use the same storageclass for all components
+    registryStorageClass:
+      label: Default StorageClass
+    registryExistingClaim:
+      label: Existing Claim
+      prompt: Select a Existing Claim...
+    registrySubPath:
+      label: Sub Path
+    registryAccessMode:
+      label: Access Mode
+    registryPVSize:
+      label: Persistent Volume Size
+    chartmuseumStorageClass:
+      label: Default StorageClass
+    chartmuseumExistingClaim:
+      label: Existing Claim
+    chartmuseumSubPath:
+      label: Sub Path
+    chartmuseumAccessMode:
+      label: Access Mode
+    chartmuseumPVSize:
+      label: Persistent Volume Size
+    postgresqlStorageClass:
+      label: Default StorageClass
+    postgresqlAccessMode:
+      label: Access Mode
+    postgresqlPVSize:
+      label: Persistent Volume Size
+    redisStorageClass:
+      label: Default StorageClass
+    redisAccessMode:
+      label: Access Mode
+    redisPVSize:
+      label: Persistent Volume Size
+    persistenceType:
+      label: Harbor Persistent Volume Type
+      storageClass: Storage Class
+    source:
+      pvc: Use an existing persistent volume claim
+    storageClass:
+      emptyError: At least one default storage class is required in "local" cluster
+    redis:
+      existingClaim:
+        label: Existing Claim for Redis
+      external:
+        host:
+          label: Host for Redis
+          placeholder: e.g. 192.168.0.2
+        port:
+          label: Port for Redis
+          placeholder: e.g. 6379
+        coreDatabaseIndex:
+          label: Core Database Index
+          placeholder: e.g. 0
+        jobserviceDatabaseIndex:
+          label: Jobservice Database Index
+          placeholder: e.g. 1
+        registryDatabaseIndex:
+          label: Registry Database Index
+          placeholder: e.g. 2
+        password:
+          label: Password for Redis
+          placeholder: Your redis password
+    s3:
+      region:
+        label: S3 Region
+        placeholder: e.g. us-west-2
+      bucket:
+        label: S3 Bucket Name
+        placeholder: backups
+      accesskey:
+        label: S3 Access Key
+        placeholder: Your S3 Access Key
+      secretkey:
+        label: Secret Key for S3
+        placeholder: Your S3 Secret Key
+      regionendpoint:
+        label: S3 Region Endpoint
+        placeholder: e.g. s3.us-west-2.amazonaws.com
+    database:
+      external:
+        host:
+          label: Host for PostgreSQL
+          placeholder: e.g. 192.168.0.1
+        port:
+          label: Port for PostgreSQL
+          placeholder: e.g. 5432
+        username:
+          label: Username for PostgreSQL
+          placeholder: e.g. user
+        password:
+          label: Password for PostgreSQL
+          placeholder: e.g. password
+        coreDatabase:
+          label: Core Database
+          placeholder: e.g. registry
+        clairDatabase:
+          label: Clair Database
+          placeholder: e.g. clair
+        notaryServerDatabase:
+          label: Notary Server Database
+          placeholder: e.g. notary_server
+        notarySignerDatabase:
+          label: Notary Signer Database
+          placeholder: e.g. notary_signer
+        sslmode:
+          label: SSL Mode for PostgreSQL
+      existingClaim:
+        label: Existing Claim for PostgreSQL
+    exposeIngressHost:
+      error: '"{hostName}" is a host name. Require domain name for expose.ingress.host'
 
 globalDnsPage:
   header: Global DNS Entries
@@ -3145,6 +3275,7 @@ cruRegistry:
     dockerhub: DockerHub
     quay: Quay.io
     custom: Custom
+    globalRegistry: Global Registry
     placeholder: e.g. registry.example.com
   multiple: Multiple
   auth:
@@ -7503,3 +7634,7 @@ rkeConfigComment:
   docker_root_dir: |
     ""
     "  # Rancher Config"
+
+units:
+  percent: '%'
+  cpu: milli CPUs

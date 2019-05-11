@@ -1,6 +1,3 @@
-generic:
-  noData: No Data
-
 clusterIstioPage:
   header: Cluster Istio
   enabled: Cluster Istio is enabled.
@@ -24,14 +21,20 @@ clusterIstioPage:
     title: Istio Configuration
     detail: Configure istio which will be deployed into current cluster.
   config:
+    header:
+      grafana: GRAFANA
+      gateway: ISTIO GATEWAY
+      pilot: PILOT
+      prometheus: PROMETHEUS
+      mixer: MIXER
     tracingEnabled:
-      label: Enabled Tracing
+      label: Enabled the Tracing Component
     kialiEnabled:
-      label: Enable Kiali
+      label: Enable Istio Kiali
     prometheusEnabled:
-      label: Enable Prometheus
+      label: Enable the prometheus Server
     grafanaEnabled:
-      label: Enabled Grafana
+      label: Enabled the Grafana Component
     grafanaPersistenceEnabled:
       label: Enable Persistent Storage for Grafana
     grafanaPersistenceSize:
@@ -46,3 +49,72 @@ clusterIstioPage:
       label: Enabled automatic Istio Sidecar injection
     mtlsEnabled:
       label: Enabled mTLS
+    pilotCpu:
+      label: Pilot CPU Reservation
+      placeholder: e.g. 500
+      unit: milli CPUs
+    pilotMemory:
+      label: Pilot Memory Reservation
+      placeholder: e.g. 20148
+    gatewayEnabled:
+      label: Enabled Istio Gateway
+    gatewayType:
+      label: Service Type of Istio Ingress Gateway
+    http2Port:
+      label: Http2 Port
+    httpsPort:
+      label: Https Port
+    loadBalancerIP:
+      label: Load Balancer IP
+      placeholder: e.g. 192.0.0.1
+    grafana:
+      existingClaim:
+        label: Existing Claim for Grafana
+    prometheusRetention:
+      label: Retention for Prometheus
+      placeholder: e.g. 6h
+    prometheusRequestMemory:
+      label: Prometheus Memory Reservation
+      placeholder: e.g. 1000
+    prometheusLimitMemory:
+      label: Prometheus Memory Limit
+      placeholder: e.g. 1000
+    prometheusLimitCPU:
+      label: Prometheus CPU Limit
+      placeholder: e.g. 1000
+    prometheusRequestCPU:
+      label: Prometheus CPU Reservation
+      placeholder: e.g. 1000
+    mixerRequestCPU:
+      label: Mixer CPU Reservation
+      placeholder: e.g. 1000
+    mixerRequestMemory:
+      label: Mixer Memory Reservation
+      placeholder: e.g. 1000
+    mixerLimitCPU:
+      label: Mixer CPU Limit
+      placeholder: e.g. 1000
+    mixerLimitMemory:
+      label: Mixer Memory Limit
+      placeholder: e.g. 1000
+    traceSampling:
+      label: Trace sampling Percentage
+      placeholder: e.g. 1
+    mixerPolicyEnabled:
+      label: Enabled Mixer Policy
+    pilotLimitCPU:
+      label: Pilot CPU Limit
+      placeholder: e.g. 1000
+    pilotLimitMemory:
+      label: Pilot Memory Limit
+      placeholder: e.g. 1000
+  nodeSelector:
+    addSelectorLabel: Add Selector
+    helpText: Select the nodes where Prometheus workloads will be scheduled to
+  mixerNodeSelector:
+    helpText: Select the nodes where mixer workloads will be scheduled to
+  insufficientSize:
+    selectors:
+      cpu: Please make sure you have at least one node matches node selectors has {cpu} milli CPUs available to enable {component} workload.
+      memory: Please make sure you have at least one node matches node selectors has {memory} MiB of memory available to enable {component} workload.
+      all: Please make sure you have at least one node matches node selectors has {cpu} milli CPUs and {memory} MiB of memory available to enable {component} workload.
