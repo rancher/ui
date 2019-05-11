@@ -977,7 +977,7 @@ editDns:
     label: Session保持时间
     placeholder: '例如: 10800'
   kind:
-    label: 作为
+    label: 类型
     clusterIP: Cluster IP(仅集群内部通信)
     loadBalancer: L4负载均衡器
     nodePort: NodePort(所有主机端口均可访问)
@@ -992,27 +992,27 @@ editDns:
   recordType:
     label: "解析到"
     arecord: 外部IP地址
-    cname: 外部主机名
-    alias: 服务名别名
+    cname: 外部域名
+    alias: 服务别名
     workload: 工作负载
     selector: Pod
     clusterIp: "Cluster IP"
   target:
     arecord: 目标IP地址
-    cname: 目标主机名
+    cname: 目标域名
     alias: 目标DNS记录
     workload: 目标工作负载
     selector: 目标Pod选择器
   add:
-    arecord: 添加目标IP
-    alias: 添加目标服务
-    workload: 添加目标工作负载
-    selector: 添加目标选择器
+    arecord: 添加IP
+    alias: 添加服务
+    workload: 添加工作负载
+    selector: 添加选择器
   placeholder:
     arecord: '例如: 19.82.2.24'
     cname: '例如: example.com'
   prompt:
-    alias: 选择目标服务...
+    alias: 选择服务...
     workload: 选择工作负载...
   errors:
     targetRequired: '必须配置一个或多个"目标服务/工作负载/主机名/域名"'
@@ -1090,7 +1090,7 @@ cruPrivateRegistry:
       label: 默认仓库
 
 cruVolume:
-  sourcePrompt: 需要先在上面选择存储源...
+  sourcePrompt: 需要先选择卷插件...
   title:
     new: 配置临时卷
   define:
@@ -1184,6 +1184,20 @@ globalDnsPage:
       apiKey:
         label: API Key
         placeholder: Your API Key
+      credentialsPath:
+        label: Credential Path
+        placeholder: "/.aws"
+      proxySetting:
+        label: Proxy Setting
+      roleArn:
+        label: Role ARN
+        placeholder: "arn:partition:service:region:account-id:resource"
+      region:
+        label: Region
+        placeholder: us-west-2
+      zone:
+        label: Zone
+        placeholder: public
 
 multiClusterAppsPage:
   header: 多集群应用列表
@@ -1373,7 +1387,7 @@ k8sPage:
       helpText: |
         将设置保存到<code>~/.kube/config</code>
       downloadText: |
-        然后<a href="https://www.cnrancher.com/docs/rancher/v2.x/cn/install-prepare/download/#kubectl" target="_blank"><code>下载kubectl</code></a>(如有需要)并运行。
+        然后<a href="https://www.cnrancher.com/docs/rancher/v2.x/cn/install-prepare/download/kubernetes/" target="_blank"><code>下载kubectl</code></a>(如有需要)并运行。
 
 loginPage:
   greeting: "您好！<br>欢迎使用{appName}"
@@ -3461,6 +3475,7 @@ cruPersistentVolume:
     volumePath:
       label: 卷路径
       placeholder: "例如: /"
+
 cruStorageClass:
   name:
     placeholder: '例如: 储存'
@@ -3556,7 +3571,6 @@ cruStorageClass:
       placeholder: "例如: 20"
   azure-disk:
     new: 新建Azure磁盘
-    unmanaged: Azure非托管磁盘
     skuName:
       label: Sku名称
       placeholder: "例如: Standard_LRS"
@@ -5447,6 +5461,11 @@ modalAddCloudKey:
     password:
       label: Password
 
+modalConfirmYaml2Form:
+  header: "您将从YAML编辑切换到表单编辑"
+  helpText: "请注意，此列表并不包括所有的答案，您应该在保存前校验您的配置。当切换回表单编辑时，可能会发生数据丢失，以下字段已被标识为将丢失的字段。在点击确认之前，请确认丢失的字段不会受影响。"
+  confirm: 确认
+
 modalContainerStop:
   header: "确认要停止吗？"
   helpText: "在超时时间后容器将被强制停止"
@@ -5716,6 +5735,7 @@ newCatalog:
   forceUpgrade: 如果升级过程中需要，删除和重新创建资源
   forceRollback: 如果在回滚期间需要，删除和重新创建资源
   templateFiles: 模版文件
+  requiredNamespace: 需要指定命名空间
   seeMore: 更多信息...
   saveConfigure: 设置
   saveNew: 启动
@@ -7444,10 +7464,15 @@ rkeConfigComment:
     "           # 拉取镜像的最大并发数，registry-burst不能超过registry-qps ，仅当registry-qps大于0(零)时生效，(默认10)。如果registry-qps为0则不限制(默认5)。"
     "           registry-burst: '10' "
     "           registry-qps: '0'   "
-    "       etcd:"
+    "           system-reserved: 'memory=250Mi'   "
+    "           kube-reserved: 'memory=250Mi'  "
+    "           eviction-hard: 'memory.available<300Mi,nodefs.available<10%,imagefs.available<15%,nodefs.inodesFree<5%'   "
+    "           cgroup-driver: systemd      "
+    "       etcd:     "
     "         # 修改空间配额为$((4*1024*1024*1024))，默认2G,最大8G"
     "         extra_args:"
     "           quota-backend-bytes: '4294967296'"
+    "           auto-compaction-retention: 240 #(单位小时) "
   docker_root_dir: |
     ""
     "  # 自定义Rancher参数"
