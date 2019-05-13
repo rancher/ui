@@ -164,6 +164,7 @@ export default Component.extend(ThrottledResize, {
   byCluster: computed('scope.allClusters.@each.id', 'projectChoices.@each.clusterId', 'cluster.id', function() {
     const currentClusterId = get(this, 'cluster.id');
     const out              = [];
+    const navWidth = $('#application nav').width();
 
     get(this, 'scope.allClusters').forEach((cluster) => {
       getOrAddCluster(cluster);
@@ -171,7 +172,7 @@ export default Component.extend(ThrottledResize, {
 
     get(this, 'projectChoices').forEach((project) => {
       const cluster = get(project, 'cluster');
-      const width   = textWidth(get(project, 'displayName'), FONT);
+      const width   = getMaxWidth(textWidth(get(project, 'displayName'), FONT), navWidth);
 
       if ( !cluster ) {
         return;
@@ -192,12 +193,13 @@ export default Component.extend(ThrottledResize, {
     function getOrAddCluster(cluster) {
       const clusterId = get(cluster, 'id');
       let entry       = out.findBy('clusterId', clusterId);
+      let width       = getMaxWidth(textWidth(get(cluster, 'displayName'), FONT), navWidth);
 
       if ( !entry ) {
         entry = {
           clusterId,
           cluster,
-          width:        textWidth(get(cluster, 'displayName'), FONT),
+          width,
           projectWidth: 0,
           projects:     [],
           active:       clusterId === currentClusterId,
@@ -207,6 +209,10 @@ export default Component.extend(ThrottledResize, {
       }
 
       return entry;
+    }
+
+    function getMaxWidth(width, navWidth) {
+      return width >= (navWidth / 2) ? (navWidth / 2) : width;
     }
   }),
 
