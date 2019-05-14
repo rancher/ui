@@ -224,6 +224,85 @@
       {{/accordion-list-item}}
 
       {{#accordion-list-item
+          title=(t "clusterNew.azureaks.sso.title")
+          detail=(t "clusterNew.azureaks.sso.detail")
+          expandOnInit=false
+          expandAll=al.expandAll
+          expand=(action expandFn)
+      }}
+        <div class="row">
+          <div class="col span-6">
+						<label class="acc-label" for="azureaks-aad-client-app-id">
+							{{t "clusterNew.azureaks.sso.aadClientAppId.label"}}
+						</label>
+            {{#input-or-display
+              editable=isNew
+              value=config.aadClientAppId
+              }}
+            {{input
+              classNames="form-control"
+              id="azureaks-aad-client-app-id"
+              type="text"
+              value=config.aadClientAppId
+            }}
+            {{/input-or-display}}
+          </div>
+          <div class="col span-6">
+						<label class="acc-label" for="azureaks-aad-server-app-id">
+							{{t "clusterNew.azureaks.sso.aadServerAppId.label"}}
+						</label>
+            {{#input-or-display
+              editable=isNew
+              value=config.aadServerAppId
+              }}
+            {{input
+              classNames="form-control"
+              id="azureaks-aad-server-app-id"
+              type="text"
+              value=config.aadServerAppId
+            }}
+            {{/input-or-display}}
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col span-6">
+						<label class="acc-label" for="azureaks-aad-tenant-id">
+							{{t "clusterNew.azureaks.sso.aadTenantId.label"}}
+						</label>
+            {{#input-or-display
+              editable=isNew
+              value=config.aadTenantId
+              }}
+            {{input
+              classNames="form-control"
+              id="azureaks-aad-tenant-id"
+              type="text"
+              value=config.aadTenantId
+            }}
+            {{/input-or-display}}
+          </div>
+          <div class="col span-6">
+						<label class="acc-label" for="aad-server-app-secret">
+							{{t "clusterNew.azureaks.sso.aadServerAppSecret.label"}}
+						</label>
+            {{#input-or-display
+              editable=isNew
+              value=config.aadServerAppSecret
+              }}
+            {{input
+              classNames="form-control"
+              id="aad-server-app-secret"
+              type="password"
+              value=config.aadServerAppSecret
+            }}
+            {{/input-or-display}}
+          </div>
+        </div>
+
+      {{/accordion-list-item}}
+
+      {{#accordion-list-item
          title=(t "clusterNew.nodes.title")
          detail=(t "clusterNew.nodes.detail")
          showExpand=false
