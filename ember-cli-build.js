@@ -2,6 +2,8 @@
 const EmberApp = require('ember-cli/lib/broccoli/ember-app');
 const env      = EmberApp.env();
 const webpack  = require('webpack');
+const nodeSass = require('node-sass');
+
 
 module.exports = function(defaults) {
   // Pull in a few useful environment settings for index.html to use
@@ -16,21 +18,30 @@ module.exports = function(defaults) {
     }
   });
 
-  var concatTests = true;
-
-  if (env.EMBER_ENV === 'development') {
-    concatTests = false;
-  }
+  var isDev = env.EMBER_ENV === 'development';
+  var isTest = env.EMBER_ENV === 'test';
+  var isProd = env.EMBER_ENV === 'production';
 
   var app = new EmberApp(defaults, {
+    hinting: isTest,
+    tests: isTest,
+    autoprefixer: {
+      sourcemap: false // Was never helpful
+    },
     babel:             { plugins: [require('ember-auto-import/babel-plugin')] },
-    'ember-cli-babel': { includePolyfill: true, },
+    "ember-cli-babel": {
+      includePolyfill: isProd // Only include babel polyfill in prod
+    },
     storeConfigInMeta: false,
     inlineContent:     inline,
     codemirror:        {
       modes:      ['yaml', 'dockerfile', 'shell', 'markdown'],
       themes:     ['monokai'],
       addonFiles: ['lint/lint.css', 'lint/lint.js', 'hint/show-hint.js', 'hint/show-hint.css', 'hint/anyword-hint.js', 'lint/yaml-lint.js']
+    },
+    sassOptions: {
+      implementation: nodeSass,
+      sourceMap: isProd,
     },
     outputPaths: {
       app: {
@@ -81,11 +92,11 @@ module.exports = function(defaults) {
     },
 
     sourcemaps: {
-      enabled:    true,
+      enabled: isProd,
       extensions: ['js']
     },
 
-    tests: concatTests,
+    tests: isDev,
   });
 
   // Use `app.import` to add additional libraries to the generated

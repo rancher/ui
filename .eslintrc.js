@@ -6,7 +6,6 @@ const propertyOrder = [
   'relationship',
   'property',
   'single-line-function',
-
   'init',
   'beforeModel',
   'model',
@@ -19,7 +18,6 @@ const propertyOrder = [
     'didUpdateAttrs', 'renderTemplate', 'serialize', 'setupController',
     'willClearRender', 'willDestroyElement', 'willInsertElement', 'willRender', 'willUpdate'
   ],
-
   'actions',
   'observer',
   'multi-line-function'
@@ -53,7 +51,7 @@ module.exports = {
   env: {
     browser: true,
     es6:     true,
-    node:    true
+    node:    false
   },
   rules: {
     // Overrides
@@ -84,6 +82,7 @@ module.exports = {
     'new-cap':                                    'off',
     'no-caller':                                  'error',
     'no-cond-assign':                             ['error', 'except-parens'],
+    'no-self-assign':                             'off',
     'no-console':                                 'off',
     'no-debugger':                                'warn',
     'no-empty':                                   'off',
@@ -97,26 +96,16 @@ module.exports = {
     'no-useless-escape':                          'off',
     'strict':                                     'off',
     'wrap-iife':                                  'off',
-    files:                                        [
-      '.eslintrc.js',
-      'tests/.eslintrc.js',
-      '.template-lintrc.js',
-      'ember-cli-build.js',
-      'testem.js',
-      'blueprints/*/index.js',
-      'config/**/*.js',
-      'lib/*/index.js'
-    ],
     // stylistic
-    'array-bracket-spacing':    'error',
-    'padded-blocks':            ['error', 'never'],
-    'block-spacing':            ['error', 'always'],
-    'brace-style':              ['error', '1tbs'],
-    'comma-spacing':            'error',
-    'func-call-spacing':        ['error', 'never'],
-    'implicit-arrow-linebreak': 'error',
-    'indent':                   ['error', 2],
-    'key-spacing':              ['error', {
+    'array-bracket-spacing':                      'error',
+    'padded-blocks':                              ['error', 'never'],
+    'block-spacing':                              ['error', 'always'],
+    'brace-style':                                ['error', '1tbs'],
+    'comma-spacing':                              'error',
+    'func-call-spacing':                          ['error', 'never'],
+    'implicit-arrow-linebreak':                   'error',
+    'indent':                                     ['error', 2],
+    'key-spacing':                                ['error', {
       'align': {
         'beforeColon': false,
         'afterColon':  true,
@@ -204,5 +193,36 @@ module.exports = {
     'rest-spread-spacing':    'error',
     'template-curly-spacing': ['error', 'always'],
     'yield-star-spacing':     ['error', 'both'],
-  }
+  },
+  overrides: [
+    // node files
+    {
+      files: [
+        '.eslintrc.js',
+        '.template-lintrc.js',
+        'ember-cli-build.js',
+        'testem.js',
+        'blueprints/*/index.js',
+        'config/**/*.js',
+        'lib/*/index.js',
+        'server/**/*.js'
+      ],
+      parserOptions: {
+        sourceType:  'script',
+        ecmaVersion: 2015
+      },
+      env: {
+        browser: false,
+        node:    true
+      },
+      plugins: ['node'],
+      rules:   Object.assign({}, require('eslint-plugin-node').configs.recommended.rules, {
+        // add your custom rules and overrides for node files here
+
+        // this can be removed once the following is fixed
+        // https://github.com/mysticatea/eslint-plugin-node/issues/77
+        'node/no-unpublished-require': 'off'
+      })
+    }
+  ]
 };
