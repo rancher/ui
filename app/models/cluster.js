@@ -368,6 +368,14 @@ export default Resource.extend(Grafana, ResourceUsage, {
 
   },
 
+  clearConfigFieldsForClusterTemplate() {
+    let clearedNull   = ['localClusterAuthEndpoint', 'rancherKubernetesEngineConfig', 'enableNetworkPolicy'];
+    let clearedDelete = ['defaultClusterRoleForProjectMembers', 'defaultPodSecurityPolicyTemplateId'];
+
+    clearedDelete.forEach((c) => delete this[c]);
+    clearedNull.forEach((c) => set(this, c, null));
+  },
+
   clearProvidersExcept(keep) {
     const keys = this.allKeys().filter((x) => x.endsWith('Config'));
 

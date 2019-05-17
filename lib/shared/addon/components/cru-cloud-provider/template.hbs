@@ -3,52 +3,103 @@
 </label>
 {{#if (and (eq driver "custom") (eq selectedCloudProvider "none"))}}
   <div class="col span-12">
-    {{banner-message
-      color="bg-info mt-0 mb-0"
-      icon="icon-info"
-      message=(t "cloudProvider.custom.notInList" htmlSafe=true)
-    }}
+    <BannerMessage
+      @color="bg-info mt-0 mb-0"
+      @icon="icon-info"
+      @message={{t "cloudProvider.custom.notInList" htmlSafe=true}}
+    />
   </div>
 {{/if}}
 <div class="row">
-  <div class="col span-6">
-    <div class="radio">
-      <label>
-        {{radio-button selection=selectedCloudProvider value="none"}} {{t "generic.none"}}
-      </label>
+  <CheckComputedOverride
+    @applyClusterTemplate={{applyClusterTemplate}}
+    @clusterTemplateCreate={{clusterTemplateCreate}}
+    @computedOverrideAllowed={{selectedCloudProviderOverrideAvailable}}
+    @selectedCloudProvider={{mut selectedCloudProvider}}
+    @driver={{mut driver}}
+    @isCreateClusterOrClusterTemplate={{isCreateClusterOrClusterTemplate}}
+    @computedState={{not (eq selectedCloudProvider "none")}}
+  >
+    <div class="col span-6">
+      {{#if (and applyClusterTemplate (eq selectedCloudProvider "none"))}}
+        <div class="radio">
+          <label>
+            {{t "generic.none"}}
+          </label>
+        </div>
+      {{else if isCreateClusterOrClusterTemplate}}
+        <div class="radio">
+          <label>
+            {{radio-button
+              selection=selectedCloudProvider
+              value="none"
+            }} {{t "generic.none"}}
+          </label>
+        </div>
+      {{/if}}
+      {{#if (or (eq driver "amazonec2") (eq driver "custom"))}}
+        {{#if (and applyClusterTemplate (eq selectedCloudProvider "amazonec2"))}}
+          <div class="radio">
+            <label>
+              {{t "cloudProvider.amazon"}}
+            </label>
+          </div>
+        {{else if isCreateClusterOrClusterTemplate}}
+          <div class="radio">
+            <label>
+              {{radio-button
+                selection=selectedCloudProvider
+                value="amazonec2"
+              }} {{t "cloudProvider.amazon"}}
+            </label>
+          </div>
+        {{/if}}
+      {{/if}}
+      {{#if (or (eq driver "azure") (eq driver "custom"))}}
+        {{#if (and applyClusterTemplate (eq selectedCloudProvider "azure"))}}
+          <div class="radio">
+            <label>
+              {{t "cloudProvider.azure"}}
+            </label>
+          </div>
+        {{else if isCreateClusterOrClusterTemplate}}
+          <div class="radio">
+            <label>
+              {{radio-button
+                selection=selectedCloudProvider
+                value="azure"
+              }} {{t "cloudProvider.azure"}}
+            </label>
+          </div>
+        {{/if}}
+      {{/if}}
+      {{#if (and (not-eq driver "amazonec2") (not-eq driver "azure"))}}
+        {{#if (and applyClusterTemplate (eq selectedCloudProvider "generic"))}}
+          <div class="radio">
+            <label>
+              {{t "generic.custom"}}
+            </label>
+          </div>
+        {{else if isCreateClusterOrClusterTemplate}}
+          <div class="radio">
+            <label>
+              {{radio-button
+                selection=selectedCloudProvider
+                value="generic"
+              }} {{t "generic.custom"}}
+            </label>
+          </div>
+        {{/if}}
+      {{/if}}
     </div>
-    {{#if (or (eq driver "amazonec2") (eq driver "custom"))}}
-      <div class="radio">
-        <label>
-          {{radio-button selection=selectedCloudProvider value="amazonec2"}} {{t "cloudProvider.amazon"}}
-        </label>
-      </div>
-    {{/if}}
-    {{#if (or (eq driver "azure") (eq driver "custom"))}}
-      <div class="radio">
-        <label>
-          {{radio-button selection=selectedCloudProvider value="azure"}} {{t "cloudProvider.azure"}}
-        </label>
-      </div>
-    {{/if}}
-    {{#if (and (not-eq driver "amazonec2") (not-eq driver "azure"))}}
-      <div class="radio">
-        <label>
-          {{radio-button selection=selectedCloudProvider value="generic"}} {{t "generic.custom"}}
-        </label>
-      </div>
-    {{/if}}
-  </div>
+  </CheckComputedOverride>
   {{#unless (eq selectedCloudProvider "none")}}
     <div class="col span-6">
-      <div class="banner bg-warning">
-        <div class="banner-icon">
-          <i class="icon icon-alert"></i>
-        </div>
-        <div class="banner-message">
-          {{t "cloudProvider.warning"}}
-        </div>
-      </div>
+      <BannerMessage
+        @color="bg-info mt-0 mb-0"
+        @icon="icon-alert"
+        @message={{t "cloudProvider.warning"}}
+      />
     </div>
   {{/unless}}
 </div>
@@ -71,17 +122,34 @@
               {{field-required}}
             {{/if}}
           {{/if}}
+          {{#if clusterTemplateCreate}}
+            <ClusterTemplateOverrideToggle
+              @path={{concat "rancherKubernetesEngineConfig.cloudProvider.azureCloudProvider." key}}
+              @configVariable={{configVariable}}
+              @addOverride={{addOverride}}
+              @questions={{questions}}
+            />
+          {{/if}}
         </label>
-        <p class="help-block mt-0">{{t (get (get azureDescriptions key) "description")}}</p>
+        <p class="help-block mt-0">
+          {{t (get (get azureDescriptions key) "description")}}
+        </p>
       </div>
       <div class="col span-6">
-        {{input
-          class="form-control input-sm value"
-          spellcheck="false"
-          type=(or (get (get azureDescriptions key) "type") "text")
-          value=(mut (get configAnswers key))
-          placeholder=(t "generic.value")
-        }}
+        <CheckOverrideAllowed
+          @applyClusterTemplate={{applyClusterTemplate}}
+          @clusterTemplateRevision={{clusterTemplateRevision.clusterConfig}}
+          @paramName={{concat "rancherKubernetesEngineConfig.cloudProvider.azureCloudProvider." key}}
+          @questions={{questions}}
+        >
+          {{input
+            class="form-control input-sm value"
+            spellcheck="false"
+            type=(or (get (get azureDescriptions key) "type") "text")
+            value=(mut (get configAnswers key))
+            placeholder=(t "generic.value")
+          }}
+        </CheckOverrideAllowed>
       </div>
     </div>
   {{/each-in}}

@@ -1,45 +1,61 @@
 <section class="header clearfix">
-  <h1 class="pull-left">{{t 'clustersPage.header'}}</h1> <div class="vertical-middle"></div>
+  <h1 class="pull-left">
+    {{t "clustersPage.header"}}
+  </h1>
+
+  <div class="vertical-middle"></div>
 
   <div class="right-buttons">
-    {{#link-to "clusters.new" class="btn btn-sm bg-primary" disabled=(rbac-prevents resource="cluster" scope="global" permission="create")}}
-      {{t 'clustersPage.newCluster'}}
+    {{#link-to
+       "clusters.new"
+       class="btn btn-sm bg-primary"
+       disabled=(rbac-prevents resource="cluster" scope="global" permission="create")
+    }}
+      {{t "clustersPage.newCluster"}}
     {{/link-to}}
   </div>
 </section>
 
 {{#if model.clusters.length}}
   {{#sortable-table
-      classNames="grid sortable-table"
-      body=model.clusters
-      searchText=searchText
-      descending=descending
-      sortBy=sortBy
-      bulkActions=true
-      extraSearchFields=extraSearchFields
-      pagingLabel="pagination.cluster"
-      headers=headers as |sortable kind inst dt|
+     classNames="grid sortable-table"
+     body=model.clusters
+     searchText=searchText
+     descending=descending
+     sortBy=sortBy
+     bulkActions=true
+     extraSearchFields=extraSearchFields
+     pagingLabel="pagination.cluster"
+     headers=headers as |sortable kind inst dt|
   }}
     {{#if (eq kind "row")}}
       {{cluster-row
-          model=inst
-          fullColspan=sortable.fullColspan
-          launchOnCluster=(action "launchOnCluster")
-          useKubernetes=(action "useKubernetes")
-          dt=dt
+        model=inst
+        fullColspan=sortable.fullColspan
+        launchOnCluster=(action "launchOnCluster")
+        useKubernetes=(action "useKubernetes")
+        dt=dt
       }}
     {{else if (eq kind "nomatch")}}
-      <tr><td colspan="{{sortable.fullColspan}}" class="text-center text-muted lacsso pt-20 pb-20">{{t 'clusterRow.noClusterMatch'}}</td></tr>
+      <tr>
+        <td colspan="{{sortable.fullColspan}}" class="text-center text-muted lacsso pt-20 pb-20">
+          {{t "clusterRow.noClusterMatch"}}
+        </td>
+      </tr>
     {{else if (eq kind "norows")}}
-      <tr><td colspan="{{sortable.fullColspan}}" class="text-center text-muted lacsso pt-20 pb-20">{{t 'clusterRow.noClusterData'}}</td></tr>
+      <tr>
+        <td colspan="{{sortable.fullColspan}}" class="text-center text-muted lacsso pt-20 pb-20">
+          {{t "clusterRow.noClusterData"}}
+        </td>
+      </tr>
     {{/if}}
   {{/sortable-table}}
 {{else}}
   {{empty-table
-      resource="container"
-      newRoute="global-admin.clusters.new"
-      newTranslationKey="clustersPage.newCluster"
-      disabled=(rbac-prevents resource="cluster" scope="global" permission="create")
-      ctx=""
+    resource="container"
+    newRoute="global-admin.clusters.new"
+    newTranslationKey="clustersPage.newCluster"
+    disabled=(rbac-prevents resource="cluster" scope="global" permission="create")
+    ctx=""
   }}
 {{/if}}

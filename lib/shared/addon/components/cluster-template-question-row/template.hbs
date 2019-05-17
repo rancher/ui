@@ -1,0 +1,104 @@
+<td data-title="{{dt.question}}:" class="p-20 pl-0" >
+  {{#if (or question.isBuiltIn applyClusterTemplate) }}
+    <div>
+      {{question.variable}}
+    </div>
+  {{else}}
+    {{input
+      type="text"
+      value=question.variable
+    }}
+  {{/if}}
+</td>
+<td data-title="{{dt.type}}" class="p-20 pl-0" >
+  {{#if (or question.isBuiltIn applyClusterTemplate) }}
+    <div>
+      {{question.type}}
+    </div>
+  {{else}}
+    <NewSelect
+      class="form-control"
+      @optionLabelPath="value"
+      @content={{typeOptions}}
+      @value={{question.type}}
+    />
+  {{/if}}
+</td>
+<td data-title="{{dt.answer}}" class="p-20 pl-0" >
+  {{#if question.isBuiltIn }}
+    <div>
+      {{#if (or (eq question.type "password") (eq question.type "secret"))}}
+        *********
+      {{else}}
+        {{question.default}}
+      {{/if}}
+    </div>
+  {{else}}
+    {{#if (eq question.type "string")}}
+      {{schema/input-string
+        value=question.default
+        classNames="form-control"
+      }}
+    {{else if (eq question.type "boolean")}}
+      {{schema/input-boolean
+        value=question.default
+        classNames="form-control"
+      }}
+    {{else if (eq question.type "int")}}
+      {{schema/input-int
+        value=question.default
+        classNames="form-control"
+      }}
+    {{else if (eq question.type "hostname")}}
+      {{schema/input-hostname
+        value=question.default
+        classNames="form-control"
+      }}
+    {{else if (eq question.type "password")}}
+      {{schema/input-password
+        question=question
+        value=question.default
+        classNames="form-control"
+      }}
+    {{else if (eq question.type "float")}}
+      {{schema/input-float
+        value=question.default
+        classNames="form-control"
+      }}
+    {{else if (eq question.type "multiline")}}
+      {{schema/input-multiline
+        value=question.default
+        classNames="form-control"
+      }}
+    {{else if (eq question.type "boolean")}}
+      Reference
+    {{else}}
+      {{schema/input-multiline
+        value=question.default
+        classNames="form-control"
+      }}
+    {{/if}}
+  {{/if}}
+</td>
+<td data-title="{{dt.required}}" class="p-20 pl-0 text-center" >
+  {{#if (or question.isBuiltIn applyClusterTemplate) }}
+    <div>
+      {{#if question.required}}
+        <FieldRequired/>
+      {{/if}}
+    </div>
+  {{else}}
+    {{input
+      type="checkbox"
+      checked=question.required
+    }}
+  {{/if}}
+</td>
+<td data-title="{{t "generic.actions"}}:" class="actions">
+  <button
+    class="btn bg-primary btn-sm"
+    {{action "removeQuestion"}}
+  >
+    <i class="icon icon-minus"></i>
+  </button>
+</td>
