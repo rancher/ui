@@ -110,6 +110,8 @@ module.exports = function(defaults) {
   app.import('vendor/ember-shortcuts.js');
   app.import('vendor/aliyun-sdk.js');
   app.import('vendor/cce-sdk.js');
+  app.import('vendor/cytoscape-dagre.js');
+  app.import('vendor/dagre.min.js');
 
   app.import('vendor/icons/fonts/rancher-icons.svg',   { destDir: 'assets/fonts/' });
   app.import('vendor/icons/fonts/rancher-icons.ttf',   { destDir: 'assets/fonts/' });

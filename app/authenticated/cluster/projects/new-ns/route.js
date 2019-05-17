@@ -1,4 +1,4 @@
-import { get, set } from '@ember/object';
+import { get, set, setProperties } from '@ember/object';
 import { hash } from 'rsvp';
 import { inject as service } from '@ember/service';
 import Route from '@ember/routing/route';
@@ -29,8 +29,11 @@ export default Route.extend({
   },
 
   resetController(controller, isExiting/* , transition*/) {
-    if (isExiting) {
-      controller.set('errors', null);
+    if ( isExiting ) {
+      setProperties(controller, {
+        errors:         null,
+        istioInjection: false
+      });
     }
   },
   queryParams: {

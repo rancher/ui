@@ -27,6 +27,7 @@ export default Controller.extend({
       apps = apps.filter((obj) => obj.hasTags(needTags));
     }
 
+    apps = apps.filterBy('isIstio', false);
     apps = apps.sortBy('displayName');
 
     const group = [];

@@ -9,6 +9,9 @@ import {
 } from '@ember/object';
 import { next } from '@ember/runloop';
 
+const ISTIO_INJECTION = 'istio-injection'
+const ENABLED = 'enabled';
+
 export default Component.extend(ModalBase, NewOrEdit, {
   scope: service(),
 
@@ -38,6 +41,14 @@ export default Component.extend(ModalBase, NewOrEdit, {
       allProjects:   get(this, 'globalStore').all('project')
         .filterBy('clusterId', get(this, 'scope.currentCluster.id')),
     })
+
+    const labels = get(this, 'primaryResource.labels')
+
+    if (labels && labels[ISTIO_INJECTION] === ENABLED) {
+      set(this, 'istioInjection', true)
+    } else {
+      set(this, 'istioInjection', false)
+    }
   },
 
   actions: {
@@ -59,7 +70,21 @@ export default Component.extend(ModalBase, NewOrEdit, {
 
     updateContainerDefault(limit) {
       set(this, 'primaryResource.containerDefaultResourceLimit', limit);
-    }
+    },
+
+    setLabels(labels) {
+      let out = {};
+
+      labels.forEach((row) => {
+        out[row.key] = row.value;
+      });
+
+      set(this, 'primaryResource.labels', out);
+    },
+
+    toggleAutoInject() {
+      set(this, 'istioInjection', !get(this, 'istioInjection'));
+    },
   },
 
   projectDidChange: observer('primaryResource.project.id', function() {
@@ -113,7 +138,19 @@ export default Component.extend(ModalBase, NewOrEdit, {
   },
 
   willSave() {
-    set(this, 'beforeSaveModel', get(this, 'originalModel').clone());
+    const isEnabled = get(this, 'istioInjection');
+    const labels = { ...get(this, 'primaryResource.labels') };
+
+    if ( isEnabled ) {
+      labels[ISTIO_INJECTION] = ENABLED;
+    } else {
+      delete labels[ISTIO_INJECTION];
+    }
+
+    setProperties(this, {
+      'beforeSaveModel':        get(this, 'originalModel').clone(),
+      'primaryResource.labels': labels
+    });
 
     return this._super(...arguments);
   },

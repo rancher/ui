@@ -1,0 +1,43 @@
+<div class="modal-yaml">
+  <section class="header clearfix">
+    <h1>{{t "modalYaml.title.view" name=name}}</h1>
+  </section>
+  <div>
+    {{new-select
+      classNames="form-control"
+      content=options
+      value=selectedType
+    }}
+  </div>
+  {{#if (or yaml loading)}}
+    {{input-yaml
+      canChangeName=false
+      value=yaml
+      loading=loading
+      autoResize=true
+      readOnly=true
+      canUpload=false
+      showUpload=false
+      showDownload=false
+      filename=filename
+    }}
+  {{else}}
+    <div class="row mt-20">
+      <div class="text-center text-muted">
+        {{t "modalYaml.noData" name=selectedType}}
+      </div>
+    </div>
+  {{/if}}
+  {{copy-to-clipboard
+    tooltipText=""
+    buttonText="copyToClipboard.tooltip"
+    clipboardText=yaml
+    class="with-clip"
+  }}
+</div>
+
+<div style="text-align: center" class="mt-20 text-center">
+  <button {{action "cancel"}} class="btn bg-transparent">
+    {{t "generic.cancel"}}
+  </button>
+</div>

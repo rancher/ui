@@ -2,38 +2,59 @@
   <h2>
     {{t "editStack.title"}}
   </h2>
-  <label class="acc-label pb-5">
-    {{t "editStack.name.label"}}
-  </label>
-  {{input
-    type="text"
-    value=primaryResource.name
-    classNames="form-control"
-    placeholder=(t "editStack.name.placeholder")
-    disabled=true
+
+  {{form-name-description
+    name=primaryResource.name
+    nameDisabled=true
+    nameRequired=false
+    bothColClass="col span-12 mt-0"
+    colClass="col span-12 mt-0"
+    description=primaryResource.description
+    descriptionPlaceholder="editStack.description.placeholder"
   }}
 
-  <label class="pt-20 pb-5">{{t "editStack.description.label"}}</label>
-  {{textarea
-    value=primaryResource.description
-    classNames="form-control no-resize"
-    rows="5"
-    placeholder=(t "editStack.description.placeholder")
-  }}
-
-  <label class="pt-20 pb-5">
-    {{t "editStack.project.label"}}
-  </label>
-  {{new-select
-    classNames="form-control"
-    optionValuePath="id"
-    optionLabelPath="displayName"
-    content=allProjects
-    value=primaryResource.projectId
-    prompt="editStack.project.prompt"
-    localizedPrompt=true
-  }}
-
+  <div class="row">
+    <div class="col span-6">
+      <label class="pt-20 pb-5 acc-label">
+        {{t "editStack.project.label"}}
+      </label>
+      {{new-select
+        classNames="form-control"
+        optionValuePath="id"
+        optionLabelPath="displayName"
+        content=allProjects
+        value=primaryResource.projectId
+        prompt="editStack.project.prompt"
+        localizedPrompt=true
+      }}
+    </div>
+    <div class="col span-6">
+      <label class="pt-20 pb-5 acc-label">
+        {{t "editStack.autoInject.label"}}
+      </label>
+      <div class="mt-5">
+        {{#if istioInjection}}
+          <div class="btn-group no-inline-space">
+            <div class="btn btn-link btn-sm bg-success">
+              {{t "generic.enabled"}}
+            </div>
+            <div class="btn btn-link btn-sm bg-default" {{action "toggleAutoInject"}}>
+              {{t "generic.disable"}}
+            </div>
+          </div>
+        {{else}}
+          <div class="btn-group no-inline-space">
+            <div class="btn btn-link btn-sm bg-default" {{action "toggleAutoInject"}}>
+              {{t "generic.enable"}}
+            </div>
+            <div class="btn btn-link btn-sm bg-primary">
+              {{t "generic.disabled"}}
+            </div>
+          </div>
+        {{/if}}
+      </div>
+    </div>
+  </div>
 
   <div class="row mt-20">
     {{#accordion-list showExpandAll=false as | al expandFn | }}
@@ -72,6 +93,16 @@
           changed=(action "updateContainerDefault")
         }}
       {{/accordion-list-item}}
+
+      {{form-labels-annotations
+        classNames="accordion-wrapper"
+        expandAll=al.expandAll
+        expandFn=expandFn
+        initialLabels=primaryResource.labels
+        model=primaryResource
+        editing=(or editing isNew)
+        setLabels=(action "setLabels")
+      }}
     {{/accordion-list}}
   </div>
 

@@ -22,6 +22,12 @@ const Template = Resource.extend({
     }
   }),
 
+  isIstio: computed('labels', function() {
+    const labels = get(this, 'labels') || {};
+
+    return labels[C.LABEL_ISTIO_RULE] === 'true';
+  }),
+
   displayCatalogId: computed('catalogRef', 'clusterCatalog', 'projectCatalog', function() {
     const {
       catalogRef, clusterCatalog, projectCatalog, clusterCatalogId, catalogId, projectCatalogId

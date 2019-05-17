@@ -1,0 +1,54 @@
+{{#if rows.length}}
+  <section class="pl-0 pr-0">
+    {{#sortable-table
+      classNames="grid sortable-table"
+      body=rows
+      searchText=searchText
+      sortBy=sortBy
+      bulkActions=true
+      descending=descending
+      groupByKey="namespaceId"
+      groupByRef="namespace"
+      pagingLabel="pagination.istioRule"
+      headers=headers as |sortable kind inst dt|
+    }}
+      {{#if (eq kind "row")}}
+        {{istio-rule-row
+          model=inst
+          dt=dt
+        }}
+      {{else if (eq kind "group")}}
+        {{namespace-group
+          model=inst.ref
+          fullColspan=sortable.fullColspan
+        }}
+      {{else if (eq kind "nomatch")}}
+        <tr>
+          <td
+            colspan="{{sortable.fullColspan}}"
+            class="text-center text-muted pt-20 pb-20"
+          >
+            {{t "rulesPage.noMatch"}}
+          </td>
+        </tr>
+      {{else if (eq kind "norows")}}
+        <tr>
+          <td
+            colspan="{{sortable.fullColspan}}"
+            class="text-center text-muted pt-20 pb-20"
+          >
+            {{t "rulesPage.noData"}}
+          </td>
+        </tr>
+      {{/if}}
+    {{/sortable-table}}
+  </section>
+{{else}}
+  {{empty-table
+    disabled=(rbac-prevents resource="app" scope="project" permission="create")
+    resource="container"
+    newRoute="catalog-tab"
+    istio=true
+    newTranslationKey="rulesPage.new"
+  }}
+{{/if}}

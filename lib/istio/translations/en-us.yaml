@@ -1,0 +1,149 @@
+clusterIstioPage:
+  header: Cluster Istio
+  enabled: Cluster Istio is enabled.
+  disabled: Cluster Istio is not enabled yet.
+  notReady: Installing Istio into the system project of current cluster...
+  confirmDisable: "Are you sure?  Click again to really disable Istio"
+  disable: Disable Istio
+  enableActionLabel: Enable
+  links:
+    kiali:
+      label: Kiali UI
+    jaeger:
+      label: Jaeger UI
+    grafana:
+      label: Grafana UI
+    prometheus:
+      label: Prometheus UI
+  config:
+    header:
+      grafana: GRAFANA
+      gateway: ISTIO GATEWAY
+      pilot: PILOT
+      prometheus: PROMETHEUS
+      mixer: MIXER
+    tracingEnabled:
+      label: Enabled Tracing
+    grafanaEnabled:
+      label: Enabled Grafana
+    grafanaPersistenceEnabled:
+      label: Enable Persistent Storage for Grafana
+    mtlsEnabled:
+      label: Service to service mutual TLS
+    pilotCpu:
+      label: Pilot CPU Reservation
+      placeholder: e.g. 500
+      unit: milli CPUs
+    pilotMemory:
+      label: Pilot Memory Reservation
+      placeholder: e.g. 20148
+    gatewayEnabled:
+      label: Enabled Istio Gateway
+    gatewayType:
+      label: Service Type of Istio Ingress Gateway
+    http2Port:
+      label: Http2 Port
+    httpsPort:
+      label: Https Port
+    loadBalancerIP:
+      label: Load Balancer IP
+      placeholder: e.g. 192.0.0.1
+    prometheusRetention:
+      label: Retention for Prometheus
+      placeholder: e.g. 6h
+    prometheusRequestMemory:
+      label: Prometheus Memory Reservation
+      placeholder: e.g. 1000
+    prometheusLimitMemory:
+      label: Prometheus Memory Limit
+      placeholder: e.g. 1000
+    prometheusLimitCpu:
+      label: Prometheus CPU Limit
+      placeholder: e.g. 1000
+    prometheusRequestCpu:
+      label: Prometheus CPU Reservation
+      placeholder: e.g. 1000
+    mixerRequestCpu:
+      label: Mixer CPU Reservation
+      placeholder: e.g. 1000
+    mixerRequestMemory:
+      label: Mixer Memory Reservation
+      placeholder: e.g. 1000
+    mixerLimitCpu:
+      label: Mixer CPU Limit
+      placeholder: e.g. 1000
+    mixerLimitMemory:
+      label: Mixer Memory Limit
+      placeholder: e.g. 1000
+    traceSampling:
+      label: Trace sampling Percentage
+      placeholder: e.g. 1
+    mixerPolicyEnabled:
+      label: Enabled Mixer Policy
+    pilotLimitCpu:
+      label: Pilot CPU Limit
+      placeholder: e.g. 1000
+    pilotLimitMemory:
+      label: Pilot Memory Limit
+      placeholder: e.g. 1000
+  nodeSelector:
+    addSelectorLabel: Add Selector
+    helpText: Select the nodes where Prometheus workloads will be scheduled to
+  mixerNodeSelector:
+    helpText: Select the nodes where mixer workloads will be scheduled to
+  insufficientSize:
+    total:
+      cpu: Please make sure you have at least {minCpu} milli CPUs available to {action} istio.
+      memory: Please make sure you have at least {minMemory} MiB of memory available to {action} istio.
+      all: Please make sure you have at least {minCpu} milli CPUs and {minMemory} MiB of memory available to {action} istio.
+    workload:
+      cpu: Please make sure you have at least one node has {cpu} milli CPUs available to deploy {component} workload.
+      memory: Please make sure you have at least one node has {memory} MiB of memory available to deploy {component} workload.
+      all: Please make sure you have at least one node has {cpu} milli CPUs and {memory} MiB of memory available to deploy {component} workload.
+    selectors:
+      cpu: Please make sure you have at least one node matches node selectors has {cpu} milli CPUs available to enable {component} workload.
+      memory: Please make sure you have at least one node matches node selectors has {memory} MiB of memory available to enable {component} workload.
+      all: Please make sure you have at least one node matches node selectors has {cpu} milli CPUs and {memory} MiB of memory available to enable {component} workload.
+istio:
+  noData: Not enough data for graph
+  period: Period
+  table:
+    template: Template
+    host: Host
+
+  trafficMonitoring:
+    duration:
+      60: Last 1m
+      300: Last 5m
+      600: Last 10m
+      1800: Last 30m
+      3600: Last 1h
+      10800: Last 3h
+      21600: Last 6h
+  nav:
+    graph: Traffic Graph
+    metrics: Traffic Metrics
+    rules: Istio Configs
+rulesPage:
+  new: Add Istio Config
+  noMatch: No istio configs match the current search
+  noData: There are no istio configs to show
+ruleDetailPage:
+  header: "Istio Config: {appName}"
+  rules:
+    virtualservices: Virtual Services
+    serviceentries: Service Entries
+    destinationrules: Destination Rules
+    gateways: Gateways
+    envoyfilters: Envoy Filters
+    sidecars: Sidecars
+  answers:
+    title: Answers
+    detail: Customized answers of this istio config
+    variable: Variable
+
+projectIstioPage:
+  info:
+    noApp: Cluster Istio is not enabled yet. Go here to
+    enable: enable it.
+    notOwner: Only users who have System project access can view this page.

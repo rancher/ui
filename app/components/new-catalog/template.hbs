@@ -6,6 +6,11 @@
         <span style="font-weight: normal">
           {{catalogApp.displayName}}
         </span>
+      {{else if isIstio}}
+        {{#link-to parentRoute (query-params istio="true")}}
+          {{t "newCatalog.istio.catalog"}}
+          {{templateResource.displayName}}
+        {{/link-to}}
       {{else}}
         {{#link-to parentRoute}}
           {{t "newCatalog.catalog"}}
@@ -247,7 +252,7 @@
 
   <div class="footer-actions">
     {{save-cancel
-      createLabel=(if editing saveUpgrade saveNew)
+      createLabel=(if editing saveUpgrade (if isIstio "newCatalog.istio.saveNew" saveNew))
       save=(action "save")
       cancel=(action "cancel")
     }}
