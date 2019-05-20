@@ -114,7 +114,6 @@
           class="form-control"
           content=storageTypeContent
           value=config.storageType
-          prompt=(t "globalRegistryPage.config.storageType.prompt")
         }}
       </div>
       {{#if (eq config.storageType "s3")}}
@@ -291,6 +290,20 @@
               {{t "generic.mibibyte"}}
             </div>
           </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col span-12">
+          <label class="acc-label">
+            {{t "globalRegistryPage.nodeSelector.helpText" component="database"}}
+          </label>
+          {{form-key-value
+            changedArray=(action (mut databaseNodeSelectors))
+            initialMap=databaseNodeSelector
+            allowEmptyValue=true
+            addActionLabel="globalRegistryPage.nodeSelector.addSelectorLabel"
+          }}
         </div>
       </div>
     {{else if (eq config.databaseType "external")}}
@@ -488,6 +501,20 @@
               {{t "generic.mibibyte"}}
             </div>
           </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col span-12">
+          <label class="acc-label">
+            {{t "globalRegistryPage.nodeSelector.helpText" component="redis"}}
+          </label>
+          {{form-key-value
+            changedArray=(action (mut redisNodeSelectors))
+            initialMap=redisNodeSelector
+            allowEmptyValue=true
+            addActionLabel="globalRegistryPage.nodeSelector.addSelectorLabel"
+          }}
         </div>
       </div>
     {{else if (eq config.redisType "external")}}

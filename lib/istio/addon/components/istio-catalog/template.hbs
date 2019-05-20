@@ -153,6 +153,20 @@
     </div>
   </div>
 
+  <div class="row">
+    <div class="col span-12">
+      <label class="acc-label">
+        {{t "clusterIstioPage.nodeSelector.helpText" component="Pilot"}}
+      </label>
+      {{form-key-value
+        changedArray=(action (mut pilotNodeSelectors))
+        initialMap=pilotNodeSelector
+        allowEmptyValue=true
+        addActionLabel="clusterIstioPage.nodeSelector.addSelectorLabel"
+      }}
+    </div>
+  </div>
+
   <div class="over-hr"><span>{{t "clusterIstioPage.config.header.mixer"}}</span></div>
   <div class="row">
     <div class="col span-6">
@@ -243,7 +257,7 @@
   <div class="row">
     <div class="col span-12">
       <label class="acc-label">
-        {{t "clusterIstioPage.mixerNodeSelector.helpText"}}
+        {{t "clusterIstioPage.nodeSelector.helpText" component="Mixer"}}
       </label>
       {{form-key-value
         changedArray=(action (mut mixerNodeSelectors))
@@ -344,11 +358,11 @@
   <div class="row">
     <div class="col span-12">
       <label class="acc-label">
-        {{t "clusterIstioPage.nodeSelector.helpText"}}
+        {{t "clusterIstioPage.nodeSelector.helpText" component="Prometheus"}}
       </label>
       {{form-key-value
         changedArray=(action (mut prometheusNodeSelectors))
-        initialMap=nodeSelector
+        initialMap=prometheusNodeSelector
         allowEmptyValue=true
         addActionLabel="clusterIstioPage.nodeSelector.addSelectorLabel"
       }}
