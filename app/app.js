@@ -194,6 +194,7 @@ const App = Application.extend({
           'intl',
           'grafana',
           'scope',
+          'store',
           'session',
           'modal',
           'globalStore',
