@@ -144,7 +144,7 @@ export default Resource.extend(Grafana, ResourceUsage, {
     case 'rancherKubernetesEngineConfig':
       if ( !!pools ) {
         if ( firstPool ) {
-          return get(firstPool, 'displayProvider');
+          return get(firstPool, 'displayProvider') ? get(firstPool, 'displayProvider') : intl.t('clusterNew.rke.shortLabel');
         } else {
           return intl.t('clusterNew.rke.shortLabel');
         }
@@ -255,7 +255,9 @@ export default Resource.extend(Grafana, ResourceUsage, {
     },
 
     edit() {
-      get(this, 'router').transitionTo('authenticated.cluster.edit', get(this, 'id'), { queryParams: { provider: get(this, 'driver') } });
+      let provider = get(this, 'provider') || get(this, 'driver');
+
+      get(this, 'router').transitionTo('authenticated.cluster.edit', get(this, 'id'), { queryParams: { provider } });
     },
 
     scaleDownPool(id) {
