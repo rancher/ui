@@ -136,6 +136,26 @@
         storageClasses=storageClasses
         persistentVolumeClaims=persistentVolumeClaims
       }}
+      {{form-reservation
+        component="Registry"
+        requestCpu=config.registryRequestCpu
+        requestMemory=config.registryRequestMemory
+        limitCpu=config.registryLimitCpu
+        limitMemory=config.registryLimitMemory
+      }}
+      <div class="row">
+        <div class="col span-12">
+          <label class="acc-label">
+            {{t "clusterIstioPage.nodeSelector.helpText" component="Registry"}}
+          </label>
+          {{form-key-value
+            changedArray=(action (mut registryNodeSelectors))
+            initialMap=registryNodeSelector
+            allowEmptyValue=true
+            addActionLabel="clusterIstioPage.nodeSelector.addSelectorLabel"
+          }}
+        </div>
+      </div>
     {{else if (eq config.storageType "s3")}}
       <div class="row">
         <div class="col span-6">
@@ -571,7 +591,11 @@
       </div>
     {{/if}}
 
-    <hr/>
+    <div class="over-hr">
+      <span>
+        {{t "globalRegistryPage.config.header.clair"}}
+      </span>
+    </div>
     <div class="row">
       <div class="col span-6">
         <label class="acc-label">
@@ -582,6 +606,37 @@
           classNames="form-control"
         }}
       </div>
+    </div>
+
+    {{#if config.clairEnabled}}
+      {{form-reservation
+        component="Clair"
+        requestCpu=config.clairRequestCpu
+        requestMemory=config.clairRequestMemory
+        limitCpu=config.clairLimitCpu
+        limitMemory=config.clairLimitMemory
+      }}
+      <div class="row">
+        <div class="col span-12">
+          <label class="acc-label">
+            {{t "clusterIstioPage.nodeSelector.helpText" component="Clair"}}
+          </label>
+          {{form-key-value
+            changedArray=(action (mut clairNodeSelectors))
+            initialMap=clairNodeSelector
+            allowEmptyValue=true
+            addActionLabel="clusterIstioPage.nodeSelector.addSelectorLabel"
+          }}
+        </div>
+      </div>
+    {{/if}}
+
+    <div class="over-hr">
+      <span>
+        {{t "globalRegistryPage.config.header.notary"}}
+      </span>
+    </div>
+    <div class="row">
       <div class="col span-6">
         <label class="acc-label">
           {{t "globalRegistryPage.config.notaryEnabled.label"}}
@@ -592,6 +647,29 @@
         }}
       </div>
     </div>
+
+    {{#if config.notaryEnabled}}
+      {{form-reservation
+        component="Notary"
+        requestCpu=config.notaryRequestCpu
+        requestMemory=config.notaryRequestMemory
+        limitCpu=config.notaryLimitCpu
+        limitMemory=config.notaryLimitMemory
+      }}
+      <div class="row">
+        <div class="col span-12">
+          <label class="acc-label">
+            {{t "clusterIstioPage.nodeSelector.helpText" component="Notary"}}
+          </label>
+          {{form-key-value
+            changedArray=(action (mut notaryNodeSelectors))
+            initialMap=notaryNodeSelector
+            allowEmptyValue=true
+            addActionLabel="clusterIstioPage.nodeSelector.addSelectorLabel"
+          }}
+        </div>
+      </div>
+    {{/if}}
 
     {{#advanced-section advanced=advanced}}
       {{form-key-value

@@ -402,7 +402,34 @@
     }}
   {{/if}}
 
-  <div class="over-hr"><span>{{t "clusterIstioPage.config.header.gateway"}}</span></div>
+  {{#if config.grafanaEnabled}}
+    {{form-reservation
+      component="Grafana"
+      requestCpu=config.grafanaRequestCpu
+      requestMemory=config.grafanaRequestMemory
+      limitCpu=config.grafanaLimitCpu
+      limitMemory=config.grafanaLimitMemory
+    }}
+    <div class="row">
+      <div class="col span-12">
+        <label class="acc-label">
+          {{t "clusterIstioPage.nodeSelector.helpText" component="Grafana"}}
+        </label>
+        {{form-key-value
+          changedArray=(action (mut grafanaNodeSelectors))
+          initialMap=grafanaNodeSelector
+          allowEmptyValue=true
+          addActionLabel="clusterIstioPage.nodeSelector.addSelectorLabel"
+        }}
+      </div>
+    </div>
+  {{/if}}
+
+  <div class="over-hr">
+    <span>
+      {{t "clusterIstioPage.config.header.gateway"}}
+    </span>
+  </div>
   <div class="row">
     <div class="col span-6">
       <label class="acc-label">
@@ -478,9 +505,35 @@
         </div>
       </div>
     {{/if}}
+
+    {{form-reservation
+      component="Gateway"
+      requestCpu=config.gatewayRequestCpu
+      requestMemory=config.gatewayRequestMemory
+      limitCpu=config.gatewayLimitCpu
+      limitMemory=config.gatewayLimitMemory
+    }}
+
+    <div class="row">
+      <div class="col span-12">
+        <label class="acc-label">
+          {{t "clusterIstioPage.nodeSelector.helpText" component="Gateway"}}
+        </label>
+        {{form-key-value
+          changedArray=(action (mut gatewayNodeSelectors))
+          initialMap=gatewayNodeSelector
+          allowEmptyValue=true
+          addActionLabel="clusterIstioPage.nodeSelector.addSelectorLabel"
+        }}
+      </div>
+    </div>
   {{/if}}
 
-  <hr/>
+  <div class="over-hr">
+    <span>
+      {{t "clusterIstioPage.config.header.tracing"}}
+    </span>
+  </div>
   <div class="row">
     <div class="col span-6">
       <label class="acc-label">
@@ -491,6 +544,33 @@
         classNames="form-control"
       }}
     </div>
+  </div>
+
+  {{#if config.tracingEnabled}}
+    {{form-reservation
+      component="Tracing"
+      requestCpu=config.tracingRequestCpu
+      requestMemory=config.tracingRequestMemory
+      limitCpu=config.tracingLimitCpu
+      limitMemory=config.tracingLimitMemory
+    }}
+    <div class="row">
+      <div class="col span-12">
+        <label class="acc-label">
+          {{t "clusterIstioPage.nodeSelector.helpText" component="Tracing"}}
+        </label>
+        {{form-key-value
+          changedArray=(action (mut tracingNodeSelectors))
+          initialMap=tracingNodeSelector
+          allowEmptyValue=true
+          addActionLabel="clusterIstioPage.nodeSelector.addSelectorLabel"
+        }}
+      </div>
+    </div>
+  {{/if}}
+
+  <hr/>
+  <div class="row">
     <div class="col span-6">
       <label class="acc-label">
         {{t "clusterIstioPage.config.mtlsEnabled.label"}}
@@ -520,7 +600,7 @@
   {{/advanced-section}}
 </div>
 
-{{#if (or prometheusWarning mixerWarning istioWarning pilotWarning)}}
+{{#if saveDisabled}}
   {{#banner-message color="bg-warning"}}
     {{#if istioWarning}}
       <p>{{istioWarning}}</p>
@@ -528,6 +608,9 @@
       <p>{{pilotWarning}}</p>
       <p>{{mixerWarning}}</p>
       <p>{{prometheusWarning}}</p>
+      <p>{{tracingWarning}}</p>
+      <p>{{grafanaWarning}}</p>
+      <p>{{gatewayWarning}}</p>
     {{/if}}
   {{/banner-message}}
 {{/if}}
