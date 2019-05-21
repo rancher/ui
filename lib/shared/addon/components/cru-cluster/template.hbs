@@ -10,17 +10,159 @@
   </h1>
 </section>
 
-{{#unless initialProvider}}
+{{!-- We need two levels here because the component is used in an engine and outside on (cluster edit) This will be undergoing some design changes and perhaps we should think about editing from the global level and the cluster level rather than cluster all the time. --}}
 
-  <div class="row nav nav-boxes checked-active inline-form">
-    <div class="col span-8 col-inline mb-0">
-      <div>
-        <label class="acc-label">
-          {{t "clusterNew.driverLabels.cloud"}}
-        </label>
+{{#unless initialProvider}}
+  {{#if (eq router.currentRouteName "authenticated.cluster.edit")}}
+    <div class="row nav nav-boxes checked-active inline-form">
+      <div class="col span-8 col-inline mb-0">
+        <div>
+          <label class="acc-label">
+            {{t "clusterNew.driverLabels.cloud"}}
+          </label>
+        </div>
+        {{#each (get providerGroups "cloudGroup") as |provider|}}
+          {{#unless provider.scriptError}}
+            {{#link-to-external
+               "authenticated.cluster.edit"
+               (query-params provider=provider.name)
+               class=(concat "mb-20 mt-10 col span-3 col-inline nav-box-item driver " provider.name)
+            }}
+              <div class="machine-driver {{if provider.genericIcon "generic"}} {{provider.name}}"></div>
+              <p class="driver-name">{{driver-name provider.name}}</p>
+            {{/link-to-external}}
+        {{else}}
+            <div class={{concat "disabled error-loading-driver mb-20 mt-10 col span-3 col-inline nav-box-item driver " provider.name}}>
+              {{#tooltip-element type="tooltip-basic" model=provider.scriptError tooltipTemplate="tooltip-static" aria-describedby="tooltip-base" tooltipFor="tooltipDriverError"}}
+                <span class="icon icon-alert"></span>
+              {{/tooltip-element}}
+              <div class="machine-driver {{provider.name}}"></div>
+              <p class="driver-name">{{driver-name provider.name}}</p>
+            </div>
+          {{/unless}}
+        {{else}}
+          <div class="machine-driver-empty">{{t "clusterNew.driverLabels.noCloud"}}</div>
+        {{/each}}
       </div>
-      {{#each (get providerGroups "cloudGroup") as |provider|}}
-        {{#unless provider.scriptError}}
+
+      <div class="col span-2 col-inline mb-0">
+        <div>
+          <label class="acc-label">{{t "clusterNew.driverLabels.import"}}</label>
+        </div>
+        {{#each (get providerGroups "importGroup") as |provider|}}
+          {{#link-to-external
+             "authenticated.cluster.edit"
+             (query-params provider=provider.name)
+             class=(concat "mb-20 mt-10 col span-12 col-inline nav-box-item driver " provider.name)
+          }}
+            <div class="machine-driver {{provider.name}}"></div>
+            <p class="driver-name">{{driver-name provider.name}}</p>
+            {{#if provider.genericIcon}}
+              <p class="text-link text-bold">{{driver-name provider.name}}</p>
+            {{/if}}
+          {{/link-to-external}}
+        {{/each}}
+      </div>
+
+    </div>
+
+    <div class="row nav nav-boxes checked-active inline-form">
+      <div class="col span-8 col-inline mt-0">
+        <div>
+          <label class="acc-label">{{t "clusterNew.driverLabels.infra"}}</label>
+        </div>
+        {{#each (get providerGroups "rkeGroup") as |provider|}}
+          {{#link-to-external
+             "authenticated.cluster.edit"
+             (query-params provider=provider.name)
+             class=(concat "mb-20 mt-10 col span-3 col-inline nav-box-item driver " provider.name)
+          }}
+            <div class="machine-driver {{if provider.genericIcon "generic"}} {{provider.name}}"></div>
+            <p class="driver-name">{{driver-name provider.name}}</p>
+          {{/link-to-external}}
+        {{else}}
+          <div class="machine-driver-empty">{{t "clusterNew.driverLabels.noInfra"}}</div>
+        {{/each}}
+      </div>
+
+      <div class="col span-2 col-inline mt-0">
+        <div>
+          <label class="acc-label">{{t "clusterNew.driverLabels.custom"}}</label>
+        </div>
+        {{#each (get providerGroups "customGroup") as |provider|}}
+          {{#link-to-external
+             "authenticated.cluster.edit"
+             (query-params provider=provider.name)
+             class=(concat "mb-20 mt-10 col span-12 col-inline nav-box-item driver " provider.name)
+          }}
+            <div class="machine-driver {{provider.name}}"></div>
+            <p class="driver-name">{{driver-name provider.name}}</p>
+            {{#if provider.genericIcon}}
+              <p class="text-link text-bold">{{driver-name provider.name}}</p>
+            {{/if}}
+          {{/link-to-external}}
+        {{/each}}
+      </div>
+    </div>
+  {{else}}
+    <div class="row nav nav-boxes checked-active inline-form">
+      <div class="col span-8 col-inline mb-0">
+        <div>
+          <label class="acc-label">
+            {{t "clusterNew.driverLabels.cloud"}}
+          </label>
+        </div>
+        {{#each (get providerGroups "cloudGroup") as |provider|}}
+          {{#unless provider.scriptError}}
+            {{#link-to
+               "clusters.new"
+               (query-params provider=provider.name)
+               class=(concat "mb-20 mt-10 col span-3 col-inline nav-box-item driver " provider.name)
+            }}
+              <div class="machine-driver {{if provider.genericIcon "generic"}} {{provider.name}}"></div>
+              <p class="driver-name">{{driver-name provider.name}}</p>
+            {{/link-to}}
+        {{else}}
+            <div class={{concat "disabled error-loading-driver mb-20 mt-10 col span-3 col-inline nav-box-item driver " provider.name}}>
+              {{#tooltip-element type="tooltip-basic" model=provider.scriptError tooltipTemplate="tooltip-static" aria-describedby="tooltip-base" tooltipFor="tooltipDriverError"}}
+                <span class="icon icon-alert"></span>
+              {{/tooltip-element}}
+              <div class="machine-driver {{provider.name}}"></div>
+              <p class="driver-name">{{driver-name provider.name}}</p>
+            </div>
+          {{/unless}}
+        {{else}}
+          <div class="machine-driver-empty">{{t "clusterNew.driverLabels.noCloud"}}</div>
+        {{/each}}
+      </div>
+
+      <div class="col span-2 col-inline mb-0">
+        <div>
+          <label class="acc-label">{{t "clusterNew.driverLabels.import"}}</label>
+        </div>
+        {{#each (get providerGroups "importGroup") as |provider|}}
+          {{#link-to
+             "clusters.new"
+             (query-params provider=provider.name)
+             class=(concat "mb-20 mt-10 col span-12 col-inline nav-box-item driver " provider.name)
+          }}
+            <div class="machine-driver {{provider.name}}"></div>
+            <p class="driver-name">{{driver-name provider.name}}</p>
+            {{#if provider.genericIcon}}
+              <p class="text-link text-bold">{{driver-name provider.name}}</p>
+            {{/if}}
+          {{/link-to}}
+        {{/each}}
+      </div>
+
+    </div>
+
+    <div class="row nav nav-boxes checked-active inline-form">
+      <div class="col span-8 col-inline mt-0">
+        <div>
+          <label class="acc-label">{{t "clusterNew.driverLabels.infra"}}</label>
+        </div>
+        {{#each (get providerGroups "rkeGroup") as |provider|}}
           {{#link-to
              "clusters.new"
              (query-params provider=provider.name)
@@ -29,79 +171,31 @@
             <div class="machine-driver {{if provider.genericIcon "generic"}} {{provider.name}}"></div>
             <p class="driver-name">{{driver-name provider.name}}</p>
           {{/link-to}}
-      {{else}}
-          <div class={{concat "disabled error-loading-driver mb-20 mt-10 col span-3 col-inline nav-box-item driver " provider.name}}>
-            {{#tooltip-element type="tooltip-basic" model=provider.scriptError tooltipTemplate="tooltip-static" aria-describedby="tooltip-base" tooltipFor="tooltipDriverError"}}
-              <span class="icon icon-alert"></span>
-            {{/tooltip-element}}
+        {{else}}
+          <div class="machine-driver-empty">{{t "clusterNew.driverLabels.noInfra"}}</div>
+        {{/each}}
+      </div>
+
+      <div class="col span-2 col-inline mt-0">
+        <div>
+          <label class="acc-label">{{t "clusterNew.driverLabels.custom"}}</label>
+        </div>
+        {{#each (get providerGroups "customGroup") as |provider|}}
+          {{#link-to
+             "clusters.new"
+             (query-params provider=provider.name)
+             class=(concat "mb-20 mt-10 col span-12 col-inline nav-box-item driver " provider.name)
+          }}
             <div class="machine-driver {{provider.name}}"></div>
             <p class="driver-name">{{driver-name provider.name}}</p>
-          </div>
-        {{/unless}}
-      {{else}}
-        <div class="machine-driver-empty">{{t "clusterNew.driverLabels.noCloud"}}</div>
-      {{/each}}
-    </div>
-
-    <div class="col span-2 col-inline mb-0">
-      <div>
-        <label class="acc-label">{{t "clusterNew.driverLabels.import"}}</label>
+            {{#if provider.genericIcon}}
+              <p class="text-link text-bold">{{driver-name provider.name}}</p>
+            {{/if}}
+          {{/link-to}}
+        {{/each}}
       </div>
-      {{#each (get providerGroups "importGroup") as |provider|}}
-        {{#link-to
-           "clusters.new"
-           (query-params provider=provider.name)
-           class=(concat "mb-20 mt-10 col span-12 col-inline nav-box-item driver " provider.name)
-        }}
-          <div class="machine-driver {{provider.name}}"></div>
-          <p class="driver-name">{{driver-name provider.name}}</p>
-          {{#if provider.genericIcon}}
-            <p class="text-link text-bold">{{driver-name provider.name}}</p>
-          {{/if}}
-        {{/link-to}}
-      {{/each}}
     </div>
-
-  </div>
-
-  <div class="row nav nav-boxes checked-active inline-form">
-    <div class="col span-8 col-inline mt-0">
-      <div>
-        <label class="acc-label">{{t "clusterNew.driverLabels.infra"}}</label>
-      </div>
-      {{#each (get providerGroups "rkeGroup") as |provider|}}
-        {{#link-to
-           "clusters.new"
-           (query-params provider=provider.name)
-           class=(concat "mb-20 mt-10 col span-3 col-inline nav-box-item driver " provider.name)
-        }}
-          <div class="machine-driver {{if provider.genericIcon "generic"}} {{provider.name}}"></div>
-          <p class="driver-name">{{driver-name provider.name}}</p>
-        {{/link-to}}
-      {{else}}
-        <div class="machine-driver-empty">{{t "clusterNew.driverLabels.noInfra"}}</div>
-      {{/each}}
-    </div>
-
-    <div class="col span-2 col-inline mt-0">
-      <div>
-        <label class="acc-label">{{t "clusterNew.driverLabels.custom"}}</label>
-      </div>
-      {{#each (get providerGroups "customGroup") as |provider|}}
-        {{#link-to
-           "clusters.new"
-           (query-params provider=provider.name)
-           class=(concat "mb-20 mt-10 col span-12 col-inline nav-box-item driver " provider.name)
-        }}
-          <div class="machine-driver {{provider.name}}"></div>
-          <p class="driver-name">{{driver-name provider.name}}</p>
-          {{#if provider.genericIcon}}
-            <p class="text-link text-bold">{{driver-name provider.name}}</p>
-          {{/if}}
-        {{/link-to}}
-      {{/each}}
-    </div>
-  </div>
+  {{/if}}
 {{/unless}}
 
 
