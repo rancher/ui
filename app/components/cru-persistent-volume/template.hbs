@@ -59,15 +59,21 @@
 {{else}}
   <div class="row">
     <div class="col span-6">
-      <label class="acc-label">{{t 'cruPersistentVolume.source.label'}}{{field-required editing=editing}}</label>
-      {{new-select
-        content=sourceChoices
-        prompt="cruPersistentVolume.source.prompt"
-        localizedPrompt=true
-        optionValuePath="name"
-        value=sourceName
-        readOnly=isView
+      <label class="acc-label">
+        {{t "cruPersistentVolume.source.label"}}{{field-required editing=editing}}
+      </label>
+      {{#input-or-display
+         editable=isNew
+         value=sourceDisplayName
       }}
+        {{new-select
+          content=sourceChoices
+          prompt="cruPersistentVolume.source.prompt"
+          localizedPrompt=true
+          optionValuePath="name"
+          value=sourceName
+        }}
+      {{/input-or-display}}
     </div>
     <div class="col span-6">
       <label class="acc-label">{{t 'cruPersistentVolume.capacity.label'}}{{field-required editing=editing}}</label>
@@ -95,7 +101,7 @@
       {{component sourceComponent
         volume=model
         sourceStore=clusterStore
-        editing=notView
+        editing=isNew
       }}
     {{else}}
       <p class="text-muted">{{t 'cruVolume.sourcePrompt'}}</p>
@@ -154,8 +160,8 @@
     </div>
     <div class="row mt-20">
       <label class="acc-label">{{t 'cruPersistentVolume.nodeAffinity.label'}}</label>
-      {{form-node-affinity 
-        model=model.nodeAffinity.required 
+      {{form-node-affinity
+        model=model.nodeAffinity.required
         editing=notView
         changed=(action "updateNodeAffinities")
       }}
