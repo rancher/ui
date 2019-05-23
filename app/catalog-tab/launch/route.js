@@ -13,10 +13,12 @@ export default Route.extend({
   scope:        service(),
   clusterStore: service(),
   settings:     service(),
+  growl:        service(),
+  intl:         service(),
 
   parentRoute:  'catalog-tab',
 
-  model(params/* , transition*/) {
+  model(params, transition) {
     const { store, clusterStore } = this;
 
     const dependencies = {
@@ -163,6 +165,12 @@ export default Route.extend({
           versionsArray:      verArr,
         });
       });
+    }).catch((error) => {
+      if (error.status === 404) {
+        this.growl.fromError(this.intl.t('newCatalog.error.appData'), error.message);
+      }
+
+      return transition.router.transitionTo('apps-tab.index');
     });
   },
 
