@@ -111,6 +111,35 @@ let INSTANCE_TYPES = [
     group: 'T3 - Burstable',
     name:  't3.2xlarge'
   },
+  
+  {
+    group: 'T3a - Burstable AMD Epyc',
+    name:  't3a.nano'
+  },
+  {
+    group: 'T3a - Burstable AMD Epyc',
+    name:  't3a.micro'
+  },
+  {
+    group: 'T3a - Burstable AMD Epyc',
+    name:  't3a.small'
+  },
+  {
+    group: 'T3a - Burstable AMD Epyc',
+    name:  't3a.medium'
+  },
+  {
+    group: 'T3a - Burstable AMD Epyc',
+    name:  't3a.large'
+  },
+  {
+    group: 'T3a - Burstable AMD Epyc',
+    name:  't3a.xlarge'
+  },
+  {
+    group: 'T3a - Burstable AMD Epyc',
+    name:  't3a.2xlarge'
+  },
 
   {
     group: 'M5 - General Purpose',
@@ -135,6 +164,81 @@ let INSTANCE_TYPES = [
   {
     group: 'M5 - General Purpose',
     name:  'm5.24xlarge'
+  },
+  
+  {
+    group: 'M5d - General Purpose SSD',
+    name:  'm5d.large'
+  },
+  {
+    group: 'M5d - General Purpose SSD',
+    name:  'm5d.xlarge'
+  },
+  {
+    group: 'M5d - General Purpose SSD',
+    name:  'm5d.2xlarge'
+  },
+  {
+    group: 'M5d - General Purpose SSD',
+    name:  'm5d.4xlarge'
+  },
+  {
+    group: 'M5d - General Purpose SSD',
+    name:  'm5d.12xlarge'
+  },
+  {
+    group: 'M5d - General Purpose SSD',
+    name:  'm5d.24xlarge'
+  },
+  
+  {
+    group: 'M5a - General Purpose AMD Epyc',
+    name:  'm5a.large'
+  },
+  {
+    group: 'M5a - General Purpose AMD Epyc',
+    name:  'm5a.xlarge'
+  },
+  {
+    group: 'M5a - General Purpose AMD Epyc',
+    name:  'm5a.2xlarge'
+  },
+  {
+    group: 'M5a - General Purpose AMD Epyc',
+    name:  'm5a.4xlarge'
+  },
+  {
+    group: 'M5a - General Purpose AMD Epyc',
+    name:  'm5a.12xlarge'
+  },
+  {
+    group: 'M5a - General Purpose AMD Epyc',
+    name:  'm5a.24xlarge'
+  },
+  
+  {
+    group: 'M5ad - General Purpose SSD AMD Epyc',
+    name:  'm5ad.large'
+  },
+  {
+    group: 'M5ad - General Purpose SSD AMD Epyc',
+    name:  'm5ad.xlarge'
+  },
+  {
+    group: 'M5ad - General Purpose SSD AMD Epyc',
+    name:  'm5ad.2xlarge'
+  },
+  {
+    group: 'M5ad - General Purpose SSD AMD Epyc',
+    name:  'm5ad.4xlarge'
+  },
+  {
+    group: 'M5ad - General Purpose SSD AMD Epyc',
+    name:  'm5ad.12xlarge'
+  },
+  {
+    group: 'M5ad - General Purpose SSD AMD Epyc',
+    name:  'm5ad.24xlarge'
   },
 
   {
@@ -310,36 +414,86 @@ let INSTANCE_TYPES = [
   },
   {
     group: 'R5 - High Memory Optimized',
-    name:  'r5.12xlarge	'
+    name:  'r5.12xlarge'
   },
   {
     group: 'R5 - High Memory Optimized',
-    name:  'r5.24xlarge	'
+    name:  'r5.24xlarge'
   },
 
   {
-    group: 'R5D - High Memory Optimized & Local Storage',
+    group: 'R5d - High Memory Optimized & Local Storage',
     name:  'r5d.large'
   },
   {
-    group: 'R5D - High Memory Optimized & Local Storage',
+    group: 'R5d - High Memory Optimized & Local Storage',
     name:  'r5d.xlarge'
   },
   {
-    group: 'R5D - High Memory Optimized & Local Storage',
+    group: 'R5d - High Memory Optimized & Local Storage',
     name:  'r5d.2xlarge'
   },
   {
-    group: 'R5D - High Memory Optimized & Local Storage',
+    group: 'R5d - High Memory Optimized & Local Storage',
     name:  'r5d.4xlarge'
   },
   {
-    group: 'R5D - High Memory Optimized & Local Storage',
+    group: 'R5d - High Memory Optimized & Local Storage',
     name:  'r5d.12xlarge'
   },
   {
-    group: 'R5D - High Memory Optimized & Local Storage',
+    group: 'R5d - High Memory Optimized & Local Storage',
     name:  'r5d.24xlarge'
+  },
+  
+  {
+    group: 'R5a - High Memory Optimized AMD Epyc',
+    name:  'r5a.large'
+  },
+  {
+    group: 'R5a - High Memory Optimized AMD Epyc',
+    name:  'r5a.xlarge'
+  },
+  {
+    group: 'R5a - High Memory Optimized AMD Epyc',
+    name:  'r5a.2xlarge'
+  },
+  {
+    group: 'R5a - High Memory Optimized AMD Epyc',
+    name:  'r5a.4xlarge'
+  },
+  {
+    group: 'R5a - High Memory Optimized AMD Epyc',
+    name:  'r5a.12xlarge'
+  },
+  {
+    group: 'R5a - High Memory Optimized AMD Epyc',
+    name:  'r5a.24xlarge'
+  },
+  
+  {
+    group: 'R5ad - High Memory Optimized & Local Storage AMD Epyc',
+    name:  'r5ad.large'
+  },
+  {
+    group: 'R5ad - High Memory Optimized & Local Storage AMD Epyc',
+    name:  'r5ad.xlarge'
+  },
+  {
+    group: 'R5ad - High Memory Optimized & Local Storage AMD Epyc',
+    name:  'r5ad.2xlarge'
+  },
+  {
+    group: 'R5ad - High Memory Optimized & Local Storage AMD Epyc',
+    name:  'r5ad.4xlarge'
+  },
+  {
+    group: 'R5ad - High Memory Optimized & Local Storage AMD Epyc',
+    name:  'r5ad.12xlarge'
+  },
+  {
+    group: 'R5ad - High Memory Optimized & Local Storage AMD Epyc',
+    name:  'r5ad.24xlarge'
   },
 
   {
