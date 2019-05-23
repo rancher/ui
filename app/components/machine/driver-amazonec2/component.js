@@ -414,11 +414,11 @@ let INSTANCE_TYPES = [
   },
   {
     group: 'R5 - High Memory Optimized',
-    name:  'r5.12xlarge	'
+    name:  'r5.12xlarge'
   },
   {
     group: 'R5 - High Memory Optimized',
-    name:  'r5.24xlarge	'
+    name:  'r5.24xlarge'
   },
 
   {
@@ -464,11 +464,11 @@ let INSTANCE_TYPES = [
   },
   {
     group: 'R5a - High Memory Optimized AMD Epyc',
-    name:  'r5a.12xlarge	'
+    name:  'r5a.12xlarge'
   },
   {
     group: 'R5a - High Memory Optimized AMD Epyc',
-    name:  'r5a.24xlarge	'
+    name:  'r5a.24xlarge'
   },
   
   {
