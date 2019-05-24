@@ -179,6 +179,7 @@ const App = Application.extend({
           'logout':                                   'logout',
           'volumes.index':                            'volumes.index',
           'authenticated.project.dns.index':          'authenticated.project.dns.index',
+          'authenticated.project.hpa.index':          'authenticated.project.hpa.index',
           'ingresses.index':                          'ingresses.index',
           'containers.index':                         'containers.index',
           'authenticated.project.pipeline.pipeline':  'authenticated.project.pipeline.pipeline',

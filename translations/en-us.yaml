@@ -53,6 +53,7 @@ generic:
   help: Help
   hostname: Hostname
   hours: hours
+  hpa: HPA
   id: ID
   image: Image
   import: Import
@@ -928,6 +929,19 @@ metrics:
   container-disk-io: Disk I/O
   container-memory-usage-bytes-sum: Memory Utilization
 
+hpaPage:
+  noMatch: No HPA match the current search
+  noData: There are no HPA to show
+  table:
+    replicas:
+      range: Replicas Range
+      current: Current Replicas
+      desired: Desired
+    lastScaleTime:
+      label: Last Scale
+    target:
+      label: Target Workload
+
 dnsPage:
   noMatch: No records match the current search
   noData: There are no DNS records to show
@@ -943,6 +957,73 @@ dnsPage:
     target: Target
     clusterIpDetail: 'Cluster IP: {ip}'
 
+cruHpa:
+  title:
+    new: Add Horizontal Pod Autoscaler
+    edit: Edit Horizontal Pod Autoscaler
+    view: "Horizontal Pod Autoscaler: {name}"
+  status:
+    label: Current Status
+  target:
+    label: Scale Target
+  name:
+    placeholder: e.g. myscaler
+  description:
+    placeholder: e.g. My scaler
+  prompt:
+    deployment: Select a Target...
+  minReplicas:
+    label: Minimum Scale
+    placeholder: e.g. 1
+  maxReplicas:
+    label: Maximum Scale
+    placeholder: e.g. 10
+  metrics:
+    label: Metrics
+    noMetrics: No Metrics
+    addMetricLabel: Add Metric
+    removeMetricLabel: Remove Metric
+    selector:
+      labels:
+        addSelectorLabel: Add Label
+        label: Metrics Match Labels
+      expressions:
+        addSelectorLabel: Add Expression
+        label: Metrics Match Expressions
+    describedObject:
+      label: Described Object
+      apiVersion:
+        label: Described Object API Version
+        placeholder: e.g. extensions/v1beta1
+      kind:
+        label: Described Object Kind
+        placeholder: e.g. Ingress
+      name:
+        label: Described Object Name
+        placeholder: e.g. main-route
+    types:
+      label: Metric type
+      object: Object
+      pods: Pods
+      resource: Resource
+      external: External
+    name:
+      label: Metric Name
+      placeholder: e.g. packets-per-second
+      resources:
+        cpu: CPU
+        memory: Memory
+    target:
+      label: Target Type
+      options:
+        value: Value
+        averageValue: Average Value
+        averageUtilization: Average Utilization
+    value:
+      label: Quantity
+      placeholder: e.g. 200Mi
+      cpuPlaceholder: e.g. 200m
+      utilizationPlaceholder: e.g. 50
 editDns:
   title:
     new: Add Record
@@ -4490,6 +4571,15 @@ formKeyToPath:
     label: Mode
     placeholder: "e.g. 400"
 
+formMatchExpressions:
+  addAction: Add Expression
+  key:
+    label: Key
+    placeholder: e.g. region
+  value:
+    label: Values
+    placeholder: e.g. us,eu,ap
+
 formKeyValue:
   addAction: Add Pair
   key:
@@ -6714,6 +6804,11 @@ pagination:
     =0 {No Items}
     =1 {{count} {count, plural, =1 {Item} other {Items}}}
     other {{from} - {to} of {count} Items}}
+  hpa: |
+    {pages, plural,
+    =0 {No Horizontal Pod Autoscalers}
+    =1 {{count} {count, plural, =1 {Horizontal Pod Autoscaler} other {Horizontal Pod Autoscalers}}}
+    other {{from} - {to} of {count} Horizontal Pod Autoscalers}}
   image: |
     {pages, plural,
     =0 {No Images}
@@ -7066,6 +7161,7 @@ nav:
     ingresses: Load Balancing
     containers: Workloads
     dns: Service Discovery
+    hpa: HPA
     volumes: Volumes
     pipelines: Pipelines
     deploy: Deploy
@@ -7073,6 +7169,7 @@ nav:
     addBalancer: Add Balancer
     addIngress: Add Ingress
     addDns: Add Record
+    addHpa: Add HPA
     addVolume: Add Volume
     importCompose: Import YAML
   group:
