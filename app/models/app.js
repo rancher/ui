@@ -5,6 +5,7 @@ import { parseHelmExternalId } from 'ui/utils/parse-externalid';
 import StateCounts from 'ui/mixins/state-counts';
 import { inject as service } from '@ember/service';
 import EndpointPorts from 'ui/mixins/endpoint-ports';
+import { isEmpty } from '@ember/utils';
 
 const App = Resource.extend(StateCounts, EndpointPorts, {
   catalog:      service(),
@@ -12,8 +13,7 @@ const App = Resource.extend(StateCounts, EndpointPorts, {
   clusterStore: service(),
   globalStore:  service(),
 
-  canEdit:   false,
-  canClone: true,
+  canEdit:      false,
 
   namespace:       reference('targetNamespace', 'namespace', 'clusterStore'),
   catalogTemplate: reference('externalIdInfo.templateId', 'template', 'globalStore'),
@@ -23,7 +23,7 @@ const App = Resource.extend(StateCounts, EndpointPorts, {
     this.defineStateCounts('pods', 'podStates', 'podCountSort');
   },
 
-  pods:      computed('namespace.pods.@each.workloadId', 'workloads.@each.workloadLabels', function() {
+  pods: computed('namespace.pods.@each.workloadId', 'workloads.@each.workloadLabels', function() {
     return (get(this, 'namespace.pods') || []).filter((item) => {
       if ( item['labels'] ) {
         const inApp = item['labels']['io.cattle.field/appId'] === get(this, 'name');
@@ -42,6 +42,7 @@ const App = Resource.extend(StateCounts, EndpointPorts, {
       }
     });
   }),
+
   services: computed('namespace.services.@each.labels', function() {
     return (get(this, 'namespace.services') || []).filter((item) => {
       if ( item['labels'] ) {
@@ -49,6 +50,7 @@ const App = Resource.extend(StateCounts, EndpointPorts, {
       }
     });
   }),
+
   dnsRecords: computed('namespace.services.@each.labels', function() {
     return (get(this, 'namespace.services') || []).filter((item) => {
       if ( item['labels'] ) {
@@ -56,6 +58,7 @@ const App = Resource.extend(StateCounts, EndpointPorts, {
       }
     });
   }),
+
   workloads: computed('namespace.workloads.@each.workloadLabels', function() {
     return (get(this, 'namespace.workloads') || []).filter((item) => {
       if ( item['workloadLabels'] ) {
@@ -63,6 +66,7 @@ const App = Resource.extend(StateCounts, EndpointPorts, {
       }
     });
   }),
+
   secrets: computed('namespace.secrets', function() {
     return (get(this, 'namespace.secrets') || []).filter((item) => {
       if ( item['labels'] ) {
@@ -70,6 +74,7 @@ const App = Resource.extend(StateCounts, EndpointPorts, {
       }
     });
   }),
+
   configMaps: computed('namespace.configMaps', function() {
     return (get(this, 'namespace.configMaps') || []).filter((item) => {
       if ( item['labels'] ) {
@@ -77,6 +82,7 @@ const App = Resource.extend(StateCounts, EndpointPorts, {
       }
     });
   }),
+
   ingress: computed('namespace.ingress', function() {
     return (get(this, 'namespace.ingress') || []).filter((item) => {
       if ( item['labels'] ) {
@@ -84,6 +90,7 @@ const App = Resource.extend(StateCounts, EndpointPorts, {
       }
     });
   }),
+
   volumes: computed('namespace.volumes', function() {
     return (get(this, 'namespace.volumes') || []).filter((item) => {
       if ( item['labels'] ) {
@@ -100,6 +107,7 @@ const App = Resource.extend(StateCounts, EndpointPorts, {
         out.push(endpoint);
       });
     });
+
     get(this, 'services').forEach((service) => {
       (get(service, 'proxyEndpoints') || []).forEach((endpoint) => {
         out.push(endpoint);
@@ -113,6 +121,16 @@ const App = Resource.extend(StateCounts, EndpointPorts, {
     return parseHelmExternalId(get(this, 'externalId'));
   }),
 
+  canUpgrade: computed('actionLinks.{upgrade}', 'catalogTemplate', function() {
+    let a = get(this, 'actionLinks') || {};
+
+    return !!a.upgrade && !isEmpty(this.catalogTemplate);
+  }),
+
+  canClone: computed('catalogTemplate', function() {
+    return !isEmpty(this.catalogTemplate);
+  }),
+
   availableActions: computed('actionLinks.{rollback,upgrade}', function() {
     let a = get(this, 'actionLinks') || {};
 
@@ -121,7 +139,7 @@ const App = Resource.extend(StateCounts, EndpointPorts, {
         label:   'action.upgrade',
         icon:    'icon icon-edit',
         action:  'upgrade',
-        enabled: !!a.upgrade
+        enabled: get(this, 'canUpgrade')
       },
       {
         label:   'action.rollback',
@@ -133,6 +151,7 @@ const App = Resource.extend(StateCounts, EndpointPorts, {
 
     return choices;
   }),
+
   actions: {
     upgrade() {
       const templateId    = get(this, 'externalIdInfo.templateId');
