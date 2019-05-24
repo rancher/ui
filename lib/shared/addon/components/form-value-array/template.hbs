@@ -22,7 +22,14 @@
     </span>
     {{#if editing}}
       <span class="input-group-btn">
-        <button class="btn bg-primary btn-sm" {{action "remove" row}}><i class="icon icon-minus"/><span class="sr-only">{{t "generic.remove"}}</span></button>
+        <button
+          class="btn bg-primary btn-sm"
+          {{action "remove" row}}>
+          <i class="icon icon-minus"/>
+          <span class="sr-only">
+            {{t "generic.remove"}}
+          </span>
+        </button>
       </span>
     {{/if}}
     </div>
@@ -30,11 +37,23 @@
 
 
 {{else if (not editing)}}
-    <p class="text-center text-muted">{{t noDataLabel}}</p>
+    <p class="text-center text-muted">
+      {{t noDataLabel}}
+    </p>
 {{/if}}
 {{#if editing}}
-
-<button class="btn bg-link icon-btn mt-10" {{action "add"}} disabled={{cannotAdd}}><span class="darken"><i class="icon icon-plus text-small"/></span> <span>{{t addActionLabel}}</span></button>
+  <button
+    class={{addButtonClass}}
+    {{action "add"}}
+    disabled={{cannotAdd}}
+  >
+    <span class="darken">
+      <i class="icon icon-plus text-small"/>
+    </span>
+    <span>
+      {{t addActionLabel}}
+    </span>
+  </button>
 
   {{#if ary.length}}
     {{#if showProTip}}

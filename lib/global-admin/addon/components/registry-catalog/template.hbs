@@ -1,0 +1,715 @@
+<section class="header clearfix">
+  <h1 class="pull-left">
+    {{t "globalRegistryPage.header"}}
+  </h1>
+  {{#if (and enabled showForm)}}
+    <div class="pull-right">
+      {{#if confirmDisable}}
+        <button class="btn bg-error" {{action "disable"}}>
+          <i class="icon icon-alert"></i> {{t "globalRegistryPage.confirmDisable"}}
+        </button>
+      {{else}}
+        <button class="btn bg-error" {{action "promptDisable"}}>
+          <i class="icon icon-umbrella"></i> {{t "globalRegistryPage.disable"}}
+        </button>
+      {{/if}}
+    </div>
+  {{/if}}
+</section>
+
+{{#if (and enabled ready)}}
+  {{#banner-message color="bg-info"}}
+    <p>{{t "globalRegistryPage.enabled" url=app.answers.externalURL htmlSafe=true}}</p>
+  {{/banner-message}}
+{{else if enabled}}
+  {{#banner-message color="bg-warning"}}
+    <p>{{t "globalRegistryPage.notReady"}}</p>
+  {{/banner-message}}
+{{else}}
+  {{#banner-message color="bg-warning"}}
+    <p>{{t "globalRegistryPage.disabled"}}</p>
+  {{/banner-message}}
+{{/if}}
+
+{{#if (and enabled ready)}}
+  {{#accordion-list showExpandAll=false  as |al expandFn|}}
+    {{#accordion-list-item
+        classNames="mt-30"
+        expand=(action expandFn)
+        expandAll=al.expandAll
+        expandOnInit=true
+        expanded=true
+        title=(t "globalRegistryPage.command.title")
+        detail=(t "globalRegistryPage.command.detail")
+    }}
+      <div>
+        <div class="acc-label p-0 mb-5 mt-10">
+          {{t "globalRegistryPage.command.dockerLogin"}}:
+        </div>
+        <code class="p-5">{{dockerLogin}}</code>{{copy-to-clipboard clipboardText=dockerLogin size="small"}}
+      </div>
+      <div>
+        <div class="acc-label p-0 mb-5 mt-10">
+          {{t "globalRegistryPage.command.dockerPull"}}:
+        </div>
+        <code class="p-5">{{dockerPull}}</code>{{copy-to-clipboard clipboardText=dockerPull size="small"}}
+      </div>
+      <div>
+        <div class="acc-label p-0 mb-5 mt-10">
+          {{t "globalRegistryPage.command.dockerTag"}}:
+        </div>
+        <code class="p-5">{{dockerTag}}</code>{{copy-to-clipboard clipboardText=dockerTag size="small"}}
+      </div>
+      <div>
+        <div class="acc-label p-0 mb-5 mt-10">
+          {{t "globalRegistryPage.command.dockerPush"}}:
+        </div>
+        <code class="p-5">{{dockerPush}}</code>{{copy-to-clipboard clipboardText=dockerPush size="small"}}
+      </div>
+    {{/accordion-list-item}}
+  {{/accordion-list}}
+{{/if}}
+
+{{#if showForm}}
+  <div class="box mb-10">
+    <div class="row">
+      <div class="col span-6">
+        <label class="acc-label">
+          {{t "globalRegistryPage.setting.adminPassword.label"}}{{field-required}}
+        </label>
+        {{input
+          type="text"
+          class="conceal"
+          placeholder=(t "globalRegistryPage.setting.adminPassword.placeholder")
+          value=config.password
+        }}
+      </div>
+      <div class="col span-6">
+        <label class="acc-label">
+          {{t "globalRegistryPage.config.secretKey.label"}}
+        </label>
+        {{schema/input-password
+          value=config.secretKey
+          question=secretKeyQuestion
+          conceal=true
+        }}
+        <p class="help-block">
+          {{t "globalRegistryPage.config.secretKey.description"}}
+        </p>
+      </div>
+    </div>
+
+    <div class="over-hr">
+      <span>
+        {{t "globalRegistryPage.config.header.registryPersistence"}}
+      </span>
+    </div>
+
+    <div class="row">
+      <div class="col span-6">
+        <label class="acc-label">
+          {{t "globalRegistryPage.config.storageType.label"}}{{field-required}}
+        </label>
+        {{new-select
+          class="form-control"
+          content=storageTypeContent
+          value=config.storageType
+        }}
+      </div>
+      {{#if (eq config.storageType "s3")}}
+        <div class="col span-6">
+          <label class="acc-label">
+            {{t "globalRegistryPage.config.s3.bucket.label"}}{{field-required}}
+          </label>
+          {{schema/input-string
+            value=imageChartStorage.s3.bucket
+            placeholder=(t "globalRegistryPage.config.s3.bucket.placeholder")
+          }}
+        </div>
+      {{/if}}
+    </div>
+
+    {{#if (eq config.storageType "filesystem")}}
+      {{catalog-persistence-row
+        useStorageClass=useRegistryStorageClass
+        config=persistence.persistentVolumeClaim.registry
+        storageClasses=storageClasses
+        persistentVolumeClaims=persistentVolumeClaims
+      }}
+      {{form-reservation
+        component="Registry"
+        requestCpu=config.registryRequestCpu
+        requestMemory=config.registryRequestMemory
+        limitCpu=config.registryLimitCpu
+        limitMemory=config.registryLimitMemory
+      }}
+      <div class="row">
+        <div class="col span-12">
+          <label class="acc-label">
+            {{t "clusterIstioPage.nodeSelector.helpText" component="Registry"}}
+          </label>
+          {{form-key-value
+            changedArray=(action (mut registryNodeSelectors))
+            initialMap=registryNodeSelector
+            allowEmptyValue=true
+            addActionLabel="clusterIstioPage.nodeSelector.addSelectorLabel"
+          }}
+        </div>
+      </div>
+    {{else if (eq config.storageType "s3")}}
+      <div class="row">
+        <div class="col span-6">
+          <label class="acc-label">
+            {{t "globalRegistryPage.config.s3.region.label"}}
+          </label>
+          {{schema/input-string
+            value=imageChartStorage.s3.region
+            placeholder=(t "globalRegistryPage.config.s3.region.placeholder")
+          }}
+        </div>
+        <div class="col span-6">
+          <label class="acc-label">
+            {{t "globalRegistryPage.config.s3.regionendpoint.label"}}{{field-required}}
+          </label>
+          {{schema/input-string
+            value=imageChartStorage.s3.regionendpoint
+            placeholder=(t "globalRegistryPage.config.s3.regionendpoint.placeholder")
+          }}
+        </div>
+      </div>
+      <div class="row">
+        <div class="col span-6">
+          <label class="acc-label">
+            {{t "globalRegistryPage.config.s3.accesskey.label"}}{{field-required}}
+          </label>
+          {{schema/input-string
+            value=imageChartStorage.s3.accesskey
+            placeholder=(t "globalRegistryPage.config.s3.accesskey.placeholder")
+          }}
+        </div>
+        <div class="col span-6">
+          <label class="acc-label">
+            {{t "globalRegistryPage.config.s3.secretkey.label"}}{{field-required}}
+          </label>
+          {{input
+            type="password"
+            name="password"
+            classNames="form-control"
+            value=imageChartStorage.s3.secretkey
+            placeholder=(t "globalRegistryPage.config.s3.secretkey.placeholder")
+          }}
+        </div>
+      </div>
+    {{/if}}
+
+    <div class="over-hr">
+      <span>
+        {{t "globalRegistryPage.config.header.postgresql"}}
+      </span>
+    </div>
+
+    <div class="row">
+      <div class="col span-6">
+        <label class="acc-label">
+          {{t "globalRegistryPage.config.databaseType.label"}}
+        </label>
+        {{new-select
+          class="form-control"
+          content=databaseTypeContent
+          value=config.databaseType
+        }}
+      </div>
+      {{#if (eq config.databaseType "external")}}
+        <div class="col span-6">
+          <label class="acc-label">
+            {{t "globalRegistryPage.config.database.external.sslmode.label"}}
+          </label>
+          {{new-select
+            class="form-control"
+            content=sslmodeContent
+            value=database.external.sslmode
+          }}
+        </div>
+      {{/if}}
+    </div>
+    {{#if (eq config.databaseType "internal")}}
+      {{catalog-persistence-row
+        useStorageClass=useDatabaseStorageClass
+        config=persistence.persistentVolumeClaim.database
+        storageClasses=storageClasses
+        persistentVolumeClaims=persistentVolumeClaims
+      }}
+      <div class="row">
+        <div class="col span-6">
+          <label class="acc-label">
+            {{t "globalRegistryPage.config.databaseLimitCpu.label"}}
+          </label>
+          <div class="input-group">
+            {{input-integer
+              min="0"
+              step="100"
+              value=config.databaseLimitCpu
+              classNames="form-control"
+              placeholder=(t "globalRegistryPage.config.databaseLimitCpu.placeholder")
+            }}
+            <div class="input-group-addon bg-default">
+              {{t "units.cpu"}}
+            </div>
+          </div>
+        </div>
+        <div class="col span-6">
+          <label class="acc-label">
+            {{t "globalRegistryPage.config.databaseLimitMemory.label"}}
+          </label>
+          <div class="input-group">
+            {{input-integer
+              min="4"
+              step="1"
+              value=config.databaseLimitMemory
+              classNames="form-control"
+              placeholder=(t "globalRegistryPage.config.databaseLimitMemory.placeholder")
+            }}
+            <div class="input-group-addon bg-default">
+              {{t "generic.mibibyte"}}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col span-6">
+          <label class="acc-label">
+            {{t "globalRegistryPage.config.databaseRequestCpu.label"}}
+          </label>
+          <div class="input-group">
+            {{input-integer
+              min="0"
+              step="100"
+              value=config.databaseRequestCpu
+              classNames="form-control"
+              placeholder=(t "globalRegistryPage.config.databaseRequestCpu.placeholder")
+            }}
+            <div class="input-group-addon bg-default">
+              {{t "units.cpu"}}
+            </div>
+          </div>
+        </div>
+        <div class="col span-6">
+          <label class="acc-label">
+            {{t "globalRegistryPage.config.databaseRequestMemory.label"}}
+          </label>
+          <div class="input-group">
+            {{input-integer
+              min="4"
+              step="1"
+              value=config.databaseRequestMemory
+              classNames="form-control"
+              placeholder=(t "globalRegistryPage.config.databaseRequestMemory.placeholder")
+            }}
+            <div class="input-group-addon bg-default">
+              {{t "generic.mibibyte"}}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col span-12">
+          <label class="acc-label">
+            {{t "globalRegistryPage.nodeSelector.helpText" component="database"}}
+          </label>
+          {{form-key-value
+            changedArray=(action (mut databaseNodeSelectors))
+            initialMap=databaseNodeSelector
+            allowEmptyValue=true
+            addActionLabel="globalRegistryPage.nodeSelector.addSelectorLabel"
+          }}
+        </div>
+      </div>
+    {{else if (eq config.databaseType "external")}}
+      <div class="row">
+        <div class="col span-6">
+          <label class="acc-label">
+            {{t "globalRegistryPage.config.database.external.host.label"}}{{field-required}}
+          </label>
+          {{schema/input-string
+            value=database.external.host
+            placeholder=(t "globalRegistryPage.config.database.external.host.placeholder")
+          }}
+        </div>
+        <div class="col span-6">
+          <label class="acc-label">
+            {{t "globalRegistryPage.config.database.external.port.label"}}{{field-required}}
+          </label>
+          {{schema/input-int
+            value=database.external.port
+            placeholder=(t "globalRegistryPage.config.database.external.port.placeholder")
+          }}
+        </div>
+      </div>
+      <div class="row">
+        <div class="col span-6">
+          <label class="acc-label">
+            {{t "globalRegistryPage.config.database.external.username.label"}}{{field-required}}
+          </label>
+          {{schema/input-string
+            value=database.external.username
+            placeholder=(t "globalRegistryPage.config.database.external.username.placeholder")
+          }}
+        </div>
+        <div class="col span-6">
+          <label class="acc-label">
+            {{t "globalRegistryPage.config.database.external.password.label"}}{{field-required}}
+          </label>
+          {{input
+            type="password"
+            classNames="form-control"
+            value=database.external.password
+            placeholder=(t "globalRegistryPage.config.database.external.password.placeholder")
+          }}
+        </div>
+      </div>
+      <div class="row">
+        <div class="col span-6">
+          <label class="acc-label">
+            {{t "globalRegistryPage.config.database.external.coreDatabase.label"}}
+          </label>
+          {{schema/input-string
+            value=database.external.coreDatabase
+            placeholder=(t "globalRegistryPage.config.database.external.coreDatabase.placeholder")
+          }}
+        </div>
+        <div class="col span-6">
+          <label class="acc-label">
+            {{t "globalRegistryPage.config.database.external.clairDatabase.label"}}
+          </label>
+          {{schema/input-string
+            value=database.external.clairDatabase
+            placeholder=(t "globalRegistryPage.config.database.external.clairDatabase.placeholder")
+          }}
+        </div>
+      </div>
+      <div class="row">
+        <div class="col span-6">
+          <label class="acc-label">
+            {{t "globalRegistryPage.config.database.external.notaryServerDatabase.label"}}
+          </label>
+          {{schema/input-string
+            value=database.external.notaryServerDatabase
+            placeholder=(t "globalRegistryPage.config.database.external.notaryServerDatabase.placeholder")
+          }}
+        </div>
+        <div class="col span-6">
+          <label class="acc-label">
+            {{t "globalRegistryPage.config.database.external.notarySignerDatabase.label"}}
+          </label>
+          {{schema/input-string
+            value=database.external.notarySignerDatabase
+            placeholder=(t "globalRegistryPage.config.database.external.notarySignerDatabase.placeholder")
+          }}
+        </div>
+      </div>
+    {{/if}}
+
+    <div class="over-hr">
+      <span>
+        {{t "globalRegistryPage.config.header.redis"}}
+      </span>
+    </div>
+
+    <div class="row">
+      <div class="col span-6">
+        <label class="acc-label">
+          {{t "globalRegistryPage.config.redisType.label"}}
+        </label>
+        {{new-select
+          class="form-control"
+          content=databaseTypeContent
+          value=config.redisType
+        }}
+      </div>
+      {{#if (eq config.redisType "external")}}
+        <div class="col span-6">
+          <label class="acc-label">
+            {{t "globalRegistryPage.config.redis.external.password.label"}}{{field-required}}
+          </label>
+          {{input
+            type="password"
+            classNames="form-control"
+            value=redis.external.password
+            placeholder=(t "globalRegistryPage.config.redis.external.password.placeholder")
+          }}
+        </div>
+      {{/if}}
+    </div>
+    {{#if (eq config.redisType "internal")}}
+      {{catalog-persistence-row
+        useStorageClass=useRedisStorageClass
+        config=persistence.persistentVolumeClaim.redis
+        storageClasses=storageClasses
+        persistentVolumeClaims=persistentVolumeClaims
+      }}
+
+      <div class="row">
+        <div class="col span-6">
+          <label class="acc-label">
+            {{t "globalRegistryPage.config.redisLimitCpu.label"}}
+          </label>
+          <div class="input-group">
+            {{input-integer
+              min="0"
+              step="100"
+              value=config.redisLimitCpu
+              classNames="form-control"
+              placeholder=(t "globalRegistryPage.config.redisLimitCpu.placeholder")
+            }}
+            <div class="input-group-addon bg-default">
+              {{t "units.cpu"}}
+            </div>
+          </div>
+        </div>
+        <div class="col span-6">
+          <label class="acc-label">
+            {{t "globalRegistryPage.config.redisLimitMemory.label"}}
+          </label>
+          <div class="input-group">
+            {{input-integer
+              min="4"
+              step="1"
+              value=config.redisLimitMemory
+              classNames="form-control"
+              placeholder=(t "globalRegistryPage.config.redisLimitMemory.placeholder")
+            }}
+            <div class="input-group-addon bg-default">
+              {{t "generic.mibibyte"}}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col span-6">
+          <label class="acc-label">
+            {{t "globalRegistryPage.config.redisRequestCpu.label"}}
+          </label>
+          <div class="input-group">
+            {{input-integer
+              min="0"
+              step="100"
+              value=config.redisRequestCpu
+              classNames="form-control"
+              placeholder=(t "globalRegistryPage.config.redisRequestCpu.placeholder")
+            }}
+            <div class="input-group-addon bg-default">
+              {{t "units.cpu"}}
+            </div>
+          </div>
+        </div>
+        <div class="col span-6">
+          <label class="acc-label">
+            {{t "globalRegistryPage.config.redisRequestMemory.label"}}
+          </label>
+          <div class="input-group">
+            {{input-integer
+              min="4"
+              step="1"
+              value=config.redisRequestMemory
+              classNames="form-control"
+              placeholder=(t "globalRegistryPage.config.redisRequestMemory.placeholder")
+            }}
+            <div class="input-group-addon bg-default">
+              {{t "generic.mibibyte"}}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col span-12">
+          <label class="acc-label">
+            {{t "globalRegistryPage.nodeSelector.helpText" component="redis"}}
+          </label>
+          {{form-key-value
+            changedArray=(action (mut redisNodeSelectors))
+            initialMap=redisNodeSelector
+            allowEmptyValue=true
+            addActionLabel="globalRegistryPage.nodeSelector.addSelectorLabel"
+          }}
+        </div>
+      </div>
+    {{else if (eq config.redisType "external")}}
+      <div class="row">
+        <div class="col span-6">
+          <label class="acc-label">
+            {{t "globalRegistryPage.config.redis.external.host.label"}}{{field-required}}
+          </label>
+          {{schema/input-string
+            value=redis.external.host
+            placeholder=(t "globalRegistryPage.config.redis.external.host.placeholder")
+          }}
+        </div>
+        <div class="col span-6">
+          <label class="acc-label">
+            {{t "globalRegistryPage.config.redis.external.port.label"}}{{field-required}}
+          </label>
+          {{schema/input-string
+            value=redis.external.port
+            placeholder=(t "globalRegistryPage.config.redis.external.port.placeholder")
+          }}
+        </div>
+      </div>
+      <div class="row">
+        <div class="col span-6">
+          <label class="acc-label">
+            {{t "globalRegistryPage.config.redis.external.coreDatabaseIndex.label"}}{{field-required}}
+          </label>
+          {{schema/input-string
+            value=redis.external.coreDatabaseIndex
+            placeholder=(t "globalRegistryPage.config.redis.external.coreDatabaseIndex.placeholder")
+          }}
+        </div>
+        <div class="col span-6">
+          <label class="acc-label">
+            {{t "globalRegistryPage.config.redis.external.jobserviceDatabaseIndex.label"}}{{field-required}}
+          </label>
+          {{schema/input-string
+            value=redis.external.jobserviceDatabaseIndex
+            placeholder=(t "globalRegistryPage.config.redis.external.jobserviceDatabaseIndex.placeholder")
+          }}
+        </div>
+      </div>
+      <div class="row">
+        <div class="col span-6">
+          <label class="acc-label">
+            {{t "globalRegistryPage.config.redis.external.registryDatabaseIndex.label"}}{{field-required}}
+          </label>
+          {{schema/input-string
+            value=redis.external.registryDatabaseIndex
+            placeholder=(t "globalRegistryPage.config.redis.external.registryDatabaseIndex.placeholder")
+          }}
+        </div>
+      </div>
+    {{/if}}
+
+    <div class="over-hr">
+      <span>
+        {{t "globalRegistryPage.config.header.clair"}}
+      </span>
+    </div>
+    <div class="row">
+      <div class="col span-6">
+        <label class="acc-label">
+          {{t "globalRegistryPage.config.clairEnabled.label"}}
+        </label>
+        {{schema/input-boolean
+          value=config.clairEnabled
+          classNames="form-control"
+        }}
+      </div>
+    </div>
+
+    {{#if config.clairEnabled}}
+      {{form-reservation
+        component="Clair"
+        requestCpu=config.clairRequestCpu
+        requestMemory=config.clairRequestMemory
+        limitCpu=config.clairLimitCpu
+        limitMemory=config.clairLimitMemory
+      }}
+      <div class="row">
+        <div class="col span-12">
+          <label class="acc-label">
+            {{t "clusterIstioPage.nodeSelector.helpText" component="Clair"}}
+          </label>
+          {{form-key-value
+            changedArray=(action (mut clairNodeSelectors))
+            initialMap=clairNodeSelector
+            allowEmptyValue=true
+            addActionLabel="clusterIstioPage.nodeSelector.addSelectorLabel"
+          }}
+        </div>
+      </div>
+    {{/if}}
+
+    <div class="over-hr">
+      <span>
+        {{t "globalRegistryPage.config.header.notary"}}
+      </span>
+    </div>
+    <div class="row">
+      <div class="col span-6">
+        <label class="acc-label">
+          {{t "globalRegistryPage.config.notaryEnabled.label"}}
+        </label>
+        {{schema/input-boolean
+          value=config.notaryEnabled
+          classNames="form-control"
+        }}
+      </div>
+    </div>
+
+    {{#if config.notaryEnabled}}
+      {{form-reservation
+        component="Notary"
+        requestCpu=config.notaryRequestCpu
+        requestMemory=config.notaryRequestMemory
+        limitCpu=config.notaryLimitCpu
+        limitMemory=config.notaryLimitMemory
+      }}
+      <div class="row">
+        <div class="col span-12">
+          <label class="acc-label">
+            {{t "clusterIstioPage.nodeSelector.helpText" component="Notary"}}
+          </label>
+          {{form-key-value
+            changedArray=(action (mut notaryNodeSelectors))
+            initialMap=notaryNodeSelector
+            allowEmptyValue=true
+            addActionLabel="clusterIstioPage.nodeSelector.addSelectorLabel"
+          }}
+        </div>
+      </div>
+    {{/if}}
+
+    {{#advanced-section advanced=advanced}}
+      {{form-key-value
+        initialMap=customAnswers
+        changed=(action (mut customAnswers))
+        allowEmptyValue=true
+        addInitialEmptyRow=true
+        editing=true
+        header=(t "newCatalog.answers.label")
+        addActionLabel="newCatalog.answers.addAction"
+        keyLabel="newContainer.environment.keyLabel"
+        keyPlaceholder="newContainer.environment.keyPlaceholder"
+        valueLabel="newContainer.environment.valueLabel"
+        valuePlaceholder="newContainer.environment.valuePlaceholder"
+      }}
+    {{/advanced-section}}
+  </div>
+
+  {{#if saveDisabled}}
+    {{#banner-message color="bg-warning"}}
+      {{#if globalRegistryWarning}}
+        <p>{{globalRegistryWarning}}</p>
+      {{else}}
+        <p>{{databaseWarning}}</p>
+        <p>{{redisWarning}}</p>
+        <p>{{registryWarning}}</p>
+        <p>{{clairWarning}}</p>
+        <p>{{notaryWarning}}</p>
+      {{/if}}
+    {{/banner-message}}
+  {{/if}}
+
+  {{top-errors errors=errors}}
+
+  {{save-cancel
+    editing=enabled
+    createLabel="globalRegistryPage.enableActionLabel"
+    save=(action "save")
+    saved=saved
+    cancel=cancel
+    saveDisabled=saveDisabled
+  }}
+{{/if}}

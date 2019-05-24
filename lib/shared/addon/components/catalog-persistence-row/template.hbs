@@ -1,0 +1,60 @@
+<div class="row">
+  <div class="col span-6">
+    <label class="acc-label">
+      {{t "cruPersistentVolumeClaim.source.label"}}
+    </label>
+    <div class="radio">
+      <label>
+        {{radio-button
+          selection=useStorageClass
+          value=true
+        }}
+        {{t "cruPersistentVolumeClaim.source.storageClass"}}
+      </label>
+    </div>
+    <div class="radio">
+      <label>
+        {{radio-button
+          selection=useStorageClass
+          value=false
+        }}
+        {{t "globalRegistryPage.config.source.pvc"}}
+      </label>
+    </div>
+  </div>
+  {{#if useStorageClass}}
+    <div class="col span-6">
+      <label class="acc-label">
+        {{t "globalRegistryPage.config.persistenceStorageclass.label"}}
+      </label>
+      {{new-select
+        content=storageClasses
+        prompt="cruPersistentVolumeClaim.storageClass.prompt"
+        localizedPrompt=true
+        optionLabelPath="name"
+        optionValuePath="id"
+        value=config.storageClass
+      }}
+      <label class="acc-label">
+        {{t "globalRegistryPage.config.registryPVSize.label"}}
+      </label>
+      {{schema/input-string
+        value=config.size
+      }}
+    </div>
+  {{else}}
+    <div class="col span-6">
+      <label class="acc-label">
+        {{t "globalRegistryPage.config.registryExistingClaim.label"}}
+      </label>
+      {{new-select
+        content=persistentVolumeClaims
+        prompt="globalRegistryPage.config.registryExistingClaim.prompt"
+        localizedPrompt=true
+        value=config.existingClaim
+        optionLabelPath="name"
+        optionValuePath="name"
+      }}
+    </div>
+  {{/if}}
+</div>

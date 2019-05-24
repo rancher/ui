@@ -46,7 +46,7 @@
         </label>
         {{#if isView}}
           <div>
-            {{#if (eq row.preset "custom")}}
+            {{#if (or (eq row.preset "custom") (eq row.preset hostname))}}
               {{row.address}}
             {{else}}
               {{t (concat "cruRegistry.address." row.preset)}}
@@ -71,6 +71,17 @@
               {{t "cruRegistry.address.quay"}}
             </label>
           </div>
+          {{#if globalRegistryEnabled}}
+            <div>
+              <label>
+                {{radio-button
+                  selection=row.preset
+                  value=hostname
+                }}&nbsp;
+                {{hostname}}
+              </label>
+            </div>
+          {{/if}}
           <div>
             <label>
               {{radio-button
