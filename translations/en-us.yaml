@@ -58,6 +58,7 @@ generic:
   import: Import
   internal: Internal
   ipAddress: IP Address
+  istioRule: Istio Config
   key: Key
   limit: Limit
   limits: Limits
@@ -625,6 +626,8 @@ balancerPage:
     target: Target
 
 catalogPage:
+  istio:
+    header: Istio Config Catalog
   index:
     header: Catalog
     refreshBtn: Refresh
@@ -927,7 +930,16 @@ metrics:
   container-cpu-usage: CPU Utilization
   container-disk-io: Disk I/O
   container-memory-usage-bytes-sum: Memory Utilization
-
+  istio-global-request-volume: Project Request Volume
+  istio-global-success-rate: Project Success Rate
+  istio-4xxs: Project 4xx Reqeust Count
+  istio-5xxs: Project 5xx Reqeust Count
+  istio-global-request-volume-top10: Request Volume by Service
+  istio-4xxs-top10: 4xx Reqeust Count by Service
+  istio-5xxs-top10: 5xx Reqeust Count by Service
+  istio-request-duration-p99-top10: P99 Reqeust Latency by Service
+  istio-request-duration-p90-top10: P90 Reqeust Latency by Service
+  istio-request-duration-p50-top10: P50 Reqeust Latency by Service
 dnsPage:
   noMatch: No records match the current search
   noData: There are no DNS records to show
@@ -1106,6 +1118,168 @@ cruVolume:
     detail: Configure options for the selected volume source
     prompt: Choose a volume source...
 
+globalRegistryPage:
+  header: Global Registry
+  enabled: Registry is enabled. Click <a href="{url}/registry" target="_blank" rel="nofollow noopener noreferrer">here</a> to go to Harbor UI.
+  disabled: Registry is not enabled yet.
+  notReady: Installing registry into the system project of the local cluster...
+  confirmDisable: "Are you sure?  Click again to really disable registry"
+  disable: Disable registry
+  enableActionLabel: Enable
+  command:
+    title: Docker Commands
+    detail: Docker commands for this repositry
+    dockerLogin: Login registry
+    dockerPull: Pull an image from this repositry
+    dockerTag: Tag an image for this repositry
+    dockerPush: Push an image to this repositry
+  setting:
+    adminPassword:
+      label: Admin Password
+      placeholder: Harobr admin password
+  config:
+    header:
+      postgresql: Database
+      redis: Redis
+      registryPersistence: Registry
+      notary: Notary
+      clair: Clair
+    persistenceStorageclass:
+      label: Storage Class
+    clairEnabled:
+      label: Enable Clair
+    notaryEnabled:
+      label: Enable Notary
+    secretKey:
+      label: Encryption Key For Harbor
+      description: The key used for encryption. Must be a string of 16 chars
+      error: '"Encryption Key For Harbor" must be a string of 16 chars.'
+    storageType:
+      label: Storage backend for registry
+    databaseType:
+      label: Config Database Type
+    redisType:
+      label: Config Redis Type
+    registryExistingClaim:
+      label: Existing Claim
+      prompt: Select a Existing Claim...
+    registryPVSize:
+      label: Persistent Volume Size
+    source:
+      pvc: Use an existing persistent volume claim
+    storageClass:
+      emptyError: At least one default storage class is required in "local" cluster
+    databaseRequestCpu:
+      label: Database CPU Request
+      placeholder: e.g. 1000
+    databaseLimitCpu:
+      label: Database CPU Limit
+      placeholder: e.g. 1000
+    databaseRequestMemory:
+      label: Database Memory Request
+      placeholder: e.g. 1000
+    databaseLimitMemory:
+      label: Database Memory Limit
+      placeholder: e.g. 1000
+    redisRequestCpu:
+      label: Redis CPU Request
+      placeholder: e.g. 1000
+    redisLimitCpu:
+      label: Redis CPU Limit
+      placeholder: e.g. 1000
+    redisRequestMemory:
+      label: Redis Memory Request
+      placeholder: e.g. 1000
+    redisLimitMemory:
+      label: Redis Memory Limit
+      placeholder: e.g. 1000
+    redis:
+      external:
+        host:
+          label: Host for Redis
+          placeholder: e.g. 192.168.0.2
+        port:
+          label: Port for Redis
+          placeholder: e.g. 6379
+        coreDatabaseIndex:
+          label: Core Database Index
+          placeholder: e.g. 0
+        jobserviceDatabaseIndex:
+          label: Jobservice Database Index
+          placeholder: e.g. 1
+        registryDatabaseIndex:
+          label: Registry Database Index
+          placeholder: e.g. 2
+        password:
+          label: Password for Redis
+          placeholder: Your redis password
+    s3:
+      region:
+        label: S3 Region
+        placeholder: e.g. us-west-2
+      bucket:
+        label: S3 Bucket Name
+        placeholder: Your Bucket Name
+      accesskey:
+        label: S3 Access Key
+        placeholder: Your S3 Access Key
+      secretkey:
+        label: Secret Key for S3
+        placeholder: Your S3 Secret Key
+      regionendpoint:
+        label: S3 Region Endpoint
+        placeholder: e.g. s3.us-west-2.amazonaws.com
+    database:
+      external:
+        host:
+          label: Host for PostgreSQL
+          placeholder: e.g. 192.168.0.1
+        port:
+          label: Port for PostgreSQL
+          placeholder: e.g. 5432
+        username:
+          label: Username for PostgreSQL
+          placeholder: e.g. user
+        password:
+          label: Password for PostgreSQL
+          placeholder: e.g. password
+        coreDatabase:
+          label: Core Database
+          placeholder: e.g. registry
+        clairDatabase:
+          label: Clair Database
+          placeholder: e.g. clair
+        notaryServerDatabase:
+          label: Notary Server Database
+          placeholder: e.g. notary_server
+        notarySignerDatabase:
+          label: Notary Signer Database
+          placeholder: e.g. notary_signer
+        sslmode:
+          label: SSL Mode for PostgreSQL
+      existingClaim:
+        label: Existing Claim for PostgreSQL
+    exposeIngressHost:
+      error: '"{hostName}" is a host name. Require domain name for expose.ingress.host'
+  globalRegistryEnabled:
+    error: Error saving global-registry-enabled
+  insufficientSize:
+    total:
+      cpu: Please make sure you have at least {minCpu} milli CPUs available to {action} registry.
+      memory: Please make sure you have at least {minMemory} MiB of memory available to {action} registry.
+      all: Please make sure you have at least {minCpu} milli CPUs and {minMemory} MiB of memory available to {action} registry.
+    workload:
+      cpu: Please make sure you have at least one node has {cpu} milli CPUs available to enable {component} workload.
+      memory: Please make sure you have at least one node has {memory} MiB of memory available to enable {component} workload.
+      all: Please make sure you have at least one node has {cpu} milli CPUs and {memory} MiB of memory available to enable {component} workload.
+    selectors:
+      cpu: Please make sure you have at least one node matches node selectors has {cpu} milli CPUs available to enable {component} workload.
+      memory: Please make sure you have at least one node matches node selectors has {memory} MiB of memory available to enable {component} workload.
+      all: Please make sure you have at least one node matches node selectors has {cpu} milli CPUs and {memory} MiB of memory available to enable {component} workload.
+  nodeSelector:
+    addSelectorLabel: Add Selector
+    helpText: Select the nodes where {component} workloads will be scheduled to
+
 globalDnsPage:
   header: Global DNS Entries
   newDns: Add DNS Entry
@@ -1129,6 +1303,7 @@ globalDnsPage:
       noAccessProvider: You do not have access to the provider
       noAccessProject: You do not have access to the target project
     projectHelp: "To finalize configuring this Global DNS entry, you must add the following annotation ( <code>rancher.io/globalDNS.hostname</code> ) on the ingress in your application or in your project. The value of this annotation should be the hostname used in the routing rules of your ingress and match the FQDN of this Global DNS entry."
+    istioHelp: "To make catalog template visable in Istio Config Catalog, you must add the following label ( <code>io.rancher.istio=true</code> ) in <code>questions.yaml</code> file of your catalog template."
     table:
       name: Name
       fqdn: FQDN
@@ -3114,6 +3289,7 @@ cruRegistry:
     dockerhub: DockerHub
     quay: Quay.io
     custom: Custom
+    globalRegistry: Global Registry
     placeholder: e.g. registry.example.com
   multiple: Multiple
   auth:
@@ -3950,6 +4126,8 @@ editStack:
     label: Tags
     placeholder: e.g. frontend, production
     help: Comma-separated list of tags for the new Stack.  The workload lists can be filtered by individual tags.
+  autoInject:
+    label: Istio sidecar auto injection
 
 editUser:
   title: Edit User
@@ -5018,6 +5196,9 @@ formVersions:
   experimental: "(experimental)"
   unsupported: "(unsupported)"
 
+formIstioHost:
+  prompt: Select a host...
+
 formVolumeRow:
   prompt: Select a Persistent Volume Claim...
   name:
@@ -5214,6 +5395,20 @@ formBasicPodSecurityPolicy:
     label: Read Only Root Filesystem
     enable: "Yes: Requiring the use of a read only root file system"
     disable: "No"
+
+formReservation:
+  limitCpu:
+    label: '{component} CPU Limit'
+    placeholder: e.g. 1000
+  limitMemory:
+    label: '{component} Memory Limit'
+    placeholder: e.g. 1000
+  requestCpu:
+    label: '{component} CPU Reservation'
+    placeholder: e.g. 1000
+  requestMemory:
+    label: '{component} Memory Reservation'
+    placeholder: e.g. 1000
 
 hostSettings:
   header: Host Registration URL
@@ -5694,6 +5889,7 @@ modalYaml:
     new: Import {type} YAML
     edit: 'Edit YAML: {name}'
     view: 'View YAML: {name}'
+  noData: There is no {name} resources.
 
 modalWelcome:
   header: Welcome to {appName}!
@@ -5730,6 +5926,9 @@ newBalancer:
     stackName: "A new stack needs a name"
 
 newCatalog:
+  istio:
+    catalog: 'Istio Config Catalog:'
+    saveNew: 'Create'
   answers:
     label: Answers
     addAction: Add Answer
@@ -6708,6 +6907,11 @@ pagination:
     =0 {No Images}
     =1 {{count} {count, plural, =1 {Image} other {Images}}}
     other {{from} - {to} of {count} Images}}
+  istioRule: |
+    {pages, plural,
+    =0 {No Istio Configs}
+    =1 {{count} {count, plural, =1 {Istio Config} other {Istio Configs}}}
+    other {{from} - {to} of {count} Istio Configs}}
   link: |
     {pages, plural,
     =0 {No Links}
@@ -7100,6 +7304,7 @@ nav:
     globalDns: Global DNS
     globalDnsEntries: Global DNS Entries
     globalDnsProviders: Global DNS Providers
+    globalRegistry: Global Registry
     multiClusterApps: Apps
     security:
       cloudCredentials: Cloud Credentials
@@ -7134,6 +7339,7 @@ nav:
     notifiers: Notifiers
     pipeline: Pipeline
     tab: Tools
+    istio: Service Mesh
   project:
     none: Grouped Projects/Namespaces
     namespaces: Namespaces
@@ -7474,3 +7680,7 @@ rkeConfigComment:
   docker_root_dir: |
     ""
     "  # Rancher Config"
+
+units:
+  percent: '%'
+  cpu: milli CPUs
