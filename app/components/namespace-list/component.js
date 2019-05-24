@@ -37,8 +37,11 @@ export default Component.extend({
   scope: service(),
 
   layout,
-  sortBy:     'name',
-  descending: false,
+  sortBy:            'name',
+  descending:        false,
   headers,
+  extraSearchFields: [
+    'displayUserLabelStrings',
+  ],
   rows:       alias('model'),
 });

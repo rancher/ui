@@ -30,11 +30,14 @@ export const headers = [
 
 export default Controller.extend({
 
-  scope:   service(),
-  router:  service(),
-  session: service(),
-  sortBy:  'name',
+  scope:             service(),
+  router:            service(),
+  session:           service(),
+  sortBy:            'name',
   headers,
+  extraSearchFields: [
+    'displayUserLabelStrings',
+  ],
 
   actions: {
     newNs() {

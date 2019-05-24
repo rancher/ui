@@ -14,20 +14,51 @@
     {{t "editStack.name.error"}}
   </p>
 {{/if}}
-{{#unless from}}
-  <label class="pt-20 pb-5 acc-label">
-    {{t "editStack.project.label"}}
-  </label>
-  {{new-select
-    classNames="form-control"
-    optionValuePath="id"
-    optionLabelPath="displayName"
-    content=allProjects
-    value=model.namespace.projectId
-    prompt="editStack.project.prompt"
-    localizedPrompt=true
-  }}
-{{/unless}}
+
+<div class="row">
+  {{#unless from}}
+    <div class="col span-6">
+      <label class="pt-20 pb-5 acc-label">
+        {{t "editStack.project.label"}}
+      </label>
+      {{new-select
+        classNames="form-control"
+        optionValuePath="id"
+        optionLabelPath="displayName"
+        content=allProjects
+        value=model.namespace.projectId
+        prompt="editStack.project.prompt"
+        localizedPrompt=true
+      }}
+    </div>
+  {{/unless}}
+  <div class="col span-6">
+    <label class="pt-20 pb-5 acc-label">
+      {{t "editStack.autoInject.label"}}
+    </label>
+    <div class="mt-5">
+      {{#if istioInjection}}
+        <div class="btn-group no-inline-space">
+          <div class="btn btn-link btn-sm bg-success">
+            {{t 'generic.enabled'}}
+          </div>
+          <div class="btn btn-link btn-sm bg-default" {{action "toggleAutoInject"}}>
+            {{t 'generic.disable'}}
+          </div>
+        </div>
+      {{else}}
+        <div class="btn-group no-inline-space">
+          <div class="btn btn-link btn-sm bg-default" {{action "toggleAutoInject"}}>
+            {{t 'generic.enable'}}
+          </div>
+          <div class="btn btn-link btn-sm bg-primary">
+            {{t 'generic.disabled'}}
+          </div>
+        </div>
+      {{/if}}
+    </div>
+  </div>
+</div>
 
 <div class="row mt-20">
   {{#accordion-list showExpandAll=false as | al expandFn | }}
@@ -66,6 +97,16 @@
         changed=(action "updateContainerDefault")
       }}
     {{/accordion-list-item}}
+
+    {{form-labels-annotations
+      classNames="accordion-wrapper"
+      expandAll=al.expandAll
+      expandFn=expandFn
+      initialLabels=primaryResource.labels
+      model=primaryResource
+      editing=(or editing isNew)
+      setLabels=(action "setLabels")
+    }}
   {{/accordion-list}}
 </div>
 
