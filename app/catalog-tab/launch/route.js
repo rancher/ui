@@ -15,6 +15,7 @@ export default Route.extend({
   settings:     service(),
   growl:        service(),
   intl:         service(),
+  router:       service(),
 
   parentRoute:  'catalog-tab',
 
