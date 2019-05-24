@@ -122,6 +122,10 @@ export default Route.extend({
           ( { namespace, newAppName } = this.newNamespace(existingNamespace, namespaceName));
         }
 
+        if ( params.istio === 'true' ) {
+          newAppName = '';
+        }
+
         var verArr = Object.keys(links).filter((key) => !!links[key])
           .map((key) => ({
             version:     key,
@@ -149,6 +153,10 @@ export default Route.extend({
             .forEach((ver) => {
               set(ver, 'version', `${ ver.version } (current)`);
             })
+        }
+
+        if ( !params.namespaceId && params.istio === 'true' ) {
+          namespace = null;
         }
 
         return EmberObject.create({
@@ -184,6 +192,7 @@ export default Route.extend({
         namespaceId: null,
         template:    null,
         upgrade:     null,
+        istio:       null,
       });
     }
   },
