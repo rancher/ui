@@ -10,6 +10,7 @@ generic:
   any: Qualquer
   application: aplicação
   as: como
+  back: Voltar
   cancel: Cancelar
   closeModal: Fechar
   cluster: Cluster
@@ -33,6 +34,7 @@ generic:
   done: Concluído
   download: Baixar
   edit: Editar
+  emptyString: ""
   enable: Habilitar
   enabled: Ativado
   entrypoint: Ponto de entrada
@@ -44,6 +46,8 @@ generic:
   hardware: Hardware
   healthy: Sem erros
   help: Ajuda
+  hostname: Nome do servidor
+  hours: horas
   id: Identificador
   image: Imagem
   import: Importar
@@ -55,6 +59,7 @@ generic:
   loading: "Carregando..."
   loggingOut: "Fazendo logout..."
   member: Membro
+  mbps: Mbps
   mibibyte: 'MiB'
   minutes: minutos
   milliseconds: 'Milissegundos'
@@ -80,10 +85,12 @@ generic:
   persistentVolume: volume persistente
   random: Aleatório
   remove: Remover
+  restarts: Reinicia
   role: Função
   save: Salvar
   saved: Salvo
   saving: Salvando
+  scope: Escopo
   search: Busca
   searchOrCustomInput: Procure ou insira seu valor personalizado.
   searching: 'Procurando...'
@@ -108,6 +115,11 @@ generic:
   value: Valor
   version: Versão
   yes: "Sim"
+  isRequired: é obrigatório
+  readOnly: Somente Leitura
+  readWrite: Leitura Escrita
+  writeOnly: Somente Escrita
+  full: Completo
 realmNames:
   all: Todos
   usWest: Oeste dos EUA
@@ -184,6 +196,10 @@ appDetailPage:
     protocol: Protocolo
     noData: Nenhum endpoint público foi criado para este aplicativo.
     noMatch: Nenhum endpoint público corresponde à pesquisa atual.
+  answers:
+    title: Respostas
+    detail: Respostas personalizadas desta aplicação
+    variable: Variável
   notes:
     title: Observações
     detail: 'Instruções sobre como usar este aplicativo'
@@ -236,6 +252,10 @@ podSecurityPoliciesPage:
         placeholder: "ex: política"
 rolesPage:
   title: Função
+  headers:
+    global: Global
+    cluster: Clusters
+    project: Projetos
   index:
     localLink: Adicionar Função
     table:
@@ -251,6 +271,8 @@ rolesPage:
       cluster: Padrão do Criador de Cluster
       project: Padrão do Criador do Projeto
       showDefaults: Mostrar apenas padrões
+    errors:
+      inherited: "Papel {displayName} é herdada por: {roleNames}"
   resources:
     title: Conceder recursos
     detail: Conceder acesso a operações específicas nos recursos Kubernetes
@@ -268,6 +290,8 @@ rolesPage:
       nameInExists: O nome já existe. Por favor, use um novo nome de função.
       ruleResourceReq: Recurso é necessário para uma regra.
       roleTemplate: Modelo de papéis é obrigatório.
+      noSelectedRoles: Por favor, selecione pelo menos um papel para este usuário.
+      roleAlreadyExists: O usuário já tem o papel "{key}".
     form:
       name:
         labelText: Nome
@@ -317,6 +341,7 @@ apiPage:
     state: Estado
     name: Chave de Acesso
     description: Descrição
+    scope: Escopo
     created: Criado
     expires:
       label: Expira
@@ -364,6 +389,7 @@ authPage:
       ping: Latência
       adfs: Active Directory
       keycloak: Keycloak
+      okta: Okta
     authError: 'O acesso não foi autorizado'
     popupError: 'Por favor, desabilite seu bloqueador de pop-up e clique em "Autenticar" novamente.'
   ping:
@@ -377,6 +403,10 @@ authPage:
   adfs:
     buttonText:
       pre: 'Autenticar com Active Directory'
+      post: Esperando resposta do IDP
+  okta:
+    buttonText:
+      pre: 'Autenticar com Okta'
       post: Esperando resposta do IDP
   shibboleth:
     enabled:
@@ -556,6 +586,18 @@ authPage:
       buttonText:
         pre: Ativar Autenticação local
         post: 'Ativando...'
+backupsPage:
+  header: Snapshots do etcd
+  detail: snapshots do etcd, se ativadas, serão feitas periodicamente em intervalos predefinidos que podem ser usados para restaurar clusters de uma versão anterior.
+  table:
+    state: Estado
+    target:
+      label: Alvo
+      s3: S3
+      local: Local
+    name: Nome
+    created: Criado
+    noData: Não há snapshots do etcd
 balancerPage:
   noMatch: Nenhum balanciador corresponde à pesquisa atual
   noData: Nenhuma alteração a mostrar.
@@ -586,6 +628,17 @@ catalogPage:
       launch: Ver Detalhes
       notCompatible: Não compatível
       alreadyDeployed: Já implantado
+cloudCredentialsPage:
+  header: Credenciais de nuvem
+  rightButtons:
+    addKey: Adicionar credencial de nuvem
+    nodeTemplates: Gerenciar modelos de nós
+  index:
+    table:
+      noData: Ainda não há credenciais na nuvem
+      noMatch: Nenhuma credencial de nuvem corresponde à pesquisa atual
+clusterCatalogPage:
+  header: Catálogos
 certificatesPage:
   cn: Nome do domínio
   expiresDate: Expira
@@ -693,6 +746,9 @@ projectsPage:
   resourceQuota:
     title: Cotas de Recursos
     detail: Configurar quanto dos recursos o projeto pode consumir
+  containerDefaultLimit:
+    title: Limite padrão do contêiner
+    detail: Configurar quanto dos recursos o contêiner pode consumir por padrão
   members:
     title: Membros
     detail: Configurar quem tem acesso aos recursos neste projeto e o que eles têm permissões
@@ -749,6 +805,8 @@ ingressPage:
     noData: Não há regras de Balanceadores de Carga definidas
 containerPage:
   header: 'Recipiente: {name}'
+  initContainer:
+    label: initContainer
   envTab:
     header: Variáveis de Ambiente
     detail: 'Variáveis ​​de ambiente que foram adicionadas na criação.'
@@ -770,6 +828,7 @@ containerPage:
       noData: Este contêiner não tem volumes montados
       noMatch: Nenhum volume corresponde a pesquisa atual
       noContainers: Não há outros recipientes
+  pod: Pod
 podPage:
   header: 'Nó: {name}'
   nodeIp: IP do nó
@@ -794,6 +853,46 @@ clusterDashboard:
   systemProject: Este é o projeto do sistema que possui todos os namespaces do sistema Kubernetes e {appName}. As alterações feitas nos recursos do projeto do sistema podem prejudicar o grupo.
   notActive: Este cluster está atualmente em <b>{state}</b>.
   notReady: Este cluster está atualmente <b>{state}</b>; áreas que interagem diretamente com ele não estarão disponíveis até que a API esteja pronta.
+  used: Usado
+metricsAction:
+  description: Expandir para ver métricas ao vivo
+  noData: Dados insuficientes para gráfico
+  sections:
+    workload: Métricas de carga de trabalho
+    pod: Métricas do Pod
+    container: Métricas do contêiner
+  grafana:
+    label: Grafana
+  summary:
+    label: Resumo
+  detail:
+    label: Detalhe
+  from:
+    label: De
+  to:
+    label: Para
+  periods:
+    custom: Personalizado
+    5m: 5 minutos
+    1h: 1 hora
+    6h: 6 horas
+    24h: 24 horas
+    7d: 7 dias
+    30d: 30 dias
+metrics:
+  workload-cpu-usage: Utilização da CPU
+  workload-disk-io: I/O de Disco
+  workload-memory-usage-bytes-sum: Utilização de Memória
+  workload-network-io: I/O de rede
+  workload-network-packet: Pacotes de rede
+  pod-cpu-usage: Utilização da CPU
+  pod-disk-io: I/O de disco
+  pod-memory-usage-bytes-sum: Utilização de Memória
+  pod-network-io: I/O de rede
+  pod-network-packet: Pacotes de rede
+  container-cpu-usage: Utilização da CPU
+  container-disk-io: I/O de Disco
+  container-memory-usage-bytes-sum: Utilização de Memória
 dnsPage:
   noMatch: Nenhum registro corresponde à pesquisa atual
   noData: Não há registros DNS para mostrar
@@ -810,11 +909,47 @@ dnsPage:
     clusterIpDetail: 'IP de Cluster: {ip}'
 editDns:
   title:
-    new: Adicionar registo
+    new: Adicionar registro
     edit: Editar registro
     view: "Registro: {name}"
   name:
     placeholder: p.ex. meuapp
+  sessionAffinity:
+    title: Afinidade de Sessão
+    detail: Mapeie as conexões para um destino consistente baseado em seu IP de origem
+    label: Ativar afinidade de sessão
+  externalIPs:
+    addActionLabel: Adicionar IP externo
+    placeholder: ex. 80.11.12.10
+    value: IPs Externos
+  loadBalancerIP:
+    label: IP do balanceador de carga
+    placeholder: ex. 78.11.24.19
+  loadBalancerSourceRanges:
+    addActionLabel: Adicionar intervalo de origem
+    placeholder: ex. 143.231.0.0/16
+    value: Intervalos de fonte de balanceador de carga
+  healthCheckNodePort:
+    label: Porta da Verificação de Saúde do Nó
+    placeholder: ex. 8080
+  externalTrafficPolicy:
+    label: Política de Tráfego Externo
+    local: Local
+    cluster: Cluster
+  publishNotReadyAddresses:
+    label: Endereços IP Publicados
+    readyOnly: Apenas endpoints ativos
+    all: Todos os endpoints
+  sessionAffinityConfig:
+    label: Session Sticky Time
+    placeholder: ex. 10800
+  kind:
+    label: Como
+    clusterIP: IP de cluster (somente interno)
+    loadBalancer: Balanceamento de Carga Layer-4
+    nodePort: NodePort (em todos os nós)
+    externalName: ExternalName
+    headless: Serviço headless
   description:
     placeholder: Por exemplo, versão atual do MeuApp
   selector:
@@ -828,6 +963,7 @@ editDns:
     alias: Apelido do valor de outro registro de DNS
     workload: Uma ou mais cargas de trabalho
     selector: O conjunto de núcleos, que correspondem a um seletor
+    clusterIp: "IP do Cluster"
   target:
     arecord: Endereços IP de destino
     cname: Nome do Servidor de destino
@@ -873,6 +1009,49 @@ cruPersistentVolumeClaim:
   storageClass:
     label: Classe de Armazenamento
     prompt: Use a classe padrão
+cruVolumeClaimTemplate:
+  title:
+    define: Definir Modelo de Requisição de Volume
+    new: Adicionar modelo de requisição de volume
+    edit: "Editar modelo de Volume Claim: {name}"
+    view: "Modelo de Volume Claim: {name}"
+  define:
+    addActionLabel: Definir
+  capacity:
+    label: Capacidade
+    unit: GiB
+  name:
+    placeholder: ex. meuvol
+  source:
+    label: Fonte
+    pv: Use um volume persistente existente para definir um modelo
+    storageClass: Use uma Storage Class para definir um modelo
+  pv:
+    label: Volume Persistente
+    prompt: Selecione um volume persistente...
+  storageClass:
+    label: Classe de Armazenamento
+    prompt: Use a classe padrão
+  customize:
+    title: Personalizar
+    detail: Personalizar Opções Avançadas
+cruPrivateRegistry:
+  title:
+    label: Registros Privados
+    detail: Adicionar registries privados a este cluster
+  noData: Este cluster não possui registries privados definidos
+  defaultError: Você deve designar um registry privado como o padrão
+  add:
+    label: Adicionar registry privado
+  registry:
+    user:
+      label: Usuário
+    password:
+      label: Senha
+    url:
+      label: URL
+    default:
+      label: Registro Padrão
 cruVolume:
   sourcePrompt: Escolha uma fonte de volume acima...
   title:
@@ -886,6 +1065,81 @@ cruVolume:
     title: Configuração De Origem
     detail: Configurar opções para a origem de volume selecionada
     prompt: Escolha uma fonte de volume...
+globalDnsPage:
+  header: Entradas de DNS globais
+  newDns: Adicionar entrada de DNS
+  noDnsMatch: Nenhuma entrada de DNS corresponde à pesquisa atual.
+  noDnsData: Ainda não há entradas DNS globais.
+  newProvider: Adicionar provedor de DNS
+  noDnsProviderMatch: Nenhuma provedor de DNS corresponde à pesquisa atual.
+  noDnsProviderData: Ainda não há provedores de DNS globais.
+  noProjects: Não existem projetos para selecionar
+  noApps: Não há aplicativos multi-cluster acessíveis
+  noProviders: Nenhum provedor acessível
+  entriesPage:
+    access:
+      noAccessMulti: Você não tem acesso ao app de destino
+      noAccessProvider: Você não tem acesso ao provedor
+      noAccessProject: Você não tem acesso ao projeto alvo
+    add: Adicionar entrada de DNS global
+    projectHelp: "To finalize Global DNS for projects you must add the following annotation label ( <code>rancher.io/globalDNS.hostname</code> ) on the ingress in the project, where <code>hostname</code> is the host name used in the routing rules."
+    table:
+      name: Nome
+      fqdn: FQDN
+      target: Destino
+      provider: ID do Provedor
+    config:
+      title: Configurar entrada DNS
+      detail: Forneça detalhes da sua configuração para adicionar uma nova entrada de DNS Global
+      configType: Resolve Para
+      multi: Aplicativo Multi Cluster
+      project: Projetos
+      fqdn:
+        label: FQDN
+        placeholder: dev.exemplo.com
+      multiCluster:
+        label: Aplicativo Alvo Multi Cluster
+        placeholder: Selecione um aplicativo de vários clusters
+        add:
+          label: Adicionar Destino
+      provider:
+        label: Provedor
+        placeholder: Selecione o provedor
+      projects:
+        label: Projeto Alvo
+      ttl:
+        label: DNS TTL
+  providersPage:
+    title: Provedores de DNS Globais
+    add: Adicionar provedor de DNS Global
+    options:
+      title: Opções de provedor
+      detail: Personalizar opções para o provedor de DNS
+    members:
+      title: Acesso de membro
+      detail: Controle quem tem acesso ao recurso
+    table:
+      name: Nome
+      provider: Nome do Provedor
+      rootDomain: Domínio Raiz
+    config:
+      root:
+        label: Domínio Raiz
+        placeholder: Seu domínio principal
+      accessKey:
+        label: Chave de Acesso
+        placeholder: Sua chave de acesso
+      secretKey:
+        label: Chave Secreta
+        placeholder: Sua chave secreta
+      apiEmail:
+        label: E-mail da API
+        placeholder: Seu e-mail da API
+      apiKey:
+        label: Chave de API
+        placeholder: Sua chave de API
+multiClusterAppsPage:
+  header: Aplicativos Multi Cluster
 failWhalePage:
   header: Erro
   reloadButton: |
@@ -1143,6 +1397,7 @@ servicePage:
     namespace: 'Espaços de nomes:'
     created: 'Criado:'
     daemonSetScale: '1 por nó'
+    currentScale: 'Escala Pronta: {count}'
   serviceType:
     deployment: Implantação
     replicaSet: Conjunto de réplicas
@@ -1235,15 +1490,39 @@ stackPage:
   containers:
     header: Contêineres
     detail: Standalone Containers e Serviços conteinerizados na Stack
+    status: |
+      {count, plural,
+      =0 {Nenhum contêiner}
+      =1 {# contêiner}
+      other {# contêineres}
+      }
   loadBalancers:
     header: Balanceadores de carga
     detail: 'Load Balancer containers que estão separados dessa pilha'
+    status: |
+      {count, plural,
+      =0 {Nenhum balanceador}
+      =1 {# balanceador}
+      other {# balanceadores}
+      }
   dnsServices:
     header: Entradas de DNS
     detail: 'Balanceadores de carga que estão para além dessa pilha'
+    status: |
+      {count, plural,
+      =0 {Nenhuma entrada}
+      =1 {# entrada}
+      other {# entradas}
+      }
   scalingGroups:
     header: Grupos de dimensionamento
     detail: 'Contêineres existentes neste grupo de dimensionamento'
+    status: |
+      Executar {count, plural,
+      =0 {Nenhum contêiner}
+      =1 {# contêiner}
+      other {# contêineres}
+      }
   volumesTab:
     header: Volumes
     detail: 'Estas propriedades mostram os volumes anexados ao seu recipiente.'
@@ -1265,11 +1544,15 @@ newStack:
     uploadActionLabel: Ler a partir do Disco
     namePlaceholder: Nome do Arquivo
     valuePlaceholder: Conteúdo Do Arquivo
+    protipLabel: Suporta {appName} <code>compose.yml</code>, <code>docker-compose.yml</code> e arquivos de manifesto do Kubernetes
   answers:
     label: Respostas (substituições de variáveis)
     addActionLabel: Adicionar Resposta
 nodeTemplatesPage:
   header: Modelos de Nós
+  rightButtons:
+    actionButton: Adicionar Modelo
+    cloudCredentials: Gerenciar credenciais de nuvem
   detail: Templates de nó são utilizados para implementar nós que formam um Cluster em um provedor de infraestrutura.
   table:
     state: Estado
@@ -1285,6 +1568,7 @@ storageClassPage:
   header: Classe de Armazenamento
   addActionLabel: Adicionar Classe
   noData: Não existem classes de armazenamento definidos
+  noMatch: Nenhuma classe de armazenamento corresponde à pesquisa atual
   provisioner:
     label: Provisionador
   default:
@@ -1293,8 +1577,13 @@ persistentVolumePage:
   header: Volumes Persistentes
   addActionLabel: Adicionar Volume
   noData: Não há volumes persistentes definidos
+  noMatch: Nenhum volume persistente corresponde à pesquisa atual
+  source:
+    label: Fonte
 userPreferencesPage:
+  header: Preferências
   theme:
+    header: Tema
     light: Claro
     auto: Auto
     autoDetail: Auto fará a transição para o escuro das 18h às 6h
@@ -1332,13 +1621,103 @@ notifierPage:
   testedBtnLabel: OK
   testingBtnLabel: Testando
   deleteErrorMessage: 'Notificador {displayName} está em uso por: {alertNames}'
+  notifierTypes:
+    slack: Slack
+    email: E-mail
+    pagerduty: PagerDuty
+    webhook: Webhook
+    wechat: WeChat
+  slack:
+    url: URL
+    urlPlaceholder: ex. https://hooks.slack.com/services/T00000000/B00000000/XXXXXXXXXXXXXXXXXXXXXXXX
+    defaultRecipient:
+      label: Canal padrão
+      helpText: Opcional. Por padrão, as notificações são enviadas para o canal padrão de entrado dos WebHook. Ao configurar um alerta, o canal pode ser substituído.
+    defaultRecipientPlaceholder: 'ex. #exemplo'
+    helpText: |
+      Veja como você <a href="https://slack.com/apps/A0F7XDUAZ-incoming-webhooks" target="_blank" rel="nofollow noopener noreferrer">cria Entrada de WebHooks</a> para o Slack.
+  smtp:
+    server: Servidor SMTP
+    host: Servidor
+    hostPlaceholder: ex. 192.168.1.121
+    port: Porta
+    portPlaceholder: ex. 465
+    sender: Remetente
+    userName: Usuário
+    userNamePlaceholder: 'exemplo: João'
+    password: Senha
+    passwordPlaceholder: Sua Senha
+    defaultRecipient:
+      label: Endereço de entrega padrão
+      helpText: Ao configurar um alerta, o destinatário pode ser substituído.
+    defaultRecipientPlaceholder: ex. admin@exemplo.com
+  pagerduty:
+    serviceKey:
+      label: Chave de integração padrão
+      helpText: Ao configurar um alerta, a chave de integração pode ser substituída.
+    serviceKeyPlaceholder: Sua chave de integração do PagerDuty
+    helpText: |
+      Here's how you <a href="https://www.pagerduty.com/docs/guides/prometheus-integration-guide/" target="_blank" rel="nofollow noopener noreferrer">create an Integration Key</a> for PagerDuty.
+  wechat:
+    recipientType:
+      label: Recipient Type
+      tag: Tag
+      party: Party
+      user: Usuário
+    secret:
+      label: Segredo da Aplicação
+      helpText: 'You can find Secret in <a href="https://work.weixin.qq.com/wework_admin/frame#apps" target="_blank" rel="nofollow noopener noreferrer">app detail</a> page.'
+    agent:
+      label: ID do agente da aplicação
+      helpText: 'You can find AgentId in <a href="https://work.weixin.qq.com/wework_admin/frame#apps" target="_blank" rel="nofollow noopener noreferrer">app detail</a> page.'
+    corp:
+      label: ID da Corporação
+      helpText: |
+        Click <a href="https://work.weixin.qq.com/wework_admin/frame#profile" target="_blank" rel="nofollow noopener noreferrer">here</a> to find your Corporation ID.
+    defaultRecipient:
+      label: Destinatário Padrão
+    secretPlaceholder: O segredo do app
+    agentPlaceholder: ex. 1000003
+    corpPlaceholder: 'ex: wwc0cc3d58f9b021b6'
+    defaultRecipientPlaceholder: ex. 2
+  webhook:
+    url: URL
+    urlPlaceholder: URL do seu webhook
+  testAction:
+    testing: TESTANDO
+    testOk: Configurações validadas.
+    testFailed: Something's not quite right. Check your inputs.
+    test: TESTE
+  clone: Clonar
+  index:
+    addActionLabel: Add Notifier
+    table:
+      created: Criado
+      noData: There are no notifiers defined
+      noMatch: Sem correspondência
 ldap:
+  providerName:
+    openldap: OpenLDAP
+    ad: Active Directory
+    freeipa: FreeIPA
+    saveLabels:
+      openldap: Autenticar com OpenLDAP
+      ad: Autenticar com o Active Directory
+      freeipa: Authenticate with FreeIPA
+  header:
+    disabled:
+      label: "{providerName} is not configured"
   accessEnabled:
     header: Autenticação
     subtext: "Para alterar a configuração do servidor, desativar o controle de acesso abaixo e, em seguida, configurá-lo novamente."
+    serviceAccountDistinguishedName:
+      labelText: "Service Account Distinguished Name:"
+    connectionTimeout:
+      labelText: "Server Connection Timeout:"
     general:
       header: Geral
       server: "Servidor:"
+      tls: "TLS:"
       serviceAccount: "Conta de Serviço:"
       searchBase: "Base de pesquisa:"
       defaultDomain: "Domínio Padrão:"
@@ -1348,6 +1727,7 @@ ldap:
       login: "Campo Login:"
       name: "Campo Nome:"
       search: "Campo Pesquisar:"
+      searchFilter: "Filtro de Busca:"
       enabled: "Campo ativado:"
       disabledBitMask: "Máscara de bits Desativado:"
     group:
@@ -1355,6 +1735,7 @@ ldap:
       objectClass: "Classe de Objeto:"
       name: "Campo Nome:"
       search: "Campo Pesquisar:"
+      searchFilter: "Filtro de Busca:"
     disable:
       confirmDisable:
         pre: Desativar controle de acesso
@@ -1364,23 +1745,74 @@ ldap:
     subtext2: "{appName} precisa de uma conta de serviço que tenha acesso (somente leitura) a todos os domínios que será capaz de fazer login, para que possamos determinar quais grupos um usuário é membro de quando eles fazem um pedido com uma Chave de API."
     port:
       labelText: Porta
+      checkbox: TLS
+    groupSearchBase:
+      labelText: Group Search Base
+      placeholder: "e.g. ou=Groups,dc=mycompany,dc=com"
+      helpText: "If set, groups will be searched for only under this base instead of under the User Search Base."
+    userSearchBase:
+      labelText: User Search Base
+      placeholder: "e.g. ou=users,dc=mycompany,dc=com"
     defaultDomain:
       helpText: "Este domínio será usado se um usuário fizer logon sem especificar um."
       labelText: Domínio de logon padrão*
       placeholder: "p.ex. minhaempresa"
+    serviceAccountDistinguishedName:
+      labelText: Service Account Distinguished Name
+    connectionTimeout:
+      labelText: Server Connection Timeout
   customizeSchema:
     header: "2. Personalizar Esquema"
     helpText: "Se o seu esquema não coincide com o formato padrão do ActiveDirectory, você pode personalizá-lo aqui."
+    cert:
+      labelText: Certificado CA
+      helpText: Se necessário, informe um certificado de CA
+      placeholder: "Colar certificado, começando com -----BEGIN CERTIFICATE-----"
     users:
       header: Usuários
       objectClass:
         labelText: Classe de Objeto
+      login:
+        labelText: Atributo de Login
+      name:
+        labelText: Username Attribute
+      search:
+        labelText: Search Attribute
+      searchFilter:
+        labelText: Filtro de Busca
+      searchBase:
+        labelText: User Search Base
+      enabledAttribute:
+        labelText: User Enabled Attribute
       disabledBitMask:
         labelText: Máscara de bits Desativado
+      userMemberAttribute:
+        labelText: User Member Attribute
     groups:
       header: Grupos
       objectClass:
         labelText: Classe de Objeto
+      name:
+        labelText: Name Attribute
+      search:
+        labelText: Atributo de busca
+      searchFilter:
+        labelText: Filtro de Pesquisa
+      groupMemberUser:
+        labelText: Group Member User Attribute
+        placeholder: UID
+      groupMemberMapping:
+        labelText: Group Member Mapping Attribute
+      groupDN:
+        labelText: Group DN Attribute
+        placeholder: distinguishedName
+      nestedGroup:
+        title: Nested Group Membership
+        enabled:
+          labelText: Search direct and nested group memberships
+          helpText: Nested search may be slower in large directories
+        disabled:
+          labelText: Search only direct group memberships
   testAuth:
     header: "3. Testar e ativar a autenticação"
     helpText: "Verificar se tudo está configurado corretamente pela autenticação de testes com a sua conta {providerName}:"
@@ -1396,7 +1828,146 @@ servicePartial:
     label: Sem contêineres ainda..
     inactive:
       start: Iniciar
+accordionRow:
+  status:
+    none: Nenhum
+    incomplete: Incompleto
+    error: Erro
+    notConfigured: Não Configurado
+    configured: Configurado
+    countConfigured: "{count} Configured"
+    standard: Padrão
+    custom: Personalizado
+    specific: Especifico
+    any: Qualquer
+    rule: "{count, plural, =1 {#1 Regra} other {# Regras}}"
+advancedSection:
+  showText: Mostrar opções avançadas
+  hideText: Ocultar opções avançadas
+annotationsSection:
+  title: Anotações
+  detail: Metadados chave/valor.
+  key: Chave
+  value: Valor
+  noData: Nenhuma anotação
+  noMatch: Nenhuma anotação corresponde à pesquisa atual
+authorizedEndpoint:
+  enabled:
+    label: Authorized Cluster Endpoint
+  fqdn:
+    label: FQDN
+taintsSection:
+  title: Taints
+  detail: Taints mark pods so that they are only scheduled to a node is marked as being able to "tolerate" it
+  key: Chave
+  value: Valor
+  effect: Efeito
+  noData: No taints
+  noMatch: No taints match the current search
+billingInfo:
+  header: Informações de cobrança
+  addNew: Add Payment Method
+  card: "{brand}: ...{last}"
+  noSub: Você não tem um método de pagamento ativo
+  table:
+    title:
+      cardType: "Brand: {brand}"
+      last4: "Last Four: {last}"
+      exp: "Exp Date: {exp}"
+      name: "Name On Card: {name}"
+      actions: Ações
+cloudProvider:
+  title: Provedor de Nuvem
+  amazon: Amazon
+  azure: Azure
+  name: Nome do provedor de nuvem
+  custom:
+    notInList: 'If your cloud provider is not listed, please use the <b>Custom</b> option.'
+    helpText: 'Please edit the YAML to add in any other <a href="http://rancher.com/docs/rke/v0.1.x/en/config-options/cloud-providers/" target="_blank" rel="nofollow noopener noreferrer">cloud providers</a>'
+  helpText: |
+    Read more about the <a href="https://kubernetes.io/docs/concepts/cluster-administration/cloud-providers/" target="_blank" rel="nofollow noopener noreferrer">Kubernetes cloud providers</a>
+  warning: Configuring a Cloud Provider in your cluster without configuring the prerequisites will cause your cluster to not provision correctly. Prerequisites needed for supported cloud providers can be found in the documentation.
+  azureCloudConfig:
+    cloudProviderBackoff:
+      description: "Enable exponential backoff to manage resource request retries"
+    cloudProviderBackoffDuration:
+      description: "Backoff duration"
+    cloudProviderBackoffExponent:
+      description: "Backoff exponent"
+    cloudProviderBackoffJitter:
+      description: "Backoff jitter"
+    cloudProviderBackoffRetries:
+      description: "Backoff retry limit"
+    cloudProviderRateLimit:
+      description: "Enable rate limiting"
+    cloudProviderRateLimitBucket:
+      description: "Rate limit Bucket Size"
+    cloudProviderRateLimitQPS:
+      description: "Rate limit QPS (Read)"
+    maximumLoadBalancerRuleCount:
+      description: "Maximum allowed LoadBalancer Rule Count is the limit enforced by Azure Load balancer"
+    useInstanceMetadata:
+      description: "Use instance metadata service where possible"
+    useManagedIdentityExtension:
+      description: "Use managed service identity for the virtual machine to access Azure ARM APIs"
+    aadClientCertPassword:
+      description: "The password of the client certificate for an AAD application with RBAC access to talk to Azure RM APIs"
+    aadClientCertPath:
+      description: "The path of a client certificate for an AAD application with RBAC access to talk to Azure RM APIs"
+    aadClientId:
+      description: "The ClientID for an AAD application with RBAC access to talk to Azure RM APIs"
+    aadClientSecret:
+      description: "The ClientSecret for an AAD application with RBAC access to talk to Azure RM APIs"
+    cloud:
+      description: "The cloud environment identifier. See here for valid entries. See here for valid entries"
+    location:
+      description: "The location of the resource group that the cluster is deployed in"
+    primaryAvailabilitySetName:
+      description: "The name of the availability set that should be used as the load balancer backend"
+    primaryScaleSetName:
+      description: "The name of the scale set that should be used as the load balancer backend"
+    resourceGroup:
+      description: "The name of the resource group that the cluster is deployed in"
+    routeTableName:
+      description: "The name of the route table attached to the subnet that the cluster is deployed in"
+    securityGroupName:
+      description: "The name of the security group attached to the cluster's subnet"
+    subnetName:
+      description: "The name of the subnet that the cluster is deployed in"
+    subscriptionId:
+      description: "The ID of the Azure Subscription that the cluster is deployed in"
+    tenantId:
+      description: "The AAD Tenant ID for the Subscription that the cluster is deployed in"
+    vmType:
+      description: "The type of azure nodes. Candidate values are: vmss and standard"
+    vnetName:
+      description: "The name of the VNet that the cluster is deployed in"
+    vnetResourceGroup:
+      description: "The name of the resource group that the Vnet is deployed in"
 catalogSettings:
+  header: Catálogos
+  notAvailable: "Not available: there is a custom catalog called <code>{name}</code>"
+  helpText: Currently only Helm catalogs are supported
+  currentCluster: Cluster
+  currentProject: Projeto
+  globalCatalog: Global
+  library:
+    label: Biblioteca
+    detail: Official repository of curated application templates maintained by {appName}.
+  helm:
+    stable:
+      label: Helm Estável
+      detail: Official repository of curated applications maintained by the Kubernetes community.
+    incubator:
+      label: Helm Incubator
+      detail: Additional beta-quality Helm application templates which are not ready to be promoted to Stable yet.
+  certified:
+    header:
+      rancher: "{appName} Certified Library"
+      pl: Certified Library
+    detail:
+      rancher: Templates required for core Rancher features such as Kubernetes orchestration support.  Maintained and supported by Rancher Labs.
+      pl: Officially maintained templates required for core features such as Kubernetes.
   community:
     header:
       rancher: Contribuição da Comunidade
@@ -1406,13 +1977,960 @@ catalogSettings:
       pl: Templates criados e mantidos pelos membros da comunidade.
   more:
     header: Mais
+    helpText:
+      header: "You can define your own additional custom catalog sources. Each custom catalog needs the following:"
+      help-name: '<strong>Unique name</strong>'
+      help-repo: '<strong>Repository URL:</strong>'
+      help-git: "Git-based catalog URL, <em class='text-lowercase'>e.g. https://github.com/{appName}/charts.git</em>"
+      help-chart: 'Helm Charts server URL, <em>e.g. https://kubernetes-charts.storage.googleapis.com/ (see <a href="https://docs.helm.sh/developing_charts/#hosting-chart-repositories" target="_blank" rel="nofollow noopener noreferrer">Hosting Chart Repositories</a> for specifics)</em>'
     addActionLabel: Adicionar Catálogo
+    noMatch: No catalogs match the current search.
+    noData: There are no custom catalogs defined.
+    addHeader: Add Catalog
+    editHeader: Edit Catalog
+    name:
+      label: Nome
+      placeholder: e.g. mycatalog
+    url:
+      label: URL do catálogo
+    kind:
+      label: Tipo
+      native: Nativo
+      helm: Helm
+    branch:
+      label: Branch
+      placeholder: 'e.g. master'
+    private:
+      label: Use private catalog
+    username:
+      label: Usuário
+      required: '"Usuário" é obrigatório'
+      placeholder: Seu Usuário
+    password:
+      label: Senha
+      required: '"Senha" é obrigatória'
+      placeholder: Sua Senha
+  errors:
+    nameInExists: 'You cannot enable {key} as there is a custom catalog already with name {key}.'
+clusterRow:
+  noMatch: No environments match the current search.
+  noData: This cluster doesn't have any environments yet.
+  noHosts: External cluster has no nodes
+  noClusterMatch: No clusters match the current search.
+  noClusterData: There are no clusters yet.
+  addHost: Add Nodes
+  importCluster: Use existing Kubernetes
+  loginDefault: Login
+clusterNew:
+  advanced:
+    helpText: Tabs are not able to be used in the yaml file for parsing.
+    cancel: Edit as a Form
+    yaml: Edit as YAML
+  name:
+    label: Cluster Name
+    placeholder: e.g. sandbox
+    required: '"Cluster Name" is required'
+  description:
+    placeholder: e.g. Cluster for dev and test workloads
+  driverLabels:
+    cloud: In a hosted Kubernetes provider
+    custom: From my own existing nodes
+    import: Import existing cluster
+    infra: From nodes in an infrastructure provider
+    noCloud: There are no cluster drivers enabled.
+    noInfra: There are no node drivers enabled.
+  externalError: 'Component could not be loaded. Check URL.'
+  members:
+    label: Member Roles
+    detail: Control who has access to the cluster and what permission they have to change it.
+  config:
+    label: Provedor
+    detail: Choose where the nodes for the cluster will come from
+  nodes:
+    title: Nós
+    detail: Customize the nodes that will be created
+  customize:
+    title: Cluster Options
+    detail: Customize the cluster that will be created
+  security:
+    title: Segurança
+    detail: Customize the Service Account and Access Scopes
+  psp:
+    label: Default Pod Security Policy
+    prompt: Select a Pod Security Policy...
+    none: No policies are defined
+    required: A Default Pod Security Policy is required when support is enabled.
+  amazoneks:
+    label: Amazon Elastic Container Service for Kubernetes
+    shortLabel: Amazon EKS
+    ingressWarning: "Note: Currently Amazon EKS will not create an ingress controller when launching a new cluster. If you need this functionality you will have to create an ingress controller manually after cluster creation."
+    access:
+      title: Account Access
+      detail: Choose the region and API Key that will be used to launch Amazon EKS
+  tencenttke:
+    label: Tencent Kubernetes Engine
+    shortLabel: Tencent TKE
+    access:
+      next: "Próximo: Configurar Cluster"
+      loading: "Loading VPCs from Tencent Cloud"
+      title: Account Access
+      detail: Choose the region and API Key that will be used to launch Tencent Kubernetes Service
+    cluster:
+      title: Cluster Configuration
+      detail: Choose the VPC and Kubernetes version that will be used to launch Tencent Kubernetes Service
+      next: "Next: Select Instance Type"
+      loading: "Loading Availability Zones from Tencent Cloud"
+    node:
+      title: Tipo de Instância
+      detail: Choose the instance type that will be used to launch Tencent Kubernetes Service
+      next: "Próximo: Configurar Instância"
+      loading: "Loading configuration from Tencent Cloud"
+    instance:
+      title: Configuração de Instância
+      detail: Configure the instance that will be used to launch Tencent Kubernetes Service
+    subnet:
+      label: Subnet
+      required: Subnet is required
+    os:
+      label: Operating System
+    disk:
+      basic: Local Basic
+      ssd: Local SSD
+      cloudBasic: Cloud Basic
+      cloudPremium: Cloud Premium
+      cloudSsd: Cloud SSD
+    rootSize:
+      label: Root Disk Size
+      placeholder: e.g. 25
+    rootType:
+      label: Root Disk Type
+    storageType:
+      label: Data Disk Type
+    storageSize:
+      label: Data Disk Size
+      placeholder: e.g. 10
+    bandwidth:
+      label: Band Width
+      placeholder: e.g. 10
+    goodsNum:
+      label: Node Count
+      placeholder: e.g. 3
+      required: Node Count is required
+      help: The count of nodes will be launched in this Kubernetes cluster
+    bandwidthType:
+      label: Band Width Type
+      hour: Pay By Hour
+      traffic: Pay By Traffic
+    keyPair:
+      label: Par de Chaves
+      required: Key Pair is required
+    region:
+      label: Região
+    secretId:
+      label: Secret ID
+      placeholder: Your Tencent Cloud secret id
+      required: Secret ID is required
+    secretKey:
+      label: Secret Key
+      placeholder: Your Tencent Cloud secret key
+      provided: Provided
+      required: Secret Key is required
+    securityGroup:
+      label: Security Group
+      required: Security Group is required
+    vpc:
+      label: VPC
+      required: VPC is required
+    version:
+      label: Kubernetes Version
+    cidr:
+      label: Container Network CIDR
+      placeholder: e.g. 172.16.0.0/16
+      required: Container Network CIDR is required
+    zone:
+      label: Zona de Disponibilidade
+      required: A zona de disponibilidade é obrigatória
+    instanceType:
+      label: Tipo de Instância
+      required: Tipo de Instância é obrigatório
+  azureaks:
+    label: Azure Container Service
+    shortLabel: Azure AKS
+    ingressWarning: "Note: Currently Azure AKS will not create an ingress controller when launching a new cluster. If you need this functionality you will have to create an ingress controller manually after cluster creation."
+    authenticate:
+      next: "Next: Authenticate & configure nodes"
+    access:
+      title: Account Access
+      detail: Configure the Azure Active Directory (AD) Service Principal that will be used to talk to Azure
+      help: 'You can find instructions on how to create an Azure AD Service Principal <a href="https://docs.microsoft.com/en-us/azure/aks/kubernetes-service-principal" target="_blank">here</a>.'
+    placement:
+      label: Placement
+    count:
+      label: Node Count
+      placeholder: e.g. 1
+    location:
+      label: Location
+      prompt: Choose a location...
+    accountAccessSection:
+      label: Account Access
+    subscriptionId:
+      label: ID de Inscrição
+      placeholder: Your Azure subscription ID
+    machineType:
+      label: Tamanho da VM
+      prompt: Escolha um tamanho...
+    diskSizeGb:
+      label: OS Disk Size
+      placeholder: e.g. 100
+    dns:
+      label: Prefixo DNS
+      placeholder: "e.g. example"
+    ssh:
+      label: SSH Public Key
+    security:
+      label: Segurança
+    members:
+      label: Member Roles
+    pod:
+      label: Pod Security Policies
+    kubernetesVersion:
+      label: Kubernetes Version
+      prompt: Choose a Version...
+    admin:
+      label: Admin Username
+      placeholder: user-1
+    tenant:
+      label: Tenant ID
+      placeholder: Your Azure tenant ID
+    image:
+      label: Imagem
+      placeholder: 'canonical:UbuntuServer:16.04.0-LTS:latest'
+    size:
+      label: Tamanho
+    dockerPort:
+      label: Docker Port
+      placeholder: '2376'
+    publishSettingsFile:
+      label: Publish Settings
+      placeholder: Your Publish Settings file
+    environment:
+      label: Ambiente
+    resourceGroup:
+      label: Cluster Resource Group
+      placeholder: 'docker-machine'
+      helpText: "Use an existing resource group or enter a new resource group name and one will be created for you. Note: Using a resource group containing an existing AKS cluster will create a new resource group. Azure AKS only allows one AKS cluster per resource group."
+    networking:
+      label: Networking
+      default: Padrão
+      advanced: Avançado
+      vnet:
+        label: Virtual Network - Subnet (Subnet CIDR)
+        prompt: Select a Virtual Network/Subnet
+      vnetresourcegroup:
+        label: Virtual Network Resource Group
+        prompt: Please select a Virtual Network
+        help: The Resource Group if your Virtual Network does not exist in the same Resource Group as your cluster.
+      subnet:
+        label: Subnet
+      serviceCidr:
+        label: Kubernetes service address range
+        help: "A CIDR notation IP range from which to assign service cluster IPs. It must not overlap with any Subnet IP ranges. For example: 10.0.0.0/16."
+        prompt: "10.43.0.0/16"
+      dnsServiceIp:
+        label: Kubernetes DNS service IP address
+        help: "An IP address assigned to the Kubernetes DNS service. It must be within the Kubernetes service address range. For example: 10.0.0.10."
+        placeholder: e.g. 10.0.0.10
+      dockerBridgeCidr:
+        label: Endereço da ponte (bridge) do Docker
+        help: 'An IP address and netmask assigned to Docker Bridge. It must not be in any Subnet IP ranges, or the Kubernetes service address range. For example: 172.17.0.1/16.'
+        placeholder: e.g. 172.17.0.1/16
+    sshUser:
+      label: Usuário SSH
+      placeholder: usr1
+    storageType:
+      label: Tipo de Armazenamento
+    vnet:
+      label: VNet
+      placeholder: '[resourcegroup:]name'
+    subnet:
+      label: Subnet
+      placeholder: example-sub-name
+    subnetPrefix:
+      label: Subnet Prefix
+      placeholder: 128.42.0.0/21
+    availabilitySet:
+      label: Availability Set
+      placeholder: availability-set-name
+    openPort:
+      label: Porta Aberta
+      placeholder: 'Comma-separated, e.g. 80,443'
+    privateIpAddress:
+      label: IP Privado
+      placeholder: 127.0.0.1
+    usePrivateIp:
+      label: Use Private IP To Connect
+    staticPublicIp:
+      label: IP público
+    noPublicIp:
+      label: Nenhum IP Público
+    clientId:
+      label: ID do Cliente
+      placeholder: Seu ID do Cliente
+    clientSecret:
+      label: Client Secret
+      placeholder: Your Client Secret
+    region:
+      label: Região
+    enableHttpApplicationRouting:
+      label: HTTP Application Routing
+    enableMonitoring:
+      label: Monitoramento
+    networkPolicy:
+      label: Política de Rede
+      placeholder: Selecione uma Política de Rede
+    tags:
+      label: Tags
+      addActionLabel: Adicionar etiqueta
+    errors:
+      included:
+        serviceCidr: 'Kubernetes service address range must be valid CIDR format.'
+        dnsServiceIp: 'Kubernetes DNS service IP address must be valid a ip address.'
+        dockerBridgeCidr: 'Docker bridge address must be valid CIDR format.'
+        parsedServiceCidr: 'Kubernetes service address range must fall within the selected Virtual Network range.'
+        parsedDnsServiceIp: 'Kubernetes DNS service IP address must fall within the entered Kubernetes service address range.'
+        parsedDockerBridgeCidr: 'Docker bridge address can not overlap with the selected Virtual Network or the Kubernetes service address range'
+  aliyunkcs:
+    label: Aliyun Kubernetes Container Service
+    shortLabel: Alibaba ACK
+    access:
+      next: "Next: Configure Cluster"
+      loading: "Loading Zones from Alibaba ACK"
+      title: Account Access
+      detail: Choose the region and API Key that will be used to launch Alibaba Kubernetes Service
+    cluster:
+      title: Cluster Configuration
+      detail: Choose the Zone and Kubernetes version that will be used to launch Alibaba Kubernetes Service
+      next: "Next: Configure Master Nodes"
+      loading: "Loading Availability Zones from Alibaba"
+    clusters:
+      k8s: Kubernetes
+      managed: Managed Kubernetes
+      label: Cluster Type
+    master:
+      title: Master Nodes
+      detail: Configure the master nodes that will be used to launch Alibaba Kubernetes Service
+      next: "Next: Configure Worker Nodes"
+      loading: "Loading Key Pairs from Alibaba"
+    worker:
+      title: Worker Nodes
+      detail: Configure the worker nodes that will be used to launch Alibaba Kubernetes Service
+    disk:
+      efficiency: Ultra Disk
+      ssd: SSD Disk
+    rootSize:
+      label: Root Disk Size
+      placeholder: e.g. 120
+    rootType:
+      label: Root Disk Type
+    storageType:
+      label: Data Disk Type
+    storageSize:
+      label: Data Disk Size
+      placeholder: ex. 120
+    masterNum:
+      label: Master Nodes Count
+      help: The count of master nodes will be launched in this Kubernetes cluster
+    numOfNodes:
+      label: Worker Nodes Count
+      placeholder: e.g. 3
+      required: Worker Nodes Count is required
+      help: The count of worker nodes will be launched in this Kubernetes cluster
+    keyPair:
+      label: Par de Chaves
+      required: Key Pair is required
+    regionId:
+      label: Região
+    accessKeyId:
+      label: Access Key
+      placeholder: Your Aliyun access key
+      required: Access Key is required
+    accessKeySecret:
+      label: Secret Key
+      placeholder: Your Aliyun secret key
+      provided: Provided
+      required: Secret Key is required
+    version:
+      label: Kubernetes Version
+    zoneId:
+      label: Availability Zone
+      required: Availability Zone is required
+    instanceType:
+      label: Tipo Instância
+      required: Instance Type is required
+  googlegke:
+    label: Google Kubernetes Engine
+    shortLabel: Google GKE
+    checkServiceAccount: "Next: Configure Nodes"
+    checkingServiceAccount: Autenticando...
+    credential:
+      label: Service Account
+      placeholder: Service account private key JSON file
+      configured: Configured for {project} project
+      helpText: |
+        Create a <a href="https://console.cloud.google.com/projectselector/iam-admin/serviceaccounts" target="_blank" rel="nofollow noopener noreferrer">Service Account</a> with a JSON private key and provide the JSON here.  See <a href="https://cloud.google.com/compute/docs/access/create-enable-service-accounts-for-instances" target="_blank" rel="nofollow noopener noreferrer">Google Cloud docs</a> for more info about creating a service account. These IAM roles are required: Compute Viewer (<code>roles/compute.viewer</code>), (Project) Viewer (<code>roles/viewer</code>), Kubernetes Engine Admin (<code>roles/container.admin</code>), Service Account User (<code>roles/iam.serviceAccountUser</code>). More info on roles can be found <a href="https://cloud.google.com/kubernetes-engine/docs/how-to/iam-integration" target="_blank" rel="nofollow noopener noreferrer">here.</a>
+    zone:
+      label: Zona
+      prompt: Choose a Zone...
+    project:
+      label: Projeto
+      placeholder: e.g. my-project
+    machineType:
+      label: Machine Type
+      prompt: Choose a Type...
+    nodeCount:
+      label: Node Count
+      prompt: Choose a Type...
+    diskSizeGb:
+      label: Root Disk Size
+    masterVersion:
+      label: Kubernetes Version
+      prompt: Choose a Version...
+    clusterIpv4Cidr:
+      label: Container Address Range
+      placeholder: e.g. 10.42.0.0/16
+    alphaFeatures:
+      label: Alpha Features
+    legacyAuth:
+      label: Legacy Authorization
+    stackDriverLogging:
+      label: Stackdriver Logging
+    stackdriverMonitor:
+      label: Stackdriver Monitoring
+    dashboard:
+      label: Kubernetes Dashboard
+    httpLB:
+      label: Http Load Balancing
+    maintenanceWindow:
+      label: Maintenance Window
+    enableHorizontalPodAutoscaling:
+      label: Horizontal Pod Autoscaling
+    enableNodepoolAutoscaling:
+      label: Node Pool Autoscaling
+    minNodeCount:
+      label: Minimum Node Count
+      required: '"Minimum Node Count" is required'
+    maxNodeCount:
+      label: Maximum Node Count
+      minError: Maximum Node Count should greater Minimum Node Count
+      required: '"Maximum Node Count" is required'
+    masterAuthUsername:
+      label: Master Endpoint Username
+      placeholder: Your Master Endpoint Username
+      required: '"Master Endpoint Username" is required'
+    masterAuthPassword:
+      label: Master Endpoint Password
+      placeholder: Your Master Endpoint Password
+      required: '"Master Endpoint Password" is required'
+    issueClientCertificate:
+      label: Master Auth
+    enableMasterAuthorizedNetwork:
+      label: Master Authorized Network
+    enablePrivateEndpoint:
+      label: Access Master Using Its Internal IP Address
+    enablePrivateNodes:
+      label: Cluster Privado
+    masterIpv4CidrBlock:
+      label: Master IP range
+      placeholder: e.g. 10.42.0.0/28
+    useIpAliases:
+      label: Use Ip Aliases
+    ipPolicySubnetworkName:
+      label: Subnetwork Name
+      placeholder: Your Subnetwork Name
+    ipPolicyCreateSubnetwork:
+      label: Create Subnetwork
+    ipPolicyClusterSecondaryRangeName:
+      label: Cluster Secondary Range Name
+      placeholder: Your Cluster Secondary Range Name
+    ipPolicyServicesSecondaryRangeName:
+      label: Services Secondary Range Name
+      placeholder: Your Services Secondary Range Name
+    ipPolicyClusterIpv4CidrBlock:
+      label: Pod address range
+      placeholder: e.g. 10.96.0.0/11
+    ipPolicyNodeIpv4CidrBlock:
+      label: Node Ipv4 CIDR Block
+      placeholder: Your Node Ipv4 CIDR Block
+    masterAuthorizedNetworkCidrBlocks:
+      label: Master Authorized Network CIDR Blocks
+      placeholder: Your Master Authorized Network CIDR Blocks
+      addActionLabel: Add CIDR Block
+    ipPolicyServicesIpv4CidrBlock:
+      label: Service address range
+      placeholder: e.g. 10.94.0.0/18
+    header:
+      iPAllocationPolicy: IP Allocation Policy
+      privateCluster: Private Cluster
+      masteAuth: Master Auth
+      nodePoolAutoscaling: Node Pool Autoscaling
+      masterAuthorizedNetwork: Master Authorized Network
+    locations:
+      label: Additional Zones
+    imageType:
+      label: Image Type
+      UBUNTU: Ubuntu
+      COS: Container-Optimized OS
+    network:
+      label: Rede
+    subNetwork:
+      label: Node Subnet
+    nodeLabels:
+      label: Node Labels
+      addAction: Add Label
+    clusterLabels:
+      label: Cluster Labels
+    localSsdCount:
+      label: Local SSD disks
+    diskType:
+      label: Root disk type
+      pd-standard: Standard persistent disk
+      pd-ssd: SSD persistent disk
+    preemptible:
+      label: Preemptible nodes (beta)
+    enableAutoUpgrade:
+      label: Auto Upgrade
+    enableAutoRepair:
+      label: Auto Repair
+    serviceAccount:
+      label: Service Account
+    oauthScopes:
+      label: Access scopes
+      default: Allow default access
+      full: Allow full access to all Cloud APIs
+      custom: Set access for each API
+    userInfo:
+      label: Informações do usuário
+    computeEngine:
+      label: Compute Engine
+    storage:
+      label: Storage
+    taskQueue:
+      label: Task queue
+    bigQuery:
+      label: BigQuery
+    cloudSQL:
+      label: Cloud SQL
+    cloudDatastore:
+      label: Cloud Datastore
+    stackdriverLoggingAPI:
+      label: Stackdriver Logging API
+    stackdriverMonitoringAPI:
+      label: Stackdriver Monitoring API
+    cloudPlatform:
+      label: Cloud Platform
+    bigtableData:
+      label: Bigtable Data
+    bigtableAdmin:
+      label: Bigtable Admin
+    cloudPub:
+      label: Cloud Pub/Sub
+    serviceControl:
+      label: Service Control
+    serviceManagement:
+      label: Service Management
+    stackdriverTrace:
+      label: Stackdriver Trace
+    cloudSourceRepositories:
+      label: Cloud Source Repositories
+    cloudDebugger:
+      label: Cloud Debugger
+    taints:
+      label: Taints
+      addAction: Add Taint
+      effect:
+        label: Effect
+      key:
+        label: Chave
+        placeholder: Chave
+      value:
+        label: Valor
+        placeholder: Valor
+      required: 'Taint "key" and "value" are required.'
+    tablesOnly: Tables Only
+  huaweicce:
+    label: Huawei Cloud Container Engine
+    shortLabel: Huawei CCE
+    name:
+      label: Cluster Name
+      required: Cluster name is required.
+    access:
+      title: Account Access
+      detail: Choose the region and API Key that will be used to launch Huawei Cloud Container Engine.
+    accessKey:
+      label: Access Key
+      placeholder: Your Huawei access key
+      help: You can find instructions on how to create Access Key <a href="https://support.huaweicloud.com/usermanual-ca/zh-cn_topic_0046606340.html" target="_blank">here</a>.
+    secretKey:
+      label: Secret Key
+      placeholder: Your Huawei secret key
+      help: You can find instructions on how to obtain Secret Key <a href="https://support.huaweicloud.com/usermanual-ca/zh-cn_topic_0046606340.html" target="_blank">here</a>.
+    projectId:
+      label: Project Id
+      placeholder: Your CCE project id
+      help: You can find instructions on how to obtain Project Id <a href="https://support.huaweicloud.com/usermanual-ca/zh-cn_topic_0046606344.html" target="_blank">here</a>.
+      required: Project Id is required.
+    region:
+      label: Região
+      helpText: You can find instructions on how to obtain Region <a href="https://developer.huaweicloud.com/endpoint" target="_blank">here</a>.
+      required: Region is required.
+    business:
+      label: Business
+    checkAccount: "Next: Configure cluster"
+    checkingAccount: Authenticating...
+    configureNode: "Next: Configure Node"
+    configuringNode: Configuring...
+    clusterOption:
+      title: Cluster Options
+      detail: Customize the cluster that will be used to launch Huawei Cloud Container Engine.
+    clusterType:
+      label: Cluster Type
+    clusterFlavor:
+      label: Cluster Flavor
+    masterVersion:
+      label: Master Version
+    vpcId:
+      label: VPC Name
+    subnetId:
+      label: Subnet Name
+      none: No subnet in this VPC
+    highwaySubnet:
+      label: Highway Subnet
+      placeholder: Highway Subnet
+      none: No Highway Subnet can be used
+    nodeOption:
+      title: Nós
+      detail: Customize the nodes that will be used to launch Huawei Cloud Container Engine.
+    dataVolumeType:
+      label: Data Volume Type
+    dataVolumeSize:
+      label: Data Volume Size
+    description:
+      label: Descrição
+      placeholder: e.g. Cluster for Huawei CCE
+    eipBandwidthSize:
+      label: Eip Bandwidth Size
+    eipChargeMode:
+      label: Eip Charge Mode
+    eipCount:
+      label: Eip Count
+    availableZone:
+      label: Zone
+    billingMode:
+      label: Billing Mode
+      payPerUse: Pay-per-use
+      yearly: Yearly/Monthly
+    containerNetworkCidr:
+      label: Container Network Cidr
+      placeholder: e.g. 172.16.0.0/16
+    containerNetworkMode:
+      label: Container Network Mode
+      none: No config
+    rootVolumeType:
+      label: Root Volume Type
+    rootVolumeSize:
+      label: Root Volume Size
+    nodeCount:
+      label: Node Count
+    nodeFlavor:
+      label: Node Flavor
+    ssh:
+      label: SSH Key Name
+    eip:
+      label: Eip
+    eipSelection:
+      none: Disabled
+      new: Create Eip
+      exist: Select Existed Eip
+    eipIds:
+      label: Eip
+      none: No available Eip
+    eipType:
+      label: Eip Type
+    clusterLabels:
+      label: Cluster Label
+      none: No label
+    nodeLabels:
+      label: Node Label
+    clusterEipId:
+      label: Cluster Eip
+      prompt: Choose a Eip...
+    externalServerEnabled:
+      label: External Server
+      enabled: Enabled - Only support in intranet
+      disabled: Disabled - Setup cce cluster in the same vpc as Rancher server
+    highAvailability:
+      label: High Availability
+    managementScale:
+      label: Management Scale count
+    nodeOperationSystem:
+      label: Node Operation System
+    authenticatingProxyCa:
+      label: Certificado
+    validityPeriod:
+      label: Validity Period
+    bmsIsAutoRenew:
+      label: Auto Renew
+    loginMode:
+      label: Login Mode
+      password: Password
+      keyPair: Par de Chaves
+    password:
+      label: Password
+      placeholder: Please enter password
+    userName:
+      label: User Name
+    authentiactionMode:
+      label: Authentiaction Mode
+      rbac: RBAC
+      authenticating_proxy: Authenticating Proxy
+    eipShareType:
+      label: EIP Share Type
+  rke:
+    etcd:
+      backupConfig:
+        legacy: "This cluster was configured with a legacy ectd snapshot api. The new api replaces the creation time and retention time durations with a simpler creation time in hours and retention count. We have migrated your creation period automatically. Retention count has been configured to the default of 6 backups (current retention duration: {duration}), if you're okay with this setting no further action is required. If not, you may change the setting in the advanced settings section."
+        retention:
+          label: Snapshot Retention Count
+          placeholder: "12"
+        interval:
+          label: Snapshot Creation Period
+          placeholder: "6"
+        bucketName:
+          label: S3 Bucket Name
+          placeholder: "backups"
+        region:
+          label: S3 Region
+          placeholder: "us-west-2"
+        endpoint:
+          label: S3 Region Endpoint
+          placeholder: "s3.us-west-2.amazonaws.com"
+        accessKey:
+          label: Access Key
+          placeholder: Your AWS access key
+        secretKey:
+          label: Secret Key
+          placeholder: Your AWS secret key
+          provided: Provided
+      location:
+        label: etcd Snapshot Target
+      heartbeat:
+        label: etcd Heartbeat Interval
+        placeholder: Time of a heartbeat interval
+      election:
+        label: etcd Election Timeout
+        placeholder: Time for an election to timeout
+      snapshot:
+        label: Recurring etcd Snapshots
+      retention:
+        label: Snapshot Retention Period
+        placeholder: "12h"
+        help: "acceptable duration units: h, m, s"
+      creation:
+        label: Snapshot Creation Period
+        placeholder: "6h"
+      error: "Snapshot {type} Period Error: You must specify a valid time duration. You entered {entry}"
+    nodeName:
+      title: Node Name
+      detail: Optionally configure the node name as identification instead of the actual hostname
+      placeholder: e.g. my-worker-node
+    address:
+      title: Node Address
+      detail: Optionally configure the public address and internal address for machines
+      warning: This doesn't look like an address
+      public:
+        label: Public Address
+        placeholder: e.g. 1.2.3.4
+      private:
+        label: Internal Address
+        placeholder: e.g. 1.2.3.4
+    label: '{appName} Kubernetes Engine'
+    shortLabel: Custom
+    customize:
+      label: Cluster Options
+      detail: "Customize Kubernetes options for the cluster"
+    labels:
+      title: Node Labels
+      detail: Optional labels to be applied to the node
+    nodes:
+      title: Node Pools
+      detail: Configure the machines that will make up the cluster
+      add: Add Node Pool
+      addTemplate: Add Node Template
+      templatePrompt: "Choose a Template..."
+      hostnamePrefix: Name Prefix
+      count: Count
+      template: Template
+    detected: |
+      {count, plural,
+      =1 {# new node has registered}
+      other {# new nodes have registered}
+      }
+    done: Done
+    info:
+      text: Editing node options will update the command you will run on your existing machines
+    command:
+      instructions: 'Run this command on one or more existing machines already running a supported version of Docker.'
+      winInstructions: 'Run this command in <code>CMD</code> on one or more existing machines already running a supported version of Docker and windows server version more than <code class="code-version">1803</code>.'
+    auth:
+      label: Auth Provider
+      x509: x509
+    serviceNodePortRange:
+      label: Node Port Range
+      placeholder: e.g. 30000-32767
+    network:
+      title: Networking
+      detail: Configure the networking for the cluster
+      label: Network Provider
+      flannel: Flannel
+      flannelCustom: Flannel (Windows Support Available)
+      calico: Calico
+      canal: Canal (Network Isolation Available)
+      weave: Weave
+      options:
+        flannel:
+          iface:
+            label: Interface
+        canal:
+          iface:
+            label: Interface
+        calico:
+          cloudProvider:
+            label: Cloud Provider
+      type:
+        info: Only support "host-gw" backend
+    ingress:
+      label: Nginx Ingress
+    monitoring:
+      label: Metrics Server Monitoring
+    networkPolicy:
+      label: Project Network Isolation
+    version:
+      label: Kubernetes Version
+    registry:
+      label: Pull Kubernetes Images From
+      default: The default registry (DockerHub)
+      custom: "A custom registry:"
+      url:
+        label: URL
+        placeholder: e.g. quay.io
+      user:
+        label: Usuário
+      password:
+        label: Senha
+    ignoreDockerVersion:
+      label: Docker version on nodes
+      enabled: Allow unsupported versions
+      disabled: Require a supported Docker version
+    podSecurityPolicy:
+      label: Pod Security Policy Support
+    role:
+      pageheader: Customize Node Run Command
+      sectionheader: Node Options
+      title: Node Role
+      detail: Choose what roles the node will have in the cluster
+      header:
+        etcd: etcd
+        controlplane: Control Plane
+        worker: Worker
+      requirements:
+        label: "Number of nodes required:"
+        etcd: 1, 3, or 5
+        controlplane: 1 or more
+        worker: 1 or more
+    kubeApi:
+      label: Kube API
+      ipRange: Service Cluster IP Range
+      podSecurityPolicy: Pod Security Policy
+    kubeController:
+      label: Kube Controller
+      cidr: Cluster CIDR
+      ipRange: Service Cluster IP Range
+    kubelet:
+      label: Kubelet
+      domain: Cluster Domain
+      dns: Cluster DNS Server
+    warning:
+      etcd:
+        even: Setting {count} etcd nodes is a waste of hardware because it doesn't increase the quorum until you have an odd number.
+        noEtcd: The number of etcd nodes should not be less than 1.
+      aws:
+        iam: 'An IAM role name should be provided in node template when using the Cloud Provider Amazon'
+    errors:
+      etcd: Please select 1, 3, or 5 nodes to use for etcd.
+      controlPlane: Please select at least one node to use for for management.
+      worker: Please select at least one node to use as a worker.
+    dockerRootDir:
+      placeholder: Default directory is {dir}.
+    system:
+      title: Node Operating System
+      detail: The OS of the node which will be added into the cluster
+      linux: Linux
+      windows: Windows
+    windowsSupport:
+      label: Windows Support (Experimental)
+      disabled: Not support {plugin} network provider.
+    advanced:
+      label: Advanced Cluster Options
+      detail: Customize advanced options
+    authorizedEndpoint:
+      title: Authorized Cluster Endpoint
+      detail: "Enabling the authorized cluster endpoint allows direct communication with the cluster, bypassing the Rancher API proxy. Authorized endpoint's can be retrieved by generating a kubeconfig for the cluster."
+      label: Authorized Cluster Endpoint
+  custom:
+    label: Custom
+    shortLabel: Custom
+  import:
+    label: Imported
+    shortLabel: Imported
+    command:
+      instructionsAdminRole: "<b>Note:</b> If you want to import a Google Kubernetes Engine (GKE) cluster (or any cluster that does not supply you with a kubectl configuration file with the ClusterRole <b>cluster-admin</b> bound to it), you need to bind the ClusterRole <b>cluster-admin</b> using the command below.<br/><br/>Replace <b>[USER_ACCOUNT]</b> with your Google account address (you can retrieve this using <b>gcloud config get-value account</b>). If you are not importing a Google Kubernetes Engine cluster, replace <b>[USER_ACCOUNT]</b> with the executing user configured in your kubectl configuration file."
+      instructions: "Run the kubectl command below on an existing Kubernetes cluster running a supported Kubernetes version to import it into {appName}:"
+      instructionsInsecure: "If you get an error about 'certificate signed by unknown authority' because your {appName} installation is running with an untrusted/self-signed SSL certificate, run the command below instead to bypass the certificate check:"
+conditionSections:
+  title: Status
+  detail: Status of current {resourceType}
+  table:
+    type: Type
+    status: Status
+    lastUpdate: Last Update
+    reason: Reason
+    message: Message
+  noData: No Conditions
+  noMatch: No conditions match the current search
+resourceEventList:
+  title: Events
+  detail: Events of current {resourceType}
+  table:
+    type: Type
+    lastUpdate: Last Update
+    reason: Reason
+    message: Message
+  noData: No Events
+  noMatch: No events match the current search
 confirmDelete:
   title: 'Tem certeza de que deseja excluir'
+  environmentNote: 'Note: All resources inside this Project will be permanently removed, including any namespaces that were created through {appName}.'
+  clusterNote: 'Note: Associated resources such as volumes, balancers, and networks that were created in the cloud provider will not be automatically removed.'
+  clusterRoleTemplateBindingNote: "Note: User's project permissions will not be removed."
+  systemProjectNamespaceNote: 'You are removing the namespaces under system project. It might cause the harmful effects to the cluster if it is removed.'
+  systemProjectNote: 'You are removing the system project. It might cause the harmful effects to the cluster if they are removed.'
   protip: 'Dica: Mantenha a chave {key} enquanto clicar Delete para ignorar essa confirmação.'
   confirmAction: Excluir
   cancelAction: Cancelar
+  largeDeleteText: '{key} and {othersCount} others'
 containerLogs:
+  download: Download Logs
+  title: "Logs: "
   onlyCombined: "<b>Nota:</b> Somente logs de stdout/stderr combinados estão disponíveis para este contêiner porque foi executado com o TTY (-t) flag."
   combined: Combinado
   stdout: Saída Padrão
@@ -1421,6 +2939,7 @@ containerLogs:
   scrollTop: Rolar para Cima
   scrollBottom: Rolar para Baixo
   clear: Limpar Tela
+  wrapLines: Wrap lines
   status:
     initializing: Inicializando...
     connecting: Conectando...
@@ -1436,19 +2955,732 @@ containerShell:
     connected: Conectado
     disconnected: Desconectada
     closed: Fechado
+    code: "Code: {code}"
 copyToClipboard:
   tooltip: Copiar para Área de Transferência
   copied: Copiado!
+cruRegistry:
+  title:
+    new: Add Registry
+    edit: 'Edit Registry: {name}'
+    view: 'Registry: {name}'
+  address:
+    label: Address
+    dockerhub: DockerHub
+    quay: Quay.io
+    custom: Custom
+    placeholder: e.g. registry.example.com
+  multiple: Multiple
+  auth:
+    label: Auth token
+    saved: Saved
+  username:
+    label: Username
+  password:
+    label: Password
+    saved: Saved
+cruPersistentVolume:
+  name:
+    placeholder: e.g. myvolume
+  description:
+    placeholder: e.g. Volume for production database
+  title:
+    new: Add Persistent Volume
+    edit: 'Edit Persistent Volume: {name}'
+    view: 'Persistent Volume: {name}'
+  storageClass:
+    label: Assign to Storage Class
+    prompt: None
+  pvc: Persistent Volume Claim
+  reclaimPolicy: Reclaim Policy
+  capacity:
+    label: Capacity
+    unit: GiB
+  source:
+    label: Volume Plugin
+    title: Plugin Configuration
+    detail: Configure options for the selected volume plugin
+    prompt: Choose a volume plugin...
+  nodeAffinity:
+    label: Node Affinity
+  customize:
+    title: Customize
+    detail: Customize Advanced options
+  mountOptions:
+    label: Mount Options
+    addActionLabel: Add Option
+    noData: No Mount Options
+  awsElasticBlockStore:
+    fsType:
+      label: Filesystem Type
+      placeholder: "e.g. ext4"
+    readOnly:
+      label: Read Only
+    partition:
+      label: Partition
+      placeholder: "e.g. 1; 0 for entire device"
+    volumeID:
+      label: Volume ID
+      placeholder: "e.g. volume1"
+  azureDisk:
+    cachingMode:
+      label: Caching Mode
+      none: None
+      readOnly: Read Only
+      readWrite: Read Write
+    diskName:
+      label: Disk Name
+      placeholder: "e.g. kubernetes-pvc"
+    diskURI:
+      label: Disk URI
+      placeholder: "e.g. https://example.com/disk"
+    fsType:
+      label: Filesystem Type
+      placeholder: "e.g. ext4"
+    kind:
+      label: Kind
+      dedicated: Dedicated
+      managed: Managed
+      shared: Shared
+    readOnly:
+      label: Read Only
+  secret:
+    defaultMode:
+      label: Default Mode
+      placeholder: "e.g. 256"
+    optional:
+      label: Optional
+    secretName:
+      label: Secret
+    certificateName:
+      label: Certificate
+    items:
+      label: Items
+  configMap:
+    defaultMode:
+      label: Default Mode
+      placeholder: "e.g. 256"
+    optional:
+      label: Optional
+    name:
+      label: Config Map Name
+    items:
+      label: Items
+  emptyDir:
+    medium:
+      label: Medium
+      default: Node's Default Medium
+      memory: Memory
+    sizeLimit:
+      label: Size Limit
+      placeholder: "e.g. 300Mi"
+  azureFile:
+    secretName:
+      label: Secret Name
+      placeholder: "e.g. secret"
+    secretNamespace:
+      label: Secret Namespace
+      placeholder: "e.g. default"
+    shareName:
+      label: Share Name
+      placeholder: "e.g. abc"
+    readOnly:
+      label: Read Only
+  cephfs:
+    monitors:
+      label: Monitors
+      addActionLabel: Add
+    path:
+      label: Path
+      placeholder: "e.g. /var"
+    readOnly:
+      label: Read Only
+    secretFile:
+      label: Secret File
+      placeholder: "e.g. secret"
+    secretRef:
+      name:
+        label: Secret Name
+        placeholder: "e.g. abc"
+      namespace:
+        label: Secret Namespace
+        placeholder: "e.g. default"
+      label: Secret Name
+    user:
+      label: User
+      placeholder: "e.g. root"
+  rbd:
+    fsType:
+      label: Filesystem Type
+      placeholder: "e.g. ext4"
+    image:
+      label: Image
+      placeholder: "e.g. image"
+    keyring:
+      label: Key Ring
+      placeholder: "e.g. /etc/ceph/keyring"
+    monitors:
+      label: Monitors
+      addActionLabel: Add
+    pool:
+      label: Pool
+      placeholder: "e.g. rbd"
+    readOnly:
+      label: Read Only
+    secretRef:
+      label: Secret Name
+      placeholder: "e.g. secret"
+    user:
+      label: User
+      placeholder: "e.g. root"
+  fc:
+    fsType:
+      label: Filesystem Type
+      placeholder: "e.g. ext4"
+    lun:
+      label: Lun
+      placeholder: "e.g. 2"
+    readOnly:
+      label: Read Only
+    targetWWNs:
+      label: Target WWNs
+      addActionLabel: Add
+    wwids:
+      label: Wwids
+      addActionLabel: Add
+  flexVolume:
+    driver:
+      label: Driver
+      placeholder: "e.g. driver"
+    fsType:
+      label: Filesystem Type
+      placeholder: "e.g. ext4"
+    options:
+      label: Options
+      addActionLabel: Add
+    readOnly:
+      label: Read Only
+    secretRef:
+      label: Secret Name
+      placeholder: "e.g. secret"
+  flocker:
+    datasetName:
+      label: Dataset Name
+      placeholder: "e.g. dataset"
+    datasetUUID:
+      label: Dataset UUID
+      placeholder: "e.g. uuid"
+  glusterfs:
+    endpoints:
+      label: Endpoints
+      placeholder: "e.g. glusterfs-cluster"
+    path:
+      label: Path
+      placeholder: "e.g. kube_vol"
+    readOnly:
+      label: Read Only
+  gcePersistentDisk:
+    fsType:
+      label: Filesystem Type
+      placeholder: "e.g. ext4"
+    partition:
+      label: Partition
+      placeholder: "e.g. 1; 0 for entire device"
+    pdName:
+      label: Persistent Disk Name
+      placeholder: "e.g. abc"
+    readOnly:
+      label: Read Only
+  iscsi:
+    chapAuthDiscovery:
+      label: Chap Auth Discovery
+    chapAuthSession:
+      label: Chap Auth Session
+    fsType:
+      label: Filesystem Type
+      placeholder: "e.g. ext4"
+    initiatorName:
+      label: Initiator Name
+      placeholder: "e.g. abc"
+    iqn:
+      label: IQN
+      placeholder: "e.g. 2"
+    iscsiInterface:
+      label: iSCSI Interface
+      placeholder: "e.g. interface"
+    lun:
+      label: Lun
+      placeholder: "e.g. 2"
+    portals:
+      label: Portals
+      addActionLabel: Add
+    readOnly:
+      label: Read Only
+    secretRef:
+      label: Secret Name
+      placeholder: "e.g. secret"
+    targetPortal:
+      label: Target Portal
+      placeholder: "e.g. portal"
+  local:
+    path:
+      label: Path
+      placeholder: "e.g. /mnt/disks/ssd1"
+  nfs:
+    path:
+      label: Path
+      placeholder: "e.g. /var"
+    readOnly:
+      label: Read Only
+    server:
+      label: Server
+      placeholder: "e.g. 10.244.1.4"
+  cinder:
+    fsType:
+      label: Filesystem Type
+      placeholder: "e.g. ext4"
+    readOnly:
+      label: Read Only
+    volumeID:
+      label: Volume ID
+      placeholder: "e.g. vol"
+  photonPersistentDisk:
+    fsType:
+      label: Filesystem Type
+      placeholder: "e.g. ext4"
+    pdID:
+      label: PD ID
+      placeholder: "e.g. abc"
+  portworxVolume:
+    fsType:
+      label: Filesystem Type
+      placeholder: "e.g. ext4"
+    readOnly:
+      label: Read Only
+    volumeID:
+      label: Volume ID
+      placeholder: "e.g. abc"
+  quobyte:
+    group:
+      label: Group
+      placeholder: "e.g. abc"
+    readOnly:
+      label: Read Only
+    registry:
+      label: Registry
+      placeholder: "e.g. abc"
+    user:
+      label: User
+      placeholder: "e.g. root"
+    volume:
+      label: Volume
+      placeholder: "e.g. vol"
+  scaleIO:
+    fsType:
+      label: Filesystem Type
+      placeholder: "e.g. ext4"
+    gateway:
+      label: Gateway
+      placeholder: "e.g. https://localhost:443/api"
+    protectionDomain:
+      label: Protection Domain
+      placeholder: "e.g. pd01"
+    readOnly:
+      label: Read Only
+    secretRef:
+      name:
+        label: Secret Name
+        placeholder: "e.g. secret"
+      namespace:
+        label: Secret Namespace
+        placeholder: "e.g. default"
+      label: Secret Name
+    sslEnabled:
+      label: SSL Enabled
+    storageMode:
+      label: Storage Mode
+      placeholder: "e.g. ThinProvisioned"
+    storagePool:
+      label: Storage Pool
+      placeholder: "e.g. sp01"
+    system:
+      label: System
+      placeholder: "e.g. scaleio"
+    volumeName:
+      label: Volume Name
+      placeholder: "e.g. vol-0"
+  storageos:
+    fsType:
+      label: Filesystem Type
+      placeholder: "e.g. ext4"
+    readOnly:
+      label: Read Only
+    secretRef:
+      name:
+        label: Secret Name
+        placeholder: "e.g. secret"
+      namespace:
+        label: Secret Namespace
+        placeholder: "e.g. default"
+      label: Secret Name
+    volumeName:
+      label: Volume Name
+      placeholder: "e.g. vol"
+    volumeNamespace:
+      label: Volume Namespace
+      placeholder: "e.g. default"
+  vsphereVolume:
+    fsType:
+      label: Filesystem Type
+      placeholder: "e.g. ext4"
+    storagePolicyID:
+      label: Storage Policy ID
+      placeholder: "e.g. sp1"
+    storagePolicyName:
+      label: Storage Policy Name
+      placeholder: "e.g. sp"
+    volumePath:
+      label: Volume Path
+      placeholder: "e.g. /"
+cruStorageClass:
+  name:
+    placeholder: e.g. storage
+  description:
+    placeholder: e.g. AWS EBS Storage
+  title:
+    new: Add Storage Class
+    edit: 'Edit Storage Class: {name}'
+    view: 'Storage Class: {name}'
+  allowVolumeExpansion:
+    label: Allow users to expand volumes
+  pv:
+    title: Persistent Volumes
+    detail: Persistent Volumes provisioned by the current storage class.
+  mountOptions:
+    label: Mount Options
+    addActionLabel: Add Option
+    noData: No Mount Options
+  parameters:
+    title: Parameters
+    detail: Configure the provider-specific parameters for the storage class
+    addActionLabel: Add Parameter
+  customize:
+    title: Customize
+    detail: Customize Advanced options
+  provisioner:
+    label: Provisioner
+  reclaimPolicy:
+    label: Reclaim Policy
+    Delete: Delete volumes and underlying device when released by workloads
+    Retain: Retain the volume for manual cleanup
+    Recycle: "Recycle: Empty the contents and then preserve the volume for future workloads"
+  aws-ebs:
+    type:
+      label: Volume Type
+      gp2: 'GP2 - General Purpose SSD'
+      io1: 'IO1 - Provisioned IOPS SSD'
+      st1: 'ST1 - Throughput-Optimized HDD'
+      sc1: 'SC1 - Cold-Storage HDD'
+    zone:
+      label: Availability Zone
+      automatic: "Automatic: Zones the cluster has a node in"
+      manual: "Manual: Choose specific zones"
+      placeholder: "us-east-1d, us-east-1c"
+    iopsPerGB:
+      label: Provisioned IOPS
+      unit: per second, per GB
+    encrypted:
+      label: Encryption
+    kmsKeyId:
+      label: KMS Key ID for Encryption
+      automatic: "Automatic: Generate a key"
+      manual: "Manual: Use a specific key (full ARN)"
+  gce-pd:
+    type:
+      label: Volume Type
+      pd-standard: 'Standard'
+      pd-ssd: 'SSD'
+    zone:
+      label: Availability Zone
+      automatic: "Automatic: Zones the cluster has a node in"
+      manual: "Manual: Choose specific zones"
+      placeholder: "us-central1-a, us-central1-b"
+  cinder:
+    type:
+      label: Volume Type
+      placeholder: "e.g. fast"
+    availability:
+      label: Availability Zone
+      automatic: "Automatic: Zones the cluster has a node in"
+      manual: "Manual: Choose specific zones"
+      placeholder: "e.g. nova"
+  vsphere-volume:
+    diskformat:
+      label: Disk Format
+      thin: Thin
+      zeroedthick: Zeroed Thick
+      eagerzeroedthick: Eager Zeroed Thick
+    storagePolicyName:
+      label: Storage Policy Name
+      placeholder: "e.g. gold"
+    datastore:
+      label: Datastore
+      placeholder: "e.g. VSANDatastore"
+    fstype:
+      label: Filesystem Type
+      placeholder: "e.g. ext3"
+    hostFailuresToTolerate:
+      label: Host Failures To Tolerate
+      placeholder: "e.g. 2"
+    cachereservation:
+      label: Cache Reservation
+      placeholder: "e.g. 20"
+  azure-disk:
+    new: New Azure Disk
+    unmanaged: Azure Unmanaged Disk
+    skuName:
+      label: Sku Name
+      placeholder: "e.g. Standard_LRS"
+    location:
+      label: Location
+      placeholder: "e.g. eastus"
+    storageAccount:
+      label: Storage Account
+      placeholder: "e.g. azure_storage_account_name"
+    storageaccounttype:
+      label: Storage Account Type
+      placeholder: "e.g. Standard_LRS"
+    kind:
+      label: Kind
+      shared: Shared
+      dedicated: Dedicated
+      managed: Managed
+      placeholder: "e.g. Shared"
+  azure-file:
+    skuName:
+      label: Sku Name
+      placeholder: "e.g. Standard_LRS"
+    location:
+      label: Location
+      placeholder: "e.g. eastus"
+    storageAccount:
+      label: Storage Account
+      placeholder: "e.g. azure_storage_account_name"
+  portworx-volume:
+    fs:
+      label: Filesystem
+      placeholder: "e.g. ext4"
+    block_size:
+      label: Block Size
+      placeholder: "e.g. 32"
+    repl:
+      label: Repl
+      placeholder: "e.g. 1; 0 for entire device"
+    io_priority:
+      label: I/O Priority
+      placeholder: "e.g. low"
+    snap_interval:
+      label: Snapshots Interval
+      placeholder: "e.g. 70"
+    aggregation_level:
+      label: Aggregation Level
+      placeholder: "e.g. 0"
+    ephemeral:
+      label: Ephemeral
+      placeholder: "e.g. true"
+  scaleio:
+    gateway:
+      label: Gateway
+      placeholder: "e.g. https://192.168.99.200:443/api"
+    system:
+      label: System
+      placeholder: "e.g. scaleio"
+    protectionDomain:
+      label: Protection Domain
+      placeholder: "e.g. pd0"
+    storagePool:
+      label: Storage Pool
+      placeholder: "e.g. sp1"
+    storageMode:
+      label: Storage Mode
+      ThinProvisioned: Thin Provisioned
+      ThickProvisioned: Thick Provisioned
+    secretRef:
+      label: Secret Ref
+      placeholder: "e.g. sio-secret"
+    readOnly:
+      label: Read Only
+      placeholder: "e.g. false"
+    fsType:
+      label: Filesystem Type
+      placeholder: "e.g. xfs"
+  storageos:
+    pool:
+      label: Pool
+      placeholder: "e.g. default"
+    description:
+      label: Description
+      placeholder: "e.g. Kubernetes volume"
+    adminSecretNamespace:
+      label: Admin Secret Namespace
+      placeholder: "e.g. default"
+    adminSecretName:
+      label: Admin Secret Name
+      placeholder: "e.g. storageos-secret"
+    fsType:
+      label: Filesystem Type
+      placeholder: "e.g. ext4"
+  longhorn:
+    numberOfReplicas:
+      label: Number Of Replicas
+      placeholder: "e.g. 3"
+    staleReplicaTimeout:
+      label: Stale Replica Timeout
+      placeholder: "e.g. 30"
+    fromBackup:
+      label: From Backup
+      placeholder: ""
+  quobyte:
+    quobyteAPIServer:
+      label: Quobyte API Server
+      placeholder: "e.g. http://138.68.74.142:7860"
+    registry:
+      label: Registry
+      placeholder: "e.g. 138.68.74.142:7861"
+    adminSecretNamespace:
+      label: Admin Secret Namespace
+      placeholder: "e.g. kube-system"
+    adminSecretName:
+      label: Admin Secret Name
+      placeholder: "e.g. quobyte-admin-secret"
+    user:
+      label: User
+      placeholder: "e.g. root"
+    group:
+      label: Group
+      placeholder: "e.g. root"
+    quobyteConfig:
+      label: Quobyte Config
+      placeholder: "e.g. BASE"
+    quobyteTenant:
+      label: Quobyte Tenant
+      placeholder: "e.g. DEFAULT"
+  rbd:
+    monitors:
+      label: Monitors
+      placeholder: "e.g. 10.16.153.105:6789"
+    adminId:
+      label: Admin ID
+      placeholder: "e.g. kube"
+    adminSecretNamespace:
+      label: Admin Secret Namespace
+      placeholder: "e.g. kube-system"
+    adminSecretName:
+      label: Admin Secret
+      placeholder: "e.g. secret"
+    pool:
+      label: Pool
+      placeholder: "e.g. kube"
+    userId:
+      label: User ID
+      placeholder: "e.g. kube"
+    userSecretName:
+      label: User Secret Name
+      placeholder: "e.g. ceph-secret-user"
+    fsType:
+      label: Filesystem Type
+      placeholder: "e.g. ext4"
+    imageFormat:
+      label: Image Format
+      placeholder: "e.g. 2"
+    imageFeatures:
+      label: Image Features
+      placeholder: "e.g. layering"
+  glusterfs:
+    resturl:
+      label: REST URL
+      placeholder: "e.g. http://127.0.0.1:8081"
+    restuser:
+      label: REST User
+      placeholder: "e.g. admin"
+    restuserkey:
+      label: REST User Key
+      placeholder: "e.g. password"
+    secretNamespace:
+      label: Secret Namespace
+      placeholder: "e.g. default"
+    secretName:
+      label: Secret Name
+      placeholder: "e.g. heketi-secret"
+    clusterid:
+      label: Cluster ID
+      placeholder: "e.g. 630372ccdc720a92c681fb928f27b53f"
+    gidMin:
+      label: GID MIN
+      placeholder: "e.g. 40000"
+    gidMax:
+      label: GID MAX
+      placeholder: "e.g. 50000"
+    volumetype:
+      label: Volume Type
+      placeholder: "e.g. replicate:3"
+dangerZone:
+  header: Advanced Settings
+  subtext: "Typical users will not need to change these.  Proceed with caution, incorrect values can break your {appName} installation.<br/>Settings which have been customized from default settings  are shown in <b>bold</b>."
+  showLabel: I understand that I can break things by changing advanced settings.
+  description:
+    'cacerts': "CA Certificates needed to verify the server's certificate."
+    'cluster-defaults': 'Override RKE Defaults when creating new clusters.'
+    'engine-install-url': 'Default Docker engine installation URL (for most node drivers).'
+    'engine-iso-url': 'Default OS installation URL (for vSphere driver).'
+    'engine-newest-version': 'The newest supported version of Docker at the time of this release.  A Docker version that does not satisfy supported docker range but is newer than this will be marked as untested.'
+    'engine-supported-range': 'Semver range for supported Docker engine versions.  Versions which do not satisfy this range will be marked unsupported in the UI.'
+    'ingress-ip-domain': 'Wildcard DNS domain to use for automatically generated Ingress hostnames. <ingress-name>.<namespace-name>.<ip address of ingress controller> will be added to the domain.'
+    'server-url': 'Default {appName} install url. Must be HTTPS. All nodes in your cluster must be able to reach this.'
+    'system-default-registry': 'Private registry to be used for all system Docker images.'
+    'ui-index': 'HTML index location for the UI.'
+    'ui-pl': 'Private-Label company name.'
+    'telemetry-opt': 'Telemetry reporting opt-in.'
+    'auth-user-info-max-age-seconds': 'The maximum age of a users auth tokens before an auth provider group membership sync will be performed.'
+    'auth-user-info-resync-cron': 'Default cron schedule for resyncing auth provider group memberships.'
+deleteEksCluster:
+  title: "Delete {clusterName}?"
+  help: This cluster was created with a temporary session token. Please provide keys and token to delete the cluster.
+  updateKeys: Update Keys
+  updatingKeys: Updating Keys
+  deleteCluster: Delete Cluster
+  deletingCluster: Deleting Cluster
+  accessKey:
+    label: Access Key
+    placeholder: Your AWS access key
+  secretKey:
+    label: Secret Key
+    placeholder: Your AWS secret key
+    provided: Provided
+  sessionToken:
+    label: "Session Token  <em class='text-muted'>Optional</em>"
+    deleteLabel: Session Token
+    placeholder: Your AWS session token
+    provided: Provided
+  error:
+    accessKey: Access key is required.
+    secretKey: Secret key is required.
+    sessionToken: Session token is required.
 editAccount:
   title: Editar Conta
   form:
     name:
+      label: Display Name
       placeholder: p.ex. João da Silva
     kind:
       label: Tipo de Conta
+      user: Normal User
+      admin: "Admin: Full access to manage everything in all clusters"
     description:
       label: Descrição
       placeholder: p.ex. Esta conta é para João da Silva
+    publicValue:
+      label: Username
     oldPassword:
       label: Senha Atual
     newPassword:
@@ -1461,13 +3693,51 @@ editApiKey:
   title:
     justCreated: Chave de API Criada
     editing: Editar a chave de API
+    new: Add API Key
+  accessKey: Access Key (username)
+  secretKey: Secret Key (password)
+  basicAuth: "Access Key and Secret Key can be sent as the username and password for HTTP Basic auth to authorize requests.  You can also combine them to use as a Bearer token:"
+  token: Bearer Token
+  scope: Scope
+  scopeSelect:
+    prompt: no scope
+  ttl:
+    label: Automatically Expire
+    never: Never
+    day: A day from now
+    month: A month from now
+    year: A year from now
+  description:
+    placeholder: "Optional: e.g. This key is used by the app servers to deploy containers"
+  saveWarning1: Save the info above!  This is the only time you'll be able to see it.
   saveWarning2: Se você perdê-lo, você precisará criar uma nova chave de API.
+  noteOptional: Description is optional to help you remember what this key will be used for.
 editCertificate:
   title: Editar Certificado
   name:
     placeholder: p.ex. meudominio.com
   description:
     placeholder: p.ex. EV cert para meudominio.com
+  noteKeyWriteOnly: "Note: The Private Key is intentionally blank because the field is write-only.  You will do not need to provide the Private Key unless you are intending on changing it."
+editCluster:
+  title:
+    new: Add Cluster
+    edit: Edit Cluster
+  name:
+    label: Name
+    placeholder: e.g. Sandbox
+  description:
+    label: Description
+    placeholder: e.g. Shared cluster for development
+  systemStacks:
+    hr: Cluster Options
+    title: System Catalog Stacks
+    detail: These stacks will be automatically deployed into the System environment for the cluster.
+    noData: No stacks will be deployed into the System environment.
+    add: Add Stack
+    cancel: Cancel Add System Stack
+  modal:
+    onCluster: "Attention: You are trying to delete the cluster that owns your current environment. Please select a new environment in a different cluster before deleting this cluster."
 editContainer:
   title:
     vm: Editar VM
@@ -1477,36 +3747,255 @@ editContainer:
   description:
     placeholder: p.ex. Minha Aplicação
 editHost:
+  title: Edit Node
   hostname:
     label: Nome do Host
+    help: As reported by the node operating system.
   customName:
     label: Nome Personalizado
     placeholder: p.ex. dev1
     help: Se for deixado vazio, será mostrado o nome do host como o nome.
   description:
     label: Descrição
+    placeholder: e.g. My development node
   labels:
     label: Rótulos
+  ips:
+    label: Scheduler IPs
+    valueLabel: IP Address
+    valuePlaceholder: e.g. 1.2.3.4
+    addActionLabel: Add IP
+    help: If provided, the scheduler will select and bind published ports to one of the given public IP addresses.
+  requireAny:
+    label: Require Container Label
+    help: If provided, containers must have one or more of the given labels in order to be eligible for scheduling onto this node.  If the value is left empty, a container with a matching key is eligible regardless of value.  <code>io.rancher.container.system</code> is required to allow system containers on to the node.
+    addActionLabel: Add Required Label
 editService:
   title: Editar Serviço
 editStack:
+  title: Edit Namespace
   name:
     label: Nome
+    error: Namespace name is already in use. Please choose a new namespace name.
     placeholder: p.ex. myapp
+  project:
+    label: Project
+    prompt: Select a Project...
   description:
     label: Descrição
+    placeholder: e.g. MyApp namespace
+  resourceQuota:
+    title: Resource Quotas
+    detail: Configure how much of the resources the namespace as a whole can consume
+  group:
+    label: Tags
+    placeholder: e.g. frontend, production
+    help: Comma-separated list of tags for the new Stack.  The workload lists can be filtered by individual tags.
+editUser:
+  title: Edit User
+  form:
+    name:
+      label: Display Name
+      placeholder: e.g. John Smith
+    username:
+      label: Username
+    otherRoles:
+      label: Remove Roles
+    password:
+      label: Change Password
+      new: New Password
+      confirm: Confirm New Password
+      error: Passwords must match
+      mustChangePassword:
+        new: Ask user to change their password on first login
+        edit: Ask user to change their password on next login
+envCatalog:
+  header: Catalog
+  subtext: 'You can define your own custom catalog sources here. Catalogs added here will only be available to the environment in which they were added. Each one needs a unique name and a URL that <code>git clone</code> can handle (see <a href="https://git-scm.com/docs/git-clone#_git_urls_a_id_urls_a" target="_blank" rel="nofollow noopener noreferrer">docs</a> for more info).'
+  addActionLabel: Add Catalog
+moveNamespace:
+  title: |
+    Move {count, plural,
+    =1 {namespace: {name}}
+    other {# namespaces:}}
+  to: "To project:"
+  actionLabel: Move
+stackHeader:
+  title: 'Namespace: {name}'
+  outputs: Outputs
+stacksPage:
+  table:
+    standalone: Standalone
+    endpoints: Endpoints
+    scale: Scale
+    instanceState: Container States
+    instanceStateWithIcon: States
 formatIp:
   noIp: Nenhum
+formBalancerConfig:
+  title: Custom Config File
+  detail: Provide your own custom configuration file to be applied on top of the config generated by {appName}
+  custom: |
+    See <a href="https://cbonte.github.io/haproxy-dconv/1.6/configuration.html" target="_blank" rel="nofollow noopener noreferrer">haproxy documentation</a> for more info about specific options that can go into the the config file.  When overriding the <code>backend</code> or similar lines which include the IP address of the target container, use <code>$IP</code> where the address goes and {appName} will generate the appropriate line(s).
+  config:
+    prompt: Custom haproxy.cfg content
+formNodeAffinity:
+  addRuleLabel: Add Node Selector
+  noRules: No node Selectors
+  removeRuleLabel: Remove this Node Selector
+formMembersGlobalAccess:
+  title: Members
+  detail: Select members who can view this application
+  table:
+    name: Name
+    type: Member Type
+    accessType: Access Type
+    noData: There are no members yet
+    noMatch: No members match the current search
+    prompt: Select a Value...
+formNodeRequirement:
+  label: Rules
+  addRuleLabel: Add Rule
+  noRules: No Rules
+  key:
+    label: Key
+    placeholder: e.g. hostname
+  operator:
+    label: Operator
+  values:
+    label: Values
+    placeholder: Comma-separated, e.g. node1,node2
+formIngress:
+  hostMode:
+    automatic: Automatically generate a <code>.{domain}</code> hostname
+    existing: Keep the existing hostname <code>{domain}</code>
+    manual: Specify a hostname to use
+    default: Use as the default backend
+    defaultDisabled: Ingress controller does not support default backend
+  defaultBackend:
+    label: Set this rule as default backend
+    mark: Default backend
+  label: Rules
+  addRuleLabel: Add Rule
+  removeRuleLabel: Remove this Rule
+  noRules: No Rules
+  host:
+    label: Request Host
+    placeholder: "e.g. example.com"
+  backendType:
+    label: Backend Type
+  mode:
+    workload: Workload
+    service: DNS Record
+formIngressBackends:
+  label: Target Backend
+  noRules: No Backends
+  warning: If the target is a service, only the port exposed by the service can be selected. You can go to Service Discovery tab and edit the service to add ports by editing the YAML.
+  addServiceLabel: Service
+  addWorkloadLabel: Workload
+  service:
+    label: service
+  workload:
+    label: workload
+  targetPort:
+    label: Port
+    placeholder: e.g. 80
+  path:
+    label: Path
+    placeholder: e.g. /foo
+  target: Target
+formBalancerListeners:
+  label: Listeners & Target Rules
+  detail: Control the mapping of requests coming into the balancer to the desired target.
+  status: |
+    {count, plural,
+    =0 {No rules}
+    =1 {# rule}
+    other {# rules}
+    }
+  noRules: No Ports
+  addPortLabel: Add a Listening Port
+  removePortLabel: Remove this Listening Port
+  showBackendLabel: "Customize backend names"
+  access:
+    label: Access
+    public: Public
+    internal: Internal
+  protocol:
+    label: Protocol
+  sourceIp:
+    label: Host IP
+    placeholder: "e.g. 1.2.3.4; Default: All"
+  sourcePort:
+    label: Listening Port
+    placeholder: e.g. 80
+  help: "Host and Path rules are matched top-to-bottom in the order shown.  Backends will be named randomly by default; to customize the generated backends, provide a name and then refer to that name in your custom haproxy.cfg."
+formBalancerRules:
+  label: Target Rules
+  detail: Map requests to different targets depending on host, port, path, or IP address.
+  status: |
+    {count, plural,
+    =0 {No rules}
+    =1 {# rule}
+    other {# rules}
+    }
+  noRules: No Rules
+  addServiceLabel: Add a Service
+  addInstanceLabel: Add a Container
+  addSelectorLabel: Add a Selector
+  addTargetLabel: Add a Rule
+  access:
+    label: Access
+    public: Public
+    internal: Internal
+  protocol:
+    label: Protocol
+  sourceIp:
+    label: Host IP
+    placeholder: "e.g. 1.2.3.4; Default: All"
+  sourcePort:
+    label: Listening Port
+    placeholder: e.g. 80
+  path:
+    label: Path
+    placeholder: e.g. /foo
+  hostname:
+    label: Request Host
+    placeholder: e.g. example.com
+  backendName:
+    label: Backend
+    placeholder: e.g. webapp
+  targetPort:
+    label: Port
+    placeholder: e.g. 80
+  priority:
+    label: Priority
+  target: Target
+  selector:
+    label: Selector
+    placeholder: e.g. foo=bar
 formCommand:
+  title: Command
+  detail: Configuration of the executable that will be run when the container is started.
   command:
     label: Comando
     placeholder: p.ex. /usr/sbin/httpd -f httpd.conf
+  entryPoint:
+    label: Entrypoint
+    placeholder: e.g. /bin/sh
+  environment:
+    label: Environment Labels
   workingDir:
     label: Dir. de Trabalho
     placeholder: p.ex. /myapp
+  uid:
+    label: User ID
+    placeholder: e.g. 501
   console:
+    label: Console
     both: 'Interativo &amp; TTY <span class="text-muted">(-i -t)</span>'
     interactive: 'Interativo <span class="text-muted">(-i)</span>'
+    terminal: 'TTY <span class="text-muted">(-t)</span>'
     none: Nenhum
   autoRestart:
     label: Reinício Automático
@@ -1519,8 +4008,25 @@ formCommand:
       other {vezes}
       }
     always: Sempre
+  terminationGracePeriodSeconds:
+    label: Stop Timeout
+    helpText: The container will have this long to stop on its own before it is forcefully terminated.
+  fsgid:
+    label: Filesystem Group
+    placeholder: e.g. 501
 formContainerLinks:
+  title: Links
+  detail: Define relationships between this and other containers.
   addActionLabel: Adicionar Ligações
+  name:
+    label: Target Container
+  alias:
+    label: As Name
+    placeholder: e.g. database
+  noData: There are no container links
+  noMatch: No links match the current search
+formCount:
+  label: Count
 formDisks:
   addDiskLabel: Adicionar Disco
   addRootDiskLabel: Adicionar Raiz do Disco
@@ -1531,10 +4037,22 @@ formDisks:
   size:
     label: Tamanho
     rootDisk: Determinado pela raiz da imagem
+  readIops:
+    label: Read Iops
+    placeholder: e.g. 1000
+  writeIops:
+    label: Write Iops
+    placeholder: e.g. 1000
+  driver:
+    label: Driver
 formEngineOpts:
+  title: Engine Options
+  detail: Customize the configuration of the Docker daemon
   engineInstallUrl:
     label: URL de instalação do Docker
     placeholder: p.ex. http://get.docker.com/
+    recommended: Recommended
+    latest: Latest
   engineStorageDriver:
     label: Driver de Armazenamento
     placeholder: p.ex. overlay
@@ -1550,6 +4068,7 @@ formEngineOpts:
   engineEnv:
     label: Ambiente de Engine
     addActionLabel: Adicionar Variável de Ambiente
+    keyLabel: Variable
     keyPlaceholder: p.ex. HTTP_PROXY
     valuePlaceholder: p.ex. http://your-proxy:8080
   engineInsecureRegistry:
@@ -1562,18 +4081,223 @@ formEngineOpts:
     addActionLabel: Adicionar Espelho de Registro
     valueLabel: URL Espelho
     valuePlaceholder: p.ex. https://meu-espelho.exemplo.com:5000
+formResourceQuota:
+  addQuotaLabel: Add Quota
+  table:
+    type:
+      label: Resource Type
+    value:
+      label: Limit
+      placeholder: e.g. 10
+      milliCpuPlaceholder: e.g. 500
+      memoryPlaceholder: e.g. 1Gi
+    resources:
+      label: Project Resource Availability
+      reserved: Other Namespaces
+      namespace: This Namespace
+      available: Available
+      max: Total
+    projectLimit:
+      label: Project Limit
+      placeholder: e.g. 50
+      milliCpuPlaceholder: e.g. 2000
+      memoryPlaceholder: e.g. 2048
+    namespaceLimit:
+      label: Namespace Default Limit
+      placeholder: e.g. 10
+      milliCpuPlaceholder: e.g. 500
+      memoryPlaceholder: e.g. 1024
+    noData: There are no resource quotas defined
+  errors:
+    projectLimitRequired: Project Limit for {resource} is required.
+    nsDefaultLimitRequired: Namepsace Default Limit for {resource} is required.
+    limitRequired: '{resource} limit is required.'
+    invalidLimit: '{used} of {total} {resource} quota has been used. The value should be less than or equal {left}.'
+  resources:
+    configMaps: Config Maps
+    limitsCpu: CPU Limit
+    limitsMemory: Memory Limit
+    persistentVolumeClaims: Persistent Volume Claims
+    pods: Pods
+    replicationControllers: Replication Controllers
+    requestsCpu: CPU Reservation
+    requestsMemory: Memory Reservation
+    requestsStorage: Storage Reservation
+    secrets: Secrets
+    services: Services
+    servicesLoadBalancers: Services Load Balancers
+    servicesNodePorts: Services Node Ports
+formEnvVar:
+  title: Environment Variables
+  detail: Environment Variables that were added at creation.
+  noData: No Environment Variables
+  status: |
+    {count, plural,
+    =0 {Not Configured}
+    =1 {# variable}
+    other {# variables}
+    }
+  labels:
+    key: Key
+    value: Value
+formGlobalRoles:
+  title: Global Permissions
+  description: Controls what access the user has to administer the overall {appName} installation.
+  mode:
+    admin:
+      label: Administrator
+      detail: Administrators have full control over the entire installation and all resources in all clusters.
+    user:
+      label: Standard User
+      detail: Standard Users can create new clusters and manage clusters and projects they have been granted access to.
+    custom:
+      label: Custom
+      detail: Choose individual permissions for the user.
+  role:
+    create-clusters:
+      label: Create new Clusters
+      detail: Allows the user to create new clusters and become the owner of them.  Standard Users have this permission by default.
+    manage-authn:
+      label: Configure Authentication
+      detail: Allows the user to enable, configure, and disable all Authentication provider settings.
+    manage-catalogs:
+      label: Configure Catalogs
+      detail: Allows the user to add, edit, and remove Catalogs
+    manage-clusters:
+      label: Manage all Clusters
+      detail: Allows the user to manage all clusters, including ones they are not a member of.
+    manage-node-drivers:
+      label: Configure Node Drivers
+      detail: Allows the user to enable, configure, and remove all Node Driver settings
+    manage-node-templates:
+      label: Manage Node Templates
+      detail: Allows the user to define, edit, and remove Node Templates
+    manage-roles:
+      label: Manage Roles
+      detail: Allows the user to define, edit, and remove Role definitions
+    manage-users:
+      label: Manage Users
+      detail: Allows the user to create, remove, and set passwords for all Users
+    use-catalogs:
+      label: Use Catalogs
+      detail: Allows the user to see and deploy Templates from the Catalog.  Standard Users have this permission by default.
+    use-node-templates:
+      label: Use Node Templates
+      detail: Allows the user to deploy new Nodes using any existing Node Templates.
+    base:
+      label: Login Access
+formMembers:
+  members:
+    user: User
+    group: Group
+    serviceaccount: Service Account
+    labelText: Members
+    addMember: Add Member
+    addUser: Add User
+    noAddUser: You are the only active registered user.
+    addGroup: Add Group
+    addServiceAccount: Add Service Account
+    multipleRoles: Multiple Roles
+    customRoles: Custom Roles
+    kind:
+      label: Kind
+    name:
+      label: Name
+    role:
+      label: Role
+    errors:
+      nameReq: Name is required.
+      nameInExists: Name is already exists. Please use a new project name.
+      memberNameReq: Name is required for a member
+      memberRoleReq: Role is required for a member
+      ownerReq: There must be at least one member with the Owner role.
+formScopedRoles:
+  title: '{type} Permissions'
+  description: 'Controls what access users have to the {type}.'
+  mode:
+    admin:
+      label: Owner
+      detail: Owners have full control over the {type} and all resources inside it.
+    user:
+      label: Member
+      detail: Members can manage the resources inside the {type} but not change the {type} itself.
+    custom:
+      label: Custom
+      detail: Choose individual roles for this user
+    readOnly:
+      label: Read Only
+      detail: Members can view the resources inside the {type} but not change the {type} itself.
+    userDef:
+      detail: User defined role.
+    role:
+      read-only:
+        label: Read-Only
+        detail: Allows seeing everything, but not changing anything.
 formHealthCheck:
+  title: Health Check
+  detail: Periodically make a request to the container to see if it is alive and responding correctly.
+  readiness: Readiness Check
+  liveness: Liveness Check
+  separateLivenessCheck: Define a separate liveness check
+  combinedLivenessCheck: Use the same check for liveness and readiness
   checkType:
     none: Nenhum
+    tcp: TCP connection opens successfully
+    http: HTTP request returns a successful status (2xx or 3xx)
+    https: HTTPS request returns  a successful status (2xx or 3xx)
+    command: Command run inside the container exits with status 0
+  command:
+    label: Command
+    placeholder: e.g. cat /tmp/health
+  path:
+    label: Request Path
+    placeholder: e.g. /healthcheck
+  httpHeaders:
+    label: Additional Headers
+    addActionLabel: Add Header
+    keyLabel: Header Name
+    keyPlaceholder: e.g. User-Agent
+    valuePlaceholder: e.g. Health-Check
   host:
     label: Cabeçalho do Host
+    placeholder: e.g. example.com
   port:
+    label: Target Container Port
     placeholder: p.ex. 80
+  initialDelaySeconds:
+    label: Start Checking After
+  reinitializingTimeout:
+    label: Reinitializing Timeout
+  periodSeconds:
+    label: Check Interval
+  timeoutSeconds:
+    label: Check Timeout
+  successThreshold:
+    label: Healthy After
+    unit: successes
+  failureThreshold:
+    label: Unhealthy After
+    unit: failures
+formKeyToPath:
+  addAction: Add Item
+  header: Items
+  default: All Keys
+  specific: Select Specific Keys
+  key:
+    label: Key
+    placeholder: "e.g. username"
+  path:
+    label: Path
+    placeholder: "e.g. my-group/my-username"
+  mode:
+    label: Mode
+    placeholder: "e.g. 400"
 formKeyValue:
   addAction: Adicionar Par
   key:
     label: Chave
     placeholder: Chave
+  separator: "="
   value:
     label: Valor
     placeholder: Valor
@@ -1589,32 +4313,681 @@ formNameDescription:
   description:
     label: Descrição
     placeholder: Descrição
+    expand: Add a Description
+formNetwork:
+  title: Networking
+  detail: Configure the networking and DNS options for the container.
+  netMode:
+    label: Use Host's Network Namespace
+    disable: "No"
+    enable: "Yes"
+  dnsPolicy:
+    label: DNS Policy
+    clusterFirstWithHostNet: "Cluster first with host network"
+    clusterFirst: "Cluster first"
+  dnsConfig:
+    nameservers:
+      label: DNS Name Server IP Addresses
+      addActionLabel: Add Name Server
+      placeholder: e.g. 192.168.2.1
+    options:
+      label: DNS Resolver Options
+      addActionLabel: Add Option
+      name:
+        label: Name
+        placeholder: e.g. ndots
+      value:
+        label: Value
+        placeholder: e.g. 5
+    searches:
+      label: DNS Search Domains
+      placeholder: e.g. example.com
+      addActionLabel: Add Search Domain
+  container:
+    label: Container
+  requestedIp:
+    label: Request IP
+    placeholder: Optional; e.g. 10.42.2.24
+    help: Request a specific IP in the 10.42.0.0/16 block.  If already in use, a random one will be assigned.
+  retainIp:
+    label: Retain IP
+    reuse: Reuse existing IP on upgrade or replace
+  dns:
+    label: Service Discovery
+    enable: Enable discovery and use local caching resolver
+    disable: Disable discovery and directly use remote resolving servers
+  hostname:
+    label: Hostname
+    placeholder: e.g. web
+    dockerId: Use the Docker container ID
+    hostName: Use the host's hostname
+    containerName: Use the container name
+    custom: Set a specific hostname
+  domainName:
+    label: Domain Name
+    placeholder: e.g. example.com
+  resolvingServers:
+    label: Resolving Servers
+    addActionLabel: Add Server
+    placeholder: e.g. 8.8.4.4
+  searchDomains:
+    label: Search Domains
+    placeholder: e.g. prod.example.com
+    addActionLabel: Add Domain
+  subdomain:
+    label: Subdomain
+    placeholder: e.g. foo
+  hostAlias:
+    addActionLabel: Add Host Alias
+    label: Host Aliases (/etc/hosts entries)
+    host:
+      label: Hostname
+      placeholder: e.g. database
+    ip:
+      label: IP Address
+      placeholder: e.g. 192.168.0.1
+formCustomMetrics:
+  title: Custom Metrics
+  detail: Expose the endpoints for Prometheus to collect custom metrics
+  port:
+    label: Container Port
+    placeholder: e.g. 8080
+  path:
+    label: Path
+    placeholder: e.g. /metrics
+  protocol:
+    label: Protocol
+  noPorts: No Endpoints
+  addActionLabel: Add Metrics Endpoint
+formServicePorts:
+  header: Port Mapping
+  addAction: Add Port
+  noPorts: This service has no port maps.
+  name:
+    label: Port Name
+    placeholder: "e.g. myport"
+  port:
+    label: Publish the service port
+    placeholder: "e.g. 8088"
+  protocol:
+    label: Protocol
+  targetPort:
+    label: Target Port
+    placeholder: "e.g. 80"
+    default: "Same as service port"
+  nodePort:
+    label: Node Port
+    placeholder: "e.g. 30000"
 formPorts:
+  header: Port Mapping
   addAction: Mapa de Porta
+  warning: This workload is not created by {appName} UI or {appName} API. {appName} will not automatically create related services for port mapping.
+  kind:
+    label: As a
+    NodePort: NodePort (On every node)
+    HostPort: HostPort (Nodes running a pod)
+    ClusterIP: Cluster IP (Internal only)
+    LoadBalancer: Layer-4 Load Balancer
+    LoadBalancerDisbaled: 'Layer-4 Load Balancer (disabled)'
+  sourcePort:
+    label: On listening port
+    placeholder: "e.g. 80"
+    ipPlaceholder: "e.g. 80 or 19.82.2.24:80"
+    clusterIpDefault: "Same as container port"
+  nodePort:
+    placeholder: "Default node port range is 30000-32767, e.g. 30000"
+    customPortRangePlaceholder: "Node port range is {range}, e.g. {port}"
+  containerPort:
+    label: Publish the container port
+    placeholder: "e.g. 8080"
   protocol:
     label: Protocolo
+  name:
+    label: Name
+    placeholder: "e.g. backend"
+  dnsName:
+    label: DNS Name
+    placeholder: "e.g. example"
   noPorts: Este contêiner não tem nenhuma mapa de porta.
+  error:
+    privateRequired: Private Container Port is required for each port rule.
+    publicRequired: Source Port is required if Host IP is specified.
+    hostPort:
+      sourcePortRequired: Source Port is required for Nodes running a pod.
+    loadBalancer:
+      sourcePortRequired: Source Port is required for Load Balancer.
+    mixedIpPort: "Port {ip}:{port}/{proto} has more than one mapping."
+    mixedPort: "Port {port}/{proto} has more than one mapping."
+  showAdvanced: Show Port Naming Options
+formScale:
+  label: Workload Type
+  showAdvanced: More options
+  scaleMode:
+    deploymentPrefix: "Scalable deployment of"
+    replicationControllerPrefix: "Replication Controller of"
+    replicaSetPrefix: "Replica Set of"
+    statefulSetPrefix: "Stateful set of"
+    scaleSuffix: |
+      {scale, plural,
+      =1 {pod}
+      other {pods}
+      }
+    daemonSet: "Run one pod on each node"
+    cronJob: "Run on a cron schedule"
+    job: Job
+    sidekickInactive: "Sidecar: Add a container to an existing workload"
+    sidekickPrefix: "Sidecar: Add a container to"
+    sidekickSuffix: ""
+formScheduling:
+  title: Node Scheduling
+  detail: Configure what nodes the pods can be deployed to.
+  status: |
+    {count, plural,
+    =0 {No rules}
+    =1 {# rule}
+    other {# rules}
+    }
+  canRequestHost:
+    vm: Run <b>all</b> virtual machines on a specific node
+    containers: Run <b>all</b> pods for this workload on a specific node
+  runSpecific: Run this pod on a specific node
+  noRules: No rules.
+  noToleration: No tolerations.
+  autoRun: "Automatically run on every node matching scheduling rules:"
+  autoPick:
+    vm: "Automatically pick nodes for each virtual machine matching scheduling rules:"
+    container: "Automatically pick nodes for each pod matching scheduling rules:"
+    host: "Automatically pick a node matching scheduling rules:"
+  addRule: Add Rule
+  addCustom: Add Custom Rule
+  condition: Condition
+  field: Field
+  key: Label Key
+  value: Value
+  operator: Operator
+  effect: Effect
+  time: Time
+  toleration:
+    title: Toleration
+    add: Add Toleration
+  scaling:
+    minMaxDetail: If set, the scale will not be allowed to be adjusted by user or API call above or below these limits.
+    incrementDetail: If set, the scale must be a multiple of the increment
+    hostMaxDetail: If set, schedule containers for this service to a maximum of this many hosts.
+  scaleMin: Minimum Scale
+  scaleMax: Maximum Scale
+  scaleIncrement: Scale Increment
+  hostMax: Maximum Nodes
+  perHost: per host
+  priority:
+    label: Priority
+    placeholder: e.g. 3
+  priorityClassName:
+    label: Priority Class Name
+    placeholder: e.g. high
+  scheduler:
+    label: Scheduler
+    placeholder: e.g. myScheduler
+  nodeSelector:
+    requireAll: "Require ALL of:"
+    requireAny: "Require Any of:"
+    preferred: "Prefer Any of:"
+    operator:
+      lt: '<'
+      le: |
+        &le;
+      eq: '='
+      ne: |
+        &ne;
+      gt: '>'
+      ge: |
+        &ge;
+      in: 'in list'
+      notIn: 'not in list'
+      exists: 'is set'
+      notExists: 'is not set'
+    multiple:
+      placeholder: 'e.g. foo, bar, baz'
+    custom:
+      placeholder: 'e.g. foo > 42 && bar != baz'
+formSources:
+  title: Environments From Sources
+  detail: Environments from sources allow you to inject passwords, keys, or other information into the containers that need them.
+  noData: No Environments From Sources
+  noMatch: No Environments From Sources match the current search
+  addLabel: Add Source
+  type:
+    label: Type
+  source:
+    label: Source
+  prefixOrKey:
+    label: Key
+  prefix:
+    label: Prefix or Alias
+  field:
+    placeholder: e.g. spec.nodeName
+  resource:
+    placeholder: e.g. requests.cpu
+  container:
+    placeholder: e.g. my-container
+formSecurity:
+  title: Security & Host Config
+  detail: Grant or limit the abilities of the container to affect the host it is running on.
+  pullImage:
+    label: Pull Image
+    always: Always
+    ifNotPresent: Only if not already on the node
+  privileged:
+    label: Privileged
+    disable: "No"
+    enable: "Yes: container has full access to the host"
+  allowPrivilegeEscalation:
+    label: Privilege Escalation
+    disable: "No"
+    enable: "Yes: container can gain more privileges than its parent process"
+  hostIPC:
+    label: Use Host's IPC Namespace
+  runAsNonRoot:
+    label: Run as Non-Root
+    disable: "No"
+    enable: "Yes: container must run as a non-root user"
+  readOnlyRootFilesystem:
+    label: Read-Only Root Filesystem
+    disable: "No"
+    enable: "Yes: container has a read-only root filesystem"
+  hostPID:
+    label: Use Host's PID Namespace
+  memoryLimit:
+    label: Memory Limit
+    unlimited: No Limit
+    set: Limit to
+  cpuLimit:
+    label: CPU Limit
+    unlimited: No Limit
+    set: Limit to
+    unit: milli CPUs
+  swapLimit:
+    label: Swap Memory
+    unlimited: Unlimited
+    set: Limit to
+    default: Limit to double the physical limit
+    none: Do not allow swap
+  swappiness:
+    label: Swappiness
+    default: Use the host's default
+    none: Minimum
+    set: Custom (1-100)
+  cpuPinning:
+    label: CPU Pinning
+    placeholder: "e.g. 0,1,3; Default: All"
+  shares:
+    label: CPU Shares
+    placeholder: e.g. 1024
+  capabilities:
+    add: Add Capabilities
+    drop: Drop Capabilities
+    helpBlock:
+      text: Capabilities allow you to provide fine-grained control over superuser privileges available to the container.
+      link: More information
+  deviceBinding:
+    label: Device Binding
+    addActionLabel: Add Binding
+    pathHost:
+      label: Path in Host
+      placeholder: e.g. /dev/sdc
+    pathContainer:
+      label: Path in Container
+      placeholder: e.g. /dev/xsdc
+    permissions:
+      label: Permissions
+  memoryReservation:
+    label: Memory Reservation
+    placeholder: e.g. 128
+  milliCpuReservation:
+    label: CPU Reservation
+    placeholder: e.g. 1000
+    unit: milli CPUs
+  gpuReservation:
+    label: NVIDIA GPU Reservation
+    placeholder: e.g. 1
+    unit: GPUs
+  isolation:
+    label: Isolation
+    default: Default (Container)
+    hyperv: HyperV (VM)
 formSslTermination:
+  title: SSL/TLS Certificates
+  detail: Configure the certificates that will be presented for requests to encrypted ports.
   defaultCertificate:
     prompt: Escolha um Certificado...
+  default:
+    label: Use default ingress controller certificate
+    noHosts: Please provide at least one host for the default ingress controller certificate
+  custom:
+    label: Choose a certificate
+    required: Please select a certificate
   alternateCertificate:
     prompt: Escolha um Certificado...
+  certificate: Certificate
+  alternateCerts: Alternate Certs
+  addAlternate: Add Alternate Certificate
+  noCertificates: There are no certificates to use.
+  wildcardCert: Please provide at least one host as {name} is a wildcard certificate.
+  noCertificatesConfiged: No Certificates.
+  noAlternateCertificates: There are no other certificates to use.
+  hosts: Hosts
+  noHosts: No Hosts
+  host:
+    label: Host
+    placeholder: e.g. example.com
+  addHostLabel: Add Hosts
+  helpBlock: |
+    "Note: Some older SSL/TLS clients do not support <a href="https://en.wikipedia.org/wiki/Server_Name_Indication" target="_blank">Server Name Indication (SNI)</a>; these clients will always be offered the main Certificate.  Modern clients will be offered an appropriate certificate from the Alternate Certificates list if a match is found."
+  notNeeded: There are no SSL/TLS Listening Ports configured with a valid Target Rule.
+  removeCertLabel: Remove this Certificate
+  addCertLabel: Add Certificate
+formNamespace:
+  label:
+    reuse: Namespace
+    create: Namespace
+    default: Default Namespace
+  toggle:
+    simple: Customize
+    reuse: Use an existing namespace
+    create: Add to a new namespace
+  reuse:
+    prompt: Choose a Namespace...
+  create:
+    placeholder: e.g. myapp
+  errors:
+    noneChosen: You must choose a namespace.
+    validation: "Namespace: {error}"
+formUserData:
+  placeholder: "e.g. Configuration information for the container"
+  isVmPlaceholder: "e.g. Configuration information for the virtual machine"
+formLabelsAnnotations:
+  title: Labels & Annotations
+  detail: Key/Value pairs that can be used to label/annotate containers and make scheduling decisions.
 formUserLabels:
+  title: Labels
+  detail: Labels are key/value pairs that can be used to annotate containers and make scheduling decisions.
+  nodeDetail: Labels are key/value pairs that can be applied to nodes and used to make scheduling decisions for containers.
   addAction: Adicionar Rótulo
   key:
     label: Chave
     placeholder: p.ex. foo
+  separator: "="
   value:
     label: Valor
     placeholder: p.ex. bar
   protip: "Dica: Colar uma ou mais linhas de pares chave=valor em qualquer campo de chave para a fácil entrada em massa."
+formAccessModes:
+  label: Access Modes
+  accessRWO: Single Node Read-Write
+  accessROX: Many Nodes Read-Only
+  accessRWX: Many Nodes Read-Write
+formAnnotations:
+  addActionLabel: Add Annotation
+  title: Annotations
+  detail: Configure annotations (key/value metadata) for the container.
+  errors:
+    invalidJSON: Annotation JSON format is invalid.
+    topLevelValueInvalid: Annotation JSON top-level value must be an object.
+formAuthCloudCredential:
+  add: Add New
+  label: Cloud Credentials
+  selectCreds:
+    prompt: Select a cloud credential
+formJobConfig:
+  title: Job Configuration
+  detail: Configure the desired behavior of jobs.
+  times: |
+    {count, plural,
+    =1 {Time}
+    other {Times}
+    }
+  seconds: |
+    {count, plural,
+    =1 {Second}
+    other {Seconds}
+    }
+  completions:
+    label: Completions
+    detail: The number of successfully finished pods the job should be run with.
+  parallelism:
+    label: Parallelism
+    detail: The maximum number of pods the job should run at any given time.
+  backoffLimit:
+    label: Back Off Limit
+    detail: The number of retries before marking this job failed.
+  activeDeadlineSeconds:
+    label: Active Deadline Seconds
+    detail: The duration that the job may be active before the system tries to terminate it.
+  suspend:
+    label: Suspend
+formUpgrade:
+  title: Scaling/Upgrade Policy
+  detail: Configure how pods are replaced when performing an upgrade.
+  strategy:
+    label: Upgrade Strategy
+    orderedReady: Strict serial update in order and wait for readiness
+    parallel: Start all new and stop all old pods in parallel
+    onDelete: Start upgraded pods only when old ones are manually deleted
+    recreate: Kill ALL pods, then start new
+    rollingUpdate: Rolling Update
+    startFirst: 'Rolling: start new pods, then stop old'
+    stopFirst: 'Rolling: stop old pods, then start new'
+    custom: Custom
+    batchSize:
+      label: Batch Size
+      detail: Pods will be started and stopped this many at a time
+    maxSurge:
+      label: Max Surge
+      detail: The maximum number of pods allowed beyond the desired scale at any given time.
+    maxUnavailable:
+      label: Max Unavailable
+      detail: The maximum number of pods which can be unavailable at any given time.
+    minReadySeconds:
+      label: Minimum Ready Time
+      detail: Containers in the pods must be up for at least this long before the pod is considered available.
+    progressDeadlineSeconds:
+      label: Progress Deadline
+      detail: How long to wait without seeing progress before marking the deployment as stalled.
 formValueArray:
   addActionLabel: Adicionar Valor
   valueLabel: Valor
+  valuePlaceholder: Value
+  noData: No Data
   protip: "Dica: Cole um ou mais linhas de valores em qualquer campo para a fácil entrada em massa."
+formVersions:
+  experimental: "(experimental)"
+  unsupported: "(unsupported)"
+formVolumeRow:
+  prompt: Select a Persistent Volume Claim...
+  name:
+    label: Volume Name
+    placeholder: e.g. vol1
+  volumeClaimTemplateName:
+    label: Volume Claim Template Name
+    placeholder: e.g. vol1
+    vctWarning: Stateful workloads launched with volume claim templates will become uneditable due to a <a href="https://github.com/kubernetes/kubernetes/issues/69041" target="_blank" rel="nofollow noreferrer noopener">upstream bug</a> in Kubernetes. Please be aware that this limitation exists before launching your new workload.
+  mode:
+    label: Volume Type
+    newVolume: Ephemeral Volume
+    existingVolume: Existing Volume
+    newPvc: New Volume Claim
+    existingPvc: Persistent Volume Claim
+    existingVct: Volume Claim Template
+    bindMount: Bind-Mount
+    tmpfs: Tmpfs
+    secret: Secret
+    configmap: Config Map
+    certificate: Certificate
+    newVolumeClaimTemplate: New Volume Claim Template
+  remove: Remove Volume
+  subPath: Sub Path in Volume
+  readOnly: Read-Only
+  noVolume: The volume will not be mounted in the current container.  It may be used by other containers in the pod.
+  addMount: Add Mount
+  mounts:
+    mountPoint: Mount Point
+    subPath: Sub Path in Volume
+    readOnly: Read-Only
+    helper: The volume will not be mounted in the current container.  It may be used by other containers in the pod.
+  customLogPath:
+    helpText: We will deploy a flexvolume driver to create a volume and mount the log to the host. This feature is supported on GKE cluster now.
 formVolumes:
+  title: Volumes
+  detail: Persist and share data separate from the lifecycle of an individual container.
   value:
     prompt: Selecione um Contêiner...
+  volumes: Volumes
+  volumesFrom: Volumes From
+  volumeDriver:
+    label: Driver for custom volumes
+    placeholder: 'e.g. rancher-nfs; Default: local'
+    suggestion: 'Volume drivers in use:'
+  noLaunchConfigs: There are no other launch configs in this service to share volumes with.
+  noHostContainers: This host has no containers to use the volumes from.
+  onlySingleHost: Only available when adding a container to a particular host.
+  errors:
+    incomplete: Incomplete volume definition
+    absoluteMountPoint: Volume mount points must be absolute paths
+  add:
+    label: Add Volume...
+    newVolume: Add an ephemeral volume
+    existingVolume: Existing ephemeral volume
+    newPvc: Add a new persistent volume (claim)
+    existingPvc: Use an existing persistent volume (claim)
+    bindMount: Bind-mount a directory from the node
+    tmpfs: Add an in-memory tmpfs
+    secret: Use a secret
+    configMap: Use a config map
+    certificate: Use a certificate
+    customLogPath: Read log files from a directory
+    vct: Add a Volume Claim Template
+  table:
+    kind: Kind
+    source: Source
+    mountPoint: Mount Point
+    opts: Access/Options
+formCapabilityPodSecurityPolicy:
+  title: Capability Policies
+  detail: Config set of capability Policies
+  capabilities:
+    allow: Allowed Capabilities
+    add: Default Add Capabilities
+    drop: Required Drop Capabilities
+formVolumePodSecurityPolicy:
+  title: Volume Policy
+  detail: Control the usage of volume types
+  volumes: Volumes
+formAllowedHostPathsPodSecurityPolicy:
+  title: Allowed Host Paths Policy
+  detail: Whitelist of allowed host paths
+  path:
+    addLabel: Add Path Prefix
+    placeholder: e.g. /foo
+formFsGroupPodSecurityPolicy:
+  title: FS Group Policy
+  detail: Allocating an FSGroup that owns the pod’s volumes
+  rule:
+    mustRunAs: MustRunAs - Requires at least one range to be specified. Uses the minimum value of the first range as the default. Validates against the first ID in the first range.
+    runAsAny: RunAsAny - No default provided. Allows any fsGroup ID to be specified.
+  range:
+    addLabel: Add Range
+    max:
+      label: Max
+      placeholder: e.g. 6
+    min:
+      label: Min
+      placeholder: e.g. 1
+formHostPortsPodSecurityPolicy:
+  title: Host Ports Policy
+  detail: The use of host ports
+  port:
+    addLabel: Add Port Range
+    max:
+      label: Max
+      placeholder: e.g. 7000
+    min:
+      label: Min
+      placeholder: e.g. 6000
+formRunAsUserPodSecurityPolicy:
+  title: Run As User Policy
+  detail: The user ID
+  rule:
+    mustRunAs: MustRunAs - Requires a range to be configured. Uses the first value of the range as the default. Validates against the configured range.
+    mustRunAsNonRoot: MustRunAsNonRoot - Requires that the pod be submitted with a non-zero runAsUser or have the USER directive defined in the image. No default provided.
+    runAsAny: RunAsAny - No default provided. Allows any runAsUser to be specified.
+  range:
+    addLabel: Add Range
+    max:
+      label: Max
+      placeholder: e.g. 6
+    min:
+      label: Min
+      placeholder: e.g. 1
+formSeLinuxodSecurityPolicy:
+  title: SELinux Policy
+  detail: The SELinux context of the container
+  rule:
+    mustRunAs: MustRunAs - Uses seLinuxOptions as the default. Validates against seLinuxOptions.
+    runAsAny: RunAsAny - Allows any seLinuxOptions to be specified
+  level:
+    label: Level
+    placeholder: e.g. level
+  role:
+    label: Role
+    placeholder: e.g. role
+  user:
+    label: User
+    placeholder: e.g. user
+formSupplementalGroupsPodSecurityPolicy:
+  title: Supplemental Groups Policy
+  detail: Configuring allowable supplemental groups
+  rule:
+    mustRunAs: MustRunAs - Requires at least one range to be specified. Uses the minimum value of the first range as the default. Validates against all ranges.
+    runAsAny: RunAsAny - No default provided. Allows any supplementalGroups to be specified.
+  range:
+    addLabel: Add Range
+    max:
+      label: Max
+      placeholder: e.g. 6
+    min:
+      label: Min
+      placeholder: e.g. 1
+formBasicPodSecurityPolicy:
+  title: Basic Policies
+  detail: Config basic pod security policies
+  allowPrivilegeEscalation:
+    label: Allow Privilege Escalation
+    enable: "Yes: Running of a container that allow privilege escalation from its parent"
+    disable: "No"
+  defaultAllowPrivilegeEscalation:
+    label: Default Allow Privilege Escalation
+    enable: "Yes: Control whether a process can gain more privileges than its parent process"
+    disable: "No"
+  hostIPC:
+    label: Host IPC
+    enable: "Yes: The use of host’s IPC namespace"
+    disable: "No"
+  hostNetwork:
+    label: Host Network
+    enable: "Yes: The use of host networking"
+    disable: "No"
+  hostPID:
+    label: Host PID
+    enable: "Yes: The use of host’s PID namespace"
+    disable: "No"
+  privileged:
+    label: Privileged
+    enable: "Yes: Running of privileged containers"
+    disable: "No"
+  readOnlyRootFilesystem:
+    label: Read Only Root Filesystem
+    enable: "Yes: Requiring the use of a read only root file system"
+    disable: "No"
 hostSettings:
   header: URL de Registro Host
   subtext: Qual URL base do hosts devem ser usadas para conectar na API {appName}?
@@ -1631,67 +5004,604 @@ hostSettings:
   notPublic:
     alert: |
       Tenha a certeza de que todos os hosts que você irá criar serão capazes de alcançar <code>{activeValue}</code> ?<br/>Parece um IP privado ou rede local.
+  badTld:
+    alert: |
+      The <code>.local</code> Top-Level Domain is reserved by RFC6762 for Multicast DNS.  Using this as your Registration URL is strongly discouraged and may cause DNS resolution issues as well as problems with addons like secrets and networked storage drivers.  Please choose a different hostname or IP.
+hostPod:
+  supportState:
+    unsupported: Unsupported Docker version
+    untested: Untested Docker version
+  groupedInstances:
+    namespace: 'Namespace:'
+    stack: 'Stack:'
+    standalone: Standalone Containers
 identityBlock:
   loading: Carregando...
+inputAnswers:
+  yaml: Edit as YAML
+  config: Configuration Options
+  editAsForm: Edit as a Form
+  yamlConfig: Paste or Read answers in a yml/yaml format.
+  yamlProtip: You can find default configuration in PREVIEW section.
+  unknownType: "Unrecognized question type:"
+  noConfig: This template has no configuration options
+  protip: "Paste and Read actions require their respective answers to be in a yml/yaml format"
 inputIdentity:
   placeholder:
     github: Adicionar um nome de usuário ou organização do GitHub
     generic: Adicionar um usuário ou grupo por nome
+  dropdownLabel:
+    teams: Your Teams and Organizations
+    groups: Your Groups
 inputPassword:
   buttonText: Gerar
 inputTextFile:
   tooltip: Ler de um arquivo
+uploadFile:
+  label: Read from File
+podsSection:
+  title: Pods
+  detail: Pods in this workload
+containersSection:
+  title: Containers
+  detail: Containers in this pod
+  noData: No Containers
+  noMatch: No Containers match the current search
+  initContainer: Init Container
 labelsSection:
   kind: Tipo
+  title: Labels
+  detail: Key/Value data that can be used in Node Scheduling rules or as part of configuring other advanced options.
+  status: |
+    {count, plural,
+    =0 {No labels}
+    =1 {# label}
+    other {# labels}
+    }
   key: Chave
   value: Valor
   noData: Sem rótulos
+  noMatch: No labels match the current search
+loginShibboleth:
+  buttonText: Log In with Shibboleth
+loginGithub:
+  buttonText: Log In with GitHub
+loginAzure:
+  buttonText: Log In with Azure AD
+loginSaml:
+  ping:
+    buttonText: "Log In with Ping"
+  adfs:
+    buttonText: "Log In with AD FS"
+  okta:
+    buttonText: "Log In with Okta"
+  keycloak:
+    buttonText: "Log In with Keycloak"
 loginUserPass:
+  local: Use a Local User
+  externalProvider: Use a {externalName} User
+  provider: "{kind}"
   userLabel: Nome de Usuário
+  remember: Remember
   userPlaceholder: p.ex. joaosilva
+  genericLoginLabel: Log In
+  loginLabel: Log In  with {provider}
   loggingInLabel: Entrando...
   passwordLabel: Senha
+machineTemplatesPage:
+  title: Add Node
+  new:
+    helpText: Launch a new node or import one already running Docker via SSH.
+    btn: Configure
+  custom: Custom add an existing node that is already running Docker
+  templateBox:
+    button: Select
+    labels:
+      region: Region
+      zone: Zone
+newCertificate:
+  title:
+    new: Add Certificate
+    edit: 'Edit Certificate: {name}'
+    view: 'Certificate: {name}'
+  key:
+    label: Private Key
+    required: Private Key is required.
+    invalidFormat: Private Key is invalid.
+    placeholder: "Paste in the private key, typically starting with -----BEGIN RSA PRIVATE KEY-----"
+  cert:
+    label: Certificate
+    required: Certificate is required.
+    invalidFormat: Certificate is invalid.
+    placeholder: "Paste in the certificate and any necessary chain certificates, starting with -----BEGIN CERTIFICATE-----"
+    protip: Please include any chain certificates that are needed.
+  certChain:
+    label: Chain Certs
+    placeholder: "Optional; Paste in the additional chained certificates, starting with -----BEGIN CERTIFICATE-----"
+  metaXML:
+    label: Metadata XML
+    placeholder: "Paste in the IDP Metadata XML"
+  publicKey:
+    label: SSH Public Key
+    required: Public Key is required.
+    invalidFormat: Public Key is invalid.
+    placeholder: "Paste in the public key, typically starting with 'ssh-rsa', 'ssh-dss', 'ssh-ed25519', 'ecdsa-sha2-nistp256', 'ecdsa-sha2-nistp384', or 'ecdsa-sha2-nistp521'"
+  errors:
+    encrypted: The private key cannot be password-protected.
+    key:
+      required: Private Key is required.
+      invalidFormat: Private Key is invalid. Please make sure it is a RSA key.
+    cert:
+      required: Certificate is required.
+      invalidFormat: Certificate is invalid.
 modalAboutComponent:
   component: Componente
   version: Versão
+  cattle: Cattle
+  cli: CLI
   ui: Interface de Usuário
+  helm: Helm
+  machine: Machine
+modalAddPayment:
+  header: Add New Payment Method
+  save: Save
+  errors:
+    cc: Invalid credit card number
+    exp: Invalid Expiry
+    cvc: Invalid CVC number
+    street: A street is required.
+    city: A city is required.
+    state: A state is required.
+    zip: A zipcode is required.
+  form:
+    currency:
+      label: Select your currency
+    cc:
+      label: Credit Card Number
+      placeholder: '•••• •••• •••• ••••'
+    default:
+      label: Default Card
+    name:
+      label: Name On Credit Card
+      placeholder: 'John Smith'
+    exp:
+      label: Expiration
+      placeholder: '••/••'
+    cvc:
+      label: CVC
+      placeholder: '•••'
+    address:
+      addressLine1:
+        label: Address
+        placeholder: 742 Evergreen Terrace
+      addressLine2:
+        label: Address (cont)
+        placeholder: Apt. 123
+      city:
+        label: City
+        placeholder: Springfield
+      state:
+        label: State
+        placeholder: OR
+      zip:
+        label: Zip Code
+        placeholder: '99999'
+      country:
+        label: Country
+        placeholder: United States
+  currencies:
+    yuan: "Chinese Yuan (¥)"
+    euro: "Euro (€)"
+    dollar: "US Dollar ($)"
+modalAddCloudKey:
+  header: Add Cloud Credential
+  type: Cloud Credential Type
+  saving:
+    validating: Validando Chaves
+  error: '{ status }: There was a problem validating your keys. Enter valid credentials and try agian.'
+  typeSelect:
+    prompt: Choose a cloud credential provider type
+  amazonec2:
+    accessKey:
+      label: Access Key
+      placeholder: Your AWS access key
+    secretKey:
+      label: Secret Key
+      placeholder: Your AWS secret key
+  azure:
+    clientId:
+      label: Client ID
+      placeholder: Your Client ID
+    clientSecret:
+      label: Client Secret
+      placeholder: Your Client Secret
+  digitalocean:
+    accessToken:
+      label: Access Token
+      placeholder: Your DigitalOcean API access token
+      help: |
+        Paste in a Personal Access Token from the DigitalOcean
+        <a href="https://cloud.digitalocean.com/settings/api/tokens" target="_blank" rel="nofollow noreferrer noopener">Applications & API</a> screen
+  vmwarevsphere:
+    password:
+      label: Password
+modalContainerStop:
+  header: "Are you sure you want to stop"
+  helpText: "The container will be forcibly terminated if it does not stop itself before the timeout expires"
+  protip: "ProTip: Hold the {key} key while clicking stop to bypass this confirmation."
+  label: Timeout
+  button: Stop
 modalConfirmDeactivate:
   header: Tem certeza que você quer
   protip: "Dica: Mantenha pressionada a tecla {key} enquanto clicar em {isServiceButton} para contornar essa confirmação."
   cancel: Cancelar
+  buttons:
+    project:
+      message: deactivate your environment
+      button: Deactivate
+    environment:
+      message: stop services for
+      button: Stop Services
+    default:
+      message: deactivate
+      button: Deactivate
+modalConfirmRemovePayment:
+  header: 'Confirm Payment Removal'
+  title: 'Are you sure you want to delete'
+  card: 'Card ending in {card}'
 modalEditDriver:
+  header:
+    create: "Add {type} Driver"
+    edit: "Edit {type} Driver"
   url:
     label: URL de Download
+    help: The URL to download the machine driver binary for 64-bit Linux.
   uiUrl:
     label: URL de UI Personalizada
+    help: "Optional: The URL to load for customized Add Nodes screen for this driver."
     link: Ver <a href="https://github.com/rancher/ui-driver-skel" target="_blank">ui-driver-skel</a> para mais informações.
   checksum:
+    label: Checksum
     help: "Opcional: Verifique se o driver baixado corresponde ao checksum esperada."
+  whitelist:
+    label: Whitelist Domains
+    addActionLabel: Add Domain
+    noData: No Domains
+modalEditSetting:
+  title: Edit Advanced Setting
+  name:
+    label: Name
+  value:
+    label: Value
+    prompt: Select a Value...
+  reset:
+    label: Reset to Default
+modalEditPassword:
+  firstLogin:
+    title: Welcome to {appName}
+    help: The first order of business is to set a strong password for the default <code>admin</code> user.
+    actionButton: Continue
+  edit:
+    title: Change Password
+    help: Please choose a new password
+  current: Current Password
+  new: New Password
+  confirm: Confirm Password
+  mismatch: Passwords do not match
+  actionButton: Change
+  mode:
+    generate: 'Use a new randomly generated password:'
+    manual: 'Set a specific password to use:'
+modalFeedback:
+  header: Welcome to {appName}!
+  subtitle: "Before you get started, please tell us a little about yourself..."
+  send: Get Started
+modalHostEvacuate:
+  header: "Are you sure you want to evacuate"
+  helpText: "This will deactivate the host(s) and delete all non-infrastructure containers running on it."
+  protip: "ProTip: Hold the {key} key while clicking stop to bypass this confirmation."
+  button: Evacuate
+modalImport:
+  title: Import YAML
+  mode:
+    label: Import Mode
+    cluster: "Cluster: Direct import of any resources into this cluster"
+    project: "Project: Import resources into this project"
+    namespace: "Namespace: Import all resources into a specific namespace"
+  detail:
+    cluster1: Namespaces the resources specify will be created as needed, but will not be automatically added to this project.
+    cluster2: If a resource does not specify a namespace, it will be imported into <code>default</code>.
+    cluster3: This mode also supports resources which are not namespaced, e.g. RoleTemplates.
+    project1: Resources that do not specify a namespace will be imported into the selected default.
+    project2: If a resource specifies a namespace that doesn't exist, it will be created and added to this project.
+    namespace1: All resources will be imported into the selected namespace.
+    namespace2: If a resource specifies a different namespace, importing will fail.
 modalProcessError:
   header: Informação de Exceção
   cause: "Causa:"
   none: N/D
+  stackTrace: "Stack Trace:"
   close: Fechar
+modalDrainNode:
+  titleOne: 'Drain "{name}"'
+  titleMultiple: 'Drain {count} Nodes'
+  action: Drain
+  mode: Mode
+  safe:
+    label: Safe
+    helpText: If a node has standalone pods or ephemeral data it will be cordoned but not drained.
+  aggressive:
+    label: Aggressive
+    helpText: <b>Permanently delete</b>:<ul class="m-0"><li>Standalone Pods and their data</li><li>Pods with "Empty Dir" volumes and their data.</li></ul>
+  gracePeriod:
+    title: Grace period for pods to terminate themselves
+    default: Honor the default from each pod
+    placeholder: e.g. 30
+    custom: "Ignore the defaults and give each pod:"
+  timeout:
+    title: "Drain timeout"
+    default: Keep trying forever
+    placeholder: e.g. 60
+    custom: "Give up after:"
+modalRevertSettings:
+  title: "Revert {setting} to default value?"
+  current: Current Value
+  default: Default Value
+modalRestoreBackup:
+  title: Restore From Backup
+  backups: Available Backups
+  error: A backup is required
+  fetching: Fetching new backups
+  select:
+    all: Select an available backup
+modalRotateCertificates:
+  title: Rotate Cluster Certificates
+  caCerts: Rotate the CA and all Service certificates
+  services: Rotate all Service certificates (keep the same CA)
+  single: Rotate an individual service
+  dropdownLabel: Services
+  select:
+    all: select a service
+modalRollbackService:
+  title: 'Rollback "{instanceName}"'
+  titleWithSidekicks: 'Rollback "{instanceName}" & {count, plural, =1 {# sidecar} other {# sidecar}}'
+  action: Rollback
+  current:
+    label: Current Revision
+  revisionId:
+    label: Rollback to Revision
+    prompt: Choose a Revision...
+  difference:
+    label: Differences
+modalRollbackApp:
+  title: 'Rollback "{appName}"'
+  action: Rollback
+  current:
+    label: Current Revision
+  revision:
+    label: Rollback to Revision
+    prompt: Choose a Revision...
+  difference:
+    label: Differences
+modalShell:
+  title: "Shell: "
+modalShortcuts:
+  world: World
+  time: Time
+  title:
+    rancher: "WELCOME TO WARP ZONE!"
+    pl: Keyboard Shortcuts
+  global: Global
+  cluster: Cluster
+  project: Project
+  other: Other Stuff
+  shift: Shift-{key}
+  delete: Delete selected (in table views)
+  kubectl: Kubectl Shell
+  viewGroup: Toggle view grouping
+  nextTab: Next page tab
+  search: Focus the search field
+  shortcuts: You are here
+modalYaml:
+  title:
+    new: Import {type} YAML
+    edit: 'Edit YAML: {name}'
+    view: 'View YAML: {name}'
+modalWelcome:
+  header: Welcome to {appName}!
+  closeModal: Got It
+namespaceGroup:
+  label: "Namespace: {name}"
+  none: Pod
+  project: "Namespace: All"
+nodeGroup:
+  label: "Node: {name}"
+newIngress:
+  header:
+    add: Add Ingress
+    edit: Edit Ingress
+  error:
+    noRules: "You must have one or more rules"
+newBalancer:
+  header:
+    add: Add Load Balancer
+    edit: Edit Load Balancer
+    upgrade: Upgrade Load Balancer
+  error:
+    noRules: "You must have one or more listening ports and target rules"
+    noSourcePort: "Source Port is required on each rule"
+    invalidSourcePort: "Invalid source port: '{num}'"
+    invalidTargetPort: "Invalid target port: '{num}'"
+    mixedPort: "Port {num} has multiple rules with conflicting access/protocols"
+    noTarget: "Target is required on each rule"
+    noTargetPort: "Target Port is required on each rule"
+    needsCertificate: "A certificate is required because there are SSL/TLS port rules"
+    stackName: "A new stack needs a name"
 newCatalog:
+  answers:
+    label: Answers
+    addAction: Add Answer
   catalog: "Catálogo:"
   category: "Categoria:"
   config: Opções de Configuração
+  helm:
+    label: Configuration Options
+    protip: Helm templates accept a comma separated list of strings
+  kind: "Catalog Kind:"
   license: "Licença:"
   maintainedBy: Mantido por membros da comunidade
   maintainer: "Mantenedor:"
+  newNamespace: New Namespace
+  customizeNamespace: "This application will be deployed into the <code>{namespaceId}</code> namespace"
+  newAppDetail: Choose application version and namespace for the application
+  appInfo: Detailed Descriptions
+  appInfoDetail: Application information and user guide
+  noConfig: This template has no configuration options
   official: Oficialmente Certificado
   preview: Visualizar
+  forceUpgrade: Delete and recreate resources if needed during the upgrade
+  forceRollback: Delete and recreate resources if needed during the rollback
+  templateFiles: Template Files
+  seeMore: More information...
+  saveConfigure: Configure
   saveNew: Iniciar
   saveUpgrade: Atualizar
+  selectVersionAdd: Select a version of the template to deploy
+  selectVersionConfigure: Select a version of the template to configure
+  selectVersionUpgrade: Select a version of the template to upgrade to
   startService: Iniciar os serviços depois de criar
   support: "Suporte:"
   templateVersion: Versão do Template
+  titleAdd: "Add {name} App"
+  titleConfigure: "Configure {name} App"
+  titleUpgrade: "Upgrade {name} App"
+  txt: answers.txt
   unknownType: "Tipo de pergunta não reconhecida:"
   upgrade: "Atualizar:"
   url: "URL do Projeto:"
   version:
     prompt: Escolha uma versão...
+    default: The default at the time (currently {version})
+newMultiClusterApp:
+  answers:
+    label: Answers
+    addAction: Add Answer
+  access:
+    noAccessLink: You do not have access to the target project
+  catalog: "Catalog:"
+  category: "Category:"
+  config: Configuration Options
+  helm:
+    label: Configuration Options
+    protip: Helm templates accept a comma separated list of strings
+  kind: "Catalog Kind:"
+  license: "License:"
+  maintainedBy: Maintained by community members
+  maintainer: "Maintainer:"
+  newNamespace: New Namespace
+  customizeNamespace: "This application will be deployed into the <code>{namespaceId}</code> namespace"
+  newAppDetail: Choose application version and namespace for the application
+  appInfo: Detailed Descriptions
+  appInfoDetail: Application information and user guide
+  noConfig: This template has no configuration options
+  official: Officially Certified
+  preview: Preview
+  templateFiles: Template Files
+  seeMore: More information...
+  saveConfigure: Configure
+  saveNew: Launch
+  saveUpgrade: Upgrade
+  selectVersionAdd: Select a version of the template to deploy
+  selectVersionConfigure: Select a version of the template to configure
+  selectVersionUpgrade: Select a version of the template to upgrade to
+  startService: Start services after creating
+  support: "Support:"
+  targets:
+    label: Target Projects
+    add: Add Target
+    prompt: Add a target project
+    target: Target
+    cluster: Cluster
+    project: Project
+    noData: There are no targets
+  templateVersion: Template Version
+  titleAdd: "Add {name} App"
+  titleConfigure: "Configure {name} App"
+  titleUpgrade: "Upgrade {name} App"
+  txt: answers.txt
+  unknownType: "Unrecognized question type:"
+  upgrade: "Upgrade:"
+  url: "Project URL:"
+  version:
+    prompt: Choose a version...
+    default: The default at the time (currently {version})
+  overrides:
+    label: Answer Overrides
+    detail: Override individual answers on a per cluster/project basis
+    dropdown:
+      allProjects: "All projects in cluster {clusterName}"
+      clusterGroup: "Cluster: {clusterName}"
+    add:
+      label: Add Override
+    table:
+      scope: Scope
+      question: Question
+      answer: Answer
+      noData: There are no overrides
+      noMatch: No overrides match the current search
+    scopeOverride:
+      placeholder: Select a scope
+    questionOverride:
+      placeholder: Select a question
+    answerOverride:
+      placeholder: Question required
+  roles:
+    title: Application Access Roles
+    detail: Select a role to assign this app given this app the selected access.
+    label: Available Roles
+    radios:
+      cluster: "Cluster - This app will be able access and manage all resources in the clusters in which it is deployed"
+      project: "Project - This app will be able to access and manage resources in the projects in which it is deployed"
+    help: "Note: This may not be the full list of roles. The list is limited to the roles available to your user. If you are missing a required role, please ask your system administrator."
+    additionalRoles: Existing Roles
+    noRoles: "You can not add new roles because you do not have any roles available. Please speak to your system administrator about gaining role access."
+    table:
+      role: Role
+      name: Name
+      builtIn: Built In
+      external: External
+      noData: There are no roles yet
+      noMatch: No roles match the current search
+      prompt: "Select a Role..."
+  members:
+    title: Members
+    detail: Select members who can view this application
+    table:
+      name: Name
+      type: Member Type
+      accessType: Access Type
+      noData: There are no members yet
+      noMatch: No members match the current search
+      prompt: Select a Value...
+  upgradeApp:
+    title: Upgrade Strategy
+    disabled: Upgrade all apps simultaneously
+    enabled: Rolling update (batched)
+    batch: Batch size
+    interval: Interval
 newContainer:
+  add:
+    container: Deploy Pod
+    service: Deploy Workload
+    globalService: Deploy Global Workload
+    sidekick: 'Deploy Sidecar'
+    sidekickName: 'Deploy Sidecar of "{name}"'
+  upgrade:
+    container: Upgrade Container
+    service: Upgrade Service
+    globalService: Upgrade Global Service
+    sidekick: Upgrade Sidecar
+    sidekickName: 'Upgrade Sidecar of "{name}"'
   selectUpgrade: Selecione um ou mais serviços para atualizar.
   saveUpgrade: Atualizar
   saveNew: Criar
@@ -1699,24 +5609,908 @@ newContainer:
     placeholder: p.ex. myapp
   description:
     placeholder: p.ex. Minha Aplicação
+  environment:
+    label: Environment Variables
+    from: Inject Values From Another Resource
+    detail: Set the environment that will be visible to the container, including injecting values from other resources like Secrets.
+    addAction: Add Variable
+    addFrom: Add From Source
+    keyLabel: Variable
+    keyPlaceholder: e.g. FOO
+    valueLabel: Value
+    valuePlaceholder: e.g. bar
+  sidekick:
+    header: Upgrade service
+    title: Select service launch config to upgrade
+    detail: '"{service}" has sidecars.  Which container do you want to upgrade?'
+    primary: Primary
+    sidekick: Sidecar
+  containerType:
+    title: Sidecar Type
+    standard: Standard Container
+    init: Init Container
+  errors:
+    noSidekick: Choose a workload to add the sidecar to
+    duplicateName: 'There is already a sidecar named "{name}" in the workload "{service}"'
+    quotaRequired: '"{key}" is required as resource quota is enforced on the project'
+newPassword:
+  placeholder: New Password
+  password: New Password
+  confirmPassword: Confirm Password
+  passwordNoMatch: Passwords do not match
+newSecret:
+  title:
+    new: Add Secret
+    edit: 'Edit Secret: {name}'
+    view: 'Secret: {name}'
+  name:
+    placeholder: e.g. api-key
+  description:
+    placeholder: e.g. S3 key pair
+  values:
+    label: Secrets Values
+  addActionLabel: Add Secret Value
+customDrivers:
+  nodes: Node Drivers
+  clusters: Cluster Drivers
+clusterDrivers:
+  add: Add Cluster Driver
+  builtIn: Built-In
+  table:
+    noData: This cluster does not have any nodes defined
+    noMatch: No nodes match the current search
+kontainerDriver:
+  displayName:
+    aliyunkubernetescontainerservice: Alibaba ACK
+    amazonElasticContainerService: Amazon ECS
+    azureKubernetesService: Azure AKS
+    googleKubernetesEngine: Google GKE
+    huaweicontainercloudengine: Huawei CCE
+    import: Import
+    rancherKubernetesEngine: Rancher RKE
+    tencentkubernetesengine: Tencent TKE
 nodeDriver:
+  addTemplate: Add Node Template
+  editTemplate: "Edit node template: {name}"
+  cloneTemplate: "Clone node template from: {name}"
+  editWarning: Editing a node template will only affect new nodes created by a node pool; existing nodes will not be updated or replaced automatically.<br>If you delete nodes from a pool, new ones will be created using the new settings in the template.
+  displayName:
+    aliyunecs: Aliyun ECS
+    aliyunkcs: Alibaba ACK
+    amazonec2: Amazon EC2
+    amazoneks: Amazon EKS
+    azure: Azure
+    azureaks: Azure AKS
+    cloudca: Cloud.ca
+    digitalocean: DigitalOcean
+    exoscale: Exoscale
+    googlegke: Google GKE
+    huaweicce: Huawei CCE
+    linode: Linode
+    openstack: OpenStack
+    otc: Open Telekom Cloud
+    packet: Packet
+    rackspace: RackSpace
+    softlayer: SoftLayer
+    tencenttke: Tencent TKE
+    vmwarevsphere: vSphere
+    zstack: ZStack
+  driverOptions: "{driver} Options"
+  templateOptions: "{appName} Template"
   amazoneks:
-    associateWorkerNodePublicIp:
+    access:
+      next: "Next: Configure Cluster"
+      loading: Loading Cluster Option from Amazon...
+      help: "Paste in your AWS key pair here. Use only IAM access keys, using keys generated from the root user will make the cluster unreachable."
+    clusterOption:
+      title: Cluster Options
+      detail: Customize the cluster that will be used to launch EKS Instances
+    kubernetesVersion:
+      label: Kubernetes Version
+      placeholder: Select the Kubernetes Version to install
+    role:
+      label: Service Role
+      noneSelected: "Rancher created role"
+      help: "You may choose to not select a Service Role and Rancher will create one for you."
       radio:
-        default: "Yes"
+        default: "Standard: Rancher generated service role"
+        custom: "Custom: Choose from your existing service roles"
+      next: "Next: Select VPC & Subnet"
+      loading: "Loading VPCs from Amazon..."
+    vpc:
+      title: VPC & Subnet
+      detail: Choose the VPC for that will be used for EKS Instances
+      next: "Next: Select Subnets"
+      loading: "Loading Subnets from Amazon..."
+      nextRancherDefault: "Next: Select Instance Options"
+      loadingRancherDefault: "Loading Instance options..."
+      noneSelected: "Rancher created VPC and Subnet"
+      radio:
+        default: "Standard: Rancher generated VPC and Subnet"
+        custom: "Custom: Choose from your existing VPC and Subnets"
+    subnet:
+      title: Subnet
+      help: 2 subnets required
+      next: "Next: Select Security Group"
+      loading: "Loading Security Groups from Amazon..."
+    associateWorkerNodePublicIp:
+      title: Public IP for Worker Nodes
+      radio:
+        default: true
+        off: 'No: Private IPs only'
+    securityGroup:
+      title: Security Groups
+      detail: Choose the security groups that will be applied to EKS Instances
+      choose: Choose one or more existing groups
+      defaultExisting: "Standard: Use the existing <code>{groupName}</code> group"
+      defaultCreate: "Standard: Automatically create a new security group"
+      next: "Next: Set Instance options"
+      loading: Loading Instance options...
+    ami:
+      label: Custom AMI Override
+      help: "You may override the default AMI that Rancher selects based on your region"
+    max:
+      label: Maximum ASG Size
+    min:
+      label: Minimum ASG Size
+    userData:
+      label: User Data
+      help: Pass user-data to the nodes to perform automated configuration tasks
+      placeholder: Paste in the script
+    nodeVolumeSize:
+      label: Node Volume Size
+      placeholder: e.g. 20
+    accessKey:
+      label: Access Key
+      placeholder: Your AWS access key
+    secretKey:
+      label: Secret Key
+      placeholder: Your AWS secret key
+      provided: Provided
+    sessionToken:
+      label: "Session Token  <em class='text-muted'>Optional</em>"
+      placeholder: Your AWS session token
+      provided: Provided
+    region:
+      label: Region
+  amazonec2:
+    access:
+      title: 1. Account Access
+      detail: Choose the region and API Key that will be used to launch EC2 Instances
+      next: "Next: Authenticate & configure nodes"
+      loading: Loading Availability Zone and VPC info from EC2...
+      help: "Paste in your AWS key pair here. We'll use this key to create your new Instances."
+    zone:
+      title: 2. Zone and Network
+      detail: Select the Availability Zone and VPC/Subnet for Instances
+      next: "Next: Select a Security Group"
+      loading: Loading security group info from EC2...
+    accessKey:
+      label: Access Key
+      placeholder: Your AWS access key
+    secretKey:
+      label: Secret Key
+      placeholder: Your AWS secret key
+      provided: Provided
+    region:
+      label: Region
+    availabilityZone: Availability Zone
+    subnet: VPC/Subnet
+    noSubnet: There are no subnets to choose from
+    securityGroup:
+      title: 3. Security Groups
+      detail: Choose the security groups that will be applied to Instances
+      choose: Choose one or more existing groups
+      defaultExisting: "Standard: Use the existing <code>{groupName}</code> group"
+      defaultCreate: "Standard: Automatically create a <code>{groupName}</code> group"
+      next: "Next: Set Instance options"
+      loading: Loading Instance options...
+    tags:
+      addActionLabel: Add AWS Tag
+      valueLabel: Tags
+      placeholder: e.g. dev
+    instance:
+      title: 4. Instance
+      detail: Customize the EC2 Instance that will be created.
+    portHelp:
+      link: Learn more
+      text: about the ports that will be opened.
+    needs:
+      label: "For {appName} to work correctly your security group will need to allow traffic:"
+      item1: From the {appName} server to <code>TCP</code> port <code>22</code> <span class="text-muted">(SSH to install and configure Docker)</span>
+      item2: From and To all other hosts on <code>UDP</code> ports <code>500</code> and <code>4500</code> <span class="text-muted">(for IPsec networking)</span></li>
+      item3: These rules will <b>not</b> be added automatically.
+    instanceType:
+      label: Instance Type
+    rootSize:
+      label: Root Disk Size
+      unit: GB
+    ami:
+      label: AMI
+      placeholder: An Ubuntu AMI
+      rancherList: RancherOS AMI List
+    sshUser:
+      label: SSH User
+      placeholder: e.g. ubuntu
+    iam:
+      label: IAM Instance Profile Name
+      placeholder: my-k8s-profile
+    privateIp:
+      label: Private IP
+    onlyPrivate:
+      label: Use only private IP address
+    requestSpotInstance:
+      label: Spot Instance
+      enable: Request spot instance
+    spotPrice:
+      label: Spot Price
+      unit: '$'
+  digitalocean:
+    droplet:
+      title: Droplet Options
+      detail: Configure the options for the Droplets that will be created by this template.
+    sizeLabel: |
+      {highMem, select, true {High Memory: } other {}}{memoryGb} GB RAM, {disk} GB Disk, {vcpus, plural,
+      =1 {# vCPU}
+      other {# vCPUs}
+      }
+    authAccountButton: 'Next: Configure Droplet'
+    accessToken:
+      label: Access Token
+      placeholder: Your DigitalOcean API access token
+      help: |
+        Paste in a Personal Access Token from the DigitalOcean
+        <a href="https://cloud.digitalocean.com/settings/api/tokens" target="_blank" rel="nofollow noreferrer noopener">Applications & API</a> screen
+    image:
+      label: Image
+    sshUser:
+      label: SSH User
+      placeholder: 'e.g. root'
+    size:
+      label: Droplet Size
+    region:
+      label: Region
+    optionsSection: Options
+    backups:
+      label: Enable Backups
+    ipv6:
+      label: Enable IPv6
+    privateNetworking:
+      label: Enable Private Networking
+    monitoring:
+      label: Enable Monitoring
+    tags:
+      addActionLabel: Add Droplet Tag
+      valueLabel: Tags
+      placeholder: e.g. dev
+    errors:
+      hostnamePrefix: '"Name Prefix" can not contain "_"'
+  exoscale:
+    accountSection: Account Access
+    apiKey:
+      label: API Key
+      placeholder: Your Exoscale API Key
+    secretKey:
+      label: Secret Key
+      placeholder: Your Exoscale secret key
+      provided: Provided
+    accountHelp: Paste in your Exoscale key pair here.  We'll use this key to create your new Instances.
+    loginAction: "Next: Authenticate & select a Zone"
+    loadingSecurity: Loading security group info from Exoscale...
+    securityGroupSection: Security Group
+    securityGroup:
+      label: Security Group
+      defaultExisting: "Standard: Use the existing <code>{groupName}</code> group"
+      defaultCreate: "Standard: Automatically create a <code>{groupName}</code> group"
+      custom: "Custom: Choose an existing group"
+      updating: Updating Security Group...
+      creating: Creating Security Group...
+    loadingZone: Loading zone info from Exoscale...
+    zoneSection: Zone
+    selectZoneAction: "Next: Select a Security Group"
+    zone:
+      label: Zone
+    portHelp:
+      link: Learn more
+      text: about the ports that will be opened.
+    needs:
+      label: "For {appName} to work correctly your security group will need to allow traffic:"
+      item1: From the {appName} server to <code>TCP</code> port <code>22</code> <span class="text-muted">(SSH to install and configure Docker)</span>
+      item2: From and To all other hosts on <code>UDP</code> ports <code>500</code> and <code>4500</code> <span class="text-muted">(for IPsec networking)</span></li>
+      item3: These rules will <b>not</b> be added automatically.
+    selectSecurityGroupAction: "Next: Set Instance options"
+    loadingInstance: Fetching available Instance settings...
+    instanceSection: Instance
+    instanceProfile:
+      label: Instance Profile
+    diskSize:
+      label: Root Size
+    sshUser:
+      label: SSH User
+      placeholder: 'picked by default by docker-machine'
+    template:
+      label: Template
+  packet:
+    accountSection: Account Access
+    projectId:
+      label: Project
+      placeholder: Your Packet project ID
+    apiKey:
+      label: API Key
+      placeholder: Your Packet API key
+    apiKeyHelp: 'From the Packet <a href="https://app.packet.net/portal#/api-keys" target="_blank">API Keys</a> screen'
+    instanceSection: Instance
+    instanceOptionsSection: Instance Options
+    loginAction: "Next: Authenticate & select an instance"
+    authentication: Authenticating
+    location: Location
+    planDetails:
+      label: Instance Details
+      cpu: CPUs
+      memory: Memory
+      drives: Drives
+      network: NICs
+    image:
+      label: Image
+    size:
+      label: Size
+    regionSection: Region
+    region:
+      label: Region
+  rackspace:
+    account:
+      title: 1. Account Access
+      detail: Username and API Key will be used to launch Rackspace Instances.
+    username:
+      label: Username
+      placeholder: Your RackSpace username
+    apiKey:
+      label: API Key
+      placeholder: Your RackSpace API key
+    accountHelp: From the Account Settings screen of the RackSpace control panel
+    region:
+      title: 2. Region and Flavor
+      detail: Choose the region and flavor that will be used to launch Rackspace Instances.
+      label: Region
+    flavor:
+      label: Flavor
+  vmwarevsphere:
+    access:
+      title: 1. Account Access
+      detail: Configure where to find the VCenter or ESXi server
+      help: "Note: The free ESXi license does not support API access.  Only servers with a valid or evaluation license are supported."
+    instance:
+      title: 2. Instance Options
+      detail: Choose the size and OS of the virtual machine
+    scheduling:
+      title: 3. Scheduling
+      detail: Choose what hypervisor the virtual machine will be scheduled to
+    vappOptions:
+      title: 4. vApp Options
+      detail: Choose OVF environment properties
+    vcenter:
+      label: vCenter or ESXi Server
+      placeholder: vCenter or ESXi hostname/IP
+    vcenterPort:
+      label: Port
+    username:
+      label: Username
+    password:
+      label: Password
+    instanceSection: Instance
+    instanceOptionsSection: Instance Options
+    cpuCount:
+      label: CPUs
+      unit: '{cores, plural, =1 {Core} other {Cores}}'
+    memorySize:
+      label: Memory
+      unit: MB
+    diskSize:
+      label: Disk
+      unit: MB
+    boot2dockerUrl:
+      label: OS ISO URL
+      placeholder: "Default: Latest rancheros-vmware image"
+    schedulingSection: Scheduling
+    dataCenter:
+      label: Data Center
+      placeholder: "e.g. datacenter_name"
+      help: "Data Center to create VM in (leave blank for standalone ESXi)"
+    pool:
+      label: Pool
+      placeholder: "e.g. /dc_name/host/host_name/Resources/pool_name"
+      help: "Resource Pool to create VM in (leave blank for standalone ESXi)"
+    host:
+      label: Host
+      placeholder: "e.g. cluster_name/host_name"
+      help: "Specific host to create VM on (leave blank for standalone ESXi or for cluster with DRS)"
+    network:
+      label: Network
+      placeholder: "e.g. VM Network"
+      help: "Network to attach VM to"
+    dataStore:
+      label: Data Store
+      placeholder: "e.g. datastore_cluster_name/datastore_name"
+      help: "Datastore to create VM disk on"
+    cloudinit:
+      label: Cloud Init
+      placeholder: "e.g. http://my_host/cloud-config.yml"
+      help: "Cloud-init file or url to set in the guestinfo"
+    folder:
+      label: Folder
+      placeholder: "e.g. /folder"
+      help: "Folder for the VM. This folder must already exist in the datacenter."
+    cfgparam:
+      key:
+        placeholder: "e.g. guestinfo.hostname"
+      value:
+        placeholder: "e.g. myrancherhost"
+      label: Configuration Parameters used for guestinfo
+      addActionLabel: Add Parameter
+    vappHelp: "Note: standalone ESXI does not support vApp options and network protocol profiles"
+    vappMode:
+      disabled: "Do not use vApp"
+      auto: "Use vApp to configure networks with network protocol profiles"
+      manual: "Provide a custom vApp config"
+    vappTransport:
+      label: OVF environment transport
+      placeholder: "e.g. com.vmware.guestInfo"
+      help: "com.vmware.guestInfo or iso"
+    vappIpprotocol:
+      label: vApp IP protocol
+      placeholder: "e.g. IPv4"
+      help: "IPv4 or IPv6"
+    vappIpallocationpolicy:
+      label: vApp IP allocation policy
+      placeholder: "e.g. fixedAllocated"
+      help: "dhcp, fixed, transient or fixedAllocated"
+    vappProperty:
+      key:
+        placeholder: "e.g. guestinfo.interface.0.ip.0.address"
+      value:
+        placeholder: "e.g. ip:VM Network, expression or string"
+      label: vApp properties
+      addActionLabel: Add Property
+  azure:
+    placement:
+      title: Placement
+      detail: Select the placement for the instances that will be created by this template.
+    access:
+      title: Account Access
+      detail: API Keys will be used to launch Azure Instances.
+    network:
+      title: Network
+      detail: Configure the network for the instances that will be created by this template.
+    instance:
+      title: Instance
+      detail: Customize the Azure Instance that will be created.
+    subscriptionId:
+      label: Subscription ID
+      placeholder: Your Azure subscription ID
+    subscriptionCert:
+      label: Subscription Cert
+      placeholder: Your Azure subscription certificate
+    image:
+      label: Image
+      placeholder: 'canonical:UbuntuServer:16.04.0-LTS:latest'
+    size:
+      label: Size
+    dockerPort:
+      label: Docker Port
+      placeholder: '2376'
+    publishSettingsFile:
+      label: Publish Settings
+      placeholder: Your Publish Settings file
+    environment:
+      label: Environment
+      placeholder: 'AzurePublicCloud'
+    resourceGroup:
+      label: Resource Group
+      placeholder: 'docker-machine'
+    sshUser:
+      label: SSH User
+      placeholder: usr1
+    storageType:
+      label: Storage Type
+    vnet:
+      label: VNet
+      placeholder: '[resourcegroup:]name'
+    subnet:
+      label: Subnet
+      placeholder: example-sub-name
+    subnetPrefix:
+      label: Subnet Prefix
+      placeholder: 128.42.0.0/21
+    availabilitySet:
+      label: Availability Set
+      placeholder: availability-set-name
+    openPort:
+      label: Open Port
+      placeholder: 'Comma-separated, e.g. 80,443'
+    privateIpAddress:
+      label: Private IP
+      placeholder: 127.0.0.1
+    usePrivateIp:
+      label: Use Private IP To Connect
+    staticPublicIp:
+      label: Public IP
+    noPublicIp:
+      label: No Public IP
+    clientId:
+      label: Client ID
+      placeholder: Your Client ID
+    clientSecret:
+      label: Client Secret
+      placeholder: Your Client Secret
+    region:
+      label: Region
+  aliyunecs:
+    accountSection:
+      label: 1. Account Access
+      detail: API Keys will be used to launch Aliyun ECS Instances.
+      next: "Next: Authenticate & Config network options"
+      loading: Loading Regions from Aliyun ECS...
+    accessKey:
+      label: Access Key
+      placeholder: Your Aliyun Account Access Key
+    accessKeySecret:
+      label: Access Key Secret
+      placeholder: Your Aliyun Account Access Key Secret
+      provided: Provided
+    apiEndpoint:
+      label: API Endpoint
+      placeholder: Private Aliyun API Server Endpoint
+    instanceOptionsSection:
+      label: Instance
+      detail: Customize the Aliyun ECS Instance that will be created.
+    instanceDescription:
+      label: Instance Description
+      placeholder: Instance Description
+    instanceType:
+      label: Instance Type
+      placeholder: Instance Type
+    systemImage:
+      label: System image
+      placeholder: System image
+    internetMaxBandwidth:
+      label: Internet Max Bandwidth
+      placeholder: 1 to 100
+    aliyunSLB:
+      label: Aliyun SLB ID
+      placeholder: Aliyun SLB ID
+    storageSection:
+      label: Storage
+      detail: Configure the storage for the instances that will be created by this template.
+      next: "Next: Config Aliyun ECS Instance options"
+      loading: Loading Instance Types and Images from Aliyun ECS...
+    ioOptimized:
+      label: Instance Storage I/O Optimized
+      optimized: Optimized
+      none: None
+    systemDiskCategory:
+      label: System Disk Category
+    dataDiskCategory:
+      label: Data Disk Category
+    dataDiskSize:
+      label: Data Disk Size
+      placeholder: Disk Size
+    region:
+      label: Region
+      placeholder: Region
+    zone:
+      label: Available Zone
+      prompt: Choose a Available Zone...
+    networkSection:
+      label: Network
+      detail: Configure the network for the instances that will be created by this template.
+      next: "Next: Config Storage Options"
+      loading: Loading Storage Types from Aliyun ECS...
+    routeCIDR:
+      label: Route CIDR
+      placeholder: e.g. 192.168.1.0/24
+    vpcId:
+      label: VPC
+      prompt: Choose a VPC...
+    vswitchId:
+      label: VSwitch
+      prompt: Choose a VSwitch...
+    privateIp:
+      label: Private IP
+      placeholder: Private IP in Private Network
+    privateAddressOnly:
+      label: Private Address Only
+    securitySection:
+      label: Security
+      detail: Choose the security groups that will be applied to Instances
+    securityGroup:
+      label: Security Group
+      placeholder: Security Group
+      prompt: Choose a Security Group...
+      defaultCreate: "Automatically create a <code>{groupName}</code> group"
+    sshPassword:
+      label: SSH Password
+      placeholder: Set Instance SSH Password (Optional)
+      provided: Provided
+    tags:
+      addActionLabel: Add Instance Tag
+      valueLabel: Tags
+      placeholder: e.g. dev
+    errors:
+      vpcIdRequired: VPC is required.
+      vswitchIdRequired: VSwitch is required.
+      accessKeyRequired: Access Key is required.
+      accessSecretRequired: Access Secret Key is required.
+      sshPasswordLengthNotValid: The length of SSH password must between eight and thirty.
+      sshPasswordInvalidCharacter: SSH password contains invalid characters.
+      sshPasswordFormatError: "SSH password must contain at least three out of four kinds of following characters: uppercase letter, lowercase letters, numbers, and special characters."
+      nameNotValidForApp: The name is invalid according to the {appName} hostname rule.
+  zstack:
+    access:
+      title: 1. Account Access
+      detail: Choose the endpoint, account name and account password that will be used to launch ZStack Instances
+      next: "Next: Authenticate & select a network"
+      loading: Loading Zone, Cluster, Network info from ZStack...
+    endpoint:
+      label: Endpoint
+      placeholder: e.g. https://192.168.1.42:8443/
+    accountName:
+      label: Account Name
+      placeholder: Your account name
+    accountPassword:
+      label: Account Password
+      placeholder: Your account password
+      provided: Provided
+    zone:
+      title: 2. Zone, Cluster and Network
+      detail: Select the Zone, Cluster and Network for Instances
+      next: "Next: Set Instance options"
+      loading: Loading instance options from ZStack...
+      label: Zone
+    cluster:
+      label: Cluster
+    network:
+      defaultCreate: "Standard: Automatically create a <code>{groupName}</code> network"
+      choose: Choose existing network
+      label: Network
+    portHelp:
+      link: Learn more
+      text: about the ports that will be opened.
+    instance:
+      title: 3. Instance
+      detail: Customize the EC2 Instance that will be created.
+    instanceOffering:
+      label: Instance Type
+    systemDiskOffering:
+      label: System Disk
+    imageName:
+      label: Image Name
+    dataDiskOffering:
+      label: Data Disk
+newConfigMap:
+  title:
+    new: Add Config Map
+    edit: 'Edit Config Map: {name}'
+    view: 'Config Map: {name}'
+  name:
+    placeholder: e.g. map
+  description:
+    placeholder: e.g. app
+  values:
+    label: Config Map Values
+  addActionLabel: Add Config Map Value
+projectGroup:
+  label: "Project: {name}"
+  none: Namespace
+  project: Not in a project
+  noNS: This project contains no namespaces
+optionallyNamespaced:
+  scope:
+    label: Scope
+    project: Available to all namespaces in this project
+    namespace: Available to a single namespace
+orchestrationWelcome:
+  simple:
+    title: Simple
+  enhanced:
+    title: Enhanced with Kubernetes
 pageFooter:
   notARelease: (Não é uma Release)
   help: 'Ajuda'
   issues: Registre uma Issue
   forums: Fóruns
+  slack: Slack
   download:
     link: Baixar CLI
+    mac: macOS
+    windows: Windows
+    linux: Linux
+  showSystem: Show System
+pagination:
+  catalog: |
+    {pages, plural,
+    =0 {No Catalogs}
+    =1 {{count} {count, plural, =1 {Catalog} other {Catalogs}}}
+    other {{from} - {to} of {count} Catalogs}}
+  certificate: |
+    {pages, plural,
+    =0 {No Certificates}
+    =1 {{count} {count, plural, =1 {Certificate} other {Certificates}}}
+    other {{from} - {to} of {count} Certificates}}
+  container: |
+    {pages, plural,
+    =0 {No Containers}
+    =1 {{count} {count, plural, =1 {Container} other {Containers}}}
+    other {{from} - {to} of {count} Containers}}
+  cluster: |
+    {pages, plural,
+    =0 {No Clusters}
+    =1 {{count} {count, plural, =1 {Cluster} other {Clusters}}}
+    other {{from} - {to} of {count} Clusters}}
+  dnsRecord: |
+    {pages, plural,
+    =0 {No DNS Records}
+    =1 {{count} {count, plural, =1 {DNS Record} other {DNS Records}}}
+    other {{from} - {to} of {count} DNS Records}}
+  driver: |
+    {pages, plural,
+    =0 {No Drivers}
+    =1 {{count} {count, plural, =1 {Driver} other {Drivers}}}
+    other {{from} - {to} of {count} Drivers}}
+  driverOptions: |
+    {pages, plural,
+    =0 {No Options}
+    =1 {{count} {count, plural, =1 {Driver Option} other {Driver Options}}}
+    other {{from} - {to} of {count} Driver Options}}
+  entry: |
+    {pages, plural,
+    =0 {No Entries}
+    =1 {{count} {count, plural, =1 {Entry} other {Entries}}}
+    other {{from} - {to} of {count} Entries}}
+  event: |
+    {pages, plural,
+    =0 {No Events}
+    =1 {{count} {count, plural, =1 {Event} other {Events}}}
+    other {{from} - {to} of {count} Events}}
+  generic: |
+    {pages, plural,
+    =0 {No Items}
+    =1 {{count} {count, plural, =1 {Item} other {Items}}}
+    other {{from} - {to} of {count} Items}}
+  image: |
+    {pages, plural,
+    =0 {No Images}
+    =1 {{count} {count, plural, =1 {Image} other {Images}}}
+    other {{from} - {to} of {count} Images}}
+  link: |
+    {pages, plural,
+    =0 {No Links}
+    =1 {{count} {count, plural, =1 {Link} other {Links}}}
+    other {{from} - {to} of {count} Links}}
+  loadBalancer: |
+    {pages, plural,
+    =0 {No Load Balancers}
+    =1 {{count} {count, plural, =1 {Load Balancer} other {Load Balancers}}}
+    other {{from} - {to} of {count} Load Balancers}}
+  ingress: |
+    {pages, plural,
+    =0 {No Ingresses}
+    =1 {{count} {count, plural, =1 {Ingress} other {Ingresses}}}
+    other {{from} - {to} of {count} Ingresses}}
+  member: |
+    {pages, plural,
+    =0 {No Members}
+    =1 {{count} {count, plural, =1 {Member} other {Members}}}
+    other {{from} - {to} of {count} Members}}
+  mount: |
+    {pages, plural,
+    =0 {No Mounts}
+    =1 {{count} {count, plural, =1 {Mount} other {Mounts}}}
+    other {{from} - {to} of {count} Mounts}}
+  namespace: |
+    {pages, plural,
+    =0 {No Namespaces}
+    =1 {{count} {count, plural, =1 {Namespace} other {Namespaces}}}
+    other {{from} - {to} of {count} Namespaces}}
+  node: |
+    {pages, plural,
+    =0 {No Nodes}
+    =1 {{count} {count, plural, =1 {Node} other {Nodes}}}
+    other {{from} - {to} of {count} Nodes}}
+  nodePool: |
+    {pages, plural,
+    =0 {No Node Pools}
+    =1 {{count} {count, plural, =1 {Node Pool} other {Node Pools}}}
+    other {{from} - {to} of {count} Node Pools}}
+  nodeTemplate: |
+    {pages, plural,
+    =0 {No Node Templates}
+    =1 {{count} {count, plural, =1 {Node Template} other {Node Templates}}}
+    other {{from} - {to} of {count} Node NodeTemplates}}
+  pod: |
+    {pages, plural,
+    =0 {No Pods}
+    =1 {{count} {count, plural, =1 {Pod} other {Pods}}}
+    other {{from} - {to} of {count} Pods}}
+  podHighlightSubset: "<b>{subset} of {count}</b> Pods"
+  podNoSubset: "0 of {count} Pods"
+  podLabel: |
+    {count, plural,
+    =1 {Pod}
+    other {Pods}
+    }
+  port: |
+    {pages, plural,
+    =0 {No Ports}
+    =1 {{count} {count, plural, =1 {Port} other {Ports}}}
+    other {{from} - {to} of {count} Ports}}
+  project: |
+    {pages, plural,
+    =0 {No Projects}
+    =1 {{count} {count, plural, =1 {Project} other {Projects}}}
+    other {{from} - {to} of {count} Projects}}
+  rule: |
+    {pages, plural,
+    =0 {No Rules}
+    =1 {{count} {count, plural, =1 {Rule} other {Rules}}}
+    other {{from} - {to} of {count} Rules}}
+  role: |
+    {pages, plural,
+    =0 {No Roles}
+    =1 {{count} {count, plural, =1 {Role} other {Roles}}}
+    other {{from} - {to} of {count} Roles}}
+  service: |
+    {pages, plural,
+    =0 {No Services}
+    =1 {{count} {count, plural, =1 {Service} other {Services}}}
+    other {{from} - {to} of {count} Services}}
+  storageClass: |
+    {pages, plural,
+    =0 {No Storage Classes}
+    =1 {{count} {count, plural, =1 {Storage Class} other {Storage Classes}}}
+    other {{from} - {to} of {count} Storage Classes}}
+  volume: |
+    {pages, plural,
+    =0 {No Volumes}
+    =1 {{count} {count, plural, =1 {Volume} other {Volumes}}}
+    other {{from} - {to} of {count} Volumes}}
+  workload: |
+    {pages, plural,
+    =0 {No Workloads}
+    =1 {{count} {count, plural, =1 {Workload} other {Workloads}}}
+    other {{from} - {to} of {count} Workloads}}
 projectRow:
   none: Sem descrição
+  orchestration: Orchestration
+publicEndpoints:
+  endpoint: Endpoint
+  bindIpAddress: Bind IP
+  publicPort: Public Port
+  target: Target
+  privatePort: Container Port
+  noData: There are no published ports
+  noMatch: No ports match the current search
+physicalStats:
+  title: Physical Attributes
+  detail: Physical machine attributes
+registryRow:
+  address: Address
+  username: Username
+  created: Created
+reservationParameters:
+  label: Resource Limit
+  memory:
+    labelText: 'Memory'
+    placeholder: 'Default: Entire host'
+    unit: 'MB'
+  milliCpu:
+    labelText: CPU
+    placeholder: 'Default: Entire host'
+    unit: 'mCPU'
 saveCancel:
-  saving: Sanvando...
+  saving: Salvando...
   saved: Salvo!
   edit: Salvar
+  next: Next
   create: Criar
   cancel: Cancelar
 schema:
@@ -1725,85 +6519,575 @@ schema:
     n: "Falso"
   inputCertificate:
     prompt: Escolher um Certificado...
+  inputContainer:
+    prompt: Choose a Container...
+  inputConfigMap:
+    prompt: Choose a Config Map...
   inputEnum:
     option: Escolha uma Opção...
+  inputHost:
+    label: Choose a Host...
+  inputService:
+    prompt: Choose a Workload...
+    custom: Custom
+  inputDnsRecord:
+    prompt: Choose a Service...
+  inputStorageClass:
+    prompt: Use the default class...
+  inputSecret:
+    secret: Choose a Secret...
+    certificate: Choose a Certificate...
 schedulingRuleRow:
   theHost: O host
+  must: must
+  should: should
+  shouldNot: should not
+  mustNot: must not
   haveA: tem um
   of: de
+  hostLabel: host label
+  containerLabel: container with label
+  serviceName: service with the name
+  containerName: container with the name
+serverUrl:
+  header:
+    label: Rancher Server URL
+    detail: "What URL should be used for this {appName} installation? All the nodes in your clusters will need to be able to reach this."
+  button:
+    save: Save URL
+siteAccess:
+  header: Site Access
+  helpText: "Configure who should be allowed to log in and use {appName}."
+  unrestricted: "Allow any valid {individuals}"
+  restricted: "Allow members of Clusters, Projects, plus Authorized {individuals} and {collection}"
+  required: "Restrict access to only Authorized {individuals} and {collection}"
+  listHeader: "Authorized {individuals} and {collection}"
+  dupe: "User access already enabled"
+  minimum: 'You must add at least one authorized entry'
+  noIdentity: None
+  users: Users
+  groups: Groups
+  organizations: Organizations
+  refreshGroups: Refresh Group Memberships
+  refreshHelp: This will trigger a refresh of all Groups and update their user lists.
+  helpLabel: Whats this?
+systemInfoSection:
+  title: System Information
+  detail: System and kubernetes information.
+  key: Key
+  value: Value
+  noData: No Data
+  arch: Architecture
+  dockerVersion: Docker Version
+  kernelVersion: Kernel Version
+  kubeletVersion: Kubelet Version
+  kubeProxyVersion: Kube Proxy Version
+  operatingSystem: Operating System Image
+  osType: Operating System
+  noMatch: No system information match the current search
+tableCountSelect:
+  header: Table Rows per Page
+telemetryOpt:
+  header: Statistics
+  subtext: |
+    Rancher Labs would like to collect anonymous information about the configuration of your installation to help make {appName} better.<br/>Your data will not be shared with anyone else, and no specific resource names or addresses are collected.
+  learnMore:
+    label: Learn More
+  label: Allow collection of anonymous statistics
 tooltipLink:
   list: Lista
+  composeYaml: Compose YAML
 tooltipWarning:
   notConfigured: Controle de Acesso Não Configurado
   dismiss: Dispensar
+upgradeBtn:
+  version:
+    current: 'Current'
+  status:
+    none: 'Upgrade: None'
+    loading: 'Checking upgrades...'
+    current: 'Up to date'
+    available: 'Upgrade available'
+    inprogress: 'Upgrade in progress'
+    upgraded: 'Upgraded: Finish Upgrade'
+    notfound: 'Template version not found'
+    error: 'Error checking for upgrade'
+    required: 'Upgrade required'
+jsonEditor:
+  placeholder: "Please input in JSON format"
 viewEditDescription:
   form:
     name:
       placeholder: p.ex. lab
     description:
       placeholder: p.ex. Ambiente para experimentação de desenvolvedor
+volumesPage:
+  title: Volume Claims
+  addActionLabel: Add Volume Claim
+  noData: There are no persistent volume claims defined
+  noMatch: No persistent volume claims match the current search
+  claimName:
+    label: Claim Name
+  volume:
+    label: Persistent Volume
+  storageClass:
+    label: Storage Class
 vmConsole:
+  header: "Console:"
   protip: "Dica: Mantenha pressionada a tecla {key} ao abrir acesso shell para iniciar uma nova janela."
   canvas: Canvas não é suportado.
   footerActions:
     buttonSend: Enviar Ctrl-Alt-Delete
     buttonCancel: Fechar
+volumeRow:
+  mounts:
+    readOnly: "(read-only)"
+waitOrchestration:
+  count: '({sub} of {count})'
+waitKubernetes:
+  addHost: 'Add at least one host'
+  activateHost: 'Waiting for a host to be active'
+  createStack: 'Creating Kubernetes system stack'
+  startServices: 'Starting services'
+  waitApi: 'Waiting for Kubernetes API'
+searchableSelect:
+  noMatch: No match
+  noOptions: No available options
+containerChoices:
+  hostGroup: "Host: {name}"
+  hostGroupWithState: "Host: {name} ({state})"
+  unknownHost: "Host: ???"
+  containerOption: "{name}"
+allWorkloads:
+  namespace: "Namespace: {name}"
 nav:
   srToggleDropdown: Alternar Dropdown
+  projectDropdown:
+    label: Scope
+    clusters: Clusters
+    projects: Projects
+    projectsIn: Projects in {cluster}
+    clustersNoData: You don't have any clusters
+    projectsNoData: Select a cluster
+    projectNoData: This cluster has no projects
+    clustersNoMatch: 'No clusters match "{searchInput}"'
+    projectsNoMatch: 'No projects match "{searchInput}"'
+    projectNotReady: 'Cluster not ready'
+    projectInCluster: 'in {cluster}'
+    search: "Search..."
+  cluster:
+    dashboard: Cluster
+    members: Members
+    nodes: Nodes
+    namespaces: Namespaces
+    storage:
+      tab: Storage
+      classes: Storage Classes
+      volumes: Persistent Volumes
+    projects: Projects/Namespaces
+  containers:
+    tab: Workloads
+    systemTab: System
+    ingresses: Load Balancing
+    containers: Workloads
+    dns: Service Discovery
+    volumes: Volumes
+    pipelines: Pipelines
+    deploy: Deploy
+    addContainer: Add Container
+    addBalancer: Add Balancer
+    addIngress: Add Ingress
+    addDns: Add Record
+    addVolume: Add Volume
+    importCompose: Import YAML
+  group:
+    none: Flat List
+    node: Group by Node
+    workload: Group by Workload
+    namespace: Group by Namespace
+    namespaceWorkload: Group by Namespace/Workload
+  hosts:
+    tab: Nodes
+    addHost: Add Nodes
   catalog:
     all: Todos
     library: Biblioteca
+    community: Community
+  apps:
+    tab: Catalog Apps
+    apps: Catalog Apps
+    launch: Launch
+    manage: Manage Catalogs
   infra:
     tab: Infra-estrutura
+    storagePage: Storage
     certificates: Certificados
+    configMaps: Config Maps
     registries: Registros
+    secrets: Secrets
+    members: Members
   admin:
+    tab: Global
+    accounts: Users
+    clusters: Clusters
+    machines: Nodes
+    drivers: Drivers
+    catalogs: Catalogs
+    globalDns: Global DNS
+    globalDnsEntries: Global DNS Entries
+    globalDnsProviders: Global DNS Providers
+    multiClusterApps: Multi-Cluster Apps
+    security:
+      cloudCredentials: Cloud Credentials
+      tab: Security
+      roles: Roles
+      members: Members
+      podSecurityPolicies: Pod Security Policies
+      authentication: Authentication
     settings:
       tab: Configurações
       auth: Controle de Acesso
+      registration: Host Registration
       advanced: Avançado
   user:
     label: "Menu do Usuário: {username}"
     logout: Sair
   userPreferences:
     link: "Preferências"
+  nodeTemplates:
+    link: "Node Templates"
+  api:
+    link: "API & Keys"
+  settings:
+    tab: Settings
+    advanced: Advanced
+  tools:
+    alerts: Alerts
+    backups: Backups
+    logging: Logging
+    monitoring: Monitoring
+    notifiers: Notifiers
+    pipeline: Pipeline
+    tab: Tools
+  project:
+    none: Grouped Projects/Namespaces
+    namespaces: Namespaces
 action:
   activate: Ativar
+  addContainer: Deploy Pod
+  addSidekick: Add a Sidecar
+  backupEtcd: Backup Now
+  backupEtcdMessage:
+    success:
+      title: Backup initiated
+      message: "A { backupType } backup has been started for { clusterId }"
   clone: Clonar
   console: Abrir Console
+  convertToService: Convert to Service
+  cordon: Cordon
   deactivate: Desativar
+  downloadYaml: Download YAML
+  drain: Drain
   edit: Editar
+  editConfig: Edit Config
+  editService: Edit Service
+  editYaml: View/Edit YAML
+  evacuate: Evacuate
   execute: Executar Shell
   exportConfig: Configuração de Exportação
+  garbageCollect: Cleanup
   logs: Exibir Logs
+  makeDefault: Set as default
+  move: Move
+  mute: Mute
+  nodeConfig: Download Keys
+  pause: Pause Orchestration
+  pauseAll: Pause All
+  redeploy: Redeploy
+  refreshAuthProviderAccess:
+    label: Refresh Group Memberships
+    success:
+      title: Refresh Successful
+      message: A group memebership refresh has been triggered
+    allSuccess:
+      title: Refresh Successful
+      message: A group memebership refresh has been triggered for all users.
   remove: Excluir
+  replay: Replay
+  resetDefault: Reset default
   restart: Reiniciar
+  restoreFromEtcdBackup: Restore From Backup
+  resume: Resume Orchestration
   retry: Tente novamente
+  revert: Revert to Default
+  rollback: Rollback
+  rotate: Rotate Certificates
+  setDefault: Set as Login Environment
+  setting: Setting
   start: Iniciar
+  startAll: Start All
   stop: Parar
+  stopAll: Stop All
+  stopDrain: Stop Drain
+  test: Test
+  uncordon: Uncordon
+  unmute: Unmute
   upgrade: Atualizar
+  upgradeOrEdit: Upgrade/Edit
   viewConfig: Exibir Configuração
   viewGraph: Exibir Gráfico
   viewInApi: Exibir na API
+  viewInGrafana: Go to Grafana
+  viewInstance: View Instance
+  viewYaml: View YAML
+validation:
+  required: '"{key}" is required'
+  arrayLength:
+    exactly: '"{key}" should contain {count, plural, =1 {# item} other {# items}}'
+    between: '"{key}" should contain between {min} and {max} {max, plural, =1 {item} other {items}}'
+    min: '"{key}" should contain at least {count} {count, plural, =1 {item} other {items}}'
+    max: '"{key}" should contain at most {count} {count, plural, =1 {item} other {items}}'
+  stringLength:
+    exactly: '"{key}" should be {count, plural, =1 {# character} other {# characters}}'
+    between: '"{key}" should be between {min} and {max} {max, plural, =1 {character} other {characters}}'
+    min: '"{key}" should be at least {count} {count, plural, =1 {character} other {characters}}'
+    max: '"{key}" should be at most {count} {count, plural, =1 {character} other {characters}}'
+  number:
+    exactly: '"{key}" should be exactly {val}'
+    between: '"{key}" should be between {min} and {max}'
+    min: '"{key}" should be at least {val}'
+    max: '"{key}" should be at most {val}'
+  chars: '"{key}" contains {count, plural, =1 {an invalid character} other {# invalid characters}}: {chars}'
+  dns:
+    doubleHyphen: Cannot contain two consecutive hyphens
+    hostname:
+      startDot: '"{key}" cannot start with a dot'
+      endDot: '"{key}" cannot end with a dot'
+      empty: '"{key}" must be at least one character'
+      tooLong: '"{key}" cannot be longer than {max} characters'
+      startNumber: '"{key}" cannot start with a number'
+      startHyphen: '"{key}" cannot start with a hyphen'
+      endHyphen: '"{key}" cannot end with a hyphen'
+      emptyLabel: '"{key}" cannot contain two consecutive dots'
+      tooLongLabel: '"{key}" cannot contain a section longer than {max} characters'
+    label:
+      startNumber: '"{key}" cannot start with a number'
+      startHyphen: '"{key}" cannot start with a hyphen'
+      endHyphen: '"{key}" cannot end with a hyphen'
+      emptyLabel: '"{key}" cannot be empty'
+      tooLongLabel: '"{key}" cannot be more than {max} characters'
+  k8s:
+    identifier:
+      startLetter: '"{key}" must start with a letter or number'
+      endLetter: '"{key}" must end with a letter or number'
+      emptyPrefix: '"{key}" cannot have an empty prefix'
+      tooLongPrefix: '"{key}" cannot have a prefix longer than {max} characters'
+      emptyLabel: '"{key}" cannot have an empty key'
+      tooLongKey: '"{key}" cannot have a key longer than {max} characters'
+  targets:
+    missingProjectId: A target must have a project selected.
 model:
+  account:
+    kind:
+      registeredAgent: Registered Agent
+      agent: Agent
+      service: Service
+      user: User
+      admin: Admin
+      project: Environment
+  cluster:
+    name: Cluster Name
   identity:
     displayType:
+      user: User
+      team: Team
+      group: Group
+      org: Organization
       localUser: Usuário local
+      unknown: "{type}?"
+  ingress:
+    displayKind: L7 Ingress
   machine:
     role:
       worker: Worker
       etcd: etcd
+      controlPlane: Control Plane
+  openldapconfig:
+    server:
+      label: Hostname or IP Address
+    serviceAccountUsername:
+      label: Service Account Username
+    serviceAccountPassword:
+      label: Service Account Password
+    domain:
+      label: User Search Base
+      placeholder: "e.g. ou=Users,dc=mycompany,dc=com"
+      help: "Only users below this base will be used."
   projectMember:
     role:
       member: Membro
       owner: Dono
       readonly: Somente leitura
+      restricted: Restricted
+  service:
+    displayKind:
+      generic: Service
+      loadBalancer: L4 Balancer
+growl:
+  dismiss: Dismiss All Notifications
+  webSocket:
+    connecting:
+      title: Error connecting to WebSocket
+      warning: Unable to establish a WebSocket connection to the server.  If your server is behind a proxy or SSL-termination device, Browser can not connect to WebSocket. If you run the server behind a proxy, please make sure the proxy supports WebSockets.  Streaming stats, logs, shell/console, and auto-updating of the state of resources may not work until this is resolved.
+      safariCertWarning: Another possible cause is that Safari does not allow WebSocket connections using an unrecognized certificate, even if you say to Continue to bypass the warning.  The server must have a certificate signed by a recognized authority Safari automatically trusts.
+      disconnectedWarning: "Disconnected from server, attempting to reconnect..."
 storageClass:
+  aws-ebs:
+    title: Amazon EBS Disk
   azure-disk:
     title: Disco do Azure
+  azure-file:
+    title: Azure File
+  cinder:
+    title: Openstack Cinder Volume
+  gce-pd:
+    title: Google Persistent Disk
+  glusterfs:
+    title: Gluster Volume
+  local:
+    title: Local Node Disk
+  longhorn:
+    title: Longhorn
+  portworx-volume:
+    title: Portworx Volume
+  quobyte:
+    title: Quobyte Volume
+  rbd:
+    title: Ceph RBD
+  scaleio:
+    title: ScaleIO Volume
+  storageos:
+    title: StorageOS
+  vsphere-volume:
+    title: VMWare vSphere Volume
 volumeSource:
+  aws-ebs:
+    title: Amazon EBS Disk
+  azure-disk:
+    title: Azure Disk
+  azure-file:
+    title: Azure Filesystem
+  cephfs:
+    title: Ceph Filesystem
+  config-map:
+    title: Config Map Volume
+  cinder:
+    title: Openstack Cinder Volume
+  secret:
+    title: Secret Volume
+  empty-dir:
+    title: Empty Dir Volume
+  fc:
+    title: Fibre Channel
+  flex-volume:
+    title: Flex Volume
+  flex-volume-longhorn:
+    title: Longhorn
+  flocker:
+    title: Flocker
+  gce-pd:
+    title: Google Persistent Disk
+  glusterfs:
+    title: Gluster Volume
+  host-path:
+    title: Local Node Path
+    path:
+      label: Path on the Node
+      placeholder: e.g. /data
+    kind:
+      label: The Path on the Node must be
+      Any: "Anything: do no check the target path"
+      DirectoryOrCreate: A directory, or create if it does not exist
+      FileOrCreate: A file, or create if it does not exist
+      Directory: An existing directory
+      File: An existing file
+      Socket: An existing socket
+      CharDevice: An existing character device
+      BlockDevice: An existing block device
+  iscsi:
+    title: iSCSI Target
+  local:
+    title: Local Node Disk
   nfs:
     title: Compartilhamento NFS
+  photon:
+    title: Photon Volume
+  portworx:
+    title: Portworx Volume
+  quobyte:
+    title: Quobyte Volume
+  rbd:
+    title: Ceph RBD
+  scaleio:
+    title: ScaleIO Volume
+  storageos:
+    title: StorageOS
+  vsphere-volume:
+    title: VMWare vSphere Volume
   customLogPath:
+    mountPath:
+      label: Log Path
+      placeholder: e.g. /var/www
+      helpText: Your log path inside the container.
     logFormat:
       label: Formato do Log
+      useCustomRegex: Use a custom Fluentd regex
+      useExistingLogFormat: Use an existing log format
+      helpText: You can test your regex <a href="http://fluentular.herokuapp.com/" target="_blank">here</a>.
+yamlPage:
+  errors: There are errors in the yaml.
+rkeConfigComment:
+  ingress: |
+    ""
+    "  # Currently only nginx ingress provider is supported."
+    "  # To disable ingress controller, set `provider: none`"
+    "  # To enable ingress on specific nodes, use the node_selector, eg:"
+    "     provider: nginx"
+    "     node_selector:"
+    "       app: ingress"
+  network: |
+    ""
+    "  # If you are using calico on AWS"
+    ""
+    "     network:"
+    "       plugin: calico"
+    "       calico_network_provider:"
+    "         cloud_provider: aws"
+    ""
+    "  # To specify flannel interface"
+    ""
+    "     network:"
+    "       plugin: flannel"
+    "       flannel_network_provider:"
+    "         iface: eth1"
+    ""
+    "  # To specify flannel interface for canal plugin"
+    ""
+    "     network:"
+    "       plugin: canal"
+    "       canal_network_provider:"
+    "         iface: eth1"
+  services: |
+    ""
+    "     services:"
+    "       kube-api:"
+    "         service_cluster_ip_range: 10.43.0.0/16"
+    "       kube-controller:"
+    "         cluster_cidr: 10.42.0.0/16"
+    "         service_cluster_ip_range: 10.43.0.0/16"
+    "       kubelet:"
+    "         cluster_domain: cluster.local"
+    "         cluster_dns_server: 10.43.0.10"
+  docker_root_dir: |
+    ""
+    "  # Rancher Config"
