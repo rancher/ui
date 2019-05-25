@@ -14,15 +14,15 @@
         {{linkify model.description}}
       </p>
     {{/if}}
-    {{#if model.showTransitioningMessage}}
-      <div class="clip text-small {{model.stateColor}}">
-        {{uc-first model.transitioningMessage}}
-      </div>
-    {{/if}}
   </td>
 
   <td data-title="{{dt.template}}" class="clip">
     {{model.catalogTemplate.name}}
+    <div class="text-small text-muted">
+      <span>
+        {{model.externalIdInfo.version}}
+      </span>
+    </div>
   </td>
 
   <td data-title="{{dt.host}}" class="clip">
@@ -37,3 +37,18 @@
     {{action-menu model=model}}
   </td>
 </tr>
+
+{{#if model.displayAnswerStrings.length}}
+  <tr class="sub-row">
+    <td colspan="2">{{! checkbox and expand}}</td>
+    <td colspan="5">
+      {{#each model.displayAnswerStrings as |label|}}
+        <span class="tag-xs bg-info">{{label}}</span>
+      {{/each}}
+    </td>
+  </tr>
+{{/if}}
+
+{{#if model.showTransitioningMessage}}
+  {{error-sub-row fullColspan="7" model=model}}
+{{/if}}

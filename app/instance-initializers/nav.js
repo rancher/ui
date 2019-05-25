@@ -39,6 +39,7 @@ const rootNav = [
     resource:        [],
     resourceScope:   'project',
     moreCurrentWhen: [
+      'authenticated.project.istio.graph',
       'authenticated.project.istio.metrics',
       'authenticated.project.istio.rules',
     ],

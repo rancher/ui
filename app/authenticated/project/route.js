@@ -11,7 +11,7 @@ const VALID_ROUTES = ['apps-tab', 'catalog-tab.index', 'authenticated.project.se
   'authenticated.project.secrets', 'authenticated.project.config-maps',
   'authenticated.project.registries', 'authenticated.project.alert',
   'authenticated.project.logging', 'authenticated.project.pipeline.settings',
-  'authenticated.project.monitoring.project-setting', 'authenticated.project.istio.index',
+  'authenticated.project.monitoring.project-setting', 'authenticated.project.istio.graph',
   'authenticated.project.istio.metrics', 'authenticated.project.istio.rules'];
 
 export default Route.extend(Preload, {
@@ -54,6 +54,7 @@ export default Route.extend(Preload, {
 
   redirect(model, transition) {
     let route = this.get(`session.${ C.SESSION.PROJECT_ROUTE }`);
+
 
     if ( get(transition, 'targetName') === 'authenticated.project.index' && VALID_ROUTES.includes(route) ) {
       this.replaceWith(route);

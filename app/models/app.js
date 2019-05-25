@@ -122,6 +122,17 @@ const App = Resource.extend(StateCounts, EndpointPorts, {
     return out;
   }),
 
+  displayAnswerStrings: computed('answers', function() {
+    let out = [];
+    let answers = get(this, 'answers') || {};
+
+    Object.keys(answers).forEach((key) => {
+      out.push(key + (answers[key] ? `=${ answers[key] }` : ''));
+    });
+
+    return out;
+  }),
+
   externalIdInfo: computed('externalId', function() {
     return parseHelmExternalId(get(this, 'externalId'));
   }),
