@@ -60,7 +60,7 @@ export default Route.extend({
       var catalogTemplateUrl = null;
       const allApps          = get(results, 'apps');
 
-      if (app && params.appId && !params.upgrade) {
+      if (app && params.appId && (!params.upgrade || params.istio === 'true')) {
         def = get(app, 'externalIdInfo.version');
       }
 
