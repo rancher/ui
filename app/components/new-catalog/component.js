@@ -124,9 +124,7 @@ export default Component.extend(NewOrEdit, CatalogApp, ChildHook, {
     },
 
     cancel() {
-      if ( get(this, 'isIstio') && !get(this, 'upgrade') ) {
-        get(this, 'router').transitionTo('catalog-tab.index', { queryParams: { istio: 'true',  } });
-      } else if ( get(this, 'isIstio') && get(this, 'upgrade') ) {
+      if ( get(this, 'isIstio') ) {
         const projectId = get(this, 'scope.currentProject.id');
 
         get(this, 'router').transitionTo('authenticated.project.istio.rules', projectId);
