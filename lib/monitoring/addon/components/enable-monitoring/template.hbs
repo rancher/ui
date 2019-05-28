@@ -51,6 +51,26 @@
     <div class="row">
       <div class="col span-6">
         <label class="acc-label">
+          {{t "monitoringPage.version"}}
+          {{#if (and enabled latestVersion templateVersion (not-eq latestVersion templateVersion))}}
+            <span class="bg-warning pt-0 pb-0 pl-5 pr-5">
+              {{t "monitoringPage.upgradeAvailable" version=latestVersion}}
+            </span>
+          {{/if}}
+        </label>
+        {{new-select
+          classNames="form-control"
+          content=availableVersions
+          value=templateVersion
+        }}
+      </div>
+    </div>
+
+    <hr class="mt-15 mb-15"/>
+
+    <div class="row">
+      <div class="col span-6">
+        <label class="acc-label">
           {{t "monitoringPage.config.retention.label"}}
         </label>
         <div class="input-group">
@@ -322,18 +342,6 @@
       {{/if}}
     </p>
   {{/banner-message}}
-{{/if}}
-
-{{#if (and (not loading) toUpgrade.length)}}
-  <div class="checkbox pt-10">
-    <label>
-      {{input
-        type="checkbox"
-        checked=upgrade
-      }}
-      {{t "monitoringPage.upgrade"}}
-    </label>
-  </div>
 {{/if}}
 
 <div class="text-center">
