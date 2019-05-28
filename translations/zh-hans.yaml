@@ -603,15 +603,15 @@ authPage:
         post: '启用中...'
 
 backupsPage:
-  header: Etcd 快照
+  header: Etcd 备份
   detail: 如果启用etcd快照功能，将按预先配置的时间间隔周期获取集群快照，可用于集群灾难恢复。
   table:
     state: 状态
     target:
-      label: 目标
+      label: 目标存储
       s3: S3
       local: Local
-    name: 名称
+    name: 备份名称
     created: 创建时间
     noData: 当前没有Etcd快照
 
@@ -1201,6 +1201,8 @@ globalDnsPage:
 
 multiClusterAppsPage:
   header: 多集群应用列表
+  error:
+    appData: 数据加载出错
 
 # If you change translations here also change the translation in app/utils/constants.js under the FALLBACK_TRANSLATIONS key
 # those are present in case we have an error in the app and can not load the translations file
@@ -1401,6 +1403,9 @@ loginPage:
   error:
     authFailedCreds: "登录失败: 检查凭据，或者帐户可能无权登录"
     authFailed: "登录失败: 帐户可能无权登录"
+    unknown: "尝试登录时发生未知错误，请与系统管理员联系。"
+    invalidSamlAttrs: "无效的saml属性"
+    noResponse: "没有响应"
   readableProviders:
     ad: Active Directory
     azureAd: Azure AD
@@ -1961,7 +1966,7 @@ annotationsSection:
 
 authorizedEndpoint:
   enabled:
-    label: '授权集群访问地址(此地址需要能够访问k8s api-server，在Rancher不可用时，可通过此地址直接访问k8s)'
+    label: '授权集群访问地址(此地址需要能够访问k8s api-server，在Rancher不可用时，可通过此地址直接访问k8s集群)'
   fqdn:
     label: FQDN(域名，后面的证书为CA证书 → )
 
@@ -2059,7 +2064,7 @@ cloudProvider:
       description: "部署Vnet的资源组的名称"
 
 catalogSettings:
-  header: 应用商店
+  header: 商店设置
   notAvailable: "不可用: 这是名为<code>{name}</code>的自定义商店"
   helpText: 目前只支持Helm目录
   currentCluster: 当前集群
@@ -2815,14 +2820,14 @@ clusterNew:
   rke:
     etcd:
       enabled:
-        label: Etcd快照轮换
+        label: Etcd备份轮换
       backupConfig:
         legacy: "当前集群配置了废弃的ectd快照设置。新的设置将创建时间和保留持续时间替换为更简单的创建时间(以小时和保留计数为单位)。系统已自动迁移了您的创建周期，保留计数已配置为默认的6个备份(当前保留时间:{duration})，如果您不介意这个设置，那不需要进一步的操作，您也可以在高级设置中更改此设置。"
         retention:
-          label: 快照副本数
+          label: 备份副本
           placeholder: "12"
         interval:
-          label: 快照创建周期
+          label: 备份周期
           placeholder: "6"
         bucketName:
           label: S3 Bucket Name
@@ -2841,13 +2846,13 @@ clusterNew:
           placeholder: Your AWS secret key
           provided: Provided
       location:
-        label: Etcd快照存储
+        label: Etcd备份存储
         s3:
           label: s3
-          help: 'Etcd将在本地生成快照，随后将快照备份到s3存储。'
+          help: 'Etcd将在本地生成备份，随后将备份拷贝到s3存储。'
         local:
           label: local
-          help: Etcd快照只存在本地，不执行外部备份
+          help: Etcd备份只保存在本地，不执行外部存储
       heartbeat:
         label: Etcd心跳间隔时间
         placeholder: 心跳间隔时间
@@ -3840,6 +3845,7 @@ editApiKey:
   scope: 作用集群范围
   scopeSelect:
     prompt: 未指定作用范围
+    helpText: '集群范围的令牌可用于直接与<a href="https://rancher.com/docs/rancher/v2.x/en/cluster-provisioning/rke-clusters/options/#authorized-cluster-endpoint" target="_blank" rel="nofollow noreferrer"授权集群端点</a>配置的集群的Kubernetes API交互。'
   ttl:
     label: 自动失效时间
     never: 永不过期
@@ -5756,6 +5762,8 @@ newCatalog:
   version:
     prompt: 选择版本...
     default: 当前默认(当前版本{version})
+  error:
+    appData: 数据加载错误
 
 newMultiClusterApp:
   answers:
@@ -7067,8 +7075,8 @@ nav:
     accounts: 用户
     clusters: 集群
     machines: 主机
-    drivers: 驱动
-    catalogs: 应用商店
+    drivers: 驱动管理
+    catalogs: 商店设置
     globalDns: 全局DNS服务
     globalDnsEntries: 全局DNS服务
     globalDnsProviders: 全局DNS提供商
@@ -7099,8 +7107,8 @@ nav:
     advanced: 高级
   tools:
     alerts: 告警
-    backups: 快照
-    catalogs: 应用商店
+    backups: 备份
+    catalogs: 商店设置
     logging: 日志
     monitoring: 监控
     notifiers: 通知
@@ -7122,7 +7130,7 @@ action:
   backupEtcdMessage:
     success:
       title: 备份成功
-      message: "{ clusterId }已备份到{ backupType }provider"
+      message: "已备份{ clusterId }到{ backupType }存储"
   clone: 克隆
   console: 打开控制台
   convertToService: 转换为服务
