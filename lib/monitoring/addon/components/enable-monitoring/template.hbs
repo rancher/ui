@@ -50,6 +50,11 @@
       <div class="col span-6">
         <label class="acc-label">
           {{t "monitoringPage.version"}}
+          {{#if (and enabled latestVersion templateVersion (not-eq latestVersion templateVersion))}}
+            <span class="bg-warning pt-0 pb-0 pl-5 pr-5">
+              {{t "monitoringPage.upgradeAvailable" version=latestVersion}}
+            </span>
+          {{/if}}
         </label>
         {{new-select
           classNames="form-control"
