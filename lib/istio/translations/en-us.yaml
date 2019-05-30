@@ -92,17 +92,17 @@ clusterIstioPage:
     helpText: Select the nodes where {component} workloads will be scheduled to
   insufficientSize:
     total:
-      cpu: Please make sure you have at least {minCpu} milli CPUs available to {action} istio.
-      memory: Please make sure you have at least {minMemory} MiB of memory available to {action} istio.
-      all: Please make sure you have at least {minCpu} milli CPUs and {minMemory} MiB of memory available to {action} istio.
+      cpu: Please make sure you have at least {minCpu} milli CPUs available to {action} Istio.
+      memory: Please make sure you have at least {minMemory} MiB of memory available to {action} Istio.
+      all: Please make sure you have at least {minCpu} milli CPUs and {minMemory} MiB of memory available to {action} Istio.
     workload:
-      cpu: Please make sure you have at least one node has {cpu} milli CPUs available to deploy {component} workload.
-      memory: Please make sure you have at least one node has {memory} MiB of memory available to deploy {component} workload.
-      all: Please make sure you have at least one node has {cpu} milli CPUs and {memory} MiB of memory available to deploy {component} workload.
+      cpu: Please make sure you have at least one node with {cpu} milli CPUs available to deploy {component} workload.
+      memory: Please make sure you have at least one node with {memory} MiB of memory available to deploy {component} workload.
+      all: Please make sure you have at least one node with {cpu} milli CPUs and {memory} MiB of memory available to deploy {component} workload.
     selectors:
-      cpu: Please make sure you have at least one node matches node selectors has {cpu} milli CPUs available to enable {component} workload.
-      memory: Please make sure you have at least one node matches node selectors has {memory} MiB of memory available to enable {component} workload.
-      all: Please make sure you have at least one node matches node selectors has {cpu} milli CPUs and {memory} MiB of memory available to enable {component} workload.
+      cpu: Please make sure you have at least one node matches node selectors with {cpu} milli CPUs available to enable {component} workload.
+      memory: Please make sure you have at least one node matches node selectors with {memory} MiB of memory available to enable {component} workload.
+      all: Please make sure you have at least one node matches node selectors with {cpu} milli CPUs and {memory} MiB of memory available to enable {component} workload.
 istio:
   noData: Not enough data for graph
   period: Period
@@ -111,14 +111,7 @@ istio:
     host: Host
 
   trafficMonitoring:
-    duration:
-      60: Last 1m
-      300: Last 5m
-      600: Last 10m
-      1800: Last 30m
-      3600: Last 1h
-      10800: Last 3h
-      21600: Last 6h
+    duration: Last {time}
   nav:
     graph: Traffic Graph
     metrics: Traffic Metrics
@@ -142,6 +135,5 @@ ruleDetailPage:
 
 projectIstioPage:
   info:
-    noApp: Cluster Service Mesh is not enabled yet. Go here to
-    enable: enable it.
+    notEnabled: 'Cluster Service Mesh is not enabled yet. Go <a href="/c/{clusterId}/istio/cluster-setting">here</a> to enable it.'
     notOwner: Only users who have System project access can view this page.

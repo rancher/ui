@@ -18,10 +18,11 @@
 <div class="row">
   {{#unless from}}
     <div class="col span-6">
-      <label class="pt-20 pb-5 acc-label">
+      <label class="pt-20 pb-5 acc-label" for="input-project-select">
         {{t "editStack.project.label"}}
       </label>
       {{new-select
+        id="input-project-select"
         classNames="form-control"
         optionValuePath="id"
         optionLabelPath="displayName"
@@ -40,7 +41,7 @@
       {{#if istioInjection}}
         <div class="btn-group no-inline-space">
           <div class="btn btn-link btn-sm bg-success">
-            {{t 'generic.enabled'}}
+            {{t "generic.enabled"}}
           </div>
           <div class="btn btn-link btn-sm bg-default" {{action "toggleAutoInject"}}>
             {{t 'generic.disable'}}

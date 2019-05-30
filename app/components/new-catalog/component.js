@@ -38,7 +38,7 @@ export default Component.extend(NewOrEdit, CatalogApp, ChildHook, {
   customizeNamespace:       false,
   decoding:                 false,
   forceUpgrade:             false,
-  isIstio:                  false,
+  istio:                    false,
   titleAdd:                 'newCatalog.titleAdd',
   titleUpgrade:             'newCatalog.titleUpgrade',
   selectVersionAdd:         'newCatalog.selectVersionAdd',
@@ -124,7 +124,7 @@ export default Component.extend(NewOrEdit, CatalogApp, ChildHook, {
     },
 
     cancel() {
-      if ( get(this, 'isIstio') ) {
+      if ( get(this, 'istio') ) {
         const projectId = get(this, 'scope.currentProject.id');
 
         get(this, 'router').transitionTo('authenticated.project.istio.rules', projectId);
@@ -425,7 +425,7 @@ export default Component.extend(NewOrEdit, CatalogApp, ChildHook, {
   doneSaving() {
     var projectId = get(this, 'scope.currentProject.id');
 
-    if ( get(this, 'isIstio') ) {
+    if ( get(this, 'istio') ) {
       return get(this, 'router').transitionTo('authenticated.project.istio.rules', projectId);
     } else {
       return get(this, 'router').transitionTo('apps-tab.index', projectId);

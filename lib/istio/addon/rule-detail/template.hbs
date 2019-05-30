@@ -1,14 +1,14 @@
 <section class="header clearfix">
   <div class="pull-left">
     <h1 class="vertical-middle">
-      {{t "ruleDetailPage.header" appName=model.rule.displayName}}
+      {{t "ruleDetailPage.header" appName=model.displayName}}
     </h1>
   </div>
   <div class="vertical-middle"></div>
   <div class="right-buttons">
-    {{badge-state model=model.rule}}
+    {{badge-state model=model}}
     {{action-menu
-      model=model.rule
+      model=model
       showPrimary=false
       classNames="ml-10 pull-right"
       size="sm"
@@ -16,17 +16,17 @@
   </div>
 </section>
 
-{{#if model.rule.description}}
+{{#if model.description}}
   {{banner-message
     color="bg-secondary mb-0 mt-10"
-    message=(linkify model.rule.description)
+    message=(linkify model.description)
   }}
 {{/if}}
 
-{{#if model.rule.showTransitioningMessage}}
-  <div class="{{model.rule.stateColor}}">
+{{#if model.showTransitioningMessage}}
+  <div class="{{model.stateColor}}">
     <p>
-      {{uc-first model.rule.transitioningMessage}}
+      {{uc-first model.transitioningMessage}}
     </p>
   </div>
 {{/if}}
@@ -37,14 +37,14 @@
       <label class="acc-label vertical-middle p-0">
         {{t "generic.version"}}
       </label>
-      {{model.rule.externalIdInfo.version}}
+      {{model.externalIdInfo.version}}
     </div>
     <div class="vertical-middle">
       <label class="acc-label vertical-middle p-0">
         {{t "generic.namespace"}}
       </label>
-      {{model.rule.namespace.displayName}} {{copy-to-clipboard
-                                            clipboardText=model.rule.namespace.id
+      {{model.namespace.displayName}} {{copy-to-clipboard
+                                            clipboardText=model.namespace.id
                                             size="small"
                                           }}
     </div>
@@ -52,7 +52,7 @@
       <label class="acc-label vertical-middle p-0">
         {{t "generic.created"}}
       </label>
-      {{date-calendar model.rule.created}}
+      {{date-calendar model.created}}
     </div>
   </div>
 </section>
@@ -61,7 +61,7 @@
   {{#accordion-list as |al expandFn|}}
     {{resource-condition-list
       resourceType=(t "generic.istioRule")
-      conditions=model.rule.status.conditions
+      conditions=model.status.conditions
       expandAll=al.expandAll
       expandFn=expandFn
       expandOnInit=false
@@ -76,13 +76,13 @@
     }}
       {{form-key-value
         editing=false
-        initialMap=model.rule.answers
-        showNoneLabel=(not model.rule.valuesYaml)
+        initialMap=model.answers
+        showNoneLabel=(not model.valuesYaml)
         keyLabel="ruleDetailPage.answers.variable"
       }}
-      {{#if model.rule.valuesYaml}}
+      {{#if model.valuesYaml}}
         {{code-block
-          code=model.rule.valuesYaml
+          code=model.valuesYaml
           language="yaml"
         }}
       {{/if}}
@@ -90,4 +90,4 @@
   {{/accordion-list}}
 </section>
 
-{{istio-yaml rule=model.rule}}
+{{istio-yaml rule=model}}

@@ -18,17 +18,20 @@
 </section>
 
 {{#if (and enabled ready)}}
-  {{#banner-message color="bg-info"}}
-    <p>{{t "globalRegistryPage.enabled" url=app.answers.externalURL htmlSafe=true}}</p>
-  {{/banner-message}}
+  {{banner-message
+    color="bg-info"
+    message=(t "globalRegistryPage.enabled" url=app.answers.externalURL htmlSafe=true)
+  }}
 {{else if enabled}}
-  {{#banner-message color="bg-warning"}}
-    <p>{{t "globalRegistryPage.notReady"}}</p>
-  {{/banner-message}}
+  {{banner-message
+    color="bg-warning"
+    message=(t "globalRegistryPage.notReady")
+  }}
 {{else}}
-  {{#banner-message color="bg-warning"}}
-    <p>{{t "globalRegistryPage.disabled"}}</p>
-  {{/banner-message}}
+  {{banner-message
+    color="bg-warning"
+    message=(t "globalRegistryPage.disabled")
+  }}
 {{/if}}
 
 {{#if (and enabled ready)}}
@@ -74,21 +77,23 @@
   <div class="box mb-10">
     <div class="row">
       <div class="col span-6">
-        <label class="acc-label">
+        <label class="acc-label" for="input-admin-password">
           {{t "globalRegistryPage.setting.adminPassword.label"}}{{field-required}}
         </label>
         {{input
           type="text"
           class="conceal"
+          id="input-admin-password"
           placeholder=(t "globalRegistryPage.setting.adminPassword.placeholder")
           value=config.password
         }}
       </div>
       <div class="col span-6">
-        <label class="acc-label">
+        <label class="acc-label" for="input-secret-key">
           {{t "globalRegistryPage.config.secretKey.label"}}
         </label>
         {{schema/input-password
+          id="input-secret-key"
           value=config.secretKey
           question=secretKeyQuestion
           conceal=true
@@ -107,21 +112,23 @@
 
     <div class="row">
       <div class="col span-6">
-        <label class="acc-label">
+        <label class="acc-label" for="input-storage-type">
           {{t "globalRegistryPage.config.storageType.label"}}{{field-required}}
         </label>
         {{new-select
           class="form-control"
+          id="input-storage-type"
           content=storageTypeContent
           value=config.storageType
         }}
       </div>
       {{#if (eq config.storageType "s3")}}
         <div class="col span-6">
-          <label class="acc-label">
+          <label class="acc-label" for="input-s3-bucket">
             {{t "globalRegistryPage.config.s3.bucket.label"}}{{field-required}}
           </label>
           {{schema/input-string
+            id="input-s3-bucket"
             value=imageChartStorage.s3.bucket
             placeholder=(t "globalRegistryPage.config.s3.bucket.placeholder")
           }}
@@ -131,6 +138,7 @@
 
     {{#if (eq config.storageType "filesystem")}}
       {{catalog-persistence-row
+        component="registry"
         useStorageClass=useRegistryStorageClass
         config=persistence.persistentVolumeClaim.registry
         storageClasses=storageClasses
@@ -159,19 +167,21 @@
     {{else if (eq config.storageType "s3")}}
       <div class="row">
         <div class="col span-6">
-          <label class="acc-label">
+          <label class="acc-label" for="input-s3-region">
             {{t "globalRegistryPage.config.s3.region.label"}}
           </label>
           {{schema/input-string
+            id="input-s3-region"
             value=imageChartStorage.s3.region
             placeholder=(t "globalRegistryPage.config.s3.region.placeholder")
           }}
         </div>
         <div class="col span-6">
-          <label class="acc-label">
+          <label class="acc-label" for="input-s3-regionendpoint">
             {{t "globalRegistryPage.config.s3.regionendpoint.label"}}{{field-required}}
           </label>
           {{schema/input-string
+            id="input-s3-regionendpoint"
             value=imageChartStorage.s3.regionendpoint
             placeholder=(t "globalRegistryPage.config.s3.regionendpoint.placeholder")
           }}
@@ -179,21 +189,23 @@
       </div>
       <div class="row">
         <div class="col span-6">
-          <label class="acc-label">
+          <label class="acc-label" for="input-s3-accesskey">
             {{t "globalRegistryPage.config.s3.accesskey.label"}}{{field-required}}
           </label>
           {{schema/input-string
+            id="input-s3-accesskey"
             value=imageChartStorage.s3.accesskey
             placeholder=(t "globalRegistryPage.config.s3.accesskey.placeholder")
           }}
         </div>
         <div class="col span-6">
-          <label class="acc-label">
+          <label class="acc-label" for="input-s3-secretkey">
             {{t "globalRegistryPage.config.s3.secretkey.label"}}{{field-required}}
           </label>
           {{input
             type="password"
             name="password"
+            id="input-s3-secretkey"
             classNames="form-control"
             value=imageChartStorage.s3.secretkey
             placeholder=(t "globalRegistryPage.config.s3.secretkey.placeholder")
@@ -210,22 +222,24 @@
 
     <div class="row">
       <div class="col span-6">
-        <label class="acc-label">
+        <label class="acc-label" for="input-database-type">
           {{t "globalRegistryPage.config.databaseType.label"}}
         </label>
         {{new-select
           class="form-control"
+          id="input-database-type"
           content=databaseTypeContent
           value=config.databaseType
         }}
       </div>
       {{#if (eq config.databaseType "external")}}
         <div class="col span-6">
-          <label class="acc-label">
+          <label class="acc-label" for="input-database-external-ssl-mode">
             {{t "globalRegistryPage.config.database.external.sslmode.label"}}
           </label>
           {{new-select
             class="form-control"
+            id="input-database-external-ssl-mode"
             content=sslmodeContent
             value=database.external.sslmode
           }}
@@ -234,6 +248,7 @@
     </div>
     {{#if (eq config.databaseType "internal")}}
       {{catalog-persistence-row
+        component="database"
         useStorageClass=useDatabaseStorageClass
         config=persistence.persistentVolumeClaim.database
         storageClasses=storageClasses
@@ -241,13 +256,14 @@
       }}
       <div class="row">
         <div class="col span-6">
-          <label class="acc-label">
+          <label class="acc-label" for="input-database-limit-cpu">
             {{t "globalRegistryPage.config.databaseLimitCpu.label"}}
           </label>
           <div class="input-group">
             {{input-integer
               min="0"
               step="100"
+              id="input-database-limit-cpu"
               value=config.databaseLimitCpu
               classNames="form-control"
               placeholder=(t "globalRegistryPage.config.databaseLimitCpu.placeholder")
@@ -258,13 +274,14 @@
           </div>
         </div>
         <div class="col span-6">
-          <label class="acc-label">
+          <label class="acc-label" for="input-database-limit-memory">
             {{t "globalRegistryPage.config.databaseLimitMemory.label"}}
           </label>
           <div class="input-group">
             {{input-integer
               min="4"
               step="1"
+              id="input-database-limit-memory"
               value=config.databaseLimitMemory
               classNames="form-control"
               placeholder=(t "globalRegistryPage.config.databaseLimitMemory.placeholder")
@@ -278,13 +295,14 @@
 
       <div class="row">
         <div class="col span-6">
-          <label class="acc-label">
+          <label class="acc-label" for="input-database-request-cpu">
             {{t "globalRegistryPage.config.databaseRequestCpu.label"}}
           </label>
           <div class="input-group">
             {{input-integer
               min="0"
               step="100"
+              id="input-database-request-cpu"
               value=config.databaseRequestCpu
               classNames="form-control"
               placeholder=(t "globalRegistryPage.config.databaseRequestCpu.placeholder")
@@ -295,13 +313,14 @@
           </div>
         </div>
         <div class="col span-6">
-          <label class="acc-label">
+          <label class="acc-label" for="input-database-request-memory">
             {{t "globalRegistryPage.config.databaseRequestMemory.label"}}
           </label>
           <div class="input-group">
             {{input-integer
               min="4"
               step="1"
+              id="input-database-request-memory"
               value=config.databaseRequestMemory
               classNames="form-control"
               placeholder=(t "globalRegistryPage.config.databaseRequestMemory.placeholder")
@@ -329,19 +348,21 @@
     {{else if (eq config.databaseType "external")}}
       <div class="row">
         <div class="col span-6">
-          <label class="acc-label">
+          <label class="acc-label" for="input-database-external-host">
             {{t "globalRegistryPage.config.database.external.host.label"}}{{field-required}}
           </label>
           {{schema/input-string
+            id="input-database-external-host"
             value=database.external.host
             placeholder=(t "globalRegistryPage.config.database.external.host.placeholder")
           }}
         </div>
         <div class="col span-6">
-          <label class="acc-label">
+          <label class="acc-label" for="input-database-external-port">
             {{t "globalRegistryPage.config.database.external.port.label"}}{{field-required}}
           </label>
           {{schema/input-int
+            id="input-database-external-port"
             value=database.external.port
             placeholder=(t "globalRegistryPage.config.database.external.port.placeholder")
           }}
@@ -349,20 +370,22 @@
       </div>
       <div class="row">
         <div class="col span-6">
-          <label class="acc-label">
+          <label class="acc-label" for="input-database-external-username">
             {{t "globalRegistryPage.config.database.external.username.label"}}{{field-required}}
           </label>
           {{schema/input-string
+            id="input-database-external-username"
             value=database.external.username
             placeholder=(t "globalRegistryPage.config.database.external.username.placeholder")
           }}
         </div>
         <div class="col span-6">
-          <label class="acc-label">
+          <label class="acc-label" for="input-database-external-password">
             {{t "globalRegistryPage.config.database.external.password.label"}}{{field-required}}
           </label>
           {{input
             type="password"
+            id="input-database-external-password"
             classNames="form-control"
             value=database.external.password
             placeholder=(t "globalRegistryPage.config.database.external.password.placeholder")
@@ -371,19 +394,21 @@
       </div>
       <div class="row">
         <div class="col span-6">
-          <label class="acc-label">
+          <label class="acc-label" for="input-database-external-coredatabase">
             {{t "globalRegistryPage.config.database.external.coreDatabase.label"}}
           </label>
           {{schema/input-string
+            id="input-database-external-coredatabase"
             value=database.external.coreDatabase
             placeholder=(t "globalRegistryPage.config.database.external.coreDatabase.placeholder")
           }}
         </div>
         <div class="col span-6">
-          <label class="acc-label">
+          <label class="acc-label" for="input-database-external-clairdatabase">
             {{t "globalRegistryPage.config.database.external.clairDatabase.label"}}
           </label>
           {{schema/input-string
+            id="input-database-external-clairdatabase"
             value=database.external.clairDatabase
             placeholder=(t "globalRegistryPage.config.database.external.clairDatabase.placeholder")
           }}
@@ -391,19 +416,21 @@
       </div>
       <div class="row">
         <div class="col span-6">
-          <label class="acc-label">
+          <label class="acc-label" for="input-database-external-notaryserverdatabase">
             {{t "globalRegistryPage.config.database.external.notaryServerDatabase.label"}}
           </label>
           {{schema/input-string
+            id="input-database-external-notaryserverdatabase"
             value=database.external.notaryServerDatabase
             placeholder=(t "globalRegistryPage.config.database.external.notaryServerDatabase.placeholder")
           }}
         </div>
         <div class="col span-6">
-          <label class="acc-label">
+          <label class="acc-label" for="input-database-external-notarysignerdatabase">
             {{t "globalRegistryPage.config.database.external.notarySignerDatabase.label"}}
           </label>
           {{schema/input-string
+            id="input-database-external-notarysignerdatabase"
             value=database.external.notarySignerDatabase
             placeholder=(t "globalRegistryPage.config.database.external.notarySignerDatabase.placeholder")
           }}
@@ -419,10 +446,11 @@
 
     <div class="row">
       <div class="col span-6">
-        <label class="acc-label">
+        <label class="acc-label" for="input-redis-type">
           {{t "globalRegistryPage.config.redisType.label"}}
         </label>
         {{new-select
+          id="input-redis-type"
           class="form-control"
           content=databaseTypeContent
           value=config.redisType
@@ -430,11 +458,12 @@
       </div>
       {{#if (eq config.redisType "external")}}
         <div class="col span-6">
-          <label class="acc-label">
+          <label class="acc-label" for="input-redis-external-password">
             {{t "globalRegistryPage.config.redis.external.password.label"}}{{field-required}}
           </label>
           {{input
             type="password"
+            id="input-redis-external-password"
             classNames="form-control"
             value=redis.external.password
             placeholder=(t "globalRegistryPage.config.redis.external.password.placeholder")
@@ -444,6 +473,7 @@
     </div>
     {{#if (eq config.redisType "internal")}}
       {{catalog-persistence-row
+        component="redis"
         useStorageClass=useRedisStorageClass
         config=persistence.persistentVolumeClaim.redis
         storageClasses=storageClasses
@@ -452,13 +482,14 @@
 
       <div class="row">
         <div class="col span-6">
-          <label class="acc-label">
+          <label class="acc-label" for="input-redis-limit-cpu">
             {{t "globalRegistryPage.config.redisLimitCpu.label"}}
           </label>
           <div class="input-group">
             {{input-integer
               min="0"
               step="100"
+              id="input-redis-limit-cpu"
               value=config.redisLimitCpu
               classNames="form-control"
               placeholder=(t "globalRegistryPage.config.redisLimitCpu.placeholder")
@@ -469,13 +500,14 @@
           </div>
         </div>
         <div class="col span-6">
-          <label class="acc-label">
+          <label class="acc-label" for="input-redis-limit-memory">
             {{t "globalRegistryPage.config.redisLimitMemory.label"}}
           </label>
           <div class="input-group">
             {{input-integer
               min="4"
               step="1"
+              id="input-redis-limit-memory"
               value=config.redisLimitMemory
               classNames="form-control"
               placeholder=(t "globalRegistryPage.config.redisLimitMemory.placeholder")
@@ -489,13 +521,14 @@
 
       <div class="row">
         <div class="col span-6">
-          <label class="acc-label">
+          <label class="acc-label" for="input-redis-request-cpu">
             {{t "globalRegistryPage.config.redisRequestCpu.label"}}
           </label>
           <div class="input-group">
             {{input-integer
               min="0"
               step="100"
+              id="input-redis-request-cpu"
               value=config.redisRequestCpu
               classNames="form-control"
               placeholder=(t "globalRegistryPage.config.redisRequestCpu.placeholder")
@@ -506,7 +539,7 @@
           </div>
         </div>
         <div class="col span-6">
-          <label class="acc-label">
+          <label class="acc-label" for="input-redis-request-memory">
             {{t "globalRegistryPage.config.redisRequestMemory.label"}}
           </label>
           <div class="input-group">
@@ -514,6 +547,7 @@
               min="4"
               step="1"
               value=config.redisRequestMemory
+              id="input-redis-request-memory"
               classNames="form-control"
               placeholder=(t "globalRegistryPage.config.redisRequestMemory.placeholder")
             }}
@@ -540,39 +574,43 @@
     {{else if (eq config.redisType "external")}}
       <div class="row">
         <div class="col span-6">
-          <label class="acc-label">
+          <label class="acc-label" for="input-redis-external-host">
             {{t "globalRegistryPage.config.redis.external.host.label"}}{{field-required}}
           </label>
           {{schema/input-string
+            id="input-redis-external-host"
             value=redis.external.host
             placeholder=(t "globalRegistryPage.config.redis.external.host.placeholder")
           }}
         </div>
         <div class="col span-6">
-          <label class="acc-label">
+          <label class="acc-label" for="input-redis-external-port">
             {{t "globalRegistryPage.config.redis.external.port.label"}}{{field-required}}
           </label>
           {{schema/input-string
             value=redis.external.port
+            id="input-redis-external-port"
             placeholder=(t "globalRegistryPage.config.redis.external.port.placeholder")
           }}
         </div>
       </div>
       <div class="row">
         <div class="col span-6">
-          <label class="acc-label">
+          <label class="acc-label" for="input-redis-external-coredatabaseindex">
             {{t "globalRegistryPage.config.redis.external.coreDatabaseIndex.label"}}{{field-required}}
           </label>
           {{schema/input-string
+            id="input-redis-external-coredatabaseindex"
             value=redis.external.coreDatabaseIndex
             placeholder=(t "globalRegistryPage.config.redis.external.coreDatabaseIndex.placeholder")
           }}
         </div>
         <div class="col span-6">
-          <label class="acc-label">
+          <label class="acc-label" for="input-redis-external-jobservicedatabaseindex">
             {{t "globalRegistryPage.config.redis.external.jobserviceDatabaseIndex.label"}}{{field-required}}
           </label>
           {{schema/input-string
+            id="input-redis-external-jobservicedatabaseindex"
             value=redis.external.jobserviceDatabaseIndex
             placeholder=(t "globalRegistryPage.config.redis.external.jobserviceDatabaseIndex.placeholder")
           }}
@@ -580,10 +618,11 @@
       </div>
       <div class="row">
         <div class="col span-6">
-          <label class="acc-label">
+          <label class="acc-label" for="input-redis-external-registrydatabaseindex">
             {{t "globalRegistryPage.config.redis.external.registryDatabaseIndex.label"}}{{field-required}}
           </label>
           {{schema/input-string
+            id="input-redis-external-registryDatabaseIndex"
             value=redis.external.registryDatabaseIndex
             placeholder=(t "globalRegistryPage.config.redis.external.registryDatabaseIndex.placeholder")
           }}

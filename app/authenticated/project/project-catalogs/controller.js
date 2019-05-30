@@ -8,7 +8,7 @@ export default Controller.extend({
   modalService:    service('modal'),
   router:          service(),
   queryParams:     ['istio'],
-  istio:          null,
+  istio:           false,
   globalCatalogs:  alias('model.globalCatalogs'),
   filtered:        union('globalCatalogs', 'clusterCatalogs', 'projectCatalogs'),
 
@@ -28,17 +28,13 @@ export default Controller.extend({
     },
 
     goBack() {
-      if ( get(this, 'isIstio') ) {
+      if ( get(this, 'istio') ) {
         get(this, 'router').transitionTo('authenticated.project.istio.rules');
       } else {
         get(this, 'router').transitionTo('apps-tab');
       }
     }
   },
-
-  isIstio: computed('istio', function() {
-    return get(this, 'istio') === 'true';
-  }),
 
   clusterCatalogs: computed('model.clusterCatalogs.@each.{clusterId,state,id}', function() {
     return get(this, 'model.clusterCatalogs').filterBy('clusterId', get(this, 'scope.currentCluster.id'));

@@ -24,30 +24,33 @@
   </div>
   {{#if useStorageClass}}
     <div class="col span-6">
-      <label class="acc-label">
+      <label class="acc-label" for={{concat "input-persistence-storage-class-" component}}>
         {{t "globalRegistryPage.config.persistenceStorageclass.label"}}
       </label>
       {{new-select
         content=storageClasses
+        id=(concat "input-persistence-storage-class-" component)
         prompt="cruPersistentVolumeClaim.storageClass.prompt"
         localizedPrompt=true
         optionLabelPath="name"
         optionValuePath="id"
         value=config.storageClass
       }}
-      <label class="acc-label">
+      <label class="acc-label" for={{concat "input-registry-pv-size-" component}}>
         {{t "globalRegistryPage.config.registryPVSize.label"}}
       </label>
       {{schema/input-string
         value=config.size
+        id=(concat "input-registry-pv-size-" component)
       }}
     </div>
   {{else}}
     <div class="col span-6">
-      <label class="acc-label">
+      <label class="acc-label" for={{concat "input-registry-existing-claim-" component}}>
         {{t "globalRegistryPage.config.registryExistingClaim.label"}}
       </label>
       {{new-select
+        id=(concat "input-registry-existing-claim-" component)
         content=persistentVolumeClaims
         prompt="globalRegistryPage.config.registryExistingClaim.prompt"
         localizedPrompt=true

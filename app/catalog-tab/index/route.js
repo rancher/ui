@@ -7,8 +7,8 @@ export default Route.extend({
   resetController(controller, isExiting/* , transition*/) {
     if (isExiting) {
       setProperties(controller, {
-        'search': '',
-        'istio':  '',
+        search: '',
+        istio:  false,
       })
     }
   },

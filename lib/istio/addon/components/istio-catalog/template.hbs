@@ -18,17 +18,20 @@
 </section>
 
 {{#if (and enabled ready)}}
-  {{#banner-message color="bg-info"}}
-    <p>{{t "clusterIstioPage.enabled"}}</p>
-  {{/banner-message}}
+  {{banner-message
+    color="bg-info"
+    message=(t "clusterIstioPage.enabled")
+  }}
 {{else if enabled}}
-  {{#banner-message color="bg-warning"}}
-    <p>{{t "clusterIstioPage.notReady"}}</p>
-  {{/banner-message}}
+  {{banner-message
+    color="bg-warning"
+    message=(t "clusterIstioPage.notReady")
+  }}
 {{else}}
-  {{#banner-message color="bg-warning"}}
-    <p>{{t "clusterIstioPage.disabled"}}</p>
-  {{/banner-message}}
+  {{banner-message
+    color="bg-warning"
+    message=(t "clusterIstioPage.disabled")
+  }}
 {{/if}}
 
 {{#if (and enabled ready)}}
@@ -60,13 +63,14 @@
   <div class="over-hr"><span>{{t "clusterIstioPage.config.header.pilot"}}</span></div>
   <div class="row">
     <div class="col span-6">
-      <label class="acc-label">
+      <label class="acc-label" for="input-pilot-limit-cpu">
         {{t "clusterIstioPage.config.pilotLimitCpu.label"}}
       </label>
       <div class="input-group">
         {{input-integer
           min="0"
           step="100"
+          id="input-pilot-limit-cpu"
           value=config.pilotLimitCpu
           classNames="form-control"
           placeholder=(t "clusterIstioPage.config.pilotLimitCpu.placeholder")
@@ -77,13 +81,14 @@
       </div>
     </div>
     <div class="col span-6">
-      <label class="acc-label">
+      <label class="acc-label" for="input-pilot-limit-memory">
         {{t "clusterIstioPage.config.pilotLimitMemory.label"}}
       </label>
       <div class="input-group">
         {{input-integer
           min="4"
           step="1"
+          id="input-pilot-limit-memory"
           value=config.pilotLimitMemory
           classNames="form-control"
           placeholder=(t "clusterIstioPage.config.pilotLimitMemory.placeholder")
@@ -96,7 +101,7 @@
   </div>
   <div class="row">
     <div class="col span-6">
-      <label class="acc-label">
+      <label class="acc-label" for="input-pilot-cpu">
         {{t "clusterIstioPage.config.pilotCpu.label"}}
       </label>
       <span class="with-input">
@@ -104,6 +109,7 @@
           {{input-integer
             min="0"
             step="100"
+            id="input-pilot-cpu"
             value=config.pilotRequestCpu
             classNames="form-control"
             placeholder=(t "clusterIstioPage.config.pilotCpu.placeholder")
@@ -115,13 +121,14 @@
       </span>
     </div>
     <div class="col span-6">
-      <label class="acc-label">
+      <label class="acc-label" for="input-pilot-memory">
         {{t "clusterIstioPage.config.pilotMemory.label"}}
       </label>
       <div class="input-group">
         {{input-integer
           min="4"
           step="1"
+          id="input-pilot-memory"
           value=config.pilotRequestMemory
           classNames="form-control"
           placeholder=(t "clusterIstioPage.config.pilotMemory.placeholder")
@@ -134,13 +141,14 @@
   </div>
   <div class="row">
     <div class="col span-6">
-      <label class="acc-label">
+      <label class="acc-label" for="input-trace-sampling">
         {{t "clusterIstioPage.config.traceSampling.label"}}
       </label>
       <div class="input-group">
         {{input-float
           min="0"
           max="100"
+          id="input-trace-sampling"
           value=config.traceSampling
           classNames="form-control"
           placeholder=(t "clusterIstioPage.config.traceSampling.placeholder")
@@ -170,13 +178,14 @@
   <div class="over-hr"><span>{{t "clusterIstioPage.config.header.mixer"}}</span></div>
   <div class="row">
     <div class="col span-6">
-      <label class="acc-label">
+      <label class="acc-label" for="input-mixer-limit-cpu">
         {{t "clusterIstioPage.config.mixerLimitCpu.label"}}
       </label>
       <div class="input-group">
         {{input-integer
           min="0"
           step="100"
+          id="input-mixer-limit-cpu"
           value=config.mixerLimitCpu
           classNames="form-control"
           placeholder=(t "clusterIstioPage.config.mixerLimitCpu.placeholder")
@@ -187,13 +196,14 @@
       </div>
     </div>
     <div class="col span-6">
-      <label class="acc-label">
+      <label class="acc-label" for="input-mixer-limit-memory">
         {{t "clusterIstioPage.config.mixerLimitMemory.label"}}
       </label>
       <div class="input-group">
         {{input-integer
           min="4"
           step="1"
+          id="input-mixer-limit-memory"
           value=config.mixerLimitMemory
           classNames="form-control"
           placeholder=(t "clusterIstioPage.config.mixerLimitMemory.placeholder")
@@ -207,13 +217,14 @@
 
   <div class="row">
     <div class="col span-6">
-      <label class="acc-label">
+      <label class="acc-label" for="input-mixer-request-cpu">
         {{t "clusterIstioPage.config.mixerRequestCpu.label"}}
       </label>
       <div class="input-group">
         {{input-integer
           min="4"
           step="1"
+          id="input-mixer-request-cpu"
           value=config.mixerRequestCpu
           classNames="form-control"
           placeholder=(t "clusterIstioPage.config.mixerRequestCpu.placeholder")
@@ -224,13 +235,14 @@
       </div>
     </div>
     <div class="col span-6">
-      <label class="acc-label">
+      <label class="acc-label" for="input-mixer-request-memory">
         {{t "clusterIstioPage.config.mixerRequestMemory.label"}}
       </label>
       <div class="input-group">
         {{input-integer
           min="4"
           step="1"
+          id="input-mixer-request-memory"
           value=config.mixerRequestMemory
           classNames="form-control"
           placeholder=(t "clusterIstioPage.config.mixerRequestMemory.placeholder")
@@ -244,10 +256,11 @@
 
   <div class="row">
     <div class="col span-6">
-      <label class="acc-label">
+      <label class="acc-label" for="input-mixer-policy-enabled">
         {{t "clusterIstioPage.config.mixerPolicyEnabled.label"}}
       </label>
       {{schema/input-boolean
+        id="input-mixer-policy-enabled"
         value=config.mixerPolicyEnabled
         classNames="form-control"
       }}
@@ -271,13 +284,14 @@
   <div class="over-hr"><span>{{t "clusterIstioPage.config.header.prometheus"}}</span></div>
   <div class="row">
     <div class="col span-6">
-      <label class="acc-label">
+      <label class="acc-label" for="input-prometheus-limit-cpu">
         {{t "clusterIstioPage.config.prometheusLimitCpu.label"}}
       </label>
       <div class="input-group">
         {{input-integer
           min="4"
           step="1"
+          id="input-prometheus-limit-cpu"
           value=config.prometheusLimitCpu
           classNames="form-control"
           placeholder=(t "clusterIstioPage.config.prometheusLimitCpu.placeholder")
@@ -288,13 +302,14 @@
       </div>
     </div>
     <div class="col span-6">
-      <label class="acc-label">
+      <label class="acc-label" for="input-prometheus-limit-memory">
         {{t "clusterIstioPage.config.prometheusLimitMemory.label"}}
       </label>
       <div class="input-group">
         {{input-integer
           min="4"
           step="1"
+          id="input-prometheus-limit-memory"
           value=config.prometheusLimitMemory
           classNames="form-control"
           placeholder=(t "clusterIstioPage.config.prometheusLimitMemory.placeholder")
@@ -308,13 +323,14 @@
 
   <div class="row">
     <div class="col span-6">
-      <label class="acc-label">
+      <label class="acc-label" for="input-prometheus-request-cpu">
         {{t "clusterIstioPage.config.prometheusRequestCpu.label"}}
       </label>
       <div class="input-group">
         {{input-integer
           min="4"
           step="1"
+          id="input-prometheus-request-cpu"
           value=config.prometheusRequestCpu
           classNames="form-control"
           placeholder=(t "clusterIstioPage.config.prometheusRequestCpu.placeholder")
@@ -325,13 +341,14 @@
       </div>
     </div>
     <div class="col span-6">
-      <label class="acc-label">
+      <label class="acc-label" for="input-prometheus-request-memory">
         {{t "clusterIstioPage.config.prometheusRequestMemory.label"}}
       </label>
       <div class="input-group">
         {{input-integer
           min="4"
           step="1"
+          id="input-prometheus-request-memory"
           value=config.prometheusRequestMemory
           classNames="form-control"
           placeholder=(t "clusterIstioPage.config.prometheusRequestMemory.placeholder")
@@ -345,11 +362,15 @@
 
   <div class="row">
     <div class="col span-6">
-      <label class="acc-label">
+      <label class="acc-label" for="input-prometheus-retention">
         {{t "clusterIstioPage.config.prometheusRetention.label"}}
       </label>
       <div class="input-group">
-        {{input-integer min=0 value=config.prometheusRetention}}
+        {{input-integer
+          min=0
+          value=config.prometheusRetention
+          id="input-prometheus-retention"
+        }}
         <span class="input-group-addon bg-default">{{t "generic.hours"}}</span>
       </div>
     </div>
@@ -395,6 +416,7 @@
 
   {{#if (and config.grafanaPersistenceEnabled config.grafanaEnabled)}}
     {{catalog-persistence-row
+      component="grafana"
       useStorageClass=useGrafanaStorageClass
       config=grafana.persistence
       storageClasses=storageClasses
@@ -442,10 +464,11 @@
     </div>
     {{#if config.gatewayEnabled}}
       <div class="col span-6">
-        <label class="acc-label">
+        <label class="acc-label" for="input-gateway-type-select">
           {{t "clusterIstioPage.config.gatewayType.label"}}
         </label>
         {{new-select
+          id="input-gateway-type-select"
           class="form-control"
           content=gatewayTypeContent
           value=config.gatewayType
@@ -458,25 +481,27 @@
     {{#if (eq config.gatewayType "NodePort")}}
       <div class="row">
         <div class="col span-6">
-          <label class="acc-label">
+          <label class="acc-label" for="input-http2-port">
             {{t "clusterIstioPage.config.http2Port.label"}}
           </label>
           {{input-integer
             min="30000"
             max="32767"
             step="1"
+            id="input-http2-port"
             value=config.http2Port
             classNames="form-control"
           }}
         </div>
         <div class="col span-6">
-          <label class="acc-label">
+          <label class="acc-label" for="input-https-port">
             {{t "clusterIstioPage.config.httpsPort.label"}}
           </label>
           {{input-integer
             min="30000"
             max="32767"
             step="1"
+            id="input-https-port"
             value=config.httpsPort
             classNames="form-control"
           }}
@@ -485,11 +510,12 @@
     {{else if (eq config.gatewayType "LoadBalancer")}}
       <div class="row">
         <div class="col span-6">
-          <label class="acc-label">
+          <label class="acc-label" for="input-load-balancer-ip">
             {{t "clusterIstioPage.config.loadBalancerIP.label"}}
           </label>
           {{schema/input-string
             value=config.loadBalancerIP
+            id="input-load-balancer-ip"
             placeholder=(t "clusterIstioPage.config.loadBalancerIP.placeholder")
           }}
         </div>

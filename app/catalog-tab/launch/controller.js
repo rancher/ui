@@ -1,5 +1,4 @@
 import Controller from '@ember/controller';
-import { get, computed } from '@ember/object';
 
 export default Controller.extend({
   queryParams: ['istio', 'appId', 'appName', 'stackId', 'upgrade', 'catalog', 'namespaceId', 'clone'],
@@ -10,7 +9,7 @@ export default Controller.extend({
   namespaceId: null,
   appId:       null,
   appName:     null,
-  istio:       null,
+  istio:       false,
 
   parentRoute: 'catalog-tab',
 
@@ -19,8 +18,4 @@ export default Controller.extend({
       this.send('goToPrevious', 'apps-tab.index');
     }
   },
-
-  isIstio: computed('istio', function() {
-    return get(this, 'istio') === 'true';
-  }),
 });

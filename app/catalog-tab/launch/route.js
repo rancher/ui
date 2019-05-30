@@ -60,7 +60,7 @@ export default Route.extend({
       var catalogTemplateUrl = null;
       const allApps          = get(results, 'apps');
 
-      if (app && params.appId && (!params.upgrade || params.istio === 'true')) {
+      if (app && params.appId && (!params.upgrade || params.istio)) {
         def = get(app, 'externalIdInfo.version');
       }
 
@@ -122,7 +122,7 @@ export default Route.extend({
           ( { namespace, newAppName } = this.newNamespace(existingNamespace, namespaceName));
         }
 
-        if ( params.istio === 'true' ) {
+        if ( params.istio ) {
           newAppName = '';
         }
 
@@ -155,7 +155,7 @@ export default Route.extend({
             })
         }
 
-        if ( !params.namespaceId && params.istio === 'true' ) {
+        if ( !params.namespaceId && params.istio ) {
           namespace = null;
         }
 
@@ -192,7 +192,7 @@ export default Route.extend({
         namespaceId: null,
         template:    null,
         upgrade:     null,
-        istio:       null,
+        istio:       false,
       });
     }
   },

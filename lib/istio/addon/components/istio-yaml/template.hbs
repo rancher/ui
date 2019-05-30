@@ -1,17 +1,13 @@
-
 <section class="header has-tabs clearfix pb-0">
   <ul class="tab-nav">
     {{#each options as |option|}}
-      <li>
-        <a
-          class="{{if (eq option selectedType) "active"}} hand"
-          {{action "select" option}}
-        >
-          <div>
-            {{t (concat "ruleDetailPage.rules." option)}}
-          </div>
-        </a>
-      </li>
+      <button class="no-outline bg-transparent {{if (eq option selectedType) "tab-selected"}}"
+        {{action "select" option}}
+      >
+        <span class="{{if (not-eq option selectedType) "text-gray"}}">
+          {{t (concat "ruleDetailPage.rules." option)}}
+        </span>
+      </button>
     {{/each}}
   </ul>
 </section>

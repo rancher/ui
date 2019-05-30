@@ -11,7 +11,7 @@ export default Controller.extend({
   queryParams:       ['istio'],
   parentRoute:       'catalog-tab',
   launchRoute:       'catalog-tab.launch',
-  istio:             '',
+  istio:             false,
 
   category:          alias('catalogController.category'),
   actions:           {
@@ -43,8 +43,8 @@ export default Controller.extend({
         return false;
       }
 
-      if ( get(this, 'isIstio') ) {
-        this.transitionToRoute(this.get('launchRoute'), id, { queryParams: { istio: 'true',  } });
+      if ( get(this, 'istio') ) {
+        this.transitionToRoute(this.get('launchRoute'), id, { queryParams: { istio: true,  } });
       } else {
         this.transitionToRoute(this.get('launchRoute'), id);
       }
@@ -56,10 +56,6 @@ export default Controller.extend({
       catalogTab.send('refresh');
     },
   },
-
-  isIstio: computed('istio', function() {
-    return get(this, 'istio') === 'true';
-  }),
 
   catalogId: computed('catalogController.catalogId', 'catalogController.clusterCatalogId', 'catalogController.projectCatalogId', function() {
     const clusterCatalogId = get(this, 'catalogController.clusterCatalogId')

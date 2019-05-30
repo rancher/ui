@@ -11,7 +11,7 @@ export default Route.extend({
 
   resetController(controller, isExiting /* , transition*/ ) {
     if (isExiting) {
-      set(controller, 'istio', null);
+      set(controller, 'istio', false);
     }
   },
 });
