@@ -178,7 +178,7 @@
         </div>
         <div class="col span-6">
           <label class="acc-label" for="input-s3-regionendpoint">
-            {{t "globalRegistryPage.config.s3.regionendpoint.label"}}{{field-required}}
+            {{t "globalRegistryPage.config.s3.regionendpoint.label"}}
           </label>
           {{schema/input-string
             id="input-s3-regionendpoint"
@@ -732,11 +732,21 @@
       {{#if globalRegistryWarning}}
         <p>{{globalRegistryWarning}}</p>
       {{else}}
-        <p>{{databaseWarning}}</p>
-        <p>{{redisWarning}}</p>
-        <p>{{registryWarning}}</p>
-        <p>{{clairWarning}}</p>
-        <p>{{notaryWarning}}</p>
+        {{#if (eq config.storageType "filesystem")}}
+          <p>{{registryWarning}}</p>
+        {{/if}}
+        {{#if (eq config.databaseType "internal")}}
+          <p>{{databaseWarning}}</p>
+        {{/if}}
+        {{#if (eq config.redisType "internal")}}
+          <p>{{redisWarning}}</p>
+        {{/if}}
+        {{#if config.clairEnabled}}
+          <p>{{clairWarning}}</p>
+        {{/if}}
+        {{#if config.notaryEnabled}}
+          <p>{{notaryWarning}}</p>
+        {{/if}}
       {{/if}}
     {{/banner-message}}
   {{/if}}

@@ -621,9 +621,15 @@
       <p>{{pilotWarning}}</p>
       <p>{{mixerWarning}}</p>
       <p>{{prometheusWarning}}</p>
-      <p>{{tracingWarning}}</p>
-      <p>{{grafanaWarning}}</p>
-      <p>{{gatewayWarning}}</p>
+      {{#if config.tracingEnabled}}
+        <p>{{tracingWarning}}</p>
+      {{/if}}
+      {{#if config.grafanaEnabled}}
+        <p>{{grafanaWarning}}</p>
+      {{/if}}
+      {{#if config.gatewayEnabled}}
+        <p>{{gatewayWarning}}</p>
+      {{/if}}
     {{/if}}
   {{/banner-message}}
 {{/if}}

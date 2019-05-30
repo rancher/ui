@@ -56,26 +56,28 @@
 </section>
 
 {{#accordion-list as |al expandFn|}}
-  {{#accordion-list-item
-     title=(t "newCatalog.appInfo")
-     detail=(t "newCatalog.appInfoDetail")
-     expandAll=al.expandAll
-     expand=(action expandFn)
-     expanded=detailExpanded
-  }}
-    <div class="row">
-      {{#if readmeContent}}
-        <div class="col span-12" style="overflow-y: auto; max-height: 500px;">
-          {{marked-down markdown=readmeContent}}
-        </div>
-      {{else}}
-        <h2 class="mb-10">
-          {{t (if editing titleUpgrade titleAdd) name=templateResource.name}}
-        </h2>
-        <p>{{templateResource.description}}</p>
-      {{/if}}
-    </div>
-  {{/accordion-list-item}}
+  {{#unless istio}}
+    {{#accordion-list-item
+      title=(t "newCatalog.appInfo")
+      detail=(t "newCatalog.appInfoDetail")
+      expandAll=al.expandAll
+      expand=(action expandFn)
+      expanded=detailExpanded
+    }}
+      <div class="row">
+        {{#if readmeContent}}
+          <div class="col span-12" style="overflow-y: auto; max-height: 500px;">
+            {{marked-down markdown=readmeContent}}
+          </div>
+        {{else}}
+          <h2 class="mb-10">
+            {{t (if editing titleUpgrade titleAdd) name=templateResource.name}}
+          </h2>
+          <p>{{templateResource.description}}</p>
+        {{/if}}
+      </div>
+    {{/accordion-list-item}}
+  {{/unless}}
 
 
   {{#accordion-list-item
