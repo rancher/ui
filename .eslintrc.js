@@ -49,7 +49,6 @@ module.exports = {
     'jQuery':         true,
     'navigator':      true,
     'window':         true,
-    'cytoscapeDagre': true,
   },
   env: {
     browser: true,
