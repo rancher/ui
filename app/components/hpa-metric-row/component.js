@@ -67,7 +67,9 @@ export default Component.extend({
 
   actions: {
     removeMetric(metric) {
-      this.sendAction('removeMetric', metric);
+      if ( this.removeMetric ) {
+        this.removeMetric(metric);
+      }
     },
 
     updateSelectorMatchLabels(labels) {

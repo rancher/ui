@@ -36,13 +36,14 @@
   {{/unless}}
   <div class="row">
     <div class="col span-6">
-      <label class="pb-5 acc-label">
+      <label class="pb-5 acc-label" for="{{concat elementId "-input-type-choices"}}">
         {{t "cruHpa.metrics.types.label"}}
         {{#if editing}}
           {{field-required}}
         {{/if}}
       </label>
       {{new-select
+        id=(concat elementId "-input-type-choices")
         classNames="form-control"
         content=typeChoices
         value=metric.type
@@ -51,7 +52,7 @@
       }}
     </div>
     <div class="col span-6">
-      <label class="pb-5 acc-label">
+      <label class="pb-5 acc-label" for="{{concat elementId "-input-metrics-name"}}">
         {{t "cruHpa.metrics.name.label"}}
         {{#if editing}}
           {{field-required}}
@@ -59,6 +60,7 @@
       </label>
       {{#if (eq metric.type "Resource")}}
         {{new-select
+          id=(concat elementId "-input-metrics-name")
           classNames="form-control"
           content=resourceChoices
           value=metric.name
@@ -72,6 +74,7 @@
           classesForDisplay="text-muted form-control-static"
         }}
           {{input
+            id=(concat elementId "-input-metrics-name")
             class="form-control"
             type="text"
             value=metric.name
@@ -83,13 +86,14 @@
   </div>
   <div class="row">
     <div class="col span-6">
-      <label class="pb-5 acc-label">
+      <label class="pb-5 acc-label" for="{{concat elementId "-input-metrics-target"}}">
         {{t "cruHpa.metrics.target.label"}}
         {{#if editing}}
           {{field-required}}
         {{/if}}
       </label>
       {{new-select
+        id=(concat elementId "-input-metrics-target")
         classNames="form-control"
         content=targetChoices
         value=metric.target.type
@@ -98,7 +102,7 @@
       }}
     </div>
     <div class="col span-6">
-      <label class="pb-5 acc-label">
+      <label class="pb-5 acc-label" for="{{concat elementId "-input-metrics-target-type"}}">
         {{t "cruHpa.metrics.value.label"}}
         {{#if editing}}
           {{field-required}}
@@ -114,6 +118,7 @@
             <div class="input-group">
               {{input-integer
                 min=0
+                id=(concat elementId "-input-metrics-target-type")
                 value=metric.target.utilization
                 classNames="form-control"
                 placeholder=(t "cruHpa.metrics.value.utilizationPlaceholder")
@@ -133,6 +138,7 @@
           {{input
             class="form-control"
             type="text"
+            id=(concat elementId "-input-metrics-target-type")
             value=metric.target.averageValue
             placeholder=(t (if (eq metric.name "cpu") "cruHpa.metrics.value.cpuPlaceholder" "cruHpa.metrics.value.placeholder"))
           }}
@@ -144,6 +150,7 @@
           classesForDisplay="text-muted form-control-static"
         }}
           {{input
+            id=(concat elementId "-input-metrics-target-type")
             class="form-control"
             type="text"
             value=metric.target.value
@@ -156,7 +163,7 @@
   {{#if (eq metric.type "Object")}}
     <div class="row">
       <div class="col span-6">
-        <label class="pb-5 acc-label">
+        <label class="pb-5 acc-label" for="{{concat elementId "-input-metrics-describedbject-apiversion"}}">
           {{t "cruHpa.metrics.describedObject.apiVersion.label"}}
           {{#if editing}}
             {{field-required}}
@@ -170,13 +177,14 @@
           {{input
             class="form-control"
             type="text"
+            id=(concat elementId "-input-metrics-describedbject-apiversion")
             value=metric.describedObject.apiVersion
             placeholder=(t "cruHpa.metrics.describedObject.apiVersion.placeholder")
           }}
         {{/input-or-display}}
       </div>
       <div class="col span-6">
-        <label class="pb-5 acc-label">
+        <label class="pb-5 acc-label" for="{{concat elementId "-input-metrics-describedbject-kind"}}">
           {{t "cruHpa.metrics.describedObject.kind.label"}}
           {{#if editing}}
             {{field-required}}
@@ -190,6 +198,7 @@
           {{input
             class="form-control"
             type="text"
+            id=(concat elementId "-input-metrics-describedbject-kind")
             value=metric.describedObject.kind
             placeholder=(t "cruHpa.metrics.describedObject.kind.placeholder")
           }}
@@ -198,7 +207,7 @@
     </div>
     <div class="row">
       <div class="col span-6">
-        <label class="pb-5 acc-label">
+        <label class="pb-5 acc-label" for="{{concat elementId "-input-metrics-describedbject-name"}}">
           {{t "cruHpa.metrics.describedObject.name.label"}}
           {{#if editing}}
             {{field-required}}
@@ -212,6 +221,7 @@
           {{input
             class="form-control"
             type="text"
+            id=(concat elementId "-input-metrics-describedbject-name")
             value=metric.describedObject.name
             placeholder=(t "cruHpa.metrics.describedObject.name.placeholder")
           }}

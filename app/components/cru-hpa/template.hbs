@@ -136,13 +136,14 @@
     </div>
     <div class="row">
       <div class="col span-6">
-        <label class="pb-5 acc-label desc-label">
+        <label class="pb-5 acc-label desc-label" for="input-hpa-target">
           {{t "cruHpa.target.label"}}
           {{#if editing}}
             {{field-required}}
           {{/if}}
         </label>
         {{new-select
+          id="input-hpa-target"
           classNames="form-control"
           optionValuePath="id"
           optionLabelPath="displayName"
@@ -158,7 +159,7 @@
     </div>
     <div class="row">
       <div class="col span-6">
-        <label class="pb-5 acc-label desc-label">
+        <label class="pb-5 acc-label desc-label" for="input-hpa-min-replicas">
           {{t "cruHpa.minReplicas.label"}}
           {{#if editing}}
             {{field-required}}
@@ -166,6 +167,7 @@
         </label>
         {{input-integer
           min=0
+          id="input-hpa-min-replicas"
           max=model.maxReplicas
           value=model.minReplicas
           classNames="form-control"
@@ -173,13 +175,14 @@
         }}
       </div>
       <div class="col span-6">
-        <label class="pb-5 acc-label desc-label">
+        <label class="pb-5 acc-label desc-label" for="input-hpa-max-replicas">
           {{t "cruHpa.maxReplicas.label"}}
           {{#if editing}}
             {{field-required}}
           {{/if}}
         </label>
         {{input-integer
+          id="input-hpa-max-replicas"
           min=model.minReplicas
           value=model.maxReplicas
           classNames="form-control"
