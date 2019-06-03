@@ -10,9 +10,10 @@ export default Resource.extend({
   clusterStore:  service(),
   router:        service(),
 
-  workload:      reference('workloadId'),
-  namespace:     reference('namespaceId', 'namespace', 'clusterStore'),
+  canHaveLabels:  true,
 
+  workload:       reference('workloadId'),
+  namespace:      reference('namespaceId', 'namespace', 'clusterStore'),
   displayMetrics: computed('metrics.@each.current.{averageValue,utilization,value}', function() {
     return (get(this, 'metrics') || [])
       .map((metric) => {

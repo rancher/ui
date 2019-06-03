@@ -89,6 +89,16 @@ export default Component.extend({
     },
   },
 
+  targetTypeDidChange: observer('metric.target.type', function() {
+    const target = get(this, 'metric.target');
+
+    setProperties(target, {
+      utilization:  null,
+      averageValue: null,
+      value:        null,
+    });
+  }),
+
   metricTypeDidChange: observer('metric.type', function() {
     const metric = get(this, 'metric');
     const type = get(metric, 'type');
