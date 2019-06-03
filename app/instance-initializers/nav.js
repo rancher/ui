@@ -31,6 +31,20 @@ const rootNav = [
     resourceScope:  'project',
   },
   {
+    scope:           'project',
+    id:              'project-istio',
+    localizedLabel:  'nav.tools.istio',
+    route:           'authenticated.project.istio.index',
+    ctx:             [getProjectId],
+    resource:        [],
+    resourceScope:   'project',
+    moreCurrentWhen: [
+      'authenticated.project.istio.graph',
+      'authenticated.project.istio.metrics',
+      'authenticated.project.istio.rules',
+    ],
+  },
+  {
     scope:          'project',
     id:             'infra',
     localizedLabel: 'nav.infra.tab',
@@ -263,6 +277,14 @@ const rootNav = [
         resource:       [],
         ctx:            [getClusterId],
       },
+      {
+        id:             'cluster-tools-istio',
+        localizedLabel: 'nav.tools.istio',
+        route:          'authenticated.cluster.istio.cluster-setting',
+        resourceScope:  'global',
+        resource:       [],
+        ctx:            [getClusterId],
+      },
     ],
   },
 
@@ -362,6 +384,14 @@ const rootNav = [
         localizedLabel: 'nav.admin.globalDnsProviders',
         route:          'global-admin.global-dns.providers',
         resource:       ['globaldnsprovider'],
+        resourceScope:  'global',
+      },
+      {
+        id:             'global-registry',
+        localizedLabel: 'nav.admin.globalRegistry',
+        route:          'global-admin.global-registry',
+        // There is no schema for global registry. But we can use global dns to check if it is a HA env.
+        resource:       ['globaldns'],
         resourceScope:  'global',
       },
     ],

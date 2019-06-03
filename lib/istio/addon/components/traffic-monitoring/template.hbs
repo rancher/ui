@@ -1,0 +1,61 @@
+<div class="row text-left">
+  <div class="pull-right pl-20 pt-0 mr-10">
+    <div>
+      <label class="acc-label">
+        {{t "istio.period"}}:
+      </label>
+    </div>
+    <div class="text-left inline-block">
+      {{new-select
+        classNames="period text-black"
+        content=durationContent
+        value=duration
+        disabled=loading
+      }}
+    </div>
+    <button type="button" style="height: 37px;margin-top: -4px;" class="btn bg-primary" disabled={{loading}} {{action "refresh"}}>
+      <span><i class="icon icon-refresh"></i></span>
+    </button>
+  </div>
+  {{#if namespaces.length}}
+    <div class="pull-left pl-20 pt-0 mr-10">
+      <label class="acc-label">
+        {{t "generic.namespace"}}:
+      </label>
+      {{new-select
+        content=namespaces
+        classNames="namespace-select text-black"
+        value=namespace
+        optionValuePath="id"
+        optionLabelPath="displayName"
+        disabled=loading
+      }}
+    </div>
+  {{/if}}
+</div>
+
+{{#if loading}}
+  <div class="row mt-20">
+    <div class="text-center">
+      <i class="icon icon-spinner icon-spin icon-3x"></i>
+    </div>
+  </div>
+{{else if elements.nodes.length}}
+  {{traffic-graph
+    elements=graphData
+    edgeLabelMode="none"
+    graphType="versionedApp"
+    showCircuitBreakers=true
+    showMissingSidecars=true
+    showNodeLabels=true
+    showSecurity=false
+    showVirtualServices=false
+  }}
+{{else}}
+  <div class="mt-20">
+    <div class="text-center text-muted">
+      {{t "istio.noData"}}
+    </div>
+  </div>
+{{/if}}
+

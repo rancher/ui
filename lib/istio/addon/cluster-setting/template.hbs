@@ -1,0 +1,18 @@
+{{#if model.owner}}
+  {{istio-catalog
+    app=model.app
+    cluster=model.cluster
+    project=model.project
+    nsExists=model.nsExists
+    storageClasses=model.storageClasses
+    persistentVolumeClaims=model.persistentVolumeClaims
+    namespace=model.namespace
+    cancel=(action "cancel")
+  }}
+{{else}}
+  {{#banner-message color="bg-info"}}
+    <p>
+      {{t "projectIstioPage.info.notOwner"}}
+    </p>
+  {{/banner-message}}
+{{/if}}

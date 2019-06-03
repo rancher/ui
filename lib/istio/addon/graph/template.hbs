@@ -1,0 +1,23 @@
+{{#if model.owner}}
+  {{#if model.app}}
+    {{istio-nav}}
+    {{traffic-monitoring namespaces=model.namespaces}}
+  {{else}}
+    {{#banner-message color="bg-info"}}
+      <p>
+        {{t
+          "projectIstioPage.info.notEnabled"
+          clusterId=model.cluster.id
+          htmlSafe=true
+        }}
+      </p>
+    {{/banner-message}}
+  {{/if}}
+{{else}}
+  {{istio-nav}}
+  {{#banner-message color="bg-info"}}
+    <p>
+      {{t "projectIstioPage.info.notOwner"}}
+    </p>
+  {{/banner-message}}
+{{/if}}
