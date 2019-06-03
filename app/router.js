@@ -165,6 +165,14 @@ Router.map(function() {
         });
       });
 
+      this.route('hpa', function() {
+        this.route('new', { path: '/add' });
+        this.route('index', { path: '/' });
+        this.route('detail', { path: '/:hpa_id' }, function() {
+          this.route('edit');
+        });
+      });
+
       this.route('volumes', {
         path:           '/volumes',
         resetNamespace: true

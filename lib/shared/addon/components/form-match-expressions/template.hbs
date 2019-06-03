@@ -1,0 +1,121 @@
+{{#if ary.length}}
+  <table class="table fixed no-lines">
+    <thead>
+      <tr class="hidden-sm">
+        <th>
+          {{t keyLabel}}
+          {{#if editing}}
+            {{field-required}}
+          {{/if}}
+        </th>
+        <th width="10">
+          &nbsp;
+        </th>
+        <th>
+          {{t "formScheduling.operator"}}
+        </th>
+        <th width="10">
+          &nbsp;
+        </th>
+        <th>
+          {{t valueLabel}}
+        </th>
+        <th width="10">
+          &nbsp;
+        </th>
+        <th width="30">
+          &nbsp;
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+    {{#each ary as |row|}}
+      <tr>
+        <td data-title="{{t keyLabel}}:">
+          {{#input-or-display
+            editable=editing
+            value=row.key
+          }}
+            {{input type="text"
+              class="form-control input-sm"
+              placeholder=(t keyPlaceholder)
+              value=row.key
+            }}
+          {{/input-or-display}}
+        </td>
+        <td>
+          &nbsp;
+        </td>
+        <td>
+          {{#input-or-display
+            editable=editing
+            value=row.operator
+          }}
+            {{new-select
+              class="form-control input-sm"
+              content=operatorChoices
+              localizedHtmlLabel=true
+              value=row.operator
+            }}
+          {{/input-or-display}}
+        </td>
+        <td>
+          &nbsp;
+        </td>
+        <td data-title="{{t valueLabel}}:">
+          {{#if (or (eq row.operator "Exists") (eq row.operator "DoesNotExist")) }}
+            {{t "generic.na"}}
+          {{else}}
+            {{#input-or-display
+              editable=editing
+              value=row.values
+            }}
+              {{input
+                type="text"
+                class="form-control input-sm"
+                placeholder=(t valuePlaceholder)
+                value=row.values
+              }}
+            {{/input-or-display}}
+          {{/if}}
+        </td>
+        <td>&nbsp;</td>
+        <td class="valign-top text-right">
+          {{#if editing}}
+            <button
+              class="btn bg-primary btn-sm"
+              {{action "remove" row}}
+            >
+              <i class="icon icon-minus"/>
+              <span class="sr-only">
+                {{t "generic.remove"}}
+              </span>
+            </button>
+          {{/if}}
+        </td>
+      </tr>
+      {{#unless editing}}
+        <div class="pb-10"></div>
+      {{/unless}}
+    {{/each}}
+    </tbody>
+  </table>
+{{else if (not editing)}}
+  <div>{{t "generic.none"}}</div>
+{{/if}}
+
+{{#if editing}}
+  <div>
+    <button
+      class="btn bg-link icon-btn p-0"
+      {{action "add"}}
+    >
+      <span class="darken">
+        <i class="icon icon-plus text-small"/>
+      </span>
+      <span>
+        {{t addActionLabel}}
+      </span>
+    </button>
+  </div>
+{{/if}}

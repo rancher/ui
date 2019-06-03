@@ -15,6 +15,7 @@ const rootNav = [
       'containers', 'workload',
       'ingresses',
       'authenticated.project.dns',
+      'authenticated.project.hpa',
       'volumes',
       'authenticated.project.pipeline.pipelines',
       'authenticated.project.pipeline.repositories',

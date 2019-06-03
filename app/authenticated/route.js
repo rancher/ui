@@ -49,6 +49,7 @@ export default Route.extend(Preload, {
     'w': 'gotow',
     'b': 'gotob',
     's': 'gotos',
+    'h': 'gotoh',
     'v': 'gotov',
     'a': 'gotoa',
 
@@ -318,6 +319,9 @@ export default Route.extend(Preload, {
     },
     gotos() {
       this._gotoRoute('authenticated.project.dns', 'project');
+    },
+    gotoh() {
+      this._gotoRoute('authenticated.project.hpa', 'project');
     },
     gotov() {
       this._gotoRoute('volumes', 'project');
