@@ -28,9 +28,9 @@ export default Component.extend(ViewNewEdit, OptionallyNamespaced, {
     if (get(this, 'model.type') === 'namespacedDockerCredential') {
       set(this, 'scope', 'namespace');
     }
-    const globalRegistryEnabled = get(this, 'globalStore').all('setting').findBy('id', 'global-registry-enabled')
+    const globalRegistryEnabled = get(this, 'globalStore').all('setting').findBy('id', 'global-registry-enabled') || {};
 
-    set(this, 'globalRegistryEnabled', globalRegistryEnabled)
+    set(this, 'globalRegistryEnabled', get(globalRegistryEnabled, 'value') === 'true')
 
     let asArray = JSON.parse(JSON.stringify(get(this, 'model.asArray') || []))
 
