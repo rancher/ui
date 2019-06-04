@@ -25,21 +25,22 @@ const MultiClusterApp = Resource.extend({
   }),
 
 
-  canUpgrade: computed('actionLinks.{upgrade}', 'catalogTemplate', function() {
+  canUpgrade: computed('actionLinks.{upgrade}', 'catalogTemplate', 'templateVersion', function() {
     const l = get(this, 'links') || {};
 
     return !!l.update && !isEmpty(this.catalogTemplate);
   }),
 
-  canClone: computed('catalogTemplate', function() {
+  canClone: computed('catalogTemplate', 'templateVersion', function() {
     return !isEmpty(this.catalogTemplate);
   }),
 
+  canRollback: computed('catalogTemplate', 'templateVersion', function() {
+    return !isEmpty(this.catalogTemplate) && !!( this.actionLinks || {} ).rollback;
+  }),
 
   availableActions: computed('actionLinks.{rollback}', 'links.{update}', function() {
-    const a = get(this, 'actionLinks') || {};
-
-    var choices = [
+    return [
       {
         label:   'action.upgrade',
         icon:    'icon icon-edit',
@@ -50,11 +51,9 @@ const MultiClusterApp = Resource.extend({
         label:   'action.rollback',
         icon:    'icon icon-history',
         action:  'rollback',
-        enabled: !!a.rollback
+        enabled: get(this, 'canRollback')
       }
     ];
-
-    return choices;
   }),
 
   actions: {

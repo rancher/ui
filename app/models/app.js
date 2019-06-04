@@ -131,10 +131,12 @@ const App = Resource.extend(StateCounts, EndpointPorts, {
     return !isEmpty(this.catalogTemplate);
   }),
 
-  availableActions: computed('actionLinks.{rollback,upgrade}', function() {
-    let a = get(this, 'actionLinks') || {};
+  canRollback: computed('catalogTemplate', function() {
+    return !isEmpty(this.catalogTemplate) && !!( this.actionLinks || {} ).rollback;
+  }),
 
-    var choices = [
+  availableActions: computed('actionLinks.{rollback,upgrade}', 'catalogTemplate', function() {
+    return [
       {
         label:   'action.upgrade',
         icon:    'icon icon-edit',
@@ -145,11 +147,9 @@ const App = Resource.extend(StateCounts, EndpointPorts, {
         label:   'action.rollback',
         icon:    'icon icon-history',
         action:  'rollback',
-        enabled: !!a.rollback
+        enabled: get(this, 'canRollback')
       }
     ];
-
-    return choices;
   }),
 
   actions: {
