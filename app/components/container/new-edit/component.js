@@ -115,6 +115,10 @@ export default Component.extend(NewOrEdit, ChildHook, {
     if ( !get(this, 'isSidekick') ) {
       this.labelsChanged();
     }
+
+    if ( get(this, 'showTargetOS') && get(this, `prefs.${ C.PREFS.TARGET_OS }`) ) {
+      set(this, 'targetOs', get(this, `prefs.${ C.PREFS.TARGET_OS }`));
+    }
   },
 
   didInsertElement() {
@@ -437,6 +441,11 @@ export default Component.extend(NewOrEdit, ChildHook, {
       set(this, `prefs.${ C.PREFS.LAST_SCALE_MODE }`, scaleMode);
       set(this, `prefs.${ C.PREFS.LAST_IMAGE_PULL_POLICY }`, get(this, 'launchConfig.imagePullPolicy'));
       set(this, `prefs.${ C.PREFS.LAST_NAMESPACE }`, get(this, 'namespace.id'));
+
+
+      if ( get(this, 'showTargetOS') ) {
+        set(this, `prefs.${ C.PREFS.TARGET_OS }`, get(this, 'targetOs'));
+      }
     }
     if (this.done) {
       this.done();
