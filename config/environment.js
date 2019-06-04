@@ -167,6 +167,14 @@ module.exports = function(environment) {
     ENV.APP.pl = 'rancher';
   }
 
+  var appName = process.env.APP_NAME;
+
+  if( appName ) 
+  {
+	ENV.APP.appName = appName;
+
+  }
+
   return ENV;
 };
 
