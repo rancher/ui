@@ -101,6 +101,10 @@ export default Component.extend(ModalBase, NewOrEdit, {
     set(this, 'primaryResource.tags', get(this, 'tags').split(',') || []);
   }),
 
+  canMoveNamespace: computed('primaryResource.actionLinks.{move}', function() {
+    return !!get(this, 'primaryResource.actionLinks.move');
+  }),
+
   projectLimit: computed('primaryResource.resourceQuota.{limit}', 'primaryResource.projectId', function() {
     const projectId = get(this, 'primaryResource.projectId');
     const project   = get(this, 'allProjects').findBy('id', projectId);
