@@ -45,7 +45,7 @@
             {{#each item.submenu as |subitem|}}
               {{#if subitem.route}}
                 {{#if (or (not subitem.resource) (rbac-allows resource=subitem.resource scope=subitem.resourceScope))}}
-                  <li>
+                  <li class="{{if (and subitem.disableIfClusterNotReady (not cluster.isReady)) "pointer-events-none"}}">
                     {{#link-to-as-attrs
                        ourRoute=subitem.route
                        ctx=subitem.ctx
@@ -78,7 +78,7 @@
 
         {{#if (or (not item.resource) (rbac-allows resource=item.resource scope=item.resourceScope))}}
           {{! No submenu }}
-          <li class="nav-item">
+          <li class="nav-item {{if (and item.disableIfClusterNotReady (not cluster.isReady)) "pointer-events-none"}}">
             {{#link-to-as-attrs
                ourRoute=item.route
                ctx=item.ctx
