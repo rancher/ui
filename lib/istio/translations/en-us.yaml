@@ -18,7 +18,7 @@ clusterIstioPage:
   config:
     header:
       grafana: GRAFANA
-      gateway: ISTIO GATEWAY
+      gateway: INGRESS GATEWAY
       pilot: PILOT
       prometheus: PROMETHEUS
       mixer: MIXER
@@ -37,11 +37,11 @@ clusterIstioPage:
       unit: milli CPUs
     pilotMemory:
       label: Pilot Memory Reservation
-      placeholder: e.g. 20148
+      placeholder: e.g. 2048
     gatewayEnabled:
-      label: Enabled Istio Gateway
+      label: Enabled Ingress Gateway
     gatewayType:
-      label: Service Type of Istio Ingress Gateway
+      label: Service Type of Ingress Gateway
     http2Port:
       label: Http2 Port
     httpsPort:
@@ -63,18 +63,6 @@ clusterIstioPage:
       placeholder: e.g. 1000
     prometheusRequestCpu:
       label: Prometheus CPU Reservation
-      placeholder: e.g. 1000
-    mixerRequestCpu:
-      label: Mixer CPU Reservation
-      placeholder: e.g. 1000
-    mixerRequestMemory:
-      label: Mixer Memory Reservation
-      placeholder: e.g. 1000
-    mixerLimitCpu:
-      label: Mixer CPU Limit
-      placeholder: e.g. 1000
-    mixerLimitMemory:
-      label: Mixer Memory Limit
       placeholder: e.g. 1000
     traceSampling:
       label: Trace sampling Percentage
@@ -104,6 +92,9 @@ clusterIstioPage:
       memory: Please make sure you have at least one node matches node selectors with {memory} MiB of memory available to enable {component} workload.
       all: Please make sure you have at least one node matches node selectors with {cpu} milli CPUs and {memory} MiB of memory available to enable {component} workload.
       unsupported: 'Node selector with value "true", "false" or number is not supported'
+  telemetryAndPolicy: Telemetry And Policy
+  existingClaim:
+    label: 'Existing Claim for {component}'
 istio:
   noData: Not enough data for graph
   period: Period
