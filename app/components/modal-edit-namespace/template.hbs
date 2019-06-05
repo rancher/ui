@@ -18,15 +18,21 @@
       <label class="pt-20 pb-5 acc-label">
         {{t "editStack.project.label"}}
       </label>
-      {{new-select
-        classNames="form-control"
-        optionValuePath="id"
-        optionLabelPath="displayName"
-        content=allProjects
-        value=primaryResource.projectId
-        prompt="editStack.project.prompt"
-        localizedPrompt=true
-      }}
+      {{#if canMoveNamespace}}
+        {{new-select
+          classNames="form-control"
+          optionValuePath="id"
+          optionLabelPath="displayName"
+          content=allProjects
+          value=primaryResource.projectId
+          prompt="editStack.project.prompt"
+          localizedPrompt=true
+        }}
+      {{else}}
+        <div class="pt-10">
+          {{primaryResource.project.displayName}}
+        </div>
+      {{/if}}
     </div>
     <div class="col span-6">
       <label class="pt-20 pb-5 acc-label">
