@@ -75,34 +75,34 @@
 
 {{#if showForm}}
   <div class="box mb-10">
-    <div class="row">
-      <div class="col span-6">
-        <label class="acc-label" for="input-admin-password">
-          {{t "globalRegistryPage.setting.adminPassword.label"}}{{field-required}}
-        </label>
-        {{input
-          type="text"
-          class="conceal"
-          id="input-admin-password"
-          placeholder=(t "globalRegistryPage.setting.adminPassword.placeholder")
-          value=config.password
-        }}
+    {{#unless enabled}}
+      <div class="row">
+        <div class="col span-6">
+          <label class="acc-label" for="input-admin-password">
+            {{t "globalRegistryPage.setting.adminPassword.label"}}{{field-required}}
+          </label>
+          {{input
+            type="password"
+            id="input-admin-password"
+            placeholder=(t "globalRegistryPage.setting.adminPassword.placeholder")
+            value=config.password
+          }}
+        </div>
+        <div class="col span-6">
+          <label class="acc-label" for="input-secret-key">
+            {{t "globalRegistryPage.config.secretKey.label"}}
+          </label>
+          {{schema/input-password
+            id="input-secret-key"
+            value=config.secretKey
+            question=secretKeyQuestion
+          }}
+          <p class="help-block">
+            {{t "globalRegistryPage.config.secretKey.description"}}
+          </p>
+        </div>
       </div>
-      <div class="col span-6">
-        <label class="acc-label" for="input-secret-key">
-          {{t "globalRegistryPage.config.secretKey.label"}}
-        </label>
-        {{schema/input-password
-          id="input-secret-key"
-          value=config.secretKey
-          question=secretKeyQuestion
-          conceal=true
-        }}
-        <p class="help-block">
-          {{t "globalRegistryPage.config.secretKey.description"}}
-        </p>
-      </div>
-    </div>
+    {{/unless}}
 
     <div class="over-hr">
       <span>
@@ -113,13 +113,14 @@
     <div class="row">
       <div class="col span-6">
         <label class="acc-label" for="input-storage-type">
-          {{t "globalRegistryPage.config.storageType.label"}}{{field-required}}
+          {{t "globalRegistryPage.config.storageType.label"}}
         </label>
         {{new-select
           class="form-control"
           id="input-storage-type"
           content=storageTypeContent
           value=config.storageType
+          disabled=enabled
         }}
       </div>
       {{#if (eq config.storageType "s3")}}
@@ -137,33 +138,15 @@
     </div>
 
     {{#if (eq config.storageType "filesystem")}}
-      {{catalog-persistence-row
-        component="registry"
-        useStorageClass=useRegistryStorageClass
-        config=persistence.persistentVolumeClaim.registry
-        storageClasses=storageClasses
-        persistentVolumeClaims=persistentVolumeClaims
-      }}
-      {{form-reservation
-        component="Registry"
-        requestCpu=config.registryRequestCpu
-        requestMemory=config.registryRequestMemory
-        limitCpu=config.registryLimitCpu
-        limitMemory=config.registryLimitMemory
-      }}
-      <div class="row">
-        <div class="col span-12">
-          <label class="acc-label">
-            {{t "clusterIstioPage.nodeSelector.helpText" component="Registry"}}
-          </label>
-          {{form-key-value
-            changedArray=(action (mut registryNodeSelectors))
-            initialMap=registryNodeSelector
-            allowEmptyValue=true
-            addActionLabel="clusterIstioPage.nodeSelector.addSelectorLabel"
-          }}
-        </div>
-      </div>
+      {{#unless enabled}}
+        {{catalog-persistence-row
+          component="registry"
+          useStorageClass=useRegistryStorageClass
+          config=persistence.persistentVolumeClaim.registry
+          storageClasses=storageClasses
+          persistentVolumeClaims=persistentVolumeClaims
+        }}
+      {{/unless}}
     {{else if (eq config.storageType "s3")}}
       <div class="row">
         <div class="col span-6">
@@ -214,6 +197,27 @@
       </div>
     {{/if}}
 
+    {{form-reservation
+      component="Registry"
+      requestCpu=config.registryRequestCpu
+      requestMemory=config.registryRequestMemory
+      limitCpu=config.registryLimitCpu
+      limitMemory=config.registryLimitMemory
+    }}
+    <div class="row">
+      <div class="col span-12">
+        <label class="acc-label">
+          {{t "clusterIstioPage.nodeSelector.helpText" component="Registry"}}
+        </label>
+        {{form-key-value
+          changedArray=(action (mut registryNodeSelectors))
+          initialMap=registryNodeSelector
+          allowEmptyValue=true
+          addActionLabel="clusterIstioPage.nodeSelector.addSelectorLabel"
+        }}
+      </div>
+    </div>
+
     <div class="over-hr">
       <span>
         {{t "globalRegistryPage.config.header.postgresql"}}
@@ -230,6 +234,7 @@
           id="input-database-type"
           content=databaseTypeContent
           value=config.databaseType
+          disabled=enabled
         }}
       </div>
       {{#if (eq config.databaseType "external")}}
@@ -247,17 +252,20 @@
       {{/if}}
     </div>
     {{#if (eq config.databaseType "internal")}}
-      {{catalog-persistence-row
-        component="database"
-        useStorageClass=useDatabaseStorageClass
-        config=persistence.persistentVolumeClaim.database
-        storageClasses=storageClasses
-        persistentVolumeClaims=persistentVolumeClaims
-      }}
+      {{#unless enabled}}
+        {{catalog-persistence-row
+          component="database"
+          useStorageClass=useDatabaseStorageClass
+          config=persistence.persistentVolumeClaim.database
+          storageClasses=storageClasses
+          persistentVolumeClaims=persistentVolumeClaims
+        }}
+      {{/unless}}
       <div class="row">
         <div class="col span-6">
           <label class="acc-label" for="input-database-limit-cpu">
             {{t "globalRegistryPage.config.databaseLimitCpu.label"}}
+            {{field-required}}
           </label>
           <div class="input-group">
             {{input-integer
@@ -276,6 +284,7 @@
         <div class="col span-6">
           <label class="acc-label" for="input-database-limit-memory">
             {{t "globalRegistryPage.config.databaseLimitMemory.label"}}
+            {{field-required}}
           </label>
           <div class="input-group">
             {{input-integer
@@ -297,6 +306,7 @@
         <div class="col span-6">
           <label class="acc-label" for="input-database-request-cpu">
             {{t "globalRegistryPage.config.databaseRequestCpu.label"}}
+            {{field-required}}
           </label>
           <div class="input-group">
             {{input-integer
@@ -315,6 +325,7 @@
         <div class="col span-6">
           <label class="acc-label" for="input-database-request-memory">
             {{t "globalRegistryPage.config.databaseRequestMemory.label"}}
+            {{field-required}}
           </label>
           <div class="input-group">
             {{input-integer
@@ -454,12 +465,13 @@
           class="form-control"
           content=databaseTypeContent
           value=config.redisType
+          disabled=enabled
         }}
       </div>
       {{#if (eq config.redisType "external")}}
         <div class="col span-6">
           <label class="acc-label" for="input-redis-external-password">
-            {{t "globalRegistryPage.config.redis.external.password.label"}}{{field-required}}
+            {{t "globalRegistryPage.config.redis.external.password.label"}}
           </label>
           {{input
             type="password"
@@ -472,18 +484,21 @@
       {{/if}}
     </div>
     {{#if (eq config.redisType "internal")}}
-      {{catalog-persistence-row
-        component="redis"
-        useStorageClass=useRedisStorageClass
-        config=persistence.persistentVolumeClaim.redis
-        storageClasses=storageClasses
-        persistentVolumeClaims=persistentVolumeClaims
-      }}
+      {{#unless enabled}}
+        {{catalog-persistence-row
+          component="redis"
+          useStorageClass=useRedisStorageClass
+          config=persistence.persistentVolumeClaim.redis
+          storageClasses=storageClasses
+          persistentVolumeClaims=persistentVolumeClaims
+        }}
+      {{/unless}}
 
       <div class="row">
         <div class="col span-6">
           <label class="acc-label" for="input-redis-limit-cpu">
             {{t "globalRegistryPage.config.redisLimitCpu.label"}}
+            {{field-required}}
           </label>
           <div class="input-group">
             {{input-integer
@@ -502,6 +517,7 @@
         <div class="col span-6">
           <label class="acc-label" for="input-redis-limit-memory">
             {{t "globalRegistryPage.config.redisLimitMemory.label"}}
+            {{field-required}}
           </label>
           <div class="input-group">
             {{input-integer
@@ -523,6 +539,7 @@
         <div class="col span-6">
           <label class="acc-label" for="input-redis-request-cpu">
             {{t "globalRegistryPage.config.redisRequestCpu.label"}}
+            {{field-required}}
           </label>
           <div class="input-group">
             {{input-integer
@@ -541,6 +558,7 @@
         <div class="col span-6">
           <label class="acc-label" for="input-redis-request-memory">
             {{t "globalRegistryPage.config.redisRequestMemory.label"}}
+            {{field-required}}
           </label>
           <div class="input-group">
             {{input-integer
@@ -596,16 +614,6 @@
       </div>
       <div class="row">
         <div class="col span-6">
-          <label class="acc-label" for="input-redis-external-coredatabaseindex">
-            {{t "globalRegistryPage.config.redis.external.coreDatabaseIndex.label"}}{{field-required}}
-          </label>
-          {{schema/input-string
-            id="input-redis-external-coredatabaseindex"
-            value=redis.external.coreDatabaseIndex
-            placeholder=(t "globalRegistryPage.config.redis.external.coreDatabaseIndex.placeholder")
-          }}
-        </div>
-        <div class="col span-6">
           <label class="acc-label" for="input-redis-external-jobservicedatabaseindex">
             {{t "globalRegistryPage.config.redis.external.jobserviceDatabaseIndex.label"}}{{field-required}}
           </label>
@@ -615,8 +623,6 @@
             placeholder=(t "globalRegistryPage.config.redis.external.jobserviceDatabaseIndex.placeholder")
           }}
         </div>
-      </div>
-      <div class="row">
         <div class="col span-6">
           <label class="acc-label" for="input-redis-external-registrydatabaseindex">
             {{t "globalRegistryPage.config.redis.external.registryDatabaseIndex.label"}}{{field-required}}
@@ -689,16 +695,23 @@
 
     {{#if config.notaryEnabled}}
       {{form-reservation
-        component="Notary"
-        requestCpu=config.notaryRequestCpu
-        requestMemory=config.notaryRequestMemory
-        limitCpu=config.notaryLimitCpu
-        limitMemory=config.notaryLimitMemory
+        component="notaryServer"
+        requestCpu=config.notaryServerRequestCpu
+        requestMemory=config.notaryServerRequestMemory
+        limitCpu=config.notaryServerLimitCpu
+        limitMemory=config.notaryServerLimitMemory
+      }}
+      {{form-reservation
+        component="notarySigner"
+        requestCpu=config.notarySignerRequestCpu
+        requestMemory=config.notarySignerRequestMemory
+        limitCpu=config.notarySignerLimitCpu
+        limitMemory=config.notarySignerLimitMemory
       }}
       <div class="row">
         <div class="col span-12">
           <label class="acc-label">
-            {{t "clusterIstioPage.nodeSelector.helpText" component="Notary"}}
+            {{t "clusterIstioPage.nodeSelector.helpText" component=(t 'globalRegistryPage.notaryAndSigner')}}
           </label>
           {{form-key-value
             changedArray=(action (mut notaryNodeSelectors))
@@ -727,14 +740,12 @@
     {{/advanced-section}}
   </div>
 
-  {{#if (or globalRegistryWarning registryWarning databaseWarning redisWarning clairWarning notaryWarning)}}
+  {{#if (or globalRegistryWarning registryWarning databaseWarning redisWarning clairWarning notaryServerWarning notarySignerWarning notaryWarning)}}
     {{#banner-message color="bg-warning"}}
       {{#if globalRegistryWarning}}
         <p>{{globalRegistryWarning}}</p>
       {{else}}
-        {{#if (eq config.storageType "filesystem")}}
-          <p>{{registryWarning}}</p>
-        {{/if}}
+        <p>{{registryWarning}}</p>
         {{#if (eq config.databaseType "internal")}}
           <p>{{databaseWarning}}</p>
         {{/if}}
@@ -745,6 +756,8 @@
           <p>{{clairWarning}}</p>
         {{/if}}
         {{#if config.notaryEnabled}}
+          <p>{{notaryServerWarning}}</p>
+          <p>{{notarySignerWarning}}</p>
           <p>{{notaryWarning}}</p>
         {{/if}}
       {{/if}}
