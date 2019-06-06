@@ -65,86 +65,14 @@
       {{t "clusterIstioPage.config.header.pilot"}}
     </span>
   </div>
-  <div class="row">
-    <div class="col span-6">
-      <label class="acc-label" for="input-pilot-limit-cpu">
-        {{t "clusterIstioPage.config.pilotLimitCpu.label"}}
-        {{field-required}}
-      </label>
-      <div class="input-group">
-        {{input-integer
-          min="0"
-          step="100"
-          id="input-pilot-limit-cpu"
-          value=config.pilotLimitCpu
-          classNames="form-control"
-          placeholder=(t "clusterIstioPage.config.pilotLimitCpu.placeholder")
-        }}
-        <div class="input-group-addon bg-default">
-          {{t "units.cpu"}}
-        </div>
-      </div>
-    </div>
-    <div class="col span-6">
-      <label class="acc-label" for="input-pilot-limit-memory">
-        {{t "clusterIstioPage.config.pilotLimitMemory.label"}}
-        {{field-required}}
-      </label>
-      <div class="input-group">
-        {{input-integer
-          min="4"
-          step="1"
-          id="input-pilot-limit-memory"
-          value=config.pilotLimitMemory
-          classNames="form-control"
-          placeholder=(t "clusterIstioPage.config.pilotLimitMemory.placeholder")
-        }}
-        <div class="input-group-addon bg-default">
-          {{t "generic.mibibyte"}}
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="row">
-    <div class="col span-6">
-      <label class="acc-label" for="input-pilot-cpu">
-        {{t "clusterIstioPage.config.pilotCpu.label"}}
-        {{field-required}}
-      </label>
-      <div class="input-group">
-        {{input-integer
-          min="0"
-          step="100"
-          id="input-pilot-cpu"
-          value=config.pilotRequestCpu
-          classNames="form-control"
-          placeholder=(t "clusterIstioPage.config.pilotCpu.placeholder")
-        }}
-        <div class="input-group-addon bg-default">
-          {{t "units.cpu"}}
-        </div>
-      </div>
-    </div>
-    <div class="col span-6">
-      <label class="acc-label" for="input-pilot-memory">
-        {{t "clusterIstioPage.config.pilotMemory.label"}}
-        {{field-required}}
-      </label>
-      <div class="input-group">
-        {{input-integer
-          min="4"
-          step="1"
-          id="input-pilot-memory"
-          value=config.pilotRequestMemory
-          classNames="form-control"
-          placeholder=(t "clusterIstioPage.config.pilotMemory.placeholder")
-        }}
-        <div class="input-group-addon bg-default">
-          {{t "generic.mibibyte"}}
-        </div>
-      </div>
-    </div>
-  </div>
+  {{form-reservation
+    component="Pilot"
+    requestCpu=config.pilotRequestCpu
+    requestMemory=config.pilotRequestMemory
+    limitCpu=config.pilotLimitCpu
+    limitMemory=config.pilotLimitMemory
+  }}
+
   <div class="row">
     <div class="col span-6">
       <label class="acc-label" for="input-trace-sampling">
@@ -387,87 +315,13 @@
       {{t "clusterIstioPage.config.header.prometheus"}}
     </span>
   </div>
-  <div class="row">
-    <div class="col span-6">
-      <label class="acc-label" for="input-prometheus-limit-cpu">
-        {{t "clusterIstioPage.config.prometheusLimitCpu.label"}}
-        {{field-required}}
-      </label>
-      <div class="input-group">
-        {{input-integer
-          min="4"
-          step="1"
-          id="input-prometheus-limit-cpu"
-          value=config.prometheusLimitCpu
-          classNames="form-control"
-          placeholder=(t "clusterIstioPage.config.prometheusLimitCpu.placeholder")
-        }}
-        <div class="input-group-addon bg-default">
-          {{t "units.cpu"}}
-        </div>
-      </div>
-    </div>
-    <div class="col span-6">
-      <label class="acc-label" for="input-prometheus-limit-memory">
-        {{t "clusterIstioPage.config.prometheusLimitMemory.label"}}
-        {{field-required}}
-      </label>
-      <div class="input-group">
-        {{input-integer
-          min="4"
-          step="1"
-          id="input-prometheus-limit-memory"
-          value=config.prometheusLimitMemory
-          classNames="form-control"
-          placeholder=(t "clusterIstioPage.config.prometheusLimitMemory.placeholder")
-        }}
-        <div class="input-group-addon bg-default">
-          {{t "generic.mibibyte"}}
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div class="row">
-    <div class="col span-6">
-      <label class="acc-label" for="input-prometheus-request-cpu">
-        {{t "clusterIstioPage.config.prometheusRequestCpu.label"}}
-        {{field-required}}
-      </label>
-      <div class="input-group">
-        {{input-integer
-          min="4"
-          step="1"
-          id="input-prometheus-request-cpu"
-          value=config.prometheusRequestCpu
-          classNames="form-control"
-          placeholder=(t "clusterIstioPage.config.prometheusRequestCpu.placeholder")
-        }}
-        <div class="input-group-addon bg-default">
-          {{t "units.cpu"}}
-        </div>
-      </div>
-    </div>
-    <div class="col span-6">
-      <label class="acc-label" for="input-prometheus-request-memory">
-        {{t "clusterIstioPage.config.prometheusRequestMemory.label"}}
-        {{field-required}}
-      </label>
-      <div class="input-group">
-        {{input-integer
-          min="4"
-          step="1"
-          id="input-prometheus-request-memory"
-          value=config.prometheusRequestMemory
-          classNames="form-control"
-          placeholder=(t "clusterIstioPage.config.prometheusRequestMemory.placeholder")
-        }}
-        <div class="input-group-addon bg-default">
-          {{t "generic.mibibyte"}}
-        </div>
-      </div>
-    </div>
-  </div>
+  {{form-reservation
+    component="Prometheus"
+    requestCpu=config.prometheusRequestCpu
+    requestMemory=config.prometheusRequestMemory
+    limitCpu=config.prometheusLimitCpu
+    limitMemory=config.prometheusLimitMemory
+  }}
 
   <div class="row">
     <div class="col span-6">
