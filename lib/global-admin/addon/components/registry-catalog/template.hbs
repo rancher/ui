@@ -75,8 +75,8 @@
 
 {{#if showForm}}
   <div class="box mb-10">
-    {{#unless enabled}}
-      <div class="row">
+    <div class="row">
+      {{#unless enabled}}
         <div class="col span-6">
           <label class="acc-label" for="input-admin-password">
             {{t "globalRegistryPage.setting.adminPassword.label"}}{{field-required}}
@@ -88,21 +88,21 @@
             value=config.password
           }}
         </div>
-        <div class="col span-6">
-          <label class="acc-label" for="input-secret-key">
-            {{t "globalRegistryPage.config.secretKey.label"}}
-          </label>
-          {{schema/input-password
-            id="input-secret-key"
-            value=config.secretKey
-            question=secretKeyQuestion
-          }}
-          <p class="help-block">
-            {{t "globalRegistryPage.config.secretKey.description"}}
-          </p>
-        </div>
+      {{/unless}}
+      <div class="col span-6">
+        <label class="acc-label" for="input-secret-key">
+          {{t "globalRegistryPage.config.secretKey.label"}}
+        </label>
+        {{schema/input-password
+          id="input-secret-key"
+          value=config.secretKey
+          question=secretKeyQuestion
+        }}
+        <p class="help-block">
+          {{t "globalRegistryPage.config.secretKey.description"}}
+        </p>
       </div>
-    {{/unless}}
+    </div>
 
     <div class="over-hr">
       <span>
