@@ -34,32 +34,34 @@
         </div>
       {{/if}}
     </div>
-    <div class="col span-6">
-      <label class="pt-20 pb-5 acc-label">
-        {{t "editStack.autoInject.label"}}
-      </label>
-      <div class="mt-5">
-        {{#if istioInjection}}
-          <div class="btn-group no-inline-space">
-            <div class="btn btn-link btn-sm bg-success">
-              {{t "generic.enabled"}}
+    {{#if scope.currentCluster.istioEnabled}}
+      <div class="col span-6">
+        <label class="pt-20 pb-5 acc-label">
+          {{t "editStack.autoInject.label"}}
+        </label>
+        <div class="mt-5">
+          {{#if istioInjection}}
+            <div class="btn-group no-inline-space">
+              <div class="btn btn-link btn-sm bg-success">
+                {{t "generic.enabled"}}
+              </div>
+              <div class="btn btn-link btn-sm bg-default" {{action "toggleAutoInject"}}>
+                {{t "generic.disable"}}
+              </div>
             </div>
-            <div class="btn btn-link btn-sm bg-default" {{action "toggleAutoInject"}}>
-              {{t "generic.disable"}}
+          {{else}}
+            <div class="btn-group no-inline-space">
+              <div class="btn btn-link btn-sm bg-default" {{action "toggleAutoInject"}}>
+                {{t "generic.enable"}}
+              </div>
+              <div class="btn btn-link btn-sm bg-primary">
+                {{t "generic.disabled"}}
+              </div>
             </div>
-          </div>
-        {{else}}
-          <div class="btn-group no-inline-space">
-            <div class="btn btn-link btn-sm bg-default" {{action "toggleAutoInject"}}>
-              {{t "generic.enable"}}
-            </div>
-            <div class="btn btn-link btn-sm bg-primary">
-              {{t "generic.disabled"}}
-            </div>
-          </div>
-        {{/if}}
+          {{/if}}
+        </div>
       </div>
-    </div>
+    {{/if}}
   </div>
 
   <div class="row mt-20">
