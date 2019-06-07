@@ -142,13 +142,14 @@ export default Component.extend(ModalBase, NewOrEdit, {
   },
 
   willSave() {
-    const isEnabled = get(this, 'istioInjection');
     const labels = { ...get(this, 'primaryResource.labels') };
 
-    if ( isEnabled ) {
-      labels[ISTIO_INJECTION] = ENABLED;
-    } else {
-      delete labels[ISTIO_INJECTION];
+    if ( get(this, 'scope.currentCluster.istioEnabled') ) {
+      if ( get(this, 'istioInjection') ) {
+        labels[ISTIO_INJECTION] = ENABLED;
+      } else {
+        delete labels[ISTIO_INJECTION];
+      }
     }
 
     setProperties(this, {

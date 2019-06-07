@@ -1,23 +1,9 @@
-{{#if model.owner}}
-  {{#if model.app}}
-    {{istio-nav}}
-    {{traffic-monitoring namespaces=model.namespaces}}
-  {{else}}
-    {{#banner-message color="bg-info"}}
-      <p>
-        {{t
-          "projectIstioPage.info.notEnabled"
-          clusterId=model.cluster.id
-          htmlSafe=true
-        }}
-      </p>
-    {{/banner-message}}
-  {{/if}}
-{{else}}
+{{#if scope.currentCluster.istioEnabled}}
   {{istio-nav}}
-  {{#banner-message color="bg-info"}}
-    <p>
-      {{t "projectIstioPage.info.notOwner"}}
-    </p>
-  {{/banner-message}}
+  {{traffic-monitoring namespaces=model}}
+{{else}}
+  {{banner-message
+    color="bg-info"
+    message=(t (if scope.currentCluster.systemProject  "projectIstioPage.info.notEnabled" "projectIstioPage.info.notOwner") clusterId=scope.currentCluster.id htmlSafe=true)
+  }}
 {{/if}}
