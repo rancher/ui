@@ -9,11 +9,6 @@
     <a href="{{href-to "authenticated.project.hpa.detail" model.id}}">
       {{model.displayName}}
     </a>
-    {{#if model.showTransitioningMessage}}
-      <div class="clip text-small {{model.stateColor}}">
-        {{uc-first model.transitioningMessage}}
-      </div>
-    {{/if}}
   </td>
   <td data-title="{{dt.target}}">
     {{#if model.workload}}
@@ -51,3 +46,6 @@
     {{action-menu model=model}}
   </td>
 </tr>
+{{#if model.showTransitioningMessage}}
+  {{error-sub-row fullColspan="7" model=model}}
+{{/if}}
