@@ -1,6 +1,5 @@
 import { on } from '@ember/object/evented';
 import { get, set } from '@ember/object';
-import { hash } from 'rsvp';
 import Route from '@ember/routing/route';
 import C from 'ui/utils/constants';
 
@@ -8,7 +7,19 @@ export default Route.extend({
   model() {
     var store = get(this, 'store');
 
-    return hash({ data: store.findAll('horizontalpodautoscaler') });
+    return store.findAll('horizontalpodautoscaler')
+      .then((hpas) => {
+        return {
+          data:      hpas,
+          supported: true
+        }
+      })
+      .catch(() => {
+        return {
+          data:      [],
+          supported: false
+        }
+      });
   },
 
   setDefaultRoute: on('activate', function() {
