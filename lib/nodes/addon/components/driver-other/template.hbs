@@ -1,16 +1,16 @@
 {{#accordion-list showExpandAll=false as | al expandFn |}}
   <div class="over-hr"><span>{{driverOptionsTitle}}</span></div>
 
-  {{#each fieldNames as |fieldName|}}
+  {{#each-in schema.resourceFields as |key value|}}
     {{api-field
-        resource=config
-        resourceType=driverName
-        field=fieldName
-        value=(get config fieldName)
-        schema=schema
-        typeDocs=typeDocumentations
+      resource=config
+      resourceType=driverName
+      field=key
+      value=(get config key)
+      schema=schema
+      typeDocs=typeDocumentations
     }}
-  {{/each}}
+  {{/each-in}}
 
   <div class="over-hr"><span>{{templateOptionsTitle}}</span></div>
 
