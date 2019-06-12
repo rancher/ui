@@ -10,7 +10,7 @@
     "authenticated.project.hpa.new"
     scope.currentProject.id
     class="btn btn-sm bg-primary"
-    disabled=(rbac-prevents resource="horizontalpodautoscaler" scope="project" permission="create")
+    disabled=(or (not model.supported) (rbac-prevents resource="horizontalpodautoscaler" scope="project" permission="create"))
   }}
     {{t "nav.containers.addHpa"}}
   {{/link-to}}
