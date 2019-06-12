@@ -8,7 +8,11 @@
       {{else if principalId}}
         <div class="gh-block">
           <div class="gh-avatar">
-            <img src="{{principalGravatarSrc}}" width="34" height="34">
+            <img
+              src="{{principalGravatarSrc}}"
+              width="34"
+              height="34"
+            >
           </div>
           <div class="gh-block-content">
             <div class="clip gh-block-name">
@@ -40,13 +44,18 @@
         {{t "generic.custom"}}
       {{/if}}
     {{else}}
-      {{searchable-select change="onSelect" content=choices value=roleTemplateId readOnly=noUpdate}}
+      {{searchable-select
+        change=(action "onSelect")
+        content=choices
+        value=roleTemplateId
+        readOnly=noUpdate
+      }}
     {{/if}}
   {{/if}}
 </td>
 <td>&nbsp;</td>
 <div class="input-group-btn">
-  {{#unless  owner}}
+  {{#unless owner}}
     <button class="btn bg-primary btn-sm" {{action remove member}}>
       <i class="icon icon-minus" />
     </button>
