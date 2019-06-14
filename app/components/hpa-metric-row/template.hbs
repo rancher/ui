@@ -1,4 +1,25 @@
 <div class="box mb-10">
+  {{#unless (eq metric.type "Resource")}}
+    {{banner-message
+      color="bg-warning"
+      message=(t (if (eq metric.type "External") "cruHpa.metrics.types.warning.external" "cruHpa.metrics.types.warning.custom" ))
+    }}
+  {{/unless}}
+
+  {{#if showCpuReservationWarning}}
+    {{banner-message
+      color="bg-warning"
+      message=(t "cruHpa.metrics.types.warning.cpu")
+    }}
+  {{/if}}
+
+  {{#if showMemoryReservationWarning}}
+    {{banner-message
+      color="bg-warning"
+      message=(t "cruHpa.metrics.types.warning.memory")
+    }}
+  {{/if}}
+
   {{#if (and editing (gt metrics.length 1))}}
     <div class="row">
       <div class="pull-right">
