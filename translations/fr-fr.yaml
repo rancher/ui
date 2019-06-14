@@ -10,6 +10,7 @@ generic:
   any: N’importe quel
   application: application
   as: comme
+  back: Retour
   cancel: Annuler
   closeModal: Fermer
   cluster: Cluster
@@ -38,12 +39,16 @@ generic:
   entrypoint: Point d’entrée
   environment: Environnement
   expandAll: Tout développer
+  experimental: "(expérimental)"
   from: de
+  false: 'Faux'
   generic: 'Générique'
   gigabyte: 'GB'
   hardware: Matériel
   healthy: Sans erreur
   help: Aide
+  hostname: Nom de l’hôte
+  hours: heures
   id: ID
   image: Image
   import: Importer
@@ -55,6 +60,7 @@ generic:
   loading: "Chargement..."
   loggingOut: "Déconnexion..."
   member: Membre
+  mbps: Mb/s
   mibibyte: 'MiB'
   minutes: minutes
   milliseconds: 'Millisecondes'
@@ -80,10 +86,12 @@ generic:
   persistentVolume: volume persistant
   random: Aléatoire
   remove: Retirer
+  restarts: Redémarrages
   role: Rôle
   save: Enregistrer
   saved: Enregistré
   saving: Enregistrement en cours
+  scope: Périmètre
   search: Rechercher
   searchOrCustomInput: Recherchez ou entrez votre valeur personnalisée.
   searching: 'Recherche en cours...'
@@ -98,6 +106,7 @@ generic:
   testing: En test
   to: A
   total: Total
+  true: 'Vrai'
   type: Catégorie
   unknown: Inconnu
   unknownUser: Impossible de récupérer les informations de l'utilisateur
@@ -108,6 +117,11 @@ generic:
   value: Valeur
   version: Version
   yes: "Oui"
+  isRequired: est obligatoire
+  readOnly: Lecture seule
+  readWrite: Lecture/Ecriture
+  writeOnly: Écriture seule
+  full: Plein
 realmNames:
   all: Tous
   usWest: EU - Ouest
@@ -184,6 +198,10 @@ appDetailPage:
     protocol: Protocole 
     noData: Aucun point d'accès public n'a été créé pour cette application.
     noMatch: Aucun point d'accès public ne correspond à la recherche en cours.
+  answers:
+    title: Réponses
+    detail: Réponses personnalisées de cette application
+    variable: Variable
   notes:
     title: Notes
     detail: 'Instructions sur l''utilisation de cette application'
@@ -236,6 +254,10 @@ podSecurityPoliciesPage:
         placeholder: "par exemple la politique"
 rolesPage:
   title: Rôle
+  headers:
+    global: Global
+    cluster: Clusters
+    project: Projets
   index:
     localLink: Ajouter rôle
     table:
@@ -251,6 +273,8 @@ rolesPage:
       cluster: Créateur de cluster par défaut
       project: Créateur de projet par défaut
       showDefaults: Afficher uniquement les valeurs par défaut
+    errors:
+      inherited: "Le rôle {displayName} est hérité par: {roleNames}"
   resources:
     title: Octroi de ressources
     detail: Accorder l'accès à des opérations spécifiques sur les ressources Kubernetes
@@ -268,14 +292,19 @@ rolesPage:
       nameInExists: Ce nom existe déjà. Veuillez utiliser un nouveau nom de rôle.
       ruleResourceReq: Une ressource est requise pour la règle.
       roleTemplate: Le modèle de rôle est requis.
+      noSelectedRoles: Veuillez sélectionner au moins un rôle pour cet utilisateur.
+      roleAlreadyExists: L'utilisateur a déjà le rôle "{key}".
     form:
       name:
         labelText: Nom
         placeholder: "par exemple les développeurs"
       context:
         labelText: Contexte
+        detail: Dans quel périmètre ce rôle peut figurer.
       locked:
         labelText: Verrouillé
+        detail: Cela n'affecte pas les liaisons au rôle déjà existantes.
+        enabled: "Oui : Les nouvelles liaisons ne sont pas autorisées à utiliser ce rôle"
         disabled: "Non"
       allow:
         create: Créer
@@ -300,6 +329,10 @@ rolesPage:
         global: Nouvel utilisateur par défaut
         cluster: Créateur de cluster par défaut
         project: Créateur de projet par défaut
+        enabled:
+          global: "Oui: Rôle par défaut pour les nouveaux utilisateurs"
+          cluster: "Oui: Rôle par défaut pour la création d'un nouveau cluster"
+          project: "Oui: Rôle par défaut pour la création d'un nouveau projet"
         disabled: "Non"
 apiPage:
   header: API et clés
@@ -310,6 +343,7 @@ apiPage:
     state: Etat
     name: Clé d'accès
     description: Description 
+    scope: Périmètre
     created: Crée le
     expires:
       label: Expiration
@@ -339,7 +373,43 @@ authPage:
         labelText: Champ Nom Public
         display: "Champ Nom Public :"
       username:
+        labelText: Champ Nom d’Utilisateur
         display: "Champ nom d’utilisateur :"
+      uid:
+        labelText: Champ UID
+        display: "Champ UID:"
+      rancherApiHost:
+        labelText: "{appName} Hôte de l'API"
+        display: "{appName} Hôte de l'API:"
+      groups:
+        labelText: Champ Groupes
+        display: "Champ Groupes:"
+      testAuth:
+        header: '2. Tester et activer l''authentification'
+        subtext: 'Vérifier que votre application est correctement configurée en testant l''authentification :'
+    providerName:
+      ping: Ping
+      adfs: AD FS
+      keycloak: Keycloak
+      okta: Okta
+    authError: 'L''accès n''a pas été autorisé'
+    popupError: 'Veuillez désactiver votre bloqueur de pop-up et cliquez de nouveau sur « Authentifier ».'
+  ping:
+    buttonText:
+      pre: 'S''authentifier avec Ping'
+      post: En attente de validation d'IDP
+  keycloak:
+    buttonText:
+      pre: 'S''authentifier avec Keycloak'
+      post: En attente de validation d'IDP
+  adfs:
+    buttonText:
+      pre: 'S’authentifier avec AD FS'
+      post: En attente de validation d'IDP
+  okta:
+    buttonText:
+      pre: 'S’authentifier avec Okta'
+      post: En attente de validation d'IDP
   shibboleth:
     enabled:
       authenticated:
@@ -348,7 +418,6 @@ authPage:
       disableAccess:
         header: "Zone dangereuse&trade;"
         warning: '<b class="text-danger">Attention:</b> Désactiver le contrôle d''accès donne le contrôle complet à {appName}, à quiconque accède à cette page ou l''API .'
-        confirmDisable: "Êtes-vous sûr ? Cliquez encore une fois pour vraiment désactiver le contrôle d'accès"
         disable: Désactiver le contrôle d’accès
       groupsField: 'Groupes :'
       displayName: 'Nom Public :'
@@ -391,7 +460,6 @@ authPage:
       disableAccess:
         header: "Zone Dangereuse&trade;"
         warning: '<b class="text-danger">Attention:</b> Désactivé le control d''accès donne le contrôle complet à {appName}, à quiconque accède à cette page (ou l''API) .'
-        confirmDisable: "Désactiver? vraiment? Cliquer à nouveau pour désactiver le contrôle d'accès"
         disable: Désactiver l'accès Github
     notAuthenticated:
       header: "1. Configurer une authentification Github"
@@ -429,13 +497,32 @@ authPage:
       buttonText:
         pre: Authentification via GitHub
         post: En attente de validation de GitHub
+      authError: 'L''accès à Gitlab n''a pas été autorisé'
+      popupError: 'Veuillez désactiver votre bloqueur de publicité et cliquez sur "S''authentifier" une nouvelle fois.'
   azuread:
+    header:
+      disabled:
+        label: "Azure AD n'est pas configuré"
     enabled:
       header: 'Zone Dangereuse&trade;'
-      reallyDisable: 'Désactiver? vraiment? Cliquer à nouveau pour désactiver le contrôle d''accès'
       promptDisable: Désactiver contrôle d'accès
+      general:
+        header: Général
     configure:
       header: '1. Configurer un compte Azure AD'
+      applicationId:
+        label: ID de l'application
+        placeholder: Une longue chaîne UUID
+      serverURL:
+        label: Url du serveur Rancher
+      azureADEndpoint:
+        label: Point d'accès
+      endpoints:
+        label: Points d'accès
+      regions:
+        standard: Standard
+        china: Chine
+        custom: Personnalisé
       tenantId:
         label: ID Client
         placeholder: Un long identifiant unique (chaîne de caractères) ou UUID
@@ -450,6 +537,7 @@ authPage:
         label: Mot de passe
       pre: Authentification via Azure
       post: En attente de validation d'Azure
+      authError: 'L''accès à Azure n''a pas été autorisé'
   localAuth:
     header:
       enabled: 'L''authentification locale est actvivée'
@@ -464,7 +552,6 @@ authPage:
       header: 'Zone Dangereuse&trade;'
       warning: '<b class="text-danger">Attention:</b> Désactiver le contrôle d''accès donne le contrôle complet à {appName}, à quiconque accède à cette page ou l''API .'
       buttonText:
-        disable: 'Êtes-vous sûr ? Cliquez encore une fois pour vraiment désactiver le contrôle d''accès'
         prompt: Désactiver le contrôle d’accès
     accessDisabled:
       header: '1. configurer un utilisateur Admin'
@@ -486,6 +573,16 @@ authPage:
       buttonText:
         pre: Activer l'Authentification Locale
         post: 'Activation...'
+backupsPage:
+  table:
+    state: État
+    target:
+      label: Cible 
+      s3: S3
+      local: Local
+    name: Nom
+    created: Crée le
+    noData: Il n'y a pas d'instantané etcd
 balancerPage:
   noMatch: Aucun répartisseur ne correspond à la recherche en cours
   noData: Il n’y a aucun répartisseur à afficher.
@@ -516,6 +613,15 @@ catalogPage:
       launch: Afficher les détails
       notCompatible: Incompatible
       alreadyDeployed: Déjà déployé
+cloudCredentialsPage:
+  header: Identifiants Cloud
+  rightButtons:
+    addKey: Ajouter un identifiant Cloud
+  index:
+    table:
+      noData: Il n'y a pas encore d'identifiants cloud
+clusterCatalogPage:
+  header: Catalogues
 certificatesPage:
   cn: Nom de domaine
   expiresDate: Expire
@@ -594,6 +700,8 @@ clusterPage:
   edit: Modifier un cluster
 projectsListNamespacePage:
   header: Espaces de noms
+  notIn: Introuvable dans le projet
+  current: Dans ce projet
 projectsPage:
   header: Projets/Espaces de noms
   headerNS: Espaces de noms
@@ -612,6 +720,7 @@ projectsPage:
   psp:
     label: Politique de sécurité des Pods
   members:
+    title: Membres
     user: Utilisateur
     group: Groupe
     serviceaccount: Compte de Service 
@@ -664,6 +773,9 @@ ingressPage:
     noData: Il n'y a pas de règles d'entrée définies
 containerPage:
   header: 'Conteneur : {name}'
+  envTab:
+    header: Variables d'Environnement
+    detail: 'Les Variables d''Environnement qui ont été ajoutées lors de la création.'
   portsTab:
     header: Ports
     detail: 'Mappages de ports d’écoute conteneurs aux ports hôte sur des adresses IP publiques'
@@ -682,12 +794,14 @@ containerPage:
       noData: Ce conteneur ne dispose pas de volumes montés
       noMatch: Aucun volume ne correspond à la recherche en cours
       noContainers: Aucun autre conteneur
+  pod: Pod
 podPage:
   header: 'Pod: {name}'
   nodeIp: IP du nœud
   podIp: IP du Pod
   containerImage: 'Image de {container}'
   image: Image
+  displayImage: '{image} + {sidecar, plural, =1 {1 image} other {# images}}'
 containersPage:
   table:
     sparkPrefixCpu: "CPU : "
@@ -702,8 +816,47 @@ containersPage:
     orchestrator: Installer un autre orchestrateur
     kubernetesLink: Installe Kubernetes
 clusterDashboard:
+  systemProject: Il s'agit du projet système qui contient tous les espaces de noms de Kubernetes et de {appName} . Les modifications apportées aux ressources dans le projet système peuvent endommager le cluster.
   notActive: Ce cluster est actuellement <b>{state}</b>.
   notReady: Ce cluster est actuellement <b>{state}</b>; les zones qui interagissent directement avec lui ne seront pas disponibles tant que l'API n'est pas prête.
+  used: Utilisé
+metricsAction:
+  description: Développer pour voir les statistiques en direct
+  noData: Pas assez de données pour le graphique
+  sections:
+    workload: Métriques de la charge de travail
+    pod: Métriques du Pod
+    container: Métriques du Conteneur
+  grafana:
+    label: Grafana
+  summary:
+    label: Récapitulatif
+  detail:
+    label: Détail
+  from:
+    label: À partir de
+  periods:
+    custom: Personnalisé
+    5m: 5 minutes
+    1h: 1 heure
+    6h: 6 heures
+    24h: 24 heures
+    7d: 7 jours
+    30d: 30 jours
+metrics:
+  workload-cpu-usage: Utilisation CPU
+  workload-disk-io: I/O du Disque
+  workload-memory-usage-bytes-sum: Utilisation de la Mémoire
+  workload-network-io: I/O Réseau
+  workload-network-packet: Paquets Réseau
+  pod-cpu-usage: Utilisation CPU
+  pod-disk-io: I/O du Disque
+  pod-memory-usage-bytes-sum: Utilisation de la Mémoire
+  pod-network-io: I/O Réseau
+  pod-network-packet: Paquets Réseau
+  container-cpu-usage: Utilisation CPU
+  container-disk-io: I/O du Disque
+  container-memory-usage-bytes-sum: Utilisation de la Mémoire
 dnsPage:
   noMatch: Aucun enregistrement ne correspond à la recherche en cours
   noData: Il n'y a aucun enregistrement DNS à montrer
@@ -725,6 +878,29 @@ editDns:
     view: "Enregistrement: {name}"
   name:
     placeholder: e.g. myapp
+  sessionAffinity:
+    title: Affinité de session
+  externalIPs:
+    value: IPs externes
+  loadBalancerIP:
+    placeholder: par exemple 78.11.24.19
+  loadBalancerSourceRanges:
+    addActionLabel: Ajouter une plage source
+    placeholder: par exemple 143.231.0.0/16
+  healthCheckNodePort:
+    placeholder: par exemple 8080
+  externalTrafficPolicy:
+    local: Local
+    cluster: Cluster
+  publishNotReadyAddresses:
+    label: Adresses IP publiées
+    all: Tous les points de terminaison
+  kind:
+    label: En tant que
+    clusterIP: IP du cluster (interne uniquement)
+    loadBalancer: Équilibreur de charge de couche 4
+    nodePort: NodePort (sur chaque nœud)
+    externalName: Nom externe
   description:
     placeholder: e.g. version actuelle de myapp
   selector:
@@ -763,7 +939,16 @@ cruPersistentVolumeClaim:
   storageClass:
     label: Classe de stockage
     prompt: Utiliser la classe par défaut
+cruPrivateRegistry:
+  registry:
+    user:
+      label: Utilisateur
+    password:
+      label: Mot de Passe
+    url:
+      label: URL
 cruVolume:
+  sourcePrompt: Choisissez une source de volume ci-dessus ...
   title:
     new: Définir un volume éphémère
   define:
@@ -1330,6 +1515,8 @@ copyToClipboard:
 dangerZone:
   header: Paramètres Avancés
   showLabel: Je comprends que je peux casser des choses en changeant les paramètres avancés.
+deleteEksCluster:
+  deleteCluster: Supprimer Cluster
 editAccount:
   title: Modifier le Compte
   form:
@@ -1836,10 +2023,6 @@ newCatalog:
     prompt: Choisissez une version...
     default: La valeur par défaut à l’époque (actuellement {version})
 newContainer:
-  upgrade:
-    container: Mise à niveau du Conteneur
-  selectUpgrade: Sélectionnez un ou plusieurs services à mettre à niveau.
-  saveUpgrade: Mettre à niveau
   name:
     placeholder: par exemple monappli
   description:
@@ -1853,10 +2036,7 @@ nodeDriver:
   amazoneks:
     associateWorkerNodePublicIp:
       radio:
-        default: "Yes"
-  packet:
-    projectId:
-      label: Projet
+        default: true
 projectGroup:
   label: "Projet: {name}"
   project: Pas dans un projet
@@ -1949,7 +2129,6 @@ upgradeBtn:
     available: 'Mise à jour disponible'
     inprogress: 'Mise à niveau en cours'
     upgraded: 'Mis à jour : Finir la Mise à Niveau'
-    notfound: 'Version du modèle non trouvée'
     error: 'Erreur pendant la recherche de mise à jour'
 viewEditDescription:
   form:
@@ -1981,7 +2160,7 @@ containerChoices:
   unknownHost: "Hôte : ???"
   containerOption: "{name}"
 nav:
-  srToggleDropdown: Activer/Désactiver la liste déroulante
+  srToggleDropdown: Activer/Désactiver la liste déroulante 
   containers:
     addDns: Ajouter un enregistrement
   catalog:

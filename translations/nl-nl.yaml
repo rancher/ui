@@ -5,10 +5,12 @@ generic:
   actions: Acties
   activate: Activeer
   add: Toevoegen
+  advanced: Geavanceerd
   all: Alles
   any: Maakt niet uit
   application: toepassing
   as: als
+  back: Terug
   cancel: Annuleren
   closeModal: Sluiten
   cluster: Cluster
@@ -43,6 +45,8 @@ generic:
   hardware: Hardware
   healthy: Gezond
   help: Help
+  hostname: Hostnaam
+  hours: uren
   id: ID
   image: Image
   import: Importeren
@@ -52,8 +56,11 @@ generic:
   limit: Limiet
   limits: Limieten
   loading: "Bezig met laden..."
+  loggingOut: "Afmelden..."
   member: Gebruiker
+  mbps: Mbps
   mibibyte: 'MiB'
+  minutes: minuten
   milliseconds: 'Milliseconden'
   missing: "*%MISSING%*"
   moreActions: Meer acties
@@ -73,12 +80,16 @@ generic:
   ports: Poorten
   prefix: voorvoegsel
   project: Project
+  persistentVolumeClaim: persistente volume claim
+  persistentVolume: persistent volume
   random: Willekeurig
   remove: Verwijderen
+  restarts: Herstarten
   role: Rol
   save: Opslaan
   saved: Opgeslagen
   saving: Opslaan
+  scope: Bereik
   search: Zoeken
   searchOrCustomInput: Zoek of voer uw aangepaste waarde in.
   searching: 'Zoeken...'
@@ -95,6 +106,7 @@ generic:
   total: Totaal
   type: Type
   unknown: Onbekend
+  unknownUser: Kan gebruikersgegevens niet ophalen
   upload: Upload
   url: URL
   user: Gebruiker
@@ -102,6 +114,11 @@ generic:
   value: Waarde
   version: Versie
   yes: "Ja"
+  isRequired: is vereist
+  readOnly: Alleen lezen
+  readWrite: Lezen/schrijven
+  writeOnly: Alleen schrijven
+  full: Volledig
 realmNames:
   all: Alle
   usWest: US West
@@ -141,8 +158,10 @@ accountsPage:
     table:
       id: ID
       kind: Soort
+      username: Gebruikersnaam
       identity: Identiteit
       noData: Er zijn nog geen gebruikers
+      noMatch: Geen gebruikers gevonden die overeenkomen met de zoekopdracht
       noName: Geen
   new:
     header: Gebruiker toevoegen
@@ -150,6 +169,7 @@ accountsPage:
       usernameReq: Gebruikersnaam is vereist.
       usernameInExists: Gebruikersnaam is al in gebruik. Kies een nieuwe gebruikersnaam.
       pwReq: Wachtwoord is vereist.
+      role: Nieuwe gebruikers moeten een rol hebben. Selecteer een rol in de lijst.
     form:
       username:
         labelText: Gebruikersnaam
@@ -166,18 +186,96 @@ accountsPage:
         placeholder: "bijv. Deze account is van Jan Jansen"
   modal:
     password: Wachtwoord wijzigen
+appDetailPage:
+  header: "Toepassing: {appName}"
+  endpoints:
+    title: Eindpunten
+    detail: 'Publieke eindpunten van deze toepassing'
+    endpoint: Eindpunt
+    protocol: Protocol
+    noData: Er zijn geen openbare eindpunten voor deze toepassing gemaakt.
+    noMatch: Geen eindpunten gevonden die overeenkomen met de zoekopdracht.
+  answers:
+    title: Antwoorden
+    detail: Aangepaste antwoorden van deze toepassing
+    variable: Variabele
+  notes:
+    title: Aantekeningen
+    detail: 'Instructies voor het gebruik van deze toepassing'
+  workloads:
+    title: Workloads
+    detail: Workloads gemaakt voor deze applicatie.
+    nodata: Voor deze toepassing zijn geen workloads gemaakt.
+  ingress:
+    title: Ingress-regels
+    detail: Ingress-regels gemaakt voor deze toepassing.
+    nodata: Voor deze toepassing zijn geen ingress-regels gemaakt.
+  services:
+    title: Services
+    detail: Services gemaakt met deze toepassing
+    nodata: Geen services zijn gemaakt voor deze toepassing.
+  volumes:
+    title: Volumes
+    detail: Persistente volume claims gemaakt met deze toepassing
+    nodata: Geen volume claims gemaakt voor deze toepassing.
+  configMaps:
+    title: Configuratiesets
+    detail: Configuratiesets gekoppeld aan deze toepassing
+    nodata: De toepassing heeft geen configuratiesets
+  secrets:
+    title: Geheimen
+    detail: Geheim gekoppeld aan deze toepassing
+    nodata: Deze toepassing heeft geen geheimen
 podSecurityPoliciesPage:
   index:
+    header: Pod-beveiligingsbeleid
+    description: Beleid toepassen op pods gemaakt door een gebruiker met deze rol
     table:
       name: Naam
+      created: Gemaakt
+      noData: Er is geen pod beveiligingsbeleid gedefinieerd
+      noMatch: Geen pod beveiligingsbeleid gevonden dat overeenkomt met de zoekopdracht
+  addPodSecurityPolicy: Beleid toevoegen
+  editPodSecurityPolicy: Beleid bewerken
+  detail:
+    header: Beleid
+  saveEdit: Bewerken
+  saveNew: Aanmaken
   new:
     errors:
       nameReq: Naam is verplicht.
+      nameInExists: Naam bestaat al. Gebruik een nieuwe naam voor het pod beveiligingsbeleid.
+    form:
+      name:
+        labelText: Naam
+        placeholder: "bijv. beleid"
 rolesPage:
+  title: Rol
+  headers:
+    global: Globaal
+    cluster: Clusters
+    project: Projecten
   index:
+    localLink: Rol toevoegen
     table:
+      builtin: Ingebouwd
+      created: Gemaakt
+      enabled: Geactiveerd
+      name: Naam
+      noData: Er zijn nog geen rollen
+      noMatch: Geen rollen gevonden die overeenkomen met de zoekopdracht
       subjectKind: Soort
       template: Sjabloon
+      global: Nieuwe gebruiker standaard
+      cluster: Clustermaker standaard
+      project: Projectmaker standaard
+      showDefaults: Toon standaardwaarden
+    errors:
+      inherited: "Rol {displayName} wordt overgeërfd door: {roleNames}"
+  inherit:
+    title: Overerven van een rol
+    detail: Alle permissies van andere rol overnemen
+  addRole: "Rol {context} toevoegen"
   editRole: Rol bewerken
   saveEdit: Bewerken
   saveNew: Maak aan
@@ -188,12 +286,20 @@ rolesPage:
       nameInExists: Naam is al bestaat. Gebruik een nieuwe rolnaam.
       ruleResourceReq: Resource is vereist voor een regel.
       roleTemplate: Rol sjabloon is vereist.
+      noSelectedRoles: Selecteer ten minste één rol voor deze gebruiker.
+      roleAlreadyExists: De gebruiker heeft al de "{key}" rol.
     form:
       name:
         labelText: Naam
         placeholder: "bijvoorbeeld ontwikkelaars"
       context:
         labelText: Context
+        detail: Welke scopes deze rol geschikt is om getoond te worden.
+      locked:
+        labelText: Vergrendeld
+        detail: Dit heeft geen invloed op bestaande koppelingen met de rol.
+        enabled: "Ja: Nieuwe koppelingen mogen deze rol niet gebruiken"
+        disabled: "Nee"
       allow:
         create: Maak aan
         delete: Verwijder
@@ -206,13 +312,98 @@ rolesPage:
         labelText: Toestaan
         resource: Document
         addAction: Bestand toevoegen
+      otherRole:
+        labelText: Andere rollen toevoegen
+        role: Rol
+        addAction: Rol toevoegen
+      policy:
+        policy: Beleid
+        addAction: Beleid toevoegen
+      default:
+        global: Nieuwe gebruiker standaard
+        cluster: Clustermaker standaard
+        project: Projectmaker standaard
+        enabled:
+          global: "Ja: standaardrol voor nieuwe gebruikers"
+          cluster: "Ja: standaardrol voor het maken van nieuwe clusters"
+          project: "Ja: standaardrol voor het maken van nieuwe projecten"
+        disabled: "Nee"
 apiPage:
+  header: API & Sleutels
+  actionButton: Sleutel toevoegen
   currentEndpoint: 'Eindpunt:'
+  detail: API-sleutels zijn gekoppeld aan je specifieke gebruiker ({name}) en kunnen alle clusters en projecten bewerken waartoe je toegang hebt.
   table:
     state: Status
+    name: Toegangssleutel
     description: Omschrijving
+    scope: Bereik
     created: Aangemaakt
+    expires:
+      label: Verloopt
+      never: Nooit
+    noData: Er zijn geen API-sleutels gedefinieerd
 authPage:
+  saml:
+    accessEnabled:
+      header: Authenticatie
+      disable: Toegangsbeheer uitschakelen
+    header:
+      disabled:
+        label: "{providerName} is niet geconfigureerd"
+    enabled:
+      authenticated:
+        header:
+          text: Verificatie
+      groupsField: 'Groepen:'
+      displayName: 'Weergavenaam:'
+      userName: 'Gebruikersnaam:'
+      userId: 'Gebruikers-ID:'
+    disabled:
+      header: '1. Configureer {providerName} account'
+      headerDetail: 'Voer je {providerName} accountgegevens in'
+      label: "{providerName} is niet geconfigureerd"
+      name:
+        labelText: Weergavenaam veld
+        display: "Weergavenaam veld:"
+      username:
+        labelText: Gebruikersnaam veld
+        display: "Gebruikersnaam veld:"
+      uid:
+        labelText: UID veld
+        display: "UID veld:"
+      rancherApiHost:
+        labelText: "{appName} API Host"
+        display: "{appName} API Host:"
+      groups:
+        labelText: Groepsveld
+        display: "Groepsveld:"
+      testAuth:
+        header: '2. Authenticatie testen en activeren'
+        subtext: 'Controleer of uw toepassing correct is geconfigureerd door de authenticatie te testen:'
+    providerName:
+      ping: Ping
+      adfs: AD FS
+      keycloak: Keycloak
+      okta: Okta
+    authError: 'Toegang niet geautoriseerd'
+    popupError: 'Schakel alstublieft uw pop-upblokkering uit en klik nogmaals op "Verifiëren".'
+  ping:
+    buttonText:
+      pre: 'Verifiëren met Ping'
+      post: Wacht op antwoord van IDP
+  keycloak:
+    buttonText:
+      pre: 'Verifiëren met Keycloak'
+      post: Wacht op antwoord van IDP
+  adfs:
+    buttonText:
+      pre: 'Verifieer met AD FS'
+      post: Wacht op antwoord van IDP
+  okta:
+    buttonText:
+      pre: 'Verifiër met Okta'
+      post: Wacht op antwoord van IDP
   shibboleth:
     enabled:
       authenticated:
@@ -221,16 +412,28 @@ authPage:
       disableAccess:
         header: "Gevarenzone&trade;"
         warning: '<b class="text-danger">Opgelet:</b>Toegangsbeheer uitschakelen geeft volledige toegang tot {appName} aan iedereen die deze pagina kan bereiken of de API.'
-        confirmDisable: "Weet U het zeker? Klik nogmaals om toegangsbeheer echt uit te schakelen"
         disable: Toegangsbeheer uitschakelen
       groupsField: 'Groepen:'
       displayName: 'Weergavenaam:'
       userName: 'Gebruikersnaam:'
+      userId: 'Gebruikers ID:'
     disabled:
       header: '1. Configureer Shibboleth Account'
       label: "{providerName} is niet geconfigureerd"
+      name:
+        labelText: Weergavenaam veld
+      username:
+        labelText: Gebruikersnaam veld
+      uid:
+        labelText: UID veld
+      groups:
+        labelText: Groepsveld
       testAuth:
         header: '2. Testen en activeer authenticatie'
+        subtext: 'Controleer of uw toepassing correct is geconfigureerd door de authenticatie te testen:'
+        buttonText:
+          pre: Authenticeer met IDP
+          post: Wachten om terug te horen van IDP
     providerName:
       shibboleth: Shibboleth
   root:
@@ -244,34 +447,106 @@ authPage:
     authenticated:
       header:
         text: Authenticatie
+        enterpriseHostName: "Enterprise Host:"
+        clientId:
+          text: "Client ID:"
+          helpText: "Om de geconfigureerde GitHub applicatie te wijzigen, schakel de toegangscontrole hieronder uit en stel het vervolgens opnieuw in."
       disableAccess:
         header: "Gevarenzone&trade;"
         warning: '<b class="text-danger">Opgelet:</b>Toegangsbeheer uitschakelen geeft volledige toegang tot {appName} aan iedereen die deze pagina kan bereiken of de API.'
-        confirmDisable: "Weet U het zeker? Klik nogmaals om toegangsbeheer echt uit te schakelen"
+        disable: Github toegang uitschakelen
     notAuthenticated:
+      header: "1. Een GitHub applicatie instellen"
+      ul:
+        li1:
+          text: 'Voor standaard GitHub, <a href="https://github.com/settings/developers" target="_blank">klik hier</a> om applicatie instellingen te gaan in een nieuw venster.'
+          ul:
+            li1: "Voor GitHub Enterprise, login in je account. Klik op instellingen en vervolgens op ontwikkelaar instellingen."
+        li2:
+          ul:
+            li2: 'Homepage URL:'
+            li4: 'Autorisatie callback URL:'
+        li3:
+          text: 'Klik op "Registreer applicatie"'
       form:
+        header: '2. Configureer {appName} om uw toepassing te gebruiken voor authenticatie'
+        subtext: 'Kopieer en plak het Client ID en Client secret van uw nieuw aangemaakte applicatie.'
+        clientId:
+          labelText: Client ID
+        clientSecret:
+          labelText: Client secret
+        ghEnterprise:
+          labelText: Gebruik een eigen GitHub Enterprise installatie
         isGHEnterprise:
           labelText: Beveiligde verbinding gebruiken
         enterpriseHost:
+          labelText: Enterprise Host
           placeholder: 'bijv. github.example.com'
+    testAuth:
+      header: '3. Authenticatie testen en activeren'
+      subtext: 'Controleer of uw toepassing correct is geconfigureerd door de authenticatie te testen:'
+      buttonText:
+        pre: Authenticeren met GitHub
+        post: Wachten om terug te horen van GitHub
+      authError: 'Github toegang is niet toegestaan'
+      popupError: 'Schakel alstublieft uw pop-upblokkering uit en klik nogmaals op "Authenticeren".'
   azuread:
+    header:
+      disabled:
+        label: "Azure AD is niet geconfigureerd"
     enabled:
       header: 'Gevarenzone&trade;'
-      reallyDisable: 'Weet U het zeker? Klik nogmaals om toegangsbeheer echt uit te schakelen'
       promptDisable: Toegangsbeheer uitschakelen
+      general:
+        header: Algemeen
+    configure:
+      header: 'Azure AD account configureren'
+      replyUrl: "Azure AD vereist een whitelist URL voor uw {appName} server voordat u deze setup begint. Zorg ervoor dat de volgende URL is ingesteld in het Reply URL gedeelte van uw Azure Portal. Let op dat dit tot 5 minuten kan duren totdat de whitelist URL toegepast is."
+      help: Voer de Tenant ID, Client ID en Admin gebruikersgegevens in om verbinding te maken met uw Azure AD-auth account.
+      applicationId:
+        label: Applicatie ID
+        placeholder: Een lange UUID-string
+      applicationSecret:
+        label: Applicatie Secret
+      serverURL:
+        label: Rancher Server Url
+      azureADEndpoint:
+        label: Endpoint
+      tenantId:
+        help: Van de Azure AD-portal
     test:
+      header: 'Test en activeer authenticatie'
+      help: 'Controleer of alles correct is geconfigureerd door de authenticatie te testen met uw account:'
       username:
+        label: Login Gebruikersnaam
         placeholder: 'bijv. jjansen'
+      password:
+        label: Login Wachtwoord
+      pre: Authenticeer met Azure
+      post: Wacht op antwoord van Azure
+      authError: 'Azure-toegang is niet geautoriseerd'
+      popupError: 'Schakel alstublieft uw pop-upblokkering uit en klik nogmaals op "Verifiëren".'
   localAuth:
+    header:
+      enabled: 'Lokale verificatie is ingeschakeld'
+      disabled: 'Lokale verificatie is niet geconfigureerd'
+    subtext:
+      enabled:
+        text: '{appName} is geconfigureerd om toegang tot accounts in de lokale database toe te staan.'
+        alwaysOn: 'Lokale verificatie is altijd ingeschakeld, maar je kunt nog een extra verificatieschema selecteren.'
+        linkText: Accounts beheren
+      disabled: '{appName} kan worden geconfigureerd om de toegang te beperken tot een reeks accounts die in de database {appName} is gedefinieerd. Dit is momenteel niet ingesteld, dus iedereen die deze pagina (of de API) bereikt, heeft volledige controle over het systeem.'
     accessEnabled:
       header: 'Gevarenzone&trade;'
       warning: '<b class="text-danger">Opgelet:</b>Toegangsbeheer uitschakelen geeft volledige toegang tot {appName} aan iedereen die deze pagina kan bereiken of de API.'
       buttonText:
-        disable: 'Weet U het zeker? Klik nogmaals om toegangsbeheer echt uit te schakelen'
         prompt: Toegangsbeheer uitschakelen
     accessDisabled:
+      header: '1. Stel een beheerder in'
+      helpText: 'Deze gebruiker wordt beheerder met volledige controle over {appName}.'
       form:
         login:
+          labelText: Login Gebruikersnaam
           placeholder: 'bijv. jjansen'
         name:
           labelText: Volledige Naam
@@ -282,20 +557,159 @@ authPage:
           labelText: Wachtwoord bevestigen
     accessControl:
       header: '2. Toegangsbeheer inschakelen'
+      helpText: 'Klik om toegangscontrole in te schakelen en in te loggen.'
+      buttonText:
+        pre: Lokale authenticatie inschakelen
+        post: 'Inschakelen...'
+backupsPage:
+  header: etcd Snapshots
+  detail: enz. snapshots, indien ingeschakeld, zijn periodieke snapshots van clusters gemaakt met vooraf gedefinieerde intervallen die kunnen worden gebruikt om clusters naar een vorige versie te herstellen.
+  table:
+    state: Status
+    target:
+      label: Doel
+      s3: S3
+      local: Lokaal
+    name: Naam
+    created: Aangemaakt
+    noData: Er zijn geen etcd snapshots
+balancerPage:
+  noMatch: Er zijn geen balancers die overeenkomen met de huidige zoekopdracht
+  noData: Er zijn geen balancers om te tonen.
+  table:
+    target: Doel
+catalogPage:
+  index:
+    header: Catalogus
+    refreshBtn: Vernieuwen
+    allCatalogs: Alle catalogi
+    allCategories: Alle categorieën
+    manage: Beheren
+    search:
+      label: Zoeken
+    filters:
+      label: Catalogusfilter
+    certified:
+      rancher:
+        rancher: Rancher Labs
+        partner: Partner
+      pl:
+        rancher: Kern
+        partner: Partner
+    noData:
+      singular: Er zijn geen geschikte sjablonen.
+      plural: Er zijn geen geschikte sjablonen in deze catalogus.
+    action:
+      launch: Details bekijken
+      notCompatible: Niet geschikt
+      alreadyDeployed: Reeds uitgerold
+cloudCredentialsPage:
+  header: Cloud-referenties
 certificatesPage:
+  detail:
+    header: 'Certificaat: {name}'
   index:
     header: Certificaten
+    linkTo: Certificaat toevoegen
   new:
     form:
       name:
         placeholder: bijv. mijndomein.nl
       description:
         placeholder: bijv. EV certificaat voor mijndomein.nl
+projectsListNamespacePage:
+  current: In dit project
+projectsPage:
+  header: Projecten / Namespaces
+  headerNS: Namespaces
+  addProject: Project toevoegen
+  editProject: Project bewerken
+  noMatch: Geen projecten gevonden die overeenkomen met de zoekopdracht.
+  noData: Voor dit cluster zijn geen projecten gedefinieerd
+  groups:
+    none: Namespaces weergeven
+    namespaces: Gegroepeerde projecten/namespaces
+  quota:
+    label: Resource Quota
+  ns:
+    label: Namespace naam
+    placeholder: bijv. lab
+  name:
+    label: Projectnaam
+    placeholder: bijv. lab
+  created:
+    label: Aangemaakt
+  psp:
+    label: Pod-beveiligingsbeleid
+  resourceQuota:
+    title: Resource quota
+clustersPage:
+  version:
+    label: Versie
+  nodes:
+    label: Nodes
+  cpu:
+    label: CPU
+  memory:
+    label: RAM
+containerPage:
+  header: 'Container: {name}'
+  initContainer:
+    label: initContainer
+  envTab:
+    header: Omgevingsvariabelen
+    detail: 'Omgevingsvariabelen die tijdens het creëren zijn toegevoegd.'
+  portsTab:
+    header: Poorten
+    detail: 'Koppelingen van containerluisterpoorten naar hostpoorten op openbare IP-adressen'
+    hostPrimaryIp: '({ip})'
+  linksTab:
+    header: Links
+    detail: 'Deze eigenschappen geven de verbindingen tussen de containers in deze container.'
+    noData: Deze container heeft geen koppelingen
+  volumesTab:
+    header: Volumes
+    detail: 'Deze eigenschappen tonen de volumes die aan uw container zijn gekoppeld.'
+    table:
+      path: Mount point
+      shared: Gedeeld met
+      writable: Schrijfbaar
+      noData: Deze container heeft geen volumes gekoppeld
+      noMatch: Geen volumes die voldoen aan de huidige zoekopdracht
+      noContainers: Geen overige containers
+  pod: Pod
+podPage:
+  header: 'Pod: {name}'
+  nodeIp: Node
+  podIp: Pod IP
+  containerImage: 'Image van {container}'
+  image: Image
+  displayImage: '{image} + {sidecar, plural, =1 {1 image} other {# images}}'
+containersPage:
+  table:
+    sparkPrefixCpu: "CPU: "
+    sparkPrefixMemory: "Geheugen: "
+    sparkPrefixNetwork: "Netwerk: "
+    sparkPrefixStorage: "Opslag: "
+    noData: Er zijn geen containers om te tonen.
+    noMatch: Geen containers gevonden die overeenkomen met de zoekopdracht.
+  welcome:
+    containerLink: Een container toevoegen
+dnsPage:
+  table:
+    target: Doel
 editDns:
   name:
     placeholder: bijv. myapp
+  description:
+    placeholder: bijv. huidige versie van MyApp
 failWhalePage:
   header: Fout
+  reloadButton: |
+    <a href="#" onclick="window.location.href = window.location.href; return false;">Opnieuw laden</a> om nog een keer te proberen of
+  logoutButton: Afmelden
+haPage:
+  header: Hoge beschikbaarheid
 hostsPage:
   cloudHostsPage:
     addPage:
@@ -374,6 +788,68 @@ catalogSettings:
       placeholder: bijv. mijncatalogus
     branch:
       placeholder: 'bijv. master'
+clusterNew:
+  aliyunkcs:
+    clusters:
+      k8s: Kubernetes
+      managed: Managed Kubernetes
+      label: Cluster type
+    master:
+      title: Master nodes
+      detail: Configureer de master nodes die gebruikt zullen worden om Alibaba Kubernetes Service te starten
+      next: "Volgende: Worker Nodes configureren"
+      loading: "Sleutelparen van Alibaba laden"
+    worker:
+      title: Worker Nodes
+      detail: Configureer de worker nodes die gebruikt zullen worden om Alibaba Kubernetes Service te starten
+    disk:
+      efficiency: Ultra Disk
+      ssd: SSD schijf
+    rootSize:
+      label: Root schijfgrootte
+      placeholder: bijv. 120
+    rootType:
+      label: Root schijftype
+    storageType:
+      label: Data schijftype
+    storageSize:
+      label: Data schrijfgrootte
+      placeholder: bijv. 120
+    masterNum:
+      label: Aantal Master nodes
+      help: Het aantal master nodes wordt gestart in dit Kubernetes-cluster
+    numOfNodes:
+      label: Aantal Worker nodes
+      placeholder: bijv. 3
+      required: Aantal Worker nodes is vereist
+      help: Het aantal worker nodes wordt gestart in dit Kubernetes-cluster
+    keyPair:
+      label: Sleutelpaar
+      required: Sleutelpaar is verplicht
+    regionId:
+      label: Regio
+    accessKeyId:
+      label: Toegangssleutel
+      placeholder: Uw Aliyun toegangssleutel
+      required: Toegangssleutel is vereist
+    accessKeySecret:
+      label: Geheime sleutel
+      placeholder: Uw Aliyun geheime sleutel
+  googlegke:
+    enablePrivateNodes:
+      label: Eigen cluster
+    masterIpv4CidrBlock:
+      label: Master IP reeks
+      placeholder: bijv. 10.42.0.0/28
+    useIpAliases:
+      label: Gebruik IP aliassen
+    ipPolicySubnetworkName:
+      label: Subnetwerk naam
+      placeholder: Uw subnetwerk naam
+    ipPolicyCreateSubnetwork:
+      label: Subnetwerk aanmaken
+    ipPolicyClusterIpv4CidrBlock:
+      placeholder: bijv. 10.96.0.0/11
 containerLogs:
   stderr: Standaardfout
 containerShell:
@@ -555,7 +1031,7 @@ nodeDriver:
   amazoneks:
     associateWorkerNodePublicIp:
       radio:
-        default: "Yes"
+        default: true
 pageFooter:
   help: 'Hulp & Documentatie'
 telemetryOpt:

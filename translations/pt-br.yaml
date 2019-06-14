@@ -10,6 +10,7 @@ generic:
   any: Qualquer
   application: aplicação
   as: como
+  back: Voltar
   cancel: Cancelar
   closeModal: Fechar
   cluster: Cluster
@@ -38,12 +39,16 @@ generic:
   entrypoint: Ponto de entrada
   environment: Ambiente
   expandAll: Expandir tudo
+  experimental: "(experimental)"
   from: de
+  false: 'Falso'
   generic: 'Genérico'
   gigabyte: 'GB'
   hardware: Hardware
   healthy: Sem erros
   help: Ajuda
+  hostname: Nome do servidor
+  hours: horas
   id: Identificador
   image: Imagem
   import: Importar
@@ -55,6 +60,7 @@ generic:
   loading: "Carregando..."
   loggingOut: "Fazendo logout..."
   member: Membro
+  mbps: Mbps
   mibibyte: 'MiB'
   minutes: minutos
   milliseconds: 'Milissegundos'
@@ -72,6 +78,7 @@ generic:
   owner: Proprietário
   paste: Colar
   pod: pods
+  podRestarts: Reinícios de Pod
   port: Porta
   ports: Portas
   prefix: prefixo
@@ -80,10 +87,12 @@ generic:
   persistentVolume: volume persistente
   random: Aleatório
   remove: Remover
+  restarts: Reinicia
   role: Função
   save: Salvar
   saved: Salvo
   saving: Salvando
+  scope: Escopo
   search: Busca
   searchOrCustomInput: Procure ou insira seu valor personalizado.
   searching: 'Procurando...'
@@ -98,6 +107,7 @@ generic:
   testing: Testando
   to: Para
   total: Total
+  true: 'Verdadeiro'
   type: Tipo
   unknown: Desconhecido
   unknownUser: Não é possível buscar informações do usuário
@@ -108,6 +118,11 @@ generic:
   value: Valor
   version: Versão
   yes: "Sim"
+  isRequired: é obrigatório
+  readOnly: Somente Leitura
+  readWrite: Leitura Escrita
+  writeOnly: Somente Escrita
+  full: Completo
 realmNames:
   all: Todos
   usWest: Oeste dos EUA
@@ -184,6 +199,10 @@ appDetailPage:
     protocol: Protocolo
     noData: Nenhum endpoint público foi criado para este aplicativo.
     noMatch: Nenhum endpoint público corresponde à pesquisa atual.
+  answers:
+    title: Respostas
+    detail: Respostas personalizadas desta aplicação
+    variable: Variável
   notes:
     title: Observações
     detail: 'Instruções sobre como usar este aplicativo'
@@ -236,6 +255,10 @@ podSecurityPoliciesPage:
         placeholder: "ex: política"
 rolesPage:
   title: Função
+  headers:
+    global: Global
+    cluster: Clusters
+    project: Projetos
   index:
     localLink: Adicionar Função
     table:
@@ -251,6 +274,8 @@ rolesPage:
       cluster: Padrão do Criador de Cluster
       project: Padrão do Criador do Projeto
       showDefaults: Mostrar apenas padrões
+    errors:
+      inherited: "Papel {displayName} é herdada por: {roleNames}"
   resources:
     title: Conceder recursos
     detail: Conceder acesso a operações específicas nos recursos Kubernetes
@@ -268,6 +293,8 @@ rolesPage:
       nameInExists: O nome já existe. Por favor, use um novo nome de função.
       ruleResourceReq: Recurso é necessário para uma regra.
       roleTemplate: Modelo de papéis é obrigatório.
+      noSelectedRoles: Por favor, selecione pelo menos um papel para este usuário.
+      roleAlreadyExists: O usuário já tem o papel "{key}".
     form:
       name:
         labelText: Nome
@@ -317,6 +344,7 @@ apiPage:
     state: Estado
     name: Chave de Acesso
     description: Descrição
+    scope: Escopo
     created: Criado
     expires:
       label: Expira
@@ -364,6 +392,7 @@ authPage:
       ping: Latência
       adfs: Active Directory
       keycloak: Keycloak
+      okta: Okta
     authError: 'O acesso não foi autorizado'
     popupError: 'Por favor, desabilite seu bloqueador de pop-up e clique em "Autenticar" novamente.'
   ping:
@@ -378,6 +407,10 @@ authPage:
     buttonText:
       pre: 'Autenticar com Active Directory'
       post: Esperando resposta do IDP
+  okta:
+    buttonText:
+      pre: 'Autenticar com Okta'
+      post: Esperando resposta do IDP
   shibboleth:
     enabled:
       authenticated:
@@ -386,7 +419,6 @@ authPage:
       disableAccess:
         header: "Zona perigosa&trade;"
         warning: '<b class="text-danger">Cuidado:</b> Desativar o controle de acesso dará controle total sobre {appName} a qualquer pessoa que possa acessar esta página ou a API.'
-        confirmDisable: "Você tem certeza? Clique novamente para realmente desabilitar o controle de acesso"
         disable: Desativar o controle de acesso
       groupsField: 'Grupos:'
       displayName: 'Exibir Nome:'
@@ -429,7 +461,6 @@ authPage:
       disableAccess:
         header: "Zona Perigosa&trade;"
         warning: '<b class="text-danger">Cuidado:</b> A desativação de controle de acesso dará o controle completo sobre {appName} a qualquer um que pode chegar a esta página ou a API.'
-        confirmDisable: "Você tem certeza?  Clique novamente para realmente desativar o controle de acesso"
         disable: Desabilitar acesso ao GitHub
     notAuthenticated:
       header: "1. Configurar um aplicativo GitHub"
@@ -475,7 +506,6 @@ authPage:
         label: "O Azure AD não está configurado"
     enabled:
       header: 'Zona Perigosa&trade;'
-      reallyDisable: 'Você tem certeza?  Clique novamente para realmente desativar o controle de acesso'
       promptDisable: Desativar controle de acesso
       general:
         header: Geral
@@ -534,7 +564,6 @@ authPage:
       header: 'Zona Perigosa&trade;'
       warning: '<b class="text-danger">Cuidado:</b> A desativação de controle de acesso dará o controle completo sobre {appName} a qualquer um que pode chegar a esta página ou a API.'
       buttonText:
-        disable: 'Você tem certeza?  Clique novamente para realmente desativar o controle de acesso'
         prompt: Desativar controle de acesso
     accessDisabled:
       header: '1. Configurar um usuário Admin'
@@ -556,6 +585,18 @@ authPage:
       buttonText:
         pre: Ativar Autenticação local
         post: 'Ativando...'
+backupsPage:
+  header: Snapshots do etcd
+  detail: snapshots do etcd, se ativadas, serão feitas periodicamente em intervalos predefinidos que podem ser usados para restaurar clusters de uma versão anterior.
+  table:
+    state: Estado
+    target:
+      label: Alvo
+      s3: S3
+      local: Local
+    name: Nome
+    created: Criado
+    noData: Não há snapshots do etcd
 balancerPage:
   noMatch: Nenhum balanciador corresponde à pesquisa atual
   noData: Nenhuma alteração a mostrar.
@@ -586,6 +627,17 @@ catalogPage:
       launch: Ver Detalhes
       notCompatible: Não compatível
       alreadyDeployed: Já implantado
+cloudCredentialsPage:
+  header: Credenciais de nuvem
+  rightButtons:
+    addKey: Adicionar credencial de nuvem
+    nodeTemplates: Gerenciar modelos de nós
+  index:
+    table:
+      noData: Ainda não há credenciais na nuvem
+      noMatch: Nenhuma credencial de nuvem corresponde à pesquisa atual
+clusterCatalogPage:
+  header: Catálogos
 certificatesPage:
   cn: Nome do domínio
   expiresDate: Expira
@@ -693,6 +745,9 @@ projectsPage:
   resourceQuota:
     title: Cotas de Recursos
     detail: Configurar quanto dos recursos o projeto pode consumir
+  containerDefaultLimit:
+    title: Limite de Recursos Padrão do Container
+    detail: Configurar quanto dos recursos o contêiner pode consumir por padrão
   members:
     title: Membros
     detail: Configurar quem tem acesso aos recursos neste projeto e o que eles têm permissões
@@ -749,6 +804,8 @@ ingressPage:
     noData: Não há regras de Balanceadores de Carga definidas
 containerPage:
   header: 'Recipiente: {name}'
+  initContainer:
+    label: initContainer
   envTab:
     header: Variáveis de Ambiente
     detail: 'Variáveis ​​de ambiente que foram adicionadas na criação.'
@@ -770,6 +827,7 @@ containerPage:
       noData: Este contêiner não tem volumes montados
       noMatch: Nenhum volume corresponde a pesquisa atual
       noContainers: Não há outros recipientes
+  pod: Pod
 podPage:
   header: 'Nó: {name}'
   nodeIp: IP do nó
@@ -794,6 +852,46 @@ clusterDashboard:
   systemProject: Este é o projeto do sistema que possui todos os namespaces do sistema Kubernetes e {appName}. As alterações feitas nos recursos do projeto do sistema podem prejudicar o grupo.
   notActive: Este cluster está atualmente em <b>{state}</b>.
   notReady: Este cluster está atualmente <b>{state}</b>; áreas que interagem diretamente com ele não estarão disponíveis até que a API esteja pronta.
+  used: Usado
+metricsAction:
+  description: Expandir para ver métricas ao vivo
+  noData: Dados insuficientes para gráfico
+  sections:
+    workload: Métricas de carga de trabalho
+    pod: Métricas do Pod
+    container: Métricas do contêiner
+  grafana:
+    label: Grafana
+  summary:
+    label: Resumo
+  detail:
+    label: Detalhe
+  from:
+    label: De
+  to:
+    label: Para
+  periods:
+    custom: Personalizado
+    5m: 5 minutos
+    1h: 1 hora
+    6h: 6 horas
+    24h: 24 horas
+    7d: 7 dias
+    30d: 30 dias
+metrics:
+  workload-cpu-usage: Utilização da CPU
+  workload-disk-io: I/O de Disco
+  workload-memory-usage-bytes-sum: Utilização de Memória
+  workload-network-io: I/O de rede
+  workload-network-packet: Pacotes de rede
+  pod-cpu-usage: Utilização da CPU
+  pod-disk-io: I/O de disco
+  pod-memory-usage-bytes-sum: Utilização de Memória
+  pod-network-io: I/O de rede
+  pod-network-packet: Pacotes de rede
+  container-cpu-usage: Utilização da CPU
+  container-disk-io: I/O de Disco
+  container-memory-usage-bytes-sum: Utilização de Memória
 dnsPage:
   noMatch: Nenhum registro corresponde à pesquisa atual
   noData: Não há registros DNS para mostrar
@@ -810,11 +908,46 @@ dnsPage:
     clusterIpDetail: 'IP de Cluster: {ip}'
 editDns:
   title:
-    new: Adicionar registo
+    new: Adicionar registro
     edit: Editar registro
     view: "Registro: {name}"
   name:
     placeholder: p.ex. meuapp
+  sessionAffinity:
+    title: Afinidade de Sessão
+    detail: Mapeie as conexões para um destino consistente baseado em seu IP de origem
+    label: Ativar afinidade de sessão
+  externalIPs:
+    addActionLabel: Adicionar IP externo
+    placeholder: ex. 80.11.12.10
+    value: IPs Externos
+  loadBalancerIP:
+    label: IP do balanceador de carga
+    placeholder: ex. 78.11.24.19
+  loadBalancerSourceRanges:
+    addActionLabel: Adicionar intervalo de origem
+    placeholder: ex. 143.231.0.0/16
+    value: Intervalos de fonte de balanceador de carga
+  healthCheckNodePort:
+    label: Porta da Verificação de Saúde do Nó
+    placeholder: ex. 8080
+  externalTrafficPolicy:
+    label: Política de Tráfego Externo
+    local: Local
+    cluster: Cluster
+  publishNotReadyAddresses:
+    label: Endereços IP Publicados
+    readyOnly: Apenas endpoints ativos
+    all: Todos os endpoints
+  sessionAffinityConfig:
+    placeholder: ex. 10800
+  kind:
+    label: Como
+    clusterIP: IP de cluster (somente interno)
+    loadBalancer: Balanceamento de Carga Layer-4
+    nodePort: NodePort (em todos os nós)
+    externalName: ExternalName
+    headless: Serviço headless
   description:
     placeholder: Por exemplo, versão atual do MeuApp
   selector:
@@ -828,6 +961,7 @@ editDns:
     alias: Apelido do valor de outro registro de DNS
     workload: Uma ou mais cargas de trabalho
     selector: O conjunto de núcleos, que correspondem a um seletor
+    clusterIp: "IP do Cluster"
   target:
     arecord: Endereços IP de destino
     cname: Nome do Servidor de destino
@@ -873,6 +1007,45 @@ cruPersistentVolumeClaim:
   storageClass:
     label: Classe de Armazenamento
     prompt: Use a classe padrão
+cruVolumeClaimTemplate:
+  title:
+    define: Definir Modelo de Requisição de Volume
+    new: Adicionar modelo de requisição de volume
+    edit: "Editar modelo de Volume Claim: {name}"
+    view: "Modelo de Volume Claim: {name}"
+  define:
+    addActionLabel: Definir
+  capacity:
+    label: Capacidade
+    unit: GiB
+  name:
+    placeholder: ex. meuvol
+  source:
+    label: Fonte
+    pv: Use um volume persistente existente para definir um modelo
+    storageClass: Use uma Storage Class para definir um modelo
+  pv:
+    label: Volume Persistente
+    prompt: Selecione um volume persistente...
+  storageClass:
+    label: Classe de Armazenamento
+    prompt: Use a classe padrão
+  customize:
+    title: Personalizar
+    detail: Personalizar Opções Avançadas
+cruPrivateRegistry:
+  title:
+    label: Registry Prívado
+  defaultError: Você deve designar um registry privado como o padrão
+  add:
+    label: Adicionar registry privado
+  registry:
+    user:
+      label: Usuário
+    password:
+      label: Senha
+    url:
+      label: URL
 cruVolume:
   sourcePrompt: Escolha uma fonte de volume acima...
   title:
@@ -886,6 +1059,72 @@ cruVolume:
     title: Configuração De Origem
     detail: Configurar opções para a origem de volume selecionada
     prompt: Escolha uma fonte de volume...
+globalDnsPage:
+  header: Entradas de DNS globais
+  newDns: Adicionar entrada de DNS
+  noDnsMatch: Nenhuma entrada de DNS corresponde à pesquisa atual.
+  noDnsData: Ainda não há entradas DNS globais.
+  newProvider: Adicionar provedor de DNS
+  noDnsProviderMatch: Nenhuma provedor de DNS corresponde à pesquisa atual.
+  noDnsProviderData: Ainda não há provedores de DNS globais.
+  noProjects: Não existem projetos para selecionar
+  noProviders: Nenhum provedor acessível
+  entriesPage:
+    access:
+      noAccessMulti: Você não tem acesso ao app de destino
+      noAccessProvider: Você não tem acesso ao provedor
+      noAccessProject: Você não tem acesso ao projeto alvo
+    table:
+      name: Nome
+      fqdn: FQDN
+      target: Destino
+      provider: ID do Provedor
+    config:
+      title: Configurar entrada DNS
+      detail: Forneça detalhes da sua configuração para adicionar uma nova entrada de DNS Global
+      configType: Resolve Para
+      project: Projetos
+      fqdn:
+        label: FQDN
+        placeholder: dev.exemplo.com
+      multiCluster:
+        add:
+          label: Adicionar Destino
+      provider:
+        label: Provedor
+        placeholder: Selecione o provedor
+      projects:
+        label: Projeto Alvo
+      ttl:
+        label: DNS TTL
+  providersPage:
+    title: Provedores de DNS Globais
+    options:
+      title: Opções de provedor
+      detail: Personalizar opções para o provedor de DNS
+    members:
+      title: Acesso de membro
+      detail: Controle quem tem acesso ao recurso
+    table:
+      name: Nome
+      provider: Nome do Provedor
+      rootDomain: Domínio Raiz
+    config:
+      root:
+        label: Domínio Raiz
+        placeholder: Seu domínio principal
+      accessKey:
+        label: Chave de Acesso
+        placeholder: Sua chave de acesso
+      secretKey:
+        label: Chave Secreta
+        placeholder: Sua chave secreta
+      apiEmail:
+        label: E-mail da API
+        placeholder: Seu e-mail da API
+      apiKey:
+        label: Chave de API
+        placeholder: Sua chave de API
 failWhalePage:
   header: Erro
   reloadButton: |
@@ -1143,6 +1382,7 @@ servicePage:
     namespace: 'Espaços de nomes:'
     created: 'Criado:'
     daemonSetScale: '1 por nó'
+    currentScale: 'Escala Pronta: {count}'
   serviceType:
     deployment: Implantação
     replicaSet: Conjunto de réplicas
@@ -1235,15 +1475,39 @@ stackPage:
   containers:
     header: Contêineres
     detail: Standalone Containers e Serviços conteinerizados na Stack
+    status: |
+      {count, plural,
+      =0 {Nenhum contêiner}
+      =1 {# contêiner}
+      other {# contêineres}
+      }
   loadBalancers:
     header: Balanceadores de carga
     detail: 'Load Balancer containers que estão separados dessa pilha'
+    status: |
+      {count, plural,
+      =0 {Nenhum balanceador}
+      =1 {# balanceador}
+      other {# balanceadores}
+      }
   dnsServices:
     header: Entradas de DNS
     detail: 'Balanceadores de carga que estão para além dessa pilha'
+    status: |
+      {count, plural,
+      =0 {Nenhuma entrada}
+      =1 {# entrada}
+      other {# entradas}
+      }
   scalingGroups:
     header: Grupos de dimensionamento
     detail: 'Contêineres existentes neste grupo de dimensionamento'
+    status: |
+      Executar {count, plural,
+      =0 {Nenhum contêiner}
+      =1 {# contêiner}
+      other {# contêineres}
+      }
   volumesTab:
     header: Volumes
     detail: 'Estas propriedades mostram os volumes anexados ao seu recipiente.'
@@ -1265,11 +1529,15 @@ newStack:
     uploadActionLabel: Ler a partir do Disco
     namePlaceholder: Nome do Arquivo
     valuePlaceholder: Conteúdo Do Arquivo
+    protipLabel: Suporta {appName} <code>compose.yml</code>, <code>docker-compose.yml</code> e arquivos de manifesto do Kubernetes
   answers:
     label: Respostas (substituições de variáveis)
     addActionLabel: Adicionar Resposta
 nodeTemplatesPage:
   header: Modelos de Nós
+  rightButtons:
+    actionButton: Adicionar Modelo
+    cloudCredentials: Gerenciar credenciais de nuvem
   detail: Templates de nó são utilizados para implementar nós que formam um Cluster em um provedor de infraestrutura.
   table:
     state: Estado
@@ -1285,6 +1553,7 @@ storageClassPage:
   header: Classe de Armazenamento
   addActionLabel: Adicionar Classe
   noData: Não existem classes de armazenamento definidos
+  noMatch: Nenhuma classe de armazenamento corresponde à pesquisa atual
   provisioner:
     label: Provisionador
   default:
@@ -1293,8 +1562,13 @@ persistentVolumePage:
   header: Volumes Persistentes
   addActionLabel: Adicionar Volume
   noData: Não há volumes persistentes definidos
+  noMatch: Nenhum volume persistente corresponde à pesquisa atual
+  source:
+    label: Fonte
 userPreferencesPage:
+  header: Preferências
   theme:
+    header: Tema
     light: Claro
     auto: Auto
     autoDetail: Auto fará a transição para o escuro das 18h às 6h
@@ -1332,13 +1606,84 @@ notifierPage:
   testedBtnLabel: OK
   testingBtnLabel: Testando
   deleteErrorMessage: 'Notificador {displayName} está em uso por: {alertNames}'
+  notifierTypes:
+    slack: Slack
+    email: E-mail
+    pagerduty: PagerDuty
+    webhook: Webhook
+    wechat: WeChat
+  slack:
+    url: URL
+    urlPlaceholder: ex. https://hooks.slack.com/services/T00000000/B00000000/XXXXXXXXXXXXXXXXXXXXXXXX
+    defaultRecipient:
+      label: Canal padrão
+      helpText: Opcional. Por padrão, as notificações são enviadas para o canal padrão de entrado dos WebHook. Ao configurar um alerta, o canal pode ser substituído.
+    defaultRecipientPlaceholder: 'ex. #exemplo'
+    helpText: |
+      Veja como você <a href="https://slack.com/apps/A0F7XDUAZ-incoming-webhooks" target="_blank" rel="nofollow noopener noreferrer">cria Entrada de WebHooks</a> para o Slack.
+  smtp:
+    server: Servidor SMTP
+    host: Servidor
+    hostPlaceholder: ex. 192.168.1.121
+    port: Porta
+    portPlaceholder: ex. 465
+    sender: Remetente
+    userName: Usuário
+    userNamePlaceholder: 'exemplo: João'
+    password: Senha
+    passwordPlaceholder: Sua Senha
+    defaultRecipient:
+      label: Endereço de entrega padrão
+      helpText: Ao configurar um alerta, o destinatário pode ser substituído.
+    defaultRecipientPlaceholder: ex. admin@exemplo.com
+  pagerduty:
+    serviceKey:
+      label: Chave de integração padrão
+      helpText: Ao configurar um alerta, a chave de integração pode ser substituída.
+    serviceKeyPlaceholder: Sua chave de integração do PagerDuty
+  wechat:
+    recipientType:
+      tag: Tag
+      user: Usuário
+    secret:
+      label: Segredo da Aplicação
+    agent:
+      label: ID do agente da aplicação
+    corp:
+      label: ID da Corporação
+    defaultRecipient:
+      label: Destinatário Padrão
+    secretPlaceholder: O segredo do app
+    agentPlaceholder: ex. 1000003
+    corpPlaceholder: 'ex: wwc0cc3d58f9b021b6'
+    defaultRecipientPlaceholder: ex. 2
+  webhook:
+    url: URL
+    urlPlaceholder: URL do seu webhook
+  testAction:
+    testing: TESTANDO
+    testOk: Configurações validadas.
+    test: TESTE
+  clone: Clonar
+  index:
+    table:
+      created: Criado
+      noMatch: Sem correspondência
 ldap:
+  providerName:
+    openldap: OpenLDAP
+    ad: Active Directory
+    freeipa: FreeIPA
+    saveLabels:
+      openldap: Autenticar com OpenLDAP
+      ad: Autenticar com o Active Directory
   accessEnabled:
     header: Autenticação
     subtext: "Para alterar a configuração do servidor, desativar o controle de acesso abaixo e, em seguida, configurá-lo novamente."
     general:
       header: Geral
       server: "Servidor:"
+      tls: "TLS:"
       serviceAccount: "Conta de Serviço:"
       searchBase: "Base de pesquisa:"
       defaultDomain: "Domínio Padrão:"
@@ -1348,6 +1693,7 @@ ldap:
       login: "Campo Login:"
       name: "Campo Nome:"
       search: "Campo Pesquisar:"
+      searchFilter: "Filtro de Busca:"
       enabled: "Campo ativado:"
       disabledBitMask: "Máscara de bits Desativado:"
     group:
@@ -1355,6 +1701,7 @@ ldap:
       objectClass: "Classe de Objeto:"
       name: "Campo Nome:"
       search: "Campo Pesquisar:"
+      searchFilter: "Filtro de Busca:"
     disable:
       confirmDisable:
         pre: Desativar controle de acesso
@@ -1364,6 +1711,7 @@ ldap:
     subtext2: "{appName} precisa de uma conta de serviço que tenha acesso (somente leitura) a todos os domínios que será capaz de fazer login, para que possamos determinar quais grupos um usuário é membro de quando eles fazem um pedido com uma Chave de API."
     port:
       labelText: Porta
+      checkbox: TLS
     defaultDomain:
       helpText: "Este domínio será usado se um usuário fizer logon sem especificar um."
       labelText: Domínio de logon padrão*
@@ -1371,16 +1719,32 @@ ldap:
   customizeSchema:
     header: "2. Personalizar Esquema"
     helpText: "Se o seu esquema não coincide com o formato padrão do ActiveDirectory, você pode personalizá-lo aqui."
+    cert:
+      labelText: Certificado CA
+      helpText: Se necessário, informe um certificado de CA
+      placeholder: "Colar certificado, começando com -----BEGIN CERTIFICATE-----"
     users:
       header: Usuários
       objectClass:
         labelText: Classe de Objeto
+      login:
+        labelText: Atributo de Login
+      searchFilter:
+        labelText: Filtro de Busca
       disabledBitMask:
         labelText: Máscara de bits Desativado
     groups:
       header: Grupos
       objectClass:
         labelText: Classe de Objeto
+      search:
+        labelText: Atributo de busca
+      searchFilter:
+        labelText: Filtro de Pesquisa
+      groupMemberUser:
+        placeholder: UID
+      groupDN:
+        placeholder: distinguishedName
   testAuth:
     header: "3. Testar e ativar a autenticação"
     helpText: "Verificar se tudo está configurado corretamente pela autenticação de testes com a sua conta {providerName}:"
@@ -1396,7 +1760,58 @@ servicePartial:
     label: Sem contêineres ainda..
     inactive:
       start: Iniciar
+accordionRow:
+  status:
+    none: Nenhum
+    incomplete: Incompleto
+    error: Erro
+    notConfigured: Não Configurado
+    configured: Configurado
+    standard: Padrão
+    custom: Personalizado
+    specific: Especifico
+    any: Qualquer
+    rule: "{count, plural, =1 {#1 Regra} other {# Regras}}"
+advancedSection:
+  showText: Mostrar opções avançadas
+  hideText: Ocultar opções avançadas
+annotationsSection:
+  title: Anotações
+  detail: Metadados chave/valor.
+  key: Chave
+  value: Valor
+  noData: Nenhuma anotação
+  noMatch: Nenhuma anotação corresponde à pesquisa atual
+authorizedEndpoint:
+  fqdn:
+    label: FQDN
+taintsSection:
+  key: Chave
+  value: Valor
+  effect: Efeito
+billingInfo:
+  header: Informações de cobrança
+  noSub: Você não tem um método de pagamento ativo
+  table:
+    title:
+      actions: Ações
+cloudProvider:
+  title: Provedor de Nuvem
+  amazon: Amazon
+  azure: Azure
+  name: Nome do provedor de nuvem
 catalogSettings:
+  header: Catálogos
+  currentCluster: Cluster
+  currentProject: Projeto
+  globalCatalog: Global
+  library:
+    label: Biblioteca
+  helm:
+    stable:
+      label: Helm Estável
+    incubator:
+      label: Helm Incubator
   community:
     header:
       rancher: Contribuição da Comunidade
@@ -1407,6 +1822,158 @@ catalogSettings:
   more:
     header: Mais
     addActionLabel: Adicionar Catálogo
+    name:
+      label: Nome
+    url:
+      label: URL do catálogo
+    kind:
+      label: Tipo
+      native: Nativo
+      helm: Helm
+    branch:
+      label: Branch
+    username:
+      label: Usuário
+      required: '"Usuário" é obrigatório'
+      placeholder: Seu Usuário
+    password:
+      label: Senha
+      required: '"Senha" é obrigatória'
+      placeholder: Sua Senha
+clusterRow:
+  loginDefault: Login
+clusterNew:
+  config:
+    label: Provedor
+  nodes:
+    title: Nós
+  security:
+    title: Segurança
+  amazoneks:
+    shortLabel: Amazon EKS
+  tencenttke:
+    access:
+      next: "Próximo: Configurar Cluster"
+    node:
+      title: Tipo de Instância
+      next: "Próximo: Configurar Instância"
+    instance:
+      title: Configuração de Instância
+    keyPair:
+      label: Par de Chaves
+    region:
+      label: Região
+    vpc:
+      label: VPC
+    zone:
+      label: Zona de Disponibilidade
+      required: A zona de disponibilidade é obrigatória
+    instanceType:
+      label: Tipo de Instância
+      required: Tipo de Instância é obrigatório
+  azureaks:
+    shortLabel: Azure AKS
+    subscriptionId:
+      label: ID de Inscrição
+    machineType:
+      label: Tamanho da VM
+      prompt: Escolha um tamanho...
+    dns:
+      label: Prefixo DNS
+    security:
+      label: Segurança
+    image:
+      label: Imagem
+    size:
+      label: Tamanho
+    dockerPort:
+      placeholder: '2376'
+    environment:
+      label: Ambiente
+    networking:
+      default: Padrão
+      advanced: Avançado
+      dockerBridgeCidr:
+        label: Endereço da ponte (bridge) do Docker
+    sshUser:
+      label: Usuário SSH
+    storageType:
+      label: Tipo de Armazenamento
+    vnet:
+      label: VNet
+    openPort:
+      label: Porta Aberta
+    privateIpAddress:
+      label: IP Privado
+      placeholder: 127.0.0.1
+    staticPublicIp:
+      label: IP público
+    noPublicIp:
+      label: Nenhum IP Público
+    clientId:
+      label: ID do Cliente
+      placeholder: Seu ID do Cliente
+    region:
+      label: Região
+    enableMonitoring:
+      label: Monitoramento
+    networkPolicy:
+      label: Política de Rede
+      placeholder: Selecione uma Política de Rede
+    tags:
+      label: Tags
+      addActionLabel: Adicionar etiqueta
+  aliyunkcs:
+    clusters:
+      k8s: Kubernetes
+    storageSize:
+      placeholder: ex. 120
+    keyPair:
+      label: Par de Chaves
+    regionId:
+      label: Região
+    instanceType:
+      label: Tipo Instância
+  googlegke:
+    checkingServiceAccount: Autenticando...
+    zone:
+      label: Zona
+    project:
+      label: Projeto
+    enablePrivateNodes:
+      label: Cluster Privado
+    imageType:
+      UBUNTU: Ubuntu
+    network:
+      label: Rede
+    userInfo:
+      label: Informações do usuário
+    taints:
+      key:
+        label: Chave
+        placeholder: Chave
+      value:
+        label: Valor
+        placeholder: Valor
+  huaweicce:
+    region:
+      label: Região
+    nodeOption:
+      title: Nós
+    description:
+      label: Descrição
+    authenticatingProxyCa:
+      label: Certificado
+    loginMode:
+      keyPair: Par de Chaves
+    authentiactionMode:
+      rbac: RBAC
+  rke:
+    registry:
+      user:
+        label: Usuário
+      password:
+        label: Senha
 confirmDelete:
   title: 'Tem certeza de que deseja excluir'
   protip: 'Dica: Mantenha a chave {key} enquanto clicar Delete para ignorar essa confirmação.'
@@ -1655,6 +2222,9 @@ modalAboutComponent:
   component: Componente
   version: Versão
   ui: Interface de Usuário
+modalAddCloudKey:
+  saving:
+    validating: Validando Chaves
 modalConfirmDeactivate:
   header: Tem certeza que você quer
   protip: "Dica: Mantenha pressionada a tecla {key} enquanto clicar em {isServiceButton} para contornar essa confirmação."
@@ -1692,8 +2262,6 @@ newCatalog:
   version:
     prompt: Escolha uma versão...
 newContainer:
-  selectUpgrade: Selecione um ou mais serviços para atualizar.
-  saveUpgrade: Atualizar
   saveNew: Criar
   name:
     placeholder: p.ex. myapp
@@ -1703,7 +2271,7 @@ nodeDriver:
   amazoneks:
     associateWorkerNodePublicIp:
       radio:
-        default: "Yes"
+        default: true
 pageFooter:
   notARelease: (Não é uma Release)
   help: 'Ajuda'
@@ -1714,7 +2282,7 @@ pageFooter:
 projectRow:
   none: Sem descrição
 saveCancel:
-  saving: Sanvando...
+  saving: Salvando...
   saved: Salvo!
   edit: Salvar
   create: Criar

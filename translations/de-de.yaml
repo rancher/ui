@@ -10,6 +10,7 @@ generic:
   any: Irgendein
   application: Anwendung
   as: als
+  back: Zurück
   cancel: Abbrechen
   closeModal: Schließen
   cluster: Cluster
@@ -38,12 +39,16 @@ generic:
   entrypoint: Einstiegspunkt
   environment: Umgebung
   expandAll: Alles öffnen
+  experimental: "(experimentell)"
   from: von
+  false: 'Falsch'
   generic: 'Allgemein'
   gigabyte: 'GB'
   hardware: Hardware
   healthy: Bereit
   help: Hilfe
+  hostname: Hostname
+  hours: Stunden
   id: Id
   image: Image
   import: Importieren
@@ -55,6 +60,7 @@ generic:
   loading: "Laden..."
   loggingOut: "Abmeldevorgang läuft..."
   member: Mitglied
+  mbps: Mbps
   mibibyte: 'MiB'
   minutes: Minuten
   milliseconds: 'Millisekunden'
@@ -80,10 +86,12 @@ generic:
   persistentVolume: persistentes Volume
   random: Zufällig
   remove: Entfernen
+  restarts: Neustarts
   role: Rolle
   save: Speichern
   saved: Gespeichert
   saving: Speichern
+  scope: Anwendung
   search: Suche
   searchOrCustomInput: Suchen oder einen eigenen Wert eintragen.
   searching: 'Suche...'
@@ -98,6 +106,7 @@ generic:
   testing: Testet
   to: Zu
   total: Gesamt
+  true: 'Wahr'
   type: Typ
   unknown: Unbekannt
   unknownUser: Benutzerinformationen können nicht abgerufen werden
@@ -108,6 +117,11 @@ generic:
   value: Wert
   version: Version
   yes: "Ja"
+  isRequired: ist erforderlich
+  readOnly: Schreibgeschützt
+  readWrite: Schreib-/Lesezugriff
+  writeOnly: Nur Schreiben
+  full: Voll
 realmNames:
   all: Alle
   usWest: US Westküste
@@ -184,6 +198,10 @@ appDetailPage:
     protocol: Protokoll
     noData: Für diese Anwendung wurden keine öffentlichen Endpunkte erstellt.
     noMatch: Keine öffentlichen Endpunkte für die aktuelle Suche gefunden.
+  answers:
+    title: Antworten
+    detail: Angepasste Antworten dieser Anwendung
+    variable: Variabel
   notes:
     title: Notizen
     detail: 'Anweisungen zur Verwendung dieser Anwendung'
@@ -236,6 +254,10 @@ podSecurityPoliciesPage:
         placeholder: "z.B. Richtlinie"
 rolesPage:
   title: Rolle
+  headers:
+    global: Global
+    cluster: Clusters
+    project: Projekte
   index:
     localLink: Rolle hinzufügen
     table:
@@ -251,6 +273,8 @@ rolesPage:
       cluster: Standardeinstellungen für neue Cluster Ersteller
       project: Standardeinstellungen für neue Projekt Ersteller
       showDefaults: Nur Standardwerte anzeigen
+    errors:
+      inherited: "Rolle {displayName} wird von: {roleNames} geerbt"
   resources:
     title: Resourcen gewähren
     detail: Zugriff gewähren für bestimmte Operationen in Kubernetes Resourcen
@@ -268,6 +292,8 @@ rolesPage:
       nameInExists: Der Name ist bereits vorhanden. Bitte verwenden Sie einen neuen Namen für die Rolle.
       ruleResourceReq: Ressource ist für eine Regel erforderlich.
       roleTemplate: Ein Rollen-Template ist erforderlich.
+      noSelectedRoles: Bitte wählen Sie mindestens einen Rolle für diesen Anwender aus.
+      roleAlreadyExists: Der Benutzer hat bereits die "{key}" Rolle.
     form:
       name:
         labelText: Name
@@ -301,6 +327,8 @@ rolesPage:
         addAction: Richtlinie hinzufügen
       default:
         global: Standardeinstellungen für neue Benutzer
+        cluster: Cluster Ersteller Standard
+        project: Projektersteller Standard
         enabled:
           global: "Ja: Standardrolle für neue Benutzer"
           cluster: "Ja: Standardrolle bei der Erstellung neuer Cluster"
@@ -315,6 +343,7 @@ apiPage:
     state: Status
     name: Zugangsschlüssel
     description: Beschreibung
+    scope: Anwendung
     created: Erstellt
     expires:
       label: Gültig bis
@@ -337,6 +366,7 @@ authPage:
       userName: 'Benutzername:'
       userId: 'Benutzer ID:'
     disabled:
+      header: '1. Benutzerkonto {providerName} konfigurieren'
       headerDetail: 'Geben Sie Ihre Benutzername für {providerName} ein'
       label: "{providerName} ist nicht konfiguriert"
       name:
@@ -348,11 +378,20 @@ authPage:
       uid:
         labelText: Feld für die UID
         display: "Feld für die UID:"
+      rancherApiHost:
+        labelText: "{appName} API-Host"
+        display: "{appName} API-Host:"
+      groups:
+        labelText: Gruppen-Feld
+        display: "Gruppen Feld:"
       testAuth:
         header: '2. Authentifizierung testen und aktivieren'
+        subtext: 'Überprüfen Sie ob die Anwendung korrekt konfiguriert wurde, indem Sie die Authentifizierung testen:'
     providerName:
       ping: Ping
       adfs: AD FS
+      keycloak: Tastenkombination
+      okta: Okta
     authError: 'Zugang wurde nicht autorisiert'
     popupError: 'Bitte deaktivieren Sie Ihren Popup-Blocker und klicken Sie erneut auf "Authentifizieren".'
   ping:
@@ -361,11 +400,16 @@ authPage:
       post: Auf Rückmeldung von IDP warten
   keycloak:
     buttonText:
+      pre: 'Authentifizieren Sie sich mit Keycloak'
       post: Warte auf Antwort von IDP
   adfs:
     buttonText:
       pre: 'Authentifizieren Sie sich mit AD FS'
       post: Warte auf Antwort von IDP
+  okta:
+    buttonText:
+      pre: 'Authentifizieren Sie sich mit Okta'
+      post: Warten auf Antwort von IDP
   shibboleth:
     enabled:
       authenticated:
@@ -374,7 +418,6 @@ authPage:
       disableAccess:
         header: "Gefahrenzone&trade;"
         warning: '<b class="text-danger">Achtung:</b> Das deaktivieren der Zugriffskontrolle wird jedem, der diese Seite oder API erreicht, volle Kontrolle über {appName} geben.'
-        confirmDisable: "Bist du dir sicher? Klicke noch einmal um die Zugriffskontrolle wirklich zu deaktivieren"
         disable: Zugriffskontrolle deaktivieren
       groupsField: 'Gruppen:'
       displayName: 'Anzeigename:'
@@ -417,7 +460,6 @@ authPage:
       disableAccess:
         header: "Gefahrenzone&trade;"
         warning: '<b class="text-danger">Achtung:</b> Das Deaktiveren der Zugriffskontrolle gibt jedem mit Zugriff auf diese Seite oder die API alle Rechte für {appName}.'
-        confirmDisable: "Sind Sie sicher?  Nochmal klicken um die Zugriffskontrolle zu deaktivieren"
         disable: Deaktivieren des Github-Zugriffs
     notAuthenticated:
       header: "1. Eine GitHub Anwendung einrichten"
@@ -463,7 +505,6 @@ authPage:
         label: "Azure AD ist nicht konfiguriert"
     enabled:
       header: 'Gefahrenzone&trade;'
-      reallyDisable: 'Sind Sie sicher?  Nochmal klicken um die Zugriffskontrolle zu deaktivieren'
       promptDisable: Zugriffskontrolle deaktivieren
       general:
         header: Allgemein
@@ -474,6 +515,8 @@ authPage:
       applicationId:
         label: Anwendungs-ID
         placeholder: Eine lange UUID Zeichenfolge
+      applicationSecret:
+        label: Anwendungspasswort
       serverURL:
         label: Rancher Server-URL
       azureADEndpoint:
@@ -520,7 +563,6 @@ authPage:
       header: 'Gefahrenzone&trade;'
       warning: '<b class="text-danger">Achtung:</b> Das Deaktiveren der Zugriffskontrolle gibt jedem mit Zugriff auf diese Seite oder die API alle Rechte für {appName}.'
       buttonText:
-        disable: 'Sind Sie sicher?  Nochmal klicken um die Zugriffskontrolle zu deaktivieren'
         prompt: Zugriffskontrolle deaktivieren
     accessDisabled:
       header: '1. Admin Benutzer einrichten'
@@ -542,6 +584,18 @@ authPage:
       buttonText:
         pre: Lokale Authentifizierung aktivieren
         post: 'Aktiviere...'
+backupsPage:
+  header: etcd Snapshots
+  detail: Wenn aktiviert, sind etcd-Snapshots Cluster-Snapshots, die regelmäßig in vordefinierten Intervallen erstellt werden, um Cluster aus einer früheren Version wiederherzustellen.
+  table:
+    state: Status
+    target:
+      label: Ziel
+      s3: S3
+      local: Lokal
+    name: Name
+    created: Erstellt
+    noData: Es gibt keine etcd Snapshots
 balancerPage:
   noMatch: Keine Balancer gefunden, die den Suchkriterien entsprechen
   noData: Es gibt keine Balancer zum Anzeigen.
@@ -572,6 +626,17 @@ catalogPage:
       launch: Detailansicht
       notCompatible: Nicht kompatibel
       alreadyDeployed: Bereits eingesetzt
+cloudCredentialsPage:
+  header: Cloud-Anmeldeinformationen
+  rightButtons:
+    addKey: Cloud-Anmeldeinformationen hinzufügen
+    nodeTemplates: Node-Vorlagen verwalten
+  index:
+    table:
+      noData: Es gibt noch keine Cloud-Anmeldedaten
+      noMatch: Keine Ereignisse gefunden, die den Suchkriterien entsprechen
+clusterCatalogPage:
+  header: Kataloge
 certificatesPage:
   cn: Domainname
   expiresDate: Ablaufdatum
@@ -585,7 +650,7 @@ certificatesPage:
     labelText: Domainname
     single: '<a href="https://{cn}" target="_blank" rel="nofollow noreferrer noopener">{cn} <i class="icon icon-sm icon-external-link"/></a>'
     withSan: |
-
+       
     wildcardSingle: '{cn}'
     wildcardWithSan: |
       {cn} +
@@ -663,6 +728,7 @@ projectsPage:
   quota:
     label: Ressourcenkontingente
   ns:
+    label: Name des Namespaces
     placeholder: z.B. Labor
   name:
     label: Projektname
@@ -674,6 +740,9 @@ projectsPage:
   resourceQuota:
     title: Ressourcenkontingente
     detail: Konfigurieren Sie, wie viel Ressourcen das Projekt reservieren kann
+  containerDefaultLimit:
+    title: Standard-Ressourcenlimit für Container
+    detail: Konfigurieren Sie, wie viele Ressourcen der Container standardmäßig reservieren kann
   members:
     title: Mitglieder
     detail: Konfigurieren Sie, wer Zugriff auf die Ressourcen in diesem Projekt hat und welche Berechtigungen sie haben
@@ -730,6 +799,8 @@ ingressPage:
     noData: Es wurden keine Ingress Regeln definiert
 containerPage:
   header: 'Container: {name}'
+  initContainer:
+    label: initContainer
   envTab:
     header: Umgebungsvariablen
     detail: 'Umgebungsvariablen, die bei der Erstellung hinzugefügt wurden.'
@@ -751,12 +822,14 @@ containerPage:
       noData: Dieser Container hat keine Volumes
       noMatch: Keine Volumes zur aktuellen Suche gefunden
       noContainers: Keine anderen Container
+  pod: Pod
 podPage:
   header: 'Pod: {name}'
   nodeIp: Knoten IP
   podIp: Knoten IP
   containerImage: 'Image von {container}'
   image: Image
+  displayImage: '{image} + {sidecar, plural, one {} =1 {1 image} other {# images}}'
 containersPage:
   table:
     sparkPrefixCpu: "Prozessor: "
@@ -771,8 +844,49 @@ containersPage:
     orchestrator: Installieren Sie einen anderen Orchestrator
     kubernetesLink: Kubernetes installieren
 clusterDashboard:
+  systemProject: Dies ist das Systemprojekt, das alle Kubernetes und {appName} Systemnamensräume enthält. Änderungen an Ressourcen im Systemprojekt können den Cluster beschädigen.
   notActive: Dieser Cluster ist derzeit <b>{state}</b>.
   notReady: Dieser Cluster ist derzeit <b>{state}</b>; Bereiche, die direkt damit interagieren, sind erst verfügbar, wenn die API bereit ist.
+  used: Genutzt
+metricsAction:
+  description: Erweitern, um Live-Metriken anzuzeigen
+  noData: Nicht genügend Daten für die Grafik
+  sections:
+    workload: Arbeitslast Metriken
+    pod: Pod Metriken
+    container: Container Metriken
+  grafana:
+    label: Grafana
+  summary:
+    label: Übersicht
+  detail:
+    label: Detail
+  from:
+    label: Von
+  to:
+    label: Zu
+  periods:
+    custom: Benutzerdefininert
+    5m: 5 Minuten
+    1h: 1 Stunde
+    6h: 6 Stunden
+    24h: 24 Stunden
+    7d: 7 Tage
+    30d: 30 Tage
+metrics:
+  workload-cpu-usage: CPU Auslastung
+  workload-disk-io: Disk I/O
+  workload-memory-usage-bytes-sum: Speicherauslastung
+  workload-network-io: Netzwerk I/O
+  workload-network-packet: Netzwerkpakete
+  pod-cpu-usage: CPU Auslastung
+  pod-disk-io: Disk I/O
+  pod-memory-usage-bytes-sum: Speicherauslastung
+  pod-network-io: Netzwerk I/O
+  pod-network-packet: Netzwerkpakete
+  container-cpu-usage: CPU Auslastung
+  container-disk-io: Disk I/O
+  container-memory-usage-bytes-sum: Speicherauslastung
 dnsPage:
   noMatch: Keine Datensätze stimmen mit der aktuellen Suche überein
   noData: Es gibt keine DNS-Datensätze zum Anzeigen
@@ -791,25 +905,69 @@ editDns:
   title:
     new: DNS-Eintrag hinzufügen
     edit: DNS-Eintrag bearbeiten
+    view: "Eintrag: {name}"
   name:
     placeholder: z.B. meineapp
+  sessionAffinity:
+    title: Session Affinität
+    detail: Ordnen Sie Verbindungen basierend auf ihrer Quell-IP einem konsistenten Ziel zu
+    label: Aktivieren Sie die Sitzungsaffinität
+  externalIPs:
+    addActionLabel: Externe IP hinzufügen
+    placeholder: z. B. 80.11.12.10
+    value: Externe IPs
+  loadBalancerIP:
+    label: IP des Lastenverteilers
+    placeholder: z.B. 78.11.24.19
+  loadBalancerSourceRanges:
+    addActionLabel: Quellbereich hinzufügen
+    placeholder: z.B. 143.231.0.0/16
+    value: Load Balancer-Quellbereiche
+  healthCheckNodePort:
+    label: Knotenport für Überwachung
+    placeholder: z.B. 8080
+  externalTrafficPolicy:
+    label: Richtlinie für externen Verkehr
+    local: Lokal
+    cluster: Cluster
+  publishNotReadyAddresses:
+    label: Veröffentlichte IP-Adressen
+    readyOnly: Nur bereite Endpunkte
+    all: Alle Endpunkte
+  sessionAffinityConfig:
+    label: Sitzungstartzeit
+    placeholder: z.B. 10800
+  kind:
+    label: Als
+    clusterIP: Cluster-IP (nur intern)
+    loadBalancer: Layer-4-Lastenausgleich
+    nodePort: NodePort (auf jedem Knoten)
+    externalName: ExternerName
+    headless: Headless-Service
   description:
     placeholder: z.B. Aktuelle Version von meineapp
   selector:
+    label: Containerbezeichnung-Auswahl
     keyLabel: Bezeichnung
     addActionLabel: Auswahl hinzufügen
   recordType:
     label: "Löst auf in"
     arecord: Eine oder mehrere externe IP-Adressen
     cname: Einen externen Hostnamen
+    alias: Alias eines anderen DNS-Eintrags
     workload: Eine oder mehrere Arbeitslasten
     selector: Die Menge der Container, die einem Selektor entsprechen
+    clusterIp: "Cluster-IP"
   target:
     arecord: IP-Zieladressen
     cname: Ziel Hostname
     alias: Ziel DNS-Einträge
+    workload: Ziel-Workloads
+    selector: Ziel-Pod-Selektoren
   add:
     arecord: Ziel IP hinzufügen
+    alias: Ziel hinzufügen
+    workload: Ziel-Workload hinzufügen
   placeholder:
     arecord: z. B. 19.82.2.24
     cname: z.B. example.com
@@ -820,6 +978,13 @@ editDns:
     targetRequired: 'Eine oder mehrere "Ziel-IP-Adressen" sind erforderlich'
     multipleCname: Ein Alias ​​kann nicht auf mehr als einen CNAME-Datensatz ausgerichtet sein
 cruPersistentVolumeClaim:
+  title:
+    define: Volumenanspruch definieren
+    new: Volumenanspruch hinzufügen
+    edit: 'Volumenanspruch bearbeiten: {name}'
+    view: 'Persistenter Volumenanspruch: {name}'
+  define:
+    addActionLabel: Definieren
   capacity:
     label: Kapazität
     unit: GiB
@@ -827,20 +992,139 @@ cruPersistentVolumeClaim:
     placeholder: z.B. myvol
   source:
     label: Quelle
+    pv: Verwenden Sie ein vorhandenes persistentes volume
+    storageClass: Verwenden Sie eine Speicherklasse, um ein neues beständiges Volumen bereitzustellen
   pv:
     label: Persistentes Volumen
     prompt: Wählen Sie ein persistentes Volumen...
   storageClass:
     label: Speicherklasse
     prompt: Standardklasse verwenden
+cruVolumeClaimTemplate:
+  title:
+    define: Volumenanspruchsvorlage definieren
+    new: Volumenanspruchsvorlage hinzufügen
+    edit: "Volumenanspruchsvorlage bearbeiten: {name}"
+    view: "Vorlage für Volumenanspruch: {name}"
+  define:
+    addActionLabel: Definieren
+  capacity:
+    label: Kapazität
+    unit: GiB
+  name:
+    placeholder: z.B. MeinVolume
+  source:
+    label: Quelle
+    pv: Verwenden Sie ein vorhandenes persistentes Volumen, um eine Vorlage zu definieren
+    storageClass: Verwenden Sie eine Speicherklasse, um eine Vorlage zu definieren
+  pv:
+    label: Persistentes Volumen
+    prompt: Wählen Sie ein persistentes Volumen...
+  storageClass:
+    label: Speicherklasse
+    prompt: Standardklasse verwenden
+  customize:
+    title: Anpassen
+    detail: Erweiterte Optionen anpassen
+cruPrivateRegistry:
+  title:
+    label: Private Registry
+  add:
+    label: Private Registry hinzufügen
+  registry:
+    user:
+      label: Benutzer
+    password:
+      label: Passwort
+    url:
+      label: URL
 cruVolume:
   sourcePrompt: Wählen Sie oben eine Volumen-Quelle aus...
+  title:
+    new: Temporäres Volumen definieren
+  define:
+    addActionLabel: Definieren
   name:
     placeholder: z.B. myvol
   source:
     label: Quelle
     title: Ursprungskonfiguration
     prompt: Wählen Sie eine Volumenquelle...
+globalDnsPage:
+  header: Globale DNS-Einträge
+  newDns: DNS-Eintrag hinzufügen
+  noDnsMatch: Keine DNS-Einträge stimmen mit der aktuellen Suche überein.
+  noDnsData: Es gibt noch keine globalen DNS-Einträge.
+  newProvider: DNS-Anbieter hinzufügen
+  noDnsProviderMatch: Kein DNS-Procider stimmt mit der aktuellen Suche überein.
+  noDnsProviderData: Es gibt noch keine globalen DNS-Provider.
+  noProjects: Es gibt keine Projekte zur Auswahl
+  noApps: Keine zugreifbaren Multi-Cluster-Applikationen
+  entriesPage:
+    header:
+      new: Globalen DNS-Eintrag hinzufügen
+      edit: Globalen DNS-Eintrag bearbeiten
+    options:
+      detail: Passen Sie die Optionen für den DNS-Eintrag an
+    access:
+      noAccessMulti: Sie haben keinen Zugriff auf die Ziel-Applikation
+      noAccessProvider: Sie haben keinen Zugriff auf den Provider
+      noAccessProject: Sie haben keinen Zugriff auf das Zielprojekt
+    table:
+      name: Name
+      fqdn: FQDN
+      target: Ziel
+      provider: Provider-ID
+    config:
+      title: DNS-Eintrag konfigurieren
+      configType: Löst auf in
+      multi: Multi-Cluster-Applikation
+      project: Projekte
+      fqdn:
+        label: FQDN
+        placeholder: dev.example.com
+      multiCluster:
+        placeholder: Multi-Cluster-Applikation auswählen
+        add:
+          label: Ziel hinzufügen
+      provider:
+        label: Anbieter
+        placeholder: Anbieter auswählen
+      projects:
+        label: Zielprojekte
+      ttl:
+        label: DNS TTL
+  providersPage:
+    title: Globale DNS-Anbieter
+    header:
+      new: Globalen DNS-Anbieter hinzufügen
+      edit: Globalen DNS-Anbieter bearbeiten
+    options:
+      title: Anbietereinstellungen
+      detail: Passen Sie die Optionen für den DNS-Anbieter an
+    members:
+      title: Mitgliederzugang
+      detail: Kontrollieren Sie, wer Zugriff auf die Ressource hat
+    table:
+      name: Name
+      provider: Name des Anbieters
+      rootDomain: Root-Domäne
+    config:
+      root:
+        label: Root-Domäne
+        placeholder: Ihre Root-Domäne
+      accessKey:
+        label: Zugangsschlüssel
+        placeholder: Ihr Zugangsschlüssel
+      secretKey:
+        label: Geheimschlüssel
+        placeholder: Ihr Geheimschlüssel
+      apiEmail:
+        label: E-Mail-API
+        placeholder: Ihre E-Mail-API
+      apiKey:
+        label: API-Schlüssel
+        placeholder: Ihr API-Schlüssel
 failWhalePage:
   header: Fehler
   reloadButton: |
@@ -1078,6 +1362,7 @@ servicePage:
     daemonSet: Daemon Set
     job: Auftrag
     cronJob: Cron-Job
+    pod: Eigenständiger Pod
   external:
     externalIp: |
       {count, plural,
@@ -1168,7 +1453,7 @@ stackPage:
     detail: 'Load-Balancer-Container, die von diesem Stack getrennt sind'
     status: |
       {count, plural,
-      =0 {Kein Balancer}
+      =0 {Kein Balancer} 
       =1 {# Balancer}
       other {# Balancer}
       }
@@ -1177,7 +1462,7 @@ stackPage:
     detail: 'Load-Balancer, die von diesem Stack getrennt sind'
     status: |
       {count, plural,
-      =0 {Keine Einträge}
+      =0 {Keine Einträge} 
       =1 {# Eintrag}
       other {# Einträge}
       }
@@ -1215,6 +1500,10 @@ newStack:
     label: Antworten (variable Ersetzungen)
     addActionLabel: Antwort hinzufügen
 nodeTemplatesPage:
+  header: Knotenvorlagen
+  rightButtons:
+    actionButton: Vorlage hinzufügen
+    cloudCredentials: Cloud-Anmeldeinformationen verwalten
   detail: Knotenvorlagen werden verwendet, um die Knoten, aus denen sich ein Cluster zusammensetzt, bei einem Infrastrukturanbieter bereitzustellen.
   table:
     state: Status
@@ -1234,7 +1523,10 @@ storageClassPage:
   default:
     label: Standard
 persistentVolumePage:
+  header: Persistente Volumen
   addActionLabel: Volume hinzufügen
+  noData: Es sind keine persistenten Volumes definiert
+  noMatch: Keine persistenten Volumen passen zur aktuellen Suche
   source:
     label: Quelle
 userPreferencesPage:
@@ -1274,18 +1566,26 @@ waitingPage:
     setup:
       kubernetes: Kubernetes konfigurieren
 notifierPage:
+  notifiers: Benachrichtigungen
   testedBtnLabel: OK
+  testingBtnLabel: Testen
   notifierTypes:
     slack: Slack
     email: Email
     pagerduty: PagerDuty
     webhook: Webhook
+    wechat: WeChat
   slack:
     url: URL
     urlPlaceholder: z.B. https://hooks.slack.com/services/T00000000/B00000000/XXXXXXXXXXXXXXXXXXXXXXXX
+    defaultRecipient:
+      label: Standardkanal
     defaultRecipientPlaceholder: 'z.B. #Beispiel'
+    helpText: |
+      So erstellen Sie <a href="https://slack.com/apps/A0F7XDUAZ-incoming-webhooks" target="_blank" rel="nofollow noopener noreferrer">Incoming WebHooks</a> für Slack.
   smtp:
     server: SMTP-Server
+    host: Host
     hostPlaceholder: z.B. 192.168.1.121
     port: Port
     portPlaceholder: z.B. 465
@@ -1294,7 +1594,30 @@ notifierPage:
     userNamePlaceholder: z.B. John
     password: Passwort
     passwordPlaceholder: Ihr Passwort
+    defaultRecipient:
+      label: Standard Empfängeradresse
+      helpText: Bei der Konfiguration eines Alarms kann der Empfänger überschrieben werden.
     defaultRecipientPlaceholder: z.B. admin@example.com
+    tls: TLS verwenden
+  pagerduty:
+    serviceKey:
+      label: Standardintegrationsschlüssel
+      helpText: Bei der Konfiguration eines Alarms kann der Integrationsschlüssel überschrieben werden.
+    helpText: |
+      So erstellen Sie <a href="https://www.pagerduty.com/docs/guides/prometheus-integration-guide/" target="_blank" rel="nofollow noopener noreferrer">einen Integrationsschlüssel</a> für PagerDuty.
+  wechat:
+    recipientType:
+      label: Empfängertyp
+      tag: Tag
+      party: Party
+      user: Benutzer
+    secret:
+      label: Anwendungspasswort
+    defaultRecipient:
+      label: Standardempfänger
+    agentPlaceholder: z.B. 1000003
+    corpPlaceholder: z.B. wwc0cc3d58f9b021b6
+    defaultRecipientPlaceholder: z.B. 2
   webhook:
     url: URL
     urlPlaceholder: Ihre Webhook-URL
@@ -1341,6 +1664,7 @@ ldap:
       login: "Login Feld:"
       name: "Name Feld:"
       search: "Suche Feld:"
+      searchFilter: "Suchfilter:"
       enabled: "Status Feld:"
       disabledBitMask: "Deaktivierte BitMaske:"
     group:
@@ -1348,6 +1672,7 @@ ldap:
       objectClass: "Objektklasse:"
       name: "Name Feld:"
       search: "Suche Feld:"
+      searchFilter: "Suchfilter:"
     disable:
       confirmDisable:
         pre: Zugriffskontrolle deaktivieren
@@ -1384,6 +1709,8 @@ ldap:
       header: Benutzer
       objectClass:
         labelText: Objektklasse
+      name:
+        labelText: Benutzernamens-Attribut
       searchBase:
         labelText: Benutzersuchbasis
       disabledBitMask:
@@ -1436,6 +1763,9 @@ annotationsSection:
   value: Wert
   noData: Keine Anmerkungen
   noMatch: Keine Anmerkungen entsprechen der aktuellen Suche
+authorizedEndpoint:
+  fqdn:
+    label: FQDN
 taintsSection:
   key: Schlüssel
   value: Wert
@@ -1771,8 +2101,6 @@ clusterNew:
       title: Betriebssystem des Knotens
       linux: Linux
       windows: Windows
-    windowsSupport:
-      label: Windows-Unterstützung
   custom:
     label: Benutzerdefininert
     shortLabel: Benutzerdefininert
@@ -2013,10 +2341,6 @@ cruStorageClass:
       placeholder: "z.B. 2"
     cachereservation:
       placeholder: "z.B. 20"
-  azure-disk:
-    kind:
-      shared: Geteilt
-      dedicated: Dediziert
   portworx-volume:
     fs:
       label: Dateisystem
@@ -2046,8 +2370,6 @@ cruStorageClass:
       placeholder: "z.B. 3"
     staleReplicaTimeout:
       placeholder: "z.B. 30"
-    fromBackup:
-      label: Aus Sicherung
   quobyte:
     quobyteAPIServer:
       placeholder: "z.B. http://138.68.74.142:7860"
@@ -2776,7 +3098,6 @@ newCatalog:
   version:
     prompt: Version auswählen...
 newContainer:
-  selectUpgrade: Einen oder mehrere Service für das Upgrade auswählen.
   name:
     placeholder: z.B. myapp
   description:
@@ -2806,15 +3127,12 @@ nodeDriver:
   amazoneks:
     associateWorkerNodePublicIp:
       radio:
-        default: "Yes"
+        default: true
   amazonec2:
     portHelp:
       link: Mehr erfahren
     sshUser:
       label: SSH-Benutzer
-  packet:
-    projectId:
-      label: Projekt
   vmwarevsphere:
     username:
       label: Benutzername
@@ -2911,7 +3229,6 @@ upgradeBtn:
     loading: 'Suche nach Upgrades...'
     current: 'Auf dem neuesten Stand'
     available: 'Upgrade verfügbar'
-    notfound: 'Template Version nicht gefunden'
     required: 'Upgrade erforderlich'
 viewEditDescription:
   form:

@@ -1,5 +1,5 @@
 ---
-languageName: "한국어"
+languageName: "영어"
 languageContribute: "Rancher 번역을 도와주세요"
 generic:
   actions: 동작
@@ -10,6 +10,7 @@ generic:
   any: 아무거나
   application: 애플리케이션
   as: 로
+  back: 뒤로
   cancel: 취소
   closeModal: 닫기
   cluster: 클러스터
@@ -37,13 +38,15 @@ generic:
   enabled: 활성화됨
   entrypoint: Entrypoint
   environment: 환경
-  expandAll: 모두 확장
+  expandAll: 모두 확장 
   from: 출처
   generic: '일반'
   gigabyte: 'GB'
   hardware: 하드웨어
   healthy: 정상
   help: 도움말
+  hostname: 호스트명
+  hours: 시간
   id: ID
   image: 이미지
   import: 가져오기
@@ -55,6 +58,7 @@ generic:
   loading: "로딩중..."
   loggingOut: "로그아웃 중..."
   member: 멤버
+  mbps: Mbps
   mibibyte: 'MiB'
   minutes: 분
   milliseconds: '밀리초'
@@ -80,10 +84,12 @@ generic:
   persistentVolume: 지속적인 볼륨
   random: 무작위
   remove: 제거
+  restarts: 재시작
   role: 역할
   save: 저장
   saved: 저장됨
   saving: 저장 중
+  scope: 스코프
   search: 찾기
   searchOrCustomInput: 사용자 정의 값을 검색하거나 입력하십시오.
   searching: '검색 중...'
@@ -108,6 +114,11 @@ generic:
   value: 값
   version: 버전
   yes: "예"
+  isRequired: 필수항목
+  readOnly: 읽기 전용
+  readWrite: 읽기 쓰기
+  writeOnly: 쓰기 전용
+  full: 전체
 realmNames:
   all: 전체
   usWest: 미국 서부
@@ -184,6 +195,10 @@ appDetailPage:
     protocol: 프로토콜
     noData: 이 애플리케이션에 대해 작성된 공용 엔드포인트가 없습니다.
     noMatch: 현재 검색어와 일치하는 공용 엔드포인트가 없습니다.
+  answers:
+    title: 답변
+    detail: 이 질문에 대한 사용자 정의 답변
+    variable: 변수
   notes:
     title: 메모
     detail: '애플리케이션 사용 방법에 대한 설명서'
@@ -236,6 +251,10 @@ podSecurityPoliciesPage:
         placeholder: "예: 정책"
 rolesPage:
   title: 역할
+  headers:
+    global: 전역
+    cluster: 클러스터
+    project: 프로젝트
   index:
     localLink: 역할 추가
     table:
@@ -251,6 +270,8 @@ rolesPage:
       cluster: 클러스터 생성기 기본값
       project: 프로젝트 생성기 기본값
       showDefaults: 기본값 만 표시
+    errors:
+      inherited: "역할 {displayName} 은(는) {roleNames} 에서 상속됨"
   resources:
     title: 리소스 권한부여
     detail: Kubernetes 리소스의 특정 작업에 대한 액세스 권한 부여
@@ -268,6 +289,7 @@ rolesPage:
       nameInExists: 이름이 이미 있습니다. 새 역할 이름을 사용하십시오.
       ruleResourceReq: 규칙에는 리소스가 필요합니다.
       roleTemplate: 역할(Role) 템플릿이 필요합니다.
+      noSelectedRoles: 이 사용자에게 부여할 역할을 선택하세요.
     form:
       name:
         labelText: 이름
@@ -316,6 +338,7 @@ apiPage:
     state: 상태
     name: 액세스 키
     description: 설명
+    scope: 스코프
     created: 생성됨
     expires:
       label: 만료
@@ -360,8 +383,12 @@ authPage:
       ping: Ping
       adfs: AD FS
       keycloak: Keycloak
+      okta: Okta
     authError: '액세스 권한이 없습니다.'
     popupError: '팝업 차단을 해제하시고 "인증"을 다시 클릭하십시오.'
+  okta:
+    buttonText:
+      pre: 'Okta 인증'
   shibboleth:
     enabled:
       authenticated:
@@ -437,6 +464,14 @@ authPage:
           labelText: 암호
         confirmPassword:
           labelText: 암호 확인
+backupsPage:
+  table:
+    state: 상태
+    target:
+      label: 대상
+      s3: S3
+      local: 지역
+    name: 이름
 catalogPage:
   index:
     header: 카탈로그
@@ -458,6 +493,8 @@ catalogPage:
     action:
       launch: 세부정보 보기
       alreadyDeployed: 이미 배포됨
+clusterCatalogPage:
+  header: 카탈로그
 certificatesPage:
   cn: 도메인 이름
   expiresDate: 만료
@@ -546,6 +583,8 @@ clustersPage:
     label: 디스크
 containerPage:
   header: '컨테이너: {name}'
+  initContainer:
+    label: initContainer
   portsTab:
     header: 포트
     hostPrimaryIp: '({ip})'
@@ -568,6 +607,13 @@ containersPage:
   welcome:
     containerLink: 컨테이너 추가
     kubernetesLink: Kubernetes 설치
+metricsAction:
+  sections:
+    pod: 포드 통계
+  grafana:
+    label: Grafana
+metrics:
+  container-memory-usage-bytes-sum: 메모리 사용률
 dnsPage:
   type:
     arecord: 외부 IP
@@ -578,12 +624,60 @@ dnsPage:
   table:
     clusterIpDetail: '클러스터 IP: {ip}'
 editDns:
+  loadBalancerIP:
+    label: 로드 밸런서 IP
+    placeholder: 예를 들어 78.11.24.19
+  loadBalancerSourceRanges:
+    addActionLabel: 소스 범위 추가
+    placeholder: 예를 들어 143.231.0.0/16
+  healthCheckNodePort:
+    placeholder: 예를 들어 8080
+  externalTrafficPolicy:
+    local: 지역
+    cluster: 클러스터
+  publishNotReadyAddresses:
+    all: 모든 엔드포인트
+  sessionAffinityConfig:
+    placeholder: 예를 들어 10800
+  kind:
+    clusterIP: 클러스터 IP (내부 전용)
+    loadBalancer: 레이어4 로드 밸런서
+    nodePort: NodePort (모든 노드에서)
+    externalName: ExternalName
+    headless: 헤드리스 서비스
+  recordType:
+    clusterIp: "클러스터 IP"
   placeholder:
     arecord: e.g. 19.82.2.24
     cname: e.g. example.com
 cruPersistentVolumeClaim:
   capacity:
     unit: GiB
+cruVolumeClaimTemplate:
+  capacity:
+    label: 용량
+    unit: GiB
+  name:
+    placeholder: 예를 들어 myvol
+  source:
+    label: 소스
+  pv:
+    label: 영구 볼륨
+  storageClass:
+    label: 스토리지 클래스
+  customize:
+    title: 커스터마이즈
+globalDnsPage:
+  entriesPage:
+    config:
+      project: 프로젝트
+      fqdn:
+        label: FQDN
+        placeholder: dev.example.com
+      ttl:
+        label: DNS TTL
+  providersPage:
+    title: 글로벌 DNS 공급자
 failWhalePage:
   header: 에러
   reloadButton: |
@@ -893,7 +987,7 @@ nodeDriver:
   amazoneks:
     associateWorkerNodePublicIp:
       radio:
-        default: "Yes"
+        default: true
   azure:
     publishSettingsFile:
       label: 게시 설정
@@ -917,9 +1011,6 @@ nav:
   hosts:
     tab: 노드
     addHost: 노드 추가
-  apps:
-    tab: 서비스 카탈로그
-    apps: 서비스 카탈로그
   admin:
     machines: 노드
     settings:
