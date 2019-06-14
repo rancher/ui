@@ -202,4 +202,32 @@ export default Component.extend({
       return [TARGET_TYPES.VALUE, TARGET_TYPES.AVERAGE_VALUE];
     }
   }),
+
+  showCpuReservationWarning: computed('metric.name', 'metric.type', 'metric.target.type', 'selectedWorkload.launchConfig.hasCpuReservation', function() {
+    const targetType = get(this, 'metric.target.type');
+    const type =  get(this, 'metric.type');
+    const name = get(this, 'metric.name');
+    const selectedWorkload = get(this, 'selectedWorkload');
+    const hasCpuReservation = get(this, 'selectedWorkload.launchConfig.hasCpuReservation');
+
+    if ( name === CPU && targetType === AVERAGE_UTILIZATION && type === RESOURCE && selectedWorkload ) {
+      return !hasCpuReservation;
+    } else {
+      return false;
+    }
+  }),
+
+  showMemoryReservationWarning: computed('metric.name', 'metric.type', 'metric.target.type', 'selectedWorkload.launchConfig.hasMemoryReservation', function() {
+    const targetType = get(this, 'metric.target.type');
+    const type =  get(this, 'metric.type');
+    const name = get(this, 'metric.name');
+    const selectedWorkload = get(this, 'selectedWorkload');
+    const hasMemoryReservation = get(this, 'selectedWorkload.launchConfig.hasMemoryReservation');
+
+    if ( name === MEMORY && targetType === AVERAGE_UTILIZATION && type === RESOURCE && selectedWorkload ) {
+      return !hasMemoryReservation;
+    } else {
+      return false;
+    }
+  }),
 });

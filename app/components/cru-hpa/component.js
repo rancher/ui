@@ -57,6 +57,10 @@ export default Component.extend(ViewNewEdit, ChildHook, {
     }
   }),
 
+  selectedWorkload: computed('model.workloadId', 'deployments.[]', function() {
+    return (get(this, 'deployments') || []).findBy('id', get(this, 'model.workloadId'));
+  }),
+
   deploymentsChoices: computed('namespace.id', 'deployments.[]', function() {
     const namespaceId = get(this, 'namespace.id');
 
