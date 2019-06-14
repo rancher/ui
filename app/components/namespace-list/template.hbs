@@ -20,6 +20,9 @@
       </td>
       <td>
         {{obj.name}}
+        {{#if obj.autoInjectionEnabled}}
+          <div class="istio istio-autoinjection"></div>
+        {{/if}}
         {{#if obj.description}}
           <p class="text-small text-muted m-0">{{linkify obj.description}}</p>
         {{/if}}
@@ -41,18 +44,6 @@
         {{action-menu model=obj}}
       </td>
     </tr>
-    {{#if obj.displayUserLabelStrings.length}}
-        <tr class="sub-row">
-          <td colspan="2"></td>
-          <td colspan="4">
-            {{#each obj.displayUserLabelStrings as |label|}}
-              <span class="tag-xs bg-info">
-                {{label}}
-              </span>
-            {{/each}}
-          </td>
-        </tr>
-      {{/if}}
   {{else if (eq kind "nomatch")}}
     <tr><td colspan="{{sortable.fullColspan}}" class="text-center text-muted lacsso pt-20 pb-20">{{t 'namespacesPage.noMatch'}}</td></tr>
   {{else if (eq kind "norows")}}
