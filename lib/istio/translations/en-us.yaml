@@ -1,11 +1,12 @@
 clusterIstioPage:
-  header: Cluster Service Mesh
-  enabled: Cluster Service Mesh is enabled.
-  disabled: Cluster Service Mesh is not enabled yet.
+  header: Istio
+  enabled: "Istio is enabled. In order to leverage Istio, you will need to enable Istio sidecar auto injection for each namespace. If you enable it on an existing namespace, any existing workloads will need to be re-deployed to leverage the sidecar auto injection."
+  disabled: "Istio is not enabled yet. Please click Enable button to enable it."
   notReady: Installing Istio into the system project of current cluster...
   confirmDisable: "Are you sure?  Click again to disable Istio"
   disable: Disable Istio
   enableActionLabel: Enable
+  version: Istio Version
   links:
     kiali:
       label: Kiali UI
@@ -24,15 +25,15 @@ clusterIstioPage:
       mixer: MIXER
       tracing: TRACING
     tracingEnabled:
-      label: Enabled Tracing
+      label: Enable Tracing
     grafanaEnabled:
-      label: Enabled Grafana
+      label: Enable Grafana
     grafanaPersistenceEnabled:
       label: Enable Persistent Storage for Grafana
     mtlsEnabled:
       label: Service to service mutual TLS
     gatewayEnabled:
-      label: Enabled Ingress Gateway
+      label: Enable Ingress Gateway
     gatewayType:
       label: Service Type of Ingress Gateway
     http2Port:
@@ -49,7 +50,7 @@ clusterIstioPage:
       label: Trace sampling Percentage
       placeholder: e.g. 1
     mixerPolicyEnabled:
-      label: Enabled Mixer Policy
+      label: Enable Mixer Policy
   nodeSelector:
     addSelectorLabel: Add Selector
     helpText: Select the nodes where {component} workloads will be scheduled to
@@ -76,7 +77,7 @@ istio:
   table:
     template: Template
     host: Host
-
+  kiali: Powered by Kiali
   trafficMonitoring:
     duration: Last {time}
   nav:
@@ -102,6 +103,6 @@ ruleDetailPage:
 
 projectIstioPage:
   info:
-    notEnabled: 'Cluster Service Mesh is not enabled yet. Go <a href="/c/{clusterId}/istio/cluster-setting">here</a> to enable it.'
-    notOwner: 'Cluster Service Mesh is not enabled yet. Please contact your cluster administrator.'
-    noPermission: "You do not have permission to configure service mesh."
+    notEnabled: 'Istio is not enabled yet. Go <a href="/c/{clusterId}/istio/cluster-setting">here</a> to enable it.'
+    notOwner: "Istio is not enabled yet. Please contact your cluster administrator."
+    noPermission: "You do not have permission to configure Istio."

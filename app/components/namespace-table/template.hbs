@@ -28,6 +28,9 @@
       </td>
       <td>
         {{ns.name}}
+        {{#if ns.autoInjectionEnabled}}
+          <div class="istio istio-autoinjection"></div>
+        {{/if}}
         {{#if ns.description}}
           <p class="text-small text-muted m-0">{{linkify ns.description}}</p>
         {{/if}}
@@ -42,18 +45,6 @@
     <tr class="separator-row">
       <td colspan="{{fullColspan}}"></td>
     </tr>
-    {{#if ns.displayUserLabelStrings.length}}
-      <tr class="sub-row">
-        <td colspan="2"></td>
-        <td colspan="3">
-          {{#each ns.displayUserLabelStrings as |label|}}
-            <span class="tag-xs bg-info">
-              {{label}}
-            </span>
-          {{/each}}
-        </td>
-      </tr>
-    {{/if}}
   {{else if (eq kind "group")}}
     {{#if ns.ref}}
       {{project-group

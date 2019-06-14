@@ -20,10 +20,11 @@ export default Component.extend(ModalBase, NewOrEdit, {
   editing:       true,
   model:         null,
 
-  allNamespaces:     null,
-  allProjects:       null,
-  tags:              null,
-  beforeSaveModel:   null,
+  allNamespaces:           null,
+  allProjects:             null,
+  tags:                    null,
+  beforeSaveModel:         null,
+  initAutoInjectionStatus: null,
 
   originalModel:  alias('modalService.modalOpts'),
   init() {
@@ -44,11 +45,12 @@ export default Component.extend(ModalBase, NewOrEdit, {
 
     const labels = get(this, 'primaryResource.labels')
 
-    if (labels && labels[ISTIO_INJECTION] === ENABLED) {
-      set(this, 'istioInjection', true)
-    } else {
-      set(this, 'istioInjection', false)
-    }
+    const enabled = labels && labels[ISTIO_INJECTION] === ENABLED;
+
+    setProperties(this, {
+      istioInjection:          enabled,
+      initAutoInjectionStatus: enabled
+    });
   },
 
   actions: {

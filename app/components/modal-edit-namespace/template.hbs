@@ -117,6 +117,14 @@
 </section>
 
 {{top-errors errors=errors}}
+
+{{#if (and (not initAutoInjectionStatus) istioInjection)}}
+  {{banner-message
+    color="bg-warning"
+    message=(t "editStack.autoInject.warning")
+  }}
+{{/if}}
+
 {{save-cancel
   editing=editing
   save=(action "save")
