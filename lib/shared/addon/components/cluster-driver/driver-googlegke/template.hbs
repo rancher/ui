@@ -706,12 +706,31 @@
         </div>
         {{#if config.enableNodepoolAutoscaling}}
           <div class="col span-4">
-            <label class="acc-label">{{t "clusterNew.googlegke.minNodeCount.label"}}</label>
-            {{input-number min=1 value=config.minNodeCount max=5}}
+            <label
+              class="acc-label"
+              for="input-min-node-count"
+            >
+              {{t "clusterNew.googlegke.minNodeCount.label"}}
+            </label>
+            {{input-number
+              id="input-min-node-count"
+              min=1
+              max=config.maxNodeCount
+              value=config.minNodeCount
+            }}
           </div>
           <div class="col span-4">
-            <label class="acc-label">{{t "clusterNew.googlegke.maxNodeCount.label"}}</label>
-            {{input-number min=1 value=config.maxNodeCount max=5}}
+            <label
+              class="acc-label"
+              for="input-max-node-count"
+            >
+              {{t "clusterNew.googlegke.maxNodeCount.label"}}
+            </label>
+            {{input-number
+              id="input-max-node-count"
+              min=config.minNodeCount
+              value=config.maxNodeCount
+            }}
           </div>
         {{/if}}
       </div>
