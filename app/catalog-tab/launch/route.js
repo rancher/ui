@@ -139,7 +139,7 @@ export default Route.extend({
 
             set(neuApp, 'name', newAppName);
           } else {
-            neuApp = results.app;
+            neuApp = results.app.clone();
           }
         } else {
           neuApp = this.store.createRecord({
