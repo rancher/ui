@@ -8,7 +8,7 @@
       {{/if}}
     </h2>
   {{/unless}}
-  <hr/>
+  <hr />
 
   {{form-name-description
     model=primaryResource
@@ -28,20 +28,14 @@
           {{singleCloudKeyChoice}}
         </div>
       {{else}}
-        <select
-          class="form-control"
-          onchange={{action "selectConfig" value="target.value"}}
-        >
+        <select class="form-control" onchange={{action "selectConfig" value="target.value"}}>
           {{#if (not-eq cloudCredentialType value)}}
-            <option value="" selected=true >
+            <option value="" selected=true>
               {{t "modalAddCloudKey.typeSelect.prompt"}}
             </option>
           {{/if}}
           {{#each configChoices as |choice|}}
-            <option
-              value="{{choice.name}}"
-              selected={{eq choice.name cloudCredentialType}}
-            >
+            <option value="{{choice.name}}" selected={{eq choice.name cloudCredentialType}}>
               {{choice.displayName}}
             </option>
           {{/each}}
@@ -138,7 +132,7 @@
       <div class="row">
         <div class="col span-6">
           <label class="acc-label" for="digitalocean-accessToken">
-            {{t "modalAddCloudKey.digitalocean.accessToken.label"}}
+            {{t "modalAddCloudKey.digitalocean.accessToken.label"}}{{field-required}}
           </label>
           {{input
             type="password"
