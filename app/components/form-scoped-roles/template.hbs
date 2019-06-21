@@ -1,23 +1,35 @@
 <div class="row">
   <div class="col span-6">
-    <label class="acc-label">{{t 'generic.member'}}</label>
-    {{input-identity allowTeams=true action="addAuthorized" onError="gotError"}}
+    <label class="acc-label">
+      {{t "generic.member"}}
+    </label>
+    {{input-identity
+      allowTeams=true
+      action=(action "addAuthorized")
+      onError=(action "gotError")
+    }}
   </div>
   <div class="col span-12">
   </div>
 </div>
 
 {{#accordion-list-item
-     title=(t 'formScopedRoles.title' type=cTyped)
-     detail=(t 'formScopedRoles.description' type=cTyped)
-     expandOnInit=true
-     showExpand=false
+   title=(t "formScopedRoles.title" type=cTyped)
+   detail=(t "formScopedRoles.description" type=cTyped)
+   expandOnInit=true
+   showExpand=false
 }}
   {{#if showAdmin}}
     <div class="radio">
       <label>
-        {{radio-button selection=mode value=admin}} {{t 'formScopedRoles.mode.admin.label'}}
-        <p class="help-block">{{t 'formScopedRoles.mode.admin.detail' type=cTyped}}</p>
+        {{radio-button
+          selection=mode
+          value=admin
+        }}
+        {{t "formScopedRoles.mode.admin.label"}}
+        <p class="help-block">
+          {{t "formScopedRoles.mode.admin.detail" type=cTyped}}
+        </p>
       </label>
     </div>
   {{/if}}
@@ -25,17 +37,29 @@
   {{#if showStdUser}}
     <div class="radio">
       <label>
-        {{radio-button selection=mode value=stdUser}} {{t 'formScopedRoles.mode.user.label'}}
-        <p class="help-block">{{t 'formScopedRoles.mode.user.detail' type=cTyped}}</p>
+        {{radio-button
+          selection=mode
+          value=stdUser
+        }}
+        {{t "formScopedRoles.mode.user.label"}}
+        <p class="help-block">
+          {{t "formScopedRoles.mode.user.detail" type=cTyped}}
+        </p>
       </label>
     </div>
   {{/if}}
 
-  {{#if (and showReadOnly (eq type 'project'))}}
+  {{#if (and showReadOnly (eq type "project"))}}
     <div class="radio">
       <label>
-        {{radio-button selection=mode value="read-only"}} {{t 'formScopedRoles.mode.readOnly.label'}}
-        <p class="help-block">{{t 'formScopedRoles.mode.readOnly.detail' type=cTyped}}</p>
+        {{radio-button
+          selection=mode
+          value="read-only"
+        }}
+        {{t "formScopedRoles.mode.readOnly.label"}}
+        <p class="help-block">
+          {{t "formScopedRoles.mode.readOnly.detail" type=cTyped}}
+        </p>
       </label>
     </div>
   {{/if}}
@@ -43,12 +67,16 @@
   {{#each userRoles as |role| }}
     <div class="radio">
       <label>
-        {{radio-button selection=mode value=role}} {{role.role.displayName}}
+        {{radio-button
+          selection=mode
+          value=role
+        }}
+        {{role.role.displayName}}
         <p class="help-block">
           {{#if role.role.description}}
             {{role.role.description}}
           {{else}}
-            {{t 'formScopedRoles.mode.userDef.detail'}}
+            {{t "formScopedRoles.mode.userDef.detail"}}
           {{/if}}
         </p>
       </label>
@@ -56,17 +84,26 @@
   {{/each}}
   <div class="radio">
     <label>
-      {{radio-button selection=mode value="custom"}} {{t 'formScopedRoles.mode.custom.label'}}
-      <p class="help-block">{{t 'formScopedRoles.mode.custom.detail' type=cTyped}}</p>
+      {{radio-button
+        selection=mode
+        value="custom"
+      }}
+      {{t "formScopedRoles.mode.custom.label"}}
+      <p class="help-block">
+        {{t "formScopedRoles.mode.custom.detail" type=cTyped}}
+      </p>
     </label>
   </div>
 
-  {{#if (eq mode 'custom')}}
+  {{#if (eq mode "custom")}}
     <div class="pl-20">
       {{#each custom as |row|}}
         <div class="input-group mb-10 border">
           <label class="input-group-addon bg-default p-10 vertical-middle">
-            {{input type="checkbox" checked=row.active}}
+            {{input
+              type="checkbox"
+              checked=row.active
+            }}
           </label>
           <div class="form-control p-10 vertical-middle">
             {{row.role.displayName}}
@@ -82,4 +119,7 @@
 {{/accordion-list-item}}
 
 {{top-errors errors=errors}}
-{{save-cancel save="save" cancel="cancel"}}
+{{save-cancel
+  save=(action "save")
+  cancel=(action "cancel")
+}}

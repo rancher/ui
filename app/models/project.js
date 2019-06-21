@@ -1,4 +1,5 @@
-import { get, set, computed } from '@ember/object';
+import { get, set, computed, observer } from '@ember/object';
+import { on } from '@ember/object/evented';
 import { inject as service } from '@ember/service';
 import { hasMany, reference } from '@rancher/ember-api-store/utils/denormalize';
 import Resource from '@rancher/ember-api-store/models/resource';
@@ -21,9 +22,10 @@ export default Resource.extend({
 
   namespaces: hasMany('id', 'namespace', 'projectId', 'clusterStore'),
 
-  type:                 'project',
-  name:                 null,
-  description: null,
+  type:              'project',
+  name:              null,
+  description:       null,
+  isMonitoringReady: false,
 
   cluster:                     reference('clusterId', 'cluster'),
   // 2.0 bug projectId is wrong in the ptrb should be <cluster-id>:<project-id> instead of just <project-id>
@@ -46,23 +48,33 @@ export default Resource.extend({
     return labels[SYSTEM_PROJECT_LABEL] === 'true';
   }),
 
-  isMonitoringReady: computed('monitoringStatus.@each.conditions', function() {
+  conditionsDidChange: on('init', observer('enableProjectMonitoring', 'conditions.@each.status', function() {
     if ( !get(this, 'enableProjectMonitoring') ) {
       return false;
     }
-    const conditions = get(this, 'monitoringStatus.conditions') || [];
+    const conditions = get(this, 'conditions') || [];
 
-    if ( get(conditions, 'length') > 0 ) {
-      const ready = conditions.filterBy('status', 'True') || [] ;
+    const ready = conditions.findBy('type', 'MonitoringEnabled');
 
-      return get(ready, 'length') === get(conditions, 'length');
+    const status = ready && get(ready, 'status') === 'True';
+
+    if ( status !== get(this, 'isMonitoringReady') ) {
+      set(this, 'isMonitoringReady', status);
     }
-
-    return false;
-  }),
+  })),
 
   active: computed('scope.currentProject.id', 'id', function() {
     return get(this, 'scope.currentProject.id') === get(this, 'id');
+  }),
+
+  canSaveMonitor: computed('actionLinks.{editMonitoring,enableMonitoring}', function() {
+    const action = get(this, 'enableProjectMonitoring') ?  'editMonitoring' : 'enableMonitoring';
+
+    return !!this.hasAction(action)
+  }),
+
+  canDisableMonitor: computed('actionLinks.disableMonitoring', function() {
+    return !!this.hasAction('disableMonitoring')
   }),
 
   canSetDefault: computed('combinedState', 'isDefault', function() {

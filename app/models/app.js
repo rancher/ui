@@ -5,15 +5,16 @@ import { parseHelmExternalId } from 'ui/utils/parse-externalid';
 import StateCounts from 'ui/mixins/state-counts';
 import { inject as service } from '@ember/service';
 import EndpointPorts from 'ui/mixins/endpoint-ports';
+import { isEmpty } from '@ember/utils';
 
 const App = Resource.extend(StateCounts, EndpointPorts, {
   catalog:      service(),
   router:       service(),
   clusterStore: service(),
   globalStore:  service(),
+  modalService: service('modal'),
 
-  canEdit:   false,
-  canClone: true,
+  canEdit:      false,
 
   namespace:       reference('targetNamespace', 'namespace', 'clusterStore'),
   catalogTemplate: reference('externalIdInfo.templateId', 'template', 'globalStore'),
@@ -23,7 +24,17 @@ const App = Resource.extend(StateCounts, EndpointPorts, {
     this.defineStateCounts('pods', 'podStates', 'podCountSort');
   },
 
-  pods:      computed('namespace.pods.@each.workloadId', 'workloads.@each.workloadLabels', function() {
+  isIstio: computed('catalogTemplate.isIstio', function() {
+    let { catalogTemplate } = this;
+
+    if (catalogTemplate) {
+      return get(this, 'catalogTemplate.isIstio')
+    } else {
+      return false;
+    }
+  }),
+
+  pods: computed('namespace.pods.@each.workloadId', 'workloads.@each.workloadLabels', function() {
     return (get(this, 'namespace.pods') || []).filter((item) => {
       if ( item['labels'] ) {
         const inApp = item['labels']['io.cattle.field/appId'] === get(this, 'name');
@@ -42,6 +53,7 @@ const App = Resource.extend(StateCounts, EndpointPorts, {
       }
     });
   }),
+
   services: computed('namespace.services.@each.labels', function() {
     return (get(this, 'namespace.services') || []).filter((item) => {
       if ( item['labels'] ) {
@@ -49,6 +61,7 @@ const App = Resource.extend(StateCounts, EndpointPorts, {
       }
     });
   }),
+
   dnsRecords: computed('namespace.services.@each.labels', function() {
     return (get(this, 'namespace.services') || []).filter((item) => {
       if ( item['labels'] ) {
@@ -56,6 +69,7 @@ const App = Resource.extend(StateCounts, EndpointPorts, {
       }
     });
   }),
+
   workloads: computed('namespace.workloads.@each.workloadLabels', function() {
     return (get(this, 'namespace.workloads') || []).filter((item) => {
       if ( item['workloadLabels'] ) {
@@ -63,6 +77,7 @@ const App = Resource.extend(StateCounts, EndpointPorts, {
       }
     });
   }),
+
   secrets: computed('namespace.secrets', function() {
     return (get(this, 'namespace.secrets') || []).filter((item) => {
       if ( item['labels'] ) {
@@ -70,6 +85,7 @@ const App = Resource.extend(StateCounts, EndpointPorts, {
       }
     });
   }),
+
   configMaps: computed('namespace.configMaps', function() {
     return (get(this, 'namespace.configMaps') || []).filter((item) => {
       if ( item['labels'] ) {
@@ -77,6 +93,7 @@ const App = Resource.extend(StateCounts, EndpointPorts, {
       }
     });
   }),
+
   ingress: computed('namespace.ingress', function() {
     return (get(this, 'namespace.ingress') || []).filter((item) => {
       if ( item['labels'] ) {
@@ -84,6 +101,7 @@ const App = Resource.extend(StateCounts, EndpointPorts, {
       }
     });
   }),
+
   volumes: computed('namespace.volumes', function() {
     return (get(this, 'namespace.volumes') || []).filter((item) => {
       if ( item['labels'] ) {
@@ -100,6 +118,7 @@ const App = Resource.extend(StateCounts, EndpointPorts, {
         out.push(endpoint);
       });
     });
+
     get(this, 'services').forEach((service) => {
       (get(service, 'proxyEndpoints') || []).forEach((endpoint) => {
         out.push(endpoint);
@@ -109,31 +128,68 @@ const App = Resource.extend(StateCounts, EndpointPorts, {
     return out;
   }),
 
+  displayAnswerStrings: computed('answers', function() {
+    let out = [];
+    let answers = get(this, 'answers') || {};
+
+    Object.keys(answers).forEach((key) => {
+      out.push(key + (answers[key] ? `=${ answers[key] }` : ''));
+    });
+
+    return out;
+  }),
+
   externalIdInfo: computed('externalId', function() {
     return parseHelmExternalId(get(this, 'externalId'));
   }),
 
-  availableActions: computed('actionLinks.{rollback,upgrade}', function() {
+  canUpgrade: computed('actionLinks.{upgrade}', 'catalogTemplate', function() {
     let a = get(this, 'actionLinks') || {};
 
-    var choices = [
+    return !!a.upgrade && !isEmpty(this.catalogTemplate);
+  }),
+
+  canClone: computed('catalogTemplate', function() {
+    return !isEmpty(this.catalogTemplate);
+  }),
+
+  canRollback: computed('catalogTemplate', function() {
+    return !isEmpty(this.catalogTemplate) && !!( this.actionLinks || {} ).rollback;
+  }),
+
+  availableActions: computed('actionLinks.{rollback,upgrade}', 'catalogTemplate', function() {
+    return [
       {
         label:   'action.upgrade',
         icon:    'icon icon-edit',
         action:  'upgrade',
-        enabled: !!a.upgrade
+        enabled: get(this, 'canUpgrade')
       },
       {
         label:   'action.rollback',
         icon:    'icon icon-history',
         action:  'rollback',
-        enabled: !!a.rollback
-      }
+        enabled: get(this, 'canRollback')
+      },
+      {
+        label:   'action.viewYaml',
+        icon:    'icon icon-file',
+        action:  'viewYaml',
+        enabled: !!get(this, 'isIstio')
+      },
     ];
-
-    return choices;
   }),
+
   actions: {
+    viewYaml(){
+      get(this, 'modalService').toggleModal('modal-istio-yaml', {
+        escToClose: true,
+        name:       get(this, 'displayName'),
+        namespace:  get(this, 'namespace.id'),
+        appId:      get(this, 'name'),
+      });
+    },
+
     upgrade() {
       const templateId    = get(this, 'externalIdInfo.templateId');
       const catalogId     = get(this, 'externalIdInfo.catalog');
@@ -146,6 +202,7 @@ const App = Resource.extend(StateCounts, EndpointPorts, {
           catalog:     catalogId,
           namespaceId: get(this, 'targetNamespace'),
           upgrade:     latestVersion,
+          istio:       get(this, 'isIstio')
         }
       });
     },

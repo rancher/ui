@@ -91,7 +91,9 @@ export default Component.extend({
 
   actions: {
     toggle() {
-      this.sendAction('toggle');
+      if (this.toggle) {
+        this.toggle();
+      }
     },
   },
 

@@ -59,7 +59,9 @@ export default Component.extend(ViewNewEdit, ChildHook, {
 
   actions: {
     cancel() {
-      this.sendAction('cancel');
+      if (this.cancel) {
+        this.cancel();
+      }
     },
   },
 
@@ -102,7 +104,7 @@ export default Component.extend(ViewNewEdit, ChildHook, {
         return false;
       }
     } else {
-      set(pr, 'storageClassId', null);
+      set(pr, 'storageClassId', get(pr, 'persistentVolume.storageClassId') || null);
       set(pr, 'resources', { requests: Object.assign({}, get(pr, 'persistentVolume.capacity')), });
     }
 
@@ -110,7 +112,10 @@ export default Component.extend(ViewNewEdit, ChildHook, {
       let ok = this._super(...arguments);
 
       if ( ok ) {
-        this.sendAction('doSave', { pvc: pr, });
+        if (this.doSave) {
+          this.doSave({ pvc: pr })
+        }
+
         this.doneSaving();
       }
 
@@ -148,7 +153,9 @@ export default Component.extend(ViewNewEdit, ChildHook, {
   },
 
   doneSaving() {
-    this.sendAction('done');
+    if (this.done) {
+      this.done();
+    }
   },
 
 });

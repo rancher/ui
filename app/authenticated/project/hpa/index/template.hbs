@@ -1,0 +1,83 @@
+{{#containers-header showGroup=false}}
+  <button
+    {{action "importYaml"}}
+    class="btn btn-sm bg-default mr-10"
+    disabled={{rbac-prevents resource="horizontalpodautoscaler" scope="project" permission="create"}}
+  >
+    {{t "nav.containers.importCompose"}}
+  </button>
+  {{#link-to
+    "authenticated.project.hpa.new"
+    scope.currentProject.id
+    class="btn btn-sm bg-primary"
+    disabled=(or (not model.supported) (rbac-prevents resource="horizontalpodautoscaler" scope="project" permission="create"))
+  }}
+    {{t "nav.containers.addHpa"}}
+  {{/link-to}}
+{{/containers-header}}
+
+{{#if rows.length}}
+  <section class="pl-0 pr-0">
+    {{#sortable-table
+      classNames="grid sortable-table"
+      body=rows
+      searchText=searchText
+      sortBy=sortBy
+      bulkActions=true
+      descending=descending
+      subRows=true
+      groupByKey="namespaceId"
+      groupByRef="namespace"
+      pagingLabel="pagination.hpa"
+      subHeaders=containerHeaders
+      subSearchField="instances"
+      headers=headers as |sortable kind inst dt|
+    }}
+      {{#if (eq kind "row")}}
+        {{hpa-row
+          model=inst
+          searchText=searchText
+          subMatches=sortable.subMatches
+          fullColspan=sortable.fullColspan
+          dt=dt
+        }}
+      {{else if (eq kind "group")}}
+        {{namespace-group
+          model=inst.ref
+          fullColspan=sortable.fullColspan
+        }}
+      {{else if (eq kind "nomatch")}}
+        <tr>
+          <td
+            colspan="{{sortable.fullColspan}}"
+            class="text-center text-muted pt-20 pb-20"
+          >
+            {{t "hpaPage.noMatch"}}
+          </td>
+        </tr>
+      {{else if (eq kind "norows")}}
+        <tr>
+          <td
+            colspan="{{sortable.fullColspan}}"
+            class="text-center text-muted pt-20 pb-20"
+          >
+            {{t "hpaPage.noData"}}
+          </td>
+        </tr>
+      {{/if}}
+    {{/sortable-table}}
+  </section>
+{{else if model.supported}}
+  {{empty-table
+    disabled=(rbac-prevents resource="horizontalpodautoscaler" scope="project" permission="create")
+    resource="container"
+    newRoute="authenticated.project.hpa.new"
+    newTranslationKey="nav.containers.addHpa"
+  }}
+{{else}}
+  {{banner-message
+    icon="icon-alert"
+    color="bg-warning mb-10"
+    message=(t "hpaPage.notSupported" htmlSafe=true)
+  }}
+{{/if}}

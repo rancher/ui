@@ -1,143 +1,255 @@
 <section class="header">
   <h1>
     {{#if isEdit}}
-      {{t 'clustersPage.editClusterName' name=originalCluster.displayName}}
+      {{t "clustersPage.editClusterName" name=originalCluster.displayName}}
     {{else if (eq step 1)}}
-      {{t 'clustersPage.newCluster'}}
+      {{t "clustersPage.newCluster"}}
     {{else}}
-      {{t 'clustersPage.newClusterName' name=cluster.displayName}}
+      {{t "clustersPage.newClusterName" name=cluster.displayName}}
     {{/if}}
   </h1>
 </section>
 
-{{#unless initialProvider}}
+{{!-- We need two levels here because the component is used in an engine and outside on (cluster edit) This will be undergoing some design changes and perhaps we should think about editing from the global level and the cluster level rather than cluster all the time. --}}
 
-  <div class="row nav nav-boxes checked-active inline-form">
-    <div class="col span-8 col-inline mb-0">
-      <div>
-        <label class="acc-label">{{t 'clusterNew.driverLabels.cloud'}}</label>
-      </div>
-      {{#each (get providerGroups "cloudGroup") as |choice|}}
-        {{#unless choice.scriptError}}
-          {{#link-to (query-params provider=choice.name) class=(concat "mb-20 mt-10 col span-3 col-inline nav-box-item driver " choice.name)}}
-            <div class="machine-driver {{if choice.genericIcon 'generic'}} {{choice.name}}"></div>
-            <p class="driver-name">{{driver-name choice.name}}</p>
-          {{/link-to}}
+{{#unless initialProvider}}
+  {{#if (eq router.currentRouteName "authenticated.cluster.edit")}}
+    <div class="row nav nav-boxes checked-active inline-form">
+      <div class="col span-8 col-inline mb-0">
+        <div>
+          <label class="acc-label">
+            {{t "clusterNew.driverLabels.cloud"}}
+          </label>
+        </div>
+        {{#each (get providerGroups "cloudGroup") as |provider|}}
+          {{#unless provider.scriptError}}
+            {{#link-to-external
+               "authenticated.cluster.edit"
+               (query-params provider=provider.name)
+               class=(concat "mb-20 mt-10 col span-3 col-inline nav-box-item driver " provider.name)
+            }}
+              <div class="machine-driver {{if provider.genericIcon "generic"}} {{provider.name}}"></div>
+              <p class="driver-name">{{driver-name provider.name}}</p>
+            {{/link-to-external}}
         {{else}}
-          <div class={{concat "disabled error-loading-driver mb-20 mt-10 col span-3 col-inline nav-box-item driver " choice.name}}>
-              {{#tooltip-element type="tooltip-basic" model=choice.scriptError tooltipTemplate='tooltip-static' aria-describedby="tooltip-base" tooltipFor="tooltipDriverError"}}
+            <div class={{concat "disabled error-loading-driver mb-20 mt-10 col span-3 col-inline nav-box-item driver " provider.name}}>
+              {{#tooltip-element type="tooltip-basic" model=provider.scriptError tooltipTemplate="tooltip-static" aria-describedby="tooltip-base" tooltipFor="tooltipDriverError"}}
                 <span class="icon icon-alert"></span>
               {{/tooltip-element}}
-            <div class="machine-driver {{choice.name}}"></div>
-            <p class="driver-name">{{driver-name choice.name}}</p>
-          </div>
-        {{/unless}}
-      {{else}}
-        <div class="machine-driver-empty">{{t 'clusterNew.driverLabels.noCloud'}}</div>
-      {{/each}}
-    </div>
-
-    <div class="col span-2 col-inline mb-0">
-      <div>
-        <label class="acc-label">{{t 'clusterNew.driverLabels.import'}}</label>
+              <div class="machine-driver {{provider.name}}"></div>
+              <p class="driver-name">{{driver-name provider.name}}</p>
+            </div>
+          {{/unless}}
+        {{else}}
+          <div class="machine-driver-empty">{{t "clusterNew.driverLabels.noCloud"}}</div>
+        {{/each}}
       </div>
-      {{#each (get providerGroups "importGroup") as |choice|}}
-        {{#link-to (query-params provider=choice.name) class=(concat "mb-20 mt-10 col span-12 col-inline nav-box-item driver " choice.name)}}
-          <div class="machine-driver {{choice.name}}"></div>
-          <p class="driver-name">{{driver-name choice.name}}</p>
-          {{#if choice.genericIcon}}
-            <p class="text-link text-bold">{{driver-name choice.name}}</p>
-          {{/if}}
-        {{/link-to}}
-      {{/each}}
-    </div>
 
-  </div>
-
-  <div class="row nav nav-boxes checked-active inline-form">
-    <div class="col span-8 col-inline mt-0">
-      <div>
-        <label class="acc-label">{{t 'clusterNew.driverLabels.infra'}}</label>
+      <div class="col span-2 col-inline mb-0">
+        <div>
+          <label class="acc-label">{{t "clusterNew.driverLabels.import"}}</label>
+        </div>
+        {{#each (get providerGroups "importGroup") as |provider|}}
+          {{#link-to-external
+             "authenticated.cluster.edit"
+             (query-params provider=provider.name)
+             class=(concat "mb-20 mt-10 col span-12 col-inline nav-box-item driver " provider.name)
+          }}
+            <div class="machine-driver {{provider.name}}"></div>
+            <p class="driver-name">{{driver-name provider.name}}</p>
+            {{#if provider.genericIcon}}
+              <p class="text-link text-bold">{{driver-name provider.name}}</p>
+            {{/if}}
+          {{/link-to-external}}
+        {{/each}}
       </div>
-      {{#each (get providerGroups "rkeGroup") as |choice|}}
-        {{#link-to (query-params provider=choice.name) class=(concat "mb-20 mt-10 col span-3 col-inline nav-box-item driver " choice.name)}}
-          <div class="machine-driver {{if choice.genericIcon 'generic'}} {{choice.name}}"></div>
-          <p class="driver-name">{{driver-name choice.name}}</p>
-        {{/link-to}}
-      {{else}}
-        <div class="machine-driver-empty">{{t 'clusterNew.driverLabels.noInfra'}}</div>
-      {{/each}}
+
     </div>
 
-    <div class="col span-2 col-inline mt-0">
-      <div>
-        <label class="acc-label">{{t 'clusterNew.driverLabels.custom'}}</label>
+    <div class="row nav nav-boxes checked-active inline-form">
+      <div class="col span-8 col-inline mt-0">
+        <div>
+          <label class="acc-label">{{t "clusterNew.driverLabels.infra"}}</label>
+        </div>
+        {{#each (get providerGroups "rkeGroup") as |provider|}}
+          {{#link-to-external
+             "authenticated.cluster.edit"
+             (query-params provider=provider.name)
+             class=(concat "mb-20 mt-10 col span-3 col-inline nav-box-item driver " provider.name)
+          }}
+            <div class="machine-driver {{if provider.genericIcon "generic"}} {{provider.name}}"></div>
+            <p class="driver-name">{{driver-name provider.name}}</p>
+          {{/link-to-external}}
+        {{else}}
+          <div class="machine-driver-empty">{{t "clusterNew.driverLabels.noInfra"}}</div>
+        {{/each}}
       </div>
-      {{#each (get providerGroups "customGroup") as |choice|}}
-        {{#link-to (query-params provider=choice.name) class=(concat "mb-20 mt-10 col span-12 col-inline nav-box-item driver " choice.name)}}
-          <div class="machine-driver {{choice.name}}"></div>
-          <p class="driver-name">{{driver-name choice.name}}</p>
-          {{#if choice.genericIcon}}
-            <p class="text-link text-bold">{{driver-name choice.name}}</p>
-          {{/if}}
-        {{/link-to}}
-      {{/each}}
+
+      <div class="col span-2 col-inline mt-0">
+        <div>
+          <label class="acc-label">{{t "clusterNew.driverLabels.custom"}}</label>
+        </div>
+        {{#each (get providerGroups "customGroup") as |provider|}}
+          {{#link-to-external
+             "authenticated.cluster.edit"
+             (query-params provider=provider.name)
+             class=(concat "mb-20 mt-10 col span-12 col-inline nav-box-item driver " provider.name)
+          }}
+            <div class="machine-driver {{provider.name}}"></div>
+            <p class="driver-name">{{driver-name provider.name}}</p>
+            {{#if provider.genericIcon}}
+              <p class="text-link text-bold">{{driver-name provider.name}}</p>
+            {{/if}}
+          {{/link-to-external}}
+        {{/each}}
+      </div>
     </div>
-  </div>
+  {{else}}
+    <div class="row nav nav-boxes checked-active inline-form">
+      <div class="col span-8 col-inline mb-0">
+        <div>
+          <label class="acc-label">
+            {{t "clusterNew.driverLabels.cloud"}}
+          </label>
+        </div>
+        {{#each (get providerGroups "cloudGroup") as |provider|}}
+          {{#unless provider.scriptError}}
+            {{#link-to
+               "clusters.new"
+               (query-params provider=provider.name)
+               class=(concat "mb-20 mt-10 col span-3 col-inline nav-box-item driver " provider.name)
+            }}
+              <div class="machine-driver {{if provider.genericIcon "generic"}} {{provider.name}}"></div>
+              <p class="driver-name">{{driver-name provider.name}}</p>
+            {{/link-to}}
+        {{else}}
+            <div class={{concat "disabled error-loading-driver mb-20 mt-10 col span-3 col-inline nav-box-item driver " provider.name}}>
+              {{#tooltip-element type="tooltip-basic" model=provider.scriptError tooltipTemplate="tooltip-static" aria-describedby="tooltip-base" tooltipFor="tooltipDriverError"}}
+                <span class="icon icon-alert"></span>
+              {{/tooltip-element}}
+              <div class="machine-driver {{provider.name}}"></div>
+              <p class="driver-name">{{driver-name provider.name}}</p>
+            </div>
+          {{/unless}}
+        {{else}}
+          <div class="machine-driver-empty">{{t "clusterNew.driverLabels.noCloud"}}</div>
+        {{/each}}
+      </div>
+
+      <div class="col span-2 col-inline mb-0">
+        <div>
+          <label class="acc-label">{{t "clusterNew.driverLabels.import"}}</label>
+        </div>
+        {{#each (get providerGroups "importGroup") as |provider|}}
+          {{#link-to
+             "clusters.new"
+             (query-params provider=provider.name)
+             class=(concat "mb-20 mt-10 col span-12 col-inline nav-box-item driver " provider.name)
+          }}
+            <div class="machine-driver {{provider.name}}"></div>
+            <p class="driver-name">{{driver-name provider.name}}</p>
+            {{#if provider.genericIcon}}
+              <p class="text-link text-bold">{{driver-name provider.name}}</p>
+            {{/if}}
+          {{/link-to}}
+        {{/each}}
+      </div>
+
+    </div>
+
+    <div class="row nav nav-boxes checked-active inline-form">
+      <div class="col span-8 col-inline mt-0">
+        <div>
+          <label class="acc-label">{{t "clusterNew.driverLabels.infra"}}</label>
+        </div>
+        {{#each (get providerGroups "rkeGroup") as |provider|}}
+          {{#link-to
+             "clusters.new"
+             (query-params provider=provider.name)
+             class=(concat "mb-20 mt-10 col span-3 col-inline nav-box-item driver " provider.name)
+          }}
+            <div class="machine-driver {{if provider.genericIcon "generic"}} {{provider.name}}"></div>
+            <p class="driver-name">{{driver-name provider.name}}</p>
+          {{/link-to}}
+        {{else}}
+          <div class="machine-driver-empty">{{t "clusterNew.driverLabels.noInfra"}}</div>
+        {{/each}}
+      </div>
+
+      <div class="col span-2 col-inline mt-0">
+        <div>
+          <label class="acc-label">{{t "clusterNew.driverLabels.custom"}}</label>
+        </div>
+        {{#each (get providerGroups "customGroup") as |provider|}}
+          {{#link-to
+             "clusters.new"
+             (query-params provider=provider.name)
+             class=(concat "mb-20 mt-10 col span-12 col-inline nav-box-item driver " provider.name)
+          }}
+            <div class="machine-driver {{provider.name}}"></div>
+            <p class="driver-name">{{driver-name provider.name}}</p>
+            {{#if provider.genericIcon}}
+              <p class="text-link text-bold">{{driver-name provider.name}}</p>
+            {{/if}}
+          {{/link-to}}
+        {{/each}}
+      </div>
+    </div>
+  {{/if}}
 {{/unless}}
 
 
 {{#if (eq driverInfo.name "amazoneks")}}
-  {{#banner-message color='bg-warning'}}
-    <p>{{t 'clusterNew.amazoneks.ingressWarning'}}</p>
+  {{#banner-message color="bg-warning"}}
+    <p>{{t "clusterNew.amazoneks.ingressWarning"}}</p>
   {{/banner-message}}
 {{else if (eq driverInfo.name "azureaks")}}
-  {{#banner-message color='bg-warning'}}
-    <p>{{t 'clusterNew.azureaks.ingressWarning'}}</p>
+  {{#banner-message color="bg-warning"}}
+    <p>{{t "clusterNew.azureaks.ingressWarning"}}</p>
   {{/banner-message}}
 {{/if}}
 
 {{#if (eq step 1)}}
   <form onsubmit={{action "clickNext"}}>
-    <div class="row">
+    <div class="row mb-10">
       {{form-name-description
-          model=model.cluster
-          nameRequired=true
-          nameLabel='clusterNew.name.label'
-          namePlaceholder='clusterNew.name.placeholder'
-          descriptionPlaceholder='clusterNew.description.placeholder'
+        model=model.cluster
+        nameRequired=true
+        nameLabel="clusterNew.name.label"
+        namePlaceholder="clusterNew.name.placeholder"
+        descriptionPlaceholder="clusterNew.description.placeholder"
       }}
     </div>
 
     {{#accordion-list showExpandAll=false as |al expandFn|}}
       {{#accordion-list-item
-           title=(t 'clusterNew.members.label')
-           detail=(t 'clusterNew.members.detail')
-           expandAll=al.expandAll
-           everExpanded=true
-           expanded=expanded
-           expand=(action expandFn)
+         title=(t "clusterNew.members.label")
+         detail=(t "clusterNew.members.detail")
+         expandAll=al.expandAll
+         everExpanded=true
+         expanded=expanded
+         expand=(action expandFn)
       }}
         {{#if model.cluster.internal}}
-          {{banner-message icon='icon-alert' color='bg-error mt-0 mb-10' message=(t 'clusterPage.internal' appName=settings.appName htmlSafe=true)}}
+          {{banner-message icon="icon-alert" color="bg-error mt-0 mb-10" message=(t "clusterPage.internal" appName=settings.appName htmlSafe=true)}}
         {{/if}}
 
         {{#if isEdit}}
-          {{banner-message icon='icon-info' color='bg-info mt-0 mb-10' message=(t 'clusterPage.removeMemberNote')}}
+          {{banner-message icon="icon-info" color="bg-info mt-0 mb-10" message=(t "clusterPage.removeMemberNote")}}
         {{/if}}
 
         {{form-members
-            creator=model.me
-            editing=notView
-            expanded=expanded
-            isNew=newCluster
-            memberConfig=memberConfig
-            errors=memberErrors
-            primaryResource=cluster
-            registerHook=(action "registerHook")
-            roles=model.roleTemplates
-            type="cluster"
-            users=model.users
+          creator=model.me
+          editing=notView
+          expanded=expanded
+          isNew=newCluster
+          memberConfig=memberConfig
+          errors=memberErrors
+          primaryResource=cluster
+          registerHook=(action "registerHook")
+          roles=model.roleTemplates
+          type="cluster"
+          users=model.users
         }}
       {{/accordion-list-item}}
     {{/accordion-list}}
@@ -145,22 +257,22 @@
 {{/if}}
 
 {{component driverInfo.driverComponent
-    mode=mode
-    nodeWhich=driverInfo.nodeWhich
-    model=model
-    originalCluster=originalCluster
-    otherErrors=memberErrors
-    clusterErrors=errors
-    save=(action 'save')
-    close=(action 'close')
-    registerHook=(action "registerHook")
+  mode=mode
+  nodeWhich=driverInfo.nodeWhich
+  model=model
+  originalCluster=originalCluster
+  otherErrors=memberErrors
+  clusterErrors=errors
+  save=(action "save")
+  close=(action "close")
+  registerHook=(action "registerHook")
 }}
 
 {{#if (and isEdit (not provider))}}
   {{top-errors errors=errors}}
   {{save-cancel
     editing=isEdit
-    save="save"
-    cancel="close"
+    save=(action "save" )
+    cancel=(action "close")
   }}
 {{/if}}

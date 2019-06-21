@@ -76,6 +76,13 @@ export default Component.extend(ViewNewEdit, {
     return out.sortBy('priority', 'label');
   }),
 
+  sourceDisplayName: computed('sourceName', 'sourceChoices.[]', function() {
+    const { sourceChoices, sourceName } = this;
+    const match = sourceChoices.findBy('name', sourceName);
+
+    return match ? get(match, 'label') : '';
+  }),
+
   sourceComponent: computed('sourceName', function() {
     const name = get(this, 'sourceName');
     const sources = getSources('persistent');
@@ -121,7 +128,9 @@ export default Component.extend(ViewNewEdit, {
   },
 
   doneSaving() {
-    this.sendAction('cancel');
+    if (this.cancel) {
+      this.cancel();
+    }
   },
 
 });

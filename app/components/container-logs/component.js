@@ -92,7 +92,9 @@ export default Component.extend({
 
     cancel() {
       this.disconnect();
-      this.sendAction('dismiss');
+      if (this.dismiss) {
+        this.dismiss();
+      }
     },
 
     clear() {

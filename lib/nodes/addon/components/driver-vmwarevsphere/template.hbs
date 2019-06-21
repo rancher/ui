@@ -1,17 +1,21 @@
 {{#accordion-list showExpandAll=false as | al expandFn |}}
-  <div class="over-hr"><span>{{driverOptionsTitle}}</span></div>
+  <div class="over-hr">
+    <span>
+      {{driverOptionsTitle}}
+    </span>
+  </div>
 
   {{#accordion-list-item
-    title=(t 'nodeDriver.vmwarevsphere.access.title')
-    detail=(t 'nodeDriver.vmwarevsphere.access.detail')
-    expandAll=expandAll
-    expand=(action expandFn)
-    expandOnInit=true
+     title=(t "nodeDriver.vmwarevsphere.access.title")
+     detail=(t "nodeDriver.vmwarevsphere.access.detail")
+     expandAll=expandAll
+     expand=(action expandFn)
+     expandOnInit=true
   }}
 
     {{form-auth-cloud-credential
       driverName=driverName
-      errors=errros
+      parseAndCollectErrors=(action "errorHandler")
       primaryResource=model
       cloudCredentials=cloudCredentials
       finishAndSelectCloudCredential=(action "finishAndSelectCloudCredential")
@@ -23,134 +27,244 @@
   {{/accordion-list-item}}
 
   {{#accordion-list-item
-    title=(t 'nodeDriver.vmwarevsphere.instance.title')
-    detail=(t 'nodeDriver.vmwarevsphere.instance.detail')
-    expandAll=expandAll
-    expand=(action expandFn)
-    expandOnInit=true
+     title=(t "nodeDriver.vmwarevsphere.instance.title")
+     detail=(t "nodeDriver.vmwarevsphere.instance.detail")
+     expandAll=expandAll
+     expand=(action expandFn)
+     expandOnInit=true
   }}
     <div class="row">
       <div class="col span-6">
-        <label class="acc-label">{{t 'nodeDriver.vmwarevsphere.cpuCount.label'}}</label>
+        <label class="acc-label">
+          {{t "nodeDriver.vmwarevsphere.cpuCount.label"}}
+        </label>
         <div class="input-group">
-          {{input-integer min=1 max=32 value=config.cpuCount classNames="form-control"}}
-          <div class="input-group-addon bg-default">{{t 'nodeDriver.vmwarevsphere.cpuCount.unit' cores=config.cpuCount}}</div>
+          {{input-integer
+            min=1
+            max=32
+            value=config.cpuCount
+            classNames="form-control"
+          }}
+          <div class="input-group-addon bg-default">
+            {{t "nodeDriver.vmwarevsphere.cpuCount.unit" cores=config.cpuCount}}
+          </div>
         </div>
       </div>
 
       <div class="col span-6">
-        <label class="acc-label">{{t 'nodeDriver.vmwarevsphere.memorySize.label'}}</label>
+        <label class="acc-label">
+          {{t "nodeDriver.vmwarevsphere.memorySize.label"}}
+        </label>
         <div class="input-group">
-          {{input-integer min=1 value=config.memorySize classNames="form-control"}}
-          <div class="input-group-addon bg-default">{{t 'nodeDriver.vmwarevsphere.memorySize.unit'}}</div>
+          {{input-integer
+            min=1
+            value=config.memorySize
+            classNames="form-control"
+          }}
+          <div class="input-group-addon bg-default">
+            {{t "nodeDriver.vmwarevsphere.memorySize.unit"}}
+          </div>
         </div>
       </div>
     </div>
 
     <div class="row">
       <div class="col span-6">
-        <label class="acc-label">{{t 'nodeDriver.vmwarevsphere.diskSize.label'}}</label>
+        <label class="acc-label">
+          {{t "nodeDriver.vmwarevsphere.diskSize.label"}}
+        </label>
         <div class="input-group">
-          {{input-integer min=1 value=config.diskSize classNames="form-control"}}
-          <div class="input-group-addon bg-default">{{t 'nodeDriver.vmwarevsphere.diskSize.unit'}}</div>
+          {{input-integer
+            min=1
+            value=config.diskSize
+            classNames="form-control"
+          }}
+          <div class="input-group-addon bg-default">
+            {{t "nodeDriver.vmwarevsphere.diskSize.unit"}}
+          </div>
         </div>
       </div>
 
       <div class="col span-6">
-        <label class="acc-label">{{t 'nodeDriver.vmwarevsphere.cloudinit.label'}}</label>
-        {{input type="text" value=config.cloudinit classNames="form-control" placeholder=(t 'nodeDriver.vmwarevsphere.cloudinit.placeholder')}}
-        <p class="help-block">{{t 'nodeDriver.vmwarevsphere.cloudinit.help'}}</p>
+        <label class="acc-label">
+          {{t "nodeDriver.vmwarevsphere.cloudinit.label"}}
+        </label>
+        {{input
+          type="text"
+          value=config.cloudinit
+          classNames="form-control"
+          placeholder=(t "nodeDriver.vmwarevsphere.cloudinit.placeholder")
+        }}
+        <p class="help-block">
+          {{t "nodeDriver.vmwarevsphere.cloudinit.help"}}
+        </p>
       </div>
     </div>
 
     <div class="row">
       <div class="col span-12">
-        <label class="acc-label">{{t 'nodeDriver.vmwarevsphere.boot2dockerUrl.label'}}</label>
-        {{input type="text" value=config.boot2dockerUrl classNames="form-control" placeholder=(t 'nodeDriver.vmwarevsphere.boot2dockerUrl.placeholder')}}
+        <label class="acc-label">
+          {{t "nodeDriver.vmwarevsphere.boot2dockerUrl.label"}}
+        </label>
+        {{input
+          type="text"
+          value=config.boot2dockerUrl
+          classNames="form-control"
+          placeholder=(t "nodeDriver.vmwarevsphere.boot2dockerUrl.placeholder")
+        }}
       </div>
     </div>
 
     <div class="row">
       <div class="col span-12">
         {{form-key-value
-            allowEmptyValue=false
-            initialArray=initParamArray
-            changedArray=(action "paramChanged")
-            header=(t 'nodeDriver.vmwarevsphere.cfgparam.label')
-            valuePlaceholder="nodeDriver.vmwarevsphere.cfgparam.value.placeholder"
-            keyPlaceholder="nodeDriver.vmwarevsphere.cfgparam.key.placeholder"
-            addActionLabel="nodeDriver.vmwarevsphere.cfgparam.addActionLabel"
+          allowEmptyValue=false
+          initialArray=initParamArray
+          changedArray=(action "paramChanged")
+          header=(t "nodeDriver.vmwarevsphere.cfgparam.label")
+          valuePlaceholder="nodeDriver.vmwarevsphere.cfgparam.value.placeholder"
+          keyPlaceholder="nodeDriver.vmwarevsphere.cfgparam.key.placeholder"
+          addActionLabel="nodeDriver.vmwarevsphere.cfgparam.addActionLabel"
         }}
       </div>
     </div>
   {{/accordion-list-item}}
 
   {{#accordion-list-item
-    title=(t 'nodeDriver.vmwarevsphere.scheduling.title')
-    detail=(t 'nodeDriver.vmwarevsphere.scheduling.detail')
-    expandAll=expandAll
-    expand=(action expandFn)
-    expandOnInit=true
+     title=(t "nodeDriver.vmwarevsphere.scheduling.title")
+     detail=(t "nodeDriver.vmwarevsphere.scheduling.detail")
+     expandAll=expandAll
+     expand=(action expandFn)
+     expandOnInit=true
   }}
     <div class="row">
       <div class="col span-6">
-        <label class="acc-label">{{t 'nodeDriver.vmwarevsphere.dataCenter.label'}}</label>
-        {{input type="text" value=config.datacenter classNames="form-control" placeholder=(t 'nodeDriver.vmwarevsphere.dataCenter.placeholder')}}
-        <p class="help-block">{{t 'nodeDriver.vmwarevsphere.dataCenter.help'}}</p>
+        <label class="acc-label">
+          {{t "nodeDriver.vmwarevsphere.dataCenter.label"}}
+        </label>
+        {{input
+          type="text"
+          value=config.datacenter
+          classNames="form-control"
+          placeholder=(t "nodeDriver.vmwarevsphere.dataCenter.placeholder")
+        }}
+        <p class="help-block">
+          {{t "nodeDriver.vmwarevsphere.dataCenter.help"}}
+        </p>
       </div>
 
       <div class="col span-6">
-        <label class="acc-label">{{t 'nodeDriver.vmwarevsphere.pool.label'}}</label>
-        {{input type="text" value=config.pool classNames="form-control" placeholder=(t 'nodeDriver.vmwarevsphere.pool.placeholder')}}
-        <p class="help-block">{{t 'nodeDriver.vmwarevsphere.pool.help'}}</p>
+        <label class="acc-label">
+          {{t "nodeDriver.vmwarevsphere.pool.label"}}
+        </label>
+        {{input
+          type="text"
+          value=config.pool
+          classNames="form-control"
+          placeholder=(t "nodeDriver.vmwarevsphere.pool.placeholder")
+        }}
+        <p class="help-block">
+          {{t "nodeDriver.vmwarevsphere.pool.help"}}
+        </p>
       </div>
     </div>
 
     <div class="row">
       <div class="col span-6">
-        <label class="acc-label">{{t 'nodeDriver.vmwarevsphere.host.label'}}</label>
-        {{input type="text" value=config.hostsystem classNames="form-control" placeholder=(t 'nodeDriver.vmwarevsphere.host.placeholder')}}
-        <p class="help-block">{{t 'nodeDriver.vmwarevsphere.host.help'}}</p>
+        <label class="acc-label">
+          {{t "nodeDriver.vmwarevsphere.host.label"}}
+        </label>
+        {{input
+          type="text"
+          value=config.hostsystem
+          classNames="form-control"
+          placeholder=(t "nodeDriver.vmwarevsphere.host.placeholder")
+        }}
+        <p class="help-block">
+          {{t "nodeDriver.vmwarevsphere.host.help"}}
+        </p>
       </div>
       <div class="col span-6">
-        <label class="acc-label">{{t 'nodeDriver.vmwarevsphere.network.label'}}</label>
-        {{input type="text" value=network classNames="form-control" placeholder=(t 'nodeDriver.vmwarevsphere.network.placeholder')}}
-        <p class="help-block">{{t 'nodeDriver.vmwarevsphere.network.help'}}</p>
+        <label class="acc-label">
+          {{t "nodeDriver.vmwarevsphere.network.label"}}
+        </label>
+        {{input
+          type="text"
+          value=network
+          classNames="form-control"
+          placeholder=(t "nodeDriver.vmwarevsphere.network.placeholder")
+        }}
+        <p class="help-block">
+          {{t "nodeDriver.vmwarevsphere.network.help"}}
+        </p>
       </div>
     </div>
 
     <div class="row">
       <div class="col span-6">
-        <label class="acc-label">{{t 'nodeDriver.vmwarevsphere.dataStore.label'}}</label>
-        {{input type="text" value=config.datastore classNames="form-control" placeholder=(t 'nodeDriver.vmwarevsphere.dataStore.placeholder')}}
-        <p class="help-block">{{t 'nodeDriver.vmwarevsphere.dataStore.help'}}</p>
+        <label class="acc-label">
+          {{t "nodeDriver.vmwarevsphere.dataStore.label"}}
+        </label>
+        {{input
+          type="text"
+          value=config.datastore
+          classNames="form-control"
+          placeholder=(t "nodeDriver.vmwarevsphere.dataStore.placeholder")
+        }}
+        <p class="help-block">
+          {{t "nodeDriver.vmwarevsphere.dataStore.help"}}
+        </p>
       </div>
       <div class="col span-6">
-        <label class="acc-label">{{t 'nodeDriver.vmwarevsphere.folder.label'}}</label>
-        {{input type="text" value=config.folder classNames="form-control" placeholder=(t 'nodeDriver.vmwarevsphere.folder.placeholder')}}
-        <p class="help-block">{{t 'nodeDriver.vmwarevsphere.folder.help'}}</p>
+        <label class="acc-label">
+          {{t "nodeDriver.vmwarevsphere.folder.label"}}
+        </label>
+        {{input
+          type="text"
+          value=config.folder
+          classNames="form-control"
+          placeholder=(t "nodeDriver.vmwarevsphere.folder.placeholder")
+        }}
+        <p class="help-block">
+          {{t "nodeDriver.vmwarevsphere.folder.help"}}
+        </p>
       </div>
     </div>
   {{/accordion-list-item}}
 
   {{#accordion-list-item
-    title=(t 'nodeDriver.vmwarevsphere.vappOptions.title')
-    detail=(t 'nodeDriver.vmwarevsphere.vappOptions.detail')
-    expandAll=expandAll
-    expand=(action expandFn)
-    expandOnInit=true
+     title=(t "nodeDriver.vmwarevsphere.vappOptions.title")
+     detail=(t "nodeDriver.vmwarevsphere.vappOptions.detail")
+     expandAll=expandAll
+     expand=(action expandFn)
+     expandOnInit=true
   }}
-    <p class="help-block">{{t 'nodeDriver.vmwarevsphere.vappHelp'}}</p>
+    <p class="help-block">{{t "nodeDriver.vmwarevsphere.vappHelp"}}</p>
     <div class="row">
       <div class="col span-12">
         <div class="radio">
-          <label>{{radio-button selection=vappMode value="disabled"}} {{t 'nodeDriver.vmwarevsphere.vappMode.disabled'}}</label>
+          <label>
+            {{radio-button
+              selection=vappMode
+              value="disabled"
+            }} {{t "nodeDriver.vmwarevsphere.vappMode.disabled"}}
+          </label>
         </div>
         <div class="radio">
-          <label>{{radio-button selection=vappMode value="auto"}} {{t 'nodeDriver.vmwarevsphere.vappMode.auto'}}</label>
+          <label>
+            {{radio-button
+              selection=vappMode
+              value="auto"
+            }} {{t "nodeDriver.vmwarevsphere.vappMode.auto"}}
+          </label>
         </div>
         <div class="radio">
-          <label>{{radio-button selection=vappMode value="manual"}} {{t 'nodeDriver.vmwarevsphere.vappMode.manual'}}</label>
+          <label>
+            {{radio-button
+              selection=vappMode
+              value="manual"
+            }} {{t "nodeDriver.vmwarevsphere.vappMode.manual"}}
+          </label>
         </div>
       </div>
     </div>
@@ -158,32 +272,59 @@
       <div>
         <div class="row">
           <div class="col span-4">
-            <label class="acc-label">{{t 'nodeDriver.vmwarevsphere.vappTransport.label'}}</label>
-            {{input type="text" value=config.vappTransport classNames="form-control" placeholder=(t 'nodeDriver.vmwarevsphere.vappTransport.placeholder')}}
-            <p class="help-block">{{t 'nodeDriver.vmwarevsphere.vappTransport.help'}}</p>
+            <label class="acc-label">
+              {{t "nodeDriver.vmwarevsphere.vappTransport.label"}}
+            </label>
+            {{input
+              type="text"
+              value=config.vappTransport
+              classNames="form-control"
+              placeholder=(t "nodeDriver.vmwarevsphere.vappTransport.placeholder")
+            }}
+            <p class="help-block">
+              {{t "nodeDriver.vmwarevsphere.vappTransport.help"}}
+            </p>
           </div>
           <div class="col span-4">
-            <label class="acc-label">{{t 'nodeDriver.vmwarevsphere.vappIpprotocol.label'}}</label>
-            {{input type="text" value=config.vappIpprotocol classNames="form-control" placeholder=(t 'nodeDriver.vmwarevsphere.vappIpprotocol.placeholder')}}
-            <p class="help-block">{{t 'nodeDriver.vmwarevsphere.vappIpprotocol.help'}}</p>
+            <label class="acc-label">
+              {{t "nodeDriver.vmwarevsphere.vappIpprotocol.label"}}
+            </label>
+            {{input
+              type="text"
+              value=config.vappIpprotocol
+              classNames="form-control"
+              placeholder=(t "nodeDriver.vmwarevsphere.vappIpprotocol.placeholder")
+            }}
+            <p class="help-block">
+              {{t "nodeDriver.vmwarevsphere.vappIpprotocol.help"}}
+            </p>
           </div>
           <div class="col span-4">
-            <label class="acc-label">{{t 'nodeDriver.vmwarevsphere.vappIpallocationpolicy.label'}}</label>
-            {{input type="text" value=config.vappIpallocationpolicy classNames="form-control" placeholder=(t 'nodeDriver.vmwarevsphere.vappIpallocationpolicy.placeholder')}}
-            <p class="help-block">{{t 'nodeDriver.vmwarevsphere.vappIpallocationpolicy.help'}}</p>
+            <label class="acc-label">
+              {{t "nodeDriver.vmwarevsphere.vappIpallocationpolicy.label"}}
+            </label>
+            {{input
+              type="text"
+              value=config.vappIpallocationpolicy
+              classNames="form-control"
+              placeholder=(t "nodeDriver.vmwarevsphere.vappIpallocationpolicy.placeholder")
+            }}
+            <p class="help-block">
+              {{t "nodeDriver.vmwarevsphere.vappIpallocationpolicy.help"}}
+            </p>
           </div>
         </div>
 
         <div class="row">
           <div class="col span-12">
             {{form-key-value
-                allowEmptyValue=false
-                initialArray=initVappArray
-                changedArray=(action "vappPropertyChanged")
-                header=(t 'nodeDriver.vmwarevsphere.vappProperty.label')
-                valuePlaceholder="nodeDriver.vmwarevsphere.vappProperty.value.placeholder"
-                keyPlaceholder="nodeDriver.vmwarevsphere.vappProperty.key.placeholder"
-                addActionLabel="nodeDriver.vmwarevsphere.vappProperty.addActionLabel"
+              allowEmptyValue=false
+              initialArray=initVappArray
+              changedArray=(action "vappPropertyChanged")
+              header=(t "nodeDriver.vmwarevsphere.vappProperty.label")
+              valuePlaceholder="nodeDriver.vmwarevsphere.vappProperty.value.placeholder"
+              keyPlaceholder="nodeDriver.vmwarevsphere.vappProperty.key.placeholder"
+              addActionLabel="nodeDriver.vmwarevsphere.vappProperty.addActionLabel"
             }}
           </div>
         </div>
@@ -191,7 +332,11 @@
     {{/if}}
   {{/accordion-list-item}}
 
-  <div class="over-hr"><span>{{templateOptionsTitle}}</span></div>
+  <div class="over-hr">
+    <span>
+      {{templateOptionsTitle}}
+    </span>
+  </div>
 
   {{form-name-description
     model=model
@@ -200,7 +345,7 @@
 
   {{form-user-labels
     initialLabels=labelResource.labels
-    setLabels=(action 'setLabels')
+    setLabels=(action "setLabels")
     expandAll=expandAll
     expand=(action expandFn)
   }}
@@ -211,5 +356,9 @@
   }}
 
   {{top-errors errors=errors}}
-  {{save-cancel save="save" cancel="cancel" editing=editing}}
+  {{save-cancel
+    save=(action "save")
+    cancel=(action "cancel")
+    editing=editing
+  }}
 {{/accordion-list}}

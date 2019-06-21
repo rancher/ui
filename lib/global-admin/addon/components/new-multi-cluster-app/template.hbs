@@ -120,12 +120,10 @@
       </span>
     </div>
 
-    {{form-multi-cluster-targets
+    {{form-project-targets
       addTarget=(action "addTarget")
       removeTarget=(action "removeTarget")
-      multiClusterApp=multiClusterApp
-      isClone=isClone
-      isEditing=editing
+      targets=multiClusterApp.targets
       projects=projects
       readOnly=readOnly
     }}
@@ -240,6 +238,7 @@
       resource=multiClusterApp
       addAuthorizedPrincipal=(action "addAuthorizedPrincipal")
       removeMember=(action "removeMember")
+      gotError=(action "gotError")
     }}
 
   {{/accordion-list-item}}
@@ -368,8 +367,8 @@
   <div class="footer-actions">
     {{save-cancel
       createLabel=(if editing saveUpgrade saveNew)
-      save="save"
-      cancel="cancel"
+      save=(action "save")
+      cancel=(action "cancel")
     }}
   </div>
 {{else}}

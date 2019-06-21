@@ -1,0 +1,93 @@
+<section class="header clearfix">
+  <div class="pull-left">
+    <h1 class="vertical-middle">
+      {{t "ruleDetailPage.header" appName=model.displayName}}
+    </h1>
+  </div>
+  <div class="vertical-middle"></div>
+  <div class="right-buttons">
+    {{badge-state model=model}}
+    {{action-menu
+      model=model
+      showPrimary=false
+      classNames="ml-10 pull-right"
+      size="sm"
+    }}
+  </div>
+</section>
+
+{{#if model.description}}
+  {{banner-message
+    color="bg-secondary mb-0 mt-10"
+    message=(linkify model.description)
+  }}
+{{/if}}
+
+{{#if model.showTransitioningMessage}}
+  <div class="{{model.stateColor}}">
+    <p>
+      {{uc-first model.transitioningMessage}}
+    </p>
+  </div>
+{{/if}}
+
+<section>
+  <div class="row banner bg-info basics mb-0">
+    <div class="vertical-middle">
+      <label class="acc-label vertical-middle p-0">
+        {{t "generic.version"}}
+      </label>
+      {{model.externalIdInfo.version}}
+    </div>
+    <div class="vertical-middle">
+      <label class="acc-label vertical-middle p-0">
+        {{t "generic.namespace"}}
+      </label>
+      {{model.namespace.displayName}} {{copy-to-clipboard
+                                            clipboardText=model.namespace.id
+                                            size="small"
+                                          }}
+    </div>
+    <div class="vertical-middle">
+      <label class="acc-label vertical-middle p-0">
+        {{t "generic.created"}}
+      </label>
+      {{date-calendar model.created}}
+    </div>
+  </div>
+</section>
+
+<section>
+  {{#accordion-list as |al expandFn|}}
+    {{resource-condition-list
+      resourceType=(t "generic.istioRule")
+      conditions=model.status.conditions
+      expandAll=al.expandAll
+      expandFn=expandFn
+      expandOnInit=false
+    }}
+
+    {{#accordion-list-item
+       title=(t "ruleDetailPage.answers.title")
+       detail=(t "ruleDetailPage.answers.detail")
+       expandAll=al.expandAll
+       expand=(action expandFn)
+       expandOnInit=false
+    }}
+      {{form-key-value
+        editing=false
+        initialMap=model.answers
+        showNoneLabel=(not model.valuesYaml)
+        keyLabel="ruleDetailPage.answers.variable"
+      }}
+      {{#if model.valuesYaml}}
+        {{code-block
+          code=model.valuesYaml
+          language="yaml"
+        }}
+      {{/if}}
+    {{/accordion-list-item}}
+  {{/accordion-list}}
+</section>
+
+{{istio-yaml rule=model}}

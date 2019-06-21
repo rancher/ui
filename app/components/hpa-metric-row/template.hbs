@@ -1,0 +1,299 @@
+<div class="box mb-10">
+  {{#unless (eq metric.type "Resource")}}
+    {{banner-message
+      color="bg-warning"
+      message=(t (if (eq metric.type "External") "cruHpa.metrics.types.warning.external" "cruHpa.metrics.types.warning.custom" ))
+    }}
+  {{/unless}}
+
+  {{#if showCpuReservationWarning}}
+    {{banner-message
+      color="bg-warning"
+      message=(t "cruHpa.metrics.types.warning.cpu")
+    }}
+  {{/if}}
+
+  {{#if showMemoryReservationWarning}}
+    {{banner-message
+      color="bg-warning"
+      message=(t "cruHpa.metrics.types.warning.memory")
+    }}
+  {{/if}}
+
+  {{#if (and editing (gt metrics.length 1))}}
+    <div class="row">
+      <div class="pull-right">
+        {{#if (lte metrics.length 1 )}}
+          <button class="btn btn-disabled-transparent text-small vertical-middle" disabled="true">
+            {{t "cruHpa.metrics.removeMetricLabel"}}
+          </button>
+        {{else}}
+          <button class="btn bg-transparent text-small vertical-middle" {{action "removeMetric" metric}}>
+            {{t "cruHpa.metrics.removeMetricLabel"}}
+          </button>
+        {{/if}}
+      </div>
+    </div>
+  {{/if}}
+  {{#unless editing}}
+    <div class="row">
+      <div class="col span-6">
+        <label class="pb-5 acc-label">
+          {{t "cruHpa.status.label"}}
+        </label>
+        <div>
+          {{#if metric.current.averageValue}}
+            {{t "cruHpa.metrics.target.options.averageValue"}}: {{metric.current.averageValue}}
+          {{/if}}
+          {{#if (or metric.current.utilization (eq metric.current.utilization 0))}}
+            {{t "cruHpa.metrics.target.options.averageUtilization"}}: {{metric.current.utilization}}
+          {{/if}}
+          {{#if metric.current.value}}
+            {{t "cruHpa.metrics.target.options.value"}}: {{metric.current.value}}
+          {{/if}}
+        </div>
+      </div>
+    </div>
+  {{/unless}}
+  <div class="row">
+    <div class="col span-6">
+      <label class="pb-5 acc-label" for="{{concat elementId "-input-type-choices"}}">
+        {{t "cruHpa.metrics.types.label"}}
+        {{#if editing}}
+          {{field-required}}
+        {{/if}}
+      </label>
+      {{new-select
+        id=(concat elementId "-input-type-choices")
+        classNames="form-control"
+        content=typeChoices
+        value=metric.type
+        localizedLabel=true
+        disabled=(not editing)
+      }}
+    </div>
+    <div class="col span-6">
+      <label class="pb-5 acc-label" for="{{concat elementId "-input-metrics-name"}}">
+        {{t "cruHpa.metrics.name.label"}}
+        {{#if editing}}
+          {{field-required}}
+        {{/if}}
+      </label>
+      {{#if (eq metric.type "Resource")}}
+        {{new-select
+          id=(concat elementId "-input-metrics-name")
+          classNames="form-control"
+          content=resourceChoices
+          value=metric.name
+          localizedLabel=true
+          disabled=(not editing)
+        }}
+      {{else}}
+        {{#input-or-display
+          editable=editing
+          value=metric.name
+          classesForDisplay="text-muted form-control-static"
+        }}
+          {{input
+            id=(concat elementId "-input-metrics-name")
+            class="form-control"
+            type="text"
+            value=metric.name
+            placeholder=(t "cruHpa.metrics.name.placeholder")
+          }}
+        {{/input-or-display}}
+      {{/if}}
+    </div>
+  </div>
+  <div class="row">
+    <div class="col span-6">
+      <label class="pb-5 acc-label" for="{{concat elementId "-input-metrics-target"}}">
+        {{t "cruHpa.metrics.target.label"}}
+        {{#if editing}}
+          {{field-required}}
+        {{/if}}
+      </label>
+      {{new-select
+        id=(concat elementId "-input-metrics-target")
+        classNames="form-control"
+        content=targetChoices
+        value=metric.target.type
+        localizedLabel=true
+        disabled=(not editing)
+      }}
+    </div>
+    <div class="col span-6">
+      <label class="pb-5 acc-label" for="{{concat elementId "-input-metrics-target-type"}}">
+        {{t "cruHpa.metrics.value.label"}}
+        {{#if editing}}
+          {{field-required}}
+        {{/if}}
+      </label>
+      {{#if (eq metric.target.type "Utilization")}}
+        {{#input-or-display
+          editable=editing
+          value=metric.target.utilization
+          classesForDisplay="text-muted form-control-static"
+        }}
+          <div class="input-group">
+            {{input-integer
+              min=0
+              id=(concat elementId "-input-metrics-target-type")
+              value=metric.target.utilization
+              classNames="form-control"
+              placeholder=(t "cruHpa.metrics.value.utilizationPlaceholder")
+            }}
+            <div class="input-group-addon bg-default">
+              %
+            </div>
+          </div>
+        {{/input-or-display}}
+      {{else if (and (eq metric.type "Resource") (eq metric.target.type "AverageValue"))}}
+        {{#input-or-display
+          editable=editing
+          value=metric.target.averageValue
+          classesForDisplay="text-muted form-control-static"
+        }}
+          <div class="input-group">
+            {{input-integer
+              min=0
+              id=(concat elementId "-input-metrics-target-type")
+              value=metric.target.stringValue
+              classNames="form-control"
+              placeholder=(t "cruHpa.metrics.value.placeholder")
+            }}
+            <div class="input-group-addon bg-default">
+              {{t (if (eq metric.name "cpu") "units.cpu" "generic.mibibyte")}}
+            </div>
+          </div>
+        {{/input-or-display}}
+      {{else if (eq metric.target.type "AverageValue")}}
+        {{#input-or-display
+          editable=editing
+          value=metric.target.averageValue
+          classesForDisplay="text-muted form-control-static"
+        }}
+          {{input
+            class="form-control"
+            type="text"
+            id=(concat elementId "-input-metrics-target-type")
+            value=metric.target.averageValue
+            placeholder=(t "cruHpa.metrics.value.placeholder")
+          }}
+        {{/input-or-display}}
+      {{else}}
+        {{#input-or-display
+          editable=editing
+          value=metric.target.value
+          classesForDisplay="text-muted form-control-static"
+        }}
+          {{input
+            id=(concat elementId "-input-metrics-target-type")
+            class="form-control"
+            type="text"
+            value=metric.target.value
+            placeholder=(t "cruHpa.metrics.value.placeholder")
+          }}
+        {{/input-or-display}}
+      {{/if}}
+    </div>
+  </div>
+  {{#if (eq metric.type "Object")}}
+    <div class="row">
+      <div class="col span-6">
+        <label class="pb-5 acc-label" for="{{concat elementId "-input-metrics-describedbject-apiversion"}}">
+          {{t "cruHpa.metrics.describedObject.apiVersion.label"}}
+          {{#if editing}}
+            {{field-required}}
+          {{/if}}
+        </label>
+        {{#input-or-display
+          editable=editing
+          value=metric.describedObject.apiVersion
+          classesForDisplay="text-muted form-control-static"
+        }}
+          {{input
+            class="form-control"
+            type="text"
+            id=(concat elementId "-input-metrics-describedbject-apiversion")
+            value=metric.describedObject.apiVersion
+            placeholder=(t "cruHpa.metrics.describedObject.apiVersion.placeholder")
+          }}
+        {{/input-or-display}}
+      </div>
+      <div class="col span-6">
+        <label class="pb-5 acc-label" for="{{concat elementId "-input-metrics-describedbject-kind"}}">
+          {{t "cruHpa.metrics.describedObject.kind.label"}}
+          {{#if editing}}
+            {{field-required}}
+          {{/if}}
+        </label>
+        {{#input-or-display
+          editable=editing
+          value=metric.describedObject.kind
+          classesForDisplay="text-muted form-control-static"
+        }}
+          {{input
+            class="form-control"
+            type="text"
+            id=(concat elementId "-input-metrics-describedbject-kind")
+            value=metric.describedObject.kind
+            placeholder=(t "cruHpa.metrics.describedObject.kind.placeholder")
+          }}
+        {{/input-or-display}}
+      </div>
+    </div>
+    <div class="row">
+      <div class="col span-6">
+        <label class="pb-5 acc-label" for="{{concat elementId "-input-metrics-describedbject-name"}}">
+          {{t "cruHpa.metrics.describedObject.name.label"}}
+          {{#if editing}}
+            {{field-required}}
+          {{/if}}
+        </label>
+        {{#input-or-display
+          editable=editing
+          value=metric.describedObject.name
+          classesForDisplay="text-muted form-control-static"
+        }}
+          {{input
+            class="form-control"
+            type="text"
+            id=(concat elementId "-input-metrics-describedbject-name")
+            value=metric.describedObject.name
+            placeholder=(t "cruHpa.metrics.describedObject.name.placeholder")
+          }}
+        {{/input-or-display}}
+      </div>
+    </div>
+  {{/if}}
+  {{#if (not-eq metric.type "Resource")}}
+    <div class="row">
+      <div class="col span-12">
+        <label class="acc-label">
+          {{t "cruHpa.metrics.selector.labels.label"}}
+        </label>
+        {{form-key-value
+          editing=editing
+          initialMap=metric.selector.matchLabels
+          changed=(action "updateSelectorMatchLabels")
+          allowEmptyValue=true
+          addActionLabel="cruHpa.metrics.selector.labels.addSelectorLabel"
+        }}
+      </div>
+    </div>
+    <div class="row">
+      <div class="col span-12">
+        <label class="acc-label">
+          {{t "cruHpa.metrics.selector.expressions.label"}}
+        </label>
+        {{form-match-expressions
+          editing=editing
+          initialArray=metric.selector.matchExpressions
+          changed=(action "updateSelectorMatchExpressions")
+          addActionLabel="cruHpa.metrics.selector.expressions.addSelectorLabel"
+        }}
+      </div>
+    </div>
+  {{/if}}
+</div>

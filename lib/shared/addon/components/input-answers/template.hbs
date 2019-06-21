@@ -1,16 +1,26 @@
 <form class="{{if getTemplate.isRunning "hide"}}">
   <div class="btn-group  pull-right">
     {{#if pasteOrUpload}}
-      <button class="btn btn-sm" {{action "cancel"}}>{{t "inputAnswers.editAsForm"}}</button>
-      <button class="btn btn-sm bg-primary" {{action "upload"}}>{{t "uploadFile.label"}} <span class="icon icon-upload"></span></button>
+      <button class="btn btn-sm" {{action "cancel"}}>
+        {{t "inputAnswers.editAsForm"}}
+      </button>
+      <button class="btn btn-sm bg-primary" {{action "upload"}}>
+        {{t "uploadFile.label"}} <span class="icon icon-upload"></span>
+      </button>
     {{else if (not isMultiClusterApp)}}
-      <button class="btn btn-sm bg-primary" {{action "showPaste"}}>{{t "inputAnswers.yaml"}} <span class="icon icon-copy"></span></button>
+      <button class="btn btn-sm bg-primary" {{action "showPaste"}}>
+        {{t "inputAnswers.yaml"}} <span class="icon icon-copy"></span>
+      </button>
     {{/if}}
   </div>
   <div>
     {{#if showHeader}}
-      <h4 class="mb-0">{{t "inputAnswers.config"}}</h4>
-      <span class="protip">{{t "inputAnswers.protip"}}</span>
+      <h4 class="mb-0">
+        {{t "inputAnswers.config"}}
+      </h4>
+      <span class="protip">
+        {{t "inputAnswers.protip"}}
+      </span>
     {{/if}}
     &nbsp;
   </div>
@@ -27,7 +37,7 @@
       </div>
       {{top-errors errors=yamlErrors}}
     {{else}}
-     {{#each answerSections as |section index|}}
+      {{#each answerSections as |section index|}}
         {{#if section.title}}
           <div class="over-hr"><span>{{section.title}}</span></div>
         {{else if (gt index 0)}}
@@ -37,17 +47,17 @@
           <div class="row">
             {{#each group as |question|}}
               {{input-answer-row
-                  classNames="col span-6"
-                  question=question
-                  answer=question.answer
-                  namespaceId=namespaceId
+                classNames="col span-6"
+                question=question
+                answer=question.answer
+                namespaceId=namespaceId
               }}
             {{/each}}
           </div>
         {{/each}}
-     {{else}}
+      {{else}}
         <span class="text-muted">{{t "inputAnswers.noConfig"}}</span>
-     {{/each}}
+      {{/each}}
     {{/if}}
   </div>
 </form>

@@ -59,6 +59,14 @@ var Container = Resource.extend(Grafana, DisplayImage, {
     }
   }),
 
+  hasCpuReservation: computed('resources.requests.cpu', function() {
+    return !!get(this, 'resources.requests.cpu');
+  }),
+
+  hasMemoryReservation: computed('resources.requests.memory', function() {
+    return !!get(this, 'resources.requests.memory');
+  }),
+
   validateQuota(namespace) {
     const projectLimit =  get(this, 'scope.currentProject.resourceQuota.limit');
 

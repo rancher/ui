@@ -1,0 +1,9 @@
+{{#if scope.currentCluster.istioEnabled}}
+  {{istio-nav}}
+  {{traffic-monitoring namespaces=model}}
+{{else}}
+  {{banner-message
+    color="bg-info"
+    message=(t (if scope.currentCluster.systemProject  "projectIstioPage.info.notEnabled" "projectIstioPage.info.notOwner") clusterId=scope.currentCluster.id htmlSafe=true)
+  }}
+{{/if}}

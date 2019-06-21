@@ -13,7 +13,7 @@
       <div class="text-left inline-block" style="width: 120px;">
         {{ember-flatpickr
             disabled=state.loading
-            enableSeconds=true
+            enableSeconds=false
             enableTime=true
             dateFormat="m/d h:i"
             minuteIncrement=1
@@ -27,13 +27,14 @@
       <div class="text-left inline-block" style="width: 120px;">
         {{ember-flatpickr
             disabled=state.loading
-            enableSeconds=true
+            enableSeconds=false
             dateFormat="m/d h:i"
             minuteIncrement=1
             enableTime=true
             minDate=from
             maxDate=now
             date=to
+            onOpen=(action "onOpen")
             onChange=(action "toDidChange")
             onClose=(action "onTimePickerClose")
             placeholder=(t 'metricsAction.to.label')

@@ -1,0 +1,267 @@
+{{#if isView}}
+  <section class="header clearfix">
+    <div class="pull-left">
+      <h1>
+        {{t (concat "cruHpa.title." mode) name=model.displayName}}
+      </h1>
+    </div>
+    <div class="right-buttons">
+      {{badge-state model=model}}
+      {{action-menu
+        model=model
+        showPrimary=false
+        classNames="ml-10 inline-block"
+        size="sm"
+      }}
+    </div>
+  </section>
+
+  {{#if model.description}}
+    {{banner-message
+      color="bg-secondary mb-0 mt-10"
+      message=(linkify model.description)
+    }}
+  {{/if}}
+
+  {{#if model.showTransitioningMessage}}
+    <div class="{{model.stateColor}}">
+      <p>
+        {{uc-first model.transitioningMessage}}
+      </p>
+    </div>
+  {{/if}}
+
+  <div class="row banner bg-info basics">
+    <div class="vertical-middle">
+      <label class="acc-label vertical-middle p-0">
+        {{t "generic.name"}}:
+      </label>
+      {{#copy-inline clipboardText=model.hpaName}}
+        {{model.hpaName}}
+      {{/copy-inline}}
+    </div>
+    <div class="vertical-middle">
+      <label class="acc-label vertical-middle p-0">
+        {{t "servicePage.multistat.namespace"}}:
+      </label>
+      {{#copy-inline clipboardText=model.namespaceId}}
+        {{model.namespaceId}}
+      {{/copy-inline}}
+    </div>
+    <div class="vertical-middle">
+      <label class="acc-label vertical-middle p-0">
+        {{t "cruHpa.target.label"}}:
+      </label>
+      {{#if model.workload}}
+        {{#link-to
+          "workload"
+          model.workloadId
+        }}
+          {{model.workloadId}}
+        {{/link-to}}
+      {{else if model.workloadId}}
+        {{model.workloadId}}
+      {{else}}
+        {{t "generic.none"}}
+      {{/if}}
+    </div>
+  </div>
+  <div class="row banner bg-info basics">
+    <div class="vertical-middle">
+      <label class="acc-label vertical-middle p-0">
+        {{t "cruHpa.minReplicas.label"}}:
+      </label>
+      {{model.minReplicas}}
+    </div>
+    <div class="vertical-middle">
+      <label class="acc-label vertical-middle p-0">
+        {{t "cruHpa.maxReplicas.label"}}:
+      </label>
+      {{model.maxReplicas}}
+    </div>
+    <div class="vertical-middle">
+      <label class="acc-label vertical-middle p-0">
+        {{t "hpaPage.table.replicas.current"}}:
+      </label>
+      {{model.currentReplicas}}
+    </div>
+  </div>
+  <div class="row banner bg-info basics">
+    <div class="vertical-middle">
+      <label class="acc-label vertical-middle p-0">
+        {{t "hpaPage.table.replicas.desired"}}:
+      </label>
+      {{model.desiredReplicas}}
+    </div>
+    <div class="vertical-middle">
+      <label class="acc-label vertical-middle p-0">
+        {{t "hpaPage.table.lastScaleTime.label"}}:
+      </label>
+      {{date-calendar model.lastScaleTime}}
+    </div>
+    <div class="vertical-middle">
+      <label class="acc-label vertical-middle p-0">
+        {{t "generic.created"}}:
+      </label>
+      {{date-calendar model.created}}
+    </div>
+  </div>
+
+{{else}}
+  <section class="header clearfix">
+    <h1>
+      {{t (concat "cruHpa.title." mode) name=model.displayName}}
+    </h1>
+  </section>
+  <section class="horizontal-form container-fluid">
+    <div class="row">
+      <div class="col span-6">
+        {{form-name-description
+          model=model
+          namePlaceholder="cruHpa.name.placeholder"
+          nameRequired=true
+          descriptionPlaceholder="cruHpa.description.placeholder"
+          editing=editing
+        }}
+      </div>
+      <div class="col span-6">
+        {{form-namespace
+          editable=isNew
+          namespace=namespace
+          errors=namespaceErrors
+          registerHook=(action "registerHook")
+          editing=editing
+        }}
+      </div>
+    </div>
+    <div class="row">
+      <div class="col span-6">
+        <label class="pb-5 acc-label desc-label" for="input-hpa-target">
+          {{t "cruHpa.target.label"}}
+          {{#if editing}}
+            {{field-required}}
+          {{/if}}
+        </label>
+        {{new-select
+          id="input-hpa-target"
+          classNames="form-control"
+          optionValuePath="id"
+          optionLabelPath="displayName"
+          prompt="cruHpa.prompt.deployment"
+          localizedPrompt=true
+          content=deploymentsChoices
+          value=model.workloadId
+          showProTip=false
+          editing=editing
+          disabled=isView
+        }}
+      </div>
+    </div>
+    <div class="row">
+      <div class="col span-6">
+        <label class="pb-5 acc-label desc-label" for="input-hpa-min-replicas">
+          {{t "cruHpa.minReplicas.label"}}
+          {{#if editing}}
+            {{field-required}}
+          {{/if}}
+        </label>
+        {{input-integer
+          min=0
+          id="input-hpa-min-replicas"
+          max=model.maxReplicas
+          value=model.minReplicas
+          classNames="form-control"
+          placeholder=(t "cruHpa.minReplicas.placeholder")
+        }}
+      </div>
+      <div class="col span-6">
+        <label class="pb-5 acc-label desc-label" for="input-hpa-max-replicas">
+          {{t "cruHpa.maxReplicas.label"}}
+          {{#if editing}}
+            {{field-required}}
+          {{/if}}
+        </label>
+        {{input-integer
+          id="input-hpa-max-replicas"
+          min=model.minReplicas
+          value=model.maxReplicas
+          classNames="form-control"
+          placeholder=(t "cruHpa.maxReplicas.placeholder")
+        }}
+      </div>
+    </div>
+  </section>
+{{/if}}
+
+<section class="mt-40 mb-20 horizontal-form container-fluid">
+  <div class="row">
+    <label>
+      {{t "cruHpa.metrics.label"}}
+    </label>
+  </div>
+  <hr/>
+  {{#each metrics as |metric|}}
+    {{hpa-metric-row
+      editing=editing
+      metric=metric
+      metrics=metrics
+      selectedWorkload=selectedWorkload
+      removeMetric=(action "removeMetric")
+    }}
+  {{else}}
+    <div class="p-20 text-center text-muted">
+      {{t "cruHpa.metrics.noMetrics"}}
+    </div>
+  {{/each}}
+
+  {{#if editing}}
+    <div class="row">
+      <button class="btn bg-link icon-btn pull-right" {{action "addMetric"}}>
+        <span class="darken">
+          <i class="icon icon-plus text-small"></i>
+        </span>
+        <span>
+          {{t "cruHpa.metrics.addMetricLabel"}}
+        </span>
+      </button>
+    </div>
+  {{/if}}
+</section>
+
+{{#if isView}}
+  {{#accordion-list as |al expandFn|}}
+    {{resource-condition-list
+      resourceType=(t "generic.hpa")
+      conditions=model.conditions
+      expandAll=al.expandAll
+      expandFn=expandFn
+    }}
+
+    {{form-labels-annotations
+      classNames="accordion-wrapper"
+      model=model
+      editing=editing
+      expandAll=al.expandAll
+      expandFn=expandFn
+    }}
+  {{/accordion-list}}
+{{else}}
+  {{#advanced-section advanced=advanced}}
+    {{form-labels-annotations
+      classNames="accordion-wrapper"
+      initialLabels=model.labels
+      setLabels=(action "setLabels")
+      model=model
+      editing=editing
+    }}
+  {{/advanced-section}}
+{{/if}}
+
+{{#if editing}}
+  {{top-errors errors=errors}}
+  {{save-cancel
+    editing=isEdit
+    save=(action "save")
+    cancel=cancel
+  }}
+{{/if}}

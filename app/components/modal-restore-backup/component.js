@@ -22,7 +22,7 @@ export default Component.extend(ModalBase, {
   },
 
   actions: {
-    restore(cb) {
+    restore() {
       const { backupId } = this;
       const out          = {};
 
@@ -31,14 +31,7 @@ export default Component.extend(ModalBase, {
 
         this.modalOpts.cluster.doAction('restoreFromEtcdBackup', out).then(() => {
           this.send('cancel');
-        })
-          .catch((err) => {
-            this.growl.fromError(err);
-
-            if (cb) {
-              cb(false);
-            }
-          });
+        });
       } else {
         this.growl.fromError(this.intl.t('modalRestoreBackup.error'));
       }

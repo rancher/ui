@@ -8,10 +8,12 @@ import { get, computed } from '@ember/object';
 export default Controller.extend({
   application:       controller(),
   catalogController: controller('catalog-tab'),
+  queryParams:       ['istio'],
   parentRoute:       'catalog-tab',
   launchRoute:       'catalog-tab.launch',
-  category:          alias('catalogController.category'),
+  istio:             false,
 
+  category:          alias('catalogController.category'),
   actions:           {
     filterAction(catalog){
       let out      = {
@@ -41,7 +43,11 @@ export default Controller.extend({
         return false;
       }
 
-      this.transitionToRoute(this.get('launchRoute'), id);
+      if ( get(this, 'istio') ) {
+        this.transitionToRoute(this.get('launchRoute'), id, { queryParams: { istio: true,  } });
+      } else {
+        this.transitionToRoute(this.get('launchRoute'), id);
+      }
     },
 
     refresh() {
@@ -50,6 +56,7 @@ export default Controller.extend({
       catalogTab.send('refresh');
     },
   },
+
   catalogId: computed('catalogController.catalogId', 'catalogController.clusterCatalogId', 'catalogController.projectCatalogId', function() {
     const clusterCatalogId = get(this, 'catalogController.clusterCatalogId')
     const projectCatalogId = get(this, 'catalogController.projectCatalogId')

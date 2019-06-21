@@ -4,7 +4,9 @@
   </a>
 
   <ul class="nav-main nav-list no-inline-space">
-    {{page-header-project pageScope=pageScope}}
+    {{page-header-project
+      pageScope=pageScope
+    }}
 
     {{#each navTree as |item|}}
       {{#if item.submenu.length}}
@@ -31,7 +33,7 @@
                   <span class="icon icon-chevron-down"/>
                 {{/link-to-as-attrs}}
               {{else}}
-                <a role="button" aria-haspopup="true" aria-label={{maybe-t item.localizedLabel item.label}}>
+                <a class="nav-link" role="button" aria-haspopup="true" aria-label={{maybe-t item.localizedLabel item.label}}>
                   {{maybe-t item.localizedLabel item.label}}
                   <span class="icon icon-chevron-down"/>
                 </a>
@@ -39,13 +41,11 @@
             {{/if}}
           {{/dd.trigger}}
 
-          {{#dd.content
-             tagName="ul"
-          }}
+          {{#dd.content}}
             {{#each item.submenu as |subitem|}}
               {{#if subitem.route}}
                 {{#if (or (not subitem.resource) (rbac-allows resource=subitem.resource scope=subitem.resourceScope))}}
-                  <li>
+                  <li class="{{if (and subitem.disableIfClusterNotReady (not cluster.isReady)) "pointer-events-none"}}">
                     {{#link-to-as-attrs
                        ourRoute=subitem.route
                        ctx=subitem.ctx
@@ -78,7 +78,7 @@
 
         {{#if (or (not item.resource) (rbac-allows resource=item.resource scope=item.resourceScope))}}
           {{! No submenu }}
-          <li class="nav-item">
+          <li class="nav-item {{if (and item.disableIfClusterNotReady (not cluster.isReady)) "pointer-events-none"}}">
             {{#link-to-as-attrs
                ourRoute=item.route
                ctx=item.ctx
@@ -105,38 +105,38 @@
 
   {{#hover-dropdown
      tagName="ul"
-     class="nav-user"
+     class="nav-user list-unstyled"
      horizontalPosition="right"
      delay=250
      as |dd|
   }}
-    {{!-- <ul class="nav-user"> --}}
-    {{#dd.trigger
-       class="btn"
-       ariaLabel=(t "nav.user.label" username=session.user)
-    }}
-      {{#if accessEnabled}}
-        {{identity-avatar
-          link=false
-          identity=access.principal
-        }}
-      {{else}}
-        <div class="gh-avatar">
-          <div class="gh-placeholder">
-            <i class="icon icon-user"></i>
-          </div>
-        </div>
-      {{/if}}
-      <span class="sr-only">
-        {{t "nav.srToggleDropdown"}}
-      </span>
-      <i class="icon icon-chevron-down text-muted"></i>
-    {{/dd.trigger}}
+    <li class="nav-item">
+      {{#dd.trigger
+         class="btn"
+         ariaLabel=(t "nav.user.label" username=session.user)
+      }}
+        <a role="button" aria-haspopup="true" class="nav-link">
+          {{#if accessEnabled}}
+            {{identity-avatar
+              link=false
+              identity=access.principal
+            }}
+          {{else}}
+            <div class="gh-avatar">
+              <div class="gh-placeholder">
+                <i class="icon icon-user"></i>
+              </div>
+            </div>
+          {{/if}}
+          <span class="sr-only">
+            {{t "nav.srToggleDropdown"}}
+          </span>
+          <i class="icon icon-chevron-down text-muted"></i>
+        </a>
+      {{/dd.trigger}}
+    </li>
 
-    {{#dd.content
-       class="text-right"
-       tagName="ul"
-    }}
+    {{#dd.content class="text-right"}}
       {{#if accessEnabled}}
         <li role="presentation" class="user-auth">
           {{identity-block principal=access.principal}}
@@ -172,6 +172,5 @@
         {{/link-to}}
       </li>
     {{/dd.content}}
-    {{!-- </ul> --}}
   {{/hover-dropdown}}
 </nav>

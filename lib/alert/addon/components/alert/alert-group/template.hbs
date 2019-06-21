@@ -1,5 +1,5 @@
 <tr class="group-row">
-  <td colspan={{sub fullColspan 2}} class="pl-10">
+  <td colspan={{if hasOtherGroups (sub fullColspan 2) 4}} class="pl-10">
     {{#if (and group group.id)}}
       {{group.name}}
     {{else}}
@@ -20,8 +20,17 @@
 </tr>
 {{#if group.showTransitioningMessage}}
   <tr class="group-row group-row-error">
-    <td colspan="{{fullColspan}}" class="text-small {{group.stateColor}}">
+    <td colspan="{{if hasOtherGroups fullColspan 4}}" class="text-small {{group.stateColor}}">
       {{uc-first group.transitioningMessage}}
+    </td>
+  </tr>
+{{/if}}
+{{#if noAlerts}}
+  <tr class="main-row">
+    <td colspan="{{if hasOtherGroups fullColspan 6}}" class="text-center p-20">
+      <div class="text-muted">
+        {{t "alertPage.index.noAlerts"}}
+      </div>
     </td>
   </tr>
 {{/if}}

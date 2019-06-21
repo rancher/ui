@@ -75,7 +75,8 @@ clusterDashboard:
   subtitle:
     reserved: "已保留{total}中的{used}"
     used: "已使用{total}中的{used}"
-  enalbeMonitoring: 启用监控并查看实时监控指标
+  enableMonitoring: 启用监控并查看实时监控指标
+  upgradeAvailable: "升级监控组件到{version}版本"
   monitoringNotReady: 监控API未就绪
   node: Nodes
   etcd: Etcd
@@ -89,11 +90,31 @@ clusterDashboard:
 
 monitoringPage:
   update: 更新监控配置
+  version: 监控组件版本
+  upgradeAvailable: "(最新版本{version})"
+  upgrade: 升级监控组件到最新版本 {version}
+  confirmDisable: "你确定吗？再次点击将会禁用监控。"
+  disable: 禁用监控
+  enableActionLabel: 启用监控
   toUpdate:
     cluster: 集群级别监控已启用。
     project: 项目级别监控已启用。
+  insufficientSize:
+    prometheus:
+      cpu: 请确保你至少有一个节点有{cpu} milli CPUs 可用来激活Prometheus工作负载。
+      memory: 请确保你至少有一个节点有{memory} MiB 内存可用来激活Prometheus工作负载。
+      all: 请确保你至少有一个节点有{cpu} milli CPUs和{memory} MiB 内存可用来激活Prometheus工作负载。
+    selectors:
+      cpu: 请确保你至少有一个匹配节点选择器的节点有{cpu} milli CPUs 可用来激活Prometheus工作负载。
+      memory: 请确保你至少有一个匹配节点选择器的节点有{memory} MiB 内存可用来激活Prometheus工作负载。
+      all: 请确保你至少有一个匹配节点选择器的节点有{cpu} milli CPUs和{memory} MiB 内存可用来激活Prometheus工作负载。
+    total:
+      cpu: 请确保你至少有{cpu} milli CPUs 可用来激活监控。
+      memory: 请确保你至少有{memory} MiB 内存可用来激活监控。
+      all: 请确保你至少有{cpu} milli CPUs和{memory} MiB 内存可用来激活监控。
   clusterNotEnabled: 集群级别监控未启用。将只采集自定义指标。
   prometheus: 监控尚未启用，点击下面的保存按钮去启用监控。
+  resourceLimitsHelp: '启用集群监视时，需要确保工作节点和Prometheus pod具有足够的资源。请访问<a href="https://rancher.com/docs/rancher/v2.x/en/cluster-admin/tools/monitoring/#resource-consumption" target="_blank" rel="nofollow noreferrer">Rancher docs</a>了解建议的资源限制。'
   config:
     types:
       none: 无
@@ -101,18 +122,18 @@ monitoringPage:
     header: Prometheus 配置
     prometheus:
       cpuLimit:
-        label: Prometheus CPU 限制
+        label: Prometheus CPU限制
         placeholder: '例如: 1000'
         unit: milli CPUs
       cpuRequest:
-        label: Prometheus CPU 预留
+        label: Prometheus CPU预留
         placeholder: '例如: 1000'
         unit: milli CPUs
       memoryLimit:
-        label: Prometheus Memory 限制
+        label: Prometheus 内存限制
         placeholder: '例如: 1000'
       memoryRequest:
-        label: Prometheus Memory 预留
+        label: Prometheus 内存预留
         placeholder: '例如: 1000'
       enablePersistence:
         label: 为Prometheus启用持久化存储
@@ -133,9 +154,20 @@ monitoringPage:
       label: 数据保存时间
     storageClass:
       label: 存储类
+    operator:
+      memoryLimit:
+        label: Prometheus Operator 内存限制
+        placeholder: '例如: 500'
     nodeexporter:
       label: Node Exporter主机端口
       enable: 启用Node Exporter
+      cpuLimit:
+        label: Node Exporter CPU限制
+        placeholder: '例如: 200'
+        unit: milli CPUs
+      memoryLimit:
+        label: Node Exporter 内存限制
+        placeholder: '例如: 200'
   nodeSelector:
     addSelectorLabel: 添加选择器
     helpText: 选择部署监控相关的工作负载所运行的节点。

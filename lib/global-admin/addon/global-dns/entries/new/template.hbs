@@ -20,6 +20,15 @@
        showExpand=false
     }}
       <div class="row">
+        <div class="col span-12">
+          {{#banner-message icon="icon-info" color="bg-info mb-0 mt-10"}}
+            <p>
+              {{t "globalDnsPage.entriesPage.projectHelp" htmlSafe=true}}
+            </p>
+          {{/banner-message}}
+        </div>
+      </div>
+      <div class="row">
         <div class="col span-6 mb-0">
           <label
             class="acc-label"
@@ -139,66 +148,16 @@
               {{/if}}
             {{/if}}
           {{else}}
-            <label
-              class="acc-label"
-              for="select-project-ids"
-            >
-              {{t "globalDnsPage.entriesPage.config.projects.label"}}
-            </label>
-            {{#if groupedClustersProjects}}
-              <select
-                id="select-project-ids"
-                class="form-control select-cap-add"
-                multiple="true"
-                onchange={{action "modifyProjectIds"}}
-              >
-                {{#each groupedClustersProjects as |cluster|}}
-                  <optgroup label="{{cluster.displayName}}">
-                    {{#each cluster.options as |project|}}
-                      <option
-                        value={{project.id}}
-                        selected={{array-includes primaryResource.projectIds project.id}}
-                      >
-                        {{project.displayName}}
-                      </option>
-                    {{/each}}
-                  </optgroup>
-                {{/each}}
-              </select>
-            {{else}}
-              {{#if primaryResource.projectIds}}
-                {{#each primaryResource.projectIds as |projectId|}}
-                  {{#tooltip-element
-                     type="tooltip-basic"
-                     model=(t "globalDnsPage.entriesPage.access.noAccessProject")
-                     tooltipTemplate="tooltip-static"
-                     aria-describedby="tooltip-base"
-                     tooltipFor="tooltipLink"
-                  }}
-                    {{projectId}}
-                    <i class="icon icon-alert"></i>
-                  {{/tooltip-element}}
-                {{/each}}
-              {{else}}
-                <div>
-                  {{t "globalDnsPage.noProjects"}}
-                </div>
-              {{/if}}
-            {{/if}}
+            {{form-project-targets
+              addTarget=(action "addTarget")
+              removeTarget=(action "removeTarget")
+              targets=projectTargets
+              projects=model.allProjects
+              fullWidth=true
+            }}
           {{/if}}
         </div>
       </div>
-      {{#if (eq recordType "project")}}
-        <div class="row">
-          <div class="col span-12">
-            {{#banner-message icon="icon-info" color="bg-info mb-0 mt-10"}}
-              <p>
-                {{t "globalDnsPage.entriesPage.projectHelp" htmlSafe=true}}
-              </p>
-            {{/banner-message}}
-          </div>
-        </div>
-      {{/if}}
       <div class="row">
         <div class="col span-3">
           <label
@@ -228,11 +187,11 @@
        expand=(action expandFn)
     }}
       {{form-members-global-access
-        ownerOnly=true
+        optionsForAccessType=memberAccessTypes
         readOnly=false
         resource=model.globaldns
         addAuthorizedPrincipal=(action "addAuthorizedPrincipal")
-        removeMember=(action "removeMember")
+        removeMember=(action "removeAuthorizedPrincipal")
       }}
     {{/accordion-list-item}}
 
@@ -243,9 +202,9 @@
   {{top-errors errors=errors}}
   {{save-cancel
     editing=(eq mode "edit")
-    cancel="cancel"
+    cancel=(action "cancel")
     classNames="text-center mt-20"
-    save="save"
+    save=(action "save")
     saveDisabled=saveDisabled
   }}
 </section>

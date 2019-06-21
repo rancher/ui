@@ -1,20 +1,24 @@
-  <section>
-    {{metrics-action
-      queryAction="query"
-      state=state
-    }}
-  
-    {{metrics-graph graphs=graphs loading=state.loading noGraphs=state.noGraphs}}
+<section>
+  {{metrics-action
+    queryAction=(action "query")
+    state=state
+  }}
 
-    {{#if single.length}}
-      {{#accordion-list as |al expandFn|}}
-        <div class="mt-20 text-left">
-          {{ingress-response-list
-            expandAll=al.expandAll
-            expandFn=expandFn
-            data=responseSeconds
-          }}
-        </div>
-      {{/accordion-list}}
-    {{/if}}
-  </section>
+  {{metrics-graph
+    graphs=graphs
+    loading=state.loading
+    noGraphs=state.noGraphs
+  }}
+
+  {{#if single.length}}
+    {{#accordion-list as |al expandFn|}}
+      <div class="mt-20 text-left">
+        {{ingress-response-list
+          expandAll=al.expandAll
+          expandFn=expandFn
+          data=responseSeconds
+        }}
+      </div>
+    {{/accordion-list}}
+  {{/if}}
+</section>

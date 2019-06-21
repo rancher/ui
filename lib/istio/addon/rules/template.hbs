@@ -1,0 +1,25 @@
+{{#if scope.currentCluster.istioEnabled}}
+  {{#istio-nav}}
+    <a
+      class="btn btn-sm bg-primary mr-10"
+      href="{{href-to "authenticated.project.project-catalogs" model.projectId (query-params istio=true)}}"
+    >
+      <i class="icon icon-gear icon-fw"/>
+      <span>{{t "nav.apps.manage"}}</span>
+    </a>
+
+    <a
+      class="btn btn-sm bg-primary"
+      href="{{href-to "catalog-tab" model.projectId (query-params istio=true)}}"
+      disabled={{rbac-prevents resource="app" scope="project" permission="create"}}
+    >
+      <span>{{t "rulesPage.new"}}</span>
+    </a>
+  {{/istio-nav}}
+  {{istio-rules-table apps=model.apps}}
+{{else}}
+  {{banner-message
+    color="bg-info"
+    message=(t (if scope.currentCluster.systemProject  "projectIstioPage.info.notEnabled" "projectIstioPage.info.notOwner") clusterId=scope.currentCluster.id htmlSafe=true)
+  }}
+{{/if}}

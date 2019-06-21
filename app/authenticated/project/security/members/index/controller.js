@@ -31,6 +31,6 @@ export default Controller.extend(FilterState, {
   headers,
   searchText:        '',
   filterableContent: computed('model.projectRoleTemplateBindings.[]', function() {
-    return get(this, 'model.projectRoleTemplateBindings');
+    return get(this, 'model.projectRoleTemplateBindings').filter((b) => !get(b, 'serviceAccount'));
   }),
 });

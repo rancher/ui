@@ -1,32 +1,36 @@
 {{#sortable-table
-     body=model
-     descending=descending
-     groupByKey="projectId"
-     groupByRef="project"
-     headers=headers
-     paging=paging
-     pagingLabel="pagination.namespace"
-     searchText=searchText
-     sortBy=sortBy
-     subRows=subRows
-     suffix=suffix
-     tableClassNames="bordered"
-     as |sortable kind ns dt|
+   body=model
+   descending=descending
+   groupByKey="projectId"
+   groupByRef="project"
+   headers=headers
+   paging=paging
+   pagingLabel="pagination.namespace"
+   searchText=searchText
+   sortBy=sortBy
+   subRows=subRows
+   suffix=suffix
+   extraSearchFields=extraSearchFields
+   tableClassNames="bordered"
+   as |sortable kind ns dt|
 }}
   {{#if (eq kind "row")}}
     <tr class="main-row">
       <td valign="middle" class="row-check" style="padding-top: 2px;">
         {{#if (and projectsWithoutNamespace.length (not model.length))}}
-            &nbsp;
-          {{else}}
-            {{check-box nodeId=ns.id}}
-          {{/if}}
+          &nbsp;
+        {{else}}
+          {{check-box nodeId=ns.id}}
+        {{/if}}
       </td>
       <td>
         {{badge-state model=ns}}
       </td>
       <td>
         {{ns.name}}
+        {{#if ns.autoInjectionEnabled}}
+          <div class="istio istio-autoinjection"></div>
+        {{/if}}
         {{#if ns.description}}
           <p class="text-small text-muted m-0">{{linkify ns.description}}</p>
         {{/if}}
@@ -34,7 +38,7 @@
       <td class="text-right pr-20">
         {{date-calendar ns.created}}
       </td>
-      <td data-title="{{t 'generic.actions'}}:" class="actions">
+      <td data-title="{{t "generic.actions"}}:" class="actions">
         {{action-menu model=ns}}
       </td>
     </tr>
@@ -44,25 +48,26 @@
   {{else if (eq kind "group")}}
     {{#if ns.ref}}
       {{project-group
-          model=ns.ref
-          noGroup="namespaceGroup.project"
-          fullColspan=sortable.fullColspan
+        model=ns.ref
+        noGroup="namespaceGroup.project"
+        fullColspan=sortable.fullColspan
+        noNamespace=false
       }}
     {{else}}
       <tr class="group-row">
         <td colspan="{{sortable.fullColspan}}" class="pl-10">
-          {{t 'projectsListNamespacePage.notIn'}}
+          {{t "projectsListNamespacePage.notIn"}}
         </td>
       </tr>
     {{/if}}
   {{else if (eq kind "nomatch")}}
     <tr>
-      <td colspan="{{sortable.fullColspan}}" class="text-center text-muted lacsso pt-20 pb-20">{{t 'projectsPage.noMatch'}}</td>
+      <td colspan="{{sortable.fullColspan}}" class="text-center text-muted lacsso pt-20 pb-20">{{t "projectsPage.noMatch"}}</td>
     </tr>
   {{else if (eq kind "norows")}}
     {{#unless projectsWithoutNamespace.length}}
       <tr>
-        <td colspan="{{sortable.fullColspan}}" class="text-center text-muted lacsso pt-20 pb-20">{{t 'projectsPage.noData'}}</td>
+        <td colspan="{{sortable.fullColspan}}" class="text-center text-muted lacsso pt-20 pb-20">{{t "projectsPage.noData"}}</td>
       </tr>
     {{/unless}}
   {{else if (eq kind "suffix")}}
@@ -70,11 +75,12 @@
       <tbody class="fixed grid group">
         {{#each projectsWithoutNamespace as |project|}}
           {{project-group
-              model=project
-              noGroup="namespaceGroup.project"
-              fullColspan=sortable.fullColspan
-              noNamespace=true
-              projectsWithoutNamespaces=projectsWithoutNamespace
+            otherNamespace=sortable.filtered
+            model=project
+            noGroup="namespaceGroup.project"
+            fullColspan=sortable.fullColspan
+            noNamespace=true
+            projectsWithoutNamespaces=projectsWithoutNamespace
           }}
         {{/each}}
       </tbody>

@@ -15,16 +15,16 @@
       <div class="fixed-header-actions row clearfix">
         {{#if internalBulkActions}}
           <div class="bulk-actions pull-left">
-            {{#each availableActions as |action index|}}
-              {{#if action.enabled}}
-                <a class="btn btn-sm bg-primary" href="#" onclick={{action "executeBulkAction" action.action}} tabindex={{index}}>
-                  {{t action.label}}
-                  <i class="{{action.icon}}"></i>
+            {{#each availableActions as |resourceAction index|}}
+              {{#if resourceAction.enabled}}
+                <a class="btn btn-sm bg-primary" href="#" onclick={{action "executeBulkAction" resourceAction.action}} tabindex={{index}}>
+                  {{t resourceAction.label}}
+                  <i class="{{resourceAction.icon}}"></i>
                 </a>
               {{else}}
                 <a class="btn btn-sm bg-default btn-disabled" href="#" onclick="return false;" tabindex={{index}}>
-                  {{t action.label}}
-                  <i class="{{action.icon}}"></i>
+                  {{t resourceAction.label}}
+                  <i class="{{resourceAction.icon}}"></i>
                 </a>
               {{/if}}
             {{/each}}
@@ -78,7 +78,7 @@
           sortable=this
           current=sortBy
           descending=descending
-          action="changeSort"
+          action=(action "changeSort")
           header=header
         }}
       {{/each}}
@@ -127,6 +127,13 @@
   {{/if}}
 </table>
 
-{{#if (and paging (gt filtered.length pagedContent.length))}}
-  {{page-numbers content=pagedContent class="text-center mt-10 mb-10 no-select" indexTo=indexTo indexFrom=indexFrom totalCount=filtered.length textLabel=pagingLabel}}
+{{#if (and paging showPaging)}}
+  {{page-numbers
+    content=pagedContent
+    class="text-center mt-10 mb-10 no-select"
+    indexTo=indexTo
+    indexFrom=indexFrom
+    totalCount=filtered.length
+    textLabel=pagingLabel
+  }}
 {{/if}}

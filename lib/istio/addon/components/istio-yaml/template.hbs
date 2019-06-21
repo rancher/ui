@@ -1,0 +1,35 @@
+<section class="header has-tabs clearfix pb-0">
+  <ul class="tab-nav">
+    {{#each options as |option|}}
+      <button class="no-outline bg-transparent {{if (eq option selectedType) "tab-selected"}}"
+        {{action "select" option}}
+      >
+        <span class="{{if (not-eq option selectedType) "text-gray"}}">
+          {{t (concat "ruleDetailPage.rules." option)}}
+        </span>
+      </button>
+    {{/each}}
+  </ul>
+</section>
+
+<section>
+  {{#if (or yaml loading)}}
+    {{input-yaml
+      canChangeName=false
+      value=yaml
+      loading=loading
+      autoResize=false
+      readOnly=true
+      canUpload=false
+      showUpload=false
+      showDownload=false
+      filename=filename
+    }}
+  {{else}}
+    <div class="row mt-20">
+      <div class="text-center text-muted">
+        {{t "modalYaml.noData" name=selectedType}}
+      </div>
+    </div>
+  {{/if}}
+</section>

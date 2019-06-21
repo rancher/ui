@@ -62,13 +62,23 @@
           </span>
         </div>
       {{/if}}
+      {{#if (and model.osInfo scope.currentCluster.isWindows)}}
+        <div class="text-small text-muted">
+          <span>
+            <i class="icon icon-fw icon-{{model.osInfo}}"></i>
+            <span class="text-capitalize">
+              {{model.osInfo}}
+            </span>
+          </span>
+        </div>
+      {{/if}}
     {{else}}
       <span class="text-muted">
         {{t 'generic.na'}}
       </span>
     {{/if}}
   </td>
-  
+
   <td class="text-right" data-title="{{dt.cpu}}">
     {{#if model.cpuUsage}}
       {{model.cpuUsage}}

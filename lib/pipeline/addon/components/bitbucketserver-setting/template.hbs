@@ -1,60 +1,84 @@
 <section class="box mt-30">
-  <h3>{{t 'authPage.bitbucketserver.target.header'}}</h3>
+  <h3>
+    {{t "authPage.bitbucketserver.target.header"}}
+  </h3>
   <div>
     <div class="radio">
-      <label>{{radio-button selection=target value='bitbucketcloud'}} {{t 'authPage.bitbucketserver.target.bitbucketcloud'}}</label>
+      <label>
+        {{radio-button selection=target value="bitbucketcloud"}} {{t "authPage.bitbucketserver.target.bitbucketcloud"}}
+      </label>
     </div>
     <div class="radio">
-      <label>{{radio-button selection=target value='bitbucketserver' checked=true}} {{t 'authPage.bitbucketserver.target.bitbucketserver'}}</label>
+      <label>
+        {{radio-button
+          selection=target
+          value="bitbucketserver"
+          checked=true
+        }} {{t "authPage.bitbucketserver.target.bitbucketserver"}}
+      </label>
     </div>
   </div>
 </section>
 
 <section class="box mt-30">
-  <h3>{{t 'authPage.bitbucketserver.setup'}}</h3>
+  <h3>
+    {{t "authPage.bitbucketserver.setup"}}
+  </h3>
   <hr/>
   <p>
     <ol class="alphalist ml-40">
       <li>
-        {{t 'authPage.bitbucketserver.auth' htmlSafe=true}}
+        {{t "authPage.bitbucketserver.auth" htmlSafe=true}}
       </li>
       <li>
-        {{t 'authPage.bitbucketserver.ul.li2.text'}}
+        {{t "authPage.bitbucketserver.ul.li2.text"}}
         <ul>
           <li>
-            <b>{{t 'authPage.bitbucketserver.ul.li2.ul.li1' htmlSafe=true}}</b>
-            <span>{{applicationLink}} {{copy-to-clipboard size='small' clipboardText=applicationLink}}</span>
+            <b>{{t "authPage.bitbucketserver.ul.li2.ul.li1" htmlSafe=true}}</b>
+            <span>
+              {{applicationLink}} {{copy-to-clipboard size="small" clipboardText=applicationLink}}
+            </span>
           </li>
           <li>
-            {{t 'authPage.bitbucketserver.ul.li2.ul.li2' htmlSafe=true}}
+            {{t "authPage.bitbucketserver.ul.li2.ul.li2" htmlSafe=true}}
           </li>
           <li>
-            {{t 'authPage.bitbucketserver.ul.li2.ul.li3' htmlSafe=true}}
+            {{t "authPage.bitbucketserver.ul.li2.ul.li3" htmlSafe=true}}
           </li>
           <li>
-            {{t 'authPage.bitbucketserver.ul.li2.ul.li4' htmlSafe=true}}
+            {{t "authPage.bitbucketserver.ul.li2.ul.li4" htmlSafe=true}}
           </li>
           <li>
-            <b>{{t 'authPage.bitbucketserver.ul.li2.ul.li5'}}</b>
+            <b>{{t "authPage.bitbucketserver.ul.li2.ul.li5"}}</b>
             {{#if generating}}
-               <i class="icon icon-spinner icon-spin"></i> {{t 'generic.loading'}}
+              <i class="icon icon-spinner icon-spin"></i> {{t "generic.loading"}}
             {{else}}
-               <span class="text-muted">{{t 'authPage.bitbucketserver.copy'}}</span> <span>{{copy-to-clipboard size='small' clipboardText=provider.consumerKey}}</span>
+              <span class="text-muted">
+                {{t "authPage.bitbucketserver.copy"}}
+              </span>&nbsp;
+              <span>
+                {{copy-to-clipboard size="small" clipboardText=provider.consumerKey}}
+              </span>
             {{/if}}
           </li>
           <li>
-            {{t 'authPage.bitbucketserver.ul.li2.ul.li6' htmlSafe=true}}
+            {{t "authPage.bitbucketserver.ul.li2.ul.li6" htmlSafe=true}}
           </li>
           <li>
-            <b>{{t 'authPage.bitbucketserver.ul.li2.ul.li7'}}</b>
+            <b>{{t "authPage.bitbucketserver.ul.li2.ul.li7"}}</b>
             {{#if generating}}
-               <i class="icon icon-spinner icon-spin"></i> {{t 'generic.loading'}}
+              <i class="icon icon-spinner icon-spin"></i> {{t "generic.loading"}}
             {{else}}
-               <span class="text-muted">{{t 'authPage.bitbucketserver.copy'}}</span> <span>{{copy-to-clipboard size='small' clipboardText=provider.publicKey}}</span>
+              <span class="text-muted">
+                {{t "authPage.bitbucketserver.copy"}}
+              </span>&nbsp;
+              <span>
+                {{copy-to-clipboard size="small" clipboardText=provider.publicKey}}
+              </span>
             {{/if}}
           </li>
           <li>
-            {{t 'authPage.bitbucketserver.ul.li2.ul.li8' htmlSafe=true}}
+            {{t "authPage.bitbucketserver.ul.li2.ul.li8" htmlSafe=true}}
           </li>
         </ul>
       </li>
@@ -64,12 +88,21 @@
 
 <form autcomplete="on">
   <section class="box mt-30">
-    <h3>{{t 'authPage.bitbucketserver.form.headerVariable'}}</h3>
+    <h3>
+      {{t "authPage.bitbucketserver.form.headerVariable"}}
+    </h3>
     <div class="row">
       <div class="col span-6">
         <div class="inline-form">
-          <label class="acc-label pb-5">{{t 'authPage.bitbucketserver.form.hostname.labelText'}}{{field-required}}</label>
-          {{input type="text" value=oauthModel.hostName classNames="form-control" placeholder=(t 'authPage.bitbucketserver.form.hostname.placeholder')}}
+          <label class="acc-label pb-5">
+            {{t "authPage.bitbucketserver.form.hostname.labelText"}}{{field-required}}
+          </label>
+          {{input
+            type="text"
+            value=oauthModel.hostName
+            classNames="form-control"
+            placeholder=(t "authPage.bitbucketserver.form.hostname.placeholder")
+          }}
         </div>
       </div>
     </div>
@@ -77,19 +110,32 @@
       <div class="col span-6">
         <div class="inline-form">
           {{input type="checkbox" checked=secure}}
-          <label class="acc-label pb-5">{{t 'authPage.bitbucketserver.form.tls.labelText'}}</label>
+          <label class="acc-label pb-5">
+            {{t "authPage.bitbucketserver.form.tls.labelText"}}
+          </label>
         </div>
       </div>
     </div>
 
-    {{#banner-message color='bg-warning m-0 mb-20'}}
-      <p>{{t 'authPage.bitbucketserver.warning' appName=settings.appName htmlSafe=true}}</p>
+    {{#banner-message color="bg-warning m-0 mb-20"}}
+      <p>
+        {{t
+          "authPage.bitbucketserver.warning"
+          appName=settings.appName
+          htmlSafe=true
+        }}
+      </p>
     {{/banner-message}}
 
     {{top-errors errors=errors}}
 
     <div class="row text-center">
-      {{save-cancel cancelDisabled=true savingLabel='authPage.testAuth.buttonText.post' createLabel='authPage.testAuth.buttonText.preVariable' save='authenticate'}}
+      {{save-cancel
+        cancelDisabled=true
+        savingLabel="authPage.testAuth.buttonText.post"
+        createLabel="authPage.testAuth.buttonText.preVariable"
+        save=(action "authenticate")
+      }}
     </div>
   </section>
 </form>

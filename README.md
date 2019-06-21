@@ -31,7 +31,7 @@ Connect to UI at https://localhost:8000/ .  The server automatically picks up fi
 
 Run development server pointed at another instance of the Rancher API
 ```bash
-  RANCHER="http://rancher:8080/" yarn start
+  RANCHER="https://rancher-server/" yarn start
 ```
 
 RANCHER can also be `hostname[:port]` or `ip[:port]`.
@@ -73,6 +73,10 @@ If you want to customize the UI, re-packaging all of Rancher to distribute the U
   yarn global add ember-cli
 ```
 
+* `yarn lint:hbs`
+* `yarn lint:js`
+* `yarn lint:js -- --fix`
+
 * `ember test`
 * `ember test --server`
 
@@ -92,7 +96,7 @@ Or just [click here](//github.com/rancher/rancher/issues/new?title=%5BUI%5D%20) 
 
 License
 =======
-Copyright (c) 2014-2018 [Rancher Labs, Inc.](http://rancher.com)
+Copyright (c) 2014-2019 [Rancher Labs, Inc.](http://rancher.com)
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.

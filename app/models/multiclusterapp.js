@@ -3,6 +3,7 @@ import { reference } from '@rancher/ember-api-store/utils/denormalize';
 import { computed, get } from '@ember/object';
 import { parseHelmExternalId } from 'ui/utils/parse-externalid';
 import { inject as service } from '@ember/service';
+import { isEmpty } from '@ember/utils';
 
 const MultiClusterApp = Resource.extend({
   catalog:         service(),
@@ -11,35 +12,47 @@ const MultiClusterApp = Resource.extend({
   globalStore:     service(),
 
   canEdit:         false,
-  canClone:        true,
 
-  templateVersion: reference('templateVersionId', 'templateVersion', 'globalStore'),
-  catalogTemplate: reference('externalIdInfo.templateId', 'template', 'globalStore'),
+  templateVersion: reference('templateVersionId', 'templateversion', 'globalStore'),
+  catalogTemplate: reference('templateId', 'template', 'globalStore'),
 
   externalIdInfo: computed('templateVersion.externalId', function() {
     return parseHelmExternalId(get(this, 'templateVersion.externalId'));
   }),
 
-  availableActions: computed('actionLinks.{rollback}', 'links.{update}', function() {
-    const a = get(this, 'actionLinks') || {};
+  templateId: computed('externalIdInfo.{templateId}', function() {
+    return get(this, 'externalIdInfo.templateId');
+  }),
+
+  canUpgrade: computed('actionLinks.{upgrade}', 'catalogTemplate', 'templateVersion', function() {
     const l = get(this, 'links') || {};
 
-    var choices = [
+    return !!l.update && !isEmpty(this.catalogTemplate);
+  }),
+
+  canClone: computed('catalogTemplate', 'templateVersion', function() {
+    return !isEmpty(this.catalogTemplate);
+  }),
+
+  canRollback: computed('catalogTemplate', 'templateVersion', function() {
+    return !isEmpty(this.catalogTemplate) && !!( this.actionLinks || {} ).rollback;
+  }),
+
+  availableActions: computed('actionLinks.{rollback}', 'links.{update}', 'canUpgrade', 'canRollback', function() {
+    return [
       {
         label:   'action.upgrade',
         icon:    'icon icon-edit',
         action:  'upgrade',
-        enabled: !!l.update
+        enabled: get(this, 'canUpgrade')
       },
       {
         label:   'action.rollback',
         icon:    'icon icon-history',
         action:  'rollback',
-        enabled: !!a.rollback
+        enabled: get(this, 'canRollback')
       }
     ];
-
-    return choices;
   }),
 
   actions: {

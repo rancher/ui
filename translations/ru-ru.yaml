@@ -10,6 +10,7 @@ generic:
   any: Любой
   application: приложение
   as: как
+  back: Назад
   cancel: Отмена
   closeModal: Закрыть
   cluster: Кластер
@@ -38,12 +39,16 @@ generic:
   entrypoint: Точка входа (entrypoint)
   environment: Окружение
   expandAll: Развернуть все
+  experimental: "(экспериментально)"
   from: из
+  false: 'Неверно'
   generic: 'Общий'
   gigabyte: 'ГБ'
   hardware: Оборудование
   healthy: В порядке
   help: Помощь
+  hostname: Имя Хоста
+  hours: ч
   id: ID
   image: Образ
   import: Импорт
@@ -55,6 +60,7 @@ generic:
   loading: "Думаю..."
   loggingOut: "Выход из системы..."
   member: Участник
+  mbps: Мбит/с
   mibibyte: 'МиБ'
   minutes: мин.
   milliseconds: 'Миллисекунды'
@@ -72,17 +78,21 @@ generic:
   owner: Владелец
   paste: Вставить
   pod: pod
+  podRestarts: Перезапуск под
   port: Порт
   ports: Порты
   prefix: префикс
   project: Проект
+  persistentVolumeClaim: постоянное требование объема
   persistentVolume: постоянный объем
   random: Случайный
   remove: Убрать
+  restarts: Перезагрузка
   role: Роль
   save: Сохранить
   saved: Сохранено
   saving: Сохранение
+  scope: Область видимости
   search: Искать
   searchOrCustomInput: Найдите или введите ваше значение.
   searching: 'Поиск...'
@@ -97,6 +107,7 @@ generic:
   testing: Тестирование
   to: В
   total: Всего
+  true: 'Истина'
   type: Тип
   unknown: Неизвестный
   unknownUser: Не удалось получить информацию о пользователе
@@ -107,6 +118,11 @@ generic:
   value: Значение
   version: Версия
   yes: "Да"
+  isRequired: требуется
+  readOnly: Только для чтения
+  readWrite: Чтение и Запись
+  writeOnly: Только запись
+  full: Полный
 realmNames:
   all: Все
   usWest: Запад США
@@ -183,6 +199,10 @@ appDetailPage:
     protocol: Протокол
     noData: Для этого приложения не были созданы публичные конечные точки.
     noMatch: Не найдены публичные конечные точки, соответствующие текущему поиску.
+  answers:
+    title: Ответы
+    detail: Индивидуальные ответы этого приложения
+    variable: Переменная
   notes:
     title: Примечания
     detail: 'Инструкции о том, как использовать это приложение'
@@ -200,7 +220,11 @@ appDetailPage:
     nodata: Никаких сервисов не было создано для этого приложения.
   volumes:
     title: Тома
+    detail: Заявки на постоянные тома, созданные с помощью этого приложения
+    nodata: Никакие объемы не были сделаны для этого приложения.
   configMaps:
+    title: Конфиг Карты
+    detail: Конфиг Карты, связанные с этим приложением
     nodata: Это приложение не имеет конфигурационных карт
   secrets:
     title: Секреты
@@ -231,6 +255,10 @@ podSecurityPoliciesPage:
         placeholder: "например, policy"
 rolesPage:
   title: Роль
+  headers:
+    global: Глобальный
+    cluster: Кластеры
+    project: Проекты
   index:
     localLink: Добавить роль
     table:
@@ -243,9 +271,18 @@ rolesPage:
       subjectKind: Тип
       template: Шаблон
       global: Новый пользователь по умолчанию
+      cluster: Создатель кластера по умолчанию
+      project: Создатель проекта по умолчанию
       showDefaults: Показывать только значения по умолчанию
+    errors:
+      inherited: "Роль {displayName} наследуется: {roleNames}"
   resources:
     title: Предоставить ресурсы
+    detail: Предоставить доступ к определенным операциям на ресурсах Kubernetes
+  inherit:
+    title: Наследовать от роли
+    detail: Включить все разрешения другой роли
+  addRole: "Добавить {context} Роль"
   editRole: Редактировать роль
   saveEdit: Редактировать
   saveNew: Создать
@@ -256,14 +293,19 @@ rolesPage:
       nameInExists: Имя уже существует. Пожалуйста, используйте новое имя роли.
       ruleResourceReq: Ресурс необходим для правила.
       roleTemplate: Требуется шаблон ролей.
+      noSelectedRoles: Выберите хотя бы один узел для управления.
+      roleAlreadyExists: Пользователь уже имеет роль "{key}".
     form:
       name:
         labelText: Имя
         placeholder: "например, Developers"
       context:
         labelText: Контекст
+        detail: В чем можно будет продемонстрировать эту роль.
       locked:
         labelText: Заблокировано
+        detail: Это не влияет на привязки к уже существующей роли.
+        enabled: "Да: Новые привязки не разрешены для использования этой роли"
         disabled: "Нет"
       allow:
         create: Создать
@@ -285,6 +327,13 @@ rolesPage:
         policy: Правила
         addAction: Добавить Правило
       default:
+        global: Новый пользователь по умолчанию
+        cluster: Создатель кластера по умолчанию
+        project: Создатель проекта по умолчанию
+        enabled:
+          global: "Да: Роль по умолчанию для новых пользователей"
+          cluster: "Да: Роль по умолчанию для создания нового кластера"
+          project: "Да: Роль по умолчанию для создания нового проекта"
         disabled: "Нет"
 apiPage:
   header: API и Ключи
@@ -295,6 +344,7 @@ apiPage:
     state: Состояние
     name: Ключ доступа
     description: Описание
+    scope: Область видимости
     created: Создан
     expires:
       label: Истекает срок действия
@@ -302,13 +352,24 @@ apiPage:
     noData: Определенных ключей API нет
 authPage:
   saml:
+    accessEnabled:
+      header: Аутентификация
+      disable: Отключить контроль доступа
+    header:
+      disabled:
+        label: "{providerName} не настроен"
     enabled:
       authenticated:
         header:
           text: Аутентификация
       groupsField: 'Группы:'
+      displayName: 'Отображаемое имя:'
       userName: 'Имя пользователя:'
+      userId: 'ID пользователя:'
     disabled:
+      header: '1. Настройка учетной записи {providerName}'
+      headerDetail: 'Введите данные учетной записи {providerName}'
+      label: "{providerName} не настроен"
       name:
         labelText: Отображаемое имя поля
         display: "Отображаемое имя поля:"
@@ -318,15 +379,38 @@ authPage:
       uid:
         labelText: Поле UID
         display: "Поле UID:"
+      rancherApiHost:
+        labelText: "{appName} API хост"
+        display: "{appName} API хост:"
       groups:
         labelText: Поле группы
         display: "Поле группы:"
+      testAuth:
+        header: '2. Тест и включение аутентификации'
+        subtext: 'Проверьте, правильно ли настроено ваше приложение, протестировав с ним аутентификацию:'
     providerName:
       ping: Пинг
+      adfs: AD FS
+      keycloak: Keycloak
+      okta: Okta
     authError: 'Доступ не разрешен'
+    popupError: 'Пожалуйста, отключите блокировку всплывающих окон и снова нажмите «Аутентификация».'
   ping:
     buttonText:
       pre: 'Аутентификация с помощью Ping'
+      post: Ожидание ответа от IDP
+  keycloak:
+    buttonText:
+      pre: 'Аутентифицироваться с Keycloak'
+      post: Ожидание ответа от IDP
+  adfs:
+    buttonText:
+      pre: 'Аутентифицироваться с AD FS'
+      post: Ожидание ответа от IDP
+  okta:
+    buttonText:
+      pre: 'Аутентифицироваться с Okta'
+      post: Ожидание ответа от IDP
   shibboleth:
     enabled:
       authenticated:
@@ -335,7 +419,6 @@ authPage:
       disableAccess:
         header: "Опасная Зона&trade;"
         warning: '<b class="text-danger">Внимание:</b> Отключение контроля доступа предоставит полный доступ к Системе {appName} любому, кто может зайти на эту страницу или достучаться до API. Мы предупреждали.'
-        confirmDisable: "Вы уверены?  Нажмите ещё раз, чтобы отключить контроль доступа"
         disable: Отключить контроль доступа
       groupsField: 'Группы:'
       displayName: 'Отображаемое имя:'
@@ -378,7 +461,6 @@ authPage:
       disableAccess:
         header: "Зона Риска&trade;"
         warning: '<b class="text-danger">Внимание:</b> Отключение контроля доступа предоставит полный доступ к Системе {appName} любому, кто может зайти на эту страницу или достучаться до API. Мы предупреждали!'
-        confirmDisable: "Вы хорошо подумали? Если да - нажмите еше раз, чтобы окончательно отключить контроль доступа. Мы предупреждали."
         disable: Отключить доступ Github
     notAuthenticated:
       header: "1. Настройте ГитХаб Приложение"
@@ -416,13 +498,34 @@ authPage:
       buttonText:
         pre: Аунтефицироваться с ГитХабом
         post: Ожидаем ответа от ГиХаба
+      authError: 'Доступ к Github не был авторизован'
+      popupError: 'Пожалуйста, отключите блокировку всплывающих окон и снова нажмите «Аутентификация».'
   azuread:
+    header:
+      disabled:
+        label: "Azure AD не настроен"
     enabled:
       header: 'Зона Риска&trade;'
-      reallyDisable: 'Вы хорошо подумали? Если да - нажмите еше раз.'
       promptDisable: Отключай уже!
+      general:
+        header: Общие
     configure:
       header: '1. Настройте Azure AD учётку'
+      applicationId:
+        label: ID приложения
+        placeholder: Длинная строка UUID
+      applicationSecret:
+        label: Секрет приложения
+      serverURL:
+        label: Url сервера Rancher
+      azureADEndpoint:
+        label: Конечная точка
+      endpoints:
+        label: Конечные точки
+      regions:
+        standard: Стандартный
+        china: Китай
+        custom: Пользовательские
       tenantId:
         label: ID Организации (Tenant ID)
         placeholder: Длинная строка UUID
@@ -451,7 +554,6 @@ authPage:
       header: 'Зона Риска&trade;'
       warning: '<b class="text-danger">Внимание:</b> Отключение контроля доступа предоставит полный доступ к Системе {appName} любому, кто может зайти на эту страницу или достучаться до API. Мы предупреждали!'
       buttonText:
-        disable: 'Вы хорошо подумали? Если да - нажмите еше раз.'
         prompt: Отключить контроль доступа
     accessDisabled:
       header: '1. Создайте администратора'
@@ -473,6 +575,12 @@ authPage:
       buttonText:
         pre: Включить встроенную аунтификацию
         post: 'Включаю...'
+backupsPage:
+  table:
+    target:
+      label: Цель
+      s3: S3
+    name: Имя
 balancerPage:
   noMatch: Не найдены балансировщики, соответствующие текущему поиску
   noData: Нет балансировщиков для отображения.
@@ -583,6 +691,7 @@ clusterPage:
   edit: Редактирование кластера
 projectsListNamespacePage:
   header: Пространство имен
+  current: В этом проекте
 projectsPage:
   header: Проекты/Пространства Имен
   headerNS: Пространство имен
@@ -693,6 +802,16 @@ containersPage:
 clusterDashboard:
   notActive: В настоящее время этот кластер <b>{state}</b>.
   notReady: В настоящее время этот кластер <b>{state}</b>; области, которые взаимодействуют непосредственно с ним, будут недоступны до тех пор, пока API не будет готов.
+metricsAction:
+  grafana:
+    label: Grafana
+  periods:
+    5m: 5 минут
+    1h: 1 час
+    6h: 6 часов
+    24h: 24 часа
+    7d: 7 дней
+    30d: 30 дней
 dnsPage:
   noMatch: Нет записей, соответствующих текущему поиску
   noData: Нет записей DNS для показа
@@ -714,6 +833,16 @@ editDns:
     view: "Запись: {name}"
   name:
     placeholder: напр. myapp
+  externalIPs:
+    placeholder: напр. 80.11.12.10
+  loadBalancerIP:
+    placeholder: напр. 78.11.24.19
+  loadBalancerSourceRanges:
+    placeholder: напр. 143.231.0.0/16
+  healthCheckNodePort:
+    placeholder: напр. 8080
+  sessionAffinityConfig:
+    placeholder: напр. 10800
   description:
     placeholder: Например, "Текущая версия MyApp"
   selector:
@@ -742,13 +871,26 @@ editDns:
 cruPersistentVolumeClaim:
   capacity:
     unit: ГиБ
+  name:
+    placeholder: напр. myvol
   source:
     label: Источник
+cruVolumeClaimTemplate:
+  name:
+    placeholder: напр. myvol
 cruVolume:
   define:
     addActionLabel: Определить
+  name:
+    placeholder: напр. myvol
   source:
     label: Источник
+globalDnsPage:
+  providersPage:
+    config:
+      apiKey:
+        label: API ключ
+        placeholder: Ваш API ключ
 failWhalePage:
   header: Эвакуация!
   reloadButton: |
@@ -916,6 +1058,8 @@ loginPage:
     generic: "При попытке войти в систему произошла ошибка ({errorCode}). Повторите попытку."
   error:
     authFailedCreds: "Ошибка входа в систему: проверьте учетные данные, или ваша учетная запись может не иметь права на вход в систему."
+  readableProviders:
+    openldap: OpenLDAP
 machinePage:
   header: Драйверы узлов
   inactive: Выключен
@@ -1145,10 +1289,36 @@ notifierPage:
   notifierTypes:
     slack: Slack
     email: Эл. почта
+  slack:
+    url: URL-ссылка
+    urlPlaceholder: например, https://hooks.slack.com/services/T00000000/B00000000/XXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+    defaultRecipient:
+      label: Канал по умолчанию
+    defaultRecipientPlaceholder: 'например, #example'
+  smtp:
+    server: SMTP-сервер
+    hostPlaceholder: например, 192.168.1.121
+    portPlaceholder: напр. 465
+    userName: Имя пользователя
+    userNamePlaceholder: например, Джон
+    password: Пароль
+    passwordPlaceholder: Ваш пароль
+    defaultRecipientPlaceholder: например, admin@example.com
+  pagerduty:
+    serviceKey:
+      label: Ключ интеграции по умолчанию
+  wechat:
+    recipientType:
+      tag: Тег
+      user: Пользователь
+    agentPlaceholder: например, 1000003
+    corpPlaceholder: например, wwc0cc3d58f9b021b6
+    defaultRecipientPlaceholder: например, 2
   webhook:
     url: URL-ссылка
   testAction:
     testing: ТЕСТИРОВАНИЕ
+    testOk: Настройки проверены.
     test: ТЕСТ
   index:
     table:
@@ -1157,6 +1327,10 @@ ldap:
   providerName:
     openldap: OpenLDAP
     ad: Active Directory
+    saveLabels:
+      openldap: Аутентифицироваться с OpenLDAP
+      ad: Аутентифицироваться с Active Directory
+      freeipa: Аутентифицироваться с FreeIPA
   header:
     disabled:
       label: "Аунтификация через {providerName} не настроена"
@@ -1197,6 +1371,8 @@ ldap:
       labelText: Поисковая база групп
       placeholder: "Например, ou=Groups,dc=mycompany,dc=com"
       helpText: "Если задано, поиск групп будет вестись с этой базой вместо поисковой базы пользователей."
+    userSearchBase:
+      placeholder: "напр. ou=users,dc=mycompany,dc=com"
     defaultDomain:
       helpText: "Мы будем использовать этот домен, если пользователь не укажет никакой."
       labelText: Домен по умолчанию
@@ -1278,6 +1454,13 @@ cloudProvider:
 catalogSettings:
   header: Каталоги
   notAvailable: "Недоступно: существует специальный каталог под названием <code>{name}</code>"
+  currentCluster: Кластер
+  currentProject: Проект
+  library:
+    label: Библиотека
+  helm:
+    stable:
+      label: Стабильный Helm
   certified:
     header:
       rancher: "Сертифицированная библиотека {appName}"
@@ -1311,6 +1494,14 @@ catalogSettings:
     branch:
       label: Ветка
       placeholder: 'напр. master'
+    username:
+      label: Имя пользователя
+      required: 'требуется "Имя пользователя"'
+      placeholder: Ваше имя пользователя
+    password:
+      label: Пароль
+      required: '"Пароль" является обязательным'
+      placeholder: Ваш пароль
 clusterRow:
   noMatch: Никакие среды не соответствуют текущему поиску.
   noData: В этом кластере пока нет сред.
@@ -1326,11 +1517,33 @@ clusterNew:
     placeholder: например, Sandbox
   nodes:
     title: Узлы
+  tencenttke:
+    rootSize:
+      placeholder: напр. 25
+    storageSize:
+      placeholder: напр. 10
+    bandwidth:
+      placeholder: напр. 10
+    cidr:
+      placeholder: напр. 172.16.0.0/16
   azureaks:
+    count:
+      placeholder: напр. 1
+    diskSizeGb:
+      placeholder: напр. 100
+    dns:
+      placeholder: "напр. example"
     security:
       label: Безопасность
     image:
       label: Образ
+    networking:
+      dnsServiceIp:
+        placeholder: напр. 10.0.0.10
+      dockerBridgeCidr:
+        placeholder: напр. 172.17.0.1/16
+    openPort:
+      placeholder: 'Через запятую, напр. 80,443'
     privateIpAddress:
       placeholder: 127.0.0.1
     staticPublicIp:
@@ -1342,6 +1555,13 @@ clusterNew:
       placeholder: Ваш ID клиента
     region:
       label: Регион
+  aliyunkcs:
+    rootSize:
+      placeholder: напр. 120
+    storageSize:
+      placeholder: напр. 120
+    numOfNodes:
+      placeholder: напр. 3
   googlegke:
     project:
       label: Проект
@@ -1551,9 +1771,6 @@ cruStorageClass:
   storageos:
     fsType:
       label: Тип файловой системы
-  longhorn:
-    fromBackup:
-      label: Из резервной копии
   quobyte:
     user:
       label: Пользователь
@@ -2633,10 +2850,6 @@ newCatalog:
   version:
     prompt: Выберите версию...
 newContainer:
-  upgrade:
-    container: Обновление контейнера
-  selectUpgrade: Выберите одну или несколько служб для обновления.
-  saveUpgrade: Обновить
   saveNew: Запустить
   name:
     placeholder: напр. myapp
@@ -2664,7 +2877,7 @@ nodeDriver:
   amazoneks:
     associateWorkerNodePublicIp:
       radio:
-        default: "Yes"
+        default: 'Yes'
   amazonec2:
     region:
       label: Регион
@@ -2774,7 +2987,6 @@ upgradeBtn:
     available: 'Доступно обновление'
     inprogress: 'Выполняется обновление '
     upgraded: 'Обновление: Готово'
-    notfound: 'Версия не найдена'
     error: 'Ошибка проверки обновления'
 viewEditDescription:
   form:

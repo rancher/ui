@@ -18,6 +18,7 @@
        body=allNamespace
        descending=descending
        sortBy=sortBy
+       extraSearchFields=extraSearchFields
        as |sortable kind obj dt|
   }}
     {{#if (eq kind "row")}}
@@ -30,6 +31,9 @@
         </td>
         <td>
           {{obj.name}}
+          {{#if obj.autoInjectionEnabled}}
+            <div class="istio istio-autoinjection"></div>
+          {{/if}}
           {{#if obj.description}}
             <p class="text-small text-muted m-0">{{linkify obj.description}}</p>
           {{/if}}

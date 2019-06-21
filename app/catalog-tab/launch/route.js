@@ -5,20 +5,23 @@ import Route from '@ember/routing/route';
 import { get, set, setProperties } from '@ember/object';
 import { randomStr } from 'shared/utils/util';
 import C from 'ui/utils/constants';
+import Util from 'ui/utils/util';
 
 export default Route.extend({
   modalService: service('modal'),
   catalog:      service(),
   scope:        service(),
   clusterStore: service(),
+  settings:     service(),
+  growl:        service(),
+  intl:         service(),
 
   parentRoute:  'catalog-tab',
 
-  model(params/* , transition*/) {
-    var store = get(this, 'store');
-    var clusterStore = get(this, 'clusterStore');
+  model(params, transition) {
+    const { store, clusterStore } = this;
 
-    var dependencies = {
+    const dependencies = {
       tpl:        get(this, 'catalog').fetchTemplate(params.template),
       namespaces: clusterStore.findAll('namespace')
     };
@@ -38,73 +41,144 @@ export default Route.extend({
       dependencies.namespace = clusterStore.find('namespace', params.namespaceId);
     }
 
+    // check to see if we navigated here naturally or page refresh
+    const routeInfos = this.router._router._routerMicrolib.currentRouteInfos;
+
+    if (routeInfos && routeInfos.findBy('name', 'apps-tab.index')) {
+      // if natural get teh apps model from the already loaded route
+      let appsModel = this.modelFor('apps-tab.index');
+
+      dependencies.apps = get(appsModel, 'apps');
+    } else {
+      dependencies.apps = store.findAll('app');
+    }
+
     return hash(dependencies, 'Load dependencies').then((results) => {
-      let neuNSN = results.tpl.get('displayName');
-      let dupe   = results.namespaces.findBy('id', neuNSN);
+      var def                = get(results, 'tpl.defaultVersion');
+      var links              = get(results, 'tpl.versionLinks');
+      var app                = get(results, 'app');
+      var catalogTemplateUrl = null;
+      const allApps          = get(results, 'apps');
 
-      if ( !results.namespace ) {
-        let { newNamespaceName, newNS } = this.newNamespace(dupe, neuNSN);
-
-        if ( dupe ) {
-          neuNSN = newNamespaceName;
-        }
-
-        results.namespace = newNS;
+      if (app && params.appId && (!params.upgrade || params.istio)) {
+        def = get(app, 'externalIdInfo.version');
       }
 
-      let kind = 'helm';
-      let neuApp = null;
-      var links;
+      catalogTemplateUrl = links[def];
 
-      links = results.tpl.versionLinks;
+      var version = get(this, 'settings.rancherVersion');
 
-      var verArr = Object.keys(links).filter((key) => !!links[key])
-        .map((key) => ({
-          version:     key,
-          sortVersion: key,
-          link:        links[key]
-        }));
+      if ( version ) {
+        catalogTemplateUrl = Util.addQueryParam(catalogTemplateUrl, 'rancherVersion', version);
+      }
 
-      if (results.app) {
-        if (get(params, 'clone')) {
-          let { newNamespaceName, newNS } = this.newNamespace(dupe, neuNSN);
+      return this.catalog.fetchByUrl(catalogTemplateUrl).then((catalogTemplate) => {
+        let { requiredNamespace } = catalogTemplate;
+        let namespaceName;
 
-          if ( dupe ) {
-            neuNSN = newNamespaceName;
+        // if we have a required ns or we're upgrading we wont need a new namespace name
+        if (requiredNamespace || params.upgrade) {
+          if ( requiredNamespace ) {
+            namespaceName = requiredNamespace;
+          } else {
+            namespaceName = results.namespace.name;
+          }
+        } else {
+          namespaceName = results.tpl.get('displayName');
+        }
+
+        let existingNamespace     = results.namespaces.findBy('id', namespaceName);
+        let kind                  = 'helm';
+        let neuApp                = null;
+        let namespace             = null;
+        let newAppName            = null;
+        let match                 = null;
+
+        if (existingNamespace) {
+          // find any apps that exist in the ns so we can reuse if not
+          if (allApps && allApps.length > 0) {
+            match    = allApps.findBy('name', existingNamespace.displayName);
           }
 
-          results.namespace = newNS;
+          if (requiredNamespace || params.upgrade) {
+            namespace = existingNamespace;
+          } else {
+            // no apps exist in the namespace that match our current ns name so we can reuse the ns
+            if (match) {
+              ( { namespace } = this.newNamespace(existingNamespace, namespaceName) );
+            } else {
+              namespace = existingNamespace;
+            }
+          }
 
-          neuApp = results.app.cloneForNew();
-          set(neuApp, 'name', results.namespace.name);
+          // check for app with same name if so dedupe
+          if (match) {
+            newAppName = this.dedupeName(existingNamespace.displayName);
+          } else {
+            newAppName = existingNamespace.displayName;
+          }
         } else {
-          neuApp = results.app;
+          // new namespace
+          ( { namespace, newAppName } = this.newNamespace(existingNamespace, namespaceName));
         }
-      } else {
-        neuApp = store.createRecord({
-          type: 'app',
-          name: results.namespace.name,
+
+        if ( params.istio ) {
+          newAppName = '';
+        }
+
+        var verArr = Object.keys(links).filter((key) => !!links[key])
+          .map((key) => ({
+            version:     key,
+            sortVersion: key,
+            link:        links[key]
+          }));
+
+        if (results.app) {
+          if (get(params, 'clone')) {
+            neuApp = results.app.cloneForNew();
+
+            set(neuApp, 'name', newAppName);
+          } else {
+            neuApp = results.app;
+          }
+        } else {
+          neuApp = this.store.createRecord({
+            type: 'app',
+            name: newAppName,
+          });
+        }
+
+        if ( neuApp.id ) {
+          verArr.filter((ver) => ver.version === get(neuApp, 'externalIdInfo.version'))
+            .forEach((ver) => {
+              set(ver, 'version', `${ ver.version } (current)`);
+            })
+        }
+
+        if ( !params.namespaceId && params.istio ) {
+          namespace = null;
+        }
+
+        return EmberObject.create({
+          catalogTemplate,
+          namespace,
+          allTemplates:       this.modelFor(get(this, 'parentRoute')).get('catalog'),
+          catalogApp:         neuApp,
+          catalogTemplateUrl: links[def], // catalogTemplateUrl gets qp's added and this needs with out
+          namespaces:         results.namespaces,
+          tpl:                results.tpl,
+          tplKind:            kind,
+          upgradeTemplate:    results.upgrade,
+          versionLinks:       links,
+          versionsArray:      verArr,
         });
-      }
-
-      if ( neuApp.id ) {
-        verArr.filter((ver) => ver.version === get(neuApp, 'externalIdInfo.version'))
-          .forEach((ver) => {
-            set(ver, 'version', `${ ver.version } (current)`);
-          })
-      }
-
-      return EmberObject.create({
-        allTemplates:    this.modelFor(get(this, 'parentRoute')).get('catalog'),
-        catalogApp:      neuApp,
-        namespace:       results.namespace,
-        namespaces:      results.namespaces,
-        tpl:             results.tpl,
-        tplKind:         kind,
-        upgradeTemplate: results.upgrade,
-        versionLinks:    links,
-        versionsArray:   verArr,
       });
+    }).catch((error) => {
+      if (error.status === 404) {
+        this.growl.fromError(this.intl.t('newCatalog.error.appData'), error.message);
+      }
+
+      return transition.router.transitionTo('apps-tab.index');
     });
   },
 
@@ -114,10 +188,11 @@ export default Route.extend({
         appId:       null,
         appName:     null,
         catalog:     null,
+        clone:       null,
         namespaceId: null,
         template:    null,
         upgrade:     null,
-        clone:       null,
+        istio:       false,
       });
     }
   },
@@ -132,23 +207,28 @@ export default Route.extend({
     },
   },
 
-  newNamespace(duplicateName, newNamespaceName) {
+  dedupeName(name) {
     const suffix = randomStr(5, 5, 'novowels');
 
-    if ( duplicateName ) {
-      newNamespaceName = `${ get(duplicateName, 'displayName') }-${ suffix }`;
+    return `${ name }-${ suffix }`;
+  },
+
+  newNamespace(duplicateNamespace, namespaceName) {
+    let newAppName = namespaceName;
+
+    if ( duplicateNamespace ) {
+      newAppName = this.dedupeName(get(duplicateNamespace, 'displayName'));
     }
 
-    const newNS = get(this, 'clusterStore').createRecord({
+    const namespace = get(this, 'clusterStore').createRecord({
       type:      'namespace',
-      name:      newNamespaceName,
+      name:      newAppName,
       projectId: this.modelFor('authenticated.project').get('project.id'),
     });
 
     return {
-      newNamespaceName,
-      newNS
+      namespace,
+      newAppName,
     };
   },
-
 });

@@ -59,7 +59,9 @@ export default Component.extend({
       }
     });
 
-    this.sendAction('changed', out);
+    if (this.changed) {
+      this.changed(out);
+    }
   }),
 
   actualAccept: function() {

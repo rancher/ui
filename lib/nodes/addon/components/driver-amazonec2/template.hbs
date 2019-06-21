@@ -45,13 +45,14 @@
         cloudCredentials=cloudCredentials
         createLabel="nodeDriver.amazonec2.access.next"
         driverName=driverName
-        errors=errros
+        parseAndCollectErrors=(action "errorHandler")
         finishAndSelectCloudCredential=(action "finishAndSelectCloudCredential")
         primaryResource=primaryResource
         progressStep=(action "awsLogin")
         region=config.region
         showAddCloudCredential=hideRegionSelection
       }}
+      {{top-errors errors=errors}}
     {{else}}
       <div class="row">
         <div class="col span-4">
@@ -78,7 +79,6 @@
         </div>
       </div>
     {{/if}}
-    {{top-errors errors=errors}}
   {{/accordion-list-item}}
 
   <div class="{{unless (gte step 2) "hide"}}">
@@ -184,8 +184,8 @@
     {{#if (eq step 2)}}
       {{top-errors errors=errors}}
       {{save-cancel
-        save="selectSubnet"
-        cancel="cancel"
+        save=(action "selectSubnet")
+        cancel=(action "cancel")
         createLabel="nodeDriver.amazonec2.zone.next"
         savingLabel="nodeDriver.amazonec2.zone.loading"
       }}
@@ -270,8 +270,8 @@
     {{#if (eq step 3)}}
       {{top-errors errors=errors}}
       {{save-cancel
-        save="selectSecurityGroup"
-        cancel="cancel"
+        save=(action "selectSecurityGroup")
+        cancel=(action "cancel")
         createLabel="nodeDriver.amazonec2.securityGroup.next"
         savingLabel="nodeDriver.amazonec2.securityGroup.loading"
       }}
@@ -466,8 +466,8 @@
     {{top-errors errors=errors}}
 
     {{save-cancel
-      save="save"
-      cancel="cancel"
+      save=(action "save")
+      cancel=(action "cancel")
       editing=editing
     }}
   </div>

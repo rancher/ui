@@ -20,7 +20,9 @@ export default Component.extend({
   showLabelRow:      or('model.displayUserLabelStrings.length'),
   actions:      {
     toggle() {
-      this.sendAction('toggle');
+      if (this.toggle) {
+        this.toggle(this.model.id);
+      }
     },
   },
 });

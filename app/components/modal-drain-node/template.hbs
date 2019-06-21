@@ -1,9 +1,12 @@
 <div class="container-header-text">
   <h3>
     {{#if (eq resources.length 1)}}
-      {{t 'modalDrainNode.titleOne' name=resources.firstObject.displayName}}
+      {{t
+        "modalDrainNode.titleOne"
+        name=resources.firstObject.displayName
+      }}
     {{else}}
-      {{t 'modalDrainNode.titleMultiple' count=resources.length}}
+      {{t "modalDrainNode.titleMultiple" count=resources.length}}
     {{/if}}
   </h3>
   <hr/>
@@ -12,62 +15,112 @@
 <section class="p-20 pt-0">
   <div class="row">
     <div class="col span-11-of-23">
-      <label class="acc-label">{{t 'modalDrainNode.mode'}}</label>
+      <label class="acc-label">
+        {{t "modalDrainNode.mode"}}
+      </label>
       <div>
         <label class="radio mt-0">
-          {{radio-button selection=aggressive value=false}}
-          {{t 'modalDrainNode.safe.label'}}
-          <p class="help-block">{{t 'modalDrainNode.safe.helpText'}}</p>
+          {{radio-button
+            selection=aggressive
+            value=false
+          }}
+          {{t "modalDrainNode.safe.label"}}
+          <p class="help-block">
+            {{t "modalDrainNode.safe.helpText"}}
+          </p>
         </label>
       </div>
       <div>
         <label class="radio text-error">
-          {{radio-button selection=aggressive value=true}}
-          {{t 'modalDrainNode.aggressive.label'}}
-          <p class="help-block text-error">{{t 'modalDrainNode.aggressive.helpText' htmlSafe=true}}</p>
+          {{radio-button
+            selection=aggressive
+            value=true
+          }}
+          {{t "modalDrainNode.aggressive.label"}}
+          <p class="help-block text-error">
+            {{t "modalDrainNode.aggressive.helpText" htmlSafe=true}}
+          </p>
         </label>
       </div>
     </div>
 
     <div class="col span-11-of-23 offset-1-of-23">
-      <label class="acc-label">{{t 'modalDrainNode.gracePeriod.title'}}</label>
+      <label class="acc-label">
+        {{t "modalDrainNode.gracePeriod.title"}}
+      </label>
       <div>
         <label class="radio mt-0">
-          {{radio-button selection=usePodGracePeriod value=true}}
-          {{t 'modalDrainNode.gracePeriod.default'}}
+          {{radio-button
+            selection=usePodGracePeriod
+            value=true
+          }}
+          {{t "modalDrainNode.gracePeriod.default"}}
         </label>
       </div>
       <div>
         <label class="radio">
-          {{radio-button selection=usePodGracePeriod value=false}}
-          {{t 'modalDrainNode.gracePeriod.custom'}}
+          {{radio-button
+            selection=usePodGracePeriod
+            value=false
+          }}
+          {{t "modalDrainNode.gracePeriod.custom"}}
         </label>
       </div>
       <div class="input-group">
-        {{input-integer value=gracePeriod disabled=usePodGracePeriod min=1 classNames="form-control" placeholder=(t 'modalDrainNode.gracePeriod.placeholder')}}
-        <span class="input-group-addon bg-default">{{t 'generic.seconds'}}</span>
+        {{input-integer
+          value=gracePeriod
+          disabled=usePodGracePeriod
+          min=1
+          classNames="form-control"
+          placeholder=(t "modalDrainNode.gracePeriod.placeholder")
+        }}
+        <span class="input-group-addon bg-default">
+          {{t "generic.seconds"}}
+        </span>
       </div>
 
 
-      <label class="acc-label mt-10">{{t 'modalDrainNode.timeout.title'}}</label>
+      <label class="acc-label mt-10">
+        {{t "modalDrainNode.timeout.title"}}
+      </label>
       <div>
         <label class="radio mt-0">
-          {{radio-button selection=unlimitedTimeout value=true}}
-          {{t 'modalDrainNode.timeout.default'}}
+          {{radio-button
+            selection=unlimitedTimeout
+            value=true
+          }}
+          {{t "modalDrainNode.timeout.default"}}
         </label>
       </div>
       <div>
         <label class="radio">
-          {{radio-button selection=unlimitedTimeout value=false}}
-          {{t 'modalDrainNode.timeout.custom'}}
+          {{radio-button
+            selection=unlimitedTimeout
+            value=false
+          }}
+          {{t "modalDrainNode.timeout.custom"}}
         </label>
       </div>
       <div class="input-group">
-        {{input-integer min=1 max=10800 disabled=unlimitedTimeout value=timeout classNames="form-control" placeholder=(t 'modalDrainNode.timeout.placeholder')}}
-        <span class="input-group-addon bg-default">{{t 'generic.seconds'}}</span>
+        {{input-integer
+          min=1
+          max=10800
+          disabled=unlimitedTimeout
+          value=timeout
+          classNames="form-control"
+          placeholder=(t "modalDrainNode.timeout.placeholder")
+        }}
+        <span class="input-group-addon bg-default">
+          {{t "generic.seconds"}}
+        </span>
       </div>
     </div>
   </div>
 </section>
 
-{{save-cancel editing=true editLabel="modalDrainNode.action" save="drain" cancel="cancel"}}
+{{save-cancel
+  editing=true
+  editLabel="modalDrainNode.action"
+  save=(action "drain")
+  cancel=(action "cancel")
+}}

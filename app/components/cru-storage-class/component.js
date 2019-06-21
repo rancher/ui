@@ -67,7 +67,9 @@ export default Component.extend(ViewNewEdit, ChildHook, {
   },
 
   doneSaving() {
-    this.sendAction('cancel');
+    if (this.done) {
+      this.done();
+    }
   },
 
 });

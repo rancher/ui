@@ -19,15 +19,27 @@
     <span class="block">
       {{t "globalDnsPage.entriesPage.config.multi"}} {{entry.multiClusterApp.displayName}}
     </span>
-    {{#each multiClusterAppTargets as |target|}}
-      {{#link-to-external
-         "apps-tab.detail"
-         target.projectId
-         target.appLink
-         classNames="block"
-      }}
-        {{target.clusterName}}:{{target.projectName}}
-      {{/link-to-external}}
+    {{#each entry.multiClusterApp.targets as |target|}}
+      {{#if (and target.clusterName target.projectName)}}
+        {{#link-to-external
+           "apps-tab.detail"
+           target.projectId
+           target.appLink
+           classNames="block"
+        }}
+          {{target.clusterName}}:{{target.projectName}}
+        {{/link-to-external}}
+      {{else}}
+        {{#tooltip-element
+           type="tooltip-basic"
+           model=(t "globalDnsPage.entriesPage.access.noAccessProject")
+           tooltipTemplate="tooltip-static"
+           aria-describedby="tooltip-base"
+           tooltipFor="tooltipLink"
+        }}
+          {{target.projectId}} <i class="icon icon-alert"></i>
+        {{/tooltip-element}}
+      {{/if}}
     {{else}}
       <div>
         {{#tooltip-element
@@ -42,7 +54,7 @@
       </div>
     {{/each}}
   {{else}}
-    {{#each linkedProjects as |project|}}
+    {{#each entry.linkedProjects as |project|}}
       {{#if (and project.cluster.displayName project.displayName)}}
         {{#link-to-external
            "authenticated.project"

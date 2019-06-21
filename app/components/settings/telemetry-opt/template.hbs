@@ -1,9 +1,31 @@
-<h2>{{t 'telemetryOpt.header'}}</h2>
-<p class="text-muted">{{t 'telemetryOpt.subtext' appName=settings.appName htmlSafe=true}} <a href="{{settings.docsBase}}/faq/telemetry" target="_blank" rel="noopener nofollow">{{t 'telemetryOpt.learnMore.label'}}</a></p>
+<h2>
+  {{t "telemetryOpt.header"}}
+</h2>
+<p class="text-muted">
+  {{t
+    "telemetryOpt.subtext"
+    appName=settings.appName
+    htmlSafe=true
+  }}
+  <a href="{{settings.docsBase}}/faq/telemetry" target="_blank" rel="noopener nofollow">
+    {{t "telemetryOpt.learnMore.label"}}
+  </a>
+</p>
+
 <hr>
 
 <div class="col-inline checkbox">
-  <label>{{input type="checkbox" checked=optIn}} {{t 'telemetryOpt.label'}}</label>
+  <label>
+    {{input
+      type="checkbox"
+      checked=optIn
+    }}
+    {{t "telemetryOpt.label"}}
+  </label>
 </div>
 
-{{save-cancel cancelDisabled=true editing=true save="save"}}
+{{save-cancel
+  cancelDisabled=true
+  editing=true
+  save=(action "save")
+}}

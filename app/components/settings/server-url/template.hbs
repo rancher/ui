@@ -1,12 +1,18 @@
 {{#if showHeader}}
   <div class="header">
-    <h1>{{t 'serverUrl.header.label'}}</h1>
-    <p class="help-text">{{t 'serverUrl.header.detail' appName=settings.appName}}</p>
+    <h1>
+      {{t "serverUrl.header.label"}}
+    </h1>
+    <p class="help-text">
+      {{t "serverUrl.header.detail" appName=settings.appName}}
+    </p>
   </div>
 {{/if}}
-<form class="horizontal-form container-fluid text-left" {{action 'saveServerUrl' on="submit"}}>
+<form class="horizontal-form container-fluid text-left" {{action "saveServerUrl" on="submit"}}>
   {{#unless popupMode}}
-    <label for="server-url" class="acc-label">{{t 'generic.url'}}</label>
+    <label for="server-url" class="acc-label">
+      {{t "generic.url"}}
+    </label>
   {{/unless}}
   <div class="input-group">
     <span class="input-group-addon bg-default">
@@ -14,24 +20,27 @@
     </span>
 
     {{input-url
-        classNames="form-control"
-        id="server-url"
-        isInvalid=(action (mut urlInvalid))
-        urlWarning=(action (mut urlWarning))
-        urlError=(action (mut urlError))
-        value=serverUrl
+      classNames="form-control"
+      id="server-url"
+      isInvalid=(action (mut urlInvalid))
+      urlWarning=(action (mut urlWarning))
+      urlError=(action (mut urlError))
+      value=serverUrl
     }}
   </div>
   <div>
     {{#if urlInvalid}}
       {{#each urlError as |error|}}
         <div class="banner bg-{{error.type}} mt-30">
-          <div class="banner-icon"><i class="icon icon-info"></i></div>
+          <div class="banner-icon">
+            <i class="icon icon-info"></i>
+          </div>
           <div class="banner-message">
             <p>
-              {{t error.msg
-                  activeValue=serverUrl
-                  htmlSafe=true
+              {{t
+                error.msg
+                activeValue=serverUrl
+                htmlSafe=true
               }}
             </p>
           </div>
@@ -42,12 +51,15 @@
   <div>
     {{#each urlWarning as |warning|}}
       <div class="banner bg-{{warning.type}} mt-30">
-        <div class="banner-icon"><i class="icon icon-info"></i></div>
+        <div class="banner-icon">
+          <i class="icon icon-info"></i>
+        </div>
         <div class="banner-message">
           <p>
-            {{t warning.msg
-                activeValue=serverUrl
-                htmlSafe=true
+            {{t
+              warning.msg
+              activeValue=serverUrl
+              htmlSafe=true
             }}
           </p>
         </div>
@@ -55,14 +67,14 @@
     {{/each}}
   </div>
   {{top-errors
-      errors=errors
+    errors=errors
   }}
   {{save-cancel
-      cancelDisabled=(not popupMode)
-      editLabel="serverUrl.button.save"
-      editing=true
-      cancel="cancel"
-      save="saveServerUrl"
-      saveDisabled=(or urlInvalid (not serverUrl null))
+    cancelDisabled=(not popupMode)
+    editLabel="serverUrl.button.save"
+    editing=true
+    cancel=(action "cancel")
+    save=(action "saveServerUrl")
+    saveDisabled=(or urlInvalid (not serverUrl null))
   }}
 </form>

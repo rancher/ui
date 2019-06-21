@@ -11,7 +11,15 @@ const samlProviders = ['ping', 'adfs', 'keycloak', 'okta'];
 const allowedForwards = ['localhost'];
 
 export default Route.extend(VerifyAuth, {
-  github: service(),
+  github:   service(),
+  intl:     service(),
+  language: service('user-language'),
+
+  beforeModel() {
+    if (!this.intl.locale) {
+      return get(this, 'language').initUnauthed();
+    }
+  },
 
   model(params/* , transition */) {
     const github  = get(this, 'github');
@@ -96,7 +104,15 @@ export default Route.extend(VerifyAuth, {
     }
 
     if (get(params, 'errorCode')) {
-      reply(get(params, 'errorMsg'), get(params, 'errorCode'));
+      let errorMessageKey         = get(params, 'errorMsg') || null;
+      let errorMessageTranslation = this.intl.t('loginPage.error.unknown');
+      let locale                  = this.intl.locale || ['en-us'];
+
+      if (errorMessageKey && this.intl.exists(`loginPage.error.${ errorMessageKey }`, locale)) {
+        errorMessageTranslation = this.intl.t(`loginPage.error.${ errorMessageKey }`);
+      }
+
+      reply(errorMessageTranslation, get(params, 'errorCode'));
     }
 
     function reply(err, code) {

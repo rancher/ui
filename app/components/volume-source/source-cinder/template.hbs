@@ -1,35 +1,104 @@
-  <div class="row mb-20">
-    <div class="col span-6">
-      <label class="acc-label">{{t 'cruPersistentVolume.cinder.volumeID.label'}}</label>
-      {{#input-or-display editable=editing value=config.volumeID}}
-        {{input type="text" value=config.volumeID classNames="form-control" placeholder=(t 'cruPersistentVolume.cinder.volumeID.placeholder')}}
-      {{/input-or-display}}
-    </div>
-
-    <div class="col span-6">
-      <label class="acc-label">{{t 'cruPersistentVolume.cinder.fsType.label'}}</label>
-      {{#input-or-display editable=editing value=config.fsType}}
-        {{input type="text" value=config.fsType classNames="form-control" placeholder=(t 'cruPersistentVolume.cinder.fsType.placeholder')}}
-      {{/input-or-display}}
-    </div>
+<div class="row mb-20">
+  <div class="col span-6">
+    <label class="acc-label" for="volume-source-cinder-volume-id">
+      {{t "cruPersistentVolume.cinder.volumeID.label"}}
+    </label>
+    {{#input-or-display
+       editable=editing
+       value=config.volumeID
+    }}
+      {{input
+        type="text"
+        value=config.volumeID
+        classNames="form-control"
+        placeholder=(t "cruPersistentVolume.cinder.volumeID.placeholder")
+        id="volume-source-cinder-volume-id"
+      }}
+    {{/input-or-display}}
   </div>
 
-  <div class="row">
-    <div class="col span-6">
-      <label class="acc-label">{{t 'cruPersistentVolume.cinder.readOnly.label'}}</label>
-      {{#if editing}}
-        <div class="text-muted">
-          <label>
-            {{radio-button selection=config.readOnly value=true}} {{t 'generic.yes'}}
-          </label>
-          <label>
-            {{radio-button selection=config.readOnly value=false}} {{t 'generic.no'}}
-          </label>
-        </div>
-      {{else}}
-        <div class="text-muted">
-          {{config.readOnly}}
-        </div>
-      {{/if}}
-    </div>
+  <div class="col span-6">
+    <label class="acc-label" for="volume-source-cinder-fs-type">
+      {{t "cruPersistentVolume.cinder.fsType.label"}}
+    </label>
+    {{#input-or-display
+       editable=editing
+       value=config.fsType
+    }}
+      {{input
+        type="text"
+        value=config.fsType
+        classNames="form-control"
+        placeholder=(t "cruPersistentVolume.cinder.fsType.placeholder")
+        id="volume-source-cinder-fs-type"
+      }}
+    {{/input-or-display}}
   </div>
+</div>
+
+<div class="row mb-20">
+  <div class="col span-6">
+    <label class="acc-label" for="volume-source-cinder-secret-ref">
+      {{t "cruPersistentVolume.cinder.secretRef.name.label"}}
+    </label>
+    {{#input-or-display
+       editable=editing
+       value=config.secretRef.name
+    }}
+      {{input
+        type="text"
+        value=config.secretRef.name
+        classNames="form-control"
+        placeholder=(t "cruPersistentVolume.cinder.secretRef.name.placeholder")
+        id="volume-source-cinder-secret-ref"
+      }}
+    {{/input-or-display}}
+  </div>
+
+  <div class="col span-6">
+    <label class="acc-label" for="volume-source-cinder-secret-namespace">
+      {{t "cruPersistentVolume.cinder.secretRef.namespace.label"}}
+    </label>
+    {{#input-or-display
+       editable=editing
+       value=config.secretRef.namespace
+    }}
+      {{input
+        type="text"
+        value=config.secretRef.namespace
+        classNames="form-control"
+        placeholder=(t "cruPersistentVolume.cinder.secretRef.namespace.placeholder")
+        id="volume-source-cinder-secret-namespace"
+      }}
+    {{/input-or-display}}
+  </div>
+</div>
+
+<div class="row">
+  <div class="col span-6">
+    <label class="acc-label">
+      {{t "cruPersistentVolume.cinder.readOnly.label"}}
+    </label>
+    {{#input-or-display
+       editable=editing
+       value=config.readOnly
+    }}
+      <div class="text-muted">
+        <label for="volume-source-cinder-readonly-true">
+          {{radio-button
+            selection=config.readOnly
+            value=true
+            id="volume-source-cinder-readonly-true"
+          }} {{t "generic.yes"}}
+        </label>
+        <label for="volume-source-cinder-readonly-false">
+          {{radio-button
+            selection=config.readOnly
+            value=false
+            id="volume-source-cinder-readonly-false"
+          }} {{t "generic.no"}}
+        </label>
+      </div>
+    {{/input-or-display}}
+  </div>
+</div>

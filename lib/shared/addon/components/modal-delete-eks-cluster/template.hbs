@@ -1,43 +1,54 @@
 <div class="container-header-text">
-  <h3>{{t 'deleteEksCluster.title' clusterName=primaryResource.displayName}}</h3>
+  <h3>
+    {{t "deleteEksCluster.title" clusterName=primaryResource.displayName}}
+  </h3>
   <div class="row">
-    {{banner-message color='bg-secondary' message=(t 'deleteEksCluster.help')}}
+    {{banner-message
+      color="bg-secondary"
+      message=(t "deleteEksCluster.help")
+    }}
   </div>
 </div>
 
 <section class="horizontal-form container-fluid">
   <div class="row">
     <div class="col span-6">
-      <label class="acc-label">{{t 'deleteEksCluster.accessKey.label'}}{{field-required}}</label>
+      <label class="acc-label">
+        {{t "deleteEksCluster.accessKey.label"}}{{field-required}}
+      </label>
       {{input
-          type="text"
-          name="username"
-          classNames="form-control"
-          placeholder=(t 'deleteEksCluster.accessKey.placeholder')
-          value=primaryResource.amazonElasticContainerServiceConfig.accessKey
+        type="text"
+        name="username"
+        classNames="form-control"
+        placeholder=(t "deleteEksCluster.accessKey.placeholder")
+        value=primaryResource.amazonElasticContainerServiceConfig.accessKey
       }}
     </div>
 
     <div class="col span-6">
-      <label class="acc-label">{{t 'deleteEksCluster.secretKey.label'}}{{field-required}}</label>
+      <label class="acc-label">
+        {{t "deleteEksCluster.secretKey.label"}}{{field-required}}
+      </label>
       {{input
-          type="password"
-          name="password"
-          classNames="form-control"
-          placeholder=(t 'deleteEksCluster.secretKey.placeholder')
-          value=primaryResource.amazonElasticContainerServiceConfig.secretKey
+        type="password"
+        name="password"
+        classNames="form-control"
+        placeholder=(t "deleteEksCluster.secretKey.placeholder")
+        value=primaryResource.amazonElasticContainerServiceConfig.secretKey
       }}
     </div>
   </div>
   <div class="row">
     <div class="col span-12">
-      <label class="acc-label">{{t 'deleteEksCluster.sessionToken.deleteLabel'}}{{field-required}}</label>
+      <label class="acc-label">
+        {{t "deleteEksCluster.sessionToken.deleteLabel"}}{{field-required}}
+      </label>
       {{input
-          type="password"
-          name="session-token"
-          classNames="form-control"
-          placeholder=(t 'deleteEksCluster.sessionToken.placeholder')
-          value=primaryResource.amazonElasticContainerServiceConfig.sessionToken
+        type="password"
+        name="session-token"
+        classNames="form-control"
+        placeholder=(t "deleteEksCluster.sessionToken.placeholder")
+        value=primaryResource.amazonElasticContainerServiceConfig.sessionToken
       }}
     </div>
   </div>
@@ -47,9 +58,9 @@
 
 <div class="footer-actions">
   {{save-cancel
-      cancel="cancel"
-      createLabel="deleteEksCluster.deleteCluster"
-      save="confirmKeys"
-      savingLabel="deleteEksCluster.deletingCluster"
+    cancel=(action "cancel")
+    createLabel="deleteEksCluster.deleteCluster"
+    save=(action "confirmKeys")
+    savingLabel="deleteEksCluster.deletingCluster"
   }}
 </div>

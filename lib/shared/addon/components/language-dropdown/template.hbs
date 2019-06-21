@@ -1,27 +1,39 @@
-{{#basic-dropdown
-     horizontalPosition="right"
-     as |dd|
+{{#hover-dropdown
+   verticalPosition=dropdownVertPosition
+   horizontalPosition=dropdownHoriPosition
+   renderInPlace=true
+   as |dd|
 }}
-
   {{#dd.trigger
-       class="hand btn btn-sm bg-transparent lang-select"
+     class="hand btn btn-sm bg-transparent lang-select"
   }}
     <i class="icon icon-globe"></i> {{selectedLabel}} <i class="icon icon-chevron-down"></i>
   {{/dd.trigger}}
 
   {{#dd.content class="text-right lang-select"}}
     {{#if settings.isRancher}}
-      <li><a href="http://translate.rancher.com" target="_blank" rel="noopener nofollow">{{t 'languageContribute'}}</a></li>
+      <li>
+        <a
+          role="button"
+          href="http://translate.rancher.com"
+          target="_blank"
+          rel="noopener nofollow"
+        >
+          {{t "languageContribute"}}
+        </a>
+      </li>
       <li class="divider"></li>
     {{/if}}
     {{#each-in locales as |lang label|}}
-      <li class="{{if (eq selected lang) 'disabled selected'}}">
-        <a {{action 'selectLanguage' lang}}>
+      <li class="{{if (eq selected lang) "disabled selected"}}">
+        <a
+          role="button"
+          href="#"
+          {{action "selectLanguage" lang}}
+        >
           {{label}} ({{lang}})
         </a>
       </li>
     {{/each-in}}
-
   {{/dd.content}}
-
-{{/basic-dropdown}}
+{{/hover-dropdown}}

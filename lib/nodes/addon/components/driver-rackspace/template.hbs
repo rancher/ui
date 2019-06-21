@@ -1,54 +1,86 @@
 {{#accordion-list showExpandAll=false as | al expandFn |}}
-  <div class="over-hr"><span>{{driverOptionsTitle}}</span></div>
+  <div class="over-hr">
+    <span>
+      {{driverOptionsTitle}}
+    </span>
+  </div>
 
   {{#accordion-list-item
-    title=(t 'nodeDriver.rackspace.account.title')
-    detail=(t 'nodeDriver.rackspace.account.detail')
-    expandAll=expandAll
-    expand=(action expandFn)
-    expandOnInit=true
+     title=(t "nodeDriver.rackspace.account.title")
+     detail=(t "nodeDriver.rackspace.account.detail")
+     expandAll=expandAll
+     expand=(action expandFn)
+     expandOnInit=true
   }}
     <div class="row">
       <div class="col span-6">
-        <label class="acc-label">{{t 'nodeDriver.rackspace.username.label'}}{{field-required}}</label>
-        {{input type="text" class="form-control" value=config.username placeholder=(t 'nodeDriver.rackspace.username.placeholder')}}
+        <label class="acc-label">
+          {{t "nodeDriver.rackspace.username.label"}}{{field-required}}
+        </label>
+        {{input
+          type="text"
+          class="form-control"
+          value=config.username
+          placeholder=(t "nodeDriver.rackspace.username.placeholder")
+        }}
       </div>
       <div class="col span-6">
-        <label class="acc-label">{{t 'nodeDriver.rackspace.apiKey.label'}}{{field-required}}</label>
-        {{input type="text" class="form-control" value=config.apiKey placeholder=(t 'nodeDriver.rackspace.apiKey.placeholder')}}
-        <p class="help-block">{{t 'nodeDriver.rackspace.accountHelp'}}</p>
+        <label class="acc-label">
+          {{t "nodeDriver.rackspace.apiKey.label"}}{{field-required}}
+        </label>
+        {{input
+          type="text"
+          class="form-control"
+          value=config.apiKey
+          placeholder=(t "nodeDriver.rackspace.apiKey.placeholder")
+        }}
+        <p class="help-block">
+          {{t "nodeDriver.rackspace.accountHelp"}}
+        </p>
       </div>
     </div>
   {{/accordion-list-item}}
 
   {{#accordion-list-item
-    title=(t 'nodeDriver.rackspace.region.title')
-    detail=(t 'nodeDriver.rackspace.region.detail')
-    expandAll=expandAll
-    expand=(action expandFn)
-    expandOnInit=true
+     title=(t "nodeDriver.rackspace.region.title")
+     detail=(t "nodeDriver.rackspace.region.detail")
+     expandAll=expandAll
+     expand=(action expandFn)
+     expandOnInit=true
   }}
     <div class="row">
       <div class="col span-6">
-        <label class="acc-label">{{t 'nodeDriver.rackspace.region.label'}}</label>
+        <label class="acc-label">
+          {{t "nodeDriver.rackspace.region.label"}}
+        </label>
         <select class="form-control" onchange={{action (mut config.region) value="target.value"}}>
           {{#each regionChoices as |choice|}}
-            <option value={{choice.value}} selected={{eq config.region choice.value}}>{{choice.label}}</option>
+            <option value={{choice.value}} selected={{eq config.region choice.value}}>
+              {{choice.label}}
+            </option>
           {{/each}}
-        </select>      
+        </select>
       </div>
       <div class="col span-6">
-        <label class="acc-label">{{t 'nodeDriver.rackspace.flavor.label'}}</label>
+        <label class="acc-label">
+          {{t "nodeDriver.rackspace.flavor.label"}}
+        </label>
         <select class="form-control" onchange={{action (mut config.flavorId) value="target.value"}}>
           {{#each flavorChoices as |choice|}}
-            <option value={{choice.value}} selected={{eq config.flavorId choice.value}}>{{choice.label}}</option>
+            <option value={{choice.value}} selected={{eq config.flavorId choice.value}}>
+              {{choice.label}}
+            </option>
           {{/each}}
         </select>
       </div>
     </div>
   {{/accordion-list-item}}
 
-  <div class="over-hr"><span>{{templateOptionsTitle}}</span></div>
+  <div class="over-hr">
+    <span>
+      {{templateOptionsTitle}}
+    </span>
+  </div>
 
   {{form-name-description
     model=model
@@ -57,7 +89,7 @@
 
   {{form-user-labels
     initialLabels=labelResource.labels
-    setLabels=(action 'setLabels')
+    setLabels=(action "setLabels")
     expandAll=expandAll
     expand=(action expandFn)
   }}
@@ -68,5 +100,9 @@
   }}
 
   {{top-errors errors=errors}}
-  {{save-cancel save="save" cancel="cancel" editing=editing}}
+  {{save-cancel
+    save=(action "save")
+    cancel=(action "cancel")
+    editing=editing
+  }}
 {{/accordion-list}}

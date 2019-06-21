@@ -1,59 +1,79 @@
 {{#if (and githubAuthConfig.enabled useGloableConfig)}}
   <section>
-    {{banner-message icon="icon-info" color='bg-info mb-0 mt-10' message=(t 'pipelinesSetting.userGlobalConfig')}}
+    {{banner-message
+      icon="icon-info"
+      color="bg-info mb-0 mt-10"
+      message=(t "pipelinesSetting.userGlobalConfig")
+    }}
   </section>
   <section class="box mt-30">
-    <h3>{{t 'authPage.authenticated.header.text'}} <div class="pull-right"><a href="javascript:void();" {{action 'changeOauthSource' false}}>{{t 'pipelinesSetting.customConfigChangeLabel'}}</a></div></h3>
+    <h3>
+      {{t "authPage.authenticated.header.text"}}
+      <div class="pull-right">
+        <a href="javascript:void();" {{action "changeOauthSource" false}}>
+          {{t "pipelinesSetting.customConfigChangeLabel"}}
+        </a>
+      </div>
+    </h3>
+
     <hr/>
+
     {{#if githubAuthConfig.hostname}}
-      <div><b>{{t 'authPage.authenticated.header.enterpriseHostName'}} </b> <span class="text-muted">{{githubAuthConfig.hostname}}</span></div>
+      <div>
+        <b>{{t "authPage.authenticated.header.enterpriseHostName"}} </b> <span class="text-muted">{{githubAuthConfig.hostname}}</span>
+      </div>
     {{/if}}
-    <div><b>{{t 'authPage.authenticated.header.clientId.text'}} </b> <span class="text-muted">{{githubAuthConfig.clientId}}</span></div>
-    <p class="text-info">{{t 'pipelinesSetting.userGlobalConfig'}}
+
+    <div>
+      <b>{{t "authPage.authenticated.header.clientId.text"}} </b> <span class="text-muted">{{githubAuthConfig.clientId}}</span>
+    </div>
+    <p class="text-info">{{t "pipelinesSetting.userGlobalConfig"}}
     </p>
 
     {{top-errors errors=errors}}
     <div class="row text-center">
       <button class="btn bg-primary" {{action "githubAuthConfigAuthenticate"}}>
         {{#if testing}}
-          <i class="icon icon-spinner icon-spin"></i> {{t 'authPage.testAuth.buttonText.post'}}
+          <i class="icon icon-spinner icon-spin"></i> {{t "authPage.testAuth.buttonText.post"}}
         {{else}}
-          <i class="icon icon-github"></i> {{t 'authPage.testAuth.buttonText.preVariable'}}
+          <i class="icon icon-github"></i> {{t "authPage.testAuth.buttonText.preVariable"}}
         {{/if}}
       </button>
     </div>
   </section>
 {{else}}
   <section class="box mt-30">
-    <h3>{{t 'authPage.setup' type='Github' }}</h3>
+    <h3>
+      {{t "authPage.setup" type="Github" }}
+    </h3>
     <hr/>
     <p>
       <ol class="alphalist ml-40">
         <li>
-          {{t 'authPage.github.auth' htmlSafe=true}}
+          {{t "authPage.github.auth" htmlSafe=true}}
           <ul>
-            <li>{{t 'authPage.github.enterpriseAuth'}}</li>
+            <li>{{t "authPage.github.enterpriseAuth"}}</li>
           </ul>
         </li>
         <li>
-          {{t 'authPage.github.ul.li2.text'}}
+          {{t "authPage.github.ul.li2.text"}}
           <ul>
             <li>
-              {{t 'authPage.github.ul.li2.ul.li1' htmlSafe=true}}
+              {{t "authPage.github.ul.li2.ul.li1" htmlSafe=true}}
             </li>
             <li>
-              <b>{{t 'authPage.github.ul.li2.ul.li2'}}</b> <span>{{homePageURL}}{{copy-to-clipboard size='small' clipboardText=homePageURL htmlSafe=true}}</span>
+              <b>{{t "authPage.github.ul.li2.ul.li2"}}</b> <span>{{homePageURL}}{{copy-to-clipboard size="small" clipboardText=homePageURL htmlSafe=true}}</span>
             </li>
             <li>
-              {{t 'authPage.github.ul.li2.ul.li3' htmlSafe=true}}
+              {{t "authPage.github.ul.li2.ul.li3" htmlSafe=true}}
             </li>
             <li>
-              <b>{{t 'authPage.github.ul.li2.ul.li4'}}</b>
-              <span id="auth-callback-url">{{destinationUrl}} {{copy-to-clipboard size='small' clipboardText=destinationUrl}}</span></li>
+              <b>{{t "authPage.github.ul.li2.ul.li4"}}</b>
+              <span id="auth-callback-url">{{destinationUrl}} {{copy-to-clipboard size="small" clipboardText=destinationUrl}}</span></li>
           </ul>
         </li>
         <li>
-          {{t 'authPage.github.ul.li3.text'}}
+          {{t "authPage.github.ul.li3.text"}}
         </li>
       </ol>
     </p>
@@ -61,32 +81,56 @@
 
   <form autcomplete="on">
     <section class="box mt-30">
-      <h3>{{t 'authPage.form.headerVariable' SCM="Github" }}</h3>
+      <h3>{{t "authPage.form.headerVariable" SCM="Github" }}</h3>
       <div class="row">
         <div class="col span-6">
           <div class="inline-form">
-            <label class="acc-label pb-5">{{t 'authPage.github.form.clientId.labelText'}}{{field-required}}</label>
-            {{input type="text" name="username" value=oauthModel.clientId classNames="form-control"}}
-            <p class="help-block">{{t 'authPage.github.form.subtextVariable'}}</p>
+            <label class="acc-label pb-5">
+              {{t "authPage.github.form.clientId.labelText"}}{{field-required}}
+            </label>
+            {{input
+              type="text"
+              name="username"
+              value=oauthModel.clientId
+              classNames="form-control"
+            }}
+            <p class="help-block">{{t "authPage.github.form.subtextVariable"}}</p>
           </div>
         </div>
         <div class="col span-6">
           <div class="inline-form">
-            <label class="acc-label pb-5">{{t 'authPage.github.form.clientSecret.labelText'}}{{field-required}}</label>
-            {{input type="password" name="password" value=oauthModel.clientSecret classNames="form-control"}}
+            <label class="acc-label pb-5">
+              {{t "authPage.github.form.clientSecret.labelText"}}{{field-required}}
+            </label>
+            {{input
+              type="password"
+              name="password"
+              value=oauthModel.clientSecret
+              classNames="form-control"
+            }}
             <div class="checkbox pt-10">
-              <label class="acc-label pb-5">{{input type="checkbox" checked=isEnterprise}} 
-                {{t 'authPage.form.enterprise.labelText' type="github"}}
+              <label class="acc-label pb-5">
+                {{input type="checkbox" checked=isEnterprise}}
+                {{t "authPage.form.enterprise.labelText" type="github"}}
               </label>
             </div>
             {{#liquid-if isEnterprise}}
               <div class="checkbox pt-10">
-                <label class="acc-label pb-5">{{input type="checkbox" checked=secure}} {{t 'authPage.form.isEnterprise.labelText'}}</label>
+                <label class="acc-label pb-5">
+                  {{input type="checkbox" checked=secure}} {{t "authPage.form.isEnterprise.labelText"}}
+                </label>
               </div>
             {{/liquid-if}}
             {{#liquid-if isEnterprise}}
-              <label class="acc-label pb-5">{{t 'authPage.form.enterpriseHost.labelText'}}{{field-required}}</label>
-              {{input type="text" value=oauthModel.hostName classNames="form-control" placeholder=(t 'authPage.form.enterpriseHost.placeholder')}}
+              <label class="acc-label pb-5">
+                {{t "authPage.form.enterpriseHost.labelText"}}{{field-required}}
+              </label>
+              {{input
+                type="text"
+                value=oauthModel.hostName
+                classNames="form-control"
+                placeholder=(t "authPage.form.enterpriseHost.placeholder")
+              }}
             {{/liquid-if}}
           </div>
         </div>
@@ -95,7 +139,12 @@
       {{top-errors errors=errors}}
 
       <div class="row text-center">
-        {{save-cancel cancelDisabled=true savingLabel='authPage.testAuth.buttonText.post' createLabel='authPage.testAuth.buttonText.preVariable' save='authenticate'}}
+        {{save-cancel
+          cancelDisabled=true
+          savingLabel="authPage.testAuth.buttonText.post"
+          createLabel="authPage.testAuth.buttonText.preVariable"
+          save=(action "authenticate")
+        }}
       </div>
     </section>
   </form>

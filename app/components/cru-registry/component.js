@@ -4,9 +4,13 @@ import ViewNewEdit from 'shared/mixins/view-new-edit';
 import OptionallyNamespaced from 'shared/mixins/optionally-namespaced';
 import layout from './template';
 import  { PRESETS_BY_NAME } from  'ui/models/dockercredential';
+import { inject as service } from '@ember/service'
 
 export default Component.extend(ViewNewEdit, OptionallyNamespaced, {
+  globalStore: service(),
+
   layout,
+
   model: null,
 
   titleKey: 'cruRegistry.title',
@@ -21,11 +25,29 @@ export default Component.extend(ViewNewEdit, OptionallyNamespaced, {
   init() {
     this._super(...arguments);
 
-    set(this, 'asArray', JSON.parse(JSON.stringify(get(this, 'model.asArray') || [])));
-
     if (get(this, 'model.type') === 'namespacedDockerCredential') {
       set(this, 'scope', 'namespace');
     }
+    const globalRegistryEnabled = get(this, 'globalStore').all('setting').findBy('id', 'global-registry-enabled') || {};
+
+    set(this, 'globalRegistryEnabled', get(globalRegistryEnabled, 'value') === 'true')
+
+    let asArray = JSON.parse(JSON.stringify(get(this, 'model.asArray') || []))
+
+    if (!globalRegistryEnabled && get(this, 'mode') === 'new') {
+      asArray = asArray.map((item) => {
+        if (item.preset === get(this, 'hostname')) {
+          return {
+            ...item,
+            preset: 'custom'
+          }
+        }
+
+        return item
+      })
+    }
+
+    set(this, 'asArray', asArray);
   },
 
   arrayChanged: observer('asArray.@each.{preset,address,username,password,auth}', function() {
@@ -56,6 +78,8 @@ export default Component.extend(ViewNewEdit, OptionallyNamespaced, {
 
     return this._super(...arguments);
   }),
+
+  hostname:  window.location.host,
 
   willSave() {
     let pr = get(this, 'primaryResource');
@@ -92,6 +116,8 @@ export default Component.extend(ViewNewEdit, OptionallyNamespaced, {
   },
 
   doneSaving() {
-    this.sendAction('cancel');
+    if (this.done) {
+      this.done();
+    }
   },
 });

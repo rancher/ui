@@ -5,7 +5,6 @@ import C from 'ui/utils/constants';
 
 export default Route.extend({
   beforeModel() {
-    this._super(...arguments);
     this.get('store').findAll('host')
       .then((hosts) => {
         this.controllerFor('authenticated.project.help').set('hasHosts', hosts.get('length') > 0);

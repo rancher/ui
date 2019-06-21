@@ -1,39 +1,66 @@
 {{#authorize-user}}
   {{top-errors errors=errors}}
   {{#if showReset}}
-    {{#link-to 'login' (query-params resetPassword=true) classNames="inline-block mb-10"}}Reset Password{{/link-to}}
+    {{#link-to
+       "login"
+       (query-params resetPassword=true)
+       classNames="inline-block mb-10"
+    }}
+      Reset Password
+    {{/link-to}}
   {{/if}}
   {{#if emailSent}}
     <div class="row" style="max-width: 500px;">
       <div class="col span-12 text-center">
-        <h1>{{t 'signupPage.emailSuccess.header' appName=settings.appName}}</h1>
-        <p>{{t 'signupPage.emailSuccess.confirm.subtext'}}</p>
+        <h1>
+          {{t "signupPage.emailSuccess.header" appName=settings.appName}}
+        </h1>
+        <p>
+          {{t "signupPage.emailSuccess.confirm.subtext"}}
+        </p>
       </div>
       {{#if loading}}
-        <button class="btn bg-primary mt-10 btn-disabled"><i class="icon icon-spinner icon-spin"></i> {{t 'generic.loading'}}</button>
+        <button class="btn bg-primary mt-10 btn-disabled">
+          <i class="icon icon-spinner icon-spin"></i>
+          {{t "generic.loading"}}
+        </button>
       {{else}}
-        <button class="btn bg-primary mt-10" name="submit" {{action "register"}}>{{t 'signupPage.emailSuccess.confirm.resend'}}</button>
+        <button class="btn bg-primary mt-10" name="submit" {{action "register"}}>
+          {{t "signupPage.emailSuccess.confirm.resend"}}
+        </button>
       {{/if}}
     </div>
   {{else}}
     <div>
-      <h1>{{t 'signupPage.header' appName=settings.appName}}</h1>
-      <form class="form text-left"  {{action "register" on='submit'}}>
+      <h1>
+        {{t "signupPage.header" appName=settings.appName}}
+      </h1>
+      <form class="form text-left"  {{action "register" on="submit"}}>
         <div class="row">
-          <label for="login-user-name">{{t 'signupPage.form.labels.loginUsername'}}{{field-required}}</label>
+          <label for="login-user-name">
+            {{t "signupPage.form.labels.loginUsername"}}{{field-required}}
+          </label>
           <div name="login-user-name">
             {{input type="text" value=model.name}}
           </div>
         </div>
 
         <div class="row inline-form pt-15 pb-30">
-          <label for="email">{{t 'signupPage.form.labels.email'}}{{field-required}}</label>
+          <label for="email">
+            {{t "signupPage.form.labels.email"}}{{field-required}}
+          </label>
           <div name="email">
             {{input type="email" value=model.email}}
           </div>
         </div>
         <div class="text-center mt-15">
-          {{save-cancel save="register" cancel="cancel" saving=saving createLabel='signupPage.form.button' saveDisabled=saveDisabled}}
+          {{save-cancel
+            save=(action "register")
+            cancel=(action "cancel")
+            saving=saving
+            createLabel="signupPage.form.button"
+            saveDisabled=saveDisabled
+          }}
         </div>
       </form>
     </div>
