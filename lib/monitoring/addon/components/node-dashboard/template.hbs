@@ -1,15 +1,15 @@
 <div class="row banner bg-info basics">
   <div class="vertical-middle">
-    <label class="acc-label vertical-middle p-0">{{t 'hostsPage.hostPage.hostname'}}:</label>
-    {{model.node.hostname}} {{copy-to-clipboard clipboardText=model.node.hostname size="small"}}
-  </div>
-  <div class="vertical-middle">
     <label class="acc-label vertical-middle p-0">{{t 'hostsPage.hostPage.ipAddress'}}:</label>
     <div class="inline-block">{{node-ip model=model.node textMuted=false}}</div>
   </div>
   <div class="vertical-middle">
     <label class="acc-label vertical-middle p-0">{{t 'hostsPage.hostPage.dockerVersion'}}:</label>
     {{model.node.info.os.dockerVersion}}
+  </div>
+  <div class="vertical-middle">
+    <label class="acc-label vertical-middle p-0">{{t 'generic.created'}}:</label>
+    {{date-calendar model.node.created}}
   </div>
 </div>
 
@@ -28,22 +28,11 @@
   </div>
 </div>
 
-<div class="row banner bg-info basics">
-  <div class="vertical-middle">
-    <label class="acc-label vertical-middle p-0">{{t 'generic.cpu'}}:</label>
-    {{model.node.cpuTotal}}
-  </div>
-  <div class="vertical-middle">
-    <label class="acc-label vertical-middle p-0">{{t 'generic.memory'}}:</label>
-    {{model.node.memoryTotal}}
-  </div>
-  <div class="vertical-middle">
-    <label class="acc-label vertical-middle p-0">{{t 'generic.created'}}:</label>
-    {{date-calendar model.node.created}}
-  </div>
-</div>
-
-{{nodes-live nodes=model.nodes}}
+{{#if isMonitoringReady}}
+  {{nodes-live nodes=model.nodes}}
+{{else}}
+  {{nodes-reservation nodes=model.nodes}}
+{{/if}}
 
 {{node-conditions conditionsSource=model.node.conditions}}
 
