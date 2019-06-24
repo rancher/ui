@@ -4,7 +4,7 @@
     {{input-identity
       allowTeams=true
       allowLocal=true
-      action="addPrincipal"
+      action=(action "addPrincipal")
       onError=gotError
     }}
   </div>
@@ -30,9 +30,7 @@
             {{member.displayType}}
           </td>
           <td data-title="{{dt.accessType}}:">
-            {{#if ownerOnly}}
-              {{member.accessType}}
-            {{else}}
+            {{#if (gt optionsForAccessType.length 1)}}
               <select
                 class="form-control"
                 onchange={{action (mut member.accessType) value="target.value"}}
@@ -48,6 +46,8 @@
                   </option>
                 {{/each}}
               </select>
+            {{else}}
+              {{member.accessType}}
             {{/if}}
           </td>
           <td data-title="{{t "generic.actions"}}:" class="actions">

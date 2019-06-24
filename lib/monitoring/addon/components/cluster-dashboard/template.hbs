@@ -5,60 +5,97 @@
     {{#if monitoringEnabled}}
       <div class="row mt-0 mb-0">
         <div class="pull-right text-small text-error">
-          {{t 'clusterDashboard.monitoringNotReady'}}
+          {{t "clusterDashboard.monitoringNotReady"}}
         </div>
       </div>
     {{else}}
       <div class="row mt-0 mb-0">
         <div class="pull-right text-small">
-          <button class="btn bg-transparent p-0" {{action "enalbeMonitoring"}}>{{t 'clusterDashboard.enalbeMonitoring'}}</button>
+          <button class="btn bg-transparent p-0" {{action "enableMonitoring"}}>
+            {{t "clusterDashboard.enableMonitoring"}}
+          </button>
         </div>
       </div>
     {{/if}}
+  {{else if (and monitoringEnabled (eq toUpgrade.firstObject.name "cluster-monitoring"))}}
+    <div class="row mt-0 mb-0">
+      <div class="pull-right text-small">
+        <button class="btn bg-warning pt-0 pb-0 pl-5 pr-5" {{action "enableMonitoring"}}>
+          {{t "clusterDashboard.upgradeAvailable" version=latestVersion}}
+        </button>
+      </div>
+    </div>
   {{/unless}}
 
-  {{#if isMonitoringReady}}
-    {{nodes-live nodes=nodes}}
-  {{else}}
-    {{nodes-reservation nodes=nodes}}
-  {{/if}}
+  {{nodes-live nodes=nodes}}
 
   <div class="row mt-0">
     {{k8s-component-status
-        label='clusterDashboard.etcd'
-        showUrl=scope.currentCluster.isRKE
-        healthy=etcdHealthy
-        url=grafana.etcdUrl
+      label="clusterDashboard.etcd"
+      showUrl=scope.currentCluster.isRKE
+      healthy=etcdHealthy
+      url=grafana.etcdUrl
     }}
-    {{k8s-component-status
-        label='clusterDashboard.controllerManager'
+
+    {{#if hideManagerAndSchedulerStatus}}
+      <div class="col span-3 mt-0">
+        {{#banner-message
+           icon="icon-alert"
+           color="bg-disabled mt-0"
+        }}
+          <p class="text-left">
+            {{t "clusterDashboard.controllerManager"}}
+          </p>
+        {{/banner-message}}
+      </div>
+    {{else}}
+      {{k8s-component-status
+        label="clusterDashboard.controllerManager"
         healthy=controllerHealthy
         url=grafana.controllerUrl
-    }}
-    {{k8s-component-status
-        label='clusterDashboard.scheduler'
+      }}
+    {{/if}}
+
+    {{#if hideManagerAndSchedulerStatus}}
+      <div class="col span-3 mt-0">
+        {{#banner-message
+           icon="icon-alert"
+           color="bg-disabled mt-0"
+        }}
+          <p class="text-left">
+            {{t "clusterDashboard.scheduler"}}
+          </p>
+        {{/banner-message}}
+      </div>
+    {{else}}
+      {{k8s-component-status
+        label="clusterDashboard.scheduler"
         healthy=schedulerHealthy
         url=grafana.schedulerUrl
-    }}
+      }}
+    {{/if}}
+
     {{k8s-component-status
-        label='clusterDashboard.node'
-        healthy=nodesHealthy
-        url=grafana.nodesUrl
+      label="clusterDashboard.node"
+      healthy=nodesHealthy
+      url=grafana.nodesUrl
     }}
   </div>
 
-  <div class="row">
-    {{#each unhealthyComponents as |component|}}
-      {{#banner-message icon='icon-alert' color='text-left bg-error mt-30'}}
-        <p>{{t 'clusterDashboard.alert.component' component=component.name}}</p>
-      {{/banner-message}}
-    {{/each}}
-    {{#each inactiveNodes as |node|}}
-      {{#banner-message icon='icon-alert' color='text-left bg-error mt-30'}}
-        <p>{{t 'clusterDashboard.alert.node' node=node.displayName}}</p>
-      {{/banner-message}}
-    {{/each}}
-  </div>
+  {{#unless hideManagerAndSchedulerStatus}}
+    <div class="row">
+      {{#each unhealthyComponents as |component|}}
+        {{#banner-message icon="icon-alert" color="text-left bg-error mt-30"}}
+          <p>{{t "clusterDashboard.alert.component" component=component.name}}</p>
+        {{/banner-message}}
+      {{/each}}
+      {{#each inactiveNodes as |node|}}
+        {{#banner-message icon="icon-alert" color="text-left bg-error mt-30"}}
+          <p>{{t "clusterDashboard.alert.node" node=node.displayName}}</p>
+        {{/banner-message}}
+      {{/each}}
+    </div>
+  {{/unless}}
 
   {{#if (and showClusterTabs scope.currentCluster.isMonitoringReady)}}
     {{cluster-dashboard-tabs dashboards=dashboards}}

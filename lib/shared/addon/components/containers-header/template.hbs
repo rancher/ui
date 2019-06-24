@@ -1,31 +1,34 @@
 <section class="header has-tabs clearfix p-0">
   <ul class="tab-nav">
     {{#if (rbac-allows resource="workload" scope="project" permission="list")}}
-      <li>{{#link-to-external "containers.index" scope.currentProject.id}}{{t 'nav.containers.containers'}}{{/link-to-external}}</li>
+      <li>{{#link-to-external "containers.index" scope.currentProject.id}}{{t "nav.containers.containers"}}{{/link-to-external}}</li>
     {{/if}}
     {{#if (rbac-allows resource="ingress" scope="project" permission="list")}}
-      <li>{{#link-to-external "ingresses.index" scope.currentProject.id}}{{t 'nav.containers.ingresses'}}{{/link-to-external}}</li>
+      <li>{{#link-to-external "ingresses.index" scope.currentProject.id}}{{t "nav.containers.ingresses"}}{{/link-to-external}}</li>
     {{/if}}
     {{#if (rbac-allows resource="service" scope="project" permission="list")}}
-      <li>{{#link-to-external "authenticated.project.dns.index" scope.currentProject.id}}{{t 'nav.containers.dns'}}{{/link-to-external}}</li>
+      <li>{{#link-to-external "authenticated.project.dns.index" scope.currentProject.id}}{{t "nav.containers.dns"}}{{/link-to-external}}</li>
     {{/if}}
-    <li>{{#link-to-external "volumes.index" scope.currentProject.id}}{{t 'nav.containers.volumes'}}{{/link-to-external}}</li>
-    <li>{{#link-to-external "authenticated.project.pipeline.pipelines" scope.currentProject.id}}{{t 'nav.containers.pipelines'}}{{/link-to-external}}</li>
+    <li>{{#link-to-external "volumes.index" scope.currentProject.id}}{{t "nav.containers.volumes"}}{{/link-to-external}}</li>
+    {{#if (rbac-allows resource="horizontalpodautoscaler" scope="project" permission="list")}}
+      <li>{{#link-to-external "authenticated.project.hpa.index" scope.currentProject.id}}{{t "nav.containers.hpa"}}{{/link-to-external}}</li>
+    {{/if}}
+    <li>{{#link-to-external "authenticated.project.pipeline.pipelines" scope.currentProject.id}}{{t "nav.containers.pipelines"}}{{/link-to-external}}</li>
   </ul>
 
   <div class="right-buttons">
     {{#if showGroup}}
       <div class="btn-group p-0 mr-10">
-        {{~#tooltip-element type="tooltip-basic" model=(t 'nav.group.none') tooltipTemplate='tooltip-static' aria-describedby="tooltip-base" tooltipFor="tooltipLink"~}}
+        {{~#tooltip-element type="tooltip-basic" model=(t "nav.group.none") tooltipTemplate="tooltip-static" aria-describedby="tooltip-base" tooltipFor="tooltipLink"~}}
           {{~#link-to (query-params group="none") classNames="btn btn-sm bg-default"~}}<i class="icon icon-container"></i>{{~/link-to~}}
         {{~/tooltip-element~}}
-        {{~#tooltip-element type="tooltip-basic" model=(t 'nav.group.node') tooltipTemplate='tooltip-static' aria-describedby="tooltip-base" tooltipFor="tooltipLink"~}}
+        {{~#tooltip-element type="tooltip-basic" model=(t "nav.group.node") tooltipTemplate="tooltip-static" aria-describedby="tooltip-base" tooltipFor="tooltipLink"~}}
           {{~#link-to (query-params group="node") classNames="btn btn-sm bg-default"~}}<i class="icon icon-hosts"></i>{{~/link-to~}}
         {{~/tooltip-element~}}
-        {{~#tooltip-element type="tooltip-basic" model=(t 'nav.group.workload') tooltipTemplate='tooltip-static' aria-describedby="tooltip-base" tooltipFor="tooltipLink"~}}
+        {{~#tooltip-element type="tooltip-basic" model=(t "nav.group.workload") tooltipTemplate="tooltip-static" aria-describedby="tooltip-base" tooltipFor="tooltipLink"~}}
           {{~#link-to (query-params group="workload") classNames="btn btn-sm bg-default"~}}<i class="icon icon-service"></i>{{~/link-to~}}
         {{~/tooltip-element~}}
-        {{~#tooltip-element type="tooltip-basic" model=(t 'nav.group.namespaceWorkload') tooltipTemplate='tooltip-static' aria-describedby="tooltip-base" tooltipFor="tooltipLink"~}}
+        {{~#tooltip-element type="tooltip-basic" model=(t "nav.group.namespaceWorkload") tooltipTemplate="tooltip-static" aria-describedby="tooltip-base" tooltipFor="tooltipLink"~}}
           {{~#link-to (query-params group="namespace") classNames="btn btn-sm bg-default"~}}<i class="icon icon-list-nested"></i>{{~/link-to~}}
         {{~/tooltip-element~}}
       </div>

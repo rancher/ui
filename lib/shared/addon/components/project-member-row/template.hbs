@@ -8,7 +8,11 @@
       {{else if principalId}}
         <div class="gh-block">
           <div class="gh-avatar">
-            <img src="{{principalGravatarSrc}}" width="34" height="34">
+            <img
+              src="{{principalGravatarSrc}}"
+              width="34"
+              height="34"
+            >
           </div>
           <div class="gh-block-content">
             <div class="clip gh-block-name">
@@ -18,31 +22,40 @@
         </div>
       {{else}}
         {{!-- we should never get here, but if we did you can start with a error in principal search by id --}}
-        {{t 'generic.unknown'}}&nbsp;{{t 'generic.user'}}
+        {{t "generic.unknown"}}&nbsp;{{t "generic.user"}}
       {{/if}}
     {{else}}
-      {{input-identity allowTeams=true action="addAuthorized" onError="gotError"}}
+      {{input-identity
+        allowTeams=true
+        action=(action "addAuthorized")
+        onError=(action "gotError")
+      }}
     {{/if}}
   {{/if}}
 </td>
 <td class="pr-10">
   {{#if owner}}
-    {{t 'generic.owner'}}
+    {{t "generic.owner"}}
   {{else}}
     {{#if noUpdate}}
       {{#if roleTemplate}}
         {{roleTemplate.displayName}}
       {{else}}
-        {{t 'generic.custom'}}
+        {{t "generic.custom"}}
       {{/if}}
     {{else}}
-      {{searchable-select change="onSelect" content=choices value=roleTemplateId readOnly=noUpdate}}
+      {{searchable-select
+        change=(action "onSelect")
+        content=choices
+        value=roleTemplateId
+        readOnly=noUpdate
+      }}
     {{/if}}
   {{/if}}
 </td>
 <td>&nbsp;</td>
 <div class="input-group-btn">
-  {{#unless  owner}}
+  {{#unless owner}}
     <button class="btn bg-primary btn-sm" {{action remove member}}>
       <i class="icon icon-minus" />
     </button>

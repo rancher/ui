@@ -1,18 +1,30 @@
-import EmberObject from '@ember/object';
+import EmberObject, { set } from '@ember/object';
 import { hash } from 'rsvp';
 import Route from '@ember/routing/route';
 
 export default Route.extend({
   beforeModel() {
-    if (window.ShellQuote) {
-      return;
-    } else {
-      return import('shell-quote').then( (module) => {
-        window.ShellQuote = module.default;
+    const promises = {};
 
-        return module.default;
-      })
+    if (!window.Prettycron) {
+      set(promises, 'Prettycron', import('prettycron'));
     }
+
+    if (!window.ShellQuote) {
+      set(promises, 'ShellQuote', import('shell-quote'));
+    }
+
+    return hash(promises).then((resolved) => {
+      if (resolved.Prettycron) {
+        window.Prettycron = resolved.Prettycron;
+      }
+
+      if (resolved.ShellQuote) {
+        window.ShellQuote = resolved.ShellQuote;
+      }
+
+      return resolved;
+    });
   },
 
   model(params) {

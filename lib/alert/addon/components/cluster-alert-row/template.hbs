@@ -10,12 +10,13 @@
   </td>
   <td data-title="{{dt.name}}" class="clip">
     {{#tooltip-element
-        type="tooltip-basic"
-        model=model.name
-        tooltipTemplate="tooltip-static"
-        aria-describedby="tooltip-base"
-        tooltipFor="tooltipLink"
-        placement="top"
+       type="tooltip-basic"
+       model=model.name
+       tooltipTemplate="tooltip-static"
+       aria-describedby="tooltip-base"
+       placement="top"
+       tagName="div"
+       clip=true
     }}
       {{model.name}}
     {{/tooltip-element}}
@@ -24,19 +25,19 @@
     <div> {{model.displayTargetType}} </div>
     {{#if (eq model.targetType "nodeSelector")}}
       {{#if (eq selectorList.length 1)}}
-          <span
-            class="badge badge-xs bg-info"
-            style="color:#ecf0f1!important;border-radius:2px;"
-          >
-            {{get selectorList "firstObject"}}
-          </span>
+        <span
+          class="badge badge-xs bg-info"
+          style="color:#ecf0f1!important;border-radius:2px;"
+        >
+          {{get selectorList "firstObject"}}
+        </span>
       {{else if (gt selectorList.length 1)}}
         {{#tooltip-element
-            type="tooltip-basic"
-            model=selectorListTip
-            tooltipTemplate="tooltip-static"
-            aria-describedby="tooltip-base"
-            tooltipFor="tooltipLink"
+           type="tooltip-basic"
+           model=selectorListTip
+           tooltipTemplate="tooltip-static"
+           aria-describedby="tooltip-base"
+           tooltipFor="tooltipLink"
         }}
           <div class="text-link"> {{selectorList.length}} {{t "alertPage.items"}} </div>
         {{/tooltip-element}}
@@ -61,12 +62,12 @@
   <td data-title="{{dt.condition}}" class="clip">
     {{#if (eq model.targetType "metric")}}
       {{#tooltip-element
-          type="tooltip-basic"
-          model=model.metricRule.expression
-          tooltipTemplate="tooltip-static"
-          aria-describedby="tooltip-base"
-          tooltipFor="tooltipLink"
-          placement="top"
+         type="tooltip-basic"
+         model=model.metricRule.expression
+         tooltipTemplate="tooltip-static"
+         aria-describedby="tooltip-base"
+         tooltipFor="tooltipLink"
+         placement="top"
       }}
         {{model.displayCondition}}
       {{/tooltip-element}}
@@ -81,21 +82,21 @@
         <div class="clip">
           {{alertGroup.displayRecipient}}
         </div>
-        {{else if (gt alertGroup.recipients.length 1)}}
-          {{#tooltip-element
-               type="tooltip-basic"
-               model=recipientsTip
-               tooltipTemplate="tooltip-static"
-               aria-describedby="tooltip-base"
-               tooltipFor="tooltipLink"
-          }}
-              <div class="text-link">{{alertGroup.displayRecipient}}</div>
-          {{/tooltip-element}}
-        {{/if}}
-      {{else}}
-        {{t "alertPage.na"}}
+      {{else if (gt alertGroup.recipients.length 1)}}
+        {{#tooltip-element
+           type="tooltip-basic"
+           model=recipientsTip
+           tooltipTemplate="tooltip-static"
+           aria-describedby="tooltip-base"
+           tooltipFor="tooltipLink"
+        }}
+          <div class="text-link">{{alertGroup.displayRecipient}}</div>
+        {{/tooltip-element}}
       {{/if}}
-   </td>
+    {{else}}
+      {{t "alertPage.na"}}
+    {{/if}}
+  </td>
 
   <td data-title="{{t "generic.actions"}}" class="actions">
     {{action-menu model=model}}

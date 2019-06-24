@@ -77,7 +77,9 @@ export default Component.extend({
     },
 
     remove() {
-      this.sendAction('remove');
+      if (this.remove) {
+        this.remove(this.model);
+      }
     },
 
     addMount() {

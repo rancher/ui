@@ -10,8 +10,7 @@
   {{#dd.trigger
      ariaLabel=(t "nav.projectDropdown.label")
   }}
-
-    <a class="{{if twoLine "two-line"}} text-white">
+    <a role="button" aria-haspopup="true" class="{{if twoLine "two-line "}}text-white nav-link">
       {{#if (eq pageScope "project")}}
         <div class="clip">
           <span>{{project.cluster.displayName}}</span>
@@ -35,7 +34,6 @@
 
       <span class="sr-only">{{t "nav.srToggleDropdown"}}</span>
       <i class="icon icon-chevron-down chevron"></i>
-
     </a>
 
   {{/dd.trigger}}
@@ -66,10 +64,10 @@
         {{t "nav.projectDropdown.clusters"}}
       </label>
 
-      <ul class="list-unstyled" style="{{columnStyle}}">
+      <ul class="list-unstyled {{if (eq hoverEntry null) "no-hover-entry"}}" style="{{columnStyle}}">
         {{#if searchInput}}
           {{#each clusterSearchResults as |entry|}}
-            <li data-cluster-id={{entry.cluster.id}} class="item clip cluster">
+            <li data-cluster-id="{{entry.cluster.id}}" class="item clip cluster">
               {{#link-to
                  "authenticated.cluster"
                  entry.cluster.id

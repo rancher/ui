@@ -7,7 +7,7 @@
 
   {{#if (and allowUpload editing)}}
     <div class="pull-right">
-      <button class="btn btn-sm bg-primary" {{action 'upload'}}>{{t 'uploadFile.label'}} <span class="icon icon-upload"></span></button>
+      <button class="btn btn-sm bg-primary" {{action "upload"}}>{{t "uploadFile.label"}} <span class="icon icon-upload"></span></button>
     </div>
   {{/if}}
 </div>
@@ -28,7 +28,14 @@
       <tr>
         <td data-title="{{t keyLabel}}:">
           {{#if (and editing allowEditKey (not-eq row.editable false))}}
-            {{input-paste separators=separators pasted="pastedValues" class="form-control input-sm key" type="text" value=row.key placeholder=keyPlaceholder}}
+            {{input-paste
+              separators=separators
+              pasted=(action "pastedValues")
+              class="form-control input-sm key"
+              type="text"
+              value=row.key
+              placeholder=keyPlaceholder
+            }}
           {{else}}
             {{row.key}}
           {{/if}}
@@ -36,7 +43,7 @@
 
         <td class="valign-top text-center">
           {{#if editing}}
-            {{t 'formKeyValue.separator'}}
+            {{t "formKeyValue.separator"}}
           {{/if}}
         </td>
 
@@ -48,13 +55,13 @@
               {{input class=(concat "form-control input-sm value" (if concealValue " conceal")) spellcheck="false" type="text" value=row.value placeholder=valuePlaceholder disabled=(eq row.editable false)}}
             {{/if}}
           {{else}}
-            <span class="{{if concealValue 'conceal'}}">{{nl-to-br row.value}}</span>
+            <span class="{{if concealValue "conceal"}}">{{nl-to-br row.value}}</span>
           {{/if}}
         </td>
         <td>&nbsp;</td>
         <td class="valign-top text-right">
           {{#if (and editing allowRemove)}}
-            <button class="btn bg-primary btn-sm" {{action "remove" row}}><i class="icon icon-minus"/><span class="sr-only">{{t 'generic.remove'}}</span></button>
+            <button class="btn bg-primary btn-sm" {{action "remove" row}}><i class="icon icon-minus"/><span class="sr-only">{{t "generic.remove"}}</span></button>
           {{/if}}
         </td>
       </tr>
@@ -66,14 +73,14 @@
   </table>
 {{else if showNoneLabel}}
   {{#unless editing}}
-    <div>{{t 'generic.none'}}</div>
+    <div>{{t "generic.none"}}</div>
   {{/unless}}
 {{/if}}
 
 {{#if (and editing allowAdd)}}
   {{#if ary.length}}
     <div class="protip mb-5">
-      {{t 'formKeyValue.protip'}}
+      {{t "formKeyValue.protip"}}
     </div>
   {{/if}}
   <div>

@@ -1,18 +1,28 @@
 <section class="header clearfix">
-  <h1 class="pull-left text-capitalize">{{t headerLabel}}</h1>
+  <h1 class="pull-left text-capitalize">
+    {{t headerLabel}}
+  </h1>
 </section>
 
 <div class="banner bg-info">
-  <div class="banner-icon p-20"><i class="icon icon-info"></i></div>
+  <div class="banner-icon p-20">
+    <i class="icon icon-info"></i>
+  </div>
   <div class="banner-message p-20">
     {{#if isClusterLevel}}
       {{t "loggingPage.helpText.cluster" htmlSafe=true}}
     {{else}}
       <ul>
-        <li style="list-style: circle;"> {{t "loggingPage.helpText.cluster" htmlSafe=true}} </li>
+        <li style="list-style: circle;">
+          {{t "loggingPage.helpText.cluster" htmlSafe=true}}
+        </li>
         <li style="list-style: circle;">
           {{#if (and clusterTargetType (not-eq clusterTargetType "none"))}}
-            {{t "loggingPage.helpText.clusterTarget" clusterTargetType=clusterTargetType htmlSafe=true}}
+            {{t
+              "loggingPage.helpText.clusterTarget"
+              clusterTargetType=clusterTargetType
+              htmlSafe=true
+            }}
           {{else}}
             {{t "loggingPage.helpText.noClusterTarget"}}
           {{/if}}
@@ -27,11 +37,22 @@
     <ul class="tab-nav">
       {{#if (eq targetType "customTarget")}}
         <li>
-          <button class={{concat (if testing "btn-disabled-transparent") " btn bg-transparent"}} {{action "cancel"}} disabled={{testing}}>{{t "loggingPage.advanced.cancel"}}</button>
+          <button
+            class={{concat (if testing "btn-disabled-transparent") " btn bg-transparent"}}
+            {{action "cancel"}}
+            disabled={{testing}}
+          >
+            {{t "loggingPage.advanced.cancel"}}
+          </button>
         </li>
       {{else}}
         <li>
-          <button class="btn bg-transparent" {{action "showPaste"}}>{{t "loggingPage.advanced.file"}} <span class="icon icon-copy"></span></button>
+          <button
+            class="btn bg-transparent"
+            {{action "showPaste"}}
+          >
+            {{t "loggingPage.advanced.file"}} <span class="icon icon-copy"></span>
+          </button>
         </li>
       {{/if}}
     </ul>
@@ -41,28 +62,28 @@
 {{#if (eq targetType "customTarget")}}
   <div class="mt-25">
     {{logging/input-logging-config
-        showDownload=false
-        canChangeName=false
-        autoResize=true
-        value=customContent
-        model=model.customTarget
-        parentModel=model
-        targetType=targetType
-        pageScope=pageScope
+      showDownload=false
+      canChangeName=false
+      autoResize=true
+      value=customContent
+      model=model.customTarget
+      parentModel=model
+      targetType=targetType
+      pageScope=pageScope
     }}
   </div>
   {{copy-to-clipboard
-      tooltipText=""
-      buttonText="copyToClipboard.tooltip"
-      clipboardText=value
-      class="with-clip"
+    tooltipText=""
+    buttonText="copyToClipboard.tooltip"
+    clipboardText=value
+    class="with-clip"
   }}
 {{else}}
   {{logging/targets-nav
-      originalModel=originalModel
-      targetType=targetType
-      isClusterLevel=isClusterLevel
-      pageScope=pageScope
+    originalModel=originalModel
+    targetType=targetType
+    isClusterLevel=isClusterLevel
+    pageScope=pageScope
   }}
 
   {{#if (and originalModel.showTransitioningMessage (eq originalModel.targetType targetType))}}
@@ -70,7 +91,10 @@
       <div class="banner-icon p-20"><i class="icon {{originalModel.stateIcon}}"></i></div>
       <div class="banner-message p-20">
         <table>
-          {{error-sub-row fullColspan=fullColspan model=originalModel}}
+          {{error-sub-row
+            fullColspan=fullColspan
+            model=originalModel
+          }}
         </table>
       </div>
     </div>
@@ -78,36 +102,36 @@
 
   {{#if (eq targetType "elasticsearch")}}
     {{logging/target-elasticsearch
-         targetType=targetType
-         model=model.elasticsearch
-         pageScope=pageScope
-         parentModel=model
-         endpointErrorText=esErrors
+      targetType=targetType
+      model=model.elasticsearch
+      pageScope=pageScope
+      parentModel=model
+      endpointErrorText=esErrors
     }}
   {{else if (eq targetType "splunk")}}
     {{logging/target-splunk
-        model=model.splunk
-        parentModel=model
-        targetType=targetType
+      model=model.splunk
+      parentModel=model
+      targetType=targetType
     }}
   {{else if (eq targetType "kafka")}}
     {{logging/target-kafka
-        model=model.kafka
-        parentModel=model
-        targetType=targetType
+      model=model.kafka
+      parentModel=model
+      targetType=targetType
     }}
   {{else if (eq targetType "syslog")}}
     {{logging/target-syslog
-        model=model.syslog
-        parentModel=model
-        targetType=targetType
+      model=model.syslog
+      parentModel=model
+      targetType=targetType
     }}
   {{else if (eq targetType "fluentForwarder")}}
     {{logging/target-flentd
-        model=model.fluentForwarder
-        parentModel=model
-        targetType=targetType
-        endpointValidate=endpointValidate
+      model=model.fluentForwarder
+      parentModel=model
+      targetType=targetType
+      endpointValidate=endpointValidate
     }}
   {{/if}}
 {{/if}}
@@ -116,20 +140,20 @@
 
 {{#if (not-eq targetType "none")}}
   {{logging/form-test
-      test=(action "test")
-      testing=testing
-      tested=tested
-      testOk=testOk
-      model=model
-      targetType=targetType
+    test=(action "test")
+    testing=testing
+    tested=tested
+    testOk=testOk
+    model=model
+    targetType=targetType
   }}
 {{/if}}
 
 <div class="footer-actions">
   {{save-cancel
-      saveDisabled=saveDisabled
-      cancelDisabled=true
-      editing=true
-      save="save"
+    saveDisabled=saveDisabled
+    cancelDisabled=true
+    editing=true
+    save=(action "save")
   }}
 </div>

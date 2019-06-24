@@ -10,7 +10,7 @@ export default Component.extend({
   editing:         true,
   actions: {
     removeRule() {
-      this.sendAction('remove', this.get('rule'));
+      this.remove(this.rule);
     },
   },
 
@@ -21,6 +21,11 @@ export default Component.extend({
   isMultiple: computed('rule.operator', function() {
     return ['In', 'NotIn'].includes(this.get('rule.operator'));
   }),
+
   operatorChoices: C.SCHED_NODE_SELECTOR_OPERATOR,
+
+  remove() {
+    throw new Error('removeRule action is required!');
+  },
 
 })

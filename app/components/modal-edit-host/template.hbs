@@ -1,45 +1,69 @@
 <section class="header">
-  <h1>{{t 'editHost.title'}}</h1>
+  <h1>
+    {{t "editHost.title"}}
+  </h1>
 </section>
 <section class="horizontal-form container-fluid">
   <div class="row inline-form">
     <div class="col span-2 col-inline">
-      <label>{{t 'editHost.hostname.label'}}</label>
+      <label>
+        {{t "editHost.hostname.label"}}
+      </label>
     </div>
     <div class="col span-8">
       {{model.hostname}}
-      <p class="text-info">{{t 'editHost.hostname.help'}}</p>
+      <p class="text-info">
+        {{t "editHost.hostname.help"}}
+      </p>
     </div>
   </div>
 
   <div class="row inline-form">
     <div class="col span-2 col-inline">
-      <label>{{t 'editHost.customName.label'}}</label>
+      <label>
+        {{t "editHost.customName.label"}}
+      </label>
     </div>
     <div class="col span-8">
-      {{input type="text" value=customName classNames="form-control" placeholder=(t 'editHost.customName.placeholder')}}
+      {{input
+        type="text"
+        value=customName
+        classNames="form-control"
+        placeholder=(t "editHost.customName.placeholder")
+      }}
     </div>
   </div>
 
   <div class="row inline-form">
     <div class="col span-2 col-inline">
-      <label>{{t 'editHost.description.label'}}</label>
+      <label>
+        {{t "editHost.description.label"}}
+      </label>
     </div>
     <div class="col span-8">
-      {{textarea value=primaryResource.description classNames="form-control no-resize" rows="5" placeholder=(t 'editHost.description.placeholder')}}
+      {{textarea
+        value=primaryResource.description
+        classNames="form-control no-resize"
+        rows="5"
+        placeholder=(t "editHost.description.placeholder")
+      }}
     </div>
   </div>
 
   <div class="row inline-form">
     <div class="col span-12">
       {{form-user-labels
-         initialLabels=originalModel.labels
-         readonlyLabels=readonlyLabels
-         setLabels=(action 'setUserLabels')
+        initialLabels=originalModel.labels
+        readonlyLabels=readonlyLabels
+        setLabels=(action "setUserLabels")
       }}
     </div>
   </div>
 </section>
 
 {{top-errors errors=errors}}
-{{save-cancel editing=editing save="save" cancel="cancel"}}
+{{save-cancel
+  editing=editing
+  save=(action "save")
+  cancel=(action "cancel")
+}}

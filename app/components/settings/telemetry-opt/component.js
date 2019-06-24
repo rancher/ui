@@ -29,7 +29,9 @@ export default Component.extend({
       this.get('settings').set(C.SETTING.TELEMETRY, (this.get('optIn') ? IN : OUT));
       this.get('settings').one('settingsPromisesResolved', () => {
         btnCb(true);
-        this.sendAction('saved');
+        if (this.saved) {
+          this.saved();
+        }
       });
     },
   },

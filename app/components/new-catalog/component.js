@@ -14,8 +14,9 @@ import { isEmpty } from '@ember/utils';
 import CatalogApp from 'shared/mixins/catalog-app';
 import { isNumeric } from 'shared/utils/util';
 import convertDotAnswersToYaml from 'shared/utils/convert-yaml';
+import ChildHook from 'shared/mixins/child-hook';
 
-export default Component.extend(NewOrEdit, CatalogApp, {
+export default Component.extend(NewOrEdit, CatalogApp, ChildHook, {
   catalog:                  service(),
   intl:                     service(),
   scope:                    service(),
@@ -37,6 +38,7 @@ export default Component.extend(NewOrEdit, CatalogApp, {
   customizeNamespace:       false,
   decoding:                 false,
   forceUpgrade:             false,
+  istio:                    false,
   titleAdd:                 'newCatalog.titleAdd',
   titleUpgrade:             'newCatalog.titleUpgrade',
   selectVersionAdd:         'newCatalog.selectVersionAdd',
@@ -56,6 +58,7 @@ export default Component.extend(NewOrEdit, CatalogApp, {
   questionsArray:           null,
   selectedTemplateUrl:      null,
   selectedTemplateModel:    null,
+  catalogTemplate:          null,
   readmeContent:            null,
   appReadmeContent:         null,
   pastedAnswers:            null,
@@ -66,7 +69,7 @@ export default Component.extend(NewOrEdit, CatalogApp, {
 
   primaryResource:          alias('namespaceResource'),
   editing:                  notEmpty('catalogApp.id'),
-  requiredNamespace: alias('selectedTemplateModel.requiredNamespace'),
+  requiredNamespace:        alias('selectedTemplateModel.requiredNamespace'),
 
   init() {
     this._super(...arguments);
@@ -74,11 +77,15 @@ export default Component.extend(NewOrEdit, CatalogApp, {
 
     scheduleOnce('afterRender', () => {
       if ( get(this, 'selectedTemplateUrl') ) {
-        this.templateChanged();
+        if (this.catalogTemplate) {
+          this.initTemplateModel(this.catalogTemplate);
+        } else {
+          this.templateChanged();
+        }
       } else {
-        var def = get(this, 'templateResource.defaultVersion');
+        var def   = get(this, 'templateResource.defaultVersion');
         var links = get(this, 'versionLinks');
-        var app = get(this, 'catalogApp');
+        var app   = get(this, 'catalogApp');
 
         if (get(app, 'id') && !get(this, 'upgrade')) {
           def = get(app, 'externalIdInfo.version');
@@ -95,11 +102,12 @@ export default Component.extend(NewOrEdit, CatalogApp, {
 
   didRender() {
     if (!this.get('srcSet')) {
-      this.set('srcSet', true);
+      set(this, 'srcSet', true);
 
       const $icon = this.$('img');
 
       $icon.attr('src', $icon.data('src'));
+
       this.$('img').on('error', () => {
         $icon.attr('src', `${ this.get('app.baseAssets') }assets/images/generic-catalog.svg`);
       });
@@ -116,7 +124,13 @@ export default Component.extend(NewOrEdit, CatalogApp, {
     },
 
     cancel() {
-      this.sendAction('cancel');
+      if ( get(this, 'istio') ) {
+        const projectId = get(this, 'scope.currentProject.id');
+
+        get(this, 'router').transitionTo('authenticated.project.istio.rules', projectId);
+      } else if ( this.cancel ) {
+        this.cancel();
+      }
     },
 
     togglePreview() {
@@ -210,70 +224,96 @@ export default Component.extend(NewOrEdit, CatalogApp, {
       var selectedTemplateModel = yield get(this, 'catalog').fetchByUrl(url)
         .then((response) => {
           if (response.questions) {
-            const questions = [];
-            const customAnswers = {};
-
-            response.questions.forEach((q) => {
-              questions.push(q);
-              const subquestions = get(q, 'subquestions');
-
-              if ( subquestions ) {
-                questions.pushObjects(subquestions);
-              }
-            });
-            questions.forEach((item) => {
-            // This will be the component that is rendered to edit this answer
-              item.inputComponent = `schema/input-${ item.type }`;
-
-              // Only types marked supported will show the component, Ember will explode if the component doesn't exist
-              item.supported = C.SUPPORTED_SCHEMA_INPUTS.indexOf(item.type) >= 0;
-
-              if (typeof current[item.variable] !== 'undefined') {
-              // If there's an existing value, use it (for upgrade)
-                item.answer = current[item.variable];
-              } else if (item.type === 'service' || item.type === 'certificate') {
-              // Loaded async and then the component picks the default
-              } else if ( item.type === 'boolean' ) {
-              // Coerce booleans
-                item.answer = (item.default === 'true' || item.default === true);
-              } else {
-              // Everything else
-                item.answer = item.default || null;
-              }
-            });
-
-            Object.keys(current).forEach((key) => {
-              const q = questions.findBy('variable', key);
-
-              if ( !q ) {
-                customAnswers[key] = current[key];
-              }
-            });
-
-            response.customAnswers = customAnswers;
+            this.parseQuestionsAndAnswers(response, current);
           }
 
           return response;
         });
 
+      if (selectedTemplateModel && selectedTemplateModel.requiredNamespace) {
+        set(this, 'primaryResource.name', selectedTemplateModel.requiredNamespace);
+      }
+
       set(this, 'selectedTemplateModel', selectedTemplateModel);
 
-      const files = Object.keys(selectedTemplateModel.get('files')) || [];
-
-      if ( files.length > 0 ) {
-        const valuesYaml = files.find((file) => file.endsWith('/values.yaml'));
-
-        set(this, 'previewTab', valuesYaml ? valuesYaml : files[0]);
-      }
+      this.initPreviewTab(selectedTemplateModel);
     } else {
-      set(this, 'selectedTemplateModel', null);
-      set(this, 'readmeContent', null);
-      set(this, 'appReadmeContent', null);
-      set(this, 'noAppReadme', false);
+      setProperties(this, {
+        selectedTemplateModel: null,
+        readmeContent:         null,
+        appReadmeContent:      null,
+        noAppReadme:           false,
+      });
     }
 
     this.updateReadme();
   }),
+
+  initTemplateModel(templateModel) {
+    let currentAnswers = get(this, 'catalogApp.answers') || {};
+
+    this.parseQuestionsAndAnswers(templateModel, currentAnswers);
+    this.initPreviewTab(templateModel);
+
+    set(this, 'selectedTemplateModel', templateModel);
+
+    this.updateReadme();
+  },
+
+  initPreviewTab(selectedTemplateModel) {
+    const files = Object.keys(selectedTemplateModel.get('files')) || [];
+
+    if ( files.length > 0 ) {
+      const valuesYaml = files.find((file) => file.endsWith('/values.yaml'));
+
+      set(this, 'previewTab', valuesYaml ? valuesYaml : files[0]);
+    }
+  },
+
+  parseQuestionsAndAnswers(template, currentAnswers) {
+    const questions     = [];
+    const customAnswers = {};
+
+    (template.questions || []).forEach((q) => {
+      questions.push(q);
+      const subquestions = get(q, 'subquestions');
+
+      if ( subquestions ) {
+        questions.pushObjects(subquestions);
+      }
+    });
+
+    questions.forEach((item) => {
+      // This will be the component that is rendered to edit this answer
+      item.inputComponent = `schema/input-${ item.type }`;
+
+      // Only types marked supported will show the component, Ember will explode if the component doesn't exist
+      item.supported = C.SUPPORTED_SCHEMA_INPUTS.indexOf(item.type) >= 0;
+
+      if (typeof currentAnswers[item.variable] !== 'undefined') {
+        // If there's an existing value, use it (for upgrade)
+        item.answer = currentAnswers[item.variable];
+      } else if (item.type === 'service' || item.type === 'certificate') {
+        // Loaded async and then the component picks the default
+      } else if ( item.type === 'boolean' ) {
+        // Coerce booleans
+        item.answer = (item.default === 'true' || item.default === true);
+      } else {
+        // Everything else
+        item.answer = item.default || null;
+      }
+    });
+
+    Object.keys(currentAnswers).forEach((key) => {
+      const q = questions.findBy('variable', key);
+
+      if ( !q ) {
+        customAnswers[key] = currentAnswers[key];
+      }
+    });
+
+    template.customAnswers = customAnswers;
+  },
 
   validate() {
     this._super();
@@ -297,8 +337,6 @@ export default Component.extend(NewOrEdit, CatalogApp, {
 
     if ( requiredNamespace && (get(this, 'namespaces') || []).findBy('id', requiredNamespace) ) {
       return resolve(get(this, 'primaryResource'));
-    } else if ( requiredNamespace ) {
-      set(this, 'primaryResource.name', requiredNamespace);
     }
 
     return this._super(...arguments);
@@ -313,11 +351,15 @@ export default Component.extend(NewOrEdit, CatalogApp, {
       return false;
     }
     if ( get(this, 'actuallySave') ) {
-      if (get(this, 'selectedTemplateModel.questions')) {
+      if (!get(this, 'selectedTemplateModel.valuesYaml') && get(this, 'selectedTemplateModel.questions')) {
         set(get(this, 'catalogApp'), 'answers', get(this, 'answers'));
       }
 
-      return true;
+      return this.applyHooks('_beforeSaveHooks').catch((err) => {
+        set(this, 'errors', [err.message]);
+
+        return false;
+      });
     } else {
       // TODO 2.0 this is part of the volumes stuff so we need to investigate if this still works
       // let versionId = null;
@@ -325,23 +367,25 @@ export default Component.extend(NewOrEdit, CatalogApp, {
       //   versionId = get(this, 'selectedTemplateModel.id');
       // }
 
-      // this.sendAction('doSave', {
-      //   answers:           get(this, 'answers'),
-      //   externalId:        get(this, 'newExternalId'),
-      //   templateId:        get(this, 'templateResource.id'),
-      //   templateVersionId: versionId,
-      // });
+      // if (this.doSave) {
+      //   this.doSave({
+      //     answers:           get(this, 'answers'),
+      //     externalId:        get(this, 'newExternalId'),
+      //     templateId:        get(this, 'templateResource.id'),
+      //     templateVersionId: versionId,
+      //   });
+      // }
       return false;
     }
   },
 
   didSave(neu) {
-    let app = get(this, 'catalogApp');
+    let app  = get(this, 'catalogApp');
     let yaml = get(this, 'selectedTemplateModel.valuesYaml');
 
     if ( !yaml && this.shouldFallBackToYaml() ) {
       const questions = get(this, 'selectedTemplateModel.allQuestions') || [];
-      const input = {};
+      const input     = {};
 
       questions.forEach((q) => {
         if ( q.answer !== undefined && q.answer !== null ) {
@@ -359,7 +403,7 @@ export default Component.extend(NewOrEdit, CatalogApp, {
       return app.doAction('upgrade', {
         externalId:   get(this, 'selectedTemplateModel.externalId'),
         answers:      yaml ? {} : get(app, 'answers'),
-        valuesYaml:   yaml ? yaml : null,
+        valuesYaml:   yaml ? yaml : '',
         forceUpgrade: get(this, 'forceUpgrade'),
       }).then((resp) => resp)
         .catch((err) => err);
@@ -371,7 +415,7 @@ export default Component.extend(NewOrEdit, CatalogApp, {
         externalId:      get(this, 'selectedTemplateModel.externalId'),
         projectId:       get(neu, 'projectId'),
         answers:         yaml ? {} : get(app, 'answers'),
-        valuesYaml:      yaml ? yaml : null,
+        valuesYaml:      yaml ? yaml : '',
       });
 
       return app.save().then(() => get(this, 'primaryResource'));
@@ -381,12 +425,16 @@ export default Component.extend(NewOrEdit, CatalogApp, {
   doneSaving() {
     var projectId = get(this, 'scope.currentProject.id');
 
-    return get(this, 'router').transitionTo('apps-tab.index', projectId);
+    if ( get(this, 'istio') ) {
+      return get(this, 'router').transitionTo('authenticated.project.istio.rules', projectId);
+    } else {
+      return get(this, 'router').transitionTo('apps-tab.index', projectId);
+    }
   },
 
   shouldFallBackToYaml() {
     const questions = get(this, 'selectedTemplateModel.allQuestions') || [];
 
-    return !!questions.some((question) => get(question, 'type') === 'password' && !!isNumeric(get(question, 'answer')));
+    return !!questions.some((question) => get(question, 'type') === 'password' && !!isNumeric(get(question, 'answer')) && get(question, 'answer') !== '');
   },
 });

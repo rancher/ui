@@ -2,7 +2,12 @@
   {{#if isView}}
     <div class="right-buttons pull-right">
       {{badge-state model=model}}
-      {{action-menu model=model showPrimary=false classNames="ml-10 inline-block" size="sm"}}
+      {{action-menu
+        model=model
+        showPrimary=false
+        classNames="ml-10 inline-block"
+        size="sm"
+      }}
     </div>
   {{/if}}
 
@@ -11,57 +16,75 @@
 
 {{#if isView}}
   {{#if model.description}}
-    {{banner-message color='bg-secondary mb-0 mt-10' message=(linkify model.description)}}
+    {{banner-message
+      color="bg-secondary mb-0 mt-10"
+      message=(linkify model.description)
+    }}
   {{/if}}
 {{else}}
   {{form-name-description
-      nameDisabled=isEdit
-      nameRequired=(not isEdit)
-      model=primaryResource
-      namePlaceholder="newSecret.name.placeholder"
-      descriptionPlaceholder="newSecret.description.placeholder"
+    nameDisabled=isEdit
+    nameRequired=(not isEdit)
+    model=primaryResource
+    namePlaceholder="newSecret.name.placeholder"
+    descriptionPlaceholder="newSecret.description.placeholder"
   }}
 {{/if}}
 
-{{optionally-namespaced isClone=isClone namespaceErrors=namespaceErrors scope=scope mode=mode namespace=namespace model=model}}
+{{optionally-namespaced
+  isClone=isClone
+  namespaceErrors=namespaceErrors
+  scope=scope
+  mode=mode
+  namespace=namespace
+  model=model
+}}
 
 <div class="row">
   <div class="col span-6 mt-0">
     <div class="clearfix">
-      <label class="acc-label pt-5">{{t 'newCertificate.key.label'}}{{#if isNew}}{{field-required}}{{/if}}</label>
+      <label class="acc-label pt-5">
+        {{t "newCertificate.key.label"}}{{#if isNew}}{{field-required}}{{/if}}
+      </label>
     </div>
     {{input-text-file
-        classNames="box"
-        value=model.key
-        canChangeName=false
-        accept="text/plain,.pem,.pkey,.key"
-        minHeight=60
-        placeholder="newCertificate.key.placeholder"
-        shouldChangeName=false
+      classNames="box"
+      value=model.key
+      canChangeName=false
+      accept="text/plain,.pem,.pkey,.key"
+      minHeight=60
+      placeholder="newCertificate.key.placeholder"
+      shouldChangeName=false
     }}
   </div>
 
   <div class="col span-6 mt-0">
     <div class="clearfix">
-      <label class="acc-label pt-5">{{t 'newCertificate.cert.label'}}{{field-required}}</label>
+      <label class="acc-label pt-5">
+        {{t "newCertificate.cert.label"}}{{field-required}}
+      </label>
       <span class="protip">
-        {{t 'newCertificate.cert.protip'}}
+        {{t "newCertificate.cert.protip"}}
       </span>
     </div>
     {{input-text-file
-        classNames="box"
-        value=model.certs
-        multiple=true
-        canChangeName=false
-        accept="application/x-x509-ca-cert,text/plain,.pem,.crt"
-        minHeight=60
-        placeholder="newCertificate.cert.placeholder"
-        shouldChangeName=false
+      classNames="box"
+      value=model.certs
+      multiple=true
+      canChangeName=false
+      accept="application/x-x509-ca-cert,text/plain,.pem,.crt"
+      minHeight=60
+      placeholder="newCertificate.cert.placeholder"
+      shouldChangeName=false
     }}
   </div>
 </div>
 
 {{#unless isView}}
   {{top-errors errors=errors}}
-  {{save-cancel editing=true save="save" cancel="viewEditCancel"}}
+  {{save-cancel
+    editing=true
+    save=(action "save")
+    cancel=(action "viewEditCancel")
+  }}
 {{/unless}}

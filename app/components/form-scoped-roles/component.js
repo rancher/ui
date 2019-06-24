@@ -64,7 +64,9 @@ export default Component.extend(NewOrEdit, {
       set(this, 'principal', principal);
     },
     cancel() {
-      this.sendAction('cancel');
+      if (this.cancel) {
+        this.cancel();
+      }
     },
     save(cb) {
       set(this, 'errors', null);

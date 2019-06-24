@@ -1,4 +1,5 @@
-import { get, set, computed } from '@ember/object';
+import { get, set, computed, observer } from '@ember/object';
+import { on } from '@ember/object/evented';
 import { inject as service } from '@ember/service';
 import Resource from '@rancher/ember-api-store/models/resource';
 import { hasMany } from '@rancher/ember-api-store/utils/denormalize';
@@ -8,6 +9,12 @@ import { equal, alias } from '@ember/object/computed';
 import { resolve } from 'rsvp';
 import C from 'ui/utils/constants';
 import { isEmpty } from '@ember/utils';
+
+const FLANNEL = 'flannel';
+const HOST_GW = 'host-gw';
+const VXLAN = 'vxlan';
+const BACKEND_PORT = '4789';
+const BACKEND_VNI = '4096';
 
 export default Resource.extend(Grafana, ResourceUsage, {
   globalStore: service(),
@@ -23,10 +30,26 @@ export default Resource.extend(Grafana, ResourceUsage, {
   clusterRoleTemplateBindings: hasMany('id', 'clusterRoleTemplateBinding', 'clusterId'),
   etcdbackups:                 hasMany('id', 'etcdbackup', 'clusterId'),
   grafanaDashboardName:        'Cluster',
+  isMonitoringReady:           false,
   machines:                    alias('nodes'),
   roleTemplateBindings:        alias('clusterRoleTemplateBindings'),
   isGKE:                       equal('driver', 'googleKubernetesEngine'),
   isAKS:                       equal('driver', 'azureKubernetesService'),
+
+  conditionsDidChange:        on('init', observer('enableClusterMonitoring', 'conditions.@each.status', function() {
+    if ( !get(this, 'enableClusterMonitoring') ) {
+      return false;
+    }
+    const conditions = get(this, 'conditions') || [];
+
+    const ready = conditions.findBy('type', 'MonitoringEnabled');
+
+    const status = ready && get(ready, 'status') === 'True';
+
+    if ( status !== get(this, 'isMonitoringReady') ) {
+      set(this, 'isMonitoringReady', status);
+    }
+  })),
 
   getAltActionDelete: computed('action.remove', function() { // eslint-disable-line
     return get(this, 'canBulkRemove') ? 'delete' : null;
@@ -60,21 +83,6 @@ export default Resource.extend(Grafana, ResourceUsage, {
     }
 
     return null;
-  }),
-
-  isMonitoringReady: computed('monitoringStatus.@each.conditions', function() {
-    if ( !get(this, 'enableClusterMonitoring') ) {
-      return false;
-    }
-    const conditions = get(this, 'monitoringStatus.conditions') || [];
-
-    if ( get(conditions, 'length') > 0 ) {
-      const ready = conditions.filterBy('status', 'True') || [] ;
-
-      return get(ready, 'length') === get(conditions, 'length');
-    }
-
-    return false;
   }),
 
   isReady: computed('conditions.@each.status', function() {
@@ -142,7 +150,7 @@ export default Resource.extend(Grafana, ResourceUsage, {
     case 'rancherKubernetesEngineConfig':
       if ( !!pools ) {
         if ( firstPool ) {
-          return get(firstPool, 'displayProvider');
+          return get(firstPool, 'displayProvider') ? get(firstPool, 'displayProvider') : intl.t('clusterNew.rke.shortLabel');
         } else {
           return intl.t('clusterNew.rke.shortLabel');
         }
@@ -162,6 +170,16 @@ export default Resource.extend(Grafana, ResourceUsage, {
     let projects = (get(this, 'projects') || []).filterBy('isSystemProject', true);
 
     return get(projects, 'firstObject');
+  }),
+
+  canSaveMonitor: computed('actionLinks.{editMonitoring,enableMonitoring}', function() {
+    const action = get(this, 'enableClusterMonitoring') ?  'editMonitoring' : 'enableMonitoring';
+
+    return !!this.hasAction(action)
+  }),
+
+  canDisableMonitor: computed('actionLinks.disableMonitoring', function() {
+    return !!this.hasAction('disableMonitoring')
   }),
 
   defaultProject: computed('projects.@each.{name,clusterOwner}', function() {
@@ -206,6 +224,37 @@ export default Resource.extend(Grafana, ResourceUsage, {
         enabled:   !!a.restoreFromEtcdBackup,
       },
     ];
+  }),
+
+  isVxlan: computed('rancherKubernetesEngineConfig.network.options.flannel_backend_type', function() {
+    const backend = get(this, 'rancherKubernetesEngineConfig.network.options.flannel_backend_type');
+
+    return backend === 'vxlan';
+  }),
+
+  isWindows:  computed('rancherKubernetesEngineConfig', 'rancherKubernetesEngineConfig.network.plugin', 'rancherKubernetesEngineConfig.network.options.flannel_backend_type', function() {
+    const config = get(this, 'rancherKubernetesEngineConfig');
+
+    if ( !config ) {
+      return false;
+    }
+
+    const plugin = get(config, 'network.plugin');
+    const flannelBackend = get(config, 'network.options.flannel_backend_type');
+    const port = get(config, 'network.options.flannel_backend_port');
+    const vni = get(config, 'network.options.flannel_backend_vni');
+
+    if ( plugin === FLANNEL ) {
+      if ( flannelBackend === HOST_GW ) {
+        return true;
+      }
+
+      if ( flannelBackend === VXLAN && port === BACKEND_PORT && vni === BACKEND_VNI ) {
+        return true;
+      }
+    }
+
+    return false;
   }),
 
   actions: {
@@ -253,7 +302,9 @@ export default Resource.extend(Grafana, ResourceUsage, {
     },
 
     edit() {
-      get(this, 'router').transitionTo('authenticated.cluster.edit', get(this, 'id'), { queryParams: { provider: get(this, 'driver') } });
+      let provider = get(this, 'provider') || get(this, 'driver');
+
+      get(this, 'router').transitionTo('authenticated.cluster.edit', get(this, 'id'), { queryParams: { provider } });
     },
 
     scaleDownPool(id) {

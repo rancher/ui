@@ -1,25 +1,31 @@
 {{#if (and (eq step 2) (eq originalCluster.state "pending"))}}
 
-  {{#banner-message color='bg-info m-0'}}
-  <div class="mt-20">
-    {{t 'clusterNew.import.command.instructionsAdminRole'
-      appName=settings.appName
-      htmlSafe=true
-    }}
-  </div>
+  {{#banner-message color="bg-info m-0"}}
+    <div class="mt-20">
+      {{t "clusterNew.import.command.instructionsAdminRole"
+        appName=settings.appName
+        htmlSafe=true
+      }}
+    </div>
 
-  <div class="copy-pre mt-20 mb-20">
-    {{#if loading}}
-      <div class="text-center"><i class="icon icon-spinner icon-spin"></i> {{t 'generic.loading'}}</div>
-    {{else}}
-      {{copy-to-clipboard clipboardText=clusterAdmin tagName="div" classNames="copy-to-pre"}}
-      <pre style="font-size: 14px;">{{clusterAdmin}}</pre>
-    {{/if}}
-  </div>
+    <div class="copy-pre mt-20 mb-20">
+      {{#if loading}}
+        <div class="text-center">
+          <i class="icon icon-spinner icon-spin"></i> {{t "generic.loading"}}
+        </div>
+      {{else}}
+        {{copy-to-clipboard
+          clipboardText=clusterAdmin
+          tagName="div"
+          classNames="copy-to-pre"
+        }}
+        <pre style="font-size: 14px;">{{clusterAdmin}}</pre>
+      {{/if}}
+    </div>
   {{/banner-message}}
 
   <div class="mt-20">
-    {{t 'clusterNew.import.command.instructions'
+    {{t "clusterNew.import.command.instructions"
       appName=settings.appName
       docsBase=settings.docsBase
       htmlSafe=true
@@ -28,15 +34,21 @@
 
   <div class="copy-pre mt-20 mb-20">
     {{#if loading}}
-      <div class="text-center"><i class="icon icon-spinner icon-spin"></i> {{t 'generic.loading'}}</div>
+      <div class="text-center">
+        <i class="icon icon-spinner icon-spin"></i> {{t "generic.loading"}}
+      </div>
     {{else}}
-      {{copy-to-clipboard clipboardText=token.command tagName="div" classNames="copy-to-pre"}}
+      {{copy-to-clipboard
+        clipboardText=token.command
+        tagName="div"
+        classNames="copy-to-pre"
+      }}
       <pre id="registration-command" style="font-size: 14px;">{{token.command}}</pre>
     {{/if}}
   </div>
 
   <div class="mt-20">
-    {{t 'clusterNew.import.command.instructionsInsecure'
+    {{t "clusterNew.import.command.instructionsInsecure"
       appName=settings.appName
       docsBase=settings.docsBase
       htmlSafe=true
@@ -45,9 +57,15 @@
 
   <div class="copy-pre mt-20 mb-20">
     {{#if loading}}
-      <div class="text-center"><i class="icon icon-spinner icon-spin"></i> {{t 'generic.loading'}}</div>
+      <div class="text-center">
+        <i class="icon icon-spinner icon-spin"></i> {{t "generic.loading"}}
+      </div>
     {{else}}
-      {{copy-to-clipboard clipboardText=token.insecureCommand tagName="div" classNames="copy-to-pre"}}
+      {{copy-to-clipboard
+        clipboardText=token.insecureCommand
+        tagName="div"
+        classNames="copy-to-pre"
+      }}
       <pre id="registration-command" style="font-size: 14px;">{{token.insecureCommand}}</pre>
     {{/if}}
   </div>
@@ -55,15 +73,25 @@
   {{#if isEdit}}
     {{top-errors errors=otherErrors}}
     {{top-errors errors=clusterErrors}}
-    {{save-cancel save="driverSave" editing=true cancel="close"}}
+    {{save-cancel
+      save=(action "driverSave")
+      editing=true
+      cancel=(action "close")
+    }}
   {{else}}
     <div class="footer-actions">
-      <button {{action "close"}} class="btn bg-primary">{{t 'clusterNew.rke.done'}}</button>
+      <button {{action "close"}} class="btn bg-primary">
+        {{t "clusterNew.rke.done"}}
+      </button>
     </div>
   {{/if}}
 {{else}}
   {{top-errors errors=errors}}
   {{top-errors errors=otherErrors}}
   {{top-errors errors=clusterErrors}}
-  {{save-cancel save="driverSave" editing=isEdit cancel="close"}}
+  {{save-cancel
+    save=(action "driverSave")
+    editing=isEdit
+    cancel=(action "close")
+  }}
 {{/if}}

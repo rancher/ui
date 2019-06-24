@@ -56,6 +56,16 @@ var Workload = Resource.extend(Grafana, DisplayImage, StateCounts, EndpointPorts
     this.defineStateCounts('pods', 'podStates', 'podCountSort');
   },
 
+  restarts: computed('pods.@each.restarts', function() {
+    let out = 0;
+
+    (get(this, 'pods') || []).forEach((pod) => {
+      out += get(pod, 'restarts');
+    });
+
+    return out;
+  }),
+
   lcType: computed('type', function() {
     return (get(this, 'type') || '').toLowerCase();
   }),

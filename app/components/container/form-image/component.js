@@ -55,7 +55,11 @@ export default Component.extend({
     }
 
     set(this, 'value', out);
-    this.sendAction('changed', out);
+
+    if (this.changed) {
+      this.changed(out);
+    }
+
     this.validate();
   }),
 

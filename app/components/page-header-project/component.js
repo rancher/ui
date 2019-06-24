@@ -2,120 +2,136 @@ import { alias } from '@ember/object/computed';
 import Component from '@ember/component';
 import layout from './template';
 import { inject as service } from '@ember/service'
-import { get, set, computed } from '@ember/object';
+import { get, set, computed, setProperties } from '@ember/object';
 import ThrottledResize from 'shared/mixins/throttled-resize';
 import textWidth from 'shared/utils/text-width';
 import { next } from '@ember/runloop';
 import { escapeRegex, escapeHtml } from 'shared/utils/util';
 import $ from 'jquery';
+import { isEmpty } from '@ember/utils';
 
-const ITEM_HEIGHT = 50;
-const BUFFER_HEIGHT = 150;
-const BUFFER_WIDTH = 150;
+const ITEM_HEIGHT      = 50;
+const BUFFER_HEIGHT    = 150;
+const BUFFER_WIDTH     = 150;
 const MIN_COLUMN_WIDTH = 200;
-const FONT = '13.5px "Prompt", "Helvetica Neue Light", "Helvetica Neue", "Helvetica", "Arial", sans-serif';
-const MOUSE_HISTORY = 5;
-const MOUSE_DELAY = 250;
-const SLOP = 50; // Extend the ends of the target triangle out by this many px
+const FONT             = '13.5px "Prompt", "Helvetica Neue Light", "Helvetica Neue", "Helvetica", "Arial", sans-serif';
+const MOUSE_HISTORY    = 5;
+const MOUSE_DELAY      = 250;
+const SLOP             = 50; // Extend the ends of the target triangle out by this many px
 
 export default Component.extend(ThrottledResize, {
-  access:             service(),
-  scope:              service(),
-  globalStore:        service(),
-  router:             service(),
+  access:              service(),
+  scope:               service(),
+  globalStore:         service(),
+  router:              service(),
 
   layout,
-  pageScope:          null,
+  pageScope:           null,
 
-  tagName:            'LI',
-  classNames:         ['dropdown', 'nav-item', 'nav-cluster'],
-  classNameBindings:  ['hide'],
+  tagName:             'LI',
+  classNames:          ['dropdown', 'nav-item', 'nav-cluster'],
+  classNameBindings:   ['hide'],
 
-  searchInput:        '',
-  open:               false,
+  searchInput:         '',
+  open:                false,
 
-  columnStyle:        '',
-  menuStyle:          '',
-  mousePoints:        null,
-  clusterEntry:       null,
-  activeClusterEntry: null,
-  hoverEntry:         null,
-  hoverDelayTimer:    null,
-  delayPoint:         null,
-  leaveDelayTimer:    null,
+  columnStyle:         '',
+  menuStyle:           '',
+  mousePoints:         null,
+  clusterEntry:        null,
+  activeClusterEntry:  null,
+  hoverEntry:          null,
+  hoverDelayTimer:     null,
+  delayPoint:          null,
+  leaveDelayTimer:     null,
 
-  boundClickMenu:     null,
-  boundClickItem:     null,
-  boundEnterCluster:  null,
+  boundClickMenu:      null,
+  boundClickItem:      null,
+  boundEnterCluster:   null,
+  dropdownApi:         null,
 
-  project:            alias('scope.pendingProject'),
-  cluster:            alias('scope.pendingCluster'),
-  numClusters:        alias('byCluster.length'),
+  project:             alias('scope.pendingProject'),
+  cluster:             alias('scope.pendingCluster'),
+  numClusters:         alias('byCluster.length'),
 
   init() {
     this._super(...arguments);
-    set(this, 'mousePoints', []);
-    set(this, 'boundMouseMove', this.mouseMoved.bind(this));
-    set(this, 'boundClickMenu', this.clickMenu.bind(this));
-    set(this, 'boundClickItem', this.clickItem.bind(this));
-    set(this, 'boundEnterCluster', this.enterCluster.bind(this));
-    set(this, 'boundEnterScrollers', this.enterScrollers.bind(this));
-    set(this, 'boundLeaveScrollers', this.leaveScrollers.bind(this));
+    setProperties(this, {
+      mousePoints:         [],
+      boundMouseMove:      this.mouseMoved.bind(this),
+      boundClickMenu:      this.clickMenu.bind(this),
+      boundClickItem:      this.clickItem.bind(this),
+      boundEnterCluster:   this.enterCluster.bind(this),
+      boundEnterScrollers: this.enterScrollers.bind(this),
+      boundLeaveScrollers: this.leaveScrollers.bind(this),
+    });
   },
 
   actions: {
-    onOpen() {
+    onOpen(dropdown) {
       set(this, 'open', true);
       this.onResize();
 
+      if (dropdown) {
+        set(this, 'dropdownApi', dropdown);
+      }
+
       next(() => {
-        const menu = this.$('.project-menu');
-        const clusters = this.$('.clusters');
+        if (!this.isTransitioning()) {
+          const menu = this.$('.project-menu');
+          const clusters = this.$('.clusters');
 
-        $(document).on('mousemove', this.boundMouseMove);
+          $(document).on('mousemove', this.boundMouseMove);
 
-        menu.on('click', this.boundClickMenu);
-        menu.on('click', 'LI', this.boundClickItem);
+          menu.on('click', this.boundClickMenu);
+          menu.on('click', 'LI', this.boundClickItem);
 
-        clusters.on('focus', 'LI', this.boundEnterCluster);
-        clusters.on('mouseenter', 'LI', this.boundEnterCluster);
+          clusters.on('focus', 'LI', this.boundEnterCluster);
+          clusters.on('mouseenter', 'LI', this.boundEnterCluster);
 
-        this.$('.clusters, .projects').on('mouseenter', this.boundEnterScrollers);
-        this.$('.clusters, .projects').on('mouseleave', this.boundLeaveScrollers);
+          this.$('.clusters, .projects').on('mouseenter', this.boundEnterScrollers);
+          this.$('.clusters, .projects').on('mouseleave', this.boundLeaveScrollers);
 
-        this.$('.search INPUT')[0].focus();
+          this.$('.search INPUT')[0].focus();
 
-        this.$('.clusters UL')[0].scrollTop = 0;
-        this.$('.projects UL')[0].scrollTop = 0;
+          this.$('.clusters UL')[0].scrollTop = 0;
+          this.$('.projects UL')[0].scrollTop = 0;
 
-        const currentClusterId = get(this, 'cluster.id');
-        const currentProjectId = get(this, 'project.id');
+          const currentClusterId = get(this, 'cluster.id');
+          const currentProjectId = get(this, 'project.id');
 
-        if ( currentClusterId ) {
-          const li = this.$(`.clusters LI[data-cluster-id="${ currentClusterId }"]`)[0];
-          const entry = get(this, 'byCluster').findBy('clusterId', currentClusterId);
-
-          ensureVisible(li);
-          set(this, 'clusterEntry', entry);
-          set(this, 'activeClusterEntry', entry);
-        }
-
-        if ( currentProjectId ) {
-          next(() => {
-            const li = this.$(`.projects LI[data-project-id="${ currentProjectId }"]`)[0];
+          if ( currentClusterId ) {
+            const li = this.$(`.clusters LI[data-cluster-id="${ currentClusterId }"]`)[0];
+            const entry = get(this, 'byCluster').findBy('clusterId', currentClusterId);
 
             ensureVisible(li);
-          });
+
+            setProperties(this, {
+              clusterEntry:       entry,
+              activeClusterEntry: entry,
+            });
+          }
+
+          if ( currentProjectId ) {
+            next(() => {
+              const li = this.$(`.projects LI[data-project-id="${ currentProjectId }"]`)[0];
+
+              ensureVisible(li);
+            });
+          }
         }
       });
     },
 
     onClose() {
-      set(this, 'open', false);
-      set(this, 'searchInput', '');
-      set(this, 'hoverEntry', null);
-      set(this, 'clusterEntry', null);
-      set(this, 'activeClusterEntry', null);
+      setProperties(this, {
+        activeClusterEntry: null,
+        clusterEntry:       null,
+        dropdownApi:        null,
+        hoverEntry:         null,
+        open:               false,
+        searchInput:        '',
+      });
 
       $(document).off('mousemove', this.boundMouseMove);
       this.$('.project-menu').off('click', this.boundClickMenu);
@@ -147,7 +163,8 @@ export default Component.extend(ThrottledResize, {
 
   byCluster: computed('scope.allClusters.@each.id', 'projectChoices.@each.clusterId', 'cluster.id', function() {
     const currentClusterId = get(this, 'cluster.id');
-    const out = [];
+    const out              = [];
+    const navWidth = $('#application nav').width();
 
     get(this, 'scope.allClusters').forEach((cluster) => {
       getOrAddCluster(cluster);
@@ -155,7 +172,7 @@ export default Component.extend(ThrottledResize, {
 
     get(this, 'projectChoices').forEach((project) => {
       const cluster = get(project, 'cluster');
-      const width = textWidth(get(project, 'displayName'), FONT);
+      const width   = getMaxWidth(textWidth(get(project, 'displayName'), FONT), navWidth);
 
       if ( !cluster ) {
         return;
@@ -175,14 +192,14 @@ export default Component.extend(ThrottledResize, {
 
     function getOrAddCluster(cluster) {
       const clusterId = get(cluster, 'id');
-      let entry = out.findBy('clusterId', clusterId);
+      let entry       = out.findBy('clusterId', clusterId);
+      let width       = getMaxWidth(textWidth(get(cluster, 'displayName'), FONT), navWidth);
 
       if ( !entry ) {
         entry = {
           clusterId,
           cluster,
-
-          width:        textWidth(get(cluster, 'displayName'), FONT),
+          width,
           projectWidth: 0,
           projects:     [],
           active:       clusterId === currentClusterId,
@@ -192,6 +209,10 @@ export default Component.extend(ThrottledResize, {
       }
 
       return entry;
+    }
+
+    function getMaxWidth(width, navWidth) {
+      return width >= (navWidth / 2) ? (navWidth / 2) : width;
     }
   }),
 
@@ -246,6 +267,84 @@ export default Component.extend(ThrottledResize, {
 
     return out;
   }),
+
+  keyUp(e) {
+    if (!isEmpty(this.dropdownApi)) {
+      const project      = 'project';
+      const cluster      = 'cluster';
+      const code         = e.keyCode;
+      let clusterTabList = this.$('.project-menu .clusters a:first-of-type');
+      let projectTabList = this.$('.project-menu .projects a:first-of-type')
+      let tabList        = [];
+      let $target        = $(e.target).hasClass('ember-basic-dropdown-trigger') ? $(e.target).find('a') : e.target;
+      let currentFocusIndex;
+      let currentFocus;
+      let nextIndex;
+      let activeClusterNode;
+
+      let { clusterEntry } = this;
+
+      if (clusterEntry) {
+        activeClusterNode = this.$(`.project-menu [data-cluster-id="${ clusterEntry.clusterId }"]`);
+      }
+
+      if (clusterTabList.index($target) >= 0) {
+        currentFocus      = cluster;
+        currentFocusIndex = clusterTabList.index($target);
+        tabList           = clusterTabList;
+      } else if (projectTabList.index($target) >= 0) {
+        currentFocus      = project;
+        currentFocusIndex = projectTabList.index($target)
+        tabList           = projectTabList;
+      } else {
+        // from inputFocused
+        currentFocus      = cluster;
+        currentFocusIndex = 0;
+      }
+
+      switch (code) {
+      case 37: {
+        // left
+        if (currentFocus === project) {
+          activeClusterNode.find('a:first-of-type').focus();
+        }
+        break;
+      }
+      case 38: {
+        // up
+        nextIndex = currentFocusIndex - 1;
+
+        if (tabList && nextIndex >= tabList.length) {
+          tabList.eq(tabList.length).focus();
+        } else {
+          tabList.eq(nextIndex).focus();
+        }
+        break;
+      }
+      case 39: {
+        // right
+        if (currentFocus === cluster && projectTabList.length >= 1) {
+          projectTabList.eq(0).focus();
+        }
+        break;
+      }
+      case 40: {
+        // down
+        nextIndex = currentFocusIndex + 1;
+
+        if (nextIndex >= tabList.length) {
+          tabList.eq(tabList.length).focus();
+        } else {
+          tabList.eq(nextIndex).focus();
+        }
+        break;
+      }
+      default:
+      }
+    }
+
+    return false;
+  },
 
   mouseMoved(e) {
     const list = this.mousePoints;
@@ -305,7 +404,10 @@ export default Component.extend(ThrottledResize, {
       return;
     }
 
-    a.click();
+    next(() => {
+      this.send('onClose');
+      a.click();
+    });
   },
 
   enterCluster(e) {
@@ -333,15 +435,17 @@ export default Component.extend(ThrottledResize, {
     clearTimeout(this.hoverDelayTimer);
 
     set(this, 'leaveDelayTimer', setTimeout(() => {
-      set(this, 'hoverEntry', null);
-      set(this, 'clusterEntry', get(this, 'activeClusterEntry'));
+      setProperties(this, {
+        hoverEntry:   null,
+        clusterEntry: get(this, 'activeClusterEntry'),
+      });
     }, MOUSE_DELAY));
   },
 
   getHoverDelay() {
-    const entry = get(this, 'activeClusterEntry');
+    const entry  = get(this, 'activeClusterEntry');
     const points = this.mousePoints;
-    const $menu = this.$('.clusters');
+    const $menu  = this.$('.clusters');
 
     if ( !entry ) {
       // console.log('No entry');
@@ -358,11 +462,11 @@ export default Component.extend(ThrottledResize, {
 
     // Bounding box of the menu
     const offset = $menu.offset();
-    const left = offset.left;
-    const top = offset.top - SLOP;
-    const right = left + $menu.outerWidth();
+    const left   = offset.left;
+    const top    = offset.top - SLOP;
+    const right  = left + $menu.outerWidth();
     const bottom = offset.top + $menu.outerHeight() + SLOP;
-    const dp = this.delayPoint;
+    const dp     = this.delayPoint;
 
     if ( dp && dp.x === now.x && dp.y === now.y ) {
       // The mouse hasn't moved during the delay
@@ -417,8 +521,10 @@ export default Component.extend(ThrottledResize, {
       const prev = get(this, 'hoverEntry');
 
       if ( entry !== prev ) {
-        set(this, 'hoverEntry', entry);
-        set(this, 'clusterEntry', entry);
+        setProperties(this, {
+          hoverEntry:   entry,
+          clusterEntry: entry,
+        });
 
         let scrollToId;
 
@@ -445,11 +551,10 @@ export default Component.extend(ThrottledResize, {
     }
 
     const $window = $(window);
-    let want    = Math.max(get(this, 'numClusters'), get(this, 'maxProjects'));
-    let roomFor = Math.ceil( ($window.height() - BUFFER_HEIGHT) / (2 * ITEM_HEIGHT) );
-
-    const rows = Math.max(3, Math.min(want, roomFor));
-    const height = rows * ITEM_HEIGHT;
+    let want      = Math.max(get(this, 'numClusters'), get(this, 'maxProjects'));
+    let roomFor   = Math.ceil( ($window.height() - BUFFER_HEIGHT) / (2 * ITEM_HEIGHT) );
+    const rows    = Math.max(3, Math.min(want, roomFor));
+    const height  = rows * ITEM_HEIGHT;
 
     set(this, 'columnStyle', `height: ${ height }px`.htmlSafe());
 
@@ -466,6 +571,15 @@ export default Component.extend(ThrottledResize, {
 
     set(this, 'menuStyle', `grid-template-columns: ${ cw }px ${ pw }px`.htmlSafe());
   },
+
+  isTransitioning() {
+    if (this.router._routerMicrolib.activeTransition && this.router._routerMicrolib.activeTransition.isTransition) {
+      return true
+    }
+
+    return false;
+  },
+
 });
 
 

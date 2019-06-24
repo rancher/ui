@@ -5,6 +5,9 @@ $header-link-active                  : $primary !default;
 $user-btn                            : darken($header, 10%) !default;
 $nav-spacing: 3.5px;
 
+$project-nav-hover: $secondary !default;
+$project-nav-active: $dropdown-link-hover-bg !default;
+
 .page-header {
   @include no-select;
   margin-bottom: 10px;
@@ -21,6 +24,16 @@ $nav-spacing: 3.5px;
     flex-wrap: wrap;
     align-items: center;
 
+    .ember-basic-dropdown-content {
+      font-size:  15px;
+    }
+
+    .ember-basic-dropdown-trigger {
+      a {
+        text-decoration: none;
+      }
+    }
+
     .dropdown-menu {
       background: $dropdown-bg;
       border: 0;
@@ -36,6 +49,7 @@ $nav-spacing: 3.5px;
       border-radius: 3px 0 0 3px;
       padding: 0;
       vertical-align: middle;
+      height: 50px;
 
       &.nav-main {
         flex-grow: 1;
@@ -46,7 +60,7 @@ $nav-spacing: 3.5px;
         display: inline-block;
 
         &.active {
-          > .ember-basic-dropdown-trigger > a,
+          .ember-basic-dropdown-trigger  a,
           > a {
             color: $info;
             text-decoration: none;
@@ -54,7 +68,7 @@ $nav-spacing: 3.5px;
           }
         }
 
-        > .ember-basic-dropdown-trigger > a,
+        .ember-basic-dropdown-trigger a,
         > a {
           color: $header-link;
           display: block;
@@ -91,6 +105,14 @@ $nav-spacing: 3.5px;
     border-radius: 0 3px 3px 0;
     margin: 0;
 
+    .nav-item {
+      a.nav-link {
+        padding: 0;
+        display: inline-block;
+        border: none;
+      }
+    }
+
     > li > a {
       display: block;
       padding: 4px 10px;
@@ -120,29 +142,18 @@ $nav-spacing: 3.5px;
     background-color: $user-btn;
 
     a {
-
       &:hover {
         text-decoration: none;
       }
 
-      &::after {
-      content: '';
-      border-left: 6px solid $user-btn;
-      border-top: 6px solid transparent;
-      border-bottom: 6px solid transparent;
-      position: absolute;
-      top: 20px;
-      right: -6px;
-    }
+      &.text-white:hover {
+        background: mix($user-btn, black, 80%);
 
-    &.text-white:hover {
-      background: mix($user-btn, black, 80%);
-
-      &::after {
-        border-left-color: mix($user-btn, black, 80%);
+        &::after {
+          border-left-color: mix($user-btn, black, 80%);
+        }
       }
     }
-  }
 
     .project-menu .global ul li a:hover {
       background: transparent;
@@ -158,9 +169,23 @@ $nav-spacing: 3.5px;
         padding-right: 30px;
         padding-left: 10px;
 
+        &::after {
+          content: '';
+          border-left: 6px solid $user-btn;
+          border-top: 6px solid transparent;
+          border-bottom: 6px solid transparent;
+          position: absolute;
+          top: 20px;
+          right: -6px;
+        }
+
         &.two-line {
           padding-top: 1px;
           padding-bottom: 0;
+        }
+
+        &:focus {
+          text-decoration: none;
         }
       }
 
@@ -270,7 +295,6 @@ $nav-spacing: 3.5px;
     padding: 0 10px;
     display: block;
     border-bottom: 1px solid $accent-border;
-    margin-bottom: 2px;
   }
 
   .clusters {
@@ -279,20 +303,18 @@ $nav-spacing: 3.5px;
     // border-right: 1px solid $table-border-color;
     background-color: $accent-bg;
 
-    ul li.item {
-      &.cluster.active {
-        // background: lime;
-        position: relative;
+    ul.no-hover-entry li.item.cluster.active,
+    ul li.item.cluster.hover {
+      position: relative;
 
-        &:after {
-          content: '';
-          border-right: 8px solid $dropdown-bg;
-          border-top: 8px solid transparent;
-          border-bottom: 8px solid transparent;
-          position: absolute;
-          top: 17px;
-          right: 0;
-        }
+      &:after {
+        content: '';
+        border-right: 8px solid $dropdown-bg;
+        border-top: 8px solid transparent;
+        border-bottom: 8px solid transparent;
+        position: absolute;
+        top: 17px;
+        right: 0;
       }
     }
   }
@@ -300,23 +322,17 @@ $nav-spacing: 3.5px;
   .projects {
     grid-column-start: 2;
     grid-row-start: 2;
+
+    UL {
+      border-left: 1px solid transparent;
+    }
   }
 
   .global {
-
     > ul.list-unstyled {
       &:first-child {
         border-right: 1px solid $table-border-color;
-
       }
-
-      > LI:hover {
-        background-color: $secondary;
-        A, .state {
-          color: white;
-        }
-      }
-
     }
   }
 
@@ -325,7 +341,7 @@ $nav-spacing: 3.5px;
     border-bottom: $table-border-color;
 
     ul .item.active {
-      background: $primary;
+      background: $project-nav-active;
       a {
         color: white;
       }
@@ -357,7 +373,7 @@ $nav-spacing: 3.5px;
     @include hand;
 
     &.active {
-      background-color: $primary;
+      background-color: $project-nav-active;
       a {
         color: white;
 
@@ -367,16 +383,23 @@ $nav-spacing: 3.5px;
       }
     }
 
-    &.project:hover,
-    &.cluster:hover {
-      background-color: rgba($primary,.25);
-      A, .state {
-        color: white;
-      }
-    }
-
     &:not(:first-child) {
       border-top: 1px solid $accent-border;
+    }
+  }
+
+  .global > ul.list-unstyled > LI:hover,
+  .item.cluster.hover {
+    background-color: $project-nav-hover;
+    A, .state {
+      color: white;
+    }
+  }
+
+  .item.project:hover {
+    background-color: $project-nav-hover;
+    A, .state {
+      color: white;
     }
   }
 

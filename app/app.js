@@ -179,6 +179,7 @@ const App = Application.extend({
           'logout':                                   'logout',
           'volumes.index':                            'volumes.index',
           'authenticated.project.dns.index':          'authenticated.project.dns.index',
+          'authenticated.project.hpa.index':          'authenticated.project.hpa.index',
           'ingresses.index':                          'ingresses.index',
           'containers.index':                         'containers.index',
           'authenticated.project.pipeline.pipeline':  'authenticated.project.pipeline.pipeline',
@@ -194,6 +195,7 @@ const App = Application.extend({
           'intl',
           'grafana',
           'scope',
+          'store',
           'session',
           'modal',
           'globalStore',
@@ -203,6 +205,24 @@ const App = Application.extend({
           'tooltip',
         ],
         externalRoutes: {}
+      }
+    },
+    istio: {
+      dependencies: {
+        services: [
+          'app',
+          'catalog',
+          'intl',
+          'scope',
+          'session',
+          'modal',
+          'globalStore',
+          'router',
+          'store',
+          'clusterStore',
+          'tooltip',
+        ],
+        externalRoutes: { 'authenticated.cluster.istio.cluster-setting': 'authenticated.cluster.istio.cluster-setting', }
       }
     },
   }

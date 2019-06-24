@@ -1,48 +1,101 @@
-<form class="horizontal-form container-fluid text-left" {{action 'save' on="submit"}}>
-  <input type="text" name="username" autocomplete="username" value={{user.username}} style="display: none;" />
+<form class="horizontal-form container-fluid text-left" {{action "save" on="submit"}}>
+  <input
+    type="text"
+    name="username"
+    autocomplete="username"
+    value={{user.username}}
+    style="display: none;"
+  />
   <div class="content">
     {{#if showCurrent}}
       <div class="row mb-20">
         <div class="col span-12">
-          <label class="acc-label">{{t 'modalEditPassword.current'}}{{field-required}}</label>
-          {{input type="password" value=currentPassword autocomplete="current-password" classNames="form-control start"}}
+          <label class="acc-label">
+            {{t "modalEditPassword.current"}}{{field-required}}
+          </label>
+          {{input
+            type="password"
+            value=currentPassword
+            autocomplete="current-password"
+            classNames="form-control start"
+          }}
         </div>
       </div>
     {{/if}}
     <div class="row">
-      <label>{{radio-button selection=generate value=false}}&nbsp;{{t 'modalEditPassword.mode.manual'}}</label>
+      <label>
+        {{radio-button
+          selection=generate
+          value=false
+        }}
+        {{t "modalEditPassword.mode.manual"}}
+      </label>
     </div>
     {{#liquid-if (not generate) class="row mb-20"}}
       <div class="row">
         <div class="col span-12">
-          <label class="acc-label">{{t 'modalEditPassword.new'}}</label>
-          {{input type="password" value=password classNames="form-control start"}}
+          <label class="acc-label">
+            {{t "modalEditPassword.new"}}
+          </label>
+          {{input
+            type="password"
+            value=password
+            classNames="form-control start"
+          }}
         </div>
       </div>
       <div class="row">
         <div class="col span-12">
-          <label class="acc-label">{{t 'modalEditPassword.confirm'}}</label>
-          {{input type="password" value=confirm classNames="form-control" focusOut=(action 'blurredConfirm') }}
+          <label class="acc-label">
+            {{t "modalEditPassword.confirm"}}
+          </label>
+          {{input
+            type="password"
+            value=confirm
+            classNames="form-control"
+            focusOut=(action "blurredConfirm")
+          }}
         </div>
       </div>
     {{/liquid-if}}
 
     <div class="row">
-      <label>{{radio-button selection=generate value=true}}&nbsp;{{t 'modalEditPassword.mode.generate'}}</label>
+      <label>
+        {{radio-button
+          selection=generate
+          value=true
+        }}
+        {{t "modalEditPassword.mode.generate"}}
+      </label>
     </div>
     {{#liquid-if generate class="row mt-10"}}
       <div class="col span-12">
         <div class="input-group" style="width: 220px;">
-          <code class="form-control text-center">{{password}}</code>
-          <span class="input-group-addon bg-primary" {{action "regenerate"}}><i class="icon icon-refresh"/></span>
+          <code class="form-control text-center">
+            {{password}}
+          </code>
+          <span class="input-group-addon bg-primary" {{action "regenerate"}}>
+            <i class="icon icon-refresh"/>
+          </span>
         </div>
         <div class="mt-20 mb-20">
-          {{copy-to-clipboard color="bg-primary" clipboardText=password buttonText="copyToClipboard.tooltip"}}
+          {{copy-to-clipboard
+            color="bg-primary"
+            clipboardText=password
+            buttonText="copyToClipboard.tooltip"
+          }}
         </div>
       </div>
     {{/liquid-if}}
   </div>
 
   {{top-errors errors=errors}}
-  {{save-cancel saveDisabled=saveDisabled save="save" editing=true editLabel=editButton cancel=cancel cancelDisabled=cancelDisabled}}
+  {{save-cancel
+    saveDisabled=saveDisabled
+    save=(action "save")
+    editing=true
+    editLabel=editButton
+    cancel=cancel
+    cancelDisabled=cancelDisabled
+  }}
 </form>

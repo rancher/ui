@@ -1,46 +1,52 @@
-<label class="acc-label mt-5">{{t 'cloudProvider.title'}}</label>
-{{#if (and (eq driver 'custom') (eq selectedCloudProvider 'none'))}}
+<label class="acc-label mt-5">
+  {{t "cloudProvider.title"}}
+</label>
+{{#if (and (eq driver "custom") (eq selectedCloudProvider "none"))}}
   <div class="col span-12">
-    {{banner-message color="bg-info mt-0 mb-0" icon="icon-info" message=(t 'cloudProvider.custom.notInList' htmlSafe=true)}}
+    {{banner-message
+      color="bg-info mt-0 mb-0"
+      icon="icon-info"
+      message=(t "cloudProvider.custom.notInList" htmlSafe=true)
+    }}
   </div>
 {{/if}}
 <div class="row">
   <div class="col span-6">
     <div class="radio">
       <label>
-        {{radio-button selection=selectedCloudProvider value='none'}} {{t 'generic.none'}}
+        {{radio-button selection=selectedCloudProvider value="none"}} {{t "generic.none"}}
       </label>
     </div>
-    {{#if (or (eq driver 'amazonec2') (eq driver 'custom'))}}
+    {{#if (or (eq driver "amazonec2") (eq driver "custom"))}}
       <div class="radio">
         <label>
-          {{radio-button selection=selectedCloudProvider value='amazonec2'}} {{t 'cloudProvider.amazon'}}
+          {{radio-button selection=selectedCloudProvider value="amazonec2"}} {{t "cloudProvider.amazon"}}
         </label>
       </div>
     {{/if}}
-    {{#if (or (eq driver 'azure') (eq driver 'custom'))}}
+    {{#if (or (eq driver "azure") (eq driver "custom"))}}
       <div class="radio">
         <label>
-          {{radio-button selection=selectedCloudProvider value='azure'}} {{t 'cloudProvider.azure'}}
+          {{radio-button selection=selectedCloudProvider value="azure"}} {{t "cloudProvider.azure"}}
         </label>
       </div>
     {{/if}}
-    {{#if (and (not-eq driver 'amazonec2') (not-eq driver 'azure'))}}
+    {{#if (and (not-eq driver "amazonec2") (not-eq driver "azure"))}}
       <div class="radio">
         <label>
-          {{radio-button selection=selectedCloudProvider value='generic'}} {{t 'generic.custom'}}
+          {{radio-button selection=selectedCloudProvider value="generic"}} {{t "generic.custom"}}
         </label>
       </div>
     {{/if}}
   </div>
-  {{#unless (eq selectedCloudProvider 'none')}}
+  {{#unless (eq selectedCloudProvider "none")}}
     <div class="col span-6">
       <div class="banner bg-warning">
         <div class="banner-icon">
           <i class="icon icon-alert"></i>
         </div>
         <div class="banner-message">
-          {{t 'cloudProvider.warning'}}
+          {{t "cloudProvider.warning"}}
         </div>
       </div>
     </div>
@@ -49,28 +55,40 @@
 
 <div class="col span-12">
   <p class="text-info">
-    {{t 'cloudProvider.helpText' htmlSafe=true}}
+    {{t "cloudProvider.helpText" htmlSafe=true}}
   </p>
 </div>
 
-{{#if (eq selectedCloudProvider 'azure')}}
+{{#if (eq selectedCloudProvider "azure")}}
   {{#each-in configAnswers as |key value|}}
     <div class="row">
       <div class="col span-6">
         <label class="acc-label pb-0">{{key}}
           {{#if (get (get azureDescriptions key) "required")}}
-            {{field-required}}
+            {{#if (eq mode "new")}}
+              {{field-required}}
+            {{else if (and (eq mode "edit") (not-eq key "aadClientSecret"))}}
+              {{field-required}}
+            {{/if}}
           {{/if}}
         </label>
         <p class="help-block mt-0">{{t (get (get azureDescriptions key) "description")}}</p>
       </div>
       <div class="col span-6">
-        {{input class="form-control input-sm value" spellcheck="false" type=(or (get (get azureDescriptions key) "type") "text") value=(mut (get configAnswers key)) placeholder=(t 'generic.value')}}
+        {{input
+          class="form-control input-sm value"
+          spellcheck="false"
+          type=(or (get (get azureDescriptions key) "type") "text")
+          value=(mut (get configAnswers key))
+          placeholder=(t "generic.value")
+        }}
       </div>
     </div>
   {{/each-in}}
 {{/if}}
 
 <p class="text-info">
-  {{#if (eq selectedCloudProvider 'generic')}}{{t 'cloudProvider.custom.helpText' htmlSafe=true}} {{/if}}
+  {{#if (eq selectedCloudProvider "generic")}}
+    {{t "cloudProvider.custom.helpText" htmlSafe=true}}
+  {{/if}}
 </p>

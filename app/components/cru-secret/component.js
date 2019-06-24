@@ -64,7 +64,7 @@ export default Component.extend(ViewNewEdit, OptionallyNamespaced, {
   },
 
   doneSaving() {
-    this.sendAction('cancel');
+    this.cancel();
   },
 
 });

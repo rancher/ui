@@ -1,7 +1,7 @@
 
 <div class="modal-yaml">
   {{input-yaml
-    title=(t 'modalImport.title')
+    title=(t "modalImport.title")
     name="import.yaml"
     canChangeName=false
     value=yaml
@@ -13,41 +13,54 @@
 
 <div class="mt-20 row">
   <div class="col span-6">
-    <label class="acc-label">{{t 'modalImport.mode.label'}}</label>
+    <label class="acc-label">
+      {{t "modalImport.mode.label"}}
+    </label>
     <div>
-      <label>{{radio-button selection=mode value='cluster'}} {{t 'modalImport.mode.cluster'}}</label>
+      <label>
+        {{radio-button selection=mode value="cluster"}} {{t "modalImport.mode.cluster"}}
+      </label>
     </div>
     <div>
-      <label>{{radio-button selection=mode value='project'}} {{t 'modalImport.mode.project'}}</label>
+      <label>
+        {{radio-button selection=mode value="project"}} {{t "modalImport.mode.project"}}
+      </label>
     </div>
     <div>
-      <label>{{radio-button selection=mode value='namespace'}} {{t 'modalImport.mode.namespace'}}</label>
+      <label>
+        {{radio-button selection=mode value="namespace"}} {{t "modalImport.mode.namespace"}}
+      </label>
     </div>
   </div>
   <div class="col span-6">
-    {{#unless (eq mode 'cluster')}}
+    {{#unless (eq mode "cluster")}}
       {{form-namespace
-        reuseLabel=(if (eq mode 'project') 'formNamespace.label.default' 'formNamespace.label.reuse')
+        reuseLabel=(if (eq mode "project") "formNamespace.label.default" "formNamespace.label.reuse")
         namespace=namespace
         errors=namespaceErrors
-        registerHook=(action 'registerHook')
+        registerHook=(action "registerHook")
       }}
     {{/unless}}
   </div>
 </div>
 
-{{#if (eq mode 'cluster') }}
-  <p class="help-block">{{t 'modalImport.detail.cluster1' htmlSafe=true}}</p>
-  <p class="help-block">{{t 'modalImport.detail.cluster2' htmlSafe=true}}</p>
-  <p class="help-block">{{t 'modalImport.detail.cluster3' htmlSafe=true}}</p>
-{{else if (eq mode 'project') }}
-  <p class="help-block">{{t 'modalImport.detail.project1' htmlSafe=true}}</p>
-  <p class="help-block">{{t 'modalImport.detail.project2' htmlSafe=true}}</p>
+{{#if (eq mode "cluster") }}
+  <p class="help-block">{{t "modalImport.detail.cluster1" htmlSafe=true}}</p>
+  <p class="help-block">{{t "modalImport.detail.cluster2" htmlSafe=true}}</p>
+  <p class="help-block">{{t "modalImport.detail.cluster3" htmlSafe=true}}</p>
+{{else if (eq mode "project") }}
+  <p class="help-block">{{t "modalImport.detail.project1" htmlSafe=true}}</p>
+  <p class="help-block">{{t "modalImport.detail.project2" htmlSafe=true}}</p>
 {{else}}
-  <p class="help-block">{{t 'modalImport.detail.namespace1' htmlSafe=true}}</p>
-  <p class="help-block">{{t 'modalImport.detail.namespace2' htmlSafe=true}}</p>
+  <p class="help-block">{{t "modalImport.detail.namespace1" htmlSafe=true}}</p>
+  <p class="help-block">{{t "modalImport.detail.namespace2" htmlSafe=true}}</p>
 {{/if}}
 
 {{top-errors errors=errors}}
 {{top-errors errors=namespaceErrors}}
-{{save-cancel save='save' cancel='cancel' editing=editing createLabel='generic.import'}}
+{{save-cancel
+  save=(action "save")
+  cancel=(action "cancel")
+  editing=editing
+  createLabel="generic.import"
+}}

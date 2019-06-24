@@ -1,10 +1,23 @@
 {{#if showHeader}}
   <section class="header clearfix">
-    {{#if editing}}
-      <h1>{{t "newCatalog.upgrade"}} <span style="font-weight: normal">{{catalogApp.displayName}}</span></h1>
-    {{else}}
-      <h1>{{#link-to parentRoute}}{{t "newCatalog.catalog"}} {{templateResource.displayName}}{{/link-to}}</h1>
-    {{/if}}
+    <h1>
+      {{#if editing}}
+        {{t "newCatalog.upgrade"}}
+        <span style="font-weight: normal">
+          {{catalogApp.displayName}}
+        </span>
+      {{else if istio}}
+        {{#link-to parentRoute (query-params istio=true)}}
+          {{t "newCatalog.istio.catalog"}}
+          {{templateResource.displayName}}
+        {{/link-to}}
+      {{else}}
+        {{#link-to parentRoute}}
+          {{t "newCatalog.catalog"}}
+          {{templateResource.displayName}}
+        {{/link-to}}
+      {{/if}}
+    </h1>
   </section>
 {{/if}}
 
@@ -12,7 +25,12 @@
   <div class="row">
     <div class="col span-4 text-center">
       {{#if templateResource.links.icon}}
-        <img src={{templateResource.links.icon}} alt={{templateResource.name}} class="mr-20" style="max-height:150px;max-width: 100%;">
+        <img
+          src={{templateResource.links.icon}}
+          alt={{templateResource.name}}
+          class="mr-20"
+          style="max-height:150px;max-width: 100%;"
+        >
       {{/if}}
     </div>
     <div class="col span-8">
@@ -38,80 +56,89 @@
 </section>
 
 {{#accordion-list as |al expandFn|}}
-  {{#accordion-list-item
+  {{#unless istio}}
+    {{#accordion-list-item
       title=(t "newCatalog.appInfo")
       detail=(t "newCatalog.appInfoDetail")
       expandAll=al.expandAll
       expand=(action expandFn)
       expanded=detailExpanded
-  }}
-    <div class="row">
-      {{#if readmeContent}}
-        <div class="col span-12" style="overflow-y: auto; max-height: 500px;">
-          {{marked-down markdown=readmeContent}}
-        </div>
-      {{else}}
-        <h2 class="mb-10">
-          {{t (if editing titleUpgrade titleAdd) name=templateResource.name}}
-        </h2>
-        <p>{{templateResource.description}}</p>
-      {{/if}}
-    </div>
-  {{/accordion-list-item}}
+    }}
+      <div class="row">
+        {{#if readmeContent}}
+          <div class="col span-12" style="overflow-y: auto; max-height: 500px;">
+            {{marked-down markdown=readmeContent}}
+          </div>
+        {{else}}
+          <h2 class="mb-10">
+            {{t (if editing titleUpgrade titleAdd) name=templateResource.name}}
+          </h2>
+          <p>{{templateResource.description}}</p>
+        {{/if}}
+      </div>
+    {{/accordion-list-item}}
+  {{/unless}}
 
 
   {{#accordion-list-item
-    title=(t (if selectedTemplateModel.questions "inputAnswers.config" "newCatalog.helm.label"))
-    detail=(t (if selectedTemplateModel.questions "inputAnswers.protip" "newCatalog.helm.protip"))
-    expandAll=al.expandAll
-    expandOnInit=true
-    expand=(action expandFn)
+     title=(t (if selectedTemplateModel.questions "inputAnswers.config" "newCatalog.helm.label"))
+     detail=(t (if selectedTemplateModel.questions "inputAnswers.protip" "newCatalog.helm.protip"))
+     expandAll=al.expandAll
+     expandOnInit=true
+     expand=(action expandFn)
   }}
 
     <div class="row">
       <div class="col span-6">
         {{form-name-description
-            model=catalogApp
-            nameRequired=true
-            descriptionShow=false
-            nameDisabled=editing
-            bothColClass="col span-12"
-            colClass="col span-12"
+          model=catalogApp
+          nameRequired=false
+          descriptionShow=false
+          nameDisabled=editing
+          bothColClass="col span-12"
+          colClass="col span-12"
         }}
       </div>
       <div class="col span-6" style="padding-top: 6px;"> {{!-- matches styles of form-name-description --}}
-        <label for="" class="acc-label">{{t "newCatalog.templateVersion"}}</label>
+        <label for="" class="acc-label">
+          {{t "newCatalog.templateVersion"}}
+        </label>
         {{new-select
-            classNames="form-control"
-            content=sortedVersions
-            prompt="newCatalog.version.prompt"
-            localizedPrompt=true
-            optionLabelPath="version"
-            optionValuePath="link"
-            value=selectedTemplateUrl
-            disabled=getTemplate.isRunning
+          classNames="form-control"
+          content=sortedVersions
+          prompt="newCatalog.version.prompt"
+          localizedPrompt=true
+          optionLabelPath="version"
+          optionValuePath="link"
+          value=selectedTemplateUrl
+          disabled=getTemplate.isRunning
         }}
-        <p class="text-info">{{t (if editing selectVersionUpgrade selectVersionAdd)}}</p>
+        <p class="text-info">
+          {{t (if editing selectVersionUpgrade selectVersionAdd)}}
+        </p>
       </div>
     </div>
-    <div class="row">
-      {{#unless (or customizeNamespace (not selectedTemplateModel))}}
-        <div class="col span-12">
-          {{t "newCatalog.customizeNamespace" namespaceId=(if requiredNamespace requiredNamespace primaryResource.name) htmlSafe=true}}
-          {{#unless (or editing requiredNamespace)}}
-            <button class="btn btn-sm bg-transparent pl-0" {{action "toogleNamespace"}}>
-              {{t "generic.customize"}}
-            </button>
-          {{/unless}}
-        </div>
-      {{/unless}}
-      <div class="col span-12">
-        {{#if customizeNamespace}}
-          <hr class="mt-20 mb-20"/>
 
+    <div class="over-hr">
+      <span>
+        {{t "generic.namespace"}}
+      </span>
+    </div>
+
+    <div class="row">
+      <div class="col span-12">
+        {{#if selectedTemplateModel.requiredNamespace}}
+          <label class="acc-label pb-5">
+            {{t "newCatalog.requiredNamespace"}}
+          </label>
+          <p class="mt-0">
+            {{primaryResource.displayName}}
+          </p>
+        {{else}}
           {{form-namespace
-              namespace=primaryResource
-              errors=namespaceErrors
+            namespace=primaryResource
+            errors=namespaceErrors
+            registerHook=(action "registerHook")
           }}
         {{/if}}
       </div>
@@ -131,15 +158,15 @@
           <div class="col span-12">
             {{#if selectedTemplateModel.questions}}
               {{input-answers
-                  app=catalogApp
-                  selectedTemplate=selectedTemplateModel
-                  showHeader=false
-                  namespaceId=(if requiredNamespace requiredNamespace primaryResource.name)
+                app=catalogApp
+                selectedTemplate=selectedTemplateModel
+                showHeader=false
+                namespaceId=(if requiredNamespace requiredNamespace primaryResource.name)
               }}
             {{else}}
               {{input-custom-answers
-                  app=catalogApp
-                  selectedTemplate=selectedTemplateModel
+                app=catalogApp
+                selectedTemplate=selectedTemplateModel
               }}
             {{/if}}
           </div>
@@ -153,17 +180,24 @@
 {{#if (and selectedTemplateModel (not getTemplate.isRunning))}}
   {{#if showPreview}}
     <section>
-      <div class="over-hr hand no-select"><span {{action "togglePreview"}}>{{t "newCatalog.preview"}} <i class="icon {{if previewOpen "icon-chevron-up" "icon-chevron-down"}}"></i></span></div>
+      <div class="over-hr hand no-select">
+        <span {{action "togglePreview"}}>
+          {{t "newCatalog.preview"}}
+          <i class="icon {{if previewOpen "icon-chevron-up" "icon-chevron-down"}}"></i>
+        </span>
+      </div>
 
       {{#if previewOpen}}
         <div class="tabs">
           <div class="tab-header row">
             <div class="col span-4">
-              <label class="acc-label">{{t "newCatalog.templateFiles"}}</label>
+              <label class="acc-label">
+                {{t "newCatalog.templateFiles"}}
+              </label>
               {{searchable-select
-                  content=filenames
-                  value=previewTab
-                  readOnly=readOnly
+                content=filenames
+                value=previewTab
+                readOnly=readOnly
               }}
             </div>
           </div>
@@ -177,9 +211,15 @@
               </section>
             {{else}}
               {{#if (eq  previewTab "answers")}}
-                {{code-block code=answersString language="yaml"}}
+                {{code-block
+                  code=answersString
+                  language="yaml"
+                }}
               {{else}}
-                {{code-block code=selectedFileContetnt language="yaml"}}
+                {{code-block
+                  code=selectedFileContetnt
+                  language="yaml"
+                }}
               {{/if}}
             {{/if}}
           </div>
@@ -191,35 +231,38 @@
   {{#if upgrade}}
     <div class="checkbox pt-10">
       <label>
-        {{input type="checkbox" checked=forceUpgrade}}
+        {{input
+          type="checkbox"
+          checked=forceUpgrade
+        }}
         {{t "newCatalog.forceUpgrade"}}
       </label>
     </div>
   {{/if}}
   {{#if isGKE}}
     <div class="banner bg-warning">
-      <div class="banner-icon"><span class="icon icon-alert"></span></div>
+      <div class="banner-icon">
+        <span class="icon icon-alert"></span>
+      </div>
       <div class="banner-message">
         <p>{{t "ingressPage.gkeIngressWarning"}}</p>
       </div>
     </div>
   {{/if}}
 
-  {{#if errors.length}}
-    <section>
-      <div class="row">
-        <div class="col span-12">
-          {{top-errors errors=errors}}
-        </div>
-      </div>
-    </section>
-  {{/if}}
+  {{top-errors errors=errors}}
 
   <div class="footer-actions">
-    {{save-cancel createLabel=(if editing saveUpgrade saveNew) save="save" cancel="cancel"}}
+    {{save-cancel
+      createLabel=(if editing saveUpgrade (if istio "newCatalog.istio.saveNew" saveNew))
+      save=(action "save")
+      cancel=(action "cancel")
+    }}
   </div>
 {{else}}
   <div class="footer-actions">
-    <button {{action "cancel"}} class="btn bg-transparent">{{t "saveCancel.cancel"}}</button>
+    <button {{action "cancel"}} class="btn bg-transparent">
+      {{t "saveCancel.cancel"}}
+    </button>
   </div>
 {{/if}}

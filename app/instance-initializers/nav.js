@@ -15,6 +15,7 @@ const rootNav = [
       'containers', 'workload',
       'ingresses',
       'authenticated.project.dns',
+      'authenticated.project.hpa',
       'volumes',
       'authenticated.project.pipeline.pipelines',
       'authenticated.project.pipeline.repositories',
@@ -31,11 +32,25 @@ const rootNav = [
     resourceScope:  'project',
   },
   {
+    scope:                    'project',
+    id:                       'project-istio',
+    localizedLabel:           'nav.tools.istio',
+    route:                    'authenticated.project.istio.index',
+    ctx:                      [getProjectId],
+    resource:                 [],
+    resourceScope:            'project',
+    disableIfClusterNotReady: true,
+    moreCurrentWhen:          [
+      'authenticated.project.istio.graph',
+      'authenticated.project.istio.metrics',
+      'authenticated.project.istio.rules',
+    ],
+  },
+  {
     scope:          'project',
     id:             'infra',
     localizedLabel: 'nav.infra.tab',
     ctx:            [getProjectId],
-    route:          'authenticated.project.certificates',
     submenu:        [
       {
         id:             'infra-certificates',
@@ -96,7 +111,6 @@ const rootNav = [
     ctx:            [getProjectId],
     resource:       [],
     resourceScope:  'global',
-    route:          'authenticated.project.alert',
     submenu:        [
       {
         id:             'tools-alerts',
@@ -166,7 +180,6 @@ const rootNav = [
     ctx:            [getClusterId],
     resource:       ['clusterroletemplatebinding'],
     resourceScope:  'global',
-    route:          'authenticated.cluster.storage',
     submenu:        [
       {
         scope:          'cluster',
@@ -213,7 +226,6 @@ const rootNav = [
     ctx:            [getClusterId],
     resource:       [],
     resourceScope:  'global',
-    route:          'authenticated.cluster.alert',
     submenu:        [
       {
         id:             'cluster-tools-alert',
@@ -267,6 +279,15 @@ const rootNav = [
         resource:       [],
         ctx:            [getClusterId],
       },
+      {
+        id:                       'cluster-tools-istio',
+        localizedLabel:           'nav.tools.istio',
+        route:                    'authenticated.cluster.istio.cluster-setting',
+        resourceScope:            'global',
+        disableIfClusterNotReady: true,
+        resource:                 [],
+        ctx:                      [getClusterId],
+      },
     ],
   },
 
@@ -306,12 +327,11 @@ const rootNav = [
     scope:          'global',
     id:             'global-security',
     localizedLabel: 'nav.admin.security.tab',
-    route:          'global-admin.security',
     submenu:        [
       {
         id:             'global-security-roles',
         localizedLabel: 'nav.admin.security.roles',
-        route:          'global-admin.security.roles',
+        route:          'global-admin.security.roles.index',
         resource:       ['roletemplate'],
         resourceScope:  'global',
       },
@@ -369,6 +389,14 @@ const rootNav = [
         resource:       ['globaldnsprovider'],
         resourceScope:  'global',
       },
+      // {
+      //   id:             'global-registry',
+      //   localizedLabel: 'nav.admin.globalRegistry',
+      //   route:          'global-admin.global-registry',
+      //   // There is no schema for global registry. But we can use global dns to check if it is a HA env.
+      //   resource:       ['globaldns'],
+      //   resourceScope:  'global',
+      // },
     ],
   },
 //  {

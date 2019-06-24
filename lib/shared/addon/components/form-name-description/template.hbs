@@ -2,10 +2,14 @@
   <div class="{{rowClass}}">
     <div class="{{if (or hasBlock descriptionExpanded) bothColClass colClass}}">
 
-        <label for="{{concat elementId '-form-name'}}" class="acc-label pb-5">{{t nameLabel}}{{#if nameRequired}}{{field-required}}{{/if}}</label>
+      <label for="{{concat elementId "-form-name"}}" class="acc-label pb-5">
+        {{t nameLabel}}{{#if nameRequired}}{{field-required}}{{/if}}
+      </label>
         {{#if (and descriptionShown (not descriptionExpanded))}}
           <div class="pull-right text-small">
-            <a role="button" class="btn bg-transparent p-0" {{action "expandDescription"}}>{{t expandDescriptionAction}}</a>
+            <a role="button" class="btn bg-transparent p-0" {{action "expandDescription"}}>
+              {{t expandDescriptionAction}}
+            </a>
           </div>
         {{/if}}
 
@@ -14,7 +18,14 @@
             {{_name}}
           </div>
         {{else}}
-          {{input id=(concat elementId '-form-name') type="text" value=_name classNames="form-control" placeholder=(t namePlaceholder) }}
+          {{input
+            id=(concat elementId "-form-name")
+            type="text"
+            value=_name
+            classNames="form-control"
+            placeholder=(t namePlaceholder)
+            aria-required=nameRequired
+          }}
         {{/if}}
       {{#if nameHelpText}}<p class="text-info">{{nameHelpText}}</p>{{/if}}
     </div>
@@ -27,19 +38,36 @@
     {{#if (and descriptionShown descriptionExpanded)}}
       <div class="{{if (or hasBlock descriptionExpanded) bothColClass colClass}}">
         <div>
-          <label for="{{concat elementId '-form-description'}}" class="pb-5 acc-label desc-label">{{t descriptionLabel}}{{#if descriptionRequired}}{{field-required}}{{/if}}</label>
+          <label for="{{concat elementId "-form-description"}}" class="pb-5 acc-label desc-label">
+            {{t descriptionLabel}}{{#if descriptionRequired}}{{field-required}}{{/if}}
+          </label>
         </div>
-        {{textarea-autogrow id=(concat elementId '-form-description') value=_description classNames="form-control no-resize description" rows="1" placeholder=descriptionPlaceholder disabled=descriptionDisabled}}
+        {{textarea-autogrow
+          id=(concat elementId "-form-description")
+          value=_description
+          classNames="form-control no-resize description"
+          rows="1"
+          placeholder=descriptionPlaceholder
+          disabled=descriptionDisabled
+        }}
         {{#if descriptionHelp}}<p class="text-info">{{t descriptionHelp}}</p>{{/if}}
       </div>
     {{/if}}
   </div>
 {{else}}
-  <label class="acc-label pb-5">{{t nameLabel}}</label>
-  <p class="mt-0">{{_name}}</p>
+  <label class="acc-label pb-5">
+    {{t nameLabel}}
+  </label>
+  <p class="mt-0">
+    {{_name}}
+  </p>
 
   {{#if (and _description descriptionShown)}}
-    <label class="acc-label pb-5">{{t descriptionLabel}}</label>
-    <p class="mt-0">{{_description}}</p>
+    <label class="acc-label pb-5">
+      {{t descriptionLabel}}
+    </label>
+    <p class="mt-0">
+      {{_description}}
+    </p>
   {{/if}}
 {{/if}}

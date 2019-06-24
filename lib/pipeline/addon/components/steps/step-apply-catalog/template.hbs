@@ -5,9 +5,11 @@
     </div>
   </section>
 {{else}}
-  <div class='row mt-10'>
+  <div class="row mt-10">
     <div class="col span-6">
-      <label class='acc-label pb-5'>{{t 'newPipelineStep.stepType.applyApp.catalog.label'}}{{field-required}}</label>
+      <label class="acc-label pb-5">
+        {{t "newPipelineStep.stepType.applyApp.catalog.label"}}{{field-required}}
+      </label>
       {{searchable-select
         class="form-control"
         content=catalogs
@@ -18,7 +20,9 @@
       }}
     </div>
     <div class="col span-6">
-      <label class='acc-label pb-5'>{{t 'newPipelineStep.stepType.applyApp.catalogTemplate.label'}}{{field-required}}</label>
+      <label class="acc-label pb-5">
+        {{t "newPipelineStep.stepType.applyApp.catalogTemplate.label"}}{{field-required}}
+      </label>
       {{searchable-select
         class="form-control"
         content=apps
@@ -27,12 +31,16 @@
         optionValuePath="id"
         optionLabelPath="name"
       }}
-      <p class="text-info text-small m-0">{{t 'newPipelineStep.stepType.applyApp.catalogTemplate.helpText'}}</p>
+      <p class="text-info text-small m-0">
+        {{t "newPipelineStep.stepType.applyApp.catalogTemplate.helpText"}}
+      </p>
     </div>
   </div>
-  <div class='row'>
+  <div class="row">
     <div class="col span-6">
-      <label class='acc-label pb-5'>{{t 'newPipelineStep.stepType.applyApp.version.label'}}{{field-required}}</label>
+      <label class="acc-label pb-5">
+        {{t "newPipelineStep.stepType.applyApp.version.label"}}{{field-required}}
+      </label>
       {{searchable-select
         class="form-control"
         content=versions
@@ -41,27 +49,37 @@
         optionValuePath="id"
         optionLabelPath="name"
       }}
-      <p class="text-info text-small m-0">{{t 'newPipelineStep.stepType.applyApp.version.helpText'}}</p>
+      <p class="text-info text-small m-0">
+        {{t "newPipelineStep.stepType.applyApp.version.helpText"}}
+      </p>
     </div>
     <div class="col span-6">
-        {{form-namespace
-          namespace=namespace
-          editing=true
-        }}
-        <p class="text-info text-small m-0">{{t 'newPipelineStep.stepType.applyApp.targetNamespace.helpText'}}</p>
+      {{form-namespace
+        namespace=namespace
+        editing=true
+      }}
+      <p class="text-info text-small m-0">
+        {{t "newPipelineStep.stepType.applyApp.targetNamespace.helpText"}}
+      </p>
     </div>
   </div>
-  <div class='row'>
+  <div class="row">
     <div class="col span-6">
-      <label class='acc-label pb-5'>{{t 'newPipelineStep.stepType.applyApp.name.label'}}{{field-required}}</label>
-      {{input class="form-control" value=config.applyAppConfig.name placeholder=(t 'newPipelineStep.stepType.applyApp.name.placeholder')}}
+      <label class="acc-label pb-5">
+        {{t "newPipelineStep.stepType.applyApp.name.label"}}{{field-required}}
+      </label>
+      {{input
+        class="form-control"
+        value=config.applyAppConfig.name
+        placeholder=(t "newPipelineStep.stepType.applyApp.name.placeholder")
+      }}
     </div>
   </div>
   <div>
     {{form-key-value
       initialMap=config.applyAppConfig.answers
       changed=(action (mut config.applyAppConfig.answers))
-      header=(t 'newCatalog.answers.label')
+      header=(t "newCatalog.answers.label")
       addActionLabel="newCatalog.answers.addAction"
     }}
   </div>
@@ -69,5 +87,11 @@
     {{pipeline-condition type="step" config=config.when}}
   {{/advanced-section}}
   {{top-errors errors=errors}}
-  {{save-cancel saveDisabled=state.saveDisabled editing=editing createLabel="generic.add" save="save" cancel="cancel"}}
+  {{save-cancel
+    saveDisabled=state.saveDisabled
+    editing=editing
+    createLabel="generic.add"
+    save=(action "save")
+    cancel=(action "cancel")
+  }}
 {{/if}}

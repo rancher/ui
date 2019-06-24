@@ -1,0 +1,51 @@
+<tr class="main-row">
+  <td valign="middle" class="row-check" style="padding-top: 2px;">
+    {{check-box nodeId=model.id}}
+  </td>
+  <td data-title="{{dt.state}}" class="state">
+    {{badge-state model=model}}
+  </td>
+  <td data-title="{{dt.name}}" class="clip">
+    <a href="{{href-to "authenticated.project.hpa.detail" model.id}}">
+      {{model.displayName}}
+    </a>
+  </td>
+  <td data-title="{{dt.target}}">
+    {{#if model.workload}}
+      <a href="{{href-to "workload" model.workloadId}}">{{model.workload.displayName}}</a>
+    {{/if}}
+    <p class="text-small text-muted m-0 mr-20 clip">
+      {{#tooltip-element
+        type="tooltip-basic"
+        tooltipTemplate="tooltip-multi-lines"
+        model=model.displayMetrics
+        inlineBlock=true
+      }}
+        {{model.displayMetricsString}}
+      {{/tooltip-element}}
+    </p>
+  </td>
+  <td data-title="{{dt.currentReplicas}}">
+    {{model.currentReplicas}}
+    <p
+      data-title="{{dt.desiredReplicas}}"
+      class="text-small text-muted m-0 clip"
+    >
+      {{t "hpaPage.table.replicas.desired"}} {{model.desiredReplicas}} /
+      {{t "hpaPage.table.replicas.range"}} {{model.minReplicas}} ~ {{model.maxReplicas}}
+    </p>
+  </td>
+  <td data-title="{{dt.lastScaleTime}}" class="text-right pr-20">
+    {{#if model.lastScaleTime}}
+      {{date-from-now model.lastScaleTime}}
+    {{else}}
+      {{t "generic.na"}}
+    {{/if}}
+  </td>
+  <td data-title="{{dt.actions}}" class="actions">
+    {{action-menu model=model}}
+  </td>
+</tr>
+{{#if model.showTransitioningMessage}}
+  {{error-sub-row fullColspan="7" model=model}}
+{{/if}}

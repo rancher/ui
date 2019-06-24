@@ -10,6 +10,7 @@ generic:
   any: Any
   application: アプリケーション
   as: として
+  back: 戻る
   cancel: キャンセル
   closeModal: 閉じる
   cluster: クラスター
@@ -44,6 +45,8 @@ generic:
   hardware: ハードウェア
   healthy: ヘルス
   help: ヘルプ
+  hostname: ホスト名
+  hours: 時間
   id: ID
   image: イメージ
   import: インポート
@@ -55,6 +58,7 @@ generic:
   loading: "読込中..."
   loggingOut: "ログアウト中…"
   member: メンバー
+  mbps: Mbps
   mibibyte: 'MiB'
   minutes: 分
   milliseconds: 'ミリ秒'
@@ -79,10 +83,12 @@ generic:
   persistentVolume: 永続ボリューム
   random: ランダム
   remove: 削除
+  restarts: 再起動
   role: ロール
   save: 保存
   saved: 保存済み
   saving: 保存中
+  scope: スコープ
   search: 検索
   searchOrCustomInput: カスタム値を検索または入力してください。
   searching: '検索中...'
@@ -183,6 +189,8 @@ appDetailPage:
     protocol: プロトコル
     noData: このアプリケーションには公開エンドポイントは作成されていません
     noMatch: 検索条件に一致する公開エンドポイントはありません
+  answers:
+    variable: 変数
   notes:
     title: Notes
     detail: 'このアプリケーションを利用するための手順です'
@@ -235,6 +243,10 @@ podSecurityPoliciesPage:
         placeholder: "例: policy"
 rolesPage:
   title: ロール
+  headers:
+    global: グローバル
+    cluster: クラスター
+    project: プロジェクト
   index:
     localLink: ロールを追加
     table:
@@ -300,6 +312,7 @@ apiPage:
     state: 状態
     name: アクセスキー
     description: 詳細情報
+    scope: スコープ
     created: 作成日
     expires:
       label: 失効日
@@ -344,6 +357,7 @@ authPage:
       ping: Ping
       adfs: AD FS
       keycloak: Keycloak
+      okta: Okta
   ping:
     buttonText:
       pre: 'Pingによる認証'
@@ -364,7 +378,6 @@ authPage:
       disableAccess:
         header: "Danger Zone&trade;"
         warning: '<b class="text-danger">注意:</b> アクセスコントロールを無効化すると、このページや API にアクセスできる全ての人が {appName} 経由でフルコントロールするこ>とができます。'
-        confirmDisable: "本当によろしいですか? アクセスコントロールを無効化する場合は再度クリックしてください"
         disable: アクセスコントロールを無効化
       groupsField: 'グループ:'
       displayName: '表示名:'
@@ -407,7 +420,6 @@ authPage:
       disableAccess:
         header: "Danger Zone&trade;"
         warning: '<b class="text-danger">注意:</b> アクセスコントロールを無効化すると、このページや API にアクセスできる全ての人が {appName} 経由でフルコントロールすることができます。'
-        confirmDisable: "本当によろしいですか? アクセスコントロールを無効化する場合は再度クリックしてください"
         disable: Github アクセスを無効化
     notAuthenticated:
       header: "1. GithHub アプリケーションをセットアップする"
@@ -451,7 +463,6 @@ authPage:
         label: "Azure ADは設定されていません"
     enabled:
       header: 'Danger Zone&trade;'
-      reallyDisable: '本当によろしいですか? アクセスコントロールを無効化する場合は再度クリックしてください'
       promptDisable: アクセスコントロールを無効化
       general:
         header: 一般
@@ -506,7 +517,6 @@ authPage:
       header: 'Danger Zone&trade;'
       warning: '<b class="text-danger">注意:</b> アクセスコントロールを無効化すると、このページや API にアクセスできる全ての人が {appName} 経由でフルコントロールすることができます。'
       buttonText:
-        disable: '本当によろしいですか?  アクセスコントロールを無効化する場合は再度クリックしてください'
         prompt: アクセスコントロールを無効化
     accessDisabled:
       header: '1. 管理者ユーザーをセットアップする'
@@ -528,6 +538,13 @@ authPage:
       buttonText:
         pre: ローカル認証を有効化
         post: '有効化中...'
+backupsPage:
+  header: etcdスナップショット
+  table:
+    target:
+      s3: S3
+      local: ローカル
+    name: 名前
 balancerPage:
   noMatch: 検索条件に一致するバランサーがありません
   noData: 表示するバランサーはありません
@@ -732,6 +749,7 @@ containerPage:
       noData: このコンテナにはマウントされているボリュームがありません
       noMatch: 検索条件に一致するボリュームがありません
       noContainers: コンテナはありません
+  pod: ポッド
 podPage:
   header: 'ポッド: {name}'
   nodeIp: ノード IP
@@ -755,6 +773,17 @@ containersPage:
 clusterDashboard:
   notActive: このクラスターは現在 <b>{state}</b> 状態です
   notReady: このクラスターは現在 <b>{state}</b> 状態です; API が準備されるまでこのページでの直接の操作はできません。
+metricsAction:
+  grafana:
+    label: Grafana
+metrics:
+  pod-disk-io: ディスク I/O
+  pod-memory-usage-bytes-sum: メモリ使用率
+  pod-network-io: ネットワーク I/O
+  pod-network-packet: ネットワークパケット
+  container-cpu-usage: CPU使用率
+  container-disk-io: ディスク I/O
+  container-memory-usage-bytes-sum: メモリ使用率
 dnsPage:
   noMatch: 検索条件に一致するレコードはありません
   noData: 表示する DNS レコードはありません
@@ -776,6 +805,23 @@ editDns:
     view: "DNS レコード: {name}"
   name:
     placeholder: '例: myapp'
+  externalIPs:
+    placeholder: '例: 80.11.12.10'
+    value: 外部 IP
+  loadBalancerIP:
+    label: ロードバランサー IP
+    placeholder: '例: 78.11.24.19'
+  loadBalancerSourceRanges:
+    placeholder: '例: 143.231.0.0/16'
+  healthCheckNodePort:
+    placeholder: '例: 8080'
+  externalTrafficPolicy:
+    local: ローカル
+    cluster: クラスター
+  publishNotReadyAddresses:
+    label: 公開されている IP アドレス
+  sessionAffinityConfig:
+    placeholder: '例: 10800'
   description:
     placeholder: '例: 最新版の MyApp'
   selector:
@@ -789,6 +835,7 @@ editDns:
     alias: 別 DNS レコード値のエイリアス
     workload: 1つ以上のワークロード
     selector: セレクターに一致するポッドのセット
+    clusterIp: "クラスター IP"
   target:
     arecord: ターゲット IP アドレス
     cname: ターゲット ホスト名
@@ -834,6 +881,13 @@ cruPersistentVolumeClaim:
   storageClass:
     label: ストレージクラス
     prompt: デフォルトクラスを使用
+cruVolumeClaimTemplate:
+  name:
+    placeholder: '例: myvol'
+  pv:
+    label: 永続ボリューム
+  storageClass:
+    label: ストレージクラス
 cruVolume:
   title:
     new: エフェメラルボリュームを定義
@@ -846,6 +900,25 @@ cruVolume:
     title: ソース設定
     detail: 選択中のボリュームソースのオプションを設定します
     prompt: ボリュームソースを選択してください...
+globalDnsPage:
+  entriesPage:
+    table:
+      name: 名前
+      fqdn: FQDN
+      provider: プロバイダー ID
+    config:
+      project: プロジェクト
+      fqdn:
+        label: FQDN
+        placeholder: dev.example.com
+      provider:
+        label: プロバイダー
+  providersPage:
+    config:
+      accessKey:
+        label: アクセスキー
+      secretKey:
+        label: 秘密キー
 failWhalePage:
   header: エラー
   reloadButton: |
@@ -1327,6 +1400,7 @@ notifierPage:
     email: E-mail アドレス
     pagerduty: PagerDuty
     webhook: Webhook
+    wechat: WeChat
   slack:
     url: URL
     urlPlaceholder: '例: https://hooks.slack.com/services/T00000000/B00000000/XXXXXXXXXXXXXXXXXXXXXXXX'
@@ -1349,6 +1423,10 @@ notifierPage:
     serviceKeyPlaceholder: あなたの pagerduty サービスキー
     helpText: |
       Pagerduty 用 <a href="https://support.pagerduty.com/docs/webhooks">incoming WebHooks の作成</a> を参照してください
+  wechat:
+    agentPlaceholder: '例: 1000003'
+    corpPlaceholder: '例: wwc0cc3d58f9b021b6'
+    defaultRecipientPlaceholder: '例: 2'
   webhook:
     url: URL
     urlPlaceholder: あなたの webhook URL
@@ -1501,6 +1579,9 @@ annotationsSection:
   value: 値
   noData: アノテーションはありません。
   noMatch: 検索条件に一致するアノテーションがありません
+authorizedEndpoint:
+  fqdn:
+    label: FQDN
 taintsSection:
   key: キー
   value: 値
@@ -1529,6 +1610,9 @@ catalogSettings:
   header: カタログ
   notAvailable: "利用不可: <code>{name}</code> というカスタムカタログがあります"
   helpText: 現在は Helm カタログのみサポートされます
+  currentCluster: クラスター
+  currentProject: プロジェクト
+  globalCatalog: グローバル
   library:
     label: ライブラリ
     detail: 公式に管理されているアプリケーション定義のリポジトリであり、{appName} によりメンテナンスされています。
@@ -1897,7 +1981,6 @@ clusterNew:
       linux: Linux
       windows: Windows
     windowsSupport:
-      label: Windowsのサポート (実験的)
       disabled: ネットワークプロバイダーの {plugin} はサポートされていません
   custom:
     label: カスタム
@@ -2440,7 +2523,6 @@ cruStorageClass:
       placeholder: "例: 20"
   azure-disk:
     new: 新しい Azure ディスク
-    unmanaged: Azure 非マネージドディスク
     skuName:
       label: Sku 名
       placeholder: "例: Standard_LRS"
@@ -2455,8 +2537,6 @@ cruStorageClass:
       placeholder: "例: Standard_LRS"
     kind:
       label: 種類
-      shared: 共有
-      dedicated: 専有
       managed: マネージド
       placeholder: "例: Shared"
   azure-file:
@@ -2540,8 +2620,6 @@ cruStorageClass:
     staleReplicaTimeout:
       label: レプリカのタイムアウト値
       placeholder: "例 30"
-    fromBackup:
-      label: From Backup
   quobyte:
     quobyteAPIServer:
       label: Quobyte API サーバー
@@ -4213,14 +4291,6 @@ newContainer:
     globalService: グローバルワークロードをデプロイ
     sidekick: 'サイドカーをデプロイ'
     sidekickName: '"{name}" のサイドカーをデプロイ'
-  upgrade:
-    container: コンテナをアップグレード
-    service: サービスをアップグレード
-    globalService: グローバルサービスをアップグレード
-    sidekick: サイドカーをアップグレード
-    sidekickName: '"{name}" のサイドカーをアップグレード'
-  selectUpgrade: アップグレードするサービスを1つ以上選択してください
-  saveUpgrade: アップグレード
   saveNew: 起動
   name:
     placeholder: '例: myapp'
@@ -4237,9 +4307,6 @@ newContainer:
     valueLabel: 値
     valuePlaceholder: '例: bar'
   sidekick:
-    header: サービスをアップグレード
-    title: アップグレードするサービス起動設定の選択
-    detail: '"{service}" にはサイドカーが含まれます。どのコンテナをアップグレードしますか?'
     primary: 基本サービス
     sidekick: サイドカー
   errors:
@@ -4311,7 +4378,7 @@ nodeDriver:
       loading: "Amazonからセキュリティグループをロード中..."
     associateWorkerNodePublicIp:
       radio:
-        default: "Yes"
+        default: 'true'
     securityGroup:
       title: セキュリティグループ
       detail: EKSインスタンスに適用するセキュリティグループを選択してください
@@ -4416,8 +4483,6 @@ nodeDriver:
     region:
       label: リージョン
     optionsSection: オプション
-    backups:
-      label: バックアップを有効化
     ipv6:
       label: IPv6 を有効化
     privateNetworking:
@@ -4475,7 +4540,6 @@ nodeDriver:
   packet:
     accountSection: アカウントアクセス
     projectId:
-      label: プロジェクト
       placeholder: あなたの Packet プロジェクト ID
     apiKey:
       label: API キー
@@ -5113,7 +5177,6 @@ upgradeBtn:
     available: 'アップグレードが利用できます'
     inprogress: 'アップグレード中です'
     upgraded: 'アップグレード完了: アップグレードが終了しました'
-    notfound: 'テンプレートバージョンが見つかりません'
     error: 'アップグレードのチェックに失敗しました'
     required: 'アップグレードが必要です'
 jsonEditor:
@@ -5204,8 +5267,6 @@ nav:
     library: ライブラリ
     community: コミュニティ
   apps:
-    tab: カタログアプリ
-    apps: カタログアプリ
     launch: 起動
   infra:
     tab: リソース
@@ -5394,7 +5455,7 @@ growl:
   webSocket:
     connecting:
       title: WebSocketへの接続中にエラーが発生しました
-      warning: サーバーへのWebSocket接続を確立できません。サーバーがプロキシやSSL Terminationデバイスの背後にある場合、ブラウザはWebSocketに接続できません。サーバーがプロキシの背後にある場合は、プロキシがWebSocketをサポートしていることを確認してください。この問題が解決されるまで、ストリーミング統計、ログ、シェル/コンソール、リソースの状態の自動更新は動作しません。
+      warning: サーバーへのWebSocket接続を確立できません。サーバーがプロキシやSSL Terminationデバイスの背後にある場合、ブラウザはWebSocketに接続できません。サーバーがプロキシの背後にある場合は、プロキシがWebSocketをサポートしていることを確認してください。この問題が解決されるまで、ストリーミング東経、ログ、シェル/コンソール、リソースの状態の自動更新は動作しません。
       safariCertWarning: 考えられる別の原因は、たとえ警告をバイパスするために継続するよう回答したとしても、Safariが認識されない証明書を使用したWebSocket接続を許可しないことです。サーバーには、Safariが自動的に信頼する承認された機関によって署名された証明書が必要です。
       disconnectedWarning: "サーバーから切断されました。再接続を試みます..."
 storageClass:

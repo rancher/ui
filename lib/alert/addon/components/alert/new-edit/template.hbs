@@ -1,5 +1,9 @@
 <section class="header clearfix">
-  <div class="pull-left"><h1>{{if isCreate (t 'alertPage.new.addHeader') (t 'alertPage.new.editHeader')}}</h1></div>
+  <div class="pull-left">
+    <h1>
+      {{if isCreate (t "alertPage.new.addHeader") (t "alertPage.new.editHeader")}}
+    </h1>
+  </div>
 </section>
 <div class="row">
   <div class="col span-12 pt-0 mt-0">
@@ -15,25 +19,25 @@
 
 <div>
   {{alert/form-alert-rules
-      pageScope=pageScope
-      isCreate=isCreate
-      alertRules=alertRules
-      metrics=metrics
-      monitoringEnabled=monitoringEnabled
-      alertGroup=alertGroup
-      mode=mode
-      level=level
+    pageScope=pageScope
+    isCreate=isCreate
+    alertRules=alertRules
+    metrics=metrics
+    monitoringEnabled=monitoringEnabled
+    alertGroup=alertGroup
+    mode=mode
+    level=level
   }}
   <hr/>
   {{alert/form-recipients
-      pageScope=pageScope
-      isCreate=isCreate
-      model=alertGroup
+    pageScope=pageScope
+    isCreate=isCreate
+    model=alertGroup
   }}
 </div>
 
 {{alert/form-advanced
-    model=alertGroup
+  model=alertGroup
 }}
 
 <div class="mt-20">
@@ -42,8 +46,8 @@
 
 <div class="mv-20">
   {{save-cancel
-      createLabel=(if isCreate 'alertPage.create' 'alertPage.save')
-      save="save"
-      cancel="cancel"
+    createLabel=(if isCreate "alertPage.create" "alertPage.save")
+    save=(action "save")
+    cancel=(action "cancel")
   }}
 </div>

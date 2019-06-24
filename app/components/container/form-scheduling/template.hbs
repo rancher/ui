@@ -1,57 +1,57 @@
 {{#accordion-list-item
-     title=(t 'formScheduling.title')
-     detail=(t 'formScheduling.detail' appName=settings.appName)
-     expandAll=expandAll
-     expand=(action expandFn)
+   title=(t "formScheduling.title")
+   detail=(t "formScheduling.detail" appName=settings.appName)
+   expandAll=expandAll
+   expand=(action expandFn)
 }}
   {{#if editing}}
     {{#if canRequestHost}}
       <div class="radio mb-0">
         <label>{{radio-button selection=isRequestedHost value=true}}
-          {{t 'formScheduling.canRequestHost.containers' htmlSafe=true}}
+          {{t "formScheduling.canRequestHost.containers" htmlSafe=true}}
         </label>
-          {{#if isRequestedHost}}
-            <div class="mb-10 mt-10">
-              {{searchable-select
-                class="form-control"
-                content=hostChoices
-                value=requestedHostId
-                optionValuePath="id"
-                optionLabelPath="name"
-                disabled=(not isRequestedHost)
-                style="display: inline-block; width: auto;"
-              }}
-            </div>
-          {{/if}}
+        {{#if isRequestedHost}}
+          <div class="mb-10 mt-10">
+            {{searchable-select
+              class="form-control"
+              content=hostChoices
+              value=requestedHostId
+              optionValuePath="id"
+              optionLabelPath="name"
+              disabled=(not isRequestedHost)
+              style="display: inline-block; width: auto;"
+            }}
+          </div>
+        {{/if}}
       </div>
 
       <div class="radio mb-0">
         <label>{{radio-button selection=isRequestedHost value=false}}
           {{#if isGlobal}}
-            {{t 'formScheduling.autoRun'}}
+            {{t "formScheduling.autoRun"}}
           {{else}}
-            {{t 'formScheduling.autoPick.container'}}
+            {{t "formScheduling.autoPick.container"}}
           {{/if~}}
         </label>
       </div>
     {{else}}
       {{#if isGlobal}}
-        <label class="acc-label">{{t 'formScheduling.autoRun'}}</label>
+        <label class="acc-label">{{t "formScheduling.autoRun"}}</label>
       {{else}}
-        <label class="acc-label">{{t 'formScheduling.autoPick.container'}}</label>
+        <label class="acc-label">{{t "formScheduling.autoPick.container"}}</label>
       {{/if~}}
     {{/if}}
   {{else if isGlobal}}
-    <label class="acc-label">{{t 'formScheduling.autoRun'}}</label>
+    <label class="acc-label">{{t "formScheduling.autoRun"}}</label>
   {{else if requestedHostId}}
     <div class="row">
       <label>
-        {{t 'formScheduling.canRequestHost.containers' htmlSafe=true}}
+        {{t "formScheduling.canRequestHost.containers" htmlSafe=true}}
       </label>
       <span class="form-static-control">{{selectedChoice.name}}</span>
     </div>
   {{else}}
-    <p>{{t 'formScheduling.autoPick.container'}}</p>
+    <p>{{t "formScheduling.autoPick.container"}}</p>
   {{/if}}
 
   {{#unless isRequestedHost}}
@@ -76,21 +76,21 @@
       </div>
       <div class="row">
         <div class="col span-4 box">
-          <label class="acc-label">{{t 'formScheduling.scheduler.label'}}</label>
+          <label class="acc-label">{{t "formScheduling.scheduler.label"}}</label>
           {{#input-or-display editable=editing value=scheduling.scheduler}}
-            {{input type="text" classNames="form-control" value=scheduling.scheduler placeholder=(t 'formScheduling.scheduler.placeholder')}}
+            {{input type="text" classNames="form-control" value=scheduling.scheduler placeholder=(t "formScheduling.scheduler.placeholder")}}
           {{/input-or-display}}
         </div>
         <div class="col span-4 box">
-          <label class="acc-label">{{t 'formScheduling.priority.label'}}</label>
+          <label class="acc-label">{{t "formScheduling.priority.label"}}</label>
           {{#input-or-display editable=editing value=scheduling.priority}}
-            {{input-integer min="1" step="1" value=scheduling.priority classNames="form-control" placeholder=(t 'formScheduling.priority.placeholder')}}
+            {{input-integer min="1" step="1" value=scheduling.priority classNames="form-control" placeholder=(t "formScheduling.priority.placeholder")}}
           {{/input-or-display}}
         </div>
         <div class="col span-4 box">
-          <label class="acc-label">{{t 'formScheduling.priorityClassName.label'}}</label>
+          <label class="acc-label">{{t "formScheduling.priorityClassName.label"}}</label>
           {{#input-or-display editable=editing value=scheduling.priorityClassName}}
-            {{input type="text" classNames="form-control" value=scheduling.priorityClassName placeholder=(t 'formScheduling.priorityClassName.placeholder')}}
+            {{input type="text" classNames="form-control" value=scheduling.priorityClassName placeholder=(t "formScheduling.priorityClassName.placeholder")}}
           {{/input-or-display}}
         </div>
       </div>

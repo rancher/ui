@@ -4,6 +4,7 @@
      pagingLabel="pagination.namespace"
      headers=headers
      descending=descending
+     extraSearchFields=extraSearchFields
      bulkActions=true
      body=rows
      sortBy=sortBy
@@ -19,6 +20,9 @@
       </td>
       <td>
         {{obj.name}}
+        {{#if obj.autoInjectionEnabled}}
+          <div class="istio istio-autoinjection"></div>
+        {{/if}}
         {{#if obj.description}}
           <p class="text-small text-muted m-0">{{linkify obj.description}}</p>
         {{/if}}

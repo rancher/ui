@@ -1,15 +1,47 @@
-
-<label class="acc-label">{{fieldDef.name}}{{if fieldDef.required '*'}}</label>
-  {{#if (eq fieldDef.type 'boolean')}}
-    {{input type="checkbox" checked=value classNames="m-10"}}
-  {{else if (eq fieldDef.type 'float')}}
-    {{input type="number" value=value classNames="form-control" placeholder=placeholder min=fieldDef.min max=fieldDef.max}}
-  {{else if (eq fieldDef.type 'int')}}
-    {{input-integer value=value classNames="form-control" placeholder=placeholder min=fieldDef.min max=fieldDef.max}}
+<label class="acc-label">
+  {{fieldDef.name}}{{if fieldDef.required "*"}}
+</label>
+{{#if specialField}}
+  {{schema/input-multiline
+    classNames="form-control"
+    value=value
+    placeholder=placeholder
+    rows=1
+  }}
+{{else}}
+  {{#if (eq fieldType "boolean")}}
+    {{input
+      type="checkbox"
+      checked=value
+      classNames="m-10"
+    }}
+  {{else if (eq fieldType "float")}}
+    {{input
+      type="number"
+      value=value
+      classNames="form-control"
+      placeholder=placeholder
+      min=fieldDef.min
+      max=fieldDef.max
+    }}
+  {{else if (eq fieldType "int")}}
+    {{input-integer
+      value=value
+      classNames="form-control"
+      placeholder=placeholder
+      min=fieldDef.min
+      max=fieldDef.max
+    }}
   {{else}}
-    {{input type="text" value=value classNames="form-control" placeholder=fieldDef.placeholder}}
+    {{input
+      type="text"
+      value=value
+      classNames="form-control"
+      placeholder=fieldDef.placeholder
+    }}
   {{/if}}
+{{/if}}
 
-  <p class="text-info">{{fieldDef.description}}</p>
-
-
+<p class="text-info">
+  {{fieldDef.description}}
+</p>

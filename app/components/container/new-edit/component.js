@@ -1,5 +1,5 @@
 import Errors from 'ui/utils/errors';
-import { get, set, setProperties } from '@ember/object';
+import { get, set, setProperties, computed } from '@ember/object';
 import { equal } from '@ember/object/computed';
 import { next } from '@ember/runloop';
 import { inject as service } from '@ember/service';
@@ -10,6 +10,11 @@ import C from 'ui/utils/constants';
 import ChildHook from 'shared/mixins/child-hook';
 import { flattenLabelArrays } from 'shared/mixins/manage-labels';
 import layout from './template';
+
+const WINDOWS_NODE_SELECTOR = 'beta.kubernetes.io/os = windows';
+const LINUX_NODE_SELECTOR = 'beta.kubernetes.io/os != windows';
+const LINUX = 'linux';
+const WINDOWS = 'windows';
 
 export default Component.extend(NewOrEdit, ChildHook, {
   clusterStore: service(),
@@ -34,6 +39,7 @@ export default Component.extend(NewOrEdit, ChildHook, {
   isRequestedHost:       null,
   upgradeOptions:        null,
   separateLivenessCheck: false,
+  targetOs:              WINDOWS,
 
   // Errors from components
   commandErrors:    null,
@@ -109,6 +115,10 @@ export default Component.extend(NewOrEdit, ChildHook, {
     if ( !get(this, 'isSidekick') ) {
       this.labelsChanged();
     }
+
+    if ( get(this, 'showTargetOS') && get(this, `prefs.${ C.PREFS.TARGET_OS }`) ) {
+      set(this, 'targetOs', get(this, `prefs.${ C.PREFS.TARGET_OS }`));
+    }
   },
 
   didInsertElement() {
@@ -120,6 +130,10 @@ export default Component.extend(NewOrEdit, ChildHook, {
   },
 
   actions: {
+    setTargetOs(os) {
+      set(this, 'targetOs', os);
+    },
+
     setImage(uuid) {
       set(this, 'launchConfig.image', uuid);
     },
@@ -137,11 +151,15 @@ export default Component.extend(NewOrEdit, ChildHook, {
     },
 
     done() {
-      this.sendAction('done');
+      if (this.done) {
+        this.done();
+      }
     },
 
     cancel() {
-      this.sendAction('cancel');
+      if (this.cancel) {
+        this.cancel();
+      }
     },
 
     toggleSeparateLivenessCheck() {
@@ -195,6 +213,10 @@ export default Component.extend(NewOrEdit, ChildHook, {
       set(this, 'header', get(this, 'intl').t(k, args));
     });
   }.observes('isUpgrade', 'isSidekick', 'isGlobal', 'service.displayName', 'intl.locale').on('init'),
+
+  showTargetOS: computed('scope.currentCluster.isWindows', 'isUpgrade', 'isSidekick', function(){
+    return get(this, 'scope.currentCluster.isWindows') && !get(this, 'isUpgrade') && !get(this, 'isSidekick');
+  }),
 
   // ----------------------------------
   // ----------------------------------
@@ -264,6 +286,25 @@ export default Component.extend(NewOrEdit, ChildHook, {
     let service = get(this, 'service');
 
     let readinessProbe = get(lc, 'readinessProbe');
+
+    if ( get(this, 'showTargetOS') && ( get(this, 'targetOs') === LINUX || get(this, 'targetOs') === WINDOWS )  ) {
+      const selector = get(this, 'targetOs') === WINDOWS ? WINDOWS_NODE_SELECTOR : LINUX_NODE_SELECTOR;
+
+      if ( !get(service, 'scheduling') ) {
+        set(service, 'scheduling', { node: { requireAll: [selector] } });
+      } else if ( !get(service, 'scheduling.node') ) {
+        set(service, 'scheduling.node', { requireAll: [selector] });
+      } else if ( !get(service, 'scheduling.node.requireAll') ) {
+        set(service, 'scheduling.node.requireAll', [selector]);
+      } else {
+        const requireAll = get(service, 'scheduling.node.requireAll') || [];
+        const found = requireAll.find((r) => r && r.replace(/\s+/g, '') === selector.replace(/\s+/g, ''));
+
+        if ( !found ) {
+          requireAll.push(selector);
+        }
+      }
+    }
 
     if (!get(this, 'separateLivenessCheck')) {
       if ( readinessProbe ) {
@@ -400,8 +441,15 @@ export default Component.extend(NewOrEdit, ChildHook, {
       set(this, `prefs.${ C.PREFS.LAST_SCALE_MODE }`, scaleMode);
       set(this, `prefs.${ C.PREFS.LAST_IMAGE_PULL_POLICY }`, get(this, 'launchConfig.imagePullPolicy'));
       set(this, `prefs.${ C.PREFS.LAST_NAMESPACE }`, get(this, 'namespace.id'));
+
+
+      if ( get(this, 'showTargetOS') ) {
+        set(this, `prefs.${ C.PREFS.TARGET_OS }`, get(this, 'targetOs'));
+      }
     }
-    this.sendAction('done');
+    if (this.done) {
+      this.done();
+    }
   },
 
 });

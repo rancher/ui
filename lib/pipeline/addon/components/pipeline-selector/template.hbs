@@ -21,7 +21,11 @@
     </thead>
     <tbody>
       {{#each ruleArray as |rule|}}
-        {{pipeline-selector-row branchOnly=branchOnly remove="removeRule" rule=rule}}
+        {{pipeline-selector-row
+          branchOnly=branchOnly
+          remove=(action "removeRule")
+          rule=rule
+        }}
       {{/each}}
     </tbody>
   </table>

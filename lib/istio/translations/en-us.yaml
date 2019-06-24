@@ -1,0 +1,108 @@
+clusterIstioPage:
+  header: Istio
+  enabled: "Istio is enabled. In order to leverage Istio, you will need to enable Istio sidecar auto injection for each namespace. If you enable it on an existing namespace, any existing workloads will need to be re-deployed to leverage the sidecar auto injection."
+  disabled: "Istio is not enabled yet. Please click Enable button to enable it."
+  notReady: Installing Istio into the system project of current cluster...
+  confirmDisable: "Are you sure?  Click again to disable Istio"
+  disable: Disable Istio
+  enableActionLabel: Enable
+  version: Istio Version
+  links:
+    kiali:
+      label: Kiali UI
+    jaeger:
+      label: Jaeger UI
+    grafana:
+      label: Grafana UI
+    prometheus:
+      label: Prometheus UI
+  config:
+    header:
+      grafana: GRAFANA
+      gateway: INGRESS GATEWAY
+      pilot: PILOT
+      prometheus: PROMETHEUS
+      mixer: MIXER
+      tracing: TRACING
+    tracingEnabled:
+      label: Enable Tracing
+    grafanaEnabled:
+      label: Enable Grafana
+    grafanaPersistenceEnabled:
+      label: Enable Persistent Storage for Grafana
+    mtlsEnabled:
+      label: Service to service mutual TLS
+    gatewayEnabled:
+      label: Enable Ingress Gateway
+    gatewayType:
+      label: Service Type of Ingress Gateway
+    http2Port:
+      label: Http2 Port
+    httpsPort:
+      label: Https Port
+    loadBalancerIP:
+      label: Load Balancer IP
+      placeholder: e.g. 192.0.0.1
+    prometheusRetention:
+      label: Retention for Prometheus
+      placeholder: e.g. 6h
+    traceSampling:
+      label: Trace sampling Percentage
+      placeholder: e.g. 1
+    mixerPolicyEnabled:
+      label: Enable Mixer Policy
+  nodeSelector:
+    addSelectorLabel: Add Selector
+    helpText: Select the nodes where {component} workloads will be scheduled to
+  insufficientSize:
+    total:
+      cpu: Please make sure you have at least {minCpu} milli CPUs available to {action} Istio.
+      memory: Please make sure you have at least {minMemory} MiB of memory available to {action} Istio.
+      all: Please make sure you have at least {minCpu} milli CPUs and {minMemory} MiB of memory available to {action} Istio.
+    workload:
+      cpu: Please make sure you have at least one node with {cpu} milli CPUs available to deploy {component} workload.
+      memory: Please make sure you have at least one node with {memory} MiB of memory available to deploy {component} workload.
+      all: Please make sure you have at least one node with {cpu} milli CPUs and {memory} MiB of memory available to deploy {component} workload.
+    selectors:
+      cpu: Please make sure you have at least one node matches node selectors with {cpu} milli CPUs available to enable {component} workload.
+      memory: Please make sure you have at least one node matches node selectors with {memory} MiB of memory available to enable {component} workload.
+      all: Please make sure you have at least one node matches node selectors with {cpu} milli CPUs and {memory} MiB of memory available to enable {component} workload.
+      unsupported: 'Node selector with value "true", "false" or number is not supported'
+  telemetryAndPolicy: Telemetry And Policy
+  existingClaim:
+    label: 'Existing Claim for {component}'
+istio:
+  noData: Not enough data for graph
+  period: Period
+  table:
+    template: Template
+    host: Host
+  kiali: Powered by Kiali
+  trafficMonitoring:
+    duration: Last {time}
+  nav:
+    graph: Traffic Graph
+    metrics: Traffic Metrics
+    rules: Traffic Rules
+rulesPage:
+  new: Add Traffic Rule
+  noMatch: No traffic rule match the current search
+  noData: There are no traffic rules to show
+ruleDetailPage:
+  header: "Traffic Rules: {appName}"
+  rules:
+    virtualservices: Virtual Services
+    serviceentries: Service Entries
+    destinationrules: Destination Rules
+    gateways: Gateways
+    envoyfilters: Envoy Filters
+  answers:
+    title: Answers
+    detail: Customized answers of this traffic rules
+    variable: Variable
+
+projectIstioPage:
+  info:
+    notEnabled: 'Istio is not enabled yet. Go <a href="/c/{clusterId}/istio/cluster-setting">here</a> to enable it.'
+    notOwner: "Istio is not enabled yet. Please contact your cluster administrator."
+    noPermission: "You do not have permission to configure Istio."

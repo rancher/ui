@@ -1,4 +1,21 @@
-{{input type="password" value=value classNames="form-control"}}
+{{#if conceal}}
+  {{input
+    value=value
+    classNames="form-control conceal"
+  }}
+{{else}}
+  {{input
+    type="password"
+    value=value
+    classNames="form-control"
+  }}
+{{/if}}
 <span class="input-group-btn">
-  <button class="btn bg-primary" type="button" {{action "generate"}}>{{t 'inputPassword.buttonText'}}</button>
+  <button
+    class="btn bg-primary"
+    type="button"
+    {{action "generate"}}
+  >
+    {{t "inputPassword.buttonText"}}
+  </button>
 </span>

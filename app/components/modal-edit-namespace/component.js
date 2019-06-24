@@ -9,6 +9,9 @@ import {
 } from '@ember/object';
 import { next } from '@ember/runloop';
 
+const ISTIO_INJECTION = 'istio-injection'
+const ENABLED = 'enabled';
+
 export default Component.extend(ModalBase, NewOrEdit, {
   scope: service(),
 
@@ -17,10 +20,11 @@ export default Component.extend(ModalBase, NewOrEdit, {
   editing:       true,
   model:         null,
 
-  allNamespaces:     null,
-  allProjects:       null,
-  tags:              null,
-  beforeSaveModel:   null,
+  allNamespaces:           null,
+  allProjects:             null,
+  tags:                    null,
+  beforeSaveModel:         null,
+  initAutoInjectionStatus: null,
 
   originalModel:  alias('modalService.modalOpts'),
   init() {
@@ -38,6 +42,15 @@ export default Component.extend(ModalBase, NewOrEdit, {
       allProjects:   get(this, 'globalStore').all('project')
         .filterBy('clusterId', get(this, 'scope.currentCluster.id')),
     })
+
+    const labels = get(this, 'primaryResource.labels')
+
+    const enabled = labels && labels[ISTIO_INJECTION] === ENABLED;
+
+    setProperties(this, {
+      istioInjection:          enabled,
+      initAutoInjectionStatus: enabled
+    });
   },
 
   actions: {
@@ -59,7 +72,21 @@ export default Component.extend(ModalBase, NewOrEdit, {
 
     updateContainerDefault(limit) {
       set(this, 'primaryResource.containerDefaultResourceLimit', limit);
-    }
+    },
+
+    setLabels(labels) {
+      let out = {};
+
+      labels.forEach((row) => {
+        out[row.key] = row.value;
+      });
+
+      set(this, 'primaryResource.labels', out);
+    },
+
+    toggleAutoInject() {
+      set(this, 'istioInjection', !get(this, 'istioInjection'));
+    },
   },
 
   projectDidChange: observer('primaryResource.project.id', function() {
@@ -74,6 +101,10 @@ export default Component.extend(ModalBase, NewOrEdit, {
 
   tagsDidChanged: observer('tags', function() {
     set(this, 'primaryResource.tags', get(this, 'tags').split(',') || []);
+  }),
+
+  canMoveNamespace: computed('primaryResource.actionLinks.{move}', function() {
+    return !!get(this, 'primaryResource.actionLinks.move');
   }),
 
   projectLimit: computed('primaryResource.resourceQuota.{limit}', 'primaryResource.projectId', function() {
@@ -113,7 +144,20 @@ export default Component.extend(ModalBase, NewOrEdit, {
   },
 
   willSave() {
-    set(this, 'beforeSaveModel', get(this, 'originalModel').clone());
+    const labels = { ...get(this, 'primaryResource.labels') };
+
+    if ( get(this, 'scope.currentCluster.istioEnabled') ) {
+      if ( get(this, 'istioInjection') ) {
+        labels[ISTIO_INJECTION] = ENABLED;
+      } else {
+        delete labels[ISTIO_INJECTION];
+      }
+    }
+
+    setProperties(this, {
+      'beforeSaveModel':        get(this, 'originalModel').clone(),
+      'primaryResource.labels': labels
+    });
 
     return this._super(...arguments);
   },

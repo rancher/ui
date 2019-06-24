@@ -1,36 +1,60 @@
 ---
-pipeline:
-  test:
-    image: rancher/ui:build
-    commands:
-      - ./scripts/ci
-    volumes:
-      - /tmp/cache-npm:/var/cache/npm
-    when:
-      event: [pull_request]
+kind: pipeline
+name: default
 
-  build:
-    image: rancher/ui:build
-    commands:
-      - BUILD_LATEST=true ./scripts/ci
-    volumes:
-      - /tmp/cache-npm:/var/cache/npm
-    when:
-      branch: "master"
-      event:
-        exclude: [pull_request]
+platform:
+  os: linux
+  arch: amd64
 
-  upload:
-    image: plugins/gcs
+steps:
+- name: test
+  pull: default
+  image: rancher/dapper:v0.4.1
+  commands:
+  - dapper ci
+  privileged: true
+  volumes:
+  - name: docker
+    path: /var/run/docker.sock
+  when:
+    event:
+    - pull_request
+
+- name: build
+  pull: default
+  image: rancher/dapper:v0.4.1
+  commands:
+  - BUILD_LATEST=true dapper ci
+  privileged: true
+  volumes:
+  - name: docker
+    path: /var/run/docker.sock
+  when:
+    branch:
+    - master
+    event:
+      exclude:
+      - pull_request
+
+- name: upload
+  pull: default
+  image: plugins/gcs
+  settings:
+    acl:
+    - allUsers:READER
+    cache_control: "no-cache,must-revalidate"
     source: dist/static/latest2
     target: releases.rancher.com/ui/latest2
-    acl:
-     - allUsers:READER
-    cache_control: no-cache,must-revalidate
-    secrets:
-     - source: google_auth_key
-       target: GOOGLE_CREDENTIALS
-    when:
-      branch: master
-      event:
-        exclude: [pull_request]
+    token:
+      from_secret: google_auth_key
+  when:
+    branch:
+    - master
+    event:
+      exclude:
+      - pull_request
+
+volumes:
+- name: docker
+  host:
+    path: /var/run/docker.sock

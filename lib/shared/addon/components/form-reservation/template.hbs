@@ -1,0 +1,81 @@
+<div class="row">
+  <div class="col span-6">
+    <label class="acc-label" for={{concat "input-limit-cpu-" component}}>
+      {{t "formReservation.limitCpu.label" component=(parse-camelcase component)}}
+      {{field-required}}
+    </label>
+    <div class="input-group">
+      {{input-integer
+        min="0"
+        step="100"
+        id=(concat "input-limit-cpu-" component)
+        value=limitCpu
+        classNames="form-control"
+        placeholder=(t "formReservation.limitCpu.placeholder")
+      }}
+      <div class="input-group-addon bg-default">
+        {{t "units.cpu"}}
+      </div>
+    </div>
+  </div>
+  <div class="col span-6">
+    <label class="acc-label" for={{concat "input-limit-memory-" component}}>
+      {{t "formReservation.limitMemory.label" component=(parse-camelcase component)}}
+      {{field-required}}
+    </label>
+    <div class="input-group">
+      {{input-integer
+        min="4"
+        step="1"
+        value=limitMemory
+        id=(concat "input-limit-memory-" component)
+        classNames="form-control"
+        placeholder=(t "formReservation.limitMemory.placeholder")
+      }}
+      <div class="input-group-addon bg-default">
+        {{t "generic.mibibyte"}}
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col span-6">
+    <label class="acc-label" for={{concat "input-request-cpu-" component}}>
+      {{t "formReservation.requestCpu.label" component=(parse-camelcase component)}}
+      {{field-required}}
+    </label>
+    <div class="input-group">
+      {{input-integer
+        min="0"
+        step="100"
+        id=(concat "input-request-cpu-" component)
+        value=requestCpu
+        classNames="form-control"
+        placeholder=(t "formReservation.requestCpu.placeholder")
+      }}
+      <div class="input-group-addon bg-default">
+        {{t "units.cpu"}}
+      </div>
+    </div>
+  </div>
+  <div class="col span-6">
+    <label class="acc-label" for={{concat "input-request-memory-" component}}>
+      {{t "formReservation.requestMemory.label" component=(parse-camelcase component)}}
+      {{field-required}}
+    </label>
+    <div class="input-group">
+      {{input-integer
+        min="4"
+        step="1"
+        id=(concat "input-request-memory-" component)
+        value=requestMemory
+        classNames="form-control"
+        placeholder=(t "formReservation.requestMemory.placeholder")
+      }}
+      <div class="input-group-addon bg-default">
+        {{t "generic.mibibyte"}}
+      </div>
+    </div>
+  </div>
+</div>

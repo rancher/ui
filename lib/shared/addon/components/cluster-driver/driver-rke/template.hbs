@@ -21,11 +21,15 @@
   <ul class="tab-nav">
     {{#if pasteOrUpload}}
       <li>
-        <button class="btn bg-transparent" {{action "cancel"}}>{{t "clusterNew.advanced.cancel"}}</button>
+        <button class="btn bg-transparent" {{action "cancel"}}>
+          {{t "clusterNew.advanced.cancel"}}
+        </button>
       </li>
     {{else}}
       <li>
-        <button class="btn bg-transparent" {{action "showPaste"}}>{{t "clusterNew.advanced.yaml"}} <span class="icon icon-copy"></span></button>
+        <button class="btn bg-transparent" {{action "showPaste"}}>
+          {{t "clusterNew.advanced.yaml"}} <span class="icon icon-copy"></span>
+        </button>
       </li>
     {{/if}}
   </ul>
@@ -78,7 +82,9 @@
       }}
         <div class="row">
           <div class="col span-6">
-            <label class="acc-label">{{t "clusterNew.rke.version.label"}}</label>
+            <label class="acc-label">
+              {{t "clusterNew.rke.version.label"}}
+            </label>
             {{form-versions
               cluster=cluster
               editing=(eq mode "edit")
@@ -90,7 +96,9 @@
         </div>
         <div class="row">
           <div class="col {{if (and isCustom (eq mode "new")) "span-4" "span-6"}}">
-            <label class="acc-label">{{t "clusterNew.rke.network.label"}}</label>
+            <label class="acc-label">
+              {{t "clusterNew.rke.network.label"}}
+            </label>
             {{new-select
               classNames="form-control"
               content=networkContent
@@ -98,34 +106,68 @@
               value=cluster.rancherKubernetesEngineConfig.network.plugin
               disabled=isEdit
             }}
+            {{#if windowsSupport}}
+              <label class="acc-label mt-30">
+                {{t "clusterNew.rke.network.flannelBackends.label"}}
+              </label>
+              <div class="radio">
+                <label class={{if isEdit "text-muted"}}>
+                  {{radio-button
+                    selection=config.network.options.flannel_backend_type
+                    value="host-gw"
+                    disabled=isEdit
+                  }}
+                  {{t "clusterNew.rke.network.flannelBackends.hostgw"}}
+                </label>
+              </div>
+              <div class="radio">
+                <label class={{if isEdit "text-muted"}}>
+                  {{radio-button
+                    selection=config.network.options.flannel_backend_type
+                    value="vxlan"
+                    disabled=isEdit
+                  }}
+                  {{t "clusterNew.rke.network.flannelBackends.vxlan"}}
+                </label>
+              </div>
+            {{/if}}
           </div>
           {{#if (and isCustom (eq mode "new"))}}
             <div class="col span-4">
-              <label class="acc-label">{{t "clusterNew.rke.windowsSupport.label"}}</label>
+              <label class="acc-label">
+                {{t "clusterNew.rke.windowsSupport.label"}}
+              </label>
               <div class="radio">
-                <label class={{if (not-eq cluster.rancherKubernetesEngineConfig.network.plugin "flannel") "text-muted"}}>
+                <label class={{unless windowsSupportAvailable "text-muted"}}>
                   {{radio-button
                     selection=windowsSupport
                     value=true
-                    disabled=(not-eq cluster.rancherKubernetesEngineConfig.network.plugin "flannel")
+                    disabled=(not windowsSupportAvailable)
                   }}
                   {{t "generic.enabled"}}
                 </label>
               </div>
               <div class="radio">
-                <label class={{if (not-eq cluster.rancherKubernetesEngineConfig.network.plugin "flannel") "text-muted"}}>
+                <label class={{unless windowsSupportAvailable "text-muted"}}>
                   {{radio-button
                     selection=windowsSupport
                     value=false
-                    disabled=(not-eq cluster.rancherKubernetesEngineConfig.network.plugin "flannel")
+                    disabled=(not windowsSupportAvailable)
                   }}
                   {{t "generic.disabled"}}
                 </label>
               </div>
+              {{#unless windowsSupportAvailable}}
+                <p class="help-block">
+                  {{t "clusterNew.rke.windowsSupport.help"}}
+                </p>
+              {{/unless}}
             </div>
           {{/if}}
           <div class="col {{if (and isCustom (eq mode "new")) "span-4" "span-6"}}">
-            <label class="acc-label">{{t "clusterNew.rke.networkPolicy.label"}}</label>
+            <label class="acc-label">
+              {{t "clusterNew.rke.networkPolicy.label"}}
+            </label>
             <div class="radio">
               <label class={{unless (eq cluster.rancherKubernetesEngineConfig.network.plugin "canal")  "text-muted"}}>
                 {{radio-button
@@ -153,6 +195,8 @@
             {{cru-cloud-provider
               cluster=model.cluster
               driver=nodeWhich
+              setCpFields=(action "setCpFields")
+              mode=mode
             }}
           </div>
         </div>
@@ -168,6 +212,8 @@
         }}
           {{cru-private-registry
             cluster=cluster
+            addRegistry=(action "addRegistry")
+            removeRegistry=(action "removeRegistry")
           }}
         {{/accordion-list-item}}
 
@@ -192,7 +238,9 @@
         }}
           <div class="row">
             <div class="col span-4">
-              <label class="acc-label">{{t "clusterNew.rke.ingress.label"}}</label>
+              <label class="acc-label">
+                {{t "clusterNew.rke.ingress.label"}}
+              </label>
               <div class="radio">
                 <label>
                   {{!--
@@ -219,7 +267,9 @@
               </div>
             </div>
             <div class="col span-4">
-              <label class="acc-label">{{t "clusterNew.rke.serviceNodePortRange.label"}}</label>
+              <label class="acc-label">
+                {{t "clusterNew.rke.serviceNodePortRange.label"}}
+              </label>
               {{input
                 type="text"
                 value=cluster.rancherKubernetesEngineConfig.services.kubeApi.serviceNodePortRange
@@ -228,7 +278,9 @@
               }}
             </div>
             <div class="col span-4">
-              <label class="acc-label">{{t "clusterNew.rke.monitoring.label"}}</label>
+              <label class="acc-label">
+                {{t "clusterNew.rke.monitoring.label"}}
+              </label>
               <div class="radio">
                 <label>
                   {{!--
@@ -257,7 +309,9 @@
           </div>
           <div class="row">
             <div class="col span-4">
-              <label class="acc-label">{{t "clusterNew.rke.podSecurityPolicy.label"}}</label>
+              <label class="acc-label">
+                {{t "clusterNew.rke.podSecurityPolicy.label"}}
+              </label>
               <div class="radio">
                 <label class={{unless model.psps.length "text-muted"}}>
                   {{!--
@@ -290,7 +344,9 @@
             </div>
             <div class="col span-4">
               {{#if cluster.rancherKubernetesEngineConfig.services.kubeApi.podSecurityPolicy}}
-                <label class="acc-label">{{t "clusterNew.psp.label"}}{{field-required}}</label>
+                <label class="acc-label">
+                  {{t "clusterNew.psp.label"}}{{field-required}}
+                </label>
                 {{new-select
                   content=model.psps
                   optionLabelPath="displayName"
@@ -301,14 +357,18 @@
                   disabled=(not cluster.rancherKubernetesEngineConfig.services.kubeApi.podSecurityPolicy)
                 }}
               {{else}}
-                <label class="acc-label">{{t "clusterNew.psp.label"}}</label>
+                <label class="acc-label">
+                  {{t "clusterNew.psp.label"}}
+                </label>
                 <div class="form-control-static">{{t "generic.none"}}</div>
               {{/if}}
             </div>
           </div>
           <div class="row">
             <div class="col span-4">
-              <label class="acc-label">{{t "clusterNew.rke.ignoreDockerVersion.label"}}</label>
+              <label class="acc-label">
+                {{t "clusterNew.rke.ignoreDockerVersion.label"}}
+              </label>
               <div class="radio">
                 <label>
                   {{radio-button
@@ -330,7 +390,9 @@
             </div>
 
             <div class="col span-4">
-              <label class="acc-label">{{t "loggingPage.dockerRootDir.label"}}</label>
+              <label class="acc-label">
+                {{t "loggingPage.dockerRootDir.label"}}
+              </label>
               {{input
                 type="text"
                 value=model.cluster.dockerRootDir
@@ -341,29 +403,38 @@
 
           </div>
           <div class="row">
-            <div class="col span-3">
-              <label class="acc-label">{{t "clusterNew.rke.etcd.location.label"}}</label>
-              <select
-                class="form-control"
-                onchange={{action (mut backupStrategy) value="target.value" }}
-              >
-                {{#each availableStrategies as |choice|}}
-                  <option
-                    value={{choice}}
-                    selected={{eq backupStrategy choice}}
-                  >
-                    {{choice}}
-                  </option>
-                {{/each}}
-              </select>
-            </div>
+            <div class="col span-6">
 
+              <label class="acc-label">
+                {{t "clusterNew.rke.etcd.location.label"}}
+              </label>
+              <div>
+                <label class="radio mt-0">
+                  {{radio-button selection=backupStrategy value="local"}}
+                  {{t "clusterNew.rke.etcd.location.local.label"}}
+                  <p class="help-block">
+                    {{t "clusterNew.rke.etcd.location.local.help"}}
+                  </p>
+                </label>
+              </div>
+              <div>
+                <label class="radio">
+                  {{radio-button selection=backupStrategy value="s3"}}
+                  {{t "clusterNew.rke.etcd.location.s3.label"}}
+                  <p class="help-block">
+                    {{t "clusterNew.rke.etcd.location.s3.help"}}
+                  </p>
+                </label>
+              </div>
+            </div>
           </div>
 
           {{#unless (eq backupStrategy "local")}}
             <div class="row">
               <div class="col span-3">
-                <label class="acc-label">{{t "clusterNew.rke.etcd.backupConfig.bucketName.label"}}</label>
+                <label class="acc-label">
+                  {{t "clusterNew.rke.etcd.backupConfig.bucketName.label"}}
+                </label>
                 {{input
                   type="text"
                   value=cluster.rancherKubernetesEngineConfig.services.etcd.backupConfig.s3BackupConfig.bucketName
@@ -373,7 +444,9 @@
               </div>
 
               <div class="col span-3 offset-1">
-                <label class="acc-label">{{t "clusterNew.rke.etcd.backupConfig.region.label"}}</label>
+                <label class="acc-label">
+                  {{t "clusterNew.rke.etcd.backupConfig.region.label"}}
+                </label>
                 {{input
                   type="text"
                   value=cluster.rancherKubernetesEngineConfig.services.etcd.backupConfig.s3BackupConfig.region
@@ -383,7 +456,9 @@
               </div>
 
               <div class="col span-3 offset-1">
-                <label class="acc-label">{{t "clusterNew.rke.etcd.backupConfig.endpoint.label"}}</label>
+                <label class="acc-label">
+                  {{t "clusterNew.rke.etcd.backupConfig.endpoint.label"}}
+                </label>
                 {{input
                   type="text"
                   value=cluster.rancherKubernetesEngineConfig.services.etcd.backupConfig.s3BackupConfig.endpoint
@@ -396,7 +471,9 @@
             <div class="row">
 
               <div class="col span-3">
-                <label class="acc-label">{{t "clusterNew.rke.etcd.backupConfig.accessKey.label"}}</label>
+                <label class="acc-label">
+                  {{t "clusterNew.rke.etcd.backupConfig.accessKey.label"}}
+                </label>
                 {{input
                   type="text"
                   name="accessKey"
@@ -407,7 +484,9 @@
               </div>
 
               <div class="col span-3 offset-1">
-                <label class="acc-label">{{t "clusterNew.rke.etcd.backupConfig.secretKey.label"}}</label>
+                <label class="acc-label">
+                  {{t "clusterNew.rke.etcd.backupConfig.secretKey.label"}}
+                </label>
                 {{input
                   type="password"
                   name="password"
@@ -423,6 +502,7 @@
           <div class="row">
             <div class="col span-3">
               <label class="acc-label">
+
                 {{t "clusterNew.rke.etcd.enabled.label"}}
               </label>
               <div class="text-muted">
@@ -444,7 +524,9 @@
             </div>
 
             <div class="col span-3 offset-1">
-              <label class="acc-label">{{t "clusterNew.rke.etcd.backupConfig.interval.label"}}</label>
+              <label class="acc-label">
+                {{t "clusterNew.rke.etcd.backupConfig.interval.label"}}
+              </label>
               <div class="input-group">
                 {{input-integer
                   value=cluster.rancherKubernetesEngineConfig.services.etcd.backupConfig.intervalHours
@@ -458,7 +540,9 @@
             </div>
 
             <div class="col span-3 offset-1">
-              <label class="acc-label">{{t "clusterNew.rke.etcd.backupConfig.retention.label"}}</label>
+              <label class="acc-label">
+                {{t "clusterNew.rke.etcd.backupConfig.retention.label"}}
+              </label>
               {{input-integer
                 value=cluster.rancherKubernetesEngineConfig.services.etcd.backupConfig.retention
                 min=1
@@ -553,7 +637,7 @@
                       </label>
                     </div>
                   </div>
-                  {{#advanced-section advanced=advanced}}
+                  {{#advanced-section advanced=commandAdvanced}}
                     <div class="row mt-20">
                       {{t "clusterNew.rke.address.title"}}
                       <p class="help-block">{{t "clusterNew.rke.address.detail"}}</p>
@@ -561,7 +645,9 @@
                         <li>
                           <div class="row">
                             <div class="col span-6">
-                              <label class="acc-label">{{t "clusterNew.rke.address.public.label"}}</label>
+                              <label class="acc-label">
+                                {{t "clusterNew.rke.address.public.label"}}
+                              </label>
                               {{input
                                 type="text"
                                 value=address
@@ -577,7 +663,9 @@
                               {{/unless}}
                             </div>
                             <div class="col span-6">
-                              <label class="acc-label">{{t "clusterNew.rke.address.private.label"}}</label>
+                              <label class="acc-label">
+                                {{t "clusterNew.rke.address.private.label"}}
+                              </label>
                               {{input
                                 type="text"
                                 value=internalAddress
@@ -596,100 +684,113 @@
                         </li>
                       </ul>
                     </div>
-                    {{#if isLinux}}
-                      <div class="row mt-20">
-                        {{t "clusterNew.rke.nodeName.title"}}
-                        <p class="help-block">{{t "clusterNew.rke.nodeName.detail"}}</p>
-                        <ul class="list-unstyled">
-                          <li>
-                            <div class="row">
-                              <div class="col span-6">
-                                {{input
-                                  type="text"
-                                  value=nodeName
-                                  placeholder=(t "clusterNew.rke.nodeName.placeholder")
-                                }}
-                                {{#unless isNodeNameValid}}
-                                  {{top-errors errors=nodeNameErrors}}
-                                {{/unless}}
-                              </div>
+                    <div class="row mt-20">
+                      {{t "clusterNew.rke.nodeName.title"}}
+                      <p class="help-block">
+                        {{t "clusterNew.rke.nodeName.detail"}}
+                      </p>
+                      <ul class="list-unstyled">
+                        <li>
+                          <div class="row">
+                            <div class="col span-6">
+                              {{input
+                                type="text"
+                                value=nodeName
+                                placeholder=(t "clusterNew.rke.nodeName.placeholder")
+                              }}
+                              {{#unless isNodeNameValid}}
+                                {{top-errors errors=nodeNameErrors}}
+                              {{/unless}}
                             </div>
-                          </li>
-                        </ul>
-                      </div>
-                      <div class="row mt-20">
-                        {{t "clusterNew.rke.labels.title"}}
-                        <p class="help-block">{{t "clusterNew.rke.labels.detail"}}</p>
-                        <ul class="list-unstyled">
-                          <li>
-                            {{#form-user-labels
-                               setLabels=(action "setLabels")
-                               expandAll=al.expandAll
-                               expand=(action expandFn)
-                               detailKey="formUserLabels.nodeDetail"
-                               as | userLabelArray removeLabel addUserLabel |
-                            }}
-                              {{#if userLabelArray.length}}
-                                <table class="table fixed no-lines mt-20">
-                                  <tr class="hidden-xs hidden-sm">
-                                    <th>{{t "formUserLabels.key.label"}}{{field-required}}</th>
-                                    <th width="30">&nbsp;</th>
-                                    <th>{{t "formUserLabels.value.label"}}</th>
-                                    <th width="40">&nbsp;</th>
+                          </div>
+                        </li>
+                      </ul>
+                    </div>
+                    <div class="row mt-20">
+                      {{t "clusterNew.rke.labels.title"}}
+                      <p class="help-block">
+                        {{t "clusterNew.rke.labels.detail"}}
+                      </p>
+                      <ul class="list-unstyled">
+                        <li>
+                          {{#form-user-labels
+                              setLabels=(action "setLabels")
+                              expandAll=al.expandAll
+                              expand=(action expandFn)
+                              detailKey="formUserLabels.nodeDetail"
+                              as | userLabelArray removeLabel addUserLabel |
+                          }}
+                            {{#if userLabelArray.length}}
+                              <table class="table fixed no-lines mt-20">
+                                <tr class="hidden-xs hidden-sm">
+                                  <th>{{t "formUserLabels.key.label"}}{{field-required}}</th>
+                                  <th width="30">&nbsp;</th>
+                                  <th>{{t "formUserLabels.value.label"}}</th>
+                                  <th width="40">&nbsp;</th>
+                                </tr>
+                                {{#each userLabelArray as |label|}}
+                                  <tr>
+                                    <td data-title="key">
+                                      {{input-paste
+                                        pasted=(action "pastedLabels")
+                                        class="form-control input-sm key"
+                                        type="text"
+                                        value=label.key
+                                        placeholder="formUserLabels.key.placeholder"
+                                        disabled=(eq label.readonly true)
+                                      }}
+                                    </td>
+
+                                    <td class="text-center">
+                                      <p class="input-sm">
+                                        {{t "formUserLabels.separator"}}
+                                      </p>
+                                    </td>
+
+                                    <td data-title="label">
+                                      {{input
+                                        class="form-control input-sm"
+                                        type="text"
+                                        value=label.value
+                                        placeholder=(t "formUserLabels.value.placeholder")
+                                        disabled=(eq label.readonly true)
+                                      }}
+                                    </td>
+
+                                    <td class="text-right">
+                                      <button class="btn bg-primary btn-sm" {{action removeLabel label}} disabled={{eq label.readonly true}}>
+                                        <i class="icon icon-minus"/>
+                                        <span class="sr-only">
+                                          {{t "generic.remove"}}
+                                        </span>
+                                      </button>
+                                    </td>
                                   </tr>
-                                  {{#each userLabelArray as |label|}}
-                                    <tr>
-                                      <td data-title="key">
-                                        {{input-paste
-                                          pasted="pastedLabels"
-                                          class="form-control input-sm key"
-                                          type="text"
-                                          value=label.key
-                                          placeholder="formUserLabels.key.placeholder"
-                                          disabled=(eq label.readonly true)
-                                        }}
-                                      </td>
+                                {{/each}}
+                              </table>
+                              <div class="protip pt-10">
+                                {{t "formUserLabels.protip"}}
+                              </div>
+                            {{/if}}
 
-                                      <td class="text-center">
-                                        <p class="input-sm">{{t "formUserLabels.separator"}}</p>
-                                      </td>
-
-                                      <td data-title="label">
-                                        {{input
-                                          class="form-control input-sm"
-                                          type="text"
-                                          value=label.value
-                                          placeholder=(t "formUserLabels.value.placeholder")
-                                          disabled=(eq label.readonly true)
-                                        }}
-                                      </td>
-
-                                      <td class="text-right">
-                                        <button class="btn bg-primary btn-sm" {{action removeLabel label}} disabled={{eq label.readonly true}}><i class="icon icon-minus"/><span class="sr-only">{{t "generic.remove"}}</span></button>
-                                      </td>
-                                    </tr>
-                                  {{/each}}
-                                </table>
-                                <div class="protip pt-10">
-                                  {{t "formUserLabels.protip"}}
-                                </div>
-                              {{/if}}
-
-                              <button class="btn bg-link icon-btn" {{action addUserLabel}}>
-                                <span class="darken"><i class="icon icon-plus text-small"/></span>
-                                <span>{{t "formUserLabels.addAction"}}</span>
-                              </button>
-                            {{/form-user-labels}}
-                          </li>
-                        </ul>
-                      </div>
-                    {{/if}}
+                            <button class="btn bg-link icon-btn" {{action addUserLabel}}>
+                              <span class="darken">
+                                <i class="icon icon-plus text-small"/>
+                              </span>
+                              <span>
+                                {{t "formUserLabels.addAction"}}
+                              </span>
+                            </button>
+                          {{/form-user-labels}}
+                        </li>
+                      </ul>
+                    </div>
                   {{/advanced-section}}
                 </li>
               </ul>
             </li>
             <li>
-              {{t (if isLinux "clusterNew.rke.command.instructions" "clusterNew.rke.command.winInstructions") htmlSafe=true}}
+              {{t (if isLinux "clusterNew.rke.command.instructions" "clusterNew.rke.command.winInstructions") htmlSafe=true version="1809"}}
               {{!-- <p class="help-block">{{t "clusterNew.rke.labels.detail"}}</p> --}}
               <ul class="list-unstyled">
                 <li>
@@ -737,8 +838,8 @@
   {{save-cancel
     createLabel=(if isCustom "saveCancel.next" "saveCancel.create")
     editing=isEdit
-    save="driverSave"
-    cancel="close"
+    save=(action "driverSave")
+    cancel=(action "close")
   }}
 {{else}}
   <div class="footer-actions">

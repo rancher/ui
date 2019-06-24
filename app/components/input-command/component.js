@@ -1,6 +1,7 @@
 import { isArray } from '@ember/array';
 import TextField from '@ember/component/text-field';
 import layout from './template';
+import { get, observer, set } from '@ember/object';
 
 const ShellQuote = window.ShellQuote;
 
@@ -38,20 +39,22 @@ export default TextField.extend({
   layout,
   type: 'text',
 
+  disabled: false,
+
   init() {
     this._super(...arguments);
 
-    let initial = this.get('initialValue') || '';
+    let initial = get(this, 'initialValue') || '';
 
     if ( isArray(initial) ) {
-      this.set('value', unparse(reop(initial)));
+      set(this, 'value', unparse(reop(initial)));
     } else {
-      this.set('value', initial);
+      set(this, 'value', initial);
     }
   },
 
-  valueChanged: function() {
-    let out = ShellQuote.parse(this.get('value') || '').map((piece) => {
+  valueChanged: observer('value', function() {
+    let out = ShellQuote.parse(get(this, 'value') || '').map((piece) => {
       if ( typeof piece === 'object' && piece ) {
         if ( piece.pattern ) {
           return piece.pattern;
@@ -66,9 +69,13 @@ export default TextField.extend({
     });
 
     if ( out.length ) {
-      this.sendAction('changed', out);
+      if (this.changed) {
+        this.changed(out);
+      }
     } else {
-      this.sendAction('changed', null);
+      if (this.changed) {
+        this.changed(null);
+      }
     }
-  }.observes('value'),
+  }),
 });

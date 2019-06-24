@@ -12,7 +12,7 @@ export default Route.extend({
     const cs = get(this, 'globalStore');
     const clusterId = transition.params['authenticated.cluster'].cluster_id;
 
-    return hash({ notifiers: cs.findAll('notifier', { filter: { clusterId } }).then(() => cs.all('notifier')), });
+    return hash({ notifiers: cs.find('notifier', null, { filter: { clusterId } }).then(() => cs.all('notifier')) });
   },
 
   setDefaultRoute: on('activate', function() {

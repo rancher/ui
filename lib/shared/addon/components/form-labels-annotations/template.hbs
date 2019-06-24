@@ -1,5 +1,5 @@
 {{#accordion-list-item
-     title=(t 'formLabelsAnnotations.title')
+     title=(t "formLabelsAnnotations.title")
      detail=(t detailKey appName=settings.appName)
      showStatus=true
      status=status
@@ -11,15 +11,15 @@
     {{#if editing}}
       <div class="col span-6">
         <div class="clearfix">
-          <label class="acc-label">{{t 'formUserLabels.title'}}</label>
+          <label class="acc-label">{{t "formUserLabels.title"}}</label>
         </div>
         {{#if userLabelArray.length}}
           <table class="table fixed no-lines js-label-table">
             <thead>
               <tr class="hidden-xs hidden-sm">
-                <th>{{t 'formUserLabels.key.label'}}{{field-required}}</th>
+                <th>{{t "formUserLabels.key.label"}}{{field-required}}</th>
                 <th width="30">&nbsp;</th>
-                <th>{{t 'formUserLabels.value.label'}}</th>
+                <th>{{t "formUserLabels.value.label"}}</th>
                 <th width="40">&nbsp;</th>
               </tr>
             </thead>
@@ -27,40 +27,47 @@
               {{#each userLabelArray as |label|}}
                 <tr>
                   <td data-title="key">
-                    {{input-paste pasted="pastedLabels" class="form-control input-sm key js-label" type="text" value=label.key placeholder="formUserLabels.key.placeholder" disabled=(eq label.readonly true)}}
+                    {{input-paste
+                      pasted=(action "pastedLabels")
+                      class="form-control input-sm key js-label"
+                      type="text"
+                      value=label.key
+                      placeholder="formUserLabels.key.placeholder"
+                      disabled=(eq label.readonly true)
+                    }}
                   </td>
 
                   <td class="valign-top text-center">
                     {{#if editing}}
-                      {{t 'formKeyValue.separator'}}
+                      {{t "formKeyValue.separator"}}
                     {{/if}}
                   </td>
 
                   <td data-title="label">
-                    {{input class="form-control input-sm" type="text" value=label.value placeholder=(t 'formUserLabels.value.placeholder') disabled=(eq label.readonly true)}}
+                    {{input class="form-control input-sm" type="text" value=label.value placeholder=(t "formUserLabels.value.placeholder") disabled=(eq label.readonly true)}}
                   </td>
 
                   <td class="text-right">
-                    <button class="btn bg-primary btn-sm" {{action "removeLabel" label}} disabled={{eq label.readonly true}}><i class="icon icon-minus"/><span class="sr-only">{{t 'generic.remove'}}</span></button>
+                    <button class="btn bg-primary btn-sm" {{action "removeLabel" label}} disabled={{eq label.readonly true}}><i class="icon icon-minus"/><span class="sr-only">{{t "generic.remove"}}</span></button>
                   </td>
                 </tr>
               {{/each}}
             </tbody>
           </table>
           <div class="protip mb-5">
-            {{t 'formUserLabels.protip'}}
+            {{t "formUserLabels.protip"}}
           </div>
         {{/if}}
 
         <button class="btn bg-link icon-btn" {{action "addUserLabel"}}>
           <span class="darken"><i class="icon icon-plus text-small"/></span>
-          <span>{{t 'formUserLabels.addAction'}}</span>
+          <span>{{t "formUserLabels.addAction"}}</span>
         </button>
       </div>
     {{else}}
       {{#if model.canHaveLabels}}
         {{table-labels
-            header=(t 'formUserLabels.title')
+            header=(t "formUserLabels.title")
             model=model.labels
         }}
       {{/if}}
@@ -68,10 +75,10 @@
     {{#unless editing}}
       <hr class="mt-20 mb-20"/>
     {{/unless}}
-    <div class="col {{if editing 'span-6' 'span-12'}}">
+    <div class="col {{if editing "span-6" "span-12"}}">
       {{#if editing}}
         {{form-key-value
-            header=(t 'formAnnotations.title')
+            header=(t "formAnnotations.title")
             editing=editing
             initialMap=model.annotations
             changed=(action "annotationsChange")
@@ -79,7 +86,7 @@
         }}
       {{else}}
         {{table-labels
-            header=(t 'formAnnotations.title')
+            header=(t "formAnnotations.title")
             model=model.annotations
             labelIntlSec="annotationsSection"
         }}

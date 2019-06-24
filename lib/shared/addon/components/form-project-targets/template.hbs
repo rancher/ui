@@ -1,0 +1,78 @@
+<div class="col {{if fullWidth "span-12" "span-6"}}">
+  <label
+    for="add-project-target"
+    class="acc-label"
+  >
+    {{t "newMultiClusterApp.targets.label"}}
+  </label>
+  {{field-required}}
+  {{searchable-select
+    classNames="form-control"
+    content=allProjectsGroupedByCluster
+    optionLabelPath="name"
+    optionValuePath="value"
+    optionGroupPath="cluster"
+    placeholder=(t "newMultiClusterApp.targets.prompt" )
+    change=addTarget
+    readOnly=readOnly
+  }}
+</div>
+
+<div class="col span-12">
+  {{#sortable-table
+     bulkActions=false
+     search=false
+     classNames="grid sortable-table"
+     sortBy=sortBy
+     headers=headers
+     pagingLabel="pagination.member"
+     descending=descending
+     body=appTargets
+     as |sortable kind target dt|
+  }}
+    {{#if (eq kind "row")}}
+      <tr class="main-row">
+        <td data-title="{{dt.clusterName}}:" class="pt-5 pb-5">
+          {{#if target.project.id}}
+            {{target.clusterName}}
+          {{else}}
+            {{target.clusterId}}
+          {{/if}}
+        </td>
+        <td data-title="{{dt.projectName}}:">
+          {{#if target.project.id}}
+            {{target.projectName}}
+          {{else}}
+            {{#tooltip-element
+               type="tooltip-basic"
+               model=(t "newMultiClusterApp.access.noAccessLink")
+               tooltipTemplate="tooltip-static"
+               aria-describedby="tooltip-base"
+               tooltipFor="tooltipLink"
+            }}
+              {{target.projectId}} <i class="icon icon-alert"></i>
+            {{/tooltip-element}}
+          {{/if}}
+        </td>
+        <td
+          data-title="{{t "generic.actions"}}:"
+          class="actions"
+        >
+          <button
+            class="btn bg-primary btn-sm"
+            {{action removeTarget target}}
+          >
+            <i class="icon icon-minus"></i>
+          </button>
+        </td>
+      </tr>
+    {{else if (eq kind "norows")}}
+      <td
+        colspan="5"
+        class="text-center text-muted lacsso pt-20 pb-20"
+      >
+        {{t "newMultiClusterApp.targets.noData"}}
+      </td>
+    {{/if}}
+  {{/sortable-table}}
+</div>

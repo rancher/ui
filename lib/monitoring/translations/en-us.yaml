@@ -75,7 +75,8 @@ clusterDashboard:
   subtitle:
     reserved: "{used} of {total} Reserved"
     used: "{used} of {total} Used"
-  enalbeMonitoring: Enable Monitoring to see live metrics
+  enableMonitoring: Enable Monitoring to see live metrics
+  upgradeAvailable: "Monitoring {version} Upgrade Available"
   monitoringNotReady: Monitoring API is not ready
   node: Nodes
   etcd: Etcd
@@ -89,11 +90,32 @@ clusterDashboard:
 
 monitoringPage:
   update: Update configuration
+  version: Monitoring Version
+  upgrade: Upgrade monitoring to the latest version {version}
+  upgradeAvailable: "({version} Upgrade Available)"
+  confirmDisable: "Are you sure?  Click again to disable monitoring."
+  disable: Disable Monitoring
+  enableActionLabel: Enable Monitoring
+  noPermission: "You do not have permission to configure {level} level monitoring."
   toUpdate:
     cluster: Cluster level monitoring is enabled.
     project: Project level monitoring is enabled.
+  insufficientSize:
+    prometheus:
+      cpu: Please make sure you have at least one node with {cpu} milli CPUs available to enable Prometheus workload.
+      memory: Please make sure you have at least one node with {memory} MiB of memory available to enable Prometheus workload.
+      all: Please make sure you have at least one node with {cpu} milli CPUs and {memory} MiB of memory available to enable Prometheus workload.
+    selectors:
+      cpu: Please make sure you have at least one node matches node selectors with {cpu} milli CPUs available to enable Prometheus workload.
+      memory: Please make sure you have at least one node matches node selectors with {memory} MiB of memory available to enable Prometheus workload.
+      all: Please make sure you have at least one node matches node selectors with {cpu} milli CPUs and {memory} MiB of memory available to enable Prometheus workload.
+    total:
+      cpu: Please make sure you have at least {cpu} milli CPUs available to enable monitoring.
+      memory: Please make sure you have at least {memory} MiB of memory available to enable monitoring.
+      all: Please make sure you have at least {cpu} milli CPUs and {memory} MiB of memory available to enable monitoring.
   clusterNotEnabled: Cluster level monitoring is not enabled. Only custom metrics will be collected.
   prometheus: Monitoring is not enabled yet, click the Save button below to enable it.
+  resourceLimitsHelp: 'When enabling cluster monitoring, you need to ensure your worker nodes and Prometheus pod have enough resources. Please visit <a href="https://rancher.com/docs/rancher/v2.x/en/cluster-admin/tools/monitoring/#resource-consumption" target="_blank" rel="nofollow noreferrer">the Rancher docs</a> for suggested resource limits.'
   config:
     types:
       none: None
@@ -133,9 +155,20 @@ monitoringPage:
       label: Data Retention
     storageClass:
       label: Storage Class
+    operator:
+      memoryLimit:
+        label: Prometheus Operator Memory Limit
+        placeholder: e.g. 500
     nodeexporter:
       label: Node Exporter Host Port
       enable: Enable Node Exporter
+      cpuLimit:
+        label: Node Exporter CPU Limit
+        placeholder: e.g. 200
+        unit: milli CPUs
+      memoryLimit:
+        label: Node Exporter Memory Limit
+        placeholder: e.g. 200
   nodeSelector:
     addSelectorLabel: Add Selector
     helpText: Select the nodes where monitoring related workloads will be scheduled to

@@ -6,6 +6,7 @@ generic:
   activate: Engedélyezés
   all: Összes
   any: Bármely
+  back: Vissza
   cancel: Mégsem
   closeModal: Bezár
   collapseAll: Mind bezár
@@ -28,6 +29,8 @@ generic:
   expandAll: Mind kibont
   hardware: Hardver
   healthy: Egészséges
+  hostname: Hosztnév
+  hours: óra
   id: ID
   image: Kép
   internal: Belső
@@ -35,6 +38,7 @@ generic:
   limit: Korlát
   limits: Limitek
   loading: "Betöltés..."
+  mbps: Mbps
   mibibyte: 'MiB'
   missing: "*%MISSING%*"
   moreActions: További műveletek
@@ -45,10 +49,12 @@ generic:
   none: Semmi
   ports: Portok
   remove: Töröl
+  restarts: Újraindítások
   role: Szerep
   save: Mentés
   saved: Mentett
   saving: Mentés
+  scope: Hatókör
   search: Keresés
   seconds: másodperc
   service: Szolgáltatás
@@ -61,6 +67,11 @@ generic:
   unknown: Ismeretlen
   uuid: UUID
   yes: "Igen"
+  isRequired: kötelező
+  readOnly: Csak olvasható
+  readWrite: Olvasás/Írás
+  writeOnly: Csak írás
+  full: Teljes
 realmNames:
   all: Összes
   usWest: Nyugat-US
@@ -88,13 +99,38 @@ accountsPage:
       description:
         labelText: Leírás
         placeholder: "pl. Ez a fiók Kovács Jánosé"
+appDetailPage:
+  answers:
+    title: Válaszok
+    detail: Az alkalmazás személyre szabott válaszai
+    variable: Változó
+rolesPage:
+  headers:
+    global: Globális
+    cluster: Klaszterek
+    project: Projektek
+  index:
+    errors:
+      inherited: "A {displayName} szerepet az alábbiak öröklik: {roleNames}"
+  new:
+    errors:
+      noSelectedRoles: Kérjük, válasszon legalább egy szerepet a felhasználó számára.
+      roleAlreadyExists: A felhasználónak már megvan a "{key}" szerepe.
 apiPage:
   currentEndpoint: 'Végpont:'
   table:
     state: Állapot
     description: Leírás
+    scope: Hatókör
     created: Létrehozva
 authPage:
+  saml:
+    providerName:
+      okta: Okta
+  okta:
+    buttonText:
+      pre: 'Hitelesítés az Okta használatával'
+      post: Várakozás az IDP viszontválaszára
   shibboleth:
     enabled:
       authenticated:
@@ -103,7 +139,6 @@ authPage:
       disableAccess:
         header: "Veszélyes Terület&trade;"
         warning: '<b class="text-danger"> Figyelmeztetés:</b> A hozzáférés-szabályozás letiltása teljes hozzáférést biztosít az {appName} felett bárki számára, aki elérheti ezt az oldalt, vagy az API-t.'
-        confirmDisable: "Biztos vagy benne?  Kattints újra, hogy valóban letiltsd a hozzáférés-szabályozást"
         disable: Hozzáférés-szabályozás letiltása
       groupsField: 'Csoportok:'
       displayName: 'Megjelenített név:'
@@ -146,7 +181,6 @@ authPage:
       disableAccess:
         header: "Veszélyes Terület&trade;"
         warning: '<b class="text-danger">Figyelmeztetés:</b> A hozzáférés-vezérlés letiltása teljes körű hozzáférést biztosít a(z) {appName} szolgáltatásban bárkinek, aki elérheti ezt az oldalt vagy az API-t.'
-        confirmDisable: "Biztos vagy benne?  Kattints újra, hogy valóban letiltsd a hozzáférés-szabályozást"
     notAuthenticated:
       header: "1. GitHub alkalmazás beállítása"
       ul:
@@ -186,7 +220,6 @@ authPage:
   azuread:
     enabled:
       header: 'Veszélyes Terület&trade;'
-      reallyDisable: 'Biztos vagy benne?  Kattints újra, hogy valóban letiltsd a hozzáférés-szabályozást'
       promptDisable: Hozzáférés-szabályozás letiltása
     configure:
       header: '1. Azure AD fiók beállítása'
@@ -214,7 +247,6 @@ authPage:
       header: 'Veszélyes Terület&trade;'
       warning: '<b class="text-danger">Figyelmeztetés:</b> A hozzáférés-vezérlés letiltása teljes körű hozzáférést biztosít a(z) {appName} szolgáltatásban bárkinek, aki elérheti ezt az oldalt vagy az API-t.'
       buttonText:
-        disable: 'Biztos vagy benne?  Kattints újra, hogy valóban letiltsd a hozzáférés-szabályozást'
         prompt: Hozzáférés-szabályozás letiltása
     accessDisabled:
       header: '1. Admin felhasználó beállítása'
@@ -236,6 +268,15 @@ authPage:
       buttonText:
         pre: Helyi hitelesítés engedélyezése
         post: 'Engedélyezés...'
+backupsPage:
+  table:
+    state: Állapot
+    target:
+      label: Cél
+      s3: S3
+      local: Helyi
+    name: Név
+    created: Létrehozva
 catalogPage:
   index:
     header: Katalógus
@@ -291,12 +332,45 @@ containersPage:
     sparkPrefixMemory: "Memória: "
     sparkPrefixNetwork: "Hálózat: "
     sparkPrefixStorage: "Tároló: "
+metricsAction:
+  periods:
+    5m: 5 perc
+    1h: 1 óra
+    6h: 6 óra
+    24h: 24 óra
+    7d: 7 nap
+    30d: 30 nap
+metrics:
+  workload-cpu-usage: CPU kihasználtság
+  workload-disk-io: Lemez I/O
+  workload-memory-usage-bytes-sum: Memóriahasználat
+  workload-network-io: Hálózati I/O
+  workload-network-packet: Hálózati csomagok
+  pod-cpu-usage: CPU kihasználtság
+  pod-disk-io: Lemez I/O
+  pod-memory-usage-bytes-sum: Memóriahasználat
+  pod-network-io: Hálózati I/O
+  pod-network-packet: Hálózati csomagok
+  container-cpu-usage: CPU kihasználtság
+  container-disk-io: Lemez I/O
+  container-memory-usage-bytes-sum: Memóriahasználat
 dnsPage:
   table:
     target: Cél
 editDns:
   name:
     placeholder: pl. sajat-app
+  externalTrafficPolicy:
+    local: Helyi
+    cluster: Klaszter
+  publishNotReadyAddresses:
+    label: Közzétett IP-címek
+    readyOnly: Csak kész végpontok
+    all: Minden végpont
+  sessionAffinityConfig:
+    placeholder: pl. 10800
+  kind:
+    clusterIP: Klaszter IP (csak belső)
 failWhalePage:
   header: Hiba
   reloadButton: |
@@ -1015,10 +1089,6 @@ newCatalog:
   version:
     prompt: Válassz egy verziót...
 newContainer:
-  upgrade:
-    container: Konténer frissítése
-  selectUpgrade: Válassz egy vagy több szolgáltatást a frissítéshez.
-  saveUpgrade: Frissítés
   name:
     placeholder: pl. sajat-app
   description:
@@ -1027,7 +1097,7 @@ nodeDriver:
   amazoneks:
     associateWorkerNodePublicIp:
       radio:
-        default: "Yes"
+        default: 'Yes'
 pageFooter:
   notARelease: (Nem egy Kiadás)
   issues: Hiba jelentése
@@ -1106,7 +1176,6 @@ upgradeBtn:
     available: 'Frissítés érhető el'
     inprogress: 'Frissítés folyamatban'
     upgraded: 'Frissítve: frissítés befejezése'
-    notfound: 'Sablon verziója nem található'
     error: 'Frissítés hiba ellenőrzése'
     required: 'Frissítés szükséges'
 viewEditDescription:

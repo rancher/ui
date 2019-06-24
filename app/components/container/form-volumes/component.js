@@ -39,10 +39,14 @@ export default Component.extend({
 
   init() {
     this._super(...arguments);
-    this.sendAction('registerHook', this.saveVolumes.bind(this), {
-      name: 'saveVolumes',
-      key:  '_volumeHooks'
-    });
+
+    if (this.registerHook) {
+      this.registerHook(this.saveVolumes.bind(this), {
+        name: 'saveVolumes',
+        key:  '_volumeHooks'
+      });
+    }
+
     this.initVolumes()
   },
 

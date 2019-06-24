@@ -103,15 +103,16 @@ export default Component.extend(ViewNewEdit, {
 
       set(out, entry.value, get(vol, entry.value));
 
-      this.sendAction('doSave', { volume: out, });
-      this.doneSaving();
+      if (this.doSave) {
+        this.doSave({ volume: out })
+      }
+
+      if (this.done) {
+        this.done();
+      }
     }
 
     return false;
-  },
-
-  doneSaving() {
-    this.sendAction('done');
   },
 
 });

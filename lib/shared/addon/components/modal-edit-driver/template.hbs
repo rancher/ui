@@ -1,34 +1,45 @@
 {{top-errors errors=errors}}
 
-<h2 class="alert-header">{{t (if editing 'modalEditDriver.header.edit' 'modalEditDriver.header.create') type=driverType}}</h2>
+<h2 class="alert-header">
+  {{t (if editing "modalEditDriver.header.edit" "modalEditDriver.header.create") type=driverType}}
+</h2>
 <hr/>
 <div class="inline-form">
-  <label class="acc-label">{{t 'modalEditDriver.url.label'}}{{field-required}}</label>
+  <label class="acc-label">
+    {{t "modalEditDriver.url.label"}}{{field-required}}
+  </label>
   {{input
-      class="form-control"
-      value=originalModel.url
+    class="form-control"
+    value=originalModel.url
   }}
-  <span class="text-info">{{t 'modalEditDriver.url.help'}}</span>
+  <span class="text-info">{{t "modalEditDriver.url.help"}}</span>
 </div>
 
 <div class="inline-form pt-20">
-  <label class="acc-label">{{t 'modalEditDriver.uiUrl.label'}}</label>
+  <label class="acc-label">
+    {{t "modalEditDriver.uiUrl.label"}}
+  </label>
   {{input
-      class="form-control"
-      value=originalModel.uiUrl
+    class="form-control"
+    value=originalModel.uiUrl
   }}
   <span class="text-info">
-    {{t 'modalEditDriver.uiUrl.help'}}
+    {{t "modalEditDriver.uiUrl.help"}}
     {{#if settings.isRancher}}
-      {{t 'modalEditDriver.uiUrl.link' htmlSafe=true}}
+      {{t "modalEditDriver.uiUrl.link" htmlSafe=true}}
     {{/if}}
   </span>
 </div>
 
 <div class="inline-form pt-20">
-  <label class="acc-label pb-5">{{t 'modalEditDriver.checksum.label'}}</label>
-  {{input class="form-control" value=originalModel.checksum }}
-  <span class="text-info">{{t 'modalEditDriver.checksum.help'}}</span>
+  <label class="acc-label pb-5">
+    {{t "modalEditDriver.checksum.label"}}
+  </label>
+  {{input
+    class="form-control"
+    value=originalModel.checksum
+  }}
+  <span class="text-info">{{t "modalEditDriver.checksum.help"}}</span>
 </div>
 
 <div class="inline-form pt-20">
@@ -41,4 +52,8 @@
   }}
 </div>
 
-{{save-cancel editing=editing save="save" cancel="cancel"}}
+{{save-cancel
+  editing=editing
+  save=(action "save")
+  cancel=(action "cancel")
+}}
