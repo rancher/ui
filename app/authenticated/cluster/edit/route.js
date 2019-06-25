@@ -33,8 +33,8 @@ export default Route.extend({
     // show the driver in the ui, greyed out, and possibly add error text "can not load comonent from url [put url here]"
 
     let { kontainerDrivers } = model;
-    let externalDrivers      = kontainerDrivers.filter( (d) => d.uiUrl !== '');
-    let promises = {};
+    let externalDrivers      = kontainerDrivers.filter( (d) => d.uiUrl !== '' && d.state === 'active');
+    let promises             = {};
 
     externalDrivers.forEach( (d) => {
       if (get(d, 'hasUi')) {
