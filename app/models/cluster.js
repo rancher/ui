@@ -9,26 +9,28 @@ import { equal, alias } from '@ember/object/computed';
 import { resolve } from 'rsvp';
 import C from 'ui/utils/constants';
 import { isEmpty } from '@ember/utils';
+import moment from 'moment';
 
 export default Resource.extend(Grafana, ResourceUsage, {
   globalStore: service(),
   growl:       service(),
-  scope:       service(),
-  router:      service(),
   intl:        service(),
+  router:      service(),
+  scope:       service(),
 
-  namespaces:                  hasMany('id', 'namespace', 'clusterId'),
-  projects:                    hasMany('id', 'project', 'clusterId'),
-  nodes:                       hasMany('id', 'node', 'clusterId'),
-  nodePools:                   hasMany('id', 'nodePool', 'clusterId'),
   clusterRoleTemplateBindings: hasMany('id', 'clusterRoleTemplateBinding', 'clusterId'),
   etcdbackups:                 hasMany('id', 'etcdbackup', 'clusterId'),
+  namespaces:                  hasMany('id', 'namespace', 'clusterId'),
+  nodePools:                   hasMany('id', 'nodePool', 'clusterId'),
+  nodes:                       hasMany('id', 'node', 'clusterId'),
+  projects:                    hasMany('id', 'project', 'clusterId'),
+  expiringCerts:               null,
   grafanaDashboardName:        'Cluster',
   isMonitoringReady:           false,
   machines:                    alias('nodes'),
   roleTemplateBindings:        alias('clusterRoleTemplateBindings'),
-  isGKE:                       equal('driver', 'googleKubernetesEngine'),
   isAKS:                       equal('driver', 'azureKubernetesService'),
+  isGKE:                       equal('driver', 'googleKubernetesEngine'),
 
   conditionsDidChange:        on('init', observer('enableClusterMonitoring', 'conditions.@each.status', function() {
     if ( !get(this, 'enableClusterMonitoring') ) {
@@ -183,6 +185,38 @@ export default Resource.extend(Grafana, ResourceUsage, {
     out = projects.objectAt(0);
 
     return out;
+  }),
+
+  certsExpiring: computed('certificatesExpiration', function() {
+    let { certificatesExpiration = {}, expiringCerts } = this;
+
+    if (!expiringCerts) {
+      expiringCerts = [];
+    }
+
+    if (!isEmpty(certificatesExpiration)) {
+      let expKeys = Object.keys(certificatesExpiration);
+
+      expKeys.forEach((kee) => {
+        const certDate = get(certificatesExpiration[kee], 'expirationDate');
+        const expirey  = moment(certDate);
+        const diff     = expirey.diff(moment(), 'days');
+
+        if (diff < 30) {
+          expiringCerts.pushObject({
+            expiringCertName: kee,
+            daysUntil:        diff,
+            exactDateTime:    expirey.format('YYYY-MM-DD HH:mm:ss')
+          });
+        }
+      });
+
+      set(this, 'expiringCerts', expiringCerts);
+
+      return expiringCerts.length > 0;
+    }
+
+    return false;
   }),
 
   availableActions: computed('actionLinks.{rotateCertificates}', function() {
