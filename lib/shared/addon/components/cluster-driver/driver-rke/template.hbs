@@ -320,7 +320,7 @@
 
           </div>
           <div class="row">
-            <div class="col span-6">
+            <div class="col span-12">
 
               <label class="acc-label">{{t "clusterNew.rke.etcd.location.label"}}</label>
               <div>
@@ -378,7 +378,6 @@
             </div>
 
             <div class="row">
-
               <div class="col span-3">
                 <label class="acc-label">{{t "clusterNew.rke.etcd.backupConfig.accessKey.label"}}</label>
                 {{input
@@ -400,7 +399,24 @@
                   value=cluster.rancherKubernetesEngineConfig.services.etcd.backupConfig.s3BackupConfig.secretKey
                 }}
               </div>
-
+            </div>
+            <div class="row">
+              <div class="col span-7">
+                <label class="acc-label" for="s3-config-custom-ca">
+                  {{t "clusterNew.rke.etcd.backupConfig.customCa.label"}}
+                </label>
+                {{input-text-file
+                  accept="application/x-x509-ca-cert,text/plain,.pem,.crt"
+                  canChangeName=false
+                  classNames="box"
+                  id="s3-config-custom-ca"
+                  minHeight=60
+                  multiple=true
+                  placeholder="clusterNew.rke.etcd.backupConfig.customCa.placeholder"
+                  shouldChangeName=false
+                  value=cluster.rancherKubernetesEngineConfig.services.etcd.backupConfig.s3BackupConfig.customCa
+                }}
+              </div>
             </div>
           {{/unless}}
 
