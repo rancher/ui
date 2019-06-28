@@ -214,15 +214,15 @@ export default Resource.extend(Grafana, ResourceUsage, {
       let expKeys = Object.keys(certificatesExpiration);
 
       expKeys.forEach((kee) => {
-        const certDate = get(certificatesExpiration[kee], 'expirationDate');
-        const expirey  = moment(certDate);
-        const diff     = expirey.diff(moment(), 'days');
+        let certDate  = get(certificatesExpiration[kee], 'expirationDate');
+        const expirey = moment(certDate);
+        let diff      = expirey.diff(moment(), 'days');
 
         if (diff < 30) {
           expiringCerts.pushObject({
             expiringCertName: kee,
             daysUntil:        diff,
-            exactDateTime:    expirey.format('YYYY-MM-DD HH:mm:ss')
+            exactDateTime:    expirey
           });
         }
       });
