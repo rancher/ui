@@ -200,13 +200,13 @@ export default Resource.extend(Grafana, ResourceUsage, {
       expKeys.forEach((kee) => {
         let certDate  = get(certificatesExpiration[kee], 'expirationDate');
         const expirey = moment(certDate);
-        let diff      = expirey.diff(moment(), 'days');
+        let diff      = expirey.diff(moment());
 
-        if (diff < 30) {
+        if (diff < 2592000000) { // milliseconds in a month
           expiringCerts.pushObject({
             expiringCertName: kee,
-            daysUntil:        diff,
-            exactDateTime:    expirey
+            milliUntil:       diff,
+            exactDateTime:    certDate
           });
         }
       });
