@@ -37,32 +37,29 @@ export default Component.extend(ModalBase, {
 
       set(this, 'services', this.modalOpts.serviceDefaults.map((cert) => {
         let expiringCert = null;
-        let expiresIn = null;
+        let expiresIn    = null;
 
         if (cert === 'kubelet') {
           expiringCert = expiringCerts.findBy('expiringCertName', 'kube-node');
         } else if (cert === 'etcd' && etcdNodes.length > 0){
           // there can be multiple etcd nodes with different cert expires, we can grab and alert the soonest expiring cert date since 'rofateCertificates' action will rotates all etcd node certs at the same time.
-          expiringCert = etcdNodes.sortBy('daysUntil').get('firstObject');
+          expiringCert = etcdNodes.sortBy('milliUntil').get('firstObject');
         } else {
           expiringCert = expiringCerts.findBy('expiringCertName', cert);
         }
 
-        if (expiringCert && !isEmpty(expiringCert.daysUntil)) {
-          expiresIn    = expiringCert.daysUntil;
+        if (expiringCert && !isEmpty(expiringCert.exactDateTime)) {
+          expiresIn    = expiringCert.exactDateTime;
 
-          if (expiresIn === 0) {
-            expiresIn = moment(expiringCert.exactDateTime).diff(moment(), 'hours');
-            certLabel = this.intl.t('modalRotateCertificates.expiring.hours', {
+          if (expiringCert.milliUntil > 0) {
+            certLabel = this.intl.t('modalRotateCertificates.expiring.until', {
               cert,
-              expiresIn
+              expiresIn: moment(expiresIn).fromNow(),
             });
-          } else if (expiresIn < 0) {
-            certLabel = this.intl.t('modalRotateCertificates.expiring.expired', { cert });
           } else {
-            certLabel = this.intl.t('modalRotateCertificates.expiring.days', {
+            certLabel = this.intl.t('modalRotateCertificates.expiring.from', {
               cert,
-              expiresIn
+              expiresIn: moment(expiresIn).fromNow(),
             });
           }
         } else {
