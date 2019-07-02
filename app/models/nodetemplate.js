@@ -99,7 +99,7 @@ export default Resource.extend({
 
       this.registerDynamicComputedProperty('displayLocation', computedKeys, location.getDisplayProperty);
     } else {
-      set(this, 'displayLocation', 'N/A');
+      set(this, 'displayLocation', get(this, 'config.region') || 'N/A');
     }
   },
 
@@ -112,7 +112,7 @@ export default Resource.extend({
 
       this.registerDynamicComputedProperty('displaySize', computedKeys, size.getDisplayProperty);
     } else {
-      set(this, 'displaySize', 'N/A');
+      set(this, 'displaySize', get(this, 'config.size') || 'N/A');
     }
   },
 
