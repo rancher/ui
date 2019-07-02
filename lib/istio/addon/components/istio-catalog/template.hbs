@@ -2,7 +2,7 @@
   <h1 class="pull-left">
     {{t "clusterIstioPage.header"}}
   </h1>
-  {{#if enabled}}
+  {{#if (and enabled canEnable)}}
     <div class="pull-right">
       {{#if confirmDisable}}
         <button class="btn bg-error" {{action "disable"}}>
@@ -17,439 +17,440 @@
   {{/if}}
 </section>
 
-{{#if (and enabled ready)}}
-  {{banner-message
-    color="bg-info"
-    message=(t "clusterIstioPage.enabled")
-  }}
-{{else if enabled}}
-  {{banner-message
-    color="bg-warning"
-    message=(t "clusterIstioPage.notReady")
-  }}
-{{else}}
-  {{banner-message
-    color="bg-warning"
-    message=(t "clusterIstioPage.disabled")
-  }}
-{{/if}}
-
-{{#if (and enabled ready)}}
-  <div class="row">
-    {{istio-component-status
-      label="clusterIstioPage.links.kiali.label"
-      url=kialiUrl
-      logo="kiali"
+{{#if canEnable}}
+  {{#if (and enabled ready)}}
+    {{banner-message
+      color="bg-info"
+      message=(t "clusterIstioPage.enabled")
     }}
-    {{istio-component-status
-      label="clusterIstioPage.links.jaeger.label"
-      url=jaegerUrl
-      logo="jaeger"
+  {{else if enabled}}
+    {{banner-message
+      color="bg-warning"
+      message=(t "clusterIstioPage.notReady")
     }}
-    {{istio-component-status
-      label="clusterIstioPage.links.grafana.label"
-      url=grafanaUrl
-      logo="grafana"
-    }}
-    {{istio-component-status
-      label="clusterIstioPage.links.prometheus.label"
-      url=prometheusUrl
-      logo="prometheus-icon"
-    }}
-  </div>
-{{/if}}
-
-<div class="box mb-10">
-  <div class="row">
-    <div class="col span-6">
-      <label class="acc-label">
-        {{t "clusterIstioPage.version"}}
-        {{#if (and enabled latestVersion templateVersion (not-eq latestVersion templateVersion))}}
-          <span class="bg-warning pt-0 pb-0 pl-5 pr-5">
-            {{t "monitoringPage.upgradeAvailable" version=latestVersion}}
-          </span>
-        {{/if}}
-      </label>
-      {{new-select
-        classNames="form-control"
-        content=availableVersions
-        value=templateVersion
-      }}
-    </div>
-  </div>
-
-  <div class="over-hr">
-    <span>
-      {{t "clusterIstioPage.config.header.pilot"}}
-    </span>
-  </div>
-  {{form-reservation
-    component="Pilot"
-    requestCpu=config.pilotRequestCpu
-    requestMemory=config.pilotRequestMemory
-    limitCpu=config.pilotLimitCpu
-    limitMemory=config.pilotLimitMemory
-  }}
-
-  <div class="row">
-    <div class="col span-6">
-      <label class="acc-label" for="input-trace-sampling">
-        {{t "clusterIstioPage.config.traceSampling.label"}}
-        {{field-required}}
-      </label>
-      <div class="input-group">
-        {{input-float
-          min="0"
-          max="100"
-          id="input-trace-sampling"
-          value=config.traceSampling
-          classNames="form-control"
-          placeholder=(t "clusterIstioPage.config.traceSampling.placeholder")
-          precision=2
-        }}
-        <div class="input-group-addon bg-default">
-          {{t "units.percent"}}
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div class="row">
-    <div class="col span-12">
-      <label class="acc-label">
-        {{t "clusterIstioPage.nodeSelector.helpText" component="Pilot"}}
-      </label>
-      {{form-key-value
-        changedArray=(action (mut pilotNodeSelectors))
-        initialMap=pilotNodeSelector
-        allowEmptyValue=true
-        addActionLabel="clusterIstioPage.nodeSelector.addSelectorLabel"
-      }}
-    </div>
-  </div>
-
-  <div class="over-hr">
-    <span>
-      {{t "clusterIstioPage.config.header.mixer"}}
-    </span>
-  </div>
-  {{form-reservation
-    component="MixerTelemetry"
-    requestCpu=config.mixerTelemetryRequestCpu
-    requestMemory=config.mixerTelemetryRequestMemory
-    limitCpu=config.mixerTelemetryLimitCpu
-    limitMemory=config.mixerTelemetryLimitMemory
-  }}
-
-  <div class="row">
-    <div class="col span-6">
-      <label class="acc-label" for="input-mixer-policy-enabled">
-        {{t "clusterIstioPage.config.mixerPolicyEnabled.label"}}
-      </label>
-      {{schema/input-boolean
-        id="input-mixer-policy-enabled"
-        value=config.mixerPolicyEnabled
-        classNames="form-control"
-      }}
-    </div>
-  </div>
-
-  {{#if config.mixerPolicyEnabled}}
-    {{form-reservation
-      component="MixerPolicy"
-      requestCpu=config.mixerPolicyRequestCpu
-      requestMemory=config.mixerPolicyRequestMemory
-      limitCpu=config.mixerPolicyLimitCpu
-      limitMemory=config.mixerPolicyLimitMemory
+  {{else}}
+    {{banner-message
+      color="bg-warning"
+      message=(t "clusterIstioPage.disabled")
     }}
   {{/if}}
 
-  <div class="row">
-    <div class="col span-12">
-      <label class="acc-label">
-        {{t "clusterIstioPage.nodeSelector.helpText" component="Mixer"}}
-      </label>
-      {{form-key-value
-        changedArray=(action (mut mixerNodeSelectors))
-        initialMap=mixerNodeSelector
-        allowEmptyValue=true
-        addActionLabel="clusterIstioPage.nodeSelector.addSelectorLabel"
-      }}
-    </div>
-  </div>
-
-  <div class="over-hr">
-    <span>
-      {{t "clusterIstioPage.config.header.tracing"}}
-    </span>
-  </div>
-  <div class="row">
-    <div class="col span-6">
-      <label class="acc-label">
-        {{t "clusterIstioPage.config.tracingEnabled.label"}}
-      </label>
-      {{schema/input-boolean
-        value=config.tracingEnabled
-        classNames="form-control"
-      }}
-    </div>
-  </div>
-
-  {{#if config.tracingEnabled}}
-    {{form-reservation
-      component="Tracing"
-      requestCpu=config.tracingRequestCpu
-      requestMemory=config.tracingRequestMemory
-      limitCpu=config.tracingLimitCpu
-      limitMemory=config.tracingLimitMemory
-    }}
+  {{#if (and enabled ready)}}
     <div class="row">
-      <div class="col span-12">
-        <label class="acc-label">
-          {{t "clusterIstioPage.nodeSelector.helpText" component="Tracing"}}
-        </label>
-        {{form-key-value
-          changedArray=(action (mut tracingNodeSelectors))
-          initialMap=tracingNodeSelector
-          allowEmptyValue=true
-          addActionLabel="clusterIstioPage.nodeSelector.addSelectorLabel"
-        }}
-      </div>
+      {{istio-component-status
+        label="clusterIstioPage.links.kiali.label"
+        url=kialiUrl
+        logo="kiali"
+      }}
+      {{istio-component-status
+        label="clusterIstioPage.links.jaeger.label"
+        url=jaegerUrl
+        logo="jaeger"
+      }}
+      {{istio-component-status
+        label="clusterIstioPage.links.grafana.label"
+        url=grafanaUrl
+        logo="grafana"
+      }}
+      {{istio-component-status
+        label="clusterIstioPage.links.prometheus.label"
+        url=prometheusUrl
+        logo="prometheus-icon"
+      }}
     </div>
   {{/if}}
 
-  <div class="over-hr">
-    <span>
-      {{t "clusterIstioPage.config.header.gateway"}}
-    </span>
-  </div>
-  <div class="row">
-    <div class="col span-6">
-      <label class="acc-label">
-        {{t "clusterIstioPage.config.gatewayEnabled.label"}}
-      </label>
-      {{schema/input-boolean
-        value=config.gatewayEnabled
-        classNames="form-control"
-      }}
-    </div>
-    {{#if config.gatewayEnabled}}
+  <div class="box mb-10">
+    <div class="row">
       <div class="col span-6">
-        <label class="acc-label" for="input-gateway-type-select">
-          {{t "clusterIstioPage.config.gatewayType.label"}}
+        <label class="acc-label">
+          {{t "clusterIstioPage.version"}}
+          {{#if (and enabled latestVersion templateVersion (not-eq latestVersion templateVersion))}}
+            <span class="bg-warning pt-0 pb-0 pl-5 pr-5">
+              {{t "monitoringPage.upgradeAvailable" version=latestVersion}}
+            </span>
+          {{/if}}
         </label>
         {{new-select
-          id="input-gateway-type-select"
-          class="form-control"
-          content=gatewayTypeContent
-          value=config.gatewayType
+          classNames="form-control"
+          content=availableVersions
+          value=templateVersion
         }}
       </div>
-    {{/if}}
-  </div>
+    </div>
 
-  {{#if config.gatewayEnabled}}
-    {{#if (eq config.gatewayType "NodePort")}}
-      <div class="row">
-        <div class="col span-6">
-          <label class="acc-label" for="input-http2-port">
-            {{t "clusterIstioPage.config.http2Port.label"}}
-            {{field-required}}
-          </label>
-          {{input-integer
-            min="30000"
-            max="32767"
-            step="1"
-            id="input-http2-port"
-            value=config.http2Port
-            classNames="form-control"
-          }}
-        </div>
-        <div class="col span-6">
-          <label class="acc-label" for="input-https-port">
-            {{t "clusterIstioPage.config.httpsPort.label"}}
-            {{field-required}}
-          </label>
-          {{input-integer
-            min="30000"
-            max="32767"
-            step="1"
-            id="input-https-port"
-            value=config.httpsPort
-            classNames="form-control"
-          }}
-        </div>
-      </div>
-    {{else if (eq config.gatewayType "LoadBalancer")}}
-      <div class="row">
-        <div class="col span-6">
-          <label class="acc-label" for="input-load-balancer-ip">
-            {{t "clusterIstioPage.config.loadBalancerIP.label"}}
-          </label>
-          {{schema/input-string
-            value=config.loadBalancerIP
-            id="input-load-balancer-ip"
-            placeholder=(t "clusterIstioPage.config.loadBalancerIP.placeholder")
-          }}
-        </div>
-        <div class="col span-6">
-          {{form-value-array
-            initialValues=loadBalancerSourceRanges
-            addActionLabel="editDns.loadBalancerSourceRanges.addActionLabel"
-            valueLabel="editDns.loadBalancerSourceRanges.value"
-            valuePlaceholder="editDns.loadBalancerSourceRanges.placeholder"
-            changed=(action (mut loadBalancerSourceRanges))
-            addButtonClass="btn bg-link icon-btn"
-          }}
-        </div>
-      </div>
-    {{/if}}
-
+    <div class="over-hr">
+      <span>
+        {{t "clusterIstioPage.config.header.pilot"}}
+      </span>
+    </div>
     {{form-reservation
-      component="IngressGateway"
-      requestCpu=config.gatewayRequestCpu
-      requestMemory=config.gatewayRequestMemory
-      limitCpu=config.gatewayLimitCpu
-      limitMemory=config.gatewayLimitMemory
+      component="Pilot"
+      requestCpu=config.pilotRequestCpu
+      requestMemory=config.pilotRequestMemory
+      limitCpu=config.pilotLimitCpu
+      limitMemory=config.pilotLimitMemory
     }}
+
+    <div class="row">
+      <div class="col span-6">
+        <label class="acc-label" for="input-trace-sampling">
+          {{t "clusterIstioPage.config.traceSampling.label"}}
+          {{field-required}}
+        </label>
+        <div class="input-group">
+          {{input-float
+            min="0"
+            max="100"
+            id="input-trace-sampling"
+            value=config.traceSampling
+            classNames="form-control"
+            placeholder=(t "clusterIstioPage.config.traceSampling.placeholder")
+            precision=2
+          }}
+          <div class="input-group-addon bg-default">
+            {{t "units.percent"}}
+          </div>
+        </div>
+      </div>
+    </div>
 
     <div class="row">
       <div class="col span-12">
         <label class="acc-label">
-          {{t "clusterIstioPage.nodeSelector.helpText" component="Gateway"}}
+          {{t "clusterIstioPage.nodeSelector.helpText" component="Pilot"}}
         </label>
         {{form-key-value
-          changedArray=(action (mut gatewayNodeSelectors))
-          initialMap=gatewayNodeSelector
+          changedArray=(action (mut pilotNodeSelectors))
+          initialMap=pilotNodeSelector
           allowEmptyValue=true
           addActionLabel="clusterIstioPage.nodeSelector.addSelectorLabel"
         }}
       </div>
     </div>
-  {{/if}}
 
-  <div class="over-hr">
-    <span>
-      {{t "clusterIstioPage.config.header.prometheus"}}
-    </span>
-  </div>
-  {{form-reservation
-    component="Prometheus"
-    requestCpu=config.prometheusRequestCpu
-    requestMemory=config.prometheusRequestMemory
-    limitCpu=config.prometheusLimitCpu
-    limitMemory=config.prometheusLimitMemory
-  }}
-
-  <div class="row">
-    <div class="col span-6">
-      <label class="acc-label" for="input-prometheus-retention">
-        {{t "clusterIstioPage.config.prometheusRetention.label"}}
-        {{field-required}}
-      </label>
-      <div class="input-group">
-        {{input-integer
-          min=0
-          value=config.prometheusRetention
-          id="input-prometheus-retention"
-        }}
-        <span class="input-group-addon bg-default">{{t "generic.hours"}}</span>
-      </div>
+    <div class="over-hr">
+      <span>
+        {{t "clusterIstioPage.config.header.mixer"}}
+      </span>
     </div>
-  </div>
+    {{form-reservation
+      component="MixerTelemetry"
+      requestCpu=config.mixerTelemetryRequestCpu
+      requestMemory=config.mixerTelemetryRequestMemory
+      limitCpu=config.mixerTelemetryLimitCpu
+      limitMemory=config.mixerTelemetryLimitMemory
+    }}
 
-  <div class="row">
-    <div class="col span-12">
-      <label class="acc-label">
-        {{t "clusterIstioPage.nodeSelector.helpText" component="Prometheus"}}
-      </label>
-      {{form-key-value
-        changedArray=(action (mut prometheusNodeSelectors))
-        initialMap=prometheusNodeSelector
-        allowEmptyValue=true
-        addActionLabel="clusterIstioPage.nodeSelector.addSelectorLabel"
-      }}
-    </div>
-  </div>
-
-  <div class="over-hr">
-    <span>
-      {{t "clusterIstioPage.config.header.grafana"}}
-    </span>
-  </div>
-  <div class="row">
-    <div class="col span-6">
-      <label class="acc-label">
-        {{t "clusterIstioPage.config.grafanaEnabled.label"}}
-      </label>
-      {{schema/input-boolean
-        value=config.grafanaEnabled
-        classNames="form-control"
-      }}
-    </div>
-    {{#if config.grafanaEnabled}}
+    <div class="row">
       <div class="col span-6">
-        <label class="acc-label">
-          {{t "clusterIstioPage.config.grafanaPersistenceEnabled.label"}}
+        <label class="acc-label" for="input-mixer-policy-enabled">
+          {{t "clusterIstioPage.config.mixerPolicyEnabled.label"}}
         </label>
         {{schema/input-boolean
-          value=config.grafanaPersistenceEnabled
+          id="input-mixer-policy-enabled"
+          value=config.mixerPolicyEnabled
           classNames="form-control"
         }}
       </div>
+    </div>
+
+    {{#if config.mixerPolicyEnabled}}
+      {{form-reservation
+        component="MixerPolicy"
+        requestCpu=config.mixerPolicyRequestCpu
+        requestMemory=config.mixerPolicyRequestMemory
+        limitCpu=config.mixerPolicyLimitCpu
+        limitMemory=config.mixerPolicyLimitMemory
+      }}
     {{/if}}
-  </div>
 
-  {{#if (and config.grafanaPersistenceEnabled config.grafanaEnabled)}}
-    {{catalog-persistence-row
-      component="grafana"
-      useStorageClass=useGrafanaStorageClass
-      config=grafana.persistence
-      storageClasses=storageClasses
-      persistentVolumeClaims=persistentVolumeClaims
-    }}
-  {{/if}}
-
-  {{#if config.grafanaEnabled}}
-    {{form-reservation
-      component="Grafana"
-      requestCpu=config.grafanaRequestCpu
-      requestMemory=config.grafanaRequestMemory
-      limitCpu=config.grafanaLimitCpu
-      limitMemory=config.grafanaLimitMemory
-    }}
     <div class="row">
       <div class="col span-12">
         <label class="acc-label">
-          {{t "clusterIstioPage.nodeSelector.helpText" component="Grafana"}}
+          {{t "clusterIstioPage.nodeSelector.helpText" component="Mixer"}}
         </label>
         {{form-key-value
-          changedArray=(action (mut grafanaNodeSelectors))
-          initialMap=grafanaNodeSelector
+          changedArray=(action (mut mixerNodeSelectors))
+          initialMap=mixerNodeSelector
           allowEmptyValue=true
           addActionLabel="clusterIstioPage.nodeSelector.addSelectorLabel"
         }}
       </div>
     </div>
-  {{/if}}
 
-  {{#advanced-section}}
-    <hr/>
-    {{form-key-value
-      initialMap=customAnswers
-      changed=(action (mut customAnswers))
-      allowEmptyValue=true
-      addInitialEmptyRow=true
-      editing=true
-      header=(t "newCatalog.answers.label")
-      addActionLabel="newCatalog.answers.addAction"
-      keyLabel="newContainer.environment.keyLabel"
-      keyPlaceholder="newContainer.environment.keyPlaceholder"
-      valueLabel="newContainer.environment.valueLabel"
-      valuePlaceholder="newContainer.environment.valuePlaceholder"
+    <div class="over-hr">
+      <span>
+        {{t "clusterIstioPage.config.header.tracing"}}
+      </span>
+    </div>
+    <div class="row">
+      <div class="col span-6">
+        <label class="acc-label">
+          {{t "clusterIstioPage.config.tracingEnabled.label"}}
+        </label>
+        {{schema/input-boolean
+          value=config.tracingEnabled
+          classNames="form-control"
+        }}
+      </div>
+    </div>
+
+    {{#if config.tracingEnabled}}
+      {{form-reservation
+        component="Tracing"
+        requestCpu=config.tracingRequestCpu
+        requestMemory=config.tracingRequestMemory
+        limitCpu=config.tracingLimitCpu
+        limitMemory=config.tracingLimitMemory
+      }}
+      <div class="row">
+        <div class="col span-12">
+          <label class="acc-label">
+            {{t "clusterIstioPage.nodeSelector.helpText" component="Tracing"}}
+          </label>
+          {{form-key-value
+            changedArray=(action (mut tracingNodeSelectors))
+            initialMap=tracingNodeSelector
+            allowEmptyValue=true
+            addActionLabel="clusterIstioPage.nodeSelector.addSelectorLabel"
+          }}
+        </div>
+      </div>
+    {{/if}}
+
+    <div class="over-hr">
+      <span>
+        {{t "clusterIstioPage.config.header.gateway"}}
+      </span>
+    </div>
+    <div class="row">
+      <div class="col span-6">
+        <label class="acc-label">
+          {{t "clusterIstioPage.config.gatewayEnabled.label"}}
+        </label>
+        {{schema/input-boolean
+          value=config.gatewayEnabled
+          classNames="form-control"
+        }}
+      </div>
+      {{#if config.gatewayEnabled}}
+        <div class="col span-6">
+          <label class="acc-label" for="input-gateway-type-select">
+            {{t "clusterIstioPage.config.gatewayType.label"}}
+          </label>
+          {{new-select
+            id="input-gateway-type-select"
+            class="form-control"
+            content=gatewayTypeContent
+            value=config.gatewayType
+          }}
+        </div>
+      {{/if}}
+    </div>
+
+    {{#if config.gatewayEnabled}}
+      {{#if (eq config.gatewayType "NodePort")}}
+        <div class="row">
+          <div class="col span-6">
+            <label class="acc-label" for="input-http2-port">
+              {{t "clusterIstioPage.config.http2Port.label"}}
+              {{field-required}}
+            </label>
+            {{input-integer
+              min="30000"
+              max="32767"
+              step="1"
+              id="input-http2-port"
+              value=config.http2Port
+              classNames="form-control"
+            }}
+          </div>
+          <div class="col span-6">
+            <label class="acc-label" for="input-https-port">
+              {{t "clusterIstioPage.config.httpsPort.label"}}
+              {{field-required}}
+            </label>
+            {{input-integer
+              min="30000"
+              max="32767"
+              step="1"
+              id="input-https-port"
+              value=config.httpsPort
+              classNames="form-control"
+            }}
+          </div>
+        </div>
+      {{else if (eq config.gatewayType "LoadBalancer")}}
+        <div class="row">
+          <div class="col span-6">
+            <label class="acc-label" for="input-load-balancer-ip">
+              {{t "clusterIstioPage.config.loadBalancerIP.label"}}
+            </label>
+            {{schema/input-string
+              value=config.loadBalancerIP
+              id="input-load-balancer-ip"
+              placeholder=(t "clusterIstioPage.config.loadBalancerIP.placeholder")
+            }}
+          </div>
+          <div class="col span-6">
+            {{form-value-array
+              initialValues=loadBalancerSourceRanges
+              addActionLabel="editDns.loadBalancerSourceRanges.addActionLabel"
+              valueLabel="editDns.loadBalancerSourceRanges.value"
+              valuePlaceholder="editDns.loadBalancerSourceRanges.placeholder"
+              changed=(action (mut loadBalancerSourceRanges))
+              addButtonClass="btn bg-link icon-btn"
+            }}
+          </div>
+        </div>
+      {{/if}}
+
+      {{form-reservation
+        component="IngressGateway"
+        requestCpu=config.gatewayRequestCpu
+        requestMemory=config.gatewayRequestMemory
+        limitCpu=config.gatewayLimitCpu
+        limitMemory=config.gatewayLimitMemory
+      }}
+
+      <div class="row">
+        <div class="col span-12">
+          <label class="acc-label">
+            {{t "clusterIstioPage.nodeSelector.helpText" component="Gateway"}}
+          </label>
+          {{form-key-value
+            changedArray=(action (mut gatewayNodeSelectors))
+            initialMap=gatewayNodeSelector
+            allowEmptyValue=true
+            addActionLabel="clusterIstioPage.nodeSelector.addSelectorLabel"
+          }}
+        </div>
+      </div>
+    {{/if}}
+
+    <div class="over-hr">
+      <span>
+        {{t "clusterIstioPage.config.header.prometheus"}}
+      </span>
+    </div>
+    {{form-reservation
+      component="Prometheus"
+      requestCpu=config.prometheusRequestCpu
+      requestMemory=config.prometheusRequestMemory
+      limitCpu=config.prometheusLimitCpu
+      limitMemory=config.prometheusLimitMemory
     }}
-  {{/advanced-section}}
-</div>
+
+    <div class="row">
+      <div class="col span-6">
+        <label class="acc-label" for="input-prometheus-retention">
+          {{t "clusterIstioPage.config.prometheusRetention.label"}}
+          {{field-required}}
+        </label>
+        <div class="input-group">
+          {{input-integer
+            min=0
+            value=config.prometheusRetention
+            id="input-prometheus-retention"
+          }}
+          <span class="input-group-addon bg-default">{{t "generic.hours"}}</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col span-12">
+        <label class="acc-label">
+          {{t "clusterIstioPage.nodeSelector.helpText" component="Prometheus"}}
+        </label>
+        {{form-key-value
+          changedArray=(action (mut prometheusNodeSelectors))
+          initialMap=prometheusNodeSelector
+          allowEmptyValue=true
+          addActionLabel="clusterIstioPage.nodeSelector.addSelectorLabel"
+        }}
+      </div>
+    </div>
+
+    <div class="over-hr">
+      <span>
+        {{t "clusterIstioPage.config.header.grafana"}}
+      </span>
+    </div>
+    <div class="row">
+      <div class="col span-6">
+        <label class="acc-label">
+          {{t "clusterIstioPage.config.grafanaEnabled.label"}}
+        </label>
+        {{schema/input-boolean
+          value=config.grafanaEnabled
+          classNames="form-control"
+        }}
+      </div>
+      {{#if config.grafanaEnabled}}
+        <div class="col span-6">
+          <label class="acc-label">
+            {{t "clusterIstioPage.config.grafanaPersistenceEnabled.label"}}
+          </label>
+          {{schema/input-boolean
+            value=config.grafanaPersistenceEnabled
+            classNames="form-control"
+          }}
+        </div>
+      {{/if}}
+    </div>
+
+    {{#if (and config.grafanaPersistenceEnabled config.grafanaEnabled)}}
+      {{catalog-persistence-row
+        component="grafana"
+        useStorageClass=useGrafanaStorageClass
+        config=grafana.persistence
+        storageClasses=storageClasses
+        persistentVolumeClaims=persistentVolumeClaims
+      }}
+    {{/if}}
+
+    {{#if config.grafanaEnabled}}
+      {{form-reservation
+        component="Grafana"
+        requestCpu=config.grafanaRequestCpu
+        requestMemory=config.grafanaRequestMemory
+        limitCpu=config.grafanaLimitCpu
+        limitMemory=config.grafanaLimitMemory
+      }}
+      <div class="row">
+        <div class="col span-12">
+          <label class="acc-label">
+            {{t "clusterIstioPage.nodeSelector.helpText" component="Grafana"}}
+          </label>
+          {{form-key-value
+            changedArray=(action (mut grafanaNodeSelectors))
+            initialMap=grafanaNodeSelector
+            allowEmptyValue=true
+            addActionLabel="clusterIstioPage.nodeSelector.addSelectorLabel"
+          }}
+        </div>
+      </div>
+    {{/if}}
+
+    {{#advanced-section}}
+      <hr/>
+      {{form-key-value
+        initialMap=customAnswers
+        changed=(action (mut customAnswers))
+        allowEmptyValue=true
+        addInitialEmptyRow=true
+        editing=true
+        header=(t "newCatalog.answers.label")
+        addActionLabel="newCatalog.answers.addAction"
+        keyLabel="newContainer.environment.keyLabel"
+        keyPlaceholder="newContainer.environment.keyPlaceholder"
+        valueLabel="newContainer.environment.valueLabel"
+        valuePlaceholder="newContainer.environment.valuePlaceholder"
+      }}
+    {{/advanced-section}}
+  </div>
 
 {{#accordion-list showExpandAll=false as |al expandFn|}}
   {{#accordion-list-item
@@ -508,17 +509,22 @@
       {{#if config.mixerPolicyEnabled}}
         <p>{{mixerPolicyWarning}}</p>
       {{/if}}
-    {{/if}}
-  {{/banner-message}}
+    {{/banner-message}}
+  {{/if}}
+
+  {{top-errors errors=errors}}
+
+  {{save-cancel
+    saveDisabled=saveDisabled
+    editing=enabled
+    createLabel="clusterIstioPage.enableActionLabel"
+    save=(action "save")
+    saved=saved
+    cancel=cancel
+  }}
+{{else}}
+  {{banner-message
+    color="bg-warning"
+    message=(t "clusterIstioPage.goToMonitoring" clusterId=cluster.id htmlSafe=true)
+  }}
 {{/if}}
-
-{{top-errors errors=errors}}
-
-{{save-cancel
-  saveDisabled=saveDisabled
-  editing=enabled
-  createLabel="clusterIstioPage.enableActionLabel"
-  save=(action "save")
-  saved=saved
-  cancel=cancel
-}}
