@@ -520,6 +520,68 @@ authPage:
         post: Waiting to hear back from GitHub
       authError: 'Github access was not authorized'
       popupError: 'Please disable your pop-up blocker and click "Authenticate" again.'
+  google:
+    header:
+      disabled:
+        label: 'Google is not configured'
+    authenticated:
+      header:
+        text: Authentication
+        adminEmail:
+          text: "Admin Email: "
+      disableAccess:
+        header: "Danger Zone&trade;"
+        warning: '<b class="text-danger">Caution:</b> Disabling access control will give complete control over {appName} to anyone that can reach this page or the API.'
+        confirmDisable: "Are you sure?  Click again to disable access control"
+        disable: Disable Google access
+    notAuthenticated:
+      header: "1. Configure your Google Application settings"
+      ul:
+        li1:
+          text: 'For standard Google, <a href="https://console.developers.google.com/apis/credentials" target="_blank">click here</a> to go to your Google developer console.'
+          ul:
+            li1: 'Login to your account. Navigate to "APIs & Services" and then select "Credentials".'
+        li2:
+          text: 'Navigate to the "OAuth consent screen" tab and fill in the form:'
+          ul:
+            li1: '<b>Authorized domains:</b> '
+            li2: '<b>Application homepage link:</b> '
+            li3: 'Enable "email", "profile", and "openid" to Scopes for Google APIs.'
+            li4: 'Authorization callback URL:'
+        li3:
+          text: 'Navigate to the "Credentials" tab to create your OAuth client ID:'
+          ul:
+            li1: 'Select "Create Credentials", select OAuth clientID, then select Web application.'
+            li2: '<b>Authorized Javascript origins:</b> '
+            li3: '<b>Authorized redirect URIs:</b> '
+            li4: 'Click "save" and then download JSON.'
+        li4:
+          text: 'Navigate to the "Credentials" tab again to create your Service account key:'
+          ul:
+            li1: 'Select your service account.'
+            li2: 'Select JSON for your Key type and then click "Create".'
+            li3: 'A JSON file will be automatically saved locally.'
+      form:
+        header: '2. Configure {appName} to use your application for authentication'
+        oauthCredential:
+          labelText: OAuth Credentials
+          helperText: Copy and paste in the OAuth Credentials JSON which can be found in your Google API developers console (Step 3 above).
+        serviceAccountCredential:
+          labelText: Service Account Credentials
+          helperText: Copy and paste in the Service Account Credentials JSON which can be found in the service accounts section of the Google API developers console (Step 4 above).
+        adminEmail:
+          labelText: Admin Email
+          helperText: Enter the Admin Email associated with your account.
+        hostname:
+          labelText: Host name
+          helperText: Enter the host name of your account.
+    testAuth:
+      buttonText:
+        pre: Authenticate with Google
+        post: Waiting to hear back from Google
+      authError: 'Google access was not authorized'
+      popupError: 'Please disable your pop-up blocker and click "Authenticate" again.'
+
   azuread:
     header:
       disabled:
@@ -5621,6 +5683,9 @@ loginShibboleth:
 
 loginGithub:
   buttonText: Log In with GitHub
+
+loginGoogle:
+  buttonText: Log In with Google
 
 loginAzure:
   buttonText: Log In with Azure AD

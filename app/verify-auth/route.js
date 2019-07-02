@@ -12,6 +12,7 @@ const allowedForwards = ['localhost'];
 
 export default Route.extend(VerifyAuth, {
   github:   service(),
+  google:   service(),
   intl:     service(),
   language: service('user-language'),
 
@@ -23,6 +24,7 @@ export default Route.extend(VerifyAuth, {
 
   model(params/* , transition */) {
     const github  = get(this, 'github');
+    const google = get(this, 'google');
     const code    = get(params, 'code');
     const forward = get(params, 'forward');
 
@@ -50,11 +52,13 @@ export default Route.extend(VerifyAuth, {
 
     if ( window.opener && !get(params, 'login') && !get(params, 'errorCode') ) {
       let openersGithub = window.opener.ls('github');
+      let openersGoogle = window.opener.ls('google');
       let openerStore   = window.opener.ls('globalStore');
       let qp            = get(params, 'config') || get(params, 'authProvider');
       let type          = `${ qp }Config`;
       let config        = openerStore.getById(type, qp);
       let gh            = get(this, 'github');
+      let go            = get(this, 'google');
       let stateMsg      = 'Authorization state did not match, please try again.';
 
       if ( get(params, 'config') === 'github' ) {
@@ -63,6 +67,12 @@ export default Route.extend(VerifyAuth, {
         }).catch((err) => {
           this.send('gotError', err);
         });
+      } else if ( get(params, 'config') === 'googleoauth') {
+        return go.testConfig(config).then((resp) => {
+          go.authorize(resp, openersGoogle.get('state'));
+        }).catch((err) => {
+          this.send('gotError', err)
+        })
       } else if ( samlProviders.includes(get(params, 'config')) ) {
         if ( window.opener.window.onAuthTest ) {
           reply(null, config);
@@ -72,7 +82,9 @@ export default Route.extend(VerifyAuth, {
       }
 
       if ( get(params, 'code') ) {
-        if ( openersGithub.stateMatches(get(params, 'state')) ) {
+        const currentOpener = openersGithub.state ? openersGithub : openersGoogle;
+
+        if ( currentOpener.stateMatches(get(params, 'state')) ) {
           reply(params.error_description, params.code);
         } else {
           reply(stateMsg);
@@ -87,11 +99,13 @@ export default Route.extend(VerifyAuth, {
       }
     }
 
-    if ( code && get(params, 'login') ) {
-      if ( github.stateMatches(get(params, 'state')) ) {
-        let ghProvider = get(this, 'access.providers').findBy('id', 'github');
+    if ( code && get(params, 'login') || get(params, 'state').includes('login') ) {
+      let currentProvider = github.stateMatches(get(params, 'state')) ? 'github' : 'googleoauth'
 
-        return ghProvider.doAction('login', {
+      if ( github.stateMatches(get(params, 'state')) || google.stateMatches(get(params, 'state')) ) {
+        currentProvider = get(this, 'access.providers').findBy('id', currentProvider);
+
+        return currentProvider.doAction('login', {
           code,
           responseType: 'cookie',
           description:  C.SESSION.DESCRIPTION,

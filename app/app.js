@@ -79,6 +79,7 @@ const App = Application.extend({
           'digitalOcean',
           'endpoint',
           'github',
+          'google',
           'globalStore',
           'intl',
           'modal',
