@@ -31,7 +31,7 @@ steps:
     path: /var/run/docker.sock
   when:
     branch:
-    - master
+    - 2.2-fixes
     event:
       exclude:
       - pull_request
@@ -43,13 +43,13 @@ steps:
     acl:
     - allUsers:READER
     cache_control: "no-cache,must-revalidate"
-    source: dist/static/latest2
-    target: releases.rancher.com/ui/latest2
+    source: dist/static/latest-2.2
+    target: releases.rancher.com/ui/latest-2.2
     token:
       from_secret: google_auth_key
   when:
     branch:
-    - master
+    - 2.2-fixes
     event:
       exclude:
       - pull_request
