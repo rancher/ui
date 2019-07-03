@@ -3,6 +3,7 @@ import { get, set } from '@ember/object';
 import Component from '@ember/component';
 import C from 'ui/utils/constants';
 import ModalBase from 'shared/mixins/modal-base';
+import { isDevBuild } from 'shared/utils/parse-version';
 import layout from './template';
 
 export default Component.extend(ModalBase, {
@@ -18,12 +19,12 @@ export default Component.extend(ModalBase, {
     const version = get(this, 'settings.rancherVersion');
     let optIn;
 
-    if ( version && version !== 'master' ) {
+    if ( !version || isDevBuild(version) ) {
+      // For dev builds, default to opt out
+      optIn = (cur === 'in');
+    } else {
       // For releases, default to opt in
       optIn = (cur !== 'out');
-    } else {
-      // For master, default to opt out
-      optIn = (cur === 'in');
     }
 
     set(this, 'optIn', optIn);
