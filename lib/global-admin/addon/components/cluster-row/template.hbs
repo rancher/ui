@@ -8,7 +8,20 @@
     {{badge-state model=model}}
   </td>
   <td data-title="{{dt.name}}">
-    {{#link-to-external 'authenticated.cluster' model.id}}{{model.displayName}}{{/link-to-external}}
+    {{#link-to-external "authenticated.cluster" model.id}}
+      {{model.displayName}}
+    {{/link-to-external}}
+    {{#if model.certsExpiring}}
+      {{#tooltip-element
+         type="tooltip-expiring"
+         model=model
+         tooltipTemplate="tooltip-static"
+         aria-describedby="tooltip-base"
+         tooltipFor="tooltipCertExpire"
+      }}
+        <i class="icon icon-alert text-warning" />
+      {{/tooltip-element}}
+    {{/if}}
   </td>
   <td data-title="{{dt.provider}}">
     {{#if model.version.gitVersion}}
@@ -20,11 +33,11 @@
   </td>
   {{#if (eq model.state "inactive")}}
     <td colspan="3" class="text-center">
-      {{t 'clusterRow.noHosts'}}
+      {{t "clusterRow.noHosts"}}
     </td>
   {{else}}
     <td data-title="{{dt.nodes}}">
-      {{#link-to-external 'authenticated.cluster.nodes' model.id}}
+      {{#link-to-external "authenticated.cluster.nodes" model.id}}
         {{model.machines.length}}
       {{/link-to-external}}
     </td>
@@ -34,7 +47,7 @@
         <p class="text-small text-muted m-0">{{model.cpuPercent}}</p>
       {{else}}
         <span class="text-muted">
-          {{t 'generic.na'}}
+          {{t "generic.na"}}
         </span>
       {{/if}}
     </td>
@@ -45,7 +58,7 @@
         <p class="text-small text-muted m-0">{{model.memoryPercent}}</p>
       {{else}}
         <span class="text-muted">
-          {{t 'generic.na'}}
+          {{t "generic.na"}}
         </span>
       {{/if}}
     </td>
