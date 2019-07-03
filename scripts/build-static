@@ -49,7 +49,7 @@ if [[ -z "$BRANCH" ]]; then
 fi
 
 if [[ -z "$BRANCH" ]]; then
-  BRANCH="master"
+  BRANCH="2.2-fixes"
 fi
 
 PKG_VERSION=$(cat package.json | grep version | head -n 1 | cut -f4 -d'"')
@@ -119,7 +119,7 @@ if [[ `git status --porcelain` ]]; then
 fi
 
 # UPLOAD_LATEST=true is set by Drone for auto upload to CDN
-if [[ "${BRANCH}" == "master" ]] && [[ "${UPLOAD_LATEST}" == "true" ]]; then
+if [[ "${BRANCH}" == "2.2-fixes" ]] && [[ "${UPLOAD_LATEST}" == "true" ]]; then
   UPLOAD=2
   LATEST=1
 fi
@@ -133,7 +133,7 @@ if [[ $LATEST -eq 1 ]] && [[ $TAG -eq 1 ]]; then
 fi
 
 if ( [[ $TAG -eq 1 ]] || [[ $UPLOAD -ne 0 ]] ) && [[ "${BRANCH}" != "2.2-fixes" ]]; then
-  echo "You can only tag or upload the master branch (you are on '${BRANCH}')."
+  echo "You can only tag or upload the 2.2-fixes branch (you are on '${BRANCH}')."
   if [[ $FORCE -ne 1 ]]; then
     exit 1;
   fi
