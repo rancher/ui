@@ -14,7 +14,7 @@ export const headersAll = [
   },
   {
     name:           'name',
-    sort:           ['displayName', 'id'],
+    sort:           ['sortName', 'id'],
     searchField:    'displayName',
     translationKey: 'generic.name',
   },
