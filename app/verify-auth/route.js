@@ -11,8 +11,7 @@ const samlProviders = ['ping', 'adfs', 'keycloak', 'okta'];
 const allowedForwards = ['localhost'];
 
 export default Route.extend(VerifyAuth, {
-  github:   service(),
-  google:   service(),
+  oauth:    service(),
   intl:     service(),
   language: service('user-language'),
 
@@ -23,8 +22,7 @@ export default Route.extend(VerifyAuth, {
   },
 
   model(params/* , transition */) {
-    const github  = get(this, 'github');
-    const google = get(this, 'google');
+    const oauth  = get(this, 'oauth');
     const code    = get(params, 'code');
     const forward = get(params, 'forward');
 
@@ -41,7 +39,7 @@ export default Route.extend(VerifyAuth, {
             code
           });
         } else {
-          github.login(forward);
+          oauth.login(forward);
         }
       } else {
         return reject(new Error('Invalid forward url'));
@@ -51,28 +49,21 @@ export default Route.extend(VerifyAuth, {
     }
 
     if ( window.opener && !get(params, 'login') && !get(params, 'errorCode') ) {
-      let openersGithub = window.opener.ls('github');
-      let openersGoogle = window.opener.ls('google');
+      let openersOauth  = window.opener.ls('oauth');
       let openerStore   = window.opener.ls('globalStore');
       let qp            = get(params, 'config') || get(params, 'authProvider');
       let type          = `${ qp }Config`;
       let config        = openerStore.getById(type, qp);
-      let gh            = get(this, 'github');
-      let go            = get(this, 'google');
       let stateMsg      = 'Authorization state did not match, please try again.';
+      let isGithub      = get(params, 'config') === 'github'
+      let isGoogle      = get(params, 'config') === 'googleoauth'
 
-      if ( get(params, 'config') === 'github' ) {
-        return gh.testConfig(config).then((resp) => {
-          gh.authorize(resp, openersGithub.get('state'));
+      if ( isGithub || isGoogle ) {
+        return oauth.testConfig(config).then((resp) => {
+          oauth.authorize(resp, openersOauth.get('state'));
         }).catch((err) => {
           this.send('gotError', err);
         });
-      } else if ( get(params, 'config') === 'googleoauth') {
-        return go.testConfig(config).then((resp) => {
-          go.authorize(resp, openersGoogle.get('state'));
-        }).catch((err) => {
-          this.send('gotError', err)
-        })
       } else if ( samlProviders.includes(get(params, 'config')) ) {
         if ( window.opener.window.onAuthTest ) {
           reply(null, config);
@@ -82,9 +73,7 @@ export default Route.extend(VerifyAuth, {
       }
 
       if ( get(params, 'code') ) {
-        const currentOpener = openersGithub.state ? openersGithub : openersGoogle;
-
-        if ( currentOpener.stateMatches(get(params, 'state')) ) {
+        if ( openersOauth.stateMatches(get(params, 'state')) ) {
           reply(params.error_description, params.code);
         } else {
           reply(stateMsg);
@@ -99,11 +88,11 @@ export default Route.extend(VerifyAuth, {
       }
     }
 
-    if ( code && get(params, 'login') || get(params, 'state').includes('login') ) {
-      let currentProvider = github.stateMatches(get(params, 'state')) ? 'github' : 'googleoauth'
+    if ( code && get(params, 'state').includes('login') ) {
+      const providerType = get(params, 'state').includes('github') ? 'github' : 'googleoauth'
 
-      if ( github.stateMatches(get(params, 'state')) || google.stateMatches(get(params, 'state')) ) {
-        currentProvider = get(this, 'access.providers').findBy('id', currentProvider);
+      if ( oauth.stateMatches(get(params, 'state')) ) {
+        const currentProvider = get(this, 'access.providers').findBy('id', providerType);
 
         return currentProvider.doAction('login', {
           code,
