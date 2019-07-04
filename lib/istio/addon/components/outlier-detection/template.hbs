@@ -1,0 +1,102 @@
+<div class="row">
+  <div class="col span-6">
+    <label
+      class="acc-label"
+      for="{{concat elementId "-input-baseEjectionTime"}}"
+    >
+      {{t "cruDestinationRule.outlierDetection.baseEjectionTime.label"}}
+    </label>
+    {{#input-or-display
+      editable=editing
+      value=model.baseEjectionTime
+    }}
+      {{input
+        type="text"
+        value=model.baseEjectionTime
+        id=(concat elementId "-input-baseEjectionTime")
+        placeholder=(t "cruDestinationRule.outlierDetection.baseEjectionTime.placeholder")
+      }}
+      <p class="help-block">
+        {{t "cruDestinationRule.outlierDetection.baseEjectionTime.help"}}
+      </p>
+    {{/input-or-display}}
+  </div>
+
+  <div class="col span-6">
+    <label
+      class="acc-label"
+      for="{{concat elementId "-input-consecutiveErrors"}}"
+    >
+      {{t "cruDestinationRule.outlierDetection.consecutiveErrors.label"}}
+    </label>
+    {{#input-or-display
+      editable=editing
+      value=model.consecutiveErrors
+    }}
+      {{input-integer
+        min=0
+        value=model.consecutiveErrors
+        id=(concat elementId "-input-consecutiveErrors")
+        placeholder=(t "cruDestinationRule.outlierDetection.consecutiveErrors.placeholder")
+      }}
+      <p class="help-block">
+        {{t "cruDestinationRule.outlierDetection.consecutiveErrors.help"}}
+      </p>
+    {{/input-or-display}}
+  </div>
+</div>
+
+<div class="row">
+  <div class="col span-6">
+    <label
+      class="acc-label"
+      for="{{concat elementId "-input-interval"}}"
+    >
+      {{t "cruDestinationRule.outlierDetection.interval.label"}}
+    </label>
+    {{#input-or-display
+      editable=editing
+      value=model.interval
+    }}
+      {{input
+        type="text"
+        value=model.interval
+        id=(concat elementId "-input-interval")
+        placeholder=(t "cruDestinationRule.outlierDetection.interval.placeholder")
+      }}
+      <p class="help-block">
+        {{t "cruDestinationRule.outlierDetection.interval.help"}}
+      </p>
+    {{/input-or-display}}
+  </div>
+
+  <div class="col span-6">
+    <label
+      class="acc-label"
+      for="{{concat elementId "-input-maxEjectionPercent"}}"
+    >
+      {{t "cruDestinationRule.outlierDetection.maxEjectionPercent.label"}}
+    </label>
+    {{#input-or-display
+      editable=editing
+      value=model.maxEjectionPercent
+    }}
+      <div class="input-group">
+        {{input-integer
+          classNames="form-control"
+          min="0"
+          max="100"
+          value=model.maxEjectionPercent
+          id=(concat elementId "-input-maxEjectionPercent")
+          placeholder=(t "cruDestinationRule.outlierDetection.maxEjectionPercent.placeholder")
+        }}
+        <div class="input-group-addon bg-default">
+          %
+        </div>
+      </div>
+      <p class="help-block">
+        {{t "cruDestinationRule.outlierDetection.maxEjectionPercent.help"}}
+      </p>
+    {{/input-or-display}}
+  </div>
+</div>

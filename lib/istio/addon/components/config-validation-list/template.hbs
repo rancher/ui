@@ -1,0 +1,65 @@
+{{#accordion-list-item
+     title=(t 'validationsList.title')
+     detail=(t 'validationsList.detail' resourceType=resourceType)
+     expandAll=expandAll
+     expand=(action expandFn)
+     expanded=expanded
+     componentName='sortable-table'
+     as | parent |
+}}
+  {{#if (and expanded noPermission)}}
+    <div class="text-center mt-20">
+      {{t "validationsList.noPermission"}}
+    </div>
+  {{else if (and expanded (not loading))}}
+    {{#component parent.intent
+        classNames="grid fixed mb-0 sortable-table"
+        bulkActions=false
+        rowActions=false
+        paging=false
+        search=true
+        sortBy=sortBy
+        stickyHeader=false
+        descending=descending
+        headers=headers
+        body=validations
+        as |sortable kind row dt|
+    }}
+      {{#if (eq kind "row")}}
+        <tr>
+          <td data-title="{{dt.severity}}">
+            {{row.severity}}
+          </td>
+          <td data-title="{{dt.path}}">
+            {{row.path}}
+          </td>
+          <td data-title="{{dt.message}}">
+            {{row.message}}
+          </td>
+        </tr>
+      {{else if (eq kind "norows")}}
+        <tr>
+          <td
+            colspan="{{sortable.fullColspan}}"
+            class="text-center text-muted pt-20 pb-20"
+          >
+            {{t 'validationsList.noData'}}
+          </td>
+        </tr>
+      {{else if (eq kind "nomatch")}}
+        <tr>
+          <td
+            colspan="{{sortable.fullColspan}}"
+            class="text-center text-muted pt-20 pb-20"
+          >
+            {{t 'validationsList.noMatch'}}
+          </td>
+        </tr>
+      {{/if}}
+    {{/component}}
+  {{else}}
+    <div class="text-center mt-20">
+      <i class="icon icon-spinner icon-spin icon-3x"></i>
+    </div>
+  {{/if}}
+{{/accordion-list-item}}

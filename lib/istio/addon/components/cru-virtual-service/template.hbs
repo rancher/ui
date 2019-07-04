@@ -1,0 +1,205 @@
+{{#if isView}}
+  <section class="header clearfix">
+    <div class="pull-left">
+      <h1>
+        {{t (concat "cruVirtualService.title." mode) name=model.displayName}}
+      </h1>
+    </div>
+    <div class="right-buttons">
+      {{badge-state model=model}}
+      {{action-menu
+        model=model
+        showPrimary=false
+        classNames="ml-10 inline-block"
+        size="sm"
+      }}
+    </div>
+  </section>
+
+  <div class="row banner bg-info basics">
+    <div class="vertical-middle">
+      <label class="acc-label vertical-middle p-0">
+        {{t "generic.name"}}:
+      </label>
+      {{#copy-inline clipboardText=model.displayName}}
+        {{model.displayName}}
+      {{/copy-inline}}
+    </div>
+    <div class="vertical-middle">
+      <label class="acc-label vertical-middle p-0">
+        {{t "servicePage.multistat.namespace"}}:
+      </label>
+      {{#copy-inline clipboardText=model.namespaceId}}
+        {{model.namespaceId}}
+      {{/copy-inline}}
+    </div>
+    <div class="vertical-middle">
+      <label class="acc-label vertical-middle p-0">
+        {{t "generic.created"}}:
+      </label>
+      {{date-calendar model.created}}
+    </div>
+  </div>
+{{else}}
+  <section class="header clearfix">
+    <h1>
+      {{t (concat "cruVirtualService.title." mode) name=model.displayName}}
+    </h1>
+  </section>
+  <section class="horizontal-form container-fluid">
+    <div class="row">
+      <div class="col span-6">
+        {{form-name-description
+          model=model
+          namePlaceholder="cruVirtualService.name.placeholder"
+          descriptionShown=false
+          nameDisabled=isEdit
+        }}
+      </div>
+      <div class="col span-6">
+        {{form-namespace
+          namespace=namespace
+          errors=namespaceErrors
+          registerHook=(action "registerHook")
+          editing=isNew
+        }}
+      </div>
+    </div>
+  </section>
+{{/if}}
+
+<hr />
+
+<div class="row">
+  <div class="col span-6">
+    {{#form-value-array
+      editing=(not isView)
+      required=true
+      valueLabel="cruVirtualService.hosts.label"
+      addActionLabel="cruVirtualService.hosts.add"
+      changed=(action "setHosts")
+      initialValues=model.hosts
+      showProTip=false
+      addButtonClass="btn bg-link icon-btn"
+      autoAddIfEmpty=true
+      defaultValue=null
+      as |c row|
+    }}
+      {{#input-or-display
+        editable=editing
+        value=row.value
+      }}
+        {{istio-host-select
+          showLabel=false
+          namespaceId=namespace.id
+          value=row.value
+          inputClass="input-sm"
+        }}
+      {{/input-or-display}}
+    {{/form-value-array}}
+  </div>
+  <div class="col span-6">
+    {{#form-value-array
+      editing=(not isView)
+      valueLabel="cruVirtualService.gateways.label"
+      addActionLabel="cruVirtualService.gateways.add"
+      changed=(action "setGateways")
+      addButtonClass="btn bg-link icon-btn"
+      initialValues=model.gateways
+      showProTip=false
+      as |c row|
+    }}
+      {{#input-or-display
+        editable=editing
+        value=row.value
+      }}
+        {{input
+          class="form-control input-sm"
+          type="text"
+          value=row.value
+          placeholder=(t "cruVirtualService.gateways.placeholder")
+        }}
+      {{/input-or-display}}
+    {{/form-value-array}}
+  </div>
+</div>
+
+<hr />
+
+<section class="horizontal-form container-fluid mb-30">
+  <div class="row mt-30 mb-10">
+    <label class="acc-label">
+      {{t "cruVirtualService.http.routes.label"}}
+    </label>
+  </div>
+
+  {{#each httpRoutes as |route index|}}
+    {{virtual-service-http-route-row
+      editing=editing
+      isFirst=(eq route httpRoutes.firstObject)
+      isLast=(eq route httpRoutes.lastObject)
+      route=route
+      routes=httpRoutes
+      hosts=model.hosts
+      isNew=isNew
+      namespace=namespace
+      removeRoute=(action "removeHttpRoute")
+    }}
+  {{else}}
+    <div class="p-20 text-center text-muted">
+      {{t "cruVirtualService.http.routes.noRoutes"}}
+    </div>
+  {{/each}}
+
+  {{#if editing}}
+    <div class="row">
+      <button class="btn bg-link icon-btn pull-right" {{action "addHttpRoute"}}>
+        <span class="darken">
+          <i class="icon icon-plus text-small"></i>
+        </span>
+        <span>
+          {{t "cruVirtualService.http.routes.addRouteLabel"}}
+        </span>
+      </button>
+    </div>
+  {{/if}}
+</section>
+
+{{#if isView}}
+  {{#accordion-list as |al expandFn|}}
+    {{config-validation-list
+      resourceType="virtualservice"
+      expandAll=al.expandAll
+      expandFn=expandFn
+      namespaceId=model.namespaceId
+      name=model.name
+    }}
+
+    {{form-labels-annotations
+      classNames="accordion-wrapper"
+      model=model
+      editing=editing
+      expandAll=al.expandAll
+      expandFn=expandFn
+    }}
+  {{/accordion-list}}
+{{else}}
+  {{#advanced-section advanced=advanced}}
+    {{form-labels-annotations
+      classNames="accordion-wrapper"
+      initialLabels=model.labels
+      setLabels=(action "setLabels")
+      model=model
+      editing=editing
+    }}
+  {{/advanced-section}}
+{{/if}}
+
+{{#if editing}}
+  {{top-errors errors=errors}}
+  {{save-cancel
+    editing=isEdit
+    save=(action "save")
+    cancel=cancel
+  }}
+{{/if}}

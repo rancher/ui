@@ -1,0 +1,172 @@
+<div class="radio mb-0">
+  <label>
+    {{#if editing}}
+      {{radio-button selection=isSimpleMode value=true}}
+    {{/if}}
+    {{#if (or editing (eq isSimpleMode true))}}
+      {{t "cruDestinationRule.loadBalancer.simple.label"}}
+    {{/if}}
+  </label>
+  {{#if isSimpleMode}}
+    <div class="mb-10 mt-10">
+      {{#input-or-display
+        editable=editing
+        value=model.simple
+      }}
+        {{new-select
+          classNames="form-control"
+          content=lbModes
+          value=model.simple
+          localizedLabel=true
+        }}
+      {{/input-or-display}}
+    </div>
+  {{/if}}
+</div>
+
+<div class="radio mb-0">
+  <label>
+    {{#if editing}}
+      {{radio-button selection=isSimpleMode value=false}}
+    {{/if}}
+    {{#if (or editing (eq isSimpleMode false))}}
+      {{t "cruDestinationRule.loadBalancer.consistentHash.label"}}
+    {{/if}}
+  </label>
+</div>
+
+{{#unless isSimpleMode}}
+  <div class="row box">
+    <div class="col span-4">
+      <label class="acc-label">
+        {{t "cruDestinationRule.loadBalancer.consistentHash.mode.label"}}
+      </label>
+      {{#input-or-display
+        editable=editing
+        value=consistentHashMode
+      }}
+        <div class="radio">
+          <label>
+            {{radio-button selection=consistentHashMode value="header"}} {{t "cruDestinationRule.loadBalancer.consistentHash.mode.header.label"}}
+          </label>
+        </div>
+        <div class="radio">
+          <label>
+            {{radio-button selection=consistentHashMode value="cookie"}} {{t "cruDestinationRule.loadBalancer.consistentHash.mode.cookie.label"}}
+          </label>
+        </div>
+        <div class="radio">
+          <label>
+            {{radio-button selection=consistentHashMode value="sourceIp"}} {{t "cruDestinationRule.loadBalancer.consistentHash.mode.sourceIp.label"}}
+          </label>
+        </div>
+      {{/input-or-display}}
+    </div>
+    {{#if (eq consistentHashMode "header")}}
+      <div class="col span-4">
+        <label
+          class="acc-label"
+          for="{{concat elementId "-input-httpHeaderName"}}"
+        >
+          {{t "cruDestinationRule.loadBalancer.consistentHash.httpHeaderName.label"}}
+          {{#if editing}}
+            {{field-required}}
+          {{/if}}
+        </label>
+        {{#input-or-display
+          editable=editing
+          value=model.consistentHash.httpHeaderName
+        }}
+          {{input
+            type="text"
+            value=model.consistentHash.httpHeaderName
+            id=(concat elementId "-input-httpHeaderName")
+            placeholder=(t "cruDestinationRule.loadBalancer.consistentHash.httpHeaderName.placeholder")
+          }}
+        {{/input-or-display}}
+      </div>
+    {{else if (eq consistentHashMode "cookie")}}
+      <div class="col span-4">
+        <label
+          class="acc-label"
+          for="{{concat elementId "-input-httpCookie-name"}}"
+        >
+          {{t "cruDestinationRule.loadBalancer.consistentHash.httpCookie.name.label"}}
+          {{#if editing}}
+            {{field-required}}
+          {{/if}}
+        </label>
+        {{#input-or-display
+          editable=editing
+          value=model.model.consistentHash.httpCookie.name
+        }}
+          {{input
+            type="text"
+            value=model.consistentHash.httpCookie.name
+            id=(concat elementId "-input-httpCookie-name")
+            placeholder=(t "cruDestinationRule.loadBalancer.consistentHash.httpCookie.name.placeholder")
+          }}
+        {{/input-or-display}}
+
+        <label
+          class="acc-label pt-20"
+          for="{{concat elementId "-input-httpCookie-path"}}"
+        >
+          {{t "cruDestinationRule.loadBalancer.consistentHash.httpCookie.path.label"}}
+        </label>
+        {{#input-or-display
+          editable=editing
+          value=model.consistentHash.httpCookie.path
+        }}
+          {{input
+            type="text"
+            value=model.consistentHash.httpCookie.path
+            id=(concat elementId "-input-httpCookie-path")
+            placeholder=(t "cruDestinationRule.loadBalancer.consistentHash.httpCookie.path.placeholder")
+          }}
+        {{/input-or-display}}
+
+        <label
+          class="acc-label pt-20"
+          for="{{concat elementId "-input-httpCookie-ttl"}}"
+        >
+          {{t "cruDestinationRule.loadBalancer.consistentHash.httpCookie.ttl.label"}}
+          {{#if editing}}
+            {{field-required}}
+          {{/if}}
+        </label>
+        {{#input-or-display
+          editable=editing
+          value=model.consistentHash.httpCookie.ttl
+        }}
+          {{input
+            type="text"
+            value=model.consistentHash.httpCookie.ttl
+            id=(concat elementId "-input-httpCookie-ttl")
+            placeholder=(t "cruDestinationRule.loadBalancer.consistentHash.httpCookie.ttl.placeholder")
+          }}
+        {{/input-or-display}}
+      </div>
+    {{/if}}
+
+    <div class="col span-4">
+      <label
+        class="acc-label"
+        for="{{concat elementId "-input-minimumRingSize"}}"
+      >
+        {{t "cruDestinationRule.loadBalancer.consistentHash.minimumRingSize.label"}}
+      </label>
+      {{#input-or-display
+        editable=editing
+        value=model.consistentHash.minimumRingSize
+      }}
+        {{input-integer
+          min=0
+          value=model.consistentHash.minimumRingSize
+          id=(concat elementId "-input-minimumRingSize")
+          placeholder=(t "cruDestinationRule.loadBalancer.consistentHash.minimumRingSize.placeholder")
+        }}
+      {{/input-or-display}}
+    </div>
+  </div>
+{{/unless}}
