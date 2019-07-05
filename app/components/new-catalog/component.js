@@ -127,7 +127,7 @@ export default Component.extend(NewOrEdit, CatalogApp, ChildHook, {
       if ( get(this, 'istio') ) {
         const projectId = get(this, 'scope.currentProject.id');
 
-        get(this, 'router').transitionTo('authenticated.project.istio.rules', projectId);
+        get(this, 'router').transitionTo('authenticated.project.istio.project-istio.rules', projectId);
       } else if ( this.cancel ) {
         this.cancel();
       }
@@ -426,7 +426,7 @@ export default Component.extend(NewOrEdit, CatalogApp, ChildHook, {
     var projectId = get(this, 'scope.currentProject.id');
 
     if ( get(this, 'istio') ) {
-      return get(this, 'router').transitionTo('authenticated.project.istio.rules', projectId);
+      return get(this, 'router').transitionTo('authenticated.project.istio.project-istio.rules', projectId);
     } else {
       return get(this, 'router').transitionTo('apps-tab.index', projectId);
     }

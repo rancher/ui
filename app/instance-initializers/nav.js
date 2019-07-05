@@ -41,9 +41,9 @@ const rootNav = [
     resourceScope:            'project',
     disableIfClusterNotReady: true,
     moreCurrentWhen:          [
-      'authenticated.project.istio.graph',
-      'authenticated.project.istio.metrics',
-      'authenticated.project.istio.rules',
+      'authenticated.project.istio.project-istio.graph',
+      'authenticated.project.istio.project-istio.metrics',
+      'authenticated.project.istio.project-istio.rules',
     ],
   },
   {
