@@ -451,6 +451,42 @@
   {{/advanced-section}}
 </div>
 
+{{#accordion-list showExpandAll=false as |al expandFn|}}
+  {{#accordion-list-item
+     title=(t "clusterIstioPage.members.title")
+     detail=(t "clusterIstioPage.members.detail")
+     expand=(action expandFn)
+     expandOnInit=true
+  }}
+    <div class="radio">
+      <label>
+        {{radio-button
+          selection=allowSystemGroup
+          value=true
+        }}
+        {{t "clusterIstioPage.allowSystemGroup.true" htmlSafe=true}}
+      </label>
+    </div>
+    <div class="radio">
+      <label>
+        {{radio-button
+          selection=allowSystemGroup
+          value=false
+        }}
+        {{t "clusterIstioPage.allowSystemGroup.false" htmlSafe=true}}
+      </label>
+      {{#unless allowSystemGroup}}
+        {{form-members-catalog-access
+          readOnly=false
+          members=members
+          addAuthorizedPrincipal=(action "addAuthorizedPrincipal")
+          removeMember=(action "removeMember")
+        }}
+      {{/unless}}
+    </div>
+  {{/accordion-list-item}}
+{{/accordion-list}}
+
 {{#if (or pilotWarning mixerTelemetryWarning prometheusWarning tracingWarning grafanaWarning gatewayWarning (and mixerPolicyWarning config.mixerPolicyEnabled) mixerWarning istioWarning)}}
   {{#banner-message color="bg-warning"}}
     {{#if istioWarning}}
