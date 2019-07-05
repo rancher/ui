@@ -29,7 +29,7 @@ export default Controller.extend({
 
     goBack() {
       if ( get(this, 'istio') ) {
-        get(this, 'router').transitionTo('authenticated.project.istio.rules');
+        get(this, 'router').transitionTo('authenticated.project.istio.project-istio.rules');
       } else {
         get(this, 'router').transitionTo('apps-tab');
       }

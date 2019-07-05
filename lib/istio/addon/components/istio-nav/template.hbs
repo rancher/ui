@@ -9,7 +9,7 @@
       {{#link-to "project-istio.metrics"}}{{t "istio.nav.metrics"}}{{/link-to}}
     </li>
     {{!-- <li>
-      {{#link-to "rules"}}{{t "istio.nav.rules"}}{{/link-to}}
+      {{#link-to "project-istio.rules"}}{{t "istio.nav.rules"}}{{/link-to}}
     </li> --}}
   </ul>
 
@@ -50,6 +50,23 @@
           <div class="prometheus-icon"></div>
         </a>
       </div>
+      {{#if (and (eq currentRouteName "rules") project.id)}}
+        <a
+          class="btn btn-sm bg-primary mr-10"
+          href="{{href-to "authenticated.project.project-catalogs" project.id (query-params istio=true)}}"
+        >
+          <i class="icon icon-gear icon-fw"/>
+          <span>{{t "nav.apps.manage"}}</span>
+        </a>
+
+        <a
+          class="btn btn-sm bg-primary"
+          href="{{href-to "catalog-tab" project.id (query-params istio=true)}}"
+          disabled={{rbac-prevents resource="app" scope="project" permission="create"}}
+        >
+          <span>{{t "rulesPage.new"}}</span>
+        </a>
+      {{/if}}
       {{yield}}
     </div>
   {{/unless}}
